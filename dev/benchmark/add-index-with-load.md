@@ -1,13 +1,13 @@
 ---
-title: 线上负载与 `ADD INDEX` 相互影响测试
+title: 线上负载与 `Add index` 相互影响测试
 category: benchmark
 ---
 
-# 线上负载与 `ADD INDEX` 相互影响测试
+# 线上负载与 `Add index` 相互影响测试
 
 ## 测试目的
 
-测试 OLTP 场景下，`ADD INDEX` 与线上负载的相互影响。
+测试 OLTP 场景下，`Add index` 与线上负载的相互影响。
 
 ## 测试版本、时间、地点
 
@@ -83,7 +83,7 @@ sysbench $testname \
     run --tables=1 --table-size=2000000
 ```
 
-## 测试方案 1：`ADD INDEX` 目标列被频繁 Update
+## 测试方案 1：`Add index` 目标列被频繁 Update
 
 1. 开始 `oltp_read_write` 测试。
 2. 与步骤 1 同时，使用 `alter table sbtest1 add index c_idx(c)` 添加索引。
@@ -93,7 +93,7 @@ sysbench $testname \
 
 ### 测试结果
 
-#### 无 `ADD INDEX` 时 `oltp_read_write` 的结果
+#### 无 `Add index` 时 `oltp_read_write` 的结果
 
 | sysbench TPS | sysbench QPS    |
 | :------- | :-------- |
@@ -213,12 +213,12 @@ sysbench $testname \
 
 ### 测试结论
 
-若 `ADD INDEX` 的目标列正在进行较为频繁的写操作（本测试涉及列的 `UPDATE`、`INSERT` 和 `DELETE`），默认 `ADD INDEX` 配置对系统的线上负载有比较明显的影响，该影响主要来源于 `ADD INDEX` 与 Column Update 并发进行造成的写冲突，系统的表现反应在：
+若 `Add index` 的目标列正在进行较为频繁的写操作（本测试涉及列的 `UPDATE`、`INSERT` 和 `DELETE`），默认 `Add index` 配置对系统的线上负载有比较明显的影响，该影响主要来源于 `Add index` 与 Column Update 并发进行造成的写冲突，系统的表现反应在：
 
 - 随着两个参数的逐渐增大，`TiKV_prewrite_latch_wait_duration` 有明显的升高，造成写入变慢。
-- `tidb_ddl_reorg_worker_cnt` 与 `tidb_ddl_reorg_batch_size` 非常大时，`admin show ddl` 命令可以看到 DDL job 的多次重试（例如 `Write conflict, txnStartTS 410327455965380624 is stale [try again later], ErrCount:38, SnapshotVersion:410327228136030220`），此时 `ADD INDEX` 会持续非常久才能完成。
+- `tidb_ddl_reorg_worker_cnt` 与 `tidb_ddl_reorg_batch_size` 非常大时，`admin show ddl` 命令可以看到 DDL job 的多次重试（例如 `Write conflict, txnStartTS 410327455965380624 is stale [try again later], ErrCount:38, SnapshotVersion:410327228136030220`），此时 `Add index` 会持续非常久才能完成。
 
-## 测试方案 2：`ADD INDEX` 目标列不涉及写入（仅查询）
+## 测试方案 2：`Add index` 目标列不涉及写入（仅查询）
 
 1. 开始 `oltp_read_only` 测试。
 2. 与步骤 1 同时，使用 `alter table sbtest1 add index c_idx(c)` 添加索引。
@@ -228,7 +228,7 @@ sysbench $testname \
 
 ### 测试结果
 
-#### 无 `ADD INDEX` 时 `oltp_read_only` 结果
+#### 无 `Add index` 时 `oltp_read_only` 结果
 
 | sysbench TPS | sysbench QPS    |
 | :------- | :-------- |
@@ -278,9 +278,9 @@ sysbench $testname \
 
 ### 测试结论
 
-`ADD INDEX` 的目标列仅有查询负载时，`ADD INDEX` 对负载的影响不明显。
+`Add index` 的目标列仅有查询负载时，`Add index` 对负载的影响不明显。
 
-## 测试方案 3：集群负载不涉及 `ADD INDEX` 目标列
+## 测试方案 3：集群负载不涉及 `Add index` 目标列
 
 1. 开始 `oltp_read_write` 测试。
 2. 与步骤 1 同时，使用 `alter table test add index pad_idx(pad)` 添加索引。
@@ -290,7 +290,7 @@ sysbench $testname \
 
 ### 测试结果
 
-#### 无 `ADD INDEX` 时 `oltp_read_write` 的结果
+#### 无 `Add index` 时 `oltp_read_write` 的结果
 
 | sysbench TPS | sysbench QPS    |
 | :------- | :-------- |
@@ -340,9 +340,9 @@ sysbench $testname \
 
 ### 测试结论
 
-`ADD INDEX` 的目标列与负载无关时，`ADD INDEX` 对负载的影响不明显。
+`Add index` 的目标列与负载无关时，`Add index` 对负载的影响不明显。
 
 ## 总结
 
-- 当 `ADD INDEX` 的目标列被频繁更新（包含 `UPDATE`、`INSERT` 和 `DELETE`）时，默认配置会造成较为频繁的写冲突，使得在线负载较大；同时 `ADD INDEX` 也可能由于不断地重试，需要很长的时间才能完成。在本次测试中，将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 的乘积调整为默认值的 1/32（例如 `tidb_ddl_reorg_worker_cnt` = 4，`tidb_ddl_reorg_batch_size` = 256）可以取得较好的效果。
-- 当 `ADD INDEX` 的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以直接使用默认配置。
+- 当 `Add index` 的目标列被频繁更新（包含 `UPDATE`、`INSERT` 和 `DELETE`）时，默认配置会造成较为频繁的写冲突，使得在线负载较大；同时 `Add index` 也可能由于不断地重试，需要很长的时间才能完成。在本次测试中，将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 的乘积调整为默认值的 1/32（例如 `tidb_ddl_reorg_worker_cnt` = 4，`tidb_ddl_reorg_batch_size` = 256）可以取得较好的效果。
+- 当 `Add index` 的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以直接使用默认配置。
