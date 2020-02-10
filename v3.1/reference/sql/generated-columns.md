@@ -8,7 +8,7 @@ category: reference
 
 TiDB supports generated columns as part of MySQL 5.7 compatibility. One of the primary use cases for generated columns is to extract data out of a JSON data type and enable it to be indexed.
 
-## Index JSON using stored generated column
+## Index JSON using generated column
 
 In both MySQL 5.7 and TiDB, columns of type JSON can not be indexed directly. i.e. The following table structure is **not supported**:
 
@@ -21,11 +21,7 @@ CREATE TABLE person (
 );
 ```
 
-To index a JSON column, you must first extract it as a generated stored column.
-
-> **Note:**
->
-> The optimizer in TiDB only uses the index created on a generated stored column. Currently, the optimizer cannot use an index created on a generated virtual column. This issue will be fixed in later TiDB versions (See Issue [#5189](https://github.com/pingcap/tidb/issues/5189)).
+To index a JSON column, you must first extract it as a generated column.
 
 Using the `city` stored generated column as an example, you are then able to add an index:
 
@@ -68,7 +64,7 @@ ERROR 1048 (23000): Column 'city' cannot be null
 
 ## Use generated virtual columns
 
-TiDB also supports generated virtual columns. Different from generated store columns, generated virtual columns are **virtual** in that they are generated as needed and are not stored in the database or cached in the memory. Although TiDB supports indexing generated virtual columns, the optimizer currently cannot use indexes in this case. This issue will be fixed in a later version of TiDB (Issue [#5189](https://github.com/pingcap/tidb/issues/5189)).
+TiDB also supports generated virtual columns. Different from generated store columns, generated virtual columns are **virtual** in that they are generated as needed and are not stored in the database or cached in the memory.
 
 ```sql
 CREATE TABLE person (
