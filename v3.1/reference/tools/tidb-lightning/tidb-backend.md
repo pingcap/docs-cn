@@ -1,30 +1,38 @@
 ---
-title: TiDB Lightning "TiDB" Back End
+title: TiDB Lightning TiDB-backend
 summary: Choose how to write data into the TiDB cluster.
 category: reference
 ---
 
-# TiDB Lightning "TiDB" Back End
+# TiDB Lightning TiDB-backend
 
-TiDB Lightning supports two back ends: "Importer" and "TiDB". It determines how `tidb-lightning` delivers data into the target cluster.
+TiDB Lightning supports two backends: Importer and TiDB. It determines how `tidb-lightning` delivers data into the target cluster.
 
-The "Importer" back end (default) requires `tidb-lightning` to first encode the SQL or CSV data into KV pairs, and relies on the external `tikv-importer` program to sort these KV pairs and ingest directly into the TiKV nodes.
+The Importer-backend (default) requires `tidb-lightning` to first encode the SQL or CSV data into KV pairs, and relies on the external `tikv-importer` program to sort these KV pairs and ingest directly into the TiKV nodes.
 
-The "TiDB" back end requires `tidb-lightning` to encode these data into SQL `INSERT` statements, and has these statements executed directly on the TiDB node.
+The TiDB-backend requires `tidb-lightning` to encode these data into SQL `INSERT` statements, and has these statements executed directly on the TiDB node.
 
-| Back end | "Importer" | "TiDB" |
+| Back end | Importer | TiDB |
 |:---|:---|:---|
 | Speed | Fast (~300 GB/hr) | Slow (~50 GB/hr) |
 | Resource usage | High | Low |
 | ACID respected while importing | No | Yes |
 | Target tables | Must be empty | Can be populated |
 
-## Deployment for "TiDB" back end
+## Deployment for TiDB-backend
 
-When using the "TiDB" back end, you no longer need `tikv-importer`. Compared with the [standard deployment procedure](/v3.1/reference/tools/tidb-lightning/deployment.md), the "TiDB" back end deployment has the following two differences:
+When using the TiDB-backend, you no longer need `tikv-importer`. Compared with the [standard deployment procedure](/v3.1/reference/tools/tidb-lightning/deployment.md), the TiDB-backend deployment has the following two differences:
 
 * Steps involving `tikv-importer` can all be skipped.
-* The configuration must be changed to indicate the "TiDB" back end is used.
+* The configuration must be changed to indicate the TiDB-backend is used.
+
+### Hardware requirements
+
+The speed of TiDB Lightning using TiDB-backend is limited by the SQL processing speed of TiDB. Therefore, even a lower-end machine may max out the possible performance. The recommended hardware configuration is:
+
+* 16 logical cores CPU
+* An SSD large enough to store the entire data source, preferring higher read speed
+* 1 Gigabit network card
 
 ### Ansible deployment
 
@@ -72,7 +80,7 @@ or supplying the `--backend tidb` arguments when executing `tidb-lightning`.
 
 ## Conflict resolution
 
-The "TiDB" back end supports importing to an already-populated table. However, the new data might cause a unique key conflict with the old data. You can control how to resolve the conflict by using this task configuration.
+The TiDB-backend supports importing to an already-populated table. However, the new data might cause a unique key conflict with the old data. You can control how to resolve the conflict by using this task configuration.
 
 ```toml
 [tikv-importer]
@@ -86,9 +94,9 @@ on-duplicate = "replace" # or "error" or "ignore"
 | ignore | Keep old entries and ignore new ones | `INSERT IGNORE INTO ...` |
 | error | Abort import | `INSERT INTO ...` |
 
-## Migrating from Loader to TiDB Lightning "TiDB" back end
+## Migrating from Loader to TiDB Lightning TiDB-backend
 
-TiDB Lightning using the "TiDB" back end can completely replace functions of [Loader](/v3.1/reference/tools/loader.md). The following list shows how to translate Loader configurations into [TiDB Lightning configurations](/v3.1/reference/tools/tidb-lightning/deployment.md#step-4-start-tidb-lightning).
+TiDB Lightning using the TiDB-backend can completely replace functions of [Loader](/v3.1/reference/tools/loader.md). The following list shows how to translate Loader configurations into [TiDB Lightning configurations](/v3.1/reference/tools/tidb-lightning/deployment.md#step-4-start-tidb-lightning).
 
 <table>
 <thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thread>
@@ -167,7 +175,7 @@ schema = "tidb_lightning_checkpoint"
 
 ```toml
 [tikv-importer]
-# use the "TiDB" back end
+# use the TiDB-backend
 backend = "tidb"
 ```
 

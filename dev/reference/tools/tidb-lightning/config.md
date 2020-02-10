@@ -89,11 +89,11 @@ driver = "file"
 #keep-after-success = false
 
 [tikv-importer]
-# Delivery back end, can be "importer" or "tidb".
+# Delivery backend, can be "importer" or "tidb".
 # backend = "importer"
-# The listening address of tikv-importer when back end is "importer". Change it to the actual address.
+# The listening address of tikv-importer when backend is "importer". Change it to the actual address.
 addr = "172.16.31.10:8287"
-# Action to do when trying to insert a duplicated entry in the "tidb" back end.
+# Action to do when trying to insert a duplicated entry in the "tidb" backend.
 #  - replace: new entry replaces existing entry
 #  - ignore:  keep existing entry, ignore new entry
 #  - error:   report error and quit the program
@@ -184,6 +184,9 @@ checksum-table-concurrency = 16
 
 # The default SQL mode used to parse and execute the SQL statements.
 sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
+# Sets maximum packet size allowed for SQL connections.
+# Set this to 0 to automatically fetch the `max_allowed_packet` variable from server on every connection.
+max-allowed-packet = 67_108_864
 
 # When data importing is complete, tidb-lightning can automatically perform
 # the Checksum, Compact and Analyze operations. It is recommended to leave
@@ -295,7 +298,7 @@ min-available-ratio = 0.05
 | -V | Prints program version | |
 | -d *directory* | Directory of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
-| --backend *backend* | [Delivery back end](/dev/reference/tools/tidb-lightning/tidb-backend.md) (`importer` or `tidb`) | `tikv-importer.backend` |
+| --backend *backend* | [Delivery backend](/dev/reference/tools/tidb-lightning/tidb-backend.md) (`importer` or `tidb`) | `tikv-importer.backend` |
 | --log-file *file* | Log file path | `lightning.log-file` |
 | --status-addr *ip:port* | Listening address of the TiDB Lightning server | `lightning.status-port` |
 | --importer *host:port* | Address of TiKV Importer | `tikv-importer.addr` |

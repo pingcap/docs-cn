@@ -41,4 +41,4 @@ The complete import process is as follows:
 
 7. Finally, `tidb-lightning` switches the TiKV cluster back to "normal mode", so the cluster resumes normal services.
 
-TiDB Lightning also supports using "TiDB" instead of "Importer" as the back end. In this configuration, `tidb-lightning` transforms data into SQL `INSERT` statements and directly executes them on the target cluster, similar to Loader. See [TiDB Lightning "TiDB" Back End](/dev/reference/tools/tidb-lightning/tidb-backend.md) for details.
+TiDB Lightning also supports using TiDB instead of Importer as the backend. In this configuration, `tidb-lightning` transforms data into SQL `INSERT` statements and directly executes them on the target cluster, similar to Loader. See [TiDB Lightning TiDB-backend](/dev/reference/tools/tidb-lightning/tidb-backend.md) for details.

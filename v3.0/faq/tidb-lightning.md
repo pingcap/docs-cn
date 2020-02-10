@@ -29,12 +29,14 @@ TiDB Lightning requires the following privileges:
 * CREATE
 * DROP
 
-If the target database is used to store checkpoints, it additionally requires these privileges:
+If the [TiDB-backend](/v3.0/reference/tools/tidb-lightning/tidb-backend.md) is chosen, or the target database is used to store checkpoints, it additionally requires these privileges:
 
 * INSERT
 * DELETE
 
-If the `checksum` configuration item of TiDB Lightning is set to `true`, then the admin user privileges in the downstream TiDB need to be granted to TiDB Lightning.
+The Importer-backend does not require these two privileges because data is ingested into TiKV directly, which bypasses the entire TiDB privilege system. This is secure as long as the ports of TiKV, TiKV Importer and TiDB Lightning are not reachable outside the cluster.
+
+If the `checksum` configuration of TiDB Lightning is set to `true`, then the admin user privileges in the downstream TiDB need to be granted to TiDB Lightning.
 
 ## TiDB Lightning encountered an error when importing one table. Will it affect other tables? Will the process be terminated?
 
