@@ -539,6 +539,13 @@ Drainer="192.168.0.13"
 
         # replicate-do-db = ["~^b.*","s1"]
 
+        # [syncer.relay]
+        # 保存 relay log 的目录，空值表示不开启。
+        # 只有下游是 TiDB/MySQL 配置才有意义。
+        # log-dir = ""
+        # 每个文件的最大大小
+        # max-file-size = 10485760
+
         # [[syncer.replicate-do-table]]
         # db-name ="test"
         # tbl-name = "log"
@@ -641,8 +648,8 @@ mysql> select * from tidb_binlog.checkpoint;
 
 ```
 [syncer.relay]
-# directory of relay logs. Empty string indicates disabling relay log.
-# relay log works only if the downstream is TiDB/MySQL.
+# 保存 relay log 的目录，空值表示不开启。
+# 只有下游是 TiDB/MySQL 配置才有意意义。
 log-dir = "/dir/to/save/log"
 ```
 
