@@ -5,11 +5,11 @@ category: reference
 
 # AUTO_RANDOM <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-注意：该功能处于实验阶段，不排除后续版本修改语法或语义的可能，__不建议在生产环境直接使用__。另外，auto_random 属性必须在配置文件中设置开关 `[experimental] allow-auto-shard = true` 后，才能正常使用。
+注意：该功能处于实验阶段，不排除后续版本修改语法或语义的可能，__不建议在生产环境直接使用__。另外，auto_random 属性必须在配置文件中设置开关 `[experimental] allow-auto-random = true` 后，才能正常使用。
 
 ## 简介
 
-auto_random 用于解决大批量写入含有『整型自增主键列』表时的热点问题。参考：[TiDB 高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
+auto_random 用于解决大批量写入含有__整型自增主键列__的表时的热点问题。参考：[TiDB 高并发写入场景最佳实践](/dev/reference/best-practices/high-concurrency.md)
 
 例如下表
 
