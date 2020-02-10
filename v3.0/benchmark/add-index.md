@@ -1,13 +1,13 @@
 ---
-title: Add Index Benchmark
+title: ADD INDEX Benchmark
 category: benchmark
 ---
 
-# Add Index Benchmark
+# ADD INDEX Benchmark
 
 ## 测试目的
 
-对比 TiDB 3.0 版本和 2.0 版本 `Add Index` 的速度。
+对比 TiDB 3.0 版本和 2.0 版本 `ADD INDEX` 的速度。
 
 ## 测试版本、时间、地点
 
@@ -81,7 +81,7 @@ V2.0.6
 
 ## Benchmark 对比
 
-### add index
+### ADD INDEX
 
 对比测试 `alter table t_xx add index idx_(c0)` 的时间。
 
@@ -93,7 +93,7 @@ TiDB V2.0.6 不支持设置 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batc
 
 ![add-index-best-practices-01](/media/add-index-best-practices-01.png)
 
-### add unique index
+### ADD UNIQUE INDEX
 
 `alter table t add unique index idx_(c0)`
 
@@ -101,6 +101,6 @@ TiDB V2.0.6 不支持设置 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batc
 
 ### 测试结论
 
-在相同的表结构下，测试 200W 数据数据的 add index 时间，基本和 2000W 数据的 add index 的时间成 10 倍的关系。
+在相同的表结构下，测试 200W 数据数据的 ADD INDEX 时间，基本和 2000W 数据的 ADD INDEX 的时间成 10 倍的关系。
 
-以此类推，TiDB v3.0 版本 1 亿数据在类似的硬件，且无其他负载情况下，add index 消耗的时间大致为 344s * 5 = 1720s = 29 min。考虑到 add index 是低优先级操作，有其他负载情况下 add index 操作会更慢一些。
+以此类推，TiDB v3.0 版本 1 亿数据在类似的硬件，且无其他负载情况下，ADD INDEX 消耗的时间大致为 344s * 5 = 1720s = 29 min。考虑到 ADD INDEX 是低优先级操作，有其他负载情况下 ADD INDEX 操作会更慢一些。
