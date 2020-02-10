@@ -7,7 +7,7 @@ category: reference
 
 TiDB 支持完整的分布式事务。本文主要介绍涉及到事务的语句、显式/隐式事务以及事务的隔离级别和惰性检查。
 
-常用的变量包括 `autocommit`、[`tidb_disable_txn_auto_retry`](/v3.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/v3.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
+常用的变量包括 `autocommit`、[`tidb_disable_txn_auto_retry`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
 
 ## 事务常用语句
 

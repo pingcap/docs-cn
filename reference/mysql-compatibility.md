@@ -13,7 +13,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/v3.1/reference/security/compatibility.md)及[事务模型](/v3.1/reference/transactions/transaction-model.md)的兼容信息请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/reference/security/compatibility.md)及[事务模型](/reference/transactions/transaction-model.md)的兼容信息请查看各自具体页面。
 
 ## 不支持的特性
 
@@ -66,13 +66,13 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 ### Performance schema
 
-Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/v3.1/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
+Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
 
-从 TiDB 3.0.4 版本开始，TiDB 支持 `events_statements_summary_by_digest`，参见 [Statement Summary Table](/v3.1/reference/performance/statement-summary.md)。
+从 TiDB 3.0.4 版本开始，TiDB 支持 `events_statements_summary_by_digest`，参见 [Statement Summary Table](/reference/performance/statement-summary.md)。
 
 ### 查询计划
 
-TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较大，同时 `EXPLAIN FOR` 的输出内容与权限设置与 MySQL 不一致，参见[理解 TiDB 执行计划](/v3.1/reference/performance/understanding-the-query-execution-plan.md)。
+TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较大，同时 `EXPLAIN FOR` 的输出内容与权限设置与 MySQL 不一致，参见[理解 TiDB 执行计划](/reference/performance/understanding-the-query-execution-plan.md)。
 
 ### 内建函数
 
@@ -115,7 +115,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 ### `ANALYZE TABLE`
 
-- [`ANALYZE TABLE`](/v3.1/reference/performance/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
+- [`ANALYZE TABLE`](/reference/performance/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
 
 ### 视图
 
@@ -150,14 +150,14 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/v3.1/reference/configuration/tidb-server/configuration.md#store) 选项指定的引擎中创建用户表。
+从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/reference/configuration/tidb-server/configuration.md#store) 选项指定的引擎中创建用户表。
 
 ### SQL 模式
 
 TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除外：
 
 - TiDB 不支持兼容模式（例如 `ORACLE` 和 `POSTGRESQL`）。MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
-- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/v3.1/reference/sql/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
+- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/reference/sql/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
 
 ### 默认设置的区别
@@ -168,7 +168,7 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 + 默认排序规则不同：
     + TiDB 中，`utf8mb4` 的默认排序规则为 `utf8mb4_bin`
     + MySQL 5.7 中，`utf8mb4` 的默认排序规则为 `utf8mb4_general_ci`，MySQL 8.0 中修改为 `utf8mb4_0900_ai_ci`
-    + 请使用 [`SHOW CHARACTER SET`](/v3.1/reference/sql/statements/show-character-set.md) 语句查看所有字符集的默认排序规则
+    + 请使用 [`SHOW CHARACTER SET`](/reference/sql/statements/show-character-set.md) 语句查看所有字符集的默认排序规则
 + `foreign_key_checks` 的默认值不同：
     + TiDB 中该值默认为 `OFF`，并且目前 TiDB 只支持设置该值为 `OFF`。
     + MySQL 5.7 中该值默认为 `ON`。

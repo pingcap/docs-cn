@@ -166,7 +166,7 @@ kubectl describe po -n <namespace> <pod-name>
 kubectl get storageclass
 ```
 
-如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](/v3.1/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)进行扩充。
+如果集群中有 StorageClass，但可用的 PV 不足，则需要添加对应的 PV 资源。对于 Local PV，可以参考[本地 PV 配置](/tidb-in-kubernetes/reference/configuration/storage-class.md#本地-pv-配置)进行扩充。
 
 tidb-scheduler 针对 PD 和 TiKV 定制了高可用调度策略。对于同一个 TiDB 集群，假设 PD 或者 TiKV 的 Replicas 数量为 N，那么可以调度到每个节点的 PD Pod 数量最多为 `M=(N-1)/2`（如果 N<3，M=1），可以调度到每个节点的 TiKV Pod 数量最多为 `M=ceil(N/3)`（ceil 表示向上取整，如果 N<3，M=1）。如果 Pod 因为不满足高可用调度策略而导致状态为 Pending，需要往集群内添加节点。
 
@@ -188,7 +188,7 @@ kubectl -n <namespace> logs -f <pod-name>
 kubectl -n <namespace> logs -p <pod-name>
 ```
 
-确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/v3.1/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/v3.1/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/v3.1/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错)中的指引信息进行进一步排查解决。
+确认日志中的错误信息后，可以根据 [tidb-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tidb-server-启动报错)，[tikv-server 启动报错](/how-to/troubleshoot/cluster-setup.md#tikv-server-启动报错)，[pd-server 启动报错](/how-to/troubleshoot/cluster-setup.md#pd-server-启动报错)中的指引信息进行进一步排查解决。
 
 若是 TiKV Pod 日志中出现 "cluster id mismatch" 信息，则 TiKV Pod 使用的数据可能是其他或之前的 TiKV Pod 的旧数据。在集群配置本地存储时未清除机器上本地磁盘上的数据，或者强制删除了 PV 导致数据并没有被 local volume provisioner 程序回收，可能导致 PV 遗留旧数据，导致错误。
 

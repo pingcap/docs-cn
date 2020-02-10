@@ -6,12 +6,12 @@ category: how-to
 
 # TiDB Binlog 运维
 
-本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](/v3.1/reference/tidb-binlog/overview.md)。
+本文档介绍如何在 Kubernetes 上运维 TiDB 集群的 [TiDB Binlog](/reference/tidb-binlog/overview.md)。
 
 ## 运维准备
 
-- [部署 TiDB Operator](/v3.1/tidb-in-kubernetes/deploy/tidb-operator.md)；
-- [安装 Helm](/v3.1/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 并配置 PingCAP 官方 chart 仓库。
+- [部署 TiDB Operator](/tidb-in-kubernetes/deploy/tidb-operator.md)；
+- [安装 Helm](/tidb-in-kubernetes/reference/tools/in-kubernetes.md#使用-helm) 并配置 PingCAP 官方 chart 仓库。
 
 ## 启用 TiDB 集群的 TiDB Binlog
 
@@ -199,7 +199,7 @@ category: how-to
 
     `clusterName` 和 `clusterVersion` 必须匹配所需的源 TiDB 集群。
 
-    有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](/v3.1/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)。
+    有关完整的配置详细信息，请参阅 [Kubernetes 上的 TiDB Binlog Drainer 配置](/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)。
 
 4. 部署 drainer：
 

@@ -12,7 +12,7 @@ category: how-to
 >
 > - 对于生产环境，不要使用此方式进行部署。
 >
-> - 尽管 Minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如，VPS）上试用 TiDB Operator，可以考虑使用 [kind](/v3.1/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)。
+> - 尽管 Minikube 支持通过 `--vm-driver=none` 选项使用主机 Docker 而不使用虚拟机，但是目前尚没有针对 TiDB Operator 做过全面的测试，可能会无法正常工作。如果你想在不支持虚拟化的系统（例如，VPS）上试用 TiDB Operator，可以考虑使用 [kind](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)。
 
 ## 安装 Minikube 并启动 Kubernetes 集群
 

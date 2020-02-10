@@ -25,7 +25,7 @@ TiDB Lightning 主要包含两个部分:
 
 ## 准备全量备份数据
 
-我们使用 [`mydumper`](/v3.1/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+我们使用 [`mydumper`](/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -47,7 +47,7 @@ TiDB Lightning 主要包含两个部分:
 
 ### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群（版本要求 2.0.9 以上），本教程使用 TiDB 3.0.4 版本。部署方法可参考 [TiDB 快速入门指南](/v3.1/overview.md#部署方式)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群（版本要求 2.0.9 以上），本教程使用 TiDB 3.0.4 版本。部署方法可参考 [TiDB 快速入门指南](/overview.md#部署方式)。
 
 ### 第 2 步：下载 TiDB Lightning 安装包
 
@@ -111,10 +111,10 @@ TiDB Lightning 主要包含两个部分:
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 
-如果出错，请参见 [TiDB-Lightning 错误排解](/v3.1/how-to/troubleshoot/tidb-lightning.md)。
+如果出错，请参见 [TiDB-Lightning 错误排解](/how-to/troubleshoot/tidb-lightning.md)。
 
 ## 总结
 
 本教程对 TiDB Lightning 进行了简单的介绍，并快速部署了一套简单的 TiDB Lightning 集群，将全量备份数据导入到 TiDB 集群中。
 
-关于 TiDB Lightning 的详细功能和使用，参见 [TiDB Lightning 简介](/v3.1/reference/tools/tidb-lightning/overview.md)。
+关于 TiDB Lightning 的详细功能和使用，参见 [TiDB Lightning 简介](/reference/tools/tidb-lightning/overview.md)。
