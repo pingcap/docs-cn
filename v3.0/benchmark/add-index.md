@@ -7,7 +7,7 @@ category: benchmark
 
 ## 测试目的
 
-对比 TiDB 3.0 版本和 2.0 版本 `add Index` 的速度。
+对比 TiDB 3.0 版本和 2.0 版本 `Add Index` 的速度。
 
 ## 测试版本、时间、地点
 
