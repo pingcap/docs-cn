@@ -8,12 +8,7 @@ aliases: ['/docs-cn/v3.1/reference/transactions/transaction-model/']
 
 TiDB 默认使用乐观事务模型。也就是说，在执行 `UPDATE`、`INSERT`、`DELETE` 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。类似的，诸如 `GET_LOCK()` 和 `RELEASE_LOCK()` 等函数以及 `SELECT .. FOR UPDATE` 之类的语句在 TiDB 和 MySQL 中的执行方式并不相同。所以业务端在执行 SQL 语句后，需要注意检查 `COMMIT` 的返回值，即使执行时没有出错，`COMMIT` 的时候也可能会出错。
 
-本文介绍 TiDB 乐观事务的原理，以及相关特性。本文假定你对 [TiDB 的整体架构](/v3.1/architecture.md#tidb-整体架构)和 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型都有一定了解，相关核心概念如下：
-
-- [ACID](/v3.1/glossary.md#acid)
-- [事务](/v3.1/glossary.md#事务)
-- [乐观事务](/v3.1/glossary.md#乐观事务)
-- [显式事务/隐式事务](/v3.1/glossary.md#显式事务隐式事务)
+本文介绍 TiDB 乐观事务的原理，以及相关特性。本文假定你对    [TiDB 的整体架构](/v3.1/architecture.md#tidb-整体架构)、 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型以及事务的 [ACID 特性](/v3.1/glossary.md#acid)都有一定了解。
 
 ## 乐观事务原理
 
@@ -27,9 +22,8 @@ TiDB 中事务使用两阶段提交，流程如下：
 
 2. 客户端发起读请求。
 
-    a. TiDB 从 PD 获取数据路由信息，即数据具体存在哪个 TiKV 节点上。
-
-    b. TiDB 从 TiKV 获取 `start_ts` 版本下对应的数据信息。
+    1. TiDB 从 PD 获取数据路由信息，即数据具体存在哪个 TiKV 节点上。
+    2. TiDB 从 TiKV 获取 `start_ts` 版本下对应的数据信息。
 
 3. 客户端发起写请求。
 
@@ -39,19 +33,13 @@ TiDB 中事务使用两阶段提交，流程如下：
 
 5. TiDB 开始两阶段提交，保证分布式事务的原子性，让数据真正落盘。
 
-    a. TiDB 从当前要写入的数据中选择一个 Key 作为当前事务的 Primary Key。
-
-    b. TiDB 从 PD 获取所有数据的写入路由信息，并将所有的 Key 按照所有的路由进行分类。
-
-    c. TiDB 并发地向所有涉及的 TiKV 发起 prewrite 请求。TiKV 收到 prewrite 数据后，检查数据版本信息是否存在冲突或已过期。符合条件的数据会被加锁。
-
-    d. TiDB 成功收到所有 prewrite 请求。
-
-    e. TiDB 向 PD 获取第二个全局唯一递增版本号，定义为本次事务的 `commit_ts`。
-
-    f. TiDB 向 Primary Key 所在 TiKV 发起第二阶段提交。TiKV 收到 commit 操作后，检查数据合法性，清理 prewrite 阶段留下的锁。
-
-    g. TiDB 收到 f 成功信息。
+    1. TiDB 从当前要写入的数据中选择一个 Key 作为当前事务的 Primary Key。
+    2. TiDB 从 PD 获取所有数据的写入路由信息，并将所有的 Key 按照所有的路由进行分类。
+    3. TiDB 并发地向所有涉及的 TiKV 发起 prewrite 请求。TiKV 收到 prewrite 数据后，检查数据版本信息是否存在冲突或已过期。符合条件的数据会被加锁。
+    4. TiDB 成功收到所有 prewrite 请求。
+    5. TiDB 向 PD 获取第二个全局唯一递增版本号，定义为本次事务的 `commit_ts`。
+    6. TiDB 向 Primary Key 所在 TiKV 发起第二阶段提交。TiKV 收到 commit 操作后，检查数据合法性，清理 prewrite 阶段留下的锁。
+    7. TiDB 收到 上一步 成功的信息。
 
 6. TiDB 向客户端返回事务提交成功的信息。
 
@@ -73,19 +61,19 @@ TiDB 中事务使用两阶段提交，流程如下：
 
 ### 重试机制
 
-TiDB 中默认使用乐观事务模型，因而在高冲突率的场景中，事务很容易提交失败。而 MySQL 内部使用的是悲观事务模型，在执行 SQL 语句的过程中进行冲突检测，所以提交时很难出现异常。为了兼容 MySQL 的悲观事务行为，TiDB 提供了重试机制。当事务提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry` 和 `tidb_retry_limit` 开启自动重试：
+TiDB 中默认使用乐观事务模型，因而在高冲突率的场景中，事务很容易提交失败。而 MySQL 内部使用的是悲观事务模型，在执行 SQL 语句的过程中进行冲突检测，所以提交时很难出现异常。为了兼容 MySQL 的悲观事务行为，TiDB 提供了重试机制。当事务提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = off` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
 
 ```toml
-# 用于设置是否禁用自动重试，默认不重试。
-tidb_disable_txn_auto_retry = on
-# 用来控制重试次数。只有自动重试启用时该参数才会生效。
+# 设置是否禁用自动重试，默认为 “on”，即不重试。
+tidb_disable_txn_auto_retry = off
+# 控制重试次数，默认为 “10”。只有自动重试启用时该参数才会生效。
 # 当 “tidb_retry_limit= 0” 时，也会禁用自动重试。
 tidb_retry_limit = 10
 ```
 
-推荐通过以下两种方式进行参数设置：
+你也可以修改当前 Session 或 Global 的值：
 
-1. Session 级别设置：
+- Session 级别设置：
 
     {{< copyable "sql" >}}
 
@@ -94,7 +82,7 @@ tidb_retry_limit = 10
     set @@tidb_retry_limit = 10;
     ```
 
-2. Global 级别设置：
+- Global 级别设置：
 
     {{< copyable "sql" >}}
 
@@ -103,23 +91,23 @@ tidb_retry_limit = 10
     set @@global.tidb_retry_limit = 10;
     ```
 
+> 注意：
+>
+> `tidb_retry_limit` 变量决定了事务重试的最大次数。当它被设置为 0 时，所有事务都不会自动重试，包括自动提交的单语句隐式事务。这是彻底禁用 TiDB 中自动重试机制的方法。禁用自动重试后，所有冲突的事务都会以最快的方式上报失败信息（`try again later`）给应用层。
+
 ### 重试的局限性
 
-基于重试机制的原理，可将重试过程概括为以下三个步骤：
+TiDB 默认不进行事务重试，因为重试事务可能会导致更新丢失，从而破坏快照隔离。
+
+事务重试的局限性与其重试的原理有关。事务事务可概括为以下三个步骤：
 
 1. 重新获取 `start_ts`。
-
 2. 重新执行包含写操作的 SQL 语句。
+3. 再次进行两阶段提交。
 
-3. 两阶段提交。
+第二步中，重试时仅重新执行包含写操作的 SQL 语句，并不涉及读操作的 SQL 语句。但是当前事务中读到数据的时间与事务真正开始的时间发生了变化，写入的版本变成了重试时获取的 `start_ts` 而非事务一开始时获取的 `start_ts`。因此，当事务中存在依赖查询结果来更新的语句时，重试将无法保证事务原本可重复读的隔离级别，最终可能导致结果与预期出现不一致。
 
-根据第二步，重试时仅重新执行包含写操作的 SQL 语句，并不涉及读操作的 SQL 语句。这会引发以下问题：
-
-1. `start_ts` 发生了变更。当前事务中，读到数据的时间与事务真正开始的时间发生了变化。同理，写入的版本变成了重试时获取的 `start_ts` 而非事务一开始时获取的 `start_ts`。
-
-2. 当前事务中，如果存在依赖查询结果来更新的语句，所以无法保证事务原本可重复读的隔离级别，最终可能导致结果与预期出现不一致。
-
-因此，如果存在依赖查询结果来更新 SQL 语句的事务，建议不要打开 TiDB 乐观锁的重试机制。
+如果业务可以容忍事务重试导致的异常，或并不关注事务是否以快照隔离级别来执行，则可以开启自动重试。
 
 ## 冲突检测
 
