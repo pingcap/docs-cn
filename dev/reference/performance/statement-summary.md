@@ -9,7 +9,7 @@ category: reference
 
 为此，从 3.0.4 版本开始，TiDB 也提供系统表 `events_statements_summary_by_digest`，从 3.0.8 开始提供系统表 `events_statements_summary_by_digest_history`。本文将详细介绍这两张表，以及如何利用它们来排查 SQL 性能问题。
 
-## events_statements_summary_by_digest 介绍
+## `events_statements_summary_by_digest`
 
 `events_statements_summary_by_digest` 是 `performance_schema` 里的一张系统表，它把 SQL 按 digest 分组，统计每一组的 SQL 信息。
 
@@ -29,13 +29,13 @@ select * from EMPLOYEE where ID in (4, 5) and SALARY between 3000 and 4000;
 select * from employee where id in (...) and salary between ? and ?;
 ```
 
-`events_statements_summary_by_digest` 保存的是把 SQL 的监控指标按 SQL digest 进行聚合的结果。一般来说，每一项监控指标都包含平均值和最大值，例如执行延时对应 `AVG_LATENCY` 和 `MAX_LATENCY` 两个字段，分别是平均延时和最大延时。
+`events_statements_summary_by_digest` 保存的是把 SQL 的监控指标按 SQL digest 进行聚合的结果。一般来说，每一项监控指标都包含平均值和最大值。例如执行延时对应 `AVG_LATENCY` 和 `MAX_LATENCY` 两个字段，分别是平均延时和最大延时。
 
-为了监控指标的即时性，`events_statements_summary_by_digest` 里的数据定期清空，只展现最近一段时间内的聚合结果。清空周期由系统变量 `tidb_stmt_summary_refresh_interval` 设置。如果刚好在清空之后查询，显示的数据可能很少。
+为了监控指标的即时性，`events_statements_summary_by_digest` 里的数据定期被清空，只展现最近一段时间内的聚合结果。清空周期由系统变量 `tidb_stmt_summary_refresh_interval` 设置。如果刚好在清空之后进行查询，显示的数据可能很少。
 
-接下来详细看一下 `events_statements_summary_by_digest` 的表结构。因为 TiDB 中的很多概念不同于 MySQL，所以 `events_statements_summary_by_digest` 与 MySQL 有很大区别。
+因为 TiDB 中的很多概念不同于 MySQL，所以 TiDB 中 `events_statements_summary_by_digest` 的表结构与 MySQL 中的有很大区别。
 
-`events_statements_summary_by_digest` 表中有 64 个字段，以下截取了部分查询结果：
+`events_statements_summary_by_digest` 表中有 64 个字段，以下为部分查询结果：
 
 ```
    SUMMARY_BEGIN_TIME: 2020-01-02 11:00:00
@@ -69,7 +69,9 @@ select * from employee where id in (...) and salary between ? and ?;
 
 > **注意：**
 >
-> 在 TiDB 中，statement summary tables 中字段的时间单位是 ns，而 MySQL 中的时间单位是 ps，这一点不一致。
+> 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
+
+### 表的字段介绍
 
 SQL 的基础信息：
 
@@ -83,9 +85,9 @@ SQL 的基础信息：
 
 `QUERY_SAMPLE_TEXT`：这类 SQL 的原 SQL 语句，多条语句只取其中一条。
 
-`TABLE_NAMES`：SQL 中涉及的所有表，多张表用“,”分隔。
+`TABLE_NAMES`：SQL 中涉及的所有表，多张表用 `,` 分隔。
 
-`INDEX_NAMES`：SQL 中使用的索引名，多个索引用“,”分隔。
+`INDEX_NAMES`：SQL 中使用的索引名，多个索引用 `,` 分隔。
 
 `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个。
 
@@ -99,7 +101,7 @@ SQL 的基础信息：
 
 `LAST_SEEN`：这类 SQL 的最后一次出现时间。
 
-在 TiDB-Server 上的执行数据：
+在 TiDB server 上的执行数据：
 
 `EXEC_COUNT`：这类 SQL 的总执行次数。
 
@@ -155,7 +157,7 @@ SQL 的基础信息：
 
 `MAX_TOTAL_KEYS`：Coprocessor 扫过的 key 的最大数量。
 
-`AVG_PROCESSED_KEYS`：Coprocessor 处理的 key 的平均数量。相比 avg_total_keys，avg_processed_keys 不包含 MVCC 的旧版本。如果 avg_total_keys 和 avg_processed_keys 相差很大，说明旧版本比较多。
+`AVG_PROCESSED_KEYS`：Coprocessor 处理的 key 的平均数量。相比 `avg_total_keys`，`avg_processed_keys` 不包含 MVCC 的旧版本。如果 `avg_total_keys` 和 `avg_processed_keys` 相差很大，说明旧版本比较多。
 
 `MAX_PROCESSED_KEYS`：Coprocessor 处理的 key 的最大数量。
 
@@ -193,9 +195,9 @@ SQL 的基础信息：
 
 `MAX_WRITE_SIZE`：写入的最大数据量，单位 byte。
 
-`AVG_PREWRITE_REGIONS`：prewrite 涉及的平均 region 数量。
+`AVG_PREWRITE_REGIONS`：prewrite 涉及的平均 Region 数量。
 
-`MAX_PREWRITE_REGIONS`：prewrite 涉及的最大 region 数量。
+`MAX_PREWRITE_REGIONS`：prewrite 涉及的最大 Region 数量。
 
 `AVG_TXN_RETRY`：事务平均重试次数。
 
@@ -203,13 +205,13 @@ SQL 的基础信息：
 
 `SUM_BACKOFF_TIMES`：这类 SQL 遇到需要重试的错误后的总重试次数。
 
-`BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为“类型:次数”，多种错误按“,”分隔。例如“txnLock:2,pdRPC:1”。
+`BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为 `类型:次数`。如有多种错误则用 `,` 分隔，例如 `txnLock:2,pdRPC:1`。
 
 `AVG_AFFECTED_ROWS`：平均影响行数。
 
-`PREV_SAMPLE_TEXT`：当 SQL 是“COMMIT”时，该字段为 COMMIT 的前一条语句；否则该字段为空字符串。当 SQL 是“COMMIT”时，按 digest 和 prev_sample_text 一起分组，即不同的 prev_sample_text 的 COMMIT 也会分到不同的行。
+`PREV_SAMPLE_TEXT`：当 SQL 是“COMMIT”时，该字段为 COMMIT 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行。
 
-## events_statements_summary_by_digest_history
+## `events_statements_summary_by_digest_history`
 
 `events_statements_summary_by_digest_history` 的表结构与 `events_statements_summary_by_digest` 完全相同，不同的是前者保存了历史时间段的数据。通过历史数据，可以排查过去出现的异常，也可以对比不同时间的监控指标。
 
@@ -243,7 +245,7 @@ SELECT avg_latency, exec_count, query_sample_text
 
 ### 哪类 SQL 的总耗时最高？
 
-假如上午 10:00 到 10:30 的 QPS 明显下降，可以从历史表中找出当时耗时最高的 3 类 SQL：
+假如上午 10:00 到 10:30 的 QPS 明显下降，可以从历史表中找出当时耗时最高的三类 SQL：
 
 ```sql
 SELECT sum_latency, avg_latency, exec_count, query_sample_text
@@ -277,26 +279,26 @@ statement summary 关闭后，系统表里的数据会被清空，下次打开�
 
 还有两个控制 statement summary 的系统变量：
 
-- `tidb_stmt_summary_refresh_interval`：`events_statements_summary_by_digest` 的清空周期，单位是秒，默认值是 1800。
-- `tidb_stmt_summary_history_size`：`events_statements_summary_by_digest_history` 保存每种 SQL 的历史的数量，默认值是 24。
+- `tidb_stmt_summary_refresh_interval`：`events_statements_summary_by_digest` 的清空周期，单位是秒 (s)，默认值是 `1800`。
+- `tidb_stmt_summary_history_size`：`events_statements_summary_by_digest_history` 保存每种 SQL 的历史的数量，默认值是 `24`。
 
-例如，如下设置：
+statement summary 配置示例如下：
 
 ```sql
 set global tidb_stmt_summary_refresh_interval = 1800;
 set global tidb_stmt_summary_history_size = 24;
 ```
 
-那么 `events_statements_summary_by_digest` 每 30 分钟清空一次，`events_statements_summary_by_digest_history` 保存最近 12 小时的历史数据。
+以上配置生效后，`events_statements_summary_by_digest` 每 30 分钟清空一次，`events_statements_summary_by_digest_history` 保存最近 12 小时的历史数据。
 
-这些系统变量都有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
+以上两个系统变量都有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
 
 - 设置 global 变量后整个集群立即生效
-- 设置 session 变量后当前 TiDB-Server 立即生效，这对于调试单个 TiDB-Server 比较有用
+- 设置 session 变量后当前 TiDB server 立即生效，这对于调试单个 TiDB server 比较有用
 - 优先读 session 变量，没有设置过 session 变量才会读 global 变量
 - 把 session 变量设为空字符串，将会重新读 global 变量
 
-由于 statement summary tables 是内存表，为了防止内存问题，需要限制保存的 SQL 条数和 SQL 的最大显示长度。这两个参数都在 config.toml 的 [stmt-summary] 类别下配置：
+由于 statement summary tables 是内存表，为了防止内存问题，需要限制保存的 SQL 条数和 SQL 的最大显示长度。这两个参数都在 config.toml 的 `[stmt-summary]` 类别下配置：
 
 - 通过 `max-stmt-count` 更改保存的 SQL 种类数量，默认 200 条。当 SQL 种类超过 `max-stmt-count` 时，会移除最近没有使用的 SQL。
 - 通过 `max-sql-length` 更改 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认是 4096。
@@ -309,5 +311,5 @@ set global tidb_stmt_summary_history_size = 24;
 
 Statement summary tables 现在还存在一些限制：
 
-- 查询 statement summary tables 时，只会显示当前 TiDB-Server 的 statement summary，而不是整个集群的 statement summary。
-- TiDB Server 重启后 statement summary 丢失。因为 statement summary tables 是内存表，不会持久化数据，所以一旦 Server 被重启，statement summary 随之丢失。
+- 查询 statement summary tables 时，只会显示当前 TiDB server 的 statement summary，而不是整个集群的 statement summary。
+- TiDB server 重启后 statement summary 会丢失。因为 statement summary tables 是内存表，不会持久化数据，所以一旦 server 被重启，statement summary 随之丢失。
