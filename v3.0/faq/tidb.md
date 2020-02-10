@@ -270,7 +270,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
-3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/v3.0/how-to/maintain/identify-slow-queries.md#admin-show-slow-命令)。
+3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/v3.0/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md#admin-show-slow-命令)。
 
 #### 2.2.5 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
 
@@ -855,10 +855,6 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 #### 4.3.4 如何批量导入？
 
 导入数据的时候，可以分批插入，每批最好不要超过 1w 行。
-
-对于 insert 和 select，可以开启 `set @@session.tidb_batch_insert=1;` 隐藏参数，insert 会把大事务分批执行。这样不会因为事务太大而超时，但是可能会导致事务原子性的丢失，因此不建议在生产环境中使用。如果事务执行过程中报错，会导致只完成一部分事务的插入。所以建议只有在需要的时候，在 session 中使用，这样不会影响其他语句。事务完成以后，可以用 `set @@session.tidb_batch_insert=0` 关闭。
-
-对 delete 和 update 语句，可以使用 limit 加循环的方式进行操作。
 
 #### 4.3.5 TiDB 中删除数据后会立即释放空间吗？
 

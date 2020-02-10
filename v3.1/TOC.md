@@ -63,7 +63,10 @@
     + 备份与恢复
       - [使用 Mydumper/Loader 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)
       - [使用 BR 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/br.md)
-    - [定位慢查询](/v3.1/how-to/maintain/identify-slow-queries.md)
+      - [BR 备份与恢复最佳实践](/v3.1/how-to/maintain/backup-and-restore/br-best-practices.md)
+    + 定位异常查询
+      - [定位慢查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
+      - [定位消耗系统资源多的查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v3.1/how-to/scale/with-ansible.md)
   + 升级
@@ -233,6 +236,7 @@
     - [TiDB 数据库权限管理](/v3.1/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](/v3.1/reference/security/user-account-management.md)
     - [基于角色的访问控制](/v3.1/reference/security/role-based-access-control.md)
+    - [TiDB 证书鉴权使用指南](/v3.1/reference/security/cert-based-authentication.md)
   + 事务
     - [事务语句](/v3.1/reference/transactions/overview.md)
     - [事务模型](/v3.1/reference/transactions/transaction-model.md)
@@ -280,6 +284,7 @@
     - [监控告警](/v3.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v3.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.1/reference/tidb-binlog/binlog-slave-client.md)
+    - [术语表](/v3.1/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/v3.1/reference/tidb-binlog/troubleshoot/binlog.md)
       - [常见错误修复](/v3.1/reference/tidb-binlog/troubleshoot/error-handling.md)
@@ -408,8 +413,10 @@
 + [TiDB 路线图](/v3.1/roadmap.md)
 + [版本发布历史](/v3.1/releases/rn.md)
   + v3.1
+    - [3.1.0-beta.1](/v3.1/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/v3.1/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.9](/v3.1/releases/3.0.9.md)
     - [3.0.8](/v3.1/releases/3.0.8.md)
     - [3.0.7](/v3.1/releases/3.0.7.md)
     - [3.0.6](/v3.1/releases/3.0.6.md)

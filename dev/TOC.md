@@ -62,7 +62,10 @@
     + 备份与恢复
       - [使用 Mydumper/Loader 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-loader.md)
       - [使用 BR 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/br.md)
-    - [定位慢查询](/dev/how-to/maintain/identify-slow-queries.md)
+      - [BR 备份与恢复最佳实践](/dev/how-to/maintain/backup-and-restore/br-best-practices.md)
+    + 定位异常查询
+      - [定位慢查询](/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
+      - [定位消耗系统资源多的查询](/dev/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/dev/how-to/scale/with-ansible.md)
   + 升级
@@ -280,6 +283,7 @@
     - [监控告警](/dev/reference/tidb-binlog/monitor.md)
     - [增量恢复](/dev/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    - [术语表](/dev/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/dev/reference/tidb-binlog/troubleshoot/binlog.md)
       - [常见错误修复](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
@@ -407,9 +411,13 @@
   - [改进文档](/dev/contribute.md#改进文档)
 + [TiDB 路线图](/dev/roadmap.md)
 + [版本发布历史](/dev/releases/rn.md)
+  + v4.0
+    - [4.0.0-beta](/dev/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.9](/dev/releases/3.0.9.md)
     - [3.0.8](/dev/releases/3.0.8.md)
     - [3.0.7](/dev/releases/3.0.7.md)
     - [3.0.6](/dev/releases/3.0.6.md)

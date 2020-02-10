@@ -20,7 +20,7 @@ category: reference
 
 ```sql
 CREATE TABLE trips (
-    ->  trip_id bigint NOT NULL PRIMARY KEY auto_increment,
+    ->  trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     ->  duration integer not null,
     ->  start_date datetime,
     ->  end_date datetime,
