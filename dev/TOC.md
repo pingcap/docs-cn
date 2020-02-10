@@ -348,7 +348,7 @@
       - [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)
-      - [TiDB-backend](/dev/reference/tools/tidb-lightning/tidb-backend.md)]
+      - [TiDB-backend](/dev/reference/tools/tidb-lightning/tidb-backend.md)
       - [Web 界面](/dev/reference/tools/tidb-lightning/web.md)
       - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)

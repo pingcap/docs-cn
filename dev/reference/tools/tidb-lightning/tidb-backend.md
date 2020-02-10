@@ -6,11 +6,11 @@ category: reference
 
 # TiDB Lightning TiDB-Backend
 
-后端决定 `tidb-lightning` 将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持 Importer-backend （默认）和 TiDB-backend 两种后端，两者导入数据的区别如下：
+TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持 Importer-backend（默认）和 TiDB-backend 两种后端，两者导入数据的区别如下：
 
 * **Importer-backend**：`tidb-lightning` 先将 SQL 或 CSV 数据编码成键值对，由 `tikv-importer` 对写入的键值对进行排序，然后把这些键值对 Ingest 到 TiKV 节点中。
 
-* **TiDB-backend**：`tidb-lightning` 先将数据编码到 SQL 的 `INSERT` 语句中，然后直接在 TiDB 节点上运行这些语句进行数据导入。
+* **TiDB-backend**：`tidb-lightning` 先将数据编码成 `INSERT` 语句，然后直接在 TiDB 节点上运行这些 SQL 语句进行数据导入。
 
 | 后端 | Importer | TiDB |
 |:---|:---|:---|
@@ -28,7 +28,7 @@ category: reference
 
 ### 硬件需求
 
-使用 TiDB-backend 时， TiDB Lightning 的速度仅受限于 TiDB 执行 SQL 语句时的速度。因此，即使是低配的机器也可能发挥出最佳性能。推荐的硬件配置如下：
+使用 TiDB-backend 时， TiDB Lightning 的速度仅受限于 TiDB 执行 SQL 语句的速度。因此，即使是低配的机器也可能发挥出最佳性能。推荐的硬件配置如下：
 
 * 16 逻辑核 CPU
 * 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
@@ -50,7 +50,7 @@ category: reference
     ...
     ```
 
-2. 忽略 `group_vars/all.yml` 文件中 `tikv_importer_port` 部分的设置，`group_vars/importer_server.yml` 文件也不需要修改。但是你需要在 `conf/tidb-lightning.yml` 文件中将 `backend` 设置更改为`tidb`。
+2. 忽略 `group_vars/all.yml` 文件中 `tikv_importer_port` 部分的设置，`group_vars/importer_server.yml` 文件也不需要修改。但是你需要在 `conf/tidb-lightning.yml` 文件中将 `backend` 设置更改为 `tidb`。
 
     ```yaml
     ...
@@ -67,7 +67,7 @@ category: reference
 
 ### 手动部署
 
-手动部署时，你无需下载 `tikv-importer` 的配置文件进行配置。
+手动部署时，你无需下载和配置 `tikv-importer`。
 
 在运行 `tidb-lightning` 之前，在配置文件中加上如下几行：
 
@@ -80,7 +80,7 @@ backend = "tidb"
 
 ## 冲突解决
 
-TiDB-backend 支持导入已填充的表（非空表）。但是，新数据可能会与旧数据的唯一键冲突。你可以通过使用如下任务配置来调整遇到冲突时的默认行为：
+TiDB-backend 支持导入到已填充的表（非空表）。但是，新数据可能会与旧数据的唯一键冲突。你可以通过使用如下任务配置来控制遇到冲突时的默认行为：
 
 ```toml
 [tikv-importer]
@@ -96,7 +96,7 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 
 ## 从 Loader 迁移到 TiDB Lightning TiDB-backend
 
-TiDB Lightning TiDB-backend 可以替代 [Loader](/dev/reference/tools/loader.md)。下表说明了如何将 [Loader](/dev/reference/tools/loader.md) 的配置迁移到 [TiDB Lightning 配置](/dev/reference/tools/tidb-lightning/config.md)中：
+TiDB Lightning TiDB-backend 可以完全取代 [Loader](/dev/reference/tools/loader.md)。下表说明了如何将 [Loader](/dev/reference/tools/loader.md) 的配置迁移到 [TiDB Lightning 配置](/dev/reference/tools/tidb-lightning/config.md)中：
 
 <table align="left">
 <thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thread>
@@ -122,7 +122,7 @@ level = "info"
 file = "tidb-lightning.log"
 # Prometheus
 pprof-port = 8289
-# 线程数 (最好使用默认设置)
+# 并发度 (最好使用默认设置)
 #region-concurrency = 16
 ```
 
@@ -142,7 +142,7 @@ checkpoint-schema = "tidb_loader"
 enable = true
 schema = "tidb_lightning_checkpoint"
 # 断点默认存储在本地的文件系统，这样更高效。但你也可以
-# 选择将断点存储在兼容 MySQL 但数据库服务器中，设置如下：
+# 选择将断点存储在目标数据库中，设置如下：
 # driver = "mysql"
 ```
 
@@ -197,7 +197,7 @@ password = ""
 # TiDB 连接参数
 host = "127.0.0.1"
 port = 4000
-status-port = 10080  # <- 必须
+status-port = 10080  # <- 必须有的参数
 user = "root"
 password = ""
 #sql-mode = ""
