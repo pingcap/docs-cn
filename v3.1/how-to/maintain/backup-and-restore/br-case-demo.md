@@ -1,34 +1,32 @@
 ---
-title: BR 快速备份恢复最佳实践
+title: BR 备份恢复案例展示
 category: how-to
 ---
 
-# BR 快速备份恢复最佳实践
+# BR 备份恢复案例展示
 
-[Backup & Restore](/v3.1/how-to/maintain/backup-and-restore/br.md)（下文简称 BR）是 PingCAP 新推出的分布式快速备份和恢复工具。本文描述了 BR 在备份和恢复场景下的操作过程以及注意事项，供用户参考以达到最佳实践。
-
-## 目标读者
-
-本文为 BR 用户提供操作参考，因此读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读[使用 BR 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/br.md)。
-
-## 目标
-
-本文描述了不同场景下 BR 的操作过程，供用户参考，以期用户达到 BR 最佳实践。本文具体目标如下：
+[Backup & Restore](/v3.1/how-to/maintain/backup-and-restore/br.md)（下文简称 BR）一款分布式的快速备份和恢复工具。本文展示了以下四种备份和恢复场景下的 BR 操作过程：
 
 * 使用网络盘或本地盘进行备份或恢复
 * 通过相关指标了解备份和恢复的状态
 * 了解在进行备份或恢复时如何调优性能
 * 处理备份时可能发生的异常
 
+本文所展示的案例供用户参考，以期帮助用户正确地使用 BR。
+
 > **注意：**
 >
 > 使用 BR 时应注意[使用限制](/v3.1/how-to/maintain/backup-and-restore/br.md#使用限制)。
 
+## 目标读者
+
+读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读[使用 BR 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/br.md)。
+
 ## 环境准备
 
-本部分介绍本文操作示例中 TiDB 的部署方式、集群版本、TiKV 集群硬件信息和集群配置，仅供参考。读者可根据自己的硬件和配置来预估备份恢复的性能。
+本部分介绍本文操作示例中 TiDB 的部署方式、集群版本、TiKV 集群硬件信息和集群配置。读者可根据自己的硬件和配置来预估备份恢复的性能。
 
-BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需要依赖 tidb-server 组件。
+BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需要依赖 TiDB server 组件。
 
 ### 部署方式
 
@@ -42,18 +40,16 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 
 ### TiKV 集群硬件信息
 
-| 类别   | 名称                                   |
-| :---- | :----------------------------------- |
-| OS   | CentOS Linux release 7.6.1810 (Core) |
-| CPU  | 16 Core Common KVM processor         |
-| RAM  | 32GB                                 |
-| DISK | 500G SSD * 2                         |
-| NIC  | 10000Mb/s                            |
+操作系统：CentOS Linux release 7.6.1810 (Core)
+CPU：16 Core Common KVM processor
+RAM：32GB
+硬盘：500G SSD * 2
+网卡：10000MB/s
 
 ### 配置
 
-* TiKV Configurations: 默认配置
-* PD Configurations: 默认配置
+* TiKV: 默认配置
+* PD : 默认配置
 
 ## 使用场景
 
@@ -70,11 +66,11 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 >
 > 在进行备份或恢复操作前，需要先进行备份或恢复的准备工作。
 
-### 备份准备工作
+### 备份前的准备工作
 
 `br backup` 命令的详细使用方法请参考 [BR 命令行描述](/v3.1/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
 
-1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/v3.1/reference/garbage-collection/configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [GC](/v3.1/reference/garbage-collection/overview.md)。
+1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/v3.1/reference/garbage-collection/configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [Garbage Collection](/v3.1/reference/garbage-collection/overview.md) (GC)。
 
     {{< copyable "sql" >}}
 
@@ -91,7 +87,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
-### 恢复准备工作
+### 恢复前的准备工作
 
 `br restore` 命令的详细使用方法请参考 [BR 命令行描述](/v3.1/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
 
@@ -105,8 +101,8 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 
 #### 前置要求
 
-* 配置一台高性能 SSD 硬盘主机为 NFS server 存储数据。其他所有 BR 节点和 TiKV 节点为 NFS client，挂载相同的路径（例如 `/br_data`）到 NFS server 上。
-* NFS server 和 NFS client 的传输速率至少要达到备份集群的 `TiKV 实例数 * 150MB/s`。否则网络 I/O 有可能成为性能瓶颈。
+* 配置一台高性能 SSD 硬盘主机为 NFS server 存储数据。其他所有 BR 节点和 TiKV 节点为 NFS client，挂载相同的路径（例如 `/br_data`）到 NFS server 上以访问 NFS server。
+* NFS server 和 NFS client 间的数据传输速率至少要达到备份集群的 `TiKV 实例数 * 150MB/s`。否则网络 I/O 有可能成为性能瓶颈。
 
 #### 部署拓扑
 
@@ -119,8 +115,6 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 备份操作前，在 TiDB 中使用 `admin checksum table order_line` 命令获得备份目标表 `--db batchmark --table order_line` 的统计信息。统计信息示例如下：
 
 ![img](/media/br/total-data.png)
-
-备份前还需调整 GC 值。详细操作可参考[备份准备工作](#备份准备工作)。
 
 运行 BR 备份命令：
 
