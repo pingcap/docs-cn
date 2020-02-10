@@ -627,7 +627,7 @@ drainer 会拆分上游的事务并发写下游，在极端情况上游集群不
 
 * 下游集群的数据等同于设置了 _tidb_snapshot = ts_ 的快照上游 TiDB 集群的数据
 
-当 drainer 开启 relay log 后会先将 binlog event 写到磁盘上，然后再同步给下游集群。如果上游集群不可用，我们总是可以通过 relay log 把集群恢复到一个一致的状态。除非同时丢失 relay log 数据，不过这是概率极小的事件。此外可以使用 nfs 等网络文件系统来保证 relay log 的数据安全。 
+当 drainer 开启 relay log 后会先将 binlog event 写到磁盘上，然后再同步给下游集群。如果上游集群不可用，我们总是可以通过 relay log 把集群恢复到一个一致的状态。除非同时丢失 relay log 数据，不过这是概率极小的事件。此外可以使用 nfs 等网络文件系统来保证 relay log 的数据安全。
 
 relay log 会尽可能快的删除已经同步到下游的 binlog event，所以不会占很多磁盘空间。
 
