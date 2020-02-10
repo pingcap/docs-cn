@@ -621,13 +621,15 @@ Drainer="192.168.0.13"
 
 # 关于 Relay log
 
-drainer 会拆分上游的事务并发写下游，极端情况下上游集群不可用后并且 drainer 异常退出后没法再同步到一个一致的状态。
+drainer 会拆分上游的事务并发写下游，在极端情况上游集群不可用并且 drainer 异常退出后，同步的下游集群（MySQL/TiDB）可能处于数据不一致的中间状态。
 
-下游集群达到一个时间戳为 `ts` 的一致的状态的定义为：
+下游集群达到一致的状态的定义为：
 
-* 下游集群为上游设置 _tidb_snapshot = ts_ 的快照
+* 下游集群的数据等同于设置了 _tidb_snapshot = ts_ 的快照上游 TiDB 集群的数据
 
-当开启 Relay log 后每个 binlog 会先写对应的日志到磁盘上再写下游，如果上游集群不可用，我们总是可以通过这些日志来把集群恢复到一个一致的状态，只要不会同时丢失这部分日志。 已经同步到下游的 relay log 会尽可能快的删除，所以不会占很多空间。
+当 drainer 开启 relay log 后会先将 binlog event 写到磁盘上，然后再同步给下游集群。如果上游集群不可用，我们总是可以通过 relay log 把集群恢复到一个一致的状态。除非同时丢失 relay log 数据，不过这是概率极小的事件。此外可以使用 nfs 等网络文件系统来保证 relay log 的数据安全。 
+
+relay log 会尽可能快的删除已经同步到下游的 binlog event，所以不会占很多磁盘空间。
 
 下游报存的 checkpoint 可以看到 status 状态, 0 表示达到一致的状态。drainer 运行时会是 1，正常退出后会更新为 0。
 
@@ -640,7 +642,7 @@ mysql> select * from tidb_binlog.checkpoint;
 +---------------------+--------------------------------------------------------+
 ```
 
-当 drainer 启动时发现 status 为 1 并且连接不上 PD, 会尝试读取 relay log 恢复下游到一个一致的状态再退出，如果正常恢复退出，可以看到 status 更新为 0。
+当 drainer 启动时连接不上上游集群的 PD 并且探测到 checkpoint 的 status 为 1 , 会尝试读取 relay log 将下游集群恢复到一个一致的状态，然后 drainer 进程将 checkpoint 的 status 设置为 0 后主动退出。
 
 ## 配置
 
