@@ -14,6 +14,7 @@ category: reference
 `events_statements_summary_by_digest` 是 `performance_schema` 里的一张系统表，它把 SQL 按 digest 分组，统计每一组的 SQL 信息。
 
 此处的 digest 与 slow log 里的 digest 一样，是把 SQL 规范化后算出的唯一标识符。
+
 SQL 的规范化会忽略常量、空白符、大小写的差别。也就是说两条 SQL 语句只要语法一致，其 digest 也会相同。
 
 例如：
@@ -75,141 +76,141 @@ select * from employee where id in (...) and salary between ? and ?;
 
 SQL 的基础信息：
 
-`STMT_TYPE`：SQL 语句的类型。
+- `STMT_TYPE`：SQL 语句的类型
 
-`SCHEMA_NAME`：执行这类 SQL 的当前 schema。
+- `SCHEMA_NAME`：执行这类 SQL 的当前 schema
 
-`DIGEST`：这类 SQL 的 digest。
+- `DIGEST`：这类 SQL 的 digest
 
-`DIGEST_TEXT`：规范化后的 SQL。
+- `DIGEST_TEXT`：规范化后的 SQL
 
-`QUERY_SAMPLE_TEXT`：这类 SQL 的原 SQL 语句，多条语句只取其中一条。
+- `QUERY_SAMPLE_TEXT`：这类 SQL 的原 SQL 语句，多条语句只取其中一条
 
-`TABLE_NAMES`：SQL 中涉及的所有表，多张表用 `,` 分隔。
+- `TABLE_NAMES`：SQL 中涉及的所有表，多张表用 `,` 分隔
 
-`INDEX_NAMES`：SQL 中使用的索引名，多个索引用 `,` 分隔。
+- `INDEX_NAMES`：SQL 中使用的索引名，多个索引用 `,` 分隔
 
-`SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个。
+- `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个
 
 执行时间相关的信息：
 
-`SUMMARY_BEGIN_TIME`：当前统计的时间段的开始时间。
+- `SUMMARY_BEGIN_TIME`：当前统计的时间段的开始时间
 
-`SUMMARY_END_TIME`：当前统计的时间段的结束时间。
+- `SUMMARY_END_TIME`：当前统计的时间段的结束时间
 
-`FIRST_SEEN`：这类 SQL 的首次出现时间。
+- `FIRST_SEEN`：这类 SQL 的首次出现时间
 
-`LAST_SEEN`：这类 SQL 的最后一次出现时间。
+- `LAST_SEEN`：这类 SQL 的最后一次出现时间
 
 在 TiDB server 上的执行数据：
 
-`EXEC_COUNT`：这类 SQL 的总执行次数。
+- `EXEC_COUNT`：这类 SQL 的总执行次数
 
-`SUM_LATENCY`：这类 SQL 的总延时。
+- `SUM_LATENCY`：这类 SQL 的总延时
 
-`MAX_LATENCY`：这类 SQL 的最大延时。
+- `MAX_LATENCY`：这类 SQL 的最大延时
 
-`MIN_LATENCY`：这类 SQL 的最小延时。
+- `MIN_LATENCY`：这类 SQL 的最小延时
 
-`AVG_LATENCY`：这类 SQL 的平均延时。
+- `AVG_LATENCY`：这类 SQL 的平均延时
 
-`AVG_PARSE_LATENCY`：解析器的平均延时。
+- `AVG_PARSE_LATENCY`：解析器的平均延时
 
-`MAX_PARSE_LATENCY`：解析器的最大延时。
+- `MAX_PARSE_LATENCY`：解析器的最大延时
 
-`AVG_COMPILE_LATENCY`：优化器的平均延时。
+- `AVG_COMPILE_LATENCY`：优化器的平均延时
 
-`MAX_COMPILE_LATENCY`：优化器的最大延时。
+- `MAX_COMPILE_LATENCY`：优化器的最大延时
 
-`AVG_MEM`：使用的平均内存，单位 byte。
+- `AVG_MEM`：使用的平均内存，单位 byte
 
-`MAX_MEM`：使用的最大内存，单位 byte。
+- `MAX_MEM`：使用的最大内存，单位 byte
 
 和 TiKV Coprocessor Task 相关的字段：
 
-`COP_TASK_NUM`：每条 SQL 发送的 Coprocessor 请求数量。
+- `COP_TASK_NUM`：每条 SQL 发送的 Coprocessor 请求数量
 
-`AVG_COP_PROCESS_TIME`：cop-task 的平均处理时间。
+- `AVG_COP_PROCESS_TIME`：cop-task 的平均处理时间
 
-`MAX_COP_PROCESS_TIME`：cop-task 的最大处理时间。
+- `MAX_COP_PROCESS_TIME`：cop-task 的最大处理时间
 
-`MAX_COP_PROCESS_ADDRESS`：执行时间最长的 cop-task 所在地址。
+- `MAX_COP_PROCESS_ADDRESS`：执行时间最长的 cop-task 所在地址
 
-`AVG_COP_WAIT_TIME`：cop-task 的平均等待时间。
+- `AVG_COP_WAIT_TIME`：cop-task 的平均等待时间
 
-`MAX_COP_WAIT_TIME`：cop-task 的最大等待时间。
+- `MAX_COP_WAIT_TIME`：cop-task 的最大等待时间
 
-`MAX_COP_WAIT_ADDRESS`：等待时间最长的 cop-task 所在地址。
+- `MAX_COP_WAIT_ADDRESS`：等待时间最长的 cop-task 所在地址
 
-`AVG_PROCESS_TIME`：SQL 在 TiKV 的平均处理时间。
+- `AVG_PROCESS_TIME`：SQL 在 TiKV 的平均处理时间
 
-`MAX_PROCESS_TIME`：SQL 在 TiKV 的最大处理时间。
+- `MAX_PROCESS_TIME`：SQL 在 TiKV 的最大处理时间
 
-`AVG_WAIT_TIME`：SQL 在 TiKV 的平均等待时间。
+- `AVG_WAIT_TIME`：SQL 在 TiKV 的平均等待时间
 
-`MAX_WAIT_TIME`：SQL 在 TiKV 的最大等待时间。
+- `MAX_WAIT_TIME`：SQL 在 TiKV 的最大等待时间
 
-`AVG_BACKOFF_TIME`：SQL 遇到需要重试的错误时在重试前的平均等待时间。
+- `AVG_BACKOFF_TIME`：SQL 遇到需要重试的错误时在重试前的平均等待时间
 
-`MAX_BACKOFF_TIME`：SQL 遇到需要重试的错误时在重试前的最大等待时间。
+- `MAX_BACKOFF_TIME`：SQL 遇到需要重试的错误时在重试前的最大等待时间
 
-`AVG_TOTAL_KEYS`：Coprocessor 扫过的 key 的平均数量。
+- `AVG_TOTAL_KEYS`：Coprocessor 扫过的 key 的平均数量
 
-`MAX_TOTAL_KEYS`：Coprocessor 扫过的 key 的最大数量。
+- `MAX_TOTAL_KEYS`：Coprocessor 扫过的 key 的最大数量
 
-`AVG_PROCESSED_KEYS`：Coprocessor 处理的 key 的平均数量。相比 `avg_total_keys`，`avg_processed_keys` 不包含 MVCC 的旧版本。如果 `avg_total_keys` 和 `avg_processed_keys` 相差很大，说明旧版本比较多。
+- `AVG_PROCESSED_KEYS`：Coprocessor 处理的 key 的平均数量。相比 `avg_total_keys`，`avg_processed_keys` 不包含 MVCC 的旧版本。如果 `avg_total_keys` 和 `avg_processed_keys` 相差很大，说明旧版本比较多
 
-`MAX_PROCESSED_KEYS`：Coprocessor 处理的 key 的最大数量。
+- `MAX_PROCESSED_KEYS`：Coprocessor 处理的 key 的最大数量
 
 和事务相关的字段：
 
-`AVG_PREWRITE_TIME`：prewrite 阶段消耗的平均时间。
+- `AVG_PREWRITE_TIME`：prewrite 阶段消耗的平均时间
 
-`MAX_PREWRITE_TIME` prewrite 阶段消耗的最大时间。
+- `MAX_PREWRITE_TIME` prewrite 阶段消耗的最大时间
 
-`AVG_COMMIT_TIME`：commit 阶段消耗的平均时间。
+- `AVG_COMMIT_TIME`：commit 阶段消耗的平均时间
 
-`MAX_COMMIT_TIME`：commit 阶段消耗的最大时间。
+- `MAX_COMMIT_TIME`：commit 阶段消耗的最大时间
 
-`AVG_GET_COMMIT_TS_TIME`：获取 commit_ts 的平均时间。
+- `AVG_GET_COMMIT_TS_TIME`：获取 commit_ts 的平均时间
 
-`MAX_GET_COMMIT_TS_TIME`：获取 commit_ts 的最大时间。
+- `MAX_GET_COMMIT_TS_TIME`：获取 commit_ts 的最大时间
 
-`AVG_COMMIT_BACKOFF_TIME`：commit 时遇到需要重试的错误时在重试前的平均等待时间。
+- `AVG_COMMIT_BACKOFF_TIME`：commit 时遇到需要重试的错误时在重试前的平均等待时间
 
-`MAX_COMMIT_BACKOFF_TIME`：commit 时遇到需要重试的错误时在重试前的最大等待时间。
+- `MAX_COMMIT_BACKOFF_TIME`：commit 时遇到需要重试的错误时在重试前的最大等待时间
 
-`AVG_RESOLVE_LOCK_TIME`：解决事务的锁冲突的平均时间。
+- `AVG_RESOLVE_LOCK_TIME`：解决事务的锁冲突的平均时间
 
-`MAX_RESOLVE_LOCK_TIME`：解决事务的锁冲突的最大时间。
+- `MAX_RESOLVE_LOCK_TIME`：解决事务的锁冲突的最大时间
 
-`AVG_LOCAL_LATCH_WAIT_TIME`：本地事务等待的平均时间。
+- `AVG_LOCAL_LATCH_WAIT_TIME`：本地事务等待的平均时间
 
-`MAX_LOCAL_LATCH_WAIT_TIME`：本地事务等待的最大时间。
+- `MAX_LOCAL_LATCH_WAIT_TIME`：本地事务等待的最大时间
 
-`AVG_WRITE_KEYS`：写入 key 的平均数量。
+- `AVG_WRITE_KEYS`：写入 key 的平均数量
 
-`MAX_WRITE_KEYS`：写入 key 的最大数量。
+- `MAX_WRITE_KEYS`：写入 key 的最大数量
 
-`AVG_WRITE_SIZE`：写入的平均数据量，单位 byte。
+- `AVG_WRITE_SIZE`：写入的平均数据量，单位 byte
 
-`MAX_WRITE_SIZE`：写入的最大数据量，单位 byte。
+- `MAX_WRITE_SIZE`：写入的最大数据量，单位 byte
 
-`AVG_PREWRITE_REGIONS`：prewrite 涉及的平均 Region 数量。
+- `AVG_PREWRITE_REGIONS`：prewrite 涉及的平均 Region 数量
 
-`MAX_PREWRITE_REGIONS`：prewrite 涉及的最大 Region 数量。
+- `MAX_PREWRITE_REGIONS`：prewrite 涉及的最大 Region 数量
 
-`AVG_TXN_RETRY`：事务平均重试次数。
+- `AVG_TXN_RETRY`：事务平均重试次数
 
-`MAX_TXN_RETRY`：事务最大重试次数。
+- `MAX_TXN_RETRY`：事务最大重试次数
 
-`SUM_BACKOFF_TIMES`：这类 SQL 遇到需要重试的错误后的总重试次数。
+- `SUM_BACKOFF_TIMES`：这类 SQL 遇到需要重试的错误后的总重试次数
 
-`BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为 `类型:次数`。如有多种错误则用 `,` 分隔，例如 `txnLock:2,pdRPC:1`。
+- `BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为 `类型:次数`。如有多种错误则用 `,` 分隔，例如 `txnLock:2,pdRPC:1`
 
-`AVG_AFFECTED_ROWS`：平均影响行数。
+- `AVG_AFFECTED_ROWS`：平均影响行数
 
-`PREV_SAMPLE_TEXT`：当 SQL 是“COMMIT”时，该字段为 COMMIT 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行。
+- `PREV_SAMPLE_TEXT`：当 SQL 是“COMMIT”时，该字段为 COMMIT 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
 
 ## `events_statements_summary_by_digest_history`
 
