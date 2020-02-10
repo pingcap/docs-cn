@@ -20,7 +20,7 @@ This document describes how to deploy a TiDB cluster on Alibaba Cloud Kubernetes
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) >= 1.12
 - [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.1 and <= 2.11.0
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
-- [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.11.*
+- [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.12.*
 
 You can use [Cloud Shell](https://shell.aliyun.com) of Alibaba Cloud to perform operations. All the tools have been pre-installed and configured in the Cloud Shell of Alibaba Cloud.
 
