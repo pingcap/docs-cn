@@ -8,7 +8,7 @@ aliases: ['/docs-cn/v3.1/reference/transactions/transaction-model/']
 
 TiDB 默认使用乐观事务模型。也就是说，在执行 `UPDATE`、`INSERT`、`DELETE` 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。类似的，诸如 `GET_LOCK()` 和 `RELEASE_LOCK()` 等函数以及 `SELECT .. FOR UPDATE` 之类的语句在 TiDB 和 MySQL 中的执行方式并不相同。所以业务端在执行 SQL 语句后，需要注意检查 `COMMIT` 的返回值，即使执行时没有出错，`COMMIT` 的时候也可能会出错。
 
-本文介绍 TiDB 乐观事务的原理，以及相关特性。本文假定你对    [TiDB 的整体架构](/v3.1/architecture.md#tidb-整体架构)、 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型以及事务的 [ACID 特性](/v3.1/glossary.md#acid)都有一定了解。
+本文介绍 TiDB 乐观事务的原理，以及相关特性。本文假定你对 [TiDB 的整体架构](/v3.1/architecture.md#tidb-整体架构)、[Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型以及事务的 [ACID 特性](/v3.1/glossary.md#acid)都有一定了解。
 
 ## 乐观事务原理
 
@@ -39,7 +39,7 @@ TiDB 中事务使用两阶段提交，流程如下：
     4. TiDB 成功收到所有 prewrite 请求。
     5. TiDB 向 PD 获取第二个全局唯一递增版本号，定义为本次事务的 `commit_ts`。
     6. TiDB 向 Primary Key 所在 TiKV 发起第二阶段提交。TiKV 收到 commit 操作后，检查数据合法性，清理 prewrite 阶段留下的锁。
-    7. TiDB 收到 上一步 成功的信息。
+    7. TiDB 收到两阶段提交成功的信息。
 
 6. TiDB 向客户端返回事务提交成功的信息。
 
