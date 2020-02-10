@@ -291,6 +291,7 @@
     - [HAproxy Best Practices](/v3.1/reference/best-practices/haproxy.md)
     - [PD Scheduling Best Practices](/v3.1/reference/best-practices/pd-scheduling.md)
     - [Grafana Best Practices](/v3.1/reference/best-practices/grafana-monitor.md)
+    - [TiKV Performance Tuning with Massive Regions](/v3.1/reference/best-practices/massive-regions.md)
   - [TiSpark](/v3.1/reference/tispark.md)
   + TiDB Binlog
     - [Overview](/v3.1/reference/tidb-binlog/overview.md)
