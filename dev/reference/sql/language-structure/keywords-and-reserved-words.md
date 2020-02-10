@@ -51,11 +51,11 @@ CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-下表列出了在 TiDB 中的关键字跟保留字，保留字用 (R) 来标识：
+下表列出了 TiDB 中的关键字和保留字。保留字用 `(R)` 来标识。[窗口函数](/dev/reference/sql/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识：
 
 {{< tabs-panel "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" >}}
 
-<a name="A" class="letter">A</a>
+<a name="A" class="letter" href="#A">A</a>
 
 - ACTION
 - ADD (R)
@@ -75,7 +75,7 @@ Query OK, 0 rows affected (0.08 sec)
 - AVG
 - AVG_ROW_LENGTH
 
-<a name="B" class="letter">B</a>
+<a name="B" class="letter" href="#B">B</a>
 
 - BEGIN
 - BETWEEN (R)
@@ -92,7 +92,7 @@ Query OK, 0 rows affected (0.08 sec)
 - BY (R)
 - BYTE
 
-<a name="C" class="letter">C</a>
+<a name="C" class="letter" href="#C">C</a>
 
 - CASCADE (R)
 - CASE (R)
@@ -121,13 +121,14 @@ Query OK, 0 rows affected (0.08 sec)
 - COUNT
 - CREATE (R)
 - CROSS (R)
+- CUME_DIST (R-Window)
 - CURRENT_DATE (R)
 - CURRENT_TIME (R)
 - CURRENT_TIMESTAMP (R)
 - CURRENT_USER (R)
 - CURTIME
 
-<a name="D" class="letter">D</a>
+<a name="D" class="letter" href="#D">D</a>
 
 - DATA
 - DATABASE (R)
@@ -149,6 +150,7 @@ Query OK, 0 rows affected (0.08 sec)
 - DELAY_KEY_WRITE
 - DELAYED (R)
 - DELETE (R)
+- DENSE_RANK (R-Window)
 - DESC (R)
 - DESCRIBE (R)
 - DISABLE
@@ -162,7 +164,7 @@ Query OK, 0 rows affected (0.08 sec)
 - DUPLICATE
 - DYNAMIC
 
-<a name="E" class="letter">E</a>
+<a name="E" class="letter" href="#E">E</a>
 
 - ELSE (R)
 - ENABLE
@@ -180,11 +182,12 @@ Query OK, 0 rows affected (0.08 sec)
 - EXPLAIN (R)
 - EXTRACT
 
-<a name="F" class="letter">F</a>
+<a name="F" class="letter" href="#F">F</a>
 
 - FALSE (R)
 - FIELDS
 - FIRST
+- FIRST_VALUE (R-Window)
 - FIXED
 - FLOAT (R)
 - FLUSH
@@ -197,7 +200,7 @@ Query OK, 0 rows affected (0.08 sec)
 - FULLTEXT (R)
 - FUNCTION
 
-<a name="G" class="letter">G</a>
+<a name="G" class="letter" href="#G">G</a>
 
 - GENERATED (R)
 - GET_FORMAT
@@ -206,8 +209,9 @@ Query OK, 0 rows affected (0.08 sec)
 - GRANTS
 - GROUP (R)
 - GROUP_CONCAT
+- GROUPS (R-Window)
 
-<a name="H" class="letter">H</a>
+<a name="H" class="letter" href="#H">H</a>
 
 - HASH
 - HAVING (R)
@@ -217,7 +221,7 @@ Query OK, 0 rows affected (0.08 sec)
 - HOUR_MINUTE (R)
 - HOUR_SECOND (R)
 
-<a name="I" class="letter">I</a>
+<a name="I" class="letter" href="#I">I</a>
 
 - IDENTIFIED
 - IF (R)
@@ -235,21 +239,24 @@ Query OK, 0 rows affected (0.08 sec)
 - IS (R)
 - ISOLATION
 
-<a name="J" class="letter">J</a>
+<a name="J" class="letter" href="#J">J</a>
 
 - JOBS
 - JOIN (R)
 - JSON
 
-<a name="K" class="letter">K</a>
+<a name="K" class="letter" href="#K">K</a>
 
 - KEY (R)
 - KEY_BLOCK_SIZE
 - KEYS (R)
 - KILL (R)
 
-<a name="L" class="letter">L</a>
+<a name="L" class="letter" href="#L">L</a>
 
+- LAG (R-Window)
+- LAST_VALUE (R-Window)
+- LEAD (R-Window)
 - LEADING (R)
 - LEFT (R)
 - LESS
@@ -266,7 +273,7 @@ Query OK, 0 rows affected (0.08 sec)
 - LONGTEXT (R)
 - LOW_PRIORITY (R)
 
-<a name="M" class="letter">M</a>
+<a name="M" class="letter" href="#M">M</a>
 
 - MAX
 - MAX_ROWS
@@ -290,7 +297,7 @@ Query OK, 0 rows affected (0.08 sec)
 - MODIRY
 - MONTH
 
-<a name="N" class="letter">N</a>
+<a name="N" class="letter" href="#N">N</a>
 
 - NAMES
 - NATIONAL
@@ -300,11 +307,13 @@ Query OK, 0 rows affected (0.08 sec)
 - NONE
 - NOT (R)
 - NOW
+- NTH_VALUE (R-Window)
+- NTILE (R-Window)
 - NULL (R)
 - NUMERIC (R)
 - NVARCHAR (R)
 
-<a name="O" class="letter">O</a>
+<a name="O" class="letter" href="#O">O</a>
 
 - OFFSET
 - ON (R)
@@ -313,12 +322,14 @@ Query OK, 0 rows affected (0.08 sec)
 - OR (R)
 - ORDER (R)
 - OUTER (R)
+- OVER (R-Window)
 
-<a name="P" class="letter">P</a>
+<a name="P" class="letter" href="#P">P</a>
 
 - PARTITION (R)
 - PARTITIONS
 - PASSWORD
+- PERCENT_RANK (R-Window)
 - PLUGINS
 - POSITION
 - PRECISION (R)
@@ -329,15 +340,16 @@ Query OK, 0 rows affected (0.08 sec)
 - PROCESS
 - PROCESSLIST
 
-<a name="Q" class="letter">Q</a>
+<a name="Q" class="letter" href="#Q">Q</a>
 
 - QUARTER
 - QUERY
 - QUICK
 
-<a name="R" class="letter">R</a>
+<a name="R" class="letter" href="#R">R</a>
 
 - RANGE (R)
+- RANK (R-Window)
 - READ (R)
 - REAL (R)
 - REDUNDANT
@@ -356,9 +368,10 @@ Query OK, 0 rows affected (0.08 sec)
 - ROW
 - ROW_COUNT
 - ROW_FORMAT
-- ROWS (R)
+- ROW_NUMBER (R-Window)
+- ROWS (R-Window)
 
-<a name="S" class="letter">S</a>
+<a name="S" class="letter" href="#S">S</a>
 
 - SCHEMA
 - SCHEMAS
@@ -393,7 +406,7 @@ Query OK, 0 rows affected (0.08 sec)
 - SUM
 - SUPER
 
-<a name="T" class="letter">T</a>
+<a name="T" class="letter" href="#T">T</a>
 
 - TABLE (R)
 - TABLES
@@ -420,7 +433,7 @@ Query OK, 0 rows affected (0.08 sec)
 - TRUE (R)
 - TRUNCATE
 
-<a name="U" class="letter">U</a>
+<a name="U" class="letter" href="#U">U</a>
 
 - UNCOMMITTED
 - UNION (R)
@@ -436,7 +449,7 @@ Query OK, 0 rows affected (0.08 sec)
 - UTC_TIME (R)
 - UTC_TIMESTAMP (R)
 
-<a name="V" class="letter">V</a>
+<a name="V" class="letter" href="#V">V</a>
 
 - VALUE
 - VALUES (R)
@@ -446,24 +459,25 @@ Query OK, 0 rows affected (0.08 sec)
 - VIEW
 - VIRTUAL (R)
 
-<a name="W" class="letter">W</a>
+<a name="W" class="letter" href="#W">W</a>
 
 - WARNINGS
 - WEEK
 - WHEN (R)
 - WHERE (R)
+- WINDOW (R-Window)
 - WITH (R)
 - WRITE (R)
 
-<a name="X" class="letter">X</a>
+<a name="X" class="letter" href="#X">X</a>
 
 - XOR (R)
 
-<a name="Y" class="letter">Y</a>
+<a name="Y" class="letter" href="#Y">Y</a>
 
 - YEAR
 - YEAR_MONTH (R)
 
-<a name="Z" class="letter">Z</a>
+<a name="Z" class="letter" href="#Z">Z</a>
 
 - ZEROFILL (R)

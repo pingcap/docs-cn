@@ -41,6 +41,12 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ```
 
+{{< copyable "sql" >}}
+
+```sql
+ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
+```
+
 ## 语句概览
 
 **AdminStmt**：
@@ -103,6 +109,8 @@ admin show ddl jobs;
     > - 如果希望取消的作业已经完成，则取消操作将会失败。
 
 - `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`：用于对给定表中的所有数据和对应索引进行一致性校验，若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
+
+- `ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT`：在极端情况下，用于对存储层中的表的元信息进行非可信的覆盖，“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/dev/reference/configuration/tidb-server/configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/dev/reference/configuration/tidb-server/configuration-file.md#repair-table-list) 名单中。
 
 ## MySQL 兼容性
 

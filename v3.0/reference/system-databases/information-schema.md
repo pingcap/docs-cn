@@ -271,7 +271,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 
 `PROCESSLIST` 和 `show processlist` 的功能一样，都是查看当前正在处理的请求。
 
-`PROCESSLIST` 表会比 `show processlist` 多一个 `MEM` 列，`MEM` 是指正在处理的请求已使用的内存，单位是 byte。
+`PROCESSLIST` 表会比 `show processlist` 多一个 `MEM` 列 <span class="version-mark">从 v3.0.5 开始引入</span>，`MEM` 是指正在处理的请求已使用的内存，单位是 byte。
 
 ```sql
 +----+------+------+--------------------+---------+------+-------+---------------------------+-----+
@@ -334,7 +334,7 @@ SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY 表
 
-`SLOW_QUERY` 表中提供了慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/v3.0/how-to/maintain/identify-slow-queries.md)。
+`SLOW_QUERY` 表中提供了慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/v3.0/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)。
 
 ```sql
 mysql> desc information_schema.slow_query;

@@ -46,7 +46,7 @@ EXPLAIN SELECT 1;
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 ```
 
 ```
@@ -153,7 +153,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 3 rows in set (0.00 sec)
 ```
 
-如果未指定 `FORMAT`，或未指定 `FORMAT ="row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [Understand the Query Execution Plan](https://pingcap.com/docs/dev/reference/performance/understanding-the-query-execution-plan/)。
+如果未指定 `FORMAT`，或未指定 `FORMAT ="row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [Understand the Query Execution Plan](https://pingcap.com/docs/v3.0/reference/performance/understanding-the-query-execution-plan/)。
 
 除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT ="dot"`：
 

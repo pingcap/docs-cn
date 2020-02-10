@@ -270,11 +270,11 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
-3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/v3.0/how-to/maintain/identify-slow-queries.md#admin-show-slow-命令)。
+3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/v3.0/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md#admin-show-slow-命令)。
 
 #### 2.2.5 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
 
-TiDB 的 Label 设置是与集群的部署架构相关的，是集群部署中的重要内容，是 PD 进行全局管理和调度的依据。如果集群在初期部署过程中没有设置 Label，需要在后期对部署结构进行调整，就需要手动通过 PD 的管理工具 pd-ctl 来添加 location-labels 信息，例如：`config set location-labels "zone, rack, host"`（根据实际的 label 层级名字配置）。
+TiDB 的 Label 设置是与集群的部署架构相关的，是集群部署中的重要内容，是 PD 进行全局管理和调度的依据。如果集群在初期部署过程中没有设置 Label，需要在后期对部署结构进行调整，就需要手动通过 PD 的管理工具 pd-ctl 来添加 location-labels 信息，例如：`config set location-labels "zone,rack,host"`（根据实际的 label 层级名字配置）。
 
 pd-ctl 的使用参考 [PD Control 使用说明](/v3.0/reference/tools/pd-control.md)。
 
@@ -584,10 +584,11 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 - 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
 - TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
 
-#### 3.3.15 高并发执行 DDL 报错？
+#### 3.3.15 高并发情况下执行 DDL 时报错的原因？
 
-高并发情况下执行 DDL （比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
-建议 DDL 并发低于20。否则需要在应用端重试失败的 DDL 语句。
+高并发情况下执行 DDL（比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
+
+并发执行 DDL 时，建议将 DDL 数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
 
 ### 3.4 TiKV 管理
 
@@ -749,7 +750,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
 #### 4.1.6 如何导出 TiDB 数据？
 
-TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL 使用 mysqldump 导出某个表的部分数据](http://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
+TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
 
 #### 4.1.7 如何从 DB2、Oracle 数据库迁移到 TiDB？
 
@@ -854,10 +855,6 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 #### 4.3.4 如何批量导入？
 
 导入数据的时候，可以分批插入，每批最好不要超过 1w 行。
-
-对于 insert 和 select，可以开启 `set @@session.tidb_batch_insert=1;` 隐藏参数，insert 会把大事务分批执行。这样不会因为事务太大而超时，但是可能会导致事务原子性的丢失，因此不建议在生产环境中使用。如果事务执行过程中报错，会导致只完成一部分事务的插入。所以建议只有在需要的时候，在 session 中使用，这样不会影响其他语句。事务完成以后，可以用 `set @@session.tidb_batch_insert=0` 关闭。
-
-对 delete 和 update 语句，可以使用 limit 加循环的方式进行操作。
 
 #### 4.3.5 TiDB 中删除数据后会立即释放空间吗？
 

@@ -12,7 +12,7 @@
     - [如何对 TiDB 进行 TPC-C 测试](/v3.0/benchmark/how-to-run-tpcc.md)
     - [Sysbench 性能对比 - v3.0 对比 v2.1](/v3.0/benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/v3.0/benchmark/tpcc.md)
-    - [线上负载与 Add Index 相互影响测试](/v3.0/benchmark/add-index-with-load.md)
+    - [线上负载与 `Add Index` 相互影响测试](/v3.0/benchmark/add-index-with-load.md)
     - [TiDB in Kubernetes Sysbench 性能测试](/v3.0/benchmark/sysbench-in-k8s.md)
     - [DM 1.0-GA 性能测试](/v3.0/benchmark/dm-v1.0-ga.md)
 + 主要概念
@@ -61,90 +61,19 @@
   + 运维
     - [Ansible 常见运维操作](/v3.0/how-to/maintain/ansible-operations.md)
     + [备份与恢复](/v3.0/how-to/maintain/backup-and-restore.md)
-    - [定位慢查询](/v3.0/how-to/maintain/identify-slow-queries.md)
+    + 定位异常查询
+      - [定位慢查询](/v3.0/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
+      - [定位消耗系统资源多的查询](/v3.0/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v3.0/how-to/scale/with-ansible.md)
   + 升级
     - [升级至 TiDB 3.0](/v3.0/how-to/upgrade/from-previous-version.md)
-    - [使用 Ansible 滚动升级](/v3.0/how-to/upgrade/rolling-updates-with-ansible.md)
   + 故障诊断
     - [集群配置诊断](/v3.0/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
-  + 周边工具
-    - [Mydumper](/v3.0/reference/tools/mydumper.md)
-    - [Loader](/v3.0/reference/tools/loader.md)
-    - [Syncer](/v3.0/reference/tools/syncer.md)
-    + Data Migration
-      + 概述
-        - [DM 架构](/v3.0/reference/tools/data-migration/overview.md#dm-架构)
-        - [同步功能介绍](/v3.0/reference/tools/data-migration/overview.md#同步功能介绍)
-        - [使用限制](/v3.0/reference/tools/data-migration/overview.md#使用限制)
-        - [DM-worker 简介](/v3.0/reference/tools/data-migration/dm-worker-intro.md)
-        - [DM Relay Log](/v3.0/reference/tools/data-migration/relay-log.md)
-      + 核心特性
-        - [Table Routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists)
-        - [Binlog Event Filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [同步延迟监控](/v3.0/reference/tools/data-migration/features/overview.md#同步延迟监控)
-        + Shard Support
-          - [简介](/v3.0/reference/tools/data-migration/features/shard-merge.md)
-          - [使用限制](/v3.0/reference/tools/data-migration/features/shard-merge.md#使用限制)
-          - [手动处理 Sharding DDL Lock](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
-      + 使用场景
-        - [简单的从库同步场景](/v3.0/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
-        - [分库分表合并场景](/v3.0/reference/tools/data-migration/usage-scenarios/shard-merge.md)
-        - [分表合并数据迁移最佳实践](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
-        - [DM-worker 在上游 MySQL 主从间切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
-      + [部署使用](/v3.0/reference/tools/data-migration/deploy.md)
-      + 配置
-        - [概述](/v3.0/reference/tools/data-migration/configure/overview.md)
-        - [DM-master 配置](/v3.0/reference/tools/data-migration/configure/dm-master-configuration-file.md)
-        - [DM-worker 配置](/v3.0/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
-        - [任务配置](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)
-      + DM 集群管理
-        - [集群操作](/v3.0/reference/tools/data-migration/cluster-operations.md)
-        - [集群升级](/v3.0/reference/tools/data-migration/dm-upgrade.md)
-      + DM 同步任务管理
-        - [管理数据同步任务](/v3.0/reference/tools/data-migration/manage-tasks.md)
-        - [任务前置检查](/v3.0/reference/tools/data-migration/precheck.md)
-        - [任务状态查询](/v3.0/reference/tools/data-migration/query-status.md)
-        - [跳过或替代执行异常的 SQL 语句](/v3.0/reference/tools/data-migration/skip-replace-sqls.md)
-      - [监控 DM 集群](/v3.0/reference/tools/data-migration/monitor.md)
-      + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](/v3.0/how-to/migrate/from-aurora.md)
-      - [DM Portal](/v3.0/reference/tools/data-migration/dm-portal.md)
-      + DM 故障诊断
-        - [故障诊断](/v3.0/reference/tools/data-migration/troubleshoot/dm.md)
-        - [错误含义](/v3.0/reference/tools/data-migration/troubleshoot/error-system.md)
-        - [常见错误修复](/v3.0/reference/tools/data-migration/troubleshoot/error-handling.md)
-      - [DM FAQ](/v3.0/reference/tools/data-migration/faq.md)
-      + 版本发布历史
-        + v1.0
-          - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
-    + TiDB Lightning
-      - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
-      - [部署执行](/v3.0/reference/tools/tidb-lightning/deployment.md)
-      - [断点续传](/v3.0/reference/tools/tidb-lightning/checkpoints.md)
-      - [表库过滤](/v3.0/reference/tools/tidb-lightning/table-filter.md)
-      - [CSV 支持](/v3.0/reference/tools/tidb-lightning/csv.md)
-      - [监控告警](/v3.0/reference/tools/tidb-lightning/monitor.md)
-      - [故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
-      - [FAQ](/v3.0/faq/tidb-lightning.md)
-    - [sync-diff-inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
-    - [PD Control](/v3.0/reference/tools/pd-control.md)
-    - [PD Recover](/v3.0/reference/tools/pd-recover.md)
-    - [TiKV Control](/v3.0/reference/tools/tikv-control.md)
-    - [TiDB Controller](/v3.0/reference/tools/tidb-control.md)
-    - [工具下载](/v3.0/reference/tools/download.md)
-  + 最佳实践
-    - [HAProxy 最佳实践](/v3.0/reference/best-practices/haproxy.md)
-    - [Java 应用开发最佳实践](/v3.0/reference/best-practices/java-app.md)
-    - [高并发写入场景最佳实践](/v3.0/reference/best-practices/high-concurrency.md)
-    - [Grafana 监控最佳实践](/v3.0/reference/best-practices/grafana-monitor.md)
-    - [PD 调度策略最佳实践](/v3.0/reference/best-practices/pd-scheduling.md)
-  + [与 MySQL 兼容性对比](/v3.0/reference/mysql-compatibility.md)
   + SQL
+    - [与 MySQL 兼容性对比](/v3.0/reference/mysql-compatibility.md)
     + SQL 语言结构
       - [字面值](/v3.0/reference/sql/language-structure/literal-values.md)
       - [Schema 对象名](/v3.0/reference/sql/language-structure/schema-object-names.md)
@@ -299,17 +228,12 @@
     + tikv-server
       - [配置参数](/v3.0/reference/configuration/tikv-server/configuration.md)
       - [配置文件描述](/v3.0/reference/configuration/tikv-server/configuration-file.md)
-  + 监控指标
-    - [Overview 面板](/v3.0/reference/key-monitoring-metrics/overview-dashboard.md)
-    - [TiDB 面板](/v3.0/reference/key-monitoring-metrics/tidb-dashboard.md)
-    - [PD 面板](/v3.0/reference/key-monitoring-metrics/pd-dashboard.md)
-    - [TiKV 面板](/v3.0/reference/key-monitoring-metrics/tikv-dashboard.md)
-  - [报警规则](/v3.0/reference/alert-rules.md)
   + 安全
     - [与 MySQL 的安全特性差异](/v3.0/reference/security/compatibility.md)
     - [TiDB 数据库权限管理](/v3.0/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](/v3.0/reference/security/user-account-management.md)
     - [基于角色的访问控制](/v3.0/reference/security/role-based-access-control.md)
+    - [TiDB 证书鉴权使用指南](/v3.0/reference/security/cert-based-authentication.md)
   + 事务
     - [事务语句](/v3.0/reference/transactions/overview.md)
     - [事务模型](/v3.0/reference/transactions/transaction-model.md)
@@ -333,21 +257,108 @@
     - [Statement Summary Table](/v3.0/reference/performance/statement-summary.md)
     - [TiKV 调优](/v3.0/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
+  + 监控指标
+    - [Overview 面板](/v3.0/reference/key-monitoring-metrics/overview-dashboard.md)
+    - [TiDB 面板](/v3.0/reference/key-monitoring-metrics/tidb-dashboard.md)
+    - [PD 面板](/v3.0/reference/key-monitoring-metrics/pd-dashboard.md)
+    - [TiKV 面板](/v3.0/reference/key-monitoring-metrics/tikv-dashboard.md)
+  - [报警规则](/v3.0/reference/alert-rules.md)
+  + 最佳实践
+    - [HAProxy 最佳实践](/v3.0/reference/best-practices/haproxy.md)
+    - [Java 应用开发最佳实践](/v3.0/reference/best-practices/java-app.md)
+    - [高并发写入场景最佳实践](/v3.0/reference/best-practices/high-concurrency.md)
+    - [Grafana 监控最佳实践](/v3.0/reference/best-practices/grafana-monitor.md)
+    - [PD 调度策略最佳实践](/v3.0/reference/best-practices/pd-scheduling.md)
+    - [海量 Region 集群调优最佳实践](/v3.0/reference/best-practices/massive-regions.md)
+    - [乐观锁事务最佳实践](/v3.0/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/v3.0/reference/tispark.md)
   + TiDB Binlog
-    - [概述](/v3.0/reference/tools/tidb-binlog/overview.md)
-    - [部署使用](/v3.0/reference/tools/tidb-binlog/deploy.md)
-    - [运维管理](/v3.0/reference/tools/tidb-binlog/maintain.md)
-    - [版本升级](/v3.0/reference/tools/tidb-binlog/upgrade.md)
-    - [监控告警](/v3.0/reference/tools/tidb-binlog/monitor.md)
-    - [增量恢复](/v3.0/reference/tools/tidb-binlog/reparo.md)
-    - [Kafka 自定义开发](/v3.0/reference/tools/tidb-binlog/binlog-slave-client.md)
-    - [FAQ](/v3.0/reference/tools/tidb-binlog/faq.md)
+    - [概述](/v3.0/reference/tidb-binlog/overview.md)
+    - [部署使用](/v3.0/reference/tidb-binlog/deploy.md)
+    - [运维管理](/v3.0/reference/tidb-binlog/maintain.md)
+    - [版本升级](/v3.0/reference/tidb-binlog/upgrade.md)
+    - [监控告警](/v3.0/reference/tidb-binlog/monitor.md)
+    - [增量恢复](/v3.0/reference/tidb-binlog/reparo.md)
+    - [Kafka 自定义开发](/v3.0/reference/tidb-binlog/binlog-slave-client.md)
+    - [术语表](/v3.0/reference/tidb-binlog/glossary.md)
+    + 故障诊断
+      - [故障诊断](/v3.0/reference/tidb-binlog/troubleshoot/binlog.md)
+      - [常见错误修复](/v3.0/reference/tidb-binlog/troubleshoot/error-handling.md)
+    - [FAQ](/v3.0/reference/tidb-binlog/faq.md)
+  + 周边工具
+    - [Mydumper](/v3.0/reference/tools/mydumper.md)
+    - [Loader](/v3.0/reference/tools/loader.md)
+    - [Syncer](/v3.0/reference/tools/syncer.md)
+    + Data Migration
+      + 概述
+        - [DM 架构](/v3.0/reference/tools/data-migration/overview.md#dm-架构)
+        - [同步功能介绍](/v3.0/reference/tools/data-migration/overview.md#同步功能介绍)
+        - [使用限制](/v3.0/reference/tools/data-migration/overview.md#使用限制)
+        - [DM-worker 简介](/v3.0/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/v3.0/reference/tools/data-migration/relay-log.md)
+      + 核心特性
+        - [Table Routing](/v3.0/reference/tools/data-migration/features/overview.md#table-routing)
+        - [Black & White Lists](/v3.0/reference/tools/data-migration/features/overview.md#black--white-table-lists)
+        - [Binlog Event Filter](/v3.0/reference/tools/data-migration/features/overview.md#binlog-event-filter)
+        - [同步延迟监控](/v3.0/reference/tools/data-migration/features/overview.md#同步延迟监控)
+        + Shard Support
+          - [简介](/v3.0/reference/tools/data-migration/features/shard-merge.md)
+          - [使用限制](/v3.0/reference/tools/data-migration/features/shard-merge.md#使用限制)
+          - [手动处理 Sharding DDL Lock](/v3.0/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
+      + 使用场景
+        - [简单的从库同步场景](/v3.0/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
+        - [分库分表合并场景](/v3.0/reference/tools/data-migration/usage-scenarios/shard-merge.md)
+        - [分表合并数据迁移最佳实践](/v3.0/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
+        - [DM-worker 在上游 MySQL 主从间切换](/v3.0/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
+      + [部署使用](/v3.0/reference/tools/data-migration/deploy.md)
+      + 配置
+        - [概述](/v3.0/reference/tools/data-migration/configure/overview.md)
+        - [DM-master 配置](/v3.0/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker 配置](/v3.0/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
+        - [任务配置](/v3.0/reference/tools/data-migration/configure/task-configuration-file.md)
+      + DM 集群管理
+        - [集群操作](/v3.0/reference/tools/data-migration/cluster-operations.md)
+        - [集群升级](/v3.0/reference/tools/data-migration/dm-upgrade.md)
+      + DM 同步任务管理
+        - [管理数据同步任务](/v3.0/reference/tools/data-migration/manage-tasks.md)
+        - [任务前置检查](/v3.0/reference/tools/data-migration/precheck.md)
+        - [任务状态查询](/v3.0/reference/tools/data-migration/query-status.md)
+        - [跳过或替代执行异常的 SQL 语句](/v3.0/reference/tools/data-migration/skip-replace-sqls.md)
+      - [监控 DM 集群](/v3.0/reference/tools/data-migration/monitor.md)
+      + 从与 MySQL 兼容的数据库迁移数据
+        - [从 Amazon Aurora MySQL 迁移数据](/v3.0/how-to/migrate/from-aurora.md)
+      - [DM Portal](/v3.0/reference/tools/data-migration/dm-portal.md)
+      + DM 故障诊断
+        - [故障诊断](/v3.0/reference/tools/data-migration/troubleshoot/dm.md)
+        - [错误含义](/v3.0/reference/tools/data-migration/troubleshoot/error-system.md)
+        - [常见错误修复](/v3.0/reference/tools/data-migration/troubleshoot/error-handling.md)
+      - [DM FAQ](/v3.0/reference/tools/data-migration/faq.md)
+      + 版本发布历史
+        + v1.0
+          - [1.0.2](/v3.0/reference/tools/data-migration/releases/1.0.2.md)
+          - [1.0.3](/v3.0/reference/tools/data-migration/releases/1.0.3.md)
+      - [TiDB DM 术语表](/v3.0/reference/tools/data-migration/glossary.md)
+    + TiDB Lightning
+      - [概述](/v3.0/reference/tools/tidb-lightning/overview.md)
+      - [部署执行](/v3.0/reference/tools/tidb-lightning/deployment.md)
+      - [参数说明](/v3.0/reference/tools/tidb-lightning/config.md)
+      - [断点续传](/v3.0/reference/tools/tidb-lightning/checkpoints.md)
+      - [表库过滤](/v3.0/reference/tools/tidb-lightning/table-filter.md)
+      - [CSV 支持](/v3.0/reference/tools/tidb-lightning/csv.md)
+      - [Web 界面](/v3.0/reference/tools/tidb-lightning/web.md)
+      - [监控告警](/v3.0/reference/tools/tidb-lightning/monitor.md)
+      - [故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
+      - [FAQ](/v3.0/faq/tidb-lightning.md)
+    - [sync-diff-inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
+    - [PD Control](/v3.0/reference/tools/pd-control.md)
+    - [PD Recover](/v3.0/reference/tools/pd-recover.md)
+    - [TiKV Control](/v3.0/reference/tools/tikv-control.md)
+    - [TiDB Controller](/v3.0/reference/tools/tidb-control.md)
+    - [工具下载](/v3.0/reference/tools/download.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/v3.0/tidb-in-kubernetes/tidb-operator-overview.md)
   + 快速上手
     - [kind](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
-    - [DinD](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-dind.md)
     - [GKE](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
     - [Minikube](/v3.0/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
   + 部署
@@ -369,6 +380,7 @@
     - [收集日志](/v3.0/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/v3.0/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/v3.0/tidb-in-kubernetes/maintain/tidb-binlog.md)
+    - [重启 TiDB 集群](/v3.0/tidb-in-kubernetes/maintain/restart.md)
   - [扩缩容](/v3.0/tidb-in-kubernetes/scale-in-kubernetes.md)
   + 升级
     - [TiDB 集群](/v3.0/tidb-in-kubernetes/upgrade/tidb-cluster.md)
@@ -397,6 +409,10 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.9](/v3.0/releases/3.0.9.md)
+    - [3.0.8](/v3.0/releases/3.0.8.md)
+    - [3.0.7](/v3.0/releases/3.0.7.md)
+    - [3.0.6](/v3.0/releases/3.0.6.md)
     - [3.0.5](/v3.0/releases/3.0.5.md)
     - [3.0.4](/v3.0/releases/3.0.4.md)
     - [3.0.3](/v3.0/releases/3.0.3.md)
@@ -409,6 +425,7 @@
     - [3.0.0-beta.1](/v3.0/releases/3.0.0-beta.1.md)
     - [3.0.0-beta](/v3.0/releases/3.0beta.md)
   + v2.1
+    - [2.1.19](/v3.0/releases/2.1.19.md)
     - [2.1.18](/v3.0/releases/2.1.18.md)
     - [2.1.17](/v3.0/releases/2.1.17.md)
     - [2.1.16](/v3.0/releases/2.1.16.md)

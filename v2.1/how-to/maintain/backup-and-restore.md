@@ -5,7 +5,7 @@ category: how-to
 
 # 备份与恢复
 
-本文档将详细介绍如何对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v2.1/reference/tools/tidb-binlog/overview.md)。
+本文档将详细介绍如何对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v2.1/reference/tidb-binlog/overview.md)。
 
 这里我们假定 TiDB 服务信息如下：
 
@@ -25,8 +25,8 @@ category: how-to
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
-wget http://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
+wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：

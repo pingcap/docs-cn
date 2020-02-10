@@ -43,13 +43,13 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
 
 本部分介绍如何部署 3 个 MySQL Server 实例及 `pd-server`、`tikv-server` 和 `tidb-server` 实例各 1 个，以及如何启动 1 个 DM-master 和 3 个 DM-worker 实例。
 
-1. 安装 MySQL 5.7，下载或提取 TiDB 安装包：
+1. 安装 MySQL 5.7，下载或提取 TiDB v3.0 以及 DM v1.0.2 安装包：
 
     ```bash
     sudo yum install -y http://repo.mysql.com/yum/mysql-5.7-community/el/7/x86_64/mysql57-community-release-el7-10.noarch.rpm
     sudo yum install -y mysql-community-server
-    curl http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz | tar xzf -
-    curl http://download.pingcap.org/dm-latest-linux-amd64.tar.gz | tar xzf -
+    curl https://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz | tar xzf -
+    curl https://download.pingcap.org/dm-v1.0.2-linux-amd64.tar.gz | tar xzf -
     curl -L https://github.com/pingcap/docs/raw/master/dev/how-to/get-started/dm-cnf/dm-cnf.tgz | tar xvzf -
     ```
 
@@ -126,7 +126,7 @@ TiDB Data Migration 平台由 3 部分组成：DM-master、DM-worker 和 dmctl�
     do
         mysql -h 127.0.0.1 -P "$((3306+i))" -u root <<EoSQL
             create database dmtest1;
-            create table dmtest1.t1 (id bigint unsigned not null auto_increment primary key, c char(32), port int);
+            create table dmtest1.t1 (id bigint unsigned not null AUTO_INCREMENT primary key, c char(32), port int);
     EoSQL
     done
     ```
@@ -248,6 +248,7 @@ port = 3307
 - 如果从 MySQL Server、Percona Server、Percona XtraDB Cluster、Amazon Aurora 或 RDS 迁移数据，则 `flavor` 配置项应设为 "mysql"（默认值，支持 5.5 < MySQL 版本 < 8.0）。
 - 如果从 MariaDB Server 或 MariaDB (Galera) Cluster 迁移数据，则设置 `flavor = "mariadb"`（仅支持 10.1.2 以上 MariaDB 版本）。
 - 从 DM 1.0.2 版本开始，`flavor`、`server-id` 项均会由 DM 自动生成，一般情况下不需要手动配置。
+- `from` 中的 `password` 如果不为空，则需要使用 dmctl 进行加密，参见 [使用 dmctl 加密上游 MySQL 用户密码](/v2.1/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 
 任务在 YAML 文件中定义。以下为一个 `dmtask1.yaml` 文件示例：
 
@@ -304,6 +305,8 @@ loaders:
 * `black-white-list`：将一个任务限制在数据库 `dmtest` 中。
 
 * `loaders`：定义由各个 DM-worker 实例执行的每个 mydumper 实例的输出地址。
+
+* `target-database`：定义目标数据库的链接信息，其中的 `password` 如果不为空，则需要使用 dmctl 进行加密，参见[使用 dmctl 加密上游 MySQL 用户密码](/v2.1/how-to/deploy/data-migration-with-ansible.md#使用-dmctl-加密上游-mysql-用户密码)。
 
 `dmctl` 是控制 DM 集群的命令行工具，用于启动任务、查询任务状态。执行 `dmctl -master-addr :8261` 获取如下交互提示，从而启动该工具：
 
