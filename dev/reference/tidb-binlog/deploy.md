@@ -612,6 +612,40 @@ Drainer="192.168.0.13"
 
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
 
+# 关于 Relay log
+
+drainer 会拆分上游的事务并发写下游，极端情况下上游集群不可用后并且 drainer 异常退出后没法再同步到一个一致的状态。
+
+下游集群达到一个时间戳为 `ts` 的一致的状态的定义为：
+
+* 下游集群为上游设置 _tidb_snapshot = ts_ 的快照
+
+当开启 Relay log 后每个 binlog 会先写对应的日志到磁盘上再写下游，如果上游集群不可用，我们总是可以通过这些日志来把集群恢复到一个一致的状态，只要不会同时丢失这部分日志。 已经同步到下游的 relay log 会尽可能快的删除，所以不会占很多空间。
+
+下游报存的 checkpoint 可以看到 status 状态, 0 表示达到一致的状态。drainer 运行时会是 1，正常退出后会更新为 0。
+
+```
+mysql> select * from tidb_binlog.checkpoint;
++---------------------+--------------------------------------------------------+
+| clusterID           | checkPoint                                             |
++---------------------+--------------------------------------------------------+
+| 6791641053252586769 | {"status":0,"commitTS":414529105591271429,"ts-map":{}} |
++---------------------+--------------------------------------------------------+
+```
+
+当 drainer 启动时发现 status 为 1 并且连接不上 PD, 会尝试读取 relay log 恢复下游到一个一致的状态再退出，如果正常恢复退出，可以看到 status 更新为 0。
+
+## 配置
+
+开启 relay log 功能只需要在 drainer 添加如下配置:
+
+```
+[syncer.relay]
+# directory of relay logs. Empty string indicates disabling relay log.
+# relay log works only if the downstream is TiDB/MySQL.
+log-dir = "/dir/to/save/log"
+```
+
 > **注意：**
 >
 > - 在运行 TiDB 时，需要保证至少一个 Pump 正常运行。
