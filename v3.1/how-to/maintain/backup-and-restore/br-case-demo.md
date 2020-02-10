@@ -216,8 +216,6 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 
 
 #### 运行恢复
 
-恢复前，可以参考[恢复准备工作](#恢复准备工作)。
-
 运行 `br restore` 命令：
 
 {{< copyable "shell-regular" >}}
@@ -319,8 +317,6 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 备份前在 TiDB 里通过 `admin checksum table order_line` 获得备份的目标表 `--db batchmark --table order_line` 的统计信息。统计信息示例如下：
 
 ![img](/media/br/total-data.png)
-
-备份前还需调整 GC 值。详细操作可参考[备份准备工作](#备份准备工作)。
 
 运行 `br backup` 命令：
 
