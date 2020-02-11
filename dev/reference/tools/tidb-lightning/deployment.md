@@ -274,6 +274,6 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/dev/how-to/deploy/o
 
 ## 升级 TiDB Lightning
 
-你可以通过替换二进制文件升级 TiDB Lightning，无需其他配置。重启 TiDB Lightning 的具体操作参见 [FAQ](/dev/faq/tidb-lightning.md#how-to-properly-restart-tidb-lightning)。
+你可以通过替换二进制文件升级 TiDB Lightning，无需其他配置。重启 TiDB Lightning 的具体操作参见 [FAQ](/dev/faq/tidb-lightning.md#如何正确重启-tidb-lightning)。
 
 如果当前有运行的导入任务，推荐任务完成后再升级 TiDB Lightning。否则，你可能需要从头重新导入，因为无法保证断点可以跨版本工作。
