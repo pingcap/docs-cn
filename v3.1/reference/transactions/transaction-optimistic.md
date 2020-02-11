@@ -13,7 +13,7 @@ TiDB 默认使用乐观事务模型，即事务提交时假定不会发生并发
 
 > **注意：**
 >
-> 目前，TiDB 3.0.8 默认使用悲观事务模型。
+> 自 v3.0.8 开始，TiDB 默认使用[悲观事务模型](/v3.1/reference/transactions/transaction-pessimistic.md)。但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型。换句话说，**只有新创建的集群才会默认使用悲观事务模型**。
 
 ## 乐观事务原理
 
@@ -41,7 +41,7 @@ TiDB 中事务使用两阶段提交，流程如下：
     1. TiDB 从当前要写入的数据中选择一个 Key 作为当前事务的 Primary Key。
     2. TiDB 从 PD 获取所有数据的写入路由信息，并将所有的 Key 按照所有的路由进行分类。
     3. TiDB 并发地向所有涉及的 TiKV 发起 prewrite 请求。TiKV 收到 prewrite 数据后，检查数据版本信息是否存在冲突或已过期。符合条件的数据会被加锁。
-    4. TiDB 成功收到所有 prewrite 请求。
+    4. TiDB 收到所有 prewrite 响应且所有 prewrite 都成功。
     5. TiDB 向 PD 获取第二个全局唯一递增版本号，定义为本次事务的 `commit_ts`。
     6. TiDB 向 Primary Key 所在 TiKV 发起第二阶段提交。TiKV 收到 commit 操作后，检查数据合法性，清理 prewrite 阶段留下的锁。
     7. TiDB 收到两阶段提交成功的信息。
@@ -61,7 +61,7 @@ TiDB 中事务使用两阶段提交，流程如下：
 但 TiDB 事务也存在以下缺点：
 
 * 两阶段提交使网络交互增多。
-* 缺少一个中心化的版本管理服务。
+* 需要一个中心化的版本管理服务。
 * 事务数据量过大时易导致内存暴涨。
 
 实际应用中，你可以[根据事务的大小进行针对性处理](/v3.1/reference/transactions/overview.md#事务大小)，以提高事务的执行效率。
@@ -74,7 +74,7 @@ TiDB 中事务使用两阶段提交，流程如下：
 
 当事务提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = off` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
 
-```toml
+```sql
 # 设置是否禁用自动重试，默认为 “on”，即不重试。
 tidb_disable_txn_auto_retry = off
 # 控制重试次数，默认为 “10”。只有自动重试启用时该参数才会生效。
