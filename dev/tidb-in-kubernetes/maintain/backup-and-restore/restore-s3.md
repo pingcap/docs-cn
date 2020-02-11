@@ -68,7 +68,7 @@ category: how-to
      ```shell
      kubectl get rt -n test2 -owide
      ```
-     
+
 以上示例将存储在兼容 S3 存储的特定路径 `spec.s3.path` 的备份数据恢复到 `spec.to.host` TiDB 集群，关于兼容    S3 存储的配置项可以参考 [backup-s3.yaml](/dev/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md#备份数据到兼容-s3-的存储) 中的设置。
 
 更多 `Restore` CR 字段的详细解释：
