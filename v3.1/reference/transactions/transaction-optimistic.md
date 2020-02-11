@@ -1,14 +1,19 @@
 ---
-title: 乐观事务模型
+title: TiDB 乐观事务模型
+summary: 了解 TiDB 的乐观事务模型。
 category: reference
 aliases: ['/docs-cn/v3.1/reference/transactions/transaction-model/']
 ---
 
-# 乐观事务模型
+# TiDB 乐观事务模型
 
-TiDB 默认使用乐观事务模型。也就是说，在执行 `UPDATE`、`INSERT`、`DELETE` 等语句时，只有在提交过程中才会检查写写冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。类似的，诸如 `GET_LOCK()` 和 `RELEASE_LOCK()` 等函数以及 `SELECT .. FOR UPDATE` 之类的语句在 TiDB 和 MySQL 中的执行方式并不相同。所以业务端在执行 SQL 语句后，需要注意检查 `COMMIT` 的返回值，即使执行时没有出错，`COMMIT` 的时候也可能会出错。
+TiDB 默认使用乐观事务模型，即事务提交时假定不会发生并发冲突，只有在事务最终提交时才会检测冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。
 
 本文介绍 TiDB 乐观事务的原理，以及相关特性。本文假定你对 [TiDB 的整体架构](/v3.1/architecture.md#tidb-整体架构)、[Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型以及事务的 [ACID 特性](/v3.1/glossary.md#acid)都有一定了解。
+
+> **注意：**
+>
+> 目前，TiDB 3.0.8 默认使用悲观事务模型。
 
 ## 乐观事务原理
 
@@ -59,9 +64,15 @@ TiDB 中事务使用两阶段提交，流程如下：
 * 缺少一个中心化的版本管理服务。
 * 事务数据量过大时易导致内存暴涨。
 
+实际应用中，你可以[根据事务的大小进行针对性处理](/v3.1/reference/transactions/overview.md#事务大小)，以提高事务的执行效率。
+
+## 事务的重试
+
+使用乐观事务模型时，在高冲突率的场景中，事务很容易提交失败。而 MySQL 内部使用的是悲观事务模型，在执行 SQL 语句的过程中进行冲突检测，所以提交时很难出现异常。为了兼容 MySQL 的悲观事务行为，TiDB 提供了重试机制。
+
 ### 重试机制
 
-TiDB 中默认使用乐观事务模型，因而在高冲突率的场景中，事务很容易提交失败。而 MySQL 内部使用的是悲观事务模型，在执行 SQL 语句的过程中进行冲突检测，所以提交时很难出现异常。为了兼容 MySQL 的悲观事务行为，TiDB 提供了重试机制。当事务提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = off` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
+当事务提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = off` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
 
 ```toml
 # 设置是否禁用自动重试，默认为 “on”，即不重试。
@@ -79,6 +90,11 @@ tidb_retry_limit = 10
 
     ```sql
     set @@tidb_disable_txn_auto_retry = off;
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
     set @@tidb_retry_limit = 10;
     ```
 
@@ -88,18 +104,23 @@ tidb_retry_limit = 10
 
     ```sql
     set @@global.tidb_disable_txn_auto_retry = off;
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
     set @@global.tidb_retry_limit = 10;
     ```
 
-> 注意：
+> **注意：**
 >
-> `tidb_retry_limit` 变量决定了事务重试的最大次数。当它被设置为 0 时，所有事务都不会自动重试，包括自动提交的单语句隐式事务。这是彻底禁用 TiDB 中自动重试机制的方法。禁用自动重试后，所有冲突的事务都会以最快的方式上报失败信息（`try again later`）给应用层。
+> `tidb_retry_limit` 变量决定了事务重试的最大次数。当它被设置为 0 时，所有事务都不会自动重试，包括自动提交的单语句隐式事务。这是彻底禁用 TiDB 中自动重试机制的方法。禁用自动重试后，所有冲突的事务都会以最快的方式上报失败信息 (`try again later`) 给应用层。
 
 ### 重试的局限性
 
-TiDB 默认不进行事务重试，因为重试事务可能会导致更新丢失，从而破坏快照隔离。
+TiDB 默认不进行事务重试，因为重试事务可能会导致更新丢失，从而破坏[可重复读的隔离级别](/v3.1/reference/transactions/transaction-isolation.md)。
 
-事务重试的局限性与其重试的原理有关。事务事务可概括为以下三个步骤：
+事务重试的局限性与其原理有关。事务重试可概括为以下三个步骤：
 
 1. 重新获取 `start_ts`。
 2. 重新执行包含写操作的 SQL 语句。
@@ -107,7 +128,7 @@ TiDB 默认不进行事务重试，因为重试事务可能会导致更新丢失
 
 第二步中，重试时仅重新执行包含写操作的 SQL 语句，并不涉及读操作的 SQL 语句。但是当前事务中读到数据的时间与事务真正开始的时间发生了变化，写入的版本变成了重试时获取的 `start_ts` 而非事务一开始时获取的 `start_ts`。因此，当事务中存在依赖查询结果来更新的语句时，重试将无法保证事务原本可重复读的隔离级别，最终可能导致结果与预期出现不一致。
 
-如果业务可以容忍事务重试导致的异常，或并不关注事务是否以快照隔离级别来执行，则可以开启自动重试。
+如果业务可以容忍事务重试导致的异常，或并不关注事务是否以可重复读的隔离级别来执行，则可以开启自动重试。
 
 ## 冲突检测
 
@@ -123,7 +144,7 @@ TiDB 默认不进行事务重试，因为重试事务可能会导致更新丢失
 ```toml
 # 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
 [txn-local-latches]
-# 是否开启内存锁，默认为关闭。
+# 是否开启内存锁，默认为 false，即不开启。
 enabled = false
 # Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。
 # 每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），
@@ -151,3 +172,7 @@ scheduler-concurrency = 2048000
 ![Scheduler latch wait duration](/media/optimistic-transaction-metric.png)
 
 当 `Scheduler latch wait duration` 的值特别高时，说明大量时间消耗在等待锁的请求上。如果不存在底层写入慢的问题，基本上可以判断该段时间内冲突比较多。
+
+## 更多阅读
+
+- [Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)

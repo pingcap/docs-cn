@@ -1,11 +1,12 @@
 ---
 title: TiDB 事务概览
+summary: 了解 TiDB 中的事务。
 category: reference
 ---
 
 # TiDB 事务概览
 
-TiDB 支持完整的分布式事务，默认使用[乐观事务模型](/v3.1/reference/transactions/transaction-optimistic/)。事务提交时假定不会发生并发冲突，只有在事务最终提交时才会检测冲突。同时，TiDB v3.0 版本也加入了[悲观事务](/v3.1/reference/transactions/transaction-pessimistic.md)的支持。本文主要介绍涉及到事务的语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
+TiDB 支持完整的分布式事务，提供[乐观事务](/v3.1/reference/transactions/transaction-optimistic.md)与[悲观事务](/v3.1/reference/transactions/transaction-pessimistic.md)（TiDB 3.0 中引入）两种事务模型。本文主要介绍涉及到事务的语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
 
 常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/v3.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/v3.1/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
 
@@ -157,27 +158,31 @@ insert into test values (3);
 rollback;
 ```
 
-以上例子中，第二条语句执行失败。由于调用了 `rollback`，因此事务不会将任何数据写入数据库。
+以上例子中，第二条语句执行失败。由于调用了 `ROLLBACK`，因此事务不会将任何数据写入数据库。
 
 ## 事务大小
 
-对于 TiDB 事务而言，事务太大或太小，都会影响事务性能。
+对于 TiDB 事务而言，事务太大或太小，都会影响事务的执行效率。
 
 ### 小事务
 
 以如下 query 为例，当 `autocommit = 1` 时，下面三条语句各为一个事务：
 
+{{< copyable "sql" >}}
+
 ```sql
-# 使用自动提交的原始版本。
 UPDATE my_table SET a ='new_value' WHERE id = 1;
 UPDATE my_table SET a ='newer_value' WHERE id = 2;
 UPDATE my_table SET a ='newest_value' WHERE id = 3;
 ```
 
-此时每一条语句都需要经过两阶段提交，频繁的网络交互致使延迟率高。为提升事务执行效率，可以选择使用显式事务，即在一个事务内执行三条语句：
+此时每一条语句都需要经过两阶段提交，频繁的网络交互致使延迟率高。为提升事务执行效率，可以选择使用显式事务，即在一个事务内执行三条语句。
+
+优化后版本：
+
+{{< copyable "sql" >}}
 
 ```sql
-# 优化后版本。
 START TRANSACTION;
 UPDATE my_table SET a ='new_value' WHERE id = 1;
 UPDATE my_table SET a ='newer_value' WHERE id = 2;
