@@ -36,7 +36,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test1
+    kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
 ### 备份数据到 GCS
@@ -59,6 +59,11 @@ metadata:
   name: demo1-backup-gcs
   namespace: test1
 spec:
+  from:
+    host: <tidb-host-ip>
+    port: <tidb-port>
+    user: <tidb-user>
+    secretName: backup-demo1-tidb-secret
   gcs:
     secretName: gcs-secret
     projectId: <your-project-id>
@@ -66,9 +71,6 @@ spec:
     # storageClass: STANDARD_IA
     # objectAcl: private
     # bucketAcl: private
-  storageType: gcs
-  cluster: demo1
-  tidbSecretName: backup-demo1-tidb-secret
   storageClassName: local-storage
   storageSize: 10Gi
 ```
@@ -118,13 +120,15 @@ GCS 支持以下几种 bucket ACL 策略：
 
 更多 `Backup` CR 字段的详细解释：
 
-`.spec.metadata.namespace`：备份 TiDB 集群所在的 namespace。
+`.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
 
-`.spec.storageType`：备份的存储类型。目前主要有 S3 和 GCS 两种。
+`.spec.from.host`：需要备份的 TiDB 集群访问地址。
 
-`.spec.cluster`：备份 TiDB 集群的名字。
+`.spec.from.port`：需要备份的 TiDB 集群访问端口。
 
-`.spec.tidbSecretName`：访问 TiDB 集群所需凭证的 secret。
+`.spec.from.user`：需要备份的 TiDB 集群访问用户。
+
+`.spec.from.tidbSecretName`：需要备份的 TiDB 集群所需凭证的 secret。
 
 `.spec.storageClassName`：备份时指定所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
 
@@ -163,6 +167,11 @@ spec:
   maxReservedTime: "3h"
   schedule: "*/2 * * * *"
   backupTemplate:
+    from:
+      host: <tidb-host-ip>
+      port: <tidb-port>
+      user: <tidb-user>
+      secretName: backup-demo1-tidb-secret
     gcs:
       secretName: gcs-secret
       projectId: <your-project-id>
@@ -170,9 +179,6 @@ spec:
       # storageClass: STANDARD_IA
       # objectAcl: private
       # bucketAcl: private
-    storageType: gcs
-    cluster: demo1
-    tidbSecretName: backup-demo1-tidb-secret
     storageClassName: local-storage
     storageSize: 10Gi
 ```

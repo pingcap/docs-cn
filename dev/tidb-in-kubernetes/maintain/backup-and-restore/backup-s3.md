@@ -36,7 +36,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test1
+    kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
 ### 备份数据到兼容 S3 的存储
@@ -59,6 +59,11 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       name: demo1-backup-s3
       namespace: test1
     spec:
+      from:
+        host: <tidb-host-ip>
+        port: <tidb-port>
+        user: <tidb-user>
+        secretName: backup-demo1-tidb-secret
       s3:
         provider: aws
         secretName: s3-secret
@@ -66,9 +71,6 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
         # storageClass: STANDARD_IA
         # acl: private
         # endpoint:
-      storageType: s3
-      cluster: demo1
-      tidbSecretName: backup-demo1-tidb-secret
       storageClassName: local-storage
       storageSize: 10Gi
     ```
@@ -91,13 +93,15 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       name: demo1-backup-s3
       namespace: test1
     spec:
+      from:
+        host: <tidb-host-ip>
+        port: <tidb-port>
+        user: <tidb-user>
+        secretName: backup-demo1-tidb-secret
       s3:
         provider: ceph
         secretName: s3-secret
         endpoint: http://10.0.0.1:30074
-      storageType: s3
-      cluster: demo1
-      tidbSecretName: backup-demo1-tidb-secret
       storageClassName: local-storage
       storageSize: 10Gi
     ```
@@ -136,13 +140,15 @@ Amazon S3 支持以下几种 storageClass 类型：
 
 更多 `Backup` CR 字段的详细解释:
 
-`.spec.metadata.namespace`: 备份 TiDB 集群所在的 namespace。
+`.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
 
-`.spec.storageType`: 代表备份的存储类型，目前主要有 S3 和 GCS。
+`.spec.from.host`：需要备份的 TiDB 集群访问地址。
 
-`.spec.cluster`: 备份 TiDB 集群的名字。
+`.spec.from.port`：需要备份的 TiDB 集群访问端口。
 
-`.spec.tidbSecretName`: 访问 TiDB 集群所需密码的 secret。
+`.spec.from.user`：需要备份的 TiDB 集群访问用户。
+
+`.spec.from.tidbSecretName`：需要备份的 TiDB 集群所需凭证的 secret。
 
 `.spec.storageClassName`: 备份时所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
 
@@ -192,6 +198,11 @@ Amazon S3 支持以下几种 storageClass 类型：
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
+        from:
+      		host: <tidb-host-ip>
+          port: <tidb-port>
+          user: <tidb-user>
+          secretName: backup-demo1-tidb-secret
         s3:
           provider: aws
           secretName: s3-secret
@@ -199,9 +210,6 @@ Amazon S3 支持以下几种 storageClass 类型：
           # storageClass: STANDARD_IA
           # acl: private
           # endpoint:
-        storageType: s3
-        cluster: demo1
-        tidbSecretName: backup-demo1-tidb-secret
         storageClassName: local-storage
         storageSize: 10Gi
     ```
@@ -229,13 +237,15 @@ Amazon S3 支持以下几种 storageClass 类型：
       maxReservedTime: "3h"
       schedule: "*/2 * * * *"
       backupTemplate:
+        from:
+      		host: <tidb-host-ip>
+          port: <tidb-port>
+          user: <tidb-user>
+          secretName: backup-demo1-tidb-secret
         s3:
-           provider: ceph
-           secretName: s3-secret
-           endpoint: http://10.0.0.1:30074
-        storageType: s3
-        cluster: demo1
-        tidbSecretName: backup-demo1-tidb-secret
+          provider: ceph
+          secretName: s3-secret
+          endpoint: http://10.0.0.1:30074
         storageClassName: local-storage
         storageSize: 10Gi
     ```
