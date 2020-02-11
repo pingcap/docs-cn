@@ -397,6 +397,8 @@
     + 工具
       - [tkctl](/dev/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/dev/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
+    + 组件
+      - [TiDB Scheduler 扩展调度器](/dev/tidb-in-kubernetes/reference/components/tidb-scheduler.md)
   - [故障诊断](/dev/tidb-in-kubernetes/troubleshoot.md)
   - [常见问题](/dev/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
