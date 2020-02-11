@@ -199,7 +199,7 @@ Amazon S3 支持以下几种 storageClass 类型：
       schedule: "*/2 * * * *"
       backupTemplate:
         from:
-      		host: <tidb-host-ip>
+          host: <tidb-host-ip>
           port: <tidb-port>
           user: <tidb-user>
           secretName: backup-demo1-tidb-secret
@@ -238,7 +238,7 @@ Amazon S3 支持以下几种 storageClass 类型：
       schedule: "*/2 * * * *"
       backupTemplate:
         from:
-      		host: <tidb-host-ip>
+          host: <tidb-host-ip>
           port: <tidb-port>
           user: <tidb-user>
           secretName: backup-demo1-tidb-secret
