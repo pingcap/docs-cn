@@ -61,7 +61,9 @@
   + 运维
     - [Ansible 常见运维操作](/v3.0/how-to/maintain/ansible-operations.md)
     + [备份与恢复](/v3.0/how-to/maintain/backup-and-restore.md)
-    - [定位慢查询](/v3.0/how-to/maintain/identify-slow-queries.md)
+    + 定位异常查询
+      - [定位慢查询](/v3.0/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
+      - [定位消耗系统资源多的查询](/v3.0/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v3.0/how-to/scale/with-ansible.md)
   + 升级
@@ -343,6 +345,7 @@
       - [断点续传](/v3.0/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/v3.0/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/v3.0/reference/tools/tidb-lightning/csv.md)
+      - [TiDB-backend](/v3.0/reference/tools/tidb-lightning/tidb-backend.md)
       - [Web 界面](/v3.0/reference/tools/tidb-lightning/web.md)
       - [监控告警](/v3.0/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)

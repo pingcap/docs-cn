@@ -63,7 +63,10 @@
     + 备份与恢复
       - [使用 Mydumper/Loader 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)
       - [使用 BR 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/br.md)
-    - [定位慢查询](/v3.1/how-to/maintain/identify-slow-queries.md)
+      - [BR 备份与恢复最佳实践](/v3.1/how-to/maintain/backup-and-restore/br-best-practices.md)
+    + 定位异常查询
+      - [定位慢查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
+      - [定位消耗系统资源多的查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/v3.1/how-to/scale/with-ansible.md)
   + 升级
@@ -346,6 +349,7 @@
       - [断点续传](/v3.1/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/v3.1/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/v3.1/reference/tools/tidb-lightning/csv.md)
+      - [TiDB-backend](/v3.1/reference/tools/tidb-lightning/tidb-backend.md)
       - [Web 界面](/v3.1/reference/tools/tidb-lightning/web.md)
       - [监控告警](/v3.1/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v3.1/how-to/troubleshoot/tidb-lightning.md)
