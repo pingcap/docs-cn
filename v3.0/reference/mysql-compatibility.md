@@ -23,23 +23,22 @@ However, TiDB does not support some of MySQL features or behaves differently fro
 + Events
 + User-defined functions
 + `FOREIGN KEY` constraints
-+ `FULLTEXT` functions and indexes
-+ `SPATIAL` functions and indexes
++ `FULLTEXT`/`SPATIAL` functions and indexes
 + Character sets other than `utf8`, `utf8mb4`, `ascii`, `latin1` and `binary`
 + Collations other than `BINARY`
-+ Add primary key
-+ Drop primary key
++ Add/drop primary key
 + SYS schema
 + Optimizer trace
 + XML Functions
 + X-Protocol
 + Savepoints
 + Column-level privileges
++ `XA` syntax (TiDB uses a two-phase commit internally, but this is not exposed via an SQL interface)
 + `CREATE TABLE tblName AS SELECT stmt` syntax
 + `CREATE TEMPORARY TABLE` syntax
-+ `XA` syntax (TiDB uses a two-phase commit internally, but this is not exposed via an SQL interface)
 + `CHECK TABLE` syntax
 + `CHECKSUM TABLE` syntax
++ `SELECT INTO FILE` syntax
 + `GET_LOCK` and `RELEASE_LOCK` functions
 
 ## Features that are different from MySQL
@@ -91,7 +90,9 @@ In TiDB DDL does not block reads or writes to tables while in operation. However
 
 + Add Index:
     - Does not support creating multiple indexes at the same time.
+    - Does not support the `VISIBLE/INVISIBLE` index.
     - Adding an index on a generated column via `ALTER TABLE` is not supported.
+    - Other Index Type (HASH/BTREE/RTREE) is supported in syntax, but not applicable.
 + Add Column:
     - Does not support creating multiple columns at the same time.
     - Does not support setting a column as the `PRIMARY KEY`, or creating a unique index, or specifying `AUTO_INCREMENT` while adding it.
@@ -103,6 +104,20 @@ In TiDB DDL does not block reads or writes to tables while in operation. However
     - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: the syntax is supported, but is not applicable to TiDB. All DDL changes that are supported do not lock the table.
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: the syntax for `ALGORITHM=INSTANT` and `ALGORITHM=INPLACE` is fully supported, but it works differently from MySQL because some operations that are `INPLACE` in MySQL are `INSTANT` in TiDB. The syntax `ALGORITHM=COPY` is not applicable to TIDB and returns a warning.
+
++ The following Table Options are not supported in syntax:
+    - `WITH/WITHOUT VALIDATION`
+    - `SECONDARY_LOAD/SECONDARY_UNLOAD`
+    - `CHECK/DROP CHECK`
+    - `STATS_AUTO_RECALC/STATS_SAMPLE_PAGES`
+    - `SECONDARY_ENGINE`
+    - `ENCRYPTION`
+
++ The following Table Partition syntaxes are not supported:
+    - `PARTITION BY LIST`
+    - `PARTITION BY KEY`
+    - `SUBPARTITION`
+    - `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
 
 For more information, see [Online Schema Changes](/v3.0/key-features.md#online-schema-changes).
 
@@ -226,3 +241,12 @@ Because they are built-in, named time zones in TiDB might behave slightly differ
 #### Zero month and zero day
 
 It is not recommended to unset the `NO_ZERO_DATE` and `NO_ZERO_IN_DATE` SQL modes, which are enabled by default in TiDB as in MySQL. While TiDB supports operating with these modes disabled, the TiKV coprocessor does not. Executing certain statements that push down date and time processing functions to TiKV might result in a statement error.
+
+### Type system differences
+
+The following column types are supported by MySQL, but not by TiDB:
+
++ FLOAT4/FLOAT8
++ FIXED (alias for DECIMAL)
++ SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)
++ SQL_TSI_* (including SQL_TSI_YEAR, SQL_TSI_MONTH, SQL_TSI_WEEK, SQL_TSI_DAY, SQL_TSI_HOUR, SQL_TSI_MINUTE and SQL_TSI_SECOND)
