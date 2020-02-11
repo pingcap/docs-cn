@@ -17,7 +17,7 @@ TiDB 集群的调度需求，需要扩展 K8s 的调度规则，目前，TiDB Op
 
 ### PD 组件
 
-确保每个 Node 节点上调度的 PD 个数小于 `Replicas / 2`，例如： 
+确保每个 Node 节点上调度的 PD 个数小于 `Replicas / 2`，例如：
 
 | PD 集群规模（Replicas）  | 每个节点最多可调度的 PD 数量 |
 | ------------- | ------------- |
@@ -58,6 +58,7 @@ TiDB Scheduler 组件部署为一个或者多个 Pod，但同时只有一个 Pod
 TiDB Operator 创建的所有 Pod 的 `.spec.schedulerName` 属性会被设置为
 `tidb-scheduler`，即都用 TiDB Scheduler 自定义调度器来调度。一个 Pod
 的调度流程是这样的：
+
 - `kube-scheduler` 拉取所有 `.spec.schedulerName` 为 `tidb-scheduler` 的
    Pod，对于每个 Pod 会首先经过 K8s 默认调度规则过滤；
 - 在这之后，`kube-scheduler` 会发请求到 `tidb-scheduler` 服务，`tidb-scheduler` 会通过一些自定义的调度规则（见上述介绍）对发送过来的 Node 节点进行过滤，最终将剩余可调度的 Node 节点返回给 `tidb-scheduler`；
