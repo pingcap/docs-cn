@@ -5,14 +5,12 @@ category: how-to
 
 # BR 备份恢复案例展示
 
-[Backup & Restore](/dev/how-to/maintain/backup-and-restore/br.md)（下文简称 BR）一款分布式的快速备份和恢复工具。本文展示了以下四种备份和恢复场景下的 BR 操作过程：
+[Backup & Restore](/dev/how-to/maintain/backup-and-restore/br.md)（下文简称 BR）一款分布式的快速备份和恢复工具。本文展示了四种备份和恢复场景下的 BR 操作过程供读者参考，以期读者达到以下目标：
 
-* 使用网络盘或本地盘进行备份或恢复
-* 通过相关指标了解备份和恢复的状态
-* 了解在进行备份或恢复时如何调优性能
+* 正确使用网络盘或本地盘进行备份或恢复
+* 通过相关监控指标了解备份或恢复的状态
+* 了解在备份或恢复时如何调优性能
 * 处理备份时可能发生的异常
-
-本文所展示的案例供用户参考，以期帮助用户正确地使用 BR。
 
 > **注意：**
 >
@@ -24,9 +22,7 @@ category: how-to
 
 ## 环境准备
 
-本部分介绍本文操作示例中 TiDB 的部署方式、集群版本、TiKV 集群硬件信息和集群配置。读者可根据自己的硬件和配置来预估备份恢复的性能。
-
-BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需要依赖 TiDB server 组件。
+本部分介绍操作示例中 TiDB 的部署方式、集群版本、TiKV 集群硬件信息和集群配置。读者可根据自己的硬件和配置来预估备份恢复的性能。
 
 ### 部署方式
 
@@ -48,6 +44,8 @@ RAM：32GB
 
 ### 配置
 
+BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需要依赖 TiDB server 组件，因此无需对 TiDB server 进行配置。
+
 * TiKV: 默认配置
 * PD : 默认配置
 
@@ -56,9 +54,9 @@ RAM：32GB
 本文描述以下四种使用场景：
 
 * 将单表数据备份到网络盘（推荐）
-* 从网络盘的备份进行恢复（推荐）
+* 恢复网络盘中的备份（推荐）
 * 将单表数据备份到本地磁盘
-* 从本地磁盘的备份进行恢复
+* 恢复本地磁盘中的备份
 
 推荐使用网络盘来进行备份和恢复操作，这样可以省去收集备份数据文件的繁琐步骤。尤其在 TiKV 集群规模较大的情况下，使用网络盘可以大幅提升操作效率。
 
@@ -124,11 +122,11 @@ RAM：32GB
 bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file backup-nfs.log
 ```
 
-#### 备份过程中的监控指标
+#### 备份过程中的运行指标
 
 在 BR 备份过程中，需关注以下监控面版中的运行指标来了解备份的状态。
 
-**Backup CPU Utilization**：参与备份的 TiKV 节点（backup-worker 和 backup-endpoint）的 CPU 使用率。
+**Backup CPU Utilization**：参与备份的 TiKV 节点（例如 backup-worker 和 backup-endpoint）的 CPU 使用率。
 
 ![img](/media/br/backup-cpu.png)
 
@@ -140,11 +138,16 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 ![img](/media/br/backup-throughput.png)
 
-**One Backup Range Duration**：备份一个 range 的操作耗时，分为扫描耗时 (scan KV) 和保存耗时（保存为 backupSST 文件）。
+**One Backup Range Duration**：备份一个 range 的操作耗时，包括扫描耗时 (scan KV) 和保存耗时（保存为 backupSST 文件）。
 
 ![img](/media/br/backup-range-duration.png)
 
-**One Backup Subtask Duration**： 一次备份任务会被拆分成多个子任务。该监控项显示了子任务的耗时。虽然本次任务是备份单表，但因为表中有 3 个索引，所以正常会拆分成 4 个子任务。下图中有 13 个点，说明有 9 次 (13-4) 重试。备份过程中可能发生 Region 调度行为，少量重试是正常的。
+**One Backup Subtask Duration**： 一次备份任务会被拆分成多个子任务。该监控项显示了子任务的耗时。
+
+> **注意：**
+>
+> - 虽然本次任务是备份单表，但因为表中有 3 个索引，所以正常会拆分成 4 个子任务。
+> - 下图中有 13 个点，说明有 9 次 (13-4) 重试。备份过程中可能发生 Region 调度行为，少量重试是正常的。
 
 ![img](/media/br/backup-subtask-duration.png)
 
@@ -173,13 +176,13 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 | 备份吞吐 | `avg speed(MB/s): 358.09`   |
 | 校验耗时 | `take=6m28.29s`   |
 
-上表数据可以得到单个 TiKV 实例吞吐为：`avg speed(MB/s)`/`tikv_count` = `89`
+通过上表数据可以计算得到单个 TiKV 实例吞吐为：`avg speed(MB/s)`/`tikv_count` = `89`
 
 #### 性能调优
 
-如果 TiKV 的资源使用没有出现明显的瓶颈（例如[备份过程中的监控指标](#备份过程中的监控指标)中的 **Backup CPU Utilization** 为 `1500%`，**IO Utilization** 为 `30%`），可以尝试调大 `--concurrency` 参数以进行性能调优。该方法不适用于存在许多小表的场景。
+如果 TiKV 的资源使用没有出现明显的瓶颈（例如[备份过程中的运行指标](#备份过程中的运行指标)中的 **Backup CPU Utilization** 最高为 `1500%` 左右，**IO Utilization** 普遍低于 `30%`），可以尝试调大 `--concurrency` 参数以进行性能调优。该方法不适用于存在许多小表的场景。
 
-使用示例如下：
+示例如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -200,7 +203,7 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 
 | 备份吞吐        | `avg speed(MB/s)` 从 `358.09` 提升到 `659.59`    |
 | 单 TiKV 实例吞吐 | `avg speed(MB/s)/tikv_count` 从 `89` 提升到 `164.89` |
 
-### 从网络盘恢复备份数据
+### 恢复网络盘中的备份数据
 
 使用 `br restore` 命令，将一份完整的备份数据恢复到一个离线集群。暂不支持恢复到在线集群。
 
@@ -240,7 +243,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 ![img](/media/br/restore-region.png)
 
-**Process SST Duration**：处理 SST 文件的延迟。对于一张表来说，在恢复时，如果 `tableID` 发生了变化，需要对 `tableID` 进行 `rewrite`，否则会进行 `rename`。通常 `rewrite` 延迟要高于 `rename` 的延迟。
+**Process SST Duration**：处理 SST 文件的延迟。恢复一张表时时，如果 `tableID` 发生了变化，需要对 `tableID` 进行 `rewrite`，否则会进行 `rename`。通常 `rewrite` 延迟要高于 `rename` 的延迟。
 
 ![img](/media/br/restore-process-sst.png)
 
@@ -326,9 +329,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file backup_local.log
 ```
 
-#### 运行指标
-
-参考[备份过程中的监控指标](#备份过程中的监控指标)。
+运行备份时，参考[备份过程中的运行指标](#备份过程中的运行指标)对相关指标进行监控，以了解备份状态。
 
 #### 结果解读
 
@@ -378,9 +379,7 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 bin/br restore table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file restore_local.log
 ```
 
-#### 运行指标
-
-指标介绍可以参考[恢复过程中的运行指标](#恢复过程中的运行指标)
+运行恢复时，参考[恢复过程中的运行指标](#恢复过程中的运行指标)对相关指标进行监控，以了解恢复状态。
 
 #### 结果解读
 
@@ -413,7 +412,7 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 
 日志中的错误消息：`log - ["backup occur kv error"][error="{\"KvError\":{\"locked\":`
 
-目前在备份过程中遇到 key 被锁住，BR 会尝试清锁。少量报错不会影响备份的正确性。
+如果在备份过程中遇到 key 被锁住，目前 BR 会尝试清锁。少量报错不会影响备份的正确性。
 
 #### 备份失败
 
@@ -422,4 +421,4 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 若备份失败并出现以上错误消息，采取以下其中一种操作后再重新备份：
 
 * 更换备份数据目录。例如将 `/dir/backup-2020-01-01/` 改为 `/dir/backup_local/`。
-* 删除所有 TiKV 和 BR 节点的备份目录 /dir/backup_local/
+* 删除所有 TiKV 和 BR 节点的备份目录。
