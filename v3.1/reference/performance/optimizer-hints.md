@@ -57,15 +57,14 @@ select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 
 ### `@QB_NAME` 参数
 
-除 `QB_NAME` 外，其余优化器相关的 Hint 都可以通过可选参数 `@QB_NAME` 来指定该 Hint 的生效范围。该参数需写在最前面，与其他参数用空格隔开。例如：
+除 `QB_NAME` 外，其余优化器相关的 Hint 都可以通过可选参数 `@QB_NAME` 来指定该 Hint 的生效范围。该参数需写在最前面，与其他参数用空格隔开。
+同时，你也可以在参数中的每一个表名后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。例如：
 
 {{< copyable "sql" >}}
 
 ```sql
 select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
 ```
-
-同时，你也可以在参数中的每一个表名后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。
 
 ### SM_JOIN(t1_name [, tl_name ...])
 
