@@ -354,7 +354,7 @@
       - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/dev/faq/tidb-lightning.md)
-      - [TiDB Lightning 术语表](/dev/reference/tools/tidb-lightning/glossary.md)
+      - [术语表](/dev/reference/tools/tidb-lightning/glossary.md)
     - [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](/dev/reference/tools/pd-control.md)
     - [PD Recover](/dev/reference/tools/pd-recover.md)

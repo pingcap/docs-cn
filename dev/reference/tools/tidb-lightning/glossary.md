@@ -22,7 +22,7 @@ category: glossary
 
 用于为自增列分配默认值的计数器，每张表都有一个相关联的 `AUTO_INCREMENT_ID`。在 TiDB 中，该计数器还用于分配行 ID。
 
-因为 TiDB Lightning 不通过 TiDB 导入数据，`AUTO_INCREMENT_ID` 计数器不会自动更新，所以 TiDB Lightning 显式地将 `AUTO_INCREMENT_ID` 改为一个有效值。即使表中没有 `AUTO_INCREMENT_ID` 列，该步总是执行。
+因为 TiDB Lightning 不通过 TiDB 导入数据，`AUTO_INCREMENT_ID` 计数器不会自动更新，所以 TiDB Lightning 显式地将 `AUTO_INCREMENT_ID` 改为一个有效值。即使表中没有自增列，这步仍是会执行。
 
 <!-- B -->
 
@@ -54,7 +54,7 @@ category: glossary
 
 校验和。一种用于[验证导入数据](/dev/faq/tidb-lightning.md#如何校验导入的数据的正确性)正确性的方法。
 
-在 TiDB Lightning 中，表的校验和是由 3 个数字组成的集合，由该表中每个KV对的内容计算得出。这些数字分别是：
+在 TiDB Lightning 中，表的校验和是由 3 个数字组成的集合，由该表中每个键值对的内容计算得出。这些数字分别是：
 
 * 键值对的数量
 * 所有键值对的长度
@@ -119,7 +119,7 @@ TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。Lightning 先�
 
 不管表中有多少索引，每张表都对应一个索引引擎。
 
-TiDDB Lightning 可同时处理多个索引引擎（可通过`lightning.index-concurrency` 配置项进行更改）。由于每张表正好对应一个索引引擎，`lightning.index-concurrency` 配置项也限定了可同时处理的表的最大数量。
+TiDB Lightning 可同时处理多个索引引擎（可通过 `lightning.index-concurrency` 配置项进行更改）。由于每张表正好对应一个索引引擎，`lightning.index-concurrency` 配置项也限定了可同时处理的表的最大数量。
 
 ### Ingest
 
@@ -127,7 +127,7 @@ TiDDB Lightning 可同时处理多个索引引擎（可通过`lightning.index-co
 
 与逐个插入键值对相比，Ingest 的效率非常高。因此，该操作直接决定了 TiDB Lightning 的性能。
 
-技术细节参阅 [RocksDB's 关于创建、Ingest SST 文件的 wiki 页面](https://github.com/facebook/rocksdb/wiki/Creating-and-Ingesting-SST-files)。
+技术细节参阅 [RocksDB 关于创建、Ingest SST 文件的 wiki 页面](https://github.com/facebook/rocksdb/wiki/Creating-and-Ingesting-SST-files)。
 
 <!-- K -->
 
