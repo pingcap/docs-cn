@@ -84,8 +84,15 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# tikv-importer 的监听地址，需改为实际地址。
+# 选择后端：“importer” 或 “tidb“
+# backend = "importer"
+# 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
+# 当后端是 “tidb” 时，插入重复数据时执行的操作。
+# - replace：新数据替代已有数据
+# - ignore：保留已有数据，忽略新数据
+# - error：中止导入并报错
+# on-duplicate = "replace"
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
@@ -100,7 +107,7 @@ batch-size = 107_374_182_400 # Byte (默认为 100 GB)
 # 稍微增大了前几个区块的大小。该参数也决定了比例系数，即在完全并发下
 # “导入”和“写入”过程的持续时间比。这个值可以通过计算 1 GB 大小的
 # 单张表的（导入时长/写入时长）得到。在日志文件中可以看到精确的时间。
-# 如果“导入”更块，区块大小的差异就会更小；比值为 0 时则说明区块大小一致。
+# 如果“导入”更快，区块大小的差异就会更小；比值为 0 时则说明区块大小一致。
 # 取值范围为（0 <= batch-import-ratio < 1）。
 batch-import-ratio = 0.75
 
@@ -159,6 +166,10 @@ checksum-table-concurrency = 16
 
 # 解析和执行 SQL 语句的默认 SQL 模式。
 sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
+# `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
+# 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
+# 会使用下游数据库 global 级别的 `max_allowed_packet`。
+max-allowed-packet = 67_108_864
 
 # 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作。
 # 在生产环境中，建议这将些参数都设为 true。
@@ -269,6 +280,7 @@ min-available-ratio = 0.05
 | -V | 输出程序的版本 | |
 | -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
+| --backend *backend* | 选择后端的模式：`importer` 或 [`tidb`](/dev/reference/tools/tidb-lightning/tidb-backend.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径 | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
