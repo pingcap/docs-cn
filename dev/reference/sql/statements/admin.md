@@ -58,7 +58,7 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 
 ## 使用示例
 
-查看正在执行的 DDL 任务中最近 10 条已经完成的 DDL 任务。未指定 `NUM` 时，默认只显示最近 10 条已经执行完的 DDL 任务。
+执行以下命令，可查看正在执行的 DDL 任务中最近 10 条已经完成的 DDL 任务。未指定 `NUM` 时，默认只显示最近 10 条已经执行完的 DDL 任务。
 
 {{< copyable "sql" >}}
 
