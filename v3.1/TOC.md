@@ -290,6 +290,7 @@
       - [常见错误修复](/v3.1/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v3.1/reference/tidb-binlog/faq.md)
   + 周边工具
+    - [工具使用指南](/v3.1/reference/tools/use-guide.md)
     - [Mydumper](/v3.1/reference/tools/mydumper.md)
     - [Loader](/v3.1/reference/tools/loader.md)
     - [Syncer](/v3.1/reference/tools/syncer.md)
