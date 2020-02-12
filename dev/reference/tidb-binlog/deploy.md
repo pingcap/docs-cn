@@ -629,8 +629,6 @@ drainer 会拆分上游的事务并发写下游，在极端情况上游集群不
 
 当 drainer 开启 relay log 后会先将 binlog event 写到磁盘上，然后再同步给下游集群。如果上游集群不可用，我们总是可以通过 relay log 把集群恢复到一个一致的状态。除非同时丢失 relay log 数据，不过这是概率极小的事件。此外可以使用 nfs 等网络文件系统来保证 relay log 的数据安全。
 
-relay log 会尽可能快的删除已经同步到下游的 binlog event，所以不会占很多磁盘空间。
-
 下游报存的 checkpoint 可以看到 status 状态, 0 表示达到一致的状态。drainer 运行时会是 1，正常退出后会更新为 0。
 
 ```
@@ -643,7 +641,12 @@ mysql> select * from tidb_binlog.checkpoint;
 ```
 
 ## 触发从 relay log 消费 binlog
+
 当 drainer 启动时连接不上上游集群的 PD 并且探测到 checkpoint 的 status 为 1 , 会尝试读取 relay log 将下游集群恢复到一个一致的状态，然后 drainer 进程将 checkpoint 的 status 设置为 0 后主动退出。
+
+## GC 机制
+
+在运行时一个 log 文件的全部数据都成功写到下游了就会删除这个文件，所以不会占用很多空间，默认文件大小达到 10M 就会做切分，开始写新的文件。
 
 ## 配置
 
