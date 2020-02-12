@@ -102,7 +102,7 @@ scrape_configs:
 | 面板名称 | 序列 | 描述 |
 |:-----|:-----|:-----|
 | Idle workers | io | 未使用的 `io-concurrency` 的数量，通常接近配置值（默认为 5），接近 0 时表示磁盘运行太慢 |
-| Idle workers | closed-engine | 已关闭但未清理的引擎数量，通常接近 `index-concurrency` 与`table-concurrency` 的和（默认为 8），接近 0 时表示 TiDB Lightning 比 TiKV Importer 快，导致 TiDB Lightning 延迟 |
+| Idle workers | closed-engine | 已关闭但未清理的引擎数量，通常接近 `index-concurrency` 与 `table-concurrency` 的和（默认为 8），接近 0 时表示 TiDB Lightning 比 TiKV Importer 快，导致 TiDB Lightning 延迟 |
 | Idle workers | table | 未使用的 `table-concurrency` 的数量，通常为 0，直到进程结束 |
 | Idle workers | index | 未使用的 `index-concurrency` 的数量，通常为 0，直到进程结束 |
 | Idle workers | region | 未使用的 `region-concurrency` 的数量，通常为 0，直到进程结束 |
@@ -159,10 +159,22 @@ scrape_configs:
 
 - **`tikv_import_rpc_duration`**（直方图）
 
-    完成一次 RPC 操作所需时的直方图。标签：
+    完成一次 RPC 用时直方图。标签：
 
-    - **request**：`switch_mode` / `open_engine` / `write_engine` / `close_engine` / `import_engine` / `cleanup_engine` / `compact_cluster` / `upload` / `ingest` / `compact`
-    - **result**：`ok` / `error`
+    - **request**：所执行 RPC 请求的类型
+        * `switch_mode` — 将一个 TiKV 节点切换为 import/normal 模式
+        * `open_engine` — 打开引擎文件
+        * `write_engine` — 接收数据并写入引擎文件
+        * `close_engine` — 关闭一个引擎文件
+        * `import_engine` — 导入一个引擎文件到 TiKV 集群中
+        * `cleanup_engine` — 删除一个引擎文件
+        * `compact_cluster` — 显式压缩 TiKV 集群
+        * `upload` — 上传一个 SST 文件
+        * `ingest` — Ingest 一个 SST 文件
+        * `compact` — 显式压缩一个 TiKV 节点
+    - **result**：RPC 请求的执行结果
+        * `ok`
+        * `error`
 
 - **`tikv_import_write_chunk_bytes`**（直方图）
 
@@ -170,7 +182,7 @@ scrape_configs:
 
 - **`tikv_import_write_chunk_duration`**（直方图）
 
-    从 `tidb-lightning` 接收每个键值对区块需时直方图。
+    从 `tidb-lightning` 接收每个键值对区块所需时间的直方图。
 
 - **`tikv_import_upload_chunk_bytes`**（直方图）
 
@@ -178,23 +190,23 @@ scrape_configs:
 
 - **`tikv_import_range_delivery_duration`**（直方图）
 
-    将一个 range 的键值对发送至 `dispatch-job` 任务需时的直方图。
+    将一个 range 的键值对发送至 `dispatch-job` 任务所需时间的直方图。
 
 - **`tikv_import_split_sst_duration`**（直方图）
 
-    将 range 从引擎文件中分离到单个 SST 文件中需时的直方图。
+    将 range 从引擎文件中分离到单个 SST 文件中所需时间的直方图。
 
 - **`tikv_import_sst_delivery_duration`**（直方图）
 
-    将 SST 文件从 `dispatch-job` 任务发送到 `ImportSSTJob` 任务需时的直方图
+    将 SST 文件从 `dispatch-job` 任务发送到 `ImportSSTJob` 任务所需时间的直方图
 
 - **`tikv_import_sst_recv_duration`**（直方图）
 
-    `ImportSSTJob` 任务接收从 `dispatch-job` 任务发送过来的 SST 文件需时的直方图。
+    `ImportSSTJob` 任务接收从 `dispatch-job` 任务发送过来的 SST 文件所需时间的直方图。
 
 - **`tikv_import_sst_upload_duration`**（直方图）
 
-    从 `ImportSSTJob` 任务上传 SST 文件到 TiKV 节点需时的直方图。
+    从 `ImportSSTJob` 任务上传 SST 文件到 TiKV 节点所需时间的直方图。
 
 - **`tikv_import_sst_chunk_bytes`**（直方图）
 
@@ -202,13 +214,13 @@ scrape_configs:
 
 - **`tikv_import_sst_ingest_duration`**（直方图）
 
-    将 SST 文件传入至 TiKV 需时的直方图。
+    将 SST 文件传入至 TiKV 所需时间的直方图。
 
 - **`tikv_import_each_phase`**（测量仪）
 
     表示运行阶段。值为 1 时表示在阶段内运行，值为 0 时表示在阶段内运行。标签：
 
-    - **phase**： `prepare` / `import`
+    - **phase**：`prepare` / `import`
 
 - **`tikv_import_wait_store_available_count`**（计数器）
 
@@ -218,7 +230,7 @@ scrape_configs:
 
 - **`tikv_import_upload_chunk_duration`**（直方图）
 
-    上传到 TiKV 的每个区块需时的直方图。
+    上传到 TiKV 的每个区块所需时间的直方图。
 
 ### `tidb-lightning`
 
@@ -228,43 +240,74 @@ scrape_configs:
 
     计算已开启及关闭的引擎文件数量。标签：
 
-    - **type**：`open` / `closed`
+    - **type**:
+        * `open`
+        * `closed`
 
 - **`lightning_idle_workers`**（计量表盘）
 
-    计算闲置的 worker。数值应低于设置中的 `*-concurrency` 的值，且经常为 0。标签：
+    计算闲置的 worker。标签：
 
-    - **name**： `table` / `index` / `region` / `io` / `closed-engine`
+    - **name**：
+        * `table` — 未使用的 `table-concurrency` 的数量，通常为 0，直到进程结束
+        * `index` — 未使用的 `index-concurrency` 的数量，通常为 0，直到进程结束
+        * `region` — 未使用的 `region-concurrency` 的数量，通常为 0，直到进程结束
+        * `io` — 未使用的 `io-concurrency` 的数量，通常接近配置值（默认为 5），接近 0 时表示磁盘运行太慢
+        * `closed-engine` — 已关闭但未清理的引擎数量，通常接近 `index-concurrency` 与 `table-concurrency` 的和（默认为 8），接近 0 时表示 TiDB Lightning 比 TiKV Importer 快，导致 TiDB Lightning 延迟
 
 - **`lightning_kv_encoder`**（计数器）
 
     计算已开启及关闭的 KV 编码器。KV 编码器是运行于内存的 TiDB 实例，用于将 SQL 的 `INSERT` 语句转换成键值对。此度量的净值（开启减掉关闭）在正常情况下不应持续增长。标签：
 
-    - **type**：`open` / `closed`
+    - **type**:
+        * `open`
+        * `closed`
 
 - **`lightning_tables`**（计数器）
 
     计算处理过的表及其状态。标签：
 
-    - **state**：`pending` / `written` / `closed` / `imported` / `altered_auto_inc` / `checksum` / `analyzed` / `completed`
-    - **result**：`success` / `failure`
+    - **state**：表的状态，表明当前应执行的操作
+        * `pending` — 等待处理
+        * `written` — 所有数据已编码和传输
+        * `closed` — 所有对应的引擎文件已关闭
+        * `imported` — 所有引擎文件已上传到目标集群
+        * `altered_auto_inc` — 自增 ID 已改
+        * `checksum` — 已计算校验和
+        * `analyzed` — 已进行统计信息分析
+        * `completed` — 表格已完全导入并通过验证
+    - **result**：当前操作的执行结果
+        * `success` — 成功
+        * `failure` — 失败（未完成）
 
 - **`lightning_engines`**（计数器）
 
     计算处理后引擎文件的数量以及其状态。标签：
 
-    - **state**： `pending` / `written` / `closed` / `imported` / `completed`
-    - **result**： `success` / `failure`
+    - **state**：引擎文件的状态，表明当前应执行的操作
+        * `pending` — 等待处理
+        * `written` — 所有数据已编码和传输
+        * `closed` — 引擎文件已关闭
+        * `imported` — 当前引擎文件已上传到目标集群
+        * `completed` — 当前引擎文件已完全导入
+    - **result**：当前操作的执行结果
+        * `success` — 成功
+        * `failure` — 失败（未完成）
 
 - **`lightning_chunks`**（计数器）
 
     计算处理过的 Chunks 及其状态。标签：
 
-    - **state**：`estimated` / `pending` / `running` / `finished` / `failed`
+    - **state**: 单个 Chunk 的状态，表明该 Chunk 当前所处的阶段
+        * `estimated` — （非状态）当前任务中 Chunk 的数量
+        * `pending` — 已载入但未执行
+        * `running` — 正在编码和发送数据
+        * `finished` — 该 Chunk 已处理完毕
+        * `failed` — 处理过程中发生错误
 
 - **`lightning_import_seconds`**（直方图）
 
-    导入每个表需时的直方图。
+    导入每个表所需时间的直方图。
 
 - **`lightning_row_read_bytes`**（直方图）
 
@@ -272,15 +315,15 @@ scrape_configs:
 
 - **`lightning_row_encode_seconds`**（直方图）
 
-    解码单行 SQL 数据到键值对需时的直方图。
+    解码单行 SQL 数据到键值对所需时间的直方图。
 
 - **`lightning_row_kv_deliver_seconds`**（直方图）
 
-    发送一组与单行 SQL 数据对应的键值对需时的直方图。
+    发送一组与单行 SQL 数据对应的键值对所需时间的直方图。
 
 - **`lightning_block_deliver_seconds`**（直方图）
 
-    每个键值对中的区块传送到 `tikv-importer` 需时的直方图。
+    每个键值对中的区块传送到 `tikv-importer` 所需时间的直方图。
 
 - **`lightning_block_deliver_bytes`**（直方图）
 
@@ -288,14 +331,19 @@ scrape_configs:
 
 - **`lightning_chunk_parser_read_block_seconds`**（直方图）
 
-    数据文件解析每个 SQL 区块需时的直方图。
+    数据文件解析每个 SQL 区块所需时间的直方图。
 
 - **`lightning_checksum_seconds`**（直方图）
 
-    计算表中 Checksum 需时的直方图。
+    计算表中 Checksum 所需时间的直方图。
 
 - **`lightning_apply_worker_seconds`**（直方图）
 
-    获取闲置 worker 等待时间的直方图。标签：
+    获取闲置 worker 等待时间的直方图 (参见 `lightning_idle_workers` 计量表盘)。标签：
 
-    - **name**： `table` / `index` / `region` / `io` / `closed-engine`
+    - **name**：
+        * `table`
+        * `index`
+        * `region`
+        * `io`
+        * `closed-engine`

@@ -7,7 +7,7 @@ category: reference
 
 为了在功能上兼容 MySQL 5.7，TiDB 支持生成列 (generated column)。生成列的主要的作用之一：从 JSON 数据类型中解出数据，并为该数据建立索引。
 
-## 使用 generated stored column 对 JSON 建索引
+## 使用 generated column 对 JSON 建索引
 
 MySQL 5.7 及 TiDB 都不能直接为 JSON 类型的列添加索引，即**不支持**如下表结构：
 
@@ -22,11 +22,7 @@ CREATE TABLE person (
 );
 ```
 
-为 JSON 列添加索引之前，首先必须抽取该列为 generated stored column。
-
-> **注意：**
->
-> 必须是 generated stored column 上建立的索引才能被优化器使用到，如果在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。
+为 JSON 列添加索引之前，首先必须抽取该列为 generated column。
 
 以 `city` generated stored column 为例，你可以添加索引：
 
@@ -80,7 +76,7 @@ ERROR 1048 (23000): Column 'city' cannot be null
 
 ## 使用 generated virtual column
 
-TiDB 也支持 generated virtual column，和 generated store column 不同的是，此列按需生成，并不存储在数据库中，也不占用内存空间，因而是**虚拟的**。TiDB 虽然支持在 generated virtual column 上建立索引，优化器目前将无法使用这个索引，所以这个索引将没有意义，会在后续版本中改进（ISSUE [#5189](https://github.com/pingcap/tidb/issues/5189)）。
+TiDB 也支持 generated virtual column，和 generated store column 不同的是，此列按需生成，并不存储在数据库中，也不占用内存空间，因而是**虚拟的**。
 
 {{< copyable "sql" >}}
 

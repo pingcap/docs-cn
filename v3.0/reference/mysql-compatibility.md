@@ -22,23 +22,22 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 事件
 * 自定义函数
 * 外键约束
-* 全文函数与索引
-* 空间函数与索引
+* 全文/空间函数与索引
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * `BINARY` 之外的排序规则
-* 增加主键
-* 删除主键
+* 增加/删除主键
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
 * X Protocol
 * Savepoints
 * 列级权限
+* `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
 * `CREATE TABLE tblName AS SELECT stmt` 语法
 * `CREATE TEMPORARY TABLE` 语法
-* `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
+* `SELECT INTO FILE` 语法
 
 ## 与 MySQL 有差异的特性
 
@@ -85,7 +84,9 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 + Add Index
     - 不支持同时创建多个索引
+    - 不支持 `VISIBLE/INVISIBLE` 的索引
     - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
+    - 其他类型的 Index Type (HASH/BTREE/RTREE) 只有语法支持，功能不支持
 + Add Column
     - 不支持同时创建多个列
     - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 AUTO_INCREMENT 属性
@@ -99,6 +100,18 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
++ Table Option 不支持以下语法
+    - `WITH/WITHOUT VALIDATION`
+    - `SECONDARY_LOAD/SECONDARY_UNLOAD`
+    - `CHECK/DROP CHECK`
+    - `STATS_AUTO_RECALC/STATS_SAMPLE_PAGES`
+    - `SECONDARY_ENGINE`
+    - `ENCRYPTION`
++ Table Partition 不支持以下语法
+    - `PARTITION BY LIST`
+    - `PARTITION BY KEY`
+    - `SUBPARTITION`
+    - `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
 
 ### `ANALYZE TABLE`
 
@@ -196,3 +209,12 @@ TiDB 不需要导入时区表数据也能使用所有时区名称，采用系统
 #### 零月和零日
 
 目前 TiDB 尚不能完整支持月为 0 或日为 0（但年不为 0）的日期。在非严格模式下，此类日期时间能被正常插入，但对于特定类型 SQL 可能出现无法读出来的情况。
+
+### 类型系统的区别
+
+以下的列类型 MySQL 支持，但 TiDB 不支持：
+
++ FLOAT4/FLOAT8
++ FIXED (alias for DECIMAL)
++ SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)
++ SQL_TSI_* （包括 SQL_TSI_YEAR、SQL_TSI_MONTH、SQL_TSI_WEEK、SQL_TSI_DAY、SQL_TSI_HOUR、SQL_TSI_MINUTE 和 SQL_TSI_SECOND）
