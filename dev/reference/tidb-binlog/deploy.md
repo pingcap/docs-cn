@@ -642,6 +642,7 @@ mysql> select * from tidb_binlog.checkpoint;
 +---------------------+--------------------------------------------------------+
 ```
 
+## 触发从 relay log 消费 binlog
 当 drainer 启动时连接不上上游集群的 PD 并且探测到 checkpoint 的 status 为 1 , 会尝试读取 relay log 将下游集群恢复到一个一致的状态，然后 drainer 进程将 checkpoint 的 status 设置为 0 后主动退出。
 
 ## 配置
