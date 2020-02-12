@@ -24,7 +24,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQ
 
 TiDB 使用 [Percolator 事务模型](https://research.google.com/pubs/pub36726.html)，当事务启动时会获取全局读时间戳，事务提交时也会获取全局提交时间戳，并以此确定事务的执行顺序，如果想了解 TiDB 事务模型的实现可以详细阅读以下两篇文章：[TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)，[Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
-## 可重复读
+## 可重复读隔离级别 (Repeatable Read)
 
 当事务隔离级别为可重复读时，只能读到该事务启动时已经提交的其他事务修改的数据，未提交的数据或在事务启动后其他事务提交的数据是不可见的。对于本事务而言，事务语句可以看到之前的语句做出的修改。
 
@@ -50,6 +50,16 @@ commit;                         |
 ### 与 MySQL 可重复读隔离级别的区别
 
 MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见，也就是说，即使该行在事务启动后被更新过，同样可以继续更新。这种情况在 TiDB 会导致事务回滚，导致事务最终失败，而 MySQL 是可以更新成功的。MySQL 的可重复读隔离级别并非 Snapshot 隔离级别，MySQL 可重复读隔离级别的一致性要弱于 Snapshot 隔离级别，也弱于 TiDB 的可重复读隔离级别。
+
+## 读已提交隔离级别 (Read Committed)
+
+TiDB 仅在[悲观事务模式](/dev/reference/transactions/transaction-pessimistic.md)下支持读已提交隔离级别。在乐观事务模式下设置事务隔离级别为读已提交将不会生效，事务将仍旧使用可重复读隔离级别。
+
+由于历史原因，当前主流数据库的读已提交隔离级别本质上都是 Oracle 定义的一致性读隔离级别。TiDB 为了适应这一历史原因，悲观事务中的读已提交隔离级别的实质行为也是一致性读。
+
+### 与 MySQL 读已提交隔离级别的区别
+
+MySQL 的读已提交隔离级别大部分符合一致性读特性，但其中存在某些特例，如半一致性读 ([semi-consistent read](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html))，TiDB 没有兼容这个特殊行为。
 
 ## 事务自动重试及带来的异常
 
