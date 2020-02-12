@@ -34,7 +34,7 @@ category: how-to
     >
     > Access key 必须至少具有以下权限：创建 VPC、创建 EBS、创建 EC2 和创建 Role。
 
-* [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html)
+* [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) >= v0.12
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.11
 * [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.0 且 < 3.0.0
 * [jq](https://stedolan.github.io/jq/download/)
