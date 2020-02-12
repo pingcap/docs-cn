@@ -38,3 +38,5 @@ TiDB Lightning 整体工作原理如下：
     表的自增 ID 是通过行数的**上界**估计值得到的，与表的数据文件总大小成正比。因此，最后的自增 ID 通常比实际行数大得多。这属于正常现象，因为在 TiDB 中自增 ID [不一定是连续分配的](/v3.0/reference/mysql-compatibility.md#auto-increment-id)。
 
 7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
+
+TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据。和 Loader 类似，使用 TiDB-backend 时，`tidb-lightning` 将数据转换为 `INSERT` 语句，然后直接在目标集群上执行这些语句。详见 [TiDB Lightning TiDB-backend](/v3.0/reference/tools/tidb-lightning/tidb-backend.md)。
