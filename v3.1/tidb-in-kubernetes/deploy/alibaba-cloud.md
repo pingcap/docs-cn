@@ -18,7 +18,7 @@ category: how-to
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) >= 1.12
 - [helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) >= 2.9.1 且 <= 2.11.0
 - [jq](https://stedolan.github.io/jq/download/) >= 1.6
-- [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.11.*
+- [terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) 0.12.*
 
 你可以使用阿里云的[云命令行](https://shell.aliyun.com)服务来进行操作，云命令行中已经预装并配置好了所有工具。
 
