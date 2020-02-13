@@ -35,7 +35,6 @@ mysql> select * from tidb_binlog.checkpoint;
 
 除非同时丢失 relay log 数据，不过这是概率极小的事件。此外可以使用 nfs 等网络文件系统来保证 relay log 的数据安全。
 
-
 ### 触发从 relay log 消费 binlog
 
 当 drainer 启动时连接不上上游集群的 PD 并且探测到 checkpoint 的 `consistent = false` , 会尝试读取 relay log 将下游集群恢复到一个一致的状态，然后 drainer 进程将 checkpoint 的 status 设置为 0 后主动退出。
