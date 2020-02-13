@@ -7,13 +7,13 @@ aliases: ['/docs-cn/v3.1/reference/transactions/transaction-model/']
 
 # TiDB 乐观事务模型
 
-TiDB 默认使用乐观事务模型，即事务提交时假定不会发生并发冲突，只有在事务最终提交时才会检测冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。
-
 本文介绍 TiDB 乐观事务的原理，以及相关特性。本文假定你对 [TiDB 的整体架构](/v3.1/architecture.md#tidb-整体架构)、[Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型以及事务的 [ACID 特性](/v3.1/glossary.md#acid)都有一定了解。
+
+TiDB 默认使用乐观事务模型，即事务提交时假定不会发生并发冲突，只有在事务最终提交时才会检测冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。
 
 > **注意：**
 >
-> 自 v3.0.8 开始，TiDB 默认使用[悲观事务模型](/v3.1/reference/transactions/transaction-pessimistic.md)。但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型。换句话说，**只有新创建的集群才会默认使用悲观事务模型**。
+> 自 v3.0.8 开始，TiDB 默认使用[悲观事务模型](/v3.1/reference/transactions/transaction-pessimistic.md)。但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
 
 ## 乐观事务原理
 
