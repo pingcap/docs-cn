@@ -260,7 +260,7 @@
       - [常见错误修复](/v2.1/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v2.1/reference/tidb-binlog/faq.md)
   + 周边工具
-    - [mydumper](/v2.1/reference/tools/mydumper.md)
+    - [Mydumper](/v2.1/reference/tools/mydumper.md)
     - [Loader](/v2.1/reference/tools/loader.md)
     - [Syncer](/v2.1/reference/tools/syncer.md)
     + Data Migration

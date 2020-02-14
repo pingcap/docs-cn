@@ -60,7 +60,7 @@
   + 运维
     - [Ansible 常见运维操作](/dev/how-to/maintain/ansible-operations.md)
     + 备份与恢复
-      - [使用 mydumper/TiDB Lightning 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-lightning.md)
+      - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-lightning.md)
       - [使用 BR 进行备份与恢复](/dev/reference/tools/br/br.md)
       - [BR 备份与恢复最佳实践](/dev/reference/tools/br/br-best-practices.md)
     + 定位异常查询
@@ -290,7 +290,7 @@
     - [FAQ](/dev/reference/tidb-binlog/faq.md)
   + 周边工具
     - [工具使用指南](/dev/reference/tools/use-guide.md)
-    - [mydumper](/dev/reference/tools/mydumper.md)
+    - [Mydumper](/dev/reference/tools/mydumper.md)
     - [Loader](/dev/reference/tools/loader.md)
     - [Syncer](/dev/reference/tools/syncer.md)
     + Data Migration
