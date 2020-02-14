@@ -328,7 +328,7 @@
         - [跳过或替代执行异常的 SQL 语句](/dev/reference/tools/data-migration/skip-replace-sqls.md)
       - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
+        - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-mysql-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
       + DM 故障诊断
         - [故障诊断](/dev/reference/tools/data-migration/troubleshoot/dm.md)
