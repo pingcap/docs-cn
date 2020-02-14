@@ -1,8 +1,8 @@
 # TiDB 文档
 
-欢迎来到 [TiDB](https://github.com/pingcap/tidb) 文档库！这里存放的是 [PingCAP 官网上 TiDB 中文文档](https://pingcap.com/docs-cn/)的源文件。[英文文档](https://pingcap.com/docs/)的源文件则存放于 [pingcap/docs](https://github.com/pingcap/docs)。
+欢迎来到 [TiDB](https://github.com/pingcap/tidb) 文档库！这里存放的是 [PingCAP 官网上 TiDB 中文文档](https://pingcap.com/docs-cn/)的源文件。[英文文档](https://pingcap.com/docs/)的源文件则存放于 [pingcap/docs](https://github.com/pingcap/docs)。如果你发现或遇到了 TiDB 的文档问题，可随时[提 Issue](https://github.com/pingcap/docs-cn/issues/new/choose) 来反馈，或者直接[提交 Pull Request](/CONTRIBUTING.md#pull-request-提交流程) 来进行修改。
 
-如果你发现或遇到了 TiDB 的文档问题，可随时[提 Issue](https://github.com/pingcap/docs-cn/issues/new/choose) 来反馈，或者直接[提交 Pull Request](/CONTRIBUTING.md#pull-request-提交流程) 来进行修改。无论你是热爱技术的程序员，还是擅长书面表达的语言爱好者，亦或是纯粹想帮 TiDB 改进文档的热心小伙伴，都欢迎来为 TiDB 文档做贡献，一起打造易用友好的 TiDB 文档。
+无论你是热爱技术的程序员，还是擅长书面表达的语言爱好者，亦或是纯粹想帮 TiDB 改进文档的热心小伙伴，都欢迎来为 TiDB 文档做贡献，一起打造易用友好的 TiDB 文档。
 
 ## TiDB 文档结构
 
@@ -70,7 +70,7 @@ TiDB 的文档结构如下：
 
 ### 翻译文档
 
-TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://pingcap.com/docs/) 也需要进行更新。这一过程会涉及很多的**中译英**，即将 [pingcap/docs-cn](https://github.com/pingcap/docs) 里已 [merge](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs](https://github.com/pingcap/docs) 中。具体的认领方式即将公布。
+TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://pingcap.com/docs/) 也需要进行更新。这一过程会涉及很多的**中译英**，即将 [pingcap/docs-cn](https://github.com/pingcap/docs) 里已 [merge](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs](https://github.com/pingcap/docs) 中。**具体的认领方式即将公布。**
 
 > **注意：**
 >
