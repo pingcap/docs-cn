@@ -46,16 +46,6 @@ TiDB 生态工具可以分为几种：
 - 适用 TiDB 版本：v2.1 及以上
 - Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](/v3.0/tidb-in-kubernetes/maintain/lightning.md)
 
-#### 备份和恢复工具 BR
-
-[BR](https://pingcap.com/docs-cn/dev/reference/tools/br/br/) 是 TiDB 进行分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper 和 Loader，BR 更适合大数据量的场景，有更高效的备份和恢复效率。
-
-以下是 BR 的一些基本信息：
-
-- [备份输出和恢复输入的文件类型](https://pingcap.com/docs-cn/dev/reference/tools/br/br/#备份文件类型)：SST + `backupmeta` 文件
-- 适用 TiDB 版本：v3.1 及 v4.0
-- Kubernetes 支持：已支持，文档撰写中
-
 #### 增量导入工具 Syncer (停止维护，不推荐使用)
 
 [Syncer](/v3.0/reference/tools/syncer.md) 是将 MySQL/MariaDB 增量 binlog 数据实时复制导入到 TiDB 的工具。目前推荐使用 [TiDB Data Migration](#增量导入工具-tidb-data-migration) 替换该工具。
@@ -104,18 +94,6 @@ TiDB 生态工具可以分为几种：
 
 ## 工具演进路线
 
-### TiDB 备份与恢复
-
-Mydumper、Loader -> BR：
-
-Mydumper 和 Loader 都是在逻辑层面进行备份和恢复，效率较低；BR 使用 TiDB 的特性进行备份和恢复，适合数据量比较大的场景，备份效率大大提升。
-
-### TiDB 全量恢复
-
-Loader -> TiDB Lightning：
-
-Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightning 将数据直接导入 TiKV，大大提升了全量数据恢复的效率，适合将大量数据（TB 级别以上数据）快速导入到一个全新的 TiDB 集群中；且 TiDB Lightning 集成了 Loader 的逻辑导入数据功能，参见 [TiDB Lightning TiDB-backend 文档](/v3.0/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)，支持在线导入数据。
-
 ### MySQL 数据迁移
 
 - Mydumper、Loader、Syncer -> DM：
@@ -130,7 +108,7 @@ Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightn
 
 针对 TiDB 的 2.1，3.0 以及 3.1 版本，下面给出典型业务场景下的数据迁移方案。
 
-### TiDB 2.1 和 3.0 全链路数据迁移方案
+### TiDB 3.0 全链路数据迁移方案
 
 #### MySQL 数据迁移到 TiDB
 
@@ -152,31 +130,3 @@ Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightn
 
 1. 使用 Mydumper 进行全量数据的备份
 2. 使用 TiDB Lightning 将全量数据恢复到 TiDB/MySQL
-
-### TiDB 3.1 全链路数据迁移方案
-
-#### MySQL 数据迁移到 TiDB
-
-如果 MySQL 数据量在 TB 级别以上，推荐迁移步骤如下：
-
-1. 使用 Mydumper 导出 MySQL 全量数据
-2. 使用 TiDB Lightning 将 MySQL 全量备份数据导入 TiDB 集群
-3. 使用 DM 同步 MySQL 增量数据到 TiDB
-
-如果 MySQL 数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL 数据到 TiDB（迁移的过程包括全量导入和增量的同步）。
-
-#### TiDB 集群数据的同步
-
-使用 TiDB-Binlog 将 TiDB 数据同步到下游 TiDB/MySQL。
-
-#### TiDB 集群数据的全量备份及恢复
-
-- 恢复到 TiDB
-
-    - 使用 BR 进行全量数据的备份
-    - 使用 BR 进行全量数据的恢复
-
-- 恢复到 MySQL
-
-    - 使用 Mydumper 进行全量数据的备份
-    - 使用 TiDB Lightning 进行全量数据的恢复
