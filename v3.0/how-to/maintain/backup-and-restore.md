@@ -16,7 +16,7 @@ aliases: ['/docs-cn/v3.0/how-to/maintain/backup-and-restore/']
 
 在这个备份恢复过程中，我们会用到下面的工具：
 
-- [Mydumper](/v3.0/reference/tools/mydumper.md) 从 TiDB 导出数据
+- [mydumper](/v3.0/reference/tools/mydumper.md) 从 TiDB 导出数据
 - [TiDB Lightning](/v3.0/reference/tools/tidb-lightning/overview.md) 导入数据到 TiDB
 
 ## 使用 mydumper/TiDB Lightning 全量备份恢复数据
