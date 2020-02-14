@@ -85,7 +85,7 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 
 > **注意：**
 >
-> 目前 TiDB 主要维护三个版本的文档：dev（最新开发版），v3.1（3.1 Beta 版），v3.0（最新稳定版），v2.1（最新 2.1 版）。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
+> 目前 TiDB 主要维护四个版本的文档：dev（最新开发版），v3.1（3.1 Beta 版），v3.0（最新稳定版），v2.1（最新 2.1 版）。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
 
 ### 第 1 步：Fork pingcap/docs-cn 仓库
 
@@ -153,7 +153,7 @@ git push -u origin new-branch-name
 1. 打开你 Fork 的仓库：<https://github.com/$user/docs-cn>（将 `$user` 替换为你的 GitHub ID）
 2. 点击 `Compare & pull request` 按钮即可创建 PR。参考[如何写 PR title 和描述](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md)。
 
-    > **注意：**
-    >
-    > - 如果你的修改影响多个文档版本 (dev, *v4.0, v3.1, v3.0, v2.1)，务必在 PR 描述框中勾选相应的版本，或者在页面右侧选择相应的 label (dev, *v4.0, v3.1, v3.0, v2.1) 来注明。v4.0 为尚未发布的新版本。
-    > - 如果你的修改也同样适用于[英文版文档](https://github.com/pingcap/docs)，需要在提 PR 时添加 label `pending-aligning`；也非常欢迎同时更新中文版和英文版。
+> **注意：**
+>
+> - 如果你的修改影响多个文档版本 (dev, *v4.0, v3.1, v3.0, v2.1)，务必在 PR 描述框中勾选相应的版本，或者在页面右侧选择相应的 label (dev, *v4.0, v3.1, v3.0, v2.1) 来注明。v4.0 为尚未发布的新版本。
+> - 如果你的修改也同样适用于[英文版文档](https://github.com/pingcap/docs)，需要在提 PR 时添加 label `pending-aligning`；也非常欢迎同时更新中文版和英文版。
