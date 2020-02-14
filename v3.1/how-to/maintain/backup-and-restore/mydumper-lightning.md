@@ -92,4 +92,4 @@ aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/']
 
 ## 向 TiDB 恢复数据
 
-我们使用 `TiDB Lightning` 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/v3.1/reference/tools/tidb-lightning/tidb-backend.md)
+我们使用 TiDB Lightning 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/v3.1/reference/tools/tidb-lightning/tidb-backend.md)
