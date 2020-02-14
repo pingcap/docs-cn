@@ -1,6 +1,6 @@
 ---
-title: 从 Amazon Aurora MySQL 迁移数据
-summary: 使用 DM 从 Amazon Aurora MySQL 迁移数据。
+title: 从 MySQL/Amazon Aurora MySQL 迁移数据
+summary: 使用 DM 从 MySQL/Amazon Aurora MySQL 迁移数据。
 category: how-to
 ---
 
