@@ -1,23 +1,46 @@
-# 中文文档贡献指南
+# TiDB 中文文档贡献指南
 
 无论你是热爱技术的程序员，还是擅长书面表达的语言爱好者，亦或是纯粹想帮 TiDB 改进文档的热心小伙伴，都欢迎来为 TiDB 文档做贡献，一起打造更加易用友好的 TiDB 文档！
 
-TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，你修改的文档需要遵循一定的 Markdown 规则。
+## 可贡献的内容
+
+你既可以帮助完善中文文档，也可以将中文文档的更新翻译为英文，并成为[英文文档](https://pingcap.com/docs/)的 contributor。
+
+### 完善中文文档
+
+你可从以下任一方面入手：
+
+- 修复文档格式（如标点、空格、缩进、代码块等）和错别字
+- 修改过时或不当的内容描述
+- 增加缺失的文档内容
+- 回复或解决 [issue](https://github.com/pingcap/docs-cn/issues?q=is%3Aopen+is%3Aissue) 并提 PR 更新相关文档
+- 其它完善
+
+### 翻译中文文档
+
+TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://pingcap.com/docs/) 也需要进行频繁的更新。这一过程会涉及很多的**中译英**，即将 [pingcap/docs-cn](https://github.com/pingcap/docs) 里已 [merge](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs](https://github.com/pingcap/docs) 中。**具体的认领方式即将公布。**
+
+> **注意：**
+>
+> - 由于受众不同，TiDB 的中文文档与英文文档并非完全相同。但绝大数情况下，中英版本会保持一致。
+> - 通常，TiDB 文档是先有中文版，后有英文版。但也有一小部分文档，是先有英文版，后有中文版。
 
 ## 快速上手资源
 
+最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？我们已准备好齐全的快速上手指南，你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。
+
 - Pull Request (PR) 提交 ⭐️
-    - [Pull Request 提交流程](/CONTRIBUTING.md#pull-request-提交流程)
+    - [Pull Request 提交流程](#pull-request-提交流程)
     - [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
     - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
-- [必须遵循的 Markdown 规范](/CONTRIBUTING.md#必须遵循的-markdown-规范) ⭐️
+- [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范) ⭐️
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh-v1.1.pdf)
 - [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
 
 ## 必须遵循的 Markdown 规范
 
-我们为 docs-cn 仓库设置了检测 markdown 文件规范的 CI check，即 [markdownlint check](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md)。如果你提交的 PR 不符合规范，很可能**无法通过 markdownlint check**，最终导致无法合并 PR。
+TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，你修改的文档需要遵循一定的 Markdown 规则。我们为 docs-cn 仓库设置了检测 markdown 文件规范的 CI check，即 [markdownlint check](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md)。如果你提交的 PR 不符合规范，很可能**无法通过 markdownlint check**，最终导致无法合并 PR。
 
 假如你提 PR 之前没有熟悉相关 Markdown 规范，提 PR 时遇到了 markdownlint check 失败，也不必担心，报错信息里会明确告诉你哪个文件的哪一行出了什么问题，根据提示在 PR 里更新一下文档内容即可搞定。此外，你还可以选择在本地进行 markdownlint check：
 
@@ -30,7 +53,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 | NO. | 规则 | 描述 |
 | :--- | :--- | :--- |
 | 1 | [MD001 - Heading levels should only increment by one level at a time](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md001---heading-levels-should-only-increment-by-one-level-at-a-time) | 标题从一级开始递增使用，禁止跳级使用。例如：一级标题下面不能直接使用三级标题；二级标题下面不能直接使用四级标题。 |
-| 2 | [MD003 - Heading style](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md003---heading-style) | 必须统一使用 ATX 标题风格，即在标题前加 `#` 号来表示标题级别。 |
+| 2 | [MD003 - Heading style](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md003---heading-style) | 标题必须统一使用 ATX 风格，即在标题前加 `#` 号来表示标题级别。 |
 | 3 | [MD018 - No space after hash on atx style heading](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md018---no-space-after-hash-on-atx-style-heading) | 标题的引导符号 `#` 后必须**空一格**再接标题内容。 |
 | 4 | [MD019 - Multiple spaces after hash on atx style heading](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md019---multiple-spaces-after-hash-on-atx-style-heading) | 标题的引导符号“#”后只能空**一格**后再接标题内容，不能有多个空格。 |
 | 5 | [MD023 - Headings must start at the beginning of the line](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md023---headings-must-start-at-the-beginning-of-the-line) | 标题必须出现在一行行首，即标题的 `#` 号前不能有任何空格。 |
@@ -58,11 +81,11 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 ## Pull Request 提交流程
 
-TiDB 文档的修改需要遵循一定的流程，具体如下。
+TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些小伙伴是纯语言背景，命令行的流程掌握起来可能需要花些时间，之后我们也会提供更适合小白上手的 GitHub Desktop 客户端版提交流程（在添加至这里之前，可暂时参考 [lilin90](https://github.com/lilin90) 撰写的[小白上手流程](https://zhuanlan.zhihu.com/p/64880410)）。
 
 > **注意：**
 >
-> 目前 TiDB 主要维护三个版本的文档：dev（最新开发版），v3.0（最新稳定版），v2.1（最新 2.1 版）。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
+> 目前 TiDB 主要维护三个版本的文档：dev（最新开发版），v3.1（3.1 Beta 版），v3.0（最新稳定版），v2.1（最新 2.1 版）。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
 
 ### 第 1 步：Fork pingcap/docs-cn 仓库
 
@@ -132,5 +155,5 @@ git push -u origin new-branch-name
 
     > **注意：**
     >
-    > - 如果你的修改影响多个文档版本 (dev, v3.0, v2.1)，务必在 PR 描述框相应的问题下注明，或者在页面右侧选择相应的 label (dev, v3.0, v2.1) 来注明。
+    > - 如果你的修改影响多个文档版本 (dev, v3.1, v3.0, v2.1)，务必在 PR 描述框相应的问题下注明，或者在页面右侧选择相应的 label (dev, v3.1, v3.0, v2.1) 来注明。如果是适用 v4.0 的更新，在 PR 描述框里勾选相应的版本号即可。
     > - 如果你的修改也同样适用于[英文版文档](https://github.com/pingcap/docs)，需要在提 PR 时添加 label `pending-aligning`；也非常欢迎同时更新中文版和英文版。
