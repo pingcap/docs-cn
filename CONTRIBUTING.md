@@ -4,7 +4,7 @@
 
 ## 可贡献的内容
 
-你既可以帮助完善中文文档，也可以将中文文档的更新翻译为英文，并成为[英文文档](https://pingcap.com/docs/)的 contributor。
+你既可以帮助完善中文文档，也可以将中文文档的更新翻译为英文，并成为[英文文档](https://github.com/pingcap/docs)的 contributor。
 
 ### 完善中文文档
 
@@ -18,7 +18,7 @@
 
 ### 翻译中文文档
 
-TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://pingcap.com/docs/) 也需要进行频繁的更新。这一过程会涉及很多的**中译英**，即将 [pingcap/docs-cn](https://github.com/pingcap/docs) 里已 [merge](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs](https://github.com/pingcap/docs) 中。**具体的认领方式即将公布。**
+TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://pingcap.com/docs/stable/) 也需要进行频繁的更新。这一过程会涉及很多的**中译英**，即将 [pingcap/docs-cn](https://github.com/pingcap/docs) 里已 [merge](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs](https://github.com/pingcap/docs) 中。**具体的认领方式即将公布。**
 
 > **注意：**
 >
@@ -151,7 +151,7 @@ git push -u origin new-branch-name
 ### 第 8 步：创建一个 Pull Request
 
 1. 打开你 Fork 的仓库：<https://github.com/$user/docs-cn>（将 `$user` 替换为你的 GitHub ID）
-2. 点击 `Compare & pull request` 按钮即可创建 PR。参考[如何写 PR title 和描述](https://github.com/pingcap/community/blob/master/commit-message-pr-style.md#pull-request-title-style)。
+2. 点击 `Compare & pull request` 按钮即可创建 PR。参考[如何写 PR title 和描述](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md)。
 
     > **注意：**
     >
