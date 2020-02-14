@@ -6,7 +6,7 @@ aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/mydumper-loader']
 
 # 使用 mydumper/TiDB Lightning 进行备份与恢复
 
-本文档将详细介绍如何使用 `mydumper`/`TiDB Lightning` 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v3.1/reference/tidb-binlog/overview.md)。
+本文档将详细介绍如何使用 mydumper/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v3.1/reference/tidb-binlog/overview.md)。
 
 这里我们假定 TiDB 服务信息如下：
 
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/mydumper-loader']
 - [Mydumper](/v3.1/reference/tools/mydumper.md) 从 TiDB 导出数据
 - [TiDB Lightning](/v3.1/reference/tools/tidb-lightning/overview.md) 导入数据到 TiDB
 
-## 使用 `mydumper`/`TiDB Lightning` 全量备份恢复数据
+## 使用 mydumper/TiDB Lightning 全量备份恢复数据
 
 `mydumper` 是一个强大的数据备份工具，具体可以参考 [`maxbube/mydumper`](https://github.com/maxbube/mydumper)。
 
@@ -29,7 +29,7 @@ aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/mydumper-loader']
 >
 > PingCAP 研发团队对 `mydumper` 进行了针对 TiDB 的适配性改造，建议使用 PingCAP 官方提供的 [`mydumper`](/v3.1/reference/tools/mydumper.md)。由于使用 `mysqldump` 进行数据备份和恢复都要耗费许多时间，这里也并不推荐。
 
-### `mydumper`/`TiDB Lightning` 全量备份恢复最佳实践
+### mydumper/TiDB Lightning 全量备份恢复最佳实践
 
 为了快速地备份恢复数据 (特别是数据量巨大的库)，可以参考以下建议：
 
