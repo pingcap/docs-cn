@@ -61,8 +61,8 @@
     - [Ansible 常见运维操作](/dev/how-to/maintain/ansible-operations.md)
     + 备份与恢复
       - [使用 Mydumper/Loader 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-loader.md)
-      - [使用 BR 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/br.md)
-      - [BR 备份恢复案例展示](/dev/how-to/maintain/backup-and-restore/br-case-demo.md)
+      - [使用 BR 进行备份与恢复](/dev/reference/tools/br/br.md)
+      - [BR 备份恢复案例展示](/dev/reference/tools/br/br-case-demo.md)
     + 定位异常查询
       - [定位慢查询](/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/dev/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
