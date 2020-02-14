@@ -61,7 +61,7 @@
   + 运维
     - [Ansible 常见运维操作](/v3.1/how-to/maintain/ansible-operations.md)
     + 备份与恢复
-      - [使用 Mydumper/Loader 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-lightning.md)
+      - [使用 Mydumper/TiDB-lightning 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-lightning.md)
       - [使用 BR 进行备份与恢复](/v3.1/reference/tools/br/br.md)
       - [BR 备份与恢复最佳实践](/v3.1/reference/tools/br/br-best-practices.md)
     + 定位异常查询
