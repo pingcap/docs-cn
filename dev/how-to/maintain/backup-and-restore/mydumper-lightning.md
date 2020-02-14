@@ -1,14 +1,14 @@
 ---
-title: 使用 mydumper/tidb lightning 进行备份与恢复
+title: 使用 Mydumper/TiDB Lightning 进行备份与恢复
 category: how-to
-aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning']
+aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-loader']
 ---
 
-# 备份与恢复
+# 使用 Mydumper/TiDB Lightning 进行备份与恢复
 
 本文档将详细介绍如何使用 `mydumper`/`tidb lightning` 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/dev/reference/tidb-binlog/overview.md)。
 
-这里我们假定 TiDB 服务信息如下：
+这里假定 TiDB 的服务信息如下：
 
 |Name|Address|Port|User|Password|
 |----|-------|----|----|--------|
@@ -27,13 +27,13 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning']
 
 > **注意：**
 >
-> PingCAP 研发团队对 `mydumper` 进行了针对 TiDB 的适配性改造，建议使用 PingCAP 官方提供的 [`mydumper`](/dev/reference/tools/mydumper.md)。由于使用 `mysqldump` 进行数据备份和恢复都要耗费许多时间，这里也并不推荐。
+> PingCAP 研发团队对 `mydumper` 进行了针对 TiDB 的适配性改造，建议使用 PingCAP 官方提供的 [`mydumper`](/dev/reference/tools/mydumper.md)。由于使用 `mysqldump` 进行数据备份和恢复都要耗费许多时间，这里也并不推荐 `mysqldump`。
 
-### `mydumper`/`tidb lightning` 全量备份恢复最佳实践
+### `mydumper`/`tidb lightning` 全量恢复最佳实践
 
 为了快速地备份恢复数据 (特别是数据量巨大的库)，可以参考以下建议：
 
-* 使用 `mydumper` 导出来的数据文件尽可能的小, 可以通过设置参数 `-F` 来控制导出来的文件大小。如果后续使用  TiDB Lightning 对备份文件进行恢复，建议把 `mydumper` -F 参数的值设置为 `256`（单位 MB）；如果使用 `loader` 恢复，则建议设置为 `64`（单位 MB）。
+* 使用 `mydumper` 导出来的数据文件应当尽可能的小，可以通过设置参数 `-F` 来控制导出来的文件大小。如果后续使用  TiDB Lightning 对备份文件进行恢复，建议把 `mydumper` -F 参数的值设置为 `256`（单位 MB）；如果使用 `loader` 恢复，则建议设置为 `64`（单位 MB）。
 
 ## 从 TiDB 备份数据
 
@@ -47,9 +47,9 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning']
 
 上面，我们使用 `-B test` 表明是对 `test` 这个 database 操作，然后用 `-T t1,t2` 表明只导出 `t1`，`t2` 两张表。
 
-`-t 32` 表明使用 32 个线程去导出数据。`-F 256` 是将实际的 table 切分成多大的 chunk，这里就是 256MB 一个 chunk。
+`-t 32` 表示使用 32 个线程去导出数据。`-F 256` 是将实际的表切分成一定大小的 chunk，这里的 chunk 大小为 256MB。
 
-`--skip-tz-utc` 添加这个参数忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
+添加 `--skip-tz-utc` 参数后，会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
 如果 `mydumper` 出现以下报错：
 
@@ -59,7 +59,7 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning']
 
 就再执行两步命令：
 
-1. 执行 `mydumper` 命令前，查询 TiDB 集群的 GC 值并使用 MySQL 客户端将其调整为合适的值。
+1. 执行 `mydumper` 命令前，查询 TiDB 集群的 [GC](/dev/reference/garbage-collection/overview.md) 值并使用 MySQL 客户端将其调整为合适的值：
 
     {{< copyable "sql" >}}
 
@@ -82,7 +82,7 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning']
     update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
-2. 执行 `mydumper` 命令后，将 TiDB 集群的 GC 值恢复到第 1 步中的初始值。
+2. 执行 `mydumper` 命令后，将 TiDB 集群的 GC 值恢复到第 1 步中的初始值：
 
     {{< copyable "sql" >}}
 
@@ -92,4 +92,4 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning']
 
 ## 向 TiDB 恢复数据
 
-我们使用 `tidb lightning` 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [tidb lightning 使用文档](/dev/reference/tools/tidb-lightning/tidb-backend.md)
+使用 `tidb lightning` 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/dev/reference/tools/tidb-lightning/tidb-backend.md)。

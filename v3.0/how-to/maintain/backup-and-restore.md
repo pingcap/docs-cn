@@ -1,10 +1,10 @@
 ---
-title: 使用 mydumper/tidb lightning 进行备份与恢复
+title: 使用 Mydumper/TiDB Lightning 进行备份与恢复
 category: how-to
 aliases: ['/docs-cn/v3.0/how-to/maintain/backup-and-restore/']
 ---
 
-# 备份与恢复
+# 使用 Mydumper/TiDB Lightning 进行备份与恢复
 
 本文档将详细介绍如何使用 `mydumper`/`tidb lightning` 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v3.0/reference/tidb-binlog/overview.md)。
 
