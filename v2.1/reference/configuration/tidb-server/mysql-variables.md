@@ -21,6 +21,10 @@ SET GLOBAL autocommit = 1;
 SET @@global.autocommit = 1;
 ```
 
+> **Note:**
+>
+> In a distributed TiDB database, a variable's `GLOBAL` setting is persisted to the storage layer. A single TiDB instance proactively gets the `GLOBAL` information and forms `gvc` (global variables cache) every 2 seconds. The cache information remains valid within 2 seconds. When you set the `GLOBAL` variable, to ensure the effectiveness of new sessions, make sure that the interval between two operations is larger than 2 seconds. For details, see [Issue #14531](https://github.com/pingcap/tidb/issues/14531).
+
 ### Set Session variables
 
 Add the `SESSION` keyword before the variable, use `@@session.` as the modifier, or use no modifier:
