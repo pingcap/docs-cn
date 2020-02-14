@@ -60,15 +60,13 @@ This hint means that the `SELECT` query block's name is specified to `QB1`, whic
 
 ### @QB_NAME
 
-`@QB_NAME` is an optional parameter that specifies the query block to which an optimizer-controlling hint (except `QB_NAME`) applies. If the hint includes a leading `@QB_NAME`, the hint applies to the named query block. If there is no leading `@QB_NAME`, the hint applies to the query block where it occurs. For example:
+`@QB_NAME` is an optional parameter that specifies the query block to which an optimizer-controlling hint (except `QB_NAME`) applies. If the hint includes a leading `@QB_NAME`, the hint applies to the named query block. If there is no leading `@QB_NAME`, the hint applies to the query block where it occurs. Also, you can append `@QB_NAME` to each table name of a hint to specify which query block the table belongs to. For example:
 
 {{< copyable "sql" >}}
 
 ```sql
 select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
 ```
-
-Also, you can append `@QB_NAME` to each table name of a hint to specify which query block the table belongs to.
 
 ### SM_JOIN(t1_name [, tl_name ...])
 
