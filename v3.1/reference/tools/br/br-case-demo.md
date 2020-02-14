@@ -1,6 +1,7 @@
 ---
 title: BR 备份恢复案例展示
 category: reference
+aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/br-best-practices/']
 ---
 
 # BR 备份恢复案例展示
