@@ -14,7 +14,7 @@ category: glossary
 
 ### Analyze
 
-统计信息分析。指重建 TiDB 表中的统计信息，即运行 [`ANALYZE TABLE`](/dev/reference/sql/statements/analyze-table.md) 语句。
+统计信息分析。指重建 TiDB 表中的统计信息，即运行 [`ANALYZE TABLE`](/v3.1/reference/sql/statements/analyze-table.md) 语句。
 
 因为 TiDB Lightning 不通过 TiDB 导入数据，统计信息不会自动更新，所以 TiDB Lightning 在导入后显式地分析每个表。如果不需要该操作，可以将 `post-restore.analyze` 设置为 `false`。
 
@@ -32,13 +32,13 @@ category: glossary
 
 也称作 Back end（后端），用于接受 TiDB Lightning 解析结果。
 
-详情参阅 [TiDB Lightning TiDB-backend](/dev/reference/tools/tidb-lightning/tidb-backend.md)。
+详情参阅 [TiDB Lightning TiDB-backend](/v3.1/reference/tools/tidb-lightning/tidb-backend.md)。
 
 ### Black-white list
 
 黑白名单配置列表。用于指定要导入、忽略哪些表和库。
 
-详情参阅 [TiDB Lightning 表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)。
+详情参阅 [TiDB Lightning 表库过滤](/v3.1/reference/tools/tidb-lightning/table-filter.md)。
 
 <!-- C -->
 
@@ -48,11 +48,11 @@ category: glossary
 
 断点。用于保证 TiDB Lightning 在导入数据时不断地将进度保存到本地文件或远程数据库中。这样即使进程崩溃，TiDB Lightning 也能从中间状态恢复。
 
-详情参见 [TiDB Lightning 断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)。
+详情参见 [TiDB Lightning 断点续传](/v3.1/reference/tools/tidb-lightning/checkpoints.md)。
 
 ### Checksum
 
-校验和。一种用于[验证导入数据正确性](/dev/faq/tidb-lightning.md#如何校验导入的数据的正确性)的方法。
+校验和。一种用于[验证导入数据正确性](/v3.1/faq/tidb-lightning.md#如何校验导入的数据的正确性)的方法。
 
 在 TiDB Lightning 中，表的校验和是由 3 个数字组成的集合，由该表中每个键值对的内容计算得出。这些数字分别是：
 
@@ -62,7 +62,7 @@ category: glossary
 
 TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远程校验和](#remote-checksum)来验证导入数据的正确性。如果有任一对校验和不匹配，导入进程就会停止。如果你需要跳过校验和检查，可以将 `post-restore.checksum` 设置为 `false` 。
 
-遇到校验和不匹配的问题时，参考[故障排查](/dev/how-to/troubleshoot/tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
+遇到校验和不匹配的问题时，参考[故障排查](/v3.1/how-to/troubleshoot/tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
 
 ### Chunk
 
@@ -112,7 +112,7 @@ TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。Lightning 先�
 
 导入模式。指通过降低读取速度和减少空间使用，来优化 TiKV 写入的配置模式。
 
-导入过程中，TiDB Lightning 自动在导入模式和[普通模式](#normal-mode)中来回切换。如果 TiKV 卡在导入模式，你可以使用 `tidb-lightning-ctl` [强制切换回普通模式](/dev/faq/tidb-lightning.md#为什么用过-tidb-lightning-之后tidb-集群变得又慢又耗-cpu)。
+导入过程中，TiDB Lightning 自动在导入模式和[普通模式](#normal-mode)中来回切换。如果 TiKV 卡在导入模式，你可以使用 `tidb-lightning-ctl` [强制切换回普通模式](/v3.1/faq/tidb-lightning.md#为什么用过-tidb-lightning-之后tidb-集群变得又慢又耗-cpu)。
 
 ### Index engine
 
@@ -180,11 +180,11 @@ TiDB Lightning 可同时处理多个索引引擎（可通过 `lightning.index-co
 
 ### Scattering
 
-指随机再分配 [Region](/dev/glossary.md#regionpeerraft-group) 中 leader 和 peer 的操作。Scattering 确保导入的数据在 TiKV store 中均匀分布，这样可以降低 PD 调度的压力。
+指随机再分配 [Region](/v3.1/glossary.md#regionpeerraft-group) 中 leader 和 peer 的操作。Scattering 确保导入的数据在 TiKV store 中均匀分布，这样可以降低 PD 调度的压力。
 
 ### Splitting
 
-指 TiKV Importer 在上传之前会将单个引擎文件拆分为若干小 [SST 文件](#sst-file)的操作。这是因为引擎文件通常很大（约为 100 GB），在 TiKV 中不适合视为单一的 [Region](/dev/glossary.md#regionpeerraft-group)。拆分的文件大小可通过 `import.region-split-size` 配置项更改。
+指 TiKV Importer 在上传之前会将单个引擎文件拆分为若干小 [SST 文件](#sst-file)的操作。这是因为引擎文件通常很大（约为 100 GB），在 TiKV 中不适合视为单一的 [Region](/v3.1/glossary.md#regionpeerraft-group)。拆分的文件大小可通过 `import.region-split-size` 配置项更改。
 
 ### SST file
 
