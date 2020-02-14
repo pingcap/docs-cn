@@ -290,6 +290,7 @@
       - [常见错误修复](/v3.1/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v3.1/reference/tidb-binlog/faq.md)
   + 周边工具
+    - [工具使用指南](/v3.1/reference/tools/use-guide.md)
     - [Mydumper](/v3.1/reference/tools/mydumper.md)
     - [Loader](/v3.1/reference/tools/loader.md)
     - [Syncer](/v3.1/reference/tools/syncer.md)
@@ -349,6 +350,7 @@
       - [断点续传](/v3.1/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/v3.1/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/v3.1/reference/tools/tidb-lightning/csv.md)
+      - [TiDB-backend](/v3.1/reference/tools/tidb-lightning/tidb-backend.md)
       - [Web 界面](/v3.1/reference/tools/tidb-lightning/web.md)
       - [监控告警](/v3.1/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v3.1/how-to/troubleshoot/tidb-lightning.md)
