@@ -1,6 +1,7 @@
 ---
 title: TiDB 生态工具使用指南
 category: reference
+aliases: ['/docs-cn/v3.0/how-to/migrate/from-mysql/', '/docs-cn/v3.0/how-to/migrate/incrementally-from-mysql/', '/docs-cn/v3.0/how-to/migrate/overview/']
 ---
 
 # TiDB 生态工具使用指南
