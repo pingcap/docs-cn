@@ -1,12 +1,12 @@
 ---
 title: 使用 mydumper/tidb lightning 进行备份与恢复
 category: how-to
-aliases: ['/docs-cn/v3.0/how-to/maintain/backup-and-restore/']
+aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/mydumper-lightning']
 ---
 
 # 备份与恢复
 
-本文档将详细介绍如何使用 `mydumper`/`tidb lightning` 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v3.0/reference/tidb-binlog/overview.md)。
+本文档将详细介绍如何使用 `mydumper`/`tidb lightning` 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v3.1/reference/tidb-binlog/overview.md)。
 
 这里我们假定 TiDB 服务信息如下：
 
@@ -16,18 +16,18 @@ aliases: ['/docs-cn/v3.0/how-to/maintain/backup-and-restore/']
 
 在这个备份恢复过程中，我们会用到下面的工具：
 
-- [Mydumper](/v3.0/reference/tools/mydumper.md) 从 TiDB 导出数据
-- [TiDB Lightning](/v3.0/reference/tools/tidb-lightning/overview.md) 导入数据到 TiDB
+- [Mydumper](/v3.1/reference/tools/mydumper.md) 从 TiDB 导出数据
+- [TiDB Lightning](/v3.1/reference/tools/tidb-lightning/overview.md) 导入数据到 TiDB
 
 ## 使用 `mydumper`/`tidb lightning` 全量备份恢复数据
 
 `mydumper` 是一个强大的数据备份工具，具体可以参考 [`maxbube/mydumper`](https://github.com/maxbube/mydumper)。
 
-可使用 [`mydumper`](/v3.0/reference/tools/mydumper.md) 从 TiDB 导出数据进行备份，然后用 [TiDB Lightning](/v3.0/reference/tools/tidb-lightning/overview.md) 将其导入到 TiDB 里面进行恢复。
+可使用 [`mydumper`](/v3.1/reference/tools/mydumper.md) 从 TiDB 导出数据进行备份，然后用 [TiDB Lightning](/v3.1/reference/tools/tidb-lightning/overview.md) 将其导入到 TiDB 里面进行恢复。
 
 > **注意：**
 >
-> PingCAP 研发团队对 `mydumper` 进行了针对 TiDB 的适配性改造，建议使用 PingCAP 官方提供的 [`mydumper`](/v3.0/reference/tools/mydumper.md)。由于使用 `mysqldump` 进行数据备份和恢复都要耗费许多时间，这里也并不推荐。
+> PingCAP 研发团队对 `mydumper` 进行了针对 TiDB 的适配性改造，建议使用 PingCAP 官方提供的 [`mydumper`](/v3.1/reference/tools/mydumper.md)。由于使用 `mysqldump` 进行数据备份和恢复都要耗费许多时间，这里也并不推荐。
 
 ### `mydumper`/`tidb lightning` 全量备份恢复最佳实践
 
@@ -92,4 +92,4 @@ aliases: ['/docs-cn/v3.0/how-to/maintain/backup-and-restore/']
 
 ## 向 TiDB 恢复数据
 
-我们使用 `tidb lightning` 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [tidb lightning 使用文档](/v3.0/reference/tools/tidb-lightning/tidb-backend.md)
+我们使用 `tidb lightning` 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [tidb lightning 使用文档](/v3.1/reference/tools/tidb-lightning/tidb-backend.md)
