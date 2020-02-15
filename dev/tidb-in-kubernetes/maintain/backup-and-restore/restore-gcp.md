@@ -7,7 +7,7 @@ category: how-to
 
 本文档详细描述了如何将 Kubernetes 上通过 TiDB Operator 备份的 TiDB 集群数据恢复的具体操作过程。底层通过使用 [`loader`](/dev/reference/tools/loader.md) 来进行集群恢复。
 
-为了更好地说明如何进行恢复，本文档提供了以下示例。示例通过指定存储在 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上的一个 TiDB 集群备份数据路径来恢复 TiDB 集群。下面是具体的操作过程：
+以下示例将存储在 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上指定路径中的集群备份数据恢复到 TiDB 集群。
 
 ## 恢复备份的环境准备
 
@@ -68,20 +68,20 @@ category: how-to
      kubectl get rt -n test2 -owide
      ```
 
-以上示例将存储在 GCS 上特定路径 `spec.gcs.path` 的备份数据恢复到 `spec.to.host` TiDB 集群，关于 GCS 的配置项可以参考 [backup-gcs.yaml](/dev/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs.md#备份数据到-gcs) 中的设置。
+以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [backup-gcs.yaml](/dev/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs.md#备份数据到-gcs) 中的配置。
 
 更多 `Restore` CR 字段的详细解释：
 
 `.spec.metadata.namespace`： `Restore` CR 所在的 namespace。
 
-`.spec.to.host`：需要恢复的 TiDB 集群访问地址。
+`.spec.to.host`：需要恢复的 TiDB 集群的访问地址。
 
-`.spec.to.port`：需要恢复的 TiDB 集群访问端口。
+`.spec.to.port`：需要恢复的 TiDB 集群访问的端口。
 
-`.spec.to.user`：需要恢复的 TiDB 集群访问用户。
+`.spec.to.user`：需要恢复的 TiDB 集群的访问用户。
 
 `.spec.to.tidbSecretName`：需要恢复的 TiDB 集群所需凭证的 secret。
 
-`.spec.storageClassName`：恢复时指定所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
+`.spec.storageClassName`：指定恢复时所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值（默认为 `standard`）。
 
 `.spec.storageSize`：恢复集群时指定所需的 PV 大小。这个值应大于备份 TiDB 集群数据的大小。

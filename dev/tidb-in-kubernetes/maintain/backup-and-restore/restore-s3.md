@@ -5,13 +5,13 @@ category: how-to
 
 # 恢复备份数据到 Kubernetes 上的 TiDB 集群
 
-本文档详细描述了如何将 Kubernetes 上通过 TiDB Operator 备份的 TiDB 集群数据恢复的具体操作过程。底层通过使用 [`loader`](/dev/reference/tools/loader.md) 来进行集群恢复。
+本文档描述了如何将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。底层通过使用 [`loader`](/dev/reference/tools/loader.md) 来恢复数据。
 
-为了更好地说明如何进行恢复，本文档提供了以下示例。示例通过指定存储在兼容 S3 的存储上的一个 TiDB 集群备份数据路径来恢复 TiDB 集群。下面是具体的操作过程：
+以下示例将兼容 S3 的存储（指定路径）上的备份数据恢复到 TiDB 集群。
 
 ## 恢复备份的环境准备
 
-1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复备份所需的 RBAC 相关资源：
+1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并在 `test2` 这个 namespace 中创建恢复备份所需的 RBAC 资源，所需命令如下：
 
     {{< copyable "shell-regular" >}}
 
@@ -69,20 +69,20 @@ category: how-to
      kubectl get rt -n test2 -owide
      ```
 
-以上示例将存储在兼容 S3 存储的特定路径 `spec.s3.path` 的备份数据恢复到 `spec.to.host` TiDB 集群，关于兼容    S3 存储的配置项可以参考 [backup-s3.yaml](/dev/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md#备份数据到兼容-s3-的存储) 中的设置。
+以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 (`spec.to.host` )。有关兼容 S3 的存储的配置项，可以参考 [backup-s3.yaml](/dev/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md#备份数据到兼容-s3-的存储)。
 
 更多 `Restore` CR 字段的详细解释：
 
-`.spec.metadata.namespace`： `Restore` CR 所在的 namespace。
+`.spec.metadata.namespace`：`Restore` CR 所在的 namespace。
 
-`.spec.to.host`：需要恢复的 TiDB 集群访问地址。
+`.spec.to.host`：需要恢复的 TiDB 集群的访问地址。
 
-`.spec.to.port`：需要恢复的 TiDB 集群访问端口。
+`.spec.to.port`：需要恢复的 TiDB 集群的访问端口。
 
-`.spec.to.user`：需要恢复的 TiDB 集群访问用户。
+`.spec.to.user`：需要恢复的 TiDB 集群的访问用户。
 
 `.spec.to.tidbSecretName`：需要恢复的 TiDB 集群所需凭证的 secret。
 
-`.spec.storageClassName`：恢复时指定所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
+`.spec.storageClassName`：指定恢复时所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值（默认为 `standard`）。
 
-`.spec.storageSize`：恢复集群时指定所需的 PV 大小。这个值应大于备份 TiDB 集群数据的大小。
+`.spec.storageSize`：指定恢复集群时所需的 PV 大小。该值应大于备份 TiDB 集群的数据大小。

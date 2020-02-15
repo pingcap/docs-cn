@@ -122,11 +122,11 @@ GCS 支持以下几种 bucket ACL 策略：
 
 `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
 
-`.spec.from.host`：需要备份的 TiDB 集群访问地址。
+`.spec.from.host`：需备份的 TiDB 集群的访问地址。
 
-`.spec.from.port`：需要备份的 TiDB 集群访问端口。
+`.spec.from.port`：需要备份的 TiDB 集群的访问端口。
 
-`.spec.from.user`：需要备份的 TiDB 集群访问用户。
+`.spec.from.user`：需要备份的 TiDB 集群的访问用户。
 
 `.spec.from.tidbSecretName`：需要备份的 TiDB 集群所需凭证的 secret。
 
