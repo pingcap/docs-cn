@@ -50,7 +50,7 @@ create table t (a int auto_random, b varchar(255), primary key (a))
 
 自动分配值的计算方式如下：
 
-二进制形式下的最高 5 位（称为 shard bits）由当前事务的开始时间决定，剩下的位数按照自增的顺序分配。
+该行值在二进制形式下的最高 5 位（称为 shard bits）由当前事务的开始时间决定，剩下的位数按照自增的顺序分配。
 
 如果希望使用一个不同的 shard bits 的数量，可以在 `AUTO_RANDOM` 后面加一对括号，并在括号中指定，例如：
 
@@ -84,17 +84,17 @@ create table t (a int primary key auto_random)
 
 在 `show create table` 的结果中，`AUTO_RANDOM` 属性会被注释掉。注释会附带一个版本号，例如 `/*T!40000 auto_random */`。其中 `40000` 表示 v4.0.0 引入该功能，低版本的 TiDB 能够忽略带有上述注释的 `AUTO_RANDOM` 属性。
 
-该功能支持向前兼容，即降级兼容。新版本 TiDB 建立的含有 `AUTO_RANDOM` 的表可以被旧版本 TiDB 所使用。
+该功能支持向前兼容，即降级兼容。v4.0.0 以前的 TiDB 会忽略表（带有上述注释）的 `AUTO_RANDOM` 属性，因此能够使用含有该属性的表。
 
 ## 使用限制
 
 目前在 TiDB 中使用 `AUTO_RANDOM` 有以下限制：
 
 - 该属性必须指定在整数类型的主键列上，否则会报错。例外情况见[关于 `alter-primary-key` 配置项的说明](#关于-alter-primary-key-配置项的说明)。
-- 不支持使用 `ALTER TABLE` 来修改 `AUTO_RANDOM` 属性，包括添加/移除该属性。
+- 不支持使用 `ALTER TABLE` 来修改 `AUTO_RANDOM` 属性，包括添加或移除该属性。
 - 不支持修改含有 `AUTO_RANDOM` 属性的主键列的列类型。
 - 不支持与 `AUTO_INCREMENT` 同时指定在同一列上。
-- 不支持与 `DEFAULT` 同时指定在同一列上。
+- 不支持与列的默认值  `DEFAULT` 同时指定在同一列上。
 - 插入数据时，不建议自行显式指定含有 `AUTO_RANDOM` 列的值。不恰当地显式赋值，可能会导致该表提前耗尽用于自动分配的数值。因为用于保证唯一性的 rebase 仅针对除 shard bits 以外的位进行。
 
 ## 关于 `alter-primary-key` 配置项的说明
