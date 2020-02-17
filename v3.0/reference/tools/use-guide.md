@@ -48,11 +48,11 @@ TiDB 生态工具可以分为几种：
 
 #### 备份和恢复工具 BR
 
-[BR](https://pingcap.com/docs-cn/dev/how-to/maintain/backup-and-restore/br/) 是 TiDB 进行分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper 和 Loader，BR 更适合大数据量的场景，有更高效的备份和恢复效率。
+[BR](https://pingcap.com/docs-cn/dev/reference/tools/br/br/) 是 TiDB 进行分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper 和 Loader，BR 更适合大数据量的场景，有更高效的备份和恢复效率。
 
 以下是 BR 的一些基本信息：
 
-- [备份输出和恢复输入的文件类型](https://pingcap.com/docs-cn/dev/how-to/maintain/backup-and-restore/br/#备份文件类型)：SST + `backupmeta` 文件
+- [备份输出和恢复输入的文件类型](https://pingcap.com/docs-cn/dev/reference/tools/br/br/#备份文件类型)：SST + `backupmeta` 文件
 - 适用 TiDB 版本：v3.1 及 v4.0
 - Kubernetes 支持：已支持，文档撰写中
 
@@ -130,7 +130,7 @@ Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightn
 
 针对 TiDB 的 2.1，3.0 以及 3.1 版本，下面给出典型业务场景下的数据迁移方案。
 
-### TiDB 2.1 和 3.0 全链路数据迁移方案
+### TiDB 3.0 全链路数据迁移方案
 
 #### MySQL 数据迁移到 TiDB
 

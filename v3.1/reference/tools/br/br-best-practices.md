@@ -5,11 +5,11 @@ category: how-to
 
 # BR 快速备份恢复最佳实践
 
-[Backup & Restore](/dev/how-to/maintain/backup-and-restore/br.md)（下文简称 BR）是 PingCAP 新推出的分布式快速备份和恢复工具。本文描述了 BR 在备份和恢复场景下的操作过程以及注意事项，供用户参考以达到最佳实践。
+[Backup & Restore](/v3.1/reference/tools/br/br.md)（下文简称 BR）是 PingCAP 新推出的分布式快速备份和恢复工具。本文描述了 BR 在备份和恢复场景下的操作过程以及注意事项，供用户参考以达到最佳实践。
 
 ## 目标读者
 
-本文为 BR 用户提供操作参考，因此读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读[使用 BR 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/br.md)。
+本文为 BR 用户提供操作参考，因此读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读[使用 BR 进行备份与恢复](/v3.1/reference/tools/br/br.md)。
 
 ## 目标
 
@@ -22,7 +22,7 @@ category: how-to
 
 > **注意：**
 >
-> 使用 BR 时应注意[使用限制](/dev/how-to/maintain/backup-and-restore/br.md#使用限制)。
+> 使用 BR 时应注意[使用限制](/v3.1/reference/tools/br/br.md#使用限制)。
 
 ## 环境准备
 
@@ -32,13 +32,13 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 
 ### 部署方式
 
-推荐使用 [TiDB Ansible](/dev/how-to/deploy/orchestrated/ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/dev/reference/tools/download.md#快速备份和恢复br) 获取 BR 应用。
+推荐使用 [TiDB Ansible](/v3.1/how-to/deploy/orchestrated/ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/v3.1/reference/tools/download.md#快速备份和恢复br) 获取 BR 应用。
 
 ### 集群版本
 
-* TiKV: dev.0-beta.1
-* PD: dev.0-beta.1
-* br: dev.0-beta.1
+* TiKV: v3.1.0-beta.1
+* PD: v3.1.0-beta.1
+* br: v3.1.0-beta.1
 
 ### TiKV 集群硬件信息
 
@@ -72,9 +72,9 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 
 ### 备份准备工作
 
-`br backup` 命令的详细使用方法请参考 [BR 命令行描述](/dev/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
+`br backup` 命令的详细使用方法请参考 [BR 命令行描述](/v3.1/reference/tools/br/br.md#br-命令行描述)。
 
-1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/dev/reference/garbage-collection/configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [GC](/dev/reference/garbage-collection/overview.md)。
+1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/v3.1/reference/garbage-collection/configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [GC](/v3.1/reference/garbage-collection/overview.md)。
 
     {{< copyable "sql" >}}
 
@@ -93,7 +93,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不需�
 
 ### 恢复准备工作
 
-`br restore` 命令的详细使用方法请参考 [BR 命令行描述](/dev/how-to/maintain/backup-and-restore/br.md#br-命令行描述)。
+`br restore` 命令的详细使用方法请参考 [BR 命令行描述](/v3.1/reference/tools/br/br.md#br-命令行描述)。
 
 > **注意：**
 >
