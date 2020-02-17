@@ -541,9 +541,9 @@ Drainer="192.168.0.13"
 
         # [syncer.relay]
         # 保存 relay log 的目录，空值表示不开启。
-        # 只有下游是 TiDB/MySQL 配置才有意义。
+        # 只有下游是 TiDB 或 MySQL 时该配置才生效。
         # log-dir = ""
-        # 每个文件的最大大小
+        # 每个文件的大小上限
         # max-file-size = 10485760
 
         # [[syncer.replicate-do-table]]
