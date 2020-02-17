@@ -569,6 +569,9 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         host = "192.168.0.13"
         user = "root"
         password = ""
+        # `encrypted_password` is encrypted using `./binlogctl -cmd encrypt -text string`.
+        # When `encrypted_password` is not empty, the `password` above will be ignored.
+        encrypted_password = ""
         port = 3306
 
         [syncer.to.checkpoint]
@@ -584,6 +587,9 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # host = "127.0.0.1"
         # user = "root"
         # password = ""
+        # `encrypted_password` is encrypted using `./binlogctl -cmd encrypt -text string`.
+        # When `encrypted_password` is not empty, the `password` above will be ignored.
+        # encrypted_password = ""
         # port = 3306
 
         # the directory where the binlog file is stored when `db-type` is set to `file`
