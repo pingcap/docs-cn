@@ -14,12 +14,10 @@ drainer 同步 binlog 时会拆分上游的事务并发写下游。在极端情�
 
 * 下游集群的数据等同于上游设置了 `tidb_snapshot = ts` 的快照。
 
-checkpoint 状态一致性：
+checkpoint 状态一致性： Drainer checkpoint 通过 `consistent` 保存了同步的一致性状态。Drainer 运行时 `consistence` 为 `false`，正常退出后 `consistent` 更新为 `true`。
 
-Drainer checkpoint 通过 `consistent` 保存了同步的一致性状态。Drainer 运行时 `consistence` 为 `false`，正常退出后 `consistent` 更新为 `true`。
-
-```sql
-select * from tidb_binlog.checkpoint;
+```
+mysql> select  * from tidb_binlog.checkpoint;
 +---------------------+----------------------------------------------------------------+
 | clusterID           | checkPoint                                                     |
 +---------------------+----------------------------------------------------------------+
