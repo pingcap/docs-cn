@@ -25,7 +25,7 @@ TiDB implements Snapshot Isolation consistency, which it advertises as `REPEATAB
 
 TiDB uses the [Percolator transaction model](https://research.google.com/pubs/pub36726.html). A global read timestamp is obtained when the transaction is started, and a global commit timestamp is obtained when the transaction is committed. The execution order of transactions is confirmed based on the timestamps. To know more about the implementation of TiDB transaction model, see [MVCC in TiKV](https://pingcap.com/blog/2016-11-17-mvcc-in-tikv/).
 
-## Repeatable Read
+## Repeatable Read isolation level
 
 The Repeatable Read isolation level only sees data committed before the transaction begins, and it never sees either uncommitted data or changes committed during transaction execution by concurrent transactions. However, the transaction statement does see the effects of previous updates executed within its own transaction, even though they are not yet committed.
 
@@ -53,6 +53,16 @@ The Repeatable Read isolation level in TiDB differs from ANSI Repeatable Read is
 The Repeatable Read isolation level in TiDB differs from that in MySQL. The MySQL Repeatable Read isolation level does not check whether the current version is visible when updating, which means it can continue to update even if the row has been updated after the transaction starts. In contrast, if the row has been updated after the transaction starts, the TiDB transaction is rolled back and retried. Transaction Retries in TiDB might fail, leading to a final failure of the transaction, while in MySQL the updating transaction can be successful.
 
 The MySQL Repeatable Read isolation level is not the snapshot isolation level. The consistency of MySQL Repeatable Read isolation level is weaker than both the snapshot isolation level and TiDB Repeatable Read isolation level.
+
+## Read Committed isolation level
+
+TiDB supports the Read Committed isolation level only in the [Pessimistic Transaction Mode](/dev/reference/transactions/transaction-pessimistic.md). In the optimistic transaction mode, setting the transaction isolation level to Read Committed does not take effect. Transactions will still use the Repeatable Read isolation level.
+
+For historical reasons, the Read Committed isolation level of current mainstream databases is essentially the Consistent Read isolation level defined by Oracle. In order to adapt to this situation, the Read Committed isolation level in TiDB pessimistic transactions is also a consistent read behavior in essence.
+
+## Difference between TiDB and MySQL Read Committed
+
+The MySQL Read Committed isolation level is in line with the Consistent Read features in most cases. There are also exceptions, such as [semi-consistent read](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html). This special behavior is not supported in TiDB.
 
 ## Automatic retry and transactional anomalies caused by automatic retry
 
