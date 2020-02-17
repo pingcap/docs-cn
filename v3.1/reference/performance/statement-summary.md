@@ -66,7 +66,7 @@ select * from employee where id in (...) and salary between ? and ?;
     QUERY_SAMPLE_TEXT: select * from employee where id=3100
      PREV_SAMPLE_TEXT:
           PLAN_DIGEST: f415b8d52640b535b9b12a9c148a8630d2c6d59e419aad29397842e32e8e5de3
-                 PLAN: 	Point_Get_1	root	1	table:employee, handle:3100
+                 PLAN:  Point_Get_1     root    1       table:employee, handle:3100
 ```
 
 > **注意：**
