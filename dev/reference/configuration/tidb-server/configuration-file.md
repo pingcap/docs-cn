@@ -72,6 +72,18 @@ The TiDB configuration file supports more options than command-line parameters. 
 - Default value: `false`
 - With this default setting, adding or removing the primary key constraint is not supported. You can enable this feature by setting `alter-primary-key` to `true`. However, if a table already exists before the switch is on, and the data type of its primary key column is an integer, dropping the primary key from the column is not possible even if you set this configuration item to `true`.
 
+### `repair-mode`
+
+- Determines whether to enable the untrusted repair mode. When the `repair-mode` is set to `true`, bad tables in the `repair-table-list` cannot be loaded.
+- Default value: `false`
+- The `repair` syntax is not supported by default. This means that all tables are loaded when TiDB is started.
+
+### `repair-table-list`
+
+- `repair-table-list` is only valid when [`repair-mode`](#repair-mode) is set to `true`. `repair-table-list` is a list of bad tables that need to be repaired in an instance. An example of the list is: ["db.table1","db.table2"...].
+- Default value: []
+- The list is empty by default. This means that there are no bad tables that need to be repaired.
+
 ## Log
 
 Configuration items related to log.
