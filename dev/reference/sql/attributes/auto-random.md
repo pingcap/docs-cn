@@ -97,7 +97,7 @@ create table t (a int primary key auto_random)
 - 不支持与列的默认值  `DEFAULT` 同时指定在同一列上。
 - 插入数据时，不建议自行显式指定含有 `AUTO_RANDOM` 列的值。不恰当地显式赋值，可能会导致该表提前耗尽用于自动分配的数值。因为用于保证唯一性的 rebase 仅针对除 shard bits 以外的位进行。
 
-## 关于 `alter-primary-key` 配置项的说明
+### 关于 `alter-primary-key` 配置项的说明
 
-- 当 `alter-primary-key = true` 时，不支持使用 `AUTO_RANDOM`。
+- 当 `alter-primary-key = true` 时，即使是整形主键列，也不支持使用 `AUTO_RANDOM`。
 - 配置文件中的 `alter-primary-key` 和 `allow-auto-random` 两个配置项的值不允许同时为 `true`。
