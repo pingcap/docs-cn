@@ -47,7 +47,7 @@ TiDB 生态工具可以分为几种：
 - 适用 TiDB 版本：v2.1 及以上
 - Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](/v3.0/tidb-in-kubernetes/maintain/lightning.md)
 
-#### 增量导入工具 Syncer (停止维护，不推荐使用)
+#### 增量导入工具 Syncer（已停止维护，不推荐使用）
 
 [Syncer](/v3.0/reference/tools/syncer.md) 是将 MySQL/MariaDB 增量 binlog 数据实时复制导入到 TiDB 的工具。目前推荐使用 [TiDB Data Migration](#增量导入工具-tidb-data-migration) 替换该工具。
 
@@ -94,6 +94,8 @@ TiDB 生态工具可以分为几种：
 - Kubernetes 支持：[TiDB Binlog 运维文档](/v3.0/tidb-in-kubernetes/maintain/tidb-binlog.md)，[Kubernetes 上的 TiDB Binlog Drainer 配置](/v3.0/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
 
 ## 工具演进路线
+
+下面简单的介绍一下 TiDB 生态工具集的演进，方便大家了解工具之间的关系。
 
 ### MySQL 数据迁移
 
