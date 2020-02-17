@@ -63,7 +63,7 @@
     + 备份与恢复
       - [使用 Mydumper/Loader 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)
       - [使用 BR 进行备份与恢复](/v3.1/reference/tools/br/br.md)
-      - [BR 备份与恢复案例展示](/v3.1/reference/tools/br/br-case-demo.md)
+      - [BR 备份与恢复场景示例](/v3.1/reference/tools/br/use-cases.md)
     + 定位异常查询
       - [定位慢查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
