@@ -150,7 +150,7 @@ SQL 的基础信息：
 - `SUM_BACKOFF_TIMES`：这类 SQL 遇到需要重试的错误后的总重试次数
 - `BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为 `类型:次数`。如有多种错误则用 `,` 分隔，例如 `txnLock:2,pdRPC:1`
 - `AVG_AFFECTED_ROWS`：平均影响行数
-- `PREV_SAMPLE_TEXT`：当 SQL 是“COMMIT”时，该字段为 COMMIT 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
+- `PREV_SAMPLE_TEXT`：当 SQL 是 `COMMIT` 时，该字段为 `COMMIT` 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
 
 ## `events_statements_summary_by_digest_history`
 
