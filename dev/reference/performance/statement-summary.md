@@ -11,11 +11,9 @@ category: reference
 
 ## `events_statements_summary_by_digest`
 
-`events_statements_summary_by_digest` 是 `performance_schema` 里的一张系统表，它把 SQL 按 digest 分组，统计每一组的 SQL 信息。
+`events_statements_summary_by_digest` 是 `performance_schema` 里的一张系统表，它把 SQL 按 SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
 
-此处的 digest 与 slow log 里的 digest 一样，是把 SQL 规一化后算出的唯一标识符。
-
-SQL 的规一化会忽略常量、空白符、大小写的差别。也就是说两条 SQL 语句只要语法一致，其 digest 也会相同。
+此处的 SQL digest 与 slow log 里的 SQL digest 一样，是把 SQL 规一化后算出的唯一标识符。SQL 的规一化会忽略常量、空白符、大小写的差别。即语法一致的 SQL 语句，其 digest 也相同。
 
 例如：
 
@@ -30,7 +28,9 @@ select * from EMPLOYEE where ID in (4, 5) and SALARY between 3000 and 4000;
 select * from employee where id in (...) and salary between ? and ?;
 ```
 
-`events_statements_summary_by_digest` 保存的是把 SQL 的监控指标按 SQL digest 进行聚合的结果。一般来说，每一项监控指标都包含平均值和最大值。例如执行延时对应 `AVG_LATENCY` 和 `MAX_LATENCY` 两个字段，分别是平均延时和最大延时。
+此处的 plan digest 是把执行计划规一化后算出的唯一标识符。执行计划的规一化会忽略常量的差别。由于相同的 SQL 可能产生不同的执行计划，所以可能分到多个组，同一个组内的执行计划是相同的。
+
+`events_statements_summary_by_digest` 用于保存 SQL 监控指标聚合后的结果。一般来说，每一项监控指标都包含平均值和最大值。例如执行延时对应 `AVG_LATENCY` 和 `MAX_LATENCY` 两个字段，分别是平均延时和最大延时。
 
 为了监控指标的即时性，`events_statements_summary_by_digest` 里的数据定期被清空，只展现最近一段时间内的聚合结果。清空周期由系统变量 `tidb_stmt_summary_refresh_interval` 设置。如果刚好在清空之后进行查询，显示的数据可能很少。
 
@@ -47,7 +47,7 @@ select * from employee where id in (...) and salary between ? and ?;
           DIGEST_TEXT: select * from employee where id = ?
           TABLE_NAMES: test.employee
           INDEX_NAMES: NULL
-          SAMPLE_USER: root@127.0.0.1
+          SAMPLE_USER: root
            EXEC_COUNT: 3
           SUM_LATENCY: 1035161
           MAX_LATENCY: 399594
@@ -65,6 +65,8 @@ select * from employee where id in (...) and salary between ? and ?;
             LAST_SEEN: 2020-01-02 11:25:24
     QUERY_SAMPLE_TEXT: select * from employee where id=3100
      PREV_SAMPLE_TEXT:
+          PLAN_DIGEST: f415b8d52640b535b9b12a9c148a8630d2c6d59e419aad29397842e32e8e5de3
+                 PLAN: 	Point_Get_1	root	1	table:employee, handle:3100
 ```
 
 > **注意：**
@@ -83,6 +85,8 @@ SQL 的基础信息：
 - `TABLE_NAMES`：SQL 中涉及的所有表，多张表用 `,` 分隔
 - `INDEX_NAMES`：SQL 中使用的索引名，多个索引用 `,` 分隔
 - `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个
+- `PLAN_DIGEST`：执行计划的 digest
+- `PLAN`：原执行计划，多条语句只取其中一条的执行计划
 
 执行时间相关的信息：
 
@@ -154,7 +158,7 @@ SQL 的基础信息：
 
 ## `events_statements_summary_by_digest_history`
 
-`events_statements_summary_by_digest_history` 的表结构与 `events_statements_summary_by_digest` 完全相同，不同的是前者保存了历史时间段的数据。通过历史数据，可以排查过去出现的异常，也可以对比不同时间的监控指标。
+`events_statements_summary_by_digest_history` 的表结构与 `events_statements_summary_by_digest` 完全相同，用于保存历史时间段的数据。通过历史数据，可以排查过去出现的异常，也可以对比不同时间的监控指标。
 
 字段 `SUMMARY_BEGIN_TIME` 和 `SUMMARY_END_TIME` 代表历史时间段的开始时间和结束时间。
 
