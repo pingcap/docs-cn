@@ -264,7 +264,7 @@ You can use Docker Compose to build a TiDB cluster locally, including the cluste
 
 2. If a slow query occurs, you can locate the `tidb-server` instance where the slow query is and the slow query time point using Grafana and find the SQL statement information recorded in the log on the corresponding node.
 
-3. In addition to the log, you can also view the slow query using the `admin show slow` command. For details, see [`admin show slow` command](/v3.0/how-to/maintain/identify-slow-queries.md#admin-show-slow-command).
+3. In addition to the log, you can also view the slow query using the `admin show slow` command. For details, see [`admin show slow` command](/v3.0/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md#admin-show-slow-command).
 
 #### How to add the `label` configuration if `label` of TiKV was not configured when I deployed the TiDB cluster for the first time?
 

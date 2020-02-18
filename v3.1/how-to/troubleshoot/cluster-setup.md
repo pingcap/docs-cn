@@ -90,7 +90,7 @@ Before starting the process, make sure the result of `ulimit -n` is large enough
 
 ## Database access times out and the system load is too high
 
-First, check the [slow query log](/v3.1/how-to/maintain/identify-slow-queries.md) and see if it is because of some inappropriate SQL statement.
+First, check the [slow query log](/v3.1/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md) and see if it is because of some inappropriate SQL statement.
 If you failed to solve the problem, provide the following information:
 
 + The deployment topology
