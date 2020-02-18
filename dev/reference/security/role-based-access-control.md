@@ -10,10 +10,6 @@ The implementation of TiDB's role-based access control (RBAC) system is similar 
 
 This document introduces TiDB RBAC-related operations and implementation.
 
-> **Warning:**
->
-> The feature of RBAC is still in the testing phase. Do not use it in the production environment.
-
 ## RBAC operations
 
 A role is a collection of a series of privileges. You can do the following operations:
