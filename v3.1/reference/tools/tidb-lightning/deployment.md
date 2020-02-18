@@ -6,7 +6,9 @@ aliases: ['/docs-cn/tools/lightning/deployment/']
 
 # TiDB Lightning 部署与执行
 
-本文主要介绍 TiDB Lightning 单独部署与混合部署的硬件需求，以及使用 Ansible 部署与手动部署这两种部署方式。
+本文主要介绍 TiDB Lightning 使用 Importer-backend（默认）进行数据导入的硬件需求，以及使用 Ansible 部署与手动部署 TiDB Lightning 这两种部署方式。
+
+如果你想改用 TiDB-backend 进行数据导入，参考 [TiDB Lightning TiDB-backend](/v3.1/reference/tools/tidb-lightning/tidb-backend.md) 中的硬件需求与部署方式。
 
 ## 注意事项
 
@@ -270,3 +272,9 @@ TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/v3.1/how-to/deploy/
     #!/bin/bash
     nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
     ```
+
+## 升级 TiDB Lightning
+
+你可以通过替换二进制文件升级 TiDB Lightning，无需其他配置。重启 TiDB Lightning 的具体操作参见 [FAQ](/v3.1/faq/tidb-lightning.md#如何正确重启-tidb-lightning)。
+
+如果当前有运行的导入任务，推荐任务完成后再升级 TiDB Lightning。否则，你可能需要从头重新导入，因为无法保证断点可以跨版本工作。
