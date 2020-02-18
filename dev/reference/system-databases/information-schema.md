@@ -480,12 +480,13 @@ SHOW TABLES
 
 表中的信息大部分定义自 MySQL，此外有两列是 TiDB 新增的：
 
-  * `TiDB_TABLE_ID`：标识表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
-  * `TIDB_ROW_ID_SHARDING_INFO`：标识表的 Sharding 类型，可能的值为：
+* `TiDB_TABLE_ID`：标识表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
+* `TIDB_ROW_ID_SHARDING_INFO`：标识表的 Sharding 类型，可能的值为：
     - `"NOT_SHARDED"`：表未被 Shard。
     - `"NOT_SHARDED(PK_IS_HANDLE)"`：一个定义了整型主键的表未被 Shard。
     - `"PK_AUTO_RANDOM_BITS={bit_number}"`：一个定义了整型主键的表由于定义了 `AUTO_RANDOM` 而被 Shard。
     - `"SHARD_BITS={bit_number}"`：表使用 `SHARD_ROW_ID_BITS={bit_number}` 进行了 Shard。
+    - NULL：表属于系统表或 View，无法被 Shard。
 
 ## TABLE_CONSTRAINTS 表
 
