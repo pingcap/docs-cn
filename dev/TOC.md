@@ -281,6 +281,7 @@
     - [监控告警](/dev/reference/tidb-binlog/monitor.md)
     - [增量恢复](/dev/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    - [TiDB Binlog Relay Log](/dev/reference/tidb-binlog/relay-log.md)
     - [术语表](/dev/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/dev/reference/tidb-binlog/troubleshoot/binlog.md)
