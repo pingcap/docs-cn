@@ -61,9 +61,9 @@
   + 运维
     - [Ansible 常见运维操作](/v3.1/how-to/maintain/ansible-operations.md)
     + 备份与恢复
-      - [使用 Mydumper/Loader 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)
-      - [使用 BR 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/br.md)
-      - [BR 备份与恢复最佳实践](/v3.1/how-to/maintain/backup-and-restore/br-best-practices.md)
+      - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-lightning.md)
+      - [使用 BR 进行备份与恢复](/v3.1/reference/tools/br/br.md)
+      - [BR 备份与恢复最佳实践](/v3.1/reference/tools/br/br-best-practices.md)
     + 定位异常查询
       - [定位慢查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
@@ -290,6 +290,7 @@
       - [常见错误修复](/v3.1/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v3.1/reference/tidb-binlog/faq.md)
   + 周边工具
+    - [工具使用指南](/v3.1/reference/tools/use-guide.md)
     - [Mydumper](/v3.1/reference/tools/mydumper.md)
     - [Loader](/v3.1/reference/tools/loader.md)
     - [Syncer](/v3.1/reference/tools/syncer.md)
@@ -354,6 +355,7 @@
       - [监控告警](/v3.1/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v3.1/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/v3.1/faq/tidb-lightning.md)
+      - [术语表](/v3.1/reference/tools/tidb-lightning/glossary.md)
     - [sync-diff-inspector](/v3.1/reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](/v3.1/reference/tools/pd-control.md)
     - [PD Recover](/v3.1/reference/tools/pd-recover.md)

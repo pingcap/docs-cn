@@ -1,11 +1,12 @@
 ---
 title: 使用 Mydumper/TiDB Lightning 进行备份与恢复
 category: how-to
+aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/']
 ---
 
 # 使用 Mydumper/TiDB Lightning 进行备份与恢复
 
-本文档将详细介绍如何使用 Mydumper/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/v3.0/reference/tidb-binlog/overview.md)。
+本文档将详细介绍如何使用 Mydumper/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/dev/reference/tidb-binlog/overview.md)。
 
 这里假定 TiDB 服务信息如下：
 
@@ -15,18 +16,18 @@ category: how-to
 
 在这个备份恢复过程中，会用到下面的工具：
 
-- [Mydumper](/v3.0/reference/tools/mydumper.md) 从 TiDB 导出数据
-- [TiDB Lightning](/v3.0/reference/tools/tidb-lightning/overview.md) 导入数据到 TiDB
+- [Mydumper](/dev/reference/tools/mydumper.md) 从 TiDB 导出数据
+- [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md) 导入数据到 TiDB
 
 ## 使用 Mydumper/TiDB Lightning 全量备份恢复数据
 
 `mydumper` 是一个强大的数据备份工具，具体可以参考 [`maxbube/mydumper`](https://github.com/maxbube/mydumper)。
 
-可使用 [Mydumper](/v3.0/reference/tools/mydumper.md) 从 TiDB 导出数据进行备份，然后用 [TiDB Lightning](/v3.0/reference/tools/tidb-lightning/overview.md) 将其导入到 TiDB 里面进行恢复。
+可使用 [Mydumper](/dev/reference/tools/mydumper.md) 从 TiDB 导出数据进行备份，然后用 [TiDB Lightning](/dev/reference/tools/tidb-lightning/overview.md) 将其导入到 TiDB 里面进行恢复。
 
 > **注意：**
 >
-> PingCAP 研发团队对 `mydumper` 进行了针对 TiDB 的适配性改造，建议使用 PingCAP 官方提供的 [Mydumper](/v3.0/reference/tools/mydumper.md)。由于使用 `mysqldump` 进行数据备份和恢复都要耗费许多时间，这里也并不推荐。
+> PingCAP 研发团队对 `mydumper` 进行了针对 TiDB 的适配性改造，建议使用 PingCAP 官方提供的 [Mydumper](/dev/reference/tools/mydumper.md)。由于使用 `mysqldump` 进行数据备份和恢复都要耗费许多时间，这里也并不推荐。
 
 ### Mydumper/TiDB Lightning 全量备份恢复最佳实践
 
@@ -58,7 +59,7 @@ category: how-to
 
 就再执行两步命令：
 
-1. 执行 `mydumper` 命令前，查询 TiDB 集群的 [GC](/v3.0/reference/garbage-collection/overview.md) 值并使用 MySQL 客户端将其调整为合适的值：
+1. 执行 `mydumper` 命令前，查询 TiDB 集群的 [GC](/dev/reference/garbage-collection/overview.md) 值并使用 MySQL 客户端将其调整为合适的值：
 
     {{< copyable "sql" >}}
 
@@ -91,4 +92,4 @@ category: how-to
 
 ## 向 TiDB 恢复数据
 
-使用 TiDB Lightning 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/v3.0/reference/tools/tidb-lightning/tidb-backend.md)
+使用 TiDB Lightning 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/dev/reference/tools/tidb-lightning/tidb-backend.md)

@@ -286,6 +286,7 @@
       - [常见错误修复](/v3.0/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/v3.0/reference/tidb-binlog/faq.md)
   + 周边工具
+    - [工具使用指南](/v3.0/reference/tools/use-guide.md)
     - [Mydumper](/v3.0/reference/tools/mydumper.md)
     - [Loader](/v3.0/reference/tools/loader.md)
     - [Syncer](/v3.0/reference/tools/syncer.md)
@@ -350,6 +351,7 @@
       - [监控告警](/v3.0/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/v3.0/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/v3.0/faq/tidb-lightning.md)
+      - [术语表](/v3.0/reference/tools/tidb-lightning/glossary.md)
     - [sync-diff-inspector](/v3.0/reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](/v3.0/reference/tools/pd-control.md)
     - [PD Recover](/v3.0/reference/tools/pd-recover.md)
