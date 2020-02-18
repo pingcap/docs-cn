@@ -51,16 +51,14 @@
     - [概述](/dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/dev/how-to/monitor/monitor-a-cluster.md)
   + 迁移
-    - [概述](/dev/how-to/migrate/overview.md)
+    - [迁移工具使用指南](/dev/reference/tools/user-guide.md)
     + 从 MySQL 迁移
-      - [全量迁移](/dev/how-to/migrate/from-mysql.md)
-      - [增量复制](/dev/how-to/migrate/incrementally-from-mysql.md)
-    - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
+      - [以 Amazon Aurora MySQL 为例](/dev/how-to/migrate/from-mysql-aurora.md)
     - [从 CSV 迁移](/dev/reference/tools/tidb-lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](/dev/how-to/maintain/ansible-operations.md)
     + 备份与恢复
-      - [使用 Mydumper/Loader 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-loader.md)
+      - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-lightning.md)
       - [使用 BR 进行备份与恢复](/dev/reference/tools/br/br.md)
       - [BR 备份与恢复场景示例](/dev/reference/tools/br/use-cases.md)
     + 定位异常查询
@@ -289,7 +287,7 @@
       - [常见错误修复](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/dev/reference/tidb-binlog/faq.md)
   + 周边工具
-    - [工具使用指南](/dev/reference/tools/use-guide.md)
+    - [工具使用指南](/dev/reference/tools/user-guide.md)
     - [Mydumper](/dev/reference/tools/mydumper.md)
     - [Loader](/dev/reference/tools/loader.md)
     - [Syncer](/dev/reference/tools/syncer.md)
@@ -330,7 +328,7 @@
         - [跳过或替代执行异常的 SQL 语句](/dev/reference/tools/data-migration/skip-replace-sqls.md)
       - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
+        - [从 MySQL/Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-mysql-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
       + DM 故障诊断
         - [故障诊断](/dev/reference/tools/data-migration/troubleshoot/dm.md)
@@ -354,6 +352,7 @@
       - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/dev/faq/tidb-lightning.md)
+      - [术语表](/dev/reference/tools/tidb-lightning/glossary.md)
     - [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](/dev/reference/tools/pd-control.md)
     - [PD Recover](/dev/reference/tools/pd-recover.md)

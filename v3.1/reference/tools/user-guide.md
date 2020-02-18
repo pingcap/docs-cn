@@ -1,6 +1,7 @@
 ---
 title: TiDB 生态工具使用指南
 category: reference
+aliases: ['/docs-cn/v3.1/how-to/migrate/from-mysql/', '/docs-cn/v3.1/how-to/migrate/incrementally-from-mysql/', '/docs-cn/v3.1/how-to/migrate/overview/', '/docs-cn/v3.1/reference/tools/use-guide/']
 ---
 
 # TiDB 生态工具使用指南
@@ -20,18 +21,18 @@ TiDB 生态工具可以分为几种：
 
 #### 全量导入工具 Loader（停止维护，不推荐使用）
 
-[Loader](/v3.0/reference/tools/loader.md) 是一款轻量级的全量数据导入工具，数据以 SQL 的形式导入到 TiDB 中。目前这个工具正在逐步被 [TiDB Lightning](#全量导入工具-tidb-lightning) 替换掉，参见 [TiDB Lightning TiDB-backend 文档](/v3.0/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
+[Loader](/v3.1/reference/tools/loader.md) 是一款轻量级的全量数据导入工具，数据以 SQL 的形式导入到 TiDB 中。目前这个工具正在逐步被 [TiDB Lightning](#全量导入工具-tidb-lightning) 替换掉，参见 [TiDB Lightning TiDB-backend 文档](/v3.1/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
 
 以下是 Loader 的一些基本信息：
 
 - Loader 的输入：Mydumper 输出的文件
 - Loader 的输出：以 SQL 形式写入 TiDB
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：[备份与恢复](/v3.0/tidb-in-kubernetes/maintain/backup-and-restore.md)
+- Kubernetes 支持：[备份与恢复](/v3.1/tidb-in-kubernetes/maintain/backup-and-restore.md)
 
 #### 全量导入工具 TiDB Lightning
 
-[TiDB Lightning](/v3.0/reference/tools/tidb-lightning/overview.md) 是将全量数据快速导入到一个新的 TiDB 集群的工具。
+[TiDB Lightning](/v3.1/reference/tools/tidb-lightning/overview.md) 是将全量数据快速导入到一个新的 TiDB 集群的工具。
 
 注意用 TiDB Lightning 导入数据到 TiDB 的时候，有两种模式：
 
@@ -44,21 +45,21 @@ TiDB 生态工具可以分为几种：
     - Mydumper 输出文件
     - CSV 格式文件
 - 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](/v3.0/tidb-in-kubernetes/maintain/lightning.md)
+- Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](/v3.1/tidb-in-kubernetes/maintain/lightning.md)
 
 #### 备份和恢复工具 BR
 
-[BR](https://pingcap.com/docs-cn/dev/reference/tools/br/br/) 是 TiDB 进行分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper 和 Loader，BR 更适合大数据量的场景，有更高效的备份和恢复效率。
+[BR](/v3.1/reference/tools/br/br.md) 是 TiDB 进行分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 Mydumper 和 Loader，BR 更适合大数据量的场景，有更高效的备份和恢复效率。
 
 以下是 BR 的一些基本信息：
 
-- [备份输出和恢复输入的文件类型](https://pingcap.com/docs-cn/dev/reference/tools/br/br/#备份文件类型)：SST + `backupmeta` 文件
+- [备份输出和恢复输入的文件类型](/v3.1/reference/tools/br/br.md#备份文件类型)：SST + `backupmeta` 文件
 - 适用 TiDB 版本：v3.1 及 v4.0
 - Kubernetes 支持：已支持，文档撰写中
 
-#### 增量导入工具 Syncer (停止维护，不推荐使用)
+#### 增量导入工具 Syncer（已停止维护，不推荐使用）
 
-[Syncer](/v3.0/reference/tools/syncer.md) 是将 MySQL/MariaDB 增量 binlog 数据实时复制导入到 TiDB 的工具。目前推荐使用 [TiDB Data Migration](#增量导入工具-tidb-data-migration) 替换该工具。
+[Syncer](/v3.1/reference/tools/syncer.md) 是将 MySQL/MariaDB 增量 binlog 数据实时复制导入到 TiDB 的工具。目前推荐使用 [TiDB Data Migration](#增量导入工具-tidb-data-migration) 替换该工具。
 
 以下是 Syncer 的一些基本信息：
 
@@ -69,7 +70,7 @@ TiDB 生态工具可以分为几种：
 
 #### 增量导入工具 TiDB Data Migration
 
-[TiDB Data Migration (DM)](/v3.0/reference/tools/data-migration/overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的同步。
+[TiDB Data Migration (DM)](/v3.1/reference/tools/data-migration/overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的同步。
 
 以下是 DM 的一些基本信息：
 
@@ -82,27 +83,29 @@ TiDB 生态工具可以分为几种：
 
 #### 全量导出工具 Mydumper
 
-[Mydumper](/v3.0/reference/tools/mydumper.md) 用于对 MySQL/TiDB 进行全量逻辑备份。
+[Mydumper](/v3.1/reference/tools/mydumper.md) 用于对 MySQL/TiDB 进行全量逻辑备份。
 
 以下是 Mydumper 的一些基本信息：
 
 - Mydumper 的输入：MySQL/TiDB 集群
 - Mydumper 的输出：SQL 文件
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：[备份与恢复](/v3.0/tidb-in-kubernetes/maintain/backup-and-restore.md)
+- Kubernetes 支持：[备份与恢复](/v3.1/tidb-in-kubernetes/maintain/backup-and-restore.md)
 
 #### 增量导出工具 TiDB Binlog
 
-[TiDB Binlog](/v3.0/reference/tidb-binlog/overview.md) 是收集 TiDB 的 binlog，并提供准实时同步和备份的工具。
+[TiDB Binlog](/v3.1/reference/tidb-binlog/overview.md) 是收集 TiDB 的 binlog，并提供准实时同步和备份的工具。
 
 以下是 TiDB Binlog 的一些基本信息：
 
 - TiDB Binlog 的输入：TiDB 集群
 - TiDB Binlog 的输出：MySQL、TiDB、Kafka 或者增量备份文件
 - 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[TiDB Binlog 运维文档](/v3.0/tidb-in-kubernetes/maintain/tidb-binlog.md)，[Kubernetes 上的 TiDB Binlog Drainer 配置](/v3.0/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
+- Kubernetes 支持：[TiDB Binlog 运维文档](/v3.1/tidb-in-kubernetes/maintain/tidb-binlog.md)，[Kubernetes 上的 TiDB Binlog Drainer 配置](/v3.1/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
 
 ## 工具演进路线
+
+下面简单的介绍一下 TiDB 生态工具集的演进，方便大家了解工具之间的关系。
 
 ### TiDB 备份与恢复
 
@@ -114,7 +117,7 @@ Mydumper 和 Loader 都是在逻辑层面进行备份和恢复，效率较低；
 
 Loader -> TiDB Lightning：
 
-Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightning 将数据直接导入 TiKV，大大提升了全量数据恢复的效率，适合将大量数据（TB 级别以上数据）快速导入到一个全新的 TiDB 集群中；且 TiDB Lightning 集成了 Loader 的逻辑导入数据功能，参见 [TiDB Lightning TiDB-backend 文档](/v3.0/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)，支持在线导入数据。
+Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightning 将数据直接导入 TiKV，大大提升了全量数据恢复的效率，适合将大量数据（TB 级别以上数据）快速导入到一个全新的 TiDB 集群中；且 TiDB Lightning 集成了 Loader 的逻辑导入数据功能，参见 [TiDB Lightning TiDB-backend 文档](/v3.1/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)，支持在线导入数据。
 
 ### MySQL 数据迁移
 
@@ -124,13 +127,13 @@ Loader 使用 SQL 的方式进行全量数据恢复，效率较低。TiDB Lightn
 
 - Loader -> TiDB Lightning：
 
-    TiDB Lightning 集成了 Loader 的逻辑导入数据功能，参见 [TiDB Lightning TiDB-backend 文档](/v3.0/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)，由 TiDB Lightning 统一提供全量数据恢复功能。
+    TiDB Lightning 集成了 Loader 的逻辑导入数据功能，参见 [TiDB Lightning TiDB-backend 文档](/v3.1/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)，由 TiDB Lightning 统一提供全量数据恢复功能。
 
 ## 数据迁移解决方案
 
 针对 TiDB 的 2.1，3.0 以及 3.1 版本，下面给出典型业务场景下的数据迁移方案。
 
-### TiDB 2.1 和 3.0 全链路数据迁移方案
+### TiDB 3.0 全链路数据迁移方案
 
 #### MySQL 数据迁移到 TiDB
 
