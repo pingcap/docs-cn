@@ -65,10 +65,11 @@ mysql> explain select * from t where a = 1 or b = 1;
 ```
 
 值得注意的是，目前 `IndexMerge` 被限定为只在无法使用单个索引时候才会被考虑，假如上述查询中的条件变为 `a = 1 and b = 1` ，优化器只会考虑使用索引 `a` 或 `b` 访问，而不会选择 `IndexMerge` 。
- 
+
 默认设置下，`IndexMerge` 是关闭的，开启的方法有两种：
-- 设置系统变量 `tidb_enable_index_merge` 为 1；
-- 在查询中使用 SQL Hint `USE_INDEX_MERGE` ；
+
+- 设置系统变量 `tidb_enable_index_merge` 为 1 ；
+- 在查询中使用 SQL Hint [`USE_INDEX_MERGE`](/dev/reference/performance/optimizer-hints/#use_index_merget1_name-idx1_name--idx2_name-) ；
 
 > **注意：**
 >
