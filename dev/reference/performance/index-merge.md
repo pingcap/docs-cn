@@ -18,7 +18,9 @@ category: reference
 create table t(a int, b int, c int, unique key(a), unique key(b));
 explain select * from t where a = 1 or b = 1;
 ```
+
 由于查询的过滤条件是一个通过 `OR` 连接的表达式，我们在只能对每张表使用一个索引的限制下，无法将 `a = 1` 下推到索引 `a` 上，或将 `b = 1` 下推到索引 `b` 上，因此为了保证结果正确性，对这个查询只能生成 `TableScan` 的执行计划:
+
 ```
 +---------------------+----------+-----------+------------------------------------------------------------+
 | id                  | count    | task      | operator info                                              |
@@ -28,9 +30,11 @@ explain select * from t where a = 1 or b = 1;
 |   └─TableScan_5     | 10000.00 | cop[tikv] | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
 +---------------------+----------+-----------+------------------------------------------------------------+
 ```
+
 当 `t` 的数据量很大时，全表扫描的效率会很低，而这条查询最多却只会返回两行记录。针对这类场景，TiDB 引入了对表的新访问方式 `IndexMerge` 。
 
 在 `IndexMerge` 访问方式下，对一张表优化器可以选择使用多个索引，并将每个索引的返回结果进行集合操作，这样可以减少大量不必要的数据扫描。以上面查询为例，生成的执行计划将会变为：
+
 ```
 +--------------------+-------+-----------+---------------------------------------------------------------+
 | id                 | count | task      | operator info                                                 |
@@ -40,10 +44,10 @@ explain select * from t where a = 1 or b = 1;
 | ├─IndexScan_9      | 1.00  | cop[tikv] | table:t, index:b, range:[1,1], keep order:false, stats:pseudo |
 | └─TableScan_10     | 2.00  | cop[tikv] | table:t, keep order:false, stats:pseudo                       |
 +--------------------+-------+-----------+---------------------------------------------------------------+
-
 ```
 
 `IndexMerge` 执行计划的结构和 `IndexLookUp` 很接近，都可以分为索引扫描和全表扫描两部分，只是 `IndexMerge` 的索引扫描部分可以包含多个 `IndexScan` ，当表的主键索引是整数类型时，索引扫描部分甚至可能包含一个 `TableScan` ，比如：
+
 ```
 mysql> create table t(a int primary key, b int, c int, unique key(b));
 Query OK, 0 rows affected (0.01 sec)
