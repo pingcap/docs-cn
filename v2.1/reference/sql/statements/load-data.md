@@ -48,4 +48,4 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 ## 另请参阅
 
 * [INSERT](/v2.1/reference/sql/statements/insert.md)
-* [Transaction Model](/v2.1/reference/transactions/transaction-model.md)
+* [乐观事务模型](/v2.1/reference/transactions/transaction-optimistic.md)

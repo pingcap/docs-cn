@@ -1,15 +1,16 @@
 ---
 title: TiDB 事务概览
+summary: 了解 TiDB 中的事务。
 category: reference
 ---
 
 # TiDB 事务概览
 
-TiDB 支持完整的分布式事务。本文主要介绍涉及到事务的语句、显式/隐式事务以及事务的隔离级别和惰性检查。
+TiDB 支持完整的分布式事务，提供[乐观事务](/dev/reference/transactions/transaction-optimistic.md)与[悲观事务](/dev/reference/transactions/transaction-pessimistic.md)（TiDB 3.0 中引入）两种事务模型。本文主要介绍涉及到事务的语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
 
-常用的变量包括 `autocommit`、[`tidb_disable_txn_auto_retry`](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
+常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
 
-## 事务常用语句
+## 常用事务语句
 
 ### `BEGIN` 和 `START TRANSACTION`
 
@@ -69,13 +70,11 @@ ROLLBACK;
 SET autocommit = {0 | 1}
 ```
 
-当 `autocommit = 1` 时（默认），当前的 Session 为自动提交状态。设置 `autocommit = 0` 时将更改当前 Session 为非自动提交状态。
-
-自动提交状态下，每条语句运行后，TiDB 会自动将修改提交到数据库中。非自动提交状态下，通过执行 `COMMIT` 语句来手动提交事务。
+当 `autocommit = 1` 时（默认），当前的 Session 为自动提交状态，即每条语句运行后，TiDB 会自动将修改提交到数据库中。设置 `autocommit = 0` 时更改当前 Session 更改为非自动提交状态，通过执行 `COMMIT` 语句来手动提交事务。
 
 > **注意：**
 >
-> 某些语句执行后会导致隐式提交。例如，执行 `[BEGIN|START TRANCATION]` 语句的时候，TiDB 会试图提交上一个事务，并开启一个新的事务。详情参见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。
+> 某些语句执行后会导致隐式提交。例如，执行 `[BEGIN|START TRANCATION]` 语句时，TiDB 会试图提交上一个事务，并开启一个新的事务。详情参见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。
 
 另外，`autocommit` 也是一个系统变量，你可以通过变量赋值语句修改当前 Session 或 Global 的值。
 
@@ -93,7 +92,7 @@ SET @@GLOBAL.autocommit = {0 | 1};
 
 ## 显式事务和隐式事务
 
-TiDB 可以显式地使用事务 (`[BEGIN|START TRANSACTION]`/`COMMIT`) 或者隐式地使用事务 (`SET autocommit = 1`)。
+TiDB 可以显式地使用事务（通过 `[BEGIN|START TRANSACTION]`/`COMMIT` 语句定义事务的开始和结束) 或者隐式地使用事务 (`SET autocommit = 1`)。
 
 在自动提交状态下，使用 `[BEGIN|START TRANSACTION]` 语句会显式地开启一个事务，同时也会禁用自动提交，使隐式事务变成显式事务。直到执行 `COMMIT` 或 `ROLLBACK` 语句时才会恢复到此前默认的自动提交状态。
 
@@ -109,7 +108,7 @@ TiDB **只支持** `SNAPSHOT ISOLATION`，可以通过下面的语句将当前 S
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
 
-## 事务的惰性检查
+## 惰性检查
 
 TiDB 中，对于普通的 `INSERT` 语句写入的值，会进行惰性检查。惰性检查的含义是，不在 `INSERT` 语句执行时进行唯一约束的检查，而在事务提交时进行唯一约束的检查。
 
@@ -159,4 +158,57 @@ insert into test values (3);
 rollback;
 ```
 
-以上例子中，第二条语句执行失败。由于调用了 `rollback`，因此事务不会将任何数据写入数据库。
+以上例子中，第二条语句执行失败。由于调用了 `ROLLBACK`，因此事务不会将任何数据写入数据库。
+
+## 事务大小
+
+对于 TiDB 事务而言，事务太大或太小，都会影响事务的执行效率。
+
+### 小事务
+
+以如下 query 为例，当 `autocommit = 1` 时，下面三条语句各为一个事务：
+
+{{< copyable "sql" >}}
+
+```sql
+UPDATE my_table SET a ='new_value' WHERE id = 1;
+UPDATE my_table SET a ='newer_value' WHERE id = 2;
+UPDATE my_table SET a ='newest_value' WHERE id = 3;
+```
+
+此时每一条语句都需要经过两阶段提交，频繁的网络交互致使延迟率高。为提升事务执行效率，可以选择使用显式事务，即在一个事务内执行三条语句。
+
+优化后版本：
+
+{{< copyable "sql" >}}
+
+```sql
+START TRANSACTION;
+UPDATE my_table SET a ='new_value' WHERE id = 1;
+UPDATE my_table SET a ='newer_value' WHERE id = 2;
+UPDATE my_table SET a ='newest_value' WHERE id = 3;
+COMMIT;
+```
+
+同理，执行 `INSERT` 语句时，建议使用显式事务。
+
+> **注意：**
+>
+> 由于 TiDB 中的资源是分布式的，TiDB 中单线程 workload 可能不会很好地利用分布式资源，因此性能相比于单实例部署的 MySQL 较低。这与 TiDB 中的事务延迟较高的情況类似。
+
+### 大事务
+
+由于 TiDB 两阶段提交的要求，修改数据的单个事务过大时会存在以下问题：
+
+* 客户端在提交之前，数据都写在内存中，而数据量过多时易导致 OOM (Out of Memory) 错误。
+* 在第一阶段写入数据时，与其他事务出现冲突的概率会指数级增长，使事务之间相互阻塞影响。
+* 最终导致事务完成提交的耗时增加。
+
+因此，TiDB 特意对事务的大小做了一些限制以减少这种影响：
+
+* 单个事务包含的 SQL 语句不超过 5000 条（默认）
+* 每个键值对不超过 6 MB
+* 键值对的总数不超过 300000
+* 键值对的总大小不超过 100 MB
+
+为了使性能达到最优，建议每 100～500 行写入一个事务。
