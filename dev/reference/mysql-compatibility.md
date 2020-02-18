@@ -22,23 +22,22 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 事件
 * 自定义函数
 * 外键约束
-* 全文函数与索引
-* 空间函数与索引
+* 全文/空间函数与索引
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * `BINARY` 之外的排序规则
-* 增加主键
-* 删除主键
+* 增加/删除主键
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
 * X Protocol
 * Savepoints
 * 列级权限
+* `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
 * `CREATE TABLE tblName AS SELECT stmt` 语法
 * `CREATE TEMPORARY TABLE` 语法
-* `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
+* `SELECT INTO FILE` 语法
 
 ## 与 MySQL 有差异的特性
 
@@ -53,7 +52,7 @@ TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB �
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id int unique key auto_increment, c int);
+create table t(id int unique key AUTO_INCREMENT, c int);
 ```
 
 TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配（目前会缓存 30000 个 ID），用完这段值再去取下一段。
@@ -63,7 +62,7 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
 2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
 
-另外，从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `auto_increment` 属性，默认是不允许移除。
+另外，从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
 
 ### Performance schema
 
@@ -85,10 +84,12 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 + Add Index
     - 不支持同时创建多个索引
+    - 不支持 `VISIBLE/INVISIBLE` 的索引
     - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
+    - 其他类型的 Index Type (HASH/BTREE/RTREE) 只有语法支持，功能不支持
 + Add Column
     - 不支持同时创建多个列
-    - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 auto_increment 属性
+    - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 AUTO_INCREMENT 属性
 + Drop Column: 不支持删除主键列或索引列
 + Change/Modify Column
     - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
@@ -99,6 +100,18 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
++ Table Option 不支持以下语法
+    - `WITH/WITHOUT VALIDATION`
+    - `SECONDARY_LOAD/SECONDARY_UNLOAD`
+    - `CHECK/DROP CHECK`
+    - `STATS_AUTO_RECALC/STATS_SAMPLE_PAGES`
+    - `SECONDARY_ENGINE`
+    - `ENCRYPTION`
++ Table Partition 不支持以下语法
+    - `PARTITION BY LIST`
+    - `PARTITION BY KEY`
+    - `SUBPARTITION`
+    - `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
 
 ### `ANALYZE TABLE`
 
@@ -159,8 +172,11 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 + `foreign_key_checks` 的默认值不同：
     + TiDB 中该值默认为 `OFF`，并且目前 TiDB 只支持设置该值为 `OFF`。
     + MySQL 5.7 中该值默认为 `ON`。
-+ 默认 SQL mode 与 MySQL **已相同**
-    + TiDB 和 MySQL 5.7 中均为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
++ 默认 SQL mode 与 MySQL 5.7 相同，与 MySQL 8.0 不同：
+    + TiDB 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
+    + MySQL 中默认设置：
+        + MySQL 5.7 的默认 SQL mode 与 TiDB 相同
+        + MySQL 8.0 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION`
 + `lower_case_table_names` 的默认值不同：
     + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
     + MySQL 中默认设置：
@@ -193,3 +209,12 @@ TiDB 不需要导入时区表数据也能使用所有时区名称，采用系统
 #### 零月和零日
 
 目前 TiDB 尚不能完整支持月为 0 或日为 0（但年不为 0）的日期。在非严格模式下，此类日期时间能被正常插入，但对于特定类型 SQL 可能出现无法读出来的情况。
+
+### 类型系统的区别
+
+以下的列类型 MySQL 支持，但 TiDB 不支持：
+
++ FLOAT4/FLOAT8
++ FIXED (alias for DECIMAL)
++ SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)
++ SQL_TSI_* （包括 SQL_TSI_YEAR、SQL_TSI_MONTH、SQL_TSI_WEEK、SQL_TSI_DAY、SQL_TSI_HOUR、SQL_TSI_MINUTE 和 SQL_TSI_SECOND）

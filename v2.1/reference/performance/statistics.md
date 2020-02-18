@@ -38,7 +38,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BU
 ### 自动更新
 
 在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，
-更新的周期是 5 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
+更新的周期是 20 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
 
 和统计信息自动更新相关的三个系统变量如下：
 
@@ -97,6 +97,26 @@ SHOW STATS_META [ShowLikeOrWhere]
 > **注意：**
 >
 > 在 TiDB 根据 DML 语句自动更新总行数以及修改的行数时，`update_time` 也会被更新，因此并不能认为 `update_time` 是最近一次发生 Analyze 的时间。
+
+### 表的健康度信息
+
+通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0；当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100。
+
+通过以下命令来查看表的统计信息健康度，你可以通过 `ShowLikeOrWhere` 来筛选需要的信息：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW STATS_HEALTHY [ShowLikeOrWhere];
+```
+
+目前，`SHOW STATS_HEALTHY` 会输出 3 列，具体如下：
+
+| 语法元素 | 说明            |
+| :-------- | :------------- |
+| db_name  |  数据库名    |
+| table_name | 表名 |
+| healthy | 健康度 |
 
 ### 列的元信息
 

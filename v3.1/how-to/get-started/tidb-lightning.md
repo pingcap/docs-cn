@@ -53,7 +53,7 @@ TiDB Lightning 主要包含两个部分:
 
 通过以下链接获取 TiDB Lightning 安装包（选择与 TiDB 集群相同的版本）：
 
-- **v3.0.4**: [tidb-toolkit-v3.0.4-linux-amd64.tar.gz](http://download.pingcap.org/tidb-toolkit-v3.0.0-linux-amd64.tar.gz)
+- **v3.0.4**: [tidb-toolkit-v3.0.4-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v3.0.0-linux-amd64.tar.gz)
 
 ### 第 3 步：启动 `tikv-importer`
 
@@ -71,7 +71,7 @@ TiDB Lightning 主要包含两个部分:
 
     [server]
     # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "0.0.0.0:8287"
+    addr = "192.168.20.10:8287"
 
     [import]
     # 存储引擎文档 (engine file) 的文件夹路径。
@@ -111,7 +111,7 @@ TiDB Lightning 主要包含两个部分:
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 
-如果出错，请参见 [TiDB-Lightning 错误排解](/v3.1/how-to/troubleshoot/tidb-lightning.md)。
+如果出错，请参见 [TiDB Lightning 错误排解](/v3.1/how-to/troubleshoot/tidb-lightning.md)。
 
 ## 总结
 
