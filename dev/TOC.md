@@ -51,9 +51,9 @@
     - [概述](/dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/dev/how-to/monitor/monitor-a-cluster.md)
   + 迁移
-    - [迁移工具使用指南](/dev/reference/tools/use-guide.md)
+    - [迁移工具使用指南](/dev/reference/tools/user-guide.md)
     + 从 MySQL 迁移
-      - [从 MySQL/Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-mysql-aurora.md)
+      - [以 Amazon Aurora MySQL 为例](/dev/how-to/migrate/from-mysql-aurora.md)
     - [从 CSV 迁移](/dev/reference/tools/tidb-lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](/dev/how-to/maintain/ansible-operations.md)
@@ -287,7 +287,7 @@
       - [常见错误修复](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/dev/reference/tidb-binlog/faq.md)
   + 周边工具
-    - [工具使用指南](/dev/reference/tools/use-guide.md)
+    - [工具使用指南](/dev/reference/tools/user-guide.md)
     - [Mydumper](/dev/reference/tools/mydumper.md)
     - [Loader](/dev/reference/tools/loader.md)
     - [Syncer](/dev/reference/tools/syncer.md)
