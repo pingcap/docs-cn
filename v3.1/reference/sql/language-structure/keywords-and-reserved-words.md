@@ -29,7 +29,7 @@ mysql> CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-The following list shows the keywords and reserved words in TiDB. The reserved words are labelled with (R).
+The following list shows the keywords and reserved words in TiDB. Most of the reserved words are labelled with `(R)`. [Window functions'](/v3.1/reference/sql/functions-and-operators/window-functions.md) reserved words are labelled with `(R-Window)`.
 
 {{< tabs-panel "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" >}}
 
@@ -99,6 +99,7 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - COUNT
 - CREATE (R)
 - CROSS (R)
+- CUME_DIST (R-Window)
 - CURRENT_DATE (R)
 - CURRENT_TIME (R)
 - CURRENT_TIMESTAMP (R)
@@ -127,6 +128,7 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - DELAY_KEY_WRITE
 - DELAYED (R)
 - DELETE (R)
+- DENSE_RANK (R-Window)
 - DESC (R)
 - DESCRIBE (R)
 - DISABLE
@@ -163,6 +165,7 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - FALSE (R)
 - FIELDS
 - FIRST
+- FIRST_VALUE (R-Window)
 - FIXED
 - FLOAT (R)
 - FLUSH
@@ -184,6 +187,7 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - GRANTS
 - GROUP (R)
 - GROUP_CONCAT
+- GROUPS (R-Window)
 
 <a name="H" class="letter" href="#H">H</a>
 
@@ -228,6 +232,9 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 
 <a name="L" class="letter" href="#L">L</a>
 
+- LAG (R-Window)
+- LAST_VALUE (R-Window)
+- LEAD (R-Window)
 - LEADING (R)
 - LEFT (R)
 - LESS
@@ -278,6 +285,8 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - NONE
 - NOT (R)
 - NOW
+- NTH_VALUE (R-Window)
+- NTILE (R-Window)
 - NULL (R)
 - NUMERIC (R)
 - NVARCHAR (R)
@@ -291,12 +300,14 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - OR (R)
 - ORDER (R)
 - OUTER (R)
+- OVER (R-Window)
 
 <a name="P" class="letter" href="#P">P</a>
 
 - PARTITION (R)
 - PARTITIONS
 - PASSWORD
+- PERCENT_RANK (R-Window)
 - PLUGINS
 - POSITION
 - PRECISION (R)
@@ -316,6 +327,7 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 <a name="R" class="letter" href="#R">R</a>
 
 - RANGE (R)
+- RANK (R-Window)
 - READ (R)
 - REAL (R)
 - REDUNDANT
@@ -334,7 +346,8 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - ROW
 - ROW_COUNT
 - ROW_FORMAT
-- ROWS (R)
+- ROW_NUMBER (R-Window)
+- ROWS (R-Window)
 
 <a name="S" class="letter" href="#S">S</a>
 
@@ -430,6 +443,7 @@ The following list shows the keywords and reserved words in TiDB. The reserved w
 - WEEK
 - WHEN (R)
 - WHERE (R)
+- WINDOW (R-Window)
 - WITH (R)
 - WRITE (R)
 
