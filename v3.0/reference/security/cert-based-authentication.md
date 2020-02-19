@@ -291,7 +291,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     {{< copyable "sql" >}}
 
     ```sql
-    SHOW SESSION STATUS LIKE 'Ssl_cipher_list'
+    SHOW SESSION STATUS LIKE 'Ssl_cipher_list';
     ```
 
 ### 配置用户证书信息
