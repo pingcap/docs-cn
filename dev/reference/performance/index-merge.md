@@ -1,9 +1,9 @@
 ---
-title: 使用 IndexMerge 方式访问表
+title: 使用 Index Merge 方式访问表
 category: reference
 ---
 
-# 使用 IndexMerge 方式访问表
+# 使用 Index Merge 方式访问表
 
 `IndexMerge` 是在 TiDB 4.0 引入的一种对表的新访问方式。在 `IndexMerge` 访问方式下，优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行合并。在某些场景下，这种访问方式能够减少大量不必要的数据扫描，提升查询的执行效率。
 
