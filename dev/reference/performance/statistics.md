@@ -33,7 +33,11 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
 ```
 
-WITH NUM BUCKETS 可以用来指定生成直方图的桶数量上限, WITH NUM TOPN 可以用来指定生成 TOPN 数目的上限，WITH NUM CMSKETCH DEPTH 和 WITH CMSKETCH WIDTH 可以从来指定 CM Sketch 的长宽，WITH NUM SAMPLES 可以用来指定采样的数目。
+- `WITH NUM BUCKETS` 用于指定生成直方图的桶数量上限。
+- `WITH NUM TOPN` 用于指定生成 TOPN 数目的上限。
+- `WITH NUM CMSKETCH DEPTH` 用于指定 CM Sketch 的长。
+- `WITH CMSKETCH WIDTH` 用于指定 CM Sketch 的宽。
+- `WITH NUM SAMPLES` 用于指定采样的数目。
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
