@@ -9,7 +9,7 @@ aliases: ['/docs-cn/v2.1/reference/transactions/transaction-model/']
 
 本文介绍 TiDB 乐观事务的原理，以及相关特性。本文假定你对 [TiDB 的整体架构](/v2.1/architecture.md#tidb-整体架构)、[Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型以及事务的 [ACID 特性](/v2.1/glossary.md#acid)都有一定了解。
 
-TiDB 默认使用乐观事务模型，即事务提交时假定不会发生并发冲突，只有在事务最终提交时才会检测冲突，而不是像 MySQL 一样使用行锁来避免写写冲突。
+TiDB 默认使用乐观事务模型，不会出现读写冲突，所有的读操作都不会被写操作阻塞。对于写写冲突，只有在客户端执行 `COMMIT` 时，才会触发两阶段提交并检测是否存在写写冲突。
 
 ## 乐观事务原理
 
