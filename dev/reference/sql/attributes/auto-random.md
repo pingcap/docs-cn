@@ -21,13 +21,13 @@ category: reference
 create table t (a int primary key auto_increment, b varchar(255))
 ```
 
-对这样的表执行大量的未指定主键值的 `INSERT` 语句时，如
+在以上语句所建的表上执行大量未指定主键值的 `INSERT` 语句时，示例如下：
 
 ```sql
 insert into t(b) values ('a'), ('b'), ('c')
 ```
 
-由于未指定主键列的值（`a` 列），TiDB 会使用连续自增的行值作为行 ID，可能导致单个 TiKV 节点上产生写入热点，进而影响对外提供服务的性能。要避免这种性能下降，可以在执行建表语句时为 `a` 列指定 `AUTO_RANDOM` 属性而不是 `AUTO_INCREMENT` 属性。示例如下：
+在该情况下，由于未指定主键列的值（`a` 列），TiDB 会使用连续自增的行值作为行 ID，可能导致单个 TiKV 节点上产生写入热点，进而影响对外提供服务的性能。要避免这种性能下降，可以在执行建表语句时为 `a` 列指定 `AUTO_RANDOM` 属性而不是 `AUTO_INCREMENT` 属性。示例如下：
 
 {{< copyable "sql" >}}
 

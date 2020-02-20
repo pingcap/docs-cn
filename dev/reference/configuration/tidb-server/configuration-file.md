@@ -431,11 +431,11 @@ TiDB 服务状态相关配置。
 + `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
-## experimental <span class="version-mark">从 v3.1.0 版本开始引入</span>
+## experimental
 
 TiDB 实验功能相关配置。
 
-### `allow-auto-random`
+### `allow-auto-random` <span class="version-mark">从 v3.1.0 版本开始引入</span>
 
 + 用于控制是否允许使用 `AUTO_RANDOM`。
 + 默认值：false
