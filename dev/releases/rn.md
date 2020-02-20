@@ -16,6 +16,7 @@ category: release
 
 ## 3.0
 
+- [3.0.10](/dev/releases/3.0.10.md)
 - [3.0.9](/dev/releases/3.0.9.md)
 - [3.0.8](/dev/releases/3.0.8.md)
 - [3.0.7](/dev/releases/3.0.7.md)
