@@ -212,6 +212,12 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 + 默认值：100MB
 + 单位: MB|GB
 
+### `reserve-space`
+
++ TiKV 启动时预占额外空间的临时文件大小，临时文件名为`space_placeholder_file`，位于 storage.data-dir 目录下，TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将该项配置设置为 0
++ 默认值：2GB
++ 单位: MB|GB
+
 ## raftstore
 
 raftstore 相关的配置项。
