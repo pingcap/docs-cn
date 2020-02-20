@@ -433,7 +433,7 @@ TiDB 服务状态相关配置。
 
 ## experimental
 
-TiDB 实验功能相关配置。
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
 
 ### `allow-auto-random` <span class="version-mark">从 v3.1.0 版本开始引入</span>
 
