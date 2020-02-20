@@ -42,6 +42,7 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 * TiDB 通过内置的 Pump Client 将 Binlog 分发到各个 Pump。
 * Pump 负责存储 Binlog，并将 Binlog 按顺序提供给 Drainer。
 * Drainer 负责读取各个 Pump 的 Binlog，归并排序后发送到下游。
+* Drainer 支持 [relay log](/dev/reference/tidb-binlog/relay-log.md) 功能，通过 relay log 保证下游集群的一致性状态。
 
 ## 注意事项
 
