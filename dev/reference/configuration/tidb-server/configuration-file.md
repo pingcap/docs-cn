@@ -431,7 +431,7 @@ TiDB 服务状态相关配置。
 + `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
-## experimental <span class="version-mark">从 v4.0.0 版本开始引入</span>
+## experimental <span class="version-mark">从 v3.1.0 版本开始引入</span>
 
 TiDB 实验功能相关配置。
 
