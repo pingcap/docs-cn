@@ -408,3 +408,15 @@ TiDB 服务状态相关配置。
 
 + `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
+
+## pessimistic-txn
+
+### enable
+
++ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/dev/reference/transactions/transaction-pessimistic.md)。
++ 默认值：true
+
+### max-retry-count
+
++ 悲观事务中每个语句最大重试次数，超出该限制将会报错。
++ 默认值：256

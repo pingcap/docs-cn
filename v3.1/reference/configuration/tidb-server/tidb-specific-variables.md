@@ -465,13 +465,15 @@ set tidb_query_log_max_len = 20;
 
 ### tidb_txn_mode
 
-作用域：SESSION（自 TiDB 3.0.4 起支持 GLOBAL）
+作用域：SESSION | GLOBAL
 
-默认值：""
+默认值："pessimistic"
 
-这个变量用于设置事务模式，默认是乐观锁模式。TiDB 3.0 加入了悲观锁模式（实验性）。将 `tidb_txn_mode` 设置为 `'pessimistic'` 后，这个 session 执行的所有显式事务（即非 autocommit 的事务）都会进入悲观事务模式。更多关于悲观锁的细节，可以参考 [TiDB 悲观事务模式](/v3.1/reference/transactions/transaction-pessimistic.md)。
+这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/dev/reference/transactions/transaction-pessimistic.md)。
 
-自 TiDB 3.0.4 起，该变量也支持 GLOBAL 作用域，用于设定全局的事务模式。当设定全局的事务模式时，仅在修改生效之后创建的 session 会受到影响。
+但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
+
+将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/dev/reference/transactions/transaction-model.md)。
 
 ### tidb_constraint_check_in_place
 
@@ -479,7 +481,7 @@ set tidb_query_log_max_len = 20;
 
 默认值：0
 
-TiDB 默认采用乐观事务模型，即在执行写入时，假设不存在冲突。冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
+TiDB 支持乐观事务模型，即在执行写入时，假设不存在冲突。冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
 
 这个变量用来控制是否每次写入一行时就执行一次唯一性检查。注意，开启该变量后，在大批量写入场景下，对性能会有影响。
 

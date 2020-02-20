@@ -1072,3 +1072,21 @@ import 相关的配置项。
 + 并发导入工作任务数。
 + 默认值：8
 + 最小值：1
+
+## pessimistic-txn
+
+### `enabled`
+
++ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/dev/reference/transactions/transaction-pessimistic.md)。
++ 默认值：true
+
+### `wait-for-lock-timeout`
+
++ 悲观事务在 TiKV 中等待其他事务释放锁的最长时间，单位为毫秒。
++ 默认值：1000
++ 最小值：1
+
+### `wait-up-delay-duration`
+
++ 悲观事务释放锁时，只会唤醒等锁事务中 start ts 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 毫秒之后被唤醒。
++ 默认值：20
