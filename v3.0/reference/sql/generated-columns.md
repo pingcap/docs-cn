@@ -96,4 +96,6 @@ CREATE TABLE person (
 
 - 不能通过 `ALTER TABLE` 增加 `STORED` 存储方式的 generated column；
 - 不能通过 `ALTER TABLE` 在 generated column 上增加索引；
+- 不能通过 `ALTER TABLE` 将 Generated stored column 转换为普通列，或者反过来，将普通列转换为 Generated store column。
+- 不能通过 `ALTER TABLE` 修改 Generated stored column 的**生成列表达式**；
 - 并未支持所有的 [JSON 函数](/v3.0/reference/sql/functions-and-operators/json-functions.md)。
