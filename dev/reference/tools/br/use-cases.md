@@ -37,11 +37,11 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','
 
 ### TiKV 集群硬件信息
 
-操作系统：CentOS Linux release 7.6.1810 (Core)
-CPU：16-Core Common KVM processor
-RAM：32GB
-硬盘：500G SSD * 2
-网卡：10000MB/s
+* 操作系统：CentOS Linux release 7.6.1810 (Core)
+* CPU：16-Core Common KVM processor
+* RAM：32GB
+* 硬盘：500G SSD * 2
+* 网卡：10000MB/s
 
 ### 配置
 
@@ -147,8 +147,8 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 
 > **注意：**
 >
-> - 虽然本次任务是备份单表，但因为表中有 3 个索引，所以正常会拆分成 4 个子任务。
-> - 下图中有 13 个点，说明有 9 次 (13-4) 重试。备份过程中可能发生 Region 调度行为，少量重试是正常的。
+> * 虽然本次任务是备份单表，但因为表中有 3 个索引，所以正常会拆分成 4 个子任务。
+> * 下图中有 13 个点，说明有 9 次 (13-4) 重试。备份过程中可能发生 Region 调度行为，少量重试是正常的。
 
 ![img](/media/br/backup-subtask-duration.png)
 
@@ -266,11 +266,11 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 以上日志信息中包含以下内容：
 
-恢复耗时：`total take(s):961.37`
-数据大小：`total size(MB): 353227.18`
-恢复吞吐：`avg speed(MB/s): 367.42`
-`Region Split` 耗时：`take=49.049182743s`
-校验耗时：`take=6m34.879439498s`
+* 恢复耗时：`total take(s):961.37`
+* 数据大小：`total size(MB): 353227.18`
+* 恢复吞吐：`avg speed(MB/s): 367.42`
+* `Region Split` 耗时：`take=49.049182743s`
+* 校验耗时：`take=6m34.879439498s`
 
 根据上表数据可以计算得到：
 
@@ -334,10 +334,10 @@ bin/br backup table --db batchmark --table order_line -s local:///home/tidb/back
 
 以上日志信息中包含以下内容：
 
-备份耗时：`total take(s): 551.31`
-数据大小：`total size(MB): 353227.18`
-备份吞吐：`avg speed(MB/s): 640.71`
-校验耗时：`take=6m33.962719217s`
+* 备份耗时：`total take(s): 551.31`
+* 数据大小：`total size(MB): 353227.18`
+* 备份吞吐：`avg speed(MB/s): 640.71`
+* 校验耗时：`take=6m33.962719217s`
 
 根据上表数据可以计算得到单个 TiKV 实例的吞吐：`avg speed(MB/s)`/`tikv_count` = `160`。
 
