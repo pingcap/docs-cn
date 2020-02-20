@@ -52,7 +52,7 @@
     + 从 MySQL 迁移
       - [全量迁移](/v2.1/how-to/migrate/from-mysql.md)
       - [增量复制](/v2.1/how-to/migrate/incrementally-from-mysql.md)
-    - [从 Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
+    - [从 MySQL/Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
     - [从 CSV 迁移](/v2.1/reference/tools/tidb-lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](/v2.1/how-to/maintain/ansible-operations.md)
@@ -300,7 +300,7 @@
         - [跳过或替代执行异常的 SQL 语句](/v2.1/reference/tools/data-migration/skip-replace-sqls.md)
       - [监控 DM 集群](/v2.1/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
+        - [从 MySQL/Amazon Aurora MySQL 迁移数据](/v2.1/how-to/migrate/from-aurora.md)
       - [DM Portal](/v2.1/reference/tools/data-migration/dm-portal.md)
       + DM 故障诊断
         - [故障诊断](/v2.1/reference/tools/data-migration/troubleshoot/dm.md)
