@@ -470,14 +470,13 @@ set tidb_query_log_max_len = 20;
 
 默认值："pessimistic"
 
-这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/dev/reference/transactions/transaction-pessimistic.md)。
+这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/v3.0/reference/transactions/transaction-pessimistic.md)。
 
 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
 
-将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/dev/reference/transactions/transaction-model.md)。
+将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/v3.0/reference/transactions/transaction-optimistic.md)。
 
 自 TiDB 3.0.4 起，该变量也支持 GLOBAL 作用域，用于设定全局的事务模式。当设定全局的事务模式时，仅在修改生效之后创建的 session 会受到影响。
-
 
 ### tidb_constraint_check_in_place
 

@@ -472,7 +472,7 @@ set tidb_query_log_max_len = 20;
 
 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
 
-将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/dev/reference/transactions/transaction-model.md)。
+将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/dev/reference/transactions/transaction-optimistic.md)。
 
 ### tidb_constraint_check_in_place
 

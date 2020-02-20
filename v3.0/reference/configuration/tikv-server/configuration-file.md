@@ -1078,7 +1078,7 @@ import 相关的配置项。
 
 ### `enabled`
 
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/dev/reference/transactions/transaction-pessimistic.md)。
++ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/v3.0/reference/transactions/transaction-pessimistic.md)。
 + 默认值：true
 
 ### `wait-for-lock-timeout`
