@@ -61,7 +61,7 @@
     + 备份与恢复
       - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-lightning.md)
       - [使用 BR 进行备份与恢复](/v3.1/reference/tools/br/br.md)
-      - [BR 备份与恢复最佳实践](/v3.1/reference/tools/br/br-best-practices.md)
+      - [BR 备份与恢复场景示例](/v3.1/reference/tools/br/use-cases.md)
     + 定位异常查询
       - [定位慢查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
@@ -282,6 +282,7 @@
     - [监控告警](/v3.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v3.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.1/reference/tidb-binlog/binlog-slave-client.md)
+    - [TiDB Binlog Relay Log](/v3.1/reference/tidb-binlog/relay-log.md)
     - [术语表](/v3.1/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/v3.1/reference/tidb-binlog/troubleshoot/binlog.md)
