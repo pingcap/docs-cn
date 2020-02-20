@@ -69,4 +69,4 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 ## 另请参阅
 
 * [INSERT](/dev/reference/sql/statements/insert.md)
-* [Transaction Model](/dev/reference/transactions/transaction-model.md)
+* [乐观事务模型](/dev/reference/transactions/transaction-optimistic.md)
