@@ -101,7 +101,7 @@ select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 ### INL_MERGE_JOIN
 
-`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。该算法相比于 INL_JOIN 会更为节省内存。该算法使用条件在 INL_JOIN 的使用条件上需要附加一条：join keys 中的内表列集合是内表使用的 index 的前缀, 或内表使用的 index 是 join keys 中的内表列集合的前缀。
+`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。该算法相比于 `INL_JOIN` 会更节省内存。该算法使用条件包含 `INL_JOIN` 的所有使用条件，但还需要添加一条：join keys 中的内表列集合是内表使用的 index 的前缀，或内表使用的 index 是 join keys 中的内表列集合的前缀。
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
