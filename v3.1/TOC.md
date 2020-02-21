@@ -303,6 +303,7 @@
     - [Upgrade](/v3.1/reference/tidb-binlog/upgrade.md)
     - [Reparo](/v3.1/reference/tidb-binlog/reparo.md)
     - [Binlog Slave Client](/v3.1/reference/tidb-binlog/binlog-slave-client.md)
+    - [Glossary](/v3.1/reference/tidb-binlog/glossary.md)
     + Troubleshoot
       - [Troubleshooting](/v3.1/reference/tidb-binlog/troubleshoot/binlog.md)
       - [Error Handling](/v3.1/reference/tidb-binlog/troubleshoot/error-handling.md)

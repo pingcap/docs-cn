@@ -272,6 +272,7 @@
     - [Upgrade](/v2.1/reference/tidb-binlog/upgrade.md)
     - [Reparo](/v2.1/reference/tidb-binlog/reparo.md)
     - [Binlog Slave Client](/v2.1/reference/tidb-binlog/binlog-slave-client.md)
+    - [Glossary](/v2.1/reference/tidb-binlog/glossary.md)
     + Troubleshoot
       - [Troubleshooting](/v2.1/reference/tidb-binlog/troubleshoot/binlog.md)
       - [Error Handling](/v2.1/reference/tidb-binlog/troubleshoot/error-handling.md)

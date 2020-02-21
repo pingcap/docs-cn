@@ -304,6 +304,7 @@
     - [Upgrade](/dev/reference/tidb-binlog/upgrade.md)
     - [Reparo](/dev/reference/tidb-binlog/reparo.md)
     - [Binlog Slave Client](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    - [Glossary](/dev/reference/tidb-binlog/glossary.md)
     + Troubleshoot
       - [Troubleshooting](/dev/reference/tidb-binlog/troubleshoot/binlog.md)
       - [Error Handling](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
