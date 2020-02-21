@@ -446,28 +446,29 @@ SELECT * FROM tables WHERE table_schema='mysql' AND table_name='user';
 
 ```
 *************************** 1. row ***************************
-  TABLE_CATALOG: def
-   TABLE_SCHEMA: mysql
-     TABLE_NAME: user
-     TABLE_TYPE: BASE TABLE
-         ENGINE: InnoDB
-        VERSION: 10
-     ROW_FORMAT: Compact
-     TABLE_ROWS: 0
- AVG_ROW_LENGTH: 0
-    DATA_LENGTH: 0
-MAX_DATA_LENGTH: 0
-   INDEX_LENGTH: 0
-      DATA_FREE: 0
- AUTO_INCREMENT: 0
-    CREATE_TIME: 2019-03-29 09:17:27
-    UPDATE_TIME: NULL
-     CHECK_TIME: NULL
-TABLE_COLLATION: utf8mb4_bin
-       CHECKSUM: NULL
- CREATE_OPTIONS:
-  TABLE_COMMENT:
-  TIDB_TABLE_ID: 5
+            TABLE_CATALOG: def
+             TABLE_SCHEMA: mysql
+               TABLE_NAME: user
+               TABLE_TYPE: BASE TABLE
+                   ENGINE: InnoDB
+                  VERSION: 10
+               ROW_FORMAT: Compact
+               TABLE_ROWS: 0
+           AVG_ROW_LENGTH: 0
+              DATA_LENGTH: 0
+          MAX_DATA_LENGTH: 0
+             INDEX_LENGTH: 0
+                DATA_FREE: 0
+           AUTO_INCREMENT: 0
+              CREATE_TIME: 2019-03-29 09:17:27
+              UPDATE_TIME: NULL
+               CHECK_TIME: NULL
+          TABLE_COLLATION: utf8mb4_bin
+                 CHECKSUM: NULL
+           CREATE_OPTIONS:
+            TABLE_COMMENT:
+            TIDB_TABLE_ID: 5
+TIDB_ROW_ID_SHARDING_INFO: NULL
 1 row in set (0.00 sec)
 ```
 
@@ -482,6 +483,16 @@ SHOW TABLES
   FROM db_name
   [LIKE 'wild']
 ```
+
+Most of the information in the table is the same as MySQL. Only two columns are newly defined by TiDB:
+
+* `TIDB_TABLE_ID`: to indicate the internal ID of a table. This ID is unique in a TiDB cluster.
+* `TIDDB_ROW_ID_SHARDING_INFO`: to indicate the sharding type of a table. The possible values are as follows:
+    - `"NOT_SHARDED"`: the table is not sharded.
+    - `"NOT_SHARDED(PK_IS_HANDLE)"`: the table that defines an integer Primary Key as its row id is not sharded.
+    - `"PK_AUTO_RANDOM_BITS={bit_number}"`: the table that defines an integer Primary Key as its row id is sharded because the Primary Key is assigned with `AUTO_RANDOM` attribute.
+    - `"SHARD_BITS={bit_number}"`: the table is sharded using `SHARD_ROW_ID_BITS={bit_number}`.
+    - NULL: the table is a system table or view, and thus cannot be sharded.
 
 ### TABLE_CONSTRAINTS table
 
