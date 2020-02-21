@@ -7,9 +7,11 @@ category: reference
 
 本文介绍了如何使用 [dmctl](/dev/reference/tools/data-migration/overview.md#dmctl) 组件来进行数据同步任务的管理和维护。对于用 DM-Ansible 部署的 DM 集群，dmctl 二进制文件路径为 `dm-ansible/dmctl`。
 
-## dmctl 基本用法
+dmctl 支持交互模式用于人工操作，同时也支持命令模式用于脚本。
 
-本部分描述了一些 dmctl 命令的基本用法。
+## dmctl 交互模式
+
+本部分描述了在交互模式下一些 dmctl 命令的基本用法。
 
 ### dmctl 使用帮助
 
@@ -50,7 +52,7 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 
 ### 任务管理概览
 
-进入命令行模式，与 DM-master 进行交互：
+进入交互模式，与 DM-master 进行交互：
 
 {{< copyable "shell-regular" >}}
 
@@ -900,6 +902,49 @@ purge-relay -w "127.0.0.1:8262" --filename "mysql-bin.000003"
 > **注意：**
 >
 > 一般不需要使用此命令。仅当已确定 `task => DM-workers` 映射关系存在，但执行其它命令时仍提示必须刷新它时，你才需要使用此命令。
+
+## dmctl 命令模式
+
+命令模式跟交互模式的区别是，执行命令时只需要在 dmctl 命令后紧接着执行任务操作，任务操作同交互模式的参数一致。
+
+> **注意：**
+>
+> + 一条 dmctl 命令只能跟一个任务操作
+> + 任务操作只能放在 dmctl 命令的最后
+
+{{< copyable "shell-regular" >}}
+
+```bash
+./dmctl -master-addr 172.16.30.14:8261 start-task task.yaml
+./dmctl -master-addr 172.16.30.14:8261 stop-task task
+./dmctl -master-addr 172.16.30.14:8261 query-status
+```
+
+```
+Available Commands:
+  break-ddl-lock        break-ddl-lock <-w worker ...> <task-name> [--remove-id] [--exec] [--skip]
+  check-task            check-task <config-file>
+  migrate-relay         migrate-relay <worker> <binlogName> <binlogPos>
+  pause-relay           pause-relay <-w worker ...>
+  pause-task            pause-task [-w worker ...] <task-name>
+  purge-relay           purge-relay <-w worker> [--filename] [--sub-dir]
+  query-error           query-error [-w worker ...] [task-name]
+  query-status          query-status [-w worker ...] [task-name]
+  refresh-worker-tasks  refresh-worker-tasks
+  resume-relay          resume-relay <-w worker ...>
+  resume-task           resume-task [-w worker ...] <task-name>
+  show-ddl-locks        show-ddl-locks [-w worker ...] [task-name]
+  sql-inject            sql-inject <-w worker> <task-name> <sql1;sql2;>
+  sql-replace           sql-replace <-w worker> [-b binlog-pos] [-s sql-pattern] [--sharding] <task-name> <sql1;sql2;>
+  sql-skip              sql-skip <-w worker> [-b binlog-pos] [-s sql-pattern] [--sharding] <task-name>
+  start-task            start-task [-w worker ...] <config-file>
+  stop-task             stop-task [-w worker ...] <task-name>
+  switch-relay-master   switch-relay-master <-w worker ...>
+  unlock-ddl-lock       unlock-ddl-lock [-w worker ...] <lock-ID>
+  update-master-config  update-master-config <config-file>
+  update-relay          update-relay [-w worker ...] <config-file>
+  update-task           update-task [-w worker ...] <config-file>
+```
 
 ## 废弃或不推荐使用的命令
 

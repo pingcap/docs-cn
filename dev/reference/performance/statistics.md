@@ -5,7 +5,7 @@ category: reference
 
 # 统计信息简介
 
-TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息收集了表级别和列级别的信息，表的统计信息包括总行数和修改的行数。列的统计信息包括不同值的数量、NULL 的数量、直方图、以及该列的 Count-Min Sketch 信息。
+TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息收集了表级别和列级别的信息，表的统计信息包括总行数和修改的行数。列的统计信息包括不同值的数量、NULL 的数量、直方图、列上出现次数最多的值 TOPN 以及该列的 Count-Min Sketch 信息。
 
 ## 统计信息的收集
 
@@ -30,17 +30,21 @@ TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableNameList [WITH NUM BUCKETS];
+ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
 ```
 
-WITH NUM BUCKETS 可以用来指定生成直方图的桶数量上限。
+- `WITH NUM BUCKETS` 用于指定生成直方图的桶数量上限。
+- `WITH NUM TOPN` 用于指定生成 TOPN 数目的上限。
+- `WITH NUM CMSKETCH DEPTH` 用于指定 CM Sketch 的长。
+- `WITH CMSKETCH WIDTH` 用于指定 CM Sketch 的宽。
+- `WITH NUM SAMPLES` 用于指定采样的数目。
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS];
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
 ```
 
 IndexNameList 为空时会收集所有索引列的统计信息。
@@ -50,7 +54,7 @@ IndexNameList 为空时会收集所有索引列的统计信息。
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS];
+ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
 ```
 
 收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -58,7 +62,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS];
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS];
+ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
 ```
 
 #### 增量收集
@@ -77,7 +81,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BU
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS];
+ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
 ```
 
 增量收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -85,13 +89,13 @@ ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS];
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS];
+ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
 ```
 
 ### 自动更新
 
 在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，
-更新的周期是 5 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
+更新的周期是 20 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
 
 和统计信息自动更新相关的三个系统变量如下：
 

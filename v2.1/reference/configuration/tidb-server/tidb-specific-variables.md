@@ -180,38 +180,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 这个变量用来设置是否跳过 UTF-8 字符的验证。
 验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 1。
 
-### tidb_batch_insert
-
-作用域：SESSION
-
-默认值：0
-
-这个变量用来设置是否自动切分插入数据。仅在 autocommit 开启时有效。
-当插入大量数据时，可以将其设置为 1，这样插入数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行插入。
-该用法破坏了事务的原子性和隔离性，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议在生产环境中使用。
-
-### tidb_batch_delete
-
-作用域：SESSION
-
-默认值：0
-
-这个变量用来设置是否自动切分待删除的数据。仅在 autocommit 开启，并且是单表删除的 SQL 时有效。关于单表删除的 SQL 的定义，详见 [`DELETE` Syntax](https://dev.mysql.com/doc/refman/8.0/en/delete.html)。
-当删除大量数据时，可以将其设置为 1，这样待删除数据会被自动切分为多个 batch，每个 batch 使用一个单独的事务进行删除。
-该用法破坏了事务的原子性和隔离性，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议在生产环境中使用。
-
-### tidb_dml_batch_size
-
-作用域：SESSION
-
-默认值：20000
-
-这个变量用来设置自动切分插入/待删除数据的的 batch 大小。仅在 tidb_batch_insert 或 tidb_batch_delete 开启时有效。
-
-> **注意：**
->
-> 当单行总数据大小很大时，20k 行总数据量数据会超过单个事务大小限制。因此在这种情况下，用户应当将其设置为一个较小的值。
-
 ### tidb_max_chunk_size
 
 作用域：SESSION | GLOBAL
@@ -315,21 +283,21 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 默认值：10
 
-这个变量用来设置最多可重试次数，即在一个事务执行中遇到可重试的错误(例如事务冲突、事务提交过慢或表结构变更)时，这个事务可以被重新执行，这个变量值表明最多可重试的次数。
+这个变量用来设置最大重试次数。一个事务执行中遇到可重试的错误（例如事务冲突、事务提交过慢或表结构变更）时，会根据该变量的设置进行重试。注意当 `tidb_retry_limit = 0` 时，也会禁用自动重试。
 
 ### tidb_disable_txn_auto_retry
 
 作用域：SESSION | GLOBAL
 
-默认值：on
+默认值：off
 
-这个变量用来设置是否禁用显式事务自动重试，设置为 `on` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
+这个变量用来设置是否禁用显式事务自动重试，设置为 `on` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。TiDB v2.1 默认开启自动重试。
 
 如果将该变量的值设为 `off`，TiDB 将会自动重试事务，这样在事务提交时遇到的错误更少。需要注意的是，这样可能会导致数据更新丢失。
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[事务自动重试及带来的异常](/v2.1/reference/transactions/transaction-isolation.md#事务自动重试及带来的异常)。
+是否需要禁用自动重试，请参考[重试的局限性](/v2.1/reference/transactions/transaction-optimistic.md#重试的局限性)。
 
 ### tidb_backoff_weight
 
@@ -458,4 +426,4 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值：0
 
-这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `auto_increment` 属性。默认为不允许。
+这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认为不允许。

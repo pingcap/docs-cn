@@ -35,7 +35,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment, c1 INT NOT NULL);
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 ```
 
 ```
@@ -101,7 +101,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * 不支持降序索引（类似于 MySQL 5.7）。
 * 目前尚不支持同时添加多个索引。
-* 无法向表中添加 `PRIMARY KEY`。
+* 默认无法向表中添加 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/v3.1/reference/configuration/tidb-server/configuration-file.md#alter-primary-key)。
 
 ## 另请参阅
 
