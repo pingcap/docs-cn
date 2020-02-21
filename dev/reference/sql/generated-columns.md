@@ -94,4 +94,6 @@ CREATE TABLE person (
 目前 JSON and generated column 有以下局限性：
 
 - 不能通过 `ALTER TABLE` 增加 `STORED` 存储方式的 generated column；
+- 不能通过 `ALTER TABLE` 将 generated stored column 转换为普通列，也不能将普通列转换成 generated stored column；
+- 不能通过 `ALTER TABLE` 修改 generated stored column 的**生成列表达式**；
 - 并未支持所有的 [JSON 函数](/dev/reference/sql/functions-and-operators/json-functions.md)。
