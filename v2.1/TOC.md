@@ -216,9 +216,9 @@
     - [TiDB 数据库权限管理](/v2.1/reference/security/privilege-system.md)
     - [TiDB 用户账户管理](/v2.1/reference/security/user-account-management.md)
   + 事务
-    - [事务语句](/v2.1/reference/transactions/overview.md)
-    - [事务模型](/v2.1/reference/transactions/transaction-model.md)
+    - [事务概览](/v2.1/reference/transactions/overview.md)
     - [隔离级别](/v2.1/reference/transactions/transaction-isolation.md)
+    - [乐观事务](/v2.1/reference/transactions/transaction-optimistic.md)
   + 系统数据库
     - [`mysql`](/v2.1/reference/system-databases/mysql.md)
     - [`information_schema`](/v2.1/reference/system-databases/information-schema.md)
@@ -244,7 +244,6 @@
     - [Grafana 监控最佳实践](/v2.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v2.1/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/v2.1/reference/best-practices/massive-regions.md)
-    - [乐观锁事务最佳实践](/v2.1/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/v2.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v2.1/reference/tidb-binlog/overview.md)

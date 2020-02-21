@@ -61,7 +61,7 @@
     + 备份与恢复
       - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/v3.1/how-to/maintain/backup-and-restore/mydumper-lightning.md)
       - [使用 BR 进行备份与恢复](/v3.1/reference/tools/br/br.md)
-      - [BR 备份与恢复最佳实践](/v3.1/reference/tools/br/br-best-practices.md)
+      - [BR 备份与恢复场景示例](/v3.1/reference/tools/br/use-cases.md)
     + 定位异常查询
       - [定位慢查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/v3.1/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
@@ -236,9 +236,9 @@
     - [基于角色的访问控制](/v3.1/reference/security/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/v3.1/reference/security/cert-based-authentication.md)
   + 事务
-    - [事务语句](/v3.1/reference/transactions/overview.md)
-    - [事务模型](/v3.1/reference/transactions/transaction-model.md)
+    - [事务概览](/v3.1/reference/transactions/overview.md)
     - [隔离级别](/v3.1/reference/transactions/transaction-isolation.md)
+    - [乐观事务](/v3.1/reference/transactions/transaction-optimistic.md)
     - [悲观事务](/v3.1/reference/transactions/transaction-pessimistic.md)
   + 系统数据库
     - [`mysql`](/v3.1/reference/system-databases/mysql.md)
@@ -272,7 +272,6 @@
     - [Grafana 监控最佳实践](/v3.1/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.1/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/v3.1/reference/best-practices/massive-regions.md)
-    - [乐观锁事务最佳实践](/v3.1/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/v3.1/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.1/reference/tidb-binlog/overview.md)
@@ -282,6 +281,7 @@
     - [监控告警](/v3.1/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v3.1/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.1/reference/tidb-binlog/binlog-slave-client.md)
+    - [TiDB Binlog Relay Log](/v3.1/reference/tidb-binlog/relay-log.md)
     - [术语表](/v3.1/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/v3.1/reference/tidb-binlog/troubleshoot/binlog.md)
@@ -417,6 +417,7 @@
     - [3.1.0-beta.1](/v3.1/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/v3.1/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.10](/v3.1/releases/3.0.10.md)
     - [3.0.9](/v3.1/releases/3.0.9.md)
     - [3.0.8](/v3.1/releases/3.0.8.md)
     - [3.0.7](/v3.1/releases/3.0.7.md)

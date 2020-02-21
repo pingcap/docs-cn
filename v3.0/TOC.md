@@ -233,9 +233,9 @@
     - [基于角色的访问控制](/v3.0/reference/security/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/v3.0/reference/security/cert-based-authentication.md)
   + 事务
-    - [事务语句](/v3.0/reference/transactions/overview.md)
-    - [事务模型](/v3.0/reference/transactions/transaction-model.md)
+    - [事务概览](/v3.0/reference/transactions/overview.md)
     - [隔离级别](/v3.0/reference/transactions/transaction-isolation.md)
+    - [乐观事务](/v3.0/reference/transactions/transaction-optimistic.md)
     - [悲观事务](/v3.0/reference/transactions/transaction-pessimistic.md)
   + 系统数据库
     - [`mysql`](/v3.0/reference/system-databases/mysql.md)
@@ -268,7 +268,6 @@
     - [Grafana 监控最佳实践](/v3.0/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/v3.0/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/v3.0/reference/best-practices/massive-regions.md)
-    - [乐观锁事务最佳实践](/v3.0/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/v3.0/reference/tispark.md)
   + TiDB Binlog
     - [概述](/v3.0/reference/tidb-binlog/overview.md)
@@ -278,6 +277,7 @@
     - [监控告警](/v3.0/reference/tidb-binlog/monitor.md)
     - [增量恢复](/v3.0/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/v3.0/reference/tidb-binlog/binlog-slave-client.md)
+    - [TiDB Binlog Relay Log](/v3.0/reference/tidb-binlog/relay-log.md)
     - [术语表](/v3.0/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/v3.0/reference/tidb-binlog/troubleshoot/binlog.md)
@@ -410,6 +410,7 @@
 + [TiDB 路线图](/v3.0/roadmap.md)
 + [版本发布历史](/v3.0/releases/rn.md)
   + v3.0
+    - [3.0.10](/v3.0/releases/3.0.10.md)
     - [3.0.9](/v3.0/releases/3.0.9.md)
     - [3.0.8](/v3.0/releases/3.0.8.md)
     - [3.0.7](/v3.0/releases/3.0.7.md)
