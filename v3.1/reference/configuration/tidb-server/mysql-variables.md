@@ -190,7 +190,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 | time_zone | GLOBAL \| SESSION | 数据库所使用的时区 |
 | tx_isolation | GLOBAL \| SESSION | 事务隔离级别 |
 | max\_execution\_time | GLOBAL \| SESSION | 语句超时时间，单位为毫秒 |
-| lock\_wait\_timeout | GLOBAL \| SESSION | 悲观事务语句等锁时间，单位为妙 |
+| innodb\_lock\_wait\_timeout | GLOBAL \| SESSION | 悲观事务语句等锁时间，单位为秒 |
 
 > **注意：**
 >
