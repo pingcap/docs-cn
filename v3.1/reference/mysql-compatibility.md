@@ -13,7 +13,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/v3.1/reference/security/compatibility.md)及[事务模型](/v3.1/reference/transactions/transaction-model.md)的兼容信息请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/v3.1/reference/security/compatibility.md)、[悲观事务模型](/v3.1/reference/transactions/transaction-pessimistic.md#和-mysql-innodb-的差异)的兼容信息请查看各自具体页面。
 
 ## 不支持的特性
 
@@ -208,7 +208,13 @@ TiDB 不需要导入时区表数据也能使用所有时区名称，采用系统
 
 #### 零月和零日
 
-目前 TiDB 尚不能完整支持月为 0 或日为 0（但年不为 0）的日期。在非严格模式下，此类日期时间能被正常插入，但对于特定类型 SQL 可能出现无法读出来的情况。
+目前 TiDB 尚不能完整支持月为 `0` 或日为 `0`（但年不为 `0`）的日期。在非严格模式下，此类日期时间能被正常插入。但对于特定类型的 SQL 语句，可能出现无法读出来的情况。
+
+#### 字符串类型行末空格的处理
+
+目前 TiDB 在进行数据插入时，对于 `VARCHAR` 类型会保留行末空格，对于 `CHAR` 类型会插入截断空格后的数据。在没有索引的情况下，TiDB 和 MySQL 行为保持一致。如果 `VARCHAR` 类型上有 `UNIQUE` 索引，MySQL 在判断是否重复的时候，和处理 `CHAR` 类型一样，先截断 `VARCHAR` 数据末行空格再作判断；TiDB 则是按照保留空格的情况处理。
+
+在做比较时，MySQL 会先截去常量和 Column 的末尾空格再作比较，而 TiDB 则是保留常量和 Column 的末尾空格来做精确比较。
 
 ### 类型系统的区别
 

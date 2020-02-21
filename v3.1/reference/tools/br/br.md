@@ -2,11 +2,12 @@
 title: 使用 BR 进行备份与恢复
 summary: 了解如何使用 BR 工具进行集群数据备份和恢复。
 category: how-to
+aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/br/']
 ---
 
 # 使用 BR 进行备份与恢复
 
-Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/v3.1/how-to/maintain/backup-and-restore/mydumper-loader.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
+Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/v3.1/how-to/maintain/backup-and-restore/mydumper-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
 
 ## 使用限制
 
@@ -310,7 +311,7 @@ br restore table \
 - 在使用共享存储时，推荐使用高吞吐的存储硬件，因为存储的吞吐会限制备份或恢复的速度。
 - 推荐在业务低峰时执行备份操作，这样能最大程度地减少对业务的影响。
 
-更多最佳实践内容，参见 [BR 最佳实践文档](/v3.1/how-to/maintain/backup-and-restore/br-best-practices.md)。
+更多最佳实践内容，参见 [BR 备份与恢复场景示例](/v3.1/reference/tools/br/use-cases.md)。
 
 ## 备份和恢复示例
 
