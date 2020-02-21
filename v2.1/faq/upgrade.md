@@ -186,23 +186,39 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
 
     * HTTP API（HTTP API 只在单台服务器上生效）
 
-        ```sh
-        # Enabled.
-        curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
+        * 执行下列命令启用 HTTP API：
 
-        # Disabled.
-        curl -X POST -d "check_mb4_value_in_utf8=0" http://{TiDBIP}:10080/settings
-        ```
+            {{< copyable "shell-regular" >}}
+
+            ```sh
+            curl -X POST -d "check_mb4_value_in_utf8=1" http://{TiDBIP}:10080/settings
+            ```
+
+        * 执行下列命令禁用 HTTP API：
+
+            {{< copyable "shell-regular" >}}
+
+            ```sh
+            curl -X POST -d "check_mb4_value_in_utf8=0" http://{TiDBIP}:10080/settings
+            ```
 
     * Session 变量
 
-        ```sql
-        # Enabled.
-        set @@session.tidb_check_mb4_value_in_utf8 = 1;
+        * 执行下列命令启用 Session 变量：
 
-        # Disabled.
-        set @@session.tidb_check_mb4_value_in_utf8 = 0;
-        ```
+            {{< copyable "sql" >}}
+
+            ```sql
+            set @@session.tidb_check_mb4_value_in_utf8 = 1;
+            ```
+
+        * 执行下列命令禁用 Session 变量：
+
+            {{< copyable "sql" >}}
+
+            ```sql
+            set @@session.tidb_check_mb4_value_in_utf8 = 0;
+            ```
 
 - v2.1.7 及之后版本，如果对表和 column 的字符集没有严格要求为 UTF8，也不想修改客户端代码去跳过 UTF8 检查或者手动修改 column 的 charset，可以在配置文件中把 `treat-old-version-utf8-as-utf8mb4` 打开。该配置的作用是自动把 v2.1.7 版本之前创建的旧版本的表和 column 的 UTF8 字符集转成 UTF8MB4。这个转换是在 TiDB load schema 时在内存中将 UTF8 转成 UTF8MB4，不会对实际存储的数据做任何修改。在配置文件中关闭 `treat-old-version-utf8-as-utf8mb4` 并重启 TiDB 后，以前字符集为 UTF8 的表和 column 的字符集仍然还是 UTF8。
 

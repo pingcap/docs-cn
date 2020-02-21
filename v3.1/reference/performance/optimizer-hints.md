@@ -57,15 +57,13 @@ select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 
 ### `@QB_NAME` 参数
 
-除 `QB_NAME` 外，其余优化器相关的 Hint 都可以通过可选参数 `@QB_NAME` 来指定该 Hint 的生效范围。该参数需写在最前面，与其他参数用空格隔开。例如：
+除 `QB_NAME` 外，其余优化器相关的 Hint 都可以通过可选参数 `@QB_NAME` 来指定该 Hint 的生效范围。该参数需写在最前面，与其他参数用空格隔开。同时，你也可以在参数中的每一个表名后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。例如：
 
 {{< copyable "sql" >}}
 
 ```sql
 select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
 ```
-
-同时，你也可以在参数中的每一个表名后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。
 
 ### SM_JOIN(t1_name [, tl_name ...])
 
@@ -175,16 +173,6 @@ select /*+ AGG_TO_COP() */ sum(t1.a) from t t1;
 select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 where t1.a = t2.a;
 ```
 
-### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
-
-`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
-```
-
 ## 运行参数相关 Hint 语法
 
 运行参数相关的 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，对当前的这条查询的相关运行参数进行修改。
@@ -232,20 +220,6 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
-
-### NO_INDEX_MERGE()
-
-`NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
-
-下面的例子不会使用 index merge：
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
-```
-
-除了 Hint 外，环境变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
 
 ### USE_TOJA(boolean_value)
 

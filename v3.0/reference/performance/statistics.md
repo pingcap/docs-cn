@@ -6,7 +6,7 @@ aliases: ['/docs-cn/sql/statistics/']
 
 # 统计信息简介
 
-TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息收集了表级别和列级别的信息，表的统计信息包括总行数和修改的行数。列的统计信息包括不同值的数量、NULL 的数量、直方图、以及该列的 Count-Min Sketch 信息。
+TiDB 优化器会根据统计信息来选择最优的执行计划。统计信息收集了表级别和列级别的信息，表的统计信息包括总行数和修改的行数。列的统计信息包括不同值的数量、NULL 的数量、直方图、列上出现次数最多的值 TOPN 以及该列的 Count-Min Sketch 信息。
 
 ## 统计信息的收集
 
@@ -92,7 +92,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 ### 自动更新
 
 在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，
-更新的周期是 5 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
+更新的周期是 20 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
 
 和统计信息自动更新相关的三个系统变量如下：
 

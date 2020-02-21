@@ -96,31 +96,31 @@ tidb> explain select * from t where a < 2 and a > 2;
 >
 > - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 语句的 TiDB server 生效。若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
 > - 表达式黑名单功能在 v3.0.0 及以上版本中支持。
-> - 在 v3.0.3 及以下版本中，不支持将某些运算符的原始名称文本（如 ">"、"+" 和 "is null"）加入黑名单中，部分运算符在黑名单中需使用别名。已支持下推的表达式中，别名与原始名不同的运算符见下表（不区分大小写）。
+> - 在 v3.0.3 及以下版本中，不支持将某些运算符的原始名称文本（如 ">"、"+" 和 "is null"）加入黑名单中，部分运算符在黑名单中需使用别名。已支持下推的表达式中，别名与原始名不同的运算符见下表（区分大小写）。
 
 | 运算符原始名称 | 运算符别名 |
 | :-------- | :---------- |
-| < | LT |
-| > | GT |
-| <= | LE |
-| >= | GT |
-| = | EQ |
-| != | NE |
-| <> | NE |
-| <=> | NullEQ |
+| < | lt |
+| > | gt |
+| <= | le |
+| >= | ge |
+| = | eq |
+| != | ne |
+| <> | ne |
+| <=> | nulleq |
 | &#124; | bitor |
 | && | bitand|
 | &#124;&#124; | or |
 | ! | not |
-| in | IN |
-| + | PLUS|
-| - | MINUS |
-| * | MUL |
-| / | DIV |
-| DIV | INTDIV|
-| IS NULL | ISNULL |
-| IS TRUE | ISTRUE |
-| IS FALSE | ISFALSE |
+| in | in |
+| + | plus|
+| - | minus |
+| * | mul |
+| / | div |
+| DIV | intdiv|
+| IS NULL | isnull |
+| IS TRUE | istrue |
+| IS FALSE | isfalse |
 
 [json_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract
 [json_short_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#operator_json-column-path

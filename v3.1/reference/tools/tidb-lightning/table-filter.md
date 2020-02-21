@@ -26,6 +26,10 @@ ignore-dbs = ["pattern4", "pattern5"]
 
 如果匹配项首字符为 `~`，它会被解析为 [Go 语言的正则表达式](https://golang.org/pkg/regexp/syntax/#hdr-syntax)。否则会视为普通的字串来匹配数据库名称。
 
+> **注意：**
+>
+> 无论你如何设置过滤规则，系统数据库 `information_schema`、`performance_schema`、`mysql` 和 `sys` 总是会被略过。
+
 ## 过滤表
 
 ```toml
