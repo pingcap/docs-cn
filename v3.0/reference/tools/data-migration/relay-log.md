@@ -115,7 +115,7 @@ remain-space = 15
 
 ### Manual data purge
 
-Manual data purge means using the `purge-relay` command provided by dmctl to specify `subdir` and the binlog name thus to purge all the relay logs before the specified binlog.
+Manual data purge means using the `purge-relay` command provided by dmctl to specify `subdir` and the binlog name thus to purge all the relay logs **before** the specified binlog. If the `-subdir` option in the command is not specified, all relay logs **before** the current relay log sub-directory are purged.
 
 Assuming that the directory structure of the current relay log is as follows:
 
@@ -141,16 +141,18 @@ e4e0e8ab-09cc-11e9-9220-82cc35207219.000002
 deb76a2b-09cc-11e9-9129-5242cf3bb246.000003
 ```
 
-If you use dmctl to execute the following commands, the corresponding results are as follows:
++ Executing the following `purge-relay` command in dmctl purges all relay log files **before** `e4e0e8ab-09cc-11e9-9220-82cc35207219.000002/mysql-bin.000001`, which is all relay log files in `deb76a2b-09cc-11e9-9129-5242cf3bb246.000001`.
 
-```
-# The `deb76a2b-09cc-11e9-9129-5242cf3bb246.000001` directory is purged,
-# while `e4e0e8ab-09cc-11e9-9220-82cc35207219.000002` and `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` directories are retained.
+    {{< copyable "" >}}
 
-» purge-relay -w 10.128.16.223:10081 --filename mysql-bin.000001 --sub-dir e4e0e8ab-09cc-11e9-9220-82cc35207219.000002
+    ```bash
+    » purge-relay -w 10.128.16.223:10081 --filename mysql-bin.000001 --sub-dir e4e0e8ab-09cc-11e9-9220-82cc35207219.000002
+    ```
 
-# The `deb76a2b-09cc-11es9-9129-5242cf3bb246.000001、e4e0e8ab-09cc-11e9-9220-82cc35207219.000002` directory is purged,
-# while the `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` directory is retained.
++ Executing the following `purge-relay` command in dmctl purges all relay log file **before the current** (`deb76a2b-09cc-11e9-9129-5242cf3bb246.000003`) directory's `mysql-bin.000001`, which is all relay log files in `deb76a2b-09cc-11e9-9129-5242cf3bb246.000001` and `e4e0e8ab-09cc-11e9-9220-82cc35207219.000002`.
 
-» purge-relay -w 10.128.16.223:10081 --filename mysql-bin.000001
-```
+    {{< copyable "" >}}
+
+    ```bash
+    » purge-relay -w 10.128.16.223:10081 --filename mysql-bin.000001
+    ```
