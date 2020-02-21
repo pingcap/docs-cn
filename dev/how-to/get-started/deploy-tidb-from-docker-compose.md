@@ -67,7 +67,8 @@ To customize the cluster, you can edit the `docker-compose.yml` file directly. I
 
 1. Install Helm.
 
-    [Helm](https://helm.sh) can be used as a template rendering engine. To use Helm, you only need to download its binary file:
+    [Helm](https://helm.sh) can be used as a template rendering engine. Make sure your Helm version >= 2.9.0 and < 3.0.0. To use Helm, you only need to download its binary file:
+    To use Helm, you only need to download its binary file:
 
     ```bash
     curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
@@ -76,7 +77,8 @@ To customize the cluster, you can edit the `docker-compose.yml` file directly. I
     For macOS, you can also install Helm using the following command in Homebrew:
 
     ```bash
-    brew install kubernetes-helm
+    brew install helm@2
+    brew link --force helm@2
     ```
 
 2. Download `tidb-docker-compose`.
