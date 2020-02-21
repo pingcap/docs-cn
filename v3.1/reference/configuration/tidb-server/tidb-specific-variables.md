@@ -312,7 +312,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：10
 
-这个变量用来设置最多可重试次数，即在一个事务执行中遇到可重试的错误(例如事务冲突、事务提交过慢或表结构变更)时，这个事务可以被重新执行，这个变量值表明最多可重试的次数。
+这个变量用来设置最大重试次数。一个事务执行中遇到可重试的错误（例如事务冲突、事务提交过慢或表结构变更）时，会根据该变量的设置进行重试。注意当 `tidb_retry_limit = 0` 时，也会禁用自动重试。
 
 ### tidb_disable_txn_auto_retry
 
@@ -326,7 +326,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[事务自动重试及带来的异常](/v3.1/reference/transactions/transaction-isolation.md#事务自动重试及带来的异常)。
+是否需要禁用自动重试，请参考[重试的局限性](/v3.1/reference/transactions/transaction-optimistic.md#重试的局限性)。
 
 ### tidb_backoff_weight
 

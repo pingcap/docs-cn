@@ -51,18 +51,16 @@
     - [概述](/dev/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/dev/how-to/monitor/monitor-a-cluster.md)
   + 迁移
-    - [概述](/dev/how-to/migrate/overview.md)
+    - [迁移工具使用指南](/dev/reference/tools/user-guide.md)
     + 从 MySQL 迁移
-      - [全量迁移](/dev/how-to/migrate/from-mysql.md)
-      - [增量复制](/dev/how-to/migrate/incrementally-from-mysql.md)
-    - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
+      - [以 Amazon Aurora MySQL 为例](/dev/how-to/migrate/from-mysql-aurora.md)
     - [从 CSV 迁移](/dev/reference/tools/tidb-lightning/csv.md)
   + 运维
     - [Ansible 常见运维操作](/dev/how-to/maintain/ansible-operations.md)
     + 备份与恢复
-      - [使用 Mydumper/Loader 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-loader.md)
-      - [使用 BR 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/br.md)
-      - [BR 备份与恢复最佳实践](/dev/how-to/maintain/backup-and-restore/br-best-practices.md)
+      - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/dev/how-to/maintain/backup-and-restore/mydumper-lightning.md)
+      - [使用 BR 进行备份与恢复](/dev/reference/tools/br/br.md)
+      - [BR 备份与恢复场景示例](/dev/reference/tools/br/use-cases.md)
     + 定位异常查询
       - [定位慢查询](/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/dev/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
@@ -237,9 +235,9 @@
     - [基于角色的访问控制](/dev/reference/security/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/dev/reference/security/cert-based-authentication.md)
   + 事务
-    - [事务语句](/dev/reference/transactions/overview.md)
-    - [事务模型](/dev/reference/transactions/transaction-model.md)
+    - [事务概览](/dev/reference/transactions/overview.md)
     - [隔离级别](/dev/reference/transactions/transaction-isolation.md)
+    - [乐观事务](/dev/reference/transactions/transaction-optimistic.md)
     - [悲观事务](/dev/reference/transactions/transaction-pessimistic.md)
   + 系统数据库
     - [`mysql`](/dev/reference/system-databases/mysql.md)
@@ -273,7 +271,6 @@
     - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/dev/reference/best-practices/massive-regions.md)
-    - [乐观锁事务最佳实践](/dev/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + TiDB Binlog
     - [概述](/dev/reference/tidb-binlog/overview.md)
@@ -283,12 +280,14 @@
     - [监控告警](/dev/reference/tidb-binlog/monitor.md)
     - [增量恢复](/dev/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/dev/reference/tidb-binlog/binlog-slave-client.md)
+    - [TiDB Binlog Relay Log](/dev/reference/tidb-binlog/relay-log.md)
     - [术语表](/dev/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/dev/reference/tidb-binlog/troubleshoot/binlog.md)
       - [常见错误修复](/dev/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/dev/reference/tidb-binlog/faq.md)
   + 周边工具
+    - [工具使用指南](/dev/reference/tools/user-guide.md)
     - [Mydumper](/dev/reference/tools/mydumper.md)
     - [Loader](/dev/reference/tools/loader.md)
     - [Syncer](/dev/reference/tools/syncer.md)
@@ -329,7 +328,7 @@
         - [跳过或替代执行异常的 SQL 语句](/dev/reference/tools/data-migration/skip-replace-sqls.md)
       - [监控 DM 集群](/dev/reference/tools/data-migration/monitor.md)
       + 从与 MySQL 兼容的数据库迁移数据
-        - [从 Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-aurora.md)
+        - [从 MySQL/Amazon Aurora MySQL 迁移数据](/dev/how-to/migrate/from-mysql-aurora.md)
       - [DM Portal](/dev/reference/tools/data-migration/dm-portal.md)
       + DM 故障诊断
         - [故障诊断](/dev/reference/tools/data-migration/troubleshoot/dm.md)
@@ -348,10 +347,12 @@
       - [断点续传](/dev/reference/tools/tidb-lightning/checkpoints.md)
       - [表库过滤](/dev/reference/tools/tidb-lightning/table-filter.md)
       - [CSV 支持](/dev/reference/tools/tidb-lightning/csv.md)
+      - [TiDB-backend](/dev/reference/tools/tidb-lightning/tidb-backend.md)
       - [Web 界面](/dev/reference/tools/tidb-lightning/web.md)
       - [监控告警](/dev/reference/tools/tidb-lightning/monitor.md)
       - [故障诊断](/dev/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/dev/faq/tidb-lightning.md)
+      - [术语表](/dev/reference/tools/tidb-lightning/glossary.md)
     - [sync-diff-inspector](/dev/reference/tools/sync-diff-inspector/overview.md)
     - [PD Control](/dev/reference/tools/pd-control.md)
     - [PD Recover](/dev/reference/tools/pd-recover.md)
@@ -417,6 +418,7 @@
     - [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.10](/dev/releases/3.0.10.md)
     - [3.0.9](/dev/releases/3.0.9.md)
     - [3.0.8](/dev/releases/3.0.8.md)
     - [3.0.7](/dev/releases/3.0.7.md)
