@@ -67,7 +67,7 @@ To customize the cluster, you can edit the `docker-compose.yml` file directly. I
 
 1. Install Helm.
 
-    [Helm](https://helm.sh) can be used as a template rendering engine. Make sure your Helm version >= 2.9.0 and < 3.0.0. To use Helm, you only need to download its binary file:
+    [Helm](https://helm.sh) can be used as a template rendering engine. Make sure your Helm version >= 2.9.0 and < 3.0.0.
     To use Helm, you only need to download its binary file:
 
     ```bash
