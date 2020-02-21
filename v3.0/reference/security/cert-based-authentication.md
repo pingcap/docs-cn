@@ -291,7 +291,7 @@ The user certificate information can be specified by `require subject`, `require
     {{< copyable "sql" >}}
 
     ```sql
-    SHOW SESSION STATUS LIKE 'Ssl_cipher_list'
+    SHOW SESSION STATUS LIKE 'Ssl_cipher_list';
     ```
 
 ### Configure user certificate information
