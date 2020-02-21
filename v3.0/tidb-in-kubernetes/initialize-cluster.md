@@ -63,7 +63,7 @@ aliases: ['/docs-cn/v3.0/how-to/configure/initialize-cluster/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    helm install pingcap/tidb-cluster --name=<release-name> --namespace=<namespace> --version=<chart-version> --set tidb.passwordSecretName=tidb-secret
+    helm install pingcap/tidb-cluster -f values.yaml --name=<release-name> --namespace=<namespace> --version=<chart-version>
     ```
 
     以上命令指定 `tidb.passwordSecretName` 之后，创建的集群会自动创建一个初始化的 Job，该 Job 在集群创建过程中会尝试利用提供的 secret 给 root 账号创建初始密码，并且创建其它账号和密码，如果指定了的话。注意由于 Job 创建时 TiDB 集群的 Pod 还没完全创建，所以可能会失败几次，初始化完成后 Pod 状态会变成 Completed。之后通过 MySQL 客户端登录时需要指定这里设置的密码。

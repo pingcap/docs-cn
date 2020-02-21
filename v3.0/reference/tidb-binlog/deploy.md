@@ -142,31 +142,41 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 ### 第 3 步：部署 Drainer
 
-1. 获取 initial_commit_ts
+1. 获取 initial_commit_ts 的值
 
-    如果从最近的时间点开始同步，从 v3.0.6 开始 inital_commit_ts 使用 `-1` 即可，否则参考下文方法获取一个最新的时间戳。
+    Drainer 初次启动时需要获取 initial_commit_ts 这个时间戳信息。
 
-    如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复，必需使用全量备份的时间戳。
+    - 如果从最近的时间点开始同步，从 v3.0.6 开始 initial_commit_ts 使用 `-1` 即可。否则，需要使用 binlogctl 工具获取一个最新的时间戳，来作为 initial_commit_ts 的值。获取最新时间戳的方法如下：
 
-    获取一个最新时间戳的方法：
+        {{< copyable "shell-regular" >}}
 
-    使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：
+        ```bash
+        cd /home/tidb/tidb-ansible &&
+        resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
+        ```
 
-    {{< copyable "shell-regular" >}}
+        ```
+        INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
+        INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
+        INFO[0000] [pd] init cluster id 6569368151110378289
+        2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
+        ```
 
-    ```bash
-    cd /home/tidb/tidb-ansible &&
-    resources/bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd generate_meta
-    ```
+        该命令会输出 `meta: &{CommitTS:400962745252184065}`，其中 CommitTS 的值即所需的最新的时间戳。
 
-    ```
-    INFO[0000] [pd] create pd client with endpoints [http://192.168.199.118:32379]
-    INFO[0000] [pd] leader switches to: http://192.168.199.118:32379, previous:
-    INFO[0000] [pd] init cluster id 6569368151110378289
-    2018/06/21 11:24:47 meta.go:117: [info] meta: &{CommitTS:400962745252184065}
-    ```
+    - 如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复。此时 initial_commit_ts 的值必须是全量备份的时间戳。
 
-    该命令会输出 `meta: &{CommitTS:400962745252184065}`，CommitTS 的值作为 Drainer 初次启动使用的 `initial-commit-ts` 参数的值。
+        如果使用 mydumper，可以在导出目录中找到 metadata 文件，其中的 `Pos` 字段值即全量备份的时间戳。metadata 文件示例如下：
+
+        ```
+        Started dump at: 2019-12-30 13:25:41
+        SHOW MASTER STATUS:
+                Log: tidb-binlog
+                Pos: 413580274257362947
+                GTID:
+
+        Finished dump at: 2019-12-30 13:25:41
+        ```
 
 2. 修改 `tidb-ansible/inventory.ini` 文件
 
@@ -544,6 +554,13 @@ Drainer="192.168.0.13"
 
         # replicate-do-db = ["~^b.*","s1"]
 
+        # [syncer.relay]
+        # 保存 relay log 的目录，空值表示不开启。
+        # 只有下游是 TiDB 或 MySQL 时该配置才生效。
+        # log-dir = ""
+        # 每个文件的大小上限
+        # max-file-size = 10485760
+
         # [[syncer.replicate-do-table]]
         # db-name ="test"
         # tbl-name = "log"
@@ -562,6 +579,9 @@ Drainer="192.168.0.13"
         host = "192.168.0.13"
         user = "root"
         password = ""
+        # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
+        # encrypted_password 非空时 password 会被忽略
+        encrypted_password = ""
         port = 3306
 
         [syncer.to.checkpoint]
@@ -576,6 +596,9 @@ Drainer="192.168.0.13"
         # host = "127.0.0.1"
         # user = "root"
         # password = ""
+        # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
+        # encrypted_password 非空时 password 会被忽略
+        # encrypted_password = ""
         # port = 3306
 
         # db-type 设置为 file 时，存放 binlog 文件的目录
@@ -617,6 +640,6 @@ Drainer="192.168.0.13"
 > - 在运行 TiDB 时，需要保证至少一个 Pump 正常运行。
 > - 通过给 TiDB 增加启动参数 `enable-binlog` 来开启 binlog 服务。尽量保证同一集群的所有 TiDB 都开启了 binlog 服务，否则在同步数据时可能会导致上下游数据不一致。如果要临时运行一个不开启 binlog 服务的 TiDB 实例，需要在 TiDB 的配置文件中设置 `run_ddl= false`。
 > - Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
-> - 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。
+> - 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取**快照时间戳**，然后导入全量备份，最后启动 Drainer 从对应的快照时间戳开始同步增量数据。
 > - 下游使用 MySQL 或 TiDB 时应当保证上下游数据库的 sql_mode 具有一致性，即下游数据库同步每条 SQL 语句时的 sql_mode 应当与上游数据库执行该条 SQL 语句时的 sql_mode 保持一致。可以在上下游分别执行 `select @@sql_mode;` 进行查询和比对。
 > - 如果存在上游 TiDB 能运行但下游 MySQL 不支持的 DDL 语句时（例如下游 MySQL 使用 InnoDB 引擎时同步语句 `CREATE TABLE t1(a INT) ROW_FORMAT=FIXED;`），Drainer 也会同步失败，此时可以在 Drainer 配置中跳过该事务，同时在下游手动执行兼容的语句，详见[跳过事务](/v3.0/reference/tidb-binlog/faq.md#同步时出现上游数据库支持但是下游数据库执行会出错的-ddl应该怎么办)。

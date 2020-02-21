@@ -1,9 +1,9 @@
 ---
-title: TiDB Lightning 错误排解
+title: TiDB Lightning 故障诊断
 category: reference
 ---
 
-# TiDB Lightning 错误排解
+# TiDB Lightning 故障诊断
 
 当 Lightning 遇到不可恢复的错误时便会异常退出，并在日志中记下错误原因。一般可在日志底部找到，也可以搜索 `[error]` 字符串找出中间发生的错误。本文主要描述一些常见的错误及其解决方法。
 
@@ -17,11 +17,11 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 
 1. 从日志的开头搜寻 `region-concurrency` 能知道 Lightning 读到的参数是多少。
 2. 如果 Lightning 与其他服务（如 Importer）共用一台服务器，必需**手动**将 `region-concurrency` 设为该服务器 CPU 数量的 75%。
-3. 如果 CPU 设有限额（例如从 K8s 指定的上限），Lightning 可能无法自动判断出来，此时亦需要**手动**调整 `region-concurrency`。
+3. 如果 CPU 设有限额（例如从 Kubernetes 指定的上限），Lightning 可能无法自动判断出来，此时亦需要**手动**调整 `region-concurrency`。
 
 **原因 2**：表结构太复杂。
 
-每条索引都会额外增加 KV 对。如果有 N 条索引，实际导入的大小就差不多是 Mydumper 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
+每条索引都会额外增加键值对。如果有 N 条索引，实际导入的大小就差不多是 Mydumper 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
 
 **原因 3**：Lightning 版本太旧。
 
@@ -36,7 +36,8 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 3. 如果数据源是由机器生成而不是从 Mydumper 备份的，需确保数据符合表的限制，例如：
 
     * 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
-    * 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
+    * 唯一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
+4. 如果 TiDB Lightning 之前失败停机过，但没有正确重启，可能会因为数据不同步而出现校验和不一致。
 
 **解决办法**：
 
@@ -49,6 +50,8 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
     ```
 
 2. 把断点存放在外部数据库（修改 `[checkpoint] dsn`），减轻目标集群压力。
+
+3. 参考[如何正确重启 TiDB Lightning](/v3.1/faq/tidb-lightning.md#如何正确重启-tidb-lightning)中的解决办法。
 
 ## Checkpoint for … has invalid status:（错误码）
 
@@ -68,7 +71,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 其他解决方法请参考[断点续传的控制](/v3.1/reference/tools/tidb-lightning/checkpoints.md#断点续传的控制)。
 
-## ResourceTemporarilyUnavailable("Too many open engines …: 8")
+## ResourceTemporarilyUnavailable("Too many open engines …: …")
 
 **原因**：并行打开的引擎文件 (engine files) 超出 `tikv-importer` 里的限制。这可能由配置错误引起。即使配置没问题，如果 `tidb-lightning` 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
 
@@ -98,7 +101,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 2. 手动在目标数量库创建所有的表，然后设置 `[mydumper] no-schema = true` 跳过创建表的步骤。
 3. 设置 `[mydumper] character-set = "binary"` 跳过这个检查。但是这样可能使数据库出现乱码。
 
-## [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'
+## [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 …}'
 
 **原因**: 一个 `timestamp` 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏时制切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 
@@ -125,3 +128,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
         ```
 
 2. 导出数据时，必须加上 `--skip-tz-utc` 选项。
+
+3. 确保整个集群使用的是同一最新版本的 `tzdata` (2018i 或更高版本)。
+
+    如果你使用的是 CentOS 机器，你可以运行 `yum info tzdata` 命令查看 `tzdata` 的版本及是否有更新。然后运行 `yum upgrade tzdata` 命令升级 `tzdata`。

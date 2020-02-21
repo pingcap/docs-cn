@@ -20,7 +20,7 @@ category: reference
 
 ```sql
 CREATE TABLE trips (
-    ->  trip_id bigint NOT NULL PRIMARY KEY auto_increment,
+    ->  trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     ->  duration integer not null,
     ->  start_date datetime,
     ->  end_date datetime,
@@ -59,4 +59,4 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 ## 另请参阅
 
 * [INSERT](/v3.1/reference/sql/statements/insert.md)
-* [Transaction Model](/v3.1/reference/transactions/transaction-model.md)
+* [乐观事务模型](/v3.1/reference/transactions/transaction-optimistic.md)
