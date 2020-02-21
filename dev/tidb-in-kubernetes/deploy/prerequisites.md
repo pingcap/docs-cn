@@ -71,6 +71,60 @@ If the above command shows that the swap column is all `0`, then swap is disable
 
 In addition, to permanently disable swaps, remove all the swap-related entries in `/etc/fstab`.
 
+After all above configurations are made, check whether you have configured [SMP IRQ Affinity](https://cs.uwaterloo.ca/~brecht/servers/apic/SMP-affinity.txt) on the machine. This configuration is to assign the interrupt of each device to different CPUs to prevent all interrupts from being sent to the same CPU, avoiding potential performance bottleneck and taking advantage of multiple cores to increase cluster throughput. For the TiDB cluster, the rate at which the network card processes packages has a great impact on the throughput of the cluster.
+
+Follow these steps to check whether you have configured SMP IRQ Affinity on the machine:
+
+1. Execute the following command to check the interrupt of a network card:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat /proc/interrupts|grep <iface-name>|awk '{print $1,$NF}'
+    ```
+
+    In the output result of the above command, the first column indicates the interrupt and the second column indicates the device name. If it is a multi-queue network card, the above command outputs information in multiple rows and each queue corresponds to an interrupt.
+
+2. Execute either of the following commands to check this interrupt is assigned to which CPU.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat /proc/irq/<ir_num>/smp_affinity
+    ```
+
+    The above command outputs the hexadecimal value corresponding to the CPU serial number, and the output result is not so intuitive. For the detailed calculation method, refer to [SMP IRQ Affinity](https://cs.uwaterloo.ca/~brecht/servers/apic/SMP-affinity.txt).
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat /proc/irq/<ir_num>/smp_affinity_list
+    ```
+
+    The above command outputs the decimal value corresponding to the CPU serial number. The result is more intuitive.
+
+If all interrupts of a network card are assigned to different CPUs, the SMP IRQ Affinity is correctly configured on the machine and you do not need further operation.
+
+If all interrupts are sent to the same CPU, configure SMP IRQ Affinity by the following steps:
+
++ For the scenario of multi-queue network card and multiple cores:
+
+    - Method 1: Enable the [irqbalance](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-irqbalance) service. Use the following command to enable the service on CentOS 7:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        systemctl start irqbalance
+        ```
+
+    - Method 2: Disable irqbalance and customize the binding relationship between interrupts and CPUs. Refer to the [set_irq_affinity.sh](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh) script for more details.
+
++ For the scenario of single-queue network card and multiple cores:
+
+    To configure SMP IRQ Affinity in this scenario, you can use [RPS/RFS](https://www.kernel.org/doc/Documentation/networking/scaling.txt) to simulate the Receive Side Scaling (RSS) feature of the network card at the software level.
+
+    Do not use the irqbalance service as described in Method 1. Instead, use the [script](https://gist.githubusercontent.com/SaveTheRbtz/8875474/raw/0c6e500e81e161505d9111ac77115a2367180d12/set_irq_affinity.sh) provided in Method 2 to configure RPS. For the configuration of RFS, refer to [RFS configuration](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-networking-configuration_tools#sect-Red_Hat_Enterprise_Linux-Performance_Tuning_Guide-Configuration_tools-Configuring_Receive_Flow_Steering_RFS).
+
 ## Hardware and deployment requirements
 
 + 64-bit generic hardware server platform in the Intel x86-64 architecture and 10 Gigabit NIC (network interface card), which are the same as the server requirements for deploying a TiDB cluster using binary. For details, refer to [Hardware recommendations](/dev/how-to/deploy/hardware-recommendations.md).
