@@ -434,28 +434,29 @@ SELECT * FROM tables WHERE table_schema='mysql' AND table_name='user';
 
 ```
 *************************** 1. row ***************************
-  TABLE_CATALOG: def
-   TABLE_SCHEMA: mysql
-     TABLE_NAME: user
-     TABLE_TYPE: BASE TABLE
-         ENGINE: InnoDB
-        VERSION: 10
-     ROW_FORMAT: Compact
-     TABLE_ROWS: 0
- AVG_ROW_LENGTH: 0
-    DATA_LENGTH: 0
-MAX_DATA_LENGTH: 0
-   INDEX_LENGTH: 0
-      DATA_FREE: 0
- AUTO_INCREMENT: 0
-    CREATE_TIME: 2019-03-29 09:17:27
-    UPDATE_TIME: NULL
-     CHECK_TIME: NULL
-TABLE_COLLATION: utf8mb4_bin
-       CHECKSUM: NULL
- CREATE_OPTIONS:
-  TABLE_COMMENT:
-  TIDB_TABLE_ID: 5
+            TABLE_CATALOG: def
+             TABLE_SCHEMA: mysql
+               TABLE_NAME: user
+               TABLE_TYPE: BASE TABLE
+                   ENGINE: InnoDB
+                  VERSION: 10
+               ROW_FORMAT: Compact
+               TABLE_ROWS: 0
+           AVG_ROW_LENGTH: 0
+              DATA_LENGTH: 0
+          MAX_DATA_LENGTH: 0
+             INDEX_LENGTH: 0
+                DATA_FREE: 0
+           AUTO_INCREMENT: 0
+              CREATE_TIME: 2019-03-29 09:17:27
+              UPDATE_TIME: NULL
+               CHECK_TIME: NULL
+          TABLE_COLLATION: utf8mb4_bin
+                 CHECKSUM: NULL
+           CREATE_OPTIONS:
+            TABLE_COMMENT:
+            TIDB_TABLE_ID: 5
+TIDB_ROW_ID_SHARDING_INFO: NULL
 1 row in set (0.00 sec)
 ```
 
@@ -476,6 +477,16 @@ SHOW TABLES
   FROM db_name
   [LIKE 'wild']
 ```
+
+表中的信息大部分定义自 MySQL，此外有两列是 TiDB 新增的：
+
+* `TIDB_TABLE_ID`：标识表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
+* `TIDB_ROW_ID_SHARDING_INFO`：标识表的 Sharding 类型，可能的值为：
+    - `"NOT_SHARDED"`：表未被 Shard。
+    - `"NOT_SHARDED(PK_IS_HANDLE)"`：一个定义了整型主键的表未被 Shard。
+    - `"PK_AUTO_RANDOM_BITS={bit_number}"`：一个定义了整型主键的表由于定义了 `AUTO_RANDOM` 而被 Shard。
+    - `"SHARD_BITS={bit_number}"`：表使用 `SHARD_ROW_ID_BITS={bit_number}` 进行了 Shard。
+    - NULL：表属于系统表或 View，无法被 Shard。
 
 ## TABLE_CONSTRAINTS 表
 

@@ -57,15 +57,13 @@ select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 
 ### `@QB_NAME` 参数
 
-除 `QB_NAME` 外，其余优化器相关的 Hint 都可以通过可选参数 `@QB_NAME` 来指定该 Hint 的生效范围。该参数需写在最前面，与其他参数用空格隔开。例如：
+除 `QB_NAME` 外，其余优化器相关的 Hint 都可以通过可选参数 `@QB_NAME` 来指定该 Hint 的生效范围。该参数需写在最前面，与其他参数用空格隔开。同时，你也可以在参数中的每一个表名后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。例如：
 
 {{< copyable "sql" >}}
 
 ```sql
 select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
 ```
-
-同时，你也可以在参数中的每一个表名后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。
 
 ### SM_JOIN(t1_name [, tl_name ...])
 
@@ -96,6 +94,14 @@ select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 > **注意：**
 >
 > `INL_JOIN` 的别名是 `TIDB_INLJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
+
+### INL_HASH_JOIN
+
+`INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，但在某些场景下会更为节省内存资源。
+
+### INL_MERGE_JOIN
+
+`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。该算法相比于 `INL_JOIN` 会更节省内存。该算法使用条件包含 `INL_JOIN` 的所有使用条件，但还需要添加一条：join keys 中的内表列集合是内表使用的 index 的前缀，或内表使用的 index 是 join keys 中的内表列集合的前缀。
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
