@@ -6,14 +6,56 @@ category: reference
 
 # Data Migration Task Configuration File
 
-This document introduces the task configuration file of Data Migration --
-[`task.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task_basic.yaml), including [Global configuration](#global-configuration) and [Instance configuration](#instance-configuration).
+This document introduces the basic task configuration file of Data Migration --
+[`task_basic.yaml`](https://github.com/pingcap/dm/blob/master/dm/master/task_advanced.yaml), including [global configuration](#global-configuration) and [instance configuration](#instance-configuration).
+
+DM also implements [an advanced task configuration file](/v3.1/reference/tools/data-migration/configure/task-configuration-file-full.md) which provides greater flexibility and more control over DM.
 
 For the feature and configuration of each configuration item, see [Data replication features](/v3.1/reference/tools/data-migration/features/overview.md).
 
 ## Important concepts
 
 For description of important concepts including `source-id` and the DM-worker ID, see [Important concepts](/v3.1/reference/tools/data-migration/configure/overview.md#important-concepts).
+
+## Task configuration file template (basic)
+
+The following is a task configuration file template which allows you to perform basic data replication tasks.
+
+```yaml
+---
+
+# ----------- Global configuration -----------
+## ********** Basic configuration ************
+
+```yaml
+name: test                      # The name of the task. Should be globally unique.
+task-mode: all                  # The task mode. Can be set to `full`/`incremental`/`all`.
+
+target-database:                # Configuration of the downstream database instance.
+  host: "127.0.0.1"
+  port: 4000
+  user: "root"
+  password: ""                  # The dmctl encryption is needed when the password is not empty.
+
+## ******** Feature configuration set **********
+# The filter rule set of the black white list of the matched table of the upstream database instance.
+black-white-list:
+  bw-rule-1:             # # The name of the black and white lists filtering rule of the table matching the upstream database instance.
+    do-dbs: ["all_mode"] # white list of upstream tables needs to be replicated
+# ----------- Instance configuration -----------
+mysql-instances:
+  # The ID of the upstream instance or replication group ID. It can be configured by referring to the `source-id` in the `dm-master.toml` file.
+  - source-id: "mysql-replica-01"
+    black-white-list:  "bw-rule-1"
+        mydumper-thread: 4             # The number of threads that Mydumper uses for dumping data, new in v1.0.2 and later versions
+        loader-thread: 16              # The number of threads that Loader uses for loading data, new in v1.0.2 and later versions
+        syncer-thread: 16              # The number of threads that Syncer uses for replicating incremental data, new in v1.0.2 and later versions
+  - source-id: "mysql-replica-02"
+    black-white-list:  "bw-rule-1"
+    mydumper-thread: 4
+    loader-thread: 16
+    syncer-thread: 16
+```
 
 ## Configuration order
 
@@ -24,22 +66,7 @@ For description of important concepts including `source-id` and the DM-worker ID
 
 ### Basic configuration
 
-```yaml
-name: test                      # The name of the task. Should be globally unique.
-task-mode: all                  # The task mode. Can be set to `full`/`incremental`/`all`.
-is-sharding: true               # Whether it is a task to merge the shards.
-meta-schema: "dm_meta"          # The downstream database that stores the `meta` information.
-remove-meta: false              # Whether to remove the `meta` information (`checkpoint` and `onlineddl`) corresponding to the task name before starting the replication task.
-enable-heartbeat: false         # Whether to enable the heartbeat feature.
-
-target-database:                # Configuration of the downstream database instance.
-  host: "192.168.0.1"
-  port: 4000
-  user: "root"
-  password: ""                  # The dmctl encryption is needed when the password is not empty.
-```
-
-`task-mode`
+Refer to the comments in the [template](#task-configuration-file-template-basic) to see more details. Specific instruction about `task-mode` are as follows:
 
 - Description: the task mode that can be used to specify the data replication task to be executed.
 - Value: string (`full`, `incremental`, or `all`).
@@ -49,113 +76,10 @@ target-database:                # Configuration of the downstream database insta
 
 ### Feature configuration set
 
-Global configuration includes the following feature configuration set.
-
-```yaml
-# The routing mapping rule set between the upstream and downstream tables.
-routes:
-  route-rule-1:
-    schema-pattern: "test_*"
-    table-pattern: "t_*"
-    target-schema: "test"
-    target-table: "t"
-  route-rule-2:
-    schema-pattern: "test_*"
-    target-schema: "test"
-
-# The binlog event filter rule set of the matched table of the upstream database instance.
-filters:
-  filter-rule-1:
-    schema-pattern: "test_*"
-    table-pattern: "t_*"
-    events: ["truncate table", "drop table"]
-    action: Ignore
-  filter-rule-2:
-    schema-pattern: "test_*"
-    # Only execute all the DML events in the `test_*` schema.
-    events: ["all dml"]
-    action: Do
-
-# The filter rule set of the black white list of the matched table of the upstream database instance.
-black-white-list:
-  bw-rule-1:
-    do-dbs: ["~^test.*", "user"]
-    ignore-dbs: ["mysql", "account"]
-    do-tables:
-    - db-name: "~^test.*"
-      tbl-name: "~^t.*"
-    - db-name: "user"
-      tbl-name: "information"
-    ignore-tables:
-    - db-name: "user"
-      tbl-name: "log"
-
-# Configuration arguments of running Mydumper.
-mydumpers:
-  global:
-    # The Mydumper binary file path. It is generated by the Ansible deployment application automatically and needs no configuration.
-    mydumper-path: "./mydumper"
-    # The number of the threads Mydumper dumps from the upstream database instance.
-    threads: 16
-    # The size of the file generated by Mydumper. Unit: MB.
-    chunk-filesize: 64
-    skip-tz-utc: true
-    extra-args: "-B test -T t1,t2 --no-locks"
-
-# Configuration arguments of running Loader.
-loaders:
-  global:
-    # The number of threads that execute Mydumper SQL files concurrently in Loader.
-    pool-size: 16
-    # The directory output by Mydumper that Loader reads. Directories for different tasks of the same instance must be different. (Mydumper outputs the SQL file based on the directory)
-    dir: "./dumped_data"
-
-# Configuration arguments of running Syncer.
-syncers:
-  global:
-    # The number of threads that replicate binlog events concurrently in Syncer.
-    worker-count: 16
-    # The number of SQL statements in a transaction batch that Syncer replicates to the downstream database.
-    batch: 1000
-    # The retry times of the transactions with an error that Syncer replicates to the downstream database (only for DML operations).
-    max-retry: 100
-```
+For basic applications, you only need to modify the black and white lists filtering rule. Refer to the comments about `black-white-list` in the [template](#task-configuration-file-template-basic) or [Black & white table lists](/v3.1/reference/tools/data-migration/features/overview.md#black--white-table-lists) to see more details.
 
 ## Instance configuration
 
 This part defines the subtask of data replication. DM supports replicating data from one or multiple MySQL instances to the same instance.
 
-```
-mysql-instances:
-  -
-    source-id: "mysql-replica-01"                                      # The ID of the upstream instance or replication group ID. It can be configured by referring to the `source_id` in the `inventory.ini` file or the `source-id` in the `dm-master.toml` file.
-    meta:                                                              # The position where the binlog replication starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used.
-
-      binlog-name: binlog.000001
-      binlog-pos: 4
-
-    route-rules: ["route-rule-1", "route-rule-2"]                      # The name of the mapping rule between the table matching the upstream database instance and the downstream database.
-    filter-rules: ["filter-rule-1"]                                    # The name of the binlog filtering rule of the table matching the upstream database instance.
-    black-white-list:  "bw-rule-1"                                     # The name of the black and white lists filtering rule of the table matching the upstream database instance.
-
-    mydumper-config-name: "global"                                     # The Mydumper configuration name.
-    loader-config-name: "global"                                       # The Loader configuration name.
-    syncer-config-name: "global"                                       # The Syncer configuration name.
-
-  -
-    source-id: "mysql-replica-02"                                      # The ID of the upstream instance or replication group. It can be configured by referring to the `source_id` in the `inventory.ini` file or the `source-id` in the `dm-master.toml` file.
-    mydumper-config-name: "global"                                     # The Mydumper configuration name.
-    loader-config-name: "global"                                       # The Loader configuration name.
-    syncer-config-name: "global"                                       # The Syncer configuration name.
-```
-
-For the configuration details of the above options, see the corresponding part in [Feature configuration set](#feature-configuration-set), as shown in the following table.
-
-| Option | Corresponding part |
-| :------ | :------------------ |
-| `route-rules` | `routes` |
-| `filter-rules` | `filters` |
-| `black-white-list` | `black-white-list` |
-| `mydumper-config-name` | `mydumpers` |
-| `loader-config-name` | `loaders` |
-| `syncer-config-name` | `syncers`  |
+For more details, refer to the comments about `mysql-instances` in the [template](#task-configuration-file-template-basic).

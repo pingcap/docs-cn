@@ -2,7 +2,6 @@
 title: Data Migration Configuration File Overview
 summary: This document gives an overview of Data Migration configuration files.
 category: reference
-aliases: ['/docs/tools/dm/dm-configuration-file-overview/']
 ---
 
 # Data Migration Configuration File Overview
@@ -12,8 +11,8 @@ This document gives an overview of configuration files of DM (Data Migration).
 ## DM process configuration files
 
 - `inventory.ini`: The configuration file of deploying DM using DM-Ansible. You need to edit it based on your machine topology. For details, see [Edit the `inventory.ini` file to orchestrate the DM cluster](/v3.0/how-to/deploy/data-migration-with-ansible.md#step-7-edit-the-inventoryini-file-to-orchestrate-the-dm-cluster).
-- `dm-master.toml`: The configuration file of running the DM-master process, including the topology information of the DM cluster and the corresponding relationship between the MySQL instance and DM-worker (must be one-to-one relationship). When you use DM-Ansible to deploy DM, `dm-master.toml` is generated automatically.
-- `dm-worker.toml`: The configuration file of running the DM-worker process, including the upstream MySQL instance configuration and the relay log configuration. When you use DM-Ansible to deploy DM, `dm-worker.toml` is generated automatically.
+- `dm-master.toml`: The configuration file of running the DM-master process, including the topology information of the DM cluster and the corresponding relationship between the MySQL instance and DM-worker (must be one-to-one relationship). When you use DM-Ansible to deploy DM, `dm-master.toml` is generated automatically. Refer to [DM-master Configuration File](/v3.0/reference/tools/data-migration/configure/dm-master-configuration-file.md) to see more details.
+- `dm-worker.toml`: The configuration file of running the DM-worker process, including the upstream MySQL instance configuration and the relay log configuration. When you use DM-Ansible to deploy DM, `dm-worker.toml` is generated automatically. Refer to [DM-worker Configuration File](/v3.0/reference/tools/data-migration/configure/dm-master-configuration-file.md) to see more details.
 
 ## DM replication task configuration
 

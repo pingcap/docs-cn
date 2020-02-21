@@ -334,6 +334,8 @@
       - [Deploy](/dev/reference/tools/data-migration/deploy.md)
       + Configure
         - [Overview](/dev/reference/tools/data-migration/configure/overview.md)
+        - [DM-master Configuration](/dev/reference/tools/data-migration/configure/dm-master-configuration-file.md)
+        - [DM-worker Configuration](/dev/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
         - [Task Configuration](/dev/reference/tools/data-migration/configure/task-configuration-file.md)
       + Manage the DM Cluster
         - [Cluster Operations](/dev/reference/tools/data-migration/cluster-operations.md)
