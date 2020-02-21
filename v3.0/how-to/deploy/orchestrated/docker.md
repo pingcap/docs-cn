@@ -20,7 +20,7 @@ To learn more, see [TiDB architecture](/v3.0/architecture.md) and [Software and 
 Before you start, make sure that you have:
 
 + Installed the latest version of [Docker](https://www.docker.com/products/docker)
-+ Pulled the latest images of TiDB, TiKV and PD from [Docker Hub](https://hub.docker.com). If not, pull the images using the following commands:
++ Pulled the latest images of TiDB, TiKV and PD from [Docker Hub](https://hub.docker.com/u/pingcap). If not, pull the images using the following commands:
 
     {{< copyable "shell-regular" >}}
 
