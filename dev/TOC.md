@@ -235,9 +235,9 @@
     - [基于角色的访问控制](/dev/reference/security/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/dev/reference/security/cert-based-authentication.md)
   + 事务
-    - [事务语句](/dev/reference/transactions/overview.md)
-    - [事务模型](/dev/reference/transactions/transaction-model.md)
+    - [事务概览](/dev/reference/transactions/overview.md)
     - [隔离级别](/dev/reference/transactions/transaction-isolation.md)
+    - [乐观事务](/dev/reference/transactions/transaction-optimistic.md)
     - [悲观事务](/dev/reference/transactions/transaction-pessimistic.md)
   + 系统数据库
     - [`mysql`](/dev/reference/system-databases/mysql.md)
@@ -271,7 +271,6 @@
     - [Grafana 监控最佳实践](/dev/reference/best-practices/grafana-monitor.md)
     - [PD 调度策略最佳实践](/dev/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/dev/reference/best-practices/massive-regions.md)
-    - [乐观锁事务最佳实践](/dev/reference/best-practices/optimistic-transaction.md)
   + [TiSpark 使用指南](/dev/reference/tispark.md)
   + TiDB Binlog
     - [概述](/dev/reference/tidb-binlog/overview.md)
@@ -419,6 +418,7 @@
     - [3.1.0-beta.1](/dev/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/dev/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.10](/dev/releases/3.0.10.md)
     - [3.0.9](/dev/releases/3.0.9.md)
     - [3.0.8](/dev/releases/3.0.8.md)
     - [3.0.7](/dev/releases/3.0.7.md)
