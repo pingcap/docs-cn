@@ -8,8 +8,8 @@
 
 <!--Give us some reference link(s) that might help quickly review and merge your PR, for example, a file link that supports why you changed the document.-->
 
-- [ ] Reference link(s):<!--Give links here-->
-- [ ] This PR is to align with:<!--Give links here-->
+- Reference link(s):<!--Give links here-->
+- This PR is to align with:<!--Give links here-->
 - [ ] N/A (not applicable)
 
 **Important Notice:**
