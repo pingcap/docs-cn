@@ -5,7 +5,7 @@ category: how-to
 
 # 恢复备份数据到 Kubernetes 上的 TiDB 集群
 
-本文档描述了如何将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。底层通过使用 [`loader`](/dev/reference/tools/loader.md) 来恢复数据。
+本文档描述了如何将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。底层通过使用 [`loader`](/reference/tools/loader.md) 来恢复数据。
 
 以下示例将兼容 S3 的存储（指定路径）上的备份数据恢复到 TiDB 集群。
 
@@ -69,7 +69,7 @@ category: how-to
      kubectl get rt -n test2 -owide
      ```
 
-以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 (`spec.to.host` )。有关兼容 S3 的存储的配置项，可以参考 [backup-s3.yaml](/dev/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md#备份数据到兼容-s3-的存储)。
+以上示例将兼容 S3 的存储（`spec.s3.path` 路径下）中的备份数据恢复到 TiDB 集群 (`spec.to.host` )。有关兼容 S3 的存储的配置项，可以参考 [backup-s3.yaml](/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md#备份数据到兼容-s3-的存储)。
 
 更多 `Restore` CR 字段的详细解释：
 

@@ -68,7 +68,7 @@ category: how-to
      kubectl get rt -n test2 -owide
      ```
 
-以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [backup-gcs.yaml](/dev/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs.md#备份数据到-gcs) 中的配置。
+以上示例将存储在 GCS 上指定路径 `spec.gcs.path` 的备份数据恢复到 TiDB 集群 `spec.to.host`。关于 GCS 的配置项可以参考 [backup-gcs.yaml](/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs.md#备份数据到-gcs) 中的配置。
 
 更多 `Restore` CR 字段的详细解释：
 
