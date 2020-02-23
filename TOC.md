@@ -81,6 +81,8 @@
       - [用户自定义变量](/reference/sql/language-structure/user-defined-variables.md)
       - [表达式语法](/reference/sql/language-structure/expression-syntax.md)
       - [注释语法](/reference/sql/language-structure/comment-syntax.md)
+    + 表属性和列属性
+      - [`AUTO_RANDOM`](/reference/sql/attributes/auto-random.md)
     + 数据类型
       - [概述](/reference/sql/data-types/overview.md)
       - [默认值](/reference/sql/data-types/default-values.md)
