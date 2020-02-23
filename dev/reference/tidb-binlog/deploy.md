@@ -188,8 +188,8 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
         ```bash
         cd /home/tidb/tidb-ansible/conf &&
-        cp drainer.toml drainer_mysql_drainer.toml &&
-        vi drainer_mysql_drainer.toml
+        cp drainer-cluster.toml drainer_mysql_drainer-cluster.toml &&
+        vi drainer_mysql_drainer-cluster.toml
         ```
 
         > **注意：**
