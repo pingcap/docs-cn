@@ -69,4 +69,4 @@ Pod 的调度流程是这样的：
 - 在这之后，`kube-scheduler` 会发请求到 `tidb-scheduler` 服务，`tidb-scheduler` 会通过一些自定义的调度规则（见上述介绍）对发送过来的 Node 节点进行过滤，最终将剩余可调度的 Node 节点返回给 `tidb-scheduler`；
 - 最终由 `kube-scheduler` 决定最终调度的 Node 节点。
 
-如果出现 Pod 无法调度，请参考此[文档](/tidb-in-kubernetes/troubleshoot/#pod-处于-pending-状态)诊断和解决。
+如果出现 Pod 无法调度，请参考此[文档](/tidb-in-kubernetes/troubleshoot.md#pod-处于-pending-状态)诊断和解决。
