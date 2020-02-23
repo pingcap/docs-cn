@@ -106,7 +106,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 是否开启慢查询日志
 + 默认值：true
-+ 可以设置成 `true` 或者 `false`。
++ 可以设置成 `true` 或 `false` 来启用或或禁用慢查询日志。
 
 ### `slow-query-file`
 
