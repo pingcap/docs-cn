@@ -1,30 +1,13 @@
-<!--Thanks for your contribution to TiDB documentation. See [CONTRIBUTING](https://github.com/pingcap/community/blob/master/CONTRIBUTING.md) before filing this pull request (PR).-->
+<!--Thanks for your contribution to TiDB documentation. See [CONTRIBUTING](https://github.com/pingcap/community/blob/master/CONTRIBUTING.md) before filing this PR.-->
 
 ### What is changed, added or deleted? <!--Required-->
 
-<!--Tell us what you did and why. This is important to help reviewers and community members understand your PR.-->
+<!--Tell us what you did and why.-->
 
-### What is the related PR or file link(s)? <!--Required-->
+### What is the related PR or file link(s)? <!--Write "N/A" or remove this item if it is not applicable-->
 
-<!--Give us some reference link(s) that might help quickly review and merge your PR, for example, a file link that supports why you changed the document.-->
+<!--Provide a reference link that is related to your change. For example, a link in the pingcap/docs repository. -->
 
-- [ ] Reference link(s):<!--Give links here-->
-- [ ] This PR is to align with:<!--Give links here-->
-- [ ] N/A (not applicable)
+### Which version does your change affect? <!--Required; write "N/A" if it is not applicable-->
 
-### Which TiDB version(s) does your changes apply to? <!--Required-->
-
-<!--Tick the checkbox(es) below to choose the TiDB version(s) that your changes apply to.-->
-
-- [ ] All active versions: dev, v3.0, v2.1, v3.1
-- [ ] dev (the latest development version)
-- [ ] v3.0 (TiDB 3.0 versions)
-- [ ] v2.1 (TiDB 2.1 versions)
-- [ ] v3.1 (TiDB 3.1 versions)
-- [ ] v4.0 (TiDB 4.0 versions)
-- [ ] All active and inactive versions
-- [ ] N/A (not applicable)
-
-**Note:** If your changes apply to multiple TiDB versions, make sure you update the documents in the **corresponding** version folders such as "dev", "v3.0", "v2.1" and "v3.1" in this PR.
-
-- [ ] Updated one version first. Will update other versions after I get two LGTMs.
+<!--Specify the version or versions that your change affect by adding a label at the right-hand side of this page. "dev" indicates the latest development version. "v3.0"/"v2.1" indicates the documentation of TiDB 3.0/2.1. If your change affects multiple versions, please update the documents for ALL the necessary versions.-->

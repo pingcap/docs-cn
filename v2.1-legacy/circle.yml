@@ -1,0 +1,43 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: andelf/doc-build:0.1.9
+    working_directory: ~/pingcap/docs-cn
+    branches:
+      only:
+        - master
+        - website-preview
+    steps:
+      - checkout
+
+      - run:
+          name: "Special Check for Golang User"
+          command: grep -RP '\t' *  | tee | grep '.md' && exit 1; echo ok
+
+      - run:
+          name: "Merge Makedown Files"
+          command: python3 scripts/merge_by_toc.py
+
+      - run:
+          name: "Generate PDF"
+          command: scripts/generate_pdf.sh
+
+      - deploy:
+          name: "Publish PDF"
+          command: |
+            sudo bash -c 'echo "119.188.128.5 uc.qbox.me" >> /etc/hosts';
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              python3 scripts/upload.py output.pdf tidb-manual-cn.pdf;
+            fi
+            if [ "${CIRCLE_BRANCH}" == "website-preview" ]; then
+              python3 scripts/upload.py output.pdf tidb-manual-cn-preview.pdf;
+            fi
+
+      - run:
+          name: "Copy Generated PDF"
+          command: mkdir /tmp/artifacts && cp output.pdf doc.md /tmp/artifacts
+
+      - store_artifacts:
+          path: /tmp/artifacts
