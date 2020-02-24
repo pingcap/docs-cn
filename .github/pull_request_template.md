@@ -16,6 +16,5 @@
 
 **If your changes apply to multiple TiDB documentation versions**, to trigger the bot to cherry-pick this PR to other release branches, make sure you add labels such as:
 
-- **needs-cherry-pick-3.0**
 - **needs-cherry-pick-3.1**
 - **needs-cherry-pick-2.1**
