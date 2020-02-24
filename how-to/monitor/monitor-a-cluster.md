@@ -111,7 +111,7 @@ Metrics 接口用于监控整个集群的状态和性能。
 
 ```bash
 wget https://download.pingcap.org/prometheus-2.8.1.linux-amd64.tar.gz
-wget http://download.pingcap.org/node_exporter-0.17.0.linux-amd64.tar.gz
+wget https://download.pingcap.org/node_exporter-0.17.0.linux-amd64.tar.gz
 wget https://download.pingcap.org/grafana-6.1.6.linux-amd64.tar.gz
 ```
 
