@@ -60,7 +60,7 @@ while read -r tasks; do
         ) &
     done
     wait
-done <<<"$(find "." -type f -name '*.md' | xargs -n 10)"
+done <<<"$(find "." -type f -not -path './node_modules/*' -name '*.md' | xargs -n 10)"
 
 error_files=$(cat $ERROR_REPORT | grep 'FILE: ' | wc -l)
 error_output=$(cat $ERROR_REPORT)

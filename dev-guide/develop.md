@@ -4,7 +4,7 @@ If you want to develop the TiDB project, you can follow this guide.
 
 ## Before you begin
 
-You need to check the [supported platforms](./requirements.md#supported-platforms) and [prerequisites](./requirements.md#prerequisites) first.
+You need to check the [supported platforms](/dev-guide/requirements.md#supported-platforms) and [prerequisites](/dev-guide/requirements.md#prerequisites) first.
 
 ## Build TiKV
 

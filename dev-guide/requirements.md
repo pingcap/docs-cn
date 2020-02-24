@@ -19,6 +19,6 @@ The following table lists TiDB support for common architectures and operating sy
 + GCC 4.8+ with static library
 + CMake 3.1+
 
-The [check requirement script](../scripts/check_requirement.sh) can help you check prerequisites and install the missing ones automatically.
+The [check requirement script](/scripts/check_requirement.sh) can help you check prerequisites and install the missing ones automatically.
 
 TiKV is well tested in a certain Rust version by us, and the exact version can be found in the `RUST_VERSION` file in TiKV's root directory. It is recommended to use the same version as we do.
