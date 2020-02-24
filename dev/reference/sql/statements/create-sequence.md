@@ -39,6 +39,7 @@ category: reference
 ![CreateTableOptionListOpt](/media/sqlgram/CreateTableOptionListOpt.png)
 
 ## 语法说明
+
 ```
   CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 	[ INCREMENT [ BY | = ] increment ]
@@ -74,7 +75,7 @@ SEQUENCE 的使用主要通过表达式函数来操纵
 
 lastval() 函数，用于获取本会话上一个使用过的值，如果没有则为 NULL, 其参数为 SEQUENCE 序列的 identifier。
 
-**SETVAL()**
+**SETVAL**
 
 setval() 函数，用于设置序列的增长，其第一参数为 SEQUENCE 序列的 identifier，第二个参数为 num。
 
