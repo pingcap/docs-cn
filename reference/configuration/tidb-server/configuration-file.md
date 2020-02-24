@@ -448,3 +448,13 @@ TiDB 服务状态相关配置。
 
 + 悲观事务中每个语句最大重试次数，超出该限制将会报错。
 + 默认值：256
+
+## experimental
+
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
+
+### `allow-auto-random` <span class="version-mark">从 v3.1.0 版本开始引入</span>
+
++ 用于控制是否允许使用 `AUTO_RANDOM`。
++ 默认值：false
++ 默认情况下，不支持使用 `AUTO_RANDOM`。当该值为 true 时，不允许同时设置 alter-primary-key 为 true。
