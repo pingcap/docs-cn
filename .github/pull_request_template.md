@@ -18,4 +18,3 @@
 
 - **needs-cherry-pick-3.0**
 - **needs-cherry-pick-3.1**
-- **needs-cherry-pick-2.1**
