@@ -289,9 +289,9 @@ url = https://grafana.net
     - 默认账户：admin
     - 默认密码：admin
 
-    > 注意：
+    > **注意：**
     >
-    > **Change Password** 步骤可以选择 **Skip**
+    > **Change Password** 步骤可以选择 **Skip**。
 
 2. 点击 Grafana 侧边栏菜单 **Configuration** 中的 **Data Source**。
 
