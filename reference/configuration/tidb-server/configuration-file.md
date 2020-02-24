@@ -102,6 +102,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 >
 > 考虑后向兼容性，原来的配置项 `disable-timestamp` 仍然有效，但如果和 `enable-timestamp` 配置的值在语义上冲突（例如在配置中把 `enable-timestamp` 和 `disable-timestamp` 同时设置为 `true`），则 TiDB 会忽略 `disable-timestamp` 的值。在未来的版本中，`disable-timestamp` 配置项将被彻底移除，请废弃 `disable-timestamp` 的用法，使用语义上更易于理解的 `enable-timestamp`。
 
+### `enable-slow-log`
+
++ 是否开启慢查询日志
++ 默认值：true
++ 可以设置成 `true` 或 `false` 来启用或或禁用慢查询日志。
+
 ### `slow-query-file`
 
 + 慢查询日志的文件名。
@@ -442,3 +448,13 @@ TiDB 服务状态相关配置。
 
 + 悲观事务中每个语句最大重试次数，超出该限制将会报错。
 + 默认值：256
+
+## experimental
+
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
+
+### `allow-auto-random` <span class="version-mark">从 v3.1.0 版本开始引入</span>
+
++ 用于控制是否允许使用 `AUTO_RANDOM`。
++ 默认值：false
++ 默认情况下，不支持使用 `AUTO_RANDOM`。当该值为 true 时，不允许同时设置 alter-primary-key 为 true。
