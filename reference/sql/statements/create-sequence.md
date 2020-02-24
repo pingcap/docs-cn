@@ -274,5 +274,5 @@ ERROR 4135 (HY000): Sequence 'test.seq2' has run out
 
 ## 另请参阅
 
-* [DROP SEQUENCE](/dev/reference/sql/statements/drop-sequence.md)
-* [SHOW CREATE SEQUENCE](/dev/reference/sql/statements/show-create-sequence.md)
+* [DROP SEQUENCE](/reference/sql/statements/drop-sequence.md)
+* [SHOW CREATE SEQUENCE](/reference/sql/statements/show-create-sequence.md)

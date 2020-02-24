@@ -54,5 +54,5 @@ Query OK, 0 rows affected (0.03 sec)
 
 ## 另请参阅
 
-* [CREATE SEQUENCE](/dev/reference/sql/statements/create-sequence.md)
-* [SHOW CREATE SEQUENCE](/dev/reference/sql/statements/show-create-sequence.md)
+* [CREATE SEQUENCE](/reference/sql/statements/create-sequence.md)
+* [SHOW CREATE SEQUENCE](/reference/sql/statements/show-create-sequence.md)

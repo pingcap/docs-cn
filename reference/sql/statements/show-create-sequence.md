@@ -51,5 +51,5 @@ SHOW CREATE SEQUENCE seq;
 
 ## 另请参阅
 
-* [CREATE SEQUENCE](/dev/reference/sql/statements/create-sequence.md)
-* [DROP SEQUENCE](/dev/reference/sql/statements/drop-sequence.md)
+* [CREATE SEQUENCE](/reference/sql/statements/create-sequence.md)
+* [DROP SEQUENCE](/reference/sql/statements/drop-sequence.md)
