@@ -19,7 +19,7 @@ TiDB expands both SQL processing and storage by simply adding new nodes. This ma
 
 TiDB acts like it is a MySQL 5.7 server to your applications. You can continue to use all of the existing MySQL client libraries, and in many cases, you will not need to change a single line of code in your application.
 
-TiDB does not have 100% MySQL compatibility because we built the layer from scratch in order to maximize the performance advantages inherent to a distributed system. We believe in being transparent about the level of MySQL compatibility that TiDB provides. Please check out the list of [known compatibility differences](./sql/mysql-compatibility.md).
+TiDB does not have 100% MySQL compatibility because we built the layer from scratch in order to maximize the performance advantages inherent to a distributed system. We believe in being transparent about the level of MySQL compatibility that TiDB provides. Please check out the list of [known compatibility differences](/reference/mysql-compatibility.md).
 
 ### Replicate from and to MySQL
 

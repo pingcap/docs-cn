@@ -13,10 +13,6 @@
     ],
     "replacementPatterns": [
         {
-            "pattern": "^(?!(/<VERSION>/|/media/))",
-            "replacement": "/ERROR:link-must-start-with-slash-and-cannot-reference-files-in-other-version-directory:"
-        },
-        {
             "comment": "prefix with repo root",
             "pattern": "^(?!(\\.|/ERROR:.*))",
             "replacement": "<ROOT>/"

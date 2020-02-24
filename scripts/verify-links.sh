@@ -39,35 +39,28 @@ function in_array() {
 }
 
 # Check all directories starting with 'v\d.*' and dev.
-for d in dev $(ls -d v[0-9]*); do
-    if in_array $d "${IGNORE_DIRS[@]}"; then
-        echo "info: directory $d skipped"
-        continue
-    fi
-    echo "info: checking links under $d directory..."
-    sed \
-        -e "s#<ROOT>#$ROOT#g" \
-        -e "s#<VERSION>#$d#g" \
-        scripts/markdown-link-check.tpl > $CONFIG_TMP
-    if [ -n "$VERBOSE" ]; then
-        cat $CONFIG_TMP
-    fi
-    # TODO simplify this if markdown-link-check can process multiple files together
-    while read -r tasks; do
-        for task in $tasks; do
-            (
-                output=$(markdown-link-check --color --config "$CONFIG_TMP" "$task" -q)
-                if [ $? -ne 0 ]; then
-                    printf "$output" >> $ERROR_REPORT
-                fi
-                if [ -n "$VERBOSE" ]; then
-                    echo "$output"
-                fi
-            ) &
-        done
-        wait
-    done <<<"$(find "$d" -type f -name '*.md' | xargs -n 10)"
-done
+echo "info: checking links under $ROOT directory..."
+sed \
+    -e "s#<ROOT>#$ROOT#g" \
+    scripts/markdown-link-check.tpl > $CONFIG_TMP
+if [ -n "$VERBOSE" ]; then
+    cat $CONFIG_TMP
+fi
+# TODO simplify this if markdown-link-check can process multiple files together
+while read -r tasks; do
+    for task in $tasks; do
+        (
+            output=$(markdown-link-check --color --config "$CONFIG_TMP" "$task" -q)
+            if [ $? -ne 0 ]; then
+                printf "$output" >> $ERROR_REPORT
+            fi
+            if [ -n "$VERBOSE" ]; then
+                echo "$output"
+            fi
+        ) &
+    done
+    wait
+done <<<"$(find "." -type f -name '*.md' | xargs -n 10)"
 
 error_files=$(cat $ERROR_REPORT | grep 'FILE: ' | wc -l)
 error_output=$(cat $ERROR_REPORT)
