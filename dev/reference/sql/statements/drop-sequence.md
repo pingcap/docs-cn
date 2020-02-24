@@ -48,7 +48,6 @@ DROP SEQUENCE seq, seq2;
 Query OK, 0 rows affected (0.03 sec)
 ```
 
-
 ## MySQL 兼容性
 
 * MySQL 暂无 SEQUENCE 选项。

@@ -41,15 +41,15 @@ category: reference
 ## 语法说明
 
 ```
-  CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
-	[ INCREMENT [ BY | = ] increment ]
-	[ MINVALUE [=] minvalue | NO MINVALUE | NOMINVALUE ]
-	[ MAXVALUE [=] maxvalue | NO MAXVALUE | NOMAXVALUE ]
-	[ START [ WITH | = ] start ]
-	[ CACHE [=] cache | NOCACHE | NO CACHE]
-	[ CYCLE | NOCYCLE | NO CYCLE]
-	[ ORDER | NOORDER | NO ORDER]
-	[table_options]
+CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
+    [ INCREMENT [ BY | = ] increment ]
+    [ MINVALUE [=] minvalue | NO MINVALUE | NOMINVALUE ]
+    [ MAXVALUE [=] maxvalue | NO MAXVALUE | NOMAXVALUE ]
+    [ START [ WITH | = ] start ]
+    [ CACHE [=] cache | NOCACHE | NO CACHE]
+    [ CYCLE | NOCYCLE | NO CYCLE]
+    [ ORDER | NOORDER | NO ORDER]
+    [table_options]
 ```
 
 ## 参数说明
@@ -57,7 +57,7 @@ category: reference
 参数 | 默认值 | 描述  
  -|-|-
 INCREMENT | 1 | 指定序列的步长，其正负值可以控制 SEQUENCE 的增长方向。
-MINVALUE | 1 / -9223372036854775807 | 指定序列的最小值，当 INCREMENT > 0 时，默认值为 1；当 INCREMENT < 0 时，默认值为 -9223372036854775807。 
+MINVALUE | 1 / -9223372036854775807 | 指定序列的最小值，当 INCREMENT > 0 时，默认值为 1；当 INCREMENT < 0 时，默认值为 -9223372036854775807。
 MAXVALUE | 9223372036854775806 / -1 | 指定序列的最大值，当 INCREMENT > 0 时，默认值为 9223372036854775806；当 INCREMENT < 0 时，默认值为 -1。
 START | MINVALUE / MAXVALUE | 指定序列的初始值，当 INCREMENT > 0 时，默认值为 MINVALUE; 当 INCREMENT < 0 时，默认值为 MAXVALUE。
 CACHE | 1000 | 指定每个 TiDB 本地缓存序列的大小，默认值为 1000。
@@ -80,7 +80,6 @@ lastval() 函数，用于获取本会话上一个使用过的值，如果没有�
 setval() 函数，用于设置序列的增长，其第一参数为 SEQUENCE 序列的 identifier，第二个参数为 num。
 
 > 注意：在 TiDB SEQUENCE 的实现中，setval 函数并不能改变序列增长的初始步调/循环步调，在 setval 之后只会返回符合步调规律的下一个有效的序列值。
-
 
 ## 示例
 
