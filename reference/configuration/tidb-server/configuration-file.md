@@ -366,7 +366,7 @@ prepare 语句的 Plan cache 设置。
 
 ### `enable-chunk-rpc`
 
-+ 开启 `coprocessor` 的 `Chunk` 数据编码格式。
++ 开启 coprocessor 的 `Chunk` 数据编码格式。
 + 默认值：true
 
 ## txn-local-latches
