@@ -106,7 +106,7 @@ sync-log = true
 
 # Raft RocksDB directory. The default value is Raft subdirectory of [storage.data-dir].
 # If there are multiple disks on the machine, store the data of Raft RocksDB on different disks to improve TiKV performance.
-# raftdb-dir = "/tmp/tikv/store/raft"
+# raftdb-path = "/tmp/tikv/store/raft"
 
 region-max-size = "384MB"
 # The threshold value of Region split
