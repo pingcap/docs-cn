@@ -18,10 +18,10 @@ To make it easy to [try TiSpark](/reference/tispark.md), the TiDB cluster instal
     spark/jars/tispark-${name_with_version}.jar
     ```
 
-- TiSpark sample data and import scripts are deployed by default in the TiDB Ansible directory.
+- TiSpark sample data and import scripts can be downloaded from [TiSpark sample data](http://download.pingcap.org/tispark-sample-data.tar.gz).
 
     ```
-    tidb-ansible/resources/bin/tispark-sample-data
+    tispark-sample-data/
     ```
 
 ## Prepare the environment
@@ -53,7 +53,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 Assume that the TiDB cluster is started. The service IP of one TiDB instance is `192.168.0.2`, the port is `4000`, the user name is `root`, and the password is null.
 
 ```
-cd tidb-ansible/resources/bin/tispark-sample-data
+wget http://download.pingcap.org/tispark-sample-data.tar.gz
+tar -zxvf tispark-sample-data.tar.gz
+cd tispark-sample-data
 ```
 
 Edit the TiDB login information in `sample_data.sh`. For example:
