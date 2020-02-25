@@ -20,7 +20,7 @@ category: reference
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v2.1.15` 版本的下载链接为 `https://download.pingcap.org/tidb-v2.1.15-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v2.1.15` 版本的下载链接为 `https://download.pingcap.org/tidb-v2.1.15-linux-amd64.tar.gz`。
 
 ## TiDB Lightning
 
