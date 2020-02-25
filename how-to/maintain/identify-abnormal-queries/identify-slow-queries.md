@@ -9,6 +9,8 @@ aliases: ['/docs-cn/dev/how-to/maintain/identify-slow-queries/']
 
 To help users identify slow queries, analyze and improve the performance of SQL execution, TiDB outputs the statements whose execution time exceeds [slow-threshold](/reference/configuration/tidb-server/configuration-file.md#slow-threshold) (The default value is 300 milliseconds) to [slow-query-file](/reference/configuration/tidb-server/configuration-file.md#slow-query-file) (The default value is "tidb-slow.log").
 
+TiDB enables the slow query log by default. You can enable or disable the feature by modifying the configuration [`enable-slow-log`](/reference/configuration/tidb-server/configuration-file.md#enable-slow-log).
+
 ## Usage example
 
 ```sql

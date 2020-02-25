@@ -106,6 +106,12 @@ Configuration items related to log.
 >
 > Discard `disable-timestamp` and use `enable-timestamp` which is semantically easier to understand.
 
+### `enable-slow-log`
+
+- Determines whether to enable the slow query log.
+- Default value: `true`
+- To enable the slow query log, set `enable-slow-log` to `true`. Otherwise, set it to `false`.
+
 ### `slow-query-file`
 
 - The file name of the slow query log.
