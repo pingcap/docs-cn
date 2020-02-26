@@ -128,6 +128,19 @@ CREATE UNIQUE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.31 sec)
 ```
 
+
+## 表达式索引
+TiDB 支持创建表达式索引，即将索引建立在一个表达式上。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE INDEX c1_exor ON t1 ((c1+1));
+```
+
+表达式索引的语法和限制与 MySQL 相同，并通过将索引建立在隐藏的虚拟列来实现。
+这意味着所支持的表达式继承虚拟列的所有限制。目前，表达式索引只能使用在 FIELD 子句、WHERE 子句 和 ORDER BY 子句，后续将支持 GROUP BY 子句。
+
 ## 相关 session 变量
 
 和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/dev/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_ddl_reorg_worker_cnt)。
