@@ -849,7 +849,7 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 在 Google 的 Cloud Spanner 上面，也有类似的[限制](https://cloud.google.com/spanner/docs/limits)。
 
-默认还设置了 KV entry 的总大小不超过 100MB，如果业务需要使用大事务，可能修改配置文件中的配置项 txn-total-size-limit 调整，最大可以修改到 10G。实际的大小限制还受机器的物理内存影响。
+还默认限制 KV entry 的总大小不超过 100MB。如果业务需要使用大事务，可以修改配置文件中的 `txn-total-size-limit` 配置项进行调整，最大可以修改到 10G。实际的大小限制还受机器的物理内存影响。
 
 #### 4.3.4 如何批量导入？
 
