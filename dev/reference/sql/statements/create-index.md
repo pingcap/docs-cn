@@ -128,8 +128,8 @@ CREATE UNIQUE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.31 sec)
 ```
 
-
 ## 表达式索引
+
 TiDB 支持创建表达式索引，即将索引建立在一个表达式上。例如：
 
 {{< copyable "sql" >}}
