@@ -50,7 +50,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 ## MySQL 兼容性
 
-* MySQL 暂无 SEQUENCE 选项。
+* MySQL 暂无 SEQUENCE 选项。TiDB Sequence 借鉴自 MariaDB，但是 setval 会保持原有的步调。
 
 ## 另请参阅
 

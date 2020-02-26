@@ -6,7 +6,7 @@ category: reference
 
 # SHOW CREATE SEQUENCE
 
-`SHOW CREATE SEQUENCE` 语句用于显示用 SQL 重新创建已有 SEQUENCE 的确切语句。
+`SHOW CREATE SEQUENCE` 语句用于查看一个 SEQUENCE 的详细信息，类似于 `SHOW CREATE TABLE` 语句。
 
 ## 语法图
 
@@ -47,7 +47,7 @@ SHOW CREATE SEQUENCE seq;
 
 ## MySQL 兼容性
 
-* MySQL 暂无 SEQUENCE 选项。
+* MySQL 暂无 SEQUENCE 选项。TiDB Sequence 借鉴自 MariaDB，但是 setval 会保持原有的步调。
 
 ## 另请参阅
 

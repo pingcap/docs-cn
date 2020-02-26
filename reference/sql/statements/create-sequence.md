@@ -6,7 +6,7 @@ category: reference
 
 # CREATE SEQUENCE
 
-`CREATE SEQUENCE` 语句用于在 TiDB 中创建 SEQUENCE 对象，其是一种与表、视图对象平级的数据库对象，用来进行自定义的序列化 id 生成。
+`CREATE SEQUENCE` 语句用于在 TiDB 中创建 SEQUENCE 对象。SEQUENCE 是一种与表、视图对象平级的数据库对象，用于进行自定义的序列化 id 生成。
 
 ## 语法图
 
@@ -270,7 +270,7 @@ ERROR 4135 (HY000): Sequence 'test.seq2' has run out
 
 ## MySQL 兼容性
 
-* MySQL 暂无 SEQUENCE 选项。
+* MySQL 暂无 SEQUENCE 选项。TiDB Sequence 借鉴自 MariaDB，但是 setval 会保持原有的步调。
 
 ## 另请参阅
 
