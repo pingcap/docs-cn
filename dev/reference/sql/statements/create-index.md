@@ -135,7 +135,7 @@ TiDB 支持创建表达式索引，即将索引建立在一个表达式上。例
 {{< copyable "sql" >}}
 
 ```sql
-CREATE INDEX c1_exor ON t1 ((c1+1));
+CREATE INDEX c1_expr ON t1 ((c1+1));
 ```
 
 表达式索引的语法和限制与 MySQL 相同，并通过将索引建立在隐藏的虚拟列来实现。
