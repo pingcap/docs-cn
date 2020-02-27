@@ -97,7 +97,7 @@ Slow Query 基础信息：
 
 > **注意：**
 >
-> 每次查询 `SLOW_QUERY` 表时，TiDB 都会去读取和解析一次当前的慢查询日志。
+> 每次查询 `SLOW_QUERY` 表时，TiDB 都会去读取和解析一次慢查询日志文件。
 
 ## 查询 `SLOW_QUERY` 示例
 
@@ -232,6 +232,10 @@ TiDB 通过 session 变量 `tidb_slow_query_file` 控制查询 `INFORMATION_SCHE
 ```sql
 set tidb_slow_query_file = "/path-to-log/tidb-slow.log"
 ```
+
+TiDB 4.0 中，SLOW_QUERY 已经支持查询任意时间段的慢日志, 即支持查询已经被 rotate 的慢日志文件。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢日志文件。若果查询不指定时间范围，则任然只解析当前的慢日志文件。
+
+TiDB 4.0 中新增了 CLUSTER_SLOW_QUERY 系统表，用来查询所有 TiDB 节点的 SLOW_QUERY 数据。
 
 ## 用 `pt-query-digest` 工具分析 TiDB 慢日志
 
