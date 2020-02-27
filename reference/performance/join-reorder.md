@@ -13,15 +13,15 @@ category: reference
 
 以三个表 `t1, t2, t3` 的 Join 为例。首先我们会从拿到所有参与 Join 的节点，将他们按照行数多少从少到多排序
 
-![pic1](./join-reorder-1.png)
+![pic1](/media/join-reorder-1.png)
 
 之后我们选定其中最小的表。和其他两个表一次做 Join，看输出的结果集大小，选择更小的一侧作为选择。
 
-![pic2](./join-reorder-2.png)
+![pic2](/media/join-reorder-2.png)
 
 然后进入下一轮的选择，如果这时是四个表那么就是继续比较输出结果集的大小进行选择。这里只有三个表，因此就直接得到了最终的 Join 结果。
 
-![pic3](./join-reorder-3.png)
+![pic3](/media/join-reorder-3.png)
 
 这个就是当前 TiDB 中使用的 Join reorder 算法。
 
@@ -32,4 +32,4 @@ category: reference
 - 目前并不支持 Outer Join 的 Join Reorder
 - 受结果集的计算算法所限并不会保证一定会选到合适的 Join order
 
-目前 TiDB 中支持使用 `STRAIGHT_JOIN` 语法来强制指定一种 Join 顺序，参见[语法元素说明](../sql/statements/select.md#语法元素说明)。
+目前 TiDB 中支持使用 `STRAIGHT_JOIN` 语法来强制指定一种 Join 顺序，参见[语法元素说明](/reference/sql/statements/select.md#语法元素说明)。
