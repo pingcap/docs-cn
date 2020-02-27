@@ -52,7 +52,7 @@ category: reference
 
 - 乐观事务和悲观事务可以共存，事务可以任意指定使用乐观模式或悲观模式来执行。
 
-- 通过设置 `innodb_wait_timeout` 变量，设置等锁超时时间，等锁超时后返回兼容 MySQL 的错误码 `1205`。
+- 通过设置 `innodb_lock_wait_timeout` 变量，设置等锁超时时间，等锁超时后返回兼容 MySQL 的错误码 `1205`。
 
 - 支持 `FOR UPDATE NOWAIT` 语法，遇到锁时不会阻塞等锁，而是返回兼容 MySQL 的错误码 `3572`。
 
