@@ -5,7 +5,7 @@ category: how-to
 
 # 在 Kubernetes 上备份 TiDB 集群到兼容 S3 的存储
 
-这篇文档详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份）。底层通过使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
+这篇文档详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份）。底层通过使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。这里使用的备份恢复方式基于 TiDB Operator 新版 (大于等于 v1.1) 的 CRD 实现，基于 charts 备份恢复方式参考 [这里](/tidb-in-kubernetes/maintain/backup-and-restore.md)。
 
 ## Ad-hoc 全量备份
 

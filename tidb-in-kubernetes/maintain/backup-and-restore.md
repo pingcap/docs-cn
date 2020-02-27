@@ -5,7 +5,7 @@ category: how-to
 
 # Kubernetes 上的 TiDB 集群备份与恢复
 
-这篇文档详细描述了如何对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。
+这篇文档详细描述了如何对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。这里使用的备份恢复方式是基于 charts 实现，新版基于 CRD 的备份恢复方式参考 [这里](/tidb-in-kubernetes/maintain/backup-and-restore)
 
 Kubernetes 上的 TiDB 集群支持两种备份策略：
 

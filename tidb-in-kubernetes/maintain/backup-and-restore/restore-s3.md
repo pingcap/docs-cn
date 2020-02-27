@@ -1,11 +1,11 @@
 ---
-title: 恢复备份数据到 Kubernetes 上的 TiDB 集群
+title: 恢复 S3 兼容存储上的备份数据到 Kubernetes 上的 TiDB 集群
 category: how-to
 ---
 
 # 恢复备份数据到 Kubernetes 上的 TiDB 集群
 
-本文档描述了如何将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。底层通过使用 [`loader`](/reference/tools/loader.md) 来恢复数据。
+本文档描述了如何将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。底层通过使用 [`loader`](/reference/tools/loader.md) 来恢复数据。这里使用的备份方式基于 TiDB Operator 新版 (大于等于 v1.1) 的 CRD 实现，基于 charts 的备份恢复方式参考 [这里](/tidb-in-kubernetes/maintain/backup-and-restore.md)。
 
 以下示例将兼容 S3 的存储（指定路径）上的备份数据恢复到 TiDB 集群。
 
