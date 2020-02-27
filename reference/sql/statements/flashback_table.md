@@ -26,7 +26,7 @@ FLASHBACK TABLE table_name [TO other_table_name]
 
 ## 示例
 
-    恢复被 `DROP` 的表数据。
+- 恢复被 `DROP` 的表数据。
 
     {{< copyable "sql" >}}
     
@@ -40,7 +40,7 @@ FLASHBACK TABLE table_name [TO other_table_name]
     FLASHBACK TABLE t;
     ```
     
-    恢复被 `TRUNCATE` 的表数据，由于被 `TRUNCATE` 的表还存在，所以需要重命名被恢复的表，否则会报错表 t 已存在。
+- 恢复被 `TRUNCATE` 的表数据，由于被 `TRUNCATE` 的表还存在，所以需要重命名被恢复的表，否则会报错表 t 已存在。
     
     ```sql
     TRUNCATE TABLE t;
@@ -59,4 +59,3 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 所以，`FLASHBACK TABLE` 只需要在 GC Worker 还没删除表数据前，恢复表的元信息并删除 `mysql.gc_delete_range` 表中相应的行记录就可以了。恢复表的元信息可以用 TiDB 的快照读实现。具体的快照读内容可以参考[读取历史数据](/how-to/get-started/read-historical-data.md)文档。
 
 TiDB 中表的恢复是通过快照读获取表的元信息后，再走一次类似于 `CREATE TABLE` 的建表流程，所以 `FLASHBACK TABLE` 实际上也是一种 DDL。
-
