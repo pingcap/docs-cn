@@ -7,7 +7,7 @@ category: how-to
 
 本文详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份）。底层通过使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
 
-本文使用的备份恢复方式基于 TiDB Operator 新版（大于等于 v1.1）的 CRD 实现，基于 charts 备份恢复方式参考[这里](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
+本文使用的备份恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CRD 实现。基于 Helm Charts 实现的备份恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
 
 ## Ad-hoc 全量备份
 
@@ -142,19 +142,13 @@ Amazon S3 支持以下几种 storageClass 类型：
 
 更多 `Backup` CR 字段的详细解释:
 
-`.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
-
-`.spec.from.host`：需要备份的 TiDB 集群的访问地址。
-
-`.spec.from.port`：需要备份的 TiDB 集群的访问端口。
-
-`.spec.from.user`：需要备份的 TiDB 集群的访问用户。
-
-`.spec.from.tidbSecretName`：需要备份的 TiDB 集群所需凭证的 secret。
-
-`.spec.storageClassName`: 备份时所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
-
-`.spec.storageSize`: 备份时指定所需的 PV 大小。这个值要大于备份 TiDB 集群的数据大小。
+* `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
+* `.spec.from.host`：待备份 TiDB 集群的访问地址。
+* `.spec.from.port`：待备份 TiDB 集群的访问端口。
+* `.spec.from.user`：待备份 TiDB 集群的访问用户。
+* `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
+* `.spec.storageClassName`: 备份时所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，该值默认为 `standard`。
+* `.spec.storageSize`: 备份时指定所需的 PV 大小。该值须大于备份 TiDB 集群的数据大小。
 
 更多支持的兼容 S3 的 `provider` 如下：
 
