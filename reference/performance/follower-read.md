@@ -47,4 +47,6 @@ When the follower node processes a read request, it first uses `ReadIndex` of th
 
 ### Follower replica selection strategy
 
-Because the Follower Read feature guarantees linearizability without affecting Snapshot Isolation, TiDB adopts the round-robin strategy to select the follower replica. Although TiKV can select any follower replica to handle any read request, considering the different replication speed among followers, if the load balancing granularity is too fine, it might cause significant fluctuation of latency. Currently, the granularity of the Follower Read load balancing policy is at the connection level. For a TiDB client connected to a specific Region, the selected follower is fixed, and is switched only when it fails or the scheduling policy is adjusted.
+Because the Follower Read feature guarantees linearizability without affecting Snapshot Isolation, TiDB adopts the round-robin strategy to select the follower replica. Currently, for the coprocessor requests, the granularity of the Follower Read load balancing policy is at the connection level. For a TiDB client connected to a specific Region, the selected follower is fixed, and is switched only when it fails or the scheduling policy is adjusted.
+
+However, for the non-coprocessor requests, such as a point query, the granularity of the Follower Read load balancing policy is at the transaction level. For a TiDB transaction on a specific Region, the selected follower is fixed, and is switched only when it fails or the scheduling policy is adjusted.
