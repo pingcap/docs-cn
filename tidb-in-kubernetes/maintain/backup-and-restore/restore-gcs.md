@@ -1,11 +1,13 @@
 ---
-title: 恢复 GCS 上的备份数据到 Kubernetes 上的 TiDB 集群
+title: 从 GCS 上的备份数据进行恢复
 category: how-to
 ---
 
-# 恢复备份数据到 Kubernetes 上的 TiDB 集群
+# 从 GCS 上的备份数据进行恢复
 
-本文档详细描述了如何将 Kubernetes 上通过 TiDB Operator 备份的 TiDB 集群数据恢复的具体操作过程。底层通过使用 [`loader`](/reference/tools/loader.md) 来进行集群恢复。这里使用的备份方式基于 TiDB Operator 新版 (大于等于 v1.1) 的 CRD 实现，基于 charts 的备份恢复方式参考 [这里](/tidb-in-kubernetes/maintain/backup-and-restore.md)。
+本文详细描述了如何将 Kubernetes 上通过 TiDB Operator 备份的 TiDB 集群数据恢复的具体操作过程。底层通过使用 [`loader`](/reference/tools/loader.md) 来进行集群恢复。
+
+本文使用的备份方式基于 TiDB Operator 新版（大于等于 v1.1）的 CRD 实现，基于 charts 的备份恢复方式参考 [这里](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
 
 以下示例将存储在 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上指定路径中的集群备份数据恢复到 TiDB 集群。
 
