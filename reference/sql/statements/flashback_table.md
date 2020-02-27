@@ -29,25 +29,25 @@ FLASHBACK TABLE table_name [TO other_table_name]
 - 恢复被 `DROP` 的表数据。
 
     {{< copyable "sql" >}}
-    
+
     ```sql
     DROP TABLE t;
     ```
-    
+
     {{< copyable "sql" >}}
-    
+
     ```sql
     FLASHBACK TABLE t;
     ```
-    
+
 - 恢复被 `TRUNCATE` 的表数据，由于被 `TRUNCATE` 的表还存在，所以需要重命名被恢复的表，否则会报错表 t 已存在。
-    
+
     ```sql
     TRUNCATE TABLE t;
     ```
-    
+
     {{< copyable "sql" >}}
-    
+
     ```sql
     FLASHBACK TABLE t TO t1;
     ```
