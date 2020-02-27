@@ -53,8 +53,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget http://download.pingcap.org/tispark-sample-data.tar.gz
-tar -zxvf tispark-sample-data.tar.gz
+wget http://download.pingcap.org/tispark-sample-data.tar.gz && \
+tar -zxvf tispark-sample-data.tar.gz && \
 cd tispark-sample-data
 ```
 
