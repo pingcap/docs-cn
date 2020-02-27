@@ -85,11 +85,7 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 mem
 
 在 TiDB 中用户名最长为 32 字符。
 
-#### 1.1.18 一个事务中的语句数量最大是多少？
-
-一个事务中的语句数量，默认限制最大为 5000 条。
-
-#### 1.1.19 TiDB 是否支持 XA？
+#### 1.1.18 TiDB 是否支持 XA？
 
 虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC（Connector / J），但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
 
@@ -97,7 +93,7 @@ Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然�
 
 MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
 
-#### 1.1.20 show processlist 是否显示系统进程号？
+#### 1.1.19 show processlist 是否显示系统进程号？
 
 TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
@@ -105,19 +101,19 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 
 2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
 
-#### 1.1.21 如何修改用户名密码和权限？
+#### 1.1.20 如何修改用户名密码和权限？
 
 TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。详情可参考 [TiDB 用户账户管理](/reference/security/user-account-management.md)。
 
-#### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
+#### 1.1.21 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
 TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/reference/mysql-compatibility.md#自增-id)。
 
-#### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
+#### 1.1.22 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
 
 TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不支持配置文件配置设置数据库的 sql\_mode，而只能使用 set 命令去设置，具体方法为：`set @@global.sql_mode = 'STRICT_TRANS_TABLES';`。
 
-#### 1.1.24 TiDB 支持哪些认证协议，过程是怎样的？
+#### 1.1.23 TiDB 支持哪些认证协议，过程是怎样的？
 
 这一层跟 MySQL 一样，走的 SASL 认证协议，用于用户登录认证，对密码的处理流程。
 
