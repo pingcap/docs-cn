@@ -364,6 +364,11 @@ prepare 语句的 Plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
+### `enable-chunk-rpc`
+
++ 开启 coprocessor 的 `Chunk` 数据编码格式。
++ 默认值：true
+
 ## txn-local-latches
 
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
