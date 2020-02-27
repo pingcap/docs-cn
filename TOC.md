@@ -382,7 +382,7 @@
     - [销毁 TiDB 集群](/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
     - [维护 TiDB 集群所在节点](/tidb-in-kubernetes/maintain/kubernetes-node.md)
     + 备份与恢复
-      - [基于 charts 的备份恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)
+      - [基于 charts 的备份恢复](/tidb-in-kubernetes/maintain/backup-and-restore.md)
       + 基于 CRD 的备份恢复
         - [备份到 GCS](/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs.md)
         - [从 GCS 上的备份数据进行恢复](/tidb-in-kubernetes/maintain/backup-and-restore/restore-gcs.md)
