@@ -191,6 +191,34 @@ select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 wher
 select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
 ```
 
+### NO_INDEX_MERGE()
+
+`NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
+
+下面的例子不会使用 index merge：
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
+```
+
+除了 Hint 外，环境变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
+
+### USE_TOJA(boolean_value)
+
+参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
+
+下面的例子会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
+```
+
+除了 Hint 外，环境变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。
+
 ## 运行参数相关 Hint 语法
 
 运行参数相关的 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，对当前的这条查询的相关运行参数进行修改。
@@ -238,31 +266,3 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
-
-### NO_INDEX_MERGE()
-
-`NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
-
-下面的例子不会使用 index merge：
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
-```
-
-除了 Hint 外，环境变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
-
-### USE_TOJA(boolean_value)
-
-参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
-
-下面的例子会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
-```
-
-除了 Hint 外，环境变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。
