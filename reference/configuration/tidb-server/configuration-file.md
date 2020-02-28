@@ -369,6 +369,11 @@ The Plan Cache configuration of the `PREPARE` statement.
 - The threshold of the TiKV load. If the TiKV load exceeds this threshold, more `batch` packets are collected to relieve the pressure of TiKV. It is valid only when the value of `tikv-client.max-batch-size` is greater than `0`. It is recommended not to modify this value.
 - Default value: `200`
 
+### `enable-chunk-rpc`
+
+- Determines whether to enable the `Chunk` data encoding format in Coprocessor.
+- Default value: `true`
+
 ### txn-local-latches
 
 Configuration related to the transaction latch. It is recommended to enable it when many local transaction conflicts occur.
