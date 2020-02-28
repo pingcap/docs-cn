@@ -376,7 +376,13 @@
   + 运维
     - [销毁 TiDB 集群](/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
     - [维护 TiDB 集群所在节点](/tidb-in-kubernetes/maintain/kubernetes-node.md)
-    - [备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore.md)
+    + 备份与恢复
+      - [基于 Helm Charts 的备份恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)
+      + 基于 CRD 的备份恢复
+        - [备份 TiDB 集群到 GCS](/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs.md)
+        - [恢复 GCS 上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-gcs.md)
+        - [备份 TiDB 集群到兼容 S3 的存储](/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md)
+        - [恢复 S3 兼容存储上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-s3.md)
     - [恢复 Kubernetes 上的 TiDB 集群数据](/tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/tidb-in-kubernetes/maintain/auto-failover.md)
