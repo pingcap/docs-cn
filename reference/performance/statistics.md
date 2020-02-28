@@ -185,6 +185,27 @@ Currently, the `SHOW STATS_META` statement returns the following 6 columns:
 >
 > When TiDB automatically updates the total number of rows and the number of modified rows according to DML statements, `update_time` is also updated. Therefore, `update_time` does not necessarily indicate the last time when the `ANALYZE` statement is executed.
 
+### Health state of tables
+
+You can use the `SHOW STATS_HEALTHY` statement to check the health state of tables and roughly estimate the accuracy of the statistics. When `modify_count` >= `row_count`, the health state is 0; when `modify_count` < `row_count`, the health state is (1 - `modify_count`/`row_count`) * 100.
+
+The syntax is as follows. You can use `ShowLikeOrWhere` to filter the information you need:
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW STATS_HEALTHY [ShowLikeOrWhere];
+```
+
+Currently, the `SHOW STATS_HEALTHY` statement returns the following 4 columns:
+
+| Syntax Element | Description  |
+| :-------- | :------------- |
+| `db_name`  | The database name    |
+| `table_name` | The table name |
+| `partition_name` | The partition name |
+| `healthy` | The health state of tables |
+
 ### Metadata of columns
 
 You can use the `SHOW STATS_HISTOGRAMS` statement to view the number of different values and the number of `NULL` in all the columns.
