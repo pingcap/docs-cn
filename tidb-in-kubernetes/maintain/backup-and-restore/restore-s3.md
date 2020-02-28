@@ -11,7 +11,7 @@ category: how-to
 
 以下示例将兼容 S3 的存储（指定路径）上的备份数据恢复到 TiDB 集群。
 
-## 恢复备份的环境准备
+## 环境准备
 
 1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并在 `test2` 这个 namespace 中创建恢复备份所需的 RBAC 资源，所需命令如下：
 
