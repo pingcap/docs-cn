@@ -21,7 +21,7 @@ category: reference
 create table t (a int primary key auto_increment, b varchar(255))
 ```
 
-在以上语句所建的表上执行大量未指定主键值的 `INSERT` 语句，示例如下
+在以上语句所建的表上执行大量未指定主键值的 `INSERT` 语句，示例如下：
 
 ```sql
 insert into t(b) values ('a'), ('b'), ('c')
@@ -50,7 +50,7 @@ create table t (a int auto_random, b varchar(255), primary key (a))
 
 自动分配值的计算方式如下：
 
-该行值在二进制形式下的最高五位（称为 shard bits）由当前事务的开始时间决定，剩下的位数分配到自增顺序的数值。
+该行值在二进制形式下的最高五位（称为 shard bits）由当前事务的开始时间决定，剩下的位数按照自增顺序分配数值。
 
 若要使用一个不同的 shard bits 的数量，可以在 `AUTO_RANDOM` 后面加一对括号，并在括号中指定想要的 shard bits 数量。示例如下：
 
