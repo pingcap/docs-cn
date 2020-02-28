@@ -59,7 +59,7 @@ category: how-to
 
 1. 安装 Helm
 
-    [Helm](https://helm.sh) 可以用作模板渲染引擎，只需要下载其 binary 文件即可以使用。确保你的 Helm 版本为 2.9.0 或更高版本，且低于 3.0.0。
+    [Helm](https://helm.sh) 可以用作模板渲染引擎，只需要下载其 binary 文件即可以使用。确保你的 Helm 版本为 2.9.0 ≤ Helm < 3.0.0。
 
     {{< copyable "shell-regular" >}}
 
