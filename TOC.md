@@ -432,6 +432,7 @@
 - [Roadmap](/roadmap.md)
 + [Releases](/releases/rn.md)
   + v4.0
+    - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
