@@ -692,7 +692,7 @@ WAL belongs to ordered writing, and currently, we do not apply a unique configur
 
 #### How is the write performance in the most strict data available mode (`sync-log = true`)?
 
-Generally, enabling `sync-log` reduces about 30% of the performance. For write performance when `sync-log` is set to `false`, see [Performance test result for TiDB using Sysbench](https://github.com/pingcap/docs/blob/master/dev/benchmark/sysbench-v4.md).
+Generally, enabling `sync-log` reduces about 30% of the performance. For write performance when `sync-log` is set to `false`, see [Performance test result for TiDB using Sysbench](/benchmark/sysbench-v4.md).
 
 #### Can Raft + multiple replicas in the TiKV architecture achieve absolute data safety? Is it necessary to apply the most strict mode (`sync-log = true`) to a standalone storage?
 
@@ -882,7 +882,7 @@ See [Syncer User Guide](/reference/tools/syncer.md).
 
 ##### How to configure to monitor Syncer status?
 
-Download and import [Syncer Json](https://github.com/pingcap/docs/blob/master/dev/etc/Syncer.json) to Grafana. Edit the Prometheus configuration file and add the following content:
+Download and import [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) to Grafana. Edit the Prometheus configuration file and add the following content:
 
 ```
 - job_name: 'syncer_ops' // task name
