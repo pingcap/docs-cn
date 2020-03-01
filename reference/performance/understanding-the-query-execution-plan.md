@@ -36,6 +36,8 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 * `loops` 是当前算子被父算子调用的次数。
 * `rows` 是当前算子返回的行的总数。例如，可以将 `count` 列的精度和 `execution_info` 列中的 `rows`/`loops` 值进行对比，据此评定查询优化器估算的精确度。
 
+除此之外，还会有 `memory` 和 `disk` 两列，会显示 root task 对应算子的内存和磁盘使用信息，如果没有使用磁盘，会显示 `N/A`。
+
 ### 用例
 
 使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/dev/how-to/get-started/import-example-database.md):
