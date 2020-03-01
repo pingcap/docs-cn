@@ -148,16 +148,16 @@ TiDB 集群由 PD、TiKV、TiDB 三个组件组成，在做容量规划的时候
 
 ## TiDB 集群规划示例
 
-通过上面的分析，这里给出一个支持部署 5 套规模为 3 个 PD + 3 个 TiKV + 2 个 TiDB 集群的例子，其中 PD 配置为 2C 4GB，TiDB 配置为 8C 32GB，TiKV 配置为 8C 32GB。Kubernetes 节点有 7 个，其中有 3 个节点既是 master 又是 worker 节点，另外 4 个是纯 worker 节点。各组件分布情况如下：
+通过上面的分析，这里给出一个支持部署 5 套规模为 3 个 PD + 3 个 TiKV + 2 个 TiDB 集群的例子，其中 PD 配置为 2C 4GB，TiDB 配置为 8C 32GB，TiKV 配置为 8C 32GB。Kubernetes 节点有 7 个，其中有 3 个节点既是 master 又是 worker 节点，另外 4 个是纯 worker 节点。各台主机上部署组件情况如下：
 
-+ 单个 master 节点：
++ 每台 master 节点：
 
     - 1 etcd (2C 4GB) + 2 PD (2 \* 2C 2 \* 4GB) + 3 TiKV (3 \* 8C 3 \* 32GB) + 1 TiDB (8C 32GB)，总共是 38C 140GB
     - 两块 SSD 盘，一块给 etcd，另外一块给 2 个 PD 实例
     - 做了 RAID5 的 SAS 盘，给 Docker 和 kubelet 做数据盘
     - 三块 NVMe 盘给 TiKV 实例
 
-+ 单个 worker 节点：
++ 每台 worker 节点：
 
     - 3 PD (3 \* 2C 3 \* 4GB) + 2 TiKV (2 \* 8C 2 \* 32GB) + 2 TiDB (2 \* 8C 2 \* 32GB)，总共是 38C 140GB
     - 一块 SSD 盘给三个 PD 实例
