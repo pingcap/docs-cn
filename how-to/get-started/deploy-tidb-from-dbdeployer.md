@@ -17,12 +17,12 @@ Similar to [Homebrew](/how-to/get-started/deploy-tidb-from-homebrew.md), the DBd
 <main class="tabs">
   <input id="tabMacOS" type="radio" name="tabs" value="MacOSContent" checked>
   <label for="tabMacOS">
-      <span><img src="/images/docs/mac-os-20.png" width="20"></img></span>
+      <span><img src="media/mac-os-20.png" width="20"></img></span>
       <span class="label__title">macOS</span>
   </label>
   <input id="tabLinux" type="radio" name="tabs" value="LinuxContent">
   <label for="tabLinux">
-      <span><img src="/images/docs/linux-20.png" width="20"></img></span>
+      <span><img src="media/linux-20.png" width="20"></img></span>
       <span class="label__title">Linux</span>
   </label>
   <section id="MacOSContent">
