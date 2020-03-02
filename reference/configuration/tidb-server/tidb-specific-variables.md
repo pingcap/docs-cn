@@ -220,10 +220,10 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 作用域：SESSION
 
-默认值：32 GB
+默认值：1 GB
 
 这个变量用来设置一条查询语句的内存使用阈值。
-如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [mem-quota-query](/reference/configuration/tidb-server/configuration-file/#mem-quota-query) 配置。
 
 ### tidb_mem_quota_hashjoin
 
