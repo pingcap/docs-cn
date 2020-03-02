@@ -129,7 +129,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `query-log-max-len`
 
 + 最长的 SQL 输出长度。
-+ 默认值：2048
++ 默认值：4096
 + 当语句的长度大于 `query-log-max-len`，将会被截断输出。
 
 ### `max-server-connections`
