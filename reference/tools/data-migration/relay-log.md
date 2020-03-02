@@ -85,24 +85,23 @@ The data purge methods for the relay log include automatic purge and manual purg
 
 ### Automatic data purge
 
-You can use the following three command-line options to change the automatic data purge strategy of DM-worker:
+You can configure the automatic data purge strategy of DM-worker using the following two methods:
 
-- `purge-interval`
+Method 1: Use the command-line options.
 
++ `purge-interval`
     - The interval of automatic purge in the background, in seconds.
     - "3600" by default, indicating a background purge task is performed every 3600 seconds.
 
-- `purge-expires`
-
++ `purge-expires`
     - The number of hours that a non-updated relay log can be retained for before being purged in the automatic background purge.
     - "0" by default, indicating data purge is not performed according to the update time of the relay log.
 
-- `purge-remain-space`
-
++ `purge-remain-space`
     - The amount of remaining disk space in GB less than which the specified DM-worker machine tries to purge the relay log that can be purged securely in the automatic background purge. If it is set to `0`, data purge is not performed according to the remaining disk space.
     - "15" by default, indicating when the available disk space is less than 15GB, DM-master tries to purge the relay log securely.
 
-You can also add a `[purge]` section in the [configuration file of DM-worker](/reference/tools/data-migration/configure/dm-worker-configuration-file-full.md) to modify the purge strategy.
+Method 2: Add the `[purge]` section in the [configuration file of DM-worker](/reference/tools/data-migration/configure/dm-worker-configuration-file-full.md).
 
 ```toml
 # relay log purge strategy

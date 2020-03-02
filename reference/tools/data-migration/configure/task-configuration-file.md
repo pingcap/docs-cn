@@ -44,7 +44,7 @@ black-white-list:
     do-dbs: ["all_mode"] # white list of upstream tables needs to be replicated
 # ----------- Instance configuration -----------
 mysql-instances:
-  # The ID of the upstream instance or replication group ID. It can be configured by referring to the `source-id` in the `dm-master.toml` file.
+  # The ID of the upstream instance or replication group. It can be configured by referring to the `source-id` in the `dm-master.toml` file.
   - source-id: "mysql-replica-01"
     black-white-list:  "bw-rule-1"
         mydumper-thread: 4             # The number of threads that Mydumper uses for dumping data, new in v1.0.2 and later versions
