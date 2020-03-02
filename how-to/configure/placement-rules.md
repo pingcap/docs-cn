@@ -18,7 +18,7 @@ Placement Rules 是一套强大灵活的副本规则系统。通过组合不同�
 >> config set enable-placement-rules true
 ```
 
-开启后会根据之前的副本配置默认生成一条规则。下面的生成的规则对应之前版本的 `max-replicas=3,location-labels=[zone,rack,host]` 配置：
+开启后会根据之前的副本配置默认生成一条规则。下面的生成的规则对应 3.0 版本的 `max-replicas=3,location-labels=[zone,rack,host]` 配置：
 
 {{< copyable "" >}}
 
@@ -36,45 +36,18 @@ Placement Rules 是一套强大灵活的副本规则系统。通过组合不同�
 
 ## 字段的具体含义
 
-### group_id
-
-标识规则的创建者。不同创建者之间互不影响。
-
-### id
-
-group 内唯一标识，由创建者自行生成。
-
-### index
-
-适用多条规则时，控制调度时的适配顺序（group 内生效）。
-
-### override
-
-是否覆盖 index 更小的规则（group 内生效）。
-
-### start_key
-
-开始的 key，表示该规则从哪一个 key 开始生效。
-
-### end_key
-
-结束的 key，表示该规则从哪一个 key 起就不再生效。
-
-### role
-
-Raft 算法当中的角色，包括：`voter`，`leader`，`follower` 以及 `learner`。
-
-### count
-
-所要添加角色的数量。需注意，`leader` 的该值不能大于 `1`。
-
-### label_constraints
-
-用于过滤 store 的限制条件，支持通过 `in`, `notIn`, `exists`, `notExists` 四种原语来筛选 label。
-
-### location_labels
-
-用于实现根据拓扑进行隔离，与之前的意义相同。
+| 字段 | 含义 |
+| --- | --- |
+| group_id | 标识规则的创建者。不同创建者之间互不影响 |
+| id | group 内唯一标识，由创建者自行生成 |
+| index | 适用多条规则时，控制调度时的适配顺序（group 内生效） |
+| override | 是否覆盖 index 更小的规则（group 内生效） |
+| start_key | 开始的 key，表示该规则从哪一个 key 开始生效 |
+| end_key | 结束的 key，表示该规则从哪一个 key 起就不再生效 |
+| role | Raft 算法当中的角色，包括：`voter`，`leader`，`follower` 以及 `learner` |
+| count | 所要添加角色的数量。需注意，`leader` 的该值不能大于 `1` |
+| label_constraints | 用于过滤 store 的限制条件，支持通过 `in`, `notIn`, `exists`, `notExists` 四种原语来筛选 label |
+| location_labels | TiKV 集群的拓扑信息。副本会按照实际拓扑信息放置 |
 
 ## 添加规则
 
@@ -92,9 +65,9 @@ curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/
 
 ### 场景一
 
-场景描述：普通 table 数据使用 3 副本，meta 元数据使用 5 副本提升集群容灾能力
+场景描述：普通的表使用 3 副本，元数据使用 5 副本提升集群容灾能力
 
-新建一条规则，为 meta 对应的 key range 添加 2 副本，具体规则如下：
+新建一条规则，为元数据对应的 key range 添加 2 副本，具体规则如下：
 
 {{< copyable "" >}}
 
@@ -112,15 +85,15 @@ curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/
 ```
 
 其中 `6E` 是 `n` 的十六进制表示方式，`6D` 是 `m` 的十六进制表示方式。
-加上这条规则后，普通 table 数据仍适用于 default 规则。meta 数据根据 key range 将适配 default 和 meta，分别配置了 3 副本和 2 副本，共 5 副本。
+加上这条规则后，普通的表仍适用于 `default` 规则。元数据根据 key range 将适配 `default` 和 `meta`，分别配置了 3 副本和 2 副本，共 5 副本。
 
 **注意**
 
-由于不同的 Rule 调度时单独计算，只能保证适配 default 规则的 3 副本按照 `location-labels` 隔离，适配 meta 规则的 2 副本也隔离，而不能防止 default 规则的副本和 meta 规则的副本被调度在一起。
+因为在调度副本时，不同的规则相互之间没有影响，所以只能保证适配 `default` 规则的 3 副本按照 `location-labels` 隔离，适配 `meta` 规则的 2 副本也隔离，而不能防止 `default` 规则的副本和 `meta` 规则的副本被调度在一起。
 
-可以通过 default 规则的范围拆分成 2 个 key range，分别为 `["", "6D")` 和 `["6E", "")`，然后把 meta 规则的 `count` 调整为 5，让 meta 数据只适配一条 5 副本的规则，实现 `location-label` 的隔离。
+可以通过 `default` 规则的范围拆分成 2 个 key range，分别为 `["", "6D")` 和 `["6E", "")`，然后把 `meta` 规则的 `count` 调整为 5，让元数据只适配一条 5 副本的规则，实现 `location-label` 的隔离。
 
-更合适的方式是通过设置 meta 规则的 `override` 属性来避免更新 default 规则，此时要注意设置 `index` 来保证 meta 规则堆叠在 default 的上面。
+更合适的方式是通过设置 `meta` 规则的 `override` 属性来避免更新 `default` 规则，此时要注意设置 `index` 来保证 `meta` 规则堆叠在 `default` 的上面。
 
 {{< copyable "" >}}
 
