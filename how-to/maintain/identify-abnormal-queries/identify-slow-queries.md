@@ -93,12 +93,12 @@ Slow Query 基础信息：
 * `Cop_wait_p90`：cop-task 的 P90 分位等待时间。
 * `Cop_wait_max`：cop-task 的最大等待时间。
 * `Cop_wait_addr`：等待时间最长的 cop-task 所在地址。
-* `Cop_backoff_{backoff-type}_total_times`：因某种错误造成的 backoff 总次数
-* `Cop_backoff_{backoff-type}_total_time`：因某种错误造成的 backoff 总时间
-* `Cop_backoff_{backoff-type}_max_time`：因某种错误造成的最大 backoff 时间
-* `Cop_backoff_{backoff-type}_max_addr`：因某种错误造成的最大 backoff 时间的 cop-task 地址
-* `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间
-* `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间
+* `Cop_backoff_{backoff-type}_total_times`：因某种错误造成的 backoff 总次数。
+* `Cop_backoff_{backoff-type}_total_time`：因某种错误造成的 backoff 总时间。
+* `Cop_backoff_{backoff-type}_max_time`：因某种错误造成的最大 backoff 时间。
+* `Cop_backoff_{backoff-type}_max_addr`：因某种错误造成的最大 backoff 时间的 cop-task 地址。
+* `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
+* `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
 
 ## 慢日志内存映射表
 
