@@ -1,11 +1,11 @@
 ---
 title: Figma Quick Start Guide
-summary: This guide introduces how to use Figma to design a figure.
+summary: This guide introduces how to use Figma to design a diagram.
 ---
 
 # Figma Quick Start Guide
 
-[Figma](https://www.figma.com/) is a collaborative interface design tool that runs in a browser. This guide introduces how to use Figma to design a figure.
+[Figma](https://www.figma.com/) is a collaborative interface design tool that runs in a browser. This guide introduces how to use Figma to design a diagram.
 
 ## The Figma interface
 
@@ -35,7 +35,7 @@ Click [tidb-sketch-book](https://www.figma.com/file/MOBwqkBtuA03agMjeGEGUT/tidb-
 
 > **Note:**
 >
-> - **tidb-sketch-book** is a Figma file that collects common shapes for figure designs. When creating a figure, you are recommended to use the objects and colors in this file to maintain a consistent style for figures.
+> - **tidb-sketch-book** is a Figma file that collects common shapes for diagram designs. When creating a diagram, you are recommended to use the objects and colors in this file to maintain a consistent style for diagrams.
 > - If you cannot open this file, contact [Jingyi Chen](mailto:chenjingyi@pingcap.com) for help.
 
 ![tidb-sketch-book](/media/tidb-sketch-book.png)
@@ -70,13 +70,13 @@ Click [tidb-sketch-book](https://www.figma.com/file/MOBwqkBtuA03agMjeGEGUT/tidb-
 
 Within this Frame, you can begin your designs.
 
-### Step 4: Design your figure
+### Step 4: Design your diagram
 
 You are recommended to copy and paste the existing objects within other Frames into the new Frame.
 
 > **Note:**
 >
-> * To ensure a consistent style for figures, design a figure **based on shapes and the color scheme in the tidb-sketch-book file**.
+> * To ensure a consistent style for diagrams, design a diagram **based on shapes and the color scheme in the tidb-sketch-book file**.
 > * Set text fonts to **Ubuntu**.
 
 #### Pick a color
@@ -117,7 +117,7 @@ Select the object you want to edit and adjust the **Corner Radius** value in the
 
 See the [Figma user guide](https://help.figma.com/category/9-getting-started).
 
-### Step 5: Export a figure
+### Step 5: Export a diagram
 
 1. Select the Frame you want to export and click **+** next to the **Export** settings.
 
@@ -127,12 +127,12 @@ See the [Figma user guide](https://help.figma.com/category/9-getting-started).
 
     ![Export](/media/export.png)
 
-2. Set the figure format. You can export to **PNG (recommended)**, JPG, SVG, or PDF.
+2. Set the diagram format. You can export to **PNG (recommended)**, JPG, SVG, or PDF.
 
-    ![Figure format](/media/figure-format.png)
+    ![Diagram format](/media/figure-format.png)
 
-3. Click the **Export Frame X** button below **PNG** to export your figure.
+3. Click the **Export Frame X** button below **PNG** to export your diagram.
 
     ![Export Frame X](/media/export-frame-x.png)
 
-4. Use a **descriptive** name for the figure. You can use lowercase characters, numbers, and hyphens `-` in the name. **Avoid using uppercase characters, spaces, and underscores**.
+4. Use a **descriptive** name for the diagram. You can use lowercase characters, numbers, and hyphens `-` in the name. **Avoid using uppercase characters, spaces, and underscores**.
