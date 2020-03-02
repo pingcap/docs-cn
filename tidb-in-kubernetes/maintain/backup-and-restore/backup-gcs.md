@@ -1,11 +1,13 @@
 ---
-title: 在 Kubernetes 上备份 TiDB 集群到 GCS
+title: 备份 TiDB 集群到 GCS
 category: how-to
 ---
 
-# 在 Kubernetes 上备份 TiDB 集群到 GCS
+# 备份 TiDB 集群到 GCS
 
 本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份），底层通过使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
+
+本文使用的备份恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CRD 实现的。基于 Helm Charts 的备份恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
 
 ## Ad-hoc 全量备份
 
@@ -36,7 +38,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test1
+    kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
 ### 备份数据到 GCS
@@ -59,6 +61,11 @@ metadata:
   name: demo1-backup-gcs
   namespace: test1
 spec:
+  from:
+    host: <tidb-host-ip>
+    port: <tidb-port>
+    user: <tidb-user>
+    secretName: backup-demo1-tidb-secret
   gcs:
     secretName: gcs-secret
     projectId: <your-project-id>
@@ -66,9 +73,6 @@ spec:
     # storageClass: STANDARD_IA
     # objectAcl: private
     # bucketAcl: private
-  storageType: gcs
-  cluster: demo1
-  tidbSecretName: backup-demo1-tidb-secret
   storageClassName: local-storage
   storageSize: 10Gi
 ```
@@ -118,17 +122,13 @@ GCS 支持以下几种 bucket ACL 策略：
 
 更多 `Backup` CR 字段的详细解释：
 
-`.spec.metadata.namespace`：备份 TiDB 集群所在的 namespace。
-
-`.spec.storageType`：备份的存储类型。目前主要有 S3 和 GCS 两种。
-
-`.spec.cluster`：备份 TiDB 集群的名字。
-
-`.spec.tidbSecretName`：访问 TiDB 集群所需凭证的 secret。
-
-`.spec.storageClassName`：备份时指定所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
-
-`.spec.storageSize`：备份时指定所需的 PV 大小。该值应大于备份 TiDB 集群数据的大小。
+* `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
+* `.spec.from.host`：待备份 TiDB 集群的访问地址。
+* `.spec.from.port`：待备份 TiDB 集群的访问端口。
+* `.spec.from.user`：待备份 TiDB 集群的访问用户。
+* `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
+* `.spec.storageClassName`：备份时指定所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，该值默认为 `standard`。
+* `.spec.storageSize`：备份时指定所需的 PV 大小。该值应大于备份 TiDB 集群数据的大小。
 
 ## 定时全量备份
 
@@ -163,6 +163,11 @@ spec:
   maxReservedTime: "3h"
   schedule: "*/2 * * * *"
   backupTemplate:
+    from:
+      host: <tidb-host-ip>
+      port: <tidb-port>
+      user: <tidb-user>
+      secretName: backup-demo1-tidb-secret
     gcs:
       secretName: gcs-secret
       projectId: <your-project-id>
@@ -170,9 +175,6 @@ spec:
       # storageClass: STANDARD_IA
       # objectAcl: private
       # bucketAcl: private
-    storageType: gcs
-    cluster: demo1
-    tidbSecretName: backup-demo1-tidb-secret
     storageClassName: local-storage
     storageSize: 10Gi
 ```
