@@ -96,7 +96,8 @@ The `FULLTEXT` and `FOREIGN KEY` in `create_definition` are currently only suppo
 ```sql
 column_definition:
     data_type [NOT NULL | NULL] [DEFAULT default_value]
-      [AUTO_INCREMENT] [UNIQUE [KEY] | [PRIMARY] KEY]
+      [AUTO_INCREMENT | AUTO_RANDOM [(length)]]
+      [UNIQUE [KEY] | [PRIMARY] KEY]
       [COMMENT 'string']
       [reference_definition]
   | data_type [GENERATED ALWAYS] AS (expression)

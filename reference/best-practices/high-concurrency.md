@@ -176,7 +176,9 @@ You can see that the apparent hotspot problem has been resolved now.
 
 In this case, the table is simple. In other cases, you might also need to consider the hotspot problem of index. For more details on how to pre-split the index Region, refer to [Split Region](/reference/sql/statements/split-region.md).
 
-## Complex hotspot problem
+## Complex hotspot problems
+
+**Problem one:**
 
 If a table does not have a primary key, or the primary key is not the `Int` type and you do not want to generate a randomly distributed primary key ID, TiDB provides an implicit `_tidb_rowid` column as the row ID. Generally, when you do not use the `SHARD_ROW_ID_BITS` parameter, the values of the `_tidb_rowid` column are also monotonically increasing, which might causes hotspots too. Refer to [`SHARD_ROW_ID_BITS` description](/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits) for more details.
 
@@ -200,6 +202,12 @@ create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=·3;
 - `pre_split_regions=3` means that the table will be pre-split into 8 (2^3) Regions after it is created.
 
 When data starts to be written into table `t`, the data is written into the pre-split 8 Regions, which avoids the hotspot problem that might be caused if only one Region exists after table creation.
+
+**Problem two:**
+
+If a table's primary key is an integer type, and if the table uses `AUTO_INCREMENT` to ensure the uniqueness of the primary key (not necessarily continuous or incremental), you cannot use `SHARD_ROW_ID_BITS` to scatter the hotspot on this table because TiDB directly uses the row values of the primary key as `_tidb_rowid`.
+
+To address the problem in this scenario, you can replace `AUTO_INCREMENT` with [`AUTO_RANDOM`](/reference/sql/attributes/auto-random.md) (a column attribute) when inserting data. Then TiDB automatically assigns values to the integer primary key column, which eliminates the continuity of the row ID and scatters the hotspot.
 
 ## Parameter configuration
 

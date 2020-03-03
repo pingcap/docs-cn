@@ -50,6 +50,7 @@ The following list shows the keywords and reserved words in TiDB. Most of the re
 - ASC (R)
 - ASCII
 - AUTO_INCREMENT
+- AUTO_RANDOM
 - AVG
 - AVG_ROW_LENGTH
 

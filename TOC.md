@@ -107,6 +107,8 @@
       - [User-Defined Variables](/reference/sql/language-structure/user-defined-variables.md)
       - [Expression Syntax](/reference/sql/language-structure/expression-syntax.md)
       - [Comment Syntax](/reference/sql/language-structure/comment-syntax.md)
+    + Attributes
+      - [`AUTO_RANDOM`](/reference/sql/attributes/auto-random.md)
     + Data Types
       - [Overview](/reference/sql/data-types/overview.md)
       - [Default Values](/reference/sql/data-types/default-values.md)
