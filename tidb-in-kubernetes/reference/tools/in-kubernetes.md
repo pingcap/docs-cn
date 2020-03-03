@@ -135,7 +135,7 @@ tidb-ctl schema in mysql
 
 ## 使用 Helm
 
-[Helm](https://helm.sh/) 是一个 Kubernetes 的包管理工具，你可以参考 [Helm 官方文档](https://github.com/helm/helm#install) 安装 Helm，步骤如下：
+[Helm](https://helm.sh/) 是一个 Kubernetes 的包管理工具，确保安装的 Helm 版本为 2.9.0 ≤ Helm < 3.0.0。安装步骤如下：
 
 1. 安装 Helm 客户端
 
@@ -145,7 +145,12 @@ tidb-ctl schema in mysql
     curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
     ```
 
-    如果使用 macOS，可以通过 homebrew 安装 Helm：`brew install kubernetes-helm`。
+    如果使用 macOS，可以用以下命令通过 Homebrew 安装 Helm：
+
+    ```bash
+    brew install helm@2
+    brew link --force helm@2
+    ```
 
 2. 安装 Helm 服务端
 
