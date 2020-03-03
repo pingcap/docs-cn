@@ -1,10 +1,11 @@
 <!--Thanks for your contribution to TiDB documentation. See [CONTRIBUTING](https://github.com/pingcap/community/blob/master/CONTRIBUTING.md) before filing this pull request (PR).-->
 
-### What is changed, added or deleted? <Required>
+### What is changed, added or deleted? (Required)
 
 <!--Tell us what you did and why. This is important to help reviewers and community members understand your PR.-->
+Update pull request template
 
-### Which TiDB version(s) do your changes apply to? <Required>
+### Which TiDB version(s) do your changes apply to? (Required)
 
 <!--Tick the checkbox(es) below to choose the TiDB version(s) that your changes apply to.-->
 
@@ -14,7 +15,7 @@
 - [ ] v3.0 (TiDB 3.0 versions)
 - [ ] v2.1 (TiDB 2.1 versions)
 
-### What is the related PR or file link(s)? <Optional>
+### What is the related PR or file link(s)? (Optional)
 
 <!--Give us some reference link(s) that might help quickly review and merge your PR, for example, a file link that supports why you changed the document.-->
 
