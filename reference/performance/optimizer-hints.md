@@ -191,6 +191,10 @@ select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 wher
 select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
 ```
 
+> **注意：**
+>
+> `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
+
 ### NO_INDEX_MERGE()
 
 `NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
