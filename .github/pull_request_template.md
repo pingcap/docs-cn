@@ -19,10 +19,5 @@
 
 <!--Give us some reference link(s) that might help quickly review and merge your PR, for example, a file link that supports why you changed the document.-->
 
-<<<<<<< HEAD
-- **needs-cherry-pick-3.1**
-- **needs-cherry-pick-2.1**
-=======
 - This PR is translated from:<!--Give links here-->
 - Other reference link(s):<!--Give links here-->
->>>>>>> 9a360fb... .github: update pull request template (#2349)
