@@ -84,6 +84,11 @@ When you start the TiDB cluster, you can use command-line options or environment
 - Default: "/tmp/tidb"
 - You can use `tidb-server --store=mocktikv --path=""` to enable a pure in-memory TiDB.
 
+## `--tmp-storage-path`
+
++ TiDB's temporary storage path
++ Default: `<TMPDIR>/tidb/tmp-storage`
+
 ## `--proxy-protocol-networks`
 
 - The list of proxy server's IP addresses allowed by PROXY Protocol; if you need to configure multiple addresses, separate them using ",".
