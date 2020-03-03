@@ -23,20 +23,20 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-use-tmp-storage`
 
-+ 设置为 `true` 可以使单条 SQL 内存使用在超出 `mem-quota-query` 时为某些算子启用临时磁盘。
++ 设置是否在单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时为某些算子启用临时磁盘。
 + 默认值: true
-+ 可选值: true 或者 false
 
 ### `tmp-storage-path`
 
-+ 超出 `mem-quota-query` 时，某些算子会使用的临时磁盘存储位置。
++ 单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时，某些算子的临时磁盘存储位置。
 + 默认值：`<操作系统临时文件夹>/tidb/tmp-storage`
++ 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
 
 ### `oom-action`
 
-+ 当 TiDB 中的某条 SQL 超出 `mem-quota-query` 并且也不能再利用临时磁盘时的行为。
++ 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用启用临时磁盘时的行为。
 + 默认值："log"
-+ 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个 SQL 操作，并且输出日志。
++ 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
 ### `enable-streaming`
 
