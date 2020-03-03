@@ -15,7 +15,7 @@
 
 **If you select two or more versions from above**, to trigger the bot to cherry-pick this PR to your desired release version branch(es), you **must** add corresponding labels such as **needs-cherry-pick-3.1**, **needs-cherry-pick-3.0**, and **needs-cherry-pick-2.1**.
 
-### What is the related PR or file link(s)? (Optional)
+### What is the related PR or file link(s)?
 
 <!--Give us some reference link(s) that might help quickly review and merge your PR, for example, a file link that supports why you changed the document.-->
 
