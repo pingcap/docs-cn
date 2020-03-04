@@ -33,6 +33,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
     - 编辑 `inventory.ini`：
 
+<<<<<<< HEAD
     ```ini
     [tidb_servers]
     172.16.10.4
@@ -70,6 +71,45 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     [grafana_servers]
     172.16.10.3
     ```
+=======
+        ```ini
+        [tidb_servers]
+        172.16.10.4
+        172.16.10.5
+        172.16.10.101
+        172.16.10.102
+
+        [pd_servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
+
+        [tikv_servers]
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
+
+        [monitored_servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
+        172.16.10.4
+        172.16.10.5
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
+        172.16.10.101
+        172.16.10.102
+
+        [monitoring_servers]
+        172.16.10.3
+
+        [grafana_servers]
+        172.16.10.3
+        ```
+>>>>>>> 6c0b05a... how-to/scale: add necessary actions on the target machines for dev (#2359)
 
     现在拓扑结构如下所示：
 
@@ -88,6 +128,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     | node9 | 172.16.10.9 | TiKV4 |
 
     - 编辑 `hosts.ini`：
+<<<<<<< HEAD
 
     ```ini
     [servers]
@@ -107,6 +148,53 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     username = tidb
     ntp_server = pool.ntp.org
     ```
+=======
+
+        ```ini
+        [servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
+        172.16.10.4
+        172.16.10.5
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
+        172.16.10.101
+        172.16.10.102
+
+        [all:vars]
+        username = tidb
+        ntp_server = pool.ntp.org
+        ```
+
+2. 初始化新增节点。
+
+    1. 在中控机上配置部署机器 SSH 互信及 sudo 规则：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook -i hosts.ini create_users.yml -l 172.16.10.101,172.16.10.102 -u root -k
+        ```
+
+    2. 在部署目标机器上安装 NTP 服务：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
+        ```
+
+    3. 在部署目标机器上初始化节点：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
+        ```
+>>>>>>> 6c0b05a... how-to/scale: add necessary actions on the target machines for dev (#2359)
 
 2. 初始化新增节点。
 
