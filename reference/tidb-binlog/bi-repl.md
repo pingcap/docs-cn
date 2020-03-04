@@ -47,7 +47,6 @@ update drainer_repl_mark set val = val + 1 where id = ? && channel_id = ?;
 
 drainer 跟下游的每个连接可以使用一个 id 避免冲突， channel_id 用来表示做双向同步的一个通道，A, B 集群做双向同步要配置使用相同值。
 
-
 # 关于 DDL 同步
 
 DDL 没法加入标识表， 采用单向同步方案。
