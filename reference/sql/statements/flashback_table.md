@@ -26,7 +26,7 @@ FLASHBACK TABLE table_name [TO other_table_name]
 
 ## 示例
 
-- 恢复被 `DROP` 的表数据。
+- 恢复被 `DROP` 删除的表数据：
 
     {{< copyable "sql" >}}
 
