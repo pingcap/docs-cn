@@ -30,7 +30,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
 例如，如果要添加两个 TiDB 节点（node101、node102），IP 地址为 172.16.10.101、172.16.10.102，可以进行如下操作：
 
-1. 编辑 `inventory.ini` 文件和 `hosts.ini` 文件，添加节点信息：
+1. 编辑 `inventory.ini` 文件和 `hosts.ini` 文件，添加节点信息。
 
     - 编辑 `inventory.ini`：
     
