@@ -29,45 +29,47 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
 例如，如果要添加两个 TiDB 节点（node101、node102），IP 地址为 172.16.10.101、172.16.10.102，可以进行如下操作：
 
-1. 编辑 `inventory.ini` 文件，添加节点信息：
+1. 编辑 `inventory.ini` 文件和 `hosts.ini` 文件，添加节点信息。
 
-    ```ini
-    [tidb_servers]
-    172.16.10.4
-    172.16.10.5
-    172.16.10.101
-    172.16.10.102
+    - 编辑 `inventory.ini`：
 
-    [pd_servers]
-    172.16.10.1
-    172.16.10.2
-    172.16.10.3
+        ```ini
+        [tidb_servers]
+        172.16.10.4
+        172.16.10.5
+        172.16.10.101
+        172.16.10.102
 
-    [tikv_servers]
-    172.16.10.6
-    172.16.10.7
-    172.16.10.8
-    172.16.10.9
+        [pd_servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
 
-    [monitored_servers]
-    172.16.10.1
-    172.16.10.2
-    172.16.10.3
-    172.16.10.4
-    172.16.10.5
-    172.16.10.6
-    172.16.10.7
-    172.16.10.8
-    172.16.10.9
-    172.16.10.101
-    172.16.10.102
+        [tikv_servers]
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
 
-    [monitoring_servers]
-    172.16.10.3
+        [monitored_servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
+        172.16.10.4
+        172.16.10.5
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
+        172.16.10.101
+        172.16.10.102
 
-    [grafana_servers]
-    172.16.10.3
-    ```
+        [monitoring_servers]
+        172.16.10.3
+
+        [grafana_servers]
+        172.16.10.3
+        ```
 
     现在拓扑结构如下所示：
 
@@ -85,13 +87,52 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     | node8 | 172.16.10.8 | TiKV3 |
     | node9 | 172.16.10.9 | TiKV4 |
 
-2. 初始化新增节点：
+    - 编辑 `hosts.ini`：
 
-    {{< copyable "shell-regular" >}}
+        ```ini
+        [servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
+        172.16.10.4
+        172.16.10.5
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
+        172.16.10.101
+        172.16.10.102
 
-    ```bash
-    ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
-    ```
+        [all:vars]
+        username = tidb
+        ntp_server = pool.ntp.org
+        ```
+
+2. 初始化新增节点。
+
+    1. 在中控机上配置部署机器 SSH 互信及 sudo 规则：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook -i hosts.ini create_users.yml -l 172.16.10.101,172.16.10.102 -u root -k
+        ```
+
+    2. 在部署目标机器上安装 NTP 服务：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
+        ```
+
+    3. 在部署目标机器上初始化节点：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
+        ```
 
     > **注意：**
     >
@@ -204,7 +245,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
     2. 添加 `--join="http://172.16.10.1:2379" \`，IP 地址 （172.16.10.1） 可以是集群内现有 PD IP 地址中的任意一个。
 
-    3. 在新增 PD 节点中手动启动 PD 服务：
+    3. 在新增 PD 节点中启动 PD 服务：
 
         {{< copyable "shell-regular" >}}
 
@@ -224,15 +265,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
         /home/tidb/tidb-ansible/resources/bin/pd-ctl -u "http://172.16.10.1:2379" -d member
         ```
 
-5. 滚动升级整个集群：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ansible-playbook rolling_update.yml
-    ```
-
-6. 启动监控服务：
+5. 启动监控服务：
 
     {{< copyable "shell-regular" >}}
 
@@ -240,15 +273,32 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     ansible-playbook start.yml -l 172.16.10.103
     ```
 
-7. 更新 Prometheus 配置并重启：
+    > **注意：**
+    >
+    > 如果使用了别名（inventory_name），则也需要使用 `-l` 指定别名。
+
+6. 更新集群的配置：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ansible-playbook deploy.yml
+    ```
+
+7. 重启 Prometheus，新增扩容的 PD 节点的监控：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook stop.yml --tags=prometheus
+    ansible-playbook start.yml --tags=prometheus
     ```
 
 8. 打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群和新增节点的状态。
+
+> **注意：**
+>
+> TiKV 中的 PD Client 会缓存 PD 节点列表，但目前不会定期自动更新，只有在 PD leader 发生切换或 TiKV 重启加载最新配置后才会更新；为避免 TiKV 缓存的 PD 节点列表过旧的风险，在扩缩容 PD 完成后，PD 集群中至少要包含两个扩缩容操作前就已经存在的 PD 节点成员，如果不满足该条件需要手动执行 PD transfer leader 操作，更新 TiKV 中的 PD 缓存列表。
 
 ## 缩容 TiDB 节点
 
@@ -458,6 +508,10 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     ansible-playbook stop.yml -l 172.16.10.2
     ```
 
+    > **注意：**
+    >
+    > 此示例中 `172.16.10.2` 服务器上只有 PD 节点才可以如上操作，如果该服务器上还有其他服务（例如 `TiDB`），则还需要使用 `-t` 来指定服务（例如 `-t tidb`）。
+
 4. 编辑 `inventory.ini` 文件，移除节点信息：
 
     ```ini
@@ -508,20 +562,25 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     | node8 | 172.16.10.8 | TiKV3 |
     | node9 | 172.16.10.9 | TiKV4 |
 
-5. 滚动升级整个集群：
+5. 更新集群的配置：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ansible-playbook rolling_update.yml
+    ansible-playbook deploy.yml
     ```
 
-6. 更新 Prometheus 配置并重启：
+6. 重启 Prometheus，移除缩容的 PD 节点的监控：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ansible-playbook rolling_update_monitor.yml --tags=prometheus
+    ansible-playbook stop.yml --tags=prometheus
+    ansible-playbook start.yml --tags=prometheus
     ```
 
 7. 打开浏览器访问监控平台：`http://172.16.10.3:3000`，监控整个集群的状态。
+
+> **注意：**
+>
+> TiKV 中的 PD Client 会缓存 PD 节点列表，但目前不会定期自动更新，只有在 PD leader 发生切换或 TiKV 重启加载最新配置后才会更新；为避免 TiKV 缓存的 PD 节点列表过旧的风险，在扩缩容 PD 完成后，PD 集群中至少要包含两个扩缩容操作前就已经存在的 PD 节点成员，如果不满足该条件需要手动执行 PD transfer leader 操作，更新 TiKV 中的 PD 缓存列表。

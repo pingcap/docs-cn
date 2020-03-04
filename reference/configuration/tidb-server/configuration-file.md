@@ -140,7 +140,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `query-log-max-len`
 
 + 最长的 SQL 输出长度。
-+ 默认值：2048
++ 默认值：4096
 + 当语句的长度大于 `query-log-max-len`，将会被截断输出。
 
 ### `max-server-connections`
@@ -247,7 +247,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 一个事务允许的最大语句条数限制。
 + 默认值：5000
-+ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。
++ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在可重试的乐观事务中生效，如果使用悲观事务或者关闭了[事务重试](/reference/transactions/transaction-optimistic.md#事务的重试)，事务中的语句数将不受此限制。
 
 ### `tcp-keep-alive`
 
@@ -375,6 +375,11 @@ prepare 语句的 Plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
+### `enable-chunk-rpc`
+
++ 开启 coprocessor 的 `Chunk` 数据编码格式。
++ 默认值：true
+
 ## txn-local-latches
 
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
@@ -459,3 +464,13 @@ TiDB 服务状态相关配置。
 
 + 悲观事务中每个语句最大重试次数，超出该限制将会报错。
 + 默认值：256
+
+## experimental
+
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
+
+### `allow-auto-random` <span class="version-mark">从 v3.1.0 版本开始引入</span>
+
++ 用于控制是否允许使用 `AUTO_RANDOM`。
++ 默认值：false
++ 默认情况下，不支持使用 `AUTO_RANDOM`。当该值为 true 时，不允许同时设置 alter-primary-key 为 true。

@@ -450,7 +450,7 @@ set tidb_slow_log_threshold = 200;
 
 作用域：SESSION
 
-默认值：2048 (bytes)
+默认值：4096 (bytes)
 
 最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
 
