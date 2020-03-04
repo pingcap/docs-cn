@@ -24,7 +24,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `oom-use-tmp-storage`
 
 + 设置是否在单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时为某些算子启用临时磁盘。
-+ 默认值: true
++ 默认值：true
 
 ### `tmp-storage-path`
 
