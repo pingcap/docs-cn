@@ -17,7 +17,7 @@ FLASHBACK TABLE table_name [TO other_table_name]
 
 ## 注意事项
 
-如果删除表后并过了 GC life time，就不能再用 `FLASHBACK TABLE` 来恢复被删除的数据了，执行 `FLASHBACK TABLE` 语句会返回类似错误：`snapshot is older than GC safe point 2020-02-27 13:45:57 +0800 CST`。
+如果删除了一张表并过了 GC life time，就不能再用 `FLASHBACK TABLE` 语句来恢复被删除的数据了，否则会返回错误，错误类似于 `snapshot is older than GC safe point 2020-02-27 13:45:57 +0800 CST`。
 
 在开启 TiDB Binlog 时使用 `FLASHBACK TABLE` 需要注意一下情况：
 
