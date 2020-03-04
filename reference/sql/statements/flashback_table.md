@@ -22,7 +22,7 @@ FLASHBACK TABLE table_name [TO other_table_name]
 在开启 TiDB Binlog 时使用 `FLASHBACK TABLE` 需要注意一下情况：
 
 * 下游从集群也支持 `FLASHBACK TABLE`
-* 从集群 GC lifetime 一定要长于主集群（不过由于上下游同步的延迟，可能也会造成下游恢复数据失败）
+* 从集群的 GC lifetime 一定要长于主集群的 GC lifetime。上下游同步存在的延迟可能也会造成下游恢复数据失败。
 
 ## 示例
 
