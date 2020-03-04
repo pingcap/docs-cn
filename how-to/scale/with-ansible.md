@@ -32,7 +32,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
 1. 编辑 `inventory.ini` 文件和 `hosts.ini` 文件，添加节点信息：
 
-    - 编辑 inventory.ini
+    - 编辑 `inventory.ini`：
     
     ```ini
     [tidb_servers]
