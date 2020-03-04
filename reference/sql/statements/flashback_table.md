@@ -52,7 +52,7 @@ FLASHBACK TABLE table_name [TO other_table_name]
     FLASHBACK TABLE t TO t1;
     ```
 
-## 原理
+## 工作原理
 
 TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除的表数据（行数据和索引数据）写一条数据到 `mysql.gc_delete_range` 表。TiDB 后台的 GC Worker 会定期从 `mysql.gc_delete_range` 表中取出超过 GC lifetime 相关范围的 key 进行删除。
 
