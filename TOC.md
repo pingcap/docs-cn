@@ -405,6 +405,7 @@
     - [Collect Logs](/tidb-in-kubernetes/maintain/log-collecting.md)
     - [Automatic Failover](/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/tidb-in-kubernetes/maintain/tidb-binlog.md)
+    - [Restart a TiDB Cluster](/tidb-in-kubernetes/maintain/restart.md)
   - [Scale](/tidb-in-kubernetes/scale-in-kubernetes.md)
   + Upgrade
     - [TiDB Cluster](/tidb-in-kubernetes/upgrade/tidb-cluster.md)
