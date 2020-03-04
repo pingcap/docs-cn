@@ -33,7 +33,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 1. 编辑 `inventory.ini` 文件和 `hosts.ini` 文件，添加节点信息。
 
     - 编辑 `inventory.ini`：
-    
+
     ```ini
     [tidb_servers]
     172.16.10.4
@@ -87,9 +87,9 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     | node7 | 172.16.10.7 | TiKV2 |
     | node8 | 172.16.10.8 | TiKV3 |
     | node9 | 172.16.10.9 | TiKV4 |
-    
+
     - 编辑 `hosts.ini`：
-    
+
     ```ini
     [servers]
     172.16.10.1
@@ -109,18 +109,31 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     ntp_server = pool.ntp.org
     ```
 
-2. 初始化新增节点：
+2. 初始化新增节点。
 
-    {{< copyable "shell-regular" >}}
+    1. 在中控机上配置部署机器 SSH 互信及 sudo 规则：
 
-    ```bash
-    # 在中控机上配置部署机器 SSH 互信及 sudo 规则
-    ansible-playbook -i hosts.ini create_users.yml -l 172.16.10.101,172.16.10.102 -u root -k
-    # 在部署目标机器上安装 NTP 服务
-    ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
-    # 在部署目标机器上初始化节点
-    ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
-    ```
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook -i hosts.ini create_users.yml -l 172.16.10.101,172.16.10.102 -u root -k
+        ```
+
+    2. 在部署目标机器上安装 NTP 服务：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
+        ```
+
+    3. 在部署目标机器上初始化节点：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
+        ```
 
     > **注意：**
     >
