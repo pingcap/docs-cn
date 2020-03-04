@@ -209,7 +209,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 一个事务允许的最大语句条数限制。
 + 默认值：5000
-+ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在可重试的乐观事务中生效，如果使用悲观事务或者关闭了[事务重试](/reference/transactions/transaction-optimistic.md#事务的重试)，事务中的语句数将不受此限制。
++ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在乐观事务中生效，如果使用悲观事务，事务中的语句数将不受此限制。
 
 ### `tcp-keep-alive`
 
