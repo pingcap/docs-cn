@@ -37,7 +37,7 @@ Download [TiDB Lightning](/reference/tools/tidb-lightning/overview.md) by using 
 
 ## BR (backup and restore)
 
-Download [BR](/how-to/maintain/backup-and-restore/br.md) by using the download link in the following table:
+Download [BR](/reference/tools/br/br.md) by using the download link in the following table:
 
 | Package name | OS | Architecure | SHA256 checksum |
 |:---|:---|:---|:---|
