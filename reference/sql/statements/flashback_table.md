@@ -19,7 +19,7 @@ FLASHBACK TABLE table_name [TO other_table_name]
 
 如果删除了一张表并过了 GC life time，就不能再用 `FLASHBACK TABLE` 语句来恢复被删除的数据了，否则会返回错误，错误类似于 `snapshot is older than GC safe point 2020-02-27 13:45:57 +0800 CST`。
 
-在开启 TiDB Binlog 时使用 `FLASHBACK TABLE` 需要注意一下情况：
+在开启 TiDB Binlog 时使用 `FLASHBACK TABLE` 需要注意以下情况：
 
 * 下游从集群也支持 `FLASHBACK TABLE`
 * 从集群的 GC lifetime 一定要长于主集群的 GC lifetime。上下游同步存在的延迟可能也会造成下游恢复数据失败。
