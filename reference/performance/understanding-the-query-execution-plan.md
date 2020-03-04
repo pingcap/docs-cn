@@ -76,7 +76,7 @@ As an extension to `EXPLAIN`, `EXPLAIN ANALYZE` will execute the query and provi
 
 * `loops` is the number of times the operator was called from the parent operator.
 
-* `rows` is the total number of rows that were returned by this operator. So for example, you can compare the accuracy of the `count` column to `rows`/`loops` in the `execution_info` column to assess how accurate the query optimizer's estimations are.
+* `rows` is the total number of rows that were returned by this operator. So for example, you can compare the accuracy of the `count` column to `rows` in the `execution_info` column to assess how accurate the query optimizer's estimations are.
 
 ### Example usage
 
