@@ -138,7 +138,7 @@ TiDB 支持创建表达式索引，即将索引建立在一个表达式上。示
 CREATE INDEX c1_expr ON t1 ((c1+1));
 ```
 
-表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列(Virtual Genrated Column)上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/reference/sql/generated-columns.md#局限性)。目前，建立了索引的表达式只有在 `FIELD` 子句、`WHERE` 子句和 `ORDER BY` 子句中时，优化器才能使用表达式索引。后续将支持 `GROUP BY` 子句。
+表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列(generated virtual column)上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/reference/sql/generated-columns.md#局限性)。目前，建立了索引的表达式只有在 `FIELD` 子句、`WHERE` 子句和 `ORDER BY` 子句中时，优化器才能使用表达式索引。后续将支持 `GROUP BY` 子句。
 
 ## 相关 session 变量
 
