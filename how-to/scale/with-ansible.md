@@ -89,10 +89,6 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
     - 编辑 `hosts.ini`：
 
-<<<<<<< HEAD
-    ```
-    ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
-=======
     ```ini
     [servers]
     172.16.10.1
@@ -110,7 +106,6 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     [all:vars]
     username = tidb
     ntp_server = pool.ntp.org
->>>>>>> 6e6d8e7... how-to/scale: add necessary actions on the target machines (#2324)
     ```
 
 2. 初始化新增节点。
