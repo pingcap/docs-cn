@@ -88,7 +88,8 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
     | node8 | 172.16.10.8 | TiKV3 |
     | node9 | 172.16.10.9 | TiKV4 |
     
-    - 编辑 hosts.ini
+    - 编辑 `hosts.ini`：
+    
     ```ini
     [servers]
     172.16.10.1
