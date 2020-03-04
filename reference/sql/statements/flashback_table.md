@@ -5,7 +5,7 @@ category: reference
 
 # FLASHBACK TABLE
 
-在 GC life time 时间内，被 `DROP` 或 `TRUNCATE` 的表可以用 `FLASHBACK TABLE` 恢复表以及数据。
+在 Garbage Collection (GC) life time 时间内（参阅 [`tikv_gc_life_time`](/reference/garbage-collection/configuration/#tikv_gc_life_time)），可以用 `FLASHBACK TABLE` 语句来恢复被 `DROP` 或 `TRUNCATE` 删除的表以及数据。
 
 ## 语法
 
