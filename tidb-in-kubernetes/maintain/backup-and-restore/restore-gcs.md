@@ -7,13 +7,13 @@ category: how-to
 
 本文详细描述了将 Kubernetes 上通过 TiDB Operator 备份的 TiDB 集群数据恢复的具体操作过程。底层通过使用 [`loader`](/reference/tools/loader.md) 来进行集群恢复。
 
-本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CRD 实现的。基于 Helm Charts 实现的备份恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
+本文使用的恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现的。基于 Helm Charts 实现的备份和恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
 
 以下示例将存储在 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上指定路径中的集群备份数据恢复到 TiDB 集群。
 
 ## 环境准备
 
-1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复备份所需的 RBAC 相关资源：
+1. 下载文件 [`backup-rbac.yaml`](https://github.com/pingcap/tidb-operator/blob/master/manifests/backup/backup-rbac.yaml)，并执行以下命令在 `test2` 这个 namespace 中创建恢复所需的 RBAC 相关资源：
 
     {{< copyable "shell-regular" >}}
 
@@ -29,7 +29,7 @@ category: how-to
     kubectl create secret generic restore-demo2-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test2
     ```
 
-## 将指定备份恢复到 TiDB 集群
+## 将指定备份数据恢复到 TiDB 集群
 
 1. 创建 restore custom resource (CR)，将指定的备份数据恢复至 TiDB 集群：
 
