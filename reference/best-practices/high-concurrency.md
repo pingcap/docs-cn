@@ -185,7 +185,7 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=·3;
+create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=3;
 ```
 
 - `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 （16=2^4） 个范围区间。
