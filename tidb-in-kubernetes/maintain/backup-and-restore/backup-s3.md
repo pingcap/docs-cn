@@ -7,13 +7,13 @@ category: how-to
 
 本文详细描述了如何将 Kubernetes 上的 TiDB 集群数据备份到兼容 S3 的存储上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份）。底层通过使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份，然后在将备份数据上传到兼容 S3 的存储上。
 
-本文使用的备份恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。基于 Helm Charts 实现的备份恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
+本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。基于 Helm Charts 实现的备份和恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
 
 ## Ad-hoc 全量备份
 
 Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 对象来描述一次备份。TiDB Operator 根据这个 `Backup` 对象来完成具体的备份过程。如果备份过程中出现错误，程序不会自动重试，此时需要手动处理。
 
-目前兼容 S3 的存储中，Ceph 和 Amazon S3 经测试可正常工作。下文对 Ceph 和 Amazon S3 这两种存储的使用进行描述。为了更好地描述备份的使用方式，本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
+目前兼容 S3 的存储中，Ceph 和 Amazon S3 经测试可正常工作。下文对 Ceph 和 Amazon S3 这两种存储的使用进行描述。本文档提供如下备份示例。示例假设对部署在 Kubernetes `test1` 这个 namespace 中的 TiDB 集群 `demo1` 进行数据备份，下面是具体操作过程。
 
 ### Ad-hoc 全量备份环境准备
 
@@ -43,7 +43,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### 备份数据到兼容 S3 的存储
 
-+ 创建 `Backup` CR，并将数据备份到 Amazon S3。
++ 创建 `Backup` CR，并将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -77,7 +77,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
       storageSize: 10Gi
     ```
 
-+ 创建 `Backup` CR，并将数据备份到 Ceph。
++ 创建 `Backup` CR，并将数据备份到 Ceph：
 
     {{< copyable "shell-regular" >}}
 
@@ -110,7 +110,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 以上两个示例分别将 TiDB 集群的数据全量导出备份到 Amazon S3 和 Ceph 上。Amazon S3 的 `region`、`acl`、`endpoint`、`storageClass` 配置项均可以省略。其余非 Amazon S3 的但是兼容 S3 的存储均可使用和 Amazon S3 类似的配置。可参考上面例子中 Ceph 的配置，省略不需要配置的字段。
 
-Amazon S3 支持以下几种 object access control list (ACL) 策略：
+Amazon S3 支持以下几种 access-control list (ACL) 策略：
 
 * `private`
 * `public-read`
@@ -119,9 +119,9 @@ Amazon S3 支持以下几种 object access control list (ACL) 策略：
 * `bucket-owner-read`
 * `bucket-owner-full-control`
 
-如果不设置 ACL 策略，则默认使用 `private` 策略。这几种访问控制策略的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html)。
+如果不设置 ACL 策略，则默认使用 `private` 策略。这几种访问控制策略的详细介绍参考 [AWS 官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html)。
 
-Amazon S3 支持以下几种 storageClass 类型：
+Amazon S3 支持以下几种 `storageClass` 类型：
 
 * `STANDARD`
 * `REDUCED_REDUNDANCY`
@@ -130,7 +130,7 @@ Amazon S3 支持以下几种 storageClass 类型：
 * `GLACIER`
 * `DEEP_ARCHIVE`
 
-如果不设置 `storageClass`，则默认使用 `STANDARD_IA`。这几种存储类型的详细介绍参考 AWS [官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html)。
+如果不设置 `storageClass`，则默认使用 `STANDARD_IA`。这几种存储类型的详细介绍参考 [AWS 官方文档](https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html)。
 
 创建好 `Backup` CR 后，可通过如下命令查看备份状态：
 
@@ -171,7 +171,7 @@ Amazon S3 支持以下几种 storageClass 类型：
 
 ### 定时全量备份数据到 S3 兼容存储
 
-+ 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3。
++ 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，将数据备份到 Amazon S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -210,7 +210,7 @@ Amazon S3 支持以下几种 storageClass 类型：
         storageSize: 10Gi
     ```
 
-+ 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，将数据备份到 Ceph。
++ 创建 `BackupSchedule` CR 开启 TiDB 集群的定时全量备份，将数据备份到 Ceph：
 
     {{< copyable "shell-regular" >}}
 

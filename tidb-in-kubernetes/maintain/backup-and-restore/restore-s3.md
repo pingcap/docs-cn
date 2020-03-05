@@ -80,5 +80,5 @@ category: how-to
 * `.spec.to.port`：待恢复 TiDB 集群的访问端口。
 * `.spec.to.user`：待恢复 TiDB 集群的访问用户。
 * `.spec.to.tidbSecretName`：待恢复 TiDB 集群所需凭证的 secret。
-* `.spec.storageClassName`：指定恢复时所需的 persistent volume (PV) 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值（默认为 `standard`）。
+* `.spec.storageClassName`：指定恢复时所需的 Persistent Volume (PV) 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值（默认为 `standard`）。
 * `.spec.storageSize`：指定恢复集群时所需的 PV 大小。该值应大于备份 TiDB 集群的数据大小。

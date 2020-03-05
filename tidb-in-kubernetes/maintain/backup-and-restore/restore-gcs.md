@@ -5,11 +5,11 @@ category: how-to
 
 # 恢复 GCS 上的备份数据
 
-本文详细描述了将 Kubernetes 上通过 TiDB Operator 备份的 TiDB 集群数据恢复的具体操作过程。底层通过使用 [`loader`](/reference/tools/loader.md) 来进行集群恢复。
+本文描述了将 Kubernetes 上通过 TiDB Operator 备份的数据恢复到 TiDB 集群的操作过程。底层通过使用 [`loader`](/reference/tools/loader.md) 来进行集群恢复。
 
-本文使用的恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现的。基于 Helm Charts 实现的备份和恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
+本文使用的恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。基于 Helm Charts 实现的备份和恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
 
-以下示例将存储在 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上指定路径中的集群备份数据恢复到 TiDB 集群。
+以下示例将存储在 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上指定路径上的集群备份数据恢复到 TiDB 集群。
 
 ## 环境准备
 
@@ -79,5 +79,5 @@ category: how-to
 * `.spec.to.port`：待恢复 TiDB 集群访问的端口。
 * `.spec.to.user`：待恢复 TiDB 集群的访问用户。
 * `.spec.to.tidbSecretName`：待恢复 TiDB 集群所需凭证的 secret。
-* `.spec.storageClassName`：指定恢复时所需的 persistent volume (PV) 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值（默认为 `standard`）。
+* `.spec.storageClassName`：指定恢复时所需的 Persistent Volume (PV) 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值（默认为 `standard`）。
 * `.spec.storageSize`：恢复集群时指定所需的 PV 大小。该值应大于备份 TiDB 集群数据的大小。
