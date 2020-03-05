@@ -272,15 +272,17 @@ ERROR 4135 (HY000): Sequence 'test.seq2' has run out
 
 * MySQL 暂无 SEQUENCE 选项。TiDB Sequence 借鉴自 MariaDB，但是 setval 会保持原有的步调。
 
-这里的步调是指，sequence 序列中的数在定义之后会产生一定的等差关系。setval 虽然可以将 sequence 的当前值进行移动设置，但是后续出现的值仍会遵循原有的等差关系。
+  这里的步调是指，SEQUENCE 序列中的数在定义之后会产生一定的等差关系。setval 虽然可以将 SEQUENCE 的当前值进行移动设置，但是后续出现的值仍会遵循原有的等差关系。
+
+示例如下：
 
 ```
-1, 3, 5, ...            // 序列遵循起始为 1，步长为 2 的等差关系
-select setval(seq, 6)   // 设置 sequence 的当前值为 6
-7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系
+1, 3, 5, ...            // 序列遵循起始为 1、步长为 2 的等差关系。
+select setval(seq, 6)   // 设置 sequence 的当前值为 6。
+7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系。
 ```
 
-对于 sequence 的起始值，在 cycle 模式下，第一轮会是 start，后续轮次将会是 MinValue (increment > 0) / MaxValue (increment < 0)。
+在 cycle 模式下，SEQUENCE 的起始值第一轮为 `start`，后续轮次将会是 `MinValue (increment > 0)`/ `MaxValue (increment < 0)`。
 
 ## 另请参阅
 
