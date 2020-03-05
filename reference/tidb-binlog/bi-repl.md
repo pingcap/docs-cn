@@ -1,21 +1,23 @@
 ---
-title: 双向同步
+title: 集群间双向同步
 category: reference
 ---
 
-# 基本需求
+# 集群间双向同步
 
-两个 TiDB cluster 之间双向同步，比如 A <-> B, A 写入的数据要同步到 B，B 写入的数据要同步到 A，但本身同一个表 A，B 写入的数据不会有冲突，即不会在两边修改同一主键或者唯一索引的行。
+## 使用场景
 
-# 实现方案
+当需要在两个 TiDB 集群之间双向同步数据时，可在 TiDB Binlog 进行操作。例如要将写入集群 A 的数据同步到集群 B，而且要将写入集群 B 的数据同步到集群 A。写入的数据与两个集群中的相同表无冲突，即不会在两个集群修改表的同一主键或者唯一索引的行。
 
-## 思路
+## 实现原理
+
+实现原理如下图所示：
 
 ![Architect](/media/binlog/bi-repl1.jpg)
 
-- 为两个集群 cluster A 和 cluster B 分别启动 tidb binlog 同步程序
+- 为 A 和 B 两个集群分别启动 TiDB Binlog 同步程序。
 
-- tidb binlog 的 drainer 新增逻辑
+- 为 TiDB Binlog 的 Drainer 新增以下逻辑：
     * 写目标 cluster 的时候，对每个事务加入一个对表 `_drainer_repl_mark` 的 dml event。
     * 解析 binlog event 的时候，发现事务带有对表 `_drainer_repl_mark` 的 dml event，放弃同步该事务。
     * DDL 没有事务概念采取单向同步的方案。
@@ -24,11 +26,11 @@ category: reference
 
 ![Mark Table](/media/binlog/bi-repl2.jpg)
 
-对 `_drainer_repl_mark` 表的 update 一定要有数据改动才会产生 binlog。
+更新 `_drainer_repl_mark` 表时，一定要有数据改动才会产生 binlog。
 
 ## 标识表
 
-表结构如下：
+`_drainer_repl_mark` 标识表的结构如下：
 
 ```
 CREATE TABLE `_drainer_repl_mark` (
@@ -40,27 +42,29 @@ CREATE TABLE `_drainer_repl_mark` (
 );
 ```
 
-drainer 使用如下 SQL 更新保证一定有数据改动：
+Drainer 使用如以下 SQL 语句更新 `_drainer_repl_mark` 一定会有数据改动：
 
 ```sql
 update drainer_repl_mark set val = val + 1 where id = ? && channel_id = ?;
 ```
 
-drainer 跟下游的每个连接可以使用一个 id 避免冲突，channel_id 用来表示做双向同步的一个通道，A, B 集群做双向同步要配置使用相同值。
+Drainer 与下游的每个连接可以使用一个 ID 以避免冲突。`channel_id` 用来表示进行双向同步的一个通道。A 和 B 两个集群进行双向同步的配置应使用相同的值。
 
-# 关于 DDL 同步
+## DDL 同步
 
-DDL 没法加入标识表，采用单向同步方案。
+DDL 操作无法加入标识表，因此采用单向同步方案。
 
-A -> B 开启 ddl 同步， B -> A 关闭 ddl 同步， DDL 操作全部在 A 上执行。
+集群 A 到集群 B 开启 DDL 同步，集群 B 到集群 A 关闭 DDL 同步。DDL 操作全部在 A 上执行。
 
-注意 DDL 没法在两个集群同时执行，执行 DDL 同时有 DML 操作或者 DML binlog 没同步完，会可能出现上下游表结构不相同的 DML 数据同步。
+> **注意：**
+> 
+> DDL 无法在两个集群同时执行。执行 DDL 时，若同时有 DML 操作或者 DML binlog 没同步完，会可能出现 DML 同步的上下游表结构不一致的情况。
 
-当有添加或者删除列时会出现要同步到下游的数据多或者少列的情况，drainer 通过添加配置来允许这种情况，会忽略多了的列值或者给少了的列写默认值。
+当有添加或者删除列时，要同步到下游的数据可能会出现多列或者少列的情况。Drainer 通过添加配置来允许这种情况，会忽略多了的列值或者给少了的列写入默认值。
 
-# 部署配置
+## 部署配置
 
-针对双向同步 drainer 需要添加如下对应配置:
+若要进行双向同步，需在 Drainer 中添加以下配置：
 
 ```toml
 [syncer]
