@@ -165,7 +165,7 @@
       - [`EXECUTE`](/reference/sql/statements/execute.md)
       - [`EXPLAIN ANALYZE`](/reference/sql/statements/explain-analyze.md)
       - [`EXPLAIN`](/reference/sql/statements/explain.md)
-      - [`FLASHBACK TABLE`](/reference/sql/statements/flashback_table.md)
+      - [`FLASHBACK TABLE`](/reference/sql/statements/flashback-table.md)
       - [`FLUSH PRIVILEGES`](/reference/sql/statements/flush-privileges.md)
       - [`FLUSH STATUS`](/reference/sql/statements/flush-status.md)
       - [`FLUSH TABLES`](/reference/sql/statements/flush-tables.md)
