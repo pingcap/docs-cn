@@ -280,7 +280,7 @@ select setval(seq, 6)   // 设置 sequence 的当前值为 6
 7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系
 ```
 
-对于 sequence 的起始值，在 cycle 模式下，第一轮会是 start，后续轮次将会是 MinValue (increment>0) / MaxValue (increment < 0)。
+对于 sequence 的起始值，在 cycle 模式下，第一轮会是 start，后续轮次将会是 MinValue (increment > 0) / MaxValue (increment < 0)。
 
 ## 另请参阅
 
