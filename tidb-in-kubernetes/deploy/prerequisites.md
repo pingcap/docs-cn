@@ -171,16 +171,16 @@ The TiDB cluster consists of three components: PD, TiKV and TiDB. The following 
 
 ## A case of planning TiDB clusters
 
-This is an example of deploying five clusters (each cluster has 3 PDs, 3 TiKVs, and 2 TiDBs), where PD is configured as 2C 4GB, TiDB as 8C 32GB, and TiKV as 8C 32GB. There are seven Kubernetes nodes, three of which are both master and worker nodes, and the other four are purely worker nodes. The distribution of each component is as follows:
+This is an example of deploying five clusters (each cluster has 3 PDs, 3 TiKVs, and 2 TiDBs), where PD is configured as 2C 4GB, TiDB as 8C 32GB, and TiKV as 8C 32GB. There are seven Kubernetes nodes, three of which are both master and worker nodes, and the other four are purely worker nodes. The distribution of components on each node is as follows:
 
-+ Single master node:
++ Each master node:
 
     - 1 etcd (2C 4GB) + 2 PDs (2 \* 2C 2 \* 4GB) + 3 TiKVs (3 \* 8C 3 \* 32GB) + 1 TiDB (8C 32GB), totalling 38C 140GB
     - Two SSD disks, one for etcd and one for two PD instances
     - The RAID5-applied SAS disk used for Docker and kubelet
     - Three NVMe disks for TiKV instances
 
-+ Single worker node:
++ Each worker node:
 
     - 3 PDs (3 \* 2C 3 \* 4GB) + 2 TiKVs (2 \* 8C 2 \* 32GB) + 2 TiDBs (2 \* 8C 2 \* 32GB), totalling 38C 140GB
     - One SSD disk for three PD instances
