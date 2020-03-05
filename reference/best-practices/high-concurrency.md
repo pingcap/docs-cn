@@ -195,7 +195,7 @@ Example:
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=·3;
+create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=3;
 ```
 
 - `SHARD_ROW_ID_BITS = 4` means that the values of `tidb_rowid` will be randomly distributed into 16 (16=2^4) ranges.
