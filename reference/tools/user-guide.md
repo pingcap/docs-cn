@@ -28,7 +28,7 @@ TiDB 生态工具可以分为几种：
 - Loader 的输入：Mydumper 输出的文件
 - Loader 的输出：以 SQL 形式写入 TiDB
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：[备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore.md)
+- Kubernetes 支持：[备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)
 
 #### 全量导入工具 TiDB Lightning
 
@@ -80,7 +80,7 @@ TiDB 生态工具可以分为几种：
 - Mydumper 的输入：MySQL/TiDB 集群
 - Mydumper 的输出：SQL 文件
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：[备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore.md)
+- Kubernetes 支持：[备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)
 
 #### 增量导出工具 TiDB Binlog
 
