@@ -61,7 +61,7 @@ MINVALUE | 1 / -9223372036854775807 | 指定序列的最小值，当 INCREMENT >
 MAXVALUE | 9223372036854775806 / -1 | 指定序列的最大值，当 INCREMENT > 0 时，默认值为 9223372036854775806；当 INCREMENT < 0 时，默认值为 -1。
 START | MINVALUE / MAXVALUE | 指定序列的初始值，当 INCREMENT > 0 时，默认值为 MINVALUE; 当 INCREMENT < 0 时，默认值为 MAXVALUE。
 CACHE | 1000 | 指定每个 TiDB 本地缓存序列的大小，默认值为 1000。
-CYCLE | false | 指定序列用完之后的是否循环使用。在 CYCLE 的情况下，当 INCREMENT > 0 时，默认值为 MINVALUE；当 INCREMENT < 0 时，默认值为 MAXVALUE。
+CYCLE | false | 指定序列用完之后是否要循环使用。在 CYCLE 的情况下，当 INCREMENT > 0 时，默认值为 MINVALUE；当 INCREMENT < 0 时，默认值为 MAXVALUE。
 
 ## SEQUENCE 函数
 
@@ -69,11 +69,11 @@ SEQUENCE 的使用主要通过表达式函数来操纵
 
 **NEXTVAL / NEXT VALUE FOR**
 
-本质上都是 nextval() 函数, 获取 SEQUENCE 对象的下一个有效值，其参数为 SEQUENCE 序列的 identifier。
+本质上都是 nextval() 函数，获取 SEQUENCE 对象的下一个有效值，其参数为 SEQUENCE 序列的 identifier。
 
 **LASTVAL**
 
-lastval() 函数，用于获取本会话上一个使用过的值，如果没有则为 NULL, 其参数为 SEQUENCE 序列的 identifier。
+lastval() 函数，用于获取本会话上一个使用过的值，如果没有则为 NULL，其参数为 SEQUENCE 序列的 identifier。
 
 **SETVAL**
 
@@ -271,6 +271,16 @@ ERROR 4135 (HY000): Sequence 'test.seq2' has run out
 ## MySQL 兼容性
 
 * MySQL 暂无 SEQUENCE 选项。TiDB Sequence 借鉴自 MariaDB，但是 setval 会保持原有的步调。
+
+这里的步调是指，sequence 序列中的数在定义之后会产生一定的等差关系。setval 虽然可以将 sequence 的当前值进行移动设置，但是后续出现的值仍会遵循原有的等差关系。
+
+```
+1, 3, 5, ...            // 序列遵循起始为 1，步长为 2 的等差关系
+select setval(seq, 6)   // 设置 sequence 的当前值为 6
+7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系
+```
+
+对于 sequence 的起始值，在 cycle 模式下，第一轮会是 start，后续轮次将会是 MinValue (increment>0) / MaxValue (increment < 0)。
 
 ## 另请参阅
 
