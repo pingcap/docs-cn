@@ -7,7 +7,7 @@ category: how-to
 
 本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份），底层通过使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
 
-本文使用的备份恢复方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现的。基于 Helm Charts 的备份恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
+本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。基于 Helm Charts 的备份和恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
 
 ## Ad-hoc 全量备份
 
@@ -43,7 +43,7 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
 
 ### 备份数据到 GCS
 
-创建 `Backup` CR，并将数据备份到 GCS。
+创建 `Backup` CR，并将数据备份到 GCS：
 
 {{< copyable "shell-regular" >}}
 
@@ -200,4 +200,4 @@ kubectl get bks -n test1 -owide
 + `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
 + `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。比如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考[`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
 + `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
-+ `.spec.pause`：该值默认为 `false`。如果将该值设置为 `true`，表示暂停定时调度。此时即使到了调度时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。将 `true` 改为 `false` 则重新开启定时全量备份。
++ `.spec.pause`：该值默认为 `false`。如果将该值设置为 `true`，表示暂停定时调度。此时即使到了调度时间点，也不会进行备份。在定时备份暂停期间，备份 [Garbage Collection (GC)](/reference/garbage-collection/overview.md) 仍然正常进行。将 `true` 改为 `false` 则重新开启定时全量备份。
