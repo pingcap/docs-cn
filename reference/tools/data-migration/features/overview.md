@@ -113,7 +113,18 @@ routes:
 ```yaml
 black-white-list:
   rule-1:
-    do-dbs: ["~^test.*"]         # 以 ~ 字符开头，表示规则是正则表达式
+    do-dbs: ["test*"]         # 非 ~ 字符开头，表示规则是通配符；通配符规则在 v1.0.4 及后续版本支持
+​    ignore-dbs: ["mysql"]
+    do-tables:
+    - db-name: "test*"
+      tbl-name: "t*"
+    - db-name: "test"
+      tbl-name: "t"
+    ignore-tables:
+    - db-name: "test"
+      tbl-name: "log"
+  rule-2:
+    do-dbs: ["~^test.*"]      # 以 ~ 字符开头，表示规则是正则表达式
 ​    ignore-dbs: ["mysql"]
     do-tables:
     - db-name: "~^test.*"
