@@ -145,7 +145,7 @@ Configuration items related to log.
 ### `query-log-max-len`
 
 - The maximum length of SQL output.
-- Default value: `2048`
+- Default value: `4096`
 - When the length of the statement is longer than `query-log-max-len`, the statement is truncated to output.
 
 ### `max-server-connections`

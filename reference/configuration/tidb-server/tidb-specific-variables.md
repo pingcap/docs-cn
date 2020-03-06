@@ -366,7 +366,7 @@ set tidb_slow_log_threshold = 200
 ## tidb_query_log_max_len
 
 - Scope: SESSION
-- Default value: 2048 (bytes)
+- Default value: 4096 (bytes)
 - The maximum length of the SQL statement output. When the output length of a statement is larger than the `tidb_query-log-max-len` value, the statement is truncated to output.
 
 Usage example:
