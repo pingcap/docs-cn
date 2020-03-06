@@ -113,7 +113,7 @@ Kubernetes 当前支持静态分配的本地存储。可使用 [local-static-pro
 
     > **注意：**
     >
-    > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量、每个集群内的 Pump 数量及备份方式。1 个目录会对应创建 1 个 PV。每个 Pump 会使用 1 个 PV，每个 drainer 会使用 1 个 PV，每次 [Ad-hoc 全量备份](/tidb-in-kubernetes/maintain/backup-and-restore.md#ad-hoc-全量备份)会使用 1 个 PV，所有[定时全量备份](/tidb-in-kubernetes/maintain/backup-and-restore.md#定时全量备份)会共用 1 个 PV。
+    > 该步骤中创建的目录个数取决于规划的 TiDB 集群数量、每个集群内的 Pump 数量及备份方式。1 个目录会对应创建 1 个 PV。每个 Pump 会使用 1 个 PV，每个 drainer 会使用 1 个 PV，每次 [Ad-hoc 全量备份](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md#ad-hoc-全量备份)会使用 1 个 PV，所有[定时全量备份](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md#定时全量备份)会共用 1 个 PV。
 
 - 给 PD 数据使用的盘，可以参考[步骤](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/operations.md#sharing-a-disk-filesystem-by-multiple-filesystem-pvs)挂载盘，创建目录，并将新建的目录以 bind mount 方式挂载到 `/mnt/sharedssd` 目录，后续创建 `shared-ssd-storage` `StorageClass`。
 
