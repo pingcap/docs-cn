@@ -21,6 +21,7 @@ Before you contribute, please take a quick look at some general information abou
 
 - [Commit Message Style](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
 - [Pull Request Title Style](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
+- [Markdown Rules](/resources/markdownlint-rules.md)
 - [Code Comment Style](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
 - Diagram Style: [Figma Quick Start Guide](/resources/figma-quick-start-guide.md)
 
