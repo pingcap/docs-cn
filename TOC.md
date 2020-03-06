@@ -295,6 +295,7 @@
   + Best Practices
     - [Highly Concurrent Write Best Practices](/reference/best-practices/high-concurrency.md)
     - [HAProxy Best Practices](/reference/best-practices/haproxy.md)
+    - [Java Application Development Best Practices](/reference/best-practices/java-app.md)
     - [PD Scheduling Best Practices](/reference/best-practices/pd-scheduling.md)
     - [Grafana Best Practices](/reference/best-practices/grafana-monitor.md)
     - [TiKV Performance Tuning with Massive Regions](/reference/best-practices/massive-regions.md)
