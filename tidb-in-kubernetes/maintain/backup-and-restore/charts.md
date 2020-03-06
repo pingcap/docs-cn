@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/backup-and-store/']
 
 本文详细描述了如何对 Kubernetes 上的 TiDB 集群进行数据备份和数据恢复。本文使用的备份恢复方式是基于 Helm Charts 实现的。
 
-TiDB Operator 1.1 及以上版本推荐使用基于 CRD 的备份恢复方式实现，详情可参阅以下文档：
+TiDB Operator 1.1 及以上版本推荐使用基于 CustomResourceDefinition (CRD) 实现的备份恢复方式实现，详情可参阅以下文档：
 
 - [备份 TiDB 集群到 GCS](/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs.md)
 - [恢复 GCS 上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-gcs.md)
