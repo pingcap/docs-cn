@@ -2,6 +2,7 @@
 title: Use BR to Back up and Restore Data
 summary: Learn how to back up and restore data of the TiDB cluster using BR.
 category: how-to
+aliases: ['/docs/dev/how-to/maintain/backup-and-restore/br/']
 ---
 
 # Use BR to Back up and Restore Data
