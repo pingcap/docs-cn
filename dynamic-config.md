@@ -136,7 +136,7 @@ refresh-config-interval = "30s"
 | compatible-kill-query | 设置 KILL 语句的兼容性 |
 | treat-old-version-utf8-as-utf8mb4 | 将旧表中的 utf8 字符集当成 utf8mb4的开关 |
 | opentracing.enable | 是否开启 opentracing 功能 |
-| prepared-plan-cache.enable | 是否开启 prepare 语句的 plan cache | 
+| prepared-plan-cache.enable | 是否开启 prepare 语句的 plan cache |
 
 具体参数意义可参考 [TiDB 配置文件描述](https://github.com/pingcap/docs-cn/blob/master/reference/configuration/tidb-server/configuration-file.md)。
 

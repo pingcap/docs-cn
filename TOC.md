@@ -245,6 +245,7 @@
     + tikv-server
       - [配置参数](/command-line-flags-for-tikv-configuration.md)
       - [配置文件描述](/tikv-configuration-file.md)
+    - [动态配置变更](/dynamic-config.md)
   + 安全
     - [与 MySQL 的安全特性差异](/security-compatibility-with-mysql.md)
     - [TiDB 数据库权限管理](/privilege-management.md)
