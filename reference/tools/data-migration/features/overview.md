@@ -9,6 +9,7 @@ category: reference
 本文将详细介绍 DM 提供的数据同步功能，以及相关的配置选项。
 
 Table Routing, Black & White Lists, Binlog Event Filter 在匹配库表名时：
+
 1. v1.0.4 版及后续版本：均支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)
 2. v1.0.4 以前版本：Table Routing，Binlog Event Filter 支持通配符，但不支持[...]与[!...]表达式；Black & White Lists 仅支持正则
 
