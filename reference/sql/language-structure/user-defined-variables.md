@@ -205,7 +205,7 @@ SELECT @col FROM t;
 1 row in set (0.01 sec)
 ```
 
-但是有一个例外是如果你在 PREPARE 语句中使用它，是可以的：
+但是有一个例外是如果你在 PREPARE 语句中使用“用户变量”，是允许的：
 
 {{< copyable "sql" >}}
 
