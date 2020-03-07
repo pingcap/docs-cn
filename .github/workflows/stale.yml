@@ -14,6 +14,10 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-issue-message: 'This is a stale issue message.'
-        stale-pr-message: 'This is a stale pull request message. To test github actions.'
+        stale-pr-message: 'This is a stale pull request message.'
         stale-issue-label: 'action/no-issue-activity'
         stale-pr-label: 'action/no-pr-activity'
+
+    - name: Report-link-action
+      uses: ad-m/report-link-action@v1.0.0
+
