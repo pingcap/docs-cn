@@ -293,13 +293,13 @@ set @@global.tidb_distsql_scan_concurrency = 10
 ### tidb_ddl_reorg_worker_cnt
 
 - Scope: GLOBAL
-- Default value: 16
+- Default value: 4
 - This variable is used to set the concurrency of the DDL operation in the `re-organize` phase.
 
 ### tidb_ddl_reorg_batch_size
 
 - Scope: GLOBAL
-- Default value: 1024
+- Default value: 256
 - This variable is used to set the batch size during the `re-organize` phase of the DDL operation. For example, when TiDB executes the `ADD INDEX` operation, the index data needs to backfilled by `tidb_ddl_reorg_worker_cnt` (the number) concurrent workers. Each worker backfills the index data in batches.
     - If many updating operations such as `UPDATE` and `REPLACE` exist during the `ADD INDEX` operation, a larger batch size indicates a larger probability of transaction conflicts. In this case, you need to adjust the batch size to a smaller value. The minimum value is 32.
     - If the transaction conflict does not exist, you can set the batch size to a large value. The maximum value is 10240. This can increase the speed of the backfilling data, but the write pressure on TiKV also becomes higher.
