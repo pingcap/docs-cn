@@ -86,6 +86,10 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
     ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
     ```
 
+3. 证书重加载。
+
+TiDB， PD 以及 TiKV 之间通讯的证书和密钥会在每次新建连接时重新读取最新的证书和密钥实现重加载，目前暂不支持 CA 的重加载。
+
 ### MySQL 与 TiDB 间开启 TLS
 
 请参考 [使用加密连接](/how-to/secure/enable-tls-clients.md)。
