@@ -101,7 +101,6 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
 + 单个 `ALTER TABLE` 语句中无法完成多个操作。例如，不能用一个语句来添加多个列或多个索引。
-
 + Table Option 不支持以下语法
     - `WITH/WITHOUT VALIDATION`
     - `SECONDARY_LOAD/SECONDARY_UNLOAD`
