@@ -71,7 +71,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + `NEXTVAL` 或 `NEXT VALUE FOR`
 
-    本质上都是 `nextval(`) 函数，获取 SEQUENCE 对象的下一个有效值，其参数为 `SEQUENCE` 序列的 `identifier`。
+    本质上都是 `nextval()` 函数，获取 SEQUENCE 对象的下一个有效值，其参数为 SEQUENCE 序列的 `identifier`。
 
 + `LASTVAL`
 
