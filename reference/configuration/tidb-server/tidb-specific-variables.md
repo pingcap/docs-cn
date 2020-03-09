@@ -331,8 +331,8 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 作用域：GLOBAL
 
-默认值（2.1.17以前版本）：16
-默认值（2.1.17及以后版本）：4
+默认值（2.1.17 之前版本）：16
+默认值（2.1.17 及之后版本）：4
 
 这个变量用来设置 DDL 操作 re-organize 阶段的并发度。
 
