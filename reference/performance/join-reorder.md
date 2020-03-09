@@ -5,7 +5,7 @@ category: reference
 
 # Join Reorder 算法简介
 
-在实际的业务场景中，多个表的 Join 语句是很常见的，而 Join 的执行效果和各个表参与 Join 的顺序有关系。如 `select * from t, t1, t2 where t.a=t1.a and t2.a=t1.a`，这个 SQL 中可能的执行顺序有“t 和 t1 先做 Join，然后再和 t2 做 Join”以及“t1 和 t2 先做 Join，然后再和 t 做 Join”两种情况。根据 `t` 和 `t2` 的数据量及数据分布，这两种执行顺序会有不同的性能表现。
+在实际的业务场景中，多个表的 Join 语句是很常见的，而 Join 的执行效率和各个表参与 Join 的顺序有关系。如 `select * from t1, t2, t3 where t1.a=t2.a and t3.a=t2.a`，这个 SQL 中可能的执行顺序有“t1 和 t2 先做 Join，然后再和 t3 做 Join”以及“t2 和 t3 先做 Join，然后再和 t1 做 Join”两种情况。根据 `t1` 和 `t3` 的数据量及数据分布，这两种执行顺序会有不同的性能表现。
 
 因此优化器需要实现一种决定 Join 顺序的算法。目前 TiDB 中使用的算法是 Join Reorder 算法，又称贪心算法。
 
