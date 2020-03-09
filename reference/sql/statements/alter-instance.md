@@ -10,7 +10,9 @@ category: reference
 
 # RELOAD TLS
 
-`ALTER INSTACE RELOAD TLS` 语句用于重新从原配置的证书(`Security-SSLCERT` )和密钥(`Security-SSLKERY`)路径重新加证书和密钥。
+`ALTER INSTACE RELOAD TLS` 语句用于从原配置的证书([`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert)), 密钥([`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)) 和 CA([`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca))路径重新加证书，密钥和 CA。
+
+新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
 
 在重加载遇到错误时默认会报错且继续使用变更前的密钥和证书，而在添加可选的 `NO ROLLBACK ON ERROR` 后重加载遇到错误将不报错并关闭 TLS 安全连接功能继续工作。 
 
@@ -29,7 +31,7 @@ ALTER INSTANCE RELOAD TLS;
 
 ## MySQL 兼容性
 
-- 仅支持从启动配置的 `Security-SSLCERT` 和 `Security-SSLKEY` 路径重加载证书和密钥， 不支持修改密钥和证书加载路径，也不支持动态启用启动时未开启的 TLS 加密连接功能。
+- 仅支持从原配置路径重加载， 不支持动态修改加载路径，也不支持动态启用启动时未开启的 TLS 加密连接功能。
 
 ## 另请参阅
 
