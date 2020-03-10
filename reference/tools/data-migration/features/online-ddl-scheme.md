@@ -1,9 +1,14 @@
+---
+title: online-ddl-scheme 功能介绍
+category: reference
+---
+
 # DM online-ddl-scheme
 
 ## 概述
 
 DDL 是数据库应用中必然会使用的一类 SQL 。MySQL 虽然在 5.6 的版本以后支持了 online-ddl 。但是也有或多或少的限制，比如 MDL 锁的获取，某些 ddl 还是需要以 Copy 的方式来进行，在生产业务使用中，DDL执行过程中的锁表会一定程度上阻塞数据库的读取或者写入，因此 gh-ost 以及 pt-osc 可以更优雅地把 DDL 在 MySQL 上面执行，把对读写的影响降到最低。 \
-**TiDB** 根据 Google F1 的在线异步 schema 变更算法实现，在 DDL 过程中并不会阻塞读写。因此 gh-ost 以 pt-osc 在 online-schema-change 过程中的产生的大量中间表的数据以及 binlogevent 在 MySQL 与 TiDB 的数据同步过程中并不需要。\
+**TiDB** 根据 Google F1 的在线异步 schema 变更算法实现，在 DDL 过程中并不会阻塞读写。因此 gh-ost 和 pt-osc 在 online-schema-change 过程中产生的大量中间表的数据以及 binlogevent， 在 MySQL 与 TiDB 的数据同步过程中并不需要。\
 **DM** 作为 MySQL 同步到 TiDB 的工具，online-ddl-scheme 功能就是对上述两个 online-schema-change 的工具进行特殊的处理，以更快地完成所需的 DDL 的同步。\
 如想从源码方面了解 DM online-ddl-scheme 可以参考 : [DM 源码阅读系列文章（八）Online Schema Change 同步支持](https://pingcap.com/blog-cn/dm-source-code-reading-8/#dm-源码阅读系列文章八online-schema-change-同步支持)
 
@@ -36,17 +41,17 @@ target-database:                # 下游数据库实例配置
 - **gho** 用于应用 ddl ，待数据同步追上 origin table 之后会通过 rename 的方式替换 origin table 。
 - **ghc** 用于存放 online schema change 相关的信息。
 - **del** 表是由 origin table rename 过来的。
-   
+
 ### dm 在同步过程中会把上述 table 中会分成 3 类
 
-- ghostTable : \_\*\_gho (gh-ost) 
+- ghostTable : \_\*\_gho (gh-ost)
 - trashTable : \_\*\_ghc (gh-ost) 、\_\*\_del (gh-ost)
 - realTable : 执行的 online-ddl 的 origin table
 
 ### **gh-ost** 涉及的主要 SQL
 
 ```sql
--- 1. 
+-- 1.
    Create /* gh-ost */ table `test`.`_test4_ghc` (
                         id bigint auto_increment,
                         last_update timestamp not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -55,8 +60,8 @@ target-database:                # 下游数据库实例配置
                         primary key(id),
                         unique key hint_uidx(hint)
                 ) auto_increment=256 ;
-                
--- 2. 
+
+-- 2.
    Create /* gh-ost */ table `test`.`_test4_gho` like `test`.`test4` ;
 
 -- 3.
@@ -64,12 +69,14 @@ target-database:                # 下游数据库实例配置
 
 -- 4.
    Insert /* gh-ost */ into `test`.`_test4_ghc`;
--- 5. 
+
+-- 5.
    Insert /* gh-ost `test`.`test4` */ ignore into `test`.`_test4_gho` (`id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`)
       (select `id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2` from `test`.`test4` force index (`PRIMARY`)
         where (((`id` > _binary'1') or ((`id` = _binary'1'))) and ((`id` < _binary'2') or ((`id` = _binary'2')))) lock in share mode
       )   ;
--- 6. 
+
+-- 6.
    Rename /* gh-ost */ table `test`.`test4` to `test`.`_test4_del`, `test`.`_test4_gho` to `test`.`test4`;
 ```
 
@@ -152,13 +159,13 @@ target-database:                # 下游数据库实例配置
 
 1. 不执行 _test4_new 的创建操作。根据 ghost_schema 、 ghost_table 以及 dm_worker 的 server_id 删除下游 dm_meta.{task_name}\_onlineddl 的记录，清理内存中的相关信息。
 
-   ```sql 
+   ```sql
    DELETE FROM dm_meta.{task_name}_onlineddl WHERE id = {server_id} and ghost_schema = {ghost_schema} and ghost_table = {ghost_table}
    ```
 
 2. 不执行 _test4_new 的 ddl 操作。把执行的 ddl 记录到 dm_meta.{task_name}\_onlineddl 以及内存中。
 
-   ```sql 
+   ```sql
    REPLACE INTO dm_meta.{task_name}_onlineddl (id, ghost_schema , ghost_table , ddls) VALUES (......)
    ```
 
@@ -166,28 +173,28 @@ target-database:                # 下游数据库实例配置
 4. 只要不是 **realtable** 的 dml 全部不执行。
 5. rename 拆分成两个 SQL 。
 
-   ```sql 
+   ```sql
    rename test.test4 to test._test4_old; rename test._test4_new to test.test4; 
    ```
 
 6. 不执行 rename to  _test4_old 。当要执行 rename ghost_table to origin table 的时候，并不执行 rename ，而是把步骤 2 内存中的 ddl 读取出来，然后把 ghost_table，ghost_schema 替换为 origin_table 以及对应的 schema 再执行。
 
-   ```sql 
+   ```sql
    ALTER TABLE `test`.`_test4_new` add column c3 int
-   --替换为 
+   --替换为
    ALTER TABLE `test`.`test4` add column c3 int 
    ```
 
 7. 不执行 _test4_old 以及 Trigger 的删除操作。
 
-## FAQ：
+## FAQ
 
 **Q**： 设置了 **online-ddl-sheme: gh-ost** , 但是 DM 还是出现关于 gh-ost 相关的表的错误。
 > [unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/dm/pkg/terror.(*Error).Generate ......
 
-**A**： 由于 DM 是在最后 rename ghost_table to origin table 的步骤会把内存的 ddl 信息读出，并且还原为 origin table 的 ddl 。而内存中的 ddl 信息是在第 3 步的时候或者重启 dm-woker 启动 task 的时候，从 dm_meta.{task_name}_onlineddl 中读取出来。因此，如果在增量同步过程中，指定的 Pos 跳过了步骤 3 ，但是该 pos 仍在 gh-ost 的 online-ddl 的过程。就会因为 ghost_table 没有正确写入到内存以及 dm_meta.{task_name}_onlineddl ，而导致该问题。
+**A**： 由于 DM 是在最后 rename ghost_table to origin table 的步骤会把内存的 ddl 信息读出，并且还原为 origin table 的 ddl 。而内存中的 ddl 信息是在第 3 步的时候或者重启 dm-woker 启动 task 的时候，从 dm_meta.{task_name}_onlineddl 中读取出来。因此，如果在增量同步过程中，指定的 Pos 跳过了步骤 3 ，但是该 pos 仍在 gh-ost 的 online-ddl 的过程。就会因为 ghost_table 没有正确写入到内存以及 dm_meta.{task_name}_onlineddl ，而导致该问题。  
 绕过解决方法：
-  1. 取消task 的 online-ddl-schema 的配置
-  2. 把 **\_\*\_gho 、\_\*\_ghc 、\_\*\_del** 配置到 black-white-list.ignore-tables 中。
-  3. 手工在下游的 **TiDB** 执行上游的 ddl 。
-  4. 待 Pos 同步到 gh-ost 流程的位置之后，再重新启用 online-ddl-schema 以及注释掉 black-white-list.ignore-tables 。
+1. 取消task 的 online-ddl-schema 的配置
+2. 把 **\_\*\_gho 、\_\*\_ghc 、\_\*\_del** 配置到 black-white-list.ignore-tables 中。
+3. 手工在下游的 **TiDB** 执行上游的 ddl 。
+4. 待 Pos 同步到 gh-ost 流程的位置之后，再重新启用 online-ddl-schema 以及注释掉 black-white-list.ignore-tables 。
