@@ -63,7 +63,7 @@ ssl-cert = "certs/server-cert.pem"
 ssl-key = "certs/server-key.pem"
 ```
 
-If the certificate parameters are correct, TiDB outputs `Secure connection is enabled` when started, otherwise it outputs `Secure connection is NOT ENABLED`.
+If the certificate parameters are correct, TiDB outputs `secure connection is enabled` when started, otherwise it outputs `secure connection is NOT ENABLED`.
 
 ## Configure the MySQL client to use encrypted connections
 
