@@ -71,7 +71,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 11. [MD024 - Multiple headings with the same content](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md024---multiple-headings-with-the-same-content)
 
-    文档中不能连续出现内容重复的标题，如一级标题为“# TiDB 架构”，紧接着的二级标题就不能是“# TiDB 架构”。如果不是连续的标题，则标题内容可重复。(`siblings_only`=`true`)
+    文档中不能连续出现内容重复的标题，如一级标题为“# TiDB 架构”，紧接着的二级标题就不能是“## TiDB 架构”。如果不是连续的标题，则标题内容可重复。(`siblings_only`=`true`)
 
 12. [MD025 - Multiple top level headings in the same document](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md025---multiple-top-level-headings-in-the-same-document)
 
