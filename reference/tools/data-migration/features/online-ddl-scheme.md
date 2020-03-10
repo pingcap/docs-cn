@@ -14,7 +14,7 @@ DDL 是数据库应用中必然会使用的一类 SQL 。MySQL 虽然在 5.6 的
 
 ## 配置
 
-**online-ddl-scheme** 在 task 配置文件里面与 name 同级，例子详见下面配置 Example (完整的配置及意义可以参考 [DM 完整配置文件示例](https://pingcap.com/docs-cn/stable/reference/tools/data-migration/configure/task-configuration-file-full/#完整配置文件示例))：
+**online-ddl-scheme** 在 task 配置文件里面与 name 同级，例子详见下面配置 Example (完整的配置及意义可以参考 [DM 完整配置文件示例](/reference/tools/data-migration/configure/task-configuration-file-full.md#完整配置文件示例)：
 
 ```yml
 # ----------- 全局配置 -----------
@@ -103,26 +103,26 @@ target-database:                # 下游数据库实例配置
 5. rename 拆分成两个 SQL 。
 
     ```sql
-    rename test.test4 to test._test4_del; rename test._test4_gho to test.test4; 
+    rename test.test4 to test._test4_del; rename test._test4_gho to test.test4;
     ```
 
 6. 不执行 rename to _test4_del 。当要执行 rename ghost_table to origin table 的时候，并不执行 rename ，而是把步骤3 内存中的 ddl 读取出来，然后把 ghost_table，ghost_schema 替换为 origin_table 以及对应的 schema 再执行。
 
     ```sql
-    alter table test._test4_gho add column cl1 varchar(20) not null 
-    --替换为 
+    alter table test._test4_gho add column cl1 varchar(20) not null
+    --替换为
     alter table test.test4 add column cl1 varchar(20) not null
     ```
 
 ## online-schema-change : pt
 
-### pt-osc 在实现 online schema change 的过程会产生 2 种 table ： \_\*\_new 、\_\*\_old 以及 3 种 trigger : pt_osc\_\*\_ins 、pt_osc\_\*\_upd 、pt_osc\_\*\_del。
+### pt-osc 在实现 online schema change 的过程会产生 2 种 table ： \_\*\_new 、\_\*\_old 以及 3 种 trigger : pt_osc\_\*\_ins 、pt_osc\_\*\_upd 、pt_osc\_\*\_del
 
 - **new** 用于应用 ddl ，待数据同步追上 origin table 之后会通过 rename 的方式替换 origin table 。
 - **old** 是由 origin table rename 过来的。
 - 3种 **trigger** 用于在 pt_osc 过程中，同步 orgin table 新产生的数据到 new
 
-### dm 在同步过程中会把上述 table 中会分成 3 类：
+### dm 在同步过程中会把上述 table 中会分成 3 类
 
 - ghostTable : \_\*\_new
 - trashTable : \_\*\_old
@@ -131,16 +131,16 @@ target-database:                # 下游数据库实例配置
 ### pt-osc 主要涉及的 SQL
 
 ``` sql
--- 1. 
+-- 1.
    CREATE TABLE `test`.`_test4_new` ( id int(11) NOT NULL AUTO_INCREMENT,
    date date DEFAULT NULL, account_id bigint(20) DEFAULT NULL, conversion_price decimal(20,3) DEFAULT NULL,  ocpc_matched_conversions bigint(20) DEFAULT NULL, ad_cost decimal(20,3) DEFAULT NULL,cl2 varchar(20) COLLATE utf8mb4_bin NOT NULL,cl1 varchar(20) COLLATE utf8mb4_bin NOT NULL,PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ;
 -- 2.
    ALTER TABLE `test`.`_test4_new` add column c3 int
--- 3. 
+-- 3.
    CREATE TRIGGER `pt_osc_test_test4_del` AFTER DELETE ON `test`.`test4` ...... ;
    CREATE TRIGGER `pt_osc_test_test4_upd` AFTER UPDATE ON `test`.`test4` ...... ;
    CREATE TRIGGER `pt_osc_test_test4_ins` AFTER INSERT ON `test`.`test4` ...... ;
--- 4. 
+-- 4.
    INSERT LOW_PRIORITY IGNORE INTO `test`.`_test4_new` (`id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`, `cl1`) SELECT `id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`, `cl1` FROM `test`.`test4` LOCK IN SHARE MODE /*pt-online-schema-change 3227 copy table*/
 -- 5.
    RENAME TABLE `test`.`test4` TO `test`.`_test4_old`, `test`.`_test4_new` TO `test`.`test4`
@@ -174,7 +174,7 @@ target-database:                # 下游数据库实例配置
 5. rename 拆分成两个 SQL 。
 
    ```sql
-   rename test.test4 to test._test4_old; rename test._test4_new to test.test4; 
+   rename test.test4 to test._test4_old; rename test._test4_new to test.test4;
    ```
 
 6. 不执行 rename to  _test4_old 。当要执行 rename ghost_table to origin table 的时候，并不执行 rename ，而是把步骤 2 内存中的 ddl 读取出来，然后把 ghost_table，ghost_schema 替换为 origin_table 以及对应的 schema 再执行。
@@ -182,7 +182,7 @@ target-database:                # 下游数据库实例配置
    ```sql
    ALTER TABLE `test`.`_test4_new` add column c3 int
    --替换为
-   ALTER TABLE `test`.`test4` add column c3 int 
+   ALTER TABLE `test`.`test4` add column c3 int
    ```
 
 7. 不执行 _test4_old 以及 Trigger 的删除操作。
@@ -194,6 +194,7 @@ target-database:                # 下游数据库实例配置
 
 **A**： 由于 DM 是在最后 rename ghost_table to origin table 的步骤会把内存的 ddl 信息读出，并且还原为 origin table 的 ddl 。而内存中的 ddl 信息是在第 3 步的时候或者重启 dm-woker 启动 task 的时候，从 dm_meta.{task_name}_onlineddl 中读取出来。因此，如果在增量同步过程中，指定的 Pos 跳过了步骤 3 ，但是该 pos 仍在 gh-ost 的 online-ddl 的过程。就会因为 ghost_table 没有正确写入到内存以及 dm_meta.{task_name}_onlineddl ，而导致该问题。  
 绕过解决方法：
+
 1. 取消task 的 online-ddl-schema 的配置
 2. 把 **\_\*\_gho 、\_\*\_ghc 、\_\*\_del** 配置到 black-white-list.ignore-tables 中。
 3. 手工在下游的 **TiDB** 执行上游的 ddl 。
