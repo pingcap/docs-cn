@@ -27,9 +27,9 @@ target-database:                # 下游数据库实例配置
   port: 4000
   user: "root"
   password: ""                  # 如果不为空则需经过 dmctl 加密
-
 ```
-## online-schema-change : gh-ost 
+
+## online-schema-change : gh-ost
 
 ### gh-ost 在实现 online schema change 的过程会产生 3 种 table ： **\_\*\_gho 、\_\*\_ghc 、\_\*\_del**
 
@@ -72,6 +72,7 @@ target-database:                # 下游数据库实例配置
 -- 6. 
    Rename /* gh-ost */ table `test`.`test4` to `test`.`_test4_del`, `test`.`_test4_gho` to `test`.`test4`;
 ```
+
 >注意
 >
 >具体 gh-ost 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 gh-ost 官方文档。
@@ -90,12 +91,14 @@ target-database:                # 下游数据库实例配置
     ```sql
     REPLACE INTO dm_meta.{task_name}_onlineddl (id, ghost_schema , ghost_table , ddls) VALUES (......)
     ```
+
 4. 只要不是 **realtable** 的 dml 全部不执行。
 5. rename 拆分成两个 SQL 。
 
     ```sql
     rename test.test4 to test._test4_del; rename test._test4_gho to test.test4; 
     ```
+
 6. 不执行 rename to _test4_del 。当要执行 rename ghost_table to origin table 的时候，并不执行 rename ，而是把步骤3 内存中的 ddl 读取出来，然后把 ghost_table，ghost_schema 替换为 origin_table 以及对应的 schema 再执行。
 
     ```sql
@@ -103,6 +106,7 @@ target-database:                # 下游数据库实例配置
     --替换为 
     alter table test.test4 add column cl1 varchar(20) not null
     ```
+
 ## online-schema-change : pt
 
 ### pt-osc 在实现 online schema change 的过程会产生 2 种 table ： \_\*\_new 、\_\*\_old 以及 3 种 trigger : pt_osc\_\*\_ins 、pt_osc\_\*\_upd 、pt_osc\_\*\_del。
@@ -110,13 +114,13 @@ target-database:                # 下游数据库实例配置
 - **new** 用于应用 ddl ，待数据同步追上 origin table 之后会通过 rename 的方式替换 origin table 。
 - **old** 是由 origin table rename 过来的。
 - 3种 **trigger** 用于在 pt_osc 过程中，同步 orgin table 新产生的数据到 new
-   
+
 ### dm 在同步过程中会把上述 table 中会分成 3 类：
 
 - ghostTable : \_\*\_new
 - trashTable : \_\*\_old
 - realTable : 执行的 online-ddl 的 origin table
-  
+
 ### pt-osc 主要涉及的 SQL
 
 ``` sql
@@ -139,6 +143,7 @@ target-database:                # 下游数据库实例配置
    DROP TRIGGER IF EXISTS `pt_osc_test_test4_upd` AFTER UPDATE ON `test`.`test4` ...... ;
    DROP TRIGGER IF EXISTS `pt_osc_test_test4_ins` AFTER INSERT ON `test`.`test4` ...... ;
 ```
+
 >注意
 >
 >具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 pt-osc 官方文档。
@@ -150,17 +155,21 @@ target-database:                # 下游数据库实例配置
    ```sql 
    DELETE FROM dm_meta.{task_name}_onlineddl WHERE id = {server_id} and ghost_schema = {ghost_schema} and ghost_table = {ghost_table}
    ```
+
 2. 不执行 _test4_new 的 ddl 操作。把执行的 ddl 记录到 dm_meta.{task_name}\_onlineddl 以及内存中。
 
    ```sql 
    REPLACE INTO dm_meta.{task_name}_onlineddl (id, ghost_schema , ghost_table , ddls) VALUES (......)
    ```
+
 3. 不执行 TiDB 不支持的相关的 Trigger 操作。
 4. 只要不是 **realtable** 的 dml 全部不执行。
 5. rename 拆分成两个 SQL 。
+
    ```sql 
    rename test.test4 to test._test4_old; rename test._test4_new to test.test4; 
    ```
+
 6. 不执行 rename to  _test4_old 。当要执行 rename ghost_table to origin table 的时候，并不执行 rename ，而是把步骤 2 内存中的 ddl 读取出来，然后把 ghost_table，ghost_schema 替换为 origin_table 以及对应的 schema 再执行。
 
    ```sql 
@@ -168,9 +177,11 @@ target-database:                # 下游数据库实例配置
    --替换为 
    ALTER TABLE `test`.`test4` add column c3 int 
    ```
+
 7. 不执行 _test4_old 以及 Trigger 的删除操作。
 
 ## FAQ：
+
 **Q**： 设置了 **online-ddl-sheme: gh-ost** , 但是 DM 还是出现关于 gh-ost 相关的表的错误。
 > [unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/dm/pkg/terror.(*Error).Generate ......
 
