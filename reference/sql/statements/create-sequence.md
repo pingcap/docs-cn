@@ -6,7 +6,7 @@ category: reference
 
 # CREATE SEQUENCE
 
-`CREATE SEQUENCE` 语句用于在 TiDB 中创建 SEQUENCE 对象。SEQUENCE 是一种与表、视图对象平级的数据库对象，用于进行自定义的序列化 ID 生成。
+`CREATE SEQUENCE` 语句用于在 TiDB 中创建序列对象。序列是一种与表、视图对象平级的数据库对象，用于进行自定义的序列化 ID 生成。
 
 ## 语法图
 
@@ -58,7 +58,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 |参数 | 默认值 | 描述 |
 | :-- | :-- | :--|
-| `INCREMENT` | `1` | 指定序列的步长。其正负值可以控制 SEQUENCE 的增长方向。|
+| `INCREMENT` | `1` | 指定序列的步长。其正负值可以控制序列的增长方向。|
 | `MINVALUE` | `1` 或 `-9223372036854775807` | 指定序列的最小值。当 `INCREMENT` > `0` 时，默认值为 `1`；当 `INCREMENT` < `0` 时，默认值为 `-9223372036854775807`。|
 | `MAXVALUE` | `9223372036854775806` 或 `-1` | 指定序列的最大值。当 `INCREMENT` > `0` 时，默认值为 `9223372036854775806`；当 `INCREMENT` < `0` 时，默认值为 `-1`。|
 | `START` | `MINVALUE` 或 `MAXVALUE` | 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`; 当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。|
@@ -67,23 +67,23 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 ## `SEQUENCE` 函数
 
-主要通过表达式函数来操纵 SEQUENCE 的使用。
+主要通过表达式函数来操纵序列的使用。
 
 + `NEXTVAL` 或 `NEXT VALUE FOR`
 
-    本质上都是 `nextval()` 函数，获取 SEQUENCE 对象的下一个有效值，其参数为 SEQUENCE 序列的 `identifier`。
+    本质上都是 `nextval()` 函数，获取序列对象的下一个有效值，其参数为序列的 `identifier`。
 
 + `LASTVAL`
 
-    `lastval()` 函数，用于获取本会话上一个使用过的值。如果没有值，则为 `NULL`，其参数为 SEQUENCE 序列的 `identifier`。
+    `lastval()` 函数，用于获取本会话上一个使用过的值。如果没有值，则为 `NULL`，其参数为序列的 `identifier`。
 
 + `SETVAL`
 
-    `setval()` 函数，用于设置序列的增长。其第一参数为 SEQUENCE 序列的 `identifier`，第二个参数为 `num`。
+    `setval()` 函数，用于设置序列的增长。其第一参数为序列的 `identifier`，第二个参数为 `num`。
 
 > **注意：**
 >
-> 在 TiDB SEQUENCE 的实现中，`SETVAL` 函数并不能改变序列增长的初始步调或循环步调。在 `SETVAL` 之后只会返回符合步调规律的下一个有效的序列值。
+> 在 TiDB 序列的实现中，`SETVAL` 函数并不能改变序列增长的初始步调或循环步调。在 `SETVAL` 之后只会返回符合步调规律的下一个有效的序列值。
 
 ## 示例
 
@@ -274,19 +274,19 @@ ERROR 4135 (HY000): Sequence 'test.seq2' has run out
 
 ## MySQL 兼容性
 
-MySQL 暂无 SEQUENCE 选项。TiDB SEQUENCE 借鉴自 MariaDB，但是 `SETVAL` 会保持原有的步调。
+MySQL 暂无序列选项。TiDB 序列借鉴自 MariaDB。`SETVAL` 函数的步调是 TiDB 特有的，其他函数的步调与 MariaDB 保持一致。
 
-这里的步调是指，SEQUENCE 序列中的数在定义之后会产生一定的等差关系。`SETVAL` 虽然可以将 SEQUENCE 的当前值进行移动设置，但是后续出现的值仍会遵循原有的等差关系。
+这里的步调是指，序列中的数在定义之后会产生一定的等差关系。`SETVAL` 虽然可以将序列的当前值进行移动设置，但是后续出现的值仍会遵循原有的等差关系。
 
 示例如下：
 
 ```
 1, 3, 5, ...            // 序列遵循起始为 1、步长为 2 的等差关系。
-select setval(seq, 6)   // 设置 SEQUENCE 的当前值为 6。
+select setval(seq, 6)   // 设置序列的当前值为 6。
 7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系。
 ```
 
-在 `CYCLE` 模式下，SEQUENCE 的起始值第一轮为 `start`，后续轮次将会是 `MinValue` (increment > 0) 或 `MaxValue` (increment < 0)。
+在 `CYCLE` 模式下，序列的起始值第一轮为 `start`，后续轮次将会是 `MinValue` (increment > 0) 或 `MaxValue` (increment < 0)。
 
 ## 另请参阅
 
