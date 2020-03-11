@@ -89,9 +89,47 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 单位：KB|MB|GB
 + 最小值：1KB
 
+## readpool
+
+读取线程池相关的配置项。
+
+### `unify-thread-pool`
+
++ 是否使用单个线程池处理所有的读请求。
++ 默认值：true
+
+## readpool.unified
+
+统一处理读请求的线程池相关的配置项。
+以下配置只在 `unify-read-pool` 是 `true` 时生效。
+
+### `min-thread-count`
+
++ 统一处理读请求的线程池最少的线程数量。
++ 默认值：1
+
+### `max-thread-count`
+
++ 统一处理读请求的线程池最多的线程数量。
++ 默认值：CPU * 0.8，但最少为 4
+
+### `stack-size`
+
++ 统一处理读请求的线程池中线程的栈大小。
++ 默认值：10MB
++ 单位：KB|MB|GB
++ 最小值：2MB
+
+### `max-tasks-per-worker`
+
++ 统一处理读请求的线程池中单个线程允许积压的最大任务数量，超出后会返回 Server Is Busy。
++ 默认值：2000
++ 最小值：2
+
 ## readpool.storage
 
 存储线程池相关的配置项。
+以下配置只在 `unify-read-pool` 是 `false` 时生效。
 
 ### `high-concurrency`
 
@@ -139,6 +177,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ## readpool.coprocessor
 
 协处理器线程池相关的配置项。
+以下配置只在 `unify-read-pool` 是 `false` 时生效。
 
 ### `high-concurrency`
 

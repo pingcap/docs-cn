@@ -36,7 +36,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 - `WITH NUM BUCKETS` 用于指定生成直方图的桶数量上限。
 - `WITH NUM TOPN` 用于指定生成 TOPN 数目的上限。
 - `WITH NUM CMSKETCH DEPTH` 用于指定 CM Sketch 的长。
-- `WITH CMSKETCH WIDTH` 用于指定 CM Sketch 的宽。
+- `WITH NUM CMSKETCH WIDTH` 用于指定 CM Sketch 的宽。
 - `WITH NUM SAMPLES` 用于指定采样的数目。
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
