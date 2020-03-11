@@ -35,7 +35,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
 - [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范) ⭐️
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
-- [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh-v1.1.pdf)
+- [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
 
 ## 必须遵循的 Markdown 规范
@@ -59,7 +59,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 | 5 | [MD023 - Headings must start at the beginning of the line](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md023---headings-must-start-at-the-beginning-of-the-line) | 标题必须出现在一行行首，即标题的 `#` 号前不能有任何空格。 |
 | 6 | [MD026 - Trailing punctuation in heading](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md026---trailing-punctuation-in-heading) | 标题末尾仅能出现中英文问号、反引号、中英文单双引号等符号。其余如**冒号**、逗号、句号、感叹号等符号均不能在标题末尾使用。 |
 | 7 | [MD022 - Headings should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md022---headings-should-be-surrounded-by-blank-lines) | 标题上下均须空一行。 |
-| 8 | [MD024 - Multiple headings with the same content](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md024---multiple-headings-with-the-same-content) | 文档中不能连续出现内容重复的标题，如一级标题为 `# TiDB 架构`，紧接着的二级标题就不能是 `# TiDB 架构`。如果不是连续的标题，则标题内容可重复。 |
+| 8 | [MD024 - Multiple headings with the same content](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md024---multiple-headings-with-the-same-content) | 文档中不能连续出现内容重复的标题，如一级标题为 `# TiDB 架构`，紧接着的二级标题就不能是 `## TiDB 架构`。如果不是连续的标题，则标题内容可重复。 |
 | 9 | [MD025 - Multiple top level headings in the same document](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md025---multiple-top-level-headings-in-the-same-document) | 文档中只能出现一个一级标题。一级标题前的元数据（写明了 `title` 和 `category`）不会违反该规则。 |
 | 10 | [MD041 - First line in file should be a top level heading](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md041---first-line-in-file-should-be-a-top-level-heading) | 文档正文一开始必须是一级标题。这条规则会自动忽略文档中头几行的元数据，直接检查后面是否有一级标题。 |
 | 11 | [MD007 - Unordered list indentation](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md007---unordered-list-indentation) | 一般来说，除 `TOC.md` 文件可缩进 2 个空格外，其余所有 `.md` 文件每缩进一级，默认须缩进 4 个空格。 |
