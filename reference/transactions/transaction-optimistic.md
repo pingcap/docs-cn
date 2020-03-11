@@ -74,7 +74,7 @@ TiDB 中事务使用两阶段提交，流程如下：
 
 当事务提交后，如果发现冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = off` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
 
-```sql
+```toml
 # 设置是否禁用自动重试，默认为 “on”，即不重试。
 tidb_disable_txn_auto_retry = off
 # 控制重试次数，默认为 “10”。只有自动重试启用时该参数才会生效。
