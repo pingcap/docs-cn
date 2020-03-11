@@ -1,7 +1,7 @@
 ---
 title: 基于 Helm Charts 实现的 TiDB 集群备份恢复
 category: how-to
-aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/backup-and-store/']
+aliases: ['/docs-cn/dev/tidb-in-kubernetes/maintain/backup-and-restore/']
 ---
 
 # 基于 Helm Charts 实现的 TiDB 集群备份与恢复
