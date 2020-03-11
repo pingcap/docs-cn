@@ -92,9 +92,47 @@ This document only describes the parameters that are not included in command-lin
 + Unit: KB|MB|GB
 + Minimum value: `1KB`
 
+## readpool
+
+Configuration items related to read pools
+
+### `unify-thread-pool`
+
++ Whether to use a single thread pool to serve all the read requests.
++ Default value: `true`
+
+## readpool.unified
+
+Configuration items related to the single thread pool serving read requests.
+They only take effect when `unify-read-pool` is `true`.
+
+### `min-thread-count`
+
++ The minimal working thread count of the unified read pool.
++ Default value: `1`
+
+### `max-thread-count`
+
++ The maximum working thread count of the unified read pool.
++ Default value: `MAX(4, CPU * 0.8)`
+
+### `stack-size`
+
++ The stack size of the threads in the unified thread pool.
++ Default value: `10MB`
++ Unit: KB|MB|GB
++ Minimum value: `2MB`
+
+### `max-tasks-per-worker`
+
++ The maximum number of tasks allowed for a single thread in the unified read pool. `Server Is Busy` is returned when the value is exceeded.
++ Default value: `2000`
++ Minimum value: `2`
+
 ## readpool.storage
 
-Configuration items related to storage thread pool
+Configuration items related to storage thread pool.
+They only take effect when `unify-read-pool` is `false`.
 
 ### `high-concurrency`
 
@@ -141,7 +179,8 @@ Configuration items related to storage thread pool
 
 ## `readpool.coprocessor`
 
- Configuration items related to the Coprocessor thread pool
+Configuration items related to the Coprocessor thread pool.
+They only take effect when `unify-read-pool` is `false`.
 
 ### `high-concurrency`
 
