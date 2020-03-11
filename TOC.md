@@ -322,7 +322,7 @@
         - [DM Overview](/reference/tools/data-migration/overview.md)
         - [Restrictions](/reference/tools/data-migration/overview.md#usage-restrictions)
         - [DM-worker](/reference/tools/data-migration/dm-worker-intro.md)
-        - [DM Relay Log](/reference/tools/data-migration/dm-worker-intro.md)
+        - [DM Relay Log](/reference/tools/data-migration/relay-log.md)
       + Features
         - [Table Routing](/reference/tools/data-migration/features/overview.md#table-routing)
         - [Black and White Lists](/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
