@@ -14,12 +14,11 @@ category: reference
 
 新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
 
-在重加载遇到错误时默认会报错且继续使用变更前的密钥和证书，而在添加可选的 `NO ROLLBACK ON ERROR` 后重加载遇到错误将不报错并关闭 TLS 安全连接功能继续工作。 
+在重加载遇到错误时默认会报错且继续使用变更前的密钥和证书，而在添加可选的 `NO ROLLBACK ON ERROR` 后重加载遇到错误将不报错并关闭 TLS 安全连接功能继续工作。
 
 ## 语法图
 
 ![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
-
 
 ## 示例
 
@@ -35,4 +34,4 @@ ALTER INSTANCE RELOAD TLS;
 
 ## 另请参阅
 
-* [Enable Client TLS](/how-to/secure/enable-tls-clients.md) 
+* [Enable Client TLS](/how-to/secure/enable-tls-clients.md)
