@@ -103,7 +103,7 @@ sync-log = true
 
 # Raft RocksDB 目录。默认值是 [storage.data-dir] 的 raft 子目录。
 # 如果机器上有多块磁盘，可以将 Raft RocksDB 的数据放在不同的盘上，提高 TiKV 的性能。
-# raftdb-dir = "/tmp/tikv/store/raft"
+# raftdb-path = "/tmp/tikv/store/raft"
 
 region-max-size = "384MB"
 # Region 分裂阈值
