@@ -359,7 +359,11 @@
       - [故障诊断](/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/faq/tidb-lightning.md)
       - [术语表](/reference/tools/tidb-lightning/glossary.md)
-    - [sync-diff-inspector](/reference/tools/sync-diff-inspector/overview.md)
+    + sync-diff-inspector
+      - [概述](/reference/tools/sync-diff-inspector/overview.md)
+      - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
+      - [分库分表场景下的数据校验](/reference/tools/sync-diff-inspector/shard-diff.md)
+      - [TiDB 主从集群的数据校验](/reference/tools/sync-diff-inspector/tidb-diff.md)
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
