@@ -47,4 +47,4 @@ TiKV follower 节点处理读取请求时，首先使用 Raft `ReadIndex` 协议
 
 ### Follower 副本选择策略
 
-由于 TiKV 的 Follower Read 可以保证线性一致性，不会破坏 TiDB 的 Snapshot Isolation 事务隔离级别，因此 TiDB 选择 follower 的策略可以采用 round robin 的方式。虽然 TiKV 可以选择任意的 follower 处理任意读取请求，但考虑到多个 follower 间复制速度不同，如果负载均衡的粒度过细，可能会导致明显的 latency 波动。目前，Follower Read 负载均衡策略粒度是连接级别的，对于一个 TiDB 的客户端连接在某个具体的 Region 上会固定使用同一个 follower，只有在选中的 follower 发生故障或者因调度策略发生调整的情况下才会进行切换。
+由于 TiKV 的 Follower Read 可以保证线性一致性，不会破坏 TiDB 的 Snapshot Isolation 事务隔离级别，因此 TiDB 选择 follower 的策略可以采用 round robin 的方式。目前，对于 Coprocessor 请求，Follower Read 负载均衡策略粒度是连接级别的，对于一个 TiDB 的客户端连接在某个具体的 Region 上会固定使用同一个 follower，只有在选中的 follower 发生故障或者因调度策略发生调整的情况下才会进行切换。而对于非 Coprocessor 请求（点查等），Follower Read 负载均衡策略粒度是事务级别的，对于一个 TiDB 的事务在某个具体的 Region 上会固定使用同一个 follower，同样在 follower 发生故障或者因调度策略发生调整的情况下才会进行切换。

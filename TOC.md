@@ -81,6 +81,8 @@
       - [用户自定义变量](/reference/sql/language-structure/user-defined-variables.md)
       - [表达式语法](/reference/sql/language-structure/expression-syntax.md)
       - [注释语法](/reference/sql/language-structure/comment-syntax.md)
+    + 表属性和列属性
+      - [`AUTO_RANDOM`](/reference/sql/attributes/auto-random.md)
     + 数据类型
       - [概述](/reference/sql/data-types/overview.md)
       - [默认值](/reference/sql/data-types/default-values.md)
@@ -145,6 +147,7 @@
       - [`COMMIT`](/reference/sql/statements/commit.md)
       - [`CREATE DATABASE`](/reference/sql/statements/create-database.md)
       - [`CREATE INDEX`](/reference/sql/statements/create-index.md)
+      - [`CREATE SEQUENCE`](/reference/sql/statements/create-sequence.md)
       - [`CREATE TABLE LIKE`](/reference/sql/statements/create-table-like.md)
       - [`CREATE TABLE`](/reference/sql/statements/create-table.md)
       - [`CREATE USER`](/reference/sql/statements/create-user.md)
@@ -157,6 +160,7 @@
       - [`DROP COLUMN`](/reference/sql/statements/drop-column.md)
       - [`DROP DATABASE`](/reference/sql/statements/drop-database.md)
       - [`DROP INDEX`](/reference/sql/statements/drop-index.md)
+      - [`DROP SEQUENCE`](/reference/sql/statements/drop-sequence.md)
       - [`DROP TABLE`](/reference/sql/statements/drop-table.md)
       - [`DROP USER`](/reference/sql/statements/drop-user.md)
       - [`DROP VIEW`](/reference/sql/statements/drop-view.md)
@@ -186,6 +190,7 @@
       - [`SHOW CHARACTER SET`](/reference/sql/statements/show-character-set.md)
       - [`SHOW COLLATION`](/reference/sql/statements/show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/reference/sql/statements/show-columns-from.md)
+      - [`SHOW CREATE SEQUENCE`](/reference/sql/statements/show-create-sequence.md)
       - [`SHOW CREATE TABLE`](/reference/sql/statements/show-create-table.md)
       - [`SHOW CREATE USER`](/reference/sql/statements/show-create-user.md)
       - [`SHOW DATABASES`](/reference/sql/statements/show-databases.md)
@@ -281,6 +286,7 @@
     - [增量恢复](/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/reference/tidb-binlog/binlog-slave-client.md)
     - [TiDB Binlog Relay Log](/reference/tidb-binlog/relay-log.md)
+    - [集群间双向同步](/reference/tidb-binlog/bi-repl.md)
     - [术语表](/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/reference/tidb-binlog/troubleshoot/binlog.md)
@@ -379,7 +385,13 @@
   + 运维
     - [销毁 TiDB 集群](/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
     - [维护 TiDB 集群所在节点](/tidb-in-kubernetes/maintain/kubernetes-node.md)
-    - [备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore.md)
+    + 备份与恢复
+      - [基于 Helm Charts 的备份恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)
+      + 基于 CRD 的备份恢复
+        - [备份 TiDB 集群到 GCS](/tidb-in-kubernetes/maintain/backup-and-restore/backup-gcs.md)
+        - [恢复 GCS 上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-gcs.md)
+        - [备份 TiDB 集群到兼容 S3 的存储](/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md)
+        - [恢复 S3 兼容存储上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-s3.md)
     - [恢复 Kubernetes 上的 TiDB 集群数据](/tidb-in-kubernetes/maintain/lightning.md)
     - [收集日志](/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/tidb-in-kubernetes/maintain/auto-failover.md)
@@ -413,11 +425,14 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/rn.md)
   + v4.0
+    - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.0-beta.2](/releases/3.1.0-beta.2.md)
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.11](/releases/3.0.11.md)
     - [3.0.10](/releases/3.0.10.md)
     - [3.0.9](/releases/3.0.9.md)
     - [3.0.8](/releases/3.0.8.md)
