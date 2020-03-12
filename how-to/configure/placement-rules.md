@@ -10,15 +10,31 @@ Placement Rules 是一套强大灵活的副本规则系统。通过组合不同�
 
 ## 开启 Placement Rules
 
-可通过 pd-ctl 设置 enable-placement-rules 为 true 开启。
+可通过 [pd-ctl](/reference/tools/pd-control.md) 设置 enable-placement-rules 为 true 开启。
 
 {{< copyable "" >}}
 
 ```bash
->> config set enable-placement-rules true
+config set enable-placement-rules true
+```
+
+可通过如下命令查看是否设置成功：
+
+{{< copyable "" >}}
+
+```bash
+config show replication
 ```
 
 开启后会根据之前的副本配置默认生成一条规则。下面的生成的规则对应 3.0 版本的 `max-replicas=3,location-labels=[zone,rack,host]` 配置：
+
+可通过如下命令查看当前全部规则：
+
+{{< copyable "" >}}
+
+```bash
+curl http://127.0.0.1:2379/pd/api/v1/config/rules
+```
 
 {{< copyable "" >}}
 
@@ -56,7 +72,7 @@ Placement Rules 是一套强大灵活的副本规则系统。通过组合不同�
 {{< copyable "" >}}
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/pd/api/v1/config/rules
+curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/pd/api/v1/config/rule
 ```
 
 把以上 `{rule}` 部分替换成需添加的规则。
