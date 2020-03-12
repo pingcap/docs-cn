@@ -147,6 +147,7 @@
       - [`COMMIT`](/reference/sql/statements/commit.md)
       - [`CREATE DATABASE`](/reference/sql/statements/create-database.md)
       - [`CREATE INDEX`](/reference/sql/statements/create-index.md)
+      - [`CREATE SEQUENCE`](/reference/sql/statements/create-sequence.md)
       - [`CREATE TABLE LIKE`](/reference/sql/statements/create-table-like.md)
       - [`CREATE TABLE`](/reference/sql/statements/create-table.md)
       - [`CREATE USER`](/reference/sql/statements/create-user.md)
@@ -159,6 +160,7 @@
       - [`DROP COLUMN`](/reference/sql/statements/drop-column.md)
       - [`DROP DATABASE`](/reference/sql/statements/drop-database.md)
       - [`DROP INDEX`](/reference/sql/statements/drop-index.md)
+      - [`DROP SEQUENCE`](/reference/sql/statements/drop-sequence.md)
       - [`DROP TABLE`](/reference/sql/statements/drop-table.md)
       - [`DROP USER`](/reference/sql/statements/drop-user.md)
       - [`DROP VIEW`](/reference/sql/statements/drop-view.md)
@@ -188,6 +190,7 @@
       - [`SHOW CHARACTER SET`](/reference/sql/statements/show-character-set.md)
       - [`SHOW COLLATION`](/reference/sql/statements/show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/reference/sql/statements/show-columns-from.md)
+      - [`SHOW CREATE SEQUENCE`](/reference/sql/statements/show-create-sequence.md)
       - [`SHOW CREATE TABLE`](/reference/sql/statements/show-create-table.md)
       - [`SHOW CREATE USER`](/reference/sql/statements/show-create-user.md)
       - [`SHOW DATABASES`](/reference/sql/statements/show-databases.md)
@@ -283,6 +286,7 @@
     - [增量恢复](/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/reference/tidb-binlog/binlog-slave-client.md)
     - [TiDB Binlog Relay Log](/reference/tidb-binlog/relay-log.md)
+    - [集群间双向同步](/reference/tidb-binlog/bi-repl.md)
     - [术语表](/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/reference/tidb-binlog/troubleshoot/binlog.md)
@@ -428,9 +432,11 @@
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.0-beta.2](/releases/3.1.0-beta.2.md)
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.11](/releases/3.0.11.md)
     - [3.0.10](/releases/3.0.10.md)
     - [3.0.9](/releases/3.0.9.md)
     - [3.0.8](/releases/3.0.8.md)
