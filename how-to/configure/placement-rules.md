@@ -45,7 +45,7 @@ curl http://127.0.0.1:2379/pd/api/v1/config/rules
   "start_key": "",
   "end_key": "",
   "role": "voter",
-  "count": "3",
+  "count": 3,
   "location_labels": ["zone", "rack", "host"]
 }
 ```
@@ -72,7 +72,7 @@ curl http://127.0.0.1:2379/pd/api/v1/config/rules
 {{< copyable "" >}}
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/pd/api/v1/config/rule
+curl -X POST -H "Content-Type: application/json" --data '{rule}' https://ip:port/pd/api/v1/config/rule
 ```
 
 把以上 `{rule}` 部分替换成需添加的规则。
@@ -91,23 +91,23 @@ curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/
 {
   "group_id": "pd",
   "id": "meta",
-  "start_key": "6D",
-  "end_key": "6E",
+  "start_key": "7480000000000000FF2B00000000000000F8",
+  "end_key": "7480000000000000FF2C00000000000000F8",
   "role": "voter",
-  "count": "2",
+  "count": 2,
   "label_constraints": [],
   "location_labels": ["zone", "rack", "host"]
 }
 ```
 
-其中 `6E` 是 `n` 的十六进制表示方式，`6D` 是 `m` 的十六进制表示方式。
+其中 `7480000000000000FF2B00000000000000F8` 是 `table_id` 为 43 的 key 的前缀的十六进制表示方式，`7480000000000000FF2C00000000000000F8` 是 `table_id` 为 44 的 key 的前缀的十六进制表示方式。
 加上这条规则后，普通的表仍适用于 `default` 规则。元数据根据 key range 将适配 `default` 和 `meta`，分别配置了 3 副本和 2 副本，共 5 副本。
 
 **注意**
 
 因为在调度副本时，不同的规则相互之间没有影响，所以只能保证适配 `default` 规则的 3 副本按照 `location-labels` 隔离，适配 `meta` 规则的 2 副本也隔离，而不能防止 `default` 规则的副本和 `meta` 规则的副本被调度在一起。
 
-可以通过 `default` 规则的范围拆分成 2 个 key range，分别为 `["", "6D")` 和 `["6E", "")`，然后把 `meta` 规则的 `count` 调整为 5，让元数据只适配一条 5 副本的规则，实现 `location-label` 的隔离。
+可以通过 `default` 规则的范围拆分成 2 个 key range，分别为 `["", "7480000000000000FF2B00000000000000F8")` 和 `["7480000000000000FF2C00000000000000F8", "")`，然后把 `meta` 规则的 `count` 调整为 5，让元数据只适配一条 5 副本的规则，实现 `location-label` 的隔离。
 
 更合适的方式是通过设置 `meta` 规则的 `override` 属性来避免更新 `default` 规则，此时要注意设置 `index` 来保证 `meta` 规则堆叠在 `default` 的上面。
 
@@ -119,10 +119,10 @@ curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/
   "id": "meta",
   "index": 1,
   "override": true,
-  "start_key": "6D",
-  "end_key": "6E",
+  "start_key": "7480000000000000FF2B00000000000000F8",
+  "end_key": "7480000000000000FF2C00000000000000F8",
   "role": "voter",
-  "count": "5",
+  "count": 5,
   "location_labels": ["zone", "rack", "host"]
 }
 ```
@@ -188,8 +188,8 @@ curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/
 {
   "group_id": "tiflash",
   "id": "learner-replica-table-03",
-  "start_key": "6D",
-  "end_key": "6E",
+  "start_key": "7480000000000000FF2B00000000000000F8",
+  "end_key": "7480000000000000FF2C00000000000000F8",
   "role": "learner",
   "count": 2,
   "label_constraints": [
@@ -213,8 +213,8 @@ curl -X POST -H "Content-Type: application/json" -data '{rule}' https://ip:port/
 {
   "group_id": "follower-read",
   "id": "follower-read-table-03",
-  "start_key": "6D",
-  "end_key": "6E",
+  "start_key": "7480000000000000FF2B00000000000000F8",
+  "end_key": "7480000000000000FF2C00000000000000F8",
   "role": "follower",
   "count": 2,
   "label_constraints": [
