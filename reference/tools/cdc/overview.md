@@ -5,11 +5,11 @@ category: reference
 
 # TiCDC 简介
 
-[TiCDC](https://github.com/pingcap/ticdc) CDC 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具。具有还原数据到与上游任意 TSO 一致状态的能力，同时提供开放数据协议，支持其他系统订阅数据变更。
+[TiCDC](https://github.com/pingcap/ticdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具。具有还原数据到与上游任意 TSO 一致状态的能力，同时提供开放数据协议，支持其他系统订阅数据变更。
 
 ## TiCDC 架构
 
-CDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可用。CDC 集群支持创建多个同步任务，向多个不同的下游进行数据同步。CDC 的系统架构如下图所示：
+TiCDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可用。TiCDC 集群支持创建多个同步任务，向多个不同的下游进行数据同步。TiCDC 的系统架构如下图所示：
 
 ![TiCDC architecture](/media/cdc-architecture.png)
 
@@ -21,7 +21,7 @@ CDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可用
     - 内部逻辑拼装 kv change log
     - 提供输出 kv change log 的接口，发送数据包括实时 change log 和增量扫的 change log
 
-- Capture: CDC 运行进程，多个 capture 组成一个 CDC 集群，负责 kv change log 的同步
+- Capture: TiCDC 运行进程，多个 capture 组成一个 TiCDC 集群，负责 kv change log 的同步
 
     - 每个 capture 负责一部分的 kv change log 拉取
     - 对拉取的一个或多个 kv change log 进行排序

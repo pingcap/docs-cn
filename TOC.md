@@ -361,7 +361,7 @@
       - [术语表](/reference/tools/tidb-lightning/glossary.md)
     + TiCDC
       - [概述](/reference/tools/cdc/overview.md)
-      - [部署使用](/reference/tools/cdc/overview.md)
+      - [部署使用](/reference/tools/cdc/deploy.md)
     + sync-diff-inspector
       - [概述](/reference/tools/sync-diff-inspector/overview.md)
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
