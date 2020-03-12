@@ -140,7 +140,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
     ```
 
     `{version}` 为期望下载的 DM 版本，如 `v1.0.1`、`v1.0.2` 等，
-    可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+    可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
 
 ## 第 4 步：安装 DM-Ansible 及其依赖至中控机
 
