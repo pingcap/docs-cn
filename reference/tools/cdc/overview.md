@@ -13,7 +13,6 @@ TiCDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可�
 
 ![TiCDC architecture](/media/cdc-architecture.png)
 
-
 ### 系统角色
 
 - TiKV CDC component: 只输出 kv change log
@@ -27,9 +26,7 @@ TiCDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可�
     - 对拉取的一个或多个 kv change log 进行排序
     - 向下游还原事务或按照 TiCDC open protocol 进行输出
 
-
 ## 同步功能介绍
-
 
 ### sink 支持
 
