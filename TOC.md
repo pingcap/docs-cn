@@ -363,7 +363,7 @@
       - [概述](/reference/tools/ticdc/overview.md)
       - [部署使用](/reference/tools/ticdc/deploy.md)
       - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
-      - [Sink uri 配置规则](/reference/tools/ticdc/sink.md)
+      - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
     + sync-diff-inspector
       - [概述](/reference/tools/sync-diff-inspector/overview.md)
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
