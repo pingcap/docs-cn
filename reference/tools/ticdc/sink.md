@@ -43,8 +43,8 @@ Sink URI 需要按照以下格式进行配置，目前 scheme 支持 mysql/tidb/
 | 参数               | 解析                                                         |
 | ------------------ | ------------------------------------------------------------ |
 | 127.0.0.1          | 下游 kafka 对外提供服务的 IP                                 |
-| 9092               | 下游数据密码                                                 |
-| cdc-test           | 数据同步到 kafka topic 的名字                                |
+| 9092               | 下游 kafka 连接端口                                          |
+| cdc-test           | 使用的 kafka topic 名字                                      |
 | kafka-version      | 下游 kafka 版本号（可选，默认值 2.4.0）                      |
 | partition-num      | 下游 kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量） |
 | max-message-bytes  | 每次向 kafka broker 发送消息的最大数据量（可选，默认值 64MB） |
