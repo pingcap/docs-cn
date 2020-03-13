@@ -27,7 +27,7 @@ $ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=4152382266212
 
 - pd: pd client-url
 - start-ts: 指定开始同步的 tso ，不指定或指定为 0 将使用当前 tso 作为同步起始 tso
-- sink-uri: sink 地址，目前支持 MySQL/TiDB 和 Kafka
+- sink-uri: sink 地址，目前支持 MySQL/TiDB 和 Kafka，关于 sink uri 的写法请参考 [sink uri 配置规则](/reference/tools/ticdc/sink.md)
 - config: 同步任务配置，目前提供黑白名单配置和跳过特定 commit-ts 的事务
 
 执行该命令后，TiCDC 就会从指定的 start-ts(415238226621235200) 开始同步数据到下游 MySQL(127.0.0.1:3306) 中。
