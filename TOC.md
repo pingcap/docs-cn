@@ -396,7 +396,7 @@
         - [恢复 GCS 上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-gcs.md)
         - [备份 TiDB 集群到兼容 S3 的存储](/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md)
         - [恢复 S3 兼容存储上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-s3.md)
-      - [恢复 Kubernetes 上的 TiDB 集群数据](/tidb-in-kubernetes/maintain/backup-and-restore/lightning.md)
+      - [使用 TiDB Lightning 恢复集群数据](/tidb-in-kubernetes/maintain/backup-and-restore/lightning.md)
     - [收集日志](/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/tidb-in-kubernetes/maintain/tidb-binlog.md)
