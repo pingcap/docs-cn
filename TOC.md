@@ -345,6 +345,7 @@
         + v1.0
           - [1.0.2](/reference/tools/data-migration/releases/1.0.2.md)
           - [1.0.3](/reference/tools/data-migration/releases/1.0.3.md)
+          - [1.0.4](/reference/tools/data-migration/releases/1.0.4.md)
       - [TiDB DM 术语表](/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/reference/tools/tidb-lightning/overview.md)
@@ -359,6 +360,11 @@
       - [故障诊断](/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/faq/tidb-lightning.md)
       - [术语表](/reference/tools/tidb-lightning/glossary.md)
+    + TiCDC
+      - [概述](/reference/tools/ticdc/overview.md)
+      - [部署使用](/reference/tools/ticdc/deploy.md)
+      - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
+      - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
     + sync-diff-inspector
       - [概述](/reference/tools/sync-diff-inspector/overview.md)
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
