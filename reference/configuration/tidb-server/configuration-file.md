@@ -243,6 +243,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
 
+### `txn-total-size-limit`
+
++ TiDB 事务大小限制
++ 默认值：104857600
++ 单个事务中，所有的 key-value 记录的总大小不能超过该限制。注意，如果 `binlog` 开启了，该配置项的值不能超过 104857600(100M)，因为 `binlog` 组件不支持同步的事务过大；如果 `binlog` 没开启，该配置项的最大值不超过 10737418240(10G)。
+
 ### `stmt-count-limit`
 
 + TiDB 一个事务允许的最大语句条数限制。
