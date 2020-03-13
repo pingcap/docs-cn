@@ -35,7 +35,7 @@ TiDB 具备如下特性：
 
 TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](/reference/tispark.md)来完成。
 
-TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大的提升研发的生产力。
+TiDB 对业务没有任何侵入性，能优雅地替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大地提升研发的生产力。
 
 三篇文章了解 TiDB 技术内幕：
 
@@ -52,7 +52,7 @@ TiDB 可以部署在本地和云平台上，支持公有云、私有云和混合
 - [使用 TiDB Operator 部署](/tidb-in-kubernetes/deploy/tidb-operator.md)：使用 TiDB Operator 在 Kubernetes 集群上部署生产就绪的 TiDB 集群，支持[部署到 AWS EKS](/tidb-in-kubernetes/deploy/aws-eks.md)、[部署到谷歌云 GKE (beta)](/tidb-in-kubernetes/deploy/gcp-gke.md)、[部署到阿里云 ACK](/tidb-in-kubernetes/deploy/alibaba-cloud.md) 等。
 - [使用 Docker Compose 部署](/how-to/get-started/deploy-tidb-from-docker-compose.md)：如果你只是想测试 TiDB、体验 TiDB 的特性，或者用于开发环境，可以使用 Docker Compose 在本地快速部署 TiDB 集群。该部署方式不适用于生产环境。
 - [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)：你可以使用 Docker 部署 TiDB 集群，但该部署方式不适用于生产环境。
-- [使用 TiDB Operator 部署到 Minikube](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)：你可以使用 TiDB Opeartor 将 TiDB 集群部署到本地 Minikube 启动的 Kubernetes 集群中。该部署方式不适用于生产环境。
+- [使用 TiDB Operator 部署到 Minikube](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)：你可以使用 TiDB Operator 将 TiDB 集群部署到本地 Minikube 启动的 Kubernetes 集群中。该部署方式不适用于生产环境。
 - [使用 TiDB Operator 部署到 kind](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)：你可以使用 TiDB Operator 将 TiDB 集群部署到以 kind 方式启动的 Kubernetes 本地集群中。该部署方式不适用于生产环境。
 
 ## 项目源码
