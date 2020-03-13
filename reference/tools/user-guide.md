@@ -45,7 +45,7 @@ TiDB 生态工具可以分为几种：
     - Mydumper 输出文件
     - CSV 格式文件
 - 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](/tidb-in-kubernetes/maintain/lightning.md)
+- Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](/tidb-in-kubernetes/maintain/backup-and-restore/lightning.md)
 
 #### 备份和恢复工具 BR
 
