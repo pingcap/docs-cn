@@ -1,51 +1,57 @@
 ---
-title: sink uri 配置规则
+title: sink URI 配置规则
 category: reference
 ---
 
-# Sink URI
+# sink URI
 
-Sink URI 需要按照以下格式进行配置，目前 scheme 支持 mysql/tidb/kafka
+sink URI 需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
+
+{{< copyable "" >}}
 
 ```
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
-## sink uri 配置 mysql/tidb
+## sink URI 配置 `mysql`/`tidb`
 
-配置样例
+配置样例如下所示：
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 --sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
 ```
 
-参数解析
+以上配置命令中的参数解析如下：
 
 | 参数         | 解析                                             |
-| ------------ | ------------------------------------------------ |
-| mysql        | 下游数据库连接用户名                             |
-| 123456       | 下游数据密码                                     |
-| 127.0.0.1    | 下游数据库连接 IP                                |
-| 3306         | 下游数据连接端口                                 |
-| worker-count | 向下游执行 SQL 的并发度（可选，默认值 16）       |
-| max-txn-row  | 向下游执行 SQL 的 batch 大小（可选，默认值 256） |
+| :------------ | :------------------------------------------------ |
+| `root`        | 下游数据库的用户名                             |
+| `123456`       | 下游数据库密码                                     |
+| `127.0.0.1`    | 下游数据库的 IP                                |
+| `3306`         | 下游数据的连接端口                                 |
+| `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
+| `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
 
-## sink uri 配置 kakfa
+## sink URI 配置 `kakfa`
 
-配置样例
+配置样例如下所示：
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 ```
 
-参数解析
+以上配置命令中的参数解析如下：
 
 | 参数               | 解析                                                         |
-| ------------------ | ------------------------------------------------------------ |
-| 127.0.0.1          | 下游 kafka 对外提供服务的 IP                                 |
-| 9092               | 下游 kafka 连接端口                                          |
-| cdc-test           | 使用的 kafka topic 名字                                      |
-| kafka-version      | 下游 kafka 版本号（可选，默认值 2.4.0）                      |
-| partition-num      | 下游 kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量） |
-| max-message-bytes  | 每次向 kafka broker 发送消息的最大数据量（可选，默认值 64MB） |
-| replication-factor | kafka 消息保存副本数（可选，默认值 1）                       |
+| :------------------ | :------------------------------------------------------------ |
+| `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
+| `9092`               | 下游 Kafka 的连接端口                                          |
+| `cdc-test`           | 使用的 Kafka topic 名字                                      |
+| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
+| `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
