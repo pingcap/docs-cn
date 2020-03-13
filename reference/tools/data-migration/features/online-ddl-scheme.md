@@ -186,16 +186,3 @@ target-database:                # 下游数据库实例配置
    ```
 
 7. 不执行 _test4_old 以及 Trigger 的删除操作。
-
-## FAQ
-
-**Q**： 设置了 **online-ddl-sheme: gh-ost** , 但是 DM 还是出现关于 gh-ost 相关的表的错误。
-> [unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/dm/pkg/terror.(*Error).Generate ......
-
-**A**： 由于 DM 是在最后 rename ghost_table to origin table 的步骤会把内存的 ddl 信息读出，并且还原为 origin table 的 ddl 。而内存中的 ddl 信息是在第 3 步的时候或者重启 dm-woker 启动 task 的时候，从 dm_meta.{task_name}_onlineddl 中读取出来。因此，如果在增量同步过程中，指定的 Pos 跳过了步骤 3 ，但是该 pos 仍在 gh-ost 的 online-ddl 的过程。就会因为 ghost_table 没有正确写入到内存以及 dm_meta.{task_name}_onlineddl ，而导致该问题。  
-绕过解决方法：
-
-1. 取消task 的 online-ddl-schema 的配置
-2. 把 **\_\*\_gho 、\_\*\_ghc 、\_\*\_del** 配置到 black-white-list.ignore-tables 中。
-3. 手工在下游的 **TiDB** 执行上游的 ddl 。
-4. 待 Pos 同步到 gh-ost 流程的位置之后，再重新启用 online-ddl-schema 以及注释掉 black-white-list.ignore-tables 。
