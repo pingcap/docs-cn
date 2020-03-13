@@ -35,7 +35,7 @@ $ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=4152382266212
 如果希望同步数据到 Kafka 集群，需要先在 Kafka 集群中创建好 topic（譬如以下示例创建了名为 cdc-test 的 topic），划分好 partition，并通过以下命令创建到 Kafka 集群的同步任务
 
 ```
-$ $ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235200 --sink-uri="kafka://10.0.10.30:9092/cdc-test"
+$ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235200 --sink-uri="kafka://10.0.10.30:9092/cdc-test"
 ```
 
 执行命令后，TiCDC 会从指定 start-ts 开始同步数据到下游 Kafka（10.0.10.30:9092）中
