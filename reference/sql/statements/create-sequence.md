@@ -65,7 +65,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 | `START` | `MINVALUE` 或 `MAXVALUE` | 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`; 当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。|
 | `CACHE` | `1000` | 指定每个 TiDB 本地缓存序列的大小。|
 | `CYCLE` | `NO CYCLE` | 指定序列用完之后是否要循环使用。在 `CYCLE` 的情况下，当 `INCREMENT` > `0` 时，后续起始值为 `MINVALUE`；当 `INCREMENT` < `0` 时，后续起始值为 `MAXVALUE`。|
-| `ORDER` | `false` | TiDB 暂时不支持 `ORDER` 选项，仅在语法上做兼容。|
+| `ORDER` | `NO ORDER` | TiDB 暂时不支持 `ORDER` 选项，仅在语法上做兼容。|
 
 ## `SEQUENCE` 函数
 
@@ -150,7 +150,7 @@ SELECT setval(seq, 10);
 1 row in set (0.01 sec)
 ```
 
-使用 `setval()` 函数设置 SEQUENCE 对象的当前值的位置。
+使用 `setval()` 函数设置 SEQUENCE 对象当前值的位置。
 
 {{< copyable "sql" >}}
 
@@ -230,7 +230,7 @@ SELECT setval(seq2, 6);
 1 row in set (0.00 sec)
 ```
 
-使用 `setval()` 虽然可以改变 SEQUENCE 对象的当前值位置，但是无法改变下一个值的等差规律。
+使用 `setval()` 虽然可以改变 SEQUENCE 对象当前值的位置，但是无法改变下一个值的等差规律。
 
 {{< copyable "sql" >}}
 
