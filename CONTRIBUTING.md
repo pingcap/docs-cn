@@ -175,3 +175,9 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 | 23 | [MD042 - No empty links](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md042---no-empty-links) | 链接必须有链接路径。如不能出现`[空链接]()`或`[空链接](#)`等情况。 |
 | 24 | [MD045 - Images should have alternate text (alt text)](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md045---images-should-have-alternate-text-alt-text) | 图片链接必须添加描述文本（即 `[]()` 的 `[]` 内必须有描述文字），这是为了让无法加载出图片的人看到图片的描述性文字。 |
 | 25 | [MD046 - Code block style](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md046---code-block-style) | 文档中的代码块统一使用**三个反引号** ` ``` ` 进行包裹，**禁止**使用**缩进四格**风格的代码块。 |
+
+## 推荐使用的绘图工具
+
+为确保文档中图片风格统一，推荐使用 [Figma](https://www.figma.com/) 绘制图片。
+
+使用教程参见 [Figma 快速上手教程](/resources/figma-quick-start-guide.md).
