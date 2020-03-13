@@ -308,6 +308,7 @@
     - [Upgrade](/reference/tidb-binlog/upgrade.md)
     - [Reparo](/reference/tidb-binlog/reparo.md)
     - [Binlog Slave Client](/reference/tidb-binlog/binlog-slave-client.md)
+    - [TiDB Binlog Relay Log](/reference/tidb-binlog/relay-log.md)
     - [Glossary](/reference/tidb-binlog/glossary.md)
     + Troubleshoot
       - [Troubleshooting](/reference/tidb-binlog/troubleshoot/binlog.md)

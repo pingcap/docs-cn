@@ -47,6 +47,7 @@ The TiDB Binlog cluster is composed of Pump and Drainer.
 * TiDB uses the built-in Pump Client to send the binlog to each Pump
 * Pump stores binlogs and sends the binlogs to Drainer in order
 * Drainer reads binlogs of each Pump, merges and sorts the binlogs, and sends the binlogs downstream
+* Drainer supports [relay log](/reference/tidb-binlog/relay-log.md). By the relay log, Drainer ensures that the downstream clusters are in a consistent state.
 
 ## Notes
 
