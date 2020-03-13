@@ -19,6 +19,9 @@ category: reference
 
 ```shell
 cdc cli capture list
+```
+
+```
 [
         {
                 "id": "6d92386a-73fc-43f3-89de-4e337a42b766",
@@ -48,6 +51,9 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
 
 ```shell
 cdc cli changefeed list
+```
+
+```
 [
         {
                 "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
@@ -61,6 +67,9 @@ cdc cli changefeed list
 
 ```shell
 cdc cli changefeed query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+```
 {
         "info": {
                 "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
@@ -91,6 +100,9 @@ cdc cli changefeed query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 
 ```shell
 cdc cli processor list
+```
+
+```
 [
         {
                 "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
@@ -106,6 +118,9 @@ cdc cli processor list
 
 ```shell
 cdc cli processor query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
+```
+
+```
 {
         "status": {
                 "table-infos": [
@@ -137,6 +152,9 @@ cdc cli processor query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --c
 
 ```shell
 curl http://127.0.0.1:8300/status
+```
+
+```
 {
  "version": "0.0.1",
  "git_hash": "863f8ea889b144244ff53593a45c47ad22d37396",
@@ -150,17 +168,26 @@ curl http://127.0.0.1:8300/status
 {{< copyable "shell-regular" >}}
 
 ```shell
-// 仅对 owner 节点请求有效
 curl -X POST http://127.0.0.1:8300/capture/owner/resign
+```
+
+以上命令仅对 owner 节点请求有效。
+
+```
 {
  "status": true,
  "message": ""
 }
+```
 
-// 对非 owner 节点请求返回错误
+{{< copyable "shell-regular" >}}
+
+```shell
 curl -X POST http://127.0.0.1:8301/capture/owner/resign
 election: not leader
 ```
+
+以上命令对非 owner 节点请求返回错误。
 
 ### 停止同步任务
 
@@ -170,6 +197,9 @@ election: not leader
 
 ```shell
 curl -X POST -d "admin-job=1&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://127.0.0.1:8301/capture/owner/admin
+```
+
+```
 {
  "status": true,
  "message": ""
@@ -178,7 +208,7 @@ curl -X POST -d "admin-job=1&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://
 
 以上命令中：
 
-- `admin-job=1`，表示停止任务，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+- `admin-job=1`，表示停止任务。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
 - `cf-id=xxx` 为需要操作的 `changefeed` ID。
 
 ### 恢复同步任务
@@ -189,6 +219,9 @@ curl -X POST -d "admin-job=1&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://
 
 ```shell
 curl -X POST -d "admin-job=2&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://127.0.0.1:8301/capture/owner/admin
+```
+
+```
 {
  "status": true,
  "message": ""
@@ -208,6 +241,9 @@ curl -X POST -d "admin-job=2&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://
 
 ```shell
 curl -X POST -d "admin-job=3&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://127.0.0.1:8301/capture/owner/admin
+```
+
+```
 {
  "status": true,
  "message": ""
