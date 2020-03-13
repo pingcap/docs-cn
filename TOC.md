@@ -362,6 +362,7 @@
         + v1.0
           - [1.0.2](/reference/tools/data-migration/releases/1.0.2.md)
           - [1.0.3](/reference/tools/data-migration/releases/1.0.3.md)
+          - [1.0.4](/reference/tools/data-migration/releases/1.0.4.md)
       - [TiDB DM Glossary](/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [Overview](/reference/tools/tidb-lightning/overview.md)
