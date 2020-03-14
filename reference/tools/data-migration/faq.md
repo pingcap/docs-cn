@@ -65,4 +65,4 @@ DM 是在最后 `rename ghost_table to origin table` 的步骤会把内存的 DD
 1. 取消 task 的 `online-ddl-schema` 的配置
 2. 把 `_{table_name}_gho` 、`_{table_name}_ghc` 、`_{table_name}_del` 配置到 black-white-list.ignore-tables 中。
 3. 手工在下游的 **TiDB** 执行上游的 DDL 。
-4. 待 Pos 同步到 gh-ost 流程的位置之后，再重新启用 online-ddl-schema 以及注释掉 black-white-list.ignore-tables 。
+4. 待 Pos 同步到 gh-ost 流程的位置之后，再重新启用 `online-ddl-schema` 以及注释掉 `black-white-list.ignore-tables`。
