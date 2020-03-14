@@ -7,9 +7,9 @@ category: reference
 
 ## 概述
 
-DDL 是数据库应用中必然会使用的一类 SQL 。MySQL 虽然在 5.6 的版本以后支持了 online-ddl 。但是也有或多或少的限制，比如 MDL 锁的获取，某些 ddl 还是需要以 Copy 的方式来进行，在生产业务使用中，DDL执行过程中的锁表会一定程度上阻塞数据库的读取或者写入，因此 gh-ost 以及 pt-osc 可以更优雅地把 DDL 在 MySQL 上面执行，把对读写的影响降到最低。 \
-**TiDB** 根据 Google F1 的在线异步 schema 变更算法实现，在 DDL 过程中并不会阻塞读写。因此 gh-ost 和 pt-osc 在 online-schema-change 过程中产生的大量中间表的数据以及 binlogevent， 在 MySQL 与 TiDB 的数据同步过程中并不需要。\
-**DM** 作为 MySQL 同步到 TiDB 的工具，online-ddl-scheme 功能就是对上述两个 online-schema-change 的工具进行特殊的处理，以更快地完成所需的 DDL 的同步。\
+DDL 是数据库应用中必然会使用的一类 SQL 。MySQL 虽然在 5.6 的版本以后支持了 online-ddl 。但是也有或多或少的限制，比如 MDL 锁的获取，某些 ddl 还是需要以 Copy 的方式来进行，在生产业务使用中，DDL执行过程中的锁表会一定程度上阻塞数据库的读取或者写入，因此 gh-ost 以及 pt-osc 可以更优雅地把 DDL 在 MySQL 上面执行，把对读写的影响降到最低。  
+**TiDB** 根据 Google F1 的在线异步 schema 变更算法实现，在 DDL 过程中并不会阻塞读写。因此 gh-ost 和 pt-osc 在 online-schema-change 过程中产生的大量中间表的数据以及 binlogevent， 在 MySQL 与 TiDB 的数据同步过程中并不需要。  
+**DM** 作为 MySQL 同步到 TiDB 的工具，online-ddl-scheme 功能就是对上述两个 online-schema-change 的工具进行特殊的处理，以更快地完成所需的 DDL 的同步。  
 如想从源码方面了解 DM online-ddl-scheme 可以参考 : [DM 源码阅读系列文章（八）Online Schema Change 同步支持](https://pingcap.com/blog-cn/dm-source-code-reading-8/#dm-源码阅读系列文章八online-schema-change-同步支持)
 
 ## 配置
@@ -36,19 +36,19 @@ target-database:                # 下游数据库实例配置
 
 ## online-schema-change : gh-ost
 
-### gh-ost 在实现 online schema change 的过程会产生 3 种 table ： **\_\*\_gho 、\_\*\_ghc 、\_\*\_del**
+gh-ost 在实现 online schema change 的过程会产生 3 种 table：
 
-- **gho** 用于应用 ddl ，待数据同步追上 origin table 之后会通过 rename 的方式替换 origin table 。
+- **gho** 用于应用 DDL ，待数据同步追上 origin table 之后会通过 rename 的方式替换 origin table 。
 - **ghc** 用于存放 online schema change 相关的信息。
 - **del** 表是由 origin table rename 过来的。
 
-### dm 在同步过程中会把上述 table 中会分成 3 类
+dm 在同步过程中会把上述 table 中会分成 3 类：
 
-- ghostTable : \_\*\_gho (gh-ost)
-- trashTable : \_\*\_ghc (gh-ost) 、\_\*\_del (gh-ost)
+- ghostTable : \_\*\_gho
+- trashTable : \_\*\_ghc 、\_\*\_del
 - realTable : 执行的 online-ddl 的 origin table
 
-### **gh-ost** 涉及的主要 SQL
+**gh-ost** 涉及的主要 SQL如下：
 
 ```sql
 -- 1.
@@ -80,9 +80,9 @@ target-database:                # 下游数据库实例配置
    Rename /* gh-ost */ table `test`.`test4` to `test`.`_test4_del`, `test`.`_test4_gho` to `test`.`test4`;
 ```
 
->注意
+> **注意：**
 >
->具体 gh-ost 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 gh-ost 官方文档。
+> 具体 gh-ost 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 gh-ost 官方文档。
 
 ### DM 对于 **online-ddl-scheme: gh-ost** 的处理
 
@@ -116,19 +116,19 @@ target-database:                # 下游数据库实例配置
 
 ## online-schema-change : pt
 
-### pt-osc 在实现 online schema change 的过程会产生 2 种 table ： \_\*\_new 、\_\*\_old 以及 3 种 trigger : pt_osc\_\*\_ins 、pt_osc\_\*\_upd 、pt_osc\_\*\_del
+pt-osc 在实现 online schema change 的过程会产生 2 种 table：
 
 - **new** 用于应用 ddl ，待数据同步追上 origin table 之后会通过 rename 的方式替换 origin table 。
 - **old** 是由 origin table rename 过来的。
-- 3种 **trigger** 用于在 pt_osc 过程中，同步 orgin table 新产生的数据到 new
+- 3种 **trigger** pt_osc\_\*\_ins 、pt_osc\_\*\_upd 、pt_osc\_\*\_del ，用于在 pt_osc 过程中，同步 orgin table 新产生的数据到 new
 
-### dm 在同步过程中会把上述 table 中会分成 3 类
+dm  在同步过程中会把上述 table 中会分成 3 类：
 
 - ghostTable : \_\*\_new
 - trashTable : \_\*\_old
 - realTable : 执行的 online-ddl 的 origin table
 
-### pt-osc 主要涉及的 SQL
+pt-osc 主要涉及的 SQL如下：
 
 ``` sql
 -- 1.
@@ -151,9 +151,9 @@ target-database:                # 下游数据库实例配置
    DROP TRIGGER IF EXISTS `pt_osc_test_test4_ins` AFTER INSERT ON `test`.`test4` ...... ;
 ```
 
->注意
+>**注意：**
 >
->具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 pt-osc 官方文档。
+> 具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 pt-osc 官方文档。
 
 ### DM 对于 **online-ddl-scheme: pt** 的处理
 
