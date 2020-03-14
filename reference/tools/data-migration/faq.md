@@ -51,7 +51,7 @@ DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一
 
 6. 以新的任务名重启数据同步任务，或设置 `remove-meta` 为 `true` 且 `task-mode` 为 `all`。
 
-## 设置了 **online-ddl-sheme: "gh-ost"** , gh-ost 表相关的 DDL 报错该如何处理？
+## 设置了 **online-ddl-sheme: "gh-ost"** ， gh-ost 表相关的 DDL 报错该如何处理？
 
 > [unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/dm/pkg/terror.(*Error).Generate ......
 
