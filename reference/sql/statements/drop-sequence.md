@@ -6,7 +6,7 @@ category: reference
 
 # DROP SEQUENCE
 
-`DROP SEQUENCE` 语句用于删除 SEQUENCE 对象。
+`DROP SEQUENCE` 语句用于删除序列对象。
 
 ## 语法图
 
@@ -50,7 +50,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 ## MySQL 兼容性
 
-* MySQL 暂无 SEQUENCE 选项。TiDB Sequence 借鉴自 MariaDB，但是 setval 会保持原有的步调。
+MySQL 暂无序列选项。TiDB 序列借鉴自 MariaDB。`SETVAL` 函数的步调是 TiDB 特有的，其他函数的步调与 MariaDB 保持一致。
 
 ## 另请参阅
 

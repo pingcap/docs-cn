@@ -59,7 +59,7 @@ category: how-to
 
 1. 安装 Helm
 
-    [Helm](https://helm.sh) 可以用作模板渲染引擎，只需要下载其 binary 文件即可以使用。
+    [Helm](https://helm.sh) 可以用作模板渲染引擎，只需要下载其 binary 文件即可以使用。确保你的 Helm 版本为 2.9.0 ≤ Helm < 3.0.0。
 
     {{< copyable "shell-regular" >}}
 
@@ -72,7 +72,8 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```bash
-    brew install kubernetes-helm
+    brew install helm@2
+    brew link --force helm@2
     ```
 
 2. 下载 `tidb-docker-compose`

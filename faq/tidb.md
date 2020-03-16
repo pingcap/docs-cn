@@ -85,11 +85,7 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 mem
 
 在 TiDB 中用户名最长为 32 字符。
 
-#### 1.1.18 一个事务中的语句数量最大是多少？
-
-一个事务中的语句数量，默认限制最大为 5000 条。
-
-#### 1.1.19 TiDB 是否支持 XA？
+#### 1.1.18 TiDB 是否支持 XA？
 
 虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC（Connector / J），但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
 
@@ -97,7 +93,7 @@ Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然�
 
 MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
 
-#### 1.1.20 show processlist 是否显示系统进程号？
+#### 1.1.19 show processlist 是否显示系统进程号？
 
 TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
@@ -105,19 +101,19 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 
 2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
 
-#### 1.1.21 如何修改用户名密码和权限？
+#### 1.1.20 如何修改用户名密码和权限？
 
 TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。详情可参考 [TiDB 用户账户管理](/reference/security/user-account-management.md)。
 
-#### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
+#### 1.1.21 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
 TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/reference/mysql-compatibility.md#自增-id)。
 
-#### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
+#### 1.1.22 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
 
 TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不支持配置文件配置设置数据库的 sql\_mode，而只能使用 set 命令去设置，具体方法为：`set @@global.sql_mode = 'STRICT_TRANS_TABLES';`。
 
-#### 1.1.24 TiDB 支持哪些认证协议，过程是怎样的？
+#### 1.1.23 TiDB 支持哪些认证协议，过程是怎样的？
 
 这一层跟 MySQL 一样，走的 SASL 认证协议，用于用户登录认证，对密码的处理流程。
 
@@ -659,7 +655,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.15 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/dev/benchmark/sysbench-v4.md)。
+一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](/benchmark/sysbench-v4.md)。
 
 #### 3.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
@@ -701,7 +697,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
-- 大家可以直接参考 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/dev/benchmark/sysbench-v4.md)。
+- 大家可以直接参考 [TiDB Sysbench 性能测试报告](/benchmark/sysbench-v4.md)。
 
 #### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
@@ -842,11 +838,9 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 #### 4.3.3 Transaction too large 是什么原因，怎么解决？
 
-由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
+TiDB 限制了单条 KV entry 不超过 6MB。
 
-- 单个事务包含的 SQL 语句不超过 5000 条（默认）
-- 单条 KV entry 不超过 6MB
-- KV entry 的总大小不超过 100MB
+分布式事务要做两阶段提交，而且底层还需要做 Raft 复制。如果一个事务非常大，提交过程会非常慢，事务写冲突概率会增加，而且事务失败后回滚会导致不必要的性能开销。所以我们设置了 key-value entry 的总大小默认不超过 100MB。如果业务需要使用大事务，可以修改配置文件中的 `txn-total-size-limit` 配置项进行调整，最大可以修改到 10G。实际的大小限制还受机器的物理内存影响。
 
 在 Google 的 Cloud Spanner 上面，也有类似的[限制](https://cloud.google.com/spanner/docs/limits)。
 

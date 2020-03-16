@@ -15,18 +15,29 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果需要创建大量的表，我们建议把这个参数设置为 false。
 
-### `oom-action`
-
-+ 指定 TiDB 发生 out-of-memory 错误时的操作。
-+ 默认值："log"
-+ 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
-
 ### `mem-quota-query`
 
 + 单条 SQL 语句可以占用的最大内存阈值。
 + 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
 + 该值作为系统变量 [`tidb_mem_quota_query`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_mem_quota_query) 的初始值。
+
+### `oom-use-tmp-storage`
+
++ 设置是否在单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时为某些算子启用临时磁盘。
++ 默认值：true
+
+### `tmp-storage-path`
+
++ 单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时，某些算子的临时磁盘存储位置。
++ 默认值：`<操作系统临时文件夹>/tidb/tmp-storage`
++ 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
+
+### `oom-action`
+
++ 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
++ 默认值："cancel"
++ 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
 ### `enable-streaming`
 
@@ -237,7 +248,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 一个事务允许的最大语句条数限制。
 + 默认值：5000
-+ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。
++ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在可重试的乐观事务中生效，如果使用悲观事务或者关闭了[事务重试](/reference/transactions/transaction-optimistic.md#事务的重试)，事务中的语句数将不受此限制。
 
 ### `tcp-keep-alive`
 
