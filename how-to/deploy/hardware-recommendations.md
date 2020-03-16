@@ -75,7 +75,7 @@ As an open source distributed NewSQL database, TiDB requires the following netwo
 | Pump | 8250 | the Pump communication port |
 | Drainer | 8249 | the Drainer communication port |
 | Prometheus | 9090 | the communication port for the Prometheus service|
-| Pushgateway | 9091 | the aggregation and report port for TiDB, TiKV, and PD monitor |
+| Pushgateway | 9091 | the aggregation and report port for tikv-importer |
 | Node_exporter | 9100 | the communication port to report the system information of every TiDB cluster node |
 | Blackbox_exporter | 9115 | the Blackbox_exporter communication port, used to monitor the ports in the TiDB cluster |
 | Grafana | 3000 | the port for the external Web monitoring service and client (Browser) access|
