@@ -18,8 +18,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `mem-quota-query`
 
 + 单条 SQL 语句可以占用的最大内存阈值。
-+ 默认值：34359738368
++ 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
++ 该值作为系统变量 [`tidb_mem_quota_query`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_mem_quota_query) 的初始值。
 
 ### `oom-use-tmp-storage`
 
@@ -35,7 +36,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `oom-action`
 
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
-+ 默认值："log"
++ 默认值："cancel"
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
 ### `enable-streaming`
