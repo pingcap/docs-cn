@@ -1,11 +1,13 @@
 ---
-title: 在 Kubernetes 上备份 TiDB 集群到 GCS
+title: 备份 TiDB 集群到 GCS
 category: how-to
 ---
 
-# 在 Kubernetes 上备份 TiDB 集群到 GCS
+# 备份 TiDB 集群到 GCS
 
 本文档详细描述了如何将 Kubernetes 上 TiDB 集群的数据备份到 [Google Cloud Storage (GCS)](https://cloud.google.com/storage/docs/) 上。本文档中的“备份”，均是指全量备份（Ad-hoc 全量备份和定时全量备份），底层通过使用 [`mydumper`](/reference/tools/mydumper.md) 获取集群的逻辑备份，然后再将备份数据上传到远端 GCS。
+
+本文使用的备份方式基于 TiDB Operator 新版（v1.1 及以上）的 CustomResourceDefinition (CRD) 实现。基于 Helm Charts 的备份和恢复方式可参考[基于 Helm Charts 实现的 TiDB 集群备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)。
 
 ## Ad-hoc 全量备份
 
@@ -36,12 +38,12 @@ Ad-hoc 全量备份通过创建一个自定义的 `Backup` custom resource (CR) 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    kubectl create secret generic backup-demo1-tidb-secret --from-literal=user=root --from-literal=password=<password> --namespace=test1
+    kubectl create secret generic backup-demo1-tidb-secret --from-literal=password=<password> --namespace=test1
     ```
 
 ### 备份数据到 GCS
 
-创建 `Backup` CR，并将数据备份到 GCS。
+创建 `Backup` CR，并将数据备份到 GCS：
 
 {{< copyable "shell-regular" >}}
 
@@ -59,6 +61,11 @@ metadata:
   name: demo1-backup-gcs
   namespace: test1
 spec:
+  from:
+    host: <tidb-host-ip>
+    port: <tidb-port>
+    user: <tidb-user>
+    secretName: backup-demo1-tidb-secret
   gcs:
     secretName: gcs-secret
     projectId: <your-project-id>
@@ -66,9 +73,6 @@ spec:
     # storageClass: STANDARD_IA
     # objectAcl: private
     # bucketAcl: private
-  storageType: gcs
-  cluster: demo1
-  tidbSecretName: backup-demo1-tidb-secret
   storageClassName: local-storage
   storageSize: 10Gi
 ```
@@ -87,7 +91,7 @@ GCS 支持以下几种 `storageClass` 类型：
 
 如果不设置 `storageClass`，则默认使用 `COLDLINE`。这几种存储类型的详细介绍可参考 [GCS 官方文档](https://cloud.google.com/storage/docs/storage-classes)。
 
-GCS 支持以下几种 object ACL 策略：
+GCS 支持以下几种 object access-control list (ACL) 策略：
 
 * `authenticatedRead`
 * `bucketOwnerFullControl`
@@ -118,17 +122,13 @@ GCS 支持以下几种 bucket ACL 策略：
 
 更多 `Backup` CR 字段的详细解释：
 
-`.spec.metadata.namespace`：备份 TiDB 集群所在的 namespace。
-
-`.spec.storageType`：备份的存储类型。目前主要有 S3 和 GCS 两种。
-
-`.spec.cluster`：备份 TiDB 集群的名字。
-
-`.spec.tidbSecretName`：访问 TiDB 集群所需凭证的 secret。
-
-`.spec.storageClassName`：备份时指定所需的 PV 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，这个值默认为 `standard`。
-
-`.spec.storageSize`：备份时指定所需的 PV 大小。该值应大于备份 TiDB 集群数据的大小。
+* `.spec.metadata.namespace`：`Backup` CR 所在的 namespace。
+* `.spec.from.host`：待备份 TiDB 集群的访问地址。
+* `.spec.from.port`：待备份 TiDB 集群的访问端口。
+* `.spec.from.user`：待备份 TiDB 集群的访问用户。
+* `.spec.from.tidbSecretName`：待备份 TiDB 集群所需凭证的 secret。
+* `.spec.storageClassName`：备份时指定所需的 persistent volume (PV) 类型。如果不指定该项，则默认使用 TiDB Operator 启动参数中 `default-backup-storage-class-name` 指定的值，该值默认为 `standard`。
+* `.spec.storageSize`：备份时指定所需的 PV 大小。该值应大于备份 TiDB 集群数据的大小。
 
 ## 定时全量备份
 
@@ -163,6 +163,11 @@ spec:
   maxReservedTime: "3h"
   schedule: "*/2 * * * *"
   backupTemplate:
+    from:
+      host: <tidb-host-ip>
+      port: <tidb-port>
+      user: <tidb-user>
+      secretName: backup-demo1-tidb-secret
     gcs:
       secretName: gcs-secret
       projectId: <your-project-id>
@@ -170,9 +175,6 @@ spec:
       # storageClass: STANDARD_IA
       # objectAcl: private
       # bucketAcl: private
-    storageType: gcs
-    cluster: demo1
-    tidbSecretName: backup-demo1-tidb-secret
     storageClassName: local-storage
     storageSize: 10Gi
 ```
@@ -195,10 +197,7 @@ kubectl get bks -n test1 -owide
 
 从以上示例可知，`backupSchedule` 的配置由两部分组成。一部分是 `backupSchedule` 独有的配置，另一部分是 `backupTemplate`。`backupTemplate` 指定 GCS 存储相关的配置，该配置与 Ad-hoc 全量备份到 GCS 的配置完全一样，可参考[备份数据到 GCS](#备份数据到-gcs)。下面介绍 `backupSchedule` 独有的配置项：
 
-`.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
-
-`.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。比如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考[`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
-
-`.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
-
-`.spec.pause`：该值默认为 `false`。如果将该值设置为 `true`，表示暂停定时调度。此时即使到了调度时间点，也不会进行备份。在定时备份暂停期间，备份 Garbage Collection (GC) 仍然正常进行。将 `true` 改为 `false` 则重新开启定时全量备份。
++ `.spec.maxBackups`：一种备份保留策略，决定定时备份最多可保留的备份个数。超过该数目，就会将过时的备份删除。如果将该项设置为 `0`，则表示保留所有备份。
++ `.spec.maxReservedTime`：一种备份保留策略，按时间保留备份。比如将该参数设置为 `24h`，表示只保留最近 24 小时内的备份条目。超过这个时间的备份都会被清除。时间设置格式参考[`func ParseDuration`](https://golang.org/pkg/time/#ParseDuration)。如果同时设置最大备份保留个数和最长备份保留时间，则以最长备份保留时间为准。
++ `.spec.schedule`：Cron 的时间调度格式。具体格式可参考 [Cron](https://en.wikipedia.org/wiki/Cron)。
++ `.spec.pause`：该值默认为 `false`。如果将该值设置为 `true`，表示暂停定时调度。此时即使到了调度时间点，也不会进行备份。在定时备份暂停期间，备份 [Garbage Collection (GC)](/reference/garbage-collection/overview.md) 仍然正常进行。将 `true` 改为 `false` 则重新开启定时全量备份。
