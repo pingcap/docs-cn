@@ -64,7 +64,7 @@
       - [BR 备份与恢复场景示例](/reference/tools/br/use-cases.md)
     + 定位异常查询
       - [定位慢查询](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
-      - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
+      - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-expensive-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/how-to/scale/with-ansible.md)
   + 升级
