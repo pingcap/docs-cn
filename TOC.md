@@ -286,6 +286,7 @@
     - [增量恢复](/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/reference/tidb-binlog/binlog-slave-client.md)
     - [TiDB Binlog Relay Log](/reference/tidb-binlog/relay-log.md)
+    - [集群间双向同步](/reference/tidb-binlog/bi-repl.md)
     - [术语表](/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/reference/tidb-binlog/troubleshoot/binlog.md)
@@ -344,6 +345,7 @@
         + v1.0
           - [1.0.2](/reference/tools/data-migration/releases/1.0.2.md)
           - [1.0.3](/reference/tools/data-migration/releases/1.0.3.md)
+          - [1.0.4](/reference/tools/data-migration/releases/1.0.4.md)
       - [TiDB DM 术语表](/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/reference/tools/tidb-lightning/overview.md)
@@ -358,7 +360,16 @@
       - [故障诊断](/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/faq/tidb-lightning.md)
       - [术语表](/reference/tools/tidb-lightning/glossary.md)
-    - [sync-diff-inspector](/reference/tools/sync-diff-inspector/overview.md)
+    + TiCDC
+      - [概述](/reference/tools/ticdc/overview.md)
+      - [部署使用](/reference/tools/ticdc/deploy.md)
+      - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
+      - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
+    + sync-diff-inspector
+      - [概述](/reference/tools/sync-diff-inspector/overview.md)
+      - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
+      - [分库分表场景下的数据校验](/reference/tools/sync-diff-inspector/shard-diff.md)
+      - [TiDB 主从集群的数据校验](/reference/tools/sync-diff-inspector/tidb-diff.md)
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
@@ -391,7 +402,7 @@
         - [恢复 GCS 上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-gcs.md)
         - [备份 TiDB 集群到兼容 S3 的存储](/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md)
         - [恢复 S3 兼容存储上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-s3.md)
-    - [恢复 Kubernetes 上的 TiDB 集群数据](/tidb-in-kubernetes/maintain/lightning.md)
+      - [使用 TiDB Lightning 恢复集群数据](/tidb-in-kubernetes/maintain/backup-and-restore/lightning.md)
     - [收集日志](/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/tidb-in-kubernetes/maintain/tidb-binlog.md)
