@@ -673,4 +673,4 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值：1
 
-这个变量用来设置是否启用 coprocessor 的 `Chunk` 数据编码格式。
+这个变量用来设置是否启用 Coprocessor 的 `Chunk` 数据编码格式。
