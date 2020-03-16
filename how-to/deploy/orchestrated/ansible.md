@@ -731,7 +731,6 @@ TiDB 兼容 MySQL，因此可使用 MySQL 客户端直接连接 TiDB。推荐配
 | Node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | blackbox_exporter_port | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | grafana_port |  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
-| Grafana | grafana_collector_port |  8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
 | Kafka_exporter | kafka_exporter_port | 9308 | Kafka_exporter 通信端口，用于监控 binlog Kafka 集群 |
 
 ### 如何自定义部署目录
