@@ -156,7 +156,7 @@ pt-osc 主要涉及的 SQL如下：
    DROP TRIGGER IF EXISTS `pt_osc_test_test4_ins` AFTER INSERT ON `test`.`test4` ...... ;
 ```
 
->**注意：**
+> **注意：**
 >
 > 具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 pt-osc 官方文档。
 
