@@ -80,6 +80,32 @@ show warnings
 
 另外，含有 `AUTO_RANDOM` 属性的表在系统表 `information_schema.tables` 中 `TIDB_ROW_ID_SHARDING_INFO` 一列的值为 `PK_AUTO_RANDOM_BITS=x`，其中 `x` 为 shard bits 的数量。
 
+要获取上一次 TiDB 隐式分配的 id，可以使用 `select last_insert_id()` 查看，例如：
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t (b) values ("b")
+select * from t;
+select last_insert_id()
+```
+
+可能得到的结果如下：
+
+```
++------------+---+
+| a          | b |
++------------+---+
+| 1073741825 | b |
++------------+---+
+
++------------------+
+| last_insert_id() |
++------------------+
+| 1073741825       |
++------------------+
+```
+
 ## 兼容性
 
 TiDB 支持解析版本注释语法。示例如下：
