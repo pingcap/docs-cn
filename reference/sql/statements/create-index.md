@@ -81,6 +81,34 @@ mysql> CREATE UNIQUE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.31 sec)
 ```
 
+## Expression index
+
+TiDB can build indexes not only on one or more columns in a table, but also on an expression. When queries involve expressions, expression indexes can speed up those queries.
+
+Take the following query as an example:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t WHERE lower(name) = "pingcap";
+```
+
+If the following expression index is built, you can use the index to speed up the above query:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE INDEX idx ON t ((lower(name)));
+```
+
+The cost of maintaining an expression index is higher than that of maintaining other indexes, because the value of the expression needs to be calculated whenever a row is inserted or updated. The value of the expression is already stored in the index, so this value does not require recalculation when the optimizer selects the expression index.
+
+Therefore, when the query performance outweighs the insert and update performance, you can consider indexing the expressions.
+
+Expression indexes have the same syntax and limitations as in MySQL. They are implemented by building indexes on generated virtual columns that are invisible, so the supported expressions inherit all [limitations of virtual generated columns](/reference/sql/generated-columns.md#limitations).
+
+Currently, the optimizer can use the indexed expressions when the expressions are only in the `FIELD` clause, `WHERE` clause, and `ORDER BY` clause. The `GROUP BY` clause will be supported in future updates.
+
 ## Associated session variables
 
 The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size` and `tidb_ddl_reorg_priority`. Refer to [TiDB-specific system variables](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_ddl_reorg_worker_cnt) for details.
