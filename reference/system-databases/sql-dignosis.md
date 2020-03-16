@@ -133,10 +133,10 @@ mysql> desc cluster_hardware;
 * INSTANCE：对应于节点信息表 `information_schema.cluster_info`  中的 STATUS_ADDRESS 字段
 * DEVICE_TYPE：硬件类型，目前可以查询的硬件类型有 cpu/memory/disk/net
 * DEVICE_NAME：硬件名，对于不同的 DEVICE_TYPE，取值不同
-  * cpu：硬件名为 cpu
-  * memory：硬件名为 memory
-  * disk：磁盘名
-  * net：NIC 名
+    * cpu：硬件名为 cpu
+    * memory：硬件名为 memory
+    * disk：磁盘名
+    * net：NIC 名
 * NAME：硬件不同的信息名，比如 cpu 有 `cpu-logical-cores`/`cpu-physical-cores`，可以通过 `select name from cluster_hardware where device_type='cpu' group by name` 来查询不同硬件类型支持的 NAME
 * VALUE：对应硬件信息的值，比如磁盘容量，CPU 核数
 
@@ -182,10 +182,10 @@ mysql> desc cluster_load;
 * INSTANCE：对应于节点信息表 `information_schema.cluster_info`  中的 STATUS_ADDRESS 字段。
 * DEVICE_TYPE：硬件类型，目前可以查询的硬件类型有 cpu/memory/disk/net。
 * DEVICE_NAME：硬件名，对于不同的 DEVICE_TYPE，取值不同。
-  * cpu：硬件名为 cpu。
-  * disk：磁盘名。
-  * net：NIC 名。
-  * memory：硬件名为 memory。
+    * cpu：硬件名为 cpu。
+    * disk：磁盘名。
+    * net：NIC 名。
+    * memory：硬件名为 memory。
 * NAME：不同负载类型，比如 cpu 有 `load1/load5/load15` 分别表示 CPU 在 1min/5min/15min 中的平均负载，可以通过 `select name from cluster_load where device_type='cpu' group by name` 来查询不同硬件类型支持的 NAME。
 * VALUE：对应硬件负载的值，比如 CPU 的 1min/5min/15min 平均负载。
 
@@ -393,8 +393,8 @@ mysql> desc metrics_summary;
 
 * METRICS_NAME：监控表名
 * QUANTILE：百分位，可以通过 SQL 语句指定 QUANTILE，例如
-  * select * from metrics_summary where quantile=0.99 指定查看百分位为 0.99 的数据
-  * select * from metrics_summary where quantile in (0.80, 0.99, 0.99, 0.999) 同时查看百分位为 0.80, 0.99, 0.99, 0.999 的数据
+    * select * from metrics_summary where quantile=0.99 指定查看百分位为 0.99 的数据
+    * select * from metrics_summary where quantile in (0.80, 0.99, 0.99, 0.999) 同时查看百分位为 0.80, 0.99, 0.99, 0.999 的数据
 * SUM_VALUE / AVG_VALUE / MIN_VALUE / MAX_VALUE
 * COMMENT：对应监控的解释
 
@@ -622,11 +622,11 @@ mysql> desc inspection_result;
 字段解释：
 
 * RULE：诊断规则，目前实现了
-  * config：配置一致性检测，如果同一个配置在不同节点不同，会生成 warning 级别的诊断结果
-  * version：版本一致性检测，如果同一类型的节点版本不同，会生成 critical 级别的诊断结果
-  * current-load：如果当前系统负载太高，会生成对应的 warning 诊断结果
-  * critical-error：系统各个模块定义了严重的错误，如果某一个严重错误在对应时间段内超过阈值，会生成 warning 诊断结果
-  * threshold-check：诊断系统会对大量指标进行阈值判断，如果超过阈值会生成对应的诊断信息
+    * config：配置一致性检测，如果同一个配置在不同节点不同，会生成 warning 级别的诊断结果
+    * version：版本一致性检测，如果同一类型的节点版本不同，会生成 critical 级别的诊断结果
+    * current-load：如果当前系统负载太高，会生成对应的 warning 诊断结果
+    * critical-error：系统各个模块定义了严重的错误，如果某一个严重错误在对应时间段内超过阈值，会生成 warning 诊断结果
+    * threshold-check：诊断系统会对大量指标进行阈值判断，如果超过阈值会生成对应的诊断信息
 * ITEM：每一个规则会对不同的项进行诊断，这个用来表示对应规则下面的具体诊断项。
 * TYPE：诊断的实例类型，可能是 tidb/tikv/pd
 * INSTANCE：诊断的具体实例
