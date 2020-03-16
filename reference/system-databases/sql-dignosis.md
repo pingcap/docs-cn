@@ -285,7 +285,7 @@ mysql> desc cluster_log;
 
 ## 集群监控表
 
-TiDB 4.0 诊断系统添加了集群监控系统表，所有表都在 `metrics_schema` 中，可以通过 SQL 的方式查询监控，SQL 查询监控的好处在于可以对整个集群的所有监控进行关联查询，
+集群信息表固然给力，但光有集群信息表还不够，为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表，所有表都在 `metrics_schema` 中，可以通过 SQL 的方式查询监控，SQL 查询监控的好处在于可以对整个集群的所有监控进行关联查询，
 并对比不同时间段的结果，迅速找出性能瓶颈。由于目前添加的系统表数量较多，本文不对各个表进行逐个解释。用户可以通过 `information_schema.metrics_tables` 查询这些表的相关信息。
 
 ```field
@@ -481,7 +481,46 @@ COMMENT      | The quantile of TiDB query durations(second)
 * 时间段 t2 : ("2020-03-03 17:18:00", "2020-03-03 17:21:00")
 对两个时间段的监控按照 METRICS_NAME 进行 join，并按照差值排序。其中 TIME_RANGE 是用于指定查询时间的 Hint。
 
-从上述查询结果可以看出：
+查询 t1.avg_value / t2.avg_value 差异最大的 10 个监控项:
+```
+mysql> SELECT 
+         t1.avg_value / t2.avg_value AS ratio,
+         t1.metrics_name,
+         t1.avg_value,
+         t2.avg_value,
+         t2.comment
+       FROM 
+         (
+           SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/
+             * 
+           FROM information_schema.metrics_summary
+         ) t1 
+         JOIN
+         (
+           SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/
+             * 
+           FROM information_schema.metrics_summary
+         ) t2
+         ON t1.metrics_name = t2.metrics_name 
+       ORDER BY 
+         ratio DESC limit 10;
++----------------+-----------------------------------+-------------------+-------------------+--------------------------------------------------------------------------+
+| ratio          | metrics_name                      | avg_value         | avg_value         | comment                                                                  |
++----------------+-----------------------------------+-------------------+-------------------+--------------------------------------------------------------------------+
+| 17.6439787379  | tikv_region_average_written_bytes |   30816827.0953   |    1746591.71568  | The average rate of writing bytes to Regions per TiKV instance           |
+|  8.88407551364 | tikv_region_average_written_keys  |     108557.034612 |      12219.283193 | The average rate of written keys to Regions per TiKV instance            |
+|  6.4105335594  | tidb_kv_write_num                 |       4493.293654 |        700.923505 | The quantile of kv write times per transaction execution                 |
+|  2.99993333333 | tidb_gc_total_count               |          1.0      |          0.333341 | The total count of kv storage garbage collection time durations          |
+|  2.66412165823 | tikv_engine_avg_seek_duration     |       6569.879007 |       2466.05818  | The time consumed when executing seek operation, the unit is microsecond |
+|  2.66412165823 | tikv_engine_max_seek_duration     |       6569.879007 |       2466.05818  | The time consumed when executing seek operation, the unit is microsecond |
+|  2.49994444321 | tikv_region_change                |         -0.277778 |         -0.111114 | The count of region change per TiKV instance                             |
+|  2.16063829787 | etcd_wal_fsync_duration           |          0.002539 |          0.001175 | The quantile time consumed of writing WAL into the persistent storage    |
+|  2.06089264604 | node_memory_free                  | 4541448192.0      | 2203631616.0      |                                                                          |
+|  1.96749064186 | tidb_kv_write_size                |     514489.28     |     261495.159902 | The quantile of kv write size per transaction execution                  |
++----------------+-----------------------------------+-------------------+-------------------+--------------------------------------------------------------------------+
+```
+
+查询结果表示：
 * t1 时间段内的 tikv_region_average_written_bytes （region 的平均写入字节数） 比 t2 时间段高了 17.6 倍
 * t1 时间段内的 tikv_region_average_written_keys （region 的平均写入 keys 数） 比 t2 时间段高了 8.8 倍
 * t1 时间段内的 tidb_kv_write_size （tidb 每个事务写入的 kv 大小） 比 t2 时间段高了 1.96 倍
@@ -540,7 +579,7 @@ mysql> SELECT
 
 ## 诊断结果表
 
-前面介绍了集群信息表和集群监控表，并通过 SQL 演示了如何通过查询这些表来发现集群问题，比如通过 information_schema.cluster_config 发现集群不同节点配置不一致，通过 information_schema.cluster_info 发现是否存在组件版本不一样。
+前面介绍了集群信息表和集群监控表，并通过 SQL 演示了如何通过查询这些表来发现集群问题，比如通过 information_schema.cluster_config 发现集群不同节点配置不一致，通过 information_schema.metrics_summary  发现指定时间范围内 TiDB 集群中平均耗时最高的监控项。
 不过手动执行固定模式的 SQL 排查集群问题是低效的，为了进一步优化用户体验，方便用户使用，于是我们利用已有的基础信息表提供了诊断相关的系统表来自动执行诊断：
 
 * information_schema.inspection_result
@@ -605,6 +644,7 @@ mysql> select * from inspection_rules where type='inspection';
 5 rows in set (0.00 sec)
 ```
 
+## INSPECTION_SUMMARY
 以上的监控汇总表是按照集群所有的监控进行汇总，但是在部分场景下我们只想要关注特定链路或模块的监控汇总，比如当前 Coprocessor 配置的线程池为 8，
 如果 Coprocessor 的 CPU 使用率达到了 750%，可以确定这里有风险，或者可能提前成为瓶颈。但是部分监控会因为用户的 workload 不同而差异较大，所以难以定义确定的阈值。这部分场景问题排查也非常重要，所以新建了 `inspection_summary` 来进行链路汇总。
 
