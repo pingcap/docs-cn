@@ -46,11 +46,11 @@ create table t (a int auto_random, b varchar(255), primary key (a))
 此时再执行形如 `INSERT INTO t(b) values...` 的 `INSERT` 语句。
 
 + 如果该 `INSERT` 语句没有指定整型主键列（`a` 列）的值，或者指定为 `NULL`，TiDB 会为该列自动分配值。该值不保证自增，不保证连续，只保证唯一，避免了连续的行 ID 带来的热点问题。
-+ 如果该 `INSERT` 语句显式指定了整型主键列的值，和 `AUTO_INCREMENT` 属性类似，TiDB 会保存该值。注意，如果系统变量 `@@sql_mode` 中没有设置 `NO_AUTO_VALUE_ON_ZERO`， 即使显式指定为 0，TiDB 也会为该列自动分配值。
++ 如果该 `INSERT` 语句显式指定了整型主键列的值，和 `AUTO_INCREMENT` 属性类似，TiDB 会保存该值。注意，如果未在系统变量 `@@sql_mode` 中设置 `NO_AUTO_VALUE_ON_ZERO`， 即使显式指定整型主键列的值为 `0`，TiDB 也会为该列自动分配值。
 
 自动分配值的计算方式如下：
 
-该行值在二进制形式下，除去最高位（无论是 unsigned 还是 signed）的次高 5 位（称为 shard bits）由当前事务的开始时间决定，剩下的位数按照自增的顺序分配。
+该行值在二进制形式下，除去最高位（无论是 unsigned 还是 signed）的次高五位（称为 shard bits）由当前事务的开始时间决定，剩下的位数按照自增的顺序分配。
 
 若要使用一个不同的 shard bits 的数量，可以在 `AUTO_RANDOM` 后面加一对括号，并在括号中指定想要的 shard bits 数量。示例如下：
 
@@ -80,7 +80,7 @@ show warnings
 
 另外，含有 `AUTO_RANDOM` 属性的表在系统表 `information_schema.tables` 中 `TIDB_ROW_ID_SHARDING_INFO` 一列的值为 `PK_AUTO_RANDOM_BITS=x`，其中 `x` 为 shard bits 的数量。
 
-要获取上一次 TiDB 隐式分配的 id，可以使用 `select last_insert_id()` 查看，例如：
+要获取上一次 TiDB 隐式分配的 ID，可以使用 `select last_insert_id()` 查看，例如：
 
 {{< copyable "sql" >}}
 
