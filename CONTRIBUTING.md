@@ -56,6 +56,9 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 - [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
 - [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
+- 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
+
+    为确保文档图片风格统一，建议使用 Figma 绘制图片。绘制图片时，请参考模板提供的图形元素和配色方案。
 
 ## Pull Request 提交流程
 
