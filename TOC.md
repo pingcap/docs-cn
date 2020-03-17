@@ -75,11 +75,9 @@
     - [Overview](/how-to/monitor/overview.md)
     - [Monitor a TiDB Cluster](/how-to/monitor/monitor-a-cluster.md)
   + Migrate
-    - [Overview](/how-to/migrate/overview.md)
+    - [Migration Tools User Guide](/reference/tools/user-guide.md)
     + Migrate from MySQL
-      - [Migrate the Full Data](/how-to/migrate/from-mysql.md)
-      - [Migrate the Incremental Data](/how-to/migrate/incrementally-from-mysql.md)
-    - [Migrate from Aurora](/how-to/migrate/from-aurora.md)
+      - [Migration Case of Amazon Aurora](/how-to/migrate/from-mysql-aurora.md)
     - [Migrate from CSV](/reference/tools/tidb-lightning/csv.md)
   + Maintain
     - [Common Ansible Operations](/how-to/deploy/orchestrated/ansible-operations.md)
@@ -315,6 +313,7 @@
       - [Error Handling](/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/reference/tidb-binlog/faq.md)
   + Tools
+  + - [Tools User Guide](/reference/tools/user-guide.md)
     - [Mydumper](/reference/tools/mydumper.md)
     - [Syncer](/reference/tools/syncer.md)
     - [Loader](/reference/tools/loader.md)
@@ -353,7 +352,7 @@
         - [Skip or Replace Abnormal SQL Statements](/reference/tools/data-migration/skip-replace-sqls.md)
       - [Monitor](/reference/tools/data-migration/monitor.md)
       + Migrate from MySQL compatible database
-        - [Migrate from Aurora](/how-to/migrate/from-aurora.md)
+        - [Migrate from Amazon Aurora](/how-to/migrate/from-mysql-aurora.md)
       + Troubleshoot
         - [DM Troubleshooting](/reference/tools/data-migration/troubleshoot/dm.md)
         - [Error Description](/reference/tools/data-migration/troubleshoot/error-system.md)

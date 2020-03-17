@@ -1,10 +1,11 @@
 ---
-title: Migrate from Amazon Aurora MySQL to TiDB
-summary: Learn how to migrate from Amazon Aurora MySQL to TiDB by using TiDB Data Migration (DM).
+title: Migrate from MySQL (Amazon Aurora)
+summary: Learn how to migrate from MySQL (using a case of Amazon Aurora) to TiDB by using TiDB Data Migration (DM).
 category: how-to
+aliases: ['/docs/dev/how-to/migrate/from-aurora/']
 ---
 
-# Migrate from Amazon Aurora MySQL to TiDB
+# Migrate from MySQL (Amazon Aurora)
 
 This document describes how to migrate from [Amazon Aurora MySQL](https://aws.amazon.com/rds/aurora/details/mysql-details/?nc1=h_ls) to TiDB by using TiDB Data Migration (DM).
 
