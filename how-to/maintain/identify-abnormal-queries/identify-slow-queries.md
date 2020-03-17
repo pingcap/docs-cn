@@ -107,12 +107,29 @@ Slow Query 基础信息：
 > **注意：**
 >
 > 每次查询 `SLOW_QUERY` 表时，TiDB 都会去读取和解析一次当前的慢查询日志。
-> 
-> TiDB 4.0 中，SLOW_QUERY 已经支持查询任意时间段的慢日志，即支持查询已经被 rotate 的慢日志文件的数据。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢日志文件。如果查询不指定时间范围，则仍然只解析当前的慢日志文件。
->
-> TiDB 4.0 中新增了 CLUSTER_SLOW_QUERY 系统表，用来查询所有 TiDB 节点的 SLOW_QUERY 数据，使用上和 SLOW_QUERY 系统表是一样的，表结构上比 SLOW_QUERY 多一列 `INSTANCE` 列，表示该行慢查询信息来自于的 TiDB 节点地址。具体表结构可查看 [Information Schema](/reference/system-databases/information-schema.md#information-schema) 中关于 `CLUSTER_SLOW_QUERY` 表的介绍。
 
-## 查询 `SLOW_QUERY` 示例
+TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢日志，即支持查询已经被 rotate 的慢日志文件的数据。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢日志文件。如果查询不指定时间范围，则仍然只解析当前的慢日志文件。
+
+TiDB 4.0 中新增了 `CLUSTER_SLOW_QUERY` 系统表，用来查询所有 TiDB 节点的慢查询信息，使用上和 `SLOW_QUERY` 系统表是一样的，表结构上比 `SLOW_QUERY` 多一列 `INSTANCE` 列，表示该行慢查询信息来自于的 TiDB 节点地址。具体表结构可查看 [Information Schema](/reference/system-databases/information-schema.md#information-schema) 中关于 `CLUSTER_SLOW_QUERY` 表的介绍。
+
+关于查询 `CLUSTER_SLOW_QUERY` 的实现，我们来看一个简单的查询的执行计划：
+
+```
+>desc select count(*) from cluster_slow_query where time >= '2020-03-08 02:29:00' AND time < '2020-03-08 02:35:00';
++--------------------------+----------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                       | estRows  | task      | operator info                                                                                                                                          |
++--------------------------+----------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+| StreamAgg_20             | 1.00     | root      | funcs:count(Column#51)->Column#49                                                                                                                      |
+| └─TableReader_21         | 1.00     | root      | data:StreamAgg_9                                                                                                                                       |
+|   └─StreamAgg_9          | 1.00     | cop[tidb] | funcs:count(1)->Column#51                                                                                                                              |
+|     └─Selection_19       | 250.00   | cop[tidb] | ge(information_schema.cluster_slow_query.time, 2020-03-08 02:29:00.000000), lt(information_schema.cluster_slow_query.time, 2020-03-08 02:35:00.000000) |
+|       └─TableFullScan_18 | 10000.00 | cop[tidb] | table:CLUSTER_SLOW_QUERY, keep order:false, stats:pseudo                                                                                               |
++--------------------------+----------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+从上面执行计划可以看到有 3 个 `cop[tidb]` 请求，表示是 3 个发往其他 TiDB 节点计算的 coprocessor 请求，这里会把 `count(*)` 的计算和 `time` 的条件过滤都下推给其他 TiDB 节点执行，而不是把其他节点的慢查询数据都取回来后在一台 TiDB 上执行计算。
+
+## 查询 `SLOW_QUERY` / `CLUSTER_SLOW_QUERY` 示例
 
 ### 搜索 Top N 的慢查询
 
