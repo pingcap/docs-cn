@@ -82,7 +82,7 @@
   + Maintain
     - [Common Ansible Operations](/how-to/deploy/orchestrated/ansible-operations.md)
     + Backup and Restore
-      - [Use `mydumper` and `loader`](/how-to/maintain/backup-and-restore/mydumper-loader.md)
+      - [Use Mydumper and TiDB Lightning](/how-to/maintain/backup-and-restore/mydumper-lightning.md)
       - [Use BR](/reference/tools/br/br.md)
       - [BR Usage Scenarios](/reference/tools/br/use-cases.md)
     + Identify Abnormal Queries
