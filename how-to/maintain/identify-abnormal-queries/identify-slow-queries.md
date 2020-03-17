@@ -19,6 +19,8 @@ TiDB enables the slow query log by default. You can enable or disable the featur
 # User: root@127.0.0.1
 # Conn_ID: 3086
 # Query_time: 1.527627037
+# Parse_time: 0.000054933
+# Compile_time: 0.000129729
 # Process_time: 0.07 Request_count: 1 Total_keys: 131073 Process_keys: 131072 Prewrite_time: 0.335415029 Commit_time: 0.032175429 Get_commit_ts_time: 0.000177098 Local_latch_wait_time: 0.106869448 Write_keys: 131072 Write_size: 3538944 Prewrite_region: 1
 # DB: test
 # Is_internal: false
@@ -28,7 +30,8 @@ TiDB enables the slow query log by default. You can enable or disable the featur
 # Cop_proc_avg: 0.07 Cop_proc_p90: 0.07 Cop_proc_max: 0.07 Cop_proc_addr: 172.16.5.87:20171
 # Cop_wait_avg: 0 Cop_wait_p90: 0 Cop_wait_max: 0 Cop_wait_addr: 172.16.5.87:20171
 # Mem_max: 525211
-# Succ: false
+# Succ: true
+# Plan: tidb_decode_plan('ZJAwCTMyXzcJMAkyMAlkYXRhOlRhYmxlU2Nhbl82CjEJMTBfNgkxAR0AdAEY1Dp0LCByYW5nZTpbLWluZiwraW5mXSwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCg==')
 insert into t select * from t;
 ```
 
@@ -42,6 +45,8 @@ Slow query basics:
 
 * `Time`: The print time of log.
 * `Query_time`: The execution time of a statement.
+* `Parse_time`: The parsing time for the statement.
+* `Compile_time`: The duration of the query optimization.
 * `Query`: A SQL statement. `Query` is not printed in the slow log, but the corresponding field is called `Query` after the slow log is mapped to the memory table.
 * `Digest`: The fingerprint of the SQL statement.
 * `Txn_start_ts`: The start timestamp and the unique ID of a transaction. You can use this value to search for the transaction-related logs.
@@ -49,6 +54,17 @@ Slow query basics:
 * `Index_ids`: The IDs of the indexes involved in a statement.
 * `Succ`: Whether a statement is executed successfully.
 * `Backoff_time`: The waiting time before retry when a statement encounters errors that require a retry. The common errors as such include: `lock occurs`, `Region split`, and `tikv server is busy`.
+* `Plan`: The execution plan of the statement. Use the `select tidb_decode_plan('xxx...')` statement to parse the specific execution plan.
+
+The following fields are related to transaction execution:
+
+* `Prewrite_time`: The duration of the first phase (prewrite) of the two-phase transaction commit.
+* `Commit_time`: The duration of the second phase (commit) of the two-phase transaction commit.
+* `Get_commit_ts_time`: The time spent on getting `commit_ts` during the second phase (commit) of the two-phase transaction commit.
+* `Local_latch_wait_time`: The time that TiDB spends on waiting for the lock before the second phase (commit) of the two-phase transaction commit.
+* `Write_keys`: The count of keys that the transaction writes to the Write CF in TiKV.
+* `Write_size`: The total size of the keys or values to be written when the transaction commits.
+* `Prewrite_region`: The number of TiKV Regions involved in the first phase (prewrite) of the two-phase transaction commit. Each Region triggers a remote procedure call.
 
 Memory usage fields:
 
