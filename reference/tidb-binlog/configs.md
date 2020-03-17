@@ -9,7 +9,7 @@ category: reference
 
 ## Pump
 
-本节介绍 Pump 的配置项。可以在 [Pump Configuration](https://github.com/pingcap/tidb-binlog/blob/release-3.0/cmd/pump/pump.toml) 中查看完整的 Pump 配置文件示例。
+本节介绍 Pump 的配置项。可以在 [Pump Configuration](https://github.com/pingcap/tidb-binlog/blob/release-2.1/cmd/pump/pump.toml) 中查看完整的 Pump 配置文件示例。
 
 ### addr
 
@@ -128,7 +128,7 @@ category: reference
 
 ## Drainer
 
-本节介绍 Drainer 的配置项。可以在 [Drainer Configuration](https://github.com/pingcap/tidb-binlog/blob/release-3.0/cmd/drainer/drainer.toml) 中查看完整的配置文件示例。
+本节介绍 Drainer 的配置项。可以在 [Drainer Configuration](https://github.com/pingcap/tidb-binlog/blob/release-2.1/cmd/drainer/drainer.toml) 中查看完整的配置文件示例。
 
 ### addr
 
