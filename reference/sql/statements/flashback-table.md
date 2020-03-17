@@ -66,7 +66,7 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 
 所以，`FLASHBACK TABLE` 只需要在 GC Worker 还没删除表数据前，恢复表的元信息并删除 `mysql.gc_delete_range` 表中相应的行记录即可。恢复表的元信息可以用 TiDB 的快照读实现。具体的快照读内容可以参考[读取历史数据](/how-to/get-started/read-historical-data.md)文档。下面是 `FLASHBACK TABLE t TO t1` 的工作流程：
 
-1. 从 DDL History job 中查找 `drop table` 或者 `truncate table` 类型，且操作的表名是 `t` 的第一个 DDL job，若没找到，则返回错误。
+1. 从 DDL History job 中查找 `drop table` 或者 `truncate table` 类型的操作，且操作的表名是 `t` 的第一个 DDL job，若没找到，则返回错误。
 2. 检查 DDL job 的开始时间，是否在 `tikv_gc_safe_point` 之前，如果是，说明已经被 GC，返回错误。
 3. 用 DDL job 的开始时间作为 snapshot 读取历史数据，读取表的元信息。
 4. 删除 `mysql.gc_delete_range` 中和表 `t` 相关的 GC 任务。
