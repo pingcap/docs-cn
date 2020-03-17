@@ -72,6 +72,10 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 4. 删除 `mysql.gc_delete_range` 中和表 `t` 相关的 GC 任务。
 5. 将表的元信息中的 `name` 修改成 `t1`，并用该元信息新建一个表。注意：这里只是修改了表名，但是 table ID 不变，依旧是之前被删除的表 `t` 的 table ID。
 
-可以发现，从表 `t` 被删除，到表 `t` 被 `FLASHBACK` 到 `t1`，一直都是操作的表的元信息，表的用户数据一直未被修改过。这里有一个很关键的点，被恢复的表 `t1` 和之前被删除的表 `t` 的 table ID 是一样的，所以表 `t1` 才能读取表`t` 的用户数据。细心的你会发现，不能 `FLASHBACK` 同一个被删除的表多次，因为 `FLASHBACK` 的表的 table ID 还是被删除表的 table ID，而 TiDB 要求所有还存在的表的 table ID 必须全局唯一。
+可以发现，从表 `t` 被删除，到表 `t` 被 `FLASHBACK` 恢复到 `t1`，一直都是对表的元信息进行操作，而表的用户数据一直未被修改过。被恢复的表 `t1` 和之前被删除的表 `t` 的 table ID 相同，所以表 `t1` 才能读取表`t` 的用户数据。
+
+> **注意：**
+>
+> 不能用 `FLASHBACK` 多次恢复同一个被删除的表，因为 `FLASHBACK` 所恢复表的 table ID 还是被删除表的 table ID，而 TiDB 要求所有还存在的表 table ID 必须全局唯一。
 
  `FLASHBACK TABLE` 是通过快照读获取表的元信息后，再走一次类似于 `CREATE TABLE` 的建表流程，所以 `FLASHBACK TABLE` 实际上也是一种 DDL。
