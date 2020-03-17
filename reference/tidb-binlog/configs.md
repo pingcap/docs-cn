@@ -170,7 +170,7 @@ category: reference
 
 ### initial-commit-ts
 
-* 指定从哪个 commit timestamp 之后开始同步。这个配置仅适用于初次开始同步的 Drainer 实例。如果下游已经有 checkpoint 存在，则会根据 checkpoint 里记录的时间进行同步。
+* 指定从哪个 commit timestamp 之后开始同步。这个配置仅适用于初次开始同步的 Drainer 节点。如果下游已经有 checkpoint 存在，则会根据 checkpoint 里记录的时间进行同步。
 * 默认：`-1`。Drainer 会从 PD 得到一个最新的 timestamp 作为初始时间。
 
 ### synced-check-time
@@ -340,7 +340,7 @@ tbl-name = "~^a.*"
 
         > **注意：**
         >
-        > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 实例指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
+        > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
 
     * `host`
     * `user`
