@@ -63,7 +63,7 @@
       - [BR 备份与恢复场景示例](/reference/tools/br/use-cases.md)
     + 定位异常查询
       - [定位慢查询](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
-      - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
+      - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-expensive-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/how-to/scale/with-ansible.md)
   + 升级
@@ -442,6 +442,7 @@
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.12](/releases/3.0.12.md)
     - [3.0.11](/releases/3.0.11.md)
     - [3.0.10](/releases/3.0.10.md)
     - [3.0.9](/releases/3.0.9.md)
