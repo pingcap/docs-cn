@@ -15,130 +15,130 @@ category: reference
 
 - 查询 `capture` 列表：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-cdc cli capture list
-```
+    ```shell
+    cdc cli capture list
+    ```
 
-```
-[
-        {
-                "id": "6d92386a-73fc-43f3-89de-4e337a42b766",
-                "is-owner": true
-        },
-        {
-                "id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                "is-owner": false
-        }
-]
-```
+    ```
+    [
+            {
+                    "id": "6d92386a-73fc-43f3-89de-4e337a42b766",
+                    "is-owner": true
+            },
+            {
+                    "id": "b293999a-4168-4988-a4f4-35d9589b226b",
+                    "is-owner": false
+            }
+    ]
+    ```
 
 ### 管理同步任务 (`changefeed`)
 
 - 创建 `changefeed`：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-cdc cli changefeed create --sink-uri="mysql://root:123456@127.0.0.1:3306/"
-create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-commit-ts":null}}
-```
+    ```shell
+    cdc cli changefeed create --sink-uri="mysql://root:123456@127.0.0.1:3306/"
+    create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-commit-ts":null}}
+    ```
 
 - 查询 `changefeed` 列表：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-cdc cli changefeed list
-```
+    ```shell
+    cdc cli changefeed list
+    ```
 
-```
-[
-        {
-                "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
-        }
-]
-```
+    ```
+    [
+            {
+                    "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
+            }
+    ]
+    ```
 
 - 查询特定 `changefeed`，对应于某个同步任务的信息和状态：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-cdc cli changefeed query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
-```
+    ```shell
+    cdc cli changefeed query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+    ```
 
-```
-{
-        "info": {
-                "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
-                "opts": {},
-                "create-time": "2020-03-12T22:04:08.103600025+08:00",
-                "start-ts": 415241823337054209,
-                "target-ts": 0,
-                "admin-job-type": 0,
-                "config": {
-                        "filter-case-sensitive": false,
-                        "filter-rules": null,
-                        "ignore-txn-commit-ts": null
-                }
-        },
-        "status": {
-                "resolved-ts": 415241860902289409,
-                "checkpoint-ts": 415241860640145409,
-                "admin-job-type": 0
-        }
-}
-```
+    ```
+    {
+            "info": {
+                    "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
+                    "opts": {},
+                    "create-time": "2020-03-12T22:04:08.103600025+08:00",
+                    "start-ts": 415241823337054209,
+                    "target-ts": 0,
+                    "admin-job-type": 0,
+                    "config": {
+                            "filter-case-sensitive": false,
+                            "filter-rules": null,
+                            "ignore-txn-commit-ts": null
+                    }
+            },
+            "status": {
+                    "resolved-ts": 415241860902289409,
+                    "checkpoint-ts": 415241860640145409,
+                    "admin-job-type": 0
+            }
+    }
+    ```
 
 ### 管理同步子任务处理单元 (`processor`)
 
 - 查询 `processor` 列表：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-cdc cli processor list
-```
+    ```shell
+    cdc cli processor list
+    ```
 
-```
-[
-        {
-                "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
-                "capture-id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                "changefeed-id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
-        }
-]
-```
+    ```
+    [
+            {
+                    "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
+                    "capture-id": "b293999a-4168-4988-a4f4-35d9589b226b",
+                    "changefeed-id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
+            }
+    ]
+    ```
 
 - 查询特定 `processor`，对应于某个节点处理的同步子任务信息和状态：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-cdc cli processor query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
-```
+    ```shell
+    cdc cli processor query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
+    ```
 
-```
-{
-        "status": {
-                "table-infos": [
-                        {
-                                "id": 45,
-                                "start-ts": 415241823337054209
-                        }
-                ],
-                "table-p-lock": null,
-                "table-c-lock": null,
-                "admin-job-type": 0
-        },
-        "position": {
-                "checkpoint-ts": 415241893447467009,
-                "resolved-ts": 415241893971492865
-        }
-}
-```
+    ```
+    {
+            "status": {
+                    "table-infos": [
+                            {
+                                    "id": 45,
+                                    "start-ts": 415241823337054209
+                            }
+                    ],
+                    "table-p-lock": null,
+                    "table-c-lock": null,
+                    "admin-job-type": 0
+            },
+            "position": {
+                    "checkpoint-ts": 415241893447467009,
+                    "resolved-ts": 415241893971492865
+            }
+    }
+    ```
 
 ## 使用 HTTP 接口管理集群状态和数据同步
 

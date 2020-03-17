@@ -3,7 +3,7 @@ title: Sink URI 配置规则
 category: reference
 ---
 
-# Sink URI
+# Sink URI 配置规则
 
 sink URI 需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
 

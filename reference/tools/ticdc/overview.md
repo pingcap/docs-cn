@@ -16,12 +16,10 @@ TiCDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可�
 ### 系统角色
 
 - TiKV CDC component: 只输出 key-value (KV) change log。
-
     - 内部逻辑拼装 KV change log。
     - 提供输出 KV change log 的接口，发送数据包括实时 change log 和增量扫的 change log。
 
 - `capture`: TiCDC 运行进程，多个 `capture` 组成一个 TiCDC 集群，负责 KV change log 的同步。
-
     - 每个 `capture` 负责拉取一部分 KV change log。
     - 对拉取的一个或多个 KV change log 进行排序。
     - 向下游还原事务或按照 TiCDC open protocol 进行输出。
