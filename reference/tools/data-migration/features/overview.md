@@ -10,7 +10,7 @@ category: reference
 
 Table Routing、Black & White Lists、Binlog Event Filter 在匹配库表名时，有以下版本差异：
 
-+ 对于v1.0.4 版及后续版本，以上功能均支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
++ 对于 v1.0.4 版及后续版本，以上功能均支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
 + 对于 v1.0.4 以前的版本，Table Routing 和 Binlog Event Filter 支持通配符，但不支持 `[...]` 与 `[!...]` 表达式。Black & White Lists 仅支持正则表达式。
 
 在简单任务场景下推荐使用通配符匹配。
