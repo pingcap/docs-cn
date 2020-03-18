@@ -89,9 +89,47 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 单位：KB|MB|GB
 + 最小值：1KB
 
+## readpool
+
+读取线程池相关的配置项。
+
+### `unify-read-pool`
+
++ 是否使用单个线程池处理所有的读请求。
++ 默认值：true
+
+## readpool.unified
+
+统一处理读请求的线程池相关的配置项。
+以下配置只在 `unify-read-pool` 是 `true` 时生效。
+
+### `min-thread-count`
+
++ 统一处理读请求的线程池最少的线程数量。
++ 默认值：1
+
+### `max-thread-count`
+
++ 统一处理读请求的线程池最多的线程数量。
++ 默认值：CPU * 0.8，但最少为 4
+
+### `stack-size`
+
++ 统一处理读请求的线程池中线程的栈大小。
++ 默认值：10MB
++ 单位：KB|MB|GB
++ 最小值：2MB
+
+### `max-tasks-per-worker`
+
++ 统一处理读请求的线程池中单个线程允许积压的最大任务数量，超出后会返回 Server Is Busy。
++ 默认值：2000
++ 最小值：2
+
 ## readpool.storage
 
 存储线程池相关的配置项。
+以下配置只在 `unify-read-pool` 是 `false` 时生效。
 
 ### `high-concurrency`
 
@@ -139,6 +177,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ## readpool.coprocessor
 
 协处理器线程池相关的配置项。
+以下配置只在 `unify-read-pool` 是 `false` 时生效。
 
 ### `high-concurrency`
 
@@ -210,6 +249,12 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 
 + 写入数据队列的最大值，超过该值之后对于新的写入 TiKV 会返回 Server Is Busy 错误。
 + 默认值：100MB
++ 单位: MB|GB
+
+### `reserve-space`
+
++ TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
++ 默认值：2GB
 + 单位: MB|GB
 
 ## raftstore
