@@ -93,7 +93,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 读取线程池相关的配置项。
 
-### `unify-thread-pool`
+### `unify-read-pool`
 
 + 是否使用单个线程池处理所有的读请求。
 + 默认值：true

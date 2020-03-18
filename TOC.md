@@ -63,7 +63,7 @@
       - [BR 备份与恢复场景示例](/reference/tools/br/use-cases.md)
     + 定位异常查询
       - [定位慢查询](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
-      - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
+      - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-expensive-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/how-to/scale/with-ansible.md)
   + 升级
@@ -167,6 +167,7 @@
       - [`EXECUTE`](/reference/sql/statements/execute.md)
       - [`EXPLAIN ANALYZE`](/reference/sql/statements/explain-analyze.md)
       - [`EXPLAIN`](/reference/sql/statements/explain.md)
+      - [`FLASHBACK TABLE`](/reference/sql/statements/flashback-table.md)
       - [`FLUSH PRIVILEGES`](/reference/sql/statements/flush-privileges.md)
       - [`FLUSH STATUS`](/reference/sql/statements/flush-status.md)
       - [`FLUSH TABLES`](/reference/sql/statements/flush-tables.md)
@@ -256,10 +257,12 @@
     - [SQL 优化流程](/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](/reference/performance/understanding-the-query-execution-plan.md)
     - [执行计划绑定](/reference/performance/execution-plan-bind.md)
+    - [Join Reorder 算法简介](/reference/performance/join-reorder.md)
     - [统计信息概述](/reference/performance/statistics.md)
     - [Optimizer Hints](/reference/performance/optimizer-hints.md)
     - [Follower Read](/reference/performance/follower-read.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/reference/performance/check-cluster-status-using-sql-statements.md)
+    - [使用 Index Merge 方式访问表](/reference/performance/index-merge.md)
     - [Statement Summary Table](/reference/performance/statement-summary.md)
     - [TiKV 调优](/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
@@ -281,6 +284,9 @@
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)
     - [运维管理](/reference/tidb-binlog/maintain.md)
+    - [配置说明](/reference/tidb-binlog/configs.md)
+      - [Pump](/reference/tidb-binlog/configs.md#pump)
+      - [Drainer](/reference/tidb-binlog/configs.md#drainer)
     - [版本升级](/reference/tidb-binlog/upgrade.md)
     - [监控告警](/reference/tidb-binlog/monitor.md)
     - [增量恢复](/reference/tidb-binlog/reparo.md)
@@ -309,6 +315,7 @@
         - [Black & White Lists](/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [同步延迟监控](/reference/tools/data-migration/features/overview.md#同步延迟监控)
+        - [Online-ddl-scheme](/reference/tools/data-migration/features/online-ddl-scheme.md)
         + Shard Support
           - [简介](/reference/tools/data-migration/features/shard-merge.md)
           - [使用限制](/reference/tools/data-migration/features/shard-merge.md#使用限制)
@@ -345,6 +352,7 @@
         + v1.0
           - [1.0.2](/reference/tools/data-migration/releases/1.0.2.md)
           - [1.0.3](/reference/tools/data-migration/releases/1.0.3.md)
+          - [1.0.4](/reference/tools/data-migration/releases/1.0.4.md)
       - [TiDB DM 术语表](/reference/tools/data-migration/glossary.md)
     + TiDB Lightning
       - [概述](/reference/tools/tidb-lightning/overview.md)
@@ -359,6 +367,11 @@
       - [故障诊断](/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/faq/tidb-lightning.md)
       - [术语表](/reference/tools/tidb-lightning/glossary.md)
+    + TiCDC
+      - [概述](/reference/tools/ticdc/overview.md)
+      - [部署使用](/reference/tools/ticdc/deploy.md)
+      - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
+      - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
     + sync-diff-inspector
       - [概述](/reference/tools/sync-diff-inspector/overview.md)
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
@@ -414,6 +427,8 @@
     + 工具
       - [tkctl](/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
+    + 组件
+      - [TiDB Scheduler 扩展调度器](/tidb-in-kubernetes/reference/components/tidb-scheduler.md)
   - [故障诊断](/tidb-in-kubernetes/troubleshoot.md)
   - [常见问题](/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
@@ -436,6 +451,7 @@
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.12](/releases/3.0.12.md)
     - [3.0.11](/releases/3.0.11.md)
     - [3.0.10](/releases/3.0.10.md)
     - [3.0.9](/releases/3.0.9.md)
