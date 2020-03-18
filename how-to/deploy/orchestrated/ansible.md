@@ -31,7 +31,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 1. 部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](/how-to/deploy/hardware-recommendations.md)。
-    - 我们支持 x86_64 (AMD64) 和 ARM64 两种架构。在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统；在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统。
+    - 目前支持在 x86_64 (AMD64) 和 ARM64 两种架构上部署 TiDB 集群。在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统；在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统。
     - 机器之间内网互通。
 
     > **注意：**
@@ -420,7 +420,7 @@ analyzing CPU 0:
 >
 > 请使用内网 IP 来部署集群，如果部署目标机器 SSH 端口非默认的 22 端口，需添加 `ansible_port` 变量，如 `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`。
 >
-> 如果是 arm 架构的机器，需要将 `cpu_architecture` 改为 `arm64`。
+> 如果是 ARM 架构的机器，需要将 `cpu_architecture` 改为 `arm64`。
 
 你可以根据实际场景从以下两种集群拓扑中选择一种：
 
