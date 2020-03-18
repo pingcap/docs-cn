@@ -31,7 +31,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 1. 部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](/how-to/deploy/hardware-recommendations.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64 或者  arm64)。
     - 机器之间内网互通。
 
     > **注意：**
@@ -419,6 +419,8 @@ analyzing CPU 0:
 > **注意：**
 >
 > 请使用内网 IP 来部署集群，如果部署目标机器 SSH 端口非默认的 22 端口，需添加 `ansible_port` 变量，如 `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`。
+>
+> 如果是 arm 架构的机器，需要将 `cpu_architecture` 改为 `arm64`。
 
 你可以根据实际场景从以下两种集群拓扑中选择一种：
 
@@ -602,6 +604,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | 变量            | 含义                                                        |
 | :--------------- | :-------------------------------------------------------- |
 | `cluster_name` | 集群名称，可调整 |
+| `cpu_architecture` | CPU 体系架构，默认为 `amd64`，可选 `arm64` |
 | `tidb_version` | TiDB 版本，TiDB Ansible 各分支默认已配置 |
 | `process_supervision` | 进程监管方式，默认为 `systemd`，可选 `supervise` |
 | `timezone` | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](/how-to/configure/time-zone.md)。默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
