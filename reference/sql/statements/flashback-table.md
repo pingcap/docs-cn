@@ -32,6 +32,8 @@ FLASHBACK TABLE table_name [TO other_table_name]
 * 下游从集群也支持 `FLASHBACK TABLE`
 * 从集群的 GC lifetime 一定要长于主集群的 GC lifetime。上下游同步存在的延迟可能也会造成下游恢复数据失败。
 
+如果 Binlog 同步出错，则需要在 Binlog 过滤掉该表，同时手动全量重新导入该表的数据。
+
 ## 示例
 
 - 恢复被 `DROP` 删除的表数据：
