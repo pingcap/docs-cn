@@ -257,7 +257,7 @@
     - [SQL 优化流程](/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](/reference/performance/understanding-the-query-execution-plan.md)
     - [执行计划绑定](/reference/performance/execution-plan-bind.md)
-    - [Join Reorder 算法简介](reference/performance/join-reorder.md)A
+    - [Join Reorder 算法简介](/reference/performance/join-reorder.md)A
     - [统计信息概述](/reference/performance/statistics.md)
     - [Optimizer Hints](/reference/performance/optimizer-hints.md)
     - [Follower Read](/reference/performance/follower-read.md)
