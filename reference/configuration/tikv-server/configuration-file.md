@@ -96,7 +96,7 @@ This document only describes the parameters that are not included in command-lin
 
 Configuration items related to read pools
 
-### `unify-thread-pool`
+### `unify-read-pool`
 
 + Whether to use a single thread pool to serve all the read requests.
 + Default value: `true`
