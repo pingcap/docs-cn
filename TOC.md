@@ -277,6 +277,7 @@
         - [Black & White Lists](/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [同步延迟监控](/reference/tools/data-migration/features/overview.md#同步延迟监控)
+        - [Online-ddl-scheme](/reference/tools/data-migration/features/online-ddl-scheme.md)
         + Shard Support
           - [简介](/reference/tools/data-migration/features/shard-merge.md)
           - [使用限制](/reference/tools/data-migration/features/shard-merge.md#使用限制)
