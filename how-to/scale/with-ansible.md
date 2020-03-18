@@ -30,67 +30,109 @@ Assume that the topology is as follows:
 
 For example, if you want to add two TiDB nodes (node101, node102) with the IP addresses `172.16.10.101` and `172.16.10.102`, take the following steps:
 
-1. Edit the `inventory.ini` file and append the node information:
+1. Edit the `inventory.ini` file and the `hosts.ini` file, and append the node information.
 
-    ```ini
-    [tidb_servers]
-    172.16.10.4
-    172.16.10.5
-    172.16.10.101
-    172.16.10.102
+    - Edit the `inventory.ini` file:
 
-    [pd_servers]
-    172.16.10.1
-    172.16.10.2
-    172.16.10.3
+        ```ini
+        [tidb_servers]
+        172.16.10.4
+        172.16.10.5
+        172.16.10.101
+        172.16.10.102
 
-    [tikv_servers]
-    172.16.10.6
-    172.16.10.7
-    172.16.10.8
-    172.16.10.9
+        [pd_servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
 
-    [monitored_servers]
-    172.16.10.1
-    172.16.10.2
-    172.16.10.3
-    172.16.10.4
-    172.16.10.5
-    172.16.10.6
-    172.16.10.7
-    172.16.10.8
-    172.16.10.9
-    172.16.10.101
-    172.16.10.102
+        [tikv_servers]
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
 
-    [monitoring_servers]
-    172.16.10.3
+        [monitored_servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
+        172.16.10.4
+        172.16.10.5
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
+        172.16.10.101
+        172.16.10.102
 
-    [grafana_servers]
-    172.16.10.3
-    ```
+        [monitoring_servers]
+        172.16.10.3
 
-    Now the topology is as follows:
+        [grafana_servers]
+        172.16.10.3
+        ```
 
-    | Name | Host IP | Services |
-    | ---- | ------- | -------- |
-    | node1 | 172.16.10.1 | PD1 |
-    | node2 | 172.16.10.2 | PD2 |
-    | node3 | 172.16.10.3 | PD3, Monitor |
-    | node4 | 172.16.10.4 | TiDB1 |
-    | node5 | 172.16.10.5 | TiDB2 |
-    | **node101** | **172.16.10.101**|**TiDB3** |
-    | **node102** | **172.16.10.102**|**TiDB4** |
-    | node6 | 172.16.10.6 | TiKV1 |
-    | node7 | 172.16.10.7 | TiKV2 |
-    | node8 | 172.16.10.8 | TiKV3 |
-    | node9 | 172.16.10.9 | TiKV4 |
+        Now the topology is as follows:
 
-2. Initialize the newly added node:
+        | Name | Host IP | Services |
+        | ---- | ------- | -------- |
+        | node1 | 172.16.10.1 | PD1 |
+        | node2 | 172.16.10.2 | PD2 |
+        | node3 | 172.16.10.3 | PD3, Monitor |
+        | node4 | 172.16.10.4 | TiDB1 |
+        | node5 | 172.16.10.5 | TiDB2 |
+        | **node101** | **172.16.10.101**|**TiDB3** |
+        | **node102** | **172.16.10.102**|**TiDB4** |
+        | node6 | 172.16.10.6 | TiKV1 |
+        | node7 | 172.16.10.7 | TiKV2 |
+        | node8 | 172.16.10.8 | TiKV3 |
+        | node9 | 172.16.10.9 | TiKV4 |
 
-    ```
-    ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
-    ```
+    - Edit the `hosts.ini` file:
+
+        ```ini
+        [servers]
+        172.16.10.1
+        172.16.10.2
+        172.16.10.3
+        172.16.10.4
+        172.16.10.5
+        172.16.10.6
+        172.16.10.7
+        172.16.10.8
+        172.16.10.9
+        172.16.10.101
+        172.16.10.102
+        [all:vars]
+        username = tidb
+        ntp_server = pool.ntp.org
+        ```
+
+2. Initialize the newly added node.
+
+    1. Configure the SSH mutual trust and sudo rules of the deployment machine on the central control machine:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook -i hosts.ini create_users.yml -l 172.16.10.101,172.16.10.102 -u root -k
+        ```
+
+    2. Install the NTP service on the deployment target machine:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
+        ```
+
+    3. Initialize the node on the deployment target machine:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook bootstrap.yml -l 172.16.10.101,172.16.10.102
+        ```
 
     > **Note:**
     >
