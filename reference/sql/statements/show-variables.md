@@ -39,7 +39,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_auto_analyze_end_time          | 23:59 +0000   |
 | tidb_slow_log_threshold             | 300           |
 | tidb_opt_correlation_exp_factor     | 1             |
-| tidb_mem_quota_sort                 | 34359738368   |
+| tidb_mem_quota_sort                 | 1073741824    |
 | tidb_current_ts                     | 0             |
 | tidb_ddl_reorg_batch_size           | 256           |
 | tidb_checksum_table_concurrency     | 4             |

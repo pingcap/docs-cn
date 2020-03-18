@@ -181,9 +181,9 @@ set @@global.tidb_distsql_scan_concurrency = 10
 ### tidb_mem_quota_query
 
 - Scope: SESSION
-- Default value: 32 GB
+- Default value: 1 GB
 - This variable is used to set the threshold value of memory quota for a query.
-- If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
+- If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. The initial value of this variable is configured by [`mem-quota-query`](/reference/configuration/tidb-server/configuration-file.md#mem-quota-query).
 
 ### tidb_mem_quota_hashjoin
 
