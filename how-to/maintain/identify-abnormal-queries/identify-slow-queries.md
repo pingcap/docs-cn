@@ -29,6 +29,9 @@ TiDB enables the slow query log by default. You can enable or disable the featur
 # Num_cop_tasks: 1
 # Cop_proc_avg: 0.07 Cop_proc_p90: 0.07 Cop_proc_max: 0.07 Cop_proc_addr: 172.16.5.87:20171
 # Cop_wait_avg: 0 Cop_wait_p90: 0 Cop_wait_max: 0 Cop_wait_addr: 172.16.5.87:20171
+# Cop_backoff_regionMiss_total_times: 200 Cop_backoff_regionMiss_total_time: 0.2 Cop_backoff_regionMiss_max_time: 0.2 Cop_backoff_regionMiss_max_addr: 127.0.0.1 Cop_backoff_regionMiss_avg_time: 0.2 Cop_backoff_regionMiss_p90_time: 0.2
+# Cop_backoff_rpcPD_total_times: 200 Cop_backoff_rpcPD_total_time: 0.2 Cop_backoff_rpcPD_max_time: 0.2 Cop_backoff_rpcPD_max_addr: 127.0.0.1 Cop_backoff_rpcPD_avg_time: 0.2 Cop_backoff_rpcPD_p90_time: 0.2
+# Cop_backoff_rpcTiKV_total_times: 200 Cop_backoff_rpcTiKV_total_time: 0.2 Cop_backoff_rpcTiKV_max_time: 0.2 Cop_backoff_rpcTiKV_max_addr: 127.0.0.1 Cop_backoff_rpcTiKV_avg_time: 0.2 Cop_backoff_rpcTiKV_p90_time: 0.2
 # Mem_max: 525211
 # Succ: true
 # Plan: tidb_decode_plan('ZJAwCTMyXzcJMAkyMAlkYXRhOlRhYmxlU2Nhbl82CjEJMTBfNgkxAR0AdAEY1Dp0LCByYW5nZTpbLWluZiwraW5mXSwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCg==')
@@ -91,6 +94,12 @@ TiKV Coprocessor Task fields:
 * `Cop_wait_p90`: The P90 waiting time of cop-tasks.
 * `Cop_wait_max`: The maximum waiting time of cop-tasks.
 * `Cop_wait_addr`: The address of the cop-task whose waiting time is the longest.
+* `Cop_backoff_{backoff-type}_total_times`: The total times of backoff caused by an error.
+* `Cop_backoff_{backoff-type}_total_time`: The total time of backoff caused by an error.
+* `Cop_backoff_{backoff-type}_max_time`: The longest time of backoff caused by an error.
+* `Cop_backoff_{backoff-type}_max_addr`: The address of the cop-task that has the longest backoff time caused by an error.
+* `Cop_backoff_{backoff-type}_avg_time`: The average time of backoff caused by an error.
+* `Cop_backoff_{backoff-type}_p90_time`: The P90 percentile backoff time caused by an error.
 
 ## Memory mapping in slow log
 
