@@ -7,7 +7,7 @@ category: reference
 
 在 TiDB 4.0 中，引入了 `FLASHBACK TABLE` 语法，其功能是在 Garbage Collection (GC) life time 时间内，可以用 `FLASHBACK TABLE` 语句来恢复被 `DROP` 或 `TRUNCATE` 删除的表以及数据。
 
-查询集群的 `tikv_gc_safe_point` 和 `tikv_gc_life_time`。只要被 `DROP` 或 `TRUNCATE` 删除的表是在 `tikv_gc_safe_point` 时间之后，都能用 `flashback table` 语法来恢复。  
+查询集群的 `tikv_gc_safe_point` 和 `tikv_gc_life_time`。只要被 `DROP` 或 `TRUNCATE` 删除的表是在 `tikv_gc_safe_point` 时间之后，都能用 `FLASHBACK TABLE` 语法来恢复。  
 
 {{< copyable "sql" >}}
 
