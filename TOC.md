@@ -282,6 +282,9 @@
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)
     - [运维管理](/reference/tidb-binlog/maintain.md)
+    - [配置说明](/reference/tidb-binlog/configs.md)
+      - [Pump](/reference/tidb-binlog/configs.md#pump)
+      - [Drainer](/reference/tidb-binlog/configs.md#drainer)
     - [版本升级](/reference/tidb-binlog/upgrade.md)
     - [监控告警](/reference/tidb-binlog/monitor.md)
     - [增量恢复](/reference/tidb-binlog/reparo.md)
@@ -421,6 +424,8 @@
     + 工具
       - [tkctl](/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
+    + 组件
+      - [TiDB Scheduler 扩展调度器](/tidb-in-kubernetes/reference/components/tidb-scheduler.md)
   - [故障诊断](/tidb-in-kubernetes/troubleshoot.md)
   - [常见问题](/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
