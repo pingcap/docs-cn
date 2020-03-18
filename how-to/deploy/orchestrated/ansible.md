@@ -31,7 +31,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 1. 部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](/how-to/deploy/hardware-recommendations.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64 或者  arm64)。
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 (AMD64) 或者 ARM64 架构。
     - 机器之间内网互通。
 
     > **注意：**
