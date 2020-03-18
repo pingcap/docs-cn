@@ -313,7 +313,7 @@
       - [Error Handling](/reference/tidb-binlog/troubleshoot/error-handling.md)
     - [FAQ](/reference/tidb-binlog/faq.md)
   + Tools
-  + - [Tools User Guide](/reference/tools/user-guide.md)
+    - [Tools User Guide](/reference/tools/user-guide.md)
     - [Mydumper](/reference/tools/mydumper.md)
     - [Syncer](/reference/tools/syncer.md)
     - [Loader](/reference/tools/loader.md)
