@@ -11,7 +11,7 @@ heading-style:
   style: atx
 
 # MD009
-no-trailing-spaces: true
+# no-trailing-spaces: true
 
 # MD010
 no-hard-tabs: true
