@@ -257,6 +257,8 @@ where is_internal = false
 
 由于统计信息不准可能导致同类型 SQL 的执行计划发生改变导致执行变慢，可以用以下 SQL 查询哪些 SQL 具有不同的执行计划：
 
+{{< copyable "sql" >}}
+
 ```sql
 select count(distinct plan_digest) as count, digest,min(query)
 from cluster_slow_query
