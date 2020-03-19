@@ -56,4 +56,3 @@ metrics_schema> select * from tidb_query_duration where value is not null and ti
 
 * tidb_metric_query_step：查询的分辨率步长。从 Promethues 的 query_range 数据时需要指定 start，end，step，其中 step 会使用该变量的值
 * tidb_metric_query_range_duration：查询监控时，会将 PROMQL 中的 $RANGE_DURATION 替换成该变量的值，默认值是 60 秒
-

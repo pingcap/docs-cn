@@ -43,13 +43,3 @@ TiDB 4.0 之前的以下系统表，只能查看当前节点，TiDB 4.0 实现�
 
 * 诊断结果表 `information_schema.inspection_result` 用于展示对系统的诊断结果，诊断是惰性触发，使用 SQL `select * from inspection_result` 会触发所有的诊断规则对系统进行诊断，并会在结果集中展示系统中的故障或风险。
 * 诊断汇总表 `information_schema.inspection_summary` 用于对特定链路或模块的监控进行汇总，用户可以根据整个模块或链路的上下文来排查定位问题。
-
-
-
-
-
-
-
-
-
-
