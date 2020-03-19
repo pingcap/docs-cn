@@ -2,7 +2,7 @@
 
 TiDB 内置了一些诊断规则，用于检测系统中的故障以及隐患。
 
-该诊断功能可以帮助用户快速发现问题，减少用户的重复性手动工作。可使用 SQL select * from information_schema.inspection_result 来触发内部的诊断。
+该诊断功能可以帮助用户快速发现问题，减少用户的重复性手动工作。可使用 SQL `select * from information_schema.inspection_result` 来触发内部的诊断。
 
 诊断结果表 `information_schema.inspection_result` 的表结构如下：
 
