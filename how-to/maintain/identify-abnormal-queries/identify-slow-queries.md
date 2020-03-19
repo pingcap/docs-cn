@@ -110,7 +110,7 @@ Slow Query 基础信息：
 
 TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢日志，即支持查询已经被 rotate 的慢日志文件的数据。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢日志文件。如果查询不指定时间范围，则仍然只解析当前的慢日志文件。
 
-TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY` 系统表](/reference/system-databases/information-schema.md#cluster_slow_query-表)，用来查询所有 TiDB 节点的慢查询信息，使用上和 [`SLOW_QUERY` 系统表](/reference/system-databases/information-schema.md#slow_query-表)是一样的，表结构上比 `SLOW_QUERY` 多一列 `INSTANCE` 列，表示该行慢查询信息来自于的 TiDB 节点地址。
+TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY` 系统表](/reference/system-databases/information-schema.md#cluster_slow_query-表)，用来查询所有 TiDB 节点的慢查询信息，使用上和 [`SLOW_QUERY` 系统表](/reference/system-databases/information-schema.md#slow_query-表)是一样的，表结构上比 `SLOW_QUERY` 多一列 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。
 
 关于查询 `CLUSTER_SLOW_QUERY` 的实现，我们来看一个简单的查询的执行计划：
 
