@@ -5,7 +5,7 @@ category: reference
 
 # 部署和使用 TiCDC
 
-本文介绍如何部署和使用 TiCDC 进行增量数据同步
+本文介绍如何部署和使用 TiCDC 进行增量数据同步。
 
 ## 第 1 步：部署 TiCDC 集群
 
