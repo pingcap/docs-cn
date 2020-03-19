@@ -114,8 +114,13 @@ TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY` 系统表](/reference/system-databas
 
 关于查询 `CLUSTER_SLOW_QUERY` 的实现，我们来看一个简单的查询的执行计划：
 
+{{< copyable "sql" >}}
+
 ```sql
 desc select count(*) from cluster_slow_query where time >= '2020-03-08 02:29:00' AND time < '2020-03-08 02:35:00';
+```
+
+```
 +--------------------------+----------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                       | estRows  | task      | operator info                                                                                                                                          |
 +--------------------------+----------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -288,7 +293,7 @@ min(query) | SELECT DISTINCT c FROM sbtest11 WHERE id BETWEEN ? AND ? ORDER BY c
 ```sql
 select min(plan),plan_digest
 from cluster_slow_query where digest='17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94'
-group by plan_digest\G
+group by plan_digest;
 ```
 
 输出样例：
