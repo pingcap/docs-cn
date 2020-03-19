@@ -188,7 +188,6 @@ curl -X POST http://127.0.0.1:8301/capture/owner/resign
 
 以上命令对非 owner 节点请求返回错误。
 
-
 ```
 election: not leader
 ```
