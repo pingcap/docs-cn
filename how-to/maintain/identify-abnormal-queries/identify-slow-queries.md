@@ -356,7 +356,7 @@ WHERE t1.digest NOT IN
     WHERE time >= '2020-03-10 13:20:00'
             AND time < '2020-03-10 13:23:00'
     GROUP BY  digest)
-ORDER BY  t1.sum_query_time DESC limit 10\G
+ORDER BY  t1.sum_query_time DESC limit 10;
 ```
 
 输出样例：
