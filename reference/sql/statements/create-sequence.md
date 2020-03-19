@@ -64,7 +64,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 | `MAXVALUE` | `9223372036854775806` 或 `-1` | 指定序列的最大值。当 `INCREMENT` > `0` 时，默认值为 `9223372036854775806`；当 `INCREMENT` < `0` 时，默认值为 `-1`。|
 | `START` | `MINVALUE` 或 `MAXVALUE` | 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`; 当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。|
 | `CACHE` | `1000` | 指定每个 TiDB 本地缓存序列的大小。|
-| `CYCLE` | `NO CYCLE` | 指定序列用完之后是否要循环使用。在 `CYCLE` 的情况下，当 `INCREMENT` > `0` 时，后续起始值为 `MINVALUE`；当 `INCREMENT` < `0` 时，后续起始值为 `MAXVALUE`。|
+| `CYCLE` | `NO CYCLE` | 指定序列用完之后是否要循环使用。在 `CYCLE` 的情况下，当 `INCREMENT` > `0` 时，序列用完后的后续起始值为 `MINVALUE`；当 `INCREMENT` < `0` 时，序列用完后的后续起始值为 `MAXVALUE`。|
 | `ORDER` | `NO ORDER` | TiDB 暂时不支持 `ORDER` 选项，仅在语法上做兼容。|
 
 ## `SEQUENCE` 函数
@@ -252,7 +252,7 @@ SELECT next value for seq2;
 {{< copyable "sql" >}}
 
 ```sql
-CRATE TABLE t(a int default next value for seq2);
+CREATE TABLE t(a int default next value for seq2);
 ```
 
 ```
