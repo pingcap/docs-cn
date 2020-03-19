@@ -310,6 +310,8 @@ plan_digest: 6afbbd21f60ca6c6fdf3d3cd94f7c7a49dd93c00fcf8774646da492e50e204ee
 
 ### (6) 查询集群各个 TIDB 节点的慢查询数量
 
+{{< copyable "sql" >}}
+
 ```sql
 select instance, count(*) from information_schema.cluster_slow_query where time >= "2020-03-06 00:00:00" and time < now() group by instance;
 ```
