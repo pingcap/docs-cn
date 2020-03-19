@@ -396,7 +396,7 @@ desc information_schema.slow_query;
 
 ## CLUSTER_SLOW_QUERY 表
 
-`CLUSTER_SLOW_QUERY` 表中提供了集群所有节点的慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，该表使用上和 `SLOW_QUERY` 一样，表结构上比 `SLOW_QUERY` 多一列 `INSTANCE`，表示该行慢查询信息来自于的 TiDB 节点地址。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)。
+`CLUSTER_SLOW_QUERY` 表中提供了集群所有节点的慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，该表使用上和 [`SLOW_QUERY`](#slow_query-表) 一样，表结构上比 `SLOW_QUERY` 多一列 `INSTANCE`，表示该行慢查询信息来自的 TiDB 节点地址。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)。
 
 {{< copyable "sql" >}}
 
