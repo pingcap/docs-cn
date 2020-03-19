@@ -27,7 +27,8 @@ category: reference
 | metric 名称 | 说明 |
 |:----|:------------|
 | Checkpoint TSO | Drainer 已经同步到下游的 binlog 的最大 TSO 对应的时间。可以通过该指标估算同步延迟时间 |
-| Pump Handle TSO | 记录 Drainer 从各个 Pump 获取到的 binlog 的最大 TSO 对应的时间 | | Pull Binlog QPS by Pump NodeID | Drainer 从每个 Pump 获取 binlog 的 QPS |
+| Pump Handle TSO | 记录 Drainer 从各个 Pump 获取到的 binlog 的最大 TSO 对应的时间 |
+| Pull Binlog QPS by Pump NodeID | Drainer 从每个 Pump 获取 binlog 的 QPS |
 | 95% Binlog Reach Duration By Pump | 记录 binlog 从写入 Pump 到被 Drainer 获取到这个过程的延迟时间 |
 | Error By Type | Drainer 遇到的 error 数量，按照 error 的类型进行统计 |
 | SQL Query Time| Drainer 在下游执行 SQL 的耗时 |
