@@ -31,12 +31,12 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 1. 部署目标机器若干
 
     - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见[部署建议](/how-to/deploy/hardware-recommendations.md)。
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统，x86_64 架构 (amd64)。
+    - 目前支持在 x86_64 (AMD64) 和 ARM64 两种架构上部署 TiDB 集群。在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统；在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统。
     - 机器之间内网互通。
 
     > **注意：**
     >
-    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to/get-started/deploy-tidb-from-docker-compose.md)单机进行测试。
+    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。**如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to/get-started/deploy-tidb-from-docker-compose.md)单机进行测试。**
 
 2. 部署中控机一台
 
@@ -419,6 +419,8 @@ analyzing CPU 0:
 > **注意：**
 >
 > 请使用内网 IP 来部署集群，如果部署目标机器 SSH 端口非默认的 22 端口，需添加 `ansible_port` 变量，如 `TiDB1 ansible_host=172.16.10.1 ansible_port=5555`。
+>
+> 如果是 ARM 架构的机器，需要将 `cpu_architecture` 改为 `arm64`。
 
 你可以根据实际场景从以下两种集群拓扑中选择一种：
 
@@ -602,6 +604,7 @@ TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy
 | 变量            | 含义                                                        |
 | :--------------- | :-------------------------------------------------------- |
 | `cluster_name` | 集群名称，可调整 |
+| `cpu_architecture` | CPU 体系架构，默认为 `amd64`，可选 `arm64` |
 | `tidb_version` | TiDB 版本，TiDB Ansible 各分支默认已配置 |
 | `process_supervision` | 进程监管方式，默认为 `systemd`，可选 `supervise` |
 | `timezone` | 新安装 TiDB 集群第一次启动 bootstrap（初始化）时，将 TiDB 全局默认时区设置为该值。TiDB 使用的时区后续可通过 `time_zone` 全局变量和 session 变量来修改，参考[时区支持](/how-to/configure/time-zone.md)。默认为 `Asia/Shanghai`，可选值参考 [timzone 列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。 |
@@ -732,7 +735,6 @@ TiDB 兼容 MySQL，因此可使用 MySQL 客户端直接连接 TiDB。推荐配
 | Node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | blackbox_exporter_port | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | grafana_port |  3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
-| Grafana | grafana_collector_port |  8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
 | Kafka_exporter | kafka_exporter_port | 9308 | Kafka_exporter 通信端口，用于监控 binlog Kafka 集群 |
 
 ### 如何自定义部署目录
