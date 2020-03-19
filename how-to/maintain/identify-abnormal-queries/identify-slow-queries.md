@@ -290,6 +290,8 @@ min(query) | SELECT DISTINCT c FROM sbtest11 WHERE id BETWEEN ? AND ? ORDER BY c
 
 然后可以用查询结果中的 SQL 指纹进一步查询不同的 plan
 
+{{< copyable "sql" >}}
+
 ```sql
 select min(plan),plan_digest
 from cluster_slow_query where digest='17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94'
@@ -313,7 +315,7 @@ plan_digest: 6afbbd21f60ca6c6fdf3d3cd94f7c7a49dd93c00fcf8774646da492e50e204ee
               └─TableScan_11    cop     1.2440069558121831      table:sbtest25, range:[472745,472844], keep order:false
 ```
 
-### (6) 查询集群各个 TIDB 节点的慢查询数量
+### 查询集群各个 TIDB 节点的慢查询数量
 
 {{< copyable "sql" >}}
 
