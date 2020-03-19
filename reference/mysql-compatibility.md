@@ -25,7 +25,6 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 全文/空间函数与索引
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * `BINARY` 之外的排序规则
-* 增加/删除主键
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
