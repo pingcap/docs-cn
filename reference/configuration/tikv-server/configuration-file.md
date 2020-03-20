@@ -96,7 +96,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `unify-read-pool`
 
 + 是否使用单个线程池处理所有的读请求。
-+ 默认值：如果 `readpool.storage` 和 `readpool.coprocessor` 中没有自定义配置，则该选项默认值为 true，否则为 false.
++ 默认值：如果 `readpool.storage` 和 `readpool.coprocessor` 中没有自定义配置，则该选项默认值为 true。否则默认值为 false。
 
 ## readpool.unified
 
