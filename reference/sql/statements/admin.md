@@ -30,11 +30,15 @@ ADMIN SHOW DDL JOBS;
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ```
 
+`ADMIN SHOW DDL JOB QUERIES` 用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句。
+
 {{< copyable "sql" >}}
 
 ```sql
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ```
+
+`ADMIN CANCEL DDL JOBS` 用于取消当前正在运行的 `job_id` 的 DDL 作业，并返回对应作业是否取消成功。如果取消失败，会显示失败的具体原因。
 
 {{< copyable "sql" >}}
 
@@ -42,6 +46,17 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ```
 
+<<<<<<< HEAD
+=======
+{{< copyable "sql" >}}
+
+```sql
+ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
+```
+
+`ADMIN CHECK TABLE` 用于对表 `tbl_name` 中的所有数据和对应索引进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
+
+>>>>>>> 80e16ce... sql: refine doc for admin (#2504)
 ## 语句概览
 
 **AdminStmt**：
