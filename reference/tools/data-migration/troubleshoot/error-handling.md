@@ -50,7 +50,7 @@ category: reference
 3. 将上游对应的 binlog 文件复制到 relay log 目录作为 relay log 文件。
 4. 更新 relay log 目录内对应的 `relay.meta` 文件以从下一个 binlog 开始拉取。如果 DM worker 已开启 enable_gtid。那么在修改时，同样需要修改下一个 binlog 对应的 GTID，如果未开启则无需更改。
 
-    例如：报错时有 `binlog-name = "mysql-bin.004451"` 与`binlog-pos = 2453`，则将其分别更新为 `binlog-name = "mysql-bin.004452"` ，`binlog-pos = 4`，`binlog-gtid = "f0e914ef-54cf-11e7-813d-6c92bf2fa791:1-138218058"`。
+    例如：报错时有 `binlog-name = "mysql-bin.004451"` 与 `binlog-pos = 2453`，则将其分别更新为 `binlog-name = "mysql-bin.004452"` 和 `binlog-pos = 4`，同时更新 `binlog-gtid = "f0e914ef-54cf-11e7-813d-6c92bf2fa791:1-138218058"`。
 5. 重启 DM-worker。
 
 对于 binlog replication 处理单元，可通过以下步骤手动恢复：
