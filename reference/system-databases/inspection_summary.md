@@ -9,8 +9,13 @@ category: reference
 
 诊断汇总表 `information_schema.inspection_summary` 的表结构如下：
     
+{{< copyable "sql" >}}    
+    
 ```sql
 mysql> desc inspection_summary;
+```
+
+```
 +--------------+-----------------------+------+------+---------+-------+
 | Field        | Type                  | Null | Key  | Default | Extra |
 +--------------+-----------------------+------+------+---------+-------+
@@ -41,9 +46,11 @@ mysql> desc inspection_summary;
 
 诊断结果表和诊断监控汇总表都可以通过 hint 的方式指定诊断的时间范围，比如 select **+ time_range('2020-03-07 12:00:00','2020-03-07 13:00:00') */* from inspection_summary 对2020-03-07 12:00:00 - 2020-03-07 13:00:00 时间段的监控汇总。和监控汇总表一样，通过两个不同时间段的数据进行对比，快速发现差异较大的监控项。以下为一个例子：
 
-```sql
 诊断集群在时间段 "2020-01-16 16:00:54.933", "2020-01-16 16:10:54.933" 的故障:
 
+{{< copyable "sql" >}}
+
+```sql
 mysql> SELECT
          t1.avg_value / t2.avg_value AS ratio,
          t1.*,

@@ -7,8 +7,13 @@ category: reference
 
 集群负载表 `CLUSTER_LOAD` 提供了集群不同节点的不同硬件类型的当前负载信息。
 
-```field
-mysql> desc cluster_load;
+{{< copyable "sql" >}}
+
+```sql
+desc cluster_load;
+```
+
+```
 +-------------+--------------+------+------+---------+-------+
 | Field       | Type         | Null | Key  | Default | Extra |
 +-------------+--------------+------+------+---------+-------+
@@ -37,8 +42,13 @@ mysql> desc cluster_load;
 
 具体示例，查询集群的 CPU 负载信息：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select * from cluster_load where device_type='cpu' and device_name='cpu';
+select * from cluster_load where device_type='cpu' and device_name='cpu';
+```
+
+```
 +------+-----------------+-------------+-------------+--------+---------------+
 | TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME   | VALUE         |
 +------+-----------------+-------------+-------------+--------+---------------+

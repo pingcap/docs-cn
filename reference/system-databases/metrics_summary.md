@@ -13,8 +13,13 @@ category: reference
 这两张表用于汇总所有监控数据，以提升用户对各个监控指标进行排查的效率。
 两者不同在于 information_schema.metrics_summary_by_label 会对不同的 label 使用区分统计。
 
-```field
+{{< copyable "sql" >}}
+
+```sql
 mysql> desc metrics_summary;
+```
+
+```
 +--------------+-----------------------+------+------+---------+-------+
 | Field        | Type                  | Null | Key  | Default | Extra |
 +--------------+-----------------------+------+------+---------+-------+
@@ -41,14 +46,19 @@ mysql> desc metrics_summary;
 具体查询示例：
 以查询 ['2020-03-08 13:23:00', '2020-03-08 13:33:00') 时间范围内 TiDB 集群中平均耗时最高的 3 组监控项为例。通过直接查询 information_schema.metrics_summary 表，并通过 /*+ time_range() */ 这个 hint 来指定时间范围来构造以下 SQL：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
-       from information_schema.`METRICS_SUMMARY`
-       where metrics_name like 'tidb%duration'
-         and avg_value > 0
-         and quantile = 0.99
-       order by avg_value desc
-       limit 3\G
+select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
+from information_schema.`METRICS_SUMMARY`
+where metrics_name like 'tidb%duration'
+ and avg_value > 0
+ and quantile = 0.99
+order by avg_value desc
+limit 3\G
+```
+
+```
 ***************************[ 1. row ]***************************
 METRICS_NAME | tidb_get_token_duration
 QUANTILE     | 0.99
@@ -77,14 +87,19 @@ COMMENT      | The quantile of kv requests durations by store
 
 类似的，查询 metrics_summary_by_label 监控汇总表结果如下：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
-       from information_schema.`METRICS_SUMMARY_BY_LABEL`
-       where metrics_name like 'tidb%duration'
-         and avg_value > 0
-         and quantile = 0.99
-       order by avg_value desc
-       limit 10\G
+select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
+from information_schema.`METRICS_SUMMARY_BY_LABEL`
+where metrics_name like 'tidb%duration'
+ and avg_value > 0
+ and quantile = 0.99
+order by avg_value desc
+limit 10\G
+```
+
+```
 ***************************[ 1. row ]***************************
 INSTANCE     | 172.16.5.40:10089
 METRICS_NAME | tidb_get_token_duration
@@ -127,28 +142,33 @@ COMMENT      | The quantile of TiDB query durations(second)
 
 查询 t1.avg_value / t2.avg_value 差异最大的 10 个监控项:
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT
-         t1.avg_value / t2.avg_value AS ratio,
-         t1.metrics_name,
-         t1.avg_value,
-         t2.avg_value,
-         t2.comment
-       FROM
-         (
-           SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/
-             *
-           FROM information_schema.metrics_summary
-         ) t1
-         JOIN
-         (
-           SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/
-             *
-           FROM information_schema.metrics_summary
-         ) t2
-         ON t1.metrics_name = t2.metrics_name
-       ORDER BY
-         ratio DESC limit 10;
+SELECT
+ t1.avg_value / t2.avg_value AS ratio,
+ t1.metrics_name,
+ t1.avg_value,
+ t2.avg_value,
+ t2.comment
+FROM
+ (
+   SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/
+     *
+   FROM information_schema.metrics_summary
+ ) t1
+ JOIN
+ (
+   SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/
+     *
+   FROM information_schema.metrics_summary
+ ) t2
+ ON t1.metrics_name = t2.metrics_name
+ORDER BY
+ ratio DESC limit 10;
+```
+
+```
 +----------------+-----------------------------------+-------------------+-------------------+--------------------------------------------------------------------------+
 | ratio          | metrics_name                      | avg_value         | avg_value         | comment                                                                  |
 +----------------+-----------------------------------+-------------------+-------------------+--------------------------------------------------------------------------+
@@ -175,28 +195,33 @@ mysql> SELECT
 
 反过来，查询 t2.avg_value / t1.avg_value 差异最大的 10 个监控项:
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> SELECT
-         t2.avg_value / t1.avg_value AS ratio,
-         t1.metrics_name,
-         t1.avg_value,
-         t2.avg_value,
-         t2.comment
-       FROM
-         (
-           SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/
-             *
-           FROM information_schema.metrics_summary
-         ) t1
-         JOIN
-         (
-           SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/
-             *
-           FROM information_schema.metrics_summary
-         ) t2
-         ON t1.metrics_name = t2.metrics_name
-       ORDER BY
-         ratio DESC limit 10;
+SELECT
+ t2.avg_value / t1.avg_value AS ratio,
+ t1.metrics_name,
+ t1.avg_value,
+ t2.avg_value,
+ t2.comment
+FROM
+ (
+   SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/
+     *
+   FROM information_schema.metrics_summary
+ ) t1
+ JOIN
+ (
+   SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/
+     *
+   FROM information_schema.metrics_summary
+ ) t2
+ ON t1.metrics_name = t2.metrics_name
+ORDER BY
+ ratio DESC limit 10;
+```
+
+```
 +----------------+-----------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+
 | ratio          | metrics_name                            | avg_value      | avg_value        | comment                                                                                     |
 +----------------+-----------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+

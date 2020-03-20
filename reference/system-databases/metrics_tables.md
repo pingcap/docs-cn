@@ -7,8 +7,13 @@ category: reference
 
 `METRICS_TABLES` 表提供了 `metrics_schema` 中所有监控表的相关信息。
 
-```field
-mysql> desc metrics_tables;
+{{< copyable "sql" >}}
+
+```sql
+desc metrics_tables;
+```
+
+```
 +------------+-----------------+------+------+---------+-------+
 | Field      | Type            | Null | Key  | Default | Extra |
 +------------+-----------------+------+------+---------+-------+

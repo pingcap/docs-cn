@@ -14,8 +14,13 @@ category: reference
 
 `tidb_query_duration` 的表结构如下，从表的 COMMENT 中可以看出，这个表的是用来查询 TiDB query 执行的百分位时间，如 P999，P99，P90 的查询耗时，单位是秒。
 
+{{< copyable "sql" >}}
+
 ```sql
-metrics_schema> show create table tidb_query_duration;
+show create table tidb_query_duration;
+```
+
+```
 +---------------------+--------------------------------------------------------------------------------------------------------------------+
 | Table               | Create Table                                                                                                       |
 +---------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -31,8 +36,13 @@ metrics_schema> show create table tidb_query_duration;
 
 比如 tikv_admin_apply 有三个 label，对应的表也会有三个额外的列。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc metrics_schema.tikv_admin_apply;
+desc metrics_schema.tikv_admin_apply;
+```
+
+```
 +----------+-------------------+------+------+---------+-------+
 | Field    | Type              | Null | Key  | Default | Extra |
 +----------+-------------------+------+------+---------+-------+
@@ -47,8 +57,13 @@ mysql> desc metrics_schema.tikv_admin_apply;
 
 下面是查询当前时间的 P90 的 TiDB Query 耗时，可以看出，Select 类似的 Query 的 P90 耗时是 0.0384 秒，internal 类型的 P90 耗时是 0.00327。instance 字段是 TiDB 示例的地址。
 
+{{< copyable "sql" >}}
+
 ```sql
 metrics_schema> select * from tidb_query_duration where value is not null and time=now() and quantile=0.90;
+```
+
+```
 +---------------------+-------------------+----------+----------+------------------+
 | time                | instance          | sql_type | quantile | value            |
 +---------------------+-------------------+----------+----------+------------------+

@@ -7,8 +7,13 @@ category: reference
 
 集群负载表 `CLUSTER_SYSTEMINFO` 主要用于查询集群不同节点的内核配置信息，目前支持查询 sysctl 的信息。
 
-```field
-mysql> desc cluster_systeminfo;
+{{< copyable "sql" >}}
+
+```sql
+desc cluster_systeminfo;
+```
+
+```
 +-------------+--------------+------+------+---------+-------+
 | Field       | Type         | Null | Key  | Default | Extra |
 +-------------+--------------+------+------+---------+-------+
@@ -32,7 +37,10 @@ mysql> desc cluster_systeminfo;
 * VALUE：sysctl 对应配置项的值。
 
 ```sql
-mysql> select * from cluster_systeminfo where name like '%fd%';
+select * from cluster_systeminfo where name like '%fd%';
+```
+
+```
 +------+-----------------+-------------+-------------+-------------------------------+-------+
 | TYPE | INSTANCE        | SYSTEM_TYPE | SYSTEM_NAME | NAME                          | VALUE |
 +------+-----------------+-------------+-------------+-------------------------------+-------+

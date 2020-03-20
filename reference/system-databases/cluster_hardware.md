@@ -7,8 +7,13 @@ category: reference
 
 集群硬件表 `CLUSTER_HARDWARE` 提供了集群各节点实例的硬件信息。
 
-```field
-mysql> desc cluster_hardware;
+{{< copyable "sql" >}}
+
+```sql
+desc cluster_hardware;
+```
+
+```
 +-------------+--------------+------+------+---------+-------+
 | Field       | Type         | Null | Key  | Default | Extra |
 +-------------+--------------+------+------+---------+-------+
@@ -37,8 +42,13 @@ mysql> desc cluster_hardware;
 
 具体示例，查询集群的 CPU 信息：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select * from cluster_hardware where device_type='cpu' and device_name='cpu' and name like '%cores';
+select * from cluster_hardware where device_type='cpu' and device_name='cpu' and name like '%cores';
+```
+
+```
 +------+-----------------+-------------+-------------+--------------------+-------+
 | TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME               | VALUE |
 +------+-----------------+-------------+-------------+--------------------+-------+

@@ -11,8 +11,13 @@ TiDB 内置了一些诊断规则，用于检测系统中的故障以及隐患。
 
 诊断结果表 `information_schema.inspection_result` 的表结构如下：
 
+{{< copyable "sql" >}}
+
 ```sql
 mysql> desc inspection_result;
+```
+
+```
 +-----------+--------------+------+------+---------+-------+
 | Field     | Type         | Null | Key  | Default | Extra |
 +-----------+--------------+------+------+---------+-------+
@@ -48,8 +53,13 @@ mysql> desc inspection_result;
 
 查询已有的诊断规则:
 
+{{< copyable "sql" >}}
+
 ```sql
 mysql> select * from inspection_rules where type='inspection';
+```
+
+```
 +-----------------+------------+---------+
 | NAME            | TYPE       | COMMENT |
 +-----------------+------------+---------+

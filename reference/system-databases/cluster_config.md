@@ -7,8 +7,13 @@ category: reference
 
 集群配置表 `CLUSTER_CONFIG` 用于获取集群当前所有节点的配置，而 TiDB 4.0 之前的版本必须通过逐个访问各个节点的 HTTP API 的形式才能收集到所有节点配置。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc cluster_config;
+desc cluster_config;
+```
+
+```
 +----------+--------------+------+------+---------+-------+
 | Field    | Type         | Null | Key  | Default | Extra |
 +----------+--------------+------+------+---------+-------+
@@ -29,8 +34,13 @@ mysql> desc cluster_config;
 
 具体示例，查询 TiKV 节点的 `coprocessor` 相关配置：
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select * from cluster_config where type='tikv' and `key` like 'coprocessor%';
+select * from cluster_config where type='tikv' and `key` like 'coprocessor%';
+```
+
+```
 +------+-----------------+-----------------------------------+----------+
 | TYPE | INSTANCE        | KEY                               | VALUE    |
 +------+-----------------+-----------------------------------+----------+
