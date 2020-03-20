@@ -1,3 +1,8 @@
+---
+title: INSPECTION_RESULT
+category: reference
+---
+
 # INSPECTION_RESULT
 
 TiDB 内置了一些诊断规则，用于检测系统中的故障以及隐患。

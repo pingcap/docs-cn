@@ -1,4 +1,9 @@
-# CLUSTER_CONFIG 表
+---
+title: CLUSTER_CONFIG
+category: reference
+---
+
+# CLUSTER_CONFIG
 
 集群配置表 `CLUSTER_CONFIG` 用于获取集群当前所有节点的配置，而 TiDB 4.0 之前的版本必须通过逐个访问各个节点的 HTTP API 的形式才能收集到所有节点配置。
 

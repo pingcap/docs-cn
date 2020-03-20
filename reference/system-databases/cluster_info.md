@@ -1,4 +1,9 @@
-# CLUSTER_INFO 表
+---
+title: CLUSTER_INFO
+category: reference
+---
+
+# CLUSTER_INFO
 
 集群拓扑表 `CLUSTER_INFO` 提供了集群当前的拓扑信息，以及各个节点的版本、版本对应的 Git Hash、启动时间、运行时间信息。
 

@@ -1,3 +1,8 @@
+---
+title: INSPECTION_SUMMARY
+category: reference
+---
+
 # INSPECTION_SUMMARY
 
 在部分场景下我们只想要关注特定链路或模块的监控汇总，比如当前 Coprocessor 配置的线程池为 8，如果 Coprocessor 的 CPU 使用率达到了 750%，可以确定这里有风险，或者可能提前成为瓶颈。但是部分监控会因为用户的 workload 不同而差异较大，所以难以定义确定的阈值。这部分场景问题排查也非常重要，所以新建了 `inspection_summary` 来进行链路汇总。

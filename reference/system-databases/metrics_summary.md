@@ -1,3 +1,8 @@
+---
+title: METRICS_SUMMARY
+category: reference
+---
+
 # METRICS_SUMMARY
 
 由于 TiDB 集群的监控指标数量较大，因此为了方便用户能更加便捷地从众多监控中找出异常的监控项，TiDB 4.0 提供了监控汇总表：

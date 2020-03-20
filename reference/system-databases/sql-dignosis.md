@@ -1,3 +1,8 @@
+---
+title: SQL DIAGNOSIS
+category: reference
+---
+
 # SQL DIAGNOSIS
 
 SQL 诊断功能是由 TiDB 4.0 引入的新特性，主要用于提升 TiDB 问题定位效率，相较于 4.0 版本之前，不同的信息需要使用不同工具获取的异构方式，

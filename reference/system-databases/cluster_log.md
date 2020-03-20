@@ -1,3 +1,8 @@
+---
+title: CLUSTER_LOG
+category: reference
+---
+
 # CLUSTER_LOG
 
 集群日志表 `CLUSTER_LOG` 表主要用于集群日志查询，通过将查询条件下推到各个节点，降低日志查询对集群的影响，**性能影响小于 grep 命令**。

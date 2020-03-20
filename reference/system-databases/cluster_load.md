@@ -1,3 +1,8 @@
+---
+title: CLUSTER_LOAD
+category: reference
+---
+
 # CLUSTER_LOAD
 
 集群负载表 `CLUSTER_LOAD` 提供了集群不同节点的不同硬件类型的当前负载信息。

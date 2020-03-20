@@ -1,3 +1,8 @@
+---
+title: CLUSTER_SYSTEMINFO
+category: reference
+---
+
 # CLUSTER_SYSTEMINFO
 
 集群负载表 `CLUSTER_SYSTEMINFO` 主要用于查询集群不同节点的内核配置信息，目前支持查询 sysctl 的信息。

@@ -1,3 +1,8 @@
+---
+title: CLUSTER_HARDWARE
+category: reference
+---
+
 # CLUSTER_HARDWARE
 
 集群硬件表 `CLUSTER_HARDWARE` 提供了集群各节点实例的硬件信息。

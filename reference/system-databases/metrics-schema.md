@@ -1,3 +1,8 @@
+---
+title: Metrics Schema
+category: reference
+---
+
 # Metrics Schema
 
 为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表，所有表都在 `metrics_schema` 中，可以通过 SQL 的方式查询监控，SQL 查询监控的好处在于可以对整个集群的所有监控进行关联查询，
