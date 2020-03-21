@@ -69,7 +69,7 @@ The downstream database (TiDB) user must have the following privileges:
 |:----|:----|
 | `SELECT` | Tables |
 | `INSERT` | Tables |
-| `UPDATE`| Tables |
+| `UPDATE` | Tables |
 | `DELETE` | Tables |
 | `CREATE` | Databases, tables |
 | `DROP` | Databases, tables |
