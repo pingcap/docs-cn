@@ -759,7 +759,6 @@ Edit the `inventory.ini` file and add the following host variable after the IP o
 | Pushgateway   | pushgateway_port   | 9091         | the aggregation and report port for TiDB, TiKV, and PD monitor |
 | Node_exporter | node_exporter_port | 9100         | the communication port to report the system information of every TiDB cluster node |
 | Grafana       | grafana_port       | 3000         | the port for the external Web monitoring service and client (Browser) access |
-| Grafana | grafana_collector_port | 8686 | the grafana_collector communication port, used to export Dashboard as the PDF format |
 | Kafka_exporter | kafka_exporter_port | 9308 | the communication port for Kafka_exporter, used to monitor the binlog Kafka cluster |
 
 ### How to customize the deployment directory?
