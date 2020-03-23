@@ -310,6 +310,7 @@
         - [Black & White Lists](/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [同步延迟监控](/reference/tools/data-migration/features/overview.md#同步延迟监控)
+        - [Online-ddl-scheme](/reference/tools/data-migration/features/online-ddl-scheme.md)
         + Shard Support
           - [简介](/reference/tools/data-migration/features/shard-merge.md)
           - [使用限制](/reference/tools/data-migration/features/shard-merge.md#使用限制)
@@ -416,6 +417,8 @@
     + 工具
       - [tkctl](/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
+    + 组件
+      - [TiDB Scheduler 扩展调度器](/tidb-in-kubernetes/reference/components/tidb-scheduler.md)
   - [故障诊断](/tidb-in-kubernetes/troubleshoot.md)
   - [常见问题](/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
