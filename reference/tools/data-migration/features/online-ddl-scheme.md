@@ -65,22 +65,32 @@ DM 在同步过程中会把上述 table 分成 3 类：
                         primary key(id),
                         unique key hint_uidx(hint)
                 ) auto_increment=256 ;
+```
 
+```sql
 -- 2.
    Create /* gh-ost */ table `test`.`_test4_gho` like `test`.`test4` ;
+```
 
+```sql
 -- 3.
    Alter /* gh-ost */ table `test`.`_test4_gho` add column cl1 varchar(20) not null ;
+```
 
+```sql
 -- 4.
    Insert /* gh-ost */ into `test`.`_test4_ghc`;
+```
 
+```sql
 -- 5.
    Insert /* gh-ost `test`.`test4` */ ignore into `test`.`_test4_gho` (`id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`)
       (select `id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2` from `test`.`test4` force index (`PRIMARY`)
         where (((`id` > _binary'1') or ((`id` = _binary'1'))) and ((`id` < _binary'2') or ((`id` = _binary'2')))) lock in share mode
       )   ;
+```
 
+```sql
 -- 6.
    Rename /* gh-ost */ table `test`.`test4` to `test`.`_test4_del`, `test`.`_test4_gho` to `test`.`test4`;
 ```
@@ -138,25 +148,35 @@ DM 在同步过程中会把上述 table 分成 3 类：
 
 pt-osc 主要涉及的 SQL如下：
 
-``` sql
+```sql
 -- 1.
    CREATE TABLE `test`.`_test4_new` ( id int(11) NOT NULL AUTO_INCREMENT,
    date date DEFAULT NULL, account_id bigint(20) DEFAULT NULL, conversion_price decimal(20,3) DEFAULT NULL,  ocpc_matched_conversions bigint(20) DEFAULT NULL, ad_cost decimal(20,3) DEFAULT NULL,cl2 varchar(20) COLLATE utf8mb4_bin NOT NULL,cl1 varchar(20) COLLATE utf8mb4_bin NOT NULL,PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ;
+```
 
+```sql
 -- 2.
    ALTER TABLE `test`.`_test4_new` add column c3 int
+```
 
+```sql
 -- 3.
    CREATE TRIGGER `pt_osc_test_test4_del` AFTER DELETE ON `test`.`test4` ...... ;
    CREATE TRIGGER `pt_osc_test_test4_upd` AFTER UPDATE ON `test`.`test4` ...... ;
    CREATE TRIGGER `pt_osc_test_test4_ins` AFTER INSERT ON `test`.`test4` ...... ;
+```
 
+```sql
 -- 4.
    INSERT LOW_PRIORITY IGNORE INTO `test`.`_test4_new` (`id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`, `cl1`) SELECT `id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`, `cl1` FROM `test`.`test4` LOCK IN SHARE MODE /*pt-online-schema-change 3227 copy table*/
+```
 
+```sql
 -- 5.
    RENAME TABLE `test`.`test4` TO `test`.`_test4_old`, `test`.`_test4_new` TO `test`.`test4`
+```
 
+```sql
 -- 6.
    DROP TABLE IF EXISTS `test`.`_test4_old`;
    DROP TRIGGER IF EXISTS `pt_osc_test_test4_del` AFTER DELETE ON `test`.`test4` ...... ;
