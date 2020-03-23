@@ -91,28 +91,30 @@ DM 在同步过程中会把上述 table 分成 3 类：
 
 ### DM 对于 **online-ddl-scheme: gh-ost** 的处理
 
-- 不执行 `_test4_ghc` 的创建操作。
-- 不执行 `_test4_gho` 的创建操作，根据 ghost_schema、ghost_table 以及 dm_worker 的 server_id 删除下游 dm_meta.{task_name}\_onlineddl 的记录，清理内存中的相关信息。
+1. 不执行 `_test4_ghc` 的创建操作。
+
+2. 不执行 `_test4_gho` 的创建操作，根据 ghost_schema、ghost_table 以及 dm_worker 的 server_id 删除下游 dm_meta.{task_name}\_onlineddl 的记录，清理内存中的相关信息。
 
     ```sql
     DELETE FROM dm_meta.{task_name}_onlineddl WHERE id = {server_id} and ghost_schema = {ghost_schema} and ghost_table = {ghost_table};
     ```
 
-- 不执行 `_test4_gho` 的 DDL 操作。把执行的 DDL 记录到 dm_meta.{task_name}\_onlineddl 以及内存中。
+3. 不执行 `_test4_gho` 的 DDL 操作。把执行的 DDL 记录到 dm_meta.{task_name}\_onlineddl 以及内存中。
 
     ```sql
     REPLACE INTO dm_meta.{task_name}_onlineddl (id, ghost_schema , ghost_table , ddls) VALUES (......);
     ```
 
-- 只要不是 **realtable** 的 DML 全部不执行。
-- rename 拆分成两个 SQL。
+4. 只要不是 **realtable** 的 DML 全部不执行。
+
+5. rename 拆分成两个 SQL。
 
     ```sql
     rename test.test4 to test._test4_del;
     rename test._test4_gho to test.test4;
     ```
 
-- 不执行 `rename to _test4_del`。当要执行 `rename ghost_table to origin table` 的时候，并不执行 rename，而是把步骤 3 内存中的 DDL 读取出来，然后把 ghost_table、ghost_schema 替换为 origin_table 以及对应的 schema 再执行。
+6. 不执行 `rename to _test4_del`。当要执行 `rename ghost_table to origin table` 的时候，并不执行 rename，而是把步骤 3 内存中的 DDL 读取出来，然后把 ghost_table、ghost_schema 替换为 origin_table 以及对应的 schema 再执行。
 
     ```sql
     alter table test._test4_gho add column cl1 varchar(20) not null;
