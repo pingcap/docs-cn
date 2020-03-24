@@ -61,7 +61,7 @@
     + [备份与恢复](/how-to/maintain/backup-and-restore.md)
     + 定位异常查询
       - [定位慢查询](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
-      - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-aborted-queries.md)
+      - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-expensive-queries.md)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/how-to/scale/with-ansible.md)
   + 升级
@@ -273,6 +273,9 @@
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)
     - [运维管理](/reference/tidb-binlog/maintain.md)
+    - [配置说明](/reference/tidb-binlog/configs.md)
+      - [Pump](/reference/tidb-binlog/configs.md#pump)
+      - [Drainer](/reference/tidb-binlog/configs.md#drainer)
     - [版本升级](/reference/tidb-binlog/upgrade.md)
     - [监控告警](/reference/tidb-binlog/monitor.md)
     - [增量恢复](/reference/tidb-binlog/reparo.md)
@@ -301,6 +304,7 @@
         - [Black & White Lists](/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [同步延迟监控](/reference/tools/data-migration/features/overview.md#同步延迟监控)
+        - [Online-ddl-scheme](/reference/tools/data-migration/features/online-ddl-scheme.md)
         + Shard Support
           - [简介](/reference/tools/data-migration/features/shard-merge.md)
           - [使用限制](/reference/tools/data-migration/features/shard-merge.md#使用限制)
@@ -389,7 +393,7 @@
         - [恢复 GCS 上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-gcs.md)
         - [备份 TiDB 集群到兼容 S3 的存储](/tidb-in-kubernetes/maintain/backup-and-restore/backup-s3.md)
         - [恢复 S3 兼容存储上的备份数据](/tidb-in-kubernetes/maintain/backup-and-restore/restore-s3.md)
-    - [恢复 Kubernetes 上的 TiDB 集群数据](/tidb-in-kubernetes/maintain/lightning.md)
+      - [使用 TiDB Lightning 恢复集群数据](/tidb-in-kubernetes/maintain/backup-and-restore/lightning.md)
     - [收集日志](/tidb-in-kubernetes/maintain/log-collecting.md)
     - [集群故障自动转移](/tidb-in-kubernetes/maintain/auto-failover.md)
     - [TiDB Binlog](/tidb-in-kubernetes/maintain/tidb-binlog.md)
@@ -407,6 +411,8 @@
     + 工具
       - [tkctl](/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
+    + 组件
+      - [TiDB Scheduler 扩展调度器](/tidb-in-kubernetes/reference/components/tidb-scheduler.md)
   - [故障诊断](/tidb-in-kubernetes/troubleshoot.md)
   - [常见问题](/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
@@ -422,6 +428,7 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/rn.md)
   + v3.0
+    - [3.0.12](/releases/3.0.12.md)
     - [3.0.11](/releases/3.0.11.md)
     - [3.0.10](/releases/3.0.10.md)
     - [3.0.9](/releases/3.0.9.md)

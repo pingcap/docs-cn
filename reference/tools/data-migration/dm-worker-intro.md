@@ -71,7 +71,7 @@ GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 |:----|:----|
 | `SELECT` | Tables |
 | `INSERT` | Tables |
-| `UPDATE`| Tables |
+| `UPDATE` | Tables |
 | `DELETE` | Tables |
 | `CREATE` | Databases，tables |
 | `DROP` | Databases，tables |
