@@ -257,6 +257,18 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 + 默认值：2GB
 + 单位: MB|GB
 
+## storage.block-cache
+
+Rocksdb 多个 CF 之间共享 block cache 相关的配置选项，当开启时，为每个 CF 单独配置的 block cache 将无效。
+
+### `shared`
++ 是否开启共享 block cache
++ 默认值：true
+
+###  `capacity`
++ 共享 block cache 的大小
++ 默认值：系统总内存大小的 45%
+
 ## raftstore
 
 raftstore 相关的配置项。
@@ -1022,6 +1034,22 @@ rocksdb defaultcf titan 相关的配置项。
 + 最小值：0
 + 单位：KB|MB|GB
 
+### `blob-run-mode`
+
++ Titan 的运行模式选择：正常写入；只读不再写入 blob；回退将 blob 写回 LSM
++ 默认值："normal"
++ 可选值："normal"|"read_only"|"fallback"
+
+### `level-merge`
+
++ 是否开启 level-merge 牺牲些写放大以提升读性能
++ 默认值：true
+
+### `gc-merge-rewrite`
+
++ 是否开启使用 merge operator 来进行 Titan GC 写回
++ 默认值：true
+
 ## rocksdb.writecf
 
 rocksdb writecf 相关的配置项。
@@ -1135,3 +1163,4 @@ import 相关的配置项。
 
 + 悲观事务释放锁时，只会唤醒等锁事务中 start ts 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 毫秒之后被唤醒。
 + 默认值：20
+
