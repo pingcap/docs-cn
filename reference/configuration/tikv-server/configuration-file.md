@@ -259,7 +259,7 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 
 ## storage.block-cache
 
-Rocksdb 多个 CF 之间共享 block cache 的配置选项，当开启时，为每个 CF 单独配置的 block cache 将无效。
+RocksDB 多个 CF 之间共享 block cache 的配置选项，当开启时，为每个 CF 单独配置的 block cache 将无效。
 
 ### `shared`
 
