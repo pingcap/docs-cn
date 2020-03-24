@@ -53,7 +53,6 @@ Row Changed Event 代表一行的数据变化，在 Row 发生变更时被发出
 }
 ```
 
-
 | 参数         | 类型   | 说明                    |
 | ----------- | ------ | ---------------------- |
 | UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "update"/"delete" |
@@ -129,7 +128,7 @@ None
 # 示例
 
 设上游执行如下 SQL, MQ Partition 数量为 2：
-```SQL
+```sql
 CREATE TABLE test.t1(id int primary key, val varchar(16));
 
 BEGIN;
