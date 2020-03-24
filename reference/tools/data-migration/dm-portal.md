@@ -193,28 +193,3 @@ DM Portal 可以在 [dm-portal-latest-linux-amd64.tar.gz](https://download.pingc
 ##### 完成并下载
 
 ![DM Portal GenerateConfig](/media/dm-portal-generateconfig.png)
-
-### 编辑规则
-
-#### 功能描述
-
-可以将之前创建的 `task.yaml` 上传后，解析出来之前的填写的配置信息，对部分配置进行修改。
-
-#### 前置条件
-
-* 已经创建出 `task.yaml` 文件。
-* 非 DM Portal 创建出来的 `task.yaml` 文件不可使用。
-
-#### 注意事项
-
-* 不允许修改实例配置信息
-
-#### 操作步骤
-
-1. 在首页，点击**编辑同步规则**。
-2. 选择上传 `task.yaml` 文件。
-3. 解析成功后，页面会自动跳转。
-
-![DM Portal EditConfig](/media/dm-portal-editconfig.png)
-
-![DM Portal UploadConfig](/media/dm-portal-uploadconfig.png)
