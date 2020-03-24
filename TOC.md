@@ -377,7 +377,11 @@
       - [Troubleshoot](/how-to/troubleshoot/tidb-lightning.md)
       - [FAQ](/faq/tidb-lightning.md)
       - [Glossary](/reference/tools/tidb-lightning/glossary.md)
-    - [sync-diff-inspector](/reference/tools/sync-diff-inspector/overview.md)
+    + sync-diff-inspector
+      - [Overview](/reference/tools/sync-diff-inspector/overview.md)
+      - [Data Check for Tables with Different Schema or Table Names](/reference/tools/sync-diff-inspector/route-diff.md)
+      - [Data Check in the Sharding Scenario](/reference/tools/sync-diff-inspector/shard-diff.md)
+      - [Data Check for TiDB Upstream and Downstream Clusters](/reference/tools/sync-diff-inspector/tidb-diff.md)
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
