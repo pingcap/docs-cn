@@ -258,8 +258,8 @@ Similar to slow scheduling, the speed of region merge is most likely limited by 
 
 - A lot of tables have been created and then emptied (including truncated tables). These empty regions cannot be merged if the split table attribute is enabled. You can disable this attribute by adjusting the following parameters:
 
-    - TiKV: set `split-region-on-table` to `false`
-    - PD: set `namespace-classifier` to ""
+    - TiKV: Set `split-region-on-table` to `false`. You cannot modify the parameter dynamically.
+    - PD: Set `key-type` to `"txn"` or `"raw"`. You can modify the parameter dynamically.
 
 For v3.0.4 and v2.1.16 or earlier, the `approximate_keys` of regions are inaccurate in specific circumstances (most of which occur after dropping tables), which makes the number of keys break the constraints of `max-merge-region-keys`. To avoid this problem, you can adjust `max-merge-region-keys` to a larger value.
 
