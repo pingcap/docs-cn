@@ -28,7 +28,7 @@ TiDB 集群包括 PD，TiKV 以及 TiDB 三个核心组件，每个组件又是�
 
 ### TiKV 组件
 
-调度规则二：如果 Kubernetes 节点数小于 3 个（Kubernetes 集群节点数小于 3 个是无法实现 TiKV 高可用的），则可以任意调度；否则，每个节点上可调度的 TiKV 个数的计算公式为：Ceil (`Replicas / 3`) 。例如：
+调度规则二：如果 Kubernetes 节点数小于 3 个（Kubernetes 集群节点数小于 3 个是无法实现 TiKV 高可用的），则可以任意调度；否则，每个节点上可调度的 TiKV 个数的计算公式为：`ceil(Replicas/3)` 。例如：
 
 | TiKV 集群规模（Replicas）  | 每个节点最多可调度的 TiKV 副本数量 | 最佳调度分布 |
 | ------------- | ------------- | ------------- |
