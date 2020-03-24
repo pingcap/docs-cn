@@ -48,13 +48,13 @@ tidb> create table t(a int);
 Query OK, 0 rows affected (0.01 sec)
 
 tidb> explain select * from t where a < 2 and a > 2;
-+---------------------+----------+------+------------------------------------------------------------+
-| id                  | count    | task | operator info                                              |
-+---------------------+----------+------+------------------------------------------------------------+
-| TableReader_7       | 0.00     | root | data:Selection_6                                           |
-| └─Selection_6       | 0.00     | cop  | gt(test.t.a, 2), lt(test.t.a, 2)                           |
-|   └─TableScan_5     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-+---------------------+----------+------+------------------------------------------------------------+
++-------------------------+----------+-----------+---------------+----------------------------------+
+| id                      | estRows  | task      | access object | operator info                    |
++-------------------------+----------+-----------+---------------+----------------------------------+
+| TableReader_7           | 0.00     | root      |               | data:Selection_6                 |
+| └─Selection_6           | 0.00     | cop[tikv] |               | gt(test.t.a, 2), lt(test.t.a, 2) |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo   |
++-------------------------+----------+-----------+---------------+----------------------------------+
 3 rows in set (0.00 sec)
 
 tidb> insert into mysql.expr_pushdown_blacklist values('<'), ('>');
@@ -65,13 +65,13 @@ tidb> admin reload expr_pushdown_blacklist;
 Query OK, 0 rows affected (0.00 sec)
 
 tidb> explain select * from t where a < 2 and a > 2;
-+---------------------+----------+------+------------------------------------------------------------+
-| id                  | count    | task | operator info                                              |
-+---------------------+----------+------+------------------------------------------------------------+
-| Selection_5         | 8000.00  | root | gt(test.t.a, 2), lt(test.t.a, 2)                           |
-| └─TableReader_7     | 10000.00 | root | data:TableScan_6                                           |
-|   └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-+---------------------+----------+------+------------------------------------------------------------+
++-------------------------+----------+-----------+---------------+----------------------------------+
+| id                      | estRows  | task      | access object | operator info                    |
++-------------------------+----------+-----------+---------------+----------------------------------+
+| Selection_5             | 8000.00  | root      |               | gt(test.t.a, 2), lt(test.t.a, 2) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6             |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo   |
++-------------------------+----------+-----------+---------------+----------------------------------+
 3 rows in set (0.00 sec)
 
 tidb> delete from mysql.expr_pushdown_blacklist where name = '>';
@@ -81,14 +81,14 @@ tidb> admin reload expr_pushdown_blacklist;
 Query OK, 0 rows affected (0.00 sec)
 
 tidb> explain select * from t where a < 2 and a > 2;
-+-----------------------+----------+------+------------------------------------------------------------+
-| id                    | count    | task | operator info                                              |
-+-----------------------+----------+------+------------------------------------------------------------+
-| Selection_5           | 2666.67  | root | lt(test.t.a, 2)                                            |
-| └─TableReader_8       | 3333.33  | root | data:Selection_7                                           |
-|   └─Selection_7       | 3333.33  | cop  | gt(test.t.a, 2)                                            |
-|     └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-+-----------------------+----------+------+------------------------------------------------------------+
++---------------------------+----------+-----------+---------------+--------------------------------+
+| id                        | estRows  | task      | access object | operator info                  |
++---------------------------+----------+-----------+---------------+--------------------------------+
+| Selection_5               | 2666.67  | root      |               | lt(test.t.a, 2)                |
+| └─TableReader_8           | 3333.33  | root      |               | data:Selection_7               |
+|   └─Selection_7           | 3333.33  | cop[tikv] |               | gt(test.t.a, 2)                |
+|     └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
++---------------------------+----------+-----------+---------------+--------------------------------+
 4 rows in set (0.00 sec)
 ```
 

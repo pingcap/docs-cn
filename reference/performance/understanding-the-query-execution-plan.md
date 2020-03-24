@@ -2,7 +2,6 @@
 title: 理解 TiDB 执行计划
 category: reference
 ---
-
 # 理解 TiDB 执行计划
 
 TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
@@ -17,26 +16,92 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 通过观察 `EXPLAIN` 的结果，你可以知道如何给数据表添加索引使得执行计划使用索引从而加速 SQL 语句的执行速度；你也可以使用 `EXPLAIN` 来检查优化器是否选择了最优的顺序来 JOIN 数据表。
 
-## `EXPLAIN` 输出格式
+## 使用 EXPLAIN 语句查看执行计划
 
-目前 TiDB 的 `EXPLAIN` 会输出 4 列，分别是：id，count，task，operator info。执行计划中每个算子都由这 4 列属性来描述，`EXPLAIN` 结果中每一行描述一个算子。每个属性的具体含义如下：
+执行计划由一系列的算子构成。和其他数据库一样，在 TiDB 中可通过 `EXPLAIN` 语句返回的结果查看某条 `SQL` 的执行计划。
 
-| 属性名          | 含义                                                                                                                                        |
-|:----------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
-| id            | 算子的 ID，在整个执行计划中唯一的标识一个算子。在 TiDB 2.1 中，id 会格式化显示算子的树状结构。数据从 child 流向 parent，每个 算子的 parent 有且仅有一个。                                                                                       |
-| count         | 预计当前算子将会输出的数据条数，基于统计信息以及算子的执行逻辑估算而来。                                                            |
-| task          | 当前这个算子属于什么 task。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 上的任务，每个 cop task 分散在 TiKV 集群中，由多个进程共同执行。 |
-| operator info | 每个算子的详细信息。各个算子的 operator info 各有不同，详见 [Operator Info](#operator-info)。                   |
+目前 `TiDB` 的 `EXPLAIN` 会输出 5 列，分别是：`id`，`estRows`，`task`，`access object`， `operator info`。执行计划中每个算子都由这 5 列属性来描述，`EXPLAIN`结果中每一行描述一个算子。每个属性的具体含义如下：
 
-## `EXPLAIN ANALYZE` 输出格式
+| 属性名          | 含义 |
+|:----------------|:----------------------------------------------------------------------------------------------------------|
+| id            | 算子的 ID，在整个执行计划中唯一的标识一个算子。在 TiDB 2.1 中，ID 会格式化的显示算子的树状结构。数据从孩子结点流向父亲结点，每个算子的父亲结点有且仅有一个。                                                                                       |
+| estRows       | 算子预计将会输出的数据条数，基于统计信息以及算子的执行逻辑估算而来。在 4.0 之前叫 count。 |
+| task          | 算子属于的 task 种类。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 或者 TiFlash 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 或者 TiFlash 上的任务，每个 cop task 分散在 TiKV 或者 TiFlash 集群中，由多个进程共同执行。 |
+| access object | 算子所访问的数据项信息。包括表 `table`，表分区 `partition` 以及使用的索引 `index`（如果有）。只有直接访问数据的算子才拥有这些信息。 |
+| operator info | 算子的其它信息。各个算子的 operator info 各有不同，可参考下面的示例解读。 |
 
-作为 `EXPLAIN` 语句的扩展，`EXPLAIN ANALYZE` 语句执行查询并在 `execution info` 列中提供额外的执行统计信息。具体如下：
+## EXPLAIN ANALYZE 输出格式
 
-* `time` 显示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (`loops`)，这个时间就是累积的时间。
-* `loops` 是当前算子被父算子调用的次数。
-* `rows` 是当前算子返回的行的总数。例如，可以将 `count` 列的精度和 `execution_info` 列中的 `rows`/`loops` 值进行对比，据此评定查询优化器估算的精确度。
-* `memory` 是当前算子使用的内存信息，只有 root task 才会有此类信息，如果没有此信息则显示 `N/A`。
-* `disk` 是当前算子使用的磁盘信息，只有 root task 才会有此类信息，如果没有使用磁盘，则会显示 `N/A`。
+和 `EXPLAIN` 不同，`EXPLAIN ANALYZE` 会执行对应的 `SQL` 语句，记录其运行时信息，和执行计划一并返回出来，可以视为 `EXPLAIN` 语句的扩展。`EXPLAIN ANALYZE` 语句的返回结果中增加了 `actRows`, `execution info`,`memory`,`disk` 这几列信息：
+
+| 属性名          | 含义 |
+|:----------------|:---------------------------------|
+| actRows       | 算子实际输出的数据条数。 |
+| execution info  | 算子的实际执行信息。time 表示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (loops)，这个时间就是累积的时间。loops 是当前算子被父算子调用的次数。 |
+| memory  | 算子占用内存空间的大小。 |
+| disk  | 算子占用磁盘空间的大小。 |
+
+一个例子：
+
+```
+mysql> explain analyze select * from t where a < 10;
++-------------------------------+---------+---------+-----------+-------------------------+------------------------------------------------------------------------+-----------------------------------------------------+---------------+------+
+| id                            | estRows | actRows | task      | access object           | execution info                                                         | operator info                                       | memory        | disk |
++-------------------------------+---------+---------+-----------+-------------------------+------------------------------------------------------------------------+-----------------------------------------------------+---------------+------+
+| IndexLookUp_10                | 9.00    | 9       | root      |                         | time:641.245µs, loops:2, rpc num: 1, rpc time:242.648µs, proc keys:0   |                                                     | 9.23046875 KB | N/A  |
+| ├─IndexRangeScan_8(Build)     | 9.00    | 9       | cop[tikv] | table:t, index:idx_a(a) | time:142.94µs, loops:10,                                               | range:[-inf,10), keep order:false                   | N/A           | N/A  |
+| └─TableRowIDScan_9(Probe)     | 9.00    | 9       | cop[tikv] | table:t                 | time:141.128µs, loops:10                                               | keep order:false                                    | N/A           | N/A  |
++-------------------------------+---------+---------+-----------+-------------------------+------------------------------------------------------------------------+-----------------------------------------------------+---------------+------+
+3 rows in set (0.00 sec)
+```
+
+从上述例子中可以看出，优化器估算的 `estRows` 和实际执行中统计得到的 `actRows` 几乎是相等的，说明优化器估算误差很小。同时 `IndexLookUp_10` 算子在实际执行过程中使用了约 `9 KB` 的内存，该 `SQL` 在执行过程中，没有触发过任何算子的落盘操作。
+
+## 如何阅读算子的执行顺序
+
+TiDB 的执行计划是一个树形结构，树中每个节点即是算子。考虑到每个算子内多线程并发执行的情况，在一条 `SQL` 执行的过程中，如果能够有一个手术刀把这棵树切开看看，大家可能会发现所有的算子都正在消耗 `CPU` 和`内存`处理数据，从这个角度来看，算子是没有执行顺序的。
+
+但是如果从一行数据先后被哪些算子处理的角度来看，一条数据在算子上的执行是有顺序的。这个顺序可以通过下面这个规则简单总结出来：
+
+**`Build`总是先于 `Probe` 执行，并且 `Build` 总是出现 `Probe` 前面**
+
+这个原则的前半句是说：如果一个算子有多个孩子节点，孩子节点 ID 后面有 `Build` 关键字的算子总是先于有 `Probe` 关键字的算子执行。后半句是说：TiDB 在展现执行计划的时候，`Build` 端总是第一个出现，接着才是 `Probe` 端。
+
+一些例子：
+
+```
+TiDB(root@127.0.0.1:test) > explain select * from t use index(idx_a) where a = 1;
++-------------------------------+---------+-----------+-------------------------+---------------------------------------------+
+| id                            | estRows | task      | access object           | operator info                               |
++-------------------------------+---------+-----------+-------------------------+---------------------------------------------+
+| IndexLookUp_7                 | 10.00   | root      |                         |                                             |
+| ├─IndexRangeScan_5(Build)     | 10.00   | cop[tikv] | table:t, index:idx_a(a) | range:[1,1], keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)     | 10.00   | cop[tikv] | table:t                 | keep order:false, stats:pseudo              |
++-------------------------------+---------+-----------+-------------------------+---------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+这里 `IndexLookUp_7` 算子有两个孩子节点：`IndexRangeScan_5(Build)` 和 `TableRowIDScan_6(Probe)`。可以看到，`IndexRangeScan_5(Build)` 是第一个出现的，并且基于上面这条规则，要得到一条数据，需要先执行它得到一个 `RowID` 以后再由 `TableRowIDScan_6(Probe)` 根据前者读上来的 `RowID` 去获取完整的一行数据。
+
+这种规则隐含的另一个信息是：在同一层级的节点中，出现在最前面的算子可能是最先被执行的，而出现在最末尾的算子可能是最后被执行的。比如下面这个例子：
+
+```
+TiDB(root@127.0.0.1:test) > explain select * from t t1 use index(idx_a) join t t2 use index() where t1.a = t2.a;
++----------------------------------+----------+-----------+--------------------------+------------------------------------------------------------------+
+| id                               | estRows  | task      | access object            | operator info                                                    |
++----------------------------------+----------+-----------+--------------------------+------------------------------------------------------------------+
+| HashJoin_22                      | 12487.50 | root      |                          | inner join, inner:TableReader_26, equal:[eq(test.t.a, test.t.a)] |
+| ├─TableReader_26(Build)          | 9990.00  | root      |                          | data:Selection_25                                                |
+| │ └─Selection_25                 | 9990.00  | cop[tikv] |                          | not(isnull(test.t.a))                                            |
+| │   └─TableFullScan_24           | 10000.00 | cop[tikv] | table:t2                 | keep order:false, stats:pseudo                                   |
+| └─IndexLookUp_29(Probe)          | 9990.00  | root      |                          |                                                                  |
+|   ├─IndexFullScan_27(Build)      | 9990.00  | cop[tikv] | table:t1, index:idx_a(a) | keep order:false, stats:pseudo                                   |
+|   └─TableRowIDScan_28(Probe)     | 9990.00  | cop[tikv] | table:t1                 | keep order:false, stats:pseudo                                   |
++----------------------------------+----------+-----------+--------------------------+------------------------------------------------------------------+
+7 rows in set (0.00 sec)
+```
+
+要完成 `HashJoin_22`，需要先执行 `TableReader_26(Build)` 再执行 `IndexLookUp_29(Probe)`。而在执行 `IndexLookUp_29(Probe)` 的时候，又需要先执行 `IndexFullScan_27(Build)` 再执行 `TableRowIDScan_28(Probe)`。所以从整条执行链路来看，`TableRowIDScan_28(Probe)` 是最后被唤起执行的。
 
 ### 用例
 
