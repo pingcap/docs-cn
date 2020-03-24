@@ -119,25 +119,66 @@ loadWorkers=32  # The number of concurrent workers that load data.
 
 ## Load data
 
-1. Use a MySQL client to connect to the TiDB server and run the following command:
+**Loading data is usually the most time-consuming and problematic stage of the entire TPC-C test.** This section provides the following four steps to load data.
 
-    {{< copyable "sql" >}}
+First, use a MySQL client to connect to the TiDB server and run the following command:
 
-    ```sql
-    create database tpcc;
+{{< copyable "sql" >}}
+
+```sql
+create database tpcc;
+```
+
+Second, run the following BenchmarkSQL script in shell to create tables:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cd run && \
+./runSQL.sh props.mysql sql.mysql/tableCreates.sql && \
+./runSQL.sh props.mysql sql.mysql/indexCreates.sql
+```
+
+Third, use one of the following two ways to load data:
+
+* [Use BenchmarkSQL to load data directly](#use-benchmarksql-to-load-data-directly)
+* [Use TiDB Lightning to load data](#use-tidb-lightning-to-load-data)
+
+### Use BenchmarkSQL to load data directly
+
+Run the following script to load data:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+./runLoader.sh props.mysql
+```
+
+This process might last for several hours depending on the machine configuration.
+
+### Use TiDB Lightning to load data
+
+The amount of loaded data increases as the number of warehouses increases. When you need to load more than 1000 warehouses of data, you can first use BenchmarkSQL to generate CSV files, and then quickly load the CSV files through TiDB Lightning (hereinafter referred to as Lightning). The CSV files can be reused multiple times, which saves the time required for each generation.
+
+Follow the steps below to use TiDB Lightning to load data:
+
+1. Modify the BenchmarkSQL configuration file.
+
+    The CSV file of one warehouse requires 77 MB of disk space. To ensure sufficient disk space, add a line to the `benchmarksql/run/props.mysql` file:
+
+    ```text
+    fileLocation=/home/user/csv/  # The absolute path of the directory where your CSV files are stored
     ```
 
-2. Run the following BenchmarkSQL script in shell to create tables:
+    It is recommended that the CSV file names adhere to the naming rules in Lightning, that is, `{database}.{table}.csv`, because eventually you'll use Lightning to load data. Here you can modify the above configuration as follows:
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    cd run && \
-    ./runSQL.sh props.mysql sql.mysql/tableCreates.sql && \
-    ./runSQL.sh props.mysql sql.mysql/indexCreates.sql
+    ```text
+    fileLocation=/home/user/csv/tpcc.  # The absolute path of the directory where your CSV files are stored + the file name prefix (database)
     ```
 
-3. Run the following script to load data:
+    This will generate CSV files with a naming style such as `tpcc.bmsql_warehouse.csv`.
+
+2. Generate the CSV file.
 
     {{< copyable "shell-regular" >}}
 
@@ -145,9 +186,54 @@ loadWorkers=32  # The number of concurrent workers that load data.
     ./runLoader.sh props.mysql
     ```
 
-This process might last for several hours depending on the machine configuration.
+3. Use Lightning to load data.
 
-After importing data, you can run `sql.common/test.sql` to validate the correctness of the data. If all SQL statements return an empty result, then the data is correctly imported.
+    To load data using Lightning, see [TiDB Lightning Deployment](/reference/tools/tidb-lightning/deployment.md). The following steps introduce how to use TiDB Ansible to deploy Lightning and use Lightning to load data.
+
+    1. Edit `inventory.ini`.
+
+        It is recommended to manually specify the deployed IP address, the port, and the deployment directory to avoid anomalies caused by conflicts. For the disk space of `import_dir`, see [TiDB Lightning Deployment](/reference/tools/tidb-lightning/deployment.md). `data_source_dir` refers to the directory where the CSV files are stored as mentioned before.
+
+        ```ini
+        [importer_server]
+        IS1 ansible_host=172.16.5.34 deploy_dir=/data2/is1 tikv_importer_port=13323 import_dir=/data2/import
+        [lightning_server]
+        LS1 ansible_host=172.16.5.34 deploy_dir=/data2/ls1 tidb_lightning_pprof_port=23323 data_source_dir=/home/user/csv
+        ```
+
+    2. Edit `conf/tidb-lightning.yml`.
+
+        ```yaml
+        mydumper:
+            no-schema: true
+            csv:
+                separator: ','
+                delimiter: ''
+                header: false
+                not-null: false
+                'null': 'NULL'
+                backslash-escape: true
+                trim-last-separator: false
+        ```
+
+    3. Deploy Lightning and Importer.
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        ansible-playbook deploy.yml --tags=lightning
+        ```
+
+    4. Start Lightning and Importer.
+
+       * Log into the server where Lightning and Importer are deployed.
+       * Enter the deployment directory.
+       * Execute `scripts/start_importer.sh` under the Importer directory to start Importer.
+       * Execute `scripts/start_lightning.sh` under the Lightning directory to begin to load data.
+
+       Because you've used TiDB Ansible deployment method, you can see the loading progress of Lightning on the monitoring page, or check whether the loading process is completed through the log.
+
+Fourth, after successfully loading data, you can run `sql.common/test.sql` to validate the correctness of the data. If all SQL statements return an empty result, then the data is correctly loaded.
 
 ## Run the test
 
