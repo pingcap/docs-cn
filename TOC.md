@@ -282,6 +282,7 @@
     - [Follower Read](/reference/performance/follower-read.md)
     - [Check the TiDB Cluster Status Using SQL Statements](/reference/performance/check-cluster-status-using-sql-statements.md)
     - [Execution Plan Binding](/reference/performance/execution-plan-bind.md)
+    - [Access Tables Using `IndexMerge`](/reference/performance/index-merge.md)
     - [Statement Summary Table](/reference/performance/statement-summary.md)
     - [Tune TiKV](/reference/performance/tune-tikv.md)
   + Key Monitoring Metrics
