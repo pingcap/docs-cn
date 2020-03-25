@@ -3,10 +3,12 @@ title: Column 和 DDL 的类型码
 category: reference
 ---
 
-# Column Type
+# Column 和 DDL 的类型码
+
+## Column Type
 
 | 类型         | Code | 
-| ----------- | ---- | 
+| :---------- | :--- | 
 | Decimal     | 0    |
 | Tiny        | 1    |
 | Short       | 2    |
@@ -36,10 +38,10 @@ category: reference
 | String      | 0xfe |
 | Geometry    | 0xff |
 
-# DDL Type Code
+## DDL Type Code
 
 | 类型                               | Code | 
-| --------------------------------- | -- | 
+| :-------------------------------- | :- | 
 | Create Schema                     | 1  |
 | Drop Schema                       | 2  |
 | Create Table                      | 3  |

@@ -3,21 +3,31 @@ title: TiCDC Open Protocol
 category: reference
 ---
 
-# 概述
+# TiCDC Open Protocol
 
-TiCDC Open Protocol 利用消息队列等数据媒介，提供一种行级别的数据变更通知机制，为异构数据库的主从复制、监控、缓存、全文索引、分析引擎等提供数据源。
+## 概述
 
-# Event
+TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ 等第三方数据媒介复制 TiDB 的数据变更。
 
-Event 分为三类：Row Changed Event、DDL Event、Resolved Event。
+TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件，Event 分为三类：
 
-## Row Changed Event
+* Row Changed Event：代表一行的数据变化，在 Row 发生变更时被发出，包含变更后 Row 的相关信息
+* DDL Event：代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中
+* Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的
 
-Row Changed Event 代表一行的数据变化，在 Row 发生变更时被发出，包含变更后 Row 的相关信息。
+## 协议约束
 
-### 格式
+* 在绝大多数情况下，一个版本的 Row Changed Event 只会发出一次，但是特殊情况（节点故障、网络分区等）下，同一版本的 Row Changed Event 可能会多次发送。
+* 对于同一张表的 Row Changed Event 组成的 Event 流，对于每一个版本第一次发出的 Row Changed Event 一定是按 TS 顺序递增的。
+* Resolved Event 会被周期性的广播到各个 MQ Partition，Resolved Event 意味着任何 TS 小于 Resolved Event TS 的 Event 已经发送给下游。
+* DDL Event 将被广播到各个 MQ Partition。
+* 对于一行数据的多个 Row Changed Event 一定会被发送到同一个 MQ Partition 中。
 
-#### Key
+## Event 格式定义
+
+### Row Changed Event
+
+**Key:**
 
 ```json
 {
@@ -29,12 +39,12 @@ Row Changed Event 代表一行的数据变化，在 Row 发生变更时被发出
 ```
 
 | 参数         | 类型   | 说明                    |
-| ----------- | ------ | ---------------------- |
+| :---------- | :----- | :--------------------- |
 | TS          | Number | 造成 Row 变更的事务的 TS  |
 | Schema Name | String | Row 所在的 Schema 的名字 |
 | Table Name  | String | Row 所在的 Table 的名字  |
 
-#### Value
+**Value:**
 
 ```json
 {
@@ -54,20 +64,16 @@ Row Changed Event 代表一行的数据变化，在 Row 发生变更时被发出
 ```
 
 | 参数         | 类型   | 说明                    |
-| ----------- | ------ | ---------------------- |
+| :---------- | :----- | :--------------------- |
 | UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "update"/"delete" |
 | Column Name    | String | 列名   |
 | Column Type    | Number | 列类型，详见：[Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md) |
 | Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true |
 | Column Value   | Any    | 列值   |
 
-## DDL Event
+### DDL Event
 
-代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中。
-
-### 格式
-
-#### Key
+**Key:**
 
 ```json
 {
@@ -79,12 +85,12 @@ Row Changed Event 代表一行的数据变化，在 Row 发生变更时被发出
 ```
 
 | 参数         | 类型   | 说明                                 |
-| ----------- | ------ | ----------------------------------- |
+| :---------- | :----- | :---------------------------------- |
 | TS          | Number | 进行 DDL 变更的事务的 TS               |
 | Schema Name | String | DDL 变更的 Schema 的名字，可能为空字符串 |
 | Table Name  | String | DDL 变更的 Table 的名字，可能为空字符串  |
 
-#### Value
+**Value:**
 
 ```json
 {
@@ -94,17 +100,13 @@ Row Changed Event 代表一行的数据变化，在 Row 发生变更时被发出
 ```
 
 | 参数       | 类型   | 说明           |
-| --------- | ------ | ------------- |
+| :-------- | :----- | :------------ |
 | DDL Query | String | DDL Query SQL |
 | DDL Type  | String | DDL 类型，详见：[Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)       |
 
-## Resolved Event
+### Resolved Event
 
-代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。
-
-### 格式
-
-#### Key
+**Key:**
 
 ```json
 {
@@ -113,21 +115,13 @@ Row Changed Event 代表一行的数据变化，在 Row 发生变更时被发出
 }
 ```
 
-#### Value
+**Value:**
 
 None
 
-# 协议约束
+## 示例
 
-* 在绝大多数情况下，一个版本的 Row Changed Event 只会发出一次，但是特殊情况（节点故障、网络分区等）下，同一版本的 Row Changed Event 可能会多次发送。
-* 对于同一张表的 Row Changed Event 组成的 Event 流，对于每一个版本第一次发出的 Row Changed Event 一定是按 TS 顺序递增的。
-* Resolved Event 会被周期性的广播到各个 MQ Partition，Resolved Event 意味着任何小于 Resolved Event 的 Event 已经发送给下游。
-* DDL Event 将被广播到各个 MQ Partition。
-* 对于一行数据的多个 Row Changed Event 一定会被发送到同一个 Partition 中。
-
-# 示例
-
-设上游执行如下 SQL, MQ Partition 数量为 2：
+设上游执行以下 SQL, MQ Partition 数量为 2：
 ```sql
 CREATE TABLE test.t1(id int primary key, val varchar(16));
 
