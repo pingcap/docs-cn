@@ -537,7 +537,7 @@ raftstore 相关的配置项。
 
 ## coprocessor
 
-coprocessor 相关的配置项。
+Coprocessor 相关的配置项。
 
 ### `split-region-on-table`
 
