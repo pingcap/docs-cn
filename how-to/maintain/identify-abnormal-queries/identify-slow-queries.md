@@ -150,7 +150,6 @@ TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/reference/system-databases/informa
 
 关于查询 `CLUSTER_SLOW_QUERY` 表，TiDB 会把相关的计算和判断下推到其他节点执行，而不是把其他节点的慢查询数据都取回来在一台 TiDB 上执行。
 
-
 ## 查询 `SLOW_QUERY` / `CLUSTER_SLOW_QUERY` 示例
 
 ### 搜索 Top N 的慢查询
