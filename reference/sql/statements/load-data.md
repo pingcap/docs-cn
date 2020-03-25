@@ -64,6 +64,7 @@ CREATE TABLE trips (
 ```
 Query OK, 0 rows affected (0.14 sec)
 ```
+
 通过 `LOAD DATA` 导入数据，指定数据的分隔符为逗号分隔，忽略包围数据的引号，并且忽略文件的第一行数据。
 如果此时遇到 `ERROR 1148 (42000): the used command is not allowed with this TiDB version` 报错信息。可以参考以下文档解决：
 
