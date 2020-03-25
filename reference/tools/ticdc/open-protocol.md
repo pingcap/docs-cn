@@ -122,16 +122,43 @@ None
 ## 示例
 
 设上游执行以下 SQL, MQ Partition 数量为 2：
+
 ```sql
 CREATE TABLE test.t1(id int primary key, val varchar(16));
+```
 
+正如以下 [Log 1]、[Log 3]，DDL Event 将广播到所有 MQ Partition，Resolved Event 会被周期性的广播到各个 MQ Partition：
+
+```log
+1. [partition=0] [key="{\"ts\":415508856908021766,\"schema\":\"test\",\"table\":\"t1\",\"type\":2}"] [value="{\"query\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"type\":3}"]
+2. [partition=0] [key="{\"ts\":415508856908021766,\"type\":3}"] [value=]
+3. [partition=1] [key="{\"ts\":415508856908021766,\"schema\":\"test\",\"table\":\"t1\",\"type\":2}"] [value="{\"query\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"type\":3}"]
+4. [partition=1] [key="{\"ts\":415508856908021766,\"type\":3}"] [value=]
+```
+
+在上游执行：
+
+```sql
 BEGIN;
 INSERT INTO test.t1(id, val) VALUES (1, 'aa');
 INSERT INTO test.t1(id, val) VALUES (2, 'aa');
 UPDATE test.t1 SET val = 'bb' WHERE id = 2;
 INSERT INTO test.t1(id, val) VALUES (3, 'cc');
 COMMIT;
+```
 
+正如以下 [Log 5]、[Log 6]，同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理；在 [Log 6] 中，在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event；[Log 8] 是 [log 7] 的重复 Event，Row Changed Event 可能重复，但每个版本的 Event 第一次收到的次序一定是有序的：
+
+```log
+5. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":1},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"YWE=\"}}}"]
+6. [partition=1] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":2},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"YmI=\"}}}"]
+7. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"Y2M=\"}}}"]
+8. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"Y2M=\"}}}"]
+```
+
+在上游执行：
+
+```sql
 BEGIN;
 DELETE FROM test.t1 WHERE id = 1;
 UPDATE test.t1 SET val = 'dd' WHERE id = 3;
@@ -139,30 +166,13 @@ UPDATE test.t1 SET id = 4, val = 'ee' WHERE id = 2;
 COMMIT;
 ```
 
-在 MQ 中将接收到：
+[Log 9] 是 Delete 类型的 Row Changed Event，这种类型的 Event 只包含主键列或唯一索引列；[Log 13]、[Log 14]是 Resolved Event，Resolved Event 意味着在这个 Partition 中，任意小于 Resolved TS 的 Event（包括 Row Changed Event 和 DDL Event） 已经发送完毕：
 
-```json
-# DDL Event 将广播到所有 Partition
-[partition=0] [key="{\"ts\":415508856908021766,\"schema\":\"test\",\"table\":\"t1\",\"type\":2}"] [value="{\"query\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"type\":3}"]
-[partition=0] [key="{\"ts\":415508856908021766,\"type\":3}"] [value=]
-[partition=1] [key="{\"ts\":415508856908021766,\"schema\":\"test\",\"table\":\"t1\",\"type\":2}"] [value="{\"query\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"type\":3}"]
-[partition=1] [key="{\"ts\":415508856908021766,\"type\":3}"] [value=]
-
-# 同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理。
-[partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":1},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"YWE=\"}}}"]
-# 在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event
-[partition=1] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":2},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"YmI=\"}}}"]
-[partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"Y2M=\"}}}"]
-# Row Changed Event 可能重复，但每个版本的 Event 第一次收到的次序一定是有序的
-[partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"Y2M=\"}}}"]
-
-# Delete 类型的 Row Changed Event 只包含主键列或唯一索引列
-[partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"delete\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":1}}}"]
-[partition=1] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"delete\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":2}}}"]
-[partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"ZGQ=\"}}}"]
-[partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":4},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"ZWU=\"}}}"]
-
-# Resolved Event 意味着在这个 Partition 中，任意小于 Resolved TS 的 Event（包括 Row Changed Event 和 DDL Event） 已经发送完毕。
-[partition=0] [key="{\"ts\":415508881038376963,\"type\":3}"] [value=]
-[partition=1] [key="{\"ts\":415508881038376963,\"type\":3}"] [value=]
+```log
+9. [partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"delete\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":1}}}"]
+10. [partition=1] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"delete\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":2}}}"]
+11. [partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"ZGQ=\"}}}"]
+12. [partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":4},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"ZWU=\"}}}"]
+13. [partition=0] [key="{\"ts\":415508881038376963,\"type\":3}"] [value=]
+14. [partition=1] [key="{\"ts\":415508881038376963,\"type\":3}"] [value=]
 ```
