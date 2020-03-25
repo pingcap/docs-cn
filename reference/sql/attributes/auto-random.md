@@ -50,12 +50,12 @@ create table t (a int auto_random, b varchar(255), primary key (a))
 
 Then execute the `INSERT` statement such as `INSERT INTO t(b) values...`.  Now the results will be as follows:
 
-+ If the `INSERT` statement does not specify the values of the integer primary key column (column `a`), TiDB automatically assigns values to this column. These values are not necessarily auto-increment or continuous but are unique, which avoids the hotspot problem caused by continuous row IDs.
-+ If the `INSERT` statement explicitly specifies the values of the integer primary key column, TiDB saves these values, which works similarly to the `AUTO_INCREMENT` attribute.
++ If the `INSERT` statement does not specify the values of the integer primary key column (column `a`) or specify the value as `NULL`, TiDB automatically assigns values to this column. These values are not necessarily auto-increment or continuous but are unique, which avoids the hotspot problem caused by continuous row IDs.
++ If the `INSERT` statement explicitly specifies the values of the integer primary key column, TiDB saves these values, which works similarly to the `AUTO_INCREMENT` attribute. Note that if you do not set `NO_AUTO_VALUE_ON_ZERO` in the `@@sql_mode` system variable, TiDB will automatically assign values to this column even if you explicitly specify the value of the integer primary key column as `0`.
 
 TiDB automatically assigns values in the following way:
 
-The highest five digits of the row value in binary (namely, shard bits) are determined by the starting time of the current transaction. The remaining digits are assigned values in an auto-increment order.
+The second highest five digits (no matter the column type is signed or unsigned) of the row value in binary (namely, shard bits) are determined by the starting time of the current transaction. The remaining digits are assigned values in an auto-increment order.
 
 To use different number of shard bits, append a pair of parentheses to `AUTO_RANDOM` and specify the desired number of shard bits in the parentheses. See the following example:
 
@@ -67,7 +67,48 @@ create table t (a int primary key auto_random(3), b varchar(255))
 
 In the above `CREATE TABLE` statement, `3` shard bits are specified. The range of the number of shard bits is `[1, field_max_bits)`. `field_max_bits` is the length of bits occupied by the primary key column.
 
-For tables with the `AUTO_RANDOM` attribute, the value of the corresponding `TIDB_ROW_ID_SHARDING_INFO` column in the `information_schema.tables` system table is `PK_AUTO_RANDOM_BITS=x`. `x` is the number of shard bits.
+After creating the table, use the `SHOW WARNINGS` statement to see the maximum number of implicit allocations supported by the current table:
+
+{{< copyable "sql" >}}
+
+```sql
+show warnings
+```
+
+```
++-------+------+------------------------------------------------+
+| Level | Code | Message                                        |
++-------+------+------------------------------------------------+
+| Note  | 1105 | Available implicit allocation times: 268435455 |
++-------+------+------------------------------------------------+
+```
+
+In addition, for tables with the `AUTO_RANDOM` attribute, the value of the corresponding `TIDB_ROW_ID_SHARDING_INFO` column in the `information_schema.tables` system table is `PK_AUTO_RANDOM_BITS=x`. `x` is the number of shard bits.
+
+You can use `select last_insert_id ()` to see the last implicit ID assigned by TiDB. For example:
+
+{{< copyable "sql" >}}
+
+```sql
+insert into t (b) values ("b")
+select * from t;
+select last_insert_id()
+```
+
+You might see the following result:
+
+```
++------------+---+
+| a          | b |
++------------+---+
+| 1073741825 | b |
++------------+---+
++------------------+
+| last_insert_id() |
++------------------+
+| 1073741825       |
++------------------+
+```
 
 ## Compatibility
 
