@@ -190,23 +190,4 @@ TiDB 不需要导入时区表数据也能使用所有时区名称，采用系统
 
 #### 零月和零日
 
-<<<<<<< HEAD
-目前 TiDB 尚不能完整支持月为 0 或日为 0（但年不为 0）的日期。在非严格模式下，此类日期时间能被正常插入，但对于特定类型 SQL 可能出现无法读出来的情况。
-=======
 与 MySQL 一样，TiDB 默认启用了 `NO_ZERO_DATE` 和 `NO_ZERO_IN_DATE` 模式，不建议将这两个模式设为禁用。尽管将这些模式设为禁用时 TiDB 仍可正常使用，但 TiKV 协处理器会受到影响，具体表现为，执行特定类型的语句，将日期和时间处理函数下推到 TiKV 时可能会导致语句错误。
-
-#### 字符串类型行末空格的处理
-
-目前 TiDB 在进行数据插入时，对于 `VARCHAR` 类型会保留行末空格，对于 `CHAR` 类型会插入截断空格后的数据。在没有索引的情况下，TiDB 和 MySQL 行为保持一致。如果 `VARCHAR` 类型上有 `UNIQUE` 索引，MySQL 在判断是否重复的时候，和处理 `CHAR` 类型一样，先截断 `VARCHAR` 数据末行空格再作判断；TiDB 则是按照保留空格的情况处理。
-
-在做比较时，MySQL 会先截去常量和 Column 的末尾空格再作比较，而 TiDB 则是保留常量和 Column 的末尾空格来做精确比较。
-
-### 类型系统的区别
-
-以下的列类型 MySQL 支持，但 TiDB 不支持：
-
-+ FLOAT4/FLOAT8
-+ FIXED (alias for DECIMAL)
-+ SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)
-+ SQL_TSI_* （包括 SQL_TSI_YEAR、SQL_TSI_MONTH、SQL_TSI_WEEK、SQL_TSI_DAY、SQL_TSI_HOUR、SQL_TSI_MINUTE 和 SQL_TSI_SECOND）
->>>>>>> 70f7388... reference: updated zero month and zero day (#2557)
