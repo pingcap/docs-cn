@@ -139,7 +139,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## readpool.coprocessor
 
+<<<<<<< HEAD
 协处理器线程池相关的配置项。
+=======
+coprocessor 线程池相关的配置项。
+
+以下配置只在 `unify-read-pool` 是 `false` 时生效。
+>>>>>>> 4639359... reference: unify the term "coprocessor" (#2563)
 
 ### `high-concurrency`
 
@@ -537,7 +543,7 @@ raftstore 相关的配置项。
 
 ## coprocessor
 
-协处理器相关的配置项。
+coprocessor 相关的配置项。
 
 ### `split-region-on-table`
 
