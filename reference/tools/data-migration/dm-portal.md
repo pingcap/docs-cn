@@ -1,5 +1,6 @@
 ---
 title: DM Portal 简介
+summary: 了解 DM Portal 的功能、部署方式以及使用方法。
 category: reference
 ---
 
@@ -10,6 +11,8 @@ category: reference
 针对这个问题，DM 提供了一个精简的网页程序 DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 `task.yaml` 文件。
 
 ## 功能描述
+
+本节简要介绍 DM Portal 的各项功能。
 
 ### 同步模式配置
 
@@ -43,6 +46,8 @@ category: reference
 
 ## 部署使用
 
+本节介绍两种部署方式：Binary 部署和 DM Ansible 部署。
+
 ### Binary 部署
 
 DM Portal 可以在 [dm-portal-latest-linux-amd64.tar.gz](https://download.pingcap.org/dm-portal-latest-linux-amd64.tar.gz) 下载，通过 `./dm-portal` 的命令即可直接启动。
@@ -56,11 +61,13 @@ DM Portal 可以在 [dm-portal-latest-linux-amd64.tar.gz](https://download.pingc
 
 ## 使用说明
 
+本节介绍如何使用 DM Portal 各个功能。
+
 ### 新建规则
 
 #### 功能描述
 
-用于新建一个 `task.yaml` 文件，需要选择同步模式、配置上下游实例、配置库表路由，配置 binlog 过滤。
+新建一个 `task.yaml` 文件。
 
 #### 操作步骤
 
