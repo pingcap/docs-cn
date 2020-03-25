@@ -401,7 +401,6 @@ select * from mysql.default_roles;
 
 `HOST` 和 `USER` 分别表示用户的主机名和用户名，`DEFAULT_ROLE_HOST` 和 `DEFAULT_ROLE_USER` 分别表示默认启用的角色的主机名和用户名。
 
-
 ### 其他
 
 由于基于角色的访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
