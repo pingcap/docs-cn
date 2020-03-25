@@ -31,7 +31,7 @@ desc cluster_info;
 字段解释：
 
 * TYPE：节点类型，目前节点的类型为 pd/tikv/tidb，节点类型始终为小写
-* INSTANCE：实例地址，始终为 IP:PORT 格式的字符串
+* INSTANCE：实例地址，为 `IP:PORT` 格式的字符串。
 * `STATUS_ADDRESS`：HTTP API 的服务地址。部分 tikv-ctl / pd-ctl / tidb-ctl 命令会使用到 HTTP API 和该地址。用户也可以通过该地址获取一些额外的集群信息，详情可参考 HTTP API 官方文档。
 * VERSION：对应节点的语义版本号，TiDB 版本为了兼容 MySQL 的版本号，以 ${mysql-version}-${tidb-version} 方式展示
 * GIT_HASH：对应节点版本编译时的 git commit hash，主要用于识别两个节点是否是绝对一致的版本
