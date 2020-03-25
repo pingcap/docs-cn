@@ -14,6 +14,29 @@ category: reference
 
 ![LoadDataStmt](/media/sqlgram/LoadDataStmt.png)
 
+## 参数说明
+
+用户可以通过 `FIELDS` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。
+
+例如对于以下格式的数据：
+
+```
+"bob","20","street 1"
+```
+
+如果想分别提取 `bob` `20` `street 1`，可以指定数据的分隔符号为 `','`，数据的包围符号为`'\"'`。
+
+
+
+如果不指定处理数据的参数，将会按以下参数处理
+
+```sql
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY ''
+```
+
+
+
 ## 示例
 
 {{< copyable "sql" >}}
