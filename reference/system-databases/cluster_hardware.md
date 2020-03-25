@@ -37,7 +37,7 @@ desc cluster_hardware;
     * memory：硬件名为 memory
     * disk：磁盘名
     * `net`：NIC 名。
-* NAME：硬件不同的信息名，比如 cpu 有 `cpu-logical-cores`/`cpu-physical-cores`，可以通过 `select name from cluster_hardware where device_type='cpu' group by name` 来查询不同硬件类型支持的 NAME
+* `NAME`：硬件不同的信息名，比如 cpu 有 `cpu-logical-cores` 或 `cpu-physical-cores` 两个信息名。可以通过 `select name from cluster_hardware where device_type='cpu' group by name` 来查询不同硬件类型支持的 `NAME`。
 * VALUE：对应硬件信息的值，比如磁盘容量，CPU 核数
 
 具体示例，查询集群的 CPU 信息：
