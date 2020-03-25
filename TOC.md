@@ -277,6 +277,7 @@
   + Performance
     - [Overview](/reference/performance/sql-optimizer-overview.md)
     - [Understanding the Query Execution Plan](/reference/performance/understanding-the-query-execution-plan.md)
+    - [Introduction to Join Reorder](/reference/performance/join-reorder.md)
     - [Introduction to Statistics](/reference/performance/statistics.md)
     - [Optimizer Hints](/reference/performance/optimizer-hints.md)
     - [Follower Read](/reference/performance/follower-read.md)
