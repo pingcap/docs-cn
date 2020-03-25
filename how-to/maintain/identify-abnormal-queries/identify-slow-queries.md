@@ -108,31 +108,48 @@ Slow Query 基础信息：
 >
 > 每次查询 `SLOW_QUERY` 表时，TiDB 都会去读取和解析一次当前的慢查询日志。
 
-TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢日志，即支持查询已经被 rotate 的慢日志文件的数据。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢日志文件。如果查询不指定时间范围，则仍然只解析当前的慢日志文件。
+TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢日志，即支持查询已经被 rotate 的慢日志文件的数据。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢日志文件。如果查询不指定时间范围，则仍然只解析当前的慢日志文件，示例如下：
 
-TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/reference/system-databases/information-schema.md#cluster_slow_query-表) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/reference/system-databases/information-schema.md#slow_query-表) 系统表一样。
-
-关于查询 `CLUSTER_SLOW_QUERY` 的实现，我们来看一个简单的查询的执行计划：
+不指定时间范围时，只会解析当前 TiDB 正在写入的慢日志文件的慢查询数据：
 
 {{< copyable "sql" >}}
 
 ```sql
-desc select count(*) from cluster_slow_query where time >= '2020-03-08 02:29:00' AND time < '2020-03-08 02:35:00';
+select count(*),min(time),max(time) from slow_query;
 ```
 
 ```
-+--------------------------+----------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
-| id                       | estRows  | task      | operator info                                                                                                                                          |
-+--------------------------+----------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
-| StreamAgg_20             | 1.00     | root      | funcs:count(Column#51)->Column#49                                                                                                                      |
-| └─TableReader_21         | 1.00     | root      | data:StreamAgg_9                                                                                                                                       |
-|   └─StreamAgg_9          | 1.00     | cop[tidb] | funcs:count(1)->Column#51                                                                                                                              |
-|     └─Selection_19       | 250.00   | cop[tidb] | ge(information_schema.cluster_slow_query.time, 2020-03-08 02:29:00.000000), lt(information_schema.cluster_slow_query.time, 2020-03-08 02:35:00.000000) |
-|       └─TableFullScan_18 | 10000.00 | cop[tidb] | table:CLUSTER_SLOW_QUERY, keep order:false, stats:pseudo                                                                                               |
-+--------------------------+----------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
++----------+----------------------------+----------------------------+
+| count(*) | min(time)                  | max(time)                  |
++----------+----------------------------+----------------------------+
+| 122492   | 2020-03-11 23:35:20.908574 | 2020-03-25 19:16:38.229035 |
++----------+----------------------------+----------------------------+
 ```
 
-从上面执行计划可以看到有 3 个 `cop[tidb]` 请求，表示是 3 个发往其他 TiDB 节点计算的 coprocessor 请求，这里会把 `count(*)` 的计算和 `time` 的条件过滤都下推给其他 TiDB 节点执行，而不是把其他节点的慢查询数据都取回来后在一台 TiDB 上执行计算。
+指定查询 `2020-03-10 00:00:00` 到 `2020-03-11 00:00:00` 时间范围后，会定位指定时间范围内的慢日志文件后解析慢查询数据：
+
+{{< copyable "sql" >}}
+
+```sql
+select count(*),min(time),max(time) from slow_query where time > '2020-03-10 00:00:00' and time < '2020-03-11 00:00:00';
+```
+
+```
++----------+----------------------------+----------------------------+
+| count(*) | min(time)                  | max(time)                  |
++----------+----------------------------+----------------------------+
+| 2618049  | 2020-03-10 00:00:00.427138 | 2020-03-10 23:00:22.716728 |
++----------+----------------------------+----------------------------+
+```
+
+> **注意：**
+>
+> 如果指定时间范围内的慢日志文件被删除，或者并没有慢查询，则查询结果会返回空。
+
+TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/reference/system-databases/information-schema.md#cluster_slow_query-表) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/reference/system-databases/information-schema.md#slow_query-表) 系统表一样。
+
+关于查询 `CLUSTER_SLOW_QUERY` 表，TiDB 会把相关的计算和判断下推到其他节点执行，而不是把其他节点的慢查询数据都取回来在一台 TiDB 上执行。
+
 
 ## 查询 `SLOW_QUERY` / `CLUSTER_SLOW_QUERY` 示例
 
@@ -260,15 +277,15 @@ where is_internal = false
 
 ### 查询执行计划发生变化的慢查询
 
-由于统计信息不准可能导致同类型 SQL 的执行计划发生改变导致执行变慢，可以用以下 SQL 查询哪些 SQL 具有不同的执行计划：
+由于统计信息过时，或者统计信息因为误差无法精确反映数据的真实分布情况时，可能导致同类型 SQL 的执行计划发生改变导致执行变慢，可以用以下 SQL 查询哪些 SQL 具有不同的执行计划：
 
 {{< copyable "sql" >}}
 
 ```sql
-select count(distinct plan_digest) as count, digest,min(query)
+select count(distinct plan_digest) as count, digest, min(query)
 from cluster_slow_query
 group by digest
-having count>1 limit 3;
+having count>1 limit 3\G
 ```
 
 输出样例：
@@ -295,7 +312,7 @@ min(query) | SELECT DISTINCT c FROM sbtest11 WHERE id BETWEEN ? AND ? ORDER BY c
 ```sql
 select min(plan),plan_digest
 from cluster_slow_query where digest='17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94'
-group by plan_digest;
+group by plan_digest\G
 ```
 
 输出样例：
@@ -365,7 +382,7 @@ WHERE t1.digest NOT IN
     WHERE time >= '2020-03-10 13:20:00'
             AND time < '2020-03-10 13:23:00'
     GROUP BY  digest)
-ORDER BY  t1.sum_query_time DESC limit 10;
+ORDER BY  t1.sum_query_time DESC limit 10\G
 ```
 
 输出样例：
