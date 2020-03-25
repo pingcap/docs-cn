@@ -29,7 +29,7 @@ desc cluster_log;
 字段解释：
 
 * TIME：日志打印时间。
-* TYPE：对应于节点信息表 `information_schema.cluster_info` 中的 TYPE 字段，可取值为 tidb/pd/tikv，且均为小写。
+* TYPE：对应节点信息表 `information_schema.cluster_info` 中的 TYPE 字段，可取值为 `tidb`，`pd` 或 `tikv`。
 * INSTANCE：对应于节点信息表 `information_schema.cluster_info` 中的 INSTANCE 字段。
 * LEVEL：日志级别。
 * MESSAGE：日志内容。
