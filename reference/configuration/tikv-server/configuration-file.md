@@ -139,7 +139,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## readpool.coprocessor
 
-协处理器线程池相关的配置项。
+Coprocessor 线程池相关的配置项。
 
 ### `high-concurrency`
 
@@ -537,7 +537,7 @@ raftstore 相关的配置项。
 
 ## coprocessor
 
-协处理器相关的配置项。
+Coprocessor 相关的配置项。
 
 ### `split-region-on-table`
 
