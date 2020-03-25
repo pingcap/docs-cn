@@ -38,7 +38,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 你可以通过以下简单几步来认领一个 PR 翻译任务：
 
-1. 打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+is%3Aopen+)，可以看到所有打上了 `translation/welcome` label 的 PR（这类 PR 无论是 open 还是 closed 状态，均在认领的范畴）。
+1. 打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+)，可以看到所有打上了 `translation/welcome` label 的 PR（这类 PR 无论是 open 还是 closed 状态，均在认领的范畴）。
 2. 打开你想认领的 PR，拉到底部留下这条 comment：`@yikeke: I'd like to translate this PR.`。
 3. 仓库管理员 @yikeke 会及时联系你，并将 `translation/welcome` 改为 `translation/doing`，之后你便可以开始翻译了。
 
