@@ -270,7 +270,6 @@ tidb-ctl base64decode [table_id] [base64_data]
 
 TiDB 错误日志的堆栈信息是一行的格式，可以使用 `tidb-ctl log` 将堆栈信息格式化成多行形式。
 
-
 #### keyrange 子命令
 
 keyrange 子命令用于查询全局或表相关的关键 key range 信息，以 hex 形式输出。
