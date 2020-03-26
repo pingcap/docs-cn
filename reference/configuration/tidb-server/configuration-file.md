@@ -86,8 +86,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `server-version`
 
 + 用来修改 TiDB 服务端在以下情况下返回的版本:
-  + 当使用内置函数 `VERSION()` 时。
-  + 当与客户端初始连接，TiDB 返回带有服务端版本的初始握手包时。具体可以查看 MySQL 初始握手包[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake for more details)。
+    + 当使用内置函数 `VERSION()` 时。
+    + 当与客户端初始连接，TiDB 返回带有服务端版本的初始握手包时。具体可以查看 MySQL 初始握手包[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake for more details)。
 + 默认值：""
 + 默认情况下，TiDB 服务端版本为 TiDB 的原始版本。
 
