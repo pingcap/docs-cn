@@ -83,6 +83,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。
 
+### `server-version`
+
++ 用来修改 TiDB 服务端在以下情况下返回的版本:
+  + 当使用内置函数 `VERSION()` 时。
+  + 当与客户端初始连接，TiDB 返回带有服务端版本的初始握手包时。具体可以查看 MySQL 初始握手包[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake for more details)。
++ 默认值：""
++ 默认情况下，TiDB 服务端版本为 TiDB 的原始版本。
+
 ### `repair-mode`
 
 + 用于开启非可信修复模式，启动该模式后，可以过滤 `repair-table-list` 名单中坏表的加载。
