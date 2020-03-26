@@ -18,8 +18,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `mem-quota-query`
 
 + 单条 SQL 语句可以占用的最大内存阈值。
-+ 默认值：34359738368
++ 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
++ 该值作为系统变量 [`tidb_mem_quota_query`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_mem_quota_query) 的初始值。
 
 ### `oom-use-tmp-storage`
 
@@ -374,11 +375,6 @@ prepare 语句的 Plan cache 设置。
 
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
-
-### `enable-chunk-rpc`
-
-+ 开启 coprocessor 的 `Chunk` 数据编码格式。
-+ 默认值：true
 
 ## txn-local-latches
 

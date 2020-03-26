@@ -1,5 +1,6 @@
 ---
 title: DM Portal 简介
+summary: 了解 DM Portal 的功能、部署方式以及使用方法。
 category: reference
 ---
 
@@ -10,6 +11,8 @@ category: reference
 针对这个问题，DM 提供了一个精简的网页程序 DM Portal，能够帮助用户以可视化的方式去配置需要的同步任务，并且生成可以直接让 DM 直接执行的 `task.yaml` 文件。
 
 ## 功能描述
+
+本节简要介绍 DM Portal 的各项功能。
 
 ### 同步模式配置
 
@@ -43,6 +46,8 @@ category: reference
 
 ## 部署使用
 
+本节介绍两种部署方式：Binary 部署和 DM Ansible 部署。
+
 ### Binary 部署
 
 DM Portal 可以在 [dm-portal-latest-linux-amd64.tar.gz](https://download.pingcap.org/dm-portal-latest-linux-amd64.tar.gz) 下载，通过 `./dm-portal` 的命令即可直接启动。
@@ -56,11 +61,13 @@ DM Portal 可以在 [dm-portal-latest-linux-amd64.tar.gz](https://download.pingc
 
 ## 使用说明
 
+本节介绍如何使用 DM Portal 各个功能。
+
 ### 新建规则
 
 #### 功能描述
 
-用于新建一个 `task.yaml` 文件，需要选择同步模式、配置上下游实例、配置库表路由，配置 binlog 过滤。
+新建一个 `task.yaml` 文件。
 
 #### 操作步骤
 
@@ -193,28 +200,3 @@ DM Portal 可以在 [dm-portal-latest-linux-amd64.tar.gz](https://download.pingc
 ##### 完成并下载
 
 ![DM Portal GenerateConfig](/media/dm-portal-generateconfig.png)
-
-### 编辑规则
-
-#### 功能描述
-
-可以将之前创建的 `task.yaml` 上传后，解析出来之前的填写的配置信息，对部分配置进行修改。
-
-#### 前置条件
-
-* 已经创建出 `task.yaml` 文件。
-* 非 DM Portal 创建出来的 `task.yaml` 文件不可使用。
-
-#### 注意事项
-
-* 不允许修改实例配置信息
-
-#### 操作步骤
-
-1. 在首页，点击**编辑同步规则**。
-2. 选择上传 `task.yaml` 文件。
-3. 解析成功后，页面会自动跳转。
-
-![DM Portal EditConfig](/media/dm-portal-editconfig.png)
-
-![DM Portal UploadConfig](/media/dm-portal-uploadconfig.png)
