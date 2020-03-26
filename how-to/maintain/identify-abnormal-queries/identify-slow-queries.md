@@ -115,7 +115,10 @@ TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢日志，即�
 {{< copyable "sql" >}}
 
 ```sql
-select count(*),min(time),max(time) from slow_query;
+select count(*),
+       min(time),
+       max(time)
+from slow_query;
 ```
 
 ```
