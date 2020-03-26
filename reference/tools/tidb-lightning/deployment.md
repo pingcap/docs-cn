@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Lightning 部署与执行
 
-本文主要介绍 TiDB Lightning 单独部署与混合部署的硬件需求，以及使用 Ansible 部署与手动部署这两种部署方式。
+本文主要介绍 TiDB Lightning 单独部署与混合部署的硬件需求，以及使用 TiDB Ansible 部署与手动部署这两种部署方式。
 
 ## 注意事项
 
@@ -88,9 +88,9 @@ category: reference
 
 ## 部署 TiDB Lightning
 
-本节介绍 TiDB Lightning 的两种部署方式：[使用 Ansible 部署](#使用-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 的两种部署方式：[使用 TiDB Ansible 部署](#使用-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
 
-### 使用 Ansible 部署 TiDB Lightning
+### 使用 TiDB Ansible 部署 TiDB Lightning
 
 TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
 

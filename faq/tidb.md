@@ -305,7 +305,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 ### 2.3 升级
 
-#### 2.3.1 如何使用 Ansible 滚动升级？
+#### 2.3.1 如何使用 TiDB Ansible 滚动升级？
 
 滚动升级 TiKV 节点( 只升级单独服务 )
 
@@ -374,7 +374,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.7 如何规范停止 TiDB？
 
-如果是用 Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
+如果是用 TiDB Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 TiDB Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
 
 #### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 
