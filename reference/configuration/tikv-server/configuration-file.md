@@ -1052,7 +1052,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `gc-merge-rewrite`
 
-+ 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响
++ 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
 + 默认值：true
 
 ## rocksdb.writecf
