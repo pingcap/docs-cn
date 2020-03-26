@@ -16,7 +16,7 @@ category: reference
 
 ## 参数说明
 
-用户可以通过 `FIELDS` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。
+用户可以使用 `FIELDS` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。
 如果用户希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
 
 例如对于以下格式的数据：
@@ -26,7 +26,7 @@ category: reference
 "alice","33","street 1"\r\n
 ```
 
-如果想分别提取 `bob` `20` `street 1`；可以指定数据的分隔符号为 `','`，数据的包围符号为`'\"'`。
+如果想分别提取 `bob`、`20`、`street 1`，可以指定数据的分隔符号为 `','`，数据的包围符号为 `'\"'`。
 可以写成：
 
 ```sql
@@ -65,10 +65,11 @@ CREATE TABLE trips (
 Query OK, 0 rows affected (0.14 sec)
 ```
 
-通过 `LOAD DATA` 导入数据，指定数据的分隔符为逗号分隔，忽略包围数据的引号，并且忽略文件的第一行数据。
+通过 `LOAD DATA` 导入数据，指定数据的分隔符为逗号，忽略包围数据的引号，并且忽略文件的第一行数据。
+
 如果此时遇到 `ERROR 1148 (42000): the used command is not allowed with this TiDB version` 报错信息。可以参考以下文档解决：
 
-[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](../../../faq/tidb.md#923-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
+[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/faq/tidb.md#923-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
 
 {{< copyable "sql" >}}
 
