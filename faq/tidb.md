@@ -113,7 +113,11 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不支持配置文件配置设置数据库的 sql\_mode，而只能使用 set 命令去设置，具体方法为：`set @@global.sql_mode = 'STRICT_TRANS_TABLES';`。
 
-#### 1.1.23 TiDB 支持哪些认证协议，过程是怎样的？
+#### 1.1.23 TiDB 是否支持修改版本号？我们的安全漏洞扫描工具对 mysql version 有要求。
+
+TiDB 目前是支持修改版本号的，可通过修改配置文件中的 `server-version` 配置项进行调整。在使用 tidb-ansible 部署集群时，同样可以通过 `conf/tidb.yml` 配置文件中的 `server-version` 来设置合适的版本号，以避免安全漏洞扫描不通过的问题。
+
+#### 1.1.24 TiDB 支持哪些认证协议，过程是怎样的？
 
 这一层跟 MySQL 一样，走的 SASL 认证协议，用于用户登录认证，对密码的处理流程。
 
