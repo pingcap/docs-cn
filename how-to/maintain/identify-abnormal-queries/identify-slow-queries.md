@@ -281,10 +281,13 @@ where is_internal = false
 {{< copyable "sql" >}}
 
 ```sql
-select count(distinct plan_digest) as count, digest, min(query)
+select count(distinct plan_digest) as count,
+       digest,
+       min(query)
 from cluster_slow_query
 group by digest
-having count>1 limit 3\G
+having count > 1
+limit 3\G
 ```
 
 输出样例：
