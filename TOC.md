@@ -430,6 +430,8 @@
     + Tools
       - [tkctl](/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [Tools in Kubernetes](/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
+    + Components
+      - [TiDB Scheduler](/tidb-in-kubernetes/reference/components/tidb-scheduler.md)
   - [Troubleshoot](/tidb-in-kubernetes/troubleshoot.md)
   - [FAQs](/tidb-in-kubernetes/faq.md)
 + FAQs
