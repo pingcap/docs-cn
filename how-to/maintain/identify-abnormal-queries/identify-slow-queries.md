@@ -131,7 +131,12 @@ select count(*),min(time),max(time) from slow_query;
 {{< copyable "sql" >}}
 
 ```sql
-select count(*),min(time),max(time) from slow_query where time > '2020-03-10 00:00:00' and time < '2020-03-11 00:00:00';
+select count(*),
+       min(time),
+       max(time)
+from slow_query
+where time > '2020-03-10 00:00:00'
+  and time < '2020-03-11 00:00:00';
 ```
 
 ```
