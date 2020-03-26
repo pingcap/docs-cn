@@ -62,6 +62,7 @@ GRANT ALL ON app_db.* TO 'app_developer';
 首先用 `CREATE USER` 来创建用户。
 
 {{< copyable "sql" >}}
+
 ```sql
 CREATE USER 'dev1'@'localhost' IDENTIFIED BY 'dev1pass';
 CREATE USER 'read_user1'@'localhost' IDENTIFIED BY 'read_user1pass';
