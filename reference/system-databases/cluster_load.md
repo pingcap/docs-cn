@@ -37,7 +37,7 @@ desc cluster_load;
     * `disk`：磁盘名。
     * `net`：`NIC` 名。
     * `memory`：硬件名为 `memory`。
-* `NAME`：不同负载类型，比如 cpu 有 `load1/load5/load15` 分别表示 cpu 在 1min/5min/15min 中的平均负载，可以通过 `select name from cluster_load where device_type='cpu' group by name` 来查询不同硬件类型支持的 NAME。
+* `NAME`：不同负载类型，比如 cpu 有 `load1/load5/load15` 分别表示 cpu 在 `1min/5min/15min` 内的平均负载，可以通过 `select name from cluster_load where device_type='cpu' group by name` 来查询不同硬件类型支持的 NAME。
 * `VALUE`：硬件负载的值，例如 cpu 在 `1min/5min/15min` 内的平均负载。
 
 查询集群的 CPU 负载信息示例如下：

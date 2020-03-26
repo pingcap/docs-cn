@@ -32,7 +32,7 @@ desc cluster_config;
 * `KEY`：配置项名。
 * `VALUE`：配置项值。
 
-具体示例，查询 TiKV 节点的 `coprocessor` 相关配置：
+以下示例查询 TiKV 节点的 `coprocessor` 相关配置：
 
 {{< copyable "sql" >}}
 
