@@ -268,7 +268,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项，当开启时，为�
 
 ### `capacity`
 
-+ 共享 block cache 的大小
++ 共享 block cache 的大小。
 + 默认值：系统总内存大小的 45%
 + 单位：KB|MB|GB
 
