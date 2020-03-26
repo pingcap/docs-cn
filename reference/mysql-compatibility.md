@@ -64,7 +64,9 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 另外，从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
 
-注意：TiDB 对于没有指定主键的情况下会使用 _tidb_rowid 来标识行，该数值的分配会和 auto_increment 列（如果存在的话) 共用一个分配器。如果指定了 auto_increment 列为主键，则 tidb 会用 auto_increment 列来标识行。因此会有以下的示例情况：
+> **注意：**
+>
+> 在没有指定主键的情况下 TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
 
 {{< copyable "sql" >}}
 
