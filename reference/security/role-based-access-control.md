@@ -32,20 +32,20 @@ CREATE ROLE 'app_developer', 'app_read', 'app_write';
 
 为角色授予权限和为用户授予权限操作相同，可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
 
-为 `app_reader` 角色授予数据库 `app_db` 的读权限：
+为 `app_read` 角色授予数据库 `app_db` 的读权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT SELECT ON app_db.* TO 'app_reader'@'%';
+GRANT SELECT ON app_db.* TO 'app_read'@'%';
 ```
 
-为 `app_writer` 角色授予数据库 `app_db` 的写权限：
+为 `app_write` 角色授予数据库 `app_db` 的写权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT INSERT, UPDATE, DELETE ON app_db.* TO 'app_writer'@'%';
+GRANT INSERT, UPDATE, DELETE ON app_db.* TO 'app_write'@'%';
 ```
 
 为 `app_developer` 角色授予 `app_db` 数据库的全部权限：
@@ -58,7 +58,7 @@ GRANT ALL ON app_db.* TO 'app_developer';
 
 ### 将角色授予给用户
 
-假设有有一个用户拥有开发者角色，可以对 `app_db` 的所有操作权限，另外有两个用户拥有 `app_db` 的只读权限。还有一个用户拥有 `app_db` 的读写权限。
+假设有一个用户拥有开发者角色，可以对 `app_db` 的所有操作权限；另外有两个用户拥有 `app_db` 的只读权限；还有一个用户拥有 `app_db` 的读写权限。
 首先用 `CREATE USER` 来创建用户。
 
 {{< copyable "sql" >}}
@@ -320,7 +320,7 @@ SET ROLE 'app_read'; SELECT CURRENT_ROLE();
 REVOKE 'app_read' FROM 'read_user1'@'localhost', 'read_user2'@'localhost';
 ```
 
-解除角色 `app_read`, `app_write` 与用户 `rw_user1@localhost` 的授权关系。
+解除角色 `app_read`、`app_write` 与用户 `rw_user1@localhost` 的授权关系。
 
 {{< copyable "sql" >}}
 
@@ -349,7 +349,7 @@ REVOKE INSERT, UPDATE, DELETE ON app_db.* FROM 'app_write';
 {{< copyable "sql" >}}
 
 ```sql
-DROP ROLE 'app_read', 'app_write';;
+DROP ROLE 'app_read', 'app_write';
 ```
 
 这个操作会清除角色在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录，解除和其相关的授权关系。
