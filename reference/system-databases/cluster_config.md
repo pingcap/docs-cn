@@ -27,8 +27,8 @@ desc cluster_config;
 
 字段解释：
 
-* `TYPE`：对应节点信息表 `information_schema.cluster_info` 中的 `TYPE` 字段。可取值为 `tidb`、`pd` 和 `tikv`。
-* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info`  中的 `STATUS_ADDRESS` 字段。
+* `TYPE`：对应节点信息表 `information_schema.cluster_info` 中的 `TYPE` 字段。可取值为 `tidb`，`pd` 或 `tikv`。
+* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info` 中的 `STATUS_ADDRESS` 字段。
 * `KEY`：配置项名。
 * `VALUE`：配置项值。
 
