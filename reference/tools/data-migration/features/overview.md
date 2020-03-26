@@ -8,6 +8,13 @@ category: reference
 
 This document describes the data replication features provided by the Data Migration tool and explains the configuration of corresponding parameters.
 
+For different DM versions, pay attention to the different match rules of schema or table names in the table routing, black & white lists, and binlog event filter features:
+
++ For DM v1.0.4 or later versions, all the above features support the [wildcard match](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax).
++ For DM versions earlier than v1.0.4, table routing and binlog event filter support the wildcard but do not support the `[...]` and `[!...]` expressions. The black & white lists only supports the regular expression.
+
+It is recommended that you use the wildcard for matching in simple scenarios.
+
 ## Table routing
 
 The table routing feature enables DM to replicate a certain table of the upstream MySQL or MariaDB instance to the specified table in the downstream.
@@ -102,7 +109,15 @@ The black and white lists filtering rule of the upstream database instance table
 ```yaml
 black-white-list:
   rule-1:
-    do-dbs: ["~^test.*"]         # Starting with "~" indicates it is a regular expression.
+    do-dbs: ["test*"]         # Starting with characters other than "~" indicates that it is a wildcard;
+                              # v1.0.4 or later versions support the regular expression rules.
+​    do-tables:
+    - db-name: "test[123]"    # Matches test1, test2, and test3.
+      tbl-name: "t[1-5]"      # Matches t1, t2, t3, t4, and t5.
+    - db-name: "test"
+      tbl-name: "t"
+  rule-2:
+    do-dbs: ["~^test.*"]      # Starting with "~" indicates that it is a regular expression.
 ​    ignore-dbs: ["mysql"]
     do-tables:
     - db-name: "~^test.*"
