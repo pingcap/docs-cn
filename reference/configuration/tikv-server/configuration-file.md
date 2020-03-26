@@ -263,7 +263,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ### `shared`
 
-+ 是否开启共享 block cache
++ 是否开启共享 block cache。
 + 默认值：true
 
 ### `capacity`
