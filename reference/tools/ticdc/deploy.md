@@ -9,7 +9,7 @@ category: reference
 
 ## 第 1 步：部署 TiCDC 集群
 
-假设 PD 集群有一个可以提供服务的 PD 节点 `client-url=10.0.10.25:2379`。若要部署三个 TiCDC 节点，可以按照以下命令启动集群。只需要指定相同的 PD 地址，新启动的节点就可以自动加入 TiCDC 集群。
+假设 PD 集群有一个可以提供服务的 PD 节点（client URL 为 `10.0.10.25:2379`）。若要部署三个 TiCDC 节点，可以按照以下命令启动集群。只需要指定相同的 PD 地址，新启动的节点就可以自动加入 TiCDC 集群。
 
 {{< copyable "shell-regular" >}}
 
