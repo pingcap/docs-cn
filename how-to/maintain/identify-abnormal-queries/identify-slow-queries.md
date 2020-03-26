@@ -317,8 +317,10 @@ min(query) | SELECT DISTINCT c FROM sbtest11 WHERE id BETWEEN ? AND ? ORDER BY c
 {{< copyable "sql" >}}
 
 ```sql
-select min(plan),plan_digest
-from cluster_slow_query where digest='17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94'
+select min(plan),
+       plan_digest
+from cluster_slow_query
+where digest='17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94'
 group by plan_digest\G
 ```
 
