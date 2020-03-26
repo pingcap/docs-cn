@@ -269,3 +269,57 @@ tidb-ctl base64decode [table_id] [base64_data]
 #### log 子命令
 
 TiDB 错误日志的堆栈信息是一行的格式，可以使用 `tidb-ctl log` 将堆栈信息格式化成多行形式。
+
+
+#### keyrange 子命令
+
+keyrange 子命令用于查询全局或表相关的关键 key range 信息，以 hex 形式输出。
+
+* `tidb-ctl keyrange` 查看全局的关键 key range。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tidb-ctl keyrange
+    ```
+
+    ```
+    global ranges:
+      meta: (6d, 6e)
+      table: (74, 75)
+    ```
+
+* 添加 `--encode` 选项可以显示按 bytes encode 过的 key（TiKV 及 PD 使用的表示）。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tidb-ctl keyrange --encode
+    ```
+
+    ```
+    global ranges:
+      meta: (6d00000000000000f8, 6e00000000000000f8)
+      table: (7400000000000000f8, 7500000000000000f8)
+    ```
+
+* `tidb-ctl keyrange --database={db} --table={tbl}` 查看全局和 table 相关的关键 key range。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tidb-ctl keyrange --database test --table ttt
+    ```
+
+    ```
+    global ranges:
+      meta: (6d, 6e)
+      table: (74, 75)
+    table ttt ranges: (NOTE: key range might be changed after DDL)
+      table: (74800000000000002f, 748000000000000030)
+      table indexes: (74800000000000002f5f69, 74800000000000002f5f72)
+        index c2: (74800000000000002f5f698000000000000001, 74800000000000002f5f698000000000000002)
+        index c3: (74800000000000002f5f698000000000000002, 74800000000000002f5f698000000000000003)
+        index c4: (74800000000000002f5f698000000000000003, 74800000000000002f5f698000000000000004)
+      table rows: (74800000000000002f5f72, 748000000000000030)
+    ```
