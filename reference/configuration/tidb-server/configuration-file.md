@@ -147,8 +147,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `max-server-connections`
 
 + TiDB 中同时允许的最大客户端连接数，用于资源控制。
-+ 默认值：4096
-+ 当客户端连接数到达 `max-server-connections` 时，TiDB 服务端将会拒绝新的客户端连接。
++ 默认值：0
++ 默认情况下，TiDB 不限制客户端连接数。当 `max-server-connections` 设置的值大于 0 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 
 ## log.file
 
