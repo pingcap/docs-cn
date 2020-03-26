@@ -88,7 +88,7 @@ category: reference
 
 ## 部署 TiDB Lightning
 
-本节介绍 TiDB Lightning 的两种部署方式：[使用 TiDB Ansible 部署](#使用-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
 
 ### 使用 TiDB Ansible 部署 TiDB Lightning
 
