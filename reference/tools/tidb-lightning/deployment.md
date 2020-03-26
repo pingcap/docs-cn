@@ -90,11 +90,11 @@ category: reference
 
 ## 部署 TiDB Lightning
 
-本节介绍 TiDB Lightning 的两种部署方式：[使用 TiDB Ansible 部署](#使用-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
 
 ### 使用 TiDB Ansible 部署 TiDB Lightning
 
-TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
+TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
 
 1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
 
