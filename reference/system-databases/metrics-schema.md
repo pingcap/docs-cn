@@ -12,7 +12,7 @@ category: reference
 
 系统表数量较多，这里挑出比较典型的 `tidb_query_duration` 表来作为示例讲解：
 
-`tidb_query_duration` 的表结构如下，从表的 COMMENT 中可以看出，这个表的是用来查询 TiDB query 执行的百分位时间，如 P999，P99，P90 的查询耗时，单位是秒。
+`tidb_query_duration` 的表结构如下，从表的 `COMMENT` 中可以看出，这个表的是用来查询 TiDB query 执行的百分位时间，如 P999，P99，P90 的查询耗时，单位是秒。
 
 {{< copyable "sql" >}}
 
@@ -34,7 +34,7 @@ show create table tidb_query_duration;
 +---------------------+--------------------------------------------------------------------------------------------------------------------+
 ```
 
-比如 tikv_admin_apply 有三个 label，对应的表也会有三个额外的列。
+比如 `tikv_admin_apply` 有三个 label，对应的表也会有三个额外的列。
 
 {{< copyable "sql" >}}
 
@@ -55,7 +55,7 @@ desc metrics_schema.tikv_admin_apply;
 5 rows in set (0.00 sec)
 ```
 
-下面是查询当前时间的 P90 的 TiDB Query 耗时，可以看出，Select 类似的 Query 的 P90 耗时是 0.0384 秒，internal 类型的 P90 耗时是 0.00327。instance 字段是 TiDB 示例的地址。
+下面是查询当前时间的 P90 的 TiDB Query 耗时，可以看出，Select 类似的 Query 的 P90 耗时是 0.0384 秒，`internal` 类型的 P90 耗时是 0.00327。`instance` 字段是 TiDB 示例的地址。
 
 {{< copyable "sql" >}}
 
@@ -74,5 +74,5 @@ metrics_schema> select * from tidb_query_duration where value is not null and ti
 
 监控表 session 变量：
 
-* tidb_metric_query_step：查询的分辨率步长。从 Promethues 的 query_range 数据时需要指定 start，end，step，其中 step 会使用该变量的值
-* tidb_metric_query_range_duration：查询监控时，会将 PROMQL 中的 $RANGE_DURATION 替换成该变量的值，默认值是 60 秒
+* `tidb_metric_query_step`：查询的分辨率步长。从 `Promethues` 的 `query_range` 数据时需要指定 `start`，`end`，`step`，其中 `step` 会使用该变量的值。
+* `tidb_metric_query_range_duration`：查询监控时，会将 `PROMQL` 中的 `$RANGE_DURATION` 替换成该变量的值，默认值是 60 秒。

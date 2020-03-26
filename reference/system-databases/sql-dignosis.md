@@ -11,40 +11,38 @@ SQL 诊断功能是在 TiDB 4.0 版本中引入的特性，用于提升 TiDB 问
 SQL 诊断共分三大块：
 
 * **集群信息表**：TiDB 4.0 诊断系统添加了集群信息表，为原先离散的各节点实例信息提供了统一的获取方式。它将整个集群的集群拓扑、硬件信息、软件信息、内核参数、监控、系统信息、慢查询、语句、日志完全整合在表中，让用户能够统一使用 SQL 进行查询。
-* **集群监控表**：TiDB 4.0 诊断系统添加了集群监控系统表，所有表都在 `metrics_schema` 中，可以通过 SQL 语句来查询监控信息。比起原先的可视化监控，SQL 查询监控允许用户对整个集群的所有监控进行关联查询，并对比不同时间段的结果，迅速找出性能瓶颈。
-由于 TiDB 集群的监控指标数量较大，SQL 诊断还提供了监控汇总表，让用户更便捷地从众多监控中找出异常的监控项。
-* **自动诊断**：尽管用户可以手动执行 SQL 来查询集群信息表和集群监控表与汇总表来发现集群问题，但自动挡总是更香的，所以 SQL 诊断利用已有的基础信息表提供了诊断相关的系统表来自动执行诊断。
+* **集群监控表**：TiDB 4.0 诊断系统添加了集群监控系统表，所有表都在 `metrics_schema` 中，可以通过 SQL 语句来查询监控信息。比起原先的可视化监控，SQL 查询监控允许用户对整个集群的所有监控进行关联查询，并对比不同时间段的结果，迅速找出性能瓶颈。由于 TiDB 集群的监控指标数量较大，SQL 诊断还提供了监控汇总表，让用户能够更便捷地从众多监控中找出异常的监控项。
+* **自动诊断**：尽管用户可以手动执行 SQL 来查询集群信息表、集群监控表与汇总表，但自动诊断更加方便。所以 SQL 诊断基于已有的集群信息表和监控表，提供了与之相关的诊断结果表与诊断汇总表来执行自动诊断。
 
 ## 集群信息表
 
 集群信息表将一个集群中的所有节点实例的信息都汇聚在一起，让用户仅通过一条 SQL 就能查询整个集群相关信息。
 集群信息表列表如下：
 
-* 集群拓扑表 `information_schema.cluster_info` 主要是用于获取集群当前的拓扑信息，以及各个节点的版本、版本对应的 Git Hash、启动时间、运行时间信息。
-* 集群配置表 `information_schema.cluster_config` 用于获取集群当前所有节点的配置，TiDB 4.0 之前的版本必须逐个访问各个节点的 HTTP API。
-* 集群硬件表 `information_schema.cluster_hardware` 主要用于快速查询集群硬件信息。
-* 集群负载表 `information_schema.cluster_load` 主要用于查询集群不同节点的不同硬件类型的负载信息。
-* 内核参数表 `information_schema.cluster_systeminfo` 主要用于查询集群不同节点的内核配置信息，目前支持查询 sysctl 的信息。
-* 集群日志表 `information_schema.cluster_log` 表主要用于集群日志查询，通过将查询条件下推到各个节点，降低日志查询对集群的影响，性能影响小于等 grep 命令。
+* 集群拓扑表 `information_schema.cluster_info` 用于获取集群当前的拓扑信息，以及各个节点的版本、版本对应的 Git Hash、各节点的启动时间、各节点的运行时间。
+* 集群配置表 `information_schema.cluster_config` 用于获取集群当前所有节点的配置。对于 TiDB 4.0 之前的版本，用户必须逐个访问各个节点的 HTTP API 才能获取这些配置信息。
+* 集群硬件表 `information_schema.cluster_hardware` 用于快速查询集群硬件信息。
+* 集群负载表 `information_schema.cluster_load` 用于查询集群不同节点以及不同硬件类型的负载信息。
+* 内核参数表 `information_schema.cluster_systeminfo` 用于查询集群不同节点的内核配置信息。目前支持查询 sysctl 的信息。
+* 集群日志表 `information_schema.cluster_log` 用于集群日志查询，通过将查询条件下推到各个节点，降低日志查询对集群的影响，性能影响小于等 grep 命令。
 
-TiDB 4.0 之前的以下系统表，只能查看当前节点，TiDB 4.0 实现了对应的集群表，可以在单个 TiDB 节点上拥有整个集群的全局视图。
-这些表目前都位于 information_schema 中，查询形式上与其他 information_schema 系统表一致。
+TiDB 4.0 之前的系统表，只能查看当前节点，TiDB 4.0 实现了对应的集群表，可以在单个 TiDB 节点上拥有整个集群的全局视图。
+这些表目前都位于 `information_schema` 中，查询方式与其他 `information_schema` 系统表一致。
 
 ## 集群监控表
 
-为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表，所有表都在 `metrics_schema` 中，可以通过 SQL 的方式查询监控，SQL 查询监控的好处在于可以对整个集群的所有监控进行关联查询，并对比不同时间段的结果，迅速找出性能瓶颈。
+为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有监控表都在 `metrics_schema` 中，可以通过 SQL 的方式查询监控信息。SQL 查询监控允许用户对整个集群的所有监控进行关联查询，并对比不同时间段的结果，迅速找出性能瓶颈。
 
 * `information_schema.metrics_tables`：由于目前添加的系统表数量较多，因此用户可以通过该表查询这些监控表的相关元信息。
 
-由于 TiDB 集群的监控指标数量较大，因此 TiDB 4.0 提供了监控汇总表：
+由于 TiDB 集群的监控指标数量较大，因此 TiDB 4.0 提供以下监控汇总表：
 
-* 监控汇总表 `information_schema.metrics_summary` 用于汇总所有监控数据，以提升用户对各个监控指标进行排查的效率。
-* 监控汇总表 `information_schema.metrics_summary_by_label` 同样用于汇总所有监控数据，不过它会对不同的 label 使用区分统计。
+* 监控汇总表 `information_schema.metrics_summary` 用于汇总所有监控数据，以提升用户排查各监控指标的效率。
+* 监控汇总表 `information_schema.metrics_summary_by_label` 同样用于汇总所有监控数据，不过该表会对不同的 label 进行区分统计。
 
 ## 自动诊断
 
-前面介绍了集群信息表和集群监控表，并通过 SQL 演示了如何通过查询这些表来发现集群问题，比如通过 information_schema.cluster_config 发现集群不同节点配置不一致，通过 `information_schema.metrics_summary` 发现指定时间范围内 TiDB 集群中平均耗时最高的监控项。
-不过手动执行固定模式的 SQL 排查集群问题是低效的，为了进一步优化用户体验，方便用户使用，于是我们利用已有的基础信息表提供了诊断相关的系统表来自动执行诊断：
+以上集群信息表和集群监控表均需要用户手动执行固定模式的 SQL 语句来排查集群问题。为了进一步优化用户体验，TiDB 根据已有的基础信息表，提供诊断相关的系统表，使诊断自动执行。自动诊断相关的系统表如下：
 
-* 诊断结果表 `information_schema.inspection_result` 用于展示对系统的诊断结果，诊断是惰性触发，使用 SQL `select * from inspection_result` 会触发所有的诊断规则对系统进行诊断，并会在结果集中展示系统中的故障或风险。
+* 诊断结果表 `information_schema.inspection_result` 用于展示对系统的诊断结果。诊断是惰性触发，使用 `select * from inspection_result` 会触发所有诊断规则对系统进行诊断，并在结果中展示系统中的故障或风险。
 * 诊断汇总表 `information_schema.inspection_summary` 用于对特定链路或模块的监控进行汇总，用户可以根据整个模块或链路的上下文来排查定位问题。
