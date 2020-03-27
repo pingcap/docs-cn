@@ -144,7 +144,7 @@ DM-master 重启时会自动向每个 DM-worker 实例请求任务信息，重�
         ansible-playbook local_prepare.yml
         ```
 
-2. 使用 Ansible 执行滚动升级。
+2. 使用 TiDB Ansible 执行滚动升级。
 
     1. 对 DM-worker 实例执行滚动升级：
 
