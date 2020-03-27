@@ -5,7 +5,7 @@ category: reference
 
 # CLUSTER_SYSTEMINFO
 
-集群负载表 `CLUSTER_SYSTEMINFO` 用于查询集群不同节点的内核配置信息。目前支持查询 `sysctl` 的信息。
+集群负载表 `CLUSTER_SYSTEMINFO` 用于查询集群所有节点所在服务器的内核配置信息。目前支持查询 `sysctl` 的信息。
 
 {{< copyable "sql" >}}
 
@@ -36,20 +36,18 @@ desc cluster_systeminfo;
 * `NAME`：`sysctl` 对应的配置名。
 * `VALUE`：`sysctl` 对应配置项的值。
 
+查询集群所有服务器的内核版本示例如下：
+
 ```sql
-select * from cluster_systeminfo where name like '%fd%';
+select * from CLUSTER_SYSTEMINFO where name like '%kernel.osrelease%'
 ```
 
 ```
-+------+-----------------+-------------+-------------+-------------------------------+-------+
-| TYPE | INSTANCE        | SYSTEM_TYPE | SYSTEM_NAME | NAME                          | VALUE |
-+------+-----------------+-------------+-------------+-------------------------------+-------+
-| tidb | 127.0.0.1:10080 | system      | sysctl      | net.inet6.ip6.maxifdefrouters | 16    |
-| tidb | 127.0.0.1:10080 | system      | sysctl      | net.necp.client_fd_count      | 98    |
-| tidb | 127.0.0.1:10080 | system      | sysctl      | net.necp.observer_fd_count    | 0     |
-| pd   | 127.0.0.1:2379  | system      | sysctl      | net.inet6.ip6.maxifdefrouters | 16    |
-| pd   | 127.0.0.1:2379  | system      | sysctl      | net.necp.client_fd_count      | 98    |
-| pd   | 127.0.0.1:2379  | system      | sysctl      | net.necp.observer_fd_count    | 0     |
-+------+-----------------+-------------+-------------+-------------------------------+-------+
-6 rows in set (0.04 sec)
++------+-------------------+-------------+-------------+------------------+----------------------------+
+| TYPE | INSTANCE          | SYSTEM_TYPE | SYSTEM_NAME | NAME             | VALUE                      |
++------+-------------------+-------------+-------------+------------------+----------------------------+
+| tidb | 172.16.5.40:4008  | system      | sysctl      | kernel.osrelease | 3.10.0-862.14.4.el7.x86_64 |
+| pd   | 172.16.5.40:20379 | system      | sysctl      | kernel.osrelease | 3.10.0-862.14.4.el7.x86_64 |
+| tikv | 172.16.5.40:21150 | system      | sysctl      | kernel.osrelease | 3.10.0-862.14.4.el7.x86_64 |
++------+-------------------+-------------+-------------+------------------+----------------------------+
 ```

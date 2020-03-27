@@ -30,7 +30,6 @@ mysql> desc metrics_summary;
 | MAX_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
 | COMMENT      | varchar(256)          | YES  |      | NULL    |       |
 +--------------+-----------------------+------+------+---------+-------+
-7 rows in set (0.00 sec)
 ```
 
 字段解释：

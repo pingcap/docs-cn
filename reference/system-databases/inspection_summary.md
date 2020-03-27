@@ -28,7 +28,6 @@ mysql> desc inspection_summary;
 | MIN_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
 | MAX_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
 +--------------+-----------------------+------+------+---------+-------+
-8 rows in set (0.00 sec)
 ```
 
 字段解释：

@@ -23,7 +23,6 @@ desc metrics_tables;
 | QUANTILE   | double unsigned | YES  |      | NULL    |       |
 | COMMENT    | varchar(256)    | YES  |      | NULL    |       |
 +------------+-----------------+------+------+---------+-------+
-5 rows in set (0.00 sec)
 ```
 
 表 `metrics_tables` 的字段解释：

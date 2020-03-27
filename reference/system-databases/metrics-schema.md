@@ -51,7 +51,6 @@ desc metrics_schema.tikv_admin_apply;
 | status   | varchar(512)      | YES  |      | NULL    |       |
 | value    | double unsigned   | YES  |      | NULL    |       |
 +----------+-------------------+------+------+---------+-------+
-5 rows in set (0.00 sec)
 ```
 
 下面是查询当前时间的 P90 的 TiDB Query 耗时，可以看出，`Select` Query 类型的 P90 耗时是 0.0384 秒，`internal` 类型的 P90 耗时是 0.00327。`instance` 字段是 TiDB 示例的地址。
