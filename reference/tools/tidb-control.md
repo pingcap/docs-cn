@@ -274,7 +274,7 @@ TiDB 错误日志的堆栈信息是一行的格式，可以使用 `tidb-ctl log`
 
 `keyrange` 子命令用于查询全局或表相关的关键 key range 信息，以十六进制形式输出。
 
-* `tidb-ctl keyrange` 查看全局的关键 key range。
+* 使用 `tidb-ctl keyrange` 命令查看全局的关键 key range。
 
     {{< copyable "shell-regular" >}}
 
