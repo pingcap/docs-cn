@@ -265,4 +265,16 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 select /*+ READ_FROM_REPLICA() */ * from t;
 ```
 
+### IGNORE_PLAN_CACHE()
+
+`IGNORE_PLAN_CACHE()` 提示优化器处理当前 prepare 语句时不使用 plan cache。
+
+下面的例子会强制 prepare 语句不使用 plan cache：
+
+{{< copyable "sql" >}}
+
+```sql
+prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id=?';
+```
+
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
