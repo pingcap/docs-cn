@@ -8,9 +8,11 @@ category: reference
 
 This document describes how to manage and maintain the data replication task using the [dmctl](/reference/tools/data-migration/overview.md#dmctl) component. For the Data Migration cluster deployed using DM-Ansible, the dmctl binary file is in `dm-ansible/dmctl`.
 
-## dmctl basic usage
+The dmctl component supports the interactive mode for manual operations, and also supports the command mode for the script.
 
-This section shows the basic usage of dmctl commands.
+## dmctl interactive mode
+
+This section described the basic use of dmctl commands in the interactive mode.
 
 ### dmctl help
 
@@ -42,9 +44,15 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 
 ### Task management overview
 
+Enters the interactive mode to interact with DM-master.
+
+{{< copyable "shell-regular" >}}
+
 ```bash
-# Enters the command line mode to interact with DM-master.
-$ ./dmctl -master-addr 172.16.30.14:8261
+./dmctl -master-addr 172.16.30.14:8261
+```
+
+```
 Welcome to dmctl
 Release Version: v1.0.1
 Git Commit Hash: e63c6cdebea0edcf2ef8c91d84cff4aaa5fc2df7
@@ -816,6 +824,49 @@ You can use the `refresh-worker-tasks` command to forcefully refresh the `task =
 > **Note:**
 >
 > Normally, you do not need to use this command. Use it only when you are sure that the `task => DM-workers` mapping exists, but you are still prompted to refresh while you are executing other commands.
+
+## dmctl command mode
+
+The command mode differs from the interactive mode in that you need to append the task operation right after the dmctl command. The parameters of the task operation in the command mode are the same as those in the interactive mode.
+
+> **Note:**
+>
+> + A dmctl command must be followed by only one task operation.
+> + The task operation can be placed only at the end of the dmctl command.
+
+{{< copyable "shell-regular" >}}
+
+```bash
+./dmctl -master-addr 172.16.30.14:8261 start-task task.yaml
+./dmctl -master-addr 172.16.30.14:8261 stop-task task
+./dmctl -master-addr 172.16.30.14:8261 query-status
+```
+
+```
+Available Commands:
+  break-ddl-lock        break-ddl-lock <-w worker ...> <task-name> [--remove-id] [--exec] [--skip]
+  check-task            check-task <config-file>
+  migrate-relay         migrate-relay <worker> <binlogName> <binlogPos>
+  pause-relay           pause-relay <-w worker ...>
+  pause-task            pause-task [-w worker ...] <task-name>
+  purge-relay           purge-relay <-w worker> [--filename] [--sub-dir]
+  query-error           query-error [-w worker ...] [task-name]
+  query-status          query-status [-w worker ...] [task-name]
+  refresh-worker-tasks  refresh-worker-tasks
+  resume-relay          resume-relay <-w worker ...>
+  resume-task           resume-task [-w worker ...] <task-name>
+  show-ddl-locks        show-ddl-locks [-w worker ...] [task-name]
+  sql-inject            sql-inject <-w worker> <task-name> <sql1;sql2;>
+  sql-replace           sql-replace <-w worker> [-b binlog-pos] [-s sql-pattern] [--sharding] <task-name> <sql1;sql2;>
+  sql-skip              sql-skip <-w worker> [-b binlog-pos] [-s sql-pattern] [--sharding] <task-name>
+  start-task            start-task [-w worker ...] <config-file>
+  stop-task             stop-task [-w worker ...] <task-name>
+  switch-relay-master   switch-relay-master <-w worker ...>
+  unlock-ddl-lock       unlock-ddl-lock [-w worker ...] <lock-ID>
+  update-master-config  update-master-config <config-file>
+  update-relay          update-relay [-w worker ...] <config-file>
+  update-task           update-task [-w worker ...] <config-file>
+```
 
 ## Deprecated or unrecommended commands
 
