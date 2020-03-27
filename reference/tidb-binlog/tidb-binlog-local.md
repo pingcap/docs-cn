@@ -272,9 +272,9 @@ TiDB Binlog 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/re
 
 ### pump/drainer 配置
 
-使用 ansible 部署的 pump 服务，已经在启动参数设置 metrics 。
+使用 TiDB Ansible 部署的 Pump 服务，已经在启动参数设置 metrics 。
 
-drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
+Drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个参数，其中 metrics-addr 设为 Push Gateway 的地址，metrics-interval 为 push 的频率，单位为秒，默认值为15
 
 ### Grafana 配置
 
@@ -282,6 +282,6 @@ drainer 启动时可以设置 `--metrics-addr` 和 `--metrics-interval` 两个�
 
     点击 Grafana Logo -> 点击 Data Sources -> 点击 Add data source -> 填写 data source 信息 ( 注: Type 选 Prometheus，Url 为 Prometheus 地址，根据实际情况 添加/填写 ）
 
-+ 导入 dashboard 配置文件
++ 导入 Dashboard 配置文件
 
     点击 Grafana Logo -> 点击 Dashboards -> 点击 Import -> 选择需要的 [dashboard 配置文件](https://github.com/pingcap/tidb-ansible/blob/master/scripts/binlog.json)上传 -> 选择对应的 data source
