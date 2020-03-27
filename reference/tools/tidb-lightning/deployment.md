@@ -6,7 +6,7 @@ category: reference
 
 # TiDB Lightning Deployment
 
-This document describes the hardware requirements of TiDB Lightning using the default Importer-backend, and how to deploy it using Ansible or manually.
+This document describes the hardware requirements of TiDB Lightning using the default Importer-backend, and how to deploy it using TiDB Ansible or manually.
 
 If you wish to use the TiDB-backend, also read [TiDB Lightning TiDB-backend](/reference/tools/tidb-lightning/tidb-backend.md) for the changes to the deployment steps.
 
@@ -96,12 +96,12 @@ If the data source consists of CSV files, see [CSV support](/reference/tools/tid
 
 This section describes two deployment methods of TiDB Lightning:
 
-- [Deploy TiDB Lightning using Ansible](#deploy-tidb-lightning-using-ansible)
+- [Deploy TiDB Lightning using TiDB Ansible](#deploy-tidb-lightning-using-ansible)
 - [Deploy TiDB Lightning manually](#deploy-tidb-lightning-manually)
 
-### Deploy TiDB Lightning using Ansible
+### Deploy TiDB Lightning using TiDB Ansible
 
-You can deploy TiDB Lightning using Ansible together with the [deployment of the TiDB cluster itself using Ansible](/how-to/deploy/orchestrated/ansible.md).
+You can deploy TiDB Lightning using TiDB Ansible together with the [deployment of the TiDB cluster itself using TiDB Ansible](/how-to/deploy/orchestrated/ansible.md).
 
 1. Edit `inventory.ini` to add the addresses of the `tidb-lightning` and `tikv-importer` servers.
 

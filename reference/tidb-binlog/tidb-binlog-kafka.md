@@ -405,7 +405,7 @@ This section introduces how to monitor TiDB Binlog's status and performance, and
 
 ### Configure Pump/Drainer
 
-Use the Pump service deployed using Ansible. Set metrics in startup parameters.
+Use the Pump service deployed using TiDB Ansible. Set metrics in startup parameters.
 
 When you start Drainer, set the two parameters of `--metrics-addr` and `--metrics-interval`. Set `--metrics-addr` as the address of Push Gateway. Set `--metrics-interval` as the frequency of push (default 15 seconds).
 

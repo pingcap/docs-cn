@@ -7,9 +7,9 @@ aliases: ['/docs/dev/how-to/upgrade/tidb-binlog/']
 
 # Upgrade TiDB Binlog
 
-This document introduces how to upgrade TiDB Binlog that is deployed with Ansible and deployed manually to the latest [cluster](/reference/tidb-binlog/overview.md) version. There is also a section on how to upgrade TiDB Binlog from an earlier incompatible version (Kafka/Local version) to the latest version.
+This document introduces how to upgrade TiDB Binlog that is deployed with TiDB Ansible and deployed manually to the latest [cluster](/reference/tidb-binlog/overview.md) version. There is also a section on how to upgrade TiDB Binlog from an earlier incompatible version (Kafka/Local version) to the latest version.
 
-## Upgrade TiDB Binlog deployed with Ansible
+## Upgrade TiDB Binlog deployed with TiDB Ansible
 
 Follow the steps in this section if you deploy TiDB Binlog with [TiDB Ansible Playbook](https://github.com/pingcap/tidb-ansible).
 

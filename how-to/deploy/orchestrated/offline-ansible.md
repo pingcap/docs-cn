@@ -1,12 +1,12 @@
 ---
-title: Deploy TiDB Offline Using Ansible
-summary: Use Ansible to deploy a TiDB cluster offline.
+title: Deploy TiDB Offline Using TiDB Ansible
+summary: Use TiDB Ansible to deploy a TiDB cluster offline.
 category: how-to
 ---
 
-# Deploy TiDB Offline Using Ansible
+# Deploy TiDB Offline Using TiDB Ansible
 
-This guide describes how to deploy a TiDB cluster offline using Ansible.
+This guide describes how to deploy a TiDB cluster offline using TiDB Ansible.
 
 ## Prepare
 
@@ -57,19 +57,19 @@ Take the following steps to install system dependencies on the Control Machine i
 
 > **Note:**
 >
-> If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install Ansible and its dependencies offline.
+> If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install TiDB Ansible and its dependencies offline.
 
 ## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
 
 See [Create the `tidb` user on the Control Machine and generate the SSH key](/how-to/deploy/orchestrated/ansible.md#step-2-create-the-tidb-user-on-the-control-machine-and-generate-the-ssh-key).
 
-## Step 3: Install Ansible and its dependencies offline on the Control Machine
+## Step 3: Install TiDB Ansible and its dependencies offline on the Control Machine
 
-Currently, all the versions of Ansible from 2.4 to 2.7.11 are supported. The versions of Ansible and the related dependencies are listed in the `tidb-ansible/requirements.txt` file. The following installation steps take Ansible 2.5 as an example.
+Currently, all the versions of TiDB Ansible from 2.4 to 2.7.11 are supported. The versions of TiDB Ansible and the related dependencies are listed in the `tidb-ansible/requirements.txt` file. The following installation steps take Ansible 2.5 as an example.
 
 1. Download [Ansible 2.5 offline installation package](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz) on the download machine and then upload it to the Control Machine.
 
-2. Install Ansible and its dependencies offline.
+2. Install TiDB Ansible and its dependencies offline.
 
     {{< copyable "shell-root" >}}
 
@@ -80,9 +80,9 @@ Currently, all the versions of Ansible from 2.4 to 2.7.11 are supported. The ver
     ./install_ansible.sh
     ```
 
-3. View the version of Ansible.
+3. View the version of TiDB Ansible.
 
-    After Ansible is installed, you can view the version using `ansible --version`.
+    After TiDB Ansible is installed, you can view the version using `ansible --version`.
 
     {{< copyable "shell-root" >}}
 
@@ -96,9 +96,9 @@ Currently, all the versions of Ansible from 2.4 to 2.7.11 are supported. The ver
 
 ## Step 4: Download TiDB Ansible and TiDB packages on the download machine
 
-1. Install Ansible on the download machine.
+1. Install TiDB Ansible on the download machine.
 
-    Use the following method to install Ansible online on the download machine installed with the CentOS 7 system. After Ansible is installed, you can view the version using `ansible --version`.
+    Use the following method to install Ansible online on the download machine installed with the CentOS 7 system. After TiDB Ansible is installed, you can view the version using `ansible --version`.
 
     {{< copyable "shell-root" >}}
 

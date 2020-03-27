@@ -131,7 +131,7 @@ In environments of development, testing and production, the requirements on serv
 
     **Method #2**: Deploy a TiDB cluster containing Pump from scratch.
 
-    For how to use Ansible to deploy the TiDB cluster, see [Deploy TiDB Using Ansible](/how-to/deploy/orchestrated/ansible.md).
+    For how to use TiDB Ansible to deploy the TiDB cluster, see [Deploy TiDB Using TiDB Ansible](/how-to/deploy/orchestrated/ansible.md).
 
 3. Check the Pump status.
 

@@ -39,12 +39,12 @@ You need to reset the entire data replication task in the following cases:
 Generally, at this time, the relay unit exits with an error and cannot be automatically restored gracefully. You need to manually restore the data replication and the steps are as follows:
 
 1. Use the `stop-task` command to stop all the replication tasks that are currently running.
-2. Use Ansible to [stop the entire DM cluster](/how-to/deploy/data-migration-with-ansible.md#step-10-stop-the-dm-cluster).
+2. Use DM-Ansible to [stop the entire DM cluster](/how-to/deploy/data-migration-with-ansible.md#step-10-stop-the-dm-cluster).
 3. Manually clean up the relay log directory of the DM-worker corresponding to the MySQL master whose binlog is reset.
 
     - If the cluster is deployed using DM-Ansible, the relay log is in the `<deploy_dir>/relay_log` directory.
     - If the cluster is manually deployed using the binary, the relay log is in the directory set in the `relay-dir` parameter.
 
 4. Clean up downstream replicated data.
-5. Use Ansible to [start the entire DM cluster](/how-to/deploy/data-migration-with-ansible.md#step-9-deploy-the-dm-cluster).
+5. Use DM-Ansible to [start the entire DM cluster](/how-to/deploy/data-migration-with-ansible.md#step-9-deploy-the-dm-cluster).
 6. Restart data replication with the new task name, or set `remove-meta` to `true` and `task-mode` to `all`.

@@ -144,7 +144,7 @@ To restart the DM-master component, you can use either of the following two appr
         ansible-playbook local_prepare.yml
         ```
 
-2. Use Ansible to perform the rolling update.
+2. Use DM-Ansible to perform the rolling update.
 
     1. Perform a rolling update on the DM-worker instance:
 

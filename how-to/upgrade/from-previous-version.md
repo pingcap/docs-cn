@@ -34,7 +34,7 @@ This document is targeted for users who want to upgrade from TiDB 2.0, 2.1, 3.0,
 
 The latest development version of TiDB Ansible depends on Ansible 2.4.2 ~ 2.7.11 (`2.4.2 ≦ ansible ≦ 2.7.11`, Ansible 2.7.11 recommended) and the Python modules of `jinja2 ≧ 2.9.6` and `jmespath ≧ 0.9.0`.
 
-To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-4-install-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-ansible-and-its-dependencies-offline-on-the-control-machine).
+To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/how-to/deploy/orchestrated/ansible.md#step-4-install-tidb-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/how-to/deploy/orchestrated/offline-ansible.md#step-3-install-tidb-ansible-and-its-dependencies-offline-on-the-control-machine).
 
 After the installation is finished, you can view the version information using the following command:
 

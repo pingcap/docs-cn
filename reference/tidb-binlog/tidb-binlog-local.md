@@ -39,7 +39,7 @@ TiDB Binlog can be [downloaded](/reference/tools/download.md) as part of the Ent
 
 ### Deploy TiDB Binlog
 
-- It is recommended to deploy Pump using Ansible.
+- It is recommended to deploy Pump using TiDB Ansible.
 - Build a new TiDB cluster with a startup order of pd-server -> tikv-server -> pump -> tidb-server -> drainer.
     - Edit the `tidb-ansible inventory.ini` file:
 
@@ -289,7 +289,7 @@ This section introduces how to monitor TiDB Binlog's status and performance, and
 
 ### Configure Pump/Drainer
 
-Use the Pump service deployed using Ansible. Set metrics in startup parameters.
+Use the Pump service deployed using TiDB Ansible. Set metrics in startup parameters.
 
 When you start Drainer, set the two parameters of `--metrics-addr` and `--metrics-interval`. Set `--metrics-addr` as the address of Push Gateway. Set `--metrics-interval` as the frequency of push (default 15 seconds).
 

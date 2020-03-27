@@ -145,7 +145,7 @@ Make sure you have logged in to the Control Machine using the `tidb` user accoun
 
 Make sure you have logged in to the Control Machine using the `tidb` user account.
 
-It is required to use `pip` to install Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, DM-Ansible is compatible with Ansible 2.5 or later.
+It is required to use `pip` to install DM-Ansible and its dependencies, otherwise a compatibility issue occurs. Currently, DM-Ansible is compatible with Ansible 2.5 or later.
 
 1. Install DM-Ansible and the dependencies on the Control Machine:
 
@@ -158,7 +158,7 @@ It is required to use `pip` to install Ansible and its dependencies, otherwise a
     sudo pip install -r ./requirements.txt
     ```
 
-    Ansible and the related dependencies are in the `dm-ansible/requirements.txt` file.
+    DM-Ansible and the related dependencies are in the `dm-ansible/requirements.txt` file.
 
 2. View the version of Ansible:
 
