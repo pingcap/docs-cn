@@ -288,7 +288,7 @@ TiDB 错误日志的堆栈信息是一行的格式，可以使用 `tidb-ctl log`
       table: (74, 75)
     ```
 
-* 添加 `--encode` 选项可以显示按 bytes encode 过的 key（TiKV 及 PD 使用的表示）。
+* 添加 `--encode` 选项可以显示 encode 过的 key（与 TiKV 及 PD 中的格式相同）。
 
     {{< copyable "shell-regular" >}}
 
