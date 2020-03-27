@@ -78,6 +78,10 @@ As an extension to `EXPLAIN`, `EXPLAIN ANALYZE` will execute the query and provi
 
 * `rows` is the total number of rows that were returned by this operator. So for example, you can compare the accuracy of the `count` column to `rows` in the `execution_info` column to assess how accurate the query optimizer's estimations are.
 
+* `memory` is the memory information used by this operator. Only root tasks have such information; otherwise `memeory` is `N/A`.
+
+* `disk` is the disk information used by this operator. Only root tasks have such information; otherwise `disk` is `N/A`.
+
 ### Example usage
 
 ```sql
