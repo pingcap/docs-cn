@@ -513,3 +513,9 @@ set tidb_query_log_max_len = 20
 - Scope: SESSION | GLOBAL
 - Default value: 0
 - This variable is used to enable or disable the statement summary feature. If enabled, SQL execution information like time consumption is recorded to the `performance_schema.events_statements_summary_by_digest` table to identify and troubleshoot SQL performance issues.
+
+### tidb_enable_chunk_rpc <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION
+- Default value: 1
+- This variable is used to control whether to enable the `Chunk` data encoding format in Coprocessor.
