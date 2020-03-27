@@ -208,7 +208,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2 安装部署
 
-#### 2.2.1 Ansible 部署方式（强烈推荐）
+#### 2.2.1 TiDB Ansible 部署方式（强烈推荐）
 
 详细可参考[使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
 
@@ -260,7 +260,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.4 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
-1）TiDB 中，对慢查询的定义在 tidb-ansible 的 `conf/tidb.yml` 配置文件中，`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
+1）TiDB 中，对慢查询的定义在 TiDB Ansible 的 `conf/tidb.yml` 配置文件中，`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
 
 慢查询日志默认记录到 tidb.log 中，如果希望生成单独的慢查询日志文件，修改 inventory.ini 配置文件的参数 `enable_slow_query_log` 为 True。
 
@@ -305,7 +305,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 ### 2.3 升级
 
-#### 2.3.1 如何使用 Ansible 滚动升级？
+#### 2.3.1 如何使用 TiDB Ansible 滚动升级？
 
 滚动升级 TiKV 节点( 只升级单独服务 )
 
@@ -321,7 +321,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### 2.3.3 Binary 如何升级？
 
-Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 Ansible 部署。
+Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 TiDB Ansible 部署。
 
 #### 2.3.4 一般升级选择升级 TiKV 还是所有组件都升级？
 
@@ -374,7 +374,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.7 如何规范停止 TiDB？
 
-如果是用 Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
+如果是用 TiDB Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 TiDB Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
 
 #### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 

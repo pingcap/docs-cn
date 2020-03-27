@@ -38,16 +38,16 @@ DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一
 
 1. 使用 `stop-task` 命令停止当前正在运行的所有同步任务。
 
-2. 使用 Ansible [停止整个 DM 集群](/how-to/deploy/data-migration-with-ansible.md#第-10-步关闭-dm-集群)。
+2. 使用 DM-Ansible [停止整个 DM 集群](/how-to/deploy/data-migration-with-ansible.md#第-10-步关闭-dm-集群)。
 
 3. 手动清理掉与 binlog event 被重置的 MySQL master 相对应的 DM-worker 的 relay log 目录。
 
-    - 如果是使用 Ansible 部署，relay log 目录即 `<deploy_dir>/relay_log` 目录。
+    - 如果是使用 DM-Ansible 部署，relay log 目录即 `<deploy_dir>/relay_log` 目录。
     - 如果是使用二进制文件手动部署，relay log 目录即 relay-dir 参数设置的目录。
 
 4. 清理掉下游已同步的数据。
 
-5. 使用 Ansible [启动整个 DM 集群](/how-to/deploy/data-migration-with-ansible.md#第-9-步部署-dm-集群)。
+5. 使用 DM-Ansible [启动整个 DM 集群](/how-to/deploy/data-migration-with-ansible.md#第-9-步部署-dm-集群)。
 
 6. 以新的任务名重启数据同步任务，或设置 `remove-meta` 为 `true` 且 `task-mode` 为 `all`。
 

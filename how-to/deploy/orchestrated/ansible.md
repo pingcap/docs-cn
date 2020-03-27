@@ -36,7 +36,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 
     > **注意：**
     >
-    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to//get-started/deploy-tidb-from-docker-compose.md)单机进行测试。
+    > 使用 TiDB Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。** 如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to//get-started/deploy-tidb-from-docker-compose.md)单机进行测试。
 
 2. 部署中控机一台
 
@@ -162,11 +162,11 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 > - 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
 > - 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
-## 第 4 步：在中控机器上安装 Ansible 及其依赖
+## 第 4 步：在中控机器上安装 TiDB Ansible 及其依赖
 
-以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，release-2.0、release-2.1 及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 TiDB Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，release-2.0、release-2.1 及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
 
-1. 在中控机器上安装 Ansible 及其依赖。
+1. 在中控机器上安装 TiDB Ansible 及其依赖。
 
     {{< copyable "shell-regular" >}}
 
@@ -175,7 +175,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     sudo pip install -r ./requirements.txt
     ```
 
-    Ansible 及相关依赖的版本信息记录在 `tidb-ansible/requirements.txt` 文件中。
+    TiDB Ansible 及相关依赖的版本信息记录在 `tidb-ansible/requirements.txt` 文件中。
 
 2. 查看 Ansible 的版本。
 
@@ -709,7 +709,7 @@ TiDB 兼容 MySQL，因此可使用 MySQL 客户端直接连接 TiDB。推荐配
 
 ## 常见部署问题
 
-本小节介绍使用 Ansible 部署 TiDB 集群过程中的常见问题与解决方案。
+本小节介绍使用 TiDB Ansible 部署 TiDB 集群过程中的常见问题与解决方案。
 
 ### 如何自定义端口
 
@@ -912,7 +912,7 @@ ansible-playbook start.yml
 
 ### You need to install jmespath prior to running json_query filter 报错
 
-1. 请参照[在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 `pip` 安装 Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
+1. 请参照[在中控机器上安装 TiDB Ansible 及其依赖](#在中控机器上安装-tidb-ansible-及其依赖) 在中控机上通过 `pip` 安装 TiDB Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
 
 2. 执行以下命令，验证 `jmespath` 是否安装成功：
 

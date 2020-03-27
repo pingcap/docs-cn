@@ -124,7 +124,7 @@ DM-Ansible 是 PingCAP 基于 [Ansible](https://docs.ansible.com/ansible/latest/
 > **注意：**
 >
 > - 请确保使用 `tidb` 账户登录中控机。
-> - 您需要使用 `pip` 方式下载安装 Ansible 及其依赖，否则可能会遇到兼容性问题。 DM-Ansible 当前与 Ansible 2.5 或更高版本兼容。
+> - 您需要使用 `pip` 方式下载安装 DM-Ansible 及其依赖，否则可能会遇到兼容性问题。 DM-Ansible 当前与 Ansible 2.5 或更高版本兼容。
 
 1. 在中控机上安装 DM-Ansible 及其依赖包：
 
