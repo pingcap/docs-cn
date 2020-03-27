@@ -1,5 +1,5 @@
 ---
-title: SQL DIAGNOSIS
+title: SQL 诊断
 category: reference
 ---
 
