@@ -302,7 +302,7 @@ TiDB 错误日志的堆栈信息是一行的格式，可以使用 `tidb-ctl log`
       table: (7400000000000000f8, 7500000000000000f8)
     ```
 
-* `tidb-ctl keyrange --database={db} --table={tbl}` 查看全局和 table 相关的关键 key range。
+* 使用 `tidb-ctl keyrange --database={db} --table={tbl}` 命令查看全局和表相关的关键 key range。
 
     {{< copyable "shell-regular" >}}
 
