@@ -22,7 +22,7 @@ TiCDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可�
 - `capture`: TiCDC 运行进程，多个 `capture` 组成一个 TiCDC 集群，负责 KV change log 的同步。
     - 每个 `capture` 负责拉取一部分 KV change log。
     - 对拉取的一个或多个 KV change log 进行排序。
-    - 向下游还原事务或按照 TiCDC open protocol 进行输出。
+    - 向下游还原事务或按照 TiCDC Open Protocol 进行输出。
 
 ## 同步功能介绍
 
@@ -33,7 +33,7 @@ TiCDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可�
 目前 TiCDC sink 模块支持同步数据到以下下游：
 
 - MySQL 协议兼容的数据库，提供最终一致性支持。
-- 以 TiCDC open protocol 输出到 Kafka，可实现行级别有序、最终一致性或严格事务一致性三种一致性保证。
+- 以 TiCDC Open Protocol 输出到 Kafka，可实现行级别有序、最终一致性或严格事务一致性三种一致性保证。
 
 ### 库表同步黑白名单
 
