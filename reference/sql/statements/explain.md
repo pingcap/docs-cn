@@ -10,6 +10,8 @@ category: reference
 
 语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/reference/sql/statements/show-columns-from.md) 下。
 
+TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 `EXPLAIN FOR` 有一些区别，请参见 [`EXPLAIN FOR CONNECTION`](#explain-for-connection)。
+
 ## 语法图
 
 **ExplainSym:**
@@ -23,6 +25,18 @@ category: reference
 **ExplainableStmt:**
 
 ![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
+
+## EXPLAIN 输出格式
+
+目前 `TiDB` 的 `EXPLAIN` 会输出 5 列，分别是：`id`，`estRows`，`task`，`access object`， `operator info`。执行计划中每个算子都由这 5 列属性来描述，`EXPLAIN`结果中每一行描述一个算子。每个属性的具体含义如下：
+
+| 属性名          | 含义 |
+|:----------------|:----------------------------------------------------------------------------------------------------------|
+| id            | 算子的 ID，在整个执行计划中唯一的标识一个算子。在 TiDB 2.1 中，ID 会格式化的显示算子的树状结构。数据从孩子结点流向父亲结点，每个算子的父亲结点有且仅有一个。                                                                                       |
+| estRows       | 算子预计将会输出的数据条数，基于统计信息以及算子的执行逻辑估算而来。在 4.0 之前叫 count。 |
+| task          | 算子属于的 task 种类。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，并行的在 TiKV 或者 TiFlash 上执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 或者 TiFlash 上的任务，每个 cop task 分散在 TiKV 或者 TiFlash 集群中，由多个进程共同执行。 |
+| access object | 算子所访问的数据项信息。包括表 `table`，表分区 `partition` 以及使用的索引 `index`（如果有）。只有直接访问数据的算子才拥有这些信息。 |
+| operator info | 算子的其它信息。各个算子的 operator info 各有不同，可参考下面的示例解读。 |
 
 ## 示例
 
@@ -223,6 +237,13 @@ The `xx.dot` is the result returned by the above statement.
 * `EXPLAIN` 的格式和 TiDB 中潜在的执行计划都与 MySQL 有很大不同。
 * TiDB 不像 MySQL 那样支持 `EXPLAIN FORMAT = JSON`。
 * TiDB 目前不支持插入语句的 `EXPLAIN`。
+
+## `EXPLAIN FOR CONNECTION`
+
+`EXPLAIN FOR CONNECTION` 用于获得一个连接中最后执行的查询的执行计划，其输出格式与 `EXPLAIN` 完全一致。但 TiDB 中的实现与 MySQL 不同，除了输出格式之外，还有以下区别：
+
+- MySQL 返回的是**正在执行**的查询计划，而 TiDB 返回的是**最后执行**的查询计划。
+- MySQL 的文档中指出，MySQL 要求登录用户与被查询的连接相同，或者拥有 `PROCESS` 权限，而 TiDB 则要求登录用户与被查询的连接相同，或者拥有 `SUPER` 权限。
 
 ## 另请参阅
 

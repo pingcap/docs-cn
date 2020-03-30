@@ -22,6 +22,18 @@ category: reference
 
 ![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
 
+
+## EXPLAIN ANALYZE 输出格式
+
+和 `EXPLAIN` 不同，`EXPLAIN ANALYZE` 会执行对应的 `SQL` 语句，记录其运行时信息，和执行计划一并返回出来，可以视为 `EXPLAIN` 语句的扩展。`EXPLAIN ANALYZE` 语句的返回结果相比 `EXPLAIN` 增加了 `actRows`, `execution info`,`memory`,`disk` 这几列信息：
+
+| 属性名          | 含义 |
+|:----------------|:---------------------------------|
+| actRows       | 算子实际输出的数据条数。 |
+| execution info  | 算子的实际执行信息。time 表示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (loops)，这个时间就是累积的时间。loops 是当前算子被父算子调用的次数。 |
+| memory  | 算子占用内存空间的大小。 |
+| disk  | 算子占用磁盘空间的大小。 |
+
 ## 示例
 
 {{< copyable "sql" >}}
