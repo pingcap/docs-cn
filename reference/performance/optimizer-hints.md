@@ -265,9 +265,12 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 select /*+ READ_FROM_REPLICA() */ * from t;
 ```
 
+除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
+
 ### IGNORE_PLAN_CACHE()
 
 `IGNORE_PLAN_CACHE()` 提示优化器处理当前 prepare 语句时不使用 plan cache。
+该 hint 用于在 [prepare-plan-cache](https://pingcap.com/docs-cn/dev/reference/configuration/tidb-server/configuration-file/#prepared-plan-cache) 开启的场景下临时禁用 `plan cache`
 
 以下示例强制 `prepare` 语句不使用 plan cache：
 
@@ -276,5 +279,3 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 ```sql
 prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id = ?';
 ```
-
-除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
