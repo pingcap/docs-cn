@@ -12,7 +12,7 @@ The dmctl component supports the interactive mode for manual operations, and als
 
 ## dmctl interactive mode
 
-This section described the basic use of dmctl commands in the interactive mode.
+This section describes the basic use of dmctl commands in the interactive mode.
 
 ### dmctl help
 
@@ -44,7 +44,7 @@ VjX8cEeTX+qcvZ3bPaO4h0C80pe/1aU=
 
 ### Task management overview
 
-Enters the interactive mode to interact with DM-master.
+You can go into the interactive mode to interact with DM-master.
 
 {{< copyable "shell-regular" >}}
 
