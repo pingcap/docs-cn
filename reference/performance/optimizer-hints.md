@@ -269,8 +269,9 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 
 ### IGNORE_PLAN_CACHE()
 
-`IGNORE_PLAN_CACHE()` 提示优化器处理当前 prepare 语句时不使用 plan cache。
-该 hint 用于在 [prepare-plan-cache](https://pingcap.com/docs-cn/dev/reference/configuration/tidb-server/configuration-file/#prepared-plan-cache) 开启的场景下临时禁用 `plan cache`
+`IGNORE_PLAN_CACHE()` 提示优化器在处理当前 prepare 语句时不使用 plan cache。
+
+该 Hint 用于在 [prepare-plan-cache](https://pingcap.com/docs-cn/dev/reference/configuration/tidb-server/configuration-file/#prepared-plan-cache) 开启的场景下临时禁用 plan cache。
 
 以下示例强制 `prepare` 语句不使用 plan cache：
 
