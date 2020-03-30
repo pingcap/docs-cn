@@ -1,14 +1,16 @@
 # PD Recover 快速指南
 
-PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常启动或服务的 PD 集群。PD Recover  会随 tidb-ansible 一起下载，位于 resource/bin/pd-recover。
+PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常启动或服务的 PD 集群。PD Recover 会随 tidb-ansible 一起下载，位于 resource/bin/pd-recover。
 
 ## 快速开始
 
 ### 获取 Cluster ID
 
-一般在 PD，TiKV 或 TiDB 的日志中都可以获取 Cluster ID。可以从中控机使用 ansible ad-hoc，也可以直接去服务器上翻日志。
+一般在 PD、TiKV 或 TiDB 的日志中都可以获取 Cluster ID。可以从中控机使用 `ansible ad-hoc`，也可以直接去服务器上查看日志。
 
-#### （推荐）从 pd 日志获取 [info] cluster id
+#### 从 PD 日志获取 [info] Cluster ID（推荐）
+
+使用以下命令，从 PD 日志中获取 [info] Cluster ID：
 
 ~~~
 ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd.log | grep "init cluster id" | head -10'
@@ -65,7 +67,7 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | gr
 
 或者也可以从 tikv 的日志中获取  
 
-##### 从 tikv 日志获取 [info] alloc store id
+#### 从 tikv 日志获取 [info] alloc store id
 
 ~~~
 ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* | grep "alloc store" | head -10'
