@@ -274,7 +274,7 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 {{< copyable "sql" >}}
 
 ```sql
-prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id=?';
+prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id = ?';
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
