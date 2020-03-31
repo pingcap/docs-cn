@@ -255,7 +255,7 @@
       -[`cluster_load`](/reference/system-databases/cluster_load.md)
       -[`cluster_systeminfo`](/reference/system-databases/cluster_systeminfo.md)
       -[`cluster_log`](/reference/system-databases/cluster_log.md)
-      -[`metrics_schema`](/reference/system-databases/metrics_schema.md)
+      -[`metrics_schema`](/reference/system-databases/metrics-schema.md)
       -[`metrics_tables`](/reference/system-databases/metrics_tables.md)
       -[`metrics_summary`](/reference/system-databases/metrics_summary.md)
       -[`inspection_result`](/reference/system-databases/inspection_result.md)
