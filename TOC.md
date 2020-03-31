@@ -167,6 +167,7 @@
       - [`EXECUTE`](/reference/sql/statements/execute.md)
       - [`EXPLAIN ANALYZE`](/reference/sql/statements/explain-analyze.md)
       - [`EXPLAIN`](/reference/sql/statements/explain.md)
+      - [`FLASHBACK TABLE`](/reference/sql/statements/flashback-table.md)
       - [`FLUSH PRIVILEGES`](/reference/sql/statements/flush-privileges.md)
       - [`FLUSH STATUS`](/reference/sql/statements/flush-status.md)
       - [`FLUSH TABLES`](/reference/sql/statements/flush-tables.md)
@@ -256,10 +257,12 @@
     - [SQL 优化流程](/reference/performance/sql-optimizer-overview.md)
     - [理解 TiDB 执行计划](/reference/performance/understanding-the-query-execution-plan.md)
     - [执行计划绑定](/reference/performance/execution-plan-bind.md)
+    - [Join Reorder 算法简介](/reference/performance/join-reorder.md)
     - [统计信息概述](/reference/performance/statistics.md)
     - [Optimizer Hints](/reference/performance/optimizer-hints.md)
     - [Follower Read](/reference/performance/follower-read.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/reference/performance/check-cluster-status-using-sql-statements.md)
+    - [使用 Index Merge 方式访问表](/reference/performance/index-merge.md)
     - [Statement Summary Table](/reference/performance/statement-summary.md)
     - [TiKV 调优](/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
@@ -312,6 +315,7 @@
         - [Black & White Lists](/reference/tools/data-migration/features/overview.md#black--white-table-lists)
         - [Binlog Event Filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)
         - [同步延迟监控](/reference/tools/data-migration/features/overview.md#同步延迟监控)
+        - [Online-ddl-scheme](/reference/tools/data-migration/features/online-ddl-scheme.md)
         + Shard Support
           - [简介](/reference/tools/data-migration/features/shard-merge.md)
           - [使用限制](/reference/tools/data-migration/features/shard-merge.md#使用限制)
@@ -423,6 +427,8 @@
     + 工具
       - [tkctl](/tidb-in-kubernetes/reference/tools/tkctl.md)
       - [相关工具使用](/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
+    + 组件
+      - [TiDB Scheduler 扩展调度器](/tidb-in-kubernetes/reference/components/tidb-scheduler.md)
   - [故障诊断](/tidb-in-kubernetes/troubleshoot.md)
   - [常见问题](/tidb-in-kubernetes/faq.md)
 + 常见问题 (FAQ)
@@ -438,6 +444,7 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/rn.md)
   + v4.0
+    - [4.0.0-beta.2](/releases/4.0.0-beta.2.md)
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
