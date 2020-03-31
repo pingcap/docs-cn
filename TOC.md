@@ -26,7 +26,7 @@
     - [SQL 基本操作](/how-to/get-started/explore-sql.md)
     - [读取历史数据](/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](/how-to/get-started/tidb-binlog.md)
-    - [TiDB Data Migration 教程](/how-to/get-started/data-migration.md)
+    - [TiDB Data Migration 教程](https://pingcap.com/docs-cn/tidb-data-migration/stable/get-started.md)
     - [TiDB Lightning 教程](/how-to/get-started/tidb-lightning.md)
     - [TiSpark 教程](/how-to/get-started/tispark.md)
   + 部署
@@ -38,7 +38,7 @@
     + 跨地域冗余
       - [跨数据中心部署方案](/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](/how-to/deploy/geographic-redundancy/location-awareness.md)
-    - [使用 Ansible 部署 DM 集群](/how-to/deploy/data-migration-with-ansible.md)
+    - [使用 Ansible 部署 DM 集群](https://pingcap.com/docs-cn/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/)
   + 配置
     - [时区](/how-to/configure/time-zone.md)
     - [内存控制](/how-to/configure/memory-control.md)
