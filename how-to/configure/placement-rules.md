@@ -92,6 +92,8 @@ pd-ctl config placement-rules disable
 
 ### 使用 pd-ctl 设置规则
 
+**注意：规则的变更将实时地影响 PD 调度，不恰当的规则设置可能导致副本数较少影响系统的高可用。**
+
 pd-ctl 支持使用多种方式查看系统中的 Rule，输出是 json 格式的 Rule 或 Rule 列表：
 
 {{< copyable "" >}}
