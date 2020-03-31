@@ -628,7 +628,6 @@ CONSTRAINT_CATALOG: def
       TABLE_SCHEMA: mysql
         TABLE_NAME: gc_delete_range_done
    CONSTRAINT_TYPE: UNIQUE
-6 rows in set (0.00 sec)
 ```
 
 其中：
