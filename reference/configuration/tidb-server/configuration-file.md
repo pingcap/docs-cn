@@ -89,7 +89,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 当使用内置函数 `VERSION()` 时。
     - 当与客户端初始连接，TiDB 返回带有服务端版本的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake)。
 + 默认值：""
-+ 默认情况下，TiDB 服务端版本为 TiDB 的原始版本。
++ 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
 
 ### `repair-mode`
 
