@@ -67,8 +67,6 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 >
 > 在没有指定主键的情况下 TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
 
-{{< copyable "sql" >}}
-
 ```sql
 mysql> create table t(id int unique key AUTO_INCREMENT);
 Query OK, 0 rows affected (0.05 sec)
