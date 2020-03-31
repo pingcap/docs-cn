@@ -5,7 +5,7 @@ category: reference
 
 # TiDB Lightning 部署与执行
 
-本文主要介绍 TiDB Lightning 使用 Importer-backend（默认）进行数据导入的硬件需求，以及使用 Ansible 部署与手动部署 TiDB Lightning 这两种部署方式。
+本文主要介绍 TiDB Lightning 使用 Importer-backend（默认）进行数据导入的硬件需求，以及使用 TiDB Ansible 部署与手动部署 TiDB Lightning 这两种部署方式。
 
 如果你想改用 TiDB-backend 进行数据导入，参考 [TiDB Lightning TiDB-backend](/reference/tools/tidb-lightning/tidb-backend.md) 中的硬件需求与部署方式。
 
@@ -90,11 +90,11 @@ category: reference
 
 ## 部署 TiDB Lightning
 
-本节介绍 TiDB Lightning 的两种部署方式：[使用 Ansible 部署](#使用-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
 
-### 使用 Ansible 部署 TiDB Lightning
+### 使用 TiDB Ansible 部署 TiDB Lightning
 
-TiDB Lightning 可随 TiDB 集群一起用 [Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
+TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
 
 1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
 
