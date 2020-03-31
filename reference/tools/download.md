@@ -48,7 +48,7 @@ category: reference
 
 ## TiDB DM (Data Migration)
 
-使用下表中的链接下载 [DM](/reference/tools/data-migration/overview.md)：
+使用下表中的链接下载 [DM](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|

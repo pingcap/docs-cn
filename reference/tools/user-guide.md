@@ -70,7 +70,7 @@ TiDB 生态工具可以分为几种：
 
 #### 增量导入工具 TiDB Data Migration
 
-[TiDB Data Migration (DM)](/reference/tools/data-migration/overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的同步。
+[TiDB Data Migration (DM)](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的同步。
 
 以下是 DM 的一些基本信息：
 

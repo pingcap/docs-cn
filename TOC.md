@@ -305,9 +305,9 @@
     - [Syncer](/reference/tools/syncer.md)
     + Data Migration
       + 概述
-        - [DM 架构](/reference/tools/data-migration/overview.md#dm-架构)
-        - [同步功能介绍](/reference/tools/data-migration/overview.md#同步功能介绍)
-        - [使用限制](/reference/tools/data-migration/overview.md#使用限制)
+        - [DM 架构](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/#dm-架构)
+        - [同步功能介绍](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/#同步功能介绍)
+        - [使用限制](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/#使用限制)
         - [DM-worker 简介](/reference/tools/data-migration/dm-worker-intro.md)
         - [DM Relay Log](/reference/tools/data-migration/relay-log.md)
       + 核心特性
