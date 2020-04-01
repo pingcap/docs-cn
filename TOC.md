@@ -9,8 +9,15 @@
   - [TiDB 简介](/overview.md)
   + Benchmark 测试
     - [如何用 Sysbench 测试 TiDB](/benchmark/how-to-run-sysbench.md)
+<<<<<<< HEAD
     - [Sysbench 性能对比 - v2.1 对比 v2.0](/benchmark/sysbench-v3.md)
     - [TPC-H 50G 性能对比 - v2.1 对比 v2.0](/benchmark/tpch-v2.md)
+=======
+    - [如何对 TiDB 进行 TPC-C 测试](/benchmark/how-to-run-tpcc.md)
+    - [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/sysbench-v4.md)
+    - [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/tpcc.md)
+    - [线上负载与 `Add Index` 相互影响测试](/benchmark/add-index-with-load.md)
+>>>>>>> b01f70b... DM: remove all DM files from docs-cn repo (#2585)
 + 主要概念
   - [整体架构](/architecture.md)
   + 核心特性
@@ -23,7 +30,7 @@
     - [SQL 基本操作](/how-to/get-started/explore-sql.md)
     - [读取历史数据](/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](/how-to/get-started/tidb-binlog.md)
-    - [TiDB Data Migration 教程](/how-to/get-started/data-migration.md)
+    - [TiDB Data Migration 教程](https://pingcap.com/docs-cn/tidb-data-migration/stable/get-started.md)
     - [TiDB Lightning 教程](/how-to/get-started/tidb-lightning.md)
     - [TiSpark 教程](/how-to/get-started/tispark.md)
   + 部署
@@ -35,7 +42,7 @@
     + 跨地域冗余
       - [跨数据中心部署方案](/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](/how-to/deploy/geographic-redundancy/location-awareness.md)
-    - [使用 Ansible 部署 DM 集群](/how-to/deploy/data-migration-with-ansible.md)
+    - [使用 Ansible 部署 DM 集群](https://pingcap.com/docs-cn/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/)
   + 配置
     - [时区](/how-to/configure/time-zone.md)
     - [内存控制](/how-to/configure/memory-control.md)
@@ -265,6 +272,7 @@
     - [Mydumper](/reference/tools/mydumper.md)
     - [Loader](/reference/tools/loader.md)
     - [Syncer](/reference/tools/syncer.md)
+<<<<<<< HEAD
     + Data Migration
       + 概述
         - [DM 架构](/reference/tools/data-migration/overview.md#dm-架构)
@@ -316,6 +324,9 @@
           - [1.0.3](/reference/tools/data-migration/releases/1.0.3.md)
           - [1.0.4](/reference/tools/data-migration/releases/1.0.4.md)
       - [TiDB DM 术语表](/reference/tools/data-migration/glossary.md)
+=======
+    - [Data Migration](https://pingcap.com/docs-cn/tidb-data-migration/stable/)
+>>>>>>> b01f70b... DM: remove all DM files from docs-cn repo (#2585)
     + TiDB Lightning
       - [概述](/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/reference/tools/tidb-lightning/deployment.md)
