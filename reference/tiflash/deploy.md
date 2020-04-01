@@ -113,8 +113,15 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
     >
     > 即使 TiFlash 与 TiKV 同机部署，TiFlash 也会采用与 TiKV 不同的默认端口，默认 9000，无特殊需要可以不用指定，有需要也可在 inventory.ini 配置文件中新增一行 `tcp_port=xxx` 来指定。
 
-4. 执行 `ansible-playbook local_prepare.yml`。
-5. 执行 `ansible-playbook -t tiflash deploy.yml`。
-6. 执行 `ansible-playbook -t tiflash start.yml`。
-7. 执行 `ansible-playbook rolling_update_monitor.yml`。
-8. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl 工具](/reference/tools/pd-control.md) 执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
+4. 执行以下 ansible-playbook 命令：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ansible-playbook local_prepare.yml &&
+    ansible-playbook -t tiflash deploy.yml &&
+    ansible-playbook -t tiflash start.yml &&
+    ansible-playbook rolling_update_monitor.yml
+    ```
+
+5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl 工具](/reference/tools/pd-control.md) 执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
