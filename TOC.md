@@ -13,7 +13,6 @@
     - [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/tpcc.md)
     - [线上负载与 `Add Index` 相互影响测试](/benchmark/add-index-with-load.md)
-    - [DM 1.0-GA 性能测试](/benchmark/dm-v1.0-ga.md)
 + 主要概念
   - [整体架构](/architecture.md)
   + 核心特性
@@ -25,7 +24,7 @@
     - [SQL 基本操作](/how-to/get-started/explore-sql.md)
     - [读取历史数据](/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog 教程](/how-to/get-started/tidb-binlog.md)
-    - [TiDB Data Migration 教程](/how-to/get-started/data-migration.md)
+    - [TiDB Data Migration 教程](https://pingcap.com/docs-cn/tidb-data-migration/stable/get-started.md)
     - [TiDB Lightning 教程](/how-to/get-started/tidb-lightning.md)
     - [TiSpark 教程](/how-to/get-started/tispark.md)
   + 部署
@@ -37,7 +36,7 @@
     + 跨地域冗余
       - [跨数据中心部署方案](/how-to/deploy/geographic-redundancy/overview.md)
       - [配置集群拓扑](/how-to/deploy/geographic-redundancy/location-awareness.md)
-    - [使用 Ansible 部署 DM 集群](/how-to/deploy/data-migration-with-ansible.md)
+    - [使用 Ansible 部署 DM 集群](https://pingcap.com/docs-cn/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/)
   + 配置
     - [时区](/how-to/configure/time-zone.md)
     - [内存控制](/how-to/configure/memory-control.md)
@@ -302,57 +301,7 @@
     - [Mydumper](/reference/tools/mydumper.md)
     - [Loader](/reference/tools/loader.md)
     - [Syncer](/reference/tools/syncer.md)
-    + Data Migration
-      + 概述
-        - [DM 架构](/reference/tools/data-migration/overview.md#dm-架构)
-        - [同步功能介绍](/reference/tools/data-migration/overview.md#同步功能介绍)
-        - [使用限制](/reference/tools/data-migration/overview.md#使用限制)
-        - [DM-worker 简介](/reference/tools/data-migration/dm-worker-intro.md)
-        - [DM Relay Log](/reference/tools/data-migration/relay-log.md)
-      + 核心特性
-        - [Table Routing](/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black & White Lists](/reference/tools/data-migration/features/overview.md#black--white-table-lists)
-        - [Binlog Event Filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [同步延迟监控](/reference/tools/data-migration/features/overview.md#同步延迟监控)
-        - [Online-ddl-scheme](/reference/tools/data-migration/features/online-ddl-scheme.md)
-        + Shard Support
-          - [简介](/reference/tools/data-migration/features/shard-merge.md)
-          - [使用限制](/reference/tools/data-migration/features/shard-merge.md#使用限制)
-          - [手动处理 Sharding DDL Lock](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
-      + 使用场景
-        - [简单的从库同步场景](/reference/tools/data-migration/usage-scenarios/simple-synchronization.md)
-        - [分库分表合并场景](/reference/tools/data-migration/usage-scenarios/shard-merge.md)
-        - [分表合并数据迁移最佳实践](/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
-        - [DM-worker 在上游 MySQL 主从间切换](/reference/tools/data-migration/usage-scenarios/master-slave-switch.md)
-      + [部署使用](/reference/tools/data-migration/deploy.md)
-      + 配置
-        - [概述](/reference/tools/data-migration/configure/overview.md)
-        - [DM-master 配置](/reference/tools/data-migration/configure/dm-master-configuration-file.md)
-        - [DM-worker 配置](/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
-        - [任务配置](/reference/tools/data-migration/configure/task-configuration-file.md)
-      + DM 集群管理
-        - [集群操作](/reference/tools/data-migration/cluster-operations.md)
-        - [集群升级](/reference/tools/data-migration/dm-upgrade.md)
-      + DM 同步任务管理
-        - [管理数据同步任务](/reference/tools/data-migration/manage-tasks.md)
-        - [任务前置检查](/reference/tools/data-migration/precheck.md)
-        - [任务状态查询](/reference/tools/data-migration/query-status.md)
-        - [跳过或替代执行异常的 SQL 语句](/reference/tools/data-migration/skip-replace-sqls.md)
-      - [监控 DM 集群](/reference/tools/data-migration/monitor.md)
-      + 从与 MySQL 兼容的数据库迁移数据
-        - [从 MySQL/Amazon Aurora MySQL 迁移数据](/how-to/migrate/from-mysql-aurora.md)
-      - [DM Portal](/reference/tools/data-migration/dm-portal.md)
-      + DM 故障诊断
-        - [故障诊断](/reference/tools/data-migration/troubleshoot/dm.md)
-        - [错误含义](/reference/tools/data-migration/troubleshoot/error-system.md)
-        - [常见错误修复](/reference/tools/data-migration/troubleshoot/error-handling.md)
-      - [DM FAQ](/reference/tools/data-migration/faq.md)
-      + 版本发布历史
-        + v1.0
-          - [1.0.2](/reference/tools/data-migration/releases/1.0.2.md)
-          - [1.0.3](/reference/tools/data-migration/releases/1.0.3.md)
-          - [1.0.4](/reference/tools/data-migration/releases/1.0.4.md)
-      - [TiDB DM 术语表](/reference/tools/data-migration/glossary.md)
+    - [Data Migration](https://pingcap.com/docs-cn/tidb-data-migration/stable/)
     + TiDB Lightning
       - [概述](/reference/tools/tidb-lightning/overview.md)
       - [部署执行](/reference/tools/tidb-lightning/deployment.md)
