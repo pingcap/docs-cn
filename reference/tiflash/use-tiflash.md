@@ -92,7 +92,7 @@ TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本
 
 Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine 的副本，可选 engine 为 tikv 和 tiflash，分别有 2 个配置级别：
 
-- 会话级别，即 SESSION 级别。设置语句：
+1. 会话级别，即 SESSION 级别。设置语句：
 
     {{< copyable "sql" >}}
 
@@ -110,7 +110,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
     会话级别的默认配置继承自 TiDB 实例级别的配置，见 2。
 
-- TiDB 实例级别，即 INSTANCE 级别，和会话级别配置是交集关系。比如实例级别配置了 "tikv, tiflash"，而会话级别配置了 "tikv"，则只会读取 tikv。
+2. TiDB 实例级别，即 INSTANCE 级别，和会话级别配置是交集关系。比如实例级别配置了 "tikv, tiflash"，而会话级别配置了 "tikv"，则只会读取 tikv。
 
     在 TiDB 的配置文件添加如下配置项：
 
