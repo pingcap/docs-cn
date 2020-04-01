@@ -27,7 +27,7 @@ Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本�
 | GroupID         | string                         | 分组 ID，标识规则的来源               |
 | ID              | string                         | 分组内唯一 ID                        |
 | Index           | int                            | 分组内堆叠次序                       |
-| Override        | true/false                     | 是否覆盖 index 更小的 Rule (限分组内) |
+| Override        | true/false                     | 是否覆盖 index 的更小 Rule (限分组内) |
 | StartKey        | string，hex 编码                | 适用 Range 起始 key                 |
 | EndKey          | string，hex 编码                | 适用 Range 终止 key                 |
 | Role            | string，leader/follower/learner | 副本角色                            |
