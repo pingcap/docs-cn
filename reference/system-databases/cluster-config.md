@@ -5,7 +5,7 @@ category: reference
 
 # CLUSTER_CONFIG
 
-集群配置表 `CLUSTER_CONFIG` 用于获取集群当前所有节点的配置。对于 TiDB 4.0 以前的版本，用户必须逐个访问各个节点的 HTTP API 才能收集到所有节点配置。
+集群配置表 `CLUSTER_CONFIG` 用于获取集群当前所有 TiDB/PD/TiKV 节点的配置。对于 TiDB 4.0 以前的版本，用户需要逐个访问各个节点的 HTTP API 才能收集到所有组件配置。
 
 {{< copyable "sql" >}}
 
@@ -22,13 +22,12 @@ desc cluster_config;
 | KEY      | varchar(256) | YES  |      | NULL    |       |
 | VALUE    | varchar(128) | YES  |      | NULL    |       |
 +----------+--------------+------+------+---------+-------+
-4 rows in set (0.00 sec)
 ```
 
 字段解释：
 
-* `TYPE`：对应节点信息表 `information_schema.cluster_info` 中的 `TYPE` 字段。可取值为 `tidb`，`pd` 或 `tikv`。
-* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info` 中的 `STATUS_ADDRESS` 字段。
+* `TYPE`：节点的类型，可取值为 `tidb`，`pd` 或 `tikv`。
+* `INSTANCE`：节点的服务地址。
 * `KEY`：配置项名。
 * `VALUE`：配置项值。
 
@@ -51,5 +50,4 @@ select * from cluster_config where type='tikv' and `key` like 'coprocessor%';
 | tikv | 127.0.0.1:20160 | coprocessor.region-split-size     | 96MiB    |
 | tikv | 127.0.0.1:20160 | coprocessor.split-region-on-table | false    |
 +------+-----------------+-----------------------------------+----------+
-6 rows in set (1.04 sec)
 ```

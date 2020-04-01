@@ -1,9 +1,9 @@
 ---
-title: SQL DIAGNOSIS
+title: SQL 诊断
 category: reference
 ---
 
-# SQL DIAGNOSIS
+# SQL 诊断
 
 SQL 诊断功能是在 TiDB 4.0 版本中引入的特性，用于提升 TiDB 问题定位的效率。TiDB 4.0 版本以前，用户需要使用不同工具获取以异构的方式获取不同信息。
 新的 SQL 诊断系统对这些离散的信息进行了整体设计，它整合系统各个维度的信息，通过系统表的方式向上层提供一致的接口，提供监控汇总与自动诊断，方便用户查询集群信息。
@@ -32,7 +32,7 @@ TiDB 4.0 之前的系统表，只能查看当前节点，TiDB 4.0 实现了对�
 
 为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有监控表都在 `metrics_schema` 中，可以通过 SQL 的方式查询监控信息。SQL 查询监控允许用户对整个集群的所有监控进行关联查询，并对比不同时间段的结果，迅速找出性能瓶颈。
 
-* [`information_schema.metrics_tables`](/reference/system-databases/metrics-tables.md)：由于目前添加的系统表数量较多，因此用户可以通过该表查询这些监控表的相关元信息。
+* [`information_schema.metrics_tables`](/reference/system-databases/metrics_tables.md)：由于目前添加的系统表数量较多，因此用户可以通过该表查询这些监控表的相关元信息。
 
 由于 TiDB 集群的监控指标数量较大，因此 TiDB 4.0 提供以下监控汇总表：
 

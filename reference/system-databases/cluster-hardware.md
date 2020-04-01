@@ -5,7 +5,7 @@ category: reference
 
 # CLUSTER_HARDWARE
 
-集群硬件表 `CLUSTER_HARDWARE` 提供了集群各节点和实例的硬件信息。
+集群硬件表 `CLUSTER_HARDWARE` 提供了集群各节点所在服务器的硬件信息。
 
 {{< copyable "sql" >}}
 
@@ -24,7 +24,6 @@ desc cluster_hardware;
 | NAME        | varchar(256) | YES  |      | NULL    |       |
 | VALUE       | varchar(128) | YES  |      | NULL    |       |
 +-------------+--------------+------+------+---------+-------+
-6 rows in set (0.00 sec)
 ```
 
 字段解释：
@@ -36,8 +35,8 @@ desc cluster_hardware;
     * `cpu`：硬件名为 cpu。
     * `memory`：硬件名为 memory。
     * `disk`：磁盘名。
-    * `net`：NIC 名。
-* `NAME`：硬件不同的信息名，比如 cpu 有 `cpu-logical-cores` 或 `cpu-physical-cores` 两个信息名，可以通过 `select name from cluster_hardware where device_type='cpu' group by name` 来查询不同硬件类型支持的 `NAME`。
+    * `net`：网卡名。
+* `NAME`：硬件不同的信息名，比如 cpu 有 `cpu-logical-cores` ， `cpu-physical-cores` 两个信息名，表示逻辑核心数量和物理核心数量。
 * `VALUE`：对应硬件信息的值。例如磁盘容量和 CPU 核数。
 
 查询集群 CPU 信息的示例如下：
@@ -59,5 +58,4 @@ select * from cluster_hardware where device_type='cpu' and device_name='cpu' and
 | tikv | 127.0.0.1:20160 | cpu         | cpu         | cpu-logical-cores  | 8     |
 | tikv | 127.0.0.1:20160 | cpu         | cpu         | cpu-physical-cores | 4     |
 +------+-----------------+-------------+-------------+--------------------+-------+
-6 rows in set (0.26 sec)
 ```
