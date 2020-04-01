@@ -28,7 +28,7 @@ TiDB 生态工具可以分为几种：
 - Loader 的输入：Mydumper 输出的文件
 - Loader 的输出：以 SQL 形式写入 TiDB
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：[备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)
+- Kubernetes 支持：[备份与恢复](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/backup-and-restore-using-helm-charts/)
 
 #### 全量导入工具 TiDB Lightning
 
@@ -45,7 +45,7 @@ TiDB 生态工具可以分为几种：
     - Mydumper 输出文件
     - CSV 格式文件
 - 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](/tidb-in-kubernetes/maintain/backup-and-restore/lightning.md)
+- Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/)
 
 #### 增量导入工具 Syncer（已停止维护，不推荐使用）
 
@@ -80,7 +80,7 @@ TiDB 生态工具可以分为几种：
 - Mydumper 的输入：MySQL/TiDB 集群
 - Mydumper 的输出：SQL 文件
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：[备份与恢复](/tidb-in-kubernetes/maintain/backup-and-restore/charts.md)
+- Kubernetes 支持：[备份与恢复](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/backup-and-restore-using-helm-charts/)
 
 #### 增量导出工具 TiDB Binlog
 
@@ -91,7 +91,7 @@ TiDB 生态工具可以分为几种：
 - TiDB Binlog 的输入：TiDB 集群
 - TiDB Binlog 的输出：MySQL、TiDB、Kafka 或者增量备份文件
 - 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[TiDB Binlog 运维文档](/tidb-in-kubernetes/maintain/tidb-binlog.md)，[Kubernetes 上的 TiDB Binlog Drainer 配置](/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
+- Kubernetes 支持：[TiDB Binlog 运维文档](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-binlog/)，[Kubernetes 上的 TiDB Binlog Drainer 配置](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer/)
 
 ## 工具演进路线
 
