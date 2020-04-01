@@ -48,14 +48,7 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 ### 全新部署 TiFlash
 
-目前全新部署 TiFlash 场景提供两种安装方式：
-
-- [离线安装包安装 TiFlash](#离线安装包安装-tiflash)
-- [手动替换 binary 安装 TiFlash](#手动替换-binary-安装-tiflash)
-
-#### 离线安装包安装 TiFlash
-
-离线安装包安装 TiFlash 的步骤如下：
+目前对于全新部署 TiFlash 场景，推荐通过下载离线安装包来部署 TiFlash。步骤如下：
 
 1. 下载对应版本的离线包，并解压：
 
