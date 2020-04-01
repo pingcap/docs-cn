@@ -18,8 +18,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `mem-quota-query`
 
 + 单条 SQL 语句可以占用的最大内存阈值。
-+ 默认值：34359738368
++ 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
++ 该值作为系统变量 [`tidb_mem_quota_query`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_mem_quota_query) 的初始值。
 
 ### `oom-use-tmp-storage`
 
@@ -81,6 +82,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制添加或者删除主键功能。
 + 默认值：false
 + 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。
+
+### `server-version`
+
++ 用来修改 TiDB 在以下情况下返回的版本号:
+    - 当使用内置函数 `VERSION()` 时。
+    - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake)。
++ 默认值：""
++ 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
 
 ### `repair-mode`
 
@@ -146,8 +155,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `max-server-connections`
 
 + TiDB 中同时允许的最大客户端连接数，用于资源控制。
-+ 默认值：4096
-+ 当客户端连接数到达 `max-server-connections` 时，TiDB 服务端将会拒绝新的客户端连接。
++ 默认值：0
++ 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 
 ## log.file
 
@@ -380,11 +389,6 @@ prepare 语句的 Plan cache 设置。
 
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
-
-### `enable-chunk-rpc`
-
-+ 开启 coprocessor 的 `Chunk` 数据编码格式。
-+ 默认值：true
 
 ## txn-local-latches
 
