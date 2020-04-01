@@ -5,10 +5,10 @@
 tiflash_system_asynchronous_metric_jemalloc_allocated > 1.6e+10
 
 含义
-  *TiFlash进程占用内存超过16G。
+  * TiFlash进程占用内存超过16G。
 
 处理方法
-  *怀疑有内存泄漏，联系TiFlash开发人员进行排查。
+  * 怀疑有内存泄漏，联系TiFlash开发人员进行排查。
 ## TiFlash_tmt_merge_duration
 监控规则
 histogram_quantile(0.99, sum(rate(tiflash_tmt_merge_duration_seconds_bucket[1m])) BY (le, instance)) > 600
