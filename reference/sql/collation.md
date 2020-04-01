@@ -14,11 +14,11 @@ collation 的语法支持和语义支持受到配置项 new_collation_enable 的
 
 # 不使用 new collation 的情况
 
-如果没有使用 new collation， 则所有的 collation 都当成 binary collation 处理。
+如果没有使用新的 collation， 则所有的 collation 都当成 binary collation 处理。
 
-# \[utf8|utf8mb4\]_general_ci
+# utf8_general_ci 和 utf8mb4_general_ci
 
-在开启 new collation 后，TiDB 能够支持 utf8_general_ci 和 utf8mb4_general_ci 这两种 collation, 其排序规则与 MySQL 兼容。
+在开启新的 collation 后，TiDB 能够支持 utf8_general_ci 和 utf8mb4_general_ci 这两种 collation, 其排序规则与 MySQL 兼容。
 使用 utf8_general_ci 或者 utf8mb4_general_ci 时， 字符串之间的比较是大小写不敏感的。
 
 # 新 collation 与旧 collation 的区别
