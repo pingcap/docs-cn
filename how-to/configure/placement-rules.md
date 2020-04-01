@@ -43,7 +43,7 @@ LocationLabels 的意义和作用与之前的版本相同。比如配置 `[zone,
 
 本节的操作步骤以使用 [pd-ctl](/reference/tools/pd-control.md) 工具为例，涉及到的命令也支持通过 HTTP API 进行调用，具体 API 这里不一一列举了。
 
-### 开启 placement rules 特性
+### 开启 Placement Rules 特性
 
 默认情况下，placement rules 特性是关闭的。要开启这个特性，可以集群初始化以前设置 PD 配置文件：
 
