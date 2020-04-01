@@ -193,7 +193,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ### 场景一：普通的表使用 3 副本，元数据使用 5 副本提升集群容灾能力
 
-只需要增加一条规则，key range 限定在 meta 数据的范围，并把 `count` 值设为 5。
+只需要增加一条规则，key range 限定在 meta 数据的范围，并把 `count` 值设为 5。添加规则示例如下：
 
 {{< copyable "" >}}
 
