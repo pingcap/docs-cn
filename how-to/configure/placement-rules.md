@@ -100,13 +100,36 @@ pd-ctl config placement-rules disable
 
 pd-ctl 支持使用多种方式查看系统中的 Rule，输出是 json 格式的 Rule 或 Rule 列表：
 
+**查看所有规则列表**
+
 {{< copyable "" >}}
 
 ```bash
-pd-ctl config placement-rules show // 查看所有规则列表
-pd-ctl config placement-rules show --group=pd // 查看 pd Group 的所有规则列表
-pd-ctl config placement-rules show --group=pd --id=default // 查看对应 Group 和 ID 的一条规则
-pd-ctl config placement-rules show --region=2 // 查看 Region 2 所匹配的规则列表
+pd-ctl config placement-rules show
+```
+
+**查看 pd Group 的所有规则列表**
+
+{{< copyable "" >}}
+
+```bash
+pd-ctl config placement-rules show --group=pd
+```
+
+**查看对应 Group 和 ID 的一条规则**
+
+{{< copyable "" >}}
+
+```bash
+pd-ctl config placement-rules show --group=pd --id=default
+```
+
+**查看 Region 2 所匹配的规则列表**
+
+{{< copyable "" >}}
+
+```bash
+pd-ctl config placement-rules show --region=2
 ```
 
 新增和编辑规则是类似的，需要把对应的规则写进文件，然后使用 `save` 命令保存至 PD：
