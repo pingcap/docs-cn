@@ -71,8 +71,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。
 
-<<<<<<< HEAD
-=======
 ### `server-version`
 
 + 用来修改 TiDB 在以下情况下返回的版本号:
@@ -81,19 +79,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：""
 + 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
 
-### `repair-mode`
-
-+ 用于开启非可信修复模式，启动该模式后，可以过滤 `repair-table-list` 名单中坏表的加载。
-+ 默认值：false
-+ 默认情况下，不支持修复语法，默认启动时会加载所有表信息。
-
-### `repair-table-list`
-
-+ 配合 `repair-mode` 为 true 时使用，用于列出实例中需要修复的坏表的名单，该名单的写法为 ["db.table1","db.table2"...]。
-+ 默认值：[]
-+ 默认情况下，该 list 名单为空，表示没有所需修复的坏表信息。
-
->>>>>>> 83554de... reference/configuration, faq: add both config and faq of server-version. (#2573)
 ## log
 
 日志相关的配置项。
