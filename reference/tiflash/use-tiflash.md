@@ -32,7 +32,7 @@ CREATE TABLE table_name like t
   * 目前版本，若先对表创建 tiflash 副本，再使用 tidb-lightning 导入数据，会导致数据导入失败。需要在使用 tidb-lightning 成功导入数据至表后，再对相应的表创建 tiflash 副本。
   * 不推荐同步 1000 张以上的表，这会降低 PD 的调度性能。这个限制将在后续版本去除。
   * TiFlash 中保留了数据库 system ，用户不能为 TiDB 中名字为 system 数据库下的表创建 TiFlash 副本。且如果强行创建，结果行为未定义（暂时性限制）。
-## 查看同步进度
+## 查看表同步进度
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 ```
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>'
