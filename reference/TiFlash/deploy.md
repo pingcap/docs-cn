@@ -37,31 +37,31 @@ TiFlash 和 TiKV 部署在相同节点模式
 
 请先下载对应版本的离线包，并解压
 3.1 rc版：
-
+```
 curl -o tidb-ansible-tiflash-3.1-rc.tar.gz https://download.pingcap.org/tidb-ansible-tiflash-3.1-rc.tar.gz
 tar zxvf tidb-ansible-tiflash-3.1-rc.tar.gz
-
-编辑 inventory.ini 配置文件，相比于部署 TiDB 集群的配置，需要额外在 [tiflash_servers] 下配置 tiflash servers 所在的 ip (目前只支持ip，不支持域名)。如果希望自定义部署目录，请配置 data_dir 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录。（注意每个 data_dir 目录的上级目录需要赋予 tidb 用户写权限）例如：
 ```
-	[tiflash_servers]
-	192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
+编辑 `inventory.ini` 配置文件，相比于部署 TiDB 集群的配置，需要额外在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip (目前只支持ip，不支持域名)。如果希望自定义部署目录，请配置 data_dir 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录。（注意每个 data_dir 目录的上级目录需要赋予 tidb 用户写权限）例如：
+```
+[tiflash_servers]
+192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
 ```
 按照 ansible 部署流程 完成集群部署的剩余步骤。
-验证 TiFlash 已部署成功的方式：通过 pd-ctl store http://your-pd-address 查询可以观测到所部署的 TiFlash 实例状态为 “Up”。
+验证 TiFlash 已部署成功的方式：通过 `pd-ctl store http://your-pd-address` 查询可以观测到所部署的 TiFlash 实例状态为 “Up”。
 
 ### 在原有 TiDB 集群上新增 TiFlash 组件
 首先确认当前 TiDB 的版本支持 TiFlash，否则请先按照 TiDB 升级操作指南升级 TiDB 集群。
 需要在 pd-ctl (tidb-ansible 目录下的 resources/bin 包含对应的二进制文件)中输入 `config set enable-placement-rules true` 命令。
-编辑 inventory.ini 配置文件，需要在 [tiflash_servers] 下配置 tiflash servers 所在的 ip(目前只支持ip，不支持域名)。如果希望自定义部署目录，请配置 data_dir 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录。（注意每个 data_dir 目录的上级目录需要赋予 tidb 用户写权限）例如：
+编辑 `inventory.ini` 配置文件，需要在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip(目前只支持ip，不支持域名)。如果希望自定义部署目录，请配置 data_dir 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录。（注意每个 data_dir 目录的上级目录需要赋予 tidb 用户写权限）例如：
 ```
-	[tiflash_servers]
-	192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
+[tiflash_servers]
+192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
 ```
-             注意：即使 TiFlash 与 TiKV 同机部署，TiFlash 也会采用与 TiKV 不同的默认端口，默认 9000，无特殊需要可以不用指定，有需要也可用 tcp_port=xxx 指定”
+  * 注意：即使 TiFlash 与 TiKV 同机部署，TiFlash 也会采用与 TiKV 不同的默认端口，默认 9000，无特殊需要可以不用指定，有需要也可用 tcp_port=xxx 指定”
 
 首先需要更新tidb-ansible到3.1 rc版
 执行 `ansible-playbook local_prepare.yml`
 执行 `ansible-playbook -t tiflash deploy.yml`
 执行 `ansible-playbook -t tiflash start.yml`
 执行 `ansible-playbook rolling_update_monitor.yml`
-验证 TiFlash 已部署成功的方式：通过 pd-ctl store http://your-pd-address 查询可以观测到所部署的 TiFlash 实例状态为 “Up”
+验证 TiFlash 已部署成功的方式：通过 `pd-ctl store http://your-pd-address` 查询可以观测到所部署的 TiFlash 实例状态为 “Up”
