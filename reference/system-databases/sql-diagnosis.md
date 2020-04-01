@@ -33,7 +33,7 @@ TiDB 4.0 之前的系统表，只能查看当前节点，TiDB 4.0 实现了对�
 
 为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有监控表都在 `metrics_schema` 中，可以通过 SQL 的方式查询监控信息。SQL 查询监控允许用户对整个集群的所有监控进行关联查询，并对比不同时间段的结果，迅速找出性能瓶颈。
 
-* `information_schema.metrics_tables`：由于目前添加的系统表数量较多，因此用户可以通过该表查询这些监控表的相关元信息。
+* [`information_schema.metrics_tables`](/reference/system-databases/metrics_tables.md)：由于目前添加的系统表数量较多，因此用户可以通过该表查询这些监控表的相关元信息。
 
 由于 TiDB 集群的监控指标数量较大，因此 TiDB 4.0 提供以下监控汇总表：
 
