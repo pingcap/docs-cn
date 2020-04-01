@@ -115,7 +115,7 @@ TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不�
 
 #### 1.1.23 我们的安全漏洞扫描工具对 MySQL version 有要求，TiDB 是否支持修改 server 版本号呢？
 
-TiDB 在 v3.0.8 之后是支持修改 server 版本号的，可以通过配置文件中的 [`server-version`](/reference/configuration/tidb-server/configuration-file.md#server-version) 配置项进行修改。在使用 tidb-ansible 部署集群时，同样可以通过 `conf/tidb.yml` 配置文件中的 `server-version` 来设置合适的版本号，以避免出现安全漏洞扫描不通过的问题。
+TiDB 在 v3.0.8 后支持修改 server 版本号，可以通过配置文件中的 [`server-version`](/reference/configuration/tidb-server/configuration-file.md#server-version) 配置项进行修改。在使用 TiDB Ansible 部署集群时，同样可以通过 `conf/tidb.yml` 配置文件中的 `server-version` 来设置合适的版本号，以避免出现安全漏洞扫描不通过的问题。
 
 #### 1.1.24 TiDB 支持哪些认证协议，过程是怎样的？
 
