@@ -50,7 +50,7 @@ The following are the basics of BR:
 
 #### Incremental and full import tool TiDB Data Migration
 
-[TiDB Data Migration (DM)](/reference/tools/data-migration/overview.md) is an tool used for data migration from MySQL/MariaDB into TiDB. It supports both the full and incremental data replication.
+[TiDB Data Migration (DM)](https://pingcap.com/docs/tidb-data-migration/stable/overview/) is an tool used for data migration from MySQL/MariaDB into TiDB. It supports both the full and incremental data replication.
 
 The following are the basics of DM:
 

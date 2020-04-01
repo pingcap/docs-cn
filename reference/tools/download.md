@@ -49,7 +49,7 @@ Download [BR](/reference/tools/br/br.md) by using the download link in the follo
 
 ## TiDB DM (Data Migration)
 
-Download [DM](/reference/tools/data-migration/overview.md) by using the download link in the following table:
+Download [DM](https://pingcap.com/docs/tidb-data-migration/stable/overview/) by using the download link in the following table:
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|

@@ -14,8 +14,6 @@
     - [TPC-C Performance Test - v3.0 vs. v2.1](/benchmark/tpcc.md)
     - [Interaction Test on Online Workloads and `ADD INDEX` Operations](/benchmark/add-index-with-load.md)
     - [TiDB in Kubernetes Sysbench Test](/benchmark/sysbench-in-k8s.md)
-    - [DM 1.0-alpha Benchmark Report](/benchmark/dm-v1-alpha.md)
-    - [DM 1.0-GA Benchmark Report](/benchmark/dm-v1.0-ga.md)
 + Concepts
   - [Architecture](/architecture.md)
   + Key Features
@@ -47,7 +45,7 @@
     - [Import Example Database](/how-to/get-started/import-example-database.md)
     - [Read Historical Data](/how-to/get-started/read-historical-data.md)
     - [TiDB Binlog Tutorial](/how-to/get-started/tidb-binlog.md)
-    - [TiDB Data Migration Tutorial](/how-to/get-started/data-migration.md)
+    - [TiDB Data Migration Tutorial](https://pingcap.com/docs/tidb-data-migration/stable/get-started.md)
     - [TiDB Lightning Tutorial](/how-to/get-started/tidb-lightning.md)
     - [TiSpark Quick Start Guide](/how-to/get-started/tispark.md)
   + Deploy
@@ -62,7 +60,7 @@
     + Geographic Redundancy
       - [Overview](/how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](/how-to/deploy/geographic-redundancy/location-awareness.md)
-    - [Data Migration with Ansible](/how-to/deploy/data-migration-with-ansible.md)
+    - [Data Migration with Ansible](https://pingcap.com/docs/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/)
   + Configure
     - [Time Zone](/how-to/configure/time-zone.md)
     - [Memory Control](/how-to/configure/memory-control.md)
@@ -323,54 +321,7 @@
     - [Mydumper](/reference/tools/mydumper.md)
     - [Syncer](/reference/tools/syncer.md)
     - [Loader](/reference/tools/loader.md)
-    + TiDB Data Migration
-      + Overview
-        - [DM Overview](/reference/tools/data-migration/overview.md)
-        - [Restrictions](/reference/tools/data-migration/overview.md#usage-restrictions)
-        - [DM-worker](/reference/tools/data-migration/dm-worker-intro.md)
-        - [DM Relay Log](/reference/tools/data-migration/relay-log.md)
-      + Features
-        - [Table Routing](/reference/tools/data-migration/features/overview.md#table-routing)
-        - [Black and White Lists](/reference/tools/data-migration/features/overview.md#black-and-white-table-lists)
-        - [Binlog Event Filter](/reference/tools/data-migration/features/overview.md#binlog-event-filter)
-        - [Replication Delay Monitoring](/reference/tools/data-migration/features/overview.md#replication-delay-monitoring)
-        + Sharding Support
-          - [Introduction](/reference/tools/data-migration/features/shard-merge.md)
-          - [Restrictions](/reference/tools/data-migration/features/shard-merge.md#restrictions)
-          - [Handle Sharding DDL Locks Manually](/reference/tools/data-migration/features/manually-handling-sharding-ddl-locks.md)
-      + Usage Scenarios
-        - [Simple Scenario](/reference/tools/data-migration/usage-scenarios/simple-replication.md)
-        - [Shard Merge Scenario](/reference/tools/data-migration/usage-scenarios/shard-merge.md)
-        - [Shard Merge Best Practices](/reference/tools/data-migration/usage-scenarios/best-practice-dm-shard.md)
-      - [Deploy](/reference/tools/data-migration/deploy.md)
-      + Configure
-        - [Overview](/reference/tools/data-migration/configure/overview.md)
-        - [DM-master Configuration](/reference/tools/data-migration/configure/dm-master-configuration-file.md)
-        - [DM-worker Configuration](/reference/tools/data-migration/configure/dm-worker-configuration-file.md)
-        - [Task Configuration](/reference/tools/data-migration/configure/task-configuration-file.md)
-      + Manage the DM Cluster
-        - [Cluster Operations](/reference/tools/data-migration/cluster-operations.md)
-        - [Cluster Upgrade](/reference/tools/data-migration/upgrade.md)
-      + Manage Replication Tasks
-        - [Manage Tasks](/reference/tools/data-migration/manage-tasks.md)
-        - [Precheck Tasks](/reference/tools/data-migration/precheck.md)
-        - [Query Task Status](/reference/tools/data-migration/query-status.md)
-        - [Skip or Replace Abnormal SQL Statements](/reference/tools/data-migration/skip-replace-sqls.md)
-      - [Monitor](/reference/tools/data-migration/monitor.md)
-      + Migrate from MySQL compatible database
-        - [Migrate from Amazon Aurora](/how-to/migrate/from-mysql-aurora.md)
-      + [DM Portal](/reference/tools/data-migration/dm-portal.md)
-      + Troubleshoot
-        - [DM Troubleshooting](/reference/tools/data-migration/troubleshoot/dm.md)
-        - [Error Description](/reference/tools/data-migration/troubleshoot/error-system.md)
-        - [Error Handling](/reference/tools/data-migration/troubleshoot/error-handling.md)
-      - [FAQ](/reference/tools/data-migration/faq.md)
-      + Releases
-        + v1.0
-          - [1.0.2](/reference/tools/data-migration/releases/1.0.2.md)
-          - [1.0.3](/reference/tools/data-migration/releases/1.0.3.md)
-          - [1.0.4](/reference/tools/data-migration/releases/1.0.4.md)
-      - [TiDB DM Glossary](/reference/tools/data-migration/glossary.md)
+    - [Data Migration](https://pingcap.com/docs/tidb-data-migration/stable/)
     + TiDB Lightning
       - [Overview](/reference/tools/tidb-lightning/overview.md)
       - [Deployment](/reference/tools/tidb-lightning/deployment.md)
