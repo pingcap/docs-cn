@@ -10,6 +10,8 @@ category: reference
 * Character Set：字符集
 * Collation：排序规则
 
+collation 的语法支持和语义支持受到配置项 new_collation_enable 的影响，这里我们区分语法支持和语义支持，语法支持是指 TiDB 能够解析和设置 collation，语义支持是指 TiDB 能够在字符串比较时正确地使用 collation。如果new_collation_enable = true, 则只能设置和使用语义支持的 collation。如果 new_collation_enable = false，则能设置语法支持的 collation，语义上所有的 collation 都当成 binary collation。
+
 目前 `TiDB` 支持以下字符集：
 
 {{< copyable "sql" >}}
@@ -33,71 +35,29 @@ SHOW CHARACTER SET;
 
 > **注意：**
 >
-> - 在 `TiDB` 中 `utf8` 被当做成了 `utf8mb4` 来处理。
 > - 每种字符集都对应一个默认的 Collation，当前有且仅有一个。
 
-对于字符集来说，至少会有一个 Collation（排序规则）与之对应。而大部分字符集实际上会有多个 Collation。利用以下的语句可以查看：
+对于字符集来说，至少会有一个 Collation（排序规则）与之对应。利用以下的语句可以查看字符集对应的排序规则（以下是 new_collation_enable = true 情况下的结果）：
 
 {{< copyable "sql" >}}
 
 ```sql
-SHOW COLLATION WHERE Charset = 'latin1';
+SHOW COLLATION WHERE Charset = 'utf8mb4';
 ```
 
 ```
-+-------------------|---------|------|---------|----------|---------+
-| Collation         | Charset | Id   | Default | Compiled | Sortlen |
-+-------------------|---------|------|---------|----------|---------+
-| latin1_german1_ci | latin1  |    5 |         | Yes      |       1 |
-| latin1_swedish_ci | latin1  |    8 | Yes     | Yes      |       1 |
-| latin1_danish_ci  | latin1  |   15 |         | Yes      |       1 |
-| latin1_german2_ci | latin1  |   31 |         | Yes      |       1 |
-| latin1_bin        | latin1  |   47 |         | Yes      |       1 |
-| latin1_general_ci | latin1  |   48 |         | Yes      |       1 |
-| latin1_general_cs | latin1  |   49 |         | Yes      |       1 |
-| latin1_spanish_ci | latin1  |   94 |         | Yes      |       1 |
-+-------------------|---------|------|---------|----------|---------+
-8 rows in set (0.00 sec)
++--------------------+---------+------+---------+----------+---------+
+| Collation          | Charset | Id   | Default | Compiled | Sortlen |
++--------------------+---------+------+---------+----------+---------+
+| utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
+| utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
++--------------------+---------+------+---------+----------+---------+
+2 rows in set (0.00 sec)
 ```
 
-`latin1` Collation（排序规则）分别有以下含义：
 
-| Collation         | 含义                              |
-|:------------------|:----------------------------------|
-| latin1_bin        | latin1 编码的二进制表示           |
-| latin1_danish_ci  | 丹麦语/挪威语，不区分大小写       |
-| latin1_general_ci | 多种语言的 (西欧)，不区分大小写   |
-| latin1_general_cs | 多种语言的 (ISO 西欧)，区分大小写 |
-| latin1_german1_ci | 德国 DIN-1 (字典序)，不区分大小写 |
-| latin1_german2_ci | 德国 DIN-2，不区分大小写          |
-| latin1_spanish_ci | 现代西班牙语，不区分大小写        |
-| latin1_swedish_ci | 瑞典语/芬兰语，不区分大小写       |
+每一个字符集，都有一个默认的 Collation，例如 `utf8mb4` 的默认 Collation 就为 `utf8mb4_bin`。
 
-每一个字符集，都有一个默认的 Collation，例如 `utf8` 的默认 Collation 就为 `utf8_bin`。
-
-> **注意：**
->
-> `TiDB` 目前的 Collation 只支持区分大小写的比较排序规则。
-
-## Collation 命名规则
-
-`TiDB` 的 Collation 遵循着如下的命名规则：
-
-* Collation 的前缀是它相应的字符集，通常之后会跟着一个或者更多的后缀来表名其他的排序规则， 例如：utf8_general_ci 和 lation1_swedish_ci 是 utf8
- 和 latin1 字符集的 Collation。但是 binary 字符集只有一个 Collation，就是 binary。
-* 一个语言对应的 Collation 会包含语言的名字，例如 utf8_turkish_ci 和 utf8_hungarian_ci 是依据 Turkish(土耳其语) 和 Hungarian(匈牙利语) 的排序规则来排序。
-* Collation 的后缀表示了 Collation 是否区分大小写和是否区分口音。下面的表展示了这些特性：
-
-| 后缀 | 含义                             |
-|:-----|:---------------------------------|
-| \_ai | 口音不敏感（Accent insensitive） |
-| \_as | 口音敏感 （Accent sensitive）  |
-| \_ci | 大小写不敏感                     |
-| \_cs | 大小写敏感                       |
-
-> **注意：**
->
-> 目前为止 TiDB 只支持部分以上提到的 Collation。
 
 ## 集群 Character Set 和 Collation
 
@@ -126,7 +86,7 @@ ALTER DATABASE db_name
 {{< copyable "sql" >}}
 
 ```sql
-create schema test1 character set utf8 COLLATE uft8_general_ci;
+create schema test1 character set utf8mb4 COLLATE uft8mb4_general_ci;
 ```
 
 ```
@@ -153,7 +113,7 @@ SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
-| utf8                     | uft8_general_ci      |
+| utf8mb4                  | uft8mb4_general_ci   |
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 ```
@@ -161,7 +121,7 @@ SELECT @@character_set_database, @@collation_database;
 {{< copyable "sql" >}}
 
 ```sql
-create schema test2 character set latin1 COLLATE latin1_general_ci;
+create schema test2 character set latin1 COLLATE latin1_bin;
 ```
 
 ```
@@ -188,7 +148,7 @@ SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
-| latin1                   | latin1_general_ci    |
+| latin1                   | latin1_bin           |
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 ```
@@ -221,7 +181,7 @@ ALTER TABLE tbl_name
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1(a int) CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE TABLE t1(a int) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
 ```
@@ -260,8 +220,8 @@ col_name {ENUM | SET} (val_list)
 
 ```sql
 SELECT 'string';
-SELECT _latin1'string';
-SELECT _latin1'string' COLLATE latin1_danish_ci;
+SELECT _utf8mb4'string';
+SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 ```
 
 规则，如下：
@@ -283,7 +243,7 @@ SELECT _latin1'string' COLLATE latin1_danish_ci;
 
 * `SET NAMES 'charset_name' [COLLATE 'collation_name']`
 
-`SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8` 表示客户端会在接下来的请求中，都使用 utf8 字符集。服务端也会在之后返回结果的时候使用 utf8 字符集。
+`SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。
 `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
 
 {{< copyable "sql" >}}
@@ -310,7 +270,7 @@ SET collation_connection = @@collation_database;
 
 ## 集群，服务器，数据库，表，列，字符串 Character Sets 和 Collation 优化级
 
-字符串 => 列 => 表 => 数据库 => 服务器 => 集群
+字符串 > 列 > 表 > 数据库 > 服务器 > 集群
 
 ## Character Sets 和 Collation 通用选择规则
 
@@ -325,3 +285,4 @@ SET collation_connection = @@collation_database;
 如果不希望报错，可以通过 `set @@tidb_skip_utf8_check=1;` 跳过字符检查。
 
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
+

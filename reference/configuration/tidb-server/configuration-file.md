@@ -103,6 +103,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：[]
 + 默认情况下，该 list 名单为空，表示没有所需修复的坏表信息。
 
+### `new_collations_enabled_on_first_bootstrap`
+
++ 用于开启新的 collation 支持
++ 默认值：false
++ 该配置项只有在初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation。
+
 ## log
 
 日志相关的配置项。
