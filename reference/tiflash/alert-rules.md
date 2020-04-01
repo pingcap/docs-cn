@@ -21,35 +21,6 @@ category: reference
 
     怀疑有内存泄漏，联系 TiFlash 开发人员进行排查。
 
-## `TiFlash_tmt_merge_duration`
-
-- 报警规则：
-
-    `histogram_quantile(0.99, sum(rate(tiflash_tmt_merge_duration_seconds_bucket[1m])) BY (le, instance)) > 600`
-
-- 规则描述：
-
-    TiFlash TMT 引擎 Compact 时间超过 600 秒时报警。
-
-- 处理方法：
-
-    可能是磁盘有问题（如磁盘损坏、空间占用较满、碎片较多），检查系统环境，联系 TiFlash 开发人员。
-
-## `TiFlash_tmt_write_parts_duration`
-
-- 报警规则：
-
-    `histogram_quantile(0.99, sum(rate(tiflash_tmt_write_parts_duration_seconds_bucket[1m])) BY (le, instance)) > 8`
-
-- 规则描述：
-
-    TiFlash TMT 引擎 99% 的可能单次写入时间超过 8 秒时报警。
-
-- 处理方法：
-
-    - 可能是磁盘有问题（如磁盘损坏、空间占用较满、碎片较多），检查系统环境，联系 TiFlash 开发人员。
-    - 可能是缓存数据过大，因为系统压力过大，写入缓慢，检查系统写入压力，考虑增加机器。
-
 ## `TiFlash_schema_error`
 
 - 报警规则：
