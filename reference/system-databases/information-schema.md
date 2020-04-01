@@ -744,6 +744,20 @@ COLLATION_CONNECTION: utf8_general_ci
 1 row in set (0.00 sec)
 ```
 
+## SQL 诊断相关的表
+
+* [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md)
+* [`information_schema.cluster_config`](/reference/system-databases/cluster-config.md)
+* [`information_schema.cluster_hardware`](/reference/system-databases/cluster-hardware.md)
+* [`information_schema.cluster_load`](/reference/system-databases/cluster-load.md)
+* [`information_schema.cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md)
+* [`information_schema.cluster_log`](/reference/system-databases/cluster-log.md)
+* [`information_schema.metrics_tables`](/reference/system-databases/metrics-tables.md)
+* [`information_schema.metrics_summary`](/reference/system-databases/metrics-summary.md)
+* [`information_schema.metrics_summary_by_label`](/reference/system-databases/metrics-summary.md)
+* [`information_schema.inspection_result`](/reference/system-databases/inspection-result.md)
+* [`information_schema.inspection_summary`](/reference/system-databases/inspection-summary.md)
+
 ## 不支持的 Information Schema 表
 
 TiDB 包含以下 `INFORMATION_SCHEMA` 表，但仅会返回空行：
