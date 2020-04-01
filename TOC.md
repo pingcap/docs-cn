@@ -13,7 +13,6 @@
     - [Sysbench Performance Test - v3.0 vs. v2.1](/benchmark/sysbench-v4.md)
     - [TPC-C Performance Test - v3.0 vs. v2.1](/benchmark/tpcc.md)
     - [Interaction Test on Online Workloads and `ADD INDEX` Operations](/benchmark/add-index-with-load.md)
-    - [TiDB in Kubernetes Sysbench Test](/benchmark/sysbench-in-k8s.md)
 + Concepts
   - [Architecture](/architecture.md)
   + Key Features
@@ -350,49 +349,7 @@
     - [TiKV Control](/reference/tools/tikv-control.md)
     - [TiDB Control](/reference/tools/tidb-control.md)
     - [Download](/reference/tools/download.md)
-+ TiDB in Kubernetes
-  - [About TiDB Operator](/tidb-in-kubernetes/tidb-operator-overview.md)
-  + Get Started
-    - [kind](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-kind.md)
-    - [GKE](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-gke.md)
-    - [Minikube](/tidb-in-kubernetes/get-started/deploy-tidb-from-kubernetes-minikube.md)
-  + Deploy
-    - [Prerequisites](/tidb-in-kubernetes/deploy/prerequisites.md)
-    - [TiDB Operator](/tidb-in-kubernetes/deploy/tidb-operator.md)
-    - [TiDB in General Kubernetes](/tidb-in-kubernetes/deploy/general-kubernetes.md)
-    - [TiDB in AWS EKS](/tidb-in-kubernetes/deploy/aws-eks.md)
-    - [TiDB in GCP GKE](/tidb-in-kubernetes/deploy/gcp-gke.md)
-    - [TiDB in Alibaba Cloud ACK](/tidb-in-kubernetes/deploy/alibaba-cloud.md)
-    - [Access TiDB in Kubernetes](/tidb-in-kubernetes/deploy/access-tidb.md)
-  + Configure
-    - [Cluster Initialization](/tidb-in-kubernetes/initialize-cluster.md)
-  - [Monitor](/tidb-in-kubernetes/monitor/tidb-in-kubernetes.md)
-  + Maintain
-    - [Destroy a TiDB cluster](/tidb-in-kubernetes/maintain/destroy-tidb-cluster.md)
-    - [Maintain a Hosting Kubernetes Node](/tidb-in-kubernetes/maintain/kubernetes-node.md)
-    - [Backup and Restore](/tidb-in-kubernetes/maintain/backup-and-restore.md)
-    - [Restore Data with TiDB Lightning](/tidb-in-kubernetes/maintain/lightning.md)
-    - [Collect Logs](/tidb-in-kubernetes/maintain/log-collecting.md)
-    - [Automatic Failover](/tidb-in-kubernetes/maintain/auto-failover.md)
-    - [TiDB Binlog](/tidb-in-kubernetes/maintain/tidb-binlog.md)
-    - [Restart a TiDB Cluster](/tidb-in-kubernetes/maintain/restart.md)
-  - [Scale](/tidb-in-kubernetes/scale-in-kubernetes.md)
-  + Upgrade
-    - [TiDB Cluster](/tidb-in-kubernetes/upgrade/tidb-cluster.md)
-    - [TiDB Operator](/tidb-in-kubernetes/upgrade/tidb-operator.md)
-  + Reference
-    + Configuration
-      - [TiDB Cluster](/tidb-in-kubernetes/reference/configuration/tidb-cluster.md)
-      - [Backup](/tidb-in-kubernetes/reference/configuration/backup.md)
-      - [PV](/tidb-in-kubernetes/reference/configuration/storage-class.md)
-      - [TiDB Drainer](/tidb-in-kubernetes/reference/configuration/tidb-drainer.md)
-    + Tools
-      - [tkctl](/tidb-in-kubernetes/reference/tools/tkctl.md)
-      - [Tools in Kubernetes](/tidb-in-kubernetes/reference/tools/in-kubernetes.md)
-    + Components
-      - [TiDB Scheduler](/tidb-in-kubernetes/reference/components/tidb-scheduler.md)
-  - [Troubleshoot](/tidb-in-kubernetes/troubleshoot.md)
-  - [FAQs](/tidb-in-kubernetes/faq.md)
+- [TiDB in Kubernetes](https://pingcap.com/docs/tidb-in-kubernetes/stable/)
 + FAQs
   - [TiDB FAQs](/faq/tidb.md)
   - [TiDB Lightning FAQs](/faq/tidb-lightning.md)

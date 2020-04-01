@@ -36,7 +36,7 @@ The following are the basics of TiDB Lightning:
     - Files output by Mydumper;
     - CSV files.
 - Compatibility: Compatible with TiDB v2.1 and later versions.
-- Kubernetes: Supported. See [Quickly restore data into a TiDB cluster in Kubernetes using TiDB Lightning](/tidb-in-kubernetes/maintain/lightning.md).
+- Kubernetes: Supported. See [Quickly restore data into a TiDB cluster in Kubernetes using TiDB Lightning](https://pingcap.com/docs/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/).
 
 #### Backup and restore tool BR
 
@@ -68,7 +68,7 @@ The following are the basics of Loader:
 - Input: Files output by Mydumper.
 - Output: SQL statements written to TiDB.
 - Compatibility: Compatible with all TiDB versions.
-- Kubernetes: Supported. See [Backup and restore](/tidb-in-kubernetes/maintain/backup-and-restore.md).
+- Kubernetes: Supported. See [Backup and restore](https://pingcap.com/docs/tidb-in-kubernetes/stable/backup-and-restore-using-helm-charts/).
 
 #### Incremental import tool Syncer (Stop maintenance, not recommended)
 
@@ -92,7 +92,7 @@ The following are the basics of Mydumper:
 - Input: MySQL/TiDB clusters.
 - Output: SQL files.
 - Compatibility: Compatible with all TiDB versions.
-- Kubernetes: Supported. See [Backup and Restore](/tidb-in-kubernetes/maintain/backup-and-restore.md).
+- Kubernetes: Supported. See [Backup and Restore](https://pingcap.com/docs/tidb-in-kubernetes/stable/backup-and-restore-using-helm-charts/).
 
 #### Full export tool TiDB Binlog
 
@@ -103,7 +103,7 @@ The following are the basics of TiDB Binlog:
 - Input: TiDB clusters.
 - Output: MySQL, TiDB, Kafka or incremental backup files.
 - Compatibility: Compatible with TiDB v2.1 and later versions.
-- Kubernetes: Supported. See [TiDB Binlog Cluster Operations](/tidb-in-kubernetes/maintain/tidb-binlog.md) and [TiDB Binlog Drainer Configurations in Kubernetes](/tidb-in-kubernetes/reference/configuration/tidb-drainer.md).
+- Kubernetes: Supported. See [TiDB Binlog Cluster Operations](https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-tidb-binlog/) and [TiDB Binlog Drainer Configurations in Kubernetes](https://pingcap.com/docs/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer/).
 
 ## Tools development roadmap
 

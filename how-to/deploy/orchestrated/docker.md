@@ -12,7 +12,7 @@ To learn more, see [TiDB architecture](/architecture.md) and [Software and Hardw
 
 > **Warning:**
 >
-> This is for testing only. DO NOT USE in production! Please deploy TiDB with [our Ansible solution](/how-to/deploy/orchestrated/ansible.md) or [TiDB Operator in Kubernetes](/tidb-in-kubernetes/deploy/tidb-operator.md) in production.
+> This is for testing only. DO NOT USE in production! Please deploy TiDB with [our Ansible solution](/how-to/deploy/orchestrated/ansible.md) or [TiDB Operator in Kubernetes](https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-tidb-operator/) in production.
 
 ## Preparation
 
