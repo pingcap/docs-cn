@@ -88,7 +88,9 @@ PD 同样将根据系统的 `max-replicas` 及 `location-labels` 生成默认的
 pd-ctl config placement-rules disable
 ```
 
-**注意：关闭 placement rules 后，PD 将使用原先的 `max-replicas` 及 `location-labels` 配置，在 placement rules 开启期间对 Rule 的修改不会导致这两项配置的同步更新。此外，设置好的所有 Rule 都会保留在系统中，会在下次开启 placement rules 时被使用。**
+> **注意：**
+>
+> 关闭 Placement Rules 后，PD 将使用原先的 `max-replicas` 及 `location-labels` 配置。在 Placement Rules 开启期间对 Rule 的修改不会导致这两项配置的同步更新。此外，设置好的所有 Rule 都会保留在系统中，会在下次开启 Placement Rules 时被使用。
 
 ### 使用 pd-ctl 设置规则
 
