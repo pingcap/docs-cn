@@ -67,6 +67,29 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 另外，从 TiDB 2.1.18 开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
 
+> **注意：**
+>
+> 在没有指定主键的情况下 TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
+
+```sql
+mysql> create table t(id int unique key AUTO_INCREMENT);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into t values(),(),();
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select _tidb_rowid, id from t;
++-------------+------+
+| _tidb_rowid | id   |
++-------------+------+
+|           4 |    1 |
+|           5 |    2 |
+|           6 |    3 |
++-------------+------+
+3 rows in set (0.01 sec)
+```
+
 ### Performance schema
 
 Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
