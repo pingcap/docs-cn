@@ -2,11 +2,13 @@
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表。
 
 用户可以使用 TiDB 或者 TiSpark 读取 TiFlash，TiDB 适合用于中等规模的 OLAP 计算，而 TiSpark 适合大规模的 OLAP 计算，用户可以根据自己的场景和使用习惯自行选择。具体参见：
-使用 TiDB 读取 TiFlash
-使用 TiSpark 读取 TiFlash
+  * 使用 TiDB 读取 TiFlash
+  * 使用 TiSpark 读取 TiFlash
 ## 按表构建 TiFlash 副本
 TiFlash 接入 TiKV 集群后，默认不会开始同步数据，可通过 mysql 客户端向 TiDB 发送 DDL 命令来为特定的表建立 TiFlash副本：
-	ALTER TABLE table_name SET TIFLASH REPLICA count 
+```
+ALTER TABLE table_name SET TIFLASH REPLICA count 
+```
 count 表示副本数，0 则表示删除
 location_labels 为一组由用户指定字符串用于标识 label，是为了 pd 调度的 topology 隔离，可以不填。
 
@@ -14,23 +16,30 @@ location_labels 为一组由用户指定字符串用于标识 label，是为了 
 
 例如：
 为表建立2个副本，无 location label：
-	ALTER TABLE `tpch50`.`partsupp` SET TIFLASH REPLICA 2
-
+```
+ALTER TABLE `tpch50`.`partsupp` SET TIFLASH REPLICA 2
+```
 删除副本：
-	ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
+```
+ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
+```
 
 注意事项：
-假设有一张表 t 已经通过上述的 DDL 语句同步到 TiFlash，则通过以下语句创建的表也会自动同步到 TiFlash：
-	CREATE TABLE table_name like t
-目前版本，若先对表创建 tiflash 副本，再使用 tidb-lightning 导入数据，会导致数据导入失败。需要在使用 tidb-lightning 成功导入数据至表后，再对相应的表创建 tiflash 副本。
-不推荐同步 1000 张以上的表，这会降低 PD 的调度性能。这个限制将在后续版本去除。
-TiFlash 中保留了数据库 system ，用户不能为 TiDB 中名字为 system 数据库下的表创建 TiFlash 副本。且如果强行创建，结果行为未定义（暂时性限制）。
+  * 假设有一张表 t 已经通过上述的 DDL 语句同步到 TiFlash，则通过以下语句创建的表也会自动同步到 TiFlash：
+```
+CREATE TABLE table_name like t
+```
+  * 目前版本，若先对表创建 tiflash 副本，再使用 tidb-lightning 导入数据，会导致数据导入失败。需要在使用 tidb-lightning 成功导入数据至表后，再对相应的表创建 tiflash 副本。
+  * 不推荐同步 1000 张以上的表，这会降低 PD 的调度性能。这个限制将在后续版本去除。
+  * TiFlash 中保留了数据库 system ，用户不能为 TiDB 中名字为 system 数据库下的表创建 TiFlash 副本。且如果强行创建，结果行为未定义（暂时性限制）。
 ## 查看同步进度
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
-	SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>'
+```
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>'
+```
 查询结果中：
-AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。
-PROGRESS 字段代表同步进度，在 0.0 ~ 1.0 之间，1 代表至少 1 个副本已经完成同步。
+  * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。
+  * PROGRESS 字段代表同步进度，在 0.0 ~ 1.0 之间，1 代表至少 1 个副本已经完成同步。
 ## 使用 TiDB 读取 TiFlash
 TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本，而没有做任何 engine 的配置，则默认使用 CBO 方式。
 ### 智能选择
@@ -55,7 +64,7 @@ TiDB 实例级别，即 INSTANCE 级别，和会话级别配置是 交集 关系
 [isolation-read]
 engines = ["tikv", "tiflash"]
 ```
-实例级别的默认配置为 ["tikv", "tiflash"]。
+实例级别的默认配置为 `["tikv", "tiflash"]`。
 
 当 engine 配置为 "tikv, tiflash"，即可以同时读取 tikv 和 tiflash 副本，优化器会自动选择。指定了 engine 后，对于查询中的表没有对应 engine 副本的情况（因为 tikv 副本是必定存在的，因此只有配置了 engine 为 tiflash 而 tiflash 副本不存在这一种情况），查询会报该表不存在该 engine 副本的错。
 ### 手工 Hint
@@ -71,12 +80,15 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 `spark.tispark.use.tiflash` 为 true（或 false）。
 
 可以使用以下任意一种方式进行设置：
-在 spark-defaults.conf 文件中添加 spark.tispark.use.tiflash true
-在启动 spark shell 或 thrift server 时，启动命令中添加 --conf spark.tispark.use.tiflash=true
-Spark shell 中实时设置：spark.conf.set("spark.tispark.use.tiflash", true)
-Thrift server 通过 beeline 连接后实时设置：set spark.tispark.use.tiflash=true
+在 `spark-defaults.conf` 文件中添加 
+```
+spark.tispark.use.tiflash true
+```
+在启动 spark shell 或 thrift server 时，启动命令中添加 `--conf spark.tispark.use.tiflash=true`
+Spark shell 中实时设置：`spark.conf.set("spark.tispark.use.tiflash", true)`
+Thrift server 通过 beeline 连接后实时设置：`set spark.tispark.use.tiflash=true`
 
-注意，设为 true 时，所有查询的表都会只读取 TiFlash 副本，设为 false 则只读取 TiKV 副本。设为 true 时，要求查询所用到的表都必须已创建了 TiFlash 副本，对于未创建 TiFlash 副本的表的查询会报错。
+注意，设为 true 时，所有查询的表都会只读取 TiFlash 副本，设为 `false` 则只读取 TiKV 副本。设为 `true` 时，要求查询所用到的表都必须已创建了 TiFlash 副本，对于未创建 TiFlash 副本的表的查询会报错。
 ## TiFlash 支持的计算下推
 TiFlash 主要支持谓词，聚合下推计算，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型主要是表连接和 DISTINCT COUNT，会在后续版本逐步优化。
 
