@@ -138,113 +138,52 @@ COMMENT      | The quantile of TiDB query durations(second)
 * 时间段 t1：`("2020-03-03 17:08:00", "2020-03-03 17:11:00")`
 * 时间段 t2：`("2020-03-03 17:18:00", "2020-03-03 17:21:00")`
 
-对两个时间段的监控按照 `METRICS_NAME` 进行 join，并按照差值排序。其中 `TIME_RANGE` 是用于指定查询时间的 hint。
-
-查询 `t1.avg_value` / `t2.avg_value` 差异最大的 10 个监控项:
+对两个时间段的监控按照 `METRICS_NAME` 进行 join，并按照差异值大小排序。其中 `TIME_RANGE` 是用于指定查询时间的 hint。
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT
- t1.avg_value / t2.avg_value AS ratio,
- t1.metrics_name,
- t1.avg_value,
- t2.avg_value,
- t2.comment
-FROM
- (
-   SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/
-     *
-   FROM information_schema.metrics_summary
- ) t1
- JOIN
- (
-   SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/
-     *
-   FROM information_schema.metrics_summary
- ) t2
- ON t1.metrics_name = t2.metrics_name
-ORDER BY
- ratio DESC limit 10;
+SELECT GREATEST(t1.avg_value,t2.avg_value)/LEAST(t1.avg_value,
+         t2.avg_value) AS ratio,
+         t1.metrics_name,
+         t1.avg_value as t1_avg_value,
+         t2.avg_value as t2_avg_value,
+         t2.comment
+FROM 
+    (SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/ *
+    FROM information_schema.metrics_summary ) t1
+JOIN 
+    (SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/ *
+    FROM information_schema.metrics_summary ) t2
+    ON t1.metrics_name = t2.metrics_name
+ORDER BY  ratio DESC limit 10;
 ```
 
 ```
-+----------------+-----------------------------------+-------------------+-------------------+--------------------------------------------------------------------------+
-| ratio          | metrics_name                      | avg_value         | avg_value         | comment                                                                  |
-+----------------+-----------------------------------+-------------------+-------------------+--------------------------------------------------------------------------+
-| 17.6439787379  | tikv_region_average_written_bytes |   30816827.0953   |    1746591.71568  | The average rate of writing bytes to Regions per TiKV instance           |
-|  8.88407551364 | tikv_region_average_written_keys  |     108557.034612 |      12219.283193 | The average rate of written keys to Regions per TiKV instance            |
-|  6.4105335594  | tidb_kv_write_num                 |       4493.293654 |        700.923505 | The quantile of kv write times per transaction execution                 |
-|  2.99993333333 | tidb_gc_total_count               |          1.0      |          0.333341 | The total count of kv storage garbage collection time durations          |
-|  2.66412165823 | tikv_engine_avg_seek_duration     |       6569.879007 |       2466.05818  | The time consumed when executing seek operation, the unit is microsecond |
-|  2.66412165823 | tikv_engine_max_seek_duration     |       6569.879007 |       2466.05818  | The time consumed when executing seek operation, the unit is microsecond |
-|  2.49994444321 | tikv_region_change                |         -0.277778 |         -0.111114 | The count of region change per TiKV instance                             |
-|  2.16063829787 | etcd_wal_fsync_duration           |          0.002539 |          0.001175 | The quantile time consumed of writing WAL into the persistent storage    |
-|  2.06089264604 | node_memory_free                  | 4541448192.0      | 2203631616.0      |                                                                          |
-|  1.96749064186 | tidb_kv_write_size                |     514489.28     |     261495.159902 | The quantile of kv write size per transaction execution                  |
-+----------------+-----------------------------------+-------------------+-------------------+--------------------------------------------------------------------------+
-```
-
-查询结果表示：
-
-* t1 时间段内的 `tikv_region_average_written_bytes` Region 的平均写入字节数，比 t2 时间段高了 17.6 倍。
-* t1 时间段内的 `tikv_region_average_written_keys` Region 的平均写入 key 数，比 t2 时间段高了 8.8 倍。
-* t1 时间段内的 `tidb_kv_write_size`（tidb 每个事务写入的 kv 大小）比 t2 时间段高了 1.96 倍。
-
-通过以上结果可以轻易看出 t1 时间段的写入要比 t2 时间段高。
-
-反过来，查询 `t2.avg_value` 和 `t1.avg_value` 差异最大的十个监控项：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT
- t2.avg_value / t1.avg_value AS ratio,
- t1.metrics_name,
- t1.avg_value,
- t2.avg_value,
- t2.comment
-FROM
- (
-   SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/
-     *
-   FROM information_schema.metrics_summary
- ) t1
- JOIN
- (
-   SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/
-     *
-   FROM information_schema.metrics_summary
- ) t2
- ON t1.metrics_name = t2.metrics_name
-ORDER BY
- ratio DESC limit 10;
-```
-
-```
-+----------------+-----------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+
-| ratio          | metrics_name                            | avg_value      | avg_value        | comment                                                                                     |
-+----------------+-----------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+
-| 5865.59537065  | tidb_slow_query_cop_process_total_time  |       0.016333 |        95.804724 | The total time of TiDB slow query statistics with slow query total cop process time(second) |
-| 3648.74109023  | tidb_distsql_partial_scan_key_total_num |   10865.666667 |  39646004.4394   | The total num of distsql partial scan key numbers                                          |
-|  267.002351165 | tidb_slow_query_cop_wait_total_time     |       0.003333 |         0.890008 | The total time of TiDB slow query statistics with slow query total cop wait time(second)    |
-|  192.43267836  | tikv_cop_total_response_total_size      | 2515333.66667  | 484032394.445    |                                                                                             |
-|  192.43267836  | tikv_cop_total_response_size            |   41922.227778 |   8067206.57408  |                                                                                             |
-|  152.780296296 | tidb_distsql_scan_key_total_num         |    5304.333333 |    810397.618317 | The total num of distsql scan numbers                                                      |
-|  126.042290167 | tidb_distsql_execution_total_time       |       0.421622 |        53.142143 | The total time of distsql execution(second)                                                 |
-|  105.164020657 | tikv_cop_scan_details                   |     134.450733 |     14139.379665 |                                                                                             |
-|  105.164020657 | tikv_cop_scan_details_total             |    8067.043981 |    848362.77991  |                                                                                             |
-|  10``1.635495394 | tikv_cop_total_kv_cursor_operations     |    1070.875    |    108838.91113  |                                                                                             |
-+----------------+-----------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+
++----------------+------------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+
+| ratio          | metrics_name                             | t1_avg_value   | t2_avg_value     | comment                                                                                     |
++----------------+------------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+
+| 5865.59537065  | tidb_slow_query_cop_process_total_time   |       0.016333 |        95.804724 | The total time of TiDB slow query statistics with slow query total cop process time(second) |
+| 3648.74109023  | tidb_distsql_partial_scan_key_total_num  |   10865.666667 |  39646004.4394   | The total num of distsql partial scan key numbers                                           |
+|  267.002351165 | tidb_slow_query_cop_wait_total_time      |       0.003333 |         0.890008 | The total time of TiDB slow query statistics with slow query total cop wait time(second)    |
+|  192.43267836  | tikv_cop_total_response_total_size       | 2515333.66667  | 484032394.445    |                                                                                             |
+|  192.43267836  | tikv_cop_total_response_size_per_seconds |   41922.227778 |   8067206.57408  |                                                                                             |
+|  152.780296296 | tidb_distsql_scan_key_total_num          |    5304.333333 |    810397.618317 | The total num of distsql scan numbers                                                       |
+|  126.042290167 | tidb_distsql_execution_total_time        |       0.421622 |        53.142143 | The total time of distsql execution(second)                                                 |
+|  105.164020657 | tikv_cop_scan_details                    |     134.450733 |     14139.379665 |                                                                                             |
+|  105.164020657 | tikv_cop_scan_details_total              |    8067.043981 |    848362.77991  |                                                                                             |
+|  101.635495394 | tikv_cop_scan_keys_num                   |    1070.875    |    108838.91113  |                                                                                             |
++----------------+------------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+
 ```
 
 上面查询结果表示：
 
 * t2 时间段内的 `tidb_slow_query_cop_process_total_time`（TiDB 慢查询中的 `cop process` 耗时）比 t1 时间段高了 5865 倍。
 * t2 时间段内的 `tidb_distsql_partial_scan_key_total_num`（TiDB 的 `distsql` 请求扫描key 的数量）比 t1 时间段高了 3648 倍。
+t2 时间段内，`tidb_slow_query_cop_wait_total_time` (TiDB 慢查询中的 cop 请求排队等待的耗时) 比 t1 时间段高了 267 倍。
 * t2 时间段内的 `tikv_cop_total_response_size`（TiKV 的 cop 请求结果的大小 ）比 t1 时间段高了 192 倍。
 * t2 时间段内的 `tikv_cop_scan_details`（TiKV 的 cop 请求的 scan ）比 t1 时间段高了 105 倍。
 
-对比上面两个时间段的查询，可以大致了解集群在这两个时间段的负载情况。t2 时间段的 cop 请求要比 t2 时间段高很多，导致 TiKV 的 Copprocessor 过载，出现了 `cop task` 等待，可以猜测可能是 t2 时间段出现了一些大查询，或者是查询较多的负载。
+综上，我们可以马上知道 t2 时间段的 cop 请求要比 t2 时间段高很多，导致 TiKV 的 Copprocessor 过载，出现了 `cop task` 等待，可以猜测可能是 t2 时间段出现了一些大查询，或者是查询较多的负载。
 
 实际上，在 t1 ~ t2 整个时间段内都在跑 `go-ycsb` 的压测，然后在 t2 时间段跑了 20 个 `tpch` 的查询，所以是因为 `tpch` 大查询导致了出现很多的 cop 请求。
