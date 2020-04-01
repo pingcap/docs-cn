@@ -185,7 +185,9 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
   table rows: (7480000000000000ff2d5f720000000000fa, 7480000000000000ff2e00000000000000f8)
 ```
 
-**注意：DDL 等操作会导致 table ID 发生变化，需要同步更新对应的规则。**
+> **注意：**
+>
+> DDL 等操作会导致 table ID 发生变化，需要同步更新对应的规则。
 
 ## 典型场景示例
 
