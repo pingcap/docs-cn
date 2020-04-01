@@ -258,7 +258,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 ]
 ```
 
-### 场景三：为某个 table 添加 2 个 TiFlash Learner 副本
+### 场景三：为某张表添加 2 个 TiFlash Learner 副本
 
 为 table 的 row key 单独添加一条规则，限定数量为 2，并且通过 `label_constraint` 保证副本产生在 `engine=tiflash` 的节点。注意这里使用了单独的 `group_id`，保证这条规则不会与系统中其他来源的规则互相覆盖或产生冲突。
 
