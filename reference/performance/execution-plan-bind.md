@@ -24,13 +24,13 @@ CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
 例如：
 
 ```sql
-create global binding for select * from t1,t2 where t1.id = t2.id using select  /*+ TIDB_HJ(t1, t2) */  * from t1,t2 where t1.id = t2.id
-select * from t1,t2 where t1.id = t2.id
-create binding for select * from t1,t2 where t1.id = t2.id using select  /*+ TIDB_SMJ(t1, t2) */  * from t1,t2 where t1.id = t2.id
-select * from t1,t2 where t1.id = t2.id
+create global binding for select * from t1,t2 where t1.id = t2.id using select  /*+ TIDB_SMJ(t1, t2) */  * from t1,t2 where t1.id = t2.id
+explain select * from t1,t2 where t1.id = t2.id
+create binding for select * from t1,t2 where t1.id = t2.id using select  /*+ TIDB_HJ(t1, t2) */  * from t1,t2 where t1.id = t2.id
+explain select * from t1,t2 where t1.id = t2.id
 ```
 
-第一个 `select` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `TIDB_HJ(t1, t2)` hint。而第二个 `select` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `TIDB_SMJ(t1, t2)` hint。
+第一个 `select` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `TIDB_SMJ(t1, t2)` hint，explain 出的执行计划中最上层的节点为 MergeJoin。而第二个 `select` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `TIDB_HJ(t1, t2)` hint，explain 出的执行计划中最上层的节点为 HashJoin。
 
 这种屏蔽将会持续到 SESSION 结束，即使 SESSION 作用域的绑定被删除掉，该绑定对 GLOBAL 作用域内相应绑定的屏蔽依然会持续。
 
@@ -38,10 +38,10 @@ select * from t1,t2 where t1.id = t2.id
 
 ```sql
 drop binding for select * from t1,t2 where t1.id = t2.id
-select * from t1,t2 where t1.id = t2.id
+explain select * from t1,t2 where t1.id = t2.id
 ```
 
-在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `TIDB_HJ(t1, t2)` hint。
+在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `TIDB_SMJ(t1, t2)` hint，explain 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
 `参数化`：把 SQL 中的常量变成变量参数，并对 SQL 中的空格和换行符等做标准化处理。例如：
 
