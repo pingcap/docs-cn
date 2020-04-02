@@ -79,7 +79,7 @@ category: reference
 
     预期结果为 `"enable-placement-rules": "true"`。
 
-2. 监控面板 TiFlash-Summary 下的 UpTime 检查操作系统中 TiFlash 进程是否正常。
+2. 通过 TiFlash-Summary 监控面板下的 UpTime 检查操作系统中 TiFlash 进程是否正常。
 
 3. 通过 pd-ctl 查看 TiFlash proxy 状态是否正常：
 
