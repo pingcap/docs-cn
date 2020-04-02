@@ -81,7 +81,7 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
     192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
     ```
 
-3. 按照 [TiDB Ansible 部署流程](/how-to/deploy/orchestrated/ansible.md)完成集群部署的[剩余步骤](/how-to/deploy/orchestrated/ansible.md#第-10-步调整-inventoryini-文件中的变量)。
+3. 按照 TiDB Ansible 部署流程完成集群部署的[剩余步骤](/how-to/deploy/orchestrated/ansible.md#第-10-步调整-inventoryini-文件中的变量)。
 
 4. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
 
