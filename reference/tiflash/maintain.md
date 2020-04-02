@@ -47,7 +47,7 @@ category: reference
     alter table <db-name>.<table-name> set tiflash replica 0;
     ```
 
-2. 等待相关表的 TiFlash 副本被删除（按照[“查看表同步进度”](/reference/tiflash/use-tiflash.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
+2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/reference/tiflash/use-tiflash.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
 
 3. 在 [pd-ctl](/reference/tools/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 store 命令，查看该 TiFlash 节点对应的 store id。
 
@@ -67,7 +67,7 @@ category: reference
 
 该问题一般由于配置错误或者环境问题导致 TiFlash 处于异常状态，可以先通过以下步骤定位问题组件：
 
-1. 检查 PD 是否开启 Placement Rules 功能（开启方法见[“在原有 TiDB 集群上新增 TiFlash 组件”](/reference/tiflash/deploy.md#在原有-tidb-集群上新增-tiflash-组件)的第 2 步）：
+1. 检查 PD 是否开启 Placement Rules 功能（开启方法见[在原有 TiDB 集群上新增 TiFlash 组件](/reference/tiflash/deploy.md#在原有-tidb-集群上新增-tiflash-组件)的第 2 步）：
 
     {{< copyable "shell-regular" >}}
 
@@ -119,7 +119,7 @@ category: reference
 
 可依照如下步骤进行处理：
 
-1. 参照[“下线 TiFlash 节点”](/reference/tiflash/maintain.md#下线-tiflash-节点)一节下线对应的 TiFlash 节点。
+1. 参照[下线 TiFlash 节点](/reference/tiflash/maintain.md#下线-tiflash-节点)一节下线对应的 TiFlash 节点。
 2. 清除该 TiFlash 节点的相关数据。
 3. 重新在集群中部署 TiFlash 节点。
 
@@ -135,7 +135,7 @@ category: reference
 
 ## TiFlash 系统表
 
-information_schema.tiflash_replica 系统表的列名及含义如下：
+`information_schema.tiflash_replica` 系统表的列名及含义如下：
 
 | 列名          | 含义                |
 |---------------|---------------------|

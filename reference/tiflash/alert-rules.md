@@ -15,7 +15,7 @@ category: reference
 
 - 规则描述：
 
-    TiFlash 进程占用内存超过 16G 时报警。
+    TiFlash 进程占用内存超过 16 GB 时报警。
 
 - 处理方法：
 

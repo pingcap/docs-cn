@@ -9,7 +9,7 @@ category: reference
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/reference/tools/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 调整参数：
+可通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）调整参数：
 
 - [`replica-schedule-limit`](/reference/configuration/pd-server/configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
@@ -25,7 +25,7 @@ category: reference
 
 ```
 tmp_path = tiflash 临时文件存放路径
-path = tiflash 数据存储路径     # 如果有多个目录，以逗号分割，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果您的环境有多块磁盘，推荐一个路径对应一块磁盘，并且把性能最好的磁盘放在最前面，以发挥所有磁盘的全部性能。
+path = tiflash 数据存储路径     # 如果有多个目录，以英文逗号分割，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果您的环境有多块磁盘，推荐一个路径对应一块磁盘，并且把性能最好的磁盘放在最前面，以发挥所有磁盘的全部性能。
 path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
 listen_host = tiflash 服务监听 host # 一般配置成 0.0.0.0
 tcp_port = tiflash tcp 服务端口

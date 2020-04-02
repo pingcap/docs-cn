@@ -18,7 +18,7 @@ category: reference
 
 部署机器不限，最少一台即可。单台机器可以使用多盘，但不推荐单机多实例部署。
 
-推荐用一个 SSD 盘来缓冲 TiKV 同步数据的实时写入，该盘性能不低于 TiKV 所使用的硬盘，建议是性能更好的 NVMe SSD。该 SSD 盘容量建议不小于 10% 总容量，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他硬盘，可以选择部署多块 HDD 或者普通 SSD，当然更好的硬盘会带来更好的性能。
+推荐用一个 SSD 盘来缓冲 TiKV 同步数据的实时写入，该盘性能不低于 TiKV 所使用的硬盘，建议是性能更好的 NVMe SSD。该 SSD 盘容量建议不小于总容量的 10%，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他硬盘，可以选择部署多块 HDD 或者普通 SSD，当然更好的硬盘会带来更好的性能。
 
 TiFlash 支持多目录存储，所以无需使用 RAID。
 
@@ -89,7 +89,7 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先按照 [TiDB 升级操作指南](/how-to/upgrade/from-previous-version.md)升级 TiDB 集群至 3.1 rc 以上版本。
 
-2. 在 pd-ctl (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
+2. 在 pd-ctl（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
 
 3. 编辑 `inventory.ini` 配置文件，并在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip（目前只支持 ip，不支持域名）。
 
