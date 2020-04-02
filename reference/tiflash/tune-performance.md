@@ -53,7 +53,7 @@ Region 个数和大小会对 TiFlash 性能有一定的影响，过多的小 Reg
     region-split-keys:  1920000
     ```
 
-2. 在 `roles/pd/vars/default.yml` 文件中添加如下配置可以开启 Region Merge。也可以直接通过 pd-ctl 的 config set <config-name> 命令设置。
+2. 在 `roles/pd/vars/default.yml` 文件中添加如下配置可以开启 Region Merge。也可以直接通过 pd-ctl 的 `config set <config-name>` 命令设置。
 
     {{< copyable "" >}}
 

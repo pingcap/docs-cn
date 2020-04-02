@@ -59,7 +59,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * 不推荐同步 1000 张以上的表，这会降低 PD 的调度性能。这个限制将在后续版本去除。
 
-* TiFlash 中保留了数据库 system ，用户不能为 TiDB 中名字为 system 数据库下的表创建 TiFlash 副本。且如果强行创建，结果行为未定义（暂时性限制）。
+* TiFlash 中保留了数据库 system，用户不能为 TiDB 中名字为 system 数据库下的表创建 TiFlash 副本。如果强行创建，结果行为未定义（暂时性限制）。
 
 ## 查看表同步进度
 
@@ -110,7 +110,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
     会话级别的默认配置继承自 TiDB 实例级别的配置，见 2。
 
-2. TiDB 实例级别，即 INSTANCE 级别，和会话级别配置是交集关系。比如实例级别配置了 "tikv, tiflash"，而会话级别配置了 "tikv"，则只会读取 tikv。
+2. TiDB 实例级别，即 INSTANCE 级别，和会话级别配置是交集关系。比如实例级别配置了 "tikv, tiflash"，而会话级别配置了 "tikv"，则只会读取 TiKV。
 
     在 TiDB 的配置文件添加如下配置项：
 
@@ -121,11 +121,11 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
     实例级别的默认配置为 `["tikv", "tiflash"]`。
 
-当 engine 配置为 "tikv, tiflash"，即可以同时读取 tikv 和 tiflash 副本，优化器会自动选择。指定了 engine 后，对于查询中的表没有对应 engine 副本的情况（因为 tikv 副本是必定存在的，因此只有配置了 engine 为 tiflash 而 tiflash 副本不存在这一种情况），查询会报该表不存在该 engine 副本的错。
+当 engine 配置为 "tikv, tiflash"，即可以同时读取 TiKV 和 TiFlash 副本，优化器会自动选择。指定了 engine 后，对于查询中的表没有对应 engine 副本的情况（因为 TiKV 副本是必定存在的，因此只有配置了 engine 为 tiflash 而 TiFlash 副本不存在这一种情况），查询会报该表不存在该 engine 副本的错。
 
 ### 手工 Hint
 
-手工 hint 可以强制 TiDB 对于某张或某几张表使用 TiFlash 副本，其优先级低于 engine 隔离，如果 hint 中指定的引擎不在 engine 列表中，会返回 warning，使用方法为：
+手工 Hint 可以强制 TiDB 对于某张或某几张表使用 TiFlash 副本，其优先级低于 engine 隔离，如果 Hint 中指定的引擎不在 engine 列表中，会返回 warning，使用方法为：
 
 {{< copyable "sql" >}}
 
@@ -137,11 +137,11 @@ Engine 隔离的优先级高于 CBO 与 Hint，Hint 优先级高于代价估算�
 
 ## 使用 TiSpark 读取 TiFlash
 
-TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方式是通过配置参数 `spark.tispark.use.tiflash` 为 true（或 false）。
+TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方式是通过配置参数 `spark.tispark.use.tiflash` 为 `true`（或 `false`）。
 
 > **注意：**
 >
-> 设为 true 时，所有查询的表都会只读取 TiFlash 副本，设为 `false` 则只读取 TiKV 副本。设为 `true` 时，要求查询所用到的表都必须已创建了 TiFlash 副本，对于未创建 TiFlash 副本的表的查询会报错。
+> 设为 `true` 时，所有查询的表都会只读取 TiFlash 副本，设为 `false` 则只读取 TiKV 副本。设为 `true` 时，要求查询所用到的表都必须已创建了 TiFlash 副本，对于未创建 TiFlash 副本的表的查询会报错。
 
 可以使用以下任意一种方式进行设置：
 
@@ -151,7 +151,7 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
     spark.tispark.use.tiflash true
     ```
 
-2. 在启动 spark shell 或 thrift server 时，启动命令中添加 `--conf spark.tispark.use.tiflash=true`
+2. 在启动 Spark shell 或 Thrift server 时，启动命令中添加 `--conf spark.tispark.use.tiflash=true`
 
 3. Spark shell 中实时设置：`spark.conf.set("spark.tispark.use.tiflash", true)`
 
@@ -165,4 +165,4 @@ TiFlash 主要支持谓词、聚合下推计算，下推的计算可以帮助 Ti
 
 例如在聚合函数或者 WHERE 条件中包含了不在上述列表中的表达式，聚合或者相关的谓词过滤会无法进行下推。
 
-如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持表达式，将会在后续陆续加入支持，也可以联系官方沟通。
+如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的表达式，将会在后续陆续加入支持，也可以联系官方沟通。
