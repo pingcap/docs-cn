@@ -56,15 +56,6 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 1. 下载对应版本的离线包，并解压：
 
-    - 如果你使用的是 TiDB 4.0 内测版，执行以下命令：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        curl -o tidb-ansible-tiflash-4.0-v3-20200331.tar.gz https://download.pingcap.org/tidb-ansible-tiflash-4.0-v3-20200331.tar.gz &&
-        tar zxvf tidb-ansible-tiflash-4.0-v3-20200331.tar.gz
-        ```
-
     - 如果你使用的是 TiDB 3.1 rc 版，执行以下命令：
 
         {{< copyable "shell-regular" >}}
