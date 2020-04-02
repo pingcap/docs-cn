@@ -23,7 +23,7 @@ category: reference
 
 ### 配置文件 tiflash.toml
 
-```toml
+```
 tmp_path = tiflash 临时文件存放路径
 path = tiflash 数据存储路径     # 如果有多个目录，以逗号分割，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果您的环境有多块磁盘，推荐一个路径对应一块磁盘，并且把性能最好的磁盘放在最前面，以发挥所有磁盘的全部性能。
 path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
@@ -32,7 +32,7 @@ tcp_port = tiflash tcp 服务端口
 http_port = tiflash http 服务端口
 ```
 
-```toml
+```
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  tiflash raft 服务 和 coprocessor 服务监听地址
@@ -40,7 +40,7 @@ http_port = tiflash http 服务端口
 
 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，需要 3 个参数控制。
 
-```toml
+```
 [flash.flash_cluster]
     refresh_interval = master 定时刷新有效期
     update_rule_interval = master 定时向 tidb 获取 tiflash 副本状态并与 pd 交互
@@ -70,7 +70,7 @@ http_port = tiflash http 服务端口
 
 ### 配置文件 tiflash-learner.toml
 
-```toml
+```
 [server]
     engine-addr = tiflash raft 服务监听地址
     status-addr = Prometheus 拉取 proxy metrics 信息的 ip + 端口
