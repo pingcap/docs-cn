@@ -132,6 +132,8 @@ pd-ctl config placement-rules show --group=pd --id=default
 pd-ctl config placement-rules show --region=2
 ```
 
+上面的例子中 2 为 region id。
+
 新增和编辑规则是类似的，需要把对应的规则写进文件，然后使用 `save` 命令保存至 PD：
 
 {{< copyable "" >}}
