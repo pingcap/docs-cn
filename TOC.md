@@ -279,6 +279,18 @@
     - [PD 调度策略最佳实践](/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/reference/best-practices/massive-regions.md)
   + [TiSpark 使用指南](/reference/tispark.md)
+  + TiFlash
+    - [概述](/reference/tiflash/overview.md)
+    - [部署集群](/reference/tiflash/deploy.md)
+    - [使用 TiFlash](/reference/tiflash/use-tiflash.md)
+    - [运维集群](/reference/tiflash/maintain.md)
+    - [监控集群](/reference/tiflash/monitor.md)
+    - [扩缩容集群](/reference/tiflash/deploy.md)
+    - [升级节点](/reference/tiflash/upgrade.md)
+    - [配置参数](/reference/tiflash/configuration.md)
+    - [报警规则](/reference/tiflash/alert-rules.md)
+    - [性能调优](/reference/tiflash/tune-performance.md)
+    - [FAQ](/reference/tiflash/faq.md)
   + TiDB Binlog
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)
