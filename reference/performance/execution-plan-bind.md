@@ -19,6 +19,8 @@ CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。在不指定作用域时，隐式作用域为 SESSION。被绑定的 SQL 会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
 
+值得注意的是当一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划时，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉该其在 GLOBAL 作用域内绑定的执行计划。即使在之后这条语句在 SESSION 作用域内绑定的相应执行计划被 drop 掉，对其 GLOBAL 作用域内绑定的屏蔽依然会持续。
+
 `参数化`：把 SQL 中的常量变成变量参数，并对 SQL 中的空格和换行符等做标准化处理。例如：
 
 ```sql
