@@ -7,20 +7,6 @@ category: reference
 
 本文介绍了 TiFlash 集群的报警规则。
 
-## `TiFlash_memory_abnormal`
-
-- 报警规则：
-
-    `tiflash_system_asynchronous_metric_jemalloc_allocated > 1.6e+10`
-
-- 规则描述：
-
-    TiFlash 进程占用内存超过 16 GB 时报警。
-
-- 处理方法：
-
-    可能有内存泄漏，联系 TiFlash 开发人员进行排查。
-
 ## `TiFlash_schema_error`
 
 - 报警规则：
