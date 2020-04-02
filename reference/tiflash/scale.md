@@ -11,7 +11,7 @@ category: reference
 
 以在节点 192.168.1.1 上部署 TiFlash 为例，扩容该 TiFlash 节点的步骤如下。
 
-1. 编辑 `inventory.ini` 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）
+1. 编辑 `inventory.ini` 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
 
     {{< copyable "" >}}
 
@@ -93,11 +93,11 @@ category: reference
 >
 > 本节介绍的下线流程不会删除下线节点上的数据文件，如需再次上线，请先手动删除。
 
-1. 首先参考[“下线 TiFlash 节点”](/reference/tiflash/maintain.md#下线-tiflash-节点)章节，对要进行缩容的 TiFlash 节点进行下线操作。
+1. 首先参考[下线 TiFlash 节点](/reference/tiflash/maintain.md#下线-tiflash-节点)章节，对要进行缩容的 TiFlash 节点进行下线操作。
 
 2. 使用 Grafana 或者 pd-ctl 检查节点是否下线成功（下线需要一定时间）。
 
-3. 等待 tiflash 对应的 `store` 消失，或者 `state_name` 变成 `Tomestone` 后，执行如下命令关闭 tiflash 进程：
+3. 等待 TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tomestone` 后，执行如下命令关闭 TiFlash 进程：
 
     {{< copyable "shell-regular" >}}
 
