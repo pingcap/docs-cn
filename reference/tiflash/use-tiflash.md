@@ -27,7 +27,7 @@ ALTER TABLE table_name SET TIFLASH REPLICA count
 - count 表示副本数，0 表示删除。
 - location_labels 为一组由用户指定的用于标识的字符串，是为了 PD 调度的 topology 隔离，可以不填。
 
-对于相同表的多次 DDL 命令，仅保证最后一次能生效。例如：
+对于相同表的多次 DDL 命令，仅保证最后一次能生效。例如下面给出的操作 `tpch50` 表的两条 DDL 命令中，只有第二条删除副本的命令能生效：
 
 为表建立 2 个副本，无 location label：
 
