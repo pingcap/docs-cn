@@ -5,7 +5,10 @@ category: reference
 
 # 部署 TiFlash 集群
 
-体验 TiFlash RC 版推荐和 PingCAP 联系，以获得更多资讯和辅助。
+> **注意：**
+>
+> 体验 TiFlash RC 版建议和 [PingCAP 官方](mailto:info@pingcap.com)联系，以获得更多资讯和辅助。
+
 本文介绍了部署 TiFlash 集群的环境要求以及不同场景下的部署方式。
 
 ## 推荐硬件配置
