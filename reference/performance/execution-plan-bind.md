@@ -41,7 +41,7 @@ drop binding for select * from t1,t2 where t1.id = t2.id
 select * from t1,t2 where t1.id = t2.id
 ```
 
-在这里 SESSION 作用域内被 drop 掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 select 语句添加 `TIDB_HJ(t1, t2)` hint。
+在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `TIDB_HJ(t1, t2)` hint。
 
 `参数化`：把 SQL 中的常量变成变量参数，并对 SQL 中的空格和换行符等做标准化处理。例如：
 
