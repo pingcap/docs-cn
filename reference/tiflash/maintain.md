@@ -77,7 +77,7 @@ category: reference
 
     预期结果为 `"enable-placement-rules": "true"`。
 
-2. 检查 TiFlash 进程是否正常。
+2. 通过 `ps` 或 `pgrep tiflash` 命令检查操作系统中 TiFlash 进程是否正常。
 
 3. 通过 pd-ctl 查看 TiFlash proxy 状态是否正常：
 

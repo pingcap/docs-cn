@@ -17,7 +17,7 @@ category: reference
     >
     > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
 
-- `store-balance-rate`：用于限制每个 store 的调度速度
+- [`store-balance-rate`](/reference/configuration/pd-server/configuration-file.md#store-balance-rate)：用于限制每个 store 的调度速度
 
 ## TiFlash 配置参数
 
