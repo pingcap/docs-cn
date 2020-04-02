@@ -124,7 +124,7 @@ pd-ctl config placement-rules show --group=pd
 pd-ctl config placement-rules show --group=pd --id=default
 ```
 
-**查看 Region 2 所匹配的规则列表**
+**查看 Region 所匹配的规则列表**
 
 {{< copyable "" >}}
 
