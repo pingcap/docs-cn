@@ -19,7 +19,29 @@ CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。在不指定作用域时，隐式作用域为 SESSION。被绑定的 SQL 会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
 
-值得注意的是当一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划时，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉该其在 GLOBAL 作用域内绑定的执行计划。即使在之后这条语句在 SESSION 作用域内绑定的相应执行计划被 drop 掉，对其 GLOBAL 作用域内绑定的屏蔽依然会持续。
+值得注意的是当一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划时，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉该其在 GLOBAL 作用域内绑定的执行计划。
+
+例如：
+
+```sql
+create global binding for select * from t1,t2 where t1.id = t2.id using select  /*+ TIDB_HJ(t1, t2) */  * from t1,t2 where t1.id = t2.id
+select * from t1,t2 where t1.id = t2.id
+create binding for select * from t1,t2 where t1.id = t2.id using select  /*+ TIDB_SMJ(t1, t2) */  * from t1,t2 where t1.id = t2.id
+select * from t1,t2 where t1.id = t2.id
+```
+
+第一个 select 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `TIDB_HJ(t1, t2)` hint。而第二个 select 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `TIDB_SMJ(t1, t2)` hint。
+
+这种屏蔽将会持续到 SESSION 结束，即使 SESSION 作用域的绑定被 drop 掉，该绑定对 GLOBAL 作用域内相应绑定的屏蔽依然会持续。
+
+承接上面的例子，继续执行：
+
+```sql
+drop binding for select * from t1,t2 where t1.id = t2.id
+select * from t1,t2 where t1.id = t2.id
+```
+
+在这里 SESSION 作用域内被 drop 掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 select 语句添加 `TIDB_HJ(t1, t2)` hint。
 
 `参数化`：把 SQL 中的常量变成变量参数，并对 SQL 中的空格和换行符等做标准化处理。例如：
 
