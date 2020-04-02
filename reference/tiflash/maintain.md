@@ -11,7 +11,7 @@ category: reference
 
 查看 TiFlash 版本有以下两种方法：
 
-1. 假设 TiFlash 的二进制文件名为 `tiflash`，则可以通过 `./tiflash version` 方式获取 TiFlash 版本。
+- 假设 TiFlash 的二进制文件名为 `tiflash`，则可以通过 `./tiflash version` 方式获取 TiFlash 版本。
 
     但是由于 TiFlash 的运行依赖于动态库 `libtiflash_proxy.so`，因此需要将包含动态库 `libtiflash_proxy.so` 的目录路径添加到环境变量 `LD_LIBRARY_PATH` 后，上述命令才能正常执行。
 
@@ -23,7 +23,7 @@ category: reference
     LD_LIBRARY_PATH=./ ./tiflash version
     ```
 
-2. 在 TiFlash 日志（日志路径见[配置文件 tiflash.toml [logger] 部分](/reference/tiflash/configuration.md#配置文件-tiflashtoml)）中查看 TiFlash 版本，例如：
+- 在 TiFlash 日志（日志路径见[配置文件 tiflash.toml [logger] 部分](/reference/tiflash/configuration.md#配置文件-tiflashtoml)）中查看 TiFlash 版本，例如：
    
     ```
     <information>: TiFlash version: TiFlash 0.2.0 master-375035282451103999f3863c691e2fc2
@@ -57,7 +57,9 @@ category: reference
 
 > **注意：**
 >
-> 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则（发送 DELETE 请求 `http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/<rule_id>`，rule_id 是需要清除的 rule 的 id），否则无法成功完成 TiFlash 节点的下线。
+> 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
+>
+> 手动在 PD 中清除同步规则的方法是：发送 DELETE 请求 `http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/<rule_id>`，rule_id 是需要清除的 rule 的 id。
 
 ## TiFlash 故障处理
 

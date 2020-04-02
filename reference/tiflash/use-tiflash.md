@@ -55,7 +55,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
     CREATE TABLE table_name like t
     ```
 
-* 目前版本里，若先对表创建 TiFlash 副本，再使用 tidb-lightning 导入数据，会导致数据导入失败。需要在使用 tidb-lightning 成功导入数据至表后，再对相应的表创建 TiFlash 副本。
+* 目前版本里，若先对表创建 TiFlash 副本，再使用 TiDB Lightning 导入数据，会导致数据导入失败。需要在使用 TiDB Lightning 成功导入数据至表后，再对相应的表创建 TiFlash 副本。
 
 * 不推荐同步 1000 张以上的表，这会降低 PD 的调度性能。这个限制将在后续版本去除。
 

@@ -17,7 +17,7 @@ TiFlash 暂时无法直接接受写入，只能通过写入 TiKV 再同步到 Ti
 
 ## TiFlash 的数据如何做到高可用？
 
-TiFlash 可以通过 TiKV 恢复数据。只要 TiKV 的对应 Region 没有不可用，TiFlash 就可以从中恢复数据。
+TiFlash 可以通过 TiKV 恢复数据。只要 TiKV 的对应 Region 是可用的，TiFlash 就可以从中恢复数据。
 
 ## TiFlash 推荐设置多少个副本？
 
