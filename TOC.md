@@ -40,6 +40,7 @@
   + 配置
     - [时区](/how-to/configure/time-zone.md)
     - [内存控制](/how-to/configure/memory-control.md)
+    - [Placement Rules](/how-to/configure/placement-rules.md)
   + 安全
     + 安全传输层协议 (TLS)
       - [为 MySQL 客户端开启 TLS](/how-to/secure/enable-tls-clients.md)
