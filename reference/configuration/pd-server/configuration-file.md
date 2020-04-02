@@ -238,7 +238,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `store-balance-rate`
 
-+ 控制 tikv 每分钟最多只允许做 add peer 相关操作的次数。
++ 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
 + 默认：15
 
 ## replication
