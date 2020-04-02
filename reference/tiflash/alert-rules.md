@@ -19,7 +19,7 @@ category: reference
 
 - 处理方法：
 
-    怀疑有内存泄漏，联系 TiFlash 开发人员进行排查。
+    可能有内存泄漏，联系 TiFlash 开发人员进行排查。
 
 ## `TiFlash_schema_error`
 
@@ -43,7 +43,7 @@ category: reference
 
 - 规则描述：
 
-    99% 的概率 apply 时间超过了 20 秒时报警。
+    apply 时间超过 20 秒的概率超过 99% 时报警。
 
 - 处理方法：
 
@@ -57,7 +57,7 @@ category: reference
 
 - 规则描述：
 
-    read index 的时间 99% 的概率超过 3 秒时报警。
+    read index 时间超过 3 秒的概率超过 99% 时报警。
 
     > **注意：**
     >
@@ -75,7 +75,7 @@ category: reference
 
 - 规则描述：
 
-    TiFlash 等待 Region Raft Index 的时间 99% 的概率超过 2 秒时报警。
+    TiFlash 等待 Region Raft Index 的时间超过 2 秒的概率超过 99% 时报警。
 
 - 处理方法：
 
