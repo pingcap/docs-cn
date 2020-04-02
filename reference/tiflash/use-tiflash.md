@@ -25,7 +25,7 @@ ALTER TABLE table_name SET TIFLASH REPLICA count
 该命令的参数说明如下：
 
 - count 表示副本数，0 表示删除。
-- location_labels 为一组由用户指定字符串用于标识 label，是为了 PD 调度的 topology 隔离，可以不填。
+- location_labels 为一组由用户指定的用于标识的字符串，是为了 PD 调度的 topology 隔离，可以不填。
 
 对于相同表的多次 DDL 命令，仅保证最后一次能生效。例如：
 
