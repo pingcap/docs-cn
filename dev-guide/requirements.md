@@ -1,4 +1,9 @@
-# Build requirements
+---
+title: Build Requirements
+draft: true
+---
+
+# Build Requirements
 
 Learn about the following requirements before building TiDB.
 

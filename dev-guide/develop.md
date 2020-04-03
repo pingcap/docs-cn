@@ -1,3 +1,8 @@
+---
+title: Build for Development
+draft: true
+---
+
 # Build for Development
 
 If you want to develop the TiDB project, you can follow this guide.

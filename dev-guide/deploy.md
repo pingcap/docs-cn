@@ -1,4 +1,9 @@
-# Build for deployment
+---
+title: Build for Deployment
+draft: true
+---
+
+# Build for Deployment
 
 The easiest way to deploy TiDB is to use Docker Compose, see [TiDB Docker Compose Deployment](/how-to/get-started/deploy-tidb-from-docker-compose.md). For more deployment methods, see [TiDB deployment methods](/_index.md).
 
