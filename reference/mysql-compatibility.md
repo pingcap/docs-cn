@@ -14,7 +14,7 @@ However, TiDB does not support some of MySQL features or behaves differently fro
 
 > **Note:**
 >
-> This page refers to general differences between MySQL and TiDB. Please also see the dedicated pages for [Security](/reference/security/compatibility.md) and [Transaction Model](/reference/transactions/transaction-model.md) compatibility.
+> This page refers to general differences between MySQL and TiDB. Refer to the dedicated pages for [Security](/reference/security/compatibility.md) and [Pessimistic Transaction Model](/reference/transactions/transaction-pessimistic.md#difference-with-mysql-innodb) compatibility.
 
 ## Unsupported features
 

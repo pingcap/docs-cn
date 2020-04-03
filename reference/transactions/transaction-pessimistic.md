@@ -1,12 +1,12 @@
 ---
-title: TiDB Pessimistic Transaction Mode
-summary: Learn about the pessimistic transaction mode of TiDB.
+title: TiDB Pessimistic Transaction Model
+summary: Learn the pessimistic transaction model in TiDB.
 category: reference
 ---
 
-# TiDB Pessimistic Transaction Mode
+# TiDB Pessimistic Transaction Model
 
-By default, TiDB implements the optimistic transaction mode, where the transaction commit might fail because of transaction conflicts. To make sure that the commit succeeds, you need to modify the application and add an automatic retry mechanism. You can avoid this issue by using the pessimistic transaction mode of TiDB.
+An optimistic transaction in TiDB might fail to commit because of transaction conflicts. To make sure that the commit succeeds, you need to modify the application and add an automatic retry mechanism. Using the pessimistic transaction model can avoid this issue.
 
 ## Behaviors of the pessimistic transaction mode
 
