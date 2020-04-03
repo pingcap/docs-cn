@@ -220,6 +220,7 @@
     - [分区表](/reference/sql/partitioning.md)
     - [字符集](/reference/sql/character-set.md)
     - [SQL 模式](/reference/sql/sql-mode.md)
+    - [SQL 诊断](/reference/system-databases/sql-diagnosis.md)
     - [视图](/reference/sql/view.md)
   + 配置
     + tidb-server
@@ -247,7 +248,7 @@
   + 系统数据库
     - [`mysql`](/reference/system-databases/mysql.md)
     - [`information_schema`](/reference/system-databases/information-schema.md)
-    + [`sql-diagnosis`](/reference/system-databases/sql-diagnosis.md)
+    + `sql-diagnosis`
       - [`cluster_info`](/reference/system-databases/cluster-info.md)
       - [`cluster_hardware`](/reference/system-databases/cluster-hardware.md)
       - [`cluster_config`](/reference/system-databases/cluster-config.md)
