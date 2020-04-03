@@ -24,10 +24,23 @@ CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
 例如：
 
 ```sql
-create global binding for select * from t1,t2 where t1.id = t2.id using select  /*+ TIDB_SMJ(t1, t2) */  * from t1,t2 where t1.id = t2.id
-explain select * from t1,t2 where t1.id = t2.id
-create binding for select * from t1,t2 where t1.id = t2.id using select  /*+ TIDB_HJ(t1, t2) */  * from t1,t2 where t1.id = t2.id
-explain select * from t1,t2 where t1.id = t2.id
+--  创建一个 global binding，指定其使用 sort merge join：
+create global binding for
+    select * from t1, t2 where t1.id = t2.id
+using
+    select /*+ TIDB_SMJ(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+    
+-- 从该 SQL 的执行计划中可以看到其使用了 global binding 中指定的 sort merge join：
+explain select * from t1, t2 where t1.id = t2.id;
+
+-- 创建另一个 session binding，指定其使用 hash join：
+create binding for
+    select * from t1, t2 where t1.id = t2.id
+using
+    select /*+ TIDB_HJ(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+
+-- 从该 SQL 的执行计划中可以看到其使用了 session binding 中指定的 hash join，而不是 global binding 中指定的 sort merge join：
+explain select * from t1, t2 where t1.id = t2.id;
 ```
 
 第一个 `select` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `TIDB_SMJ(t1, t2)` hint，explain 出的执行计划中最上层的节点为 MergeJoin。而第二个 `select` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `TIDB_HJ(t1, t2)` hint，explain 出的执行计划中最上层的节点为 HashJoin。
