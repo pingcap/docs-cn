@@ -1,5 +1,5 @@
 ---
-title: 字符集支持
+title: 字符集和排序规则
 category: reference
 ---
 
@@ -9,8 +9,6 @@ category: reference
 
 * Character Set：字符集
 * Collation：排序规则
-
-collation 的语法支持和语义支持受到配置项 new_collation_enable 的影响，这里我们区分语法支持和语义支持，语法支持是指 TiDB 能够解析和设置 collation，语义支持是指 TiDB 能够在字符串比较时正确地使用 collation。如果new_collation_enable = true, 则只能设置和使用语义支持的 collation。如果 new_collation_enable = false，则能设置语法支持的 collation，语义上所有的 collation 都当成 binary collation。
 
 目前 `TiDB` 支持以下字符集：
 
@@ -35,9 +33,9 @@ SHOW CHARACTER SET;
 
 > **注意：**
 >
-> - 每种字符集都对应一个默认的 Collation，当前有且仅有一个。
+> - 每种字符集都对应一个默认的 Collation，并且仅有一个。
 
-对于字符集来说，至少会有一个 Collation（排序规则）与之对应。利用以下的语句可以查看字符集对应的排序规则（以下是 new_collation_enable = true 情况下的结果）：
+对于字符集来说，至少会有一个 Collation（排序规则）与之对应。利用以下的语句可以查看字符集对应的排序规则（以下是[新的 Collation 框架](#新框架下的-Collation-支持)）下的结果：
 
 {{< copyable "sql" >}}
 
@@ -283,6 +281,99 @@ SET collation_connection = @@collation_database;
 当指定的字符集为 utf8 或 utf8mb4 时，TiDB 仅支持合法的 utf8 字符。对于不合法的字符，会报错：`incorrect utf8 value`。该字符合法性检查与 MySQL 8.0 兼容，与 MySQL 5.7 及以下版本不兼容。
 
 如果不希望报错，可以通过 `set @@tidb_skip_utf8_check=1;` 跳过字符检查。
+
+## 排序规则支持
+
+Collation 的语法支持和语义支持受到配置项 [new_collation_enable](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。 这里我们区分语法支持和语义支持，语法支持是指 TiDB 能够解析和设置 collation，语义支持是指 TiDB 能够在字符串比较时正确地使用 collation。在新的 Collation 框架下, 只能设置和使用语义支持的 collation。在旧的 Collation 框架下。，能设置语法支持的 collation，语义上所有的 collation 都当成 binary collation。
+
+#### 旧框架下的 Collation 支持
+
+在 4.0 版本之前，TiDB 中可以指定大部分 MySQl 中的 Collation，并把它们按照默认 Collation 处理，即以编码字节序为字符定序。同时，并未像 MySQL 一样，在比较前按照 Collation 的 `PADDING` 属性将字符补齐空格。因此，会造成以下的行为区别：
+
+{{< copyable "sql" >}}
+
+```sql
+tidb> create table t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci primary key);
+Query OK, 0 rows affected
+tidb> insert into t values ('A');
+Query OK, 1 row affected
+tidb> insert into t values ('a');
+Query OK, 1 row affected // MySQL 中，由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'.
+tidb> insert into t1 values ('a ');
+Query OK, 1 row affected // MySQL 中，由于补齐空格比较，报错 Duplicate entry 'a '
+```
+
+#### 新框架下的 Collation 支持
+
+TiDB 4.0 新增了完整的 Collation 支持框架，从语义上支持了 Collation，并新增了配置开关 `new_collation_enabled_on_first_boostrap`，在集群初次初始化时决定是否启用新 Collation 框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认新 Collation 是否启用：
+
+{{< copyable "sql" >}}
+
+```sql
+tidb> select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';
++----------------+
+| VARIABLE_VALUE |
++----------------+
+| True           |
++----------------+
+1 row in set (0.00 sec)
+```
+
+在新的 Collation 框架下，TiDB 能够支持 `utf8_general_ci` 和 `utf8mb4_general_ci` 这两种 Collation, 其排序规则与 MySQL 兼容。
+                     使用 utf8_general_ci 或者 utf8mb4_general_ci 时， 字符串之间的比较是大小写不敏感的。同时，TiDB 还修正了 Collation 的 PADDING 行为：
+
+{{< copyable "sql" >}}
+
+```sql
+tidb> create table t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci primary key);
+Query OK, 0 rows affected (0.00 sec)
+tidb> insert into t values ('A');
+Query OK, 1 row affected (0.00 sec)
+tidb> insert into t values ('a');
+ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY'
+tidb> insert into t values ('a ');
+ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
+```
+
+> **注意：**
+>
+> - TiDB 中 padding 的实现方式与 MySQL 的不同。在 MySQL 中， padding 是通过补齐空格实现的。而在 TiDB 中是通过裁剪掉末尾的空格来实现的。两种做法在绝大多数情况下是一致的。唯一的例外是尾部包含小于空格(0x20)的字符时:
+> 
+>  `'a' < 'a\t'` 在 TiDB 中的结果为`1`， 而在 MySQL 中，其等价于`'a ' < 'a\t'`，结果为`0`。
+
+## 表达式中 collation 的 coercibility 值
+
+如果一个表达式涉及多个不同 collation 的子表达式时，需要对计算时用的 collation 进行推断，规则如下：
+1. 显式COLLATE子句的 coercibility 值为0
+2. 两个不同 collation 的字符串的 concat 结果的 coercibility 值为1
+3. 列的 collation 的 coercibility 值为2
+4. 系统常量（USER（）或者VERSION（）返回的字符串）的 coercibility 值为3
+5. 常量的 coercibility 值为4
+6. 数字或者中间变量的 coercibility 值为5
+7.  `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为6
+
+在推断 collation 时，优先使用 coercibility 值低的表达式的 collation。如果coercibility 值相同，则按以下优先级决定 collation：
+
+binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
+
+如果有两个不同的 collation 的子表达式且其 coercibility 值都为0时，TiDB无法推断 collation 并报错。
+
+## collate 子句
+
+TiDB 支持使用 collate 子句来指定一个表达式的 collation， 并在推断 collation 时具有最高的优先级。例子如下：
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> select 'a' = 'A' collate utf8mb4_general_ci;
++--------------------------------------+
+| 'a' = 'A' collate utf8mb4_general_ci |
++--------------------------------------+
+|                                    1 |
++--------------------------------------+
+1 row in set (0.00 sec)
+```
+
 
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
 
