@@ -220,6 +220,7 @@
     - [分区表](/reference/sql/partitioning.md)
     - [字符集](/reference/sql/character-set.md)
     - [SQL 模式](/reference/sql/sql-mode.md)
+    - [SQL 诊断](/reference/system-databases/sql-diagnosis.md)
     - [视图](/reference/sql/view.md)
   + 配置
     + tidb-server
@@ -247,6 +248,18 @@
   + 系统数据库
     - [`mysql`](/reference/system-databases/mysql.md)
     - [`information_schema`](/reference/system-databases/information-schema.md)
+    + `sql-diagnosis`
+      - [`cluster_info`](/reference/system-databases/cluster-info.md)
+      - [`cluster_hardware`](/reference/system-databases/cluster-hardware.md)
+      - [`cluster_config`](/reference/system-databases/cluster-config.md)
+      - [`cluster_load`](/reference/system-databases/cluster-load.md)
+      - [`cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md)
+      - [`cluster_log`](/reference/system-databases/cluster-log.md)
+      - [`metrics_schema`](/reference/system-databases/metrics-schema.md)
+      - [`metrics_tables`](/reference/system-databases/metrics-tables.md)
+      - [`metrics_summary`](/reference/system-databases/metrics-summary.md)
+      - [`inspection_result`](/reference/system-databases/inspection-result.md)
+      - [`inspection_summary`](/reference/system-databases/inspection-summary.md)
   - [错误码](/reference/error-codes.md)
   - [支持的连接器和 API](/reference/supported-clients.md)
   + 垃圾回收 (GC)
