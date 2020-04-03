@@ -1,5 +1,6 @@
 ---
 title: SQL 诊断
+summary: 了解 SQL 诊断功能。
 category: reference
 ---
 

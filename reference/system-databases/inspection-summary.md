@@ -1,5 +1,6 @@
 ---
 title: INSPECTION_SUMMARY
+summary: 了解 TiDB 集群配置表 `INSPECTION_SUMMARY`。
 category: reference
 ---
 

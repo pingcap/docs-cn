@@ -1,5 +1,6 @@
 ---
 title: CLUSTER_LOG
+summary: 了解 TiDB 集群配置表 `CLUSTER_LOG`。
 category: reference
 ---
 

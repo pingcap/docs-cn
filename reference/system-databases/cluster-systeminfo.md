@@ -1,5 +1,6 @@
 ---
 title: CLUSTER_SYSTEMINFO
+summary: 了解 TiDB 集群配置表 `CLUSTER_SYSTEMINFO`。
 category: reference
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: INSPECTION_RESULT
+summary: 了解 TiDB 集群配置表 `INSPECTION_RESULT`。
 category: reference
 ---
 

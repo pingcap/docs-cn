@@ -1,5 +1,6 @@
 ---
 title: METRICS_SUMMARY
+summary: 了解 TiDB 集群配置表 `METRICS_SUMMARY`。
 category: reference
 ---
 
