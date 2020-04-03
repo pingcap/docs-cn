@@ -239,3 +239,56 @@ tidb-ctl base64decode [table_id] [base64_data]
 #### The `log` subcommand
 
 The stack information for the TiDB error log is in one line format. You could use `tidb-ctl log` to change its format to multiple lines.
+
+#### The `keyrange` subcommand
+
+The `keyrange` subcommand is used to query the global or table-related key range information, which is output in the hexadecimal form.
+
+* Execute the `tidb-ctl keyrange` command to check the global key range information:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tidb-ctl keyrange
+    ```
+
+    ```
+    global ranges:
+      meta: (6d, 6e)
+      table: (74, 75)
+    ```
+
+* Add the `--encode` option to display encoded keys (in the same format as in TiKV and PD):
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tidb-ctl keyrange --encode
+    ```
+
+    ```
+    global ranges:
+      meta: (6d00000000000000f8, 6e00000000000000f8)
+      table: (7400000000000000f8, 7500000000000000f8)
+    ```
+
+* Execute the `tidb-ctl keyrange --database={db} --table={tbl}` command to check the global and table-related key range information:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tidb-ctl keyrange --database test --table ttt
+    ```
+
+    ```
+    global ranges:
+      meta: (6d, 6e)
+      table: (74, 75)
+    table ttt ranges: (NOTE: key range might be changed after DDL)
+      table: (74800000000000002f, 748000000000000030)
+      table indexes: (74800000000000002f5f69, 74800000000000002f5f72)
+        index c2: (74800000000000002f5f698000000000000001, 74800000000000002f5f698000000000000002)
+        index c3: (74800000000000002f5f698000000000000002, 74800000000000002f5f698000000000000003)
+        index c4: (74800000000000002f5f698000000000000003, 74800000000000002f5f698000000000000004)
+      table rows: (74800000000000002f5f72, 748000000000000030)
+    ```
