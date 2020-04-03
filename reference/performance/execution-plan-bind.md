@@ -37,8 +37,11 @@ explain select * from t1,t2 where t1.id = t2.id
 承接上面的例子，继续执行：
 
 ```sql
-drop binding for select * from t1,t2 where t1.id = t2.id
-explain select * from t1,t2 where t1.id = t2.id
+-- 删除 session 中创建的 binding：
+drop session binding for select * from t1, t2 where t1.id = t2.id;
+
+-- 重新查看该 SQL 的执行计划：
+explain select * from t1,t2 where t1.id = t2.id;
 ```
 
 在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `TIDB_SMJ(t1, t2)` hint，explain 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
