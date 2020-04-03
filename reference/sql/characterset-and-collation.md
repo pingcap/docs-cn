@@ -53,9 +53,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 2 rows in set (0.00 sec)
 ```
 
-
 每一个字符集，都有一个默认的 Collation，例如 `utf8mb4` 的默认 Collation 就为 `utf8mb4_bin`。
-
 
 ## 集群 Character Set 和 Collation
 
@@ -286,7 +284,7 @@ SET collation_connection = @@collation_database;
 
 Collation 的语法支持和语义支持受到配置项 [new_collation_enable](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。 这里我们区分语法支持和语义支持，语法支持是指 TiDB 能够解析和设置 collation，语义支持是指 TiDB 能够在字符串比较时正确地使用 collation。在新的 Collation 框架下, 只能设置和使用语义支持的 collation。在旧的 Collation 框架下。，能设置语法支持的 collation，语义上所有的 collation 都当成 binary collation。
 
-#### 旧框架下的 Collation 支持
+### 旧框架下的 Collation 支持
 
 在 4.0 版本之前，TiDB 中可以指定大部分 MySQl 中的 Collation，并把它们按照默认 Collation 处理，即以编码字节序为字符定序。同时，并未像 MySQL 一样，在比较前按照 Collation 的 `PADDING` 属性将字符补齐空格。因此，会造成以下的行为区别：
 
@@ -303,7 +301,7 @@ tidb> insert into t1 values ('a ');
 Query OK, 1 row affected // MySQL 中，由于补齐空格比较，报错 Duplicate entry 'a '
 ```
 
-#### 新框架下的 Collation 支持
+### 新框架下的 Collation 支持
 
 TiDB 4.0 新增了完整的 Collation 支持框架，从语义上支持了 Collation，并新增了配置开关 `new_collation_enabled_on_first_boostrap`，在集群初次初始化时决定是否启用新 Collation 框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认新 Collation 是否启用：
 
@@ -338,19 +336,19 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 > **注意：**
 >
 > - TiDB 中 padding 的实现方式与 MySQL 的不同。在 MySQL 中， padding 是通过补齐空格实现的。而在 TiDB 中是通过裁剪掉末尾的空格来实现的。两种做法在绝大多数情况下是一致的。唯一的例外是尾部包含小于空格(0x20)的字符时:
-> 
->  `'a' < 'a\t'` 在 TiDB 中的结果为`1`， 而在 MySQL 中，其等价于`'a ' < 'a\t'`，结果为`0`。
+> `'a' < 'a\t'` 在 TiDB 中的结果为`1`， 而在 MySQL 中，其等价于`'a ' < 'a\t'`，结果为`0`。
 
 ## 表达式中 collation 的 coercibility 值
 
 如果一个表达式涉及多个不同 collation 的子表达式时，需要对计算时用的 collation 进行推断，规则如下：
+
 1. 显式COLLATE子句的 coercibility 值为0
 2. 两个不同 collation 的字符串的 concat 结果的 coercibility 值为1
 3. 列的 collation 的 coercibility 值为2
 4. 系统常量（USER（）或者VERSION（）返回的字符串）的 coercibility 值为3
 5. 常量的 coercibility 值为4
 6. 数字或者中间变量的 coercibility 值为5
-7.  `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为6
+7. `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为6
 
 在推断 collation 时，优先使用 coercibility 值低的表达式的 collation。如果coercibility 值相同，则按以下优先级决定 collation：
 
@@ -374,6 +372,4 @@ mysql> select 'a' = 'A' collate utf8mb4_general_ci;
 1 row in set (0.00 sec)
 ```
 
-
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
-
