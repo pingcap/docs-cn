@@ -103,13 +103,63 @@ TiKV Coprocessor Task fields:
 
 ## Memory mapping in slow log
 
-You can query the contents of the slow query log by querying the `INFORMATION_SCHEMA.SLOW_QUERY` table. Each column name in the table corresponds to one field name in the slow log. For table structure, see the introduction to the `SLOW_QUERY` table in [Information Schema](/reference/system-databases/information-schema.md#information-schema).
+You can query the content of the slow query log by querying the `INFORMATION_SCHEMA.SLOW_QUERY` table. Each column name in the table corresponds to one field name in the slow log. For table structure, see the introduction to the `SLOW_QUERY` table in [Information Schema](/reference/system-databases/information-schema.md#information-schema).
 
 > **Note:**
 >
 > Every time you query the `SLOW_QUERY` table, TiDB reads and parses the current slow query log.
 
-## Query example of SLOW_QUERY
+For TiDB 4.0, `SLOW_QUERY` supports querying the slow log of any period of time, including the rotated slow log file. You need to specify the `TIME` range to locate the slow log files that need to be parsed. If you don't specify the `TIME` range, TiDB only parses the current slow log file. For example:
+
+* If you don't specify the time range, TiDB only parses the slow query data that TiDB is writing to the slow log file:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select count(*),
+          min(time),
+          max(time)
+    from slow_query;
+    ```
+
+    ```
+    +----------+----------------------------+----------------------------+
+    | count(*) | min(time)                  | max(time)                  |
+    +----------+----------------------------+----------------------------+
+    | 122492   | 2020-03-11 23:35:20.908574 | 2020-03-25 19:16:38.229035 |
+    +----------+----------------------------+----------------------------+
+    ```
+
+* If you specify the time range, for example, from `2020-03-10 00:00:00` to `2020-03-11 00:00:00`, TiDB first locates the slow log files of the specified time range, and then parses the slow query information:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select count(*),
+          min(time),
+          max(time)
+    from slow_query
+    where time > '2020-03-10 00:00:00'
+      and time < '2020-03-11 00:00:00';
+    ```
+
+    ```
+    +----------+----------------------------+----------------------------+
+    | count(*) | min(time)                  | max(time)                  |
+    +----------+----------------------------+----------------------------+
+    | 2618049  | 2020-03-10 00:00:00.427138 | 2020-03-10 23:00:22.716728 |
+    +----------+----------------------------+----------------------------+
+    ```
+
+> **Note:**
+>
+> If the slow log files of the specified time range are removed, or there is no slow query, the query returns NULL.
+
+TiDB 4.0 adds the [`CLUSTER_SLOW_QUERY`](/reference/system-databases/information-schema.md#cluster_slow_query-table) system table to query the slow query information of all TiDB nodes. The table schema of the `CLUSTER_SLOW_QUERY` table differs from that of the `SLOW_QUERY` table in that an `INSTANCE` column is added to `CLUSTER_SLOW_QUERY`. The `INSTANCE` column represents the TiDB node address of the row information on the slow query. You can use `CLUSTER_SLOW_QUERY` the way you do with [`SLOW_QUERY`](/reference/system-databases/information-schema.md#slow_query-table).
+
+When you query the `CLUSTER_SLOW_QUERY` table, TiDB pushes the computation and the judgment down to other nodes, instead of retrieving all slow query information from other nodes and executing the operations on one TiDB node.
+
+## `SLOW_QUERY` / `CLUSTER_SLOW_QUERY` usage examples
 
 ### Top-N slow queries
 
@@ -125,7 +175,7 @@ order by query_time desc
 limit 2;
 ```
 
-Usage example:
+Output example:
 
 ```
 +--------------+------------------------------------------------------------------+
@@ -151,7 +201,7 @@ order by query_time desc
 limit 2;
 ```
 
-Usage example:
+Output example:
 
 ```
 +-------------+------------------------------------------------------------------+----------------+
@@ -177,7 +227,7 @@ After querying the Top-N SQL statements, continue to query similar slow queries 
     limit 1;
     ```
 
-    Usage example:
+    Output example:
 
     ```
     +-------------+-----------------------------+------------------------------------------------------------------+
@@ -197,7 +247,7 @@ After querying the Top-N SQL statements, continue to query similar slow queries 
     where digest = "4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa";
     ```
 
-    Usage example:
+    Output example:
 
     ```
     +-----------------------------+-------------+
@@ -219,7 +269,7 @@ where is_internal = false
   and stats like '%pseudo%';
 ```
 
-Usage example:
+Output example:
 
 ```
 +-----------------------------+-------------+---------------------------------+
@@ -233,9 +283,143 @@ Usage example:
 +-----------------------------+-------------+---------------------------------+
 ```
 
+### Query slow queries whose execution plan is changed
+
+When the execution plan of SQL statements of the same category is changed, the execution slows down, because the statistics is outdated, or the statistics is not accurate enough to reflect the real data distribution. You can use the following SQL statement to query SQL statements with different execution plans.
+
+{{< copyable "sql" >}}
+
+```sql
+select count(distinct plan_digest) as count,
+       digest,
+       min(query)
+from cluster_slow_query
+group by digest
+having count > 1
+limit 3\G
+```
+
+Output example:
+
+```
+***************************[ 1. row ]***************************
+count      | 2
+digest     | 17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94
+min(query) | SELECT DISTINCT c FROM sbtest25 WHERE id BETWEEN ? AND ? ORDER BY c [arguments: (291638, 291737)];
+***************************[ 2. row ]***************************
+count      | 2
+digest     | 9337865f3e2ee71c1c2e740e773b6dd85f23ad00f8fa1f11a795e62e15fc9b23
+min(query) | SELECT DISTINCT c FROM sbtest22 WHERE id BETWEEN ? AND ? ORDER BY c [arguments: (215420, 215519)];
+***************************[ 3. row ]***************************
+count      | 2
+digest     | db705c89ca2dfc1d39d10e0f30f285cbbadec7e24da4f15af461b148d8ffb020
+min(query) | SELECT DISTINCT c FROM sbtest11 WHERE id BETWEEN ? AND ? ORDER BY c [arguments: (303359, 303458)];
+```
+
+Then you can query the different plans using the SQL fingerprint in the query result above:
+
+{{< copyable "sql" >}}
+
+```sql
+select min(plan),
+       plan_digest
+from cluster_slow_query
+where digest='17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94'
+group by plan_digest\G
+```
+
+Output example:
+
+```
+*************************** 1. row ***************************
+  min(plan):    Sort_6                  root    100.00131380758702      sbtest.sbtest25.c:asc
+        └─HashAgg_10            root    100.00131380758702      group by:sbtest.sbtest25.c, funcs:firstrow(sbtest.sbtest25.c)->sbtest.sbtest25.c
+          └─TableReader_15      root    100.00131380758702      data:TableRangeScan_14
+            └─TableScan_14      cop     100.00131380758702      table:sbtest25, range:[502791,502890], keep order:false
+plan_digest: 6afbbd21f60ca6c6fdf3d3cd94f7c7a49dd93c00fcf8774646da492e50e204ee
+*************************** 2. row ***************************
+  min(plan):    Sort_6                  root    1                       sbtest.sbtest25.c:asc
+        └─HashAgg_12            root    1                       group by:sbtest.sbtest25.c, funcs:firstrow(sbtest.sbtest25.c)->sbtest.sbtest25.c
+          └─TableReader_13      root    1                       data:HashAgg_8
+            └─HashAgg_8         cop     1                       group by:sbtest.sbtest25.c,
+              └─TableScan_11    cop     1.2440069558121831      table:sbtest25, range:[472745,472844], keep order:false
+```
+
+### Query the number of slow queries for each TiDB node in a cluster
+
+{{< copyable "sql" >}}
+
+```sql
+select instance, count(*) from information_schema.cluster_slow_query where time >= "2020-03-06 00:00:00" and time < now() group by instance;
+```
+
+Output example:
+
+```
++---------------+----------+
+| instance      | count(*) |
++---------------+----------+
+| 0.0.0.0:10081 | 124      |
+| 0.0.0.0:10080 | 119771   |
++---------------+----------+
+```
+
+### Query slow logs occurring only in abnormal time period
+
+If you find problems such as decreased QPS or increased latency for the time period from `2020-03-10 13:24:00` to `2020-03-10 13:27:00`, the reason might be that a large query crops up. Run the following SQL statement to query slow logs that occur only in abnormal time period. The time range from `2020-03-10 13:20:00` to `2020-03-10 13:23:00` refers to the normal time period.
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM
+    (SELECT /*+ AGG_TO_COP(), HASH_AGG() */ count(*),
+         min(time),
+         sum(query_time) AS sum_query_time,
+         sum(Process_time) AS sum_process_time,
+         sum(Wait_time) AS sum_wait_time,
+         sum(Commit_time),
+         sum(Request_count),
+         sum(process_keys),
+         sum(Write_keys),
+         max(Cop_proc_max),
+         min(query),min(prev_stmt),
+         digest
+    FROM information_schema.CLUSTER_SLOW_QUERY
+    WHERE time >= '2020-03-10 13:24:00'
+            AND time < '2020-03-10 13:27:00'
+            AND Is_internal = false
+    GROUP BY  digest) AS t1
+WHERE t1.digest NOT IN
+    (SELECT /*+ AGG_TO_COP(), HASH_AGG() */ digest
+    FROM information_schema.CLUSTER_SLOW_QUERY
+    WHERE time >= '2020-03-10 13:20:00'
+            AND time < '2020-03-10 13:23:00'
+    GROUP BY  digest)
+ORDER BY  t1.sum_query_time DESC limit 10\G
+```
+
+Output example:
+
+```
+***************************[ 1. row ]***************************
+count(*)           | 200
+min(time)          | 2020-03-10 13:24:27.216186
+sum_query_time     | 50.114126194
+sum_process_time   | 268.351
+sum_wait_time      | 8.476
+sum(Commit_time)   | 1.044304306
+sum(Request_count) | 6077
+sum(process_keys)  | 202871950
+sum(Write_keys)    | 319500
+max(Cop_proc_max)  | 0.263
+min(query)         | delete from test.tcs2 limit 5000;
+min(prev_stmt)     |
+digest             | 24bd6d8a9b238086c9b8c3d240ad4ef32f79ce94cf5a468c0b8fe1eb5f8d03df
+```
+
 ### Parse other TiDB slow log files
 
-TiDB uses the session variable `tidb_slow_query_file` to control the files to be read and parsed when querying `INFORMATION_SCHEMA.SLOW_QUERY`. You can query the contents of other slow query log files by modifying the value of the session variable.
+TiDB uses the session variable `tidb_slow_query_file` to control the files to be read and parsed when querying `INFORMATION_SCHEMA.SLOW_QUERY`. You can query the content of other slow query log files by modifying the value of the session variable.
 
 {{< copyable "sql" >}}
 
@@ -253,13 +437,13 @@ Use `pt-query-digest` to parse TiDB slow logs.
 
 For example:
 
-{{< copyable "shell" >}}
+{{< copyable "shell-regular" >}}
 
 ```shell
 pt-query-digest --report tidb-slow.log
 ```
 
-Usage example:
+Output example:
 
 ```
 # 320ms user time, 20ms system time, 27.00M rss, 221.32M vsz

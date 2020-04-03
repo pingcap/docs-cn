@@ -351,42 +351,129 @@ SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY table
 
-The `SLOW_QUERY` table provides the slow query information, which is the parsing result of the TiDB slow log file. The column names in the table are corresponding to the field names in the slow log. For how to use this table to identify problematic statements and improve query performance, see [Slow Query Log Document](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md).
+The `SLOW_QUERY` table provides the slow query information of the current node, which is the parsing result of the TiDB slow log file. The column names in the table are corresponding to the field names in the slow log. For how to use this table to identify problematic statements and improve query performance, see [Slow Query Log Document](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md).
+
+{{< copyable "sql" >}}
 
 ```sql
-mysql> desc information_schema.slow_query;
-+---------------+---------------------+------+------+---------+-------+
-| Field         | Type                | Null | Key  | Default | Extra |
-+---------------+---------------------+------+------+---------+-------+
-| Time          | timestamp unsigned  | YES  |      | NULL    |       |
-| Txn_start_ts  | bigint(20) unsigned | YES  |      | NULL    |       |
-| User          | varchar(64)         | YES  |      | NULL    |       |
-| Host          | varchar(64)         | YES  |      | NULL    |       |
-| Conn_ID       | bigint(20) unsigned | YES  |      | NULL    |       |
-| Query_time    | double unsigned     | YES  |      | NULL    |       |
-| Process_time  | double unsigned     | YES  |      | NULL    |       |
-| Wait_time     | double unsigned     | YES  |      | NULL    |       |
-| Backoff_time  | double unsigned     | YES  |      | NULL    |       |
-| Request_count | bigint(20) unsigned | YES  |      | NULL    |       |
-| Total_keys    | bigint(20) unsigned | YES  |      | NULL    |       |
-| Process_keys  | bigint(20) unsigned | YES  |      | NULL    |       |
-| DB            | varchar(64)         | YES  |      | NULL    |       |
-| Index_ids     | varchar(100)        | YES  |      | NULL    |       |
-| Is_internal   | tinyint(1) unsigned | YES  |      | NULL    |       |
-| Digest        | varchar(64)         | YES  |      | NULL    |       |
-| Stats         | varchar(512)        | YES  |      | NULL    |       |
-| Cop_proc_avg  | double unsigned     | YES  |      | NULL    |       |
-| Cop_proc_p90  | double unsigned     | YES  |      | NULL    |       |
-| Cop_proc_max  | double unsigned     | YES  |      | NULL    |       |
-| Cop_proc_addr | varchar(64)         | YES  |      | NULL    |       |
-| Cop_wait_avg  | double unsigned     | YES  |      | NULL    |       |
-| Cop_wait_p90  | double unsigned     | YES  |      | NULL    |       |
-| Cop_wait_max  | double unsigned     | YES  |      | NULL    |       |
-| Cop_wait_addr | varchar(64)         | YES  |      | NULL    |       |
-| Mem_max       | bigint(20) unsigned | YES  |      | NULL    |       |
-| Succ          | tinyint(1) unsigned | YES  |      | NULL    |       |
-| Query         | longblob unsigned   | YES  |      | NULL    |       |
-+---------------+---------------------+------+------+---------+-------+
+desc information_schema.slow_query;
+```
+
+```sql
++---------------------------+---------------------+------+-----+---------+-------+
+| Field                     | Type                | Null | Key | Default | Extra |
++---------------------------+---------------------+------+-----+---------+-------+
+| Time                      | timestamp unsigned  | YES  |     | <null>  |       |
+| Txn_start_ts              | bigint(20) unsigned | YES  |     | <null>  |       |
+| User                      | varchar(64)         | YES  |     | <null>  |       |
+| Host                      | varchar(64)         | YES  |     | <null>  |       |
+| Conn_ID                   | bigint(20) unsigned | YES  |     | <null>  |       |
+| Query_time                | double unsigned     | YES  |     | <null>  |       |
+| Parse_time                | double unsigned     | YES  |     | <null>  |       |
+| Compile_time              | double unsigned     | YES  |     | <null>  |       |
+| Prewrite_time             | double unsigned     | YES  |     | <null>  |       |
+| Wait_prewrite_binlog_time | double unsigned     | YES  |     | <null>  |       |
+| Commit_time               | double unsigned     | YES  |     | <null>  |       |
+| Get_commit_ts_time        | double unsigned     | YES  |     | <null>  |       |
+| Commit_backoff_time       | double unsigned     | YES  |     | <null>  |       |
+| Backoff_types             | varchar(64)         | YES  |     | <null>  |       |
+| Resolve_lock_time         | double unsigned     | YES  |     | <null>  |       |
+| Local_latch_wait_time     | double unsigned     | YES  |     | <null>  |       |
+| Write_keys                | bigint(22) unsigned | YES  |     | <null>  |       |
+| Write_size                | bigint(22) unsigned | YES  |     | <null>  |       |
+| Prewrite_region           | bigint(22) unsigned | YES  |     | <null>  |       |
+| Txn_retry                 | bigint(22) unsigned | YES  |     | <null>  |       |
+| Process_time              | double unsigned     | YES  |     | <null>  |       |
+| Wait_time                 | double unsigned     | YES  |     | <null>  |       |
+| Backoff_time              | double unsigned     | YES  |     | <null>  |       |
+| LockKeys_time             | double unsigned     | YES  |     | <null>  |       |
+| Request_count             | bigint(20) unsigned | YES  |     | <null>  |       |
+| Total_keys                | bigint(20) unsigned | YES  |     | <null>  |       |
+| Process_keys              | bigint(20) unsigned | YES  |     | <null>  |       |
+| DB                        | varchar(64)         | YES  |     | <null>  |       |
+| Index_names               | varchar(100)        | YES  |     | <null>  |       |
+| Is_internal               | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Digest                    | varchar(64)         | YES  |     | <null>  |       |
+| Stats                     | varchar(512)        | YES  |     | <null>  |       |
+| Cop_proc_avg              | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_p90              | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_max              | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_addr             | varchar(64)         | YES  |     | <null>  |       |
+| Cop_wait_avg              | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_p90              | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_max              | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_addr             | varchar(64)         | YES  |     | <null>  |       |
+| Mem_max                   | bigint(20) unsigned | YES  |     | <null>  |       |
+| Succ                      | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Plan                      | longblob unsigned   | YES  |     | <null>  |       |
+| Plan_digest               | varchar(128)        | YES  |     | <null>  |       |
+| Prev_stmt                 | longblob unsigned   | YES  |     | <null>  |       |
+| Query                     | longblob unsigned   | YES  |     | <null>  |       |
++---------------------------+---------------------+------+-----+---------+-------+
+```
+
+## CLUSTER_SLOW_QUERY table
+
+The `CLUSTER_SLOW_QUERY` table provides the slow query information of all nodes in the cluster, which is the parsing result of the TiDB slow log files. You can use the `CLUSTER_SLOW_QUERY` table the way you do with [`SLOW_QUERY`](#slow_query-table). The table schema of the `CLUSTER_SLOW_QUERY` table differs from that of the `SLOW_QUERY` table in that an `INSTANCE` column is added to `CLUSTER_SLOW_QUERY`. The `INSTANCE` column represents the TiDB node address of the row information on the slow query. For how to use this table to identify problematic statements and improve query performance, see [Slow Query Log Document](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md).
+
+{{< copyable "sql" >}}
+
+```sql
+desc information_schema.cluster_slow_query;
+```
+
+```sql
++---------------------------+---------------------+------+-----+---------+-------+
+| Field                     | Type                | Null | Key | Default | Extra |
++---------------------------+---------------------+------+-----+---------+-------+
+| INSTANCE                  | varchar(64)         | YES  |     | <null>  |       |
+| Time                      | timestamp unsigned  | YES  |     | <null>  |       |
+| Txn_start_ts              | bigint(20) unsigned | YES  |     | <null>  |       |
+| User                      | varchar(64)         | YES  |     | <null>  |       |
+| Host                      | varchar(64)         | YES  |     | <null>  |       |
+| Conn_ID                   | bigint(20) unsigned | YES  |     | <null>  |       |
+| Query_time                | double unsigned     | YES  |     | <null>  |       |
+| Parse_time                | double unsigned     | YES  |     | <null>  |       |
+| Compile_time              | double unsigned     | YES  |     | <null>  |       |
+| Prewrite_time             | double unsigned     | YES  |     | <null>  |       |
+| Wait_prewrite_binlog_time | double unsigned     | YES  |     | <null>  |       |
+| Commit_time               | double unsigned     | YES  |     | <null>  |       |
+| Get_commit_ts_time        | double unsigned     | YES  |     | <null>  |       |
+| Commit_backoff_time       | double unsigned     | YES  |     | <null>  |       |
+| Backoff_types             | varchar(64)         | YES  |     | <null>  |       |
+| Resolve_lock_time         | double unsigned     | YES  |     | <null>  |       |
+| Local_latch_wait_time     | double unsigned     | YES  |     | <null>  |       |
+| Write_keys                | bigint(22) unsigned | YES  |     | <null>  |       |
+| Write_size                | bigint(22) unsigned | YES  |     | <null>  |       |
+| Prewrite_region           | bigint(22) unsigned | YES  |     | <null>  |       |
+| Txn_retry                 | bigint(22) unsigned | YES  |     | <null>  |       |
+| Process_time              | double unsigned     | YES  |     | <null>  |       |
+| Wait_time                 | double unsigned     | YES  |     | <null>  |       |
+| Backoff_time              | double unsigned     | YES  |     | <null>  |       |
+| LockKeys_time             | double unsigned     | YES  |     | <null>  |       |
+| Request_count             | bigint(20) unsigned | YES  |     | <null>  |       |
+| Total_keys                | bigint(20) unsigned | YES  |     | <null>  |       |
+| Process_keys              | bigint(20) unsigned | YES  |     | <null>  |       |
+| DB                        | varchar(64)         | YES  |     | <null>  |       |
+| Index_names               | varchar(100)        | YES  |     | <null>  |       |
+| Is_internal               | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Digest                    | varchar(64)         | YES  |     | <null>  |       |
+| Stats                     | varchar(512)        | YES  |     | <null>  |       |
+| Cop_proc_avg              | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_p90              | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_max              | double unsigned     | YES  |     | <null>  |       |
+| Cop_proc_addr             | varchar(64)         | YES  |     | <null>  |       |
+| Cop_wait_avg              | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_p90              | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_max              | double unsigned     | YES  |     | <null>  |       |
+| Cop_wait_addr             | varchar(64)         | YES  |     | <null>  |       |
+| Mem_max                   | bigint(20) unsigned | YES  |     | <null>  |       |
+| Succ                      | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Plan                      | longblob unsigned   | YES  |     | <null>  |       |
+| Plan_digest               | varchar(128)        | YES  |     | <null>  |       |
+| Prev_stmt                 | longblob unsigned   | YES  |     | <null>  |       |
+| Query                     | longblob unsigned   | YES  |     | <null>  |       |
++---------------------------+---------------------+------+-----+---------+-------+
 ```
 
 ### STATISTICS table
@@ -752,8 +839,13 @@ COLLATION_CONNECTION: utf8_general_ci
 
 The `TIDB_INDEXES` table provides index-related information.
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc tidb_indexes\G
+desc tidb_indexes\G
+```
+
+```
 *************************** 1. row ***************************
        Table: TIDB_INDEXES
 Create Table: CREATE TABLE `TIDB_INDEXES` (
@@ -791,8 +883,13 @@ where
 
 The `TIDB_HOT_REGIONS` table provides the hot Region information in the current TiKV instance.
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc tidb_hot_regions\G
+desc tidb_hot_regions\G
+```
+
+```
 *************************** 1. row ***************************
        Table: TIDB_HOT_REGIONS
 Create Table: CREATE TABLE `TIDB_HOT_REGIONS` (
@@ -816,8 +913,13 @@ Create Table: CREATE TABLE `TIDB_HOT_REGIONS` (
 
 The `TIKV_STORE_STATUS` table shows some basic information of TiKV nodes via PD's API, like the ID allocated in the cluster, address and port, and status, capacity, and the number of Region leaders of the current node.
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc tikv_store_status\G
+desc tikv_store_status\G
+```
+
+```
 *************************** 1. row ***************************
        Table: TIKV_STORE_STATUS
 Create Table: CREATE TABLE `TIKV_STORE_STATUS` (
@@ -848,8 +950,13 @@ Create Table: CREATE TABLE `TIKV_STORE_STATUS` (
 
 The `TIKV_REGION_STATUS` table shows some basic information of TiKV Regions via PD's API, like the Region ID, starting and ending key-values, and read and write traffic.
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc tikv_region_status\G
+desc tikv_region_status\G
+```
+
+```
 *************************** 1. row ***************************
        Table: TIKV_REGION_STATUS
 Create Table: CREATE TABLE `TIKV_REGION_STATUS` (
@@ -878,8 +985,13 @@ select * from tikv_region_status order by written_bytes desc limit 3;
 
 The `TIKV_REGION_PEERS` table shows detailed information of a single Region node in TiKV, like whether it is a learner or leader.
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc tikv_region_peers\G
+desc tikv_region_peers\G
+```
+
+```
 *************************** 1. row ***************************
        Table: TIKV_REGION_PEERS
 Create Table: CREATE TABLE `TIKV_REGION_PEERS` (
@@ -923,8 +1035,13 @@ where
 
 The `ANALYZE_STATUS` table shows the execution status of the `ANALYZE` command in the current cluster.
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc analyze_status\G
+desc analyze_status\G
+```
+
+```
 *************************** 1. row ***************************
        Table: ANALYZE_STATUS
 Create Table: CREATE TABLE `ANALYZE_STATUS` (
@@ -945,8 +1062,13 @@ The `STATE` column shows the execution status of a specific `ANALYZE` task. Its 
 
 The `SLOW_QUERY` table maps slow query logs. Its column names and field names of slow query logs have an one-to-one corresponse relationship. For details, see [Identify Slow Queries](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md#identify-slow-queries).
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> desc slow_query\G
+desc slow_query\G
+```
+
+```
 *************************** 1. row ***************************
        Table: SLOW_QUERY
 Create Table: CREATE TABLE `SLOW_QUERY` (
