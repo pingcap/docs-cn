@@ -117,6 +117,8 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     如需变更，可参考[如何调整进程监管方式从 supervise 到 systemd](/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
 
+3. 新增 `cpu_architecture` 参数，根据 CPU 架构来配置。默认为 `amd64`。
+
 ### 编辑 TiDB 集群组件配置文件
 
 如之前自定义过 TiDB 集群组件配置文件，请参照备份文件修改 `/home/tidb/tidb-ansible/conf` 下对应配置文件。
@@ -154,6 +156,8 @@ git clone  https://github.com/pingcap/tidb-ansible.git
     > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+    >
+    > 如果当前版本已经是该参数并且配置没问题，则不需要修改。
 
 - TiKV 配置中单机多实例场景需要额外配置 `tikv_status_port` 端口：
 
@@ -169,7 +173,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 最新开发版单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    > 最新开发版单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。如果当前版本已经是如上配置，则不需要修改。
     >
     > 配置前，注意检查端口是否有冲突。
 
