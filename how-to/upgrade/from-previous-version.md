@@ -6,19 +6,15 @@ aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrad
 
 # TiDB 最新开发版升级操作指南
 
-本文档适用于从 TiDB 2.0、2.1、3.0、3.1 版本升级至 TiDB 最新开发版 (latest) 以及从开发版的较低版本升级至最新版本。目前，TiDB 最新开发版兼容 [TiDB Binlog Cluster 版本](/reference/tidb-binlog/overview.md)。
-
-> **警告：**
->
-> TiDB 最新开发版为非稳定版本，不建议用于生产环境。
+本文档适用于从 TiDB 2.0、2.1、3.0、3.1 版本升级至 TiDB 4.0 版本以及 TiDB 4.0 的低版本升级至 TiDB 4.0 高版本。目前，TiDB 4.0 版本兼容 [TiDB Binlog Cluster 版本](/reference/tidb-binlog/overview.md)。
 
 ## 升级兼容性说明
 
-- 不支持在升级后回退至 2.1.x 或更旧版本
-- 从 2.0.6 之前的版本升级到 latest 之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
-- 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 latest 版本，可以选择下面两种方案：
-    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 latest 版本
-    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 latest 版本
+- 不支持在升级后回退至 3.1.x 或更旧版本
+- 从 2.0.6 之前的版本升级到 4.0 之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
+- 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 4.0 版本，可以选择下面两种方案：
+    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本
+    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本
 
 > **注意：**
 >
@@ -30,7 +26,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrad
 >
 > 如果已经安装了 TiDB Ansible 及其依赖，可跳过该步骤。
 
-TiDB Ansible 最新开发版依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 TiDB Ansible 及其依赖，可参照[在中控机器上安装 TiDB Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-tidb-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 TiDB Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-tidb-ansible-及其依赖)。
+TiDB Ansible 最新开发版依赖 2.5.0 及以上但不高于 2.7.11 的 Ansible 版本（`2.5.0 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 TiDB Ansible 及其依赖，可参照[在中控机器上安装 TiDB Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-tidb-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 TiDB Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-tidb-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -72,7 +68,7 @@ Version: 0.9.0
 
 ## 在中控机器上下载 TiDB Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0、2.1、3.0 或其他低版本的 tidb-ansible 文件夹：
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录，备份 TiDB 2.0、2.1、3.0、3.1 或其他低版本的 tidb-ansible 文件夹：
 
 {{< copyable "shell-regular" >}}
 
@@ -80,12 +76,12 @@ Version: 0.9.0
 mv tidb-ansible tidb-ansible-bak
 ```
 
-下载 TiDB latest 版本对应的 tidb-ansible  [**下载 TiDB Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
+下载 TiDB 4.0 版本对应的 tidb-ansible  [**下载 TiDB Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-git clone  https://github.com/pingcap/tidb-ansible.git
+git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 ```
 
 ## 编辑 inventory.ini 文件和配置文件
@@ -151,7 +147,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。
+    > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。如果当前版本已经是新的配置，则不需要再修改。
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
 
@@ -169,13 +165,13 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 最新开发版单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    > 从 3.0 以前版本升级到 4.0 版本，并且单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
     >
     > 配置前，注意检查端口是否有冲突。
 
 ## 下载 TiDB latest binary 到中控机
 
-确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = latest`，然后执行以下命令下载 TiDB latest binary 到中控机。
+确认 `tidb-ansible/inventory.ini` 文件中 `tidb_version = v4.0.x`，然后执行以下命令下载 TiDB 4.0 binary 到中控机。
 
 {{< copyable "shell-regular" >}}
 
