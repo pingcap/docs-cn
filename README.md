@@ -9,7 +9,7 @@
 - `master`：最新开发版
 - `release-4.0`：4.0 Beta 版
 - `release-3.1`：3.1 RC 版
-- `release-3.0`：最新稳定版
+- `release-3.0`：3.0 稳定版
 - `release-2.1`：2.1 稳定版
 
 TiDB 的文档结构如下：
