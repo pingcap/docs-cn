@@ -9,12 +9,15 @@ category: how-to
 
 TiUP 是通过 Golang 编写的 TiDB 运维工具，cluster 是 TiUP 提供的集群管理组件，我们通过 cluster 组件就可以进行日常的运维工作。
 
-TiDB 集群部署
-TiDB-binlog 部署
-TiFlash 部署
-集群扩缩容
-参数管理
-集群升级
+- TiDB 集群部署
+- TiDB 启动
+- TiDB 停止
+- TiDB 销毁
+- TiDB 集群弹性扩缩容
+- TiDB 集群参数管理
+- TiDB 集群升级
+- TiDB-binlog 部署
+- TiFlash 部署
 
 ## 准备阶段
 
@@ -32,7 +35,7 @@ TiFlash 部署
 
 ### 安装 TiUP 组件
 
-使用 `root` 用户或者有 `sudo` 权限的用户安装
+使用 `root` 用户或者有 `sudo` 权限的用户安装，以 `pingcap` 用户为例
 
 1. 执行安装命令
 
@@ -110,6 +113,24 @@ Flags:
       --version   version for cluster
 
 Use "cluster [command] --help" for more information about a command.
+
+# cluster 组件提供以下集群管理功能
+# deploy      集群部署
+# start       启动 TiDB 集群
+# stop        关闭 TiDB 集群
+# restart     重启 TiDB 集群
+# scale-in    扩容 TiDB 集群
+# scale-out   缩容 TiDB 集群
+# destroy     销毁指定 TiDB 集群
+# upgrade     升级指定 TiDB 集群
+# exec        在 TiDB 集群的目标主机执行命令
+# display     展示 TiDB 集群信息
+# list        展示管理的 TiDB 集群
+# audit       审计 TiUP 历史操作命令
+# import      导入 TiDB-Ansible 部署的 TiDB 集群
+# edit-config 编辑 TiDB 集群参数
+# reload      重新加载 TiDB 集群或者指定实例的参数配置
+# help        帮助信息
 ```
 
 4. 如果已经安装，请更新 TiUP 的 cluster 工具版本至最新
@@ -247,21 +268,17 @@ tiup --binary cluster
 
 ## 部署阶段
 
->  **注意**
-> 
->  验证环境是否符合要求，请参考软硬件配置来配置环境。
-
 ### yaml 参数文件配置
 
 集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。需要在中控机上面创建 yml 格式配置文件例如 `topology.yaml`，下文介绍 3 个经典的集群配置模版。
 
 ### 1. 单机单实例
 
--  需求
+#### 部署需求
 
 将集群通过 `tidb` 用户创建，使用默认 `22` 端口，指定全局的配置，服务、监控目录为 `/tidb-deploy` 和 数据目录 `/tidb-data` 。
 
-- 拓扑信息
+#### 拓扑信息
 
 |实例 | 个数 | 物理机配置 | IP |配置 |
 | :-- | :-- | :-- | :-- | :-- |
@@ -269,7 +286,11 @@ tiup --binary cluster
 | TiDB |1 | 16  Vcore 32GB * 1 | 10.0.1.4 | 默认端口 <br>  全局目录配置 |
 | PD | 1 |16  Vcore 32GB * 1 |10.0.1.4 | 默认端口 <br> 全局目录配置 |
 
-- 配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
+
+```
+cat topology.yaml
+```
 
 ```yaml
 # # Global variables are applied to all deployments and as the default value of
@@ -303,13 +324,14 @@ alertmanager_servers:
 
 ### 1. 单机多实例
 
-- 需求
+#### 部署需求
 
 TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混布，需要数据目录使用独立的文件系统。
 
-- 关键参数
+#### 单机多实例部署的关键参数配置
 
 - TiKV 进行配置优化
+
   - readpool 线程池自适应，配置 readpool.unified.max-thread-count 参数可以使  readpool.storage 和  readpool.coprocessor 共用  unified 线程池，同时要分别开启自适应开关。计算公式如下：
   
   ```
@@ -328,7 +350,7 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
    raftstore.capactiy = 磁盘总容量 / TiKV 实例数量
    ```
 
-   - label 调度配置
+- label 调度配置
 
    因为采用单机多实例部署 TiKV，为了避免物理机宕机导致 Region Group 默认 3 副本的 2 副本丢失，导致集群不可用的问题。可以通过 label 来实现 PD 智能调度，保证同台机器的多 TiKV 实例不会存在 Region Group 的 2 副本的情况。
  
@@ -351,7 +373,7 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
          replication.location-labels: ["host"]
        ```
 
-- 拓扑信息
+#### 拓扑信息
 
 | 实例 | 个数 | 物理机配置 | IP | 配置
 | :-- | :-- | :-- | :-- | :-- |
@@ -359,7 +381,7 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
 | TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 numa 绑核操作 |
 | PD | 3 | 16 Vcore 32 GB | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 location_lables 参数 |
 
-- 配置文件模版（如无需端口、目录自定义，仅修改 IP 即可） topology.yaml
+#### 配置文件模版（如无需端口、目录自定义，仅修改 IP 即可） topology.yaml
 
 ```
 cat topology.yaml
@@ -508,16 +530,16 @@ alertmanager_servers:
  - host: 10.0.1.7
 ```
 
-
 ### 3. TiDB-binlog 部署模版
 
-- 需求
+#### 部署需求
 
 设置默认部署目录 /tidb-deploy 和 数据目录 /tidb-data ，通过 TiDB-binlog 同步到下游 10.0.1.9:4000。
 
-- 关键参数
+#### 关键参数
   
   - TiDB 
+
     - `binlog.enable: true` 
      
       开启 binlog 服务，默认为 false。
@@ -526,17 +548,21 @@ alertmanager_servers:
       
       高可用场景建议开启，如果设置为 true，发生错误时，TiDB 会停止写入 binlog，并且在监控项 tidb_server_critical_error_total 上计数加 1；如果设置为 false，写入 binlog 失败，会停止整个 TiDB 的服务。
 
-- 拓扑信息
+#### 拓扑信息
 
-| 实例 | 物理机配置 | IP |配置 |
+| 实例 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- | :-- |
 | TiKV | 16 vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
 |TiDB | 16 vcore 32 GB | 10.0.1.4 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 |
 | PD | 4 vcore 8 GB | 10.0.1.5 | 默认端口配置 |
 | Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 <br> 设置 gc 时间 7 天
-| Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS
+| Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
-- 配置文件模版（如无端口、目录自定义，仅修改 IP 即可） topology.yaml
+#### 配置文件模版（如无需自定义端口或者目录，仅修改 IP 即可），以 topology.yaml 为例
+
+```
+cat topology.yaml
+```
 
 ```yaml
 # # Global variables are applied to all deployments and as the default value of
@@ -615,7 +641,6 @@ alertmanager_servers:
  - host: 10.0.1.4
 ```
 
-
 ## 执行部署
 
 ### 部署命令介绍
@@ -649,8 +674,11 @@ Flags:
 > **注意**
 >
 > - 通过 TiUP 进行集群部署可以使用 密钥 或者 交互密码方式来进行安全认证，
+> 
 >   - 如果是 密钥 方式可以通过 -i 或者 --identity_file 来指定 密钥 的路径；
->   - 如果是 密码 方式无需添加其他参数，Enter 即可进入 密码 交互窗口；
+> 
+>   - 如果是 密码 方式无需添加其他参数，Enter 即可进入 密码 交互窗口。
+> 
 
 ### 执行部署操作
 
@@ -694,7 +722,9 @@ Input SSH password:
 + [Parallel] - Download: component=alertmanager, version=v0.17.0
 + [Parallel] - Download: component=prometheus, version=v2.8.1
 + [Parallel] - Download: component=grafana, version=v6.1.6
+
 ...... 部分日志忽略......
+
 Checking service state of pd
 	10.0.1.4
 		   Active: active (running) since 六 2020-04-04 09:54:22 CST; 50s ago
@@ -808,7 +838,9 @@ Starting component pd
 Starting component node_exporter
 	Starting instance 10.0.1.4
 	Start 10.0.1.4 success
+
 ...... 部分日志忽略......
+
 	Checking service state of pd
 	10.0.1.4
 		   Active: active (running) since 六 2020-04-04 01:08:04 CST; 43s ago
@@ -842,7 +874,7 @@ Started cluster `tidb-test` successfully
 tiup cluster display tidb-test
 ```
 
-预期结果输出，注意 Status 状态信息为 Up 说明集群状态正常
+预期结果输出，注意 Status 状态信息为 `Up` 说明集群状态正常
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster display tidb-test
@@ -970,11 +1002,70 @@ MySQL [pingcap]> exit
 Bye
 ```
 
+## 关闭集群
+
+### 执行 `tidb-test` 集群关闭命令
+
+```shell
+cluster stop tidb-test
+```
+
+- 预期结果输出，注意 “Stopped cluster `tidb-test` successfully” 标志销毁成功
+
+```shell
+Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster stop tidb-test
++ [ Serial ] - SSHKeySet: privateKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa, publicKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa.pub
++ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
++ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
++ [Parallel] - UserSSH: user=tidb, host=172.16.5.169
++ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
++ [Parallel] - UserSSH: user=tidb, host=172.16.5.169
++ [Parallel] - UserSSH: user=tidb, host=172.16.4.237
++ [Parallel] - UserSSH: user=tidb, host=172.16.4.235
++ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
++ [ Serial ] - ClusterOperate: operation=StopOperation, options={Roles:[] Nodes:[] Force:false}
+Stopping component alertmanager
+	Stopping instance 172.16.5.172
+	Stop alertmanager 172.16.5.172:9104 success
+
+...... 部分日志忽略......
+
+Checking service state of pd
+	172.16.5.169
+		   Active: inactive (dead) since 六 2020-04-04 15:35:42 CST; 15s ago
+Checking service state of tikv
+	172.16.4.235
+		   Active: inactive (dead) since 六 2020-04-04 15:35:21 CST; 38s ago
+	172.16.4.237
+		   Active: inactive (dead) since 六 2020-04-04 15:35:23 CST; 37s ago
+	172.16.5.172
+		   Active: inactive (dead) since 六 2020-04-04 15:35:24 CST; 37s ago
+Checking service state of tidb
+	172.16.5.169
+		   Active: inactive (dead) since 六 2020-04-04 15:35:15 CST; 49s ago
+Checking service state of prometheus
+	172.16.5.172
+		   Active: inactive (dead) since 六 2020-04-04 15:35:12 CST; 53s ago
+Checking service state of grafana
+	172.16.5.172
+		   Active: inactive (dead) since 六 2020-04-04 15:35:10 CST; 56s ago
+Checking service state of alertmanager
+	172.16.5.172
+		   Active: inactive (dead) since 六 2020-04-04 15:35:09 CST; 59s ago
+Stopped cluster `tidb-test` successfully
+```
+
 ## 集群销毁
 
 ### 执行 `tidb-test` 集群销毁命令
 
+>  **注意**
+>
+> **`生产环境慎重执行，此操作确认后清理任务无法回退`**
+
 ```shell
+# 删除 tidb-test 集群，包括数据、服务。
+
 tiup cluster destroy tidb-test
 ```
 
@@ -998,7 +1089,9 @@ Destroying cluster...
 Stopping component alertmanager
 	Stopping instance 10.0.1.4
 	Stop alertmanager 10.0.1.4:9104 success
-…...忽略部分日志……
+
+...... 部分日志忽略......
+
 	Destroy monitored on 10.0.1.1 success
 Destroying monitored 10.0.1.2
 Destroying monitored
@@ -1050,7 +1143,7 @@ Destroyed cluster `tidb-test` successfully
 
 - 默认目录：
 
-| 组件 | 目录变量 | 默认目录 | 说明 |
+| 模块 | 目录变量 | 默认目录 | 说明 |
 | :-- | :-- | :-- | :-- |
 | global | deploy_dir | /home/tidb/deploy | 部署目录 |
 | global | data_dir | /home/tidb/data | 数据目录 |
@@ -1058,15 +1151,18 @@ Destroyed cluster `tidb-test` successfully
 | monitored | deploy_dir | /home/tidb/data | 部署目录 |
 | monitored | data_dir | /home/tidb/deploy | 数据目录 |
 | monitored | log_dir | /home/tidb/deploy | 日志目录 |
+| 实例 | deploy_dir | 继承 global 配置 | 部署目录 |
+| 实例 | data_dir | 继承 global 配置 | 数据目录 |
+| 实例 | log_dir | 继承 global 配置 | 日志目录 |
 
-### 关于配置文件，按照从高到低顺序
+### 关于参数模块配置，按照从高到低顺序
 
-#### 实例 级别
+#### 1. 实例参数模块
 
-TiDB Server 为例，在实例级别配置会最高优先级应用到目标节点的 Server。 
+TiDB Server 为例，在实例参数模块的配置，即 `“- host”` 为分割的实例，是最高优先级应用到目标节点的。 
 
-- config 配置会优先于 server_configs 级别配置；
-- `ssh_port`、`deploy_dir`、`log_dir` 配置优先 `global` 级别配置；
+- 实例下的 `config` 配置会优先于 `server_configs` 参数模块的配置；
+- 实例下的 `ssh_port`、`deploy_dir`、`log_dir` 配置优先 `global` 参数模块的配置；
 
 ```yaml
 tidb_servers:
@@ -1083,9 +1179,9 @@ tidb_servers:
       log.slow-query-file: tidb-slow-overwrited.log
 ```
 
-#### `global` 和 `server_configs` 全集 级别
+#### 2. `global` 、 `server_configs` 、`monitored` 参数模块
 
-- `global` 级别参数会在全局配置，参数优先级低于实例级别配置。
+- `global` 参数模块的配置在全局配置，优先级低于实例参数模块的配置。
 
 ```yaml
 global:
@@ -1095,7 +1191,7 @@ global:
   data_dir: "data"
 ```
 
-- `server_configs` 级别的服务参数配置应用于全局配置，参数优先级低于实例级别配置。
+- `server_configs` 参数模块的配置应用于全局监控配置，优先级低于实例参数模块的配置。
 
 ```yaml
 server_configs:
@@ -1117,6 +1213,18 @@ server_configs:
           value: "bja"
   pump:
     gc: 7
+```
+
+- `monitored` 参数模块应用于被监控的主机，默认端口为 9100 和 9115，目录如果配置默认会部署在用户的家目录下面，例如 `golbal` 参数模块配置的 `user` 为 tidb 用户，默认会配置到 `/home/tidb` 目录下。
+
+```yaml
+# Monitored variables are used to
+monitored:
+  node_exporter_port: 9100
+  blackbox_exporter_port: 9115
+  deploy_dir: "deploy/monitored-9100"
+  data_dir: "data/monitored-9100"
+  log_dir: "deploy/monitored-9100/log"
 ```
 
 ### 如何检测 NTP 服务是否正常
@@ -1196,6 +1304,7 @@ server_configs:
     sudo systemctl start ntpd.service && \
     sudo systemctl enable ntpd.service
     ```
+
 ### 如何手工配置 SSH 互信及 sudo 免密码
 
 1. 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
@@ -1309,6 +1418,7 @@ Flags:
 ```
 
 - 操作命令，将 tidb-test 集群所有目标主机通过 sudo 权限执行安装命令
+
 ```bash
 tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
 ```
