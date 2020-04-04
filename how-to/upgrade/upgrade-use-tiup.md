@@ -26,7 +26,6 @@ $ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.
 ## 三、将 TiDB Ansible 及 inventory.ini 配置导入到 TiUP
 
 > **注意：**
-
 > 如果原集群已经是 TiUP 部署，可以跳过此步骤
 > 目前默认识别 `inventory.ini` 文件，如果你的配置为其他名称，请指定
 > 请确保当前集群的状态，与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常
