@@ -1390,7 +1390,7 @@ sudo systemctl status firewalld.service
 
 ### 安装 numactl 工具
 
-> **注意**
+>**注意**
 > 
 > - numa 绑核是用来隔离 CPU 资源一种方法，适合高配置物理机环境部署多实例使用。 
 > - 通过 tiup  cluster deploy 完成部署操作，就可以通过 exec 命令来进行集群级别管理工作。 
