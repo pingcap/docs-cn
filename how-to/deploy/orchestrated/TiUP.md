@@ -708,7 +708,7 @@ Flags:
 tiup cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user pingcap -i /home/pingcap/.ssh/gcp_rsa
 ```
 
-- 预期日志输出样例，部署成功会有 `"Started cluster `tidb-test` successfully"` 关键词
+- 预期日志输出样例，部署成功会有 `Started cluster tidb-test successfully` 关键词
 
 ```log
 Starting /home/pingcap/.tiup/components/cluster/v0.0.9/cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user pingcap --identity_file /home/pingcap/.ssh/gcp_rsa
@@ -835,7 +835,7 @@ ID                  Role          Host          Ports        Status    Data Dir 
 tiup cluster start tidb-test
 ```
 
-- 预期日志输出样例，结果输出返回 `"Started cluster `tidb-test` successfully"` ，说明启动成功。
+- 预期日志输出样例，结果输出返回 `Started cluster tidb-test successfully` ，说明启动成功。
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster start tidb-test
@@ -1027,7 +1027,7 @@ Bye
 cluster stop tidb-test
 ```
 
-- 预期结果输出，注意 `“Stopped cluster `tidb-test` successfully”` 标志销毁成功
+- 预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志销毁成功
 
 ```shell
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster stop tidb-test
@@ -1086,7 +1086,7 @@ Stopped cluster `tidb-test` successfully
 tiup cluster destroy tidb-test
 ```
 
-- 预期结果输出，注意 `“Destroy cluster `tidb-test` successfully”` 标志销毁成功
+- 预期结果输出，注意 `Destroy cluster tidb-test successfully` 标志销毁成功
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster destroy tidb-test
