@@ -34,9 +34,10 @@ Currently, we maintain four versions of TiDB documentation, each with a separate
 | Docs branch name | Version description |
 | :--- | :--- |
 | `master` branch | the latest development version |
-| `release-3.1` branch | the 3.1 Beta version |
-| `release-3.0` branch | the latest 3.0 stable version |
-| `release-2.1` branch | the latest 2.1 stable version |
+| `release-4.0` branch | the 4.0 Beta version |
+| `release-3.1` branch | the 3.1 RC version |
+| `release-3.0` branch | the 3.0 stable version |
+| `release-2.1` branch | the 2.1 stable version |
 
 > **Note:**
 >
@@ -50,8 +51,9 @@ Currently, we maintain four versions of TiDB documentation, each with a separate
 
 - If your changes apply to multiple docs versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the sre-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, sre-bot will start to work.
 
-    - `needs-cherry-pick-3.0` label: sre-bot will submit a PR to the `release-3.0` branch.
+    - `needs-cherry-pick-4.0` label: sre-bot will submit a PR to the `release-4.0` branch.
     - `needs-cherry-pick-3.1` label: sre-bot will submit a PR to the `release-3.1` branch.
+    - `needs-cherry-pick-3.0` label: sre-bot will submit a PR to the `release-3.0` branch.
     - `needs-cherry-pick-2.1` label: sre-bot will submit a PR to the `release-2.1` branch.
 
 - If most of your changes apply to multiple docs versions but some differences exist among versions, you still can use cherry-pick labels to let sre-bot create PRs to other versions. After the PR to another version is successfully submitted by sre-bot, you can make changes to that PR.
