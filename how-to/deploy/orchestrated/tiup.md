@@ -953,21 +953,21 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 - 通过 {pd-leader-ip}:2379/dashboard 登陆 TiDB Dashboard
 
-    ![TiDB-Dashboard](/media/TiUP-deploy/1.png)
+    ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
 - 主页面显示 TiDB Cluster 节点信息
 
-    ![TiDB-Dashboard-status](/media/TiUP-deploy/2.png)
+    ![TiDB-Dashboard-status](/media/tiup/tidb-dashboard-status.png)
 
 #### 查看 Grafana 监控 Overview 模版检查 TiDB Cluster 状态
 
 - 通过 {Grafana-ip}:3000 登陆 Grafana 监控，默认密码为 admin/admin
 
-    ![Grafana-login](/media/TiUP-deploy/3.png)
+    ![Grafana-login](/media/tiup/grafana-login.png)
  
 - 点击 Overview 监控页面检查 TiDB 端口和负载监控信息 
 
-    ![Grafana-overview](/media/TiUP-deploy/4.png)
+    ![Grafana-overview](/media/tiup/grafana-overview.png)
 
 ### 登陆数据库简单 DML DDL 操作和查询 SQL statement （提前安装 Mysql Client）
 
