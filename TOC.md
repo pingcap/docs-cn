@@ -67,6 +67,7 @@
     - [使用 Ansible 扩容缩容](/how-to/scale/with-ansible.md)
   + 升级
     - [升级至最新开发版](/how-to/upgrade/from-previous-version.md)
+    - [使用 TiUP 升级](/how-to/upgrade/using-tiup)
   + 故障诊断
     - [集群配置诊断](/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/how-to/troubleshoot/tidb-lightning.md)
