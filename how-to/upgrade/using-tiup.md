@@ -33,6 +33,27 @@ category: how-to
 curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
 ```
 
+重新声明全局环境变量：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+source .bash_profile
+```
+确认 TiUP 工具是否安装：
+{{< copyable "shell-regular" >}}
+
+```shell
+which tiup
+```
+
+安装 TiUP 的 cluster 工具：
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster
+```
+
 如果之前安装过 TiUP，使用如下命令更新至最新版本即可：
 
 {{< copyable "shell-regular" >}}
