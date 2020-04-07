@@ -136,6 +136,6 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
 
 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
 
-2. 在 pd-ctl（目前 pd-ctl 还没有接入 TiUP Cluster，需要从 [这里](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz) 手动进行下载）中输入 config set enable-placement-rules true 命令，以开启 PD 的 Placement Rules 功能。
+2. 在 pd-ctl（目前 pd-ctl 还没有接入 TiUP Cluster，需要从 [这里](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz) 手动进行下载）中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
 
 3. 参考 [扩容TiFlash节点](/reference/tiflash/scale.md#扩容-TiFlash-节点) 章节对TiFlash进行部署。
