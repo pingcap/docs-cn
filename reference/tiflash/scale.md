@@ -9,7 +9,7 @@ category: reference
 
 ## 扩容 TiFlash 节点
 
-  假如需要在 172.19.0.104 上新增 TiFlash
+假如需要在 172.19.0.104 上新增 TiFlash 节点，步骤如下：
 
 1. 编写 scale-out.yaml 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
 
