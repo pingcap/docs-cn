@@ -106,6 +106,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 | 8225 | DDL 已经完成，无法被取消 |
 | 8226 | DDL 几乎要完成了，无法被取消 |
 | 8227 | 创建 Sequence 时使用了不支持的选项 |
+| 8229 | 事务超过存活时间 | 提交或者回滚当前事务，开启一个新事务 |
 | 9001 | 请求 PD 超时，请检查 PD Server 状态/监控/日志以及 TiDB Server 与 PD Server 之间的网络 |
 | 9002 | 请求 TiKV 超时，请检查 TiKV Server 状态/监控/日志以及 TiDB Server 与 TiKV Server 之间的网络 |
 | 9003 | TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV Server 状态/监控/日志 |

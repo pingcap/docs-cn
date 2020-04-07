@@ -236,6 +236,11 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 关闭隔离级别检查的开关，当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
 + 默认：false
 
+### `store-balance-rate`
+
++ 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
++ 默认：15
+
 ## replication
 
 副本相关的配置项。
