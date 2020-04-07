@@ -5,19 +5,26 @@ category: how-to
 
 # 使用 TiUP 部署 TiDB 集群
 
-## 概述
+[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，cluster 是 TiUP 提供的集群管理组件，通过 cluster 组件就可以进行日常的运维工作，包括：
 
-TiUP 是通过 Golang 编写的 TiDB 运维工具，cluster 是 TiUP 提供的集群管理组件，我们通过 cluster 组件就可以进行日常的运维工作。
+- 部署 TiDB 集群
+- 启动 TiDB 集群
+- 停止 TiDB 集群
+- 销毁 TiDB 集群
+- 弹性扩缩容 TiDB 集群
+- 管理 TiDB 集群参数
+- 升级 TiDB 集群
+- 部署 TiDB Binlog
+- 部署 TiFlash
 
-- TiDB 集群部署
-- TiDB 启动
-- TiDB 停止
-- TiDB 销毁
-- TiDB 集群弹性扩缩容
-- TiDB 集群参数管理
-- TiDB 集群升级
-- TiDB-binlog 部署
-- TiFlash 部署
+使用 TiUP 部署 TiDB 集群分为如下几个步骤：
+
+- 一、环境准备
+- 二、配置初始化参数文件 `topology.yaml`
+- 三、执行部署
+- 四、验证集群部署状态
+- 五、启动集群
+- 六、验证集群状态
 
 ## 一、环境准备
 
@@ -25,160 +32,167 @@ TiUP 是通过 Golang 编写的 TiDB 运维工具，cluster 是 TiUP 提供的�
 - 中控机 TiUP 安装
 - TiKV 部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
-### 第一步 硬件配置，请参考官方文档软硬件建议
+### 第一步：硬件配置参考官方文档软硬件建议
 
 - 中控机建议
 
-  - 中控机可以是部署目标机器中的某一台；
+    - 中控机可以是部署目标机器中的某一台
+    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统
+    - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包
+    - 需要安装 TiUP 组件
 
-  - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统；
+### 第二步：中控机安装 TiUP 组件
 
-  - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包；
+使用 `root` 用户或者有 `sudo` 权限的用户安装，以 `pingcap` 用户为例：
 
-  - 需要安装 TiUP 组件
+1. 执行如下命令安装 TiUP：
 
-### 第二步 中控机安装 TiUP 组件
+    {{< copyable "shell-regular" >}}
 
-使用 `root` 用户或者有 `sudo` 权限的用户安装，以 `pingcap` 用户为例
+    ```shell
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+    ```
 
-1. 执行安装命令
+    执行成功输出结果样例：
 
-```shell
-curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-```
+    ```log
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100 6029k  100 6029k    0     0  2384k      0  0:00:02  0:00:02 --:--:-- 2385k
+    Detected shell: /bin/bash
+    Shell profile:  /home/pingcap/.bash_profile
+    /home/pingcap/.bash_profile has been modified to to add tiup to PATH
+    open a new terminal or source /home/pingcap/.bash_profile to use it
+    Installed path: /home/pingcap/.tiup/bin/tiup
+    ===============================================
+    Have a try:     tiup playground
+    ===============================================
+    ```
 
-- 执行成功输出结果样例
+2. 按如下步骤设置 TiUP 环境变量：
 
-```log
- % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100 6029k  100 6029k    0     0  2384k      0  0:00:02  0:00:02 --:--:-- 2385k
-Detected shell: /bin/bash
-Shell profile:  /home/pingcap/.bash_profile
-/home/pingcap/.bash_profile has been modified to to add tiup to PATH
-open a new terminal or source /home/pingcap/.bash_profile to use it
-Installed path: /home/pingcap/.tiup/bin/tiup
-===============================================
-Have a try:     tiup playground
-===============================================
-```
+    重新声明全局环境变量：
 
-2. 设置 TiUP 环境变量
+    {{< copyable "shell-regular" >}}
 
-```shell
-# 重新声明全局环境变量
-source .bash_profile
+    ```shell
+    source .bash_profile
+    ```
 
-# 确认 TiUP 工具是否安装
-which tiup
-```
+    确认 TiUP 工具是否安装：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    which tiup
+    ```
 
 3. 安装 TiUP 的 cluster 工具
 
-- 执行 cluster 安装
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup cluster
-```
+    ```shell
+    tiup cluster
+    ```
 
-- 预期结果输出
+    预期结果输出：
 
-```log
-The component `cluster` is not installed; downloading from repository.
-download https://tiup-mirrors.pingcap.com/cluster-v0.4.3-linux-amd64.tar.gz:
-17400435 / 17400435 [---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------] 100.00% ? p/s
-Starting /home/pingcap/.tiup/components/cluster/v0.4.3/cluster
-Deploy a TiDB cluster for production
+    ```log
+    The component `cluster` is not installed; downloading from repository.
+    download https://tiup-mirrors.pingcap.com/cluster-v0.4.3-linux-amd64.tar.gz:
+    17400435 / 17400435 [---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------] 100.00% ? p/s
+    Starting /home/pingcap/.tiup/components/cluster/v0.4.3/cluster
+    Deploy a TiDB cluster for production
 
-Usage:
-  cluster [flags]
-  cluster [command]
+    Usage:
+    cluster [flags]
+    cluster [command]
 
-Available Commands:
-  deploy      Deploy a cluster for production
-  start       Start a TiDB cluster
-  stop        Stop a TiDB cluster
-  restart     Restart a TiDB cluster
-  scale-in    Scale in a TiDB cluster
-  scale-out   Scale out a TiDB cluster
-  destroy     Destroy a specified cluster
-  upgrade     Upgrade a specified TiDB cluster
-  exec        Run shell command on host in the tidb cluster
-  display     Display information of a TiDB cluster
-  list        List all clusters
-  audit       Show audit log of cluster operation
-  import      Import an exist TiDB cluster from TiDB-Ansible
-  edit-config Edit TiDB cluster config
-  reload      Reload a TiDB cluster's config and restart if needed
-  help        Help about any command
+    Available Commands:
+    deploy      Deploy a cluster for production
+    start       Start a TiDB cluster
+    stop        Stop a TiDB cluster
+    restart     Restart a TiDB cluster
+    scale-in    Scale in a TiDB cluster
+    scale-out   Scale out a TiDB cluster
+    destroy     Destroy a specified cluster
+    upgrade     Upgrade a specified TiDB cluster
+    exec        Run shell command on host in the tidb cluster
+    display     Display information of a TiDB cluster
+    list        List all clusters
+    audit       Show audit log of cluster operation
+    import      Import an exist TiDB cluster from TiDB-Ansible
+    edit-config Edit TiDB cluster config
+    reload      Reload a TiDB cluster's config and restart if needed
+    help        Help about any command
 
-Flags:
-  -h, --help      help for cluster
-      --version   version for cluster
+    Flags:
+    -h, --help      help for cluster
+        --version   version for cluster
 
-Use "cluster [command] --help" for more information about a command.
+    Use "cluster [command] --help" for more information about a command.
 
-# cluster 组件提供以下集群管理功能
-# deploy      集群部署
-# start       启动 TiDB 集群
-# stop        关闭 TiDB 集群
-# restart     重启 TiDB 集群
-# scale-in    扩容 TiDB 集群
-# scale-out   缩容 TiDB 集群
-# destroy     销毁指定 TiDB 集群
-# upgrade     升级指定 TiDB 集群
-# exec        在 TiDB 集群的目标主机执行命令
-# display     展示 TiDB 集群信息
-# list        展示管理的 TiDB 集群
-# audit       审计 TiUP 历史操作命令
-# import      导入 TiDB-Ansible 部署的 TiDB 集群
-# edit-config 编辑 TiDB 集群参数
-# reload      重新加载 TiDB 集群或者指定实例的参数配置
-# help        帮助信息
-```
+    # cluster 组件提供以下集群管理功能
+    # deploy      集群部署
+    # start       启动 TiDB 集群
+    # stop        关闭 TiDB 集群
+    # restart     重启 TiDB 集群
+    # scale-in    扩容 TiDB 集群
+    # scale-out   缩容 TiDB 集群
+    # destroy     销毁指定 TiDB 集群
+    # upgrade     升级指定 TiDB 集群
+    # exec        在 TiDB 集群的目标主机执行命令
+    # display     展示 TiDB 集群信息
+    # list        展示管理的 TiDB 集群
+    # audit       审计 TiUP 历史操作命令
+    # import      导入 TiDB-Ansible 部署的 TiDB 集群
+    # edit-config 编辑 TiDB 集群参数
+    # reload      重新加载 TiDB 集群或者指定实例的参数配置
+    # help        帮助信息
+    ```
 
-4. 如果已经安装，请更新 TiUP 的 cluster 工具版本至最新
+4. 如果已经安装，则更新 TiUP 的 cluster 工具至最新版本
 
-- 执行 更新 操作
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup update cluster
-```
+    ```shell
+    tiup update cluster
+    ```
 
-- 预期结果输出 `“Update successfully!”` 字样
+    预期结果输出如下 `“Update successfully!”` 字样：
 
-```log
-The `cluster:v0.4.3` has been installed
-Update successfully!
-```
+    ```log
+    The `cluster:v0.4.3` has been installed
+    Update successfully!
+    ```
 
-5. 验证当前 cluster 版本信息
+5. 验证当前 cluster 版本信息。执行如下命令查看 TiUP 工具 cluster 组件版本：
 
-- 查看 TiUP 工具 cluster 组件版本
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup --binary cluster
-```
+    ```shell
+    tiup --binary cluster
+    ```
 
-- 预期结果输出，v0.4.3 为当前版本
+    预期结果输出，v0.4.3 为当前版本
 
-```log
-/home/pingcap/.tiup/components/cluster/v0.4.3/cluster
-```
+    ```log
+    /home/pingcap/.tiup/components/cluster/v0.4.3/cluster
+    ```
 
 - 目标主机软硬件配置文件系统要求
 
-  - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议；
+    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议
 
-  - 目前支持在 x86_64 (AMD64) 和 ARM64（4.0 GA支持） 两种架构上部署 TiDB 集群。在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统；在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统；
+    - 目前支持在 x86_64 (AMD64) 和 ARM64（4.0 GA支持） 两种架构上部署 TiDB 集群。在 AMD64 架构下，建 议使用 CentOS 7.3 及以上版本 Linux 操作系统；在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统
 
-  - TiKV 数据文件的文件系统建议使用 EXT4 格式 或者使用 CentOS 默认的 XFS 格式
+    - TiKV 数据文件的文件系统建议使用 EXT4 格式 或者使用 CentOS 默认的 XFS 格式
 
-  - 机器之间内网互通（建议关闭防火墙）；
+    - 机器之间内网互通（建议关闭防火墙）
 
-  - 如果需要绑核操作，需要安装 numactl 工具；
+    - 如果需要绑核操作，需要安装 numactl 工具
 
-### 第三步 TiKV 部署目标机器上添加数据盘 ext4 文件系统挂载参数
+### 第三步：TiKV 部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
 使用 `root` 用户登录目标机器，将部署目标机器数据盘格式化成 ext4 文件系统，挂载时添加 `nodelalloc` 和 `noatime` 挂载参数。`nodelalloc` 是必选参数，否则 Ansible 安装时检测无法通过；`noatime` 是可选建议参数。
 
@@ -274,13 +288,15 @@ tiup --binary cluster
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 二、配置初始化参数文件 `topology.yaml` 
+## 二、配置初始化参数文件 `topology.yaml`
 
-### 第四步 yaml 参数文件配置
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。需要在中控机上面创建 yml 格式配置文件例如 `topology.yaml`，下文介绍 3 个经典场景的集群配置模版：
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。需要在中控机上面创建 yml 格式配置文件例如 `topology.yaml`，下文介绍 3 个经典场景的集群配置模版。
+- 场景 1：单机单实例
+- 场景 2：单机多实例
+- 场景 3：TiDB-binlog 部署模版
 
-### 场景 1 单机单实例
+### 场景 1：单机单实例
 
 #### 部署需求
 
@@ -294,9 +310,11 @@ tiup --binary cluster
 | TiDB |1 | 16  Vcore 32GB * 1 | 10.0.1.4 | 默认端口 <br>  全局目录配置 |
 | PD | 1 |16  Vcore 32GB * 1 |10.0.1.4 | 默认端口 <br> 全局目录配置 |
 
-#### 配置文件模版 topology.yaml
+#### 第四步：配置文件模版 topology.yaml
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 cat topology.yaml
 ```
 
@@ -330,7 +348,7 @@ alertmanager_servers:
  - host: 10.0.1.4
 ```
 
-### 场景 2 单机多实例
+### 场景 2：单机多实例
 
 #### 部署需求
 
@@ -340,54 +358,54 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
 
 - TiKV 进行配置优化
 
-  - readpool 线程池自适应，配置 readpool.unified.max-thread-count 参数可以使  readpool.storage 和  readpool.coprocessor 共用  unified 线程池，同时要分别开启自适应开关。计算公式如下：
+    - readpool 线程池自适应，配置 readpool.unified.max-thread-count 参数可以使  readpool.storage 和  readpool.coprocessor 共用  unified 线程池，同时要分别开启自适应开关。计算公式如下：
   
-  ```
-  readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
-  ```
+        ```
+        readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
+        ```
 
-   - storage CF（all RocksDB column families） 内存自适应，配置 storage.block-cache.capacity 参数就可以实现 CF 之间自动平衡内存使用。 计算公式如下：
+    - storage CF（all RocksDB column families） 内存自适应，配置 storage.block-cache.capacity 参数就可以实现 CF 之间自动平衡内存使用。 计算公式如下：
    
-   ```
-   storage.block-cache.capacity  = (MEM_TOTAL * 0.5 / TiKV 实例数量)
-   ```
+        ```
+        storage.block-cache.capacity  = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+        ```
 
-   - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 conf/tikv.yml 中的 capacity 参数：
+    - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 conf/tikv.yml 中的 capacity 参数：
    
-   ```
-   raftstore.capactiy = 磁盘总容量 / TiKV 实例数量
-   ```
+        ```
+        raftstore.capactiy = 磁盘总容量 / TiKV 实例数量
+        ```
 
 - label 调度配置
 
    因为采用单机多实例部署 TiKV，为了避免物理机宕机导致 Region Group 默认 3 副本的 2 副本丢失，导致集群不可用的问题。可以通过 label 来实现 PD 智能调度，保证同台机器的多 TiKV 实例不会存在 Region Group 的 2 副本的情况。
  
-     - TiKV 配置
+    - TiKV 配置
 
-       相同物理机配置相同的 host 级别 label 信息
+        相同物理机配置相同的 host 级别 label 信息
 
-       ```yml
-       config:
-         server.labels:
-           host: tikv1
-       ```
+        ```yml
+        config:
+          server.labels:
+            host: tikv1
+        ```
 
-     - PD 配置
+    - PD 配置
 
-       PD 需要配置 labels 类型来识别并调度 Region 
+        PD 需要配置 labels 类型来识别并调度 Region 
 
-       ```yml
-       pd:
-         replication.location-labels: ["host"]
-       ```
+        ```yml
+        pd:
+          replication.location-labels: ["host"]
+        ```
 
 - `numa_node` 绑核
-   
-  - 在实例参数模块配置对应的 `numa_node` 参数，并添加对应的物理 CPU 的数字；
 
-  - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
+    - 在实例参数模块配置对应的 `numa_node` 参数，并添加对应的物理 CPU 的数字；
 
-  - `numa_node` 参数配置参数，会与 `numactl --membind` 配置对应。 
+    - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
+
+    - `numa_node` 参数配置参数，会与 `numactl --membind` 配置对应。 
 
 #### 拓扑信息
 
@@ -397,9 +415,11 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
 | TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 numa 绑核操作 |
 | PD | 3 | 16 Vcore 32 GB | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 location_lables 参数 |
 
-#### 配置文件模版（如无需端口、目录自定义，仅修改 IP 即可） topology.yaml
+#### 第四步：配置文件模版（如无需端口、目录自定义，仅修改 IP 即可） topology.yaml
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 cat topology.yaml
 ```
 
@@ -546,22 +566,22 @@ alertmanager_servers:
  - host: 10.0.1.7
 ```
 
-### 场景 3  TiDB-binlog 部署模版
+### 场景 3：TiDB-binlog 部署模版
 
 #### 部署需求
 
 设置默认部署目录 /tidb-deploy 和 数据目录 /tidb-data ，通过 TiDB-binlog 同步到下游 10.0.1.9:4000。
 
 #### 关键参数
-  
-  - TiDB 
+
+- TiDB 关键参数
 
     - `binlog.enable: true` 
-     
+
       开启 binlog 服务，默认为 false。
 
     - `binlog.ignore-error: true` 
-      
+
       高可用场景建议开启，如果设置为 true，发生错误时，TiDB 会停止写入 binlog，并且在监控项 tidb_server_critical_error_total 上计数加 1；如果设置为 false，写入 binlog 失败，会停止整个 TiDB 的服务。
 
 #### 拓扑信息
@@ -574,9 +594,11 @@ alertmanager_servers:
 | Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 <br> 设置 gc 时间 7 天 |
 | Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
-#### 配置文件模版（如无需自定义端口或者目录，仅修改 IP 即可），以 topology.yaml 为例
+#### 第四步：配置文件模版（如无需自定义端口或者目录，仅修改 IP 即可），以 topology.yaml 为例
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 cat topology.yaml
 ```
 
@@ -661,13 +683,15 @@ alertmanager_servers:
 
 ### 部署命令介绍
 
-- 通过 help 查询具体的参数说明
+通过 help 查询具体的参数说明：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster  deploy --help
 ```
 
-- 预期输出结果
+预期输出结果：
 
 ```log
 Deploy a cluster for production. SSH connection will be used to deploy files, as well as creating system users for running the service.
@@ -691,24 +715,25 @@ Flags:
 
 > **注意：**
 >
-> - 通过 TiUP 进行集群部署可以使用 密钥 或者 交互密码方式来进行安全认证，
+> 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 > 
->   - 如果是 密钥 方式可以通过 -i 或者 --identity_file 来指定 密钥 的路径；
-> 
->   - 如果是 密码 方式无需添加其他参数，Enter 即可进入 密码 交互窗口。
+> - 如果是密钥方式可以通过 -i 或者 --identity_file 来指定密钥的路径；
+> - 如果是密码方式无需添加其他参数，Enter 即可进入密码交互窗口。
 
-### 第五步 执行部署操作
+### 第五步：执行部署操作
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 # 通过 TiUP cluster 部署集群名称为 tidb-test
 # 部署版本为 v4.0.0-beta.2
 # 初始化配置文件 topology.yaml
-# 通过 pingcap 的 密钥 登陆到目标主机完成集群部署
+# 通过 pingcap 的密钥登陆到目标主机完成集群部署
 
 tiup cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user pingcap -i /home/pingcap/.ssh/gcp_rsa
 ```
 
-- 预期日志输出样例，部署成功会有 `Started cluster tidb-test successfully` 关键词
+预期日志输出样例，部署成功会有 `Started cluster tidb-test successfully` 关键词：
 
 ```log
 Starting /home/pingcap/.tiup/components/cluster/v0.0.9/cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user pingcap --identity_file /home/pingcap/.ssh/gcp_rsa
@@ -743,33 +768,35 @@ Input SSH password:
 ...... 部分日志忽略......
 
 Checking service state of pd
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 09:54:22 CST; 50s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 09:54:22 CST; 50s ago
 Checking service state of tikv
-	10.0.1.1
-		   Active: active (running) since 六 2020-04-04 09:54:35 CST; 38s ago
-	10.0.1.2
-		   Active: active (running) since 六 2020-04-04 09:54:38 CST; 37s ago
-	10.0.1.3
-		   Active: active (running) since 六 2020-04-04 09:54:41 CST; 35s ago
+    10.0.1.1
+           Active: active (running) since 六 2020-04-04 09:54:35 CST; 38s ago
+    10.0.1.2
+           Active: active (running) since 六 2020-04-04 09:54:38 CST; 37s ago
+    10.0.1.3
+           Active: active (running) since 六 2020-04-04 09:54:41 CST; 35s ago
 Checking service state of tidb
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 09:54:56 CST; 22s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 09:54:56 CST; 22s ago
 Checking service state of prometheus
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 09:55:03 CST; 16s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 09:55:03 CST; 16s ago
 Checking service state of grafana
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 09:55:05 CST; 16s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 09:55:05 CST; 16s ago
 Checking service state of alertmanager
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 09:55:08 CST; 14s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 09:55:08 CST; 14s ago
 Started cluster `tidb-test` successfully
 ```
 
 ## 四、验证集群部署状态
 
 ### 验证命令介绍
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster list --help
@@ -788,13 +815,15 @@ Flags:
 # Flags 可以通过 -h 或者 --help 来查看帮助
 ```
 
-### 第六步 检查 TiUP 管理集群情况
+### 第六步：检查 TiUP 管理集群情况
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 tiup cluster list
 ```
 
-- 预期输出样例，当前通过 TiUP cluster 管理的集群名称、部署用户、版本、密钥信息情况
+预期输出样例，当前通过 TiUP cluster 管理的集群名称、部署用户、版本、密钥信息情况：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster list
@@ -803,13 +832,15 @@ Name              User  Version        Path                                     
 tidb-test         tidb  v4.0.0-beta.2  /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
-### 第七步 检查 `tidb-test` 集群情况
+### 第七步：检查 `tidb-test` 集群情况
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster display tidb-test
 ```
 
-- 预期结果输出包括实例 ID、角色、主机、监听端口和状态（为启动，所以状态为 Down/inactive）、目录信息
+预期结果输出包括实例 ID、角色、主机、监听端口和状态（为启动，所以状态为 Down/inactive）、目录信息：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster display tidb-test
@@ -829,13 +860,15 @@ ID                  Role          Host          Ports        Status    Data Dir 
 
 ## 五、启动集群
 
-### 第八步 执行 `tidb-test` 集群启动命令
+### 第八步：执行 `tidb-test` 集群启动命令
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 tiup cluster start tidb-test
 ```
 
-- 预期日志输出样例，结果输出返回 `Started cluster tidb-test successfully` ，说明启动成功。
+预期日志输出样例，结果输出返回 `Started cluster tidb-test successfully` ，说明启动成功：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster start tidb-test
@@ -850,48 +883,50 @@ Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster start tidb-test
 + [Parallel] - UserSSH: user=tidb, host=10.0.1.4
 + [ Serial ] - ClusterOperate: operation=StartOperation, options={Roles:[] Nodes:[] Force:false}
 Starting component pd
-	Starting instance pd 10.0.1.4:2379
-	Start pd 10.0.1.4:2379 success
+    Starting instance pd 10.0.1.4:2379
+    Start pd 10.0.1.4:2379 success
 Starting component node_exporter
-	Starting instance 10.0.1.4
-	Start 10.0.1.4 success
+    Starting instance 10.0.1.4
+    Start 10.0.1.4 success
 
 ...... 部分日志忽略......
 
-	Checking service state of pd
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 01:08:04 CST; 43s ago
+    Checking service state of pd
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 01:08:04 CST; 43s ago
 Checking service state of tikv
-	10.0.1.1
-		   Active: active (running) since 六 2020-04-04 01:08:15 CST; 33s ago
-	10.0.1.2
-		   Active: active (running) since 六 2020-04-04 01:08:18 CST; 31s ago
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 01:08:21 CST; 29s ago
+    10.0.1.1
+           Active: active (running) since 六 2020-04-04 01:08:15 CST; 33s ago
+    10.0.1.2
+           Active: active (running) since 六 2020-04-04 01:08:18 CST; 31s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 01:08:21 CST; 29s ago
 Checking service state of tidb
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 01:08:36 CST; 16s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 01:08:36 CST; 16s ago
 Checking service state of prometheus
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 01:08:39 CST; 15s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 01:08:39 CST; 15s ago
 Checking service state of grafana
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 01:08:41 CST; 14s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 01:08:41 CST; 14s ago
 Checking service state of alertmanager
-	10.0.1.4
-		   Active: active (running) since 六 2020-04-04 01:08:44 CST; 12s ago
+    10.0.1.4
+           Active: active (running) since 六 2020-04-04 01:08:44 CST; 12s ago
 Started cluster `tidb-test` successfully
 ```
 
 ## 六、验证集群状态
 
-### 第九步 通过 TiUP 检查 tidb-test 集群状态
+### 第九步：通过 TiUP 检查 tidb-test 集群状态
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 tiup cluster display tidb-test
 ```
 
-预期结果输出，注意 Status 状态信息为 `Up` 说明集群状态正常
+预期结果输出，注意 Status 状态信息为 `Up` 说明集群状态正常：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster display tidb-test
@@ -909,35 +944,37 @@ ID                  Role          Host          Ports        Status     Data Dir
 10.0.1.3:2060  tikv          10.0.1.4  2060/20080  Up         /tidb-data/tikv-2060         /tidb-deploy/tikv-2060
 ```
 
-### 第十步 通过 TiDB-Dashboard 和 Grafana 检查集群状态
+### 第十步：通过 TiDB-Dashboard 和 Grafana 检查集群状态
 
 #### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
 
-  - 通过 {pd-ip}:2379/dashboard 登陆 TiDB Dashboard
+- 通过 {pd-ip}:2379/dashboard 登陆 TiDB Dashboard
 
     ![TiDB-Dashboard](/media/TiUP-deploy/1.png)
 
-  - 主页面显示 TiDB Cluster 节点信息
+- 主页面显示 TiDB Cluster 节点信息
 
     ![TiDB-Dashboard-status](/media/TiUP-deploy/2.png)
 
 #### 查看 Grafana 监控 Overview 模版检查 TiDB Cluster 状态
 
-  - 通过 {Grafana-ip}:3000 登陆 Grafana 监控，默认密码为 admin/admin
+- 通过 {Grafana-ip}:3000 登陆 Grafana 监控，默认密码为 admin/admin
 
     ![Grafana-login](/media/TiUP-deploy/3.png)
  
-  - 点击 Overview 监控页面检查 TiDB 端口和负载监控信息 
+- 点击 Overview 监控页面检查 TiDB 端口和负载监控信息 
 
     ![Grafana-overview](/media/TiUP-deploy/4.png)
 
 ### 登陆数据库简单 DML DDL 操作和查询 SQL statement （提前安装 Mysql Client）
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 mysql -u root -h 10.0.1.4 -P 4000
 ```
 
-- 数据库操作
+数据库操作：
 
 ```sql
 --
@@ -1023,13 +1060,15 @@ Bye
 
 ### 执行 `tidb-test` 集群关闭命令
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 cluster stop tidb-test
 ```
 
-- 预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志销毁成功
+预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志销毁成功：
 
-```shell
+```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster stop tidb-test
 + [ Serial ] - SSHKeySet: privateKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa, publicKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa.pub
 + [Parallel] - UserSSH: user=tidb, host=172.16.5.172
@@ -1042,51 +1081,51 @@ Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster stop tidb-test
 + [Parallel] - UserSSH: user=tidb, host=172.16.5.172
 + [ Serial ] - ClusterOperate: operation=StopOperation, options={Roles:[] Nodes:[] Force:false}
 Stopping component alertmanager
-	Stopping instance 172.16.5.172
-	Stop alertmanager 172.16.5.172:9104 success
+    Stopping instance 172.16.5.172
+    Stop alertmanager 172.16.5.172:9104 success
 
 ...... 部分日志忽略......
 
 Checking service state of pd
-	172.16.5.169
-		   Active: inactive (dead) since 六 2020-04-04 15:35:42 CST; 15s ago
+    172.16.5.169
+           Active: inactive (dead) since 六 2020-04-04 15:35:42 CST; 15s ago
 Checking service state of tikv
-	172.16.4.235
-		   Active: inactive (dead) since 六 2020-04-04 15:35:21 CST; 38s ago
-	172.16.4.237
-		   Active: inactive (dead) since 六 2020-04-04 15:35:23 CST; 37s ago
-	172.16.5.172
-		   Active: inactive (dead) since 六 2020-04-04 15:35:24 CST; 37s ago
+    172.16.4.235
+           Active: inactive (dead) since 六 2020-04-04 15:35:21 CST; 38s ago
+    172.16.4.237
+           Active: inactive (dead) since 六 2020-04-04 15:35:23 CST; 37s ago
+    172.16.5.172
+           Active: inactive (dead) since 六 2020-04-04 15:35:24 CST; 37s ago
 Checking service state of tidb
-	172.16.5.169
-		   Active: inactive (dead) since 六 2020-04-04 15:35:15 CST; 49s ago
+    172.16.5.169
+           Active: inactive (dead) since 六 2020-04-04 15:35:15 CST; 49s ago
 Checking service state of prometheus
-	172.16.5.172
-		   Active: inactive (dead) since 六 2020-04-04 15:35:12 CST; 53s ago
+    172.16.5.172
+           Active: inactive (dead) since 六 2020-04-04 15:35:12 CST; 53s ago
 Checking service state of grafana
-	172.16.5.172
-		   Active: inactive (dead) since 六 2020-04-04 15:35:10 CST; 56s ago
+    172.16.5.172
+           Active: inactive (dead) since 六 2020-04-04 15:35:10 CST; 56s ago
 Checking service state of alertmanager
-	172.16.5.172
-		   Active: inactive (dead) since 六 2020-04-04 15:35:09 CST; 59s ago
+    172.16.5.172
+           Active: inactive (dead) since 六 2020-04-04 15:35:09 CST; 59s ago
 Stopped cluster `tidb-test` successfully
 ```
 
 ## 集群销毁
 
-### 执行 `tidb-test` 集群销毁命令
-
-> **注意：**
+> **警告：**
 >
 > **`生产环境慎重执行，此操作确认后清理任务无法回退`**
 
-```shell
-# 删除 tidb-test 集群，包括数据、服务。
+执行如下命令删除 tidb-test 集群，包括数据、服务：
 
+{{< copyable "shell-regular" >}}
+
+```shell
 tiup cluster destroy tidb-test
 ```
 
-- 预期结果输出，注意 `Destroy cluster tidb-test successfully` 标志销毁成功
+预期结果输出，注意 `Destroy cluster tidb-test successfully` 标志销毁成功：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster destroy tidb-test
@@ -1104,19 +1143,19 @@ Destroying cluster...
 + [Parallel] - UserSSH: user=tidb, host=10.0.1.4
 + [ Serial ] - ClusterOperate: operation=StopOperation, options={Roles:[] Nodes:[] Force:false}
 Stopping component alertmanager
-	Stopping instance 10.0.1.4
-	Stop alertmanager 10.0.1.4:9104 success
+    Stopping instance 10.0.1.4
+    Stop alertmanager 10.0.1.4:9104 success
 
 ...... 部分日志忽略......
 
-	Destroy monitored on 10.0.1.1 success
+    Destroy monitored on 10.0.1.1 success
 Destroying monitored 10.0.1.2
 Destroying monitored
-	Destroying instance 10.0.1.2
+    Destroying instance 10.0.1.2
 Destroy monitored on 10.0.1.2 success
 Destroying monitored 10.0.1.4
 Destroying monitored
-	Destroying instance 10.0.1.4
+    Destroying instance 10.0.1.4
 Destroy monitored on 10.0.1.4 success
 Destroying component pd
 Destroying instance 10.0.1.4
@@ -1124,7 +1163,7 @@ Deleting paths on 10.0.1.4: /tidb-data/pd-2379 /tidb-deploy/pd-2379 /tidb-deploy
 Destroy 10.0.1.4 success
 Destroying monitored 10.0.1.4
 Destroying monitored
-	Destroying instance 10.0.1.4
+    Destroying instance 10.0.1.4
 Destroy monitored on 10.0.1.4 success
 Destroyed cluster `tidb-test` successfully
 ```
@@ -1133,9 +1172,7 @@ Destroyed cluster `tidb-test` successfully
 
 本小节介绍使用 TiUP 部署 TiDB 集群过程中的常见问题与解决方案。
 
-### 关于默认端口
-
-- 默认端口：
+### 默认端口
 
 | 组件 | 端口变量 | 默认端口 | 说明 |
 | :-- | :-- | :-- | :-- |
@@ -1154,9 +1191,7 @@ Destroyed cluster `tidb-test` successfully
 | Alertmanager | web_port | 9093 | 告警 web 服务端口 |
 | Alertmanager | cluster_port | 9094 | 告警通信端口 |
 
-### 关于默认目录
-
-- 默认目录：
+### 默认目录
 
 | 模块 | 目录变量 | 默认目录 | 说明 |
 | :-- | :-- | :-- | :-- |
@@ -1170,7 +1205,7 @@ Destroyed cluster `tidb-test` successfully
 | 实例 | data_dir | 继承 global 配置 | 数据目录 |
 | 实例 | log_dir | 继承 global 配置 | 日志目录 |
 
-### 关于参数模块配置，按照从高到低顺序
+### 参数模块配置（按照从高到低顺序）
 
 #### 1. 实例参数模块
 
@@ -1198,51 +1233,51 @@ tidb_servers:
 
 - `global` 参数模块的配置在全局配置，优先级低于实例参数模块的配置。
 
-```yaml
-global:
-  user: "tidb"
-  ssh_port: 22
-  deploy_dir: "deploy"
-  data_dir: "data"
-```
+    ```yaml
+    global:
+    user: "tidb"
+    ssh_port: 22
+    deploy_dir: "deploy"
+    data_dir: "data"
+    ```
 
 - `server_configs` 参数模块的配置应用于全局监控配置，优先级低于实例参数模块的配置。
 
-```yaml
-server_configs:
-  tidb:
-    binlog.enable: false
-    binlog.ignore-error: false
-  tikv:
-    readpool.storage.low-concurrency: 8
-    server.labels:
-      zone: sh
-      dc: sha
-      rack: rack1
-      host: host1
-  pd:
-    replication.enable-placement-rules: true
-    label-property:
-      reject-leader:
-        - key: "dc"
-          value: "bja"
-  pump:
-    gc: 7
-```
+    ```yaml
+    server_configs:
+    tidb:
+        binlog.enable: false
+        binlog.ignore-error: false
+    tikv:
+        readpool.storage.low-concurrency: 8
+        server.labels:
+        zone: sh
+        dc: sha
+        rack: rack1
+        host: host1
+    pd:
+        replication.enable-placement-rules: true
+        label-property:
+        reject-leader:
+            - key: "dc"
+            value: "bja"
+    pump:
+        gc: 7
+    ```
 
 - `monitored` 参数模块应用于被监控的主机，默认端口为 9100 和 9115，目录如果配置默认会部署在用户的家目录下面，例如 `golbal` 参数模块配置的 `user` 为 tidb 用户，默认会配置到 `/home/tidb` 目录下。
 
-```yaml
-# Monitored variables are used to
-monitored:
-  node_exporter_port: 9100
-  blackbox_exporter_port: 9115
-  deploy_dir: "deploy/monitored-9100"
-  data_dir: "data/monitored-9100"
-  log_dir: "deploy/monitored-9100/log"
-```
+    ```yaml
+    # Monitored variables are used to
+    monitored:
+    node_exporter_port: 9100
+    blackbox_exporter_port: 9115
+    deploy_dir: "deploy/monitored-9100"
+    data_dir: "data/monitored-9100"
+    log_dir: "deploy/monitored-9100/log"
+    ```
 
-### 如何检测 NTP 服务是否正常
+### 检测 NTP 服务是否正常
 
 1. 执行以下命令，如果输出 `running` 表示 NTP 服务正在运行：
 
@@ -1272,9 +1307,9 @@ monitored:
     polling server every 1024 s
     ```
 
-> **注意：**
->
-> Ubuntu 系统需安装 `ntpstat` 软件包。
+    > **注意：**
+    >
+    > Ubuntu 系统需安装 `ntpstat` 软件包。
 
 - 以下情况表示 NTP 服务未正常同步：
 
@@ -1379,28 +1414,36 @@ monitored:
 
 1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
-```shell
-sudo firewall-cmd --state
-sudo systemctl status firewalld.service
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    sudo firewall-cmd --state
+    sudo systemctl status firewalld.service
+    ```
 
 2. 关闭防火墙服务
 
-```bash
-sudo systemctl stop firewalld.service
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sudo systemctl stop firewalld.service
+    ```
 
 3. 关闭防火墙自动启动服务
 
-```bash
-sudo systemctl disable firewalld.service
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sudo systemctl disable firewalld.service
+    ```
 
 4. 检查防火墙状态
 
-```bash
-sudo systemctl status firewalld.service
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sudo systemctl status firewalld.service
+    ```
 
 ### 安装 numactl 工具
 
@@ -1412,28 +1455,36 @@ sudo systemctl status firewalld.service
 
 1. 登陆到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
-```bash
-sudo yum -y install numactl
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    sudo yum -y install numactl
+    ```
 
 2. 通过 TiUP 的 cluster 执行完 exec 命令来完成批量安装
 
-```bash
-tiup cluster exec --help
+    {{< copyable "shell-regular" >}}
 
-Run shell command on host in the tidb cluster
+    ```bash
+    tiup cluster exec --help
+    ```
 
-Usage:
-  cluster exec <cluster-name> [flags]
+    ```
+    Run shell command on host in the tidb cluster
 
-Flags:
-      --command string   the command run on cluster host (default "ls")
-  -h, --help             help for exec
-      --sudo             use root permissions (default false)
-```
+    Usage:
+    cluster exec <cluster-name> [flags]
 
-- 操作命令，将 tidb-test 集群所有目标主机通过 sudo 权限执行安装命令
+    Flags:
+        --command string   the command run on cluster host (default "ls")
+    -h, --help             help for exec
+        --sudo             use root permissions (default false)
+    ```
 
-```bash
-tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
-```
+    操作命令，将 tidb-test 集群所有目标主机通过 sudo 权限执行安装命令
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
+    ```
