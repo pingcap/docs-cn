@@ -9,85 +9,38 @@ category: reference
 
 ## 扩容 TiFlash 节点
 
-以在节点 192.168.1.1 上部署 TiFlash 为例，扩容该 TiFlash 节点的步骤如下。
+  假如需要在 172.19.0.104 上新增 TiFlash
 
-1. 编辑 `inventory.ini` 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
-
-    {{< copyable "" >}}
-
-    ```ini
-    [tiflash_servers]
-    192.168.1.1
-    ```
-
-2. 编辑 `hosts.ini` 文件，添加节点信息：
+1. 编写 scale-out.yaml 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
 
     {{< copyable "" >}}
 
     ```ini
-    [servers]
-    192.168.1.1
-
-    [all:vars]
-    username = tidb
-    ntp_server = pool.ntp.org
+    tiflash_servers:
+      - host: 172.19.0.104
     ```
 
-3. 初始化新增节点：
-
-    - 在中控机上配置部署机器 SSH 互信及 sudo 规则：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        ansible-playbook -i hosts.ini create_users.yml -l 192.168.1.1 -u root -k
-        ```
-
-    - 在部署目标机器上安装 NTP 服务：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
-        ```
-
-    - 在部署目标机器上初始化节点：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        ansible-playbook bootstrap.yml -l 192.168.1.1
-        ```
-
-4. 部署新增节点：
+2. 运行扩容命令
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ansible-playbook deploy.yml -l 192.168.1.1
+    tiup cluster scale-out test scale-out.yaml
     ```
 
-5. 启动新节点服务：
+3. 查看集群状态
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ansible-playbook start.yml -l 192.168.1.1
+    tiup cluster display test
     ```
 
-6. 更新 Prometheus 配置并重启：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    ansible-playbook rolling_update_monitor.yml --tags=prometheus
-    ```
-
-7. 打开浏览器访问监控平台，监控整个集群和新增节点的状态。
+4. 打开浏览器访问监控平台，监控整个集群和新增节点的状态。
 
 ## 缩容 TiFlash 节点
 
-以停止 192.168.1.1 节点的服务为例，缩容该 TiFlash 节点的步骤如下。
+以停止 172.19.0.104 节点的服务为例，缩容该 TiFlash 节点的步骤如下。
 
 > **注意：**
 >
@@ -102,25 +55,15 @@ category: reference
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ansible-playbook stop.yml -l 192.168.1.1
+    tiup cluster scale-in test --node 172.19.0.104:9000
     ```
 
-    如果该节点仍有其他服务，只希望停止 TiFlash 则请注明 TiFlash 服务：
+4. 查看集群状态
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ansible-playbook stop.yml -t tiflash -l 192.168.1.1
+    tiup cluster display test
     ```
 
-4. 编辑 `inventory.ini` 和 `hosts.ini` 文件，移除节点信息。
-
-5. 更新 Prometheus 配置并重启：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    ansible-playbook rolling_update_monitor.yml --tags=prometheus
-    ```
-
-6. 打开浏览器访问监控平台，监控整个集群的状态。
+5. 打开浏览器访问监控平台，监控整个集群的状态。
