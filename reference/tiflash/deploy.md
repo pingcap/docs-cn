@@ -108,7 +108,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
 
 4. 按照 TiUP 部署流程完成集群部署的剩余步骤，包括：
 
-    部署 TiDB 集群，其中 test 为集群名
+    部署 TiDB 集群，其中 test 为集群名：
 
     {{< copyable "shell-regular" >}}
 
