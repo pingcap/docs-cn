@@ -113,7 +113,7 @@ set global tidb_evolve_plan_baselines = on;
 create table t(a int, b int, key(a), key(b));
 ```
 
-对于查询
+在表 `t` 上进行如下查询：
 
 {{< copyable "sql" >}}
 
