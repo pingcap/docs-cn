@@ -54,9 +54,9 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐使用 TiUP Cluster 安装部署 TiFlash，部署流程如下：
 
-1. 安装 TiUP，参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)。
+1. 参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)安装 TiUP。
 
-2. 安装 cluster 组件
+2. 安装 TiUP cluster 组件
 
     {{< copyable "shell-regular" >}}
 
@@ -64,11 +64,11 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
     tiup cluster
     ```
 
-3. 编写 topology 配置文件，保存为 topology.yaml。
+3. 编写 topology 配置文件，保存为 `topology.yaml`。
 
     可以参考[全量的配置文件模版](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
 
-    除了部署 TiDB 集群的配置，需要额外在 `tiflash_servers` 下配置 tiflash servers 所在的 ip (目前只支持 ip，不支持域名)。
+    除了部署 TiDB 集群的配置，需要额外在 `tiflash_servers` 下配置 tiflash servers 所在的 ip（目前只支持 ip，不支持域名）。
 
     如果需要部署 TiFlash，请把 `pd` 部分的 `replication.enable-placement-rules` 配置设置为 `true`。
 
