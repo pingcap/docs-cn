@@ -184,19 +184,16 @@ category: how-to
     /home/pingcap/.tiup/components/cluster/v0.4.3/cluster
     ```
 
-- 目标主机软硬件配置文件系统要求
+目标主机软硬件配置文件系统要求
+- 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议
+- 目前支持在 x86_64 (AMD64) 和 ARM64（TiUP 会在 4.0 GA支持） 两种架构上部署 TiDB 集群。在 AMD64 架构下，建 议使用 CentOS 7.3 及以上版本 Linux 操作系统；在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统
+- TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式
+- 机器之间内网互通（建议关闭防火墙，或者开放 TiDB 集群的节点间所需端口）
+- 如果需要绑核操作，需要安装 numactl 工具
 
-    - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议
+### 第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数
 
-    - 目前支持在 x86_64 (AMD64) 和 ARM64（4.0 GA支持） 两种架构上部署 TiDB 集群。在 AMD64 架构下，建 议使用 CentOS 7.3 及以上版本 Linux 操作系统；在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统
-
-    - TiKV 数据文件的文件系统建议使用 EXT4 格式 或者使用 CentOS 默认的 XFS 格式
-
-    - 机器之间内网互通（建议关闭防火墙）
-
-    - 如果需要绑核操作，需要安装 numactl 工具
-
-### 第 3 步：在 TiKV 部署目标机器上添加数据盘 ext4 文件系统挂载参数
+本文会介绍部署 TiKV 的数据目录使用 EXT4 文件系统格式部署，EXT4 文件系统格式相比 XFS 文件系统格式在 TiDB 集群部署案例较多，生产环境优先选择使用 EXT4 文件系统格式。
 
 使用 `root` 用户登录目标机器，将部署目标机器数据盘格式化成 ext4 文件系统，挂载时添加 `nodelalloc` 和 `noatime` 挂载参数。`nodelalloc` 是必选参数，否则 Ansible 安装时检测无法通过；`noatime` 是可选建议参数。
 
@@ -512,11 +509,10 @@ tikv_servers:
   - host: 10.0.1.1
     port: 20161
     status_port: 20181
-    deploy_dir: "/tidb-deploy/tikv-20160"
     deploy_dir: "/tidb-deploy/tikv-20161"
     data_dir: "/tidb-data/tikv-20161"
     log_dir: "/tidb-deploy/tikv-20161/log"
-    numa_node: "0"
+    numa_node: "1"
     config:
       server.labels:
         host: tikv1
@@ -536,7 +532,7 @@ tikv_servers:
     deploy_dir: "/tidb-deploy/tikv-20161"
     data_dir: "/tidb-data/tikv-20161"
     log_dir: "/tidb-deploy/tikv-20161/log"
-    numa_node: "0"
+    numa_node: "1"
     config:
       server.labels:
         host: tikv2
@@ -556,7 +552,7 @@ tikv_servers:
     deploy_dir: "/tidb-deploy/tikv-20161"
     data_dir: "/tidb-data/tikv-20161"
     log_dir: "/tidb-deploy/tikv-20161/log"
-    numa_node: "0"
+    numa_node: "1"
     config:
       server.labels:
         host: tikv3
@@ -591,11 +587,11 @@ alertmanager_servers:
 #### 拓扑信息
 
 | 实例 | 物理机配置 | IP | 配置 |
-| :-- | :-- | :-- | :-- | :-- |
+| :-- | :-- | :-- | :-- |
 | TiKV | 16 vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
-|TiDB | 16 vcore 32 GB | 10.0.1.4 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 |
+|TiDB | 16 vcore 32 GB | 10.0.1.4 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
 | PD | 4 vcore 8 GB | 10.0.1.5 | 默认端口配置 |
-| Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 <br> 设置 gc 时间 7 天 |
+| Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 gc 时间 7 天 |
 | Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
 #### 第 4 步：配置文件模版（如无需自定义端口或者目录，仅修改 IP 即可），以 topology.yaml 为例
@@ -952,7 +948,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 #### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
 
-- 通过 {pd-ip}:2379/dashboard 登陆 TiDB Dashboard
+- 通过 {pd-leader-ip}:2379/dashboard 登陆 TiDB Dashboard
 
     ![TiDB-Dashboard](/media/TiUP-deploy/1.png)
 
@@ -1031,7 +1027,7 @@ Query OK, 0 rows affected (0.11 sec)
 --
 -- 插入数据
 --
-MySQL [pingcap]> insert into `tab_tidb` values (1,'TiDB',6,'TiDB-v4.0.0');
+MySQL [pingcap]> insert into `tab_tidb` values (1,'TiDB',5,'TiDB-v4.0.0');
 Query OK, 1 row affected (0.03 sec)
 --
 -- 查看 tab_tidb 结果
@@ -1040,7 +1036,7 @@ MySQL [pingcap]> select * from tab_tidb;
 +----+------+-----+-------------+
 | id | name | age | version     |
 +----+------+-----+-------------+
-|  1 | TiDB |   6 | TiDB-v4.0.0 |
+|  1 | TiDB |   5 | TiDB-v4.0.0 |
 +----+------+-----+-------------+
 1 row in set (0.00 sec)
 --
