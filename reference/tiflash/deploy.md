@@ -116,7 +116,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
     tiup cluster deploy test v4.0.0-rc topology.yaml  -i ~/.ssh/id_rsa
     ```
 
-    启动 TiDB 集群
+    启动 TiDB 集群：
 
     {{< copyable "shell-regular" >}}
 
