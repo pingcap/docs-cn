@@ -220,10 +220,10 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 作用域：SESSION
 
-默认值：32 GB
+默认值：1 GB
 
 这个变量用来设置一条查询语句的内存使用阈值。
-如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/reference/configuration/tidb-server/configuration-file.md#mem-quota-query) 配置。
 
 ### tidb_mem_quota_hashjoin
 
@@ -361,7 +361,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 作用域：GLOBAL
 
-默认值：16
+默认值：4
 
 这个变量用来设置 DDL 操作 re-organize 阶段的并发度。
 
@@ -369,7 +369,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 作用域：GLOBAL
 
-默认值：1024
+默认值：256
 
 这个变量用来设置 DDL 操作 re-organize 阶段的 batch size。比如 Add Index 操作，需要回填索引数据，通过并发 tidb_ddl_reorg_worker_cnt 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。如果 Add Index 时有较多 Update 操作或者 Replace 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。在没有事务冲突的情况下，batch size 可设为较大值，最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
 
@@ -666,3 +666,11 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statements_summary_by_digest` 中，用于定位和排查 SQL 性能问题。
+
+### tidb_enable_chunk_rpc <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值：1
+
+这个变量用来设置是否启用 Coprocessor 的 `Chunk` 数据编码格式。

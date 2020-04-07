@@ -15,17 +15,29 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果需要创建大量的表，我们建议把这个参数设置为 false。
 
-### `oom-action`
-
-+ 指定 TiDB 发生 out-of-memory 错误时的操作。
-+ 默认值："log"
-+ 现在合法的选项是 ["log", "cancel"]，如果为 "log"，仅仅是打印日志，不作实质处理。如果为 "cancel"，我们会取消执行这个操作，并且输出日志。
-
 ### `mem-quota-query`
 
 + 单条 SQL 语句可以占用的最大内存阈值。
-+ 默认值：34359738368
++ 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
++ 该值作为系统变量 [`tidb_mem_quota_query`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_mem_quota_query) 的初始值。
+
+### `oom-use-tmp-storage`
+
++ 设置是否在单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时为某些算子启用临时磁盘。
++ 默认值：true
+
+### `tmp-storage-path`
+
++ 单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时，某些算子的临时磁盘存储位置。
++ 默认值：`<操作系统临时文件夹>/tidb/tmp-storage`
++ 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
+
+### `oom-action`
+
++ 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
++ 默认值："cancel"
++ 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
 ### `enable-streaming`
 
@@ -70,6 +82,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制添加或者删除主键功能。
 + 默认值：false
 + 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。
+
+### `server-version`
+
++ 用来修改 TiDB 在以下情况下返回的版本号:
+    - 当使用内置函数 `VERSION()` 时。
+    - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake)。
++ 默认值：""
++ 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
 
 ### `repair-mode`
 
@@ -135,8 +155,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `max-server-connections`
 
 + TiDB 中同时允许的最大客户端连接数，用于资源控制。
-+ 默认值：4096
-+ 当客户端连接数到达 `max-server-connections` 时，TiDB 服务端将会拒绝新的客户端连接。
++ 默认值：0
++ 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 
 ## log.file
 
@@ -236,7 +256,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 一个事务允许的最大语句条数限制。
 + 默认值：5000
-+ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。
++ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在可重试的乐观事务中生效，如果使用悲观事务或者关闭了[事务重试](/reference/transactions/transaction-optimistic.md#事务的重试)，事务中的语句数将不受此限制。
 
 ### `tcp-keep-alive`
 
@@ -363,11 +383,6 @@ prepare 语句的 Plan cache 设置。
 
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
-
-### `enable-chunk-rpc`
-
-+ 开启 coprocessor 的 `Chunk` 数据编码格式。
-+ 默认值：true
 
 ## txn-local-latches
 
