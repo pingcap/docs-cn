@@ -57,7 +57,7 @@ category: how-to
 
 ### 第 2 步：在中控机上安装 TiUP 组件
 
-使用 `root` 用户或者有 `sudo` 权限的用户安装，以 `pingcap` 用户为例：
+使用普通用户，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
 
 1. 执行如下命令安装 TiUP：
 
@@ -74,10 +74,10 @@ category: how-to
                                     Dload  Upload   Total   Spent    Left  Speed
     100 6029k  100 6029k    0     0  2384k      0  0:00:02  0:00:02 --:--:-- 2385k
     Detected shell: /bin/bash
-    Shell profile:  /home/pingcap/.bash_profile
-    /home/pingcap/.bash_profile has been modified to to add tiup to PATH
-    open a new terminal or source /home/pingcap/.bash_profile to use it
-    Installed path: /home/pingcap/.tiup/bin/tiup
+    Shell profile:  /home/tidb/.bash_profile
+    /home/tidb/.bash_profile has been modified to to add tiup to PATH
+    open a new terminal or source /home/tidb/.bash_profile to use it
+    Installed path: /home/tidb/.tiup/bin/tiup
     ===============================================
     Have a try:     tiup playground
     ===============================================
@@ -101,7 +101,7 @@ category: how-to
     which tiup
     ```
 
-3. 安装 TiUP 的 cluster 工具
+3. 安装 TiUP 的 cluster 工具（以 cluster-v0.4.3 为例）
 
     {{< copyable "shell-regular" >}}
 
@@ -115,7 +115,7 @@ category: how-to
     The component `cluster` is not installed; downloading from repository.
     download https://tiup-mirrors.pingcap.com/cluster-v0.4.3-linux-amd64.tar.gz:
     17400435 / 17400435 [---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------] 100.00% ? p/s
-    Starting /home/pingcap/.tiup/components/cluster/v0.4.3/cluster
+    Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster
     Deploy a TiDB cluster for production
 
     Usage:
@@ -191,7 +191,7 @@ category: how-to
     预期结果输出（v0.4.3 为当前版本）：
 
     ```log
-    /home/pingcap/.tiup/components/cluster/v0.4.3/cluster
+    /home/tidb/.tiup/components/cluster/v0.4.3/cluster
     ```
 
 ### 第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数
@@ -296,7 +296,7 @@ category: how-to
 
 ## 二、配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。需要在中控机上面创建 yml 格式配置文件例如 `topology.yaml`，下文介绍 3 个经典场景的集群配置模版：
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件例如 `topology.yaml`，下文介绍 3 个经典场景的集群配置模版：
 
 - 场景 1：单机单实例
 - 场景 2：单机多实例
@@ -306,17 +306,21 @@ category: how-to
 
 #### 部署需求
 
-将集群通过 `tidb` 用户创建，使用默认 `22` 端口，指定全局的配置，服务、监控目录为 `/tidb-deploy` 和 数据目录 `/tidb-data` 。
+通过 `tidb` 用户做集群管理，使用默认 `22` 端口，部署目录为 `/tidb-deploy` 和 数据目录 `/tidb-data` 。
 
 #### 拓扑信息
 
 |实例 | 个数 | 物理机配置 | IP |配置 |
 | :-- | :-- | :-- | :-- | :-- |
 | TiKV | 3 | 16 Vcore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
-| TiDB |1 | 16  Vcore 32GB * 1 | 10.0.1.4 | 默认端口 <br>  全局目录配置 |
-| PD | 1 |16  Vcore 32GB * 1 |10.0.1.4 | 默认端口 <br> 全局目录配置 |
+| TiDB |3 | 16 Vcore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口 <br>  全局目录配置 |
+| PD | 3 |4 Vcore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
 
 #### 第 4 步：配置文件模版 topology.yaml
+
+> **注意：**
+>
+> tidb 无需手动创建，该用户 tiup 会自动在所有部署机创建，可以自定义用户，也可以和中控机的用户保持一致。
 
 {{< copyable "shell-regular" >}}
 
@@ -338,20 +342,75 @@ monitored:
   data_dir: "/tidb-data/monitored-9100"
   log_dir: "/tidb-deploy/monitored-9100/log"
 
+server_configs:
+  tidb:
+    log.slow-threshold: 300
+    log.level: warn
+    binlog.enable: false
+    binlog.ignore-error: false
+  tikv:
+    readpool.storage.use-unified-pool: true
+    readpool.coprocessor.use-unified-pool: true
+  pd:
+    schedule.leader-schedule-limit: 4
+    schedule.region-schedule-limit: 2048
+    schedule.replica-schedule-limit: 64
+    
+
 pd_servers:
   - host: 10.0.1.4
+    # ssh_port: 22
+    # name: "pd-1"
+    # client_port: 2379
+    # peer_port: 2380
+    # deploy_dir: "deploy/pd-2379"
+    # data_dir: "data/pd-2379"
+    # log_dir: "deploy/pd-2379/log"
+    # numa_node: "0,1"
+    # # Config is used to overwrite the `server_configs.pd` values
+    # config:
+    #   schedule.max-merge-region-size: 20
+    #   schedule.max-merge-region-keys: 200000
+  - host: 10.0.1.5
+  - host: 10.0.1.6
 tidb_servers:
-  - host: 10.0.1.4
+  - host: 10.0.1.7
+    # ssh_port: 22
+    # port: 4000
+    # status_port: 10080
+    # deploy_dir: "deploy/tidb-4000"
+    # log_dir: "deploy/tidb-4000/log"
+    # numa_node: "0,1"
+    # # Config is used to overwrite the `server_configs.tidb` values
+    # config:
+    #   log.level: warn
+    #   log.slow-query-file: tidb-slow-overwrited.log
+  - host: 10.0.1.8
+  - host: 10.0.1.9
 tikv_servers:
   - host: 10.0.1.1
+    # ssh_port: 22
+    # port: 20160
+    # status_port: 20180
+    # deploy_dir: "deploy/tikv-20160"
+    # data_dir: "data/tikv-20160"
+    # log_dir: "deploy/tikv-20160/log"
+    # numa_node: "0,1"
+    # # Config is used to overwrite the `server_configs.tikv` values
+    #  config:
+    #    server.labels:
+    #      zone: sh
+    #      dc: sha
+    #      rack: rack1
+    #      host: host1
   - host: 10.0.1.2
   - host: 10.0.1.3
 monitoring_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 grafana_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 alertmanager_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 ```
 
 ### 场景 2：单机多实例
@@ -361,6 +420,10 @@ alertmanager_servers:
 TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混布，需要数据目录使用独立的文件系统。
 
 #### 单机多实例部署的关键参数配置
+
+> **注意：**
+> 
+> 以下为单机多实例的关键参数介绍，主要用于 TiDB、TiKV 的单机多实例部署场景。请按照提供的计算公式，将结果填写至下一步的配置文件中。
 
 - TiKV 进行配置优化
 
@@ -418,10 +481,10 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
 | 实例 | 个数 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- | :-- |
 | TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1.实例级别 port、status_port 区分；<br> 2.全局参数配置 readpool、storage 以及 raftstore 参数；<br> 3.实例级别 host 维度 的 label 配置；<br> 4. 配置 numa 绑核操作|
-| TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 numa 绑核操作 |
-| PD | 3 | 16 Vcore 32 GB | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 location_lables 参数 |
+| TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 numa 绑核操作 |
+| PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
 
-#### 第 4 步：配置文件模版（如无需端口、目录自定义，仅修改 IP 即可） topology.yaml
+#### 第 4 步：配置文件模版（注意修改必要参数、IP、端口、目录的修改） topology.yaml
 
 {{< copyable "shell-regular" >}}
 
@@ -446,54 +509,53 @@ monitored:
   data_dir: "/tidb-data-monitored-9100"
   log_dir: "/tidb-deploy/monitored-9100/log"
 
-
 server_configs:
   tikv:
-    readpool.unified.max-thread-count: 12
+    readpool.unified.max-thread-count: <取值参考上文计算公式的结果>
     readpool.storage.use-unified-pool: true
     readpool.coprocessor.use-unified-pool: true
-    storage.block-cache.capacity: "8GB"
-    raftstore.capactiy: "200GB"
+    storage.block-cache.capacity: "<取值参考上文计算公式的结果>"
+    raftstore.capactiy: "<取值参考上文计算公式的结果>"
   pd:
     replication.location-labels: ["host"]
 
 pd_servers:
-  - host: 10.0.1.7
-  - host: 10.0.1.8
-  - host: 10.0.1.9
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
 
 tidb_servers:
-  - host: 10.0.1.4
+  - host: 10.0.1.7
     port: 4000
     status_port: 10080
     deploy_dir: "/tidb-deploy/tidb-4000"
     log_dir: "/tidb-deploy/tidb-4000/log"
     numa_node: "0"
-  - host: 10.0.1.4
+  - host: 10.0.1.7
     port: 4001
     status_port: 10081
     deploy_dir: "/tidb-deploy/tidb-4001"
     log_dir: "/tidb-deploy/tidb-4001/log"
     numa_node: "1"
-  - host: 10.0.1.5
+  - host: 10.0.1.8
     port: 4000
     status_port: 10080
     deploy_dir: "/tidb-deploy/tidb-4000"
     log_dir: "/tidb-deploy/tidb-4000/log"
     numa_node: "0"
-  - host: 10.0.1.5
+  - host: 10.0.1.8
     port: 4001
     status_port: 10081
     deploy_dir: "/tidb-deploy/tidb-4001"
     log_dir: "/tidb-deploy/tidb-4001/log"
     numa_node: "1"
-  - host: 10.0.1.6
+  - host: 10.0.1.9
     port: 4000
     status_port: 10080
     deploy_dir: "/tidb-deploy/tidb-4000"
     log_dir: "/tidb-deploy/tidb-4000/log"
     numa_node: "0"
-  - host: 10.0.1.6
+  - host: 10.0.1.9
     port: 4001
     status_port: 10081
     deploy_dir: "/tidb-deploy/tidb-4001"
@@ -594,8 +656,8 @@ alertmanager_servers:
 | 实例 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- |
 | TiKV | 16 vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
-|TiDB | 16 vcore 32 GB | 10.0.1.4 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
-| PD | 4 vcore 8 GB | 10.0.1.5 | 默认端口配置 |
+|TiDB | 16 vcore 32 GB * 3 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
+| PD | 4 vcore 8 GB * 3| 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
 | Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 gc 时间 7 天 |
 | Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
@@ -628,9 +690,13 @@ server_configs:
     binlog.ignore-error: true
 
 pd_servers:
-  - host: 10.0.1.5
-tidb_servers:
   - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
 tikv_servers:
   - host: 10.0.1.1
   - host: 10.0.1.2
@@ -723,7 +789,7 @@ Flags:
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 > 
 > - 如果是密钥方式可以通过 -i 或者 --identity_file 来指定密钥的路径；
-> - 如果是密码方式无需添加其他参数，Enter 即可进入密码交互窗口。
+> - 如果是密码方式无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
 ### 第 5 步：执行部署操作
 
@@ -733,27 +799,31 @@ Flags:
 # 通过 TiUP cluster 部署集群名称为 tidb-test
 # 部署版本为 v4.0.0-beta.2
 # 初始化配置文件 topology.yaml
-# 通过 pingcap 的密钥登陆到目标主机完成集群部署
+# 通过 root 的密钥登陆到目标主机完成集群部署,也可以用其他有 ssh 和 sudo 权限的用户来完成部署。
 
-tiup cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user pingcap -i /home/pingcap/.ssh/gcp_rsa
+tiup cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user root -i /home/root/.ssh/gcp_rsa
 ```
 
 预期日志输出样例，部署成功会有 `Started cluster tidb-test successfully` 关键词：
 
 ```log
-Starting /home/pingcap/.tiup/components/cluster/v0.0.9/cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user pingcap --identity_file /home/pingcap/.ssh/gcp_rsa
+Starting /home/tidb/.tiup/components/cluster/v0.0.9/cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user root --identity_file /home/root/.ssh/gcp_rsa
 Please confirm your topology:
 TiDB Cluster: tidb-test
 TiDB Version: v4.0.0-beta.2
 Type          Host          Ports        Directories
 ----          ----          -----        -----------
 pd            10.0.1.4  2379/2380    /tidb-deploy/pd-2379,/tidb-data/pd-2379
-tikv          10.0.1.1  2060/20080  /tidb-deploy/tikv-2060,/tidb-data/tikv-2060
-tikv          10.0.1.2  2060/20080  /tidb-deploy/tikv-2060,/tidb-data/tikv-2060
-tikv          10.0.1.3  2060/20080  /tidb-deploy/tikv-2060,/tidb-data/tikv-2060
-tidb          10.0.1.4  4000/10080   /tidb-deploy/tidb-4000
+pd            10.0.1.5  2379/2380    /tidb-deploy/pd-2379,/tidb-data/pd-2379
+pd            10.0.1.6  2379/2380    /tidb-deploy/pd-2379,/tidb-data/pd-2379
+tikv          10.0.1.1  2060/20080   /tidb-deploy/tikv-2060,/tidb-data/tikv-2060
+tikv          10.0.1.2  2060/20080   /tidb-deploy/tikv-2060,/tidb-data/tikv-2060
+tikv          10.0.1.3  2060/20080   /tidb-deploy/tikv-2060,/tidb-data/tikv-2060
+tidb          10.0.1.7  4000/10080   /tidb-deploy/tidb-4000
+tidb          10.0.1.8  4000/10080   /tidb-deploy/tidb-4000
+tidb          10.0.1.9  4000/10080   /tidb-deploy/tidb-4000
 prometheus    10.0.1.4  9090         /tidb-deploy/prometheus-9090,/tidb-data/prometheus-9090
-grafana       10.0.1.4 3000         /tidb-deploy/grafana-3000
+grafana       10.0.1.4  3000         /tidb-deploy/grafana-3000
 alertmanager  10.0.1.4  9104/9105    /tidb-deploy/alertmanager-9104,/tidb-data/alertmanager-9104
 Attention:
     1. If the topology is not what you expected, check your yaml file.
@@ -853,10 +923,14 @@ TiDB Version: v4.0.0-beta.2
 ID                  Role          Host          Ports        Status    Data Dir                        Deploy Dir
 --                  ----          ----          -----        ------    --------                        ----------
 10.0.1.4:9104   alertmanager  10.0.1.4  9104/9105    inactive  /tidb-data/alertmanager-9104  /tidb-deploy/alertmanager-9104
-10.0.1.4:3000   grafana       10.0.1.4  3000         inactive  -                               /tidb-deploy/grafana-3000
+10.0.1.4:3000   grafana       10.0.1.4  3000         inactive  -                             /tidb-deploy/grafana-3000
 10.0.1.4:2379   pd            10.0.1.4  2379/2380    Down      /tidb-data/pd-2379            /tidb-deploy/pd-2379
+10.0.1.5:2379   pd            10.0.1.5  2379/2380    Down      /tidb-data/pd-2379            /tidb-deploy/pd-2379
+10.0.1.6:2379   pd            10.0.1.6  2379/2380    Down      /tidb-data/pd-2379            /tidb-deploy/pd-2379
 10.0.1.4:9090   prometheus    10.0.1.4  9090         inactive  /tidb-data/prometheus-9090    /tidb-deploy/prometheus-9090
-10.0.1.4:4000   tidb          10.0.1.4  4000/10080   Down      -                               /tidb-deploy/tidb-4000
+10.0.1.7:4000   tidb          10.0.1.7  4000/10080   Down      -                             /tidb-deploy/tidb-4000
+10.0.1.8:4000   tidb          10.0.1.8  4000/10080   Down      -                             /tidb-deploy/tidb-4000
+10.0.1.9:4000   tidb          10.0.1.9  4000/10080   Down      -                             /tidb-deploy/tidb-4000
 10.0.1.1:20160  tikv          10.0.1.1  20160/20180  Down      /tidb-data/tikv-20160         /tidb-deploy/tikv-2060
 10.0.1.2:20160  tikv          10.0.1.2  20160/20180  Down      /tidb-data/tikv-20160         /tidb-deploy/tikv-2060
 10.0.1.3:20160  tikv          10.0.1.4  20160/20180  Down      /tidb-data/tikv-20160         /tidb-deploy/tikv-2060
@@ -939,13 +1013,17 @@ TiDB Version: v4.0.0-beta.2
 ID                  Role          Host          Ports        Status     Data Dir                        Deploy Dir
 --                  ----          ----          -----        ------     --------                        ----------
 10.0.1.4:9104   alertmanager  10.0.1.4  9104/9105    Up         /tidb-data/alertmanager-9104  /tidb-deploy/alertmanager-9104
-10.0.1.4:3000   grafana       10.0.1.4  3000         Up         -                               /tidb-deploy/grafana-3000
+10.0.1.4:3000   grafana       10.0.1.4  3000         Up         -                             /tidb-deploy/grafana-3000
 10.0.1.4:2379   pd            10.0.1.4  2379/2380    Healthy|L  /tidb-data/pd-2379            /tidb-deploy/pd-2379
+10.0.1.5:2379   pd            10.0.1.5  2379/2380    Healthy    /tidb-data/pd-2379            /tidb-deploy/pd-2379
+10.0.1.6:2379   pd            10.0.1.6  2379/2380    Healthy    /tidb-data/pd-2379            /tidb-deploy/pd-2379
 10.0.1.4:9090   prometheus    10.0.1.4  9090         Up         /tidb-data/prometheus-9090    /tidb-deploy/prometheus-9090
-10.0.1.4:4000   tidb          10.0.1.4  4000/10080   Up         -                               /tidb-deploy/tidb-4000
-10.0.1.1:2060  tikv          10.0.1.1  2060/20080  Up         /tidb-data/tikv-2060         /tidb-deploy/tikv-2060
-10.0.1.2:2060  tikv          10.0.1.2  2060/20080  Up         /tidb-data/tikv-2060         /tidb-deploy/tikv-2060
-10.0.1.3:2060  tikv          10.0.1.4  2060/20080  Up         /tidb-data/tikv-2060         /tidb-deploy/tikv-2060
+10.0.1.7:4000   tidb          10.0.1.7  4000/10080   Up         -                             /tidb-deploy/tidb-4000
+10.0.1.8:4000   tidb          10.0.1.8  4000/10080   Up         -                             /tidb-deploy/tidb-4000
+10.0.1.9:4000   tidb          10.0.1.9  4000/10080   Up         -                             /tidb-deploy/tidb-4000
+10.0.1.1:2060   tikv          10.0.1.1  2060/20080   Up         /tidb-data/tikv-2060          /tidb-deploy/tikv-2060
+10.0.1.2:2060   tikv          10.0.1.2  2060/20080   Up         /tidb-data/tikv-2060          /tidb-deploy/tikv-2060
+10.0.1.3:2060   tikv          10.0.1.4  2060/20080   Up         /tidb-data/tikv-2060          /tidb-deploy/tikv-2060
 ```
 
 ### 第 10 步：通过 TiDB-Dashboard 和 Grafana 检查集群状态
