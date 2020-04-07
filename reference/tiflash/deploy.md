@@ -54,7 +54,7 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐使用 TiUP Cluster 安装部署 TiFlash，部署流程如下：
 
-1. 安装 tiup，参考 [tiup 网站](https://tiup.io/)。
+1. 安装 TiUP，参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)。
 
 2. 安装 cluster 组件
 
