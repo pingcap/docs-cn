@@ -15,6 +15,8 @@ The SQL diagnosis system has the following advantages:
 + It provides monitoring summaries and automatic diagnosis.
 + You will find it easier to query cluster information.
 
+## Overview
+
 The SQL diagnosis system consists of three major parts:
 
 + **Cluster information table**: The SQL diagnosis system introduces cluster information tables that provide a unified way to get the discrete information of each instance and node. This system fully integrates the cluster topology, hardware information, software information, kernel parameters, monitoring, system information, slow queries, statements, and logs of the entire cluster into the table. So you can query these information using SQL statements.

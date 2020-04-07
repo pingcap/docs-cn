@@ -95,19 +95,19 @@ You can use pd-ctl to disable the Placement Rules feature and switch to the prev
 pd-ctl config placement-rules disable
 ```
 
-> **Notes:**
+> **Note:**
 >
 > After disabling Placement Rules, PD uses the original `max-replicas` and `location-labels` configurations. The modification of rules (when Placement Rules is enabled) will not update these two configurations in real time. In addition, all the rules that have been configured remain in PD and will be used the next time you enable Placement Rules.
 
 ### Set rules using pd-ctl
 
-> **Note：**
+> **Note:**
 >
 > The change of rules affects the PD scheduling in real time. Improper rule setting might result in fewer replicas and affect the high availability of the system.
 
 pd-ctl supports using the following methods to view rules in the system, and the output is a JSON-format rule or a rule list.
 
-- **To view the list of all rules:**
+- To view the list of all rules:
 
     {{< copyable "shell-regular" >}}
 
@@ -115,7 +115,7 @@ pd-ctl supports using the following methods to view rules in the system, and the
     pd-ctl config placement-rules show
     ```
 
-- **To view the list of all rules in a PD Group:**
+- To view the list of all rules in a PD Group:
 
     {{< copyable "shell-regular" >}}
 
@@ -123,7 +123,7 @@ pd-ctl supports using the following methods to view rules in the system, and the
     pd-ctl config placement-rules show --group=pd
     ```
 
-- **To view the rule of a specific ID in a Group:**
+- To view the rule of a specific ID in a Group:
 
     {{< copyable "shell-regular" >}}
 
@@ -131,7 +131,7 @@ pd-ctl supports using the following methods to view rules in the system, and the
     pd-ctl config placement-rules show --group=pd --id=default
     ```
 
-- **To view the rule list that matches a Region:**
+- To view the rule list that matches a Region:
 
     {{< copyable "shell-regular" >}}
 
