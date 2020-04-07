@@ -38,20 +38,20 @@ category: how-to
 
 软硬件环境配置参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
 
-中控机环境配置建议如下：
+中控机软硬件配置建议如下：
 
 - 中控机可以是部署目标机器中的某一台
 - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统
 - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包
-- 需要安装 TiUP 组件（参考第 2 步）
+- 需要安装 TiUP 组件（参考[第 2 步](#第-2-步在中控机上安装-tiup-组件)）
 
 目标主机软硬件配置建议如下：
 
 - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议
-- 目前支持在 x86_64 (AMD64) 和 ARM64（TiUP 在 4.0 GA 支持） 两种架构上部署 TiDB 集群。
-  - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统；
-  - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统；
-- TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考第 3 步）
+- 目前支持在 x86_64 (AMD64) 和 ARM64（TiUP 在 4.0 GA 支持）两种架构上部署 TiDB 集群。
+    - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
+    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统
+- TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考[第 3 步](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)）
 - 机器之间内网互通（建议关闭防火墙 `firewalld`，或者开放 TiDB 集群的节点间所需端口）
 - 如果需要绑核操作，需要安装 `numactl` 工具
 
@@ -952,21 +952,21 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 - 通过 {pd-leader-ip}:2379/dashboard 登陆 TiDB Dashboard
 
-    ![TiDB-Dashboard](/media/TiUP-deploy/1.png)
+    ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
 - 主页面显示 TiDB Cluster 节点信息
 
-    ![TiDB-Dashboard-status](/media/TiUP-deploy/2.png)
+    ![TiDB-Dashboard-status](/media/tiup/tidb-dashboard-status.png)
 
 #### 查看 Grafana 监控 Overview 模版检查 TiDB Cluster 状态
 
 - 通过 {Grafana-ip}:3000 登陆 Grafana 监控，默认密码为 admin/admin
 
-    ![Grafana-login](/media/TiUP-deploy/3.png)
+    ![Grafana-login](/media/tiup/grafana-login.png)
  
 - 点击 Overview 监控页面检查 TiDB 端口和负载监控信息 
 
-    ![Grafana-overview](/media/TiUP-deploy/4.png)
+    ![Grafana-overview](/media/tiup/grafana-overview.png)
 
 ### 登陆数据库简单 DML DDL 操作和查询 SQL statement （提前安装 Mysql Client）
 
