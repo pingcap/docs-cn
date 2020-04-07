@@ -210,6 +210,7 @@ select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 
 > `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
 
 目前该 Hint 生效的条件较为苛刻，包括：
+
 - 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
 - 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
 
