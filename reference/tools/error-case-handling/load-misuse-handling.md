@@ -5,7 +5,7 @@ category: reference
 
 # 全量数据导入过程常见报错处理
 
-本文介绍了使用 [Loader](/reference/tools/loader.md) 或者 [TiDB Data Migration](/reference/tools/data-migration/overview.md)（以下简称为 DM）进行全量数据导入过程中常见的因为使用造成的出错场景，以及这些错误发生的原因和处理方式。
+本文介绍了使用 [Loader](/reference/tools/loader.md) 或者 [TiDB Data Migration](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/)（以下简称为 DM）进行全量数据导入过程中常见的因为使用造成的出错场景，以及这些错误发生的原因和处理方式。
 
 ## 报错：```Try adjusting the `max_allowed_packet` variable```
 
