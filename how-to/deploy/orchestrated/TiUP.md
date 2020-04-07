@@ -28,20 +28,24 @@ category: how-to
 
 ## 一、环境准备
 
-- 软硬件环境准备
-- 中控机 TiUP 安装
-- TiKV 部署目标机器上添加数据盘 ext4 文件系统挂载参数
+环境准备环节分为如下几步：
 
-### 第一步：硬件配置参考官方文档软硬件建议
+- 第 1 步：软硬件环境配置
+- 第 2 步：在中控机上安装 TiUP 组件
+- 第 3 步：在 TiKV 部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
-- 中控机建议
+### 第 1 步：软硬件环境配置
 
-    - 中控机可以是部署目标机器中的某一台
-    - 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统
-    - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包
-    - 需要安装 TiUP 组件
+软硬件环境配置参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
 
-### 第二步：中控机安装 TiUP 组件
+中控机环境配置建议如下：
+
+- 中控机可以是部署目标机器中的某一台
+- 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统
+- 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包
+- 需要安装 TiUP 组件（参考第 2 步）
+
+### 第 2 步：在中控机上安装 TiUP 组件
 
 使用 `root` 用户或者有 `sudo` 权限的用户安装，以 `pingcap` 用户为例：
 
@@ -151,7 +155,7 @@ category: how-to
     # help        帮助信息
     ```
 
-4. 如果已经安装，则更新 TiUP 的 cluster 工具至最新版本
+4. 如果已经安装，则更新 TiUP 的 cluster 工具至最新版本：
 
     {{< copyable "shell-regular" >}}
 
@@ -159,7 +163,7 @@ category: how-to
     tiup update cluster
     ```
 
-    预期结果输出如下 `“Update successfully!”` 字样：
+    预期输出如下 `“Update successfully!”` 字样：
 
     ```log
     The `cluster:v0.4.3` has been installed
@@ -174,7 +178,7 @@ category: how-to
     tiup --binary cluster
     ```
 
-    预期结果输出，v0.4.3 为当前版本
+    预期结果输出（v0.4.3 为当前版本）：
 
     ```log
     /home/pingcap/.tiup/components/cluster/v0.4.3/cluster
@@ -192,7 +196,7 @@ category: how-to
 
     - 如果需要绑核操作，需要安装 numactl 工具
 
-### 第三步：TiKV 部署目标机器上添加数据盘 ext4 文件系统挂载参数
+### 第 3 步：在 TiKV 部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
 使用 `root` 用户登录目标机器，将部署目标机器数据盘格式化成 ext4 文件系统，挂载时添加 `nodelalloc` 和 `noatime` 挂载参数。`nodelalloc` 是必选参数，否则 Ansible 安装时检测无法通过；`noatime` 是可选建议参数。
 
@@ -310,7 +314,7 @@ category: how-to
 | TiDB |1 | 16  Vcore 32GB * 1 | 10.0.1.4 | 默认端口 <br>  全局目录配置 |
 | PD | 1 |16  Vcore 32GB * 1 |10.0.1.4 | 默认端口 <br> 全局目录配置 |
 
-#### 第四步：配置文件模版 topology.yaml
+#### 第 4 步：配置文件模版 topology.yaml
 
 {{< copyable "shell-regular" >}}
 
@@ -415,7 +419,7 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
 | TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 numa 绑核操作 |
 | PD | 3 | 16 Vcore 32 GB | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 location_lables 参数 |
 
-#### 第四步：配置文件模版（如无需端口、目录自定义，仅修改 IP 即可） topology.yaml
+#### 第 4 步：配置文件模版（如无需端口、目录自定义，仅修改 IP 即可） topology.yaml
 
 {{< copyable "shell-regular" >}}
 
@@ -594,7 +598,7 @@ alertmanager_servers:
 | Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 <br> 设置 gc 时间 7 天 |
 | Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
-#### 第四步：配置文件模版（如无需自定义端口或者目录，仅修改 IP 即可），以 topology.yaml 为例
+#### 第 4 步：配置文件模版（如无需自定义端口或者目录，仅修改 IP 即可），以 topology.yaml 为例
 
 {{< copyable "shell-regular" >}}
 
@@ -720,7 +724,7 @@ Flags:
 > - 如果是密钥方式可以通过 -i 或者 --identity_file 来指定密钥的路径；
 > - 如果是密码方式无需添加其他参数，Enter 即可进入密码交互窗口。
 
-### 第五步：执行部署操作
+### 第 5 步：执行部署操作
 
 {{< copyable "shell-regular" >}}
 
@@ -815,7 +819,7 @@ Flags:
 # Flags 可以通过 -h 或者 --help 来查看帮助
 ```
 
-### 第六步：检查 TiUP 管理集群情况
+### 第 6 步：检查 TiUP 管理集群情况
 
 {{< copyable "shell-regular" >}}
 
@@ -832,7 +836,7 @@ Name              User  Version        Path                                     
 tidb-test         tidb  v4.0.0-beta.2  /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
-### 第七步：检查 `tidb-test` 集群情况
+### 第 7 步：检查 `tidb-test` 集群情况
 
 {{< copyable "shell-regular" >}}
 
@@ -860,7 +864,7 @@ ID                  Role          Host          Ports        Status    Data Dir 
 
 ## 五、启动集群
 
-### 第八步：执行 `tidb-test` 集群启动命令
+### 第 8 步：执行 `tidb-test` 集群启动命令
 
 {{< copyable "shell-regular" >}}
 
@@ -918,7 +922,7 @@ Started cluster `tidb-test` successfully
 
 ## 六、验证集群状态
 
-### 第九步：通过 TiUP 检查 tidb-test 集群状态
+### 第 9 步：通过 TiUP 检查 tidb-test 集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -944,7 +948,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 10.0.1.3:2060  tikv          10.0.1.4  2060/20080  Up         /tidb-data/tikv-2060         /tidb-deploy/tikv-2060
 ```
 
-### 第十步：通过 TiDB-Dashboard 和 Grafana 检查集群状态
+### 第 10 步：通过 TiDB-Dashboard 和 Grafana 检查集群状态
 
 #### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
 
