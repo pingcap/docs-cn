@@ -45,6 +45,16 @@ category: how-to
 - 该机器需开放外网访问，用于下载 TiDB 及相关软件安装包
 - 需要安装 TiUP 组件（参考第 2 步）
 
+目标主机软硬件配置建议如下：
+
+- 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议
+- 目前支持在 x86_64 (AMD64) 和 ARM64（TiUP 在 4.0 GA 支持） 两种架构上部署 TiDB 集群。
+  - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统；
+  - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统；
+- TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考第 3 步）
+- 机器之间内网互通（建议关闭防火墙 `firewalld`，或者开放 TiDB 集群的节点间所需端口）
+- 如果需要绑核操作，需要安装 `numactl` 工具
+
 ### 第 2 步：在中控机上安装 TiUP 组件
 
 使用 `root` 用户或者有 `sudo` 权限的用户安装，以 `pingcap` 用户为例：
@@ -183,13 +193,6 @@ category: how-to
     ```log
     /home/pingcap/.tiup/components/cluster/v0.4.3/cluster
     ```
-
-目标主机软硬件配置文件系统要求
-- 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议
-- 目前支持在 x86_64 (AMD64) 和 ARM64（TiUP 会在 4.0 GA支持） 两种架构上部署 TiDB 集群。在 AMD64 架构下，建 议使用 CentOS 7.3 及以上版本 Linux 操作系统；在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统
-- TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式
-- 机器之间内网互通（建议关闭防火墙，或者开放 TiDB 集群的节点间所需端口）
-- 如果需要绑核操作，需要安装 numactl 工具
 
 ### 第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数
 
