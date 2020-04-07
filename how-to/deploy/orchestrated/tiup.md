@@ -814,8 +814,7 @@ Usage:
 Flags:
   -h, --help   help for list
 
-# Usage 展示执行命令
-# Flags 可以通过 -h 或者 --help 来查看帮助
+# Usage 展示执行命令，该命令来展示受管理的所有 TiDB 集群的清单。
 ```
 
 ### 第 6 步：检查 TiUP 管理集群情况
