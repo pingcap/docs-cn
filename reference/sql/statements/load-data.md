@@ -14,6 +14,33 @@ category: reference
 
 ![LoadDataStmt](/media/sqlgram/LoadDataStmt.png)
 
+## 参数说明
+
+用户可以使用 `FIELDS` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。如果用户希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
+
+例如对于以下格式的数据：
+
+```
+"bob","20","street 1"\r\n
+"alice","33","street 1"\r\n
+```
+
+如果想分别提取 `bob`、`20`、`street 1`，可以指定数据的分隔符号为 `','`，数据的包围符号为 `'\"'`。
+可以写成：
+
+```sql
+FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n'
+```
+
+如果不指定处理数据的参数，将会按以下参数处理
+
+```sql
+FIELDS TERMINATED BY '\t' ENCLOSED BY ''
+LINES TERMINATED BY '\n'
+```
+
+用户可以通过 `IGNORE number LINES` 参数来忽略文件开始的 `number` 行，例如可以使用 `IGNORE 1 LINES` 来忽略文件的首行。
+
 ## 示例
 
 {{< copyable "sql" >}}
@@ -36,6 +63,12 @@ CREATE TABLE trips (
 ```
 Query OK, 0 rows affected (0.14 sec)
 ```
+
+通过 `LOAD DATA` 导入数据，指定数据的分隔符为逗号，忽略包围数据的引号，并且忽略文件的第一行数据。
+
+如果此时遇到 `ERROR 1148 (42000): the used command is not allowed with this TiDB version` 报错信息。可以参考以下文档解决：
+
+[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/faq/tidb.md#923-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
 
 {{< copyable "sql" >}}
 
