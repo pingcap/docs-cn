@@ -48,9 +48,9 @@ Value:
 ```
 {
     "ts":<TS>,
-    "schema":<Schema Name>,
-    "table":<Table Name>,
-    "type":1
+    "scm":<Schema Name>,
+    "tbl":<Table Name>,
+    "t":1
 }
 ```
 
@@ -66,14 +66,14 @@ Value:
 {
     <UpdateOrDelete>:{
         <Column Name>:{
-            "type":<Column Type>,
-            "where_handle":<Where Handle>,
-            "value":<Column Value>
+            "t":<Column Type>,
+            "h":<Where Handle>,
+            "v":<Column Value>
         },
         <Column Name>:{
-            "type":<Column Type>,
-            "where_handle":<Where Handle>,
-            "value":<Column Value>
+            "t":<Column Type>,
+            "h":<Where Handle>,
+            "v":<Column Value>
         }
     }
 }
@@ -81,7 +81,7 @@ Value:
 
 | 参数         | 类型   | 说明                    |
 | :---------- | :----- | :--------------------- |
-| UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "update"/"delete" |
+| UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "u"/"d" |
 | Column Name    | String | 列名   |
 | Column Type    | Number | 列类型，详见：[Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md) |
 | Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true |
@@ -94,9 +94,9 @@ Value:
 ```
 {
     "ts":<TS>,
-    "schema":<Schema Name>,
-    "table":<Table Name>,
-    "type":2
+    "scm":<Schema Name>,
+    "tbl":<Table Name>,
+    "t":2
 }
 ```
 
@@ -110,8 +110,8 @@ Value:
 
 ```
 {
-    "query":<DDL Query>,
-    "type":<DDL Type>
+    "q":<DDL Query>,
+    "t":<DDL Type>
 }
 ```
 
@@ -127,7 +127,7 @@ Value:
 ```
 {
     "ts":<TS>,
-    "type":3
+    "t":3
 }
 ```
 
@@ -150,10 +150,10 @@ CREATE TABLE test.t1(id int primary key, val varchar(16));
 如以下执行日志中的 Log 1、Log 3 所示，DDL Event 将被广播到所有 MQ Partition；Resolved Event 会被周期性地广播到各个 MQ Partition：
 
 ```
-1. [partition=0] [key="{\"ts\":415508856908021766,\"schema\":\"test\",\"table\":\"t1\",\"type\":2}"] [value="{\"query\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"type\":3}"]
-2. [partition=0] [key="{\"ts\":415508856908021766,\"type\":3}"] [value=]
-3. [partition=1] [key="{\"ts\":415508856908021766,\"schema\":\"test\",\"table\":\"t1\",\"type\":2}"] [value="{\"query\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"type\":3}"]
-4. [partition=1] [key="{\"ts\":415508856908021766,\"type\":3}"] [value=]
+1. [partition=0] [key="{\"ts\":415508856908021766,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":2}"] [value="{\"q\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"t\":3}"]
+2. [partition=0] [key="{\"ts\":415508856908021766,\"t\":3}"] [value=]
+3. [partition=1] [key="{\"ts\":415508856908021766,\"scm\":\"test\",\"tbl\":\"t1\",\"type\":2}"] [value="{\"q\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"t\":3}"]
+4. [partition=1] [key="{\"ts\":415508856908021766,\"t\":3}"] [value=]
 ```
 
 在上游执行以下 SQL 语句：
@@ -172,10 +172,10 @@ COMMIT;
 + Log 8 是 Log 7 的重复 Event。Row Changed Event 可能重复，但每个版本的 Event 第一次发出的次序一定是有序的。
 
 ```
-5. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":1},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"YWE=\"}}}"]
-6. [partition=1] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":2},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"YmI=\"}}}"]
-7. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"Y2M=\"}}}"]
-8. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"Y2M=\"}}}"]
+5. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":1},\"val\":{\"t\":15,\"v\":\"YWE=\"}}}"]
+6. [partition=1] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":2},\"val\":{\"t\":15,\"v\":\"YmI=\"}}}"]
+7. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"Y2M=\"}}}"]
+8. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"type\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"Y2M=\"}}}"]
 ```
 
 在上游执行以下 SQL 语句：
@@ -192,10 +192,10 @@ COMMIT;
 + Log 13 和 Log 14 是 Resolved Event。Resolved Event 意味着在这个 Partition 中，任意小于 Resolved TS 的 Event（包括 Row Changed Event 和 DDL Event）已经发送完毕。
 
 ```
-9. [partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"delete\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":1}}}"]
-10. [partition=1] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"delete\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":2}}}"]
-11. [partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"ZGQ=\"}}}"]
-12. [partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":4},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"ZWU=\"}}}"]
-13. [partition=0] [key="{\"ts\":415508881038376963,\"type\":3}"] [value=]
-14. [partition=1] [key="{\"ts\":415508881038376963,\"type\":3}"] [value=]
+9. [partition=0] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"d\":{\"id\":{\"t\":3,\"h\":true,\"v\":1}}}"]
+10. [partition=1] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"d\":{\"id\":{\"t\":3,\"h\":true,\"v\":2}}}"]
+11. [partition=0] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"ZGQ=\"}}}"]
+12. [partition=0] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":4},\"val\":{\"t\":15,\"v\":\"ZWU=\"}}}"]
+13. [partition=0] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
+14. [partition=1] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
 ```
