@@ -352,7 +352,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 4. 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 3
 5. 常量的 coercibility 值为 4
 6. 数字或者中间变量的 coercibility 值为 5
-7. `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为6
+7. `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为 6
 
 在推断 collation 时，优先使用 coercibility 值低的表达式的 collation。如果coercibility 值相同，则按以下优先级决定 collation：
 
