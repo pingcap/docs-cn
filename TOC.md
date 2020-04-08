@@ -30,7 +30,8 @@
   + 部署
     - [软硬件环境需求](/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
-      - [使用 Ansible 部署（推荐）](/how-to/deploy/orchestrated/ansible.md)
+      - [使用 TiUP 部署（推荐）](/how-to/deploy/orchestrated/tiup.md)
+      - [使用 Ansible 部署](/how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](/how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)
     + 跨地域冗余
@@ -40,6 +41,7 @@
   + 配置
     - [时区](/how-to/configure/time-zone.md)
     - [内存控制](/how-to/configure/memory-control.md)
+    - [Placement Rules](/how-to/configure/placement-rules.md)
   + 安全
     + 安全传输层协议 (TLS)
       - [为 MySQL 客户端开启 TLS](/how-to/secure/enable-tls-clients.md)
@@ -219,6 +221,7 @@
     - [分区表](/reference/sql/partitioning.md)
     - [字符集](/reference/sql/character-set.md)
     - [SQL 模式](/reference/sql/sql-mode.md)
+    - [SQL 诊断](/reference/system-databases/sql-diagnosis.md)
     - [视图](/reference/sql/view.md)
   + 配置
     + tidb-server
@@ -246,6 +249,18 @@
   + 系统数据库
     - [`mysql`](/reference/system-databases/mysql.md)
     - [`information_schema`](/reference/system-databases/information-schema.md)
+    + `sql-diagnosis`
+      - [`cluster_info`](/reference/system-databases/cluster-info.md)
+      - [`cluster_hardware`](/reference/system-databases/cluster-hardware.md)
+      - [`cluster_config`](/reference/system-databases/cluster-config.md)
+      - [`cluster_load`](/reference/system-databases/cluster-load.md)
+      - [`cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md)
+      - [`cluster_log`](/reference/system-databases/cluster-log.md)
+      - [`metrics_schema`](/reference/system-databases/metrics-schema.md)
+      - [`metrics_tables`](/reference/system-databases/metrics-tables.md)
+      - [`metrics_summary`](/reference/system-databases/metrics-summary.md)
+      - [`inspection_result`](/reference/system-databases/inspection-result.md)
+      - [`inspection_summary`](/reference/system-databases/inspection-summary.md)
   - [错误码](/reference/error-codes.md)
   - [支持的连接器和 API](/reference/supported-clients.md)
   + 垃圾回收 (GC)
@@ -278,6 +293,18 @@
     - [PD 调度策略最佳实践](/reference/best-practices/pd-scheduling.md)
     - [海量 Region 集群调优最佳实践](/reference/best-practices/massive-regions.md)
   + [TiSpark 使用指南](/reference/tispark.md)
+  + TiFlash
+    - [概述](/reference/tiflash/overview.md)
+    - [部署集群](/reference/tiflash/deploy.md)
+    - [使用 TiFlash](/reference/tiflash/use-tiflash.md)
+    - [运维集群](/reference/tiflash/maintain.md)
+    - [监控集群](/reference/tiflash/monitor.md)
+    - [扩缩容集群](/reference/tiflash/scale.md)
+    - [升级节点](/reference/tiflash/upgrade.md)
+    - [配置参数](/reference/tiflash/configuration.md)
+    - [报警规则](/reference/tiflash/alert-rules.md)
+    - [性能调优](/reference/tiflash/tune-performance.md)
+    - [FAQ](/reference/tiflash/faq.md)
   + TiDB Binlog
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)
@@ -348,6 +375,7 @@
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.0-rc](/releases/3.1.0-rc.md)
     - [3.1.0-beta.2](/releases/3.1.0-beta.2.md)
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
