@@ -141,22 +141,23 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 
 ## 第 3 步：在中控机器上下载 TiDB Ansible
 
-以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。使用以下命令从 [TiDB Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 master 分支的 TiDB Ansible，默认的文件夹名称为 `tidb-ansible`。
+以 `tidb` 用户登录中控机并进入 `/home/tidb` 目录。使用以下命令从 [TiDB Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB Ansible 4.0 [相应 TAG 版本](https://github.com/pingcap/tidb-ansible/tags)，默认的文件夹名称为 `tidb-ansible`。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-git clone https://github.com/pingcap/tidb-ansible.git
+git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 ```
 
 > **注意：**
 >
+> - `$tag` 替换为选定的 TAG 版本的值，例如 `v4.0.0-beta.2`。
 > - 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
 > - 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
 ## 第 4 步：在中控机器上安装 TiDB Ansible 及其依赖
 
-以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 TiDB Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0、release-3.1 以及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 TiDB Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB Ansible release-4.0 版本兼容 Ansible 2.5 ~ 2.7.11 (2.5 ≤ Ansible ≤ 2.7.11)。
 
 1. 在中控机器上安装 TiDB Ansible 及其依赖。
 
@@ -495,21 +496,15 @@ analyzing CPU 0:
 172.16.10.3
 
 # 注意：要使用 TiKV 的 labels，必须同时配置 PD 的 location_labels 参数，否则 labels 设置不生效。
-[tikv_servers]
-TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv1"
-TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv1"
-TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv2"
-TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv2"
-TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv3"
-TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
 
-# 部署 3.0 版本的 TiDB 集群时，多实例场景需要额外配置 status 端口，示例如下：
-# TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv1"
-# TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv1"
-# TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv2"
-# TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv2"
-# TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv3"
-# TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv3"
+# 多实例场景需要额外配置 status 端口，示例如下：
+[tikv_servers]
+TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv1"
+TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv1"
+TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv2"
+TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv2"
+TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv3"
+TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv3"
 
 [monitoring_servers]
 172.16.10.1
