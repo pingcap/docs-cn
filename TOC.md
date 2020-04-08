@@ -273,6 +273,10 @@
   + System Databases
     - [`mysql`](/reference/system-databases/mysql.md)
     - [`information_schema`](/reference/system-databases/information-schema.md)
+    + `sql-diagnosis`
+      - [`cluster_info`](/reference/system-databases/cluster-info.md)
+      - [`cluster_hardware`](/reference/system-databases/cluster-hardware.md)
+      - [`cluster_config`](/reference/system-databases/cluster-config.md)
   - [Errors Codes](/reference/error-codes.md)
   - [Supported Client Drivers](/reference/supported-clients.md)
   + Garbage Collection (GC)
