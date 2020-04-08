@@ -15,7 +15,7 @@ category: reference
     mv tidb-ansible tidb-ansible-bak
     ```
 
-2. 下载 TiDB 3.0 版本对应 tag 的 tidb-ansible
+2. 下载 TiDB 3.1 版本对应 tag 的 tidb-ansible
 
     {{< copyable "shell-regular" >}}
 
