@@ -350,7 +350,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 2. 两个不同 collation 的字符串的 concat 结果的 coercibility 值为 1
 3. 列的 collation 的 coercibility 值为 2
 4. 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 3
-5. 常量的 coercibility 值为4
+5. 常量的 coercibility 值为 4
 6. 数字或者中间变量的 coercibility 值为5
 7. `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为6
 
