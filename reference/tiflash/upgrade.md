@@ -5,25 +5,22 @@ category: reference
 
 # 升级 TiFlash 节点
 
-升级 TiFlash 节点的步骤如下：
+升级前请保证集群处于启动状态，升级 TiFlash 节点的步骤如下：
 
-1. 下载新版 TiFlash binary 到中控机，方式有如下两种：
-
-    - 下载最新版 TiDB Ansible 或者通过 `git pull` 命令更新 TiDB Ansible git repo，然后执行 `ansible-playbook local_prepare.yml` 命令。
-    - 或者手动下载 TiFlash binary 并覆盖到 `resource/bin/tiflash`。
-
-2. 滚动升级 TiFlash：
+1. 运行升级命令
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ansible-playbook rolling_update.yml --tags tiflash
+    tiup cluster upgrade test v4.0.0-rc
     ```
 
-3. 滚动升级 TiDB 监控组件：
+2. 查看集群状态
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ansible-playbook rolling_update_monitor.yml
+    tiup cluster display test
     ```
+
+3. 打开浏览器访问监控平台，监控整个集群的状态
