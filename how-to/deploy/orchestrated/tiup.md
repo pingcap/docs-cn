@@ -382,7 +382,7 @@ tidb_servers:
     # # Config is used to overwrite the `server_configs.tidb` values
     # config:
     #   log.level: warn
-    #   log.slow-query-file: tidb-slow-overwrited.log
+    #   log.slow-query-file: tidb-slow-overwritten.log
   - host: 10.0.1.8
   - host: 10.0.1.9
 tikv_servers:
@@ -1320,7 +1320,7 @@ tidb_servers:
     # Config is used to overwrite the `server_configs.tidb` values
     config:
       log.level: warn
-      log.slow-query-file: tidb-slow-overwrited.log
+      log.slow-query-file: tidb-slow-overwritten.log
 ```
 
 #### 2. `global`、`server_configs`、`monitored` 参数模块
@@ -1448,7 +1448,7 @@ tidb_servers:
     sudo systemctl enable ntpd.service
     ```
 
-### 如何手工配置 SSH 互信及 sudo 免密码
+### 如何手动配置 SSH 互信及 sudo 免密码
 
 1. 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 
@@ -1543,8 +1543,7 @@ tidb_servers:
 > **注意：**
 > 
 > - numa 绑核是用来隔离 CPU 资源一种方法，适合高配置物理机环境部署多实例使用。 
-> 
-> - 通过 tiup  cluster deploy 完成部署操作，就可以通过 exec 命令来进行集群级别管理工作。 
+> - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。 
 
 1. 登陆到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
