@@ -11,10 +11,10 @@ category: how-to
 
 - 一、环境准备
 - 二、配置初始化参数文件 `topology.yaml`
-- 三、执行部署
+- 三、执行部署命令
 - 四、验证集群部署状态
 - 五、启动集群
-- 六、验证集群状态
+- 六、验证集群运行状态
 
 ## 一、环境准备
 
@@ -994,7 +994,7 @@ Checking service state of alertmanager
 Started cluster `tidb-test` successfully
 ```
 
-## 六、验证集群状态
+## 六、验证集群运行状态
 
 ### 第 9 步：通过 TiUP 检查 tidb-test 集群状态
 
