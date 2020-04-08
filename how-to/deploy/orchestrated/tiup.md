@@ -847,26 +847,26 @@ Input SSH password:
 
 Checking service state of pd
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:54:22 CST; 50s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:22 CST; 50s ago
 Checking service state of tikv
     10.0.1.1
-           Active: active (running) since 六 2020-04-04 09:54:35 CST; 38s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:35 CST; 38s ago
     10.0.1.2
-           Active: active (running) since 六 2020-04-04 09:54:38 CST; 37s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:38 CST; 37s ago
     10.0.1.3
-           Active: active (running) since 六 2020-04-04 09:54:41 CST; 35s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:41 CST; 35s ago
 Checking service state of tidb
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:54:56 CST; 22s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:56 CST; 22s ago
 Checking service state of prometheus
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:03 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:03 CST; 16s ago
 Checking service state of grafana
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:05 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:05 CST; 16s ago
 Checking service state of alertmanager
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:08 CST; 14s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:08 CST; 14s ago
 Started cluster `tidb-test` successfully
 ```
 
@@ -974,26 +974,26 @@ Starting component node_exporter
 
     Checking service state of pd
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:04 CST; 43s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:04 CST; 43s ago
 Checking service state of tikv
     10.0.1.1
-           Active: active (running) since 六 2020-04-04 01:08:15 CST; 33s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:15 CST; 33s ago
     10.0.1.2
-           Active: active (running) since 六 2020-04-04 01:08:18 CST; 31s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:18 CST; 31s ago
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:21 CST; 29s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:21 CST; 29s ago
 Checking service state of tidb
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:36 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:36 CST; 16s ago
 Checking service state of prometheus
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:39 CST; 15s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:39 CST; 15s ago
 Checking service state of grafana
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:41 CST; 14s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:41 CST; 14s ago
 Checking service state of alertmanager
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:44 CST; 12s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:44 CST; 12s ago
 Started cluster `tidb-test` successfully
 ```
 
