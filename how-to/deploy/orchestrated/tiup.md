@@ -5,7 +5,7 @@ category: how-to
 
 # 使用 TiUP 部署 TiDB 集群
 
-[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，TiUP cluster 是 TiUP 提供的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、停止、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
+[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，TiUP cluster 是 TiUP 提供的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
@@ -42,9 +42,9 @@ category: how-to
 目标主机软硬件配置建议如下：
 
 - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议
-- 目前支持在 x86_64 (AMD64) 和 ARM64（TiUP 在 4.0 GA 支持）两种架构上部署 TiDB 集群。
+- 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
-    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统
+    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 - TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考[第 3 步](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)）
 - 机器之间内网互通（建议关闭防火墙 `firewalld`，或者开放 TiDB 集群的节点间所需端口）
 - 如果需要绑核操作，需要安装 `numactl` 工具
@@ -470,13 +470,13 @@ alertmanager_servers:
 
     - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
 
-    - `numa_node` 参数配置参数，会与 `numactl --membind` 配置对应。 
+    - `numa_node` 这个配置参数与 `numactl --membind` 配置对应。 
 
 #### 拓扑信息
 
 | 实例 | 个数 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 实例级别 port、status_port 区分；<br> 2. 全局参数配置 readpool、storage 以及 raftstore 参数；<br> 3. 实例级别 host 维度的 label 配置；<br> 4. 配置 numa 绑核操作|
+| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 区分实例级别的 port、status_port；<br> 2. 配置全局参数 readpool、storage 以及 raftstore 参数；<br> 3. 配置实例级别 host 维度的 labels；<br> 4. 配置 numa 绑核操作|
 | TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 numa 绑核操作 |
 | PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
 
