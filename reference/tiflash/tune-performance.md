@@ -21,7 +21,7 @@ category: reference
     set @@tidb_distsql_scan_concurrency = 80;
     ```
 
-2. 开启聚合推过 JOIN 优化：
+2. 开启聚合推过 JOIN / UNION 等 TiDB 算子的优化：
 
     {{< copyable "sql" >}}
 
