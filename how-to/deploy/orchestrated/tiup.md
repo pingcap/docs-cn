@@ -5,7 +5,7 @@ category: how-to
 
 # 使用 TiUP 部署 TiDB 集群
 
-[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，TiUP cluster 是 TiUP 提供的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
+[TiUP](https://github.com/pingcap-incubator/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap-incubator/tiup-cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
@@ -310,15 +310,20 @@ category: how-to
 
 |实例 | 个数 | 物理机配置 | IP |配置 |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 3 | 16 Vcore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
-| TiDB |3 | 16 Vcore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口 <br>  全局目录配置 |
-| PD | 3 |4 Vcore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
+| TiKV | 3 | 16 VCore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
+| TiDB |3 | 16 VCore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口 <br>  全局目录配置 |
+| PD | 3 | 4 VCore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
+| Tiflash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | 默认端口 <br> 全局目录配置 |
 
 #### 第 4 步：配置文件模版 topology.yaml
 
 > **注意：**
 >
-> 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> - 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> 
+> - [部署 Tiflash](https://pingcap.com/docs-cn/dev/reference/tiflash/deploy/) 需要开启 `replication.enable-placement-rules` ，以开启 PD 的 [Placement Rules](https://pingcap.com/docs-cn/dev/how-to/configure/placement-rules/) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 
 {{< copyable "shell-regular" >}}
 
@@ -353,7 +358,8 @@ server_configs:
     schedule.leader-schedule-limit: 4
     schedule.region-schedule-limit: 2048
     schedule.replica-schedule-limit: 64
-    
+    replication.enable-placement-rules: true
+  
 
 pd_servers:
   - host: 10.0.1.4
@@ -403,6 +409,9 @@ tikv_servers:
     #      host: host1
   - host: 10.0.1.2
   - host: 10.0.1.3
+tiflash_servers:
+  - host: 10.0.1.10
+    # data_dir: /data1/tiflash/data,/data2/tiflash/data
 monitoring_servers:
   - host: 10.0.1.4
 grafana_servers:
@@ -415,7 +424,7 @@ alertmanager_servers:
 
 #### 部署需求
 
-部署 TiDB 和 TiKV 组件的物理机为 2 路处理器，每路 16 vcore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
+部署 TiDB 和 TiKV 组件的物理机为 2 路处理器，每路 16 VCore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
 
 #### 单机多实例部署的关键参数配置
 
@@ -476,15 +485,21 @@ alertmanager_servers:
 
 | 实例 | 个数 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 区分实例级别的 port、status_port；<br> 2. 配置全局参数 readpool、storage 以及 raftstore 参数；<br> 3. 配置实例级别 host 维度的 labels；<br> 4. 配置 numa 绑核操作|
-| TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 numa 绑核操作 |
-| PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
+| TiKV | 6 | 32 VCore 64GB | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 区分实例级别的 port、status_port；<br> 2. 配置全局参数 readpool、storage 以及 raftstore 参数；<br> 3. 配置实例级别 host 维度的 labels；<br> 4. 配置 numa 绑核操作|
+| TiDB | 6 | 32 VCore 64GB | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 numa 绑核操作 |
+| PD | 3 | 16 VCore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
+| Tiflash | 1 | 32 VCore 64 GB | 10.0.1.10 | 默认端口 <br> 自定义部署目录 /data1/tiflash/data |
 
 #### 第 4 步：配置文件模版 topology.yaml
 
 > **注意：**
 > 
-> 配置文件模版时，注意修改必要参数、IP、端口及目录。
+> - 配置文件模版时，注意修改必要参数、IP、端口及目录。
+> 
+> - [部署 Tiflash](https://pingcap.com/docs-cn/dev/reference/tiflash/deploy/) 需要开启 `replication.enable-placement-rules` ，以开启 PD 的 [Placement Rules](https://pingcap.com/docs-cn/dev/how-to/configure/placement-rules/) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
+
 
 {{< copyable "shell-regular" >}}
 
@@ -518,6 +533,7 @@ server_configs:
     raftstore.capactiy: "<取值参考上文计算公式的结果>"
   pd:
     replication.location-labels: ["host"]
+    replication.enable-placement-rules: true
 
 pd_servers:
   - host: 10.0.1.4
@@ -623,14 +639,15 @@ tikv_servers:
     config:
       server.labels:
         host: tikv3
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data
 monitoring_servers:
- - host: 10.0.1.7
-
+  - host: 10.0.1.7
 grafana_servers:
- - host: 10.0.1.7
-
+  - host: 10.0.1.7
 alertmanager_servers:
- - host: 10.0.1.7
+  - host: 10.0.1.7
 ```
 
 ### 场景 3：TiDB Binlog 部署模版
@@ -653,19 +670,24 @@ TiDB 关键参数：
 
 #### 拓扑信息
 
-| 实例 | 物理机配置 | IP | 配置 |
-| :-- | :-- | :-- | :-- |
-| TiKV | 16 vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
-|TiDB | 16 vcore 32 GB * 3 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
-| PD | 4 vcore 8 GB * 3| 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
-| Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
-| Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
+| 实例 |个数| 物理机配置 | IP | 配置 |
+| :-- | :-- | :-- | :-- | :-- |
+| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
+|TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
+| PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
+| Tiflash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，通过 /data1/tiflash/data,/data2/tiflash/data 多盘部署 |
+| Pump| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
+| Drainer | 1 | 8 VCore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
 #### 第 4 步：配置文件模版 topology.yaml
 
 > **注意：**
 > 
-> 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
+> - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
+>
+> - [部署 Tiflash](https://pingcap.com/docs-cn/dev/reference/tiflash/deploy/) 需要开启 `replication.enable-placement-rules` ，以开启 PD 的 [Placement Rules](https://pingcap.com/docs-cn/dev/how-to/configure/placement-rules/) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
 
 {{< copyable "shell-regular" >}}
 
@@ -692,6 +714,8 @@ server_configs:
   tidb:
     binlog.enable: true
     binlog.ignore-error: true
+  pd:
+    replication.enable-placement-rules: true
 
 pd_servers:
   - host: 10.0.1.4
@@ -746,12 +770,15 @@ drainer_servers:
       syncer.to.user: "root"
       syncer.to.password: ""
       syncer.to.port: 4000
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data 
 monitoring_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 grafana_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 alertmanager_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 ```
 
 ## 三、执行部署命令
