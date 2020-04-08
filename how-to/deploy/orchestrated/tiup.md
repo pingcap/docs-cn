@@ -5,7 +5,7 @@ category: how-to
 
 # 使用 TiUP 部署 TiDB 集群
 
-[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，TiUP cluster 是 TiUP 提供的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、停止、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
+[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，TiUP cluster 是 TiUP 提供的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
@@ -42,9 +42,9 @@ category: how-to
 目标主机软硬件配置建议如下：
 
 - 建议 4 台及以上，TiKV 至少 3 实例，且与 TiDB、PD 模块不位于同一主机，详见部署建议
-- 目前支持在 x86_64 (AMD64) 和 ARM64（TiUP 在 4.0 GA 支持）两种架构上部署 TiDB 集群。
+- 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
-    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux  操作系统
+    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 - TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考[第 3 步](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)）
 - 机器之间内网互通（建议关闭防火墙 `firewalld`，或者开放 TiDB 集群的节点间所需端口）
 - 如果需要绑核操作，需要安装 `numactl` 工具
@@ -53,7 +53,7 @@ category: how-to
 
 ### 第 2 步：在中控机上安装 TiUP 组件
 
-使用普通用户登陆中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
+使用普通用户登录中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
 
 1. 执行如下命令安装 TiUP 工具：
 
@@ -382,7 +382,7 @@ tidb_servers:
     # # Config is used to overwrite the `server_configs.tidb` values
     # config:
     #   log.level: warn
-    #   log.slow-query-file: tidb-slow-overwrited.log
+    #   log.slow-query-file: tidb-slow-overwritten.log
   - host: 10.0.1.8
   - host: 10.0.1.9
 tikv_servers:
@@ -470,13 +470,13 @@ alertmanager_servers:
 
     - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
 
-    - `numa_node` 参数配置参数，会与 `numactl --membind` 配置对应。 
+    - `numa_node` 这个配置参数与 `numactl --membind` 配置对应。 
 
 #### 拓扑信息
 
 | 实例 | 个数 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 实例级别 port、status_port 区分；<br> 2. 全局参数配置 readpool、storage 以及 raftstore 参数；<br> 3. 实例级别 host 维度的 label 配置；<br> 4. 配置 numa 绑核操作|
+| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 区分实例级别的 port、status_port；<br> 2. 配置全局参数 readpool、storage 以及 raftstore 参数；<br> 3. 配置实例级别 host 维度的 labels；<br> 4. 配置 numa 绑核操作|
 | TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 numa 绑核操作 |
 | PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
 
@@ -784,7 +784,7 @@ Flags:
 # Flags 可选参数，有以下的作用： 
 # 通过 -h 可以查看帮助；
 # 通过 -i 执行权限认证； 
-# --user 通过指定用户来完成 ssh 登陆，默认为 root 用户；
+# --user 通过指定用户来完成 ssh 登录，默认为 root 用户；
 # -y 提过拓扑信息确认直接执行部署任务
 ```
 
@@ -792,7 +792,7 @@ Flags:
 >
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 > 
-> - 如果是密钥方式，可以通过 -i 或者 --identity_file 来指定密钥的路径；
+> - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
 > - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
 ### 第 5 步：执行部署命令
@@ -805,10 +805,10 @@ tiup cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user root -i /home
 
 以上部署命令中：
 
-- 通过 TiUP cluster 部署的集群名称为 tidb-test
-- 部署版本为 v4.0.0-beta.2
-- 初始化配置文件为 topology.yaml
-- 通过 root 的密钥登陆到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署
+- 通过 TiUP cluster 部署的集群名称为 `tidb-test`
+- 部署版本为 `v4.0.0-beta.2`
+- 初始化配置文件为 `topology.yaml`
+- 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署
 
 预期日志输出样例，部署成功会有 `Started cluster tidb-test successfully` 关键词：
 
@@ -850,26 +850,26 @@ Input SSH password:
 
 Checking service state of pd
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:54:22 CST; 50s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:22 CST; 50s ago
 Checking service state of tikv
     10.0.1.1
-           Active: active (running) since 六 2020-04-04 09:54:35 CST; 38s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:35 CST; 38s ago
     10.0.1.2
-           Active: active (running) since 六 2020-04-04 09:54:38 CST; 37s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:38 CST; 37s ago
     10.0.1.3
-           Active: active (running) since 六 2020-04-04 09:54:41 CST; 35s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:41 CST; 35s ago
 Checking service state of tidb
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:54:56 CST; 22s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:56 CST; 22s ago
 Checking service state of prometheus
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:03 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:03 CST; 16s ago
 Checking service state of grafana
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:05 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:05 CST; 16s ago
 Checking service state of alertmanager
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:08 CST; 14s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:08 CST; 14s ago
 Started cluster `tidb-test` successfully
 ```
 
@@ -977,26 +977,26 @@ Starting component node_exporter
 
     Checking service state of pd
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:04 CST; 43s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:04 CST; 43s ago
 Checking service state of tikv
     10.0.1.1
-           Active: active (running) since 六 2020-04-04 01:08:15 CST; 33s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:15 CST; 33s ago
     10.0.1.2
-           Active: active (running) since 六 2020-04-04 01:08:18 CST; 31s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:18 CST; 31s ago
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:21 CST; 29s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:21 CST; 29s ago
 Checking service state of tidb
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:36 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:36 CST; 16s ago
 Checking service state of prometheus
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:39 CST; 15s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:39 CST; 15s ago
 Checking service state of grafana
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:41 CST; 14s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:41 CST; 14s ago
 Checking service state of alertmanager
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:44 CST; 12s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:44 CST; 12s ago
 Started cluster `tidb-test` successfully
 ```
 
@@ -1036,7 +1036,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 #### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
 
-- 通过 {pd-leader-ip}:2379/dashboard 登陆 TiDB Dashboard
+- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
@@ -1046,7 +1046,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 #### 查看 Grafana 监控 Overview 页面检查 TiDB Cluster 状态
 
-- 通过 {Grafana-ip}:3000 登陆 Grafana 监控，默认密码为 admin/admin
+- 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认密码为 admin/admin
 
     ![Grafana-login](/media/tiup/grafana-login.png)
  
@@ -1054,13 +1054,13 @@ ID                  Role          Host          Ports        Status     Data Dir
 
     ![Grafana-overview](/media/tiup/grafana-overview.png)
 
-### 登陆数据库执行简单 DML、DDL 操作和查询 SQL 语句
+### 登录数据库执行简单 DML、DDL 操作和查询 SQL 语句
 
 > **注意：**
 >
-> 登陆数据库前，你需要安装 MySQL 客户端。
+> 登录数据库前，你需要安装 MySQL 客户端。
 
-执行如下命令登陆数据库：
+执行如下命令登录数据库：
 
 {{< copyable "shell-regular" >}}
 
@@ -1072,7 +1072,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 ```sql
 --
--- 登陆成功
+-- 登录成功
 --
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 1
@@ -1160,48 +1160,48 @@ Bye
 cluster stop tidb-test
 ```
 
-预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志销毁成功：
+预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志关闭成功：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster stop tidb-test
 + [ Serial ] - SSHKeySet: privateKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa, publicKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa.pub
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.169
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.169
-+ [Parallel] - UserSSH: user=tidb, host=172.16.4.237
-+ [Parallel] - UserSSH: user=tidb, host=172.16.4.235
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.5
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.5
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.2
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.1
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
 + [ Serial ] - ClusterOperate: operation=StopOperation, options={Roles:[] Nodes:[] Force:false}
 Stopping component alertmanager
-    Stopping instance 172.16.5.172
-    Stop alertmanager 172.16.5.172:9104 success
+    Stopping instance 10.0.1.4
+    Stop alertmanager 10.0.1.4:9104 success
 
 ...... 部分日志忽略......
 
 Checking service state of pd
-    172.16.5.169
-           Active: inactive (dead) since 六 2020-04-04 15:35:42 CST; 15s ago
+    10.0.1.5
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:42 CST; 15s ago
 Checking service state of tikv
-    172.16.4.235
-           Active: inactive (dead) since 六 2020-04-04 15:35:21 CST; 38s ago
-    172.16.4.237
-           Active: inactive (dead) since 六 2020-04-04 15:35:23 CST; 37s ago
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:24 CST; 37s ago
+    10.0.1.1
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:21 CST; 38s ago
+    10.0.1.2
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:23 CST; 37s ago
+    10.0.1.3
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:24 CST; 37s ago
 Checking service state of tidb
-    172.16.5.169
-           Active: inactive (dead) since 六 2020-04-04 15:35:15 CST; 49s ago
+    10.0.1.5
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:15 CST; 49s ago
 Checking service state of prometheus
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:12 CST; 53s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:12 CST; 53s ago
 Checking service state of grafana
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:10 CST; 56s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:10 CST; 56s ago
 Checking service state of alertmanager
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:09 CST; 59s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:09 CST; 59s ago
 Stopped cluster `tidb-test` successfully
 ```
 
@@ -1320,7 +1320,7 @@ tidb_servers:
     # Config is used to overwrite the `server_configs.tidb` values
     config:
       log.level: warn
-      log.slow-query-file: tidb-slow-overwrited.log
+      log.slow-query-file: tidb-slow-overwritten.log
 ```
 
 #### 2. `global`、`server_configs`、`monitored` 参数模块
@@ -1448,7 +1448,7 @@ tidb_servers:
     sudo systemctl enable ntpd.service
     ```
 
-### 如何手工配置 SSH 互信及 sudo 免密码
+### 如何手动配置 SSH 互信及 sudo 免密码
 
 1. 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 
@@ -1543,10 +1543,9 @@ tidb_servers:
 > **注意：**
 > 
 > - numa 绑核是用来隔离 CPU 资源一种方法，适合高配置物理机环境部署多实例使用。 
-> 
-> - 通过 tiup  cluster deploy 完成部署操作，就可以通过 exec 命令来进行集群级别管理工作。 
+> - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。 
 
-1. 登陆到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
+1. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
     {{< copyable "shell-regular" >}}
 
