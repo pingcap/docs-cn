@@ -1205,7 +1205,7 @@ Checking service state of alertmanager
 Stopped cluster `tidb-test` successfully
 ```
 
-## 集群销毁
+## 销毁集群
 
 > **警告：**
 >
