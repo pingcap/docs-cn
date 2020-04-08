@@ -322,7 +322,7 @@ tidb> select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_e
 ```
 
 在新的 Collation 框架下，TiDB 能够支持 `utf8_general_ci` 和 `utf8mb4_general_ci` 这两种 Collation, 其排序规则与 MySQL 兼容。
-                     使用 utf8_general_ci 或者 utf8mb4_general_ci 时， 字符串之间的比较是大小写不敏感的。同时，TiDB 还修正了 Collation 的 PADDING 行为：
+使用 utf8_general_ci 或者 utf8mb4_general_ci 时， 字符串之间的比较是大小写不敏感（case-insensitive）和口音不敏感（accent-insensitive）的。同时，TiDB 还修正了 Collation 的 PADDING 行为：
 
 {{< copyable "sql" >}}
 
