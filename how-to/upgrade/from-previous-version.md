@@ -157,7 +157,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
     >
-    > 如果当前版本已经是该参数并且配置没问题，则不需要修改。
+    > 如果当前版本已经是 `capacity` 参数而且配置合理，则不需要修改。
 
 - TiKV 配置中单机多实例场景需要额外配置 `tikv_status_port` 端口：
 
