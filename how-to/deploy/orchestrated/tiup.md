@@ -850,26 +850,26 @@ Input SSH password:
 
 Checking service state of pd
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:54:22 CST; 50s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:22 CST; 50s ago
 Checking service state of tikv
     10.0.1.1
-           Active: active (running) since 六 2020-04-04 09:54:35 CST; 38s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:35 CST; 38s ago
     10.0.1.2
-           Active: active (running) since 六 2020-04-04 09:54:38 CST; 37s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:38 CST; 37s ago
     10.0.1.3
-           Active: active (running) since 六 2020-04-04 09:54:41 CST; 35s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:41 CST; 35s ago
 Checking service state of tidb
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:54:56 CST; 22s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:56 CST; 22s ago
 Checking service state of prometheus
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:03 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:03 CST; 16s ago
 Checking service state of grafana
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:05 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:05 CST; 16s ago
 Checking service state of alertmanager
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:08 CST; 14s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:08 CST; 14s ago
 Started cluster `tidb-test` successfully
 ```
 
@@ -977,26 +977,26 @@ Starting component node_exporter
 
     Checking service state of pd
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:04 CST; 43s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:04 CST; 43s ago
 Checking service state of tikv
     10.0.1.1
-           Active: active (running) since 六 2020-04-04 01:08:15 CST; 33s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:15 CST; 33s ago
     10.0.1.2
-           Active: active (running) since 六 2020-04-04 01:08:18 CST; 31s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:18 CST; 31s ago
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:21 CST; 29s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:21 CST; 29s ago
 Checking service state of tidb
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:36 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:36 CST; 16s ago
 Checking service state of prometheus
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:39 CST; 15s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:39 CST; 15s ago
 Checking service state of grafana
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:41 CST; 14s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:41 CST; 14s ago
 Checking service state of alertmanager
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:44 CST; 12s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:44 CST; 12s ago
 Started cluster `tidb-test` successfully
 ```
 
@@ -1160,48 +1160,48 @@ Bye
 cluster stop tidb-test
 ```
 
-预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志销毁成功：
+预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志关闭成功：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster stop tidb-test
 + [ Serial ] - SSHKeySet: privateKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa, publicKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa.pub
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.169
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.169
-+ [Parallel] - UserSSH: user=tidb, host=172.16.4.237
-+ [Parallel] - UserSSH: user=tidb, host=172.16.4.235
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.5
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.5
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.2
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.1
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
 + [ Serial ] - ClusterOperate: operation=StopOperation, options={Roles:[] Nodes:[] Force:false}
 Stopping component alertmanager
-    Stopping instance 172.16.5.172
-    Stop alertmanager 172.16.5.172:9104 success
+    Stopping instance 10.0.1.4
+    Stop alertmanager 10.0.1.4:9104 success
 
 ...... 部分日志忽略......
 
 Checking service state of pd
-    172.16.5.169
-           Active: inactive (dead) since 六 2020-04-04 15:35:42 CST; 15s ago
+    10.0.1.5
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:42 CST; 15s ago
 Checking service state of tikv
-    172.16.4.235
-           Active: inactive (dead) since 六 2020-04-04 15:35:21 CST; 38s ago
-    172.16.4.237
-           Active: inactive (dead) since 六 2020-04-04 15:35:23 CST; 37s ago
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:24 CST; 37s ago
+    10.0.1.1
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:21 CST; 38s ago
+    10.0.1.2
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:23 CST; 37s ago
+    10.0.1.3
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:24 CST; 37s ago
 Checking service state of tidb
-    172.16.5.169
-           Active: inactive (dead) since 六 2020-04-04 15:35:15 CST; 49s ago
+    10.0.1.5
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:15 CST; 49s ago
 Checking service state of prometheus
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:12 CST; 53s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:12 CST; 53s ago
 Checking service state of grafana
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:10 CST; 56s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:10 CST; 56s ago
 Checking service state of alertmanager
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:09 CST; 59s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:09 CST; 59s ago
 Stopped cluster `tidb-test` successfully
 ```
 
