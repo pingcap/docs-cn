@@ -23,15 +23,15 @@ category: reference
     git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     ```
 
-3. 编辑 inventory.ini 文件
-
-4. 下载 binary
+3. 下载 binary
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     ansible-playbook local_prepare.yml
     ```
+
+4. 编辑 inventory.ini 文件
 
 5. 滚动升级 TiFlash：
 
