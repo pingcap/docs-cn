@@ -339,7 +339,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 
 > **注意：**
 >
-> - TiDB 中 padding 的实现方式与 MySQL 的不同。在 MySQL 中， padding 是通过补齐空格实现的。而在 TiDB 中是通过裁剪掉末尾的空格来实现的。两种做法在绝大多数情况下是一致的。唯一的例外是尾部包含小于空格(0x20)的字符时:
+> - TiDB 中 padding 的实现方式与 MySQL 的不同。在 MySQL 中， padding 是通过补齐空格实现的。而在 TiDB 中是通过裁剪掉末尾的空格来实现的。两种做法在绝大多数情况下是一致的。唯一的例外发生在字符串尾部包含小于空格（0x20）的字符时：
 > `'a' < 'a\t'` 在 TiDB 中的结果为`1`， 而在 MySQL 中，其等价于`'a ' < 'a\t'`，结果为`0`。
 
 ## 表达式中 collation 的 coercibility 值
