@@ -41,7 +41,7 @@ For example, if the overall planned capacity of TiKV is three replicas, then the
 
 ## TiDB version requirements
 
-Currently, the testing of TiFlash is based on the related components of TiDB 3.1 (including TiDB, PD, TiKV, and TiFlash). For the download method of TiDB 3.1, refer to the following installation and deployment steps.
+Currently, the testing of TiFlash is based on the related components of TiDB 4.0 (including TiDB, PD, TiKV, and TiFlash). For the download method of TiDB 4.0, refer to the following installation and deployment steps.
 
 ## Install and deploy TiFlash
 
@@ -57,79 +57,88 @@ This section describes how to install and deploy TiFlash in the following scenar
 
 ### Fresh TiFlash deployment
 
-For fresh TiFlash deployment, it is recommended to deploy TiFlash by downloading an offline installation package. The steps are as follows:
+TiUP cluster is the deployment tool for TiDB 4.0 or later versions. It is recommended that you use TiUP cluster to install and deploy TiFlash. The steps are as follows:
 
-1. Download the offline package of your desired version and unzip it.
+1. [Install TiUP](/how-to/deploy/orchestrated/tiup.md#step-2-install-tiup-on-the-control-machine).
 
-    - If you are using TiDB 4.0 beta version, execute the following command:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        curl -o tidb-ansible-tiflash-4.0-v3-20200331.tar.gz https://download.pingcap.org/tidb-ansible-tiflash-4.0-v3-20200331.tar.gz &&
-        tar zxvf tidb-ansible-tiflash-4.0-v3-20200331.tar.gz
-        ```
-
-    - If you are using TiDB 3.1 rc version, execute the following command:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        curl -o tidb-ansible-tiflash-3.1-rc.tar.gz https://download.pingcap.org/tidb-ansible-tiflash-3.1-rc.tar.gz &&
-        tar zxvf tidb-ansible-tiflash-3.1-rc.tar.gz
-        ```
-
-2. Edit the `inventory.ini` configuration file. In addition to [configuring for TiDB cluster deployment](/how-to/deploy/orchestrated/ansible.md#step-9-edit-the-inventoryini-file-to-orchestrate-the-tidb-cluster), you also need to specify the IPs of your TiFlash servers under the `[tiflash_servers]` section (currently only IPs are supported; domain names are not supported).
-
-    If you want to customize the deployment directory, configure the `data_dir` parameter. If you want multi-disk deployment, separate the deployment directories with commas (note that the parent directory of each `data_dir` directory needs to give the `tidb` user write permissions). For example:
-
-    {{< copyable "" >}}
-
-    ```ini
-    [tiflash_servers]
-    192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
-    ```
-
-3. Complete the [remaining steps](/how-to/deploy/orchestrated/ansible.md#step-10-edit-variables-in-the-inventoryini-file) of the TiDB Ansible deployment process.
-
-4. To verify that TiFlash has been successfully deployed:
-    
-    1. Execute the `pd-ctl store http://your-pd-address` command in [pd-ctl](/reference/tools/pd-control.md) (`resources/bin` in the tidb-ansible directory includes the pd-ctl binary file).
-    2. Observe that the status of the deployed TiFlash instance is "Up".
-
-### Add TiFlash component to an existing TiDB cluster
-
-1. First, confirm that your current TiDB version supports TiFlash, otherwise you need to upgrade your TiDB cluster to 3.1 rc or higher according to [TiDB Upgrade Guide](/how-to/upgrade/from-previous-version.md).
-
-2. Execute the `config set enable-placement-rules true` command in [pd-ctl](/reference/tools/pd-control.md) (`resources/bin` in the tidb-ansible directory includes the pd-ctl binary file) to enable PD's Placement Rules feature.
-
-3. Edit the `inventory.ini` configuration file. You need to specify the IPs of your TiFlash servers under the `[tiflash_servers]` section (currently only IPs are supported; domain names are not supported).
-
-    If you want to customize the deployment directory, configure the `data_dir` parameter. If you want multi-disk deployment, separate the deployment directories with commas (note that the parent directory of each `data_dir` directory needs to give the `tidb` user write permissions). For example:
-
-    {{< copyable "" >}}
-
-    ```ini
-    [tiflash_servers]
-    192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
-    ```
-
-    > **Note:**
-    >
-    > Even if TiFlash and TiKV are deployed on the same machine, TiFlash uses a different default port from TiKV. TiFlash's default port is 9000. If you want to modify the port, add a new line `tcp_port=xxx` to the `inventory.ini` configuration file.
-
-4. Execute the following ansible-playbook commands to deploy TiFlash:
+2. Install the TiUP cluster component.
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ansible-playbook local_prepare.yml &&
-    ansible-playbook -t tiflash deploy.yml &&
-    ansible-playbook -t tiflash start.yml &&
-    ansible-playbook rolling_update_monitor.yml
+    tiup cluster
     ```
 
-5. To verify that TiFlash has been successfully deployed:
+3. Write the topology configuration file and save it as `topology.yaml`.
 
-    1. Execute the `pd-ctl store http://your-pd-address` command in [pd-ctl](/reference/tools/pd-control.md) (`resources/bin` in the tidb-ansible directory includes the pd-ctl binary file).
-    2. Observe that the status of the deployed TiFlash instance is "Up".
+    You can refer to [the topology configuration file template](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml).
+
+    In addition to configuring the TiDB cluster, you also need to configure the IP of TiFlash servers in `tiflash_servers`. Currently the configuration only supports IP but not domain name.
+
+    If you need to deploy TiFlash, set `replication.enable-placement-rules` in the `pd` section to `true`.
+
+    {{< copyable "" >}}
+
+    ```ini
+    server_configs:
+      pd:
+        replication.enable-placement-rules: true
+    pd_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+    tidb_servers:
+      - host: 172.19.0.101
+    tikv_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+    tiflash_servers:
+      - host: 172.19.0.103
+    ```
+
+    If you want to customize the deployment directory, configure the `data_dir` parameter. If you want to deploy TiFlash on multiple disks, separate each directory with commas. For example:
+
+    {{< copyable "" >}}
+
+    ```ini
+    tiflash_servers:
+      - host: 172.19.0.103
+        data_dir: /data1/tiflash/data,/data2/tiflash/data
+    ```
+
+4. Refer to the TiUP deployment process, and complete the following steps:
+
+    * Deploy the TiDB cluster (`test` is the cluster name):
+    
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup cluster deploy test v4.0.0-rc topology.yaml  -i ~/.ssh/id_rsa
+        ```
+    
+    * Start the TiDB cluster:
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup cluster start test
+        ```
+
+5. View the cluster status:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster display test
+    ``` 
+
+### Add TiFlash component to an existing TiDB cluster
+
+1. First, confirm that your current TiDB version supports TiFlash; otherwise, you need to upgrade your TiDB cluster to 4.0 rc or higher versions.
+
+2. Execute the `config set enable-placement-rules true` command in [pd-ctl](/reference/tools/pd-control.md) (`resources/bin` in the tidb-ansible directory includes the pd-ctl binary file) to enable PD's Placement Rules feature.
+
+    Currently, pd-ctl is not connected to TiUP cluster, you need to [manually download pd-ctl](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz).
+
+3. Refer to [Scale out a TiFlash node](/reference/tiflash/scale.md#scale-out-a-tiflash-node) and deploy TiFlash.
