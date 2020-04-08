@@ -5,17 +5,7 @@ category: how-to
 
 # 使用 TiUP 部署 TiDB 集群
 
-[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，cluster 是 TiUP 提供的集群管理组件，通过 cluster 组件就可以进行日常的运维工作，包括：
-
-- 部署 TiDB 集群
-- 启动 TiDB 集群
-- 停止 TiDB 集群
-- 销毁 TiDB 集群
-- 弹性扩缩容 TiDB 集群
-- 管理 TiDB 集群参数
-- 升级 TiDB 集群
-- 部署 TiDB Binlog
-- 部署 TiFlash
+[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，TiUP cluster 是 TiUP 提供的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、停止、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
 
 使用 TiUP 部署 TiDB 集群分为如下几个步骤：
 
@@ -36,8 +26,6 @@ category: how-to
 
 ### 第 1 步：软硬件环境配置
 
-软硬件环境配置参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
-
 中控机软硬件配置建议如下：
 
 - 中控机可以是部署目标机器中的某一台
@@ -55,11 +43,13 @@ category: how-to
 - 机器之间内网互通（建议关闭防火墙 `firewalld`，或者开放 TiDB 集群的节点间所需端口）
 - 如果需要绑核操作，需要安装 `numactl` 工具
 
+其他软硬件环境配置可参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
+
 ### 第 2 步：在中控机上安装 TiUP 组件
 
-使用普通用户，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
+使用普通用户登陆中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
 
-1. 执行如下命令安装 TiUP：
+1. 执行如下命令安装 TiUP 工具：
 
     {{< copyable "shell-regular" >}}
 
@@ -101,7 +91,7 @@ category: how-to
     which tiup
     ```
 
-3. 安装 TiUP 的 cluster 工具（以 cluster-v0.4.3 为例）
+3. 安装 TiUP cluster 组件（以 cluster-v0.4.3 为例）
 
     {{< copyable "shell-regular" >}}
 
@@ -165,7 +155,7 @@ category: how-to
     # help        帮助信息
     ```
 
-4. 如果已经安装，则更新 TiUP 的 cluster 工具至最新版本：
+4. 如果已经安装，则更新 TiUP cluster 组件至最新版本：
 
     {{< copyable "shell-regular" >}}
 
@@ -180,7 +170,7 @@ category: how-to
     Update successfully!
     ```
 
-5. 验证当前 cluster 版本信息。执行如下命令查看 TiUP 工具 cluster 组件版本：
+5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
 
     {{< copyable "shell-regular" >}}
 
@@ -188,7 +178,7 @@ category: how-to
     tiup --binary cluster
     ```
 
-    预期结果输出（v0.4.3 为当前版本）：
+    预期结果输出（当前版本为 v0.4.3）：
 
     ```log
     /home/tidb/.tiup/components/cluster/v0.4.3/cluster
@@ -296,7 +286,9 @@ category: how-to
 
 ## 二、配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件例如 `topology.yaml`，下文介绍 3 个经典场景的集群配置模版：
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
+
+需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`。下文介绍 3 个经典场景的集群配置模版：
 
 - 场景 1：单机单实例
 - 场景 2：单机多实例
@@ -306,7 +298,7 @@ category: how-to
 
 #### 部署需求
 
-通过 `tidb` 用户做集群管理，使用默认 `22` 端口，部署目录为 `/tidb-deploy` 和 数据目录 `/tidb-data` 。
+通过 `tidb` 用户做集群管理，使用默认 `22` 端口，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
 
 #### 拓扑信息
 
@@ -329,8 +321,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
+# Global variables are applied to all deployments and as the default value of
+# them if the specific deployment value missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -417,29 +409,27 @@ alertmanager_servers:
 
 #### 部署需求
 
-TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混布，需要数据目录使用独立的文件系统。
+部署 TiDB 和 TiKV 组件的物理机为 2 路处理器，每路 16 vcore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
 
 #### 单机多实例部署的关键参数配置
 
-> **注意：**
-> 
-> 以下为单机多实例的关键参数介绍，主要用于 TiDB、TiKV 的单机多实例部署场景。请按照提供的计算公式，将结果填写至下一步的配置文件中。
+本节介绍单机多实例的关键参数，主要用于 TiDB、TiKV 的单机多实例部署场景。你需要按照提供的计算公式，将结果填写至下一步的配置文件中。
 
 - TiKV 进行配置优化
 
-    - readpool 线程池自适应，配置 readpool.unified.max-thread-count 参数可以使  readpool.storage 和  readpool.coprocessor 共用  unified 线程池，同时要分别开启自适应开关。计算公式如下：
+    - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。计算公式如下：
   
         ```
         readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
         ```
 
-    - storage CF（all RocksDB column families） 内存自适应，配置 storage.block-cache.capacity 参数就可以实现 CF 之间自动平衡内存使用。 计算公式如下：
+    - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。计算公式如下：
    
         ```
-        storage.block-cache.capacity  = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+        storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
         ```
 
-    - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 conf/tikv.yml 中的 capacity 参数：
+    - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 capacity 参数：
    
         ```
         raftstore.capactiy = 磁盘总容量 / TiKV 实例数量
@@ -447,11 +437,11 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
 
 - label 调度配置
 
-   因为采用单机多实例部署 TiKV，为了避免物理机宕机导致 Region Group 默认 3 副本的 2 副本丢失，导致集群不可用的问题。可以通过 label 来实现 PD 智能调度，保证同台机器的多 TiKV 实例不会存在 Region Group 的 2 副本的情况。
+    由于采用单机多实例部署 TiKV，为了避免物理机宕机导致 Region Group 默认 3 副本的 2 副本丢失，导致集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同台机器的多 TiKV 实例不会出现 Region Group 只有 2 副本的情况。
  
     - TiKV 配置
 
-        相同物理机配置相同的 host 级别 label 信息
+        相同物理机配置相同的 host 级别 label 信息：
 
         ```yml
         config:
@@ -461,7 +451,7 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
 
     - PD 配置
 
-        PD 需要配置 labels 类型来识别并调度 Region 
+        PD 需要配置 labels 类型来识别并调度 Region：
 
         ```yml
         pd:
@@ -480,11 +470,15 @@ TiDB 和 TiKV 组件物理机为 2 路处理器，每路 16 vcore，内存也达
 
 | 实例 | 个数 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1.实例级别 port、status_port 区分；<br> 2.全局参数配置 readpool、storage 以及 raftstore 参数；<br> 3.实例级别 host 维度 的 label 配置；<br> 4. 配置 numa 绑核操作|
+| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 实例级别 port、status_port 区分；<br> 2. 全局参数配置 readpool、storage 以及 raftstore 参数；<br> 3. 实例级别 host 维度的 label 配置；<br> 4. 配置 numa 绑核操作|
 | TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 numa 绑核操作 |
 | PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
 
-#### 第 4 步：配置文件模版（注意修改必要参数、IP、端口、目录的修改） topology.yaml
+#### 第 4 步：配置文件模版 topology.yaml
+
+> **注意：**
+> 
+> 配置文件模版时，注意修改必要参数、IP、端口及目录。
 
 {{< copyable "shell-regular" >}}
 
@@ -493,8 +487,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
+# Global variables are applied to all deployments and as the default value of
+# them if the specific deployment value missing.
 
 global:
   user: "tidb"
@@ -633,23 +627,23 @@ alertmanager_servers:
  - host: 10.0.1.7
 ```
 
-### 场景 3：TiDB-binlog 部署模版
+### 场景 3：TiDB Binlog 部署模版
 
 #### 部署需求
 
-设置默认部署目录 /tidb-deploy 和 数据目录 /tidb-data ，通过 TiDB-binlog 同步到下游 10.0.1.9:4000。
+设置默认部署目录 `/tidb-deploy` 和 数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.9:4000。
 
 #### 关键参数
 
-- TiDB 关键参数
+TiDB 关键参数：
 
-    - `binlog.enable: true` 
+- `binlog.enable: true` 
 
-      开启 binlog 服务，默认为 false。
+    开启 binlog 服务，默认为 false。
 
-    - `binlog.ignore-error: true` 
+- `binlog.ignore-error: true` 
 
-      高可用场景建议开启，如果设置为 true，发生错误时，TiDB 会停止写入 binlog，并且在监控项 tidb_server_critical_error_total 上计数加 1；如果设置为 false，写入 binlog 失败，会停止整个 TiDB 的服务。
+    高可用场景建议开启，如果设置为 true，发生错误时，TiDB 会停止写入 binlog，并且在监控项 tidb_server_critical_error_total 上计数加 1；如果设置为 false，一旦写入 binlog 失败，会停止整个 TiDB 的服务。
 
 #### 拓扑信息
 
@@ -658,10 +652,14 @@ alertmanager_servers:
 | TiKV | 16 vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
 |TiDB | 16 vcore 32 GB * 3 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
 | PD | 4 vcore 8 GB * 3| 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
-| Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 gc 时间 7 天 |
+| Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
 | Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
-#### 第 4 步：配置文件模版（如无需自定义端口或者目录，仅修改 IP 即可），以 topology.yaml 为例
+#### 第 4 步：配置文件模版 topology.yaml
+
+> **注意：**
+> 
+> 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
 
 {{< copyable "shell-regular" >}}
 
@@ -670,8 +668,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
+# Global variables are applied to all deployments and as the default value of
+# them if the specific deployment value missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -750,7 +748,7 @@ alertmanager_servers:
  - host: 10.0.1.4
 ```
 
-## 三、执行部署
+## 三、执行部署命令
 
 ### 部署命令介绍
 
@@ -788,21 +786,23 @@ Flags:
 >
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 > 
-> - 如果是密钥方式可以通过 -i 或者 --identity_file 来指定密钥的路径；
-> - 如果是密码方式无需添加其他参数，`Enter` 即可进入密码交互窗口。
+> - 如果是密钥方式，可以通过 -i 或者 --identity_file 来指定密钥的路径；
+> - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
-### 第 5 步：执行部署操作
+### 第 5 步：执行部署命令
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-# 通过 TiUP cluster 部署集群名称为 tidb-test
-# 部署版本为 v4.0.0-beta.2
-# 初始化配置文件 topology.yaml
-# 通过 root 的密钥登陆到目标主机完成集群部署,也可以用其他有 ssh 和 sudo 权限的用户来完成部署。
-
 tiup cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user root -i /home/root/.ssh/gcp_rsa
 ```
+
+以上部署命令中：
+
+- 通过 TiUP cluster 部署的集群名称为 tidb-test
+- 部署版本为 v4.0.0-beta.2
+- 初始化配置文件为 topology.yaml
+- 通过 root 的密钥登陆到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署
 
 预期日志输出样例，部署成功会有 `Started cluster tidb-test successfully` 关键词：
 
@@ -897,7 +897,7 @@ Flags:
 tiup cluster list
 ```
 
-预期输出样例，当前通过 TiUP cluster 管理的集群名称、部署用户、版本、密钥信息情况：
+预期输出当前通过 TiUP cluster 管理的集群名称、部署用户、版本、密钥信息等：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster list
@@ -914,7 +914,7 @@ tidb-test         tidb  v4.0.0-beta.2  /home/tidb/.tiup/storage/cluster/clusters
 tiup cluster display tidb-test
 ```
 
-预期结果输出包括实例 ID、角色、主机、监听端口和状态（为启动，所以状态为 Down/inactive）、目录信息：
+预期输出包括实例 ID、角色、主机、监听端口和状态（为启动，所以状态为 Down/inactive）、目录信息：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster display tidb-test
@@ -1026,7 +1026,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 10.0.1.3:2060   tikv          10.0.1.4  2060/20080   Up         /tidb-data/tikv-2060          /tidb-deploy/tikv-2060
 ```
 
-### 第 10 步：通过 TiDB-Dashboard 和 Grafana 检查集群状态
+### 第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态
 
 #### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
 
@@ -1038,7 +1038,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 
     ![TiDB-Dashboard-status](/media/tiup/tidb-dashboard-status.png)
 
-#### 查看 Grafana 监控 Overview 模版检查 TiDB Cluster 状态
+#### 查看 Grafana 监控 Overview 页面检查 TiDB Cluster 状态
 
 - 通过 {Grafana-ip}:3000 登陆 Grafana 监控，默认密码为 admin/admin
 
@@ -1048,7 +1048,13 @@ ID                  Role          Host          Ports        Status     Data Dir
 
     ![Grafana-overview](/media/tiup/grafana-overview.png)
 
-### 登陆数据库简单 DML DDL 操作和查询 SQL statement （提前安装 Mysql Client）
+### 登陆数据库执行简单 DML、DDL 操作和查询 SQL 语句
+
+> **注意：**
+>
+> 登陆数据库前，你需要安装 MySQL 客户端。
+
+执行如下命令登陆数据库：
 
 {{< copyable "shell-regular" >}}
 
@@ -1088,7 +1094,7 @@ MySQL [tidb]> create database pingcap;
 Query OK, 0 rows affected (0.10 sec)
 
 --
--- 创建 PingCAP databse
+-- 创建 PingCAP database
 --
 MySQL [(none)]> create database pingcap;
 Query OK, 0 rows affected (0.10 sec)
@@ -1140,7 +1146,7 @@ Bye
 
 ## 关闭集群
 
-### 执行 `tidb-test` 集群关闭命令
+执行如下命令关闭 `tidb-test` 集群：
 
 {{< copyable "shell-regular" >}}
 
@@ -1197,7 +1203,7 @@ Stopped cluster `tidb-test` successfully
 
 > **警告：**
 >
-> **`生产环境慎重执行，此操作确认后清理任务无法回退`**
+> **生产环境慎重执行，此操作确认后清理任务无法回退。**
 
 执行如下命令删除 tidb-test 集群，包括数据、服务：
 
@@ -1291,7 +1297,7 @@ Destroyed cluster `tidb-test` successfully
 
 #### 1. 实例参数模块
 
-TiDB Server 为例，在实例参数模块的配置，即 `“- host”` 为分割的实例，是最高优先级应用到目标节点的。 
+以 TiDB Server 为例，在实例参数模块的配置，即 `“- host”` 为分割的实例，是最高优先级应用到目标节点的。 
 
 - 实例下的 `config` 配置会优先于 `server_configs` 参数模块的配置；
 - 实例下的 `ssh_port`、`deploy_dir`、`log_dir` 配置优先 `global` 参数模块的配置；
@@ -1311,9 +1317,9 @@ tidb_servers:
       log.slow-query-file: tidb-slow-overwrited.log
 ```
 
-#### 2. `global` 、 `server_configs` 、`monitored` 参数模块
+#### 2. `global`、`server_configs`、`monitored` 参数模块
 
-- `global` 参数模块的配置在全局配置，优先级低于实例参数模块的配置。
+- `global` 参数模块的配置为全局配置，优先级低于实例参数模块的配置。
 
     ```yaml
     global:
@@ -1347,7 +1353,7 @@ tidb_servers:
         gc: 7
     ```
 
-- `monitored` 参数模块应用于被监控的主机，默认端口为 9100 和 9115，目录如果配置默认会部署在用户的家目录下面，例如 `golbal` 参数模块配置的 `user` 为 tidb 用户，默认会配置到 `/home/tidb` 目录下。
+- `monitored` 参数模块应用于被监控的主机，默认端口为 9100 和 9115，目录如果配置，默认会部署在用户的 `/home` 目录下，例如 `global` 参数模块配置的 `user` 为 tidb 用户，默认会配置到 `/home/tidb` 目录下。
 
     ```yaml
     # Monitored variables are used to
