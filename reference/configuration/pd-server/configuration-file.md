@@ -238,6 +238,11 @@ Configuration items related to scheduling
 + Determines whether to disable isolation level check. When this parameter is set to `true`, PD does not increase the isolation level of the Region replicas through scheduling.
 + Default value: `false`
 
+### `store-balance-rate`
+
++ Determines the maximum number of operations related to adding peers within a minute
++ Default value: `15`
+
 ## `replication`
 
 Configuration items related to replicas
