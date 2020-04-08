@@ -200,7 +200,7 @@ category: how-to
 
 > **注意：**
 >
-> 如果您的数据盘已经格式化成 ext4 并挂载了磁盘，可先执行 `umount /dev/nvme0n1p1` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行，添加挂载参数重新挂载即可。
+> 如果你的数据盘已经格式化成 ext4 并挂载了磁盘，可先执行 `umount /dev/nvme0n1p1` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行，添加挂载参数重新挂载即可。
 
 以 `/dev/nvme0n1` 数据盘为例，具体操作步骤如下：
 
@@ -419,7 +419,7 @@ alertmanager_servers:
 
 #### 单机多实例部署的关键参数配置
 
-本节介绍单机多实例的关键参数，主要用于 TiDB、TiKV 的单机多实例部署场景。您需要按照提供的计算公式，将结果填写至下一步的配置文件中。
+本节介绍单机多实例的关键参数，主要用于 TiDB、TiKV 的单机多实例部署场景。你需要按照提供的计算公式，将结果填写至下一步的配置文件中。
 
 - TiKV 进行配置优化
 
@@ -1058,7 +1058,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 > **注意：**
 >
-> 登陆数据库前，您需要安装 MySQL 客户端。
+> 登陆数据库前，你需要安装 MySQL 客户端。
 
 执行如下命令登陆数据库：
 
@@ -1428,7 +1428,7 @@ tidb_servers:
     Unable to talk to NTP daemon. Is it running?
     ```
 
-- 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为您的 NTP server：
+- 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP server：
 
     {{< copyable "shell-regular" >}}
 
@@ -1471,7 +1471,7 @@ tidb_servers:
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
 
-3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成您的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。
+3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成你的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。
 
     {{< copyable "shell-regular" >}}
 
