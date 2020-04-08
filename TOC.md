@@ -312,6 +312,7 @@
     - [Overview](/reference/tiflash/overview.md)
     - [Deploy a TiFlash Cluster](/reference/tiflash/deploy.md)
     - [Use TiFlash](/reference/tiflash/use-tiflash.md)
+    - [Maintain a TiFlash Cluster](/reference/tiflash/maintain.md)
     - [Monitor TiFlash](/reference/tiflash/monitor.md)
     - [Scale TiFlash](/reference/tiflash/scale.md)
     - [Configure TiFlash](/reference/tiflash/configuration.md)
