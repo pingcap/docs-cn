@@ -460,7 +460,7 @@ alertmanager_servers:
 
 - `numa_node` 绑核
 
-    - 在实例参数模块配置对应的 `numa_node` 参数，并添加对应的物理 CPU 的数字；
+    - 在实例参数模块配置对应的 `numa_node` 参数，并添加对应的物理 CPU 的核数；
 
     - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
 
