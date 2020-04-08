@@ -165,7 +165,7 @@ git clone -b $tag https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 从 3.0 以前版本升级到 4.0 版本，并且单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    > 从 3.0 以前版本（不包括 3.0）升级到 4.0 版本，并且单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
     >
     > 配置前，注意检查端口是否有冲突。
 
