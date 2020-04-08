@@ -191,6 +191,10 @@ select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 wher
 select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
 ```
 
+> **注意：**
+>
+> `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
+
 ### NO_INDEX_MERGE()
 
 `NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
@@ -266,3 +270,17 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
+
+### IGNORE_PLAN_CACHE()
+
+`IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
+
+该 Hint 用于在 [prepare-plan-cache](/reference/configuration/tidb-server/configuration-file.md#prepared-plan-cache) 开启的场景下临时禁用 plan cache。
+
+以下示例强制 `prepare` 语句不使用 plan cache：
+
+{{< copyable "sql" >}}
+
+```sql
+prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id = ?';
+```
