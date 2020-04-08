@@ -7,21 +7,37 @@ category: reference
 
 ## 概述
 
-TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ 等第三方数据媒介复制 TiDB 的数据变更。
+TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ(Message Queue) 等第三方数据媒介复制 TiDB 的数据变更。
 
 TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件，Event 分为三类：
 
-* Row Changed Event：代表一行的数据变化，在 Row 发生变更时被发出，包含变更后 Row 的相关信息
+* Row Changed Event：代表一行的数据变化，在行发生变更时该 Event 被发出，包含变更后该行的相关信息。
 * DDL Event：代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中
 * Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的
 
 ## 协议约束
 
 * 在绝大多数情况下，一个版本的 Row Changed Event 只会发出一次，但是特殊情况（节点故障、网络分区等）下，同一版本的 Row Changed Event 可能会多次发送。
-* 对于同一张表的 Row Changed Event 组成的 Event 流，对于每一个版本第一次发出的 Row Changed Event 一定是按 TS 顺序递增的。
+* 同一张表中的每一个版本第一次发出的 Row Changed Event 在 Event 流中一定是按 TS 顺序递增的。
 * Resolved Event 会被周期性的广播到各个 MQ Partition，Resolved Event 意味着任何 TS 小于 Resolved Event TS 的 Event 已经发送给下游。
 * DDL Event 将被广播到各个 MQ Partition。
-* 对于一行数据的多个 Row Changed Event 一定会被发送到同一个 MQ Partition 中。
+* 一行数据的多个 Row Changed Event 一定会被发送到同一个 MQ Partition 中。
+
+## Message 格式定义
+
+一个 Message 中包含一个或多个 Event，按照以下格式排列：
+
+Key:
+
+| Offset(Byte) | 0       | 1~7     | 8~15 | 16~(15+长度1) | ... | ... |
+| :----------- | :------ | :------ | :--- | :----------- | :--- | :----------- |
+| 参数         | 协议版本号 | 预留位  | 长度1 | Event Key1         | 长度N | Event KeyN         |
+
+Value:
+
+| Offset(Byte) | 0~7 | 8~(7+长度1) | ... | ... |
+| :----------- | :--- | :-------- | :--- | :------ |
+| 参数         | 长度1 | Event Value1     | 长度N | Event ValueN |
 
 ## Event 格式定义
 
@@ -29,7 +45,7 @@ TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件�
 
 **Key:**
 
-```json
+```
 {
     "ts":<TS>,
     "schema":<Schema Name>,
@@ -46,7 +62,7 @@ TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件�
 
 **Value:**
 
-```json
+```
 {
     <UpdateOrDelete>:{
         <Column Name>:{
@@ -75,7 +91,7 @@ TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件�
 
 **Key:**
 
-```json
+```
 {
     "ts":<TS>,
     "schema":<Schema Name>,
@@ -92,7 +108,7 @@ TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件�
 
 **Value:**
 
-```json
+```
 {
     "query":<DDL Query>,
     "type":<DDL Type>
@@ -108,12 +124,16 @@ TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件�
 
 **Key:**
 
-```json
+```
 {
     "ts":<TS>,
     "type":3
 }
 ```
+
+| 参数         | 类型   | 说明                                         |
+| :---------- | :----- | :------------------------------------------ |
+| TS          | Number | Resolved TS，任意小于该 TS 的 Event 已经发送完毕 |
 
 **Value:**
 
@@ -121,22 +141,22 @@ None
 
 ## 示例
 
-设上游执行以下 SQL, MQ Partition 数量为 2：
+假设在上游执行以下 SQL 语句, MQ Partition 数量为 2：
 
 ```sql
 CREATE TABLE test.t1(id int primary key, val varchar(16));
 ```
 
-正如以下 [Log 1]、[Log 3]，DDL Event 将广播到所有 MQ Partition，Resolved Event 会被周期性的广播到各个 MQ Partition：
+如以下执行日志中的 Log 1、Log 3 所示，DDL Event 将被广播到所有 MQ Partition；Resolved Event 会被周期性地广播到各个 MQ Partition：
 
-```log
+```
 1. [partition=0] [key="{\"ts\":415508856908021766,\"schema\":\"test\",\"table\":\"t1\",\"type\":2}"] [value="{\"query\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"type\":3}"]
 2. [partition=0] [key="{\"ts\":415508856908021766,\"type\":3}"] [value=]
 3. [partition=1] [key="{\"ts\":415508856908021766,\"schema\":\"test\",\"table\":\"t1\",\"type\":2}"] [value="{\"query\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"type\":3}"]
 4. [partition=1] [key="{\"ts\":415508856908021766,\"type\":3}"] [value=]
 ```
 
-在上游执行：
+在上游执行以下 SQL 语句：
 
 ```sql
 BEGIN;
@@ -147,16 +167,18 @@ INSERT INTO test.t1(id, val) VALUES (3, 'cc');
 COMMIT;
 ```
 
-正如以下 [Log 5]、[Log 6]，同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理；在 [Log 6] 中，在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event；[Log 8] 是 [log 7] 的重复 Event，Row Changed Event 可能重复，但每个版本的 Event 第一次收到的次序一定是有序的：
++ 如以下执行日志中的 Log 5 和 Log 6 所示，同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理。
++ 如 Log 6 所示，在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event。
++ Log 8 是 Log 7 的重复 Event。Row Changed Event 可能重复，但每个版本的 Event 第一次发出的次序一定是有序的。
 
-```log
+```
 5. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":1},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"YWE=\"}}}"]
 6. [partition=1] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":2},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"YmI=\"}}}"]
 7. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"Y2M=\"}}}"]
 8. [partition=0] [key="{\"ts\":415508878783938562,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"Y2M=\"}}}"]
 ```
 
-在上游执行：
+在上游执行以下 SQL 语句：
 
 ```sql
 BEGIN;
@@ -166,9 +188,10 @@ UPDATE test.t1 SET id = 4, val = 'ee' WHERE id = 2;
 COMMIT;
 ```
 
-[Log 9] 是 Delete 类型的 Row Changed Event，这种类型的 Event 只包含主键列或唯一索引列；[Log 13]、[Log 14]是 Resolved Event，Resolved Event 意味着在这个 Partition 中，任意小于 Resolved TS 的 Event（包括 Row Changed Event 和 DDL Event） 已经发送完毕：
++ Log 9 是 `Delete` 类型的 Row Changed Event，这种类型的 Event 只包含主键列或唯一索引列。
++ Log 13 和 Log 14 是 Resolved Event。Resolved Event 意味着在这个 Partition 中，任意小于 Resolved TS 的 Event（包括 Row Changed Event 和 DDL Event）已经发送完毕。
 
-```log
+```
 9. [partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"delete\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":1}}}"]
 10. [partition=1] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"delete\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":2}}}"]
 11. [partition=0] [key="{\"ts\":415508881418485761,\"schema\":\"test\",\"table\":\"t1\",\"type\":1}"] [value="{\"update\":{\"id\":{\"type\":3,\"where_handle\":true,\"value\":3},\"val\":{\"type\":15,\"where_handle\":false,\"value\":\"ZGQ=\"}}}"]
