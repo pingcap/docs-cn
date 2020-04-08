@@ -53,9 +53,10 @@
       - [For Testing Environments](/how-to/deploy/from-tarball/testing-environment.md)
       - [For Production Environments](/how-to/deploy/from-tarball/production-environment.md)
     + Orchestrated Deployment
-      - [Ansible Deployment (Recommended)](/how-to/deploy/orchestrated/ansible.md)
-      - [Ansible Offline Deployment](/how-to/deploy/orchestrated/offline-ansible.md)
-      - [Docker Deployment](/how-to/deploy/orchestrated/docker.md)
+      - [Use TiUP (Recommended)](/how-to/deploy/orchestrated/tiup.md)
+      - [Use TiDB Ansible](/how-to/deploy/orchestrated/ansible.md)
+      - [Use TiDB Ansible Offline](/how-to/deploy/orchestrated/offline-ansible.md)
+      - [Use Docker](/how-to/deploy/orchestrated/docker.md)
     + Geographic Redundancy
       - [Overview](/how-to/deploy/geographic-redundancy/overview.md)
       - [Configure Location Awareness](/how-to/deploy/geographic-redundancy/location-awareness.md)
