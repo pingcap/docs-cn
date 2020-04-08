@@ -117,7 +117,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     如需变更，可参考[如何调整进程监管方式从 supervise 到 systemd](/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
 
-3. 新增 `cpu_architecture` 参数，根据 CPU 架构来配置。默认为 `amd64`。
+3. 新增 `cpu_architecture` 参数，根据 CPU 架构来配置。默认值为 `amd64`。
 
 ### 编辑 TiDB 集群组件配置文件
 
