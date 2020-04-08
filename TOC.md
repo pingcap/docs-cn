@@ -30,8 +30,7 @@
   + 部署
     - [软硬件环境需求](/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
-      - [使用 TiUP 部署（推荐）](/how-to/deploy/orchestrated/tiup.md)
-      - [使用 Ansible 部署](/how-to/deploy/orchestrated/ansible.md)
+      - [使用 Ansible 部署（推荐）](/how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](/how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)
     + 跨地域冗余

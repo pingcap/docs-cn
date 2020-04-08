@@ -430,18 +430,6 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 - `CREATE TABLE`：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
 - `ALTER TABLE`：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
 
-### tidb_row_format_version
-
-作用域：GLOBAL
-
-默认值：2
-
-控制新保存数据的表数据格式版本。TiDB v4.0 中默认使用版本号为 2 的[新表数据格式](https://github.com/pingcap/tidb/blob/master/docs/design/2018-07-19-row-format.md)保存新数据。
-
-但如果从 4.0.0 之前的版本升级到 4.0.0，不会改变表数据格式版本，TiDB 会继续使用版本为 1 的旧格式写入表中，即**只有新创建的集群才会默认使用新表数据格式**。
-
-需要注意的是修改该变量不会对已保存的老数据产生影响，只会对修改变量后的新写入数据使用对应版本格式保存。
-
 ### tidb_slow_log_threshold
 
 作用域：SESSION
