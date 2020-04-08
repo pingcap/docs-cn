@@ -200,7 +200,7 @@ category: how-to
 
 > **注意：**
 >
-> 如果你的数据盘已经格式化成 ext4 并挂载了磁盘，可先执行 `umount /dev/nvme0n1p1` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行，添加挂载参数重新挂载即可。
+> 如果您的数据盘已经格式化成 ext4 并挂载了磁盘，可先执行 `umount /dev/nvme0n1p1` 命令卸载，从编辑 `/etc/fstab` 文件步骤开始执行，添加挂载参数重新挂载即可。
 
 以 `/dev/nvme0n1` 数据盘为例，具体操作步骤如下：
 
@@ -419,7 +419,7 @@ alertmanager_servers:
 
 #### 单机多实例部署的关键参数配置
 
-本节介绍单机多实例的关键参数，主要用于 TiDB、TiKV 的单机多实例部署场景。你需要按照提供的计算公式，将结果填写至下一步的配置文件中。
+本节介绍单机多实例的关键参数，主要用于 TiDB、TiKV 的单机多实例部署场景。您需要按照提供的计算公式，将结果填写至下一步的配置文件中。
 
 - TiKV 进行配置优化
 
@@ -850,26 +850,26 @@ Input SSH password:
 
 Checking service state of pd
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:54:22 CST; 50s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:22 CST; 50s ago
 Checking service state of tikv
     10.0.1.1
-           Active: active (running) since 六 2020-04-04 09:54:35 CST; 38s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:35 CST; 38s ago
     10.0.1.2
-           Active: active (running) since 六 2020-04-04 09:54:38 CST; 37s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:38 CST; 37s ago
     10.0.1.3
-           Active: active (running) since 六 2020-04-04 09:54:41 CST; 35s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:41 CST; 35s ago
 Checking service state of tidb
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:54:56 CST; 22s ago
+           Active: active (running) since Saturday 2020-04-04 09:54:56 CST; 22s ago
 Checking service state of prometheus
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:03 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:03 CST; 16s ago
 Checking service state of grafana
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:05 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:05 CST; 16s ago
 Checking service state of alertmanager
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 09:55:08 CST; 14s ago
+           Active: active (running) since Saturday 2020-04-04 09:55:08 CST; 14s ago
 Started cluster `tidb-test` successfully
 ```
 
@@ -977,26 +977,26 @@ Starting component node_exporter
 
     Checking service state of pd
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:04 CST; 43s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:04 CST; 43s ago
 Checking service state of tikv
     10.0.1.1
-           Active: active (running) since 六 2020-04-04 01:08:15 CST; 33s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:15 CST; 33s ago
     10.0.1.2
-           Active: active (running) since 六 2020-04-04 01:08:18 CST; 31s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:18 CST; 31s ago
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:21 CST; 29s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:21 CST; 29s ago
 Checking service state of tidb
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:36 CST; 16s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:36 CST; 16s ago
 Checking service state of prometheus
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:39 CST; 15s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:39 CST; 15s ago
 Checking service state of grafana
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:41 CST; 14s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:41 CST; 14s ago
 Checking service state of alertmanager
     10.0.1.4
-           Active: active (running) since 六 2020-04-04 01:08:44 CST; 12s ago
+           Active: active (running) since Saturday 2020-04-04 01:08:44 CST; 12s ago
 Started cluster `tidb-test` successfully
 ```
 
@@ -1058,7 +1058,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 > **注意：**
 >
-> 登陆数据库前，你需要安装 MySQL 客户端。
+> 登陆数据库前，您需要安装 MySQL 客户端。
 
 执行如下命令登陆数据库：
 
@@ -1160,48 +1160,48 @@ Bye
 cluster stop tidb-test
 ```
 
-预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志销毁成功：
+预期结果输出，注意 `Stopped cluster tidb-test successfully` 标志关闭成功：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster stop tidb-test
 + [ Serial ] - SSHKeySet: privateKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa, publicKey=/home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa.pub
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.169
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.169
-+ [Parallel] - UserSSH: user=tidb, host=172.16.4.237
-+ [Parallel] - UserSSH: user=tidb, host=172.16.4.235
-+ [Parallel] - UserSSH: user=tidb, host=172.16.5.172
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.5
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.5
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.2
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.1
++ [Parallel] - UserSSH: user=tidb, host=10.0.1.4
 + [ Serial ] - ClusterOperate: operation=StopOperation, options={Roles:[] Nodes:[] Force:false}
 Stopping component alertmanager
-    Stopping instance 172.16.5.172
-    Stop alertmanager 172.16.5.172:9104 success
+    Stopping instance 10.0.1.4
+    Stop alertmanager 10.0.1.4:9104 success
 
 ...... 部分日志忽略......
 
 Checking service state of pd
-    172.16.5.169
-           Active: inactive (dead) since 六 2020-04-04 15:35:42 CST; 15s ago
+    10.0.1.5
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:42 CST; 15s ago
 Checking service state of tikv
-    172.16.4.235
-           Active: inactive (dead) since 六 2020-04-04 15:35:21 CST; 38s ago
-    172.16.4.237
-           Active: inactive (dead) since 六 2020-04-04 15:35:23 CST; 37s ago
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:24 CST; 37s ago
+    10.0.1.1
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:21 CST; 38s ago
+    10.0.1.2
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:23 CST; 37s ago
+    10.0.1.3
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:24 CST; 37s ago
 Checking service state of tidb
-    172.16.5.169
-           Active: inactive (dead) since 六 2020-04-04 15:35:15 CST; 49s ago
+    10.0.1.5
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:15 CST; 49s ago
 Checking service state of prometheus
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:12 CST; 53s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:12 CST; 53s ago
 Checking service state of grafana
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:10 CST; 56s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:10 CST; 56s ago
 Checking service state of alertmanager
-    172.16.5.172
-           Active: inactive (dead) since 六 2020-04-04 15:35:09 CST; 59s ago
+    10.0.1.4
+           Active: inactive (dead) since Saturday 2020-04-04 15:35:09 CST; 59s ago
 Stopped cluster `tidb-test` successfully
 ```
 
@@ -1428,7 +1428,7 @@ tidb_servers:
     Unable to talk to NTP daemon. Is it running?
     ```
 
-- 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP server：
+- 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为您的 NTP server：
 
     {{< copyable "shell-regular" >}}
 
@@ -1471,7 +1471,7 @@ tidb_servers:
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
 
-3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成你的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。
+3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成您的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。
 
     {{< copyable "shell-regular" >}}
 
