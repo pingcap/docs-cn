@@ -7,12 +7,33 @@ category: reference
 
 升级 TiFlash 节点的步骤如下：
 
-1. 下载新版 TiFlash binary 到中控机，方式有如下两种：
+1. 备份 tidb-ansible 文件夹
 
-    - 下载最新版 TiDB Ansible 或者通过 `git pull` 命令更新 TiDB Ansible git repo，然后执行 `ansible-playbook local_prepare.yml` 命令。
-    - 或者手动下载 TiFlash binary 并覆盖到 `resource/bin/tiflash`。
+    {{< copyable "shell-regular" >}}
 
-2. 滚动升级 TiFlash：
+    ```shell
+    mv tidb-ansible tidb-ansible-bak
+    ```
+
+2. 下载 TiDB 3.1 版本对应 tag 的 tidb-ansible
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+    ```
+
+3. 下载 binary
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ansible-playbook local_prepare.yml
+    ```
+
+4. 编辑 inventory.ini 文件
+
+5. 滚动升级 TiFlash：
 
     {{< copyable "shell-regular" >}}
 
@@ -20,7 +41,7 @@ category: reference
     ansible-playbook rolling_update.yml --tags tiflash
     ```
 
-3. 滚动升级 TiDB 监控组件：
+6. 滚动升级 TiDB 监控组件：
 
     {{< copyable "shell-regular" >}}
 
