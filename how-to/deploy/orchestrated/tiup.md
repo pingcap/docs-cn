@@ -1362,7 +1362,6 @@ tidb_servers:
 - `monitored` 参数模块应用于被监控的主机，默认端口为 9100 和 9115，目录如果配置，默认会部署在用户的 `/home` 目录下，例如 `global` 参数模块配置的 `user` 为 tidb 用户，默认会配置到 `/home/tidb` 目录下。
 
     ```yaml
-    # Monitored variables are used to
     monitored:
     node_exporter_port: 9100
     blackbox_exporter_port: 9115
