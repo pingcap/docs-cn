@@ -377,16 +377,17 @@ set tidb_query_log_max_len = 20
 
 ### tidb_txn_mode
 
-- Scope: SESSION | GLOBAL (in TiDB 3.0.4 or later)
-- Default value: ""
-- This variable is used to set the transaction mode, which by default is optimistic locking mode. TiDB 3.0 supports the pessimistic locking mode (experimental). After you set `tidb_txn_mode` to `pessimistic`, all explicit transactions (non-autocommit transactions) the session executes become pessimistic transactions.
-- Since TiDB 3.0.4, you can also use this variable to set the transaction mode globally. Once set to GLOBAL, only sessions created after modification are affected. For details, see [TiDB Pessimistic Transaction Mode](/reference/transactions/transaction-pessimistic.md).
+- Scope: SESSION | GLOBAL
+- Default value: "pessimistic"
+- This variable is used to set the transaction mode. TiDB 3.0 supports the pessimistic transactions. Since TiDB 3.0.8, the [pessimistic transaction mode](/reference/transactions/transaction-pessimistic.md) is enabled by default.
+- If you upgrade TiDB from v3.0.7 or earlier versions to v3.0.8 or later versions, the default transaction mode does not change. **Only the newly created clusters use the pessimistic transaction mode by default**.
+- If this variable is set to "optimistic" or "", TiDB uses the [optimistic transaction mode](/reference/transactions/transaction-optimistic.md).
 
 ### tidb_constraint_check_in_place
 
 - Scope: SESSION | GLOBAL
 - Default value: 0
-- TiDB uses the optimistic locking model by default. This means that conflict check (unique key check) is performed when the transaction is committed. This variable is used to set whether to do a unique key check each time a row of data is written.
+- TiDB supports the optimistic transaction model. This means that conflict check (unique key check) is performed when the transaction is committed. This variable is used to set whether to do a unique key check each time a row of data is written.
 - If this variable is enabled, the performance might be affected in a scenario where a large batch of data is written. For example:
 
     - When this variable is disabled:

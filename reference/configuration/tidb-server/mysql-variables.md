@@ -114,7 +114,8 @@ The following MySQL system variables are fully supported in TiDB and have the sa
 | time_zone | GLOBAL \| SESSION | the time zone of the database |
 | tx_isolation | GLOBAL \| SESSION | the isolation level of a transaction |
 | hostname | NONE | the hostname of the TiDB server |
-| max\_execution\_time | GLOBAL \| SESSION |  the execution timeout for a statement, in milliseconds |
+| max\_execution\_time | GLOBAL \| SESSION | the execution timeout for a statement, in milliseconds |
+| innodb\_lock\_wait\_timeout | GLOBAL \| SESSION | the lock wait time for pessimistic transactions, in seconds |
 | windowing\_use\_high\_precision | GLOBAL \| SESSION |  whether to use the high precision mode when computing the window function. The default value is ON |
 
 > **Note:**
