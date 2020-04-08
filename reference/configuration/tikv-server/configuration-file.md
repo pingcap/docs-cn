@@ -122,7 +122,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `use-unified-pool`
 
-+ 是否使用统一的读取线程池（在 readpool.unified 中配置）处理存储请求。该选项为 false 时，使用单独的存储线程池，通过本节中的其余配置项配置。
++ 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理存储请求。该选项值为 false 时，使用单独的存储线程池。通过本节 (`readpool.storage`) 中的其余配置项配置单独的线程池。
 + 默认值：false
 
 ### `high-concurrency`
@@ -174,8 +174,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `use-unified-pool`
 
-+ 是否使用统一的读取线程池（在 readpool.unified 中配置）处理协处理器请求。该选项为 false 时，使用单独的协处理器线程池，通过本节中的其余配置项配置。
-+ 默认值：如果本节中没有其他配置，默认为 true。否则，为了升级兼容性，默认为 false，请根据需要更改 readpool.unified 中的配置后再启用该选项。
++ 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理协处理器请求。该选项值为 false 时，使用单独的协处理器线程池。通过本节 (`readpool.coprocessor`) 中的其余配置项配置单独的线程池。
++ 默认值：如果本节 (`readpool.coprocessor`) 中没有其他配置，默认为 true。否则，为了升级兼容性，默认为 false，请根据需要更改 [`readpool.unified`](#readpoolunified) 中的配置后再启用该选项。
 
 ### `high-concurrency`
 
