@@ -53,7 +53,7 @@ category: how-to
 
 ### 第 2 步：在中控机上安装 TiUP 组件
 
-使用普通用户登陆中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
+使用普通用户登录中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
 
 1. 执行如下命令安装 TiUP 工具：
 
@@ -784,7 +784,7 @@ Flags:
 # Flags 可选参数，有以下的作用： 
 # 通过 -h 可以查看帮助；
 # 通过 -i 执行权限认证； 
-# --user 通过指定用户来完成 ssh 登陆，默认为 root 用户；
+# --user 通过指定用户来完成 ssh 登录，默认为 root 用户；
 # -y 提过拓扑信息确认直接执行部署任务
 ```
 
@@ -792,7 +792,7 @@ Flags:
 >
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 > 
-> - 如果是密钥方式，可以通过 -i 或者 --identity_file 来指定密钥的路径；
+> - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
 > - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
 ### 第 5 步：执行部署命令
@@ -805,10 +805,10 @@ tiup cluster deploy tidb-test v4.0.0-beta.2 ./topology.yaml --user root -i /home
 
 以上部署命令中：
 
-- 通过 TiUP cluster 部署的集群名称为 tidb-test
-- 部署版本为 v4.0.0-beta.2
-- 初始化配置文件为 topology.yaml
-- 通过 root 的密钥登陆到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署
+- 通过 TiUP cluster 部署的集群名称为 `tidb-test`
+- 部署版本为 `v4.0.0-beta.2`
+- 初始化配置文件为 `topology.yaml`
+- 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署
 
 预期日志输出样例，部署成功会有 `Started cluster tidb-test successfully` 关键词：
 
@@ -1036,7 +1036,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 #### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
 
-- 通过 {pd-leader-ip}:2379/dashboard 登陆 TiDB Dashboard
+- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
@@ -1046,7 +1046,7 @@ ID                  Role          Host          Ports        Status     Data Dir
 
 #### 查看 Grafana 监控 Overview 页面检查 TiDB Cluster 状态
 
-- 通过 {Grafana-ip}:3000 登陆 Grafana 监控，默认密码为 admin/admin
+- 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认密码为 admin/admin
 
     ![Grafana-login](/media/tiup/grafana-login.png)
  
@@ -1054,13 +1054,13 @@ ID                  Role          Host          Ports        Status     Data Dir
 
     ![Grafana-overview](/media/tiup/grafana-overview.png)
 
-### 登陆数据库执行简单 DML、DDL 操作和查询 SQL 语句
+### 登录数据库执行简单 DML、DDL 操作和查询 SQL 语句
 
 > **注意：**
 >
-> 登陆数据库前，你需要安装 MySQL 客户端。
+> 登录数据库前，你需要安装 MySQL 客户端。
 
-执行如下命令登陆数据库：
+执行如下命令登录数据库：
 
 {{< copyable "shell-regular" >}}
 
@@ -1072,7 +1072,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 ```sql
 --
--- 登陆成功
+-- 登录成功
 --
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MySQL connection id is 1
@@ -1545,7 +1545,7 @@ tidb_servers:
 > - numa 绑核是用来隔离 CPU 资源一种方法，适合高配置物理机环境部署多实例使用。 
 > - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。 
 
-1. 登陆到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
+1. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
     {{< copyable "shell-regular" >}}
 
