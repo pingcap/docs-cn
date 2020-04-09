@@ -5,15 +5,15 @@ category: reference
 
 # Titan 配置
 
-Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，以在 value 较大的场景下，降低 RocksDB 后台 compaction 对 IO 带宽和 CPU 的占用，同时提高 SSD 寿命。
+Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，以在 value 较大的场景下，降低 RocksDB 后台 compaction 对 I/O 带宽和 CPU 的占用，同时提高 SSD 寿命。
 
 ## 适用场景
 
 Titan 适合在以下场景中使用：
 
-- 前台写入量较大，RocksDB 大量触发 compaction 消耗大量 IO 带宽或者 CPU 资源，造成 TiKV 前台读写性能较差。
-- 前台写入量较大，由于 IO 带宽瓶颈或 CPU 瓶颈的限制，RocksDB compaction 进度落后较多频繁造成 write stall。
-- 前台写入量较大，RocksDB 大量触发 compaction 造成 IO 写入量较大，影响 SSD 盘的寿命。
+- 前台写入量较大，RocksDB 大量触发 compaction 消耗大量 I/O 带宽或者 CPU 资源，造成 TiKV 前台读写性能较差。
+- 前台写入量较大，由于 I/O 带宽瓶颈或 CPU 瓶颈的限制，RocksDB compaction 进度落后较多频繁造成 write stall。
+- 前台写入量较大，RocksDB 大量触发 compaction 造成 I/O 写入量较大，影响 SSD 盘的寿命。
 
 开启 Titan 需要考虑以下前提条件：
 
@@ -79,14 +79,14 @@ discardable-ratio = 0.5
 当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过这一阈值时，将会触发 Titan GC ，将此文件有用的数据重写到另一个文件。这个值可以估算 Titan 的写放大和空间放大的上界（假设关闭压缩）。公式是：
 写放大上界 = 1 / discardable_ratio
 空间放大上界 = 1 / ( 1 - discarable_ratio )
-可以看到，减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 IO 带宽和 CPU 消耗，但是会增加磁盘空间占用。
+可以看到，减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。
 
 ```toml
 [rocksdb]
 rate-bytes-per-sec = 0
 ```
 
-该选项并不是 Titan 独有的设置。该选项限制 RocksDB compaction 的 IO 速率，以达到在流量高峰时，限制 RocksDB compaction 减少其 IO 带宽和 CPU 消耗对前台读写性能的影响。当开启 Titan 时，该选项限制 RocksDB compaction 和 Titan GC 的 IO 速率总和。当发现在流量高峰时 RocksDB compaction 和 Titan GC 的 IO 和/或 CPU 消耗过大，可以根据磁盘 IO 带宽和实际写入流量适当配置这个选项。
+该选项并不是 Titan 独有的设置。该选项限制 RocksDB compaction 的 I/O 速率，以达到在流量高峰时，限制 RocksDB compaction 减少其 I/O 带宽和 CPU 消耗对前台读写性能的影响。当开启 Titan 时，该选项限制 RocksDB compaction 和 Titan GC 的 I/O 速率总和。当发现在流量高峰时 RocksDB compaction 和 Titan GC 的 I/O 和/或 CPU 消耗过大，可以根据磁盘 I/O 带宽和实际写入流量适当配置这个选项。
 
 ## 关闭 Titan（实验性）
 
@@ -115,4 +115,4 @@ level-merge = true
 - 减少了 Titan GC 对前台写入性能的影响，提升写入性能。
 - 减少 Titan 空间放大，减少磁盘空间占用（默认配置下的比较）。
 
-相应地，level mege 写放大会比 Titan 稍高，但依然低于原生的 RocksDB。
+相应地，level merge 写放大会比 Titan 稍高，但依然低于原生的 RocksDB。
