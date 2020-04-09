@@ -9,14 +9,15 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
 本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD 或者 TiFlash 节点。
 
-例如，如果原拓扑结构如下所示：
+原拓扑结构如下所示：
 
 | 主机 IP   | 服务   | 
 |:----|:----|
-| 10.0.1.4   | TiDB + PD    | 
+| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.4   | TiDB + PD   | 
 | 10.0.1.5   | TiKV + Monitor   | 
 | 10.0.1.1   | TiKV   | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.2   | TiKV    |
 
 ## 1. 扩容 TiDB/TiKV/PD 节点
 
@@ -32,7 +33,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 >
 > 默认情况下，可以不填端口信息。但在单机多实例场景下，你需要分配不同的端口，如果有端口或目录冲突，会在部署或扩容时提醒。
 
-新建 scale-out.yaml 文件，添加扩容拓扑配置：
+在 scale-out.yaml 文件添加扩容拓扑配置：
 
 {{< copyable "shell-regular" >}}
 
@@ -54,11 +55,12 @@ tidb_servers:
 
 你可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的整体配置，其中 global 和 server_configs 的全局配置也会在 `scale-out.yaml` 中生效。
 
-配置后的拓扑结构如下所示：
+配置后，现拓扑结构如下所示：
 
 | 主机 IP   | 服务   | 
 |:----|:----|
-| 10.0.1.4   | TiDB + PD    | 
+| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.4   | TiDB + PD   | 
 | 10.0.1.5   | **TiDB** + TiKV + Monitor   | 
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
@@ -85,7 +87,7 @@ tiup cluster display <cluster-name>
 
 ## 2. 扩容 TiFlash 节点
 
-如果要添加一个 TiFlash 节点，IP 地址为 172.19.0.104，可以按照如下步骤进行操作。
+如果要添加一个 TiFlash 节点，IP 地址为 10.0.1.4，可以按照如下步骤进行操作。
 
 ### 2.1 添加节点信息到 scale-out.yaml 文件
 
@@ -95,7 +97,7 @@ tiup cluster display <cluster-name>
 
 ```ini
 tiflash_servers:
-    - host: 172.19.0.104
+    - host: 10.0.1.4
 ```
 
 ### 2.2 运行扩容命令
@@ -114,7 +116,7 @@ tiup cluster scale-out <cluster-name> scale-out.yaml
 tiup cluster display <cluster-name>
 ```
 
-打开浏览器访问监控平台 <http://172.19.0.104:3200>，监控整个集群和新增节点的状态。
+打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
 
 ## 3. 缩容 TiDB/TiKV/PD 节点
 
@@ -139,27 +141,33 @@ TiDB Cluster: <cluster-name>
 
 TiDB Version: v4.0.0-rc
 
-ID              Role Host              Ports        Status  Data Dir                Deploy Dir
+ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
 
---              ---- ----              -----        ------  --------                ----------
+--              ----         ----        -----                            ------  --------                ----------
 
-10.0.1.4:2379   pd 10.0.1.4            2379/2380    Healthy data/pd-2379            deploy/pd-2379
+10.0.1.4:2379   pd           10.0.1.4    2379/2380                        Healthy data/pd-2379            deploy/pd-2379
 
-10.0.1.1:20160  tikv 10.0.1.1          20160/20180  Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.1:20160  tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
 
-10.0.1.2:20160  tikv 10.0.1.2          20160/20180  Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.2:20160  tikv         10.0.1.2    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
 
-10.0.1.5:20160  tikv 10.0.1.5          20160/20180  Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.5:20160  tikv         10.0.1.5    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
 
-10.0.1.4:4000   tidb 10.0.1.4          4000/10080   Up      -                       deploy/tidb-4000
+10.0.1.3:4000   tidb         10.0.1.3    4000/10080                       Up      -                       deploy/tidb-4000
 
-10.0.1.5:4000   tidb 10.0.1.5          4000/10080   Up      -                       deploy/tidb-4000
+10.0.1.4:4000   tidb         10.0.1.4    4000/10080                       Up      -                       deploy/tidb-4000
 
-10.0.1.5:9290   prometheus 10.0.1.5    9290         Up      data/prometheus-9290    deploy/prometheus-9290
+10.0.1.5:4000   tidb         10.0.1.5    4000/10080                       Up      -                       deploy/tidb-4000
 
-10.0.1.5:3200   grafana 10.0.1.5       3200         Up      -                       deploy/grafana-3200
+10.0.1.3:9000   tiflash      10.0.1.3    9000/8123/3930/20170/20292/8234  Up      data/tiflash-9000       deploy/tiflash-9000
 
-10.0.1.5:9293   alertmanager 10.0.1.5  9293/9294    Up      data/alertmanager-9293  deploy/alertmanager-9293
+10.0.1.4:9000   tiflash      10.0.1.4    9000/8123/3930/20170/20292/8234  Up      data/tiflash-9000       deploy/tiflash-9000
+
+10.0.1.5:9290   prometheus   10.0.1.5    9290                             Up      data/prometheus-9290    deploy/prometheus-9290
+
+10.0.1.5:3200   grafana      10.0.1.5    3200                             Up      -                       deploy/grafana-3200
+
+10.0.1.5:9293   alertmanager 10.0.1.5    9293/9294                        Up      data/alertmanager-9293  deploy/alertmanager-9293
 ```
 
 ### 3.2 执行缩容操作
@@ -190,7 +198,8 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   | 
 |:----|:----|
-| 10.0.1.4   | TiDB + PD    | 
+| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.4   | TiDB + PD + TiFlash   | 
 | 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   | 
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
@@ -199,7 +208,7 @@ tiup cluster display <cluster-name>
 
 ## 4. 缩容 TiFlash 节点
 
-如果要下线一个 TiFlash 节点，IP 地址为 172.19.0.104，可以按照如下步骤进行操作。
+如果要下线一个 TiFlash 节点，IP 地址为 10.0.1.4，可以按照如下步骤进行操作。
 
 > **注意：**
 >
@@ -220,7 +229,7 @@ tiup cluster display <cluster-name>
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-in <cluster-name> --node 172.19.0.104:9000
+tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
 ```
 
 ### 4.4 查看集群状态
@@ -231,4 +240,4 @@ tiup cluster scale-in <cluster-name> --node 172.19.0.104:9000
 tiup cluster display <cluster-name>
 ```
 
-打开浏览器访问监控平台 <http://172.19.0.104:3200>，监控整个集群的状态。
+打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群的状态。
