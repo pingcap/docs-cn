@@ -15,7 +15,7 @@ Titan 适合在以下场景中使用：
 - 前台写入量较大，由于 IO 带宽瓶颈或 CPU 瓶颈的限制，RocksDB compaction 进度落后较多频繁造成 write stall。
 - 前台写入量较大，RocksDB 大量触发 compaction 造成 IO 写入量较大，影响 SSD 盘的寿命。
 
-但是开启 Titan 需要考虑以下这些前提条件：
+开启 Titan 需要考虑以下前提条件：
 
 - Value 较大。可以是 value 平均大小比较大，或者数据中大 value 的数据总大小占比比较大。目前 Titan 默认 1kb 以上大小的 value 是大 value，实际根据情况 512b 以上大小的 value 也可以看作是大 value。
 - 没有范围查询或者对范围查询性能不敏感。Titan 存储数据顺序性较差，故而相比 RocksDB 范围查询性能较差，尤其是大范围查询。在测试中 Titan 范围查询性能相比 RocksDB 下降 40% 到数倍不等。
