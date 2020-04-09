@@ -17,7 +17,7 @@ Titan 适合在以下场景中使用：
 
 开启 Titan 需要考虑以下前提条件：
 
-- Value 较大。可以是 value 平均大小比较大，或者数据中大 value 的数据总大小占比比较大。目前 Titan 默认 1kb 以上大小的 value 是大 value，实际根据情况 512b 以上大小的 value 也可以看作是大 value。
+- Value 较大。即 value 平均大小比较大，或者数据中大 value 的数据总大小占比比较大。目前 Titan 默认 1kb 以上大小的 value 是大 value，根据实际情况 512b 以上大小的 value 也可以看作是大 value。
 - 没有范围查询或者对范围查询性能不敏感。Titan 存储数据顺序性较差，故而相比 RocksDB 范围查询性能较差，尤其是大范围查询。在测试中 Titan 范围查询性能相比 RocksDB 下降 40% 到数倍不等。
 - 磁盘剩余空间足够。Titan 降低写放大是通过牺牲空间放大达到的。另外由于 Titan 是逐个 value 进行压缩，压缩率比 RocksDB （逐个 block 压缩）要差。这两个因素一起造成 Titan 占用磁盘空间比 RocksDB 要多，这是正常现象。实际根据情况和不同的配置，Titan 磁盘空间占用可能会比 RocksDB 多一倍。
 
