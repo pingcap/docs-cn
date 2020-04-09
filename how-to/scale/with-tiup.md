@@ -203,7 +203,7 @@ tiup cluster display test
 >
 > 本节介绍的下线流程不会删除缩容节点上的数据文件，如需再次上线，请先手动删除。
 
-### 4.1 下线该 TiFlash 节点
+### 4.1 下线 TiFlash 节点
 
 参考[下线 TiFlash 节点](/reference/tiflash/maintain.md#下线-tiflash-节点)一节，对要进行缩容的 TiFlash 节点进行下线操作。
 
