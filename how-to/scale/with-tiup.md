@@ -7,11 +7,11 @@ category: how-to
 
 TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD 或者 TiFlash 节点。如未安装 TiUP ，请参考[升级文档中的步骤](https://pingcap.com/docs-cn/stable/how-to/upgrade/using-tiup/#2-%E5%9C%A8%E4%B8%AD%E6%8E%A7%E6%9C%BA%E5%99%A8%E4%B8%8A%E5%AE%89%E8%A3%85-tiup)，将集群 import 到 TiUP 环境中，再进行扩容缩容。
+本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD 或者 TiFlash 节点。如未安装 TiUP，可参考[升级文档中的步骤](/how-to/upgrade/using-tiup.md#2-在中控机器上安装-tiup)，将集群 import 到 TiUP 环境中，再进行扩容缩容。
 
-当前的集群名称列表，可以通过 `tiup cluster list` 查看
+你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
-集群原拓扑结构如下所示：
+例如，集群原拓扑结构如下所示：
 
 | 主机 IP   | 服务   | 
 |:----|:----|
@@ -46,13 +46,13 @@ vi scale-out.yaml
 ```
 tidb_servers:
 
- - host: 10.0.1.5
+ - host: 10.0.1.5
 
-   ssh_port: 22
+   ssh_port: 22
 
-   port: 4000
+   port: 4000
 
-   status_port: 10080
+   status_port: 10080
 ```
 
 你可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的整体配置，其中 global 和 server_configs 的全局配置也会在 `scale-out.yaml` 中生效。
