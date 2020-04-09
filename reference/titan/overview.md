@@ -30,7 +30,7 @@ BlobFile 是用来存放从 LSM-tree 中分离出来的 value 的文件，其格
 
 ![2-BlobFile.png](/media/titan/titan-2.png)
 
-BlobFile 主要由 blob record 、meta block、meta index block 和 footer 组成。其中每个 blob record 用于存放一个 key-value 对；meta block 支持可扩展性，可以用来存放和 BlobFile 相关的一些属性等；meta index block 用于检索 meta block。
+BlobFile 由 blob record 、meta block、meta index block 和 footer 组成。其中每个 blob record 用于存放一个 key-value 对；meta block 支持可扩展性，可以用来存放和 BlobFile 相关的一些属性；meta index block 用于检索 meta block。
 
 BlobFile 有几点值得关注的地方：
 
