@@ -1,10 +1,9 @@
 ---
-title: TiDB 最新开发版升级操作指南
+title: TiDB 4.0 升级操作指南
 category: how-to
-aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
-# TiDB 最新开发版升级操作指南
+# TiDB 4.0 升级操作指南
 
 本文档适用于从 TiDB 2.0、2.1、3.0、3.1 版本升级至 TiDB 4.0 版本以及 TiDB 4.0 的低版本升级至 TiDB 4.0 高版本。目前，TiDB 4.0 版本兼容 [TiDB Binlog Cluster 版本](/reference/tidb-binlog/overview.md)。
 
@@ -76,7 +75,7 @@ Version: 0.9.0
 mv tidb-ansible tidb-ansible-bak
 ```
 
-[**下载 TiDB 4.0 版本对应的 TiDB Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。`$tag` 需替换为选定的 TAG 版本的值，例如 `v4.0.0-beta.2`。
+[**下载 TiDB 4.0 版本对应的 TiDB Ansible**](/how-to/deploy/orchestrated/ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。`$tag` 需替换为选定的 TAG 版本的值，例如 `v4.0.0-rc`。
 
 {{< copyable "shell-regular" >}}
 
