@@ -5,7 +5,7 @@ category: reference
 
 # Titan 介绍
 
-[Titan](https://github.com/pingcap/rocksdb/tree/titan-5.15) 是基于 [RocksDB](https://github.com/facebook/rocksdb) 的高性能单机 key-value 存储引擎，其主要设计灵感来源于 USENIX FAST 2016 上发表的一篇论文 [WiscKey](https://www.usenix.org/system/files/conference/fast16/fast16-papers-lu.pdf)。WiscKey 提出了一种高度基于 SSD 优化的设计，利用 SSD 高效的随机读写性能，通过将 value 分离出 LSM-tree 的方法来达到降低写放大的目的。
+[Titan](https://github.com/pingcap/rocksdb/tree/titan-5.15) 是基于 [RocksDB](https://github.com/facebook/rocksdb) 的高性能单机 key-value 存储引擎。
 
 当 value 较大的时候，Titan 在写、更新和点读等场景下性能都优于 RocksDB。但与此同时，Titan 会占用更多硬盘空间和部分舍弃范围查询。随着 SSD 价格的降低，Titan 的优势会更加突出，让用户更容易做出选择。
 
