@@ -70,7 +70,7 @@ Titan 中 value 所使用的压缩算法。Titan 中压缩是以 value 为单元
 blob-cache-size = 0
 ```
 
-Titan 中 value 的缓存大小。更大的缓存能提高 Titan 读性能，但过大的缓存会造成 OOM。建议在数据库稳定运行后，根据监控把 RocksDB block cache （storage.block-cache.capacity） 设置为 store size 减去 blob file size 的大小，blob-cache-size 设置为 内存大小 * 50% 减去 block cache 的大小。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。
+Titan 中 value 的缓存大小。更大的缓存能提高 Titan 读性能，但过大的缓存会造成 OOM。建议在数据库稳定运行后，根据监控把 RocksDB block cache (storage.block-cache.capacity) 设置为 store size 减去 blob file size 的大小，`blob-cache-size` 设置为`内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。
 
 ```toml
 discardable-ratio = 0.5
