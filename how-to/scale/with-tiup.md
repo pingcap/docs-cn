@@ -148,7 +148,7 @@ tiup cluster scale-in test --node 10.0.1.5:20160
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display testy
+tiup cluster display test
 ```
 
 现拓扑结构如下：
