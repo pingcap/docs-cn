@@ -31,7 +31,7 @@ category: reference
 
 ## 下线 TiFlash 节点
 
-下线 TiFlash 节点与[缩容 TiFlash 节点](/reference/tiflash/scale.md#缩容-tiflash-节点)不同，下线 TiFlash 并不会在 TiDB Ansible 中删除这个节点，而仅仅是安全地关闭这个进程。
+下线 TiFlash 节点与[缩容 TiFlash 节点](/how-to/scale/with-tiup.md#4-缩容-tiflash-节点)不同，下线 TiFlash 并不会在 TiDB Ansible 中删除这个节点，而仅仅是安全地关闭这个进程。
 
 下线 TiFlash 节点的步骤如下：
 
