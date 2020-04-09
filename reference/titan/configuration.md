@@ -5,7 +5,7 @@ category: reference
 
 # Titan 配置
 
-Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 合 value 分离存储，达到在 value 较大的场景下，降低 RocksDB 后台 compaction 对 IO 带宽和 CPU 的占用，同时提高 SSD 寿命的效果。
+Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，以在 value 较大的场景下，降低 RocksDB 后台 compaction 对 IO 带宽和 CPU 的占用，同时提高 SSD 寿命。
 
 ## 适用场景
 
