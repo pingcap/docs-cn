@@ -98,7 +98,7 @@ tiup cluster display test
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.3.3/cluster display testy 
+Starting /root/.tiup/components/cluster/v0.3.3/cluster display test
 
 TiDB Cluster: test
 
