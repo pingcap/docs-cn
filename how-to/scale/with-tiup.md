@@ -32,7 +32,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 >
 > 默认情况下，可以不填端口信息。但在单机多实例场景下，你需要分配不同的端口，如果有端口或目录冲突，会在部署或扩容时提醒。
 
-新建 scale-out.yaml 文件，添加扩容拓扑配置：
+在 scale-out.yaml 文件添加扩容拓扑配置：
 
 {{< copyable "shell-regular" >}}
 
@@ -52,6 +52,8 @@ tidb_servers:
    status_port: 10080
 ```
 
+当前集群的整体配置，可以使用 `tiup cluster edit-config <cluster-name>` 查看，其中的 global 和 server_configs 的全局配置也会在 `scale-out.yaml` 中生效
+
 配置后，现拓扑结构如下所示：
 
 | 主机 IP   | 服务   | 
@@ -66,17 +68,17 @@ tidb_servers:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-out test scale-out.yaml
+tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
 
-预期输出 Scaled cluster `test` in successfully 信息，表示扩容操作成功。
+预期输出 Scaled cluster `<cluster-name>` in successfully 信息，表示扩容操作成功。
 
 ### 1.3 检查集群状态
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display test
+tiup cluster display <cluster-name>
 ```
 
 打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
@@ -101,7 +103,7 @@ tiflash_servers:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-out test scale-out.yaml
+tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
 
 ### 2.3 查看集群状态
@@ -109,7 +111,7 @@ tiup cluster scale-out test scale-out.yaml
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display test
+tiup cluster display <cluster-name>
 ```
 
 打开浏览器访问监控平台 <http://172.19.0.104:3200>，监控整个集群和新增节点的状态。
@@ -120,22 +122,22 @@ tiup cluster display test
 
 > **注意：**
 >
-> 移除 TiKV 和 PD 节点和移除 TiDB 节点的步骤类似。
+> 移除 TiDB 和 PD 节点和移除 TiKV 节点的步骤类似。
 
 ### 3.1 查看节点 ID 信息
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display test
+tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.3.3/cluster display test 
+Starting /root/.tiup/components/cluster/v0.4.6/cluster display <cluster-name> 
 
-TiDB Cluster: test
+TiDB Cluster: <cluster-name>
 
-TiDB Version: v4.0.0-beta.1
+TiDB Version: v4.0.0-rc
 
 ID              Role Host              Ports        Status  Data Dir                Deploy Dir
 
@@ -165,12 +167,12 @@ ID              Role Host              Ports        Status  Data Dir�
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-in test --node 10.0.1.5:20160
+tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
 ```
 
 其中 `--node` 参数为需要下线节点的 ID。
 
-预期输出 Scaled cluster `test` in successfully 信息，表示扩容操作成功。
+预期输出 Scaled cluster `<cluster-name>` in successfully 信息，表示扩容操作成功。
 
 ### 3.3 检查集群状态
 
@@ -181,7 +183,7 @@ tiup cluster scale-in test --node 10.0.1.5:20160
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display test
+tiup cluster display <cluster-name>
 ```
 
 现拓扑结构如下：
@@ -195,30 +197,30 @@ tiup cluster display test
 
 打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
 
-## 4. 缩容 TiFlash 节点
+## 3. 缩容 TiFlash 节点
 
-如果要集群中移除一个 TiFlash 节点，IP 地址为 172.19.0.104，可以按照如下步骤进行操作。
+如果要下线一个 TiFlash 节点，IP 地址为 172.19.0.104，可以按照如下步骤进行操作。
 
 > **注意：**
 >
-> 本节介绍的缩容流程不会删除缩容节点上的数据文件，如需再次上线该节点，请先手动删除原来的数据文件。
+> 本节介绍的下线流程不会删除缩容节点上的数据文件，如需再次上线，请先手动删除。
 
-### 4.1 下线 TiFlash 节点
+### 3.1 下线该 TiFlash 节点
 
 参考[下线 TiFlash 节点](/reference/tiflash/maintain.md#下线-tiflash-节点)一节，对要进行缩容的 TiFlash 节点进行下线操作。
 
-### 4.2 检查节点是否下线成功
+### 3.2 检查节点是否下线成功
 
 使用 Grafana 或者 pd-ctl 检查节点是否下线成功（下线需要一定时间）。
 
-### 4.3 关闭 TiFlash 进程
+### 3.3 关闭 TiFlash 进程
 
 等待 TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，执行如下命令关闭 TiFlash 进程：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-in test --node 172.19.0.104:9000
+tiup cluster scale-in <cluster-name> --node 172.19.0.104:9000
 ```
 
 ### 3.4 查看集群状态
@@ -226,7 +228,7 @@ tiup cluster scale-in test --node 172.19.0.104:9000
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display test
+tiup cluster display <cluster-name>
 ```
 
 打开浏览器访问监控平台 <http://172.19.0.104:3200>，监控整个集群的状态。
