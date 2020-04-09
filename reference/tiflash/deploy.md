@@ -36,7 +36,7 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 ## 针对 TiDB 的版本要求
 
-目前 TiFlash 的测试是基于 TiDB 3.1 版本的相关组件（包括 TiDB、PD、TiKV、TiFlash）来进行的，TiDB 3.1 版本的下载方式参考以下安装部署步骤。
+目前 TiFlash 的测试是基于 TiDB 4.0 版本的相关组件（包括 TiDB、PD、TiKV、TiFlash）来进行的，TiDB 4.0 版本的下载方式参考以下安装部署步骤。
 
 ## 安装部署 TiFlash
 
@@ -52,73 +52,90 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 ### 全新部署 TiFlash
 
-目前对于全新部署 TiFlash 场景，推荐通过下载离线安装包来部署 TiFlash。步骤如下：
+TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐使用 TiUP Cluster 安装部署 TiFlash，部署流程如下：
 
-1. 下载对应版本的离线包，并解压：
+1. 参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)安装 TiUP。
 
-    - 如果你使用的是 TiDB 4.0 内测版，执行以下命令：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        curl -o tidb-ansible-tiflash-4.0-v3-20200331.tar.gz https://download.pingcap.org/tidb-ansible-tiflash-4.0-v3-20200331.tar.gz &&
-        tar zxvf tidb-ansible-tiflash-4.0-v3-20200331.tar.gz
-        ```
-
-    - 如果你使用的是 TiDB 3.1 rc 版，执行以下命令：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        curl -o tidb-ansible-tiflash-3.1-rc.tar.gz https://download.pingcap.org/tidb-ansible-tiflash-3.1-rc.tar.gz &&
-        tar zxvf tidb-ansible-tiflash-3.1-rc.tar.gz
-        ```
-
-2. 编辑 `inventory.ini` 配置文件，除了[部署 TiDB 集群的配置](/how-to/deploy/orchestrated/ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)，需要额外在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip (目前只支持 ip，不支持域名)。
-    
-    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
-
-    {{< copyable "" >}}
-
-    ```ini
-    [tiflash_servers]
-    192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
-    ```
-
-3. 按照 TiDB Ansible 部署流程完成集群部署的[剩余步骤](/how-to/deploy/orchestrated/ansible.md#第-10-步调整-inventoryini-文件中的变量)。
-
-4. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
-
-### 在原有 TiDB 集群上新增 TiFlash 组件
-
-1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先按照 [TiDB 升级操作指南](/how-to/upgrade/from-previous-version.md)升级 TiDB 集群至 3.1 rc 以上版本。
-
-2. 在 pd-ctl（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
-
-3. 编辑 `inventory.ini` 配置文件，并在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip（目前只支持 ip，不支持域名）。
-
-    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
-
-    {{< copyable "" >}}
-
-    ```ini
-    [tiflash_servers]
-    192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
-    ```
-
-    > **注意：**
-    >
-    > 即使 TiFlash 与 TiKV 同机部署，TiFlash 也会采用与 TiKV 不同的默认端口，默认 9000，无特殊需要可以不用指定，有需要也可在 inventory.ini 配置文件中新增一行 `tcp_port=xxx` 来指定。
-
-4. 执行以下 ansible-playbook 命令部署 TiFlash：
+2. 安装 TiUP cluster 组件
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    ansible-playbook local_prepare.yml &&
-    ansible-playbook -t tiflash deploy.yml &&
-    ansible-playbook -t tiflash start.yml &&
-    ansible-playbook rolling_update_monitor.yml
+    tiup cluster
     ```
 
-5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md) 执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
+3. 编写 topology 配置文件，保存为 `topology.yaml`。
+
+    可以参考[全量的配置文件模版](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
+
+    除了部署 TiDB 集群的配置，需要额外在 `tiflash_servers` 下配置 tiflash servers 所在的 ip（目前只支持 ip，不支持域名）。
+
+    如果需要部署 TiFlash，请把 `pd` 部分的 `replication.enable-placement-rules` 配置设置为 `true`。
+
+    {{< copyable "" >}}
+
+    ```ini
+    server_configs:
+      pd:
+        replication.enable-placement-rules: true
+
+    pd_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+
+    tidb_servers:
+      - host: 172.19.0.101
+
+    tikv_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+
+    tiflash_servers:
+      - host: 172.19.0.103
+    ```
+
+    如果希望自定义部署目录，需要配置 data_dir 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录，例如：
+
+    {{< copyable "" >}}
+
+    ```ini
+    tiflash_servers:
+      - host: 172.19.0.103
+        data_dir: /data1/tiflash/data,/data2/tiflash/data
+    ```
+
+4. 按照 TiUP 部署流程完成集群部署的剩余步骤，包括：
+
+    部署 TiDB 集群，其中 test 为集群名：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster deploy test v4.0.0-rc topology.yaml  -i ~/.ssh/id_rsa
+    ```
+
+    启动 TiDB 集群：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster start test
+    ```
+
+5. 查看集群状态
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster display test
+    ```
+
+### 在原有 TiDB 集群上新增 TiFlash 组件
+
+1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
+
+2. 在 pd-ctl（目前 pd-ctl 还没有接入 TiUP Cluster，需要从 [这里](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz) 手动进行下载）中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
+
+3. 参考 [扩容 TiFlash 节点](/reference/tiflash/scale.md#扩容-TiFlash-节点) 章节对 TiFlash 进行部署。
