@@ -132,7 +132,7 @@ ID              Role Host              Ports        Status  Data Dir�
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-in testy --node 10.0.1.5:20160
+tiup cluster scale-in test --node 10.0.1.5:20160
 ```
 
 其中 `--node` 参数为需要下线节点的 ID。
