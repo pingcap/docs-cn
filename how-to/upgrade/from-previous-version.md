@@ -127,6 +127,8 @@ Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansi
 
     If you need to modify this variable, see [How to modify the supervision method of a process from `supervise` to `systemd`](/how-to/deploy/orchestrated/ansible.md#how-to-modify-the-supervision-method-of-a-process-from-supervise-to-systemd). Before you upgrade, first use the `/home/tidb/tidb-ansible-bak/` backup branch to modify the supervision method of a process.
 
+3. Add the `cpu_architecture` parameter according to the CPU architecture. The default value is `amd64`.
+
 ### Edit the configuration file of TiDB cluster components
 
 If you have previously customized the configuration file of TiDB cluster components, refer to the backup file to modify the corresponding configuration file in the `/home/tidb/tidb-ansible/conf` directory.
@@ -163,9 +165,10 @@ If you have previously customized the configuration file of TiDB cluster compone
     >
     > For the cluster topology of multiple TiKV instances (processes) on a single machine, you need to modify the `capacity` parameter.
 
-    Recommended configuration: `capacity` = MEM_TOTAL \* 0.5 / the number of TiKV instances.
+    Recommended configuration: `capacity` = MEM_TOTAL \* 0.5 / the number of TiKV instances. If the `capacity` parameter is configured reasonably in the current version, it needs no modification.
 
-- In the TiKV configuration, you need to configure the `tikv_status_port` port for the multiple instances on a single machine scenario. Before you configure it, check whether a port conflict exists.
+- In the TiKV configuration, you need to configure the `tikv_status_port` port for the multiple instances on a single machine scenario. If the current version has the above configuration, it needs no modification.
+- Before you configure `tikv_status_port`, check whether a port conflict exists.
 
     ```
     [tikv_servers]
