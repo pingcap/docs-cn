@@ -195,7 +195,7 @@ tiup cluster display test
 
 打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
 
-## 3. 缩容 TiFlash 节点
+## 4. 缩容 TiFlash 节点
 
 如果要下线一个 TiFlash 节点，IP 地址为 172.19.0.104，可以按照如下步骤进行操作。
 
@@ -203,15 +203,15 @@ tiup cluster display test
 >
 > 本节介绍的下线流程不会删除缩容节点上的数据文件，如需再次上线，请先手动删除。
 
-### 3.1 下线该 TiFlash 节点
+### 4.1 下线该 TiFlash 节点
 
 参考[下线 TiFlash 节点](/reference/tiflash/maintain.md#下线-tiflash-节点)一节，对要进行缩容的 TiFlash 节点进行下线操作。
 
-### 3.2 检查节点是否下线成功
+### 4.2 检查节点是否下线成功
 
 使用 Grafana 或者 pd-ctl 检查节点是否下线成功（下线需要一定时间）。
 
-### 3.3 关闭 TiFlash 进程
+### 4.3 关闭 TiFlash 进程
 
 等待 TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，执行如下命令关闭 TiFlash 进程：
 
