@@ -9,7 +9,7 @@ Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value �
 
 ## 适用场景
 
-Titan 适合在以下这些场景使用：
+Titan 适合在以下场景中使用：
 
 - 前台写入量较大，RocksDB 大量触发 compaction 消耗大量 IO 带宽或者 CPU，造成 TiKV 前台读写性能较差。
 - 前台写入量较大，由于 IO 带宽瓶颈或 CPU 瓶颈的限制，RocksDB compaction 进度落后较多频繁造成 write stall。
