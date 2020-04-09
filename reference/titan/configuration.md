@@ -23,8 +23,6 @@ Titan 适合在以下场景中使用：
 
 ## 开启 Titan
 
-### 直接开启 Titan
-
 Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 TiKV 实例可以直接开启 Titan。开启的方法是修改 TiKV 配置并重启 TiKV：
 
 {{< copyable "" >}}
@@ -41,10 +39,6 @@ enabled = true
 **注意：**
 >
 > RocksDB 无法读取 Titan 的数据，但用 RocksDB 打开 Titan 数据也不会造成数据损坏。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan （误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。请参看[关闭 Titan](#关闭-titan实验性) 一节。
-
-### 滚动开启 Titan（实验性）
-
-也可以在集群中一个或多个 TiKV 节点中打开 Titan 作为实验，待调整稳定以后再在整个集群开启 Titan。由于 Titan 写入性能和存储方式跟 RocksDB 存在差异，滚动开启 Titan 的过程中可能造成 leader 分布不均匀，可以通过 PD 监控查看是否开启 Titan 的实例 leader count 较高，如果写负载有明显不均可以通过 pd-ctl store weight 降低 Titan 实例的 leader weight 以使 leader count 均衡。
 
 ## 参数调整
 

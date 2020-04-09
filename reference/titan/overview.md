@@ -55,12 +55,7 @@ Garbage Collection (GC) 的目的是回收空间。由于在 LSM-tree compaction
 
 ### 传统 GC
 
-在设计 GC 的时候有两个主要的问题需要考虑：
-
-- 何时进行 GC
-- 挑选哪些文件进行 GC
-
-Titan 使用 RocksDB 提供的两个特性来解决这两个问题，这两个特性分别是 TablePropertiesCollector 和 EventListener 。下面将讲解如何通过这两个特性来辅助 GC 工作的。
+Titan 使用 RocksDB 的 TablePropertiesCollector 和 EventListener 来收集 GC 所需的统计信息。
 
 #### BlobFileSizeCollector
 
