@@ -131,7 +131,7 @@ tiup cluster display test
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.3.3/cluster display testy 
+Starting /root/.tiup/components/cluster/v0.3.3/cluster display test 
 
 TiDB Cluster: test
 
@@ -165,7 +165,7 @@ ID              Role Host              Ports        Status  Data Dir�
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-in testy --node 10.0.1.5:20160
+tiup cluster scale-in test --node 10.0.1.5:20160
 ```
 
 其中 `--node` 参数为需要下线节点的 ID。
@@ -181,7 +181,7 @@ tiup cluster scale-in testy --node 10.0.1.5:20160
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display testy
+tiup cluster display test
 ```
 
 现拓扑结构如下：
