@@ -76,7 +76,7 @@ tiup cluster scale-out test scale-out.yaml
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display testy
+tiup cluster display test
 ```
 
 打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
