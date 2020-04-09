@@ -38,7 +38,9 @@ enabled = true
 
 如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction。请参看 tikv-ctl 文档。
 
-注意 RocksDB 无法读取 Titan 的数据，但用 RocksDB 打开 Titan 数据也不会造成数据损坏。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan （误设置 rocksdb.titan.enabled = false），启动 TiKV 会失败，TiKV log 中出现 “You have disabled titan when its data directory is not empty” 错误。请参看“关闭 Titan”一节。
+**注意：**
+>
+> RocksDB 无法读取 Titan 的数据，但用 RocksDB 打开 Titan 数据也不会造成数据损坏。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan （误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。请参看[关闭 Titan](#关闭-titan实验性) 一节。
 
 ### 滚动开启 Titan（实验性）
 
