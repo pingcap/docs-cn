@@ -51,9 +51,9 @@ tidb_servers:
 
    status_port: 10080
 ```
+
 你可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的整体配置，其中 global 和 server_configs 的全局配置也会在 `scale-out.yaml` 中生效。
 
-当前集群的整体配置，可以使用 `tiup cluster edit-config <cluster-name>` 查看，其中的 global 和 server_configs 的全局配置也会在 `scale-out.yaml` 中生效
 
 配置后，现拓扑结构如下所示：
 
