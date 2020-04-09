@@ -89,19 +89,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 单位：KB|MB|GB
 + 最小值：1KB
 
-## readpool
-
-读取线程池相关的配置项。
-
-### `unify-thread-pool`
-
-+ 是否使用单个线程池处理所有的读请求。
-+ 默认值：true
-
 ## readpool.unified
 
 统一处理读请求的线程池相关的配置项。
-以下配置只在 `unify-read-pool` 是 `true` 时生效。
 
 ### `min-thread-count`
 
@@ -129,7 +119,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ## readpool.storage
 
 存储线程池相关的配置项。
-以下配置只在 `unify-read-pool` 是 `false` 时生效。
+
+### `use-unified-pool`
+
++ 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理存储请求。该选项值为 false 时，使用单独的存储线程池。通过本节 (`readpool.storage`) 中的其余配置项配置单独的线程池。
++ 默认值：false
 
 ### `high-concurrency`
 
@@ -177,7 +171,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ## readpool.coprocessor
 
 协处理器线程池相关的配置项。
-以下配置只在 `unify-read-pool` 是 `false` 时生效。
+
+### `use-unified-pool`
+
++ 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理协处理器请求。该选项值为 false 时，使用单独的协处理器线程池。通过本节 (`readpool.coprocessor`) 中的其余配置项配置单独的线程池。
++ 默认值：如果本节 (`readpool.coprocessor`) 中没有其他配置，默认为 true。否则，为了升级兼容性，默认为 false，请根据需要更改 [`readpool.unified`](#readpoolunified) 中的配置后再启用该选项。
 
 ### `high-concurrency`
 
@@ -581,7 +579,7 @@ raftstore 相关的配置项。
 
 ## coprocessor
 
-协处理器相关的配置项。
+coprocessor 相关的配置项。
 
 ### `split-region-on-table`
 
