@@ -313,7 +313,7 @@ category: how-to
 | TiKV | 3 | 16 VCore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
 | TiDB |3 | 16 VCore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口 <br>  全局目录配置 |
 | PD | 3 | 4 VCore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
-| Tiflash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | 默认端口 <br> 全局目录配置 |
+| TiFlash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | 默认端口 <br> 全局目录配置 |
 
 #### 第 4 步：配置文件模版 topology.yaml
 
@@ -325,7 +325,7 @@ category: how-to
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 >
-> - TiFlash 具体的参数配置介绍请见[常见部署问题 TiFlash 参数配置](#常见部署问题)。
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
 
 {{< copyable "shell-regular" >}}
 
@@ -518,7 +518,7 @@ alertmanager_servers:
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 >
-> - TiFlash 具体的参数配置介绍请见[常见部署问题 TiFash 参数配置](#常见部署问题)。
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
 
 {{< copyable "shell-regular" >}}
 
@@ -708,7 +708,7 @@ TiDB 关键参数：
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
 >
-> - TiFlash 具体的参数配置介绍请见[常见部署问题 TiFlash 参数配置](#常见部署问题)。
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
 
 {{< copyable "shell-regular" >}}
 
@@ -1347,7 +1347,6 @@ Destroyed cluster `tidb-test` successfully
 | 实例 | data_dir | 继承 global 配置 | 数据目录 |
 | 实例 | log_dir | 继承 global 配置 | 日志目录 |
 
-
 ### TiFlash 参数
 
 | 参数 | 默认配置 | 说明 |
@@ -1355,7 +1354,7 @@ Destroyed cluster `tidb-test` successfully
 | ssh_port | 22 | ssh 默认端口 |
 | tcp_port | 9000 | TiFlash TCP 服务端口 |
 | http_port | 8123 | TiFlash HTTP 服务端口 |
-| flash_service_port | 3930 | TiFlash RAFT 服务 和 Coprocessor 服务端口 |
+| flash_service_port | 3930 | TiFlash RAFT 服务和 Coprocessor 服务端口 |
 | flash_proxy_port | 20170 | TiFlash Proxy 服务端口 |
 | flash_proxy_status_port | 20292 | Prometheus 拉取 TiFlash Proxy metrics 端口 |
 | metrics_port | 8234 | Prometheus 拉取 TiFlash metrics 端口 |
