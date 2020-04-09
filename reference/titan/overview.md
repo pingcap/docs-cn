@@ -32,7 +32,7 @@ BlobFile 是用来存放从 LSM-tree 中分离出来的 value 的文件，其格
 
 BlobFile 由 blob record 、meta block、meta index block 和 footer 组成。其中每个 blob record 用于存放一个 key-value 对；meta block 支持可扩展性，可以用来存放和 BlobFile 相关的一些属性；meta index block 用于检索 meta block。
 
-BlobFile 有几点值得关注的地方：
+BlobFile 的实现上有几点值得关注的地方：
 
 + BlobFile 中的 key-value 是有序存放的，目的是在实现 iterator 的时候可以通过 prefetch 的方式提高顺序读取的性能。
 2. 每个 blob record 都保留了 value 对应的 user key 的拷贝，这样做的目的是在进行 GC 的时候，可以通过查询 user key 是否更新来确定对应 value 是否已经过期，但同时也带来了一定的写放大。
