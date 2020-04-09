@@ -411,7 +411,23 @@ tikv_servers:
   - host: 10.0.1.3
 tiflash_servers:
   - host: 10.0.1.10
-    # data_dir: /data1/tiflash/data,/data2/tiflash/data
+    # ssh_port: 22
+    # tcp_port: 9000
+    # http_port: 8123
+    # flash_service_port: 3930
+    # flash_proxy_port: 20170
+    # flash_proxy_status_port: 20292
+    # metrics_port: 8234
+    # deploy_dir: deploy/tiflash-9000
+    # data_dir: deploy/tiflash-9000/data
+    # log_dir: deploy/tiflash-9000/log
+    # numa_node: "0,1"
+    # # Config is used to overwrite the `server_configs.tiflash` values
+    #  config:
+    #    logger:
+    #      level: "info"
+    #  learner_config:
+    #    log-level: "info"
 monitoring_servers:
   - host: 10.0.1.4
 grafana_servers:
