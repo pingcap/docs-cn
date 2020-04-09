@@ -516,7 +516,6 @@ alertmanager_servers:
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 
-
 {{< copyable "shell-regular" >}}
 
 ```shell
