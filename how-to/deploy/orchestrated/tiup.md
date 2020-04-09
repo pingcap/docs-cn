@@ -512,7 +512,7 @@ alertmanager_servers:
 > 
 > - 配置文件模版时，注意修改必要参数、IP、端口及目录。
 > 
-> - [部署 Tiflash](https://pingcap.com/docs-cn/dev/reference/tiflash/deploy/) 需要开启 `replication.enable-placement-rules` ，以开启 PD 的 [Placement Rules](https://pingcap.com/docs-cn/dev/how-to/configure/placement-rules/) 功能。
+> - [部署 Tiflash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 
