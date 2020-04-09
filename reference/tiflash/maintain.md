@@ -53,7 +53,7 @@ category: reference
 
 4. 在 pd-ctl 中输入 `store delete <store_id>`，其中 <store_id> 为上一步查到的该 TiFlash 节点对应的 store id。
 
-5. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
+5. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tomestone 再关闭 TiFlash 进程。
 
 > **注意：**
 >
