@@ -190,6 +190,10 @@ The `USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` hint tells the optim
 select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
 ```
 
+> **Note:**
+>
+> The parameters of `USE_INDEX_MERGE` refer to index names, rather than column names. The index name of the primary key is `primary`.
+
 ### NO_INDEX_MERGE()
 
 The `NO_INDEX_MERGE()` hint disables the index merge feature of the optimizer.
