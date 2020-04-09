@@ -300,7 +300,7 @@
     - [使用 TiFlash](/reference/tiflash/use-tiflash.md)
     - [运维集群](/reference/tiflash/maintain.md)
     - [监控集群](/reference/tiflash/monitor.md)
-    - [扩缩容集群](/reference/tiflash/scale.md)
+    - [扩缩容集群](/how-to/scale/with-tiup.md#扩容-tiflash-节点)
     - [升级节点](/reference/tiflash/upgrade.md)
     - [配置参数](/reference/tiflash/configuration.md)
     - [报警规则](/reference/tiflash/alert-rules.md)

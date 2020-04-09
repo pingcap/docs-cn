@@ -7,7 +7,7 @@ category: how-to
 
 TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV 或者 PD 节点。
+本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD 或者 TiFlash 节点。
 
 原拓扑结构如下所示：
 
@@ -81,7 +81,40 @@ tiup cluster display test
 
 打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
 
-## 2. 缩容 TiDB/TiKV/PD 节点
+## 2. 扩容 TiFlash 节点
+
+如果要添加一个 TiFlash 节点，IP 地址为 172.19.0.104，可以按照如下步骤进行操作。
+
+### 2.1 添加节点信息到 scale-out.yaml 文件
+
+编写 scale-out.yaml 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
+
+{{< copyable "" >}}
+
+```ini
+tiflash_servers:
+    - host: 172.19.0.104
+```
+
+### 2.2 运行扩容命令
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster scale-out test scale-out.yaml
+```
+
+### 2.3 查看集群状态
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster display test
+```
+
+打开浏览器访问监控平台 <http://172.19.0.104:3200>，监控整个集群和新增节点的状态。
+
+## 3. 缩容 TiDB/TiKV/PD 节点
 
 如果要移除一个 TiKV 节点，IP 地址为 10.0.1.5，可以按照如下步骤进行操作。
 
@@ -89,7 +122,7 @@ tiup cluster display test
 >
 > 移除 TiKV 和 PD 节点和移除 TiDB 节点的步骤类似。
 
-### 2.1 查看节点 ID 信息
+### 3.1 查看节点 ID 信息
 
 {{< copyable "shell-regular" >}}
 
@@ -98,7 +131,7 @@ tiup cluster display test
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.3.3/cluster display test
+Starting /root/.tiup/components/cluster/v0.3.3/cluster display testy 
 
 TiDB Cluster: test
 
@@ -127,19 +160,19 @@ ID              Role Host              Ports        Status  Data Dir�
 10.0.1.5:9293   alertmanager 10.0.1.5  9293/9294    Up      data/alertmanager-9293  deploy/alertmanager-9293
 ```
 
-### 2.2 执行缩容操作
+### 3.2 执行缩容操作
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-in test --node 10.0.1.5:20160
+tiup cluster scale-in testy --node 10.0.1.5:20160
 ```
 
 其中 `--node` 参数为需要下线节点的 ID。
 
 预期输出 Scaled cluster `test` in successfully 信息，表示扩容操作成功。
 
-### 2.3 检查集群状态
+### 3.3 检查集群状态
 
 下线需要一定时间，下线节点的状态变为 Tombstone 就说明下线成功。
 
@@ -148,7 +181,7 @@ tiup cluster scale-in test --node 10.0.1.5:20160
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster display test
+tiup cluster display testy
 ```
 
 现拓扑结构如下：
@@ -161,3 +194,39 @@ tiup cluster display test
 | 10.0.1.2   | TiKV    | 
 
 打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
+
+## 3. 缩容 TiFlash 节点
+
+如果要下线一个 TiFlash 节点，IP 地址为 172.19.0.104，可以按照如下步骤进行操作。
+
+> **注意：**
+>
+> 本节介绍的下线流程不会删除缩容节点上的数据文件，如需再次上线，请先手动删除。
+
+### 3.1 下线该 TiFlash 节点
+
+参考[下线 TiFlash 节点](/reference/tiflash/maintain.md#下线-tiflash-节点)一节，对要进行缩容的 TiFlash 节点进行下线操作。
+
+### 3.2 检查节点是否下线成功
+
+使用 Grafana 或者 pd-ctl 检查节点是否下线成功（下线需要一定时间）。
+
+### 3.3 关闭 TiFlash 进程
+
+等待 TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，执行如下命令关闭 TiFlash 进程：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster scale-in test --node 172.19.0.104:9000
+```
+
+### 3.4 查看集群状态
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster display test
+```
+
+打开浏览器访问监控平台 <http://172.19.0.104:3200>，监控整个集群的状态。
