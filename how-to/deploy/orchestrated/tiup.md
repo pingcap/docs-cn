@@ -9,20 +9,20 @@ category: how-to
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
-- [一、环境准备](#一环境准备)
-- [二、配置初始化参数文件 `topology.yaml`](#二配置初始化参数文件-topologyyaml)
-- [三、执行部署命令](#三执行部署命令)
-- [四、验证集群部署状态](#四验证集群部署状态)
-- [五、启动集群](#五启动集群)
-- [六、验证集群运行状态](#六验证集群运行状态)
+- [1. 环境准备](#1-环境准备)
+- [2. 配置初始化参数文件 `topology.yaml`](#2-配置初始化参数文件-topologyyaml)
+- [3. 执行部署命令](#3-执行部署命令)
+- [4. 验证集群部署状态](#4-验证集群部署状态)
+- [5. 启动集群](#5-启动集群)
+- [6. 验证集群运行状态](#6-验证集群运行状态)
 
 另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
 
-- [关闭集群](#关闭集群)
-- [销毁集群](#销毁集群)
-- [常见部署问题](#常见部署问题)
+- [7. 关闭集群](#7-关闭集群)
+- [8. 销毁集群](#8-销毁集群)
+- [9. 常见部署问题](#9-常见部署问题)
 
-## 一、环境准备
+## 1. 环境准备
 
 环境准备环节分为如下几步：
 
@@ -290,7 +290,7 @@ category: how-to
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 二、配置初始化参数文件 `topology.yaml`
+## 2. 配置初始化参数文件 `topology.yaml`
 
 集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
 
@@ -320,7 +320,7 @@ category: how-to
 > **注意：**
 >
 > - 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
-> 
+>
 > - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
@@ -361,7 +361,7 @@ server_configs:
     schedule.region-schedule-limit: 2048
     schedule.replica-schedule-limit: 64
     replication.enable-placement-rules: true
-  
+
 
 pd_servers:
   - host: 10.0.1.4
@@ -451,19 +451,19 @@ alertmanager_servers:
 - TiKV 进行配置优化
 
     - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。计算公式如下：
-  
+
         ```
         readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
         ```
 
     - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。计算公式如下：
-   
+
         ```
         storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
         ```
 
     - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 capacity 参数：
-   
+
         ```
         raftstore.capactiy = 磁盘总容量 / TiKV 实例数量
         ```
@@ -471,7 +471,7 @@ alertmanager_servers:
 - label 调度配置
 
     由于采用单机多实例部署 TiKV，为了避免物理机宕机导致 Region Group 默认 3 副本的 2 副本丢失，导致集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同台机器的多 TiKV 实例不会出现 Region Group 只有 2 副本的情况。
- 
+
     - TiKV 配置
 
         相同物理机配置相同的 host 级别 label 信息：
@@ -511,9 +511,9 @@ alertmanager_servers:
 #### 第 4 步：配置文件模版 topology.yaml
 
 > **注意：**
-> 
+>
 > - 配置文件模版时，注意修改必要参数、IP、端口及目录。
-> 
+>
 > - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
@@ -679,11 +679,11 @@ alertmanager_servers:
 
 TiDB 关键参数：
 
-- `binlog.enable: true` 
+- `binlog.enable: true`
 
     开启 binlog 服务，默认为 false。
 
-- `binlog.ignore-error: true` 
+- `binlog.ignore-error: true`
 
     高可用场景建议开启，如果设置为 true，发生错误时，TiDB 会停止写入 binlog，并且在监控项 tidb_server_critical_error_total 上计数加 1；如果设置为 false，一旦写入 binlog 失败，会停止整个 TiDB 的服务。
 
@@ -701,7 +701,7 @@ TiDB 关键参数：
 #### 第 4 步：配置文件模版 topology.yaml
 
 > **注意：**
-> 
+>
 > - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
 >
 > - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
@@ -793,7 +793,7 @@ drainer_servers:
       syncer.to.port: 4000
 tiflash_servers:
   - host: 10.0.1.10
-    data_dir: /data1/tiflash/data,/data2/tiflash/data 
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
 monitoring_servers:
   - host: 10.0.1.4
 grafana_servers:
@@ -802,7 +802,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-## 三、执行部署命令
+## 3. 执行部署命令
 
 ### 部署命令介绍
 
@@ -829,9 +829,9 @@ Flags:
   -y, --yes                    Skip confirming the topology
 
 # Usage 展示执行命令样例，<> 为必填项
-# Flags 可选参数，有以下的作用： 
+# Flags 可选参数，有以下的作用：
 # 通过 -h 可以查看帮助；
-# 通过 -i 执行权限认证； 
+# 通过 -i 执行权限认证；
 # --user 通过指定用户来完成 ssh 登录，默认为 root 用户；
 # -y 提过拓扑信息确认直接执行部署任务
 ```
@@ -839,7 +839,7 @@ Flags:
 > **注意：**
 >
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
-> 
+>
 > - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
 > - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
@@ -921,7 +921,7 @@ Checking service state of alertmanager
 Started cluster `tidb-test` successfully
 ```
 
-## 四、验证集群部署状态
+## 4. 验证集群部署状态
 
 ### 验证命令介绍
 
@@ -990,7 +990,7 @@ ID                  Role          Host          Ports        Status    Data Dir 
 10.0.1.3:20160  tikv          10.0.1.4  20160/20180  Down      /tidb-data/tikv-20160         /tidb-deploy/tikv-2060
 ```
 
-## 五、启动集群
+## 5. 启动集群
 
 ### 第 8 步：执行 `tidb-test` 集群启动命令
 
@@ -1048,7 +1048,7 @@ Checking service state of alertmanager
 Started cluster `tidb-test` successfully
 ```
 
-## 六、验证集群运行状态
+## 6. 验证集群运行状态
 
 ### 第 9 步：通过 TiUP 检查 tidb-test 集群状态
 
@@ -1097,8 +1097,8 @@ ID                  Role          Host          Ports        Status     Data Dir
 - 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认密码为 admin/admin
 
     ![Grafana-login](/media/tiup/grafana-login.png)
- 
-- 点击 Overview 监控页面检查 TiDB 端口和负载监控信息 
+
+- 点击 Overview 监控页面检查 TiDB 端口和负载监控信息
 
     ![Grafana-overview](/media/tiup/grafana-overview.png)
 
@@ -1198,7 +1198,7 @@ MySQL [pingcap]> exit
 Bye
 ```
 
-## 关闭集群
+## 7. 关闭集群
 
 执行如下命令关闭 `tidb-test` 集群：
 
@@ -1253,7 +1253,7 @@ Checking service state of alertmanager
 Stopped cluster `tidb-test` successfully
 ```
 
-## 销毁集群
+## 8. 销毁集群
 
 > **警告：**
 >
@@ -1310,7 +1310,7 @@ Destroy monitored on 10.0.1.4 success
 Destroyed cluster `tidb-test` successfully
 ```
 
-## 常见部署问题
+## 9. 常见部署问题
 
 本小节介绍使用 TiUP 部署 TiDB 集群过程中的常见问题与解决方案。
 
@@ -1604,9 +1604,9 @@ tidb_servers:
 ### 安装 numactl 工具
 
 > **注意：**
-> 
-> - numa 绑核是用来隔离 CPU 资源一种方法，适合高配置物理机环境部署多实例使用。 
-> - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。 
+>
+> - numa 绑核是用来隔离 CPU 资源一种方法，适合高配置物理机环境部署多实例使用。
+> - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。
 
 1. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
