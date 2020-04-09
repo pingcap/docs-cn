@@ -46,6 +46,8 @@ enabled = true
 
 ## 参数调整
 
+{{< copyable "" >}}
+
 ```toml
 [rocksdb.titan]
 max-background-gc = 1
