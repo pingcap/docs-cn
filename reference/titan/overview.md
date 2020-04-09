@@ -34,7 +34,7 @@ BlobFile 由 blob record 、meta block、meta index block 和 footer 组成。�
 
 BlobFile 有几点值得关注的地方：
 
-1. BlobFile 中的 key-value 是有序存放的，目的是在实现 Iterator 的时候可以通过 prefetch 的方式提高顺序读取的性能。
++ BlobFile 中的 key-value 是有序存放的，目的是在实现 iterator 的时候可以通过 prefetch 的方式提高顺序读取的性能。
 2. 每个 blob record 都保留了 value 对应的 user key 的拷贝，这样做的目的是在进行 GC 的时候，可以通过查询 user key 是否更新来确定对应 value 是否已经过期，但同时也带来了一定的写放大。
 3. BlobFile 支持 blob record 粒度的 compression，并且支持多种 compression algorithm，包括 [Snappy](https://github.com/google/snappy)、[LZ4](https://github.com/lz4/lz4) 和 [Zstd](https://github.com/facebook/zstd) 等，目前 Titan 默认使用的 compression algorithm 是 LZ4。
 
