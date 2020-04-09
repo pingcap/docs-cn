@@ -44,7 +44,7 @@ BlobFile 有几点值得关注的地方：
 
 TitanTableBuilder 是实现分离 key-value 的关键，它通过判断 value size 的大小来决定是否将 value 分离到 BlobFile 中去。如果 value size 大于等于 `min_blob_size` 则将 value 分离到 BlobFile，并生成 index 写入 SST；如果 value size 小于 `min_blob_size` 则将 value 直接写入 SST。
 
-反之，这个流程就可以支持 Titan 降级回 RocksDB。在 RocksDB 做 Compaction 的时候，将分离出来的 value 重新写回新生成的 SST 文件中。
+该流程还支持将 Titan 降级回 RocksDB。在 RocksDB 做 compaction 的时候，将分离出来的 value 重新写回新生成的 SST 文件中。
 
 ## Garbage Collection
 
