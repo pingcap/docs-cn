@@ -30,7 +30,8 @@
   + 部署
     - [软硬件环境需求](/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
-      - [使用 Ansible 部署（推荐）](/how-to/deploy/orchestrated/ansible.md)
+      - [使用 TiUP 部署（推荐）](/how-to/deploy/orchestrated/tiup.md)
+      - [使用 Ansible 部署](/how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](/how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)
     + 跨地域冗余
@@ -370,6 +371,7 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/rn.md)
   + v4.0
+    - [4.0.0-rc](/releases/4.0.0-rc.md)
     - [4.0.0-beta.2](/releases/4.0.0-beta.2.md)
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
