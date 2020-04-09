@@ -56,7 +56,7 @@ Titan GC 线程数。当从 TiKV Details - Thread CPU - RocksDB CPU 监控中观
 min-blob-size = "1KB"
 ```
 
-大 value 大小的阈值。当写入的 value 大小小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。视乎 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。
+大 value 的大小阈值。当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。
 
 ```toml
 [rocksdb.defaultcf.titan]
