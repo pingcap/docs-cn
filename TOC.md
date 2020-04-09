@@ -315,6 +315,7 @@
     - [Maintain a TiFlash Cluster](/reference/tiflash/maintain.md)
     - [Monitor TiFlash](/reference/tiflash/monitor.md)
     - [Scale TiFlash](/reference/tiflash/scale.md)
+    - [Upgrade TiFlash Nodes](/reference/tiflash/upgrade.md)
     - [Configure TiFlash](/reference/tiflash/configuration.md)
   + TiDB Binlog
     - [Overview](/reference/tidb-binlog/overview.md)
