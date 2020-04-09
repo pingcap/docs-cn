@@ -51,7 +51,7 @@ enabled = true
 max-background-gc = 1
 ```
 
-Titan GC 线程数。当从 TiKV Details - Thread CPU - RocksDB CPU 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑增加 Titan GC 线程池大小。
+Titan GC 线程数。当从 **TiKV Details** - **Thread CPU** - **RocksDB CPU** 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑增加 Titan GC 线程池大小。
 
 ```toml
 [rocksdb.defaultcf.titan]
