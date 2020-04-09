@@ -20,7 +20,8 @@ category: how-to
     - 启用了 `Kafka` 的集群
     - 启用了 `Spark` 的集群
     - 启用了 `Lightning` / `Importer` 的集群
-    - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）仍在使用 PushGateway 收集监控指标的集群
+    - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）
+    - 仍在使用 PushGateway 收集监控指标的集群
     - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
 
 ## 2. 在中控机器上安装 TiUP
