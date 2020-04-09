@@ -75,7 +75,7 @@ tiup update cluster
 
 ### 3.1 将 TiDB Ansible 集群导入到 TiUP 中
 
-1. 以 `/home/tidb/tidb-ansible` 为示例路径，使用如下命令将 TiDB Ansible 集群导入到 TiUP 中（不要在 Ansible 的目录下执行该命令）：
+1. 以 `/home/tidb/tidb-ansible` 为示例路径，使用如下命令将 TiDB Ansible 集群导入到 TiUP 中（不要在 Ansible 的目录下执行该命令，否则会报错）：
 
     {{< copyable "shell-regular" >}}
 
