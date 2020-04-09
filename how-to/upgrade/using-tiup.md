@@ -9,7 +9,7 @@ category: how-to
 
 如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
 
-## 一、升级兼容性说明
+## 1. 升级兼容性说明
 
 - 不支持在升级后回退至 3.0 版本。
 - 3.0 之前的版本，需要先通过 TiDB Ansible 升级到 3.0 版本，然后按照本文档的说明，使用 TiUP 将 TiDB Ansible 配置导入，再升级到 4.0 版本。
@@ -23,7 +23,7 @@ category: how-to
     - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）仍在使用 PushGateway 收集监控指标的集群
     - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
 
-## 二、在中控机器上安装 TiUP
+## 2. 在中控机器上安装 TiUP
 
 1. 在中控机上执行如下命令安装 TiUP：
 
@@ -65,7 +65,7 @@ category: how-to
 tiup update cluster
 ```
 
-## 三、将 TiDB Ansible 及 `inventory.ini` 配置导入到 TiUP
+## 3. 将 TiDB Ansible 及 `inventory.ini` 配置导入到 TiUP
 
 > **注意：**
 >
@@ -141,7 +141,7 @@ tiup install cluster
 >
 > 升级到 4.0 版本前，请确认 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/reference/configuration/tikv-server/configuration-file.md)。
 
-## 四、滚动升级 TiDB 集群
+## 4. 滚动升级 TiDB 集群
 
 本部分介绍如何滚动升级 TiDB 集群以及升级后的验证。
 
@@ -171,7 +171,7 @@ TiDB Cluster: <cluster-name>
 TiDB Version: v4.0.0-rc
 ```
 
-## 五、升级 FAQ
+## 5. 升级 FAQ
 
 本部分介绍使用 TiUP 升级 TiDB 集群遇到的常见问题。
 
@@ -213,7 +213,7 @@ tiup cluster upgrade <cluster-name> v4.0.0-rc --force
 https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
 ```
 
-## 六、TiDB 4.0 兼容性变化
+## 6. TiDB 4.0 兼容性变化
 
 - `oom-action` 参数设置为 `cancel` 时，当查询语句触发 OOM 阈值后会被 kill 掉，升级到 4.0 版本后除了 `select` 语句，还可能 kill 掉 `insert`/`update`/`delete` 等 DML 语句。
 - 4.0 版本增加了 `rename` 时对表名长度的检查，长度限制为 `64` 个字符。升级后 `rename` 后的表名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
