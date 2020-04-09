@@ -99,7 +99,7 @@ The following example shows how to scale in a TiFlash node if you stop the TiFla
 
 2. Check whether the node has been offline successfully using Grafana or pd-ctl (the offline process takes some time).
 
-3. After the `store` corresponding to TiFlash disappears, or the `state_name` becomes `Tomestone`, execute the following command to shutdown the TiFlash process:
+3. After the `store` corresponding to TiFlash disappears, or the `state_name` becomes `Tombstone`, execute the following command to shutdown the TiFlash process:
 
     {{< copyable "shell-regular" >}}
 

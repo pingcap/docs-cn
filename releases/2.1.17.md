@@ -14,7 +14,7 @@ TiDB Ansible version: 2.1.17
 + New features
     - Add the  `WHERE` clause in TiDB’s `SHOW TABLE REGIONS` syntax
     - Add the `config-check` feature in TiKV and PD to check the configuration items
-    - Add the `remove-tomestone` command in pd-ctl to clear tombstone store records
+    - Add the `remove-tombstone` command in pd-ctl to clear tombstone store records
     - Add the `worker-count` and `txn-batch` configuration items in Reparo to control the recovery speed
 
 + Improvements
@@ -73,7 +73,7 @@ TiDB Ansible version: 2.1.17
 ## PD
 
 - Add the `config-check` option in PD to check whether the PD configuration item is valid [#1725](https://github.com/pingcap/pd/pull/1725)
-- Add the `remove-tomestone` command in pd-ctl to support clearing tombstone store records [#1705](https://github.com/pingcap/pd/pull/1705)
+- Add the `remove-tombstone` command in pd-ctl to support clearing tombstone store records [#1705](https://github.com/pingcap/pd/pull/1705)
 - Support actively pushing operators to speed up scheduling [#1686](https://github.com/pingcap/pd/pull/1686)
 
 ## Tools
