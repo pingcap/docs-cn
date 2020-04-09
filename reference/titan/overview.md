@@ -51,7 +51,7 @@ TitanTableBuilder 是实现分离 key-value 的关键，它通过判断 value si
 Garbage Collection (GC) 的目的是回收空间。由于在 LSM-Tree Compaction 进行回收 key 时，存在 Blob 文件的 value 并不会一同被删除，因此需要 GC 定期来将已经作废的 value 删除掉。在 Titan 中根据不同的侧重分为两种方式：
 
 - 定期整合重写 Blob 文件将作废的 value 剔除（传统 GC）
-- 在 LSM-Tree Compaction 的时候同时进行 Blob 文件的重写 （Level-Merge）
+- 在 LSM-tree compaction 的时候同时进行 blob 文件的重写 （Level-Merge）
 
 ### 传统 GC
 
