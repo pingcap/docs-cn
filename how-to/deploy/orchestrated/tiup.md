@@ -321,7 +321,7 @@ category: how-to
 >
 > - 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
 > 
-> - [部署 Tiflash](/reference/tiflash/deploy/) 需要开启 `replication.enable-placement-rules` ，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules/) 功能。
+> - [部署 Tiflash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 
