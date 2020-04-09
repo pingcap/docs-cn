@@ -27,6 +27,8 @@ Titan 适合在以下场景中使用：
 
 Titan 对 RocksDB 兼容，也就是说，现有使用 RocksDB 存储引擎的 TiKV 实例可以直接开启 Titan。开启的方法是修改 TiKV 配置并重启 TiKV：
 
+{{< copyable "" >}}
+
 ``` toml
 [rocksdb.titan]
 enabled = true
