@@ -97,7 +97,7 @@ category: reference
 
 2. 使用 Grafana 或者 pd-ctl 检查节点是否下线成功（下线需要一定时间）。
 
-3. 等待 TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tomestone` 后，执行如下命令关闭 TiFlash 进程：
+3. 等待 TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，执行如下命令关闭 TiFlash 进程：
 
     {{< copyable "shell-regular" >}}
 
