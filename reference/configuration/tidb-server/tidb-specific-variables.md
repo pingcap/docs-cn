@@ -52,6 +52,15 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
+### tidb_opt_distinct_agg_push_down
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来设置优化器是否执行带有 Distinct 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
+当查询中带有 Distinct 的聚合操作执行很慢时，可以尝试设置该变量为 1。
+
 ### tidb_auto_analyze_ratio
 
 作用域：GLOBAL
