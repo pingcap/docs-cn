@@ -802,7 +802,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-## 6. 执行部署命令
+## 3. 执行部署命令
 
 ### 部署命令介绍
 
@@ -921,7 +921,7 @@ Checking service state of alertmanager
 Started cluster `tidb-test` successfully
 ```
 
-## 7. 验证集群部署状态
+## 4. 验证集群部署状态
 
 ### 验证命令介绍
 
@@ -990,7 +990,7 @@ ID                  Role          Host          Ports        Status    Data Dir 
 10.0.1.3:20160  tikv          10.0.1.4  20160/20180  Down      /tidb-data/tikv-20160         /tidb-deploy/tikv-2060
 ```
 
-## 8. 启动集群
+## 5. 启动集群
 
 ### 第 8 步：执行 `tidb-test` 集群启动命令
 
@@ -1048,7 +1048,7 @@ Checking service state of alertmanager
 Started cluster `tidb-test` successfully
 ```
 
-## 5. 验证集群运行状态
+## 6. 验证集群运行状态
 
 ### 第 9 步：通过 TiUP 检查 tidb-test 集群状态
 
@@ -1198,7 +1198,7 @@ MySQL [pingcap]> exit
 Bye
 ```
 
-## 4. 关闭集群
+## 7. 关闭集群
 
 执行如下命令关闭 `tidb-test` 集群：
 
@@ -1253,7 +1253,7 @@ Checking service state of alertmanager
 Stopped cluster `tidb-test` successfully
 ```
 
-## 9. 销毁集群
+## 8. 销毁集群
 
 > **警告：**
 >
@@ -1310,7 +1310,7 @@ Destroy monitored on 10.0.1.4 success
 Destroyed cluster `tidb-test` successfully
 ```
 
-## 3. 常见部署问题
+## 9. 常见部署问题
 
 本小节介绍使用 TiUP 部署 TiDB 集群过程中的常见问题与解决方案。
 
