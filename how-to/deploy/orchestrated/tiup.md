@@ -324,6 +324,8 @@ category: how-to
 > - [部署 Tiflash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
+>
+> - Tiflash 具体的参数配置介绍请见[常见部署问题 Tiflash 参数配置](#常见部署问题)。
 
 {{< copyable "shell-regular" >}}
 
@@ -515,6 +517,8 @@ alertmanager_servers:
 > - [部署 Tiflash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
+>
+> - Tiflash 具体的参数配置介绍请见[常见部署问题 Tiflash 参数配置](#常见部署问题)。
 
 {{< copyable "shell-regular" >}}
 
@@ -703,6 +707,8 @@ TiDB 关键参数：
 > - [部署 Tiflash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
+>
+> - Tiflash 具体的参数配置介绍请见[常见部署问题 Tiflash 参数配置](#常见部署问题)。
 
 {{< copyable "shell-regular" >}}
 
@@ -1340,6 +1346,22 @@ Destroyed cluster `tidb-test` successfully
 | 实例 | deploy_dir | 继承 global 配置 | 部署目录 |
 | 实例 | data_dir | 继承 global 配置 | 数据目录 |
 | 实例 | log_dir | 继承 global 配置 | 日志目录 |
+
+
+### Tiflash 参数
+
+| 参数 | 默认配置 | 说明 |
+| :-- | :-- | :-- |
+| ssh_port | 22 | ssh 默认端口 |
+| tcp_port | 9000 | TiFlash TCP 服务端口 |
+| http_port | 8123 | TiFlash HTTP 服务端口 |
+| flash_service_port | 3930 | TiFlash RAFT 服务 和 Coprocessor 服务端口 |
+| flash_proxy_port | 20170 | TiFlash Proxy 服务端口 |
+| flash_proxy_status_port | 20292 | Prometheus 拉取 TiFlash Proxy metrics 端口 |
+| metrics_port | 8234 | Prometheus 拉取 TiFlash metrics 端口 |
+| deploy_dir | /home/tidb/deploy/tiflash-9000 | TiFlash 部署目录 |
+| data_dir | /home/tidb/deploy/tiflash-9000/data | TiFlash 数据存储目录 |
+| log_dir | /home/tidb/deploy/tiflash-9000/log | TiFlash 日志存储目录 |
 
 ### 参数模块配置（按照从高到低顺序）
 
