@@ -5,24 +5,24 @@ category: how-to
 
 # 使用 TiUP 部署 TiDB 集群
 
-[TiUP](https://github.com/pingcap-incubator/tiup-cluster) 是通过 Golang 编写的 TiDB 运维工具，TiUP cluster 是 TiUP 提供的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
+[TiUP](https://github.com/pingcap-incubator/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap-incubator/tiup-cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数；部署 TiDB Binlog；部署 TiFlash 等。
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
-- [一、环境准备](#一环境准备)
-- [二、配置初始化参数文件 `topology.yaml`](#二配置初始化参数文件-topologyyaml)
-- [三、执行部署命令](#三执行部署命令)
-- [四、验证集群部署状态](#四验证集群部署状态)
-- [五、启动集群](#五启动集群)
-- [六、验证集群运行状态](#六验证集群运行状态)
+- [1. 环境准备](#1-环境准备)
+- [2. 配置初始化参数文件 `topology.yaml`](#2-配置初始化参数文件-topologyyaml)
+- [3. 执行部署命令](#3-执行部署命令)
+- [4. 验证集群部署状态](#4-验证集群部署状态)
+- [5. 启动集群](#5-启动集群)
+- [6. 验证集群运行状态](#6-验证集群运行状态)
 
 另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
 
-- [关闭集群](#关闭集群)
-- [销毁集群](#销毁集群)
-- [常见部署问题](#常见部署问题)
+- [7. 关闭集群](#7-关闭集群)
+- [8. 销毁集群](#8-销毁集群)
+- [9. 常见部署问题](#9-常见部署问题)
 
-## 一、环境准备
+## 1. 环境准备
 
 环境准备环节分为如下几步：
 
@@ -290,7 +290,7 @@ category: how-to
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 二、配置初始化参数文件 `topology.yaml`
+## 2. 配置初始化参数文件 `topology.yaml`
 
 集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
 
@@ -310,15 +310,22 @@ category: how-to
 
 |实例 | 个数 | 物理机配置 | IP |配置 |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 3 | 16 Vcore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
-| TiDB |3 | 16 Vcore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口 <br>  全局目录配置 |
-| PD | 3 |4 Vcore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
+| TiKV | 3 | 16 VCore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
+| TiDB |3 | 16 VCore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口 <br>  全局目录配置 |
+| PD | 3 | 4 VCore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
+| TiFlash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | 默认端口 <br> 全局目录配置 |
 
 #### 第 4 步：配置文件模版 topology.yaml
 
 > **注意：**
 >
-> 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> - 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+>
+> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
+>
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
 
 {{< copyable "shell-regular" >}}
 
@@ -353,7 +360,8 @@ server_configs:
     schedule.leader-schedule-limit: 4
     schedule.region-schedule-limit: 2048
     schedule.replica-schedule-limit: 64
-    
+    replication.enable-placement-rules: true
+
 
 pd_servers:
   - host: 10.0.1.4
@@ -403,6 +411,25 @@ tikv_servers:
     #      host: host1
   - host: 10.0.1.2
   - host: 10.0.1.3
+tiflash_servers:
+  - host: 10.0.1.10
+    # ssh_port: 22
+    # tcp_port: 9000
+    # http_port: 8123
+    # flash_service_port: 3930
+    # flash_proxy_port: 20170
+    # flash_proxy_status_port: 20292
+    # metrics_port: 8234
+    # deploy_dir: deploy/tiflash-9000
+    # data_dir: deploy/tiflash-9000/data
+    # log_dir: deploy/tiflash-9000/log
+    # numa_node: "0,1"
+    # # Config is used to overwrite the `server_configs.tiflash` values
+    #  config:
+    #    logger:
+    #      level: "info"
+    #  learner_config:
+    #    log-level: "info"
 monitoring_servers:
   - host: 10.0.1.4
 grafana_servers:
@@ -415,7 +442,7 @@ alertmanager_servers:
 
 #### 部署需求
 
-部署 TiDB 和 TiKV 组件的物理机为 2 路处理器，每路 16 vcore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
+部署 TiDB 和 TiKV 组件的物理机为 2 路处理器，每路 16 VCore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
 
 #### 单机多实例部署的关键参数配置
 
@@ -424,19 +451,19 @@ alertmanager_servers:
 - TiKV 进行配置优化
 
     - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。计算公式如下：
-  
+
         ```
         readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
         ```
 
     - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。计算公式如下：
-   
+
         ```
         storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
         ```
 
     - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要修改 `conf/tikv.yml` 中的 capacity 参数：
-   
+
         ```
         raftstore.capactiy = 磁盘总容量 / TiKV 实例数量
         ```
@@ -444,7 +471,7 @@ alertmanager_servers:
 - label 调度配置
 
     由于采用单机多实例部署 TiKV，为了避免物理机宕机导致 Region Group 默认 3 副本的 2 副本丢失，导致集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同台机器的多 TiKV 实例不会出现 Region Group 只有 2 副本的情况。
- 
+
     - TiKV 配置
 
         相同物理机配置相同的 host 级别 label 信息：
@@ -476,15 +503,22 @@ alertmanager_servers:
 
 | 实例 | 个数 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 区分实例级别的 port、status_port；<br> 2. 配置全局参数 readpool、storage 以及 raftstore 参数；<br> 3. 配置实例级别 host 维度的 labels；<br> 4. 配置 numa 绑核操作|
-| TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 numa 绑核操作 |
-| PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
+| TiKV | 6 | 32 VCore 64GB | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. 区分实例级别的 port、status_port；<br> 2. 配置全局参数 readpool、storage 以及 raftstore 参数；<br> 3. 配置实例级别 host 维度的 labels；<br> 4. 配置 numa 绑核操作|
+| TiDB | 6 | 32 VCore 64GB | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 配置 numa 绑核操作 |
+| PD | 3 | 16 VCore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
+| TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data` |
 
 #### 第 4 步：配置文件模版 topology.yaml
 
 > **注意：**
-> 
-> 配置文件模版时，注意修改必要参数、IP、端口及目录。
+>
+> - 配置文件模版时，注意修改必要参数、IP、端口及目录。
+>
+> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
+>
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
 
 {{< copyable "shell-regular" >}}
 
@@ -518,6 +552,7 @@ server_configs:
     raftstore.capactiy: "<取值参考上文计算公式的结果>"
   pd:
     replication.location-labels: ["host"]
+    replication.enable-placement-rules: true
 
 pd_servers:
   - host: 10.0.1.4
@@ -623,14 +658,15 @@ tikv_servers:
     config:
       server.labels:
         host: tikv3
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data
 monitoring_servers:
- - host: 10.0.1.7
-
+  - host: 10.0.1.7
 grafana_servers:
- - host: 10.0.1.7
-
+  - host: 10.0.1.7
 alertmanager_servers:
- - host: 10.0.1.7
+  - host: 10.0.1.7
 ```
 
 ### 场景 3：TiDB Binlog 部署模版
@@ -643,29 +679,36 @@ alertmanager_servers:
 
 TiDB 关键参数：
 
-- `binlog.enable: true` 
+- `binlog.enable: true`
 
     开启 binlog 服务，默认为 false。
 
-- `binlog.ignore-error: true` 
+- `binlog.ignore-error: true`
 
     高可用场景建议开启，如果设置为 true，发生错误时，TiDB 会停止写入 binlog，并且在监控项 tidb_server_critical_error_total 上计数加 1；如果设置为 false，一旦写入 binlog 失败，会停止整个 TiDB 的服务。
 
 #### 拓扑信息
 
-| 实例 | 物理机配置 | IP | 配置 |
-| :-- | :-- | :-- | :-- |
-| TiKV | 16 vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
-|TiDB | 16 vcore 32 GB * 3 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
-| PD | 4 vcore 8 GB * 3| 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
-| Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
-| Drainer | 8 vcore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
+| 实例 |个数| 物理机配置 | IP | 配置 |
+| :-- | :-- | :-- | :-- | :-- |
+| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
+|TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
+| PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行多盘部署 |
+| Pump| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
+| Drainer | 1 | 8 VCore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
 #### 第 4 步：配置文件模版 topology.yaml
 
 > **注意：**
-> 
-> 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
+>
+> - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
+>
+> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
+>
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
 
 {{< copyable "shell-regular" >}}
 
@@ -692,6 +735,8 @@ server_configs:
   tidb:
     binlog.enable: true
     binlog.ignore-error: true
+  pd:
+    replication.enable-placement-rules: true
 
 pd_servers:
   - host: 10.0.1.4
@@ -746,15 +791,18 @@ drainer_servers:
       syncer.to.user: "root"
       syncer.to.password: ""
       syncer.to.port: 4000
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
 monitoring_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 grafana_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 alertmanager_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 ```
 
-## 三、执行部署命令
+## 3. 执行部署命令
 
 ### 部署命令介绍
 
@@ -781,9 +829,9 @@ Flags:
   -y, --yes                    Skip confirming the topology
 
 # Usage 展示执行命令样例，<> 为必填项
-# Flags 可选参数，有以下的作用： 
+# Flags 可选参数，有以下的作用：
 # 通过 -h 可以查看帮助；
-# 通过 -i 执行权限认证； 
+# 通过 -i 执行权限认证；
 # --user 通过指定用户来完成 ssh 登录，默认为 root 用户；
 # -y 提过拓扑信息确认直接执行部署任务
 ```
@@ -791,7 +839,7 @@ Flags:
 > **注意：**
 >
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
-> 
+>
 > - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
 > - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
@@ -873,7 +921,7 @@ Checking service state of alertmanager
 Started cluster `tidb-test` successfully
 ```
 
-## 四、验证集群部署状态
+## 4. 验证集群部署状态
 
 ### 验证命令介绍
 
@@ -942,7 +990,7 @@ ID                  Role          Host          Ports        Status    Data Dir 
 10.0.1.3:20160  tikv          10.0.1.4  20160/20180  Down      /tidb-data/tikv-20160         /tidb-deploy/tikv-2060
 ```
 
-## 五、启动集群
+## 5. 启动集群
 
 ### 第 8 步：执行 `tidb-test` 集群启动命令
 
@@ -1000,7 +1048,7 @@ Checking service state of alertmanager
 Started cluster `tidb-test` successfully
 ```
 
-## 六、验证集群运行状态
+## 6. 验证集群运行状态
 
 ### 第 9 步：通过 TiUP 检查 tidb-test 集群状态
 
@@ -1049,8 +1097,8 @@ ID                  Role          Host          Ports        Status     Data Dir
 - 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认密码为 admin/admin
 
     ![Grafana-login](/media/tiup/grafana-login.png)
- 
-- 点击 Overview 监控页面检查 TiDB 端口和负载监控信息 
+
+- 点击 Overview 监控页面检查 TiDB 端口和负载监控信息
 
     ![Grafana-overview](/media/tiup/grafana-overview.png)
 
@@ -1150,7 +1198,7 @@ MySQL [pingcap]> exit
 Bye
 ```
 
-## 关闭集群
+## 7. 关闭集群
 
 执行如下命令关闭 `tidb-test` 集群：
 
@@ -1205,7 +1253,7 @@ Checking service state of alertmanager
 Stopped cluster `tidb-test` successfully
 ```
 
-## 销毁集群
+## 8. 销毁集群
 
 > **警告：**
 >
@@ -1262,7 +1310,7 @@ Destroy monitored on 10.0.1.4 success
 Destroyed cluster `tidb-test` successfully
 ```
 
-## 常见部署问题
+## 9. 常见部署问题
 
 本小节介绍使用 TiUP 部署 TiDB 集群过程中的常见问题与解决方案。
 
@@ -1298,6 +1346,21 @@ Destroyed cluster `tidb-test` successfully
 | 实例 | deploy_dir | 继承 global 配置 | 部署目录 |
 | 实例 | data_dir | 继承 global 配置 | 数据目录 |
 | 实例 | log_dir | 继承 global 配置 | 日志目录 |
+
+### TiFlash 参数
+
+| 参数 | 默认配置 | 说明 |
+| :-- | :-- | :-- |
+| ssh_port | 22 | ssh 默认端口 |
+| tcp_port | 9000 | TiFlash TCP 服务端口 |
+| http_port | 8123 | TiFlash HTTP 服务端口 |
+| flash_service_port | 3930 | TiFlash RAFT 服务和 Coprocessor 服务端口 |
+| flash_proxy_port | 20170 | TiFlash Proxy 服务端口 |
+| flash_proxy_status_port | 20292 | Prometheus 拉取 TiFlash Proxy metrics 端口 |
+| metrics_port | 8234 | Prometheus 拉取 TiFlash metrics 端口 |
+| deploy_dir | /home/tidb/deploy/tiflash-9000 | TiFlash 部署目录 |
+| data_dir | /home/tidb/deploy/tiflash-9000/data | TiFlash 数据存储目录 |
+| log_dir | /home/tidb/deploy/tiflash-9000/log | TiFlash 日志存储目录 |
 
 ### 参数模块配置（按照从高到低顺序）
 
@@ -1541,9 +1604,9 @@ tidb_servers:
 ### 安装 numactl 工具
 
 > **注意：**
-> 
-> - numa 绑核是用来隔离 CPU 资源一种方法，适合高配置物理机环境部署多实例使用。 
-> - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。 
+>
+> - numa 绑核是用来隔离 CPU 资源一种方法，适合高配置物理机环境部署多实例使用。
+> - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。
 
 1. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
