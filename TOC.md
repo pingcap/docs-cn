@@ -317,6 +317,7 @@
     - [Scale TiFlash](/reference/tiflash/scale.md)
     - [Upgrade TiFlash Nodes](/reference/tiflash/upgrade.md)
     - [Configure TiFlash](/reference/tiflash/configuration.md)
+    - [TiFlash Alert Rules](/reference/tiflash/alert-rules.md)
     - [Tune TiFlash Performance](/reference/tiflash/tune-performance.md)
     - [FAQ](/reference/tiflash/faq.md)
   + TiDB Binlog
