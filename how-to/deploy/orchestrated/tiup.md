@@ -1350,7 +1350,7 @@ tidb_servers:
 
 ### 查看 TiUP 支持管理的 TiDB 版本
 
-#### 执行命令
+执行如下命令查看 TiUP 支持管理的 TiDB 版本：
 
 ```shell
 tiup list tidb --refresh
