@@ -1004,7 +1004,7 @@ tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters
 tiup cluster display tidb-test
 ```
 
-预期输出包括实例 ID、角色、主机、监听端口和状态（因未启动，所以状态为 Down/inactive）、目录信息：
+预期输出包括实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster display tidb-test
