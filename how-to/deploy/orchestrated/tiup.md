@@ -949,7 +949,7 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 以上部署命令中：
 
 - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
-- 部署版本为 `v4.0.0-rc`，其他版本可以参考一下[查看 TiUP 支持管理的 TiDB 版本](###查看\ TiUP\ 支持管理的\ TiDB\ 版本)的介绍
+- 部署版本为 `v4.0.0-rc`，其他版本可以参考[查看 TiUP 支持管理的 TiDB 版本](#查看-tiup-支持管理的-tidb-版本)的介绍
 - 初始化配置文件为 `topology.yaml`
 - 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 
