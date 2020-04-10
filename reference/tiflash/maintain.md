@@ -31,7 +31,7 @@ category: reference
 
 ## 下线 TiFlash 节点
 
-下线 TiFlash 节点与[缩容 TiFlash 节点](/reference/tiflash/scale.md#缩容-tiflash-节点)不同，下线 TiFlash 并不会在 TiDB Ansible 中删除这个节点，而仅仅是安全地关闭这个进程。
+下线 TiFlash 节点与[缩容 TiFlash 节点](/how-to/scale/with-tiup.md#4-缩容-tiflash-节点)不同，下线 TiFlash 并不会在 TiDB Ansible 中删除这个节点，而仅仅是安全地关闭这个进程。
 
 下线 TiFlash 节点的步骤如下：
 
@@ -53,7 +53,7 @@ category: reference
 
 4. 在 pd-ctl 中输入 `store delete <store_id>`，其中 <store_id> 为上一步查到的该 TiFlash 节点对应的 store id。
 
-5. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tomestone 再关闭 TiFlash 进程。
+5. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 
 > **注意：**
 >
@@ -109,7 +109,7 @@ category: reference
 
 该问题是由于集群中存在大量写入，导致 TiFlash 查询时遇到锁并发生查询重试。
 
-可以通过在 TiDB 中将查询时间戳设置为 1 秒前（例如：`set @@tidb_snapshot=412881237115666555;`），来减小 TiFlash 查询碰到锁的可能性，从而减轻查询时间不稳定的程度。
+可以在 TiDB 中将查询时间戳设置为 1 秒前（例如：假设当前时间为 '2020-04-08 20:15:01'，可以在执行 query 前执行 `set @@tidb_snapshot='2020-04-08 20:15:00';`），来减小 TiFlash 查询碰到锁的可能性，从而减轻查询时间不稳定的程度。
 
 ### 部分查询返回 Region Unavailable 的错误
 

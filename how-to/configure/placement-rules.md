@@ -109,39 +109,39 @@ pd-ctl config placement-rules disable
 
 pd-ctl 支持使用多种方式查看系统中的 Rule，输出是 json 格式的 Rule 或 Rule 列表：
 
-**查看所有规则列表**
++ 查看所有规则列表
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-pd-ctl config placement-rules show
-```
+    ```bash
+    pd-ctl config placement-rules show
+    ```
 
-**查看 PD Group 的所有规则列表**
++ 查看 PD Group 的所有规则列表
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-pd-ctl config placement-rules show --group=pd
-```
+    ```bash
+    pd-ctl config placement-rules show --group=pd
+    ```
 
-**查看对应 Group 和 ID 的某条规则**
++ 查看对应 Group 和 ID 的某条规则
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-pd-ctl config placement-rules show --group=pd --id=default
-```
+    ```bash
+    pd-ctl config placement-rules show --group=pd --id=default
+    ```
 
-**查看 Region 所匹配的规则列表**
++ 查看 Region 所匹配的规则列表
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-pd-ctl config placement-rules show --region=2
-```
+    ```bash
+    pd-ctl config placement-rules show --region=2
+    ```
 
-上面的例子中 `2` 为 Region ID。
+    上面的例子中 `2` 为 Region ID。
 
 新增和编辑规则是类似的，需要把对应的规则写进文件，然后使用 `save` 命令保存至 PD：
 
@@ -258,7 +258,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ### 场景二：5 副本按 2-2-1 的比例放置在 3 个数据中心，且第 3 个中心不产生 Leader
 
-创建三条规则，分别设置副本数为 2、2、1，并且在每个规则内通过 `label_constraint` 将副本限定在对应的数据中心内。另外，不需要 leader 的数据中心将 `role` 改为 `follower`。
+创建三条规则，分别设置副本数为 2、2、1，并且在每个规则内通过 `label_constraints` 将副本限定在对应的数据中心内。另外，不需要 leader 的数据中心将 `role` 改为 `follower`。
 
 {{< copyable "" >}}
 
@@ -305,7 +305,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ### 场景三：为某张表添加 2 个 TiFlash Learner 副本
 
-为表的 row key 单独添加一条规则，限定数量为 2，并且通过 `label_constraint` 保证副本产生在 `engine=tiflash` 的节点。注意这里使用了单独的 `group_id`，保证这条规则不会与系统中其他来源的规则互相覆盖或产生冲突。
+为表的 row key 单独添加一条规则，限定数量为 2，并且通过 `label_constraints` 保证副本产生在 `engine=tiflash` 的节点。注意这里使用了单独的 `group_id`，保证这条规则不会与系统中其他来源的规则互相覆盖或产生冲突。
 
 {{< copyable "" >}}
 
@@ -326,7 +326,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ### 场景四：为某张表在有高性能磁盘的北京节点添加 2 个 Follower 副本
 
-这个例子展示了比较复杂的 `label_constaint` 配置，下面的例子限定了副本放置在 bj1 或 bj2 机房，且磁盘类型不能为 hdd。
+这个例子展示了比较复杂的 `label_constraints` 配置，下面的例子限定了副本放置在 bj1 或 bj2 机房，且磁盘类型不能为 hdd。
 
 {{< copyable "" >}}
 
