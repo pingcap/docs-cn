@@ -33,7 +33,7 @@ Create two replicas for the table:
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50`.`partsupp` SET TIFLASH REPLICA 2
+ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
 ```
 
 Delete the replica:
