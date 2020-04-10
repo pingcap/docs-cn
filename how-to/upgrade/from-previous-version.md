@@ -1,11 +1,11 @@
 ---
-title: TiDB Latest Development Version Upgrade Guide
-summary: Learn how to upgrade to the latest development version of TiDB.
+title: Upgrade TiDB Using TiDB Ansible
+summary: Learn how to upgrade TiDB using TiDB Ansible.
 category: how-to
 aliases: ['/docs/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
-# TiDB Latest Development Version Upgrade Guide
+# Upgrade TiDB Using TiDB Ansible
 
 This document is targeted for users who want to upgrade from TiDB 2.0, 2.1, 3.0, or 3.1 versions to the latest development version (`latest`), or from an earlier development version to the latest development version. The latest development version is compatible with [TiDB Binlog of the cluster version](/reference/tidb-binlog/overview.md).
 
