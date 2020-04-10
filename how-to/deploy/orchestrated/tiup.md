@@ -147,8 +147,8 @@ category: how-to
     # start       启动 TiDB 集群
     # stop        关闭 TiDB 集群
     # restart     重启 TiDB 集群
-    # scale-in    扩容 TiDB 集群
-    # scale-out   缩容 TiDB 集群
+    # scale-in    缩容 TiDB 集群
+    # scale-out   扩容 TiDB 集群
     # destroy     销毁指定 TiDB 集群
     # upgrade     升级指定 TiDB 集群
     # exec        在 TiDB 集群的目标主机执行命令
