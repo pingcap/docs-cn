@@ -169,16 +169,14 @@ category: how-to
     tiup update cluster
     ```
     
-    > **注意：**
-    >
-    > 预期输出如下 `“Update successfully!”` 字样：
+    预期输出如下 `“Update successfully!”` 字样：
 
     ```log
     The `cluster:v0.4.3` has been installed
     Update successfully!
     ```
 
-5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
+1. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
 
     {{< copyable "shell-regular" >}}
 
@@ -953,9 +951,7 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 - 初始化配置文件为 `topology.yaml`
 - 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 
-> **注意：**
-> 
-> 预期日志结尾输出会有 `Deployed cluster `lzs_test` successfully` 关键词，表示部署成功。
+预期日志结尾输出会有 `Deployed cluster `lzs_test` successfully` 关键词，表示部署成功。
 
 ## 4. 验证集群部署状态
 
@@ -1037,9 +1033,7 @@ ID                  Role          Host          Ports                           
 tiup cluster start tidb-test
 ```
 
-> **注意：**
-> 
-> 预期结果输出 `Started cluster tidb-test successfully` 标志启动成功：
+预期结果输出 `Started cluster tidb-test successfully` 标志启动成功：
 
 ## 6. 验证集群运行状态
 
@@ -1202,9 +1196,7 @@ Bye
 cluster stop tidb-test
 ```
 
-> **注意：**
-> 
-> 预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功：
+预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功：
 
 ## 8. 销毁集群
 
@@ -1220,10 +1212,7 @@ cluster stop tidb-test
 tiup cluster destroy tidb-test
 ```
 
-> **注意：**
-> 
-> 预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功：
-
+预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功：
 
 ## 9. 常见部署问题
 
@@ -1356,7 +1345,7 @@ tidb_servers:
 tiup list tidb --refresh
 ```
 
-### `Version` 为支持的 TiDB 版本，`Installed` 当前安装的版本，`Release` 发版时间， `Platforms` 支持的平台
+`Version` 为支持的 TiDB 版本，`Installed` 当前安装的版本，`Release` 发版时间， `Platforms` 支持的平台
 
 ```log
 Available versions for tidb (Last Modified: 2020-02-26T15:20:35+08:00):
@@ -1392,7 +1381,7 @@ nightly                   2020-04-10T08:42:23+08:00            darwin/amd64,linu
 tiup list
 ```
 
-### `Name` 为支持组件名称，`Installed` 当前是否安装，`Platforms` 支持的系统平台，`Description` 组件描述
+`Name` 为支持组件名称，`Installed` 当前是否安装，`Platforms` 支持的系统平台，`Description` 组件描述
 
 ```log
 Available components (Last Modified: 2020-02-27T15:20:35+08:00):
