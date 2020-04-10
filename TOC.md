@@ -300,7 +300,7 @@
     - [使用 TiFlash](/reference/tiflash/use-tiflash.md)
     - [运维集群](/reference/tiflash/maintain.md)
     - [监控集群](/reference/tiflash/monitor.md)
-    - [扩缩容集群](/reference/tiflash/scale.md)
+    - [扩缩容集群](/how-to/scale/with-tiup.md#2-扩容-tiflash-节点)
     - [升级节点](/reference/tiflash/upgrade.md)
     - [配置参数](/reference/tiflash/configuration.md)
     - [报警规则](/reference/tiflash/alert-rules.md)
@@ -348,6 +348,8 @@
       - [部署使用](/reference/tools/ticdc/deploy.md)
       - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
       - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
+      - [开放数据协议](/reference/tools/ticdc/open-protocol.md)
+      - [Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)
     + sync-diff-inspector
       - [概述](/reference/tools/sync-diff-inspector/overview.md)
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
