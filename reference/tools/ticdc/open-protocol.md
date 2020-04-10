@@ -18,7 +18,7 @@ TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件�
 ## 协议约束
 
 * 在绝大多数情况下，一个版本的 Row Changed Event 只会发出一次，但是特殊情况（节点故障、网络分区等）下，同一版本的 Row Changed Event 可能会多次发送。
-* 同一张表中的每一个版本第一次发出的 Row Changed Event 在 Event 流中一定是按 TS 顺序递增的。
+* 同一张表中的每一个版本第一次发出的 Row Changed Event 在 Event 流中一定是按 TS (timestamp) 顺序递增的。
 * Resolved Event 会被周期性的广播到各个 MQ Partition，Resolved Event 意味着任何 TS 小于 Resolved Event TS 的 Event 已经发送给下游。
 * DDL Event 将被广播到各个 MQ Partition。
 * 一行数据的多个 Row Changed Event 一定会被发送到同一个 MQ Partition 中。
@@ -45,113 +45,117 @@ Value:
 
 ## Event 格式定义
 
+本部分介绍 Row Changed Event、DDL Event 和 Resolved Event 的格式定义。
+
 ### Row Changed Event
 
-**Key:**
++ **Key:**
 
-```
-{
-    "ts":<TS>,
-    "scm":<Schema Name>,
-    "tbl":<Table Name>,
-    "t":1
-}
-```
+    ```
+    {
+        "ts":<TS>,
+        "scm":<Schema Name>,
+        "tbl":<Table Name>,
+        "t":1
+    }
+    ```
 
-| 参数         | 类型   | 说明                    |
-| :---------- | :----- | :--------------------- |
-| TS          | Number | 造成 Row 变更的事务的 TS  |
-| Schema Name | String | Row 所在的 Schema 的名字 |
-| Table Name  | String | Row 所在的 Table 的名字  |
+    | 参数         | 类型   | 说明                    |
+    | :---------- | :----- | :--------------------- |
+    | TS          | Number | 造成 Row 变更的事务的 TS  |
+    | Schema Name | String | Row 所在的 Schema 的名字 |
+    | Table Name  | String | Row 所在的 Table 的名字  |
 
-**Value:**
++ **Value:**
 
-```
-{
-    <UpdateOrDelete>:{
-        <Column Name>:{
-            "t":<Column Type>,
-            "h":<Where Handle>,
-            "v":<Column Value>
-        },
-        <Column Name>:{
-            "t":<Column Type>,
-            "h":<Where Handle>,
-            "v":<Column Value>
+    ```
+    {
+        <UpdateOrDelete>:{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "v":<Column Value>
+            }
         }
     }
-}
-```
+    ```
 
-| 参数         | 类型   | 说明                    |
-| :---------- | :----- | :--------------------- |
-| UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "u"/"d" |
-| Column Name    | String | 列名   |
-| Column Type    | Number | 列类型，详见：[Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md) |
-| Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true |
-| Column Value   | Any    | 列值   |
+    | 参数         | 类型   | 说明                    |
+    | :---------- | :----- | :--------------------- |
+    | UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "u"/"d" |
+    | Column Name    | String | 列名   |
+    | Column Type    | Number | 列类型，详见：[Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md) |
+    | Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true |
+    | Column Value   | Any    | 列值   |
 
 ### DDL Event
 
-**Key:**
++ **Key:**
 
-```
-{
-    "ts":<TS>,
-    "scm":<Schema Name>,
-    "tbl":<Table Name>,
-    "t":2
-}
-```
+    ```
+    {
+        "ts":<TS>,
+        "scm":<Schema Name>,
+        "tbl":<Table Name>,
+        "t":2
+    }
+    ```
 
-| 参数         | 类型   | 说明                                 |
-| :---------- | :----- | :---------------------------------- |
-| TS          | Number | 进行 DDL 变更的事务的 TS               |
-| Schema Name | String | DDL 变更的 Schema 的名字，可能为空字符串 |
-| Table Name  | String | DDL 变更的 Table 的名字，可能为空字符串  |
+    | 参数         | 类型   | 说明                                 |
+    | :---------- | :----- | :---------------------------------- |
+    | TS          | Number | 进行 DDL 变更的事务的 TS               |
+    | Schema Name | String | DDL 变更的 Schema 的名字，可能为空字符串 |
+    | Table Name  | String | DDL 变更的 Table 的名字，可能为空字符串  |
 
-**Value:**
++ **Value:**
 
-```
-{
-    "q":<DDL Query>,
-    "t":<DDL Type>
-}
-```
+    ```
+    {
+        "q":<DDL Query>,
+        "t":<DDL Type>
+    }
+    ```
 
-| 参数       | 类型   | 说明           |
-| :-------- | :----- | :------------ |
-| DDL Query | String | DDL Query SQL |
-| DDL Type  | String | DDL 类型，详见：[Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)       |
+    | 参数       | 类型   | 说明           |
+    | :-------- | :----- | :------------ |
+    | DDL Query | String | DDL Query SQL |
+    | DDL Type  | String | DDL 类型，详见：[Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)      |
 
 ### Resolved Event
 
-**Key:**
++ **Key:**
 
-```
-{
-    "ts":<TS>,
-    "t":3
-}
-```
+    ```
+    {
+        "ts":<TS>,
+        "t":3
+    }
+    ```
 
-| 参数         | 类型   | 说明                                         |
-| :---------- | :----- | :------------------------------------------ |
-| TS          | Number | Resolved TS，任意小于该 TS 的 Event 已经发送完毕 |
+    | 参数         | 类型   | 说明                                         |
+    | :---------- | :----- | :------------------------------------------ |
+    | TS          | Number | Resolved TS，任意小于该 TS 的 Event 已经发送完毕 |
 
-**Value:**
++ **Value:** None
 
-None
+## Event 流的输出示例
 
-## 示例
+本部分展示并描述 Event 流的输出日志。
 
-假设在上游执行以下 SQL 语句, MQ Partition 数量为 2：
+假设在上游执行以下 SQL 语句，MQ Partition 数量为 2：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE test.t1(id int primary key, val varchar(16));
 ```
 
-如以下执行日志中的 Log 1、Log 3 所示，DDL Event 将被广播到所有 MQ Partition；Resolved Event 会被周期性地广播到各个 MQ Partition：
+如以下执行日志中的 Log 1、Log 3 所示，DDL Event 将被广播到所有 MQ Partition，Resolved Event 会被周期性地广播到各个 MQ Partition：
 
 ```
 1. [partition=0] [key="{\"ts\":415508856908021766,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":2}"] [value="{\"q\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"t\":3}"]
@@ -161,6 +165,8 @@ CREATE TABLE test.t1(id int primary key, val varchar(16));
 ```
 
 在上游执行以下 SQL 语句：
+
+{{< copyable "sql" >}}
 
 ```sql
 BEGIN;
@@ -183,6 +189,8 @@ COMMIT;
 ```
 
 在上游执行以下 SQL 语句：
+
+{{< copyable "sql" >}}
 
 ```sql
 BEGIN;
