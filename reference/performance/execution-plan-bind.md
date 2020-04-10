@@ -45,7 +45,7 @@ explain select * from t1, t2 where t1.id = t2.id;
 
 第一个 `select` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `TIDB_SMJ(t1, t2)` hint，explain 出的执行计划中最上层的节点为 MergeJoin。而第二个 `select` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `TIDB_HJ(t1, t2)` hint，explain 出的执行计划中最上层的节点为 HashJoin。
 
-考虑到 SPM 只允许 DBA 操作，正规修改使用 GLOBAL 绑定，而 SESSION 绑定只用于临时调试。该屏蔽将会持续到 SESSION 结束，即使 SESSION 作用域的绑定被删除掉，该绑定对 GLOBAL 作用域内相应绑定的屏蔽依然会持续。
+一般来说，SESSION 作用域的绑定主要用于测试或在某些特殊情况下使用，若需要集群中所有的 TiDB 进程都生效，则需要使用 GLOBAL 作用于的绑定。SESSION 作用域对 GLOBAL 作用域绑定的屏蔽效果会持续到该 SESSION 结束。
 
 承接上面的例子，继续执行：
 
