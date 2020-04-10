@@ -1386,7 +1386,7 @@ nightly                   2020-04-10T08:42:23+08:00            darwin/amd64,linu
 
 ### 查看 TiUP 支持管理的组件和版本
 
-#### 执行命令
+执行如下命令查看 TiUP 支持管理的组件和版本：
 
 ```shell
 tiup list
