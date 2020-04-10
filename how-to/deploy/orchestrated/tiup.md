@@ -529,7 +529,7 @@ alertmanager_servers:
 
     - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。
    
-      - `readpool.storage` 和 `readpool.coprocessor` 开启
+      - 开启 `readpool.storage` 和 `readpool.coprocessor`：
         
         ```yaml
         readpool.storage.use-unified-pool: true
