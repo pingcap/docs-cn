@@ -122,7 +122,7 @@ tiup update cluster
     {{< copyable "shell-regular" >}}
 
     ```shell
-    `tiup cluster edit-config <cluster-name>
+    tiup cluster edit-config <cluster-name>
     ```
 
 3. 参考 [topology](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
