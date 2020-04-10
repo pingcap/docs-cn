@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog kafka 部署方案
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/tidb-binlog/tidb-binlog-kafka/']
 ---
 
 # TiDB Binlog Kafka 部署方案
