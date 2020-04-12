@@ -5,7 +5,7 @@ category: how-to
 
 # 使用 TiUP cluster 快速构建 TiDB 集群
 
-本文档介绍如何通过 TiUP 快速一键部署单机 TiDB 测试集群以及最小拓扑的 TiDB 集群。[TiUP 最小拓扑](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/minimal.yaml) 可以通过一个 YAML 文件定义多个服务，然后一键部署、启动、停止、销毁。
+本文档介绍如何通过 TiUP 快速一键部署单机 TiDB 测试集群以及最小拓扑的 TiDB 集群。[TiUP 最小拓扑](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/minimal.yaml) 可以通过一个 YAML 文件定义多个服务，然后一键部署.
 
 > **警告：**
 >
@@ -82,7 +82,7 @@ category: how-to
 - 部署集群信息
 
 |实例 | 个数 | IP |配置 |
-| :-- | :-- | :-- | :-- | :-- |
+| :-- | :-- | :-- | :-- |
 | TiKV | 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
 | TiDB |1 | 10.0.1.1 | 默认端口 <br>  全局目录配置 |
 | PD | 3 |10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
@@ -118,7 +118,7 @@ category: how-to
 
 3. 创建并启动集群
 
-    - 复制[最小集群拓扑的 YAML](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/minimal.yaml) 文件到目标机器，创建 topo.yaml 文件。
+    - 复制[最小集群拓扑的 YAML](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/minimal.yaml) 文件到中控机，创建 topo.yaml 文件。
 
       - 通过 tidb 用户部署集群（如部署前未创建，部署命令会自动创建），默认使用 22 端口通过 ssh 登陆目标机器，在 tidb 用户 `/home/tidb` 目录下面创建部署目录 `/home/tidb/deploy` 和数据目录 `/home/tidb/data`。
 
@@ -174,9 +174,9 @@ category: how-to
    
 4. 部署集群
 
-    - <cluster-name> 设置集群名称,可以通过 `tiup cluster list` 命令来确认当前已经部署的集群信息。
-    - <tidb-version> 设置部署集群的 TiDB 版本，可以通过 `tiup list tidb --refresh` 命令来确认当前支持部署的 TiDB 版本情况。
-    - <Private Key>  设置密钥登陆，如果使用密码登陆，可以去掉 `-i` 配置，`Entered` 可以直接进入密码交互窗口。
+    - `<cluster-name>` 设置集群名称,可以通过 `tiup cluster list` 命令来确认当前已经部署的集群信息。
+    - `<tidb-version>` 设置部署集群的 TiDB 版本，可以通过 `tiup list tidb --refresh` 命令来确认当前支持部署的 TiDB 版本情况。
+    - `<Private Key>`  设置密钥登陆，如果使用密码登陆，可以去掉 `-i` 配置，`Entered` 可以直接进入密码交互窗口。
 
     {{< copyable "shell-regular" >}}
 
