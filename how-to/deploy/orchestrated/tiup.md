@@ -347,9 +347,9 @@ global:
 monitored:
   node_exporter_port: 9100
   blackbox_exporter_port: 9115
-  deploy_dir: "/tidb-deploy/monitored-9100"
-  data_dir: "/tidb-data/monitored-9100"
-  log_dir: "/tidb-deploy/monitored-9100/log"
+  # deploy_dir: "/tidb-deploy/monitored-9100"
+  # data_dir: "/tidb-data/monitored-9100"
+  # log_dir: "/tidb-deploy/monitored-9100/log"
 
 # # Server configs are used to specify the runtime configuration of TiDB components
 # # All configuration items can be found in TiDB docs:
@@ -434,24 +434,24 @@ tikv_servers:
 
 tiflash_servers:
   - host: 10.0.1.10
-#      ssh_port: 22
-#      tcp_port: 9000
-#      http_port: 8123
-#      flash_service_port: 3930
-#      flash_proxy_port: 20170
-#      flash_proxy_status_port: 20292
-#      metrics_port: 8234
-#      deploy_dir: /tidb-deploy/tiflash-9000
-#      data_dir: /tidb-data/tiflash-9000
-#      log_dir: /tidb-deploy/tiflash-9000/log
-#      numa_node: "0,1"
-#      # Config is used to overwrite the `server_configs.tiflash` values
-#      config:
-#        logger.level: "info"
-#      learner_config:
-#        log-level: "info"
-#  - host: 10.0.1.15
-#  - host: 10.0.1.16
+  # ssh_port: 22
+  # tcp_port: 9000
+  # http_port: 8123
+  # flash_service_port: 3930
+  # flash_proxy_port: 20170
+  # flash_proxy_status_port: 20292
+  # metrics_port: 8234
+  # deploy_dir: /tidb-deploy/tiflash-9000
+  # data_dir: /tidb-data/tiflash-9000
+  # log_dir: /tidb-deploy/tiflash-9000/log
+  # numa_node: "0,1"
+  # # Config is used to overwrite the `server_configs.tiflash` values
+  # config:
+  #   logger.level: "info"
+  # learner_config:
+  #   log-level: "info"
+  #  - host: 10.0.1.15
+  #  - host: 10.0.1.16
 
 # pump_servers:
 #   - host: 10.0.1.17
@@ -945,7 +945,7 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 - 初始化配置文件为 `topology.yaml`
 - 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 
-预期日志结尾输出会有 Deployed cluster `lzs_test` successfully 关键词，表示部署成功。
+预期日志结尾输出会有 Deployed cluster `tidb-test` successfully 关键词，表示部署成功。
 
 ## 4. 验证集群部署状态
 
@@ -1382,9 +1382,9 @@ tiup list
 Available components (Last Modified: 2020-02-27T15:20:35+08:00):
 Name               Installed                                                                                                             Platforms                 Description
 ----               ---------                                                                                                             ---------                 -----------
-tidb               YES(v3.0.12,v4.0.0-beta.2)                                                                                            darwin/amd64,linux/amd64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
-tikv               YES(v3.0.12,v4.0.0-beta.2)                                                                                            darwin/amd64,linux/amd64  Distributed transactional key-value database, originally created to complement TiDB
-pd                 YES(v3.0.12,v4.0.0-beta.2)                                                                                            darwin/amd64,linux/amd64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
+tidb               YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
+tikv               YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  Distributed transactional key-value database, originally created to complement TiDB
+pd                 YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
 playground         YES(v0.0.5)                                                                                                           darwin/amd64,linux/amd64  Bootstrap a local TiDB cluster
 client                                                                                                                                   darwin/amd64,linux/amd64  A simple mysql client to connect TiDB
 prometheus                                                                                                                               darwin/amd64,linux/amd64  The Prometheus monitoring system and time series database.
@@ -1398,7 +1398,7 @@ pushgateway                                                                     
 tiflash                                                                                                                                  linux/amd64               The TiFlash Columnar Storage Engine
 drainer                                                                                                                                  linux/amd64               The drainer componet of TiDB binlog service
 pump                                                                                                                                     linux/amd64               The pump componet of TiDB binlog service
-cluster            YES(v0.0.2,v0.0.4,v0.0.5,v0.0.6,v0.0.7,v0.0.8,v0.0.9,v0.3.2,v0.3.3,v0.3.4,v0.3.5,v0.4.2,v0.4.3,v0.4.4,v0.4.5,v0.4.6)  linux/amd64,darwin/amd64  Deploy a TiDB cluster for production
+cluster            YES(v0.4.6)  linux/amd64,darwin/amd64  Deploy a TiDB cluster for production
 ```
 
 ### 如何检测 NTP 服务是否正常
