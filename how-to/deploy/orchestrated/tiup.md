@@ -364,7 +364,6 @@ monitored:
 server_configs:
   tidb:
     log.slow-threshold: 300
-    log.level: warn
     binlog.enable: false
     binlog.ignore-error: false
   tikv:
@@ -413,7 +412,6 @@ tidb_servers:
     # numa_node: "0,1"
     # # Config is used to overwrite the `server_configs.tidb` values
     # config:
-    #   log.level: warn
     #   log.slow-query-file: tidb-slow-overwrited.log
   - host: 10.0.1.8
   - host: 10.0.1.9
@@ -430,7 +428,7 @@ tikv_servers:
     # # Config is used to overwrite the `server_configs.tikv` values
     # config:
     #   server.grpc-concurrency: 4
-    #   server.labels: { zone : "zone1", dc : "dc1", host : "host1" }
+    #   server.labels: { zone: "zone1", dc: "dc1", host: "host1" }
   - host: 10.0.1.2
   - host: 10.0.1.3
 
@@ -700,7 +698,7 @@ tikv_servers:
     log_dir: "/tidb-deploy/tikv-20160/log"
     numa_node: "0"
     config:
-      server.labels: { host : "tikv1" }
+      server.labels: { host: "tikv1" }
   - host: 10.0.1.1
     port: 20161
     status_port: 20181
@@ -709,7 +707,7 @@ tikv_servers:
     log_dir: "/tidb-deploy/tikv-20161/log"
     numa_node: "1"
     config:
-      server.labels: { host : "tikv1" }
+      server.labels: { host: "tikv1" }
   - host: 10.0.1.2
     port: 20160
     status_port: 20180
@@ -718,7 +716,7 @@ tikv_servers:
     log_dir: "/tidb-deploy/tikv-20160/log"
     numa_node: "0"
     config:
-      server.labels: { host : "tikv2" }
+      server.labels: { host: "tikv2" }
   - host: 10.0.1.2
     port: 20161
     status_port: 20181
@@ -727,7 +725,7 @@ tikv_servers:
     log_dir: "/tidb-deploy/tikv-20161/log"
     numa_node: "1"
     config:
-      server.labels: { host : "tikv2" }
+      server.labels: { host: "tikv2" }
   - host: 10.0.1.3
     port: 20160
     status_port: 20180
@@ -736,7 +734,7 @@ tikv_servers:
     log_dir: "/tidb-deploy/tikv-20160/log"
     numa_node: "0"
     config:
-      server.labels: { host : "tikv3" }
+      server.labels: { host: "tikv3" }
   - host: 10.0.1.3
     port: 20161
     status_port: 20181
@@ -745,7 +743,7 @@ tikv_servers:
     log_dir: "/tidb-deploy/tikv-20161/log"
     numa_node: "1"
     config:
-      server.labels: { host : "tikv3" }
+      server.labels: { host: "tikv3" }
 tiflash_servers:
   - host: 10.0.1.10
     data_dir: /data1/tiflash/data
@@ -1282,7 +1280,6 @@ tidb_servers:
     numa_node: "0,1"
     # Config is used to overwrite the `server_configs.tidb` values
     config:
-      log.level: warn
       log.slow-query-file: tidb-slow-overwritten.log
 ```
 
@@ -1304,7 +1301,6 @@ tidb_servers:
     server_configs:
     tidb:
       log.slow-threshold: 300
-      log.level: warn
       binlog.enable: false
       binlog.ignore-error: false
     tikv:
