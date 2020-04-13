@@ -604,13 +604,13 @@ alertmanager_servers:
 >
 > - 配置文件模版时，注意修改必要参数、IP、端口及目录。
 >
+> - 各个组件的 deploy_dir，默认会使用 global 中的 <deploy_dir>/<components_name>-<port>。例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
+>
 > - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 >
 > - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
->
-> - 各个组件的 deploy_dir，默认会使用 global 中的 <deploy_dir>/<components_name>-<port>，例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
 
 {{< copyable "shell-regular" >}}
 
