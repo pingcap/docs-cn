@@ -46,8 +46,8 @@ category: how-to
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 - TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考[第 3 步](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)）
-- 机器之间内网互通（建议关闭防火墙 `firewalld`，或者开放 TiDB 集群的节点间所需端口）
-- 如果需要绑核操作，需要安装 `numactl` 工具
+- 机器之间内网互通（建议[关闭防火墙 `firewalld`](#如何关闭部署机器的防火墙)，或者开放 TiDB 集群的节点间所需端口）
+- 如果需要绑核操作，需要[安装 `numactl` 工具](#如何安装-numactl-工具)
 
 其他软硬件环境配置可参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
 
@@ -527,32 +527,32 @@ alertmanager_servers:
 
     - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。
    
-      - 开启 `readpool.storage` 和 `readpool.coprocessor`：
+        - 开启 `readpool.storage` 和 `readpool.coprocessor`：
+          
+          ```yaml
+          readpool.storage.use-unified-pool: true
+          readpool.coprocessor.use-unified-pool: true
+          ```
         
-        ```yaml
-        readpool.storage.use-unified-pool: true
-        readpool.coprocessor.use-unified-pool: true
-        ```
-      
-      - 计算公式如下：
+        - 计算公式如下：
 
-        ```
-        readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
-        ```
+          ```
+          readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
+          ```
 
     - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。
       
-      - `storage.block-cache` 默认开启 CF 自适应，无需修改。
+        - `storage.block-cache` 默认开启 CF 自适应，无需修改。
 
-        ```yaml
-        storage.block-cache.shared: true
-        ```
-   
-      - 计算公式如下：
+          ```yaml
+          storage.block-cache.shared: true
+          ```
+     
+        - 计算公式如下：
 
-        ```
-        storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
-        ```
+          ```
+          storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+          ```
 
     - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要在 tikv 配置中添加 capacity 参数：
 
@@ -1033,7 +1033,7 @@ ID                  Role          Host          Ports                           
 tiup cluster start tidb-test
 ```
 
-预期结果输出 `Started cluster tidb-test successfully` 标志启动成功：
+预期结果输出 `Started cluster tidb-test successfully` 标志启动成功。
 
 ## 6. 验证集群运行状态
 
@@ -1090,7 +1090,7 @@ ID              Role          Host      Ports                            Status 
 
     ![Grafana-overview](/media/tiup/grafana-overview.png)
 
-### 登录数据库执行简单 DML、DDL 操作和查询 SQL 语句
+### 第 11 步：登录数据库执行简单 DML、DDL 操作和查询 SQL 语句
 
 > **注意：**
 >
@@ -1196,7 +1196,7 @@ Bye
 cluster stop tidb-test
 ```
 
-预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功：
+预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功。
 
 ## 8. 销毁集群
 
@@ -1212,7 +1212,7 @@ cluster stop tidb-test
 tiup cluster destroy tidb-test
 ```
 
-预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功：
+预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功。
 
 ## 9. 常见部署问题
 
@@ -1337,7 +1337,7 @@ tidb_servers:
     log_dir: "deploy/monitored-9100/log"
     ```
 
-### 查看 TiUP 支持管理的 TiDB 版本
+### 如何查看 TiUP 支持管理的 TiDB 版本
 
 执行如下命令查看 TiUP 支持管理的 TiDB 版本：
 
@@ -1345,7 +1345,7 @@ tidb_servers:
 tiup list tidb --refresh
 ```
 
-`Version` 为支持的 TiDB 版本，`Installed` 当前安装的版本，`Release` 发版时间， `Platforms` 支持的平台
+以下输出结果中，`Version` 为支持的 TiDB 版本，`Installed` 为当前安装的版本，`Release` 为发版时间，`Platforms` 为支持的平台。
 
 ```log
 Available versions for tidb (Last Modified: 2020-02-26T15:20:35+08:00):
@@ -1373,7 +1373,7 @@ v4.0.0-rc                 2020-04-09T00:10:32+08:00            linux/amd64,darwi
 nightly                   2020-04-10T08:42:23+08:00            darwin/amd64,linux/amd64
 ```
 
-### 查看 TiUP 支持管理的组件和版本
+### 如何查看 TiUP 支持管理的组件和版本
 
 执行如下命令查看 TiUP 支持管理的组件和版本：
 
@@ -1381,7 +1381,7 @@ nightly                   2020-04-10T08:42:23+08:00            darwin/amd64,linu
 tiup list
 ```
 
-`Name` 为支持组件名称，`Installed` 当前是否安装，`Platforms` 支持的系统平台，`Description` 组件描述
+以下输出结果中，`Name` 为支持组件名称，`Installed` 为当前是否安装，`Platforms` 为支持的系统平台，`Description` 为组件描述。
 
 ```log
 Available components (Last Modified: 2020-02-27T15:20:35+08:00):
@@ -1406,7 +1406,7 @@ pump                                                                            
 cluster            YES(v0.0.2,v0.0.4,v0.0.5,v0.0.6,v0.0.7,v0.0.8,v0.0.9,v0.3.2,v0.3.3,v0.3.4,v0.3.5,v0.4.2,v0.4.3,v0.4.4,v0.4.5,v0.4.6)  linux/amd64,darwin/amd64  Deploy a TiDB cluster for production
 ```
 
-### 检测 NTP 服务是否正常
+### 如何检测 NTP 服务是否正常
 
 1. 执行以下命令，如果输出 `running` 表示 NTP 服务正在运行：
 
@@ -1539,7 +1539,7 @@ cluster            YES(v0.0.2,v0.0.4,v0.0.5,v0.0.6,v0.0.7,v0.0.8,v0.0.9,v0.3.2,v
     [root@10.0.1.1 tidb]#
     ```
 
-### 关闭部署机器的防火墙
+### 如何关闭部署机器的防火墙
 
 1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
@@ -1574,7 +1574,7 @@ cluster            YES(v0.0.2,v0.0.4,v0.0.5,v0.0.6,v0.0.7,v0.0.8,v0.0.9,v0.3.2,v
     sudo systemctl status firewalld.service
     ```
 
-### 安装 numactl 工具
+### 如何安装 numactl 工具
 
 > **注意：**
 >
