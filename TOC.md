@@ -316,7 +316,7 @@
     - [Use TiFlash](/reference/tiflash/use-tiflash.md)
     - [Maintain a TiFlash Cluster](/reference/tiflash/maintain.md)
     - [Monitor TiFlash](/reference/tiflash/monitor.md)
-    - [Scale TiFlash](/how-to/scale/with-tiup.md#2-scale-out-a-tiflash-node)
+    - [Scale TiFlash](/how-to/scale/with-tiup.md#scale-out-a-tiflash-node)
     - [Upgrade TiFlash Nodes](/reference/tiflash/upgrade.md)
     - [Configure TiFlash](/reference/tiflash/configuration.md)
     - [TiFlash Alert Rules](/reference/tiflash/alert-rules.md)
