@@ -176,7 +176,7 @@ category: how-to
     Update successfully!
     ```
 
-1. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
+5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
 
     {{< copyable "shell-regular" >}}
 
@@ -951,7 +951,7 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 - 初始化配置文件为 `topology.yaml`
 - 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 
-预期日志结尾输出会有 `Deployed cluster `lzs_test` successfully` 关键词，表示部署成功。
+预期日志结尾输出会有 Deployed cluster `lzs_test` successfully 关键词，表示部署成功。
 
 ## 4. 验证集群部署状态
 
