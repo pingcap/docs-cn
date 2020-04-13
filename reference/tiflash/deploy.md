@@ -141,4 +141,4 @@ TiUP cluster is the deployment tool for TiDB 4.0 or later versions. It is recomm
 
     Currently, pd-ctl is not connected to TiUP cluster, you need to [manually download pd-ctl](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz).
 
-3. Refer to [Scale out a TiFlash node](/reference/tiflash/scale.md#scale-out-a-tiflash-node) and deploy TiFlash.
+3. Refer to [Scale out a TiFlash node](/how-to/scale/with-tiup.md#2-scale-out-a-tiflash-node) and deploy TiFlash.

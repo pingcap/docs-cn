@@ -32,7 +32,7 @@ There are two ways to check the TiFlash version:
 
 ## Take a TiFlash node down
 
-Taking a TiFlash node down differs from [Scaling in a TiFlash node](/reference/tiflash/scale.md#scale-in-a-tiflash-node) in that the former doesn't remove the node in TiDB Ansible; instead, it just safely shuts down the TiFlash process.
+Taking a TiFlash node down differs from [Scaling in a TiFlash node](/how-to/scale/with-tiup.md#scale-in-a-tiflash-node) in that the former doesn't remove the node in TiDB Ansible; instead, it just safely shuts down the TiFlash process.
 
 Follow the steps below to take a TiFlash node down:
 

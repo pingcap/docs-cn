@@ -89,6 +89,7 @@
       - [Identify Expensive Queries](/how-to/maintain/identify-abnormal-queries/identify-expensive-queries.md)
   + Scale
     - [Scale using Ansible](/how-to/scale/with-ansible.md)
+    - [Scale using TiUP](/how-to/scale/with-tiup.md)
     - [Scale a TiDB Cluster](/how-to/scale/horizontally.md)
   + Upgrade
     - [Upgrade Using TiUP (Recommended)](/how-to/upgrade/using-tiup.md)
@@ -315,7 +316,7 @@
     - [Use TiFlash](/reference/tiflash/use-tiflash.md)
     - [Maintain a TiFlash Cluster](/reference/tiflash/maintain.md)
     - [Monitor TiFlash](/reference/tiflash/monitor.md)
-    - [Scale TiFlash](/reference/tiflash/scale.md)
+    - [Scale TiFlash](/how-to/scale/with-tiup.md#2-scale-out-a-tiflash-node)
     - [Upgrade TiFlash Nodes](/reference/tiflash/upgrade.md)
     - [Configure TiFlash](/reference/tiflash/configuration.md)
     - [TiFlash Alert Rules](/reference/tiflash/alert-rules.md)
