@@ -1,9 +1,17 @@
 ---
+<<<<<<< HEAD
 title: TiDB 4.0 升级操作指南
+=======
+title: 使用 TiDB Ansible 升级 TiDB
+>>>>>>> a17f5ce... how-to/upgrade: change file names of the upgrade docs (#2692)
 category: how-to
 ---
 
+<<<<<<< HEAD
 # TiDB 4.0 升级操作指南
+=======
+# 使用 TiDB Ansible 升级 TiDB
+>>>>>>> a17f5ce... how-to/upgrade: change file names of the upgrade docs (#2692)
 
 本文档适用于从 TiDB 2.0、2.1、3.0、3.1 版本升级至 TiDB 4.0 版本以及 TiDB 4.0 的低版本升级至 TiDB 4.0 高版本。目前，TiDB 4.0 版本兼容 [TiDB Binlog Cluster 版本](/reference/tidb-binlog/overview.md)。
 
