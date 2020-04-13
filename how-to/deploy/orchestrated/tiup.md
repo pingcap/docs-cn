@@ -610,7 +610,7 @@ alertmanager_servers:
 >
 > - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
 >
-> - 各个组件的 deploy_dir，默认会使用 global 中的 <deploy_dir>/<components_name>-<port>，例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001，无需由于多实例指定非默认端口，而再次指定目录。
+> - 各个组件的 deploy_dir，默认会使用 global 中的 <deploy_dir>/<components_name>-<port>，例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
 
 {{< copyable "shell-regular" >}}
 
