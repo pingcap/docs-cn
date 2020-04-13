@@ -65,6 +65,7 @@
       - [定位慢查询](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-expensive-queries.md)
   + 扩容缩容
+    - [使用 TiUP 扩容缩容](/how-to/scale/with-tiup.md)
     - [使用 Ansible 扩容缩容](/how-to/scale/with-ansible.md)
   + 升级
     - [使用 TiUP 升级（推荐）](/how-to/upgrade/using-tiup.md)
