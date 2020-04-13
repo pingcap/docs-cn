@@ -341,7 +341,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 ### tidb_enable_table_partition
 
-作用域：SESSION
+作用域：SESSION | GLOBAL
 
 默认值："auto"
 
