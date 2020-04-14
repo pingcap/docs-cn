@@ -73,19 +73,9 @@ tiup update cluster
 > + 目前默认识别 `inventory.ini` 配置文件，如果你的配置为其他名称，请指定。
 > + 你需要确保当前集群的状态与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常。
 
-### 3.1 安装集群管理工具
+### 3.1 将 TiDB Ansible 集群导入到 TiUP 中
 
-使用如下命令安装集群管理工具：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup install cluster
-```
-
-### 3.2 将 TiDB Ansible 集群导入到 TiUP 中
-
-1. 以 `/home/tidb/tidb-ansible` 为示例路径，使用如下命令将 TiDB Ansible 集群导入到 TiUP 中（不要在 Ansible 的目录下执行该命令）：
+1. 以 `/home/tidb/tidb-ansible` 为示例路径，使用如下命令将 TiDB Ansible 集群导入到 TiUP 中（不要在 Ansible 的目录下执行该命令，否则会报错）：
 
     {{< copyable "shell-regular" >}}
 
@@ -116,7 +106,7 @@ tiup install cluster
 
 导入完成后，可以通过 `tiup cluster display <cluster-name>` 查看当前集群状态以验证导入结果。由于 `display` 命令会查询各结点的实时状态，所以命令执行可能需要等待少许时间。
 
-### 3.3 编辑 TiUP 拓扑配置文件
+### 3.2 编辑 TiUP 拓扑配置文件
 
 > **注意：**
 >
@@ -135,7 +125,10 @@ tiup install cluster
     tiup cluster edit-config <cluster-name>
     ```
 
-3. 参考 [topology](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。修改完成后 `wq` 保存并退出编辑模式，输入 `Y` 确认变更。
+3. 参考 [topology](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
+如果集群有配置 label，目前也需要按模板中的格式在配置中补充，后续版本会自动导入 label。
+
+修改完成后 `wq` 保存并退出编辑模式，输入 `Y` 确认变更。
 
 > **注意：**
 >

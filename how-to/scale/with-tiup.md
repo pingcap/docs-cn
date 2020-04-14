@@ -75,7 +75,7 @@ tidb_servers:
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
 
-预期输出 Scaled cluster `<cluster-name>` in successfully 信息，表示扩容操作成功。
+预期输出 Scaled cluster `<cluster-name>` out successfully 信息，表示扩容操作成功。
 
 ### 1.3 检查集群状态
 
@@ -182,7 +182,7 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
 
 其中 `--node` 参数为需要下线节点的 ID。
 
-预期输出 Scaled cluster `<cluster-name>` in successfully 信息，表示扩容操作成功。
+预期输出 Scaled cluster `<cluster-name>` in successfully 信息，表示缩容操作成功。
 
 ### 3.3 检查集群状态
 
@@ -206,7 +206,7 @@ tiup cluster display <cluster-name>
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
 
-打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
+打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群的状态。
 
 ## 4. 缩容 TiFlash 节点
 

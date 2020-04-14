@@ -33,7 +33,7 @@ ALTER TABLE table_name SET TIFLASH REPLICA count
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50`.`partsupp` SET TIFLASH REPLICA 2
+ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
 ```
 
 删除副本：
