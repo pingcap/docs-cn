@@ -115,11 +115,7 @@ tiup update cluster
 > - 原集群没有修改过配置参数。
 > - 升级后希望使用 `4.0` 默认参数。
 
-<<<<<<< HEAD
-1. 进入 andible 的备份目录 `~/.tiup/storage/cluster/clusters/{clust_name}/config`，确认配置模板中修改过的参数。
-=======
 1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/config`，确认配置模板中修改过的参数。
->>>>>>> ae77517... tiup: fix the config path in using-tiup.md (#2739)
 
 2. 进入拓扑文件的 `vi` 编辑模式：
 
