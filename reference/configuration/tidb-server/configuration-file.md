@@ -160,8 +160,8 @@ Configuration items related to log.
 ### `max-server-connections`
 
 - The maximum number of concurrent client connections allowed in TiDB. It is used to control resources.
-- Default value: `4096`
-- When the number of actual client connections is equal to the value of `max-server-connections`, the TiDB server rejects new client connections.
+- Default value: `0`
+- By default, TiDB does not set limit on the number of concurrent client connections. When the value of this configuration item is greater than `0` and the number of actual client connections reaches this value, the TiDB server rejects new client connections.
 
 ## log.file
 
