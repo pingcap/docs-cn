@@ -23,7 +23,7 @@ TiDB 的加密连接支持默认是关闭的，必须在 TiDB 服务端通过配
 另外，与 MySQL 一致，TiDB 加密连接是以单个连接为单位的，默认情况下是可选的，因而对于开启了加密连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需强制要求客户端使用加密连接可以通过以下两种方式进行配置:
 
 1. 通过在启动参数中配置 `--require-secure-transport` 要求所有用户必须使用加密连接连接 TiDB
-2. 通过在创建用户 (`create user`)，赋予权限 (`grant`) 或修改已有用户 (`alter user`) 时指定 `require ssl` 要求指定用户必须使用加密连接连接， TiDB 以创建用户为例:
+2. 通过在创建用户 (`create user`)，赋予权限 (`grant`) 或修改已有用户 (`alter user`) 时指定 `require ssl` 要求指定用户必须使用加密连接连接 TiDB，以创建用户为例:
 
 ```sql
 create user 'u1'@'%'  require ssl;
