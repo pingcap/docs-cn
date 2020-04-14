@@ -11,7 +11,7 @@ category: how-to
 
 本部分介绍 TiDB 集群如何开启 TLS 验证，TLS 验证支持：
 
-- TiDB 组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间，TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
+- TiDB 组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间，TiDB Control 与 TiDB、 TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
 - MySQL Client 与 TiDB 之间的客户端对服务器身份的单向验证以及双向验证。
 
 MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用另外一套证书。
@@ -72,8 +72,14 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
     > **注意：**
     >
-    > 若 TiDB 集群各个组件间已开启 TLS，在使用 tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
+    > 若 TiDB 集群各个组件间已开启 TLS，在使用 tidb-ctl、tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
 
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./tidb-ctl -u https://127.0.0.1:10080 --ca /path/to/ca.pem --ssl-cert /path/to/client.pem --ssl-key /path/to/client-key.pem
+    ```
+   
     {{< copyable "shell-regular" >}}
 
     ```bash
@@ -86,7 +92,46 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
     ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
     ```
 
-3. 证书重加载。
+3. 配置校验调用者 Common Name
+
+通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份(比如: 只能 TiKV 只能被 TiDB 访问，需有合法证书的其他业务系统直接访问 TiKV)。推荐在生成证书时通过 Common Name 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
+
+    - TiDB
+
+        在 `config` 文件或命令行参数中设置：
+
+        ```toml
+        [security]
+        cluster-verify-cn = [
+          "TiDB",
+          "TiKV-Control",
+          "PD",
+          "RawKvClient1"
+        ]
+
+        ```
+
+    - TiKV
+
+        在 `config` 文件或命令行参数中设置：
+
+        ```toml
+        [security]
+        cert-allowed-cn = [
+            "example.tikv.com",
+        ]
+        ```
+
+    - PD
+
+        在 `config` 文件或命令行参数中设置：
+
+        ```toml
+        [security]
+        cert-allowed-cn = ["TiKV", "TiDB"]
+        ```
+
+4. 证书重加载。
 
 TiDB， PD 以及 TiKV 之间通讯的证书和密钥会在每次新建连接时重新读取最新的证书和密钥实现重加载，目前暂不支持 CA 的重加载。
 
