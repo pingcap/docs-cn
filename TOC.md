@@ -359,7 +359,7 @@
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
-    - [TiDB Controller](/reference/tools/tidb-control.md)
+    - [TiDB Control](/reference/tools/tidb-control.md)
     - [工具下载](/reference/tools/download.md)
 + TiDB in Kubernetes
   - [TiDB Operator 简介](/tidb-in-kubernetes/tidb-operator-overview.md)
