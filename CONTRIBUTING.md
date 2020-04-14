@@ -38,7 +38,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 你可以通过以下简单几步来认领一个 PR 翻译任务：
 
-1. 打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+is%3Aopen+)，可以看到所有打上了 `translation/welcome` label 的 PR（这类 PR 无论是 open 还是 closed 状态，均在认领的范畴）。
+1. 打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+)，可以看到所有打上了 `translation/welcome` label 的 PR（这类 PR 无论是 open 还是 closed 状态，均在认领的范畴）。
 2. 打开你想认领的 PR，拉到底部留下这条 comment：`@yikeke: I'd like to translate this PR.`。
 3. 仓库管理员 @yikeke 会及时联系你，并将 `translation/welcome` 改为 `translation/doing`，之后你便可以开始翻译了。
 
@@ -66,7 +66,7 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 
 > **注意：**
 >
-> 目前 TiDB 主要维护四个版本的文档：dev（最新开发版），v3.1（3.1 Beta 版），v3.0（最新稳定版），v2.1（最新 2.1 版）。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
+> 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版）、v4.0、v3.1、v3.0 以及 v2.1。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
 
 ### 第 1 步：Fork pingcap/docs-cn 仓库
 
@@ -136,8 +136,8 @@ git push -u origin new-branch-name
 
 > **注意：**
 >
-> - 如果你的修改影响多个文档版本 (dev, *v4.0, v3.1, v3.0, v2.1)，务必在 PR 描述框中勾选相应的版本，或者在页面右侧选择相应的 label (dev, *v4.0, v3.1, v3.0, v2.1) 来注明。v4.0 为尚未发布的新版本。
-> - 如果你的修改也同样适用于[英文版文档](https://github.com/pingcap/docs)，需要在提 PR 时添加 label `pending-aligning`；也非常欢迎同时更新中文版和英文版。
+> - 如果你的修改影响多个文档版本 (dev, v4.0, v3.1, v3.0, v2.1)，务必在 PR 描述框中勾选相应的版本，以及在页面右侧选择相应的 cherry-pick labels。
+> - 如果你的修改也同样适用于[英文版文档](https://github.com/pingcap/docs)，需要在提 PR 时添加 label `translation-welcome`；也非常欢迎同时更新中文版和英文版。
 
 ## 必须遵循的 Markdown 规范
 
