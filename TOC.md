@@ -30,7 +30,8 @@
   + 部署
     - [软硬件环境需求](/how-to/deploy/hardware-recommendations.md)
     + 集群部署方式
-      - [使用 Ansible 部署（推荐）](/how-to/deploy/orchestrated/ansible.md)
+      - [使用 TiUP 部署（推荐）](/how-to/deploy/orchestrated/tiup.md)
+      - [使用 Ansible 部署](/how-to/deploy/orchestrated/ansible.md)
       - [使用 Ansible 离线部署](/how-to/deploy/orchestrated/offline-ansible.md)
       - [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)
     + 跨地域冗余
@@ -64,9 +65,11 @@
       - [定位慢查询](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-expensive-queries.md)
   + 扩容缩容
+    - [使用 TiUP 扩容缩容](/how-to/scale/with-tiup.md)
     - [使用 Ansible 扩容缩容](/how-to/scale/with-ansible.md)
   + 升级
-    - [升级至最新开发版](/how-to/upgrade/from-previous-version.md)
+    - [使用 TiUP 升级（推荐）](/how-to/upgrade/using-tiup.md)
+    - [使用 TiDB Ansible 升级](/how-to/upgrade/from-previous-version.md)
   + 故障诊断
     - [集群配置诊断](/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/how-to/troubleshoot/tidb-lightning.md)
@@ -298,7 +301,7 @@
     - [使用 TiFlash](/reference/tiflash/use-tiflash.md)
     - [运维集群](/reference/tiflash/maintain.md)
     - [监控集群](/reference/tiflash/monitor.md)
-    - [扩缩容集群](/reference/tiflash/scale.md)
+    - [扩缩容集群](/how-to/scale/with-tiup.md#2-扩容-tiflash-节点)
     - [升级节点](/reference/tiflash/upgrade.md)
     - [配置参数](/reference/tiflash/configuration.md)
     - [报警规则](/reference/tiflash/alert-rules.md)
@@ -346,6 +349,8 @@
       - [部署使用](/reference/tools/ticdc/deploy.md)
       - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
       - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
+      - [开放数据协议](/reference/tools/ticdc/open-protocol.md)
+      - [Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)
     + sync-diff-inspector
       - [概述](/reference/tools/sync-diff-inspector/overview.md)
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
@@ -370,6 +375,7 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/rn.md)
   + v4.0
+    - [4.0.0-rc](/releases/4.0.0-rc.md)
     - [4.0.0-beta.2](/releases/4.0.0-beta.2.md)
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
