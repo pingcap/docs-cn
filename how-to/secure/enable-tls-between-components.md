@@ -92,9 +92,9 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
     ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
     ```
 
-3. 配置校验调用者 Common Name
+3. 配置校验调用者 Common Name。
 
-通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份(比如: 只能 TiKV 只能被 TiDB 访问，需有合法证书的其他业务系统直接访问 TiKV)。推荐在生成证书时通过 Common Name 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
+    通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份(比如: 只能 TiKV 只能被 TiDB 访问，需有合法证书的其他业务系统直接访问 TiKV)。推荐在生成证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
 
     - TiDB
 
@@ -103,10 +103,8 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
         ```toml
         [security]
         cluster-verify-cn = [
-          "TiDB",
-          "TiKV-Control",
-          "PD",
-          "RawKvClient1"
+          "TiDB-Server",
+          "TiKV-Control",          
         ]
 
         ```
@@ -118,7 +116,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
         ```toml
         [security]
         cert-allowed-cn = [
-            "example.tikv.com",
+            "TiDB-Server", "PD-Server", "TiKV-Control", "RawKvClient1",
         ]
         ```
 
@@ -128,7 +126,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
         ```toml
         [security]
-        cert-allowed-cn = ["TiKV", "TiDB"]
+        cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
         ```
 
 4. 证书重加载。
