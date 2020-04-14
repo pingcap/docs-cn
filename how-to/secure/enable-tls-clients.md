@@ -109,7 +109,7 @@ create user 'u1'@'%'  require x509;
 
 > **注意：**
 >
-> 如果登录用户已配置使用[TiDB 证书鉴权功能](/reference/security/cert-based-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书信息时也会隐式要求对应用户必须使用加密连接连接 TiDB
+> 如果登录用户已配置使用[TiDB 证书鉴权功能](/reference/security/cert-based-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户需进行身份验证
 
 ## 检查当前连接是否是加密连接
 
