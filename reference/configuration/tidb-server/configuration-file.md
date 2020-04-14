@@ -33,6 +33,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：`<操作系统临时文件夹>/tidb/tmp-storage`
 + 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
 
+### `temp-storage-quota`
+
++ `tmp-storage-path` 存储使用的限额，单位为字节。
++ 当单条 SQL 语句使用临时磁盘，导致 TiDB server 的总体临时磁盘总量超过 `temp-storage-quota` 时，当前 SQL 操作会被取消，并返回 `Out Of Global Storage Quota!` 错误。
++ 当 `temp-storage-quota` 小于 0 时则没有上述检查与限制。
++ 默认值: -1
++ 当 `tmp-storage-path` 的剩余可用容量低于 `temp-storage-quota` 所定义的值时，TiDB server 启动时将会报出错误并退出。
+
 ### `oom-action`
 
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
@@ -82,6 +90,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制添加或者删除主键功能。
 + 默认值：false
 + 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。
+
+### `server-version`
+
++ 用来修改 TiDB 在以下情况下返回的版本号:
+    - 当使用内置函数 `VERSION()` 时。
+    - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake)。
++ 默认值：""
++ 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
 
 ### `repair-mode`
 
@@ -147,8 +163,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `max-server-connections`
 
 + TiDB 中同时允许的最大客户端连接数，用于资源控制。
-+ 默认值：4096
-+ 当客户端连接数到达 `max-server-connections` 时，TiDB 服务端将会拒绝新的客户端连接。
++ 默认值：0
++ 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 
 ## log.file
 
@@ -243,6 +259,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)会 剔除 LRU 中的元素。
 + 默认值：0
 + 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
+
+### `txn-total-size-limit`
+
++ TiDB 事务大小限制
++ 默认值：104857600 (Byte)
++ 单个事务中，所有 key-value 记录的总大小不能超过该限制。注意，如果开启了 `binlog`，该配置项的值不能超过 `104857600`（表示 100MB），因为 binlog 组件不支持同步的事务过大。如果 `binlog` 没开启，该配置项的最大值不超过 `10737418240`（表示 10GB）。
 
 ### `stmt-count-limit`
 
