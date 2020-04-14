@@ -81,9 +81,40 @@ TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本
 
 ### 智能选择
 
-对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。具体有没有选择 TiFlash 副本，可以通过 `explain analyze` 语句查看，见下图：
+对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。具体有没有选择 TiFlash 副本，可以通过 `desc` 或 `explain analyze` 语句查看，例如：
 
-![tidb-display](/media/tiflash/tidb-display.png)
+{{< copyable "sql" >}}
+
+```sql
+desc select count(*) from test.t;
+```
+
+```
++--------------------------+---------+--------------+---------------+--------------------------------+
+| id                       | estRows | task         | access object | operator info                  |
++--------------------------+---------+--------------+---------------+--------------------------------+
+| StreamAgg_9              | 1.00    | root         |               | funcs:count(1)->Column#4       |
+| └─TableReader_17         | 1.00    | root         |               | data:TableFullScan_16          |
+|   └─TableFullScan_16     | 1.00    | cop[tiflash] | table:t       | keep order:false, stats:pseudo |
++--------------------------+---------+--------------+---------------+--------------------------------+
+3 rows in set (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+explain analyze select count(*) from test.t;
+```
+
+```
++--------------------------+---------+---------+--------------+---------------+----------------------------------------------------------------------+--------------------------------+-----------+------+
+| id                       | estRows | actRows | task         | access object | execution info                                                       | operator info                  | memory    | disk |
++--------------------------+---------+---------+--------------+---------------+----------------------------------------------------------------------+--------------------------------+-----------+------+
+| StreamAgg_9              | 1.00    | 1       | root         |               | time:83.8372ms, loops:2                                              | funcs:count(1)->Column#4       | 372 Bytes | N/A  |
+| └─TableReader_17         | 1.00    | 1       | root         |               | time:83.7776ms, loops:2, rpc num: 1, rpc time:83.5701ms, proc keys:0 | data:TableFullScan_16          | 152 Bytes | N/A  |
+|   └─TableFullScan_16     | 1.00    | 1       | cop[tiflash] | table:t       | time:43ms, loops:1                                                   | keep order:false, stats:pseudo | N/A       | N/A  |
++--------------------------+---------+---------+--------------+---------------+----------------------------------------------------------------------+--------------------------------+-----------+------+
+```
 
 `cop[tiflash]` 表示该任务会发送至 TiFlash 进行处理。如果没有选择 TiFlash 副本，可尝试通过 `analyze table` 语句更新统计信息后，再查看 `explain analyze` 结果。
 
