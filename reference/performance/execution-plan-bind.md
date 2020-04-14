@@ -81,7 +81,7 @@ DROP [GLOBAL | SESSION] BINDING FOR SelectStmt;
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内删除指定的执行计划绑定，在不指定作用域时默认作用域为 SESSION。
 
-一般来说，SESSION 作用域的绑定主要用于测试或在某些特殊情况下使用，若需要集群中所有的 TiDB 进程都生效，则需要使用 GLOBAL 作用于的绑定。SESSION 作用域对 GLOBAL 作用域绑定的屏蔽效果会持续到该 SESSION 结束。
+一般来说，SESSION 作用域的绑定主要用于测试或在某些特殊情况下使用，若需要集群中所有的 TiDB 进程都生效，则需要使用 GLOBAL 作用域的绑定。SESSION 作用域对 GLOBAL 作用域绑定的屏蔽效果会持续到该 SESSION 结束。
 
 承接上面关于 SESSION 绑定屏蔽 GLOBAL 绑定的例子，继续执行：
 
