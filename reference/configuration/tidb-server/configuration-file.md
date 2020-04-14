@@ -33,6 +33,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：`<操作系统临时文件夹>/tidb/tmp-storage`
 + 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
 
+### `temp-storage-quota`
+
++ `tmp-storage-path` 存储使用的限额，单位为字节。
++ 当单条 SQL 语句使用临时磁盘，导致 TiDB server 的总体临时磁盘总量超过 `temp-storage-quota` 时，当前 SQL 操作会被取消，并返回 `Out Of Global Storage Quota!` 错误。
++ 当 `temp-storage-quota` 小于 0 时则没有上述检查与限制。
++ 默认值: -1
++ 当 `tmp-storage-path` 的剩余可用容量低于 `temp-storage-quota` 所定义的值时，TiDB server 启动时将会报出错误并退出。
+
 ### `oom-action`
 
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
