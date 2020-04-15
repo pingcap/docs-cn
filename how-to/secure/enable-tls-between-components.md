@@ -106,7 +106,6 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
           "TiDB-Server",
           "TiKV-Control",          
         ]
-
         ```
 
     - TiKV
