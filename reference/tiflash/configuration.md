@@ -77,6 +77,7 @@ http_port = tiflash http 服务端口
 ```
 
 ### 多盘部署
+
 TiFlash 支持多盘部署，主要通过 `path` 和 `path_realtime_mode` 这两个参数控制。
 多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果您的环境有多块磁盘，推荐一个数据存储目录对应一块磁盘，并且把性能最好的磁盘放在最前面，以发挥所有磁盘的全部性能。
 `path_realtime_mode` 默认为 false，表示数据会在所有的存储目录之间进行均衡。如果设为 true，且 `path` 配置了多个目录，表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。
