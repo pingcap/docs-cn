@@ -20,6 +20,7 @@
     - [高可用](/key-features.md#高可用)
 + 操作指南
   + 快速上手
+    - [快速体验 TiDB 集群](/how-to/get-started/quick-start-with-tidb.md)
     - [使用 Docker Compose 部署 TiDB](/how-to/get-started/deploy-tidb-from-docker-compose.md)
     - [SQL 基本操作](/how-to/get-started/explore-sql.md)
     - [读取历史数据](/how-to/get-started/read-historical-data.md)
