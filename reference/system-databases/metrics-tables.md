@@ -1,6 +1,6 @@
 ---
 title: METRICS_TABLES
-summary: 了解 TiDB 集群配置表 `METRICS_TABLES`。
+summary: 了解 TiDB 系统表 `METRICS_TABLES`。
 category: reference
 ---
 
