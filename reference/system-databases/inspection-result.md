@@ -15,36 +15,38 @@ TiDB 内置了一些诊断规则，用于检测系统中的故障以及隐患。
 {{< copyable "sql" >}}
 
 ```sql
-mysql> desc inspection_result;
+desc inspection_result;
 ```
 
 ```
-+-----------+--------------+------+------+---------+-------+
-| Field     | Type         | Null | Key  | Default | Extra |
-+-----------+--------------+------+------+---------+-------+
-| RULE      | varchar(64)  | YES  |      | NULL    |       |
-| ITEM      | varchar(64)  | YES  |      | NULL    |       |
-| TYPE      | varchar(64)  | YES  |      | NULL    |       |
-| INSTANCE  | varchar(64)  | YES  |      | NULL    |       |
-| VALUE     | varchar(64)  | YES  |      | NULL    |       |
-| REFERENCE | varchar(64)  | YES  |      | NULL    |       |
-| SEVERITY  | varchar(64)  | YES  |      | NULL    |       |
-| DETAILS   | varchar(256) | YES  |      | NULL    |       |
-+-----------+--------------+------+------+---------+-------+
-8 rows in set (0.00 sec)
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| RULE           | varchar(64)  | YES  |     | <null>  |       |
+| ITEM           | varchar(64)  | YES  |     | <null>  |       |
+| TYPE           | varchar(64)  | YES  |     | <null>  |       |
+| INSTANCE       | varchar(64)  | YES  |     | <null>  |       |
+| STATUS_ADDRESS | varchar(64)  | YES  |     | <null>  |       |
+| VALUE          | varchar(64)  | YES  |     | <null>  |       |
+| REFERENCE      | varchar(64)  | YES  |     | <null>  |       |
+| SEVERITY       | varchar(64)  | YES  |     | <null>  |       |
+| DETAILS        | varchar(256) | YES  |     | <null>  |       |
++----------------+--------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
 ```
 
 字段解释：
 
 * `RULE`：诊断规则名称，目前实现了以下规则：
-    * `config`：配置一致性检测。如果同一个配置在不同节点不一致，会生成 `warning` 诊断结果。
-    * `version`：版本一致性检测。如果同一类型的节点版本不同，会生成 `critical` 诊断结果。
+    * `config`：配置一致性检测。如果同一个配置在不同实例不一致，会生成 `warning` 诊断结果。
+    * `version`：版本一致性检测。如果同一类型的实例版本不同，会生成 `critical` 诊断结果。
     * `current-load`：如果当前系统负载太高，会生成对应的 `warning` 诊断结果。
     * `critical-error`：系统各个模块定义了严重的错误，如果某一个严重错误在对应时间段内超过阈值，会生成 `warning` 诊断结果。
     * `threshold-check`：诊断系统会对大量指标进行阈值判断，如果超过阈值会生成对应的诊断信息。
 * `ITEM`：每一个规则会对不同的项进行诊断，该字段表示对应规则下面的具体诊断项。
 * `TYPE`：诊断的实例类型，可取值为 `tidb`，`pd` 或 `tikv`。
 * `INSTANCE`：诊断的具体实例地址。
+* `STATUS_ADDRESS`：HTTP API 的服务地址。
 * `VALUE`：针对这个诊断项得到的值。
 * `REFERENCE`：针对这个诊断项的参考值（阈值）。如果 `VALUE` 和阈值相差较大，就会产生对应的诊断信息。
 * `SEVERITY`：严重程度，取值为 `warning` 或 `critical`。
@@ -136,8 +138,8 @@ DETAILS   | max duration of 172.16.5.40:10089 tidb get-token-duration is too slo
 
 上面的诊断结果发现了以下问题：
 
-* 第一行表示 172.16.5.40:4009 TiDB 节点在 `2020/03/26 00:05:45.670` 发生了重启。
-* 第二行表示 172.16.5.40:10089 TiDB 节点的最大的 get-token-duration 时间为 0.234s, 期望时间是小于 0.001s。 
+* 第一行表示 172.16.5.40:4009 TiDB 实例在 `2020/03/26 00:05:45.670` 发生了重启。
+* 第二行表示 172.16.5.40:10089 TiDB 实例的最大的 get-token-duration 时间为 0.234s, 期望时间是小于 0.001s。 
 
 也可以指定条件，比如只查询 `critical` 严重级别的诊断结果：
 
@@ -283,13 +285,13 @@ threshold-check 诊断规则通过查询 metrics_schema 数据库中相关的监
 | TiKV | index-block-cache-hit | tikv_block_index_cache_hit | 大于 0.95 | TiKV 中 index block 缓存的命中率 |
 | TiKV | filter-block-cache-hit | tikv_block_filter_cache_hit | 大于 0.95 | TiKV 中 filter block 缓存的命中率 |
 | TiKV | data-block-cache-hit | tikv_block_data_cache_hit | 大于 0.80 | TiKV 中 data block 缓存的命中率 |
-| TiKV | leader-score-balance | pd_scheduler_store_status  | 小于 0.05 | 检测各个 TiKV 节点的 leader score 是否均衡，期望节点间的差异小于 5% |
-| TiKV | region-score-balance | pd_scheduler_store_status  | 小于 0.05 | 检测各个 TiKV 节点的 region score 是否均衡，期望节点间的差异小于 5% |
-| TiKV | store-available-balance | pd_scheduler_store_status  | 小于 0.2 | 检测各个 TiKV 节点的存储可用空间大小是否均衡，期望节点间的差异小于 20% |
-| TiKV | region-count | pd_scheduler_store_status  | 小于 20000 | 检测各个 TiKV 节点的 region 数量，期望单个节点的 region 数量小于 20000 |
+| TiKV | leader-score-balance | pd_scheduler_store_status  | 小于 0.05 | 检测各个 TiKV 实例的 leader score 是否均衡，期望实例间的差异小于 5% |
+| TiKV | region-score-balance | pd_scheduler_store_status  | 小于 0.05 | 检测各个 TiKV 实例的 region score 是否均衡，期望实例间的差异小于 5% |
+| TiKV | store-available-balance | pd_scheduler_store_status  | 小于 0.2 | 检测各个 TiKV 实例的存储可用空间大小是否均衡，期望实例间的差异小于 20% |
+| TiKV | region-count | pd_scheduler_store_status  | 小于 20000 | 检测各个 TiKV 实例的 region 数量，期望单个实例的 region 数量小于 20000 |
 | PD | region-health | pd_region_health | 小于 100  | 检测集群中处于调度中间状态的 region 数量，期望总数小于 100 |
 
-另外还会检测 TiKV 节点的以下 thread cpu usage 是否过高:
+另外还会检测 TiKV 实例的以下 thread cpu usage 是否过高:
 
 * scheduler-worker-cpu
 * coprocessor-normal-cpu
