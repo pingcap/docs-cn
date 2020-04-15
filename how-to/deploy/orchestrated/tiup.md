@@ -1187,7 +1187,7 @@ Bye
 {{< copyable "shell-regular" >}}
 
 ```shell
-cluster stop tidb-test
+tiup cluster stop tidb-test
 ```
 
 预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功。
