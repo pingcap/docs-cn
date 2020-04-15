@@ -3,209 +3,306 @@ title: 使用 TiUP cluster 快速构建 TiDB 集群
 category: how-to
 ---
 
-# 使用 TiUP cluster 快速构建 TiDB 集群
+本文档介绍如何快速地体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
 
-本文档介绍如何通过 TiUP 快速一键部署单机 TiDB 测试集群以及最小拓扑的 TiDB 集群。[TiUP 最小拓扑](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/minimal.yaml) 可以通过一个 YAML 文件定义多个服务，然后一键部署.
+- 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
+- 第二种：使用 TiUP Playground 快速部署本地测试环境
+- 第三种：使用 TiUP Cluster 模拟单机下的准生产测试环境
 
-> **警告：**
->
-> 对于生产环境，不要使用 TiUP 单机版或者最小拓扑模版进行部署，而应使用 [TiUP 部署 TiDB 集群](/how-to/deploy/orchestrated/tiup.md)。
+> **警告：** 对于生产环境，不要使用本文档介绍的方式进行部署，而应使用 TiUP 部署 TiDB 集群。
 
-## 准备环境
+# 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
 
-确保你的主机（中控机或者单机搭建环境）的软件满足需求：
+- 适用场景：初步极速体验 TiDB 数据库的语法、兼容性等基本功能
+- 耗时：即时体验
 
-- 推荐安装 CentOS 7.3 及以上版本 Linux 操作系统
-- 开放外网访问，用于下载 TiDB 及相关软件安装包
-- 安装 TiUP 组件
+TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用。TiDB-Wasm 可直接进行 SQL 执行、兼容性验证等基本功能。
 
-## 快速部署
+试用请点击网址：[https://tour.pingcap.com](https://tour.pingcap.com)，之后会在内存中构建 TiDB 数据库，预计消耗 10s 左右时间。
 
-1. 下载 `TiUP`
 
-    {{< copyable "shell-regular" >}}
+# 第二种：使用 TiUP Playground 快速部署本地测试环境
 
-    ```bash
-    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-    ```
+- 适用场景：利用本地 mac 或者单机 linux 环境快速部署 TiDB 集群。可以体验 TiDB 集群的基本架构，以及 tidb/tikv/pd/监控等基础组件的运行。
+- 耗时：1 分钟
 
-    预期输出 
+作为一个分布式系统，最基础的 TiDB 测试集群通常由 2 个 TiDB 组件、3 个 TiKV 组件和 3 个 PD 组件来构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
 
-    ```shell
-      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                     Dload  Upload   Total   Spent    Left  Speed
-    100 3418k  100 3418k    0     0  2878k      0  0:00:01  0:00:01 --:--:-- 2880k
-    Detected shell: /bin/bash
-    Shell profile:  /home/tidb/.bash_profile
-    Installed path: /home/tidb/.tiup/bin/tiup
-    ===============================================
-    Have a try:     tiup playground
-    ===============================================
-    ```
+1. 下载并安装 TiUP
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+```
 
 2. 声明全局环境变量
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    source .bash_profile
-    ```
+```shell
+source .bash_profile
+``` 
 
-3. 在当前 session 启动集群
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tiup playground
-    ```
-
-4. 创建新的会话来访问集群
-
-- 访问 TiDB 数据库
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    mysql -h 10.0.1.1 -P 4000 -u root
-    ```
-
-- 访问 TiDB 的 Grafana 监控
-
-    访问集群 Grafana 监控页面：<http://localhost:3000> 默认用户名和密码均为 admin。
-
-- 访问 TiDB 的 Dashboard
+3. 安装 Playground
   
-    访问集群 TiDB-Dashboard 监控页面：<http://localhost:2379/dashboard> 默认用户名 root 密码为空。
+{{< copyable "shell-regular" >}}
 
-## 部署最小规模的 TiDB 集群
+```shell
+tiup install playground
+``` 
+  
+- 如果曾经安装过，请升级至最新版
+  
+{{< copyable "shell-regular" >}}
 
-- 部署集群信息
+```shell
+tiup update playground`
+```
 
-|实例 | 个数 | IP |配置 |
-| :-- | :-- | :-- | :-- |
-| TiKV | 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
-| TiDB |1 | 10.0.1.1 | 默认端口 <br>  全局目录配置 |
-| PD | 3 |10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br> 全局目录配置 |
-| TiFlash | 1 | 10.0.1.2 | 默认端口 <br> 全局目录配置 |
+4. 在当前 session 启动集群
 
-- 部署节点软件和环境要求
+- 直接运行 tiup playground 会运行最新版本的 TiDB 集群，其中组件 tidb/tikv/pd 各 1 个。
 
-  - 中控机可以使用部署节点的 root 用户或者具体 sudo 权限的用户的密钥或者密码可以直接 ssh 登陆；
+{{< copyable "shell-regular" >}}
 
-  - 所有的机器关闭防火墙或者开放 TiDB 集群的节点间所需端口
+```shell
+tiup playground
+```
 
-  - 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
+- 也可以指定版本以及组件个数
 
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground v4.0.0-rc --db 2 --pd 3 --kv 3 --monitor
+```
+
+会在本地下载并启动一个 v4.0.0-rc 版本的集群，--monitor 表示带监控。运行结果将显示集群的访问方式：
+
+```log
+CLUSTER START SUCCESSFULLY, Enjoy it ^-^
+To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root
+To connect TiDB: mysql --host 127.0.0.1 --port 4001 -u root
+To view the dashboard: http://127.0.0.1:2379/dashboard
+To view the monitor: http://127.0.0.1:9090
+```
+
+5. 新开启 session 访问 TiDB 数据库
+
+{{< copyable "shell-regular" >}}
+
+```shell
+mysql --host 127.0.0.1 --port 4000 -u root
+```
+
+6. 访问 TiDB 的 Grafana 监控：http://127.0.0.1:9090  默认用户名和密码均为 admin。
+
+7. 访问 TiDB 的 Dashboard 页面：http://127.0.0.1:2379/dashboard 默认用户名 root 密码为空。
+
+8. 测试完成，清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行 
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup clean --all
+```
+
+# 第三种：使用  TiUP Cluster 模拟单机下的准生产测试环境
+
+- 适用场景：希望用单台 Linux  服务器，体验 TiDB 最小的完整拓扑的集群，并模拟生产的部署步骤。
+- 耗时：10 分钟
+
+本文档介绍如何参照 TiUP 最小拓扑 的一个 YAML 文件部署 TiDB 集群。
+
+## 准备环境
+
+准备一台部署主机，确保其软件满足需求：
+
+- 推荐安装 CentOS 7.3 及以上版本 
+- Linux 操作系统开放外网访问，用于下载 TiDB 及相关软件安装包
+
+最小规模的 TiDB 集群拓扑
+
+| 实例 | 个数 | IP | 配置 |
+|:-- | :-- | :-- | :-- |
+| TiKV | 3 | 10.0.1.1 <br> 10.0.1.1 <br> 10.0.1.1 | 避免端口和目录冲突 |
+| TiDB | 1 | 10.0.1.1 | 默认端口 <br> 全局目录配置 |
+| PD | 1 | 10.0.1.1 | |
+| TiFlash | 1 | 10.0.1.1 | |
+| Monitor | 1 | 10.0.1.1 | |
+
+部署主机软件和环境要求
+
+- 部署需要使用部署主机的 root 用户及密码
+- 部署主机关闭防火墙或者开放 TiDB 集群的节点间所需端口
+- 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
+    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系操作步骤：
 
-    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
+## 实施部署
 
-1. 安装 TiUP 的 cluster 组件（TiUP 已经安装完成）
+1. 以下步骤使用 linux 系统的任一普通用户或 root 用户，以 root 用户为例
 
-    {{< copyable "shell-regular" >}}
+2. 下载并安装 TiUP
 
-    ```bash
-    tiup cluster
-    ```
 
-2. 如果已经安装 TiUP cluster 的机器更新软件版本
+{{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
+```shell
+curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+```
 
-    ```bash
-    tiup update cluster
-    ```
+3. 安装 TiUP 的 cluster 组件
 
-3. 创建并启动集群
+{{< copyable "shell-regular" >}}
 
-    - 复制[最小集群拓扑的 YAML](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/minimal.yaml) 文件到中控机，创建 topo.yaml 文件。
+```shell
+tiup cluster
+```
 
-      - 通过 tidb 用户部署集群（如部署前未创建，部署命令会自动创建），默认使用 22 端口通过 ssh 登陆目标机器，在 tidb 用户 `/home/tidb` 目录下面创建部署目录 `/home/tidb/deploy` 和数据目录 `/home/tidb/data`。
+4. 如果已经安装 TiUP cluster 的机器更新软件版本
 
-      - 设置 PD 参数 `replication.enable-placement-rules` 参数来确保 TiFlash 正常运行。
+{{< copyable "shell-regular" >}}
 
-      - 所有节点服务均采用默认配置（包括：端口、目录、参数文件）。
+```shell
+tiup update cluster
+```
 
-    {{< copyable "shell-regular" >}}
+5. 由于模拟多机部署，需要通过 `root` 用户调大 sshd 服务的连接数限制
 
-    ```yaml
-    # The topology template is used deploy a minimal TiDB cluster, which suitable
-    # for scenarios with only three machinescontains. The minimal cluster contains
-    # - 3 PD nodes
-    # - 3 TiKV nodes
-    # - 1 TiDB nodes
-    # You can change the hosts according your environment
-    
-    global:
-      user: "tidb"
-      ssh_port: 22
-      deploy_dir: "deploy"
-      data_dir: "data"
-    
-    server_configs:
-      pd:
-        replication.enable-placement-rules: true
+- 修改 /etc/ssh/sshd_config 将 `MaxSessions` 调至 20
+- 重启 sshd 服务 
 
-    pd_servers:
-      - host: 10.0.1.1
-      - host: 10.0.1.2
-      - host: 10.0.1.2
-    
-    tikv_servers:
-      - host: 10.0.1.1
-      - host: 10.0.1.2
-      - host: 10.0.1.3
-    
-    tidb_servers:
-      - host: 10.0.1.1
-    
-    tiflash_servers:
-      - host: 10.0.1.2
+{{< copyable "shell-regular" >}}
 
-    monitoring_servers:
-      - host: 10.0.1.3
-    
-    grafana_servers:
-      - host: 10.0.1.3
-    
-    alertmanager_servers:
-      - host: 10.0.1.3
-    ```
-   
-4. 部署集群
+```shell
+service sshd restart
+```
 
-    - `<cluster-name>` 设置集群名称,可以通过 `tiup cluster list` 命令来确认当前已经部署的集群信息。
-    - `<tidb-version>` 设置部署集群的 TiDB 版本，可以通过 `tiup list tidb --refresh` 命令来确认当前支持部署的 TiDB 版本情况。
-    - `<Private Key>`  设置密钥登陆，如果使用密码登陆，可以去掉 `-i` 配置，`Entered` 可以直接进入密码交互窗口。
+6. 创建并启动集群
 
-    {{< copyable "shell-regular" >}}
+- 按下面的配置模板，编辑配置文件，命名为 topo.yaml ，其中：
 
-    ```bash
-    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root -i <Private Key>
-    ```  
+  - `user: "tidb"` 表示通过 tidb 系统用户来做集群的内部管理（部署会自动创建），默认使用 22 端口通过 ssh 登陆目标机器
 
-5. 启动集群
+  - 设置 PD 参数 `replication.enable-placement-rules` 参数来确保 TiFlash 正常运行。
 
-   {{< copyable "shell-regular" >}}
+  - host 改为本部署主机的 IP
 
-    ```bash
-    tiup cluster start <cluster-name>
-    ```    
+{{< copyable "shell-regular" >}}
 
-6. 访问集群
+```yaml
+# # Global variables are applied to all deployments and as the default value of
+# # them if the specific deployment value missing.
+ 
+global:
+ user: "tidb"
+ ssh_port: 22
+ deploy_dir: "/tidb-deploy"
+ data_dir: "/tidb-data"
+ 
+# # Monitored variables are used to all the machine
+monitored:
+ node_exporter_port: 9100
+ blackbox_exporter_port: 9115
+ 
+server_configs:
+ tidb:
+   log.slow-threshold: 300
+ tikv:
+   readpool.storage.use-unified-pool: true
+   readpool.coprocessor.use-unified-pool: true
+ pd:
+   replication.enable-placement-rules: true
+ tiflash:
+   logger.level: "info"
+ 
+pd_servers:
+ - host: 10.0.1.1
+ 
+tidb_servers:
+ - host: 10.0.1.1
+ 
+tikv_servers:
+ - host: 10.0.1.1
+   port: 20160
+   status_port: 20180
+ 
+ - host: 10.0.1.1
+   port: 20161
+   status_port: 20181
+ 
+ - host: 10.0.1.1
+   port: 20162
+   status_port: 20182
+ 
+tiflash_servers:
+ - host: 10.0.1.1
+ 
+monitoring_servers:
+ - host: 10.0.1.1
+ 
+grafana_servers:
+ - host: 10.0.1.1
+```
 
-- 访问 TiDB 数据库
+7. 执行部署集群
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    mysql -h 10.0.1.1 -P 4000 -u root
-    ```
+```shell
+tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root 
+```
+
+- <cluster-name> 设置集群名称
+- <tidb-version> 设置部署的 TiDB 集群版本，可以通过 tiup list tidb --refresh 命令来选择当前支持部署的 TiDB 版本。
+
+按照引导，输入”y” 及 root 密码，来完成部署
+
+```log
+Do you want to continue? [y/N]:  y
+Input SSH password:
+```
+
+8. 启动集群
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster start <cluster-name>
+```
+
+9. 访问集群
+
+- 访问 TiDB 数据库，密码为空
+
+  {{< copyable "shell-regular" >}}
+  
+  ```shell
+  mysql -h 10.0.1.1 -P 4000 -u root
+  ```
 
 - 访问 TiDB 的 Grafana 监控
 
-    访问集群 Grafana 监控页面：<http://10.0.1.3:3000> 默认用户名和密码均为 admin。
+  访问集群 Grafana 监控页面：http://{grafana-ip}:3000 默认用户名和密码均为 admin。
 
 - 访问 TiDB 的 Dashboard
+
+  访问集群 TiDB-Dashboard 监控页面：http://{pd-ip}:2379/dashboard 默认用户名 root 密码为空。
+
+- 通过 `tiup cluster list` 命令来确认当前已经部署的集群列表
+
+  {{< copyable "shell-regular" >}}
   
-    访问集群 TiDB-Dashboard 监控页面：<http://{pd-leader-ip}:2379/dashboard> 默认用户名 root 密码为空。
+  ```shell
+  tiup cluster list
+  ```
+
+- `tiup cluster display <cluster-name>` 来查看集群的拓扑结构和状态
+
+  {{< copyable "shell-regular" >}}
+  
+  ```shell
+  tiup cluster display <cluster-name>
+  ```
