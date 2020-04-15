@@ -59,7 +59,7 @@ tiup install playground
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup update playground`
+tiup update playground
 ```
 
 4. 在当前 session 启动集群
