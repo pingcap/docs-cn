@@ -524,33 +524,33 @@ alertmanager_servers:
 - TiKV 进行配置优化
 
     - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。
-   
+
         - 开启 `readpool.storage` 和 `readpool.coprocessor`：
           
-          ```yaml
-          readpool.storage.use-unified-pool: true
-          readpool.coprocessor.use-unified-pool: true
-          ```
-        
+            ```yaml
+            readpool.storage.use-unified-pool: true
+            readpool.coprocessor.use-unified-pool: true
+            ```
+
         - 计算公式如下：
 
-          ```
-          readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
-          ```
+            ```
+            readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
+            ```
 
     - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。
-      
+
         - `storage.block-cache` 默认开启 CF 自适应，无需修改。
 
-          ```yaml
-          storage.block-cache.shared: true
-          ```
+            ```yaml
+            storage.block-cache.shared: true
+            ```
      
         - 计算公式如下：
 
-          ```
-          storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
-          ```
+            ```
+            storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+            ```
 
     - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要在 tikv 配置中添加 capacity 参数：
 
@@ -605,6 +605,8 @@ alertmanager_servers:
 > - 配置文件模版时，注意修改必要参数、IP、端口及目录。
 >
 > - 各个组件的 deploy_dir，默认会使用 global 中的 <deploy_dir>/<components_name>-<port>。例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
+
+> **注意：**
 >
 > - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
