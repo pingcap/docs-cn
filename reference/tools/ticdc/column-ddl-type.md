@@ -9,7 +9,6 @@ Column 和 DDL 的类型码是由 [TiCDC Open Protocol](/reference/tools/ticdc/o
 
 ## Column Type Code
 
-
 | 类型         | Code | 输出示例 | 说明 |
 | :---------- | :--- | :------ | :-- |
 | Decimal     | 0    | {"t":0,"v":"129012.1230000"} | - |
