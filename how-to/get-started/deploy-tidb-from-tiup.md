@@ -100,7 +100,7 @@ To view the monitor: http://127.0.0.1:9090
 mysql --host 127.0.0.1 --port 4000 -u root
 ```
 
-6. 访问 TiDB 的 Grafana 监控：http://127.0.0.1: 9090  默认用户名和密码均为 admin。
+6. 访问 TiDB 的 Grafana 监控：http://127.0.0.1:9090  默认用户名和密码均为 admin。
 
 7. 访问 TiDB 的 Dashboard 页面：http://127.0.0.1:2379/dashboard 默认用户名 root 密码为空。
 
