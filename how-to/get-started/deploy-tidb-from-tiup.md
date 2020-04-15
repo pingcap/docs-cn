@@ -3,7 +3,7 @@ title: 如何快速体验 TiDB 集群
 category: how-to
 ---
 
-# 使用 TiUP cluster 快速构建 TiDB 集群
+# 如何快速体验 TiDB 集群
 
 本文档介绍如何快速地体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
 
@@ -13,7 +13,7 @@ category: how-to
 
 > **警告：** 对于生产环境，不要使用本文档介绍的方式进行部署，而应使用 TiUP 部署 TiDB 集群。
 
-# 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
+## 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
 
 - 适用场景：初步极速体验 TiDB 数据库的语法、兼容性等基本功能
 - 耗时：即时体验
@@ -23,7 +23,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 试用请点击网址：[https://tour.pingcap.com](https://tour.pingcap.com)，之后会在内存中构建 TiDB 数据库，预计消耗 10s 左右时间。
 
 
-# 第二种：使用 TiUP Playground 快速部署本地测试环境
+## 第二种：使用 TiUP Playground 快速部署本地测试环境
 
 - 适用场景：利用本地 mac 或者单机 linux 环境快速部署 TiDB 集群。可以体验 TiDB 集群的基本架构，以及 tidb/tikv/pd/监控等基础组件的运行。
 - 耗时：1 分钟
@@ -110,14 +110,14 @@ mysql --host 127.0.0.1 --port 4000 -u root
 tiup clean --all
 ```
 
-# 第三种：使用  TiUP Cluster 模拟单机下的准生产测试环境
+## 第三种：使用  TiUP Cluster 模拟单机下的准生产测试环境
 
 - 适用场景：希望用单台 Linux  服务器，体验 TiDB 最小的完整拓扑的集群，并模拟生产的部署步骤。
 - 耗时：10 分钟
 
 本文档介绍如何参照 TiUP 最小拓扑 的一个 YAML 文件部署 TiDB 集群。
 
-## 准备环境
+### 准备环境
 
 准备一台部署主机，确保其软件满足需求：
 
@@ -142,7 +142,7 @@ tiup clean --all
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系操作步骤：
 
-## 实施部署
+### 实施部署
 
 1. 以下步骤使用 linux 系统的任一普通用户或 root 用户，以 root 用户为例
 
