@@ -94,7 +94,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 3. 配置校验调用者 Common Name。
 
-    通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份(比如: 只能 TiKV 只能被 TiDB 访问，需阻止拥有合法证书但并非 TiDB 的其他访问者访问 TiKV)。推荐在生成证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
+    通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。推荐在生成证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
 
     - TiDB
 
@@ -129,9 +129,9 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
         cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
         ```
 
-4. 证书重加载。
+4. 重加载证书。
 
-TiDB、PD 和 TiKV 会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容实现证书和密钥重加载，目前暂不支持 CA 的重加载。
+    TiDB、PD 和 TiKV 会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。目前暂不支持 CA 的重加载。
 
 ### MySQL 与 TiDB 间开启 TLS
 
