@@ -9,20 +9,25 @@ category: how-to
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
-- [1. 环境准备](#1-环境准备)
-- [2. 配置初始化参数文件 `topology.yaml`](#2-配置初始化参数文件-topologyyaml)
-- [3. 执行部署命令](#3-执行部署命令)
-- [4. 验证集群部署状态](#4-验证集群部署状态)
-- [5. 启动集群](#5-启动集群)
-- [6. 验证集群运行状态](#6-验证集群运行状态)
+- [第 1 步：软硬件环境配置](#第-1-步：软硬件环境配置)
+- [第 2 步：在中控机上安装 TiUP 组件](#第-2-步：在中控机上安装-tiup-组件)
+- [第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数](#第-3-步：在-tikv-部署目标机器添加数据盘-ext4-文件系统挂载参数)
+- [第 4 步：配置文件模版 topology.yaml](#第-4-步：配置文件模版-topology.yaml)
+- [第 5 步：执行部署命令](#第-5-步：执行部署命令)
+- [第 6 步：检查 TiUP 管理集群情况](#第-6-步：检查-TiUP-管理集群情况)
+- [第 7 步：检查集群情况](#第-7-步：检查集群情况)
+- [第 8 步：执行集群启动命令](#第-8-步：执行集群启动命令)
+- [第 9 步：通过 TiUP 检查集群状态](#第-9-步：通过-TiUP-检查集群状态)
+- [第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态](#第-10-步：通过-TiDB-Dashboard--Grafana-检查集群状态)
+- [第 11 步：登录数据库执行简单 DML、DDL 操作和查询 SQL 语句](#第-11-步：登录数据库执行简单-DMLDDL-操作和查询-SQL-语句)
 
 另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
 
-- [7. 关闭集群](#7-关闭集群)
-- [8. 销毁集群](#8-销毁集群)
-- [9. 常见部署问题](#9-常见部署问题)
+- [关闭集群](#关闭集群)
+- [销毁集群](#销毁集群)
+- [常见部署问题](#常见部署问题)
 
-## 1. 环境准备
+## 环境准备
 
 环境准备环节分为如下几步：
 
@@ -290,7 +295,7 @@ category: how-to
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 2. 配置初始化参数文件 `topology.yaml`
+## 配置初始化参数文件 `topology.yaml`
 
 集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
 
@@ -888,7 +893,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-## 3. 执行部署命令
+## 执行部署命令
 
 ### 部署命令介绍
 
@@ -947,7 +952,7 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 
 预期日志结尾输出会有 Deployed cluster `tidb-test` successfully 关键词，表示部署成功。
 
-## 4. 验证集群部署状态
+## 验证集群部署状态
 
 ### 验证命令介绍
 
@@ -986,7 +991,7 @@ Name              User  Version        Path                                     
 tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
-### 第 7 步：检查 `tidb-test` 集群情况
+### 第 7 步：检查集群情况
 
 {{< copyable "shell-regular" >}}
 
@@ -1017,9 +1022,9 @@ ID                  Role          Host          Ports                           
 10.0.1.3:20160      tikv          10.0.1.4      20160/20180                      Down      /tidb-data/tikv-20160           /tidb-deploy/tikv-2060
 ```
 
-## 5. 启动集群
+## 启动集群
 
-### 第 8 步：执行 `tidb-test` 集群启动命令
+### 第 8 步：执行集群启动命令
 
 {{< copyable "shell-regular" >}}
 
@@ -1029,9 +1034,9 @@ tiup cluster start tidb-test
 
 预期结果输出 `Started cluster tidb-test successfully` 标志启动成功。
 
-## 6. 验证集群运行状态
+## 验证集群运行状态
 
-### 第 9 步：通过 TiUP 检查 tidb-test 集群状态
+### 第 9 步：通过 TiUP 检查集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -1180,7 +1185,7 @@ MySQL [pingcap]> exit
 Bye
 ```
 
-## 7. 关闭集群
+## 关闭集群
 
 执行如下命令关闭 `tidb-test` 集群：
 
@@ -1192,7 +1197,7 @@ cluster stop tidb-test
 
 预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功。
 
-## 8. 销毁集群
+## 销毁集群
 
 > **警告：**
 >
@@ -1208,7 +1213,7 @@ tiup cluster destroy tidb-test
 
 预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功。
 
-## 9. 常见部署问题
+## 常见部署问题
 
 本小节介绍使用 TiUP 部署 TiDB 集群过程中的常见问题与解决方案。
 
