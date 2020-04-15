@@ -208,9 +208,10 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2 安装部署
 
-#### 2.2.1 TiDB Ansible 部署方式（强烈推荐）
+#### 2.2.1 推荐部署方式
 
-详细可参考[使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
+- [使用 TiUP 部署](/how-to/deploy/orchestrated/tiup.md)：如果用于生产环境，推荐使用 TiUP 部署 TiDB 集群。
+- [使用 TiDB Ansible 部署](/how-to/deploy/orchestrated/ansible.md)：如果用于生产环境，也可以使用 TiDB Ansible 部署 TiDB 集群。
 
 ##### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
