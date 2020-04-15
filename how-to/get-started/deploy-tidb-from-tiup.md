@@ -24,7 +24,6 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
 试用请点击网址：[https://tour.pingcap.com](https://tour.pingcap.com)，之后会在内存中构建 TiDB 数据库，预计消耗 10s 左右时间。
 
-
 ## 第二种：使用 TiUP Playground 快速部署本地测试环境
 
 - 适用场景：利用本地 mac 或者单机 linux 环境快速部署 TiDB 集群。可以体验 TiDB 集群的基本架构，以及 tidb/tikv/pd/监控等基础组件的运行。
