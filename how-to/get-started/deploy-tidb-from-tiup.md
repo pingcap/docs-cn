@@ -41,7 +41,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 
 2. 声明全局环境变量
 
-> **建议：** TiUP 安装完成会提示对应的 profile 文件的绝对路径，source 操作请根据实际位置进行操作。
+    > **建议：**
+    >
+    > TiUP 安装完成会提示对应的 profile 文件的绝对路径，source 操作请根据实际位置进行操作。
 
 {{< copyable "shell-regular" >}}
 
