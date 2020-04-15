@@ -11,7 +11,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_info;
+desc information_schema.cluster_info;
 ```
 
 ```

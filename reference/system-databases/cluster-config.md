@@ -11,7 +11,7 @@ summary: 了解 TiDB 集群配置表 `CLUSTER_CONFIG`。
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_config;
+desc information_schema.cluster_config;
 ```
 
 ```

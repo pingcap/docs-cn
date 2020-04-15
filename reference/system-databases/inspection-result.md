@@ -15,7 +15,7 @@ TiDB 内置了一些诊断规则，用于检测系统中的故障以及隐患。
 {{< copyable "sql" >}}
 
 ```sql
-desc inspection_result;
+desc information_schema.inspection_result;
 ```
 
 ```
@@ -40,7 +40,7 @@ desc inspection_result;
 * `RULE`：诊断规则名称，目前实现了以下规则：
     * `config`：配置一致性检测。如果同一个配置在不同实例不一致，会生成 `warning` 诊断结果。
     * `version`：版本一致性检测。如果同一类型的实例版本不同，会生成 `critical` 诊断结果。
-    * `current-load`：如果当前系统负载太高，会生成对应的 `warning` 诊断结果。
+    * `node-load`：如果当前系统负载太高，会生成对应的 `warning` 诊断结果。
     * `critical-error`：系统各个模块定义了严重的错误，如果某一个严重错误在对应时间段内超过阈值，会生成 `warning` 诊断结果。
     * `threshold-check`：诊断系统会对大量指标进行阈值判断，如果超过阈值会生成对应的诊断信息。
 * `ITEM`：每一个规则会对不同的项进行诊断，该字段表示对应规则下面的具体诊断项。
@@ -59,7 +59,7 @@ desc inspection_result;
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_result\G
+select * from information_schema.inspection_result\G
 ```
 
 ```
@@ -112,7 +112,7 @@ DETAILS   | max duration of 172.16.5.40:20151 tikv rocksdb-write-duration was to
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ time_range("2020-03-26 00:03:00", "2020-03-26 00:08:00") */ * from inspection_result\G
+select /*+ time_range("2020-03-26 00:03:00", "2020-03-26 00:08:00") */ * from information_schema.inspection_result\G
 ```
 
 ```
@@ -146,7 +146,7 @@ DETAILS   | max duration of 172.16.5.40:10089 tidb get-token-duration is too slo
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_result where severity='critical';
+select * from information_schema.inspection_result where severity='critical';
 ```
 
 只查询 `critical-error` 规则的诊断结果:
@@ -154,7 +154,7 @@ select * from inspection_result where severity='critical';
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_result where rule='critical-error';
+select * from information_schema.inspection_result where rule='critical-error';
 ```
 
 ## 诊断规则介绍
@@ -166,7 +166,7 @@ select * from inspection_result where rule='critical-error';
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_rules where type='inspection';
+select * from information_schema.inspection_rules where type='inspection';
 ```
 
 ```
@@ -175,7 +175,7 @@ select * from inspection_rules where type='inspection';
 +-----------------+------------+---------+
 | config          | inspection |         |
 | version         | inspection |         |
-| current-load    | inspection |         |
+| node-load       | inspection |         |
 | critical-error  | inspection |         |
 | threshold-check | inspection |         |
 +-----------------+------------+---------+
@@ -197,6 +197,7 @@ select * from inspection_rules where type='inspection';
     status.status-port
     log.file.filename
     log.slow-query-file
+    tmp-storage-path
 
     // PD 配置一致性检查白名单
     advertise-client-urls
@@ -216,6 +217,7 @@ select * from inspection_rules where type='inspection';
     log-file
     raftstore.raftdb-path
     storage.data-dir
+    storage.block-cache.capacity
     ```
 
 * 检测以下配置项的值是否符合预期。
@@ -232,7 +234,7 @@ select * from inspection_rules where type='inspection';
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_result where rule='version'\G
+select * from information_schema.inspection_result where rule='version'\G
 ```
 
 ```

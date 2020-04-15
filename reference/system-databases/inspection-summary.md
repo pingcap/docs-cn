@@ -13,7 +13,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-desc inspection_summary;
+desc information_schema.inspection_summary;
 ```
 
 ```
@@ -62,13 +62,13 @@ FROM
   (
     SELECT
       /*+ time_range("2020-01-16 16:00:54.933", "2020-01-16 16:10:54.933")*/ *
-    FROM inspection_summary WHERE rule='read-link'
+    FROM information_schema.inspection_summary WHERE rule='read-link'
   ) t1
   JOIN
   (
     SELECT
       /*+ time_range("2020-01-16 16:10:54.933","2020-01-16 16:20:54.933")*/ *
-    FROM inspection_summary WHERE rule='read-link'
+    FROM information_schema.inspection_summary WHERE rule='read-link'
   ) t2
   ON t1.metrics_name = t2.metrics_name
   and t1.instance = t2.instance
