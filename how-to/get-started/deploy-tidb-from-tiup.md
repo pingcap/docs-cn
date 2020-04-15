@@ -11,7 +11,7 @@ category: how-to
 - 第二种：使用 TiUP Playground 快速部署本地测试环境
 - 第三种：使用 TiUP Cluster 模拟单机下的准生产测试环境
 
-> **警告：** 对于生产环境，不要使用本文档介绍的方式进行部署，而应使用 TiUP 部署 TiDB 集群。
+> **警告：** 对于生产环境，不要使用本文档介绍的方式进行部署，而应使用 [TiUP 部署 TiDB 集群](https://pingcap.com/docs-cn/stable/how-to/deploy/orchestrated/tiup/)。
 
 ## 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
 
