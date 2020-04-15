@@ -25,9 +25,9 @@ TiDB 的加密连接支持默认是关闭的，必须在 TiDB 服务端通过配
 + 通过在启动参数中配置 `--require-secure-transport` 要求所有用户必须使用加密连接来连接到 TiDB。
 + 通过在创建用户 (`create user`)，赋予权限 (`grant`) 或修改已有用户 (`alter user`) 时指定 `require ssl` 要求指定用户必须使用加密连接来连接 TiDB。以创建用户为例：
 
-```sql
-create user 'u1'@'%'  require ssl;
-```
+    ```sql
+    create user 'u1'@'%'  require ssl;
+    ```
 
 > **注意：**
 >
