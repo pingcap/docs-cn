@@ -7,13 +7,7 @@ category: reference
 
 目前 TiFlash 暂时还不支持通过 `tiup cluster upgrade` 进行升级。 推荐使用下面的步骤进行升级：
 
-1. 将所有 TiFlash 节点进行缩容操作
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup cluster scale-in test --node 172.19.0.104:9000
-    ```
+1. 参考[缩容 TiFlash 节点](/reference/tiflash/scale.md#缩容-tiflash-节点)章节，对所有的 TiFlash 节点进行缩容操作
 
 2. 运行升级命令
 
