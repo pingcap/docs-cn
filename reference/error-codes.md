@@ -425,4 +425,3 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 ## 故障诊断
 
 参见[故障诊断文档](/how-to/troubleshoot/cluster-setup.md)以及 [FAQ](/faq/tidb.md)。
-
