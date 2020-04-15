@@ -1,7 +1,7 @@
 ---
 title: TiDB Control 使用说明
 category: reference
-aliases: ['/docs-cn/tools/tidb-control/']
+aliases: ['/docs-cn/tools/tidb-controller/']
 ---
 
 # TiDB Control 使用说明
