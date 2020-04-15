@@ -103,7 +103,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     mysql --host 127.0.0.1 --port 4000 -u root
     ```
 
-6. 访问 TiDB 的 Prometheus 管理界面：http://127.0.0.1:9090
+6. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面
 
 7. 访问 TiDB 的 Dashboard 页面：http://127.0.0.1:2379/dashboard 默认用户名 root 密码为空。
 
