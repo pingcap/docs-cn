@@ -1206,7 +1206,7 @@ To stop the `tidb-test` cluster, run the following command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cluster stop tidb-test
+tiup cluster stop tidb-test
 ```
 
 The expected output is as follows. `Stopped cluster tidb-test successfully` indicates the cluster is successfully stopped.
