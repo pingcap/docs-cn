@@ -256,7 +256,7 @@ tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root
 ```
 
 - 参数 `<cluster-name>` 表示设置集群名称
-- 参数 <tidb-version> 表示设置集群版本，可以通过 tiup list tidb --refresh 命令来选择当前支持部署的 TiDB 版本。
+- 参数 `<tidb-version>` 表示设置集群版本，可以通过 tiup list tidb --refresh 命令来选择当前支持部署的 TiDB 版本。
 
 按照引导，输入”y” 及 root 密码，来完成部署
 
