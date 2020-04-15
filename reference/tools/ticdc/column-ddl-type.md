@@ -38,7 +38,7 @@ Column 和 DDL 的类型码是由 [TiCDC Open Protocol](/reference/tools/ticdc/o
 | Blob        | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
 | Var String  | 253  | {"t":253,"v":"测试"} | value 编码为 UTF-8 |
 | String      | 254  | {"t":254,"v":"测试"} | value 编码为 UTF-8 |
-| Geometry    | 255  | - | 尚不支持 |
+| Geometry    | 255  |  | 尚不支持 |
 
 ## DDL Type Code
 
