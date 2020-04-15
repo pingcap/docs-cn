@@ -6,7 +6,7 @@ category: how-to
 
 # Deploy a TiDB Cluster Using TiUP
 
-[TiUP](https://github.com/pingcap-incubator/tiup-cluster) is a TiDB operation and maintenance tool written in Golang. TiUP cluster is a cluster management component provided by TiUP. By using TiUP cluster, you can easily perform daily database operations, including deploying, starting, stopping, destroying, scaling, and upgrading a TiDB cluster; managing TiDB cluster parameters; deploying TiDB Binlog; deploying TiFlash; etc.
+[TiUP](https://github.com/pingcap-incubator/tiup) is a cluster operation and maintenance tool introduced in TiDB 4.0. TiUP provides [TiUP cluster](https://github.com/pingcap-incubator/tiup-cluster), a cluster management component written in Golang. By using TiUP cluster, you can easily perform daily database operations, including deploying, starting, stopping, destroying, scaling, and upgrading a TiDB cluster; managing TiDB cluster parameters; deploying TiDB Binlog; deploying TiFlash; etc.
 
 This document introduces how to use TiUP to deploy a TiDB cluster. The steps are as follows:
 
@@ -304,17 +304,24 @@ The following sections provide a cluster configuration template for each of the 
 
 | Instance | Count | Physical Machine Configuration | IP | Other Configuration |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 3 | 16 Vcore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port; <br> Global directory configuration |
-| TiDB |3 | 16 Vcore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port; <br>  Global directory configuration |
-| PD | 3 |4 Vcore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port; <br> Global directory configuration |
+| TiKV | 3 | 16 Vcore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration; <br> Global directory configuration |
+| TiDB |3 | 16 Vcore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration; <br>  Global directory configuration |
+| PD | 3 |4 Vcore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration; <br> Global directory configuration |
+| TiFlash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | Default port configuration; <br> Global directory configuration |
 
 #### Step 4: Edit the configuration file template topology.yaml
 
 > **Note:**
 >
-> You do not need to manually create the `tidb` user, because the TiUP cluster component will automatically create the `tidb` user on the target machines.
+> You do not need to manually create the `tidb` user, because the TiUP cluster component will automatically create the `tidb` user on the target machines. You can customize the user or keep it the same as the user of the Control Machine.
+
+> **Note:**
+>
+> - If you need to [deploy TiFlash](/reference/tiflash/deploy.md), set `replication.enable-placement-rules` to `true` in the `topology.yaml` configuration file to enable PD’s [Placement Rules](/how-to/configure/placement-rules.md) feature.
+>
+> - Currently, the instance-level configuration `"-host"` under `tiflash_servers` only supports IP, not domain name.
 > 
-> You can customize the user or keep it the same as the user of the Control Machine.
+> - For the detailed parameter configuration of TiFlash, refer to [TiFlash Parameter Configuration](#tiflash-parameter).
 
 {{< copyable "shell-regular" >}}
 
@@ -349,6 +356,7 @@ server_configs:
     schedule.leader-schedule-limit: 4
     schedule.region-schedule-limit: 2048
     schedule.replica-schedule-limit: 64
+    replication.enable-placement-rules: true
     
 
 pd_servers:
@@ -399,6 +407,25 @@ tikv_servers:
     #      host: host1
   - host: 10.0.1.2
   - host: 10.0.1.3
+tiflash_servers:
+  - host: 10.0.1.10
+    # ssh_port: 22
+    # tcp_port: 9000
+    # http_port: 8123
+    # flash_service_port: 3930
+    # flash_proxy_port: 20170
+    # flash_proxy_status_port: 20292
+    # metrics_port: 8234
+    # deploy_dir: deploy/tiflash-9000
+    # data_dir: deploy/tiflash-9000/data
+    # log_dir: deploy/tiflash-9000/log
+    # numa_node: "0,1"
+    # # Config is used to overwrite the `server_configs.tiflash` values
+    #  config:
+    #    logger:
+    #      level: "info"
+    #  learner_config:
+    #    log-level: "info"
 monitoring_servers:
   - host: 10.0.1.4
 grafana_servers:
@@ -411,7 +438,7 @@ alertmanager_servers:
 
 #### Deployment requirements
 
-The physical machines on which TiDB and TiKV components are deployed have a 2-way processor with 16 vcores per way, and the memory also meets the standard.
+The physical machines on which TiDB and TiKV components are deployed have a 2-way processor with 16 Vcores per way, and the memory also meets the standard.
 
 In order to improve the resource utilization, you can deploy multiple instances on a single machine, that is, you can bind the cores through numa to isolate CPU resources used by TiDB and TiKV instances.
 
@@ -481,12 +508,21 @@ You need to fill in the result in the configuration file (as described in the St
 | TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. Distinguish between instance-level port and status_port; <br> 2. Configure `readpool` and `storage` global parameters and the `raftstore` parameter; <br> 3. Configure instance-level host-dimension labels; <br> 4. Configure numa to bind cores|
 | TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | Configure numa to bind cores |
 | PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | Configure `location_lables` parameter |
+| TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | Default port; <br> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data` |
 
 #### Step 4: Edit the configuration file template topology.yaml
 
 > **Note:**
 >
-> When you configure the file template, you might need to modify the necessary parameters, IP, port and directory.
+> You do not need to manually create the `tidb` user, because the TiUP cluster component will automatically create the `tidb` user on the target machines. You can customize the user or keep it the same as the user of the Control Machine.
+
+> **Note:**
+>
+> - If you need to [deploy TiFlash](/reference/tiflash/deploy.md), set `replication.enable-placement-rules` to `true` in the `topology.yaml` configuration file to enable PD’s [Placement Rules](/how-to/configure/placement-rules.md) feature.
+>
+> - Currently, the instance-level configuration `"-host"` under `tiflash_servers` only supports IP, not domain name.
+> 
+> - For the detailed parameter configuration of TiFlash, refer to [TiFlash Parameter Configuration](#tiflash-parameter).
 
 {{< copyable "shell-regular" >}}
 
@@ -520,6 +556,7 @@ server_configs:
     raftstore.capactiy: "<fill in the calculated result from the calculation formula provided before>"
   pd:
     replication.location-labels: ["host"]
+    replication.enable-placement-rules: true
 
 pd_servers:
   - host: 10.0.1.4
@@ -625,14 +662,15 @@ tikv_servers:
     config:
       server.labels:
         host: tikv3
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data
 monitoring_servers:
- - host: 10.0.1.7
-
+  - host: 10.0.1.7
 grafana_servers:
- - host: 10.0.1.7
-
+  - host: 10.0.1.7
 alertmanager_servers:
- - host: 10.0.1.7
+  - host: 10.0.1.7
 ```
 
 ### Scenario 3: Use TiDB Binlog deployment template
@@ -659,17 +697,26 @@ Key parameters of TiDB:
 
 | Instance | Physical Machine Configuration | IP | Other Configuration |
 | :-- | :-- | :-- | :-- |
-| TiKV | 16 vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration |
-|TiDB | 16 vcore 32 GB * 3 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration;<br>`enable_binlog` enabled; <br> `ignore-error` enabled |
-| PD | 4 vcore 8 GB * 3| 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration |
-| Pump|8 vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | Default port configuration; <br> The GC time is set to 7 days |
-| Drainer | 8 vcore 16GB | 10.0.1.9 | Default port configuration; <br>Set default initialization commitTS |
+| TiKV | 16 Vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration |
+|TiDB | 16 Vcore 32 GB * 3 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration;<br>`enable_binlog` enabled; <br> `ignore-error` enabled |
+| PD | 4 Vcore 8 GB * 3| 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | Default port configuration; <br> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data,/data2/tiflash/data` for multi-disk deployment |
+| Pump|8 Vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | Default port configuration; <br> The GC time is set to 7 days |
+| Drainer | 8 Vcore 16GB | 10.0.1.9 | Default port configuration; <br>Set default initialization commitTS |
 
 #### Step 4: Edit the configuration file template topology.yaml
 
 > **Note:**
 >
-> When you configure the file template, if you do not need to customize the port or directory, just modify the IP.
+> You do not need to manually create the `tidb` user, because the TiUP cluster component will automatically create the `tidb` user on the target machines. You can customize the user or keep it the same as the user of the Control Machine.
+
+> **Note:**
+>
+> - If you need to [deploy TiFlash](/reference/tiflash/deploy.md), set `replication.enable-placement-rules` to `true` in the `topology.yaml` configuration file to enable PD’s [Placement Rules](/how-to/configure/placement-rules.md) feature.
+>
+> - Currently, the instance-level configuration `"-host"` under `tiflash_servers` only supports IP, not domain name.
+> 
+> - For the detailed parameter configuration of TiFlash, refer to [TiFlash Parameter Configuration](#tiflash-parameter).
 
 {{< copyable "shell-regular" >}}
 
@@ -696,6 +743,8 @@ server_configs:
   tidb:
     binlog.enable: true
     binlog.ignore-error: true
+  pd:
+    replication.enable-placement-rules: true
 
 pd_servers:
   - host: 10.0.1.4
@@ -750,12 +799,15 @@ drainer_servers:
       syncer.to.user: "root"
       syncer.to.password: ""
       syncer.to.port: 4000
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data 
 monitoring_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 grafana_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 alertmanager_servers:
- - host: 10.0.1.4
+  - host: 10.0.1.4
 ```
 
 ## 3. Execute the deployment command
@@ -1295,6 +1347,21 @@ This section describes common problems and solutions when you deploy TiDB cluste
 | Instance | `deploy_dir` | inherit global configuration | deployment directory |
 | Instance | `data_dir` | inherit global configuration | data directory |
 | Instance | `log_dir` | inherit global configuration | log directory |
+
+### TiFlash parameter
+
+| Parameter | Default configuration | Description |
+| :-- | :-- | :-- |
+| ssh_port | 22 | SSH default port |
+| tcp_port | 9000 | TiFlash TCP service port |
+| http_port | 8123 | TiFlash HTTP service port |
+| flash_service_port | 3930 | TiFlash RAFT service port and Coprocessor service port |
+| flash_proxy_port | 20170 | TiFlash Proxy service port |
+| flash_proxy_status_port | 20292 | Prometheus pulling TiFlash Proxy metrics port |
+| metrics_port | 8234 | Prometheus pulling TiFlash metrics port |
+| deploy_dir | /home/tidb/deploy/tiflash-9000 | TiFlash deployment directory |
+| data_dir | /home/tidb/deploy/tiflash-9000/data | TiFlash data storage directory |
+| log_dir | /home/tidb/deploy/tiflash-9000/log | TiFlash log storage directory |
 
 ### Parameter module configuration
 
