@@ -1,6 +1,6 @@
 ---
 title: CLUSTER_LOG
-summary: 了解 TiDB 集群配置表 `CLUSTER_LOG`。
+summary: 了解 TiDB 集群日志表 `CLUSTER_LOG`。
 category: reference
 ---
 
@@ -32,7 +32,7 @@ desc cluster_log;
 字段解释：
 
 * `TIME`：日志打印时间。
-* `TYPE`：节点的类型，可取值为 `tidb`，`pd` 或 `tikv`。
+* `TYPE`：节点的类型，可取值为 `tidb`，`pd` 和 `tikv`。
 * `INSTANCE`：节点的服务地址。
 * `LEVEL`：日志级别。
 * `MESSAGE`：日志内容。
@@ -68,6 +68,6 @@ select * from `CLUSTER_LOG` where message like '%ddl%' and message like '%job%58
 
 上面查询结果表示：
 
-1. 用户将 DDL JOB ID 为 58 的请求发给 `172.16.5.40:4008` TiDB 节点。
-2. `172.16.5.40:4009` TiDB 节点处理这个 DDL 请求，说明此时 `172.16.5.40:4009` 节点是 DDL owner。
-3. DDL JOB ID 为 58 的请求处理完成。
++ 用户将 DDL JOB ID 为 `58` 的请求发给 `172.16.5.40:4008` TiDB 节点。
++ `172.16.5.40:4009` TiDB 节点处理这个 DDL 请求，说明此时 `172.16.5.40:4009` 节点是 DDL owner。
++ DDL JOB ID 为 58 的请求处理完成。
