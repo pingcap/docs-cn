@@ -1,5 +1,5 @@
 ---
-title: 使用 TiUP cluster 快速构建 TiDB 集群
+title: 如何快速体验 TiDB 集群
 category: how-to
 ---
 
