@@ -295,7 +295,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     
     - 访问 TiDB 的 Dashboard
     
-      访问集群 TiDB-Dashboard 监控页面：http://{pd-ip}:2379/dashboard 默认用户名 root 密码为空。
+      通过 <http://{pd-ip}:2379/dashboard> 访问集群 TiDB Dashboard 监控页面，默认用户名 root，密码为空。
     
     - 通过 `tiup cluster list` 命令来确认当前已经部署的集群列表
     
