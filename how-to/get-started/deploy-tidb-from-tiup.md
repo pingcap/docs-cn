@@ -3,6 +3,8 @@ title: 如何快速体验 TiDB 集群
 category: how-to
 ---
 
+# 使用 TiUP cluster 快速构建 TiDB 集群
+
 本文档介绍如何快速地体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
 
 - 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
