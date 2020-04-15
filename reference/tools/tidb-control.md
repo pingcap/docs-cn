@@ -39,6 +39,9 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 - `--port` TiDB 服务端口
 - `--pdhost` PD 服务地址
 - `--pdport` PD 服务端口
+- `--ca` 连接使用的 TLS CA 文件路径
+- `--ssl-key` 连接使用的 TLS 密钥文件路径
+- `--ssl-cert` 连接使用的 TLS 证书文件路径
 
 其中 `--pdhost` 和 `--pdport` 主要是用于 `etcd` 子命令，例如：`tidb-ctl etcd ddlinfo`。如不添加地址和端口将使用默认值，TiDB/PD 服务默认的地址是 127.0.0.1 (服务地址只能使用 IP 地址)，TiDB 服务端口默认的端口是 10080，PD 服务端口默认的端口是 2379 **连接选项是全局选项，适用于以下所有命令。**
 
