@@ -356,7 +356,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 6. 数字或者中间变量的 coercibility 值为 5
 7. `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为 6
 
-在推断 collation 时，TiDB 优先使用 coercibility 值低的表达式的 collation（与 MySQL 一致）。如果 coercibility 值相同，则按以下优先级决定 collation：
+在推断 collation 时，TiDB 优先使用 coercibility 值较低的表达式的 collation（与 MySQL 一致）。如果 coercibility 值相同，则按以下优先级确定 collation：
 
 binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
 
