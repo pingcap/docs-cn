@@ -36,7 +36,7 @@ SHOW CHARACTER SET;
 >
 > - 每种字符集都对应一个默认的 Collation，并且仅有一个。
 
-对于字符集来说，至少会有一个 Collation（排序规则）与之对应。利用以下的语句可以查看字符集对应的排序规则（以下是[新的 Collation 框架](#新框架下的-Collation-支持)）下的结果：
+对于字符集来说，至少会有一个 Collation（排序规则）与之对应。利用以下的语句可以查看字符集对应的排序规则（以下是[新的 Collation 框架](#新框架下的-collation-支持)）下的结果：
 
 {{< copyable "sql" >}}
 
