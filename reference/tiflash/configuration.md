@@ -72,6 +72,6 @@ http_port = tiflash http 服务端口
 
 ```
 [server]
-    engine-addr = tiflash raft 服务监听地址
+    engine-addr = tiflash coprocessor 服务监听地址
     status-addr = Prometheus 拉取 proxy metrics 信息的 ip + 端口
 ```
