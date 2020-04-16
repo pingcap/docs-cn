@@ -202,3 +202,5 @@ Therefore, TiDB intentionally imposes some limits on transaction sizes:
 For each transaction, it is recommended to keep the number of SQL statements between 100 to 500 to achieve an optimal performance.
 
 TiDB sets a default limit of 100 MB for the total size of key-value pairs, which can be modified by the `txn-total-size-limit` configuration item in the configuration file. The maximum value of `txn-total-size-limit` is 10 GB. The actual size limit of one transaction also depends on the memory capacity. When executing large transactions, the memory usage of the TiDB process is approximately 6 times larger than the total size of transactions.
+
+In versions earlier than 4.0, TiDB limits the total number of key-value pairs for a single transaction to no more than 300,000. This limitation is removed since v4.0.
