@@ -360,7 +360,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 
 binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
 
-如果有两个不同的 collation 的子表达式且其 coercibility 值都为0时，TiDB无法推断 collation 并报错。
+如果两个子表达式的 collation 不相同，而且表达式的 coercibility 值都为 `0` 时，TiDB无法推断 collation 并报错。
 
 ## collate 子句
 
