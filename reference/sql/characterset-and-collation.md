@@ -287,7 +287,7 @@ Collation 的语法支持和语义支持受到配置项 [`new_collation_enable`]
 
 在 4.0 版本之前，TiDB 只提供了旧的 collation 框架，能够在语法上支持的绝大部分 MySQL collation，但语义上所有的 collation 都当成 binary collation。
 
-4.0 版本中，TiDB 增加了新的 collation 框架用于在语义上支持不同的 collation，保证字符串比较时严格遵循对应的 collation，详情请见下。
+4.0 版本中，TiDB 增加了新的 collation 框架用于在语义上支持不同的 collation，保证字符串比较时严格遵循对应的 collation，详情请见下文。
 
 ### 旧框架下的 Collation 支持
 
