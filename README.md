@@ -7,8 +7,8 @@
 目前，TiDB 的文档维护以下几个版本，分别放置在相应的 branch：
 
 - `master`：最新开发版
-- `release-4.0`：4.0 Beta 版
-- `release-3.1`：3.1 RC 版
+- `release-4.0`：4.0 RC 版
+- `release-3.1`：3.1 稳定版
 - `release-3.0`：3.0 稳定版
 - `release-2.1`：2.1 稳定版
 
