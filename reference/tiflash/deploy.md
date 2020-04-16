@@ -54,19 +54,24 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 目前对于全新部署 TiFlash 场景，推荐通过下载离线安装包来部署 TiFlash。步骤如下：
 
-1. 下载对应版本的离线包，并解压：
-
-    - 如果你使用的是 TiDB 3.1 rc 版，执行以下命令：
+1. 下载 TiDB 3.1 版本对应 tag 的 tidb-ansible
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        curl -o tidb-ansible-tiflash-3.1-rc.tar.gz https://download.pingcap.org/tidb-ansible-tiflash-3.1-rc.tar.gz &&
-        tar zxvf tidb-ansible-tiflash-3.1-rc.tar.gz
+        git clone -b $tag https://github.com/pingcap/tidb-ansible.git
         ```
 
-2. 编辑 `inventory.ini` 配置文件，除了[部署 TiDB 集群的配置](/how-to/deploy/orchestrated/ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)，需要额外在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip (目前只支持 ip，不支持域名)。
-    
+2. 下载 binary
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        ansible-playbook local_prepare.yml
+        ```
+
+3. 编辑 `inventory.ini` 配置文件，除了[部署 TiDB 集群的配置](/how-to/deploy/orchestrated/ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)，需要额外在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip (目前只支持 ip，不支持域名)。
+
     如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
 
     {{< copyable "" >}}
@@ -76,9 +81,9 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
     192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
     ```
 
-3. 按照 TiDB Ansible 部署流程完成集群部署的[剩余步骤](/how-to/deploy/orchestrated/ansible.md#第-10-步调整-inventoryini-文件中的变量)。
+4. 按照 TiDB Ansible 部署流程完成集群部署的[剩余步骤](/how-to/deploy/orchestrated/ansible.md#第-10-步调整-inventoryini-文件中的变量)。
 
-4. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
+5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
 
 ### 在原有 TiDB 集群上新增 TiFlash 组件
 
