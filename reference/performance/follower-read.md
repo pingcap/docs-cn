@@ -10,11 +10,11 @@ When a read hotspot appears in a Region, the Region leader can become a read bot
 
 ## Overview
 
-The Follower Read feature refers to using any follower replica of a Region to serve a read request under the premise of strongly consistent reads. This feature improves the throughput of the TiDB cluster and reduces the load of the leader. It contains a series of load balancing mechanisms that offload TiKV read loads from the leader replica to the follower replica in a Region. TiKV's Follower Read implementation guarantees the linearizability of data reading; combined with Snapshot Isolation in TiDB, this implementation provides users with strongly consistent reads.
+The Follower Read feature refers to using any follower replica of a Region to serve a read request under the premise of strongly consistent reads. This feature improves the throughput of the TiDB cluster and reduces the load of the leader. It contains a series of load balancing mechanisms that offload TiKV read loads from the leader replica to the follower replica in a Region. TiKV's Follower Read implementation guarantees the consistency of data reading; combined with Snapshot Isolation in TiDB, this implementation provides users with strongly consistent reads.
 
 > **Note:**
 >
-> To achieve strongly consistent reads, the follower node currently requires additional `ReadIndex` overhead. Therefore, the main benefits of Follower Read are to isolate read and write requests of the cluster and to increase overall read throughput. Regarding the latency of a single request, it requires one more interaction overhead with `ReadIndex` of the Raft protocol than the traditional leader reads.
+> To achieve strongly consistent reads, the follower node currently needs to request the current execution progress from the leader node (that is `ReadIndex`), which causes an additional network request overhead. Therefore, the main benefits of Follower Read are to isolate read requests from write requests in the cluster and to increase overall read throughput.
 
 ## Usage
 
@@ -47,6 +47,6 @@ When the follower node processes a read request, it first uses `ReadIndex` of th
 
 ### Follower replica selection strategy
 
-Because the Follower Read feature guarantees linearizability without affecting Snapshot Isolation, TiDB adopts the round-robin strategy to select the follower replica. Currently, for the coprocessor requests, the granularity of the Follower Read load balancing policy is at the connection level. For a TiDB client connected to a specific Region, the selected follower is fixed, and is switched only when it fails or the scheduling policy is adjusted.
+Because the Follower Read feature does not affect TiDB's Snapshot Isolation transaction isolation level, TiDB adopts the round-robin strategy to select the follower replica. Currently, for the coprocessor requests, the granularity of the Follower Read load balancing policy is at the connection level. For a TiDB client connected to a specific Region, the selected follower is fixed, and is switched only when it fails or the scheduling policy is adjusted.
 
 However, for the non-coprocessor requests, such as a point query, the granularity of the Follower Read load balancing policy is at the transaction level. For a TiDB transaction on a specific Region, the selected follower is fixed, and is switched only when it fails or the scheduling policy is adjusted.
