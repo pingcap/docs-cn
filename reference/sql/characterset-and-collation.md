@@ -291,7 +291,7 @@ Collation 的语法支持和语义支持受到配置项 [`new_collation_enable`]
 
 ### 旧框架下的 Collation 支持
 
-在 4.0 版本之前，TiDB 中可以指定大部分 MySQl 中的 Collation，并把它们按照默认 Collation 处理，即以编码字节序为字符定序。同时，并未像 MySQL 一样，在比较前按照 Collation 的 `PADDING` 属性将字符补齐空格。因此，会造成以下的行为区别：
+在 4.0 版本之前，TiDB 中可以指定大部分 MySQl 中的 Collation，并把这些 Collation 按照默认 Collation 处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 在比较字符前按照 Collation 的 `PADDING` 属性将字符补齐空格，因此会造成以下的行为区别：
 
 {{< copyable "sql" >}}
 
