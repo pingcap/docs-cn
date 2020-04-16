@@ -62,7 +62,7 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
     git clone -b $tag https://github.com/pingcap/tidb-ansible.git
     ```
 
-2. 下载 binary
+2. 运行如下 `local prepare` 命令下载 TiDB、TiKV、PD 等组件的二进制文件：
 
     {{< copyable "shell-regular" >}}
 
