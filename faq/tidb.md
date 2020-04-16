@@ -113,7 +113,11 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不支持配置文件配置设置数据库的 sql\_mode，而只能使用 set 命令去设置，具体方法为：`set @@global.sql_mode = 'STRICT_TRANS_TABLES';`。
 
-#### 1.1.23 TiDB 支持哪些认证协议，过程是怎样的？
+#### 1.1.23 我们的安全漏洞扫描工具对 MySQL version 有要求，TiDB 是否支持修改 server 版本号呢？
+
+TiDB 在 v3.0.8 后支持修改 server 版本号，可以通过配置文件中的 [`server-version`](/reference/configuration/tidb-server/configuration-file.md#server-version) 配置项进行修改。在使用 TiDB Ansible 部署集群时，同样可以通过 `conf/tidb.yml` 配置文件中的 `server-version` 来设置合适的版本号，以避免出现安全漏洞扫描不通过的问题。
+
+#### 1.1.24 TiDB 支持哪些认证协议，过程是怎样的？
 
 这一层跟 MySQL 一样，走的 SASL 认证协议，用于用户登录认证，对密码的处理流程。
 
@@ -204,9 +208,10 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2 安装部署
 
-#### 2.2.1 Ansible 部署方式（强烈推荐）
+#### 2.2.1 推荐部署方式
 
-详细可参考[使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
+- [使用 TiUP 部署](/how-to/deploy/orchestrated/tiup.md)：如果用于生产环境，推荐使用 TiUP 部署 TiDB 集群。
+- [使用 TiDB Ansible 部署](/how-to/deploy/orchestrated/ansible.md)：如果用于生产环境，也可以使用 TiDB Ansible 部署 TiDB 集群。
 
 ##### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
@@ -305,7 +310,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 ### 2.3 升级
 
-#### 2.3.1 如何使用 Ansible 滚动升级？
+#### 2.3.1 如何使用 TiDB Ansible 滚动升级？
 
 滚动升级 TiKV 节点( 只升级单独服务 )
 
@@ -321,7 +326,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### 2.3.3 Binary 如何升级？
 
-Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 Ansible 部署。
+Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 TiDB Ansible 部署。
 
 #### 2.3.4 一般升级选择升级 TiKV 还是所有组件都升级？
 
@@ -374,7 +379,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.7 如何规范停止 TiDB？
 
-如果是用 Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
+如果是用 TiDB Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 TiDB Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
 
 #### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 
@@ -655,7 +660,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.15 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/dev/benchmark/sysbench-v4.md)。
+一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](/benchmark/sysbench-v4.md)。
 
 #### 3.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
@@ -697,7 +702,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
-- 大家可以直接参考 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/dev/benchmark/sysbench-v4.md)。
+- 大家可以直接参考 [TiDB Sysbench 性能测试报告](/benchmark/sysbench-v4.md)。
 
 #### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
