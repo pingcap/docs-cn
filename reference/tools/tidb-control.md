@@ -9,17 +9,11 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 ## 源码编译
 
-<<<<<<< HEAD
-- 编译环境要求：[Go](https://golang.org/) Version 1.7 以上。
-- 编译步骤：在 [TiDB Controller 项目](https://github.com/pingcap/tidb-ctl)根目录，使用 `make` 命令进行编译，生成 tidb-ctl。
-- 编译文档：帮助文档在 doc 文件夹下，如丢失或需要更新，可通过 `make doc` 命令生成帮助文档。
-=======
 编译环境要求：[Go](https://golang.org/) Version 1.7 以上
 
 编译步骤：在 [TiDB Control 项目](https://github.com/pingcap/tidb-ctl)根目录，使用 `make` 命令进行编译，生成 tidb-ctl。
 
 编译文档：帮助文档在 doc 文件夹下，如丢失或需要更新，可通过 `make doc` 命令生成帮助文档。
->>>>>>> aa0f0d5... reference: rename TiDB Controller to TiDB Control (#2747)
 
 ## 使用介绍
 
@@ -43,11 +37,7 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 如不添加地址和端口将使用默认值，默认的地址是 127.0.0.1 (服务地址只能使用 IP 地址)，默认的端口是 10080。**连接选项是顶级选项，适用于以下所有命令。**
 
-<<<<<<< HEAD
-目前，TiDB Controller 可以获取四类信息，分别通过以下四个命令获得：
-=======
 目前，TiDB Control 包含以下子命令，各个子命令的具体用法可以使用 `tidb-ctl SUBCOMMAND --help` 获取使用帮助：
->>>>>>> aa0f0d5... reference: rename TiDB Controller to TiDB Control (#2747)
 
 * `tidb-ctl mvcc` - MVCC 信息
 * `tidb-ctl region` - Region 信息
