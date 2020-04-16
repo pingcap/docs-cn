@@ -349,7 +349,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 如果一个表达式涉及多个不同 collation 的子表达式时，需要对计算时用的 collation 进行推断，规则如下：
 
 1. 显式 `COLLATE` 子句的 coercibility 值为0
-2. 两个无法兼容 collation 的字符串的 concat 结果的 coercibility 值为 1（目前所实现的 collation 都是互相兼容的）
+2. 如果两个字符串的 collation 不兼容，这两个字符串 concat 结果的 coercibility 值为 1。目前所实现的 collation 都是互相兼容的。
 3. 列的 collation 的 coercibility 值为 2
 4. 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 3
 5. 常量的 coercibility 值为 4
