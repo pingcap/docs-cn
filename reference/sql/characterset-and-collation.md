@@ -364,7 +364,7 @@ binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_
 
 ## collate 子句
 
-TiDB 支持使用 collate 子句来指定一个表达式的 collation， 并在推断 collation 时具有最高的优先级。例子如下：
+TiDB 支持使用 collate 子句来指定一个表达式的 collation，并在推断 collation 时具有最高的优先级。例子如下：
 
 {{< copyable "sql" >}}
 
