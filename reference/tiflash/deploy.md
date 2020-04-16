@@ -56,19 +56,19 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 1. 下载 TiDB 3.1 版本对应 tag 的 tidb-ansible
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```shell
-        git clone -b $tag https://github.com/pingcap/tidb-ansible.git
-        ```
+    ```shell
+    git clone -b $tag https://github.com/pingcap/tidb-ansible.git
+    ```
 
 2. 下载 binary
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```shell
-        ansible-playbook local_prepare.yml
-        ```
+    ```shell
+    ansible-playbook local_prepare.yml
+    ```
 
 3. 编辑 `inventory.ini` 配置文件，除了[部署 TiDB 集群的配置](/how-to/deploy/orchestrated/ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)，需要额外在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip (目前只支持 ip，不支持域名)。
 
