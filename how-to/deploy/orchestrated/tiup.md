@@ -780,7 +780,7 @@ TiDB 关键参数：
 | TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
 |TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
 | PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
-| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行多盘部署 |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
 | Pump| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
 | Drainer | 1 | 8 VCore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
