@@ -283,7 +283,7 @@ SET collation_connection = @@collation_database;
 
 ## 排序规则支持
 
-Collation 的语法支持和语义支持受到配置项 [new_collation_enable](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。 这里我们区分语法支持和语义支持，语法支持是指 TiDB 能够解析和设置 collation；而语义支持是指 TiDB 能够在字符串比较时正确地使用 collation。
+Collation 的语法支持和语义支持受到配置项 [`new_collation_enable`](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区分。语法支持是指 TiDB 能够解析和设置 collation；而语义支持是指 TiDB 能够在比较字符串时正确地使用 collation。
 
 在 4.0 版本之前，TiDB 只提供了旧的 collation 框架，能够在语法上支持的绝大部分 MySQL collation，但语义上所有的 collation 都当成 binary collation。
 
