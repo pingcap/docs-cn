@@ -7,13 +7,13 @@ category: reference
 
 TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 
-## `EXPLAIN` 简介
+## EXPLAIN 简介
 
 `EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
 - `EXPLAIN` 可以和 `SELECT`，`DELETE` 等语句一起使用；
 - 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。
-- 关于 `EXPLAIN` 每列的简述，可以参见 [`EXPLAIN` 输出格式](/reference/sql/statements/explain.md)。
+- 关于 `EXPLAIN` 每列的简述，可以参见 [EXPLAIN 输出格式](/reference/sql/statements/explain.md)。
 
 通过观察 `EXPLAIN` 的结果，你可以知道如何给数据表添加索引使得执行计划使用索引从而加速 SQL 语句的执行速度；你也可以使用 `EXPLAIN` 来检查优化器是否选择了最优的顺序来 JOIN 数据表。
 
@@ -23,9 +23,9 @@ TiDB 的执行计划是一个树形结构，树中每个节点即是算子。考
 
 但是如果从一行数据先后被哪些算子处理的角度来看，一条数据在算子上的执行是有顺序的。这个顺序可以通过下面这个规则简单总结出来：
 
-**`Build`总是先于 `Probe` 执行，并且 `Build` 总是出现在 `Probe` 前面。**
+**Build 总是先于 Probe 执行，并且 Build 总是出现在 Probe 前面。**
 
-这个原则的前半句是说：如果一个算子有多个孩子节点，孩子节点 ID 后面有 `Build` 关键字的算子总是先于有 `Probe` 关键字的算子执行。后半句是说：TiDB 在展现执行计划的时候，`Build` 端总是第一个出现，接着才是 `Probe` 端。
+这个原则的前半句是说：如果一个算子有多个孩子节点，孩子节点 ID 后面有 Build 关键字的算子总是先于有 Probe 关键字的算子执行。后半句是说：TiDB 在展现执行计划的时候，Build 端总是第一个出现，接着才是 Probe 端。
 
 一些例子：
 
@@ -41,7 +41,7 @@ TiDB(root@127.0.0.1:test) > explain select * from t use index(idx_a) where a = 1
 3 rows in set (0.00 sec)
 ```
 
-这里 `IndexLookUp_7` 算子有两个孩子节点：`IndexRangeScan_5(Build)` 和 `TableRowIDScan_6(Probe)`。可以看到，`IndexRangeScan_5(Build)` 是第一个出现的，并且基于上面这条规则，要得到一条数据，需要先执行 `IndexRangeScan_5(Build)` 得到一个 `RowID` 以后，再由 `TableRowIDScan_6(Probe)` 根据前者读上来的 `RowID` 去获取完整的一行数据。
+这里 `IndexLookUp_7` 算子有两个孩子节点：`IndexRangeScan_5(Build)` 和 `TableRowIDScan_6(Probe)`。可以看到，`IndexRangeScan_5(Build)` 是第一个出现的，并且基于上面这条规则，要得到一条数据，需要先执行 `IndexRangeScan_5(Build)` 得到一个 RowID 以后，再由 `TableRowIDScan_6(Probe)` 根据前者读上来的 RowID 去获取完整的一行数据。
 
 这种规则隐含的另一个信息是：在同一层级的节点中，出现在最前面的算子可能是最先被执行的，而出现在最末尾的算子可能是最后被执行的。比如下面这个例子：
 
@@ -73,9 +73,9 @@ SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV
 
 在 WHERE/HAVING/ON 条件中，TiDB 优化器会分析主键或索引键的查询返回。如数字、日期类型的比较符，如大于、小于、等于以及大于等于、小于等于，字符类型的 LIKE 符号等。
 
-值得注意的是，TiDB 目前只支持比较符一端是列，另一端是常量，或可以计算成某一常量的情况，类似 `year(birth_day) < 1992` 的查询条件是不能利用索引的。还要注意应尽可能使用同一类型进行比较，以避免引入额外的 cast 操作而导致不能利用索引，如 `user_id = 123456`，如果 `user_id` 是字符串，需要将 `123456` 也写成字符串常量的形式。
+值得注意的是，TiDB 目前只支持比较符一端是列，另一端是常量，或可以计算成某一常量的情况，类似 `year(birth_day) < 1992` 的查询条件是不能利用索引的。还要注意应尽可能使用同一类型进行比较，以避免引入额外的 cast 操作而导致不能利用索引，如 `user_id = 123456`，如果 user_id 是字符串，需要将 123456 也写成字符串常量的形式。
 
-针对同一列的范围查询条件使用 `AND` 和 `OR` 组合后，等于对范围求交集或者并集。对于多维组合索引，可以写多个列的条件。例如对组合索引 `(a, b, c)`，当 a 为等值查询时，可以继续求 b 的查询范围，当 b 也为等值查询时，可以继续求 c 的查询范围；反之，如果 a 为非等值查询，则只能求 a 的范围。
+针对同一列的范围查询条件使用 AND 和 OR 组合后，等于对范围求交集或者并集。对于多维组合索引，可以写多个列的条件。例如对组合索引 (a, b, c)，当 a 为等值查询时，可以继续求 b 的查询范围，当 b 也为等值查询时，可以继续求 c 的查询范围；反之，如果 a 为非等值查询，则只能求 a 的范围。
 
 ## 算子信息
 
@@ -91,16 +91,16 @@ SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV
 
 - **TableFullScan**：这是大家所熟知的 “全表扫” 操作
 - **TableRangeScan**：带有范围的表数据扫描操作
-- **TableRowIDScan**：根据上层传递下来的 `RowID` 精确地扫描表数据
+- **TableRowIDScan**：根据上层传递下来的 RowID 精确地扫描表数据
 - **IndexFullScan**：另一种“全表扫”，只不过这里扫的是索引数据，不是表数据
 - **IndexRangeScan**：带有范围的索引数据扫描操作
 
 TiDB 会汇聚 TiKV/TiFlash 上扫描的数据或者计算结果，这种“数据汇聚”算子目前有如下几类：
 
-- **TableReader**：将 TiKV 上底层扫表算子 `TableFullScan` 或 `TableRangeScan` 得到的数据进行汇总。
-- **IndexReader**：将 TiKV 上底层扫表算子 `IndexFullScan` 或 `IndexRangeScan` 得到的数据进行汇总。
-- **IndexLookUp**：先汇总 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确地读取 TiKV 上的数据。Build 端是 `IndexFullScan` 或 `IndexRangeScan` 类型的算子，Probe 端是 `TableRowIDScan` 类型的算子。
-- **IndexMerge**：和 IndexLookupReader 类似，可以看做是它的扩展，可以同时读取多个索引的数据，有多个 Build 端，一个 Probe 端。执行过程也很类似，先汇总所有 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确地读取 TiKV 上的数据。Build 端是 `IndexFullScan` 或 `IndexRangeScan` 类型的算子，Probe 端是 `TableRowIDScan` 类型的算子。
+- **TableReader**：将 TiKV 上底层扫表算子 TableFullScan 或 TableRangeScan 得到的数据进行汇总。
+- **IndexReader**：将 TiKV 上底层扫表算子 IndexFullScan 或 IndexRangeScan 得到的数据进行汇总。
+- **IndexLookUp**：先汇总 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确地读取 TiKV 上的数据。Build 端是 IndexFullScan 或 IndexRangeScan 类型的算子，Probe 端是 TableRowIDScan 类型的算子。
+- **IndexMerge**：和 IndexLookupReader 类似，可以看做是它的扩展，可以同时读取多个索引的数据，有多个 Build 端，一个 Probe 端。执行过程也很类似，先汇总所有 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确地读取 TiKV 上的数据。Build 端是 IndexFullScan 或 IndexRangeScan 类型的算子，Probe 端是 TableRowIDScan 类型的算子。
 
 #### 表数据和索引数据
 
@@ -122,7 +122,7 @@ mysql> explain select * from t use index(idx_a);
 3 rows in set (0.00 sec)
 ```
 
-这里 `IndexLookUp_6` 算子有两个孩子节点：`IndexFullScan_4(Build)` 和 `TableRowIDScan_5(Probe)`。可以看到，`IndexFullScan_4(Build)` 执行索引全表扫，扫描索引 `a` 的所有数据，因为是全范围扫，这个操作将获得表中所有数据的 RowID，之后再由 `TableRowIDScan_5(Probe)` 根据这些 RowID 去扫描所有的表数据。可以预见的是，这个执行计划不如直接使用 TableReader 进行全表扫，因为同样都是全表扫，这里的 IndexLookUp 多扫了一次索引，带来了额外的开销。
+这里 `IndexLookUp_6` 算子有两个孩子节点：`IndexFullScan_4(Build)` 和 `TableRowIDScan_5(Probe)`。可以看到，`IndexFullScan_4(Build)` 执行索引全表扫，扫描索引 a 的所有数据，因为是全范围扫，这个操作将获得表中所有数据的 RowID，之后再由 `TableRowIDScan_5(Probe)` 根据这些 RowID 去扫描所有的表数据。可以预见的是，这个执行计划不如直接使用 TableReader 进行全表扫，因为同样都是全表扫，这里的 IndexLookUp 多扫了一次索引，带来了额外的开销。
 
 #### TableReader 示例
 
@@ -138,14 +138,9 @@ mysql> explain select * from t where a > 1 or b >100;
 3 rows in set (0.00 sec)
 ```
 
-在上面例子中 `TableReader_7` 算子的孩子节点是 `Selection_6`。以这个孩子节点为根的子树被当做了一个 `Cop Task` 下发给了相应的 TiKV，这个 `Cop Task` 使用 `TableFullScan_5` 算子执行扫表操作。`Selection` 表示 SQL 语句中的选择条件，可能来自 SQL 语句中的 `WHERE`/`HAVING`/`ON` 子句。由 `TableFullScan_5` 可以看到，这个执行计划使用了一个全表扫描的操作，集群的负载将因此而上升，可能会影响到集群中正在运行的其他查询。这时候如果能够建立合适的索引，并且使用 `IndexMerge` 算子，将能够极大的提升查询的性能，降低集群的负载。
+在上面例子中 `TableReader_7` 算子的孩子节点是 `Selection_6`。以这个孩子节点为根的子树被当做了一个 `Cop Task` 下发给了相应的 TiKV，这个 Cop Task 使用 `TableFullScan_5` 算子执行扫表操作。`Selection` 表示 SQL 语句中的选择条件，可能来自 SQL 语句中的 `WHERE`/`HAVING`/`ON` 子句。由 `TableFullScan_5` 可以看到，这个执行计划使用了一个全表扫描的操作，集群的负载将因此而上升，可能会影响到集群中正在运行的其他查询。这时候如果能够建立合适的索引，并且使用 IndexMerge 算子，将能够极大的提升查询的性能，降低集群的负载。
 
 #### IndexMerge 示例
-
-> **注意：**
->
-> 目前 TiDB 的 `Index Merge` 特性在 4.0 RC 版本中默认关闭，同时 4.0 中的 `Index Merge` 目前支持的场景仅限于析取范式（`or` 连接的表达式），对合取范式（`and` 连接的表达式）将在之后的版本中支持。
-> 开启 `Index Merge` 特性，可通过在客户端中设置 session 或者 global 变量完成：`set @@tidb_enable_index_merge = 1;`
 
 ```
 mysql> set @@tidb_enable_index_merge = 1;
@@ -161,7 +156,12 @@ mysql> explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 4 rows in set (0.00 sec)
 ```
 
-`IndexMerge` 使得数据库在扫描表数据时可以使用多个索引。这里 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 `RowID`，再由 `TableRowIDScan_15` 算子根据这些 `RowID` 精确地读取所有满足条件的数据。
+IndexMerge 使得数据库在扫描表数据时可以使用多个索引。这里 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 RowID，再由 `TableRowIDScan_15` 算子根据这些 RowID 精确地读取所有满足条件的数据。
+
+> **注意：**
+>
+> 目前 TiDB 的 IndexMerge 特性在 4.0 RC 版本中默认关闭，同时 4.0 中的 IndexMerge 目前支持的场景仅限于析取范式（or 连接的表达式），对合取范式（and 连接的表达式）将在之后的版本中支持。
+> 开启 IndexMerge 特性，可通过在客户端中设置 session 或者 global 变量完成：`set @@tidb_enable_index_merge = 1;`
 
 ### 如何阅读聚合的执行计划
 
@@ -172,7 +172,7 @@ TiDB 的聚合算法包括如下两类：
 
 #### Hash Aggregate 示例
 
-TiDB 上的 `Hash Aggregation` 算子采用多线程并发优化，执行速度快，但会消耗较多内存。下面是一个 `Hash Aggregate` 的例子：
+TiDB 上的 Hash Aggregation 算子采用多线程并发优化，执行速度快，但会消耗较多内存。下面是一个 Hash Aggregate 的例子：
 
 ```
 TiDB(root@127.0.0.1:test) > explain select /*+ HASH_AGG() */ count(*) from t;
@@ -187,11 +187,11 @@ TiDB(root@127.0.0.1:test) > explain select /*+ HASH_AGG() */ count(*) from t;
 4 rows in set (0.00 sec)
 ```
 
-一般而言 TiDB 的 `Hash Aggregate` 会分成两个阶段执行，一个在 TiKV/TiFlash 的 Coprocessor 上，在算子读取数据时计算聚合函数的中间结果。另一个在 TiDB 层，汇总所有 Coprocessor Task 的中间结果后，得到最终结果。
+一般而言 TiDB 的 Hash Aggregate 会分成两个阶段执行，一个在 TiKV/TiFlash 的 Coprocessor 上，在扫表算子读取数据时计算聚合函数的中间结果。另一个在 TiDB 层，汇总所有 Coprocessor Task 的中间结果后，得到最终结果。
 
 #### Stream Aggregate 示例
 
-TiDB `Stream Aggregation` 算子通常会比 `Hash Aggregate` 占用更少的内存，有些场景中也会比 `Hash Aggregate` 执行得更快。当数据量太大或者系统内存不足时，可以试试 `Stream Aggregate` 算子。一个 `Stream Aggregate` 的例子如下：
+TiDB Stream Aggregation 算子通常会比 Hash Aggregate 占用更少的内存，有些场景中也会比 Hash Aggregate 执行得更快。当数据量太大或者系统内存不足时，可以试试 Stream Aggregate 算子。一个 Stream Aggregate 的例子如下：
 
 ```
 TiDB(root@127.0.0.1:test) > explain select /*+ STREAM_AGG() */ count(*) from t;
@@ -206,7 +206,7 @@ TiDB(root@127.0.0.1:test) > explain select /*+ STREAM_AGG() */ count(*) from t;
 4 rows in set (0.00 sec)
 ```
 
-和 `Hash Aggregate` 类似，一般而言 TiDB 的 `Stream Aggregate` 也会分成两个阶段执行，一个在 TiKV/TiFlash 的 `Coprocessor` 上，计算聚合函数的中间结果。另一个在 TiDB 层，汇总所有 `Coprocessor` Task 的中间结果后，得到最终结果。
+和 Hash Aggregate 类似，一般而言 TiDB 的 Stream Aggregate 也会分成两个阶段执行，一个在 TiKV/TiFlash 的 Coprocessor 上，在扫表算子读取数据时计算聚合函数的中间结果。另一个在 TiDB 层，汇总所有 Coprocessor Task 的中间结果后，得到最终结果。
 
 ### 如何阅读 Join 的执行计划
 
@@ -222,7 +222,7 @@ TiDB 的 Join 算法包括如下几类：
 
 #### Hash Join 示例
 
-TiDB 的 `Hash Join` 算子采用了多线程优化，执行速度较快，但会消耗较多内存。一个 `Hash Join` 的例子如下：
+TiDB 的 Hash Join 算子采用了多线程优化，执行速度较快，但会消耗较多内存。一个 Hash Join 的例子如下：
 
 ```
 mysql> EXPLAIN SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
@@ -238,11 +238,11 @@ mysql> EXPLAIN SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id
 5 rows in set (0.01 sec)
 ```
 
-`Hash Join` 会将 Build 端的数据缓存在内存中，根据这些数据构造出一个 `Hash Table`，然后读取 Probe 端的数据，用 Probe 端的数据去探测 Build 端构造出来的 Hash Table，将符合条件的数据返回给用户。
+Hash Join 会将 Build 端的数据缓存在内存中，根据这些数据构造出一个 Hash Table，然后读取 Probe 端的数据，用 Probe 端的数据去探测 Build 端构造出来的 Hash Table，将符合条件的数据返回给用户。
 
 #### Merge Join 示例
 
-TiDB 的 `Merge Join` 算子相比于 Hash Join 通常会占用更少的内存，但可能执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。下面是一个 Merge Join 的例子：
+TiDB 的 Merge Join 算子相比于 Hash Join 通常会占用更少的内存，但可能执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。下面是一个 Merge Join 的例子：
 
 ```
 mysql> EXPLAIN SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
@@ -258,7 +258,7 @@ mysql> EXPLAIN SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.i
 5 rows in set (0.01 sec)
 ```
 
-`Merge Join` 算子在执行时，会从 Build 端把一个 Join Group 的数据全部读取到内存中，接着再去读 Probe 端的数据，用 Probe 端的每行数据去和 Build 端的一个完整 Join Group 比较，依次查看是否匹配（除了满足等值条件以外，还有其他非等值条件，这里的 “匹配” 主要是指查看是否满足非等值条件）。Join Group 指的是所有 Join Key 上值相同的数据。
+Merge Join 算子在执行时，会从 Build 端把一个 Join Group 的数据全部读取到内存中，接着再去读 Probe 端的数据，用 Probe 端的每行数据去和 Build 端的一个完整 Join Group 比较，依次查看是否匹配（除了满足等值条件以外，还有其他非等值条件，这里的 “匹配” 主要是指查看是否满足非等值条件）。Join Group 指的是所有 Join Key 上值相同的数据。
 
 #### Index Join 示例
 
@@ -339,9 +339,9 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 +------------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------------+
 ```
 
-在上面的例子中，coprocessor 上读取 `trips` 表上的数据 (`TableScan_18`)，寻找满足 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 条件的数据 (`Selection_19`)，然后计算满足条件的数据行数 (`StreamAgg_9`)，最后把结果返回给 TiDB。TiDB 汇总各个 coprocessor 返回的结果 (`TableReader_21`)，并进一步计算所有数据的行数 (`StreamAgg_20`)，最终把结果返回给客户端。在上面这个查询中，TiDB 根据 `trips` 表的统计信息估算出 `TableScan_18` 的输出结果行数为 19117643.00，满足条件 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 的有 `8166.73` 条，经过聚合运算后，只有 1 条结果。
+在上面的例子中，coprocessor 上读取 trips 表上的数据 (`TableScan_18`)，寻找满足 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 条件的数据 (`Selection_19`)，然后计算满足条件的数据行数 (`StreamAgg_9`)，最后把结果返回给 TiDB。TiDB 汇总各个 coprocessor 返回的结果 (`TableReader_21`)，并进一步计算所有数据的行数 (`StreamAgg_20`)，最终把结果返回给客户端。在上面这个查询中，TiDB 根据 `trips` 表的统计信息估算出 `TableScan_18` 的输出结果行数为 19117643.00，满足条件 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 的有 8166.73 条，经过聚合运算后，只有 1 条结果。
 
-上述查询中，虽然大部分计算逻辑都下推到了 TiKV 的 coprocessor 上，但是其执行效率还是不够高，可以添加适当的索引来消除 `TableScan_18` 对 `trips` 的全表扫，进一步加速查询的执行：
+上述查询中，虽然大部分计算逻辑都下推到了 TiKV 的 coprocessor 上，但是其执行效率还是不够高，可以添加适当的索引来消除 `TableScan_18` 对 trips 的全表扫，进一步加速查询的执行：
 
 {{< copyable "sql" >}}
 
@@ -367,7 +367,7 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 4 rows in set (0.00 sec)
 ```
 
-在添加完索引后的新执行计划中，使用 `IndexScan_24` 直接读取满足条件 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 的数据，可以看到，估算的要扫描的数据行数从之前的 `19117643.00` 降到了现在的 `8166.73`。在测试环境中显示，这个查询的执行时间从 50.41 秒降到了 0.01 秒！
+在添加完索引后的新执行计划中，使用 `IndexScan_24` 直接读取满足条件 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 的数据，可以看到，估算的要扫描的数据行数从之前的 19117643.00 降到了现在的 8166.73。在测试环境中显示，这个查询的执行时间从 50.41 秒降到了 0.01 秒！
 
 ## 另请参阅
 
