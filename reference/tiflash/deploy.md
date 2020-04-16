@@ -54,7 +54,7 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
 
 目前对于全新部署 TiFlash 场景，推荐通过下载离线安装包来部署 TiFlash。步骤如下：
 
-1. 下载 TiDB 3.1 版本对应 tag 的 tidb-ansible
+1. 下载 TiDB 3.1 版本对应 tag 的 TiDB Ansible：
 
     {{< copyable "shell-regular" >}}
 
