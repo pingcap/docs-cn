@@ -2,6 +2,7 @@
 title: 理解 TiDB 执行计划
 category: reference
 ---
+
 # 理解 TiDB 执行计划
 
 TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
@@ -71,9 +72,9 @@ SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV
 
 ### 表数据和索引数据
 
-TiDB 的表数据是指一张表的原始数据，存放在 TiKV 中。对于每行表数据，它的 key 是一个 64 位整数，称为 Handle ID。如果一张表存在 int 类型的主键，TiDB 会把主键的值当作表数据的 Handle ID，否则由系统自动生成 Handle ID。表数据的 value 由这一行的所有数据编码而成。在读取表数据的时候，可以按照 Handle ID 递增的顺序返回。
+TiDB 的表数据是指一张表的原始数据，存放在 TiKV 中。对于每行表数据，它的 key 是一个 64 位整数，称为 RowID。如果一张表存在 int 类型的主键，TiDB 会把主键的值当作表数据的 RowID，否则由系统自动生成 RowID。表数据的 value 由这一行的所有数据编码而成。在读取表数据的时候，可以按照 RowID 递增的顺序返回。
 
-TiDB 的索引数据和表数据一样，也存放在 TiKV 中。它的 key 是由索引列编码的有序 bytes，value 是这一行索引数据对应的 Handle ID，通过 Handle ID 可以读取这一行的非索引列。在读取索引数据的时候，TiKV 会按照索引列递增的顺序返回，如果有多个索引列，首先保证第 1 列递增，并且在第 i 列相等的情况下，保证第 i + 1 列递增。
+TiDB 的索引数据和表数据一样，也存放在 TiKV 中。它的 key 是由索引列编码的有序 bytes，value 是这一行索引数据对应的 RowID，通过 RowID 可以读取这一行的非索引列。在读取索引数据的时候，TiKV 会按照索引列递增的顺序返回，如果有多个索引列，首先保证第 1 列递增，并且在第 i 列相等的情况下，保证第 i + 1 列递增。
 
 ### 范围查询
 
@@ -97,10 +98,10 @@ TiDB 的索引数据和表数据一样，也存放在 TiKV 中。它的 key 是�
 
 TiDB 会汇聚 TiKV/TiFlash 上扫描的数据或者计算结果，这种“数据汇聚”算子目前有如下几类：
 
-- **TableReader**：汇总 TiKV 上底层扫表算子是 `TableFullScan` 或 `TableRangeScan` 的算子。
-- **IndexReader**：汇总 TiKV 上底层扫表算子是 `IndexFullScan` 或 `IndexRangeScan` 的算子。
-- **IndexLookUp**：先汇总 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确的读取 TiKV 上的数据。Build 端是 `IndexFullScan` 或 `IndexRangeScan`，Probe 端是 `TableRowIDScan`。
-- **IndexMerge**：和 IndexLookupReader 类似，可以看做是它的扩展，可以同时读取多个索引的数据，有多个 Build 端，一个 Probe 端。执行过程也很类似，先汇总所有 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确的读取 TiKV 上的数据。Build 端是 `IndexFullScan` 或 `IndexRangeScan`，Probe 端是 `TableRowIDScan`。
+- **TableReader**：将 TiKV 上底层扫表算子 `TableFullScan` 或 `TableRangeScan` 得到的数据进行汇总。
+- **IndexReader**：将 TiKV 上底层扫表算子 `IndexFullScan` 或 `IndexRangeScan` 得到的数据进行汇总。
+- **IndexLookUp**：先汇总 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确地读取 TiKV 上的数据。Build 端是 `IndexFullScan` 或 `IndexRangeScan` 类型的算子，Probe 端是 `TableRowIDScan` 类型的算子。
+- **IndexMerge**：和 IndexLookupReader 类似，可以看做是它的扩展，可以同时读取多个索引的数据，有多个 Build 端，一个 Probe 端。执行过程也很类似，先汇总所有 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确地读取 TiKV 上的数据。Build 端是 `IndexFullScan` 或 `IndexRangeScan` 类型的算子，Probe 端是 `TableRowIDScan` 类型的算子。
 
 **IndexLookUp 示例：**
 
@@ -155,7 +156,7 @@ mysql> explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 4 rows in set (0.00 sec)
 ```
 
-`IndexMerge` 使得数据库在扫描表数据时可以使用多个索引。这里 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 `RowID`，再由 `TableRowIDScan_15` 算子根据这些 `RowID` 精确的读取所有满足条件的数据。
+`IndexMerge` 使得数据库在扫描表数据时可以使用多个索引。这里 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 `RowID`，再由 `TableRowIDScan_15` 算子根据这些 `RowID` 精确地读取所有满足条件的数据。
 
 ### 如何阅读聚合的执行计划
 
@@ -229,7 +230,7 @@ mysql> explain select /*+ HASH_JOIN(t1, t2) */ * from t t1 join t2 on t1.a = t2.
 7 rows in set (0.00 sec)
 ```
 
-`Hash Join` 会将 Build 端的数据缓存在内存中，根据这些数据构造出一个 `Hash Table`，然后读取 Probe 端的数据，用 Probe 端的数据去探测（Probe）Build 端构造出来的 Hash Table，将符合条件的数据返回给用户。
+`Hash Join` 会将 Build 端的数据缓存在内存中，根据这些数据构造出一个 `Hash Table`，然后读取 Probe 端的数据，用 Probe 端的数据去探测 Build 端构造出来的 Hash Table，将符合条件的数据返回给用户。
 
 **Merge Join 示例：**
 
