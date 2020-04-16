@@ -286,7 +286,7 @@
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
-    - [TiDB Controller](/reference/tools/tidb-control.md)
+    - [TiDB Control](/reference/tools/tidb-control.md)
     - [工具下载](/reference/tools/download.md)
 + 常见问题 (FAQ)
   - [TiDB FAQ](/faq/tidb.md)
