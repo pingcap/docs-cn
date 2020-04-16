@@ -5,6 +5,8 @@ category: reference
 
 # 升级 TiFlash 节点
 
+Pre-RC 版本升级到更高的版本请联系[PingCAP 官方](mailto:info@pingcap.com)，以获得更多资讯和辅助。
+
 目前 TiFlash 暂时还不支持通过 `tiup cluster upgrade` 进行升级。 推荐使用下面的步骤进行升级：
 
 1. 参考[缩容 TiFlash 节点](/how-to/scale/with-tiup.md#4-缩容-tiflash-节点)章节，对所有的 TiFlash 节点进行缩容操作
