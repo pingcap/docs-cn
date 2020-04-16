@@ -394,6 +394,7 @@
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.0 GA](/releases/3.1.0-ga.md)
     - [3.1.0-rc](/releases/3.1.0-rc.md)
     - [3.1.0-beta.2](/releases/3.1.0-beta.2.md)
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
