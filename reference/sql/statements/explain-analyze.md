@@ -24,7 +24,7 @@ category: reference
 
 ## EXPLAIN ANALYZE 输出格式
 
-和 `EXPLAIN` 不同，`EXPLAIN ANALYZE` 会执行对应的 `SQL` 语句，记录其运行时信息，和执行计划一并返回出来，可以视为 `EXPLAIN` 语句的扩展。`EXPLAIN ANALYZE` 语句的返回结果相比 `EXPLAIN` 增加了 `actRows`, `execution info`,`memory`,`disk` 这几列信息：
+和 `EXPLAIN` 不同，`EXPLAIN ANALYZE` 会执行对应的 SQL 语句，记录其运行时信息，和执行计划一并返回出来。因此，可以将 `EXPLAIN ANALYZE` 视为 `EXPLAIN` 语句的扩展。`EXPLAIN ANALYZE` 语句的返回结果相比 `EXPLAIN`，增加了 `actRows`，`execution info`，`memory`，`disk` 这几列信息：
 
 | 属性名          | 含义 |
 |:----------------|:---------------------------------|
