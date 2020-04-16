@@ -14,7 +14,7 @@
 - [ ] v3.0 (TiDB 3.0 versions)
 - [ ] v2.1 (TiDB 2.1 versions)
 
-<!-- For contributors with write access:
+<!-- For contributors with write access in docs-cn repo:
 If you select **two or more** versions from above, to trigger the bot to cherry-pick this PR to your desired release branch(es), you **must** add corresponding labels such as "needs-cherry-pick-4.0", "needs-cherry-pick-3.1", "needs-cherry-pick-3.0", and "needs-cherry-pick-2.1" on the right side of this PR page.-->
 
 ### What is the related PR or file link(s)?
