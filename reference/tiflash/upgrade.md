@@ -9,7 +9,7 @@ category: reference
 >
 > TiFlash Pre-RC 版本升级到更高版本请联系 [PingCAP 官方](mailto:info@pingcap.com)，以获得更多资讯和帮助。
 
-升级 TiFlash 节点的步骤如下：
+升级前请保证集群处于启动状态，升级 TiFlash 节点的步骤如下：
 
 1. 备份 tidb-ansible 文件夹
 
