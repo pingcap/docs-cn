@@ -312,7 +312,7 @@
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
-    - [TiDB Controller](/reference/tools/tidb-control.md)
+    - [TiDB Control](/reference/tools/tidb-control.md)
     - [工具下载](/reference/tools/download.md)
 - [TiDB in Kubernetes](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)
 + 常见问题 (FAQ)
