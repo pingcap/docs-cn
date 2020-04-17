@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/reference/sql/character-set/']
 
 # 字符集支持
 
-名词解释，下面的阐述中会交错使用中文或者英文，请互相对照：
+下面的阐述中会交错使用中文或者英文，请互相对照：
 
 * Character Set：字符集
 * Collation：排序规则
@@ -54,7 +54,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 2 rows in set (0.00 sec)
 ```
 
-每一个字符集，都有一个默认的 Collation，例如 `utf8mb4` 的默认 Collation 就为 `utf8mb4_bin`。
+每一个字符集，都有一个默认的 Collation，例如 `utf8mb4` 的默认 Collation 为 `utf8mb4_bin`。
 
 ## 集群 Character Set 和 Collation
 
@@ -283,11 +283,11 @@ SET collation_connection = @@collation_database;
 
 ## 排序规则支持
 
-Collation 的语法支持和语义支持受到配置项 [`new_collation_enable`](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区分。语法支持是指 TiDB 能够解析和设置 collation；而语义支持是指 TiDB 能够在比较字符串时正确地使用 collation。
+Collation 的语法支持和语义支持受到配置项 [`new_collation_enable`](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置 Collation；而语义支持是指 TiDB 能够在比较字符串时正确地使用 Collation。
 
-在 4.0 版本之前，TiDB 只提供了旧的 collation 框架，能够在语法上支持的绝大部分 MySQL collation，但语义上所有的 collation 都当成 binary collation。
+在 4.0 版本之前，TiDB 只提供了旧的 Collation 框架，能够在语法上支持的绝大部分 MySQL Collation，但语义上所有的 Collation 都当成 binary Collation。
 
-4.0 版本中，TiDB 增加了新的 collation 框架用于在语义上支持不同的 collation，保证字符串比较时严格遵循对应的 collation，详情请见下文。
+4.0 版本中，TiDB 增加了新的 Collation 框架用于在语义上支持不同的 Collation，保证字符串比较时严格遵循对应的 Collation，详情请见下文。
 
 ### 旧框架下的 Collation 支持
 
@@ -296,14 +296,14 @@ Collation 的语法支持和语义支持受到配置项 [`new_collation_enable`]
 {{< copyable "sql" >}}
 
 ```sql
-tidb> create table t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci primary key);
+create table t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci primary key);
 Query OK, 0 rows affected
-tidb> insert into t values ('A');
+insert into t values ('A');
 Query OK, 1 row affected
-tidb> insert into t values ('a');
+insert into t values ('a');
 Query OK, 1 row affected # MySQL 中，由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'。
-tidb> insert into t1 values ('a ');
-Query OK, 1 row affected # MySQL 中，由于补齐空格比较，报错 Duplicate entry 'a '
+insert into t1 values ('a ');
+Query OK, 1 row affected # MySQL 中，由于补齐空格比较，报错 Duplicate entry 'a '。
 ```
 
 ### 新框架下的 Collation 支持
@@ -313,7 +313,10 @@ TiDB 4.0 新增了完整的 Collation 支持框架，从语义上支持了 Colla
 {{< copyable "sql" >}}
 
 ```sql
-tidb> select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';
+select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';
+```
+
+```
 +----------------+
 | VARIABLE_VALUE |
 +----------------+
@@ -324,53 +327,54 @@ tidb> select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_e
 
 在新的 Collation 框架下，TiDB 能够支持 `utf8_general_ci` 和 `utf8mb4_general_ci` 这两种 Collation, 其排序规则与 MySQL 兼容。
 
-使用 utf8_general_ci 或者 utf8mb4_general_ci 时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了 Collation 的 `PADDING` 行为：
+使用 `utf8_general_ci` 或者 `utf8mb4_general_ci` 时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了 Collation 的 `PADDING` 行为：
 
 {{< copyable "sql" >}}
 
 ```sql
-tidb> create table t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci primary key);
+create table t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci primary key);
 Query OK, 0 rows affected (0.00 sec)
-tidb> insert into t values ('A');
+insert into t values ('A');
 Query OK, 1 row affected (0.00 sec)
-tidb> insert into t values ('a');
+insert into t values ('a');
 ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY'
-tidb> insert into t values ('a ');
+insert into t values ('a ');
 ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 ```
 
 > **注意：**
 >
-> TiDB 中 padding 的实现方式与 MySQL 的不同。在 MySQL 中，padding 是通过补齐空格实现的。而在 TiDB 中 padding 是通过裁剪掉末尾的空格来实现的。两种做法在绝大多数情况下是一致的。唯一的例外是字符串尾部包含小于空格 (0x20) 的字符时：
->
-> 例如 `'a' < 'a\t'` 在 TiDB 中的结果为 `1`，而在 MySQL 中，其等价于 `'a ' < 'a\t'`，结果为 `0`。
+> TiDB 中 padding 的实现方式与 MySQL 的不同。在 MySQL 中，padding 是通过补齐空格实现的。而在 TiDB 中 padding 是通过裁剪掉末尾的空格来实现的。两种做法在绝大多数情况下是一致的，唯一的例外是字符串尾部包含小于空格 (0x20) 的字符时，例如 `'a' < 'a\t'` 在 TiDB 中的结果为 `1`，而在 MySQL 中，其等价于 `'a ' < 'a\t'`，结果为 `0`。
 
-## 表达式中 collation 的 coercibility 值
+## 表达式中 Collation 的 Coercibility 值
 
-如果一个表达式涉及多个不同 collation 的子表达式时，需要对计算时用的 collation 进行推断，规则如下：
+如果一个表达式涉及多个不同 Collation 的子表达式时，需要对计算时用的 Collation 进行推断，规则如下：
 
-1. 显式 `COLLATE` 子句的 coercibility 值为0
-2. 如果两个字符串的 collation 不兼容，这两个字符串 concat 结果的 coercibility 值为 1。目前所实现的 collation 都是互相兼容的。
-3. 列的 collation 的 coercibility 值为 2
-4. 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 3
-5. 常量的 coercibility 值为 4
-6. 数字或者中间变量的 coercibility 值为 5
-7. `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为 6
+1. 显式 `COLLATE` 子句的 coercibility 值为 `0`。
+2. 如果两个字符串的 Collation 不兼容，这两个字符串 `concat` 结果的 coercibility 值为 `1`。目前所实现的 Collation 都是互相兼容的。
+3. 列的 Collation 的 coercibility 值为 `2`。
+4. 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 `3`。
+5. 常量的 coercibility 值为 `4`。
+6. 数字或者中间变量的 coercibility 值为 `5`。
+7. `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为 `6`。
 
-在推断 collation 时，TiDB 优先使用 coercibility 值较低的表达式的 collation（与 MySQL 一致）。如果 coercibility 值相同，则按以下优先级确定 collation：
+在推断 Collation 时，TiDB 优先使用 coercibility 值较低的表达式的 Collation（与 MySQL 一致）。如果 coercibility 值相同，则按以下优先级确定 Collation：
 
 binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
 
-如果两个子表达式的 collation 不相同，而且表达式的 coercibility 值都为 `0` 时，TiDB无法推断 collation 并报错。
+如果两个子表达式的 Collation 不相同，而且表达式的 coercibility 值都为 `0` 时，TiDB无法推断 Collation 并报错。
 
-## collate 子句
+## `COLLATE` 子句
 
-TiDB 支持使用 collate 子句来指定一个表达式的 collation，并在推断 collation 时具有最高的优先级。例子如下：
+TiDB 支持使用 `COLLATE` 子句来指定一个表达式的 Collation，该表达式的 coercibility 值为 `0`，具有最高的优先级。示例如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> select 'a' = 'A' collate utf8mb4_general_ci;
+select 'a' = 'A' collate utf8mb4_general_ci;
+```
+
+```
 +--------------------------------------+
 | 'a' = 'A' collate utf8mb4_general_ci |
 +--------------------------------------+
