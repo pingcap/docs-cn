@@ -150,7 +150,7 @@ tiup cluster upgrade <cluster-name> v4.0.0-rc
 
 如果不希望驱逐 leader，而希望立刻升级，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
 
-如果希望稳定优先，保证所有 leader 驱逐完成再停止 tikv，可以指定 `--transfer-timeout` 为一个超大值，如 `--transfer-timeout 100000000`，单位 s。
+如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个超大值，如 `--transfer-timeout 100000000`，单位为 s。
 
 ### 4.2 升级后验证
 
