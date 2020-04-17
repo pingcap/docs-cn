@@ -146,7 +146,11 @@ tiup update cluster
 tiup cluster upgrade <cluster-name> v4.0.0-rc
 ```
 
-滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 10 分钟，超过后会直接停止实例。
+滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟，超过后会直接停止实例。
+
+如果希望不驱逐 leader ，立刻升级，可以指定 `--force`，该方式会造成性能抖动，不会造成数据损失
+
+如果希望稳定优先，保证所有 leader 驱逐完成再停止 tikv，可以指定 `--transfer-timeout` 为一个超大值，如 `--transfer-timeout 100000000`，单位 s。
 
 ### 4.2 升级后验证
 
