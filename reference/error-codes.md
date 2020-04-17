@@ -397,6 +397,12 @@ In addition, TiDB has the following unique error codes:
 
     Unsupported options are used when creating Sequence.
 
+* Error Number: 8229
+
+    The transaction exceeds the survival time.
+
+    Commit or roll back the current transaction, and start a new transaction.
+
 * Error Number: 9001
 
     The PD request timed out.

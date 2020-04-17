@@ -54,6 +54,8 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
 
 - TiDB supports the `FOR UPDATE NOWAIT` syntax and does not block and wait for locks to be released. Instead, a MySQL-compatible error code `3572` is returned.
 
+- If the `Point Get` and `Batch Point Get` operators do not read data, they still locks the given primary key or unique key, which blocks other transactions from locking or writing data to the same primary key or unique key.
+
 ## Difference with MySQL InnoDB
 
 1. When TiDB executes DML or `SELECT FOR UPDATE` statements that use range in the WHERE clause, the concurrent `INSERT` statements within the range are not blocked.
@@ -66,7 +68,7 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
 
 3. DDL may result in failure of the pessimistic transaction commit.
 
-    When DDL is executed in MySQL, it might be blocked by the transaction that is being executed. However, in this scenario, the DDL operation is not blocked in TiDB, which leads to failure of the pessimistic transaction commit: `ERROR 1105 (HY000): Information schema is changed. [try again later]`.
+    When DDL is executed in MySQL, it might be blocked by the transaction that is being executed. However, in this scenario, the DDL operation is not blocked in TiDB, which leads to failure of the pessimistic transaction commit: `ERROR 1105 (HY000): Information schema is changed. [try again later]`. TiDB executes the `TRUNCATE TABLE` statement during the transaction execution, which might result in the `table dosen't exist` error.
 
 4. After executing `START TRANSACTION WITH CONSISTENT SNAPSHOT`, MySQL can still read the tables that are created later in other transactions, while TiDB cannot.
 
@@ -75,6 +77,8 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
     None of the autocommit statements acquire the pessimistic lock. These statements do not display any difference in the user side, because the nature of pessimistic transactions is to turn the retry of the whole transaction into a single DML retry. The autocommit transactions automatically retry even when TiDB closes the retry, which has the same effect as pessimistic transactions.
 
     The autocommit `SELECT FOR UPDATE` statement does not wait for lock, either.
+
+6. The data read by `EMBEDDED SELECT` in the statement is not locked.
 
 ## FAQ
 
