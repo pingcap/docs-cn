@@ -45,6 +45,9 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 > - 该操作可以同时取消多个 DDL 作业。可以通过 `ADMIN SHOW DDL JOBS` 语句来获取 DDL 作业的 ID。
 > - 如果希望取消的作业已经完成，则取消操作将会失败。
 
+
+
+
 {{< copyable "sql" >}}
 
 ```sql
