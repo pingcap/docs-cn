@@ -5,9 +5,8 @@
 # - External links are ignored in CI because these links may go down out of our contorl.
 # - Anchors are ignored
 # - Internal links conventions
-#   - Links starting with '/media/' are relative to site root
-#   - Links starting with one or two dots are relative to the directory in which files reside
-#   - Other links are relative to the root of the version directory (e.g. v1.0, v2.0, v3.0)
+#   - Must be absolute and start from repo root
+#   - Only files in current directory and /media are allowed
 # - When a file was moved, all other references are required to be updated for now, even if alias are given
 #   - This is recommended because of less redirects and better anchors support.
 #
@@ -19,6 +18,7 @@ if ! which markdown-link-check &>/dev/null; then
     sudo npm install -g markdown-link-check@3.7.3
 fi
 
+VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)
 ERROR_REPORT=$(mktemp)
 
@@ -39,42 +39,42 @@ function in_array() {
 }
 
 # Check all directories starting with 'v\d.*' and dev.
-for d in dev $(ls -d v[0-9]*); do
-    if in_array $d "${IGNORE_DIRS[@]}"; then
-        echo "info: directory $d skipped"
-        continue
-    fi
-    echo "info: checking links under $d directory..."
-    sed \
-        -e "s#<ROOT>#$ROOT#g" \
-        -e "s#<DOC_ROOT>#$ROOT#g" \
-        scripts/markdown-link-check.tpl > $CONFIG_TMP
+echo "info: checking links under $ROOT directory..."
+sed \
+    -e "s#<ROOT>#$ROOT#g" \
+    scripts/markdown-link-check.tpl > $CONFIG_TMP
+if [ -n "$VERBOSE" ]; then
     cat $CONFIG_TMP
-    # TODO simplify this if markdown-link-check can process multiple files together
-    while read -r tasks; do
-        for task in $tasks; do
-            (
-                echo markdown-link-check --config "$CONFIG_TMP" "$task" -q
-                output=$(markdown-link-check --color --config "$CONFIG_TMP" "$task" -q)
-                if [ $? -ne 0 ]; then
-                    printf "$output" >> $ERROR_REPORT
-                fi
+fi
+# TODO simplify this if markdown-link-check can process multiple files together
+while read -r tasks; do
+    for task in $tasks; do
+        (
+            output=$(markdown-link-check --color --config "$CONFIG_TMP" "$task" -q)
+            if [ $? -ne 0 ]; then
+                printf "$output" >> $ERROR_REPORT
+            fi
+            if [ -n "$VERBOSE" ]; then
                 echo "$output"
-            ) &
-        done
-        wait
-    done <<<"$(find "$d" -type f -name '*.md' | xargs -n 10)"
-done
+            fi
+        ) &
+    done
+    wait
+done <<<"$(find "." -type f -not -path './node_modules/*' -name '*.md' | xargs -n 10)"
 
 error_files=$(cat $ERROR_REPORT | grep 'FILE: ' | wc -l)
 error_output=$(cat $ERROR_REPORT)
 echo ""
 if [ "$error_files" -gt 0 ]; then
-    echo "error: $error_files files have invalid links (or alias links which are recommended to be replaced with latest one), please fix them!"
+    echo "Link error: $error_files files have invalid links. The faulty files are listed below, please fix the wrong links!"
+    echo ""
+    echo "=== Hint on how to fix links === "
+    echo "Links in TiDB documentation follow a style like '/reference/tidb-binlog/deploy.md#服务器要求'. That is, you need to make sure that:"
+    echo "1) Links start with a slash; 2) Anchor links are written in a '/dir/xxx.md#anchor-point' style; 3) Links don't start with a version, e.g. '/v3.0/...' is wrong and '/v3.0' should be removed."
     echo ""
     echo "=== ERROR REPORT == ":
     echo "$error_output"
     exit 1
 else
-    echo "info: all files are ok!"
+    echo "Link check report: All files are ok. No deadlink found!"
 fi
