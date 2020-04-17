@@ -453,7 +453,7 @@ You need to fill in the result in the configuration file (as described in the St
 - Configuration optimization for TiKV
 
     - Make `readpool` thread pool self-adaptive. Configure the `readpool.unified.max-thread-count` parameter to make `readpool.storage` and `readpool.coprocessor` share a unified thread pool, and also enable self-adaptive switches for them. The calculation formula is as follows:
-  
+
         ```
         readpool.unified.max-thread-count = cores * 0.8 / the number of TiKV instances
         ```
@@ -465,7 +465,7 @@ You need to fill in the result in the configuration file (as described in the St
         ```
 
     - If multiple TiKV instances are deployed on the same physical disk, you need to modify the `capacity` parameter in `conf/tikv.yml`:
-   
+
         ```
         raftstore.capactiy = the total disk capacity / the number of TiKV instances
         ```
@@ -473,7 +473,7 @@ You need to fill in the result in the configuration file (as described in the St
 - Label scheduling configuration
 
     Because multiple TiKV instances are deployed on a single machine, in order to avoid losing 2 replicas of the default 3 replicas in the Region Group during machine downtime which causes cluster unavailability, you can use labels to implement intelligent scheduling of PD.
- 
+
     - TiKV configuration
 
         Configure the same host-level label information on the same physical machines:

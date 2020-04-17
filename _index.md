@@ -10,13 +10,13 @@ TiDB ("Ti" stands for Titanium) is an open-source NewSQL database that supports 
 
 TiDB can be deployed on-premise or in-cloud. The following deployment options are officially supported by PingCAP:
 
-- [Ansible Deployment](/how-to/deploy/orchestrated/ansible.md): This guide describes how to deploy TiDB using TiDB Ansible. It is strongly recommended for production deployment.
+- [TiUP Deployment](/how-to/deploy/orchestrated/tiup.md): This guide describes how to deploy a TiDB cluster using [TiUP](https://github.com/pingcap-incubator/tiup). It is strongly recommended for production deployment.
 - [Ansible Offline Deployment](/how-to/deploy/orchestrated/offline-ansible.md): If your environment has no access to the internet, you can follow this guide to see how to deploy a TiDB cluster offline using TiDB Ansible.
 - [Docker Deployment](/how-to/deploy/orchestrated/docker.md): This guide describes how to deploy TiDB using Docker.
 - [Docker Compose Deployment](/how-to/get-started/deploy-tidb-from-docker-compose.md): This guide describes how to deploy TiDB using Docker compose. You can follow this guide to quickly deploy a TiDB cluster for testing and development on your local drive.
 - Kubernetes Deployment:
 
-    You can use [TiDB Operator](https://github.com/pingcap/tidb-operator) to deploy TiDB on:
+    You can use [TiDB Operator](https://github.com/pingcap/tidb-operator) to deploy TiDB for production environments on:
 
     - [AWS EKS (Elastic Kubernetes Service)](https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-on-aws-eks/)
     - [GKE (Google Kubernetes Engine)](https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)

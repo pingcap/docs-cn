@@ -12,7 +12,7 @@ With Docker Compose, you can use a YAML file to configure application services i
 
 > **Warning:**
 >
-> This is for testing only. DO NOT USE in production! Please deploy TiDB with [our Ansible solution](/how-to/deploy/orchestrated/ansible.md) or [TiDB Operator in Kubernetes](https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-tidb-operator/) in production.
+> This is for testing only. DO NOT USE in production! It is recommended to deploy TiDB using [TiUP](/how-to/deploy/orchestrated/tiup.md) or [TiDB Operator in Kubernetes](https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-tidb-operator/) in production.
 
 ## Prerequisites
 

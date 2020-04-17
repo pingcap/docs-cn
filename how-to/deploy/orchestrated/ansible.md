@@ -27,6 +27,10 @@ You can use the TiDB Ansible configuration file to set up the cluster topology a
 - [Clean up data of the TiDB cluster](/how-to/deploy/orchestrated/ansible-operations.md#clean-up-cluster-data)
 - [Destroy the TiDB cluster](/how-to/deploy/orchestrated/ansible-operations.md#destroy-a-cluster)
 
+> **Note:**
+>
+> For production environments, it is recommended that you deploy TiDB [using TiUP](/how-to/deploy/orchestrated/tiup.md). You can also deploy TiDB using TiDB Ansible. If you only want to try TiDB out and explore the features, it is recommended to [deploy TiDB using Docker Compose](/how-to/get-started/deploy-tidb-from-docker-compose.md) on a single machine.
+
 ## Prepare
 
 Before you start, make sure you have:
