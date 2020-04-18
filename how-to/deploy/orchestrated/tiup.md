@@ -1029,7 +1029,7 @@ ID                  Role          Host          Ports                           
 tiup cluster start tidb-test
 ```
 
-预期结果输出 `Started cluster tidb-test successfully` 标志启动成功。
+预期结果输出 ```Started cluster `tidb-test` successfully``` 标志启动成功。
 
 ## 6. 验证集群运行状态
 
@@ -1192,7 +1192,7 @@ Bye
 tiup cluster stop tidb-test
 ```
 
-预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功。
+预期结果输出 ```Stopped cluster `tidb-test` successfully``` 标志关闭成功。
 
 ## 8. 销毁集群
 
@@ -1208,7 +1208,7 @@ tiup cluster stop tidb-test
 tiup cluster destroy tidb-test
 ```
 
-预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功。
+预期结果输出 ```Destroy cluster `tidb-test` successfully``` 标志销毁成功。
 
 ## 9. 常见部署问题
 
