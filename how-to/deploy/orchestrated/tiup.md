@@ -913,7 +913,7 @@ Usage:
 Flags:
   -h, --help                   help for deploy
   -i, --identity_file string   The path of the SSH identity file. If specified, public key authentication will be used.
-      --user string            The user name to login via SSH. The user must has root (or sudo) privilege. (default "root")
+      --user string            The user name to login via SSH. The user must have root (or sudo) privilege. (default "root")
   -y, --yes                    Skip confirming the topology
 
 # Usage 展示执行命令样例，<> 为必填项
@@ -1029,7 +1029,7 @@ ID                  Role          Host          Ports                           
 tiup cluster start tidb-test
 ```
 
-预期结果输出 `Started cluster tidb-test successfully` 标志启动成功。
+预期结果输出 ```Started cluster `tidb-test` successfully``` 标志启动成功。
 
 ## 6. 验证集群运行状态
 
@@ -1068,7 +1068,7 @@ ID              Role          Host      Ports                            Status 
 
 #### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
 
-- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登陆用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
+- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
@@ -1192,7 +1192,7 @@ Bye
 tiup cluster stop tidb-test
 ```
 
-预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功。
+预期结果输出 ```Stopped cluster `tidb-test` successfully``` 标志关闭成功。
 
 ## 8. 销毁集群
 
@@ -1208,7 +1208,7 @@ tiup cluster stop tidb-test
 tiup cluster destroy tidb-test
 ```
 
-预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功。
+预期结果输出 ```Destroy cluster `tidb-test` successfully``` 标志销毁成功。
 
 ## 9. 常见部署问题
 
@@ -1370,9 +1370,9 @@ v4.0.0-rc                 2020-04-09T00:10:32+08:00            linux/amd64,darwi
 nightly                   2020-04-10T08:42:23+08:00            darwin/amd64,linux/amd64
 ```
 
-### 如何查看 TiUP 支持管理的组件和版本
+### 如何查看 TiUP 支持管理的组件
 
-执行如下命令查看 TiUP 支持管理的组件和版本：
+执行如下命令查看 TiUP 支持管理的组件：
 
 ```shell
 tiup list
