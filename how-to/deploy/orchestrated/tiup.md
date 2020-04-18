@@ -1370,9 +1370,9 @@ v4.0.0-rc                 2020-04-09T00:10:32+08:00            linux/amd64,darwi
 nightly                   2020-04-10T08:42:23+08:00            darwin/amd64,linux/amd64
 ```
 
-### 如何查看 TiUP 支持管理的组件和版本
+### 如何查看 TiUP 支持管理的组件
 
-执行如下命令查看 TiUP 支持管理的组件和版本：
+执行如下命令查看 TiUP 支持管理的组件：
 
 ```shell
 tiup list
