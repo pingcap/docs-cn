@@ -91,7 +91,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## readpool.unified
 
-统一处理读请求的线程池相关的配置项。
+统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
 
 ### `min-thread-count`
 

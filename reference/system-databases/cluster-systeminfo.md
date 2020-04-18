@@ -1,6 +1,6 @@
 ---
 title: CLUSTER_SYSTEMINFO
-summary: 了解 TiDB 集群配置表 `CLUSTER_SYSTEMINFO`。
+summary: 了解 TiDB 集群负载表 `CLUSTER_SYSTEMINFO`。
 category: reference
 ---
 
@@ -30,8 +30,8 @@ desc cluster_systeminfo;
 
 字段解释：
 
-* `TYPE`：对应于节点信息表 `information_schema.cluster_info` 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 或 `tikv`。
-* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info` 中的 `INSTANCE` 字段。
+* `TYPE`：对应于节点信息表 [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md) 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 和 `tikv`。
+* `INSTANCE`：对应于节点信息表 [`information_schema.cluster_info`](/reference/system-databases/information-schema.md) 中的 `INSTANCE` 字段。
 * `SYSTEM_TYPE`：系统类型，目前可以查询的系统类型有 `system`。
 * `SYSTEM_NAME`：目前可以查询的 `SYSTEM_NAME` 为 `sysctl`。
 * `NAME`：`sysctl` 对应的配置名。

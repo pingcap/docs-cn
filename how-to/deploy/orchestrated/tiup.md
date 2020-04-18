@@ -529,33 +529,33 @@ alertmanager_servers:
 - TiKV 进行配置优化
 
     - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。
-   
+
         - 开启 `readpool.storage` 和 `readpool.coprocessor`：
           
-          ```yaml
-          readpool.storage.use-unified-pool: true
-          readpool.coprocessor.use-unified-pool: true
-          ```
-        
+            ```yaml
+            readpool.storage.use-unified-pool: true
+            readpool.coprocessor.use-unified-pool: true
+            ```
+
         - 计算公式如下：
 
-          ```
-          readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
-          ```
+            ```
+            readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
+            ```
 
     - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。
-      
+
         - `storage.block-cache` 默认开启 CF 自适应，无需修改。
 
-          ```yaml
-          storage.block-cache.shared: true
-          ```
+            ```yaml
+            storage.block-cache.shared: true
+            ```
      
         - 计算公式如下：
 
-          ```
-          storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
-          ```
+            ```
+            storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+            ```
 
     - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要在 tikv 配置中添加 capacity 参数：
 
@@ -610,6 +610,8 @@ alertmanager_servers:
 > - 配置文件模版时，注意修改必要参数、IP、端口及目录。
 >
 > - 各个组件的 deploy_dir，默认会使用 global 中的 <deploy_dir>/<components_name>-<port>。例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
+
+> **注意：**
 >
 > - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
@@ -916,7 +918,7 @@ Usage:
 Flags:
   -h, --help                   help for deploy
   -i, --identity_file string   The path of the SSH identity file. If specified, public key authentication will be used.
-      --user string            The user name to login via SSH. The user must has root (or sudo) privilege. (default "root")
+      --user string            The user name to login via SSH. The user must have root (or sudo) privilege. (default "root")
   -y, --yes                    Skip confirming the topology
 
 # Usage 展示执行命令样例，<> 为必填项
@@ -1032,7 +1034,7 @@ ID                  Role          Host          Ports                           
 tiup cluster start tidb-test
 ```
 
-预期结果输出 `Started cluster tidb-test successfully` 标志启动成功。
+预期结果输出 ```Started cluster `tidb-test` successfully``` 标志启动成功。
 
 ## 验证集群运行状态
 
@@ -1071,7 +1073,7 @@ ID              Role          Host      Ports                            Status 
 
 #### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
 
-- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登陆用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
+- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
@@ -1192,10 +1194,10 @@ Bye
 {{< copyable "shell-regular" >}}
 
 ```shell
-cluster stop tidb-test
+tiup cluster stop tidb-test
 ```
 
-预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功。
+预期结果输出 ```Stopped cluster `tidb-test` successfully``` 标志关闭成功。
 
 ## 销毁集群
 
@@ -1211,7 +1213,7 @@ cluster stop tidb-test
 tiup cluster destroy tidb-test
 ```
 
-预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功。
+预期结果输出 ```Destroy cluster `tidb-test` successfully``` 标志销毁成功。
 
 ## 常见部署问题
 
