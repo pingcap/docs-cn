@@ -293,7 +293,7 @@ category: how-to
 
 ## 第 4 步：配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
 
 需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`。下文介绍 3 个经典场景的集群配置模版：
 
@@ -930,7 +930,6 @@ Flags:
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 >
 > - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
-> 
 > - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
 ### 第 5 步：执行部署命令
@@ -948,7 +947,7 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 - 初始化配置文件为 `topology.yaml`
 - 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 
-预期日志结尾输出会有 Deployed cluster `tidb-test` successfully 关键词，表示部署成功。
+预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
 ## 验证集群部署状态
 
@@ -972,7 +971,7 @@ Flags:
 # Usage 展示执行命令，该命令来展示受管理的所有 TiDB 集群的清单。
 ```
 
-### 第 6 步：检查 TiUP 管理集群情况
+### 第 6 步：检查 TiUP 管理的集群情况
 
 {{< copyable "shell-regular" >}}
 
@@ -989,7 +988,9 @@ Name              User  Version        Path                                     
 tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
-### 第 7 步：检查集群情况
+### 第 7 步：检查部署的 TiDB 集群情况
+
+例如，执行如下命令检查 `tidb-test` 集群情况：
 
 {{< copyable "shell-regular" >}}
 
@@ -997,7 +998,7 @@ tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters
 tiup cluster display tidb-test
 ```
 
-预期输出包括实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息：
+预期输出包括 `tidb-test` 集群中实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster display tidb-test
@@ -1067,19 +1068,19 @@ ID              Role          Host      Ports                            Status 
 
 ### 第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态
 
-#### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
+#### 查看 TiDB Dashboard 检查 TiDB 集群状态
 
 - 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
-- 主页面显示 TiDB Cluster 节点信息
+- 主页面显示 TiDB 集群中节点信息
 
     ![TiDB-Dashboard-status](/media/tiup/tidb-dashboard-status.png)
 
-#### 查看 Grafana 监控 Overview 页面检查 TiDB Cluster 状态
+#### 查看 Grafana 监控 Overview 页面检查 TiDB 集群状态
 
-- 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认密码为 admin/admin
+- 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认用户名及密码为 admin/admin
 
     ![Grafana-login](/media/tiup/grafana-login.png)
 
@@ -1201,7 +1202,7 @@ tiup cluster stop tidb-test
 >
 > **生产环境慎重执行，此操作确认后清理任务无法回退。**
 
-执行如下命令删除 tidb-test 集群，包括数据、服务：
+执行如下命令删除 `tidb-test` 集群，包括数据、服务：
 
 {{< copyable "shell-regular" >}}
 
