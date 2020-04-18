@@ -303,7 +303,7 @@ category: how-to
 
 - [场景 1：单机单实例](#场景-1单机单实例)
 - [场景 2：单机多实例](#场景-2单机多实例)
-- [场景 3：TiDB Binlog 部署模版](#场景-3tidb-binlog-部署模版)
+- [场景 3：通过 TiDB Binlog 同步到下游](#场景-3通过-TiDB-Binlog-同步到下游)
 
 ### 场景 1：单机单实例
 
@@ -762,7 +762,7 @@ alertmanager_servers:
   - host: 10.0.1.7
 ```
 
-### 场景 3：TiDB Binlog 部署模版
+### 场景 3：通过 TiDB Binlog 同步到下游
 
 #### 部署需求
 
