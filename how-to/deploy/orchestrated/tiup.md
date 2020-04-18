@@ -9,17 +9,17 @@ category: how-to
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
-- [第 1 步：软硬件环境配置](#第-1-步：软硬件环境配置)
-- [第 2 步：在中控机上安装 TiUP 组件](#第-2-步：在中控机上安装-tiup-组件)
-- [第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数](#第-3-步：在-tikv-部署目标机器添加数据盘-ext4-文件系统挂载参数)
-- [第 4 步：配置文件模版 topology.yaml](#第-4-步：配置文件模版-topology.yaml)
-- [第 5 步：执行部署命令](#第-5-步：执行部署命令)
-- [第 6 步：检查 TiUP 管理集群情况](#第-6-步：检查-TiUP-管理集群情况)
-- [第 7 步：检查集群情况](#第-7-步：检查集群情况)
-- [第 8 步：执行集群启动命令](#第-8-步：执行集群启动命令)
-- [第 9 步：通过 TiUP 检查集群状态](#第-9-步：通过-TiUP-检查集群状态)
-- [第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态](#第-10-步：通过-TiDB-Dashboard--Grafana-检查集群状态)
-- [第 11 步：登录数据库执行简单 DML、DDL 操作和查询 SQL 语句](#第-11-步：登录数据库执行简单-DMLDDL-操作和查询-SQL-语句)
+- [第 1 步：软硬件环境配置](#第-1-步软硬件环境配置)
+- [第 2 步：在中控机上安装 TiUP 组件](#第-2-步在中控机上安装-tiup-组件)
+- [第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)
+- [第 4 步：配置初始化参数文件 `topology.yaml`](#第-4-步配置初始化参数文件-topologyyaml)
+- [第 5 步：执行部署命令](#第-5-步执行部署命令)
+- [第 6 步：检查 TiUP 管理集群情况](#第-6-步检查-tiup-管理集群情况)
+- [第 7 步：检查集群情况](#第-7-步检查集群情况)
+- [第 8 步：执行集群启动命令](#第-8-步执行集群启动命令)
+- [第 9 步：通过 TiUP 检查集群状态](#第-9-步通过-tiup-检查集群状态)
+- [第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态](#第-10-步通过-tidb-dashboard-和-grafana-检查集群状态)
+- [第 11 步：登录数据库执行简单 DML、DDL 操作和查询 SQL 语句](#第-11-步登录数据库执行简单-dmlddl-操作和查询-sql-语句)
 
 另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
 
@@ -29,11 +29,7 @@ category: how-to
 
 ## 环境准备
 
-环境准备环节分为如下几步：
-
-- [第 1 步：软硬件环境配置](#第-1-步软硬件环境配置)
-- [第 2 步：在中控机上安装 TiUP 组件](#第-2-步在中控机上安装-tiup-组件)
-- [第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)
+环境准备环节分为如下几步。
 
 ### 第 1 步：软硬件环境配置
 
@@ -295,7 +291,7 @@ category: how-to
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 配置初始化参数文件 `topology.yaml`
+## 第 4 步：配置初始化参数文件 `topology.yaml`
 
 集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
 
@@ -303,7 +299,7 @@ category: how-to
 
 - [场景 1：单机单实例](#场景-1单机单实例)
 - [场景 2：单机多实例](#场景-2单机多实例)
-- [场景 3：TiDB Binlog 部署模版](#场景-3tidb-binlog-部署模版)
+- [场景 3：通过 TiDB Binlog 同步到下游](#场景-3通过-tidb-binlog-同步到下游)
 
 ### 场景 1：单机单实例
 
@@ -320,7 +316,7 @@ category: how-to
 | PD | 3 | 4 VCore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
 | TiFlash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | 默认端口 <br> 全局目录配置 |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
@@ -603,7 +599,7 @@ alertmanager_servers:
 | PD | 3 | 16 VCore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
 | TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data` |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
@@ -762,11 +758,11 @@ alertmanager_servers:
   - host: 10.0.1.7
 ```
 
-### 场景 3：TiDB Binlog 部署模版
+### 场景 3：通过 TiDB Binlog 同步到下游
 
 #### 部署需求
 
-设置默认部署目录 `/tidb-deploy` 和 数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.9:4000。
+设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.9:4000。
 
 #### 关键参数
 
@@ -791,7 +787,7 @@ TiDB 关键参数：
 | Pump| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
 | Drainer | 1 | 8 VCore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
