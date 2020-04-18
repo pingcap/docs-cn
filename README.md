@@ -20,8 +20,7 @@ TiDB 的文档结构如下：
     ├── get-started
     ├── deploy
         ├── orchestrated
-            ├── ansible.md
-            ├── offline-ansible.md
+            ├── tiup.md
             ├── docker.md
     ├── configure
     ├── maintain
