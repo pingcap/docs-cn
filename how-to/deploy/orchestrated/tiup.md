@@ -487,7 +487,6 @@ tiflash_servers:
 #       syncer.to.port: 3306
 #   - host: 10.0.1.19
 
-
 monitoring_servers:
   - host: 10.0.1.4
     # ssh_port: 22
@@ -509,7 +508,6 @@ alertmanager_servers:
     # deploy_dir: "/tidb-deploy/alertmanager-9093"
     # data_dir: "/tidb-data/alertmanager-9093"
     # log_dir: "/tidb-deploy/alertmanager-9093/log"
-
 ```
 
 ### 场景 2：单机多实例
