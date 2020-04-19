@@ -620,8 +620,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# Global variables are applied to all deployments and as the default value of
-# them if the specific deployment value missing.
+# # Global variables are applied to all deployments and as the default value of
+# # them if the specific deployment value missing.
 
 global:
   user: "tidb"
@@ -804,8 +804,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# Global variables are applied to all deployments and as the default value of
-# them if the specific deployment value missing.
+# # Global variables are applied to all deployments and as the default value of
+# # them if the specific deployment value missing.
 global:
   user: "tidb"
   ssh_port: 22
