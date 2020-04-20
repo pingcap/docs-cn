@@ -13,6 +13,7 @@
     - [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/tpcc.md)
     - [线上负载与 `Add Index` 相互影响测试](/benchmark/add-index-with-load.md)
+- [TiDB 快速上手指南](/quick-start-with-tidb.md)
 + 主要概念
   - [整体架构](/architecture.md)
   + 核心特性
@@ -20,7 +21,6 @@
     - [高可用](/key-features.md#高可用)
 + 操作指南
   + 快速上手
-    - [TiDB 数据库快速上手指南](/how-to/get-started/quick-start-with-tidb.md)
     - [使用 Docker Compose 部署 TiDB](/how-to/get-started/deploy-tidb-from-docker-compose.md)
     - [SQL 基本操作](/how-to/get-started/explore-sql.md)
     - [读取历史数据](/how-to/get-started/read-historical-data.md)
