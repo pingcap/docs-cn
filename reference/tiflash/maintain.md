@@ -59,7 +59,7 @@ category: reference
 >
 > 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
 
-手动在 PD 中清除同步规则的方法如下：
+手动在 PD <span class="x x-first x-last">中清除同步规则的步骤如下</span>：
 
 1. 查询当前 PD 实例中所有与 TiFlash 相关的的数据同步规则。
 
