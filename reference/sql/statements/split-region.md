@@ -187,6 +187,8 @@ region4  [("c", "")                    , maxIndexValue               )
 
 均匀切分的语法如下：
 
+{{< copyable "sql" >}}
+
 ```sql
 SPLIT [PARTITION] TABLE t [PARTITION] [(partition_name_list...)] [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
 ```
