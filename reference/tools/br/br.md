@@ -234,7 +234,7 @@ br backup table \
 
 ### 备份数据到 Amazon S3 后端存储
 
-如果备份的存储并不是在本地，而是在 Amazon 的 S3 后端存储，那么我们需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 br 节点和 TiKV 节点访问 Amazon S3 的权限。
+如果备份的存储并不是在本地，而是在 Amazon 的 S3 后端存储，那么我们需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
 
 这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在制定的区域 `Region` 中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
 
@@ -333,7 +333,7 @@ br restore table \
 
 ### 从 Amazon S3 后端存储恢复数据
 
-如果需要恢复的数据并不是存储在本地，而是在 Amazon 的 S3 后端，那么我们需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 br 节点和 TiKV 节点访问 Amazon S3 的权限。
+如果需要恢复的数据并不是存储在本地，而是在 Amazon 的 S3 后端，那么我们需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
 
 将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
 
