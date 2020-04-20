@@ -211,7 +211,7 @@ SPLIT [PARTITION] TABLE table_name [PARTITION (partition_name_list...)] [INDEX i
 create table t (a int,b int,index idx(a)) partition by hash(a) partitions 2;
 ```
 
-此时建完表后会为每个 partition 都单独 split 一个 region，用 `SHOW TABLE REGIONS` 语法查看该表的 REGION 如下：
+此时建完表后会为每个 partition 都单独 split 一个 Region，用 `SHOW TABLE REGIONS` 语法查看该表的 Region 如下：
 
 {{< copyable "sql" >}}
 
