@@ -25,7 +25,7 @@ category: reference
 
 ```
 tmp_path = tiflash 临时文件存放路径
-path = tiflash 数据存储路径     # 如果有多个目录，以英文逗号分割，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果您的环境有多块磁盘，推荐一个路径对应一块磁盘，并且把性能最好的磁盘放在最前面，以发挥所有磁盘的全部性能。
+path = tiflash 数据存储路径     # 如果有多个目录，以英文逗号分隔
 path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
 listen_host = tiflash 服务监听 host # 一般配置成 0.0.0.0
 tcp_port = tiflash tcp 服务端口
@@ -59,8 +59,8 @@ http_port = tiflash http 服务端口
     level = log 级别（支持 trace、debug、information、warning、error）
     log = tiflash log 路径
     errorlog = tiflash error log 路径
-            size = 单个日志文件的大小
-            count = 最多保留日志文件个数
+    size = 单个日志文件的大小
+    count = 最多保留日志文件个数
 [raft]
     kvstore_path = kvstore 数据存储路径 # 默认为 "{path 的第一个目录}/kvstore"
     pd_addr = pd 服务地址 # 多个地址以逗号隔开
@@ -75,3 +75,11 @@ http_port = tiflash http 服务端口
     engine-addr = tiflash coprocessor 服务监听地址
     status-addr = Prometheus 拉取 proxy metrics 信息的 ip + 端口
 ```
+
+### 多盘部署
+
+TiFlash 支持多盘部署，主要通过[配置文件 `tiflash.toml`](#配置文件-tiflashtoml) 中的 `path` 和 `path_realtime_mode` 这两个参数控制。
+
+多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果你的环境有多块磁盘，推荐一个数据存储目录对应一块磁盘，并且把性能最好的磁盘放在最前面，以发挥所有磁盘的全部性能。
+
+`path_realtime_mode` 参数默认值为 false，表示数据会在所有的存储目录之间进行均衡。如果设为 true，且 `path` 配置了多个目录，表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。
