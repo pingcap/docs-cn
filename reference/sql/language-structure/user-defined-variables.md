@@ -22,7 +22,7 @@ or
 SET @var_name := expr
 ```
 
-For SET, you can use `=` or `:=` as the assignment operator.
+For `SET`, you can use `=` or `:=` as the assignment operator.
 
 For example:
 
