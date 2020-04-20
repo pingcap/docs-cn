@@ -13,24 +13,30 @@ Key Visualizer 是一款用于分析 TiDB 使用模式和排查流量热点的�
 
 Key Visualizer 功能作为 TiDB Dashboard 组件的功能之一，直接集成在 PD 节点上，无需单独部署。可通过以下方式在浏览器中访问某个 PD 实例上的 Dashboard：
 
+{{< copyable "" >}}
+
 ```
 http://PDAddress:PDPort/dashboard
 ```
 
-> 默认情况下 PDPort 是 2379，若部署时修改过 PD 相应参数，则需要填写对应的端口。
+> **注意：**
+>
+> 默认情况下 `PDPort` 是 `2379`。若部署时修改过 PD 相应参数，则需要填写对应的端口。
 
 ### 4.0.0-beta.1 版本中的注意事项
 
 * 存在一些显示问题和浏览器兼容问题，如文本溢出边框等。
 * 首次打开时，界面的文本显示可能存在问题，您可能会见到诸如 `keyvis.toolbar.brightness` 这样的文本。此时您只需点击页面的右上角，重新选择语言即可，如图所示：
-    * ![choose language](/media/dashboard/language.png)
-* 默认情况下，所有的 PD 节点上都能访问 Dashbord，但目前只有 PD Leader 节点能正常显示热力图。如果当前 PD 有多个节点，您可以按照如下方式获得当前 PD Leader 节点的信息：
+    
+    ![choose language](/media/dashboard/language.png)
+    
+* 默认情况下，所有的 PD 节点上都能访问 Dashbord，但目前只有 PD Leader 节点能正常显示热力图。如果当前 PD 有多个节点，您可以按照以下方式获取当前 PD Leader 节点的信息：
     * 访问任意 PD 节点的如下 API 地址：`http://PDAddress:PDPort/pd/api/v1/leader`
     * 使用返回数据中 client_urls 字段中的地址访问 PD Leader 节点的 Dashboard
 
 ## Key Visualizer 总览
 
-下图为一个 Key Visualizer 页面示例，我们可以观察到以下信息：
+下图为一个 Key Visualizer 页面示例，可以观察到以下信息：
 
 * 一个大型热力图，显示访问流量随时间的变化情况。
 * 下方和右侧为沿热力图的每个轴的平均值。
@@ -40,6 +46,8 @@ http://PDAddress:PDPort/dashboard
 
 ## 如何使用 Key Visualizer？
 
+此部分介绍如何使用 Key Visualizer。
+
 ### 概念介绍
 
 **Region**
@@ -48,13 +56,17 @@ TiDB 作为一个分布式数据库，其数据是分散在不同的节点上的
 
 ![view region](/media/dashboard/keyvisualizer/region.png)
 
-> 关于 Region 的详细介绍，请参考[《三篇文章了解 TiDB 技术内幕 - 说存储》# Region](https://pingcap.com/blog-cn/tidb-internal-1/#region)
+> **注意：**
+>
+> 关于 Region 的详细介绍，请参考[《三篇文章了解 TiDB 技术内幕 - 说存储》](https://pingcap.com/blog-cn/tidb-internal-1/#region)
 
 **热点**
 
 一个典型的热点，是大量的流量都在读写一小块数据，在 TiDB 架构中，每一行数据会对应一个 TiKV 节点进行处理，而不是所有节点都能用于处理这一行数据。因而，如果大多数业务流量都在频繁访问某一行数据，那么大多数业务流量最终都会由某一个 TiKV 节点来处理，最终这个 TiKV 机器的性能就成为了整个业务的性能上限，无法通过增加更多机器来提高处理能力。由于 TiDB 实际上是以 Region（即一批相邻数据）为单位划分处理，因此除了上述场景以外还有更多会产生热点的场景，如使用自增主键连续写入相邻数据导致的写入表数据热点、时间索引下写入相邻时间数据导致的写入表索引热点等。
 
-> 想要深入了解热点问题，请参考[《TiDB 热点问题详解》](https://asktug.com/t/tidb/358)。
+> **注意：** 
+>
+> 热点问题详情请参阅[《TiDB 热点问题详解》](https://asktug.com/t/tidb/358)。
 
 **热力图**
 
@@ -77,7 +89,9 @@ TiDB 作为一个分布式数据库，其数据是分散在不同的节点上的
 * 点击 **Reset** 按钮，将 Region 范围重置为整个数据库。
 * 点击 **时间选择框**，重新选择观察时间段。
 
-> 注意：使用后几种方法，将引起热力图的重新绘制，您可能观察到热力图与放大前有较大差异。这是一个正常的现象。它可能是由于在进行局部观察时，Region 压缩的粒度发生了变化，或者是局部范围内，「热」的基准发生了改变。
+> **注意：**
+>
+> 使用后几种方法，将引起热力图的重新绘制，您可能观察到热力图与放大前有较大差异。这是一个正常的现象。它可能是由于在进行局部观察时，Region 压缩的粒度发生了变化，或者是局部范围内，“热”的基准发生了改变。
 
 **调整亮度**
 
