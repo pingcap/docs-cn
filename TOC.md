@@ -13,6 +13,7 @@
     - [Sysbench Performance Test - v3.0 vs. v2.1](/benchmark/sysbench-v4.md)
     - [TPC-C Performance Test - v3.0 vs. v2.1](/benchmark/tpcc.md)
     - [Interaction Test on Online Workloads and `ADD INDEX` Operations](/benchmark/add-index-with-load.md)
+- [Quick Start with TiDB](/quick-start-with-tidb.md)
 + Concepts
   - [Architecture](/architecture.md)
   + Key Features
