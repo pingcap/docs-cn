@@ -24,7 +24,7 @@ category: reference
 
 推荐用一个 SSD 盘来缓冲 TiKV 同步数据的实时写入，该盘性能不低于 TiKV 所使用的硬盘，建议是性能更好的 NVMe SSD。该 SSD 盘容量建议不小于总容量的 10%，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他硬盘，可以选择部署多块 HDD 或者普通 SSD，当然更好的硬盘会带来更好的性能。
 
-TiFlash 支持多目录存储，所以无需使用 RAID。
+TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)，所以无需使用 RAID。
 
 ### TiFlash 和 TiKV 部署在相同节点模式
 
@@ -81,7 +81,13 @@ TiFlash 支持多目录存储，所以无需使用 RAID。
     192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
     ```
 
+<<<<<<< HEAD
 4. 按照 TiDB Ansible 部署流程完成集群部署的[剩余步骤](/how-to/deploy/orchestrated/ansible.md#第-10-步调整-inventoryini-文件中的变量)。
+=======
+    如果希望自定义部署目录，需要配置 data_dir 参数，不需要则不加。如果希望[多盘部署](/reference/tiflash/configuration.md#多盘部署)，则以逗号分隔各部署目录，例如：
+
+    {{< copyable "" >}}
+>>>>>>> d574839... tiflash: add more explanation for multi disk deployment (#2752)
 
 5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
 
