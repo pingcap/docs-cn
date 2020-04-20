@@ -93,7 +93,7 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
 
 3. 编辑 `inventory.ini` 配置文件，并在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip（目前只支持 ip，不支持域名）。
 
-    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
+    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望[多盘部署](/reference/tiflash/configuration.md#多盘部署)，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
 
     {{< copyable "" >}}
 
