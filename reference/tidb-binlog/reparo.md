@@ -46,11 +46,6 @@ Usage of Reparo:
 # Drainer 输出的 protobuf 格式 binlog 文件的存储路径。
 data-dir = "./data.drainer"
 
-# 使用索引文件来搜索 ts 的位置，当设置了 `start-ts` 时设置该参数，文件的路径为 {data-dir}/{index-name}。
-# index-name = "binlog.index"
-# log-file = ""
-# log-rotate = "hour"
-
 # 日志输出信息等级设置：debug, info, warn, error, fatal (默认值：info)。
 log-level = "info"
 
