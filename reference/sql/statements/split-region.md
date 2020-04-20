@@ -27,7 +27,7 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
 
 `BY value_list…` 语法将手动指定一系列的点，然后根据这些指定的点切分 Region，适用于数据不均匀分布的场景。
 
-Split 语句的返回结果的示例如下：
+`SPLIT` 语句的返回结果示例如下：
 
 ```sql
 +--------------------+----------------------+
