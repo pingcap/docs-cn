@@ -6,7 +6,7 @@ category: how-to
 
 # Quick Start Guide for the TiDB Database Platform
 
-> **Note:**
+> **Warning:**
 >
 > For production environments, **do not** deploy TiDB with the following three methods. Instead, it is recommended that you [deploy TiDB using TiUP](/how-to/deploy/orchestrated/tiup.md).
 
