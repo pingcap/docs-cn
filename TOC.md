@@ -20,6 +20,7 @@
     - [高可用](/key-features.md#高可用)
 + 操作指南
   + 快速上手
+    - [快速体验 TiDB 集群](/how-to/get-started/quick-start-with-tidb.md)
     - [使用 Docker Compose 部署 TiDB](/how-to/get-started/deploy-tidb-from-docker-compose.md)
     - [SQL 基本操作](/how-to/get-started/explore-sql.md)
     - [读取历史数据](/how-to/get-started/read-historical-data.md)
@@ -221,7 +222,7 @@
     - [约束](/reference/sql/constraints.md)
     - [生成列](/reference/sql/generated-columns.md)
     - [分区表](/reference/sql/partitioning.md)
-    - [字符集](/reference/sql/character-set.md)
+    - [字符集](/reference/sql/characterset-and-collation.md)
     - [SQL 模式](/reference/sql/sql-mode.md)
     - [SQL 诊断](/reference/system-databases/sql-diagnosis.md)
     - [视图](/reference/sql/view.md)
@@ -359,7 +360,7 @@
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
-    - [TiDB Controller](/reference/tools/tidb-control.md)
+    - [TiDB Control](/reference/tools/tidb-control.md)
     - [工具下载](/reference/tools/download.md)
 - [TiDB in Kubernetes](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)
 + 常见问题 (FAQ)
@@ -380,6 +381,7 @@
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.0 GA](/releases/3.1.0-ga.md)
     - [3.1.0-rc](/releases/3.1.0-rc.md)
     - [3.1.0-beta.2](/releases/3.1.0-beta.2.md)
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)

@@ -505,7 +505,7 @@ target-table = "order_2017"
 
 6. 检查字符集。
 
-    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/reference/sql/character-set.md)。
+    TiDB 和 MySQL 的字符集的兼容性不同，详见 [TiDB 支持的字符集](/reference/sql/characterset-and-collation.md)。
 
 7. 检查同步的表是否都有主键或者唯一索引。
 
