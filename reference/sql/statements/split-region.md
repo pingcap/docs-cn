@@ -271,7 +271,7 @@ split partition table t index idx between (1000) and (10000) regions 2;
 
 #### Split 单个分区的 Region
 
-可以单独指定要 切分的 partition，示例如下：
+可以单独指定要切分的 partition，示例如下：
 
 首先创建一个分区表：
 
