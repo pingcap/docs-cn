@@ -72,7 +72,7 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
 
 3. 编辑 `inventory.ini` 配置文件，除了[部署 TiDB 集群的配置](/how-to/deploy/orchestrated/ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)，需要额外在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip (目前只支持 ip，不支持域名)。
 
-    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
+    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望[多盘部署](/reference/tiflash/configuration.md#多盘部署)，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
 
     {{< copyable "" >}}
 
@@ -81,13 +81,7 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
     192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
     ```
 
-<<<<<<< HEAD
 4. 按照 TiDB Ansible 部署流程完成集群部署的[剩余步骤](/how-to/deploy/orchestrated/ansible.md#第-10-步调整-inventoryini-文件中的变量)。
-=======
-    如果希望自定义部署目录，需要配置 data_dir 参数，不需要则不加。如果希望[多盘部署](/reference/tiflash/configuration.md#多盘部署)，则以逗号分隔各部署目录，例如：
-
-    {{< copyable "" >}}
->>>>>>> d574839... tiflash: add more explanation for multi disk deployment (#2752)
 
 5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
 
