@@ -181,7 +181,7 @@ region3  [("b", "2019-04-17 14:26:19") , ("c", "")                   )
 region4  [("c", "")                    , maxIndexValue               )
 ```
 
-### 切分分区表的 Region
+### Split 分区表的 Region
 
 预切分分区表的 Region 在使用上和普通表一样，差别是会为每一个 partition 都做相同的切分。
 
@@ -269,7 +269,7 @@ region4  [("c", "")                    , maxIndexValue               )
     split partition table t index idx between (1000) and (10000) regions 2;
     ```
 
-#### 切分单个分区的 Region
+#### Split 单个分区的 Region
 
 可以单独指定要切分的 partition，示例如下：
 
