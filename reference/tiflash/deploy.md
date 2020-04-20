@@ -24,7 +24,7 @@ category: reference
 
 推荐用一个 SSD 盘来缓冲 TiKV 同步数据的实时写入，该盘性能不低于 TiKV 所使用的硬盘，建议是性能更好的 NVMe SSD。该 SSD 盘容量建议不小于总容量的 10%，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他硬盘，可以选择部署多块 HDD 或者普通 SSD，当然更好的硬盘会带来更好的性能。
 
-TiFlash 支持多目录存储，所以无需使用 RAID。
+TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)，所以无需使用 RAID。
 
 ### TiFlash 和 TiKV 部署在相同节点模式
 
@@ -96,7 +96,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
       - host: 172.19.0.103
     ```
 
-    如果希望自定义部署目录，需要配置 data_dir 参数，不需要则不加。如果希望多盘部署，则以逗号分隔各部署目录，例如：
+    如果希望自定义部署目录，需要配置 data_dir 参数，不需要则不加。如果希望[多盘部署](/reference/tiflash/configuration.md#多盘部署)，则以逗号分隔各部署目录，例如：
 
     {{< copyable "" >}}
 
