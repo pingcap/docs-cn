@@ -46,7 +46,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
     >
     > After the installation, TiUP displays the absolute path of the corresponding `profile` file. You need to modify the following `source` command according to the path.
 
-    {< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     source .bash_profile
