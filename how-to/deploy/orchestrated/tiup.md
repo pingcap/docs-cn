@@ -9,26 +9,27 @@ category: how-to
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
-- [1. 环境准备](#1-环境准备)
-- [2. 配置初始化参数文件 `topology.yaml`](#2-配置初始化参数文件-topologyyaml)
-- [3. 执行部署命令](#3-执行部署命令)
-- [4. 验证集群部署状态](#4-验证集群部署状态)
-- [5. 启动集群](#5-启动集群)
-- [6. 验证集群运行状态](#6-验证集群运行状态)
-
-另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
-
-- [7. 关闭集群](#7-关闭集群)
-- [8. 销毁集群](#8-销毁集群)
-- [9. 常见部署问题](#9-常见部署问题)
-
-## 1. 环境准备
-
-环境准备环节分为如下几步：
-
 - [第 1 步：软硬件环境配置](#第-1-步软硬件环境配置)
 - [第 2 步：在中控机上安装 TiUP 组件](#第-2-步在中控机上安装-tiup-组件)
 - [第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)
+- [第 4 步：配置初始化参数文件 `topology.yaml`](#第-4-步配置初始化参数文件-topologyyaml)
+- [第 5 步：执行部署命令](#第-5-步执行部署命令)
+- [第 6 步：检查 TiUP 管理的集群情况](#第-6-步检查-tiup-管理的集群情况)
+- [第 7 步：检查部署的 TiDB 集群情况](#第-7-步检查部署的-tidb-集群情况)
+- [第 8 步：执行集群启动命令](#第-8-步执行集群启动命令)
+- [第 9 步：通过 TiUP 检查集群状态](#第-9-步通过-tiup-检查集群状态)
+- [第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态](#第-10-步通过-tidb-dashboard-和-grafana-检查集群状态)
+- [第 11 步：登录数据库执行简单 DML、DDL 操作和查询 SQL 语句](#第-11-步登录数据库执行简单-dmlddl-操作和查询-sql-语句)
+
+另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
+
+- [关闭集群](#关闭集群)
+- [销毁集群](#销毁集群)
+- [常见部署问题](#常见部署问题)
+
+## 环境准备
+
+环境准备环节分为如下几步。
 
 ### 第 1 步：软硬件环境配置
 
@@ -290,15 +291,15 @@ category: how-to
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 2. 配置初始化参数文件 `topology.yaml`
+## 第 4 步：配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
 
 需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`。下文介绍 3 个经典场景的集群配置模版：
 
 - [场景 1：单机单实例](#场景-1单机单实例)
 - [场景 2：单机多实例](#场景-2单机多实例)
-- [场景 3：TiDB Binlog 部署模版](#场景-3tidb-binlog-部署模版)
+- [场景 3：通过 TiDB Binlog 同步到下游](#场景-3通过-tidb-binlog-同步到下游)
 
 ### 场景 1：单机单实例
 
@@ -315,7 +316,7 @@ category: how-to
 | PD | 3 | 4 VCore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
 | TiFlash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | 默认端口 <br> 全局目录配置 |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
@@ -486,7 +487,6 @@ tiflash_servers:
 #       syncer.to.port: 3306
 #   - host: 10.0.1.19
 
-
 monitoring_servers:
   - host: 10.0.1.4
     # ssh_port: 22
@@ -508,7 +508,6 @@ alertmanager_servers:
     # deploy_dir: "/tidb-deploy/alertmanager-9093"
     # data_dir: "/tidb-data/alertmanager-9093"
     # log_dir: "/tidb-deploy/alertmanager-9093/log"
-
 ```
 
 ### 场景 2：单机多实例
@@ -598,7 +597,7 @@ alertmanager_servers:
 | PD | 3 | 16 VCore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
 | TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data` |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
@@ -621,8 +620,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# Global variables are applied to all deployments and as the default value of
-# them if the specific deployment value missing.
+# # Global variables are applied to all deployments and as the default value of
+# # them if the specific deployment value missing.
 
 global:
   user: "tidb"
@@ -757,11 +756,11 @@ alertmanager_servers:
   - host: 10.0.1.7
 ```
 
-### 场景 3：TiDB Binlog 部署模版
+### 场景 3：通过 TiDB Binlog 同步到下游
 
 #### 部署需求
 
-设置默认部署目录 `/tidb-deploy` 和 数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.9:4000。
+设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.9:4000。
 
 #### 关键参数
 
@@ -786,7 +785,7 @@ TiDB 关键参数：
 | Pump| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
 | Drainer | 1 | 8 VCore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
@@ -805,8 +804,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# Global variables are applied to all deployments and as the default value of
-# them if the specific deployment value missing.
+# # Global variables are applied to all deployments and as the default value of
+# # them if the specific deployment value missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -890,7 +889,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-## 3. 执行部署命令
+## 执行部署命令
 
 ### 部署命令介绍
 
@@ -913,7 +912,7 @@ Usage:
 Flags:
   -h, --help                   help for deploy
   -i, --identity_file string   The path of the SSH identity file. If specified, public key authentication will be used.
-      --user string            The user name to login via SSH. The user must has root (or sudo) privilege. (default "root")
+      --user string            The user name to login via SSH. The user must have root (or sudo) privilege. (default "root")
   -y, --yes                    Skip confirming the topology
 
 # Usage 展示执行命令样例，<> 为必填项
@@ -929,7 +928,6 @@ Flags:
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 >
 > - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
-> 
 > - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
 ### 第 5 步：执行部署命令
@@ -947,9 +945,9 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 - 初始化配置文件为 `topology.yaml`
 - 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 
-预期日志结尾输出会有 Deployed cluster `tidb-test` successfully 关键词，表示部署成功。
+预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
-## 4. 验证集群部署状态
+## 验证集群部署状态
 
 ### 验证命令介绍
 
@@ -971,7 +969,7 @@ Flags:
 # Usage 展示执行命令，该命令来展示受管理的所有 TiDB 集群的清单。
 ```
 
-### 第 6 步：检查 TiUP 管理集群情况
+### 第 6 步：检查 TiUP 管理的集群情况
 
 {{< copyable "shell-regular" >}}
 
@@ -988,7 +986,9 @@ Name              User  Version        Path                                     
 tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
-### 第 7 步：检查 `tidb-test` 集群情况
+### 第 7 步：检查部署的 TiDB 集群情况
+
+例如，执行如下命令检查 `tidb-test` 集群情况：
 
 {{< copyable "shell-regular" >}}
 
@@ -996,7 +996,7 @@ tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters
 tiup cluster display tidb-test
 ```
 
-预期输出包括实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息：
+预期输出包括 `tidb-test` 集群中实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster display tidb-test
@@ -1019,9 +1019,9 @@ ID                  Role          Host          Ports                           
 10.0.1.3:20160      tikv          10.0.1.4      20160/20180                      Down      /tidb-data/tikv-20160           /tidb-deploy/tikv-2060
 ```
 
-## 5. 启动集群
+## 启动集群
 
-### 第 8 步：执行 `tidb-test` 集群启动命令
+### 第 8 步：执行集群启动命令
 
 {{< copyable "shell-regular" >}}
 
@@ -1029,11 +1029,11 @@ ID                  Role          Host          Ports                           
 tiup cluster start tidb-test
 ```
 
-预期结果输出 `Started cluster tidb-test successfully` 标志启动成功。
+预期结果输出 ```Started cluster `tidb-test` successfully``` 标志启动成功。
 
-## 6. 验证集群运行状态
+## 验证集群运行状态
 
-### 第 9 步：通过 TiUP 检查 tidb-test 集群状态
+### 第 9 步：通过 TiUP 检查集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -1066,19 +1066,19 @@ ID              Role          Host      Ports                            Status 
 
 ### 第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态
 
-#### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
+#### 查看 TiDB Dashboard 检查 TiDB 集群状态
 
-- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登陆用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
+- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
-- 主页面显示 TiDB Cluster 节点信息
+- 主页面显示 TiDB 集群中节点信息
 
     ![TiDB-Dashboard-status](/media/tiup/tidb-dashboard-status.png)
 
-#### 查看 Grafana 监控 Overview 页面检查 TiDB Cluster 状态
+#### 查看 Grafana 监控 Overview 页面检查 TiDB 集群状态
 
-- 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认密码为 admin/admin
+- 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认用户名及密码为 admin/admin
 
     ![Grafana-login](/media/tiup/grafana-login.png)
 
@@ -1182,7 +1182,7 @@ MySQL [pingcap]> exit
 Bye
 ```
 
-## 7. 关闭集群
+## 关闭集群
 
 执行如下命令关闭 `tidb-test` 集群：
 
@@ -1192,15 +1192,15 @@ Bye
 tiup cluster stop tidb-test
 ```
 
-预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功。
+预期结果输出 ```Stopped cluster `tidb-test` successfully``` 标志关闭成功。
 
-## 8. 销毁集群
+## 销毁集群
 
 > **警告：**
 >
 > **生产环境慎重执行，此操作确认后清理任务无法回退。**
 
-执行如下命令删除 tidb-test 集群，包括数据、服务：
+执行如下命令删除 `tidb-test` 集群，包括数据、服务：
 
 {{< copyable "shell-regular" >}}
 
@@ -1208,9 +1208,9 @@ tiup cluster stop tidb-test
 tiup cluster destroy tidb-test
 ```
 
-预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功。
+预期结果输出 ```Destroy cluster `tidb-test` successfully``` 标志销毁成功。
 
-## 9. 常见部署问题
+## 常见部署问题
 
 本小节介绍使用 TiUP 部署 TiDB 集群过程中的常见问题与解决方案。
 
@@ -1349,30 +1349,35 @@ Available versions for tidb (Last Modified: 2020-02-26T15:20:35+08:00):
 Version        Installed  Release:                             Platforms
 -------        ---------  --------                             ---------
 master                    2020-03-18T08:39:11.753360611+08:00  linux/amd64,darwin/amd64
-v3.0.1                    2020-04-07T17:53:00+08:00            linux/amd64,darwin/amd64
-v3.0.2                    2020-04-08T23:38:37+08:00            linux/amd64,darwin/amd64
-v3.0.3                    2020-03-27T22:41:16.279411145+08:00  linux/amd64,darwin/amd64
-v3.0.4                    2020-03-27T22:43:35.362550386+08:00  linux/amd64,darwin/amd64
-v3.0.5                    2020-03-27T22:46:01.016467032+08:00  linux/amd64,darwin/amd64
-v3.0.6                    2020-03-13T11:55:17.941641963+08:00  linux/amd64,darwin/amd64
-v3.0.7                    2020-03-13T12:02:22.538128662+08:00  linux/amd64,darwin/amd64
-v3.0.8                    2020-03-17T14:03:29.575448277+08:00  linux/amd64,darwin/amd64
-v3.0.9                    2020-03-13T13:02:15.947260351+08:00  linux/amd64,darwin/amd64
+v3.0.0                    2020-04-16T14:03:31+08:00            linux/amd64,darwin/amd64
+v3.0                      2020-04-16T16:58:06+08:00            linux/amd64,darwin/amd64
+v3.0.1                    2020-04-17T18:33:22+08:00            linux/amd64,darwin/amd64
+v3.0.2                    2020-04-16T23:55:11+08:00            linux/amd64,darwin/amd64
+v3.0.3                    2020-04-17T00:16:31+08:00            linux/amd64,darwin/amd64
+v3.0.4                    2020-04-17T00:22:46+08:00            linux/amd64,darwin/amd64
+v3.0.5                    2020-04-17T00:29:45+08:00            linux/amd64,darwin/amd64
+v3.0.6                    2020-04-17T00:39:33+08:00            linux/amd64,darwin/amd64
+v3.0.7                    2020-04-17T00:46:32+08:00            linux/amd64,darwin/amd64
+v3.0.8                    2020-04-17T00:54:19+08:00            linux/amd64,darwin/amd64
+v3.0.9                    2020-04-17T01:00:58+08:00            linux/amd64,darwin/amd64
 v3.0.10                   2020-03-13T14:11:53.774527401+08:00  linux/amd64,darwin/amd64
-v3.0.11                   2020-03-13T15:31:06.94547891+08:00   linux/amd64,darwin/amd64
-v3.0.12        YES        2020-03-20T11:36:28.18950808+08:00   linux/amd64,darwin/amd64
+v3.0.11                   2020-04-17T01:09:20+08:00            linux/amd64,darwin/amd64
+v3.0.12                   2020-04-17T01:16:04+08:00            linux/amd64,darwin/amd64
+v3.1.0-beta               2020-04-13T16:07:51+08:00            linux/amd64,darwin/amd64
+v3.1.0-beta.1             2020-04-13T15:45:38+08:00            linux/amd64,darwin/amd64
 v3.1.0-beta.2             2020-03-19T00:48:48.266468238+08:00  linux/amd64,darwin/amd64
 v3.1.0-rc                 2020-04-02T23:43:17.456327834+08:00  linux/amd64,darwin/amd64
+v3.1.0                    2020-04-17T11:07:54+08:00            linux/amd64,darwin/amd64
 v4.0.0-beta               2020-03-13T12:43:55.508190493+08:00  linux/amd64,darwin/amd64
 v4.0.0-beta.1             2020-03-13T12:30:08.913759828+08:00  linux/amd64,darwin/amd64
-v4.0.0-beta.2  YES        2020-03-18T22:52:00.830626492+08:00  linux/amd64,darwin/amd64
-v4.0.0-rc                 2020-04-09T00:10:32+08:00            linux/amd64,darwin/amd64
-nightly                   2020-04-10T08:42:23+08:00            darwin/amd64,linux/amd64
+v4.0.0-beta.2             2020-03-18T22:52:00.830626492+08:00  linux/amd64,darwin/amd64
+v4.0.0-rc      YES        2020-04-17T01:22:03+08:00            linux/amd64,darwin/amd64
+nightly                   2020-04-18T08:54:10+08:00            darwin/amd64,linux/amd64
 ```
 
-### 如何查看 TiUP 支持管理的组件和版本
+### 如何查看 TiUP 支持管理的组件
 
-执行如下命令查看 TiUP 支持管理的组件和版本：
+执行如下命令查看 TiUP 支持管理的组件：
 
 ```shell
 tiup list
@@ -1384,9 +1389,9 @@ tiup list
 Available components (Last Modified: 2020-02-27T15:20:35+08:00):
 Name               Installed                                                                                                             Platforms                 Description
 ----               ---------                                                                                                             ---------                 -----------
-tidb               YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
-tikv               YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  Distributed transactional key-value database, originally created to complement TiDB
-pd                 YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
+tidb               YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
+tikv               YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  Distributed transactional key-value database, originally created to complement TiDB
+pd                 YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
 playground         YES(v0.0.5)                                                                                                           darwin/amd64,linux/amd64  Bootstrap a local TiDB cluster
 client                                                                                                                                   darwin/amd64,linux/amd64  A simple mysql client to connect TiDB
 prometheus                                                                                                                               darwin/amd64,linux/amd64  The Prometheus monitoring system and time series database.
