@@ -81,7 +81,7 @@ show warnings
 
 > **警告：**
 >
-> 不建议用户使用除 `bigint` 以外的类型作为 `AUTO_RANDOM` 列类型。
+> 建议用户使用 `bigint` 作为 `AUTO_RANDOM` 列类型，以获得最大的可隐式分配次数。
 
 另外，要查看某张含有 `AUTO_RANDOM` 属性的表的 shard bits 数量，可以在系统表 `information_schema.tables` 中 `TIDB_ROW_ID_SHARDING_INFO` 一列看到模式为 `PK_AUTO_RANDOM_BITS=x` 的值，其中 `x` 为 shard bits 的数量。
 
