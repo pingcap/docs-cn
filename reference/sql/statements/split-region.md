@@ -236,7 +236,7 @@ show table t regions;
 split partition table t between (0) and (10000) regions 4;
 ```
 
-再用 `SHOW TABLE REGIONS` 语法查看该表的 REGION 如下，会发现该表现在一共有 10 个 region，每个 partition 分别有 5 个 region，其中 4 个 region 是表的行数据，1 个 region 是表的索引数据。
+再用 `SHOW TABLE REGIONS` 语法查看该表的 Region。如下会发现该表现在一共有 10 个 Region，每个 partition 分别有 5 个 Region，其中 4 个 Region 是表的行数据，1 个 Region 是表的索引数据。
 
 {{< copyable "sql" >}}
 
