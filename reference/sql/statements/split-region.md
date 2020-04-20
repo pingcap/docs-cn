@@ -195,6 +195,8 @@ SPLIT [PARTITION] TABLE t [PARTITION] [(partition_name_list...)] [INDEX index_na
 
 不均匀切分的语法如下：
 
+{{< copyable "sql" >}}
+
 ```sql
 SPLIT [PARTITION] TABLE table_name [PARTITION (partition_name_list...)] [INDEX index_name] BY (value_list) [, (value_list)] ...
 ```
