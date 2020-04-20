@@ -45,7 +45,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     >
     > TiUP 安装完成会提示对应的 profile 文件的绝对路径，以下 source 操作需要根据实际位置进行操作。
 
-    {< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     source .bash_profile
