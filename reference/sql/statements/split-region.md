@@ -32,6 +32,19 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
 
 `BY value_list…` specifies a series of points manually, based on which the current Region is spilt. It is suitable for scenarios with unevenly distributed data.
 
+The following example shows the result of the `SPLIT` statement:
+
+```sql
++--------------------+----------------------+
+| TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
++--------------------+----------------------+
+| 4                  | 1.0                  |
++--------------------+----------------------+
+```
+
+* `TOTAL_SPLIT_REGION`: the number of newly split Regions.
+* `SCATTER_FINISH_RATIO`: the completion rate of scattering for newly split Regions. `1.0` means that all Regions are scattered. `0.5` means that only half of the Regions are scattered and the rest are being scattered.
+
 ### Split Table Region
 
 The key of row data in each table is encoded by `table_id` and `row_id`. The format is as follows:
@@ -173,6 +186,153 @@ region3  [("b", "2019-04-17 14:26:19") , ("c", "")                   )
 region4  [("c", "")                    , maxIndexValue               )
 ```
 
+### Split Regions for partitioned tables
+
+Splitting Regions for partitioned tables is the same as splitting Regions for ordinary tables. The only difference is that the same split operation is performed for every partition.
+
++ The syntax of even split:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SPLIT [PARTITION] TABLE t [PARTITION] [(partition_name_list...)] [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
+    ```
+
++ The syntax of uneven split:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SPLIT [PARTITION] TABLE table_name [PARTITION (partition_name_list...)] [INDEX index_name] BY (value_list) [, (value_list)] ...
+    ```
+
+#### Examples
+
+1. Create a partitioned table `t`.
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t (a int,b int,index idx(a)) partition by hash(a) partitions 2;
+    ```
+
+    After creating the table `t`, a Region is split for each partition. Use the `SHOW TABLE REGIONS` syntax to view the Regions of this table:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show table t regions;
+    ```
+
+    ```sql
+    +-----------+-----------+---------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | REGION_ID | START_KEY | END_KEY | LEADER_ID | LEADER_STORE_ID | PEERS            | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
+    +-----------+-----------+---------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | 1978      | t_1400_   | t_1401_ | 1979      | 4               | 1979, 1980, 1981 | 0          | 0             | 0          | 1                    | 0                |
+    | 6         | t_1401_   |         | 17        | 4               | 17, 18, 21       | 0          | 223           | 0          | 1                    | 0                |
+    +-----------+-----------+---------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    ```
+
+2. Use the `SPLIT` syntax to split a Region for each partition. In the following example, four Regions are split in the range of `[0,10000]`.
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t between (0) and (10000) regions 4;
+    ```
+
+3. Use the `SHOW TABLE REGIONS` syntax to view the Regions of this table again. You can see that this table now has ten Regions, each partition with five Regions, four of which are the row data and one is the index data.
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show table t regions;
+    ```
+
+    ```sql
+    +-----------+---------------+---------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | REGION_ID | START_KEY     | END_KEY       | LEADER_ID | LEADER_STORE_ID | PEERS            | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
+    +-----------+---------------+---------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | 1998      | t_1400_r      | t_1400_r_2500 | 2001      | 5               | 2000, 2001, 2015 | 0          | 132           | 0          | 1                    | 0                |
+    | 2006      | t_1400_r_2500 | t_1400_r_5000 | 2016      | 1               | 2007, 2016, 2017 | 0          | 35            | 0          | 1                    | 0                |
+    | 2010      | t_1400_r_5000 | t_1400_r_7500 | 2012      | 2               | 2011, 2012, 2013 | 0          | 35            | 0          | 1                    | 0                |
+    | 1978      | t_1400_r_7500 | t_1401_       | 1979      | 4               | 1979, 1980, 1981 | 0          | 621           | 0          | 1                    | 0                |
+    | 1982      | t_1400_       | t_1400_r      | 2014      | 3               | 1983, 1984, 2014 | 0          | 35            | 0          | 1                    | 0                |
+    | 1990      | t_1401_r      | t_1401_r_2500 | 1992      | 2               | 1991, 1992, 2020 | 0          | 120           | 0          | 1                    | 0                |
+    | 1994      | t_1401_r_2500 | t_1401_r_5000 | 1997      | 5               | 1996, 1997, 2021 | 0          | 129           | 0          | 1                    | 0                |
+    | 2002      | t_1401_r_5000 | t_1401_r_7500 | 2003      | 4               | 2003, 2023, 2022 | 0          | 141           | 0          | 1                    | 0                |
+    | 6         | t_1401_r_7500 |               | 17        | 4               | 17, 18, 21       | 0          | 601           | 0          | 1                    | 0                |
+    | 1986      | t_1401_       | t_1401_r      | 1989      | 5               | 1989, 2018, 2019 | 0          | 123           | 0          | 1                    | 0                |
+    +-----------+---------------+---------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    ```
+
+4. You can also split Regions for the index of each partition. For example, you can split the `[1000,10000]` range of the `idx` index into two Regions:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t index idx between (1000) and (10000) regions 2;
+    ```
+
+#### Split Region for a single partition
+
+You can specify the partition to be split. See the following usage example:
+
+1. Create a partitioned table:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t ( a int, b int, index idx(b)) partition by range( a ) (
+        partition p1 values less than (10000),
+        partition p2 values less than (20000),
+        partition p3 values less than (MAXVALUE) );
+    ```
+
+2. Split two Regions in the `[0,10000]` range of the `p1` partition:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t partition (p1) between (0) and (10000) regions 2;
+    ```
+
+3. Split two Regions in the `[10000,20000]` range of the `p2` partition:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t partition (p2) between (10000) and (20000) regions 2;
+    ```
+
+4. Use the `SHOW TABLE REGIONS` syntax to view the Regions of this table:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show table t regions;
+    ```
+
+    ```sql
+    +-----------+----------------+----------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | REGION_ID | START_KEY      | END_KEY        | LEADER_ID | LEADER_STORE_ID | PEERS            | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
+    +-----------+----------------+----------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | 2040      | t_1406_        | t_1406_r_5000  | 2045      | 3               | 2043, 2045, 2044 | 0          | 0             | 0          | 1                    | 0                |
+    | 2032      | t_1406_r_5000  | t_1407_        | 2033      | 4               | 2033, 2034, 2035 | 0          | 0             | 0          | 1                    | 0                |
+    | 2046      | t_1407_        | t_1407_r_15000 | 2048      | 2               | 2047, 2048, 2050 | 0          | 35            | 0          | 1                    | 0                |
+    | 2036      | t_1407_r_15000 | t_1408_        | 2037      | 4               | 2037, 2038, 2039 | 0          | 0             | 0          | 1                    | 0                |
+    | 6         | t_1408_        |                | 17        | 4               | 17, 18, 21       | 0          | 214           | 0          | 1                    | 0                |
+    +-----------+----------------+----------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    ```
+
+5. Split two Regions in the `[0,20000]` range of the `idx` index of `p1` and `p2` partitions:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t partition (p1,p2) index idx between (0) and (20000) regions 2;
+    ```
+
 ## pre_split_regions
 
 To have evenly split Regions when a table is created, it is recommended you use `shard_row_id_bits` together with `pre_split_regions`. When a table is created successfully, `pre_split_regions` pre-spilts tables into the number of Regions as specified by `2^(pre_split_regions)`.
@@ -203,3 +363,7 @@ region4:   [ 3<<61     ,  +inf  )
 ## Related session variable
 
 There are two `SPLIT REGION` related session variables: `tidb_scatter_region`, `tidb_wait_split_region_finish` and `tidb_wait_split_region_timeout`. For details, see [TiDB specific system variables and syntax](/reference/configuration/tidb-server/tidb-specific-variables.md).
+
+## Reference
+
+[SHOW TABLE REGIONS](/reference/sql/statements/show-table-regions.md)
