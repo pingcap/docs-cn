@@ -288,7 +288,7 @@ create table t ( a int, b int, index idx(b)) partition by range( a ) (
 split partition table t partition (p1) between (0) and (10000) regions 2;
 ```
 
-为 `p2` 分区的 [10000,20000] 预切分 4 个 region：
+为 `p2` 分区的 [10000,20000] 预切分 2 个 region：
 
 {{< copyable "sql" >}}
 
