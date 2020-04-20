@@ -60,24 +60,16 @@ category: reference
 > 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
 
  手动在 PD 中清除同步规则的方法如下：
-1. 查询当前 PD 中所有的数据同步规则，其中 `group_id` 为 `tiflash` 的规则均是与 TiFlash 相关的数据同步规则。
+1. 查询当前 PD 中所有与 TiFlash 相关的的数据同步规则。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules
+    curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
     ```
 
     ```
     [
-      {
-        "group_id": "pd",
-        "id": "default",
-        "start_key": "",
-        "end_key": "",
-        "role": "voter",
-        "count": 1
-      },
       {
         "group_id": "tiflash",
         "id": "table-45-r",
