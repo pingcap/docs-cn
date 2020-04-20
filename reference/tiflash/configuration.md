@@ -75,6 +75,6 @@ Multiple TiFlash nodes elect a master to add or delete placement rules to PD, an
 
 ```
 [server]
-    engine-addr = The listening address of the TiFlash Raft service.
+    engine-addr = The listening address of the TiFlash coprocessor service.
     status-addr = The port and IP through which Prometheus pulls proxy metrics information.
 ```
