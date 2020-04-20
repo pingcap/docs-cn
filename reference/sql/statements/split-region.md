@@ -183,7 +183,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ### Split Partition Table Region
 
-预切分分区表的 REGION 使用上和普通表一样，差别是会为每一个 partition 都做相同的切分。
+预切分分区表的 Region 使用上和普通表一样，差别是会为每一个 partition 都做相同的切分。
 
 均匀切分的语法如下：
 
