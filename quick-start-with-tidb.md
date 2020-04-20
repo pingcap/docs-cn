@@ -1,19 +1,19 @@
 ---
-title: 如何快速体验 TiDB 集群
+title: TiDB 数据库快速上手指南
 category: how-to
 ---
 
-# 如何快速体验 TiDB 集群
+# TiDB 数据库快速上手指南
 
 > **警告：**
 >
 > 对于生产环境，不要使用本文介绍的方式进行部署，而应使用 [TiUP 部署 TiDB 集群](/how-to/deploy/orchestrated/tiup.md)。
 
-本文介绍如何快速体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
+本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
 
 - [第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第一种使用-tidb-wasm-一键体验-tidb-数据库)
 - [第二种：使用 TiUP Playground 快速部署本地测试环境](#第二种使用-tiup-playground-快速部署本地测试环境)
-- [第三种：使用 TiUP cluster 模拟单机下的准生产测试环境](#第三种使用-tiup-cluster-模拟单机下的准生产测试环境)
+- [第三种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第三种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
 
 ## 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
 
@@ -115,7 +115,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     tiup clean --all
     ```
 
-## 第三种：使用 TiUP cluster 模拟单机下的准生产测试环境
+## 第三种：使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
 - 适用场景：希望用单台 Linux 服务器，体验 TiDB 最小的完整拓扑的集群，并模拟生产的部署步骤。
 - 耗时：10 分钟
