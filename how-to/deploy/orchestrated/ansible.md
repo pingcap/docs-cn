@@ -24,7 +24,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 >
 > 对于生产环境，推荐[使用 TiUP 部署 TiDB 集群](/how-to/deploy/orchestrated/tiup.md)。从 TiDB 4.0 版本开始，不再推荐使用 TiDB Ansible 部署 TiDB 集群，但可以使用 TiUP 直接支持之前的 Ansible 集群。
 > 
-> 如果只是希望测试 TiDB 或体验 TiDB 特性，可参考[如何快速体验 TiDB 集群](/how-to/get-started/quick-start-with-tidb.md)或者[使用 Docker Compose 在单机上快速部署 TiDB 集群](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
+> 如果只是希望测试 TiDB 或体验 TiDB 特性，可参考 [TiDB 快速上手指南](/quick-start-with-tidb.md)或者[使用 Docker Compose 在单机上快速部署 TiDB 集群](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
 
 ## 准备机器
 
