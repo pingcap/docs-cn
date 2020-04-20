@@ -37,7 +37,7 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
 +--------------------+----------------------+
 ```
 
-* `TOTAL_SPLIT_REGION`：表示新增预切分的 region 数量。
+* `TOTAL_SPLIT_REGION`：表示新增预切分的 Region 数量。
 * `SCATTER_FINISH_RATIO`：表示新增预切分 Region 中，打散完成的比率。如 `1.0` 表示全部完成。`0.5`表示只有一半的 Region 已经打散完成，剩下的还在打散过程中。
 
 ### Split Table Region
