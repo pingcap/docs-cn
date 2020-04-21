@@ -6,7 +6,7 @@ category: reference
 
 # CLUSTER_INFO
 
-The `CLUSTER_INFO` cluster topology table provides the current topology information of the cluster, the version information of each node, the Git Hash corresponding to the node version, the starting time of each node, and the running time of each node.
+The `CLUSTER_INFO` cluster topology table provides the current topology information of the cluster, the version information of each instance, the Git Hash corresponding to the instance version, the starting time of each instance, and the running time of each instance.
 
 {{< copyable "sql" >}}
 
@@ -14,7 +14,7 @@ The `CLUSTER_INFO` cluster topology table provides the current topology informat
 desc cluster_info;
 ```
 
-```
+```sql
 +----------------+-------------+------+------+---------+-------+
 | Field          | Type        | Null | Key  | Default | Extra |
 +----------------+-------------+------+------+---------+-------+
@@ -31,13 +31,13 @@ desc cluster_info;
 
 Field description:
 
-* `TYPE`: The node type. The optional values are `tidb`, `pd`, and `tikv`.
+* `TYPE`: The instance type. The optional values are `tidb`, `pd`, and `tikv`.
 * `INSTANCE`: The instance address, which is a string in the format of `IP:PORT`.
 * `STATUS_ADDRESS`: The service address of HTTP API. Some commands in tikv-ctl, pd-ctl, or tidb-ctl might use this API and this address. You can also get more cluster information via this address. Refer to [TiDB HTTP API document](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md) for details.
-* `VERSION`: The semantic version number of the corresponding node. To be compatible with the MySQL version number, the TiDB version is displayed in the format of `${mysql-version}-${tidb-version}`.
-* `GIT_HASH`: The Git Commit Hash when compiling the node version, which is used to identify whether two nodes are of the absolutely consistent version.
-* `START_TIME`: The starting time of the corresponding node.
-* `UPTIME`: The uptime of the corresponding node.
+* `VERSION`: The semantic version number of the corresponding instance. To be compatible with the MySQL version number, the TiDB version is displayed in the format of `${mysql-version}-${tidb-version}`.
+* `GIT_HASH`: The Git Commit Hash when compiling the instance version, which is used to identify whether two instances are of the absolutely consistent version.
+* `START_TIME`: The starting time of the corresponding instance.
+* `UPTIME`: The uptime of the corresponding instance.
 
 {{< copyable "sql" >}}
 
@@ -45,7 +45,7 @@ Field description:
 select * from cluster_info;
 ```
 
-```
+```sql
 +------+-----------------+-----------------+----------------------------------------+------------------------------------------+---------------------------+--------------+
 | TYPE | INSTANCE        | STATUS_ADDRESS  | VERSION                                | GIT_HASH                                 | START_TIME                | UPTIME       |
 +------+-----------------+-----------------+----------------------------------------+------------------------------------------+---------------------------+--------------+

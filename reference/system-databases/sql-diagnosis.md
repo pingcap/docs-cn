@@ -32,9 +32,9 @@ The cluster information tables bring together the information of all nodes and i
 + From the cluster topology table [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md), you can get the current topology information of the cluster, the version of each node, the Git Hash corresponding to the version, the starting time of each node, and the running time of each node.
 + From the cluster configuration table [`information_schema.cluster_config`](/reference/system-databases/cluster-config.md), you can get the configuration of all nodes in the cluster. For versions earlier than 4.0, you need to access the HTTP API of each node one by one to get these configuration information.
 + On the cluster hardware table [`information_schema.cluster_hardware`](/reference/system-databases/cluster-hardware.md), you can quickly query the cluster hardware information.
-+ On the cluster load table `information_schema.cluster_load`, you can query the load information of different nodes and hardware types of the cluster.
-+ On the kernel parameter table `information_schema.cluster_systeminfo`, you can query the kernel configuration information of different nodes in the cluster. Currently, TiDB supports querying the sysctl information.
-+ On the cluster log table `information_schema.cluster_log`, you can query cluster logs. By pushing down query conditions to each node, the impact of the query on cluster performance is less than that of the `grep` command.
++ On the cluster load table [`information_schema.cluster_load`](/reference/system-databases/cluster-load.md), you can query the load information of different nodes and hardware types of the cluster.
++ On the kernel parameter table [`information_schema.cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md), you can query the kernel configuration information of different nodes in the cluster. Currently, TiDB supports querying the sysctl information.
++ On the cluster log table [`information_schema.cluster_log`](/reference/system-databases/cluster-log.md), you can query cluster logs. By pushing down query conditions to each node, the impact of the query on cluster performance is less than that of the `grep` command.
 
 On the system tables earlier than TiDB v4.0, you can only view the current node. TiDB v4.0 introduces the corresponding cluster tables and you can have a global view of the entire cluster on a single TiDB node. These tables are currently in `information_schema`, and the query method is the same as other `information_schema` system tables.
 
