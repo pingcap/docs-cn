@@ -125,7 +125,7 @@ http://PDAddress:PDPort/dashboard
 
 **均衡：期望结果**
 
-![view balance](/media/dashboard/keyvisualizer/balance.png)
+![view balance](/media/dashboard/keyvisualizer/well_dist.png)
 
 如图所示，热力图颜色均匀或者深色和亮色混合良好，说明读取或写入在时间和 Region 空间范围上都分布得比较均衡，访问压力均匀地分摊在所有的机器上。这种负载是最适合分布式数据库的。
 
