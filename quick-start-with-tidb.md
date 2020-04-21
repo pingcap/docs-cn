@@ -186,8 +186,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     
     ```yaml
     # # Global variables are applied to all deployments and used as the default value of
-    # # The deployments if a specific deployment value is missing.
-     
+    # # the deployments if a specific deployment value is missing.
     global:
      user: "tidb"
      ssh_port: 22
