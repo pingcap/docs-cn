@@ -24,8 +24,6 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 外键约束
 * 全文/空间函数与索引
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
-* `BINARY` 之外的排序规则
-* 增加/删除主键
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
@@ -64,6 +62,29 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 另外，从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
 
+> **注意：**
+>
+> 在没有指定主键的情况下 TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
+
+```sql
+mysql> create table t(id int unique key AUTO_INCREMENT);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into t values(),(),();
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select _tidb_rowid, id from t;
++-------------+------+
+| _tidb_rowid | id   |
++-------------+------+
+|           4 |    1 |
+|           5 |    2 |
+|           6 |    3 |
++-------------+------+
+3 rows in set (0.01 sec)
+```
+
 ### Performance schema
 
 Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
@@ -95,8 +116,6 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
     - 不支持修改 `DECIMAL` 类型的精度
     - 不支持更改 `UNSIGNED` 属性
-    - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
-+ Alter Database
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
@@ -209,13 +228,7 @@ TiDB 不需要导入时区表数据也能使用所有时区名称，采用系统
 
 #### 零月和零日
 
-目前 TiDB 尚不能完整支持月为 `0` 或日为 `0`（但年不为 `0`）的日期。在非严格模式下，此类日期时间能被正常插入。但对于特定类型的 SQL 语句，可能出现无法读出来的情况。
-
-#### 字符串类型行末空格的处理
-
-目前 TiDB 在进行数据插入时，对于 `VARCHAR` 类型会保留行末空格，对于 `CHAR` 类型会插入截断空格后的数据。在没有索引的情况下，TiDB 和 MySQL 行为保持一致。如果 `VARCHAR` 类型上有 `UNIQUE` 索引，MySQL 在判断是否重复的时候，和处理 `CHAR` 类型一样，先截断 `VARCHAR` 数据末行空格再作判断；TiDB 则是按照保留空格的情况处理。
-
-在做比较时，MySQL 会先截去常量和 Column 的末尾空格再作比较，而 TiDB 则是保留常量和 Column 的末尾空格来做精确比较。
+与 MySQL 一样，TiDB 默认启用了 `NO_ZERO_DATE` 和 `NO_ZERO_IN_DATE` 模式，不建议将这两个模式设为禁用。尽管将这些模式设为禁用时 TiDB 仍可正常使用，但 TiKV coprocessor 会受到影响，具体表现为，执行特定类型的语句，将日期和时间处理函数下推到 TiKV 时可能会导致语句错误。
 
 ### 类型系统的区别
 
