@@ -139,6 +139,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 随着数据的变更，有可能原先绑定的执行计划已经不是最优的了，自动演进绑定功能可以自动优化已经绑定的执行计划。
 
 #### 使用方式
+
 通过以下语句可以开启自动演进绑定功能：
 
 {{< copyable "sql" >}}
