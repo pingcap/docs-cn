@@ -35,11 +35,15 @@ tiup cluster start ${cluster-name}
 
 例如，下列命令只启动 PD 组件：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 tiup cluster start ${cluster-name} -R pd
 ```
 
 下列命令只启动 `1.2.3.4` 和 `1.2.3.5` 这两台机器上的 PD 组件：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 tiup cluster start ${cluster-name} -N 1.2.3.4:2379,1.2.3.5:2379
@@ -133,11 +137,15 @@ tiup cluster stop ${cluster-name}
 
 例如，下列命令只停止 TiDB 组件：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 tiup cluster stop ${cluster-name} -R tidb
 ```
 
 下列命令只停止 `1.2.3.4` 和 `1.2.3.5` 这两台机器上的 TiDB 组件：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 tiup cluster stop ${cluster-name} -N 1.2.3.4:4000,1.2.3.5:4000
