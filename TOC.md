@@ -57,6 +57,7 @@
       - [以 Amazon Aurora MySQL 为例](/how-to/migrate/from-mysql-aurora.md)
     - [从 CSV 迁移](/reference/tools/tidb-lightning/csv.md)
   + 运维
+    - [TiUP 常见运维操作](/how-to/maintain/tiup-operations.md)
     - [Ansible 常见运维操作](/how-to/maintain/ansible-operations.md)
     + 备份与恢复
       - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/how-to/maintain/backup-and-restore/mydumper-lightning.md)
