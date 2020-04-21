@@ -1,6 +1,6 @@
 ---
 title: METRICS_SUMMARY
-summary: 了解 TiDB 集群配置表 `METRICS_SUMMARY`。
+summary: 了解 TiDB 系统表 `METRICS_SUMMARY`。
 category: reference
 ---
 
@@ -16,7 +16,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-mysql> desc metrics_summary;
+desc metrics_summary;
 ```
 
 ```
@@ -38,7 +38,7 @@ mysql> desc metrics_summary;
 * `METRICS_NAME`：监控表名。
 * `QUANTILE`：百分位。可以通过 SQL 语句指定 `QUANTILE`，例如：
     * `select * from metrics_summary where quantile=0.99` 指定查看百分位为 0.99 的数据。
-    * `select * from metrics_summary where quantile in (0.80, 0.99, 0.99, 0.999)` 同时查看百分位为 0.80, 0.99, 0.99, 0.999 的数据。
+    * `select * from metrics_summary where quantile in (0.80, 0.90, 0.99, 0.999)` 同时查看百分位为 0.80, 0.90, 0.99, 0.999 的数据。
 * `SUM_VALUE、AVG_VALUE、MIN_VALUE、MAX_VALUE` 分别表示总和、平均值、最小值、最大值。
 * `COMMENT`：对应监控的解释。
 
@@ -150,10 +150,10 @@ SELECT GREATEST(t1.avg_value,t2.avg_value)/LEAST(t1.avg_value,
          t1.avg_value as t1_avg_value,
          t2.avg_value as t2_avg_value,
          t2.comment
-FROM 
+FROM
     (SELECT /*+ time_range("2020-03-03 17:08:00", "2020-03-03 17:11:00")*/ *
     FROM information_schema.metrics_summary ) t1
-JOIN 
+JOIN
     (SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/ *
     FROM information_schema.metrics_summary ) t2
     ON t1.metrics_name = t2.metrics_name
@@ -180,11 +180,11 @@ ORDER BY  ratio DESC limit 10;
 上面查询结果表示：
 
 * t2 时间段内的 `tidb_slow_query_cop_process_total_time`（TiDB 慢查询中的 `cop process` 耗时）比 t1 时间段高了 5865 倍。
-* t2 时间段内的 `tidb_distsql_partial_scan_key_total_num`（TiDB 的 `distsql` 请求扫描key 的数量）比 t1 时间段高了 3648 倍。
-t2 时间段内，`tidb_slow_query_cop_wait_total_time` (TiDB 慢查询中的 cop 请求排队等待的耗时) 比 t1 时间段高了 267 倍。
-* t2 时间段内的 `tikv_cop_total_response_size`（TiKV 的 cop 请求结果的大小 ）比 t1 时间段高了 192 倍。
-* t2 时间段内的 `tikv_cop_scan_details`（TiKV 的 cop 请求的 scan ）比 t1 时间段高了 105 倍。
+* t2 时间段内的 `tidb_distsql_partial_scan_key_total_num`（TiDB 的 `distsql` 请求扫描 key 的数量）比 t1 时间段高了 3648 倍。
+t2 时间段内，`tidb_slow_query_cop_wait_total_time`（TiDB 慢查询中的 cop 请求排队等待的耗时）比 t1 时间段高了 267 倍。
+* t2 时间段内的 `tikv_cop_total_response_size`（TiKV 的 cop 请求结果的大小）比 t1 时间段高了 192 倍。
+* t2 时间段内的 `tikv_cop_scan_details`（TiKV 的 cop 请求的 scan）比 t1 时间段高了 105 倍。
 
-综上，我们可以马上知道 t2 时间段的 cop 请求要比 t2 时间段高很多，导致 TiKV 的 Copprocessor 过载，出现了 `cop task` 等待，可以猜测可能是 t2 时间段出现了一些大查询，或者是查询较多的负载。
+综上，可以马上知道 t2 时间段的 cop 请求要比 t2 时间段高很多，导致 TiKV 的 Coprocessor 过载，出现了 `cop task` 等待，可以猜测可能是 t2 时间段出现了一些大查询，或者是查询较多的负载。
 
 实际上，在 t1 ~ t2 整个时间段内都在跑 `go-ycsb` 的压测，然后在 t2 时间段跑了 20 个 `tpch` 的查询，所以是因为 `tpch` 大查询导致了出现很多的 cop 请求。
