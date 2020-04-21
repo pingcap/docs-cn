@@ -25,7 +25,7 @@ tiup cluster list
 tiup cluster start <cluster-name>
 ```
 
-> 请将 <cluster-name> 替换成实际的集群名字，若忘记集群名字，可通过 `tiup cluster list` 查看
+> 请将 `<cluster-name>` 替换成实际的集群名字，若忘记集群名字，可通过 `tiup cluster list` 查看
 
 该命令支持通过 `-R` 和 `-N` 参数来只启动部分组件，例如下面的命令只启动 test-cluster 的 pd 组件
 
@@ -77,7 +77,7 @@ tiup cluster start test-cluster -R tidb -N 1.2.3.4:4000,1.2.3.5:4000
 
 ## 销毁集群
 
-此操作会关闭服务，清空数据目录和部署目录。
+此操作会关闭服务，清空数据目录和部署目录，并且无法恢复，请谨慎操作。
 
 {{< copyable "shell-regular" >}}
 
