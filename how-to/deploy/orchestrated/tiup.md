@@ -331,23 +331,22 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
-
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
 
-# # Monitored variables are used to all the machine
+# # Monitored variables are applied to all the machines.
 monitored:
   node_exporter_port: 9100
   blackbox_exporter_port: 9115
   # deploy_dir: "/tidb-deploy/monitored-9100"
   # data_dir: "/tidb-data/monitored-9100"
   # log_dir: "/tidb-deploy/monitored-9100/log"
-# # Server configs are used to specify the runtime configuration of TiDB components
+# # Server configs are used to specify the runtime configuration of TiDB components.
 # # All configuration items can be found in TiDB docs:
 # # - TiDB: https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/
 # # - TiKV: https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/
@@ -355,7 +354,7 @@ monitored:
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
 # #           ^       ^
-# # You can overwrite this configuration via instance-level `config` field
+# # You can overwrite this configuration via the instance-level `config` field.
 
 server_configs:
   tidb:
@@ -391,7 +390,7 @@ pd_servers:
     # data_dir: "/tidb-data/pd-2379"
     # log_dir: "/tidb-deploy/pd-2379/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.pd` values
+    # # The following configs are used to overwrite the `server_configs.pd` values.
     # config:
     #   schedule.max-merge-region-size: 20
     #   schedule.max-merge-region-keys: 200000
@@ -406,7 +405,7 @@ tidb_servers:
     # deploy_dir: "/tidb-deploy/tidb-4000"
     # log_dir: "/tidb-deploy/tidb-4000/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.tidb` values
+    # # The following configs are used to overwrite the `server_configs.tidb` values.
     # config:
     #   log.slow-query-file: tidb-slow-overwrited.log
   - host: 10.0.1.8
@@ -421,7 +420,7 @@ tikv_servers:
     # data_dir: "/tidb-data/tikv-20160"
     # log_dir: "/tidb-deploy/tikv-20160/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.tikv` values
+    # # The following configs are used to overwrite the `server_configs.tikv` values.
     # config:
     #   server.grpc-concurrency: 4
     #   server.labels: { zone: "zone1", dc: "dc1", host: "host1" }
@@ -441,7 +440,7 @@ tiflash_servers:
   # data_dir: /tidb-data/tiflash-9000
   # log_dir: /tidb-deploy/tiflash-9000/log
   # numa_node: "0,1"
-  # # Config is used to overwrite the `server_configs.tiflash` values
+  # # The following configs are used to overwrite the `server_configs.tiflash` values.
   # config:
   #   logger.level: "info"
   # learner_config:
@@ -457,7 +456,7 @@ tiflash_servers:
 #     data_dir: "/tidb-data/pump-8249"
 #     log_dir: "/tidb-deploy/pump-8249/log"
 #     numa_node: "0,1"
-#     # Config is used to overwrite the `server_configs.drainer` values
+#     # The following configs are used to overwrite the `server_configs.drainer` values.
 #     config:
 #       gc: 7
 #   - host: 10.0.1.18
@@ -466,13 +465,13 @@ tiflash_servers:
 #   - host: 10.0.1.17
 #     port: 8249
 #     data_dir: "/tidb-data/drainer-8249"
-#     # if drainer doesn't have checkpoint, use initial commitTS to initial checkpoint
-#     # will get a latest timestamp from pd if setting to be -1 (default -1)
+#     # If drainer doesn't have a checkpoint, use initial commitTS as the initial checkpoint.
+#     # Will get a latest timestamp from pd if commit_ts is set to -1 (the default value).
 #     commit_ts: -1
 #     deploy_dir: "/tidb-deploy/drainer-8249"
 #     log_dir: "/tidb-deploy/drainer-8249/log"
 #     numa_node: "0,1"
-#     # Config is used to overwrite the `server_configs.drainer` values
+#     # The following configs are used to overwrite the `server_configs.drainer` values.
 #     config:
 #       syncer.db-type: "mysql"
 #       syncer.to.host: "127.0.0.1"
@@ -620,9 +619,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
-
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -808,9 +806,8 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
-
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -849,7 +846,7 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
   - host: 10.0.1.7
@@ -857,7 +854,7 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
   - host: 10.0.1.8
@@ -865,18 +862,18 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
 drainer_servers:
   - host: 10.0.1.9
     port: 8249
     data_dir: "/tidb-data/drainer-8249"
-    # if drainer doesn't have checkpoint, use initial commitTS to initial checkpoint
-    # will get a latest timestamp from pd if setting to be -1 (default -1)
+    # If drainer doesn't have a checkpoint, use initial commitTS as the initial checkpoint.
+    # Will get a latest timestamp from pd if commit_ts is set to -1 (the default value).
     commit_ts: -1
     deploy_dir: "/tidb-deploy/drainer-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       syncer.db-type: "tidb"
       syncer.to.host: "10.0.1.9"
@@ -1278,7 +1275,7 @@ tidb_servers:
     deploy_dir: "deploy/tidb-4000"
     log_dir: "deploy/tidb-4000/log"
     numa_node: "0,1"
-    # Config is used to overwrite the `server_configs.tidb` values
+    # The following configs are used to overwrite the `server_configs.tidb` values.
     config:
       log.slow-query-file: tidb-slow-overwritten.log
 ```
