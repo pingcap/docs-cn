@@ -99,7 +99,7 @@ tiup cluster display ${cluster-name}
 
     参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/topology.example.yaml)。
 
-    **配置项层次结构使用'.'表示**。
+    **配置项层次结构使用 `.` 表示**。
 
     关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/v4.0.0-rc/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/v4.0.0-rc/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/pingcap/pd/blob/v4.0.0-rc/conf/config.toml)。
 
