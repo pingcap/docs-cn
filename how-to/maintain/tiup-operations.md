@@ -81,6 +81,7 @@ tiup cluster stop ${cluster-name} -N 1.2.3.4:4000,1.2.3.5:4000
 
 1. 以编辑模式打开该集群的配置文件：
 
+{{< copyable "shell-regular" >}}
 ```bash
 tiup cluster edit-config ${cluster-name}
 ```
@@ -118,6 +119,7 @@ tiup cluster edit-config ${cluster-name}
 
 3. 执行 `reload` 滚动分发配置、重启相应组件
 
+{{< copyable "shell-regular" >}}
 ```bash
 tiup cluster reload ${cluster-name} [-N <nodes>] [-R <roles>]
 ```
