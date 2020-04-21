@@ -1278,7 +1278,7 @@ tidb_servers:
     deploy_dir: "deploy/tidb-4000"
     log_dir: "deploy/tidb-4000/log"
     numa_node: "0,1"
-    # The following configs are used to overwrite the `server_configs.drainer` values.
+    # The following configs are used to overwrite the `server_configs.tidb` values.
     config:
       log.slow-query-file: tidb-slow-overwritten.log
 ```
