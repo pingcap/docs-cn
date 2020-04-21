@@ -22,10 +22,10 @@ tiup cluster list
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster start <cluster-name>
+tiup cluster start ${cluster-name}
 ```
 
-> 请将 `<cluster-name>` 替换成实际的集群名字，若忘记集群名字，可通过 `tiup cluster list` 查看
+> 请将 `${cluster-name}` 替换成实际的集群名字，若忘记集群名字，可通过 `tiup cluster list` 查看
 
 该命令支持通过 `-R` 和 `-N` 参数来只启动部分组件，例如下面的命令只启动 test-cluster 的 pd 组件
 
@@ -50,7 +50,7 @@ tiup cluster start test-cluster -N 1.2.3.4:2379,1.2.3.5:2379
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster display <cluster-name>
+tiup cluster display ${cluster-name}
 ```
 
 ## 关闭集群
@@ -60,7 +60,7 @@ tiup cluster display <cluster-name>
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster stop <cluster-name>
+tiup cluster stop ${cluster-name}
 ```
 
 和 `start` 命令类似，`stop` 命令也支持通过 `-R` 和 `-N` 参数来只停止部分组件，例如下面的命令只停止 test-cluster 的 tidb 组件
@@ -82,5 +82,5 @@ tiup cluster stop test-cluster -N 1.2.3.4:4000,1.2.3.5:4000
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster destroy <cluster-name>
+tiup cluster destroy ${cluster-name}
 ```
