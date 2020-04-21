@@ -22,7 +22,9 @@ http://PDAddress:PDPort/dashboard
 > **注意：**
 >
 > 存在多个 PD 实例时，任意一个 PD 的地址均可访问。
+>
 > 默认情况下 `PDPort` 是 `2379`。若部署时修改过 PD 相应参数，则需要填写对应的端口。
+>
 > 登录 TiDB Dashboard 需要使用 TiDB 的 Root 账号。
 
 ## Key Visualizer 总览
