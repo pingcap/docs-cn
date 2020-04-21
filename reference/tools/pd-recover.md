@@ -17,6 +17,8 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 使用以下命令，从 PD 日志中获取 [info] Cluster ID：
 
+{{< copyable "shell-regular" >}}
+
 ```
 ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd.log | grep "init cluster id" | head -10'
 ```
@@ -31,6 +33,8 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd.log |
 
 #### 从 TiDB 日志获取 [info] cluster id
 
+{{< copyable "shell-regular" >}}
+
 ```
 ansible -i inventory.ini tidb_servers -m shell -a 'cat {{deploy_dir}}/log/tidb*.log | grep "init cluster id" | head -10'
 ```
@@ -42,6 +46,8 @@ ansible -i inventory.ini tidb_servers -m shell -a 'cat {{deploy_dir}}/log/tidb*.
 ```
 
 #### 从 TiKV 日志获取 [info] PD cluster
+
+{{< copyable "shell-regular" >}}
 
 ```
 ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* | grep "PD cluster" | head -10'
@@ -59,6 +65,8 @@ ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* 
 
 #### （推荐）从 PD 日志获取 [info] allocates id
 
+{{< copyable "shell-regular" >}}
+
 ```
 ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | grep "allocates" | head -10'
 ```
@@ -73,6 +81,8 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | gr
 或者也可以从 TiKV 的日志中获取。
 
 #### 从 tikv 日志获取 [info] alloc store id
+
+{{< copyable "shell-regular" >}}
 
 ```
 ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* | grep "alloc store" | head -10'
@@ -97,6 +107,8 @@ ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* 
 
 ### 部署一套新的 PD 集群
 
+{{< copyable "shell-regular" >}}
+
 ```
 ansible-playbook bootsrap.yml --tags=pd
 ```
@@ -113,17 +125,23 @@ ansible-playbook start.yml --tags=pd
 
 ### 使用 pd-recover
 
+{{< copyable "shell-regular" >}}
+
 ```
 ./pd-recover -endpoints http://10.0.1.13:2379 -cluster-id 6747551640615446306 -alloc-id 10000
 ```
 
 ### 重启 pd 集群
 
+{{< copyable "shell-regular" >}}
+
 ```
 ansible-playbook rolling_update.yml --tags=pd
 ```
 
 ### 重启 TiDB 或 TiKV
+
+{{< copyable "shell-regular" >}}
 
 ```
 ansible-playbook rolling_update.yml --tags=tidb,tikv
@@ -135,6 +153,6 @@ ansible-playbook rolling_update.yml --tags=tidb,tikv
 
 新建 PD 集群时，会生成新的 Cluster ID。可以通过日志判断旧集群的 Cluster ID。
 
-### 执行 pd-recover 时 `dial tcp 10.0.1.13:2379: connect: connection refused`
+### 执行 pd-recover 时返回错误 `dial tcp 10.0.1.13:2379: connect: connection refused`
 
 执行 pd-recover 时需要 pd 提供服务，请先部署并启动 pd 集群。
