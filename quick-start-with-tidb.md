@@ -51,23 +51,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     source .bash_profile
     ``` 
 
-3. 安装 TiUP Playground。
-  
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup install playground
-    ```
-  
-    如果曾经安装过 TiUP Playground，则执行以下命令升级至最新版：
-  
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup update playground
-    ```
-
-4. 在当前 session 执行以下命令启动集群。
+3. 在当前 session 执行以下命令启动集群。
 
     - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV 和 PD 实例各 1 个：
 
@@ -95,7 +79,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         To view the monitor: http://127.0.0.1:9090
         ```
 
-5. 新开启一个 session 以访问 TiDB 数据库。
+4. 新开启一个 session 以访问 TiDB 数据库。
 
     {{< copyable "shell-regular" >}}
 
@@ -103,11 +87,11 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     mysql --host 127.0.0.1 --port 4000 -u root
     ```
 
-6. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
+5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
-7. 通过 <http://127.0.0.1:2379/dashboard> 访问 TiDB 的 Dashboard 页面，默认用户名为 root，密码为空。
+6. 通过 <http://127.0.0.1:2379/dashboard> 访问 TiDB 的 Dashboard 页面，默认用户名为 root，密码为空。
 
-8. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
+7. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
 
     {{< copyable "shell-regular" >}}
 
