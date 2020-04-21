@@ -193,7 +193,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
      deploy_dir: "/tidb-deploy"
      data_dir: "/tidb-data"
      
-    # # Monitored variables are used to all the machine
+    # # Monitored variables are applied to all the machines.
     monitored:
      node_exporter_port: 9100
      blackbox_exporter_port: 9115
