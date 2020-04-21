@@ -17,7 +17,7 @@ tiup cluster list
 
 ## 启动集群
 
-此操作会按顺序启动整个 TiDB 集群所有组件（包括 PD、TiDB、TiKV 等组件和监控组件）。
+此操作会按 PD -> TiKV -> Pump -> TiDB -> TiFlash -> Drainer 的顺序启动整个 TiDB 集群所有组件（同时也会启动监控组件）。
 
 {{< copyable "shell-regular" >}}
 
@@ -36,7 +36,7 @@ tiup cluster start test-cluster -R pd
 而下面的命令只启动 `1.2.3.4` 和 `1.2.3.5` 这两台机器上的 pd 组件
 
 ```bash
-tiup cluster start test-cluster -R pd -N 1.2.3.4:2379,1.2.3.5:2379
+tiup cluster start test-cluster -N 1.2.3.4:2379,1.2.3.5:2379
 ```
 
 > **注意：**
@@ -55,7 +55,7 @@ tiup cluster display <cluster-name>
 
 ## 关闭集群
 
-此操作会按顺序关闭整个 TiDB 集群所有组件（包括 PD、TiDB、TiKV 等组件和监控组件）
+此操作会按 Drainer -> TiFlash -> TiDB -> Pump -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）
 
 {{< copyable "shell-regular" >}}
 
@@ -66,13 +66,13 @@ tiup cluster stop <cluster-name>
 和 `start` 命令类似，`stop` 命令也支持通过 `-R` 和 `-N` 参数来只停止部分组件，例如下面的命令只停止 test-cluster 的 tidb 组件
 
 ```bash
-tiup cluster start test-cluster -R tidb
+tiup cluster stop test-cluster -R tidb
 ```
 
-而下面的命令只启动 `1.2.3.4` 和 `1.2.3.5` 这两台机器上的 tidb 组件
+而下面的命令只停止 `1.2.3.4` 和 `1.2.3.5` 这两台机器上的 tidb 组件
 
 ```bash
-tiup cluster start test-cluster -R tidb -N 1.2.3.4:4000,1.2.3.5:4000
+tiup cluster stop test-cluster -N 1.2.3.4:4000,1.2.3.5:4000
 ```
 
 ## 销毁集群
@@ -82,5 +82,5 @@ tiup cluster start test-cluster -R tidb -N 1.2.3.4:4000,1.2.3.5:4000
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster stop <cluster-name>
+tiup cluster destroy <cluster-name>
 ```
