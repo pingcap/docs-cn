@@ -52,23 +52,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
     source .bash_profile
     ``` 
 
-3. Install TiUP Playground:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup install playground
-    ```
-
-    If you have installed TiUP Playground before, execute the following command to upgrade it to the latest version:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup update playground
-    ```
-
-4. Start the cluster in the current session:
+3. Start the cluster in the current session:
 
     - If you want to start a TiDB cluster of the latest version with 1 TiDB instance, 1 TiKV instance, and 1 PD instance, run the following command:
 
@@ -100,7 +84,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         To view the monitor: http://127.0.0.1:9090
         ```
 
-5. Start a new session to access TiDB:
+4. Start a new session to access TiDB:
 
     {{< copyable "shell-regular" >}}
 
@@ -108,11 +92,11 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
     mysql --host 127.0.0.1 --port 4000 -u root
     ```
 
-6. Access the Prometheus dashboard of TiDB at <http://127.0.0.1:9090>.
+5. Access the Prometheus dashboard of TiDB at <http://127.0.0.1:9090>.
 
-7. Access the TiDB Dashboard at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
+6. Access the TiDB Dashboard at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
 
-8. After the test, you can clean the cluster by taking the following steps:
+7. After the test, you can clean the cluster by taking the following steps:
 
     1. Stop the process by pressing `ctrl-c`.
 
