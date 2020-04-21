@@ -9,7 +9,7 @@ category: how-to
 
 ## 查看集群列表
 
-一个 TiUP 可以管理多个集群，在集群部署完毕之后它会出现在 TiUP 的集群列表里，可以使用 list 命令来查看。
+TiUP cluster 组件可以用来管理多个 TiDB 集群，在每个 TiDB 集群部署完毕后，该集群会出现在 TiUP 的集群列表里，可以使用 list 命令来查看。
 
 {{< copyable "shell-regular" >}}
 
