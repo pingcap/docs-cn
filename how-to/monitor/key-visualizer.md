@@ -9,7 +9,7 @@ category: how-to
 
 Key Visualizer 是一款用于分析 TiDB 使用模式和排查流量热点的工具。它会将 TiDB 数据库集群一段时间的指标生成可视化报告，可用于快速直观地观察集群整体热点及流量分布情况。
 
-## 如何访问 Key Visualizer？
+## 访问 Key Visualizer
 
 Key Visualizer 功能作为 TiDB Dashboard 组件的功能之一，直接集成在 PD 实例上，无需单独部署。可通过以下方式在浏览器中访问某个 PD 实例上的 Dashboard：
 
@@ -21,22 +21,22 @@ http://PDAddress:PDPort/dashboard
 
 > **注意：**
 >
-> 存在多个 PD 实例时，任意一个 PD 的地址均可访问。
+> 存在多个 PD 实例时，可通过任意一个 PD 的地址访问 Key Visualizer。
 >
 > 默认情况下 `PDPort` 是 `2379`。若部署时修改过 PD 相应参数，则需要填写对应的端口。
 >
-> 登录 TiDB Dashboard 需要使用 TiDB 的 Root 账号。
+> 登录 TiDB Dashboard 需要使用 TiDB 的 `root` 账号。
 
-## Key Visualizer 总览
+## 界面示例
 
 下图为一个 Key Visualizer 页面示例
 
 ![overview key-visualizer](/media/dashboard/keyvisualizer/overview.png)
 
-可以观察到以下信息：
+从以上 Key Visualizer 界面可以观察到以下信息：
 
 * 一个大型热力图，显示整体访问流量随时间的变化情况。
-* 可以查看热力图某个坐标的详细信息。
+* 热力图某个坐标的详细信息。
 * 下方和右侧为沿热力图的每个轴的平均值。
 * 左侧为表、索引等信息。
 
@@ -48,11 +48,11 @@ http://PDAddress:PDPort/dashboard
 
 **Region**
 
-在 TiDB 集群中，数据以分布式的方式存储在所有的 TiKV 实例中。TiKV 在逻辑上是一个巨大且有序的 KV Map。整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，我们将每一段叫做一个 Region。
+在 TiDB 集群中，数据以分布式的方式存储在所有的 TiKV 实例中。TiKV 在逻辑上是一个巨大且有序的 KV Map。整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，每一段叫做一个 Region。
 
 > **注意：**
 >
-> 关于 Region 的详细介绍，请参考[《三篇文章了解 TiDB 技术内幕 - 说存储》](https://pingcap.com/blog-cn/tidb-internal-1/#region)
+> 关于 Region 的详细介绍，请参考[三篇文章了解 TiDB 技术内幕 - 说存储](https://pingcap.com/blog-cn/tidb-internal-1/#region)
 
 **热点**
 
@@ -60,7 +60,7 @@ http://PDAddress:PDPort/dashboard
 
 > **注意：**
 >
-> 热点问题详情请参阅[《TiDB 热点问题详解》](https://asktug.com/t/topic/358)。
+> 热点问题详情请参阅[TiDB 热点问题详解](https://asktug.com/t/topic/358)。
 
 **热力图**
 
@@ -68,7 +68,7 @@ http://PDAddress:PDPort/dashboard
 
 **Region 压缩**
 
-一个 TiDB 集群中，Region 的数量可能多达数十万。在屏幕上是难以显示这么多 Region 信息的。因此，在一张热力图中，Region 会被压缩到约 1500 个连续范围，每个范围称为「Bucket」。由于在一个热力图上，那些热的实例更需要关心，因此 Region 压缩总是倾向于将 流量较小的大量 Region 压缩为一个 Bucket，而尽量让高流量的 Region 独立成 Bucket。
+一个 TiDB 集群中，Region 的数量可能多达数十万。在屏幕上是难以显示这么多 Region 信息的。因此，在一张热力图中，Region 会被压缩到约 1500 个连续范围，每个范围称为 Bucket。在一个热力图上，热的实例更需要关注，因此 Region 压缩总是倾向于将流量较小的大量 Region 压缩为一个 Bucket，而尽量让高流量的 Region 独立成 Bucket。
 
 ### 使用说明
 
@@ -81,11 +81,11 @@ http://PDAddress:PDPort/dashboard
 * 在热力图中向上或向下滚动。
 * 点击 **Select & Zoom** 按钮，然后点击并拖动以选择要放大的区域。
 * 点击 **Reset** 按钮，将 Region 范围重置为整个数据库。
-* 点击 **时间选择框**，重新选择观察时间段。
+* 点击 **时间选择框**（以上界面的 `6 hours` 处），重新选择观察时间段。
 
 > **注意：**
 >
-> 使用后几种方法，将引起热力图的重新绘制，您可能观察到热力图与放大前有较大差异。这是一个正常的现象。它可能是由于在进行局部观察时，Region 压缩的粒度发生了变化，或者是局部范围内，“热”的基准发生了改变。
+> 使用后三种方法，将引起热力图的重新绘制。您可能观察到热力图与放大前有较大差异，这是一个正常的现象。它可能是由于在进行局部观察时，Region 压缩的粒度发生了变化，或者是局部范围内，“热”的基准发生了改变。
 
 **调整亮度**
 
@@ -97,7 +97,7 @@ http://PDAddress:PDPort/dashboard
 
 **选择指标**
 
-您可以通过 **指标选择框** 来查看您关心的指标：
+您可以通过 **指标选择框**（以上界面中 `Write (bytes)` 处）来查看您关心的指标：
 
 * Read (bytes) 读流量
 * Write (bytes) 写流量
@@ -115,15 +115,17 @@ http://PDAddress:PDPort/dashboard
 
 **查看详情**
 
-您可以将鼠标悬停在您关心的 Bucket 上，来查看这个区域的详细信息。
+您可以将鼠标悬停在您关心的 Bucket 上，来查看这个区域的详细信息。详细信息如下图所示：
 
 ![view tooltip](/media/dashboard/keyvisualizer/tooltip.png)
 
-如果您有复制某个信息的需要，可以在 bucket 进行点击。此时这个详细信息的页面会被暂时钉住。点击您关心的信息，即可将其复制到剪切板。
+如果您有复制某个信息的需要，可以在 bucket 进行点击。此时这个详细信息的页面会被暂时钉住。点击您关心的信息，即可将其复制到剪切板。示例图如下：
 
 ![copy tooltip](/media/dashboard/keyvisualizer/tooltip-copy.png)
 
 ### 常见热力图解读
+
+本部分选取了 Key Visualizer 中常见的四种热力图进行解读。
 
 **均衡：期望结果**
 
