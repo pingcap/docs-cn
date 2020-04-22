@@ -19,19 +19,19 @@ desc information_schema.inspection_result;
 ```
 
 ```
-+----------------+--------------+------+-----+---------+-------+
-| Field          | Type         | Null | Key | Default | Extra |
-+----------------+--------------+------+-----+---------+-------+
-| RULE           | varchar(64)  | YES  |     | <null>  |       |
-| ITEM           | varchar(64)  | YES  |     | <null>  |       |
-| TYPE           | varchar(64)  | YES  |     | <null>  |       |
-| INSTANCE       | varchar(64)  | YES  |     | <null>  |       |
-| STATUS_ADDRESS | varchar(64)  | YES  |     | <null>  |       |
-| VALUE          | varchar(64)  | YES  |     | <null>  |       |
-| REFERENCE      | varchar(64)  | YES  |     | <null>  |       |
-| SEVERITY       | varchar(64)  | YES  |     | <null>  |       |
-| DETAILS        | varchar(256) | YES  |     | <null>  |       |
-+----------------+--------------+------+-----+---------+-------+
++----------------+--------------+------+------+---------+-------+
+| Field          | Type         | Null | Key  | Default | Extra |
++----------------+--------------+------+------+---------+-------+
+| RULE           | varchar(64)  | YES  |      | NULL    |       |
+| ITEM           | varchar(64)  | YES  |      | NULL    |       |
+| TYPE           | varchar(64)  | YES  |      | NULL    |       |
+| INSTANCE       | varchar(64)  | YES  |      | NULL    |       |
+| STATUS_ADDRESS | varchar(64)  | YES  |      | NULL    |       |
+| VALUE          | varchar(64)  | YES  |      | NULL    |       |
+| REFERENCE      | varchar(64)  | YES  |      | NULL    |       |
+| SEVERITY       | varchar(64)  | YES  |      | NULL    |       |
+| DETAILS        | varchar(256) | YES  |      | NULL    |       |
++----------------+--------------+------+------+---------+-------+
 9 rows in set (0.00 sec)
 ```
 

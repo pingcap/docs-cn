@@ -15,15 +15,15 @@ desc information_schema.metrics_tables;
 ```
 
 ```
-+------------+--------------+------+-----+---------+-------+
-| Field      | Type         | Null | Key | Default | Extra |
-+------------+--------------+------+-----+---------+-------+
-| TABLE_NAME | varchar(64)  | YES  |     | <null>  |       |
-| PROMQL     | varchar(64)  | YES  |     | <null>  |       |
-| LABELS     | varchar(64)  | YES  |     | <null>  |       |
-| QUANTILE   | double       | YES  |     | <null>  |       |
-| COMMENT    | varchar(256) | YES  |     | <null>  |       |
-+------------+--------------+------+-----+---------+-------+
++------------+--------------+------+------+---------+-------+
+| Field      | Type         | Null | Key  | Default | Extra |
++------------+--------------+------+------+---------+-------+
+| TABLE_NAME | varchar(64)  | YES  |      | NULL    |       |
+| PROMQL     | varchar(64)  | YES  |      | NULL    |       |
+| LABELS     | varchar(64)  | YES  |      | NULL    |       |
+| QUANTILE   | double       | YES  |      | NULL    |       |
+| COMMENT    | varchar(256) | YES  |      | NULL    |       |
++------------+--------------+------+------+---------+-------+
 ```
 
 表 `metrics_tables` 的字段解释：

@@ -17,15 +17,15 @@ desc information_schema.cluster_log;
 ```
 
 ```
-+----------+------------------+------+-----+---------+-------+
-| Field    | Type             | Null | Key | Default | Extra |
-+----------+------------------+------+-----+---------+-------+
-| TIME     | varchar(32)      | YES  |     | <null>  |       |
-| TYPE     | varchar(64)      | YES  |     | <null>  |       |
-| INSTANCE | varchar(64)      | YES  |     | <null>  |       |
-| LEVEL    | varchar(8)       | YES  |     | <null>  |       |
-| MESSAGE  | var_string(1024) | YES  |     | <null>  |       |
-+----------+------------------+------+-----+---------+-------+
++----------+------------------+------+------+---------+-------+
+| Field    | Type             | Null | Key  | Default | Extra |
++----------+------------------+------+------+---------+-------+
+| TIME     | varchar(32)      | YES  |      | NULL    |       |
+| TYPE     | varchar(64)      | YES  |      | NULL    |       |
+| INSTANCE | varchar(64)      | YES  |      | NULL    |       |
+| LEVEL    | varchar(8)       | YES  |      | NULL    |       |
+| MESSAGE  | var_string(1024) | YES  |      | NULL    |       |
++----------+------------------+------+------+---------+-------+
 5 rows in set (0.00 sec)
 ```
 
