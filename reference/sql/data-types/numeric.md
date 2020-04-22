@@ -101,7 +101,6 @@ INTEGER[(M)] [UNSIGNED] [ZEROFILL]
 
 ```sql
 BIGINT[(M)] [UNSIGNED] [ZEROFILL]
->
 ```
 
 ### 存储空间以及取值范围
