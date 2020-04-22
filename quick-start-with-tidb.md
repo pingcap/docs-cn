@@ -1,19 +1,19 @@
 ---
-title: 如何快速体验 TiDB 集群
+title: TiDB 数据库快速上手指南
 category: how-to
 ---
 
-# 如何快速体验 TiDB 集群
+# TiDB 数据库快速上手指南
 
 > **警告：**
 >
 > 对于生产环境，不要使用本文介绍的方式进行部署，而应使用 [TiUP 部署 TiDB 集群](/how-to/deploy/orchestrated/tiup.md)。
 
-本文介绍如何快速体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
+本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
 
 - [第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第一种使用-tidb-wasm-一键体验-tidb-数据库)
 - [第二种：使用 TiUP Playground 快速部署本地测试环境](#第二种使用-tiup-playground-快速部署本地测试环境)
-- [第三种：使用 TiUP cluster 模拟单机下的准生产测试环境](#第三种使用-tiup-cluster-模拟单机下的准生产测试环境)
+- [第三种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第三种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
 
 ## 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
 
@@ -45,29 +45,13 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     >
     > TiUP 安装完成会提示对应的 profile 文件的绝对路径，以下 source 操作需要根据实际位置进行操作。
 
-    {< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     source .bash_profile
     ``` 
 
-3. 安装 TiUP Playground。
-  
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup install playground
-    ```
-  
-    如果曾经安装过 TiUP Playground，则执行以下命令升级至最新版：
-  
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup update playground
-    ```
-
-4. 在当前 session 执行以下命令启动集群。
+3. 在当前 session 执行以下命令启动集群。
 
     - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV 和 PD 实例各 1 个：
 
@@ -95,7 +79,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         To view the monitor: http://127.0.0.1:9090
         ```
 
-5. 新开启一个 session 以访问 TiDB 数据库。
+4. 新开启一个 session 以访问 TiDB 数据库。
 
     {{< copyable "shell-regular" >}}
 
@@ -103,11 +87,11 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     mysql --host 127.0.0.1 --port 4000 -u root
     ```
 
-6. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
+5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
-7. 通过 <http://127.0.0.1:2379/dashboard> 访问 TiDB 的 Dashboard 页面，默认用户名为 root，密码为空。
+6. 通过 <http://127.0.0.1:2379/dashboard> 访问 TiDB 的 Dashboard 页面，默认用户名为 root，密码为空。
 
-8. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
+7. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -115,7 +99,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     tiup clean --all
     ```
 
-## 第三种：使用 TiUP cluster 模拟单机下的准生产测试环境
+## 第三种：使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
 - 适用场景：希望用单台 Linux 服务器，体验 TiDB 最小的完整拓扑的集群，并模拟生产的部署步骤。
 - 耗时：10 分钟
@@ -201,16 +185,15 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     {{< copyable "shell-regular" >}}
     
     ```yaml
-    # # Global variables are applied to all deployments and as the default value of
-    # # them if the specific deployment value missing.
-     
+    # # Global variables are applied to all deployments and used as the default value of
+    # # the deployments if a specific deployment value is missing.
     global:
      user: "tidb"
      ssh_port: 22
      deploy_dir: "/tidb-deploy"
      data_dir: "/tidb-data"
      
-    # # Monitored variables are used to all the machine
+    # # Monitored variables are applied to all the machines.
     monitored:
      node_exporter_port: 9100
      blackbox_exporter_port: 9115
