@@ -5,13 +5,11 @@ category: how-to
 
 # Key Visualizer 热点可视化
 
-## 什么是 Key Visualizer？
-
 Key Visualizer 是一款用于分析 TiDB 使用模式和排查流量热点的工具。它会将 TiDB 数据库集群一段时间的指标生成可视化报告，可用于快速直观地观察集群整体热点及流量分布情况。
 
 ## 访问 Key Visualizer
 
-Key Visualizer 功能作为 TiDB Dashboard 组件的功能之一，直接集成在 PD 实例上，无需单独部署。可通过以下方式在浏览器中访问某个 PD 实例上的 Dashboard：
+Key Visualizer 功能作为 TiDB Dashboard 组件的功能之一，直接集成在 PD 实例上，无需单独部署。可通过以下方式在浏览器中访问某个 PD 实例上的 TiDB Dashboard：
 
 {{< copyable "" >}}
 
@@ -21,7 +19,7 @@ http://PDAddress:PDPort/dashboard
 
 > **注意：**
 >
-> 存在多个 PD 实例时，可通过任意一个 PD 的地址访问 Key Visualizer。
+> 存在多个 PD 实例时，可通过任意一个 PD 的地址访问 TiDB Dashboard。
 >
 > 默认情况下 `PDPort` 是 `2379`。若部署时修改过 PD 相应参数，则需要填写对应的端口。
 >
@@ -37,18 +35,13 @@ http://PDAddress:PDPort/dashboard
 
 * 一个大型热力图，显示整体访问流量随时间的变化情况。
 * 热力图某个坐标的详细信息。
-* 下方和右侧为沿热力图的每个轴的平均值。
 * 左侧为表、索引等信息。
 
-## 如何使用 Key Visualizer？
-
-此部分介绍如何使用 Key Visualizer。
-
-### 概念介绍
+## 概念介绍
 
 **Region**
 
-在 TiDB 集群中，数据以分布式的方式存储在所有的 TiKV 实例中。TiKV 在逻辑上是一个巨大且有序的 KV Map。整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，每一段叫做一个 Region。
+在 TiDB 集群中，数据以分布式的方式存储在所有的 TiKV 实例中。TiKV 在逻辑上是一个巨大且有序的 KV Map。整个 Key-Value 空间分成很多 Region，每一个 Region 是一系列连续的 Key。
 
 > **注意：**
 >
@@ -70,7 +63,9 @@ http://PDAddress:PDPort/dashboard
 
 一个 TiDB 集群中，Region 的数量可能多达数十万。在屏幕上是难以显示这么多 Region 信息的。因此，在一张热力图中，Region 会被压缩到约 1500 个连续范围，每个范围称为 Bucket。在一个热力图上，热的实例更需要关注，因此 Region 压缩总是倾向于将流量较小的大量 Region 压缩为一个 Bucket，而尽量让高流量的 Region 独立成 Bucket。
 
-### 使用说明
+## 使用 Key Visualizer
+
+此部分介绍如何使用 Key Visualizer。
 
 ![view toolbar](/media/dashboard/keyvisualizer/toolbar.png)
 
@@ -123,7 +118,7 @@ http://PDAddress:PDPort/dashboard
 
 ![copy tooltip](/media/dashboard/keyvisualizer/tooltip-copy.png)
 
-### 常见热力图解读
+## 常见热力图解读
 
 本部分选取了 Key Visualizer 中常见的四种热力图进行解读。
 
