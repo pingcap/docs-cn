@@ -23,11 +23,31 @@ category: reference
 
 当函数的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将上述支持的函数或运算符名加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。
 
+`mysql.expr_pushdown_blacklist` 的 schema 如下：
+
+```sql
+tidb> desc mysql.expr_pushdown_blacklist;
++------------+--------------+------+------+-------------------+-------+
+| Field      | Type         | Null | Key  | Default           | Extra |
++------------+--------------+------+------+-------------------+-------+
+| name       | char(100)    | NO   |      | NULL              |       |
+| store_type | char(100)    | NO   |      | tikv,tiflash,tidb |       |
+| reason     | varchar(200) | YES  |      | NULL              |       |
++------------+--------------+------+------+-------------------+-------+
+3 rows in set (0.00 sec)
+```
+
+以上结果字段解释如下：
+
++ `name` 为禁止下推的函数名。
++ `store_type` 指明希望禁止该函数下推到哪些存储引擎。目前 TiDB 支持三种存储引擎，分别为 `tikv`、`tidb` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间应以逗号隔开。
++ `reason` 列可以记录该函数被加入黑名单的原因。
+
 ### 加入黑名单
 
 执行以下步骤，可将一个或多个函数或运算符加入黑名单：
 
-1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名。
+1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名以及希望禁止下推的存储类型集合。
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
 ### 移出黑名单
@@ -45,50 +65,50 @@ category: reference
 
 ```sql
 tidb> create table t(a int);
-Query OK, 0 rows affected (0.01 sec)
+Query OK, 0 rows affected (0.06 sec)
 
 tidb> explain select * from t where a < 2 and a > 2;
-+---------------------+----------+------+------------------------------------------------------------+
-| id                  | count    | task | operator info                                              |
-+---------------------+----------+------+------------------------------------------------------------+
-| TableReader_7       | 0.00     | root | data:Selection_6                                           |
-| └─Selection_6       | 0.00     | cop  | gt(test.t.a, 2), lt(test.t.a, 2)                           |
-|   └─TableScan_5     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-+---------------------+----------+------+------------------------------------------------------------+
++-------------------------+----------+-----------+---------------+------------------------------------+
+| id                      | estRows  | task      | access object | operator info                      |
++-------------------------+----------+-----------+---------------+------------------------------------+
+| TableReader_7           | 0.00     | root      |               | data:Selection_6                   |
+| └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
++-------------------------+----------+-----------+---------------+------------------------------------+
 3 rows in set (0.00 sec)
 
-tidb> insert into mysql.expr_pushdown_blacklist values('<'), ('>');
-Query OK, 2 rows affected (0.00 sec)
+tidb> insert into mysql.expr_pushdown_blacklist values('<', 'tikv',''), ('>','tikv','');
+Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
 
 tidb> admin reload expr_pushdown_blacklist;
 Query OK, 0 rows affected (0.00 sec)
 
 tidb> explain select * from t where a < 2 and a > 2;
-+---------------------+----------+------+------------------------------------------------------------+
-| id                  | count    | task | operator info                                              |
-+---------------------+----------+------+------------------------------------------------------------+
-| Selection_5         | 8000.00  | root | gt(test.t.a, 2), lt(test.t.a, 2)                           |
-| └─TableReader_7     | 10000.00 | root | data:TableScan_6                                           |
-|   └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-+---------------------+----------+------+------------------------------------------------------------+
++-------------------------+----------+-----------+---------------+------------------------------------+
+| id                      | estRows  | task      | access object | operator info                      |
++-------------------------+----------+-----------+---------------+------------------------------------+
+| Selection_7             | 10000.00 | root      |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
+| └─TableReader_6         | 10000.00 | root      |               | data:TableFullScan_5               |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
++-------------------------+----------+-----------+---------------+------------------------------------+
 3 rows in set (0.00 sec)
 
 tidb> delete from mysql.expr_pushdown_blacklist where name = '>';
-Query OK, 1 row affected (0.00 sec)
+Query OK, 1 row affected (0.01 sec)
 
 tidb> admin reload expr_pushdown_blacklist;
 Query OK, 0 rows affected (0.00 sec)
 
 tidb> explain select * from t where a < 2 and a > 2;
-+-----------------------+----------+------+------------------------------------------------------------+
-| id                    | count    | task | operator info                                              |
-+-----------------------+----------+------+------------------------------------------------------------+
-| Selection_5           | 2666.67  | root | lt(test.t.a, 2)                                            |
-| └─TableReader_8       | 3333.33  | root | data:Selection_7                                           |
-|   └─Selection_7       | 3333.33  | cop  | gt(test.t.a, 2)                                            |
-|     └─TableScan_6     | 10000.00 | cop  | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-+-----------------------+----------+------+------------------------------------------------------------+
++---------------------------+----------+-----------+---------------+--------------------------------+
+| id                        | estRows  | task      | access object | operator info                  |
++---------------------------+----------+-----------+---------------+--------------------------------+
+| Selection_8               | 0.00     | root      |               | lt(ssb_1.t.a, 2)               |
+| └─TableReader_7           | 0.00     | root      |               | data:Selection_6               |
+|   └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2)               |
+|     └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
++---------------------------+----------+-----------+---------------+--------------------------------+
 4 rows in set (0.00 sec)
 ```
 
