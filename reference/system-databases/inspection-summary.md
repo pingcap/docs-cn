@@ -17,19 +17,19 @@ desc information_schema.inspection_summary;
 ```
 
 ```
-+--------------+--------------+------+-----+---------+-------+
-| Field        | Type         | Null | Key | Default | Extra |
-+--------------+--------------+------+-----+---------+-------+
-| RULE         | varchar(64)  | YES  |     | <null>  |       |
-| INSTANCE     | varchar(64)  | YES  |     | <null>  |       |
-| METRICS_NAME | varchar(64)  | YES  |     | <null>  |       |
-| LABEL        | varchar(64)  | YES  |     | <null>  |       |
-| QUANTILE     | double       | YES  |     | <null>  |       |
-| AVG_VALUE    | double(22,6) | YES  |     | <null>  |       |
-| MIN_VALUE    | double(22,6) | YES  |     | <null>  |       |
-| MAX_VALUE    | double(22,6) | YES  |     | <null>  |       |
-| COMMENT      | varchar(256) | YES  |     | <null>  |       |
-+--------------+--------------+------+-----+---------+-------+
++--------------+--------------+------+------+---------+-------+
+| Field        | Type         | Null | Key  | Default | Extra |
++--------------+--------------+------+------+---------+-------+
+| RULE         | varchar(64)  | YES  |      | NULL    |       |
+| INSTANCE     | varchar(64)  | YES  |      | NULL    |       |
+| METRICS_NAME | varchar(64)  | YES  |      | NULL    |       |
+| LABEL        | varchar(64)  | YES  |      | NULL    |       |
+| QUANTILE     | double       | YES  |      | NULL    |       |
+| AVG_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| MIN_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| MAX_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| COMMENT      | varchar(256) | YES  |      | NULL    |       |
++--------------+--------------+------+------+---------+-------+
 9 rows in set
 ```
 

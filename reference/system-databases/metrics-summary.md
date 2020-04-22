@@ -20,17 +20,17 @@ desc information_schema.metrics_summary;
 ```
 
 ```
-+--------------+--------------+------+-----+---------+-------+
-| Field        | Type         | Null | Key | Default | Extra |
-+--------------+--------------+------+-----+---------+-------+
-| METRICS_NAME | varchar(64)  | YES  |     | <null>  |       |
-| QUANTILE     | double       | YES  |     | <null>  |       |
-| SUM_VALUE    | double(22,6) | YES  |     | <null>  |       |
-| AVG_VALUE    | double(22,6) | YES  |     | <null>  |       |
-| MIN_VALUE    | double(22,6) | YES  |     | <null>  |       |
-| MAX_VALUE    | double(22,6) | YES  |     | <null>  |       |
-| COMMENT      | varchar(256) | YES  |     | <null>  |       |
-+--------------+--------------+------+-----+---------+-------+
++--------------+--------------+------+------+---------+-------+
+| Field        | Type         | Null | Key  | Default | Extra |
++--------------+--------------+------+------+---------+-------+
+| METRICS_NAME | varchar(64)  | YES  |      | NULL    |       |
+| QUANTILE     | double       | YES  |      | NULL    |       |
+| SUM_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| AVG_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| MIN_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| MAX_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| COMMENT      | varchar(256) | YES  |      | NULL    |       |
++--------------+--------------+------+------+---------+-------+
 ```
 
 字段解释：
