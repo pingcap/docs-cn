@@ -22,6 +22,7 @@ category: release
 
 ## 3.0
 
+- [3.0.13](/releases/3.0.13.md)
 - [3.0.12](/releases/3.0.12.md)
 - [3.0.11](/releases/3.0.11.md)
 - [3.0.10](/releases/3.0.10.md)
