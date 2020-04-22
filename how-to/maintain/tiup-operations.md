@@ -83,7 +83,7 @@ tiup cluster display ${cluster-name}
 
         ```
         server_configs:
-        tidb:
+          tidb:
             log.slow-threshold: 300
         ```
 
