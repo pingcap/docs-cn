@@ -70,7 +70,7 @@ Slow Query 基础信息：
 
 和内存使用相关的字段：
 
-* `Memory_max`：表示执行期间 TiDB 使用的最大内存空间，单位为 byte。
+* `Mem_max`：表示执行期间 TiDB 使用的最大内存空间，单位为 byte。
 
 和 SQL 执行的用户相关的字段：
 
