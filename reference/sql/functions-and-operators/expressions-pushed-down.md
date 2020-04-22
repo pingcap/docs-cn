@@ -37,7 +37,11 @@ tidb> desc mysql.expr_pushdown_blacklist;
 3 rows in set (0.00 sec)
 ```
 
-其中，`name` 为禁止下推的函数名，`store_type` 指明希望禁止该函数下推到哪些存储引擎，目前 TiDB 支持三种存储引擎，分别为 `tikv`， `tidb` 和 `tiflash`，`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推的话各个存储之间以逗号隔开，`reason` 列可以记录该函数被加入黑名单的原因。
+以上结果字段解释如下：
+
++ `name` 为禁止下推的函数名。
++ `store_type` 指明希望禁止该函数下推到哪些存储引擎。目前 TiDB 支持三种存储引擎，分别为 `tikv`、`tidb` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间应以逗号隔开。
++ `reason` 列可以记录该函数被加入黑名单的原因。
 
 ### 加入黑名单
 
