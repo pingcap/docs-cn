@@ -411,6 +411,31 @@ prepare 语句的 Plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
+## tikv-client.copr-cache
+
+### `enabled`
+
++ 是否开启[下推计算结果缓存](/reference/performance/coprocessor-cache.md)。
++ 默认值：true
+
+### `capacity-mb`
+
++ 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
++ 默认值：1000
++ 单位：MB
+
+### `admission-max-result-mb`
+
++ 最大缓存的下推计算结果集大小。若下推计算结果集大小大于该参数指定的大小，则结果集不会被缓存。
++ 默认值：10
++ 单位：MB
+
+### `admission-min-process-ms`
+
++ 最小缓存的下推计算结果集计算时间。若下推计算的计算时间小于该参数指定的时间，则结果集不会被缓存。
++ 默认值：5
++ 单位：ms
+
 ## txn-local-latches
 
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
