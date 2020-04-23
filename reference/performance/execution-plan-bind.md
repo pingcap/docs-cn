@@ -20,6 +20,32 @@ CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt
 
 This statement binds SQL execution plans at the GLOBAL or SESSION level. The default scope is SESSION. The bound SQL statement is parameterized and stored in the system table. When a SQL query is processed, as long as the parameterized SQL statement and a bound one in the system table are consistent and the system variable `tidb_use_plan_baselines` is set to `on` (the default value is `on`), the corresponding optimizer hint is available. If multiple execution plans are available, the optimizer chooses to bind the plan with the least cost.
 
+When a SQL statement has bound execution plans in both GLOBAL and SESSION scopes, because the optimizer ignores the bound execution plan in the GLOBAL scope when it encounters the SESSION binding, the bound execution plan of this statement in the SESSION scope shields the execution plan in the GLOBAL scope.
+
+For example:
+
+```sql
+--  Creates a GLOBAL binding and specifies using `sort merge join` in this binding.
+create global binding for
+    select * from t1, t2 where t1.id = t2.id
+using
+    select /*+ TIDB_SMJ(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+
+-- The execution plan of this SQL statement uses the `sort merge join` specified in the GLOBAL binding.
+explain select * from t1, t2 where t1.id = t2.id;
+
+-- Creates another SESSION binding and specifies using `hash join` in this binding.
+create binding for
+    select * from t1, t2 where t1.id = t2.id
+using
+    select /*+ TIDB_HJ(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+
+-- In the execution plan of this statement, `hash join` specified in the SESSION binding is used, instead of `sort merge join` specified in the GLOBAL binding.
+explain select * from t1, t2 where t1.id = t2.id;
+```
+
+When the first `select` statement is being executed, the optimizer adds the `TIDB_SMJ(t1, t2)` hint to the statement through the binding in the GLOBAL scope. The top node of the execution plan in the `explain` result is MergeJoin. When the second `select` statement is being executed, the optimizer uses the binding in the SESSION scope instead of the binding in the GLOBAL scope and adds the `TIDB_HJ(t1, t2)` hint to the statement. The top node of the execution plan in the `explain` result is HashJoin.
+
 `Parameterization` is a process that converts a constant in SQL to a variable parameter, with standardized processing on the spaces and line breaks in the SQL statement, for example,
 
 {{< copyable "sql" >}}
@@ -55,6 +81,20 @@ DROP [GLOBAL | SESSION] BINDING FOR SelectStmt
 ```
 
 This statement removes a specified execution plan binding at the GLOBAL or SESSION level. The default scope is SESSION.
+
+Generally, the binding in the SESSION scope is mainly used for test or in special situations. For a binding to take effect in all TiDB processes, you need to use the GLOBAL binding. A created SESSION binding shields the corresponding GLOBAL binding until the end of the SESSION, even if the SESSION binding is dropped before the session closes. In this case, no binding takes effect and the plan is selected by the optimizer.
+
+The following example is based on the example in [create binding](#create-binding) in which the SESSION binding shields the GLOBAL binding:
+
+```sql
+-- Drops the binding created in the SESSION scope.
+drop session binding for select * from t1, t2 where t1.id = t2.id;
+
+-- Views the SQL execution plan again.
+explain select * from t1,t2 where t1.id = t2.id;
+```
+
+In the example above, the dropped binding in the SESSION scope shields the corresponding binding in the GLOBAL scope. The optimizer does not add the `TIDB_SMJ(t1, t2)` hint to the statement. The top node of the execution plan in the `explain` result is not fixed to MergeJoin by this hint. Instead, the top node is independently selected by the optimizer according to the cost estimation.
 
 ### View binding
 
