@@ -34,7 +34,7 @@ set @@tidb_replica_read = 'follower';
 
 - 当设定为默认值 `leader` 或者空字符串时，TiDB 会维持原有行为方式，将所有的读取操作都发送给 leader 副本处理。
 - 当设置为 `follower` 时，TiDB 会选择 Region 的 follower 副本完成所有的数据读取操作。
-- 当 `tidb_replica_read` 的值设为 `leader-and-follower` 时，TiDB可以选择任意副本来执行读取操作。
+- 当 `tidb_replica_read` 的值设为 `leader-and-follower` 时，TiDB 可以选择任意副本来执行读取操作。
 
 ## 实现机制
 
