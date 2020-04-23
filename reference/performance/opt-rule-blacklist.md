@@ -70,3 +70,6 @@ admin reload opt_rule_blacklist
 delete from mysql.opt_rule_blacklist where name in ("join_reoder", "topn_push_down")
 admin reload opt_rule_blacklist
 ```
+
+> **注意：**
+> 所以以上操作需要使用 root 权限的用户进行操作。
