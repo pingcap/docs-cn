@@ -29,13 +29,13 @@ explain select * from t where a = 1 or b = 1;
 由于查询的过滤条件是一个通过 `OR` 连接的表达式，我们在只能对每张表使用一个索引的限制下，无法将 `a = 1` 下推到索引 `a` 上，或将 `b = 1` 下推到索引 `b` 上，因此为了保证结果正确性，对这个查询只能生成 `TableScan` 的执行计划：
 
 ```
-+---------------------+----------+-----------+------------------------------------------------------------+
-| id                  | count    | task      | operator info                                              |
-+---------------------+----------+-----------+------------------------------------------------------------+
-| TableReader_7       | 8000.00  | root      | data:Selection_6                                           |
-| └─Selection_6       | 8000.00  | cop[tikv] | or(eq(test.t.a, 1), eq(test.t.b, 1))                       |
-|   └─TableScan_5     | 10000.00 | cop[tikv] | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-+---------------------+----------+-----------+------------------------------------------------------------+
++-------------------------+----------+-----------+---------------+--------------------------------------+
+| id                      | estRows  | task      | access object | operator info                        |
++-------------------------+----------+-----------+---------------+--------------------------------------+
+| TableReader_7           | 8000.00  | root      |               | data:Selection_6                     |
+| └─Selection_6           | 8000.00  | cop[tikv] |               | or(eq(test.t.a, 1), eq(test.t.b, 1)) |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo       |
++-------------------------+----------+-----------+---------------+--------------------------------------+
 ```
 
 当 `t` 的数据量很大时，全表扫描的效率会很低，但这条查询最多却只会返回两行记录。针对这类场景，TiDB 引入了对表的新访问方式 `IndexMerge`。
@@ -45,14 +45,14 @@ explain select * from t where a = 1 or b = 1;
 在 `IndexMerge` 访问方式下，优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行集合并操作。以上面查询为例，生成的执行计划将会变为：
 
 ```
-+--------------------+-------+-----------+---------------------------------------------------------------+
-| id                 | count | task      | operator info                                                 |
-+--------------------+-------+-----------+---------------------------------------------------------------+
-| IndexMerge_11      | 2.00  | root      |                                                               |
-| ├─IndexScan_8      | 1.00  | cop[tikv] | table:t, index:a, range:[1,1], keep order:false, stats:pseudo |
-| ├─IndexScan_9      | 1.00  | cop[tikv] | table:t, index:b, range:[1,1], keep order:false, stats:pseudo |
-| └─TableScan_10     | 2.00  | cop[tikv] | table:t, keep order:false, stats:pseudo                       |
-+--------------------+-------+-----------+---------------------------------------------------------------+
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| id                             | estRows | task      | access object       | operator info                               |
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| IndexMerge_11                  | 2.00    | root      |                     |                                             |
+| ├─IndexRangeScan_8(Build)      | 1.00    | cop[tikv] | table:t, index:a(a) | range:[1,1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_9(Build)      | 1.00    | cop[tikv] | table:t, index:b(b) | range:[1,1], keep order:false, stats:pseudo |
+| └─TableRowIDScan_10(Probe)     | 2.00    | cop[tikv] | table:t             | keep order:false, stats:pseudo              |
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
 ```
 
 `IndexMerge` 执行计划的结构和 `IndexLookUp` 很接近，都可以分为索引扫描和全表扫描两部分，只是 `IndexMerge` 的索引扫描部分可以包含多个 `IndexScan`，当表的主键索引是整数类型时，索引扫描部分甚至可能包含一个 `TableScan`，比如：
@@ -74,14 +74,14 @@ explain select * from t where a = 1 or b = 1;
 ```
 
 ```
-+--------------------+-------+-----------+---------------------------------------------------------------+
-| id                 | count | task      | operator info                                                 |
-+--------------------+-------+-----------+---------------------------------------------------------------+
-| IndexMerge_11      | 2.00  | root      |                                                               |
-| ├─TableScan_8      | 1.00  | cop[tikv] | table:t, range:[1,1], keep order:false, stats:pseudo          |
-| ├─IndexScan_9      | 1.00  | cop[tikv] | table:t, index:b, range:[1,1], keep order:false, stats:pseudo |
-| └─TableScan_10     | 2.00  | cop[tikv] | table:t, keep order:false, stats:pseudo                       |
-+--------------------+-------+-----------+---------------------------------------------------------------+
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| id                             | estRows | task      | access object       | operator info                               |
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| IndexMerge_11                  | 2.00    | root      |                     |                                             |
+| ├─TableRangeScan_8(Build)      | 1.00    | cop[tikv] | table:t             | range:[1,1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_9(Build)      | 1.00    | cop[tikv] | table:t, index:b(b) | range:[1,1], keep order:false, stats:pseudo |
+| └─TableRowIDScan_10(Probe)     | 2.00    | cop[tikv] | table:t             | keep order:false, stats:pseudo              |
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
 4 rows in set (0.01 sec)
 ```
 
