@@ -106,7 +106,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere]
 
 This statement outputs the execution plan bindings at the GLOBAL or SESSION level. The default scope is SESSION. Currently `SHOW BINDINGS` outputs eight columns, as shown below:
 
-| Column Name | Note  |
+| Column Name | Note |
 | :-------- | :------------- |
 | original_sql  |  Original SQL statement after parameterization |
 | bind_sql | Bound SQL statement with hints |
@@ -129,7 +129,7 @@ After automatic binding creation is enabled, the historical SQL statements in th
 
 ### Automatically evolve binding
 
-As data updates, the previously bound execution plan might no longer be optimal. The automatic binding evolution feature can optimize the bound execution plan.
+As data updates, the previously bound execution plan might no longer be optimal. The automatic binding evolution feature can optimize the bound execution plan. Use the following statement to enable automatic binding evolution:
 
 {{< copyable "sql" >}}
 
@@ -139,7 +139,41 @@ set global tidb_evolve_plan_baselines = on;
 
 The default value of `tidb_evolve_plan_baselines` is `off`.
 
-After the automatic binding evolution feature is enabled, if the optimal execution plan selected by the optimizer is not among the bound execution plans, the optimizer marks the plan as an execution plan that waits for verification. Every `bind-info-lease` (the default value is `3s`), an execution plan to be verified is selected and compared with a bound execution plan with the least cost, in terms of the actual execution time. If the plan to be verified is better, it is marked as a usable binding.
+> **Note:**
+>
+> The global variable does not take effect in the current session. It only takes effect in a newly created session. To enable automatic binding evolution in the current session, change the keyword `global` to `session`.
+
+After the automatic binding evolution feature is enabled, if the optimal execution plan selected by the optimizer is not among the binding execution plans, the optimizer marks the plan as an execution plan that waits for verification. At every `bind-info-lease` (the default value is `3s`) interval, an execution plan to be verified is selected and compared with the binding execution plan that has the least cost in terms of the actual execution time. If the plan to be verified has shorter execution time, this plan is marked as a usable binding. The following example describes the process above.
+
+Assume that table `t` is defined as follows:
+
+{{< copyable "sql" >}}
+
+```sql
+create table t(a int, b int, key(a), key(b));
+```
+
+Perform the following query on table `t`:
+
+{{< copyable "sql" >}}
+
+```sql
+select * from t where a < 100 and b < 100;
+```
+
+In the table defined above, few rows meet the `a < 100` condition. But for some reason, the optimizer mistakenly selects the full table scan instead of the optimal execution plan that uses index `a`. You can first use the following statement to create a binding:
+
+{{< copyable "sql" >}}
+
+```sql
+create global binding for select * from t where a < 100 and b < 100 using select * from t use index(a) where a < 100 and b < 100;
+```
+
+When the query above is executed again, the optimizer selects index `a` (influenced by the binding created above) to reduce the query time.
+
+Assuming that as insertions and deletions are performed on table `t`, an increasing number of rows meet the `a < 100` condition and a decreasing number of rows meet the `b < 100` condition. At this time, using index `a` under the binding might no longer be the optimal plan.
+
+The binding evolution can address this kind of issues. When the optimizer recognizes data change in a table, it generates an execution plan for the query that uses index `b`. However, because the binding of the current plan exists, this query plan is not adopted and executed. Instead, this plan is stored in the backend evolution list. During the evolution process, if this plan is verified to have an obviously shorter execution time than that of the current execution plan that uses index `a`, index `b` is added into the available binding list. After this, when the query is executed again, the optimizer first generates the execution plan that uses index `b` and makes sure that this plan is in the binding list. Then the optimizer adopts and executes this plan to reduce the query time after data changes.
 
 To reduce the impact that the automatic evolution has on clusters, use the following configurations:
 
