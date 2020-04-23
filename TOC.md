@@ -275,6 +275,7 @@
     - [理解 TiDB 执行计划](/reference/performance/understanding-the-query-execution-plan.md)
     - [执行计划绑定](/reference/performance/execution-plan-bind.md)
     - [Join Reorder 算法简介](/reference/performance/join-reorder.md)
+    - [优化规则黑名单](/reference/performance/opt-rule-blacklist.md)
     - [统计信息概述](/reference/performance/statistics.md)
     - [Optimizer Hints](/reference/performance/optimizer-hints.md)
     - [Follower Read](/reference/performance/follower-read.md)
