@@ -71,7 +71,7 @@ The following fields are related to transaction execution:
 
 Memory usage fields:
 
-* `Memory_max`: The maximum memory space used during the execution period of a SQL statement (the unit is byte).
+* `Mem_max`: The maximum memory space used during the execution period of a SQL statement (the unit is byte).
 
 User fields:
 
