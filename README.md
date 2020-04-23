@@ -4,11 +4,12 @@
 
 ## TiDB 文档结构
 
-目前，TiDB 的文档维护以下四个版本，分别放置在相应的 branch：
+目前，TiDB 的文档维护以下几个版本，分别放置在相应的 branch：
 
 - `master`：最新开发版
-- `release-3.1`：3.1 Beta 版
-- `release-3.0`：最新稳定版
+- `release-4.0`：4.0 RC 版
+- `release-3.1`：3.1 稳定版
+- `release-3.0`：3.0 稳定版
 - `release-2.1`：2.1 稳定版
 
 TiDB 的文档结构如下：
@@ -19,8 +20,7 @@ TiDB 的文档结构如下：
     ├── get-started
     ├── deploy
         ├── orchestrated
-            ├── ansible.md
-            ├── offline-ansible.md
+            ├── tiup.md
             ├── docker.md
     ├── configure
     ├── maintain
