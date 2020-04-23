@@ -95,7 +95,6 @@ request-batch-enable-cross-command = false
 pipelined = true
 ```
 
-
 ### 集群拓扑
 
 * 每台 i3.4xlarge 部署 1 个 TiKV，一共三台。
