@@ -298,7 +298,7 @@
     - [增量恢复](/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/reference/tidb-binlog/binlog-slave-client.md)
     - [TiDB Binlog Relay Log](/reference/tidb-binlog/relay-log.md)
-    - [集群间双向同步](/reference/tidb-binlog/bi-repl.md)
+    - [集群间双向同步](/reference/tidb-binlog/bidirectional-replication.md)
     - [术语表](/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/reference/tidb-binlog/troubleshoot/binlog.md)
