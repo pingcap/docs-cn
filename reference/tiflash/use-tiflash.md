@@ -118,6 +118,8 @@ explain analyze select count(*) from test.t;
 
 `cop[tiflash]` 表示该任务会发送至 TiFlash 进行处理。如果没有选择 TiFlash 副本，可尝试通过 `analyze table` 语句更新统计信息后，再查看 `explain analyze` 结果。
 
+需要注意的是，表的 TiFlash 副本状态置为可用之后则不再变更直到通过 DDL 命令修改副本数。若该表仅有单副本且相关的 TiFlash 节点无法服务，CBO 模式下的查询或因无法感知而不断重试，需要指定 Engine 或者手工 Hint 来读取 TiKV。
+
 ### Engine 隔离
 
 Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine 的副本，可选 engine 为 tikv 和 tiflash，分别有 2 个配置级别：
