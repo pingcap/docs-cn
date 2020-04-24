@@ -373,7 +373,7 @@ server_configs:
     # rocksdb.max-sub-compactions: 1
     # storage.block-cache.capacity: "16GB"
     # readpool.unified.max-thread-count: 12
-    readpool.storage.use-unified-pool: true
+    readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
   pd:
     schedule.leader-schedule-limit: 4
@@ -521,12 +521,12 @@ alertmanager_servers:
 
 - TiKV 进行配置优化
 
-    - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。
+    - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别设置自适应开关。
 
         - 开启 `readpool.storage` 和 `readpool.coprocessor`：
           
             ```yaml
-            readpool.storage.use-unified-pool: true
+            readpool.storage.use-unified-pool: false
             readpool.coprocessor.use-unified-pool: true
             ```
 
@@ -637,7 +637,7 @@ monitored:
 server_configs:
   tikv:
     readpool.unified.max-thread-count: <取值参考上文计算公式的结果>
-    readpool.storage.use-unified-pool: true
+    readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
     storage.block-cache.capacity: "<取值参考上文计算公式的结果>"
     raftstore.capactiy: "<取值参考上文计算公式的结果>"
@@ -1310,7 +1310,7 @@ tidb_servers:
       # rocksdb.max-sub-compactions: 1
       # storage.block-cache.capacity: "16GB"
       # readpool.unified.max-thread-count: 12
-      readpool.storage.use-unified-pool: true
+      readpool.storage.use-unified-pool: false
       readpool.coprocessor.use-unified-pool: true
     pd:
       schedule.leader-schedule-limit: 4
