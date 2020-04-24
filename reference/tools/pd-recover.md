@@ -36,7 +36,6 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd.log |
 使用以下命令，从 TiDB 日志中获取 [info] cluster id：
 
 {{< copyable "shell-regular" >}}
-{{< copyable "shell-regular" >}}
 
 ```
 ansible -i inventory.ini tidb_servers -m shell -a 'cat {{deploy_dir}}/log/tidb*.log | grep "init cluster id" | head -10'
@@ -52,7 +51,6 @@ ansible -i inventory.ini tidb_servers -m shell -a 'cat {{deploy_dir}}/log/tidb*.
 
 使用以下命令，从 TiKV 日志中获取 [info] PD cluster：
 
-{{< copyable "shell-regular" >}}
 {{< copyable "shell-regular" >}}
 
 ```
@@ -75,8 +73,6 @@ ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* 
 
 {{< copyable "shell-regular" >}}
 
-{{< copyable "shell-regular" >}}
-
 ```
 ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | grep "allocates" | head -10'
 ```
@@ -93,8 +89,6 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | gr
 #### 从 TiKV 日志获取 [info] alloc store id
 
 使用以下命令，从 TiKV 日志获取 [info] alloc store id：
-
-{{< copyable "shell-regular" >}}
 
 {{< copyable "shell-regular" >}}
 
