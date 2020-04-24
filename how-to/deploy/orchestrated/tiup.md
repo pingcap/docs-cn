@@ -377,8 +377,8 @@ server_configs:
     readpool.coprocessor.use-unified-pool: true
   pd:
     schedule.leader-schedule-limit: 4
-    schedule.region-schedule-limit: 2048
-    schedule.replica-schedule-limit: 64
+    schedule.region-schedule-limit: 4
+    schedule.replica-schedule-limit: 8
     replication.enable-placement-rules: true
   tiflash:
     logger.level: "info"
@@ -1314,8 +1314,8 @@ tidb_servers:
       readpool.coprocessor.use-unified-pool: true
     pd:
       schedule.leader-schedule-limit: 4
-      schedule.region-schedule-limit: 2048
-      schedule.replica-schedule-limit: 64
+      schedule.region-schedule-limit: 4
+      schedule.replica-schedule-limit: 8
       replication.enable-placement-rules: true
     pump:
         gc: 7
