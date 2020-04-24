@@ -14,11 +14,11 @@ aliases: ['/docs-cn/dev/reference/tidb-binlog/bi-repl/']
 
 > **注意：**
 >
-> 集群间双向同步的前提条件是，写入两个集群的数据必须保证无冲突，即在两个集群中，不会同时修改同一张表的同一主键和具有唯一索引的行
+> 集群间双向同步的前提条件是，写入两个集群的数据必须保证无冲突，即在两个集群中，不会同时修改同一张表的同一主键和具有唯一索引的行。
 
 使用场景示例图如下：
 
-![场景示例图](/media/binlog/bi-repl1.jpg)
+![使用场景示例图](/media/binlog/bi-repl1.jpg)
 
 ## 实现原理
 
@@ -69,7 +69,7 @@ update drainer_repl_mark set val = val + 1 where id = ? && channel_id = ?;
 
 因为 Drainer 无法为 DDL 操作加入标识表，所以采用单向同步的方式来同步 DDL 操作。
 
-例如集群 A 到集群 B 开启 DDL 同步，集群 B 到集群 A 关闭 DDL 同步。DDL 操作全部在 A 上执行。
+比如集群 A 到集群 B 开启了 DDL 同步，则集群 B 到集群 A 会关闭 DDL 同步。即 DDL 操作全部在 A 上执行。
 
 > **注意：**
 >
