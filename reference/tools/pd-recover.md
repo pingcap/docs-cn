@@ -33,6 +33,9 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd.log |
 
 #### 从 TiDB 日志获取 [info] cluster id
 
+使用以下命令，从 TiDB 日志中获取 [info] cluster id：
+
+{{< copyable "shell-regular" >}}
 {{< copyable "shell-regular" >}}
 
 ```
@@ -47,6 +50,9 @@ ansible -i inventory.ini tidb_servers -m shell -a 'cat {{deploy_dir}}/log/tidb*.
 
 #### 从 TiKV 日志获取 [info] PD cluster
 
+使用以下命令，从 TiKV 日志中获取 [info] PD cluster：
+
+{{< copyable "shell-regular" >}}
 {{< copyable "shell-regular" >}}
 
 ```
@@ -63,7 +69,11 @@ ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* 
 
 在指定 `alloc-id` 时需指定一个比当前最大的 `Alloc ID` 更大的值。可以从中控机使用 `ansible ad-hoc`，也可以直接去服务器上翻日志。
 
-#### （推荐）从 PD 日志获取 [info] allocates id
+#### 从 PD 日志获取 [info] allocates id（推荐）
+
+使用以下命令，从 PD 日志中获取 [info] allocates id：
+
+{{< copyable "shell-regular" >}}
 
 {{< copyable "shell-regular" >}}
 
@@ -80,7 +90,11 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | gr
 
 或者也可以从 TiKV 的日志中获取。
 
-#### 从 tikv 日志获取 [info] alloc store id
+#### 从 TiKV 日志获取 [info] alloc store id
+
+使用以下命令，从 TiKV 日志获取 [info] alloc store id：
+
+{{< copyable "shell-regular" >}}
 
 {{< copyable "shell-regular" >}}
 
@@ -149,7 +163,7 @@ ansible-playbook rolling_update.yml --tags=tidb,tikv
 
 ## 常见问题
 
-### 获取 Cluster ID 时发现有多个
+### 获取 Cluster ID 时发现有多个 Cluster ID
 
 新建 PD 集群时，会生成新的 Cluster ID。可以通过日志判断旧集群的 Cluster ID。
 
