@@ -32,7 +32,7 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
 
 建议不要将 TiFlash 与 TiKV 同盘部署，以防互相干扰。
 
-硬盘选择标准同 [TiFlash 单独部署模式](#tiflash-单独部署模式)。硬盘总容量大致为：`整个 TiKV 集群的需同步数据容量/副本数/2`。例如整体 TiKV 的规划容量为三副本，则 TiFlash 的推荐容量为 TiKV 集群的六分之一。用户可以选择同步部分表数据而非全部。
+硬盘选择标准同 [TiFlash 单独部署模式](#tiflash-单独部署模式)。硬盘总容量大致为：`整个 TiKV 集群的需同步数据容量 / TiKV 副本数 * TiFlash 副本数`。例如整体 TiKV 的规划容量为 1TB、TiKV 副本数为 3、TiFlash 副本数为 2，则 TiFlash 的推荐总容量为 `1024GB / 3 * 2`。用户可以选择同步部分表数据而非全部。
 
 ## 针对 TiDB 的版本要求
 
