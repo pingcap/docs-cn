@@ -3,7 +3,7 @@ title: Sink URI 配置规则
 category: reference
 ---
 
-# Sink URI
+# Sink URI 配置规则
 
 sink URI 需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
 
@@ -34,7 +34,7 @@ sink URI 需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`ti
 | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
 | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
 
-## Sink URI 配置 `kakfa`
+## Sink URI 配置 `kafka`
 
 配置样例如下所示：
 

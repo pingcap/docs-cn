@@ -183,7 +183,7 @@ fileLocation=/home/user/csv/tpcc.  # 存储 csv 文件的目录绝对路径 + �
 
 #### 通过 Lightning 导入
 
-通过 Lightning 导入数据请参考 [Lightning 部署执行](/reference/tools/tidb-lightning/deployment.md)章节。这里我们介绍下通过 tidb-ansible 部署 Lightning 导入数据的方法。
+通过 Lightning 导入数据请参考 [Lightning 部署执行](/reference/tools/tidb-lightning/deployment.md)章节。这里我们介绍下通过 TiDB Ansible 部署 Lightning 导入数据的方法。
 
 ##### 修改 inventory.ini
 
@@ -227,7 +227,7 @@ ansible-playbook deploy.yml --tags=lightning
 * 在 Importer 目录下执行 `scripts/start_importer.sh`，启动 Importer
 * 在 Lightning 目录下执行 `scripts/start_lightning.sh`，开始导入数据
 
-由于是用 ansible 进行部署的，可以在监控页面看到 Lightning 的导入进度，或者通过日志查看导入是否结束。
+由于是用 TiDB Ansible 进行部署的，可以在监控页面看到 Lightning 的导入进度，或者通过日志查看导入是否结束。
 
 ### 导入完成后
 

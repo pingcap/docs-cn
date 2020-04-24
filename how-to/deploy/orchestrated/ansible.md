@@ -5,8 +5,6 @@ category: how-to
 
 # 使用 TiDB Ansible 部署 TiDB 集群
 
-## 概述
-
 Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。本文档介绍如何使用 TiDB Ansible 部署一个完整的 TiDB 集群。
 
 本部署工具可以通过配置文件设置集群拓扑，完成以下各项运维工作：
@@ -22,9 +20,11 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [清除集群数据](/how-to/maintain/ansible-operations.md#清除集群数据)
 - [销毁集群](/how-to/maintain/ansible-operations.md#销毁集群)
 
-> **注意：**
+> **警告：**
 >
-> 对于生产环境，须使用 TiDB Ansible 部署 TiDB 集群。如果只是用于测试 TiDB 或体验 TiDB 的特性，建议[使用 Docker Compose 在单机上快速部署 TiDB 集群](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
+> 对于生产环境，推荐[使用 TiUP 部署 TiDB 集群](/how-to/deploy/orchestrated/tiup.md)。从 TiDB 4.0 版本开始，不再推荐使用 TiDB Ansible 部署 TiDB 集群，但可以使用 TiUP 直接支持之前的 Ansible 集群。
+> 
+> 如果只是希望测试 TiDB 或体验 TiDB 特性，可参考 [TiDB 快速上手指南](/quick-start-with-tidb.md)或者[使用 Docker Compose 在单机上快速部署 TiDB 集群](/how-to/get-started/deploy-tidb-from-docker-compose.md)。
 
 ## 准备机器
 
@@ -36,7 +36,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 
     > **注意：**
     >
-    > 使用 Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。**如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to/get-started/deploy-tidb-from-docker-compose.md)单机进行测试。**
+    > 使用 TiDB Ansible 方式部署时，TiKV 及 PD 节点数据目录所在磁盘请使用 SSD 磁盘，否则无法通过检测。**如果仅验证功能，建议使用 [Docker Compose 部署方案](/how-to/get-started/deploy-tidb-from-docker-compose.md)单机进行测试。**
 
 2. 部署中控机一台
 
@@ -154,11 +154,11 @@ git clone https://github.com/pingcap/tidb-ansible.git
 > - 部署和升级 TiDB 集群需使用对应的 tidb-ansible 版本，通过改 `inventory.ini` 文件中的版本来混用可能会产生一些错误。
 > - 请务必按文档操作，将 `tidb-ansible` 下载到 `/home/tidb` 目录下，权限为 `tidb` 用户，不要下载到 `/root` 下，否则会遇到权限问题。
 
-## 第 4 步：在中控机器上安装 Ansible 及其依赖
+## 第 4 步：在中控机器上安装 TiDB Ansible 及其依赖
 
-以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0、release-3.1 以及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
+以 `tidb` 用户登录中控机，请务必按以下方式通过 `pip` 安装 TiDB Ansible 及其相关依赖的指定版本，否则会有兼容问题。目前，TiDB release-2.0、release-2.1、release-3.0、release-3.1 以及最新开发版本兼容 Ansible 2.4 ~ 2.7.11 (2.4 ≤ Ansible ≤ 2.7.11)。
 
-1. 在中控机器上安装 Ansible 及其依赖。
+1. 在中控机器上安装 TiDB Ansible 及其依赖。
 
     {{< copyable "shell-regular" >}}
 
@@ -496,20 +496,12 @@ analyzing CPU 0:
 
 # 注意：要使用 TiKV 的 labels，必须同时配置 PD 的 location_labels 参数，否则 labels 设置不生效。
 [tikv_servers]
-TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv1"
-TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv1"
-TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv2"
-TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv2"
-TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 labels="host=tikv3"
-TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 labels="host=tikv3"
-
-# 部署 3.0 版本的 TiDB 集群时，多实例场景需要额外配置 status 端口，示例如下：
-# TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv1"
-# TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv1"
-# TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv2"
-# TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv2"
-# TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv3"
-# TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv3"
+TiKV1-1 ansible_host=172.16.10.4 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv1"
+TiKV1-2 ansible_host=172.16.10.4 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv1"
+TiKV2-1 ansible_host=172.16.10.5 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv2"
+TiKV2-2 ansible_host=172.16.10.5 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv2"
+TiKV3-1 ansible_host=172.16.10.6 deploy_dir=/data1/deploy tikv_port=20171 tikv_status_port=20181 labels="host=tikv3"
+TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv3"
 
 [monitoring_servers]
 172.16.10.1
@@ -715,7 +707,7 @@ TiDB 兼容 MySQL，因此可使用 MySQL 客户端直接连接 TiDB。推荐配
 
 ## 常见部署问题
 
-本小节介绍使用 Ansible 部署 TiDB 集群过程中的常见问题与解决方案。
+本小节介绍使用 TiDB Ansible 部署 TiDB 集群过程中的常见问题与解决方案。
 
 ### 如何自定义端口
 
@@ -917,7 +909,7 @@ ansible-playbook start.yml
 
 ### You need to install jmespath prior to running json_query filter 报错
 
-1. 请参照[在中控机器上安装 Ansible 及其依赖](#在中控机器上安装-ansible-及其依赖) 在中控机上通过 `pip` 安装 Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
+1. 请参照[在中控机器上安装 TiDB Ansible 及其依赖](#在中控机器上安装-tidb-ansible-及其依赖) 在中控机上通过 `pip` 安装 TiDB Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
 
 2. 执行以下命令，验证 `jmespath` 是否安装成功：
 

@@ -34,7 +34,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 * 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
 * 千兆网卡
 
-### 使用 Ansible 部署
+### 使用 TiDB Ansible 部署
 
 1. `inventory.ini` 文件中，`[importer_server]` 部分可以留空。
 
