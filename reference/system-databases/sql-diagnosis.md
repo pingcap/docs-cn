@@ -40,14 +40,14 @@ On the system tables earlier than TiDB v4.0, you can only view the current node.
 
 ## Cluster monitoring tables
 
-To dynamically observe and compare cluster conditions in different time periods, the SQL diagnosis system introduces cluster monitoring system tables. All monitoring tables are in `metrics_schema`, and you can query the monitoring information SQL statements. Using this method, you can perform correlated queries on all monitoring information of the entire cluster and compare the results of different time periods to quickly identify performance bottlenecks.
+To dynamically observe and compare cluster conditions in different time periods, the SQL diagnosis system introduces cluster monitoring system tables. All monitoring tables are in `metrics_schema`, and you can query the monitoring information using SQL statements. Using this method, you can perform correlated queries on all monitoring information of the entire cluster and compare the results of different time periods to quickly identify performance bottlenecks.
 
-+ `information_schema.metrics_tables`: Because many system tables exist now, you can query meta-information of these monitoring tables on the `information_schema.metrics_tables` table.
++ [`information_schema.metrics_tables`](/reference/system-databases/metrics-tables.md)): Because many system tables exist now, you can query meta-information of these monitoring tables on the `information_schema.metrics_tables` table.
 
 Because the TiDB cluster has many monitoring metrics, TiDB provides the following monitoring summary tables in v4.0:
 
-+ The monitoring summary table `information_schema.metrics_summary` summarizes all monitoring data to for you to check each monitoring metric with higher efficiency.
-+ The monitoring summary table `information_schema.metrics_summary_by_label` also summarizes all monitoring data, but this table performs differentiated statistics according to different labels.
++ The monitoring summary table [`information_schema.metrics_summary`](/reference/system-databases/metrics-summary.md) summarizes all monitoring data to for you to check each monitoring metric with higher efficiency.
++ The monitoring summary table [`information_schema.metrics_summary_by_label`](/reference/system-databases/metrics-summary.md)) also summarizes all monitoring data, but this table performs differentiated statistics according to different labels.
 
 ## Automatic diagnosis
 
