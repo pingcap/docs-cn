@@ -276,12 +276,13 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_enable_table_partition
 
-- Scope: SESSION
-- Default value: "auto"
+- Scope: SESSION | GLOBAL
+- Default value: "on"
 - This variable is used to set whether to enable the `TABLE PARTITION` feature.
     - `off` indicates disabling the `TABLE PARTITION` feature. In this case, the syntax that creates a partition table can be executed, but the table created is not a partitioned one.
-    - `auto` indicates enabling the `TABLE PARTITION` feature. Currently, it indicates enabling range partition and hash partition.
-    - `on` functions the same way as `auto` does.
+    - `on` indicates enabling the `TABLE PARTITION` feature for the supported partition types. Currently, it indicates enabling range partition, hash partition and range column partition with one single column.
+    - `auto` functions the same way as `on` does.
+
 - Currently, TiDB only supports range partition and hash partition.
 
 ### tidb_backoff_lock_fast
