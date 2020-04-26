@@ -95,7 +95,7 @@ When the cluster is in operation, if you need to modify the parameters of a comp
     
         ```
         server_configs:
-        tidb:
+          tidb:
             log.slow-threshold: 300
         ```
 
