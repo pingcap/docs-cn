@@ -118,7 +118,7 @@ explain analyze select count(*) from test.t;
 
 `cop[tiflash]` 表示该任务会发送至 TiFlash 进行处理。如果没有选择 TiFlash 副本，可尝试通过 `analyze table` 语句更新统计信息后，再查看 `explain analyze` 结果。
 
-需要注意的是，如果表仅有单个 TiFlash 副本且相关节点无法服务，CBO 模式下的查询会不断重试，需要指定 Engine 或者手工 Hint 来读取 TiKV。
+需要注意的是，如果表仅有单个 TiFlash 副本且相关节点无法服务，智能选择模式下的查询会不断重试，需要指定 Engine 或者手工 Hint 来读取 TiKV。
 
 ### Engine 隔离
 
