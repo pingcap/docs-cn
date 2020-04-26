@@ -430,24 +430,24 @@ tikv_servers:
 
 tiflash_servers:
   - host: 10.0.1.10
-  # ssh_port: 22
-  # tcp_port: 9000
-  # http_port: 8123
-  # flash_service_port: 3930
-  # flash_proxy_port: 20170
-  # flash_proxy_status_port: 20292
-  # metrics_port: 8234
-  # deploy_dir: /tidb-deploy/tiflash-9000
-  # data_dir: /tidb-data/tiflash-9000
-  # log_dir: /tidb-deploy/tiflash-9000/log
-  # numa_node: "0,1"
-  # # The following configs are used to overwrite the `server_configs.tiflash` values.
-  # config:
-  #   logger.level: "info"
-  # learner_config:
-  #   log-level: "info"
-  #  - host: 10.0.1.15
-  #  - host: 10.0.1.16
+    # ssh_port: 22
+    # tcp_port: 9000
+    # http_port: 8123
+    # flash_service_port: 3930
+    # flash_proxy_port: 20170
+    # flash_proxy_status_port: 20292
+    # metrics_port: 8234
+    # deploy_dir: /tidb-deploy/tiflash-9000
+    # data_dir: /tidb-data/tiflash-9000
+    # log_dir: /tidb-deploy/tiflash-9000/log
+    # numa_node: "0,1"
+    # # The following configs are used to overwrite the `server_configs.tiflash` values.
+    # config:
+    #   logger.level: "info"
+    # learner_config:
+    #   log-level: "info"
+  # - host: 10.0.1.15
+  # - host: 10.0.1.16
 
 # pump_servers:
 #   - host: 10.0.1.17
