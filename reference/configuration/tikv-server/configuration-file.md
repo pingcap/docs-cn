@@ -493,6 +493,10 @@ raftstore 相关的配置项。
 + 开启 rocksdb delete_range 接口删除数据的开关。
 + 默认值：false
 
+> **警告：**
+>
+> 该功能还在测试阶段，请不要在生产环境中使用。
+
 ### `cleanup-import-sst-interval`
 
 + 触发检查过期 SST 文件的时间间隔，0 表示不启用。
@@ -725,6 +729,10 @@ rocksdb 相关的配置项。
 ## rocksdb.titan
 
 Titan 相关的配置项。
+
+> **警告：**
+>
+> 该功能还在测试阶段，请不要在生产环境中使用。
 
 ### `enabled`
 
