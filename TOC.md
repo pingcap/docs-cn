@@ -374,6 +374,8 @@
       - [Deploy and Use TiCDC](/reference/tools/ticdc/deploy.md)
       - [Manage TiCDC Cluster and Replication Tasks](/reference/tools/ticdc/manage.md)
       - [Configure Sink URI](/reference/tools/ticdc/sink.md)
+      - [TiCDC Open Protocol](/reference/tools/ticdc/open-protocol.md)
+      - [Column and DDL Type Codes](/reference/tools/ticdc/column-ddl-type.md)
     + sync-diff-inspector
       - [Overview](/reference/tools/sync-diff-inspector/overview.md)
       - [Data Check for Tables with Different Schema or Table Names](/reference/tools/sync-diff-inspector/route-diff.md)
