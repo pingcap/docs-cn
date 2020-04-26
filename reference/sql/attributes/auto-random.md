@@ -21,7 +21,7 @@ Take the following created table as an example:
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int primary key auto_increment, b varchar(255))
+create table t (a bigint primary key auto_increment, b varchar(255))
 ```
 
 On this `t` table, you execute a large number of `INSERT` statements that do not specify the values of the primary key as below:
@@ -37,7 +37,7 @@ In the above statement, values of the primary key (column `a`) are not specified
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int primary key auto_random, b varchar(255))
+create table t (a bigint primary key auto_random, b varchar(255))
 ```
 
 or
@@ -45,24 +45,24 @@ or
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int auto_random, b varchar(255), primary key (a))
+create table t (a bigint auto_random, b varchar(255), primary key (a))
 ```
 
-Then execute the `INSERT` statement such as `INSERT INTO t(b) values...`.  Now the results will be as follows:
+Then execute the `INSERT` statement such as `INSERT INTO t(b) values...`. Now the results will be as follows:
 
-+ If the `INSERT` statement does not specify the values of the integer primary key column (column `a`) or specify the value as `NULL`, TiDB automatically assigns values to this column. These values are not necessarily auto-increment or continuous but are unique, which avoids the hotspot problem caused by continuous row IDs.
-+ If the `INSERT` statement explicitly specifies the values of the integer primary key column, TiDB saves these values, which works similarly to the `AUTO_INCREMENT` attribute. Note that if you do not set `NO_AUTO_VALUE_ON_ZERO` in the `@@sql_mode` system variable, TiDB will automatically assign values to this column even if you explicitly specify the value of the integer primary key column as `0`.
++ Implicitly assigning values: If the `INSERT` statement does not specify the values of the integer primary key column (column `a`) or specify the value as `NULL`, TiDB automatically assigns values to this column. These values are not necessarily auto-increment or continuous but are unique, which avoids the hotspot problem caused by continuous row IDs.
++ Explicitly inserting values: If the `INSERT` statement explicitly specifies the values of the integer primary key column, TiDB saves these values, which works similarly to the `AUTO_INCREMENT` attribute. Note that if you do not set `NO_AUTO_VALUE_ON_ZERO` in the `@@sql_mode` system variable, TiDB will automatically assign values to this column even if you explicitly specify the value of the integer primary key column as `0`.
 
 TiDB automatically assigns values in the following way:
 
-The second highest five digits (no matter the column type is signed or unsigned) of the row value in binary (namely, shard bits) are determined by the starting time of the current transaction. The remaining digits are assigned values in an auto-increment order.
+The highest five digits (ignoring the sign bit) of the row value in binary (namely, shard bits) are determined by the starting time of the current transaction. The remaining digits are assigned values in an auto-increment order.
 
 To use different number of shard bits, append a pair of parentheses to `AUTO_RANDOM` and specify the desired number of shard bits in the parentheses. See the following example:
 
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int primary key auto_random(3), b varchar(255))
+create table t (a bigint primary key auto_random(3), b varchar(255))
 ```
 
 In the above `CREATE TABLE` statement, `3` shard bits are specified. The range of the number of shard bits is `[1, field_max_bits)`. `field_max_bits` is the length of bits occupied by the primary key column.
@@ -75,17 +75,21 @@ After creating the table, use the `SHOW WARNINGS` statement to see the maximum n
 show warnings
 ```
 
-```
-+-------+------+------------------------------------------------+
-| Level | Code | Message                                        |
-+-------+------+------------------------------------------------+
-| Note  | 1105 | Available implicit allocation times: 268435455 |
-+-------+------+------------------------------------------------+
+```sql
++-------+------+----------------------------------------------------------+
+| Level | Code | Message                                                  |
++-------+------+----------------------------------------------------------+
+| Note  | 1105 | Available implicit allocation times: 1152921504606846976 |
++-------+------+----------------------------------------------------------+
 ```
 
-In addition, for tables with the `AUTO_RANDOM` attribute, the value of the corresponding `TIDB_ROW_ID_SHARDING_INFO` column in the `information_schema.tables` system table is `PK_AUTO_RANDOM_BITS=x`. `x` is the number of shard bits.
+> **Note:**
+>
+> It is recommended that you use `bigint` as the `AUTO_RANDOM` column type to get the maximum number of implicit assignments.
 
-You can use `select last_insert_id ()` to see the last implicit ID assigned by TiDB. For example:
+In addition, to view the shard bit number of the table with the `AUTO_RANDOM` attribute, you can see the value of the `PK_AUTO_RANDOM_BITS=x` mode in the `TIDB_ROW_ID_SHARDING_INFO` column in the `information_schema.tables` system table. `x` is the number of shard bits.
+
+Values assigned to the `AUTO_RANDOM` column affect `last_insert_id()`. You can use `select last_insert_id ()` to get the ID that TiDB last implicitly assigns. For example:
 
 {{< copyable "sql" >}}
 
@@ -117,13 +121,13 @@ TiDB supports parsing the version comment syntax. See the following example:
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int primary key /*T!30100 auto_random */)
+create table t (a bigint primary key /*T!30100 auto_random */)
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int primary key auto_random)
+create table t (a bigint primary key auto_random)
 ```
 
 The above two statements have the same meaning.
