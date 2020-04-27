@@ -1,10 +1,10 @@
 ---
-title: TiDB 最新开发版升级操作指南
+title: 使用 TiDB Ansible 升级 TiDB
 category: how-to
 aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
-# TiDB 最新开发版升级操作指南
+# 使用 TiDB Ansible 升级 TiDB
 
 本文档适用于从 TiDB 2.0、2.1、3.0、3.1 版本升级至 TiDB 最新开发版 (latest) 以及从开发版的较低版本升级至最新版本。目前，TiDB 最新开发版兼容 [TiDB Binlog Cluster 版本](/reference/tidb-binlog/overview.md)。
 

@@ -91,7 +91,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## readpool.unified
 
-统一处理读请求的线程池相关的配置项。
+统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
 
 ### `min-thread-count`
 
@@ -254,6 +254,21 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 + TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
 + 默认值：2GB
 + 单位: MB|GB
+
+## storage.block-cache
+
+RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为每个 CF 单独配置的 block cache 将无效。
+
+### `shared`
+
++ 是否开启共享 block cache。
++ 默认值：true
+
+### `capacity`
+
++ 共享 block cache 的大小。
++ 默认值：系统总内存大小的 45%
++ 单位：KB|MB|GB
 
 ## raftstore
 
@@ -1019,6 +1034,24 @@ rocksdb defaultcf titan 相关的配置项。
 + 默认值：8MB
 + 最小值：0
 + 单位：KB|MB|GB
+
+### `blob-run-mode`
+
++ Titan 的运行模式选择，可选值：
+    + "normal"：value size 超过 min-blob-size 的数据会写入到 blob 文件。
+    + "read_only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
+    + "fallback"：将 blob 内的数据写回 LSM。
++ 默认值："normal"
+
+### `level-merge`
+
++ 是否通过开启 level-merge 来提升读性能，副作用是写放大会比不开启更大。
++ 默认值：true
+
+### `gc-merge-rewrite`
+
++ 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
++ 默认值：true
 
 ## rocksdb.writecf
 

@@ -1,19 +1,19 @@
 ---
 title: INSPECTION_SUMMARY
-summary: 了解 TiDB 集群配置表 `INSPECTION_SUMMARY`。
+summary: 了解 TiDB 系统表 `INSPECTION_SUMMARY`。
 category: reference
 ---
 
 # INSPECTION_SUMMARY
 
-在部分场景下，用户只关注特定链路或模块的监控汇总。例如当前 Coprocessor 配置的线程池为 8，如果 Coprocessor 的 CPU 使用率达到了 750%，可以确定存在风险，或者可能提前成为瓶颈。但是部分监控会因为用户的 workload 不同而差异较大，所以难以定义确定的阈值。排查这部分场景的问题也非常重要，所以TiDB 提供了 `inspection_summary` 来进行链路汇总。
+在部分场景下，用户只关注特定链路或模块的监控汇总。例如当前 Coprocessor 配置的线程池为 8，如果 Coprocessor 的 CPU 使用率达到了 750%，可以确定存在风险，或者可能提前成为瓶颈。但是部分监控会因为用户的 workload 不同而差异较大，所以难以定义确定的阈值。排查这部分场景的问题也非常重要，所以 TiDB 提供了 `inspection_summary` 来进行链路汇总。
 
 诊断汇总表 `information_schema.inspection_summary` 的表结构如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> desc inspection_summary;
+desc inspection_summary;
 ```
 
 ```
@@ -51,25 +51,25 @@ mysql> desc inspection_summary;
 {{< copyable "sql" >}}
 
 ```sql
-mysql> SELECT
-         t1.avg_value / t2.avg_value AS ratio,
-         t1.*,
-         t2.*
-       FROM
-         (
-           SELECT
-             /*+ time_range("2020-01-16 16:00:54.933", "2020-01-16 16:10:54.933")*/ *
-           FROM inspection_summary WHERE rule='read-link'
-         ) t1
-         JOIN
-         (
-           SELECT
-             /*+ time_range("2020-01-16 16:10:54.933","2020-01-16 16:20:54.933")*/ *
-           FROM inspection_summary WHERE rule='read-link'
-         ) t2
-         ON t1.metrics_name = t2.metrics_name
-         and t1.instance = t2.instance
-         and t1.label = t2.label
-       ORDER BY
-         ratio DESC;
+SELECT
+  t1.avg_value / t2.avg_value AS ratio,
+  t1.*,
+  t2.*
+FROM
+  (
+    SELECT
+      /*+ time_range("2020-01-16 16:00:54.933", "2020-01-16 16:10:54.933")*/ *
+    FROM inspection_summary WHERE rule='read-link'
+  ) t1
+  JOIN
+  (
+    SELECT
+      /*+ time_range("2020-01-16 16:10:54.933","2020-01-16 16:20:54.933")*/ *
+    FROM inspection_summary WHERE rule='read-link'
+  ) t2
+  ON t1.metrics_name = t2.metrics_name
+  and t1.instance = t2.instance
+  and t1.label = t2.label
+ORDER BY
+  ratio DESC;
 ```

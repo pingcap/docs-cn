@@ -1,6 +1,6 @@
 ---
 title: CLUSTER_HARDWARE
-summary: 了解 TiDB 集群配置表 `CLUSTER_HARDWARE`。
+summary: 了解 TiDB 集群硬件表 `CLUSTER_HARDWARE`。
 category: reference
 ---
 
@@ -29,15 +29,15 @@ desc cluster_hardware;
 
 字段解释：
 
-* `TYPE`：对应节点信息表 `information_schema.cluster_info` 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 或 `tikv`。
-* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info` 中的 `STATUS_ADDRESS` 字段。
+* `TYPE`：对应节点信息表 [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md) 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 和 `tikv`。
+* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info` 中的 `INSTANCE` 字段。
 * `DEVICE_TYPE`：硬件类型。目前可以查询的硬件类型有 `cpu`、`memory`、`disk` 和 `net`。
 * `DEVICE_NAME`：硬件名。对于不同的 `DEVICE_TYPE`，`DEVICE_NAME` 的取值不同。
     * `cpu`：硬件名为 cpu。
     * `memory`：硬件名为 memory。
     * `disk`：磁盘名。
     * `net`：网卡名。
-* `NAME`：硬件不同的信息名，比如 cpu 有 `cpu-logical-cores` ， `cpu-physical-cores` 两个信息名，表示逻辑核心数量和物理核心数量。
+* `NAME`：硬件不同的信息名，比如 cpu 有 `cpu-logical-cores` 和 `cpu-physical-cores` 两个信息名，表示逻辑核心数量和物理核心数量。
 * `VALUE`：对应硬件信息的值。例如磁盘容量和 CPU 核数。
 
 查询集群 CPU 信息的示例如下：
