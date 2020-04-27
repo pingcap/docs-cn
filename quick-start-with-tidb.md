@@ -202,7 +202,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
      tidb:
        log.slow-threshold: 300
      tikv:
-       readpool.storage.use-unified-pool: true
+       readpool.storage.use-unified-pool: false
        readpool.coprocessor.use-unified-pool: true
      pd:
        replication.enable-placement-rules: true
