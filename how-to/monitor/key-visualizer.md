@@ -9,7 +9,7 @@ Key Visualizer 是一款用于分析 TiDB 使用模式和排查流量热点的�
 
 ## 访问 Key Visualizer
 
-Key Visualizer 功能作为 TiDB Dashboard 组件的功能之一，直接集成在 PD 实例上，无需单独部署。可通过以下方式在浏览器中访问某个 PD 实例上的 TiDB Dashboard：
+Key Visualizer 功能作为 TiDB Dashboard 组件的功能之一，直接集成在 PD 实例上，无需单独部署。可通过以下方式在浏览器中访问任一 PD 实例上的 TiDB Dashboard：
 
 {{< copyable "" >}}
 
