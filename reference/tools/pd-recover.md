@@ -139,7 +139,7 @@ ansible-playbook start.yml --tags=pd
 ./pd-recover -endpoints http://10.0.1.13:2379 -cluster-id 6747551640615446306 -alloc-id 10000
 ```
 
-### 重启 pd 集群
+### 重启 PD 集群
 
 {{< copyable "shell-regular" >}}
 
@@ -163,4 +163,4 @@ ansible-playbook rolling_update.yml --tags=tidb,tikv
 
 ### 执行 pd-recover 时返回错误 `dial tcp 10.0.1.13:2379: connect: connection refused`
 
-执行 pd-recover 时需要 pd 提供服务，请先部署并启动 pd 集群。
+执行 pd-recover 时需要 PD 提供服务，请先部署并启动 PD 集群。
