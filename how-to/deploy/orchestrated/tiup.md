@@ -347,6 +347,7 @@ monitored:
   # deploy_dir: "/tidb-deploy/monitored-9100"
   # data_dir: "/tidb-data/monitored-9100"
   # log_dir: "/tidb-deploy/monitored-9100/log"
+
 # # Server configs are used to specify the runtime configuration of TiDB components.
 # # All configuration items can be found in TiDB docs:
 # # - TiDB: https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/
@@ -369,7 +370,7 @@ server_configs:
     # rocksdb.max-sub-compactions: 1
     # storage.block-cache.capacity: "16GB"
     # readpool.unified.max-thread-count: 12
-    readpool.storage.use-unified-pool: true
+    readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
   pd:
     schedule.leader-schedule-limit: 4
@@ -523,12 +524,12 @@ You need to fill in the result in the configuration file (as described in the St
 
 - Configuration optimization for TiKV
 
-    - Make `readpool` thread pool self-adaptive. Configure the `readpool.unified.max-thread-count` parameter to make `readpool.storage` and `readpool.coprocessor` share a unified thread pool, and also enable self-adaptive switches for them.
+    - Make `readpool` thread pool self-adaptive. Configure the `readpool.unified.max-thread-count` parameter to make `readpool.storage` and `readpool.coprocessor` share a unified thread pool, and also set self-adaptive switches for them respectively.
 
         - Enable `readpool.storage` and `readpool.coprocessor`:
 
             ```yaml
-            readpool.storage.use-unified-pool: true
+            readpool.storage.use-unified-pool: false
             readpool.coprocessor.use-unified-pool: true
             ```
 
@@ -638,7 +639,7 @@ monitored:
 server_configs:
   tikv:
     readpool.unified.max-thread-count: <fill in the calculated result from the calculation formula provided before>
-    readpool.storage.use-unified-pool: true
+    readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
     storage.block-cache.capacity: "<fill in the calculated result from the calculation formula provided before>"
     raftstore.capacity: "<fill in the calculated result from the calculation formula provided before>"
@@ -1308,7 +1309,7 @@ tidb_servers:
       # rocksdb.max-sub-compactions: 1
       # storage.block-cache.capacity: "16GB"
       # readpool.unified.max-thread-count: 12
-      readpool.storage.use-unified-pool: true
+      readpool.storage.use-unified-pool: false
       readpool.coprocessor.use-unified-pool: true
     pd:
       schedule.leader-schedule-limit: 4

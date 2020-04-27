@@ -206,7 +206,7 @@ Other requirements for the deployment machine:
      tidb:
        log.slow-threshold: 300
      tikv:
-       readpool.storage.use-unified-pool: true
+       readpool.storage.use-unified-pool: false
        readpool.coprocessor.use-unified-pool: true
      pd:
        replication.enable-placement-rules: true
