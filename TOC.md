@@ -13,6 +13,7 @@
     - [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/tpcc.md)
     - [线上负载与 `Add Index` 相互影响测试](/benchmark/add-index-with-load.md)
+- [TiDB 快速上手指南](/quick-start-with-tidb.md)
 + 主要概念
   - [整体架构](/architecture.md)
   + 核心特性
@@ -20,7 +21,6 @@
     - [高可用](/key-features.md#高可用)
 + 操作指南
   + 快速上手
-    - [快速体验 TiDB 集群](/how-to/get-started/quick-start-with-tidb.md)
     - [使用 Docker Compose 部署 TiDB](/how-to/get-started/deploy-tidb-from-docker-compose.md)
     - [SQL 基本操作](/how-to/get-started/explore-sql.md)
     - [读取历史数据](/how-to/get-started/read-historical-data.md)
@@ -57,6 +57,7 @@
       - [以 Amazon Aurora MySQL 为例](/how-to/migrate/from-mysql-aurora.md)
     - [从 CSV 迁移](/reference/tools/tidb-lightning/csv.md)
   + 运维
+    - [TiUP 常见运维操作](/how-to/maintain/tiup-operations.md)
     - [Ansible 常见运维操作](/how-to/maintain/ansible-operations.md)
     + 备份与恢复
       - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/how-to/maintain/backup-and-restore/mydumper-lightning.md)
@@ -320,7 +321,7 @@
     - [增量恢复](/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/reference/tidb-binlog/binlog-slave-client.md)
     - [TiDB Binlog Relay Log](/reference/tidb-binlog/relay-log.md)
-    - [集群间双向同步](/reference/tidb-binlog/bi-repl.md)
+    - [集群间双向同步](/reference/tidb-binlog/bidirectional-replication.md)
     - [术语表](/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/reference/tidb-binlog/troubleshoot/binlog.md)
@@ -387,6 +388,7 @@
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.13](/releases/3.0.13.md)
     - [3.0.12](/releases/3.0.12.md)
     - [3.0.11](/releases/3.0.11.md)
     - [3.0.10](/releases/3.0.10.md)
