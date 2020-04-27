@@ -67,7 +67,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 
 ### 手动部署
 
-手动部署时，你无需下载和配置 `tikv-importer`。
+手动部署时，你无需下载和配置 `tikv-importer`，TiDB Lightning 可[在此下载](/reference/tools/download.md)。
 
 在运行 `tidb-lightning` 之前，在配置文件中加上如下几行：
 
