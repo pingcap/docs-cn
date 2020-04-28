@@ -31,7 +31,7 @@ SHOW CHARACTER SET;
 
 > **注意：**
 >
-> 每个字符集可能对应多个排序规则，但与之默认对应的排序规则有且仅有一个。
+> 每个字符集可能对应多个排序规则，但与之对应的**默认排序规则**有且仅有一个。
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
 
@@ -200,13 +200,13 @@ col_name {ENUM | SET} (val_list)
 
 ## 字符串的字符集和排序规则
 
-每一字符串字符文字有一个字符集和一个比较排序规则，在使用字符串时指，此选项可选，如下：
+每一个字符串都对应一个字符集和一个比较排序规则，在使用字符串时指此选项可选，如下：
 
 ```sql
 [_charset_name]'string' [COLLATE collation_name]
 ```
 
-示例，如下：
+示例如下：
 
 {{< copyable "sql" >}}
 
@@ -218,9 +218,9 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 规则如下：
 
-* 规则 1：指定 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
-* 规则 2：指定 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `CHARACTER SET charset_name` 默认的排序比较规则。
-* 规则 3：`CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用 `character_set_connection` 和 `collation_connection` 系统变量给出的字符集和比较排序规则。
+* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
+* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `CHARACTER SET charset_name` 默认的排序规则。
+* 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用 `character_set_connection` 和 `collation_connection` 系统变量给出的字符集和排序规则。
 
 ## 客户端连接的字符集和排序规则
 
@@ -246,7 +246,7 @@ SET character_set_results = charset_name;
 SET character_set_connection = charset_name;
 ```
 
-`COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 默认的排序规则。
+`COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的排序规则。
 
 * `SET CHARACTER SET 'charset_name'`
 
@@ -260,15 +260,15 @@ SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;
 ```
 
-## 集群、服务器、数据库、表、列、字符串的字符集和排序规则的优化级别
+## 集群、服务器、数据库、表、列、字符串的字符集和排序规则的优先级
 
 字符串 > 列 > 表 > 数据库 > 服务器 > 集群
 
-## 字符集和排序规则通用选择规则
+## 字符集和排序规则的通用选择规则
 
-* 规则 1：指定 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
-* 规则 2：指定 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `CHARACTER SET charset_name` 默认的排序比较规则。
-* 规则 3：`CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用更高优化级给出的字符集和排序比较规则。
+* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
+* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `CHARACTER SET charset_name` 默认的排序规则。
+* 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用更高优先级给出的字符集和排序规则。
 
 ## 字符合法性检查
 
@@ -280,13 +280,13 @@ SET collation_connection = @@collation_database;
 
 排序规则的语法支持和语义支持受到配置项 [`new_collation_enable`](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。
 
-在 4.0 版本之前，TiDB 只提供了旧的排序规则框架，能够在语法上支持的绝大部分 MySQL排序规则，但语义上所有的排序规则都当成二进制排序规则。
+在 4.0 版本之前，TiDB 只提供了旧的排序规则框架，能够在语法上支持的绝大部分 MySQL 排序规则，但语义上所有的排序规则都当成二进制排序规则。
 
 4.0 版本中，TiDB 增加了新的排序规则框架用于在语义上支持不同的排序规则，保证字符串比较时严格遵循对应的排序规则，详情请见下文。
 
 ### 旧框架下的排序规则支持
 
-在 4.0 版本之前，TiDB 中可以指定大部分 MySQl 中的排序规则，并把这些排序规则按照默认排序规则处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 在比较字符前按照 排序规则 的 `PADDING` 属性将字符补齐空格，因此会造成以下的行为区别：
+在 4.0 版本之前，TiDB 中可以指定大部分 MySQl 中的排序规则，并把这些排序规则按照默认排序规则处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 在比较字符前按照排序规则的 PADDING 属性将字符末尾的空格删除，因此会造成以下的行为区别：
 
 {{< copyable "sql" >}}
 
@@ -303,7 +303,7 @@ Query OK, 1 row affected # MySQL 中，由于补齐空格比较，报错 Duplica
 
 ### 新框架下的排序规则支持
 
-TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collation_enabled_on_first_boostrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认新排序规则是否启用：
+TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collation_enabled_on_first_boostrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled`  变量确认是否启用新排序规则框架：
 
 {{< copyable "sql" >}}
 
@@ -357,7 +357,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 
 binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
 
-如果两个子表达式的排序规则不相同，而且表达式的 coercibility 值都为 `0` 时，TiDB无法推断排序规则并报错。
+如果两个子表达式的排序规则不相同，而且表达式的 coercibility 值都为 `0` 时，TiDB 无法推断排序规则并报错。
 
 ## `COLLATE` 子句
 
