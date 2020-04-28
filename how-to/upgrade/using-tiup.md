@@ -126,7 +126,7 @@ After the import is complete, you can check the current cluster status by execut
     tiup cluster edit-config <cluster-name>
     ```
 
-3. See the configuration template format of [topology](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml) and fill in the modified parameters of the original cluster in the `server_configs` section of the topology file.
+3. See the configuration template format of [topology](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml) and fill in the modified parameters of the original cluster in the `server_configs` section of the topology file.
 
     Even if the label has been configured for the cluster, you also need to fill in the label in the configuration according to the format in the template. In later versions, the label will be automatically imported.
 

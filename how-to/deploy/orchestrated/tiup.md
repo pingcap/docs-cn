@@ -283,7 +283,7 @@ Take the `/dev/nvme0n1` data disk as an example:
 
 ## Step 4: Edit the initialization configuration file `topology.yaml`
 
-You need to manually create and edit the cluster initialization configuration file. For the full configuration template, refer to [Github TiUP Project](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml).
+You need to manually create and edit the cluster initialization configuration file. For the full configuration template, refer to [Github TiUP Project](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml).
 
 You need to create a YAML configuration file on the Control Machine, such as `topology.yaml`.
 
