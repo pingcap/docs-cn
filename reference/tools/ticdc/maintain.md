@@ -14,29 +14,29 @@ category: reference
 首先需要理解同步任务的 `start-ts` 对应于上游 TiDB 集群的一个 TSO，同步任务会从这个 TSO 开始请求数据。所以同步任务的 `start-ts` 需要满足两个条件：
 
 - `start-ts` 的值需要大于 TiDB 集群当前的 `tikv_gc_safe_point`，否则创建任务时会报错
-- 启动任务时，需要保证下游已经具有 `start-ts` 之前的所有数据（如果需要保证上下游数据的一致，对于同步到消息队列等场景，可根据业务场景放宽此需求）
+- 启动任务时，需要保证下游已经具有 `start-ts` 之前的所有数据（对于同步到消息队列等场景，如果不需要保证上下游数据的一致，可根据业务场景放宽此需求）
 
-需要注意如果不指定 `start-ts` 或者指定 `start-ts=0`，在启动任务的时候会去 pd 获取当前的一个 TSO，并从该 TSO 开始同步。
+如果不指定 `start-ts` 或者指定 `start-ts=0`，在启动任务的时候会去 PD 获取一个当前 TSO，并从该 TSO 开始同步。
 
 ### 发生同步中断的处理
 
-目前已知可能产生的同步中断包括以下几类场景：
+目前已知可能发生的同步中断包括以下几类场景：
 
 - 下游持续异常，TiCDC 多次重试后仍然失败：
 
-    - 该场景下 TiCDC 保存任务信息，并且在 PD 中设置的 service GC safepoint 不会推进，保证在任务 checkpoint 之后的数据不被 TiKV GC。
+    - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC。
     - 用户可以在下游恢复正常后，通过 HTTP 接口恢复同步任务。
 
 - 因下游存在不兼容的 SQL，导致同步不能继续：
 
-    - 该场景下 TiCDC 保存任务信息，并且在 PD 中设置的 service GC safepoint 不会推进，保证在任务 checkpoint 之后的数据不被 TiKV GC。
-    - 用户需先通过 `cdc cli changefeed query` 查询同步状态信息，记录 `checkpoint-ts` 值。
-    - 使用新的任务配置文件，并增加`ignore-txn-commit-ts` 参数跳过指定 `commit-ts` 对应的事务
-    - 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create` 并指定配置文件启动新的同步任务
+    - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC。
+    - 用户需先通过 `cdc cli changefeed query` 查询同步任务状态信息，记录 `checkpoint-ts` 值。
+    - 使用新的任务配置文件，增加`ignore-txn-commit-ts` 参数跳过指定 `commit-ts` 对应的事务。
+    - 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create` ，指定新的任务配置文件，指定 `start-ts` 为刚才记录的 `checkpoint-ts`，启动新的同步任务恢复同步。
 
 ### gc-ttl 和文件排序
 
-最新版本的 PD 支持外部服务设置服务级别的 GC safepoint，任何一个服务可以注册更新自己服务的 GC safepoint，PD 会保证任何小于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用状况、或同步任务中断情况下，在 TiKV 还没有消费的数据不会被 GC。在启动 CDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最大时间，改制默认为 86400s（一天）。
+最新版本的 PD 支持外部服务设置服务级别的 GC safepoint，任何一个服务可以注册更新自己服务的 GC safepoint，PD 会保证任何小于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用状况、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC。启动 CDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最大时间，该值默认为 86400 秒。
 
 如果同步任务长时间中断，累积未消费的数据比较多，初始启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的文件排序功能，该功能会使用文件系统文件进行排序，（注意目前版本 TiCDC 还不支持动态修改文件排序和内存排序），启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=file` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下
 
