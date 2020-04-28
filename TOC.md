@@ -51,6 +51,7 @@
   + 监控
     - [概述](/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/how-to/monitor/monitor-a-cluster.md)
+    - [热点可视化](/how-to/monitor/key-visualizer.md)
   + 迁移
     - [迁移工具使用指南](/reference/tools/user-guide.md)
     + 从 MySQL 迁移
