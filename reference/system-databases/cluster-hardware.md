@@ -52,11 +52,11 @@ select * from information_schema.cluster_hardware where device_type='cpu' and de
 +------+-----------------+-------------+-------------+--------------------+-------+
 | TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME               | VALUE |
 +------+-----------------+-------------+-------------+--------------------+-------+
-| tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-logical-cores  | 4     |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-logical-cores  | 8     |
 | tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-physical-cores | 4     |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-logical-cores  | 4     |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-logical-cores  | 8     |
 | pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-physical-cores | 4     |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | cpu-logical-cores  | 4     |
+| tikv | 127.0.0.1:20160 | cpu         | cpu         | cpu-logical-cores  | 8     |
 | tikv | 127.0.0.1:20160 | cpu         | cpu         | cpu-physical-cores | 4     |
 +------+-----------------+-------------+-------------+--------------------+-------+
 ```

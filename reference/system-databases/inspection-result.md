@@ -287,10 +287,10 @@ DETAILS   | the cluster has 2 different tidb versions, execute the sql to see mo
 | TiKV | index-block-cache-hit | tikv_block_index_cache_hit | 大于 0.95 | TiKV 中 index block 缓存的命中率 |
 | TiKV | filter-block-cache-hit | tikv_block_filter_cache_hit | 大于 0.95 | TiKV 中 filter block 缓存的命中率 |
 | TiKV | data-block-cache-hit | tikv_block_data_cache_hit | 大于 0.80 | TiKV 中 data block 缓存的命中率 |
-| TiKV | leader-score-balance | pd_scheduler_store_status  | 小于 0.05 | 检测各个 TiKV 节点的 leader score 是否均衡，期望节点间的差异小于 5% |
-| TiKV | region-score-balance | pd_scheduler_store_status  | 小于 0.05 | 检测各个 TiKV 节点的 Region score 是否均衡，期望节点间的差异小于 5% |
-| TiKV | store-available-balance | pd_scheduler_store_status  | 小于 0.2 | 检测各个 TiKV 节点的存储可用空间大小是否均衡，期望节点间的差异小于 20% |
-| TiKV | region-count | pd_scheduler_store_status  | 小于 20000 | 检测各个 TiKV 节点的 Region 数量，期望单个节点的 Region 数量小于 20000 |
+| TiKV | leader-score-balance | pd_scheduler_store_status  | 小于 0.05 | 检测各个 TiKV 实例的 leader score 是否均衡，期望实例间的差异小于 5% |
+| TiKV | region-score-balance | pd_scheduler_store_status  | 小于 0.05 | 检测各个 TiKV 实例的 Region score 是否均衡，期望实例间的差异小于 5% |
+| TiKV | store-available-balance | pd_scheduler_store_status  | 小于 0.2 | 检测各个 TiKV 实例的存储可用空间大小是否均衡，期望实例间的差异小于 20% |
+| TiKV | region-count | pd_scheduler_store_status  | 小于 20000 | 检测各个 TiKV 实例的 Region 数量，期望单个实例的 Region 数量小于 20000 |
 | PD | region-health | pd_region_health | 小于 100  | 检测集群中处于调度中间状态的 Region 数量，期望总数小于 100 |
 
 另外还会检测 TiKV 实例的以下 thread cpu usage 是否过高:
