@@ -371,7 +371,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-更细化的配置为：
+更详细的配置为：
 
 ```yaml
 # # Global variables are applied to all deployments and used as the default value of
@@ -756,7 +756,7 @@ alertmanager_servers:
   - host: 10.0.1.7
 ```
 
-更细化的配置为:
+更详细的配置为:
 
 ```yaml
 # # Global variables are applied to all deployments and used as the default value of
@@ -993,7 +993,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-更细化的配置为：
+更详细的配置为：
 
 ```yaml
 # # Global variables are applied to all deployments and used as the default value of
