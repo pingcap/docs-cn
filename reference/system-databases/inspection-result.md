@@ -46,7 +46,7 @@ desc information_schema.inspection_result;
 * `ITEM`：每一个规则会对不同的项进行诊断，该字段表示对应规则下面的具体诊断项。
 * `TYPE`：诊断的实例类型，可取值为 `tidb`，`pd` 和 `tikv`。
 * `INSTANCE`：诊断的具体实例地址。
-* `STATUS_ADDRESS`：HTTP API 的服务地址。
+* `STATUS_ADDRESS`：实例的 HTTP API 服务地址。
 * `VALUE`：针对这个诊断项得到的值。
 * `REFERENCE`：针对这个诊断项的参考值（阈值）。如果 `VALUE` 和阈值相差较大，就会产生对应的诊断信息。
 * `SEVERITY`：严重程度，取值为 `warning` 或 `critical`。

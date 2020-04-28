@@ -37,7 +37,7 @@ desc information_schema.inspection_summary;
 
 * `RULE`：汇总规则。由于规则在持续添加，最新的规则列表可以通过 `select * from inspection_rules where type='summary'` 查询。
 * `INSTANCE`：监控的具体实例。
-* `METRIC_NAME`：监控表。
+* `METRICS_NAME`：监控表。
 * `QUANTILE`：对于包含 `QUANTILE` 的监控表有效，可以通过谓词下推指定多个百分位，例如 `select * from inspection_summary where rule='ddl' and quantile in (0.80, 0.90, 0.99, 0.999)` 来汇总 DDL 相关监控，查询百分位为 80/90/99/999 的结果。`AVG_VALUE`、`MIN_VALUE`、`MAX_VALUE` 分别表示聚合的平均值、最小值、最大值。
 * `COMMENT`：对应监控的解释。
 

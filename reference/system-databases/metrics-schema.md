@@ -111,7 +111,7 @@ desc select * from metrics_schema.tidb_query_duration where value is not null an
 
 从以上结果可知，在 [`2020-03-25 23:40:00`, `2020-03-25 23:42:00`] 时间范围内，每个 label 只有三个时间的值，执行计划中的 `step` 值为一分钟，这实际上是由下面两个 session 变量决定的：
 
-* `tidb_metric_query_step`：查询的分辨率步长。从 Prometheus 的 `query_range` 数据时需要指定 `start_time`，`end_time` 和 `step`，其中 `step` 会使用该变量的值。
+* `tidb_metric_query_step`：查询的分辨率步长。从 Prometheus 的 `query_range` 接口查询数据时需要指定 `start_time`，`end_time` 和 `step`，其中 `step` 会使用该变量的值。
 * `tidb_metric_query_range_duration`：查询监控时，会将 `PROMQL` 中的 `$RANGE_DURATION` 替换成该变量的值，默认值是 60 秒。
 
 如果想要查看不同时间粒度的监控项的值，用户可以修改上面两个 session 变量后查询监控表，示例如下：
