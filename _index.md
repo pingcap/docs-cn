@@ -47,10 +47,12 @@ TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间
 
 TiDB 可以部署在本地和云平台上，支持公有云、私有云和混合云。你可以根据实际场景或需求，选择相应的方式来部署 TiDB 集群：
 
-- [使用 Ansible 部署](/how-to/deploy/orchestrated/ansible.md)：如果用于生产环境，须使用 Ansible 部署 TiDB 集群。
-- [使用 Ansible 离线部署](/how-to/deploy/orchestrated/offline-ansible.md)：如果部署环境无法访问网络，可使用 Ansible 进行离线部署。
+- [使用 TiUP 部署](/how-to/deploy/orchestrated/tiup.md)：如果用于生产环境，推荐使用 TiUP 部署 TiDB 集群。
 - [使用 Docker Compose 部署](/how-to/get-started/deploy-tidb-from-docker-compose.md)：如果你只是想测试 TiDB、体验 TiDB 的特性，或者用于开发环境，可以使用 Docker Compose 在本地快速部署 TiDB 集群。该部署方式不适用于生产环境。
 - [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)：你可以使用 Docker 部署 TiDB 集群，但该部署方式不适用于生产环境。
+- [使用 TiDB Operator 部署](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-operator/)：使用 TiDB Operator 在 Kubernetes 集群上部署生产就绪的 TiDB 集群，支持[部署到 AWS EKS](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-aws-eks/)、[部署到谷歌云 GKE (beta)](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)、[部署到阿里云 ACK](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud/) 等。
+- [使用 TiDB Operator 部署到 Minikube](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube/)：你可以使用 TiDB Operator 将 TiDB 集群部署到本地 Minikube 启动的 Kubernetes 集群中。该部署方式不适用于生产环境。
+- [使用 TiDB Operator 部署到 kind](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/)：你可以使用 TiDB Operator 将 TiDB 集群部署到以 kind 方式启动的 Kubernetes 本地集群中。该部署方式不适用于生产环境。
 
 ## 项目源码
 

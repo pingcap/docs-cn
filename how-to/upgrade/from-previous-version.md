@@ -1,10 +1,10 @@
 ---
-title: TiDB 最新开发版升级操作指南
+title: 使用 TiDB Ansible 升级 TiDB
 category: how-to
 aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
-# TiDB 最新开发版升级操作指南
+# 使用 TiDB Ansible 升级 TiDB
 
 本文档适用于从 TiDB 2.0、2.1、3.0、3.1 版本升级至 TiDB 最新开发版 (latest) 以及从开发版的较低版本升级至最新版本。目前，TiDB 最新开发版兼容 [TiDB Binlog Cluster 版本](/reference/tidb-binlog/overview.md)。
 
@@ -24,13 +24,13 @@ aliases: ['/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrad
 >
 > 在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
 
-## 在中控机器上安装 Ansible 及其依赖
+## 在中控机器上安装 TiDB Ansible 及其依赖
 
 > **注意：**
 >
-> 如果已经安装了 Ansible 及其依赖，可跳过该步骤。
+> 如果已经安装了 TiDB Ansible 及其依赖，可跳过该步骤。
 
-TiDB Ansible 最新开发版依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 Ansible 及其依赖，可参照[在中控机器上安装 Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-ansible-及其依赖)。
+TiDB Ansible 最新开发版依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 TiDB Ansible 及其依赖，可参照[在中控机器上安装 TiDB Ansible 及其依赖](/how-to/deploy/orchestrated/ansible.md#在中控机器上安装-tidb-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 TiDB Ansible 及其依赖](/how-to/deploy/orchestrated/offline-ansible.md#在中控机器上离线安装-tidb-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -68,7 +68,7 @@ Version: 0.9.0
 
 > **注意：**
 >
-> 请务必按以上文档安装 Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
+> 请务必按以上文档安装 TiDB Ansible 及其依赖。确认 Jinja2 版本是否正确，否则启动 Grafana 时会报错。确认 jmespath 版本是否正确，否则滚动升级 TiKV 时会报错。
 
 ## 在中控机器上下载 TiDB Ansible
 
@@ -117,6 +117,8 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     如需变更，可参考[如何调整进程监管方式从 supervise 到 systemd](/how-to/deploy/orchestrated/ansible.md#如何调整进程监管方式从-supervise-到-systemd)，先使用备份 `/home/tidb/tidb-ansible-bak/` 分支变更进程监管方式再升级。
 
+3. 新增 `cpu_architecture` 参数，根据 CPU 架构来配置。默认值为 `amd64`。
+
 ### 编辑 TiDB 集群组件配置文件
 
 如之前自定义过 TiDB 集群组件配置文件，请参照备份文件修改 `/home/tidb/tidb-ansible/conf` 下对应配置文件。
@@ -154,6 +156,8 @@ git clone  https://github.com/pingcap/tidb-ansible.git
     > 单机多 TiKV 实例（进程）情况下，需要修改 `capacity` 参数。
     >
     > 推荐设置：`capacity` = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+    >
+    > 如果当前版本已经是 `capacity` 参数而且配置合理，则不需要修改。
 
 - TiKV 配置中单机多实例场景需要额外配置 `tikv_status_port` 端口：
 
@@ -169,7 +173,7 @@ git clone  https://github.com/pingcap/tidb-ansible.git
 
     > **注意：**
     >
-    > 最新开发版单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。
+    > 最新开发版单机多 TiKV 实例（进程）情况下，需要添加 `tikv_status_port` 参数。如果当前版本已经是如上配置，则不需要修改。
     >
     > 配置前，注意检查端口是否有冲突。
 

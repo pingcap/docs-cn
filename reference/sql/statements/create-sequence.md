@@ -6,7 +6,7 @@ category: reference
 
 # CREATE SEQUENCE
 
-`CREATE SEQUENCE` 语句用于在 TiDB 中创建序列对象。序列是一种与表、视图对象平级的数据库对象，用于进行自定义的序列化 ID 生成。
+`CREATE SEQUENCE` 语句用于在 TiDB 中创建序列对象。序列是一种与表、视图对象平级的数据库对象，用于生成自定义的序列化 ID。
 
 ## 语法图
 
@@ -58,12 +58,14 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 |参数 | 默认值 | 描述 |
 | :-- | :-- | :--|
+| `TEMPORARY` | `false` | TiDB 暂时不支持 `TEMPORARY` 选项，仅在语法上做兼容。|
 | `INCREMENT` | `1` | 指定序列的步长。其正负值可以控制序列的增长方向。|
 | `MINVALUE` | `1` 或 `-9223372036854775807` | 指定序列的最小值。当 `INCREMENT` > `0` 时，默认值为 `1`；当 `INCREMENT` < `0` 时，默认值为 `-9223372036854775807`。|
 | `MAXVALUE` | `9223372036854775806` 或 `-1` | 指定序列的最大值。当 `INCREMENT` > `0` 时，默认值为 `9223372036854775806`；当 `INCREMENT` < `0` 时，默认值为 `-1`。|
 | `START` | `MINVALUE` 或 `MAXVALUE` | 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`; 当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。|
 | `CACHE` | `1000` | 指定每个 TiDB 本地缓存序列的大小。|
-| `CYCLE` | `false` | 指定序列用完之后是否要循环使用。在 `CYCLE` 的情况下，当 `INCREMENT` > `0` 时，后续起始值为 `MINVALUE`；当 `INCREMENT` < `0` 时，后续起始值为 `MAXVALUE`。|
+| `CYCLE` | `NO CYCLE` | 指定序列用完之后是否要循环使用。在 `CYCLE` 的情况下，当 `INCREMENT` > `0` 时，序列用完后的后续起始值为 `MINVALUE`；当 `INCREMENT` < `0` 时，序列用完后的后续起始值为 `MAXVALUE`。|
+| `ORDER` | `NO ORDER` | TiDB 暂时不支持 `ORDER` 选项，仅在语法上做兼容。|
 
 ## `SEQUENCE` 函数
 
@@ -87,190 +89,216 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 ## 示例
 
-{{< copyable "sql" >}}
++ 创建一个默认参数的序列对象。
 
-```sql
-CREATE SEQUENCE seq;
-```
+    {{< copyable "sql" >}}
 
-```
-Query OK, 0 rows affected (0.06 sec)
-```
+    ```sql
+    CREATE SEQUENCE seq;
+    ```
 
-{{< copyable "sql" >}}
+    ```
+    Query OK, 0 rows affected (0.06 sec)
+    ```
 
-```sql
-SELECT nextval(seq);
-```
++ 使用 `nextval()` 函数获取序列对象的下一个值。
 
-```
-+--------------+
-| nextval(seq) |
-+--------------+
-|            1 |
-+--------------+
-1 row in set (0.02 sec)
-```
+    {{< copyable "sql" >}}
 
-{{< copyable "sql" >}}
+    ```sql
+    SELECT nextval(seq);
+    ```
 
-```sql
-SELECT lastval(seq);
-```
+    ```
+    +--------------+
+    | nextval(seq) |
+    +--------------+
+    |            1 |
+    +--------------+
+    1 row in set (0.02 sec)
+    ```
 
-```
-+--------------+
-| lastval(seq) |
-+--------------+
-|            1 |
-+--------------+
-1 row in set (0.02 sec)
-```
++ 使用 `lastval()` 函数获取本会话上一次调用序列对象所产生的值。
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SELECT setval(seq, 10);
-```
+    ```sql
+    SELECT lastval(seq);
+    ```
 
-```
-+-----------------+
-| setval(seq, 10) |
-+-----------------+
-|              10 |
-+-----------------+
-1 row in set (0.01 sec)
-```
+    ```
+    +--------------+
+    | lastval(seq) |
+    +--------------+
+    |            1 |
+    +--------------+
+    1 row in set (0.02 sec)
+    ```
 
-{{< copyable "sql" >}}
++ 使用 `setval()` 函数设置序列对象当前值的位置。
 
-```sql
-SELECT next value for seq;
-```
+    {{< copyable "sql" >}}
 
-```
-+--------------------+
-| next value for seq |
-+--------------------+
-|                 11 |
-+--------------------+
-1 row in set (0.00 sec)
-```
+    ```sql
+    SELECT setval(seq, 10);
+    ```
 
-{{< copyable "sql" >}}
+    ```
+    +-----------------+
+    | setval(seq, 10) |
+    +-----------------+
+    |              10 |
+    +-----------------+
+    1 row in set (0.01 sec)
+    ```
 
-```sql
-CREATE SEQUENCE seq2 start 3 increment 2 minvalue 1 maxvalue 10 cache 3;
-```
++ 也可使用 `next value for` 语法获取序列的下一个值。
 
-```
-Query OK, 0 rows affected (0.01 sec)
-```
+    {{< copyable "sql" >}}
 
-{{< copyable "sql" >}}
+    ```sql
+    SELECT next value for seq;
+    ```
 
-```sql
-SELECT lastval(seq2);
-```
+    ```
+    +--------------------+
+    | next value for seq |
+    +--------------------+
+    |                 11 |
+    +--------------------+
+    1 row in set (0.00 sec)
+    ```
 
-```
-+---------------+
-| lastval(seq2) |
-+---------------+
-|          NULL |
-+---------------+
-1 row in set (0.01 sec)
-```
++ 创建一个默认自定义参数的序列对象。
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SELECT nextval(seq2);
-```
+    ```sql
+    CREATE SEQUENCE seq2 start 3 increment 2 minvalue 1 maxvalue 10 cache 3;
+    ```
 
-```
-+---------------+
-| nextval(seq2) |
-+---------------+
-|             3 |
-+---------------+
-1 row in set (0.00 sec)
-```
+    ```
+    Query OK, 0 rows affected (0.01 sec)
+    ```
 
-{{< copyable "sql" >}}
++ 当本会话还未使用过序列对象时，`lastval()` 函数返回 NULL 值。
 
-```sql
-SELECT setval(seq2, 6);
-```
+    {{< copyable "sql" >}}
 
-```
-+-----------------+
-| setval(seq2, 6) |
-+-----------------+
-|               6 |
-+-----------------+
-1 row in set (0.00 sec)
-```
+    ```sql
+    SELECT lastval(seq2);
+    ```
 
-{{< copyable "sql" >}}
+    ```
+    +---------------+
+    | lastval(seq2) |
+    +---------------+
+    |          NULL |
+    +---------------+
+    1 row in set (0.01 sec)
+    ```
 
-```sql
-SELECT next value for seq2;
-```
++ 序列对象 `nextval()` 的第一个有效值为 `start` 值。
 
-```
-+---------------------+
-| next value for seq2 |
-+---------------------+
-|                   7 |
-+---------------------+
-1 row in set (0.00 sec)
-```
+    {{< copyable "sql" >}}
 
-{{< copyable "sql" >}}
+    ```sql
+    SELECT nextval(seq2);
+    ```
 
-```sql
-CRATE table t(a int default next value for seq2);
-```
+    ```
+    +---------------+
+    | nextval(seq2) |
+    +---------------+
+    |             3 |
+    +---------------+
+    1 row in set (0.00 sec)
+    ```
 
-```
-Query OK, 0 rows affected (0.02 sec)
-```
++ 使用 `setval()` 虽然可以改变序列对象当前值的位置，但是无法改变下一个值的等差规律。
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-INSERT into t values();
-```
+    ```sql
+    SELECT setval(seq2, 6);
+    ```
 
-```
-Query OK, 1 row affected (0.00 sec)
-```
+    ```
+    +-----------------+
+    | setval(seq2, 6) |
+    +-----------------+
+    |               6 |
+    +-----------------+
+    1 row in set (0.00 sec)
+    ```
 
-{{< copyable "sql" >}}
++ 使用 `nextval()` 下一个值获取时，会遵循序列定义的等差规律。
 
-```sql
-SELECT * from t;
-```
+    {{< copyable "sql" >}}
 
-```
-+------+
-| a    |
-+------+
-|    9 |
-+------+
-1 row in set (0.00 sec)
-```
+    ```sql
+    SELECT next value for seq2;
+    ```
 
-{{< copyable "sql" >}}
+    ```
+    +---------------------+
+    | next value for seq2 |
+    +---------------------+
+    |                   7 |
+    +---------------------+
+    1 row in set (0.00 sec)
+    ```
 
-```sql
-INSERT into t values();
-```
++ 可以将序列的下一个值作为列的默认值来使用。
 
-```
-ERROR 4135 (HY000): Sequence 'test.seq2' has run out
-```
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE TABLE t(a int default next value for seq2);
+    ```
+
+    ```
+    Query OK, 0 rows affected (0.02 sec)
+    ```
+
++ 下列示例中，因为没有指定值，会直接获取 `seq2` 的默认值来使用。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    INSERT into t values();
+    ```
+
+    ```
+    Query OK, 1 row affected (0.00 sec)
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * from t;
+    ```
+
+    ```
+    +------+
+    | a    |
+    +------+
+    |    9 |
+    +------+
+    1 row in set (0.00 sec)
+    ```
+
++ 下列示例中，因为没有指定值，会直接获取 `seq2` 的默认值来使用。由于 `seq2` 的下一个值超过了上述示例 (`CREATE SEQUENCE seq2 start 3 increment 2 minvalue 1 maxvalue 10 cache 3;`) 的定义范围，所以会显示报错。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    INSERT into t values();
+    ```
+
+    ```
+    ERROR 4135 (HY000): Sequence 'test.seq2' has run out
+    ```
 
 ## MySQL 兼容性
 

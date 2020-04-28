@@ -11,7 +11,7 @@ TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY
 
 ### `CHAR` 类型
 
-定长字符串。`CHAR` 列的长度固定为创建表时声明的长度。长度可以为从 0 到 255 的任何值。当保存 CHAR 值时，在它们的右边填充空格以达到指定的长度。
+定长字符串。`CHAR` 列的长度固定为创建表时声明的长度。当保存 CHAR 值时，不足固定长度的字符串在后面填充空格，以达到指定的长度。M 表示列长度（字符的个数，不是字节的个数）。长度可以为从 0 到 255 的任何值。
 
 {{< copyable "sql" >}}
 
@@ -21,7 +21,17 @@ TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY
 
 ### `VARCHAR` 类型
 
-变长字符串。M 表示最大列长度，范围是 0 到 65535。VARCHAR 的最大实际长度由最长的行的大小和使用的字符集确定。
+变长字符串。M 表示最大列长度（字符的最大个数）。`VARCHAR` 的空间占用大小不得超过 65535 字节。在选择 `VARCHAR` 长度时，应当根据最长的行的大小和使用的字符集确定。
+
+对于不同的字符集，单个字符所占用的空间可能有所不同。以下表格是各个字符集下单个字符占用的字节数，以及 `VARCHAR` 列长度的取值范围：
+
+| 字符集 | 单个字符字节数 | VARCHAR 最大列长度的取值范围 |
+| ----- | ---- | ---- |
+| ascii | 1 | (0, 65535] |
+| latin1 | 1 | (0, 65535] |
+| binary | 1 | (0, 65535] |
+| utf8 | 3 | (0, 21845] |
+| utf8mb4 | 4 | (0, 16383] |
 
 {{< copyable "sql" >}}
 
@@ -31,7 +41,7 @@ TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY
 
 ### `TEXT` 类型
 
-文本串。M 表示最大列长度，范围是 0 到 65535。TEXT 的最大实际长度由最长的行的大小和使用的字符集确定。
+文本串。M 表示最大列长度（字符的最大个数），范围是 0 到 65535。在选择 `TEXT` 长度时，应当根据最长的行的大小和使用的字符集确定。
 
 {{< copyable "sql" >}}
 
@@ -41,7 +51,7 @@ TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `TINYTEXT` 类型
 
-类似于 `TEXT`，区别在于最大列长度为 255。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 255。
 
 {{< copyable "sql" >}}
 
@@ -51,7 +61,7 @@ TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `MEDIUMTEXT` 类型
 
-类似于 TEXT，区别在于最大列长度为 16,777,215。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 16,777,215。
 
 {{< copyable "sql" >}}
 
@@ -61,7 +71,7 @@ MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `LONGTEXT` 类型
 
-类似于 `TEXT`，区别在于最大列长度为 4,294,967,295。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。
 
 {{< copyable "sql" >}}
 
@@ -71,7 +81,7 @@ LONGTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `BINARY` 类型
 
-类似于 `CHAR`，区别在于 BINARY 存储的是二进制字符串。
+类似于 [`CHAR`](#char-类型)，区别在于 `BINARY` 存储的是二进制字符串。
 
 {{< copyable "sql" >}}
 
@@ -81,7 +91,7 @@ BINARY(M)
 
 ### `VARBINARY` 类型
 
-类似于 `VARCHAR`，区别在于 VARBINARY 存储的是二进制字符串。
+类似于 [`VARCHAR`](#varchar-类型)，区别在于 `VARBINARY` 存储的是二进制字符串。
 
 {{< copyable "sql" >}}
 
@@ -89,19 +99,9 @@ BINARY(M)
 VARBINARY(M)
 ```
 
-### `TINYBLOB` 类型
-
-类似于 BLOB，区别在于最大列长度为 255。
-
-{{< copyable "sql" >}}
-
-```sql
-TINYBLOB
-```
-
 ### `BLOB` 类型
 
-二进制大文件。M 表示最大列长度，范围是 0 到 65535。
+二进制大文件。M 表示最大列长度，单位是字节，范围是 0 到 65535。
 
 {{< copyable "sql" >}}
 
@@ -109,9 +109,19 @@ TINYBLOB
 BLOB[(M)]
 ```
 
+### `TINYBLOB` 类型
+
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 255。
+
+{{< copyable "sql" >}}
+
+```sql
+TINYBLOB
+```
+
 ### `MEDIUMBLOB` 类型
 
-类似于 `BLOB`，区别在于最大列长度为 16,777,215。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16777215。
 
 {{< copyable "sql" >}}
 
@@ -121,7 +131,7 @@ MEDIUMBLOB
 
 ### `LONGBLOB` 类型
 
-类似于 `BLOB`，区别在于最大列长度为 4,294,967,295。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。
 
 {{< copyable "sql" >}}
 

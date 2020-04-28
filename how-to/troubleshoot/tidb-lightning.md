@@ -109,7 +109,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 1. 确保 Lightning 与数据源时区一致。
 
-    * 使用 Ansible 部署的话，修正 [`inventory.ini`] 下的 `timezone` 变量。
+    * 使用 TiDB Ansible 部署的话，修正 [`inventory.ini`] 下的 `timezone` 变量。
 
         ```ini
         # inventory.ini
