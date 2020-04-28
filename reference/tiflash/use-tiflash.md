@@ -193,7 +193,8 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 TiFlash 主要支持谓词、聚合下推计算，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型主要是表连接和 DISTINCT COUNT，会在后续版本逐步优化。
 
-目前 TiFlash 支持了有限的常用表达式下推，想了解具体下推的表达式，请参考[该文件](https://github.com/pingcap/tidb/blob/release-3.1/expression/expression.go#L409)。
+目前 TiFlash 支持了有限的常用表达式下推，想了解具体下推的表达式，请参考[该文件](https://github.com/pingcap/tidb/blob/v3.1.0/expression/expression.go#L558)。
+此外，目前 TiFlash 对于所有包含 Duration 和 JSON 的表达式均不能下推。
 
 例如在聚合函数或者 WHERE 条件中包含了不在上述列表中的表达式，聚合或者相关的谓词过滤会无法进行下推。
 
