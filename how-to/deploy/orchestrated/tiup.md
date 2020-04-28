@@ -340,6 +340,45 @@ global:
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
 
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+
+tiflash_servers:
+  - host: 10.0.1.10
+
+monitoring_servers:
+  - host: 10.0.1.4
+
+grafana_servers:
+  - host: 10.0.1.4
+
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+A more detailed configuration is as follows:
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
 # # Monitored variables are applied to all the machines.
 monitored:
   node_exporter_port: 9100
@@ -355,7 +394,7 @@ monitored:
 # # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
-# #           ^       ^
+# #
 # # You can overwrite this configuration via the instance-level `config` field.
 
 server_configs:
@@ -629,6 +668,105 @@ global:
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
 
+server_configs:
+  tikv:
+    readpool.unified.max-thread-count: <fill in the calculated result from the calculation formula provided before>
+    readpool.storage.use-unified-pool: false
+    readpool.coprocessor.use-unified-pool: true
+    storage.block-cache.capacity: "<fill in the calculated result from the calculation formula provided before>"
+    raftstore.capactiy: "<fill in the calculated result from the calculation formula provided before>"
+  pd:
+    replication.location-labels: ["host"]
+    replication.enable-placement-rules: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.7
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+  - host: 10.0.1.8
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.8
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+  - host: 10.0.1.9
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.9
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+tikv_servers:
+  - host: 10.0.1.1
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv1" }
+  - host: 10.0.1.1
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv1" }
+  - host: 10.0.1.2
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv2" }
+  - host: 10.0.1.2
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv2" }
+  - host: 10.0.1.3
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv3" }
+  - host: 10.0.1.3
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv3" }
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data
+monitoring_servers:
+  - host: 10.0.1.7
+grafana_servers:
+  - host: 10.0.1.7
+alertmanager_servers:
+  - host: 10.0.1.7
+```
+
+A more detailed configuration is as follows:
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
 monitored:
   node_exporter_port: 9100
   blackbox_exporter_port: 9115
@@ -806,6 +944,58 @@ Key parameters of TiDB:
 ```shell
 cat topology.yaml
 ```
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+server_configs:
+  tidb:
+    binlog.enable: true
+    binlog.ignore-error: true
+  pd:
+    replication.enable-placement-rules: true
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+pump_servers:
+  - host: 10.0.1.6
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+drainer_servers:
+  - host: 10.0.1.9
+    config:
+      syncer.db-type: "tidb"
+      syncer.to.host: "10.0.1.9"
+      syncer.to.user: "root"
+      syncer.to.password: ""
+      syncer.to.port: 4000
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
+monitoring_servers:
+  - host: 10.0.1.4
+grafana_servers:
+  - host: 10.0.1.4
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+A more detailed configuration is as follows:
 
 ```yaml
 # # Global variables are applied to all deployments and used as the default value of
