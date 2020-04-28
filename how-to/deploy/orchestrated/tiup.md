@@ -293,7 +293,7 @@ category: how-to
 
 ## 第 4 步：配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。
 
 需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`。下文介绍 3 个经典场景的集群配置模版：
 
@@ -335,16 +335,54 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
-
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
 
-# # Monitored variables are used to all the machine
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+
+tiflash_servers:
+  - host: 10.0.1.10
+
+monitoring_servers:
+  - host: 10.0.1.4
+
+grafana_servers:
+  - host: 10.0.1.4
+
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+更详细的配置为：
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+# # Monitored variables are applied to all the machines.
 monitored:
   node_exporter_port: 9100
   blackbox_exporter_port: 9115
@@ -352,15 +390,15 @@ monitored:
   # data_dir: "/tidb-data/monitored-9100"
   # log_dir: "/tidb-deploy/monitored-9100/log"
 
-# # Server configs are used to specify the runtime configuration of TiDB components
+# # Server configs are used to specify the runtime configuration of TiDB components.
 # # All configuration items can be found in TiDB docs:
 # # - TiDB: https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/
 # # - TiKV: https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/
 # # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
-# #           ^       ^
-# # You can overwrite this configuration via instance-level `config` field
+# #      
+# # You can overwrite this configuration via the instance-level `config` field.
 
 server_configs:
   tidb:
@@ -374,7 +412,7 @@ server_configs:
     # rocksdb.max-sub-compactions: 1
     # storage.block-cache.capacity: "16GB"
     # readpool.unified.max-thread-count: 12
-    readpool.storage.use-unified-pool: true
+    readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
   pd:
     schedule.leader-schedule-limit: 4
@@ -396,7 +434,7 @@ pd_servers:
     # data_dir: "/tidb-data/pd-2379"
     # log_dir: "/tidb-deploy/pd-2379/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.pd` values
+    # # The following configs are used to overwrite the `server_configs.pd` values.
     # config:
     #   schedule.max-merge-region-size: 20
     #   schedule.max-merge-region-keys: 200000
@@ -411,7 +449,7 @@ tidb_servers:
     # deploy_dir: "/tidb-deploy/tidb-4000"
     # log_dir: "/tidb-deploy/tidb-4000/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.tidb` values
+    # # The following configs are used to overwrite the `server_configs.tidb` values.
     # config:
     #   log.slow-query-file: tidb-slow-overwrited.log
   - host: 10.0.1.8
@@ -426,7 +464,7 @@ tikv_servers:
     # data_dir: "/tidb-data/tikv-20160"
     # log_dir: "/tidb-deploy/tikv-20160/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.tikv` values
+    # # The following configs are used to overwrite the `server_configs.tikv` values.
     # config:
     #   server.grpc-concurrency: 4
     #   server.labels: { zone: "zone1", dc: "dc1", host: "host1" }
@@ -435,24 +473,24 @@ tikv_servers:
 
 tiflash_servers:
   - host: 10.0.1.10
-  # ssh_port: 22
-  # tcp_port: 9000
-  # http_port: 8123
-  # flash_service_port: 3930
-  # flash_proxy_port: 20170
-  # flash_proxy_status_port: 20292
-  # metrics_port: 8234
-  # deploy_dir: /tidb-deploy/tiflash-9000
-  # data_dir: /tidb-data/tiflash-9000
-  # log_dir: /tidb-deploy/tiflash-9000/log
-  # numa_node: "0,1"
-  # # Config is used to overwrite the `server_configs.tiflash` values
-  # config:
-  #   logger.level: "info"
-  # learner_config:
-  #   log-level: "info"
-  #  - host: 10.0.1.15
-  #  - host: 10.0.1.16
+    # ssh_port: 22
+    # tcp_port: 9000
+    # http_port: 8123
+    # flash_service_port: 3930
+    # flash_proxy_port: 20170
+    # flash_proxy_status_port: 20292
+    # metrics_port: 8234
+    # deploy_dir: /tidb-deploy/tiflash-9000
+    # data_dir: /tidb-data/tiflash-9000
+    # log_dir: /tidb-deploy/tiflash-9000/log
+    # numa_node: "0,1"
+    # # The following configs are used to overwrite the `server_configs.tiflash` values.
+    # config:
+    #   logger.level: "info"
+    # learner_config:
+    #   log-level: "info"
+  # - host: 10.0.1.15
+  # - host: 10.0.1.16
 
 # pump_servers:
 #   - host: 10.0.1.17
@@ -462,7 +500,7 @@ tiflash_servers:
 #     data_dir: "/tidb-data/pump-8249"
 #     log_dir: "/tidb-deploy/pump-8249/log"
 #     numa_node: "0,1"
-#     # Config is used to overwrite the `server_configs.drainer` values
+#     # The following configs are used to overwrite the `server_configs.drainer` values.
 #     config:
 #       gc: 7
 #   - host: 10.0.1.18
@@ -472,13 +510,13 @@ tiflash_servers:
 #   - host: 10.0.1.17
 #     port: 8249
 #     data_dir: "/tidb-data/drainer-8249"
-#     # if drainer doesn't have checkpoint, use initial commitTS to initial checkpoint
-#     # will get a latest timestamp from pd if setting to be -1 (default -1)
+#     # If drainer doesn't have a checkpoint, use initial commitTS as the initial checkpoint.
+#     # Will get a latest timestamp from pd if commit_ts is set to -1 (the default value).
 #     commit_ts: -1
 #     deploy_dir: "/tidb-deploy/drainer-8249"
 #     log_dir: "/tidb-deploy/drainer-8249/log"
 #     numa_node: "0,1"
-#     # Config is used to overwrite the `server_configs.drainer` values
+#     # The following configs are used to overwrite the `server_configs.drainer` values.
 #     config:
 #       syncer.db-type: "mysql"
 #       syncer.to.host: "127.0.0.1"
@@ -522,12 +560,12 @@ alertmanager_servers:
 
 - TiKV 进行配置优化
 
-    - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。
+    - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别设置自适应开关。
 
         - 开启 `readpool.storage` 和 `readpool.coprocessor`：
           
             ```yaml
-            readpool.storage.use-unified-pool: true
+            readpool.storage.use-unified-pool: false
             readpool.coprocessor.use-unified-pool: true
             ```
 
@@ -620,9 +658,109 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
 
+server_configs:
+  tikv:
+    readpool.unified.max-thread-count: <取值参考上文计算公式的结果>
+    readpool.storage.use-unified-pool: false
+    readpool.coprocessor.use-unified-pool: true
+    storage.block-cache.capacity: "<取值参考上文计算公式的结果>"
+    raftstore.capactiy: "<取值参考上文计算公式的结果>"
+  pd:
+    replication.location-labels: ["host"]
+    replication.enable-placement-rules: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+
+tidb_servers:
+  - host: 10.0.1.7
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.7
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+  - host: 10.0.1.8
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.8
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+  - host: 10.0.1.9
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.9
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+
+tikv_servers:
+  - host: 10.0.1.1
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv1" }
+  - host: 10.0.1.1
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv1" }
+  - host: 10.0.1.2
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv2" }
+  - host: 10.0.1.2
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv2" }
+  - host: 10.0.1.3
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv3" }
+  - host: 10.0.1.3
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv3" }
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data
+monitoring_servers:
+  - host: 10.0.1.7
+grafana_servers:
+  - host: 10.0.1.7
+alertmanager_servers:
+  - host: 10.0.1.7
+```
+
+更详细的配置为:
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -639,7 +777,7 @@ monitored:
 server_configs:
   tikv:
     readpool.unified.max-thread-count: <取值参考上文计算公式的结果>
-    readpool.storage.use-unified-pool: true
+    readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
     storage.block-cache.capacity: "<取值参考上文计算公式的结果>"
     raftstore.capactiy: "<取值参考上文计算公式的结果>"
@@ -804,8 +942,62 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+server_configs:
+  tidb:
+    binlog.enable: true
+    binlog.ignore-error: true
+  pd:
+    replication.enable-placement-rules: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+
+pump_servers:
+  - host: 10.0.1.6
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+drainer_servers:
+  - host: 10.0.1.9
+    config:
+      syncer.db-type: "tidb"
+      syncer.to.host: "10.0.1.9"
+      syncer.to.user: "root"
+      syncer.to.password: ""
+      syncer.to.port: 4000
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
+monitoring_servers:
+  - host: 10.0.1.4
+grafana_servers:
+  - host: 10.0.1.4
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+更详细的配置为：
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -844,7 +1036,7 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
   - host: 10.0.1.7
@@ -852,7 +1044,7 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
   - host: 10.0.1.8
@@ -860,18 +1052,18 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
 drainer_servers:
   - host: 10.0.1.9
     port: 8249
     data_dir: "/tidb-data/drainer-8249"
-    # if drainer doesn't have checkpoint, use initial commitTS to initial checkpoint
-    # will get a latest timestamp from pd if setting to be -1 (default -1)
+    # If drainer doesn't have a checkpoint, use initial commitTS as the initial checkpoint.
+    # Will get a latest timestamp from pd if commit_ts is set to -1 (the default value).
     commit_ts: -1
     deploy_dir: "/tidb-deploy/drainer-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       syncer.db-type: "tidb"
       syncer.to.host: "10.0.1.9"
@@ -1280,7 +1472,7 @@ tidb_servers:
     deploy_dir: "deploy/tidb-4000"
     log_dir: "deploy/tidb-4000/log"
     numa_node: "0,1"
-    # Config is used to overwrite the `server_configs.tidb` values
+    # The following configs are used to overwrite the `server_configs.tidb` values.
     config:
       log.slow-query-file: tidb-slow-overwritten.log
 ```
@@ -1312,7 +1504,7 @@ tidb_servers:
       # rocksdb.max-sub-compactions: 1
       # storage.block-cache.capacity: "16GB"
       # readpool.unified.max-thread-count: 12
-      readpool.storage.use-unified-pool: true
+      readpool.storage.use-unified-pool: false
       readpool.coprocessor.use-unified-pool: true
     pd:
       schedule.leader-schedule-limit: 4
