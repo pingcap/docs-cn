@@ -19,6 +19,15 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --status-addr=127.
 cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --status-addr=127.0.0.1:8303
 ```
 
+对于 `cdc server` 命令中可用选项解释如下：
+
+- `gc-ttl`: TiCDC 在 PD 设置的服务级别 GC safepoint TTL 时长，单位为秒，默认值为 86400。
+- `pd`: PD client 的 URL。
+- `status-addr`: TiCDC 服务的 HTTP API 查询地址和 prometheus 查询地址
+- `tz`: TiCDC 服务使用的时区，会在内部转换 Timestamp 等时间数据类型数据和向下游同步数据时使用的时区，默认为进程运行本地时区。
+- `log-file`: TiCDC 进程运行日志的地址，默认为 cdc.log。
+- `log-level`: TiCDC 进程运行时默认的日志级别，默认为 info。
+
 ## 第 2 步：创建同步任务
 
 假设需要将上游所有的库表（系统表除外）同步到下游的 MySQL，可以通过以下命令创建同步任务：
@@ -33,6 +42,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235
 
 - `pd`: PD client 的 URL。
 - `start-ts`: 指定开始同步的 TSO，不指定或指定为 `0` 时将使用当前 TSO 作为同步的起始 TSO。
+- `target-ts`: 指定同步结束的 TSO，不指定默认会永久同步。
 - `sink-uri`: sink 地址，目前支持 `mysql`/`tidb` 和 `kafka`。关于 sink URI 的写法请参考 [sink URI 配置规则](/reference/tools/ticdc/sink.md)
 - `config`: 同步任务的配置。目前提供黑白名单配置和跳过特定 `commit-ts` 的事务。
 
