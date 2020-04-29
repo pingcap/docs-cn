@@ -18,6 +18,10 @@ category: reference
 
 如果不指定 `start-ts` 或者指定 `start-ts=0`，在启动任务的时候会去 PD 获取一个当前 TSO，并从该 TSO 开始同步。
 
+### 启动任务时提示部分表不能同步
+
+在使用 `cdc cli changefeed create` 创建同步任务时会检查上游表是否符合[同步限制](/reference/tools/ticdc/overview.md#同步限制)，如果存在表不满足同步限制，会提示 `some tables are not eligible to replicate` 并列出这些不满足的表，用户选择 `Y` 或 `y` 则会继续创建同步任务，并且同步过程中自动忽略这些表的所有更新。用户选择其他输入，则不会创建同步任务。
+
 ### 发生同步中断的处理
 
 目前已知可能发生的同步中断包括以下几类场景：

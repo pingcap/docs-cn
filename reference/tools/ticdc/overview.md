@@ -41,7 +41,7 @@ TiCDC 的系统架构如下图所示：
 
 用户可以通过编写黑白名单过滤规则，来过滤或只同步某些数据库或某些表的所有变更数据。过滤规则类似于 MySQL `replication-rules-db` 或 `replication-rules-table`。
 
-## 使用限制
+## 同步限制
 
 将数据同步到 TiDB 或 MySQL，需要满足以下条件才能保证正确性：
 
