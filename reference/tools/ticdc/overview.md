@@ -50,8 +50,8 @@ TiCDC 的系统架构如下图所示：
 
 ### 暂不支持的场景
 
-目前 TiCDC 与部分 TiDB 特性存在冲突，在后续的 TiCDC 版本上会逐渐修复，当前版本需要做相应的兼容性处理。
+目前 TiCDC（4.0 发布版本）与部分 TiDB 特性存在冲突，在后续的 TiCDC 版本上会逐渐修复。当前版本需要做相应的兼容性处理。暂不支持的场景如下：
 
-- 暂不支持同步分区表
-- 暂不支持 TiDB 4.0 [新的 Collation 框架](/reference/sql/characterset-and-collation.md#新框架下的-collation-支持)，如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现因 collation 导致的无法定位数据的问题。
-- 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)，TiCDC 会使 region 无法进入静默状态。
+- 暂不支持同步分区表。
+- 暂不支持 TiDB 4.0 [新的 Collation 框架](/reference/sql/characterset-and-collation.md#新框架下的-collation-支持)。如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现 collation 导致的无法定位数据的问题。
+- 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。

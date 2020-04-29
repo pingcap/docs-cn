@@ -21,12 +21,12 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --status-addr=127.
 
 对于 `cdc server` 命令中可用选项解释如下：
 
-- `gc-ttl`: TiCDC 在 PD 设置的服务级别 GC safepoint TTL 时长，单位为秒，默认值为 86400。
+- `gc-ttl`: TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，单位为秒，默认值为 `86400`，即 24 小时。
 - `pd`: PD client 的 URL。
-- `status-addr`: TiCDC 服务的 HTTP API 查询地址和 prometheus 查询地址
-- `tz`: TiCDC 服务使用的时区，会在内部转换 Timestamp 等时间数据类型数据和向下游同步数据时使用的时区，默认为进程运行本地时区。
-- `log-file`: TiCDC 进程运行日志的地址，默认为 cdc.log。
-- `log-level`: TiCDC 进程运行时默认的日志级别，默认为 info。
+- `status-addr`: TiCDC 服务的 HTTP API 查询地址和 Prometheus 查询地址。
+- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
+- `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
+- `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
 
 ## 第 2 步：创建同步任务
 
