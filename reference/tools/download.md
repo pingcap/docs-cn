@@ -65,7 +65,7 @@ If you want to download the latest version of [Syncer](/reference/tools/syncer.m
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
-| [tidb-enterprise-tools-latest-linux-amd64.tar.gz](https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz) | Linux | amd64 | [tidb-enterprise-tools-latest-linux-amd64.sha256](https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256) |
+| [tidb-enterprise-tools-nightly-linux-amd64.tar.gz](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz) | Linux | amd64 | [tidb-enterprise-tools-nightly-linux-amd64.sha256](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.sha256) |
 
 This enterprise tools package includes all the following tools:
 
