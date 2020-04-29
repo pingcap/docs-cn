@@ -219,7 +219,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 规则如下：
 
 * 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
-* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `CHARACTER SET charset_name` 默认的排序规则。
+* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `charset_name` 对应的默认排序规则。
 * 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用 `character_set_connection` 和 `collation_connection` 系统变量给出的字符集和排序规则。
 
 ## 客户端连接的字符集和排序规则
@@ -262,12 +262,14 @@ SET collation_connection = @@collation_database;
 
 ## 集群、服务器、数据库、表、列、字符串的字符集和排序规则的优先级
 
+优先级从高到低排列顺序为：
+
 字符串 > 列 > 表 > 数据库 > 服务器 > 集群
 
 ## 字符集和排序规则的通用选择规则
 
 * 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
-* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `CHARACTER SET charset_name` 默认的排序规则。
+* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `charset_name` 对应的默认排序规则。
 * 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用更高优先级的字符集和排序规则。
 
 ## 字符合法性检查
@@ -286,7 +288,7 @@ SET collation_connection = @@collation_database;
 
 ### 旧框架下的排序规则支持
 
-在 4.0 版本之前，TiDB 中可以指定大部分 MySQl 中的排序规则，并把这些排序规则按照默认排序规则处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 在比较字符前按照排序规则的 PADDING 属性将字符末尾的空格删除，因此会造成以下的行为区别：
+在 4.0 版本之前，TiDB 中可以指定大部分 MySQL 中的排序规则，并把这些排序规则按照默认排序规则处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 在比较字符前按照排序规则的 PADDING 属性将字符末尾的空格删除，因此会造成以下的行为区别：
 
 {{< copyable "sql" >}}
 
