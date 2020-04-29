@@ -11,6 +11,7 @@
     - [如何用 Sysbench 测试 TiDB](/benchmark/how-to-run-sysbench.md)
     - [如何对 TiDB 进行 TPC-C 测试](/benchmark/how-to-run-tpcc.md)
     - [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/sysbench-v4.md)
+    - [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/tpcc-v2.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/tpcc.md)
     - [线上负载与 `Add Index` 相互影响测试](/benchmark/add-index-with-load.md)
 - [TiDB 快速上手指南](/quick-start-with-tidb.md)
