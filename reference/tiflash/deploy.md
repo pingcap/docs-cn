@@ -32,7 +32,7 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
 
 建议不要将 TiFlash 与 TiKV 同盘部署，以防互相干扰。
 
-硬盘选择标准同 [TiFlash 单独部署模式](#tiflash-单独部署模式)。硬盘总容量大致为：`整个 TiKV 集群的需同步数据容量/副本数/2`。例如整体 TiKV 的规划容量为三副本，则 TiFlash 的推荐容量为 TiKV 集群的六分之一。用户可以选择同步部分表数据而非全部。
+硬盘选择标准同 [TiFlash 单独部署模式](#tiflash-单独部署模式)。硬盘总容量大致为：`整个 TiKV 集群的需同步数据容量 / TiKV 副本数 * TiFlash 副本数`。例如整体 TiKV 的规划容量为 1TB、TiKV 副本数为 3、TiFlash 副本数为 2，则 TiFlash 的推荐总容量为 `1024GB / 3 * 2`。用户可以选择同步部分表数据而非全部。
 
 ## 针对 TiDB 的版本要求
 
@@ -66,7 +66,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
 
 3. 编写 topology 配置文件，保存为 `topology.yaml`。
 
-    可以参考[全量的配置文件模版](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
+    可以参考[全量的配置文件模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。
 
     除了部署 TiDB 集群的配置，需要额外在 `tiflash_servers` 下配置 tiflash servers 所在的 ip（目前只支持 ip，不支持域名）。
 

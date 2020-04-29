@@ -52,6 +52,7 @@
   + 监控
     - [概述](/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/how-to/monitor/monitor-a-cluster.md)
+    - [流量可视化](/how-to/monitor/key-visualizer.md)
   + 迁移
     - [迁移工具使用指南](/reference/tools/user-guide.md)
     + 从 MySQL 迁移
@@ -224,7 +225,7 @@
     - [约束](/reference/sql/constraints.md)
     - [生成列](/reference/sql/generated-columns.md)
     - [分区表](/reference/sql/partitioning.md)
-    - [字符集](/reference/sql/characterset-and-collation.md)
+    - [字符集和排序规则](/reference/sql/characterset-and-collation.md)
     - [SQL 模式](/reference/sql/sql-mode.md)
     - [SQL 诊断](/reference/system-databases/sql-diagnosis.md)
     - [视图](/reference/sql/view.md)
@@ -322,7 +323,7 @@
     - [增量恢复](/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/reference/tidb-binlog/binlog-slave-client.md)
     - [TiDB Binlog Relay Log](/reference/tidb-binlog/relay-log.md)
-    - [集群间双向同步](/reference/tidb-binlog/bi-repl.md)
+    - [集群间双向同步](/reference/tidb-binlog/bidirectional-replication.md)
     - [术语表](/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/reference/tidb-binlog/troubleshoot/binlog.md)
@@ -351,6 +352,7 @@
       - [概述](/reference/tools/ticdc/overview.md)
       - [部署使用](/reference/tools/ticdc/deploy.md)
       - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
+      - [常见问题和故障处理](/reference/tools/ticdc/troubleshoot.md)
       - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
       - [开放数据协议](/reference/tools/ticdc/open-protocol.md)
       - [Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)
@@ -378,6 +380,7 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/rn.md)
   + v4.0
+    - [4.0.0-rc.1](/releases/4.0.0-rc.1.md)
     - [4.0.0-rc](/releases/4.0.0-rc.md)
     - [4.0.0-beta.2](/releases/4.0.0-beta.2.md)
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
@@ -389,6 +392,7 @@
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.13](/releases/3.0.13.md)
     - [3.0.12](/releases/3.0.12.md)
     - [3.0.11](/releases/3.0.11.md)
     - [3.0.10](/releases/3.0.10.md)
