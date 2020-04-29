@@ -1,9 +1,9 @@
 ---
-title: TiDB TPC-C 性能对比测试报告 - v4.0 对比 v3.0
+title: TPC-C 性能对比 - v4.0 对比 v3.0
 category: benchmark
 ---
 
-# TiDB TPC-C 性能对比测试报告 - v4.0 对比 v3.0
+# TPC-C 性能对比 - v4.0 对比 v3.0
 
 ## 测试目的
 
@@ -22,12 +22,12 @@ TiDB 版本：v4.0.0-rc vs. v3.0.8
 AWS 机器：
 
 | 类别 | 机型 | 数量 | vCPUs |
-| :-: | :-: | :-: | :-: |
+| :- | :- | :- | :- |
 | TiKV | i3.4xlarge | 3 | 16 |
 | TiDB | c5.4xlarge | 2 | 16 |
 | PD | m5.xlarge | 3 | 4 |
 
-本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试工具并添加对 MySQL 协议支持， 可以通过以下命令下载测试程序:
+本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试工具并添加对 MySQL 协议支持。可以通过以下命令下载测试程序:
 
 {{< copyable "shell-regular" >}}
 
@@ -41,23 +41,25 @@ git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
 
 ### TiDB 版本信息
 
-### v4.0.0-rc
+#### v4.0.0-rc
 
 | 组件 | GitHash |
-| :-: | :-: |
+| :- | :- |
 | TiDB | 79db9e30ab8f98ac07c8ae55c66dfecc24b43d56 |
 | TiKV | f45d0c963df3ee4b1011caf5eb146cacd1fbbad8 |
 | PD | 6f06805f3b0070107fcb4af68b2fc224dee0714d |
 
-### v3.0.8
+#### v3.0.8
 
 | 组件 | GitHash |
-| :-: | :-: |
+| :- | :- |
 | TiDB | 8f13cf1449bd8903ff465a4f12ed89ecbac858a4 |
 | TiKV | 0d3168cfd8224fbc48a07796df83ddac0fbcbf46 |
 | PD | 456c42b8b0955b33426b58054e43b771801a74d0 |
 
 ### TiDB 参数配置
+
+{{< copyable "" >}}
 
 ```toml
 [log]
@@ -69,6 +71,8 @@ enabled = true
 ```
 
 ### TiKV 参数配置
+
+{{< copyable "" >}}
 
 ```toml
 [readpool]
@@ -97,9 +101,9 @@ pipelined = true
 
 ### 集群拓扑
 
-* 每台 i3.4xlarge 部署 1 个 TiKV，一共三台。
-* 每台 c5.4xlarge 部署 1 个 TiDB, 一共两台。
-* 每台 m5.xlarge 部署 1 个 PD，一共三台。
+* 每台 i3.4xlarge 上部署一个 TiKV 实例，一共三台。
+* 每台 c5.4xlarge 部署一个 TiDB 实例，一共两台。
+* 每台 m5.xlarge 部署一个 PD 实例，一共三台。
 
 ## 测试结果
 
