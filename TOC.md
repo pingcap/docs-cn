@@ -363,7 +363,7 @@
       - [包管理](/reference/tools/tiup/package-manage.md)
       - [本地快速部署 TiDB 集群](/reference/tools/tiup/playground.md)
       - [线上集群的部署与运维](/reference/tools/tiup/cluster.md)
-      - [搭建私有镜像](/reference/tools/tiup/mirros.md)
+      - [搭建私有镜像](/reference/tools/tiup/mirrors.md)
       - [组件打包](/reference/tools/tiup/package.md)
       - [压测](/reference/tools/tiup/bench.md)
     - [PD Control](/reference/tools/pd-control.md)

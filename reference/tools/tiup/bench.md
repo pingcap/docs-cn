@@ -63,7 +63,7 @@ Flags:
 
 ### 例子
 
-1.  通过 HASH 使用 4 个分区创建 4 个仓库
+### 通过 HASH 使用 4 个分区创建 4 个仓库
 
 {{< copyable "shell-regular" >}}
 
@@ -71,7 +71,7 @@ Flags:
 tiup bench tpcc --warehouses 4 --parts 4 prepare
 ```
 
-2. 运行 TPC-C 压测
+### 运行 TPC-C 压测
 
 {{< copyable "shell-regular" >}}
 
@@ -79,7 +79,7 @@ tiup bench tpcc --warehouses 4 --parts 4 prepare
 tiup bench tpcc --warehouses 4 run
 ```
 
-3. 清理数据 
+### 清理数据 
 
 {{< copyable "shell-regular" >}}
 
@@ -87,7 +87,7 @@ tiup bench tpcc --warehouses 4 run
 tiup bench tpcc --warehouses 4 cleanup
 ```
 
-4. 检查一致性
+### 检查一致性
 
 {{< copyable "shell-regular" >}}
 
@@ -95,7 +95,7 @@ tiup bench tpcc --warehouses 4 cleanup
 tiup bench tpcc --warehouses 4 check
 ```
 
-5. 生成 csv 文件
+### 生成 csv 文件
 
 {{< copyable "shell-regular" >}}
 
@@ -103,7 +103,7 @@ tiup bench tpcc --warehouses 4 check
 tiup bench tpcc --warehouses 4 prepare --output data
 ```
 
-6. 为指定的表生成 csv 文件
+### 为指定的表生成 csv 文件
 
 {{< copyable "shell-regular" >}}
 
@@ -111,7 +111,7 @@ tiup bench tpcc --warehouses 4 prepare --output data
 tiup bench tpcc --warehouses 4 prepare --output data --tables history,orders
 ```
 
-7. 开启 pprof
+### 开启 pprof
 
 {{< copyable "shell-regular" >}}
 
@@ -138,7 +138,7 @@ Flags:
 
 ## 例子
 
-1. 准备数据
+### 准备数据
 
 {{< copyable "shell-regular" >}}
 
@@ -146,7 +146,7 @@ Flags:
 tiup bench tpch --sf=1 prepare
 ```
 
-2. 压测并检查结果
+### 压测并检查结果
 
 {{< copyable "shell-regular" >}}
 
@@ -154,7 +154,7 @@ tiup bench tpch --sf=1 prepare
 tiup bench tpch --sf=1 --check=true run
 ```
 
-3. 压测但不检查结果
+### 压测但不检查结果
 
 {{< copyable "shell-regular" >}}
 
@@ -162,7 +162,7 @@ tiup bench tpch --sf=1 --check=true run
 tiup bench tpch --sf=1 run
 ```
 
-4. 清理
+### 清理
 
 {{< copyable "shell-regular" >}}
 

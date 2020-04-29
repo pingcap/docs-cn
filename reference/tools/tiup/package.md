@@ -31,7 +31,7 @@ Flags:
 
 本节我们开发并打包一个 hello 组件，它唯一的功能就是输出它自带配置文件的内容，该文件的内容为 "Hello World"。为了简单起见，我们采用 bash 脚本来开发该组件.
 
-1. 首先创建它的配置文件，该文件内容就只有 "Hello World"：
+### 首先创建它的配置文件，该文件内容就只有 "Hello World"
 
 {{< copyable "shell-regular" >}}
 
@@ -41,7 +41,7 @@ Hello World
 EOF
 ```
 
-2. 然后创建可执行文件：
+### 然后创建可执行文件
 
 {{< copyable "shell-regular" >}}
 
@@ -56,9 +56,9 @@ chmod 755 hello.sh
 
 环境变量 `TIUP_COMPONENT_INSTALL_DIR` 会由 TiUP 在运行时传入，指向该组件的安装目录。
 
-3. 然后参考[搭建私有镜像](./mirrors.md) 搭建离线镜像或私有镜像（主要是因为官方镜像现在没开放 publish 功能，不能发布自己的包），搭建完之后确保 TIUP_MIRRORS 变量指向搭建的镜像。
+然后参考[搭建私有镜像](/reference/tools/tiup/mirrors.md) 搭建离线镜像或私有镜像（主要是因为官方镜像现在没开放 publish 功能，不能发布自己的包），搭建完之后确保 TIUP_MIRRORS 变量指向搭建的镜像。
 
-4. 打包
+### 打包
 
 {{< copyable "shell-regular" >}}
 
@@ -68,7 +68,7 @@ tiup package hello.sh config.txt --name=hello --entry=hello.sh --release=v0.0.1
 
 此步骤会创建一个 package 目录，里面会放置打包好的文件和元信息。
 
-5. 上传到仓库
+### 上传到仓库
 
 由于目前官方仓库未开放上传，我们只能上传到第 3 步中自己搭建的镜像上，上传方式就是直接将 package 中的所有文件拷贝到第 3 步 tiup mirrors 的 ${target-dir} 中。
 
@@ -78,7 +78,7 @@ cp package/* path/to/mirror/
 
 如果第 3 步创建的目录恰好在当前目录下，并且名字叫 package，那就不需要手动 copy 了。
 
-6. 执行
+### 执行
 
 ```bash
 [root@localhost ~]# tiup list hello --refresh

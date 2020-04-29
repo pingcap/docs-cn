@@ -87,31 +87,34 @@ Use "tiup [command] --help" for more information about a command.
 ```
 
 输出的帮助信息较长，不过只需要关注两部分：
+
 - 可用的命令
-  - install: 用于安装组件
-  - list: 查看可用组件列表
-  - uninstall: 卸载组件
-  - update: 更新组件版本
-  - status: 查看组件运行记录
-  - clean: 清除组件运行记录
-  - help: 输出帮助信息
+    - install: 用于安装组件
+    - list: 查看可用组件列表
+    - uninstall: 卸载组件
+    - update: 更新组件版本
+    - status: 查看组件运行记录
+    - clean: 清除组件运行记录
+    - help: 输出帮助信息
 - 可用的组件
-  - playground: 在本机启动集群
-  - client: 连接本机的集群
-  - mirrors: 从官方镜像克隆一个私有镜像
-  - package: 打包一个新的组件
-  - bench: 对数据库进行压力测试
-  - doc: 打开在线文档
+    - playground: 在本机启动集群
+    - client: 连接本机的集群
+    - mirrors: 从官方镜像克隆一个私有镜像
+    - package: 打包一个新的组件
+    - bench: 对数据库进行压力测试
+    - doc: 打开在线文档
 
 > **注意：**
 >
-> 可用的组件会一直持续增加，以 `tiup cluster list` 输出的结果为准
+> 可用的组件会一直持续增加，以 `tiup list --refresh` 输出的结果为准
+> 组件的可用版本列表也会一直持续增加，以 `tiup list <comp> --refresh` 输出结果为准
 
 命令和组件的区别在于，命令是 TiUP 自带的，用于进行包管理的操作，而组件是 TiUP 通过包管理操作安装的独立的组件包。比如执行命令 `tiup list` TiUP 会直接运行自己内部的代码，而执行组件 `tiup playground` 则是先检查本地有没有一个叫 playground 的组件包，若没有则先从镜像上下载过来，然后运行这个组件包。
 
-[包管理](./package-manage.md) 章节将介绍所有的命令，组件的介绍将按照不同的组件分为几个章节:
-- [本地快速部署 TiDB 集群](./playground.md): playground 命令
-- [线上集群的部署与运维](./cluster.md): cluster 命令
-- [搭建私有镜像](./mirros.md)：mirros 命令
-- [组件打包](./package.md)：package 命令
-- [压测](./bench.md)
+[包管理](/reference/tools/tiup/package-manage.md) 章节将介绍所有的命令，组件的介绍将按照不同的组件分为几个章节:
+
+- [本地快速部署 TiDB 集群](/reference/tools/tiup/playground.md): playground 命令
+- [线上集群的部署与运维](/reference/tools/tiup/cluster.md): cluster 命令
+- [搭建私有镜像](/reference/tools/tiup/mirrors.md)：mirros 命令
+- [组件打包](/reference/tools/tiup/package.md)：package 命令
+- [压测](/reference/tools/tiup/bench.md)

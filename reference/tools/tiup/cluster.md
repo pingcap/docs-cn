@@ -5,6 +5,8 @@ category: tools
 
 # 线上集群的部署与运维
 
+> 该章节重在介绍 cluster 组件的使用介绍，如果需要线上部署的完善步骤，请参考[集群部署](/how-to/deploy/orchestrated/tiup.md)
+
 cluster 组件像 playground 部署本地集群一样快速部署生产集群，对比 playground，它提供了更强大的集群管理功能，包括对集群的升级，缩容，扩容甚至操作审计等。它支持非常多命令:
 
 ```bash
@@ -170,16 +172,21 @@ ID                  Role        Host          Ports        Status     Data Dir  
 
 ## 缩容
 
+> **注意：**
+>
+> 本节只用于展示命令的语法示例，线上扩缩容请参考[集群扩缩容](/how-to/scale/with-tiup.md)
+
 有时候业务量降低了，集群再占有原来的资源显得有些浪费，我们会想安全地释放某些节点，减小集群规模，于是需要缩容。缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关数据文件。由于 TiKV 和 Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV 和 Binglog 组件做了特殊处理：
+
 - 对 TiKV 及 Binlog 组件的操作
-  - TiUP cluster 通过 API 将其下线后直接退出而不等待下线完成
-  - 等之后再执行集群操作相关的命令时会检查是否存在已经下线完成的 TiKV 或者 Binlog 节点。如果不存在，则继续执行指定的操作；如果存在，则执行如下操作：
-    - 停止已经下线掉的节点的服务
-    - 清理已经下线掉的节点的相关数据文件
-    - 更新集群的拓扑，移除已经下线掉的节点
+    - TiUP cluster 通过 API 将其下线后直接退出而不等待下线完成
+    - 等之后再执行集群操作相关的命令时会检查是否存在已经下线完成的 TiKV 或者 Binlog 节点。如果不存在，则继续执行指定的操作；如果存在，则执行如下操作：
+        - 停止已经下线掉的节点的服务
+        - 清理已经下线掉的节点的相关数据文件
+        - 更新集群的拓扑，移除已经下线掉的节点
 - 对其他组件的操作
-  - PD 组件的下线通过 API 将指定节点从集群中 delete 掉（这个过程很快），然后停掉指定 PD 的服务并且清除该节点的相关数据文件
-  - 下线其他组件时，直接停止并且清除节点的相关数据文件
+    - PD 组件的下线通过 API 将指定节点从集群中 delete 掉（这个过程很快），然后停掉指定 PD 的服务并且清除该节点的相关数据文件
+    - 下线其他组件时，直接停止并且清除节点的相关数据文件
 
 缩容命令的基本用法：
 
@@ -219,6 +226,10 @@ ID                  Role        Host          Ports        Status     Data Dir  
 
 ## 扩容
 
+> **注意：**
+>
+> 本节只用于展示命令的语法示例，线上扩缩容请参考[集群扩缩容](/how-to/scale/with-tiup.md)
+
 扩容的内部逻辑如同部署类似，TiUP cluster 会先保证节点的 SSH 连接，在目标节点上创建必要的目录，然后执行部署并且启动服务。其中 PD 节点的扩容会通过 join 方式加入到集群中，并且会更新与 PD 有关联的服务的配置；其他服务直接启动加入到集群中。所有服务在扩容时都会做正确性验证，最终返回是否扩容成功。
 
 例如在集群 tidb-test 中扩容一个 TiKV 的节点和一个 PD 节点：
@@ -251,22 +262,26 @@ tiup cluster scale-out tidb-test scale.yaml
 
 ## 滚动升级
 
+> **注意：**
+>
+> 本节只用于展示命令的语法示例，线上升级请参考[集群升级](/how-to/upgrade/using-tiup.md)
+
 滚动升级功能借助 TiDB 的分布式能力，升级过程中尽量保证对前端业务透明、无感知。升级时会先检查各个组件的配置文件是否合理，如果配置有问题，则报错退出；如果配置没有问题，则工具会逐个节点升级。其中对不同节点有不同的操作。
 
 ### 不同节点的操作
 
 - 升级 PD
-  - 优先升级非 Leader 节点
-  - 所有非 Leader 节点升级完成后再升级 Leader 节点
-    - 工具会向 PD 发送一条命令将 Leader 迁移到升级完成的节点上
-    - 当 Leader 已经切换到其他节点之后，再对旧的 Leader 节点做升级操作
-  - 同时升级过程中，若发现有不健康的节点时工具会中止本次升级并退出，此时需要由人工判断、修复后再执行升级。
+    - 优先升级非 Leader 节点
+    - 所有非 Leader 节点升级完成后再升级 Leader 节点
+        - 工具会向 PD 发送一条命令将 Leader 迁移到升级完成的节点上
+        - 当 Leader 已经切换到其他节点之后，再对旧的 Leader 节点做升级操作
+    - 同时升级过程中，若发现有不健康的节点时工具会中止本次升级并退出，此时需要由人工判断、修复后再执行升级。
 - 升级 TiKV
-  - 先在 PD 中添加一个迁移对应 TiKV 上 region leader 的调度，通过迁移 Leader 确保升级过程中不影响前端业务
-  - 等待迁移 Leader 完成之后，再对该 TiKV 节点进行升级更新
-  - 等更新后的 TiKV 正常启动之后再移除迁移 Leader 的调度
+    - 先在 PD 中添加一个迁移对应 TiKV 上 region leader 的调度，通过迁移 Leader 确保升级过程中不影响前端业务
+    - 等待迁移 Leader 完成之后，再对该 TiKV 节点进行升级更新
+    - 等更新后的 TiKV 正常启动之后再移除迁移 Leader 的调度
 - 升级其他服务
-  - 正常停止服务更新
+    - 正常停止服务更新
 
 ### 升级操作
 
@@ -378,4 +393,86 @@ tiup cluster import
 
 ```bash
 tiup cluster import --dir=/path/to/tidb-ansible
+```
+
+## 查看操作日志
+
+操作日志的查看可以借助 audit 命令，其使用方式如下：
+
+```bash
+Usage:
+  tiup cluster audit [audit-id] [flags]
+
+Flags:
+  -h, --help   help for audit
+```
+
+在不实用 [audit-id] 参数调用时，它会显示执行的命令列表，如下：
+
+```bash
+$ tiup cluster audit 
+Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.6.0/cluster audit
+ID      Time                       Command
+--      ----                       -------
+4BLhr0  2020-04-29T13:25:09+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
+4BKWjF  2020-04-28T23:36:57+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
+4BKVwH  2020-04-28T23:02:08+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
+4BKKH1  2020-04-28T16:39:04+08:00  /Users/joshua/.tiup/components/cluster/v0.4.9/cluster destroy test
+4BKKDx  2020-04-28T16:36:57+08:00  /Users/joshua/.tiup/components/cluster/v0.4.9/cluster deploy test v4.0.0-rc /tmp/topology.yaml
+```
+
+第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
+
+```bash
+$ tiup cluster audit 4BLhr0
+```
+
+## 执行命令
+
+`exec` 命令可以很方便的到集群的机器上执行命令，其使用方式如下：
+
+```bash
+Usage:
+  tiup cluster exec <cluster-name> [flags]
+
+Flags:
+      --command string   需要执行的命令 (默认是 "ls")
+  -h, --help             帮助信息
+  -N, --node strings     指定要执行的节点 ID （节点 id 通过 display 命令获取）
+  -R, --role strings     指定要执行的 role
+      --sudo             是否使用 root (默认为 false)
+```
+
+例如要到所有的 tidb 节点执行 `ls /tmp`：
+
+```bash
+tiup cluster exec test-cluster --command='ls /tmp'
+```
+
+## 集群控制工具（controllers）
+
+在 TiUP 之前，我们用 `tidb-ctl`, `tikv-ctl`, `pd-ctl` 等工具操控集群，为了方便下载和使用，TiUP 将它们集成到了统一的组件 `ctl` 中：
+
+```bash
+Usage:
+  tiup ctl {tidb/pd/tikv/binlog/etcd} [flags]
+
+Flags:
+  -h, --help   help for tiup
+```
+
+这个命令和之前的命令对应关系为：
+
+```bash
+tidb-ctl [args] = tiup ctl tidb [args]
+pd-ctl [args] = tiup ctl pd [args]
+tikv-ctl [args] = tiup ctl tikv [args]
+binlogctl [args] = tiup ctl bindlog [args]
+etcdctl [args] = tiup ctl etcd [args]
+```
+
+例如，以前查看 store 的命令为 `pd-ctl -u http://127.0.0.1:2379 store`，集成到 TiUP 中的命令为：
+
+```bash
+tiup ctl pd -u http://127.0.0.1:2379 store
 ```

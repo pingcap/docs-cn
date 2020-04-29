@@ -72,6 +72,7 @@ Flags:
 ### 3. 平台限定
 
 如果只想克隆某个平台的包，那么可以使用 `--os` 和 `--arch` 来限定:
+
 - 只想克隆 linux 平台的: `tiup mirros <target-dir> --os=linux`
 - 只想克隆 amd64 架构的: `tiup mirros <target-dir> --arch=amd64`
 - 只想克隆 linux/amd64 的: `tiup mirros <target-dir> --os=linux --arch=amd64`
@@ -79,6 +80,7 @@ Flags:
 ### 4. 组件版本限定
 
 如果只想克隆某个组件的某一个版本而不是所有版本，则使用 `--<component>=<version>` 来限定，比如“
+
 - 只想克隆 tidb 的 v4 版本: `tiup mirrors <target-dir> --tidb v4`
 - 只想克隆 tidb 的 v4 版本，以及 tikv 的所有版本: `tiup mirros <target-dir> --tidb v4 --tikv all` 
 - 克隆启动一个集群的所有组件的特定版本：`tiup mirrors <target-dir> v4.0.0-rc`
@@ -120,7 +122,7 @@ tiup cluster xxx
 export TIUP_MIRRORS=/tmp/package
 ```
 
-集群相关操作可参考 [cluster 命令](./cluster.md) 的相关介绍。
+集群相关操作可参考 [cluster 命令](/reference/tools/tiup/cluster.md) 的相关介绍。
 
 ### 私有镜像
 
@@ -131,7 +133,7 @@ cd package
 python -m SimpleHTTPServer 8000
 ```
 
-这样就在 http://127.0.0.1:8000 这个地址建立了私有镜像。通过私有镜像安装 TiUP:
+这样就在 `http://127.0.0.1:8000` 这个地址建立了私有镜像。通过私有镜像安装 TiUP:
 
 ```bash
 export TIUP_MIRRORS=http://127.0.0.1:8000

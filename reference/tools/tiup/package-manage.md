@@ -6,6 +6,7 @@ category: tools
 # 组件包管理
 
 组件管理主要通过 TiUP 的子命令来完成，目前有这些子命令：
+
 - list: 查询组件列表，知道有哪些组件可以安装，以及这些组件有哪些版本可选
 - install: 安装某个组件的特定版本
 - update: 升级某个组件到最新的版本
@@ -17,10 +18,12 @@ category: tools
 ## 查询组件列表：tiup list
 
 当想要用 TiUP 安装东西的时候，首先需要知道有哪些组件可以安装，以及这些组件有哪些版本可以安装，这便是 list 命令的功能。它支持这几种用法：
+
 - tiup list: 查看当前有哪些组件可以安装
 - tiup list ${component}: 查看某个组件有哪些版本可以安装
 
 对于上面两种使用方法，可以组合使用两个 flag：
+
 - --installed: 本地已经安装了哪些组件，或者已经安装了某个组件的哪些版本
 - --refresh: 获取服务器上最新的组件列表，以及它们的版本列表
 
@@ -43,6 +46,7 @@ tiup list tikv --refresh
 ## 安装组件：tiup install
 
 查看组件列表之后，安装也非常简单，利用 tiup install 命令即可，它的使用方式为：
+
 - tiup install <component>: 安装指定组件的最新稳定版
 - tiup install <component>:[version]: 安装指定组件的指定版本
 
@@ -73,6 +77,7 @@ tiup install tikv:v3.0.6
 ## 升级组件
 
 在官方组件提供了新版之后，同样可以利用 TiUP 进行升级，它的使用方式基本和 install 相同，除了额外加的几个 flag:
+
 - --all: 升级所有组件
 - --nightly: 升级至 nightly 版本
 - --self: 升级 TiUP 自己至最新版本
@@ -145,6 +150,7 @@ tiup status
 ```
 
 运行该命令会得到一个实例列表，每行一个实例。列表中包含这些列：
+
 - Name: 实例的 tag 名称
 - Component: 实例的组件名称
 - PID: 实例运行的进程 ID
@@ -163,6 +169,7 @@ tiup clean [tag] [flags]
 ```
 
 支持以下 flags:
+
 - --all 清除所有的实例信息
 
 其中 tag 表示要清理的实例 tag，如果使用了 `--all` 则不传 tag
@@ -192,10 +199,12 @@ TiUP 安装的组件是要占用本地磁盘空间的，如果不想保留那么
 ```
 
 支持的 flags:
+
 - --all 卸载所有的组件或版本
 - --self 卸载 TiUP 自身
 
 component 为要卸载的组件名称，version 为要卸载的版本，这两个都可以省略，省略任何一个需要加上 `--all` 使用：
+
 - 若省略版本，加 `--all` 表示卸载该组件所有版本
 - 若版本和组件都省略，则加 `--all` 表示卸载所有组件及其所有版本
 

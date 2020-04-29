@@ -16,6 +16,7 @@ tiup playground [version] [flags]
 ```
 
 最朴素的启动命令 `tiup playground` 会使用本地安装的 TiDB/TiKV/PD 或它们的稳定版本启动一个 1 KV, 1 DB, 1 PD 的集群。这个命令实际上做了以下事情：
+
 - 因为没有指定版本，TiUP 会先查找已安装的 playground 的最新版本，假设已安装的最新版为 v0.0.6，则该命令相当于 tiup playground:v0.0.6
 - 如果 playground 组件从未安装过任何版本，TiUP 会先将其安装最新稳定版，然后再启动运行实例
 - 因为 playground 没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新 release 版本，假设当前为 v4.0.0-rc，则该命令相当于 tiup playground:v0.0.6 v4.0.0-rc
@@ -96,3 +97,15 @@ tiup playground --db.binpath /xx/tidb-server
 ```shell
 tiup playground v3.0.10 --db 3 --pd 3 --kv 3
 ```
+
+## 快速连接到启动的 playground 集群
+
+TiUP 提供了一个 `client` 组件用于自动寻找并连接本地启动的 playground 集群，使用方式为：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup client
+```
+
+它会在控制台上提供当前机器已经启动的 playground 列表，选中需要连接的点击回车就可以打开一个自带的 mysql 客户端连接 TiDB。
