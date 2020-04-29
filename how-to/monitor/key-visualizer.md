@@ -19,11 +19,9 @@ http://PDAddress:PDPort/dashboard
 
 > **注意：**
 >
-> 存在多个 PD 实例时，可通过任意一个 PD 的地址访问 TiDB Dashboard。
->
-> 默认情况下 `PDPort` 是 `2379`。若部署时修改过 PD 相应参数，则需要填写对应的端口。
->
-> 登录 TiDB Dashboard 需要使用 TiDB 的 `root` 账号。
+> + 存在多个 PD 实例时，可通过任意一个 PD 的地址访问 TiDB Dashboard。
+> + 默认情况下 `PDPort` 是 `2379`。若部署时修改过 PD 相应参数，则需要填写对应的端口。
+> + 登录 TiDB Dashboard 需要使用 TiDB 的 `root` 账号。
 
 ## 界面示例
 
@@ -39,7 +37,9 @@ http://PDAddress:PDPort/dashboard
 
 ## 概念介绍
 
-**Region**
+本部分介绍与 Key Visualizer 相关的基本概念。
+
+### Region
 
 在 TiDB 集群中，数据以分布式的方式存储在所有的 TiKV 实例中。TiKV 在逻辑上是一个巨大且有序的 KV Map。整个 Key-Value 空间分成很多 Region，每一个 Region 是一系列连续的 Key。
 
@@ -47,7 +47,7 @@ http://PDAddress:PDPort/dashboard
 >
 > 关于 Region 的详细介绍，请参考[三篇文章了解 TiDB 技术内幕 - 说存储](https://pingcap.com/blog-cn/tidb-internal-1/#region)
 
-**热点**
+### 热点
 
 在使用 TiDB 的过程中，热点是一个典型的现象，它表现为大量的流量都在读写一小块数据。由于连续的数据往往由同一个 TiKV 实例处理，因此热点对应的 TiKV 实例的性能就成为了整个业务的性能瓶颈。常见的热点场景有使用自增主键连续写入相邻数据导致的写入表数据热点、时间索引下写入相邻时间数据导致的写入表索引热点等。
 
@@ -55,21 +55,21 @@ http://PDAddress:PDPort/dashboard
 >
 > 热点问题详情请参阅[TiDB 热点问题详解](https://asktug.com/t/topic/358)。
 
-**热力图**
+### 热力图
 
 热力图是 Key Visualizer 的核心，它显示了一个指标随时间的变化。热力图的横轴 X 是时间，纵轴 Y 则是按 Key 排序的连续 Region，横跨 TiDB 集群上所有数据库和数据表。颜色越暗（cold）表示该区域的 Region 在这个时间段上读写流量较低，颜色越亮（hot）表示读写流量越高，即越热。
 
-**Region 压缩**
+### Region 压缩
 
 一个 TiDB 集群中，Region 的数量可能多达数十万。在屏幕上是难以显示这么多 Region 信息的。因此，在一张热力图中，Region 会被压缩到约 1500 个连续范围，每个范围称为 Bucket。在一个热力图上，热的实例更需要关注，因此 Region 压缩总是倾向于将流量较小的大量 Region 压缩为一个 Bucket，而尽量让高流量的 Region 独立成 Bucket。
 
 ## 使用 Key Visualizer
 
-此部分介绍如何使用 Key Visualizer。
+本部分介绍如何使用 Key Visualizer。
 
 ![view toolbar](/media/dashboard/keyvisualizer/toolbar.png)
 
-**观察某一段时间或者 Region 范围**
+### 观察某一段时间或者 Region 范围
 
 打开 Key Visualizer 时，默认会显示最近 6 小时整个数据库内的热力图。其中，越靠近右侧（当前时间）时，每列 Bucket 对应的时间间隔会越小。如果您想观察某个特定时间段或者特定的 Region 范围，则可以通过放大来获得更多细节。
 
@@ -80,19 +80,19 @@ http://PDAddress:PDPort/dashboard
 
 > **注意：**
 >
-> 使用后三种方法，将引起热力图的重新绘制。您可能观察到热力图与放大前有较大差异，这是一个正常的现象。它可能是由于在进行局部观察时，Region 压缩的粒度发生了变化，或者是局部范围内，“热”的基准发生了改变。
+> 使用后三种方法，将引起热力图的重新绘制。你可能观察到热力图与放大前有较大差异，这是一个正常的现象。它可能是由于在进行局部观察时，Region 压缩的粒度发生了变化，或者是局部范围内，“热”的基准发生了改变。
 
-**调整亮度**
+### 调整亮度
 
 热力图使用颜色的明暗来表达一个 Bucket 的流量高低，颜色越暗（cold）表示该区域的 Region 在这个时间段上读写流量较低，颜色越亮（hot）表示读写流量越高，即越热。如果热力图中的颜色太亮或太暗，则可能很难观察到细节。此时，可以点击 **Brightness** 按钮，然后通过滑块来调节页面的亮度。
 
 > **注意：**
 >
-> Key Visualizer 在显示一个区域内的热力图时，会根据区域内的流量情况来界定冷热。当整个区域流量较为平均时，即使整体流量在数值上很低，您依然有可能观察到较大的亮色区域。请注意一定要结合数值一起分析。
+> Key Visualizer 在显示一个区域内的热力图时，会根据区域内的流量情况来界定冷热。当整个区域流量较为平均时，即使整体流量在数值上很低，你依然有可能观察到较大的亮色区域。请注意一定要结合数值一起分析。
 
-**选择指标**
+### 选择指标
 
-您可以通过 **指标选择框**（以上界面中 `Write (bytes)` 处）来查看您关心的指标：
+你可以通过 **指标选择框**（以上界面中 `Write (bytes)` 处）来查看你关心的指标：
 
 * Read (bytes) 读流量
 * Write (bytes) 写流量
@@ -100,21 +100,21 @@ http://PDAddress:PDPort/dashboard
 * Write (keys) 写入行数
 * All 读写流量的总和
 
-**刷新与自动刷新**
+### 刷新与自动刷新
 
 可以通过点击 **Refresh** 按钮来重新获得基于当前时间的热力图。当需要实时观察数据库的流量分布情况时，可以点击 **Refresh** 右侧的向下箭头，选择一个固定的时间间隔让热力图按此间隔自动刷新。
 
 > **注意：**
 >
-> 如果您进行了时间范围或者 Region 范围的调整，自动刷新会被关闭。
+> 如果你进行了时间范围或者 Region 范围的调整，自动刷新会被关闭。
 
-**查看详情**
+### 查看详情
 
-您可以将鼠标悬停在您关心的 Bucket 上，来查看这个区域的详细信息。详细信息如下图所示：
+你可以将鼠标悬停在你关心的 Bucket 上，来查看这个区域的详细信息。详细信息如下图所示：
 
 ![view tooltip](/media/dashboard/keyvisualizer/tooltip.png)
 
-如果您有复制某个信息的需要，可以在 bucket 进行点击。此时这个详细信息的页面会被暂时钉住。点击您关心的信息，即可将其复制到剪切板。示例图如下：
+如果你有复制某个信息的需要，可以在 bucket 进行点击。此时这个详细信息的页面会被暂时钉住。点击你关心的信息，即可将其复制到剪切板。示例图如下：
 
 ![copy tooltip](/media/dashboard/keyvisualizer/tooltip-copy.png)
 
@@ -122,19 +122,19 @@ http://PDAddress:PDPort/dashboard
 
 本部分选取了 Key Visualizer 中常见的四种热力图进行解读。
 
-**均衡：期望结果**
+### 均衡：期望结果
 
 ![view balance](/media/dashboard/keyvisualizer/well_dist.png)
 
 如图所示，热力图颜色均匀或者深色和亮色混合良好，说明读取或写入在时间和 Region 空间范围上都分布得比较均衡，访问压力均匀地分摊在所有的机器上。这种负载是最适合分布式数据库的。
 
-**X 轴明暗交替：需要关注高峰期的资源情况**
+### X 轴明暗交替：需要关注高峰期的资源情况
 
 ![view period-x](/media/dashboard/keyvisualizer/period.png)
 
 如图所示，热力图在 X 轴（时间）上表现出明暗交替，但 Y 轴（Region）则比较均匀，说明读取或写入负载具有周期性的变化。这种情况可能出现在周期性的定时任务场景，如大数据平台每天定时从 TiDB 中抽取数据。一般来说可以关注一下使用高峰时期资源是否充裕。
 
-**Y 轴明暗交替：需要关注产生的热点聚集程度**
+## Y 轴明暗交替：需要关注产生的热点聚集程度
 
 ![view period-y](/media/dashboard/keyvisualizer/continue.png)
 
@@ -142,7 +142,7 @@ http://PDAddress:PDPort/dashboard
 
 另外，明亮区域的高度 （Y 轴方向的粗细）非常关键。由于 TiKV 自身拥有以 Region 为单位的热点平衡机制，因此涉及热点的 Region 越多其实越能有利于在所有 TiKV 实例上均衡流量。明亮条纹越粗、数量越多则意味着热点越分散、更多的 TiKV 能得到利用；明亮条纹越细、数量越少意味着热点越集中、热点 TiKV 越显著、越需要人工介入并关注。
 
-**明亮斜线：需要关注业务模式**
+### 明亮斜线：需要关注业务模式
 
 ![view slash](/media/dashboard/keyvisualizer/sequential.png)
 
@@ -152,6 +152,6 @@ http://PDAddress:PDPort/dashboard
 >
 > 这里只是列出了几种常见的热力图模式。Key Visualizer 中实际展示的是整个集群上所有数据库、数据表的热力图，因此非常有可能在不同的区域观察到不同的热力图模式，也可能观察到多种热力图模式的混合结果。使用的时候应当视实际情况灵活判断。
 
-### 解决热点问题
+## 解决热点问题
 
 TiDB 内置了不少帮助缓解常见热点问题的功能，深入了解请参考[《TiDB 高并发写入常见热点问题及规避方法》](https://pingcap.com/blog-cn/tidb-in-high-concurrency-scenarios/)。
