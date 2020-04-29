@@ -1,9 +1,9 @@
 ---
-title: Key Visualizer 热点可视化
+title: Key Visualizer 流量可视化
 category: how-to
 ---
 
-# Key Visualizer 热点可视化
+# Key Visualizer 流量可视化
 
 Key Visualizer 是一款用于分析 TiDB 使用模式和排查流量热点的工具。它会将 TiDB 数据库集群一段时间的指标生成可视化报告，可用于快速直观地观察集群整体热点及流量分布情况。
 
