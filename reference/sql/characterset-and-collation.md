@@ -200,7 +200,7 @@ col_name {ENUM | SET} (val_list)
 
 ## 字符串的字符集和排序规则
 
-每一个字符串都对应一个字符集和一个比较排序规则，在使用字符串时指此选项可选，如下：
+每一个字符串都对应一个字符集和一个排序规则，在使用字符串时指此选项可选，如下：
 
 ```sql
 [_charset_name]'string' [COLLATE collation_name]
@@ -246,7 +246,7 @@ SET character_set_results = charset_name;
 SET character_set_connection = charset_name;
 ```
 
-`COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的排序规则。
+`COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则。
 
 * `SET CHARACTER SET 'charset_name'`
 
@@ -268,7 +268,7 @@ SET collation_connection = @@collation_database;
 
 * 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
 * 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `CHARACTER SET charset_name` 默认的排序规则。
-* 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用更高优先级给出的字符集和排序规则。
+* 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用更高优先级的字符集和排序规则。
 
 ## 字符合法性检查
 
@@ -303,7 +303,7 @@ Query OK, 1 row affected # MySQL 中，由于补齐空格比较，报错 Duplica
 
 ### 新框架下的排序规则支持
 
-TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collation_enabled_on_first_boostrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled`  变量确认是否启用新排序规则框架：
+TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collation_enabled_on_first_boostrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用新排序规则框架：
 
 {{< copyable "sql" >}}
 
