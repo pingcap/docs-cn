@@ -7,7 +7,7 @@ category: reference
 
 > **警告：**
 >
-> Loader 目前已经不再维护，其功能已经完全被 [TiDB Lightning TiDB backend 功能](/reference/tools/tidb-lightning/tidb-backend.md)取代，强烈建议切换到 TiDB Lightning。
+> Loader 目前已经不再维护，其功能已经完全被 [TiDB Lightning 的 TiDB backend 功能](/reference/tools/tidb-lightning/tidb-backend.md)取代，强烈建议切换到 TiDB Lightning。
 
 ## Loader 简介
 
