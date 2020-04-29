@@ -341,11 +341,15 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 ### tidb_enable_table_partition
 
-作用域：SESSION
+作用域：SESSION | GLOBAL
 
-默认值："auto"
+默认值："on"
 
-这个变量用来设置是否开启 TABLE PARTITION 特性。默认值 `auto` 表示开启 range partition 和 hash partion。`off` 表示关闭 TABLE PARTITION 的特性，此时语法还是会依旧兼容，只是建立的 partition table 实际上并不是真正的 partition table，而是和普通的 table 一样。`on` 表示开启，目前的作用和 `auto` 一样。
+这个变量用来设置是否开启 TABLE PARTITION 特性。目前变量支持以下三种值：
+
+- 默认值 `on` 表示开启 TiDB 当前已实现了的分区表类型，目前 range partition、hash partition 以及 range column 单列的场景会生效。
+- `auto` 目前作用和 `on` 一样。
+- `off` 表示关闭 TABLE PARTITION 的特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
 注意，目前 TiDB 只支持 range partition 和 hash partition。
 
