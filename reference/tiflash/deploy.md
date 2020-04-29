@@ -71,7 +71,7 @@ TiUP cluster is the deployment tool for TiDB 4.0 or later versions. It is recomm
 
 3. Write the topology configuration file and save it as `topology.yaml`.
 
-    You can refer to [the topology configuration file template](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml).
+    You can refer to [the topology configuration file template](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml).
 
     In addition to configuring the TiDB cluster, you also need to configure the IP of TiFlash servers in `tiflash_servers`. Currently the configuration only supports IP but not domain name.
 
