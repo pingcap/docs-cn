@@ -351,6 +351,7 @@
       - [概述](/reference/tools/ticdc/overview.md)
       - [部署使用](/reference/tools/ticdc/deploy.md)
       - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
+      - [常见问题和故障处理](/reference/tools/ticdc/troubleshoot.md)
       - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
       - [开放数据协议](/reference/tools/ticdc/open-protocol.md)
       - [Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)
