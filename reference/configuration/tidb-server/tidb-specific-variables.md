@@ -62,7 +62,8 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 当查询中带有 Distinct 的聚合操作执行很慢时，可以尝试设置该变量为 1。
 
 例如，在如下执行计划中，`distinct a` 被下推到了 Coprocessor， 在 `HashAgg_5` 里新增里一个 group by 列 `test.t.a`。
-```mysql
+
+```
 mysql> set session tidb_opt_distinct_agg_push_down = 1;
 Query OK, 0 rows affected (0.00 sec)
 
