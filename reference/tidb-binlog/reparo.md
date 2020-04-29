@@ -58,12 +58,6 @@ Usage of Reparo:
 # The storage directory for the binlog file in the protobuf format that Drainer outputs
 data-dir = "./data.drainer"
 
-# Uses the index file to locate `ts`. Set this parameter if `start-ts` is set. The file
-# directory is {data-dir}/{index-name}.
-# index-name = "binlog.index"
-# log-file = ""
-# log-rotate = "hour"
-
 # The level of the output information of logs
 # Value: "debug"/"info"/"warn"/"error"/"fatal" ("info" by default)
 log-level = "info"
