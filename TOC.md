@@ -51,6 +51,7 @@
   + 监控
     - [概述](/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/how-to/monitor/monitor-a-cluster.md)
+    - [流量可视化](/how-to/monitor/key-visualizer.md)
   + 迁移
     - [迁移工具使用指南](/reference/tools/user-guide.md)
     + 从 MySQL 迁移
@@ -378,6 +379,7 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/rn.md)
   + v4.0
+    - [4.0.0-rc.1](/releases/4.0.0-rc.1.md)
     - [4.0.0-rc](/releases/4.0.0-rc.md)
     - [4.0.0-beta.2](/releases/4.0.0-beta.2.md)
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
