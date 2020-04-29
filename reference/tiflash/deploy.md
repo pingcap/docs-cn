@@ -66,7 +66,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
 
 3. 编写 topology 配置文件，保存为 `topology.yaml`。
 
-    可以参考[全量的配置文件模版](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
+    可以参考[全量的配置文件模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。
 
     除了部署 TiDB 集群的配置，需要额外在 `tiflash_servers` 下配置 tiflash servers 所在的 ip（目前只支持 ip，不支持域名）。
 
