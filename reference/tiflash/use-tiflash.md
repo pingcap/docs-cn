@@ -33,7 +33,7 @@ ALTER TABLE table_name SET TIFLASH REPLICA count
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50`.`partsupp` SET TIFLASH REPLICA 2
+ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
 ```
 
 删除副本：
@@ -72,7 +72,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 查询结果中：
 
-* AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。
+* AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
 ## 使用 TiDB 读取 TiFlash
@@ -81,11 +81,44 @@ TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本
 
 ### 智能选择
 
-对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。具体有没有选择 TiFlash 副本，可以通过 `explain analyze` 语句查看，见下图：
+对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。具体有没有选择 TiFlash 副本，可以通过 `desc` 或 `explain analyze` 语句查看，例如：
 
-![tidb-display](/media/tiflash/tidb-display.png)
+{{< copyable "sql" >}}
+
+```sql
+desc select count(*) from test.t;
+```
+
+```
++--------------------------+---------+--------------+---------------+--------------------------------+
+| id                       | estRows | task         | access object | operator info                  |
++--------------------------+---------+--------------+---------------+--------------------------------+
+| StreamAgg_9              | 1.00    | root         |               | funcs:count(1)->Column#4       |
+| └─TableReader_17         | 1.00    | root         |               | data:TableFullScan_16          |
+|   └─TableFullScan_16     | 1.00    | cop[tiflash] | table:t       | keep order:false, stats:pseudo |
++--------------------------+---------+--------------+---------------+--------------------------------+
+3 rows in set (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+explain analyze select count(*) from test.t;
+```
+
+```
++--------------------------+---------+---------+--------------+---------------+----------------------------------------------------------------------+--------------------------------+-----------+------+
+| id                       | estRows | actRows | task         | access object | execution info                                                       | operator info                  | memory    | disk |
++--------------------------+---------+---------+--------------+---------------+----------------------------------------------------------------------+--------------------------------+-----------+------+
+| StreamAgg_9              | 1.00    | 1       | root         |               | time:83.8372ms, loops:2                                              | funcs:count(1)->Column#4       | 372 Bytes | N/A  |
+| └─TableReader_17         | 1.00    | 1       | root         |               | time:83.7776ms, loops:2, rpc num: 1, rpc time:83.5701ms, proc keys:0 | data:TableFullScan_16          | 152 Bytes | N/A  |
+|   └─TableFullScan_16     | 1.00    | 1       | cop[tiflash] | table:t       | time:43ms, loops:1                                                   | keep order:false, stats:pseudo | N/A       | N/A  |
++--------------------------+---------+---------+--------------+---------------+----------------------------------------------------------------------+--------------------------------+-----------+------+
+```
 
 `cop[tiflash]` 表示该任务会发送至 TiFlash 进行处理。如果没有选择 TiFlash 副本，可尝试通过 `analyze table` 语句更新统计信息后，再查看 `explain analyze` 结果。
+
+需要注意的是，如果表仅有单个 TiFlash 副本且相关节点无法服务，智能选择模式下的查询会不断重试，需要指定 Engine 或者手工 Hint 来读取 TiKV。
 
 ### Engine 隔离
 

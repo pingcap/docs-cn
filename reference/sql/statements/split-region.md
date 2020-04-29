@@ -27,6 +27,19 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
 
 `BY value_list…` 语法将手动指定一系列的点，然后根据这些指定的点切分 Region，适用于数据不均匀分布的场景。
 
+`SPLIT` 语句的返回结果示例如下：
+
+```sql
++--------------------+----------------------+
+| TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
++--------------------+----------------------+
+| 4                  | 1.0                  |
++--------------------+----------------------+
+```
+
+* `TOTAL_SPLIT_REGION`：表示新增预切分的 Region 数量。
+* `SCATTER_FINISH_RATIO`：表示新增预切分 Region 中，打散完成的比率。如 `1.0` 表示全部完成。`0.5`表示只有一半的 Region 已经打散完成，剩下的还在打散过程中。
+
 ### Split Table Region
 
 表中行数据的 key 由 `table_id` 和 `row_id` 编码组成，格式如下：
@@ -168,6 +181,153 @@ region3  [("b", "2019-04-17 14:26:19") , ("c", "")                   )
 region4  [("c", "")                    , maxIndexValue               )
 ```
 
+### Split 分区表的 Region
+
+预切分分区表的 Region 在使用上和普通表一样，差别是会为每一个 partition 都做相同的切分。
+
+- 均匀切分的语法如下：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SPLIT [PARTITION] TABLE t [PARTITION] [(partition_name_list...)] [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
+    ```
+
+- 不均匀切分的语法如下：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SPLIT [PARTITION] TABLE table_name [PARTITION (partition_name_list...)] [INDEX index_name] BY (value_list) [, (value_list)] ...
+    ```
+
+#### 示例
+
+1. 首先创建一个分区表。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t (a int,b int,index idx(a)) partition by hash(a) partitions 2;
+    ```
+
+    此时建完表后会为每个 partition 都单独 split 一个 Region，用 `SHOW TABLE REGIONS` 语法查看该表的 Region 如下：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show table t regions;
+    ```
+
+    ```sql
+    +-----------+-----------+---------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | REGION_ID | START_KEY | END_KEY | LEADER_ID | LEADER_STORE_ID | PEERS            | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
+    +-----------+-----------+---------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | 1978      | t_1400_   | t_1401_ | 1979      | 4               | 1979, 1980, 1981 | 0          | 0             | 0          | 1                    | 0                |
+    | 6         | t_1401_   |         | 17        | 4               | 17, 18, 21       | 0          | 223           | 0          | 1                    | 0                |
+    +-----------+-----------+---------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    ```
+
+2. 用 `SPLIT` 语法为每个 partition 切分 Region，示例如下，在 [0,10000] 范围内切分成 4 个 Region。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t between (0) and (10000) regions 4;
+    ```
+
+3. 用 `SHOW TABLE REGIONS` 语法查看该表的 Region。如下会发现该表现在一共有 10 个 Region，每个 partition 分别有 5 个 Region，其中 4 个 Region 是表的行数据，1 个 Region 是表的索引数据。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show table t regions;
+    ```
+
+    ```sql
+    +-----------+---------------+---------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | REGION_ID | START_KEY     | END_KEY       | LEADER_ID | LEADER_STORE_ID | PEERS            | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
+    +-----------+---------------+---------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | 1998      | t_1400_r      | t_1400_r_2500 | 2001      | 5               | 2000, 2001, 2015 | 0          | 132           | 0          | 1                    | 0                |
+    | 2006      | t_1400_r_2500 | t_1400_r_5000 | 2016      | 1               | 2007, 2016, 2017 | 0          | 35            | 0          | 1                    | 0                |
+    | 2010      | t_1400_r_5000 | t_1400_r_7500 | 2012      | 2               | 2011, 2012, 2013 | 0          | 35            | 0          | 1                    | 0                |
+    | 1978      | t_1400_r_7500 | t_1401_       | 1979      | 4               | 1979, 1980, 1981 | 0          | 621           | 0          | 1                    | 0                |
+    | 1982      | t_1400_       | t_1400_r      | 2014      | 3               | 1983, 1984, 2014 | 0          | 35            | 0          | 1                    | 0                |
+    | 1990      | t_1401_r      | t_1401_r_2500 | 1992      | 2               | 1991, 1992, 2020 | 0          | 120           | 0          | 1                    | 0                |
+    | 1994      | t_1401_r_2500 | t_1401_r_5000 | 1997      | 5               | 1996, 1997, 2021 | 0          | 129           | 0          | 1                    | 0                |
+    | 2002      | t_1401_r_5000 | t_1401_r_7500 | 2003      | 4               | 2003, 2023, 2022 | 0          | 141           | 0          | 1                    | 0                |
+    | 6         | t_1401_r_7500 |               | 17        | 4               | 17, 18, 21       | 0          | 601           | 0          | 1                    | 0                |
+    | 1986      | t_1401_       | t_1401_r      | 1989      | 5               | 1989, 2018, 2019 | 0          | 123           | 0          | 1                    | 0                |
+    +-----------+---------------+---------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    ```
+
+4. 也可以给每个分区的索引切分 Region，如将索引 `idx` 的 [1000,10000] 范围切分成 2 个 Region：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t index idx between (1000) and (10000) regions 2;
+    ```
+
+#### Split 单个分区的 Region
+
+可以单独指定要切分的 partition，示例如下：
+
+1. 首先创建一个分区表：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t ( a int, b int, index idx(b)) partition by range( a ) ( 
+        partition p1 values less than (10000), 
+        partition p2 values less than (20000), 
+        partition p3 values less than (MAXVALUE) );
+    ```
+
+2. 为 `p1` 分区的 [0,10000] 预切分 2 个 Region：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t partition (p1) between (0) and (10000) regions 2;
+    ```
+
+3. 为 `p2` 分区的 [10000,20000] 预切分 2 个 Region：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t partition (p2) between (10000) and (20000) regions 2;
+    ```
+
+4. 用 `SHOW TABLE REGIONS` 语法查看该表的 Region 如下：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show table t regions;
+    ```
+
+    ```sql
+    +-----------+----------------+----------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | REGION_ID | START_KEY      | END_KEY        | LEADER_ID | LEADER_STORE_ID | PEERS            | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
+    +-----------+----------------+----------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    | 2040      | t_1406_        | t_1406_r_5000  | 2045      | 3               | 2043, 2045, 2044 | 0          | 0             | 0          | 1                    | 0                |
+    | 2032      | t_1406_r_5000  | t_1407_        | 2033      | 4               | 2033, 2034, 2035 | 0          | 0             | 0          | 1                    | 0                |
+    | 2046      | t_1407_        | t_1407_r_15000 | 2048      | 2               | 2047, 2048, 2050 | 0          | 35            | 0          | 1                    | 0                |
+    | 2036      | t_1407_r_15000 | t_1408_        | 2037      | 4               | 2037, 2038, 2039 | 0          | 0             | 0          | 1                    | 0                |
+    | 6         | t_1408_        |                | 17        | 4               | 17, 18, 21       | 0          | 214           | 0          | 1                    | 0                |
+    +-----------+----------------+----------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
+    ```
+
+5. 为 `p1` 和 `p2` 分区的索引 `idx` 的 [0,20000] 范围预切分 2 个 Region:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    split partition table t partition (p1,p2) index idx between (0) and (20000) regions 2;
+    ```
+
 ## pre_split_regions
 
 使用带有 `shard_row_id_bits` 的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions)` 个 Region。
@@ -198,3 +358,7 @@ region4:   [ 3<<61     ,  +inf  )
 ## 相关 session 变量
 
 和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_scatter_region`，`tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/reference/configuration/tidb-server/tidb-specific-variables.md)。
+
+## 另请参阅
+
+* [SHOW TABLE REGIONS](/reference/sql/statements/show-table-regions.md)

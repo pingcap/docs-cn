@@ -25,4 +25,4 @@ TiFlash 可以通过 TiKV 恢复数据。只要 TiKV 的对应 Region 是可用�
 
 ## 什么时候使用 TiSpark 进行查询？什么时候使用 TiDB server 进行查询？
 
-如果查询以单表集合和过滤为主，那么 TiDB server 比 TiSpark 在列存上拥有更好的性能；如果查询以表连接为主，那么推荐使用 TiSpark。
+如果查询以单表聚合和过滤为主，那么 TiDB server 比 TiSpark 在列存上拥有更好的性能；如果查询以表连接为主，那么推荐使用 TiSpark。

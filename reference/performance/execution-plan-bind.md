@@ -19,6 +19,32 @@ CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。在不指定作用域时，隐式作用域为 SESSION。被绑定的 SQL 会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
 
+值得注意的是当一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划时，因为优化器在遇到 SESSION 绑定时会将 GLOBAL 绑定的执行计划丢弃，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
+
+例如：
+
+```sql
+--  创建一个 global binding，指定其使用 sort merge join
+create global binding for
+    select * from t1, t2 where t1.id = t2.id
+using
+    select /*+ TIDB_SMJ(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+    
+-- 从该 SQL 的执行计划中可以看到其使用了 global binding 中指定的 sort merge join
+explain select * from t1, t2 where t1.id = t2.id;
+
+-- 创建另一个 session binding，指定其使用 hash join
+create binding for
+    select * from t1, t2 where t1.id = t2.id
+using
+    select /*+ TIDB_HJ(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+
+-- 从该 SQL 的执行计划中可以看到其使用了 session binding 中指定的 hash join，而不是 global binding 中指定的 sort merge join
+explain select * from t1, t2 where t1.id = t2.id;
+```
+
+第一个 `select` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `TIDB_SMJ(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 MergeJoin。而第二个 `select` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `TIDB_HJ(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 HashJoin。
+
 `参数化`：把 SQL 中的常量变成变量参数，并对 SQL 中的空格和换行符等做标准化处理。例如：
 
 ```sql
@@ -54,6 +80,20 @@ DROP [GLOBAL | SESSION] BINDING FOR SelectStmt;
 ```
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内删除指定的执行计划绑定，在不指定作用域时默认作用域为 SESSION。
+
+一般来说，SESSION 作用域的绑定主要用于测试或在某些特殊情况下使用。若需要集群中所有的 TiDB 进程都生效，则需要使用 GLOBAL 作用域的绑定。SESSION 作用域对 GLOBAL 作用域绑定的屏蔽效果会持续到该 SESSION 结束。
+
+承接上面关于 SESSION 绑定屏蔽 GLOBAL 绑定的例子，继续执行：
+
+```sql
+-- 删除 session 中创建的 binding
+drop session binding for select * from t1, t2 where t1.id = t2.id;
+
+-- 重新查看该 SQL 的执行计划
+explain select * from t1,t2 where t1.id = t2.id;
+```
+
+在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `TIDB_SMJ(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
 ### 查看绑定
 

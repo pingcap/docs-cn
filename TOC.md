@@ -13,6 +13,7 @@
     - [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/sysbench-v4.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/tpcc.md)
     - [线上负载与 `Add Index` 相互影响测试](/benchmark/add-index-with-load.md)
+- [TiDB 快速上手指南](/quick-start-with-tidb.md)
 + 主要概念
   - [整体架构](/architecture.md)
   + 核心特性
@@ -56,6 +57,7 @@
       - [以 Amazon Aurora MySQL 为例](/how-to/migrate/from-mysql-aurora.md)
     - [从 CSV 迁移](/reference/tools/tidb-lightning/csv.md)
   + 运维
+    - [TiUP 常见运维操作](/how-to/maintain/tiup-operations.md)
     - [Ansible 常见运维操作](/how-to/maintain/ansible-operations.md)
     + 备份与恢复
       - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/how-to/maintain/backup-and-restore/mydumper-lightning.md)
@@ -65,9 +67,11 @@
       - [定位慢查询](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/how-to/maintain/identify-abnormal-queries/identify-expensive-queries.md)
   + 扩容缩容
+    - [使用 TiUP 扩容缩容](/how-to/scale/with-tiup.md)
     - [使用 Ansible 扩容缩容](/how-to/scale/with-ansible.md)
   + 升级
-    - [升级至最新开发版](/how-to/upgrade/from-previous-version.md)
+    - [使用 TiUP 升级（推荐）](/how-to/upgrade/using-tiup.md)
+    - [使用 TiDB Ansible 升级](/how-to/upgrade/from-previous-version.md)
   + 故障诊断
     - [集群配置诊断](/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/how-to/troubleshoot/tidb-lightning.md)
@@ -219,7 +223,7 @@
     - [约束](/reference/sql/constraints.md)
     - [生成列](/reference/sql/generated-columns.md)
     - [分区表](/reference/sql/partitioning.md)
-    - [字符集](/reference/sql/character-set.md)
+    - [字符集](/reference/sql/characterset-and-collation.md)
     - [SQL 模式](/reference/sql/sql-mode.md)
     - [SQL 诊断](/reference/system-databases/sql-diagnosis.md)
     - [视图](/reference/sql/view.md)
@@ -299,7 +303,7 @@
     - [使用 TiFlash](/reference/tiflash/use-tiflash.md)
     - [运维集群](/reference/tiflash/maintain.md)
     - [监控集群](/reference/tiflash/monitor.md)
-    - [扩缩容集群](/reference/tiflash/scale.md)
+    - [扩缩容集群](/how-to/scale/with-tiup.md#2-扩容-tiflash-节点)
     - [升级节点](/reference/tiflash/upgrade.md)
     - [配置参数](/reference/tiflash/configuration.md)
     - [报警规则](/reference/tiflash/alert-rules.md)
@@ -317,7 +321,7 @@
     - [增量恢复](/reference/tidb-binlog/reparo.md)
     - [Kafka 自定义开发](/reference/tidb-binlog/binlog-slave-client.md)
     - [TiDB Binlog Relay Log](/reference/tidb-binlog/relay-log.md)
-    - [集群间双向同步](/reference/tidb-binlog/bi-repl.md)
+    - [集群间双向同步](/reference/tidb-binlog/bidirectional-replication.md)
     - [术语表](/reference/tidb-binlog/glossary.md)
     + 故障诊断
       - [故障诊断](/reference/tidb-binlog/troubleshoot/binlog.md)
@@ -347,6 +351,8 @@
       - [部署使用](/reference/tools/ticdc/deploy.md)
       - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
       - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
+      - [开放数据协议](/reference/tools/ticdc/open-protocol.md)
+      - [Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)
     + sync-diff-inspector
       - [概述](/reference/tools/sync-diff-inspector/overview.md)
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
@@ -355,7 +361,7 @@
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
-    - [TiDB Controller](/reference/tools/tidb-control.md)
+    - [TiDB Control](/reference/tools/tidb-control.md)
     - [工具下载](/reference/tools/download.md)
 - [TiDB in Kubernetes](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)
 + 常见问题 (FAQ)
@@ -371,16 +377,19 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/rn.md)
   + v4.0
+    - [4.0.0-rc.1](/releases/4.0.0-rc.1.md)
     - [4.0.0-rc](/releases/4.0.0-rc.md)
     - [4.0.0-beta.2](/releases/4.0.0-beta.2.md)
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.0 GA](/releases/3.1.0-ga.md)
     - [3.1.0-rc](/releases/3.1.0-rc.md)
     - [3.1.0-beta.2](/releases/3.1.0-beta.2.md)
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.13](/releases/3.0.13.md)
     - [3.0.12](/releases/3.0.12.md)
     - [3.0.11](/releases/3.0.11.md)
     - [3.0.10](/releases/3.0.10.md)

@@ -31,7 +31,7 @@ category: reference
 
 ## 下线 TiFlash 节点
 
-下线 TiFlash 节点与[缩容 TiFlash 节点](/reference/tiflash/scale.md#缩容-tiflash-节点)不同，下线 TiFlash 并不会在 TiDB Ansible 中删除这个节点，而仅仅是安全地关闭这个进程。
+下线 TiFlash 节点与[缩容 TiFlash 节点](/how-to/scale/with-tiup.md#4-缩容-tiflash-节点)不同，下线 TiFlash 并不会在 TiDB Ansible 中删除这个节点，而仅仅是安全地关闭这个进程。
 
 下线 TiFlash 节点的步骤如下：
 
@@ -58,8 +58,47 @@ category: reference
 > **注意：**
 >
 > 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
->
-> 手动在 PD 中清除同步规则的方法是：发送 DELETE 请求 `http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/<rule_id>`，rule_id 是需要清除的 rule 的 id。
+
+手动在 PD 中清除同步规则的步骤如下：
+
+1. 查询当前 PD 实例中所有与 TiFlash 相关的的数据同步规则。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
+    ```
+
+    ```
+    [
+      {
+        "group_id": "tiflash",
+        "id": "table-45-r",
+        "override": true,
+        "start_key": "7480000000000000FF2D5F720000000000FA",
+        "end_key": "7480000000000000FF2E00000000000000F8",
+        "role": "learner",
+        "count": 1,
+        "label_constraints": [
+          {
+            "key": "engine",
+            "op": "in",
+            "values": [
+              "tiflash"
+            ]
+          }
+        ]
+      }
+    ]
+    ```
+
+2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
+    ```
 
 ## TiFlash 故障处理
 

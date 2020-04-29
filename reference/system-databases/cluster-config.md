@@ -27,7 +27,7 @@ desc cluster_config;
 
 字段解释：
 
-* `TYPE`：节点的类型，可取值为 `tidb`，`pd` 或 `tikv`。
+* `TYPE`：节点的类型，可取值为 `tidb`，`pd` 和 `tikv`。
 * `INSTANCE`：节点的服务地址。
 * `KEY`：配置项名。
 * `VALUE`：配置项值。
