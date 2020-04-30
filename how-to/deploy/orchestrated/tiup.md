@@ -535,7 +535,6 @@ tiflash_servers:
 #   - host: 10.0.1.21
 #   - host: 10.0.1.22
 
-
 monitoring_servers:
   - host: 10.0.1.4
     # ssh_port: 22
@@ -1004,79 +1003,6 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-### 场景 4：通过 TiCDC 同步到下游
-
-#### 部署需求
-
-设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，集群启动 TiCDC，可在部署后通过 cdc cli 创建同步任务。
-
-#### 拓扑信息
-
-| 实例 |个数| 物理机配置 | IP | 配置 |
-| :-- | :-- | :-- | :-- | :-- |
-| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
-|TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置 |
-| PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
-| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
-| CDC| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 |
-#### 配置文件模版 topology.yaml
-
-> **注意：**
->
-> - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
->
-> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
->
-> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
->
-> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cat topology.yaml
-```
-
-```yaml
-# # Global variables are applied to all deployments and used as the default value of
-# # the deployments if a specific deployment value is missing.
-global:
-  user: "tidb"
-  ssh_port: 22
-  deploy_dir: "/tidb-deploy"
-  data_dir: "/tidb-data"
-
-server_configs:
-  pd:
-    replication.enable-placement-rules: true
-
-pd_servers:
-  - host: 10.0.1.4
-  - host: 10.0.1.5
-  - host: 10.0.1.6
-tidb_servers:
-  - host: 10.0.1.7
-  - host: 10.0.1.8
-  - host: 10.0.1.9
-tikv_servers:
-  - host: 10.0.1.1
-  - host: 10.0.1.2
-  - host: 10.0.1.3
-tiflash_servers:
-  - host: 10.0.1.10
-    data_dir: /data1/tiflash/data,/data2/tiflash/data
-cdc_servers:
-  - host: 10.0.1.6
-  - host: 10.0.1.7
-  - host: 10.0.1.8
-monitoring_servers:
-  - host: 10.0.1.4
-grafana_servers:
-  - host: 10.0.1.4
-alertmanager_servers:
-  - host: 10.0.1.4
-```
-
 更详细的配置为：
 
 ```yaml
@@ -1157,6 +1083,79 @@ drainer_servers:
 tiflash_servers:
   - host: 10.0.1.10
     data_dir: /data1/tiflash/data,/data2/tiflash/data
+monitoring_servers:
+  - host: 10.0.1.4
+grafana_servers:
+  - host: 10.0.1.4
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+### 场景 4：通过 TiCDC 同步到下游
+
+#### 部署需求
+
+设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，集群启动 TiCDC，可在部署后通过 cdc cli 创建同步任务。
+
+#### 拓扑信息
+
+| 实例 |个数| 物理机配置 | IP | 配置 |
+| :-- | :-- | :-- | :-- | :-- |
+| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
+|TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置 |
+| PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
+| CDC| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 |
+#### 配置文件模版 topology.yaml
+
+> **注意：**
+>
+> - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
+>
+> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
+>
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat topology.yaml
+```
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+server_configs:
+  pd:
+    replication.enable-placement-rules: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
+cdc_servers:
+  - host: 10.0.1.6
+  - host: 10.0.1.7
+  - host: 10.0.1.8
 monitoring_servers:
   - host: 10.0.1.4
 grafana_servers:
