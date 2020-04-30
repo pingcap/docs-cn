@@ -7,7 +7,7 @@ category: how-to
 
 TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、CDC 或者 TiFlash 节点。如未安装 TiUP，可参考[升级文档中的步骤](/how-to/upgrade/using-tiup.md#2-在中控机器上安装-tiup)，将集群 import 到 TiUP 环境中，再进行扩容缩容。
+本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[升级文档中的步骤](/how-to/upgrade/using-tiup.md#2-在中控机器上安装-tiup)，将集群 import 到 TiUP 环境中，再进行扩容缩容。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
@@ -27,7 +27,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
 > **注意：**
 >
-> 添加 TiKV、PD、CDC 节点和添加 TiDB 节点的步骤类似。
+> 添加 TiKV、PD、TiCDC 节点和添加 TiDB 节点的步骤类似。
 
 ### 1.1 编写扩容拓扑配置
 
@@ -126,7 +126,7 @@ tiup cluster display <cluster-name>
 
 > **注意：**
 >
-> 移除 TiDB、PD、CDC 节点和移除 TiKV 节点的步骤类似。
+> 移除 TiDB、PD、TiCDC 节点和移除 TiKV 节点的步骤类似。
 
 ### 3.1 查看节点 ID 信息
 

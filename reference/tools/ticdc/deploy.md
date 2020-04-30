@@ -17,7 +17,7 @@ category: reference
 
 ### 使用 TiUP 全新部署 TiCDC
 
-TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐使用 TiUP Cluster 安装部署 TiCDC v4.0.0-rc.1 及更新版本，部署流程如下：
+TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，部署运行 TiCDC 必须使用 TiDB v4.0.0-rc.1 或更新版本，部署流程如下：
 
 1. 参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)安装 TiUP。
 
@@ -85,7 +85,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
 
 ### 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
 
-1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
+1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
 
 2. 参考 [扩容 TiDB/TiKV/PD 节点](/how-to/scale/with-tiup.md#1-扩容-tidbtikvpd-节点) 章节对 TiCDC 进行部署。
    示例的扩容配置文件为：
