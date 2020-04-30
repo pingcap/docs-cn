@@ -132,5 +132,5 @@ Use "tiup [command] --help" for more information about a command.
 - [本地快速部署 TiDB 集群](/reference/tools/tiup/playground.md)：playground 组件
 - [部署运维 TiDB 线上集群](/reference/tools/tiup/cluster.md)：cluster 组件
 - [搭建私有镜像](/reference/tools/tiup/mirrors.md)：mirrors 组件
-- [打包组件](/reference/tools/tiup/package.md)：package 组件
+- [打包组件](/reference/tools/tiup/package-component.md)：package 组件
 - [使用 TiUP 压测 TiDB](/reference/tools/tiup/bench.md)：bench 组件
