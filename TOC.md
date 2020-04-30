@@ -366,7 +366,7 @@
       - [本地快速部署 TiDB 集群](/reference/tools/tiup/playground.md)
       - [部署运维 TiDB 线上集群](/reference/tools/tiup/cluster.md)
       - [搭建私有镜像](/reference/tools/tiup/mirrors.md)
-      - [打包组件](/reference/tools/tiup/package.md)
+      - [打包组件](/reference/tools/tiup/package-component.md)
       - [使用 TiUP 压测 TiDB](/reference/tools/tiup/bench.md)
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
