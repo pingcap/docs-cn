@@ -11,23 +11,23 @@ SQL 诊断功能是在 TiDB 4.0 版本中引入的特性，用于提升 TiDB 问
 
 SQL 诊断共分三大块：
 
-* **集群信息表**：TiDB 4.0 诊断系统添加了集群信息表，为原先离散的各节点实例信息提供了统一的获取方式。它将整个集群的集群拓扑、硬件信息、软件信息、内核参数、监控、系统信息、慢查询、语句、日志完全整合在表中，让用户能够统一使用 SQL 进行查询。
+* **集群信息表**：TiDB 4.0 诊断系统添加了集群信息表，为原先离散的各实例信息提供了统一的获取方式。它将整个集群的集群拓扑、硬件信息、软件信息、内核参数、监控、系统信息、慢查询、语句、日志完全整合在表中，让用户能够统一使用 SQL 进行查询。
 * **集群监控表**：TiDB 4.0 诊断系统添加了集群监控系统表，所有表都在 `metrics_schema` 中，可以通过 SQL 语句来查询监控信息。比起原先的可视化监控，SQL 查询监控允许用户对整个集群的所有监控进行关联查询，并对比不同时间段的结果，迅速找出性能瓶颈。由于 TiDB 集群的监控指标数量较大，SQL 诊断还提供了监控汇总表，让用户能够更便捷地从众多监控中找出异常的监控项。
 * **自动诊断**：尽管用户可以手动执行 SQL 来查询集群信息表、集群监控表与汇总表，但自动诊断更加方便。所以 SQL 诊断基于已有的集群信息表和监控表，提供了与之相关的诊断结果表与诊断汇总表来执行自动诊断。
 
 ## 集群信息表
 
-集群信息表将一个集群中的所有节点实例的信息都汇聚在一起，让用户仅通过一条 SQL 就能查询整个集群相关信息。
+集群信息表将一个集群中的所有实例的信息都汇聚在一起，让用户仅通过一条 SQL 就能查询整个集群相关信息。
 集群信息表列表如下：
 
-* 集群拓扑表 [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md) 用于获取集群当前的拓扑信息，以及各个节点的版本、版本对应的 Git Hash、各节点的启动时间、各节点的运行时间。
-* 集群配置表 [`information_schema.cluster_config`](/reference/system-databases/cluster-config.md) 用于获取集群当前所有节点的配置。对于 TiDB 4.0 之前的版本，用户必须逐个访问各个节点的 HTTP API 才能获取这些配置信息。
+* 集群拓扑表 [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md) 用于获取集群当前的拓扑信息，以及各个实例的版本、版本对应的 Git Hash、各实例的启动时间、各实例的运行时间。
+* 集群配置表 [`information_schema.cluster_config`](/reference/system-databases/cluster-config.md) 用于获取集群当前所有实例的配置。对于 TiDB 4.0 之前的版本，用户必须逐个访问各个实例的 HTTP API 才能获取这些配置信息。
 * 集群硬件表 [`information_schema.cluster_hardware`](/reference/system-databases/cluster-hardware.md) 用于快速查询集群硬件信息。
-* 集群负载表 [`information_schema.cluster_load`](/reference/system-databases/cluster-load.md) 用于查询集群不同节点以及不同硬件类型的负载信息。
-* 内核参数表 [`information_schema.cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md) 用于查询集群不同节点的内核配置信息。目前支持查询 sysctl 的信息。
-* 集群日志表 [`information_schema.cluster_log`](/reference/system-databases/cluster-log.md) 用于集群日志查询，通过将查询条件下推到各个节点，降低日志查询对集群的影响，性能影响小于等 grep 命令。
+* 集群负载表 [`information_schema.cluster_load`](/reference/system-databases/cluster-load.md) 用于查询集群不同实例以及不同硬件类型的负载信息。
+* 内核参数表 [`information_schema.cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md) 用于查询集群不同实例的内核配置信息。目前支持查询 sysctl 的信息。
+* 集群日志表 [`information_schema.cluster_log`](/reference/system-databases/cluster-log.md) 用于集群日志查询，通过将查询条件下推到各个实例，降低日志查询对集群的影响，性能影响小于等 grep 命令。
 
-TiDB 4.0 之前的系统表，只能查看当前节点，TiDB 4.0 实现了对应的集群表，可以在单个 TiDB 节点上拥有整个集群的全局视图。这些表目前都位于 [`information_schema`](/reference/system-databases/information-schema.md) 中，查询方式与其他 `information_schema` 系统表一致。
+TiDB 4.0 之前的系统表，只能查看当前实例信息，TiDB 4.0 实现了对应的集群表，可以在单个 TiDB 实例上拥有整个集群的全局视图。这些表目前都位于 [`information_schema`](/reference/system-databases/information-schema.md) 中，查询方式与其他 `information_schema` 系统表一致。
 
 ## 集群监控表
 
