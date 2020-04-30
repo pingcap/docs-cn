@@ -131,6 +131,8 @@ mysql> desc select a+1 from t where a+1=3;
 > 只有当待替换的表达式类型和生成列类型严格相等时，才会进行转换。
 >
 > 上例中，`a` 的类型是 int，而 `a+1` 的列类型是 bigint，如果将生成列的类型定为 int，就不会发生替换。
+>
+> 关于类型转换规则，可以参见[表达式求值的类型转换](/reference/sql/functions-and-operators/type-conversion)。
 
 ## 局限性
 
