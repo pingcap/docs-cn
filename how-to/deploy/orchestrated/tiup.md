@@ -1106,6 +1106,7 @@ alertmanager_servers:
 | PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
 | TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
 | CDC| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 |
+
 #### 配置文件模版 topology.yaml
 
 > **注意：**
