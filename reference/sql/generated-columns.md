@@ -48,7 +48,7 @@ CREATE TABLE person (
 SELECT name, id FROM person WHERE city = 'Beijing';
 ```
 
-如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义 virtual column：
+如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义 generated column：
 
 {{< copyable "sql" >}}
 
@@ -62,7 +62,7 @@ CREATE TABLE person (
 );
 ```
 
-`INSERT` 和 `UPDATE` 语句都会检查 virtual column 的定义。未通过有效性检测的行会返回错误：
+`INSERT` 和 `UPDATE` 语句都会检查 generated column 的定义。未通过有效性检测的行会返回错误：
 
 {{< copyable "sql" >}}
 
