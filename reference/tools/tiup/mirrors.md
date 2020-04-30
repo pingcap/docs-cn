@@ -9,10 +9,15 @@ category: tools
 
 ## mirrors 组件介绍
 
-首先我们看 `mirrors` 的帮助文档：
+`mirrors` 组件的帮助文档如下：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
-$ tiup mirrors --help
+tiup mirrors --help
+```
+
+```
 Starting component `mirrors`: /Users/joshua/.tiup/components/mirrors/v0.0.1/mirrors
 Build a local mirrors and download all selected components
 
@@ -54,90 +59,120 @@ Flags:
   -h, --help                        help for tiup
 ```
 
-它的基本用法是 `tiup mirrors <target-dir> [global-version] [flags]`，这个 target-dir 是说需要把克隆下来的数据放到哪个目录里。global-version 用于快速为所有组件设置一个共同的版本。
-然后这个命令有很吓人的几十个 flag，以后甚至更多。但是完全不必被这些 flag 的数量吓倒，其实它们也就四类：
+`tiup mirrors` 命令的基本用法如下：
 
-### 1. 指定是否覆盖本地的包
-
-`--overwrite` 参数的意义是说，如果指定的 <target-dir> 中已经有想要下载的包了，是否要用官方镜像的包覆盖，如果设置了这个 flag 就会覆盖。
-
-### 2. 是否全量克隆
-
-如果指定了 `--full`，则会完整的克隆官方镜像。
-
-> **注意：**
->
-> 如果不指定 `--full` 也不指定其它 flag，那么就只会克隆一些元信息
-
-### 3. 平台限定
-
-如果只想克隆某个平台的包，那么可以使用 `--os` 和 `--arch` 来限定:
-
-- 只想克隆 linux 平台的: `tiup mirros <target-dir> --os=linux`
-- 只想克隆 amd64 架构的: `tiup mirros <target-dir> --arch=amd64`
-- 只想克隆 linux/amd64 的: `tiup mirros <target-dir> --os=linux --arch=amd64`
-
-### 4. 组件版本限定
-
-如果只想克隆某个组件的某一个版本而不是所有版本，则使用 `--<component>=<version>` 来限定，比如“
-
-- 只想克隆 tidb 的 v4 版本: `tiup mirrors <target-dir> --tidb v4`
-- 只想克隆 tidb 的 v4 版本，以及 tikv 的所有版本: `tiup mirros <target-dir> --tidb v4 --tikv all` 
-- 克隆启动一个集群的所有组件的特定版本：`tiup mirrors <target-dir> v4.0.0-rc`
-
-## 实战
-
-### 离线安装
-
-例如我们想在隔离的环境中安装一个 v4.0.0-rc 的 TiDB 集群，则可以在一台和外网相通的机器上执行以下命令拉取需要的组件：
+{{< copyable "shell-regular" >}}
 
 ```bash
-tiup mirrors package --os=linux v4.0.0-rc
+tiup mirrors <target-dir> [global-version] [flags]`
 ```
 
-该命令会在当前目录下创建一个名叫 `package` 的目录，里面有启动一个集群必要的组件包，通过 tar 命令将其打包然后发送到隔离环境的中控机：
+- `target-dir`：指需要把克隆下来的数据放到哪个目录里。
+- `global-version`：用于为所有组件快速设置一个共同的版本。
 
-```bash
-tar czvf package.tar.gz package
-```
+`tiup mirrors` 命令提供了很多可选参数，日后可能会提供更多。但这些参数其实可以分为四类：
 
-package.tar.gz 就是一个独立的离线环境了，将其发送到目标集群的中控机后，执行以下命令安装 TiUP:
+1. 指定是否覆盖本地的包
 
-```bash
-tar xzvf package.tar.gz
-cd package
-sh local_install.sh
-```
+    `--overwrite` 参数的意义为，如果指定的 `<target-dir>` 中已经有想要下载的包，是否要用官方镜像的包覆盖。如果设置了这个参数，则会覆盖。
 
-根据提示安装完 TiUP 之后，再部署 TiDB 集群 (假设工作目录还在 package 内)：
+2. 是否全量克隆
 
-```bash
-export TIUP_MIRRORS=/path/to/mirror
-tiup cluster xxx
-```
+    如果指定了 `--full` 参数，则会完整地克隆官方镜像。
 
-`/path/to/mirror` 是 `tiup mirrors <target-dir>` 中 <target-dir> 所在的位置，如果在 /tmp/package 则：
+    > **注意：**
+    >
+    > 如果不指定 `--full` 参数或其它参数，那么就只会克隆一些元信息。
 
-```bash
-export TIUP_MIRRORS=/tmp/package
-```
+3. 限定只克隆特定平台的包
 
-集群相关操作可参考 [cluster 命令](/reference/tools/tiup/cluster.md) 的相关介绍。
+    如果只想克隆某个平台的包，那么可以使用 `--os` 和 `--arch` 来限定：
 
-### 私有镜像
+    - 只想克隆 linux 平台的，则执行 `tiup mirros <target-dir> --os=linux`
+    - 只想克隆 amd64 架构的，则执行 `tiup mirros <target-dir> --arch=amd64`
+    - 只想克隆 linux/amd64 的，则执行 `tiup mirros <target-dir> --os=linux --arch=amd64`
+
+4. 限定只克隆组件的特定版本
+
+    如果只想克隆某个组件的某一个版本而不是所有版本，则使用 `--<component>=<version>` 来限定，例如：
+
+    - 只想克隆 TiDB 的 v4 版本，则执行 `tiup mirrors <target-dir> --tidb v4`
+    - 只想克隆 TiDB 的 v4 版本，以及 TiKV 的所有版本，则执行 `tiup mirros <target-dir> --tidb v4 --tikv all`
+    - 克隆一个集群的所有组件的特定版本，则执行 `tiup mirrors <target-dir> v4.0.0-rc`
+
+## 使用示例
+
+### 使用 TiUP 离线安装 TiDB 集群
+
+以在隔离的环境中安装一个 v4.0.0-rc 的 TiDB 集群为例，可以执行以下步骤：
+
+1. 在一台和外网相通的机器上拉取需要的组件：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup mirrors package --os=linux v4.0.0-rc
+    ```
+
+    该命令会在当前目录下创建一个名叫 `package` 的目录，里面有启动一个集群必要的组件包。
+
+2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tar czvf package.tar.gz package
+    ```
+
+    此时，`package.tar.gz` 就是一个独立的离线环境。
+
+3. 将包发送到目标集群的中控机后，执行以下命令安装 TiUP：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tar xzvf package.tar.gz
+    cd package
+    sh local_install.sh
+    ```
+
+4. 根据提示安装完 TiUP 之后，再部署 TiDB 集群（假设工作目录还在 package 内）：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    export TIUP_MIRRORS=/path/to/mirror
+    tiup cluster xxx
+    ```
+
+    `/path/to/mirror` 是 `tiup mirrors <target-dir>` 中 `<target-dir>` 所在的位置，如果在 `/tmp/package` 则：
+
+    ```bash
+    export TIUP_MIRRORS=/tmp/package
+    ```
+
+部署完成后，集群相关操作可参考 [cluster 命令](/reference/tools/tiup/cluster.md)。
+
+### 构建私有镜像
 
 构建私有镜像的方式和离线安装包的制作过程相同，只需要将 package 目录中的内容上传到 CDN 或者文件服务器即可，最简单的方式是：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 cd package
 python -m SimpleHTTPServer 8000
 ```
 
-这样就在 `http://127.0.0.1:8000` 这个地址建立了私有镜像。通过私有镜像安装 TiUP:
+这样就在 <http://127.0.0.1:8000> 这个地址建立了私有镜像。
+
+通过私有镜像安装 TiUP：
+
+{{< copyable "shell-regular" >}}
 
 ```bash
 export TIUP_MIRRORS=http://127.0.0.1:8000
 curl $TIUP_MIRRORS/install.sh | sh
 ```
 
-导入 PATH 变量之后就可以正常使用 TiUP 了（需要保持 TIUP_MIRRORS 变量指向私有的镜像）。
+导入 PATH 变量之后就可以正常使用 TiUP 了（需要保持 `TIUP_MIRRORS` 变量指向私有镜像）。
