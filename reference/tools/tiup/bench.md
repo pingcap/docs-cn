@@ -1,14 +1,19 @@
 ---
-title: 使用 TiUP bench 组件压测
+title: 使用 TiUP bench 组件压测 TiDB
 category: tools
 ---
 
-# 使用 TiUP bench 组件压测
+# 使用 TiUP bench 组件压测 TiDB
 
-在测试数据库性能的时候经常需要对数据库进行压测，为了方便这一需求，TiUP 集成了 bench 组件，该组件目前提供了两种压测的 workload: tpcc 和 tpch，其命令参数如下：
+在测试数据库性能时，经常需要对数据库进行压测，为了满足这一需求，TiUP 集成了 bench 组件。目前，TiUP bench 组件提供 TPC-C 和 TPC-H 两种压测的 workload，其命令参数如下：
+
+{{< copyable "shell-root" >}}
 
 ```bash
-[root@localhost ~]# tiup bench
+tiup bench
+```
+
+```
 Starting component `bench`: /Users/joshua/.tiup/components/bench/v0.0.1/bench 
 Benchmark database with different workloads
 
@@ -43,9 +48,11 @@ Flags:
   -U, --user string         压测时使用的数据库用户 (默认 "root")
 ```
 
-## TPC-C
+下文分别介绍如何使用 TiUP 运行 TPC-C 测试和 TPC-H 测试。
 
-TPC-C 的命令和参数如下:
+## 使用 TiUP 运行 TPC-C 测试
+
+TiUP bench 组件支持如下运行 TPC-C 测试的命令和参数：
 
 ```bash
 Available Commands:
@@ -63,67 +70,67 @@ Flags:
       --warehouses int   仓库的数量 (默认 10)
 ```
 
-### 例子
+### TPC-C 测试步骤
 
-### 通过 HASH 使用 4 个分区创建 4 个仓库
+1. 通过 HASH 使用 4 个分区创建 4 个仓库：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup bench tpcc --warehouses 4 --parts 4 prepare
-```
+    ```shell
+    tiup bench tpcc --warehouses 4 --parts 4 prepare
+    ```
 
-### 运行 TPC-C 压测
+2. 运行 TPC-C 测试：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup bench tpcc --warehouses 4 run
-```
+    ```shell
+    tiup bench tpcc --warehouses 4 run
+    ```
 
-### 清理数据 
+3. 清理数据：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup bench tpcc --warehouses 4 cleanup
-```
+    ```shell
+    tiup bench tpcc --warehouses 4 cleanup
+    ```
 
-### 检查一致性
+4. 检查一致性：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup bench tpcc --warehouses 4 check
-```
+    ```shell
+    tiup bench tpcc --warehouses 4 check
+    ```
 
-### 生成 csv 文件
+5. 生成 CSV 文件：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup bench tpcc --warehouses 4 prepare --output data
-```
+    ```shell
+    tiup bench tpcc --warehouses 4 prepare --output data
+    ```
 
-### 为指定的表生成 csv 文件
+6. 为指定的表生成 CSV 文件：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup bench tpcc --warehouses 4 prepare --output data --tables history,orders
-```
+    ```shell
+    tiup bench tpcc --warehouses 4 prepare --output data --tables history,orders
+    ```
 
-### 开启 pprof
+7. 开启 pprof：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup bench tpcc --warehouses 4 prepare --output data --pprof :10111
-```
+    ```shell
+    tiup bench tpcc --warehouses 4 prepare --output data --pprof :10111
+    ```
 
-## TPC-H
+## 使用 TiUP 运行 TPC-H 测试
 
-TPC-C 的命令和参数如下:
+TiUP bench 组件支持如下运行 TPC-H 测试的命令和参数：
 
 ```bash
 Available Commands:
@@ -138,36 +145,38 @@ Flags:
       --sf int           scale 因子
 ```
 
-## 例子
+## TPC-H 测试步骤
 
-### 准备数据
+1. 准备数据：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup bench tpch --sf=1 prepare
-```
+    ```shell
+    tiup bench tpch --sf=1 prepare
+    ```
 
-### 压测并检查结果
+2. 运行 TPC-H 测试，根据是否检查结果执行相应命令：
 
-{{< copyable "shell-regular" >}}
+    - 检查结果：
 
-```shell
-tiup bench tpch --sf=1 --check=true run
-```
+        {{< copyable "shell-regular" >}}
 
-### 压测但不检查结果
+        ```shell
+        tiup bench tpch --sf=1 --check=true run
+        ```
 
-{{< copyable "shell-regular" >}}
+    - 不检查结果：
 
-```shell
-tiup bench tpch --sf=1 run
-```
+        {{< copyable "shell-regular" >}}
 
-### 清理
+        ```shell
+        tiup bench tpch --sf=1 run
+        ```
 
-{{< copyable "shell-regular" >}}
+3. 清理数据：
 
-```shell
-tiup bench tpch cleanup
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup bench tpch cleanup
+    ```
