@@ -367,7 +367,7 @@
       - [线上集群的部署与运维](/reference/tools/tiup/cluster.md)
       - [搭建私有镜像](/reference/tools/tiup/mirrors.md)
       - [组件打包](/reference/tools/tiup/package.md)
-      - [压测](/reference/tools/tiup/bench.md)
+      - [使用 TiUP bench 组件压测](/reference/tools/tiup/bench.md)
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)

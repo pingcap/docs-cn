@@ -1,7 +1,9 @@
 ---
-title: 压测
+title: 使用 TiUP bench 组件压测
 category: tools
 ---
+
+# 使用 TiUP bench 组件压测
 
 在测试数据库性能的时候经常需要对数据库进行压测，为了方便这一需求，TiUP 集成了 bench 组件，该组件目前提供了两种压测的 workload: tpcc 和 tpch，其命令参数如下：
 
