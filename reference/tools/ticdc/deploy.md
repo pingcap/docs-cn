@@ -89,6 +89,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
 
 2. 参考 [扩容 TiDB/TiKV/PD 节点](/how-to/scale/with-tiup.md#1-扩容-tidbtikvpd-节点) 章节对 TiCDC 进行部署。
    示例的扩容配置文件为：
+
    ```shell
    vi scale-out.yaml
    ```
@@ -99,6 +100,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
     - host: 10.0.1.6
     - host: 10.0.1.7
    ```
+
    随后执行扩容命令即可：
    {{< copyable "shell-regular" >}}
 
