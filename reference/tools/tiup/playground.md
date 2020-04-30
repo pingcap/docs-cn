@@ -5,23 +5,23 @@ category: tools
 
 # 本地快速部署 TiDB 集群
 
-TiDB 集群是由多个组件构成的分布式系统，一个典型的 TiDB 集群至少由 3 个 PD 节点、3 个 TiKV 节点和 2 个 TiDB 节点构成。通过手工来部署这么多组件对于想要体验 TiDB 的用户甚至是 TiDB 的开发人员来说都是非常耗时且头疼的事情。在本节中，我们将介绍 TiUP 中的 playground 组件，并且将通过这个组件搭建起一套本地的 TiDB 测试环境。
+TiDB 集群是由多个组件构成的分布式系统，一个典型的 TiDB 集群至少由 3 个 PD 节点、3 个 TiKV 节点和 2 个 TiDB 节点构成。对于想要快速体验 TiDB 的用户来说，手工部署这么多组件是非常耗时且麻烦的事情。本文介绍 TiUP 中的 playground 组件，以及如何通过 playground 组件快速搭建一套本地的 TiDB 测试环境。
 
 ## playground 组件介绍
 
-playground 的基本用法：
+playground 组件的基本用法：
 
 ```bash
 tiup playground [version] [flags]
 ```
 
-最朴素的启动命令 `tiup playground` 会使用本地安装的 TiDB/TiKV/PD 或它们的稳定版本启动一个 1 KV, 1 DB, 1 PD 的集群。这个命令实际上做了以下事情：
+如果直接执行 `tiup playground` 命令，则会使用本地安装的 TiDB/TiKV/PD 或它们的稳定版本启动一个由 1 个 TiKV、1 个 TiDB、1 个 PD 实例构成的集群。该命令实际做了以下事情：
 
 - 因为没有指定版本，TiUP 会先查找已安装的 playground 的最新版本，假设已安装的最新版为 v0.0.6，则该命令相当于 tiup playground:v0.0.6
 - 如果 playground 组件从未安装过任何版本，TiUP 会先将其安装最新稳定版，然后再启动运行实例
 - 因为 playground 没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新 release 版本，假设当前为 v4.0.0-rc，则该命令相当于 tiup playground:v0.0.6 v4.0.0-rc
 - 因为 playground 也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV 和 1 个 PD 构成的最小化集群
-- 在依次启动完各个组件后，playground 会告诉你启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 dashboard
+- 在依次启动完各个组件后，playground 会提醒启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 dashboard
 
 playground 的命令行参数说明：
 
@@ -44,7 +44,7 @@ Flags:
       --tiflash.config string    指定 TiFlash 的配置文件（开发调试用，可忽略）
 ```
 
-## 例子
+## 使用示例
 
 ### 使用每日构建版启动一个 TiDB 集群
 
@@ -68,7 +68,7 @@ tiup playground nightly --monitor
 
 ### 覆盖 PD 的默认配置
 
-复制 PD 的[配置模版](https://github.com/pingcap/pd/blob/master/conf/config.toml)，修改某些内容，然后执行：
+复制 PD 的[配置模版](https://github.com/pingcap/pd/blob/master/conf/config.toml)，假设将复制的配置文件放置在 `~/config/pd.toml`，按需修改一些内容后，执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
@@ -76,11 +76,9 @@ tiup playground nightly --monitor
 tiup playground --pd.config ~/config/pd.toml
 ```
 
-> 这里假设将配置放置在 ~/config/pd.toml
-
 ### 替换默认的二进制文件
 
-默认启动 playground 时，各个组件都是使用官方镜像组件包中的二进制文件启动的，如果本地编译了一个临时的二进制文件想要放入集群中测试，可以使用 --{comp}.binpath 这个 flag 替换，例如替换 TiDB 的二进制文件:
+默认启动 playground 时，各个组件都是使用官方镜像组件包中的二进制文件启动的，如果本地编译了一个临时的二进制文件想要放入集群中测试，可以使用 `--{comp}.binpath` 这个参数替换，例如执行以下命令替换 TiDB 的二进制文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -90,7 +88,7 @@ tiup playground --db.binpath /xx/tidb-server
 
 ### 启动多个组件实例
 
-默认情况下 TiDB, TiKV 和 PD 各启动一个，如果希望启动多个，可以这样：
+默认情况下各启动一个 TiDB、TiKV 和 PD 实例，如果希望启动多个，可以加上如下参数：
 
 {{< copyable "shell-regular" >}}
 
@@ -100,7 +98,7 @@ tiup playground v3.0.10 --db 3 --pd 3 --kv 3
 
 ## 快速连接到启动的 playground 集群
 
-TiUP 提供了一个 `client` 组件用于自动寻找并连接本地启动的 playground 集群，使用方式为：
+TiUP 提供了 `client` 组件，用于自动寻找并连接本地启动的 playground 集群，使用方式为：
 
 {{< copyable "shell-regular" >}}
 
@@ -108,4 +106,4 @@ TiUP 提供了一个 `client` 组件用于自动寻找并连接本地启动的 p
 tiup client
 ```
 
-它会在控制台上提供当前机器已经启动的 playground 列表，选中需要连接的点击回车就可以打开一个自带的 mysql 客户端连接 TiDB。
+该命令会在控制台上提供当前机器已经启动的 playground 列表，选中需要连接的 playground 集群，点击回车后，可以打开一个自带的 MySQL 客户端以连接 TiDB。
