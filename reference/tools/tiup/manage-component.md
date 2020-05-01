@@ -117,6 +117,9 @@ tiup update --self
 
 ```shell
 tiup [flags] <component>[:version] [args...]
+
+Flags:
+  -T, --tag string                     为组件实例指定 tag
 ```
 
 该命令需要提供一个组件的名字以及可选的版本，若不提供版本，则使用该组件已安装的最新稳定版。

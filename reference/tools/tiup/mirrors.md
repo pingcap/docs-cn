@@ -136,13 +136,14 @@ tiup mirrors <target-dir> [global-version] [flags]`
     sh local_install.sh
     ```
 
-4. 根据提示安装完 TiUP 之后，再部署 TiDB 集群（假设工作目录还在 package 内）：
+4. 根据提示安装完 TiUP 之后，再部署 TiDB 集群：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     export TIUP_MIRRORS=/path/to/mirror
-    tiup cluster xxx
+    tiup cluster deploy <cluster-name> <cluster-version> <topology-file>
+    tiup cluster start <cluster-name>
     ```
 
     `/path/to/mirror` 是 `tiup mirrors <target-dir>` 中 `<target-dir>` 所在的位置，如果在 `/tmp/package` 则：
