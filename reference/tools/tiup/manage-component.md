@@ -60,7 +60,7 @@ tiup list tikv --refresh
 tiup install tidb
 ```
 
-示例二：使用 TiUP 安装 nightly 版本的TiDB
+示例二：使用 TiUP 安装 nightly 版本的 TiDB
 
 {{< copyable "shell-regular" >}}
 
@@ -112,8 +112,6 @@ tiup update --self
 ## 运行组件
 
 安装完成之后，你可以使用 `tiup <component>` 命令来启动相应的组件：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup [flags] <component>[:version] [args...]
