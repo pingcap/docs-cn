@@ -361,6 +361,14 @@
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
       - [分库分表场景下的数据校验](/reference/tools/sync-diff-inspector/shard-diff.md)
       - [TiDB 主从集群的数据校验](/reference/tools/sync-diff-inspector/tidb-diff.md)
+    + TiUP
+      - [概述](/reference/tools/tiup/overview.md)
+      - [管理组件](/reference/tools/tiup/manage-component.md)
+      - [本地快速部署 TiDB 集群](/reference/tools/tiup/playground.md)
+      - [部署运维 TiDB 线上集群](/reference/tools/tiup/cluster.md)
+      - [搭建私有镜像](/reference/tools/tiup/mirrors.md)
+      - [打包组件](/reference/tools/tiup/package-component.md)
+      - [使用 TiUP 压测 TiDB](/reference/tools/tiup/bench.md)
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
@@ -386,6 +394,7 @@
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.1](/releases/3.1.1.md)
     - [3.1.0 GA](/releases/3.1.0-ga.md)
     - [3.1.0-rc](/releases/3.1.0-rc.md)
     - [3.1.0-beta.2](/releases/3.1.0-beta.2.md)
