@@ -17,7 +17,7 @@ category: reference
 
 ### 使用 TiUP 全新部署 TiCDC
 
-TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，部署运行 TiCDC 必须使用 TiDB v4.0.0-rc.1 或更新版本，部署流程如下：
+TiUP cluster 是适用于 TiDB 4.0 及以上版本的部署工具，部署运行 TiCDC 必须使用 TiDB v4.0.0-rc.1 或更新版本，部署流程如下：
 
 1. 参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)安装 TiUP。
 
@@ -33,7 +33,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，部署运行
 
     可以参考[全量的配置文件模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。
 
-    除了部署 TiDB 集群的配置，需要额外在 `cdc_servers` 下配置 cdc servers 所在的 ip（目前只支持 ip，不支持域名）。
+    除了部署 TiDB 集群的配置，需要额外在 `cdc_servers` 下配置 CDC 服务器所在的 ip（目前只支持 ip，不支持域名）。
 
     {{< copyable "" >}}
 

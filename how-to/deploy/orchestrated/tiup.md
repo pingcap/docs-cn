@@ -1096,7 +1096,7 @@ alertmanager_servers:
 
 #### 部署需求
 
-设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，集群启动 TiCDC，可在部署后通过 `cdc cli` 创建同步任务。
+设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，需要启动 TiCDC，可在 TiCDC 集群部署完成后[通过 `cdc cli` 创建同步任务](/reference/tools/ticdc/deploy.md#第-2-步创建同步任务)。
 
 #### 拓扑信息
 
