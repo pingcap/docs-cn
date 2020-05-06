@@ -1,0 +1,39 @@
+name: Upload media files to Qiniu and Aws when they change
+on:
+  push:
+    branches:
+      - master
+      - release-2.1
+      - release-3.0
+      - release-3.1
+      - release-4.0
+    paths:
+      - media/**
+jobs:
+  run:
+    name: Upload media files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          # Must use at least depth 2!
+          fetch-depth: 2
+
+      - name: Download cloud_assets_utils
+        run: |
+          curl -L https://github.com/pingcap/cloud-assets-utils/releases/download/v0.2.0/cloud_assets_utils-ubuntu-latest -o cloud_assets_utils
+          chmod +x cloud_assets_utils
+          sudo mv cloud_assets_utils /usr/local/bin/cloud-assets-utils
+      - name: Configure qshell
+        run: |
+          curl http://devtools.qiniu.com/qshell-linux-x64-v2.4.1.zip -o qshell.zip
+          unzip qshell.zip
+          sudo mv qshell-linux-x64-v2.4.1 /usr/local/bin/qshell
+          qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} test
+      - name: Configure awscli
+        run: |
+          pip3 install --upgrade setuptools
+          pip3 install awscli
+          printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
+      - name: Upload
+        run: cloud-assets-utils verify-and-sync -qiniu true -qiniu-bucket ${{ secrets.QINIU_BUCKET_NAME }} -aws true -aws-bucket ${{ secrets.AWS_BUCKET_NAME }} media -replace-first-path-to images/docs
