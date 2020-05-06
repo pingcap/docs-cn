@@ -111,6 +111,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：[]
 + 默认情况下，该 list 名单为空，表示没有所需修复的坏表信息。
 
+### `new_collations_enabled_on_first_bootstrap`
+
++ 用于开启新的 collation 支持
++ 默认值：false
++ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
+
 ### `max-server-connections`
 
 + TiDB 中同时允许的最大客户端连接数，用于资源控制。
@@ -499,3 +505,8 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 + 用于控制是否允许使用 `AUTO_RANDOM`。
 + 默认值：false
 + 默认情况下，不支持使用 `AUTO_RANDOM`。当该值为 true 时，不允许同时设置 alter-primary-key 为 true。
+
+### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
++ 用于控制是否能创建表达式索引。
++ 默认值：false

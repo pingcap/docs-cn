@@ -1,19 +1,19 @@
 ---
-title: 如何快速体验 TiDB 集群
+title: TiDB 数据库快速上手指南
 category: how-to
 ---
 
-# 如何快速体验 TiDB 集群
-
-本文介绍如何快速体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
+# TiDB 数据库快速上手指南
 
 > **警告：**
 >
 > 对于生产环境，不要使用本文介绍的方式进行部署，而应使用 [TiUP 部署 TiDB 集群](/how-to/deploy/orchestrated/tiup.md)。
 
+本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
+
 - [第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第一种使用-tidb-wasm-一键体验-tidb-数据库)
 - [第二种：使用 TiUP Playground 快速部署本地测试环境](#第二种使用-tiup-playground-快速部署本地测试环境)
-- [第三种：使用 TiUP cluster 模拟单机下的准生产测试环境](#第三种使用-tiup-cluster-模拟单机下的准生产测试环境)
+- [第三种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第三种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
 
 ## 第一种：使用 TiDB-Wasm 一键体验 TiDB 数据库
 
@@ -22,7 +22,7 @@ category: how-to
 
 TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用。TiDB-Wasm 可直接进行 SQL 执行、兼容性验证等基本操作。
 
-试用 TiDB-Wasm 直接点击网址：[https://tour.pingcap.com](https://tour.pingcap.com)，之后会在内存中构建 TiDB 数据库，预计耗时 10 秒左右。
+直接点击网址试用 TiDB-Wasm：<https://tour.pingcap.com>，之后会在内存中构建 TiDB 数据库，预计耗时 10 秒左右。
 
 ## 第二种：使用 TiUP Playground 快速部署本地测试环境
 
@@ -45,29 +45,13 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     >
     > TiUP 安装完成会提示对应的 profile 文件的绝对路径，以下 source 操作需要根据实际位置进行操作。
 
-    {< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     source .bash_profile
     ``` 
 
-3. 安装 TiUP Playground。
-  
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup install playground
-    ```
-  
-    如果曾经安装过 TiUP Playground，则执行以下命令升级至最新版：
-  
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup update playground
-    ```
-
-4. 在当前 session 执行以下命令启动集群。
+3. 在当前 session 执行以下命令启动集群。
 
     - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV 和 PD 实例各 1 个：
 
@@ -77,7 +61,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         tiup playground
         ```
 
-    - 也可以指定版本以及组件实例个数：
+    - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
 
         {{< copyable "shell-regular" >}}
 
@@ -85,7 +69,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         tiup playground v4.0.0-rc --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动一个 v4.0.0-rc 版本的集群，`--monitor` 表示同时部署监控组件。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动一个 `v4.0.0-rc` 版本的集群，`--monitor` 表示同时部署监控组件。运行结果将显示集群的访问方式：
         
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -95,7 +79,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         To view the monitor: http://127.0.0.1:9090
         ```
 
-5. 新开启一个 session 以访问 TiDB 数据库。
+4. 新开启一个 session 以访问 TiDB 数据库。
 
     {{< copyable "shell-regular" >}}
 
@@ -103,11 +87,11 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     mysql --host 127.0.0.1 --port 4000 -u root
     ```
 
-6. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
+5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
-7. 通过 <http://127.0.0.1:2379/dashboard> 访问 TiDB 的 Dashboard 页面，默认用户名为 root，密码为空。
+6. 通过 <http://127.0.0.1:2379/dashboard> 访问 TiDB 的 Dashboard 页面，默认用户名为 root，密码为空。
 
-8. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
+7. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -115,7 +99,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     tiup clean --all
     ```
 
-## 第三种：使用 TiUP cluster 模拟单机下的准生产测试环境
+## 第三种：使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
 - 适用场景：希望用单台 Linux 服务器，体验 TiDB 最小的完整拓扑的集群，并模拟生产的部署步骤。
 - 耗时：10 分钟
@@ -145,7 +129,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 - 部署主机[关闭防火墙](/how-to/deploy/orchestrated/tiup.md#如何关闭部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
 - 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
-    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系操作步骤：
+    - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 
 ### 实施部署
 
@@ -179,7 +163,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
 4. 由于模拟多机部署，需要通过 `root` 用户调大 sshd 服务的连接数限制：
 
-    1. 修改 /etc/ssh/sshd_config 将 `MaxSessions` 调至 20。
+    1. 修改 `/etc/ssh/sshd_config` 将 `MaxSessions` 调至 20。
     2. 重启 sshd 服务：
 
         {{< copyable "shell-regular" >}}
@@ -190,27 +174,26 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
 5. 创建并启动集群
 
-    按下面的配置模板，编辑配置文件，命名为 `topology.yaml`，其中：
+    按下面的配置模板，编辑配置文件，命名为 `topo.yaml`，其中：
 
-    - `user: "tidb"` 表示通过 `tidb` 系统用户来做集群的内部管理（部署会自动创建），默认使用 22 端口通过 ssh 登陆目标机器
-    - 设置 `replication.enable-placement-rules` 这个 PD 参数来确保 TiFlash 正常运行
-    - host 改为本部署主机的 IP
+    - `user: "tidb"`：表示通过 `tidb` 系统用户（部署会自动创建）来做集群的内部管理，默认使用 22 端口通过 ssh 登录目标机器
+    - `replication.enable-placement-rules`：设置这个 PD 参数来确保 TiFlash 正常运行
+    - `host`：设置为本部署主机的 IP
 
     配置模板如下：
 
     {{< copyable "shell-regular" >}}
     
     ```yaml
-    # # Global variables are applied to all deployments and as the default value of
-    # # them if the specific deployment value missing.
-     
+    # # Global variables are applied to all deployments and used as the default value of
+    # # the deployments if a specific deployment value is missing.
     global:
      user: "tidb"
      ssh_port: 22
      deploy_dir: "/tidb-deploy"
      data_dir: "/tidb-data"
      
-    # # Monitored variables are used to all the machine
+    # # Monitored variables are applied to all the machines.
     monitored:
      node_exporter_port: 9100
      blackbox_exporter_port: 9115
@@ -219,7 +202,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
      tidb:
        log.slow-threshold: 300
      tikv:
-       readpool.storage.use-unified-pool: true
+       readpool.storage.use-unified-pool: false
        readpool.coprocessor.use-unified-pool: true
      pd:
        replication.enable-placement-rules: true
@@ -264,7 +247,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
-    - 参数 `<tidb-version>` 表示设置集群版本，可以通过 `tiup list tidb --refresh` 命令来选择当前支持部署的 TiDB 版本
+    - 参数 `<tidb-version>` 表示设置集群版本，可以通过 `tiup list tidb --refresh` 命令来查看当前支持部署的 TiDB 版本
 
     按照引导，输入”y”及 root 密码，来完成部署：
     

@@ -52,6 +52,43 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
+### tidb_opt_distinct_agg_push_down
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
+当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
+
+在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
+
+```sql
+mysql> desc select count(distinct a) from test.t;
++-------------------------+----------+-----------+---------------+------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                            |
++-------------------------+----------+-----------+---------------+------------------------------------------+
+| StreamAgg_6             | 1.00     | root      |               | funcs:count(distinct test.t.a)->Column#4 |
+| └─TableReader_10        | 10000.00 | root      |               | data:TableFullScan_9                     |
+|   └─TableFullScan_9     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo           |
++-------------------------+----------+-----------+---------------+------------------------------------------+
+3 rows in set (0.01 sec)
+
+mysql> set session tidb_opt_distinct_agg_push_down = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> desc select count(distinct a) from test.t;
++---------------------------+----------+-----------+---------------+------------------------------------------+
+| id                        | estRows  | task      | access object | operator info                            |
++---------------------------+----------+-----------+---------------+------------------------------------------+
+| HashAgg_8                 | 1.00     | root      |               | funcs:count(distinct test.t.a)->Column#3 |
+| └─TableReader_9           | 1.00     | root      |               | data:HashAgg_5                           |
+|   └─HashAgg_5             | 1.00     | cop[tikv] |               | group by:test.t.a,                       |
+|     └─TableFullScan_7     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo           |
++---------------------------+----------+-----------+---------------+------------------------------------------+
+4 rows in set (0.00 sec)
+```
+
 ### tidb_auto_analyze_ratio
 
 作用域：GLOBAL
@@ -341,11 +378,15 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 ### tidb_enable_table_partition
 
-作用域：SESSION
+作用域：SESSION | GLOBAL
 
-默认值："auto"
+默认值："on"
 
-这个变量用来设置是否开启 TABLE PARTITION 特性。默认值 `auto` 表示开启 range partition 和 hash partion。`off` 表示关闭 TABLE PARTITION 的特性，此时语法还是会依旧兼容，只是建立的 partition table 实际上并不是真正的 partition table，而是和普通的 table 一样。`on` 表示开启，目前的作用和 `auto` 一样。
+这个变量用来设置是否开启 TABLE PARTITION 特性。目前变量支持以下三种值：
+
+- 默认值 `on` 表示开启 TiDB 当前已实现了的分区表类型，目前 range partition、hash partition 以及 range column 单列的场景会生效。
+- `auto` 目前作用和 `on` 一样。
+- `off` 表示关闭 TABLE PARTITION 的特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
 注意，目前 TiDB 只支持 range partition 和 hash partition。
 

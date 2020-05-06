@@ -33,7 +33,7 @@ select * from `ANALYZE_STATUS`;
 
 ## CHARACTER_SETS 表
 
-`CHARACTER_SETS` 表提供[字符集](/reference/sql/character-set.md)相关的信息。TiDB 目前仅支持部分字符集。
+`CHARACTER_SETS` 表提供[字符集](/reference/sql/characterset-and-collation.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 {{< copyable "sql" >}}
 

@@ -151,3 +151,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 ```bash
 ./scripts/markdownlint [FILE...]
 ```
+
+## 联系我们
+
+加入 Slack channel：[#sig-docs](http://suo.im/6dB6OH)
