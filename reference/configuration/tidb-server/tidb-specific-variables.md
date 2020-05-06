@@ -61,9 +61,19 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 这个变量用来设置优化器是否执行带有 Distinct 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 当查询中带有 Distinct 的聚合操作执行很慢时，可以尝试设置该变量为 1。
 
-例如，在如下执行计划中，`distinct a` 被下推到了 Coprocessor， 在 `HashAgg_5` 里新增里一个 group by 列 `test.t.a`。
+在如下例子中，`tidb_opt_distinct_agg_push_down` 打开前，tidb 需要从 tikv 读到所有数据，并在 tidb 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 打开后， `distinct a` 被下推到了 Coprocessor， 在 `HashAgg_5` 里新增里一个 group by 列 `test.t.a`。
 
 ```
+mysql> desc select count(distinct a) from test.t;
++-------------------------+----------+-----------+---------------+------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                            |
++-------------------------+----------+-----------+---------------+------------------------------------------+
+| StreamAgg_6             | 1.00     | root      |               | funcs:count(distinct test.t.a)->Column#4 |
+| └─TableReader_10        | 10000.00 | root      |               | data:TableFullScan_9                     |
+|   └─TableFullScan_9     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo           |
++-------------------------+----------+-----------+---------------+------------------------------------------+
+3 rows in set (0.01 sec)
+
 mysql> set session tidb_opt_distinct_agg_push_down = 1;
 Query OK, 0 rows affected (0.00 sec)
 
