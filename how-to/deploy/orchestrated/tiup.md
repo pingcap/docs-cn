@@ -1902,7 +1902,7 @@ cdc                             darwin/amd64,linux/amd64,linux/arm64
     tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
     ```
     
-### 如何关闭系统swap
+### 如何关闭系统 swap
 
 {{< copyable "shell-regular" >}}
     
