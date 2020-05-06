@@ -12,11 +12,11 @@ The `TRACE` statement provides detailed information about query execution. It is
 
 **TraceStmt:**
 
-![TraceStmt](/media/sqlgram-dev/TraceStmt.png)
+![TraceStmt](/media/sqlgram/TraceStmt.png)
 
 **TraceableStmt:**
 
-![TraceableStmt](/media/sqlgram-dev/TraceableStmt.png)
+![TraceableStmt](/media/sqlgram/TraceableStmt.png)
 
 ## Examples
 

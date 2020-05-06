@@ -12,31 +12,31 @@ The `CREATE SEQUENCE` statement creates sequence objects in TiDB. The sequence i
 
 **CreateSequenceStmt:**
 
-![CreateSequenceStmt](/media/sqlgram-dev/CreateSequenceStmt.png)
+![CreateSequenceStmt](/media/sqlgram/CreateSequenceStmt.png)
 
 **OptTemporary:**
 
-![OptTemporary](/media/sqlgram-dev/OptTemporary.png)
+![OptTemporary](/media/sqlgram/OptTemporary.png)
 
 **IfNotExists:**
 
-![IfNotExists](/media/sqlgram-dev/IfNotExists.png)
+![IfNotExists](/media/sqlgram/IfNotExists.png)
 
 **TableName:**
 
-![TableName](/media/sqlgram-dev/TableName.png)
+![TableName](/media/sqlgram/TableName.png)
 
 **CreateSequenceOptionListOpt:**
 
-![CreateSequenceOptionListOpt](/media/sqlgram-dev/CreateSequenceOptionListOpt.png)
+![CreateSequenceOptionListOpt](/media/sqlgram/CreateSequenceOptionListOpt.png)
 
 **SequenceOption:**
 
-![SequenceOption](/media/sqlgram-dev/SequenceOption.png)
+![SequenceOption](/media/sqlgram/SequenceOption.png)
 
 **CreateTableOptionListOpt:**
 
-![CreateTableOptionListOpt](/media/sqlgram-dev/CreateTableOptionListOpt.png)
+![CreateTableOptionListOpt](/media/sqlgram/CreateTableOptionListOpt.png)
 
 ## Syntax
 

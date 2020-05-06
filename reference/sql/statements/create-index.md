@@ -12,35 +12,35 @@ This statement adds a new index to an existing table. It is an alternative synta
 
 **CreateIndexStmt:**
 
-![CreateIndexStmt](/media/sqlgram-dev/CreateIndexStmt.png)
+![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
 
 **CreateIndexStmtUnique:**
 
-![CreateIndexStmtUnique](/media/sqlgram-dev/CreateIndexStmtUnique.png)
+![CreateIndexStmtUnique](/media/sqlgram/CreateIndexStmtUnique.png)
 
 **Identifier:**
 
-![Identifier](/media/sqlgram-dev/Identifier.png)
+![Identifier](/media/sqlgram/Identifier.png)
 
 **IndexTypeOpt:**
 
-![IndexTypeOpt](/media/sqlgram-dev/IndexTypeOpt.png)
+![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
 
 **TableName:**
 
-![TableName](/media/sqlgram-dev/TableName.png)
+![TableName](/media/sqlgram/TableName.png)
 
 **IndexColNameList:**
 
-![IndexColNameList](/media/sqlgram-dev/IndexColNameList.png)
+![IndexColNameList](/media/sqlgram/IndexColNameList.png)
 
 **IndexOptionList:**
 
-![IndexOptionList](/media/sqlgram-dev/IndexOptionList.png)
+![IndexOptionList](/media/sqlgram/IndexOptionList.png)
 
 **IndexOption:**
 
-![IndexOption](/media/sqlgram-dev/IndexOption.png)
+![IndexOption](/media/sqlgram/IndexOption.png)
 
 ## Examples
 

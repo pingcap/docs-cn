@@ -14,7 +14,7 @@ In the absence of a `BEGIN` or `START TRANSACTION` statement, the default behavi
 
 **CommitStmt:**
 
-![CommitStmt](/media/sqlgram-dev/CommitStmt.png)
+![CommitStmt](/media/sqlgram/CommitStmt.png)
 
 ## Examples
 

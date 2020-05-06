@@ -12,19 +12,19 @@ The `DROP DATABASE` statement permanently removes a specified database schema, a
 
 **DropDatabaseStmt:**
 
-![DropDatabaseStmt](/media/sqlgram-dev/DropDatabaseStmt.png)
+![DropDatabaseStmt](/media/sqlgram/DropDatabaseStmt.png)
 
 **DatabaseSym:**
 
-![DatabaseSym](/media/sqlgram-dev/DatabaseSym.png)
+![DatabaseSym](/media/sqlgram/DatabaseSym.png)
 
 **IfExists:**
 
-![IfExists](/media/sqlgram-dev/IfExists.png)
+![IfExists](/media/sqlgram/IfExists.png)
 
 **DBName:**
 
-![DBName](/media/sqlgram-dev/DBName.png)
+![DBName](/media/sqlgram/DBName.png)
 
 ## Examples
 

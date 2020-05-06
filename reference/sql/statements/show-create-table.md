@@ -12,11 +12,11 @@ This statement shows the exact statement to recreate an existing table using SQL
 
 **ShowStmt:**
 
-![ShowStmt](/media/sqlgram-dev/ShowStmt.png)
+![ShowStmt](/media/sqlgram/ShowStmt.png)
 
 **TableName:**
 
-![TableName](/media/sqlgram-dev/TableName.png)
+![TableName](/media/sqlgram/TableName.png)
 
 ## Examples
 

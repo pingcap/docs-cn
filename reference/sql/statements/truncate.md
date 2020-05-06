@@ -14,15 +14,15 @@ Both `TRUNCATE TABLE tableName` and `TRUNCATE tableName` are valid syntax.
 
 **TruncateTableStmt:**
 
-![TruncateTableStmt](/media/sqlgram-dev/TruncateTableStmt.png)
+![TruncateTableStmt](/media/sqlgram/TruncateTableStmt.png)
 
 **OptTable:**
 
-![OptTable](/media/sqlgram-dev/OptTable.png)
+![OptTable](/media/sqlgram/OptTable.png)
 
 **TableName:**
 
-![TableName](/media/sqlgram-dev/TableName.png)
+![TableName](/media/sqlgram/TableName.png)
 
 ## Examples
 

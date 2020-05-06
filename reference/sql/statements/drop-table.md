@@ -14,15 +14,15 @@ By design `DROP TABLE` will also drop views, as they share the same namespace as
 
 **DropTableStmt:**
 
-![DropTableStmt](/media/sqlgram-dev/DropTableStmt.png)
+![DropTableStmt](/media/sqlgram/DropTableStmt.png)
 
 **TableOrTables:**
 
-![TableOrTables](/media/sqlgram-dev/TableOrTables.png)
+![TableOrTables](/media/sqlgram/TableOrTables.png)
 
 **TableNameList:**
 
-![TableNameList](/media/sqlgram-dev/TableNameList.png)
+![TableNameList](/media/sqlgram/TableNameList.png)
 
 ## Examples
 

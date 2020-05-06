@@ -63,7 +63,7 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 
 **AdminStmt:**
 
-![AdminStmt](/media/sqlgram-dev/AdminStmt.png)
+![AdminStmt](/media/sqlgram/AdminStmt.png)
 
 ## Examples
 

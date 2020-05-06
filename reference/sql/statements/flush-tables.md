@@ -12,27 +12,27 @@ This statement is included for compatibility with MySQL. It has no effective usa
 
 **FlushStmt:**
 
-![FlushStmt](/media/sqlgram-dev/FlushStmt.png)
+![FlushStmt](/media/sqlgram/FlushStmt.png)
 
 **NoWriteToBinLogAliasOpt:**
 
-![NoWriteToBinLogAliasOpt](/media/sqlgram-dev/NoWriteToBinLogAliasOpt.png)
+![NoWriteToBinLogAliasOpt](/media/sqlgram/NoWriteToBinLogAliasOpt.png)
 
 **FlushOption:**
 
-![FlushOption](/media/sqlgram-dev/FlushOption.png)
+![FlushOption](/media/sqlgram/FlushOption.png)
 
 **TableOrTables:**
 
-![TableOrTables](/media/sqlgram-dev/TableOrTables.png)
+![TableOrTables](/media/sqlgram/TableOrTables.png)
 
 **TableNameListOpt:**
 
-![TableNameListOpt](/media/sqlgram-dev/TableNameListOpt.png)
+![TableNameListOpt](/media/sqlgram/TableNameListOpt.png)
 
 **WithReadLockOpt:**
 
-![WithReadLockOpt](/media/sqlgram-dev/WithReadLockOpt.png)
+![WithReadLockOpt](/media/sqlgram/WithReadLockOpt.png)
 
 ## Examples
 

@@ -12,7 +12,7 @@ The `LOAD DATA` statement batch loads data into a TiDB table.
 
 **LoadDataStmt:**
 
-![LoadDataStmt](/media/sqlgram-dev/LoadDataStmt.png)
+![LoadDataStmt](/media/sqlgram/LoadDataStmt.png)
 
 ## Examples
 

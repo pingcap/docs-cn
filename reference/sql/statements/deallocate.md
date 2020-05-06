@@ -12,15 +12,15 @@ The `DEALLOCATE` statement provides an SQL interface to server-side prepared sta
 
 **DeallocateStmt:**
 
-![DeallocateStmt](/media/sqlgram-dev/DeallocateStmt.png)
+![DeallocateStmt](/media/sqlgram/DeallocateStmt.png)
 
 **DeallocateSym:**
 
-![DeallocateSym](/media/sqlgram-dev/DeallocateSym.png)
+![DeallocateSym](/media/sqlgram/DeallocateSym.png)
 
 **Identifier:**
 
-![Identifier](/media/sqlgram-dev/Identifier.png)
+![Identifier](/media/sqlgram/Identifier.png)
 
 ## Examples
 

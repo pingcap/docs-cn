@@ -12,35 +12,35 @@ The `CREATE VIEW` statement saves a `SELECT` statement as a queryable object, si
 
 **CreateViewStmt:**
 
-![CreateViewStmt](/media/sqlgram-dev/CreateViewStmt.png)
+![CreateViewStmt](/media/sqlgram/CreateViewStmt.png)
 
 **OrReplace:**
 
-![OrReplace](/media/sqlgram-dev/OrReplace.png)
+![OrReplace](/media/sqlgram/OrReplace.png)
 
 **ViewAlgorithm:**
 
-![ViewAlgorithm](/media/sqlgram-dev/ViewAlgorithm.png)
+![ViewAlgorithm](/media/sqlgram/ViewAlgorithm.png)
 
 **ViewDefiner:**
 
-![ViewDefiner](/media/sqlgram-dev/ViewDefiner.png)
+![ViewDefiner](/media/sqlgram/ViewDefiner.png)
 
 **ViewSQLSecurity:**
 
-![ViewSQLSecurity](/media/sqlgram-dev/ViewSQLSecurity.png)
+![ViewSQLSecurity](/media/sqlgram/ViewSQLSecurity.png)
 
 **ViewName:**
 
-![ViewName](/media/sqlgram-dev/ViewName.png)
+![ViewName](/media/sqlgram/ViewName.png)
 
 **ViewFieldList:**
 
-![ViewFieldList](/media/sqlgram-dev/ViewFieldList.png)
+![ViewFieldList](/media/sqlgram/ViewFieldList.png)
 
 **ViewCheckOption:**
 
-![ViewCheckOption](/media/sqlgram-dev/ViewCheckOption.png)
+![ViewCheckOption](/media/sqlgram/ViewCheckOption.png)
 
 ## Examples
 

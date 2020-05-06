@@ -14,15 +14,15 @@ To show tables in a different database, use `SHOW TABLES IN DatabaseName`.
 
 **ShowStmt:**
 
-![ShowStmt](/media/sqlgram-dev/ShowStmt.png)
+![ShowStmt](/media/sqlgram/ShowStmt.png)
 
 **ShowTargetFilterable:**
 
-![ShowTargetFilterable](/media/sqlgram-dev/ShowTargetFilterable.png)
+![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
 
 **ShowDatabaseNameOpt:**
 
-![ShowDatabaseNameOpt](/media/sqlgram-dev/ShowDatabaseNameOpt.png)
+![ShowDatabaseNameOpt](/media/sqlgram/ShowDatabaseNameOpt.png)
 
 ## Examples
 

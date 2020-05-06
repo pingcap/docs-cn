@@ -12,11 +12,11 @@ This statement shows a list of privileges associated with a user. As in MySQL, t
 
 **ShowStmt:**
 
-![ShowStmt](/media/sqlgram-dev/ShowStmt.png)
+![ShowStmt](/media/sqlgram/ShowStmt.png)
 
 **Username:**
 
-![Username](/media/sqlgram-dev/Username.png)
+![Username](/media/sqlgram/Username.png)
 
 ## Examples
 
