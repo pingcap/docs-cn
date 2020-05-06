@@ -28,7 +28,7 @@ This section introduces the configuration parameters of TiFlash.
 
 ```
 tmp_path = The path in which the TiFlash temporary files are stored.
-path = The TiFlash data storage path.     # If there are multiple directories, separate each directory with a comma. For example, `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`. If your environment has multiple disks, it is recommended that each path corresponds to one disk and you put disks with best performance at the front to fully use performance of all disks.
+path = The TiFlash data storage path.     # If there are multiple directories, separate each directory with a comma.
 path_realtime_mode = false # The default value is `false`. If you set it to `true` and multiple directories are deployed in the path, the latest data is stored in the first directory and older data is stored in the rest directories.
 listen_host = The TiFlash service listening host. # Generally, it is configured as `0.0.0.0`.
 tcp_port = The TiFlash TCP service port.
@@ -78,3 +78,11 @@ Multiple TiFlash nodes elect a master to add or delete placement rules to PD, an
     engine-addr = The listening address of the TiFlash coprocessor service.
     status-addr = The port and IP through which Prometheus pulls proxy metrics information.
 ```
+
+### Multi-disk deployment
+
+TiFlash supports multi-disk deployment, controlled by the `path` and `path_realtime_mode` parameters in the [`tiflash.toml` file](#configure-the-tiflashtoml-file).
+
+If there are multiple data storage directories in `path`, separate each with a comma. For example, `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`. If there are multiple disks in your environment, it is recommended that each directory corresponds to one disk and you put disks with the best performance at the front to maximize the performance of all disks.
+
+The default value of the `path_realtime_mode` parameter is `false`, which means that data are evenly distributed on all storage directories. If the parameter is set to `true`, and `path` contains multiple directories, it means that the first directory only stores the latest data, and the older data are evenly distributed on other directories.

@@ -27,7 +27,7 @@ It is recommended to use an SSD disk to buffer the real-time data being replicat
 
 For other hard disks, you can use multiple HDDs or regular SSDs. A better hard disk will surely bring better performance.
 
-TiFlash supports multi-directory storage, so there is no need to use RAID.
+TiFlash supports [multi-disk deployment](/reference/tiflash/configuration.md#multi-disk-deployment), so there is no need to use RAID.
 
 ### TiFlash and TiKV are deployed on the same node
 
@@ -97,7 +97,7 @@ TiUP cluster is the deployment tool for TiDB 4.0 or later versions. It is recomm
       - host: 172.19.0.103
     ```
 
-    If you want to customize the deployment directory, configure the `data_dir` parameter. If you want to deploy TiFlash on multiple disks, separate each directory with commas. For example:
+    If you want to customize the deployment directory, configure the `data_dir` parameter. If you want to [deploy TiFlash on multiple disks](/reference/tiflash/configuration.md#multi-disk-deployment), separate each directory with commas. For example:
 
     {{< copyable "" >}}
 
