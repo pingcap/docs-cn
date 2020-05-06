@@ -231,6 +231,34 @@ br backup table \
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
 
+### 备份数据到 Amazon S3 后端存储
+
+如果备份的存储并不是在本地，而是在 Amazon 的 S3 后端存储，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
+
+这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
+
+将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export AWS_ACCESS_KEY_ID=${AccessKey}
+export AWS_SECRET_ACCESS_KEY=${SecretKey}
+```
+
+在进行 BR 备份时，显示指定参数 `--s3.region` 和 `--send-credentials-to-tikv`, `--s3.region` 表示 S3 存储所在的区域，`--send-credentials-to-tikv` 表示将 S3 的访问权限传递给 TiKV 节点。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --send-credentials-to-tikv true \
+    --log-file backuptable.log
+```
+
 ## 恢复集群数据
 
 使用 `br restore` 命令来恢复备份数据。可选择添加 `full`、`db` 或 `table` 子命令来指定恢复操作的范围：全部集群数据、某个数据库或某张数据表。
@@ -299,6 +327,32 @@ br restore table \
     --db "test" \
     --table "usertable" \
     --storage "local:///tmp/backup" \
+    --log-file restorefull.log
+```
+
+### 从 Amazon S3 后端存储恢复数据
+
+如果需要恢复的数据并不是存储在本地，而是在 Amazon 的 S3 后端，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
+
+将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export AWS_ACCESS_KEY_ID=${AccessKey}
+export AWS_SECRET_ACCESS_KEY=${SecretKey}
+```
+
+在进行 BR 恢复时，显示指定参数 `--s3.region` 和 `--send-credentials-to-tikv`, `--s3.region` 表示 S3 存储所在的区域，`--send-credentials-to-tikv` 表示将 S3 的访问权限传递给 TiKV 节点。`--storage`参数中的 `Bucket` 和 `Folder` 分别代表需要恢复的数据所在的 S3 存储桶和文件夹。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --send-credentials-to-tikv true \
     --log-file restorefull.log
 ```
 
