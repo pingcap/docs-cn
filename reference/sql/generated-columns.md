@@ -93,13 +93,13 @@ CREATE TABLE person (
 
 当查询中出现的某个表达式已经被存储为一个含索引的生成列时，TiDB 会将这个表达式替换为对应的生成列，这样就可以在生成查询计划时考虑使用这个索引。
 
+例如，下面的例子为 `a+1` 这个表达式创建生成列并添加索引，从而加速了查询。
+
 {{< copyable "sql" >}}
 
 ```sql
-mysql> create table t(a int);
-Query OK, 0 rows affected (0.02 sec)
-
-mysql> desc select a+1 from t where a+1=3;
+create table t(a int);
+desc select a+1 from t where a+1=3;
 +---------------------------+----------+-----------+---------------+--------------------------------+
 | id                        | estRows  | task      | access object | operator info                  |
 +---------------------------+----------+-----------+---------------+--------------------------------+
@@ -110,13 +110,9 @@ mysql> desc select a+1 from t where a+1=3;
 +---------------------------+----------+-----------+---------------+--------------------------------+
 4 rows in set (0.00 sec)
 
-mysql> alter table t add column b bigint as (a+1) virtual;
-Query OK, 0 rows affected (0.03 sec)
-
-mysql> alter table t add index idx_b(b);
-Query OK, 0 rows affected (0.04 sec)
-
-mysql> desc select a+1 from t where a+1=3;
+alter table t add column b bigint as (a+1) virtual;
+alter table t add index idx_b(b);
+desc select a+1 from t where a+1=3;
 +------------------------+---------+-----------+-------------------------+---------------------------------------------+
 | id                     | estRows | task      | access object           | operator info                               |
 +------------------------+---------+-----------+-------------------------+---------------------------------------------+
