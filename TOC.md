@@ -11,6 +11,7 @@
     - [如何用 Sysbench 测试 TiDB](/benchmark/how-to-run-sysbench.md)
     - [如何对 TiDB 进行 TPC-C 测试](/benchmark/how-to-run-tpcc.md)
     - [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/sysbench-v4.md)
+    - [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/tpcc-v2.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/tpcc.md)
     - [线上负载与 `Add Index` 相互影响测试](/benchmark/add-index-with-load.md)
 - [TiDB 快速上手指南](/quick-start-with-tidb.md)
@@ -51,6 +52,7 @@
   + 监控
     - [概述](/how-to/monitor/overview.md)
     - [监控 TiDB 集群](/how-to/monitor/monitor-a-cluster.md)
+    - [流量可视化](/how-to/monitor/key-visualizer.md)
   + 迁移
     - [迁移工具使用指南](/reference/tools/user-guide.md)
     + 从 MySQL 迁移
@@ -223,7 +225,7 @@
     - [约束](/reference/sql/constraints.md)
     - [生成列](/reference/sql/generated-columns.md)
     - [分区表](/reference/sql/partitioning.md)
-    - [字符集](/reference/sql/characterset-and-collation.md)
+    - [字符集和排序规则](/reference/sql/characterset-and-collation.md)
     - [SQL 模式](/reference/sql/sql-mode.md)
     - [SQL 诊断](/reference/system-databases/sql-diagnosis.md)
     - [视图](/reference/sql/view.md)
@@ -350,6 +352,7 @@
       - [概述](/reference/tools/ticdc/overview.md)
       - [部署使用](/reference/tools/ticdc/deploy.md)
       - [集群和同步任务管理](/reference/tools/ticdc/manage.md)
+      - [常见问题和故障处理](/reference/tools/ticdc/troubleshoot.md)
       - [Sink URI 配置规则](/reference/tools/ticdc/sink.md)
       - [开放数据协议](/reference/tools/ticdc/open-protocol.md)
       - [Column 和 DDL 的类型码](/reference/tools/ticdc/column-ddl-type.md)
@@ -358,6 +361,14 @@
       - [不同库名或表名的数据校验](/reference/tools/sync-diff-inspector/route-diff.md)
       - [分库分表场景下的数据校验](/reference/tools/sync-diff-inspector/shard-diff.md)
       - [TiDB 主从集群的数据校验](/reference/tools/sync-diff-inspector/tidb-diff.md)
+    + TiUP
+      - [概述](/reference/tools/tiup/overview.md)
+      - [管理组件](/reference/tools/tiup/manage-component.md)
+      - [本地快速部署 TiDB 集群](/reference/tools/tiup/playground.md)
+      - [部署运维 TiDB 线上集群](/reference/tools/tiup/cluster.md)
+      - [搭建私有镜像](/reference/tools/tiup/mirrors.md)
+      - [打包组件](/reference/tools/tiup/package-component.md)
+      - [使用 TiUP 压测 TiDB](/reference/tools/tiup/bench.md)
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
@@ -383,6 +394,7 @@
     - [4.0.0-beta.1](/releases/4.0.0-beta.1.md)
     - [4.0.0-beta](/releases/4.0.0-beta.md)
   + v3.1
+    - [3.1.1](/releases/3.1.1.md)
     - [3.1.0 GA](/releases/3.1.0-ga.md)
     - [3.1.0-rc](/releases/3.1.0-rc.md)
     - [3.1.0-beta.2](/releases/3.1.0-beta.2.md)

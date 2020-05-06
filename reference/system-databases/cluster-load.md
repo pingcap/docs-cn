@@ -6,12 +6,12 @@ category: reference
 
 # CLUSTER_LOAD
 
-集群负载表 `CLUSTER_LOAD` 提供集群各个节点所在服务器的的当前负载信息。
+集群负载表 `CLUSTER_LOAD` 提供集群各个实例所在服务器的的当前负载信息。
 
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_load;
+desc information_schema.cluster_load;
 ```
 
 ```
@@ -30,7 +30,7 @@ desc cluster_load;
 字段解释：
 
 * `TYPE`：对应于节点信息表 [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md) 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 和 `tikv`。
-* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info` 中的 `STATUS_ADDRESS` 字段。
+* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info` 中的 `INSTANCE` 字段。
 * `DEVICE_TYPE`：硬件类型，目前可以查询的硬件类型有 `cpu`、`memory`、`disk` 和 `net`。
 * `DEVICE_NAME`：硬件名。对于不同的 `DEVICE_TYPE`，`DEVICE_NAME` 取值不同。
     * `cpu`：硬件名为 cpu。
@@ -45,21 +45,21 @@ desc cluster_load;
 {{< copyable "sql" >}}
 
 ```sql
-select * from cluster_load where device_type='cpu' and device_name='cpu';
+select * from information_schema.cluster_load where device_type='cpu' and device_name='cpu';
 ```
 
 ```
-+------+-----------------+-------------+-------------+--------+---------------+
-| TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME   | VALUE         |
-+------+-----------------+-------------+-------------+--------+---------------+
-| tidb | 127.0.0.1:10080 | cpu         | cpu         | load1  | 1.94          |
-| tidb | 127.0.0.1:10080 | cpu         | cpu         | load5  | 2.16          |
-| tidb | 127.0.0.1:10080 | cpu         | cpu         | load15 | 2.24          |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load1  | 1.94          |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load5  | 2.16          |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load15 | 2.24          |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load1  | 1.94287109375 |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load5  | 2.15576171875 |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load15 | 2.2421875     |
-+------+-----------------+-------------+-------------+--------+---------------+
++------+-----------------+-------------+-------------+--------+-------+
+| TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME   | VALUE |
++------+-----------------+-------------+-------------+--------+-------+
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load1  | 0.39  |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load5  | 0.36  |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load15 | 0.66  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load1  | 0.39  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load5  | 0.36  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load15 | 0.66  |
+| tikv | 127.0.0.1:20160 | cpu         | cpu         | load1  | 0.39  |
+| tikv | 127.0.0.1:20160 | cpu         | cpu         | load5  | 0.36  |
+| tikv | 127.0.0.1:20160 | cpu         | cpu         | load15 | 0.66  |
++------+-----------------+-------------+-------------+--------+-------+
 ```
