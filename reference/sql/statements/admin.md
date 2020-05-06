@@ -32,11 +32,23 @@ ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ```
 
+`ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...` 用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在运行中的 DDL 作业以及 DDL 历史作业队列中最近的十条结果。
+
 {{< copyable "sql" >}}
 
 ```sql
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ```
+
+`ADMIN CANCEL DDL JOBS job_id [, job_id] ...` 用于取消当前正在运行的 `job_id` 的 DDL 作业，并返回对应作业是否取消成功。如果取消失败，会显示失败的具体原因。
+
+> **注意：**
+>
+> + 只有该操作可以取消 DDL 作业，其他所有的操作和环境变更（例如机器重启、集群重启）都不会取消 DDL 作业。
+>
+> + 该操作可以同时取消多个 DDL 作业。可以通过 `ADMIN SHOW DDL JOBS` 语句来获取 DDL 作业的 ID。
+>
+> + 如果希望取消的作业已经完成，则取消操作将会失败。
 
 {{< copyable "sql" >}}
 
@@ -44,11 +56,15 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ```
 
+`ADMIN CHECK TABLE tbl_name [, tbl_name] ...` 用于对表 `tbl_name` 中的所有数据和对应索引进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
+
 {{< copyable "sql" >}}
 
 ```sql
 ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 ```
+
+`ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/reference/configuration/tidb-server/configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/reference/configuration/tidb-server/configuration-file.md#repair-table-list) 名单中。
 
 ## 语句概览
 
@@ -142,21 +158,6 @@ admin show ddl jobs 5 where state!='synced' and db_name='test';
     * `rollback done`：表示该操作执行失败，回滚完成。
     * `rollingback`：表示该操作执行失败，正在回滚。
     * `cancelling`：表示正在取消该操作。这个状态只有在用 `ADMIN CANCEL DDL JOBS` 命令取消 DDL 作业时才会出现。
-
-- `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`：用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在运行中的 DDL 作业以及 DDL 历史作业队列中最近的十条结果。
-- `ADMIN CANCEL DDL JOBS job_id [, job_id] ...`：用于取消当前正在运行的 DDL 作业，并返回对应作业是否取消成功。如果取消失败，会显示失败的具体原因。
-
-    > **注意：**
-    >
-    > 只有该操作可以取消 DDL 作业，其他所有的操作和环境变更（例如机器重启、集群重启）都不会取消 DDL 作业。
-    >
-    > 该操作可以同时取消多个 DDL 作业。可以通过 `ADMIN SHOW DDL JOBS` 语句来获取 DDL 作业的 ID。
-    >
-    > 如果希望取消的作业已经完成，则取消操作将会失败。
-
-- `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`：用于对给定表中的所有数据和对应索引进行一致性校验，若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
-
-- `ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT`：在极端情况下，用于对存储层中的表的元信息进行非可信的覆盖，“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/reference/configuration/tidb-server/configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/reference/configuration/tidb-server/configuration-file.md#repair-table-list) 名单中。
 
 ## MySQL 兼容性
 

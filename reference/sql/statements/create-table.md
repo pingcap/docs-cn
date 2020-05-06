@@ -100,7 +100,8 @@ create_definition:
 ```sql
 column_definition:
     data_type [NOT NULL | NULL] [DEFAULT default_value]
-      [AUTO_INCREMENT] [UNIQUE [KEY] | [PRIMARY] KEY]
+      [AUTO_INCREMENT | AUTO_RANDOM [(length)]]
+      [UNIQUE [KEY] | [PRIMARY] KEY]
       [COMMENT 'string']
       [reference_definition]
   | data_type [GENERATED ALWAYS] AS (expression)

@@ -8,6 +8,8 @@ aliases: ['/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow
 
 TiDB 会将执行时间超过 [slow-threshold](/reference/configuration/tidb-server/configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/reference/configuration/tidb-server/configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
 
+TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/reference/configuration/tidb-server/configuration-file.md#enable-slow-log) 来启用或禁用它。
+
 ## 日志示例
 
 ```sql
@@ -26,6 +28,9 @@ TiDB 会将执行时间超过 [slow-threshold](/reference/configuration/tidb-ser
 # Num_cop_tasks: 1
 # Cop_proc_avg: 0.07 Cop_proc_p90: 0.07 Cop_proc_max: 0.07 Cop_proc_addr: 172.16.5.87:20171
 # Cop_wait_avg: 0 Cop_wait_p90: 0 Cop_wait_max: 0 Cop_wait_addr: 172.16.5.87:20171
+# Cop_backoff_regionMiss_total_times: 200 Cop_backoff_regionMiss_total_time: 0.2 Cop_backoff_regionMiss_max_time: 0.2 Cop_backoff_regionMiss_max_addr: 127.0.0.1 Cop_backoff_regionMiss_avg_time: 0.2 Cop_backoff_regionMiss_p90_time: 0.2
+# Cop_backoff_rpcPD_total_times: 200 Cop_backoff_rpcPD_total_time: 0.2 Cop_backoff_rpcPD_max_time: 0.2 Cop_backoff_rpcPD_max_addr: 127.0.0.1 Cop_backoff_rpcPD_avg_time: 0.2 Cop_backoff_rpcPD_p90_time: 0.2
+# Cop_backoff_rpcTiKV_total_times: 200 Cop_backoff_rpcTiKV_total_time: 0.2 Cop_backoff_rpcTiKV_max_time: 0.2 Cop_backoff_rpcTiKV_max_addr: 127.0.0.1 Cop_backoff_rpcTiKV_avg_time: 0.2 Cop_backoff_rpcTiKV_p90_time: 0.2
 # Mem_max: 525211
 # Succ: true
 # Plan: tidb_decode_plan('ZJAwCTMyXzcJMAkyMAlkYXRhOlRhYmxlU2Nhbl82CjEJMTBfNgkxAR0AdAEY1Dp0LCByYW5nZTpbLWluZiwraW5mXSwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCg==')
@@ -65,7 +70,7 @@ Slow Query 基础信息：
 
 和内存使用相关的字段：
 
-* `Memory_max`：表示执行期间 TiDB 使用的最大内存空间，单位为 byte。
+* `Mem_max`：表示执行期间 TiDB 使用的最大内存空间，单位为 byte。
 
 和 SQL 执行的用户相关的字段：
 
@@ -88,6 +93,12 @@ Slow Query 基础信息：
 * `Cop_wait_p90`：cop-task 的 P90 分位等待时间。
 * `Cop_wait_max`：cop-task 的最大等待时间。
 * `Cop_wait_addr`：等待时间最长的 cop-task 所在地址。
+* `Cop_backoff_{backoff-type}_total_times`：因某种错误造成的 backoff 总次数。
+* `Cop_backoff_{backoff-type}_total_time`：因某种错误造成的 backoff 总时间。
+* `Cop_backoff_{backoff-type}_max_time`：因某种错误造成的最大 backoff 时间。
+* `Cop_backoff_{backoff-type}_max_addr`：因某种错误造成的最大 backoff 时间的 cop-task 地址。
+* `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
+* `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
 
 ## 慢日志内存映射表
 
@@ -97,7 +108,57 @@ Slow Query 基础信息：
 >
 > 每次查询 `SLOW_QUERY` 表时，TiDB 都会去读取和解析一次当前的慢查询日志。
 
-## 查询 `SLOW_QUERY` 示例
+TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢日志，即支持查询已经被 rotate 的慢日志文件的数据。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢日志文件。如果查询不指定时间范围，则仍然只解析当前的慢日志文件，示例如下：
+
+不指定时间范围时，只会解析当前 TiDB 正在写入的慢日志文件的慢查询数据：
+
+{{< copyable "sql" >}}
+
+```sql
+select count(*),
+       min(time),
+       max(time)
+from slow_query;
+```
+
+```
++----------+----------------------------+----------------------------+
+| count(*) | min(time)                  | max(time)                  |
++----------+----------------------------+----------------------------+
+| 122492   | 2020-03-11 23:35:20.908574 | 2020-03-25 19:16:38.229035 |
++----------+----------------------------+----------------------------+
+```
+
+指定查询 `2020-03-10 00:00:00` 到 `2020-03-11 00:00:00` 时间范围后，会定位指定时间范围内的慢日志文件后解析慢查询数据：
+
+{{< copyable "sql" >}}
+
+```sql
+select count(*),
+       min(time),
+       max(time)
+from slow_query
+where time > '2020-03-10 00:00:00'
+  and time < '2020-03-11 00:00:00';
+```
+
+```
++----------+----------------------------+----------------------------+
+| count(*) | min(time)                  | max(time)                  |
++----------+----------------------------+----------------------------+
+| 2618049  | 2020-03-10 00:00:00.427138 | 2020-03-10 23:00:22.716728 |
++----------+----------------------------+----------------------------+
+```
+
+> **注意：**
+>
+> 如果指定时间范围内的慢日志文件被删除，或者并没有慢查询，则查询结果会返回空。
+
+TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/reference/system-databases/information-schema.md#cluster_slow_query-表) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/reference/system-databases/information-schema.md#slow_query-表) 系统表一样。
+
+关于查询 `CLUSTER_SLOW_QUERY` 表，TiDB 会把相关的计算和判断下推到其他节点执行，而不是把其他节点的慢查询数据都取回来在一台 TiDB 上执行。
+
+## 查询 `SLOW_QUERY` / `CLUSTER_SLOW_QUERY` 示例
 
 ### 搜索 Top N 的慢查询
 
@@ -219,6 +280,140 @@ where is_internal = false
 | select * from t1 where a>3; | 0.50077719  | t1:pseudo                       |
 | select * from t1 join t2;   | 0.931260518 | t1:407872303825682445,t2:pseudo |
 +-----------------------------+-------------+---------------------------------+
+```
+
+### 查询执行计划发生变化的慢查询
+
+由于统计信息过时，或者统计信息因为误差无法精确反映数据的真实分布情况时，可能导致同类型 SQL 的执行计划发生改变导致执行变慢，可以用以下 SQL 查询哪些 SQL 具有不同的执行计划：
+
+{{< copyable "sql" >}}
+
+```sql
+select count(distinct plan_digest) as count,
+       digest,
+       min(query)
+from cluster_slow_query
+group by digest
+having count > 1
+limit 3\G
+```
+
+输出样例：
+
+```
+***************************[ 1. row ]***************************
+count      | 2
+digest     | 17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94
+min(query) | SELECT DISTINCT c FROM sbtest25 WHERE id BETWEEN ? AND ? ORDER BY c [arguments: (291638, 291737)];
+***************************[ 2. row ]***************************
+count      | 2
+digest     | 9337865f3e2ee71c1c2e740e773b6dd85f23ad00f8fa1f11a795e62e15fc9b23
+min(query) | SELECT DISTINCT c FROM sbtest22 WHERE id BETWEEN ? AND ? ORDER BY c [arguments: (215420, 215519)];
+***************************[ 3. row ]***************************
+count      | 2
+digest     | db705c89ca2dfc1d39d10e0f30f285cbbadec7e24da4f15af461b148d8ffb020
+min(query) | SELECT DISTINCT c FROM sbtest11 WHERE id BETWEEN ? AND ? ORDER BY c [arguments: (303359, 303458)];
+```
+
+然后可以用查询结果中的 SQL 指纹进一步查询不同的 plan
+
+{{< copyable "sql" >}}
+
+```sql
+select min(plan),
+       plan_digest
+from cluster_slow_query
+where digest='17b4518fde82e32021877878bec2bb309619d384fca944106fcaf9c93b536e94'
+group by plan_digest\G
+```
+
+输出样例：
+
+```
+*************************** 1. row ***************************
+  min(plan):    Sort_6                  root    100.00131380758702      sbtest.sbtest25.c:asc
+        └─HashAgg_10            root    100.00131380758702      group by:sbtest.sbtest25.c, funcs:firstrow(sbtest.sbtest25.c)->sbtest.sbtest25.c
+          └─TableReader_15      root    100.00131380758702      data:TableRangeScan_14
+            └─TableScan_14      cop     100.00131380758702      table:sbtest25, range:[502791,502890], keep order:false
+plan_digest: 6afbbd21f60ca6c6fdf3d3cd94f7c7a49dd93c00fcf8774646da492e50e204ee
+*************************** 2. row ***************************
+  min(plan):    Sort_6                  root    1                       sbtest.sbtest25.c:asc
+        └─HashAgg_12            root    1                       group by:sbtest.sbtest25.c, funcs:firstrow(sbtest.sbtest25.c)->sbtest.sbtest25.c
+          └─TableReader_13      root    1                       data:HashAgg_8
+            └─HashAgg_8         cop     1                       group by:sbtest.sbtest25.c,
+              └─TableScan_11    cop     1.2440069558121831      table:sbtest25, range:[472745,472844], keep order:false
+```
+
+### 查询集群各个 TIDB 节点的慢查询数量
+
+{{< copyable "sql" >}}
+
+```sql
+select instance, count(*) from information_schema.cluster_slow_query where time >= "2020-03-06 00:00:00" and time < now() group by instance;
+```
+
+输出样例：
+
+```
++---------------+----------+
+| instance      | count(*) |
++---------------+----------+
+| 0.0.0.0:10081 | 124      |
+| 0.0.0.0:10080 | 119771   |
++---------------+----------+
+```
+
+### 查询仅出现在异常时间段的慢日志
+
+假如发现 `2020-03-10 13:24:00` ~ `2020-03-10 13:27:00` 的 QPS 降低或者延迟上升等问题，可能是由于突然出现大查询导致的，可以用下面 SQL 查询仅出现在异常时间段的慢日志，其中 `2020-03-10 13:20:00` ~ `2020-03-10 13:23:00` 为正常时间段。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM
+    (SELECT /*+ AGG_TO_COP(), HASH_AGG() */ count(*),
+         min(time),
+         sum(query_time) AS sum_query_time,
+         sum(Process_time) AS sum_process_time,
+         sum(Wait_time) AS sum_wait_time,
+         sum(Commit_time),
+         sum(Request_count),
+         sum(process_keys),
+         sum(Write_keys),
+         max(Cop_proc_max),
+         min(query),min(prev_stmt),
+         digest
+    FROM information_schema.CLUSTER_SLOW_QUERY
+    WHERE time >= '2020-03-10 13:24:00'
+            AND time < '2020-03-10 13:27:00'
+            AND Is_internal = false
+    GROUP BY  digest) AS t1
+WHERE t1.digest NOT IN
+    (SELECT /*+ AGG_TO_COP(), HASH_AGG() */ digest
+    FROM information_schema.CLUSTER_SLOW_QUERY
+    WHERE time >= '2020-03-10 13:20:00'
+            AND time < '2020-03-10 13:23:00'
+    GROUP BY  digest)
+ORDER BY  t1.sum_query_time DESC limit 10\G
+```
+
+输出样例：
+
+```
+***************************[ 1. row ]***************************
+count(*)           | 200
+min(time)          | 2020-03-10 13:24:27.216186
+sum_query_time     | 50.114126194
+sum_process_time   | 268.351
+sum_wait_time      | 8.476
+sum(Commit_time)   | 1.044304306
+sum(Request_count) | 6077
+sum(process_keys)  | 202871950
+sum(Write_keys)    | 319500
+max(Cop_proc_max)  | 0.263
+min(query)         | delete from test.tcs2 limit 5000;
+min(prev_stmt)     |
+digest             | 24bd6d8a9b238086c9b8c3d240ad4ef32f79ce94cf5a468c0b8fe1eb5f8d03df
 ```
 
 ## 解析其他的 TiDB 慢日志文件

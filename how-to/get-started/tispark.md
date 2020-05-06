@@ -11,7 +11,13 @@ category: how-to
 
 - Spark 默认部署在 TiDB 实例部署目录下 spark 目录中
 - TiSpark jar 包默认部署在 Spark 部署目录 jars 文件夹下：`spark/jars/tispark-${name_with_version}.jar`
-- TiSpark sample data 及导入脚本默认部署在 TiDB Ansible 目录下：`tidb-ansible/resources/bin/tispark-sample-data`
+- TiSpark 示例数据和导入脚本可点击 [TiSpark 示例数据](http://download.pingcap.org/tispark-sample-data.tar.gz)下载。
+
+   {{< copyable "" >}}
+
+   ```
+   tispark-sample-data/
+   ```
 
 ## 环境准备
 
@@ -47,7 +53,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd tidb-ansible/resources/bin/tispark-sample-data
+wget http://download.pingcap.org/tispark-sample-data.tar.gz && \
+tar -zxvf tispark-sample-data.tar.gz && \
+cd tispark-sample-data
 ```
 
 修改 `sample_data.sh` 中 TiDB 登录信息，比如：

@@ -257,10 +257,10 @@ mysql> desc select count(distinct a) from test.t;
 
 作用域：SESSION
 
-默认值：32 GB
+默认值：1 GB
 
 这个变量用来设置一条查询语句的内存使用阈值。
-如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/reference/configuration/tidb-server/configuration-file.md#mem-quota-query) 配置。
 
 ### tidb_mem_quota_hashjoin
 
@@ -378,11 +378,15 @@ mysql> desc select count(distinct a) from test.t;
 
 ### tidb_enable_table_partition
 
-作用域：SESSION
+作用域：SESSION | GLOBAL
 
-默认值："auto"
+默认值："on"
 
-这个变量用来设置是否开启 TABLE PARTITION 特性。默认值 `auto` 表示开启 range partition 和 hash partion。`off` 表示关闭 TABLE PARTITION 的特性，此时语法还是会依旧兼容，只是建立的 partition table 实际上并不是真正的 partition table，而是和普通的 table 一样。`on` 表示开启，目前的作用和 `auto` 一样。
+这个变量用来设置是否开启 TABLE PARTITION 特性。目前变量支持以下三种值：
+
+- 默认值 `on` 表示开启 TiDB 当前已实现了的分区表类型，目前 range partition、hash partition 以及 range column 单列的场景会生效。
+- `auto` 目前作用和 `on` 一样。
+- `off` 表示关闭 TABLE PARTITION 的特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
 注意，目前 TiDB 只支持 range partition 和 hash partition。
 
@@ -398,7 +402,7 @@ mysql> desc select count(distinct a) from test.t;
 
 作用域：GLOBAL
 
-默认值：16
+默认值：4
 
 这个变量用来设置 DDL 操作 re-organize 阶段的并发度。
 
@@ -406,7 +410,7 @@ mysql> desc select count(distinct a) from test.t;
 
 作用域：GLOBAL
 
-默认值：1024
+默认值：256
 
 这个变量用来设置 DDL 操作 re-organize 阶段的 batch size。比如 Add Index 操作，需要回填索引数据，通过并发 tidb_ddl_reorg_worker_cnt 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。如果 Add Index 时有较多 Update 操作或者 Replace 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。在没有事务冲突的情况下，batch size 可设为较大值，最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
 
@@ -467,6 +471,18 @@ mysql> desc select count(distinct a) from test.t;
 - `CREATE TABLE`：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
 - `ALTER TABLE`：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
 
+### tidb_row_format_version
+
+作用域：GLOBAL
+
+默认值：2
+
+控制新保存数据的表数据格式版本。TiDB v4.0 中默认使用版本号为 2 的[新表数据格式](https://github.com/pingcap/tidb/blob/master/docs/design/2018-07-19-row-format.md)保存新数据。
+
+但如果从 4.0.0 之前的版本升级到 4.0.0，不会改变表数据格式版本，TiDB 会继续使用版本为 1 的旧格式写入表中，即**只有新创建的集群才会默认使用新表数据格式**。
+
+需要注意的是修改该变量不会对已保存的老数据产生影响，只会对修改变量后的新写入数据使用对应版本格式保存。
+
 ### tidb_slow_log_threshold
 
 作用域：SESSION
@@ -487,7 +503,7 @@ set tidb_slow_log_threshold = 200;
 
 作用域：SESSION
 
-默认值：2048 (bytes)
+默认值：4096 (bytes)
 
 最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
 
@@ -703,3 +719,11 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statements_summary_by_digest` 中，用于定位和排查 SQL 性能问题。
+
+### tidb_enable_chunk_rpc <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值：1
+
+这个变量用来设置是否启用 Coprocessor 的 `Chunk` 数据编码格式。

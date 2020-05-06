@@ -46,13 +46,13 @@ category: how-to
 
 > **注意：**
 >
-> 如果你的系统已安装 pip，请确认版本 >= 8.1.2，否则离线安装 ansible 及其依赖时，会有兼容问题。
+> 如果你的系统已安装 pip，请确认版本 >= 8.1.2，否则离线安装 TiDB Ansible 及其依赖时，会有兼容问题。
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
 参考[在中控机上创建 tidb 用户，并生成 ssh key](/how-to/deploy/orchestrated/ansible.md#第-2-步在中控机上创建-tidb-用户并生成-ssh-key) 即可。
 
-## 在中控机器上离线安装 Ansible 及其依赖
+## 在中控机器上离线安装 TiDB Ansible 及其依赖
 
 以下是 CentOS 7 系统 Ansible 离线安装方式：
 
@@ -60,7 +60,7 @@ category: how-to
 
 1. 在下载机上下载 [Ansible 2.5 离线安装包](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz)，然后上传至中控机。
 
-2. 离线安装 Ansible 及相关依赖：
+2. 离线安装 TiDB Ansible 及相关依赖：
 
     {{< copyable "shell-root" >}}
 
@@ -85,9 +85,9 @@ category: how-to
 
 ## 在下载机上下载 TiDB Ansible 及 TiDB 安装包
 
-1. 在下载机上安装 Ansible：
+1. 在下载机上安装 TiDB Ansible：
 
-    请按以下方式在 CentOS 7 系统的下载机上在线安装 Ansible。安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.5.0** 版本，否则会有兼容问题。
+    请按以下方式在 CentOS 7 系统的下载机上在线安装 TiDB Ansible。安装完成后，可通过 `ansible --version` 查看版本，请务必确认是 **Ansible 2.5.0** 版本，否则会有兼容问题。
 
     {{< copyable "shell-root" >}}
 

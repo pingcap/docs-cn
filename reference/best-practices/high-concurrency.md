@@ -124,7 +124,7 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)]
 
 ![Table Region Range](/media/best-practices/table-Region-range.png)
 
-从上图可知，根据行数据 key 的编码规则，行 ID (rowID) 是行数据中唯一可变的部分。在 TiDB 中，rowID 是一个 Int64 整形。但是用户不一定能将 Int64 整形范围均匀切分成需要的份数，然后均匀分布在不同的节点上，还需要结合实际情况。
+从上图可知，根据行数据 key 的编码规则，行 ID (rowID) 是行数据中唯一可变的部分。在 TiDB 中，rowID 是一个 Int64 整型。但是用户不一定能将 Int64 整型范围均匀切分成需要的份数，然后均匀分布在不同的节点上，还需要结合实际情况。
 
 如果行 ID 的写入是完全离散的，那么上述方式是可行的。如果行 ID 或者索引有固定的范围或者前缀（例如，只在 `[2000w, 5000w)` 的范围内离散插入数据），这种写入依然在业务上不产生热点，但是如果按上面的方式进行切分，那么有可能一开始数据仍只写入到某个 Region 上。
 
@@ -170,7 +170,9 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 ### 更复杂的热点问题
 
-如果表没有主键或者主键不是 Int 类型，而且用户也不想自己生成一个随机分布的主键 ID 的话，TiDB 内部有一个隐式的 `_tidb_rowid` 列作为行 ID。在不使用 `SHARD_ROW_ID_BITS` 的情况下，`_tidb_rowid` 列的值基本也为单调递增，此时也会有写热点存在（参阅 [`SHARD_ROW_ID_BITS` 的详细说明](/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)）。
+**问题一：**
+
+如果表没有主键或者主键不是整数类型，而且用户也不想自己生成一个随机分布的主键 ID 的话，TiDB 内部有一个隐式的 `_tidb_rowid` 列作为行 ID。在不使用 `SHARD_ROW_ID_BITS` 的情况下，`_tidb_rowid` 列的值基本也为单调递增，此时也会有写热点存在（参阅 [`SHARD_ROW_ID_BITS` 的详细说明](/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)）。
 
 要避免由 `_tidb_rowid` 带来的写入热点问题，可以在建表时，使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 这两个建表选项（参阅 [`PRE_SPLIT_REGIONS` 的详细说明](/reference/sql/statements/split-region.md#pre_split_regions)）。
 
@@ -185,13 +187,19 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=·3;
+create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=3;
 ```
 
 - `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 （16=2^4） 个范围区间。
 - `pre_split_regions=3` 表示建完表后提前切分出 8 (2^3) 个 Region。
 
 开始写数据进表 t 后，数据会被写入提前切分好的 8 个 Region 中，这样也避免了刚开始建表完后因为只有一个 Region 而存在的写热点问题。
+
+**问题二：**
+
+如果表的主键为整数类型，并且该表使用了 `AUTO_INCREMENT` 来保证主键唯一性（不需要连续或递增）的表而言，由于 TiDB 直接使用主键行值作为 `_tidb_rowid`，此时无法使用 `SHARD_ROW_ID_BITS` 来打散热点。
+
+要解决上述热点问题，可以利用 `AUTO_RANDOM` 列属性（参阅 [`AUTO_RANDOM` 的详细说明](/reference/sql/attributes/auto-random.md)），将 `AUTO_INCREMENT` 改为 `AUTO_RANDOM`，插入数据时让 TiDB 自动为整型主键列分配一个值，消除行 ID 的连续性，从而达到打散热点的目的。
 
 ## 参数配置
 

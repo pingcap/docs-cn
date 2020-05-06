@@ -8,9 +8,9 @@ aliases: ['/docs-cn/dev/how-to/upgrade/tidb-binlog/','/docs-cn/dev/reference/too
 
 如未特别指明，文中出现的 TiDB Binlog 均指最新的 [Cluster](/reference/tidb-binlog/overview.md) 版本。
 
-本文会分 Ansible 部署和手动部署两种情况介绍 TiDB Binlog 版本升级的方法，另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
+本文会分 TiDB Ansible 部署和手动部署两种情况介绍 TiDB Binlog 版本升级的方法，另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
 
-## Ansible 部署
+## TiDB Ansible 部署
 
 本节适用于使用 [TiDB Ansible Playbook](https://github.com/pingcap/tidb-ansible) 部署的情况。
 

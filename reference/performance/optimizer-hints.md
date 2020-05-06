@@ -65,19 +65,19 @@ select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
 ```
 
-### SM_JOIN(t1_name [, tl_name ...])
+### MERGE_JOIN(t1_name [, tl_name ...])
 
-`SM_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Sort Merge Join 算法。这个算法通常会占用更少的内存，但执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。例如：
+`MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Sort Merge Join 算法。这个算法通常会占用更少的内存，但执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。例如：
 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
+select /*+ MERGE_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 ```
 
 > **注意：**
 >
-> `SM_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
+> `MERGE_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
 
 ### INL_JOIN(t1_name [, tl_name ...])
 
@@ -191,6 +191,38 @@ select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 wher
 select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
 ```
 
+> **注意：**
+>
+> `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
+
+### NO_INDEX_MERGE()
+
+`NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
+
+下面的例子不会使用 index merge：
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
+```
+
+除了 Hint 外，环境变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
+
+### USE_TOJA(boolean_value)
+
+参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
+
+下面的例子会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
+```
+
+除了 Hint 外，环境变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。
+
 ## 运行参数相关 Hint 语法
 
 运行参数相关的 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，对当前的这条查询的相关运行参数进行修改。
@@ -239,30 +271,16 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
 
-### NO_INDEX_MERGE()
+### IGNORE_PLAN_CACHE()
 
-`NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
+`IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
 
-下面的例子不会使用 index merge：
+该 Hint 用于在 [prepare-plan-cache](/reference/configuration/tidb-server/configuration-file.md#prepared-plan-cache) 开启的场景下临时禁用 plan cache。
 
-{{< copyable "sql" >}}
-
-```sql
-select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
-```
-
-除了 Hint 外，环境变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
-
-### USE_TOJA(boolean_value)
-
-参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
-
-下面的例子会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
+以下示例强制 `prepare` 语句不使用 plan cache：
 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
+prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id = ?';
 ```
-
-除了 Hint 外，环境变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。

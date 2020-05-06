@@ -85,11 +85,7 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 mem
 
 在 TiDB 中用户名最长为 32 字符。
 
-#### 1.1.18 一个事务中的语句数量最大是多少？
-
-一个事务中的语句数量，默认限制最大为 5000 条。
-
-#### 1.1.19 TiDB 是否支持 XA？
+#### 1.1.18 TiDB 是否支持 XA？
 
 虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC（Connector / J），但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
 
@@ -97,7 +93,7 @@ Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然�
 
 MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
 
-#### 1.1.20 show processlist 是否显示系统进程号？
+#### 1.1.19 show processlist 是否显示系统进程号？
 
 TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
@@ -105,17 +101,21 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 
 2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
 
-#### 1.1.21 如何修改用户名密码和权限？
+#### 1.1.20 如何修改用户名密码和权限？
 
 TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 方法，不推荐使用 `update mysql.user` 的方法进行，这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，都建议采用官方的标准语法。详情可参考 [TiDB 用户账户管理](/reference/security/user-account-management.md)。
 
-#### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
+#### 1.1.21 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
 TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/reference/mysql-compatibility.md#自增-id)。
 
-#### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
+#### 1.1.22 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
 
 TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不支持配置文件配置设置数据库的 sql\_mode，而只能使用 set 命令去设置，具体方法为：`set @@global.sql_mode = 'STRICT_TRANS_TABLES';`。
+
+#### 1.1.23 我们的安全漏洞扫描工具对 MySQL version 有要求，TiDB 是否支持修改 server 版本号呢？
+
+TiDB 在 v3.0.8 后支持修改 server 版本号，可以通过配置文件中的 [`server-version`](/reference/configuration/tidb-server/configuration-file.md#server-version) 配置项进行修改。在使用 TiDB Ansible 部署集群时，同样可以通过 `conf/tidb.yml` 配置文件中的 `server-version` 来设置合适的版本号，以避免出现安全漏洞扫描不通过的问题。
 
 #### 1.1.24 TiDB 支持哪些认证协议，过程是怎样的？
 
@@ -208,9 +208,9 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### 2.2 安装部署
 
-#### 2.2.1 Ansible 部署方式（强烈推荐）
+#### 2.2.1 推荐部署方式
 
-详细可参考[使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
+[使用 TiUP 部署](/how-to/deploy/orchestrated/tiup.md)：如果用于生产环境，推荐使用 TiUP 部署 TiDB 集群。
 
 ##### 2.2.1.1 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
@@ -250,7 +250,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
-#### 2.2.2 TiDB 离线 Ansible 部署方案
+#### 2.2.2 TiDB 离线 Ansible 部署方案（4.0 版本后不推荐使用）
 
 首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[离线 TiDB Ansible 部署方案](/how-to/deploy/orchestrated/offline-ansible.md)。
 
@@ -309,7 +309,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 ### 2.3 升级
 
-#### 2.3.1 如何使用 Ansible 滚动升级？
+#### 2.3.1 如何使用 TiDB Ansible 滚动升级？
 
 滚动升级 TiKV 节点( 只升级单独服务 )
 
@@ -325,7 +325,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### 2.3.3 Binary 如何升级？
 
-Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 Ansible 部署。
+Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 TiDB Ansible 部署。
 
 #### 2.3.4 一般升级选择升级 TiKV 还是所有组件都升级？
 
@@ -378,7 +378,7 @@ Binary 不是我们建议的安装方式，对升级支持也不友好，建议�
 
 #### 3.1.7 如何规范停止 TiDB？
 
-如果是用 Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
+如果是用 TiDB Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 TiDB Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
 
 #### 3.1.8 TiDB 里面可以执行 kill 命令吗？
 
@@ -401,7 +401,7 @@ TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log�
 
 #### 3.1.11 分不清 TiDB master 版本之间的区别，经常用错 TiDB Ansible 版本?
 
-TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐使用 TiDB Ansible 进行安装，TiDB Ansible 的版本也会随着 TiDB 的版本发布进行更新，因此建议用户在安装升级新版本的时候使用最新的 TiDB Ansible 安装包版本进行安装。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
+TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/how-to/deploy/orchestrated/tiup.md)。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
 
 - 通过 `select tidb_version()` 进行查看
 - 通过执行 `tidb-server -V` 进行查看
@@ -659,7 +659,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 3.4.15 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/dev/benchmark/sysbench-v4.md)。
+一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](/benchmark/sysbench-v4.md)。
 
 #### 3.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
@@ -701,7 +701,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
-- 大家可以直接参考 [TiDB Sysbench 性能测试报告](https://github.com/pingcap/docs-cn/blob/master/dev/benchmark/sysbench-v4.md)。
+- 大家可以直接参考 [TiDB Sysbench 性能测试报告](/benchmark/sysbench-v4.md)。
 
 #### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
@@ -842,11 +842,9 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 #### 4.3.3 Transaction too large 是什么原因，怎么解决？
 
-由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
+TiDB 限制了单条 KV entry 不超过 6MB。
 
-- 单个事务包含的 SQL 语句不超过 5000 条（默认）
-- 单条 KV entry 不超过 6MB
-- KV entry 的总大小不超过 100MB
+分布式事务要做两阶段提交，而且底层还需要做 Raft 复制。如果一个事务非常大，提交过程会非常慢，事务写冲突概率会增加，而且事务失败后回滚会导致不必要的性能开销。所以我们设置了 key-value entry 的总大小默认不超过 100MB。如果业务需要使用大事务，可以修改配置文件中的 `txn-total-size-limit` 配置项进行调整，最大可以修改到 10G。实际的大小限制还受机器的物理内存影响。
 
 在 Google 的 Cloud Spanner 上面，也有类似的[限制](https://cloud.google.com/spanner/docs/limits)。
 

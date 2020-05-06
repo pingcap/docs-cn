@@ -66,11 +66,15 @@ error_files=$(cat $ERROR_REPORT | grep 'FILE: ' | wc -l)
 error_output=$(cat $ERROR_REPORT)
 echo ""
 if [ "$error_files" -gt 0 ]; then
-    echo "error: $error_files files have invalid links (or alias links which are recommended to be replaced with latest one), please fix them!"
+    echo "Link error: $error_files files have invalid links. The faulty files are listed below, please fix the wrong links!"
+    echo ""
+    echo "=== Hint on how to fix links === "
+    echo "Links in TiDB documentation follow a style like '/reference/tidb-binlog/deploy.md#服务器要求'. That is, you need to make sure that:"
+    echo "1) Links start with a slash; 2) Anchor links are written in a '/dir/xxx.md#anchor-point' style; 3) Links don't start with a version, e.g. '/v3.0/...' is wrong and '/v3.0' should be removed."
     echo ""
     echo "=== ERROR REPORT == ":
     echo "$error_output"
     exit 1
 else
-    echo "info: all files are ok!"
+    echo "Link check report: All files are ok. No deadlink found!"
 fi

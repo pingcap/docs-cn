@@ -80,6 +80,11 @@ category: reference
 + 默认："/tmp/tidb"
 + 可以通过 `tidb-server --store=mocktikv --path=""` 来启动一个纯内存引擎的 TiDB
 
+## `--tmp-storage-path`
+
++ TiDB 临时磁盘存储位置。
++ 默认：`<操作系统临时文件夹>/tidb/tmp-storage`
+
 ## `--proxy-protocol-networks`
 
 + PROXY Protocol 允许的代理服务器地址列表。如需配置多个地址，用 `,` 分隔。

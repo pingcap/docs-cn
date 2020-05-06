@@ -72,6 +72,7 @@ Query OK, 0 rows affected (0.08 sec)
 - ASC (R)
 - ASCII
 - AUTO_INCREMENT
+- AUTO_RANDOM
 - AVG
 - AVG_ROW_LENGTH
 

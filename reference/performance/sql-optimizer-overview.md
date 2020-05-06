@@ -18,6 +18,7 @@ category: reference
 - 谓词下推
 - 分区裁剪
 - TopN 和 Limit 下推
+- [Join Reorder](/reference/performance/join-reorder.md)
 
 ## 物理优化简介
 

@@ -259,8 +259,8 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 - 创建过大量 Table 后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
 
-    - TiKV: `split-region-on-table` 设为 false
-    - PD: `namespace-classifier` 设为 “”
+    - TiKV: `split-region-on-table` 设为 `false`，该参数不支持动态修改
+    - PD: `key-type` 设为 `"txn"` 或者 `"raw"`，该参数支持动态修改
 
 - 对于 3.0.4 和 2.1.16 以前的版本，Region 中 Key 的个数（`approximate_keys`）在特定情况下（大部分发生在删表之后）统计不准确，造成 keys 的统计值很大，无法满足 `max-merge-region-keys` 的约束。你可以通过调大 `max-merge-region-keys` 来避免这个问题。
 

@@ -15,12 +15,12 @@ TiDB 的基于角色的访问控制 (RBAC) 系统的实现类似于 MySQL 8.0 �
 
 ### 创建角色
 
-创建角色 r_1 和 r_2：
+创建角色 app_developer，app_read 和 app_write：
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE ROLE `r_1`@`%`, `r_2`@`%`;
+CREATE ROLE 'app_developer', 'app_read', 'app_write';
 ```
 
 角色名的格式和规范可以参考 [TiDB 用户账户管理](/reference/security/user-account-management.md)。
@@ -28,59 +28,56 @@ CREATE ROLE `r_1`@`%`, `r_2`@`%`;
 角色会被保存在 `mysql.user` 表中，如果表中有同名角色或用户，角色会创建失败并报错。
 创建角色的用户需要拥有 `CREATE ROLE` 或 `CREATE USER` 权限。
 
-### 删除角色
-
-删除角色 r_1 和 r_2：
-
-{{< copyable "sql" >}}
-
-```sql
-DROP ROLE `r_1`@`%`, `r_2`@`%`;
-```
-
-这个操作会清除角色在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录，解除和其相关的授权关系。
-执行删除角色的用户需要拥有 `DROP ROLE` 或 `DROP USER` 权限。
-
 ### 授予角色权限
 
 为角色授予权限和为用户授予权限操作相同，可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
 
-为 `analyst` 角色授予数据库 `test` 的读权限：
+为 `app_read` 角色授予数据库 `app_db` 的读权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT SELECT ON test.* TO 'analyst'@'%';
+GRANT SELECT ON app_db.* TO 'app_read'@'%';
 ```
 
-为 `analyst` 角色授予所有数据库的全部权限：
+为 `app_write` 角色授予数据库 `app_db` 的写权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT ALL PRIVILEGES ON *.* TO 'analyst'@'%';
+GRANT INSERT, UPDATE, DELETE ON app_db.* TO 'app_write'@'%';
 ```
 
-### 收回权限
-
-`REVOKE` 语句与 `GRANT` 对应：
+为 `app_developer` 角色授予 `app_db` 数据库的全部权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-REVOKE ALL PRIVILEGES ON `test`.* FROM 'analyst'@'%';
+GRANT ALL ON app_db.* TO 'app_developer';
 ```
-
-具体可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
 
 ### 将角色授予给用户
 
-将角色 role1 和 role2 同时授予给用户 `user1@localhost` 和 `user2@localhost`。
+假设有一个用户拥有开发者角色，可以对 `app_db` 的所有操作权限；另外有两个用户拥有 `app_db` 的只读权限；还有一个用户拥有 `app_db` 的读写权限。
+首先用 `CREATE USER` 来创建用户。
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT 'role1', 'role2' TO 'user1'@'localhost', 'user2'@'localhost';
+CREATE USER 'dev1'@'localhost' IDENTIFIED BY 'dev1pass';
+CREATE USER 'read_user1'@'localhost' IDENTIFIED BY 'read_user1pass';
+CREATE USER 'read_user2'@'localhost' IDENTIFIED BY 'read_user2pass';
+CREATE USER 'rw_user1'@'localhost' IDENTIFIED BY 'rw_user1pass';
+```
+
+然后使用 `GRANT` 授予用户对应的角色。
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT 'app_developer' TO 'dev1'@'localhost';
+GRANT 'app_read' TO 'read_user1'@'localhost', 'read_user2'@'localhost';
+GRANT 'app_read', 'app_write' TO 'rw_user1'@'localhost';
 ```
 
 用户执行将角色授予给其他用户或者收回角色的命令，需要用户拥有 `SUPER` 权限。
@@ -101,17 +98,78 @@ GRANT 'u2' TO 'r2';
 
 TiDB 允许这种多层授权关系存在，可以使用多层授权关系实现权限继承。
 
-### 收回角色
+### 查看角色拥有的权限
 
-解除角色 role1、role2 与用户 `user1@localhost`、`user2@localhost` 的授权关系。
+可以通过 `SHOW GRANTS` 语句查看用户被授予了哪些角色。
+当用户查看其他用户权限相关信息时，需要对 `mysql` 数据库拥有 `SELECT` 权限。
 
 {{< copyable "sql" >}}
 
 ```sql
-REVOKE 'role1', 'role2' FROM 'user1'@'localhost', 'user2'@'localhost';
+SHOW GRANTS FOR 'dev1'@'localhost';
 ```
 
-解除角色授权具有原子性，如果在撤销授权操作中失败会回滚。
+```
++-------------------------------------------------+
+| Grants for dev1@localhost                       |
++-------------------------------------------------+
+| GRANT USAGE ON *.* TO `dev1`@`localhost`        |
+| GRANT `app_developer`@`%` TO `dev1`@`localhost` |
++-------------------------------------------------+
+```
+
+可以通过使用 `SHOW GRANTS` 的 `USING` 选项来查看角色对应的权限。
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR 'dev1'@'localhost' USING 'app_developer';
+```
+
+```
++----------------------------------------------------------+
+| Grants for dev1@localhost                                |
++----------------------------------------------------------+
+| GRANT USAGE ON *.* TO `dev1`@`localhost`                 |
+| GRANT ALL PRIVILEGES ON `app_db`.* TO `dev1`@`localhost` |
+| GRANT `app_developer`@`%` TO `dev1`@`localhost`          |
++----------------------------------------------------------+
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR 'rw_user1'@'localhost' USING 'app_read', 'app_write';
+```
+
+```
++------------------------------------------------------------------------------+
+| Grants for rw_user1@localhost                                                |
++------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `rw_user1`@`localhost`                                 |
+| GRANT SELECT, INSERT, UPDATE, DELETE ON `app_db`.* TO `rw_user1`@`localhost` |
+| GRANT `app_read`@`%`,`app_write`@`%` TO `rw_user1`@`localhost`               |
++------------------------------------------------------------------------------+
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR 'read_user1'@'localhost' USING 'app_read';
+```
+
+```
++--------------------------------------------------------+
+| Grants for read_user1@localhost                        |
++--------------------------------------------------------+
+| GRANT USAGE ON *.* TO `read_user1`@`localhost`         |
+| GRANT SELECT ON `app_db`.* TO `read_user1`@`localhost` |
+| GRANT `app_read`@`%` TO `read_user1`@`localhost`       |
++--------------------------------------------------------+
+```
+
+可以使用 `SHOW GRANTS` 或 `SHOW GRANTS FOR CURRENT_USER()` 查看当前用户的权限。
+这两个语句有细微的差异，`SHOW GRANTS` 会显示当前用户的启用角色的权限，而 `SHOW GRANTS FOR CURRENT_USER()` 则不会显示启用角色的权限。
 
 ### 设置默认启用角色
 
@@ -127,28 +185,28 @@ SET DEFAULT ROLE
     TO user [, user ]
 ```
 
-比如将 administrator 和 developer 设置为 `test@localhost` 的默认启用角色：
+比如将 `app_read` 和 `app_wirte` 设置为 `rw_user1@localhost` 的默认启用角色：
 
 {{< copyable "sql" >}}
 
 ```sql
-SET DEFAULT ROLE administrator, developer TO 'test'@'localhost';
+SET DEFAULT ROLE app_read, app_write TO 'rw_user1'@'localhost';
 ```
 
-将 `test@localhost` 的所有角色，设为其默认启用角色：
+将 `dev1@localhost` 的所有角色，设为其默认启用角色：
 
 {{< copyable "sql" >}}
 
 ```sql
-SET DEFAULT ROLE ALL TO 'test'@'localhost';
+SET DEFAULT ROLE ALL TO 'dev1'@'localhost';
 ```
 
-关闭 `test@localhost` 的所有默认启用角色：
+关闭 `dev1@localhost` 的所有默认启用角色：
 
 {{< copyable "sql" >}}
 
 ```sql
-SET DEFAULT ROLE NONE TO 'test'@'localhost';
+SET DEFAULT ROLE NONE TO 'dev1'@'localhost';
 ```
 
 需要注意的是，设置为默认启用角色的角色必须已经授予给那个用户。
@@ -167,12 +225,12 @@ SET ROLE {
 }
 ```
 
-例如，为当前用户启用角色 role1 和 role2 ，仅在当前 session 有效：
+例如，登陆 `rw_user1` 后，为当前用户启用角色 `app_read` 和 `app_write` ，仅在当前 session 有效：
 
 {{< copyable "sql" >}}
 
 ```sql
-SET ROLE 'role1', 'role2';
+SET ROLE 'app_read', 'app_write';
 ```
 
 启用当前用户的默认角色：
@@ -199,12 +257,12 @@ SET ROLE ALL
 SET ROLE NONE
 ```
 
-启用除 role1 和 role2 外的角色：
+启用除 `app_read` 外的角色：
 
 {{< copyable "sql" >}}
 
 ```sql
-SET ROLE ALL EXCEPT 'role1', 'role2'
+SET ROLE ALL EXCEPT 'app_read'
 ```
 
 > **注意：**
@@ -215,21 +273,15 @@ SET ROLE ALL EXCEPT 'role1', 'role2'
 
 当前用户可以通过 `CURRENT_ROLE()` 函数查看当前用户启用了哪些角色。
 
-例如，先对 `u1'@'localhost` 授予角色：
+例如，先对 `rw_user1'@'localhost` 设置默认角色：
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT 'r1', 'r2' TO 'u1'@'localhost';
+SET DEFAULT ROLE ALL TO 'rw_user1'@'localhost';
 ```
 
-{{< copyable "sql" >}}
-
-```sql
-SET DEFAULT ROLE ALL TO 'u1'@'localhost';
-```
-
-在 u1 登陆后：
+用 `rw_user1@localhost` 登陆后：
 
 {{< copyable "sql" >}}
 
@@ -238,99 +290,71 @@ SELECT CURRENT_ROLE();
 ```
 
 ```
-+-------------------+
-| CURRENT_ROLE()    |
-+-------------------+
-| `r1`@`%`,`r2`@`%` |
-+-------------------+
++--------------------------------+
+| CURRENT_ROLE()                 |
++--------------------------------+
+| `app_read`@`%`,`app_write`@`%` |
++--------------------------------+
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-SET ROLE 'r1'; SELECT CURRENT_ROLE();
+SET ROLE 'app_read'; SELECT CURRENT_ROLE();
 ```
 
 ```
 +----------------+
 | CURRENT_ROLE() |
 +----------------+
-| `r1`@`%`       |
+| `app_read`@`%` |
 +----------------+
 ```
 
-### 查看角色拥有的权限
+### 收回角色
 
-可以通过 `SHOW GRANTS` 语句查看用户被授予了哪些角色。
-当用户查看其他用户权限相关信息时，需要对 `mysql` 数据库拥有 `SELECT` 权限。
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW GRANTS FOR 'u1'@'localhost';
-```
-
-```
-+---------------------------------------------+
-| Grants for u1@localhost                     |
-+---------------------------------------------+
-| GRANT USAGE ON *.* TO `u1`@`localhost`      |
-| GRANT `r1`@`%`,`r2`@`%` TO `u1`@`localhost` |
-+---------------------------------------------+
-```
-
-可以通过使用 `SHOW GRANTS` 的 `USING` 选项来查看角色对应的权限。
+解除角色 `app_read` 与用户 `read_user1@localhost`、`read_user2@localhost` 的授权关系。
 
 {{< copyable "sql" >}}
 
 ```sql
-SHOW GRANTS FOR 'u1'@'localhost' USING 'r1';
+REVOKE 'app_read' FROM 'read_user1'@'localhost', 'read_user2'@'localhost';
 ```
 
-```
-+---------------------------------------------+
-| Grants for u1@localhost                     |
-+---------------------------------------------+
-| GRANT USAGE ON *.* TO `u1`@`localhost`      |
-| GRANT Select ON `db1`.* TO `u1`@`localhost` |
-| GRANT `r1`@`%`,`r2`@`%` TO `u1`@`localhost` |
-+---------------------------------------------+
-```
+解除角色 `app_read`、`app_write` 与用户 `rw_user1@localhost` 的授权关系。
 
 {{< copyable "sql" >}}
 
 ```sql
-SHOW GRANTS FOR 'u1'@'localhost' USING 'r2';
+REVOKE 'app_read', 'app_write' FROM 'rw_user1'@'localhost';
 ```
 
-```
-+-------------------------------------------------------------+
-| Grants for u1@localhost                                     |
-+-------------------------------------------------------------+
-| GRANT USAGE ON *.* TO `u1`@`localhost`                      |
-| GRANT Insert, Update, Delete ON `db1`.* TO `u1`@`localhost` |
-| GRANT `r1`@`%`,`r2`@`%` TO `u1`@`localhost`                 |
-+-------------------------------------------------------------+
-```
+解除角色授权具有原子性，如果在撤销授权操作中失败会回滚。
+
+### 收回权限
+
+`REVOKE` 语句与 `GRANT` 对应，可以使用 `REVOKE` 来撤销 `app_write` 的权限。
 
 {{< copyable "sql" >}}
 
 ```sql
-SHOW GRANTS FOR 'u1'@'localhost' USING 'r1', 'r2';
+REVOKE INSERT, UPDATE, DELETE ON app_db.* FROM 'app_write';
 ```
 
-```
-+---------------------------------------------------------------------+
-| Grants for u1@localhost                                             |
-+---------------------------------------------------------------------+
-| GRANT USAGE ON *.* TO `u1`@`localhost`                              |
-| GRANT Select, Insert, Update, Delete ON `db1`.* TO `u1`@`localhost` |
-| GRANT `r1`@`%`,`r2`@`%` TO `u1`@`localhost`                         |
-+---------------------------------------------------------------------+
+具体可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
+
+### 删除角色
+
+删除角色 `app_read` 和 `app_write`：
+
+{{< copyable "sql" >}}
+
+```sql
+DROP ROLE 'app_read', 'app_write';
 ```
 
-可以使用 `SHOW GRANTS` 或 `SHOW GRANTS FOR CURRENT_USER()` 查看当前用户的权限。
-这两个语句有细微的差异，`SHOW GRANTS` 会显示当前用户的启用角色的权限，而 `SHOW GRANTS FOR CURRENT_USER()` 则不会显示启用角色的权限。
+这个操作会清除角色在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录，解除和其相关的授权关系。
+执行删除角色的用户需要拥有 `DROP ROLE` 或 `DROP USER` 权限。
 
 ### 授权表
 

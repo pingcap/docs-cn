@@ -10,11 +10,11 @@ category: reference
 
 ## 概述
 
-Follower Read 功能是指在强一致性读的前提下使用 Region 的 follower 副本来承载数据读取的任务，从而提升 TiDB 集群的吞吐能力并降低 leader 负载。Follower Read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。TiKV 的 Follower Read 可以保证数据读取的线性一致性，配合 TiDB Snapshot Isolation 事务隔离级别，可以为用户提供强一致的数据读取能力。
+Follower Read 功能是指在强一致性读的前提下使用 Region 的 follower 副本来承载数据读取的任务，从而提升 TiDB 集群的吞吐能力并降低 leader 负载。Follower Read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。TiKV 的 Follower Read 可以保证数据读取的一致性，配合 TiDB Snapshot Isolation 事务隔离级别，可以为用户提供强一致的数据读取能力。
 
 > **注意：**
 >
-> 为了获得强一致读取的能力，在当前的实现中，follower 节点需要额外付出 `ReadIndex` 开销，因此目前 Follower Read 的主要益处是隔离集群的读写请求以及提升整体读取吞吐。从单个请求的 latency 角度看，会比传统的 leader 读取多付出一次与 Raft `ReadIndex` 的交互开销。
+> 为了获得强一致读取的能力，在当前的实现中，follower 节点需要向 leader 节点询问当前的执行进度（即 `ReadIndex`），这会产生一次额外的网络请求开销，因此目前 Follower Read 的主要优势是处理隔离集群的读写请求以及提升整体读取吞吐。
 
 ## 使用方式
 
@@ -47,4 +47,4 @@ TiKV follower 节点处理读取请求时，首先使用 Raft `ReadIndex` 协议
 
 ### Follower 副本选择策略
 
-由于 TiKV 的 Follower Read 可以保证线性一致性，不会破坏 TiDB 的 Snapshot Isolation 事务隔离级别，因此 TiDB 选择 follower 的策略可以采用 round robin 的方式。虽然 TiKV 可以选择任意的 follower 处理任意读取请求，但考虑到多个 follower 间复制速度不同，如果负载均衡的粒度过细，可能会导致明显的 latency 波动。目前，Follower Read 负载均衡策略粒度是连接级别的，对于一个 TiDB 的客户端连接在某个具体的 Region 上会固定使用同一个 follower，只有在选中的 follower 发生故障或者因调度策略发生调整的情况下才会进行切换。
+由于 TiKV 的 Follower Read 不会破坏 TiDB 的 Snapshot Isolation 事务隔离级别，因此 TiDB 选择 follower 的策略可以采用 round robin 的方式。目前，对于 Coprocessor 请求，Follower Read 负载均衡策略粒度是连接级别的，对于一个 TiDB 的客户端连接在某个具体的 Region 上会固定使用同一个 follower，只有在选中的 follower 发生故障或者因调度策略发生调整的情况下才会进行切换。而对于非 Coprocessor 请求（点查等），Follower Read 负载均衡策略粒度是事务级别的，对于一个 TiDB 的事务在某个具体的 Region 上会固定使用同一个 follower，同样在 follower 发生故障或者因调度策略发生调整的情况下才会进行切换。

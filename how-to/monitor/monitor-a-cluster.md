@@ -110,9 +110,9 @@ Metrics 接口用于监控整个集群的状态和性能。
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz &&
-wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz &&
-wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.linux-x64.tar.gz
+wget https://download.pingcap.org/prometheus-2.8.1.linux-amd64.tar.gz
+wget https://download.pingcap.org/node_exporter-0.17.0.linux-amd64.tar.gz
+wget https://download.pingcap.org/grafana-6.1.6.linux-amd64.tar.gz
 ```
 
 解压二进制包：
@@ -120,9 +120,9 @@ wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.l
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar -xzf prometheus-2.2.1.linux-amd64.tar.gz &&
-tar -xzf node_exporter-0.15.2.linux-amd64.tar.gz &&
-tar -xzf grafana-4.6.3.linux-x64.tar.gz
+tar -xzf prometheus-2.8.1.linux-amd64.tar.gz
+tar -xzf node_exporter-0.17.0.linux-amd64.tar.gz
+tar -xzf grafana-6.1.6.linux-amd64.tar.gz
 ```
 
 #### 第 2 步：在 Node1，Node2，Node3，Node4 上启动 `node_exporter`
@@ -130,7 +130,7 @@ tar -xzf grafana-4.6.3.linux-x64.tar.gz
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd node_exporter-0.15.2.linux-amd64
+cd node_exporter-0.17.0.linux-amd64
 ```
 
 启动 node_exporter 服务：
@@ -149,7 +149,7 @@ cd node_exporter-0.15.2.linux-amd64
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd prometheus-2.2.1.linux-amd64 &&
+cd prometheus-2.8.1.linux-amd64 &&
 vi prometheus.yml
 ```
 
@@ -221,7 +221,7 @@ scrape_configs:
 编辑 Grafana 的配置文件：
 
 ```bash
-cd grafana-4.6.3 &&
+cd grafana-6.1.6 &&
 vi conf/grafana.ini
 ```
 
@@ -289,20 +289,22 @@ url = https://grafana.net
     - 默认账户：admin
     - 默认密码：admin
 
-2. 点击 Grafana 图标打开侧边栏。
+    > **注意：**
+    >
+    > **Change Password** 步骤可以选择 **Skip**。
 
-3. 在侧边栏菜单中，点击 **Data Source**。
+2. 点击 Grafana 侧边栏菜单 **Configuration** 中的 **Data Source**。
 
-4. 点击 **Add data source**。
+3. 点击 **Add data source**。
 
-5. 指定数据源的相关信息：
+4. 指定数据源的相关信息：
 
     - 在 **Name** 处，为数据源指定一个名称。
     - 在 **Type** 处，选择 **Prometheus**。
     - 在 **URL** 处，指定 Prometheus 的 IP 地址。
     - 根据需求指定其它字段。
 
-6. 点击 **Add** 保存新的数据源。
+5. 点击 **Add** 保存新的数据源。
 
 #### 第 2 步：导入 Grafana 面板
 
