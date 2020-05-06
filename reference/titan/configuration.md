@@ -24,9 +24,9 @@ enabled = true
 
 **注意：**
 >
-> RocksDB 无法读取 Titan 的数据，但用 RocksDB 打开 Titan 数据也不会造成数据损坏。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan （误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。请参看[关闭 Titan](#关闭-titan实验性) 一节。
+> 在不开启 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan （误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。如需要关闭 Titan，请参看[关闭 Titan](#关闭-titan实验性) 一节。
 
-## 参数调整
+## 相关参数介绍
 
 {{< copyable "" >}}
 

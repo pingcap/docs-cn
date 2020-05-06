@@ -37,7 +37,7 @@ Titan 的基本架构如下图所示：
 
 ![1-Architecture.png](/media/titan/titan-1.png)
 
-Titan 在 Flush 和 Compaction 的时候将 value 分离出 LSM-tree，这样写入流程可以和 RockDB 保持一致，减少对 RocksDB 的侵入性改动。
+Titan 在 Flush 和 Compaction 的时候将 value 分离出 LSM-tree，这样写入流程可以和 RocksDB 保持一致，减少对 RocksDB 的侵入性改动。
 
 ### BlobFile
 
