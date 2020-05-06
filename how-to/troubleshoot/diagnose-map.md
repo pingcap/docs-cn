@@ -16,9 +16,9 @@ category: faq
 
 - 1.1.3 TiKV 报 `TiKV server is busy`，超过 `backoff` 时间，参考 4.3 `TiKV server is busy` 属于内部流控机制，后续可能不计入 `backoff` 时间，正在改善。
 
-- 1.1.4 多台 TiKV 启动不了导致 region 没有 leader。单台物理主机部署多个 TiKV 实例，一个物理机挂掉，由于 label 配置错了导致 region 没有 leader ，见案例 [case-228](./diagnose-case-study/case228.md)。
+- 1.1.4 多台 TiKV 启动不了导致 region 没有 leader。单台物理主机部署多个 TiKV 实例，一个物理机挂掉，由于 label 配置错了导致 region 没有 leader ，见案例 [case-228](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case228.md)。
 
-- 1.1.5 follower apply 落后，成为 leader 之后把收到的请求以 `epoch not match` 理由打回，见案例 [case-958](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case228.md)（TiKV 内部需要优化改机制）。
+- 1.1.5 follower apply 落后，成为 leader 之后把收到的请求以 `epoch not match` 理由打回，见案例 [case-958](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case958.md)（TiKV 内部需要优化改机制）。
 
 ### 1.2 PD 异常导致服务不可用，请查看 5 PD 问题
 
