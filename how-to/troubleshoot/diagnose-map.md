@@ -1,7 +1,7 @@
 ---
 title: TiDB 集群问题导图
 summary: 了解如何处理 TiDB 集群常见问题。
-category: faq
+category: how-to
 ---
 
 # TiDB 集群问题导图
