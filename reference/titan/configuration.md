@@ -5,21 +5,7 @@ category: reference
 
 # Titan 配置
 
-Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，以在 value 较大的场景下，降低 RocksDB 后台 compaction 对 I/O 带宽和 CPU 的占用，同时提高 SSD 寿命。
-
-## 适用场景
-
-Titan 适合在以下场景中使用：
-
-- 前台写入量较大，RocksDB 大量触发 compaction 消耗大量 I/O 带宽或者 CPU 资源，造成 TiKV 前台读写性能较差。
-- 前台写入量较大，由于 I/O 带宽瓶颈或 CPU 瓶颈的限制，RocksDB compaction 进度落后较多频繁造成 write stall。
-- 前台写入量较大，RocksDB 大量触发 compaction 造成 I/O 写入量较大，影响 SSD 盘的寿命。
-
-开启 Titan 需要考虑以下前提条件：
-
-- Value 较大。即 value 平均大小比较大，或者数据中大 value 的数据总大小占比比较大。目前 Titan 默认 1kb 以上大小的 value 是大 value，根据实际情况 512b 以上大小的 value 也可以看作是大 value。
-- 没有范围查询或者对范围查询性能不敏感。Titan 存储数据的顺序性较差，所以相比 RocksDB 范围查询的性能较差，尤其是大范围查询。在测试中 Titan 范围查询性能相比 RocksDB 下降 40% 到数倍不等。
-- 磁盘剩余空间足够。Titan 降低写放大是通过牺牲空间放大达到的。另外由于 Titan 逐个压缩 value，压缩率比 RocksDB（逐个压缩 block）要差。这两个因素一起造成 Titan 占用磁盘空间比 RocksDB 要多，这是正常现象。根据实际情况和不同的配置，Titan 磁盘空间占用可能会比 RocksDB 多一倍。
+Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，在 value 较大的场景下，减少写放大，降低 RocksDB 后台 compaction 对 I/O 带宽和 CPU 的占用，以提高性能。
 
 ## 开启 Titan
 
