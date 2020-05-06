@@ -154,4 +154,4 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 ## 联系我们
 
-加入 Slack channel：[#sig-docs](http://suo.im/6dB6OH)
+加入 Slack channel：[#sig-docs](https://slack.tidb.io/invite?team=tidb-community&channel=sig-docs&ref=pingcap-docs-cn)
