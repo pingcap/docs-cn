@@ -43,6 +43,41 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - This variable is used to set whether the optimizer executes the optimization operation of pushing down the aggregate function to the position before Join.
 - When the aggregate operation is slow in query, you can set the variable value to 1.
 
+### tidb_opt_distinct_agg_push_down
+
+- Scope: SESSION
+- Default value: 0
+- This variable is used to set whether the optimizer executes the optimization operation of pushing down the aggregate function with `distinct` (such as `select count(distinct a) from t`) to Coprocessor.
+- When the aggregate function with the `distinct` operation is slow in the query, you can set the variable value to `1`.
+
+In the following example, before `tidb_opt_distinct_agg_push_down` is enabled, TiDB needs to read all data from TiKV and execute `disctinct` on the TiDB side. After `tidb_opt_distinct_agg_push_down` is enabled, `distinct a` is pushed down to Coprocessor, and a `group by` column `test.t.a` is added to `HashAgg_5`.
+
+```sql
+mysql> desc select count(distinct a) from test.t;
++-------------------------+----------+-----------+---------------+------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                            |
++-------------------------+----------+-----------+---------------+------------------------------------------+
+| StreamAgg_6             | 1.00     | root      |               | funcs:count(distinct test.t.a)->Column#4 |
+| └─TableReader_10        | 10000.00 | root      |               | data:TableFullScan_9                     |
+|   └─TableFullScan_9     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo           |
++-------------------------+----------+-----------+---------------+------------------------------------------+
+3 rows in set (0.01 sec)
+
+mysql> set session tidb_opt_distinct_agg_push_down = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> desc select count(distinct a) from test.t;
++---------------------------+----------+-----------+---------------+------------------------------------------+
+| id                        | estRows  | task      | access object | operator info                            |
++---------------------------+----------+-----------+---------------+------------------------------------------+
+| HashAgg_8                 | 1.00     | root      |               | funcs:count(distinct test.t.a)->Column#3 |
+| └─TableReader_9           | 1.00     | root      |               | data:HashAgg_5                           |
+|   └─HashAgg_5             | 1.00     | cop[tikv] |               | group by:test.t.a,                       |
+|     └─TableFullScan_7     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo           |
++---------------------------+----------+-----------+---------------+------------------------------------------+
+4 rows in set (0.00 sec)
+```
+
 ### tidb_auto_analyze_ratio
 
 - Scope: GLOBAL
