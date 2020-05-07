@@ -41,7 +41,7 @@ Available Commands:
   import      导入一个由 TiDB-Ansible 部署的集群
   edit-config 编辑 TiDB 集群的配置
   reload      用于必要时重载集群配置
-  patch       使用临时的组件包替换其群上已部署的组件
+  patch       使用临时的组件包替换集群上已部署的组件
   help        打印 Help 信息
 
 Flags:
