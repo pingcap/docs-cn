@@ -90,7 +90,7 @@ monitoring_servers:
   - host: 172.16.5.134
 ```
 
-假如我们想要使用 TiDB 的 v4.0.0-rc 版本，集群名字为 `prod-cluster`，则执行以下命令：
+假如我们想要使用 TiDB 的 v3.0.12 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
