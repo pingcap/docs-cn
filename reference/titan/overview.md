@@ -110,4 +110,4 @@ Range-Merge 是基于 Level-Merge 的一个优化。考虑如下两种情况，�
 
 ![7-RangeMerge.png](/media/titan/titan-7.png)
 
-因此需要通过 Range Merge 操作维持 sorted run 在一定水平，即在 OnCompactionComplete 时统计该 range 的 sorted run 数量，若数量过多则将涉及的 BlobFile 标记为 ToMerge，在下一次的 Compaction 中进行重写
+因此需要通过 Range Merge 操作维持 sorted run 在一定水平，即在 OnCompactionComplete 时统计该 range 的 sorted run 数量，若数量过多则将涉及的 BlobFile 标记为 ToMerge，在下一次的 Compaction 中进行重写。
