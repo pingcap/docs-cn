@@ -41,7 +41,7 @@ category: reference
 
 ### 使用方法
 
-每个优化规则都有自己的名字，比如列裁剪的名字是 "column_prune"，所有优化规则的名字皆可以在[重要的优化规则](/reference/performance/opt-rule-blacklist.md#rules)的括号中查到。
+每个优化规则都有自己的名字，比如列裁剪的名字是 "column_prune"，所有优化规则的名字皆可以在[重要的优化规则](/reference/performance/opt-rule-blacklist.md#rules)中查到。
 
 当用户想禁用某些规则时，可以往 `mysql.opt_rule_blacklist` 的表中写入规则的名字，比如：
 
