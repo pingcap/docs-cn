@@ -54,7 +54,7 @@ insert into mysql.opt_rule_blacklist values("join_reorder"),("topn_push_down");
 > **注意：**
 > TiDB 不会实时地将这个表读入到内存中，所以即便是写入了禁用规则也不会立马生效。
 
-然后用户需要执行以下 SQL，让 TiDB 把禁用规则写到内存中，才能真正做到禁用的效果：
+然后用户需要执行以下 SQL，让 TiDB 把禁用规则加载到缓存中，才能真正做到禁用的效果：
 
 {{< copyable "sql" >}}
 
