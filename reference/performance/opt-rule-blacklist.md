@@ -17,7 +17,7 @@ category: reference
 
 - 子查询去关联（decorrelate）：会尝试对相关子查询进行改写，将其转换为普通 join 或 aggression 计算。
 
-- 聚合消除（aggregation_eliminate）：尝试删除执行计划中的某些聚合算子。
+- 聚合消除（aggregation_eliminate）：尝试消除执行计划中的某些不必要的聚合算子。
 
 - 投影消除（projection_eliminate）：对于执行计划中不必要的投影算子，对其消除。
 
