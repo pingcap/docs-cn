@@ -31,7 +31,7 @@ category: reference
 
 - 聚合下推（aggregation_push_down）：尝试将执行计划中的聚合算子下推到更底层的计算节点。
 
-- topN 下推（topn_push_down）：尝试将执行计划中的 topN 算子下推到更底层的计算节点。
+- TopN 下推（topn_push_down）：尝试将执行计划中的 TopN 算子下推到离数据源更近的算子上。
 
 - join 重排序（join_reorder）：尝试对多个 join 算子进行重新排序。
 
