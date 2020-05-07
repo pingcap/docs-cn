@@ -115,7 +115,7 @@ tiup update cluster
 > - 原集群没有修改过配置参数。
 > - 升级后希望使用 `4.0` 默认参数。
 
-1. 进入 `tidb-ansible/conf` 配置目录，确认配置模板中修改过的参数。
+1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/config`，确认配置模板中修改过的参数。
 
 2. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -125,7 +125,7 @@ tiup update cluster
     tiup cluster edit-config <cluster-name>
     ```
 
-3. 参考 [topology](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
+3. 参考 [topology](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
 如果集群有配置 label，目前也需要按模板中的格式在配置中补充，后续版本会自动导入 label。
 
 修改完成后 `wq` 保存并退出编辑模式，输入 `Y` 确认变更。
@@ -146,7 +146,11 @@ tiup update cluster
 tiup cluster upgrade <cluster-name> v4.0.0-rc
 ```
 
-滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 10 分钟，超过后会直接停止实例。
+滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟，超过后会直接停止实例。
+
+如果不希望驱逐 leader，而希望立刻升级，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
+
+如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个超大值，如 `--transfer-timeout 100000000`，单位为 s。
 
 ### 4.2 升级后验证
 

@@ -500,6 +500,112 @@ SELECT fname, lname, region_code, dob
 * partition_column = constant
 * partition_column IN (constant1, constant2, ..., constantN)
 
+### 分区裁剪生效的场景
+
+1. 分区裁剪需要使用分区表上面的查询条件，所以根据优化器的优化规则，如果查询条件不能下推到分区表，则相应的查询语句无法执行分区裁剪。
+
+    例如：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t1 (x int) partition by range (x) (
+        partition p0 values less than (5),
+        partition p1 values less than (10));
+    create table t2 (x int);
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    explain select * from t1 left join t2 on t1.x = t2.x where t2.x > 5;
+    ```
+
+    在这个查询中，外连接可以简化成内连接，然后由 `t1.x = t2.x` 和 `t2.x > 5` 可以推出条件 `t1.x > 5`，于是可以分区裁剪并且只使用 `p1` 分区。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    explain select * from t1 left join t2 on t1.x = t2.x and t2.x > 5;
+    ```
+
+    这个查询中的 `t2.x > 5` 条件不能下推到 `t1` 分区表上面，因此 `t1` 无法分区裁剪。
+
+2. 由于分区裁剪的规则优化是在查询计划的生成阶段，对于执行阶段才能获取到过滤条件的场景，无法利用分区裁剪的优化。
+
+    例如：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t1 (x int) partition by range (x) (
+        partition p0 values less than (5),
+        partition p1 values less than (10));
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    explain select * from t2 where x < (select * from t1 where t2.x < t1.x and t2.x < 2);
+    ```
+
+    这个查询每从 `t2` 读取一行，都会去分区表 `t1` 上进行查询，理论上这时会满足 `t1.x > val` 的过滤条件，但实际上由于分区裁剪只作用于查询计划生成阶段，而不是执行阶段，因而不会做裁剪。
+
+3. 由于当前实现中的一处限制，对于查询条件无法下推到 TiKV 的表达式，不支持分区裁剪。
+
+    对于一个函数表达式 `fn(col)`，如果 TiKV 支持这个函数 `fn`，则在查询优化做谓词下推的时候，`fn(col)` 会被推到叶子节点（也就是分区），因而能够执行分区裁剪。
+
+    如果 TiKV 不支持 `fn`，则优化阶段不会把 `fn(col)` 推到叶子节点，而是在叶子上面连接一个 Selection 节点，分区裁剪的实现没有处理这种父节点的 Selection 中的条件，因此对不能下推到 TiKV 的表达式不支持分区裁剪。
+
+4. 对于 hash 分区类型，只有等值比较的查询条件能够支持分区裁剪。
+
+5. 对于 range 分区类型，分区表达式必须是 `col` 或者 `fn(col)` 的简单形式，查询条件是 > < = >= <= 时才能支持分区裁剪。如果分区表达式是 `fn(col)` 形式，还要求 `fn` 必须是单调函数，才有可能分区裁剪。
+
+    这里单调函数是指某个函数 `fn` 满足条件：对于任意 `x` `y`，如果 `x > y`，则 `fn(x) > fn(y)`。
+
+    这种是严格递增的单调函数，非严格递增的单调函数也可以符合分区裁剪要求，只要函数 `fn` 满足：对于任意 `x` `y`，如果 `x > y`，则 `fn(x) >= fn(y)`。
+
+    理论上所有满足单调条件（严格或者非严格）的函数都是可以支持分区裁剪。实际上，目前 TiDB 已经支持的单调函数只有：
+
+    ```
+    unix_timestamp
+    to_days
+    ```
+
+    例如，分区表达式是简单列的情况：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t (id int) partition by range (id) (
+        partition p0 values less than (5),
+        partition p1 values less than (10));
+    select * from t where t > 6;
+    ```
+
+    分区表达式是 `fn(col)` 的形式，`fn` 是我们支持的单调函数 `to_days`：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t (dt datetime) partition by range (to_days(id)) (
+        partition p0 values less than (to_days('2020-04-01')),
+        partition p1 values less than (to_days('2020-05-01')));
+    select * from t where t > '2020-04-18';
+    ```
+
+    有一处例外是 `floor(unix_timestamp(ts))` 作为分区表达式，TiDB 针对这个场景做了特殊处理，可以支持分区裁剪。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t (ts timestamp(3) not null default current_timestamp(3))
+    partition by range (floor(unix_timestamp(ts))) (
+        partition p0 values less than (unix_timestamp('2020-04-01 00:00:00')),
+        partition p1 values less than (unix_timestamp('2020-05-01 00:00:00')));
+    select * from t where t > '2020-04-18 02:00:42.123';
+    ```
+
 ## 分区选择
 
 SELECT 语句中支持分区选择。实现通过使用一个 `PARTITION` 选项实现。

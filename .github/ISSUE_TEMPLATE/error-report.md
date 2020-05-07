@@ -1,9 +1,9 @@
 ---
-name: "\U0001F41B Bug Report"
-about: Typo, Grammatical error, etc.。
+name: "\U0001F41B Error Report"
+about: Typos, grammatical errors, terminology misuse, ambiguity, etc.
 ---
 
-## Bug 报告
+## Error 报告
 
 **This repository is ONLY used to solve problems related to DOCS-CN.
 For other issues (TiDB, TiKV, etc), please move to [other repositories](https://github.com/pingcap/).**
