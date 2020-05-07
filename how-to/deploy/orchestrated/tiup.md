@@ -1904,7 +1904,7 @@ cdc                             darwin/amd64,linux/amd64,linux/arm64
     
 ### 如何关闭系统 swap
 
-TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能，建议永久关闭系统 swap。并且不要使用 `swapoff -a` 关闭，重启会失效。
+TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
 
 {{< copyable "shell-regular" >}}
     
