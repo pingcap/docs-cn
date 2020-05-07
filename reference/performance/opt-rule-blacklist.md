@@ -33,7 +33,7 @@ category: reference
 
 - TopN 下推（topn_push_down）：尝试将执行计划中的 TopN 算子下推到离数据源更近的算子上。
 
-- join 重排序（join_reorder）：尝试对多个 join 算子进行重新排序。
+- join 重排序（join_reorder）：对多表 join 确定连接顺序。
 
 ## 如何禁用优化规则
 
