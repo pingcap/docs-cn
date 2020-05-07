@@ -15,7 +15,7 @@ category: reference
 
 - 列裁剪（column_prune）：对于上层算子不需要的列，在下层算子不输出该列，减少计算。
 
-- 子查询去关联（decorrelate）：会尝试对自查询进行改写，将其转换为 join 或 aggression 计算。
+- 子查询去关联（decorrelate）：会尝试对相关子查询进行改写，将其转换为普通 join 或 aggression 计算。
 
 - 聚合消除（aggregation_eliminate）：尝试删除执行计划中的某些聚合算子。
 
