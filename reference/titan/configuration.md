@@ -31,7 +31,7 @@ enabled = true
 
 开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
 
-如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction。请参看 tikv-ctl 文档。
+如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction。请参考 [tikv-ctl 文档手动 compact 小节](https://pingcap.com/docs-cn/stable/reference/tools/tikv-control/#%E6%89%8B%E5%8A%A8-compact-%E5%8D%95%E4%B8%AA-tikv-%E7%9A%84%E6%95%B0%E6%8D%AE)
 
 **注意：**
 >
