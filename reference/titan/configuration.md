@@ -9,7 +9,18 @@ Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value �
 
 ## 开启 Titan
 
-Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 TiKV 实例可以直接开启 Titan。开启的方法是修改 TiKV 配置并重启 TiKV：
+Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 TiKV 实例可以直接开启 Titan。如果使用 TiUP 部署的集群，开启的方法是执行 `tiup cluster edit-config ${cluster-name}` ，编辑配置文件，开启 titan
+
+{{< copyable "shell-regular" >}}
+
+server_configs:
+  tikv:
+    rocksdb.titan.enabled: true
+
+Reload 配置，同时也会在线滚动重启 tikv
+`tiup cluster reload likun-single -R tikv`
+
+也可以直接编辑 tikv 配置文件开启 titan（线上环境不推荐）：${deploy-dir}/conf/tikv.toml
 
 {{< copyable "" >}}
 
