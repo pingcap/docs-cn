@@ -13,9 +13,11 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 {{< copyable "shell-regular" >}}
 
+```shell
 server_configs:
   tikv:
     rocksdb.titan.enabled: true
+```
 
 Reload 配置，同时也会在线滚动重启 tikv
 `tiup cluster reload likun-single -R tikv`
@@ -38,6 +40,8 @@ enabled = true
 > 在不开启 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan （误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。如需要关闭 Titan，请参看[关闭 Titan](#关闭-titan实验性) 一节。
 
 ## 相关参数介绍
+
+> 使用 TiUP 调整参数，请参考 [修改配置参数](https://pingcap.com/docs-cn/stable/how-to/maintain/tiup-operations/#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0)
 
 {{< copyable "" >}}
 
