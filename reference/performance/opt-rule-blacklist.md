@@ -27,7 +27,7 @@ category: reference
 
 - 外连接消除（outer_join_eliminate）：尝试消除执行计划中不必要的 left join 或者 right join。
 
-- 分区表查询改写（partition_processor）：将分区表查询改成为用 union all 算子代替。
+- 分区裁剪（partition_processor）：将分区表查询改成为用 union all，并裁剪掉不满足过滤条件的分区。
 
 - 聚合下推（aggregation_push_down）：尝试将执行计划中的聚合算子下推到更底层的计算节点。
 
