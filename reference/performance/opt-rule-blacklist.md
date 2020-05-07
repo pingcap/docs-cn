@@ -23,7 +23,7 @@ category: reference
 
 - 最大最小消除（max_min_eliminate）：改写聚合中的 max, min 计算，转化为 order by + limit 1。
 
-- 谓词下推（predicate_push_down）：尝试将执行计划中过滤条件下推到更底层的节点。
+- 谓词下推（predicate_push_down）：尝试将执行计划中过滤条件下推到离数据源更近的算子上。
 
 - 外连接消除（outer_join_eliminate）：尝试消除执行计划中不必要的 left join 或者 right join。
 
