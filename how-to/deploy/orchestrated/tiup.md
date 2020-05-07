@@ -48,7 +48,7 @@ category: how-to
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 - TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考[第 3 步](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)）
 - 机器之间内网互通（建议[关闭防火墙 `firewalld`](#如何关闭部署机器的防火墙)，或者开放 TiDB 集群的节点间所需端口）
-- 机器[关闭系统 swap](#如何关闭系统-swap)
+- 所有部署机器[关闭系统 swap](#如何关闭系统-swap)
 - 如果需要绑核操作，需要[安装 `numactl` 工具](#如何安装-numactl-工具)
 
 其他软硬件环境配置可参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
