@@ -13,7 +13,7 @@ category: reference
 
 ## 重要的优化规则<div id="rules"></div>
 
-- 列裁剪（column_prune）：对于上层算子不要的列，裁剪掉下层算子中的该列，减少计算。
+- 列裁剪（column_prune）：对于上层算子不需要的列，在下层算子不输出该列，减少计算。
 
 - 子查询去关联（decorrelate）：会尝试对自查询进行改写，将其转换为 join 或 aggression 计算。
 
