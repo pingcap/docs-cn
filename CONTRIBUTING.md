@@ -136,4 +136,4 @@ Now, your PR is successfully submitted! After this PR is merged, you will automa
 
 ## Contact
 
-Join the Slack channel: [#sig-docs](http://suo.im/5R2dck)
+Join the Slack channel: [#sig-docs](https://slack.tidb.io/invite?team=tidb-community&channel=sig-docs&ref=pingcap-docs)
