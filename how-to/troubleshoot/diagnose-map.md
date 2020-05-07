@@ -36,7 +36,7 @@ category: how-to
 
     - 单个 TiKV region 过多导致单个 gRPC 线程成为瓶颈（查看 grafana -> TiKV-details -> `Thread CPU/gRPC CPU Per Thread` 监控），v3.x 以上版本可以开启 `hibernate region` 特性来解决，见案例 [case-612](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case612.md)。
 
-    - v3.0 之前版本 raftstore 单线程或者 apply 单线程到达瓶颈（grafana -> TiKV-details -> `Thread CPU/raft store CPU 和 Async apply CPU` 超过 `80%`），可以选择扩容 TiKV（v2.x 版本）实例或者升级到多线程模型的 v3.x 版本，见案例 [case-517](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case517.md)。
+    - v3.0 之前版本 raftstore 单线程或者 apply 单线程到达瓶颈（grafana -> TiKV-details -> `Thread CPU/raft store CPU 和 Async apply CPU` 超过 `80%`），可以选择扩容 TiKV（v2.x 版本）实例或者升级到多线程模型的 v3.x 版本。<!--见案例 [case-517](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case517.md)。-->
 
 - 2.2.2 CPU load 升高
 
@@ -48,7 +48,7 @@ category: how-to
 
 ### 3.1 DDL
 
-- 3.1.1 修改 `decimal` 字段长度报错 `"ERROR 1105 (HY000): unsupported modify decimal column precision"`, 见案例 [case-1004](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1004.md)，TiDB 暂时不支持修改 `decimal` 字段长度。
+- 3.1.1 修改 `decimal` 字段长度报错 `"ERROR 1105 (HY000): unsupported modify decimal column precision"`<!--, 见案例 [case-1004](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1004.md)，TiDB 暂时不支持修改 `decimal` 字段长度-->。
 
 - 3.1.2 TiDB DDL job 卡住不动 / 执行很慢（通过 `admin show ddl jobs` 可以查看 DDL 进度）
 
@@ -195,7 +195,7 @@ category: how-to
     - `pending compaction bytes` 太多导致 stall，磁盘 IO 能力在业务高峰跟不上写入，可以通过调大对应 cf 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解。
     
         - 如果 pending compaction bytes 达到该阈值，RocksDB 会放慢写入速度。默认值 64GB，`[rocksdb.defaultcf] soft-pending-compaction-bytes-limit = "128GB"`
-        - 如果 pending compaction bytes 达到该阈值，RocksDB 会 stop 写入，通常不太可能触发该情况，因为在达到 soft-pending-compaction-bytes-limit 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"` 见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md)；
+        - 如果 pending compaction bytes 达到该阈值，RocksDB 会 stop 写入，通常不太可能触发该情况，因为在达到 soft-pending-compaction-bytes-limit 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->；
         - 如果磁盘 IO 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
         - 比如 default cf compaction 压力比较大，调整参数 `[rocksdb.defaultcf] compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]` 改成 `compression-per-level = ["no", "no", "zstd", "zstd", "zstd", "zstd", "zstd"]`
 
@@ -312,7 +312,7 @@ category: how-to
 
 - 5.3.1 使用 /api/v1/regions 接口时 region 数量过多可能会导致 PD OOM，v3.0.8 版本修复，见 [#1986](https://github.com/pingcap/pd/pull/1986)。
 
-- 5.3.2 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，v3.0.6 版本修复，见 [#1952](https://github.com/pingcap/pd/pull/1952)。详情请参考案例 [case-852](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case852.md)
+- 5.3.2 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，v3.0.6 版本修复，见 [#1952](https://github.com/pingcap/pd/pull/1952)。<!--详情请参考案例 [case-852](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case852.md)-->
 
 ### 5.4 grafana 显示问题
 
@@ -432,7 +432,7 @@ category: how-to
 
         - relay.meta 中记录空的 GTID 信息，DM-worker 进程在退出时、以及定时（30s）会把内存中的 gtid 信息保存到 relay.meta 中，在没有获取到上游 GTID 信息的情况下，把空的 GTID 信息保存到了 relay.meta 中。见案例 [case-772](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case772.md)。
 
-        - relay.meta 中记录的 binlog event 不完整触发 recover 流程后记录错误的 GTID 信息，该问题可能会在 1.0.2 之前的版本遇到，已在 1.0.2 版本修复。见案例 [case-764](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case764.md)。
+        - relay.meta 中记录的 binlog event 不完整触发 recover 流程后记录错误的 GTID 信息，该问题可能会在 1.0.2 之前的版本遇到，已在 1.0.2 版本修复。<!--见案例 [case-764](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case764.md)。-->
 
 - 6.2.7 DM 同步报错 `"Error 1366: incorrect utf8 value eda0bdedb29d(\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd)"`
 
