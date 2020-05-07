@@ -1906,6 +1906,8 @@ cdc                             darwin/amd64,linux/amd64,linux/arm64
 
 TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
 
+建议执行以下命令关闭系统 swap：
+
 {{< copyable "shell-regular" >}}
     
 ```bash
