@@ -36,7 +36,7 @@ aliases: ['/docs-cn/v2.1/how-to/monitor/tidb-binlog/','/docs-cn/v2.1/reference/t
 | Drainer Event | 各种类型 event 的数量，event 包括 ddl、insert、delete、update、flush、savepoint |
 | Execute Time | 写入 binlog 到同步下游模块所消耗的时间 |
 | 95% Binlog Size | Drainer 从各个 Pump 获取到 binlog 数据的大小 |
-| DL Job Count | Drainer 处理的 DDL 的数量|
+| DDL Job Count | Drainer 处理的 DDL 的数量|
 | Queue Size | Drainer 内部工作队列大小 |
 
 ## 监控报警规则
