@@ -68,6 +68,29 @@ The operations are executed as follows:
 
 Also, starting from TiDB 2.1.18 and 3.0.4, TiDB supports using the system variable `tidb_allow_remove_auto_inc` to control whether the `AUTO_INCREMENT` property of a column is allowed to be removed by executing  `ALTER TABLE MODIFY` or `ALTER TABLE CHANGE` statements. It is not allowed by default.
 
+> **Note:**
+>
+> If the primary key is not specified, TiDB uses the `_tibd_rowid` column to identify rows. The values of the `_tibd_rowid` column and the auto-increment column (if there is) are assigned by the same allocator. If the auto-increment column is specified as the primary key, then TiDB uses this column to identify rows. Therefore, there might be the following situations.
+
+```sql
+mysql> create table t(id int unique key AUTO_INCREMENT);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into t values(),(),();
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select _tidb_rowid, id from t;
++-------------+------+
+| _tidb_rowid | id   |
++-------------+------+
+|           4 |    1 |
+|           5 |    2 |
+|           6 |    3 |
++-------------+------+
+3 rows in set (0.01 sec)
+```
+
 ### Performance schema
 
 Performance schema tables return empty results in TiDB. TiDB uses a combination of [Prometheus and Grafana](/how-to/monitor/monitor-a-cluster.md) for performance metrics instead.
