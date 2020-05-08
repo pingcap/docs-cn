@@ -87,7 +87,7 @@ TiUP cluster 是适用于 TiDB 4.0 及以上版本的部署工具，部署运行
 
 1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
 
-2. 参考 [扩容 TiDB/TiKV/PD 节点](/how-to/scale/with-tiup.md#1-扩容-tidbtikvpd-节点) 章节对 TiCDC 进行部署。
+2. 参考 [扩容 TiDB/TiKV/PD 节点](/how-to/scale/with-tiup.md#1-扩容-tidbtikvpdticdc-节点) 章节对 TiCDC 进行部署。
    示例的扩容配置文件为：
 
    ```shell
