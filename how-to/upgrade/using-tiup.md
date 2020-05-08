@@ -125,7 +125,7 @@ tiup update cluster
     tiup cluster edit-config <cluster-name>
     ```
 
-3. 参考 [topology](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
+3. 参考 [topology](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
 如果集群有配置 label，目前也需要按模板中的格式在配置中补充，后续版本会自动导入 label。
 
 修改完成后 `wq` 保存并退出编辑模式，输入 `Y` 确认变更。

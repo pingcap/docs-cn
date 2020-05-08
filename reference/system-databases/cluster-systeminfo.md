@@ -6,12 +6,12 @@ category: reference
 
 # CLUSTER_SYSTEMINFO
 
-集群负载表 `CLUSTER_SYSTEMINFO` 用于查询集群所有节点所在服务器的内核配置信息。目前支持查询 `sysctl` 的信息。
+集群负载表 `CLUSTER_SYSTEMINFO` 用于查询集群所有实例所在服务器的内核配置信息。目前支持查询 `sysctl` 的信息。
 
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_systeminfo;
+desc information_schema.cluster_systeminfo;
 ```
 
 ```
@@ -40,7 +40,7 @@ desc cluster_systeminfo;
 查询集群所有服务器的内核版本示例如下：
 
 ```sql
-select * from CLUSTER_SYSTEMINFO where name like '%kernel.osrelease%'
+select * from information_schema.cluster_systeminfo where name like '%kernel.osrelease%'
 ```
 
 ```
