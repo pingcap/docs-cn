@@ -48,6 +48,7 @@ category: how-to
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 - TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考[第 3 步](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)）
 - 机器之间内网互通（建议[关闭防火墙 `firewalld`](#如何关闭部署机器的防火墙)，或者开放 TiDB 集群的节点间所需端口）
+- 所有部署机器[关闭系统 swap](#如何关闭系统-swap)
 - 如果需要绑核操作，需要[安装 `numactl` 工具](#如何安装-numactl-工具)
 
 其他软硬件环境配置可参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
@@ -1346,7 +1347,7 @@ ID              Role          Host      Ports                            Status 
 
 #### 查看 TiDB Dashboard 检查 TiDB 集群状态
 
-- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
+- 通过 `{pd-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
@@ -1901,3 +1902,17 @@ cdc                             darwin/amd64,linux/amd64,linux/arm64
     ```bash
     tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
     ```
+    
+### 如何关闭系统 swap
+
+TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
+
+建议执行以下命令关闭系统 swap：
+
+{{< copyable "shell-regular" >}}
+    
+```bash
+echo "vm.swappiness = 0">> /etc/sysctl.conf 
+swapoff -a && swapon -a
+sysctl -p
+```
