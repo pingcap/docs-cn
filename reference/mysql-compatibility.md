@@ -108,7 +108,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 + Add Index
     - 不支持同时创建多个索引
     - 不支持 `VISIBLE/INVISIBLE` 的索引
-    - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
+    - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引（https://pingcap.com/docs-cn/v3.0/reference/sql/generated-columns/）
     - 其他类型的 Index Type (HASH/BTREE/RTREE) 只有语法支持，功能不支持
 + Add Column
     - 不支持同时创建多个列
