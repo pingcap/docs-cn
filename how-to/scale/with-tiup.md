@@ -8,7 +8,7 @@ Category: how-to
 
 The capacity of a TiDB cluster can be increased or decreased without affecting the online services.
 
-This document describes how to scale the TiDB, TiKV, PD or TiFlash nodes using TiUP. If you have not installed TiUP, refer to the steps in [Install TiUP on the Control Machine](/how-to/upgrade/using-tiup.md#install-tiup-on-the-control-machine) and import the cluster into TiUP before you scale the TiDB cluster.
+This document describes how to scale the TiDB, TiKV, PD, TiCDC, or TiFlash nodes using TiUP. If you have not installed TiUP, refer to the steps in [Install TiUP on the Control Machine](/how-to/upgrade/using-tiup.md#install-tiup-on-the-control-machine) and import the cluster into TiUP before you scale the TiDB cluster.
 
 To view the current cluster name list, run `tiup cluster list`.
 
@@ -22,13 +22,13 @@ For example, if the original topology of the cluster is as follows:
 | 10.0.1.1 | TiKV |
 | 10.0.1.2 | TiKV |
 
-## Scale out a TiDB/TiKV/PD node
+## Scale out a TiDB/TiKV/PD/TiCDC node
 
 If you want to add a TiDB node to the `10.0.1.5` host, take the following steps.
 
 > **Note:**
 >
-> You can take similar steps to add the TiKV or PD node.
+> You can take similar steps to add the TiKV, PD, or TiCDC node.
 
 1. Configure the scale-out topology:
 
@@ -120,13 +120,13 @@ If you want to add a TiFlash node to the `10.0.1.4` host, take the following ste
 
     Access the monitoring platform at <http://10.0.1.5:3200> using your browser, and view the status of the cluster and the new node.
 
-## Scale in a TiDB/TiKV/PD node
+## Scale in a TiDB/TiKV/PD/TiCDC node
 
 If you want to remove a TiKV node from the `10.0.1.5` host, take the following steps.
 
 > **Note:**
 >
-> You can take similar steps to remove the TiDB or PD node.
+> You can take similar steps to remove the TiDB, PD, or TiCDC node.
 
 1. View the node ID information:
 

@@ -292,6 +292,7 @@ The following sections provide a cluster configuration template for each of the 
 - [Scenario 1: Single machine with single instance](#scenario-1-single-machine-with-single-instance)
 - [Scenario 2: Single machine with multiple instances](#scenario-2-single-machine-with-multiple-instances)
 - [Scenario 3: Replicate to the downstream using TiDB Binlog](#scenario-3-replicate-to-the-downstream-using-tidb-binlog)
+- [Scenario 4: Replicate to the downstream using TiCDC](#scenario-4-replicate-to-the-downstream-using-ticdc)
 
 ### Scenario 1: Single machine with single instance
 
@@ -520,6 +521,16 @@ tiflash_servers:
 #       syncer.to.password: ""
 #       syncer.to.port: 3306
 #   - host: 10.0.1.19
+
+# cdc_servers:
+#   - host: 10.0.1.20
+#     ssh_port: 22
+#     port: 8300
+#     deploy_dir: "/tidb-deploy/cdc-8300"
+#     log_dir: "/tidb-deploy/cdc-8300/log"
+#     numa_node: "0,1"
+#   - host: 10.0.1.21
+#   - host: 10.0.1.22
 
 monitoring_servers:
   - host: 10.0.1.4
@@ -916,14 +927,14 @@ Key parameters of TiDB:
 
 #### Topology
 
-| Instance | Physical Machine Configuration | IP | Other Configuration |
-| :-- | :-- | :-- | :-- |
-| TiKV | 16 Vcore 32 GB * 3 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration |
-|TiDB | 16 Vcore 32 GB * 3 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration;<br>`enable_binlog` enabled; <br> `ignore-error` enabled |
-| PD | 4 Vcore 8 GB * 3| 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration |
-| TiFlash | 32 VCore 64 GB | 10.0.1.10 | Default port configuration; <br> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data,/data2/tiflash/data` for [multi-disk deployment](/reference/tiflash/configuration.md#multi-disk-deployment) |
-| Pump|8 Vcore 16GB * 3|10.0.1.6<br>10.0.1.7<br>10.0.1.8 | Default port configuration; <br> The GC time is set to 7 days |
-| Drainer | 8 Vcore 16GB | 10.0.1.9 | Default port configuration; <br>Set default initialization commitTS |
+| Instance | Count | Physical Machine Configuration | IP | Other Configuration |
+| :-- | :-- | :-- | :-- | :-- |
+| TiKV | 3 | 16 Vcore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration |
+|TiDB | 3 | 16 Vcore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration;<br>`enable_binlog` enabled; <br> `ignore-error` enabled |
+| PD | 3 | 4 Vcore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration |
+| TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | Default port configuration; <br> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data,/data2/tiflash/data` for [multi-disk deployment](/reference/tiflash/configuration.md#multi-disk-deployment) |
+| Pump| 3 | 8 Vcore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | Default port configuration; <br> The GC time is set to 7 days |
+| Drainer | 1 | 8 Vcore 16GB | 10.0.1.9 | Default port configuration; <br>Set default initialization commitTS |
 
 #### Edit the configuration file template topology.yaml
 
@@ -1075,6 +1086,80 @@ drainer_servers:
 tiflash_servers:
   - host: 10.0.1.10
     data_dir: /data1/tiflash/data,/data2/tiflash/data 
+monitoring_servers:
+  - host: 10.0.1.4
+grafana_servers:
+  - host: 10.0.1.4
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+### Scenario 4: Replicate to the downstream using TiCDC
+
+#### Deployment requirements
+
+- Use `/tidb-deploy` as the default deployment directory 
+- Use `/tidb-data` as the data directory
+- Start TiCDC. After deploying the TiCDC cluster, [create the replication task by running `cdc cli`](/reference/tools/ticdc/deploy.md#step-2-create-replication-task)
+
+#### Topology
+
+| Instance | Count | Physical Machine Configuration | IP | Other Configuration |
+| :-- | :-- | :-- | :-- | :-- |
+| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration |
+| TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration |
+| PD | 3| 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | Default port configuration; <br> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data,/data2/tiflash/data` for [multi-disk deployment](/reference/tiflash/configuration.md#multi-disk-deployment) |
+| CDC | 3 | 8 VCore 16GB | 10.0.1.6<br>10.0.1.7<br>10.0.1.8 | Default port configuration |
+
+#### Edit the configuration file template topology.yaml
+
+> **Note:**
+>
+> - When you edit the template, only edit IP if you do not need to customize the port or directory.
+>
+> - If you need to [deploy TiFlash](/reference/tiflash/deploy.md), set `replication.enable-placement-rules` to `true` in the `topology.yaml` configuration file to enable PD’s [Placement Rules](/how-to/configure/placement-rules.md) feature.
+>
+> - Currently, the instance-level configuration `"-host"` under `tiflash_servers` only supports IP, not domain name.
+> 
+> - For the detailed parameter configuration of TiFlash, refer to [TiFlash Parameter Configuration](#tiflash-parameter).
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat topology.yaml
+```
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+server_configs:
+  pd:
+    replication.enable-placement-rules: true
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
+cdc_servers:
+  - host: 10.0.1.6
+  - host: 10.0.1.7
+  - host: 10.0.1.8
 monitoring_servers:
   - host: 10.0.1.4
 grafana_servers:
@@ -1411,6 +1496,7 @@ This section describes common problems and solutions when you deploy TiDB cluste
 | PD | peer_port | 2380 | the inter-node communication port within the PD cluster |
 | Pump | port | 8250  | the Pump communication port |
 | Drainer | port | 8249 | the Drainer communication port |
+| CDC | port | 8300 | the CDC communication port |
 | Prometheus | port | 9090 | the communication port for the Prometheus service |
 | Node_exporter | node_exporter_port | 9100 | the communication port to report the system information of every TiDB cluster node |
 | Blackbox_exporter | blackbox_exporter_port | 9115 | the Blackbox_exporter communication port，used to monitor ports in a TiDB cluster |
@@ -1565,6 +1651,7 @@ v4.0.0-beta               2020-03-13T12:43:55.508190493+08:00  linux/amd64,darwi
 v4.0.0-beta.1             2020-03-13T12:30:08.913759828+08:00  linux/amd64,darwin/amd64
 v4.0.0-beta.2             2020-03-18T22:52:00.830626492+08:00  linux/amd64,darwin/amd64
 v4.0.0-rc      YES        2020-04-17T01:22:03+08:00            linux/amd64,darwin/amd64
+v4.0.0-rc.1               2020-04-29T01:03:31+08:00            darwin/amd64,linux/amd64,linux/arm64
 nightly                   2020-04-18T08:54:10+08:00            darwin/amd64,linux/amd64
 ```
 
@@ -1585,25 +1672,28 @@ In the following output:
 
 ```log
 Available components (Last Modified: 2020-02-27T15:20:35+08:00):
-Name               Installed                                                                                                             Platforms                 Description
-----               ---------                                                                                                             ---------                 -----------
-tidb               YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
-tikv               YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  Distributed transactional key-value database, originally created to complement TiDB
-pd                 YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
-playground         YES(v0.0.5)                                                                                                           darwin/amd64,linux/amd64  Bootstrap a local TiDB cluster
-client                                                                                                                                   darwin/amd64,linux/amd64  A simple mysql client to connect TiDB
-prometheus                                                                                                                               darwin/amd64,linux/amd64  The Prometheus monitoring system and time series database.
-tpc                                                                                                                                      darwin/amd64,linux/amd64  A toolbox to benchmark workloads in TPC
-package                                                                                                                                  darwin/amd64,linux/amd64  A toolbox to package tiup component
-grafana                                                                                                                                  linux/amd64,darwin/amd64  Grafana is the open source analytics & monitoring solution for every database
-alertmanager                                                                                                                             darwin/amd64,linux/amd64  Prometheus alertmanager
-blackbox_exporter                                                                                                                        darwin/amd64,linux/amd64  Blackbox prober exporter
-node_exporter                                                                                                                            darwin/amd64,linux/amd64  Exporter for machine metrics
-pushgateway                                                                                                                              darwin/amd64,linux/amd64  Push acceptor for ephemeral and batch jobs
-tiflash                                                                                                                                  linux/amd64               The TiFlash Columnar Storage Engine
-drainer                                                                                                                                  linux/amd64               The drainer componet of TiDB binlog service
-pump                                                                                                                                     linux/amd64               The pump componet of TiDB binlog service
-cluster            YES(v0.4.6)  linux/amd64,darwin/amd64  Deploy a TiDB cluster for production
+Name               Installed    Platforms                             Description
+----               ---------    ---------                             -----------
+tidb                            darwin/amd64,linux/amd64,linux/arm64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
+tikv                            darwin/amd64,linux/amd64,linux/arm64  Distributed transactional key-value database, originally created to complement TiDB
+pd                              darwin/amd64,linux/amd64,linux/arm64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
+playground                      darwin/amd64,linux/amd64              Bootstrap a local TiDB cluster
+client                          darwin/amd64,linux/amd64              A simple mysql client to connect TiDB
+prometheus                      darwin/amd64,linux/amd64,linux/arm64  The Prometheus monitoring system and time series database.
+package                         darwin/amd64,linux/amd64              A toolbox to package tiup component
+grafana                         darwin/amd64,linux/amd64,linux/arm64  Grafana is the open source analytics & monitoring solution for every database
+alertmanager                    darwin/amd64,linux/amd64,linux/arm64  Prometheus alertmanager
+blackbox_exporter               darwin/amd64,linux/amd64,linux/arm64  Blackbox prober exporter
+node_exporter                   darwin/amd64,linux/amd64,linux/arm64  Exporter for machine metrics
+pushgateway                     darwin/amd64,linux/amd64,linux/arm64  Push acceptor for ephemeral and batch jobs
+drainer                         darwin/amd64,linux/amd64,linux/arm64  The drainer componet of TiDB binlog service
+pump                            darwin/amd64,linux/amd64,linux/arm64  The pump componet of TiDB binlog service
+cluster            YES(v0.6.0)  darwin/amd64,linux/amd64              Deploy a TiDB cluster for production
+mirrors                         darwin/amd64,linux/amd64              Build a local mirrors and download all selected components
+bench                           darwin/amd64,linux/amd64              Benchmark database with different workloads
+doc                             darwin/amd64,linux/amd64              Online document for TiDB
+ctl                             darwin/amd64,linux/amd64,linux/arm64
+cdc                             darwin/amd64,linux/amd64,linux/arm64
 ```
 
 ### How to check whether the NTP service is normal

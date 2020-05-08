@@ -10,6 +10,111 @@ This document introduces how to deploy and use TiCDC to replicate incremental da
 
 ## Step 1: Deploy TiCDC cluster
 
+This section describes how to deploy TiCDC in the following different scenarios:
+
+- [Fresh deploy TiCDC using TiUP](#fresh-deploy-ticdc-using-tiup)
+- [Add TiCDC component to an existing TiDB cluster using TiUP](#add-ticdc-component-to-an-existing-tidb-cluster-using-tiup)
+- [Manually add TiCDC component to an existing TiDB cluster](#manually-add-ticdc-component-to-an-existing-tidb-cluster)
+
+### Fresh deploy TiCDC using TiUP
+
+TiUP cluster is a deployment tool for TiDB 4.0 and later versions. You must deploy and run TiCDC on TiDB v4.0.0-rc.1 or a later version.
+
+To deploy TiCDC, take the following steps:
+
+1. [Install TiUP](/how-to/deploy/orchestrated/tiup.md).
+
+2. Install the TiUP cluster component:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster
+    ```
+
+3. Edit the topology configuration file, and save it as `topology.yaml`:
+
+    Refer to the [full configuration file template](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml).
+
+    In addition to configuring the TiDB cluster deployment, you also need to configure the CDC server IP under the `cdc_servers` section. Currently the configuration only supports IP, not domain name.
+
+    {{< copyable "" >}}
+
+    ```ini
+    pd_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+    
+    tidb_servers:
+      - host: 172.19.0.101
+    
+    tikv_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+    
+    cdc_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+    ```
+
+4. Finish the following steps according to the TiUP deployment process:
+
+    Deploy the TiDB cluster. `test` is the cluster name:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster deploy test v4.0.0-rc.1 topology.yaml -i ~/.ssh/id_rsa
+    ```
+    
+    Start the TiDB cluster:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster start test
+    ```
+
+5. View the cluster status:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster display test
+    ```
+
+### Add TiCDC component to an existing TiDB cluster using TiUP
+
+1. Check if your TiDB version supports TiCDC. If not, upgrade the TiDB cluster to 4.0.0 rc.1 or later versions.
+
+2. Refer to [Scale out a TiDB/TiKV/PD/TiCDC node](/how-to/scale/with-tiup.md#scale-out-a-tidbtikvpdticdc-node) and deploy TiCDC.
+
+    This is an example of the scale-out configuration file:
+
+    ```shell
+   vi scale-out.yaml
+   ```
+
+   ```
+   cdc_servers:
+    - host: 10.0.1.5
+    - host: 10.0.1.6
+    - host: 10.0.1.7
+   ```
+
+   Run the scale-out command:
+
+   {{< copyable "shell-regular" >}}
+
+   ```shell
+   tiup cluster scale-out <cluster-name> scale-out.yaml
+   ```
+
+### Manually add TiCDC component to an existing TiDB cluster
+
 Suppose that there is a PD node (the client URL is `10.0.10.25:2379`) in the PD cluster that can provide services. If you want to deploy three TiCDC nodes, start the TiCDC cluster using the following commands. You only need to specify the same PD address, and the newly started TiCDC nodes will automatically be added to the TiCDC cluster.
 
 {{< copyable "shell-regular" >}}
