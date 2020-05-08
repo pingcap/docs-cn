@@ -11,19 +11,19 @@ The `METRICS_TABLES` table provides information of all monitoring tables in the 
 {{< copyable "sql" >}}
 
 ```sql
-desc metrics_tables;
+desc information_schema.metrics_tables;
 ```
 
 ```sql
-+------------+-----------------+------+------+---------+-------+
-| Field      | Type            | Null | Key  | Default | Extra |
-+------------+-----------------+------+------+---------+-------+
-| TABLE_NAME | varchar(64)     | YES  |      | NULL    |       |
-| PROMQL     | varchar(64)     | YES  |      | NULL    |       |
-| LABELS     | varchar(64)     | YES  |      | NULL    |       |
-| QUANTILE   | double unsigned | YES  |      | NULL    |       |
-| COMMENT    | varchar(256)    | YES  |      | NULL    |       |
-+------------+-----------------+------+------+---------+-------+
++------------+--------------+------+------+---------+-------+
+| Field      | Type         | Null | Key  | Default | Extra |
++------------+--------------+------+------+---------+-------+
+| TABLE_NAME | varchar(64)  | YES  |      | NULL    |       |
+| PROMQL     | varchar(64)  | YES  |      | NULL    |       |
+| LABELS     | varchar(64)  | YES  |      | NULL    |       |
+| QUANTILE   | double       | YES  |      | NULL    |       |
+| COMMENT    | varchar(256) | YES  |      | NULL    |       |
++------------+--------------+------+------+---------+-------+
 ```
 
 Field description:

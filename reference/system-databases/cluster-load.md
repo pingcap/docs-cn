@@ -11,7 +11,7 @@ The `CLUSTER_LOAD` cluster load table provides the current load information of t
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_load;
+desc information_schema.cluster_load;
 ```
 
 ```sql
@@ -45,21 +45,21 @@ The following example shows how to query the current load information of cpu usi
 {{< copyable "sql" >}}
 
 ```sql
-select * from cluster_load where device_type='cpu' and device_name='cpu';
+select * from information_schema.cluster_load where device_type='cpu' and device_name='cpu';
 ```
 
 ```sql
-+------+-----------------+-------------+-------------+--------+---------------+
-| TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME   | VALUE         |
-+------+-----------------+-------------+-------------+--------+---------------+
-| tidb | 127.0.0.1:10080 | cpu         | cpu         | load1  | 1.94          |
-| tidb | 127.0.0.1:10080 | cpu         | cpu         | load5  | 2.16          |
-| tidb | 127.0.0.1:10080 | cpu         | cpu         | load15 | 2.24          |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load1  | 1.94          |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load5  | 2.16          |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load15 | 2.24          |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load1  | 1.94287109375 |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load5  | 2.15576171875 |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load15 | 2.2421875     |
-+------+-----------------+-------------+-------------+--------+---------------+
++------+-----------------+-------------+-------------+--------+-------+
+| TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME   | VALUE |
++------+-----------------+-------------+-------------+--------+-------+
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load1  | 0.39  |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load5  | 0.36  |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load15 | 0.66  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load1  | 0.39  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load5  | 0.36  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load15 | 0.66  |
+| tikv | 127.0.0.1:20160 | cpu         | cpu         | load1  | 0.39  |
+| tikv | 127.0.0.1:20160 | cpu         | cpu         | load5  | 0.36  |
+| tikv | 127.0.0.1:20160 | cpu         | cpu         | load15 | 0.66  |
++------+-----------------+-------------+-------------+--------+-------+
 ```

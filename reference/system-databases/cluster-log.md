@@ -13,19 +13,19 @@ To get the logs of the TiDB cluster before v4.0, you need to log in to each inst
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_log;
+desc information_schema.cluster_log;
 ```
 
 ```sql
-+----------+---------------------------+------+------+---------+-------+
-| Field    | Type                      | Null | Key  | Default | Extra |
-+----------+---------------------------+------+------+---------+-------+
-| TIME     | varchar(32)               | YES  |      | NULL    |       |
-| TYPE     | varchar(64)               | YES  |      | NULL    |       |
-| INSTANCE | varchar(64)               | YES  |      | NULL    |       |
-| LEVEL    | varchar(8)                | YES  |      | NULL    |       |
-| MESSAGE  | var_string(1024) unsigned | YES  |      | NULL    |       |
-+----------+---------------------------+------+------+---------+-------+
++----------+------------------+------+------+---------+-------+
+| Field    | Type             | Null | Key  | Default | Extra |
++----------+------------------+------+------+---------+-------+
+| TIME     | varchar(32)      | YES  |      | NULL    |       |
+| TYPE     | varchar(64)      | YES  |      | NULL    |       |
+| INSTANCE | varchar(64)      | YES  |      | NULL    |       |
+| LEVEL    | varchar(8)       | YES  |      | NULL    |       |
+| MESSAGE  | var_string(1024) | YES  |      | NULL    |       |
++----------+------------------+------+------+---------+-------+
 5 rows in set (0.00 sec)
 ```
 
@@ -48,7 +48,7 @@ The following example shows how to query the execution process of a DDL statemen
 {{< copyable "sql" >}}
 
 ```sql
-select * from `CLUSTER_LOG` where message like '%ddl%' and message like '%job%58%' and type='tidb' and time > '2020-03-27 15:39:00';
+select * from information_schema.cluster_log where message like '%ddl%' and message like '%job%58%' and type='tidb' and time > '2020-03-27 15:39:00';
 ```
 
 ```sql

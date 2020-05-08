@@ -11,7 +11,7 @@ You can use the `CLUSTER_CONFIG` cluster configuration table to get the current 
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_config;
+desc information_schema.cluster_config;
 ```
 
 ```sql
@@ -37,7 +37,7 @@ The following example shows how to query the `coprocessor` configuration on the 
 {{< copyable "sql" >}}
 
 ```sql
-select * from cluster_config where type='tikv' and `key` like 'coprocessor%';
+select * from information_schema.cluster_config where type='tikv' and `key` like 'coprocessor%';
 ```
 
 ```sql

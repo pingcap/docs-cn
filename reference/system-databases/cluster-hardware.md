@@ -11,7 +11,7 @@ The `CLUSTER_HARDWARE` hardware system table provides the hardware information o
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_hardware;
+desc information_schema.cluster_hardware;
 ```
 
 ```sql
@@ -45,15 +45,15 @@ The following example shows how to query the CPU information using the `CLUSTER_
 {{< copyable "sql" >}}
 
 ```sql
-select * from cluster_hardware where device_type='cpu' and device_name='cpu' and name like '%cores';
+select * from information_schema.cluster_hardware where device_type='cpu' and device_name='cpu' and name like '%cores';
 ```
 
 ```sql
 +------+-----------------+-------------+-------------+--------------------+-------+
 | TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME               | VALUE |
 +------+-----------------+-------------+-------------+--------------------+-------+
-| tidb | 127.0.0.1:10080 | cpu         | cpu         | cpu-logical-cores  | 8     |
-| tidb | 127.0.0.1:10080 | cpu         | cpu         | cpu-physical-cores | 4     |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-logical-cores  | 8     |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-physical-cores | 4     |
 | pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-logical-cores  | 8     |
 | pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-physical-cores | 4     |
 | tikv | 127.0.0.1:20160 | cpu         | cpu         | cpu-logical-cores  | 8     |

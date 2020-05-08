@@ -6,12 +6,12 @@ category: reference
 
 # CLUSTER_SYSTEMINFO
 
-You can use the `CLUSTER_SYSTEMINFO` kernel parameter table to query the kernel configuration information of the server where all nodes of the cluster are located. Currently, you can query the information of the `sysctl` system.
+You can use the `CLUSTER_SYSTEMINFO` kernel parameter table to query the kernel configuration information of the server where all instances of the cluster are located. Currently, you can query the information of the `sysctl` system.
 
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_systeminfo;
+desc information_schema.cluster_systeminfo;
 ```
 
 ```sql
@@ -40,7 +40,7 @@ Field description:
 The following example shows how to query the kernel version of all servers in the cluster using the `CLUSTER_SYSTEMINFO` system information table.
 
 ```sql
-select * from CLUSTER_SYSTEMINFO where name like '%kernel.osrelease%'
+select * from information_schema.cluster_systeminfo where name like '%kernel.osrelease%'
 ```
 
 ```sql

@@ -19,7 +19,7 @@ The SQL diagnosis system has the following advantages:
 
 The SQL diagnosis system consists of three major parts:
 
-+ **Cluster information table**: The SQL diagnosis system introduces cluster information tables that provide a unified way to get the discrete information of each instance and node. This system fully integrates the cluster topology, hardware information, software information, kernel parameters, monitoring, system information, slow queries, statements, and logs of the entire cluster into the table. So you can query these information using SQL statements.
++ **Cluster information table**: The SQL diagnosis system introduces cluster information tables that provide a unified way to get the discrete information of each instance. This system fully integrates the cluster topology, hardware information, software information, kernel parameters, monitoring, system information, slow queries, statements, and logs of the entire cluster into the table. So you can query these information using SQL statements.
 
 + **Cluster monitoring table**: The SQL diagnosis system introduces cluster monitoring tables. All of these tables are in `metrics_schema`, and you can query monitoring information using SQL statements. Compared to the visualized monitoring before v4.0, you can use this SQL-based method to perform correlated queries on all the monitoring information of the entire cluster, and compare the results of different time periods to quickly identify performance bottlenecks. Because the TiDB cluster has many monitoring metrics, the SQL diagnosis system also provides monitoring summary tables, so you can find abnormal monitoring items more easily.
 
@@ -27,16 +27,16 @@ The SQL diagnosis system consists of three major parts:
 
 ## Cluster information tables
 
-The cluster information tables bring together the information of all nodes and instances in a cluster. With these tables, you can query all cluster information using only one SQL statement. The following is a list of cluster information tables:
+The cluster information tables bring together the information of all instances and instances in a cluster. With these tables, you can query all cluster information using only one SQL statement. The following is a list of cluster information tables:
 
-+ From the cluster topology table [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md), you can get the current topology information of the cluster, the version of each node, the Git Hash corresponding to the version, the starting time of each node, and the running time of each node.
-+ From the cluster configuration table [`information_schema.cluster_config`](/reference/system-databases/cluster-config.md), you can get the configuration of all nodes in the cluster. For versions earlier than 4.0, you need to access the HTTP API of each node one by one to get these configuration information.
++ From the cluster topology table [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md), you can get the current topology information of the cluster, the version of each instance, the Git Hash corresponding to the version, the starting time of each instance, and the running time of each instance.
++ From the cluster configuration table [`information_schema.cluster_config`](/reference/system-databases/cluster-config.md), you can get the configuration of all instances in the cluster. For versions earlier than 4.0, you need to access the HTTP API of each instance one by one to get these configuration information.
 + On the cluster hardware table [`information_schema.cluster_hardware`](/reference/system-databases/cluster-hardware.md), you can quickly query the cluster hardware information.
-+ On the cluster load table [`information_schema.cluster_load`](/reference/system-databases/cluster-load.md), you can query the load information of different nodes and hardware types of the cluster.
-+ On the kernel parameter table [`information_schema.cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md), you can query the kernel configuration information of different nodes in the cluster. Currently, TiDB supports querying the sysctl information.
-+ On the cluster log table [`information_schema.cluster_log`](/reference/system-databases/cluster-log.md), you can query cluster logs. By pushing down query conditions to each node, the impact of the query on cluster performance is less than that of the `grep` command.
++ On the cluster load table [`information_schema.cluster_load`](/reference/system-databases/cluster-load.md), you can query the load information of different instances and hardware types of the cluster.
++ On the kernel parameter table [`information_schema.cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md), you can query the kernel configuration information of different instances in the cluster. Currently, TiDB supports querying the sysctl information.
++ On the cluster log table [`information_schema.cluster_log`](/reference/system-databases/cluster-log.md), you can query cluster logs. By pushing down query conditions to each instance, the impact of the query on cluster performance is less than that of the `grep` command.
 
-On the system tables earlier than TiDB v4.0, you can only view the current node. TiDB v4.0 introduces the corresponding cluster tables and you can have a global view of the entire cluster on a single TiDB node. These tables are currently in `information_schema`, and the query method is the same as other `information_schema` system tables.
+On the system tables earlier than TiDB v4.0, you can only view the current instance. TiDB v4.0 introduces the corresponding cluster tables and you can have a global view of the entire cluster on a single TiDB instance. These tables are currently in `information_schema`, and the query method is the same as other `information_schema` system tables.
 
 ## Cluster monitoring tables
 

@@ -13,22 +13,24 @@ The structure of the `information_schema.inspection_summary` inspection summary 
 {{< copyable "sql" >}}
 
 ```sql
-desc inspection_summary;
+desc information_schema.inspection_summary;
 ```
 
 ```sql
-+--------------+-----------------------+------+------+---------+-------+
-| Field        | Type                  | Null | Key  | Default | Extra |
-+--------------+-----------------------+------+------+---------+-------+
-| RULE         | varchar(64)           | YES  |      | NULL    |       |
-| INSTANCE     | varchar(64)           | YES  |      | NULL    |       |
-| METRICS_NAME | varchar(64)           | YES  |      | NULL    |       |
-| LABEL        | varchar(64)           | YES  |      | NULL    |       |
-| QUANTILE     | double unsigned       | YES  |      | NULL    |       |
-| AVG_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
-| MIN_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
-| MAX_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
-+--------------+-----------------------+------+------+---------+-------+
++--------------+--------------+------+------+---------+-------+
+| Field        | Type         | Null | Key  | Default | Extra |
++--------------+--------------+------+------+---------+-------+
+| RULE         | varchar(64)  | YES  |      | NULL    |       |
+| INSTANCE     | varchar(64)  | YES  |      | NULL    |       |
+| METRICS_NAME | varchar(64)  | YES  |      | NULL    |       |
+| LABEL        | varchar(64)  | YES  |      | NULL    |       |
+| QUANTILE     | double       | YES  |      | NULL    |       |
+| AVG_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| MIN_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| MAX_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| COMMENT      | varchar(256) | YES  |      | NULL    |       |
++--------------+--------------+------+------+---------+-------+
+9 rows in set
 ```
 
 Field description:
@@ -37,10 +39,11 @@ Field description:
 * `INSTANCE`: The monitored instance.
 * `METRICS_NAME`: The monitoring metrics name.
 * `QUANTILE`: Takes effect on monitoring tables that contain `QUANTILE`. You can specify multiple percentiles by pushing down predicates. For example, you can execute `select * from inspection_summary where rule='ddl' and quantile in (0.80, 0.90, 0.99, 0.999)` to summarize the DDL-related monitoring metrics and query the P80/P90/P99/P999 results. `AVG_VALUE`, `MIN_VALUE`, and `MAX_VALUE` respectively indicate the average value, minimum value, and maximum value of the aggregation.
+* `COMMENT`: The comment about the corresponding monitoring metric.
 
 > **Note:**
 >
-> Because summarizing all results causes overhead, the rules in `information_summary` are triggered passively. That is, the specified `rule` runs only when it displays in the SQL predicate. For example, executing the `select * from inspection_summary` statement returns an empty result set. Executing `select * from inspection_summary where rule in ('read-link', 'ddl')` summarizes the read link and DDL-related monitoring metrics.
+> Because summarizing all results causes overhead, it is recommended to display the specific `rule` in the SQL predicate to reduce overhead. For example, executing `select * from inspection_summary where rule in ('read-link', 'ddl')` summarizes the read link and DDL-related monitoring metrics.
 
 Usage example:
 
@@ -59,13 +62,13 @@ FROM
   (
     SELECT
       /*+ time_range("2020-01-16 16:00:54.933", "2020-01-16 16:10:54.933")*/ *
-    FROM inspection_summary WHERE rule='read-link'
+    FROM information_schema.inspection_summary WHERE rule='read-link'
   ) t1
   JOIN
   (
     SELECT
       /*+ time_range("2020-01-16 16:10:54.933","2020-01-16 16:20:54.933")*/ *
-    FROM inspection_summary WHERE rule='read-link'
+    FROM information_schema.inspection_summary WHERE rule='read-link'
   ) t2
   ON t1.metrics_name = t2.metrics_name
   and t1.instance = t2.instance

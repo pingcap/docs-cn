@@ -15,23 +15,24 @@ The structure of the `information_schema.inspection_result` diagnosis result tab
 {{< copyable "sql" >}}
 
 ```sql
-desc inspection_result;
+desc information_schema.inspection_result;
 ```
 
 ```sql
-+-----------+--------------+------+------+---------+-------+
-| Field     | Type         | Null | Key  | Default | Extra |
-+-----------+--------------+------+------+---------+-------+
-| RULE      | varchar(64)  | YES  |      | NULL    |       |
-| ITEM      | varchar(64)  | YES  |      | NULL    |       |
-| TYPE      | varchar(64)  | YES  |      | NULL    |       |
-| INSTANCE  | varchar(64)  | YES  |      | NULL    |       |
-| VALUE     | varchar(64)  | YES  |      | NULL    |       |
-| REFERENCE | varchar(64)  | YES  |      | NULL    |       |
-| SEVERITY  | varchar(64)  | YES  |      | NULL    |       |
-| DETAILS   | varchar(256) | YES  |      | NULL    |       |
-+-----------+--------------+------+------+---------+-------+
-8 rows in set (0.00 sec)
++----------------+--------------+------+------+---------+-------+
+| Field          | Type         | Null | Key  | Default | Extra |
++----------------+--------------+------+------+---------+-------+
+| RULE           | varchar(64)  | YES  |      | NULL    |       |
+| ITEM           | varchar(64)  | YES  |      | NULL    |       |
+| TYPE           | varchar(64)  | YES  |      | NULL    |       |
+| INSTANCE       | varchar(64)  | YES  |      | NULL    |       |
+| STATUS_ADDRESS | varchar(64)  | YES  |      | NULL    |       |
+| VALUE          | varchar(64)  | YES  |      | NULL    |       |
+| REFERENCE      | varchar(64)  | YES  |      | NULL    |       |
+| SEVERITY       | varchar(64)  | YES  |      | NULL    |       |
+| DETAILS        | varchar(256) | YES  |      | NULL    |       |
++----------------+--------------+------+------+---------+-------+
+9 rows in set (0.00 sec)
 ```
 
 Field description:
@@ -39,12 +40,13 @@ Field description:
 * `RULE`: The name of the diagnosis rule. Currently, the following rules are available:
     * `config`: The consistency check of configuration. If the same configuration is inconsistent on different instances, a `warning` diagnosis result is generated.
     * `version`: The consistency check of version. If the same version is inconsistent on different instances, a `warning` diagnosis result is generated.
-    * `current-load`: If the current system load is too high, the corresponding `warning` diagnosis result is generated.
+    * `node-load`: If the current system load is too high, the corresponding `warning` diagnosis result is generated.
     * `critical-error`: Each module of the system defines critical errors. If a critical error exceeds the threshold within the corresponding time period, a warning diagnosis result is generated.
     * `threshold-check`: The diagnosis system checks the thresholds of a large number of metrics. If a threshold is exceeded, the corresponding diagnosis information is generated.
 * `ITEM`: Each rule diagnoses different items. This field indicates the specific diagnosis items corresponding to each rule.
 * `TYPE`: The instance type of the diagnosis. The optional values are `tidb`, `pd`, and `tikv`.
 * `INSTANCE`: The specific address of the diagnosed instance.
+* `STATUS_ADDRESS`: The HTTP API service address of the instance.
 * `VALUE`: The value of a specific diagnosis item.
 * `REFERENCE`: The reference value (threshold value) for this diagnosis item. If the difference between `VALUE` and the threshold is very large, the corresponding diagnosis information is generated.
 * `SEVERITY`: The severity level. The optional values are `warning` and `critical`.
@@ -57,7 +59,7 @@ Diagnose issues currently existing in the cluster.
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_result\G
+select * from information_schema.inspection_result\G
 ```
 
 ```sql
@@ -110,7 +112,7 @@ You can also diagnose issues existing within a specified range, such as from "20
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ time_range("2020-03-26 00:03:00", "2020-03-26 00:08:00") */ * from inspection_result\G
+select /*+ time_range("2020-03-26 00:03:00", "2020-03-26 00:08:00") */ * from information_schema.inspection_result\G
 ```
 
 ```sql
@@ -144,7 +146,7 @@ You can also specify conditions, for example, to query the `critical` level diag
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_result where severity='critical';
+select * from information_schema.inspection_result where severity='critical';
 ```
 
 Query only the diagnosis result of the `critical-error` rule:
@@ -152,7 +154,7 @@ Query only the diagnosis result of the `critical-error` rule:
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_result where rule='critical-error';
+select * from information_schema.inspection_result where rule='critical-error';
 ```
 
 ## Diagnosis rules
@@ -164,7 +166,7 @@ You can query the existing diagnosis rules by querying the `inspection_rules` sy
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_rules where type='inspection';
+select * from information_schema.inspection_rules where type='inspection';
 ```
 
 ```sql
@@ -173,7 +175,7 @@ select * from inspection_rules where type='inspection';
 +-----------------+------------+---------+
 | config          | inspection |         |
 | version         | inspection |         |
-| current-load    | inspection |         |
+| node-load       | inspection |         |
 | critical-error  | inspection |         |
 | threshold-check | inspection |         |
 +-----------------+------------+---------+
@@ -195,6 +197,7 @@ In the `config` diagnosis rule, the following two diagnosis rules are executed b
     status.status-port
     log.file.filename
     log.slow-query-file
+    tmp-storage-path
 
     // The whitelist of the PD configuration consistency check
     advertise-client-urls
@@ -214,6 +217,7 @@ In the `config` diagnosis rule, the following two diagnosis rules are executed b
     log-file
     raftstore.raftdb-path
     storage.data-dir
+    storage.block-cache.capacity
     ```
 
 * Check whether the values of the following configuration items are as expected.
@@ -230,7 +234,7 @@ The `version` diagnosis rule checks whether the version hash of the same compone
 {{< copyable "sql" >}}
 
 ```sql
-select * from inspection_result where rule='version'\G
+select * from information_schema.inspection_result where rule='version'\G
 ```
 
 ```sql
