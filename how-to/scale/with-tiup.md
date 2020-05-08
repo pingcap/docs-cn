@@ -21,7 +21,7 @@ TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 | 10.0.1.1   | TiKV   | 
 | 10.0.1.2   | TiKV    |
 
-## 1. 扩容 TiDB/TiKV/PD 节点
+## 1. 扩容 TiDB/TiKV/PD/TiCDC 节点
 
 如果要添加一个 TiDB 节点，IP 地址为 10.0.1.5，可以按照如下步骤进行操作。
 
@@ -120,7 +120,7 @@ tiup cluster display <cluster-name>
 
 打开浏览器访问监控平台 <http://10.0.1.5:3200>，监控整个集群和新增节点的状态。
 
-## 3. 缩容 TiDB/TiKV/PD 节点
+## 3. 缩容 TiDB/TiKV/PD/TiCDC 节点
 
 如果要移除一个 TiKV 节点，IP 地址为 10.0.1.5，可以按照如下步骤进行操作。
 
