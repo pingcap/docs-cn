@@ -9,6 +9,107 @@ category: reference
 
 ## 第 1 步：部署 TiCDC 集群
 
+本节介绍了在不同场景下如何安装部署 TiCDC，包括以下场景：
+
+- [使用 TiUP 全新部署 TiCDC](#使用-tiup-全新部署-ticdc)
+- [使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件](#使用-tiup-在原有-tidb-集群上新增-ticdc-组件)
+- [手动在原有 TiDB 集群上新增 TiCDC 组件](#手动在原有-tidb-集群上新增-ticdc-组件)
+
+### 使用 TiUP 全新部署 TiCDC
+
+TiUP cluster 是适用于 TiDB 4.0 及以上版本的部署工具，部署运行 TiCDC 必须使用 TiDB v4.0.0-rc.1 或更新版本，部署流程如下：
+
+1. 参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)安装 TiUP。
+
+2. 安装 TiUP cluster 组件
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster
+    ```
+
+3. 编写 topology 配置文件，保存为 `topology.yaml`。
+
+    可以参考[全量的配置文件模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。
+
+    除了部署 TiDB 集群的配置，需要额外在 `cdc_servers` 下配置 CDC 服务器所在的 ip（目前只支持 ip，不支持域名）。
+
+    {{< copyable "" >}}
+
+    ```ini
+    pd_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+
+    tidb_servers:
+      - host: 172.19.0.101
+
+    tikv_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+
+    cdc_servers:
+      - host: 172.19.0.101
+      - host: 172.19.0.102
+      - host: 172.19.0.103
+    ```
+
+4. 按照 TiUP 部署流程完成集群部署的剩余步骤，包括：
+
+    部署 TiDB 集群，其中 test 为集群名：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster deploy test v4.0.0-rc.1 topology.yaml -i ~/.ssh/id_rsa
+    ```
+
+    启动 TiDB 集群：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster start test
+    ```
+
+5. 查看集群状态
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster display test
+    ```
+
+### 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
+
+1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
+
+2. 参考 [扩容 TiDB/TiKV/PD 节点](/how-to/scale/with-tiup.md#1-扩容-tidbtikvpd-节点) 章节对 TiCDC 进行部署。
+   示例的扩容配置文件为：
+
+   ```shell
+   vi scale-out.yaml
+   ```
+
+   ```
+   cdc_servers:
+    - host: 10.0.1.5
+    - host: 10.0.1.6
+    - host: 10.0.1.7
+   ```
+
+   随后执行扩容命令即可：
+   {{< copyable "shell-regular" >}}
+
+   ```shell
+   tiup cluster scale-out <cluster-name> scale-out.yaml
+   ```
+
+### 手动在原有 TiDB 集群上新增 TiCDC 组件
+
 假设 PD 集群有一个可以提供服务的 PD 节点（client URL 为 `10.0.10.25:2379`）。若要部署三个 TiCDC 节点，可以按照以下命令启动集群。只需要指定相同的 PD 地址，新启动的节点就可以自动加入 TiCDC 集群。
 
 {{< copyable "shell-regular" >}}
