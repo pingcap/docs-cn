@@ -6,7 +6,9 @@ category: reference
 
 # Date and Time Types
 
-TiDB supports the following data types to store temporal values: `DATE`, `TIME`, `DATETIME`, `TIMESTAMP`, and `YEAR`. Each of these types has its own range of valid values, and uses a zero value to indicate that it is an invalid value. In addition, the `TIMESTAMP` and `DATETIME` types can automatically generate new time values on modification.
+TiDB supports all MySQL date and time data types to store temporal values: `DATE`, `TIME`, `DATETIME`, `TIMESTAMP`, and `YEAR`. For more information, see [Date and Time Data Types in MySQL](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html).
+
+Each of these types has its range of valid values, and uses a zero value to indicate that it is an invalid value. In addition, the `TIMESTAMP` and `DATETIME` types can automatically generate new time values on modification.
 
 When dealing with date and time value types, note:
 
@@ -75,6 +77,8 @@ Different types of zero value are shown in the following table:
 | YEAR      | 0000         |
 
 Invalid `DATE`, `DATETIME`, `TIMESTAMP` values are automatically converted to the corresponding type of zero value ( '0000-00-00' or '0000-00-00 00:00:00' ) if the SQL mode permits such usage.
+
+<!-- markdownlint-disable MD001 -->
 
 ### Automatic initialization and update of `TIMESTAMP` and `DATETIME`
 
@@ -180,14 +184,14 @@ The two-digit year-portion contained in date does not explicitly indicate the ac
 
 For `DATETIME`, `DATE` and `TIMESTAMP` types, TiDB follows the following rules to eliminate ambiguity:
 
-- Values between 00 and 69 is converted to a value between 2000 and 2069
+- Values between 01 and 69 is converted to a value between 2001 and 2069
 - Values between 70 and 99 is converted to a value between 1970 and 1999
 
 These rules also apply to the `YEAR` type, with one exception:
 
 When numeral `00` is inserted to `YEAR(4)`, the result is 0000 rather than 2000.
 
-If you want the result to be 2000, specify the value to be 2000, '0' or '00'.
+If you want the result to be 2000, specify the value to be 2000.
 
 The two-digit year-portion might not be properly calculated in some functions such  `MIN()` and  `MAX()`. For these functions, the four-digit format suites better.
 

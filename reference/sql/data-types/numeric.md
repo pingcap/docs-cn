@@ -14,7 +14,9 @@ TiDB supports all the MySQL numeric types, including:
 
 ## Integer types
 
-The meaning of the fields:
+TiDB supports all the MySQL integer types, including `INTEGER`/`INT`, `TINYINT`, `SMALLINT`, `MEDIUMINT`, and `BIGINT`. For more information, see [Numeric Data Type Syntax in MySQL](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-syntax.html).
+
+The following table summarizes field descriptions:
 
 | Syntax Element | Description |
 | -------- | ------------------------------- |
@@ -22,9 +24,19 @@ The meaning of the fields:
 | UNSIGNED | UNSIGNED. If omitted, it is SIGNED. |
 | ZEROFILL | If you specify ZEROFILL for a numeric column, TiDB automatically adds the UNSIGNED attribute to the column. |
 
+The following table summarizes the required storage and range for integer types supported by TiDB:
+
+| Data Type | Storage Required (bytes) | Minimum Value (signed/unsigned) | Maximum value (signed/unsigned) |
+| ------- | -------- | ----------- | ------------ |
+| `TINYINT` | 1 | -128 / 0 | 127 / 255 |
+| `SMALLINT` | 2 | -32768 / 0 | 32767 / 65535 |
+| `MEDIUMINT` | 3 | -8388608 / 0 | 8388607 / 16777215 |
+| `INT` | 4 | -2147483648 / 0 | 2147483647 / 4294967295 |
+| `BIGINT` | 8 | -9223372036854775808 / 0 | 9223372036854775807 / 18446744073709551615 |
+
 ### `BIT` type
 
-The BIT data type. A type of BIT(M) enables storage of M-bit values. M can range from 1 to 64:
+The BIT data type. A type of BIT(M) enables the storage of M-bit values. M can range from 1 to 64, with the default value of 1:
 
 ```sql
 BIT[(M)]
@@ -70,6 +82,12 @@ The `INTEGER` type and its alias `INT` stores signed values of range [-214748364
 INT[(M)] [UNSIGNED] [ZEROFILL]
 ```
 
+You can also use another form:
+
+```sql
+INTEGER[(M)] [UNSIGNED] [ZEROFILL]
+```
+
 ### `BIGINT` type
 
 The `BIGINT` data type stores signed values of range [-9223372036854775808, 9223372036854775807], and unsigned values of range [0, 18446744073709551615]:
@@ -80,9 +98,9 @@ BIGINT[(M)] [UNSIGNED] [ZEROFILL]
 
 ## Floating-point types
 
-TiDB supports all the MySQL floating-point types, including `FLOAT`, and `DOUBLE`. For more information, [Floating-Point Types (Approximate Value) - FLOAT, DOUBLE in MySQL](https://dev.mysql.com/doc/refman/5.7/en/floating-point-types.html).
+TiDB supports all the MySQL floating-point types, including `FLOAT`, and `DOUBLE`. For more information, see [Floating-Point Types (Approximate Value) - FLOAT, DOUBLE in MySQL](https://dev.mysql.com/doc/refman/5.7/en/floating-point-types.html).
 
-The meaning of the fields:
+The following table summarizes field descriptions:
 
 | Syntax Element | Description |
 | -------- | ------------------------------- |
@@ -91,9 +109,7 @@ The meaning of the fields:
 | UNSIGNED | UNSIGNED. If omitted, it is SIGNED. |
 | ZEROFILL | If you specify ZEROFILL for a numeric column, TiDB automatically adds the UNSIGNED attribute to the column. |
 
-### Storage
-
-See the following for the requirements of the storage:
+The following table summarizes the required storage for floating-point types supported by TiDB:
 
 | Data Type | Storage Required (bytes)|
 | ----------- |----------|
