@@ -373,7 +373,7 @@ br restore full \
 ```shell
     LAST_BACKUP_TS=`./br validate decode --field="end-version" -s local:///home/tidb/backupdata`
     ./br backup full\
-        --pd 172.16.5.xx:2379 \
+        --pd ${PDIP}:2379 \
         -s local:///home/tidb/backupdata/incr \
         --lastbackupts ${LAST_BACKUP_TS}
 ```
