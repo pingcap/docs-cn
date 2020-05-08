@@ -363,7 +363,7 @@
       - [TiDB 主从集群的数据校验](/reference/tools/sync-diff-inspector/tidb-diff.md)
     + TiUP
       - [概述](/reference/tools/tiup/overview.md)
-      - [管理组件](/reference/tools/tiup/manage-component.md)
+      - [使用 TiUP 命令管理组件](/reference/tools/tiup/manage-component.md)
       - [本地快速部署 TiDB 集群](/reference/tools/tiup/playground.md)
       - [部署运维 TiDB 线上集群](/reference/tools/tiup/cluster.md)
       - [搭建私有镜像](/reference/tools/tiup/mirrors.md)
