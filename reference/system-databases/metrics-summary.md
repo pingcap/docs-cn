@@ -16,21 +16,21 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-desc metrics_summary;
+desc information_schema.metrics_summary;
 ```
 
 ```
-+--------------+-----------------------+------+------+---------+-------+
-| Field        | Type                  | Null | Key  | Default | Extra |
-+--------------+-----------------------+------+------+---------+-------+
-| METRICS_NAME | varchar(64)           | YES  |      | NULL    |       |
-| QUANTILE     | double unsigned       | YES  |      | NULL    |       |
-| SUM_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
-| AVG_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
-| MIN_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
-| MAX_VALUE    | double(22,6) unsigned | YES  |      | NULL    |       |
-| COMMENT      | varchar(256)          | YES  |      | NULL    |       |
-+--------------+-----------------------+------+------+---------+-------+
++--------------+--------------+------+------+---------+-------+
+| Field        | Type         | Null | Key  | Default | Extra |
++--------------+--------------+------+------+---------+-------+
+| METRICS_NAME | varchar(64)  | YES  |      | NULL    |       |
+| QUANTILE     | double       | YES  |      | NULL    |       |
+| SUM_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| AVG_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| MIN_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| MAX_VALUE    | double(22,6) | YES  |      | NULL    |       |
+| COMMENT      | varchar(256) | YES  |      | NULL    |       |
++--------------+--------------+------+------+---------+-------+
 ```
 
 字段解释：
@@ -50,7 +50,7 @@ desc metrics_summary;
 
 ```sql
 select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
-from information_schema.`METRICS_SUMMARY`
+from information_schema.metrics_summary
 where metrics_name like 'tidb%duration'
  and avg_value > 0
  and quantile = 0.99
@@ -91,7 +91,7 @@ COMMENT      | The quantile of kv requests durations by store
 
 ```sql
 select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
-from information_schema.`METRICS_SUMMARY_BY_LABEL`
+from information_schema.metrics_summary_by_label
 where metrics_name like 'tidb%duration'
  and avg_value > 0
  and quantile = 0.99
