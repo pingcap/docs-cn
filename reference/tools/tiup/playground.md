@@ -96,9 +96,9 @@ tiup playground --db.binpath /xx/tidb-server
 tiup playground v3.0.10 --db 3 --pd 3 --kv 3
 ```
 
-## 快速连接到启动的 playground 集群
+## 快速连接到由 playground 启动的 TiDB 集群
 
-TiUP 提供了 `client` 组件，用于自动寻找并连接本地启动的 playground 集群，使用方式为：
+TiUP 提供了 `client` 组件，用于自动寻找并连接 playground 在本地启动的 TiDB 集群，使用方式为：
 
 {{< copyable "shell-regular" >}}
 
@@ -106,4 +106,4 @@ TiUP 提供了 `client` 组件，用于自动寻找并连接本地启动的 play
 tiup client
 ```
 
-该命令会在控制台上提供当前机器已经启动的 playground 列表，选中需要连接的 playground 集群，点击回车后，可以打开一个自带的 MySQL 客户端以连接 TiDB。
+该命令会在控制台上提供当前机器上由 playground 启动的 TiDB 集群列表，选中需要连接的 TiDB 集群，点击回车后，可以打开一个自带的 MySQL 客户端以连接 TiDB。
