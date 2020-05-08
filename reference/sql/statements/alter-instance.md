@@ -10,7 +10,7 @@ category: reference
 
 ## RELOAD TLS
 
-`ALTER INSTACE RELOAD TLS` 语句用于从原配置的证书 ([`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA。
+`ALTER INSTANCE RELOAD TLS` 语句用于从原配置的证书 ([`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA。
 
 新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
 
