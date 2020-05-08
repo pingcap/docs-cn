@@ -338,6 +338,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：NO_PRIORITY
 + 可选值：NO_PRIORITY, LOW_PRIORITY, HIGH_PRIORITY, DELAYED。
 
+### `distinct-agg-push-down`
+
++ 设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
++ 默认值：false
++ 该变量作为系统变量[`tidb_opt_distinct_agg_push_down`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
+
 ## prepared-plan-cache
 
 prepare 语句的 Plan cache 设置。
