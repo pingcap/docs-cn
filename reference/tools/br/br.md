@@ -359,6 +359,28 @@ br restore full \
 
 以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复某个数据库](#恢复某个数据库)相同。
 
+### 增量备份恢复
+
+如果想要增量备份，只需要在备份的时候指定 `--lastbackupts` 即可。
+
+注意增量备份有两个限制：
+- 增量备份需要与前一次全量备份在不同的路径下
+- 增量备份开始时间与 `lastbackupts` 之间不能有 GC
+
+{{< copyable "shell-regular" >}}
+
+```shell
+    LAST_BACKUP_TS=`./br validate decode --field="end-version" -s local:///home/tidb/backupdata`
+    ./br backup full\
+        --pd 172.16.5.xx:2379 \
+        -s local:///home/tidb/backupdata/incr \
+        --lastbackupts ${LAST_BACKUP_TS}
+```
+
+以上命令会备份 `[LAST_BACKUP_TS, current PD timestamp)` 之间的增量数据；注意你可以使用 `validate` 指令获取上一次备份的时间戳。
+
+在增量恢复的时候，使用 BR 的方法和普通的恢复并无二样；只不过需要注意恢复增量数据的时候，需要保证备份时指定的 last backup ts 之前备份的数据已经全部恢复到目标集群。
+
 ## 最佳实践
 
 - 推荐在 `-s` 指定的备份路径上挂载一个共享存储，例如 NFS。这样能方便收集和管理备份文件。
