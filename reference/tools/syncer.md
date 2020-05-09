@@ -7,7 +7,7 @@ category: reference
 
 > **警告：**
 >
-> Syncer 目前已经不再维护，其功能已经完全被 [TiDB Data Migration](#增量导入工具-tidb-data-migration)取代，强烈建议切换到 TiDB DM。
+> Syncer 目前已经不再维护，其功能已经完全被 [TiDB Data Migration](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/)取代，强烈建议切换到 TiDB DM。
 
 ## Syncer 简介
 
