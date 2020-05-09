@@ -29,7 +29,6 @@ ALTER TABLE t1 ALTER INDEX c1 INVISIBLE;
 
 ```
 Query OK, 0 rows affected (0.02 sec)
-
 ```
 
 {{< copyable "sql" >}}
@@ -134,7 +133,9 @@ SELECT * FROM t1 USE INDEX(c1);
 ERROR 1176 (42000): Key 'c1' doesn't exist in table 't1'
 ```
 
-注意，“不可见”是仅仅对优化器而言的，不可见索引仍然可以被修改或删除。
+> **注意：**
+>
+> “不可见”是仅仅对优化器而言的，不可见索引仍然可以被修改或删除。
 
 {{< copyable "sql" >}}
 
@@ -148,7 +149,7 @@ Query OK, 0 rows affected (0.02 sec)
 
 ### 限制
 
-MySQL 对不可见索引有一条限制：不能将**主键**设置为不可见的。TiDB 兼容这条限制，这种情况会会抛出错误。
+MySQL 对不可见索引有一条限制：不能将**主键**设置为不可见的。TiDB 兼容这条限制，这种情况会抛出错误。
 
 {{< copyable "sql" >}}
 
@@ -185,3 +186,5 @@ ERROR 3522 (HY000): A primary key index cannot be invisible
 * [CREATE TABLE](/reference/sql/statements/create-table.md)
 * [CREATE INDEX](/reference/sql/statements/create-index.md)
 * [ADD INDEX](/reference/sql/statements/add-index.md)
+* [DROP INDEX](/reference/sql/statements/drop-index.md)
+* [RENAME INDEX](/reference/sql/statements/rename-index.md)
