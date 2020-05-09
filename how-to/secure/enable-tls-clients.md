@@ -132,6 +132,7 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 - TLS 1.0
 - TLS 1.1
 - TLS 1.2
+- TLS 1.3
 
 ### 支持的密钥交换协议及加密算法
 
@@ -150,11 +151,6 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_128\_GCM\_SHA256
 - TLS\_ECDHE\_RSA\_WITH\_AES\_256\_GCM\_SHA384
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_256\_GCM\_SHA384
-<<<<<<< HEAD
-- TLS\_ECDHE\_RSA\_WITH\_CHACHA20\_POLY1305
-- TLS\_ECDHE\_ECDSA\_WITH\_CHACHA20\_POLY1305
-=======
 - TLS\_AES\_128\_GCM\_SHA256
 - TLS\_AES\_256\_GCM\_SHA384
 - TLS\_CHACHA20\_POLY1305\_SHA256
->>>>>>> 9bfe90d... how-to/secure: remove some week cipher suits (#2998)
