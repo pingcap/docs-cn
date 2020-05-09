@@ -386,6 +386,8 @@
     + TiUP
       - [Manage Components with Commands](/reference/tools/tiup/manage-component.md)
       - [Quickly Deploy a Local TiDB Cluster](/reference/tools/tiup/playground.md)
+      - [Deploy and Maintain an Online TiDB Cluster](/reference/tools/tiup/cluster.md)
+      - [Stress Test TiDB Using TiUP](/reference/tools/tiup/bench.md)
     - [PD Control](/reference/tools/pd-control.md)
     - [PD Recover](/reference/tools/pd-recover.md)
     - [TiKV Control](/reference/tools/tikv-control.md)
