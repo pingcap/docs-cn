@@ -160,9 +160,15 @@ CREATE TABLE t2(c1 INT, PRIMARY KEY(c1) INVISIBLE);
 ERROR 3522 (HY000): A primary key index cannot be invisible
 ```
 
-这里的**主键**包括隐式的主键，隐式主键指的是当表中不存在显式的主键时，第一个 UNIQUE 索引（要求满足索引上的每一列都是 NOT NULL）会成为隐式的主键。
+这里的**主键**包括既包括显式的主键（通过 PRIMARY KEY 关键字指定的主键），也包括隐式的主键。
 
-即隐式的主键也不能被设置为不可见的。
+当表中不存在显式的主键时，第一个 UNIQUE 索引（要求满足索引上的每一列都是 NOT NULL）会自动成为隐式的主键。
+
+即不能将隐式的主键设置为不可见的。
+
+> **注意：**
+>
+> TiDB 并不会实际创建一个**隐式的主键**，这个限制仅仅在行为上兼容 MySQL。
 
 {{< copyable "sql" >}}
 
