@@ -40,7 +40,7 @@ category: how-to
 
     - 单个 TiKV Region 过多，导致单个 gRPC 线程成为瓶颈（查看监控：**Grafana** -> **TiKV-details** -> **Thread CPU**/**gRPC CPU Per Thread**），v3.x 以上版本可以开启 Hibernate Region 特性解决该问题，见案例 [case-612](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case612.md)。
 
-    - v3.0 之前版本 Raftstore 单线程或者 apply 单线程到达瓶颈（查看监控：**Grafana** -> **TiKV-details** -> **Thread CPU**/**raft store CPU** 和 **Async apply CPU** 超过 `80%`）。可以选择扩容 TiKV（v2.x 版本）实例，或者升级到多线程模型的 v3.x 版本。见案例 [case-517](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case517.md)。
+    - v3.0 之前版本 Raftstore 单线程或者 apply 单线程到达瓶颈（查看监控：**Grafana** -> **TiKV-details** -> **Thread CPU**/**raft store CPU** 和 **Async apply CPU** 超过 `80%`）。可以选择扩容 TiKV（v2.x 版本）实例，或者升级到多线程模型的 v3.x 版本。<!-- 见案例 [case-517](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case517.md)。-->
 
 - 2.2.2 CPU load 升高。
 
@@ -52,7 +52,7 @@ category: how-to
 
 ### 3.1 DDL
 
-- 3.1.1 修改 `decimal` 字段长度时报错 `"ERROR 1105 (HY000): unsupported modify decimal column precision"`。见案例 [case-1004](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1004.md)，TiDB 暂时不支持修改 `decimal` 字段长度。
+- 3.1.1 修改 `decimal` 字段长度时报错 `"ERROR 1105 (HY000): unsupported modify decimal column precision"`。<!-- 见案例 [case-1004](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1004.md)，-->TiDB 暂时不支持修改 `decimal` 字段长度。
 
 - 3.1.2 TiDB DDL job 卡住不动/执行很慢（通过 `admin show ddl jobs` 可以查看 DDL 进度）：
 
@@ -329,7 +329,7 @@ category: how-to
 
 - 5.3.1 使用 `/api/v1/regions` 接口时 Region 数量过多，可能会导致 PD OOM，在 v3.0.8 版本中修复，见 [#1986](https://github.com/pingcap/pd/pull/1986)。
 
-- 5.3.2 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，在 v3.0.6 版本中修复，见 [#1952](https://github.com/pingcap/pd/pull/1952)。详情请参考案例 [case-852](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case852.md)。
+- 5.3.2 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，在 v3.0.6 版本中修复，见 [#1952](https://github.com/pingcap/pd/pull/1952)。<!-- 详情请参考案例 [case-852](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case852.md)。-->
 
 ### 5.4 Grafana 显示问题
 
@@ -451,7 +451,7 @@ category: how-to
 
         - relay.meta 中记录空的 GTID 信息，DM-worker 进程在退出时、以及定时 (30s) 会把内存中的 GTID 信息保存到 relay.meta 中，在没有获取到上游 GTID 信息的情况下，把空的 GTID 信息保存到了 relay.meta 中。见案例 [case-772](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case772.md)。
 
-        - relay.meta 中记录的 binlog event 不完整触发 recover 流程后记录错误的 GTID 信息，该问题可能会在 1.0.2 之前的版本遇到，已在 1.0.2 版本修复。见案例 [case-764](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case764.md)。
+        - relay.meta 中记录的 binlog event 不完整触发 recover 流程后记录错误的 GTID 信息，该问题可能会在 1.0.2 之前的版本遇到，已在 1.0.2 版本修复。<!-- 见案例 [case-764](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case764.md)。-->
 
 - 6.2.7 DM 同步报错 `Error 1366: incorrect utf8 value eda0bdedb29d(\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd)`。
 
