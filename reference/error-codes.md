@@ -17,17 +17,19 @@ In addition, TiDB has the following unique error codes:
 
     The memory used by the request exceeds the threshold limit for the TiDB memory usage.
 
-    Increase the value of the system variable with the `tidb_mem_quota` prefix.
+    Increase the memory limit for a single SQL statement by configuring `mem-quota-query`.
 
 * Error Number: 8002
 
     To guarantee consistency, a transaction with the `SELECT FOR UPDATE` statement cannot be retried when it encounters a commit conflict. TiDB rolls back the transaction and returns this error.
 
-    Retry the failed transaction.
+    The application can safely retry the whole transaction.
 
 * Error Number: 8003
 
-    If the data in a row is not consistent with the index when executing the `ADMIN CHECK TABLE` command, TiDB returns this error.
+    If the data in a row is not consistent with the index when executing the `ADMIN CHECK TABLE` command, TiDB returns this error. This error is commonly seen when you check the data corruption in the table.
+
+    You can contact PingCAP for support or seek help in the official forum.
 
 * Error Number: 8004
 
@@ -43,83 +45,93 @@ In addition, TiDB has the following unique error codes:
 
 * Error Number: 8018
 
-    The plugin cannot be reloaded because it has not been loaded before.
+    When you reload a plugin, if the plugin has not been loaded before, this error is returned.
+    
+    You can execute an initial load of the plugin.
 
 * Error Number: 8019
 
-    The version of the plugin that is being reloaded is different from the previous version. Therefore, the plugin cannot be reloaded.
+    The version of the plugin that is being reloaded is different from the previous version. Therefore, the plugin cannot be reloaded, and this error is returned.
+
+    You can reload the plugin by ensuring that the plugin version is the same as the previous one.
 
 * Error Number: 8020
 
-    The table is locked.
+    When the table is locked, if you perform a write operation on the table, this error is returned.
+
+    Unlock the table and retry the write operation.
 
 * Error Number: 8021
 
-    The key does not exist.
+    When the key to be read from TiKV does not exist, this error is returned. This error is used internally, and the external result is an empty read.
 
 * Error Number: 8022
 
-    The transaction commit fails. You can retry the process.
+    The transaction commit fails and has been rolled back.
+    
+    The application can safely retry the whole transaction.
 
 * Error Number: 8023
 
-    An empty value is not allowed.
+    If you set an empty value when writing the transaction cache, this error is returned. This error is used and dealt with internally, and is not returned to the application.
 
 * Error Number: 8024
 
-    Invalid transactions.
+    Invalid transactions. If TiDB finds that no transaction ID (Start Timestamp) is obtained for the transaction that is being executed, which means this transaction is invalid, this error is returned.
+
+    Usually this error does not occur. If you encounter this error, contact PingCAP for support or seek help in the official forum.
 
 * Error Number: 8025
 
-    The single Key-Value pair being written is too large.
+    The single Key-Value pair being written is too large. The largest single Key-Value pair supported in TiDB is 6 MB.
+    
+    If a pair exceeds this limit, you need to manually deal with this row of data to meet the 6 MB limit.
 
 * Error Number: 8026
 
-    The interface has not been implemented.
+    The interface function being used has not been implemented. This error is only used internally, and is not returned to the application.
 
 * Error Number: 8027
 
-    The table schema version is outdated.
+    The table schema version is outdated. TiDB uses the F1 online schema change algorithm to execute DDL statements. When the table schema version of the TiDB server is earlier than that of the entire system, this error is returned if you execute a SQL statement.
+
+    When this error occurs, check the network between the TiDB server and the PD Leader.
 
 * Error Number: 8028
 
-    The table schema has changed.
+    TiDB does not support table lock, which is called metadata lock in MySQL and might be called intention lock in other databases.
+
+    When a transaction is executed, the transaction cannot recognize the table schema changes. Therefore, when committing a transaction, TiDB checks the table schema related the transaction. If the related table schema has changed during the execution, the transaction commit will fail and this error is returned.
+
+    The application can safely retry the whole transaction.
 
 * Error Number: 8029
 
-    Incorrect value.
+    This error occurs when numeric conversion within the database encounters an error. This error is only used internally and is converted to a specific type of error for external applications.
 
 * Error Number: 8030
 
-    After an unsigned positive integer is converted to a signed integer, it exceeds the maximum value and displays as a negative integer.
+    After an unsigned positive integer is converted to a signed integer, it exceeds the maximum value and displays as a negative integer. This error mostly occurs in the alert message.
 
 * Error Number: 8031
 
-    When being converted to an unsigned integer, a negative integer is converted to a positive integer.
+    When being converted to an unsigned integer, a negative integer is converted to a positive integer. This error mostly occurs in the alert message.
 
 * Error Number: 8032
 
-    Invalid `year` format.
+    Invalid `year` format is used. `year` only accepts 1, 2 or 4 digits.
 
 * Error Number: 8033
 
-    Invalid `year` value.
-
-* Error Number: 8034
-
-    Incorrect `datetime` value.
-
-* Error Number: 8036
-
-    Invalid `time` format.
+    Invalid `year` value is used. The valid range of `year` is (1901, 2155).
 
 * Error Number: 8037
 
-    Invalid `week` format.
+    Invalid `mode` format is used in the `week` function. `mode` must be 1 digit within [0, 7].
 
 * Error Number: 8038
 
-    The field fails to obtain the default value.
+    The field fails to obtain the default value. This error is usually used internally, and is converted to a specific type of error for external applications.
 
 * Error Number: 8039
 
