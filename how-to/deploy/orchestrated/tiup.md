@@ -49,8 +49,8 @@ The software and hardware recommendations for the **target machines** are as fol
     - Under ARM architecture, it is recommended to use CentOS 7.6 1810 as the operating system.
 - For the file system of TiKV data files, it is recommended to use EXT4 format. (refer to [Step 3](#step-3-mount-the-data-disk-ext4-filesystem-with-options-on-the-target-machines-that-deploy-tikv)) You can also use CentOS default XFS format.
 - The target machines can communicate with each other on the Intranet. (It is recommended to [disable the firewall `firewalld`](#how-to-stop-the-firewall-service-of-deployment-machines), or enable the required ports between the nodes of the TiDB cluster.)
+- [Disable the system swap](#how-to-disable-system-swap) on all the deployment machines.
 - If you need to bind CPU cores, [install the `numactl` tool](#how-to-install-the-numactl-tool).
-- If you need to bind CPU cores, install the `numactl` tool.
 
 For other software and hardware recommendations, refer to [TiDB Software and Hardware Recommendations](/how-to/deploy/hardware-recommendations.md).
 
@@ -1338,7 +1338,7 @@ ID              Role          Host      Ports                            Status 
 
 #### Check TiDB cluster status through TiDB Dashboard
 
-Log in to TiDB Dashboard via `{pd-leader-ip}:2379/dashboard` with the `root` user and password (empty by default) of the TiDB database. If you have modified the password of the `root` user, then enter the modified password.
+Log in to TiDB Dashboard via `{pd-ip}:2379/dashboard` with the `root` user and password (empty by default) of the TiDB database. If you have modified the password of the `root` user, then enter the modified password.
 
 ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
@@ -1906,3 +1906,21 @@ cdc                             darwin/amd64,linux/amd64,linux/arm64
     ```bash
     tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
     ```
+
+### How to disable system swap
+
+TiDB requires sufficient memory space for operation. It is not recommended to use swap as a buffer for insufficient memory, which might reduce performance. Therefore, it is recommended to disable the system swap permanently.
+
+> **Note:**
+>
+> Do not disable the system swap by executing `swapoff -a`, or this setting will be invalid after the machine is restarted.
+
+To disable the system swap, execute the following command:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+echo "vm.swappiness = 0">> /etc/sysctl.conf 
+swapoff -a && swapon -a
+sysctl -p
+```
