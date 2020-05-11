@@ -79,7 +79,7 @@ Flags:
 
 5. 上传到仓库：
 
-    由于目前官方仓库未开放上传，我们只能上传到第 3 步中自己搭建的镜像上，上传方式就是直接将 package 中的所有文件拷贝到第 3 步 `tiup mirrors` 的 `${target-dir}` 中。
+    由于目前官方仓库未开放上传，我们只能上传到第 3 步中自己搭建的镜像上，上传方式就是直接将 package 中的所有文件拷贝到第 3 步 `tiup mirrors` 的 `<target-dir>` 中。
 
     {{< copyable "shell-regular" >}}
 
