@@ -126,7 +126,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
 
 <!-- markdownlint-disable MD001 -->
 
-### 自动初始化和更新 `TIMESTAMP` 和 `DATETIME`
+### 自动初始化和更新 `TIMESTAMP` 或 `DATETIME`
 
 带有 `TIMESTAMP` 或 `DATETIME` 数据类型的列可以自动初始化为或更新为当前时间。
 
