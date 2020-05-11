@@ -103,6 +103,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * [ADD INDEX](/reference/sql/statements/add-index.md)
 * [DROP INDEX](/reference/sql/statements/drop-index.md)
 * [RENAME INDEX](/reference/sql/statements/rename-index.md)
+* [ALTER INDEX](/reference/sql/statements/alter-index.md)
 * [CREATE TABLE](/reference/sql/statements/create-table.md)
 * [DROP TABLE](/reference/sql/statements/drop-table.md)
 * [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)

@@ -75,9 +75,9 @@ ssl-key = "certs/server-key.pem"
 
 若证书参数无误，则 TiDB 在启动时将会输出 `secure connection is enabled`，否则 TiDB 会输出 `secure connection is NOT ENABLED`。
 
-## 重加载证书密钥和 CA
+## 重加载证书、密钥和 CA
 
-在需要替换证书、密钥或 CA 时，可以在完成对应文件替换后，对运行中的 TiDB 实例执行 [`ALTER INSTACE RELOAD TLS`](/reference/sql/statements/alter-instance.md) 语句从原配置的证书 ([`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA 文件，而无需重启 TiDB 实例。
+在需要替换证书、密钥或 CA 时，可以在完成对应文件替换后，对运行中的 TiDB 实例执行 [`ALTER INSTANCE RELOAD TLS`](/reference/sql/statements/alter-instance.md) 语句从原配置的证书 ([`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA，而无需重启 TiDB 实例。
 
 新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
 
@@ -158,18 +158,13 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 
 ### 支持的密钥交换协议及加密算法
 
-- TLS\_RSA\_WITH\_RC4\_128\_SHA
-- TLS\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA
 - TLS\_RSA\_WITH\_AES\_128\_CBC\_SHA
 - TLS\_RSA\_WITH\_AES\_256\_CBC\_SHA
 - TLS\_RSA\_WITH\_AES\_128\_CBC\_SHA256
 - TLS\_RSA\_WITH\_AES\_128\_GCM\_SHA256
 - TLS\_RSA\_WITH\_AES\_256\_GCM\_SHA384
-- TLS\_ECDHE\_ECDSA\_WITH\_RC4\_128\_SHA
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_128\_CBC\_SHA
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_256\_CBC\_SHA
-- TLS\_ECDHE\_RSA\_WITH\_RC4\_128\_SHA
-- TLS\_ECDHE\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA
 - TLS\_ECDHE\_RSA\_WITH\_AES\_128\_CBC\_SHA
 - TLS\_ECDHE\_RSA\_WITH\_AES\_256\_CBC\_SHA
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_128\_CBC\_SHA256
@@ -178,8 +173,6 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_128\_GCM\_SHA256
 - TLS\_ECDHE\_RSA\_WITH\_AES\_256\_GCM\_SHA384
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_256\_GCM\_SHA384
-- TLS\_ECDHE\_RSA\_WITH\_CHACHA20\_POLY1305
-- TLS\_ECDHE\_ECDSA\_WITH\_CHACHA20\_POLY1305
 - TLS\_AES\_128\_GCM\_SHA256
 - TLS\_AES\_256\_GCM\_SHA384
 - TLS\_CHACHA20\_POLY1305\_SHA256

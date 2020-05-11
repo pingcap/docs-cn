@@ -364,7 +364,7 @@
       - [TiDB 主从集群的数据校验](/reference/tools/sync-diff-inspector/tidb-diff.md)
     + TiUP
       - [概述](/reference/tools/tiup/overview.md)
-      - [管理组件](/reference/tools/tiup/manage-component.md)
+      - [使用 TiUP 命令管理组件](/reference/tools/tiup/manage-component.md)
       - [本地快速部署 TiDB 集群](/reference/tools/tiup/playground.md)
       - [部署运维 TiDB 线上集群](/reference/tools/tiup/cluster.md)
       - [搭建私有镜像](/reference/tools/tiup/mirrors.md)
@@ -402,6 +402,7 @@
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.14](/releases/3.0.14.md)
     - [3.0.13](/releases/3.0.13.md)
     - [3.0.12](/releases/3.0.12.md)
     - [3.0.11](/releases/3.0.11.md)
