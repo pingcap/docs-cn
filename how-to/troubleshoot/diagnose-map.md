@@ -162,7 +162,7 @@ category: how-to
 
 ### 3.4 SQL 执行报错
 
-- 3.4.1 客户端报 `ERROR 1265(01000) Data Truncated` 错误。原因是 TiDB 内在计算 `Decimal` 类型处理精度的时候，和 MySQL 不兼容（内部正在修复中，预计 v3.0.10 版本修复），具体原因如下：
+- 3.4.1 客户端报 `ERROR 1265(01000) Data Truncated` 错误。原因是 TiDB 内在计算 `Decimal` 类型处理精度的时候，和 MySQL 不兼容。该错误已于 v3.0.10 中修复 ([#14438](https://github.com/pingcap/tidb/pull/14438))，具体原因如下：
 
     在 MySQL 内，如果两个大精度 `Decimal` 做除法运算，超出最大小数精度时(`30`)，会只保留 `30` 位且不报错；TiDB 在计算结果上，也是这样实现的，但是在内部表示 `Decimal` 的结构体内，有一个表示小数精度的字段，还是保留的真实精度；
 
