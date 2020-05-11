@@ -64,7 +64,7 @@ Flags:
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup mirrors <target-dir> [global-version] [flags]`
+tiup mirrors <target-dir> [global-version] [flags]
 ```
 
 - `target-dir`：指需要把克隆下来的数据放到哪个目录里。
