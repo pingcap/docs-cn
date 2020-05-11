@@ -7,7 +7,7 @@ category: reference
 
 TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DATETIME`、`TIMESTAMP` 以及 `YEAR`。完整信息可以参考 [MySQL 中的时间和日期类型](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html)。
 
-每种类型都有有效值范围，值为 0 表示它是一个无效值。此外，`TIMESTAMP` 和`DATETIME` 类型能自动生成新的时间值。
+每种类型都有有效值范围，值为 0 表示无效值。此外，`TIMESTAMP` 和`DATETIME` 类型能自动生成新的时间值。
 
 关于日期和时间值类型，需要注意：
 
