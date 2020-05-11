@@ -12,6 +12,7 @@ category: reference
 ## 只有一个 max/min 函数时的优化规则
 
 当一个 SQL 满足以下条件时，就会应用这个规则：
+
 1. 只有一个聚合函数，且为 max 或者 min 函数
 2. 聚合函数没有相应的 `group by` 语句
 
@@ -48,6 +49,7 @@ mysql> explain select max(a) from t;
 ## 存在多个 max/min 函数时的优化规则
 
 当一个 SQL 满足以下条件时，就会应用这个规则：
+
 1. 有多个聚合函数，且所有的聚合函数都是 max/min
 2. 聚合函数没有相应的 `group by` 语句
 3. 每个 max/min 聚合函数参数中的列都有索引能够保序。
