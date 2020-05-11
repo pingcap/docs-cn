@@ -63,7 +63,7 @@ TiKV 节点收到备份请求后，会遍历节点上所有的 Region Leader，�
 
 TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR。BR 将这些元信息收集并存储进 `backupmeta` 文件中，等待恢复时使用。
 
-假如 `StartVersion` 不为 0，这次备份会被视作增量备份，BR 除了收集 KV 以外，还会收集 `[StartVersion, EndVersion)` 之间的 DDL，在进行恢复的时候，会先恢复这些 DDL。 
+假如 `StartVersion` 不为 0，这次备份会被视作增量备份。BR 除了收集 KV 以外，还会收集 `[StartVersion, EndVersion)` 之间的 DDL，在进行恢复的时候，会先恢复这些 DDL。 
 
 如果执行命令时开启了 checksum，那么 BR 在最后会对备份的每一张表计算 checksum 用于校验。
 
@@ -381,11 +381,11 @@ br restore full \
         --lastbackupts ${LAST_BACKUP_TS}
 ```
 
-以上命令会备份 `[LAST_BACKUP_TS, current PD timestamp)` 之间的增量数据；注意你可以使用 `validate` 指令获取上一次备份的时间戳。
+以上命令会备份 `[LAST_BACKUP_TS, current PD timestamp)` 之间的增量数据。你可以使用 `validate` 指令获取上一次备份的时间戳。
 
-我们备份的增量数据包括 `[LAST_BACKUP_TS, current PD timestamp)` 的新写入，以及这段时间的 DDL。在恢复的时候，我们会先把所有 DDL 恢复，而后才会恢复写入。
+示例备份的增量数据包括 `[LAST_BACKUP_TS, current PD timestamp)` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，我们会先把所有 DDL 恢复，而后才会恢复写入数据。
 
-在增量恢复的时候，使用 BR 的方法和普通的恢复并无二样；只不过需要注意恢复增量数据的时候，需要保证备份时指定的 last backup ts 之前备份的数据已经全部恢复到目标集群。
+在增量恢复的时候，使用 BR 的方法和普通的恢复并无差别。需要注意，进行恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
 
 ## 最佳实践
 
