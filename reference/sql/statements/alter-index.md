@@ -6,7 +6,7 @@ category: reference
 
 # ALTER INDEX
 
-`ALTER INDEX` 语句用于修改索引的可见性，可以将索引设置为 Visible 或者 Invisible。设置为 Invisible 的索引将无法被优化器使用。
+`ALTER INDEX` 语句用于修改索引的可见性，可以将索引设置为 `Visible` 或者 `Invisible`。设置为 `Invisible` 的索引将无法被优化器使用。
 
 ## 语法
 
@@ -27,7 +27,7 @@ CREATE TABLE t1 (c1 INT, UNIQUE(c1));
 ALTER TABLE t1 ALTER INDEX c1 INVISIBLE;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.02 sec)
 ```
 
@@ -37,7 +37,7 @@ Query OK, 0 rows affected (0.02 sec)
 SHOW CREATE TABLE t1;
 ```
 
-```
+```sql
 +-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Table | Create Table
                                     |
@@ -52,7 +52,7 @@ SHOW CREATE TABLE t1;
 
 ## 不可见索引
 
-不可见索引（Invisible Indexes）是 MySQL 8.0 引入的新功能，将一个索引设置为不可见，使优化器不会再使用这条索引。这个功能可以方便地验证使用或者不使用一条索引的查询计划，避免了 Drop index / Add index 这种资源消耗较多的操作。
+不可见索引 (Invisible Indexes) 是 MySQL 8.0 引入的新功能，将一个索引设置为不可见，使优化器不会再使用这条索引。这个功能可以方便地验证使用或者不使用一条索引的查询计划，避免了 `Drop index` 或 `Add index` 这种资源消耗较多的操作。
 
 {{< copyable "sql" >}}
 
@@ -61,7 +61,7 @@ CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
 CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 ```
 
-可以通过 Create Table 语句查看，不可见的索引会用 `/*!80000 INVISIBLE */` 标识出：
+可以通过 `Create Table` 语句查看，不可见的索引会用 `/*!80000 INVISIBLE */` 标识出：
 
 {{< copyable "sql" >}}
 
@@ -69,7 +69,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 SHOW CREATE TABLE t1;
 ```
 
-```
+```sql
 +-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Table | Create Table
                                                               |
@@ -84,7 +84,7 @@ SHOW CREATE TABLE t1;
 1 row in set (0.00 sec)
 ```
 
-优化器将无法使用**不可见的索引**：
+优化器将无法使用 `c1` 这个**不可见的索引**：
 
 {{< copyable "sql" >}}
 
@@ -92,7 +92,7 @@ SHOW CREATE TABLE t1;
 EXPLAIN SELECT c1 FROM t1 ORDER BY c1; 
 ```
 
-```
+```sql
 +-------------------------+----------+-----------+---------------+--------------------------------+
 | id                      | estRows  | task      | access object | operator info                  |
 +-------------------------+----------+-----------+---------------+--------------------------------+
@@ -111,7 +111,7 @@ EXPLAIN SELECT c1 FROM t1 ORDER BY c1;
 EXPLAIN SELECT c2 FROM t1 ORDER BY c2; 
 ```
 
-```
+```sql
 +------------------------+----------+-----------+------------------------+-------------------------------+
 | id                     | estRows  | task      | access object          | operator info                 |
 +------------------------+----------+-----------+------------------------+-------------------------------+
@@ -121,7 +121,7 @@ EXPLAIN SELECT c2 FROM t1 ORDER BY c2;
 2 rows in set (0.00 sec)
 ```
 
-即使用 SQL Hint `USE INDEX` 强制使用索引，优化器也无法使用不可见索引，这样的 SQL 语句会报错：
+即使用 SQL Hint `USE INDEX` 强制使用索引，优化器也无法使用不可见索引，否则 SQL 语句会报错：
 
 {{< copyable "sql" >}}
 
@@ -129,7 +129,7 @@ EXPLAIN SELECT c2 FROM t1 ORDER BY c2;
 SELECT * FROM t1 USE INDEX(c1);
 ```
 
-```
+```sql
 ERROR 1176 (42000): Key 'c1' doesn't exist in table 't1'
 ```
 
@@ -143,13 +143,13 @@ ERROR 1176 (42000): Key 'c1' doesn't exist in table 't1'
 ALTER TABLE t1 DROP INDEX c1;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.02 sec)
 ```
 
 ### 限制
 
-MySQL 对不可见索引有一条限制：不能将**主键**设置为不可见的。TiDB 兼容这条限制，这种情况会抛出错误。
+MySQL 对不可见索引有一条限制：不能将**主键**设置为不可见。TiDB 兼容这条限制，将主键设置为不可见后会抛出错误。
 
 {{< copyable "sql" >}}
 
@@ -157,13 +157,13 @@ MySQL 对不可见索引有一条限制：不能将**主键**设置为不可见�
 CREATE TABLE t2(c1 INT, PRIMARY KEY(c1) INVISIBLE);
 ```
 
-```
+```sql
 ERROR 3522 (HY000): A primary key index cannot be invisible
 ```
 
-这里的**主键**包括既包括显式的主键（通过 PRIMARY KEY 关键字指定的主键），也包括隐式的主键。
+这里的**主键**包括既包括显式的主键（通过 `PRIMARY KEY` 关键字指定的主键），也包括隐式的主键。
 
-当表中不存在显式的主键时，第一个 UNIQUE 索引（要求满足索引上的每一列都是 NOT NULL）会自动成为隐式的主键。
+当表中不存在显式的主键时，第一个 `UNIQUE` 索引（要求满足索引上的每一列都是 `NOT NULL`）会自动成为隐式的主键。
 
 即不能将隐式的主键设置为不可见的。
 
