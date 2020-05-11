@@ -14,9 +14,9 @@ category: how-to
 
 - 1.1.1 `Region is Unavailable` 一般是由于 Region 在一段时间不可用（可能会遇到 `TiKV server is busy`，或者发送给 TiKV 的请求由于 `not leader` 或者 `epoch not match` 等原因被打回，又或者请求 TiKV 超时等），TiDB 内部会进行 `backoff` 重试机制，`backoff` 的时间超过一定阈值（默认 20s）后就会报错给客户端。如果 `backoff` 在阈值内，客户端对该错误是无感知的。
 
-- 1.1.2 多台 TiKV 同时 OOM，导致 Region 在一定时期内没有 Leader，见案例 [case-991](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case991.md)。
+- 1.1.2 多台 TiKV 同时内存不足 (OOM)，导致 Region 在一定时期内没有 Leader，见案例 [case-991](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case991.md)。
 
-- 1.1.3 TiKV 报 `TiKV server is busy`，超过 `backoff` 时间，参考 [4.3](#43-客户端报-server-is-busy-错误)。`TiKV server is busy` 属于内部流控机制，后续可能不计入 `backoff` 时间，正在改善。
+- 1.1.3 TiKV 报 `TiKV server is busy` 错误，超过 `backoff` 时间，参考[ 4.3 客户端报 `server is busy` 错误](#43-客户端报-server-is-busy-错误)。`TiKV server is busy` 属于内部流控机制，后续可能不计入 `backoff` 时间。
 
 - 1.1.4 多台 TiKV 启动不了，导致 Region 没有 Leader。单台物理主机部署多个 TiKV 实例，一个物理机挂掉，由于 label 配置错误导致 Region 没有 Leader，见案例 [case-228](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case228.md)。
 
@@ -24,41 +24,41 @@ category: how-to
 
 ### 1.2 PD 异常导致服务不可用
 
-请查看 [5 PD 问题](#5-pd-问题)。
+查看本文档 [5. PD 问题](#5-pd-问题)。
 
-## 2. Latency 明显升高
+## 2. 延迟明显升高
 
-### 2.1 Latency 短暂升高
+### 2.1 延迟短暂升高
 
-- 2.1.1 TiDB 执行计划不对导致延迟升高，请参考 [3.3](#33-执行计划不对)。
-- 2.1.2 PD 出现选举问题或者 OOM 问题，请参考 [5.2](#52-pd-选举问题) 和 [5.3](#53-pd-oom)。
-- 2.1.3 某些 TiKV 大量掉 Leader，请参考 [4.4](#44-某些-tikv-大量掉-leader)。
+- 2.1.1 TiDB 执行计划不对导致延迟升高，请参考 [3.3 执行计划不对](#33-执行计划不对)。
+- 2.1.2 PD 出现选举问题或者 OOM 问题，请参考 [5.2 PD 选举问题](#52-pd-选举问题) 和 [5.3 PD OOM 问题](#53-pd-oom)。
+- 2.1.3 某些 TiKV 大量掉 Leader，请参考 [4.4 某些 TiKV 大量掉 Leader](#44-某些-tikv-大量掉-leader)。
 
 ### 2.2 Latency 持续升高
 
 - 2.2.1 TiKV 单线程瓶颈
 
-    - 单个 TiKV Region 过多，导致单个 gRPC 线程成为瓶颈（查看监控：**Grafana** -> **TiKV-details** -> **Thread CPU**/**gRPC CPU Per Thread**），v3.x 以上版本可以开启 `hibernate region` 特性解决该问题，见案例 [case-612](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case612.md)。
+    - 单个 TiKV Region 过多，导致单个 gRPC 线程成为瓶颈（查看监控：**Grafana** -> **TiKV-details** -> **Thread CPU**/**gRPC CPU Per Thread**），v3.x 以上版本可以开启 Hibernate Region 特性解决该问题，见案例 [case-612](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case612.md)。
 
-    - v3.0 之前版本 raftstore 单线程或者 apply 单线程到达瓶颈（查看监控：**Grafana** -> **TiKV-details** -> **Thread CPU**/**raft store CPU** 和 **Async apply CPU** 超过 `80%`）。可以选择扩容 TiKV（v2.x 版本）实例，或者升级到多线程模型的 v3.x 版本。<!--见案例 [case-517](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case517.md)。-->
+    - v3.0 之前版本 Raftstore 单线程或者 apply 单线程到达瓶颈（查看监控：**Grafana** -> **TiKV-details** -> **Thread CPU**/**raft store CPU** 和 **Async apply CPU** 超过 `80%`）。可以选择扩容 TiKV（v2.x 版本）实例，或者升级到多线程模型的 v3.x 版本。见案例 [case-517](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case517.md)。
 
 - 2.2.2 CPU load 升高。
 
-- 2.2.3 TiKV 写入慢，请参考 [4.5](#45-tikv-写入慢)。
+- 2.2.3 TiKV 写入慢，请参考 [4.5 TiKV 写入慢](#45-tikv-写入慢)。
 
-- 2.2.4 TiDB 执行计划不对，请参考 [3.3](#33-执行计划不对)。
+- 2.2.4 TiDB 执行计划不对，请参考 [3.3 执行计划不对](#33-执行计划不对)。
 
 ## 3. TiDB 问题
 
 ### 3.1 DDL
 
-- 3.1.1 修改 `decimal` 字段长度时报错 `"ERROR 1105 (HY000): unsupported modify decimal column precision"`<!--, 见案例 [case-1004](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1004.md)，TiDB 暂时不支持修改 `decimal` 字段长度-->。
+- 3.1.1 修改 `decimal` 字段长度时报错 `"ERROR 1105 (HY000): unsupported modify decimal column precision"`。见案例 [case-1004](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1004.md)，TiDB 暂时不支持修改 `decimal` 字段长度。
 
 - 3.1.2 TiDB DDL job 卡住不动/执行很慢（通过 `admin show ddl jobs` 可以查看 DDL 进度）：
 
     - 原因 1：与外部组件（PD/TiKV）的网络问题。
 
-    - 原因 2：早期版本（v3.0.8 之前）TiDB 内部自身负载很重（高并发下可能起了很多协程）。
+    - 原因 2：早期版本（v3.0.8 之前）TiDB 内部自身负载很重（高并发下可能产生了很多协程）。
 
     - 原因 3：早期版本（v2.1.15 & v3.0.0-rc1 之前）PD 实例删除 TiDB key 无效的问题，会导致每次 DDL 变更都需要等 2 个 lease（很慢）。
 
@@ -101,19 +101,19 @@ category: how-to
 
 - 3.2.1 现象
 
-    - 客户端：客户端收到 tidb-server 报错 `ERROR 2013 (HY000): Lost connection to MySQL server during query`
+    - 客户端：客户端收到 TiDB server 报错 `ERROR 2013 (HY000): Lost connection to MySQL server during query`
 
     - 日志：
 
-        - `dmesg -T | grep tidb-server` 结果中有事故发生附近时间点的 OOM-killer 的日志
+        - `dmesg -T | grep tidb-server` 结果中有事故发生附近时间点的 OOM-killer 的日志。
 
-        - tidb.log 中可以 `grep` 到事故发生后附近时间的 `"Welcome to TiDB"` 的日志（即 tidb-server 发生重启）
+        - tidb.log 中可以 `grep` 到事故发生后附近时间的 `"Welcome to TiDB"` 的日志（即 TiDB server 发生重启）。
 
-        - tidb_stderr.log 中能 `grep` 到 `fatal error: runtime: out of memory" 或 "cannot allocate memory`
+        - tidb_stderr.log 中能 `grep` 到 `fatal error: "runtime: out of memory"` 或 `"cannot allocate memory"`。
 
-        - v2.1.8 及其之前的版本，tidb_stderr.log 中能 `grep` 到 `fatal error: stack overflow`
+        - v2.1.8 及其之前的版本，tidb_stderr.log 中能 `grep` 到 `fatal error: stack overflow`。
 
-    - 监控：tidb-server 实例所在机器可用内存迅速回升
+    - 监控：TiDB server 实例所在机器可用内存迅速回升
 
 - 3.2.2 定位造成 OOM 的 SQL（目前所有版本都无法完成精准定位，需要在发现 SQL 后再做进一步分析，确认 OOM 是否的确由该 SQL 造成）：
 
@@ -126,13 +126,13 @@ category: how-to
 
 - 3.2.3 缓解 OOM 问题
 
-    - 通过开启 `SWAP` 的方式，可以缓解由于大查询使用内存过多而造成的 OOM 问题。但该方法由于存在 IO 开销，会在内存空间不足时对大查询性能造成一定影响。性能回退程度受剩余内存量、读写盘速度影响。
+    - 通过开启 `SWAP` 的方式，可以缓解由于大查询使用内存过多而造成的 OOM 问题。但该方法由于存在 I/O 开销，会在内存空间不足时对大查询性能造成一定影响。性能回退程度受剩余内存量、读写盘速度影响。
 
 - 3.2.4 OOM 常见原因
 
-    - SQL 中包含 join，通过 explain 查看发现该 join 选用 `HashJoin` 算法且 `inner` 端的表很大。
+    - SQL 中包含 join，通过 `explain` 查看发现该 join 选用 `HashJoin` 算法且 `inner` 端的表很大。
 
-    - 单条 `UPDATE/ DELETE` 涉及的查询数据量太大，见案例 [case-882](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case882.md)。
+    - 单条 `UPDATE`/`DELETE` 涉及的查询数据量太大，见案例 [case-882](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case882.md)。
 
     - SQL 中包含 `Union` 连接的多条子查询，见案例 [case-1828](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1828.md)。
 
@@ -148,15 +148,15 @@ category: how-to
 
 - 3.3.2 排查执行计划问题
 
-    - `explain analyze {SQL}`。在执行时间可以接受的情况下，对比 explain analyze 结果中 `count` 和 execution info 中 `rows` 的数目差距。如果在 `TableScan/IndexScan` 行上发现比较大的差距，很大可能是统计信息出问题；如果在其他行上发现较大差距，则也有可能是非统计信息问题。
+    - `explain analyze {SQL}`。在执行时间可以接受的情况下，对比 `explain analyze` 结果中 `count` 和 execution info 中 `rows` 的数目差距。如果在 `TableScan`/`IndexScan` 行上发现比较大的差距，很大可能是统计信息出问题；如果在其他行上发现较大差距，则也有可能是非统计信息问题。
 
-    - `select count(*)`。在执行计划中包含 `join` 等情况下，explain analyze 可能耗时过长；此时可以通过对 `TableScan/IndexScan` 上的条件进行 `select count(*)`，并对比 explain 结果中的 `row count` 信息，确定是不是统计信息的问题。
+    - `select count(*)`。在执行计划中包含 `join` 等情况下，explain analyze 可能耗时过长；此时可以通过对 `TableScan`/`IndexScan` 上的条件进行 `select count(*)`，并对比 `explain` 结果中的 `row count` 信息，确定是不是统计信息的问题。
 
 - 3.3.3 缓解问题
 
     - v3.0 及以上版本可以使用 `SQL Bind` 功能固定执行计划。
 
-    - 更新统计信息。在大致确定问题是由统计信息导致的情况下，先 [dump 统计信息](https://pingcap.com/docs-cn/stable/reference/performance/statistics/#%E5%AF%BC%E5%87%BA%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF)保留现场。如果是由于统计信息过期导致，例如 `show stats_meta` 中 modify count/row count 大于某个值（例如 0.3）或者表中存在时间列的索引情况下，可以先尝试 analyze table 恢复；如果配置了 auto analyze，可以查看系统变量 `tidb_auto_analyze_ratio` 是否过大（例如大于 0.3），以及当前时间是否在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 范围内。
+    - 更新统计信息。在大致确定问题是由统计信息导致的情况下，先 [dump 统计信息](/reference/performance/statistics.md#导出统计信息)保留现场。如果是由于统计信息过期导致，例如 `show stats_meta` 中 modify count/row count 大于某个值（例如 0.3）或者表中存在时间列的索引情况下，可以先尝试 analyze table 恢复；如果配置了 auto analyze，可以查看系统变量 `tidb_auto_analyze_ratio` 是否过大（例如大于 0.3），以及当前时间是否在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 范围内。
 
     - 其他情况，请[上报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
 
@@ -178,7 +178,7 @@ category: how-to
 
 - 4.1.1 `sync-log = false`，机器断电之后出现 `unexpected raft log index: last_index X < applied_index Y` 错误。符合预期，需通过 `tikv-ctl` 工具恢复 Region。
 
-- 4.1.2 虚拟机部署 TiKV，kill 虚拟机或物理机断电，出现 `entries[X, Y] is unavailable from storage` 错误。符合预期，虚拟机的 fsync 不可靠，需通过 `tikv-ctl` 工具恢复 Region。
+- 4.1.2 虚拟机部署 TiKV，`kill` 虚拟机或物理机断电，出现 `entries[X, Y] is unavailable from storage` 错误。符合预期，虚拟机的 fsync 不可靠，需通过 `tikv-ctl` 工具恢复 Region。
 
 - 4.1.3 其他原因（非预期，[需报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)）。
 
@@ -190,7 +190,7 @@ category: how-to
     
     - 同时，请检查 `[storage.block-cache] capacity = # "1GB"` 参数是否设置合理，默认情况下 TiKV 的 `block-cache` 设置为机器总内存的 `45%`；在 container 部署时，需要显式指定该参数，因为 TiKV 获取的是物理机的内存，可能会超出 container 的内存限制。
 
-- 4.2.2 coprocessor 收到大量大查询，返回的数据量太大，gRPC 的发送速度跟不上 coprocessor 往外吐数据的速度，导致 OOM：
+- 4.2.2 Coprocessor 收到大量大查询，返回的数据量太大，gRPC 的发送速度跟不上 Coprocessor 往外输出数据的速度，导致 OOM：
 
     - 可以通过检查监控：**Grafana** -> **TiKV-details** -> **coprocessor overview** 的 `response size` 是否超过 `network outbound` 流量来确认是否属于这种情况。
 
@@ -198,13 +198,13 @@ category: how-to
 
 ### 4.3 客户端报 `server is busy` 错误
 
-通过查看监控：**Grafana** -> **TiKV** -> **errors** 确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，等会再尝试。
+通过查看监控：**Grafana** -> **TiKV** -> **errors** 确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，稍后再尝试。
 
-- 4.3.1 TiKV RocksDB 出现 `write stall`。一个 TiKV 包含两个 RocksDB 实例，一个用于存储 raft 日志，位于 `data/raft`，另一个用于存储真正的数据，位于 `data/db`。通过 `grep "Stalling" RocksDB` 日志查看 stall 的具体原因，RocksDB 日志是 LOG 开头的文件，LOG 为当前日志。
+- 4.3.1 TiKV RocksDB 出现 `write stall`。一个 TiKV 包含两个 RocksDB 实例，一个用于存储 Raft 日志，位于 `data/raft`。另一个用于存储真正的数据，位于 `data/db`。通过 `grep "Stalling" RocksDB` 日志查看 stall 的具体原因，RocksDB 日志是 LOG 开头的文件，LOG 为当前日志。
 
-    - `level0 sst` 太多导致 stall，可以添加参数 `[rocksdb] max-sub-compactions = 2`（或者 3），加快 level0 sst 往下 compact 的速度。该参数的意思是将从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行，见案例 [case-815](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case815.md)。
+    - `level0 sst` 太多导致 stall，可以添加参数 `[rocksdb] max-sub-compactions = 2`（或者 `3`），加快 level0 sst 往下 compact 的速度。该参数的意思是将从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行，见案例 [case-815](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case815.md)。
 
-    - `pending compaction bytes` 太多导致 stall，磁盘 IO 能力在业务高峰跟不上写入，可以通过调大对应 cf 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
+    - `pending compaction bytes` 太多导致 stall，磁盘 I/O 能力在业务高峰跟不上写入，可以通过调大对应 Column Family (CF) 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
     
         - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会放慢写入速度。默认值 64GB，`[rocksdb.defaultcf] soft-pending-compaction-bytes-limit = "128GB"`。
         
@@ -214,22 +214,22 @@ category: how-to
         
         - 比如 default cf compaction 压力比较大，调整参数 `[rocksdb.defaultcf] compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]` 改成 `compression-per-level = ["no", "no", "zstd", "zstd", "zstd", "zstd", "zstd"]`。
 
-    - memtable 太多导致 stall。该问题一般发生在瞬间写入量比较大，并且 memtable flush 到磁盘的速度比较慢的情况下。如果磁盘写入速度不能改善，并且只有业务峰值会出现这种情况，可以通过调大对应 cf 的 `max-write-buffer-number` 来缓解：
+    - memtable 太多导致 stall。该问题一般发生在瞬间写入量比较大，并且 memtable flush 到磁盘的速度比较慢的情况下。如果磁盘写入速度不能改善，并且只有业务峰值会出现这种情况，可以通过调大对应 CF 的 `max-write-buffer-number` 来缓解：
 
         - 例如 `[rocksdb.defaultcf] max-write-buffer-number = 8` （默认值 `5`），同时请求注意在高峰期可能会占用更多的内存，因为可能存在于内存中的 memtable 会更多。
 
 - 4.3.2 `scheduler too busy`
 
-    - 写入冲突严重，`latch wait duration` 比较高，查看监控： **Grafana** -> **TiKV-details** -> **scheduler prewrite** 或者 **scheduler commit** 的 `latch wait duration`。scheduler 写入任务堆积，导致超过了 `[storage] scheduler-pending-write-threshold = "100MB"` 设置的阈值。TODO：通过查看 MVCC_CONFLICT_COUNTER 对应的 metric 来确认是否属于该情况。
-    - 写入慢导致写入堆积，该 TiKV 正在写入的数据超过了 `[storage] scheduler-pending-write-threshold = "100MB"` 设置的阈值。请参考 [4.5](#45-tikv-写入慢)。
+    - 写入冲突严重，`latch wait duration` 比较高，查看监控： **Grafana** -> **TiKV-details** -> **scheduler prewrite** 或者 **scheduler commit** 的 `latch wait duration`。scheduler 写入任务堆积，导致超过了 `[storage] scheduler-pending-write-threshold = "100MB"` 设置的阈值。可通过查看 `MVCC_CONFLICT_COUNTER` 对应的 metric 来确认是否属于该情况。
+    - 写入慢导致写入堆积，该 TiKV 正在写入的数据超过了 `[storage] scheduler-pending-write-threshold = "100MB"` 设置的阈值。请参考 [4.5 TiKV 写入慢](#45-tikv-写入慢)。
 
 - 4.3.3 `raftstore is busy`，主要是消息的处理速度没有跟上接收消息的速度。短时间的 `channel full` 不会影响服务，长时间持续出现该错误可能会导致 Leader 切换走。
 
-    - `append log` 遇到了 stall，参考 [4.3.1](#43-客户端报-server-is-busy-错误)。
-    - `append log duration` 比较高，导致处理消息不及时，可以参考 [4.5](#45-tikv-写入慢) 分析为什么 `append log duration` 比较高。
-    - 瞬间收到大量消息（查看 TiKV Raft messages 面板），raftstore 没处理过来，通常情况下短时间的 `channel full` 不会影响服务。
+    - `append log` 遇到了 stall，参考 [4.3.1 客户端报 `server is busy` 错误](#43-客户端报-server-is-busy-错误)。
+    - `append log duration` 比较高，导致处理消息不及时，可以参考 [4.5 TiKV 写入慢](#45-tikv-写入慢) 分析为什么 `append log duration` 比较高。
+    - 瞬间收到大量消息（查看 TiKV Raft messages 面板），Raftstore 没处理过来，通常情况下短时间的 `channel full` 不会影响服务。
 
-- 4.3.4 TiKV coprocessor 排队，任务堆积超过了 `coprocessor 线程数 * readpool.coprocessor.max-tasks-per-worker-[normal|low|high]`。大量大查询导致 coprocessor 出现了堆积情况，需要确认是否由于执行计划变化而导致了大量扫表操作，请参考 [3.3](#33-执行计划不对)。
+- 4.3.4 TiKV Coprocessor 排队，任务堆积超过了 `Coprocessor 线程数 * readpool.coprocessor.max-tasks-per-worker-[normal|low|high]`。大量大查询导致 Coprocessor 出现了堆积情况，需要确认是否由于执行计划变化而导致了大量扫表操作，请参考 [3.3 执行计划不对](#33-执行计划不对)。
 
 ### 4.4 某些 TiKV 大量掉 Leader
 
@@ -237,7 +237,7 @@ category: how-to
 
     - TiKV `panic` 之后又被 systemd 重新拉起正常运行，可以通过查看 TiKV 的日志来确认是否有 `panic`，这种情况属于非预期，[需报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
     - 被第三者 `stop/kill`，被 systemd 重新拉起。查看 `dmesg` 和 `TiKV log` 确认原因。
-    - TiKV 发生 OOM 导致重启了，参考 [4.2](#42-tikv-oom)。
+    - TiKV 发生 OOM 导致重启了，参考 [4.2 TiKV OOM 问题](#42-tikv-oom)。
     - 动态调整 `THP` 导致 hung 住，见案例 [case-500](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case500.md)。
 
 - 4.4.2 查看监控：**Grafana** -> **TiKV-details** -> **errors** 面板 `server is busy`，看到 TiKV RocksDB 出现 write stall 导致发生重新选举，请参考 [4.3.1](#43-客户端报-server-is-busy-错误)。
@@ -246,30 +246,30 @@ category: how-to
 
 ### 4.5 TiKV 写入慢
 
-- 4.5.1 通过查看 TiKV gRPC 的 `prewrite/commit/raw-put`(仅限 raw kv 集群) duration 确认确实是 TiKV 写入慢了。通常情况下可以按照 [performance-map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 来定位到底哪个阶段慢了，下面列出几种常见的情况。
+- 4.5.1 通过查看 TiKV gRPC 的 `prewrite`/`commit`/`raw-put`(仅限 raw kv 集群) duration 确认确实是 TiKV 写入慢了。通常情况下可以按照 [performance-map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 来定位到底哪个阶段慢了，下面列出几种常见的情况。
 
 - 4.5.2 scheduler CPU 繁忙（仅限 transaction kv）。prewrite/commit 的 `scheduler command duration` 比 `scheduler latch wait duration` + `storage async write duration` 更长，并且 scheduler worker CPU 比较高，例如超过 `scheduler-worker-pool-size` * 100% 的 80%，并且或者整个机器的 CPU 资源比较紧张。如果写入量很大，确认下是否 `[storage] scheduler-worker-pool-size` 配置得太小。其他情况，[需报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
 
-- 4.5.3 append log 慢。TiKV grafana 的 **Raft IO**/`append log duration` 比较高，通常情况下是由于写盘慢了，可以检查 RocksDB - raft 的 `WAL Sync Duration max` 值来确认，否则可能[需要报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
+- 4.5.3 Append log 慢。TiKV Grafana 的 **Raft IO**/`append log duration` 比较高，通常情况下是由于写盘慢了，可以检查 RocksDB - Raft 的 `WAL Sync Duration max` 值来确认，否则可能[需要报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
 
-- 4.5.4 raftstore 线程繁忙。TiKV grafana 的 **Raft Propose**/`propose wait duration` 明显高于 `append log duration`。请查看以下情况： 
+- 4.5.4 Raftstore 线程繁忙。TiKV Grafana 的 **Raft Propose**/`propose wait duration` 明显高于 `append log duration`。请查看以下情况： 
 
     - `[raftstore] store-pool-size` 配置是否过小（该值建议在 [1,5] 之间，不建议太大）。
     - 机器的 CPU 是不是不够。
 
-- 4.5.5 apply 慢了。TiKV grafana 的 **Raft IO**/`apply log duration` 比较高，通常会伴随着 **Raft Propose**/`apply wait duration` 比较高。可能是以下原因引起的：
+- 4.5.5 apply 慢了。TiKV Grafana 的 **Raft IO**/`apply log duration` 比较高，通常会伴随着 **Raft Propose**/`apply wait duration` 比较高。可能是以下原因引起的：
 
     - `[raftstore] apply-pool-size` 配置过小（建议在 [1, 5] 之间，不建议太大），**Thread CPU**/`apply cpu` 比较高；
     - 机器的 CPU 资源不够了；
-    - Region 写入热点问题，单个 apply 线程 CPU 使用率比较高（通过修改 grafana 表达式，加上 `by (instance, name)` 来看各个线程的 CPU 使用情况），暂时对于单个 Region 的热点写入没有很好的方式，最近在优化该场景；
-    - 写 RocksDB 比较慢，**RocksDB kv**/`max write duration` 比较高（单个 raft log 可能包含很多个 kv，写 RocksDB 的时候会把 128 个 kv 放在一个 write batch 写入到 RocksDB，所以一次 apply log 可能涉及到多次 RocksDB 的 write）；
+    - Region 写入热点问题，单个 apply 线程 CPU 使用率比较高（通过修改 Grafana 表达式，加上 `by (instance, name)` 来看各个线程的 CPU 使用情况），暂时对于单个 Region 的热点写入没有很好的方式，最近在优化该场景；
+    - 写 RocksDB 比较慢，**RocksDB kv**/`max write duration` 比较高（单个 Raft log 可能包含很多个 kv，写 RocksDB 的时候会把 128 个 kv 放在一个 write batch 写入到 RocksDB，所以一次 apply log 可能涉及到多次 RocksDB 的 write）；
     - 其他情况，[需报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
 
-- 4.5.6 raft commit log 慢了。
+- 4.5.6 Raft commit log 慢了。
 
-    - TiKV grafana 的 **Raft IO**/`commit log duration` 比较高（4.x 版本的 grafana 才有该 metric）。每个 Region 对应一个独立的 raft group，raft 本身是有流控机制的，类似 TCP 的滑动窗口机制，通过参数 `[raftstore] raft-max-inflight-msgs = 256` 来控制滑动窗口的大小，如果有热点写入并且 `commit log duration` 比较高可以适度调大改参数，比如 1024。
+    - TiKV Grafana 的 **Raft IO**/`commit log duration` 比较高（4.x 版本的 Grafana 才有该 metric）。每个 Region 对应一个独立的 Raft group，Raft 本身是有流控机制的，类似 TCP 的滑动窗口机制，通过参数 `[raftstore] raft-max-inflight-msgs = 256` 来控制滑动窗口的大小，如果有热点写入并且 `commit log duration` 比较高可以适度调大改参数，比如 1024。
 
-- 4.5.7 其他情况，请参考 [performance-map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 上的写入路径来分析。
+- 4.5.7 其他情况，请参考 [Performance Map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 上的写入路径来分析。
 
 ## 5. PD 问题
 
@@ -287,9 +287,9 @@ category: how-to
 
     - 下线 TiKV，有 Region 长时间迁移不走。v3.0.4 版本已经修复改问题，见 [#5526](https://github.com/tikv/tikv/pull/5526) 和案例 [case-870](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case870.md)。
 
-- 5.1.3 balance 问题：
+- 5.1.3 Balance 问题：
 
-    - leader/region count 分布不均，见案例 [case-394](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case394.md), [case-759](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case759.md)。主要原因是 balance 是依赖 region/leader 的 size 去调度的，所以可能会造成 count 数量的不均衡，v4.0 新增了一个参数 `[leader-schedule-policy]`，可以调整 Leader 的调度策略，根据 "count" 或者是 "size" 进行调度。
+    - Leader/Region count 分布不均，见案例 [case-394](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case394.md), [case-759](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case759.md)。主要原因是 balance 是依赖 Region/leader 的 size 去调度的，所以可能会造成 count 数量的不均衡，v4.0 新增了一个参数 `[leader-schedule-policy]`，可以调整 Leader 的调度策略，根据 "count" 或者是 "size" 进行调度。
 
 ### 5.2 PD 选举问题
 
@@ -309,31 +309,31 @@ category: how-to
 
 - 5.2.3 TiDB 执行 SQL 时报 PD timeout：
 
-    - PD 没 Leader 或者有切换，参考 [5.2.1](#52-pd-选举问题) 和 [5.2.2](#52-pd-选举问题)。
+    - PD 没 Leader 或者有切换，参考 [5.2.1 PD 选举问题](#52-pd-选举问题) 和 [5.2.2 PD 选举问题](#52-pd-选举问题)。
 
     - 网络问题，排查网络相关情况。通过监控 **Grafana** -> **blackbox_exporter** -> **ping latency** 确定 TiDB 到 PD Leader 的网络是否正常。
 
     - PD panic，[需报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
-    - PD OOM，参考 [5.3](#53-pd-oom)。
+    - PD OOM，参考 [5.3 PD OOM 问题](#53-pd-oom)。
 
     - 其他原因，通过 `curl http://127.0.0.1:2379/debug/pprof/goroutine?debug=2` 抓 goroutine，[报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
 - 5.2.4 其他问题
 
-    - PD 报 `FATAL` 错误，日志中有 `range failed to find revision pair`，3.0.8 已经修复该问题，见 [#2040](https://github.com/pingcap/pd/pull/2040)。详情请参考案例 [case-947](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case947.md)。
+    - PD 报 `FATAL` 错误，日志中有 `range failed to find revision pair`，v3.0.8 已经修复该问题，见 [#2040](https://github.com/pingcap/pd/pull/2040)。详情请参考案例 [case-947](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case947.md)。
 
     - 其他原因，[需报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
 ### 5.3 PD OOM
 
-- 5.3.1 使用 `/api/v1/regions` 接口时 Region 数量过多，可能会导致 PD OOM，v3.0.8 版本修复，见 [#1986](https://github.com/pingcap/pd/pull/1986)。
+- 5.3.1 使用 `/api/v1/regions` 接口时 Region 数量过多，可能会导致 PD OOM，在 v3.0.8 版本中修复，见 [#1986](https://github.com/pingcap/pd/pull/1986)。
 
-- 5.3.2 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，v3.0.6 版本修复，见 [#1952](https://github.com/pingcap/pd/pull/1952)。<!-- 详情请参考案例 [case-852](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case852.md)-->
+- 5.3.2 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，在 v3.0.6 版本中修复，见 [#1952](https://github.com/pingcap/pd/pull/1952)。详情请参考案例 [case-852](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case852.md)。
 
 ### 5.4 Grafana 显示问题
 
-- 5.4.1 监控 **Grafana** -> **PD** -> **cluster** -> **role** 显示 follower，grafana 表达式问题，3.0.8 版本修复，见 [#1065](https://github.com/pingcap/tidb-ansible/pull/1065)。详情请参考案例 [case-1022](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1022.md)。
+- 5.4.1 监控 **Grafana** -> **PD** -> **cluster** -> **role** 显示 follower，Grafana 表达式问题，在 v3.0.8 版本修复，见 [#1065](https://github.com/pingcap/tidb-ansible/pull/1065)。详情请参考案例 [case-1022](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1022.md)。
 
 ## 6. 生态 Tools 问题
 
@@ -371,13 +371,13 @@ category: how-to
 
         - 时区问题，需要确保 Drainer 和上下游数据库时区一致，Drainer 通过 `/etc/localtime` 获取时区，不支持 `TZ` 环境变量，见案例 [case-826](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case826.md)。
 
-        - TiDB 中 Timestamp 的默认值为 `null`，MySQL 5.7 中 Timestamp 默认值为当前时间（MySQL 8 无此问题），因此当上游写入 `null` 的 Timestamp 且下游是 MySQL 5.7 时，Timestamp 列数据不一致。在开启 binlog 前，在上游执行 `set @@global.explicit_defaults_for_timestamp=on;` 可解决问题。
+        - TiDB 中 Timestamp 的默认值为 `null`，MySQL 5.7 中 Timestamp 默认值为当前时间（MySQL 8 无此问题），因此当上游写入 `null` 的 Timestamp 且下游是 MySQL 5.7 时，Timestamp 列数据不一致。在开启 binlog 前，在上游执行 `set @@global.explicit_defaults_for_timestamp=on;` 可解决次问题。
 
     - 其他情况[需报 bug](https://github.com/pingcap/tidb-binlog/issues/new?labels=bug&template=bug-report.md)。
 
 - 6.1.6 同步慢
 
-    - 下游是 TiDB/MySQL，上游频繁做 DDL，见案例 [case-1023](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1023.md)。
+    - 下游是 TiDB/MySQL，上游频繁进行 DDL 操作，见案例 [case-1023](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1023.md)。
 
     - 下游是 TiDB/MySQL，需要同步的表中存在没有主键且没有唯一索引的表，这种情况会导致 binlog 性能下降，建议加主键或唯一索引。
 
@@ -393,7 +393,7 @@ category: how-to
 
     - Pump 启动时需要通知所有 Online 状态的 Drainer，如果通知失败则会打印该错误日志。
     
-    - 可以使用 binlogctl 工具查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。见案例 [fail-to-notify-all-living-drainer](https://pingcap.com/docs-cn/stable/reference/tidb-binlog/troubleshoot/error-handling/#pump-%E5%90%AF%E5%8A%A8%E6%97%B6%E6%8A%A5%E9%94%99-fail-to-notify-all-living-drainer)。
+    - 可以使用 binlogctl 工具查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。见案例 [fail-to-notify-all-living-drainer](/reference/tidb-binlog/troubleshoot/error-handling.md#pump-启动时报错-fail-to-notify-all-living-drainer)。
 
 - 6.1.9 Drainer 报错 `gen update sqls failed: table xxx: row data is corruption []`。
 
@@ -423,19 +423,19 @@ category: how-to
 
     - 发生 `driver: bad connection` 错误时，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启等）且当前请求的数据暂时未能发送到 TiDB。
 
-        - 1.0.0 GA 之前的版本，DM 发生该类型错误时，需要先使用 stop-task 命令停止任务后再使用 start-task 命令重启任务。
+        - 1.0.0 GA 之前的版本，DM 发生该类型错误时，需要先使用 `stop-task` 命令停止任务后再使用 `start-task` 命令重启任务。
 
         - 1.0.0 GA 版本，增加对此类错误的自动重试机制，见 [#265](https://github.com/pingcap/dm/pull/265)。
 
 - 6.2.4 同步任务中断并包含 `invalid connection` 错误。
 
-    - 发生 `invalid connection` 错误时，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。由于 DM 中存在同步任务并发向下游复制数据的特性，因此在任务中断时可能同时包含多个错误（可通过 query-status 或 query-error 查询当前错误）：
+    - 发生 `invalid connection` 错误时，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。由于 DM 中存在同步任务并发向下游复制数据的特性，因此在任务中断时可能同时包含多个错误（可通过 `query-status` 或 `query-error` 查询当前错误）：
 
         - 如果错误中仅包含 `invalid connection` 类型的错误，且当前处于增量复制阶段，则 DM 会自动进行重试。
 
-        - 如果 DM 由于版本问题（v1.0.0-rc.1 后引入自动重试）等未自动进行重试或自动重试未能成功，则可尝试先使用 stop-task 停止任务，然后再使用 start-task 重启任务。
+        - 如果 DM 由于版本问题（v1.0.0-rc.1 后引入自动重试）等未自动进行重试或自动重试未能成功，则可尝试先使用 `stop-task` 停止任务，然后再使用 `start-task` 重启任务。
 
-- 6.2.5 relay 处理单元报错 `event from * in * diff from passed-in event *` 或同步任务中断并包含 `get binlog error ERROR 1236 (HY000)`、`binlog checksum mismatch, data may be corrupted` 等 binlog 获取或解析失败错误。
+- 6.2.5 Relay 处理单元报错 `event from * in * diff from passed-in event *` 或同步任务中断并包含 `get binlog error ERROR 1236 (HY000)`、`binlog checksum mismatch, data may be corrupted` 等 binlog 获取或解析失败错误。
 
     - 在 DM 进行 relay log 拉取与增量同步过程中，如果遇到了上游超过 4 GB 的 binlog 文件，就可能出现这两个错误。原因是 DM 在写 relay log 时需要依据 binlog position 及文件大小对 event 进行验证，且需要保存同步的 binlog position 信息作为 checkpoint。但是 MySQL binlog position 官方定义使用 uint32 存储，所以超过 4 GB 部分的 binlog position 的 offset 值会溢出，进而出现上面的错误。
 
@@ -443,7 +443,7 @@ category: how-to
 
         - 对于 binlog replication 处理单元，可通过官网步骤进行[手动处理](https://pingcap.com/docs-cn/tidb-data-migration/stable/error-handling/)。
 
-- 6.2.6 DM 同步中断，日志报错 `ERROR 1236 (HY000) The slave is connecting using CHANGE MASTER TO MASTER_AUTO_POSITION = 1, but the master has purged binary logs containing GTIDs that the slave requires.`
+- 6.2.6 DM 同步中断，日志报错 `ERROR 1236 (HY000) The slave is connecting using CHANGE MASTER TO MASTER_AUTO_POSITION = 1, but the master has purged binary logs containing GTIDs that the slave requires.`。
 
     - 检查 master 的 binlog 是否被 purge。
 
@@ -451,7 +451,7 @@ category: how-to
 
         - relay.meta 中记录空的 GTID 信息，DM-worker 进程在退出时、以及定时 (30s) 会把内存中的 GTID 信息保存到 relay.meta 中，在没有获取到上游 GTID 信息的情况下，把空的 GTID 信息保存到了 relay.meta 中。见案例 [case-772](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case772.md)。
 
-        - relay.meta 中记录的 binlog event 不完整触发 recover 流程后记录错误的 GTID 信息，该问题可能会在 1.0.2 之前的版本遇到，已在 1.0.2 版本修复。<!--见案例 [case-764](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case764.md)-->
+        - relay.meta 中记录的 binlog event 不完整触发 recover 流程后记录错误的 GTID 信息，该问题可能会在 1.0.2 之前的版本遇到，已在 1.0.2 版本修复。见案例 [case-764](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case764.md)。
 
 - 6.2.7 DM 同步报错 `Error 1366: incorrect utf8 value eda0bdedb29d(\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd)`。
 
@@ -467,7 +467,7 @@ category: how-to
 
         - 从日志的开头搜寻 `region-concurrency` 能知道 Lightning 读到的参数是多少；
         - 如果 Lightning 与其他服务（如 Importer）共用一台服务器，必需手动将 `region-concurrency` 设为该服务器 CPU 数量的 `75%`；
-        - 如果 CPU 设有限额（例如从 K8s 指定的上限），Lightning 可能无法自动判断出来，此时亦需要手动调整 `region-concurrency`。
+        - 如果 CPU 设有限额（例如从 Kubernetes 指定的上限），TiDB Lightning 可能无法自动判断出来，此时亦需要手动调整 `region-concurrency`。
 
     - 表结构太复杂。每条索引都会额外增加 KV 对，如果有 N 条索引，实际导入的大小就差不多是 Mydumper 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
 
@@ -484,41 +484,41 @@ category: how-to
         - 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
         - 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
 
-    - 解决办法：参考[官网步骤处理](https://pingcap.com/docs-cn/stable/how-to/troubleshoot/tidb-lightning/#checksum-failed-checksum-mismatched-remote-vs-local)。
+    - 解决办法：参考[官网步骤处理](/how-to/troubleshoot/tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)。
 
 - 6.3.4 `Checkpoint for … has invalid status:(错误码)`
 
     - 原因：断点续传已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lightning 在错误解决以前不会启动。错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
-    - 解决办法：参考[官网步骤](https://pingcap.com/docs-cn/stable/how-to/troubleshoot/tidb-lightning/#checkpoint-for--has-invalid-status%E9%94%99%E8%AF%AF%E7%A0%81)处理。
+    - 解决办法：参考[官网步骤](/how-to/troubleshoot/tidb-lightning.md#checkpoint-for--has-invalid-status错误码)处理。
 
 - 6.3.5 `ResourceTemporarilyUnavailable("Too many open engines …: 8")`
 
     - 原因：并行打开的引擎文件 (engine files) 超出 tikv-importer 里的限制。这可能由配置错误引起。即使配置没问题，如果 tidb-lightning 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
 
-    - 解决办法：参考[官网步骤处理](https://pingcap.com/docs-cn/stable/how-to/troubleshoot/tidb-lightning/#resourcetemporarilyunavailabletoo-many-open-engines--8)。
+    - 解决办法：参考[官网步骤处理](/how-to/troubleshoot/tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--8)。
 
 - 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
     - 原因：Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
 
-    - 解决办法：参考[官网步骤](https://pingcap.com/docs-cn/stable/how-to/troubleshoot/tidb-lightning/#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
+    - 解决办法：参考[官网步骤](/how-to/troubleshoot/tidb-lightning.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
 
 - 6.3.7 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
 
     - 原因：一个 timestamp 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏令时切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 
-    - 解决办法：参考[官网步骤](https://pingcap.com/docs-cn/stable/how-to/troubleshoot/tidb-lightning/#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-0-45-0-0)处理。
+    - 解决办法：参考[官网步骤](/how-to/troubleshoot/tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-0-45-0-0)处理。
 
 ## 7. 常见日志分析
 
 ### 7.1 TiDB
 
-- 7.1.1 `GC life time is shorter than transaction duration`。事务执行时间太长，超过了 GC lifetime（默认 10min），可以通过修改 mysql.tidb 表来调整 `life time`，通常情况下不建议修改，会导致大量老版本堆积起来（如果有大量 update 和 delete 语句）。
+- 7.1.1 `GC life time is shorter than transaction duration`。事务执行时间太长，超过了 GC lifetime（默认 10min），可以通过修改 `mysql.tidb` 表来调整 `life time`，通常情况下不建议修改，会导致大量老版本堆积起来（如果有大量 `update` 和 `delete` 语句）。
 
 - 7.1.2 `txn takes too much time`。事务太长时间（超过 590s）没有提交，准备提交的时候报该错误。可以通过调大 `[tikv-client] max-txn-time-use = 590` 参数，以及调大 `GC life time` 来绕过该问题（如果确实有这个需求）。通常情况下，建议看看业务是否真的需要执行这么长时间的事务。
 
-- 7.1.3 coprocessor.go 报 `request outdated`。发往 TiKV 的 coprocessor 请求在 TiKV 端排队时间超过了 60s，直接返回该错误。需要排查 TiKV coprocessor 为什么排队这么严重。
+- 7.1.3 coprocessor.go 报 `request outdated`。发往 TiKV 的 Coprocessor 请求在 TiKV 端排队时间超过了 60s，直接返回该错误。需要排查 TiKV Coprocessor 为什么排队这么严重。
 
 - 7.1.4 region_cache.go 大量报 `switch region peer to next due to send request fail` 且 error 信息是 `context deadline exceeded`。请求 TiKV 超时触发 region cache 切换请求到其他节点，可以对日志中的 addr 字段继续 `grep "<addr> cancelled"`，根据 grep 结果：
 
@@ -546,4 +546,4 @@ category: how-to
 
 - 7.2.5 `stale_epoch`。请求的 epoch 太旧了，TiDB 会更新路由之后再重新发送请求，业务无感知。epoch 在 Region 发生 split/merge 以及迁移副本的时候会变化。
 
-- 7.2.6 `peer is not leader`。请求发到了非 Leader 的副本上，TiDB 会根据该错误更新本地路由（如果错误 response 里携带了最新 Leader 是哪个副本这一信息），并且重新发送请求到最新 Leader，一般情况下业务无感知。在 v3.0 后 TiDB 在原 Leader 请求失败时会尝试其他 peer，也会导致 TiKV 频繁出现 `not leader` 日志，可以通过查看 TiDB 对应 Region 的 `switch region peer to next due to send request fail` 日志，排查发送失败根本原因，参考 [7.1.4](#71-tidb)。另外也可能是由于其他原因导致一些 Region 一直没有 Leader，请参考 [4.4](#44-某些-tikv-大量掉-leader)。
+- 7.2.6 `peer is not leader`。请求发到了非 Leader 的副本上，TiDB 会根据该错误更新本地路由（如果错误 response 里携带了最新 Leader 是哪个副本这一信息），并且重新发送请求到最新 Leader，一般情况下业务无感知。在 v3.0 后 TiDB 在原 Leader 请求失败时会尝试其他 peer，也会导致 TiKV 频繁出现 `not leader` 日志，可以通过查看 TiDB 对应 Region 的 `switch region peer to next due to send request fail` 日志，排查发送失败根本原因，参考 [7.1.4 TiDB](#71-tidb)。另外也可能是由于其他原因导致一些 Region 一直没有 Leader，请参考 [4.4 某些 TiKV 大量掉 Leader](#44-某些-tikv-大量掉-leader)。
