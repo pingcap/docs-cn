@@ -313,17 +313,17 @@ category: how-to
 
     - 网络问题，排查网络相关情况。通过监控 **Grafana** -> **blackbox_exporter** -> **ping latency** 确定 TiDB 到 PD Leader 的网络是否正常。
 
-    - PD panic，[需报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md&title=)。
+    - PD panic，[需报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
     - PD OOM，参考 [5.3](#53-pd-oom)。
 
-    - 其他原因，通过 `curl http://127.0.0.1:2379/debug/pprof/goroutine?debug=2` 抓 goroutine，[报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md&title=)。
+    - 其他原因，通过 `curl http://127.0.0.1:2379/debug/pprof/goroutine?debug=2` 抓 goroutine，[报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
 - 5.2.4 其他问题
 
     - PD 报 `FATAL` 错误，日志中有 `range failed to find revision pair`，3.0.8 已经修复该问题，见 [#2040](https://github.com/pingcap/pd/pull/2040)。详情请参考案例 [case-947](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case947.md)。
 
-    - 其他原因，[需报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md&title=)。
+    - 其他原因，[需报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
 ### 5.3 PD OOM
 
