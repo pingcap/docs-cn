@@ -413,6 +413,8 @@ prepare 语句的 Plan cache 设置。
 
 ## tikv-client.copr-cache
 
+本部分介绍 Coprocessor cache 相关的配置项。
+
 ### `enabled`
 
 + 是否开启[下推计算结果缓存](/reference/performance/coprocessor-cache.md)。
@@ -426,13 +428,13 @@ prepare 语句的 Plan cache 设置。
 
 ### `admission-max-result-mb`
 
-+ 最大缓存的单个下推计算结果集大小。若单个下推计算在 Coprocessor 上返回的结果集大小大于该参数指定的大小，则结果集不会被缓存。
++ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。
 + 默认值：10
 + 单位：MB
 
 ### `admission-min-process-ms`
 
-+ 最小缓存的单个下推计算结果集计算时间。若单个下推计算在 Coprocessor 上的计算时间小于该参数指定的时间，则结果集不会被缓存。
++ 指定能被缓存的单个下推计算结果集的最短计算时间。若单个下推计算在 Coprocessor 上的计算时间小于该参数指定的时间，则结果集不会被缓存。
 + 默认值：5
 + 单位：ms
 
