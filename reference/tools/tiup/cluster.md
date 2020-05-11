@@ -95,10 +95,10 @@ monitoring_servers:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy prod-cluster v3.0.12 /tmp/topology.yaml
+tiup cluster deploy -p prod-cluster v3.0.12 /tmp/topology.yaml
 ```
 
-执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码：
+执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码(-p 表示使用密码)：
 
 ```bash
 Please confirm your topology:
