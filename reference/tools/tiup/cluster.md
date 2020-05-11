@@ -97,10 +97,10 @@ Save the file as `/tmp/topology.yaml`. If you want to use TiDB v3.0.12 and your 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy prod-cluster v3.0.12 /tmp/topology.yaml
+tiup cluster deploy -p prod-cluster v3.0.12 /tmp/topology.yaml
 ```
 
-During the execution, TiUP asks you to confirm your topology again and requires the root password of the target machine:
+During the execution, TiUP asks you to confirm your topology again and requires the root password of the target machine (the `-p` flag means inputting password):
 
 ```bash
 Please confirm your topology:
