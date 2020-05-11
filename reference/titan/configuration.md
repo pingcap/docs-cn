@@ -24,7 +24,7 @@ Reload 配置，同时也会在线滚动重启 TiKV
 {{< copyable "shell-regular" >}}
 
 ```shell
-`tiup cluster reload likun-single -R tikv`
+`tiup cluster reload ${cluster-name} -R tikv`
 ```
 
 也可以直接编辑 TiKV 配置文件开启 Titan（线上环境不推荐)
