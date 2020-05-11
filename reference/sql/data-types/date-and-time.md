@@ -108,7 +108,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
     1 row in set (0.01 sec)
     ```
 
-- SQL 模式的设置不同，TiDB 对格式的要求不同。
+- SQL 模式的不同设置，会改变 TiDB 对格式的要求。
 - 如果 SQL 模式的 `NO_ZERO_DATE` 被禁用，TiDB 允许 `DATE` 和 `DATETIME` 列中的月份或日期为零。例如，`2009-00-00` 或 `2009-01-00`。如果使用函数计算这种日期类型，例如使用 `DATE_SUB()` 或 `DATE_ADD()` 函数，计算结果可能不正确。
 - 默认情况下，TiDB 启用 `NO_ZERO_DATE` SQL 模式。该模式可以避免存储像 `0000-00-00` 这样的零值。
 
