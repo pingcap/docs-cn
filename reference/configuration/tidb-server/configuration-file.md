@@ -411,14 +411,14 @@ prepare 语句的 Plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
-## tikv-client.copr-cache
+## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-本部分介绍 Coprocessor cache 相关的配置项。
+本部分介绍 Coprocessor Cache 相关的配置项。
 
-### `enabled`
+### `enable`
 
 + 是否开启[下推计算结果缓存](/reference/performance/coprocessor-cache.md)。
-+ 默认值：true
++ 默认值：false（即不开启）
 
 ### `capacity-mb`
 
@@ -428,13 +428,13 @@ prepare 语句的 Plan cache 设置。
 
 ### `admission-max-result-mb`
 
-+ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。
++ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
 + 默认值：10
 + 单位：MB
 
 ### `admission-min-process-ms`
 
-+ 指定能被缓存的单个下推计算结果集的最短计算时间。若单个下推计算在 Coprocessor 上的计算时间小于该参数指定的时间，则结果集不会被缓存。
++ 指定能被缓存的单个下推计算结果集的最短计算时间。若单个下推计算在 Coprocessor 上的计算时间小于该参数指定的时间，则结果集不会被缓存。处理得很快的请求没有必要进行缓存，仅对处理时间很长的请求进行缓存，减少缓存被逐出的概率，这是本配置参数的意义。
 + 默认值：5
 + 单位：ms
 
