@@ -35,9 +35,9 @@ enabled = true
 
 如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction。请参考 [tikv-ctl 文档手动 compact 小节](https://pingcap.com/docs-cn/stable/reference/tools/tikv-control/#%E6%89%8B%E5%8A%A8-compact-%E5%8D%95%E4%B8%AA-tikv-%E7%9A%84%E6%95%B0%E6%8D%AE)
 
-**注意：**
+> **注意：**
 >
-> 在不开启 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan （误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。如需要关闭 Titan，请参看[关闭 Titan](#关闭-titan实验性) 一节。
+> 在不开启 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan（误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。如需要关闭 Titan，请参看[关闭 Titan](#关闭-titan实验性) 一节。
 
 ## 相关参数介绍
 
@@ -71,15 +71,18 @@ Titan 中 value 所使用的压缩算法。Titan 中压缩是以 value 为单元
 blob-cache-size = 0
 ```
 
-Titan 中 value 的缓存大小。更大的缓存能提高 Titan 读性能，但过大的缓存会造成 OOM。建议在数据库稳定运行后，根据监控把 RocksDB block cache (storage.block-cache.capacity) 设置为 store size 减去 blob file size 的大小，`blob-cache-size` 设置为`内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。
+Titan 中 value 的缓存大小。更大的缓存能提高 Titan 读性能，但过大的缓存会造成 OOM。建议在数据库稳定运行后，根据监控把 RocksDB block cache (storage.block-cache.capacity) 设置为 store size 减去 blob file size 的大小，`blob-cache-size` 设置为 `内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。
 
 ```toml
 discardable-ratio = 0.5
 ```
 
 当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过这一阈值时，将会触发 Titan GC ，将此文件有用的数据重写到另一个文件。这个值可以估算 Titan 的写放大和空间放大的上界（假设关闭压缩）。公式是：
+
 写放大上界 = 1 / discardable_ratio
-空间放大上界 = 1 / ( 1 - discarable_ratio )
+
+空间放大上界 = 1 / (1 - discarable_ratio)
+
 可以看到，减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。
 
 ```toml
@@ -97,7 +100,7 @@ rate-bytes-per-sec = 0
 - 当设置为 “kReadnly” 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 “kFallback” 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-当需要关闭 Titan 时，可以设置 blob-run-mode = “kFallback”，并通过 tikv-ctl 执行全量 compaction。此后通过监控确认 blob file size 降到 0 以后，可以更改 rocksdb.titan.enabled = false 并重启 TiKV。
+当需要关闭 Titan 时，可以设置 blob-run-mode = "kFallback"，并通过 tikv-ctl 执行全量 compaction。此后通过监控确认 blob file size 降到 0 以后，可以更改 rocksdb.titan.enabled = false 并重启 TiKV。
 
 关闭 Titan 是实验性功能，非必要不建议使用。
 
