@@ -6,13 +6,13 @@ category: how-to
 
 # TiDB 集群问题导图
 
-本篇文档总结了使用 TiDB 及其组件时常见的错误。遇到相关情况时，可以通过该问题导图来排查错误原因并进行处理。
+本篇文档总结了使用 TiDB 及其组件时的常见错误。遇到相关错误时，可以通过本文档的问题导图来排查错误原因并进行处理。
 
 ## 1. 服务不可用
 
 ### 1.1 客户端报 `Region is Unavailable` 错误
 
-- 1.1.1 `Region is Unavailable` 一般是由于 Region 在一段时间不可用（可能会遇到 `TiKV server is busy`，或者发送给 TiKV 的请求由于 `not leader` 或者 `epoch not match` 等原因被打回，又或者请求 TiKV 超时等），TiDB 内部会进行 `backoff` 重试机制，`backoff` 的时间超过一定阈值（默认 20s）后就会报错给客户端。如果 `backoff` 在阈值内，客户端对该错误是无感知的。
+- 1.1.1 `Region is Unavailable` 一般是由于 Region 在一段时间不可用（可能会遇到 `TiKV server is busy`；或者发送给 TiKV 的请求由于 `not leader` 或者 `epoch not match` 等原因被打回；又或者请求 TiKV 超时等），TiDB 内部会进行 `backoff` 重试。`backoff` 的时间超过一定阈值（默认 20s）后就会报错给客户端。如果 `backoff` 在阈值内，客户端对该错误无感知。
 
 - 1.1.2 多台 TiKV 同时内存不足 (OOM)，导致 Region 在一定时期内没有 Leader，见案例 [case-991](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case991.md)。
 
@@ -74,7 +74,7 @@ category: how-to
 
 - 3.1.3 TiDB 日志中报 `information schema is changed` 的错误：
 
-    - 原因 1：正在执行的 DML 所涉及的表和正在做 DDL 的表相同，可以通过命令 `admin show ddl job` 查看正在运行的 DDL 操作。
+    - 原因 1：正在执行的 DML 所涉及的表和正在执行 DDL 的表相同，可以通过命令 `admin show ddl job` 查看正在运行的 DDL 操作。
 
     - 原因 2：当前执行的 DML 时间太久，且这段时间内执行了很多 DDL（新版本 `lock table` 也会导致 schema 版本变化），导致中间 `schema version` 变更超过 1024 个版本数。
 
@@ -95,7 +95,7 @@ category: how-to
 
     - 原因 3：TiKV 压力大或网络超时，通过监控 **Grafana** -> TiDB 和 TiKV 节点的负载情况来确认是否是该原因。
 
-    - 解决方法：第 1 种原因，在 TiDB 起来时手动重试该 DML 即可；第 2 种原因，需要检查 TiDB 实例和 PD 及 TiKV 的网络波动情况；第 3 种原因，需要检查 TiKV 为什么繁忙，参考 [4 TiKV 问题](#4-tikv-问题)。
+    - 解决方法：第 1 种原因，在 TiDB 启动时手动重试该 DML 即可；第 2 种原因，需要检查 TiDB 实例和 PD 及 TiKV 的网络波动情况；第 3 种原因，需要检查 TiKV 为什么繁忙，参考 [4. TiKV 问题](#4-tikv-问题)。
 
 ### 3.2 OOM 问题
 
