@@ -5,36 +5,39 @@ category: reference
 
 # Titan 配置
 
-Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，在 value 较大的场景下，减少写放大，降低 RocksDB 后台 compaction 对 I/O 带宽和 CPU 的占用，以提高性能。
+Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，在 value 较大的场景下，减少写放大，降低 RocksDB 后台 compaction 对 I/O 带宽和 CPU 的占用，以提高性能。详情参阅 [Titan 介绍](/reference/titan/overview.md)。
+
+本文档介绍如何如何通过 Titan 配置项来开启、关闭 Titan，以及开启 level merge 功能。
 
 ## 开启 Titan
 
-Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 TiKV 实例可以直接开启 Titan。如果使用 TiUP 部署的集群，开启的方法是执行 `tiup cluster edit-config ${cluster-name}` ，编辑配置文件，开启 Titan
+Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 TiKV 实例可以直接开启 Titan。
 
-{{< copyable "shell-regular" >}}
++ 方法一：如果使用 TiUP 部署的集群，开启的方法是执行 `tiup cluster edit-config ${cluster-name}` 命令，再编辑 TiKV 的配置文件。编辑 TiKV 配置文件示例如下：
 
-```shell
-server_configs:
-  tikv:
-    rocksdb.titan.enabled: true
-```
+    {{< copyable "shell-regular" >}}
 
-Reload 配置，同时也会在线滚动重启 TiKV
+    ```shell
+      tikv:
+        rocksdb.titan.enabled: true
+    ```
 
-{{< copyable "shell-regular" >}}
+    重新加载配置，同时也会在线滚动重启 TiKV：
 
-```shell
-`tiup cluster reload ${cluster-name} -R tikv`
-```
+    {{< copyable "shell-regular" >}}
 
-也可以直接编辑 TiKV 配置文件开启 Titan（线上环境不推荐)
+    ```shell
+    `tiup cluster reload ${cluster-name} -R tikv`
+    ```
 
-{{< copyable "" >}}
++ 方法二：也可以直接编辑 TiKV 配置文件开启 Titan（线上环境不推荐)
 
-``` toml
-[rocksdb.titan]
-enabled = true
-```
+    {{< copyable "" >}}
+
+    ``` toml
+    [rocksdb.titan]
+    enabled = true
+    ```
 
 开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
 
@@ -46,7 +49,7 @@ enabled = true
 
 ## 相关参数介绍
 
-> 使用 TiUP 调整参数，请参考 [修改配置参数](/how-to/maintain/tiup-operations.md#修改配置参数)
+使用 TiUP 调整参数，请参考[修改配置参数](/how-to/maintain/tiup-operations.md#修改配置参数)
 
 {{< copyable "" >}}
 
@@ -97,19 +100,19 @@ rate-bytes-per-sec = 0
 
 该选项并不是 Titan 独有的设置。该选项限制 RocksDB compaction 的 I/O 速率，以达到在流量高峰时，限制 RocksDB compaction 减少其 I/O 带宽和 CPU 消耗对前台读写性能的影响。当开启 Titan 时，该选项限制 RocksDB compaction 和 Titan GC 的 I/O 速率总和。当发现在流量高峰时 RocksDB compaction 和 Titan GC 的 I/O 和/或 CPU 消耗过大，可以根据磁盘 I/O 带宽和实际写入流量适当配置这个选项。
 
-## 关闭 Titan（实验性）
+## 关闭 Titan（实验功能）
 
-通过设置 rocksdb.defaultcf.titan.blob-run-mode 可以关闭 Titan。blob-run-mode 可以设置为以下几个值之一：
+通过设置 rocksdb.defaultcf.titan.blob-run-mode 参数可以关闭 Titan。blob-run-mode 可以设置为以下几个值之一：
 
-- 当设置为 “kNormal” 时，Titan 处于正常读写的状态。
-- 当设置为 “kReadnly” 时，新写入的 value 不论大小均会写入 RocksDB。
-- 当设置为 “kFallback” 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
+- 当设置为 `kNormal` 时，Titan 处于正常读写的状态。
+- 当设置为 `kReadnly` 时，新写入的 value 不论大小均会写入 RocksDB。
+- 当设置为 `kFallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
 当需要关闭 Titan 时，可以设置 blob-run-mode = "kFallback"，并通过 tikv-ctl 执行全量 compaction。此后通过监控确认 blob file size 降到 0 以后，可以更改 rocksdb.titan.enabled = false 并重启 TiKV。
 
 关闭 Titan 是实验性功能，非必要不建议使用。
 
-## Level Merge：提升范围查询性能（实验性）
+## Level Merge：提升范围查询性能（实验功能）
 
 TiKV 4.0 中 Titan 提供新的算法提升范围查询性能并降低 Titan GC 对前台写入性能的影响。这个新的算法称为 level merge。Level merge 可以通过以下选项开启：
 
