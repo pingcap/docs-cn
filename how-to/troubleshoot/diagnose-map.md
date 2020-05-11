@@ -339,7 +339,7 @@ category: how-to
 
 ### 6.1 TiDB Binlog 问题
 
-- 6.1.1 TiDB Binlog 是将 TiDB 的修改同步给下游 TiDB 或者 MySQL 的工具，见[官方文档](https://github.com/pingcap/tidb-binlog)。
+- 6.1.1 TiDB Binlog 是将 TiDB 的修改同步给下游 TiDB 或者 MySQL 的工具，见 [TiDB Binlog on GitHub](https://github.com/pingcap/tidb-binlog)。
 
 - 6.1.2 Pump/Drainer Status 中 Update Time 正常更新，日志中也没有异常，但下游没有数据写入。
 
@@ -409,7 +409,7 @@ category: how-to
 
 ### 6.2 DM 问题
 
-- 6.2.1 DM 是能将 MySQL/MariaDB 的数据迁移到 TiDB 的迁移工具，详情见 [DM GitHub](https://github.com/pingcap/dm/)。
+- 6.2.1 TiDB Data Migration (DM) 是能将 MySQL/MariaDB 的数据迁移到 TiDB 的迁移工具，详情见 [DM on GitHub](https://github.com/pingcap/dm/)。
 
 - 6.2.2 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`。
 
@@ -459,7 +459,7 @@ category: how-to
 
 ### 6.3 TiDB Lightning 问题
 
-- 6.3.1 TiDB Lightning 是快速的全量数据导入工具，见 [TiDB Lightning Github](https://github.com/pingcap/tidb-lightning)。
+- 6.3.1 TiDB Lightning 是快速的全量数据导入工具，见 [TiDB Lightning on GitHub](https://github.com/pingcap/tidb-lightning)。
 
 - 6.3.2 导入速度太慢。
 
