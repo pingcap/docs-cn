@@ -257,16 +257,16 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 
 除了 Hint 外，环境变量 `tidb_mem_quota_query` 也能限制语句执行的内存使用。
 
-### READ_FROM_REPLICA()
+### READ_CONSISTENT_REPLICA()
 
-`READ_FROM_REPLICA()` 会开启从数据一致的 TiKV follower 节点读取数据的特性。
+`READ_CONSTSTENT_REPLICA()` 会开启从数据一致的 TiKV follower 节点读取数据的特性。
 
 下面的例子会从 follower 节点读取数据：
 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ READ_FROM_REPLICA() */ * from t;
+select /*+ READ_CONSISTENT_REPLICA() */ * from t;
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
