@@ -564,3 +564,9 @@ set tidb_query_log_max_len = 20
 - Scope: SESSION
 - Default value: 1
 - This variable is used to control whether to enable the `Chunk` data encoding format in Coprocessor.
+
+### last_plan_from_cache <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION
+- Default value: 0
+- This variable is used to show whether the execution plan used in the previous `execute` statement is taken directly from the plan cache.
