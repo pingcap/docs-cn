@@ -9,11 +9,11 @@ category: reference
 
 谓词下推规则会把每个算子上能推的条件尽量往下推，如果某些谓词到某个算子时无法下推了，那么就会在这个算子上面新加一个 Selection 算子，形成新的查询计划。
 
-## 例子
-
 谓词下推是非常重要的一个优化。
 
-比如
+## 例子
+
+对于
 
 {{< copyable "sql" >}}
 
@@ -39,7 +39,7 @@ explain select * from t1, t2 where t1.a > 3 and t2.b > 5;
 7 rows in set (0.00 sec)
 ```
 
-上面的例子将原本在 join 上的谓词，下推到了 datasource 中，最后通过 coprocessor 推给 TiKV 去做。
+上面的例子将原本在 join 上的谓词，下推到了扫表算子中，最后通过 coprocessor 推给 TiKV 去做。
 
 ## 谓词下推与 join
 
