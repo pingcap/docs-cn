@@ -92,19 +92,19 @@ Titan 会为每个有效的 BlobFile 在内存中维护一个 discardable size �
 
 GC 的方式就是对于这些选中的 BlobFile 文件，依次通过查询其中每个 value 相应的 key 的 blob index 是否存在或者更新来确定该 value 是否作废，最终将未作废的 value 归并排序生成新的 BlobFile，并将这些 value 更新后的 blob index 通过 WriteCallback 或者 MergeOperator 的方式写回到 SST 中。在完成 GC 后，这些原来的 BlobFile 文件并不会立即被删除，Titan 会在写回 blob index 后记录 RocksDB 最新的 sequence number，等到最旧 snapshot 的 sequence 超过这个记录的 sequence number 时 BlobFile 才能被删除。这个是因为在写回 blob index 后，还是可能通过之前的 snapshot 访问到老的 blob index，因此需要确保没有 snapshot 会访问到这个老的 blob index 后才能安全删除相应 BlobFile。
 
-### Level-Merge
+### Level Merge
 
-Level-Merge 是 Titan 新加入的一种策略，它的核心思想是 LSM-Tree 在进行 Compaction 的同时，对 SST 文件对应的 BlobFile 进行归并重写产生新的 BlobFile。其流程大概如下图所示： 
+Level Merge 是 Titan 新加入的一种策略，它的核心思想是 LSM-Tree 在进行 Compaction 的同时，对 SST 文件对应的 BlobFile 进行归并重写产生新的 BlobFile。其流程大概如下图所示： 
 
 ![6-LevelMerge.png](/media/titan/titan-6.png) Level z-1 和 Level z 的 SST 进行 Compaction 时会对 KV 对有序读写一遍，这时就可以对这些 SST 中所涉及的 BlobFile 的 value 有序写到新的 BlobFile 中，并在生成新的 SST 时将 key 的 blob index 进行更新。对于 Compaction 中被删除的 key，相应的 value 也不会写到新的 BlobFile 中，相当于完成了 GC。
 
-相比于传统 GC，Level-Merge 这种方式在 LSM-Tree 进行 Compaction 的同时就完成了 Blob GC，不再需要查询 LSM-Tree 的 blob index 情况和写回新 blob index 到 LSM-Tree 中，减小了 GC 对前台操作影响。同时通过不断的重写 BlobFile，减小了 BlobFile 之间的相互重叠，提高系统整体有序性，也就是提高了 Scan 性能。当然将BlobFile 以类似 tiering compaction 的方式分层会带来写放大，考虑到 LSM-Tree 中 99% 的数据都落在最后两层，因此 Titan 仅对 LSM-Tree 中 Compaction 到最后两层数据对应的 BlobFile 进行 Level-Merge。
+相比于传统 GC，Level Merge 这种方式在 LSM-Tree 进行 Compaction 的同时就完成了 Blob GC，不再需要查询 LSM-Tree 的 blob index 情况和写回新 blob index 到 LSM-Tree 中，减小了 GC 对前台操作影响。同时通过不断的重写 BlobFile，减小了 BlobFile 之间的相互重叠，提高系统整体有序性，也就是提高了 Scan 性能。当然将 BlobFile 以类似 tiering compaction 的方式分层会带来写放大，考虑到 LSM-Tree 中 99% 的数据都落在最后两层，因此 Titan 仅对 LSM-Tree 中 Compaction 到最后两层数据对应的 BlobFile 进行 Level Merge。
 
-#### Range-Merge
+#### Range Merge
 
-Range-Merge 是基于 Level-Merge 的一个优化。考虑如下两种情况，会导致最底层的有序性越来越差：
+Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，会导致最底层的有序性越来越差：
 
-- 开启 level_compaction_dynamic_level_bytes，此时  LSM-Tree 各层动态增长，随数据量增大最后一层的sorted run会原来越多。
+- 开启 level_compaction_dynamic_level_bytes，此时 LSM-Tree 各层动态增长，随数据量增大最后一层的 sorted run 会越来越多。
 
 - 某个 range 被频繁 Compaction 导致该 range 的 sorted runs 较多 
 
