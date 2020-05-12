@@ -51,7 +51,7 @@ insert into mysql.opt_rule_blacklist values("join_reorder"),("topn_push_down");
 admin reload opt_rule_blacklist
 ```
 
-同理，需要解除某些规则的禁用时，需要删除表中数据再执行 `admin reload`:
+需要解除一条规则的禁用时，需要删除表中禁用该条规则的相应数据，再执行 `admin reload`：
 
 {{< copyable "sql" >}}
 
