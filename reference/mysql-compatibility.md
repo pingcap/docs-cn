@@ -87,7 +87,7 @@ mysql> select _tidb_rowid, id from t;
 
 TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的，其会随着上次分配缓存大小的使用速度，进行下一次分配缓存大小的调整，整体范围在 30000 到 2000000 内进行浮动。在 v4.0.rc.2, v3.1.2 和 v3.0.14 版本中，TiDB 引入了 `AUTO_ID_CACHE` table option 来允许用户自主设置自增 ID 分配缓存的大小。
 
-由于该参数是作用在自增列分配器（可能由 auto_increment 和 _tidb_rowid 共用）的逻辑上，因此在该缓存大小的使用可能会被 auto_increment 和 _tidb_rowid 共同消耗。此外如果在 insert 语句中所需连续 id 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当放大缓存步长以便能够保证该语句的正常插入。
+由于该参数是作用在自增列分配器（可能由 `auto_increment` 和 `_tidb_rowid` 共用）的逻辑上，因此在该缓存大小的使用可能会被 `auto_increment` 和 `_tidb_rowid` 共同消耗。此外如果在 `insert` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当放大缓存步长以便能够保证该语句的正常插入。
 
 ### Performance schema
 
