@@ -75,6 +75,7 @@
     - [使用 TiUP 升级（推荐）](/how-to/upgrade/using-tiup.md)
     - [使用 TiDB Ansible 升级](/how-to/upgrade/from-previous-version.md)
   + 故障诊断
+    - [TiDB 集群问题导图](/how-to/troubleshoot/diagnose-map.md)
     - [集群配置诊断](/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
