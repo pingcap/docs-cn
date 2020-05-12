@@ -55,13 +55,13 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ```
 
 ```
-+---------------------+----------+------+-------------------------------------------------------------+
-| id                  | count    | task | operator info                                               |
-+---------------------+----------+------+-------------------------------------------------------------+
-| TableReader_7       | 10.00    | root | data:Selection_6                                            |
-| └─Selection_6       | 10.00    | cop  | eq(test.t1.c1, 3)                                           |
-|   └─TableScan_5     | 10000.00 | cop  | table:t1, range:[-inf,+inf], keep order:false, stats:pseudo |
-+---------------------+----------+------+-------------------------------------------------------------+
++-------------------------+----------+-----------+---------------+--------------------------------+
+| id                      | estRows  | task      | access object | operator info                  |
++-------------------------+----------+-----------+---------------+--------------------------------+
+| TableReader_7           | 10.00    | root      |               | data:Selection_6               |
+| └─Selection_6           | 10.00    | cop[tikv] |               | eq(test.t1.c1, 3)              |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo |
++-------------------------+----------+-----------+---------------+--------------------------------+
 3 rows in set (0.00 sec)
 ```
 
@@ -82,12 +82,12 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ```
 
 ```
-+-------------------+-------+------+-----------------------------------------------------------------+
-| id                | count | task | operator info                                                   |
-+-------------------+-------+------+-----------------------------------------------------------------+
-| IndexReader_6     | 10.00 | root | index:IndexScan_5                                               |
-| └─IndexScan_5     | 10.00 | cop  | table:t1, index:c1, range:[3,3], keep order:false, stats:pseudo |
-+-------------------+-------+------+-----------------------------------------------------------------+
++------------------------+---------+-----------+------------------------+---------------------------------------------+
+| id                     | estRows | task      | access object          | operator info                               |
++------------------------+---------+-----------+------------------------+---------------------------------------------+
+| IndexReader_6          | 10.00   | root      |                        | index:IndexRangeScan_5                      |
+| └─IndexRangeScan_5     | 10.00   | cop[tikv] | table:t1, index:c1(c1) | range:[3,3], keep order:false, stats:pseudo |
++------------------------+---------+-----------+------------------------+---------------------------------------------+
 2 rows in set (0.00 sec)
 ```
 
@@ -103,6 +103,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * [ADD INDEX](/reference/sql/statements/add-index.md)
 * [DROP INDEX](/reference/sql/statements/drop-index.md)
 * [RENAME INDEX](/reference/sql/statements/rename-index.md)
+* [ALTER INDEX](/reference/sql/statements/alter-index.md)
 * [CREATE TABLE](/reference/sql/statements/create-table.md)
 * [DROP TABLE](/reference/sql/statements/drop-table.md)
 * [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)

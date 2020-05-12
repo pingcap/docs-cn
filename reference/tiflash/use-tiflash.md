@@ -72,7 +72,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 查询结果中：
 
-* AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。
+* AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
 ## 使用 TiDB 读取 TiFlash
@@ -117,6 +117,8 @@ explain analyze select count(*) from test.t;
 ```
 
 `cop[tiflash]` 表示该任务会发送至 TiFlash 进行处理。如果没有选择 TiFlash 副本，可尝试通过 `analyze table` 语句更新统计信息后，再查看 `explain analyze` 结果。
+
+需要注意的是，如果表仅有单个 TiFlash 副本且相关节点无法服务，智能选择模式下的查询会不断重试，需要指定 Engine 或者手工 Hint 来读取 TiKV。
 
 ### Engine 隔离
 
@@ -189,10 +191,17 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 ## TiFlash 支持的计算下推
 
+> **注意：**
+>
+> 目前 TiFlash 支持 TiDB 新排序规则框架的功能正在开发中，所以在 TiDB 开启[新框架下的排序规则支持](/reference/sql/characterset-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，后续版本会去除这个限制。
+
 TiFlash 主要支持谓词、聚合下推计算，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型主要是表连接和 DISTINCT COUNT，会在后续版本逐步优化。
 
-目前 TiFlash 支持了有限的常用表达式下推，想了解具体下推的表达式，请参考[该文件](https://github.com/pingcap/tidb/blob/release-3.1/expression/expression.go#L409)。
+目前 TiFlash 支持了有限的常用表达式下推，支持下推的表达式可参考[该文件](https://github.com/pingcap/tidb/blob/692e0098b1207ef26ea18bedfcc9ba067604da3c/expression/expression.go#L1115)。
 
-例如在聚合函数或者 WHERE 条件中包含了不在上述列表中的表达式，聚合或者相关的谓词过滤会无法进行下推。
+目前 TiFlash 不支持下推的情况包括：
+
+- 所有包含 Duration 和 JSON 的表达式均不能下推
+- 在聚合函数或者 WHERE 条件中包含了不在[该文件](https://github.com/pingcap/tidb/blob/692e0098b1207ef26ea18bedfcc9ba067604da3c/expression/expression.go#L1115)列表中的表达式，聚合或者相关的谓词过滤均不能下推
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的表达式，将会在后续陆续加入支持，也可以联系官方沟通。

@@ -72,13 +72,13 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ```
 
 ```
-+---------------------+----------+------+-------------------------------------------------------------+
-| id                  | count    | task | operator info                                               |
-+---------------------+----------+------+-------------------------------------------------------------+
-| TableReader_7       | 10.00    | root | data:Selection_6                                            |
-| └─Selection_6       | 10.00    | cop  | eq(test.t1.c1, 3)                                           |
-|   └─TableScan_5     | 10000.00 | cop  | table:t1, range:[-inf,+inf], keep order:false, stats:pseudo |
-+---------------------+----------+------+-------------------------------------------------------------+
++-------------------------+----------+-----------+---------------+--------------------------------+
+| id                      | estRows  | task      | access object | operator info                  |
++-------------------------+----------+-----------+---------------+--------------------------------+
+| TableReader_7           | 10.00    | root      |               | data:Selection_6               |
+| └─Selection_6           | 10.00    | cop[tikv] |               | eq(test.t1.c1, 3)              |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo |
++-------------------------+----------+-----------+---------------+--------------------------------+
 3 rows in set (0.00 sec)
 ```
 
@@ -99,12 +99,12 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ```
 
 ```
-+-------------------+-------+------+-----------------------------------------------------------------+
-| id                | count | task | operator info                                                   |
-+-------------------+-------+------+-----------------------------------------------------------------+
-| IndexReader_6     | 10.00 | root | index:IndexScan_5                                               |
-| └─IndexScan_5     | 10.00 | cop  | table:t1, index:c1, range:[3,3], keep order:false, stats:pseudo |
-+-------------------+-------+------+-----------------------------------------------------------------+
++------------------------+---------+-----------+------------------------+---------------------------------------------+
+| id                     | estRows | task      | access object          | operator info                               |
++------------------------+---------+-----------+------------------------+---------------------------------------------+
+| IndexReader_6          | 10.00   | root      |                        | index:IndexRangeScan_5                      |
+| └─IndexRangeScan_5     | 10.00   | cop[tikv] | table:t1, index:c1(c1) | range:[3,3], keep order:false, stats:pseudo |
++------------------------+---------+-----------+------------------------+---------------------------------------------+
 2 rows in set (0.00 sec)
 ```
 
@@ -130,6 +130,14 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 表达式索引
 
+表达式索引目前是一个实验特性。如果需要使用这一特性，在配置文件中进行以下设置：
+
+{{< copyable "sql" >}}
+
+```sql
+allow-expression-index = true
+```
+
 TiDB 不仅能将索引建立在表中的一个或多个列上，还可以将索引建立在一个表达式上。当查询涉及表达式时，表达式索引能够加速这些查询。
 
 考虑以下查询：
@@ -152,6 +160,17 @@ CREATE INDEX idx ON t ((lower(name)));
 
 表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列 (generated virtual column) 上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/reference/sql/generated-columns.md#局限性)。目前，建立了索引的表达式只有在 `FIELD` 子句、`WHERE` 子句和 `ORDER BY` 子句中时，优化器才能使用表达式索引。后续将支持 `GROUP BY` 子句。
 
+## 不可见索引
+
+不可见索引（Invisible Indexes）是 MySQL 8.0 引入的新功能，将一个索引设置为不可见，使优化器不会再使用这条索引。
+
+```sql
+CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
+CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
+```
+
+具体可以参考 [不可见索引的介绍](/reference/sql/statements/alter-index.md#不可见索引)。
+
 ## 相关 session 变量
 
 和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_ddl_reorg_worker_cnt)。
@@ -167,6 +186,7 @@ CREATE INDEX idx ON t ((lower(name)));
 * [ADD INDEX](/reference/sql/statements/add-index.md)
 * [DROP INDEX](/reference/sql/statements/drop-index.md)
 * [RENAME INDEX](/reference/sql/statements/rename-index.md)
+* [ALTER INDEX](/reference/sql/statements/alter-index.md)
 * [ADD COLUMN](/reference/sql/statements/add-column.md)
 * [CREATE TABLE](/reference/sql/statements/create-table.md)
 * [EXPLAIN](/reference/sql/statements/explain.md)

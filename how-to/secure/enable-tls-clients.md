@@ -7,7 +7,7 @@ category: how-to
 
 TiDB 服务端默认采用非加密连接，因而具备监视信道流量能力的第三方可以知悉 TiDB 服务端与客户端之间发送和接受的数据，包括但不限于查询语句内容、查询结果等。若信道是不可信的，例如客户端是通过公网连接到 TiDB 服务端的，则非加密连接容易造成信息泄露，建议使用加密连接确保安全性。
 
-TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL 客户端如 MySQL 运维工具和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLS 1.0、TLS 1.1、TLS 1.2。
+TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL 客户端如 MySQL 运维工具和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLS 1.0、TLS 1.1、TLS 1.2、TLS 1.3。
 
 使用加密连接后，连接将具有以下安全性质：
 
@@ -15,12 +15,23 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 - 完整性：流量明文无法被篡改；
 - 身份验证（可选）：客户端和服务端能验证双方身份，避免中间人攻击。
 
-TiDB 的加密连接支持默认是关闭的，必须在 TiDB 服务端通过配置开启加密连接的支持后，才能在客户端中使用加密连接。另外，与 MySQL 一致，TiDB 加密连接是以单个连接为单位的，并且是可选的，因而对于开启了加密连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。大部分 MySQL 客户端默认不采用加密连接，因此一般还要显式地要求客户端使用加密连接。
-
-简单来说，要使用加密连接必须同时满足以下两个条件：
+TiDB 的加密连接支持默认是关闭的，必须在 TiDB 服务端通过配置开启加密连接的支持后，才能在客户端中使用加密连接，要使用加密连接必须同时满足以下两个条件：
 
 1. TiDB 服务端配置开启加密连接的支持
 2. 客户端指定使用加密连接
+
+另外，与 MySQL 一致，TiDB 加密连接是以单个连接为单位的，默认情况下是可选的。因而对于开启了加密连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需强制要求客户端使用加密连接可以通过以下两种方式进行配置:
+
++ 通过在启动参数中配置 `--require-secure-transport` 要求所有用户必须使用加密连接来连接到 TiDB。
++ 通过在创建用户 (`create user`)，赋予权限 (`grant`) 或修改已有用户 (`alter user`) 时指定 `require ssl` 要求指定用户必须使用加密连接来连接 TiDB。以创建用户为例：
+
+    ```sql
+    create user 'u1'@'%'  require ssl;
+    ```
+
+> **注意：**
+>
+> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/reference/security/cert-based-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户必须使用加密连接连接 TiDB。
 
 ## 配置 TiDB 启用加密连接支持
 
@@ -64,6 +75,12 @@ ssl-key = "certs/server-key.pem"
 
 若证书参数无误，则 TiDB 在启动时将会输出 `secure connection is enabled`，否则 TiDB 会输出 `secure connection is NOT ENABLED`。
 
+## 重加载证书、密钥和 CA
+
+在需要替换证书、密钥或 CA 时，可以在完成对应文件替换后，对运行中的 TiDB 实例执行 [`ALTER INSTANCE RELOAD TLS`](/reference/sql/statements/alter-instance.md) 语句从原配置的证书 ([`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA，而无需重启 TiDB 实例。
+
+新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
+
 ## 配置 MySQL 客户端使用加密连接
 
 MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若服务端不支持安全连接则自动退回到使用非安全连接；MySQL 5.7 以下版本自带的客户端默认采用非安全连接。
@@ -84,9 +101,15 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 - 若要使 TiDB 服务端验证 MySQL 客户端身份，TiDB 服务端需配置 `ssl-cert`、`ssl-key`、`ssl-ca` 参数，客户端需至少指定 `--ssl-cert`、`--ssl-key` 参数。必须确保服务端配置的证书和客户端配置的证书都是由服务端配置指定的 `ssl-ca` 签发的。
 - 若要进行双向身份验证，请同时满足上述要求。
 
+默认情况，服务端对客户端的身份验证是可选的。若客户端在 TLS 握手时未出示自己的身份证书，也能正常建立 TLS 连接。但也可以通过在创建用户 (`create user`)，赋予权限 (`grant`) 或修改已有用户 (`alter user`) 时指定 `require 509` 要求客户端需进行身份验证，以创建用户为例：
+
+```sql
+create user 'u1'@'%'  require x509;
+```
+
 > **注意：**
 >
-> 目前 TiDB 尚不支持强制验证客户端身份，即服务端对客户端的身份验证是可选的。若客户端在 TLS 握手时未出示自己的身份证书，也能正常建立 TLS 连接。
+> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/reference/security/cert-based-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户需进行身份验证。
 
 ## 检查当前连接是否是加密连接
 
@@ -131,21 +154,17 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 - TLS 1.0
 - TLS 1.1
 - TLS 1.2
+- TLS 1.3
 
 ### 支持的密钥交换协议及加密算法
 
-- TLS\_RSA\_WITH\_RC4\_128\_SHA
-- TLS\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA
 - TLS\_RSA\_WITH\_AES\_128\_CBC\_SHA
 - TLS\_RSA\_WITH\_AES\_256\_CBC\_SHA
 - TLS\_RSA\_WITH\_AES\_128\_CBC\_SHA256
 - TLS\_RSA\_WITH\_AES\_128\_GCM\_SHA256
 - TLS\_RSA\_WITH\_AES\_256\_GCM\_SHA384
-- TLS\_ECDHE\_ECDSA\_WITH\_RC4\_128\_SHA
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_128\_CBC\_SHA
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_256\_CBC\_SHA
-- TLS\_ECDHE\_RSA\_WITH\_RC4\_128\_SHA
-- TLS\_ECDHE\_RSA\_WITH\_3DES\_EDE\_CBC\_SHA
 - TLS\_ECDHE\_RSA\_WITH\_AES\_128\_CBC\_SHA
 - TLS\_ECDHE\_RSA\_WITH\_AES\_256\_CBC\_SHA
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_128\_CBC\_SHA256
@@ -154,5 +173,6 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_128\_GCM\_SHA256
 - TLS\_ECDHE\_RSA\_WITH\_AES\_256\_GCM\_SHA384
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_256\_GCM\_SHA384
-- TLS\_ECDHE\_RSA\_WITH\_CHACHA20\_POLY1305
-- TLS\_ECDHE\_ECDSA\_WITH\_CHACHA20\_POLY1305
+- TLS\_AES\_128\_GCM\_SHA256
+- TLS\_AES\_256\_GCM\_SHA384
+- TLS\_CHACHA20\_POLY1305\_SHA256
