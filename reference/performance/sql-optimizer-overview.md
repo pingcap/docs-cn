@@ -15,7 +15,7 @@ category: reference
 - 投影消除
 - 关联子查询去关联
 - Max/Min 消除
-- 谓词下推
+- [谓词下推](reference/performance/predicate-pushdown.md)
 - 分区裁剪
 - TopN 和 Limit 下推
 - [Join Reorder](/reference/performance/join-reorder.md)
