@@ -312,6 +312,9 @@
     - [报警规则](/reference/tiflash/alert-rules.md)
     - [性能调优](/reference/tiflash/tune-performance.md)
     - [FAQ](/reference/tiflash/faq.md)
+  + Titan
+    - [概述](/reference/titan/overview.md)
+    - [配置参数](/reference/titan/configuration.md)
   + TiDB Binlog
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)
