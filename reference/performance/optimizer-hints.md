@@ -27,7 +27,7 @@ Optimizer Hints 可以和 `Explain` / `Explain Analyze` 组合使用，通过这
 >
 > 如果注释不是跟在指定的关键字后，会被当作是普通的 MySQL comment，注释不会生效，且不会上报 warning。
 
-TiDB 目前支持的 Optimizer Hints 根据生效范围的不同可以划分为两类：第一类是在查询块范围生效的 Hint，例如 [`/*+ HASH_AGG() */`](#hash_agg)；第二类是在整个查询范围生效的 Hint，例如 [`/*+ MEMORY_QUOTA(1024 MB)*/`](#memory_quota)。
+TiDB 目前支持的 Optimizer Hints 根据生效范围的不同可以划分为两类：第一类是在查询块范围生效的 Hint，例如 [`/*+ HASH_AGG() */`](#hash_agg)；第二类是在整个查询范围生效的 Hint，例如 [`/*+ MEMORY_QUOTA(1024 MB)*/`](#memory_quotan)。
 
 每条语句中每一个查询和子查询都对应着一个不同的查询块，每个查询块有自己对应的名字。以下面这条语句为例：
 
