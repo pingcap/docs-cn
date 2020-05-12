@@ -48,7 +48,7 @@ CREATE TABLE person (
 SELECT name, id FROM person WHERE city = 'Beijing';
 ```
 
-如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义 virtual column：
+如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义 generated column：
 
 {{< copyable "sql" >}}
 
@@ -62,7 +62,7 @@ CREATE TABLE person (
 );
 ```
 
-`INSERT` 和 `UPDATE` 语句都会检查 virtual column 的定义。未通过有效性检测的行会返回错误：
+`INSERT` 和 `UPDATE` 语句都会检查 generated column 的定义。未通过有效性检测的行会返回错误：
 
 {{< copyable "sql" >}}
 
@@ -89,6 +89,47 @@ CREATE TABLE person (
 );
 ```
 
+## 索引生成列替换
+
+当查询中出现的某个表达式已经被存储为一个含索引的生成列时，TiDB 会将这个表达式替换为对应的生成列，这样就可以在生成查询计划时考虑使用这个索引。
+
+例如，下面的例子为 `a+1` 这个表达式创建生成列并添加索引，从而加速了查询。
+
+{{< copyable "sql" >}}
+
+```sql
+create table t(a int);
+desc select a+1 from t where a+1=3;
++---------------------------+----------+-----------+---------------+--------------------------------+
+| id                        | estRows  | task      | access object | operator info                  |
++---------------------------+----------+-----------+---------------+--------------------------------+
+| Projection_4              | 8000.00  | root      |               | plus(test.t.a, 1)->Column#3    |
+| └─TableReader_7           | 8000.00  | root      |               | data:Selection_6               |
+|   └─Selection_6           | 8000.00  | cop[tikv] |               | eq(plus(test.t.a, 1), 3)       |
+|     └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
++---------------------------+----------+-----------+---------------+--------------------------------+
+4 rows in set (0.00 sec)
+
+alter table t add column b bigint as (a+1) virtual;
+alter table t add index idx_b(b);
+desc select a+1 from t where a+1=3;
++------------------------+---------+-----------+-------------------------+---------------------------------------------+
+| id                     | estRows | task      | access object           | operator info                               |
++------------------------+---------+-----------+-------------------------+---------------------------------------------+
+| IndexReader_6          | 10.00   | root      |                         | index:IndexRangeScan_5                      |
+| └─IndexRangeScan_5     | 10.00   | cop[tikv] | table:t, index:idx_b(b) | range:[3,3], keep order:false, stats:pseudo |
++------------------------+---------+-----------+-------------------------+---------------------------------------------+
+2 rows in set (0.01 sec)
+```
+
+> **注意：**
+>
+> 只有当待替换的表达式类型和生成列类型严格相等时，才会进行转换。
+>
+> 上例中，`a` 的类型是 int，而 `a+1` 的列类型是 bigint，如果将生成列的类型定为 int，就不会发生替换。
+>
+> 关于类型转换规则，可以参见[表达式求值的类型转换](/reference/sql/functions-and-operators/type-conversion.md)。
+
 ## 局限性
 
 目前 JSON and generated column 有以下局限性：
@@ -96,4 +137,5 @@ CREATE TABLE person (
 - 不能通过 `ALTER TABLE` 增加 `STORED` 存储方式的 generated column；
 - 不能通过 `ALTER TABLE` 将 generated stored column 转换为普通列，也不能将普通列转换成 generated stored column；
 - 不能通过 `ALTER TABLE` 修改 generated stored column 的**生成列表达式**；
-- 并未支持所有的 [JSON 函数](/reference/sql/functions-and-operators/json-functions.md)。
+- 并未支持所有的 [JSON 函数](/reference/sql/functions-and-operators/json-functions.md)；
+- 目前仅当生成列是 virtual column 时索引生成列替换规则有效，暂不支持将输入的表达式替换为 generated stored column，但仍然可以通过使用该生成列本身来使用索引。

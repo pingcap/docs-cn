@@ -1,6 +1,6 @@
 ---
 title: CLUSTER_LOG
-summary: 了解 TiDB 集群配置表 `CLUSTER_LOG`。
+summary: 了解 TiDB 集群日志表 `CLUSTER_LOG`。
 category: reference
 ---
 
@@ -13,26 +13,26 @@ TiDB 4.0 版本之前，要获取集群的日志，用户需要逐个登录各�
 {{< copyable "sql" >}}
 
 ```sql
-desc cluster_log;
+desc information_schema.cluster_log;
 ```
 
 ```
-+----------+---------------------------+------+------+---------+-------+
-| Field    | Type                      | Null | Key  | Default | Extra |
-+----------+---------------------------+------+------+---------+-------+
-| TIME     | varchar(32)               | YES  |      | NULL    |       |
-| TYPE     | varchar(64)               | YES  |      | NULL    |       |
-| INSTANCE | varchar(64)               | YES  |      | NULL    |       |
-| LEVEL    | varchar(8)                | YES  |      | NULL    |       |
-| MESSAGE  | var_string(1024) unsigned | YES  |      | NULL    |       |
-+----------+---------------------------+------+------+---------+-------+
++----------+------------------+------+------+---------+-------+
+| Field    | Type             | Null | Key  | Default | Extra |
++----------+------------------+------+------+---------+-------+
+| TIME     | varchar(32)      | YES  |      | NULL    |       |
+| TYPE     | varchar(64)      | YES  |      | NULL    |       |
+| INSTANCE | varchar(64)      | YES  |      | NULL    |       |
+| LEVEL    | varchar(8)       | YES  |      | NULL    |       |
+| MESSAGE  | var_string(1024) | YES  |      | NULL    |       |
++----------+------------------+------+------+---------+-------+
 5 rows in set (0.00 sec)
 ```
 
 字段解释：
 
 * `TIME`：日志打印时间。
-* `TYPE`：节点的类型，可取值为 `tidb`，`pd` 或 `tikv`。
+* `TYPE`：节点的类型，可取值为 `tidb`，`pd` 和 `tikv`。
 * `INSTANCE`：节点的服务地址。
 * `LEVEL`：日志级别。
 * `MESSAGE`：日志内容。
@@ -48,7 +48,7 @@ desc cluster_log;
 {{< copyable "sql" >}}
 
 ```sql
-select * from `CLUSTER_LOG` where message like '%ddl%' and message like '%job%58%' and type='tidb' and time > '2020-03-27 15:39:00';
+select * from information_schema.cluster_log where message like '%ddl%' and message like '%job%58%' and type='tidb' and time > '2020-03-27 15:39:00';
 ```
 
 ```
@@ -68,6 +68,6 @@ select * from `CLUSTER_LOG` where message like '%ddl%' and message like '%job%58
 
 上面查询结果表示：
 
-1. 用户将 DDL JOB ID 为 58 的请求发给 `172.16.5.40:4008` TiDB 节点。
-2. `172.16.5.40:4009` TiDB 节点处理这个 DDL 请求，说明此时 `172.16.5.40:4009` 节点是 DDL owner。
-3. DDL JOB ID 为 58 的请求处理完成。
++ 用户将 DDL JOB ID 为 `58` 的请求发给 `172.16.5.40:4008` TiDB 节点。
++ `172.16.5.40:4009` TiDB 节点处理这个 DDL 请求，说明此时 `172.16.5.40:4009` 节点是 DDL owner。
++ DDL JOB ID 为 58 的请求处理完成。

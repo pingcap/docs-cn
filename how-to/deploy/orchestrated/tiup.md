@@ -9,26 +9,27 @@ category: how-to
 
 本文介绍了使用 TiUP 部署 TiDB 集群的流程，具体步骤如下：
 
-- [1. 环境准备](#1-环境准备)
-- [2. 配置初始化参数文件 `topology.yaml`](#2-配置初始化参数文件-topologyyaml)
-- [3. 执行部署命令](#3-执行部署命令)
-- [4. 验证集群部署状态](#4-验证集群部署状态)
-- [5. 启动集群](#5-启动集群)
-- [6. 验证集群运行状态](#6-验证集群运行状态)
-
-另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
-
-- [7. 关闭集群](#7-关闭集群)
-- [8. 销毁集群](#8-销毁集群)
-- [9. 常见部署问题](#9-常见部署问题)
-
-## 1. 环境准备
-
-环境准备环节分为如下几步：
-
 - [第 1 步：软硬件环境配置](#第-1-步软硬件环境配置)
 - [第 2 步：在中控机上安装 TiUP 组件](#第-2-步在中控机上安装-tiup-组件)
 - [第 3 步：在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)
+- [第 4 步：配置初始化参数文件 `topology.yaml`](#第-4-步配置初始化参数文件-topologyyaml)
+- [第 5 步：执行部署命令](#第-5-步执行部署命令)
+- [第 6 步：检查 TiUP 管理的集群情况](#第-6-步检查-tiup-管理的集群情况)
+- [第 7 步：检查部署的 TiDB 集群情况](#第-7-步检查部署的-tidb-集群情况)
+- [第 8 步：执行集群启动命令](#第-8-步执行集群启动命令)
+- [第 9 步：通过 TiUP 检查集群状态](#第-9-步通过-tiup-检查集群状态)
+- [第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态](#第-10-步通过-tidb-dashboard-和-grafana-检查集群状态)
+- [第 11 步：登录数据库执行简单 DML、DDL 操作和查询 SQL 语句](#第-11-步登录数据库执行简单-dmlddl-操作和查询-sql-语句)
+
+另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
+
+- [关闭集群](#关闭集群)
+- [销毁集群](#销毁集群)
+- [常见部署问题](#常见部署问题)
+
+## 环境准备
+
+环境准备环节分为如下几步。
 
 ### 第 1 步：软硬件环境配置
 
@@ -47,6 +48,7 @@ category: how-to
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 - TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考[第 3 步](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)）
 - 机器之间内网互通（建议[关闭防火墙 `firewalld`](#如何关闭部署机器的防火墙)，或者开放 TiDB 集群的节点间所需端口）
+- 所有部署机器[关闭系统 swap](#如何关闭系统-swap)
 - 如果需要绑核操作，需要[安装 `numactl` 工具](#如何安装-numactl-工具)
 
 其他软硬件环境配置可参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
@@ -290,15 +292,16 @@ category: how-to
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 2. 配置初始化参数文件 `topology.yaml`
+## 第 4 步：配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目](https://github.com/pingcap-incubator/tiops/blob/master/topology.example.yaml)。
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。
 
 需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`。下文介绍 3 个经典场景的集群配置模版：
 
 - [场景 1：单机单实例](#场景-1单机单实例)
 - [场景 2：单机多实例](#场景-2单机多实例)
-- [场景 3：TiDB Binlog 部署模版](#场景-3tidb-binlog-部署模版)
+- [场景 3：通过 TiDB Binlog 同步到下游](#场景-3通过-tidb-binlog-同步到下游)
+- [场景 4：通过 TiCDC 同步到下游](#场景-4通过-ticdc-同步到下游)
 
 ### 场景 1：单机单实例
 
@@ -315,7 +318,7 @@ category: how-to
 | PD | 3 | 4 VCore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
 | TiFlash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | 默认端口 <br> 全局目录配置 |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
@@ -334,16 +337,54 @@ cat topology.yaml
 ```
 
 ```yaml
-# # Global variables are applied to all deployments and as the default value of
-# # them if the specific deployment value missing.
-
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
 
-# # Monitored variables are used to all the machine
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+
+tiflash_servers:
+  - host: 10.0.1.10
+
+monitoring_servers:
+  - host: 10.0.1.4
+
+grafana_servers:
+  - host: 10.0.1.4
+
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+更详细的配置为：
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+# # Monitored variables are applied to all the machines.
 monitored:
   node_exporter_port: 9100
   blackbox_exporter_port: 9115
@@ -351,15 +392,15 @@ monitored:
   # data_dir: "/tidb-data/monitored-9100"
   # log_dir: "/tidb-deploy/monitored-9100/log"
 
-# # Server configs are used to specify the runtime configuration of TiDB components
+# # Server configs are used to specify the runtime configuration of TiDB components.
 # # All configuration items can be found in TiDB docs:
 # # - TiDB: https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/
 # # - TiKV: https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/
 # # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
-# #           ^       ^
-# # You can overwrite this configuration via instance-level `config` field
+# #      
+# # You can overwrite this configuration via the instance-level `config` field.
 
 server_configs:
   tidb:
@@ -373,7 +414,7 @@ server_configs:
     # rocksdb.max-sub-compactions: 1
     # storage.block-cache.capacity: "16GB"
     # readpool.unified.max-thread-count: 12
-    readpool.storage.use-unified-pool: true
+    readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
   pd:
     schedule.leader-schedule-limit: 4
@@ -395,7 +436,7 @@ pd_servers:
     # data_dir: "/tidb-data/pd-2379"
     # log_dir: "/tidb-deploy/pd-2379/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.pd` values
+    # # The following configs are used to overwrite the `server_configs.pd` values.
     # config:
     #   schedule.max-merge-region-size: 20
     #   schedule.max-merge-region-keys: 200000
@@ -410,7 +451,7 @@ tidb_servers:
     # deploy_dir: "/tidb-deploy/tidb-4000"
     # log_dir: "/tidb-deploy/tidb-4000/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.tidb` values
+    # # The following configs are used to overwrite the `server_configs.tidb` values.
     # config:
     #   log.slow-query-file: tidb-slow-overwrited.log
   - host: 10.0.1.8
@@ -425,7 +466,7 @@ tikv_servers:
     # data_dir: "/tidb-data/tikv-20160"
     # log_dir: "/tidb-deploy/tikv-20160/log"
     # numa_node: "0,1"
-    # # Config is used to overwrite the `server_configs.tikv` values
+    # # The following configs are used to overwrite the `server_configs.tikv` values.
     # config:
     #   server.grpc-concurrency: 4
     #   server.labels: { zone: "zone1", dc: "dc1", host: "host1" }
@@ -434,24 +475,24 @@ tikv_servers:
 
 tiflash_servers:
   - host: 10.0.1.10
-  # ssh_port: 22
-  # tcp_port: 9000
-  # http_port: 8123
-  # flash_service_port: 3930
-  # flash_proxy_port: 20170
-  # flash_proxy_status_port: 20292
-  # metrics_port: 8234
-  # deploy_dir: /tidb-deploy/tiflash-9000
-  # data_dir: /tidb-data/tiflash-9000
-  # log_dir: /tidb-deploy/tiflash-9000/log
-  # numa_node: "0,1"
-  # # Config is used to overwrite the `server_configs.tiflash` values
-  # config:
-  #   logger.level: "info"
-  # learner_config:
-  #   log-level: "info"
-  #  - host: 10.0.1.15
-  #  - host: 10.0.1.16
+    # ssh_port: 22
+    # tcp_port: 9000
+    # http_port: 8123
+    # flash_service_port: 3930
+    # flash_proxy_port: 20170
+    # flash_proxy_status_port: 20292
+    # metrics_port: 8234
+    # deploy_dir: /tidb-deploy/tiflash-9000
+    # data_dir: /tidb-data/tiflash-9000
+    # log_dir: /tidb-deploy/tiflash-9000/log
+    # numa_node: "0,1"
+    # # The following configs are used to overwrite the `server_configs.tiflash` values.
+    # config:
+    #   logger.level: "info"
+    # learner_config:
+    #   log-level: "info"
+  # - host: 10.0.1.15
+  # - host: 10.0.1.16
 
 # pump_servers:
 #   - host: 10.0.1.17
@@ -461,7 +502,7 @@ tiflash_servers:
 #     data_dir: "/tidb-data/pump-8249"
 #     log_dir: "/tidb-deploy/pump-8249/log"
 #     numa_node: "0,1"
-#     # Config is used to overwrite the `server_configs.drainer` values
+#     # The following configs are used to overwrite the `server_configs.drainer` values.
 #     config:
 #       gc: 7
 #   - host: 10.0.1.18
@@ -471,13 +512,13 @@ tiflash_servers:
 #   - host: 10.0.1.17
 #     port: 8249
 #     data_dir: "/tidb-data/drainer-8249"
-#     # if drainer doesn't have checkpoint, use initial commitTS to initial checkpoint
-#     # will get a latest timestamp from pd if setting to be -1 (default -1)
+#     # If drainer doesn't have a checkpoint, use initial commitTS as the initial checkpoint.
+#     # Will get a latest timestamp from pd if commit_ts is set to -1 (the default value).
 #     commit_ts: -1
 #     deploy_dir: "/tidb-deploy/drainer-8249"
 #     log_dir: "/tidb-deploy/drainer-8249/log"
 #     numa_node: "0,1"
-#     # Config is used to overwrite the `server_configs.drainer` values
+#     # The following configs are used to overwrite the `server_configs.drainer` values.
 #     config:
 #       syncer.db-type: "mysql"
 #       syncer.to.host: "127.0.0.1"
@@ -486,6 +527,15 @@ tiflash_servers:
 #       syncer.to.port: 3306
 #   - host: 10.0.1.19
 
+# cdc_servers:
+#   - host: 10.0.1.20
+#     ssh_port: 22
+#     port: 8300
+#     deploy_dir: "/tidb-deploy/cdc-8300"
+#     log_dir: "/tidb-deploy/cdc-8300/log"
+#     numa_node: "0,1"
+#   - host: 10.0.1.21
+#   - host: 10.0.1.22
 
 monitoring_servers:
   - host: 10.0.1.4
@@ -508,7 +558,6 @@ alertmanager_servers:
     # deploy_dir: "/tidb-deploy/alertmanager-9093"
     # data_dir: "/tidb-data/alertmanager-9093"
     # log_dir: "/tidb-deploy/alertmanager-9093/log"
-
 ```
 
 ### 场景 2：单机多实例
@@ -523,34 +572,34 @@ alertmanager_servers:
 
 - TiKV 进行配置优化
 
-    - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别开启自适应开关。
-   
+    - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别设置自适应开关。
+
         - 开启 `readpool.storage` 和 `readpool.coprocessor`：
           
-          ```yaml
-          readpool.storage.use-unified-pool: true
-          readpool.coprocessor.use-unified-pool: true
-          ```
-        
+            ```yaml
+            readpool.storage.use-unified-pool: false
+            readpool.coprocessor.use-unified-pool: true
+            ```
+
         - 计算公式如下：
 
-          ```
-          readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
-          ```
+            ```
+            readpool.unified.max-thread-count = cores * 0.8 / TiKV 数量
+            ```
 
     - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。
-      
+
         - `storage.block-cache` 默认开启 CF 自适应，无需修改。
 
-          ```yaml
-          storage.block-cache.shared: true
-          ```
+            ```yaml
+            storage.block-cache.shared: true
+            ```
      
         - 计算公式如下：
 
-          ```
-          storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
-          ```
+            ```
+            storage.block-cache.capacity = (MEM_TOTAL * 0.5 / TiKV 实例数量)
+            ```
 
     - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要在 tikv 配置中添加 capacity 参数：
 
@@ -598,13 +647,15 @@ alertmanager_servers:
 | PD | 3 | 16 VCore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
 | TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data` |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
 > - 配置文件模版时，注意修改必要参数、IP、端口及目录。
 >
 > - 各个组件的 deploy_dir，默认会使用 global 中的 <deploy_dir>/<components_name>-<port>。例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
+
+> **注意：**
 >
 > - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
 >
@@ -619,9 +670,109 @@ cat topology.yaml
 ```
 
 ```yaml
-# Global variables are applied to all deployments and as the default value of
-# them if the specific deployment value missing.
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
 
+server_configs:
+  tikv:
+    readpool.unified.max-thread-count: <取值参考上文计算公式的结果>
+    readpool.storage.use-unified-pool: false
+    readpool.coprocessor.use-unified-pool: true
+    storage.block-cache.capacity: "<取值参考上文计算公式的结果>"
+    raftstore.capactiy: "<取值参考上文计算公式的结果>"
+  pd:
+    replication.location-labels: ["host"]
+    replication.enable-placement-rules: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+
+tidb_servers:
+  - host: 10.0.1.7
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.7
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+  - host: 10.0.1.8
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.8
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+  - host: 10.0.1.9
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.9
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+
+tikv_servers:
+  - host: 10.0.1.1
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv1" }
+  - host: 10.0.1.1
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv1" }
+  - host: 10.0.1.2
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv2" }
+  - host: 10.0.1.2
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv2" }
+  - host: 10.0.1.3
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv3" }
+  - host: 10.0.1.3
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv3" }
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data
+monitoring_servers:
+  - host: 10.0.1.7
+grafana_servers:
+  - host: 10.0.1.7
+alertmanager_servers:
+  - host: 10.0.1.7
+```
+
+更详细的配置为:
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -638,7 +789,7 @@ monitored:
 server_configs:
   tikv:
     readpool.unified.max-thread-count: <取值参考上文计算公式的结果>
-    readpool.storage.use-unified-pool: true
+    readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
     storage.block-cache.capacity: "<取值参考上文计算公式的结果>"
     raftstore.capactiy: "<取值参考上文计算公式的结果>"
@@ -755,11 +906,11 @@ alertmanager_servers:
   - host: 10.0.1.7
 ```
 
-### 场景 3：TiDB Binlog 部署模版
+### 场景 3：通过 TiDB Binlog 同步到下游
 
 #### 部署需求
 
-设置默认部署目录 `/tidb-deploy` 和 数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.9:4000。
+设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.9:4000。
 
 #### 关键参数
 
@@ -780,11 +931,11 @@ TiDB 关键参数：
 | TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
 |TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
 | PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
-| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行多盘部署 |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
 | Pump| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
 | Drainer | 1 | 8 VCore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
-#### 第 4 步：配置文件模版 topology.yaml
+#### 配置文件模版 topology.yaml
 
 > **注意：**
 >
@@ -803,8 +954,62 @@ cat topology.yaml
 ```
 
 ```yaml
-# Global variables are applied to all deployments and as the default value of
-# them if the specific deployment value missing.
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+server_configs:
+  tidb:
+    binlog.enable: true
+    binlog.ignore-error: true
+  pd:
+    replication.enable-placement-rules: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+
+pump_servers:
+  - host: 10.0.1.6
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+drainer_servers:
+  - host: 10.0.1.9
+    config:
+      syncer.db-type: "tidb"
+      syncer.to.host: "10.0.1.9"
+      syncer.to.user: "root"
+      syncer.to.password: ""
+      syncer.to.port: 4000
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
+monitoring_servers:
+  - host: 10.0.1.4
+grafana_servers:
+  - host: 10.0.1.4
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+更详细的配置为：
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
 global:
   user: "tidb"
   ssh_port: 22
@@ -843,7 +1048,7 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
   - host: 10.0.1.7
@@ -851,7 +1056,7 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
   - host: 10.0.1.8
@@ -859,18 +1064,18 @@ pump_servers:
     port: 8250
     deploy_dir: "/tidb-deploy/pump-8249"
     data_dir: "/tidb-data/pump-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       gc: 7
 drainer_servers:
   - host: 10.0.1.9
     port: 8249
     data_dir: "/tidb-data/drainer-8249"
-    # if drainer doesn't have checkpoint, use initial commitTS to initial checkpoint
-    # will get a latest timestamp from pd if setting to be -1 (default -1)
+    # If drainer doesn't have a checkpoint, use initial commitTS as the initial checkpoint.
+    # Will get a latest timestamp from pd if commit_ts is set to -1 (the default value).
     commit_ts: -1
     deploy_dir: "/tidb-deploy/drainer-8249"
-    # Config is used to overwrite the `server_configs.drainer` values
+    # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       syncer.db-type: "tidb"
       syncer.to.host: "10.0.1.9"
@@ -888,7 +1093,81 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-## 3. 执行部署命令
+### 场景 4：通过 TiCDC 同步到下游
+
+#### 部署需求
+
+设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，需要启动 TiCDC，可在 TiCDC 集群部署完成后[通过 `cdc cli` 创建同步任务](/reference/tools/ticdc/deploy.md#第-2-步创建同步任务)。
+
+#### 拓扑信息
+
+| 实例 |个数| 物理机配置 | IP | 配置 |
+| :-- | :-- | :-- | :-- | :-- |
+| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
+|TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置 |
+| PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
+| CDC| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 |
+
+#### 配置文件模版 topology.yaml
+
+> **注意：**
+>
+> - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
+>
+> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
+>
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat topology.yaml
+```
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+server_configs:
+  pd:
+    replication.enable-placement-rules: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
+cdc_servers:
+  - host: 10.0.1.6
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+monitoring_servers:
+  - host: 10.0.1.4
+grafana_servers:
+  - host: 10.0.1.4
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+## 执行部署命令
 
 ### 部署命令介绍
 
@@ -911,7 +1190,7 @@ Usage:
 Flags:
   -h, --help                   help for deploy
   -i, --identity_file string   The path of the SSH identity file. If specified, public key authentication will be used.
-      --user string            The user name to login via SSH. The user must has root (or sudo) privilege. (default "root")
+      --user string            The user name to login via SSH. The user must have root (or sudo) privilege. (default "root")
   -y, --yes                    Skip confirming the topology
 
 # Usage 展示执行命令样例，<> 为必填项
@@ -927,7 +1206,6 @@ Flags:
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 >
 > - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
-> 
 > - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
 
 ### 第 5 步：执行部署命令
@@ -935,7 +1213,7 @@ Flags:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/root/.ssh/gcp_rsa
+tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
 
 以上部署命令中：
@@ -943,11 +1221,12 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
 - 部署版本为 `v4.0.0-rc`，其他版本可以参考[如何查看 TiUP 支持管理的 TiDB 版本](#如何查看-tiup-支持管理的-tidb-版本)的介绍
 - 初始化配置文件为 `topology.yaml`
-- 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署。
+- --user root：通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
+- [-i] 及 [-p]：非必选项，如果已经配置免密登陆目标机，则不需填写。否则选择其一即可，[-i] 为可登录到部署机 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
 
-预期日志结尾输出会有 Deployed cluster `tidb-test` successfully 关键词，表示部署成功。
+预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
-## 4. 验证集群部署状态
+## 验证集群部署状态
 
 ### 验证命令介绍
 
@@ -969,7 +1248,7 @@ Flags:
 # Usage 展示执行命令，该命令来展示受管理的所有 TiDB 集群的清单。
 ```
 
-### 第 6 步：检查 TiUP 管理集群情况
+### 第 6 步：检查 TiUP 管理的集群情况
 
 {{< copyable "shell-regular" >}}
 
@@ -986,7 +1265,9 @@ Name              User  Version        Path                                     
 tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
-### 第 7 步：检查 `tidb-test` 集群情况
+### 第 7 步：检查部署的 TiDB 集群情况
+
+例如，执行如下命令检查 `tidb-test` 集群情况：
 
 {{< copyable "shell-regular" >}}
 
@@ -994,7 +1275,7 @@ tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters
 tiup cluster display tidb-test
 ```
 
-预期输出包括实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息：
+预期输出包括 `tidb-test` 集群中实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster display tidb-test
@@ -1017,9 +1298,9 @@ ID                  Role          Host          Ports                           
 10.0.1.3:20160      tikv          10.0.1.4      20160/20180                      Down      /tidb-data/tikv-20160           /tidb-deploy/tikv-2060
 ```
 
-## 5. 启动集群
+## 启动集群
 
-### 第 8 步：执行 `tidb-test` 集群启动命令
+### 第 8 步：执行集群启动命令
 
 {{< copyable "shell-regular" >}}
 
@@ -1027,11 +1308,11 @@ ID                  Role          Host          Ports                           
 tiup cluster start tidb-test
 ```
 
-预期结果输出 `Started cluster tidb-test successfully` 标志启动成功。
+预期结果输出 ```Started cluster `tidb-test` successfully``` 标志启动成功。
 
-## 6. 验证集群运行状态
+## 验证集群运行状态
 
-### 第 9 步：通过 TiUP 检查 tidb-test 集群状态
+### 第 9 步：通过 TiUP 检查集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -1064,19 +1345,19 @@ ID              Role          Host      Ports                            Status 
 
 ### 第 10 步：通过 TiDB Dashboard 和 Grafana 检查集群状态
 
-#### 查看 TiDB Dashboard 检查 TiDB Cluster 状态
+#### 查看 TiDB Dashboard 检查 TiDB 集群状态
 
-- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登陆用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
+- 通过 `{pd-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
-- 主页面显示 TiDB Cluster 节点信息
+- 主页面显示 TiDB 集群中节点信息
 
     ![TiDB-Dashboard-status](/media/tiup/tidb-dashboard-status.png)
 
-#### 查看 Grafana 监控 Overview 页面检查 TiDB Cluster 状态
+#### 查看 Grafana 监控 Overview 页面检查 TiDB 集群状态
 
-- 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认密码为 admin/admin
+- 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认用户名及密码为 admin/admin
 
     ![Grafana-login](/media/tiup/grafana-login.png)
 
@@ -1180,25 +1461,25 @@ MySQL [pingcap]> exit
 Bye
 ```
 
-## 7. 关闭集群
+## 关闭集群
 
 执行如下命令关闭 `tidb-test` 集群：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cluster stop tidb-test
+tiup cluster stop tidb-test
 ```
 
-预期结果输出 `Stopped cluster tidb-test successfully` 标志关闭成功。
+预期结果输出 ```Stopped cluster `tidb-test` successfully``` 标志关闭成功。
 
-## 8. 销毁集群
+## 销毁集群
 
 > **警告：**
 >
 > **生产环境慎重执行，此操作确认后清理任务无法回退。**
 
-执行如下命令删除 tidb-test 集群，包括数据、服务：
+执行如下命令删除 `tidb-test` 集群，包括数据、服务：
 
 {{< copyable "shell-regular" >}}
 
@@ -1206,9 +1487,9 @@ cluster stop tidb-test
 tiup cluster destroy tidb-test
 ```
 
-预期结果输出 `Destroy cluster tidb-test successfully` 标志销毁成功。
+预期结果输出 ```Destroy cluster `tidb-test` successfully``` 标志销毁成功。
 
-## 9. 常见部署问题
+## 常见部署问题
 
 本小节介绍使用 TiUP 部署 TiDB 集群过程中的常见问题与解决方案。
 
@@ -1224,6 +1505,7 @@ tiup cluster destroy tidb-test
 | PD | peer_port | 2380 | PD 集群节点间通信端口 |
 | Pump | port | 8250  | Pump 通信端口 |
 |Drainer|port|8249|Drainer 通信端口|
+| CDC | port | 8300 | CDC 通信接口 |
 | Prometheus | port | 9090 | Prometheus 服务通信端口 |
 | Node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | blackbox_exporter_port | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
@@ -1278,7 +1560,7 @@ tidb_servers:
     deploy_dir: "deploy/tidb-4000"
     log_dir: "deploy/tidb-4000/log"
     numa_node: "0,1"
-    # Config is used to overwrite the `server_configs.tidb` values
+    # The following configs are used to overwrite the `server_configs.tidb` values.
     config:
       log.slow-query-file: tidb-slow-overwritten.log
 ```
@@ -1310,7 +1592,7 @@ tidb_servers:
       # rocksdb.max-sub-compactions: 1
       # storage.block-cache.capacity: "16GB"
       # readpool.unified.max-thread-count: 12
-      readpool.storage.use-unified-pool: true
+      readpool.storage.use-unified-pool: false
       readpool.coprocessor.use-unified-pool: true
     pd:
       schedule.leader-schedule-limit: 4
@@ -1347,30 +1629,36 @@ Available versions for tidb (Last Modified: 2020-02-26T15:20:35+08:00):
 Version        Installed  Release:                             Platforms
 -------        ---------  --------                             ---------
 master                    2020-03-18T08:39:11.753360611+08:00  linux/amd64,darwin/amd64
-v3.0.1                    2020-04-07T17:53:00+08:00            linux/amd64,darwin/amd64
-v3.0.2                    2020-04-08T23:38:37+08:00            linux/amd64,darwin/amd64
-v3.0.3                    2020-03-27T22:41:16.279411145+08:00  linux/amd64,darwin/amd64
-v3.0.4                    2020-03-27T22:43:35.362550386+08:00  linux/amd64,darwin/amd64
-v3.0.5                    2020-03-27T22:46:01.016467032+08:00  linux/amd64,darwin/amd64
-v3.0.6                    2020-03-13T11:55:17.941641963+08:00  linux/amd64,darwin/amd64
-v3.0.7                    2020-03-13T12:02:22.538128662+08:00  linux/amd64,darwin/amd64
-v3.0.8                    2020-03-17T14:03:29.575448277+08:00  linux/amd64,darwin/amd64
-v3.0.9                    2020-03-13T13:02:15.947260351+08:00  linux/amd64,darwin/amd64
+v3.0.0                    2020-04-16T14:03:31+08:00            linux/amd64,darwin/amd64
+v3.0                      2020-04-16T16:58:06+08:00            linux/amd64,darwin/amd64
+v3.0.1                    2020-04-17T18:33:22+08:00            linux/amd64,darwin/amd64
+v3.0.2                    2020-04-16T23:55:11+08:00            linux/amd64,darwin/amd64
+v3.0.3                    2020-04-17T00:16:31+08:00            linux/amd64,darwin/amd64
+v3.0.4                    2020-04-17T00:22:46+08:00            linux/amd64,darwin/amd64
+v3.0.5                    2020-04-17T00:29:45+08:00            linux/amd64,darwin/amd64
+v3.0.6                    2020-04-17T00:39:33+08:00            linux/amd64,darwin/amd64
+v3.0.7                    2020-04-17T00:46:32+08:00            linux/amd64,darwin/amd64
+v3.0.8                    2020-04-17T00:54:19+08:00            linux/amd64,darwin/amd64
+v3.0.9                    2020-04-17T01:00:58+08:00            linux/amd64,darwin/amd64
 v3.0.10                   2020-03-13T14:11:53.774527401+08:00  linux/amd64,darwin/amd64
-v3.0.11                   2020-03-13T15:31:06.94547891+08:00   linux/amd64,darwin/amd64
-v3.0.12        YES        2020-03-20T11:36:28.18950808+08:00   linux/amd64,darwin/amd64
+v3.0.11                   2020-04-17T01:09:20+08:00            linux/amd64,darwin/amd64
+v3.0.12                   2020-04-17T01:16:04+08:00            linux/amd64,darwin/amd64
+v3.1.0-beta               2020-04-13T16:07:51+08:00            linux/amd64,darwin/amd64
+v3.1.0-beta.1             2020-04-13T15:45:38+08:00            linux/amd64,darwin/amd64
 v3.1.0-beta.2             2020-03-19T00:48:48.266468238+08:00  linux/amd64,darwin/amd64
 v3.1.0-rc                 2020-04-02T23:43:17.456327834+08:00  linux/amd64,darwin/amd64
+v3.1.0                    2020-04-17T11:07:54+08:00            linux/amd64,darwin/amd64
 v4.0.0-beta               2020-03-13T12:43:55.508190493+08:00  linux/amd64,darwin/amd64
 v4.0.0-beta.1             2020-03-13T12:30:08.913759828+08:00  linux/amd64,darwin/amd64
-v4.0.0-beta.2  YES        2020-03-18T22:52:00.830626492+08:00  linux/amd64,darwin/amd64
-v4.0.0-rc                 2020-04-09T00:10:32+08:00            linux/amd64,darwin/amd64
-nightly                   2020-04-10T08:42:23+08:00            darwin/amd64,linux/amd64
+v4.0.0-beta.2             2020-03-18T22:52:00.830626492+08:00  linux/amd64,darwin/amd64
+v4.0.0-rc      YES        2020-04-17T01:22:03+08:00            linux/amd64,darwin/amd64
+v4.0.0-rc.1               2020-04-29T01:03:31+08:00            darwin/amd64,linux/amd64,linux/arm64
+nightly                   2020-04-18T08:54:10+08:00            darwin/amd64,linux/amd64
 ```
 
-### 如何查看 TiUP 支持管理的组件和版本
+### 如何查看 TiUP 支持管理的组件
 
-执行如下命令查看 TiUP 支持管理的组件和版本：
+执行如下命令查看 TiUP 支持管理的组件：
 
 ```shell
 tiup list
@@ -1380,25 +1668,28 @@ tiup list
 
 ```log
 Available components (Last Modified: 2020-02-27T15:20:35+08:00):
-Name               Installed                                                                                                             Platforms                 Description
-----               ---------                                                                                                             ---------                 -----------
-tidb               YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
-tikv               YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  Distributed transactional key-value database, originally created to complement TiDB
-pd                 YES(v3.0.12,v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
-playground         YES(v0.0.5)                                                                                                           darwin/amd64,linux/amd64  Bootstrap a local TiDB cluster
-client                                                                                                                                   darwin/amd64,linux/amd64  A simple mysql client to connect TiDB
-prometheus                                                                                                                               darwin/amd64,linux/amd64  The Prometheus monitoring system and time series database.
-tpc                                                                                                                                      darwin/amd64,linux/amd64  A toolbox to benchmark workloads in TPC
-package                                                                                                                                  darwin/amd64,linux/amd64  A toolbox to package tiup component
-grafana                                                                                                                                  linux/amd64,darwin/amd64  Grafana is the open source analytics & monitoring solution for every database
-alertmanager                                                                                                                             darwin/amd64,linux/amd64  Prometheus alertmanager
-blackbox_exporter                                                                                                                        darwin/amd64,linux/amd64  Blackbox prober exporter
-node_exporter                                                                                                                            darwin/amd64,linux/amd64  Exporter for machine metrics
-pushgateway                                                                                                                              darwin/amd64,linux/amd64  Push acceptor for ephemeral and batch jobs
-tiflash                                                                                                                                  linux/amd64               The TiFlash Columnar Storage Engine
-drainer                                                                                                                                  linux/amd64               The drainer componet of TiDB binlog service
-pump                                                                                                                                     linux/amd64               The pump componet of TiDB binlog service
-cluster            YES(v0.4.6)  linux/amd64,darwin/amd64  Deploy a TiDB cluster for production
+Name               Installed    Platforms                             Description
+----               ---------    ---------                             -----------
+tidb                            darwin/amd64,linux/amd64,linux/arm64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
+tikv                            darwin/amd64,linux/amd64,linux/arm64  Distributed transactional key-value database, originally created to complement TiDB
+pd                              darwin/amd64,linux/amd64,linux/arm64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
+playground                      darwin/amd64,linux/amd64              Bootstrap a local TiDB cluster
+client                          darwin/amd64,linux/amd64              A simple mysql client to connect TiDB
+prometheus                      darwin/amd64,linux/amd64,linux/arm64  The Prometheus monitoring system and time series database.
+package                         darwin/amd64,linux/amd64              A toolbox to package tiup component
+grafana                         darwin/amd64,linux/amd64,linux/arm64  Grafana is the open source analytics & monitoring solution for every database
+alertmanager                    darwin/amd64,linux/amd64,linux/arm64  Prometheus alertmanager
+blackbox_exporter               darwin/amd64,linux/amd64,linux/arm64  Blackbox prober exporter
+node_exporter                   darwin/amd64,linux/amd64,linux/arm64  Exporter for machine metrics
+pushgateway                     darwin/amd64,linux/amd64,linux/arm64  Push acceptor for ephemeral and batch jobs
+drainer                         darwin/amd64,linux/amd64,linux/arm64  The drainer componet of TiDB binlog service
+pump                            darwin/amd64,linux/amd64,linux/arm64  The pump componet of TiDB binlog service
+cluster            YES(v0.6.0)  darwin/amd64,linux/amd64              Deploy a TiDB cluster for production
+mirrors                         darwin/amd64,linux/amd64              Build a local mirrors and download all selected components
+bench                           darwin/amd64,linux/amd64              Benchmark database with different workloads
+doc                             darwin/amd64,linux/amd64              Online document for TiDB
+ctl                             darwin/amd64,linux/amd64,linux/arm64
+cdc                             darwin/amd64,linux/amd64,linux/arm64
 ```
 
 ### 如何检测 NTP 服务是否正常
@@ -1611,3 +1902,17 @@ cluster            YES(v0.4.6)  linux/amd64,darwin/amd64  Deploy a TiDB cluster 
     ```bash
     tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
     ```
+    
+### 如何关闭系统 swap
+
+TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
+
+建议执行以下命令关闭系统 swap：
+
+{{< copyable "shell-regular" >}}
+    
+```bash
+echo "vm.swappiness = 0">> /etc/sysctl.conf 
+swapoff -a && swapon -a
+sysctl -p
+```
