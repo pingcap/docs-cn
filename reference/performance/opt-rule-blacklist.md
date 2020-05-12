@@ -15,7 +15,7 @@ category: reference
 | 子查询去关联 | decorrelate | 尝试对相关子查询进行改写，将其转换为普通 join 或 aggression 计算 |
 | 聚合消除 | aggregation_eliminate | 尝试消除执行计划中的某些不必要的聚合算子 |
 | 投影消除 | projection_eliminate |  消除执行计划中不必要的投影算子 |
-| 最大最小消除 | max_min_eliminate | 改写聚合中的 max, min 计算，转化为 order by + limit 1 |
+| 最大最小消除 | max_min_eliminate | 改写聚合中的 max/min 计算，转化为 `order by` + `limit 1` |
 | 谓词下推 | predicate_push_down | 尝试将执行计划中过滤条件下推到离数据源更近的算子上 |
 | 外连接消除 | outer_join_eliminate | 尝试消除执行计划中不必要的 left join 或者 right join |
 | 分区裁剪 | partition_processor | 将分区表查询改成为用 union all，并裁剪掉不满足过滤条件的分区 |
