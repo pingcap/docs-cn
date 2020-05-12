@@ -277,7 +277,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 事务大小限制
 + 默认值：104857600 (Byte)
-+ 单个事务中，所有 key-value 记录的总大小不能超过该限制。注意，如果开启了 `binlog`，该配置项的值不能超过 `104857600`（表示 100MB），因为 binlog 组件不支持同步的事务过大。如果 `binlog` 没开启，该配置项的最大值不超过 `10737418240`（表示 10GB）。
++ 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `10737418240`（表示 10GB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
 
 ### `stmt-count-limit`
 
@@ -337,6 +337,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 把所有的语句优先级设置为 force-priority 的值。
 + 默认值：NO_PRIORITY
 + 可选值：NO_PRIORITY, LOW_PRIORITY, HIGH_PRIORITY, DELAYED。
+
+### `distinct-agg-push-down`
+
++ 设置优化器是否执行将带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
++ 默认值：false
++ 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
 
 ## prepared-plan-cache
 

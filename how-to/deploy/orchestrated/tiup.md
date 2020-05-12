@@ -48,6 +48,7 @@ category: how-to
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 - TiKV 数据文件的文件系统推荐使用 EXT4 格式，也可以使用 CentOS 默认的 XFS 格式（参考[第 3 步](#第-3-步在-tikv-部署目标机器上添加数据盘-ext4-文件系统挂载参数)）
 - 机器之间内网互通（建议[关闭防火墙 `firewalld`](#如何关闭部署机器的防火墙)，或者开放 TiDB 集群的节点间所需端口）
+- 所有部署机器[关闭系统 swap](#如何关闭系统-swap)
 - 如果需要绑核操作，需要[安装 `numactl` 工具](#如何安装-numactl-工具)
 
 其他软硬件环境配置可参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
@@ -300,6 +301,7 @@ category: how-to
 - [场景 1：单机单实例](#场景-1单机单实例)
 - [场景 2：单机多实例](#场景-2单机多实例)
 - [场景 3：通过 TiDB Binlog 同步到下游](#场景-3通过-tidb-binlog-同步到下游)
+- [场景 4：通过 TiCDC 同步到下游](#场景-4通过-ticdc-同步到下游)
 
 ### 场景 1：单机单实例
 
@@ -524,6 +526,16 @@ tiflash_servers:
 #       syncer.to.password: ""
 #       syncer.to.port: 3306
 #   - host: 10.0.1.19
+
+# cdc_servers:
+#   - host: 10.0.1.20
+#     ssh_port: 22
+#     port: 8300
+#     deploy_dir: "/tidb-deploy/cdc-8300"
+#     log_dir: "/tidb-deploy/cdc-8300/log"
+#     numa_node: "0,1"
+#   - host: 10.0.1.21
+#   - host: 10.0.1.22
 
 monitoring_servers:
   - host: 10.0.1.4
@@ -1081,6 +1093,80 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
+### 场景 4：通过 TiCDC 同步到下游
+
+#### 部署需求
+
+设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，需要启动 TiCDC，可在 TiCDC 集群部署完成后[通过 `cdc cli` 创建同步任务](/reference/tools/ticdc/deploy.md#第-2-步创建同步任务)。
+
+#### 拓扑信息
+
+| 实例 |个数| 物理机配置 | IP | 配置 |
+| :-- | :-- | :-- | :-- | :-- |
+| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
+|TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置 |
+| PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
+| CDC| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 |
+
+#### 配置文件模版 topology.yaml
+
+> **注意：**
+>
+> - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
+>
+> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+>
+> - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
+>
+> - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](#tiflash-参数)。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat topology.yaml
+```
+
+```yaml
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+server_configs:
+  pd:
+    replication.enable-placement-rules: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+tiflash_servers:
+  - host: 10.0.1.10
+    data_dir: /data1/tiflash/data,/data2/tiflash/data
+cdc_servers:
+  - host: 10.0.1.6
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+monitoring_servers:
+  - host: 10.0.1.4
+grafana_servers:
+  - host: 10.0.1.4
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
 ## 执行部署命令
 
 ### 部署命令介绍
@@ -1127,7 +1213,7 @@ Flags:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/root/.ssh/gcp_rsa
+tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
 
 以上部署命令中：
@@ -1135,7 +1221,8 @@ tiup cluster deploy tidb-test v4.0.0-rc ./topology.yaml --user root -i /home/roo
 - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
 - 部署版本为 `v4.0.0-rc`，其他版本可以参考[如何查看 TiUP 支持管理的 TiDB 版本](#如何查看-tiup-支持管理的-tidb-版本)的介绍
 - 初始化配置文件为 `topology.yaml`
-- 通过 root 的密钥登录到目标主机完成集群部署，也可以用其他有 ssh 和 sudo 权限的用户完成部署。
+- --user root：通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
+- [-i] 及 [-p]：非必选项，如果已经配置免密登陆目标机，则不需填写。否则选择其一即可，[-i] 为可登录到部署机 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
 
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
@@ -1260,7 +1347,7 @@ ID              Role          Host      Ports                            Status 
 
 #### 查看 TiDB Dashboard 检查 TiDB 集群状态
 
-- 通过 `{pd-leader-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
+- 通过 `{pd-ip}:2379/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 root 用户和口令，如果你修改过数据库的 root 密码，则以修改后的密码为准，默认密码为空。
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
@@ -1418,6 +1505,7 @@ tiup cluster destroy tidb-test
 | PD | peer_port | 2380 | PD 集群节点间通信端口 |
 | Pump | port | 8250  | Pump 通信端口 |
 |Drainer|port|8249|Drainer 通信端口|
+| CDC | port | 8300 | CDC 通信接口 |
 | Prometheus | port | 9090 | Prometheus 服务通信端口 |
 | Node_exporter | node_exporter_port | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | blackbox_exporter_port | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
@@ -1564,6 +1652,7 @@ v4.0.0-beta               2020-03-13T12:43:55.508190493+08:00  linux/amd64,darwi
 v4.0.0-beta.1             2020-03-13T12:30:08.913759828+08:00  linux/amd64,darwin/amd64
 v4.0.0-beta.2             2020-03-18T22:52:00.830626492+08:00  linux/amd64,darwin/amd64
 v4.0.0-rc      YES        2020-04-17T01:22:03+08:00            linux/amd64,darwin/amd64
+v4.0.0-rc.1               2020-04-29T01:03:31+08:00            darwin/amd64,linux/amd64,linux/arm64
 nightly                   2020-04-18T08:54:10+08:00            darwin/amd64,linux/amd64
 ```
 
@@ -1579,25 +1668,28 @@ tiup list
 
 ```log
 Available components (Last Modified: 2020-02-27T15:20:35+08:00):
-Name               Installed                                                                                                             Platforms                 Description
-----               ---------                                                                                                             ---------                 -----------
-tidb               YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
-tikv               YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  Distributed transactional key-value database, originally created to complement TiDB
-pd                 YES(v4.0.0-rc)                                                                                            darwin/amd64,linux/amd64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
-playground         YES(v0.0.5)                                                                                                           darwin/amd64,linux/amd64  Bootstrap a local TiDB cluster
-client                                                                                                                                   darwin/amd64,linux/amd64  A simple mysql client to connect TiDB
-prometheus                                                                                                                               darwin/amd64,linux/amd64  The Prometheus monitoring system and time series database.
-tpc                                                                                                                                      darwin/amd64,linux/amd64  A toolbox to benchmark workloads in TPC
-package                                                                                                                                  darwin/amd64,linux/amd64  A toolbox to package tiup component
-grafana                                                                                                                                  linux/amd64,darwin/amd64  Grafana is the open source analytics & monitoring solution for every database
-alertmanager                                                                                                                             darwin/amd64,linux/amd64  Prometheus alertmanager
-blackbox_exporter                                                                                                                        darwin/amd64,linux/amd64  Blackbox prober exporter
-node_exporter                                                                                                                            darwin/amd64,linux/amd64  Exporter for machine metrics
-pushgateway                                                                                                                              darwin/amd64,linux/amd64  Push acceptor for ephemeral and batch jobs
-tiflash                                                                                                                                  linux/amd64               The TiFlash Columnar Storage Engine
-drainer                                                                                                                                  linux/amd64               The drainer componet of TiDB binlog service
-pump                                                                                                                                     linux/amd64               The pump componet of TiDB binlog service
-cluster            YES(v0.4.6)  linux/amd64,darwin/amd64  Deploy a TiDB cluster for production
+Name               Installed    Platforms                             Description
+----               ---------    ---------                             -----------
+tidb                            darwin/amd64,linux/amd64,linux/arm64  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
+tikv                            darwin/amd64,linux/amd64,linux/arm64  Distributed transactional key-value database, originally created to complement TiDB
+pd                              darwin/amd64,linux/amd64,linux/arm64  PD is the abbreviation for Placement Driver. It is used to manage and schedule the TiKV cluster
+playground                      darwin/amd64,linux/amd64              Bootstrap a local TiDB cluster
+client                          darwin/amd64,linux/amd64              A simple mysql client to connect TiDB
+prometheus                      darwin/amd64,linux/amd64,linux/arm64  The Prometheus monitoring system and time series database.
+package                         darwin/amd64,linux/amd64              A toolbox to package tiup component
+grafana                         darwin/amd64,linux/amd64,linux/arm64  Grafana is the open source analytics & monitoring solution for every database
+alertmanager                    darwin/amd64,linux/amd64,linux/arm64  Prometheus alertmanager
+blackbox_exporter               darwin/amd64,linux/amd64,linux/arm64  Blackbox prober exporter
+node_exporter                   darwin/amd64,linux/amd64,linux/arm64  Exporter for machine metrics
+pushgateway                     darwin/amd64,linux/amd64,linux/arm64  Push acceptor for ephemeral and batch jobs
+drainer                         darwin/amd64,linux/amd64,linux/arm64  The drainer componet of TiDB binlog service
+pump                            darwin/amd64,linux/amd64,linux/arm64  The pump componet of TiDB binlog service
+cluster            YES(v0.6.0)  darwin/amd64,linux/amd64              Deploy a TiDB cluster for production
+mirrors                         darwin/amd64,linux/amd64              Build a local mirrors and download all selected components
+bench                           darwin/amd64,linux/amd64              Benchmark database with different workloads
+doc                             darwin/amd64,linux/amd64              Online document for TiDB
+ctl                             darwin/amd64,linux/amd64,linux/arm64
+cdc                             darwin/amd64,linux/amd64,linux/arm64
 ```
 
 ### 如何检测 NTP 服务是否正常
@@ -1810,3 +1902,17 @@ cluster            YES(v0.4.6)  linux/amd64,darwin/amd64  Deploy a TiDB cluster 
     ```bash
     tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
     ```
+    
+### 如何关闭系统 swap
+
+TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
+
+建议执行以下命令关闭系统 swap：
+
+{{< copyable "shell-regular" >}}
+    
+```bash
+echo "vm.swappiness = 0">> /etc/sysctl.conf 
+swapoff -a && swapon -a
+sysctl -p
+```
