@@ -112,7 +112,6 @@ In TiDB DDL does not block reads or writes to tables while in operation. However
 + Add Index:
     - Does not support creating multiple indexes at the same time.
     - Does not support the `VISIBLE/INVISIBLE` index.
-    - Adding an index on a generated column via `ALTER TABLE` is not supported.
     - Other Index Type (HASH/BTREE/RTREE) is supported in syntax, but not applicable.
 + Add Column:
     - Does not support creating multiple columns at the same time.
