@@ -35,7 +35,9 @@ To view the original SQL statements of the DDL job corresponding to `job_id`, us
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ```
 
-To cancel the running DDL job corresponding to `job_id`, use `ADMIN CANCEL DDL JOBS`. Executing this statement returns the message that indicates whether the job has been cancelled.
+You can only searches the running DDL job corresponding to `job_id` and the last ten results in the DDL history job queue.
+
+To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled, use `ADMIN CANCEL DDL JOBS`:
 
 {{< copyable "sql" >}}
 
@@ -43,7 +45,15 @@ To cancel the running DDL job corresponding to `job_id`, use `ADMIN CANCEL DDL J
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ```
 
-To check the consistency of all the data and corresponding indexes in the `tbl_name` table, use `ADMIN CHECK TABLE`. If the consistency check is passed, an empty result is returned. Otherwise, an error message is returned indicating that the data is inconsistent.
+If the operation fails to cancel the jobs, specific reasons are displayed.
+
+> **Note:**
+>
+> - Only this operation can cancel DDL jobs. All other operations and environment changes (such as machine restart and cluster restart) cannot cancel these jobs.
+> - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the `ADMIN SHOW DDL JOBS` statement.
+> - If the jobs you want to cancel are finished, the cancellation operation fails.
+
+To check the consistency of all the data and corresponding indexes in the `tbl_name` table, use `ADMIN CHECK TABLE`:
 
 {{< copyable "sql" >}}
 
@@ -51,13 +61,17 @@ To check the consistency of all the data and corresponding indexes in the `tbl_n
 ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ```
 
-To overwrite the metadata of the stored table in an untrusted way in extreme cases, use `ADMIN REPAIR TABLE`. Here “untrusted” means that you need to manually ensure that the metadata of the original table can be covered by the `CREATE TABLE STATEMENT` operation. To use this `REPAIR` statement, enable the [`repair-mode`](/reference/configuration/tidb-server/configuration-file.md#repair-mode) configuration item, and make sure that the tables to be repaired are listed in the [`repair-table-list`](/reference/configuration/tidb-server/configuration-file.md#repair-table-list).
+If the consistency check is passed, an empty result is returned. Otherwise, an error message is returned indicating that the data is inconsistent.
+
+To overwrite the metadata of the stored table in an untrusted way in extreme cases, use `ADMIN REPAIR TABLE`:
 
 {{< copyable "sql" >}}
 
 ```sql
 ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 ```
+
+Here “untrusted” means that you need to manually ensure that the metadata of the original table can be covered by the `CREATE TABLE STATEMENT` operation. To use this `REPAIR` statement, enable the [`repair-mode`](/reference/configuration/tidb-server/configuration-file.md#repair-mode) configuration item, and make sure that the tables to be repaired are listed in the [`repair-table-list`](/reference/configuration/tidb-server/configuration-file.md#repair-table-list).
 
 ## Synopsis
 
@@ -151,18 +165,6 @@ admin show ddl jobs 5 where state!='synced' and db_name='test';
     * `rollback done`: it indicates that the operation has failed and has finished rolling back.
     * `rollingback`: it indicates that the operation has failed and is rolling back.
     * `cancelling`: it indicates that the operation is being cancelled. This state only occurs when you cancel DDL jobs using the `ADMIN CANCEL DDL JOBS` command.
-
-- `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...`: To view the original SQL statement of the DDL job corresponding to the `job_id`; the `job_id` only searches the running DDL job and the last ten results in the DDL history job queue
-- `ADMIN CANCEL DDL JOBS job_id [, job_id] ...`: To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled. If the operation fails to cancel the jobs, specific reasons are displayed.
-
-    > **Note:**
-    >
-    > - Only this operation can cancel DDL jobs. All other operations and environment changes (such as machine restart and cluster restart) cannot cancel these jobs.
-    > - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the `ADMIN SHOW DDL JOBS` statement.
-    > - If the jobs you want to cancel are finished, the cancellation operation fails.
-
-- `ADMIN CHECK TABLE tbl_name [, tbl_name] ...`: To check the consistency of all the data in the specified table and corresponding indexes. If the check is passed, an empty result is returned. Otherwise, an error message is returned indicating that the data is inconsistent.
-- `ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT`: In extreme cases, this statement is used to overwrite the metadata of the stored table in an untrusted way. Here “untrusted” means that you need to manually ensure that the metadata of the original table can be covered by the `CREATE TABLE STATEMENT` operation. To use this `REPAIR` statement, enable the [`repair-mode`](/reference/configuration/tidb-server/configuration-file.md#repair-mode) configuration item, and make sure that the tables to be repaired are listed in the [`repair-table-list`](/reference/configuration/tidb-server/configuration-file.md#repair-table-list).
 
 ## MySQL compatibility
 
