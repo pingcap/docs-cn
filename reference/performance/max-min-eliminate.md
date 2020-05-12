@@ -1,11 +1,11 @@
 ---
-title: Max/Min 消除规则简介
+title: Max/Min 函数消除规则
 category: reference
 ---
 
-# Max/Min 消除规则简介
+# Max/Min 函数消除规则
 
-在 SQL 中包含了 max/min 函数时，查询优化器会尝试使用“max/min 消除”优化规则来将 max/min 聚合函数转换为 TopN 算子，从而能够有效地利用索引进行查询。
+在 SQL 中包含了 max/min 函数时，查询优化器会尝试使用 `max/min 消除` 优化规则来将 max/min 聚合函数转换为 TopN 算子，从而能够有效地利用索引进行查询。
 
 根据 `select` 语句中 max/min 函数的个数，这一优化规则有两种表现形式。
 
