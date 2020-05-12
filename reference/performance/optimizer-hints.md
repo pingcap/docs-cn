@@ -13,7 +13,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ## 语法
 
-Optimizer Hints 通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面(`INSERT` 关键字后不支持 Optimizer Hints)，常见形式如 `/*+ HINT_NAME([t1_name [, t2_name] ...]) */`。Hint 名称不区分大小写，多个不同的 Hint 之间需用逗号隔开。例如：
+Optimizer Hints 通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面（`INSERT` 关键字后不支持 Optimizer Hints），常见形式如 `/*+ HINT_NAME([t1_name [, t2_name] ...]) */`。Hint 名称不区分大小写，多个不同的 Hint 之间需用逗号隔开。例如：
 
 {{< copyable "sql" >}}
 
