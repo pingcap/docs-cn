@@ -30,6 +30,7 @@ category: reference
 ### 使用方法
 
 > **注意：**
+>
 > 以下操作都需要数据库的 root 权限。
 
 每个优化规则都有自己的名字，比如列裁剪的名字是 "column_prune"，所有优化规则的名字皆可以在[重要的优化规则](/reference/performance/opt-rule-blacklist.md#rules)表格中第二列查到。
