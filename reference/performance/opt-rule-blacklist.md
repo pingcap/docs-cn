@@ -43,7 +43,7 @@ category: reference
 insert into mysql.opt_rule_blacklist values("join_reorder"),("topn_push_down");
 ```
 
-执行以下 SQL 让禁用规则立即生效：
+执行以下 SQL 语句让禁用规则立即生效：
 
 {{< copyable "sql" >}}
 
