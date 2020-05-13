@@ -53,7 +53,6 @@ BackupRequest{
     EndVersion,     // 备份快照时间点
     StorageBackend, // 备份文件存储地址
     RateLimit,      // 备份速度 (MB/s)
-    Concurrency,    // 执行备份操作的线程数（默认为 4）
 }
 ```
 
@@ -168,11 +167,10 @@ br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backupfull.log
 ```
 
-以上命令中，`--ratelimit` 和 `--concurrency` 选项限制了**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）和并发数上限。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
+以上命令中，`--ratelimit` 选项限制了**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。进度条效果如下：
 
@@ -181,7 +179,6 @@ br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backupfull.log
 Full Backup <---------/................................................> 17.12%.
 ```
@@ -200,7 +197,6 @@ br backup db \
     --db test \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backuptable.log
 ```
 
@@ -223,7 +219,6 @@ br backup table \
     --table usertable \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backuptable.log
 ```
 
@@ -279,11 +274,11 @@ br backup full \
 br restore full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
-    --concurrency 128 \
+    --ratelimit 128 \
     --log-file restorefull.log
 ```
 
-`--concurrency` 指定了该恢复任务内部的子任务的并发数。`--log-file` 选项指定把 BR 的 log 写到 `restorefull.log` 文件中。
+以上命令中，`--ratelimit` 选项限制了**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。`--log-file` 选项指定把 BR 的 log 写到 `restorefull.log` 文件中。
 
 恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。进度条效果如下：
 
