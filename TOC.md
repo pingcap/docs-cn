@@ -284,6 +284,7 @@
     - [使用 SQL 语句检查 TiDB 集群状态](/reference/performance/check-cluster-status-using-sql-statements.md)
     - [使用 Index Merge 方式访问表](/reference/performance/index-merge.md)
     - [Statement Summary Table](/reference/performance/statement-summary.md)
+    - [Max/Min 函数消除规则](/reference/performance/max-min-eliminate.md)
     - [TiKV 调优](/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + 监控指标
