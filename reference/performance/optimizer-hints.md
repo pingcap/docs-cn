@@ -13,7 +13,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ## 语法
 
-Optimizer Hints 通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，常见形式如 `/*+ HINT_NAME([t1_name [, t2_name] ...]) */`。Hint 名称不区分大小写，多个不同的 Hint 之间需用逗号隔开。例如：
+Optimizer Hints 通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面（`INSERT` 关键字后不支持 Optimizer Hints），常见形式如 `/*+ HINT_NAME([t1_name [, t2_name] ...]) */`。Hint 名称不区分大小写，多个不同的 Hint 之间需用逗号隔开。例如：
 
 {{< copyable "sql" >}}
 
@@ -21,15 +21,15 @@ Optimizer Hints 通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` �
 select /*+ USE_INDEX(t1, idx1), HASH_AGG(), HASH_JOIN(t1) */ count(*) from t t1, t t2 where t1.a = t2.b;
 ```
 
-TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint 用于控制优化器的行为，例如 [`/*+ HASH_AGG() */`](#hash_agg)。第二类 Hint 用于对单条查询设置一些运行参数，例如 [`/*+ MEMORY_QUOTA(1024 MB)*/`](#memory_quotan)。
+Optimizer Hints 可以和 `Explain` / `Explain Analyze` 组合使用，通过这两个命令查看验证 Optimizer Hints 是否按照预期对查询产生了影响。如果 Optimizer Hints 包含语法错误，或者不适用于当前语句，查询会按照没有 Optimizer Hints 的情况执行，不会对 Optimizer Hints 部分报错，而是会记录 Warning，用户可以在查询结束后通过 `Show Warnings` 命令查看具体信息。
 
-## 优化器相关 Hint 语法
+> **注意：**
+>
+> 如果注释不是跟在指定的关键字后，会被当作是普通的 MySQL comment，注释不会生效，且不会上报 warning。
 
-用于控制优化器行为的 Hint 跟在语句中**任意** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。Hint 的生效范围以及 Hint 中使用的表的生效范围可通过 [Query Block](#query-block) 来指定，若不显式地指定 Query Block， Hint 的默认生效范围为当前 Query Block。
+TiDB 目前支持的 Optimizer Hints 根据生效范围的不同可以划分为两类：第一类是在查询块范围生效的 Hint，例如 [`/*+ HASH_AGG() */`](#hash_agg)；第二类是在整个查询范围生效的 Hint，例如 [`/*+ MEMORY_QUOTA(1024 MB)*/`](#memory_quotan)。
 
-### Query Block
-
-一条语句中每一个查询和子查询都对应着一个不同的 Query Block，每个 Query Block 有自己对应的 `QB_NAME`。以下面这条语句为例：
+每条语句中每一个查询和子查询都对应着一个不同的查询块，每个查询块有自己对应的名字。以下面这条语句为例：
 
 {{< copyable "sql" >}}
 
@@ -37,11 +37,29 @@ TiDB 目前支持两类 Hint，具体用法上有一些差别。第一类 Hint �
 select * from (select * from t) t1, (select * from t) t2;
 ```
 
-该查询语句有 3 个 Query Block，最外面一层 `SELECT` 所在的 Query Block 的 `QB_NAME` 为 `sel_1`，两个 `SELECT` 子查询的 `QB_NAME` 依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。如果分别用 `DELETE` 和 `UPDATE` 查询替代第一个 `SELECT` 查询，则对应的 `QB_NAME` 分别为 `del_1` 和 `upd_1`。
+该查询语句有 3 个查询块，最外面一层 `SELECT` 所在的查询块的名字为 `sel_1`，两个 `SELECT` 子查询的名字依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。如果分别用 `DELETE` 和 `UPDATE` 查询替代第一个 `SELECT` 查询，则对应的查询块名字分别为 `del_1` 和 `upd_1`。
+
+## 查询块范围生效的 Hint
+
+这类 Hint 可以跟在查询语句中**任意** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。通过在 Hint 中使用查询块名字可以控制 Hint 的生效范围，以及准确标识查询中的每一个表（有可能表的名字或者别名相同），方便明确 Hint 的参数指向。若不显式地在 Hint 中指定查询块，Hint 默认作用于当前查询块。以如下查询为例：
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
+```
+
+该 Hint 在 `sel_1` 这个查询块中生效，参数分别为 `sel_1` 中的 `t1` 表（`sel_2` 中也有一个 `t1` 表）和 `t3` 表。
+
+如上例所述，在 Hint 中使用查询块名字的方式有两种：第一种是作为 Hint 的第一个参数，与其他参数用空格隔开。除 `QB_NAME` 外，本节所列的所有 Hint 除自身明确列出的参数外都有一个隐藏的可选参数 `@QB_NAME`，通过使用这个参数可以指定该 Hint 的生效范围；第二种在 Hint 中使用查询块名字的方式是在参数中的某一个表名后面加 `@QB_NAME`，用以明确指出该参数是哪个查询块中的表。
+
+> **注意：**
+>
+> Hint 声明的位置必须在指定生效的查询块之中或之前，不能是在之后的查询块中，否则无法生效。
 
 ### QB_NAME
 
-你可以为当前 Query Block 的 `QB_NAME` 指定新的值，同时原本默认的 `QB_NAME` 值仍然有效。例如：
+当查询语句是包含多层嵌套子查询的复杂语句时，识别某个查询块的序号和名字很可能会出错，Hint `QB_NAME` 可以方便我们使用查询块。`QB_NAME` 是 Query Block Name 的缩写，用于为某个查询块指定新的名字，同时查询块原本默认的名字依然有效。例如：
 
 {{< copyable "sql" >}}
 
@@ -49,21 +67,11 @@ select * from (select * from t) t1, (select * from t) t2;
 select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 ```
 
-这条 Hint 将 `SELECT` 查询的 `QB_NAME` 设为 `QB1`，此时 `QB1` 和默认名称 `sel_1` 对于这个 Query Block 来说都是有效的。
+这条 Hint 将最外层 `SELECT` 查询块的命名为 `QB1`，此时 `QB1` 和默认名称 `sel_1` 对于这个查询块来说都是有效的。
 
 > **注意：**
 >
-> 上述例子中，如果指定的 `QB_NAME` 为 `sel_2`，并且不给原本 `sel_2` 对应的第二个 Query Block 指定新的 `QB_NAME`，则第二个 Query Block 的 `QB_NAME` 默认值 `sel_2` 会失效。
-
-### `@QB_NAME` 参数
-
-除 `QB_NAME` 外，其余优化器相关的 Hint 都可以通过可选参数 `@QB_NAME` 来指定该 Hint 的生效范围。该参数需写在最前面，与其他参数用空格隔开。同时，你也可以在参数中的每一个表名后面加 `@QB_NAME` 来指定是哪个 Query Block 中的表。例如：
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
-```
+> 上述例子中，如果指定的 `QB_NAME` 为 `sel_2`，并且不给原本 `sel_2` 对应的第二个查询块指定新的 `QB_NAME`，则第二个查询块的默认名字 `sel_2` 会失效。
 
 ### MERGE_JOIN(t1_name [, tl_name ...])
 
@@ -77,7 +85,7 @@ select /*+ MERGE_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 > **注意：**
 >
-> `MERGE_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
+> `MERGE_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `MERGE_JOIN`。
 
 ### INL_JOIN(t1_name [, tl_name ...])
 
@@ -93,15 +101,15 @@ select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 > **注意：**
 >
-> `INL_JOIN` 的别名是 `TIDB_INLJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
+> `INL_JOIN` 的别名是 `TIDB_INLJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `INL_JOIN`。
 
 ### INL_HASH_JOIN
 
-`INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，但在某些场景下会更为节省内存资源。
+`INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，两者的区别是 `INL_JOIN` 会在连接的内表上建哈希表，而 `INL_HASH_JOIN` 会在连接的外表上建哈希表，后者对于内存的使用是有固定上限的，而前者使用的内存使用取决于内表匹配到的行数。
 
 ### INL_MERGE_JOIN
 
-`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。该算法相比于 `INL_JOIN` 会更节省内存。该算法使用条件包含 `INL_JOIN` 的所有使用条件，但还需要添加一条：join keys 中的内表列集合是内表使用的 index 的前缀，或内表使用的 index 是 join keys 中的内表列集合的前缀。
+`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。这个 Hint 的适用场景和 `INL_JOIN` 一致，相比于 `INL_JOIN` 和 `INL_HASH_JOIN` 会更节省内存，但使用条件会更苛刻：join keys 中的内表列集合是内表使用的索引的前缀，或内表使用的索引是 join keys 中的内表列集合的前缀。
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
@@ -115,11 +123,11 @@ select /*+ HASH_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 > **注意：**
 >
-> `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
+> `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，推荐使用 `HASH_JOIN`。
 
 ### HASH_AGG()
 
-`HASH_AGG()` 提示优化器使用 Hash Aggregation 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
+`HASH_AGG()` 提示优化器对指定查询块中所有聚合函数使用 Hash Aggregation 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
 
 {{< copyable "sql" >}}
 
@@ -129,7 +137,7 @@ select /*+ HASH_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
 
 ### STREAM_AGG()
 
-`STREAM_AGG()` 提示优化器使用 Stream Aggregation 算法。这个算法通常会占用更少的内存，但执行时间会更久。数据量太大，或系统内存不足时，建议尝试使用。例如：
+`STREAM_AGG()` 提示优化器对指定查询块中所有聚合函数使用 Stream Aggregation 算法。这个算法通常会占用更少的内存，但执行时间会更久。数据量太大，或系统内存不足时，建议尝试使用。例如：
 
 {{< copyable "sql" >}}
 
@@ -149,6 +157,10 @@ select /*+ STREAM_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
 select /*+ USE_INDEX(t1, idx1, idx2) */ * from t t1;
 ```
 
+> **注意：**
+>
+> 当该 Hint 中只指定表名，不指定索引名时，表示不考虑使用任何索引，而是选择全表扫。
+
 ### IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
 `IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表忽略给出的索引。
@@ -163,7 +175,7 @@ select /*+ IGNORE_INDEX(t1, idx1, idx2) */ * from t t1;
 
 ### AGG_TO_COP()
 
-`AGG_TO_COP()` 提示优化器将聚合操作下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。例如：
+`AGG_TO_COP()` 提示优化器将指定查询块中的聚合函数下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。例如：
 
 {{< copyable "sql" >}}
 
@@ -191,9 +203,24 @@ select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 wher
 select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
 ```
 
+当对同一张表有多个 `USE_INDEX_MERGE` Hint 时，优化器会从这些 Hint 指定的索引列表的并集中尝试选取索引。
+
 > **注意：**
 >
 > `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
+
+目前该 Hint 生效的条件较为苛刻，包括：
+
+- 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
+- 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
+
+## 查询范围生效的 Hint
+
+这类 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，等同于在当前这条查询运行时对指定的系统变量进行修改，其优先级高于现有系统变量的值。
+
+> **注意：**
+>
+> 这类 Hint 虽然也有隐藏的可选变量 `@QB_NAME`，但就算指定了该值，Hint 还是会在整个查询范围生效。
 
 ### NO_INDEX_MERGE()
 
@@ -207,7 +234,11 @@ select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 
 select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 ```
 
-除了 Hint 外，环境变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
+除了 Hint 外，系统变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
+
+> **注意：**
+>
+> `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
 
 ### USE_TOJA(boolean_value)
 
@@ -221,13 +252,7 @@ select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
 ```
 
-除了 Hint 外，环境变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。
-
-## 运行参数相关 Hint 语法
-
-运行参数相关的 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，对当前的这条查询的相关运行参数进行修改。
-
-其优先级高于默认设置以及环境变量。
+除了 Hint 外，系统变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。
 
 ### MAX_EXECUTION_TIME(N)
 
@@ -241,7 +266,7 @@ select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from 
 select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.id;
 ```
 
-除了 Hint 之外，环境变量 `global.max_execution_time` 也能对语句执行时间进行限制。
+除了 Hint 之外，系统变量 `global.max_execution_time` 也能对语句执行时间进行限制。
 
 ### MEMORY_QUOTA(N)
 
@@ -255,18 +280,18 @@ select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.
 select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 ```
 
-除了 Hint 外，环境变量 `tidb_mem_quota_query` 也能限制语句执行的内存使用。
+除了 Hint 外，系统变量 `tidb_mem_quota_query` 也能限制语句执行的内存使用。
 
-### READ_FROM_REPLICA()
+### READ_CONSISTENT_REPLICA()
 
-`READ_FROM_REPLICA()` 会开启从数据一致的 TiKV follower 节点读取数据的特性。
+`READ_CONSISTENT_REPLICA()` 会开启从数据一致的 TiKV follower 节点读取数据的特性。
 
 下面的例子会从 follower 节点读取数据：
 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ READ_FROM_REPLICA() */ * from t;
+select /*+ READ_CONSISTENT_REPLICA() */ * from t;
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
@@ -275,9 +300,9 @@ select /*+ READ_FROM_REPLICA() */ * from t;
 
 `IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
 
-该 Hint 用于在 [prepare-plan-cache](/reference/configuration/tidb-server/configuration-file.md#prepared-plan-cache) 开启的场景下临时禁用 plan cache。
+该 Hint 用于在 [prepare-plan-cache](/reference/configuration/tidb-server/configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
 
-以下示例强制 `prepare` 语句不使用 plan cache：
+以下示例强制该 `prepare` 语句不使用 plan cache：
 
 {{< copyable "sql" >}}
 
