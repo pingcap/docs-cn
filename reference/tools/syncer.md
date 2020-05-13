@@ -38,7 +38,7 @@ binlog-gtid = "2bfabd22-fff7-11e6-97f7-f02fa73bcb01:1-23,61ccbb5d-c82d-11e6-ac2e
 > **Note:**
 >
 > - The `syncer.meta` file only needs to be configured when it is first used. The position is automatically updated when the new subsequent binlog is replicated.
-> - If you use the binlog position to replicate, you only need to configure `binlog-name` and `binlog-pos`; if you use `binlog-gtid` to replacate, you need to configure `binlog-gtid` and set `--enable-gtid` when starting Syncer.
+> - If you use the binlog position to replicate, you only need to configure `binlog-name` and `binlog-pos`; if you use `binlog-gtid` to replicate, you need to configure `binlog-gtid` and set `--enable-gtid` when starting Syncer.
 
 ### 2. Start Syncer
 
@@ -462,7 +462,7 @@ Before replicating data using Syncer, check the following items:
 
 6. Check the Character Set.
 
-    TiDB differs from MySQL in [Character Set](/reference/sql/character-set.md).
+    TiDB differs from MySQL in [character sets](/reference/sql/characterset-and-collation.md).
 
 7. Check whether the table to be replicated has a primary key or a unique index.
 

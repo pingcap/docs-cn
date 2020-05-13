@@ -45,7 +45,7 @@ create_specification:
 
 If you create an existing database and does not specify `IF NOT EXISTS`, an error is displayed.
 
-The `create_specification` option is used to specify the specific `CHARACTER SET` and `COLLATE` in the database. Currently, TiDB only supports some of the character sets and collations. For details, see [Character Set Support](/reference/sql/character-set.md).
+The `create_specification` option is used to specify the specific `CHARACTER SET` and `COLLATE` in the database. Currently, TiDB only supports some of the character sets and collations. For details, see [Character Set and Collation Support](/reference/sql/characterset-and-collation.md).
 
 ## Examples
 

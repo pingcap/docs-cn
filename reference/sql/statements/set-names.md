@@ -77,4 +77,4 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 
 * [SHOW \[GLOBAL|SESSION\] VARIABLES](/reference/sql/statements/show-variables.md)
 * [SET <variable>](/reference/sql/statements/set-variable.md)
-* [Character Set Support](/reference/sql/character-set.md)
+* [Character Set and Collation Support](/reference/sql/characterset-and-collation.md)

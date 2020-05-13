@@ -25,7 +25,6 @@ However, TiDB does not support some of MySQL features or behaves differently fro
 + `FOREIGN KEY` constraints
 + `FULLTEXT`/`SPATIAL` functions and indexes
 + Character sets other than `utf8`, `utf8mb4`, `ascii`, `latin1` and `binary`
-+ Collations other than `BINARY`
 + Add/drop primary key
 + SYS schema
 + Optimizer trace
@@ -121,7 +120,6 @@ In TiDB DDL does not block reads or writes to tables while in operation. However
     - Does not support lossy changes, such as from `BIGINT` to `INTEGER` or `VARCHAR(255)` to `VARCHAR(10)`.
     - Does not support modifying the precision of `DECIMAL` data types.
     - Does not support changing the `UNSIGNED` attribute.
-    - Only supports changing the `CHARACTER SET` attribute from `utf8` to `utf8mb4`.
 + `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: the syntax is supported, but is not applicable to TiDB. All DDL changes that are supported do not lock the table.
 + `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: the syntax for `ALGORITHM=INSTANT` and `ALGORITHM=INPLACE` is fully supported, but it works differently from MySQL because some operations that are `INPLACE` in MySQL are `INSTANT` in TiDB. The syntax `ALGORITHM=COPY` is not applicable to TIDB and returns a warning.
 + Multiple operations cannot be completed in a single `ALTER TABLE` statement. For example, it's not possible to add multiple columns or indexes in a single statement.
@@ -268,14 +266,6 @@ Because they are built-in, named time zones in TiDB might behave slightly differ
 #### Zero month and zero day
 
 It is not recommended to unset the `NO_ZERO_DATE` and `NO_ZERO_IN_DATE` SQL modes, which are enabled by default in TiDB as in MySQL. While TiDB supports operating with these modes disabled, the TiKV coprocessor does not. Executing certain statements that push down date and time processing functions to TiKV might result in a statement error.
-
-#### Handling of space at the end of string line
-
-Currently, when inserting data, TiDB keeps the space at the end of the line for the `VARCHAR` type, and truncate the space for the `CHAR` type. In case there is no index, TiDB behaves exactly the same as MySQL. 
-
-If there is a `UNIQUE` index on the `VARCHAR` data, MySQL truncates the space at the end of the `VARCHAR` line before determining whether the data is duplicated, which is similar to the processing of the `CHAR` type, while TiDB keeps the space.
-
-When making a comparison, MySQL first truncates the constant and the space at the end of the column, while TiDB keeps them to enable exact comparison.
 
 ### Type system differences
 

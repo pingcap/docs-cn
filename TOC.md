@@ -250,7 +250,7 @@
     - [Constraints](/reference/sql/constraints.md)
     - [Generated Columns](/reference/sql/generated-columns.md)
     - [Partitioning](/reference/sql/partitioning.md)
-    - [Character Set](/reference/sql/character-set.md)
+    - [Character Set and Collation](/reference/sql/characterset-and-collation.md)
     - [SQL Mode](/reference/sql/sql-mode.md)
     - [SQL Diagnosis](/reference/system-databases/sql-diagnosis.md)
     - [Views](/reference/sql/views.md)

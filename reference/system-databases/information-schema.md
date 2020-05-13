@@ -36,7 +36,7 @@ select * from `ANALYZE_STATUS`;
 
 ### CHARACTER_SETS table
 
-The `CHARACTER_SETS` table provides information about [character sets](/reference/sql/character-set.md). Currently, TiDB only supports some of the character sets.
+The `CHARACTER_SETS` table provides information about [character sets](/reference/sql/characterset-and-collation.md). Currently, TiDB only supports some of the character sets.
 
 {{< copyable "sql" >}}
 

@@ -18,7 +18,7 @@ alter_specification:
   | [DEFAULT] COLLATE [=] collation_name
 ```
 
-The `alter_specification` option specifies the `CHARACTER SET` and `COLLATE` of a specified database. Currently, TiDB only supports some character sets and collations. See [Character Set Support](/reference/sql/character-set.md) for details.
+The `alter_specification` option specifies the `CHARACTER SET` and `COLLATE` of a specified database. Currently, TiDB only supports some character sets and collations. See [Character Set and Collation Support](/reference/sql/characterset-and-collation.md) for details.
 
 ## See also
 
