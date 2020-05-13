@@ -229,7 +229,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 对于每一个客户端的连接，也有相应的变量表示字符集和排序规则：`character_set_connection` 和 `collation_connection`。
 
-`character_set_client` 代表客户端的字符集。在返回结果前，服务端会把结果根据 `character_set_results` 转换成对应的字符集。包括结果的元信息等。
+`character_set_client` 代表客户端的字符集。在返回结果前，服务端会把结果根据 `character_set_results` 转换成对应的字符集，包括结果的元信息等。
 
 可以用以下的语句来影响这些跟客户端相关的字符集变量：
 
