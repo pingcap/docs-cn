@@ -1,0 +1,112 @@
+---
+title: TiDB TPC-C Performance Test Report -- v4.0 vs. v3.0
+summary: Compares the TPC-C performance of TiDB 4.0 and TiDB 3.0 using BenchmarkSQL.
+category: benchmark
+---
+
+# TiDB TPC-C Performance Test Report -- v4.0 vs. v3.0
+
+## Test purpose
+
+This test aims to compare the TPC-C performance of TiDB 4.0 and TiDB 3.0.
+
+## Test version, time, and place
+
+TiDB versions: v4.0.0-rc vs. v3.0.8
+
+Time: April, 2020
+
+Place: Beijing
+
+## Test environment
+
+AWS machine:
+
+| Type | Machine | Number | vCPUs |
+| :- | :- | :- | :- |
+| TiKV | i3.4xlarge | 3 | 16 |
+| TiDB | c5.4xlarge | 2 | 16 |
+| PD | m5.xlarge | 3 | 4 |
+
+This test uses the open-source BenchmarkSQL 5.0 as the TPC-C testing tool and adds the support for the MySQL protocol. You can download the testing program by using the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+git clone -b 5.0-mysql-support-opt https://github.com/pingcap/benchmarksql.git
+```
+
+## Test Plan
+
+Use BenchmarkSQL to load the data of **5000 warehouses** into the TiDB cluster. By using HAProxy, send concurrent requests to the cluster at an incremental number. A single concurrent test lasts 10 minutes.
+
+### TiDB version information
+
+#### v4.0.0-rc
+
+| Component | GitHash |
+| :- | :- |
+| TiDB | 79db9e30ab8f98ac07c8ae55c66dfecc24b43d56 |
+| TiKV | f45d0c963df3ee4b1011caf5eb146cacd1fbbad8 |
+| PD | 6f06805f3b0070107fcb4af68b2fc224dee0714d |
+
+#### v3.0.8
+
+| Component | GitHash |
+| :- | :- |
+| TiDB | 8f13cf1449bd8903ff465a4f12ed89ecbac858a4 |
+| TiKV | 0d3168cfd8224fbc48a07796df83ddac0fbcbf46 |
+| PD | 456c42b8b0955b33426b58054e43b771801a74d0 |
+
+### TiDB parameter configuration
+
+{{< copyable "" >}}
+
+```toml
+[log]
+level = "error"
+[performance]
+max-procs = 20
+[prepared_plan_cache]
+enabled = true
+```
+
+### TiKV parameter configuration
+
+{{< copyable "" >}}
+
+```toml
+[readpool]
+unify-read-pool = true
+[readpool.unified]
+min-thread-count = 5
+max-thread-count = 6
+[readpool.storage]
+[readpool.coprocessor]
+[storage]
+scheduler-worker-pool-size = 3
+[raftstore]
+store-pool-size = 3
+[rocksdb]
+max-background-jobs = 3
+wal-dir = ""
+[raftdb]
+max-background-jobs = 3
+allow-concurrent-memtable-write = true
+[server]
+request-batch-enable-cross-command = false
+[pessimistic-txn]
+pipelined = true
+```
+
+### Cluster topology
+
+* 1 TiKV instance is deployed on each `i3.4xlarge` machine, 3 in total.
+* 1 TiDB instance is deployed on each `c5.4xlarge` machine, 2 in total.
+* 1 PD instance is deployed on each `m5.xlarge` machine, 3 in total.
+
+## Test result
+
+![tpcc](/media/tpcc-3.0-4.0.png)
+
+According to the testing statistics, the performance of TiDB 4.0.0-rc **has increased by 45%** than that of TiDB 3.0.8.
