@@ -1,6 +1,7 @@
 ---
 title: CSV 支持
 category: reference
+aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/csv.md']
 ---
 
 # CSV 支持

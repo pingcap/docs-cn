@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.1 Beta Release Notes
 category: Releases
+aliases: ['/docs-cn/dev/releases/3.1.0-beta.md']
 ---
 
 # TiDB 3.1 Beta Release Notes

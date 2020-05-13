@@ -2,6 +2,7 @@
 title: DROP USER
 summary: TiDB 数据库中 DROP USER 的使用概况。
 category: reference
+aliases: ['/docs-cn/dev/reference/sql/statements/drop-user.md']
 ---
 
 # DROP USER

@@ -1,6 +1,7 @@
 ---
 title: Key Visualizer 流量可视化
 category: how-to
+aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer.md']
 ---
 
 # Key Visualizer 流量可视化

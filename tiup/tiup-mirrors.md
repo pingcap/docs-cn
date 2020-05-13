@@ -1,6 +1,7 @@
 ---
 title: 搭建私有镜像
 category: tools
+aliases: ['/docs-cn/dev/reference/tools/tiup/mirrors.md']
 ---
 
 # 搭建私有镜像

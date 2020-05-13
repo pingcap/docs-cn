@@ -1,6 +1,7 @@
 ---
 title: 全量数据导入过程常见报错处理
 category: reference
+aliases: ['/docs-cn/dev/reference/tools/error-case-handling/load-misuse-handling.md']
 ---
 
 # 全量数据导入过程常见报错处理

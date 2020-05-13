@@ -1,6 +1,7 @@
 ---
 title: TiFlash 常见问题
 category: faq
+aliases: ['/docs-cn/dev/reference/tiflash/faq.md']
 ---
 
 # TiFlash 常见问题

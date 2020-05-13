@@ -1,6 +1,7 @@
 ---
 title: Split Region 使用文档
 category: reference
+aliases: ['/docs-cn/dev/reference/sql/statements/split-region.md']
 ---
 
 # Split Region 使用文档

@@ -1,6 +1,7 @@
 ---
 title: TiKV 配置参数
 category: reference
+aliases: ['/docs-cn/dev/reference/configuration/tikv-server/configuration.md']
 ---
 
 # TiKV 配置参数

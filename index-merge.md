@@ -1,6 +1,7 @@
 ---
 title: 使用 Index Merge 方式访问表
 category: reference
+aliases: ['/docs-cn/dev/reference/performance/index-merge.md']
 ---
 
 # 使用 Index Merge 方式访问表

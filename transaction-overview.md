@@ -2,6 +2,7 @@
 title: TiDB 事务概览
 summary: 了解 TiDB 中的事务。
 category: reference
+aliases: ['/docs-cn/dev/reference/transactions/overview.md']
 ---
 
 # TiDB 事务概览

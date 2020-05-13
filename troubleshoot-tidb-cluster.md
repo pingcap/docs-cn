@@ -1,6 +1,7 @@
 ---
 title: TiDB 集群故障诊断
 category: how-to
+aliases: ['/docs-cn/dev/how-to/troubleshoot/cluster-setup.md']
 ---
 
 # TiDB 集群故障诊断

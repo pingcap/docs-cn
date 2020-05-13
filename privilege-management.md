@@ -1,6 +1,7 @@
 ---
 title: 权限管理
 category: reference
+aliases: ['/docs-cn/dev/reference/security/privilege-system.md']
 ---
 
 # 权限管理

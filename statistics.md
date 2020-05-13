@@ -1,6 +1,7 @@
 ---
 title: 统计信息简介
 category: reference
+aliases: ['/docs-cn/dev/reference/performance/statistics.md']
 ---
 
 # 统计信息简介

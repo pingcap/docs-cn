@@ -1,6 +1,7 @@
 ---
 title: Titan 介绍
 category: reference
+aliases: ['/docs-cn/dev/reference/titan/overview.md']
 ---
 
 # Titan 介绍

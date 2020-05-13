@@ -1,6 +1,7 @@
 ---
 title: TiDB 软件和硬件环境建议配置
 category: how-to
+aliases: ['/docs-cn/dev/how-to/deploy/hardware-recommendations.md']
 ---
 
 # TiDB 软件和硬件环境建议配置

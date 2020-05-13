@@ -1,6 +1,7 @@
 ---
 title: 与 MySQL 兼容性对比
 category: reference
+aliases: ['/docs-cn/dev/reference/mysql-compatibility.md']
 ---
 
 # 与 MySQL 兼容性对比

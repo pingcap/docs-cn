@@ -1,6 +1,7 @@
 ---
 title: 时区支持
 category: how-to
+aliases: ['/docs-cn/dev/how-to/configure/time-zone.md']
 ---
 
 # 时区支持

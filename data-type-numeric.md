@@ -1,6 +1,7 @@
 ---
 title: 数值类型
 category: reference
+aliases: ['/docs-cn/dev/reference/sql/data-types/numeric.md']
 ---
 
 # 数值类型

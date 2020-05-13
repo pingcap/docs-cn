@@ -1,6 +1,7 @@
 ---
 title: 线上负载与 `ADD INDEX` 相互影响测试
 category: benchmark
+aliases: ['/docs-cn/dev/benchmark/add-index-with-load.md']
 ---
 
 # 线上负载与 `ADD INDEX` 相互影响测试

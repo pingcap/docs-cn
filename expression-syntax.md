@@ -1,6 +1,7 @@
 ---
 title: 表达式语法
 category: reference
+aliases: ['/docs-cn/dev/reference/sql/language-structure/expression-syntax.md']
 ---
 
 # 表达式语法 (Expression Syntax)

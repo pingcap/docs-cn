@@ -1,6 +1,7 @@
 ---
 title: TiCDC Open Protocol
 category: reference
+aliases: ['/docs-cn/dev/reference/tools/ticdc/open-protocol.md']
 ---
 
 # TiCDC Open Protocol

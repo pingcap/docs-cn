@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog Relay Log
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/tidb-binlog/relay-log/']
+aliases: ['/docs-cn/dev/reference/tidb-binlog/relay-log.md','/docs-cn/dev/reference/tools/tidb-binlog/relay-log/']
 ---
 
 # TiDB Binlog Relay Log

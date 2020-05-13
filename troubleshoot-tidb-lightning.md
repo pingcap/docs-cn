@@ -1,6 +1,7 @@
 ---
 title: TiDB Lightning 故障诊断
 category: reference
+aliases: ['/docs-cn/dev/how-to/troubleshoot/tidb-lightning.md']
 ---
 
 # TiDB Lightning 故障诊断

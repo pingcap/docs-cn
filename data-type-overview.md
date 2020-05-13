@@ -1,6 +1,7 @@
 ---
 title: 数据类型概述
 category: reference
+aliases: ['/docs-cn/dev/reference/sql/data-types/overview.md']
 ---
 
 # 数据类型概述

@@ -1,6 +1,7 @@
 ---
 title: RECOVER TABLE
 category: reference
+aliases: ['/docs-cn/dev/reference/sql/statements/recover-table.md']
 ---
 
 # RECOVER TABLE
