@@ -235,30 +235,30 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 * `SET NAMES 'charset_name' [COLLATE 'collation_name']`
 
-`SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。
-`SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
+    `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。
+    `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SET character_set_client = charset_name;
-SET character_set_results = charset_name;
-SET character_set_connection = charset_name;
-```
+    ```sql
+    SET character_set_client = charset_name;
+    SET character_set_results = charset_name;
+    SET character_set_connection = charset_name;
+    ```
 
-`COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则。
+    `COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则。
 
 * `SET CHARACTER SET 'charset_name'`
 
-跟 `SET NAMES` 类似，等价于下面语句的组合：
+    跟 `SET NAMES` 类似，等价于下面语句的组合：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SET character_set_client = charset_name;
-SET character_set_results = charset_name;
-SET collation_connection = @@collation_database;
-```
+    ```sql
+    SET character_set_client = charset_name;
+    SET character_set_results = charset_name;
+    SET collation_connection = @@collation_database;
+    ```
 
 ## 集群、服务器、数据库、表、列、字符串的字符集和排序规则的优先级
 
