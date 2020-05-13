@@ -171,6 +171,7 @@
       - [`ADD INDEX`](/reference/sql/statements/add-index.md)
       - [`ADMIN`](/reference/sql/statements/admin.md)
       - [`ALTER DATABASE`](/reference/sql/statements/alter-database.md)
+      - [`ALTER INSTANCE`](/reference/sql/statements/alter-instance.md)
       - [`ALTER TABLE`](/reference/sql/statements/alter-table.md)
       - [`ALTER USER`](/reference/sql/statements/alter-user.md)
       - [`ANALYZE TABLE`](/reference/sql/statements/analyze-table.md)
