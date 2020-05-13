@@ -1,7 +1,7 @@
 ---
 title: Join Reorder 算法简介
 category: reference
-aliases: ['/docs-cn/dev/reference/performance/join-reorder.md']
+aliases: ['/docs-cn/dev/reference/performance/join-reorder/']
 ---
 
 # Join Reorder 算法简介

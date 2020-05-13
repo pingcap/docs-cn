@@ -1,7 +1,7 @@
 ---
 title: TiKV Control 使用说明
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/tikv-control.md']
+aliases: ['/docs-cn/dev/reference/tools/tikv-control/']
 ---
 
 # TiKV Control 使用说明

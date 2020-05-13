@@ -2,7 +2,7 @@
 title: RENAME INDEX
 summary: TiDB 数据库中 RENAME INDEX 的使用概况。
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/rename-index.md']
+aliases: ['/docs-cn/dev/reference/sql/statements/rename-index/']
 ---
 
 # RENAME INDEX

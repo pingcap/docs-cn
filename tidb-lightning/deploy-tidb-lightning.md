@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 部署与执行
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/deployment.md']
+aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 ---
 
 # TiDB Lightning 部署与执行

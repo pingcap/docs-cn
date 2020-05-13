@@ -2,7 +2,7 @@
 title: SHOW TABLE STATUS
 summary: TiDB 数据库中 SHOW TABLE STATUS 的使用概况。
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-table-status.md']
+aliases: ['/docs-cn/dev/reference/sql/statements/show-table-status/']
 ---
 
 # SHOW TABLE STATUS

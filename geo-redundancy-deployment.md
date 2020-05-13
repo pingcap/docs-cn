@@ -1,7 +1,7 @@
 ---
 title: 跨数据中心部署方案
 category: how-to
-aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview.md']
+aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/']
 ---
 
 # 跨数据中心部署方案

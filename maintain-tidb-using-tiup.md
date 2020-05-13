@@ -1,7 +1,7 @@
 ---
 title: TiUP 常见运维操作
 category: how-to
-aliases: ['/docs-cn/dev/how-to/maintain/tiup-operations.md']
+aliases: ['/docs-cn/dev/how-to/maintain/tiup-operations/']
 ---
 
 # TiUP 常见运维操作

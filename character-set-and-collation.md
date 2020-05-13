@@ -1,7 +1,7 @@
 ---
 title: 字符集和排序规则
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/characterset-and-collation.md','/docs-cn/dev/reference/sql/character-set/']
+aliases: ['/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev/reference/sql/character-set/']
 ---
 
 # 字符集和排序规则

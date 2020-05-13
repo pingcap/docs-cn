@@ -1,7 +1,7 @@
 ---
 title: TiFlash 集群运维
 category: reference
-aliases: ['/docs-cn/dev/reference/tiflash/maintain.md']
+aliases: ['/docs-cn/dev/reference/tiflash/maintain/']
 ---
 
 # TiFlash 集群运维

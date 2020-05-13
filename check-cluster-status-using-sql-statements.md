@@ -1,7 +1,7 @@
 ---
 title: 使用 SQL 语句检查 TiDB 集群状态
 category: reference
-aliases: ['/docs-cn/dev/reference/performance/check-cluster-status-using-sql-statements.md']
+aliases: ['/docs-cn/dev/reference/performance/check-cluster-status-using-sql-statements/']
 ---
 
 # 使用 SQL 语句检查 TiDB 集群状态

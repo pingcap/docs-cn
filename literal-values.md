@@ -1,7 +1,7 @@
 ---
 title: 字面值
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/language-structure/literal-values.md']
+aliases: ['/docs-cn/dev/reference/sql/language-structure/literal-values/']
 ---
 
 # 字面值

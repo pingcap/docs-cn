@@ -1,7 +1,7 @@
 ---
 title: TiDB 3.1 RC Release Notes
 category: Releases
-aliases: ['/docs-cn/dev/releases/3.1.0-rc.md']
+aliases: ['/docs-cn/dev/releases/3.1.0-rc/']
 ---
 
 # TiDB 3.1 RC Release Notes

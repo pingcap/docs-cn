@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 教程
 category: how-to
-aliases: ['/docs-cn/dev/how-to/get-started/tidb-lightning.md']
+aliases: ['/docs-cn/dev/how-to/get-started/tidb-lightning/']
 ---
 
 # TiDB Lightning 教程

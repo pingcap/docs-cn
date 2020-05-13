@@ -1,7 +1,7 @@
 ---
 title: 升级 TiFlash 节点
 category: reference
-aliases: ['/docs-cn/dev/reference/tiflash/upgrade.md']
+aliases: ['/docs-cn/dev/reference/tiflash/upgrade/']
 ---
 
 # 升级 TiFlash 节点

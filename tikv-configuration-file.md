@@ -1,7 +1,7 @@
 ---
 title: TiKV 配置文件描述
 category: reference
-aliases: ['/docs-cn/dev/reference/configuration/tikv-server/configuration-file.md']
+aliases: ['/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
 ---
 
 # TiKV 配置文件描述

@@ -1,7 +1,7 @@
 ---
 title: 操作符
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/operators.md']
+aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/operators/']
 ---
 
 # 操作符

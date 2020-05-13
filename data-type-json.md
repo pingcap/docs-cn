@@ -1,7 +1,7 @@
 ---
 title: JSON 类型
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/data-types/json.md']
+aliases: ['/docs-cn/dev/reference/sql/data-types/json/']
 ---
 
 # JSON 类型

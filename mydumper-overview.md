@@ -2,7 +2,7 @@
 title: Mydumper 使用文档
 summary: 使用 Mydumper 从 TiDB 导出数据。
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/mydumper.md']
+aliases: ['/docs-cn/dev/reference/tools/mydumper/']
 ---
 
 # Mydumper 使用文档

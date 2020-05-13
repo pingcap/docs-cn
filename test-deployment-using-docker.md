@@ -1,7 +1,7 @@
 ---
 title: TiDB Docker 部署方案
 category: how-to
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/docker.md']
+aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/docker/']
 ---
 
 # TiDB Docker 部署方案

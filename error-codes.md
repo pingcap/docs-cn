@@ -1,7 +1,7 @@
 ---
 title: 错误码与故障诊断
 category: reference
-aliases: ['/docs-cn/dev/reference/error-codes.md']
+aliases: ['/docs-cn/dev/reference/error-codes/']
 ---
 
 # 错误码与故障诊断

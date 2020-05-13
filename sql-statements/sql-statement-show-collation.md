@@ -2,7 +2,7 @@
 title: SHOW COLLATION
 summary: TiDB 数据库中 SHOW COLLATION 的使用概况。
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-collation.md']
+aliases: ['/docs-cn/dev/reference/sql/statements/show-collation/']
 ---
 
 # SHOW COLLATION

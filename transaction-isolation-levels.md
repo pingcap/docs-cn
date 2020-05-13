@@ -2,7 +2,7 @@
 title: TiDB 事务隔离级别
 summary: 了解 TiDB 事务的隔离级别。
 category: reference
-aliases: ['/docs-cn/dev/reference/transactions/transaction-isolation.md']
+aliases: ['/docs-cn/dev/reference/transactions/transaction-isolation/']
 ---
 
 # TiDB 事务隔离级别
