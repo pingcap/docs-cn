@@ -120,9 +120,9 @@ Suppose that there is a PD node (the client URL is `10.0.10.25:2379`) in the PD 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_1.log --status-addr=127.0.0.1:8301
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --status-addr=127.0.0.1:8302
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --status-addr=127.0.0.1:8303
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_1.log --addr 0.0.0.0:8301 --advertise-addr=127.0.0.1:8301
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --addr 0.0.0.0:8302 --advertise-addr=127.0.0.1:8302
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr 0.0.0.0:8303 --advertise-addr=127.0.0.1:8303
 ```
 
 ## Step 2: Create replication task
