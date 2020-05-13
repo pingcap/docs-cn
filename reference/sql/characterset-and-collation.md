@@ -218,7 +218,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 规则如下：
 
-* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `charset_name` 和 `collation_name`。
+* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `charset_name`  字符集和 `collation_name` 排序规则。
 * 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `charset_name` 和 `charset_name` 对应的默认排序规则。
 * 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用 `character_set_connection` 和 `collation_connection` 系统变量给出的字符集和排序规则。
 
