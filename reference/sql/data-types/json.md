@@ -24,3 +24,5 @@ CREATE TABLE city (
 INSERT INTO city (id,detail) VALUES (1, '{"name": "Beijing", "population": 100}');
 SELECT id FROM city WHERE population >= 100;
 ```
+
+有关 JSON 的更多信息，可以参考[JSON 函数](/reference/sql/functions-and-operators/json-functions.md)和[生成列](/reference/sql/generated-columns.md)。
