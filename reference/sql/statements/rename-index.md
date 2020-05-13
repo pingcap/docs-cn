@@ -86,3 +86,4 @@ Create Table: CREATE TABLE `t1` (
 * [CREATE INDEX](/reference/sql/statements/create-index.md)
 * [DROP INDEX](/reference/sql/statements/drop-index.md)
 * [SHOW INDEX](/reference/sql/statements/show-index.md)
+* [ALTER INDEX](/reference/sql/statements/alter-index.md)

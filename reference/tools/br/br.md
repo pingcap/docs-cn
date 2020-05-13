@@ -54,7 +54,6 @@ BackupRequest{
     EndVersion,     // 备份快照时间点
     StorageBackend, // 备份文件存储地址
     RateLimit,      // 备份速度 (MB/s)
-    Concurrency,    // 执行备份操作的线程数（默认为 4）
 }
 ```
 
@@ -169,11 +168,10 @@ br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backupfull.log
 ```
 
-以上命令中，`--ratelimit` 和 `--concurrency` 选项限制了**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）和并发数上限。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
+以上命令中，`--ratelimit` 选项限制了**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。进度条效果如下：
 
@@ -182,7 +180,6 @@ br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backupfull.log
 Full Backup <---------/................................................> 17.12%.
 ```
@@ -201,7 +198,6 @@ br backup db \
     --db test \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backuptable.log
 ```
 
@@ -224,13 +220,40 @@ br backup table \
     --table usertable \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backuptable.log
 ```
 
 `table` 子命令有 `--db` 和 `--table` 两个选项，分别用来指定数据库名和表名。其他选项的含义与[备份全部集群数据](#备份全部集群数据)相同。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
+
+### 备份数据到 Amazon S3 后端存储
+
+如果备份的存储并不是在本地，而是在 Amazon 的 S3 后端存储，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
+
+这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
+
+将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export AWS_ACCESS_KEY_ID=${AccessKey}
+export AWS_SECRET_ACCESS_KEY=${SecretKey}
+```
+
+在进行 BR 备份时，显示指定参数 `--s3.region` 和 `--send-credentials-to-tikv`, `--s3.region` 表示 S3 存储所在的区域，`--send-credentials-to-tikv` 表示将 S3 的访问权限传递给 TiKV 节点。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --send-credentials-to-tikv true \
+    --log-file backuptable.log
+```
 
 ## 恢复集群数据
 
@@ -252,11 +275,11 @@ br backup table \
 br restore full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
-    --concurrency 128 \
+    --ratelimit 128 \
     --log-file restorefull.log
 ```
 
-`--concurrency` 指定了该恢复任务内部的子任务的并发数。`--log-file` 选项指定把 BR 的 log 写到 `restorefull.log` 文件中。
+以上命令中，`--ratelimit` 选项限制了**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。`--log-file` 选项指定把 BR 的 log 写到 `restorefull.log` 文件中。
 
 恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。进度条效果如下：
 
@@ -300,6 +323,32 @@ br restore table \
     --db "test" \
     --table "usertable" \
     --storage "local:///tmp/backup" \
+    --log-file restorefull.log
+```
+
+### 从 Amazon S3 后端存储恢复数据
+
+如果需要恢复的数据并不是存储在本地，而是在 Amazon 的 S3 后端，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
+
+将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export AWS_ACCESS_KEY_ID=${AccessKey}
+export AWS_SECRET_ACCESS_KEY=${SecretKey}
+```
+
+在进行 BR 恢复时，显示指定参数 `--s3.region` 和 `--send-credentials-to-tikv`, `--s3.region` 表示 S3 存储所在的区域，`--send-credentials-to-tikv` 表示将 S3 的访问权限传递给 TiKV 节点。`--storage`参数中的 `Bucket` 和 `Folder` 分别代表需要恢复的数据所在的 S3 存储桶和文件夹。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --send-credentials-to-tikv true \
     --log-file restorefull.log
 ```
 

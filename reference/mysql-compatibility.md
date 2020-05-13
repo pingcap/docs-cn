@@ -85,6 +85,8 @@ mysql> select _tidb_rowid, id from t;
 3 rows in set (0.01 sec)
 ```
 
+TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1.2、v3.0.14 和 v4.0.rc.2 版本开始，TiDB 引入了 `AUTO_ID_CACHE` 表选项来允许用户自主设置自增 ID 分配缓存的大小。其中缓存大小可能会被自增列和 `_tidb_rowid` 共同消耗。此外如果在 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入。
+
 ### Performance schema
 
 Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
@@ -105,11 +107,8 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 + Add Index
     - 不支持同时创建多个索引
-    - 不支持 `VISIBLE/INVISIBLE` 的索引
-    - 不支持通过 `ALTER TABLE` 在所生成的列上添加索引
     - 其他类型的 Index Type (HASH/BTREE/RTREE) 只有语法支持，功能不支持
 + Add Column
-    - 不支持同时创建多个列
     - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 AUTO_INCREMENT 属性
 + Drop Column: 不支持删除主键列或索引列
 + Change/Modify Column
