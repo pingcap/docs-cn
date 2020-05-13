@@ -124,7 +124,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 }
 ```
 
-### config [show | set <option> <value>]
+### config [show | set \<option> \<value>]
 
 用于显示或调整配置信息。示例如下。
 
@@ -488,7 +488,7 @@ config set cluster-version 1.0.8
 >> hot store
 ```
 
-### label [store <name> <value>]
+### label [store \<name> \<value>]
 
 用于显示集群标签信息。示例如下。
 
@@ -637,7 +637,7 @@ Success!
 time: 43.12698ms
 ```
 
-### region <region_id> [--jq="<query string>"]
+### region <region_id> [--jq="\<query string>"]
 
 用于显示 Region 信息。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
 
@@ -676,7 +676,7 @@ time: 43.12698ms
 }
 ```
 
-### region key [--format=raw|encode] <key>
+### region key [--format=raw|encode] \<key>
 
 用于查询某个 key 在哪个 Region 上，支持 raw 和 encoding 格式。使用 encoding 格式时，key 需要使用单引号。
 
@@ -893,7 +893,7 @@ Encoding 格式示例：
 >> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
 ```
 
-### store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]
+### store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="\<query string>"]
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
 
