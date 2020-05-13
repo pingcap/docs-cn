@@ -377,7 +377,7 @@ config set low-space-ratio 0.9
 config set high-space-ratio 0.5
 ```
 
-`leader-schedule-policy` 用于选择 leader 的调度策略，可以选择按照 `size` 或者 `count` 来进行调度。
+`leader-schedule-policy` 用于选择 Leader 的调度策略，可以选择按照 `size` 或者 `count` 来进行调度。
 
 `store-balance-rate` 用于控制 store 添加/删除 peer 速度的上限。
 
