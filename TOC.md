@@ -75,6 +75,7 @@
     - [使用 TiUP 升级（推荐）](/how-to/upgrade/using-tiup.md)
     - [使用 TiDB Ansible 升级](/how-to/upgrade/from-previous-version.md)
   + 故障诊断
+    - [TiDB 集群问题导图](/how-to/troubleshoot/diagnose-map.md)
     - [集群配置诊断](/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
@@ -283,6 +284,7 @@
     - [使用 SQL 语句检查 TiDB 集群状态](/reference/performance/check-cluster-status-using-sql-statements.md)
     - [使用 Index Merge 方式访问表](/reference/performance/index-merge.md)
     - [Statement Summary Table](/reference/performance/statement-summary.md)
+    - [Max/Min 函数消除规则](/reference/performance/max-min-eliminate.md)
     - [TiKV 调优](/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + 监控指标
@@ -311,6 +313,9 @@
     - [报警规则](/reference/tiflash/alert-rules.md)
     - [性能调优](/reference/tiflash/tune-performance.md)
     - [FAQ](/reference/tiflash/faq.md)
+  + Titan
+    - [概述](/reference/titan/overview.md)
+    - [配置参数](/reference/titan/configuration.md)
   + TiDB Binlog
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)

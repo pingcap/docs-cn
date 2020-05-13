@@ -14,7 +14,7 @@ category: reference
 - 列裁剪
 - 投影消除
 - 关联子查询去关联
-- Max/Min 消除
+- [Max/Min 消除](/reference/performance/max-min-eliminate.md)
 - 谓词下推
 - 分区裁剪
 - TopN 和 Limit 下推
