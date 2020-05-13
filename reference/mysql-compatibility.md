@@ -85,6 +85,8 @@ mysql> select _tidb_rowid, id from t;
 3 rows in set (0.01 sec)
 ```
 
+TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1.2、v3.0.14 和 v4.0.rc.2 版本开始，TiDB 引入了 `AUTO_ID_CACHE` 表选项来允许用户自主设置自增 ID 分配缓存的大小。其中缓存大小可能会被自增列和 `_tidb_rowid` 共同消耗。此外如果在 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入。
+
 ### Performance schema
 
 Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/how-to/monitor/monitor-a-cluster.md) 来监测性能指标。
