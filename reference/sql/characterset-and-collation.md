@@ -218,8 +218,8 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 规则如下：
 
-* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
-* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `charset_name` 对应的默认排序规则。
+* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `charset_name`  字符集和 `collation_name` 排序规则。
+* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `charset_name` 字符集和 `charset_name` 对应的默认排序规则。
 * 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用 `character_set_connection` 和 `collation_connection` 系统变量给出的字符集和排序规则。
 
 ## 客户端连接的字符集和排序规则
@@ -229,36 +229,36 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 对于每一个客户端的连接，也有相应的变量表示字符集和排序规则：`character_set_connection` 和 `collation_connection`。
 
-`character_set_client` 代表客户端的字符集。在返回结果前，服务端会把结果根据 `character_set_results` 转换成对应的字符集。包括结果的元信息等。
+`character_set_client` 代表客户端的字符集。在返回结果前，服务端会把结果根据 `character_set_results` 转换成对应的字符集，包括结果的元信息等。
 
 可以用以下的语句来影响这些跟客户端相关的字符集变量：
 
 * `SET NAMES 'charset_name' [COLLATE 'collation_name']`
 
-`SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。
-`SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
+    `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。
+    `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SET character_set_client = charset_name;
-SET character_set_results = charset_name;
-SET character_set_connection = charset_name;
-```
+    ```sql
+    SET character_set_client = charset_name;
+    SET character_set_results = charset_name;
+    SET character_set_connection = charset_name;
+    ```
 
-`COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则。
+    `COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则。
 
 * `SET CHARACTER SET 'charset_name'`
 
-跟 `SET NAMES` 类似，等价于下面语句的组合：
+    跟 `SET NAMES` 类似，等价于下面语句的组合：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SET character_set_client = charset_name;
-SET character_set_results = charset_name;
-SET collation_connection = @@collation_database;
-```
+    ```sql
+    SET character_set_client = charset_name;
+    SET character_set_results = charset_name;
+    SET collation_connection = @@collation_database;
+    ```
 
 ## 集群、服务器、数据库、表、列、字符串的字符集和排序规则的优先级
 
@@ -268,8 +268,8 @@ SET collation_connection = @@collation_database;
 
 ## 字符集和排序规则的通用选择规则
 
-* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `CHARACTER SET charset_name` 和 `COLLATE collation_name`。
-* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `CHARACTER SET charset_name` 和 `charset_name` 对应的默认排序规则。
+* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `charset_name` 字符集和 `collation_name` 排序规则。
+* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `charset_name` 字符集和 `charset_name` 对应的默认排序规则。
 * 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用更高优先级的字符集和排序规则。
 
 ## 字符合法性检查
@@ -280,7 +280,7 @@ SET collation_connection = @@collation_database;
 
 ## 排序规则支持
 
-排序规则的语法支持和语义支持受到配置项 [`new_collation_enable`](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。
+排序规则的语法支持和语义支持受到配置项 [`new_collations_enabled_on_first_bootstrap`](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。
 
 在 4.0 版本之前，TiDB 只提供了旧的排序规则框架，能够在语法上支持的绝大部分 MySQL 排序规则，但语义上所有的排序规则都当成二进制排序规则。
 
@@ -305,7 +305,7 @@ Query OK, 1 row affected # MySQL 中，由于补齐空格比较，报错 Duplica
 
 ### 新框架下的排序规则支持
 
-TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collation_enabled_on_first_boostrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用新排序规则框架：
+TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用新排序规则框架：
 
 {{< copyable "sql" >}}
 
