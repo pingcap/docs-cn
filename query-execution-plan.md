@@ -13,7 +13,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 - `EXPLAIN` 可以和 `SELECT`，`DELETE` 等语句一起使用；
 - 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。
-- 关于 `EXPLAIN` 每列的简述，可以参见 [EXPLAIN 输出格式](/reference/sql/statements/explain.md)。
+- 关于 `EXPLAIN` 每列的简述，可以参见 [EXPLAIN 输出格式](/sql-statements/sql-statement-explain.md)。
 
 通过观察 `EXPLAIN` 的结果，你可以知道如何给数据表添加索引使得执行计划使用索引从而加速 SQL 语句的执行速度；你也可以使用 `EXPLAIN` 来检查优化器是否选择了最优的顺序来 JOIN 数据表。
 
@@ -81,7 +81,7 @@ SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV
 
 不同的算子在 explain 时输出的信息各有不同，接下来这部分将会讲述如何阅读各种扫表、聚合、连接算子的执行计划。
 
-可以使用优化器提示来控制优化器的行为，以此控制物理算子的选择，如使用 `/*+ HASH_JOIN(t1, t2) */` 来提示优化器使用 Hash Join 算法，详见[优化器提示](/reference/performance/optimizer-hints.md)。
+可以使用优化器提示来控制优化器的行为，以此控制物理算子的选择，如使用 `/*+ HASH_JOIN(t1, t2) */` 来提示优化器使用 Hash Join 算法，详见[优化器提示](/optimizer-hints.md)。
 
 如果读者想要详细了解各算子的内部实现，可以参见[源码阅读系列](https://pingcap.com/blog-cn/#TiDB-源码阅读)。
 
@@ -371,8 +371,8 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 
 ## 另请参阅
 
-* [EXPLAIN](/reference/sql/statements/explain.md)
-* [EXPLAIN ANALYZE](/reference/sql/statements/explain-analyze.md)
-* [ANALYZE TABLE](/reference/sql/statements/analyze-table.md)
-* [TRACE](/reference/sql/statements/trace.md)
+* [EXPLAIN](/sql-statements/sql-statement-explain.md)
+* [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md)
+* [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
+* [TRACE](/sql-statements/sql-statement-trace.md)
 * [TiDB in Action](https://book.tidb.io/session3/chapter1/sql-execution-plan.html)

@@ -51,7 +51,7 @@ category: how-to
 - 所有部署机器[关闭系统 swap](#如何关闭系统-swap)
 - 如果需要绑核操作，需要[安装 `numactl` 工具](#如何安装-numactl-工具)
 
-其他软硬件环境配置可参考官方文档 [TiDB 软件和硬件环境建议配置](/how-to/deploy/hardware-recommendations.md)。
+其他软硬件环境配置可参考官方文档 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
 
 ### 第 2 步：在中控机上安装 TiUP 组件
 
@@ -324,7 +324,7 @@ category: how-to
 >
 > - 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
 >
-> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+> - [部署 TiFlash](/tiflash/deploy-tiflash.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/configure-placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 >
@@ -657,7 +657,7 @@ alertmanager_servers:
 
 > **注意：**
 >
-> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+> - [部署 TiFlash](/tiflash/deploy-tiflash.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/configure-placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 >
@@ -931,7 +931,7 @@ TiDB 关键参数：
 | TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
 |TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置；<br>开启 enable_binlog； <br> 开启 ignore-error |
 | PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
-| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/tiflash/tiflash-configuration.md#多盘部署) |
 | Pump| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
 | Drainer | 1 | 8 VCore 16GB | 10.0.1.9 | 默认端口配置；<br>设置默认初始化 commitTS |
 
@@ -941,7 +941,7 @@ TiDB 关键参数：
 >
 > - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
 >
-> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+> - [部署 TiFlash](/tiflash/deploy-tiflash.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/configure-placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
 >
@@ -1097,7 +1097,7 @@ alertmanager_servers:
 
 #### 部署需求
 
-设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，需要启动 TiCDC，可在 TiCDC 集群部署完成后[通过 `cdc cli` 创建同步任务](/reference/tools/ticdc/deploy.md#第-2-步创建同步任务)。
+设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，需要启动 TiCDC，可在 TiCDC 集群部署完成后[通过 `cdc cli` 创建同步任务](/ticdc/deploy-ticdc.md#第-2-步创建同步任务)。
 
 #### 拓扑信息
 
@@ -1106,7 +1106,7 @@ alertmanager_servers:
 | TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口配置 |
 |TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口配置 |
 | PD | 3 | 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口配置 |
-| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/reference/tiflash/configuration.md#多盘部署) |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | 默认端口 <br> 自定义部署目录，配置 data_dir 参数为 `/data1/tiflash/data,/data2/tiflash/data`，进行[多盘部署](/tiflash/tiflash-configuration.md#多盘部署) |
 | CDC| 3 |8 VCore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | 默认端口配置 |
 
 #### 配置文件模版 topology.yaml
@@ -1115,7 +1115,7 @@ alertmanager_servers:
 >
 > - 配置文件模版时，如无需自定义端口或者目录，仅修改 IP 即可。
 >
-> - [部署 TiFlash](/reference/tiflash/deploy.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/how-to/configure/placement-rules.md) 功能。
+> - [部署 TiFlash](/tiflash/deploy-tiflash.md) 需要在 topology.yaml 配置文件中将 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/configure-placement-rules.md) 功能。
 >
 > - tiflash_servers 实例级别配置 `"-host"` 目前只支持 ip，不支持域名。
 >

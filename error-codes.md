@@ -25,11 +25,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8004
 
-    单个事务过大，原因及解决方法请参考[这里](/faq/tidb.md#433-transaction-too-large-是什么原因怎么解决) 
+    单个事务过大，原因及解决方法请参考[这里](/faq/tidb-faq.md#433-transaction-too-large-是什么原因怎么解决) 
 
 * Error Number: 8005
 
-    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb.md#九故障排除) 
+    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#九故障排除) 
 
 * Error Number: 8018
 
@@ -407,7 +407,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9007
 
-    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb.md#九故障排除) 
+    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#九故障排除) 
 
 * Error Number: 9008
 
@@ -415,4 +415,4 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 ## 故障诊断
 
-参见[故障诊断文档](/how-to/troubleshoot/cluster-setup.md)以及 [FAQ](/faq/tidb.md)。
+参见[故障诊断文档](/troubleshoot-tidb-cluster.md)以及 [FAQ](/faq/tidb-faq.md)。
