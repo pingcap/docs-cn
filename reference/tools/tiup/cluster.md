@@ -41,7 +41,7 @@ Available Commands:
   import      导入一个由 TiDB-Ansible 部署的集群
   edit-config 编辑 TiDB 集群的配置
   reload      用于必要时重载集群配置
-  patch       使用临时的组件包替换其群上已部署的组件
+  patch       使用临时的组件包替换集群上已部署的组件
   help        打印 Help 信息
 
 Flags:
@@ -90,15 +90,15 @@ monitoring_servers:
   - host: 172.16.5.134
 ```
 
-假如我们想要使用 TiDB 的 v4.0.0-rc 版本，集群名字为 `prod-cluster`，则执行以下命令：
+假如我们想要使用 TiDB 的 v3.0.12 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy prod-cluster v3.0.12 /tmp/topology.yaml
+tiup cluster deploy -p prod-cluster v3.0.12 /tmp/topology.yaml
 ```
 
-执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码：
+执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码（-p 表示使用密码）：
 
 ```bash
 Please confirm your topology:
