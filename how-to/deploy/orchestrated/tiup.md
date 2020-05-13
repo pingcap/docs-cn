@@ -604,7 +604,7 @@ alertmanager_servers:
     - 如果多个 TiKV 实例部署在同一块物理磁盘上，需要在 tikv 配置中添加 capacity 参数：
 
         ```
-        raftstore.capactiy = 磁盘总容量 / TiKV 实例数量
+        raftstore.capacity = 磁盘总容量 / TiKV 实例数量
         ```
 
 - label 调度配置
@@ -684,7 +684,7 @@ server_configs:
     readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
     storage.block-cache.capacity: "<取值参考上文计算公式的结果>"
-    raftstore.capactiy: "<取值参考上文计算公式的结果>"
+    raftstore.capacity: "<取值参考上文计算公式的结果>"
   pd:
     replication.location-labels: ["host"]
     replication.enable-placement-rules: true
@@ -792,7 +792,7 @@ server_configs:
     readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
     storage.block-cache.capacity: "<取值参考上文计算公式的结果>"
-    raftstore.capactiy: "<取值参考上文计算公式的结果>"
+    raftstore.capacity: "<取值参考上文计算公式的结果>"
   pd:
     replication.location-labels: ["host"]
     replication.enable-placement-rules: true
