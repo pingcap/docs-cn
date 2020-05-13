@@ -75,6 +75,7 @@
     - [使用 TiUP 升级（推荐）](/how-to/upgrade/using-tiup.md)
     - [使用 TiDB Ansible 升级](/how-to/upgrade/from-previous-version.md)
   + 故障诊断
+    - [TiDB 集群问题导图](/how-to/troubleshoot/diagnose-map.md)
     - [集群配置诊断](/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
@@ -100,29 +101,31 @@
         - [`MEDIUMINT`](/reference/sql/data-types/numeric.md#mediumint-类型)
         - [`INT|INTEGER`](/reference/sql/data-types/numeric.md#integer-类型)
         - [`BIGINT`](/reference/sql/data-types/numeric.md#bigint-类型)
-        - [`DECIMAL`](/reference/sql/data-types/numeric.md#decimal-类型)
         - [`FLOAT`](/reference/sql/data-types/numeric.md#float-类型)
         - [`DOUBLE`](/reference/sql/data-types/numeric.md#double-类型)
+        - [`DECIMAL`](/reference/sql/data-types/numeric.md#decimal-类型)
       + 日期和时间类型
         - [`DATE`](/reference/sql/data-types/date-and-time.md#date-类型)
+        - [`TIME`](/reference/sql/data-types/date-and-time.md#time-类型)
         - [`DATETIME`](/reference/sql/data-types/date-and-time.md#datetime-类型)
         - [`TIMESTAMP`](/reference/sql/data-types/date-and-time.md#timestamp-类型)
-        - [`TIME`](/reference/sql/data-types/date-and-time.md#time-类型)
         - [`YEAR`](/reference/sql/data-types/date-and-time.md#year-类型)
       + 字符串类型
         - [`CHAR`](/reference/sql/data-types/string.md#char-类型)
         - [`VARCHAR`](/reference/sql/data-types/string.md#varchar-类型)
         - [`TEXT`](/reference/sql/data-types/string.md#text-类型)
+        - [`TINYTEXT`](/reference/sql/data-types/string.md#tinytext-类型)
+        - [`MEDIUMTEXT`](/reference/sql/data-types/string.md#mediumtext-类型)
         - [`LONGTEXT`](/reference/sql/data-types/string.md#longtext-类型)
         - [`BINARY`](/reference/sql/data-types/string.md#binary-类型)
         - [`VARBINARY`](/reference/sql/data-types/string.md#varbinary-类型)
-        - [`TINYBLOB`](/reference/sql/data-types/string.md#tinyblob-类型)
         - [`BLOB`](/reference/sql/data-types/string.md#blob-类型)
+        - [`TINYBLOB`](/reference/sql/data-types/string.md#tinyblob-类型)
         - [`MEDIUMBLOB`](/reference/sql/data-types/string.md#mediumblob-类型)
         - [`LONGBLOB`](/reference/sql/data-types/string.md#longblob-类型)
         - [`ENUM`](/reference/sql/data-types/string.md#enum-类型)
         - [`SET`](/reference/sql/data-types/string.md#set-类型)
-      - [JSON Type](/reference/sql/data-types/json.md)
+      - [JSON 类型](/reference/sql/data-types/json.md)
     + 函数与操作符
       - [函数与操作符概述](/reference/sql/functions-and-operators/reference.md)
       - [表达式求值的类型转换](/reference/sql/functions-and-operators/type-conversion.md)
@@ -283,6 +286,7 @@
     - [使用 SQL 语句检查 TiDB 集群状态](/reference/performance/check-cluster-status-using-sql-statements.md)
     - [使用 Index Merge 方式访问表](/reference/performance/index-merge.md)
     - [Statement Summary Table](/reference/performance/statement-summary.md)
+    - [Max/Min 函数消除规则](/reference/performance/max-min-eliminate.md)
     - [TiKV 调优](/reference/performance/tune-tikv.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + 监控指标
@@ -311,6 +315,9 @@
     - [报警规则](/reference/tiflash/alert-rules.md)
     - [性能调优](/reference/tiflash/tune-performance.md)
     - [FAQ](/reference/tiflash/faq.md)
+  + Titan
+    - [概述](/reference/titan/overview.md)
+    - [配置参数](/reference/titan/configuration.md)
   + TiDB Binlog
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)
