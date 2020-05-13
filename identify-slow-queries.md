@@ -6,9 +6,9 @@ aliases: ['/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow
 
 # 慢查询日志
 
-TiDB 会将执行时间超过 [slow-threshold](/reference/configuration/tidb-server/configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/reference/configuration/tidb-server/configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
+TiDB 会将执行时间超过 [slow-threshold](/tidb-configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
 
-TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/reference/configuration/tidb-server/configuration-file.md#enable-slow-log) 来启用或禁用它。
+TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) 来启用或禁用它。
 
 ## 日志示例
 
@@ -102,7 +102,7 @@ Slow Query 基础信息：
 
 ## 慢日志内存映射表
 
-用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [Information Schema](/reference/system-databases/information-schema.md#information-schema) 中关于 `SLOW_QUERY` 表的介绍。
+用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [Information Schema](/system-tables/system-table-information-schema.md#information-schema) 中关于 `SLOW_QUERY` 表的介绍。
 
 > **注意：**
 >
@@ -154,7 +154,7 @@ where time > '2020-03-10 00:00:00'
 >
 > 如果指定时间范围内的慢日志文件被删除，或者并没有慢查询，则查询结果会返回空。
 
-TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/reference/system-databases/information-schema.md#cluster_slow_query-表) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/reference/system-databases/information-schema.md#slow_query-表) 系统表一样。
+TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/system-tables/system-table-information-schema.md#cluster_slow_query-表) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/system-tables/system-table-information-schema.md#slow_query-表) 系统表一样。
 
 关于查询 `CLUSTER_SLOW_QUERY` 表，TiDB 会把相关的计算和判断下推到其他节点执行，而不是把其他节点的慢查询数据都取回来在一台 TiDB 上执行。
 

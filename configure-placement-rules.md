@@ -48,7 +48,7 @@ Placement Rules 示意图如下所示：
 
 ## 配置规则操作步骤
 
-本节的操作步骤以使用 [pd-ctl](/reference/tools/pd-control.md) 工具为例，涉及到的命令也支持通过 HTTP API 进行调用。
+本节的操作步骤以使用 [pd-ctl](/pd-control.md) 工具为例，涉及到的命令也支持通过 HTTP API 进行调用。
 
 ### 开启 Placement Rules 特性
 

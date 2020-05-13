@@ -104,12 +104,12 @@ Query OK, 0 rows affected (0.30 sec)
 
 ## MySQL 兼容性
 
-* 默认不支持删除 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/reference/configuration/tidb-server/configuration-file.md#alter-primary-key)。
+* 默认不支持删除 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/tidb-configuration-file.md#alter-primary-key)。
 
 ## 另请参阅
 
-* [SHOW INDEX](/reference/sql/statements/show-index.md)
-* [CREATE INDEX](/reference/sql/statements/create-index.md)
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
-* [ALTER INDEX](/reference/sql/statements/alter-index.md)
+* [SHOW INDEX](/sql-statements/sql-statement-show-index.md)
+* [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
+* [ADD INDEX](/sql-statements/sql-statement-add-index.md)
+* [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
+* [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)

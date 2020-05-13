@@ -154,4 +154,4 @@ http://PDAddress:PDPort/dashboard
 
 ## 解决热点问题
 
-TiDB 内置了不少帮助缓解常见热点问题的功能，深入了解请参考 [TiDB 高并发写入场景最佳实践](/reference/best-practices/high-concurrency.md)。
+TiDB 内置了不少帮助缓解常见热点问题的功能，深入了解请参考 [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)。

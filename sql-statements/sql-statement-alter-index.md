@@ -183,8 +183,8 @@ ERROR 3522 (HY000): A primary key index cannot be invisible
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [CREATE INDEX](/reference/sql/statements/create-index.md)
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
+* [ADD INDEX](/sql-statements/sql-statement-add-index.md)
+* [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
+* [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)

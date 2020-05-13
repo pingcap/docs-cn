@@ -65,7 +65,7 @@ Flags:
 
     环境变量 `TIUP_COMPONENT_INSTALL_DIR` 会由 TiUP 在运行时传入，指向该组件的安装目录。
 
-3. 参考[搭建私有镜像](/reference/tools/tiup/mirrors.md) 搭建离线镜像或私有镜像（因为目前官方镜像未开放 publish 功能，所以不能发布自己的包），搭建完之后确保 `TIUP_MIRRORS` 变量指向搭建的镜像。
+3. 参考[搭建私有镜像](/tiup/tiup-mirrors.md) 搭建离线镜像或私有镜像（因为目前官方镜像未开放 publish 功能，所以不能发布自己的包），搭建完之后确保 `TIUP_MIRRORS` 变量指向搭建的镜像。
 
 4. 打包：
 

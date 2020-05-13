@@ -64,7 +64,7 @@ ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 ```
 
-`ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/reference/configuration/tidb-server/configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/reference/configuration/tidb-server/configuration-file.md#repair-table-list) 名单中。
+`ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/tidb-configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/tidb-configuration-file.md#repair-table-list) 名单中。
 
 ## 语句概览
 
