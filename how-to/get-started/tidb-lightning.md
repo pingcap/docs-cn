@@ -107,7 +107,7 @@ Download the TiDB Lightning installation package from the following link:
     nohup ./tidb-lightning \
                 --importer 172.16.31.10:8287 \
                 -d /data/my_database/ \
-                --tidb-server 172.16.31.2 \
+                --tidb-host 172.16.31.2 \
                 --tidb-user root \
                 --log-file tidb-lightning.log \
             > nohup.out &
