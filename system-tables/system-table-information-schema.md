@@ -33,7 +33,7 @@ select * from `ANALYZE_STATUS`;
 
 ## CHARACTER_SETS 表
 
-`CHARACTER_SETS` 表提供[字符集](/reference/sql/characterset-and-collation.md)相关的信息。TiDB 目前仅支持部分字符集。
+`CHARACTER_SETS` 表提供[字符集](/character-set-and-collation.md)相关的信息。TiDB 目前仅支持部分字符集。
 
 {{< copyable "sql" >}}
 
@@ -333,7 +333,7 @@ SELECT * FROM session_variables LIMIT 10;
 
 ## SLOW_QUERY 表
 
-`SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)。
+`SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/identify-slow-queries.md)。
 
 {{< copyable "sql" >}}
 
@@ -396,7 +396,7 @@ desc information_schema.slow_query;
 
 ## CLUSTER_SLOW_QUERY 表
 
-`CLUSTER_SLOW_QUERY` 表中提供了集群所有节点的慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，该表使用上和 [`SLOW_QUERY`](#slow_query-表) 一样，表结构上比 `SLOW_QUERY` 多一列 `INSTANCE`，表示该行慢查询信息来自的 TiDB 节点地址。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)。
+`CLUSTER_SLOW_QUERY` 表中提供了集群所有节点的慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，该表使用上和 [`SLOW_QUERY`](#slow_query-表) 一样，表结构上比 `SLOW_QUERY` 多一列 `INSTANCE`，表示该行慢查询信息来自的 TiDB 节点地址。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/identify-slow-queries.md)。
 
 {{< copyable "sql" >}}
 
@@ -834,17 +834,17 @@ COLLATION_CONNECTION: utf8_general_ci
 
 ## SQL 诊断相关的表
 
-* [`information_schema.cluster_info`](/reference/system-databases/cluster-info.md)
-* [`information_schema.cluster_config`](/reference/system-databases/cluster-config.md)
-* [`information_schema.cluster_hardware`](/reference/system-databases/cluster-hardware.md)
-* [`information_schema.cluster_load`](/reference/system-databases/cluster-load.md)
-* [`information_schema.cluster_systeminfo`](/reference/system-databases/cluster-systeminfo.md)
-* [`information_schema.cluster_log`](/reference/system-databases/cluster-log.md)
-* [`information_schema.metrics_tables`](/reference/system-databases/metrics-tables.md)
-* [`information_schema.metrics_summary`](/reference/system-databases/metrics-summary.md)
-* [`information_schema.metrics_summary_by_label`](/reference/system-databases/metrics-summary.md)
-* [`information_schema.inspection_result`](/reference/system-databases/inspection-result.md)
-* [`information_schema.inspection_summary`](/reference/system-databases/inspection-summary.md)
+* [`information_schema.cluster_info`](/system-tables/system-table-cluster-info.md)
+* [`information_schema.cluster_config`](/system-tables/system-table-cluster-config.md)
+* [`information_schema.cluster_hardware`](/system-tables/system-table-cluster-hardware.md)
+* [`information_schema.cluster_load`](/system-tables/system-table-cluster-load.md)
+* [`information_schema.cluster_systeminfo`](/system-tables/system-table-cluster-systeminfo.md)
+* [`information_schema.cluster_log`](/system-tables/system-table-cluster-log.md)
+* [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md)
+* [`information_schema.metrics_summary`](/system-tables/system-table-metrics-summary.md)
+* [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md)
+* [`information_schema.inspection_result`](/system-tables/system-table-inspection-result.md)
+* [`information_schema.inspection_summary`](/system-tables/system-table-inspection-summary.md)
 
 ## 不支持的 Information Schema 表
 

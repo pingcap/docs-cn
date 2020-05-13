@@ -49,4 +49,4 @@ SHOW CHARACTER SET;
 
 ## 另请参阅
 
-* [SHOW COLLATION](/reference/sql/statements/show-collation.md)
+* [SHOW COLLATION](/sql-statements/sql-statement-show-collation.md)

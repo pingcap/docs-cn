@@ -5,7 +5,7 @@ category: reference
 
 # Column 和 DDL 的类型码
 
-Column 和 DDL 的类型码是由 [TiCDC Open Protocol](/reference/tools/ticdc/open-protocol.md) 定义的 Column 和 DDL 类型编码，Column Type Code 标识 Row Changed Event 中的列数据类型，DDL Type Code 标识 DDL Event 中的 DDL 语句类型。
+Column 和 DDL 的类型码是由 [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md) 定义的 Column 和 DDL 类型编码，Column Type Code 标识 Row Changed Event 中的列数据类型，DDL Type Code 标识 DDL Event 中的 DDL 语句类型。
 
 ## Column Type Code
 

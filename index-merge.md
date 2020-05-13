@@ -92,7 +92,7 @@ explain select * from t where a = 1 or b = 1;
 默认设置下，`IndexMerge` 是关闭的，开启的方法有两种：
 
 - 设置系统变量 `tidb_enable_index_merge` 为 1；
-- 在查询中使用 SQL Hint [`USE_INDEX_MERGE`](/reference/performance/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-)；
+- 在查询中使用 SQL Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-)；
 
     > **注意：**
     >

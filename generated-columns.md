@@ -128,7 +128,7 @@ desc select a+1 from t where a+1=3;
 >
 > 上例中，`a` 的类型是 int，而 `a+1` 的列类型是 bigint，如果将生成列的类型定为 int，就不会发生替换。
 >
-> 关于类型转换规则，可以参见[表达式求值的类型转换](/reference/sql/functions-and-operators/type-conversion.md)。
+> 关于类型转换规则，可以参见[表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)。
 
 ## 局限性
 
@@ -137,5 +137,5 @@ desc select a+1 from t where a+1=3;
 - 不能通过 `ALTER TABLE` 增加 `STORED` 存储方式的 generated column；
 - 不能通过 `ALTER TABLE` 将 generated stored column 转换为普通列，也不能将普通列转换成 generated stored column；
 - 不能通过 `ALTER TABLE` 修改 generated stored column 的**生成列表达式**；
-- 并未支持所有的 [JSON 函数](/reference/sql/functions-and-operators/json-functions.md)；
+- 并未支持所有的 [JSON 函数](/functions-and-operators/json-functions.md)；
 - 目前仅当生成列是 virtual column 时索引生成列替换规则有效，暂不支持将输入的表达式替换为 generated stored column，但仍然可以通过使用该生成列本身来使用索引。

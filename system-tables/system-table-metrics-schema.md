@@ -6,7 +6,7 @@ category: reference
 
 # Metrics Schema
 
-为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有表都在 metrics schema 中，可以通过 SQL 的方式查询监控。实际上，SQL 诊断，以及 `metrics_summary`，`metrics_summary_by_label`，`inspection_result` 这三个监控相关的汇总表数据都是通过查询 metrics schema 库中的各种监控表来获取信息的。目前添加的系统表数量较多，用户可以通过 [`information_schema.metrics_tables`](/reference/system-databases/metrics-tables.md) 查询这些表的相关信息。
+为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有表都在 metrics schema 中，可以通过 SQL 的方式查询监控。实际上，SQL 诊断，以及 `metrics_summary`，`metrics_summary_by_label`，`inspection_result` 这三个监控相关的汇总表数据都是通过查询 metrics schema 库中的各种监控表来获取信息的。目前添加的系统表数量较多，用户可以通过 [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md) 查询这些表的相关信息。
 
 ## 概览
 

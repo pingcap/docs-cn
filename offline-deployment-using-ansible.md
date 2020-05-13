@@ -14,7 +14,7 @@ category: how-to
 
 2. 部署目标机器若干及部署中控机一台
 
-    - 系统要求及配置参考[准备机器](/how-to/deploy/orchestrated/ansible.md#准备机器)。
+    - 系统要求及配置参考[准备机器](/online-deployment-using-ansible.md#准备机器)。
     - 可以无法访问外网。
 
 ## 在中控机上安装系统依赖包
@@ -50,7 +50,7 @@ category: how-to
 
 ## 在中控机上创建 tidb 用户，并生成 ssh key
 
-参考[在中控机上创建 tidb 用户，并生成 ssh key](/how-to/deploy/orchestrated/ansible.md#第-2-步在中控机上创建-tidb-用户并生成-ssh-key) 即可。
+参考[在中控机上创建 tidb 用户，并生成 ssh key](/online-deployment-using-ansible.md#第-2-步在中控机上创建-tidb-用户并生成-ssh-key) 即可。
 
 ## 在中控机器上离线安装 TiDB Ansible 及其依赖
 
@@ -128,32 +128,32 @@ category: how-to
 
 ## 在中控机上配置部署机器 SSH 互信及 sudo 规则
 
-参考[在中控机上配置部署机器 SSH 互信及 sudo 规则](/how-to/deploy/orchestrated/ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
+参考[在中控机上配置部署机器 SSH 互信及 sudo 规则](/online-deployment-using-ansible.md#第-5-步在中控机上配置部署机器-ssh-互信及-sudo-规则)即可。
 
 ## 在部署目标机器上安装 NTP 服务
 
-如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/how-to/deploy/orchestrated/ansible.md#如何检测-ntp-服务是否正常)。
+如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/online-deployment-using-ansible.md#如何检测-ntp-服务是否正常)。
 
-参考[在部署目标机器上安装 NTP 服务](/how-to/deploy/orchestrated/ansible.md#第-6-步在部署目标机器上安装-ntp-服务)即可。
+参考[在部署目标机器上安装 NTP 服务](/online-deployment-using-ansible.md#第-6-步在部署目标机器上安装-ntp-服务)即可。
 
 ## 在部署目标机器上配置 CPUfreq 调节器模式
 
-参考[在部署目标机器上配置 CPUfreq 调节器模式](/how-to/deploy/orchestrated/ansible.md#第-7-步在部署目标机器上配置-cpufreq-调节器模式)即可。
+参考[在部署目标机器上配置 CPUfreq 调节器模式](/online-deployment-using-ansible.md#第-7-步在部署目标机器上配置-cpufreq-调节器模式)即可。
 
 ## 在部署目标机器上添加数据盘 ext4 文件系统挂载参数
 
-参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](/how-to/deploy/orchestrated/ansible.md#第-8-步在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
+参考[在部署目标机器上添加数据盘 ext4 文件系统挂载参数](/online-deployment-using-ansible.md#第-8-步在部署目标机器上添加数据盘-ext4-文件系统挂载参数)即可。
 
 ## 分配机器资源，编辑 inventory.ini 文件
 
-参考[分配机器资源，编辑 inventory.ini 文件](/how-to/deploy/orchestrated/ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)即可。
+参考[分配机器资源，编辑 inventory.ini 文件](/online-deployment-using-ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)即可。
 
 ## 部署任务
 
 1. `ansible-playbook local_prepare.yml` 该 playbook 不需要再执行。
 
-2. 参考[部署任务](/how-to/deploy/orchestrated/ansible.md#第-11-步部署-tidb-集群)即可。
+2. 参考[部署任务](/online-deployment-using-ansible.md#第-11-步部署-tidb-集群)即可。
 
 ## 测试集群
 
-参考[测试集群](/how-to/deploy/orchestrated/ansible.md#测试集群)即可。
+参考[测试集群](/online-deployment-using-ansible.md#测试集群)即可。

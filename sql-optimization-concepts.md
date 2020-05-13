@@ -14,11 +14,11 @@ category: reference
 - 列裁剪
 - 投影消除
 - 关联子查询去关联
-- [Max/Min 消除](/reference/performance/max-min-eliminate.md)
+- [Max/Min 消除](/max-min-eliminate.md)
 - 谓词下推
 - 分区裁剪
 - TopN 和 Limit 下推
-- [Join Reorder](/reference/performance/join-reorder.md)
+- [Join Reorder](/join-reorder.md)
 
 ## 物理优化简介
 

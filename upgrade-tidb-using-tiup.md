@@ -132,7 +132,7 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 4.0 版本前，请确认 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/reference/configuration/tikv-server/configuration-file.md)。
+> 升级到 4.0 版本前，请确认 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
 
 ## 4. 滚动升级 TiDB 集群
 

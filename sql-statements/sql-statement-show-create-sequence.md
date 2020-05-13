@@ -51,5 +51,5 @@ MySQL 暂无序列选项。TiDB 序列借鉴自 MariaDB。`SETVAL` 函数的步�
 
 ## 另请参阅
 
-* [CREATE SEQUENCE](/reference/sql/statements/create-sequence.md)
-* [DROP SEQUENCE](/reference/sql/statements/drop-sequence.md)
+* [CREATE SEQUENCE](/sql-statements/sql-statement-create-sequence.md)
+* [DROP SEQUENCE](/sql-statements/sql-statement-drop-sequence.md)

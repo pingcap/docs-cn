@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/br/']
 
 # 使用 BR 进行备份与恢复
 
-Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/how-to/maintain/backup-and-restore/mydumper-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
+Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/backup-and-restore-using-mydumper-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
 
 ## 使用限制
 
@@ -22,7 +22,7 @@ Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行�
 
 ## 下载 Binary
 
-详见[下载链接](/reference/tools/download.md#快速备份和恢复br)。
+详见[下载链接](/download-ecosystem-tools.md#快速备份和恢复br)。
 
 ## 工作原理
 
@@ -144,7 +144,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 使用 `br backup` 命令来备份集群数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据或单张表的数据。
 
-如果备份时间可能超过设定的 [`tikv_gc_life_time`](/reference/garbage-collection/configuration.md#tikv_gc_life_time)（默认 `10m0s`，即表示 10 分钟），则需要将该参数调大。
+如果备份时间可能超过设定的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time)（默认 `10m0s`，即表示 10 分钟），则需要将该参数调大。
 
 例如，将 `tikv_gc_life_time` 调整为 `720h`：
 
@@ -360,7 +360,7 @@ br restore full \
 - 在使用共享存储时，推荐使用高吞吐的存储硬件，因为存储的吞吐会限制备份或恢复的速度。
 - 推荐在业务低峰时执行备份操作，这样能最大程度地减少对业务的影响。
 
-更多最佳实践内容，参见 [BR 备份与恢复场景示例](/reference/tools/br/use-cases.md)。
+更多最佳实践内容，参见 [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)。
 
 ## 备份和恢复示例
 

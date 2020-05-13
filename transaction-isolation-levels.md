@@ -21,7 +21,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 
 
 > **注意：**
 >
-> 在 TiDB v3.0 中，事务的自动重试功能默认为禁用状态。关于该项功能对隔离级别的影响以及如何开启该项功能，请参考[事务重试](/reference/transactions/transaction-optimistic.md#重试机制)。
+> 在 TiDB v3.0 中，事务的自动重试功能默认为禁用状态。关于该项功能对隔离级别的影响以及如何开启该项功能，请参考[事务重试](/optimistic-transaction.md#重试机制)。
 
 ## 可重复读隔离级别 (Repeatable Read)
 
@@ -52,7 +52,7 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
 
 ## 读已提交隔离级别 (Read Committed)
 
-TiDB 仅在[悲观事务模式](/reference/transactions/transaction-pessimistic.md)下支持读已提交隔离级别。在乐观事务模式下设置事务隔离级别为读已提交将不会生效，事务将仍旧使用可重复读隔离级别。
+TiDB 仅在[悲观事务模式](/pessimistic-transaction.md)下支持读已提交隔离级别。在乐观事务模式下设置事务隔离级别为读已提交将不会生效，事务将仍旧使用可重复读隔离级别。
 
 由于历史原因，当前主流数据库的读已提交隔离级别本质上都是 Oracle 定义的一致性读隔离级别。TiDB 为了适应这一历史原因，悲观事务中的读已提交隔离级别的实质行为也是一致性读。
 
