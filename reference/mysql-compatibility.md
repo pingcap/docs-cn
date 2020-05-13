@@ -105,10 +105,8 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 + Add Index
     - 不支持同时创建多个索引
-    - 不支持 `VISIBLE/INVISIBLE` 的索引
     - 其他类型的 Index Type (HASH/BTREE/RTREE) 只有语法支持，功能不支持
 + Add Column
-    - 不支持同时创建多个列
     - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 AUTO_INCREMENT 属性
 + Drop Column: 不支持删除主键列或索引列
 + Change/Modify Column

@@ -75,6 +75,7 @@
     - [使用 TiUP 升级（推荐）](/how-to/upgrade/using-tiup.md)
     - [使用 TiDB Ansible 升级](/how-to/upgrade/from-previous-version.md)
   + 故障诊断
+    - [TiDB 集群问题导图](/how-to/troubleshoot/diagnose-map.md)
     - [集群配置诊断](/how-to/troubleshoot/cluster-setup.md)
     - [TiDB Lightning 故障诊断](/how-to/troubleshoot/tidb-lightning.md)
 + 参考手册
@@ -311,6 +312,9 @@
     - [报警规则](/reference/tiflash/alert-rules.md)
     - [性能调优](/reference/tiflash/tune-performance.md)
     - [FAQ](/reference/tiflash/faq.md)
+  + Titan
+    - [概述](/reference/titan/overview.md)
+    - [配置参数](/reference/titan/configuration.md)
   + TiDB Binlog
     - [概述](/reference/tidb-binlog/overview.md)
     - [部署使用](/reference/tidb-binlog/deploy.md)
@@ -401,6 +405,7 @@
     - [3.1.0-beta.1](/releases/3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/3.1.0-beta.md)
   + v3.0
+    - [3.0.14](/releases/3.0.14.md)
     - [3.0.13](/releases/3.0.13.md)
     - [3.0.12](/releases/3.0.12.md)
     - [3.0.11](/releases/3.0.11.md)
