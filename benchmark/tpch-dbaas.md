@@ -17,7 +17,7 @@ High 配置，2 个 TiDB 节点、3 个 TiKV 节点、3 个 TiFlash。其中 TiK
 
 > **注意：**
 >
-> 4.0.0-rc.1 版本，TiFlash不支持新的[字符排序规则](/reference/sql/characterset-and-collation.md#排序规则支持)下的计算下推，此环境中关闭了新的字符排序规则。后续版本 TiFlash 会支持新的排序规则。
+> 4.0.0-rc.1 版本中，TiFlash 不支持新的[字符排序规则](/reference/sql/characterset-and-collation.md#排序规则支持)下的计算下推，此环境中关闭了新的字符排序规则。后续版本 TiFlash 会支持新的排序规则。
 > 
 > ```
 > mysql> select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';
@@ -41,14 +41,14 @@ High 配置，2 个 TiDB 节点、3 个 TiKV 节点、3 个 TiFlash。其中 TiK
 
 ### 导入数据
 
-使用以下命令安装 [tiup](https://tiup.io/)
+使用以下命令安装 [TiUP](https://tiup.io/)：
 
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
 ```
 
 使用下面 `tiup bench` 命令导入 TPC-H 10 数据。
-该命令导入的同时，会给测试的表创建 TiFlash 副本。导入完成后会自动对表进行 `analyze table` 收集[统计信息](/reference/performance/statistics.md)，供 TiDB 优化器优化执行计划。
+该命令导入的同时，会给测试的表创建 TiFlash 副本。导入完成后会自动对表进行 `analyze table` 操作，收集[统计信息](/reference/performance/statistics.md)，供 TiDB 优化器优化执行计划。
 
 ```
 tiup bench tpch prepare
@@ -58,7 +58,7 @@ tiup bench tpch prepare
     --analyze --tidb_build_stats_concurrency 8 --tidb_distsql_scan_concurrency 30
 ```
 
-运行完之后确认数据已经建立好 TiFlash 副本
+运行完之后，确认数据已经建立好 TiFlash 副本：
 
 ```
 mysql> select * from information_schema.tiflash_replica;
@@ -78,7 +78,7 @@ mysql> select * from information_schema.tiflash_replica;
 
 ### 执行查询
 
-本文会比较智能选择、TiKV隔离读、TiFlash隔离读三种[读取模式](/reference/tiflash/use-tiflash.md#使用-tidb-读取-tiflash)下的性能。使用 mysql-client 连接到 TiDB 集群，先设置优化参数以及读取的模式。
+本文会比较智能选择、TiKV 隔离读、TiFlash 隔离读等三种[读取模式](/reference/tiflash/use-tiflash.md#使用-tidb-读取-tiflash)下的 TiDB 性能。使用 MySQL 客户端连接到 TiDB 集群，先设置优化参数以及读取的模式。
 
 ```
 mysql> set @@session.tidb_allow_batch_cop = 1; set @@session.tidb_opt_distinct_agg_push_down = 1; set @@tidb_distsql_scan_concurrency = 30;
@@ -94,11 +94,11 @@ mysql> select @@tidb_isolation_read_engines , @@tidb_allow_batch_cop , @@tidb_op
 +-------------------------------+------------------------+-----------------------------------+---------------------------------+
 ```
 
-然后执行 TPC-H 的查询语句。你可以在这里找到具体的查询语句：[tidb-bench/tpch/queries](https://github.com/pingcap/tidb-bench/tree/master/tpch/queries)
+然后执行 TPC-H 的查询语句。你可以在这里找到具体的查询语句：[tidb-bench/tpch/queries](https://github.com/pingcap/tidb-bench/tree/master/tpch/queries)。
 
 ### 测试结果
 
-| Query ID |  智能选择  |  TiKV隔离读  |  TiFlash隔离读  | 
+| Query ID |  智能选择  |  TiKV 隔离读  |  TiFlash 隔离读  | 
 |--------:|-----------:|------------:|--------------:|
 | 1       |      2.25s |      15.02s |         2.24s |
 | 2       |      2.57s |       2.74s |         2.59s |
@@ -127,5 +127,5 @@ mysql> select @@tidb_isolation_read_engines , @@tidb_allow_batch_cop , @@tidb_op
 
 说明：
 
-- 图中蓝色为智能选择，红色为 TiKV 隔离读，黄色为 TiFlash 隔离读，纵坐标是 Query 的处理时间，越低越好
-- 图中不显示 Query 18 结果，因 4.0.0-rc.1 版本 TiDB 聚合算子在大数据量情况下消耗较多内存，Query 18 查询时会报 "Lost connection to MySQL server during query"。相关 Issue [tidb#14103](https://github.com/pingcap/tidb/issues/14103)、[tidb#14413](https://github.com/pingcap/tidb/issues/14413)
+- 图中蓝色为智能选择，红色为 TiKV 隔离读，黄色为 TiFlash 隔离读，纵坐标是 Query 的处理时间，纵坐标越低，性能越好。
+- 图中不显示 Query 18 结果，因为 4.0.0-rc.1 版本 TiDB 聚合算子在大数据量情况下消耗较多内存，Query 18 查询时会报错：`Lost connection to MySQL server during query`。相关 Issue 见 [tidb#14103](https://github.com/pingcap/tidb/issues/14103)、[tidb#14413](https://github.com/pingcap/tidb/issues/14413)。
