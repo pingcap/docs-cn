@@ -124,8 +124,6 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
 
 如果 SQL 模式允许使用无效的 `DATE`、`DATETIME`、`TIMESTAMP` 值，无效值会自动转换为相应的零值（`0000-00-00` 或 `0000-00-00 00:00:00`）。
 
-<<<<<<< HEAD
-=======
 <!-- markdownlint-disable MD001 -->
 
 ### 自动初始化和更新 `TIMESTAMP` 或 `DATETIME`
@@ -281,7 +279,6 @@ SELECT NOW(), NOW()+0, NOW(3)+0;
 
 对于 `MIN()` 和 `MAX()` 等函数，年份为两位数时可能会得到错误的计算结果。建议年份为四位数时使用这类函数。
 
->>>>>>> f9bc964... reference/sql: update data types (#2853)
 ## 类型定义
 
 ### `DATE` 类型
