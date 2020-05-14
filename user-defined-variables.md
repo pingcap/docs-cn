@@ -1,6 +1,7 @@
 ---
 title: 用户自定义变量
 category: reference
+aliases: ['/docs-cn/dev/reference/sql/language-structure/user-defined-variables/']
 ---
 
 # 用户自定义变量

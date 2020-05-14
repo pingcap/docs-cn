@@ -1,6 +1,7 @@
 ---
 title: TiKV 重要监控指标详解
 category: reference
+aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ---
 
 # TiKV 重要监控指标详解
