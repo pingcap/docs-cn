@@ -55,7 +55,6 @@ BackupRequest{
     EndVersion,     // The backup snapshot time.
     StorageBackend, // The path where backup files are stored.
     RateLimit,      // Backup speed (MB/s).
-    Concurrency,    // The number of threads for the backup operation ("4" by default).
 }
 ```
 
@@ -180,14 +179,12 @@ br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backupfull.log
 ```
 
 Explanations for some options in the above command are as follows:
 
 * `--ratelimit`: specifies the maximum speed at which a backup operation is performed (MiB/s) on each TiKV node.
-* `--concurrency`: sets an upper limit on the number of concurrent operations on each TiKV node.
 * `--log-file`: specifies writing the BR log to the `backupfull.log` file.
 
 A progress bar is displayed in the terminal during the backup. When the progress bar advances to 100%, the backup is complete. Then the BR also checks the backup data to ensure data safety. The progress bar is displayed as follows:
@@ -197,7 +194,6 @@ br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backupfull.log
 Full Backup <---------/................................................> 17.12%.
 ```
@@ -218,7 +214,6 @@ br backup db \
     --db test \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backuptable.log
 ```
 
@@ -243,7 +238,6 @@ br backup table \
     --table usertable \
     --storage "local:///tmp/backup" \
     --ratelimit 120 \
-    --concurrency 4 \
     --log-file backuptable.log
 ```
 
@@ -266,8 +260,8 @@ To restore the cluster data, use the `br restore` command. You can add the `full
 >
 > Even if each TiKV node eventually only need to read a part of the all SST files, they all need full access to the complete archive because:
 >
-> * Data are replicated into multiple peers. When ingesting SSTs, these files have to be present on *all* peers. This is unlike back up where reading from a single node is enough.
-> * Where each peer is scattered to during restore is random. We don't know in advance which node will read which file.
+> - Data are replicated into multiple peers. When ingesting SSTs, these files have to be present on *all* peers. This is unlike back up where reading from a single node is enough.
+> - Where each peer is scattered to during restore is random. We don't know in advance which node will read which file.
 >
 > These can be avoided using shared storage, e.g. mounting an NFS on the local path, or using S3. With network storage, every node can automatically read every SST file, so these caveats no longer apply.
 
@@ -285,13 +279,13 @@ Restore all the backup data in the `/tmp/backup` path to the cluster.
 br restore full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
-    --concurrency 128 \
+    --ratelimit 128 \
     --log-file restorefull.log
 ```
 
 Explanations for some options in the above command are as follows:
 
-* `--concurrency`: specifies how many sub-tasks can be performed concurrently in a restoration operation.
+* `--ratelimit`: specifies the maximum speed at which a restoration operation is performed (MiB/s) on each TiKV node.
 * `--log-file`: specifies writing the BR log to the `restorefull.log` file.
 
 A progress bar is displayed in the terminal during the restoration. When the progress bar advances to 100%, the restoration is complete. Then the BR also checks the backup data to ensure data safety.
