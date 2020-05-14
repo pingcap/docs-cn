@@ -99,16 +99,6 @@ TiDB 可以显式地使用事务（通过 `[BEGIN|START TRANSACTION]`/`COMMIT` �
 
 对于 DDL 语句，会自动提交并且不能回滚。如果运行 DDL 的时候，正在一个事务的中间过程中，会先自动提交当前事务，再执行 DDL。
 
-## 事务隔离级别
-
-TiDB **只支持** `SNAPSHOT ISOLATION`，可以通过下面的语句将当前 Session 的隔离级别设置为 `READ COMMITTED`，这只是语法上的兼容，事务依旧是以 `SNAPSHOT ISOLATION` 来执行。
-
-{{< copyable "sql" >}}
-
-```sql
-SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
-```
-
 ## 惰性检查
 
 TiDB 中，对于普通的 `INSERT` 语句写入的值，会进行惰性检查。惰性检查的含义是，不在 `INSERT` 语句执行时进行唯一约束的检查，而在事务提交时进行唯一约束的检查。
