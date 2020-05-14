@@ -14,6 +14,7 @@
     - [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/tpcc-v2.md)
     - [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/tpcc.md)
     - [线上负载与 `Add Index` 相互影响测试](/benchmark/add-index-with-load.md)
+    - [TiDB DBaaS TPC-H 10G 性能测试报告](/benchmark/tpch-dbaas-v4.0.md)
 - [TiDB 快速上手指南](/quick-start-with-tidb.md)
 + 主要概念
   - [整体架构](/architecture.md)

@@ -1,9 +1,9 @@
 ---
-title: TiDB TPC-H 10G 性能测试报告
+title: TiDB DBaaS TPC-H 10G 性能测试报告
 category: benchmark
 ---
 
-# TiDB TPC-H 10G 性能测试报告
+# TiDB DBaaS TPC-H 10G 性能测试报告
 
 ## 测试目的
 
@@ -19,8 +19,8 @@ High 配置，2 个 TiDB 节点、3 个 TiKV 节点、3 个 TiFlash。其中 TiK
 >
 > 4.0.0-rc.1 版本中，TiFlash 不支持新的[字符排序规则](/reference/sql/characterset-and-collation.md#排序规则支持)下的计算下推，此环境中关闭了新的字符排序规则。后续版本 TiFlash 会支持新的排序规则。
 > 
-> ```
-> mysql> select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';
+> ```sql
+> select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';
 > +----------------+
 > | VARIABLE_VALUE |
 > +----------------+
@@ -48,9 +48,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 ```
 
 使用下面 `tiup bench` 命令导入 TPC-H 10 数据。
-该命令导入的同时，会给测试的表创建 TiFlash 副本。导入完成后会自动对表进行 `analyze table` 操作，收集[统计信息](/reference/performance/statistics.md)，供 TiDB 优化器优化执行计划。
+该命令导入的同时，会给测试的表[创建 TiFlash 副本](/reference/tiflash/use-tiflash.md#按表构建-tiflash-副本)。在完成数据导入后，该命令会自动对表进行 `analyze table` 操作，收集[统计信息](/reference/performance/statistics.md)，供 TiDB 优化器优化执行计划。
 
-```
+```bash
 tiup bench tpch prepare
     --host ${tidb_host} --port 4000 --db tpch_10 --password ${password} \
     --sf 10 \
@@ -60,8 +60,8 @@ tiup bench tpch prepare
 
 运行完之后，确认数据已经建立好 TiFlash 副本：
 
-```
-mysql> select * from information_schema.tiflash_replica;
+```sql
+select * from information_schema.tiflash_replica;
 +--------------+------------+----------+---------------+-----------------+-----------+----------+
 | TABLE_SCHEMA | TABLE_NAME | TABLE_ID | REPLICA_COUNT | LOCATION_LABELS | AVAILABLE | PROGRESS |
 +--------------+------------+----------+---------------+-----------------+-----------+----------+
@@ -78,15 +78,18 @@ mysql> select * from information_schema.tiflash_replica;
 
 ### 执行查询
 
-本文会比较智能选择、TiKV 隔离读、TiFlash 隔离读等三种[读取模式](/reference/tiflash/use-tiflash.md#使用-tidb-读取-tiflash)下的 TiDB 性能。使用 MySQL 客户端连接到 TiDB 集群，先设置优化参数以及读取的模式。
+本文会比较智能选择、TiKV 隔离读、TiFlash 隔离读等三种[读取模式](/reference/tiflash/use-tiflash.md#使用-tidb-读取-tiflash)下的 TiDB 性能。使用 MySQL 客户端连接到 TiDB 集群，先[优化相关参数](/reference/tiflash/tune-performance.md#tidb-相关参数调优)以及读取的模式。
 
-```
-mysql> set @@session.tidb_allow_batch_cop = 1; set @@session.tidb_opt_distinct_agg_push_down = 1; set @@tidb_distsql_scan_concurrency = 30;
-# 设置读取模式. 不同读取模式对应的值如下:
-# 智能选择:'tikv,tiflash', TiKV隔离读:'tikv', TiFlash隔离读:'tiflash'.
-mysql> set @@session.tidb_isolation_read_engines = 'tikv,tiflash';
-# 可以通过以下语句确认当前变量值
-mysql> select @@tidb_isolation_read_engines , @@tidb_allow_batch_cop , @@tidb_opt_distinct_agg_push_down , @@tidb_distsql_scan_concurrency;
+```sql
+set @@session.tidb_allow_batch_cop = 1;
+set @@tidb_opt_agg_push_down = 1;
+set @@session.tidb_opt_distinct_agg_push_down = 1;
+set @@tidb_distsql_scan_concurrency = 30;
+-- 设置读取模式. 不同读取模式对应的值如下:
+-- 智能选择:'tikv,tiflash', TiKV隔离读:'tikv', TiFlash隔离读:'tiflash'.
+set @@session.tidb_isolation_read_engines = 'tikv,tiflash';
+-- 可以通过以下语句确认当前变量值
+select @@tidb_isolation_read_engines , @@tidb_allow_batch_cop , @@tidb_opt_distinct_agg_push_down , @@tidb_distsql_scan_concurrency;
 +-------------------------------+------------------------+-----------------------------------+---------------------------------+
 | @@tidb_isolation_read_engines | @@tidb_allow_batch_cop | @@tidb_opt_distinct_agg_push_down | @@tidb_distsql_scan_concurrency |
 +-------------------------------+------------------------+-----------------------------------+---------------------------------+
