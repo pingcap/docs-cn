@@ -67,6 +67,6 @@ MaxOneRow 也是同理，它跟 Limit 1 效果一样。
 
 ## 另请参阅
 
-* [理解 EXPLAIN 执行计划](/reference/performance/understanding-the-query-execution-plan.md)
+* [理解 EXPLAIN 执行计划](/query-execution-plan.md)
 * [TiDB 源码阅读系列文章（七）基于规则的优化](https://pingcap.com/blog-cn/tidb-source-code-reading-7/#谓词下推)
 * [TiDB rule_predicate_push_down.go](https://github.com/pingcap/tidb/blob/master/planner/core/rule_predicate_push_down.go)
