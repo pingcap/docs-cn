@@ -1,6 +1,7 @@
 ---
 title: 字符串类型
 category: reference
+aliases: ['/docs-cn/v3.0/reference/sql/data-types/string/']
 ---
 
 # 字符串类型

@@ -1,7 +1,7 @@
 ---
 title: TiDB 中的基本 SQL 操作
 category: how-to
-aliases: ['/docs-cn/try-tidb/']
+aliases: ['/docs-cn/v3.0/how-to/get-started/explore-sql/','/docs-cn/try-tidb/']
 ---
 
 # TiDB 中的基本 SQL 操作

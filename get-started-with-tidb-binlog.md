@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 教程
 category: how-to
+aliases: ['/docs-cn/v3.0/how-to/get-started/tidb-binlog/']
 ---
 
 # TiDB Binlog 教程

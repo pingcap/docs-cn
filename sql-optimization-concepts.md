@@ -1,7 +1,7 @@
 ---
 title: SQL 优化流程简介
 category: reference
-aliases: ['/docs-cn/sql/sql-optimizer-overview/']
+aliases: ['/docs-cn/v3.0/reference/performance/sql-optimizer-overview/','/docs-cn/sql/sql-optimizer-overview/']
 ---
 
 # SQL 优化流程简介

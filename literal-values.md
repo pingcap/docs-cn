@@ -1,7 +1,7 @@
 ---
 title: 字面值
 category: reference
-aliases: ['/docs-cn/sql/literal-values/']
+aliases: ['/docs-cn/v3.0/reference/sql/language-structure/literal-values/','/docs-cn/sql/literal-values/']
 ---
 
 # 字面值

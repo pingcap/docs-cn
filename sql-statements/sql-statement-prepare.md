@@ -2,7 +2,7 @@
 title: PREPARE
 summary: TiDB 数据库中 PREPARE 的使用概况。
 category: reference
-aliases: ['/docs-cn/sql/prepare/']
+aliases: ['/docs-cn/v3.0/reference/sql/statements/prepare/','/docs-cn/sql/prepare/']
 ---
 
 # PREPARE

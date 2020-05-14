@@ -1,7 +1,7 @@
 ---
 title: TiKV 配置参数
 category: reference
-aliases: ['/docs-cn/op-guide/tikv-configuration/']
+aliases: ['/docs-cn/v3.0/reference/configuration/tikv-server/configuration/','/docs-cn/op-guide/tikv-configuration/']
 ---
 
 # TiKV 配置参数
