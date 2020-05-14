@@ -102,4 +102,4 @@ CREATE TABLE person (
 - 不能通过 `ALTER TABLE` 在 generated column 上增加索引；
 - 不能通过 `ALTER TABLE` 将 generated stored column 转换为普通列，也不能将普通列转换成 generated stored column；
 - 不能通过 `ALTER TABLE` 修改 generated stored column 的**生成列表达式**；
-- 并未支持所有的 [JSON 函数](/reference/sql/functions-and-operators/json-functions.md)。
+- 并未支持所有的 [JSON 函数](/functions-and-operators/json-functions.md)。

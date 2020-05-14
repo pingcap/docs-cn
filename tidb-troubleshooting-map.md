@@ -156,7 +156,7 @@ category: how-to
 
     - v3.0 及以上版本可以使用 `SQL Bind` 功能固定执行计划。
 
-    - 更新统计信息。在大致确定问题是由统计信息导致的情况下，先 [dump 统计信息](/reference/performance/statistics.md#导出统计信息)保留现场。如果是由于统计信息过期导致，例如 `show stats_meta` 中 modify count/row count 大于某个值（例如 0.3）或者表中存在时间列的索引情况下，可以先尝试 analyze table 恢复；如果配置了 auto analyze，可以查看系统变量 `tidb_auto_analyze_ratio` 是否过大（例如大于 0.3），以及当前时间是否在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 范围内。
+    - 更新统计信息。在大致确定问题是由统计信息导致的情况下，先 [dump 统计信息](/statistics.md#导出统计信息)保留现场。如果是由于统计信息过期导致，例如 `show stats_meta` 中 modify count/row count 大于某个值（例如 0.3）或者表中存在时间列的索引情况下，可以先尝试 analyze table 恢复；如果配置了 auto analyze，可以查看系统变量 `tidb_auto_analyze_ratio` 是否过大（例如大于 0.3），以及当前时间是否在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 范围内。
 
     - 其他情况，请[上报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
 
@@ -393,7 +393,7 @@ category: how-to
 
     - Pump 启动时需要通知所有 Online 状态的 Drainer，如果通知失败则会打印该错误日志。
     
-    - 可以使用 binlogctl 工具查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。见案例 [fail-to-notify-all-living-drainer](/reference/tidb-binlog/troubleshoot/error-handling.md#pump-启动时报错-fail-to-notify-all-living-drainer)。
+    - 可以使用 binlogctl 工具查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。见案例 [fail-to-notify-all-living-drainer](/tidb-binlog/handle-tidb-binlog-errors.md#pump-启动时报错-fail-to-notify-all-living-drainer)。
 
 - 6.1.9 Drainer 报错 `gen update sqls failed: table xxx: row data is corruption []`。
 
@@ -484,31 +484,31 @@ category: how-to
         - 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
         - 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
 
-    - 解决办法：参考[官网步骤处理](/how-to/troubleshoot/tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)。
+    - 解决办法：参考[官网步骤处理](/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)。
 
 - 6.3.4 `Checkpoint for … has invalid status:(错误码)`
 
     - 原因：断点续传已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lightning 在错误解决以前不会启动。错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
-    - 解决办法：参考[官网步骤](/how-to/troubleshoot/tidb-lightning.md#checkpoint-for--has-invalid-status错误码)处理。
+    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)处理。
 
 - 6.3.5 `ResourceTemporarilyUnavailable("Too many open engines …: 8")`
 
     - 原因：并行打开的引擎文件 (engine files) 超出 tikv-importer 里的限制。这可能由配置错误引起。即使配置没问题，如果 tidb-lightning 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
 
-    - 解决办法：参考[官网步骤处理](/how-to/troubleshoot/tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--8)。
+    - 解决办法：参考[官网步骤处理](/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--8)。
 
 - 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
     - 原因：Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
 
-    - 解决办法：参考[官网步骤](/how-to/troubleshoot/tidb-lightning.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
+    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
 
 - 6.3.7 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
 
     - 原因：一个 timestamp 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏令时切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 
-    - 解决办法：参考[官网步骤](/how-to/troubleshoot/tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-0-45-0-0)处理。
+    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-0-45-0-0)处理。
 
 ## 7. 常见日志分析
 

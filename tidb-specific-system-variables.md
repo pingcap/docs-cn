@@ -327,7 +327,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[重试的局限性](/reference/transactions/transaction-optimistic.md#重试的局限性)。
+是否需要禁用自动重试，请参考[重试的局限性](/optimistic-transaction.md#重试的局限性)。
 
 ### tidb_backoff_weight
 
@@ -472,11 +472,11 @@ set tidb_query_log_max_len = 20;
 
 默认值："pessimistic"
 
-这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/reference/transactions/transaction-pessimistic.md)。
+这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/pessimistic-transaction.md)。
 
 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
 
-将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/reference/transactions/transaction-optimistic.md)。
+将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/optimistic-transaction.md)。
 
 自 TiDB 3.0.4 起，该变量也支持 GLOBAL 作用域，用于设定全局的事务模式。当设定全局的事务模式时，仅在修改生效之后创建的 session 会受到影响。
 
@@ -541,7 +541,7 @@ ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
 
 这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
 
-注意，如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 以及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade.md)。
+注意，如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 以及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade-faq.md)。
 
 ### tidb_opt_insubq_to_join_and_agg
 
@@ -611,7 +611,7 @@ select * from t, t1 where t.a=t1.a;
 
 默认值：""
 
-查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log"。但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。更多详情可以参考 [SLOW_QUERY 文档](/how-to/maintain/identify-abnormal-queries/identify-slow-queries.md)。
+查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log"。但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。更多详情可以参考 [SLOW_QUERY 文档](/identify-slow-queries.md)。
 
 ### tidb_enable_fast_analyze
 

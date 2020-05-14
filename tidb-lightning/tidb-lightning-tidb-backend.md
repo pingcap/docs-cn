@@ -21,7 +21,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 
 ## 部署 TiDB-backend
 
-使用 TiDB-backend 时，你无需部署 `tikv-importer`。与[标准部署过程](/reference/tools/tidb-lightning/deployment.md)相比，部署 TiDB-backend 时有如下不同：
+使用 TiDB-backend 时，你无需部署 `tikv-importer`。与[标准部署过程](/tidb-lightning/deploy-tidb-lightning.md)相比，部署 TiDB-backend 时有如下不同：
 
 * 可以跳过所有涉及 `tikv-importer` 的步骤。
 * 必须更改相应配置申明使用的是 TiDB-backend。
@@ -67,7 +67,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 
 ### 手动部署
 
-手动部署时，你无需下载和配置 `tikv-importer`，TiDB Lightning 可[在此下载](/reference/tools/download.md#tidb-lightning)。
+手动部署时，你无需下载和配置 `tikv-importer`，TiDB Lightning 可[在此下载](/download-ecosystem-tools.md#tidb-lightning)。
 
 在运行 `tidb-lightning` 之前，在配置文件中加上如下几行：
 
@@ -96,7 +96,7 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 
 ## 从 Loader 迁移到 TiDB Lightning TiDB-backend
 
-TiDB Lightning TiDB-backend 可以完全取代 [Loader](/reference/tools/loader.md)。下表说明了如何将 [Loader](/reference/tools/loader.md) 的配置迁移到 [TiDB Lightning 配置](/reference/tools/tidb-lightning/config.md)中：
+TiDB Lightning TiDB-backend 可以完全取代 [Loader](/loader-overview.md)。下表说明了如何将 [Loader](/loader-overview.md) 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
 <table align="left">
 <thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thread>

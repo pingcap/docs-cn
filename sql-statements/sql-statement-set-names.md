@@ -108,6 +108,6 @@ SHOW VARIABLES LIKE 'character_set%';
 
 ## 另请参阅
 
-* [SHOW \[GLOBAL|SESSION\] VARIABLES](/reference/sql/statements/show-variables.md)
-* [SET <variable>](/reference/sql/statements/set-variable.md)
-* [Character Set Support](/reference/sql/character-set.md)
+* [SHOW \[GLOBAL|SESSION\] VARIABLES](/sql-statements/sql-statement-show-variables.md)
+* [SET <variable>](/sql-statements/sql-statement-set-variable.md)
+* [Character Set Support](/character-set-and-collation.md)

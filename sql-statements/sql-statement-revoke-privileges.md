@@ -127,6 +127,6 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## 另请参阅
 
-* [GRANT <privileges>](/reference/sql/statements/grant-privileges.md)
-* [SHOW GRANTS](/reference/sql/statements/show-grants.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [GRANT <privileges>](/sql-statements/sql-statement-grant-privileges.md)
+* [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
+* [Privilege Management](/privilege-management.md)
