@@ -65,4 +65,4 @@ Query OK, 0 rows affected (2.50 sec)
 
 ## 另请参阅
 
-* [SELECT](/reference/sql/statements/select.md)
+* [SELECT](/sql-statements/sql-statement-select.md)

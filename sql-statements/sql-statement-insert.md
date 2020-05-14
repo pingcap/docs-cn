@@ -155,7 +155,7 @@ SELECT * FROM t2;
 
 ## 另请参阅
 
-* [DELETE](/reference/sql/statements/delete.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [UPDATE](/reference/sql/statements/update.md)
-* [REPLACE](/reference/sql/statements/replace.md)
+* [DELETE](/sql-statements/sql-statement-delete.md)
+* [SELECT](/sql-statements/sql-statement-select.md)
+* [UPDATE](/sql-statements/sql-statement-update.md)
+* [REPLACE](/sql-statements/sql-statement-replace.md)

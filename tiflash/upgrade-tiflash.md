@@ -11,7 +11,7 @@ category: reference
 
 目前 TiFlash 暂时还不支持通过 `tiup cluster upgrade` 进行升级。 推荐使用下面的步骤进行升级：
 
-1. 参考[缩容 TiFlash 节点](/how-to/scale/with-tiup.md#4-缩容-tiflash-节点)章节，对所有的 TiFlash 节点进行缩容操作
+1. 参考[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#4-缩容-tiflash-节点)章节，对所有的 TiFlash 节点进行缩容操作
 
 2. 运行升级命令
 

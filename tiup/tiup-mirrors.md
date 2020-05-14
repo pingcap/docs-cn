@@ -152,7 +152,7 @@ tiup mirrors <target-dir> [global-version] [flags]
     export TIUP_MIRRORS=/tmp/package
     ```
 
-部署完成后，集群相关操作可参考 [cluster 命令](/reference/tools/tiup/cluster.md)。
+部署完成后，集群相关操作可参考 [cluster 命令](/tiup/tiup-cluster.md)。
 
 ### 构建私有镜像
 

@@ -7,7 +7,7 @@ category: reference
 
 本文主要介绍 TiDB Lightning 使用 Importer-backend（默认）进行数据导入的硬件需求，以及使用 TiDB Ansible 部署与手动部署 TiDB Lightning 这两种部署方式。
 
-如果你不希望影响 TiDB 集群的对外服务，可以参考 [TiDB Lightning TiDB-backend](/reference/tools/tidb-lightning/tidb-backend.md) 中的硬件需求与部署方式进行数据导入。
+如果你不希望影响 TiDB 集群的对外服务，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md) 中的硬件需求与部署方式进行数据导入。
 
 ## 注意事项
 
@@ -66,11 +66,11 @@ category: reference
 >
 > - `tikv-importer` 将中间数据存储缓存到内存上以加速导入过程。占用内存大小可以通过 **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)** 计算得来。如果磁盘写入速度慢，缓存可能会带来更大的内存占用。
 
-此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/how-to/deploy/hardware-recommendations.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/tidb.md#326-每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
+此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/tidb-faq.md#326-每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 
 ## 导出数据
 
-使用 [`mydumper`](/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+使用 [`mydumper`](/mydumper-overview.md) 从 MySQL 导出数据，如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -86,7 +86,7 @@ category: reference
 - `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 - `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
 
-如果数据源是 CSV 文件，请参考 [CSV 支持](/reference/tools/tidb-lightning/csv.md)获取配置信息。
+如果数据源是 CSV 文件，请参考 [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)获取配置信息。
 
 ## 部署 TiDB Lightning
 
@@ -94,7 +94,7 @@ category: reference
 
 ### 使用 TiDB Ansible 部署 TiDB Lightning
 
-TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/how-to/deploy/orchestrated/ansible.md)。
+TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deployment-using-ansible.md)。
 
 1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
 
@@ -181,7 +181,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/how-to/deploy/
 
 #### 第 2 步：下载 TiDB Lightning 安装包
 
-在[工具下载](/reference/tools/download.md#tidb-lightning)页面下载 TiDB Lightning 安装包（需选择与 TiDB 集群相同的版本）。
+在[工具下载](/download-ecosystem-tools.md#tidb-lightning)页面下载 TiDB Lightning 安装包（需选择与 TiDB 集群相同的版本）。
 
 #### 第 3 步：启动 `tikv-importer`
 
@@ -214,7 +214,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/how-to/deploy/
     import-dir = "/mnt/ssd/data.import/"
     ```
 
-    上面仅列出了 `tikv-importer` 的基本配置。完整配置请参考[`tikv-importer` 配置说明](/reference/tools/tidb-lightning/config.md#tikv-importer)。
+    上面仅列出了 `tikv-importer` 的基本配置。完整配置请参考[`tikv-importer` 配置说明](/tidb-lightning/tidb-lightning-configuration.md#tikv-importer)。
 
 3. 运行 `tikv-importer`。
 
@@ -261,7 +261,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/how-to/deploy/
     status-port = 10080
     ```
 
-    上面仅列出了 `tidb-lightning` 的基本配置信息。完整配置信息请参考[`tidb-lightning` 配置说明](/reference/tools/tidb-lightning/config.md#tidb-lightning-全局配置)。
+    上面仅列出了 `tidb-lightning` 的基本配置信息。完整配置信息请参考[`tidb-lightning` 配置说明](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)。
 
 4. 运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
@@ -274,6 +274,6 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/how-to/deploy/
 
 ## 升级 TiDB Lightning
 
-你可以通过替换二进制文件升级 TiDB Lightning，无需其他配置。重启 TiDB Lightning 的具体操作参见 [FAQ](/faq/tidb-lightning.md#如何正确重启-tidb-lightning)。
+你可以通过替换二进制文件升级 TiDB Lightning，无需其他配置。重启 TiDB Lightning 的具体操作参见 [FAQ](/tidb-lightning/tidb-lightning-faq.md#如何正确重启-tidb-lightning)。
 
 如果当前有运行的导入任务，推荐任务完成后再升级 TiDB Lightning。否则，你可能需要从头重新导入，因为无法保证断点可以跨版本工作。

@@ -31,15 +31,15 @@ TiDB 的加密连接支持默认是关闭的，必须在 TiDB 服务端通过配
 
 > **注意：**
 >
-> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/reference/security/cert-based-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户必须使用加密连接连接 TiDB。
+> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/certificate-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户必须使用加密连接连接 TiDB。
 
 ## 配置 TiDB 启用加密连接支持
 
 在启动 TiDB 时，至少需要在配置文件中同时指定 `ssl-cert` 和 `ssl-key` 参数，才能使 TiDB 服务端接受加密连接。还可以指定 `ssl-ca` 参数进行客户端身份验证（请参见[配置启用身份验证](#配置启用身份验证)章节）。
 
-- [`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert)：指定 SSL 证书文件路径
-- [`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)：指定证书文件对应的私钥
-- [`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
+- [`ssl-cert`](/tidb-configuration-file.md#ssl-cert)：指定 SSL 证书文件路径
+- [`ssl-key`](/tidb-configuration-file.md#ssl-key)：指定证书文件对应的私钥
+- [`ssl-ca`](/tidb-configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
 
 参数指定的文件都为 PEM 格式。另外目前 TiDB 尚不支持加载有密码保护的私钥，因此必须提供一个没有密码的私钥文件。若提供的证书或私钥无效，则 TiDB 服务端将照常启动，但并不支持客户端加密连接到 TiDB 服务端。
 
@@ -77,7 +77,7 @@ ssl-key = "certs/server-key.pem"
 
 ## 重加载证书、密钥和 CA
 
-在需要替换证书、密钥或 CA 时，可以在完成对应文件替换后，对运行中的 TiDB 实例执行 [`ALTER INSTANCE RELOAD TLS`](/reference/sql/statements/alter-instance.md) 语句从原配置的证书 ([`ssl-cert`](/reference/configuration/tidb-server/configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/reference/configuration/tidb-server/configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/reference/configuration/tidb-server/configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA，而无需重启 TiDB 实例。
+在需要替换证书、密钥或 CA 时，可以在完成对应文件替换后，对运行中的 TiDB 实例执行 [`ALTER INSTANCE RELOAD TLS`](/sql-statements/sql-statement-alter-instance.md) 语句从原配置的证书 ([`ssl-cert`](/tidb-configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/tidb-configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/tidb-configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA，而无需重启 TiDB 实例。
 
 新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
 
@@ -109,7 +109,7 @@ create user 'u1'@'%'  require x509;
 
 > **注意：**
 >
-> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/reference/security/cert-based-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户需进行身份验证。
+> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/certificate-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户需进行身份验证。
 
 ## 检查当前连接是否是加密连接
 

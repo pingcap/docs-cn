@@ -24,11 +24,11 @@ category: reference
 
 推荐用一个 SSD 盘来缓冲 TiKV 同步数据的实时写入，该盘性能不低于 TiKV 所使用的硬盘，建议是性能更好的 NVMe SSD。该 SSD 盘容量建议不小于总容量的 10%，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他硬盘，可以选择部署多块 HDD 或者普通 SSD，当然更好的硬盘会带来更好的性能。
 
-TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)，所以无需使用 RAID。
+TiFlash 支持[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)，所以无需使用 RAID。
 
 ### TiFlash 和 TiKV 部署在相同节点模式
 
-参考 [TiKV 节点的硬件配置](/how-to/deploy/hardware-recommendations.md#服务器建议配置)，并且适当增加内存和 CPU 核数。
+参考 [TiKV 节点的硬件配置](/hardware-and-software-requirements.md#服务器建议配置)，并且适当增加内存和 CPU 核数。
 
 建议不要将 TiFlash 与 TiKV 同盘部署，以防互相干扰。
 
@@ -54,7 +54,7 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
 
 TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐使用 TiUP Cluster 安装部署 TiFlash，部署流程如下：
 
-1. 参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)安装 TiUP。
+1. 参考 [TiUP 部署文档](/production-deployment-using-tiup.md)安装 TiUP。
 
 2. 安装 TiUP cluster 组件
 
@@ -96,7 +96,7 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
       - host: 172.19.0.103
     ```
 
-    如果希望自定义部署目录，需要配置 data_dir 参数，不需要则不加。如果希望[多盘部署](/reference/tiflash/configuration.md#多盘部署)，则以逗号分隔各部署目录，例如：
+    如果希望自定义部署目录，需要配置 data_dir 参数，不需要则不加。如果希望[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)，则以逗号分隔各部署目录，例如：
 
     {{< copyable "" >}}
 
@@ -138,4 +138,4 @@ TiUP Cluster 是适用于 TiDB 4.0 及以上版本的部署工具，目前推荐
 
 2. 在 pd-ctl（目前 pd-ctl 还没有接入 TiUP Cluster，需要从 [这里](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz) 手动进行下载）中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
 
-3. 参考 [扩容 TiFlash 节点](/how-to/scale/with-tiup.md#2-扩容-tiflash-节点) 章节对 TiFlash 进行部署。
+3. 参考 [扩容 TiFlash 节点](/scale-tidb-using-tiup.md#2-扩容-tiflash-节点) 章节对 TiFlash 进行部署。

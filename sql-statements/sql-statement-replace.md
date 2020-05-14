@@ -103,7 +103,7 @@ SELECT * FROM t1;
 
 ## 另请参阅
 
-* [DELETE](/reference/sql/statements/delete.md)
-* [INSERT](/reference/sql/statements/insert.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [UPDATE](/reference/sql/statements/update.md)
+* [DELETE](/sql-statements/sql-statement-delete.md)
+* [INSERT](/sql-statements/sql-statement-insert.md)
+* [SELECT](/sql-statements/sql-statement-select.md)
+* [UPDATE](/sql-statements/sql-statement-update.md)

@@ -280,7 +280,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 ## 排序规则支持
 
-排序规则的语法支持和语义支持受到配置项 [`new_collations_enabled_on_first_bootstrap`](/reference/configuration/tidb-server/configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。
+排序规则的语法支持和语义支持受到配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。
 
 在 4.0 版本之前，TiDB 只提供了旧的排序规则框架，能够在语法上支持的绝大部分 MySQL 排序规则，但语义上所有的排序规则都当成二进制排序规则。
 
