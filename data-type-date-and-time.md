@@ -1,6 +1,7 @@
 ---
 title: 日期和时间类型
 category: reference
+aliases: ['/docs-cn/v3.1/reference/sql/data-types/date-and-time/']
 ---
 
 # 日期和时间类型

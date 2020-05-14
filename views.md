@@ -1,6 +1,7 @@
 ---
 title: 视图
 category: reference
+aliases: ['/docs-cn/v3.1/reference/sql/view/']
 ---
 
 # 视图

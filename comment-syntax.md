@@ -1,6 +1,7 @@
 ---
 title: 注释语法
 category: reference
+aliases: ['/docs-cn/v3.1/reference/sql/language-structure/comment-syntax/']
 ---
 
 # 注释语法

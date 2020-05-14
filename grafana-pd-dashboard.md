@@ -1,6 +1,7 @@
 ---
 title: PD 重要监控指标详解
 category: reference
+aliases: ['/docs-cn/v3.1/reference/key-monitoring-metrics/pd-dashboard/']
 ---
 
 # PD 重要监控指标详解

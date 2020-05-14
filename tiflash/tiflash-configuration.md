@@ -1,6 +1,7 @@
 ---
 title: TiFlash 配置参数
 category: reference
+aliases: ['/docs-cn/v3.1/reference/tiflash/configuration/']
 ---
 
 # TiFlash 配置参数
