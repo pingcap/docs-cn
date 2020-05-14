@@ -1,6 +1,7 @@
 ---
 title: TiDB 命令行参数
 category: reference
+aliases: ['/docs-cn/v3.1/reference/configuration/tidb-server/configuration/']
 ---
 
 # TiDB 命令行参数

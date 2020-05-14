@@ -1,6 +1,7 @@
 ---
 title: TiDB FAQ
 category: FAQ
+aliases: ['/docs-cn/v3.1/faq/tidb/']
 ---
 
 # FAQ

@@ -1,6 +1,7 @@
 ---
 title: Schema Object Names
 category: reference
+aliases: ['/docs-cn/v3.1/reference/sql/language-structure/schema-object-names/']
 ---
 
 # Schema Object Names

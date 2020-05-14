@@ -1,6 +1,7 @@
 ---
 title: 使用 TiFlash
 category: reference
+aliases: ['/docs-cn/v3.1/reference/tiflash/use-tiflash/']
 ---
 
 # 使用 TiFlash

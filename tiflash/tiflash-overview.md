@@ -1,6 +1,7 @@
 ---
 title: TiFlash 简介
 category: reference
+aliases: ['/docs-cn/v3.1/reference/tiflash/overview/']
 ---
 
 # TiFlash 简介

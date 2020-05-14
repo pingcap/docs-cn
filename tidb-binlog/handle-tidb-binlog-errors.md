@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 常见错误修复
 category: reference
+aliases: ['/docs-cn/v3.1/reference/tidb-binlog/troubleshoot/error-handling/']
 ---
 
 # TiDB Binlog 常见错误修复
