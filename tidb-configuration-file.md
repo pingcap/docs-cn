@@ -20,7 +20,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单条 SQL 语句可以占用的最大内存阈值。
 + 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
-+ 该值作为系统变量 [`tidb_mem_quota_query`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_mem_quota_query) 的初始值。
++ 该值作为系统变量 [`tidb_mem_quota_query`](/tidb-specific-system-variables.md#tidb_mem_quota_query) 的初始值。
 
 ### `oom-use-tmp-storage`
 
@@ -283,7 +283,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 一个事务允许的最大语句条数限制。
 + 默认值：5000
-+ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在可重试的乐观事务中生效，如果使用悲观事务或者关闭了[事务重试](/reference/transactions/transaction-optimistic.md#事务的重试)，事务中的语句数将不受此限制。
++ 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在可重试的乐观事务中生效，如果使用悲观事务或者关闭了[事务重试](/optimistic-transaction.md#事务的重试)，事务中的语句数将不受此限制。
 
 ### `tcp-keep-alive`
 
@@ -342,7 +342,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置优化器是否执行将带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 + 默认值：false
-+ 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
++ 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
 
 ## prepared-plan-cache
 
@@ -495,7 +495,7 @@ TiDB 服务状态相关配置。
 
 ### enable
 
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/reference/transactions/transaction-pessimistic.md)。
++ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
 + 默认值：true
 
 ### max-retry-count

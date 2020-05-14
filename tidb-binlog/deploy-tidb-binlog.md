@@ -66,7 +66,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
           # gc: 7
         ```
 
-        请确保部署目录有足够空间存储 binlog，详见[调整部署目录](/how-to/deploy/orchestrated/ansible.md#调整部署目录)，也可为 Pump 设置单独的部署目录。
+        请确保部署目录有足够空间存储 binlog，详见[调整部署目录](/online-deployment-using-ansible.md#调整部署目录)，也可为 Pump 设置单独的部署目录。
 
         ```ini
         ## Binlog Part
@@ -120,7 +120,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
 
-    使用 TiDB Ansible 部署 TiDB 集群，方法参考 [使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)。
+    使用 TiDB Ansible 部署 TiDB 集群，方法参考 [使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md)。
 
 3. 查看 Pump 服务状态
 
@@ -625,4 +625,4 @@ Drainer="192.168.0.13"
 > - Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。
 > - 在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取**快照时间戳**，然后导入全量备份，最后启动 Drainer 从对应的快照时间戳开始同步增量数据。
 > - 下游使用 MySQL 或 TiDB 时应当保证上下游数据库的 sql_mode 具有一致性，即下游数据库同步每条 SQL 语句时的 sql_mode 应当与上游数据库执行该条 SQL 语句时的 sql_mode 保持一致。可以在上下游分别执行 `select @@sql_mode;` 进行查询和比对。
-> - 如果存在上游 TiDB 能运行但下游 MySQL 不支持的 DDL 语句时（例如下游 MySQL 使用 InnoDB 引擎时同步语句 `CREATE TABLE t1(a INT) ROW_FORMAT=FIXED;`），Drainer 也会同步失败，此时可以在 Drainer 配置中跳过该事务，同时在下游手动执行兼容的语句，详见[跳过事务](/reference/tidb-binlog/faq.md#同步时出现上游数据库支持但是下游数据库执行会出错的-ddl应该怎么办)。
+> - 如果存在上游 TiDB 能运行但下游 MySQL 不支持的 DDL 语句时（例如下游 MySQL 使用 InnoDB 引擎时同步语句 `CREATE TABLE t1(a INT) ROW_FORMAT=FIXED;`），Drainer 也会同步失败，此时可以在 Drainer 配置中跳过该事务，同时在下游手动执行兼容的语句，详见[跳过事务](/tidb-binlog/tidb-binlog-faq.md#同步时出现上游数据库支持但是下游数据库执行会出错的-ddl应该怎么办)。

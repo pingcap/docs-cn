@@ -75,5 +75,5 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## 另请参阅
 
-* [PREPARE](/reference/sql/statements/prepare.md)
-* [EXECUTE](/reference/sql/statements/execute.md)
+* [PREPARE](/sql-statements/sql-statement-prepare.md)
+* [EXECUTE](/sql-statements/sql-statement-execute.md)

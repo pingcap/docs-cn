@@ -67,5 +67,5 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## 另请参阅
 
-* [EXECUTE](/reference/sql/statements/execute.md)
-* [DEALLOCATE](/reference/sql/statements/deallocate.md)
+* [EXECUTE](/sql-statements/sql-statement-execute.md)
+* [DEALLOCATE](/sql-statements/sql-statement-deallocate.md)

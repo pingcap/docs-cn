@@ -13,7 +13,7 @@ category: reference
 
 ## TiDB 相关参数调优
 
-1. 对于 OLAP/TiFlash 专属的 TiDB 节点，建议调大读取并发数 [`tidb_distsql_scan_concurrency`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_distsql_scan_concurrency) 到 80：
+1. 对于 OLAP/TiFlash 专属的 TiDB 节点，建议调大读取并发数 [`tidb_distsql_scan_concurrency`](/tidb-specific-system-variables.md#tidb_distsql_scan_concurrency) 到 80：
 
     {{< copyable "sql" >}}
 

@@ -23,14 +23,14 @@ TiDB 的基于角色的访问控制 (RBAC) 系统的实现类似于 MySQL 8.0 �
 CREATE ROLE 'app_developer', 'app_read', 'app_write';
 ```
 
-角色名的格式和规范可以参考 [TiDB 用户账户管理](/reference/security/user-account-management.md)。
+角色名的格式和规范可以参考 [TiDB 用户账户管理](/user-account-management.md)。
 
 角色会被保存在 `mysql.user` 表中，如果表中有同名角色或用户，角色会创建失败并报错。
 创建角色的用户需要拥有 `CREATE ROLE` 或 `CREATE USER` 权限。
 
 ### 授予角色权限
 
-为角色授予权限和为用户授予权限操作相同，可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
+为角色授予权限和为用户授予权限操作相同，可参考 [TiDB 权限管理](/privilege-management.md)。
 
 为 `app_read` 角色授予数据库 `app_db` 的读权限：
 
@@ -341,7 +341,7 @@ REVOKE 'app_read', 'app_write' FROM 'rw_user1'@'localhost';
 REVOKE INSERT, UPDATE, DELETE ON app_db.* FROM 'app_write';
 ```
 
-具体可参考 [TiDB 权限管理](/reference/security/privilege-system.md)。
+具体可参考 [TiDB 权限管理](/privilege-management.md)。
 
 ### 删除角色
 
@@ -358,7 +358,7 @@ DROP ROLE 'app_read', 'app_write';
 
 ### 授权表
 
-在原有的四张[系统权限表](/reference/security/privilege-system.md#授权表)的基础上，角色访问控制引入了两张新的系统表：
+在原有的四张[系统权限表](/privilege-management.md#授权表)的基础上，角色访问控制引入了两张新的系统表：
 
 - `mysql.role_edges`：记录角色与用户的授权关系
 - `mysql.default_roles`：记录每个用户默认启用的角色
@@ -406,5 +406,5 @@ select * from mysql.default_roles;
 
 由于基于角色的访问控制模块和用户管理以及权限管理结合十分紧密，因此需要参考一些操作的细节：
 
-- [TiDB 权限管理](/reference/security/privilege-system.md)
-- [TiDB 用户账户管理](/reference/security/user-account-management.md)
+- [TiDB 权限管理](/privilege-management.md)
+- [TiDB 用户账户管理](/user-account-management.md)

@@ -68,7 +68,7 @@ Query OK, 0 rows affected (0.14 sec)
 
 如果此时遇到 `ERROR 1148 (42000): the used command is not allowed with this TiDB version` 报错信息。可以参考以下文档解决：
 
-[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/faq/tidb.md#923-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
+[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/faq/tidb-faq.md#923-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
 
 {{< copyable "sql" >}}
 
@@ -101,5 +101,5 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## 另请参阅
 
-* [INSERT](/reference/sql/statements/insert.md)
-* [乐观事务模型](/reference/transactions/transaction-optimistic.md)
+* [INSERT](/sql-statements/sql-statement-insert.md)
+* [乐观事务模型](/optimistic-transaction.md)

@@ -19,7 +19,7 @@ category: reference
 
 TiUP cluster 是适用于 TiDB 4.0 及以上版本的部署工具，部署运行 TiCDC 必须使用 TiDB v4.0.0-rc.1 或更新版本，部署流程如下：
 
-1. 参考 [TiUP 部署文档](/how-to/deploy/orchestrated/tiup.md)安装 TiUP。
+1. 参考 [TiUP 部署文档](/production-deployment-using-tiup.md)安装 TiUP。
 
 2. 安装 TiUP cluster 组件
 
@@ -87,7 +87,7 @@ TiUP cluster 是适用于 TiDB 4.0 及以上版本的部署工具，部署运行
 
 1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
 
-2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/how-to/scale/with-tiup.md#1-扩容-tidbtikvpdticdc-节点) 章节对 TiCDC 进行部署。
+2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#1-扩容-tidbtikvpdticdc-节点) 章节对 TiCDC 进行部署。
 
    示例的扩容配置文件为：
 
@@ -146,7 +146,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235
 - `pd`: PD client 的 URL。
 - `start-ts`: 指定开始同步的 TSO，不指定或指定为 `0` 时将使用当前 TSO 作为同步的起始 TSO。
 - `target-ts`: 指定同步结束的 TSO，不指定默认会永久同步。
-- `sink-uri`: sink 地址，目前支持 `mysql`/`tidb` 和 `kafka`。关于 sink URI 的写法请参考 [sink URI 配置规则](/reference/tools/ticdc/sink.md)
+- `sink-uri`: sink 地址，目前支持 `mysql`/`tidb` 和 `kafka`。关于 sink URI 的写法请参考 [sink URI 配置规则](/ticdc/sink-url.md)
 - `config`: 同步任务的配置。目前提供黑白名单配置和跳过特定 `commit-ts` 的事务。
 
 执行该命令后，TiCDC 就会从指定的 start-ts (`415238226621235200`) 开始同步数据到下游 MySQL (`127.0.0.1:3306`) 中。

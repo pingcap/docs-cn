@@ -6,7 +6,7 @@ category: reference
 
 # 使用 Grafana 监控 TiDB 的最佳实践
 
-[使用 TiDB Ansible 部署 TiDB 集群](/how-to/deploy/orchestrated/ansible.md)时，会同时部署一套 [Grafana + Prometheus 的监控平台](/how-to/monitor/overview.md)，用于收集和展示 TiDB 集群各个组件和机器的 metric 信息。本文主要介绍使用 TiDB 监控的最佳实践，旨在帮助 TiDB 用户高效利用丰富的 metric 信息来分析 TiDB 的集群状态或进行故障诊断。
+[使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md)时，会同时部署一套 [Grafana + Prometheus 的监控平台](/tidb-monitoring-framework.md)，用于收集和展示 TiDB 集群各个组件和机器的 metric 信息。本文主要介绍使用 TiDB 监控的最佳实践，旨在帮助 TiDB 用户高效利用丰富的 metric 信息来分析 TiDB 的集群状态或进行故障诊断。
 
 ## 监控架构
 

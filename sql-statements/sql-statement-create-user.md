@@ -62,8 +62,8 @@ Query OK, 1 row affected (0.02 sec)
 
 ## 另请参阅
 
-* [Security Compatibility with MySQL](/reference/security/compatibility.md)
-* [DROP USER](/reference/sql/statements/drop-user.md)
-* [SHOW CREATE USER](/reference/sql/statements/show-create-user.md)
-* [ALTER USER](/reference/sql/statements/alter-user.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [Security Compatibility with MySQL](/security-compatibility-with-mysql.md)
+* [DROP USER](/sql-statements/sql-statement-drop-user.md)
+* [SHOW CREATE USER](/sql-statements/sql-statement-show-create-user.md)
+* [ALTER USER](/sql-statements/sql-statement-alter-user.md)
+* [Privilege Management](/privilege-management.md)
