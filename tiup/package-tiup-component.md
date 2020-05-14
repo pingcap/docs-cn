@@ -1,7 +1,7 @@
 ---
 title: 打包组件
 category: tools
-aliases: ['/docs-cn/dev/reference/tools/tiup/package-component/']
+aliases: ['/docs-cn/stable/reference/tools/tiup/package-component/']
 ---
 
 # 打包组件

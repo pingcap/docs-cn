@@ -1,7 +1,7 @@
 ---
 title: 分区表
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/partitioning/']
+aliases: ['/docs-cn/stable/reference/sql/partitioning/']
 ---
 
 # 分区表

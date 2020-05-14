@@ -1,7 +1,7 @@
 ---
 title: Titan 配置
 category: reference
-aliases: ['/docs-cn/dev/reference/titan/configuration/']
+aliases: ['/docs-cn/stable/reference/titan/configuration/']
 ---
 
 # Titan 配置

@@ -1,7 +1,7 @@
 ---
 title: 升级后常见问题
 category: FAQ
-aliases: ['/docs-cn/dev/faq/upgrade/']
+aliases: ['/docs-cn/stable/faq/upgrade/']
 ---
 
 # 升级后常见问题

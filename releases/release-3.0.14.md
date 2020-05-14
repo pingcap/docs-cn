@@ -1,7 +1,7 @@
 ---
 title: TiDB 3.0.14 Release Notes
 category: Releases
-aliases: ['/docs-cn/dev/releases/3.0.14/']
+aliases: ['/docs-cn/stable/releases/3.0.14/']
 ---
 
 # TiDB 3.0.14 Release Notes

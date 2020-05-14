@@ -1,7 +1,7 @@
 ---
 title: Cast 函数和操作符
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/cast-functions-and-operators/']
+aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/cast-functions-and-operators/']
 ---
 
 # Cast 函数和操作符

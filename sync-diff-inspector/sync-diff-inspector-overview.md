@@ -1,7 +1,7 @@
 ---
 title: sync-diff-inspector 用户文档
 category: tools
-aliases: ['/docs-cn/dev/reference/tools/sync-diff-inspector/overview/']
+aliases: ['/docs-cn/stable/reference/tools/sync-diff-inspector/overview/']
 ---
 
 # sync-diff-inspector 用户文档

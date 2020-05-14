@@ -2,7 +2,7 @@
 title: SHOW CREATE SEQUENCE
 summary: TiDB 数据库中 SHOW CREATE SEQUENCE 的使用概况。
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-create-sequence/']
+aliases: ['/docs-cn/stable/reference/sql/statements/show-create-sequence/']
 ---
 
 # SHOW CREATE SEQUENCE

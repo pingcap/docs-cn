@@ -1,7 +1,7 @@
 ---
 title: 权限管理
 category: reference
-aliases: ['/docs-cn/dev/reference/security/privilege-system/']
+aliases: ['/docs-cn/stable/reference/security/privilege-system/']
 ---
 
 # 权限管理

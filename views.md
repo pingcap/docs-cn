@@ -1,7 +1,7 @@
 ---
 title: 视图
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/view/']
+aliases: ['/docs-cn/stable/reference/sql/view/']
 ---
 
 # 视图

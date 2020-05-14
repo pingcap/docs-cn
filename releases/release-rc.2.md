@@ -1,7 +1,7 @@
 ---
 title: TiDB RC2 Release Notes
 category: Releases
-aliases: ['/docs-cn/dev/releases/rc2/']
+aliases: ['/docs-cn/stable/releases/rc2/']
 ---
 
 # TiDB RC2 Release Notes

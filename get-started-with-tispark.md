@@ -1,7 +1,7 @@
 ---
 title: TiSpark 快速入门指南
 category: how-to
-aliases: ['/docs-cn/dev/how-to/get-started/tispark/']
+aliases: ['/docs-cn/stable/how-to/get-started/tispark/']
 ---
 
 # TiSpark 快速入门指南

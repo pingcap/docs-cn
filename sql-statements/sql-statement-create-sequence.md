@@ -2,7 +2,7 @@
 title: CREATE SEQUENCE
 summary: CREATE SEQUENCE 在 TiDB 中的使用概况
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/create-sequence/']
+aliases: ['/docs-cn/stable/reference/sql/statements/create-sequence/']
 ---
 
 # CREATE SEQUENCE

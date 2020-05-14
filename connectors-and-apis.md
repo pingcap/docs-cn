@@ -1,7 +1,7 @@
 ---
 title: 连接器和 API
 category: reference
-aliases: ['/docs-cn/dev/reference/supported-clients/']
+aliases: ['/docs-cn/stable/reference/supported-clients/']
 ---
 
 # 连接器和 API

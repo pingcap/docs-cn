@@ -1,7 +1,7 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
+aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/tiup/']
 ---
 
 # 使用 TiUP 部署 TiDB 集群

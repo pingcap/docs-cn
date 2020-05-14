@@ -1,7 +1,7 @@
 ---
 title: 部署 TiFlash 集群
 category: reference
-aliases: ['/docs-cn/dev/reference/tiflash/deploy/']
+aliases: ['/docs-cn/stable/reference/tiflash/deploy/']
 ---
 
 # 部署 TiFlash 集群
