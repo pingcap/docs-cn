@@ -61,7 +61,7 @@ TiDB Ansible 版本：3.0.8
     - `tidb_enable_table_partition` 变量支持 GLOBAL SCOPE 作用域 [#14091](https://github.com/pingcap/tidb/pull/14091)
     - 修复新增权限时未正确将新增的权限赋予对应的用户导致用户权限可能缺失或者被误添加的问题 [#14178](https://github.com/pingcap/tidb/pull/14178)
     - 修复当 TiKV 链接断开时，由于 `rpcClient` 不会关闭而导致 `CheckStreamTimeoutLoop` goroutine 会泄露的问题 [#14227](https://github.com/pingcap/tidb/pull/14227)
-    - 支持基于证书的身份验证（[使用文档](/reference/security/cert-based-authentication.md)）[#13955](https://github.com/pingcap/tidb/pull/13955)
+    - 支持基于证书的身份验证（[使用文档](/certificate-authentication.md)）[#13955](https://github.com/pingcap/tidb/pull/13955)
 + Transaction
     - 创建新集群时，`tidb_txn_mode` 变量的默认值由 `""` 改为 `"pessimistic"` [#14171](https://github.com/pingcap/tidb/pull/14171)
     - 修复悲观事务模式，事务重试时单条语句的等锁时间没有被重置导致等锁时间过长的问题 [#13990](https://github.com/pingcap/tidb/pull/13990)

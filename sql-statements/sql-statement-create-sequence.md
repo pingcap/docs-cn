@@ -318,5 +318,5 @@ select setval(seq, 6)   // 设置序列的当前值为 6。
 
 ## 另请参阅
 
-* [DROP SEQUENCE](/reference/sql/statements/drop-sequence.md)
-* [SHOW CREATE SEQUENCE](/reference/sql/statements/show-create-sequence.md)
+* [DROP SEQUENCE](/sql-statements/sql-statement-drop-sequence.md)
+* [SHOW CREATE SEQUENCE](/sql-statements/sql-statement-show-create-sequence.md)

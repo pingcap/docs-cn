@@ -23,7 +23,7 @@ category: reference
 
 + 配置文件
 + 默认：""
-+ 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件中的配置。详细的配置项请参阅 [TiDB 配置文件描述](/reference/configuration/tidb-server/configuration-file.md)。
++ 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件中的配置。详细的配置项请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md)。
 
 ## `--cors`
 

@@ -5,7 +5,7 @@ category: reference
 
 # 执行计划绑定
 
-在[优化器 Hints](/reference/performance/optimizer-hints.md) 中介绍了可以通过 Hint 的方式选择指定的执行计划，但有的时候需要在不修改 SQL 语句的情况下干预执行计划的选择。执行计划绑定提供了一系列功能使得可以在不修改 SQL 语句的情况下选择指定的执行计划。
+在[优化器 Hints](/optimizer-hints.md) 中介绍了可以通过 Hint 的方式选择指定的执行计划，但有的时候需要在不修改 SQL 语句的情况下干预执行计划的选择。执行计划绑定提供了一系列功能使得可以在不修改 SQL 语句的情况下选择指定的执行计划。
 
 ## 语法
 
@@ -122,7 +122,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 > **注意：**
 >
-> 自动绑定功能依赖于 [Statement Summary](/reference/performance/statement-summary.md)，因此在使用自动绑定之前需打开 Statement Summary 开关。
+> 自动绑定功能依赖于 [Statement Summary](/statement-summary-tables.md)，因此在使用自动绑定之前需打开 Statement Summary 开关。
 
 开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）会遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 

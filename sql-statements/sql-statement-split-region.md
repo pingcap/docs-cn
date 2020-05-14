@@ -357,8 +357,8 @@ region4:   [ 3<<61     ,  +inf  )
 
 ## 相关 session 变量
 
-和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_scatter_region`，`tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/reference/configuration/tidb-server/tidb-specific-variables.md)。
+和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_scatter_region`，`tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
 
 ## 另请参阅
 
-* [SHOW TABLE REGIONS](/reference/sql/statements/show-table-regions.md)
+* [SHOW TABLE REGIONS](/sql-statements/sql-statement-show-table-regions.md)

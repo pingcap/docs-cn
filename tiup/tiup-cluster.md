@@ -5,7 +5,7 @@ category: tools
 
 # 使用 TiUP 部署运维 TiDB 线上集群
 
-本文重在介绍如何使用 TiUP 的 cluster 组件，如果需要线上部署的完整步骤，可参考[使用 TiUP 部署 TiDB 集群](/how-to/deploy/orchestrated/tiup.md)。
+本文重在介绍如何使用 TiUP 的 cluster 组件，如果需要线上部署的完整步骤，可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
 与 playground 组件用于部署本地集群类似，cluster 组件用于快速部署生产集群。对比 playground，cluster 组件提供了更强大的集群管理功能，包括对集群的升级、缩容、扩容甚至操作、审计等。
 
@@ -191,7 +191,7 @@ ID                  Role        Host          Ports        Status     Data Dir  
 
 > **注意：**
 >
-> 本节只展示缩容命令的语法示例，线上扩缩容具体步骤可参考[使用 TiUP 扩容缩容 TiDB 集群](/how-to/scale/with-tiup.md)。
+> 本节只展示缩容命令的语法示例，线上扩缩容具体步骤可参考[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)。
 
 缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关数据文件。
 
@@ -256,7 +256,7 @@ ID                  Role        Host          Ports        Status     Data Dir  
 
 > **注意：**
 >
-> 本节只用于展示扩容命令的语法示例，线上扩缩容可参考[使用 TiUP 扩容缩容 TiDB 集群](/how-to/scale/with-tiup.md)。
+> 本节只用于展示扩容命令的语法示例，线上扩缩容可参考[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)。
 
 扩容的内部逻辑与部署类似，TiUP cluster 组件会先保证节点的 SSH 连接，在目标节点上创建必要的目录，然后执行部署并且启动服务。其中 PD 节点的扩容会通过 join 方式加入到集群中，并且会更新与 PD 有关联的服务的配置；其他服务直接启动加入到集群中。所有服务在扩容时都会做正确性验证，最终返回是否扩容成功。
 
@@ -292,7 +292,7 @@ ID                  Role        Host          Ports        Status     Data Dir  
 
 > **注意：**
 >
-> 本节只用于展示命令的语法示例，线上升级请参考[使用 TiUP 升级 TiDB](/how-to/upgrade/using-tiup.md)。
+> 本节只用于展示命令的语法示例，线上升级请参考[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md)。
 
 滚动升级功能借助 TiDB 的分布式能力，升级过程中尽量保证对前端业务透明、无感知。升级时会先检查各个组件的配置文件是否合理，如果配置有问题，则报错退出；如果配置没有问题，则工具会逐个节点进行升级。其中对不同节点有不同的操作。
 

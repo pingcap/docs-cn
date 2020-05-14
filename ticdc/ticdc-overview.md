@@ -5,7 +5,7 @@ category: reference
 
 # TiCDC 简介
 
-[TiCDC](https://github.com/pingcap/ticdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供[开放数据协议](/reference/tools/ticdc/open-protocol.md) (TiCDC Open Protocol)，支持其他系统订阅数据变更。
+[TiCDC](https://github.com/pingcap/ticdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供[开放数据协议](/ticdc/ticdc-open-protocol.md) (TiCDC Open Protocol)，支持其他系统订阅数据变更。
 
 ## TiCDC 架构
 
@@ -53,5 +53,5 @@ TiCDC 的系统架构如下图所示：
 目前 TiCDC（4.0 发布版本）与部分 TiDB 特性存在冲突，在后续的 TiCDC 版本上会逐渐修复。当前版本需要做相应的兼容性处理。暂不支持的场景如下：
 
 - 暂不支持同步分区表。
-- 暂不支持 TiDB 4.0 [新的 Collation 框架](/reference/sql/characterset-and-collation.md#新框架下的-collation-支持)。如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现 collation 导致的无法定位数据的问题。
+- 暂不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的-collation-支持)。如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现 collation 导致的无法定位数据的问题。
 - 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。

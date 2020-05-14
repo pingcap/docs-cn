@@ -75,6 +75,6 @@ SHOW DATABASES;
 
 ## 另请参阅
 
-* [SHOW SCHEMAS](/reference/sql/statements/show-schemas.md)
-* [DROP DATABASE](/reference/sql/statements/drop-database.md)
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
+* [SHOW SCHEMAS](/sql-statements/sql-statement-show-schemas.md)
+* [DROP DATABASE](/sql-statements/sql-statement-drop-database.md)
+* [CREATE DATABASE](/sql-statements/sql-statement-create-database.md)
