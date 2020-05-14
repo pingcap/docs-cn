@@ -51,7 +51,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 该命令导入的同时，会给测试的表[创建 TiFlash 副本](/reference/tiflash/use-tiflash.md#按表构建-tiflash-副本)。在完成数据导入后，该命令会自动对表进行 `analyze table` 操作，收集[统计信息](/reference/performance/statistics.md)，供 TiDB 优化器优化执行计划。
 
 ```bash
-tiup bench tpch prepare
+tiup bench tpch prepare \
     --host ${tidb_host} --port 4000 --db tpch_10 --password ${password} \
     --sf 10 \
     --tiflash \
