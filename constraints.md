@@ -1,7 +1,7 @@
 ---
 title: 约束
 category: reference
-aliases: ['/docs-cn/sql/constraints/']
+aliases: ['/docs-cn/v3.0/reference/sql/constraints/','/docs-cn/sql/constraints/']
 ---
 
 # 约束

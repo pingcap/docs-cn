@@ -1,6 +1,7 @@
 ---
 title: TiDB 工具下载
 category: reference
+aliases: ['/docs-cn/v3.0/reference/tools/download/']
 ---
 
 # TiDB 工具下载

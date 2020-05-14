@@ -1,7 +1,7 @@
 ---
 title: 字符集支持
 category: reference
-aliases: ['/docs-cn/sql/character-set-support/']
+aliases: ['/docs-cn/v3.0/reference/sql/character-set/','/docs-cn/sql/character-set-support/']
 ---
 
 # 字符集支持

@@ -1,7 +1,7 @@
 ---
 title: 系统变量
 category: reference
-aliases: ['/docs-cn/sql/variable/']
+aliases: ['/docs-cn/v3.0/reference/configuration/tidb-server/mysql-variables/','/docs-cn/sql/variable/']
 
 ---
 

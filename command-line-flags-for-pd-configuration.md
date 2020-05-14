@@ -1,7 +1,7 @@
 ---
 title: PD 配置参数
 category: reference
-aliases: ['/docs-cn/op-guide/pd-configuration/']
+aliases: ['/docs-cn/v3.0/reference/configuration/pd-server/configuration/','/docs-cn/op-guide/pd-configuration/']
 ---
 
 # PD 配置参数
