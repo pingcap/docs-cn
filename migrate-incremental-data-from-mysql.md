@@ -1,6 +1,7 @@
 ---
 title: 增量数据复制
 category: how-to
+aliases: ['/docs-cn/v2.1/how-to/migrate/incrementally-from-mysql/']
 ---
 
 # 增量数据复制

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0.8 release notes
 category: Releases
+aliases: ['/docs-cn/v2.1/releases/208/']
 ---
 
 # TiDB 2.0.8 Release Notes

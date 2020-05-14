@@ -2,6 +2,7 @@
 title: SHOW INDEX [FROM|IN]
 summary: TiDB 数据库中 SHOW INDEX [FROM|IN] 的使用概况。
 category: reference
+aliases: ['/docs-cn/v2.1/reference/sql/statements/show-index/']
 ---
 
 # SHOW INDEX [FROM|IN]
