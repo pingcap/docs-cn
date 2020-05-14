@@ -54,6 +54,6 @@ mysql> SELECT USER, HOST, PASSWORD FROM mysql.`user`  WHERE USER = 'newuser';
 
 ## 另请参阅
 
-* [Security Compatibility with MySQL](/reference/security/compatibility.md)
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [DROP USER](/reference/sql/statements/drop-user.md)
+* [Security Compatibility with MySQL](/security-compatibility-with-mysql.md)
+* [CREATE USER](/sql-statements/sql-statement-create-user.md)
+* [DROP USER](/sql-statements/sql-statement-drop-user.md)

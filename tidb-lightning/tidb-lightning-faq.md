@@ -52,7 +52,7 @@ mysql> ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## TiDB Lightning 支持哪些格式的数据源？
 
-到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [Mydumper](/reference/tools/mydumper.md) 或 [CSV](/reference/tools/tidb-lightning/csv.md) 格式。
+到 v2.1.6 版本为止，只支持本地文档形式的数据源，支持 [Mydumper](/mydumper-overview.md) 或 [CSV](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) 格式。
 
 ## 我已经在下游创建好库和表了，Lightning 可以忽略建库建表操作吗？
 
@@ -99,7 +99,7 @@ sql-mode = ""
 2018/08/10 07:29:08.310 main.go:47: [info] Got signal hangup to exit.
 ```
 
-不推荐在命令行中直接使用 `nohup` 启动进程，推荐按照 [启动 tidb-lightning](/reference/tools/tidb-lightning/deployment.md) 使用脚本启动。
+不推荐在命令行中直接使用 `nohup` 启动进程，推荐按照 [启动 tidb-lightning](/tidb-lightning/deploy-tidb-lightning.md) 使用脚本启动。
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 

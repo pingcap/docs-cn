@@ -60,5 +60,5 @@ mysql> SELECT USER, HOST, PASSWORD FROM mysql.`user`  WHERE USER = 'newuser';
 
 ## 另请参阅
 
-* [CREATE USER](/reference/sql/statements/create-user.md)
-* [Privilege Management](/reference/security/privilege-system.md)
+* [CREATE USER](/sql-statements/sql-statement-create-user.md)
+* [Privilege Management](/privilege-management.md)

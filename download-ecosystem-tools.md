@@ -9,7 +9,7 @@ category: reference
 
 ## TiDB Binlog
 
-如需下载最新版本的 [TiDB Binlog](/reference/tidb-binlog/overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
+如需下载最新版本的 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
 
 以下表格中也提供了 Kafka 版本的 TiDB Binlog 下载链接。
 
@@ -24,7 +24,7 @@ category: reference
 
 ## TiDB Lightning
 
-使用下表中的链接下载 [TiDB Lightning](/reference/tools/tidb-lightning/overview.md)：
+使用下表中的链接下载 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -48,7 +48,7 @@ category: reference
 
 ## Syncer，Loader 和 Mydumper
 
-如需下载最新版本的 [Syncer](/reference/tools/syncer.md)，[Loader](/reference/tools/loader.md) 或 [Mydumper](/reference/tools/mydumper.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
+如需下载最新版本的 [Syncer](/syncer-overview.md)，[Loader](/loader-overview.md) 或 [Mydumper](/mydumper-overview.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -60,4 +60,4 @@ tidb-enterprise-tools 安装包包含以下工具：
 - Loader
 - Mydumper
 - ddl_checker
-- [sync-diff-inspector](/reference/tools/sync-diff-inspector/overview.md)
+- [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)

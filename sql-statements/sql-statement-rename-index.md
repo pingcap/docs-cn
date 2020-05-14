@@ -56,7 +56,7 @@ Create Table: CREATE TABLE `t1` (
 
 ## 另请参阅
 
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
-* [CREATE INDEX](/reference/sql/statements/create-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [SHOW INDEX](/reference/sql/statements/show-index.md)
+* [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
+* [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
+* [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
+* [SHOW INDEX](/sql-statements/sql-statement-show-index.md)

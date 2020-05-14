@@ -39,7 +39,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## 另请参阅
 
-* [START TRANSACTION](/reference/sql/statements/start-transaction.md)
-* [ROLLBACK](/reference/sql/statements/rollback.md)
-* [BEGIN](/reference/sql/statements/begin.md)
-* [事务的惰性检查](/reference/transactions/overview.md#事务的惰性检查)
+* [START TRANSACTION](/sql-statements/sql-statement-start-transaction.md)
+* [ROLLBACK](/sql-statements/sql-statement-rollback.md)
+* [BEGIN](/sql-statements/sql-statement-begin.md)
+* [事务的惰性检查](/transaction-overview.md#事务的惰性检查)

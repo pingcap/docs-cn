@@ -84,4 +84,4 @@ mysql> SELECT * FROM t1;
 
 ## 另请参阅
 
-* [SHOW ERRORS](/reference/sql/statements/show-errors.md)
+* [SHOW ERRORS](/sql-statements/sql-statement-show-errors.md)

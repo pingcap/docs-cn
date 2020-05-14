@@ -47,5 +47,5 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 
 ## 另请参阅
 
-* [INSERT](/reference/sql/statements/insert.md)
-* [乐观事务模型](/reference/transactions/transaction-optimistic.md)
+* [INSERT](/sql-statements/sql-statement-insert.md)
+* [乐观事务模型](/optimistic-transaction.md)

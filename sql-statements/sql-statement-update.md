@@ -71,7 +71,7 @@ mysql> SELECT * FROM t1;
 
 ## 另请参阅
 
-* [INSERT](/reference/sql/statements/insert.md)
-* [SELECT](/reference/sql/statements/select.md)
-* [DELETE](/reference/sql/statements/delete.md)
-* [REPLACE](/reference/sql/statements/replace.md)
+* [INSERT](/sql-statements/sql-statement-insert.md)
+* [SELECT](/sql-statements/sql-statement-select.md)
+* [DELETE](/sql-statements/sql-statement-delete.md)
+* [REPLACE](/sql-statements/sql-statement-replace.md)

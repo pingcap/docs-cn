@@ -60,7 +60,7 @@ TiDB 中事务使用两阶段提交，流程如下：
 * 需要一个中心化的版本管理服务。
 * 事务数据量过大时易导致内存暴涨。
 
-实际应用中，你可以[根据事务的大小进行针对性处理](/reference/transactions/overview.md#事务大小)，以提高事务的执行效率。
+实际应用中，你可以[根据事务的大小进行针对性处理](/transaction-overview.md#事务大小)，以提高事务的执行效率。
 
 ## 事务的重试
 
@@ -114,7 +114,7 @@ tidb_retry_limit = 10
 
 ### 重试的局限性
 
-TiDB 默认不进行事务重试，因为重试事务可能会导致更新丢失，从而破坏[可重复读的隔离级别](/reference/transactions/transaction-isolation.md)。
+TiDB 默认不进行事务重试，因为重试事务可能会导致更新丢失，从而破坏[可重复读的隔离级别](/transaction-isolation-levels.md)。
 
 事务重试的局限性与其原理有关。事务重试可概括为以下三个步骤：
 
