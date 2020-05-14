@@ -425,7 +425,7 @@ prepare 语句的 Plan cache 设置。
 
 ### `enable`
 
-+ 是否开启[下推计算结果缓存](/reference/performance/coprocessor-cache.md)。
++ 是否开启[下推计算结果缓存](/coprocessor-cache.md)。
 + 默认值：false（即不开启）
 
 ### `capacity-mb`
