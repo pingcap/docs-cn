@@ -288,7 +288,7 @@
     - [使用 Index Merge 方式访问表](/index-merge.md)
     - [Statement Summary Table](/statement-summary-tables.md)
     - [Max/Min 函数消除规则](/max-min-eliminate.md)
-    - [下推计算结果缓存](coprocessor-cache.md)
+    - [下推计算结果缓存](/coprocessor-cache.md)
     - [TiKV 调优](/tune-tikv-performance.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + 监控指标
