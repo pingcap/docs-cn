@@ -9,11 +9,11 @@ category: reference
 >
 > 当前 `AUTO_RANDOM` 属性为实验功能，**不建议在生产环境中使用**。在后续版本中，`AUTO_RANDOM` 的语法或语义可能会变化。
 
-使用 `AUTO_RANDOM` 功能前，须在 TiDB 配置文件 `experimental` 部分设置 `allow-auto-random = true`。该参数详情可参见 [`allow-auto-random`](/reference/configuration/tidb-server/configuration-file.md#allow-auto-random)。
+使用 `AUTO_RANDOM` 功能前，须在 TiDB 配置文件 `experimental` 部分设置 `allow-auto-random = true`。该参数详情可参见 [`allow-auto-random`](/tidb-configuration-file.md#allow-auto-random)。
 
 ## 使用场景
 
-`AUTO_RANDOM` 用于解决大批量写数据入 TiDB 时因含有**整型自增主键列**的表而产生的热点问题。详情参阅 [TiDB 高并发写入场景最佳实践](/reference/best-practices/high-concurrency.md)。
+`AUTO_RANDOM` 用于解决大批量写数据入 TiDB 时因含有**整型自增主键列**的表而产生的热点问题。详情参阅 [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)。
 
 以下面语句建立的表为例：
 

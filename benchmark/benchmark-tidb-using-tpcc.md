@@ -106,7 +106,7 @@ enabled = true
 
 ### TiKV 配置
 
-开始可以使用基本的配置，压测运行后可以通过观察 Grafana 并参考 [TiKV 调优说明](/reference/performance/tune-tikv.md)进行调整。
+开始可以使用基本的配置，压测运行后可以通过观察 Grafana 并参考 [TiKV 调优说明](/tune-tikv-performance.md)进行调整。
 
 ### BenchmarkSQL 配置
 
@@ -183,11 +183,11 @@ fileLocation=/home/user/csv/tpcc.  # 存储 csv 文件的目录绝对路径 + �
 
 #### 通过 Lightning 导入
 
-通过 Lightning 导入数据请参考 [Lightning 部署执行](/reference/tools/tidb-lightning/deployment.md)章节。这里我们介绍下通过 TiDB Ansible 部署 Lightning 导入数据的方法。
+通过 Lightning 导入数据请参考 [Lightning 部署执行](/tidb-lightning/deploy-tidb-lightning.md)章节。这里我们介绍下通过 TiDB Ansible 部署 Lightning 导入数据的方法。
 
 ##### 修改 inventory.ini
 
-这里最好手动指定清楚部署的 IP、端口、目录，避免各种冲突问题带来的异常，其中 import_dir 的磁盘空间参考 [Lightning 部署执行](/reference/tools/tidb-lightning/deployment.md)，data_source_dir 就是存储上一节 csv 数据的目录。
+这里最好手动指定清楚部署的 IP、端口、目录，避免各种冲突问题带来的异常，其中 import_dir 的磁盘空间参考 [Lightning 部署执行](/tidb-lightning/deploy-tidb-lightning.md)，data_source_dir 就是存储上一节 csv 数据的目录。
 
 ```ini
 [importer_server]

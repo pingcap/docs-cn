@@ -74,7 +74,7 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 ![QPS3](/media/best-practices/QPS3.png)
 
-[Raft store CPU](/reference/key-monitoring-metrics/tikv-dashboard.md) 为 `raftstore` 线程的 CPU 使用率，通常代表写入的负载。在这个场景下 tikv-3 为 Raft Leader，tikv-0 和 tikv-1 是 Raft 的 Follower，其他的 TiKV 节点的负载几乎为空。
+[Raft store CPU](/grafana-tikv-dashboard.md) 为 `raftstore` 线程的 CPU 使用率，通常代表写入的负载。在这个场景下 tikv-3 为 Raft Leader，tikv-0 和 tikv-1 是 Raft 的 Follower，其他的 TiKV 节点的负载几乎为空。
 
 从 PD 的监控中也可以证明热点的产生：
 
@@ -106,7 +106,7 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 为了达到场景理论中的最佳性能，可以跳过这个预热阶段，直接将 Region 切分为预期的数量，提前调度到集群的各个节点中。
 
-TiDB 在 v3.0.x 以及 v2.1.13 后支持一个叫 [Split Region](/reference/sql/statements/split-region.md) 的新特性。这个特性提供了新的语法：
+TiDB 在 v3.0.x 以及 v2.1.13 后支持一个叫 [Split Region](/sql-statements/sql-statement-split-region.md) 的新特性。这个特性提供了新的语法：
 
 {{< copyable "sql" >}}
 
@@ -166,15 +166,15 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 可以看到已经消除了明显的热点问题了。
 
-本示例仅为一个简单的表，还有索引热点的问题需要考虑。读者可参阅 [Split Region](/reference/sql/statements/split-region.md) 文档来了解如何预先切散索引相关的 Region。
+本示例仅为一个简单的表，还有索引热点的问题需要考虑。读者可参阅 [Split Region](/sql-statements/sql-statement-split-region.md) 文档来了解如何预先切散索引相关的 Region。
 
 ### 更复杂的热点问题
 
 **问题一：**
 
-如果表没有主键或者主键不是整数类型，而且用户也不想自己生成一个随机分布的主键 ID 的话，TiDB 内部有一个隐式的 `_tidb_rowid` 列作为行 ID。在不使用 `SHARD_ROW_ID_BITS` 的情况下，`_tidb_rowid` 列的值基本也为单调递增，此时也会有写热点存在（参阅 [`SHARD_ROW_ID_BITS` 的详细说明](/reference/configuration/tidb-server/tidb-specific-variables.md#shard_row_id_bits)）。
+如果表没有主键或者主键不是整数类型，而且用户也不想自己生成一个随机分布的主键 ID 的话，TiDB 内部有一个隐式的 `_tidb_rowid` 列作为行 ID。在不使用 `SHARD_ROW_ID_BITS` 的情况下，`_tidb_rowid` 列的值基本也为单调递增，此时也会有写热点存在（参阅 [`SHARD_ROW_ID_BITS` 的详细说明](/tidb-specific-system-variables.md#shard_row_id_bits)）。
 
-要避免由 `_tidb_rowid` 带来的写入热点问题，可以在建表时，使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 这两个建表选项（参阅 [`PRE_SPLIT_REGIONS` 的详细说明](/reference/sql/statements/split-region.md#pre_split_regions)）。
+要避免由 `_tidb_rowid` 带来的写入热点问题，可以在建表时，使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 这两个建表选项（参阅 [`PRE_SPLIT_REGIONS` 的详细说明](/sql-statements/sql-statement-split-region.md#pre_split_regions)）。
 
 `SHARD_ROW_ID_BITS` 用于将 `_tidb_rowid` 列生成的行 ID 随机打散。`pre_split_regions` 用于在建完表后预先进行 Split region。
 
@@ -199,11 +199,11 @@ create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=3;
 
 如果表的主键为整数类型，并且该表使用了 `AUTO_INCREMENT` 来保证主键唯一性（不需要连续或递增）的表而言，由于 TiDB 直接使用主键行值作为 `_tidb_rowid`，此时无法使用 `SHARD_ROW_ID_BITS` 来打散热点。
 
-要解决上述热点问题，可以利用 `AUTO_RANDOM` 列属性（参阅 [`AUTO_RANDOM` 的详细说明](/reference/sql/attributes/auto-random.md)），将 `AUTO_INCREMENT` 改为 `AUTO_RANDOM`，插入数据时让 TiDB 自动为整型主键列分配一个值，消除行 ID 的连续性，从而达到打散热点的目的。
+要解决上述热点问题，可以利用 `AUTO_RANDOM` 列属性（参阅 [`AUTO_RANDOM` 的详细说明](/auto-random.md)），将 `AUTO_INCREMENT` 改为 `AUTO_RANDOM`，插入数据时让 TiDB 自动为整型主键列分配一个值，消除行 ID 的连续性，从而达到打散热点的目的。
 
 ## 参数配置
 
-TiDB 2.1 版本中在 SQL 层引入了 [latch 机制](/reference/configuration/tidb-server/configuration-file.md#txn-local-latches)，用于在写入冲突比较频繁的场景中提前发现事务冲突，减少 TiDB 和 TiKV 事务提交时写写冲突导致的重试。通常，跑批场景使用的是存量数据，所以并不存在事务的写入冲突。可以把 TiDB 的 latch 功能关闭，以减少为细小对象分配内存：
+TiDB 2.1 版本中在 SQL 层引入了 [latch 机制](/tidb-configuration-file.md#txn-local-latches)，用于在写入冲突比较频繁的场景中提前发现事务冲突，减少 TiDB 和 TiKV 事务提交时写写冲突导致的重试。通常，跑批场景使用的是存量数据，所以并不存在事务的写入冲突。可以把 TiDB 的 latch 功能关闭，以减少为细小对象分配内存：
 
 ```
 [txn-local-latches]

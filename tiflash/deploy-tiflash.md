@@ -24,11 +24,11 @@ category: reference
 
 推荐用一个 SSD 盘来缓冲 TiKV 同步数据的实时写入，该盘性能不低于 TiKV 所使用的硬盘，建议是性能更好的 NVMe SSD。该 SSD 盘容量建议不小于总容量的 10%，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他硬盘，可以选择部署多块 HDD 或者普通 SSD，当然更好的硬盘会带来更好的性能。
 
-TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)，所以无需使用 RAID。
+TiFlash 支持[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)，所以无需使用 RAID。
 
 ### TiFlash 和 TiKV 部署在相同节点模式
 
-参考 [TiKV 节点的硬件配置](/how-to/deploy/hardware-recommendations.md#服务器建议配置)，并且适当增加内存和 CPU 核数。
+参考 [TiKV 节点的硬件配置](/hardware-and-software-requirements.md#服务器建议配置)，并且适当增加内存和 CPU 核数。
 
 建议不要将 TiFlash 与 TiKV 同盘部署，以防互相干扰。
 
@@ -70,9 +70,9 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
     ansible-playbook local_prepare.yml
     ```
 
-3. 编辑 `inventory.ini` 配置文件，除了[部署 TiDB 集群的配置](/how-to/deploy/orchestrated/ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)，需要额外在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip (目前只支持 ip，不支持域名)。
+3. 编辑 `inventory.ini` 配置文件，除了[部署 TiDB 集群的配置](/online-deployment-using-ansible.md#第-9-步编辑-inventoryini-文件分配机器资源)，需要额外在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip (目前只支持 ip，不支持域名)。
 
-    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望[多盘部署](/reference/tiflash/configuration.md#多盘部署)，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
+    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
 
     {{< copyable "" >}}
 
@@ -81,19 +81,19 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
     192.168.1.1 data_dir=/data1/tiflash/data,/data2/tiflash/data
     ```
 
-4. 按照 TiDB Ansible 部署流程完成集群部署的[剩余步骤](/how-to/deploy/orchestrated/ansible.md#第-10-步调整-inventoryini-文件中的变量)。
+4. 按照 TiDB Ansible 部署流程完成集群部署的[剩余步骤](/online-deployment-using-ansible.md#第-10-步调整-inventoryini-文件中的变量)。
 
-5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
+5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
 
 ### 在原有 TiDB 集群上新增 TiFlash 组件
 
-1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先按照 [TiDB 升级操作指南](/how-to/upgrade/from-previous-version.md)升级 TiDB 集群至 3.1 rc 以上版本。
+1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先按照 [TiDB 升级操作指南](/upgrade-tidb-using-ansible.md)升级 TiDB 集群至 3.1 rc 以上版本。
 
 2. 在 pd-ctl（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
 
 3. 编辑 `inventory.ini` 配置文件，并在 `[tiflash_servers]` 下配置 tiflash servers 所在的 ip（目前只支持 ip，不支持域名）。
 
-    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望[多盘部署](/reference/tiflash/configuration.md#多盘部署)，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
+    如果希望自定义部署目录，需要配置 `data_dir` 参数，不需要则不加。如果希望[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)，则以逗号分隔各部署目录（注意每个 `data_dir` 目录的上级目录需要赋予 tidb 用户写权限），例如：
 
     {{< copyable "" >}}
 
@@ -117,4 +117,4 @@ TiFlash 支持[多盘部署](/reference/tiflash/configuration.md#多盘部署)�
     ansible-playbook rolling_update_monitor.yml
     ```
 
-5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/reference/tools/pd-control.md) 执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。
+5. 验证 TiFlash 已部署成功的方式：通过 [pd-ctl](/pd-control.md) 执行 `pd-ctl store http://your-pd-address` 命令，可以观测到所部署的 TiFlash 实例状态为“Up”。

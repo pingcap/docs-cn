@@ -9,7 +9,7 @@ category: reference
 
 TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到默认值的配置文件，重命名为 config.toml 即可。
 
-本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [TiKV 配置参数](/reference/configuration/tikv-server/configuration.md)。
+本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [TiKV 配置参数](/command-line-flags-for-tikv-configuration.md)。
 
 ### `status-thread-pool-size`
 
@@ -1086,7 +1086,7 @@ import 相关的配置项。
 
 ### `enabled`
 
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/reference/transactions/transaction-pessimistic.md)。
++ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
 + 默认值：true
 
 ### `wait-for-lock-timeout`

@@ -90,5 +90,5 @@ Empty set (0.00 sec)
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
