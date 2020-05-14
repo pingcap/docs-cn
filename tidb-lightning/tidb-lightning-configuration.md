@@ -10,7 +10,7 @@ category: reference
 
 ## 配置文件
 
-TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，二者在结构上兼容。只有当[服务器模式](/reference/tools/tidb-lightning/web.md)开启时，全局配置和任务配置才会有区别；默认情况下，服务器模式为禁用状态，此时 TiDB Lightning 只会执行一个任务，且全局和任务配置使用同一配置文件。
+TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，二者在结构上兼容。只有当[服务器模式](/tidb-lightning/tidb-lightning-web-interface.md)开启时，全局配置和任务配置才会有区别；默认情况下，服务器模式为禁用状态，此时 TiDB Lightning 只会执行一个任务，且全局和任务配置使用同一配置文件。
 
 ### TiDB Lightning 全局配置
 
@@ -280,7 +280,7 @@ min-available-ratio = 0.05
 | -V | 输出程序的版本 | |
 | -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
-| --backend *backend* | 选择后端的模式：`importer` 或 [`tidb`](/reference/tools/tidb-lightning/tidb-backend.md) | `tikv-importer.backend` |
+| --backend *backend* | 选择后端的模式：`importer` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径 | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |

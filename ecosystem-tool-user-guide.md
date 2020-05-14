@@ -21,7 +21,7 @@ TiDB 生态工具可以分为几种：
 
 #### 全量导入工具 Loader（停止维护，不推荐使用）
 
-[Loader](/reference/tools/loader.md) 是一款轻量级的全量数据导入工具，数据以 SQL 的形式导入到 TiDB 中。目前这个工具正在逐步被 [TiDB Lightning](#全量导入工具-tidb-lightning) 替换掉，参见 [TiDB Lightning TiDB-backend 文档](/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
+[Loader](/loader-overview.md) 是一款轻量级的全量数据导入工具，数据以 SQL 的形式导入到 TiDB 中。目前这个工具正在逐步被 [TiDB Lightning](#全量导入工具-tidb-lightning) 替换掉，参见 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
 
 以下是 Loader 的一些基本信息：
 
@@ -32,7 +32,7 @@ TiDB 生态工具可以分为几种：
 
 #### 全量导入工具 TiDB Lightning
 
-[TiDB Lightning](/reference/tools/tidb-lightning/overview.md) 是将全量数据快速导入到一个新的 TiDB 集群的工具。
+[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是将全量数据快速导入到一个新的 TiDB 集群的工具。
 
 注意用 TiDB Lightning 导入数据到 TiDB 的时候，有两种模式：
 
@@ -49,7 +49,7 @@ TiDB 生态工具可以分为几种：
 
 #### 增量导入工具 Syncer（已停止维护，不推荐使用）
 
-[Syncer](/reference/tools/syncer.md) 是将 MySQL/MariaDB 增量 binlog 数据实时复制导入到 TiDB 的工具。目前推荐使用 [TiDB Data Migration](#增量导入工具-tidb-data-migration) 替换该工具。
+[Syncer](/syncer-overview.md) 是将 MySQL/MariaDB 增量 binlog 数据实时复制导入到 TiDB 的工具。目前推荐使用 [TiDB Data Migration](#增量导入工具-tidb-data-migration) 替换该工具。
 
 以下是 Syncer 的一些基本信息：
 
@@ -73,7 +73,7 @@ TiDB 生态工具可以分为几种：
 
 #### 全量导出工具 Mydumper
 
-[Mydumper](/reference/tools/mydumper.md) 用于对 MySQL/TiDB 进行全量逻辑备份。
+[Mydumper](/mydumper-overview.md) 用于对 MySQL/TiDB 进行全量逻辑备份。
 
 以下是 Mydumper 的一些基本信息：
 
@@ -84,7 +84,7 @@ TiDB 生态工具可以分为几种：
 
 #### 增量导出工具 TiDB Binlog
 
-[TiDB Binlog](/reference/tidb-binlog/overview.md) 是收集 TiDB 的 binlog，并提供准实时同步和备份的工具。
+[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的 binlog，并提供准实时同步和备份的工具。
 
 以下是 TiDB Binlog 的一些基本信息：
 
@@ -105,7 +105,7 @@ TiDB 生态工具可以分为几种：
 
 - Loader -> TiDB Lightning：
 
-    TiDB Lightning 集成了 Loader 的逻辑导入数据功能，参见 [TiDB Lightning TiDB-backend 文档](/reference/tools/tidb-lightning/tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)，由 TiDB Lightning 统一提供全量数据恢复功能。
+    TiDB Lightning 集成了 Loader 的逻辑导入数据功能，参见 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)，由 TiDB Lightning 统一提供全量数据恢复功能。
 
 ## 数据迁移解决方案
 

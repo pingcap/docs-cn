@@ -21,7 +21,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 
 
 > **注意：**
 >
-> 在 TiDB v3.0 中，事务的自动重试功能默认为禁用状态。关于该项功能对隔离级别的影响以及如何开启该项功能，请参考[事务重试](/reference/transactions/transaction-optimistic.md#重试机制)。
+> 在 TiDB v3.0 中，事务的自动重试功能默认为禁用状态。关于该项功能对隔离级别的影响以及如何开启该项功能，请参考[事务重试](/optimistic-transaction.md#重试机制)。
 
 ## 可重复读
 

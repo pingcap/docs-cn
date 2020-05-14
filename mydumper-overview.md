@@ -11,11 +11,11 @@ aliases: ['/docs-cn/tools/mydumper/']
 
 [Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，针对 TiDB 的特性进行了优化，推荐使用此工具对 TiDB 进行逻辑备份。
 
-Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
+Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/download-ecosystem-tools.md)。
 
 ### 相比于普通的 Mydumper，此工具有哪些改进之处？
 
-+ 对于 TiDB 可以设置 [tidb_snapshot](/how-to/get-started/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
++ 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
 + 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
 

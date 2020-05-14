@@ -52,11 +52,11 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 
 2. 把断点存放在外部数据库（修改 `[checkpoint] dsn`），减轻目标集群压力。
 
-3. 参考[如何正确重启 TiDB Lightning](/faq/tidb-lightning.md#如何正确重启-tidb-lightning)中的解决办法。
+3. 参考[如何正确重启 TiDB Lightning](/tidb-lightning/tidb-lightning-faq.md#如何正确重启-tidb-lightning)中的解决办法。
 
 ## Checkpoint for … has invalid status:（错误码）
 
-**原因**：[断点续传](/reference/tools/tidb-lightning/checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lightning 在错误解决以前不会启动。
+**原因**：[断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lightning 在错误解决以前不会启动。
 
 错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
@@ -70,7 +70,7 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
 ```
 
-其他解决方法请参考[断点续传的控制](/reference/tools/tidb-lightning/checkpoints.md#断点续传的控制)。
+其他解决方法请参考[断点续传的控制](/tidb-lightning/tidb-lightning-checkpoints.md#断点续传的控制)。
 
 ## ResourceTemporarilyUnavailable("Too many open engines …: …")
 

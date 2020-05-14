@@ -8,8 +8,8 @@ category: reference
 
 `ALTER TABLE` 语句用于对已有表进行修改，以符合新表结构。`ALTER TABLE` 语句可用于：
 
-* [`ADD`](/reference/sql/statements/add-index.md)，[`DROP`](/reference/sql/statements/drop-index.md)，或 [`RENAME`](/reference/sql/statements/rename-index.md) 索引
-* [`ADD`](/reference/sql/statements/add-column.md)，[`DROP`](/reference/sql/statements/drop-column.md)，[`MODIFY`](/reference/sql/statements/modify-column.md) 或 [`CHANGE`](/reference/sql/statements/change-column.md) 列
+* [`ADD`](/sql-statements/sql-statement-add-index.md)，[`DROP`](/sql-statements/sql-statement-drop-index.md)，或 [`RENAME`](/sql-statements/sql-statement-rename-index.md) 索引
+* [`ADD`](/sql-statements/sql-statement-add-column.md)，[`DROP`](/sql-statements/sql-statement-drop-column.md)，[`MODIFY`](/sql-statements/sql-statement-modify-column.md) 或 [`CHANGE`](/sql-statements/sql-statement-change-column.md) 列
 
 ## 语法图
 
@@ -98,11 +98,11 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## 另请参阅
 
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [DROP COLUMN](/reference/sql/statements/drop-column.md)
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
+* [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
+* [ADD INDEX](/sql-statements/sql-statement-add-index.md)
+* [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
+* [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
+* [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)

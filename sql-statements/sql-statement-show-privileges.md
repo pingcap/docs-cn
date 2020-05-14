@@ -68,5 +68,5 @@ show privileges;
 
 ## 另请参阅
 
-* [SHOW GRANTS](/reference/sql/statements/show-grants.md)
-* [GRANT <privileges>](/reference/sql/statements/grant-privileges.md)
+* [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
+* [GRANT <privileges>](/sql-statements/sql-statement-grant-privileges.md)
