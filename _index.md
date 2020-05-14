@@ -11,7 +11,7 @@ TiDB 具备如下特性：
 
 - 高度兼容 MySQL
 
-    [大多数情况下](/reference/mysql-compatibility.md)，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
+    [大多数情况下](/mysql-compatibility.md)，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
 
 - 水平弹性扩展
 
@@ -33,7 +33,7 @@ TiDB 具备如下特性：
 
     TiDB 是为云而设计的数据库，支持公有云、私有云和混合云，使部署、配置和维护变得十分简单。
 
-TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](/reference/tispark.md)来完成。
+TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](/tispark-overview.md)来完成。
 
 TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大的提升研发的生产力。
 
@@ -47,9 +47,9 @@ TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间
 
 TiDB 可以部署在本地和云平台上，支持公有云、私有云和混合云。你可以根据实际场景或需求，选择相应的方式来部署 TiDB 集群：
 
-- [使用 TiUP 部署](/how-to/deploy/orchestrated/tiup.md)：如果用于生产环境，推荐使用 TiUP 部署 TiDB 集群。
-- [使用 Docker Compose 部署](/how-to/get-started/deploy-tidb-from-docker-compose.md)：如果你只是想测试 TiDB、体验 TiDB 的特性，或者用于开发环境，可以使用 Docker Compose 在本地快速部署 TiDB 集群。该部署方式不适用于生产环境。
-- [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)：你可以使用 Docker 部署 TiDB 集群，但该部署方式不适用于生产环境。
+- [使用 TiUP 部署](/production-deployment-using-tiup.md)：如果用于生产环境，推荐使用 TiUP 部署 TiDB 集群。
+- [使用 Docker Compose 部署](/deploy-test-cluster-using-docker-compose.md)：如果你只是想测试 TiDB、体验 TiDB 的特性，或者用于开发环境，可以使用 Docker Compose 在本地快速部署 TiDB 集群。该部署方式不适用于生产环境。
+- [使用 Docker 部署](/test-deployment-using-docker.md)：你可以使用 Docker 部署 TiDB 集群，但该部署方式不适用于生产环境。
 - [使用 TiDB Operator 部署](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-operator/)：使用 TiDB Operator 在 Kubernetes 集群上部署生产就绪的 TiDB 集群，支持[部署到 AWS EKS](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-aws-eks/)、[部署到谷歌云 GKE (beta)](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)、[部署到阿里云 ACK](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud/) 等。
 - [使用 TiDB Operator 部署到 Minikube](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube/)：你可以使用 TiDB Operator 将 TiDB 集群部署到本地 Minikube 启动的 Kubernetes 集群中。该部署方式不适用于生产环境。
 - [使用 TiDB Operator 部署到 kind](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/)：你可以使用 TiDB Operator 将 TiDB 集群部署到以 kind 方式启动的 Kubernetes 本地集群中。该部署方式不适用于生产环境。
