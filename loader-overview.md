@@ -7,13 +7,13 @@ category: reference
 
 > **警告：**
 >
-> Loader 目前已经不再维护，其功能已经完全被 [TiDB Lightning 的 TiDB backend 功能](/reference/tools/tidb-lightning/tidb-backend.md)取代，强烈建议切换到 TiDB Lightning。
+> Loader 目前已经不再维护，其功能已经完全被 [TiDB Lightning 的 TiDB backend 功能](/tidb-lightning/tidb-lightning-tidb-backend.md)取代，强烈建议切换到 TiDB Lightning。
 
 ## Loader 简介
 
 Loader 是由 PingCAP 开发的数据导入工具，用于向 TiDB 中导入数据。
 
-Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/reference/tools/download.md)。
+Loader 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/download-ecosystem-tools.md)。
 
 ## 为什么我们要做这个工具
 

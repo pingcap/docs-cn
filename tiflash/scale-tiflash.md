@@ -93,7 +93,7 @@ category: reference
 >
 > 本节介绍的下线流程不会删除下线节点上的数据文件，如需再次上线，请先手动删除。
 
-1. 首先参考[下线 TiFlash 节点](/reference/tiflash/maintain.md#下线-tiflash-节点)章节，对要进行缩容的 TiFlash 节点进行下线操作。
+1. 首先参考[下线 TiFlash 节点](/tiflash/maintain-tiflash.md#下线-tiflash-节点)章节，对要进行缩容的 TiFlash 节点进行下线操作。
 
 2. 使用 Grafana 或者 pd-ctl 检查节点是否下线成功（下线需要一定时间）。
 

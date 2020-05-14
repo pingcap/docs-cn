@@ -9,15 +9,15 @@ category: reference
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/reference/tools/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）调整参数：
+可通过 [pd-ctl](/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）调整参数：
 
-- [`replica-schedule-limit`](/reference/configuration/pd-server/configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
+- [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
     > **注意：**
     >
     > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
 
-- [`store-balance-rate`](/reference/configuration/pd-server/configuration-file.md#store-balance-rate)：用于限制每个 store 的调度速度
+- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate)：用于限制每个 store 的调度速度
 
 ## TiFlash 配置参数
 

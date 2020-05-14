@@ -79,5 +79,5 @@ SHOW DATABASES;
 
 ## 另请参阅
 
-* [CREATE DATABASE](/reference/sql/statements/create-database.md)
-* [ALTER DATABASE](/reference/sql/statements/alter-database.md)
+* [CREATE DATABASE](/sql-statements/sql-statement-create-database.md)
+* [ALTER DATABASE](/sql-statements/sql-statement-alter-database.md)

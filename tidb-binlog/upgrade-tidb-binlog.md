@@ -6,7 +6,7 @@ aliases: ['/docs-cn/v3.1/how-to/upgrade/tidb-binlog/','/docs-cn/v3.1/reference/t
 
 # TiDB Binlog 版本升级方法
 
-如未特别指明，文中出现的 TiDB Binlog 均指最新的 [Cluster](/reference/tidb-binlog/overview.md) 版本。
+如未特别指明，文中出现的 TiDB Binlog 均指最新的 [Cluster](/tidb-binlog/tidb-binlog-overview.md) 版本。
 
 本文会分 TiDB Ansible 部署和手动部署两种情况介绍 TiDB Binlog 版本升级的方法，另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
 
@@ -55,7 +55,7 @@ TiDB Binlog 版本与 TiDB 版本的对应关系如下：
 
 > **注意：**
 >
-> 如果能接受重新导全量数据，则可以直接废弃老版本，按 [TiDB Binlog 集群部署](/reference/tidb-binlog/deploy.md)中的步骤重新部署。
+> 如果能接受重新导全量数据，则可以直接废弃老版本，按 [TiDB Binlog 集群部署](/tidb-binlog/deploy-tidb-binlog.md)中的步骤重新部署。
 
 如果想从原来的 checkpoint 继续同步，使用以下升级流程：
 

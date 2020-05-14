@@ -64,6 +64,6 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## 另请参阅
 
-* [COMMIT](/reference/sql/statements/commit.md)
-* [ROLLBACK](/reference/sql/statements/rollback.md)
-* [BEGIN](/reference/sql/statements/begin.md)
+* [COMMIT](/sql-statements/sql-statement-commit.md)
+* [ROLLBACK](/sql-statements/sql-statement-rollback.md)
+* [BEGIN](/sql-statements/sql-statement-begin.md)

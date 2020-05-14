@@ -130,19 +130,19 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 相关 session 变量
 
-和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_ddl_reorg_worker_cnt)。
+和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/tidb-specific-system-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * 不支持降序索引 （类似于 MySQL 5.7）。
-* 默认无法向表中添加 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/reference/configuration/tidb-server/configuration-file.md#alter-primary-key)。
+* 默认无法向表中添加 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/tidb-configuration-file.md#alter-primary-key)。
 
 ## 另请参阅
 
-* [ADD INDEX](/reference/sql/statements/add-index.md)
-* [DROP INDEX](/reference/sql/statements/drop-index.md)
-* [RENAME INDEX](/reference/sql/statements/rename-index.md)
-* [ADD COLUMN](/reference/sql/statements/add-column.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [EXPLAIN](/reference/sql/statements/explain.md)
+* [ADD INDEX](/sql-statements/sql-statement-add-index.md)
+* [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
+* [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
+* [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [EXPLAIN](/sql-statements/sql-statement-explain.md)

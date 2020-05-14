@@ -19,7 +19,7 @@ TiDB Ansible 版本：3.1.0-beta.2
 
 + Tools
     - TiDB Lightning
-        - 优化配置项，部分配置项在没有进行配置的时候使用 [TiDB Lightning 配置参数](/reference/tools/tidb-lightning/config.md)中的默认配置 [#255](https://github.com/pingcap/tidb-lightning/pull/255)
+        - 优化配置项，部分配置项在没有进行配置的时候使用 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)中的默认配置 [#255](https://github.com/pingcap/tidb-lightning/pull/255)
         - 新增 `--tidb-password` 命令行参数，用于设置 TiDB 的密码 [#253](https://github.com/pingcap/tidb-lightning/pull/253)
 
 ## 新功能

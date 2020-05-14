@@ -6,7 +6,7 @@ aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/br-best-practices/',
 
 # BR 备份与恢复场景示例
 
-[Backup & Restore](/reference/tools/br/br.md)（下文简称 BR）一款分布式的快速备份和恢复工具。本文展示了[四种备份和恢复场景](#使用场景)下的 BR 操作过程，以帮助读者达到以下目标：
+[Backup & Restore](/br/backup-and-restore-tool.md)（下文简称 BR）一款分布式的快速备份和恢复工具。本文展示了[四种备份和恢复场景](#使用场景)下的 BR 操作过程，以帮助读者达到以下目标：
 
 * 正确使用网络盘或本地盘进行备份或恢复
 * 通过相关监控指标了解备份或恢复的状态
@@ -15,11 +15,11 @@ aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/br-best-practices/',
 
 > **注意：**
 >
-> 使用 BR 时应注意[使用限制](/reference/tools/br/br.md#使用限制)。
+> 使用 BR 时应注意[使用限制](/br/backup-and-restore-tool.md#使用限制)。
 
 ## 目标读者
 
-读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读[使用 BR 进行备份与恢复](/reference/tools/br/br.md)。
+读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读[使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)。
 
 ## 环境准备
 
@@ -27,7 +27,7 @@ aliases: ['/docs-cn/v3.1/how-to/maintain/backup-and-restore/br-best-practices/',
 
 ### 部署方式
 
-推荐使用 [TiDB Ansible](/how-to/deploy/orchestrated/ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/reference/tools/download.md#快速备份和恢复br) 获取 BR 应用。
+推荐使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
 
 ### 集群版本
 
@@ -67,9 +67,9 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 ### 备份前的准备工作
 
-`br backup` 命令的详细使用方法请参考 [BR 命令行描述](/reference/tools/br/br.md#br-命令行描述)。
+`br backup` 命令的详细使用方法请参考 [BR 命令行描述](/br/backup-and-restore-tool.md#br-命令行描述)。
 
-1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/reference/garbage-collection/configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [Garbage Collection](/reference/garbage-collection/overview.md) (GC)。
+1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [Garbage Collection](/garbage-collection-overview.md) (GC)。
 
     {{< copyable "sql" >}}
 
@@ -88,7 +88,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 ### 恢复前的准备工作
 
-`br restore` 命令的详细使用方法请参考 [BR 命令行描述](/reference/tools/br/br.md#br-命令行描述)。
+`br restore` 命令的详细使用方法请参考 [BR 命令行描述](/br/backup-and-restore-tool.md#br-命令行描述)。
 
 > **注意：**
 >
