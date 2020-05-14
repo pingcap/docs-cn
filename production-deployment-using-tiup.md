@@ -686,7 +686,7 @@ server_configs:
     readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
     storage.block-cache.capacity: "<fill in the calculated result from the calculation formula provided before>"
-    raftstore.capactiy: "<fill in the calculated result from the calculation formula provided before>"
+    raftstore.capacity: "<fill in the calculated result from the calculation formula provided before>"
   pd:
     replication.location-labels: ["host"]
     replication.enable-placement-rules: true
