@@ -1,6 +1,7 @@
 ---
 title: Column 和 DDL 的类型码
 category: reference
+aliases: ['/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
 ---
 
 # Column 和 DDL 的类型码

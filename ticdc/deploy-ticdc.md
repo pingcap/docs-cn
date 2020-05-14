@@ -1,6 +1,7 @@
 ---
 title: 部署和使用 TiCDC
 category: reference
+aliases: ['/docs-cn/stable/reference/tools/ticdc/deploy/']
 ---
 
 # 部署和使用 TiCDC

@@ -1,6 +1,7 @@
 ---
 title: TiDB 生态工具使用指南
 category: reference
+aliases: ['/docs-cn/stable/reference/tools/user-guide/']
 ---
 
 # TiDB 生态工具使用指南

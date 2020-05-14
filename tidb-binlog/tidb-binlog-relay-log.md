@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog Relay Log
 category: reference
+aliases: ['/docs-cn/stable/reference/tidb-binlog/relay-log/']
 ---
 
 # TiDB Binlog Relay Log

@@ -2,6 +2,7 @@
 title: SHOW [GLOBAL|SESSION] STATUS
 summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] STATUS 的使用概况。
 category: reference
+aliases: ['/docs-cn/stable/reference/sql/statements/show-status/']
 ---
 
 # SHOW [GLOBAL|SESSION] STATUS

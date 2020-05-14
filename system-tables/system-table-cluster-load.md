@@ -2,6 +2,7 @@
 title: CLUSTER_LOAD
 summary: 了解 TiDB 集群负载表 `CLUSTER_LOAD`。
 category: reference
+aliases: ['/docs-cn/stable/reference/system-databases/cluster-load/']
 ---
 
 # CLUSTER_LOAD

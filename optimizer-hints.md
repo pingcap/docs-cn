@@ -1,6 +1,7 @@
 ---
 title: Optimizer Hints
 category: reference
+aliases: ['/docs-cn/stable/reference/performance/optimizer-hints/']
 ---
 
 # Optimizer Hints

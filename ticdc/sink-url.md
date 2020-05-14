@@ -1,6 +1,7 @@
 ---
 title: Sink URI 配置规则
 category: reference
+aliases: ['/docs-cn/stable/reference/tools/ticdc/sink/']
 ---
 
 # Sink URI 配置规则

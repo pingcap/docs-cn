@@ -2,6 +2,7 @@
 title: SQL 诊断
 summary: 了解 SQL 诊断功能。
 category: reference
+aliases: ['/docs-cn/stable/reference/system-databases/sql-diagnosis/']
 ---
 
 # SQL 诊断

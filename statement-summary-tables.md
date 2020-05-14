@@ -1,6 +1,7 @@
 ---
 title: Statement Summary Tables
 category: reference
+aliases: ['/docs-cn/stable/reference/performance/statement-summary/']
 ---
 
 # Statement Summary Tables

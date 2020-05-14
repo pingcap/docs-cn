@@ -1,6 +1,7 @@
 ---
 title: GC 配置
 category: reference
+aliases: ['/docs-cn/stable/reference/garbage-collection/configuration/']
 ---
 
 # GC 配置

@@ -1,6 +1,7 @@
 ---
 title: JSON 类型
 category: reference
+aliases: ['/docs-cn/stable/reference/sql/data-types/json/']
 ---
 
 # JSON 类型

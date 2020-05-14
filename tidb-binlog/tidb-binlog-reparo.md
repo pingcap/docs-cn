@@ -1,6 +1,7 @@
 ---
 title: Reparo 使用文档
 category: reference
+aliases: ['/docs-cn/stable/reference/tidb-binlog/reparo/']
 ---
 
 # Reparo 使用文档

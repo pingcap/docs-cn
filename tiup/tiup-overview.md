@@ -1,6 +1,7 @@
 ---
 title: TiUP 简介
 category: tools
+aliases: ['/docs-cn/stable/reference/tools/tiup/overview/']
 ---
 
 # TiUP 简介

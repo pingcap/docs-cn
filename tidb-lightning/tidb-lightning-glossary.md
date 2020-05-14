@@ -2,6 +2,7 @@
 title: TiDB Lightning 术语表
 summary: 了解 TiDB Lightning 相关的术语及定义。
 category: glossary
+aliases: ['/docs-cn/stable/reference/tools/tidb-lightning/glossary/']
 ---
 
 # TiDB Lightning 术语表

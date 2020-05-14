@@ -1,6 +1,7 @@
 ---
 title: ADMIN
 category: reference
+aliases: ['/docs-cn/stable/reference/sql/statements/admin/']
 ---
 
 # ADMIN

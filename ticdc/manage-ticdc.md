@@ -1,6 +1,7 @@
 ---
 title: 管理集群和同步任务
 category: reference
+aliases: ['/docs-cn/stable/reference/tools/ticdc/manage/']
 ---
 
 # 管理集群和同步任务

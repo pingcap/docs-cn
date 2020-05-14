@@ -1,6 +1,7 @@
 ---
 title: TiDB 配置参数
 category: reference
+aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 ---
 
 # TiDB 配置参数

@@ -1,6 +1,7 @@
 ---
 title: AUTO_RANDOM
 category: reference
+aliases: ['/docs-cn/stable/reference/sql/attributes/auto-random/']
 ---
 
 # AUTO_RANDOM <span class="version-mark">从 v3.1.0 版本开始引入</span>

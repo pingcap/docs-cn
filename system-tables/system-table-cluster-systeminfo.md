@@ -2,6 +2,7 @@
 title: CLUSTER_SYSTEMINFO
 summary: 了解 TiDB 集群负载表 `CLUSTER_SYSTEMINFO`。
 category: reference
+aliases: ['/docs-cn/stable/reference/system-databases/cluster-systeminfo/']
 ---
 
 # CLUSTER_SYSTEMINFO

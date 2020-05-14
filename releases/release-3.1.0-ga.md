@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.1 GA Release Notes
 category: Releases
+aliases: ['/docs-cn/stable/releases/3.1.0-ga/']
 ---
 
 # TiDB 3.1 GA Release Notes

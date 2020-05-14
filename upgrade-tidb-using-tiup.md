@@ -1,6 +1,7 @@
 ---
 title: 使用 TiUP 升级 TiDB
 category: how-to
+aliases: ['/docs-cn/stable/how-to/upgrade/using-tiup/']
 ---
 
 # 使用 TiUP 升级 TiDB

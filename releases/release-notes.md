@@ -1,6 +1,7 @@
 ---
 title: TiDB 版本发布历史
 category: release
+aliases: ['/docs-cn/stable/releases/rn/']
 ---
 
 # TiDB 版本发布历史
