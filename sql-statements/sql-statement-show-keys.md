@@ -2,6 +2,7 @@
 title: SHOW KEYS [FROM|IN] | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW KEYS [FROM|IN] for the TiDB database.
 category: reference
+aliases: ['/docs/dev/reference/sql/statements/show-keys/']
 ---
 
 # SHOW KEYS [FROM|IN]

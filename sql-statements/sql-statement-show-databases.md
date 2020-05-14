@@ -2,6 +2,7 @@
 title: SHOW DATABASES | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW DATABASES for the TiDB database.
 category: reference
+aliases: ['/docs/dev/reference/sql/statements/show-databases/']
 ---
 
 # SHOW DATABASES

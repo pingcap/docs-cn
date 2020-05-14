@@ -2,6 +2,7 @@
 title: CLUSTER_SYSTEMINFO
 summary: Learn the `CLUSTER_SYSTEMINFO` kernel parameter table.
 category: reference
+aliases: ['/docs/dev/reference/system-databases/cluster-systeminfo/']
 ---
 
 # CLUSTER_SYSTEMINFO

@@ -2,7 +2,7 @@
 title: Character Set and Collation
 summary: Learn about the supported character sets and collations in TiDB.
 category: reference
-aliases: ['/docs/dev/reference/sql/character-set/']
+aliases: ['/docs/dev/reference/sql/characterset-and-collation/','/docs/dev/reference/sql/character-set/']
 ---
 
 # Character Set and Collation

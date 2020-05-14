@@ -2,6 +2,7 @@
 title: INSPECTION_RESULT
 summary: Learn the `INSPECTION_RESULT` diagnosis result table.
 category: reference
+aliases: ['/docs/dev/reference/system-databases/inspection-result/']
 ---
 
 # INSPECTION_RESULT

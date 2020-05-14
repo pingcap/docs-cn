@@ -2,6 +2,7 @@
 title: DESCRIBE | TiDB SQL Statement Reference
 summary: An overview of the usage of DESCRIBE for the TiDB database.
 category: reference
+aliases: ['/docs/dev/reference/sql/statements/describe/']
 ---
 
 # DESCRIBE

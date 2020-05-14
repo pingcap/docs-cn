@@ -2,6 +2,7 @@
 title: Generate Self-signed Certificates
 summary: Use `cfssl` to generate self-signed certificates.
 category: how-to
+aliases: ['/docs/dev/how-to/secure/generate-self-signed-certificates/']
 ---
 
 # Generate Self-signed Certificates

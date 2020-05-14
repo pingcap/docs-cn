@@ -2,6 +2,7 @@
 title: UPDATE | TiDB SQL Statement Reference
 summary: An overview of the usage of UPDATE for the TiDB database.
 category: reference
+aliases: ['/docs/dev/reference/sql/statements/update/']
 ---
 
 # UPDATE

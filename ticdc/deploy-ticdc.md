@@ -2,6 +2,7 @@
 title: Deploy and use TiCDC
 summary: Learn how to deploy and use TiCDC to replicate incremental data.
 category: reference
+aliases: ['/docs/dev/reference/tools/ticdc/deploy/']
 ---
 
 # Deploy and use TiCDC

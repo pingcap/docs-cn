@@ -2,6 +2,7 @@
 title: TRACE | TiDB SQL Statement Reference
 summary: An overview of the usage of TRACE for the TiDB database.
 category: reference
+aliases: ['/docs/dev/reference/sql/statements/trace/']
 ---
 
 # TRACE

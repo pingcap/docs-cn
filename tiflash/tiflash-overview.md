@@ -2,6 +2,7 @@
 title: TiFlash Overview
 summary: Learn the architecture and key features of TiFlash.
 category: reference
+aliases: ['/docs/dev/reference/tiflash/overview/']
 ---
 
 # TiFlash Overview

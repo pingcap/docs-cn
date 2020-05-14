@@ -2,6 +2,7 @@
 title: Best Practices for Developing Java Applications with TiDB
 summary: Learn the best practices for developing Java applications with TiDB.
 category: reference
+aliases: ['/docs/dev/reference/best-practices/java-app/']
 ---
 
 # Best Practices for Developing Java Applications with TiDB

@@ -2,6 +2,7 @@
 title: Partitioning
 summary: Learn how to use partitioning in TiDB.
 category: reference
+aliases: ['/docs/dev/reference/sql/partitioning/']
 ---
 
 # Partitioning

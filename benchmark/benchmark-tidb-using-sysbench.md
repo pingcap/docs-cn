@@ -1,6 +1,7 @@
 ---
 title: How to Test TiDB Using Sysbench
 category: benchmark
+aliases: ['/docs/dev/benchmark/how-to-run-sysbench/']
 ---
 
 # How to Test TiDB Using Sysbench

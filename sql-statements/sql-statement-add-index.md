@@ -2,6 +2,7 @@
 title: ADD INDEX | TiDB SQL Statement Reference
 summary: An overview of the usage of ADD INDEX for the TiDB database.
 category: reference
+aliases: ['/docs/dev/reference/sql/statements/add-index/']
 ---
 
 # ADD INDEX

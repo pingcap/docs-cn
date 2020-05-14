@@ -2,6 +2,7 @@
 title: Security Compatibility with MySQL
 summary: Learn TiDB's security compatibilities with MySQL.
 category: reference
+aliases: ['/docs/dev/reference/security/compatibility/']
 ---
 
 # Security Compatibility with MySQL

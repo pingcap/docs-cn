@@ -2,6 +2,7 @@
 title: Best Practices for Using HAProxy in TiDB
 summary: This document describes best practices for configuration and usage of HAProxy in TiDB.
 category: reference
+aliases: ['/docs/dev/reference/best-practices/haproxy/']
 ---
 
 # Best Practices for Using HAProxy in TiDB

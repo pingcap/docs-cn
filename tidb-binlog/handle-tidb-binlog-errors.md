@@ -2,6 +2,7 @@
 title: TiDB Binlog Error Handling
 summary: Learn how to handle TiDB Binlog errors.
 category: reference
+aliases: ['/docs/dev/reference/tidb-binlog/troubleshoot/error-handling/']
 ---
 
 # TiDB Binlog Error Handling

@@ -2,6 +2,7 @@
 title: ALTER TABLE | TiDB SQL Statement Reference
 summary: An overview of the usage of ALTER TABLE for the TiDB database.
 category: reference
+aliases: ['/docs/dev/reference/sql/statements/alter-table/']
 ---
 
 # ALTER TABLE

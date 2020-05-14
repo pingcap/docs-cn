@@ -2,6 +2,7 @@
 title: TiDB Configuration File
 summary: Learn the TiDB configuration file options that are not involved in command line options.
 category: deployment
+aliases: ['/docs/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
 <!-- markdownlint-disable MD001 -->

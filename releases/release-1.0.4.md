@@ -1,6 +1,7 @@
 ---
 title: TiDB 1.0.4 Release Notes
 category: Releases
+aliases: ['/docs/dev/releases/104/']
 ---
 
 # TiDB 1.0.4 Release Notes

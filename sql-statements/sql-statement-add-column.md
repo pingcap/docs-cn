@@ -2,6 +2,7 @@
 title: ADD COLUMN | TiDB SQL Statement Reference
 summary: An overview of the usage of ADD COLUMN for the TiDB database.
 category: reference
+aliases: ['/docs/dev/reference/sql/statements/add-column/']
 ---
 
 # ADD COLUMN

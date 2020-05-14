@@ -2,6 +2,7 @@
 title: METRICS_SUMMARY
 summary: Learn the `METRICS_SUMMARY` system table.
 category: reference
+aliases: ['/docs/dev/reference/system-databases/metrics-summary/']
 ---
 
 # METRICS_SUMMARY

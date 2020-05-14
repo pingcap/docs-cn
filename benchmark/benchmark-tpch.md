@@ -1,6 +1,7 @@
 ---
 title: TiDB TPC-H 50G Performance Test Report V2.0
 category: benchmark
+aliases: ['/docs/dev/benchmark/tpch/']
 ---
 
 # TiDB TPC-H 50G Performance Test Report

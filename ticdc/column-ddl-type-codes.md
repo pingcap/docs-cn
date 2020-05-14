@@ -2,6 +2,7 @@
 title: Column and DDL Type Codes
 summary: Learn the column and DDL type codes.
 category: reference
+aliases: ['/docs/dev/reference/tools/ticdc/column-ddl-type/']
 ---
 
 # Column and DDL Type Codes

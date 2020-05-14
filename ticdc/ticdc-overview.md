@@ -2,6 +2,7 @@
 title: TiCDC Overview
 summary: Learn what TiCDC is, what features TiCDC provides, etc.
 category: reference
+aliases: ['/docs/dev/reference/tools/ticdc/overview/']
 ---
 
 # TiCDC Overview

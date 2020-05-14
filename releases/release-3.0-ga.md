@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0 GA Release Notes
 category: Releases
+aliases: ['/docs/dev/releases/3.0-ga/']
 ---
 
 # TiDB 3.0 GA Release Notes

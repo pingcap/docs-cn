@@ -2,6 +2,7 @@
 title: TiDB Lightning Configuration
 summary: Learn about the CLI usage and sample configuration in TiDB Lightning.
 category: reference
+aliases: ['/docs/dev/reference/tools/tidb-lightning/config/']
 ---
 
 # TiDB Lightning Configuration
