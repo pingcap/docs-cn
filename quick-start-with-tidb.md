@@ -7,7 +7,7 @@ category: how-to
 
 > **警告：**
 >
-> 对于生产环境，不要使用本文介绍的方式进行部署，而应使用 [TiUP 部署 TiDB 集群](/how-to/deploy/orchestrated/tiup.md)。
+> 对于生产环境，不要使用本文介绍的方式进行部署，而应使用 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
 本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
 
@@ -126,7 +126,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 部署主机软件和环境要求：
 
 - 部署需要使用部署主机的 root 用户及密码
-- 部署主机[关闭防火墙](/how-to/deploy/orchestrated/tiup.md#如何关闭部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
+- 部署主机[关闭防火墙](/production-deployment-using-tiup.md#如何关闭部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
 - 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
@@ -185,16 +185,15 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     {{< copyable "shell-regular" >}}
     
     ```yaml
-    # # Global variables are applied to all deployments and as the default value of
-    # # them if the specific deployment value missing.
-     
+    # # Global variables are applied to all deployments and used as the default value of
+    # # the deployments if a specific deployment value is missing.
     global:
      user: "tidb"
      ssh_port: 22
      deploy_dir: "/tidb-deploy"
      data_dir: "/tidb-data"
      
-    # # Monitored variables are used to all the machine
+    # # Monitored variables are applied to all the machines.
     monitored:
      node_exporter_port: 9100
      blackbox_exporter_port: 9115
@@ -203,7 +202,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
      tidb:
        log.slow-threshold: 300
      tikv:
-       readpool.storage.use-unified-pool: true
+       readpool.storage.use-unified-pool: false
        readpool.coprocessor.use-unified-pool: true
      pd:
        replication.enable-placement-rules: true
