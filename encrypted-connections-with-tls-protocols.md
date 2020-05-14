@@ -1,6 +1,7 @@
 ---
 title: 使用加密连接
 category: how-to
+aliases: ['/docs-cn/dev/how-to/secure/enable-tls-clients/']
 ---
 
 # 使用加密连接

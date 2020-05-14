@@ -1,7 +1,7 @@
 ---
 title: 集群间双向同步
 category: reference
-aliases: ['/docs-cn/stable/reference/tidb-binlog/bi-repl/']
+aliases: ['/docs-cn/dev/reference/tidb-binlog/bidirectional-replication/','/docs-cn/stable/reference/tidb-binlog/bi-repl/']
 ---
 
 # 集群间双向同步

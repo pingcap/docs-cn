@@ -1,6 +1,7 @@
 ---
 title: BR 备份与恢复场景示例
 category: reference
+aliases: ['/docs-cn/dev/reference/tools/br/use-cases/']
 ---
 
 # BR 备份与恢复场景示例

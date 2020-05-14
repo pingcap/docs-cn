@@ -1,6 +1,7 @@
 ---
 title: TiDB 主从集群的数据校验
 category: tools
+aliases: ['/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/']
 ---
 
 # TiDB 主从集群的数据校验
