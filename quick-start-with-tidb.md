@@ -8,7 +8,7 @@ category: how-to
 
 > **Warning:**
 >
-> For production environments, **do not** deploy TiDB with the following three methods. Instead, it is recommended that you [deploy TiDB using TiUP](/how-to/deploy/orchestrated/tiup.md).
+> For production environments, **do not** deploy TiDB with the following three methods. Instead, it is recommended that you [deploy TiDB using TiUP](/production-deployment-using-tiup.md).
 
 This document describes how to try out TiDB, a distributed SQL database, in a few minutes. You can choose any of the following three methods to get started with the TiDB database platform:
 
@@ -135,7 +135,7 @@ The smallest TiDB cluster topology is as follows:
 Other requirements for the deployment machine:
 
 - The `root` user and its password is required
-- [Stop the firewall service of the deployment machine](/how-to/deploy/orchestrated/tiup.md#how-to-stop-the-firewall-service-of-deployment-machines), or open the port needed by the TiDB cluster nodes
+- [Stop the firewall service of the deployment machine](/production-deployment-using-tiup.md#how-to-stop-the-firewall-service-of-deployment-machines), or open the port needed by the TiDB cluster nodes
 - Currently, TiUP only supports deploying TiDB on the x86_64 (AMD64) architecture (the ARM architecture will be supported in TiDB 4.0 GA):
 
     - It is recommended to use CentOS 7.3 or later versions on AMD64
