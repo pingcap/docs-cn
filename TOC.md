@@ -78,7 +78,7 @@
     + SQL 语言结构
       - [字面值](/literal-values.md)
       - [Schema 对象名](/schema-object-names.md)
-      - [关键字和保留字](/reference/sql/language-structure/keywords-and-reserved-words.md)
+      - [关键字和保留字](/keywords-and-reserved-words.md)
       - [用户自定义变量](/user-defined-variables.md)
       - [表达式语法](/expression-syntax.md)
       - [注释语法](/comment-syntax.md)
