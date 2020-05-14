@@ -81,6 +81,6 @@ mysql> SHOW TABLES IN mysql;
 
 ## 另请参阅
 
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
+* [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)

@@ -24,7 +24,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
     有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa`，`cfssl`。
 
-    这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](/how-to/secure/generate-self-signed-certificates.md)。
+    这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](/generate-self-signed-certificates.md)。
 
 2. 配置证书。
 
@@ -82,7 +82,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 ### MySQL 与 TiDB 间开启 TLS
 
-请参考 [使用加密连接](/how-to/secure/enable-tls-clients.md)。
+请参考 [使用加密连接](/encrypted-connections-with-tls-protocols.md)。
 
 ## 开启数据加密存储
 
@@ -112,7 +112,7 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
 
 > **注意：**
 >
-> 若使用 [Lightning](/reference/tools/tidb-lightning/overview.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。
+> 若使用 [Lightning](/tidb-lightning/tidb-lightning-overview.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。
 
 ### 使用限制
 

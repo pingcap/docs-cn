@@ -812,7 +812,7 @@ category: reference
 
 ## TiDB Binlog 报警规则
 
-关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/reference/tidb-binlog/monitor.md#监控报警规则)。
+关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
 
 ## Node_exporter 主机报警规则
 

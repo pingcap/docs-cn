@@ -45,5 +45,5 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## 另请参阅
 
-* [PREPARE](/reference/sql/statements/prepare.md)
-* [DEALLOCATE](/reference/sql/statements/deallocate.md)
+* [PREPARE](/sql-statements/sql-statement-prepare.md)
+* [DEALLOCATE](/sql-statements/sql-statement-deallocate.md)

@@ -102,5 +102,5 @@ test> show table t regions where leader_store_id =1;
 
 ## 另请参阅
 
-* [SPLIT REGION](/reference/sql/statements/split-region.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
+* [SPLIT REGION](/sql-statements/sql-statement-split-region.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)

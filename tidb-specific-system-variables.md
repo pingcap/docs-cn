@@ -297,7 +297,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
-是否需要禁用自动重试，请参考[重试的局限性](/reference/transactions/transaction-optimistic.md#重试的局限性)。
+是否需要禁用自动重试，请参考[重试的局限性](/optimistic-transaction.md#重试的局限性)。
 
 ### tidb_backoff_weight
 

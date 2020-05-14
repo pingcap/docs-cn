@@ -25,7 +25,7 @@ TiDB Lightning 主要包含两个部分:
 
 ## 准备全量备份数据
 
-我们使用 [`mydumper`](/reference/tools/mydumper.md) 从 MySQL 导出数据，如下：
+我们使用 [`mydumper`](/mydumper-overview.md) 从 MySQL 导出数据，如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -111,10 +111,10 @@ TiDB Lightning 主要包含两个部分:
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 
-如果出错，请参见 [TiDB Lightning 错误排解](/how-to/troubleshoot/tidb-lightning.md)。
+如果出错，请参见 [TiDB Lightning 错误排解](/troubleshoot-tidb-lightning.md)。
 
 ## 总结
 
 本教程对 TiDB Lightning 进行了简单的介绍，并快速部署了一套简单的 TiDB Lightning 集群，将全量备份数据导入到 TiDB 集群中。
 
-关于 TiDB Lightning 的详细功能和使用，参见 [TiDB Lightning 简介](/reference/tools/tidb-lightning/overview.md)。
+关于 TiDB Lightning 的详细功能和使用，参见 [TiDB Lightning 简介](/tidb-lightning/tidb-lightning-overview.md)。

@@ -53,4 +53,4 @@ mysql> SHOW GRANTS FOR u1;
 
 ## 另请参阅
 
-* [GRANT](/reference/sql/statements/grant-privileges.md)
+* [GRANT](/sql-statements/sql-statement-grant-privileges.md)

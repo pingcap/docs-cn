@@ -6,7 +6,7 @@ category: reference
 
 # SHOW TABLE STATUS
 
-`SHOW TABLE STATUS` 语句用于显示 TiDB 中表的各种统计信息。如果显示统计信息过期，建议运行 [`ANALYZE TABLE`](/reference/sql/statements/analyze-table.md)。
+`SHOW TABLE STATUS` 语句用于显示 TiDB 中表的各种统计信息。如果显示统计信息过期，建议运行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)。
 
 ## 语法图
 
@@ -86,7 +86,7 @@ Max_data_length: 0
 
 ## 另请参阅
 
-* [SHOW TABLES](/reference/sql/statements/show-tables.md)
-* [CREATE TABLE](/reference/sql/statements/create-table.md)
-* [DROP TABLE](/reference/sql/statements/drop-table.md)
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [SHOW TABLES](/sql-statements/sql-statement-show-tables.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
+* [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)

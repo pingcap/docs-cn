@@ -56,4 +56,4 @@ Empty set (0.00 sec)
 
 ## 另请参阅
 
-* [SHOW WARNINGS](/reference/sql/statements/show-warnings.md)
+* [SHOW WARNINGS](/sql-statements/sql-statement-show-warnings.md)

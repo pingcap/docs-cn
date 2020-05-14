@@ -121,4 +121,4 @@ mysql> show full columns from mysql.user;
 
 ## 另请参阅
 
-* [SHOW CREATE TABLE](/reference/sql/statements/show-create-table.md)
+* [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)

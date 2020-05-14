@@ -6,9 +6,9 @@ category: reference
 
 # TiDB 事务概览
 
-TiDB 支持完整的分布式事务，使用[乐观事务模型](/reference/transactions/transaction-optimistic.md)。本文主要介绍涉及到事务的语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
+TiDB 支持完整的分布式事务，使用[乐观事务模型](/optimistic-transaction.md)。本文主要介绍涉及到事务的语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
 
-常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/reference/configuration/tidb-server/tidb-specific-variables.md#tidb_retry_limit)。
+常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/tidb-specific-system-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/tidb-specific-system-variables.md#tidb_retry_limit)。
 
 ## 常用事务语句
 
