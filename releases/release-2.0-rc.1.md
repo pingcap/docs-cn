@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0 RC1 Release Notes
 category: Releases
+aliases: ['/docs-cn/v2.1/releases/2rc1/']
 ---
 
 # TiDB 2.0 RC1 Release Notes

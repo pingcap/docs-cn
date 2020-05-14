@@ -1,6 +1,7 @@
 ---
 title: TiDB Lightning 断点续传
 category: reference
+aliases: ['/docs-cn/v2.1/reference/tools/tidb-lightning/checkpoints/']
 ---
 
 # TiDB Lightning 断点续传

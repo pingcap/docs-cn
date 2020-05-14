@@ -1,6 +1,7 @@
 ---
 title: TiDB 系统表
 category: reference
+aliases: ['/docs-cn/v2.1/reference/system-databases/mysql/']
 ---
 
 # TiDB 系统表

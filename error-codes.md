@@ -1,6 +1,7 @@
 ---
 title: 错误码与故障诊断
 category: reference
+aliases: ['/docs-cn/v2.1/reference/error-codes/']
 ---
 
 # 错误码与故障诊断

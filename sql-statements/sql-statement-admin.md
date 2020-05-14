@@ -1,6 +1,7 @@
 ---
 title: ADMIN 语句
 category: reference
+aliases: ['/docs-cn/v2.1/reference/sql/statements/admin/']
 ---
 
 # `ADMIN` 语句
