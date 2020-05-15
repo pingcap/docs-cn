@@ -51,6 +51,7 @@ BackupRequest{
     ClusterId,      // 集群 ID
     StartKey,       // 备份起始点，startKey 会被备份
     EndKey,         // 备份结束点，endKey 不会被备份
+    StartVersion,   // 上一次备份快照的版本，用于增量备份
     EndVersion,     // 备份快照时间点
     StorageBackend, // 备份文件存储地址
     RateLimit,      // 备份速度 (MB/s)
@@ -60,6 +61,8 @@ BackupRequest{
 TiKV 节点收到备份请求后，会遍历节点上所有的 Region Leader，找到和请求中 KV Range 有重叠范围的 Region，将该范围下的部分或者全部数据进行备份，在备份路径下生成对应的 SST 文件。
 
 TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR。BR 将这些元信息收集并存储进 `backupmeta` 文件中，等待恢复时使用。
+
+假如 `StartVersion` 不为 0，这次备份会被视作增量备份。BR 除了收集 KV 以外，还会收集 `[StartVersion, EndVersion)` 之间的 DDL，在进行恢复的时候，会先恢复这些 DDL。 
 
 如果执行命令时开启了 checksum，那么 BR 在最后会对备份的每一张表计算 checksum 用于校验。
 
@@ -360,6 +363,31 @@ br restore full \
 ```
 
 以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复某个数据库](#恢复某个数据库)相同。
+
+### 增量备份恢复
+
+如果想要增量备份，只需要在备份的时候指定 `--lastbackupts` 即可。
+
+注意增量备份有两个限制：
+
+- 增量备份需要与前一次全量备份在不同的路径下
+- 增量备份开始时间与 `lastbackupts` 之间不能有 GC
+
+{{< copyable "shell-regular" >}}
+
+```shell
+    LAST_BACKUP_TS=`./br validate decode --field="end-version" -s local:///home/tidb/backupdata`
+    ./br backup full\
+        --pd ${PDIP}:2379 \
+        -s local:///home/tidb/backupdata/incr \
+        --lastbackupts ${LAST_BACKUP_TS}
+```
+
+以上命令会备份 `[LAST_BACKUP_TS, current PD timestamp)` 之间的增量数据。你可以使用 `validate` 指令获取上一次备份的时间戳。
+
+示例备份的增量数据包括 `[LAST_BACKUP_TS, current PD timestamp)` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，我们会先把所有 DDL 恢复，而后才会恢复写入数据。
+
+在增量恢复的时候，使用 BR 的方法和全量恢复并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
 
 ## 最佳实践
 
