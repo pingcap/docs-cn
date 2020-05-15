@@ -4,38 +4,15 @@
 
 ## TiDB 文档结构
 
-目前，TiDB 的文档维护以下几个版本，分别放置在相应的 branch：
+目前，TiDB 的文档维护在以下 branch，对应着官网文档的不同版本：
 
-- `master`：最新开发版
-- `release-4.0`：4.0 RC 版
-- `release-3.1`：3.1 稳定版
-- `release-3.0`：3.0 稳定版
-- `release-2.1`：2.1 稳定版
-
-TiDB 的文档结构如下：
-
-```
-├── TOC.md
-├── how-to
-    ├── get-started
-    ├── deploy
-        ├── orchestrated
-            ├── tiup.md
-            ├── docker.md
-    ├── configure
-    ├── maintain
-    ├── troubleshoot
-    ├── ...
-├── reference
-   ├── tools
-    ├── tidb-binlog
-    ├── ...
-├── releases
-├── tidb-in-kubernetes
-├── faq
-├── ...
-...
-```
+| 文档仓库 branch | 对应 TiDB 文档版本 |
+| ---------|----------|
+| [`master`](https://github.com/pingcap/docs-cn/tree/master) | dev 最新开发版 |
+| [`release-4.0`](https://github.com/pingcap/docs-cn/tree/release-4.0) | 4.0 RC 版 |
+| [`release-3.1`](https://github.com/pingcap/docs-cn/tree/release-3.1) | 3.1 稳定版 |
+| [`release-3.0`](https://github.com/pingcap/docs-cn/tree/release-3.0) | 3.0 稳定版 |
+| [`release-2.1`](https://github.com/pingcap/docs-cn/tree/release-2.1) | 2.1 稳定版 |
 
 ## 贡献文档
 
