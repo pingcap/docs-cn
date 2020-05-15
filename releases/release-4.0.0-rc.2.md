@@ -16,19 +16,19 @@ TiUP 版本：4.0.0-rc.2
 + TiDB
 
     - 单事务大小由 100 MB 修改成无限制，但若开启 Binlog 且下游是 Kafka，由于 Kafka  消息大小的限制是 1GB，请根据情况调整`txn-total-size-limit` 配置参数 [16941](https://github.com/pingcap/tidb/pull/16941)
-    - 查询 `CLUSTER_LOG` 表时，如果未指定时间范围，从查询默认时间范围变更为返回错误并要求指定时间范围 [17003](https://github.com/pingcap/tidb/pull/17003)
+    - 查询 `CLUSTER_LOG` 表时，如果未指定时间范围，由默认时间范围变更为返回错误且用户必须指定时间范围 [17003](https://github.com/pingcap/tidb/pull/17003)
     - `CREATE TABLE` 创建分区表时指定未支持的 sub-partition 或 linear hash 选项，将会创建非分区普通表，而不是选项未生效的分区表 [#17197](https://github.com/pingcap/tidb/pull/17197)
 
 + TiKV
 
-    - 将加密相关的配置移到 security 分类下，即 TiKV 配置中的 `[encryption]` 改为了 `[security.encryption]` [#7810](https://github.com/tikv/tikv/pull/7810)
+    - 将加密相关的配置移到 security 分类下，即调整配置项 `[encryption]` 为 `[security.encryption]` [#7810](https://github.com/tikv/tikv/pull/7810)
 
 + Tools
 
     - TiDB Lightning
 
         - 导入数据时将 SQL Mode 由默认改成 `ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER`，提高兼容性 [#316](https://github.com/pingcap/tidb-lightning/pull/316)
-        - 在 tidb-backend 模式下禁止访问 PD 或者 TiKVTiKV 端口 [#312](https://github.com/pingcap/tidb-lightning/pull/312)
+        - 在 tidb-backend 模式下禁止访问 PD 或者 TiKV 端口 [#312](https://github.com/pingcap/tidb-lightning/pull/312)
         - 日志信息默认输出到 tmp 文件且在启动时输出 tmp 文件的路径 [#313](https://github.com/pingcap/tidb-lightning/pull/313)
 
 ## 重点修复的 Bug
