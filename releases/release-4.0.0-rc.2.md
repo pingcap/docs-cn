@@ -25,7 +25,7 @@ TiUP 版本：4.0.0-rc.2
 
 + Tools
 
-    - TiDB Lightning
+    + TiDB Lightning
 
         - 导入数据时将 SQL Mode 由默认改成 `ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER`，提高兼容性 [#316](https://github.com/pingcap/tidb-lightning/pull/316)
         - 在 tidb-backend 模式下禁止访问 PD 或者 TiKV 端口 [#312](https://github.com/pingcap/tidb-lightning/pull/312)
@@ -96,10 +96,15 @@ TiUP 版本：4.0.0-rc.2
 + Tools
 
     - TiDB Lightning
+
         - tidb-lightning-ctl 新增 `fetch-mode` 子命令，输出 TiKV 集群模式 [#287](https://github.com/pingcap/tidb-lightning/pull/287)
+
     - TiCDC
+
         - 支持通过 `cdc cli` 来管理同步任务 (changefeed) [#546](https://github.com/pingcap/ticdc/pull/546)
+
     - BR
+
         - 支持备份时候自动调整 GC 时间 [#257](https://github.com/pingcap/br/pull/257)
         - 优化恢复数据时的 PD 参数，以加速恢复 [#198](https://github.com/pingcap/br/pull/198)
 
