@@ -1,6 +1,8 @@
 # TiDB 文档
 
-欢迎来到 [TiDB](https://github.com/pingcap/tidb) 文档仓库！这里存放的是 [PingCAP 官网 TiDB 中文文档](https://pingcap.com/docs-cn/stable/)的源文件。[官网英文文档](https://pingcap.com/docs/stable/)的源文件则存放于 [pingcap/docs](https://github.com/pingcap/docs)。
+欢迎来到 [TiDB](https://github.com/pingcap/tidb) 文档仓库！
+
+这里存放的是 [PingCAP 官网 TiDB 中文文档](https://pingcap.com/docs-cn/stable/)的源文件。[官网英文文档](https://pingcap.com/docs/stable/)的源文件则存放于 [pingcap/docs](https://github.com/pingcap/docs)。
 
 如果你发现或遇到了 TiDB 的文档问题，可随时[提 Issue](https://github.com/pingcap/docs-cn/issues/new/choose) 来反馈，或者直接[提交 Pull Request](/CONTRIBUTING.md#pull-request-提交流程) 来进行修改。
 
