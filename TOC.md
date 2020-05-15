@@ -397,6 +397,7 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/release-notes.md)
   + v4.0
+    - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
     - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)
     - [4.0.0-rc](/releases/release-4.0.0-rc.md)
     - [4.0.0-beta.2](/releases/release-4.0.0-beta.2.md)
