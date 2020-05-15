@@ -63,7 +63,7 @@ TiUP 版本：4.0.0-rc.2
     - 支持在 General Log 中输出 `forUpdateTS` 和 `Read Consistency` 隔离级别信息 [16946](https://github.com/pingcap/tidb/pull/16946)
     - 支持对 TiKV Region Resolve Lock 请求进行去重 [16925](https://github.com/pingcap/tidb/pull/16925)
     - 支持 `SET CONFIG` 语句进行 PD/TiKV 节点配置修改 [16853](https://github.com/pingcap/tidb/pull/16853)
-    - 支持在 `CREATE TABLE` 语句中指定  `auto_random` 选项 [16813](https://github.com/pingcap/tidb/pull/16813)
+    - 支持在 `CREATE TABLE` 语句中指定 `auto_random` 选项 [16813](https://github.com/pingcap/tidb/pull/16813)
     - 通过为 DistSQL 请求分配 TaskID 让 TiKV 更好地调度处理请求 [17155](https://github.com/pingcap/tidb/pull/17155)
     - 支持在 MySQL 客户端登录后显示 TiDB server 版本信息 [17187](https://github.com/pingcap/tidb/pull/17187)
     - 支持在 `GROUP_CONCAT` 中指定 `ORDER BY` 子句 [16990](https://github.com/pingcap/tidb/pull/16990)
