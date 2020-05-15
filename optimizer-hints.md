@@ -68,17 +68,13 @@ select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1
 select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 ```
 
-<<<<<<< HEAD
-### SM_JOIN(t1_name [, tl_name ...])
-=======
 这条 Hint 将最外层 `SELECT` 查询块的命名为 `QB1`，此时 `QB1` 和默认名称 `sel_1` 对于这个查询块来说都是有效的。
 
 > **注意：**
 >
 > 上述例子中，如果指定的 `QB_NAME` 为 `sel_2`，并且不给原本 `sel_2` 对应的第二个查询块指定新的 `QB_NAME`，则第二个查询块的默认名字 `sel_2` 会失效。
 
-### MERGE_JOIN(t1_name [, tl_name ...])
->>>>>>> 1e89893... reference/performance: elaborate more on optimizer hints (#2644)
+### SM_JOIN(t1_name [, tl_name ...])
 
 `SM_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Sort Merge Join 算法。这个算法通常会占用更少的内存，但执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。例如：
 
@@ -90,11 +86,7 @@ select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 > **注意：**
 >
-<<<<<<< HEAD
-> `SM_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称。
-=======
-> `MERGE_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `MERGE_JOIN`。
->>>>>>> 1e89893... reference/performance: elaborate more on optimizer hints (#2644)
+> `SM_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `SM_JOIN`。
 
 ### INL_JOIN(t1_name [, tl_name ...])
 
@@ -112,17 +104,6 @@ select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 >
 > `INL_JOIN` 的别名是 `TIDB_INLJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `INL_JOIN`。
 
-<<<<<<< HEAD
-=======
-### INL_HASH_JOIN
-
-`INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，两者的区别是 `INL_JOIN` 会在连接的内表上建哈希表，而 `INL_HASH_JOIN` 会在连接的外表上建哈希表，后者对于内存的使用是有固定上限的，而前者使用的内存使用取决于内表匹配到的行数。
-
-### INL_MERGE_JOIN
-
-`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。这个 Hint 的适用场景和 `INL_JOIN` 一致，相比于 `INL_JOIN` 和 `INL_HASH_JOIN` 会更节省内存，但使用条件会更苛刻：join keys 中的内表列集合是内表使用的索引的前缀，或内表使用的索引是 join keys 中的内表列集合的前缀。
-
->>>>>>> 1e89893... reference/performance: elaborate more on optimizer hints (#2644)
 ### HASH_JOIN(t1_name [, tl_name ...])
 
 `HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
@@ -205,56 +186,6 @@ select /*+ AGG_TO_COP() */ sum(t1.a) from t t1;
 select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 where t1.a = t2.a;
 ```
 
-<<<<<<< HEAD
-=======
-### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
-
-`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
-```
-
-当对同一张表有多个 `USE_INDEX_MERGE` Hint 时，优化器会从这些 Hint 指定的索引列表的并集中尝试选取索引。
-
-> **注意：**
->
-> `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
-
-目前该 Hint 生效的条件较为苛刻，包括：
-
-- 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
-- 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
-
-## 查询范围生效的 Hint
-
-这类 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，等同于在当前这条查询运行时对指定的系统变量进行修改，其优先级高于现有系统变量的值。
-
-> **注意：**
->
-> 这类 Hint 虽然也有隐藏的可选变量 `@QB_NAME`，但就算指定了该值，Hint 还是会在整个查询范围生效。
-
-### NO_INDEX_MERGE()
-
-`NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
-
-下面的例子不会使用 index merge：
-
-{{< copyable "sql" >}}
-
-```sql
-select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
-```
-
-除了 Hint 外，系统变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
-
-> **注意：**
->
-> `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
-
->>>>>>> 1e89893... reference/performance: elaborate more on optimizer hints (#2644)
 ### USE_TOJA(boolean_value)
 
 参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
@@ -310,20 +241,3 @@ select /*+ READ_CONSISTENT_REPLICA() */ * from t;
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
-<<<<<<< HEAD
-=======
-
-### IGNORE_PLAN_CACHE()
-
-`IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
-
-该 Hint 用于在 [prepare-plan-cache](/reference/configuration/tidb-server/configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
-
-以下示例强制该 `prepare` 语句不使用 plan cache：
-
-{{< copyable "sql" >}}
-
-```sql
-prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id = ?';
-```
->>>>>>> 1e89893... reference/performance: elaborate more on optimizer hints (#2644)
