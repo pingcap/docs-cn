@@ -166,7 +166,21 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 select /*+ read_from_storage(tiflash[table_name]) */ ... from table_name;
 ```
 
+如果在查询语句中对表设置了别名，在 Hint 语句中必须使用别名才能使 Hint 生效。比如：
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 as alias_a, table_name_2 as alias_b where alias_a.column_1 = alias_b.column_2;
+```
+
+更多关于该 Hint 语句的语法可以参考 [READ_FROM_STORAGE](/optimizer-hints.md#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-)。
+
 Engine 隔离的优先级高于 CBO 与 Hint，Hint 优先级高于代价估算，即代价估算仅会选取指定 engine 的副本。
+
+> **注意：**
+>
+> MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 `Hint` 语法，需要在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
 
 ## 使用 TiSpark 读取 TiFlash
 
