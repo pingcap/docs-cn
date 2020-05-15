@@ -30,7 +30,7 @@ create global binding for
     select * from t1, t2 where t1.id = t2.id
 using
     select /*+ sm_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
-    
+
 -- 从该 SQL 的执行计划中可以看到其使用了 global binding 中指定的 sort merge join
 explain select * from t1, t2 where t1.id = t2.id;
 
@@ -54,7 +54,7 @@ select * from t where a >    1
 select * from t where a > ？
 ```
 
-通过 `CREATE BINDING` 创建 SQL 绑定，对于每个标准化的 SQL 只能同时存在一个，当对于相同的标准化 SQL 创建多个绑定时，会保留最后一个创建的绑定，之前的所有绑定（创建的和演进出来的）都会被标记为已删除。但是我们仍然允许 session 绑定和 global 绑定共存，它们之间不受这个逻辑影响。
+每个标准化的 SQL 只能同时有一个通过 `CREATE BINDING` 创建的绑定。对相同的标准化 SQL 创建多个绑定时，会保留最后一个创建的绑定，之前的所有绑定（创建的和演进出来的）都会被标记为已删除。但 session 绑定和 global 绑定仍然允许共存，不受这个逻辑影响。
 
 另外，创建绑定时，TiDB 要求 session 处于某个数据库上下文中，也就是执行过 `use ${database}` 或者客户端连接时指定了数据库。
 
@@ -133,7 +133,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 > **注意：**
 >
-> 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动创建绑定时会默认屏蔽内嵌 SQL
+> 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动创建绑定时会默认屏蔽内嵌 SQL。
 
 ### 自动演进绑定
 
@@ -191,16 +191,16 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
 #### 注意事项
 
-由于自动演进绑定会自动地创建新的绑定，当查询的环境发生变动时，自动创建的绑定可能会有多种行为的选择。所以这里列出一些注意事项：
+由于自动演进绑定会自动地创建新的绑定，当查询的环境发生变动时，自动创建的绑定可能会有多种行为的选择。这里列出一些注意事项：
 
-1. 自动演进只会对存在至少一个 global 绑定的标准化 SQL 进行演进。
++ 自动演进只会对存在至少一个 global 绑定的标准化 SQL 进行演进。
 
-2. 由于创建新的绑定会删除之前所有绑定（对于一条标准化 SQL），自动演进的绑定也会在手动重新创建绑定后被删除。
++ 由于创建新的绑定会删除之前所有绑定（对于一条标准化 SQL），自动演进的绑定也会在手动重新创建绑定后被删除。
 
-3. 所有和计算过程相关的 hint，在演进时都会被保留。计算过程相关的 hint 有如下几种：
++ 所有和计算过程相关的 hint，在演进时都会被保留。计算过程相关的 hint 有如下几种：
 
-    | hint | 说明            |
-    | -------- | ------------- |
+    | Hint | 说明            |
+    | :-------- | :------------- |
     | memory_quota |  查询过程最多可以使用多少内存 |
     | use_toja | 优化器是否考虑把子查询转化为 join |
     | use_cascades | 是否使用 cascades 优化器 |
@@ -208,4 +208,4 @@ create global binding for select * from t where a < 100 and b < 100 using select
     | read_consistent_replica | 是否强制读表时使用 follower read |
     | max_execution_time | 查询过程最多消耗多少时间 |
 
-4. 我们认为 `read_from_storage` 是一个非常特别的 hint，因为它指定了读表时选择从 TiKV 读还是从 TiFlash 读，由于 TiDB 提供隔离读的功能，当隔离条件变化时，这个 hint 对演进出来的执行计划影响很大，所以当最初创建的绑定中存在这个 hint，TiDB 会无视其所有演进的绑定。
++ `read_from_storage` 是一个非常特别的 hint，因为它指定了读表时选择从 TiKV 读还是从 TiFlash 读。由于 TiDB 提供隔离读的功能，当隔离条件变化时，这个 hint 对演进出来的执行计划影响很大，所以当最初创建的绑定中存在这个 hint，TiDB 会无视其所有演进的绑定。
