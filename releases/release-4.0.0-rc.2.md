@@ -15,7 +15,7 @@ TiUP 版本：4.0.0-rc.2
 
 + TiDB
 
-    - 单事务大小由 100 MB 修改成无限制，但若开启 Binlog 且下游是 Kafka，由于 Kafka  消息大小的限制是 1GB，请根据情况调整`txn-total-size-limit` 配置参数 [16941](https://github.com/pingcap/tidb/pull/16941)
+    - 单事务大小由 100 MB 修改成无限制，但若开启 Binlog 且下游是 Kafka，由于 Kafka 消息大小的限制是 1GB，请根据情况调整 `txn-total-size-limit` 配置参数 [16941](https://github.com/pingcap/tidb/pull/16941)
     - 查询 `CLUSTER_LOG` 表时，如果未指定时间范围，由默认时间范围变更为返回错误且用户必须指定时间范围 [17003](https://github.com/pingcap/tidb/pull/17003)
     - `CREATE TABLE` 创建分区表时指定未支持的 sub-partition 或 linear hash 选项，将会创建非分区普通表，而不是选项未生效的分区表 [#17197](https://github.com/pingcap/tidb/pull/17197)
 
@@ -57,7 +57,7 @@ TiUP 版本：4.0.0-rc.2
 
     - 新增 `BACKUP` 和 `RESTORE` 语句进行备份与恢复 [16960](https://github.com/pingcap/tidb/pull/16960)
     - 支持在提交前预检查单个 Region 提交数据量，并在超过阈值时预切分 Region 后再进行提交 [16959](https://github.com/pingcap/tidb/pull/16959)
-    - 新增 Session 作用域变量 `LAST_PLAN_FROM_CACHE` ，用于指示上一条语句是否命中 Plan Cache [16830](https://github.com/pingcap/tidb/pull/16830)
+    - 新增 Session 作用域变量 `LAST_PLAN_FROM_CACHE`，用于指示上一条语句是否命中 Plan Cache [16830](https://github.com/pingcap/tidb/pull/16830)
     - 支持在慢日志和 `SLOW_LOG` 表中记录 `Cop_time` 信息 [16904](https://github.com/pingcap/tidb/pull/16904)
     - 支持在 Grafana 中展示更多 Go Runtime 内存监控指标 [16928](https://github.com/pingcap/tidb/pull/16928)
     - 支持在 General Log 中输出 `forUpdateTS` 和 `Read Consistency` 隔离级别信息 [16946](https://github.com/pingcap/tidb/pull/16946)
@@ -91,7 +91,7 @@ TiUP 版本：4.0.0-rc.2
 
     - 调整 Grafana 中 Read Index 的 Count 图表的名称为 Ops
     - 优化系统负载较低时打开文件描述符的数据，降低系统资源占用量
-新增 capacity 配置参数用于限制存储数据容量
+    - 新增 capacity 配置参数用于限制存储数据容量
 
 + Tools
 
@@ -119,8 +119,8 @@ TiUP 版本：4.0.0-rc.2
     - 修复为 IndexMerge 计算候选路径时漏掉 Index 上的 `TableFilter` 的问题 [16947](https://github.com/pingcap/tidb/pull/16947)
     - 修复使用 MergeJoin Hint 并存在 TableDual 算子时无法产生物理查询计划的问题 [17016](https://github.com/pingcap/tidb/pull/17016)
     - 修复 Statement Summary 表的 `Stmt_Type` 列值大小写错误的问题 [17018](https://github.com/pingcap/tidb/pull/17018)
-    - 修复因不同用户使用相同的 tmp-storage-path 导致服务无法启动报 Permission Denied 错误问题 [16996](https://github.com/pingcap/tidb/pull/16996)
-    - 修复返回结果类型由多个输入列决定的表达式（例如：`CASE WHEN`）结果类型 `NotNullFlag` 标识推导不正确的问题 [16995](https://github.com/pingcap/tidb/pull/16995) 
+    - 修复因不同用户使用相同的 tmp-storage-path 导致服务无法启动报 `Permission Denied` 错误问题 [16996](https://github.com/pingcap/tidb/pull/16996)
+    - 修复返回结果类型由多个输入列决定的表达式（例如：`CASE WHEN`）结果类型 `NotNullFlag` 标识推导不正确的问题 [16995](https://github.com/pingcap/tidb/pull/16995)
     - 修复 Green GC 在有 Dirty Store 的情况下可能遗留锁的问题 [16949](https://github.com/pingcap/tidb/pull/16949)
     - 修复 Green GC 在遇到单个 key 有多个不同锁的情况下会遗留下锁的问题 [16948](https://github.com/pingcap/tidb/pull/16948)
     - 修复 `INSERT VALUE` 中子查询引用父查询列导致插入值错误的问题 [16952](https://github.com/pingcap/tidb/pull/16952)
@@ -128,7 +128,7 @@ TiUP 版本：4.0.0-rc.2
     - 修复 Expensive Log 日志中 `WAIT_TIME` 字段信息错误的问题 [16907](https://github.com/pingcap/tidb/pull/16907)
     - 修复悲观事务模式执行语句 `SELECT FOR UPDATE` 不能被记录到 Slow Log 的问题 [16897](https://github.com/pingcap/tidb/pull/16897)
     - 修复在 `Enum` 或 `Set` 类型列上执行 `SELECT DISTINCT` 时结果错误的问题 [16892](https://github.com/pingcap/tidb/pull/16892)
-    - 修复 `auto_random_base` 在 `SHOW CREATE  TABLE` 的显示问题 [16864](https://github.com/pingcap/tidb/pull/16864)
+    - 修复 `auto_random_base` 在 `SHOW CREATE TABLE` 的显示问题 [16864](https://github.com/pingcap/tidb/pull/16864)
     - 修复 `WHERE string_value` 结果不正确的问题 [16559](https://github.com/pingcap/tidb/pull/16559)
     - 修复 `GROUP BY` Window Function 错误消息和 MySQL 不一致问题 [16165](https://github.com/pingcap/tidb/pull/16165)
     - 修复 `FLASH TABLE` 语句在数据库名有大写字母时执行失败的问题 [17167](https://github.com/pingcap/tidb/pull/17167)
@@ -182,12 +182,12 @@ TiUP 版本：4.0.0-rc.2
         - 修复当 DDL 中库名为关键字时 reparo 解析失败的问题  [#961](https://github.com/pingcap/tidb-binlog/pull/961)
 
     - TiCDC
-        
-        - 修复当环境变量 TZ 未设置时使用错误时区的问题  [#512](https://github.com/pingcap/ticdc/pull/512)
+
+        - 修复当环境变量 `TZ` 未设置时使用错误时区的问题 [#512](https://github.com/pingcap/ticdc/pull/512)
         - 修复 owner 因为部分错误没有正确处理导致 server 退出时没有清理资源的问题 [#528](https://github.com/pingcap/ticdc/pull/528)
         - 修复重连 TiKV 可能导致 TiCDC 阻塞的问题 [#531](https://github.com/pingcap/ticdc/pull/531)
         - 优化初始化表结构时的内存使用 [#534](https://github.com/pingcap/ticdc/pull/534)
         - 使用 watch 模式监听同步状态变更并进行准实时更新，减少同步延迟 [#481](https://github.com/pingcap/ticdc/pull/481)
 
     - BR
-        - 修复 BR 恢复带有 `auto_random` 属性的表之后，插入数据有一定概率触发 duplicate entry 错误的问题。[#241](https://github.com/pingcap/br/issues/241)
+        - 修复 BR 恢复带有 `auto_random` 属性的表之后，插入数据有一定概率触发 duplicate entry 错误的问题 [#241](https://github.com/pingcap/br/issues/241)
