@@ -103,7 +103,7 @@ TiUP version: 4.0.0-rc.2
 
         - Support managing the replication task by using `cdc cli` (changefeed) [#546](https://github.com/pingcap/ticdc/pull/546)
 
-    - BR
+    - Backup & Restore (BR)
 
         - Support automatically adjusting GC time during backup [#257](https://github.com/pingcap/br/pull/257)
         - Adjust PD parameters when restoring data to speed up the restoration [#198](https://github.com/pingcap/br/pull/198)
@@ -194,6 +194,6 @@ TiUP version: 4.0.0-rc.2
         - Optimize the memory usage when initializing the table schema [#534](https://github.com/pingcap/ticdc/pull/534)
         - Use the `watch` mode to monitor the replication status changes and perform quasi-real-time updates to reduce replication delay [#481](https://github.com/pingcap/ticdc/pull/481)
 
-    + BR
+    + Backup & Restore (BR)
 
         - Fix the issue that inserting data might trigger the `duplicate entry` error after BR restores a table with the `auto_random` attribute [#241](https://github.com/pingcap/br/issues/241)
