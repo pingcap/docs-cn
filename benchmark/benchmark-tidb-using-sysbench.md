@@ -6,13 +6,13 @@ aliases: ['/docs-cn/stable/benchmark/how-to-run-sysbench/']
 
 # 如何用 Sysbench 测试 TiDB
 
-本次测试使用的是 TiDB 3.0 Beta 和 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在 [Sysbench Release 1.0.14 页面](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
+本次测试使用的是 TiDB 4.0 rc 和 Sysbench 1.0.14。建议使用 Sysbench 1.0 或之后的更新版本，可在 [Sysbench Release 1.0.14 页面](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
 
 ## 测试环境
 
 - [硬件要求](/hardware-and-software-requirements.md)
 
-- 参考 [TiDB 部署文档](https://pingcap.com/docs-cn/v3.0/how-to/deploy/orchestrated/ansible/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
+- 参考 [TiDB 部署文档](https://pingcap.com/docs-cn/v4.0/how-to/deploy/orchestrated/ansible/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
     对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
 
 IDC 机器：
