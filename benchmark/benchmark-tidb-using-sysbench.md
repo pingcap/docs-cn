@@ -59,7 +59,7 @@ enabled = true
 
 升高 TiKV 的日志级别同样有利于提高性能表现。
 
-由于 TiKV 是以集群形式部署的，在 Raft 算法的作用下，能保证大多数节点已经写入数据。因此，除了对数据安全极端敏感的场景之外，raftstore 中的 `sync-log` 选项可以关闭。
+由于 TiKV 是以集群形式部署的，在 Raft 算法的作用下，能保证大多数节点已经写入数据，在测试环境 raftstore 中 `sync-log` 选项可以关闭，对写入性能有提升，在线上和生产环境，使用默认值即可，默认为 true。
 
 TiKV 集群存在两个 Column Family（Default CF 和 Write CF），主要用于存储不同类型的数据。对于 Sysbench 测试，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
 
@@ -111,7 +111,7 @@ report-interval=10
 db-driver=mysql
 ```
 
-可根据实际需求调整其参数，其中 `TIDB_HOST` 为 TiDB server 的 IP 地址（配置文件中不能写多个地址），`threads` 为测试中的并发连接数，可在 “8, 16, 32, 64, 128, 256” 中调整，导入数据时，建议设置 threads = 8 或者 16。调整后，将该文件保存为名为 **config** 的文件。
+可根据实际需求调整其参数，其中 `TIDB_HOST` 为 TiDB server 的 IP 地址（配置文件中不能写多个地址），`threads` 为测试中的并发连接数，可在 “8, 16, 32, 64, 128, 256” 中选择，导入数据时，建议设置 threads = 8 或者 16。调整后，将该文件保存名为 **config** 的文件。
 
 **配置文件**参考示例如下：
 
@@ -172,7 +172,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 Sysbench 1.0.14 没有提供数据预热的功能，因此需要手动进行数据预热。如果使用更新的 Sysbench 版本，可以使用自带的预热功能。
 
-以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
+以 Sysbench 中表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
 
 {{< copyable "sql" >}}
 
@@ -214,7 +214,7 @@ sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 r
 
 ## 测试结果
 
-测试了数据 32 表，每表有 10M 数据。
+测试 32 张表，每张表有 10M 数据。
 
 对每个 tidb-server 进行了 Sysbench 测试，将结果相加，得出最终结果：
 
