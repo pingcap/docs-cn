@@ -15,7 +15,7 @@ TiUP version: 4.0.0-rc.2
 
 + TiDB
 
-    - Change the size limit for a single transaction from 100 MB to infinite. However, if TiDB Binlog is enabled and the downstream is Kafka, configure the `txn-total-size-limit` parameter according to the message size limit of 1 GB in kafka [#16941](https://github.com/pingcap/tidb/pull/16941)
+    - Remove the size limit for a single transaction (100 MB) when TiDB Binlog is enabled. Now the size limit for a transaction is 10 GB. However, if TiDB Binlog is enabled and the downstream is Kafka, configure the `txn-total-size-limit` parameter according to the message size limit of 1 GB in Kafka [#16941](https://github.com/pingcap/tidb/pull/16941)
     - Change the behavior from querying the default time range to returning an error and requesting a specified time range if the time range is not specified when querying the `CLUSTER_LOG` table [#17003](https://github.com/pingcap/tidb/pull/17003)
     - If the unsupported `sub-partition` or `linear hash` option is specified when creating the partitioned table using the `CREATE TABLE` statement, the normal table is created rather than the partitioned table with the options ignored [#17197](https://github.com/pingcap/tidb/pull/17197)
 
