@@ -5,8 +5,8 @@
 
 ## 目录
 
-+ 关于 TiDB @段兵
-  + 基本信息
++ 关于 TiDB
+  + 基本信息 @段兵
     + [TiDB 简介](/overview.md)
     + [开源信息说明](/licensing.md)
     + [核心用户列表](/adopters.md)
@@ -49,16 +49,19 @@
   + 监控与告警设置
     + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
     + [监控 API](/tidb-monitoring-api.md) @李宋高
-  + [测试验证](/post-installation-check.md)
+  + [测试验证](/post-installation-check.md) @李仲舒
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md) @周跃跃
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md) @梁启斌
     + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
+  + [支持的迁移路径](/ecosystem-tool-user-guide.md) @王相
+  + [从 Oracle 迁移至 TiDB](/migrate-from-oracle-to-tidb.md) @王相
+  + 从 MySQL 迁移至 TiDB
 + 运维操作
 
-<!--      - [跨数据中心部署方案](/geo-redundancy-deployment.md)
+<!--
 
 + 关于 TiDB
   - [TiDB 简介](/overview.md)
