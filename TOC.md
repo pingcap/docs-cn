@@ -5,6 +5,61 @@
 
 ## 目录
 
++ 关于 TiDB @段兵
+  + 基本信息
+    + [TiDB 简介](/overview.md)
+    + [开源信息说明](/licensing.md)
+    + [核心用户列表](/adopters.md)
+  + [核心特性](/key-features.md) @段兵
+    + 数据类型
+    + SQL 与功能
+    + 安全性
+    + 可靠性
+    + 可用性
+    + 性能数据
+    + 配套工具
+    + 企业版特性
+  + 兼容性 @段兵
+    + [与标准 SQL 的兼容性](/differences-from-standard-sql.md)
+    + [与 MySQL 的兼容性](/mysql-compatibility.md)
+    + [使用限制](/limitations.md)
+  + [使用场景](/use-cases.md) @段兵
+  + [荣誉列表](/credits.md) @姚维
++ 快速上手
+  + [快速上手指南](/quick-start-with-tidb.md) @李坤
+  + [SQL 基本操作](/basic-sql-operations.md) @庄培培
++ 部署集群
+  + [软硬件环境需求](/hardware-and-software-requirements.md) @李仲舒
+  + [环境与系统配置检查](/check-before-deployment.md) @李仲舒
+  + 配置拓扑结构
+    + [最小部署拓扑结构](/minimal-deployment-topology.md) @李仲舒
+    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) @李仲舒（[参考](/location-awareness.md)）
+    + [混合部署拓扑结构](/hybrid-deployment-topology.md) @李仲舒
+  + 安装与启动
+    + Linux
+      + [使用 TiUP 部署](/production-deployment-using-tiup.md) @李仲舒
+      + [使用 TiUP 离线部署](/production-deployment-using-tiup-offline.md) @刘金龙
+      + [使用 Ansible 部署](/online-deployment-using-ansible.md)
+      + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
+      + [使用 Docker 部署](/test-deployment-using-docker.md)
+    + Kubernetes
+    + AWS
+    + GCP
+    + Alibaba Cloud
+  + 监控与告警设置
+    + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
+    + [监控 API](/tidb-monitoring-api.md) @李宋高
+  + [测试验证](/post-installation-check.md)
+  + 性能测试报告及重现指南
+    + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md) @周跃跃
+    + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md) @梁启斌
+    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
+    + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
++ 数据迁移
++ 运维操作
+
+<!--      - [跨数据中心部署方案](/geo-redundancy-deployment.md)
+
 + 关于 TiDB
   - [TiDB 简介](/overview.md)
   + Benchmark 测试
