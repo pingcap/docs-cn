@@ -31,7 +31,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tmp-storage-path`
 
 + 单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时，某些算子的临时磁盘存储位置。
-+ 默认值：`<操作系统临时文件夹>/tidb/tmp-storage`
++ 默认值：`<操作系统临时文件夹>/<操作系统用户ID>_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage`。其中 `MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=` 是对 `<host>:<port>/<statusHost>:<statusPort>` 进行 `Base64` 编码的输出结果。
 + 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
 
 ### `tmp-storage-quota`
