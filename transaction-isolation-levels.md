@@ -24,7 +24,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 
 >
 > 在 TiDB v3.0 中，事务的自动重试功能默认为禁用状态。开启自动重试可能导致**事务隔离级别发生变化**，不建议启用，更多关于事务自动重试的文档说明，请参考[事务重试](/optimistic-transaction.md#重试机制)。
 >
-> 从 TiDB 从 [v3.0.8](/releases/release-3.0.8.md#TiDB) 版本开始，对于新创建集群默认使用[悲观事务模式](/pessimistic-transaction.md)，悲观事务中的当前读(for update 读)为**不可重复读**，关于悲观事务使用注意事项，请参考[悲观事务模式](/pessimistic-transaction.md)
+> 从 TiDB [v3.0.8](/releases/release-3.0.8.md#TiDB) 版本开始，对于新创建 TiDB 集群默认使用[悲观事务模式](/pessimistic-transaction.md)，悲观事务中的当前读(for update 读)为**不可重复读**，关于悲观事务使用注意事项，请参考[悲观事务模式](/pessimistic-transaction.md)
 
 ## 可重复读隔离级别 (Repeatable Read)
 
