@@ -59,7 +59,30 @@
   + [支持的迁移路径](/ecosystem-tool-user-guide.md) @王相
   + [从 Oracle 迁移至 TiDB](/migrate-from-oracle-to-tidb.md) @王相
   + 从 MySQL 迁移至 TiDB
+    + [从 CSV 文件迁移](/migrate-from-mysql-csv-files.md) @栾成
+    + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md) @栾成
+    + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md) @张学成，王相
+  + [从 PostgreSQL 迁移至 TiDB](/migrate-from-postgresql-to-tidb.md) @王相
+  + [从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) @王相
 + 运维操作
+  + 升级 TiDB 版本
+    + [使用 TiUP](/upgrade-tidb-using-tiup.md) @戚铮
+    + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
+    + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
+  + 扩缩容
+    + [使用 TiUP](/scale-tidb-using-tiup.md) @刘金龙
+    + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
+  + 备份与恢复
+    + [使用 Mydumper 和 TiDB Lightning](/backup-and-restore-using-mydumper-lightning.md) @栾成
+    + 使用 BR 工具
+      + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
+      + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+  + [告警处理](/handle-alerts.md) @李宋高
+  + [日常巡检](/daily-inspection.md) @王军
+  + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
+  + [TiUP 常用运维操作](/tiup/manage-tiup-component.md) @王贤净
+  + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
++ 故障诊断
 
 <!--
 
