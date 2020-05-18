@@ -93,6 +93,12 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
     }
     ```
 
+- `admin-job-type` 代表一个 changefeed 的状态：
+  - `0`: 状态正常，也是初始状态。
+  - `1`: 任务暂停。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+  - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
+  - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+
 ### 管理同步子任务处理单元 (`processor`)
 
 - 查询 `processor` 列表：
@@ -143,7 +149,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 
 ## 使用 HTTP 接口管理集群状态和数据同步
 
-目前 HTTP 接口提供一些基础的查询和运维功能。在以下接口描述中，假设 TiCDC server 的状态查询接口 IP 地址为 `127.0.0.1`，状态端口地址为 `8300`（在启动 TiCDC server 时通过 `--status-addr=ip:port` 指定绑定的 IP 和端口）。在后续版本中这部分功能也会集成到 `cdc cli` 中。
+目前 HTTP 接口提供一些基础的查询和运维功能。在以下接口描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
 
 ### 获取 TiCDC server 状态信息的接口
 
@@ -200,20 +206,12 @@ election: not leader
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X POST -d "admin-job=1&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://127.0.0.1:8301/capture/owner/admin
-```
-
-```
-{
- "status": true,
- "message": ""
-}
+cdc cli changefeed --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f pause
 ```
 
 以上命令中：
 
-- `admin-job=1` 表示停止任务。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-- `cf-id=xxx` 为需要操作的 `changefeed` ID。
+- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
 
 ### 恢复同步任务
 
@@ -222,20 +220,12 @@ curl -X POST -d "admin-job=1&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X POST -d "admin-job=2&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://127.0.0.1:8301/capture/owner/admin
-```
-
-```
-{
- "status": true,
- "message": ""
-}
+cdc cli changefeed --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f resume
 ```
 
 以上命令中：
 
-- `admin-job=2` 表示恢复任务，同步任务从 `checkpoint-ts` 继续同步。
-- `cf-id=xxx` 为需要操作的 `changefeed` ID。
+- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
 
 ### 删除同步任务
 
@@ -244,15 +234,7 @@ curl -X POST -d "admin-job=2&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X POST -d "admin-job=3&cf-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f" http://127.0.0.1:8301/capture/owner/admin
+cdc cli changefeed --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f remove
 ```
 
-```
-{
- "status": true,
- "message": ""
-}
-```
-
-- `admin-job=3`，表示删除任务，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
-- `cf-id=xxx` 为需要操作的 `changefeed` ID。
+- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
