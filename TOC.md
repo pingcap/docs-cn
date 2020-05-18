@@ -75,8 +75,8 @@
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning](/backup-and-restore-using-mydumper-lightning.md) @栾成
     + 使用 BR 工具
-      + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
-      + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+      + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
+      + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
   + [告警处理](/handle-alerts.md) @李宋高
   + [日常巡检](/daily-inspection.md) @王军
   + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
