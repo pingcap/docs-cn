@@ -291,6 +291,7 @@
     - [下推计算结果缓存](/coprocessor-cache.md)
     - [TiKV 调优](/tune-tikv-performance.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
+    - [系统调优](/tune-system-performance.md)
   + 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)
