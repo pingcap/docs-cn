@@ -104,9 +104,9 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Raft process
 
 - Ready handled：Raft 中不同 ready 类型的个数
-- Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
-- Process tick duration per server：每个 TiKV 实例处理 tick 所花费的时间
 - 0.99 Duration of Raft store events：99% 的 raftstore 事件所花费的时间
+- Process ready duration：处理 ready 所花费的时间
+- Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
 
 ![TiKV Dashboard - Raft process metrics](/media/tikv-dashboard-raft-process.png)
 
@@ -123,12 +123,14 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Raft propose
 
-- Raft proposals per ready：在一个 mio tick 内，所有 Region proposal 的个数
+- Raft proposals per ready：在一个 tick 内，所有 Region proposal 的个数
 - Raft read/write proposals：不同类型的 proposal 的个数
 - Raft read proposals per server：每个 TiKV 实例发起读 proposal 的个数
 - Raft write proposals per server：每个 TiKV 实例发起写 proposal 的个数
 - Propose wait duration：每个 proposal 的等待时间
 - Propose wait duration per server：每个 TiKV 实例上每个 proposal 的等待时间
+- Apply wait duration：每个 apply 的等待时间
+- Apply wait duration per server：每个 TiKV 实例上每个 apply 的等待时间
 - Raft log speed：peer propose 日志的速度
 
 ![TiKV Dashboard - Raft propose metrics](/media/tikv-dashboard-raft-propose.png)
@@ -145,10 +147,14 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Local reader
 
 - Local reader requests：所有请求的总数以及 local read 线程拒绝的请求数量
-- Local read requests duration：local read 请求的等待时间
-- Local read requests batch size：local read 请求的批量大小
 
 ![TiKV Dashboard - Local reader metrics](/media/tikv-dashboard-local-reader.png)
+
+## Unified Read Pool
+
+- Time used by level：在 unified read pool 中每个级别使用的时间，级别 0 指小查询
+- Level 0 chance：在 unified read pool 中调度的 level 0 任务的比例
+- Running tasks：在 unified read pool 中并发运行的任务数量
 
 ## Storage
 
@@ -162,6 +168,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Scheduler
 
 - Scheduler stage total：每种命令不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+- Scheduler writing bytes：在每个 stage 中命令的总写入字节数量
 - Scheduler priority commands：不同优先级命令的个数
 - Scheduler pending commands：每个 TiKV 实例上 pending 命令的个数
 
