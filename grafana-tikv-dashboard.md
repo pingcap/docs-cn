@@ -297,6 +297,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Write operations：write 操作的个数
 - Write duration：write 操作的耗时
 - WAL sync operations：sync WAL 操作的个数
+- Write WAL duration：当执行 write 操作所消耗的时间
 - WAL sync duration：sync WAL 操作的耗时
 - Compaction operations：compaction 和 flush 操作的个数
 - Compaction duration：compaction 和 flush 操作的耗时
@@ -333,6 +334,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Write operations：write 操作的个数
 - Write duration：write 操作的耗时
 - WAL sync operations：sync WAL 操作的个数
+- Write WAL duration：当执行 write 操作所消耗的时间
 - WAL sync duration：sync WAL 操作的耗时
 - Compaction operations：compaction 和 flush 操作的个数
 - Compaction duration：compaction 和 flush 操作的耗时
@@ -362,10 +364,21 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Titan - All
 
+
+
 ## Lock manager
 
 ## Memory
 
+- Allocator Stats：内存分配器的统计信息
+
 ## Backup
 
 ## Encryption
+
+- Encryption data keys：正在使用的加密 data key 的总数量
+- Encrypted files：被加密的文件数量
+- Encryption initialized：显示加密是否被启用，1代表已经启用
+- Encryption meta files size：加密相关的元数据文件的大小
+- Encrypt/decrypt data nanos：加密/解密数据所耗费的时间
+- Read/write encryption meta duration：读写加密文件所耗费的时间
