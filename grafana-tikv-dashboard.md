@@ -364,15 +364,57 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Titan - All
 
-
+- Blob file count：Titan blob 文件的数量
+- Blob file size：Titan blob 文件的大小
+- Live blob size：LSM-tree 引用的 Titan blob 数值的总大小
+- Blob cache hit：Titan 的 blob 缓存的使用效率
+- Iter touched blob file count：Iter 接触的 blob 文件的数量
+- Blob file discardable ratio distribution：过时的 blob 文件的大小
+- Blob key size：Titan 中 blob key 的大小
+- Blob value size：Titan 中 blob value 的大小
+- Blob get operations：blob 的 get 操作的数量
+- Blob get duration：blob 的 get 操作的耗时
+- Blob iter operations：blob 的 iter 操作的耗时
+- Blob seek duration：blob 的 seek 操作的耗时
+- Blob next duration：blob 的 next 操作的耗时
+- Blob prev duration：blob 的 prev 操作的耗时
+- Blob keys flow：Titan blob 读写的 key 数量
+- Blob bytes flow：Titan blob 读写的 bytes 数量
+- Blob file read duration：blob 文件的读取耗时
+- Blob file write duration：blob 文件的写入耗时
+- Blob file sync operations：blob 文件的同步完成的次数
+- Blob file sync duration：blob 文件的同步耗时
+- Blob GC action：Titan GC 的次数
+- Blob GC duration：Titan GC 的周期
+- Blob GC keys flow：Titan blob gc 读写的 key 数量
+- Blob GC bytes flow：Titan blob gc 读写的 bytes 数量
+- Blob GC input file size：blob gc 输入文件的大小
+- Blob GC output file size：blob gc 输出文件的大小
+- Blob GC file count：blob gc 的文件数量
 
 ## Lock manager
+
+- Thread CPU：lock manager 的线程使用率
+- Handled tasks：收到的任务的总数量
+- Waiter lifetime duration：waiter 的持续时间
+- Wait table：wait table 的状态信息
+- Deadlock detect duration：处理死锁检测请求的耗时
+- Detect error：检测的错误数量
+- Deadlock detector leader：死锁检测者 leader 数量
 
 ## Memory
 
 - Allocator Stats：内存分配器的统计信息
 
 ## Backup
+
+- Backup CPU：backup 的线程使用率
+- Range Size：backup range 的大小直方图
+- Backup Duration：backup 的耗时
+- Backup Flow：backup 总的字节大小
+- Disk Throughput：实例磁盘的吞吐量
+- Backup Range Duration：backup range 的耗时
+- Backup Errors：backup 中发生的错误数量
 
 ## Encryption
 
