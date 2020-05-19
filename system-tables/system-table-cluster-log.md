@@ -40,35 +40,33 @@ desc information_schema.cluster_log;
 
 > **注意：**
 >
-> + 日志表的所有字段都会下推到对应节点执行，所以为了降低使用集群日志表的开销，需尽可能地指定更多的条件。例如 `select * from cluter_log where instance='tikv-1'` 只会在 `tikv-1` 上执行日志搜索。
+> + 日志表的所有字段都会下推到对应节点执行，所以为了降低使用集群日志表的开销，必须指定搜索关键字以及时间范围，然后尽可能地指定更多的条件。例如 `select * from cluster_log where message like '%ddl%' and time > '2020-05-18 20:40:00' and time<'2020-05-18 21:40:00' and type='tidb'`。
 >
-> + `message` 字段支持 `like` 和 `regexp` 正则表达式，对应的 pattern 会编译为 `regexp`。同时指定多个 `message` 条件，相当于 `grep` 命令的 `pipeline` 形式，例如：`select * from cluster_log where message like 'coprocessor%' and message regexp '.*slow.*'` 相当于在集群所有节点执行 `grep 'coprocessor' xxx.log | grep -E '.*slow.*'`。
+> + `message` 字段支持 `like` 和 `regexp` 正则表达式，对应的 pattern 会编译为 `regexp`。同时指定多个 `message` 条件，相当于 `grep` 命令的 `pipeline` 形式，例如：`select * from cluster_log where message like 'coprocessor%' and message regexp '.*slow.*' and time > '2020-05-18 20:40:00' and time<'2020-05-18 21:40:00'` 相当于在集群所有节点执行 `grep 'coprocessor' xxx.log | grep -E '.*slow.*'`。
 
 查询某个 DDL 的执行过程示例如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-select * from information_schema.cluster_log where message like '%ddl%' and message like '%job%58%' and type='tidb' and time > '2020-03-27 15:39:00';
+select time,instance,left(message,150) from information_schema.cluster_log where message like '%ddl%job%ID.80%' and type='tidb' and time > '2020-05-18 20:40:00' and time<'2020-05-18 21:40:00'
 ```
 
 ```
-+-------------------------+------+------------------+-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| TIME                    | TYPE | INSTANCE         | LEVEL | MESSAGE                                                                                                                                                                                                                                                                                                                                     |
-+-------------------------+------+------------------+-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 2020/03/27 15:39:36.140 | tidb | 172.16.5.40:4008 | INFO  | [ddl_worker.go:253] ["[ddl] add DDL jobs"] ["batch count"=1] [jobs="ID:58, Type:create table, State:none, SchemaState:none, SchemaID:1, TableID:57, RowCount:0, ArgLen:1, start time: 2020-03-27 15:39:36.129 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:0; "]                                                                       |
-| 2020/03/27 15:39:36.140 | tidb | 172.16.5.40:4008 | INFO  | [ddl.go:457] ["[ddl] start DDL job"] [job="ID:58, Type:create table, State:none, SchemaState:none, SchemaID:1, TableID:57, RowCount:0, ArgLen:1, start time: 2020-03-27 15:39:36.129 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:0"] [query="create table t3 (a int, b int,c int)"]                                                   |
-| 2020/03/27 15:39:36.879 | tidb | 172.16.5.40:4009 | INFO  | [ddl_worker.go:554] ["[ddl] run DDL job"] [worker="worker 1, tp general"] [job="ID:58, Type:create table, State:none, SchemaState:none, SchemaID:1, TableID:57, RowCount:0, ArgLen:0, start time: 2020-03-27 15:39:36.129 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:0"]                                                             |
-| 2020/03/27 15:39:36.936 | tidb | 172.16.5.40:4009 | INFO  | [ddl_worker.go:739] ["[ddl] wait latest schema version changed"] [worker="worker 1, tp general"] [ver=35] ["take time"=52.165811ms] [job="ID:58, Type:create table, State:done, SchemaState:public, SchemaID:1, TableID:57, RowCount:0, ArgLen:1, start time: 2020-03-27 15:39:36.129 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:0"] |
-| 2020/03/27 15:39:36.938 | tidb | 172.16.5.40:4009 | INFO  | [ddl_worker.go:359] ["[ddl] finish DDL job"] [worker="worker 1, tp general"] [job="ID:58, Type:create table, State:synced, SchemaState:public, SchemaID:1, TableID:57, RowCount:0, ArgLen:0, start time: 2020-03-27 15:39:36.129 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:0"]                                                      |
-| 2020/03/27 15:39:36.140 | tidb | 172.16.5.40:4009 | INFO  | [ddl_worker.go:253] ["[ddl] add DDL jobs"] ["batch count"=1] [jobs="ID:58, Type:create table, State:none, SchemaState:none, SchemaID:1, TableID:57, RowCount:0, ArgLen:1, start time: 2020-03-27 15:39:36.129 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:0; "]                                                                       |
-| 2020/03/27 15:39:36.140 | tidb | 172.16.5.40:4009 | INFO  | [ddl.go:457] ["[ddl] start DDL job"] [job="ID:58, Type:create table, State:none, SchemaState:none, SchemaID:1, TableID:57, RowCount:0, ArgLen:1, start time: 2020-03-27 15:39:36.129 +0800 CST, Err:<nil>, ErrCount:0, SnapshotVersion:0"] [query="create table t3 (a int, b int,c int)"]                                                   |
-| 2020/03/27 15:39:37.141 | tidb | 172.16.5.40:4008 | INFO  | [ddl.go:489] ["[ddl] DDL job is finished"] [jobID=58]                                                                                                                                                                                                                                                                                       |
-+-------------------------+------+------------------+-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-------------------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+| time                    | instance       | left(message,150)                                                                                                                                      |
++-------------------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 2020/05/18 21:37:54.784 | 127.0.0.1:4002 | [ddl_worker.go:261] ["[ddl] add DDL jobs"] ["batch count"=1] [jobs="ID:80, Type:create table, State:none, SchemaState:none, SchemaID:1, TableID:79, Ro |
+| 2020/05/18 21:37:54.784 | 127.0.0.1:4002 | [ddl.go:477] ["[ddl] start DDL job"] [job="ID:80, Type:create table, State:none, SchemaState:none, SchemaID:1, TableID:79, RowCount:0, ArgLen:1, start |
+| 2020/05/18 21:37:55.327 | 127.0.0.1:4000 | [ddl_worker.go:568] ["[ddl] run DDL job"] [worker="worker 1, tp general"] [job="ID:80, Type:create table, State:none, SchemaState:none, SchemaID:1, Ta |
+| 2020/05/18 21:37:55.381 | 127.0.0.1:4000 | [ddl_worker.go:763] ["[ddl] wait latest schema version changed"] [worker="worker 1, tp general"] [ver=70] ["take time"=50.809848ms] [job="ID:80, Type: |
+| 2020/05/18 21:37:55.382 | 127.0.0.1:4000 | [ddl_worker.go:359] ["[ddl] finish DDL job"] [worker="worker 1, tp general"] [job="ID:80, Type:create table, State:synced, SchemaState:public, SchemaI |
+| 2020/05/18 21:37:55.786 | 127.0.0.1:4002 | [ddl.go:509] ["[ddl] DDL job is finished"] [jobID=80]                                                                                                  |
++-------------------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 上面查询结果表示：
 
-+ 用户将 DDL JOB ID 为 `58` 的请求发给 `172.16.5.40:4008` TiDB 节点。
-+ `172.16.5.40:4009` TiDB 节点处理这个 DDL 请求，说明此时 `172.16.5.40:4009` 节点是 DDL owner。
-+ DDL JOB ID 为 58 的请求处理完成。
++ 用户将 DDL JOB ID 为 `80` 的请求发给 `127.0.0.1:4002` TiDB 节点。
++ `127.0.0.1:4000` TiDB 节点处理这个 DDL 请求，说明此时 `127.0.0.1:4000` 节点是 DDL owner。
++ DDL JOB ID 为 80 的请求处理完成。
