@@ -116,27 +116,27 @@
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
       + [TiKV 调优](/tune-tikv-performance.md) @刘玮
-	+ [SQL 性能调优](/sql-tuning-overview.md) @崔一丁
-		+ [理解 TiDB 执行计划](/query-execution-plan.md)
-		+ [SQL 优化流程简介](/sql-optimization-concepts.md)
-			+ [逻辑优化](/sql-logical-optimization.md)
-				+ [子查询相关的优化](/subquery-optimization.md)
-				+ [列裁剪](/column-pruning.md)
-				+ [关联子查询去关联](/correlated-subquery-optimization.md)
-				+ [Max/Min 消除](/max-min-eliminate.md)
-				+ [谓词下推](/predicate-push-down.md)
-				+ [分区裁剪](/partition-pruning.md)
-				+ [TopN 和 Limit 下推](/topn-limit-push-down.md)
-				+ [Join Reorder](/join-reorder.md)
-			+ [物理优化](/sql-physical-optimization.md)
-				+ [索引的选择](/index-choose.md)
-				+ [统计信息介绍](/statistics-intro.md)
-				+ [发现索引选错时](/wrong-index-solution.md)
-				+ [Distinct 优化](/agg-distinct-optimization.md)
-		+ [控制执行计划](./control-execution-plan.md)
-			+ [Optimizer Hints](/optimizer-hints.md)
-			+ [执行计划绑定](/execution-plan-binding.md)
-			+ [优化规则及表达式下推的黑名单](/balcklist-control-plan.md)
+    + [SQL 性能调优](/sql-tuning-overview.md) @崔一丁
+      + [理解 TiDB 执行计划](/query-execution-plan.md)
+      + [SQL 优化流程简介](/sql-optimization-concepts.md)
+        + [逻辑优化](/sql-logical-optimization.md)
+          + [子查询相关的优化](/subquery-optimization.md)
+          + [列裁剪](/column-pruning.md)
+          + [关联子查询去关联](/correlated-subquery-optimization.md)
+          + [Max/Min 消除](/max-min-eliminate.md)
+          + [谓词下推](/predicate-push-down.md)
+          + [分区裁剪](/partition-pruning.md)
+          + [TopN 和 Limit 下推](/topn-limit-push-down.md)
+          + [Join Reorder](/join-reorder.md)
+        + [物理优化](/sql-physical-optimization.md)
+          + [索引的选择](/index-choose.md)
+          + [统计信息介绍](/statistics-intro.md)
+          + [发现索引选错时](/wrong-index-solution.md)
+          + [Distinct 优化](/agg-distinct-optimization.md)
+        + [控制执行计划](/control-execution-plan.md)
+          + [Optimizer Hints](/optimizer-hints.md)
+          + [执行计划绑定](/execution-plan-binding.md)
+          + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
     + [性能监控](/monitor-sql-performance.md) @崔一丁
 + 教程
 + 参考指南
