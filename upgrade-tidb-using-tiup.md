@@ -215,4 +215,5 @@ https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
 
 - `oom-action` 参数设置为 `cancel` 时，当查询语句触发 OOM 阈值后会被 kill 掉，升级到 4.0 版本后除了 `select` 语句，还可能 kill 掉 `insert`/`update`/`delete` 等 DML 语句。
 - 4.0 版本增加了 `rename` 时对表名长度的检查，长度限制为 `64` 个字符。升级后 `rename` 后的表名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
+- 4.0 版本增加了对分区表的分区名的长度的检查，长度限制为 `64` 个字符。升级后分区名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
 - 4.0 版本对 `explain` 执行计划的输出格式做了改进，需要注意是否有针对 `explain` 制订了自动化的分析程序。
