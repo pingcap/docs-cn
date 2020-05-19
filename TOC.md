@@ -22,7 +22,7 @@
   + 兼容性 @段兵
     + [与标准 SQL 的兼容性](/differences-from-standard-sql.md)
     + [与 MySQL 的兼容性](/mysql-compatibility.md)
-    + [使用限制](/limitations.md)
+    + [使用限制](/tidb-limitations.md)
   + [使用场景](/use-cases.md) @段兵
   + [荣誉列表](/credits.md) @姚维
 + 快速上手
@@ -138,7 +138,144 @@
     + [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md) @李坤
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) @李坤
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md) @李建俊
+  + [Placement Rules 使用文档](/configure-placement-rules.md) @黄梦龙
 + 参考指南
+  + 架构
+    + [概述](/tidb-architecture.md) @黄东旭
+    + [存储](/tidb-storage.md) @冯立元
+    + [计算](/tidb-computing.md) @黄东旭
+    + [调度](/tidb-scheduling.md) @陈书宁
+  + 监控指标
+    + [Overview 面板](/grafana-overview-dashboard.md) @王聪
+    + [TiDB 面板](/grafana-tidb-dashboard.md) @于帅鹏
+    + [PD 面板](/grafana-pd-dashboard.md) @PD Team/陈书宁
+    + [TiKV 面板](/grafana-tikv-dashboard.md) @刘新韬
+    + [TiFlash 监控指标](/tiflash/monitor-tiflash.md) @孙若曦
+  + 告警信息
+    + [TiDB 集群报警规则与处理方法](/alert-rules.md)
+    + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md) @孙若曦
+  + 安全加固
+    + [使用 TLS 加密连接](/encrypted-connections-with-tls-protocols.md) @苏立
+    + [为 TiDB 组件间开启 TLS 和数据加密存储](/enable-tls-between-components.md) @苏立
+    + [生成自签名证书](/generate-self-signed-certificates.md) @刘新韬
+  + 权限
+    + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md) @毛康力
+    + [权限管理](/privilege-management.md) @毛康力
+    + [TiDB 用户账户管理](/user-account-management.md) @毛康力
+    + [基于角色的访问控制](/role-based-access-control.md) @宋翎宇
+    + [TiDB 证书鉴权使用指南](/certificate-authentication.md) @苏立
+  + SQL
+    + SQL 语言结构和语法
+    + SQL 语句
+    + 数据类型
+    + 函数与操作符
+    + 约束
+    + 生成列
+    + SQL 模式
+    + 事务
+    + 视图
+    + 分区表
+    + 字符集
+    + 索引
+    + 系统表
+  + UI
+  + CLI
+  + 命令行参数
+  + 配置文件参数
+  + 系统变量
+  + 存储引擎
+  + [错误码](/error-codes.md)
++ FAQ
++ [版本发布历史](/releases/release-notes.md)
+  + v4.0
+    - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
+    - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)
+    - [4.0.0-rc](/releases/release-4.0.0-rc.md)
+    - [4.0.0-beta.2](/releases/release-4.0.0-beta.2.md)
+    - [4.0.0-beta.1](/releases/release-4.0.0-beta.1.md)
+    - [4.0.0-beta](/releases/release-4.0.0-beta.md)
+  + v3.1
+    - [3.1.1](/releases/release-3.1.1.md)
+    - [3.1.0 GA](/releases/release-3.1.0-ga.md)
+    - [3.1.0-rc](/releases/release-3.1.0-rc.md)
+    - [3.1.0-beta.2](/releases/release-3.1.0-beta.2.md)
+    - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
+    - [3.1.0-beta](/releases/release-3.1.0-beta.md)
+  + v3.0
+    - [3.0.14](/releases/release-3.0.14.md)
+    - [3.0.13](/releases/release-3.0.13.md)
+    - [3.0.12](/releases/release-3.0.12.md)
+    - [3.0.11](/releases/release-3.0.11.md)
+    - [3.0.10](/releases/release-3.0.10.md)
+    - [3.0.9](/releases/release-3.0.9.md)
+    - [3.0.8](/releases/release-3.0.8.md)
+    - [3.0.7](/releases/release-3.0.7.md)
+    - [3.0.6](/releases/release-3.0.6.md)
+    - [3.0.5](/releases/release-3.0.5.md)
+    - [3.0.4](/releases/release-3.0.4.md)
+    - [3.0.3](/releases/release-3.0.3.md)
+    - [3.0.2](/releases/release-3.0.2.md)
+    - [3.0.1](/releases/release-3.0.1.md)
+    - [3.0 GA](/releases/release-3.0-ga.md)
+    - [3.0.0-rc.3](/releases/release-3.0.0-rc.3.md)
+    - [3.0.0-rc.2](/releases/release-3.0.0-rc.2.md)
+    - [3.0.0-rc.1](/releases/release-3.0.0-rc.1.md)
+    - [3.0.0-beta.1](/releases/release-3.0.0-beta.1.md)
+    - [3.0.0-beta](/releases/release-3.0-beta.md)
+  + v2.1
+    - [2.1.19](/releases/release-2.1.19.md)
+    - [2.1.18](/releases/release-2.1.18.md)
+    - [2.1.17](/releases/release-2.1.17.md)
+    - [2.1.16](/releases/release-2.1.16.md)
+    - [2.1.15](/releases/release-2.1.15.md)
+    - [2.1.14](/releases/release-2.1.14.md)
+    - [2.1.13](/releases/release-2.1.13.md)
+    - [2.1.12](/releases/release-2.1.12.md)
+    - [2.1.11](/releases/release-2.1.11.md)
+    - [2.1.10](/releases/release-2.1.10.md)
+    - [2.1.9](/releases/release-2.1.9.md)
+    - [2.1.8](/releases/release-2.1.8.md)
+    - [2.1.7](/releases/release-2.1.7.md)
+    - [2.1.6](/releases/release-2.1.6.md)
+    - [2.1.5](/releases/release-2.1.5.md)
+    - [2.1.4](/releases/release-2.1.4.md)
+    - [2.1.3](/releases/release-2.1.3.md)
+    - [2.1.2](/releases/release-2.1.2.md)
+    - [2.1.1](/releases/release-2.1.1.md)
+    - [2.1 GA](/releases/release-2.1-ga.md)
+    - [2.1 RC5](/releases/release-2.1-rc.5.md)
+    - [2.1 RC4](/releases/release-2.1-rc.4.md)
+    - [2.1 RC3](/releases/release-2.1-rc.3.md)
+    - [2.1 RC2](/releases/release-2.1-rc.2.md)
+    - [2.1 RC1](/releases/release-2.1-rc.1.md)
+    - [2.1 Beta](/releases/release-2.1-beta.md)
+  + v2.0
+    - [2.0.11](/releases/release-2.0.11.md)
+    - [2.0.10](/releases/release-2.0.10.md)
+    - [2.0.9](/releases/release-2.0.9.md)
+    - [2.0.8](/releases/release-2.0.8.md)
+    - [2.0.7](/releases/release-2.0.7.md)
+    - [2.0.6](/releases/release-2.0.6.md)
+    - [2.0.5](/releases/release-2.0.5.md)
+    - [2.0.4](/releases/release-2.0.4.md)
+    - [2.0.3](/releases/release-2.0.3.md)
+    - [2.0.2](/releases/release-2.0.2.md)
+    - [2.0.1](/releases/release-2.0.1.md)
+    - [2.0](/releases/release-2.0-ga.md)
+    - [2.0 RC5](/releases/release-2.0-rc.5.md)
+    - [2.0 RC4](/releases/release-2.0-rc.4.md)
+    - [2.0 RC3](/releases/release-2.0-rc.3.md)
+    - [2.0 RC1](/releases/release-2.0-rc.1.md)
+    - [1.1 Beta](/releases/release-1.1-beta.md)
+    - [1.1 Alpha](/releases/release-1.1-alpha.md)
+  + v1.0
+    - [1.0](/releases/release-1.0-ga.md)
+    - [Pre-GA](/releases/release-pre-ga.md)
+    - [RC4](/releases/release-rc.4.md)
+    - [RC3](/releases/release-rc.3.md)
+    - [RC2](/releases/release-rc.2.md)
+    - [RC1](/releases/release-rc.1.md)
++ [术语表](/glossary.md)
 
 <!--
 
