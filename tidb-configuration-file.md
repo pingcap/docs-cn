@@ -270,9 +270,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `max-memory`
 
-+ Prepare plan cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio) 会剔除 LRU 中的元素。
++ TiDB 最大使用内存，单位字节
 + 默认值：0
-+ 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
++ 默认值 0 表示不受限制
 
 ### `txn-total-size-limit`
 
@@ -393,10 +393,10 @@ prepare 语句的 Plan cache 设置。
 
 ### `max-txn-ttl`
 
-+ 单个事务允许持有相关资源的最大执行时间。
++ 单个事务持锁的最长时间，超过该时间，该事务的锁可能会被其他事务清除，导致该事务无法成功提交。
 + 默认值：600000
 + 单位：毫秒
-+ 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功
++ 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
 
 ### `max-batch-size`
 
