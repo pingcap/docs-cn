@@ -53,7 +53,9 @@
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md) @周跃跃
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md) @梁启斌
+    + [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
     + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
+    + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
   + [支持的迁移路径](/ecosystem-tool-user-guide.md) @王相
@@ -83,6 +85,21 @@
   + [TiUP 常用运维操作](/tiup/manage-tiup-component.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 故障诊断
+  + 常见故障
+    + 硬件故障 @周强
+      + [整机](/handle-machine-issues.md)
+      + [硬盘](/handle-disk-issues.md)
+      + [网络](/handle-network-issues.md)
+      + [内存](/handle-memory-issues.md)（[相关参考](https://pingcap.com/docs-cn/stable/configure-memory-usage/)）
+    + 操作系统故障 @周强
+      + [版本](/handle-operating-system-issues.md)
+      + [内核参数](/handle-kernel-parameter-issues.md)
+  + 常见性能问题
+    + [定位慢查询](/identify-slow-queries.md) @张原嘉
+    + [SQL 诊断](/system-tables/system-table-sql-diagnosis.md) @SQL Infra
+    + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
+    + [SQL 语句统计](/statement-summary-tables.md) @SQL Infra
++ 性能调优
 
 <!--
 
