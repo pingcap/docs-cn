@@ -174,34 +174,6 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ![TiKV Dashboard - Scheduler metrics](/media/tikv-dashboard-scheduler.png)
 
-## Scheduler - batch_get
-
-- Scheduler stage total：batch_get 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 batch_get 命令所需花费的时间，正常情况下，应该小于 1s
-- Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：batch_get 命令读取 key 的个数
-- Scheduler keys written：batch_get 命令写入 key 的个数
-- Scheduler scan details：执行 batch_get 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details：执行 batch_get 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 batch_get 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 batch_get 命令时，扫描每个 default CF 中 key 的详细情况
-
-![TiKV Dashboard - Scheduler - batch_get metrics](/media/tikv-dashboard-scheduler-batch-get.png)
-
-## Scheduler - cleanup
-
-- Scheduler stage total：cleanup 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 cleanup 命令所需花费的时间，正常情况下，应该小于 1s
-- Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：cleanup 命令读取 key 的个数
-- Scheduler keys written：cleanup 命令写入 key 的个数
-- Scheduler scan details：执行 cleanup 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 cleanup 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 cleanup 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 cleanup 命令时，扫描每个 default CF 中 key 的详细情况
-
-![TiKV Dashboard - Scheduler - cleanup metrics](/media/tikv-dashboard-scheduler-cleanup.png)
-
 ## Scheduler - commit
 
 - Scheduler stage total：commit 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
@@ -216,41 +188,17 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ![TiKV Dashboard - Scheduler commit metrics](/media/tikv-dashboard-scheduler-commit.png)
 
-## Scheduler - gc
+## Scheduler - pessimistic_rollback
 
-- Scheduler stage total：gc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 gc 命令所需花费的时间，正常情况下，应该小于 1s
+- Scheduler stage total：pessimistic_rollback 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+- Scheduler command duration：执行 pessimistic_rollback 命令所需花费的时间，正常情况下，应该小于 1s
 - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：gc 命令读取 key 的个数
-- Scheduler keys written：gc 命令写入 key 的个数
-- Scheduler scan details：执行 gc 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 gc 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 gc 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 gc 命令时，扫描每个 default CF 中 key 的详细情况
-
-## Scheduler - get
-
-- Scheduler stage total：get 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 get 命令所需花费的时间，正常情况下，应该小于 1s
-- Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：get 命令读取 key 的个数
-- Scheduler keys written：get 命令写入 key 的个数
-- Scheduler scan details：执行 get 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 get 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 get 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 get 命令时，扫描每个 default CF 中 key 的详细情况
-
-## Scheduler - key_mvcc
-
-- Scheduler stage total：key_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 key_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
-- Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：key_mvcc 命令读取 key 的个数
-- Scheduler keys written：key_mvcc 命令写入 key 的个数
-- Scheduler scan details：执行 key_mvcc 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 key_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 key_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 key_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
+- Scheduler keys read：pessimistic_rollback 命令读取 key 的个数
+- Scheduler keys written：pessimistic_rollback 命令写入 key 的个数
+- Scheduler scan details：执行 pessimistic_rollback 命令时，扫描每个 CF 中 key 的详细情况
+- Scheduler scan details [lock]：执行 pessimistic_rollback 命令时，扫描每个 lock CF 中 key 的详细情况
+- Scheduler scan details [write]：执行 pessimistic_rollback 命令时，扫描每个 write CF 中 key 的详细情况
+- Scheduler scan details [default]：执行 pessimistic_rollback 命令时，扫描每个 default CF 中 key 的详细情况
 
 ## Scheduler - prewrite
 
@@ -264,82 +212,17 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Scheduler scan details [write]：执行 prewrite 命令时，扫描每个 write CF 中 key 的详细情况
 - Scheduler scan details [default]：执行 prewrite 命令时，扫描每个 default CF 中 key 的详细情况
 
-## Scheduler - resolve_lock
+## Scheduler - rollback
 
-- Scheduler stage total：resolve_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 resolve_lock 命令所需花费的时间，正常情况下，应该小于 1s
+- Scheduler stage total：rollback 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+- Scheduler command duration：执行 rollback 命令所需花费的时间，正常情况下，应该小于 1s
 - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：resolve_lock 命令读取 key 的个数
-- Scheduler keys written：resolve_lock 命令写入 key 的个数
-- Scheduler scan details：执行 resolve_lock 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 resolve_lock 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 resolve_lock 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 resolve_lock 命令时，扫描每个 default CF 中 key 的详细情况
-
-## Scheduler - scan
-
-- Scheduler stage total：scan 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 scan 命令所需花费的时间，正常情况下，应该小于 1s
-- Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：scan 命令读取 key 的个数
-- Scheduler keys written：scan 命令写入 key 的个数
-- Scheduler scan details：执行 scan 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 scan 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 scan 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 scan 命令时，扫描每个 default CF 中 key 的详细情况
-
-## Scheduler - scan_lock
-
-- Scheduler stage total：scan_lock 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 scan_lock 命令所需花费的时间，正常情况下，应该小于 1s
-- Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：scan_lock 命令读取 key 的个数
-- Scheduler keys written：scan_lock 命令写入 key 的个数
-- Scheduler scan details：执行 scan_lock 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 scan_lock 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 scan_lock 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 scan_lock 命令时，扫描每个 default CF 中 key 的详细情况
-
-## Scheduler - start_ts_mvcc
-
-- Scheduler stage total：start_ts_mvcc 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 start_ts_mvcc 命令所需花费的时间，正常情况下，应该小于 1s
-- Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：start_ts_mvcc 命令读取 key 的个数
-- Scheduler keys written：start_ts_mvcc 命令写入 key 的个数
-- Scheduler scan details：执行 start_ts_mvcc 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 start_ts_mvcc 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 start_ts_mvcc 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 start_ts_mvcc 命令时，扫描每个 default CF 中 key 的详细情况
-
-## Scheduler - unsafe_destroy_range
-
-- Scheduler stage total：unsafe_destroy_range 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler command duration：执行 unsafe_destroy_range 命令所需花费的时间，正常情况下，应该小于 1s
-- Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
-- Scheduler keys read：unsafe_destroy_range 命令读取 key 的个数
-- Scheduler keys written：unsafe_destroy_range 命令写入 key 的个数
-- Scheduler scan details：执行 unsafe_destroy_range 命令时，扫描每个 CF 中 key 的详细情况
-- Scheduler scan details [lock]：执行 unsafe_destroy_range 命令时，扫描每个 lock CF 中 key 的详细情况
-- Scheduler scan details [write]：执行 unsafe_destroy_range 命令时，扫描每个 write CF 中 key 的详细情况
-- Scheduler scan details [default]：执行 unsafe_destroy_range 命令时，扫描每个 default CF 中 key 的详细情况
-
-## Coprocessor
-
-- Request duration：处理 coprocessor 读请求所花费的时间
-- Wait duration：coprocessor 请求的等待时间，99.99% 的情况下，应该小于 10s
-- Handle duration：处理 coprocessor 请求所花费的时间
-- 95% Request duration by store：95% 的情况下，每个 TiKV 实例处理 coprocessor 读请求所花费的时间
-- 95% Wait duration by store：95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
-- 95% Handle duration by store：95% 的情况下，每个 TiKV 实例处理 coprocessor 请求所花费的时间
-- Request errors：下推的请求发生错误的个数，正常情况下，短时间内不应该有大量的错误
-- DAG executors：DAG executor 的个数
-- Scan keys：每个请求 scan key 的个数
-- Scan details：scan 每个 CF 的详细情况
-- Table Scan - Details by CF：table scan 针对每个 CF 的详细情况
-- Index Scan - Details by CF：index scan 针对每个 CF 的详细情况
-- Table Scan - Perf Statistics：执行 table sacn 的时候，根据 perf 统计的 RocksDB 内部 operation 的个数
-- Index Scan - Perf Statistics：执行 index sacn 的时候，根据 perf 统计的 RocksDB 内部 operation 的个数
+- Scheduler keys read：rollback 命令读取 key 的个数
+- Scheduler keys written：rollback 命令写入 key 的个数
+- Scheduler scan details：执行 rollback 命令时，扫描每个 CF 中 key 的详细情况
+- Scheduler scan details [lock]：执行 rollback 命令时，扫描每个 lock CF 中 key 的详细情况
+- Scheduler scan details [write]：执行 rollback 命令时，扫描每个 write CF 中 key 的详细情况
+- Scheduler scan details [default]：执行 rollback 命令时，扫描每个 default CF 中 key 的详细情况
 
 ## GC
 
@@ -348,10 +231,13 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - GC tasks：由 gc_worker 处理的 GC 任务的个数
 - GC tasks Duration：执行 GC 任务时所花费的时间
 - GC keys (write CF)：在 GC 过程中，write CF 中 受影响的 key 的个数
-- TiDB GC actions result：TiDB Region 层面的 GC 结果
 - TiDB GC worker actions：TiDB GC worker 的不同 action 的个数
 - TiDB GC seconds：TiDB 执行 GC 花费的时间
-- TiDB GC failure：TiDB GC job 失败的个数
+- GC speed：GC 每秒进行的 key 的数量
+- TiKV AutoGC Working：
+- ResolveLocks Progress：GC 第一阶段即 ResolveLocks 的进度
+- TiKV Auto GC Progress：TiKV GC 的进度
+- TiKV Auto GC SafePoint：TiKV GC 的 safe point 的数值
 - GC lifetime：TiDB 设置的 GC lifetime
 - GC interval：TiDB 设置的 GC 间隔
 
@@ -369,6 +255,38 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Worker pending tasks：当前 worker 中，pending 和 running 的任务个数，正常情况下，应该小于 1000
 - FuturePool handled tasks：future pool 处理的任务个数
 - FuturePool pending tasks：当前 future pool 中，pending 和 running 的任务个数
+
+## Coprocessor Overview
+
+- Request duration：处理 coprocessor 读请求所花费的时间
+- Total Requests：对于每种类型的总请求数量
+- Total Request Errors：
+- Handle duration：处理 coprocessor 请求所花费的时间
+- Total Request Errors：下推的请求发生错误的个数，正常情况下，短时间内不应该有大量的错误
+- Total KV Cursor Operations：各种类型的 kv cursor 操作的总数量
+- KV Cursor Operations：各种类型的 kv cursor 操作的数量
+- Total RocksDB Perf Statistics：RocksDB 性能统计数据
+- Total Response Size：coprocessor 回应的数据大小
+
+## Coprocessor Detail
+
+- Handle duration：处理 coprocessor 请求所花费的时间
+- 95% Handle duration by store：95% 的情况下，每个 TiKV 实例处理 coprocessor 请求所花费的时间
+- Wait duration：coprocessor 请求的等待时间，99.99% 的情况下，应该小于 10s
+- 95% Wait duration by store：95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
+- Total DAG Requests：DAG 请求的总数量
+- Total DAG executors：DAG executor 的总数量
+- Total Ops Details (Table Scan)：coprocessor 中请求为 select 的 scan 情况
+- Total Ops Details (Index Scan)：coprocessor 中请求为 index 的 scan 情况
+- Total Ops Details by CF (Table Scan)：coprocessor 中对于每个 CF 请求为 select 的 scan 情况
+- Total Ops Details by CF (Index Scan)：coprocessor 中对于每个 CF 请求为 index 的 scan 情况
+
+## Threads
+
+- Threads state：TiKV 线程的状态
+- Threads IO：TiKV 各个线程的 IO 使用量
+- Thread Voluntary Context Switches：TiKV 线程自主切换的次数
+- Thread Nonvoluntary Context Switches：TiKV 线程被动切换的次数
 
 ## RocksDB - kv
 
@@ -441,3 +359,13 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Number files at each level：每一层的文件个数
 - Ingest SST duration seconds：ingest SST 所花费的时间
 - Stall conditions changed of each CF：每个 CF stall 的原因
+
+## Titan - All
+
+## Lock manager
+
+## Memory
+
+## Backup
+
+## Encryption
