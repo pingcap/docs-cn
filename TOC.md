@@ -104,6 +104,27 @@
     + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
     + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
 + 性能调优
+	+ [SQL 性能调优](/sql-tuning-overview.md)
+		+ [理解 TiDB 执行计划](/query-execution-plan.md)
+		+ [SQL 优化流程简介](/sql-optimization-concepts.md)
+			+ [逻辑优化](/sql-logical-optimization.md)
+				+ [子查询相关的优化](/subquery-optimization.md)
+				+ [列裁剪](/column-pruning.md)
+				+ [关联子查询去关联](/correlated-subquery-optimization.md)
+				+ [Max/Min 消除](/max-min-eliminate.md)
+				+ [谓词下推](/predicate-push-down.md)
+				+ [分区裁剪](/partition-pruning.md)
+				+ [TopN 和 Limit 下推](/topn-limit-push-down.md)
+				+ [Join Reorder](/join-reorder.md)
+			+ [物理优化](/sql-physical-optimization.md)
+				+ [索引的选择](/index-choose.md)
+				+ [统计信息介绍](/statistics-intro.md)
+				+ [发现索引选错时](/wrong-index-solution.md)
+				+ [Distinct 优化](/agg-distinct-optimization.md)
+		+ [控制执行计划](./control-execution-plan.md)
+			+ [Optimizer Hints](/optimizer-hints.md)
+			+ [执行计划绑定](/execution-plan-binding.md)
+			+ [优化规则及表达式下推的黑名单](/balcklist-control-plan.md)
 
 <!--
 
