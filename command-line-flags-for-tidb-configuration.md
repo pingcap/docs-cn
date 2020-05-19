@@ -170,9 +170,14 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 + 设置 TiDB server cpu 亲和性，以 "," 逗号分隔，例如 "1,2,3"
 + 默认: ""
 
+## `--repair-mode`
+
++ 是否开启修复模式，仅用于数据修复场景
++ 默认: false
+
 ## `--repair-list`
 
-+ 恢复模式下需要修复的表名
++ 修复模式下需要修复的表名
 + 默认: ""
 
 ## `--require-secure-transport`
