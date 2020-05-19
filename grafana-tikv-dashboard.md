@@ -6,13 +6,13 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 # TiKV 重要监控指标详解
 
-使用 TiDB Ansible 部署 TiDB 集群时，一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
+使用 TiUP 部署 TiDB 集群时，可以一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
-目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
+目前默认的 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node_exporter、Overview 等。
 
-对于日常运维，我们通过观察 TiKV 面板上的 Metrics，可以了解 TiKV 当前的状态。
+对于日常运维，我们通过观察 TiKV-Details 面板上的指标，可以了解 TiKV 当前的状态。根据 [性能地图](https://asktug.com/_/tidb-performance-map/#/) 可以检查集群的状态是否符合预期。
 
-以下为 TiKV Dashboard 监控说明：
+以下为 TiKV-Details 默认的监控信息：
 
 ## Cluster
 
@@ -27,12 +27,14 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Errps：每个 TiKV 实例上 gRPC 消息失败的个数
 - leader：每个 TiKV 实例 leader 的个数
 - Region：每个 TiKV 实例 Region 的个数
+- Uptime： 自上次重启以来 TiKV 正常运行的时间
 
 ![TiKV Dashboard - Cluster metrics](/media/tikv-dashboard-cluster.png)
 
 ## Errors
 
-- Server is busy：各种会导致 server 繁忙的事件个数，如 write stall，channel full 等，正常情况下应当为 0
+- Critical error：严重错误的数量
+- Server is busy：各种会导致 TiKV 实例暂时不可用的事件个数，如 write stall，channel full 等，正常情况下应当为 0
 - Server report failures：server 报错的消息个数，正常情况下应当为 0
 - Raftstore error：每个 TiKV 实例上 raftstore 发生错误的个数
 - Scheduler error：每个 TiKV 实例上 scheduler 发生错误的个数
@@ -45,18 +47,48 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Server
 
-- Leader：每个 TiKV 实例 leader 的个数
-- Region：每个 TiKV 实例 Region 的个数
-- CF size：每个 CF 的大小
+- CF size：每个列族的大小
 - Store size：每个 TiKV 实例的使用的存储空间的大小
 - Channel full：每个 TiKV 实例上 channel full 错误的数量，正常情况下应当为 0
-- Server report failures：server 报错的消息个数，正常情况下应当为 0
+- Active written leaders：各个 TiKV 实例中正在被写入的 leader 的数量
+- Approximate Region size：每个 Region 近似的大小
+- Approximate Region size Histogram：每个 Region 近似大小的直方图
 - Region average written keys：每个 TiKV 实例上所有 Region 的平均 key 写入个数
 - Region average written bytes：每个 TiKV 实例上所有 Region 的平均写入大小
-- Active written leaders：每个 TiKV 实例上有效的 leader 个数
-- Approximate Region size：每个 Region 近似的大小
+- Request batch ratio：每个 TiKV 实例的 request batch 输出和输入的比率
+- Request batch input：每个 TiKV 实例的 request batch 中的请求大小
 
 ![TiKV Dashboard - Server metrics](/media/tikv-dashboard-server.png)
+
+## gRPC
+
+- gRPC message count：每种 gRPC 消息的个数
+- gRPC message failed：失败的 gRPC 消息的个数
+- 99% gRPC message duration：在 99% gRPC 消息的执行时间
+- Average gRPC message duration：gRPC 消息平均的执行时间
+- gRPC batch size：gRPC 请求的 batch 大小
+- raft message batch size：raft 消息的 batch 大小
+
+## Thread CPU
+
+- Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80%
+- Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90%
+- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率
+- gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80%
+- Unified read pool CPU：unified read pool 线程的 CPU 使用率
+- Storage ReadPool CPU：storage read pool 线程的 CPU 使用率
+- Coprocessor CPU：coprocessor 线程的 CPU 使用率
+- RocksDB CPU：RocksDB 线程的 CPU 使用率
+- Split check CPU：split check 线程的 CPU 使用率
+- GC worker CPU：GC worker 线程的 CPU 使用率
+- Snapshot worker CPU：snapshot worker 线程的 CPU 使用率
+
+## PD
+
+- PD requests：TiKV 发送给 PD 的请求个数
+- PD request duration (average)：TiKV 发送给 PD 的请求所需的平均时间
+- PD heartbeats：发送给 PD 的心跳个数
+- PD validate peers：通过 PD 验证 TiKV 的 peer 有效的个数
 
 ## Raft IO
 
@@ -64,6 +96,8 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Apply log duration per server：每个 TiKV 实例上 Raft apply 日志所花费的时间
 - Append log duration：Raft append 日志所花费的时间
 - Append log duration per server：每个 TiKV 实例上 Raft append 日志所花费的时间
+- Commit log duration：Raft commit 日志所花费的时间
+- Commit log duration per server：每个 TiKV 实例上 Raft commit 日志所花费的时间
 
 ![TiKV Dashboard - Raft IO metrics](/media/tikv-dashboard-raftio.png)
 
@@ -329,19 +363,6 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - FuturePool handled tasks：future pool 处理的任务个数
 - FuturePool pending tasks：当前 future pool 中，pending 和 running 的任务个数
 
-## Thread CPU
-
-- Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80%
-- Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90%
-- Scheduler CPU：scheduler 线程的 CPU 使用率，通常应低于 80%
-- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率
-- Storage ReadPool CPU：Readpool 线程的 CPU 使用率
-- Coprocessor CPU：coprocessor 线程的 CPU 使用率
-- Snapshot worker CPU：snapshot worker 线程的 CPU 使用率
-- Split check CPU：split check 线程的 CPU 使用率
-- RocksDB CPU：RocksDB 线程的 CPU 使用率
-- gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80%
-
 ## RocksDB - kv
 
 - Get operations：get 操作的个数
@@ -413,18 +434,3 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Number files at each level：每一层的文件个数
 - Ingest SST duration seconds：ingest SST 所花费的时间
 - Stall conditions changed of each CF：每个 CF stall 的原因
-
-## gRPC
-
-- gRPC message count：每种 gRPC 消息的个数
-- gRPC message failed：失败的 gRPC 消息的个数
-- 99% gRPC message duration：在 99% gRPC 消息的执行时间
-- gRPC GC message count：gRPC GC 消息的个数
-- 99% gRPC KV GC message duration：在 99% 情况下，gRPC GC 消息的执行时间
-
-## PD
-
-- PD requests：TiKV 发送给 PD 的请求个数
-- PD request duration (average)：TiKV 发送给 PD 的请求所需的平均时间
-- PD heartbeats：发送给 PD 的心跳个数
-- PD validate peers：通过 PD 验证 TiKV 的 peer 有效的个数
