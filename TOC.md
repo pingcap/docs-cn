@@ -166,26 +166,176 @@
     + [TiDB 证书鉴权使用指南](/certificate-authentication.md) @苏立
   + SQL
     + SQL 语言结构和语法
-    + SQL 语句
-    + 数据类型
-    + 函数与操作符
-    + 约束
-    + 生成列
-    + SQL 模式
+      + 属性
+        + [AUTO_INCREMENT](/auto-increment.md) @谢腾进
+        + [AUTO_RANDOM](/auto-random.md) @谢腾进
+      + [字面值](/literal-values.md) @邰凌翔
+      + [Schema 对象名](/schema-object-names.md) @邰凌翔
+      + [关键字和保留字](/keywords-and-reserved-words.md) @@邰凌翔
+      + [用户自定义变量](/user-defined-variables.md) @邰凌翔
+      + [表达式语法](/expression-syntax.md) @邰凌翔
+      + [注释语法](/comment-syntax.md) @邰凌翔
+    + SQL 语句 @张明/李霞
+      - [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
+      - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+      - [`ADMIN`](/sql-statements/sql-statement-admin.md)
+      - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
+      - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
+      - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
+      - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
+      - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
+      - [`BEGIN`](/sql-statements/sql-statement-begin.md)
+      - [`COMMIT`](/sql-statements/sql-statement-commit.md)
+      - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
+      - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
+      - [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)
+      - [`CREATE TABLE LIKE`](/sql-statements/sql-statement-create-table-like.md)
+      - [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)
+      - [`CREATE USER`](/sql-statements/sql-statement-create-user.md)
+      - [`CREATE VIEW`](/sql-statements/sql-statement-create-view.md)
+      - [`DEALLOCATE`](/sql-statements/sql-statement-deallocate.md)
+      - [`DELETE`](/sql-statements/sql-statement-delete.md)
+      - [`DESC`](/sql-statements/sql-statement-desc.md)
+      - [`DESCRIBE`](/sql-statements/sql-statement-describe.md)
+      - [`DO`](/sql-statements/sql-statement-do.md)
+      - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
+      - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
+      - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
+      - [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
+      - [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)
+      - [`DROP USER`](/sql-statements/sql-statement-drop-user.md)
+      - [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)
+      - [`EXECUTE`](/sql-statements/sql-statement-execute.md)
+      - [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)
+      - [`EXPLAIN`](/sql-statements/sql-statement-explain.md)
+      - [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md)
+      - [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)
+      - [`FLUSH STATUS`](/sql-statements/sql-statement-flush-status.md)
+      - [`FLUSH TABLES`](/sql-statements/sql-statement-flush-tables.md)
+      - [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)
+      - [`INSERT`](/sql-statements/sql-statement-insert.md)
+      - [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)
+      - [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)
+      - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
+      - [`PREPARE`](/sql-statements/sql-statement-prepare.md)
+      - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
+      - [`RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
+      - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
+      - [`REPLACE`](/sql-statements/sql-statement-replace.md)
+      - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
+      - [`ROLLBACK`](/sql-statements/sql-statement-rollback.md)
+      - [`SELECT`](/sql-statements/sql-statement-select.md)
+      - [`SET [NAMES|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md)
+      - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
+      - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
+      - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
+      - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
+      - [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
+      - [`SHOW CREATE SEQUENCE`](/sql-statements/sql-statement-show-create-sequence.md)
+      - [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md)
+      - [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md)
+      - [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md)
+      - [`SHOW ENGINES`](/sql-statements/sql-statement-show-engines.md)
+      - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
+      - [`SHOW [FULL] FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
+      - [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+      - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
+      - [`SHOW INDEX [FROM|IN]`](/sql-statements/sql-statement-show-index.md)
+      - [`SHOW KEYS [FROM|IN]`](/sql-statements/sql-statement-show-keys.md)
+      - [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md)
+      - [`SHOW [FULL] PROCESSSLIST`](/sql-statements/sql-statement-show-processlist.md)
+      - [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
+      - [`SHOW [FULL] TABLES`](/sql-statements/sql-statement-show-tables.md)
+      - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
+      - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
+      - [`SHOW [GLOBAL|SESSION] VARIABLES`](/sql-statements/sql-statement-show-variables.md)
+      - [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
+      - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
+      - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
+      - [`TRACE`](/sql-statements/sql-statement-trace.md)
+      - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
+      - [`UPDATE`](/sql-statements/sql-statement-update.md)
+      - [`USE`](/sql-statements/sql-statement-use.md)
+    + 数据类型 @张原嘉
+      + [数据类型概述](/data-type-overview.md)
+      + [数据类型默认值](/data-type-default-values.md)
+      + [数值类型](/data-type-numeric.md)
+      + [日期和时间类型](/data-type-date-and-time.md)
+      + [字符串类型](/data-type-string.md)
+      + [JSON 类型](/data-type-json.md)
+    + 函数与操作符 @张原嘉
+      + [函数与操作符概述](/functions-and-operators/functions-and-operators-overview.md)
+      + [表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)
+      + [操作符](/functions-and-operators/operators.md)
+      + [控制流程函数](/functions-and-operators/control-flow-functions.md)
+      + [字符串函数](/functions-and-operators/string-functions.md)
+      + [数值函数与操作符](/functions-and-operators/numeric-functions-and-operators.md)
+      + [日期和时间函数](/functions-and-operators/date-and-time-functions.md)
+      + [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md)
+      + [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md)
+      + [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md)
+      + [信息函数](/functions-and-operators/information-functions.md)
+      + [JSON 函数](/functions-and-operators/json-functions.md)
+      + [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
+      + [窗口函数](/functions-and-operators/window-functions.md)
+      + [其它函数](/functions-and-operators/miscellaneous-functions.md)
+      + [精度数学](/functions-and-operators/precision-math.md)
+      + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
+    + [约束](/constraints.md) @于帅鹏
+    + [生成列](/generated-columns.md) @黄文俊
+    + [SQL 模式](/sql-mode.md) @张原嘉
     + 事务
-    + 视图
-    + 分区表
-    + 字符集
-    + 索引
-    + 系统表
+      + [事务概览](/transaction-overview.md) @于帅鹏
+      + [隔离级别](/transaction-isolation-levels.md) @于帅鹏
+      + [乐观事务](/optimistic-transaction.md) @于帅鹏
+      + [悲观事务](/pessimistic-transaction.md) @于帅鹏
+    + [视图](/views.md) @徐怀宇
+    + [分区表](/partitioned-table.md) @毛康力
+    + [字符集和排序规则](/character-set-and-collation.md) @黄文俊
+    + [索引](/tidb-index.md) @冯立元
+    + 系统表 @陈霜
+      + [`mysql`](/system-tables/system-table-overview.md)
+      + [`information_schema`](/system-tables/system-table-information-schema.md)
+      + `sql-diagnosis`
+        + [`cluster_info`](/system-tables/system-table-cluster-info.md)
+        + [`cluster_hardware`](/system-tables/system-table-cluster-hardware.md)
+        + [`cluster_config`](/system-tables/system-table-cluster-config.md)
+        + [`cluster_load`](/system-tables/system-table-cluster-load.md)
+        + [`cluster_systeminfo`](/system-tables/system-table-cluster-systeminfo.md)
+        + [`cluster_log`](/system-tables/system-table-cluster-log.md)
+        + [`metrics_schema`](/system-tables/system-table-metrics-schema.md)
+        + [`metrics_tables`](/system-tables/system-table-metrics-tables.md)
+        + [`metrics_summary`](/system-tables/system-table-metrics-summary.md)
+        + [`inspection_result`](/system-tables/system-table-inspection-result.md)
+        + [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
   + UI
+    + TiDB Dashboard @施闻轩
   + CLI
+    + [tikv-ctl](/tikv-control.md) @屈鹏
+    + [pd-ctl](/pd-control.md) @陈书宁
+    + [tidb-ctl](/tidb-control.md) @于帅鹏
+    + [binlog-ctl](/tidb-binlog/binlog-control.md) @王相
+    + [pd-recover](/pd-recover.md) @陈书宁
   + 命令行参数
+    + [tidb-server](/command-line-flags-for-tidb-configuration.md) @于帅鹏
+    + [tikv-server](/command-line-flags-for-tikv-configuration.md) @陈书宁
+    + [tiflash-server](/tiflash/tiflash-command-line-flags.md) @孙若曦
+    + [pd-server](/command-line-flags-for-pd-configuration.md) @陈书宁
   + 配置文件参数
+    + [tidb-server](/tidb-configuration-file.md) @于帅鹏
+    + [tikv-server](/tikv-configuration-file.md) @陈书宁
+    + [tiflash-server](/tiflash/tiflash-configuration.md) @孙若曦
+    + [pd-server](/pd-configuration-file.md) @陈书宁
   + 系统变量
+    + [MySQL 系统变量](/system-variables.md)
+    + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
-  + [错误码](/error-codes.md)
+    + TiKV
+    + TiFlash
+  + [错误码](/error-codes.md) @于帅鹏
 + FAQ
++ [术语表](/glossary.md)
 + [版本发布历史](/releases/release-notes.md)
   + v4.0
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
@@ -275,7 +425,6 @@
     - [RC3](/releases/release-rc.3.md)
     - [RC2](/releases/release-rc.2.md)
     - [RC1](/releases/release-rc.1.md)
-+ [术语表](/glossary.md)
 
 <!--
 
