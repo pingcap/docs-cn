@@ -87,18 +87,22 @@
 + 故障诊断
   + 常见故障
     + 硬件故障 @周强
-      + [整机](/handle-machine-issues.md)
-      + [硬盘](/handle-disk-issues.md)
-      + [网络](/handle-network-issues.md)
-      + [内存](/handle-memory-issues.md)（[相关参考](https://pingcap.com/docs-cn/stable/configure-memory-usage/)）
+      + [整机](/troubleshoot-machine-issues.md)
+      + [硬盘](/troubleshoot-disk-issues.md)
+      + [网络](/troubleshoot-network-issues.md)
+      + [内存](/troubleshoot-memory-issues.md)（[相关参考](https://pingcap.com/docs-cn/stable/configure-memory-usage/)）
     + 操作系统故障 @周强
-      + [版本](/handle-operating-system-issues.md)
-      + [内核参数](/handle-kernel-parameter-issues.md)
+      + [版本](/troubleshoot-operating-system-issues.md)
+      + [内核参数](/troubleshoot-kernel-parameter-issues.md)
   + 常见性能问题
     + [定位慢查询](/identify-slow-queries.md) @张原嘉
     + [SQL 诊断](/system-tables/system-table-sql-diagnosis.md) @SQL Infra
     + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
     + [SQL 语句统计](/statement-summary-tables.md) @SQL Infra
+    + [热点问题处理](/troubleshoot-hot-spot-issues.md) @郭大瑞
+    + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md) @高恺迪
+    + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
+    + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
 + 性能调优
 
 <!--
