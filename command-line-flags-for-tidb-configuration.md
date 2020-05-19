@@ -37,6 +37,11 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 + 默认："0.0.0.0"
 + 0.0.0.0 默认会监听所有的网卡地址。如果有多块网卡，可以指定对外提供服务的网卡，如 192.168.100.113
 
+## `enable-binlog`
+
++ 是否产生 tidb binlog
++ 默认: false
+
 ## `-L`
 
 + Log 级别
@@ -149,3 +154,28 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 
 + 输出 TiDB 的版本
 + 默认：""
+
+## `--plugin-dir`
+
++ plugin 存放目录
++ 默认: "/data/deploy/plugin"
+
+## `--plugin-load`
+
++ 需要加载的 plugin 列表，以 "," 逗号分隔
++ 默认: ""
+
+## `--affinity-cpus`
+ 
++ 设置 TiDB server cpu 亲和性，以 "," 逗号分隔，例如 "1,2,3"
++ 默认: ""
+
+## `--repair-list`
+
++ 恢复模式下需要修复的表名
++ 默认: ""
+
+## `--require-secure-transport`
+
++ 是否要求客户端使用 secure 传输模式
++ 默认: false
