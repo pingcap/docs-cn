@@ -457,7 +457,7 @@ br restore raw --pd $PD_ADDR \
 > 
 > 在线恢复功能还在实验中，它没有经过完备的测试，同时还依赖 PD 的不稳定特性 Placement rules。暂时请避免在生产环境中使用它。
 
-在恢复的时候，写入过多的数据会影响在线集群的性能。为了尽量避免影响线上业务，BR 支持通过 [Placement rules](/docs-cn/dev/how-to/configure/placement-rules/) 隔离资源。让下载、导入 SST 的工作仅仅在由你指定的几个节点（下称“恢复节点”）上进行，具体操作如下：
+在恢复的时候，写入过多的数据会影响在线集群的性能。为了尽量避免影响线上业务，BR 支持通过 [Placement rules](/configure-placement-rules.md) 隔离资源。让下载、导入 SST 的工作仅仅在由你指定的几个节点（下称“恢复节点”）上进行，具体操作如下：
 
 配置 PD，启动 Placement rules：
 
