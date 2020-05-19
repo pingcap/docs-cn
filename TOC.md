@@ -128,6 +128,16 @@
       + [Join Reorder 算法简介](/join-reorder.md) @崔一丁
     + [性能监控](/monitor-sql-performance.md) @崔一丁
 + 教程
+  + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)（[参考](https://pingcap.com/docs-cn/stable/geo-redundancy-deployment/)）@侯召墩
+  + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md) 侯召墩
+  + 最佳实践
+    + [TiDB 最佳实践](/tidb-best-practices.md)（[参考相关博客](https://pingcap.com/blog-cn/tidb-best-practice/)）@李坤
+    + [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md) @李坤
+    + [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md) @李坤
+    + [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md) @李坤
+    + [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md) @李坤
+    + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) @李坤
+    + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md) @李建俊
 + 参考指南
 
 <!--
