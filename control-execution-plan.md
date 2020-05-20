@@ -5,8 +5,8 @@ category: performance
 
 # 控制执行计划
 
-Sub topics:
+在 SQL 性能调优的前两个章节中，我们介绍了如何理解 TiDB 的执行计划以及 TiDB 如果生成的一个执行计划。这一章节中我们会介绍当你确定了执行计划所存在的问题时，可以使用哪些手段来控制执行计划的生成。本章节主要包括以下三方面内容：
 
-- [Optimizer Hints](/optimizer-hints.md)
-- [执行计划绑定](/execution-plan-binding.md)
-- [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
+- [Optimizer Hints](/optimizer-hints.md)中，我们会介绍如何使用 Hint 来知道 TiDB 生成执行计划。
+- 但是使用 Hint 会侵入性的更改 SQL，在一些场景下并不能简单的插入 Hint。在[执行计划绑定](/execution-plan-binding.md)中，我们会介绍 TiDB 如何使用另一种语法来非侵入的控制执行计划的生成，同时还会介绍后台自动对执行计划进行演进的手段，来减轻诸如版本升级等可能原因造成的执行计划不稳定而导致的集群性能问题。
+- 最后再[优化规则及表达式下推的黑名单](/blacklist-control-plan.md)中，我们会介绍黑名单的使用。
