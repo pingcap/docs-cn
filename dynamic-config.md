@@ -1,14 +1,15 @@
 ---
-title: 动态配置变更使用文档
+title: 动态配置变更
 category: reference
 ---
 
-# 动态配置变更使用文档
+# 动态配置变更
 
-动态配置变更主要是通过利用 SQL 对包括 TiKV，PD 在内的各组件的配置进行在线更新。用户可以通过利用动态配置变更对各组件进行性能调优而无需重启集群组件。动态配置变更在 4.0 版本属于实验性特性。
-动态配置不可用于更新 TiDB 的配置，如果想动态改变 TiDB 的行为，请直接修改其对于的 SQL 变量。
+动态配置变更主要是通过利用 SQL 对包括 TiKV、PD 在内的各组件的配置进行在线更新。用户可以通过利用动态配置变更对各组件进行性能调优而无需重启集群组件。动态配置变更在 4.0 版本属于实验性特性。
 
-## 常用的操作
+动态配置不可用于更新 TiDB 的配置，如果想动态改变 TiDB 的行为，请直接修改其对应的 SQL 变量。
+
+## 常用操作
 
 ### 查看实例配置
 
@@ -31,7 +32,7 @@ mysql> show config;
 ...
 ```
 
-还可以根据对于的字段进行过滤，如：
+还可以根据对应的字段进行过滤，如：
 
 ```
 mysql> show config where type='tidb'
@@ -42,7 +43,7 @@ mysql> show config where type='tikv' and name='log-level'
 
 ### 修改实例配置
 
-SQL `set config` 可以结合实例地址和类型来修改配置，如：
+执行 SQL 语句 `set config`，可以结合实例地址和类型来修改配置，如：
 
 ```
 set config tikv log.level="info"
@@ -72,7 +73,9 @@ mysql> show warnings;
 ```
 
 > **注意：**
+>
 > 为了避免和 SQL 变量混淆，TiDB 的配置可以通过 `show config` 查看但是不能进行修改，动态配置时会返回错误；如果想动态修改 TiDB 行为，请用对应的 SQL 变量去控制。
+>
 > 某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``tikv-client.`store-limit` ``；
 
 ## 支持参数列表
@@ -189,7 +192,7 @@ mysql> show warnings;
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
 
-上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置。`db-name` 的取值可以为是 `rocksdb`, `raftdb`。
+上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置。`db-name` 的取值可以为是 `rocksdb`，`raftdb`。
 
 - 当 `db-name` 为 `rocksdb` 时，cf-name 的取值有: `defaultcf`，`writecf`，`lockcf`，`raftcf`；
 - 当 `db-name` 为 `raftdb` 时，cf-name 的取值有: `defaultcf`。
