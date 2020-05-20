@@ -311,6 +311,15 @@
         + [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
   + UI
     + TiDB Dashboard @施闻轩
+      + 访问
+      + 概况页面
+      + 集群信息页面
+      + 流量可视化页面
+      + SQL 语句分析页面
+      + 慢查询页面
+      + 集群诊断页面
+      + 日志搜索页面
+      + 实例性能分析页面
   + CLI
     + [tikv-ctl](/tikv-control.md) @屈鹏
     + [pd-ctl](/pd-control.md) @陈书宁
@@ -334,8 +343,15 @@
     + TiKV
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
-+ FAQ
-+ [术语表](/glossary.md)
++ 常见问题 (FAQ)
+  + [产品 FAQ](/faq/tidb-faq.md) @荣毅龙/启航
+  + [SQL FAQ](/faq/sql-faq.md) @荣毅龙/启航
+  + [部署运维 FAQ](/faq/deploy-and-maintain-faq.md) @荣毅龙/启航
+  + [升级 FAQ](/faq/upgrade-faq.md) @荣毅龙/启航
+  + [License FAQ](/faq/licensing-faq.md) @荣毅龙/启航
+  + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
+  + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
++ [术语表](/glossary.md) @李琳
 + [版本发布历史](/releases/release-notes.md)
   + v4.0
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
