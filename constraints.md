@@ -60,7 +60,7 @@ Query OK, 1 row affected (0.03 sec)
 
 ## 唯一约束
 
-在 TiDB 中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#事务的惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
+在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#事务的惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
 
 {{< copyable "sql" >}}
 
@@ -118,7 +118,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 * 第一条 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
 
-您可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为。如果停用此行为，则会在执行语句时就对唯一约束进行检查。例如：
+您可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。如果停用此行为，则会在执行语句时就对唯一约束进行检查。例如：
 
 ```sql
 DROP TABLE IF EXISTS users;
