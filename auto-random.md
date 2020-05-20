@@ -1,6 +1,7 @@
 ---
 title: AUTO_RANDOM
 category: reference
+summary: 本文介绍了 TiDB 的列属性 auto_random。
 aliases: ['/docs-cn/dev/reference/sql/attributes/auto-random/']
 ---
 
