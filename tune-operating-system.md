@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/reference/performance/tune-system/']
 
 ### 60s 分析法
 
-此分析法由《性能之巅》的作者 Brendan Gregg 及其所在的 Netflix 性能工程团队公布，所用到到工具均可从发行版的官方源获取，通过分析以下清单的输出，可定位大部分常见的性能问题。
+此分析法由《性能之巅》的作者 Brendan Gregg 及其所在的 Netflix 性能工程团队公布，所用到的工具均可从发行版的官方源获取，通过分析以下清单中的输出，可定位大部分常见的性能问题。
 
 1. uptime
 2. dmesg | tail
