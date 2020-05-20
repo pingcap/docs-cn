@@ -184,6 +184,7 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 ```sql
 ADMIN SHOW SLOW RECENT N;
 ```
+
 {{< copyable "sql" >}}
 
 ```sql
