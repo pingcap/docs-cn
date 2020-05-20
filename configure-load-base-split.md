@@ -2,7 +2,6 @@
 title: Load Base Split 使用文档
 summary: 如何配置 Load Base Split
 category: how-to
-aliases: ['/docs-cn/dev/how-to/configure/load-base-split/']
 ---
 
 # Load Base Split 
