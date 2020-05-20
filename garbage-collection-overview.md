@@ -43,4 +43,4 @@ Resolve Locks 的执行方式是由 GC leader 对所有的 Region 发送请求�
 
 > **注意：**
 >
->  2.1 以及更早的版本中，Do GC 这一步是通过由 TiDB 对每个 Region 发送请求的方式实现的。在 3.0 及更新的版本中，通过修改配置可以继续使用旧的 GC 方式，详情请参考 [GC 配置](/garbage-collection-configuration.md#tikv_gc_mode)。
+> 2.1 以及更早的版本中，Do GC 这一步是通过由 TiDB 对每个 Region 发送请求的方式实现的。在 3.0 及更新的版本中，通过修改配置可以继续使用旧的 GC 方式，详情请参考 [GC 配置](/garbage-collection-configuration.md#tikv_gc_mode)。
