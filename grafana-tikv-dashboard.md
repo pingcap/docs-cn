@@ -1,10 +1,10 @@
 ---
-title: TiKV 重要监控指标详解
+title: TiKV 监控指标详解
 category: reference
 aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ---
 
-# TiKV 重要监控指标详解
+# TiKV 监控指标详解
 
 使用 TiUP 部署 TiDB 集群时，可以一键部署监控系统 (Prometheus/Grafana)，监控架构请看 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
@@ -234,7 +234,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - TiDB GC worker actions：TiDB GC worker 的不同 action 的个数
 - TiDB GC seconds：TiDB 执行 GC 花费的时间
 - GC speed：GC 每秒进行的 key 的数量
-- TiKV AutoGC Working：
+- TiKV AutoGC Working：Auto GC 管理器的工作状态
 - ResolveLocks Progress：GC 第一阶段即 ResolveLocks 的进度
 - TiKV Auto GC Progress：TiKV GC 的进度
 - TiKV Auto GC SafePoint：TiKV GC 的 safe point 的数值
@@ -260,7 +260,6 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 - Request duration：处理 coprocessor 读请求所花费的时间
 - Total Requests：对于每种类型的总请求数量
-- Total Request Errors：
 - Handle duration：处理 coprocessor 请求所花费的时间
 - Total Request Errors：下推的请求发生错误的个数，正常情况下，短时间内不应该有大量的错误
 - Total KV Cursor Operations：各种类型的 kv cursor 操作的总数量
@@ -334,7 +333,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Write operations：write 操作的个数
 - Write duration：write 操作的耗时
 - WAL sync operations：sync WAL 操作的个数
-- Write WAL duration：当执行 write 操作所消耗的时间
+- Write WAL duration：write 操作中写 WAL 的耗时
 - WAL sync duration：sync WAL 操作的耗时
 - Compaction operations：compaction 和 flush 操作的个数
 - Compaction duration：compaction 和 flush 操作的耗时
