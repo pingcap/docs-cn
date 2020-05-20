@@ -111,7 +111,7 @@
 + 性能调优
   + 系统调优
     + [硬件](/tune-hardware-performance.md) @张文博
-    + [操作系统](/tune-operating-system.md) @张文博
+    + [操作系统性能参数调优](/tune-operating-system.md) @张文博
   + 软件调优
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
