@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Errps：每个 TiKV 实例上 gRPC 消息失败的个数
 - leader：每个 TiKV 实例 leader 的个数
 - Region：每个 TiKV 实例 Region 的个数
-- Uptime： 自上次重启以来 TiKV 正常运行的时间
+- Uptime：自上次重启以来 TiKV 正常运行的时间
 
 ![TiKV Dashboard - Cluster metrics](/media/tikv-dashboard-cluster.png)
 
@@ -50,7 +50,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - CF size：每个列族的大小
 - Store size：每个 TiKV 实例的使用的存储空间的大小
 - Channel full：每个 TiKV 实例上 channel full 错误的数量，正常情况下应当为 0
-- Active written leaders：各个 TiKV 实例中正在被写入的 leader 的数量
+- Active written leaders：各个 TiKV 实例中正在被写入的 Leader 的数量
 - Approximate Region size：每个 Region 近似的大小
 - Approximate Region size Histogram：每个 Region 近似大小的直方图
 - Region average written keys：每个 TiKV 实例上所有 Region 的平均 key 写入个数
@@ -262,8 +262,8 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Total Requests：对于每种类型的总请求数量
 - Handle duration：处理 coprocessor 请求所花费的时间
 - Total Request Errors：下推的请求发生错误的个数，正常情况下，短时间内不应该有大量的错误
-- Total KV Cursor Operations：各种类型的 kv cursor 操作的总数量
-- KV Cursor Operations：各种类型的 kv cursor 操作的数量
+- Total KV Cursor Operations：各种类型的 KV cursor 操作的总数量
+- KV Cursor Operations：各种类型的 KV cursor 操作的数量
 - Total RocksDB Perf Statistics：RocksDB 性能统计数据
 - Total Response Size：coprocessor 回应的数据大小
 
@@ -283,7 +283,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Threads
 
 - Threads state：TiKV 线程的状态
-- Threads IO：TiKV 各个线程的 IO 使用量
+- Threads IO：TiKV 各个线程的 I/O 使用量
 - Thread Voluntary Context Switches：TiKV 线程自主切换的次数
 - Thread Nonvoluntary Context Switches：TiKV 线程被动切换的次数
 
@@ -368,7 +368,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Live blob size：有效 blob record 的总大小
 - Blob cache hit：Titan 的 blob cache 命中率
 - Iter touched blob file count：单个 Iterator 所涉及到 blob 文件的数量
-- Blob file discardable ratio distribution：blob 文件失效 blob record 比例的分布情况
+- Blob file discardable ratio distribution：blob 文件的失效 blob record 比例的分布情况
 - Blob key size：Titan 中 blob key 的大小
 - Blob value size：Titan 中 blob value 的大小
 - Blob get operations：blob 的 get 操作的数量
@@ -419,7 +419,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 - Encryption data keys：正在使用的加密 data key 的总数量
 - Encrypted files：被加密的文件数量
-- Encryption initialized：显示加密是否被启用，1代表已经启用
+- Encryption initialized：显示加密是否被启用，`1` 代表已经启用
 - Encryption meta files size：加密相关的元数据文件的大小
 - Encrypt/decrypt data nanos：加密/解密数据所耗费的时间
 - Read/write encryption meta duration：读写加密文件所耗费的时间
