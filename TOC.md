@@ -679,6 +679,9 @@
     - [隔离级别](/transaction-isolation-levels.md)
     - [乐观事务](/optimistic-transaction.md)
     - [悲观事务](/pessimistic-transaction.md)
+    + 垃圾回收 (GC)
+      - [GC 机制简介](/garbage-collection-overview.md)
+      - [GC 配置](/garbage-collection-configuration.md)
   + 系统数据库
     - [`mysql`](/system-tables/system-table-overview.md)
     - [`information_schema`](/system-tables/system-table-information-schema.md)
@@ -696,9 +699,6 @@
       - [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
   - [错误码](/error-codes.md)
   - [支持的连接器和 API](/connectors-and-apis.md)
-  + 垃圾回收 (GC)
-    - [GC 机制简介](/garbage-collection-overview.md)
-    - [GC 配置](/garbage-collection-configuration.md)
   + 性能调优
     - [SQL 优化流程](/sql-optimization-concepts.md)
     - [理解 TiDB 执行计划](/query-execution-plan.md)
