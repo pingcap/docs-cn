@@ -6,6 +6,7 @@ aliases: ['/docs-cn/dev/how-to/configure/load-base-split/']
 ---
 
 # Load Base Split 
+
 Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访问分布不均匀造成的热点问题。适用场景有小表的全表扫描或明星字段的访问。
 
 ## 介绍
@@ -38,4 +39,5 @@ Load Base Split 会基于统计信息来自动地解决这个问题，通过统�
 
 1. 通过 SQL 查看 `show config where type='tikv' and name like '%split.qps-threshold%'`
 2. 通过 TiKV 查看 `curl "http://ip:status_port/config"`
-   *注：使用 SQL 修改和查看配置的最低版本 4.0.0-rc2*
+
+*注：使用 SQL 修改和查看配置的最低版本 4.0.0-rc2*
