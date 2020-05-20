@@ -85,29 +85,27 @@
   + [TiUP 常用运维操作](/tiup/manage-tiup-component.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 故障诊断
-  + 常见故障
-    + 硬件故障 @周强
-      + [整机](/troubleshoot-machine-issues.md)
-      + [硬盘](/troubleshoot-disk-issues.md)
-      + [网络](/troubleshoot-network-issues.md)
-      + [内存](/troubleshoot-memory-issues.md)（[相关参考](https://pingcap.com/docs-cn/stable/configure-memory-usage/)）
-    + 操作系统故障 @周强
-      + [版本](/troubleshoot-operating-system-issues.md)
-      + [内核参数](/troubleshoot-kernel-parameter-issues.md)
-  + 常见性能问题
-    + [定位慢查询](/identify-slow-queries.md) @张原嘉
-    + [SQL 诊断](/system-tables/system-table-sql-diagnosis.md) @SQL Infra
-    + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
-    + [SQL 语句统计](/statement-summary-tables.md) @SQL Infra
-    + [热点问题处理](/troubleshoot-hot-spot-issues.md) @郭大瑞
-    + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md) @高恺迪
-    + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
-    + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
-    + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
-    + [执行计划不稳定导致性能波动](/troubleshoot-execution-plan.md) @姚珂男
-    + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
-    + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
-    + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
+  + 硬件故障 @周强
+    + [整机](/troubleshoot-machine-issues.md)
+    + [硬盘](/troubleshoot-disk-issues.md)
+    + [网络](/troubleshoot-network-issues.md)
+    + [内存](/troubleshoot-memory-issues.md)（[相关参考](https://pingcap.com/docs-cn/stable/configure-memory-usage/)）
+  + 操作系统故障 @周强
+    + [版本](/troubleshoot-operating-system-issues.md)
+    + [内核参数](/troubleshoot-kernel-parameter-issues.md)
+  + [定位慢查询](/identify-slow-queries.md) @张原嘉
+  + [SQL 诊断](/system-tables/system-table-sql-diagnosis.md) @SQL Infra
+  + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
+  + [SQL 语句统计](/statement-summary-tables.md) @SQL Infra
+  + [热点问题处理](/troubleshoot-hot-spot-issues.md) @郭大瑞
+  + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md) @高恺迪
+  + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
+  + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
+  + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
+  + [执行计划不稳定导致性能波动](/troubleshoot-execution-plan.md) @姚珂男
+  + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
+  + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
+  + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
 + 性能调优
   + 系统调优
     + [硬件](/tune-hardware-performance.md) @张文博
@@ -116,16 +114,32 @@
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
       + [TiKV 调优](/tune-tikv-performance.md) @刘玮
-  + SQL 性能调优
-    + [调优基本概念](/sql-optimization-concepts.md) @崔一丁
-    + 优化器概览
-      + [执行计划](/query-execution-plan.md) @崔一丁
-      + [分布式执行计划](/distributed-exectuion-plan.md) @崔一丁
-      + 管理执行计划
-        + [执行计划绑定](/execution-plan-binding.md) @崔一丁
-        + [Optimizer Hints](/optimizer-hints.md) @崔一丁
-        + [使用 Index Merge 方式访问表](/index-merge.md) @崔一丁
-      + [Join Reorder 算法简介](/join-reorder.md) @崔一丁
+  + SQL 性能调优 @崔一丁
+    + [SQL 性能调优概览](/sql-tuning-overview.md)
+    + [理解 TiDB 执行计划](/query-execution-plan.md)
+    + SQL 优化
+      + [SQL 优化流程简介](/sql-optimization-concepts.md)
+      + 逻辑优化
+        + [逻辑优化概览](/sql-logical-optimization.md)
+        + [子查询相关的优化](/subquery-optimization.md)
+        + [列裁剪](/column-pruning.md)
+        + [关联子查询去关联](/correlated-subquery-optimization.md)
+        + [Max/Min 消除](/max-min-eliminate.md)
+        + [谓词下推](/predicate-push-down.md)
+        + [分区裁剪](/partition-pruning.md)
+        + [TopN 和 Limit 下推](/topn-limit-push-down.md)
+        + [Join Reorder](/join-reorder.md)
+      + 物理优化
+        + [物理优化概览](/sql-physical-optimization.md)
+        + [索引的选择](/index-choose.md)
+        + [统计信息介绍](/statistics-intro.md)
+        + [错误索引的解决方案](/wrong-index-solution.md)
+        + [Distinct 优化](/agg-distinct-optimization.md)
+      + 控制执行计划
+        + [控制执行计划概览](/control-execution-plan.md)
+        + [Optimizer Hints](/optimizer-hints.md)
+        + [执行计划绑定](/execution-plan-binding.md)
+        + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
     + [性能监控](/monitor-sql-performance.md) @崔一丁
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)（[参考](https://pingcap.com/docs-cn/stable/geo-redundancy-deployment/)）@侯召墩
@@ -139,6 +153,43 @@
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) @李坤
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md) @李建俊
   + [Placement Rules 使用文档](/configure-placement-rules.md) @黄梦龙
++ TiDB 生态工具
+  + [工具使用指南](/ecosystem-tool-user-guide.md)
+  + [工具下载](/download-ecosystem-tools.md)
+  + Backup & Restore (BR)
+    + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md) @余峻岑
+    + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @余峻岑
+  + TiDB Lightning @kenny
+    + [概述](/tidb-lightning/tidb-lightning-overview.md)
+    + [快速上手教程](/get-started-with-tidb-lightning.md)
+    + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
+    + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
+    + 主要功能
+      + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+      + [表库过滤](/tidb-lightning/tidb-lightning-table-filter.md)
+      + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+      + [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
+      + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
+    + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
+    + [故障诊断](/troubleshoot-tidb-lightning.md)
+    + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+    + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+  + TiCDC
+    + [概述](/ticdc/ticdc-overview.md)
+    + [部署使用](/ticdc/deploy-ticdc.md)
+    + [集群和同步任务管理](/ticdc/manage-ticdc.md)
+    + [常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
+    + [Sink URI 配置规则](/ticdc/sink-url.md)
+    + [开放数据协议](/ticdc/ticdc-open-protocol.md)
+    + [Column 和 DDL 的类型码](/ticdc/column-ddl-type-codes.md)
+  + sync-diff-inspector @王相
+    + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
+    + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
+    + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
+    + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
+  + [Loader](/loader-overview.md) @王相
+  + [Mydumper](/mydumper-overview.md) @余峻岑
+  + [Syncer](/syncer-overview.md) @王相
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md) @黄东旭
@@ -311,6 +362,15 @@
         + [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
   + UI
     + TiDB Dashboard @施闻轩
+      + 访问
+      + 概况页面
+      + 集群信息页面
+      + 流量可视化页面
+      + SQL 语句分析页面
+      + 慢查询页面
+      + 集群诊断页面
+      + 日志搜索页面
+      + 实例性能分析页面
   + CLI
     + [tikv-ctl](/tikv-control.md) @屈鹏
     + [pd-ctl](/pd-control.md) @陈书宁
@@ -334,8 +394,15 @@
     + TiKV
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
-+ FAQ
-+ [术语表](/glossary.md)
++ 常见问题解答 (FAQ)
+  + [产品 FAQ](/faq/tidb-faq.md) @荣毅龙/启航
+  + [SQL FAQ](/faq/sql-faq.md) @荣毅龙/启航
+  + [部署运维 FAQ](/faq/deploy-and-maintain-faq.md) @荣毅龙/启航
+  + [升级 FAQ](/faq/upgrade-faq.md) @荣毅龙/启航
+  + [License FAQ](/faq/licensing-faq.md) @荣毅龙/启航
+  + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
+  + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
++ [术语表](/glossary.md) @李琳
 + [版本发布历史](/releases/release-notes.md)
   + v4.0
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
