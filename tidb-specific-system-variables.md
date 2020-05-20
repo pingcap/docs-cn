@@ -484,6 +484,22 @@ mysql> desc select count(distinct a) from test.t;
 
 需要注意的是修改该变量不会对已保存的老数据产生影响，只会对修改变量后的新写入数据使用对应版本格式保存。
 
+### tidb_enable_slow_log
+
+作用域：SESSION
+
+默认值：1
+
+这个变量用于控制是否开启 slow log 功能。
+
+### tidb_record_plan_in_slow_log
+
+作用域：SESSION
+
+默认值：1
+
+这个变量用于控制是否在 slow log 里包含慢查询的执行计划。
+
 ### tidb_slow_log_threshold
 
 作用域：SESSION
@@ -721,6 +737,38 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statements_summary_by_digest` 中，用于定位和排查 SQL 性能问题。
 
+### tidb_stmt_summary_internal_query <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 0
+
+这个变量用来控制是否在 statement summary 中包含 TiDB 内部 SQL 的信息。
+
+### tidb_stmt_summary_refresh_interval <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 1800
+
+这个变量设置了 statement summary 的刷新时间，单位为秒。
+
+### tidb_stmt_summary_history_size <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 24
+
+这个变量设置了 statement summary 的历史记录容量。
+
+### tidb_stmt_summary_max_stmt_count <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 200
+
+这个变量设置了 statement summary 在内存中保存的语句的最大数量。
+
 ### tidb_enable_chunk_rpc <span class="version-mark">从 v4.0 版本开始引入</span>
 
 作用域：SESSION
@@ -736,3 +784,191 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
+
+### ddl_slow_threshold
+
+作用域：SESSION
+
+默认值：300
+
+耗时超过该阈值的 ddl 操作会被输出到日志，单位为毫秒。
+
+### tidb_pprof_sql_cpu <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
+
+### tidb_skip_isolation_level_check
+
+作用域：SESSION
+
+默认值：0
+
+开启这个开关之后对 tx_isolation 赋值一个 TiDB 不支持的隔离级别不会报错。
+
+### tidb_low_resolution_tso
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来设置是否启用低精度 tso 特性，开启该功能之后新事务会使用一个每 2s 更新的 ts 来读取数据。
+主要场景是在可以容忍读到旧数据的情况下，降低小的只读事务获取 tso 的开销。
+
+### tidb_replica_read <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值: leader
+
+这个变量用于控制 TiDB 读取数据的位置，有以下三个选择
+
+* leader：只从 leader 节点读取
+* follower：只从 follower 节点读取
+* leader-and-follower：从 leader 或 follower 节点读取
+
+### tidb_use_plan_baselines <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: on
+
+这个变量用于控制是否开启执行计划绑定功能。关于执行计划绑定功能的使用可以参考[执行计划绑定文档](/execution-plan-binding.md#创建绑定)
+
+### tidb_capture_plan_baselines <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: off
+
+这个变量用于控制是否开启打开自动创建绑定功能。该功能依赖 statement summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
+开启该功能后会定期遍历一次 statement summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
+
+### tidb_evolve_plan_baselines <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: off
+
+这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定文档](/execution-plan-binding.md#自动演进绑定)
+
+为了减少自动演进对集群的影响，可以通过 tidb_evolve_plan_task_max_time 来限制每个执行计划运行的最长时间，其默认值为 600s；通过 tidb_evolve_plan_task_start_time 和 tidb_evolve_plan_task_end_time 可以限制运行演进任务的时间窗口，默认值分别为 00:00 +0000 和 23:59 +0000。
+
+### tidb_evolve_plan_task_max_time <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：GLOBAL
+
+默认值：600
+
+该变量用于限制自动演进功能中，每个执行计划运行的最长时间，单位为秒。
+
+### tidb_evolve_plan_task_start_time <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：GLOBAL
+
+默认值：00:00 +0000
+
+这个变量用来设置一天中允许自动演进的开始时间。
+
+### tidb_evolve_plan_task_end_time <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：GLOBAL
+
+默认值：23:59 +0000
+
+这个变量用来设置一天中允许自动演进的结束时间。
+
+### tidb_allow_batch_cop <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 0
+
+这个变量用于控制 TiDB 向 TiFlash 发送 coprocessor 请求的方式，有以下几种取值：
+
+* 0：从不批量发送请求
+* 1：aggregation 和 join 的请求会进行批量发送
+* 2：所有的 cop 请求都会批量发送
+
+### tidb_enable_cascades_planner
+
+作用域：SESSION | GLOBAL
+
+默认值: 0
+
+这个变量用于控制是否开启 cascades planner。
+
+### tidb_window_concurrency <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 4
+
+这个变量用于设置 window 算子的并行度。
+
+### tidb_enable_radix_join
+
+作用域：SESSION
+
+默认值: 0
+
+这个变量用于控制是否开启 radix join。
+
+### tidb_enable_vectorized_expression <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 1
+
+这个变量用于控制是否开启向量化执行。
+
+### tidb_enable_index_merge <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 0
+
+这个变量用于控制是否开启 index merge 功能
+
+### tidb_enable_noop_functions <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 0
+
+这个变量用于控制是否开启 `get_lock` 和 `release_lock` 这两个没有实现的函数。需要注意的是，当前版本的 TiDB 这两个函数永远返回 1。
+
+### tidb_isolation_read_engines <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值: tikv, tiflash, tidb
+
+这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
+
+### tidb_store_limit <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值: 0
+
+这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
+
+### tidb_metric_query_step <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值: 60
+
+这个变量设置了查询 METRIC_SCHEMA 时生成的 Prometheus 语句的 step，单位为秒。
+
+### tidb_metric_query_range_duration <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值: 60
+
+这个变量设置了查询 METRIC_SCHEMA 时生成的 Prometheus 语句的 range duration，单位为秒。
