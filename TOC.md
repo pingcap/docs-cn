@@ -159,7 +159,7 @@
   + Backup & Restore (BR)
     + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md) @余峻岑
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @余峻岑
-  + TiDB Lightning @kennytm
+  + TiDB Lightning @kenny
     + [概述](/tidb-lightning/tidb-lightning-overview.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
@@ -182,14 +182,14 @@
     + [Sink URI 配置规则](/ticdc/sink-url.md)
     + [开放数据协议](/ticdc/ticdc-open-protocol.md)
     + [Column 和 DDL 的类型码](/ticdc/column-ddl-type-codes.md)
-  + sync-diff-inspector @WangXiangUSTC
+  + sync-diff-inspector @王相
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-  + [Loader](/loader-overview.md) @WangXiangUSTC
+  + [Loader](/loader-overview.md) @王相
   + [Mydumper](/mydumper-overview.md) @余峻岑
-  + [Syncer](/syncer-overview.md) @WangXiangUSTC
+  + [Syncer](/syncer-overview.md) @王相
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md) @黄东旭
