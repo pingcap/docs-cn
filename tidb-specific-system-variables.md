@@ -909,14 +909,6 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 这个变量用于设置 window 算子的并行度。
 
-### tidb_enable_radix_join
-
-作用域：SESSION
-
-默认值: 0
-
-这个变量用于控制是否开启 radix join。
-
 ### tidb_enable_vectorized_expression <span class="version-mark">从 v4.0 版本开始引入</span>
 
 作用域：SESSION | GLOBAL
