@@ -103,7 +103,32 @@
     + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md) @高恺迪
     + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
     + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
+    + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
+    + [执行计划不稳定导致性能波动](/troubleshoot-execution-plan.md) @姚珂男
+    + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
+    + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
+    + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
 + 性能调优
+  + 系统调优
+    + [硬件](/tune-hardware-performance.md) @张文博
+    + [操作系统](/tune-operating-system.md) @张文博
+  + 软件调优
+    + [软件版本](/tune-software-version.md) @张文博
+    + 配置
+      + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+  + SQL 性能调优
+    + [调优基本概念](/sql-optimization-concepts.md) @崔一丁
+    + 优化器概览
+      + [执行计划](/query-execution-plan.md) @崔一丁
+      + [分布式执行计划](/distributed-exectuion-plan.md) @崔一丁
+      + 管理执行计划
+        + [执行计划绑定](/execution-plan-binding.md) @崔一丁
+        + [Optimizer Hints](/optimizer-hints.md) @崔一丁
+        + [使用 Index Merge 方式访问表](/index-merge.md) @崔一丁
+      + [Join Reorder 算法简介](/join-reorder.md) @崔一丁
+    + [性能监控](/monitor-sql-performance.md) @崔一丁
++ 教程
++ 参考指南
 
 <!--
 
