@@ -40,7 +40,6 @@ Resolve Locks 的执行方式是由 GC leader 对所有的 Region 发送请求�
 
 在进行这一步骤时，TiDB 只需要将 safe point 上传给 PD，即可结束整论 GC。TiKV 会自行检测到 safe point 发生了更新，便会对当前节点上所有作为 leader 的 Region 进行 GC。与此同时，GC leader 可以继续触发下一轮 GC。
 
-
 > **注意：**
 >
 > 2.1 以及更早的版本中，Do GC 这一步是通过由 TiDB 对每个 Region 发送请求的方式实现的。在 3.0 及更新的版本中，通过修改配置可以继续使用旧的 GC 方式，详情请参考 [GC 配置](/garbage-collection-configuration.md#tikv_gc_mode)。
