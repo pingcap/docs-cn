@@ -297,7 +297,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Write operations：write 操作的个数
 - Write duration：write 操作的耗时
 - WAL sync operations：sync WAL 操作的个数
-- Write WAL duration：当执行 write 操作所消耗的时间
+- Write WAL duration：write 操作中写 WAL 的耗时
 - WAL sync duration：sync WAL 操作的耗时
 - Compaction operations：compaction 和 flush 操作的个数
 - Compaction duration：compaction 和 flush 操作的耗时
@@ -365,11 +365,11 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Titan - All
 
 - Blob file count：Titan blob 文件的数量
-- Blob file size：Titan blob 文件的大小
-- Live blob size：LSM-tree 引用的 Titan blob 数值的总大小
-- Blob cache hit：Titan 的 blob 缓存的使用效率
-- Iter touched blob file count：Iter 接触的 blob 文件的数量
-- Blob file discardable ratio distribution：过时的 blob 文件的大小
+- Blob file size：Titan blob 文件总大小
+- Live blob size：有效 blob record 的总大小
+- Blob cache hit：Titan 的 blob cache 命中率
+- Iter touched blob file count：单个 Iterator 所涉及到 blob 文件的数量
+- Blob file discardable ratio distribution：blob 文件失效 blob record 比例的分布情况
 - Blob key size：Titan 中 blob key 的大小
 - Blob value size：Titan 中 blob value 的大小
 - Blob get operations：blob 的 get 操作的数量
@@ -382,15 +382,15 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Blob bytes flow：Titan blob 读写的 bytes 数量
 - Blob file read duration：blob 文件的读取耗时
 - Blob file write duration：blob 文件的写入耗时
-- Blob file sync operations：blob 文件的同步完成的次数
-- Blob file sync duration：blob 文件的同步耗时
-- Blob GC action：Titan GC 的次数
-- Blob GC duration：Titan GC 的周期
-- Blob GC keys flow：Titan blob gc 读写的 key 数量
-- Blob GC bytes flow：Titan blob gc 读写的 bytes 数量
-- Blob GC input file size：blob gc 输入文件的大小
-- Blob GC output file size：blob gc 输出文件的大小
-- Blob GC file count：blob gc 的文件数量
+- Blob file sync operations：blob 文件 sync 次数
+- Blob file sync duration：blob 文件 sync 耗时
+- Blob GC action：Titan GC 细分动作的次数
+- Blob GC duration：Titan GC 的耗时
+- Blob GC keys flow：Titan GC 读写的 key 数量
+- Blob GC bytes flow：Titan GC 读写的 bytes 数量
+- Blob GC input file size：Titan GC 输入文件的大小
+- Blob GC output file size：Titan GC 输出文件的大小
+- Blob GC file count：Titan GC 涉及的 blob 文件数量
 
 ## Lock manager
 
