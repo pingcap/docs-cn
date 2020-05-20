@@ -37,7 +37,7 @@ Load Base Split 会基于统计信息来自动地解决这个问题，通过统�
 
 同理，目前也有两种办法查看配置：
 
-1. 通过 SQL 查看 `show config where type='tikv' and name like '%split.qps-threshold%'`
-2. 通过 TiKV 查看 `curl "http://ip:status_port/config"`
+1. 通过 SQL 查看，`show config where type='tikv' and name like '%split.qps-threshold%'`
+2. 通过 TiKV 查看，`curl "http://ip:status_port/config"`
 
 *注：使用 SQL 修改和查看配置的最低版本 4.0.0-rc2*
