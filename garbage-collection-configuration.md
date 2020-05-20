@@ -68,7 +68,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 > - 在数据更新频繁的场景下，如果将 `tikv_gc_life_time` 设置得比较大（如数天甚至数月），可能会有一些潜在的问题，如：
 >     - 磁盘空间占用较多。
 >     - 大量的历史版本会在一定程度上影响性能，尤其是范围查询（如 `select count(*) from t`）。
-> - 如果存在运行时间很久、超过了 `tikv_gc_life_time` 的事务，那么在 GC 时，会保留自该事务的开始时间（start ts）以来的数据，以允许该事务继续运行。例如，如果 `tikv_gc_life_time` 配置为 10 分钟，而某次 GC 时，集群中正在运行的事务中，开始时间最早的一个已经运行了 15 分钟，那么本次 GC 便会保留最近 15 分钟的数据。
+> - 如果存在运行时间很长、超过了 `tikv_gc_life_time` 的事务，那么在 GC 时，会保留自该事务的开始时间 (start_ts) 以来的数据，以允许该事务继续运行。例如，如果 `tikv_gc_life_time` 配置为 10 分钟，而某次 GC 时，集群中正在运行的事务中开始时间最早的一个事务已经运行了 15 分钟，那么本次 GC 便会保留最近 15 分钟的数据。
 
 ## `tikv_gc_mode`
 
