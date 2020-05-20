@@ -116,7 +116,7 @@ COMMIT;
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-* 第一条 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
+第一条 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
 
 您可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。如果停用此行为，则会在执行语句时就对唯一约束进行检查。例如：
 
@@ -161,11 +161,11 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ..
 ```
 
-* 第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
+第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
 
 ## 主键约束
 
-首先，与 MySQL 相同，主键约束包含了唯一约束，即创建了主键约束相当于拥有了唯一约束，此外，TiDB 其他的主键约束规则与 MySQL 相似。例如：
+与 MySQL 行为一样，主键约束包含了唯一约束，即创建了主键约束相当于拥有了唯一约束。此外，TiDB 其他的主键约束规则也与 MySQL 相似。例如：
 
 {{< copyable "sql" >}}
 
@@ -206,6 +206,8 @@ CREATE TABLE t4 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b));
 ```
 Query OK, 0 rows affected (0.10 sec)
 ```
+
+分析：
 
 * 表 `t2` 创建失败，因为定义为主键的列 `a` 不能允许 `NULL` 值。
 * 表 `t3` 创建失败，因为一张表只能有一个主键。
