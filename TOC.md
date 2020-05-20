@@ -116,10 +116,13 @@
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
       + [TiKV 调优](/tune-tikv-performance.md) @刘玮
-    + [SQL 性能调优](/sql-tuning-overview.md) @崔一丁
+    + [SQL 性能调优] @崔一丁
+      + [SQL 性能调优概览](/sql-tuning-overview.md)
       + [理解 TiDB 执行计划](/query-execution-plan.md)
-      + [SQL 优化流程简介](/sql-optimization-concepts.md)
-        + [逻辑优化](/sql-logical-optimization.md)
+      + [SQL 优化]
+        + [SQL 优化流程简介](/sql-optimization-concepts.md)
+        + [逻辑优化]
+          + [逻辑优化概览](/sql-logical-optimization.md)
           + [子查询相关的优化](/subquery-optimization.md)
           + [列裁剪](/column-pruning.md)
           + [关联子查询去关联](/correlated-subquery-optimization.md)
@@ -128,12 +131,14 @@
           + [分区裁剪](/partition-pruning.md)
           + [TopN 和 Limit 下推](/topn-limit-push-down.md)
           + [Join Reorder](/join-reorder.md)
-        + [物理优化](/sql-physical-optimization.md)
+        + [物理优化]
+          + [物理优化概览](/sql-physical-optimization.md)
           + [索引的选择](/index-choose.md)
           + [统计信息介绍](/statistics-intro.md)
-          + [发现索引选错时](/wrong-index-solution.md)
+          + [错误索引的解决方案](/wrong-index-solution.md)
           + [Distinct 优化](/agg-distinct-optimization.md)
-        + [控制执行计划](/control-execution-plan.md)
+        + [控制执行计划]
+          + [控制执行计划概览](/control-execution-plan.md)
           + [Optimizer Hints](/optimizer-hints.md)
           + [执行计划绑定](/execution-plan-binding.md)
           + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)

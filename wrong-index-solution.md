@@ -1,6 +1,6 @@
 ---
-title: 发现索引选错时
+title: 错误索引的解决方案
 category: performance
 ---
 
-# 发现索引选错时
+# 错误索引的解决方案
