@@ -118,7 +118,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 第一条 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
 
-您可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。如果停用此行为，则会在执行语句时就对唯一约束进行检查。例如：
+你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。如果停用此行为，则会在执行语句时就对唯一约束进行检查。例如：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -216,6 +216,10 @@ Query OK, 0 rows affected (0.10 sec)
 除上述规则外，TiDB 还强加了另一个限制，即一旦一张表创建成功，其主键就不能再改变。
 
 ## 外键约束
+
+> **注意：**
+>
+> TiDB 仅部分支持外键约束功能。
 
 TiDB 支持创建外键约束。例如：
 
