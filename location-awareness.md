@@ -1,30 +1,32 @@
 ---
-title: 集群拓扑信息配置
+title: 集群拓扑感知副本调度
 category: how-to
 aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/']
 ---
 
-# 集群拓扑信息配置
+# 集群拓扑感知副本调度
 
 ## 概述
 
-PD 能够根据 TiKV 集群的拓扑结构进行调度，使得 TiKV 的容灾能力最大化。
+为了提升 TiDB 集群的高可用性和数据容灾能力，我们推荐让 TiKV 节点尽可能在物理层面上分散，例如让 TiKV 节点分布在不同的机架甚至不同的机房。PD 调度器根据 TiKV 的拓扑信息，会自动在后台通过调度使得 Region 的各个副本尽可能隔离，从而使得数据容灾能力最大化。
 
-阅读本章前，请先确保阅读 [TiDB Ansible 部署方案](/online-deployment-using-ansible.md) 和 [Docker 部署方案](/test-deployment-using-docker.md)。
+要让这个机制生效，我们需要在部署时进行合理配置，把集群的拓扑信息（特别是 TiKV 的位置）上报给 PD。阅读本章前，请先确保阅读 [TiDB Ansible 部署方案](/online-deployment-using-ansible.md) 和 [Docker 部署方案](/test-deployment-using-docker.md)。
 
-## TiKV 上报拓扑信息
+## 配置
 
-可以通过 TiKV 的启动参数或者配置文件来让 TiKV 上报拓扑信息给 PD。
+### 设置 TiKV 的 `labels` 配置
 
-假设拓扑结构分为三级：zone > rack > host，可以通过 labels 来指定这些信息。
+TiKV 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签（label）。TiKV 在启动后，会将自身的标签上报给 PD，因此我们可以使用标签来标识 TiKV 节点的地理位置。
 
-启动参数：
+比如集群的拓扑结构分成三层：机房（zone) -> 机架（rack） -> 主机（host），我们就可以使用 3 个标签来设置 TiKV 的位置。
+
+使用命令行参数的方式：
 
 ```
 tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 ```
 
-配置文件：
+使用配置文件的方式：
 
 {{< copyable "" >}}
 
@@ -33,64 +35,68 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 labels = "zone=<zone>,rack=<rack>,host=<host>"
 ```
 
-## PD 理解 TiKV 拓扑结构
+### 设置 PD 的 `location-labels` 配置
 
-可以通过 PD 的配置文件让 PD 理解 TiKV 集群的拓扑结构。
+根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
+
+PD 上的配置叫做 `location-labels`，可以通过 PD 的配置文件进行配置。
 
 {{< copyable "" >}}
 
 ```toml
 [replication]
-max-replicas = 3
 location-labels = ["zone", "rack", "host"]
 ```
 
-其中 `location-labels` 需要与 TiKV 的 `labels` 名字对应，这样 PD 才能知道这些 `labels` 代表了 TiKV 的拓扑结构。
+当 PD 集群初始化完成后，需要使用 pd-ctl 工具进行在线更改：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config set location-labels zone,rack,host
+```
+
+其中，`location-labels` 配置是一个字符串数组，每一项与 TiKV 的 `labels` 的 key 是对应的，且其中每个 key 的顺序代表了不同标签的层次关系。
 
 > **注意：**
 >
-> 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 `labels` 不会生效。
+> 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
 
-## PD 基于 TiKV 拓扑结构进行调度
+### 使用 tidb-ansible 进行配置
 
-PD 能够根据我们提供的拓扑信息作出最优的调度，我们只需要关心什么样的拓扑结构能够达到我们想要的效果。
+如果使用 tidb-ansible 部署集群，可以直接在 inventory.ini 文件中统一进行 location 相关配置。tidb-ansible 会负责在 deploy 时生成对应的 TiKV 和 PD 配置文件。
 
-假设我们使用三副本，并且希望一个数据中心挂掉的情况下，还能继续保持 TiDB 集群的高可用状态，我们至少需要四个数据中心。
-
-假设我们有四个数据中心 (zone)，每个数据中心有两个机架 (rack)，每个机架上有两个主机 (host)。
-每个主机上面启动一个 TiKV 实例：
+下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。
 
 ```
-# zone=z1
-tikv-server --labels zone=z1,rack=r1,host=h1
-tikv-server --labels zone=z1,rack=r1,host=h2
-tikv-server --labels zone=z1,rack=r2,host=h1
-tikv-server --labels zone=z1,rack=r2,host=h2
+[tikv_servers]
+# z1
+tikv-1 labels="zone=z1,host=h1"
+tikv-2 labels="zone=z1,host=h1"
+tikv-3 labels="zone=z1,host=h2"
+tikv-4 labels="zone=z1,host=h2"
+# z2
+tikv-5 labels="zone=z2,host=h1"
+tikv-6 labels="zone=z2,host=h2"
+# z3
+tikv-7 labels="zone=z3,host=h1"
+tikv-8 labels="zone=z3,host=h2"
 
-# zone=z2
-tikv-server --labels zone=z2,rack=r1,host=h1
-tikv-server --labels zone=z2,rack=r1,host=h2
-tikv-server --labels zone=z2,rack=r2,host=h1
-tikv-server --labels zone=z2,rack=r2,host=h2
-
-# zone=z3
-tikv-server --labels zone=z3,rack=r1,host=h1
-tikv-server --labels zone=z3,rack=r1,host=h2
-tikv-server --labels zone=z3,rack=r2,host=h1
-tikv-server --labels zone=z3,rack=r2,host=h2
-
-# zone=z4
-tikv-server --labels zone=z4,rack=r1,host=h1
-tikv-server --labels zone=z4,rack=r1,host=h2
-tikv-server --labels zone=z4,rack=r2,host=h1
-tikv-server --labels zone=z4,rack=r2,host=h2
+[pd_servers:vars]
+location_labels = ["zone", "rack"]
 ```
 
-也就是说，我们有 16 个 TiKV 实例，分布在 4 个不同的数据中心，8 个不同的机架，16 个不同的机器。
+## 调度策略简介
 
-在这种拓扑结构下，PD 会优先把每一份数据的不同副本调度到不同的数据中心。
-这时候如果其中一个数据中心挂了，不会影响 TiDB 集群的高可用状态。
-如果这个数据中心一段时间内恢复不了，PD 会把这个数据中心的副本迁移出去。
+PD 在副本调度时，会按照 label 层级，保证同一份数据的不同副本尽可能分散。
+
+我们以上一节的拓扑结构为例分析。
+
+假设集群副本数设置为 3（`max-replicas=3`），因为总共有 3 个 zone，PD 会保证每个 Region 的 3 个副本分别放置在 z1/z2/z3，这样当任何一个数据中心发生故障时，TiDB 集群依然是可用的。
+
+假如使用 5 副本配置，因为总共只有 3 个 zone，在这一层级 PD 无法保证各个副本的隔离了，此时 PD 调度器会退而求其次，保证在 host 这一层的隔离。也就是说，会出现一个 Region 的多个副本分布在同一个 zone 的情况，但是不会出现多个副本分布在同一台主机。
+
+再假设在 5 副本配置的前提下，z3 出现了整体故障或隔离，如果 z3 在一段时间后仍然不能恢复（由 `max-store-down-time` 控制），PD 会通过调度补齐 5 副本，此时可用的主机只有 3 个了，故而无法保证 host 级别的隔离，于是可能出现多个副本被调度到同一台主机的情况。
 
 总的来说，PD 能够根据当前的拓扑结构使得集群容灾能力最大化，所以如果我们希望达到某个级别的容灾能力，
-就需要根据拓扑机构在不同的地理位置提供多于备份数 (`max-replicas`) 的机器。
+就需要根据拓扑结构在对应级别提供多于副本数 (`max-replicas`) 的机器。
