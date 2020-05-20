@@ -39,8 +39,8 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 
 ## `enable-binlog`
 
-+ 是否产生 tidb binlog
-+ 默认: false
++ 是否产生 TiDB binlog
++ 默认：false
 
 ## `-L`
 
@@ -158,29 +158,29 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 ## `--plugin-dir`
 
 + plugin 存放目录
-+ 默认: "/data/deploy/plugin"
++ 默认："/data/deploy/plugin"
 
 ## `--plugin-load`
 
 + 需要加载的 plugin 列表，以 "," 逗号分隔
-+ 默认: ""
++ 默认：""
 
 ## `--affinity-cpus`
  
-+ 设置 TiDB server cpu 亲和性，以 "," 逗号分隔，例如 "1,2,3"
-+ 默认: ""
++ 设置 TiDB server CPU 亲和性，以 "," 逗号分隔，例如 "1,2,3"
++ 默认：""
 
 ## `--repair-mode`
 
 + 是否开启修复模式，仅用于数据修复场景
-+ 默认: false
++ 默认：false
 
 ## `--repair-list`
 
 + 修复模式下需要修复的表名
-+ 默认: ""
++ 默认：""
 
 ## `--require-secure-transport`
 
-+ 是否要求客户端使用 secure 传输模式
-+ 默认: false
++ 是否要求客户端使用安全传输模式
++ 默认：false
