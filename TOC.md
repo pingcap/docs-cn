@@ -309,6 +309,43 @@
         + [`metrics_summary`](/system-tables/system-table-metrics-summary.md)
         + [`inspection_result`](/system-tables/system-table-inspection-result.md)
         + [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
+  + TiDB 生态工具
+    + [工具使用指南](/ecosystem-tool-user-guide.md)
+    + [工具下载](/download-ecosystem-tools.md)
+    + Backup & Restore (BR)
+      + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md)
+      + [BR 备份与恢复场景示例](br/backup-and-restore-use-cases.md)
+    + TiDB Lightning
+      + [概述](/tidb-lightning/tidb-lightning-overview.md)
+      + [快速上手教程](/get-started-with-tidb-lightning.md)
+      + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
+      + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
+      + 主要功能
+        + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+        + [表库过滤](/tidb-lightning/tidb-lightning-table-filter.md)
+        + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+        + [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
+        + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
+      + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
+      + [故障诊断](/troubleshoot-tidb-lightning.md)
+      + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+      + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+    + TiCDC
+      + [概述](/ticdc/ticdc-overview.md)
+      + [部署使用](/ticdc/deploy-ticdc.md)
+      + [集群和同步任务管理](/ticdc/manage-ticdc.md)
+      + [常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
+      + [Sink URI 配置规则](/ticdc/sink-url.md)
+      + [开放数据协议](/ticdc/ticdc-open-protocol.md)
+      + [Column 和 DDL 的类型码](/ticdc/column-ddl-type-codes.md)
+    + sync-diff-inspector
+      + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
+      + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
+      + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
+      + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
+    + [Loader](/loader-overview.md)
+    + [Mydumper](/mydumper-overview.md)
+    + [Syncer](/syncer-overview.md)
   + UI
     + TiDB Dashboard @施闻轩
   + CLI
