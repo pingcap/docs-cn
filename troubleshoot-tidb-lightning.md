@@ -133,3 +133,11 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 3. 确保整个集群使用的是同一最新版本的 `tzdata` (2018i 或更高版本)。
 
     如果你使用的是 CentOS 机器，你可以运行 `yum info tzdata` 命令查看 `tzdata` 的版本及是否有更新。然后运行 `yum upgrade tzdata` 命令升级 `tzdata`。
+
+## [Error 8025: entry too large, the max entry size is 6291456]
+
+**原因**: Lightning 生成单行 kv 超过了 TiDB 的限制
+
+**解决办法**:
+
+1. 目前无法绕过 TiDB 的限制，只能忽略这张表，确保其它表顺利导入。
