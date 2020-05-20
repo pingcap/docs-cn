@@ -1,5 +1,5 @@
 ---
-title: Load Base Split 使用文档
+title: Load Base Split
 summary: 如何配置 Load Base Split。
 category: how-to
 ---
