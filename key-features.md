@@ -5,24 +5,55 @@ category: introduction
 
 # TiDB 核心特性
 
-本文详细介绍 TiDB 的两大核心特性：水平扩展与高可用。
+本文详细介绍 TiDB 的具备的基本功能。
 
-## 水平扩展
+## 数据类型
 
-无限水平扩展是 TiDB 的一大特点，这里说的水平扩展包括两方面：计算能力和存储能力。TiDB Server 负责处理 SQL 请求，随着业务的增长，可以简单的添加 TiDB Server 节点，提高整体的处理能力，提供更高的吞吐。TiKV 负责存储数据，随着数据量的增长，可以部署更多的 TiKV Server 节点解决数据 Scale 的问题。PD 会在 TiKV 节点之间以 Region 为单位做调度，将部分数据迁移到新加的节点上。所以在业务的早期，可以只部署少量的服务实例（推荐至少部署 3 个 TiKV， 3 个 PD，2 个 TiDB），随着业务量的增长，按照需求添加 TiKV 或者 TiDB 实例。
+- 数值类型: `BIT、BOOL|BOOLEAN、SMALLINT、MEDIUMINT、INT|INTEGER、BIGINT、FLOAT、DOUBLE、DECIMAL`。
+- 日期和时间类型: `DATE、TIME、DATETIME、TIMESTAMP、YEAR`。
+- 字符串类型: `CHAR、VARCHAR、TEXT、TINYTEXT、MEDIUMTEXT、LONGTEXT、BINARY、VARBINARY、BLOB、TINYBLOB、MEDIUMBLOB、LONGBLOB、ENUM、SET`。
+- JSON 类型。
 
-## 高可用
+## 运算符
 
-高可用是 TiDB 的另一大特点，TiDB/TiKV/PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。下面分别说明这三个组件的可用性、单个实例失效后的后果以及如何恢复。
+- 算术运符、位运算符、比较运算符、逻辑运算符、日期和时间运算符等。
 
-- TiDB
+## 字符集及排序规则
 
-    TiDB 是无状态的，推荐至少部署两个实例，前端通过负载均衡组件对外提供服务。当单个实例失效时，会影响正在这个实例上进行的 Session，从应用的角度看，会出现单次请求失败的情况，重新连接后即可继续获得服务。单个实例失效后，可以重启这个实例或者部署一个新的实例。
+- 字符集：`UTF8、UTF8MB4、BINARY`。
+- 字符集：`UTF8MB4_GENERAL_CI、UTF8MB4_GENERAL_BIN、UTF8_GENERAL_CI、UTF8_GENERAL_BIN、BINARY`。
 
-- PD
+## 函数
 
-    PD 是一个集群，通过 Raft 协议保持数据的一致性，单个实例失效时，如果这个实例不是 Raft 的 leader，那么服务完全不受影响；如果这个实例是 Raft 的 leader，会重新选出新的 Raft leader，自动恢复服务。PD 在选举的过程中无法对外提供服务，这个时间大约是3秒钟。推荐至少部署三个 PD 实例，单个实例失效后，重启这个实例或者添加新的实例。
+- 控制流函数、字符串函数、日期和时间函数、位函数、数据类型转换函数、数据加解密函数、压缩和解压函数、信息函数、JSON 函数、聚合函数、窗口函数、信息函数等。
 
-- TiKV
+## SQL 语句
 
-    TiKV 是一个集群，通过 Raft 协议保持数据的一致性（副本数量可配置，默认保存三副本），并通过 PD 做负载均衡调度。单个节点失效时，会影响这个节点上存储的所有 Region。对于 Region 中的 Leader 节点，会中断服务，等待重新选举；对于 Region 中的 Follower 节点，不会影响服务。当某个 TiKV 节点失效，并且在一段时间内（默认 30 分钟）无法恢复，PD 会将其上的数据迁移到其他的 TiKV 节点上。
+- 完全支持 `SQL GROUP BY` 和 `ORDER BY` 子语句。
+- 完全支持标准 SQL 语法的 `LEFT OUTER JOIN` 和 `RIGHT OUTER JOIN`。
+- 完全支持标准 SQL 要求的表和列别名。
+- 完全支持 DELETE，INSERT，REPLACE、UPDATE、CREATE、DROP、ALTER 等语句。
+
+## 分区表
+- 支持 Range 分区。
+- 支持 Hash 分区。
+
+## 视图
+- 支持普通视图。
+
+## 约束
+- 支持非空约束。
+- 支持主键约束。
+- 支持唯一约束。
+
+## 安全
+- 支持基于 RBAC 的权限管理。
+- 支持密码管理。
+- 支持通信、数据加密。
+- 支持 IP 白名单。
+- 支持审记功能。
+
+## 工具
+- 支持快速备份功能
+- 支持通过工具从 MySQL 迁移数据到 TiDB。
+- 支持通过工具部署、运维 TiDB。
