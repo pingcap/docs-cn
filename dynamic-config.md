@@ -15,7 +15,7 @@ category: reference
 可以通过 SQL `show config` 来直接查看集群所有实例的配置信息，结果如下：
 
 ```
-mysql> mysql> show config;
+mysql> show config;
 +------+-----------------+-----------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Type | Instance        | Name                                                      | Value                                                                                                                                                                                                                                                                            |
 +------+-----------------+-----------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -43,8 +43,11 @@ mysql> show config where type='tikv' and name='log-level'
 ### 修改实例配置
 
 SQL `set config` 可以结合实例地址和类型来修改配置，如：
+
+```
 set config tikv log.level="info"
 set config "127.0.0.1:2379" log.level="info"
+```
 
 设置成功会返回 `Query OK`：
 
@@ -63,14 +66,14 @@ mysql> show warnings;
 +---------+------+---------------------------------------------------------------------------------------------------------------+
 | Level   | Code | Message                                                                                                       |
 +---------+------+---------------------------------------------------------------------------------------------------------------+
-| Warning | 1105 | bad request to http://127.0.0.1:20180/config: fail to update, error: "config \"log_level\" can not be change" |
+| Warning | 1105 | bad request to http://127.0.0.1:20180/config: fail to update, error: "config log-level can not be change" |
 +---------+------+---------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
-使用 `set config` 时，需要注意：
-为了避免和 SQL 变量混淆，TiDB 的配置可以通过 `show config` 查看但是不能进行修改，修改 TiDB 动态配置是会返回错误，如果想动态修改 TiDB 行为，请用对应的 SQL 变量去控制；
-某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 \` 包裹起来，如 `tikv-client`.`store-limit`；
+> **注意：**
+> 为了避免和 SQL 变量混淆，TiDB 的配置可以通过 `show config` 查看但是不能进行修改，动态配置时会返回错误；如果想动态修改 TiDB 行为，请用对应的 SQL 变量去控制。
+> 某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 `tikv-client`.`store-limit`；
 
 ## 支持参数列表
 
@@ -80,7 +83,7 @@ mysql> show warnings;
 | --- | --- |
 | log.level| 日志级别 |
 | cluster-version | 集群的版本 |
-| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 M） |
+| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MB） |
 | schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
 | schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
 | schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
@@ -186,9 +189,9 @@ mysql> show warnings;
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
 
-上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置
-`db-name` 的取值可以为是 `rocksdb`, `raftdb`
-当 `db-name` 为 `rocksdb` 时，cf-name 的取值有: `defaultcf`，`writecf`，`lockcf`，`raftcf`
-当 `db-name` 为 `raftdb` 时，cf-name 的取值有: `defaultcf`
+上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置。`db-name` 的取值可以为是 `rocksdb`, `raftdb`。
+
+- 当 `db-name` 为 `rocksdb` 时，cf-name 的取值有: `defaultcf`，`writecf`，`lockcf`，`raftcf`；
+- 当 `db-name` 为 `raftdb` 时，cf-name 的取值有: `defaultcf`。
 
 具体参数意义可参考 [TiKV 配置文件描述](https://github.com/pingcap/docs-cn/blob/master/reference/configuration/tikv-server/configuration-file.md)
