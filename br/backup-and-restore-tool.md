@@ -166,8 +166,8 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 
 > **注意：**
 > 
-> 我们的测试结果中，假如备份盘和服务盘不同，在线备份会让只读线上服务的 QPS 下降 15%~25% 左右。
-> 但是，假如备份盘和服务盘相同，备份将会和服务争夺 IO 资源，这可能会让只读线上服务的 QPS 骤降一半以上。
+> 经测试，假如备份盘和服务盘不同，在线备份会让只读线上服务的 QPS 下降 15%~25% 左右。
+> 假如备份盘和服务盘相同，备份将会和服务争夺 I/O 资源，这可能会让只读线上服务的 QPS 骤降一半以上。
 > 因此，请尽量禁止在线服务的数据备份到 tikv 的数据盘。
 
 {{< copyable "shell-regular" >}}
@@ -266,9 +266,9 @@ br backup full \
 
 ### 增量备份
 
-如果想要增量备份，只需要在备份的时候指定【上一次的备份时间戳】 `--lastbackupts` 即可。
+如果想要备份增量，只需要在备份的时候指定**上一次的备份时间戳** `--lastbackupts` 即可。
 
-注意增量备份有两个限制：
+注意增量备份有以下限制：
 
 - 增量备份需要与前一次全量备份在不同的路径下
 - 增量备份开始时间与 `lastbackupts` 之间不能有 GC
@@ -284,7 +284,7 @@ br backup full\
 
 以上命令会备份 `[LAST_BACKUP_TS, current PD timestamp)` 之间的增量数据。
 
-你可以使用 `validate` 指令获取上一次备份的时间戳，如下：
+你可以使用 `validate` 指令获取上一次备份的时间戳，示例如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -292,7 +292,7 @@ br backup full\
 LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata`
 ```
 
-示例备份的增量数据包括 `[LAST_BACKUP_TS, current PD timestamp)` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，我们会先把所有 DDL 恢复，而后才会恢复写入数据。
+示例备份的增量数据包括 `[LAST_BACKUP_TS, current PD timestamp)` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复写入数据。
 
 ### Raw KV 备份（实验性功能）
 
@@ -313,7 +313,7 @@ br backup raw --pd $PD_ADDR \
     --cf default
 ```
 
-以上命令会备份 default CF 上，`[0x31, 0x3130303030303030)` 之间的所有键到 `$BACKUP_DIR` 去。
+以上命令会备份 default CF 上 `[0x31, 0x3130303030303030)` 之间的所有键到 `$BACKUP_DIR` 去。
 这里，`--start` 和 `--end` 的参数会先依照 `--format` 指定的方式解码，再被送到 TiKV 上去，目前支持以下解码方式：
 
 - "raw"：不进行任何操作，将输入的字符串直接编码为二进制格式的键。
@@ -428,7 +428,7 @@ br restore full \
 
 ### 增量恢复
 
-在增量恢复的时候，使用 BR 的方法和全量恢复并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
+增量恢复的方法和使用 BR 进行全量恢复的方法并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
 
 ### Raw KV 恢复（实验性功能）
 
@@ -457,7 +457,7 @@ br restore raw --pd $PD_ADDR \
 > 
 > 在线恢复功能还在实验中，它没有经过完备的测试，同时还依赖 PD 的不稳定特性 Placement rules。暂时请避免在生产环境中使用它。
 
-在恢复的时候，写入过多的数据会影响在线集群的性能。为了尽量避免影响线上业务，BR 支持通过 [Placement rules](/configure-placement-rules.md) 隔离资源。让下载、导入 SST 的工作仅仅在由你指定的几个节点（下称“恢复节点”）上进行，具体操作如下：
+在恢复的时候，写入过多的数据会影响在线集群的性能。为了尽量避免影响线上业务，BR 支持通过 [Placement rules](/configure-placement-rules.md) 隔离资源。让下载、导入 SST 的工作仅仅在指定的几个节点（下称“恢复节点”）上进行，具体操作如下：
 
 配置 PD，启动 Placement rules：
 
