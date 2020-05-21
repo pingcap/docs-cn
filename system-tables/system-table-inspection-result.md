@@ -43,7 +43,7 @@ desc information_schema.inspection_result;
     * `version`：版本一致性检测。如果同一类型的实例版本不同，会生成 `critical` 诊断结果。
     * `node-load`：服务器负载检测。如果当前系统负载太高，会生成对应的 `warning` 诊断结果。
     * `critical-error`：系统各个模块定义了严重的错误，如果某一个严重错误在对应时间段内超过阈值，会生成 `warning` 诊断结果。
-    * `threshold-check`：诊断系统会对一些关键指标指标进行阈值判断，如果超过阈值会生成对应的诊断信息。
+    * `threshold-check`：诊断系统会对一些关键指标进行阈值判断，如果超过阈值会生成对应的诊断信息。
 * `ITEM`：每一个规则会对不同的项进行诊断，该字段表示对应规则下面的具体诊断项。
 * `TYPE`：诊断的实例类型，可取值为 `tidb`，`pd` 和 `tikv`。
 * `INSTANCE`：诊断的具体实例地址。
