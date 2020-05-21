@@ -1,5 +1,5 @@
 ---
-title: 使用 Dumpling 进行数据导出
+title: 使用 Dumpling 导出或备份 TiDB 数据
 summary: 使用新的导出工具 Dumpling 导出或者备份数据。
 category: how-to
 ---
