@@ -1,7 +1,6 @@
 ---
 title: 调度概述
 category: reference
-aliases: ['/docs-cn/dev/reference/architecture/scheduling-overview/']
 ---
 
 ## 调度概述
