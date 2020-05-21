@@ -35,7 +35,7 @@ category: reference
 
 ### perf
 
-Perf 是 Linux 内核提供的一个重要的性能分析工具，它涵盖硬件级别（CPU/PMU，性能监视单元）功能和软件功能（软件计数器，跟踪点）。详细用法请参考：<http://www.brendangregg.com/perf.html#Background> 。
+Perf 是 Linux 内核提供的一个重要的性能分析工具，它涵盖硬件级别（CPU/PMU，性能监视单元）功能和软件功能（软件计数器，跟踪点）。详细用法请参考 [perf Examples](http://www.brendangregg.com/perf.html#Background)。
 
 ### BCC/bpftrace
 
