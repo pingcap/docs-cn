@@ -1,5 +1,5 @@
 ---
-title: TiFlash 集群运维
+title: TiFlash 故障处理
 category: reference
 aliases: ['/docs-cn/dev/reference/tiflash/troubleshoot/']
 ---
