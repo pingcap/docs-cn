@@ -1,10 +1,9 @@
 ---
-title: TiFlash 故障处理
+title: TiFlash 常见问题
 category: reference
-aliases: ['/docs-cn/dev/reference/tiflash/troubleshoot/']
 ---
 
-# TiFlash 故障处理
+# TiFlash 常见问题
 
 本文介绍了一些 TiFlash 常见问题、原因及解决办法。
 
