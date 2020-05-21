@@ -490,7 +490,7 @@ mysql> desc select count(distinct a) from test.t;
 
 默认值：1
 
-这个变量用于控制是否开启 slow log 功能。
+这个变量用于控制是否开启 slow log 功能，默认开启。
 
 ### tidb_record_plan_in_slow_log
 
@@ -837,7 +837,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值: on
 
-这个变量用于控制是否开启执行计划绑定功能。关于执行计划绑定功能的使用可以参考[执行计划绑定文档](/execution-plan-binding.md#创建绑定)
+这个变量用于控制是否开启执行计划绑定功能，默认打开，可通过赋值 off 来关闭。关于执行计划绑定功能的使用可以参考[执行计划绑定文档](/execution-plan-binding.md#创建绑定)。
 
 ### tidb_capture_plan_baselines <span class="version-mark">从 v4.0 版本开始引入</span>
 
