@@ -86,7 +86,7 @@ tikv-8 labels="zone=z3,host=h2"
 location_labels = ["zone", "rack"]
 ```
 
-## 调度策略简介
+## 基于拓扑 label 的 PD 调度策略
 
 PD 在副本调度时，会按照 label 层级，保证同一份数据的不同副本尽可能分散。
 
