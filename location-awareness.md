@@ -62,7 +62,7 @@ pd-ctl config set location-labels zone,rack,host
 >
 > 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
 
-### 使用 tidb-ansible 进行配置
+### 使用 TiDB Ansible 进行配置
 
 如果使用 tidb-ansible 部署集群，可以直接在 inventory.ini 文件中统一进行 location 相关配置。tidb-ansible 会负责在 deploy 时生成对应的 TiKV 和 PD 配置文件。
 
