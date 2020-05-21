@@ -39,7 +39,7 @@ TiDB 4.0 之前的系统表，只能查看当前实例信息，TiDB 4.0 实现�
 由于 TiDB 集群的监控指标数量较大，因此 TiDB 4.0 提供以下监控汇总表：
 
 * 监控汇总表 [`information_schema.metrics_summary`](/system-tables/system-table-metrics-summary.md) 用于汇总所有监控数据，以提升用户排查各监控指标的效率。
-* 监控汇总表 [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md) 同样用于汇总所有监控数据，不过该表会对不同的 label 进行区分统计。
+* 监控汇总并按 label 聚合表 [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md) 同样用于汇总所有监控数据，但该表会对各项监控的不同的 label 进行聚合统计。
 
 ## 自动诊断
 
