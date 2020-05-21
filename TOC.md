@@ -130,7 +130,7 @@
       + 物理优化
         + [物理优化概览](/sql-physical-optimization.md)
         + [索引的选择](/index-choose.md)
-        + [统计信息介绍](/statistics-intro.md)
+        + [统计信息简介](/statistics.md)
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
       + 控制执行计划
