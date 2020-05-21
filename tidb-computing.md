@@ -65,12 +65,12 @@ indexPrefixSep  = []byte{'i'}
 
 ```sql
 CREATE TABLE User {
-	ID int,
-	Name varchar(20),
-	Role varchar(20),
-	Age int,
-	PRIMARY KEY (ID),
-	KEY idxAge (Age)
+    ID int,
+    Name varchar(20),
+    Role varchar(20),
+    Age int,
+    PRIMARY KEY (ID),
+    KEY idxAge (Age)
 };
 ```
 
