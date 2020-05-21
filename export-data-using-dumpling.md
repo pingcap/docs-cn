@@ -4,7 +4,7 @@ summary: 使用新的导出工具 Dumpling 导出或者备份数据。
 category: how-to
 ---
 
-# 使用 Dumpling 导出 TiDB 数据
+# 使用 Dumpling 导出或备份 TiDB 数据
 
 本文档介绍如何使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)。该工具可以把存储在 TiDB 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
 
