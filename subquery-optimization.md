@@ -57,7 +57,6 @@ mysql> explain select * from t1 where t1.a in (select t2.a from t2);
 
 这个改写会在 `IN` 子查询相对较小，而外部查询相对较大时产生更好的执行性能。因为不经过改写的情况下，我们无法使用以 t2 为驱动表的 `index join`。同时这里的弊端便是当改写删成的聚合无法被自动消去且 `t2` 表比较大时，反而会影响查询的性能。目前 TiDB 中使用 [tidb\_opt\_insubq\_to\_join\_and\_agg](/tidb-specific-system-variables.md#tidb_opt_insubq_to_join_and_agg) 变量来控制这个优化的打开与否。当遇到不合适这个优化的情况可以手动关闭。
 
-
 ## `EXISTS` 子查询以及 `... >/>=/</<=/=/!= (SELECT ... FROM ...)`
 
 当前对于这种场景的子查询，当它不是关联子查询时，TiDB 会在优化阶段提前展开它，将其直接替换为一个结果集直接判断结果。如下图中，`EXISTS` 会提前在优化阶段被执行为 `TRUE`，从而不会在最终的执行结果中看到它。
