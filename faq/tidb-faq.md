@@ -695,7 +695,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 
 不可以。TiDB 数据（或使用其他事务 API 生成的数据）依赖于一种特殊的键值格式，和 RawKV API 数据（或其他基于 RawKV 的服务生成的数据）并不兼容。
 
-### 3.5 TiFlash 管理
+### 3.5 TiFlash
 
 #### 3.5.1 TiFlash 是否可直接写入？
 
