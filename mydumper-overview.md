@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/tools/mydumper/']
 
 > **警告：**
 > 
-> 本文中提到的 `MyDumper` 导出方式我们已不再维护。建议使用新的数据导出工具 [Dumpling](/export-data-using-dumpling.md)。
+> 本文中提到的 `MyDumper` 导出方式我们已不再维护。建议使用新的数据导出工具 [Dumpling](/export-or-backup-using-dumpling.md)。
 
 ## Mydumper 简介
 
