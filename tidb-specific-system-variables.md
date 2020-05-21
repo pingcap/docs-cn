@@ -807,7 +807,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值：0
 
-开启这个开关之后对 tx_isolation 赋值一个 TiDB 不支持的隔离级别不会报错。
+开启这个开关之后，如果对 `tx_isolation` 赋值一个 TiDB 不支持的隔离级别，不会报错。
 
 ### tidb_low_resolution_tso
 
@@ -816,6 +816,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来设置是否启用低精度 tso 特性，开启该功能之后新事务会使用一个每 2s 更新的 ts 来读取数据。
+
 主要场景是在可以容忍读到旧数据的情况下，降低小的只读事务获取 tso 的开销。
 
 ### tidb_replica_read <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -824,7 +825,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值: leader
 
-这个变量用于控制 TiDB 读取数据的位置，有以下三个选择
+这个变量用于控制 TiDB 读取数据的位置，有以下三个选择：
 
 * leader：只从 leader 节点读取
 * follower：只从 follower 节点读取
@@ -844,8 +845,9 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值: off
 
-这个变量用于控制是否开启打开自动创建绑定功能。该功能依赖 statement summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
-开启该功能后会定期遍历一次 statement summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
+这个变量用于控制是否开启自动创建绑定功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
+
+开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 
 ### tidb_evolve_plan_baselines <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -853,9 +855,9 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值: off
 
-这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定文档](/execution-plan-binding.md#自动演进绑定)
+这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/execution-plan-binding.md#自动演进绑定)。
 
-为了减少自动演进对集群的影响，可以通过 tidb_evolve_plan_task_max_time 来限制每个执行计划运行的最长时间，其默认值为 600s；通过 tidb_evolve_plan_task_start_time 和 tidb_evolve_plan_task_end_time 可以限制运行演进任务的时间窗口，默认值分别为 00:00 +0000 和 23:59 +0000。
+为了减少自动演进对集群的影响，可以通过 `tidb_evolve_plan_task_max_time` 来限制每个执行计划运行的最长时间，其默认值为 600s；通过 `tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time` 可以限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
 
 ### tidb_evolve_plan_task_max_time <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -923,7 +925,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值: 0
 
-这个变量用于控制是否开启 index merge 功能
+这个变量用于控制是否开启 index merge 功能。
 
 ### tidb_enable_noop_functions <span class="version-mark">从 v4.0 版本开始引入</span>
 
