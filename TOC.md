@@ -190,6 +190,19 @@
   + [Loader](/loader-overview.md) @王相
   + [Mydumper](/mydumper-overview.md) @余峻岑
   + [Syncer](/syncer-overview.md) @王相
+  + TiUP @龙恒
+    + [TiUP 文档指南](/tiup/tiup-documentation-guide.md)
+    + [TiUP 概览](/tiup/tiup-overview.md)
+    + [TiUP 术语](/tiup/tiup-terms.md)
+    + [TiUP 组件管理](/tiup/tiup-component-management.md)
+    + [TiUP FAQ](/tiup/tiup-faq.md)
+    + [TiUP 故障排查](/tiup/tiup-troubleshoot.md)
+    + TiUP 组件文档
+      + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
+      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md) @黄东旭
