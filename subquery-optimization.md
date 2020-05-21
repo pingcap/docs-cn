@@ -17,7 +17,7 @@ category: performance
 
 子查询默认会以[理解 TiDB 执行计划](/query-execution-plan.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能
 
-## `... < ALL (SELECT ... FROM ...)` 或者 ` ... > ANY (SELECT ... FROM ...)`
+## `... < ALL (SELECT ... FROM ...)` 或者 `... > ANY (SELECT ... FROM ...)`
 
 对于这种情况我们可以将 `ALL` 或者 `ANY` 用 `MAX` 以及 `MIN` 来代替。不过由于在表为空时，`MAX(EXPR)` 以及 `MIN(EXPR)` 的结果会为 NULL，其表现形式和 `EXPR` 是有 `NULL` 值的结果一样。以及外部表达式结果为 `NULL` 时也会影响表达式的最终结果，因此这里完整的改写会是如下的形式：
 
