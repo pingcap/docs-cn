@@ -77,10 +77,10 @@ create table t(id int unique key AUTO_INCREMENT, c int);
 假设集群中有两个 TiDB 实例 A 和 B，如果向 A 和 B 分别对 `t` 执行一条插入语句：
 
 ```sql
-insert into t (c) (1)
+insert into t (c) values (1)
 ```
 
-实例 A 可能会缓存 [1,30000] 的自增 ID，而实例 B 则可能缓存 [30001,60000] 的自增 ID。这些缓存的 ID 将被作为缺省值，随着执行将来的插入语句，顺序地填充到 `AUTO_INCREMENT` 列中。
+实例 A 可能会缓存 [1,30000] 的自增 ID，而实例 B 则可能缓存 [30001,60000] 的自增 ID。各自实例缓存的 ID 将随着执行将来的插入语句被作为缺省值，顺序地填充到 `AUTO_INCREMENT` 列中。
 
 ## 基本特性
 
@@ -117,7 +117,7 @@ insert into t values (), (), (), ()
 
 即使存在正在执行并发写入的其他 TiDB 实例，或者当前实例剩余的缓存 ID 数量不够，都不会影响分配值的连续性。
 
-### 和 _tidb_rowid 的关联
+### _tidb_rowid 的关联性
 
 > **注意：**
 >
@@ -155,7 +155,7 @@ TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1
 目前在 TiDB 中使用 `AUTO_INCREMENT` 有以下限制：
 
 - 必须定义在主键或者唯一索引的列上。
-- 只能定义在类型为整数、`FLOAT` 或 `DOUBLE` 的列上
-- 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。。
+- 只能定义在类型为整数、`FLOAT` 或 `DOUBLE` 的列上。
+- 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。
 - 不支持使用 `ALTER TABLE` 来添加 `AUTO_INCREMENT` 属性。
 - 支持使用 `ALTER TABLE` 来移除 `AUTO_INCREMENT` 属性。但从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 通过 session 变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
