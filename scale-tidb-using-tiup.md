@@ -117,7 +117,6 @@ tiup cluster scale-out <cluster-name> scale-out.yaml
 
 预期输出 Scaled cluster `<cluster-name>` out successfully 信息，表示扩容操作成功。
 
-
 ### 1.3 检查集群状态
 
 {{< copyable "shell-regular" >}}
