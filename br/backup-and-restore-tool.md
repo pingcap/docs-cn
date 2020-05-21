@@ -168,7 +168,7 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 > 
 > 经测试，假如备份盘和服务盘不同，在线备份会让只读线上服务的 QPS 下降 15%~25% 左右。
 > 假如备份盘和服务盘相同，备份将会和服务争夺 I/O 资源，这可能会让只读线上服务的 QPS 骤降一半以上。
-> 因此，请尽量禁止在线服务的数据备份到 tikv 的数据盘。
+> 因此，请尽量禁止在线服务的数据备份到 TiKV 的数据盘，并且按照需要使用 `--ratelimit` 选项限制备份速度。
 
 {{< copyable "shell-regular" >}}
 
@@ -300,7 +300,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 > 
 > Raw KV 备份功能还在实验中，它没有经过完备的测试。暂时请避免在生产环境中使用它。
 
-TiKV 已经成为了云原生基金会的独立项目。考虑到这点，BR 也提供跳过 TiDB 层，直接备份 TiKV 中数据的功能：
+在某些使用场景下，TiKV 可能会独立于 TiDB 运行。考虑到这点，BR 也提供跳过 TiDB 层，直接备份 TiKV 中数据的功能：
 
 {{< copyable "shell-regular" >}}
 
@@ -451,7 +451,7 @@ br restore raw --pd $PD_ADDR \
 
 以上命令会将备份的键中，范围在 `[0x31, 0x3130303030303030)` 中的键，恢复到 TiKV 集群中。这里键的编码方式和备份时相同。
 
-### 在线恢复（实验性）
+### 在线恢复（实验性功能）
 
 > **警告：**
 > 
