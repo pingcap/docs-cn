@@ -34,16 +34,6 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 "2017-11-11 20:20:20" 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
-### tidb_import_data
-
-作用域：SESSION
-
-默认值：0
-
-这个变量用来表示当前状态是否为从 dump 文件中导入数据。
-当这个变量被设置为 1 时，唯一索引约束不被检查以加速导入速度。
-这个变量不对外用，只是给 lightning 使用，请用户不要自行修改。
-
 ### tidb_opt_agg_push_down
 
 作用域：SESSION
@@ -457,21 +447,6 @@ mysql> desc select count(distinct a) from test.t;
 
 这个变量用来设置是否允许 insert、replace 和 update 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
 
-### SHARD_ROW_ID_BITS
-
-对于 PK 非整数或没有 PK 的表，TiDB 会使用一个隐式的自增 rowid，大量 `INSERT` 时会把数据集中写入单个 Region，造成写入热点。
-
-通过设置 `SHARD_ROW_ID_BITS`，可以把 rowid 打散写入多个不同的 Region，缓解写入热点问题。但是设置的过大会造成 RPC 请求数放大，增加 CPU 和网络开销。
-
-- `SHARD_ROW_ID_BITS = 4` 表示 16 个分片
-- `SHARD_ROW_ID_BITS = 6` 表示 64 个分片
-- `SHARD_ROW_ID_BITS = 0` 表示默认值 1 个分片
-
-语句示例：
-
-- `CREATE TABLE`：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
-- `ALTER TABLE`：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
-
 ### tidb_row_format_version
 
 作用域：GLOBAL
@@ -733,7 +708,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 作用域：SESSION | GLOBAL
 
-默认值：0
+默认值：1 (受配置文件影响，这里给出的是默认配置文件取值)
 
 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `performance_schema.events_statements_summary_by_digest` 中，用于定位和排查 SQL 性能问题。
 
@@ -741,7 +716,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 作用域：SESSION | GLOBAL
 
-默认值: 0
+默认值: 0 (受配置文件影响，这里给出的是默认配置文件取值)
 
 这个变量用来控制是否在 statement summary 中包含 TiDB 内部 SQL 的信息。
 
@@ -749,7 +724,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 作用域：SESSION | GLOBAL
 
-默认值: 1800
+默认值: 1800 (受配置文件影响，这里给出的是默认配置文件取值)
 
 这个变量设置了 statement summary 的刷新时间，单位为秒。
 
@@ -757,7 +732,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 作用域：SESSION | GLOBAL
 
-默认值: 24
+默认值: 24 (受配置文件影响，这里给出的是默认配置文件取值)
 
 这个变量设置了 statement summary 的历史记录容量。
 
@@ -765,9 +740,17 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 作用域：SESSION | GLOBAL
 
-默认值: 200
+默认值: 200 (受配置文件影响，这里给出的是默认配置文件取值)
 
 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
+
+### tidb_stmt_summary_max_sql_length <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值：4096 (受配置文件影响，这里给出的是默认配置文件取值)
+
+这个变量控制 statement summary 显示的 SQL 字符串长度。
 
 ### tidb_enable_chunk_rpc <span class="version-mark">从 v4.0 版本开始引入</span>
 
