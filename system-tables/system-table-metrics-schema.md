@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/metrics-schema/']
 
 为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有表都在 `metrics_schema` 数据库中，可以通过 SQL 的方式查询监控。实际上，SQL 诊断，以及 `metrics_summary`，`metrics_summary_by_label`，`inspection_result` 这三个监控相关的汇总表数据都是通过查询 metrics schema 库中的各种监控表来获取信息的。目前添加的系统表数量较多，用户可以通过 [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md) 查询这些表的相关信息。
 
-## 概览
+## 监控表的使用与原理
 
 下面以 `metrics_schema` 中的 `tidb_query_duration` 监控表为例，介绍监控表相关的使用和原理，其他的监控表原理均类似。
 
