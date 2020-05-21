@@ -31,19 +31,21 @@ dumpling \
 
 上述命令中，`-H`、`-P`、`-u` 是经典的“地址，端口，用户”三元组。如果需要密码验证，可以用 `-p $YOUR_SECRET_PASSWORD` 传给 Dumpling。
 
-默认情况下，除了系统数据库中的表之外，Dumpling 会导出整个数据库的表。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。假如导出数据的格式是 CSV（使用 `--filetype csv` 即可导出 CSV 文件），还可以使用 `--sql <SQL>` 导出指定 SQL 选择出来的记录，例如，导出所有 `id < 100` 的记录。
+默认情况下，除了系统数据库中的表之外，Dumpling 会导出整个数据库的表。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。假如导出数据的格式是 CSV（使用 `--filetype csv` 即可导出 CSV 文件），还可以使用 `--sql <SQL>` 导出指定 SQL 选择出来的记录，例如，导出 `test.sbtest1` 中所有 `id < 100` 的记录：
 
-> **注意：**
-> 
-> 目前 Dumpling 不支持仅导出用户指定的某几张表（即 `-T` 标志，见[这个 issue](https://github.com/pingcap/dumpling/issues/76)）。如果你确实需要这些功能，可以先使用 [MyDumper](/backup-and-restore-using-mydumper-lightning.md)。
+{{< copyable "shell-regular" >}}
 
-默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用参数如下：
+```shell
+./dumpling \
+  -u root \
+  -P 4000 \
+  -H 127.0.0.1 \
+  -o /tmp/test \
+  --filetype csv \
+  --sql "select * from `test`.`sbtest1` where id < 100"
+```
 
-- `-o` 用于选择存储导出文件的目录。
-- `-F` 选项用于指定单个文件的最大大小（和 MyDumper 不同，这里的单位是字节）。
-- `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数）。
-
-利用以上参数可以让 Dumpling 的并行度更高。比如，使用以下指令，可以导出所有 `id < 100` 的记录：
+在导出目标为 SQL 的时候，`--sql` 暂时不可用。但是仍旧可以用 `--where` 来过滤要导出的行，使用以下指令，可以导出所有 `id < 100` 的记录：
 
 {{< copyable "shell-regular" >}}
 
@@ -55,6 +57,18 @@ dumpling \
   -o /tmp/test \
   --where "id < 100"
 ```
+
+> **注意：**
+> 
+> 目前 Dumpling 不支持仅导出用户指定的某几张表（即 `-T` 标志，见[这个 issue](https://github.com/pingcap/dumpling/issues/76)）。如果你确实需要这些功能，可以先使用 [MyDumper](/backup-and-restore-using-mydumper-lightning.md)。
+
+默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用参数如下：
+
+- `-o` 用于选择存储导出文件的目录。
+- `-F` 选项用于指定单个文件的最大大小（和 MyDumper 不同，这里的单位是字节）。
+- `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数）。
+
+利用以上参数可以让 Dumpling 的并行度更高。
 
 > **注意：**
 > 
