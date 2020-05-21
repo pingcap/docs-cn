@@ -6,7 +6,7 @@ aliases: ['/docs-cn/stable/how-to/monitor/monitor-deploy/']
 
 # TiDB 集群监控部署
 
-### 部署 Prometheus 和 Grafana
+## 部署 Prometheus 和 Grafana
 
 假设 TiDB 的拓扑结构如下：
 
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/stable/how-to/monitor/monitor-deploy/']
 | Node5 | 192.168.199.117| TiKV2, node_export |
 | Node6 | 192.168.199.118| TiKV3, node_export |
 
-#### 第 1 步：下载二进制包
+### 第 1 步：下载二进制包
 
 下载二进制包：
 
@@ -41,7 +41,7 @@ tar -xzf node_exporter-0.17.0.linux-amd64.tar.gz
 tar -xzf grafana-6.1.6.linux-amd64.tar.gz
 ```
 
-#### 第 2 步：在 Node1，Node2，Node3，Node4 上启动 `node_exporter`
+### 第 2 步：在 Node1，Node2，Node3，Node4 上启动 `node_exporter`
 
 {{< copyable "shell-regular" >}}
 
@@ -58,7 +58,7 @@ cd node_exporter-0.17.0.linux-amd64
     --log.level="info" &
 ```
 
-#### 第 3 步：在 Node1 上启动 Prometheus
+### 第 3 步：在 Node1 上启动 Prometheus
 
 编辑 Prometheus 的配置文件：
 
@@ -132,7 +132,7 @@ scrape_configs:
     --storage.tsdb.retention="15d" &
 ```
 
-#### 第 4 步：在 Node1 上启动 Grafana
+### 第 4 步：在 Node1 上启动 Grafana
 
 编辑 Grafana 的配置文件：
 
@@ -193,11 +193,11 @@ url = https://grafana.net
     --config="./conf/grafana.ini" &
 ```
 
-### 配置 Grafana
+## 配置 Grafana
 
 本小节介绍如何配置 Grafana。
 
-#### 第 1 步：添加 Prometheus 数据源
+### 第 1 步：添加 Prometheus 数据源
 
 1. 登录 Grafana 界面。
 
@@ -222,7 +222,7 @@ url = https://grafana.net
 
 5. 点击 **Add** 保存新的数据源。
 
-#### 第 2 步：导入 Grafana 面板
+### 第 2 步：导入 Grafana 面板
 
 执行以下步骤，为 PD Server、TiKV Server 和 TiDB Server 分别导入 Grafana 面板：
 
@@ -242,7 +242,7 @@ url = https://grafana.net
 
 6. 点击 **Import**，Prometheus 面板即导入成功。
 
-### 查看组件 metrics
+## 查看组件 metrics
 
 在顶部菜单中，点击 **New dashboard**，选择要查看的面板。
 
