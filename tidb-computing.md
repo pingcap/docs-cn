@@ -116,7 +116,7 @@ TiDB 的 SQL层，即 tidb-server，跟 Google 的 [F1](https://dbdb.io/db/googl
 
 ### 3.1 SQL 运算
 
-能想到的最简单的方案就是通过上一节所述的 [表中所有数据和 Key-Value 的映射关系] 映射方案，将 SQL 查询映射为对 KV 的查询，再通过 KV 接口获取对应的数据，最后执行各种计算。
+能想到的最简单的方案就是通过上一节所述的 [表中所有数据和 Key-Value 的映射关系](#1-表数据与-key-value-的映射关系) 映射方案，将 SQL 查询映射为对 KV 的查询，再通过 KV 接口获取对应的数据，最后执行各种计算。
 
 比如 `select count(*) from user where name = "TiDB"` 这样一个语句，我们需要读取表中所有的数据，然后检查 `name` 字段是否是 `TiDB`，如果是的话，则返回这一行。具体流程是：
 
