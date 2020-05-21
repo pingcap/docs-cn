@@ -31,6 +31,7 @@ Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/downl
 - RELOAD
 - LOCK TABLES
 - REPLICATION CLIENT
+- SUPER
 
 ### 使用举例
 
