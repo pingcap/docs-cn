@@ -285,7 +285,7 @@ tiup cluster display <cluster-name>
 
 ### 4.3 缩容 TiFlash 
 
-TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，表示 TiFlash 节点已经下线成功，这个时候可以执行如下命令缩容 TiFlash ：
+TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，表示 TiFlash 节点已经下线成功，这个时候可以执行如下命令缩容 TiFlash：
 
 {{< copyable "shell-regular" >}}
 
