@@ -168,7 +168,6 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -R tidb
 tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
 
-
 ## 关闭集群
 
 关闭集群操作会按 Drainer -> TiFlash -> TiDB -> Pump -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
