@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/metrics-schema/']
 
 ## 概览
 
-下面以 `metrics_schema` 中的 `tidb_query_duration` 监控表来作为示例介绍监控表相关的使用和原理，其他的监控表原理都是类似的。
+下面以 `metrics_schema` 中的 `tidb_query_duration` 监控表为例，介绍监控表相关的使用和原理，其他的监控表原理均类似。
 
 查询 `information_schema.metrics_tables` 中关于 `tidb_query_duration` 表相关的信息如下：
 
