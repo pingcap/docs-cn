@@ -70,6 +70,10 @@ TiDB(root@127.0.0.1:test) > explain select * from t t1 use index(idx_a) join t t
 
 SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV 中的 coprocessor 能支持大部分 SQL 内建函数（包括聚合函数和标量函数）、SQL `LIMIT` 操作、索引扫描和表扫描。但是，所有的 Join 操作都只能作为 root task 在 TiDB 上执行。
 
+### Access Object 简介
+
+算子所访问的数据项信息。包括表 `table`，表分区 `partition` 以及使用的索引 `index`（如果有）。只有直接访问数据的算子才拥有这些信息。
+
 ### 范围查询
 
 在 WHERE/HAVING/ON 条件中，TiDB 优化器会分析主键或索引键的查询返回。如数字、日期类型的比较符，如大于、小于、等于以及大于等于、小于等于，字符类型的 LIKE 符号等。
@@ -123,7 +127,7 @@ mysql> explain select * from t use index(idx_a);
 3 rows in set (0.00 sec)
 ```
 
-这里 `IndexLookUp_6` 算子有两个孩子节点：`IndexFullScan_4(Build)` 和 `TableRowIDScan_5(Probe)`。可以看到，`IndexFullScan_4(Build)` 执行索引全表扫，扫描索引 a 的所有数据，因为是全范围扫，这个操作将获得表中所有数据的 RowID，之后再由 `TableRowIDScan_5(Probe)` 根据这些 RowID 去扫描所有的表数据。可以预见的是，这个执行计划不如直接使用 TableReader 进行全表扫，因为同样都是全表扫，这里的 IndexLookUp 多扫了一次索引，带来了额外的开销。
+这里 `IndexLookUp_6` 算子有两个孩子节点：`IndexFullScan_4(Build)` 和 `TableRowIDScan_5(Probe)`。可以看到，`IndexFullScan_4(Build)` 执行索引全表扫，扫描索引 a 的所有数据，因为是全范围扫，这个操作将获得表中所有数据的 RowID，之后再由 `TableRowIDScan_5(Probe)` 根据这些 RowID 去扫描所有的表数据。可以预见的是，这个执行计划不如直接使用 TableReader 进行全表扫，因为同样都是全表扫，这里的 IndexLookUp 多扫了一次索引，带来了额外的开销。其中对于扫表操作来说，explain 表中的 operator info 列记录了读到的数据是否是有序的，如上面例子中 `keep order:false` 表示读到的数据是无序的。而 operator info 中的  `stats:pseudo` 表示可能因为没有统计信息，或者当统计信息过旧时，就不会用统计信息来进行估算了。对于其他扫表操作来说，operator info 所含有的信息类似。
 
 #### TableReader 示例
 
@@ -157,7 +161,7 @@ mysql> explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 4 rows in set (0.00 sec)
 ```
 
-IndexMerge 使得数据库在扫描表数据时可以使用多个索引。这里 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 RowID，再由 `TableRowIDScan_15` 算子根据这些 RowID 精确地读取所有满足条件的数据。
+IndexMerge 使得数据库在扫描表数据时可以使用多个索引。这里 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 RowID，再由 `TableRowIDScan_15` 算子根据这些 RowID 精确地读取所有满足条件的数据。对于 RangeScan 一类的扫表操作来说，相比于其他扫表操作。explain 表中 operator info 列多了扫描数据的范围这一信息，如在上面的例子中，IndexRangeScan 算子中的  `range:(1,+inf]` 这一信息表示该算子扫描了从 1 到正无穷这个范围的数据。
 
 > **注意：**
 >
@@ -188,7 +192,7 @@ TiDB(root@127.0.0.1:test) > explain select /*+ HASH_AGG() */ count(*) from t;
 4 rows in set (0.00 sec)
 ```
 
-一般而言 TiDB 的 Hash Aggregate 会分成两个阶段执行，一个在 TiKV/TiFlash 的 Coprocessor 上，在扫表算子读取数据时计算聚合函数的中间结果。另一个在 TiDB 层，汇总所有 Coprocessor Task 的中间结果后，得到最终结果。
+一般而言 TiDB 的 Hash Aggregate 会分成两个阶段执行，一个在 TiKV/TiFlash 的 Coprocessor 上，在扫表算子读取数据时计算聚合函数的中间结果。另一个在 TiDB 层，汇总所有 Coprocessor Task 的中间结果后，得到最终结果。其中 explain 表中的 operator info 列还记录了 Hash Aggregation 的其他信息，其中我们需要关注的信息是 Aggregation 所使用的聚合函数是什么。如在上面的例子中，Hash Aggregation  算子的 operator info 中的内容为 `funcs:count(Column#7)->Column#4`，我们可以得到 Hash Aggregation 使用了聚合函数 `count` 进行计算。下面例子中 Stream Aggregation 算子中 operator info 所表示的信息和此处相同。
 
 #### Stream Aggregate 示例
 
@@ -239,7 +243,7 @@ mysql> EXPLAIN SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id
 5 rows in set (0.01 sec)
 ```
 
-Hash Join 会将 Build 端的数据缓存在内存中，根据这些数据构造出一个 Hash Table，然后读取 Probe 端的数据，用 Probe 端的数据去探测 Build 端构造出来的 Hash Table，将符合条件的数据返回给用户。
+Hash Join 会将 Build 端的数据缓存在内存中，根据这些数据构造出一个 Hash Table，然后读取 Probe 端的数据，用 Probe 端的数据去探测 Build 端构造出来的 Hash Table，将符合条件的数据返回给用户。其中 explain 表中的 operator info 列还记录了 Hash Join 的其他信息，包括查询是 Inner Join 还是 Outer Join，Join 的条件是什么。如在上面的例子中，该查询是一个 Inner Join，其中 Join 的条件 `equal:[eq(test.t1.id, test.t2.id)]` 和查询语句中 `where t1.id = t2.id` 部分对应。下面例子中其他几个 Join 算子的 operator info 和此处类似。
 
 #### Merge Join 示例
 
@@ -370,6 +374,12 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 
 在添加完索引后的新执行计划中，使用 `IndexScan_24` 直接读取满足条件 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 的数据，可以看到，估算的要扫描的数据行数从之前的 19117643.00 降到了现在的 8166.73。在测试环境中显示，这个查询的执行时间从 50.41 秒降到了 0.01 秒！
 
+## 算子相关的系统变量
+
+TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用来优化性能。其中一些系统变量和具体的算子相关，比如算子的并发度，算子的内存使用上限，是否允许使用分区表等。这些都可以通过系统变量进行控制，从而影响各个算子执行的效率。
+
+如果读者想要详细了解所有的系统变量及其使用规则，可以参见 [TiDB 专用系统变量和语法](./tidb-specific-system-variables.md)。
+
 ## 另请参阅
 
 * [EXPLAIN](/sql-statements/sql-statement-explain.md)
@@ -377,3 +387,4 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 * [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
 * [TRACE](/sql-statements/sql-statement-trace.md)
 * [TiDB in Action](https://book.tidb.io/session3/chapter1/sql-execution-plan.html)
+* [System Variables](./tidb-specific-system-variables.md)
