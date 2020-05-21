@@ -107,7 +107,6 @@ pd_servers:
 可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置，默认会被 `scale-out.yaml` 继承。
 
 
-
 ### 1.2 执行扩容命令
 
 {{< copyable "shell-regular" >}}
