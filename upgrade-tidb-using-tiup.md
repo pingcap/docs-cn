@@ -176,7 +176,7 @@ TiDB Version: v4.0.0-rc
 
 ### 5.1 升级时报错中断，处理完报错后，如何继续升级
 
-重新执行 upgrade 命令升级，会重启之前已经升级完成的节点。后续版本支持从中断的位置继续升级。
+重新执行 upgrade 命令进行升级。升级操作会重启之前已经升级完成的节点，后续版本支持从中断的位置继续升级。
 
 ### 5.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
@@ -202,4 +202,8 @@ https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
 
 - `oom-action` 参数设置为 `cancel` 时，当查询语句触发 OOM 阈值后会被 kill 掉，升级到 4.0 版本后除了 `select` 语句，还可能 kill 掉 `insert`/`update`/`delete` 等 DML 语句。
 - 4.0 版本增加了 `rename` 时对表名长度的检查，长度限制为 `64` 个字符。升级后 `rename` 后的表名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
+- 4.0 版本增加了对分区表的分区名长度的检查，长度限制为 `64` 个字符。升级后 `create table` 和 `alter table` 分区表时当分区名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
 - 4.0 版本对 `explain` 执行计划的输出格式做了改进，需要注意是否有针对 `explain` 制订了自动化的分析程序。
+- 4.0 版本支持 [READ-COMMITTED 隔离级别](https://pingcap.com/docs-cn/stable/transaction-isolation-levels/#读已提交隔离级别-read-committed)，升级后在悲观事务里隔离级别设置为 READ-COMMITTED 会生效，3.0 及之前的版本则不会生效。
+- 4.0 版本执行 `alter reorganize partition` 会报错，之前的版本则不会报错，只是语法上支持没有实际效果。
+- 4.0 版本创建 `linear hash partition` 和 `subpartition` 分区表时实际不生效，会转换为普通表，之前的版本则转换为普通分区表。
