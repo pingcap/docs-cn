@@ -39,7 +39,7 @@ Perf 是 Linux 内核提供的一个重要的性能分析工具，它涵盖硬�
 
 ### BCC/bpftrace
 
-Centos 从 7.6 版本起，内核已实现对 bpf 的支持，因此可根据上述清单的结果，选取适当的工具进行深入分析。相比 perf/ftrace，bpf 提供了可编程能力，和更小的性能开销。相比 kprobe，bpf 提供了更高的安全性，更适合在生产环境上使用。关于 BCC 工具集的使用请参考：<https://github.com/iovisor/bcc/blob/master/README.md> 。
+Centos 从 7.6 版本起，内核已实现对 bpf 的支持，因此可根据上述清单的结果，选取适当的工具进行深入分析。相比 perf/ftrace，bpf 提供了可编程能力，和更小的性能开销。相比 kprobe，bpf 提供了更高的安全性，更适合在生产环境上使用。关于 BCC 工具集的使用请参考 [BPF Compiler Collection (BCC)](https://github.com/iovisor/bcc/blob/master/README.md)。
 
 ## 性能调优
 
