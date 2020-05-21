@@ -806,6 +806,7 @@
     - [配置参数](/tiflash/tiflash-configuration.md)
     - [报警规则](/tiflash/tiflash-alert-rules.md)
     - [性能调优](/tiflash/tune-tiflash-performance.md)
+    - [FAQ](/tiflash/tiflash-faq.md)
   + Titan
     - [概述](/titan-overview.md)
     - [配置参数](/titan-configuration.md)
