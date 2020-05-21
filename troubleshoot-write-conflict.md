@@ -36,7 +36,8 @@ expired,not_expired,wait_expired 表示对应的 lock 状态
 
 ![kv-retry-duration](/media/troubleshooting-writeconflict-kv-retry-duration.png)
 
-也可以通过 TiDB 日志查看是否有 `[kv:9007]Write conflict` 关键字，如果搜索到对应关键字，则可以表明集群中存在写写冲突。
+也可以通过 TiDB 日志查看是否有 `[kv:9007]Write conflict` 
+关键字，如果搜索到对应关键字，则可以表明集群中存在写写冲突。
 
 ## 如何解决 Write Conflict 问题
 
@@ -47,6 +48,7 @@ expired,not_expired,wait_expired 表示对应的 lock 状态
 ```
 
 关于日志的解释如下：
+
 * [kv:9007]Write conflict : 表示出现了写写冲突
 * txnStartTS=416617006551793665 : 表示当前事务的 start_ts 时间戳 ，可以通过 pd-ctl 工具将时间戳转换为具体时间
 * conflictStartTS=416617018650001409 : 表示冲突事务的 start_ts 时间戳，可以通过 pd-ctl 工具将时间戳转换为具体时间
