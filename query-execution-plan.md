@@ -127,7 +127,7 @@ mysql> explain select * from t use index(idx_a);
 3 rows in set (0.00 sec)
 ```
 
-这里 `IndexLookUp_6` 算子有两个孩子节点：`IndexFullScan_4(Build)` 和 `TableRowIDScan_5(Probe)`。可以看到，`IndexFullScan_4(Build)` 执行索引全表扫，扫描索引 a 的所有数据，因为是全范围扫，这个操作将获得表中所有数据的 RowID，之后再由 `TableRowIDScan_5(Probe)` 根据这些 RowID 去扫描所有的表数据。可以预见的是，这个执行计划不如直接使用 TableReader 进行全表扫，因为同样都是全表扫，这里的 IndexLookUp 多扫了一次索引，带来了额外的开销。其中对于扫表操作来说，explain 表中的 operator info 列记录了读到的数据是否是有序的，如上面例子中 `keep order:false` 表示读到的数据是无序的。而 operator info 中的  `stats:pseudo` 表示可能因为没有统计信息，或者当统计信息过旧时，就不会用统计信息来进行估算了。对于其他扫表操作来说，operator info 所含有的信息类似。
+这里 `IndexLookUp_6` 算子有两个孩子节点：`IndexFullScan_4(Build)` 和 `TableRowIDScan_5(Probe)`。可以看到，`IndexFullScan_4(Build)` 执行索引全表扫，扫描索引 a 的所有数据，因为是全范围扫，这个操作将获得表中所有数据的 RowID，之后再由 `TableRowIDScan_5(Probe)` 根据这些 RowID 去扫描所有的表数据。可以预见的是，这个执行计划不如直接使用 TableReader 进行全表扫，因为同样都是全表扫，这里的 IndexLookUp 多扫了一次索引，带来了额外的开销。其中对于扫表操作来说，explain 表中的 operator info 列记录了读到的数据是否是有序的，如上面例子中 `keep order:false` 表示读到的数据是无序的。而 operator info 中的 `stats:pseudo` 表示可能因为没有统计信息，或者当统计信息过旧时，就不会用统计信息来进行估算了。对于其他扫表操作来说，operator info 所含有的信息类似。
 
 #### TableReader 示例
 
