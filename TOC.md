@@ -533,6 +533,7 @@
   + 配置
     - [时区](/configure-time-zone.md)
     - [内存控制](/configure-memory-usage.md)
+    - [Load Base Split](/configure-load-base-split.md)
     - [Placement Rules](/configure-placement-rules.md)
   + 安全
     + 安全传输层协议 (TLS)
