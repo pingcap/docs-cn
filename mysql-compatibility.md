@@ -40,45 +40,15 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 ### 自增 ID
 
 - TiDB 的自增列仅保证自增且唯一、但不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收`Duplicated Error` 的错误信息。
-- TiDB 在工程实现上会在每一个 tidb-server 实例上缓存一段 ID 的值用于给表的自增列分配值，缓存 ID 的个数由表的 `AUTO_ID_CACHE` 确定，默认值：30000，请特别注意：自增列和`_tidb_rowid`都会消耗缓存的 ID 且 如果 `INSERT` 语句中所要求的连续的 ID 个数大于 `AUTO_ID_CACHE` 的值时系统会自动调整 `AUTO_ID_CACHE` 的值以确保该语句能正常执行。
+- TiDB 在工程实现上会在每一个 tidb-server 实例上缓存一段 ID 的值用于给表的自增列分配值，缓存 ID 的个数由表的 `AUTO_ID_CACHE` 确定，默认值：30000，请特别注意：自增列和`_tidb_rowid`都会消耗缓存的 ID，如果 `INSERT` 语句中所要求的连续的 ID 个数大于 `AUTO_ID_CACHE` 的值时系统会自动调整 `AUTO_ID_CACHE` 的值以确保该语句能正常执行。
 - TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性，删除列属性的语法是：`alter table modify` 或 `alter table change` 。
 
 > **注意：**
 >
 > * `tidb_allow_remove_auto_inc` 要求版本号 >= v2.1.18 或者 >= v3.0.4。
 > * 表的 `AUTO_ID_CACHE` 属性要求版本号 >= v3.0.14 或者 >= v3.1.2 或者 >= v4.0.rc-2。
-> * 在没有指定主键的情况下 TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
+> * 若创建表时没有指定主键时， TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
 > *
-
-- TiDB
-- TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1.2、v3.0.14 和 v4.0.rc.2 版本开始，TiDB 引入了 `AUTO_ID_CACHE` 表选项来允许用户自主设置自增 ID 分配缓存的大小。其中缓存大小可能会被自增列和 `_tidb_rowid` 共同消耗。此外如果在 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入
-
-
-TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
-
-在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值，否则在如下情况下会遇到问题。
-
-假设有这样一个带有自增 ID 的表：
-
-{{< copyable "sql" >}}
-
-```sql
-create table t(id int unique key AUTO_INCREMENT, c int);
-```
-
-TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配（目前会缓存 30000 个 ID），用完这段值再去取下一段。
-
-假设集群中有两个 tidb-server 实例 A 和 B（A 缓存 [1,30000] 的自增 ID，B 缓存 [30001,60000] 的自增 ID），依次执行如下操作：
-
-1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
-2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
-
-另外，从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
-
-> **注意：**
->
-> 在没有指定主键的情况下 TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
-
 ```sql
 mysql> create table t(id int unique key AUTO_INCREMENT);
 Query OK, 0 rows affected (0.05 sec)
@@ -97,8 +67,6 @@ mysql> select _tidb_rowid, id from t;
 +-------------+------+
 3 rows in set (0.01 sec)
 ```
-
-TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1.2、v3.0.14 和 v4.0.rc.2 版本开始，TiDB 引入了 `AUTO_ID_CACHE` 表选项来允许用户自主设置自增 ID 分配缓存的大小。其中缓存大小可能会被自增列和 `_tidb_rowid` 共同消耗。此外如果在 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入。
 
 ### Performance schema
 
