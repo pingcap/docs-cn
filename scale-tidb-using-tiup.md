@@ -81,7 +81,6 @@ tikv_servers:
    data_dir: /data/deploy/install/data/tikv-20160
 
    log_dir: /data/deploy/install/log/tikv-20160
-```
 PD 配置文件参考：
 
 {{< copyable "" >}}
