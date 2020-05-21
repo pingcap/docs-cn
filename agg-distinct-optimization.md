@@ -8,6 +8,7 @@ category: performance
 ## 简单 DISTINCT
 
 通常来说, 简单的 DISTINCT 会被优化成 GROUP BY 来执行。例如：
+
 ```sql
 mysql> explain select DISTINCT a from t;
 +--------------------------+---------+-----------+---------------+-------------------------------------------------------+
