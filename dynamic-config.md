@@ -77,6 +77,8 @@ mysql> show warnings;
 > 为了避免和 SQL 变量混淆，TiDB 的配置可以通过 `show config` 查看但是不能进行修改，动态配置时会返回错误；如果想动态修改 TiDB 行为，请用对应的 SQL 变量去控制。
 >
 > 某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``tikv-client.`store-limit` ``；
+>
+> 批量修改配置不保证原子性，可能出现某些实例成功，而某些失败。如使用 `set tikv key=val` 修改整个 tikv 集群配置时，可能有部分实例失败，请使用 `show warnings` 进行查看。
 
 ## 支持参数列表
 
