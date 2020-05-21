@@ -12,6 +12,12 @@ aliases: ['/docs-cn/dev/reference/error-codes/']
 
 TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [Server Error Message Reference](https://dev.mysql.com/doc/refman/5.7/en/server-error-reference.html)。另外还有一些 TiDB 特有的错误码：
 
+> **注意：**
+>
+> 有一部分错误码属于内部错误，正常情况下 TiDB 会自行处理不会直接返回给用户，故没有在此列出。
+>
+> 如果您遇到了这里没有列出的错误码，请向 PingCAP 工程师或通过官方论坛寻求帮助。
+
 * Error Number: 8001
 
     请求使用的内存超过 TiDB 内存使用的阈值限制。出现这种错误，可以通过调整 `mem-quota-query` 来增大单个 SQL 使用的内存上限。
@@ -108,26 +114,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     尝试进行不支持的操作，比如在 View 和 Sequence 上进行 lock table。
 
-* Error Number: 8042
-
-    表结构的状态为不存在。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
-* Error Number: 8043
-
-    列信息的状态为不存在。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
-* Error Number: 8044
-
-    索引的状态为不存在。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
-* Error Number: 8045
-
-    非法的表数据。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
-* Error Number: 8046
-
-    列信息的状态为不可见。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
 * Error Number: 8047
 
     设置了不支持的系统变量值，通常在用户设置了数据库不支持的变量值后的告警信息里出现。
@@ -155,10 +141,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     来自客户端的数据包的序列号错误。如果遇到这个错误，请检查客户端是否正常，如果客户端正常请向 PingCAP 工程师或通过官方论坛寻求帮助。
 
-* Error Number: 8053
-
-    获取到了非法的自增列值。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
 * Error Number: 8055
 
     当前快照过旧，数据可能已经被 GC。可以调大 `tikv_gc_life_time` 的值来避免该问题。新版本的 TiDB 会自动为长时间运行的事务保留数据，一般不会遇到该错误。
@@ -169,14 +151,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
     ```sql
     update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";
     ```
-
-* Error Number: 8056
-
-    非法的表 ID。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
-* Error Number: 8057
-
-    在向客户端传输数据时遇到了无法识别的类型。如果遇到该错误请向 PingCAP 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8059
 
@@ -263,10 +237,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     execute 语句涉及的表结构在 prepare 语句执行后发生了变化。
 
-* Error Number: 8114
-
-    未知的执行计划类型。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
 * Error Number: 8115
 
     不支持 prepare 多行语句。
@@ -274,10 +244,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8116
 
     不支持 prepare DDL 语句。
-
-* Error Number: 8118
-
-    构建执行器失败。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8120
 
@@ -311,14 +277,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     自动随机列使用的方法不正确，请参考 [auto random 功能文档](/auto-random.md)进行修改。
 
-* Error Number: 8221
-
-    Key 编码错误。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
-* Error Number: 8222
-
-    索引 Key 编码错误。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
-
 * Error Number: 8223
 
     检测出数据与索引不一致的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
@@ -337,11 +295,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8227
 
-    创建 Sequence 时使用了不支持的选项，支持的选项的列表可以参考 [Sequence 使用文档](sql-statements/sql-statement-create-sequence.md#参数说明)。
+    创建 Sequence 时使用了不支持的选项，支持的选项的列表可以参考 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#参数说明)。
 
 * Error Number: 8228
 
-    在 Sequence 上使用 `setval` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](sql-statements/sql-statement-create-sequence.md#示例)中找到。
+    在 Sequence 上使用 `setval` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#示例)中找到。
 
 * Error Number: 8229
 
