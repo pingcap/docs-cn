@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/'
 
 要让这个机制生效，我们需要在部署时进行合理配置，把集群的拓扑信息（特别是 TiKV 的位置）上报给 PD。阅读本章前，请先确保阅读 [TiDB Ansible 部署方案](/online-deployment-using-ansible.md) 和 [Docker 部署方案](/test-deployment-using-docker.md)。
 
-## 配置
+## 根据集群拓扑配置 labels
 
 ### 设置 TiKV 的 `labels` 配置
 
