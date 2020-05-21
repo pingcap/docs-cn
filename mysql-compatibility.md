@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 >
 > 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模型](/pessimistic-transaction.md#和-mysql-innodb-的差异) 相关的兼容信息请查看各自具体页面。
 
-## 不支持的特性
+## 不支持的功能特性
 
 * 存储过程与函数
 * 触发器
@@ -48,7 +48,7 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 > * `tidb_allow_remove_auto_inc` 要求版本号 >= v2.1.18 或者 >= v3.0.4。
 > * 表的 `AUTO_ID_CACHE` 属性要求版本号 >= v3.0.14 或者 >= v3.1.2 或者 >= v4.0.rc-2。
 > * 若创建表时没有指定主键时， TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
-> *
+> 
 ```sql
 mysql> create table t(id int unique key AUTO_INCREMENT);
 Query OK, 0 rows affected (0.05 sec)
