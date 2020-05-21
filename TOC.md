@@ -49,7 +49,7 @@
   + 监控与告警设置
     + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
     + [监控 API](/tidb-monitoring-api.md) @李宋高
-    + [监控部署](/monitor-deploy.md) @李宋高
+    + [监控部署](/deploy-monitoring-services.md) @李宋高
   + [测试验证](/post-installation-check.md) @李仲舒
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md) @周跃跃
