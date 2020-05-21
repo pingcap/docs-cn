@@ -90,7 +90,7 @@ TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1
 
 ### Performance schema
 
-Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/monitor-a-tidb-cluster.md) 来监测性能指标。
+Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/tidb-monitoring-api.md) 来监测性能指标。
 
 从 TiDB 3.0.4 版本开始，TiDB 支持 `events_statements_summary_by_digest`，参见 [Statement Summary Table](/statement-summary-tables.md)。
 
