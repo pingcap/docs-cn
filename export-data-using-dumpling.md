@@ -47,6 +47,10 @@ dumpling \
 
 在导出目标为 SQL 的时候，`--sql` 暂时不可用。但是仍旧可以用 `--where` 来过滤要导出的行，使用以下指令，可以导出所有 `id < 100` 的记录：
 
+> **注意：**
+> 
+> 这里需要在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+
 {{< copyable "shell-regular" >}}
 
 ```shell
@@ -69,10 +73,6 @@ dumpling \
 - `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数）。
 
 利用以上参数可以让 Dumpling 的并行度更高。
-
-> **注意：**
-> 
-> 这里需要在要导出的所有表上执行 `select * from <table-name> where <your --where flag>` 语句。如果部分表没有指定的字段，那么导出会失败。
 
 还有一个尚未在上面展示出来的标志是 `--consistency <consistency level>`，这个标志控制导出数据“一致性保证”的方式。对于 TiDB 来说，默认情况下，会通过获取某个时间戳的快照来保证一致性（即 `--consistency snapshot`）。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 参数指定要备份的时间戳。还可以使用以下的一致性级别：
 
