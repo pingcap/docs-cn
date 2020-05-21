@@ -45,7 +45,6 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 * `tidb-ctl schema` - Schema 信息
 * `tidb-ctl table` - Table 信息
 
-
 ### 获取帮助
 
 `tidb-ctl -h/--help` 用于获取帮助信息。tidb-ctl 由多层命令组成，tidb-ctl 及其所有子命令都可以通过 `-h/--help` 来获取使用帮助。
@@ -136,6 +135,7 @@ tid 子命令用来通过表的 id 获取数据库中表的表结构。
   ...
 }
 ``` 
+
 同 in 子命令一样，如果使用的 TiDB 地址不是默认的地址和端口，需要通过 `--host`, `--port` 参数指定 TiDB 的地址和端口。
 
 ### base64decode 命令
