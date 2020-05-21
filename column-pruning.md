@@ -29,25 +29,25 @@ PruneColumns([]*expression.Column) error
 
 函数输入即为施加给当前算子的“列需求”集合。 在普通优化器中，列裁剪会发生在逻辑优化的开始和结尾，[相关代码](https://github.com/pingcap/tidb/blob/902231076d56fee9074e4c7bcd03a0d0f0d88524/planner/core/optimizer.go#L61)。 在 cascades 优化器中，列裁剪会发生在 Preprocessing 阶段，[相关代码](https://github.com/pingcap/tidb/blob/ded862fbebc555de98e230ef57310f9162725a9e/planner/cascades/optimize.go#L118)。
 
-
-## 各算子的列裁剪实现：
+## 各算子的列裁剪实现
 
 本章节将对于目前实现的所有列裁剪方式进行详细介绍。默认情况下，优化器会在当前算子的列裁剪完成之后将列需求集合传递下去。
 
-#### baseLogicalPlan
+### baseLogicalPlan
+
 对于默认算子，优化器不进行列裁剪。
 
-#### LogicalProjection
+### LogicalProjection
 
 如果投影的结果中含有上层算子所不需要的列，那么这些列就应该删除掉。基于这个原则，优化器会去除当前算子中不在 列需求集合 中的列。（特别的，对于被赋值或sleep的表达式所涵盖的列，优化器不予删除）
 
 同时投影的列需求和上层算子无关，优化器采用当前投影算子所需要的列作为传递下去的列需求集合。
 
+### LogicalSelection
 
-#### LogicalSelection
 select 算子的条件语句会引入一些新的列，这些列会被优化器加入下传的列需求集合中。
 
-#### LogicalAggregation
+### LogicalAggregation
 
 aggregation 算子的列裁剪相对较为复杂，大致可以分为以下四个阶段：
 首先，优化器对于当前算子中的聚合函数进行扫描，如果一个聚合函数的结果没有被上层算子使用，那么就删除这个聚合函数。
@@ -58,20 +58,23 @@ aggregation 算子的列裁剪相对较为复杂，大致可以分为以下四�
 
 最后，优化器遍历当前算子的 group by 条件，对 group by 条件进行裁剪，去除常量和 Null，并将必要列加入下传的列需求集合中。
 
-#### LogicalSort, LogicalTopN, 
+### LogicalSort 和 LogicalTopN
+
 对于排序和 topN 算子，和 aggregation 算子裁剪的第四阶段类似，优化器会对于当前算子的 by 条件进行裁剪，去除常量和 Null，并将必要列加入下传的列需求集合中。
 
-#### LogicalUnionAll
+### LogicalUnionAll
+
 对于 UnionAll 算子，其裁剪发生在子算子的裁剪之后，分为两种情况：
 
 如果当前 UnionAll 算子的列不为上层算子所用，优化器不对当前算子进行裁剪，并以当前 UnionAll 算子作为基准，以其本身包含的列作为下传的列需求集合传到下层算子。
 
 如果当前 UnionAll 算子的列为上层算子所用，优化器则直接将列需求集合传递下去，并在最后调整 UnionAll 算子的列和子算子保持一致。
 
-#### LogicalUnionScan
+### LogicalUnionScan
+
 对于 UnionScan 算子，优化器直接在列需求集合中加入当前算子的 handle columns，不进行列裁剪。
 
-#### DataSource
+### DataSource
 
 在优化器中，经过上层算子的层层裁剪，列需求最终被传到 Datasource 算子上，并由其做最后的裁剪工作。该算子的裁剪不需要计算下传的列需求，只需对当前算子进行裁剪即可，该裁剪工作大致分为三步：
 
@@ -81,10 +84,12 @@ aggregation 算子的列裁剪相对较为复杂，大致可以分为以下四�
 
 最后，优化器扫描 handle columns ，对于没有对应 index 的 handle column 进行删除。
 
-#### LogicalTableDual
+### LogicalTableDual
+
 类似 Datasource 算子，TableDual 算子也只需要对当前算子进行裁剪。不同在于第一步：优化器在裁剪时会删去当前算子中没有被上层算子用过的列。
 
-#### LogicalJoin
+### LogicalJoin
+
 相对其他算子，Join 算子的列裁剪比较特殊，因为 Join 算子的列是由 Join 的两个对象决定的。同时，由于其独特的性质， Join 算子本身的列裁剪不会对下层算子的列需求产生影响。因此，在优化器中，对于 Join 算子本身列的裁剪发生在下层算子的裁剪之后。具体步骤分为三步：
 
 第一步：优化器从 Join 的条件语句中提取出左右算子的列需求集合，并用其对于左右算子分别进行列裁剪。
@@ -93,10 +98,11 @@ aggregation 算子的列裁剪相对较为复杂，大致可以分为以下四�
 
 第三步：优化器对于合并得到的列进行裁剪。
 
-#### LogicalApply
+### LogicalApply
+
 LogicalApply 算子的裁剪类似于 LogicalJoin 算子的裁剪，也是先进行左右两列的裁剪。不同在于第一个阶段的执行：由于 LogicalApply 存在执行先后顺序 以及 存在两个算子间列需求的传递，优化器会先执行右侧算子的列裁剪，并将右侧列裁剪得到的结果放入左侧算子的列需求中。
 
-#### LogicalLock
+### LogicalLock
 
 对于不是 Select Lock For Update 的 LogicalLock 算子，优化器直接按照 baseLogicalPlan 的处理方式进行处理。而对于符合条件的算子，分为两种情况进行处理：
 
@@ -104,7 +110,7 @@ LogicalApply 算子的裁剪类似于 LogicalJoin 算子的裁剪，也是先进
 
 如果当前算子不对应 partitioned table，直接将 table Id 作为 handle column 加入当前的列需求集合，作为下传的列需求集合。
 
-#### LogicalWindow
+### LogicalWindow
 
 对于 Window 算子，其本身的信息的裁剪取决于下层阶段的裁剪，所以优化器会先进行其子算子的裁剪。具体流程分为两步：
 
