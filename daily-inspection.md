@@ -43,7 +43,7 @@ title: 日常巡检
 
 说明：
 
-1. miss 是缺副本
+1. miss 是缺副本，不会一直大于 0。
 2. extra 是多副本
 3. empty 是空 Region，一般是 truncate/drop table 语句导致，如果较多，可以考虑开启跨表 Region merge 开启。
 4. pending 是 Raft log 落后的 Region。由于调度产生少量的 pending peer 是正常的，但是如果持续很高，就可能有问题。
