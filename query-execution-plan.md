@@ -6,11 +6,11 @@ aliases: ['/docs-cn/dev/reference/performance/understanding-the-query-execution-
 
 # 理解 TiDB 执行计划
 
-TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
+TiDB 优化器会根据当前数据表的最新的统计信息来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中执行计划。
 
 ## EXPLAIN 简介
 
-`EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
+TiDB 中可以使用 `EXPLAIN` 命令来查看执行计划，`EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
 - `EXPLAIN` 可以和 `SELECT`，`DELETE` 等语句一起使用；
 - 执行 `EXPLAIN`，TiDB 会返回被 `EXPLAIN` 的 SQL 语句经过优化器后的最终物理执行计划。也就是说，`EXPLAIN` 展示了 TiDB 执行该 SQL 语句的完整信息，比如以什么样的顺序，什么方式 JOIN 两个表，表达式树长什么样等等。
