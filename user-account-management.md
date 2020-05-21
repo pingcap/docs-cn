@@ -213,7 +213,6 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 设置 `skip-grant-table` 之后，启动 TiDB 进程会增加检查，只有操作系统的 `root` 用户才能执行。
 
-
 ## `FLUSH PRIVILEGES`
 
 用户以及权限相关的信息都是存储在 TiKV 服务器中的，TiDB 在进程内部会缓存。一般通过 `CREATE USER`，`GRANT` 等语句的修改，都能够在整个集群迅速生效。
