@@ -1,7 +1,6 @@
 ---
 title: 集群监控部署
 category: how-to
-aliases: ['/docs-cn/stable/how-to/monitor/monitor-deploy/']
 ---
 
 # TiDB 集群监控部署
