@@ -18,10 +18,22 @@ category: introduction
 | View     | 64 |
 | Sequence | 64 |
 
-## Databases、Tables、Views 总个数限制
+## Databases、Tables、Views、Connections 总个数限制
 
-| 标识符类型  | 最大个数 |
-|:----------|:--------|
-| Databases | unlimit |
-| Tables    | unlimit |
-| Views     | unlimit |
+| 标识符类型  | 最大个数   |
+|:----------|:----------|
+| Databases | unlimited |
+| Tables    | unlimited |
+| Views     | unlimited |
+| Connections| unlimited |
+
+## 单个 Table 相关的限制
+
+| 类型       | 最大个数   |
+|:----------|:----------|
+| Cloumns   | 512       |
+| Indexs    | 64        |
+| Rows      | unlimited |
+| Size      | unlimited |
+
+
