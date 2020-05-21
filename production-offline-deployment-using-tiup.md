@@ -231,7 +231,7 @@ alertmanager_servers:
 ```bash
 export TIUP_MIRRORS=/path/to/mirror
 
-tiup cluster deploy tidb-test v4.0.0-rc topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+tiup cluster deploy tidb-test v4.0.0-rc topology.yaml --user tidb [-p] [-i /home/root/.ssh/gcp_rsa]
 
 tiup cluster start tidb-test
 ```
@@ -240,7 +240,7 @@ tiup cluster start tidb-test
 > - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
 > - 部署版本为 `v4.0.0-rc`，其他版本可以参考[如何查看 TiUP 支持管理的 TiDB 版本](#如何查看-tiup-支持管理的-tidb-版本)的介绍
 > - 初始化配置文件为 `topology.yaml`
-> - --user root：通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
+> - --user tidb：通过 tidb 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 > - [-i] 及 [-p]：非必选项，如果已经配置免密登陆目标机，则不需填写。否则选择其一即可，[-i] 为可登录到部署机 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
 
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
@@ -251,122 +251,10 @@ tiup cluster start tidb-test
 
 ## 7. mirrors 组件介绍
 
-在构建私有云时，通常会使用隔离外网的网络环境，此时无法访问 TiUP 的官方镜像。因此，我们提供了构建私有镜像的方案，它主要由 mirrors 组件来实现，该方案也可用于离线部署。
-
-`mirrors` 组件的帮助可以使用 help 命令：
+可以使用 help 命令获取 `mirrors` 组件帮助，详细说明也可以参考[搭建私有镜像](/tiup/tiup-mirrors.md #搭建私有镜像)：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
 tiup mirrors --help
 ```
-
-```
-Starting component `mirrors`: /Users/joshua/.tiup/components/mirrors/v0.0.1/mirrors
-Build a local mirrors and download all selected components
-
-Usage:
-  tiup mirrors <target-dir> [global-version] [flags]
-
-Examples:
-  tiup mirrors local-path --arch amd64,arm --os linux,darwin    # Specify the architectures and OSs
-  tiup mirrors local-path --full                                # Build a full local mirrors
-  tiup mirrors local-path --tikv v4                             # Specify the version via prefix
-  tiup mirrors local-path --tidb all --pd all                   # Download all version for specific component
-
-Flags:
-      --overwrite                   Overwrite the exists tarball
-  -f, --full                        Build a full mirrors repository
-  -a, --arch strings                Specify the downloading architecture (default [amd64])
-  -o, --os strings                  Specify the downloading os (default [linux,darwin])
-      --tidb strings                Specify the versions for component tidb
-      --tikv strings                Specify the versions for component tikv
-      --pd strings                  Specify the versions for component pd
-      --playground strings          Specify the versions for component playground
-      --client strings              Specify the versions for component client
-      --prometheus strings          Specify the versions for component prometheus
-      --package strings             Specify the versions for component package
-      --grafana strings             Specify the versions for component grafana
-      --alertmanager strings        Specify the versions for component alertmanager
-      --blackbox_exporter strings   Specify the versions for component blackbox_exporter
-      --node_exporter strings       Specify the versions for component node_exporter
-      --pushgateway strings         Specify the versions for component pushgateway
-      --tiflash strings             Specify the versions for component tiflash
-      --drainer strings             Specify the versions for component drainer
-      --pump strings                Specify the versions for component pump
-      --cluster strings             Specify the versions for component cluster
-      --mirrors strings             Specify the versions for component mirrors
-      --bench strings               Specify the versions for component bench
-      --insight strings             Specify the versions for component insight
-      --doc strings                 Specify the versions for component doc
-      --ctl strings                 Specify the versions for component ctl
-  -h, --help                        help for tiup
-```
-
-`tiup mirrors` 命令的基本用法如下：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-tiup mirrors <target-dir> [global-version] [flags]
-```
-
-- `target-dir`：用于指定克隆下来的数据放到哪个目录里。
-- `global-version`：用于为所有组件快速设置一个共同的版本。
-
-`tiup mirrors` 命令提供了很多可选参数，日后可能会提供更多。这些参数一般可以分为四类：
-
-1. 指定是否覆盖本地的包
-
-    `--overwrite` 参数表示，如果指定的 `<target-dir>` 中已经有想要下载的包，是否要用官方镜像的包覆盖。如果设置了这个参数，则会覆盖。
-
-2. 是否全量克隆
-
-    `--full` 参数表示，指定完整地克隆官方镜像。
-
-    > **注意：**
-    >
-    > 如果不指定 `--full` 参数或其它参数，那么就只会克隆一些元信息。
-
-3. 限定只克隆特定平台的包
-
-    如果只想克隆某个平台的包，那么可以使用 `--os` 和 `--arch` 来限定：
-
-    - 只想克隆 linux 平台的，则执行 `tiup mirros <target-dir> --os=linux`
-    - 只想克隆 amd64 架构的，则执行 `tiup mirros <target-dir> --arch=amd64`
-    - 只想克隆 linux/amd64 的，则执行 `tiup mirros <target-dir> --os=linux --arch=amd64`
-
-4. 限定只克隆组件的特定版本
-
-    如果只想克隆某个组件的某一个版本而不是所有版本，则使用 `--<component>=<version>` 来限定，例如：
-
-    - 只想克隆 TiDB 的 v4 版本，则执行 `tiup mirrors <target-dir> --tidb v4`
-    - 只想克隆 TiDB 的 v4 版本，以及 TiKV 的所有版本，则执行 `tiup mirros <target-dir> --tidb v4 --tikv all`
-    - 克隆一个集群的所有组件的特定版本，则执行 `tiup mirrors <target-dir> v4.0.0-rc`
-
-
-### 8. 构建私有镜像
-
-构建私有镜像的方式和离线安装包的制作过程相同，只需要将 package 目录中的内容上传到 CDN 或者文件服务器即可，最简单的方式是：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cd package
-
-python -m SimpleHTTPServer 8000
-```
-
-这样就在 <http://127.0.0.1:8000> 这个地址建立了私有镜像。
-
-通过私有镜像安装 TiUP：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-export TIUP_MIRRORS=http://127.0.0.1:8000
-
-curl $TIUP_MIRRORS/install.sh | sh
-```
-
-导入 PATH 变量之后就可以正常使用 TiUP 了（需要保持 `TIUP_MIRRORS` 变量指向私有镜像）。
