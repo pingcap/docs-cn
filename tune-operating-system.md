@@ -55,7 +55,7 @@ cpufreq 是一个动态调整 CPU 频率的模块，可支持五种模式。为�
 - 自动平衡：可通过 `irqbalance` 服务实现。
 - 手动平衡：
     1. 确定需要平衡中断的设备，从 Centos 7.5 开始，系统会自动为某些设备及其驱动程序配置最佳的中断关联性。不能再手动配置其亲和性。目前已知的有使用 `be2iscsi` 驱动的设备，以及 NVME 设置；
-    2. 对于其他设备，可查询其芯片手册，是否支持分发中断，若不支持，则该设备的所有中断会路由到同一个 CPU 上，无法对其进行修改，若支持，则计算 `smp_affinity` 掩码并设置对应的配置文件，具体请参考内核文档：<https://www.kernel.org/doc/Documentation/IRQ-affinity.txt>。
+    2. 对于其他设备，可查询其芯片手册，是否支持分发中断，若不支持，则该设备的所有中断会路由到同一个 CPU 上，无法对其进行修改，若支持，则计算 `smp_affinity` 掩码并设置对应的配置文件，具体请参考[内核文档](https://www.kernel.org/doc/Documentation/IRQ-affinity.txt)。
 
 ### NUMA 绑核
 
