@@ -20,6 +20,8 @@ TiKV 支持在命令行参数或者配置文件中以键值对的形式绑定一
 
 使用命令行参数的方式：
 
+{{< copyable "" >}}
+
 ```
 tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 ```
