@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 + 默认："0.0.0.0"
 + 0.0.0.0 默认会监听所有的网卡地址。如果有多块网卡，可以指定对外提供服务的网卡，如 192.168.100.113
 
-## `enable-binlog`
+## `--enable-binlog`
 
 + 是否产生 TiDB binlog
 + 默认：false
@@ -162,7 +162,7 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 
 ## `--plugin-load`
 
-+ 需要加载的 plugin 列表，以 "," 逗号分隔
++ 需要加载的 plugin 名称，多个 plugin 以 "," 逗号分隔
 + 默认：""
 
 ## `--affinity-cpus`
