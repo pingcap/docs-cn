@@ -149,7 +149,7 @@ ADMIN FLUSH bindings;
 ADMIN CAPTURE bindings;
 ```
 
-以上语句可以将出现超过一次的 `select` 语句生成 SQL Plan 的绑定。
+以上语句可以将出现超过一次的 `select`execution-plan 语句生成 SQL Plan 的绑定。
 
 {{< copyable "sql" >}}
 
@@ -157,7 +157,7 @@ ADMIN CAPTURE bindings;
 ADMIN EVOLVE bindings;
 ```
 
-开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划绑定](execution-plan-binding.md)。
+开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划绑定](/execution-plan-binding.md)。
 
 {{< copyable "sql" >}}
 
