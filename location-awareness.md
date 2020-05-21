@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/'
 
 TiKV 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签（label）。TiKV 在启动后，会将自身的标签上报给 PD，因此我们可以使用标签来标识 TiKV 节点的地理位置。
 
-比如集群的拓扑结构分成三层：机房（zone) -> 机架（rack） -> 主机（host），我们就可以使用 3 个标签来设置 TiKV 的位置。
+比如集群的拓扑结构分成三层：机房（zone) -> 机架（rack）-> 主机（host），就可以使用这 3 个标签来设置 TiKV 的位置。
 
 使用命令行参数的方式：
 
