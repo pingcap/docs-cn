@@ -11,4 +11,4 @@ category: reference
 
 + 配置文件
 + 默认：""
-+ 必须指定配置文件，详细的配置项请参阅[TiFlash 配置参数](/tiflash-configuration.md)
++ 必须指定配置文件，详细的配置项请参阅 [TiFlash 配置参数](/tiflash-configuration.md)
