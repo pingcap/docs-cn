@@ -14,7 +14,6 @@ TiDB 中使用 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full
 5. TiDB 向 Primary Key 发起第二阶段提交。Primary Key 所在的 TiKV 收到 commit 操作后，检查数据合法性，清理 prewrite 阶段留下的锁
 6. TiDB 收到两阶段提交成功的信息
 
-
 Write Conflict 是发生在 prewrite 阶段，当发现有其他的事务在写当前 Key（data.commit_ts > txn.start_ts） 则发生了 Write Conflict 。TiDB 会根据 tidb_disable_txn_auto_retry 和 tidb_retry_limit 参数设置的情况决定是否进行重试，如果设置了不重试或者重试次数达到上限之后还是没有 prewrite 成功，则向 TiDB 返回 Write Conflict 错误。
 
 ## 如何判断当前集群存在 Write Conflict 情况
@@ -23,19 +22,19 @@ Write Conflict 是发生在 prewrite 阶段，当发现有其他的事务在写�
 
 * 通过 TiDB 监控面板中 KV Errors 监控栏中 KV Backoff OPS 监控指标项查看 TiKV 中返回错误信息的数量
 
-![](/media/troubleshooting-writeconflict-kv-backoff-ops.png)
+![kv-backoff-ops](/media/troubleshooting-writeconflict-kv-backoff-ops.png)
 
 txnlock 表示集群中存在写写冲突，txnLockFast 表示集群中存在读写冲突。
 
 * 通过 TiDB 监控面板中 KV Errors 监控栏中 Lock Resolve OPS 监控指标项查看事务冲突相关的数量
 
-![](/media/troubleshooting-writeconflict-lock-resolve-ops.png)
+![lock-resolve-ops](/media/troubleshooting-writeconflict-lock-resolve-ops.png)
 
 expired,not_expired,wait_expired 表示对应的 lock 状态
 
 * 查看 TiDB 监控面板中 KV Errors 监控栏中 KV Retry Duration 监控指标项查看 KV 重试请求的时间
 
-![](/media/troubleshooting-writeconflict-kv-retry-duration.png)
+![kv-retry-duration](/media/troubleshooting-writeconflict-kv-retry-duration.png)
 
 也可以通过 TiDB 日志查看是否有 `[kv:9007]Write conflict` 关键字，如果搜索到对应关键字，则可以表明集群中存在写写冲突。
 
@@ -54,7 +53,6 @@ expired,not_expired,wait_expired 表示对应的 lock 状态
 * conflictCommitTS=416617023093080065 : 表示冲突事务的 commit_ts 时间戳，可以通过 pd-ctl 工具将时间戳转换为具体时间
 * key={tableID=47, indexID=1, indexValues={string, }} : 表示当前事务中冲突的数据，tableID 表示发生冲突的表的 ID，indexID 表示是索引数据发生了冲突，如果是数据发生了冲突，会打印 handle=x 表示对应哪行数据发生了冲突，indexValues 表示发生冲突的索引数据
 * primary={tableID=47, indexID=1, indexValues={string, }}  : 表示当前事务中的 Primary Key 信息
-
 
 通过 pd-ctl 将时间戳转换为可读时间:
 
