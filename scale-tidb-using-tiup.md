@@ -106,7 +106,7 @@ pd_servers:
    log_dir: /data/deploy/install/log/pd-2379
 ```
 
-可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 global 和 server_configs 参数配置，默认会被 `scale-out.yaml` 继承。
+可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置，默认会被 `scale-out.yaml` 继承。
 
 
 
