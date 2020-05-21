@@ -13,5 +13,10 @@ category: introduction
 |:---------------------------|:---------------------------|
 | Database | 64 |
 | Table    | 64 |
+| Cloumn   | 64 |
+| Index    | 64 |
+| View     | 64 |
+| Sequence | 64 |
+| User Name| 32 |
 
 ## 贡献文档
