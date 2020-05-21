@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/metrics-tables/']
 
 # METRICS_TABLES
 
-`METRICS_TABLES` 表提供了 `metrics_schema` 数据库中所有监控表的相关信息。
+`INFORMATION_SCHEMA.METRICS_TABLES` 表提供了 `metrics_schema` 数据库中所有监控表的相关信息。
 
 {{< copyable "sql" >}}
 
