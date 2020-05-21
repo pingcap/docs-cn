@@ -10,9 +10,9 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 目前默认的 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node_exporter、Overview 等。
 
-对于日常运维，我们通过观察 TiKV-Details 面板上的指标，可以了解 TiKV 当前的状态。根据 [性能地图](https://asktug.com/_/tidb-performance-map/#/) 可以检查集群的状态是否符合预期。
+对于日常运维，我们通过观察 **TiKV-Details** 面板上的指标，可以了解 TiKV 当前的状态。根据 [性能地图](https://asktug.com/_/tidb-performance-map/#/) 可以检查集群的状态是否符合预期。
 
-以下为 TiKV-Details 默认的监控信息：
+以下为 **TiKV-Details** 默认的监控信息：
 
 ## Cluster
 
@@ -423,3 +423,117 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Encryption meta files size：加密相关的元数据文件的大小
 - Encrypt/decrypt data nanos：加密/解密数据所耗费的时间
 - Read/write encryption meta duration：读写加密文件所耗费的时间
+
+## 面板常见参数的解释
+
+### gRPC 消息类型
+
+1 使用事务型接口的命令
+- kv_get：一个事务型的 get 命令，在带有一个开始时间戳的事务中使用 key 查询 value
+- kv_scan：在带有一个开始时间戳的事务中，根据一个 key 的范围扫描 value
+- kv_prewrite：写入 TiKV 的第一个阶段，包含一个事务中所有要写入的数据
+- kv_pessimistic_lock：锁定一系列的 key 以准备写入它们
+- kv_pessimistic_rollback：解锁一系列的 key
+- kv_txn_heart_beat：用于更新悲观事务或大事物的 `lock_ttl` 以防止其被杀掉
+- kv_check_txn_status：检查事务的状态
+- kv_commit：写入 TiKV 的第二个阶段，这个请求命令将会提交一个事务
+- kv_cleanup：清理一个 key（此命令将会在 4.0 中废除）
+- kv_batch_get：与 `kv_get` 类似，带有批量的 key
+- kv_batch_rollback：回滚一个预写的事务，这将从数据库中移除初步写入的数据，解锁相关的锁，置入一个回滚的墓碑
+- kv_scan_lock：扫面数据库的锁，用于在 GC 的初始阶段找到所有的旧锁
+- kv_resolve_lock：对于所有被 `start_version` 标记的事务锁定的 key，要么提交要么回滚
+- kv_gc：触发垃圾回收以清理 `safe_point` 之前的数据
+- kv_delete_range：从 TiKV 中删除一系列的数据
+
+2 非事务型的裸命令
+- raw_get：使用 key 查询 value
+- raw_batch_get：批量地使用 key 查询 value
+- raw_scan：根据一个 key 的范围扫描 value
+- raw_batch_scan：根据多个 key 的范围扫描 value
+- raw_put：直接写入一对 key 和 value，需要提供写入的 CF
+- raw_batch_put：直接写入多对 key 和 value，需要提供写入的 CF
+- raw_delete：删除指定的 key，需要提供删除所在的 CF
+- raw_batch_delete：批量删除多个指定的 key，需要提供删除所在的 CF
+- raw_delete_range：删除一个范围的 key，需要提供删除所在的 CF
+
+3 存储命令（发送到集群中所有的 TiKV 节点）
+- unsafe_destroy_range：绕过 raft 层直接从存储引擎删除一个范围的 key
+- register_lock_observer：注册一个 observer，用于监听 max_ts 之前的锁
+- check_lock_observer：检查之前 observer 的状态，取得其收集的锁
+- remove_lock_observer：关闭相应的 observer，不再进行监听
+- physical_scan_lock：绕过 raft 层直接在物理层扫描 Lock CF，返回 max_tx 之前的锁
+
+4 在 Coprocessor 中执行 SQL 的命令（下推到 TiKV 执行的命令）
+- coprocessor：由 TiDB 发送的 coprocessor 请求
+- coprocessor_stream：由 TiDB 发送的 coprocessor 请求，以流形式返回
+- batch_coprocessor：由 TiDB 发送的多个 coprocessor 请求
+
+5 Raft 命令
+- raft：TiKV 节点间 raft 协议的消息
+- batch_raft：批量发送的 raft 协议的消息
+- snapshot：发送 raft 中状态机数据的一份快照，以流的形式发送多个打散的快照块
+
+6 调试事务命令
+- mvcc_get_by_key：通过给定 key 返回 mvcc 信息
+- mvcc_get_by_start_ts：通过给定 start ts 返回 mvcc 信息
+
+7 其它命令
+- batch_commands：批量发送多个命令，用于减少传输量提高性能
+- split_region：PD 发送 split region 请求给 TiKV 节点，同时指定需要 split 的 key
+- read_index：通过 raft 的一些元数据来获取 read index
+
+### 底层数据库类型
+
+- raft：用于存储 raft 日志的底层数据库
+- kv：用于存储 key value 数据的底层数据库
+
+### Raftstore 错误类型
+
+- err_not_leader：对应的 peer 不是所查询 region 的 leader
+- err_region_not_found：没有在当前 store 中找到需要的 region
+- err_key_not_in_region：key 不在对应的 region 范围内
+- err_epoch_not_match：访问的 region 的 epoch 不匹配，意即此 snapshot 的数据过时，可能由于当前还未 merge 最新的 commit
+- err_server_is_busy：服务器太忙碌无法及时处理到达 TiKV 的请求，原因主要是 write stall、scheduler busy、线程池排队、raftstore 组件忙碌等
+- err_stale_command：命令已经失效，当前 leader 抛弃了该请求导致其无法继续处理
+- err_store_not_match：发送到错误的 store 节点上
+- err_raft_entry_too_large：用户一次进行了过多的操作，导致产生的 raft entry 过大而拒绝掉本次请求
+
+### Scheduler 错误类型
+
+- snapshot_err：获取 snapshot 失败
+- prepare_write_err：在 prewrite 阶段写入失败
+
+### Coprocessor 错误类型
+
+- meet_lock：当前的 key 已经被锁住
+- deadline_exceeded：由于超过了处理的截止期，Coprocessor 任务被终止
+- max_pending_tasks_exceeded：由于超过了最大挂起任务数量，Coprocessor 任务被终止
+
+### 请求 PD 的消息类型
+
+- get_region：获取给定 key 的 region 和该 region 的 leader
+- bootstrap_cluster：作为集群中第一个启动的 TiKV 节点尝试启动整个集群
+- is_cluster_bootstrapped：向 PD 查询当前集群是否已经被启动
+- alloc_id：取得一个新的 store id
+- put_store：上传一个 store 的元数据信息
+- get_store：通过 store id 获取相关的元数据信息
+- get_all_stores：获取集群所有 store 的元数据信息
+- get_cluster_config：获取当前集群的配置信息，如 id、单个 region 的最大 peer 数量等信息
+- get_region_by_id：通过 id 获取 region 的相关信息，如 region 范围、leader、follower 等信息
+- ask_split：请求分割一个 region，获取新 region id 和 peer id 信息
+- ask_batch_split：请求将一个 region 分成多个 region
+- store_heartbeat：发送关于当前 store 的心跳消息
+- report_batch_split：当 TiKV 完成了 split region 后将相关的 region 信息汇报给 PD 以更新 region 信息
+- get_gc_safe_point：获取当前 gc 的时间戳 safe point，参考 [GC doc](https://pingcap.com/docs-cn/dev/garbage-collection-overview/)
+- get_operator：获取给定 region 的 operator 的相关状态信息
+- tso：从 PD 获取全局时间戳 tso，仅给 CDC 使用
+- get_members：获取当前集群的成员列表，不用提供对应集群的 id
+
+### PD 心跳类型
+
+- send：发送到 PD 的心跳
+- noop：PD 返回的心跳没有包含任何命令
+- merge：PD 返回的心跳包含 merge 命令
+- change peer：PD 返回的心跳 change peer 命令
+- transfer leader：PD 返回的心跳包含 transfer leader 的命令
+- split region：PD 返回的心跳包含 split region 的命令
