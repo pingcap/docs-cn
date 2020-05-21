@@ -5,7 +5,7 @@ category: introduction
 
 # TiDB 核心特性
 
-本文详细介绍 TiDB 的具备的基本功能。
+本文详细介绍 TiDB 具备的基本功能。
 
 ## 数据类型
 
