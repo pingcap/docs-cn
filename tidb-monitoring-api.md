@@ -1,7 +1,7 @@
 ---
 title: TiDB 集群监控 API
 category: how-to
-aliases: ['/docs-cn/stable/how-to/monitor/monitor-a-cluster/']
+aliases: ['/docs-cn/dev/monitor-a-tidb-cluster/']
 ---
 
 # TiDB 集群监控 API
