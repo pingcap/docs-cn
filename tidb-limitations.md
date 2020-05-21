@@ -25,15 +25,53 @@ category: introduction
 | Databases | unlimited |
 | Tables    | unlimited |
 | Views     | unlimited |
-| Connections| unlimited |
+| Connections| unlimited|
 
-## 单个 Table 相关的限制
 
-| 类型       | 最大个数   |
+## 单个 Database 的限制
+
+| 类型       | 最大限制   |
+|:----------|:----------|
+| Tables    |unlimited  |
+
+## 单个 Table 的限制
+
+| 类型       | 最大限制   |
 |:----------|:----------|
 | Cloumns   | 512       |
 | Indexs    | 64        |
 | Rows      | unlimited |
 | Size      | unlimited |
+| Partitions| 1024      |
 
+## 单行的限制
 
+| 类型       | 最大限制   |
+|:----------|:----------|
+| Sze       | 6MB       |
+
+## 单列的限制
+
+| 类型       | 最大限制   |
+|:----------|:----------|
+| Sze       | 6MB       |
+
+## 字符串类型限制
+
+| 类型       | 最大限制   |
+|:----------|:----------|
+| CHAR       | 256 字符      |
+| BINARY     | 256 字节      |
+| VARBINARY  | 65535 字节    |
+| VARCHAR    | 16383 字符    |
+| TEXT       | 6MB 字节      |
+| BLOB       | 6MB 字节      |
+
+## SQL Statements 的限制
+
+| 类型       | 最大限制   |
+|:----------|:----------|
+| 单条 INSERT statement 语句写入的 Key-Value 对数量       |  3000000      |
+| 单个事务写入的行数       |  3000000 / 单个表索引的数量      |
+| 单条 INSERT statement 语句写入的 Key-Value 对数量       |  3000000      |
+| 单个事务写入的行数       |  3000000 / 单个表索引的数量      |
