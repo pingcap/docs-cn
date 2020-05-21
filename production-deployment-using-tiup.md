@@ -1521,9 +1521,9 @@ tiup cluster destroy tidb-test
 | global | deploy_dir | /home/tidb/deploy | 部署目录 |
 | global | data_dir | /home/tidb/data | 数据目录 |
 | global | log_dir | /home/tidb/deploy/log | 日志目录 |
-| monitored | deploy_dir | /home/tidb/data | 部署目录 |
-| monitored | data_dir | /home/tidb/deploy | 数据目录 |
-| monitored | log_dir | /home/tidb/deploy | 日志目录 |
+| monitored | deploy_dir | /home/tidb/deploy | 部署目录 |
+| monitored | data_dir | /home/tidb/data | 数据目录 |
+| monitored | log_dir | /home/tidb/log | 日志目录 |
 | 实例 | deploy_dir | 继承 global 配置 | 部署目录 |
 | 实例 | data_dir | 继承 global 配置 | 数据目录 |
 | 实例 | log_dir | 继承 global 配置 | 日志目录 |

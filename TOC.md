@@ -289,6 +289,7 @@
     - [使用 Index Merge 方式访问表](/index-merge.md)
     - [Statement Summary Table](/statement-summary-tables.md)
     - [Max/Min 函数消除规则](/max-min-eliminate.md)
+    - [下推计算结果缓存](/coprocessor-cache.md)
     - [TiKV 调优](/tune-tikv-performance.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
   + 监控指标
@@ -397,6 +398,7 @@
 + [TiDB 路线图](/roadmap.md)
 + [版本发布历史](/releases/release-notes.md)
   + v4.0
+    - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
     - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)
     - [4.0.0-rc](/releases/release-4.0.0-rc.md)
     - [4.0.0-beta.2](/releases/release-4.0.0-beta.2.md)
