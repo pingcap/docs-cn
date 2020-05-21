@@ -60,7 +60,6 @@ tidb_servers:
    deploy_dir: /data/deploy/install/deploy/tidb-4000
 
    log_dir: /data/deploy/install/log/tidb-4000
-```
 TiKV 配置文件参考：
 
 {{< copyable "" >}}
