@@ -64,7 +64,7 @@ Skyline-Pruning 是一个针对索引的启发式过滤规则，评判一个索�
 
 2. 统计信息准确，为什么读 TiFlash 更快，而优化器选择了 TiKV？
 
-    现在区别 TiFlash 和 TiKV 的代价模型还比较粗糙，可以调小 `tidb_opt_seek_factor` 让优化器更倾向 TiFlash。
+    目前区别 TiFlash 和 TiKV 的代价模型还比较粗糙，可以调小 `tidb_opt_seek_factor` 的值，让优化器倾向于选择 TiFlash。
     
 3. 统计信息准确，某个索引要回表，但是它比另一个不用回表的索引实际执行更快，为什么选择了不用回表的索引？
 
@@ -72,7 +72,7 @@ Skyline-Pruning 是一个针对索引的启发式过滤规则，评判一个索�
 
 ## 控制索引的选择
 
-通过 [Optimizer Hints](#optimizer-hints) 可以实现单条查询对索引选择的控制。
+通过 [Optimizer Hints](/optimizer-hints.md) 可以实现单条查询对索引选择的控制。
 
 - `USE_INDEX`/`IGNORE_INDEX` 可以强制优化器使用/不使用某些索引。
 
