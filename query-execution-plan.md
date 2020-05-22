@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/reference/performance/understanding-the-query-execution-
 
 # 理解 TiDB 执行计划
 
-TiDB 优化器会根据当前数据表的最新的统计信息来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中执行计划。
+TiDB 优化器会根据当前数据表的最新的统计信息来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中的执行计划。
 
 ## EXPLAIN 简介
 
