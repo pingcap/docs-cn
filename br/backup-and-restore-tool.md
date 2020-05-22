@@ -282,7 +282,7 @@ br backup full\
     --lastbackupts ${LAST_BACKUP_TS}
 ```
 
-以上命令会备份 `[LAST_BACKUP_TS, current PD timestamp)` 之间的增量数据。
+以上命令会备份 `(LAST_BACKUP_TS, current PD timestamp]` 之间的增量数据。
 
 你可以使用 `validate` 指令获取上一次备份的时间戳，示例如下：
 
@@ -292,7 +292,7 @@ br backup full\
 LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata`
 ```
 
-示例备份的增量数据包括 `[LAST_BACKUP_TS, current PD timestamp)` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复写入数据。
+示例备份的增量数据包括 `(LAST_BACKUP_TS, current PD timestamp]` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复写入数据。
 
 ### Raw KV 备份（实验性功能）
 
