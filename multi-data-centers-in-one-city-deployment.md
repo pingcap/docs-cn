@@ -41,7 +41,7 @@ Raft 算法本身以及 TiDB 中的 Raft 实现都没有限制一个 Raft Group 
 
 集群 TiDB，TiKV，PD 组件分别分布在 3 个不同的数据中心，这是最常规，高可用性最高的方案。
 
-![三中心部署](<https://raw.githubusercontent.com/pingcap/docs-cn/master/media/deploy-3dc.png>)
+![三中心部署](/media/deploy-3dc.png)
 
 **优点**
 
@@ -49,7 +49,7 @@ Raft 算法本身以及 TiDB 中的 Raft 实现都没有限制一个 Raft Group 
 - 任何一个数据中心失效后，不会产生任何数据丢失（RPO = 0）
 - 任何一个数据中心失效后，其他两个数据中心会自动发起 leader election，并在合理长的时间内（通常情况 20s 以内）自动恢复服务（RTO <= 20s）
 
-![三中心部署容灾](https://raw.githubusercontent.com/pingcap/docs-cn/master/media/deploy-3dc-dr.png)
+![三中心部署容灾](/media/deploy-3dc-dr.png)
 
 **缺点**
 
@@ -63,7 +63,7 @@ Raft 算法本身以及 TiDB 中的 Raft 实现都没有限制一个 Raft Group 
 
 如果我们不需要每个数据中心同时对外提供服务，可以将业务流量全部派发到一个数据中心，并通过调度策略把 Region leader 和 PD leader 都迁移到同一个数据中心。这样一来，不管是从 PD 获取 TSO 还是读取 Region 都不受数据中心间网络的影响。当该数据中心失效后，PD leader 和 Region leader 会自动在其它数据中心选出，只需要把业务流量转移至其他存活的数据中心即可。
 
-![三中心部署读性能优化](https://raw.githubusercontent.com/pingcap/docs-cn/master/media/deploy-3dc-optimize.png)
+![三中心部署读性能优化](/media/deploy-3dc-optimize.png)
 
 **优点**
 
@@ -92,7 +92,7 @@ member leader_priority pdName3 3
 
 下面我们假设某城存有 IDC1、IDC2、IDC3 三机房，机房 IDC 中存有两套机架，每个机架存有三台服务器，不考虑混布以及单台机器多实例部署下，同城三数据中心架构集群（3 副本）部署参考如下：
 
-![sample-tidb](C:\Users\Marvin\Desktop\sample-tidb.PNG)
+![sample-tidb](/media/multi-data-centers-in-one-city-deployment-sample.PNG)
 
 #### 2.3.2 TiKV Labels 规划
 
