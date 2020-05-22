@@ -3,15 +3,17 @@ title: 谓词下推
 category: performance
 ---
 
+本文档介绍 TiDB 逻辑优化规则中的谓词下推规则，旨在让读者对谓词下推形成理解，并了解常见的谓词下推适用及不适用的场景。
+
 # 谓词下推
 
 谓词下推将查询语句中的过滤表达式计算尽可能下推到距离数据源最近的地方，以尽早完成数据的过滤，进而显著地减少数据传输或计算的开销。
 
 ## 示例
 
-以下通过一些例子对谓词下推优化进行说明，其中示例1/2/3为谓词下推适用的案例，示例4/5/6为谓词下推不适用的案例。
+以下通过一些例子对谓词下推优化进行说明，其中示例1、2、3为谓词下推适用的案例，示例4、5、6为谓词下推不适用的案例。
 
-### 示例 1
+### 示例 1: 谓词下推到存储层 
 
 ```sql
 create table t(id int primary key, a int);
@@ -28,7 +30,7 @@ explain select * from t where a < 1;
 
 在该查询中，将谓词 `a < 1` 下推到 TiKV 上对数据进行过滤，可以减少由于网络传输带来的开销。
 
-### 示例 2
+### 示例 2: 谓词下推到存储层
 
 ```sql
 create table t(id int primary key, a int not null);
@@ -44,7 +46,7 @@ explain select * from t where a < substring('123', 1, 1);
 
 该查询与示例 1 中的查询生成了完成一样的执行计划，这是因为谓词 `a < substring('123', 1, 1)` 的 `substring` 的入参均为常量，因此可以提前计算，进而简化得到等价的谓词 `a < 1`。进一步的，可以将 `a < 1` 下推至 TiKV 上。
 
-### 示例3
+### 示例 3: 谓词下推到 join 下方 
 
 ```sql
 create table t(id int primary key, a int not null);
@@ -64,10 +66,11 @@ explain select * from t join s on t.a = s.a where t.a < 1;
 7 rows in set (0.00 sec)
 ```
 
-在该查询中，将谓词 `t1.a < 1` 下推到 join 前进行过滤，可以减少 join 时的计算开销。
-此外，通过 `t.a = s.a`, 构造出谓词 `s.a < 1`，并将其下推至 join 运算前，可以进一步减少 join 时的计算开销。
+在该查询中，将谓词 `t.a < 1` 下推到 join 前进行过滤，可以减少 join 时的计算开销。
 
-### 示例 4
+此外，这条 SQL 执行的是内连接，且 `ON` 条件时 `t.a = s.a`，可以由 `t.a < 1` 推导出谓词 `s.a < 1`，并将其下推至 join 运算前对 `s` 表进行过滤，可以进一步减少 join 时的计算开销。
+
+### 示例 4: 存储层不支持的谓词无法下推
 
 ```sql
 create table t(id int primary key, a int not null);
@@ -82,9 +85,10 @@ desc select * from t where substring('123', a, 1) = '1';
 ```
 
 在该查询中，存在谓词 `substring('123', a, 1) = '1'`。
+
 从 explain 结果中可以看到，该谓词没有被下推到 TiKV 上进行计算，这是因为 TiKV coprocessor 中没有对 `substring` 内置函数进行支持, 因此无法将其下推到 TiKV 上。
 
-### 示例 5
+### 示例 5: 外连接中内表上的谓词不能下推
 
 ```sql
 create table t(id int primary key, a int not null);
@@ -104,9 +108,10 @@ explain select * from t left join s on t.a = s.a where s.a is null;
 ```
 
 在该查询中，内表 s 上存在谓词 `s.a is null`。
+
 从 explain 中可以看到，该谓词没有被下推到 join 前进行计算，这是因为外连接在不满足 on 条件时会对内表填充 NULL，而在该查询中 `s.a is null` 用来对 join 后的结果进行过滤，如果将其下推到 join 前在内表上进行过滤，则下推前后不等价, 因此不可进行下推。
 
-### 示例 6
+### 示例 6: 谓词中包含用户变量时不能下推
 
 ```sql
 create table t(id int primary key, a char);
@@ -123,6 +128,7 @@ explain select * from t where a < @a;
 ```
 
 在该查询中，表 t 上存在谓词 `a < @a`, 其中 `@a` 为值为 1 的用户变量。
+
 从 explain 中可以看到，该谓词没有像示例 2 中一样，将谓词简化为 `a < 1` 并下推到 TiKV 上进行计算。这是因为，用户变量 `@a` 的值可能会某些场景下在查询过程中发生改变，且 TiKV 对于用户变量 `@a` 的值不可知，因此 TiDB 不会将 `@a` 替换为 1，且不会下推至 TiKV 上进行计算。
 
 一个帮助理解的例子如下：
