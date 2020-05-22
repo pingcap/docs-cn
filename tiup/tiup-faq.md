@@ -11,7 +11,7 @@ TiUP 支持通过环境变量 TIUP_MIRRORS 指定镜像源，镜像源的地址�
 
 ## 如何将自己编写的组件放入 TiUP 镜像仓库？
 
-暂时 TiUP 还不能接受外部开发的组件，但是 TiUP Team 已经制定了 TiUP 组件开发规范，同时正在开发 tiup-publish 组件，完成 tiup-publish 组件后，开发者可以通过 `tiup publish <comp> <version>` 将自己开发的组件发布到 TiUP 的官方镜像仓库。
+TiUP 暂时不支持外部开发的组件，但是 TiUP Team 已经制定了 TiUP 组件开发规范，同时正在开发 tiup-publish 组件，完成 tiup-publish 组件后，开发者可以通过 `tiup publish <comp> <version>` 将自己开发的组件发布到 TiUP 的官方镜像仓库。
 
 ## tiup-playground 和 tiup-cluster 有什么区别？
 
@@ -20,6 +20,7 @@ TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境�
 ## 怎么样编写 tiup-cluster 组件的拓扑文件？
 
 可以参考拓扑文件的 [样例](https://github.com/pingcap-incubator/tiup-cluster/tree/master/examples)，样例中包含了：
+
 1. 两地三中心
 2. 最小部署拓扑
 3. 完整拓扑文件
@@ -38,6 +39,6 @@ TiUP Cluster 组件的部署和扩容拓扑是使用 [yaml](https://yaml.org/spe
 
 同一个集群的端口和目录冲突会在部署和扩容的时候进行检测，如果有目录和端口冲突，本次部署或扩容会中断。
 
-## 是否检测不同集群的端口和目录冲突？
+## 是否可以检测不同集群的端口和目录冲突？
 
 如果不同集群是由同一个 TiUP 中控机部署的，会在部署和扩容时进行检测，如果属于不同的 TiUP 中控机，目前不支持检测。
