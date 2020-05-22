@@ -83,7 +83,13 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 可以设置并行 GC，加快对空间的回收速度。默认并发为 1，最大可调整为 tikv 实例数量的 50%。可使用 `update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";` 命令来调整。
 
+#### 1.1.14 show processlist 是否显示系统进程号？
 
+TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
+
+1）由于 TiDB 是分布式数据库，tidb-server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/overview.md#tidb-整体架构)），用户使用 MySQL 客户端登录的是哪个 tidb-server，`show processlist` 就会显示当前连接的这个 tidb-server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
+
+2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
  
  
 ## 二、SQL 优化
