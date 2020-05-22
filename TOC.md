@@ -364,11 +364,7 @@
       + [访问](/dashboard/access.md) @wenxuan
       + [概况页面](/dashboard/overview.md) @wenxuan
       + [集群信息页面](/dashboard/cluster-info.md) @baoling
-      + 流量可视化页面 @xiangsheng
-        + [访问](/dashboard/keyviz/access.md)
-        + [基本概念](/dashboard/keyviz/concepts.md)
-        + [使用介绍](/dashboard/keyviz/usage.md)
-        + [常见热力图解读](/dashboard/keyviz/common-patterns.md)
+      + [流量可视化页面](/dashboard/key-visualizer.md) @xiangsheng
       + SQL 语句分析页面 @baoling
         + [访问列表页面](/dashboard/statements/list.md)
         + [查看执行详情](/dashboard/statements/detail.md)
