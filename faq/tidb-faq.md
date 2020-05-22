@@ -695,28 +695,50 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 
 不可以。TiDB 数据（或使用其他事务 API 生成的数据）依赖于一种特殊的键值格式，和 RawKV API 数据（或其他基于 RawKV 的服务生成的数据）并不兼容。
 
-### 3.5 TiDB 测试
+### 3.5 TiFlash
 
-#### 3.5.1 TiDB Sysbench 基准测试结果如何？
+#### 3.5.1 TiFlash 是否可直接写入？
+
+TiFlash 暂时无法直接接受写入，只能通过写入 TiKV 再同步到 TiFlash。
+
+#### 3.5.2 如果想在已经存在的集群增加 TiFlash，怎么去估算存储资源？
+
+可以衡量哪些表可能需要加速，这些表的单副本大小大致就是 TiFlash 两副本所需的空间，再算上计划的余量就行。
+
+#### 3.5.3 TiFlash 的数据如何做到高可用？
+
+TiFlash 可以通过 TiKV 恢复数据。只要 TiKV 的对应 Region 是可用的，TiFlash 就可以从中恢复数据。
+
+#### 3.5.4 TiFlash 推荐设置多少个副本？
+
+如果需要 TiFlash 服务本身高可用（并非数据高可用），那么推荐将 TiFlash 设置成 2 副本；如果可以允许 TiFlash 丢失节点的情况下通过 TiKV 副本继续服务，那么也可以使用单副本。
+
+#### 3.5.5 什么时候使用 TiSpark 进行查询？什么时候使用 TiDB server 进行查询？
+
+如果查询以单表聚合和过滤为主，那么 TiDB server 比 TiSpark 在列存上拥有更好的性能；如果查询以表连接为主，那么推荐使用 TiSpark。
+
+### 3.6 TiDB 测试
+
+#### 3.6.1 TiDB Sysbench 基准测试结果如何？
 
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
 - 大家可以直接参考 [TiDB Sysbench 性能测试报告](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)。
 
-#### 3.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
+#### 3.6.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
 - 在 10 节点内，TiDB 写入能力（Insert TPS）和节点数量基本成 40% 线性递增，MySQL 由于是单节点写入，所以不具备写入扩展能力。
 - MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考[方案虽好，成本先行：数据库 Sharding+Proxy 实践解析](http://t.cn/RTD18qV)。
 - TiDB 不管是读流量、还是写流量都可以通过添加节点快速方便的进行扩展。
 
-#### 3.5.3 我们的 DBA 测试过 MySQL 性能，单台 TiDB 的性能没有 MySQL 性能那么好？
+#### 3.6.3 我们的 DBA 测试过 MySQL 性能，单台 TiDB 的性能没有 MySQL 性能那么好？
 
 TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库分表的场景，或者需要强一致性和完整分布式事务的场景。它的优势是通过尽量下推到存储节点进行并行计算。对于小表（比如千万级以下），不适合 TiDB，因为数据量少，Region 有限，发挥不了并行的优势，最极端的就是计数器表，几行记录高频更新，这几行在 TiDB 里，会变成存储引擎上的几个 KV，然后只落在一个 Region 里，而这个 Region 只落在一个节点上。加上后台强一致性复制的开销，TiDB 引擎到 TiKV 引擎的开销，最后表现出来的就是没有单个 MySQL 好。
 
-### 3.6 TiDB 备份恢复
+### 3.7 TiDB 备份恢复
 
-#### 3.6.1 TiDB 主要备份方式？
+#### 3.7.1 TiDB 主要备份方式？
 
 目前，推荐的备份方式是使用 [PingCAP fork 的 Mydumper](/mydumper-overview.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](/mydumper-overview.md)/[`loader`](/loader-overview.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
 
