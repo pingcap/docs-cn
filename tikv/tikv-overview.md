@@ -14,7 +14,6 @@ TiKV 是一个分布式事务型的键值数据库，提供了满足 ACID 约束
 
 [!TiKV-Arch](/media/tikv-arch.png)
 
-
 ## Region 与 RocksDB
 
 - 虽然 TiKV 将数据按照范围切割成了多个 Region，但是同一个节点的所有 Region 数据仍然是不加区分地存储于同一个 RocksDB 实例，而用于 Raft 协议复制所需要的日志则存储于另一个 RocksDB。这样设计的原因是因为随机 IO 的性能远低于顺序 IO，所以我们用同一个 RocksDB 实例来存储这些数据，以便不同 Region 的写入可以合并在一次 IO 中。
