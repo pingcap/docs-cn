@@ -1,5 +1,5 @@
 ---
-title: 执行计划缓存简介
+title: 执行计划缓存
 category: performance
 ---
 
