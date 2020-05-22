@@ -29,7 +29,7 @@ category: performance
 
 ## 索引的选择
 
-TiDB 选择索引基于每个读表算子的代价估算，在这个基础上提供了一个启发式规则 "Skyline-Pruning" 去降低错误估算导致选错索引的概率。
+TiDB 在选择索引时，会基于每个读表算子的代价估算，在此基础上提供了启发式规则 "Skyline-Pruning"，以降低错误估算导致选错索引的概率。
 
 ### Skyline-Pruning
 
