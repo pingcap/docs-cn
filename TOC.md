@@ -33,7 +33,7 @@
   + [环境与系统配置检查](/check-before-deployment.md) @李仲舒
   + 配置拓扑结构
     + [最小部署拓扑结构](/minimal-deployment-topology.md) @李仲舒
-    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) @李仲舒（[参考](/location-awareness.md)）
+    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) @李仲舒（[参考](/schedule-replicas-by-topology-labels.md)）
     + [混合部署拓扑结构](/hybrid-deployment-topology.md) @李仲舒
   + 安装与启动
     + Linux
