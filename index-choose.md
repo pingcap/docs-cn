@@ -60,7 +60,7 @@ Skyline-Pruning 是一个针对索引的启发式过滤规则，评判一个索�
 
 1. 估算的行数量不准确？
 
-    一般是统计信息过期或者准确度不够造成的，可以重新 `analyze table` 或者修改 `analyze table` 的参数。
+    一般是统计信息过期或者准确度不够造成的，可以重新执行 `analyze table` 或者修改 `analyze table` 的参数。
 
 2. 统计信息准确，为什么读 TiFlash 更快，而优化器选择了 TiKV ？
 
