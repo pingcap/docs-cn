@@ -112,6 +112,7 @@
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
       + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+      + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
   + SQL 性能调优 @崔一丁
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + [理解 TiDB 执行计划](/query-execution-plan.md)
