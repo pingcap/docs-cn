@@ -4,3 +4,140 @@ category: performance
 ---
 
 # 优化规则及表达式下推的黑名单
+
+## 优化规则黑名单
+
+**优化规则黑名单**是针对优化规则的调优手段之一，主要用于手动禁用一些优化规则。
+
+### 重要的优化规则
+
+|**优化规则**|**规则名称**|**简介**|
+| :--- | :--- | :--- |
+| 列裁剪 | column_prune | 对于上层算子不需要的列，不在下层算子输出该列，减少计算 |
+| 子查询去关联 | decorrelate | 尝试对相关子查询进行改写，将其转换为普通 join 或 aggression 计算 |
+| 聚合消除 | aggregation_eliminate | 尝试消除执行计划中的某些不必要的聚合算子 |
+| 投影消除 | projection_eliminate |  消除执行计划中不必要的投影算子 |
+| 最大最小消除 | max_min_eliminate | 改写聚合中的 max/min 计算，转化为 `order by` + `limit 1` |
+| 谓词下推 | predicate_push_down | 尝试将执行计划中过滤条件下推到离数据源更近的算子上 |
+| 外连接消除 | outer_join_eliminate | 尝试消除执行计划中不必要的 left join 或者 right join |
+| 分区裁剪 | partition_processor | 将分区表查询改成为用 union all，并裁剪掉不满足过滤条件的分区 |
+| 聚合下推 | aggregation_push_down | 尝试将执行计划中的聚合算子下推到更底层的计算节点 |
+| TopN 下推 | topn_push_down | 尝试将执行计划中的 TopN 算子下推到离数据源更近的算子上 |
+| Join 重排序 | join_reorder | 对多表 join 确定连接顺序 |
+
+### 禁用优化规则
+
+当某些优化规则在一些特殊查询中的优化结果不理想时，用户可以使用**优化规则黑名单**禁用一些优化规则。
+
+#### 使用方法
+
+> **注意：**
+>
+> 以下操作都需要数据库的 root 权限。
+每个优化规则都有各自的名字，比如列裁剪的名字是 "column_prune"。所有优化规则的名字都可以在[重要的优化规则](#重要的优化规则)表格中第二列查到。
+
+当用户想禁用某些规则时，可以在 `mysql.opt_rule_blacklist` 表中写入规则的名字，比如：
+
+{{< copyable "sql" >}}
+
+```sql
+insert into mysql.opt_rule_blacklist values("join_reorder"),("topn_push_down");
+```
+
+执行以下 SQL 语句让禁用规则立即生效：
+
+{{< copyable "sql" >}}
+
+```sql
+admin reload opt_rule_blacklist
+```
+
+需要解除一条规则的禁用时，需要删除表中禁用该条规则的相应数据，再执行 `admin reload`：
+
+{{< copyable "sql" >}}
+
+```sql
+delete from mysql.opt_rule_blacklist where name in ("join_reoder", "topn_push_down")
+admin reload opt_rule_blacklist
+```
+
+## 表达式下推黑名单
+
+**表达式下推黑名单**是针对表达式下推的调优手段之一，主要用于对于某些存储类型手动禁用一些表达式。
+
+### 禁止特定表达式下推
+    
+当函数的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将上述支持的函数或运算符名加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。
+
+`mysql.expr_pushdown_blacklist` 的 schema 如下：
+
+```sql
+tidb> desc mysql.expr_pushdown_blacklist;
++------------+--------------+------+------+-------------------+-------+
+| Field      | Type         | Null | Key  | Default           | Extra |
++------------+--------------+------+------+-------------------+-------+
+| name       | char(100)    | NO   |      | NULL              |       |
+| store_type | char(100)    | NO   |      | tikv,tiflash,tidb |       |
+| reason     | varchar(200) | YES  |      | NULL              |       |
++------------+--------------+------+------+-------------------+-------+
+3 rows in set (0.00 sec)
+```
+
+以上结果字段解释如下：
+
++ `name` 为禁止下推的函数名。
++ `store_type` 指明希望禁止该函数下推到哪些存储引擎。目前 TiDB 支持三种存储引擎，分别为 `tikv`、`tidb` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间应以逗号隔开。
++ `reason` 列可以记录该函数被加入黑名单的原因。
+
+### 表达式黑名单用法示例
+
+以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
+
+黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/query-execution-plan.md)）。
+
+```sql
+tidb> create table t(a int);
+Query OK, 0 rows affected (0.06 sec)
+tidb> explain select * from t where a < 2 and a > 2;
++-------------------------+----------+-----------+---------------+------------------------------------+
+| id                      | estRows  | task      | access object | operator info                      |
++-------------------------+----------+-----------+---------------+------------------------------------+
+| TableReader_7           | 0.00     | root      |               | data:Selection_6                   |
+| └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
++-------------------------+----------+-----------+---------------+------------------------------------+
+3 rows in set (0.00 sec)
+tidb> insert into mysql.expr_pushdown_blacklist values('<', 'tikv',''), ('>','tikv','');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+tidb> admin reload expr_pushdown_blacklist;
+Query OK, 0 rows affected (0.00 sec)
+tidb> explain select * from t where a < 2 and a > 2;
++-------------------------+----------+-----------+---------------+------------------------------------+
+| id                      | estRows  | task      | access object | operator info                      |
++-------------------------+----------+-----------+---------------+------------------------------------+
+| Selection_7             | 10000.00 | root      |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
+| └─TableReader_6         | 10000.00 | root      |               | data:TableFullScan_5               |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
++-------------------------+----------+-----------+---------------+------------------------------------+
+3 rows in set (0.00 sec)
+tidb> delete from mysql.expr_pushdown_blacklist where name = '>';
+Query OK, 1 row affected (0.01 sec)
+tidb> admin reload expr_pushdown_blacklist;
+Query OK, 0 rows affected (0.00 sec)
+tidb> explain select * from t where a < 2 and a > 2;
++---------------------------+----------+-----------+---------------+--------------------------------+
+| id                        | estRows  | task      | access object | operator info                  |
++---------------------------+----------+-----------+---------------+--------------------------------+
+| Selection_8               | 0.00     | root      |               | lt(ssb_1.t.a, 2)               |
+| └─TableReader_7           | 0.00     | root      |               | data:Selection_6               |
+|   └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2)               |
+|     └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
++---------------------------+----------+-----------+---------------+--------------------------------+
+4 rows in set (0.00 sec)
+```
+
+> **注意：**
+>
+> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 语句的 TiDB server 生效。若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
+> - 表达式黑名单功能在 v3.0.0 及以上版本中支持。
