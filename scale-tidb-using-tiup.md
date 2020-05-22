@@ -1,3 +1,4 @@
+
 ---
 title: 使用 TiUP 扩容缩容 TiDB 集群
 category: how-to
@@ -139,6 +140,12 @@ tiup cluster display <cluster-name>
 ## 2. 扩容 TiFlash 节点
 
 如果要添加一个 TiFlash 节点，IP 地址为 10.0.1.4，可以按照如下步骤进行操作。
+> **注意：**
+>
+> #### 在原有 TiDB 集群上新增 TiFlash 组件:
+> 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
+> 2. 在 pd-ctl（目前 pd-ctl 还没有接入 TiUP Cluster，需要从 [这里](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz) 手动进行下载）中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
+
 
 ### 2.1 添加节点信息到 scale-out.yaml 文件
 
@@ -179,7 +186,52 @@ tiup cluster display <cluster-name>
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
 
-## 3. 缩容 TiDB/TiKV/PD/TiCDC 节点
+## 3. 扩容 TiCDC 节点
+
+如果要添加 TiCDC 节点，IP 地址为 10.0.1.3、10.0.1.4，可以按照如下步骤进行操作。
+
+### 3.1 添加节点信息到 scale-out.yaml 文件
+
+编写 scale-out.yaml 文件：
+
+{{< copyable "" >}}
+
+```ini
+cdc_servers:
+    - host: 10.0.1.3
+    - host: 10.0.1.4
+```
+
+### 3.2 运行扩容命令
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster scale-out <cluster-name> scale-out.yaml
+```
+
+### 3.3 查看集群状态
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster display <cluster-name>
+```
+
+打开浏览器访问监控平台 <http://10.0.1.5:3000>，监控整个集群和新增节点的状态。
+
+扩容后，集群拓扑结构如下所示：
+
+| 主机 IP   | 服务   | 
+|:----|:----|
+| 10.0.1.3   | TiDB + TiFlash + **TiCDC**  |
+| 10.0.1.4   | TiDB + PD + TiFlash + **TiCDC**  | 
+| 10.0.1.5   | TiDB+ TiKV + Monitor   | 
+| 10.0.1.1   | TiKV    | 
+| 10.0.1.2   | TiKV    | 
+
+
+## 4. 缩容 TiDB/TiKV/PD/TiCDC 节点
 
 如果要移除 IP 地址为 10.0.1.5 的一个 TiKV 节点，可以按照如下步骤进行操作。
 
@@ -187,7 +239,7 @@ tiup cluster display <cluster-name>
 >
 > 移除 TiDB、PD、TiCDC 节点和移除 TiKV 节点的步骤类似。
 
-### 3.1 查看节点 ID 信息
+### 4.1 查看节点 ID 信息
 
 {{< copyable "shell-regular" >}}
 
@@ -206,6 +258,8 @@ ID              Role         Host        Ports                       
 
 --              ----         ----        -----                            ------  --------                ----------
 
+10.0.1.3:8300   cdc         10.0.1.3     8300                                Up      -                       deploy/cdc-8300
+10.0.1.4:8300   cdc         10.0.1.4     8300                                Up      -                       deploy/cdc-8300
 10.0.1.4:2379   pd           10.0.1.4    2379/2380                        Healthy data/pd-2379            deploy/pd-2379
 
 10.0.1.1:20160  tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
@@ -231,7 +285,7 @@ ID              Role         Host        Ports                       
 10.0.1.5:9093   alertmanager 10.0.1.5    9093/9094                        Up      data/alertmanager-9093  deploy/alertmanager-9093
 ```
 
-### 3.2 执行缩容操作
+### 4.2 执行缩容操作
 
 {{< copyable "shell-regular" >}}
 
@@ -243,7 +297,7 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
 
 预期输出 Scaled cluster `<cluster-name>` in successfully 信息，表示缩容操作成功。
 
-### 3.3 检查集群状态
+### 4.3 检查集群状态
 
 下线需要一定时间，下线节点的状态变为 Tombstone 就说明下线成功。
 
@@ -261,13 +315,13 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   | 
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
-| 10.0.1.4   | TiDB + PD + TiFlash   | 
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC | 
 | 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   | 
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
 
-## 4. 缩容 TiFlash 节点
+## 5. 缩容 TiFlash 节点
 
 如果要缩容 IP 地址为 10.0.1.4 的一个 TiFlash 节点，，可以按照如下步骤进行操作。
 
@@ -275,15 +329,15 @@ tiup cluster display <cluster-name>
 >
 > 本节介绍的缩容流程不会删除缩容节点上的数据文件，如需再次上线该节点，请先手动删除原来的数据文件。
 
-### 4.1 下线该 TiFlash 节点
+### 5.1 下线该 TiFlash 节点
 
 参考[下线 TiFlash 节点](/tiflash/maintain-tiflash.md#下线-tiflash-节点)一节，对要进行缩容的 TiFlash 节点进行下线操作。
 
-### 4.2 检查节点是否下线成功
+### 5.2 检查节点是否下线成功
 
 使用 Grafana 或者 pd-ctl 检查节点是否下线成功（下线需要一定时间）。
 
-### 4.3 缩容 TiFlash 
+### 5.3 缩容 TiFlash 
 
 TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，表示 TiFlash 节点已经下线成功，这个时候可以执行如下命令缩容 TiFlash：
 
@@ -293,7 +347,7 @@ TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，
 tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
 ```
 
-### 4.4 查看集群状态
+### 5.4 查看集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -307,8 +361,41 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   | 
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
-| 10.0.1.4   | TiDB + PD**（TiFlash 已删除）**  | 
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.4   | TiDB + PD + TiCDC **（TiFlash 已删除）**  | 
 | 10.0.1.5   | TiDB + Monitor  | 
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
+
+## 6. 缩容 TiCDC 节点
+
+如果要缩容 IP 地址为 10.0.1.4 的一个 TiCDC 节点，可以按照如下步骤进行操作。
+
+### 6.1 下线该 TiCDC 节点
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster scale-in <cluster-name> --node 10.0.1.4:8300
+```
+
+### 6.2 查看集群状态
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster display <cluster-name>
+```
+
+打开浏览器访问监控平台 <http://10.0.1.5:3000>，监控整个集群的状态。
+
+调整后，拓扑结构如下：
+
+| Host IP   | Service   | 
+|:----|:----|
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  | 
+| 10.0.1.5   | TiDB + Monitor  | 
+| 10.0.1.1   | TiKV    | 
+| 10.0.1.2   | TiKV    | 
+
