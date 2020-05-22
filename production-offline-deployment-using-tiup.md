@@ -224,6 +224,8 @@ alertmanager_servers:
 
 `/path/to/mirror` 是 `tiup mirrors <target-dir>` 中输出的 package 所在离线机器的位置:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 export TIUP_MIRRORS=/path/to/mirror
 
