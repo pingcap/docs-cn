@@ -1,10 +1,10 @@
 ---
-title: 集群拓扑感知副本调度
+title: 通过拓扑 label 进行副本调度
 category: how-to
 aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/','/docs-cn/dev/location-awareness/']
 ---
 
-# 集群拓扑感知副本调度
+# 通过拓扑 label 进行副本调度
 
 为了提升 TiDB 集群的高可用性和数据容灾能力，我们推荐让 TiKV 节点尽可能在物理层面上分散，例如让 TiKV 节点分布在不同的机架甚至不同的机房。PD 调度器根据 TiKV 的拓扑信息，会自动在后台通过调度使得 Region 的各个副本尽可能隔离，从而使得数据容灾能力最大化。
 
