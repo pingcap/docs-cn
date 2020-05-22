@@ -10,7 +10,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 源码编译
 
-1. [Go](https://golang.org/) Version 1.9 以上
+1. [Go](https://golang.org/) Version 1.13 以上
 2. 在 PD 项目根目录使用 `make` 或者 `make pd-ctl` 命令进行编译，生成 bin/pd-ctl
 
 ## 下载安装包
@@ -23,7 +23,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v3.0.5` 版本的下载链接为 `https://download.pingcap.org/tidb-v3.0.5-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v4.0.0-rc.2` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
 
 ## 简单例子
 
@@ -124,7 +124,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 }
 ```
 
-### config [show | set \<option> \<value>]
+### config [show | set \<option> \<value> | placement-rules]
 
 用于显示或调整配置信息。示例如下。
 
@@ -433,6 +433,10 @@ config set cluster-version 1.0.8
 
 `enable-placement-rules` 用于开启 placement rules。
 
+### config placement-rules [disable | enable | load | save | show]
+
+用于配置 Placement Rules。 具体使用说明可参考[Placement Rules 使用文档](/configure-placement-rules.md)。
+
 ### health
 
 用于显示集群健康信息。示例如下。
@@ -666,13 +670,29 @@ time: 43.12698ms
 
 ```
 {
-  "region": {
-      "id": 2,
-      ......
-  }
+  "id": 2,
+  "start_key": "7480000000000000FF1D00000000000000F8",
+  "end_key": "7480000000000000FF1F00000000000000F8",
+  "epoch": {
+    "conf_ver": 1,
+    "version": 15
+  },
+  "peers": [
+    {
+      "id": 40,
+      "store_id": 3
+    }
+  ],
   "leader": {
-      ......
-  }
+    "id": 40,
+    "store_id": 3
+  },
+  "written_bytes": 0,
+  "read_bytes": 0,
+  "written_keys": 0,
+  "read_keys": 0,
+  "approximate_size": 1,
+  "approximate_keys": 0
 }
 ```
 
@@ -685,7 +705,7 @@ Raw 格式（默认）示例：
 {{< copyable "" >}}
 
 ```bash
->> region key abc
+>> region key --format=raw abc
 ```
 
 ```
@@ -714,6 +734,25 @@ Encoding 格式示例：
 }
 ```
 
+### region scan
+
+用于获取所有 Region。
+
+示例：
+
+{{< copyable "" >}}
+
+```bash
+>> region scan
+```
+
+```
+{
+  "count": 20,
+  "regions": [......],
+}
+```
+
 ### region sibling <region_id>
 
 用于查询某个 Region 相邻的 Region。
@@ -729,6 +768,25 @@ Encoding 格式示例：
 ```
 {
   "count": 2,
+  "regions": [......],
+}
+```
+
+### region startkey [--format=raw|encode|hex] <key> <limit>
+
+用于查询从某个 key 开始的所有 Region。
+
+示例：
+
+{{< copyable "" >}}
+
+```bash
+>> region startkey --format=raw abc
+```
+
+```
+{
+  "count": 16,
   "regions": [......],
 }
 ```
@@ -842,8 +900,8 @@ Encoding 格式示例：
 
 ```
 {
-    "count": 16,
-    "regions": [......],
+  "count": 16,
+  "regions": [......],
 }
 ```
 
@@ -973,6 +1031,16 @@ Encoding 格式示例：
   "High": 12
 }
 >> store limit-scene idle 100          // 设置 load 为 idle 场景下，添加/删除 peer 的速度上限为每分钟 100 个
+```
+
+### log [fatal | error | warn | info | debug]
+
+用于设置 PD leader 的日志级别。
+
+{{< copyable "" >}}
+
+```bash
+>> log warn
 ```
 
 ### tso
