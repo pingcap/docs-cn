@@ -1,7 +1,7 @@
 ---
 title: AUTO_INCREMENT
 category: reference
-summary: 本文介绍了 TiDB 的列属性 auto_increment。
+summary: 本文介绍了 TiDB 的 `AUTO_INCREMENT` 列属性。
 aliases: ['/docs-cn/dev/reference/sql/attributes/auto-increment/']
 ---
 
@@ -97,7 +97,7 @@ insert into t (c) values (1)
 
 ### 递增性保证
 
-`AUTO_INCREMENT` 列隐式分配值的递增性在含有多个 TiDB 实例的集群中无法得到保证。
+`AUTO_INCREMENT` 列隐式分配值的递增性只能在含有单个 TiDB 实例的集群中得到保证：即对于同一个自增列，先分配的值小于后分配的值；而在含有多个 TiDB 实例的集群中，无法保证自增列的递增性。
 
 例如，对于上述例子，如果先向 B 执行一条插入语句，再向 A 执行一条插入语句，根据缓存自增 ID 的性质，自增列隐式分配的值可能分别是 30002 和 2。因此从时间上看，不满足递增性。
 
@@ -144,7 +144,49 @@ mysql> select _tidb_rowid, id from t;
 
 ### 缓存大小控制
 
-TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1.2、v3.0.14 和 v4.0.rc.2 版本开始，TiDB 引入了 `AUTO_ID_CACHE` 表选项来允许用户自主设置自增 ID 分配缓存的大小。此外如果在 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入。
+TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1.2、v3.0.14 和 v4.0.rc.2 版本开始，TiDB 引入了 `AUTO_ID_CACHE` 表选项来允许用户自主设置自增 ID 分配缓存的大小。例如：
+
+```sql
+mysql> create table t(a int auto_increment key) AUTO_ID_CACHE 100;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into t values();
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> select * from t;
++---+
+| a |
++---+
+| 1 |
++---+
+1 row in set (0.01 sec)
+```
+
+此时如果将该列的自增缓存无效化，重新进行隐式分配：
+
+```sql
+mysql> delete from t;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> rename table t to t1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into t1 values()
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from t;
++-----+
+| a   |
++-----+
+| 101 |
++-----+
+1 row in set (0.00 sec)
+```
+
+可以看到再一次分配的值为 `101`，说明该表的自增 ID 分配缓存的大小为 `100`。
+
+此外如果在批量插入的 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入。
 
 ### 自增步长和偏移量设置
 
