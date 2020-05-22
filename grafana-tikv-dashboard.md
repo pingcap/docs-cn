@@ -544,3 +544,90 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - change peer：PD 返回的心跳 change peer 命令
 - transfer leader：PD 返回的心跳包含 transfer leader 的命令
 - split region：PD 返回的心跳包含 split region 的命令
+
+### Raft ready 类型
+
+- message：raft ready 产生的需要发出给其它节点的消息
+- commit：raft ready 产生的需要 commit 的 entry 数量
+- append：raft ready 产生的需要 append 的 entry 数量
+- snapshot：raft ready 产生的需要应用的 snapshot 的数量
+- has_ready_region：具有 ready 消息的 raft group 的数量
+
+### Scheduler priority 级别
+
+- normal：SQL 提交会携带优先级，如果不指定则为 normal 优先级
+- high：SQL 提交会携带优先级，可以指定为 high，TiDB 在执行阶段会优先处理这条语句
+- low：SQL 提交会携带优先级，可以指定为 low，TiDB 在执行阶段会降低执行这条语句的优先级
+
+### Store tick 类型
+
+tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面具备的 tick 类型：
+
+- compact_check：驱动以检测当前的 TiKV store 是否有 region 需要开始进行 compaction
+- pd_store_heartbeat：驱动以发送心跳到 PD 节点以上传当前 store 的状态信息
+- snap_gc：驱动以将当前 store 内所有没有正在使用即空闲状态的 snapshot 删除
+- compact_lock_cf：驱动以创建一个合并 lock cf 的任务并直接调度，lock cf 是事务中存放 key 的 lock 的区域，但有时候大量读写操作会使这个区域过大影响性能，需要合并以增加检索效率
+- consistency_check：驱动以对当前 store 的所有 region 的数据进行一致性检查
+- cleanup_import_sst：
+
+### Peer tick 类型
+
+- raft：
+- raft_log_gc：
+- split_region_check：
+- pd_heartbeat：
+- check_merge：
+- check_peer_stale_state：
+
+### Raft 消息类型 tikv_raftstore_raft_sent_message_total
+
+- append：
+- append_resp：
+- prevote：
+- prevote_resp：
+- vote：
+- vote_resp：
+- snapshot：
+- request_snapshot：
+- heartbeat：
+- heartbeat_resp：
+- transfer_leader：
+- timeout_now：
+- read_index：
+- read_index_resp：
+
+### Raft drop 消息类型 tikv_raftstore_raft_dropped_message_total
+
+- mismatch_store_id：
+- mismatch_region_epoch：
+- stale_msg：
+- region_overlap：
+- region_no_peer：
+- region_tombstone_peer：
+- region_nonexistent：
+- applying_snap：
+
+### Raft proposal 消息类型 
+
+- local_read：
+- read_index：
+- normal：
+- conf_change：
+- transfer_leader：
+
+### Local read 拒绝类型
+
+- store_id_mismatch：
+- peer_id_mismatch：
+- term_mismatch：
+- lease_expire：
+- no_region：
+- rejected_by_no_lease：
+- rejected_by_epoch：
+- rejected_by_appiled_term：
+- rejected_by_channel_full：
+- local_executed_requests：
+
+### 工作线程名字
+
+### Future poll 名字前缀
