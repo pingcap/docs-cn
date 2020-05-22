@@ -428,59 +428,66 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ### gRPC 消息类型
 
-1 使用事务型接口的命令
-- kv_get：一个事务型的 get 命令，在带有一个开始时间戳的事务中使用 key 查询 value
-- kv_scan：在带有一个开始时间戳的事务中，根据一个 key 的范围扫描 value
-- kv_prewrite：写入 TiKV 的第一个阶段，包含一个事务中所有要写入的数据
-- kv_pessimistic_lock：锁定一系列的 key 以准备写入它们
-- kv_pessimistic_rollback：解锁一系列的 key
-- kv_txn_heart_beat：用于更新悲观事务或大事物的 `lock_ttl` 以防止其被杀掉
-- kv_check_txn_status：检查事务的状态
-- kv_commit：写入 TiKV 的第二个阶段，这个请求命令将会提交一个事务
-- kv_cleanup：清理一个 key（此命令将会在 4.0 中废除）
-- kv_batch_get：与 `kv_get` 类似，带有批量的 key
-- kv_batch_rollback：回滚一个预写的事务，这将从数据库中移除初步写入的数据，解锁相关的锁，置入一个回滚的墓碑
-- kv_scan_lock：扫面数据库的锁，用于在 GC 的初始阶段找到所有的旧锁
-- kv_resolve_lock：对于所有被 `start_version` 标记的事务锁定的 key，要么提交要么回滚
-- kv_gc：触发垃圾回收以清理 `safe_point` 之前的数据
-- kv_delete_range：从 TiKV 中删除一系列的数据
+1. 使用事务型接口的命令：
 
-2 非事务型的裸命令
-- raw_get：使用 key 查询 value
-- raw_batch_get：批量地使用 key 查询 value
-- raw_scan：根据一个 key 的范围扫描 value
-- raw_batch_scan：根据多个 key 的范围扫描 value
-- raw_put：直接写入一对 key 和 value，需要提供写入的 CF
-- raw_batch_put：直接写入多对 key 和 value，需要提供写入的 CF
-- raw_delete：删除指定的 key，需要提供删除所在的 CF
-- raw_batch_delete：批量删除多个指定的 key，需要提供删除所在的 CF
-- raw_delete_range：删除一个范围的 key，需要提供删除所在的 CF
+    - kv_get：一个事务型的 get 命令，在带有一个开始时间戳的事务中使用 key 查询 value
+    - kv_scan：在带有一个开始时间戳的事务中，根据一个 key 的范围扫描 value
+    - kv_prewrite：写入 TiKV 的第一个阶段，包含一个事务中所有要写入的数据
+    - kv_pessimistic_lock：锁定一系列的 key 以准备写入它们
+    - kv_pessimistic_rollback：解锁一系列的 key
+    - kv_txn_heart_beat：用于更新悲观事务或大事物的 `lock_ttl` 以防止其被杀掉
+    - kv_check_txn_status：检查事务的状态
+    - kv_commit：写入 TiKV 的第二个阶段，这个请求命令将会提交一个事务
+    - kv_cleanup：清理一个 key（此命令将会在 4.0 中废除）
+    - kv_batch_get：与 `kv_get` 类似，带有批量的 key
+    - kv_batch_rollback：回滚一个预写的事务，这将从数据库中移除初步写入的数据，解锁相关的锁，置入一个回滚的墓碑
+    - kv_scan_lock：扫面数据库的锁，用于在 GC 的初始阶段找到所有的旧锁
+    - kv_resolve_lock：对于所有被 `start_version` 标记的事务锁定的 key，要么提交要么回滚
+    - kv_gc：触发垃圾回收以清理 `safe_point` 之前的数据
+    - kv_delete_range：从 TiKV 中删除一系列的数据
 
-3 存储命令（发送到集群中所有的 TiKV 节点）
-- unsafe_destroy_range：绕过 raft 层直接从存储引擎删除一个范围的 key
-- register_lock_observer：注册一个 observer，用于监听 max_ts 之前的锁
-- check_lock_observer：检查之前 observer 的状态，取得其收集的锁
-- remove_lock_observer：关闭相应的 observer，不再进行监听
-- physical_scan_lock：绕过 raft 层直接在物理层扫描 Lock CF，返回 max_tx 之前的锁
+2. 非事务型的裸命令：
 
-4 在 Coprocessor 中执行 SQL 的命令（下推到 TiKV 执行的命令）
-- coprocessor：由 TiDB 发送的 coprocessor 请求
-- coprocessor_stream：由 TiDB 发送的 coprocessor 请求，以流形式返回
-- batch_coprocessor：由 TiDB 发送的多个 coprocessor 请求
+    - raw_get：使用 key 查询 value
+    - raw_batch_get：批量地使用 key 查询 value
+    - raw_scan：根据一个 key 的范围扫描 value
+    - raw_batch_scan：根据多个 key 的范围扫描 value
+    - raw_put：直接写入一对 key 和 value，需要提供写入的 CF
+    - raw_batch_put：直接写入多对 key 和 value，需要提供写入的 CF
+    - raw_delete：删除指定的 key，需要提供删除所在的 CF
+    - raw_batch_delete：批量删除多个指定的 key，需要提供删除所在的 CF
+    - raw_delete_range：删除一个范围的 key，需要提供删除所在的 CF
 
-5 Raft 命令
-- raft：TiKV 节点间 raft 协议的消息
-- batch_raft：批量发送的 raft 协议的消息
-- snapshot：发送 raft 中状态机数据的一份快照，以流的形式发送多个打散的快照块
+3. 存储命令（发送到集群中所有的 TiKV 节点）：
 
-6 调试事务命令
-- mvcc_get_by_key：通过给定 key 返回 mvcc 信息
-- mvcc_get_by_start_ts：通过给定 start ts 返回 mvcc 信息
+    - unsafe_destroy_range：绕过 raft 层直接从存储引擎删除一个范围的 key
+    - register_lock_observer：注册一个 observer，用于监听 max_ts 之前的锁
+    - check_lock_observer：检查之前 observer 的状态，取得其收集的锁
+    - remove_lock_observer：关闭相应的 observer，不再进行监听
+    - physical_scan_lock：绕过 raft 层直接在物理层扫描 Lock CF，返回 max_tx 之前的锁
 
-7 其它命令
-- batch_commands：批量发送多个命令，用于减少传输量提高性能
-- split_region：PD 发送 split region 请求给 TiKV 节点，同时指定需要 split 的 key
-- read_index：通过 raft 的一些元数据来获取 read index
+4. 在 Coprocessor 中执行 SQL 的命令（下推到 TiKV 执行的命令）：
+
+    - coprocessor：由 TiDB 发送的 coprocessor 请求
+    - coprocessor_stream：由 TiDB 发送的 coprocessor 请求，以流形式返回
+    - batch_coprocessor：由 TiDB 发送的多个 coprocessor 请求
+
+5. Raft 命令：
+
+    - raft：TiKV 节点间 raft 协议的消息
+    - batch_raft：批量发送的 raft 协议的消息
+    - snapshot：发送 raft 中状态机数据的一份快照，以流的形式发送多个打散的快照块
+
+6. 调试事务命令：
+
+    - mvcc_get_by_key：通过给定 key 返回 mvcc 信息
+    - mvcc_get_by_start_ts：通过给定 start ts 返回 mvcc 信息
+
+7. 其它命令：
+
+    - batch_commands：批量发送多个命令，用于减少传输量提高性能
+    - split_region：PD 发送 split region 请求给 TiKV 节点，同时指定需要 split 的 key
+    - read_index：通过 raft 的一些元数据来获取 read index
 
 ### 底层数据库类型
 
