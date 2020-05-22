@@ -1,9 +1,9 @@
 ---
-title: TiUP 术语
+title: TiUP 术语及核心概念
 category: tools
 ---
 
-# TiUP 术语
+# TiUP 术语及核心概念
 
 本文主要说明 TiUP 的重要术语和核心概念。
 

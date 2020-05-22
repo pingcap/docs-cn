@@ -189,12 +189,12 @@
   + [Mydumper](/mydumper-overview.md) @余峻岑
   + [Syncer](/syncer-overview.md) @王相
   + TiUP @龙恒
-    + [TiUP 文档指南](/tiup/tiup-documentation-guide.md)
-    + [TiUP 概览](/tiup/tiup-overview.md)
-    + [TiUP 术语](/tiup/tiup-terms.md)
+    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [概览](/tiup/tiup-overview.md)
+    + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
     + [TiUP 组件管理](/tiup/tiup-component-management.md)
-    + [TiUP FAQ](/tiup/tiup-faq.md)
-    + [TiUP 故障排查](/tiup/tiup-troubleshooting-guide.md)
+    + [FAQ](/tiup/tiup-faq.md)
+    + [故障排查](/tiup/tiup-troubleshooting-guide.md)
     + TiUP 组件文档
       + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
