@@ -1,7 +1,7 @@
 ---
 title: 集群拓扑感知副本调度
 category: how-to
-aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/']
+aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/','/docs-cn/dev/location-awareness/']
 ---
 
 # 集群拓扑感知副本调度
