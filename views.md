@@ -18,7 +18,7 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 
 ### `SHOW CREATE TABLE view_name` 或 `SHOW CREATE VIEW view_name`
 
-示例:
+示例：
 
 {{< copyable "sql" >}}
 
@@ -26,9 +26,9 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 show create view v;
 ```
 
-该语句可以查看 view 对应的创建语句，及创建 view 时对应的 character_set_client 及 collation_connection 系统变量值。
+该语句可以查看 view 对应的创建语句，及创建 view 时对应的 `character_set_client` 及 `collation_connection` 系统变量值。
 
-```
+```sql
 +------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
 | View | Create View                                                                                                                                                         | character_set_client | collation_connection |
 +------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
@@ -37,7 +37,7 @@ show create view v;
 1 row in set (0.00 sec)
 ```
 
-### 查询 INFORMATION_SCHEMA.VIEWS 表
+### 查询 `INFORMATION_SCHEMA.VIEWS` 表
 
 示例:
 
@@ -47,9 +47,9 @@ show create view v;
 select * from information_schema.views;
 ```
 
-通过查询该表可以查看 view 的相关元信息，如 `TABLE_CATALOG`, `TABLE_SCHEMA`, `TABLE_NAME`, `VIEW_DEFINITION`, `CHECK_OPTION`, `IS_UPDATABLE`, `DEFINER`, `SECURITY_TYPE`, `CHARACTER_SET_CLIENT`, `COLLATION_CONNECTION` 等。
+通过查询该表可以查看 view 的相关元信息，如 `TABLE_CATALOG`、`TABLE_SCHEMA`、`TABLE_NAME`、`VIEW_DEFINITION`、`CHECK_OPTION`、`IS_UPDATABLE`、`DEFINER`、`SECURITY_TYPE`、`CHARACTER_SET_CLIENT`、`COLLATION_CONNECTION` 等。
 
-```
+```sql
 +---------------+--------------+------------+------------------------------------------------------------------------+--------------+--------------+----------------+---------------+----------------------+----------------------+
 | TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | VIEW_DEFINITION                                                        | CHECK_OPTION | IS_UPDATABLE | DEFINER        | SECURITY_TYPE | CHARACTER_SET_CLIENT | COLLATION_CONNECTION |
 +---------------+--------------+------------+------------------------------------------------------------------------+--------------+--------------+----------------+---------------+----------------------+----------------------+
@@ -62,11 +62,13 @@ select * from information_schema.views;
 
 示例:
 
+{{< copyable "" >}}
+
 ```
 curl http://127.0.0.1:10080/schema/test/v
 ```
 
-通过访问 `http://{TiDBIP}:10080/schema/{db}/{view}`, 可以得到对应 view 的所有元信息。
+通过访问 `http://{TiDBIP}:10080/schema/{db}/{view}` 可以得到对应 view 的所有元信息。
 
 ```
 {
