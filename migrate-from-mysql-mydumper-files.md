@@ -10,19 +10,17 @@ category: how-to
 
 ## 第 1 步：部署 TiDB Lighitning
 
-具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)
+具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
 
 > **注意：**
 >
-> 如果选用 Importer Backend 进行数据导入的话，需要额外部署 TiKV Importer 组件。
-> 如果选用 TiDB Backend 进行数据导入的话，只需要部署 TiDB Lightning 组件即可。
-> 具体的差别见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
+> 如果选用 Importer Backend 来导入数据，需要额外部署 TiKV Importer 组件。如果选用 TiDB Backend 来导入数据，只需要部署 TiDB Lightning 组件。具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-tidb-backend.md)。
 
-## 第 2 步：配置 TiDB Lightning 的数据源，以 TiDB Backend 为例
+## 第 2 步：配置 TiDB Lightning 的数据源
 
-增加 tidb-lightning.toml 配置文件，在文件中添加以下主要配置。
+本文以选用 TiDB Backend 导入数据为例。增加 `tidb-lightning.toml 配置文件`，在文件中添加以下主要配置：
 
-1. 设置 [mydumper] 下的 data-source-dir 为 MySQL SQL 文件路径。
+1. 将 `[mydumper]` 下的 `data-source-dir` 设置为 MySQL 的 SQL 文件路径。
 
 ```
 [mydumper]
@@ -31,10 +29,9 @@ data-source-dir = "/data/export"
 ```
 > **注意：**
 >
-> 如果下游已经存在对应的 schema，那么可以设置 `no-schema=true`，可以跳过 schema 创建的步骤
+> 如果下游已经存在对应的 schema，那么可以设置 `no-schema=true` 来跳过 schema 创建的步骤。
 
-
-2. 增加导入集群 tidb 配置
+2. 增加目标集群 TiDB 的配置。
 ```
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
@@ -44,14 +41,13 @@ user = "root"
 password = ""
 ```
 
-其它配置可以参考 [TiDB Lightining 配置](/tidb-lightning/tidb-lightning-configuration.md)
+其它配置参考 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ## 第 3 步：开启 TiDB Lightning 进行数据导入
 
-运行 tidb-lightning。如果直接在命令行中用 nohup 启动程序，可能会因为 SIGHUP 信号而退出，建议把 nohup 放到脚本里面，如：
+运行 TiDB Lightning。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
 ```
 #!/bin/bash
 nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
-
