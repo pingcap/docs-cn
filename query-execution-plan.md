@@ -127,7 +127,9 @@ mysql> explain select * from t use index(idx_a);
 3 rows in set (0.00 sec)
 ```
 
-这里 `IndexLookUp_6` 算子有两个孩子节点：`IndexFullScan_4(Build)` 和 `TableRowIDScan_5(Probe)`。可以看到，`IndexFullScan_4(Build)` 执行索引全表扫，扫描索引 a 的所有数据，因为是全范围扫，这个操作将获得表中所有数据的 RowID，之后再由 `TableRowIDScan_5(Probe)` 根据这些 RowID 去扫描所有的表数据。可以预见的是，这个执行计划不如直接使用 TableReader 进行全表扫，因为同样都是全表扫，这里的 IndexLookUp 多扫了一次索引，带来了额外的开销。其中对于扫表操作来说，explain 表中的 operator info 列记录了读到的数据是否是有序的，如上面例子 `IndexFullScan` 算子中的  `keep order:false` 表示读到的数据是无序的。而 operator info 中的 `stats:pseudo` 表示可能因为没有统计信息，或者当统计信息过旧时，就不会用统计信息来进行估算了。对于其他扫表操作来说，operator info 所含有的信息类似。
+这里 `IndexLookUp_6` 算子有两个孩子节点：`IndexFullScan_4(Build)` 和 `TableRowIDScan_5(Probe)`。可以看到，`IndexFullScan_4(Build)` 执行索引全表扫，扫描索引 a 的所有数据，因为是全范围扫，这个操作将获得表中所有数据的 RowID，之后再由 `TableRowIDScan_5(Probe)` 根据这些 RowID 去扫描所有的表数据。可以预见的是，这个执行计划不如直接使用 TableReader 进行全表扫，因为同样都是全表扫，这里的 IndexLookUp 多扫了一次索引，带来了额外的开销。
+
+其中对于扫表操作来说，explain 表中的 operator info 列记录了读到的数据是否是有序的，如上面例子 `IndexFullScan` 算子中的 `keep order:false` 表示读到的数据是无序的。而 operator info 中的 `stats:pseudo` 表示可能因为没有统计信息，或者统计信息过旧，不会用统计信息来进行估算。对于其他扫表操作来说，operator info 所含有的信息类似。
 
 #### TableReader 示例
 
@@ -192,7 +194,7 @@ TiDB(root@127.0.0.1:test) > explain select /*+ HASH_AGG() */ count(*) from t;
 4 rows in set (0.00 sec)
 ```
 
-一般而言 TiDB 的 Hash Aggregate 会分成两个阶段执行，一个在 TiKV/TiFlash 的 Coprocessor 上，在扫表算子读取数据时计算聚合函数的中间结果。另一个在 TiDB 层，汇总所有 Coprocessor Task 的中间结果后，得到最终结果。其中 explain 表中的 operator info 列还记录了 Hash Aggregation 的其他信息，其中我们需要关注的信息是 Aggregation 所使用的聚合函数是什么。如在上面的例子中，Hash Aggregation  算子的 operator info 中的内容为 `funcs:count(Column#7)->Column#4`，我们可以得到 Hash Aggregation 使用了聚合函数 `count` 进行计算。下面例子中 Stream Aggregation 算子中 operator info 所表示的信息和此处相同。
+一般而言 TiDB 的 Hash Aggregate 会分成两个阶段执行，一个在 TiKV/TiFlash 的 Coprocessor 上，在扫表算子读取数据时计算聚合函数的中间结果。另一个在 TiDB 层，汇总所有 Coprocessor Task 的中间结果后，得到最终结果。其中 explain 表中的 operator info 列还记录了 Hash Aggregation 的其他信息，我们需要关注的信息是 Aggregation 所使用的聚合函数是什么。如在上面的例子中，Hash Aggregation 算子的 operator info 中的内容为 `funcs:count(Column#7)->Column#4`，我们可以得到 Hash Aggregation 使用了聚合函数 `count` 进行计算。下面例子中 Stream Aggregation 算子中 operator info 所表示的信息和此处相同。
 
 #### Stream Aggregate 示例
 
