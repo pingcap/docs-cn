@@ -7,7 +7,7 @@ category: performance
 
 ## 简单 DISTINCT
 
-通常来说, 简单的 DISTINCT 会被优化成 GROUP BY 来执行。例如：
+通常简单的 `DISTINCT` 会被优化成 GROUP BY 来执行。例如：
 
 ```sql
 mysql> explain select DISTINCT a from t;
@@ -21,14 +21,14 @@ mysql> explain select DISTINCT a from t;
 3 rows in set (0.00 sec)
 ```
 
-TODO: 当 LIMIT __row_count__ 和 DISTINCT 组合使用时, TiDB 应立即返回 __row_count__ 个不同的行。 [#15284](https://github.com/pingcap/tidb/issues/15284)
+TODO([#15284](https://github.com/pingcap/tidb/issues/15284)): 当 LIMIT __row_count__ 和 `DISTINCT` 组合使用时, TiDB 应立即返回 __row_count__ 个不同的行。
 
 ## 聚合函数 DISTINCT
 
-通常来说，带有 DISTINCT 的聚合函数会单线程的在 TiDB 侧执行。
-使用系统变量 [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 或者 TiDB 的配置项 [distinct-agg-push-down](/tidb-configuration-file.md#distinct-agg-push-down) 控制优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
+通常来说，带有 `DISTINCT` 的聚合函数会单线程的在 TiDB 侧执行。
+使用系统变量 [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 或者 TiDB 的配置项 [distinct-agg-push-down](/tidb-configuration-file.md#distinct-agg-push-down) 控制优化器是否执行带有 `DISTINCT` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 
-在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
+在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增了一个 `group by` 列 `test.t.a`。
 
 ```sql
 mysql> desc select count(distinct a) from test.t;
