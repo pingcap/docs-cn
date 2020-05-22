@@ -21,8 +21,6 @@ mysql> explain select DISTINCT a from t;
 3 rows in set (0.00 sec)
 ```
 
-TODO([#15284](https://github.com/pingcap/tidb/issues/15284)): 当 LIMIT __row_count__ 和 `DISTINCT` 组合使用时, TiDB 应立即返回 __row_count__ 个不同的行。
-
 ## 聚合函数 DISTINCT
 
 通常来说，带有 `DISTINCT` 的聚合函数会单线程的在 TiDB 侧执行。
