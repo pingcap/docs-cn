@@ -10,6 +10,8 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 ## 获取 TiDB Control
 
+本节提供了两种方式获取 TiDB Control 工具。
+
 ### 获取二进制程序
 
 对于使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署的 TiDB 集群，在 TiDB 的安装路径下可以找到 TiDB Control 的二进制程序 `tidb-ctl`。
@@ -36,7 +38,7 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 目前，TiDB Control 包含以下子命令。
 
-* `tidb-ctl base64decode` BASE64 解码
+* `tidb-ctl base64decode` 用于 BASE64 解码
 * `tidb-ctl decoder` 用于 KEY 解码
 * `tidb-ctl etcd` 用于操作 etcd
 * `tidb-ctl log` 用于格式化日志文件，将单行的堆栈信息展开
