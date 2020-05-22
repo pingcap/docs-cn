@@ -23,6 +23,7 @@ TiKV 的系统架构如下图所示：
 ## RocksDB 的内存占用
 
 * 为了提高读取性能以及减少对磁盘的读取，RocksDB 将存储在磁盘上的文件都按照一定大小切分成 block （默认是 64KB），读取 block 时先去内存中的 BlockCache 中查看该块数据是否存在，存在的话则可以直接从内存中读取而不必访问磁盘。BlockCache 按照 LRU 算法淘汰低频访问的数据，TiKV 默认将系统总内存大小的 45% 用于 BlockCache，用户也可以自行修改 `storage.block-cache.capacity` 配置设置为合适的值，但是不建议超过系统总内存的 60%。
+
 * 写入 RocksDB 中的数据会写入 MemTable，当一个 MemTable 的大小超过 128MB 时会切换到一个新的 MemTable 来提供写入，TiKV 中一共有 2 个 RocksDB 实例，合计 4 个 ColumnFamily，每个 ColumnFamily 的单个 MemTable 大小限制是 128MB，最多允许 5 个 MemTable 存在，否则会阻塞前台写入，因此这部分占用的内存最多为 4 * 5 * 128MB = 2.5GB。这部分占用内存较少，不建议用户自行更改。
 
 ## RocksDB 的空间占用
@@ -32,9 +33,11 @@ TiKV 的系统架构如下图所示：
 * TiKV 的空间放大：TiKV 在 RocksDB 之上还有一层自己的 MVCC，当用户写入一个 key 的时候，tikv 实际上写入 RocksDB 是 key + commit_ts，这也就是说用户的更新和删除都是会写入新的 key 进入到 RocksDB。TiKV 会每隔一段时间删除旧版本的数据（通过 RocksDB 的 Delete 接口），因此我们可以认为用户存储在 TiKV 上的数据的实际空间放大为，1.11 加最近 10 分钟内写入的数据（假设 TiKV 回收旧版本数据足够及时）。 详细可见[tidb-in-action](https://github.com/pingcap-incubator/tidb-in-action/blob/master/session4/chapter7/compact.md#tikv-%E7%9A%84%E7%A9%BA%E9%97%B4%E6%94%BE%E5%A4%A7)
 
 ## RocksDB 后台线程与 Compact
+
 * RocksDB 将内存中的 MemTable 转化为磁盘上的 SST 文件以及合并各个层级的 SST 文件都是在后台线程池中执行的，后台线程池的默认大小是 8，当机器 CPU 数量小于等于 8 时，后台线程池默认大小 CPU 数量减一。通常来说用户不需要更改这个配置，如果用户在一个机器上部署了多个 TiKV 实例的话，或者机器的读负载比较高而写负载比较低，那么可以适当调低 `rocksdb/max-background-jobs` 至 3 或者 4。
 
 ## WriteStall
+
 * RocksDB 的 L0 与其他层不同，L0 的各个 SST 是按照生成顺序排列，各个 SST 之间的 key 范围存在重叠，因此查询的时候必须依次查询 L0 中的每一个 SST，为了不影响查询性能，当 L0 中的文件数量过多时，会触发 WriteStall 阻塞写入。如果用户遇到了写延迟突然大幅度上涨，可以先查看 Grafana RocksDB KV 面板 WriteStall Reason 指标，如果是 L0 文件数量过多引起的 WriteStall，可以调整下面几个配置到 64，详细见 [tidb-in-action](https://github.com/pingcap-incubator/tidb-in-action/blob/master/session4/chapter8/threadpool-optimize.md#5-rocksdb)
 
 ```
@@ -45,4 +48,3 @@ rocksdb.defaultcf.level0-stop-writes-trigger
 rocksdb.writecf.level0-stop-writes-trigger
 rocksdb.lockcf.level0-stop-writes-trigger
 ```
-
