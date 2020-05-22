@@ -28,7 +28,7 @@ http://PDAddress:PDPort/dashboard
 
 下图为一个 Key Visualizer 页面示例
 
-![Key Visualizer 示例图](/media/dashboard/keyvisualizer/overview.png)
+![Key Visualizer 示例图](/media/dashboard/key-visualizer/overview.png)
 
 从以上 Key Visualizer 界面可以观察到以下信息：
 
@@ -68,7 +68,7 @@ http://PDAddress:PDPort/dashboard
 
 本部分介绍如何使用 Key Visualizer。
 
-![工具栏](/media/dashboard/keyvisualizer/toolbar.png)
+![工具栏](/media/dashboard/key-visualizer/toolbar.png)
 
 ### 观察某一段时间或者 Region 范围
 
@@ -113,11 +113,11 @@ http://PDAddress:PDPort/dashboard
 
 可以将鼠标悬停在你所关注的 Bucket 上，来查看这个区域的详细信息。详细信息如下图所示：
 
-![Bucket 详细信息](/media/dashboard/keyvisualizer/tooltip.png)
+![Bucket 详细信息](/media/dashboard/key-visualizer/tooltip.png)
 
 如果需要复制某个信息，可以进行点击 Bucket。此时相关详细信息的页面会被暂时钉住。点击你关注的信息，即可将其复制到剪切板。详细信息页面示例图如下：
 
-![复制 Bucket 详细信息](/media/dashboard/keyvisualizer/tooltip-copy.png)
+![复制 Bucket 详细信息](/media/dashboard/key-visualizer/tooltip-copy.png)
 
 ## 常见热力图解读
 
@@ -125,19 +125,19 @@ http://PDAddress:PDPort/dashboard
 
 ### 均衡：期望结果
 
-![均衡结果图](/media/dashboard/keyvisualizer/well_dist.png)
+![均衡结果图](/media/dashboard/key-visualizer/well_dist.png)
 
 如上图所示，热力图颜色均匀或者深色和亮色混合良好，说明读取或写入在时间和 Region 空间范围上都分布得比较均衡，访问压力均匀地分摊在所有的机器上。这种负载是最适合分布式数据库的。
 
 ### X 轴明暗交替：需要关注高峰期的资源情况
 
-![X 轴明暗交替](/media/dashboard/keyvisualizer/period.png)
+![X 轴明暗交替](/media/dashboard/key-visualizer/period.png)
 
 如上图所示，热力图在 X 轴（时间）上表现出明暗交替，但 Y 轴 (Region) 则比较均匀，说明读取或写入负载具有周期性的变化。这种情况可能出现在周期性的定时任务场景，如大数据平台每天定时从 TiDB 中抽取数据。一般来说可以关注一下使用高峰时期资源是否充裕。
 
 ## Y 轴明暗交替：需要关注产生的热点聚集程度
 
-![Y 轴明暗交替](/media/dashboard/keyvisualizer/continue.png)
+![Y 轴明暗交替](/media/dashboard/key-visualizer/continue.png)
 
 如上图所示，热力图包含几个明亮的条纹，从 Y 轴来看条纹周围都是暗的，这表明明亮条纹区域的 Region 有很高的读写流量，可以从业务角度观察一下是否符合预期。例如，所有业务都关联用户表的情况下，用户表的整体流量就会很高，那么在热力图中表现为亮色区域就非常合理。
 
@@ -145,7 +145,7 @@ http://PDAddress:PDPort/dashboard
 
 ### 明亮斜线：需要关注业务模式
 
-![明亮斜线](/media/dashboard/keyvisualizer/sequential.png)
+![明亮斜线](/media/dashboard/key-visualizer/sequential.png)
 
 如图上所示，热力图显示了明亮的斜线，表明读写的 Region 是连续的。这种场景常常出现在带索引的数据导入或者扫描阶段。例如，向自增 ID 的表进行连续写入等等。图中明亮部分对应的 Region 是读写流量的热点，往往会成为整个集群的性能问题所在。这种时候，可能需要业务重新调整主键，尽可能打散以将压力分散在多个 Region 上，或者选择将业务任务安排在低峰期。
 
