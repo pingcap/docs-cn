@@ -8,11 +8,11 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-control/','/docs-cn/tools/tidb-cont
 
 TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多用于调试。本文介绍了 TiDB Control 的主要功能和各个功能的使用方法。
 
-## 获取 TiDB Contral
+## 获取 TiDB Control
 
 ### 获取二进制程序
 
-对于使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署的 TiDB 集群，在 TiDB 的安装路径下可以找到 TiDB Contral 的二进制程序 `tidb-ctl`。
+对于使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署的 TiDB 集群，在 TiDB 的安装路径下可以找到 TiDB Control 的二进制程序 `tidb-ctl`。
 
 ### 从源代码编译安装
 
@@ -39,11 +39,11 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 * `tidb-ctl base64decode` BASE64 解码
 * `tidb-ctl decoder` 用于 KEY 解码
 * `tidb-ctl etcd` 用于操作 etcd
-* `tidb-ctl log` 格式化日志文件，将单行的堆栈信息展开
-* `tidb-ctl mvcc` - MVCC 信息
-* `tidb-ctl region` - Region 信息
-* `tidb-ctl schema` - Schema 信息
-* `tidb-ctl table` - Table 信息
+* `tidb-ctl log` 用于格式化日志文件，将单行的堆栈信息展开
+* `tidb-ctl mvcc` 用于获取 MVCC 信息
+* `tidb-ctl region` 用于获取 Region 信息
+* `tidb-ctl schema` 用于获取 Schema 信息
+* `tidb-ctl table` 用于获取 Table 信息
 
 ### 获取帮助
 
@@ -51,7 +51,7 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 以获取 Schema 信息为例：
 
-通过 `tidb-ctl schema -h` 可以获取这个子命令的使用帮助。schema 有两个子命令，in 和 tid。in 用来通过数据库名获取数据库中所有表的表结构，tid 用来通过全数据库唯一的 table_id 获取表的表结构。
+通过 `tidb-ctl schema -h` 可以获取这个子命令的使用帮助。schema 有两个子命令——in 和 tid。in 用来通过数据库名获取数据库中所有表的表结构，tid 用来通过全数据库唯一的 table_id 获取表的表结构。
 
 ### 全局参数
 
@@ -113,7 +113,7 @@ in 子命令用来通过数据库名获取数据库中所有表的表结构。
 
 这里同样做了截断。
 
-如使用的 TiDB 地址不为默认地址和端口，可以使用命令行参数 `--host`, `--port` 选项，如：`tidb-ctl --host 172.16.55.88 --port 8898 schema in mysql -n db`
+如使用的 TiDB 地址不为默认地址和端口，可以使用命令行参数 `--host`, `--port` 选项，如：`tidb-ctl --host 172.16.55.88 --port 8898 schema in mysql -n db`。
 
 #### tid 子命令
 
@@ -136,7 +136,7 @@ tid 子命令用来通过表的 id 获取数据库中表的表结构。
 }
 ``` 
 
-同 in 子命令一样，如果使用的 TiDB 地址不是默认的地址和端口，需要通过 `--host`, `--port` 参数指定 TiDB 的地址和端口。
+同 in 子命令一样，如果使用的 TiDB 地址不是默认的地址和端口，需要通过 `--host` 和 `--port` 参数指定 TiDB 的地址和端口。
 
 ### base64decode 命令
 
