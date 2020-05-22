@@ -1,7 +1,6 @@
 ---
 title: 执行计划缓存简介
 category: performance
-aliases: ['/docs-cn/dev/reference/performance/sql-prepare-plan-cache/']
 ---
 
 # 执行计划缓存简介
