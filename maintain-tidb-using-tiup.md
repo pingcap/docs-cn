@@ -124,7 +124,7 @@ server_configs:
 
 然后执行 `tiup cluster reload ${cluster-name} -N tidb` 命令滚动重启。
 
-## 更新组件
+## Hotfix 版本替换
 
 常规的升级集群可以使用 upgrade 命令，但是在某些场景下（例如 Debug)，可能需要用一个临时的包替换正在运行的组件，此时可以用 patch 命令：
 
