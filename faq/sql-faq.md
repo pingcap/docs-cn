@@ -90,8 +90,72 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 1）由于 TiDB 是分布式数据库，tidb-server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/overview.md#tidb-整体架构)），用户使用 MySQL 客户端登录的是哪个 tidb-server，`show processlist` 就会显示当前连接的这个 tidb-server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
 
 2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
- 
- 
+
+
+#### 1.1.15 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
+
+TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_priority)、[全局](/tidb-configuration-file.md#force-priority)或单个语句的优先级。优先级包括：
+
+- HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
+- LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+
+以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
+
+1. 通过在数据库中写 SQL 的方式来调整优先级：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
+    insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
+    delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
+    update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
+    replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+    ```
+
+2. 全表扫会自动调整为低优先级，analyze 也是默认低优先级。
+
+#### 1.1.16 在 TiDB 中 auto analyze 的触发策略是怎样的？
+
+触发策略：新表达到 1000 条，并且在 1 分钟内没有写入，会自动触发。
+
+当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+
+#### 1.1.17 SQL 中如何通过 hint 使用一个具体的 index？
+
+同 MySQL 的用法一致，例如：
+`select column_name from table_name use index（index_name）where where_condition;`
+
+#### 1.1.18 触发 Information schema is changed 错误的原因？
+
+TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。
+
+现在会报此错的可能原因如下（后两个报错原因与表无关）：
+
+- 执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
+- 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句，导致中间 `schema` 版本变更次数超过 1024 （此为默认值，可以通过 `tidb_max_delta_schema_count` 变量修改）。
+- 接受 DML 请求的 TiDB 长时间不能加载到 `schema information`（TiDB 与 PD 或 TiKV 之间的网络连接故障等会导致此问题），而这段时间内执行了很多 DDL 语句，导致中间 `schema` 版本变更次数超过 100。
+
+> **注意：**
+>
+> + 目前 TiDB 未缓存所有的 `schema` 版本信息。
+> + 对于每个 DDL 操作，`schema` 版本变更的数量与对应 `schema state` 变更的次数一致。
+> + 不同的 DDL 操作版本变更次数不一样。例如，`create table` 操作会有 1 次 `schema` 版本变更；`add column` 操作有 4 次 `schema` 版本变更。
+
+#### 1.1.19 触发 Information schema is out of date 错误的原因？
+
+当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
+
+- 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
+- TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
+
+#### 1.1.20 高并发情况下执行 DDL 时报错的原因？
+
+高并发情况下执行 DDL（比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
+
+并发执行 DDL 时，建议将 DDL 数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
+
+
 ## 二、SQL 优化
 
 ### 2.1 TiDB 执行计划解读
