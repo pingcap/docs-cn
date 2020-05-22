@@ -1,17 +1,17 @@
 ---
-title: Schema Object Names
+title: Schema 对象名
 category: reference
 summary: 本文介绍 TiDB SQL 语句中的模式对象名。
 aliases: ['/docs-cn/dev/reference/sql/language-structure/schema-object-names/']
 ---
 
-本文介绍 TiDB SQL 语句中的模式对象名。
-
-# Schema Object Names
+# Schema 对象名
 
 <!-- markdownlint-disable MD038 -->
 
-模式对象名用于命名 TiDB 中所有的模式对象，包括 database，table，index，column，alias 等等。在 SQL 语句中，可以通过标识符(identifier)来引用这些对象。
+本文介绍 TiDB SQL 语句中的模式对象名。
+
+模式对象名用于命名 TiDB 中所有的模式对象，包括 database、table、index、column、alias 等等。在 SQL 语句中，可以通过标识符 (identifier) 来引用这些对象。
 
 标识符可以被反引号 (\`) 包裹，即 `SELECT * FROM t` 也可以写成 `` SELECT * FROM `t` ``。但如果标识符中存在至少一个特殊符号，或者它是一个保留关键字，那就必须使用反引号 (\`) 包裹来引用它所代表的模式对象。
 
@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/language-structure/schema-object-names/']
 SELECT * FROM `table` WHERE `table`.id = 20;
 ```
 
-如果 sql mode 中设置了 `ANSI_QUOTES`，那么 TiDB 会将被双引号 `"` 包裹的字符串识别为 identifier。
+如果 SQL MODE 中设置了 `ANSI_QUOTES`，那么 TiDB 会将被双引号 `"` 包裹的字符串识别为 identifier。
 
 ```sql
 MySQL [test]> CREATE TABLE "test" (a varchar(10));
