@@ -3,7 +3,7 @@ title: 执行计划缓存
 category: performance
 ---
 
-# 执行计划缓存简介
+# 执行计划缓存
 
 TiDB 支持对 `Prepare` / `Execute` 请求的执行计划缓存。
 
