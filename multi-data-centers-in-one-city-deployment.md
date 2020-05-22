@@ -92,7 +92,7 @@ member leader_priority pdName3 3
 
 下面我们假设某城存有 IDC1、IDC2、IDC3 三机房，机房 IDC 中存有两套机架，每个机架存有三台服务器，不考虑混布以及单台机器多实例部署下，同城三数据中心架构集群（3 副本）部署参考如下：
 
-![sample-tidb](/media/multi-data-centers-in-one-city-deployment-sample.PNG)
+![sample-tidb](/media/multi-data-centers-in-one-city-deployment-sample.png)
 
 #### 2.3.2 TiKV Labels 规划
 
