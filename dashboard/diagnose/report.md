@@ -1,0 +1,310 @@
+---
+title: Cluster Diagnose Report 集群诊断报告
+category: how-to
+aliases: ['/docs-cn/dev/how-to/???']
+---
+
+# 集群诊断页面
+
+本文档主要介绍诊断报告的内容以及查看技巧，访问集群诊断和生成报告请参考 [诊断报告访问文档](/dashboard/diagnose/access.md)
+
+## 查看报告
+
+诊断报告由以下几部分组成：
+
+* 基本信息：包括生成报告的时间范围，集群的硬件信息，集群的拓扑版本信息。
+* 诊断信息：显示自动诊断的结果。
+* 负载信息：包括服务器，TIDB/PD/TiKV 相关的 CPU, 内存等负载信息
+* 概览信息：包括 TiDB/PD/TiKV 的各个模块的耗时信息和错误信息。
+* TiDB/PD/TiKV 监控信息：包括各个组件的监控信息。
+* 配置信息：包括各个组件的配置信息。
+
+报告中报表示例如下：
+
+![示例报表](/media/dashboard/diagnose/example-table.png)
+
+上图中，最上面蓝框内的 `Total Time Consume` 是报表名字。下面红框内的内容是对这个报表意义的解释，以及报表中各个字段的含义。
+
+报表内容中，有几个小按钮的作用如下：
+
+* i 图标：鼠标移动到 i 图标会显示该行的说明注释。
+* expand：点击 `expand` 会看到这项监控更加详细的信息，如是上图中 `tidb_get_token` 的详细信息包括各个 TiDB 实例的延迟监控信息。
+* fold：和 expland 相反，用于把监控的详细信息折叠起来。
+
+所有监控基本上和 `TiDB Grafna` 监控面板上的监控内容相对应，发现某个模块异常后，可以在 `TiDB Grafna` 监控面板上查看更多详细的监控信息。
+
+另外，报表中统计的 TOTAL_TIME 和 TOTAL_COUNT 由于是从 Prometheus 读取的监控数据，其统计会有一些计算上的精度误差。
+
+下面逐个介绍报告各个部分的报告内容。
+
+### 基本信息
+
+#### Report Time Range
+
+生成报告的时间范围，包括开始时间和结束时间。
+
+![report time range 报表](/media/dashboard/diagnose/report-time-range.png)
+
+#### Cluster Hardware
+
+集群中各服务器的硬件信息，包括 CPU,Memory,磁盘等信息。
+
+![Cluster Hardware 报表](/media/dashboard/diagnose/cluster-hardware.png)
+
+上表中各个字段含义如下：
+
+* HOST: 服务器的 IP 地址。
+* INSTANCE: 该服务器部署的实例数量，如 `pd * 1` 代表这台服务器部署了 1 个 PD; 如 `tidb * 2 pd * 1` 表示这台服务器部署了 2 个 TiDB 和 1 个 PD 。
+* CPU_CORES：表示服务器 CPU 的核心数，物理核心/逻辑核心。
+* MEMORY: 表示服务器的内存大小，单位是 GB。
+* DISK: 表示服务器磁盘大小，单位是 GB。
+* UPTIME: 服务器的启动时间，单位是 DAY。
+
+#### cluster info
+
+集群拓扑信息。表中信息来自 TiDB 的 [information_schema.cluster_info](/system-tables/system-table-cluster-info.md) 系统表。
+
+![Cluster Hardware 报表](/media/dashboard/diagnose/cluster-info.png)
+
+上表中各个字段含义如下：
+
+* TYPE：节点类型。
+* INSTANCE：实例地址，为 IP:PORT 格式的字符串。
+* STATUS_ADDRESS：HTTP API 的服务地址。
+* VERSION：对应节点的语义版本号。
+* GIT_HASH：编译节点版本时的 Git Commit Hash，用于识别两个节点是否是绝对一致的版本。
+* START_TIME：对应节点的启动时间。
+* UPTIME：对应节点已经运行的时间。
+
+### 诊断信息
+
+TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考 [information_schema.inspection-result](/system-tables/inspection-result.md) 系统表的内容。
+
+### 负载信息
+
+#### Node Load Info
+
+服务器节点的负载信息，包括时间范围内，服务器以下指标的平均值(AVG)，最大值(MAX)，最小值(MIN)：
+
+* cpu 使用率，最大值是 100%
+* memory 使用率
+* 磁盘 io 使用率
+* 磁盘写延迟
+* 磁盘读延迟
+* 磁盘每秒的读取字节数
+* 磁盘每秒的写入字节数
+* 节点网络每分钟收到的字节数
+* 节点网络每分钟发送的字节数
+* 节点正在使用的 TCP 连接数
+* 节点所有的 TCP 连接数
+
+![Node Load Info 报表](/media/dashboard/diagnose/node-load-info.png)
+
+#### Process cpu usage
+
+各个 TiDB/PD/TiKV 进程的 CPU 使用率的平均值(AVG)，最大值(MAX)，最小值(MIN)，这里进程 CPU 使用率最大值是 100% * CPU 逻辑核心数。
+
+![Process cpu usage 报表](/media/dashboard/diagnose/process-cpu-usage.png)
+
+#### Process memory usage
+
+各个 TiDB/PD/TiKV 进程的占用内存字节数的平均值(AVG)，最大值(MAX)，最小值(MIN)。
+
+![Process memory usage 报表](/media/dashboard/diagnose/process-memory-usage.png)
+
+#### TiKV Thread CPU Usage
+
+TiKV 内部各个模块线程的 CPU 使用率的平均值(AVG)，最大值(MAX)，最小值(MIN)。这里进程 CPU 使用率最大值为 100% * 对应配置的线程数量。
+
+![TiKV Thread CPU Usage 报表](/media/dashboard/diagnose/thread-cpu-usage.png)
+
+上表中，
+
+* `CONFIG_KEY`：表示对应模块的相关线程数配置，``
+* `CURRENT_CONFIG_VALUE`：表示配置在生成报表时刻的当前值。
+
+> 注意：`CURRENT_CONFIG_VALUE` 是生成报告时的值，并不是报告时间范围内的值，目前不能获取历史时间某些配置的值。
+
+#### TiDB/PD goroutines count
+
+TiDB/PD 的 goroutines 数量的平均值(AVG)，最大值(MAX)，最小值(MIN)。如果 goroutines 数量超过 2000， 说明该进程并发太高，会对整体请求的延迟有影响。
+
+![TiDB/PD goroutines count 报表](/media/dashboard/diagnose/goroutines-count.png)
+
+### 概览信息
+
+#### Total Time Consume
+
+包括集群中 TiDB, PD, TiKV 的各个模块的监控控耗时以及各项耗时的占比。默认时间单位是秒。可以用该表快速定位哪些模块的耗时较多。
+
+![Total Time Consume 报表](/media/dashboard/diagnose/total-time-consume.png)
+
+上表各列的字段含义如下：
+
+* METRIC_NAME：监控项的名称
+* Label: 监控的 label 信息，点击 expand 后可以查看该项监控更加详细的各项 label 的监控信息。
+* TIME_RATIO：该项监控消耗的总时间和 TIME_RATIO 为 1 的监控行总时间比例。如 kv_request 的总耗时占 tidb_query 总耗时的 1.65 = 38325.58/23223.86。因为 KV 请求会并行执行，所以所有 KV 请求的总时间是有可能超过总查询（tidb_query）的执行时间。
+* TOTAL_TIME: 该项监控的总耗时。
+* TOTAL_COUNT: 该项监控执行的总次数。
+* P999: 该项监控的 P999 最大时间。
+* P99: 该项监控的 P99 最大时间。
+* P90: 该项监控的 P90 最大时间。
+* P80: 该项监控的 P80 最大时间。
+
+以上监控中相关模块的耗时关系如下所示：
+
+![各个模块耗时关系图](/media/dashboard/diagnose/time-relation.png)
+
+上图中，黄色部分是 TiDB 相关的监控，蓝色部分是 TiKV 相关的监控，灰色部分暂时没有具体对应的监控项。
+
+上图中，tidb_query 的耗时包括 4 部分的耗时
+
+* get_token
+* parse
+* compile
+* execute
+
+其中 execute 的耗时包括以下部分：
+
+* wait_start_tso
+* TiDB 层的执行时间，目前暂无监控
+* KV 请求的时间
+* KV_backoff 的时间，这是 KV 请求失败后进行 backoff 的时间
+
+其中，KV 请求时间包含以下部分：
+
+* 请求的网络发送以及接收耗时，目前该项暂无监控，可以大致用 KV 请求时间 减去 tikv_grpc_messge 的时间
+* tikv_grpc_messge 耗时
+
+其中，tikv_grpc_messge 耗时包含以下部分：
+
+* Coprocessor reques 耗时，指用于处理 COP 类型的请求，该耗时包括以下部分：
+    * tikv_cop_wait，请求排队等待的耗时
+    * Coprocessor handle，处理 Cop 请求的耗时
+* tikv_scheduler_command 耗时，该耗时包含以下部分：
+    * tikv_scheduler_processing_read，处理读请求的耗时
+    * tikv_storage_async_request 中获取 snapshot 的耗时 ( snapshot 是该项监控的 label ）
+    * 处理写请求的耗时，该耗时包括以下部分：
+        * tikv_scheduler_latch_wait，等待 latch 的耗时
+        * tikv_storage_async_request 中 write 的耗时（write 是改监控的 labe）
+
+其中，tikv_storage_async_request 中的 write 耗时是指 raft kv 写入的耗时，包括以下部分：
+
+* tikv_raft_propose_wait
+* tikv_raft_process，该耗时主要时间包括：
+    * tikv_raft_append_log
+* tikv_raft_commit_log
+* tikv_raft_apply_wait
+* tikv_raft_apply_log
+
+用户可以根据上述耗时之间的关系，利用 TOTAL_TIME 以及 P999，P99 的时间大致定位哪些模块耗时比较久，然后再看相关的监控。
+
+> 注意：由于 raft kv 可能会对多个请求作为一个 batch 来写入，所以用 TOTAL_TIME 来衡量各个模块的耗时时，对 raft kv 的写入相关监控项不适用，具体是： tikv_raft_process，tikv_raft_append_log，tikv_raft_commit_log，tikv_raft_apply_wait，tikv_raft_apply_log，这里用 P999,P99 的时间来对比各个模块的耗时更加合理。
+>
+> 原因是，假如有 10 个 async write 请求，raft kv 内部将 10 个请求打包成一个 batch 执行，执行时间为 1 秒，所以每个请求的执行时间为 1 秒，10 个请求的总时间是 10 秒，但是 raft kv 处理的总时间是1秒。如果用 TOTAL_TIME 来衡量，用户可能会弄不懂剩余的 9 秒耗时在哪儿。这里从总请求数（ TOTAL_COUNT ）也能看出 raft kv 的监控和之前其他监控的差异。
+
+#### Error
+
+包括 TiDB , TiKV 出现错误的总数，如写 binlog 失败，tikv server is busy, TiKV channel full， tikv write stall 等错误，具体各项错误含义可以看行注释。
+
+![Error 报表](/media/dashboard/diagnose/error.png)
+
+#### TiDB/PD/TiKV 的具体监控信息
+
+这部分包括了 TiDB/PD/TIKV 更多的具体的监控信息。
+
+#### TiDB 相关监控信息
+
+##### TIDB Time Consume
+
+TiDB 的各项监控耗时以及各项耗时的占比。和 overview 中的 time consume 表类似，但是这个表的 label 信息会更丰富，能看到更多细节。
+
+##### Transaction 
+
+TiDB 事务相关的监控。
+
+![Transaction 报表](/media/dashboard/diagnose/tidb-txn.png)
+
+* TOTAL_VALUE： 该项监控在报告时间段内所有值的和（SUM）。
+* TOTAL_COUNT：该项监控出现的总次数。
+* P999: 该项监控的 P999 最大值。
+* P99: 该项监控的 P99 最大值。
+* P90: 该项监控的 P90 最大值。
+* P80: 该项监控的 P80 最大值。
+
+示例：
+
+上表中，在报告时间范围内，tidb_txn_kv_write_size：一共约有 181296 次事务的 kv 写入，总 kv 写入大小是 266.772 MB， 其中单次事务的 KV 写入的 P999, P99, P90, P80 的最大值分别为 116.913 KB , 1.996 KB, 1.905 KB, 1.805 KB。
+
+##### DDL-Owner
+
+![TiDB DDL Owner 报表](/media/dashboard/diagnose/tidb-ddl.png)
+
+上表表示从 2020-05-21 14:40:00 开始，集群的 ddl-owner 在 10.0.1.13:10080 节点，如果 owner 发生变更，上表会有多行数据，其中 MinTime 列表示已知对应 Owner 的最小时间。
+
+> 如果 owner 信息为空，不代表这个时间段内一定没有 owner, 因为这里是依靠 ddl_worker 的监控信息来判断 DDL owner 的，也可能是这个时间段内 ddl_worker 没有做任何 DDL job 导致这里信息为空。
+
+TiDB  中其他监控表如下，这里不再一一列举：
+
+* Statistics Info：TiDB 统计信息的相关监控。
+* Top 10 Slow Query：报表时间范围内 Top 10 的慢查询信息。
+* Top 10 Slow Query Group By Digest：报表时间范围内 Top 10 的慢查询信息，并按照 SQL 指纹聚合。
+* Slow Query With Diff Plan：报表时间范围内执行计划发生变更的 SQL 语句。
+
+#### PD 相关监控信息
+
+PD 模块相关监控的报表如下：
+
+* PD Time Consume，PD 中相关模块的耗时监控
+* Blance Leader/Region，报表时间范围内集群发生的 balance-region, balance leader 监控，比如从  tikv_note_1 上调度走了多少个 leader，调度进了多少个 leader。
+* Cluster Status，集群的状态信息，包括总 TiKV 数量，总集群存储容量，region 数量，离线 TiKV 的数量等信息。
+* Store Status，记录各个 TiKV 节点的状态信息，包括 region score, leader score，region/leader 的数量。
+* Etcd Status，PD 内部的 ETCD 相关信息。
+
+#### TiKV 相关监控信息
+
+TIKV 模块的相关监控报表如下：
+
+* TiKV Time Consume，TiKV 中相关模块的耗时监控
+* RocksDB Time Consume，TiKV 中 RocksDB 的耗时监控
+* TiKV Error，TiKV 中各个模块相关的 error 信息
+* TiKV Engine Size，TiKV 中各个节点 column famaly 的存储数据大小
+* Coprocessor Info，TiKV 中 coprocessor 模块相关的监控。
+* Raft Info，TiKV 中 raft 模块的相关监控信息
+* Snapshot Info，TiKV 中 snapshot 相关监控信息
+* GC Info，TiKV 中 GC 相关的监控信息
+* Cache Hit，TiKV 中 rocksdb 的各个缓存的命中率监控信息
+
+### 配置信息
+
+配置信息中，部分模块的配置信息可以显示报告时间范围内的配置值，有部分配置则因为无法获取到历史的配置值，所以是生成报告时刻的当前配置值。
+
+在报告时间范围内，以下表包括部分配置的在报告时间范围的开始时间的值：
+
+* Scheduler Initial Config：PD 调度相关配置在报告开始时间的初始值
+* TiDB GC Initial Config：TiDB GC 相关配置在报告开始时间的初始值
+* TiKV RocksDB Initial Config：TiKV RocksDB  相关配置在报告开始时间的初始值
+* TiKV RaftStore Initial Config：TiKV RaftStore  相关配置在报告开始时间的初始值
+
+在报表时间范围内，如若有些配置被修改过，以下表包括部分配置被修改的记录：
+
+* Scheduler Change Config
+* TiDB GC Change Config
+* TiKV RocksDB Change Config
+* TiKV RaftStore Change Config
+
+示例：
+
+![Scheduler Config Change History 报表](/media/dashboard/diagnose/config-change.png)
+
+上面报表显示，leader-schedule-limit 配置参数在报告时间范围内有被修改过：
+
+* 2020-05-22T20:00:00+08:00，即报告的开始时间 leader-schedule-limit 的配置值为 4，这里并不是指该配置被修改了，只是说明在报告时间范围的开始时间其配置值是 4。
+* 2020-05-22T20:07:00+08:00，leader-schedule-limit 的配置值为 8，说明在 2020-05-22T20:07:00+08:00 左右，该配置的值被修改了。
+
+
+下面的报表是生成报告时，TiDB, PD, TiKV 的在生成报告时刻的当前配置：
+
+* TiDB Current Config
+* PD Current Config
+* TiKV Current Config
