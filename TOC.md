@@ -59,12 +59,10 @@
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
   + [支持的迁移路径](/ecosystem-tool-user-guide.md) @王相
-  + [从 Oracle 迁移至 TiDB](/migrate-from-oracle-to-tidb.md) @王相
   + 从 MySQL 迁移至 TiDB
     + [从 CSV 文件迁移](/migrate-from-mysql-csv-files.md) @栾成
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md) @栾成
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md) @张学成，王相
-  + [从 PostgreSQL 迁移至 TiDB](/migrate-from-postgresql-to-tidb.md) @王相
   + [从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) @王相
 + 运维操作
   + 升级 TiDB 版本
@@ -109,11 +107,12 @@
 + 性能调优
   + 系统调优
     + [硬件](/tune-hardware-performance.md) @张文博
-    + [操作系统](/tune-operating-system.md) @张文博
+    + [操作系统性能参数调优](/tune-operating-system.md) @张文博
   + 软件调优
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
       + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+      + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
   + SQL 性能调优 @崔一丁
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + [理解 TiDB 执行计划](/query-execution-plan.md)
