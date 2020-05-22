@@ -1,7 +1,10 @@
 ---
-title: 安装部署和集群管理
+title: 部署运维 FAQ
+summary: 介绍 TiDB 集群运维部署的常见问题、原因及解决方法。
 category: FAQ
 ---
+
+# 部署运维 FAQ
 
 ## 一、安装部署
 
@@ -15,7 +18,7 @@ category: FAQ
 | CentOS | 7.3 及以上 |
 | Oracle Enterprise Linux | 7.3 及以上 |
 
-##### 1.1.1.1  为什么要在 CentOS 7 上部署 TiDB 集群？
+##### 1.1.1.1 为什么要在 CentOS 7 上部署 TiDB 集群？
 
 TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](/hardware-and-software-requirements.md)。其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的Linux 操作系统。
 
@@ -418,7 +421,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 #### 2.4.15 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](/benchmark/v2.0-performance-benchmarking-with-sysbench.md)。
+一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)。
 
 #### 2.4.16 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
 
@@ -460,7 +463,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试，汇总很多测试结果后，我们发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
 
 - 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
-- 大家可以直接参考 [TiDB Sysbench 性能测试报告](/benchmark/v2.0-performance-benchmarking-with-sysbench.md)。
+- 大家可以直接参考 [TiDB Sysbench 性能测试报告](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)。
 
 #### 2.5.2 TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
