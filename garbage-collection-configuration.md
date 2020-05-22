@@ -92,6 +92,25 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - 手动设置 GC concurrency。要使用该参数，必须将 [`tikv_gc_auto_concurrency`](#tikv_gc_auto_concurrency) 设为 `false` 。
 - 默认值：2
 
+## `tikv_gc_scan_lock_mode` （**实验特性**）
+
+设定 GC 的 Resolve Locks 阶段中，扫描锁的方式，即是否开启 Green GC（实验性特性）。Resolve Locks 阶段需要扫描整个集群的锁。在不开启 Green GC 的情况下，TiDB 会以 Region 为单位进行扫描。Green GC 提供了“物理扫描”的功能，即每台 TiKV 节点分别绕过 Raft 层直接扫描数据。该功能可以有效缓解 [Hibernate Region](/tikv-configuration-file.md#raftstorehibernate-regions-实验特性) 功能开启时，GC 唤醒全部 Region 的现象，并一定程度上提升 Resolve Locks 阶段的执行速度。
+
+- `"legacy"`（默认）：使用旧的扫描方式，即关闭 Green GC。
+- `"physical"`：使用物理扫描的方式，即开启 Green GC。
+
+> **注意：**
+>
+> Green GC 目前是实验性功能，不建议在生产环境中使用。
+> 
+> 该项配置是隐藏配置。首次开启需要执行：
+> 
+> {{< copyable "sql" >}}
+> 
+> ```sql
+> insert into mysql.tidb values ('tikv_gc_scan_lock_mode', 'legacy', '');
+> ```
+
 ## 关于 GC 流程的说明
 
 从 TiDB 3.0 版本起，由于对分布式 GC 模式和并行 Resolve Locks 的支持，部分配置选项的作用发生了变化。可根据下表理解不同版本中这些配置的区别：
@@ -110,6 +129,8 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - 并行：使用 `tikv_gc_concurrency` 选项所指定的线程数，并行地向每个 Region 发送请求。
 - 自动并行：使用 TiKV 节点的个数作为线程数，并行地向每个 Region 发送请求。
 - 分布式：无需 TiDB 通过对 TiKV 发送请求的方式来驱动，而是每台 TiKV 自行工作。
+
+另外，如果 Green GC （实验特性）开启（即 [`tikv_gc_scan_lock_mode`](#tikv_gc_scan_lock_mode-实验特性) 配置项设为 `"physical"`），Resolve Lock 的执行将不受上述并行配置的影响。
 
 ## 流控
 
