@@ -22,10 +22,30 @@ aliases: ['/docs-cn/dev/reference/tiflash/tune-performance/']
     set @@tidb_distsql_scan_concurrency = 80;
     ```
 
-2. 开启聚合推过 JOIN / UNION 等 TiDB 算子的优化：
+2. 开启 Super batch 功能：  
+这个变量用来设置从 TiFlash 读取时，是否把 region 的请求进行合并。当查询中涉及的 region 数量比较大，可以尝试设置该变量为 1：对带 aggregation 的 TiFlash coprocess 请求生效；设置该变量为 2：对全部的 TiFlash coprocessor 请求生效。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    set @@tidb_allow_batch_cop = 1;
+    ```
+
+3. 尝试开启聚合推过 `Join` / `Union` 等 TiDB 算子的优化：  
+这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
     {{< copyable "sql" >}}
 
     ```sql
     set @@tidb_opt_agg_push_down = 1;
+    ```
+
+4. 尝试开启 `Distince` 推过 `Join` / `Union` 等 TiDB 算子的优化：
+这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
+当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    set @@tidb_opt_distinct_agg_push_down = 1;
     ```
