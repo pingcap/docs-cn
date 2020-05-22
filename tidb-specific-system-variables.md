@@ -745,4 +745,4 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 这个变量用来设置从 TiFlash 读取数据时，是否把 Region 的请求进行合并。
 
-当查询的表拥有 TiFlash 副本，且查询涉及的 Region 数量比较多，可以尝试设置该变量为 `1`（对带 `aggregation` 的 TiFlash coprocessor 请求生效），或设置该变量为 `2`（对全部的 TiFlash coprocessor 请求生效）。
+当查询的表拥有 TiFlash 副本，且查询涉及的 Region 数量比较多，可以尝试设置该变量为 `1`（对带 `aggregation` 下推到 TiFlash Coprocessor 的请求生效），或设置该变量为 `2`（对全部下推到 TiFlash Coprocessor 请求生效）。
