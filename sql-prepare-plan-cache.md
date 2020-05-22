@@ -20,7 +20,7 @@ TiDB 支持对 `Prepare` / `Execute` 请求的执行计划缓存。
 
 - 查询包含除 `?` 外的变量（系统变量或用户自定义变量）；
 - 查询包含子查询；
-- 查询包含不能被缓存的函数表达式，如 `current_user()`, `database()`, `last_insert_id()` 等；
+- 查询包含不能被缓存的函数表达式，如 `current_user()`、`database()`、`last_insert_id()` 等；
 - 查询的 `Order By` 语句中包含 `?`；
 - 查询的 `Group By` 语句中包含 `?`；
 - 查询的 `Limit [Offset]` 语句中包含 `?`；
