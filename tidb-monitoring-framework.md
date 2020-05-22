@@ -50,5 +50,3 @@ Grafana 是一个开源的 metric 分析及可视化系统。TiDB 使用 Grafana
 每个分组包含多个监控项页签，页签中包含多个详细的监控项信息。以 Overview 监控组为例，其中包含 5 个页签，每个页签内有相应的监控指标看板，如下图所示：
 
 ![Grafana Overview](/media/grafana_monitor_overview.png)
-
-
