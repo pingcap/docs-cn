@@ -1,6 +1,6 @@
 # 访问 TiDB Dashboard
 
-通过浏览器访问 http://127.0.0.1:2379/dashboard （请将 127.0.0.1:2379 替换为实际 PD 实例地址和端口）即可打开 TiDB Dashboard。
+通过浏览器访问 <http://127.0.0.1:2379/dashboard> （请将 127.0.0.1:2379 替换为实际 PD 实例地址和端口）即可打开 TiDB Dashboard。
 
 > **注意：**
 >
