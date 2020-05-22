@@ -342,7 +342,7 @@ Merge 调度的开销较大，所以这个值不宜调得过大。
 >> config set hot-region-schedule-limit 4
 ```
 
-`hot-region-cache-hits-threshold` 用于设置热点 Region 的阈值，只有超过命中 cache 的次数超过这个阈值才会被当作热点。
+`hot-region-cache-hits-threshold` 用于设置热点 Region 的阈值，只有命中 cache 的次数超过这个阈值才会被当作热点。
 
 `tolerant-size-ratio` 控制 balance 缓冲区大小。
 当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
