@@ -64,20 +64,20 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 在 TiDB 中，运行的 DDL 操作不会影响对表的读取或写入。但是，目前 DDL 以下变更和 MySQL 的 DDL 变更有所区别：
 
 | 语句类型 | 描述 | 错误信息示例 |
-| ------ | ---- | ------ | ------ |
-| Alter Table | 不支持在单个 alter 语句中指定多个 alter 选项 | Unsupported multi schema change |
+| :------ | :---- | :------ |
+| Alter Table | 不支持在单个 alter 语句中指定多个 alter 选项 | `Unsupported multi schema change` |
 | Table Option | 表选项除了 `AUTO_INCREMENT`、`CHARACTER SET`、`COLLATE`、`COMMENT` 以外，其他所有的选项都会被忽略 | N/A |
-| Add Column | 不支持将新列设为主键、唯一索引或自增 | unsupported add column '%s' constraint PRIMARY/UNIQUE/AUTO_INCREMENT KEY |
-| Change/Modify Column | 不支持列类型有损变更，例如 `BIGINT` -> `INT`，或者 `VARCHAR(255)` -> `VARCHAR(10)` | length %d is less than origin %d |
-| Change/Modify Column | 不支持修改 `DECIMAL` 类型的精度 | can't change decimal column precision |
-| Change/Modify Column | 不支持更改 `UNSIGNED` 属性 | can't change unsigned integer to signed or vice versa |
-| Drop Column | 不支持删除主键列或索引列 | Unsupported drop integer primary key/column a with index covered |
+| Add Column | 不支持将新列设为主键、唯一索引或自增 | `unsupported add column '%s' constraint PRIMARY/UNIQUE/AUTO_INCREMENT KEY` |
+| Change Column/Modify Column | 不支持列类型有损变更，例如 `BIGINT` -> `INT`，或者 `VARCHAR(255)` -> `VARCHAR(10)` | `length %d is less than origin %d` |
+| Change Column/Modify Column | 不支持修改 `DECIMAL` 类型的精度 | `can't change decimal column precision` |
+| Change Column/Modify Column | 不支持更改 `UNSIGNED` 属性 | `can't change unsigned integer to signed or vice versa` |
+| Drop Column | 不支持删除主键列或索引列 | `Unsupported drop integer primary key/column a with index covered` |
 | Add Index | 仅支持 `VISIBLE`/`INVISIBLE` 索引选项，其他索引选项将被忽略 | N/A |
-| Drop Primary Key | 仅支持删除建表时启用了 `alter-primary-key` 配置项的表的主键 | Unsupported drop primary key when alter-primary-key is false' |
+| Drop Primary Key | 仅支持删除建表时启用了 `alter-primary-key` 配置项的表的主键 | `Unsupported drop primary key when alter-primary-key is false` |
 | Order By | 所有列排序选项将被忽略 | N/A |
 | Lock | 所有锁选项将被忽略，TiDB 的 DDL 变更都不会锁表 | N/A |
 | Algorithm | 运行过程与 MySQL 有所不同，MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作；`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。| N/A |
-| Partition | 分区类型仅支持 Hash/Range；分区管理操作仅支持 Add/Drop/Truncate/Coalese；其他分区操作、分区类型和子分区语句会被忽略 | Warning: Unsupported partition type, treat as normal table |
+| Partition | 分区类型仅支持 Hash/Range；分区管理操作仅支持 Add/Drop/Truncate/Coalese；其他分区操作、分区类型和子分区语句会被忽略 | `Warning: Unsupported partition type, treat as normal table` |
 
 ### `ANALYZE TABLE`
 
