@@ -264,9 +264,10 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `enable-placement-rules`
 
-+ 打开 `placement-rules` ** 4.0 实验性特性 **
++ 打开 `placement-rules`
 + 默认：false
 + 参考[Placement Rules 使用文档](/configure-placement-rules.md)
++ 4.0 实验性特性
 
 ## label-property
 
