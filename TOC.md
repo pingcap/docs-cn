@@ -194,7 +194,7 @@
     + [TiUP 术语](/tiup/tiup-terms.md)
     + [TiUP 组件管理](/tiup/tiup-component-management.md)
     + [TiUP FAQ](/tiup/tiup-faq.md)
-    + [TiUP 故障排查](/tiup/tiup-troubleshoot.md)
+    + [TiUP 故障排查](/tiup/tiup-troubleshooting-guide.md)
     + TiUP 组件文档
       + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
