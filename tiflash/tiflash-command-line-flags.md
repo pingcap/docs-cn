@@ -9,6 +9,6 @@ category: reference
 
 ## `server --config-file`
 
-+ 配置文件
++ 指定 TiFlash 的配置文件路径
 + 默认：""
 + 必须指定配置文件，详细的配置项请参阅 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)
