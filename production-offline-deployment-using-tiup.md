@@ -64,12 +64,9 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tar xzvf package.tar.gz
-
-        cd package
-
-    sh local_install.sh
-
+    tar xzvf package.tar.gz &&
+    cd package &&
+    sh local_install.sh &&
     source /home/tidb/.bash_profile
     ```
 
