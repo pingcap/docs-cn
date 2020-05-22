@@ -74,6 +74,6 @@ Skyline-Pruning 是一个针对索引的启发式过滤规则，评判一个索�
 
 通过 [Optimizer Hints](#optimizer-hints) 可以实现单条查询对索引选择的控制。
 
-- USE_INDEX/IGNORE_INDEX 可以强制优化器使用/不使用某些索引。
+- `USE_INDEX`/`IGNORE_INDEX` 可以强制优化器使用/不使用某些索引。
 
 - READ_FROM_STORAGE 可以强制优化器对于某些表选择 TiKV/TiFlash 的存储引擎进行查询。
