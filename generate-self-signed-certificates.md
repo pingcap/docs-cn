@@ -6,9 +6,7 @@ aliases: ['/docs-cn/dev/how-to/secure/generate-self-signed-certificates/']
 
 # 生成自签名证书
 
-## 概述
-
-本文档仅提供使用 `openssl` 生成自签名证书的一个示例，用户也可以根据自己的需求生成符合自己需求的证书和密钥。
+本文档提供使用 `openssl` 生成自签名证书的一个示例，用户也可以根据自己的需求生成符合要求的证书和密钥。
 
 假设实例集群拓扑如下：
 
@@ -25,21 +23,25 @@ aliases: ['/docs-cn/dev/how-to/secure/generate-self-signed-certificates/']
 
 对于 Debian 或 Ubuntu 操作系统：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 apt install openssl
 ```
 
 对于 RedHat 或 CentOS 操作系统：
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 yum install openssl
 ```
 
-也可以参考 OpenSSL 官方的 [下载文档](https://www.openssl.org/source/) 安装
+也可以参考 OpenSSL 官方的[下载文档](https://www.openssl.org/source/) 进行安装。
 
 ## 生成 CA 证书
 
-CA 的作用是签发证书，在实际情况里，请联系你的管理员签发证书或者使用信任的 CA 机构。CA 会管理多个证书对，这里只需生成原始的一对证书：
+CA 的作用是签发证书。实际情况中，请联系你的管理员签发证书或者使用信任的 CA 机构。CA 会管理多个证书对，这里只需生成原始的一对证书：
 
 ```bash
 // 生成 root 密钥
