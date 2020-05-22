@@ -29,11 +29,11 @@ category: performance
 
 ## 索引的选择
 
-TiDB 选择索引基于每个读表算子的代价估算，在这个基础上提供了一个启发式规则 "Skyline-Pruning" 去降低错误估算导致选错索引的概率。
+TiDB 在选择索引时，会基于每个读表算子的代价估算，在此基础上提供了启发式规则 "Skyline-Pruning"，以降低错误估算导致选错索引的概率。
 
 ### Skyline-Pruning
 
-Skyline-Pruning 是一个针对索引的启发式过滤规则，评判一个索引的好坏有三个维度：
+Skyline-Pruning 是一个针对索引的启发式过滤规则，评判一个索引的好坏需要从以下三个维度进行衡量：
 
 - 选择该索引读表时，是否需要回表（即该索引生成的计划是 IndexReader 还是 IndexLookupReader）。不用回表的索引在这个维度上优于需要回表的索引。
 
