@@ -1,15 +1,17 @@
 ---
-title: ANALYZE TABLE
-summary: TiDB 数据库中 ANALYZE TABLE 的使用概况。
+title: ANALYZE
+summary: TiDB 数据库中 ANALYZE 的使用概况。
 category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/analyze-table/']
 ---
 
-# ANALYZE TABLE
+# ANALYZE
 
-`ANALYZE TABLE` 语句用于更新 TiDB 在表和索引上留下的统计信息。执行大批量更新或导入记录后，或查询执行计划不是最佳时，建议运行 `ANALYZE TABLE`。
+`ANALYZE` 语句用于更新 TiDB 在表和索引上留下的统计信息。执行大批量更新或导入记录后，或查询执行计划不是最佳时，建议运行 `ANALYZE`。
 
 当 TiDB 逐渐发现这些统计数据与预估不一致时，也会自动更新其统计数据。
+
+目前 TiDB 收集统计信息分为全量收集和增量收集两种方式，分别通过 `ANALYZE TABLE` 和 `ANALYZE INCREMENTAL TABLE` 语句来实现。关于这两种语句使用方式详情可参考[统计信息简介](/statistics.md)。
 
 ## 语法图
 
@@ -102,7 +104,9 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-`ANALYZE TABLE` 在语法上与 MySQL 类似。但 `ANALYZE TABLE` 在 TiDB 上执行所需时间可能长得多，因为它的内部运行方式不同。
+* `ANALYZE TABLE` 在语法上与 MySQL 类似。但 `ANALYZE TABLE` 在 TiDB 上执行所需时间可能长得多，因为它的内部运行方式不同。
+
+* 在 MySQL 上不支持 `ANALYZE INCREMENTAL TABLE` 语句，它的使用可参考[增量收集文档](/statistics.md#增量收集)。
 
 ## 另请参阅
 
