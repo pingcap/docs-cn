@@ -76,7 +76,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 #### 1.1.12 数据删除后查询速度为何会变慢？
 
-大量删除数据后，会有很多无用的 key 存在，影响查询效率。目前正在开发 Region Merge 功能，完善之后可以解决这个问题，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
+大量删除数据后，会有很多无用的 key 存在，影响查询效率。可以尝试开启 [Region Merge](https://pingcap.com/docs-cn/v3.0/best-practices/massive-regions-best-practices/#方法五开启-region-merge) 功能，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
 
 
 #### 1.1.13 对数据做删除操作之后，空间回收比较慢，如何处理？
