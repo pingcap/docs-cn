@@ -98,19 +98,19 @@ TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考
 * 节点正在使用的 TCP 连接数
 * 节点所有的 TCP 连接数
 
-![Node Load Info 报表](/media/dashboard/diagnose/node-load-info.png)
+![Server Load Info 报表](/media/dashboard/diagnose/node-load-info.png)
 
-#### Process cpu usage
+#### Instance cpu usage
 
 各个 TiDB/PD/TiKV 进程的 CPU 使用率的平均值(AVG)，最大值(MAX)，最小值(MIN)，这里进程 CPU 使用率最大值是 100% * CPU 逻辑核心数。
 
-![Process cpu usage 报表](/media/dashboard/diagnose/process-cpu-usage.png)
+![Instance CPU Usage 报表](/media/dashboard/diagnose/process-cpu-usage.png)
 
-#### Process memory usage
+#### Instance Memory Usage
 
 各个 TiDB/PD/TiKV 进程的占用内存字节数的平均值(AVG)，最大值(MAX)，最小值(MIN)。
 
-![Process memory usage 报表](/media/dashboard/diagnose/process-memory-usage.png)
+![Instance memory usage 报表](/media/dashboard/diagnose/process-memory-usage.png)
 
 #### TiKV Thread CPU Usage
 
@@ -133,7 +133,7 @@ TiDB/PD 的 goroutines 数量的平均值(AVG)，最大值(MAX)，最小值(MIN)
 
 ### 概览信息
 
-#### Total Time Consume
+#### Time Consumed by Each Component
 
 包括集群中 TiDB, PD, TiKV 的各个模块的监控控耗时以及各项耗时的占比。默认时间单位是秒。可以用该表快速定位哪些模块的耗时较多。
 
@@ -203,11 +203,11 @@ TiDB/PD 的 goroutines 数量的平均值(AVG)，最大值(MAX)，最小值(MIN)
 >
 > 原因是，假如有 10 个 async write 请求，raft kv 内部将 10 个请求打包成一个 batch 执行，执行时间为 1 秒，所以每个请求的执行时间为 1 秒，10 个请求的总时间是 10 秒，但是 raft kv 处理的总时间是1秒。如果用 TOTAL_TIME 来衡量，用户可能会弄不懂剩余的 9 秒耗时在哪儿。这里从总请求数（ TOTAL_COUNT ）也能看出 raft kv 的监控和之前其他监控的差异。
 
-#### Error
+#### Errors Occurred in Each Component
 
 包括 TiDB , TiKV 出现错误的总数，如写 binlog 失败，tikv server is busy, TiKV channel full， tikv write stall 等错误，具体各项错误含义可以看行注释。
 
-![Error 报表](/media/dashboard/diagnose/error.png)
+![Errors Occurred in Each Component 报表](/media/dashboard/diagnose/error.png)
 
 #### TiDB/PD/TiKV 的具体监控信息
 
@@ -215,11 +215,15 @@ TiDB/PD 的 goroutines 数量的平均值(AVG)，最大值(MAX)，最小值(MIN)
 
 #### TiDB 相关监控信息
 
-##### TIDB Time Consume
+##### Time Consumed by TiDB Component
 
 TiDB 的各项监控耗时以及各项耗时的占比。和 overview 中的 time consume 表类似，但是这个表的 label 信息会更丰富，能看到更多细节。
 
-##### Transaction 
+##### TiDB Server Connections
+
+TiDB 各个实例的客户端连接数。
+
+##### TiDB Transaction
 
 TiDB 事务相关的监控。
 
@@ -236,7 +240,7 @@ TiDB 事务相关的监控。
 
 上表中，在报告时间范围内，tidb_txn_kv_write_size：一共约有 181296 次事务的 kv 写入，总 kv 写入大小是 266.772 MB， 其中单次事务的 KV 写入的 P999, P99, P90, P80 的最大值分别为 116.913 KB , 1.996 KB, 1.905 KB, 1.805 KB。
 
-##### DDL-Owner
+##### DDL Owner
 
 ![TiDB DDL Owner 报表](/media/dashboard/diagnose/tidb-ddl.png)
 
@@ -255,7 +259,7 @@ TiDB  中其他监控表如下，这里不再一一列举：
 
 PD 模块相关监控的报表如下：
 
-* PD Time Consume，PD 中相关模块的耗时监控
+* Time Consumed by PD Component，PD 中相关模块的耗时监控
 * Blance Leader/Region，报表时间范围内集群发生的 balance-region, balance leader 监控，比如从  tikv_note_1 上调度走了多少个 leader，调度进了多少个 leader。
 * Cluster Status，集群的状态信息，包括总 TiKV 数量，总集群存储容量，region 数量，离线 TiKV 的数量等信息。
 * Store Status，记录各个 TiKV 节点的状态信息，包括 region score, leader score，region/leader 的数量。
@@ -265,8 +269,8 @@ PD 模块相关监控的报表如下：
 
 TIKV 模块的相关监控报表如下：
 
-* TiKV Time Consume，TiKV 中相关模块的耗时监控
-* RocksDB Time Consume，TiKV 中 RocksDB 的耗时监控
+* Time Consumed by TiKV Component，TiKV 中相关模块的耗时监控
+* Time Consumed by RocksDB，TiKV 中 RocksDB 的耗时监控
 * TiKV Error，TiKV 中各个模块相关的 error 信息
 * TiKV Engine Size，TiKV 中各个节点 column famaly 的存储数据大小
 * Coprocessor Info，TiKV 中 coprocessor 模块相关的监控。
@@ -288,10 +292,10 @@ TIKV 模块的相关监控报表如下：
 
 在报表时间范围内，如若有些配置被修改过，以下表包括部分配置被修改的记录：
 
-* Scheduler Change Config
-* TiDB GC Change Config
-* TiKV RocksDB Change Config
-* TiKV RaftStore Change Config
+* Scheduler Config Change History
+* TiDB GC Config Change History
+* TiKV RocksDB Config Change History
+* TiKV RaftStore Config Change History
 
 示例：
 
@@ -302,9 +306,58 @@ TIKV 模块的相关监控报表如下：
 * 2020-05-22T20:00:00+08:00，即报告的开始时间 leader-schedule-limit 的配置值为 4，这里并不是指该配置被修改了，只是说明在报告时间范围的开始时间其配置值是 4。
 * 2020-05-22T20:07:00+08:00，leader-schedule-limit 的配置值为 8，说明在 2020-05-22T20:07:00+08:00 左右，该配置的值被修改了。
 
-
 下面的报表是生成报告时，TiDB, PD, TiKV 的在生成报告时刻的当前配置：
 
-* TiDB Current Config
-* PD Current Config
-* TiKV Current Config
+* TiDB's Current Config
+* PD's Current Config
+* TiKV's Current Config
+
+## 对比报告
+
+生成 2 个时间段的对比报告，其内容和单个时间段的报告是一样的，只是加入了对比列显示两个时间段的差别。下面主要介绍对比报告中的一些特有表以及如何查看对比报表。
+
+首先在 基本信息中的 `Compare Report Time Range` 报表会显示出对比的两个时间段：
+
+![Compare Report Time Range 报表](/media/dashboard/diagnose/compare-time.png)
+
+其中 t1 是正常时间段，或者叫参考时间段，t2 是异常时间段。
+
+下面是一些慢查询相关的报表：
+
+* Slow Queries In Time Range t2：仅出现在 t2 时间段但没有出现在 t1 时间段的慢查询
+* Top 10 slow query in time range t1：t1 时间段的 Top10 慢查询
+* Top 10 slow query in time range t2：t2 时间段的 Top10 慢查询
+
+### DIFF_RATIO 介绍
+
+这里以  `Instance CPU usage` 为例子介绍 `DIFF_RATIO`。
+
+![Compare Instance CPU Usage 报表](/media/dashboard/diagnose/compare-instance-cpu-usage.png)
+
+* t1.AVG, t1.MAX, t1.Min 分别是 t1 时间段内 CPU 使用率的 平均值，最大值，最小值。
+* t2.AVG, t2.MAX, t2.Min 分别是 t2 时间段内 CPU 使用率的 平均值，最大值，最小值。
+* AVG_DIFF_RATIO 表示 t1 和 t2 时间段平均值的 DIFF_RATIO
+* MAX_DIFF_RATIO 表示 t1 和 t2 时间段最大值的 DIFF_RATIO
+* MIN_DIFF_RATIO 表示 t1 和 t2 时间段最小值的 DIFF_RATIO
+
+DIFF_RATIO：表示2个时间段的差异大小，有以下几个取值方式：
+
+* 如果该监控仅在 t2 时间内才有值，t1 时间段没有，则 DIFF_RATIO 取值为 1
+* 如果监控项仅在 t1 时间内才有值，t1 时间段没有，则 DIFF_RATIO 取值为 -1
+* 如果 t2 时间段的值比 t1 时间段的值大，则 DIFF_RATIO = (t2.value / t1.value) - 1
+* 如果 t2 时间段的值比 t1 时间段的值小，则 DIFF_RATIO = 1 - (t1.value / t2.value)
+
+例如上表中，`tidb` 节点的平均 CPU 使用率在 t2 时间段比 t1 时间段高 2.02 倍。 `2.02 = 1240/410 - 1`。 
+
+### Maximum Different Item 报表介绍
+
+`Maximum Different Item` 的报表是对比 2 个时间段的监控项后，按照监控项的差异大小排序，通过这个表可以很快发现 2 个时间段哪些监控的差异最大。示例如下：
+
+![Maximum Different Item 报表](/media/dashboard/diagnose/maximum-different-item.png)
+
+* Table: 表示这个监控项来自于对比报告中的哪个报表，如 `TiKV, coprocessor_info` 表示是 TiKV 组件下的 `coprocessor_info` 报表。
+* METRIC_NAME: 监控项名，点击 `expand` 可以查看该监控的不同 label 的差异对比。
+* LABEL：监控项对应的 label。比如 `TiKV Coprocessor scan` 监控项有 2 个 label，分别是 instance, req, tag, sql_type，分别表示为 TiKV 地址，请求类型，操作类型 和 操作的 column famaly。
+* MAX_DIFF：差异大小，取值为 t1.VALUE 和 t2.VALUE 的 DIFF_RATIO 计算。
+
+可以从上表中发现，t2 时间段比 t1 时间段多出了很多倍的 coprocessor 请求，TiDB 的解析SQL (parse) 时间也变多了很多倍等等。
