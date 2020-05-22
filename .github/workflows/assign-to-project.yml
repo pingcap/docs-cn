@@ -1,0 +1,39 @@
+name: Assign to Project
+
+on:
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, labeled]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  assign_one_project:
+    runs-on: ubuntu-latest
+    name: Assign to Project
+    steps:
+    - name: Assign NEW issues to Docs SIG project
+      uses: srggrs/assign-one-project-github-action@1.2.0
+      if: |
+        github.event_name == 'issues' && 
+        github.event.action == 'opened'
+      with:
+        project: 'https://github.com/pingcap/docs/projects/1'
+        column_name: 'Issue: Backlog'
+    - name: Assign NEW pull requests to Docs SIG project
+      uses: srggrs/assign-one-project-github-action@1.2.0
+      if: |
+        github.event_name == 'pull_request' &&
+        github.event.action == 'opened'
+      with:
+        project: 'https://github.com/pingcap/docs/projects/1'
+        column_name: 'PR: In Progress'
+    - name: Assign issues or PRs with translation-welcome label
+      uses: srggrs/assign-one-project-github-action@1.2.0
+      if: |
+        contains(github.event.issue.labels.*.name, 'translation/welcome') ||
+        contains(github.event.pull_request.labels.*.name, 'translation/welcome')
+      with:
+        project: 'https://github.com/pingcap/docs/projects/2'
+        column_name: 'To do'
