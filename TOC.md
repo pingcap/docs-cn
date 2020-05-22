@@ -368,6 +368,8 @@
       + SQL 语句分析页面
       + 慢查询页面
       + 集群诊断页面
+        + [访问](/dashboard/diagnose/access.md)
+        + [查看报告](/dashboard/diagnose/report.md)
       + 日志搜索页面
       + 实例性能分析页面
   + CLI
