@@ -180,12 +180,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `region-schedule-limit`
 
 + 同时进行 Region 调度的任务个数
-+ 默认：4
++ 默认：2048
 
 ### `replica-schedule-limit`
 
 + 同时进行 replica 调度的任务个数。
-+ 默认：8
++ 默认：64
 
 ### `merge-schedule-limit`
 
@@ -195,7 +195,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `high-space-ratio`
 
 + 设置 store 空间充裕的阈值。
-+ 默认：0.6
++ 默认：0.7
 + 最小值：大于 0
 + 最大值：小于 1
 
@@ -209,7 +209,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `tolerant-size-ratio`
 
 + 控制 balance 缓冲区大小。
-+ 默认：5
++ 默认：0 (为 0 为自动调整缓冲区大小)
 + 最小值：0
 
 ### `disable-remove-down-replica`
@@ -255,6 +255,18 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + TiKV 集群的拓扑信息。
 + 默认：[]
++ [配置集群拓扑](/location-awareness.md)
+
+### `strictly-match-label`
+
++ 打开强制 TiKV Label 和 PD 的 localtion-labels 是否匹配的检查
++ 默认：false
+
+### `enable-placement-rules`
+
++ 打开 `placement-rules` ** 4.0 实验性特性 **
++ 默认：false
++ 参考[Placement Rules 使用文档](/configure-placement-rules.md)
 
 ## label-property
 
