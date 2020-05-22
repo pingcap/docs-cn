@@ -39,31 +39,31 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 
-#### 1.1.9 TiDB 支持分布式事务吗？
+#### 1.1.7 TiDB 支持分布式事务吗？
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/geo-redundancy-deployment.md)，TiDB 均支持 ACID 分布式事务。
 
 TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。
 
-#### 1.1.10 TiDB 支持哪些编程语言？
+#### 1.1.8 TiDB 支持哪些编程语言？
 
 只要支持 MySQL Client/Driver 的编程语言，都可以直接使用 TiDB。
 
-#### 1.1.11 TiDB 是否支持其他存储引擎？
+#### 1.1.9 TiDB 是否支持其他存储引擎？
 
 是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB、RocksDB、BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
 
 
-#### 1.1.13 除了官方文档，有没有其他 TiDB 知识获取途径？
+#### 1.1.10 除了官方文档，有没有其他 TiDB 知识获取途径？
 
 目前[官方文档](/overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取，以及 [AskTUG 网站](asktug.com) 与技术专家互动交流。
 
 
-#### 1.1.17 TiDB 用户名长度限制？
+#### 1.1.11 TiDB 用户名长度限制？
 
 在 TiDB 中用户名最长为 32 字符。
 
-#### 1.1.18 TiDB 是否支持 XA？
+#### 1.1.12 TiDB 是否支持 XA？
 
 虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC（Connector / J），但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
 
