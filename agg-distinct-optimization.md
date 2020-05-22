@@ -5,6 +5,8 @@ category: performance
 
 # Distinct 优化
 
+这一节讨论可以用于 `DISTINCT` 的优化。
+
 ## 简单 DISTINCT
 
 通常简单的 `DISTINCT` 会被优化成 GROUP BY 来执行。例如：
