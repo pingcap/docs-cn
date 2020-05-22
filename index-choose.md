@@ -62,7 +62,7 @@ Skyline-Pruning 是一个针对索引的启发式过滤规则，评判一个索�
 
     一般是统计信息过期或者准确度不够造成的，可以重新执行 `analyze table` 或者修改 `analyze table` 的参数。
 
-2. 统计信息准确，为什么读 TiFlash 更快，而优化器选择了 TiKV ？
+2. 统计信息准确，为什么读 TiFlash 更快，而优化器选择了 TiKV？
 
     现在区别 TiFlash 和 TiKV 的代价模型还比较粗糙，可以调小 `tidb_opt_seek_factor` 让优化器更倾向 TiFlash。
     
