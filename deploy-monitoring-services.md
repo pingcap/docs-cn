@@ -6,6 +6,7 @@ category: how-to
 # TiDB 集群监控部署
 
 本文档适用于希望手动部署 TiDB 监控报警系统的用户。TiUP 部署方式，会同时自动部署监控报警系统，无需手动部署。
+
 ## 部署 Prometheus 和 Grafana
 
 假设 TiDB 的拓扑结构如下：
