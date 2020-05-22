@@ -28,21 +28,24 @@ trace format='row' select * from mysql.user;
 ```
 
 ```
-+---------------------------+-----------------+------------+
-| operation                 | startTS         | duration   |
-+---------------------------+-----------------+------------+
-| session.getTxnFuture      | 10:33:34.647148 | 3.847µs    |
-|   ├─session.Execute       | 10:33:34.647146 | 536.233µs  |
-|   ├─session.ParseSQL      | 10:33:34.647182 | 19.868µs   |
-|   ├─executor.Compile      | 10:33:34.647219 | 295.688µs  |
-|   ├─session.runStmt       | 10:33:34.647533 | 116.229µs  |
-|   ├─session.CommitTxn     | 10:33:34.647631 | 5.44µs     |
-|   ├─recordSet.Next        | 10:33:34.647707 | 833.103µs  |
-|   ├─tableReader.Next      | 10:33:34.647709 | 806.783µs  |
-|   ├─recordSet.Next        | 10:33:34.648572 | 19.367µs   |
-|   └─tableReader.Next      | 10:33:34.648575 | 1.783µs    |
-+---------------------------+-----------------+------------+
-10 rows in set (0.00 sec)
++--------------------------------------------+-----------------+------------+
+| operation                                  | startTS         | duration   |
++--------------------------------------------+-----------------+------------+
+| trace                                      | 17:03:31.938237 | 886.086µs  |
+|   ├─session.Execute                        | 17:03:31.938247 | 507.812µs  |
+|   │ ├─session.ParseSQL                     | 17:03:31.938254 | 22.504µs   |
+|   │ ├─executor.Compile                     | 17:03:31.938321 | 278.931µs  |
+|   │ │ └─session.getTxnFuture               | 17:03:31.938337 | 1.515µs    |
+|   │ └─session.runStmt                      | 17:03:31.938613 | 109.578µs  |
+|   │   ├─TableReaderExecutor.Open           | 17:03:31.938645 | 50.657µs   |
+|   │   │ └─distsql.Select                   | 17:03:31.938666 | 21.066µs   |
+|   │   │   └─RPCClient.SendRequest          | 17:03:31.938799 | 158.411µs  |
+|   │   └─session.CommitTxn                  | 17:03:31.938705 | 12.06µs    |
+|   │     └─session.doCommitWitRetry         | 17:03:31.938709 | 2.437µs    |
+|   ├─*executor.TableReaderExecutor.Next     | 17:03:31.938781 | 224.327µs  |
+|   └─*executor.TableReaderExecutor.Next     | 17:03:31.939019 | 6.266µs    |
++--------------------------------------------+-----------------+------------+
+13 rows in set (0.00 sec)
 ```
 
 {{< copyable "sql" >}}
@@ -73,85 +76,10 @@ TRACE FORMAT='json' SELECT * FROM t1 WHERE id = 2;
 ```
 
 ```
-operation: [
-    {"ID":{"Trace":"60d20d005593de87","Span":"44e5b309242ffe2f","Parent":"79d146dac9a29a7e"},
-        "Annotations":[
-            {"Key":"Name","Value":"c2Vzc2lvbi5nZXRUeG5GdXR1cmU="},
-            {"Key":"_schema:name","Value":null},
-            {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MTQ3ODYtMDY6MDA="},
-            {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MjA0MDYtMDY6MDA="},
-            {"Key":"_schema:Timespan","Value":null}
-        ],
-        "Sub":[
-            {"ID":{"Trace":"60d20d005593de87","Span":"4dbf8f2ca373b4b0","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"c2Vzc2lvbi5QYXJzZVNRTA=="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2NjE1MTQtMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3MDYxNjgtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"6b6d6916df809604","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"ZXhlY3V0b3IuQ29tcGlsZQ=="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3NTcyODUtMDY6MDA="},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3MzE0MjYtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"3f1bcdd402a72911","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"c2Vzc2lvbi5Db21taXRUeG4="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3OTgyNjItMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4MDU1NzYtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"58c1f7d66dc5afbc","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"c2Vzc2lvbi5ydW5TdG10"},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Msg","Value":"eyJzcWwiOiJTRUxFQ1QgKiBGUk9NIHQxIFdIRVJFIGlkID0gMiJ9"},
-                {"Key":"Time","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3ODA1NjgtMDY6MDA="},
-                {"Key":"_schema:log","Value":null},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4MTk5MzMtMDY6MDA="},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3NzcyNDItMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"6bd8cc440fb31ed7","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"c2Vzc2lvbi5FeGVjdXRl"},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MTEwODktMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4NTU0My0wNjowMA=="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"61d0b809f6cc018b","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4NzQ1NTYtMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIyOTg4NjYtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"2bd2c3d47ccb1133","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIzMjY0ODgtMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIzMjkwMDMtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null}
-        ]
-    }
-]
+operation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [{"ID":{"Trace":"7f88549f606d5b72","Span":"0118ce7c10f368a0","Parent":"0000000000000000"},"Annotations":[{"Key":"Name","Value":"dHJhY2U="},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"ZXhlY3V0ZSBkb25lLCBSZXR1cm5Sb3c6IDEsIE1vZGlmeVJvdzogMA=="},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAxNzIrMDg6MDA="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5MDMrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAyMjM0MTMrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"7f88549f606d5b72","Span":"1ce4df477db99315","Parent":"0118ce7c10f368a0"},"Annotations":[{"Key":"Name","Value":"KmV4ZWN1dG9yLlBvaW50R2V0RXhlY3V0b3IuTmV4dA=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwNTgrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAxNTU4MDIrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"7f88549f606d5b72","Span":"2fad4bbd33b0e2fa","Parent":"1ce4df477db99315"},"Annotations":[{"Key":"Name","Value":"dGlrdlNuYXBzaG90LmdldA=="},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"c2VuZCBHZXQgcmVxdWVzdCB0byByZWdpb24gNCBhdCBzdG9yZTE="},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwNzUrMDg6MDA="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwNjIrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAxNDQ5MTYrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"7f88549f606d5b72","Span":"2ce7346e52341d99","Parent":"2fad4bbd33b0e2fa"},"Annotations":[{"Key":"Name","Value":"UlBDQ2xpZW50LlNlbmRSZXF1ZXN0"},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwNzcrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAxMzYyNDErMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null}]}]},{"ID":{"Trace":"7f88549f606d5b72","Span":"0c78c3f1f83de3ed","Parent":"0118ce7c10f368a0"},"Annotations":[{"Key":"Name","Value":"KmV4ZWN1dG9yLlBvaW50R2V0RXhlY3V0b3IuTmV4dA=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAxNjUrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAxNjU4MjUrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"7f88549f606d5b72","Span":"755fa921d354d231","Parent":"0118ce7c10f368a0"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5FeGVjdXRl"},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"ZXhlY3V0ZTogU0VMRUNUICogRlJPTSB0MSBXSEVSRSBpZCA9IDI="},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5MTIrMDg6MDA="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5MDcrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwNDM1NzErMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"7f88549f606d5b72","Span":"606f9966437f529f","Parent":"755fa921d354d231"},"Annotations":[{"Key":"Name","Value":"ZXhlY3V0b3IuQ29tcGlsZQ=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5NTUrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5NzU4MTgrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"7f88549f606d5b72","Span":"1b92d023e89e99c4","Parent":"755fa921d354d231"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5ydW5TdG10"},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"eyJzcWwiOiJTRUxFQ1QgKiBGUk9NIHQxIFdIRVJFIGlkID0gMiJ9"},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5OSswODowMA=="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5ODgrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwMjQyMDcrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"7f88549f606d5b72","Span":"6a61f7ffdcbad0c4","Parent":"1b92d023e89e99c4"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5Db21taXRUeG4="},{"Key":"_schema:name","Value":null |
+| },{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwMDYrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwMTg1MDIrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"7f88549f606d5b72","Span":"52f0c4a81d7fe604","Parent":"6a61f7ffdcbad0c4"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5kb0NvbW1pdFdpdFJldHJ5"},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwMDkrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45MzAwMTE1OSswODowMA=="},{"Key":"_schema:Timespan","Value":null}],"Sub":null}]}]},{"ID":{"Trace":"7f88549f606d5b72","Span":"66367e8aa80ff69b","Parent":"755fa921d354d231"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5QYXJzZVNRTA=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5MTQrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzowNzoxNi45Mjk5MzA1NjkrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null}]}]}]           |
 1 row in set (0.00 sec)
 ```
 
