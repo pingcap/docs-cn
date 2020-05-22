@@ -1,17 +1,17 @@
 ---
-title: 关键字和保留字
+title: 关键字
 category: reference
-summary: 本文介绍 TiDB 支持的关键字和保留字。
-aliases: ['/docs-cn/dev/reference/sql/language-structure/keywords-and-reserved-words/']
+summary: 本文介绍 TiDB 的关键字。
+aliases: ['/docs-cn/dev/reference/sql/language-structure/keywords/']
 ---
 
-本文介绍 TiDB 的关键字和保留字，并汇总了所有的关键字以供查询使用。
+# 关键字
 
-# 关键字和保留字
+本文介绍 TiDB 的关键字，对保留字和非保留字作出区分，并汇总所有的关键字以供查询使用。
 
-关键字在 SQL 中有特殊的意义，例如 `SELECT`，`UPDATE`，`DELETE` 等等。它们之中有的能够直接作为模式对象名，被称为**非保留关键字**（简称**关键字**），但有的需要经过特殊处理才能作为模式对象名，被称为**保留关键字**（简称**保留字**）。
+关键字是 SQL 语句中具有特殊含义的单词，例如 `SELECT`，`UPDATE`，`DELETE` 等等。它们之中有的能够直接作为标识符，被称为**非保留关键字**（简称**非保留字**），但有的需要经过特殊处理才能作为标识符，被称为**保留关键字**（简称**保留字**）。
 
-对于保留字，必须使用反引号 `\`` 包裹，才能作为模式对象名被使用。例如：
+对于保留字，必须使用反引号包裹，才能作为标识符被使用。例如：
 
 {{< copyable "sql" >}}
 
@@ -33,7 +33,7 @@ CREATE TABLE `select` (a INT);
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-而关键字则不需要反引号也能直接作为模式对象名。例如 `BEGIN` 和 `END` 是关键字，但不是保留字，所以以下语句能够正常执行：
+而非保留字则不需要反引号也能直接作为标识符。例如 `BEGIN` 和 `END` 是非保留字，以下语句能够正常执行：
 
 {{< copyable "sql" >}}
 
@@ -57,7 +57,7 @@ CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-下表列出了 TiDB 中的关键字和保留字。保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识：
+下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识：
 
 {{< tabs-panel "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" >}}
 
