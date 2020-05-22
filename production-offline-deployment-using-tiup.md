@@ -1,14 +1,11 @@
 ---
 title: 使用 TiUP 离线部署 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 ---
-
-
 
 # 使用 TiUP 离线部署 TiDB 集群
 
-### 1. 部署在线环境 TiUP 组件
+## 1. 部署在线环境 TiUP 组件
 
 使用普通用户登录一台与外网相同的机器：
 
@@ -19,6 +16,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     ```shell
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
+
 2. 重新声明全局环境变量：
 
     {{< copyable "shell-regular" >}}
@@ -26,6 +24,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     ```shell
     source .bash_profile
     ```
+
 3. 确认 TiUP 工具是否安装：
 
     {{< copyable "shell-regular" >}}
@@ -34,7 +33,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     which tiup
     ```
 
-### 2. 使用 TiUP 拉取镜像
+## 2. 使用 TiUP 拉取镜像
 
 以 tidb 用户在隔离的环境中安装一个 v4.0.0-rc 的 TiDB 集群为例，可以执行以下步骤：
 
@@ -58,11 +57,12 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
     此时，`package.tar.gz` 就是一个独立的离线环境包。
 
-### 3. 部署离线环境 TiUP 组件
+## 3. 部署离线环境 TiUP 组件
 
 1. 将包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
 
     {{< copyable "shell-regular" >}}
+
     ```bash
     tar xzvf package.tar.gz
 
@@ -73,8 +73,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     source /home/tidb/.bash_profile
     ```
 
-
-### 4. TiKV 数据盘挂载
+## 4. TiKV 数据盘挂载
 
 > **注意：**
 >
@@ -173,7 +172,8 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     ```
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
-### 5. 配置初始化参数文件 `topology.yaml`
+
+## 5. 配置初始化参数文件 `topology.yaml`
 
 集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
 
@@ -223,8 +223,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-### 6. 部署 TiDB 集群
-
+## 6. 部署 TiDB 集群
 
 `/path/to/mirror` 是 `tiup mirrors <target-dir>` 中输出的 package 所在离线机器的位置:
 
@@ -237,6 +236,7 @@ tiup cluster start tidb-test
 ```
 
 > **参数说明：**
+>
 > - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
 > - 部署版本为 `v4.0.0-rc`，其他版本可以参考[如何查看 TiUP 支持管理的 TiDB 版本](#如何查看-tiup-支持管理的-tidb-版本)的介绍
 > - 初始化配置文件为 `topology.yaml`
@@ -245,9 +245,7 @@ tiup cluster start tidb-test
 
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
-
 部署完成后，集群相关操作可参考 [cluster 命令](/tiup/tiup-cluster.md)。
-
 
 ## 7. mirrors 组件介绍
 

@@ -33,6 +33,7 @@
     - [软硬件环境需求](/hardware-and-software-requirements.md)
     + 集群部署方式
       - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+      - [使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md)
       - [使用 Ansible 部署](/online-deployment-using-ansible.md)
       - [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       - [使用 Docker 部署](/test-deployment-using-docker.md)
