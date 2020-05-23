@@ -4,46 +4,23 @@ category: FAQ
 aliases: ['/docs-cn/dev/faq/upgrade/']
 ---
 
-# 一、 升级与升级后常见问题
+# 升级与升级后常见问题
 
-## 1.1 升级
+## 升级
 
-#### 1.1.1 如何使用 TiDB Ansible 滚动升级？
-
-滚动升级 TiKV 节点( 只升级单独服务 )
-
-`ansible-playbook rolling_update.yml --tags=tikv`
-
-滚动升级所有服务
-
-`ansible-playbook rolling_update.yml`
-
-#### 1.1.2 滚动升级有那些影响?
+#### 滚动升级有那些影响?
 
 滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB \* 2、PD \* 3、TiKV \* 3），如果集群环境中有 Pump/Drainer 服务，建议先停止 Drainer 后滚动升级（升级 TiDB 时会升级 Pump）。
 
-#### 1.1.3 Binary 如何升级？
+#### Binary 如何升级？
 
-Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 TiDB Ansible 部署。
+Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 TiUP 部署。
 
-#### 1.1.4 一般升级选择升级 TiKV 还是所有组件都升级？
-
-常规需要一起升，因为整个版本都是一起测试的，单独升级只限当发生一个紧急故障时，需要单独对一个有问题的角色做升级。
-
-#### 1.1.5 启动集群或者升级集群过程中出现 “Timeout when waiting for search string 200 OK” 是什么原因？如何处理？
-
-可能有以下几种原因：进程没有正常启动；端口被占用；进程没有正常停掉；停掉集群的情况下使用 rolling_update.yml 来升级集群（操作错误）。
-
-处理方式：登录到相应节点查看进程或者端口的状态；纠正错误的操作步骤。
-
-
-
-
-## 1.2 升级后常见问题
+## 升级后常见问题
 
 本文列出了一些升级后可能会遇到的问题与解决办法。
 
-### 1.2.1 执行 DDL 操作时遇到的字符集 (charset) 问题
+### 执行 DDL 操作时遇到的字符集 (charset) 问题
 
 TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字符集是 UTF8。从 v2.1.1 开始，默认字符集变更为 UTF8MB4。如果在 v2.1.0 及之前版本中，建表时显式指定了 table 的 charset 为 UTF8，那么升级到 v2.1.1 之后，执行 DDL 操作可能会失败。
 
@@ -53,7 +30,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
 
 2. 在 v2.1.3 之前，即使 column 的 charset 和 table 的 charset 不一样，`show create table` 也不会显示 column 的 charset，但可以通过 HTTP API 获取 table 的元信息来查看 column 的 charset，下文提供了示例。
 
-#### 1.2.1.1：`unsupported modify column charset utf8mb4 not match origin utf8`
+#### `unsupported modify column charset utf8mb4 not match origin utf8`
 
 - 升级前：v2.1.0 及之前版本
 
@@ -150,7 +127,7 @@ alter table t change column a a varchar(22) character set utf8;
     }
     ```
 
-#### 1.2.1.2：`unsupported modify charset from utf8mb4 to utf8`
+#### `unsupported modify charset from utf8mb4 to utf8`
 
 - 升级前：v2.1.1，v2.1.2
 
@@ -231,7 +208,7 @@ alter table t change column a a varchar(22) character set utf8;
     alter table t change column a a varchar(20) character set utf8mb4;
     ```
 
-#### 1.2.1.2：`ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a`
+#### `ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a`
 
 TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 的插入数据进行 UTF8 Unicode encoding 检查。在v2.1.2 及之后版本中，添加了该检查。
 
