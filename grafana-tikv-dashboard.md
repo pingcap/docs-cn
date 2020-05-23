@@ -568,41 +568,43 @@ tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面
 - snap_gc：驱动以将当前 store 内所有没有正在使用即空闲状态的 snapshot 删除
 - compact_lock_cf：驱动以创建一个合并 lock cf 的任务并直接调度，lock cf 是事务中存放 key 的 lock 的区域，但有时候大量读写操作会使这个区域过大影响性能，需要合并以增加检索效率
 - consistency_check：驱动以对当前 store 的所有 region 的数据进行一致性检查
-- cleanup_import_sst：
+- cleanup_import_sst：驱动以将失效的 sst 删除，判断的规则是所在的 region 的 epoch 过期或者本地无法找到相关 region 信息，但是从 PD 中验证后可以删除
 
 ### Peer tick 类型
 
-- raft：
-- raft_log_gc：
-- split_region_check：
-- pd_heartbeat：
-- check_merge：
-- check_peer_stale_state：
+- raft：驱动 raft 消息在集群中发送
+- raft_log_gc：驱动删除过时的 raft log，判断标准是当 replicated index 和 compact index 的差值大于阈值即删除这部分差值的 log
+- split_region_check：驱动以在 leader peer 中检查是否需要将当前管理的 region 进行 split
+- pd_heartbeat：驱动以发送心跳到 PD 节点上传当前 region 的状态信息
+- check_merge：检测是否需要将相邻的小 region 进行合并
+- check_peer_stale_state：检查其它 peer 的状态，对于 follower 而言，如果检测到 leader 无法 ping 成功即发起新一轮选举
 
-### Raft 消息类型 tikv_raftstore_raft_sent_message_total
+### Raft 消息类型
 
-- append：
-- append_resp：
-- prevote：
-- prevote_resp：
-- vote：
-- vote_resp：
-- snapshot：
-- request_snapshot：
-- heartbeat：
-- heartbeat_resp：
-- transfer_leader：
-- timeout_now：
-- read_index：
-- read_index_resp：
+在发送阶段统计 raft 消息类型：
 
-### Raft drop 消息类型 tikv_raftstore_raft_dropped_message_total
+- append：发送 append raft log
+- append_resp：回应 append raft log
+- prevote：预选举消息，和普通 vote 的区别在于当前 peer 的状态并未变成选举状态，因而不会阻塞正常的操作，减少了网络隔离之后的集群的网络抖动
+- prevote_resp：回应预选举消息
+- vote：raft 协议中的选举
+- vote_resp：回应选举消息
+- snapshot：发送 snapshot 给其它 peer，leader 用此方式快速同步 raft log 给其它 peer
+- request_snapshot：回应 snapshot 的接收状况
+- heartbeat：raft group 中的心跳消息
+- heartbeat_resp：回应 raft group 中的心跳消息
+- transfer_leader：发起转换 leader 给希望成为 leader 的 peer
+- timeout_now：在 transfer leader 过程中旧 leader 的租约提前到期
+- read_index：向 leader 发送最新的 read index 的请求，用于 follower read 的场景
+- read_index_resp：leader 回复自己的 read index
 
-- mismatch_store_id：
-- mismatch_region_epoch：
-- stale_msg：
-- region_overlap：
-- region_no_peer：
+### Raft 消息 drop 原因
+
+- mismatch_store_id：发到了错误的 store 上
+- mismatch_region_epoch：访问的 region 的 epoch 不匹配，意即此 snapshot 的数据过时，可能由于当前还未 merge 最新的 commit
+- stale_msg：raft 消息已经失效，当前 leader 抛弃了该请求导致无法继续处理
+- region_overlap：两个 region 重叠了，这里使用最新的 snapshot 的范围进行比对
+- region_no_peer：snapshot 没有包含对应的 peer //todo why
 - region_tombstone_peer：
 - region_nonexistent：
 - applying_snap：
@@ -631,3 +633,4 @@ tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面
 ### 工作线程名字
 
 ### Future poll 名字前缀
+
