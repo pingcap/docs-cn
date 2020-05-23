@@ -1,7 +1,9 @@
 ---
-title TiDB 磁盘 IO 过高
+title: TiDB 磁盘 IO 过高
 ---
+
 # TiDB 磁盘 IO 过高
+
 作为需要持久化数据的组件，数据库在追求 IO 资源的道路上没有尽头。
 
 随着基础工艺的不断发展，存储从 SATA 的磁盘，发展到 SATA 接口 SSD，再到 nvme 接口的 SSD，磁盘的 iops 性能，从几百向着数十万快速发展。TiDB 所使用的 TiKV 引擎，也随着时代发展的趋势，在 SSD 的数据存储优化上做着不断的努力。
@@ -9,12 +11,15 @@ title TiDB 磁盘 IO 过高
 当我们在使用 TiDB 数据库时，磁盘 IO 瓶颈是绕不开的问题，但同时由于线性扩展，也给了我们更多的解决方案和手段，本文会介绍我们如何定位和处理 TiDB 存储 IO 过高的问题。
 
 ## 确认当前 IO 指标 
+
 当出现系统响应变慢的时候，根据之前的章节，如果已经排查了 cpu 的瓶颈，数据事务冲突的瓶颈后，这边就还需要从 IO 来入手来辅助判断目前的系统瓶颈点。
 
 ### 从监控定位
 
 最快速的定位手段是从监控来查看整体的 IO 情况，可以从集群部署工具(TiDB-Ansible, TiUP) 默认会部署的监控组件 Grafana 来查看对应的 IO 监控：
+
 #### 面板 ：
+
 `Overview` &rarr; `System Info` &rarr; `IO Util`  中
 
 可以看到集群中每个机器的 IO 情况，该指标和 linux iostat 监控中的 util 类似，百分比越高代表磁盘 IO 占用越高：
@@ -24,6 +29,7 @@ title TiDB 磁盘 IO 过高
 TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 RocksDB 实例，一个用于存储 raft 日志，位于 data/raft，一个用于存储真正的数据，位于data/db
 
 #### 面板：
+
 `TiKV-Details` &rarr; `Raft IO` 中，有更多的一些信息可以看到这两个实例当前的状态
 
 - `Apply log duration`: 该监控表明了存储 raft 日志的 RocksDB 写入的响应时间，.99 响应应该在 100ms 以内。
@@ -32,6 +38,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 这两个监控还有 `.. per server` 的监控面板来提供辅助查看热点写入的情况。
 
 #### 面板：
+
 `TiKV-Details` &rarr; `Storage` 中，有关于 storage 相关情况监控
 
 - `Storage command total`: 可以看到相关的 IO 操作次数统计
@@ -70,6 +77,7 @@ TiKV RocksDB 出现 `write stall`
     - 比如 default cf compaction 压力比较大，调整参数 `[rocksdb.defaultcf] compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]` 改成 `compression-per-level = ["no", "no", "zstd", "zstd", "zstd", "zstd", "zstd"]`
 
 ### 从告警获取
+
 集群部署工具(TiDB-Ansible, TiUP) 默认部署的告警组件，官方已经预置了相关的告警项目和阈值，IO 相关包括：
 
 - TiKV_write_stall
