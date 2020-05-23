@@ -3,7 +3,7 @@ title: TiDB 核心特性
 category: introduction
 ---
 
-# TiDB 核心特性
+# TiDB 基本功能
 
 本文详细介绍 TiDB 具备的基本功能。
 
