@@ -43,7 +43,7 @@ Grafana 是一个开源的 metric 分析及可视化系统。TiDB 使用 Grafana
 - {TiDB_Cluster_name}-TiDB-Summary: tidb-server 相关监控项概览。
 - {TiDB_Cluster_name}-TiFlash-Proxy-Summary: 数据同步到 TiFlash 的代理 server 监控项概览。
 - {TiDB_Cluster_name}-TiFlash-Summary: tiflash-server 相关监控项概览。
-- {TiDB_Cluster_name}-TiKV-Detail: tikv-server 组件详细监控项。
+- {TiDB_Cluster_name}-TiKV-Details: tikv-server 组件详细监控项。
 - {TiDB_Cluster_name}-TiKV-Summary: tikv-server 监控项概览。
 - {TiDB_Cluster_name}-TiKV-Trouble-Shooting: TiKV 错误诊断相关监控项。
 
