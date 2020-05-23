@@ -18,6 +18,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-tables/']
 ![ShowTablesStmt](/media/sqlgram/ShowTablesStmt.png)
 
 **OptFull:**
+
 ![OptFull](/media/sqlgram/OptFull.png)
 
 **ShowDatabaseNameOpt:**
