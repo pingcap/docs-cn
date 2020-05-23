@@ -987,6 +987,7 @@ TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指�
 #### 6.2.1 TiKV 性能参数调优
 
 详情参考[线程池性能调优](/tune-tikv-performance-thread.md) 与[内存性能调优](/tune-tikv-performance-memory.md)。
+
 ## 七、监控
 
 ### 7.1 Prometheus 监控框架
