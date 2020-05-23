@@ -27,6 +27,10 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-indexes/']
 
 ![TableName](/media/sqlgram/TableName.png)
 
+**ShowLikeOrWhereOpt:**
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+
 ## 示例
 
 {{< copyable "sql" >}}
