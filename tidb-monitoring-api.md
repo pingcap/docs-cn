@@ -19,7 +19,6 @@ TiDB 提供了以下两种接口来监控集群状态：
 
 - TiDB API 地址：`http://${host}:${port}`
 - 默认端口：10080
-- 各类 `api_name` 详细信息：参见 [TiDB API 文档](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)
 
 以下示例中，通过访问 `http://${host}:${port}/status` 获取当前 TiDB Server 的状态，并判断该 TiDB Server 是否存活。结果以 **JSON** 格式返回：
 
