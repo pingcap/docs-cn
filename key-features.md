@@ -1,5 +1,5 @@
 ---
-title: TiDB 核心特性
+title: TiDB 基本功能
 category: introduction
 ---
 
