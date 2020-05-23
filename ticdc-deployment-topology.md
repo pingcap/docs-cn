@@ -1,8 +1,10 @@
-# 部署需求
+# TiCDC 部署拓扑
+
+## 部署需求
 
 通过 `tidb` 用户做集群管理，部署 3 个节点的 TiCDC 集群，使用默认 `22` 端口，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
 
-# 拓扑信息
+## 拓扑信息
 
 |实例 | 个数 | 物理机配置 | IP |配置 |
 | :-- | :-- | :-- | :-- | :-- |
@@ -12,11 +14,11 @@
 | CDC | 3 | 8 VCore 16GB * 1 | 10.0.1.11 <br> 10.0.1.12 <br> 10.0.1.13 | 默认端口 <br> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.11 | 默认端口 <br> 全局目录配置 |
 
-# 拓扑图
+## 拓扑图
 
 待添加
 
-# 配置文件模版 topology.yaml
+## 配置文件模版 topology.yaml
 
 [简单 TiCDC 配置](/simple-mini.yaml)
 [复杂 TiCDC 配置](/complex-mini.yaml)
