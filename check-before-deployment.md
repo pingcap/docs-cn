@@ -1,7 +1,6 @@
 ---
 title: TiDB 环境与系统配置检查
-category:
-aliases:
+category: how-to
 ---
 
 # TiDB 环境与系统配置检查
