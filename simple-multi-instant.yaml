@@ -84,9 +84,12 @@ tikv_servers:
     numa_node: "1"
     config:
       server.labels: { host: "tikv3" }
+
 monitoring_servers:
   - host: 10.0.1.10
+
 grafana_servers:
   - host: 10.0.1.10
+
 alertmanager_servers:
   - host: 10.0.1.10

@@ -10,8 +10,6 @@ server_configs:
   tidb:
     binlog.enable: true
     binlog.ignore-error: true
-  pd:
-    replication.enable-placement-rules: true
 
 pd_servers:
   - host: 10.0.1.4
@@ -38,9 +36,12 @@ drainer_servers:
       syncer.to.user: "root"
       syncer.to.password: ""
       syncer.to.port: 4000
+
 monitoring_servers:
   - host: 10.0.1.10
+
 grafana_servers:
   - host: 10.0.1.10
+
 alertmanager_servers:
   - host: 10.0.1.10
