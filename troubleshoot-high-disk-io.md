@@ -1,5 +1,6 @@
 ---
 title: TiDB 磁盘 IO 过高
+category: reference
 ---
 
 # TiDB 磁盘 IO 过高
