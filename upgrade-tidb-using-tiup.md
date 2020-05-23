@@ -74,7 +74,7 @@ tiup update cluster
 > + 如果原集群已经是 TiUP 部署，可以跳过此步骤。
 > + 目前默认识别 `inventory.ini` 配置文件，如果你的配置为其他名称，请指定。
 > + 你需要确保当前集群的状态与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常。
-> + 如果在一个 TiDB Ansible 目录中管理多个不同的 `inventory.ini` 配置文件和 TiDB 集群，将其中一个集群导入到 TiUP 时可以指定 `--no-backup` 避免将 Ansible 目录移动到 TiUP 管理目录下面。
+> + 如果在一个 TiDB Ansible 目录中管理多个不同的 `inventory.ini` 配置文件和 TiDB 集群，将其中一个集群导入到 TiUP 时，需要指定 `--no-backup` 以避免将 Ansible 目录移动到 TiUP 管理目录下面。
 
 ### 3.1 将 TiDB Ansible 集群导入到 TiUP 中
 
