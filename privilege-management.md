@@ -94,7 +94,7 @@ SELECT user,host FROM mysql.user WHERE user='xxxx';
 
 上述示例中，`xxxx@%` 即自动添加的用户。
 
-`GRANT` 还可以模糊匹配地授予数据库：
+`GRANT` 还可以模糊匹配地授予用户数据库的权限：
 
 {{< copyable "sql" >}}
 
@@ -243,7 +243,7 @@ GRANT SELECT ON *.* TO `rw_user`@`192.168.%`;
 GRANT INSERT, UPDATE ON `test`.`write_table` TO `rw_user`@`192.168.%`;
 ```
 
-查看 `rw_user@192.168.%` 的权限。
+查看用户 `rw_user@192.168.%` 的权限。
 
 {{< copyable "sql" >}}
 
