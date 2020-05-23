@@ -11,13 +11,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-indexes/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowIndexStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowIndexStmt](/media/sqlgram/ShowIndexStmt.png)
 
 **ShowIndexKwd:**
 
