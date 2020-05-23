@@ -132,7 +132,8 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 更详细的说明可以阅读 [AUTO_RANDOM](https://pingcap.com/docs-cn/stable/reference/sql/attributes/auto-random/) 文档。
 
-## 下推计算结果缓存
+## 小表热点的优化
+
 
 TiDB 从 4.0 起支持下推计算结果缓存（即 Coprocessor Cache 功能）。开启该功能后，将在 TiDB 实例侧缓存下推给 TiKV 计算的结果，对于小表读热点能起到比较好的效果。
 
