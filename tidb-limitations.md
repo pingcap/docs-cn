@@ -27,7 +27,6 @@ category: introduction
 | Views     | unlimited |
 | Connections| unlimited|
 
-
 ## 单个 Database 的限制
 
 | 类型       | 最大限制   |
