@@ -33,13 +33,21 @@ category: introduction
 
 ## SQL 语句
 
+- 完全支持标准的 Data Definition Statements 语句，例如：CREATE、DROP、ALTER、RENAME、RUNCATE 等。
+
+- 完全支持标准的 Data Manipulation Statements 语名，例如：INSERT、REPLACE、SELECT、Subqueries、UPDATE、LOAD DATA 等。
+
+- 完全支持标准的 Transactional and Locking Statements 语名，例如：START TRANSACTION、COMMIT、ROLLBACK、SET TRANSACTION 等。
+
+- 完全支持标准的 Database Administration Statements 语名，例如：SHOW、SET 等。
+
+- 完全支持标准的 Utility Statements语句, 例如：DESCRIBE、EXPLAIN、USE 等。
+
 - 完全支持 `SQL GROUP BY` 和 `ORDER BY` 子语句。
 
 - 完全支持标准 SQL 语法的 `LEFT OUTER JOIN` 和 `RIGHT OUTER JOIN`。
 
 - 完全支持标准 SQL 要求的表和列别名。
-
-- 完全支持 DELETE，INSERT，REPLACE、UPDATE、CREATE、DROP、ALTER 等语句。
 
 ## 分区表
 
