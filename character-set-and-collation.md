@@ -57,7 +57,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 2 rows in set (0.00 sec)
 ```
 
-## 各个层次的字符集和排序规则
+## 不同范围的字符集和排序规则
 
 字符集和排序规则可以在设置在不同的层次。
 
