@@ -7,6 +7,7 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 # 与 MySQL 兼容性对比概览
 
 - TiDB 100% 兼容 MySQL5.7 协议、MySQL5.7 常用的功能及语法，MySQL5.7 生态中系统的工具（PHPMyAdmin, Navicat, MySQL Workbench、mysqldump、Mydumper/myloader）、客户端等均用于 TiDB。
+
 - TiDB 是一款分布式数据库， MySQL5.7 中的部分特性由于工程实现难较大，投入产出比较低等多种原因在 TiDB 未能实现或者仅兼容语法但功能并没有实现，因此使用过程中请特别注意。例如：`CREATE TABLE` 语句中 `ENGINE`，仅兼容语法功能并没有实现，因此 TiDB 中没有 `ENGINE` 这类的概念。
 
 > **注意：**
@@ -40,7 +41,9 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 ### 自增 ID
 
 - TiDB 的自增列仅保证自增且唯一、但不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
+
 - TiDB 在工程实现上会在每一个 tidb-server 实例上缓存一段 ID 的值用于给表的自增列分配值，缓存 ID 的个数由表的 `AUTO_ID_CACHE` 确定，默认值：30000，请特别注意：自增列和`_tidb_rowid`都会消耗缓存的 ID，如果 `INSERT` 语句中所要求的连续的 ID 个数大于 `AUTO_ID_CACHE` 的值时系统会自动调整 `AUTO_ID_CACHE` 的值以确保该语句能正常执行。
+
 - TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性，删除列属性的语法是：`alter table modify` 或 `alter table change` 。
 
 > **注意：**
@@ -85,21 +88,28 @@ mysql> select _tidb_rowid, id from t;
 - Add Index
     + 同一条 SQL 语句不支持创建多个索引。
     + 仅在语法在支持创建不同类刑的索引 (HASH/BTREE/RTREE），功能未实现。
+
 - Add Column
     + 不支持设置`PRIMARY KEY` 及 `UNIQUE KEY`，不支持设置 `AUTO_INCREMENT` 属性。
+
 - Drop Column
     + 不支持删除主键列及索引列。
+
 - Change/Modify Column
     + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
     + 不支持修改 `DECIMAL` 类型的精度
     + 不支持更改 `UNSIGNED` 属性
     + 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
+
 - `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`
     + 仅在语法上支持，功能未实现，故所有的 DDL 都不会锁表。
+
 - `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`
     + 支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但行为与 MySQL 有所不同，MySQL 中的一些 `INPLACE` 操作在 TiDB 中的 是`INSTANT` 操作。
     + 仅在语法上支持 `ALGORITHM=COPY`，功能未实现，会返回警告信息。
+
 - 单条 `ALTER TABLE` 语句中无法完成多个操作。例如：不能用一条语句来添加多个列或多个索引。
+
 - Table Option 不支持以下语法:
     + `WITH/WITHOUT VALIDATION`
     + `SECONDARY_LOAD/SECONDARY_UNLOAD`
@@ -107,6 +117,7 @@ mysql> select _tidb_rowid, id from t;
     + `STATS_AUTO_RECALC/STATS_SAMPLE_PAGES`
     + `SECONDARY_ENGINE`
     + `ENCRYPTION`
+
 - Table Partition 不支持以下语法:
     + `PARTITION BY LIST`
     + `PARTITION BY KEY`
@@ -128,7 +139,9 @@ mysql> select _tidb_rowid, id from t;
 ### SQL 模式
 
 - 不支持兼容模式，例如： `ORACLE` 和 `POSTGRESQL`，MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+
 - `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
+
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` MySQL 用于解决兼容问题，并不适用于 TiDB。
 
 ### 默认设置的区别
@@ -169,7 +182,9 @@ mysql> select _tidb_rowid, id from t;
 #### 时区
 
 - TiDB 采用系统当前安装的所有时区规则进行计算（一般为 `tzdata` 包）, 不需要导入时区表数据就能使用所有时区名称，无法通过导入时区表数据的形式修改计算规则。
+
 - MySQL 默认使用本地时区，依赖于系统内置的当前的时区规则（例如什么时候开始夏令时等）进行计算；且在未[导入时区表数据](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation)的情况下不能通过时区名称来指定时区。
+
 > **注意：**
 >
 > TiKV 采用自己内置时区规则来计算，若系统安装的时区规则与 TiKV 内置的时区规则版本不匹配时，部分情况下可能会发生写入的数据无法读出来的情况。例如，若系统上安装了 tzdata 2018a 时区规则，则在时区设置为 Asia/Shanghai 或时区设置为本地时区且本地时区为 Asia/Shanghai 的情况下，时间 `1988-04-17 02:00:00` 可以被正常插入 TiDB 3.0 RC.1，但该记录对于特定类型 SQL 则无法再读出来，原因是 TiKV 3.0 RC.1 依据的 tzdata 2018i 规则中该时间在 Asia/Shanghai 时区中不存在（夏令时时间后移一小时）。
@@ -185,7 +200,10 @@ mysql> select _tidb_rowid, id from t;
 
 ### 类型系统
 
-+ 不支持 FLOAT4/FLOAT8
-+ 不支持 FIXED (alias for DECIMAL)
-+ 不支持 SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)
-+ 不支持 SQL_TSI_* （包括 SQL_TSI_YEAR、SQL_TSI_MONTH、SQL_TSI_WEEK、SQL_TSI_DAY、SQL_TSI_HOUR、SQL_TSI_MINUTE 和 SQL_TSI_SECOND）
++ 不支持 FLOAT4/FLOAT8。
+
++ 不支持 FIXED (alias for DECIMAL)。
+
++ 不支持 SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)。
+
++ 不支持 SQL_TSI_* （包括 SQL_TSI_YEAR、SQL_TSI_MONTH、SQL_TSI_WEEK、SQL_TSI_DAY、SQL_TSI_HOUR、SQL_TSI_MINUTE 和 SQL_TSI_SECOND）。
