@@ -64,6 +64,8 @@ TiDB Dashboard 中的「热点可视化」功能可帮助用户缩小热点排�
 
 ![Dashboard 示例4](/media/troubleshoot-hot-spot-issues-4.png)
 
+> [4.0 之前版本热点定位可以参考此文档](https://book.tidb.io/session4/chapter7/hotspot-resolved.html)
+
 ## 使用 SHARD_ROW_ID_BITS 处理热点表
 
 对于主键非整数或没有主键的表或者是联合主键，TiDB 会使用一个隐式的自增 RowID，大量 INSERT 时会把数据集中写入单个 Region，造成写入热点。
