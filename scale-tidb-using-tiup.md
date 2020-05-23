@@ -23,13 +23,13 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 | 10.0.1.1   | TiKV   | 
 | 10.0.1.2   | TiKV    |
 
-## 1. 扩容 TiDB/TiKV/PD/TiCDC 节点
+## 1. 扩容 TiDB/PD/TiKV 节点
 
 如果要添加一个 TiDB 节点，IP 地址为 10.0.1.5，可以按照如下步骤进行操作。
 
 > **注意：**
 >
-> 添加 PD、TiCDC 节点和添加 TiDB 节点的步骤类似。添加 TiKV 节点前，建议预先根据集群的负载情况调整 PD 调度参数。
+> 添加 PD 节点和添加 TiDB 节点的步骤类似。添加 TiKV 节点前，建议预先根据集群的负载情况调整 PD 调度参数。
 
 ### 1.1 编写扩容拓扑配置
 
@@ -61,6 +61,8 @@ tidb_servers:
    deploy_dir: /data/deploy/install/deploy/tidb-4000
 
    log_dir: /data/deploy/install/log/tidb-4000
+
+
 TiKV 配置文件参考：
 
 {{< copyable "" >}}
@@ -81,6 +83,8 @@ tikv_servers:
    data_dir: /data/deploy/install/data/tikv-20160
 
    log_dir: /data/deploy/install/log/tikv-20160
+
+
 PD 配置文件参考：
 
 {{< copyable "" >}}
@@ -231,13 +235,13 @@ tiup cluster display <cluster-name>
 | 10.0.1.2   | TiKV    | 
 
 
-## 4. 缩容 TiDB/TiKV/PD/TiCDC 节点
+## 4. 缩容 TiDB/PD/TiKV/ 节点
 
 如果要移除 IP 地址为 10.0.1.5 的一个 TiKV 节点，可以按照如下步骤进行操作。
 
 > **注意：**
 >
-> 移除 TiDB、PD、TiCDC 节点和移除 TiKV 节点的步骤类似。
+> 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
 
 ### 4.1 查看节点 ID 信息
 
