@@ -1,8 +1,16 @@
+---
+title: TiCDC 部署拓扑
+category: how-to
+---
+
 # TiCDC 部署拓扑
 
 ## 部署需求
 
 通过 `tidb` 用户做集群管理，部署 3 个节点的 TiCDC 集群，使用默认 `22` 端口，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
+
+## 部署规划
+
 
 ## 拓扑信息
 
