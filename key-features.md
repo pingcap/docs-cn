@@ -21,9 +21,9 @@ category: introduction
 
 - 算术运符、位运算符、比较运算符、逻辑运算符、日期和时间运算符等。
 
-## 字符集及排序规则
+## 字符集及排序规则 
 
-- 字符集：`UTF8、UTF8MB4、BINARY`。
+- 字符集：`UTF8、UTF8MB4、BINARY、ASCII、LATIN1`。
 
 - 排序规则：`UTF8MB4_GENERAL_CI、UTF8MB4_GENERAL_BIN、UTF8_GENERAL_CI、UTF8_GENERAL_BIN、BINARY`。
 
