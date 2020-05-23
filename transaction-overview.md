@@ -39,7 +39,7 @@ START TRANSACTION WITH CONSISTENT SNAPSHOT;
 
 > **注意：**
 >
-> 与 MySQL 不同的是，TiDB 在执行完上述语句后即会获取当前数据库快照，而 MySQL 的 `BEGIN` 和 `START TRANSACTION` 是在开启事务后的第一个从 InnoDB 读数据的 SELECT 语句（非 SELECT FOR UPDATE）后获取，`START TRANSACTION WITH CONSISTENT SNAPSHOT` 是语句执行时获取。因此，TiDB 中的 `BEGIN`、`START TRANSACTION` 和 `START TRANSACTION WITH CONSISTENT SNAPSHOT` 都等效为 MySQL 中的 `START TRANSACTION WITH CONSISTENT SNAPSHOT`。
+> 与 MySQL 不同的是，TiDB 在执行完上述语句后即会获取当前数据库快照，而 MySQL 的 `BEGIN` 和 `START TRANSACTION` 是在开启事务后的第一个从 InnoDB 读数据的 `SELECT` 语句（非 `SELECT FOR UPDATE`）后获取快照，`START TRANSACTION WITH CONSISTENT SNAPSHOT` 是语句执行时获取快照。因此，TiDB 中的 `BEGIN`、`START TRANSACTION` 和 `START TRANSACTION WITH CONSISTENT SNAPSHOT` 都等效为 MySQL 中的 `START TRANSACTION WITH CONSISTENT SNAPSHOT`。
 
 ### `COMMIT`
 
@@ -164,7 +164,7 @@ TiDB 同时支持乐观事务与悲观事务，其中乐观事务是悲观事务
 
 TiDB 默认设置了单个事务的容量的总大小不超过 100 MB，这个默认值可以通过配置文件中的配置项 `txn-total-size-limit` 进行修改，最大支持到 10 GB。实际的单个事务大小限制还取决于服务器剩余可用内存大小，执行事务时 TiDB 进程的内存消耗大约是事务大小 6 倍以上。
 
-在 4.0 以前的版本，TiDB 限制了单个事务的键值对的总数量不超过 30 万条，在 4.0 之后的版本没有这项限制。
+在 4.0 以前的版本，TiDB 限制了单个事务的键值对的总数量不超过 30 万条，从 4.0 版本起 TiDB 取消了这项限制。
 
 > **注意：**
 > 
