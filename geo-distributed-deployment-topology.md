@@ -1,0 +1,83 @@
+# 跨数据中心部署拓扑
+
+## 部署需求
+
+通过 `tidb` 用户做集群管理，部署一套两地三中心集群，北京 2 中心，上海 1 中心，使用默认 `22` 端口，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
+
+## 拓扑信息
+
+|实例 | 个数 | 物理机配置 | 北京 IP | 上海 IP |配置 |
+| :-- | :-- | :-- | :-- | :-- | :-- |
+| TiDB |3 | 16 VCore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 <br> 10.0.1.4 | 10.0.1.5 | 默认端口 <br>  全局目录配置 |
+| PD | 3 | 4 VCore 8GB * 1 |10.0.1.6 <br> 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 10.0.1.10 | 默认端口 <br> 全局目录配置 |
+| TiKV | 3 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.11 <br> 10.0.1.12 <br> 10.0.1.13 <br> 10.0.1.14 | 10.0.1.15 | 默认端口 <br> 全局目录配置 |
+| Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.16 || 默认端口 <br> 全局目录配置 |
+
+## 拓扑图
+
+待添加
+
+## 配置文件模版 topology.yaml
+
+[跨机房配置](/geo-redundancy-deployment.yaml)
+
+> **注意：**
+>
+> - 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+
+## 关键参数配置
+
+### CSVTiKV 参数
+
+- 设置 gRPC 的压缩格式，默认为 none，为提高跨机房部署场景的目标节点间 gRPC 包的传输速度，建议设置为 gzip 格式。
+    
+```yaml
+server.grpc-compression-type: gzip
+```
+
+- label 配置
+
+    由于采用跨机房部署 TiKV，为了避免物理机宕机导致 Region Group 默认 5 副本的 3 副本丢失，导致集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同中心、同机柜、同机器 TiKV 实例不会出现 Region Group 有 3 副本的情况。
+
+    - TiKV 配置
+
+        相同物理机配置相同的 host 级别 label 信息：
+
+        ```yml
+        config:
+          server.labels:
+            zone: bj
+            dc: bja
+            rack: rack1
+            host: host2
+        ```
+
+- 防止异地 tikv 节点发起不必要的 Raft 选举，需要将异地的 TiKV 节点的发起选举时至少经过的 tick 个数和最多经过的 tick 个数都调大，这两个参数默认设置均为 0。
+
+```yaml
+raftstore.raft-min-election-timeout-ticks: 1000
+raftstore.raft-max-election-timeout-ticks: 1020
+```
+
+### PD 参数
+
+- PD 元数据信息记录 TiKV 集群的拓扑信息，根据 4 个维度调度 Raft Group 副本。
+
+```yaml
+replication.location-labels: ["zone","dc","rack","host"]
+```
+
+- 调整 Raft Group 的副本数据量为 5 ，保证集群的高可用性
+
+```yaml
+replication.max-replicas: 5
+```
+
+- 拒绝异地机房 TiKV 的 Raft 副本拒绝选举为 leader。
+
+```yaml
+label-property:
+      reject-leader:
+        - key: "dc"
+          value: "sha"
+```
