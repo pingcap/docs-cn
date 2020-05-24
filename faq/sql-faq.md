@@ -52,38 +52,26 @@ TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不�
 有，也支持 DDL。详细参考 [TiDB 历史数据回溯](/read-historical-data.md)。
 
 
-#### 1.1.9 Transaction too large 是什么原因，怎么解决？
-
-由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
-
-- 单个事务包含的 SQL 语句不超过 5000 条（默认）
-- 单条 KV entry 不超过 6MB
-- KV entry 的总条数不超过 30w
-- KV entry 的总大小不超过 100MB
-
-在 Google 的 Cloud Spanner 上面，也有类似的[限制](https://cloud.google.com/spanner/docs/limits)。
-
-
-#### 1.1.10 TiDB 中删除数据后会立即释放空间吗？
+#### 1.1.9 TiDB 中删除数据后会立即释放空间吗？
 
 DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DROP 操作，在达到 TiDB 的 GC (garbage collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 DELETE 操作 TiDB 的 GC 机制会删除数据，但不会释放空间，而是当后续数据写入 RocksDB 且进行 compact 时对空间重新利用。
 
 
-#### 1.1.11 TiDB 是否支持 replace into 语法？
+#### 1.1.10 TiDB 是否支持 replace into 语法？
 
 支持，但是 load data 不支持 replace into 语法。
 
 
-#### 1.1.12 数据删除后查询速度为何会变慢？
+#### 1.1.11 数据删除后查询速度为何会变慢？
 
 大量删除数据后，会有很多无用的 key 存在，影响查询效率。可以尝试开启 [Region Merge](https://pingcap.com/docs-cn/v3.0/best-practices/massive-regions-best-practices/#方法五开启-region-merge) 功能，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
 
 
-#### 1.1.13 对数据做删除操作之后，空间回收比较慢，如何处理？
+#### 1.1.12 对数据做删除操作之后，空间回收比较慢，如何处理？
 
 可以设置并行 GC，加快对空间的回收速度。默认并发为 1，最大可调整为 tikv 实例数量的 50%。可使用 `update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";` 命令来调整。
 
-#### 1.1.14 show processlist 是否显示系统进程号？
+#### 1.1.13 show processlist 是否显示系统进程号？
 
 TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
@@ -92,7 +80,7 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
 
 
-#### 1.1.15 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
+#### 1.1.14 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
 TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_priority)、[全局](/tidb-configuration-file.md#force-priority)或单个语句的优先级。优先级包括：
 
@@ -115,18 +103,18 @@ TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_pr
 
 2. 全表扫会自动调整为低优先级，analyze 也是默认低优先级。
 
-#### 1.1.16 在 TiDB 中 auto analyze 的触发策略是怎样的？
+#### 1.1.15 在 TiDB 中 auto analyze 的触发策略是怎样的？
 
 触发策略：新表达到 1000 条，并且在 1 分钟内没有写入，会自动触发。
 
 当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
-#### 1.1.17 SQL 中如何通过 hint 使用一个具体的 index？
+#### 1.1.16 SQL 中如何通过 hint 使用一个具体的 index？
 
 同 MySQL 的用法一致，例如：
 `select column_name from table_name use index（index_name）where where_condition;`
 
-#### 1.1.18 触发 Information schema is changed 错误的原因？
+#### 1.1.17 触发 Information schema is changed 错误的原因？
 
 TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。
 
@@ -142,14 +130,14 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 > + 对于每个 DDL 操作，`schema` 版本变更的数量与对应 `schema state` 变更的次数一致。
 > + 不同的 DDL 操作版本变更次数不一样。例如，`create table` 操作会有 1 次 `schema` 版本变更；`add column` 操作有 4 次 `schema` 版本变更。
 
-#### 1.1.19 触发 Information schema is out of date 错误的原因？
+#### 1.1.18 触发 Information schema is out of date 错误的原因？
 
 当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
 
 - 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
 - TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
 
-#### 1.1.20 高并发情况下执行 DDL 时报错的原因？
+#### 1.1.19 高并发情况下执行 DDL 时报错的原因？
 
 高并发情况下执行 DDL（比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
 
