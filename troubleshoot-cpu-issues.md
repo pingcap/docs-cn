@@ -26,15 +26,15 @@ category: troubleshoot-cpu-issues
 **解决方案：**
 
 * 更新统计信息
-  * 手动 analyze table，配合 crontab 定期 analyze，维持统计信息准确度
-  * 自动 auto analyze，调低 analyze ratio 阈值，提高收集频次，并设置运行时间窗口
-      * set global tidb_auto_analyze_ratio=0.2;
-      * set global tidb_auto_analyze_start_time='00:00 +0800';
-      * set global tidb_auto_analyze_end_time='06:00 +0800';
+    * 手动 analyze table，配合 crontab 定期 analyze，维持统计信息准确度
+    * 自动 auto analyze，调低 analyze ratio 阈值，提高收集频次，并设置运行时间窗口
+        * set global tidb_auto_analyze_ratio=0.2;
+        * set global tidb_auto_analyze_start_time='00:00 +0800';
+        * set global tidb_auto_analyze_end_time='06:00 +0800';
 * 绑定执行计划
-      * 修改业务 SQL ，使用 use index 固定使用列上的索引
-      * 3.0 版本下，业务可以不用修改 SQL，使用 create binding 创建 force index 的绑定 SQL
-      * 4.0 版本支持 SQL Plan Management，可以避免执行计划不稳定导致的性能下降
+        * 修改业务 SQL ，使用 use index 固定使用列上的索引
+        * 3.0 版本下，业务可以不用修改 SQL，使用 create binding 创建 force index 的绑定 SQL
+        * 4.0 版本支持 SQL Plan Management，可以避免执行计划不稳定导致的性能下降
 
 ### PD 异常
 
