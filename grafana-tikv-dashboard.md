@@ -55,26 +55,24 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Approximate Region size Histogram：每个 Region 近似大小的直方图
 - Region average written keys：每个 TiKV 实例上所有 Region 的平均 key 写入个数
 - Region average written bytes：每个 TiKV 实例上所有 Region 的平均写入大小
-- Request batch ratio：每个 TiKV 实例的 request batch 输出和输入的比率
-- Request batch input：每个 TiKV 实例的 request batch 中的请求大小
 
 ![TiKV Dashboard - Server metrics](/media/tikv-dashboard-server.png)
 
 ## gRPC
 
-- gRPC message count：每种 gRPC 消息的个数
-- gRPC message failed：失败的 gRPC 消息的个数
-- 99% gRPC message duration：在 99% gRPC 消息的执行时间
-- Average gRPC message duration：gRPC 消息平均的执行时间
+- gRPC message count：每种 gRPC 请求的个数
+- gRPC message failed：失败的 gRPC 请求的个数
+- 99% gRPC message duration：99% gRPC 请求的执行时间小于该值
+- Average gRPC message duration：gRPC 请求平均的执行时间
 - gRPC batch size：gRPC 请求的 batch 大小
-- raft message batch size：raft 消息的 batch 大小
+- raft message batch size：raft 请求的 batch 大小
 
 ## Thread CPU
 
-- Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80%
-- Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90%
+- Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80% * `raftstore.store-pool-size`
+- Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90% * `raftstore.store-pool-size`
 - Scheduler worker CPU：scheduler worker 线程的 CPU 使用率
-- gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80%
+- gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80% * `raftstore.store-pool-size`
 - Unified read pool CPU：unified read pool 线程的 CPU 使用率
 - Storage ReadPool CPU：storage read pool 线程的 CPU 使用率
 - Coprocessor CPU：coprocessor 线程的 CPU 使用率
@@ -86,7 +84,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## PD
 
 - PD requests：TiKV 发送给 PD 的请求个数
-- PD request duration (average)：TiKV 发送给 PD 的请求所需的平均时间
+- PD request duration (average)：TiKV 发送给 PD 的请求处理的平均时间
 - PD heartbeats：发送给 PD 的心跳个数
 - PD validate peers：通过 PD 验证 TiKV 的 peer 有效的个数
 
