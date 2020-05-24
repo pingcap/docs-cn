@@ -34,7 +34,7 @@ TiDB Summary 面板是将 TiDB 面板中用户最为关心的部分抽取出来�
 
 - Server
     - Uptime：每个 TiDB 实例的运行时间
-    - Memory Usage：每个 TiDB 实例的内存使用统计，氛围进程占用内存和 Golang 在堆上申请的内存
+    - Memory Usage：每个 TiDB 实例的内存使用统计，分为进程占用内存和 Golang 在堆上申请的内存
     - CPU Usage：每个 TiDB 实例的 CPU 使用统计
     - Connection Count：每个 TiDB 的连接数
     - Open FD Count：每个 TiDB 实例的打开的文件描述符统计
