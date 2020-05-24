@@ -40,7 +40,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/insert/']
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (a int);
+CREATE TABLE t1 (a INT);
 ```
 
 ```

@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/rollback/']
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);
+CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
 ```
 
 ```
