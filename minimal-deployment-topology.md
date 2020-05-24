@@ -1,3 +1,8 @@
+---
+title: 常规拓扑架构
+category: how-to
+---
+
 # 部署需求
 
 通过 `tidb` 用户做集群管理，使用默认 `22` 端口，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
@@ -18,8 +23,9 @@
 # 配置文件模版 topology.yaml
 
 [简单最小拓扑配置](/simple-mini.yaml)
-[复杂最小拓扑配置](/complex-mini.yaml)
+
+[详细最小拓扑配置](/complex-mini.yaml)
 
 > **注意：**
 >
-> - 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
