@@ -604,33 +604,27 @@ tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面
 - mismatch_region_epoch：访问的 region 的 epoch 不匹配，意即此 snapshot 的数据过时，可能由于当前还未 merge 最新的 commit
 - stale_msg：raft 消息已经失效，当前 leader 抛弃了该请求导致无法继续处理
 - region_overlap：两个 region 重叠了，这里使用最新的 snapshot 的范围进行比对
-- region_no_peer：snapshot 没有包含对应的 peer //todo why
-- region_tombstone_peer：
-- region_nonexistent：
-- applying_snap：
+- region_no_peer：snapshot 消息中包含的 peer 和 snapshot 数据中的 peer 不匹配
+- region_tombstone_peer：tombstone peer 收到了一个过时的 raft 消息
+- region_nonexistent：所发送的 region 还不存在
+- applying_snap：正在 apply snapshot，此时无法处理 raft 消息
 
 ### Raft proposal 消息类型 
 
-- local_read：
-- read_index：
-- normal：
-- conf_change：
-- transfer_leader：
+- local_read：直接处理 raft 请求而不通过 raft 的 SafeReadIndex 机制
+- read_index：处理读请求的机制，通过发送 heartbeat 确认自身仍为 leader 即可
+- normal：普通的 proposal 消息
+- conf_change：region 内的 raft group 进行 conf change 相关的消息
+- transfer_leader：转移自身 leader 角色的消息
 
 ### Local read 拒绝类型
 
-- store_id_mismatch：
-- peer_id_mismatch：
-- term_mismatch：
-- lease_expire：
-- no_region：
+- store_id_mismatch：请求的 store id 和自身不匹配
+- peer_id_mismatch：请求的 peer id 和自身不匹配
+- term_mismatch：请求的 term 和自身不匹配
+- lease_expire：leader 的 lease 过期，无法处理 read 请求
+- no_region：请求的 region 不匹配
 - rejected_by_no_lease：
 - rejected_by_epoch：
 - rejected_by_appiled_term：
-- rejected_by_channel_full：
-- local_executed_requests：
-
-### 工作线程名字
-
-### Future poll 名字前缀
-
+- rejected_by_channel_full：用于缓存消息的 crossbeam channel 已满
