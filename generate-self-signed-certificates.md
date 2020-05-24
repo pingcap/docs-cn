@@ -41,16 +41,31 @@ yum install openssl
 
 ## 生成 CA 证书
 
-CA 的作用是签发证书。实际情况中，请联系你的管理员签发证书或者使用信任的 CA 机构。CA 会管理多个证书对，这里只需生成原始的一对证书：
+CA 的作用是签发证书。实际情况中，请联系你的管理员签发证书或者使用信任的 CA 机构。CA 会管理多个证书对，这里只需生成原始的一对证书，步骤如下：
 
-```bash
-// 生成 root 密钥
-openssl genrsa -out root.key 4096
-// 生成 root 证书
-openssl req -new -x509 -days 1000 -key root.key -out root.crt
-// 验证 root 证书
-openssl x509 -text -in root.crt -noout
-```
+1. 生成 root 密钥：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl genrsa -out root.key 4096
+    ```
+
+2. 生成 root 证书：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl req -new -x509 -days 1000 -key root.key -out root.crt
+    ```
+
+3. 验证 root 证书：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -text -in root.crt -noout
+    ```
 
 ## 签发各个组件的证书
 
