@@ -20,6 +20,7 @@ category: troubleshoot-cpu-issues
 * SQL 执行时间相比于其他数据库(例如 MySQL)有较大差距。可以对比其他数据库执行计划，例如 `Join Order` 是否不同。
 
 **可能的原因：**
+
 * 统计信息不准确
 
 **解决方案：**
