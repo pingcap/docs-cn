@@ -44,25 +44,25 @@ explain select * from t where x = 1;
 
 ```sql
 create table t (x int) partition by hash(x) partitions 4;
-explain select * from t where x in (1,2);
+explain select * from t where x > 2;
 ```
 
 ```sql
 +------------------------------+----------+-----------+-----------------------+--------------------------------+
 | id                           | estRows  | task      | access object         | operator info                  |
 +------------------------------+----------+-----------+-----------------------+--------------------------------+
-| Union_10                     | 80.00    | root      |                       |                                |
-| ├─TableReader_13             | 20.00    | root      |                       | data:Selection_12              |
-| │ └─Selection_12             | 20.00    | cop[tikv] |                       | in(test.t.x, 1, 2)             |
+| Union_10                     | 13333.33 | root      |                       |                                |
+| ├─TableReader_13             | 3333.33  | root      |                       | data:Selection_12              |
+| │ └─Selection_12             | 3333.33  | cop[tikv] |                       | gt(test.t.x, 2)                |
 | │   └─TableFullScan_11       | 10000.00 | cop[tikv] | table:t, partition:p0 | keep order:false, stats:pseudo |
-| ├─TableReader_16             | 20.00    | root      |                       | data:Selection_15              |
-| │ └─Selection_15             | 20.00    | cop[tikv] |                       | in(test.t.x, 1, 2)             |
+| ├─TableReader_16             | 3333.33  | root      |                       | data:Selection_15              |
+| │ └─Selection_15             | 3333.33  | cop[tikv] |                       | gt(test.t.x, 2)                |
 | │   └─TableFullScan_14       | 10000.00 | cop[tikv] | table:t, partition:p1 | keep order:false, stats:pseudo |
-| ├─TableReader_19             | 20.00    | root      |                       | data:Selection_18              |
-| │ └─Selection_18             | 20.00    | cop[tikv] |                       | in(test.t.x, 1, 2)             |
+| ├─TableReader_19             | 3333.33  | root      |                       | data:Selection_18              |
+| │ └─Selection_18             | 3333.33  | cop[tikv] |                       | gt(test.t.x, 2)                |
 | │   └─TableFullScan_17       | 10000.00 | cop[tikv] | table:t, partition:p2 | keep order:false, stats:pseudo |
-| └─TableReader_22             | 20.00    | root      |                       | data:Selection_21              |
-|   └─Selection_21             | 20.00    | cop[tikv] |                       | in(test.t.x, 1, 2)             |
+| └─TableReader_22             | 3333.33  | root      |                       | data:Selection_21              |
+|   └─Selection_21             | 3333.33  | cop[tikv] |                       | gt(test.t.x, 2)                |
 |     └─TableFullScan_20       | 10000.00 | cop[tikv] | table:t, partition:p3 | keep order:false, stats:pseudo |
 +------------------------------+----------+-----------+-----------------------+--------------------------------+
 ```
