@@ -38,10 +38,10 @@ TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](htt
 
     由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
 
-  - 单个事务包含的 SQL 语句不超过 5000 条（默认）
-    - 单条 KV entry 不超过 6MB
-    - KV entry 的总大小不超过 10G
-	
+    - 单个事务包含的 SQL 语句不超过 5000 条（默认）
+      - 单条 KV entry 不超过 6MB
+      - KV entry 的总大小不超过 10G
+
 在 Google 的 Cloud Spanner 上面，也有[类似的限制](https://cloud.google.com/spanner/docs/limits)。
 
 ### 数据分片
@@ -169,7 +169,7 @@ for i from 0 to 23:
 
 除了监控之外，查看日志也是了解系统状态的常用方法。TiDB 的三个组件 tidb-server/tikv-server/pd-server 都有一个 `--log-file` 的参数，如果启动的时候设置了这个参数，那么日志会保存着参数所设置的文件的位置，另外会自动的按天对 Log 文件做归档。如果没有设置 `--log-file` 参数，日志会输出在 stderr 中。
 
-从 4.0 版本开始，从解决易用性的角度出发，提供了 Dashboard UI 系统，通过浏览器访问 http://PD_IP:PD_PORT/dashboard 即可打开 TiDB Dashboard。Dashboard 可以提供集群状态、性能分析、流量可视化、SQL 诊断、日志搜索等功能。
+从 4.0 版本开始，从解决易用性的角度出发，提供了 Dashboard UI 系统，通过浏览器访问 `http://PD_IP:PD_PORT/dashboard` 即可打开 TiDB Dashboard。Dashboard 可以提供集群状态、性能分析、流量可视化、SQL 诊断、日志搜索等功能。
 
 ### 文档
 
