@@ -1,19 +1,20 @@
 ---
 title: TiDB 最佳实践
 category: reference
-summary: 本文档用于总结在使用 TiDB 时候的一些最佳实践，主要涉及 SQL 使用、OLAP/OLTP 优化技巧，特别是一些 TiDB 专有的优化开关。建议先阅读讲解 TiDB 原理的三篇文章(讲存储，说计算，谈调度)，再来看这篇文章。
 ---
 
 本文档用于总结在使用 TiDB 时候的一些最佳实践，主要涉及 SQL 使用、OLAP/OLTP 优化技巧，特别是一些 TiDB 专有的优化开关。
 建议先阅读讲解 TiDB 原理的三篇文章([讲存储](https://pingcap.com/blog-cn/tidb-internal-1/)，[说计算](https://pingcap.com/blog-cn/tidb-internal-2/)，[谈调度](https://pingcap.com/blog-cn/tidb-internal-3/))，再来看这篇文章。
 
 ## 前言
+
 数据库是一个通用的基础组件，在开发过程中会考虑到多种目标场景，在具体的业务场景中，需要根据业务的实际情况对数据的参数或者使用方式进行调整。
 
 TiDB 是一个兼容 MySQL 协议和语法的分布式数据库，但是由于其内部实现，特别是支持分布式存储以及分布式事务，使得一些使用方法和 MySQL 有所区别。
 
 
 ## 基本概念
+
 TiDB 的最佳实践与其实现原理密切相关，建议读者先了解一些基本的实现机制，包括 Raft、分布式事务、数据分片、负载均衡、SQL 到 KV 的映射方案、二级索引的实现方法、分布式执行引擎。下面会做一点简单的介绍，更详细的信息可以参考 PingCAP 公众号以及知乎专栏的一些文章。
 
 
@@ -25,6 +26,7 @@ Raft 是一种一致性协议，能提供强一致的数据复制保证，TiDB �
 
 
 ### 分布式事务
+
 TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](https://research.google.com/pubs/pub36726.html) 的基础上做了一些优化。具体的实现大家可以参考[《Percolator 和 TiDB 事务算法》](./percolator-and-txn.md)这篇文章。这里只说两点：
 
 + 乐观锁
@@ -46,10 +48,12 @@ TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](htt
 	在 Google 的 Cloud Spanner 上面，也有[类似的限制](https://cloud.google.com/spanner/docs/limits)。
 
 ### 数据分片
+
 TiKV 自动将底层数据按照 Key 的 Range 进行分片。每个 Region 是一个 Key 的范围，从 StartKey 到 EndKey 的左闭右开区间。Region 中的 Key-Value 总量超过一定值，就会自动分裂。这部分用户不需要担心。
 
 
 ### 负载均衡
+
 PD 会根据整个 TiKV 集群的状态，对集群的负载进行调度。调度是以 Region 为单位，以 PD 配置的策略为调度逻辑，自动完成。
 
 
