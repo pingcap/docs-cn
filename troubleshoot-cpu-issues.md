@@ -32,9 +32,9 @@ category: troubleshoot-cpu-issues
       * set global tidb_auto_analyze_start_time='00:00 +0800';
       * set global tidb_auto_analyze_end_time='06:00 +0800';
 * 绑定执行计划
-  * 修改业务 SQL ，使用 use index 固定使用列上的索引
-  * 3.0 版本下，业务可以不用修改 SQL，使用 create binding 创建 force index 的绑定 SQL
-  * 4.0 版本支持 SQL Plan Management，可以避免执行计划不稳定导致的性能下降
+      * 修改业务 SQL ，使用 use index 固定使用列上的索引
+      * 3.0 版本下，业务可以不用修改 SQL，使用 create binding 创建 force index 的绑定 SQL
+      * 4.0 版本支持 SQL Plan Management，可以避免执行计划不稳定导致的性能下降
 
 ### PD 异常
 
