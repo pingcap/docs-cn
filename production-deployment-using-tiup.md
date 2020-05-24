@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 [TiUP](https://github.com/pingcap-incubator/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap-incubator/tiup-cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数。
 
-目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC。通过本文，介绍不同集群拓扑下的部署流程，具体步骤如下：
+目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC。本文将介绍不同集群拓扑的具体部署步骤：
 
 ## 第 1 步：软硬件环境需求及前置检查
 
@@ -46,7 +46,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     which tiup
     ```
 
-3. 安装 TiUP cluster 组件（以 cluster-v0.4.3 为例）
+3. 安装 TiUP cluster 组件
 
     {{< copyable "shell-regular" >}}
 
@@ -74,33 +74,33 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 ## 第 3 步：编辑初始化配置文件
 
-请根据不同的集群拓扑，编辑 TiUP 的 yaml 集群初始化配置文件。
+请根据不同的集群拓扑，编辑 TiUP 所需的集群初始化配置文件。
 
-这里举出常见的 6 种场景，请根据拓扑说明，以及给出的配置文件模板，新建一个配置文件 `topology.yaml`。
+这里举出常见的 6 种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，新建一个配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
 
 - [常规拓扑架构](/minimal-deployment-topology.md)
 
   最基本的集群拓扑，包括 tidb-server、tikv-server、pd-server。适合 OLTP 业务。
   
-- [增加 `TiFlash` 拓扑架构]
+- [增加 `TiFlash` 拓扑架构](/tiflash-deployment-topology.md)
 
-  在常规拓扑的基础上，同时部署 `TiFlash`，`TiFlash` 是列式的存储引擎，已经逐步成为集群拓扑的标配。适合需要隔离的 Real-Time HTAP 业务。
+  包含常规拓扑的基础上，同时部署 `TiFlash`，`TiFlash` 是列式的存储引擎，已经逐步成为集群拓扑的标配。适合 Real-Time HTAP 业务。
   
-- [增加 `TiCDC` 拓扑架构]
+- [增加 `TiCDC` 拓扑架构](/ticdc-deployment-topology.md)
 
-  在常规拓扑的基础上，同时部署 `TiCDC`，`TiCDC` 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB/MySQL/MQ）。相比 `TiDB Binlog` 有延迟更低、天然高可用 的优点。
+  包含常规拓扑的基础上，同时部署 `TiCDC`，`TiCDC` 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB/MySQL/MQ）。`TiCDC` 相比 `TiDB Binlog` ，有延迟更低、天然高可用等优点。
   
-- [增加 `TiDB Binlog` 拓扑架构]
+- [增加 `TiDB Binlog` 拓扑架构](/tidb-binlog-deployment-topology.md)
 
-  在常规拓扑的基础上，同时部署 `TiDB Binlog`，`TiDB Binlog` 是目前广泛使用的增量组件，并提供准实时备份和同步功能。
+  包含常规拓扑的基础上，同时部署 `TiDB Binlog`，`TiDB Binlog` 是目前广泛使用的增量组件，可提供准实时备份和同步功能。
 
 - [单机多实例 拓扑架构](/hybrid-deployment-topology.md)
 
-  占位
+  适用于单个机器部署多个实例的情况，需要额外增加 目录、端口、资源配比、label 等配置。
 
 - [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)
 
-  占位
+  以典型的 `两地三中心` 架构为例，介绍跨机房部署架构，以及需要注意的关键设置。
 
 ### 第 4 步：执行部署命令
 
@@ -187,10 +187,3 @@ mysql -u root -h 10.0.1.4 -P 4000
 ```
 
 更多方式[验证集群运行状态](/post-installation-check.md)
-
-### 其他
-
-另外，本文还提供了使用 TiUP 关闭、销毁集群的命令，以及使用 TiUP 部署的常见问题和解决方案。具体参见：
-- [关闭集群](#关闭集群)
-- [销毁集群](#销毁集群)
-- [常见部署问题](#常见部署问题)
