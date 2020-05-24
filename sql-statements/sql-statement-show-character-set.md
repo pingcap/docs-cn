@@ -11,13 +11,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-character-set/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowCharsetStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowCharsetStmt](/media/sqlgram/ShowCharsetStmt.png)
 
 **CharsetKw:**
 
@@ -46,7 +42,7 @@ SHOW CHARACTER SET;
 
 ## MySQL 兼容性
 
-`SHOW CHARACTER SET` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW CHARACTER SET` 语句功能与 MySQL 完全兼容。然而请注意，TiDB 中字符集的默认排序规则与 MySQL 有所不同，详情请见[与 MySQL 兼容性对比](/mysql-compatibility.md)。对于其他问题导致的兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 
