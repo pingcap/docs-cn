@@ -5,6 +5,8 @@ category: how-to
 
 # 使用 TiUP 离线部署 TiDB 集群
 
+本文介绍如何使用 TiUP 离线部署 TiDB 集群，具体的操作步骤如下。
+
 ## 1. 部署在线环境 TiUP 组件
 
 使用普通用户登录一台开放外网访问的机器：
@@ -243,4 +245,3 @@ tiup cluster start tidb-test
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
 部署完成后，集群相关操作可参考 [cluster 命令](/tiup/tiup-cluster.md)。
-
