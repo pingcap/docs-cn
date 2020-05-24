@@ -42,7 +42,7 @@ TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](htt
         - 单条 KV entry 不超过 6MB
         - KV entry 的总大小不超过 10G
 
-在 Google 的 Cloud Spanner 上面，也有[类似的限制](https://cloud.google.com/spanner/docs/limits)。
+    在 Google 的 Cloud Spanner 上面，也有[类似的限制](https://cloud.google.com/spanner/docs/limits)。
 
 ### 数据分片
 
