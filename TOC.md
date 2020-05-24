@@ -107,11 +107,12 @@
 + 性能调优
   + 系统调优
     + [硬件](/tune-hardware-performance.md) @张文博
-    + [操作系统](/tune-operating-system.md) @张文博
+    + [操作系统性能参数调优](/tune-operating-system.md) @张文博
   + 软件调优
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
       + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+      + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
   + SQL 性能调优 @崔一丁
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + [理解 TiDB 执行计划](/query-execution-plan.md)
@@ -352,6 +353,9 @@
       + [隔离级别](/transaction-isolation-levels.md) @于帅鹏
       + [乐观事务](/optimistic-transaction.md) @于帅鹏
       + [悲观事务](/pessimistic-transaction.md) @于帅鹏
+    + 垃圾回收 (GC)
+      + [GC 机制简介](/garbage-collection-overview.md)
+      + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md) @徐怀宇
     + [分区表](/partitioned-table.md) @毛康力
     + [字符集和排序规则](/character-set-and-collation.md) @黄文俊
