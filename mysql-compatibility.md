@@ -1,5 +1,6 @@
 ---
 title: 与 MySQL 兼容性对比
+summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出详细的对比。
 category: reference
 aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 ---
@@ -88,17 +89,23 @@ mysql> select _tidb_rowid, id from t;
 - Add Index
     + 同一条 SQL 语句不支持创建多个索引。
     + 仅在语法在支持创建不同类刑的索引 (HASH/BTREE/RTREE），功能未实现。
+    + 支持 `VISIBLE`/`INVISIBLE` 索引选项，忽略其它索引选项。
 
 - Add Column
-    + 不支持设置`PRIMARY KEY` 及 `UNIQUE KEY`，不支持设置 `AUTO_INCREMENT` 属性。
+    + 不支持设置`PRIMARY KEY` 及 `UNIQUE KEY`，不支持设置 `AUTO_INCREMENT` 属性。可能输出的错误信息：`unsupported add column '%s' constraint PRIMARY/UNIQUE/AUTO_INCREMENT KEY`
 
 - Drop Column
-    + 不支持删除主键列及索引列。
+    + 不支持删除主键列及索引列，可能输出的错误信息：`Unsupported drop integer primary key/column a with index covered`。
+    
+- Drop Primary Key
+    + 仅支持删除建表时启用了 `alter-primary-key` 配置项的表的主键,可能输出的错误信息: `Unsupported drop primary key when alter-primary-key is false`。
+    
+- Order By 忽略所有列排序相关的选项。
 
 - Change/Modify Column
-    + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
-    + 不支持修改 `DECIMAL` 类型的精度
-    + 不支持更改 `UNSIGNED` 属性
+    + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`，可能输出的错误信息：`length %d is less than origin %d`
+    + 不支持修改 `DECIMAL` 类型的精度，可能输出的错误信息：`can't change decimal column precision`。
+    + 不支持更改 `UNSIGNED` 属性，可能输出的错误信息：`can't change unsigned integer to signed or vice versa`。
     + 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 
 - `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`
@@ -108,9 +115,9 @@ mysql> select _tidb_rowid, id from t;
     + 支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但行为与 MySQL 有所不同，MySQL 中的一些 `INPLACE` 操作在 TiDB 中的 是`INSTANT` 操作。
     + 仅在语法上支持 `ALGORITHM=COPY`，功能未实现，会返回警告信息。
 
-- 单条 `ALTER TABLE` 语句中无法完成多个操作。例如：不能用一条语句来添加多个列或多个索引。
+- 单条 `ALTER TABLE` 语句中无法完成多个操作。例如：不能用一条语句来添加多个列或多个索引。可能输出的错误信息：`Unsupported multi schema change`。
 
-- Table Option 不支持以下语法:
+- Table Option 仅支持`AUTO_INCREMENT`、`CHARACTER SET`、`COLLATE`、`COMMENT`，不支持以下语法:
     + `WITH/WITHOUT VALIDATION`
     + `SECONDARY_LOAD/SECONDARY_UNLOAD`
     + `CHECK/DROP CHECK`
@@ -118,7 +125,7 @@ mysql> select _tidb_rowid, id from t;
     + `SECONDARY_ENGINE`
     + `ENCRYPTION`
 
-- Table Partition 不支持以下语法:
+- Table Partition 分区类型支持 Hash、Range；支持 Add/Drop/Truncate/Coalese；忽略其他分区操作，可能错误信息：`Warning: Unsupported partition type, treat as normal table`，不支持以下语法:
     + `PARTITION BY LIST`
     + `PARTITION BY KEY`
     + `SUBPARTITION`
@@ -144,7 +151,7 @@ mysql> select _tidb_rowid, id from t;
 
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` MySQL 用于解决兼容问题，并不适用于 TiDB。
 
-### 默认设置的区别
+### 默认设置
 
 - 字符集：
     + TiDB 默认：`utf8mb4`。

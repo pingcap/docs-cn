@@ -19,10 +19,6 @@ aliases: ['/docs-cn/dev/reference/sql/statements/add-column/']
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
 
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
 **ColumnDef:**
 
 ![ColumnDef](/media/sqlgram/ColumnDef.png)
@@ -120,9 +116,10 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-* 不支持同时添加多列。
+* 不支持在一条语句中同时添加多列。
 * 不支持将新添加的列设为 `PRIMARY KEY`。
 * 不支持将新添加的列设为 `AUTO_INCREMENT`。
+* 对添加生成列有局限性，具体可参考：[生成列局限性](/generated-columns.md#局限性)。
 
 ## 另请参阅
 
