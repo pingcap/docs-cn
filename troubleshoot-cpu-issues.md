@@ -28,9 +28,9 @@ category: troubleshoot-cpu-issues
 * 更新统计信息
   * 手动 analyze table，配合 crontab 定期 analyze，维持统计信息准确度
   * 自动 auto analyze，调低 analyze ratio 阈值，提高收集频次，并设置运行时间窗口
-    * set global tidb_auto_analyze_ratio=0.2;
-    * set global tidb_auto_analyze_start_time='00:00 +0800';
-    * set global tidb_auto_analyze_end_time='06:00 +0800';
+      * set global tidb_auto_analyze_ratio=0.2;
+      * set global tidb_auto_analyze_start_time='00:00 +0800';
+      * set global tidb_auto_analyze_end_time='06:00 +0800';
 * 绑定执行计划
   * 修改业务 SQL ，使用 use index 固定使用列上的索引
   * 3.0 版本下，业务可以不用修改 SQL，使用 create binding 创建 force index 的绑定 SQL
@@ -66,10 +66,10 @@ category: troubleshoot-cpu-issues
 
 * 查看 gRPC duration，gRPC duration 是请求在 TiKV 端的总耗时。通过对比 TiKV 的 gRPC duration 以及 TiDB 中的 KV duration 可以发现潜在的网络问题。比如 gRPC duration 很短但是 TiDB 的 KV duration 显示很长，说明 TiDB 和 TiKV 之间网络延迟可能很高，或者 TiDB 和 TiKV 之间的网卡带宽打满了。
 * TiKV 重启了导致重新选举
-  * TiKV `panic` 之后又被 systemd 重新拉起正常运行，可以通过查看 TiKV 的日志来确认是否有 `panic`，这种情况属于非预期，需要报 bug
-  * 被第三者 `stop/kill`，被 systemd 重新拉起。查看 `dmesg` 和 `TiKV log` 确认原因
-  * TiKV 发生 OOM 导致重启了
-  * 动态调整 `THP` 导致 hung 住，见案例 [case-500](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case500.md)
+    * TiKV `panic` 之后又被 systemd 重新拉起正常运行，可以通过查看 TiKV 的日志来确认是否有 `panic`，这种情况属于非预期，需要报 bug
+    * 被第三者 `stop/kill`，被 systemd 重新拉起。查看 `dmesg` 和 `TiKV log` 确认原因
+    * TiKV 发生 OOM 导致重启了
+    * 动态调整 `THP` 导致 hung 住，见案例 [case-500](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case500.md)
 * 查看监控：grafana -> TiKV-details -> errors 面板 `server is busy` 看到 TiKV RocksDB 出现 write stall 导致发生重新选举
 * TiKV 发生网络隔离导致重新选举
 * `block-cache` 配置太大导致 OOM，在监控 grafana -> TiKV-details 选中对应的 instance 之后查看 RocksDB 的 `block cache size` 监控来确认是否是该问题。同时请检查 `[storage.block-cache] capacity = # "1GB"` 参数是否设置合理，默认情况下 TiKV 的 `block-cache` 设置为机器总内存的 `45%`;在 container 部署的时候需要显式指定该参数，因为 TiKV 获取的是物理机的内存，可能会超出 container 的内存限制。
