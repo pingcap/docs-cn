@@ -340,6 +340,9 @@
       + [隔离级别](/transaction-isolation-levels.md) @于帅鹏
       + [乐观事务](/optimistic-transaction.md) @于帅鹏
       + [悲观事务](/pessimistic-transaction.md) @于帅鹏
+    + 垃圾回收 (GC)
+      + [GC 机制简介](/garbage-collection-overview.md)
+      + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md) @徐怀宇
     + [分区表](/partitioned-table.md) @毛康力
     + [字符集和排序规则](/character-set-and-collation.md) @黄文俊
