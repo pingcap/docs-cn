@@ -235,7 +235,7 @@ tiup cluster display <cluster-name>
 | 10.0.1.2   | TiKV    | 
 
 
-## 4. 缩容 TiDB/PD/TiKV/ 节点
+## 4. 缩容 TiDB/PD/TiKV 节点
 
 如果要移除 IP 地址为 10.0.1.5 的一个 TiKV 节点，可以按照如下步骤进行操作。
 
@@ -402,4 +402,3 @@ tiup cluster display <cluster-name>
 | 10.0.1.5   | TiDB + Monitor  | 
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
-
