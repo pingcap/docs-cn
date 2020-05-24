@@ -1,5 +1,5 @@
 ---
-title: 测试集群状态
+title: 验证集群运行状态
 category: how-to
 ---
 
