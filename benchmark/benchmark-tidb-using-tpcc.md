@@ -70,7 +70,7 @@ ant
 | RAM | 128GB |
 | DISK | Optane 500GB SSD |
 
-因为该型号 CPU 是 NUMA 架构，建议用 `numactl` 进行绑核。首先[安装 numactl 工具](/production-deployment-using-tiup.md/#如何安装-numactl-工具) ，然后用 `lscpu` 查看 NUMA node，比如：
+因为该型号 CPU 是 NUMA 架构，建议用 `numactl` 进行绑核。首先[安装 numactl 工具](/production-deployment-using-tiup.md#如何安装-numactl-工具) ，然后用 `lscpu` 查看 NUMA node，比如：
 
 ```text
 NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
