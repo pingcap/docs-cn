@@ -63,55 +63,72 @@ openssl x509 -text -in root.crt -noout
 
 ### 给 TiKV 实例签发证书
 
+给 TiKV 实例签发证书的步骤如下：
+
 1. 生成该证书对应的私钥：
 
-```bash
-openssl genrsa -out tikv.key 2048
-```
+    {{< copyable "shell-regular" >}}
 
-2. 拷贝一份 OpenSSL 的配置模板文件：
+    ```bash
+    openssl genrsa -out tikv.key 2048
+    ```
 
-```bash
-// 模板文件可能存在多个位置，请以实际位置为准
-cp /usr/lib/ssl/openssl.cnf .
-// 如果不知道实际位置，请在根目录下查找
-find / -name openssl.cnf
-```
+2. 拷贝一份 OpenSSL 的配置模板文件。
+
+    模板文件可能存在多个位置，请以实际位置为准：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cp /usr/lib/ssl/openssl.cnf .
+    ```
+
+    如果不知道实际位置，请在根目录下查找：
+
+    ```bash
+    find / -name openssl.cnf
+    ```
 
 3. 编辑 `openssl.cnf`，在 `[ req ]` 字段下加入 `req_extensions = v3_req`，然后在 `[ v3_req ]` 字段下加入 `subjectAltName = @alt_names`。最后新建一个字段，并编辑 SAN 的信息：
 
-```
-[ alt_names ]
-IP.1 = 127.0.0.1
-IP.2 = 172.16.10.14
-IP.3 = 172.16.10.15
-IP.4 = 172.16.10.16
-```
+    ```
+    [ alt_names ]
+    IP.1 = 127.0.0.1
+    IP.2 = 172.16.10.14
+    IP.3 = 172.16.10.15
+    IP.4 = 172.16.10.16
+    ```
 
 4. 保存 `openssl.cnf` 文件后，生成证书请求文件（在这一步也可以为该证书指定 Common Name，其作用是让服务端验证接入的客户端的身份，各个组件默认不会开启验证，需要在配置文件中启用该功能才生效）：
 
-```bash
-openssl req -new -key tikv.key -out tikv.csr -config openssl.cnf
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl req -new -key tikv.key -out tikv.csr -config openssl.cnf
+    ```
 
 5. 签发生成证书：
 
-```bash
-openssl x509 -req -days 365 -CA root.crt -CAkey root.key -CAcreateserial -in tikv.csr -out tikv.crt -extensions v3_req -extfile openssl.cnf
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -req -days 365 -CA root.crt -CAkey root.key -CAcreateserial -in tikv.csr -out tikv.crt -extensions v3_req -extfile openssl.cnf
+    ```
 
 6. 验证证书携带 SAN 字段信息（可选）：
 
-```bash
-openssl x509 -text -in tikv.crt -noout
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -text -in tikv.crt -noout
+    ```
 
 7. 确认在当前目录下得到如下文件：
 
-```
-root.crt
-tikv.crt
-tikv.key
-```
+    ```
+    root.crt
+    tikv.crt
+    tikv.key
+    ```
 
 为其它组件签发证书的过程类似，此文档不再赘述。
