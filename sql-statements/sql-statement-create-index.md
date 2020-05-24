@@ -15,33 +15,61 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-index/']
 
 ![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
 
-**CreateIndexStmtUnique:**
+**IndexKeyTypeOpt:**
 
-![CreateIndexStmtUnique](/media/sqlgram/CreateIndexStmtUnique.png)
+![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
 
-**Identifier:**
+**IfNotExists:**
 
-![Identifier](/media/sqlgram/Identifier.png)
+![IfNotExists](/media/sqlgram/IfNotExists.png)
 
 **IndexTypeOpt:**
 
 ![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
 
-**TableName:**
+**IndexPartSpecificationList:**
 
-![TableName](/media/sqlgram/TableName.png)
-
-**IndexColNameList:**
-
-![IndexColNameList](/media/sqlgram/IndexColNameList.png)
+![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
 
 **IndexOptionList:**
 
 ![IndexOptionList](/media/sqlgram/IndexOptionList.png)
 
+**IndexLockAndAlgorithmOpt:**
+
+![IndexLockAndAlgorithmOpt](/media/sqlgram/IndexLockAndAlgorithmOpt.png)
+
+**IndexType:**
+
+![IndexType](/media/sqlgram/IndexType.png)
+
+**IndexPartSpecification:**
+
+![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
+
 **IndexOption:**
 
 ![IndexOption](/media/sqlgram/IndexOption.png)
+
+**IndexTypeName:**
+
+![IndexTypeName](/media/sqlgram/IndexTypeName.png)
+
+**ColumnName:**
+
+![ColumnName](/media/sqlgram/ColumnName.png)
+
+**OptFieldLen:**
+
+![OptFieldLen](/media/sqlgram/OptFieldLen.png)
+
+**IndexNameList:**
+
+![IndexNameList](/media/sqlgram/IndexNameList.png)
+
+**KeyOrIndex:**
+
+![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
 
 ## 示例
 
@@ -160,17 +188,6 @@ CREATE INDEX idx ON t ((lower(name)));
 维护表达式索引的代价比一般的索引更高，因为在插入或者更新每一行时都需要计算出表达式的值。因为表达式的值已经存储在索引中，所以当优化器选择表达式索引时，表达式的值就不需要再计算。因此，当查询速度比插入速度和更新速度更重要时，可以考虑建立表达式索引。
 
 表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列 (generated virtual column) 上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/generated-columns.md#局限性)。目前，建立了索引的表达式只有在 `FIELD` 子句、`WHERE` 子句和 `ORDER BY` 子句中时，优化器才能使用表达式索引。后续将支持 `GROUP BY` 子句。
-
-## 不可见索引
-
-不可见索引（Invisible Indexes）是 MySQL 8.0 引入的新功能，将一个索引设置为不可见，使优化器不会再使用这条索引。
-
-```sql
-CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
-CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
-```
-
-具体可以参考 [不可见索引的介绍](/sql-statements/sql-statement-alter-index.md#不可见索引)。
 
 ## 相关 session 变量
 

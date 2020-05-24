@@ -11,17 +11,13 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-table-like/']
 
 ## 语法图
 
-**CreateTableStmt:**
+**CreateTableLikeStmt:**
 
-![CreateTableStmt](/media/sqlgram/CreateTableStmt.png)
+![CreateTableLikeStmt](/media/sqlgram/CreateTableLikeStmt.png)
 
 **LikeTableWithOrWithoutParen:**
 
 ![LikeTableWithOrWithoutParen](/media/sqlgram/LikeTableWithOrWithoutParen.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
 
 ## 示例
 
@@ -84,6 +80,10 @@ SELECT * FROM t2;
 ```
 Empty set (0.00 sec)
 ```
+
+## Region 的预切分
+
+若被复制的表定义了 `PRE_SPLIT_REGIONS` 属性，通过 `CREATE TABLE LIKE` 语句复制的表，会继承该属性并在建表时进行 Region 的预切分，关于 `PRE_SPLIT_REGIONS` 属性的说明请参照 [CREATE TABLE 语句](/sql-statements/sql-statement-create-table.md)。
 
 ## MySQL 兼容性
 
