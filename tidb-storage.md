@@ -36,8 +36,8 @@ TiKV 利用 Raft 来做数据复制，每个数据变更都会落地为一条 Ra
 
 ## Region
 
-讲到这里，我们需要提到一个非常重要的概念：Region。这个概念是理解后续一系列机制的基础，请仔细阅读这一小节。
-前面提到，我们将 TiKV 看做一个巨大的有序的 KV Map，那么为了实现存储的水平扩展，我们需要将数据分散在多台机器上。这里提到的数据分散在多台机器上和 Raft 的数据复制不是一个概念，在这一节我们先忘记 Raft，假设所有的数据都只有一个副本，这样更容易理解。
+首先，为了便于理解，在此节，假设所有的数据都只有一个副本。
+前面提到，TiKV 可以看做是一个巨大的有序的 KV Map，那么为了实现存储的水平扩展，数据将被分散在多台机器上。
 对于一个 KV 系统，将数据分散在多台机器上有两种比较典型的方案：
 
 * Hash：按照 Key 做 Hash，根据 Hash 值选择对应的存储节点
@@ -92,7 +92,7 @@ KeyN_Version1 -> Value
 ……
 ```
 
-注意，对于同一个 Key 的多个版本，我们把版本号较大的放在前面，版本号小的放在后面（回忆一下 Key-Value 一节我们介绍过的 Key 是有序的排列），这样当用户通过一个 Key + Version 来获取 Value 的时候，可以通过 Key 和 Version 构造出 MVCC 的 Key，也就是 Key_Version。然后可以直接通过 RocksDB 的 SeekPrefix(Key_Version) API，定位到第一个大于等于这个 Key_Version 的位置。
+注意，对于同一个 Key 的多个版本，版本号较大的会被放在前面，版本号小的会被放在后面（见 [Key-Value]() 一节, Key 是有序的排列），这样当用户通过一个 Key + Version 来获取 Value 的时候，可以通过 Key 和 Version 构造出 MVCC 的 Key，也就是 Key_Version。然后可以直接通过 RocksDB 的 SeekPrefix(Key_Version) API，定位到第一个大于等于这个 Key_Version 的位置。
 
 ## 分布式 ACID 事务
 
