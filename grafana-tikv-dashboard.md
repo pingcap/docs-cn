@@ -64,15 +64,15 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - gRPC message failed：失败的 gRPC 请求的个数
 - 99% gRPC message duration：99% gRPC 请求的执行时间小于该值
 - Average gRPC message duration：gRPC 请求平均的执行时间
-- gRPC batch size：gRPC 请求的 batch 大小
-- raft message batch size：raft 请求的 batch 大小
+- gRPC batch size：TiDB 与 TiKV 之间 grpc 请求的 batch 大小
+- raft message batch size：TiKV 与 TiKV 之间 raft 消息的 batch 大小
 
 ## Thread CPU
 
 - Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80% * `raftstore.store-pool-size`
-- Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90% * `raftstore.store-pool-size`
-- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率
-- gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80% * `raftstore.store-pool-size`
+- Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90% * `raftstore.apply-pool-size`
+- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率，通常应低于 90% * `storage.scheduler-worker-pool-size`
+- gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80% * `server.grpc-concurrency`
 - Unified read pool CPU：unified read pool 线程的 CPU 使用率
 - Storage ReadPool CPU：storage read pool 线程的 CPU 使用率
 - Coprocessor CPU：coprocessor 线程的 CPU 使用率
@@ -166,7 +166,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Scheduler
 
 - Scheduler stage total：每种命令不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
-- Scheduler writing bytes：在每个 stage 中命令的总写入字节数量
+- Scheduler writing bytes：每个 TiKV 实例正在处理的命令的写入字节数量
 - Scheduler priority commands：不同优先级命令的个数
 - Scheduler pending commands：每个 TiKV 实例上 pending 命令的个数
 
@@ -231,11 +231,11 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - GC keys (write CF)：在 GC 过程中，write CF 中 受影响的 key 的个数
 - TiDB GC worker actions：TiDB GC worker 的不同 action 的个数
 - TiDB GC seconds：TiDB 执行 GC 花费的时间
-- GC speed：GC 每秒进行的 key 的数量
+- GC speed：GC 每秒删除的 key 的数量
 - TiKV AutoGC Working：Auto GC 管理器的工作状态
-- ResolveLocks Progress：GC 第一阶段即 ResolveLocks 的进度
-- TiKV Auto GC Progress：TiKV GC 的进度
-- TiKV Auto GC SafePoint：TiKV GC 的 safe point 的数值
+- ResolveLocks Progress：GC 第一阶段（ResolveLocks）的进度
+- TiKV Auto GC Progress：GC 第二阶段的进度
+- TiKV Auto GC SafePoint：TiKV GC 的 safe point 的数值，safe point 为当前 GC 的时间戳
 - GC lifetime：TiDB 设置的 GC lifetime
 - GC interval：TiDB 设置的 GC 间隔
 
@@ -256,18 +256,18 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Coprocessor Overview
 
-- Request duration：处理 coprocessor 读请求所花费的时间
-- Total Requests：对于每种类型的总请求数量
-- Handle duration：处理 coprocessor 请求所花费的时间
-- Total Request Errors：下推的请求发生错误的个数，正常情况下，短时间内不应该有大量的错误
-- Total KV Cursor Operations：各种类型的 KV cursor 操作的总数量
-- KV Cursor Operations：各种类型的 KV cursor 操作的数量
+- Request duration：从开始处理 coprocessor 请求到结束所消耗的总时间
+- Total Requests：每种类型的总请求数量
+- Handle duration：实际处理 coprocessor 请求所消耗的时间
+- Total Request Errors：Coprocessor 请求错误个数，正常情况下，短时间内不应该有大量的错误
+- Total KV Cursor Operations：各种类型的 KV cursor 操作的总数量，例如 select、index、analyze_table、analyze_index、checksum_table、checksum_index 等
+- KV Cursor Operations：各种类型的 KV cursor 操作的数量，以直方图形式显示
 - Total RocksDB Perf Statistics：RocksDB 性能统计数据
 - Total Response Size：coprocessor 回应的数据大小
 
 ## Coprocessor Detail
 
-- Handle duration：处理 coprocessor 请求所花费的时间
+- Handle duration：实际处理 coprocessor 请求所消耗的时间
 - 95% Handle duration by store：95% 的情况下，每个 TiKV 实例处理 coprocessor 请求所花费的时间
 - Wait duration：coprocessor 请求的等待时间，99.99% 的情况下，应该小于 10s
 - 95% Wait duration by store：95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
@@ -622,7 +622,13 @@ tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面
 - term_mismatch：请求的 term 和自身不匹配
 - lease_expire：leader 的 lease 过期，无法处理 read 请求
 - no_region：请求的 region 不匹配
-- rejected_by_no_lease：
-- rejected_by_epoch：
-- rejected_by_appiled_term：
+- rejected_by_no_lease：当前 leader 已无 lease 信息
+- rejected_by_epoch：访问的 region 的 epoch 不匹配
+- rejected_by_appiled_term：// todo
 - rejected_by_channel_full：用于缓存消息的 crossbeam channel 已满
+
+### GC manager 工作状态
+
+- initializing：初始化 GC 管理器，包括启动新的线程分配 worker
+- idle：在没有到 safe point 时间之前保持 idle 状态
+- working：开始进行 GC 任务，参考 [GC doc](https://pingcap.com/docs-cn/dev/garbage-collection-overview/)
