@@ -59,7 +59,7 @@ TiDB Summary 面板是将 TiDB 面板中用户最为关心的部分抽取出来�
     - Session Retry Error OPS：每秒事务重试时遇到的错误数量
     - Local Latch Wait Duration：TiDB 内部事务排队等待时间（这个相关 feature 已经移除，不需要关注）
     - KV Transaction OPS：每个 TiDB 内部每秒执行的事务数量
-        - 一个用户的事务，在 TiDB 内部可能分解为多个事务来执行，其中包含，内部元数据的读取，用户事务原子性地多次重试执行等
+        - 一个用户的事务，在 TiDB 内部可能会触发多次事务执行，其中包含，内部元数据的读取，用户事务原子性地多次重试执行等
         - TiDB 内部的定时任务也会通过事务来操作数据库，这部分也包含在这个面板里
     - KV Transaction Duration：每个 TiDB 内部执行事务的耗时
     - Commit Token Wait Duration：事务提交时的流控队列等待耗时。当出现较长等待时，代表提交事务过大，正在限流。如果系统还有资源可以使用，可以通过增大 TiDB 配置文件中 `committer-concurrency` 来加速提交
