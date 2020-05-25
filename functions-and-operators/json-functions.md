@@ -18,14 +18,15 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 
 ## 搜索 JSON 值的函数
 
-| 函数及语法糖                                                       | 功能描述                                                   |
-| ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| [JSON_CONTAINS(target, candidate[, path])][json_contains] | 通过返回 1 或 0 来表示目标 JSON 文档中是否包含给定的 candidate JSON 文档 |
-| [JSON_CONTAINS_PATH(json_doc, one_or_all, path[, path] ...)][json_contains_path] | 通过返回 0 或 1 来表示一个 JSON 文档在给定路径是否包含数据 |
-| [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract]          | 从 JSON 文档中解出某一路径对应的子文档                     |
-| [->][json_short_extract]  | 返回执行路径后面的 JSON 列的值；`JSON_EXTRACT(doc, path_literal)` 的语法糖  |
-| [->>][json_short_extract_unquote]  | 返回执行路径后面的 JSON 列的值和转义后的结果； `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` 的语法糖 |
-| [JSON_KEYS(json_doc[, path])][json_keys] | 返回从 JSON 对象的顶级值作为 JSON array 的键，如果给定了路径参数，则从选定路径中获取顶级键 |
+| 函数及语法糖                                                 | 功能描述                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [JSON_CONTAINS(target, candidate[, path])][json_contains]    | 通过返回 1 或 0 来表示目标 JSON 文档中是否包含给定的 candidate JSON 文档 |
+| [JSON_CONTAINS_PATH(json_doc, one_or_all, path[, path] ...)][json_contains_path] | 通过返回 0 或 1 来表示一个 JSON 文档在给定路径是否包含数据   |
+| [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract]     | 从 JSON 文档中解出某一路径对应的子文档                       |
+| [->][json_short_extract]                                     | 返回执行路径后面的 JSON 列的值；`JSON_EXTRACT(doc, path_literal)` 的语法糖 |
+| [->>][json_short_extract_unquote]                            | 返回执行路径后面的 JSON 列的值和转义后的结果； `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` 的语法糖 |
+| [JSON_KEYS(json_doc[, path])][json_keys]                     | 返回从 JSON 对象的顶级值作为 JSON array 的键，如果给定了路径参数，则从选定路径中获取顶级键 |
+| [JSON_SEARCH(json_doc, one_or_all, search_str[, escape_char[, path] ...])][json_search] | 返回指定字符在 JSON 文档中的路径                             |
 
 ## 修改 JSON 值的函数
 
@@ -38,6 +39,8 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace] | 替换 JSON 文档中的某一路径下的子文档 |
 | [JSON_SET(json_doc, path, val[, path, val] ...)][json_set]  | 在 JSON 文档中为某一路径设置子文档 |
 | [JSON_UNQUOTE(json_val)][json_unquote] |  去掉 JSON 值外面的引号，返回结果为字符串 |
+| [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)][json_array_append] | 将值添加到 JSON 文档指定数组的末尾，并返回添加结果 |
+| [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)][json_array_insert] | 将值插入到 JSON 文档的指定位置，并返回插入结果 |
 
 ## 返回 JSON 值属性的函数
 
@@ -46,19 +49,15 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | [JSON_DEPTH(json_doc)][json_depth] | 返回 JSON 文档的最大深度 |
 | [JSON_LENGTH(json_doc[, path])][json_length] | 返回 JSON 文档的长度；如果路径参数已定，则返回该路径下值的长度 |
 | [JSON_TYPE(json_val)][json_type] | 检查某 JSON 文档内部内容的类型 |
+| [JSON_VALID(json_val)][json_valid] | 检查某 JSON 文档的内容是否有效 |
 
 ## 未支持的函数
 
 TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://github.com/pingcap/tidb/issues/7546):
 
-* `JSON_APPEND` 及其别名 `JSON_ARRAY_APPEND`
-* `JSON_ARRAY_INSERT`
-* `JSON_DEPTH`
 * `JSON_MERGE_PATCH`
 * `JSON_PRETTY`
-* `JSON_SEARCH`
 * `JSON_STORAGE_SIZE`
-* `JSON_VALID`
 * `JSON_ARRAYAGG`
 * `JSON_OBJECTAGG`
 
@@ -83,3 +82,6 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_contains_path]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path
 [json_arrayagg]: https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_json-arrayagg
 [json_depth]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-depth
+[json_array_append]:https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append
+[json_array_insert]:https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert
+[json_search]:https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-search
