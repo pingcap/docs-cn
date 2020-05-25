@@ -46,9 +46,6 @@
     + AWS
     + GCP
     + Alibaba Cloud
-  + 监控与告警设置
-    + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
-    + [监控 API](/tidb-monitoring-api.md) @李宋高
   + [测试验证](/post-installation-check.md) @李仲舒
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md) @周跃跃
@@ -77,11 +74,16 @@
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
-  + [告警处理](/handle-alerts.md) @李宋高
   + [日常巡检](/daily-inspection.md) @王军
   + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
++ 监控与告警
+  + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
+  + [监控 API](/tidb-monitoring-api.md) @李宋高
+  + [手动部署监控](/deploy-monitoring-services.md) @李宋高
+  + [TiDB 集群报警规则与处理方法](/alert-rules.md) @李宋高
+  + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md) @孙若曦
 + 故障诊断
   + 硬件故障 @周强
     + [整机](/troubleshoot-machine-issues.md)
@@ -215,9 +217,6 @@
     + [PD 面板](/grafana-pd-dashboard.md) @PD Team/陈书宁
     + [TiKV 面板](/grafana-tikv-dashboard.md) @刘新韬
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md) @孙若曦
-  + 告警信息
-    + [TiDB 集群报警规则与处理方法](/alert-rules.md)
-    + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md) @孙若曦
   + 安全加固
     + [使用 TLS 加密连接](/encrypted-connections-with-tls-protocols.md) @苏立
     + [为 TiDB 组件间开启 TLS 和数据加密存储](/enable-tls-between-components.md) @苏立
