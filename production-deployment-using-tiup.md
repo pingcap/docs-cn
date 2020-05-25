@@ -94,9 +94,9 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
   包含最小拓扑的基础上，同时部署 `TiDB Binlog`，`TiDB Binlog` 是目前广泛使用的增量组件，可提供准实时备份和同步功能。
 
-- [单机多实例 拓扑架构](/hybrid-deployment-topology.md)
+- [混合部署 拓扑架构](/hybrid-deployment-topology.md)
 
-  适用于单台机器部署多个实例的情况，需要额外增加 目录、端口、资源配比、label 等配置。
+  适用于单台机器，混合部署多个实例的情况，也包括单机多实例，需要额外增加 目录、端口、资源配比、label 等配置。
 
 - [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)
 
