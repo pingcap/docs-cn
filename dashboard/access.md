@@ -4,40 +4,7 @@
 
 > **注意：**
 >
-> 部署了多个 PD 组件时，填写任意一个 PD 组件地址都可以访问 TiDB Dashboard，但其中仅有一个 PD 组件会真正运行 TiDB Dashboard。访问其他 PD 组件时浏览器都将会被重定向到该 PD 组件。
-> 当防火墙配置不正确时，可能出现无法访问 TiDB Dashboard 的情况。
-
-## 登录
-
-首次访问 TiDB Dashboard 将会显示用户登录界面，如下图所示。需使用与访问 TiDB 数据库一致的 SQL 用户 root 的密码登录。
-
-![登录界面](/media/dashboard/access/login.png)
-
-如果存在以下情况，则可能会登录失败：
-
-- TiDB root 用户不存在
-- PD 未启动
-- TiDB 未启动
-- root 密码错误
-
-登录后，24 小时内将保持自动登录状态。参见「[登出](#登出)」章节了解如何登出用户。
-
-## 切换语言
-
-在登录界面中，可点击 Switch Language 下拉框切换界面显示语言：
-
-![切换语言](/media/dashboard/access/switch-language.png)
-
-目前支持以下语言：
-
-- 简体中文
-- 英文
-
-## 登出
-
-登录后，在左侧导航处点击登录用户名，可切换到用户页面。在用户页面点击「登出」（Logout）按钮即可登出当前用户。登出后，需重新输入用户名密码。
-
-![登出](/media/dashboard/access/logout.png)
+> 部署了多个 PD 组件时，填写任意一个 PD 组件地址都可以访问 TiDB Dashboard，但其中仅有一个 PD 组件会真正运行 TiDB Dashboard。访问其他 PD 组件时浏览器都将会被重定向到该 PD 组件。因此若防火墙没有为这个运行 PD 的实例进行配置，可能会出现无法访问 TiDB Dashboard 的情况。
 
 ## 浏览器兼容性
 
@@ -50,3 +17,35 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 > **注意：**
 >
 > 若使用旧版本浏览器或其他浏览器访问 TiDB Dashboard，部分界面可能不能正常工作。
+
+## 登录
+
+首次访问 TiDB Dashboard 将会显示用户登录界面，如下图所示，可使用 TiDB root 账号登录。
+
+![登录界面](/media/dashboard/access/login.png)
+
+如果存在以下情况，则可能会登录失败：
+
+- TiDB root 用户不存在
+- PD 未启动或无法访问
+- TiDB 未启动或无法访问
+- root 密码错误
+
+登录后，24 小时内将保持自动登录状态。参见「[登出](#登出)」章节了解如何登出用户。
+
+## 切换语言
+
+TiDB Dashboard 目前支持以下语言：
+
+- 简体中文
+- 英文
+
+在登录界面中，可点击 Switch Language 下拉框切换界面显示语言：
+
+![切换语言](/media/dashboard/access/switch-language.png)
+
+## 登出
+
+登录后，在左侧导航处点击登录用户名，可切换到用户页面。在用户页面点击「登出」（Logout）按钮即可登出当前用户。登出后，需重新输入用户名密码。
+
+![登出](/media/dashboard/access/logout.png)
