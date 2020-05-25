@@ -1,7 +1,7 @@
 ---
 title: 集群信息页面
 summary: 查看整个集群中 TiDB、TiKV、PD、TiFlash 组件的运行状态及其所在主机的运行状态
-category: reference
+category: how-to
 ---
 
 # 集群信息页面
@@ -12,7 +12,7 @@ category: reference
 
 可以通过以下两种方法访问集群信息页面：
 
-- 登录后，左侧导航条点击「集群信息」：
+- 登录后，左侧导航条点击**集群信息**：
 
   ![访问](/media/dashboard/cluster-info/access.png)
 
@@ -20,7 +20,7 @@ category: reference
 
 ## 实例列表
 
-点击「实例」可查看实例列表：
+点击**实例**可查看实例列表：
 
 ![实例](/media/dashboard/cluster-info/instances.png)
 
@@ -49,7 +49,7 @@ category: reference
 
 ## 主机列表
 
-点击「主机」可查看主机列表：
+点击**主机**可查看主机列表：
 
 ![主机](/media/dashboard/cluster-info/hosts.png)
 

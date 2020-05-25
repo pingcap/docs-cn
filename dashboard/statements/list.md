@@ -1,7 +1,7 @@
 ---
 title: SQL 语句分析页面
 summary: 查看所有 SQL 语句在集群上执行情况
-category: reference
+category: how-to
 ---
 
 # SQL 语句分析页面
@@ -14,7 +14,7 @@ category: reference
 
 可以通过以下两种方法访问 SQL 语句分析页面：
 
-- 登录后，左侧导航条点击「SQL 语句分析」（SQL Statements）：
+- 登录后，左侧导航条点击**SQL 语句分析**（SQL Statements）：
 
   ![访问](/media/dashboard/statement/access.png)
 
@@ -30,19 +30,19 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
 
 ### 显示其他字段
 
-页面顶部「选择列」（Columns）选项中可选择显示更多列，可将鼠标移动到列名右侧的 (i) 图标处查看列的说明：
+页面顶部**选择列**（Columns）选项中可选择显示更多列，可将鼠标移动到列名右侧的 (i) 图标处查看列的说明：
 
 ![选择列](/media/dashboard/statement/columns-selector.png)
 
 ### 修改列表排序依据
 
-列表默认以「累计耗时」（Total Latency）从高到低进行排序，点击不同的列标题可以修改排序依据或切换排序顺序：
+列表默认以**累计耗时**（Total Latency）从高到低进行排序，点击不同的列标题可以修改排序依据或切换排序顺序：
 
 ![修改列排序](/media/dashboard/statement/change-order.png)
 
 ### 修改数据收集设置
 
-在列表页面，点击顶部右侧的「设置」（Settings）按钮，即可对 SQL 语句分析功能进行设置：
+在列表页面，点击顶部右侧的**设置**（Settings）按钮，即可对 SQL 语句分析功能进行设置：
 
 ![设置入口](/media/dashboard/statement/setting-entry.png)
 

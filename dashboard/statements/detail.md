@@ -1,7 +1,7 @@
 ---
 title: SQL 语句分析详情页面
 summary: 查看单个 SQL 语句执行的详细情况
-category: reference
+category: how-to
 ---
 
 # SQL 语句分析页面
