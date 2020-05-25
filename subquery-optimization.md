@@ -26,7 +26,7 @@ category: performance
 
 ## `... != ANY (SELECT ... FROM ...)`
 
-对于这种情况，当子查询中不同值的各种只有一种的话，那只要和这个值对比就可以了，如果子查询中不同值的个数多余1个，那么必然会有不相等的情况出现。因此这样的子查询可以采取如下的改写手段。
+对于这种情况，当子查询中不同值的各种只有一种的话，那只要和这个值对比就即可。如果子查询中不同值的个数多于 1 个，那么必然会有不相等的情况出现。因此这样的子查询可以采取如下的改写手段：
 
 - `select * from t where t.id != any (select s.id from s)` 会被改写为 `select t.* from t, (select s.id, count(distinct s.id) as cnt_distinct from s) where (t.id != s.id or cnt_distinct > 1)`
 
