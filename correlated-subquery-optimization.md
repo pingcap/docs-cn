@@ -1,13 +1,14 @@
 ---
 title: 关联子查询去关联
+summary: 了解如何给关联子查询解除关联。
 category: performance
 ---
 
 # 关联子查询去关联
 
-[子查询相关的优化](/subquery-optimization.md)中介绍了当没有关联列时，TiDB 是如何处理子查询的。由于关联子查询解除关联依赖是一个比较复杂的工作，本文档中会介绍一些简单的场景以及这个优化规则的适用范围。
+[子查询相关的优化](/subquery-optimization.md)中介绍了当没有关联列时，TiDB 是如何处理子查询的。由于为关联子查询解除关联依赖比较复杂，本文档中会介绍一些简单的场景以及这个优化规则的适用范围。
 
-## 介绍
+## 简介
 
 以 `select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.b)` 为例，这里子查询 `t1.a < (select sum(t2.a) from t2 where t2.b = t1.b)` 中涉及了关联列上的条件 `t2.b=t1.b`，不过恰好由于这是一个等值条件，因此可以将其等价的改写为 `select t1.* from t1, (select b, sum(a) sum_a from t2 group by b) t2 where t1.b = t2.b and t1.a < t2.sum_a;`。这样，一个关联子查询就被重新改写为 `JOIN` 的形式。
 
@@ -21,13 +22,15 @@ TiDB 之所以要进行这样的改写，是因为关联子查询每次子查询
 
 ## 样例
 
-```
+{{< copyable "sql" >}}
+
+```sql
 create table t1(a int, b int);
 create table t2(a int, b int, index idx(b));
 explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.b);
 ```
 
-```
+```sql
 +----------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------------------------+
 | id                               | estRows  | task      | access object | operator info                                                                           |
 +----------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------------------------+
@@ -44,15 +47,19 @@ explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.
 
 ```
 
-上面是优化生效的情况，可以看到 `HashJoin_11` 是一个普通的 `inner join`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+上面是优化生效的情况，可以看到 `HashJoin_11` 是一个普通的 `inner join`。
 
-```
+接下来，关闭关联规则：
+
+{{< copyable "sql" >}}
+
+```sql
 insert into mysql.opt_rule_blacklist values("decorrelate");
 admin reload opt_rule_blacklist;
 explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.b);
 ```
 
-```
+```sql
 +----------------------------------------+----------+-----------+------------------------+------------------------------------------------------------------------------+
 | id                                     | estRows  | task      | access object          | operator info                                                                |
 +----------------------------------------+----------+-----------+------------------------+------------------------------------------------------------------------------+
@@ -69,4 +76,4 @@ explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.
 +----------------------------------------+----------+-----------+------------------------+------------------------------------------------------------------------------+
 ```
 
-在执行了关闭规划规则的语句后，可以在 `IndexRangeScan_25(Build)` 的 `operator info` 中看到 `range: decided by [eq(test.t2.b, test.t1.b)]`，这部分信息就是关联依赖未被解除时，TiDB 可以使用关联条件进行索引范围查询的展示。
+在执行了关闭关联规则的语句后，可以在 `IndexRangeScan_25(Build)` 的 `operator info` 中看到 `range: decided by [eq(test.t2.b, test.t1.b)]`。这部分信息就是关联依赖未被解除时，TiDB 使用关联条件进行索引范围查询的显示结果。
