@@ -42,7 +42,7 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-show stats_meta
+show stats_meta;
 ```
 
 ```sql
@@ -73,7 +73,7 @@ show stats_meta where table_name = 't2';
 1 row in set (0.00 sec)
 ```
 
-## Mysql 兼容性
+## MySQL 兼容性
 
 `SHOW STATS_META` 是 TiDB 专有语法，因此不兼容 MySQL。
 
