@@ -35,6 +35,8 @@ explain select * from t order by a limit 10;
 
 ### 示例2：topn 下推过 join 的情况（排序规则仅依赖于外表）
 
+{{< copyable "sql" >}}
+
 ```sql
 create table t(id int primary key, a int not null);
 create table s(id int primary key, a int not null);
