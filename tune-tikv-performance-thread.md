@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/tikv-optimize/']
 
 ## TiKV 的只读请求
 
-* TiKV 的读取请求分为两类，一类是指定查询某一行或者某几行的简单查询，这类查询会运行在 Storage Read Pool 中；另一类是复杂的聚合计算、范围查询，这类请求会运行在 Coprocessor Read Pool 中。从 4.0 版本开始，支持两类读取请求使用同一个线程池，以减少线程数量，降低用户使用成本，默认不开启（默认点查询和 Coprocessor 请求使用不同的线程池）。用户可以通过设置配置 `readpool.storage.use-unified-pool` 为 true 来打开统一线程池
+TiKV 的读取请求分为两类，一类是指定查询某一行或者某几行的简单查询，这类查询会运行在 Storage Read Pool 中；另一类是复杂的聚合计算、范围查询，这类请求会运行在 Coprocessor Read Pool 中。从 4.0 版本开始，支持两类读取请求使用同一个线程池，以减少线程数量，降低用户使用成本，默认不开启（默认点查询和 Coprocessor 请求使用不同的线程池）。用户可以通过设置配置 `readpool.storage.use-unified-pool` 为 true 来打开统一线程池。
 
 ## TiKV 线程池调优
 
