@@ -7,15 +7,15 @@ category: performance
 
 SQL 中的 LIMIT 子句在 TiDB 查询计划树中对应 Limit 算子节点，ORDER BY 子句在查询计划树中对应 Sort 算子节点，此外，我们会将相邻的 Limit 和 Sort 算子组合成 TopN 算子节点，表示按某个排序规则提取记录的前 N 项。从另一方面来说，Limit 节点等价于一个排序规则为空的 TopN 节点。
 
-和谓词下推类似，topn（及 limit，下同）下推将查询计划树中的 topn 计算尽可能下推到距离数据源最近的地方，以尽早完成数据的过滤，进而显著地减少数据传输或计算的开销。
+和谓词下推类似，TopN（及 Limit，下同）下推将查询计划树中的 TopN 计算尽可能下推到距离数据源最近的地方，以尽早完成数据的过滤，进而显著地减少数据传输或计算的开销。
 
 如果要关闭这个规则，可以在参照[优化规则及表达式下推的黑名单](/blacklist-control-plan.md)中的关闭方法。
 
 ## 示例
 
-以下通过一些例子对 topn 下推进行说明。
+以下通过一些例子对 TopN 下推进行说明。
 
-### 示例1：下推到存储层
+### 示例 1：下推到存储层 Coprocessor
 
 {{< copyable "sql" >}}
 
@@ -33,9 +33,9 @@ explain select * from t order by a limit 10;
 4 rows in set (0.00 sec)
 ```
 
-在该查询中，将 topn 算子节点下推到 tikv 上对数据进行过滤，每个 cop 只向 tidb 传输 10 条记录。在 tidb 将数据整合后，再进行最终的过滤。
+在该查询中，将 TopN 算子节点下推到 tikv 上对数据进行过滤，每个 coprocessor 只向 tidb 传输 10 条记录。在 tidb 将数据整合后，再进行最终的过滤。
 
-### 示例2：topn 下推过 join 的情况（排序规则仅依赖于外表）
+### 示例 2：TopN 下推过 Join 的情况（排序规则仅依赖于外表中的列）
 
 {{< copyable "sql" >}}
 
@@ -58,9 +58,9 @@ explain select * from t left join s on t.a = s.a order by t.a limit 10;
 8 rows in set (0.01 sec)
 ```
 
-在该查询中，topn 算子的排序规则仅依赖于外表 t，可以将 topn 下推到了 join 之前进行一次计算，以减少 join 时的计算开销。除此之外，同样将 topn 下推到了存储层中。
+在该查询中，TopN 算子的排序规则仅依赖于外表 t 中的列，可以将 TopN 下推到了 Join 之前进行一次计算，以减少 Join 时的计算开销。除此之外，同样将 TopN 下推到了存储层中。
 
-### 示例3：topn 不能下推过 join 的情况
+### 示例 3：TopN 不能下推过 Join 的情况
 
 {{< copyable "sql" >}}
 
@@ -81,11 +81,11 @@ explain select * from t join s on t.a = s.a order by t.id limit 10;
 6 rows in set (0.00 sec)
 ```
 
-topn 无法下推过 inner join。以上面的查询为例，如果先 join 得到 100 条记录，再做 topn 可以剩余 10 条记录。而如果在 topn 之前就过滤到剩余 10 条记录，做完 join 之后可能就剩下 5 条了，导致了结果的差异。
+TopN 无法下推过 Inner Join。以上面的查询为例，如果先 Join 得到 100 条记录，再做 TopN 可以剩余 10 条记录。而如果在 TopN 之前就过滤到剩余 10 条记录，做完 Join 之后可能就剩下 5 条了，导致了结果的差异。
 
-同理，topn 无法下推到 outer join 的内表上。在 topn 的排序规则涉及多张表上的列时，也无法下推，如 `t.a+s.a`。只有当 topn 的排序规则仅依赖于外表上的列时，才可以下推。
+同理，TopN 无法下推到 Outer Join 的内表上。在 TopN 的排序规则涉及多张表上的列时，也无法下推，如 `t.a+s.a`。只有当 TopN 的排序规则仅依赖于外表上的列时，才可以下推。
 
-### 示例4：topn 转换成 limit 的情况
+### 示例 4：TopN 转换成 Limit 的情况
 
 {{< copyable "sql" >}}
 
@@ -109,4 +109,4 @@ explain select * from t left join s on t.a = s.a order by t.id limit 10;
 
 ```
 
-在上面的查询中，topn 首先推到了外表 t 上。然后因为它要对 t.id 进行排序，而 t.id 是表 t 的主键，可以直接按顺序读出（`keep order:true`），从而省略了 topn 中的排序，将其简化为 limit.
+在上面的查询中，TopN 首先推到了外表 t 上。然后因为它要对 t.id 进行排序，而 t.id 是表 t 的主键，可以直接按顺序读出（`keep order:true`），从而省略了 TopN 中的排序，将其简化为 Limit.
