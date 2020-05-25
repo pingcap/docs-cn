@@ -23,7 +23,7 @@ TiDB 提供了 [tidb_txn_mode](/tidb-specific-system-variables.md#tidb_txn_mode)
 set @@global.tidb_txn_mode = 'pessimistic';
 ```
 
-除此之外，还可以执行如下 SQL 显式开启悲观事务：
+除此之外，还可以执行以下 SQL 语句显式地开启悲观事务：
 
 {{< copyable "sql" >}}
 
