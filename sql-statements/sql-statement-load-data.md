@@ -17,6 +17,8 @@ aliases: ['/docs-cn/dev/reference/sql/statements/load-data/']
 
 ## 参数说明
 
+用户可以使用 `LocalOpt` 参数来指定导入的数据文件位于客户端或者服务端。 目前 TiDB 只支持从客户端进行数据导入，因此在导入数据时 `LocalOpt` 应设置成 `Local`。
+
 用户可以使用 `FIELDS` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。如果用户希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
 
 例如对于以下格式的数据：
@@ -41,6 +43,8 @@ LINES TERMINATED BY '\n'
 ```
 
 用户可以通过 `IGNORE number LINES` 参数来忽略文件开始的 `number` 行，例如可以使用 `IGNORE 1 LINES` 来忽略文件的首行。
+
+另外，TiDB 目前对参数 `DuplicateOpt`、`CharsetOpt`、`LoadDataSetSpecOpt` 仅支持了语法解析。
 
 ## 示例
 
