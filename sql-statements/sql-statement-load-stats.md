@@ -13,11 +13,11 @@ aliases: ['/docs-cn/dev/reference/sql/statements/load-stats/']
 
 **LoadStatsStmt:**
 
-![LoadStatsStmt](/media/sqlgram/LoadDataStmt.png)
+![LoadStatsStmt](/media/sqlgram/LoadStatsStmt.png)
 
 ## 参数说明
 
-用户直接通过 `FILENAME` 参数来指定统计信息文件路径，统计信息文件可通过访问 API `http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}` 进行下载。
+用户直接指定统计信息文件路径，统计信息文件可通过访问 API `http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}` 进行下载。
 
 {{< copyable "sql" >}}
 
