@@ -94,8 +94,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-* 支持除空间类型外的所有数据类型。
-* 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* 支持除空间类型外的所有数据类型。其它不支持的情况可参考：[alter-primary-key](/tidb-configuration-file.md#alter-primary-key)。
 
 ## 另请参阅
 
