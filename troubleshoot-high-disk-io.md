@@ -93,6 +93,6 @@ TiKV RocksDB 出现 `write stall`：
 
 ## I/O 问题处理方案
 
-1. 当确认为热点 I/O 问题的时候，需要参考《热点问题处理》来消除相关的热点 I/O 情况。
+1. 当确认为热点 I/O 问题的时候，需要参考[《热点问题处理》](https://github.com/pingcap/docs-cn/blob/docs-special-week/troubleshoot-hot-spot-issues.md)来消除相关的热点 I/O 情况。
 2. 当确认整体 I/O 已经到达瓶颈的时候，且从业务侧能够判断 I/O 的能力会持续的跟不上，那么就可以利用分布式数据库的 scale 的能力，采用扩容 TiKV 节点数量的方案来获取更大的整体 I/O 吞吐量。
 3. 调整上述说明中的一些参数，使用计算/内存资源来换取磁盘的存储资源。
