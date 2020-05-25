@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/reference/tikv-optimize/']
 
 # TiKV 线程池性能调优
 
-本章主要介绍 TiKV 的性能调优的主要手段，以及 TiKV 内部线程池的主要用途。内容主要参考了 [《tidb-in-action》中的线程池调优章节](https://github.com/pingcap-incubator/tidb-in-action/blob/master/session3/chapter4/performance-map.md) 
+本文主要介绍 TiKV 的性能调优的主要手段，以及 TiKV 内部线程池的主要用途。
 
 ## 线程池介绍
 
