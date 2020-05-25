@@ -33,14 +33,17 @@
   + [环境与系统配置检查](/check-before-deployment.md) @李仲舒
   + 配置拓扑结构
     + [最小部署拓扑结构](/minimal-deployment-topology.md) @李仲舒
-    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) @李仲舒（[参考](/location-awareness.md)）
+    + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
+    + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
+    + [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
+    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md) @李仲舒
   + 安装与启动
     + Linux
       + [使用 TiUP 部署](/production-deployment-using-tiup.md) @李仲舒
       + [使用 TiUP 离线部署](/production-deployment-using-tiup-offline.md) @刘金龙
-      + [使用 Ansible 部署](/online-deployment-using-ansible.md)
-      + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
+      + [使用 Ansible 部署(discard)](/online-deployment-using-ansible.md)
+      + [使用 Ansible 离线部署(discard)](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
     + Kubernetes
     + AWS
