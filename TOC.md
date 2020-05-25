@@ -80,7 +80,7 @@
   + [告警处理](/handle-alerts.md) @李宋高
   + [日常巡检](/daily-inspection.md) @王军
   + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
-  + [TiUP 常用运维操作](/tiup/manage-tiup-component.md) @王贤净
+  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 故障诊断
   + 硬件故障 @周强
@@ -131,9 +131,10 @@
       + 物理优化
         + [物理优化概览](/sql-physical-optimization.md)
         + [索引的选择](/index-choose.md)
-        + [统计信息介绍](/statistics-intro.md)
+        + [统计信息简介](/statistics.md)
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
+      + [执行计划缓存](/sql-prepare-plan-cache.md)
       + 控制执行计划
         + [控制执行计划概览](/control-execution-plan.md)
         + [Optimizer Hints](/optimizer-hints.md)
@@ -189,6 +190,19 @@
   + [Loader](/loader-overview.md) @王相
   + [Mydumper](/mydumper-overview.md) @余峻岑
   + [Syncer](/syncer-overview.md) @王相
+  + TiUP @龙恒
+    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [概览](/tiup/tiup-overview.md)
+    + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
+    + [TiUP 组件管理](/tiup/tiup-component-management.md)
+    + [FAQ](/tiup/tiup-faq.md)
+    + [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    + TiUP 组件文档
+      + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
+      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md) @黄东旭
@@ -279,6 +293,7 @@
       - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
       - [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
@@ -301,6 +316,8 @@
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/sql-statements/sql-statement-show-variables.md)
       - [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
+      - [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md)
+      - [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-row-id.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
@@ -346,7 +363,6 @@
     + [视图](/views.md) @徐怀宇
     + [分区表](/partitioned-table.md) @毛康力
     + [字符集和排序规则](/character-set-and-collation.md) @黄文俊
-    + [索引](/tidb-index.md) @冯立元
     + 系统表 @陈霜
       + [`mysql`](/system-tables/system-table-overview.md)
       + [`information_schema`](/system-tables/system-table-information-schema.md)
@@ -394,6 +410,7 @@
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
     + TiKV
+      + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
