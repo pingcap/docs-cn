@@ -3,7 +3,7 @@ title: 常规拓扑架构
 category: how-to
 ---
 
-# 部署需求
+# 部署目标
 
 通过 `tidb` 用户做集群管理，使用默认 `22` 端口，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
 
