@@ -5,7 +5,7 @@ category: how-to
 
 # 部署目标
 
-通过 `tidb` 用户做集群管理，使用默认 `22` 端口，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
+部署一个常规集群，采用最小拓扑，包括 3 * tidb-server、3 * tikv-server、3 * pd-server。
 
 # 拓扑信息
 
