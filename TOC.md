@@ -347,7 +347,6 @@
     + [视图](/views.md) @徐怀宇
     + [分区表](/partitioned-table.md) @毛康力
     + [字符集和排序规则](/character-set-and-collation.md) @黄文俊
-    + [索引](/tidb-index.md) @冯立元
     + 系统表 @陈霜
       + [`mysql`](/system-tables/system-table-overview.md)
       + [`information_schema`](/system-tables/system-table-information-schema.md)
