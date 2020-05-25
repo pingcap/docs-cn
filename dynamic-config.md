@@ -124,10 +124,10 @@ mysql> show warnings;
 | pd-server.max-gap-reset-ts | 用于设置最大的重置 timestamp 的间隔（BR）|
 | pd-server.key-type| 用于设置集群 key 的类型 |
 | pd-server.metric-storage | 用于设置集群 metrics 的存储地址 |
-| pd-server.dashboard-address | 用于设置 dashbaord 的地址 |
+| pd-server.dashboard-address | 用于设置 dashboard 的地址 |
 | replication-mode.replication-mode | 备份的模式 |
 
-具体参数意义可参考 [PD 配置文件描述](https://github.com/pingcap/docs-cn/blob/master/reference/configuration/pd-server/configuration-file.md)
+具体参数意义可参考 [PD 配置文件描述](https://pingcap.com/docs-cn/stable/pd-configuration-file/)
 
 ### TiKV
 
