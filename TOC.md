@@ -235,7 +235,7 @@
         + [AUTO_RANDOM](/auto-random.md) @谢腾进
       + [字面值](/literal-values.md) @邰凌翔
       + [Schema 对象名](/schema-object-names.md) @邰凌翔
-      + [关键字和保留字](/keywords-and-reserved-words.md) @@邰凌翔
+      + [关键字](/keywords.md) @@邰凌翔
       + [用户自定义变量](/user-defined-variables.md) @邰凌翔
       + [表达式语法](/expression-syntax.md) @邰凌翔
       + [注释语法](/comment-syntax.md) @邰凌翔
@@ -317,6 +317,8 @@
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/sql-statements/sql-statement-show-variables.md)
       - [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
+      - [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md)
+      - [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-row-id.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
