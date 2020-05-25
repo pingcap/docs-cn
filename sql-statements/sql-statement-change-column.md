@@ -19,10 +19,6 @@ aliases: ['/docs-cn/dev/reference/sql/statements/change-column/']
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
 
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
 **ColumnName:**
 
 ![ColumnName](/media/sqlgram/ColumnName.png)
