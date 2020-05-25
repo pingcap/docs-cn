@@ -47,7 +47,7 @@ category: how-to
 
         相同物理机配置相同的 host 级别 label 信息：
 
-        ```yml
+        ```yaml
         config:
           server.labels:
             zone: bj
