@@ -739,7 +739,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 ### tidb_allow_batch_cop <span class="version-mark">从 v4.0 版本开始引入</span>
 
-作用域：SESSION
+作用域：SESSION | GLOBAL
 
 默认值：0
 
