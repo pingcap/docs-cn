@@ -2,13 +2,13 @@
 
 ### 1.1 全量数据导出导入
 
-#### 1.1.1 Mydumper
+#### 1.1.1 TiDB 是否支持 Mydumper
 
-参见 [Mydumper 使用文档](/mydumper-overview.md)。
+支持，参见 [Mydumper 使用文档](/mydumper-overview.md)。
 
-#### 1.1.2 Loader
+#### 1.1.2 TiDB 是否支持 Loader
 
-参见 [Loader 使用文档](/loader-overview.md)。
+支持，参见 [Loader 使用文档](/loader-overview.md)。
 
 #### 1.1.3 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
