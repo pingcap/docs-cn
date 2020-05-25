@@ -19,7 +19,13 @@ aliases: ['/docs-cn/dev/reference/sql/statements/alter-instance/']
 
 ## 语法图
 
+**AlterInstanceStmt:**
+
 ![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
+
+**InstanceOption:**
+
+![InstanceOption](/media/sqlgram/InstanceOption.png)
 
 ## 示例
 
