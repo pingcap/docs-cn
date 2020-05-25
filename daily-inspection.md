@@ -1,5 +1,6 @@
 ---
 title: 日常巡检
+category: reference
 ---
 
 # 日常巡检
