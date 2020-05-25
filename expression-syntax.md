@@ -11,155 +11,155 @@ aliases: ['/docs-cn/dev/reference/sql/language-structure/expression-syntax/']
 
 ```
 Expression ::=
-	singleAtIdentifier assignmentEq Expression
-|	Expression logOr Expression
-|	Expression "XOR" Expression
-|	Expression logAnd Expression
-|	"NOT" Expression
-|	"MATCH" '(' ColumnNameList ')' "AGAINST" '(' BitExpr FulltextSearchModifierOpt ')'
-|	BoolPri IsOrNotOp trueKwd
-|	BoolPri IsOrNotOp falseKwd
-|	BoolPri IsOrNotOp "UNKNOWN"
-|	BoolPri
+  singleAtIdentifier assignmentEq Expression
+| Expression logOr Expression
+| Expression "XOR" Expression
+| Expression logAnd Expression
+| "NOT" Expression
+| "MATCH" '(' ColumnNameList ')' "AGAINST" '(' BitExpr FulltextSearchModifierOpt ')'
+| BoolPri IsOrNotOp trueKwd
+| BoolPri IsOrNotOp falseKwd
+| BoolPri IsOrNotOp "UNKNOWN"
+| BoolPri
 
 BitExpr ::=
-	BitExpr '|' BitExpr
-|	BitExpr '&' BitExpr
-|	BitExpr "<<" BitExpr
-|	BitExpr ">>" BitExpr
-|	BitExpr '+' BitExpr
-|	BitExpr '-' BitExpr
-|	BitExpr '+' "INTERVAL" Expression TimeUnit
-|	BitExpr '-' "INTERVAL" Expression TimeUnit
-|	BitExpr '*' BitExpr
-|	BitExpr '/' BitExpr
-|	BitExpr '%' BitExpr
-|	BitExpr "DIV" BitExpr
-|	BitExpr "MOD" BitExpr
-|	BitExpr '^' BitExpr
-|	SimpleExpr
+  BitExpr '|' BitExpr
+| BitExpr '&' BitExpr
+| BitExpr "<<" BitExpr
+| BitExpr ">>" BitExpr
+| BitExpr '+' BitExpr
+| BitExpr '-' BitExpr
+| BitExpr '+' "INTERVAL" Expression TimeUnit
+| BitExpr '-' "INTERVAL" Expression TimeUnit
+| BitExpr '*' BitExpr
+| BitExpr '/' BitExpr
+| BitExpr '%' BitExpr
+| BitExpr "DIV" BitExpr
+| BitExpr "MOD" BitExpr
+| BitExpr '^' BitExpr
+| SimpleExpr
 
 FulltextSearchModifierOpt ::=
 
-|	"IN" "NATURAL" "LANGUAGE" "MODE"
-|	"IN" "NATURAL" "LANGUAGE" "MODE" "WITH" "QUERY" "EXPANSION"
-|	"IN" "BOOLEAN" "MODE"
-|	"WITH" "QUERY" "EXPANSION"
+| "IN" "NATURAL" "LANGUAGE" "MODE"
+| "IN" "NATURAL" "LANGUAGE" "MODE" "WITH" "QUERY" "EXPANSION"
+| "IN" "BOOLEAN" "MODE"
+| "WITH" "QUERY" "EXPANSION"
 
 BoolPri ::=
-	BoolPri IsOrNotOp "NULL"
-|	BoolPri CompareOp PredicateExpr
-|	BoolPri CompareOp AnyOrAll SubSelect
-|	BoolPri CompareOp singleAtIdentifier assignmentEq PredicateExpr
-|	PredicateExpr
+  BoolPri IsOrNotOp "NULL"
+| BoolPri CompareOp PredicateExpr
+| BoolPri CompareOp AnyOrAll SubSelect
+| BoolPri CompareOp singleAtIdentifier assignmentEq PredicateExpr
+| PredicateExpr
 
 IsOrNotOp ::=
-	"IS"
-|	"IS" "NOT"
+  "IS"
+| "IS" "NOT"
 
 SimpleExpr ::=
-	SimpleIdent
-|	FunctionCallKeyword
-|	FunctionCallNonKeyword
-|	FunctionCallGeneric
-|	SimpleExpr "COLLATE" CollationName
-|	WindowFuncCall
-|	Literal
-|	paramMarker
-|	Variable
-|	SumExpr
-|	'!' SimpleExpr
-|	'~' SimpleExpr
-|	'-' SimpleExpr
-|	'+' SimpleExpr
-|	SimpleExpr pipes SimpleExpr
-|	not2 SimpleExpr
-|	SubSelect
-|	'(' Expression ')'
-|	'(' ExpressionList ',' Expression ')'
-|	"ROW" '(' ExpressionList ',' Expression ')'
-|	"EXISTS" SubSelect
-|	"BINARY" SimpleExpr
-|	builtinCast '(' Expression "AS" CastType ')'
-|	"CASE" ExpressionOpt WhenClauseList ElseOpt "END"
-|	"CONVERT" '(' Expression ',' CastType ')'
-|	"CONVERT" '(' Expression "USING" CharsetName ')'
-|	"DEFAULT" '(' SimpleIdent ')'
-|	"VALUES" '(' SimpleIdent ')'
-|	SimpleIdent jss stringLit
-|	SimpleIdent juss stringLit
+  SimpleIdent
+| FunctionCallKeyword
+| FunctionCallNonKeyword
+| FunctionCallGeneric
+| SimpleExpr "COLLATE" CollationName
+| WindowFuncCall
+| Literal
+| paramMarker
+| Variable
+| SumExpr
+| '!' SimpleExpr
+| '~' SimpleExpr
+| '-' SimpleExpr
+| '+' SimpleExpr
+| SimpleExpr pipes SimpleExpr
+| not2 SimpleExpr
+| SubSelect
+| '(' Expression ')'
+| '(' ExpressionList ',' Expression ')'
+| "ROW" '(' ExpressionList ',' Expression ')'
+| "EXISTS" SubSelect
+| "BINARY" SimpleExpr
+| builtinCast '(' Expression "AS" CastType ')'
+| "CASE" ExpressionOpt WhenClauseList ElseOpt "END"
+| "CONVERT" '(' Expression ',' CastType ')'
+| "CONVERT" '(' Expression "USING" CharsetName ')'
+| "DEFAULT" '(' SimpleIdent ')'
+| "VALUES" '(' SimpleIdent ')'
+| SimpleIdent jss stringLit
+| SimpleIdent juss stringLit
 
 CompareOp ::=
-	">="
-|	'>'
-|	"<="
-|	'<'
-|	"!="
-|	"<>"
-|	"="
-|	"<=>"
+  ">="
+| '>'
+| "<="
+| '<'
+| "!="
+| "<>"
+| "="
+| "<=>"
 
 PredicateExpr ::=
-	BitExpr InOrNotOp '(' ExpressionList ')'
-|	BitExpr InOrNotOp SubSelect
-|	BitExpr BetweenOrNotOp BitExpr "AND" PredicateExpr
-|	BitExpr LikeOrNotOp SimpleExpr LikeEscapeOpt
-|	BitExpr RegexpOrNotOp SimpleExpr
-|	BitExpr
+  BitExpr InOrNotOp '(' ExpressionList ')'
+| BitExpr InOrNotOp SubSelect
+| BitExpr BetweenOrNotOp BitExpr "AND" PredicateExpr
+| BitExpr LikeOrNotOp SimpleExpr LikeEscapeOpt
+| BitExpr RegexpOrNotOp SimpleExpr
+| BitExpr
 
 AnyOrAll ::=
-	"ANY"
-|	"SOME"
-|	"ALL"
+  "ANY"
+| "SOME"
+| "ALL"
 
 SubSelect ::=
-	'(' SelectStmt ')'
-|	'(' UnionStmt ')'
+  '(' SelectStmt ')'
+| '(' UnionStmt ')'
 
 SimpleIdent ::=
-	Identifier
-|	Identifier '.' Identifier
-|	'.' Identifier '.' Identifier
-|	Identifier '.' Identifier '.' Identifier
+  Identifier
+| Identifier '.' Identifier
+| '.' Identifier '.' Identifier
+| Identifier '.' Identifier '.' Identifier
 
 Literal ::=
-	"FALSE"
-|	"NULL"
-|	"TRUE"
-|	floatLit
-|	decLit
-|	intLit
-|	StringLiteral
-|	"UNDERSCORE_CHARSET" stringLit
-|	hexLit
-|	bitLit
+  "FALSE"
+| "NULL"
+| "TRUE"
+| floatLit
+| decLit
+| intLit
+| StringLiteral
+| "UNDERSCORE_CHARSET" stringLit
+| hexLit
+| bitLit
 
 Variable ::=
-	SystemVariable
-|	UserVariable
+  SystemVariable
+| UserVariable
 
 SumExpr ::=
-	"AVG" '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
-|	builtinBitAnd '(' Expression ')' OptWindowingClause
-|	builtinBitAnd '(' "ALL" Expression ')' OptWindowingClause
-|	builtinBitOr '(' Expression ')' OptWindowingClause
-|	builtinBitOr '(' "ALL" Expression ')' OptWindowingClause
-|	builtinBitXor '(' Expression ')' OptWindowingClause
-|	builtinBitXor '(' "ALL" Expression ')' OptWindowingClause
-|	builtinCount '(' DistinctKwd ExpressionList ')'
-|	builtinCount '(' "ALL" Expression ')' OptWindowingClause
-|	builtinCount '(' Expression ')' OptWindowingClause
-|	builtinCount '(' '*' ')' OptWindowingClause
-|	builtinGroupConcat '(' BuggyDefaultFalseDistinctOpt ExpressionList OrderByOptional OptGConcatSeparator ')' OptWindowingClause
-|	builtinMax '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
-|	builtinMin '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
-|	builtinSum '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
-|	builtinStddevPop '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
-|	builtinStddevSamp '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
-|	builtinVarPop '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
-|	builtinVarSamp '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
-|	"JSON_OBJECTAGG" '(' Expression ',' Expression ')' OptWindowingClause
-|	"JSON_OBJECTAGG" '(' "ALL" Expression ',' Expression ')' OptWindowingClause
-|	"JSON_OBJECTAGG" '(' Expression ',' "ALL" Expression ')' OptWindowingClause
-|	"JSON_OBJECTAGG" '(' "ALL" Expression ',' "ALL" Expression ')' OptWindowingClause
+  "AVG" '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
+| builtinBitAnd '(' Expression ')' OptWindowingClause
+| builtinBitAnd '(' "ALL" Expression ')' OptWindowingClause
+| builtinBitOr '(' Expression ')' OptWindowingClause
+| builtinBitOr '(' "ALL" Expression ')' OptWindowingClause
+| builtinBitXor '(' Expression ')' OptWindowingClause
+| builtinBitXor '(' "ALL" Expression ')' OptWindowingClause
+| builtinCount '(' DistinctKwd ExpressionList ')'
+| builtinCount '(' "ALL" Expression ')' OptWindowingClause
+| builtinCount '(' Expression ')' OptWindowingClause
+| builtinCount '(' '*' ')' OptWindowingClause
+| builtinGroupConcat '(' BuggyDefaultFalseDistinctOpt ExpressionList OrderByOptional OptGConcatSeparator ')' OptWindowingClause
+| builtinMax '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
+| builtinMin '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
+| builtinSum '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
+| builtinStddevPop '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
+| builtinStddevSamp '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
+| builtinVarPop '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
+| builtinVarSamp '(' BuggyDefaultFalseDistinctOpt Expression ')' OptWindowingClause
+| "JSON_OBJECTAGG" '(' Expression ',' Expression ')' OptWindowingClause
+| "JSON_OBJECTAGG" '(' "ALL" Expression ',' Expression ')' OptWindowingClause
+| "JSON_OBJECTAGG" '(' Expression ',' "ALL" Expression ')' OptWindowingClause
+| "JSON_OBJECTAGG" '(' "ALL" Expression ',' "ALL" Expression ')' OptWindowingClause
 ```
