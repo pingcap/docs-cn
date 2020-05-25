@@ -6,7 +6,7 @@ category: reference
 
 # SHOW STATS_HISTOGRAMS
 
-查看统计信息中直方图的相关信息。
+你可以使用 `SHOW STATS_HISTOGRAMS` 语句查看统计信息中直方图的相关信息。
 
 ## 语法图
 
@@ -30,7 +30,7 @@ category: reference
 show stats_histograms;
 ```
 
-```
+```sql
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+
 | Db_name | Table_name | Partition_name | Column_name | Is_index | Update_time         | Distinct_count | Null_count | Avg_col_size | Correlation |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+
@@ -47,7 +47,7 @@ show stats_histograms;
 show stats_histograms where table_name = 't2';
 ```
 
-```
+```sql
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+
 | Db_name | Table_name | Partition_name | Column_name | Is_index | Update_time         | Distinct_count | Null_count | Avg_col_size | Correlation |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+
@@ -59,7 +59,7 @@ show stats_histograms where table_name = 't2';
 
 ## MySQL 兼容性
 
-`SHOW STATS_HISTOGRAMS` 是 TiDB 专有语法。不存在和 MySQL 的兼容性问题。
+`SHOW STATS_HISTOGRAMS` 是 TiDB 专有语法，因此不兼容 MySQL。
 
 ## 另请参阅
 
