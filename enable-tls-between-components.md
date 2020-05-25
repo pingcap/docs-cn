@@ -133,8 +133,6 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 
 TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。目前暂不支持 CA 的重加载。
 
-### 客户端与 TiDB 间开启加密传输
+### TiDB 服务端与客户端加密传输
 
-本文介绍的是 TiDB 集群内各部组件如何开启加密传输，
-
-对于客户端应用与 TiDB 之间的加密传输配置请参考[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md)，客户端应用与 TiDB 之间通讯可以使用与本文介绍的内部集群间通讯证书完全不同的另一套证书。
+本文介绍的是 TiDB 集群内各部组件如何开启加密传输， 对于 TiDB 服务端与客户端之间的加密传输配置请参考[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md)，客户端应用与 TiDB 之间通讯可以使用与本文介绍的内部集群间通讯证书完全不同的另一套证书。

@@ -177,3 +177,7 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 在需要替换证书、密钥或 CA 时，可以在完成对应文件替换后，对运行中的 TiDB 实例执行 [`ALTER INSTANCE RELOAD TLS`](/sql-statements/sql-statement-alter-instance.md) 语句从原配置的证书 ([`ssl-cert`](/tidb-configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/tidb-configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/tidb-configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA，而无需重启 TiDB 实例。
 
 新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
+
+### TiDB 集群内组件间加密传输 
+
+本文介绍的是 TiDB 服务端与客户端之间如何开启加密传输， 对于 TiDB 集群内组件的加密传输配置请参考[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
