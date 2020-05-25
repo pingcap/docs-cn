@@ -1,10 +1,10 @@
 ---
-title: 打包组件
+title: 打包 TiUP 组件
 category: tools
-aliases: ['/docs-cn/dev/reference/tools/tiup/package-component/']
+aliases: ['/docs-cn/dev/reference/tools/tiup/package-component/','/docs-cn/dev/reference/tools/tiup/package-tiup-component/']
 ---
 
-# 打包组件
+# 打包 TiUP 组件
 
 当想要新增一个组件或者新增一个已有组件的版本时，需要用 tar 命令将相关文件打包然后传到镜像仓库中。用 tar 打包并不困难，麻烦在于需要更新仓库的元信息，因为要避免更新元信息的时候破坏已有组件的信息。
 
