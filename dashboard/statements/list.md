@@ -1,6 +1,5 @@
 ---
 title: SQL 语句分析页面
-summary: 查看所有 SQL 语句在集群上执行情况
 category: how-to
 ---
 
