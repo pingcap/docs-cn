@@ -205,8 +205,9 @@
     + [TiDB 集群报警规则与处理方法](/alert-rules.md)
     + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md) @孙若曦
   + 安全加固
-    + [使用 TLS 加密连接](/encrypted-connections-with-tls-protocols.md) @苏立
-    + [为 TiDB 组件间开启 TLS 和数据加密存储](/enable-tls-between-components.md) @苏立
+    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md) @苏立
+    + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md) @苏立
+    + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md) @苏立
     + [生成自签名证书](/generate-self-signed-certificates.md) @刘新韬
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md) @毛康力
