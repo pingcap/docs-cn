@@ -19,6 +19,10 @@ aliases: ['/docs-cn/dev/reference/sql/statements/set-variable/']
 
 ![SetStmt](/media/sqlgram/SetStmt.png)
 
+**VariableAssignment:**
+
+![VariableAssignment](/media/sqlgram/VariableAssignment.png)
+
 ## 示例
 
 获取 `sql_mode` 的值
