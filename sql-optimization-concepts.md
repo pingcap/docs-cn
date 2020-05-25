@@ -10,6 +10,7 @@ sub topics:
 
 - [逻辑优化](/sql-logical-optimization.md)
 - [物理优化](/sql-physical-optimization.md)
+- [执行计划缓存](/sql-prepare-plan-cache.md)
 
 <!--
 在 TiDB 中，SQL 优化过程分为逻辑优化和物理优化两个阶段。
