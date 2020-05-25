@@ -17,9 +17,21 @@ category: how-to
 | TiKV | 6 | 32 VCore 64GB | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 1. 区分实例级别的 port、status_port；<br> 2. 配置全局参数 readpool、storage 以及 raftstore 参数；<br> 3. 配置实例级别 host 维度的 labels；<br> 4. 配置 numa 绑核操作|
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd)  | 10.0.1.10 | 默认配置 |
 
-## 混合部署的关键参数配置
+## 通过 TiUP 部署集群的配置文件模版 topology.yaml
 
-本节介绍单机多实例的关键参数，主要用于 TiDB、TiKV 的单机多实例部署场景。你需要按照提供的计算公式，将结果填写至下一步的配置文件中。
+### 部署目标
+
+部署 TiDB 和 TiKV 组件的物理机为 2 路处理器，每路 16 VCore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
+
+### 拓扑模版
+
+[简单混部配置模板](/simple-multi-instant.yaml)
+
+[详细混部配置模板](/complex-multi-instant.yaml)
+
+### 混合部署的关键参数介绍
+
+本节介绍单机多实例的关键参数，主要用于 TiDB、TiKV 的单机多实例部署场景。你需要按照提供的计算公式，将结果填写至上一步的配置模板中。
 
 - TiKV 进行配置优化
 
@@ -89,19 +101,10 @@ category: how-to
 
     - `numa_node` 这个配置参数与 `numactl --membind` 配置对应。 
 
-## 通过 TiUP 部署集群的配置文件模版 topology.yaml
-
-### 部署目标
-
-部署 TiDB 和 TiKV 组件的物理机为 2 路处理器，每路 16 VCore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
-
-### 拓扑模版
-
-[简单混部拓扑配置](/simple-multi-instant)
-[复杂混部拓扑配置](/complex-multi-instant)
-
 > **注意：**
 >
-> - 配置文件模版时，注意修改必要参数、IP、端口及目录。
+> - 编辑配置文件模版时，注意修改必要参数、IP、端口及目录。
 >
 > - 各个组件的 deploy_dir，默认会使用 global 中的 <deploy_dir>/<components_name>-<port>。例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
+>
+> - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
