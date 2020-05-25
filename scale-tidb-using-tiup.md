@@ -215,27 +215,92 @@ tiup cluster display <cluster-name>
 
 > **注意：**
 >
-> 本节介绍的缩容流程不会删除缩容节点上的数据文件，如需再次上线该节点，请先手动删除原来的数据文件。
+> 如果下线该 TiFlash 节点后，TiFlash 集群剩余节点数大于等于所有数据表的最大副本数，可跳过下列步骤。
 
-### 4.1 下线该 TiFlash 节点
+1. 在 TiDB 客户端中针对所有副本数大于集群剩余 TiFlash 节点数的表执行：
 
-参考[下线 TiFlash 节点](/tiflash/maintain-tiflash.md#下线-tiflash-节点)一节，对要进行缩容的 TiFlash 节点进行下线操作。
+    {{< copyable "sql" >}}
 
-### 4.2 检查节点是否下线成功
+    ```sql
+    alter table <db-name>.<table-name> set tiflash replica 0;
+    ```
 
-使用 Grafana 或者 pd-ctl 检查节点是否下线成功（下线需要一定时间）。
+2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/use-tiflash.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
 
-### 4.3 关闭 TiFlash 进程
+接下来，请任选下列方案其一进行缩容。
 
-等待 TiFlash 对应的 `store` 消失，或者 `state_name` 变成 `Tombstone` 后，执行如下命令关闭 TiFlash 进程：
+### 4.1 通过 TiUP 缩容节点
 
-{{< copyable "shell-regular" >}}
+1. 通过以下命令确定需要下线的节点名称：
 
-```shell
-tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
-```
+    {{< copyable "shell-regular" >}}
 
-### 4.4 查看集群状态
+    ```shell
+    tiup cluster display <cluster-name>
+    ```
+
+2. 调用 scale-in 命令执行下线节点，例如步骤 1 中获得该节点名为 `10.0.1.4:9000`
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
+    ```
+
+### 4.2 手动缩容 TiFlash 节点
+
+1. 在 [pd-ctl](/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 store 命令，查看该 TiFlash 节点对应的 store id。
+
+2. 在 pd-ctl 中输入 `store delete <store_id>`，其中 <store_id> 为上一步查到的该 TiFlash 节点对应的 store id。
+
+3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
+
+> **注意：**
+>
+> 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
+
+手动在 PD 中清除同步规则的步骤如下：
+
+1. 查询当前 PD 实例中所有与 TiFlash 相关的的数据同步规则。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
+    ```
+
+    ```
+    [
+      {
+        "group_id": "tiflash",
+        "id": "table-45-r",
+        "override": true,
+        "start_key": "7480000000000000FF2D5F720000000000FA",
+        "end_key": "7480000000000000FF2E00000000000000F8",
+        "role": "learner",
+        "count": 1,
+        "label_constraints": [
+          {
+            "key": "engine",
+            "op": "in",
+            "values": [
+              "tiflash"
+            ]
+          }
+        ]
+      }
+    ]
+    ```
+
+2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
+    ```
+
+### 4.3 查看集群状态
 
 {{< copyable "shell-regular" >}}
 
