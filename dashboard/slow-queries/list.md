@@ -5,13 +5,13 @@ category: how-to
 
 # 访问慢查询列表页面
 
-查询集群中所有慢查询语句，系统默认将执行时间超过 Session 变量 [tidb_slow_log_threshold](https://pingcap.com/docs-cn/stable/tidb-specific-system-variables/#tidb_slow_log_threshold) 或者配置参数 [slow-threshold](https://pingcap.com/docs-cn/stable/tidb-configuration-file/#slow-threshold) 值的 SQL 语句视为慢查询语句，系统会自己记录到[慢查询日志](https://pingcap.com/docs-cn/stable/identify-slow-queries/) 中。此功能通过 SQL 将查询结果输出到页面。
+查询集群中所有慢查询语句，系统默认将执行时间超过 Session 变量 [`tidb_slow_log_threshold`](/tidb-specific-system-variables.md#tidb_slow_log_threshold) 或者配置参数 [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 值的 SQL 语句视为慢查询语句，系统会自己记录到[慢查询日志](/identify-slow-queries.md) 中。此功能通过 SQL 将查询结果输出到页面。
 
-默认情况下，执行时间超过 300ms 的 SQL 就会被视为慢查询，被记录到[慢查询日志](https://pingcap.com/docs-cn/stable/identify-slow-queries/)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](https://pingcap.com/docs-cn/stable/tidb-specific-system-variables/#tidb_slow_log_threshold) SESSION 变量或 TiDB [`slow-threshold`](https://pingcap.com/docs-cn/stable/tidb-configuration-file/#slow-threshold) 参数调整慢查询阈值。
+默认情况下，执行时间超过 300ms 的 SQL 就会被视为慢查询，被记录到[慢查询日志](/identify-slow-queries.md)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/tidb-specific-system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 参数调整慢查询阈值。
 
 > **注意：**
 >
-> 若关闭了慢查询日志，则本功能不可用。慢查询日志默认开启，可通过修改 TiDB 配置 [`enable-slow-log`](https://pingcap.com/docs-cn/stable/tidb-configuration-file/#enable-slow-log) 开启或禁用。
+> 若关闭了慢查询日志，则本功能不可用。慢查询日志默认开启，可通过修改 TiDB 配置 [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) 开启或禁用。
 
 ## 访问慢查询列表页面
 
@@ -21,9 +21,9 @@ category: how-to
 
 ![access 访问页面](/media/dashboard/slow-queries/access.png)
 
-* 在浏览器中访问 [http://127.0.0.1:2379/dashboard/#/slow_query](http://127.0.0.1:2379/dashboard/#/slow_query)（将 127.0.0.1:2379 替换为任意实际 PD 地址和端口）。
+* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/slow_query>（将 `127.0.0.1:2379` 替换为任意实际 PD 地址和端口）。
 
-慢查询页面所展示的所有数据都来自于 TiDB 慢查询系统表及慢查询日志，参见[慢查询日志](https://pingcap.com/docs-cn/stable/identify-slow-queries/) 文档了解详细情况。
+慢查询页面所展示的所有数据都来自于 TiDB 慢查询系统表及慢查询日志，参见[慢查询日志](/identify-slow-queries.md) 文档了解详细情况。
 
 ### 修改列表过滤条件
 
@@ -48,7 +48,7 @@ category: how-to
 在列表中点击任意一行可以显示该慢查询的详细执行信息，包含：
 
 - SQL：慢查询 SQL 文本（下图中区域 1）
-- 执行计划：慢查询的执行计划，参阅[理解 TiDB 执行计划](https://pingcap.com/docs-cn/dev/query-execution-plan/)文档了解如何解读执行计划（下图中区域 2）
+- 执行计划：慢查询的执行计划，参阅[理解 TiDB 执行计划](/query-execution-plan.md)文档了解如何解读执行计划（下图中区域 2）
 - 其他分类好的 SQL 执行信息（下图中区域 3）
 
 ![detail 示例](/media/dashboard/slow-queries/detail1.png)
