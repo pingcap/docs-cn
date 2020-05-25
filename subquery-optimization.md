@@ -1,11 +1,14 @@
 ---
 title: 子查询相关的优化
+summary: 了解子查询相关的优化。
 category: performance
 ---
 
 # 子查询相关的优化
 
-通常我们遇到的会是如下情况的子查询：
+本文主要介绍子查询相关的优化。
+
+通常会遇到如下情况的子查询：
 
 - `NOT IN (SELECT ... FROM ...)`
 - `NOT EXISTS (SELECT ... FROM ...)`
@@ -13,7 +16,7 @@ category: performance
 - `EXISTS (SELECT ... FROM ...)`
 - `... >/>=/</<=/=/!= (SELECT ... FROM ...)`
 
-有时，会遇到子查询中包含了非子查询中的列，如 `select * from t where t.a in (select * from t2 where t.b=t2.b)` 中，子查询中的 `t.b` 便不是子查询中的列，而是从子查询外面引入的列。这种子查询通常会被称为`关联子查询`，外部引入的列会被称为`关联列`，关联子查询相关的优化可以在[关联子查询去关联](/correlated-subquery-optimization.md)中查看。本节中主要关注不涉及关联列的子查询。
+有时，子查询中包含了非子查询中的列，如 `select * from t where t.a in (select * from t2 where t.b=t2.b)` 中，子查询中的 `t.b` 不是子查询中的列，而是从子查询外面引入的列。这种子查询通常会被称为`关联子查询`，外部引入的列会被称为`关联列`，关联子查询相关的优化参见[关联子查询去关联](/correlated-subquery-optimization.md)。本文主要关注不涉及关联列的子查询。
 
 子查询默认会以[理解 TiDB 执行计划](/query-execution-plan.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能。
 
@@ -41,8 +44,13 @@ category: performance
 对于这种情况，会将其改写为 `IN` 的子查询改写为 `SELECT ... FROM ... GROUP ...` 的形式，然后将 `IN` 改写为普通的 `JOIN` 的形式。
 如 `select * from t1 where t1.a in (select t2.a from t2)` 会被改写为 `select t1.* from t1, (select distinct(a) a from t2) t2 where t1.a = t2.a` 的形式。同时这里的 `DISTINCT` 可以在 `t2.a` 具有 `UNIQUE` 属性时被自动消去。
 
+{{< copyable "sql" >}}
+
+```sql
+explain select * from t1 where t1.a in (select t2.a from t2);
 ```
-mysql> explain select * from t1 where t1.a in (select t2.a from t2);
+
+```sql
 +------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
 | id                           | estRows | task      | access object          | operator info                                                              |
 +------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
@@ -61,16 +69,20 @@ mysql> explain select * from t1 where t1.a in (select t2.a from t2);
 
 当前对于这种场景的子查询，当它不是关联子查询时，TiDB 会在优化阶段提前展开它，将其直接替换为一个结果集直接判断结果。如下图中，`EXISTS` 会提前在优化阶段被执行为 `TRUE`，从而不会在最终的执行结果中看到它。
 
+{{< copyable "sql" >}}
+
+```sql
+create table t1(a int);
+create table t2(a int);
+insert into t2 values(1);
+explain select * from t where exists (select * from t2);
 ```
-mysql> create table t1(a int);
-mysql> create table t2(a int);
-mysql> insert into t2 values(1);
-mysql> explain select * from t where exists (select * from t2);
+
+```sql
 +------------------------+----------+-----------+---------------+--------------------------------+
 | id                     | estRows  | task      | access object | operator info                  |
 +------------------------+----------+-----------+---------------+--------------------------------+
 | TableReader_12         | 10000.00 | root      |               | data:TableFullScan_11          |
 | └─TableFullScan_11     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
 +------------------------+----------+-----------+---------------+--------------------------------+
-
 ```
