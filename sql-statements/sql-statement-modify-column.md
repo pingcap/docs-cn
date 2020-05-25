@@ -67,7 +67,7 @@ Query OK, 0 rows affected (0.09 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE TABLE t1;
+SHOW CREATE TABLE t1\G;
 ```
 
 ```
@@ -81,41 +81,30 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+## MySQL 兼容性
 
-```sql
-ALTER TABLE t1 MODIFY col1 INT;
-```
-
-```
-ERROR 1105 (HY000): unsupported modify column length 11 is less than origin 20
-```
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER TABLE t1 MODIFY col1 BLOB;
-```
-
-```
-ERROR 1105 (HY000): unsupported modify column type 252 not match origin 8
-```
-
-{{< copyable "sql" >}}
+* 不支持在单个 `ALTER TABLE` 语句修改多个列，例如：
 
 ```sql
 ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
+ERROR 1105 (HY000): Unsupported multi schema change
 ```
 
-```
-ERROR 1105 (HY000): can't run multi schema change
+* 不支持有损变更，以及部分数据类型的更改（包括整数改为字符串或 BLOB 格式等）。例如：
+
+```sql
+CREATE TABLE t1 (col1 BIGINT);
+ALTER TABLE t1 MODIFY col1 INT;
+ERROR 8200 (HY000): Unsupported modify column length 11 is less than origin 20
 ```
 
-## MySQL 兼容性
+* 不支持修改 decimal 类型的精度。例如：
 
-* 目前不支持使用单个 `ALTER TABLE` 语句进行多个修改。
-* 仅支持特定类型的数据类型更改。例如，支持将 `INTEGER` 改为 `BIGINT`，但不支持将 `BIGINT` 改为 `INTEGER`。不支持将整数改为字符串格式或 BLOB 格式。
-* 不支持修改 decimal 类型的精度。
+```sql
+CREATE TABLE t (a DECIMAL(5, 3));
+ALTER TABLE t MODIFY COLUMN a DECIMAL(6, 3);
+ERROR 8200 (HY000): Unsupported modify column: can't change decimal column precision
+```
 
 ## 另请参阅
 
