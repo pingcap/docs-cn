@@ -50,6 +50,18 @@
     + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
     + [监控 API](/tidb-monitoring-api.md) @李宋高
   + [测试验证](/post-installation-check.md) @李仲舒
+  + 模版附件
+    + [简单最小配置模版](/simple-mini.yaml)
+    + [详细最小配置模版](/complex-mini.yaml)
+    + [简单 TiFlash 配置模版](/simple-tiflash.yaml)
+    + [详细 TiFlash 配置模版](/complex-tiflash.yaml)
+    + [简单 TiCDC 配置模版](/simple-cdc.yaml)
+    + [详细 TiCDC 配置模版](/complex-cdc.yaml)
+    + [简单 TiDB-binlog 配置模板](/simple-tidb-binlog.yaml)
+    + [详细 TiDB-binlog 配置模板](/complex-tidb-binlog.yaml)
+    + [简单混部配置模板](/simple-multi-instant.yaml)
+    + [详细混部配置模板](/complex-multi-instant.yaml)
+    + [跨机房配置模板](/geo-redundancy-deployment.yaml)
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md) @周跃跃
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md) @梁启斌
