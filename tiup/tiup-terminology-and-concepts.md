@@ -20,17 +20,6 @@ TiUP 程序只包含少数几个命令，用来下载、更新、卸载组件。
 2. 如果用户通过 `tiup <component>` 运行某个组件，且未指定任何版本：
    - 组件在本地未安装任何版本，则从镜像服务器下载最新稳定版本
    - 如果本地已经安装部分版本，则设置环境变量来运行已经安装的版本中的最新版本
-
-开发一个组件本质上和写一个脚本以及开发一个普通的程序没有任何差别，区别在于 TiUP 组件需要使用 [`tiup package`](/tiup/tiup-package.md) 进行打包，并生成对应的元信息，如果组件已经在运行时，TiUP 会负责指定运行时临时目录。
-
-通过 TiUP 运行的组件会包含以下环境变量（环境变量都在 TiUP 项目中的 pkg/localmeta/constant.go 中定义）：
-
-- `EnvNameInstanceDataDir = "TIUP_INSTANCE_DATA_DIR"` 表示当前实例运行的工作目录，通常应该是 `$TIUP_HOME/data/<subdir>`，其中 subdir 为用户指定的 tag，如果用户没有指定 tag，则为一个随机字符串。
-- `EnvNameComponentDataDir = "TIUP_COMPONENT_DATA_DIR"` 表示当前组件的持久化目录，通常应该是 `$TIUP_HOME/storage/<component>`。
-- `EnvNameComponentInstallDir = "TIUP_COMPONENT_INSTALL_DIR"` 表示当前组件的安装目录，通常应该是 `$TIUP_HOME/components/<component>/<version>`。
-- `EnvNameWorkDir = "TIUP_WORK_DIR"` 表示 TiUP 的工作目录，如果组件参数包含路径，同时路径是一个相对路径，这个相对路径是相对于 TiUP 的工作目录，而不是组件的工作目录。
-- `EnvNameHome = "TIUP_HOME"` 表示 TiUP 的 Profile 目录。
-- `EnvTag = "TIUP_TAG"` 表示这个实例的 tag。
   
 ## TiUP 镜像仓库
 
