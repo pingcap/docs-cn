@@ -107,7 +107,7 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 
 ![Pipelined pessimistic lock](/media/pessimistic-transaction-pipelining.png)
 
-该功能默认关闭，可修改 TiKV 配置启用:
+该功能默认关闭，可修改 TiKV 配置启用：
 
 ```toml
 [pessimistic-txn]
