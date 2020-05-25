@@ -11,9 +11,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/rollback/']
 
 ## 语法图
 
-**Statement:**
+**RollbackStmt:**
 
-![Statement](/media/sqlgram/Statement.png)
+![RollbackStmt](/media/sqlgram/RollbackStmt.png)
 
 ## 示例
 
