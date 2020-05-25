@@ -85,9 +85,16 @@ member leader_priority pdName3 3
 
 ![sample-tidb](/media/multi-data-centers-in-one-city-deployment-sample.png)
 
-#### TiKV Labels 规划
+#### TiKV Labels 简概
 
-对于 TiKV Labels 需要根据已有的物理资源、用户容灾能力容忍度等方面因素设计与规划，进而提升系统的可用性和容灾能力。根据已规划的拓扑架构，配置相关 tidb-ansible inventory.ini 文件（此处省略其他非重点项）
+TiKV 是一个 Multi-Raft 系统，其数据按 region（默认 96M） 切分，每个 region 的 3 个副本构成了一个 Raft Group。假设一个 3 副本 TiDB 集群，由于 region 的副本数与 TiKV 实例数量无关，则一个 region 的 3 个副本只会被调度到其中 3 个 TiKV 实例上，也就是说即使集群扩容 N 个 TiKV 实例，其本质仍是一个 3 副本集群。出于 3 副本的 Raft Group 只能容忍 1 副本故障，当集群被扩容到 N 个 TiKV 实例时，这个集群依然只能容忍一个 TiKV 实例的故障，2 个 TiKV 实例的故障可能会导致某些 region 丢失多个副本，整个集群的数据也不再完整，访问到这些 region 上的数据的 SQL 请求将会失败。而 N 个 TiKV 实例中同时有两个发生故障的概率是远远高于 3 个 TiKV 中同时有两个发生故障的概率的，也就是说 Multi-Raft 系统集群扩容 TiKV 实例越多，其可用性是逐渐降低的。
+
+正因为 Multi-Raft TiKV 系统局限性， Labels 标签应运而出，其主要用于描述 TiKV 的位置信息，Label 信息随着部署或滚更操作刷新到 TiKV 的启动配置文件中，启动后的 TiKV 会将自己最新的 Label 信息上报给 PD，PD 根据用户登记的 Label 名称（也就是 Label 元信息），结合 TiKV 的拓扑进行 region 副本的最优调度用以提高系统可用性。
+
+
+#### TiKV Labels 样例规划
+
+对于 TiKV Labels 标签需要根据已有的物理资源、用户容灾能力容忍度等方面因素设计与规划，进而提升系统的可用性和容灾能力。根据已规划的拓扑架构，配置相关 tidb-ansible inventory.ini 文件（此处省略其他非重点项）
 
 ```ini
 [tikv_servers]
