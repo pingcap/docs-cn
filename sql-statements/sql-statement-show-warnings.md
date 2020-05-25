@@ -11,13 +11,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-warnings/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowWarningsStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowWarningsStmt](/media/sqlgram/ShowWarningsStmt.png)
 
 ## 示例
 

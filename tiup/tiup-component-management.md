@@ -1,7 +1,7 @@
 ---
 title: 使用 TiUP 命令管理组件
 category: tools
-aliases: ['/docs-cn/dev/reference/tools/tiup/manage-component/']
+aliases: ['/docs-cn/dev/reference/tools/tiup/manage-component/','/docs-cn/dev/reference/tools/tiup/manage-tiup-component/']
 ---
 
 # 使用 TiUP 命令管理组件

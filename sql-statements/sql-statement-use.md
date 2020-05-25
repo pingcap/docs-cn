@@ -41,27 +41,31 @@ SHOW TABLES;
 ```
 
 ```
-+----------------------+
-| Tables_in_mysql      |
-+----------------------+
-| GLOBAL_VARIABLES     |
-| bind_info            |
-| columns_priv         |
-| db                   |
-| default_roles        |
-| gc_delete_range      |
-| gc_delete_range_done |
-| help_topic           |
-| role_edges           |
-| stats_buckets        |
-| stats_feedback       |
-| stats_histograms     |
-| stats_meta           |
-| tables_priv          |
-| tidb                 |
-| user                 |
-+----------------------+
-16 rows in set (0.00 sec)
++-------------------------+
+| Tables_in_mysql         |
++-------------------------+
+| GLOBAL_VARIABLES        |
+| bind_info               |
+| columns_priv            |
+| db                      |
+| default_roles           |
+| expr_pushdown_blacklist |
+| gc_delete_range         |
+| gc_delete_range_done    |
+| global_priv             |
+| help_topic              |
+| opt_rule_blacklist      |
+| role_edges              |
+| stats_buckets           |
+| stats_feedback          |
+| stats_histograms        |
+| stats_meta              |
+| stats_top_n             |
+| tables_priv             |
+| tidb                    |
+| user                    |
++-------------------------+
+20 rows in set (0.01 sec)
 ```
 
 {{< copyable "sql" >}}
