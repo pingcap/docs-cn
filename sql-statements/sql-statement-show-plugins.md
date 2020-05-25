@@ -4,7 +4,7 @@ summary: TiDB 数据库中 SHOW PLUGINS 的使用概况。
 category: reference
 ---
 
-# SHOW PLUGNS
+# SHOW PLUGINS
 
 `SHOW PLUGINS` 用于查看 TiDB 安装的插件，各个插件运行的状态以及插件版本信息。
 
