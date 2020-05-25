@@ -2,12 +2,11 @@
 title: SHOW BUILTINS
 summary: TiDB 数据库中 SHOW BUILTINS 的使用概况。
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-builtins/']
 ---
 
 # SHOW BUILTINS
 
-`SHOW BUILTINS` 语句列出 TiDB 中所有的内置函数。
+`SHOW BUILTINS` 语句用于列出 TiDB 中所有的内置函数。
 
 ## 语法图
 
@@ -301,4 +300,4 @@ SHOW BUILTINS;
 
 ## MySQL 兼容性
 
-`SHOW BUILTINS` 语句功能与 MySQL 完全兼容。但尚有一些极少被用到的函数未被支持，若对这些尚未支持的函数有需求，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW BUILTINS` 是 TiDB 新增语法，MySQL 中无此语法。
