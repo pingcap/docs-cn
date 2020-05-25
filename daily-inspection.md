@@ -7,7 +7,7 @@ category: reference
 
 TiDB 作为分布式数据库，对比其他单机数据库更加复杂。优化手段繁多，自带的监控项、metrics 达到上千项。为了更便捷的运维 TiDB，本章介绍 TiDB 集群需要常关注的性能指标。
 
-# Dashboard 关键指标
+## Dashboard 关键指标
 
   从 4.0 版本开始，TiDB 提供了一个新的 Dashboard 运维管理工具，集成在 PD 组件上，默认地址为 `http://pd-ip:pd_port/dashboard` 。TiDB Dashboard 从 DBA 管理员角度出发，最大限度的简化管理员对 TiDB 数据库的运维，可在一个界面查看到整个分布式数据库集群的运行状况，包括数据热点、SQL 运行情况、集群信息、日志搜索、实时性能分析等。
 
