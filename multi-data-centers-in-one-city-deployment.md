@@ -91,7 +91,6 @@ TiKV 是一个 Multi-Raft 系统，其数据按 region（默认 96M） 切分，
 
 正因为 Multi-Raft TiKV 系统局限性， Labels 标签应运而出，其主要用于描述 TiKV 的位置信息，Label 信息随着部署或滚更操作刷新到 TiKV 的启动配置文件中，启动后的 TiKV 会将自己最新的 Label 信息上报给 PD，PD 根据用户登记的 Label 名称（也就是 Label 元信息），结合 TiKV 的拓扑进行 region 副本的最优调度用以提高系统可用性。
 
-
 #### TiKV Labels 样例规划
 
 对于 TiKV Labels 标签需要根据已有的物理资源、用户容灾能力容忍度等方面因素设计与规划，进而提升系统的可用性和容灾能力。根据已规划的拓扑架构，配置相关 tidb-ansible inventory.ini 文件（此处省略其他非重点项）
