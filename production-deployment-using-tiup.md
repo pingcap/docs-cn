@@ -78,25 +78,25 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 这里举出常见的 6 种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，新建一个配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
 
-- [常规拓扑架构](/minimal-deployment-topology.md)
+- [最小拓扑架构](/minimal-deployment-topology.md)
 
   最基本的集群拓扑，包括 tidb-server、tikv-server、pd-server。适合 OLTP 业务。
   
 - [增加 `TiFlash` 拓扑架构](/tiflash-deployment-topology.md)
 
-  包含常规拓扑的基础上，同时部署 `TiFlash`，`TiFlash` 是列式的存储引擎，已经逐步成为集群拓扑的标配。适合 Real-Time HTAP 业务。
+  包含最小拓扑的基础上，同时部署 `TiFlash`，`TiFlash` 是列式的存储引擎，已经逐步成为集群拓扑的标配。适合 Real-Time HTAP 业务。
   
 - [增加 `TiCDC` 拓扑架构](/ticdc-deployment-topology.md)
 
-  包含常规拓扑的基础上，同时部署 `TiCDC`，`TiCDC` 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB/MySQL/MQ）。`TiCDC` 相比 `TiDB Binlog` ，有延迟更低、天然高可用等优点。
+  包含最小拓扑的基础上，同时部署 `TiCDC`，`TiCDC` 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB/MySQL/MQ）。`TiCDC` 相比 `TiDB Binlog` ，有延迟更低、天然高可用等优点。
   
 - [增加 `TiDB Binlog` 拓扑架构](/tidb-binlog-deployment-topology.md)
 
-  包含常规拓扑的基础上，同时部署 `TiDB Binlog`，`TiDB Binlog` 是目前广泛使用的增量组件，可提供准实时备份和同步功能。
+  包含最小拓扑的基础上，同时部署 `TiDB Binlog`，`TiDB Binlog` 是目前广泛使用的增量组件，可提供准实时备份和同步功能。
 
 - [单机多实例 拓扑架构](/hybrid-deployment-topology.md)
 
-  适用于单个机器部署多个实例的情况，需要额外增加 目录、端口、资源配比、label 等配置。
+  适用于单台机器部署多个实例的情况，需要额外增加 目录、端口、资源配比、label 等配置。
 
 - [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)
 
