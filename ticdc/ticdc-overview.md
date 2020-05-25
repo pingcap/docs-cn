@@ -6,6 +6,10 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/overview/']
 
 # TiCDC 简介
 
+> **注意：**
+>
+> TiCDC 目前是实验性功能，不建议在生产环境中使用。
+
 [TiCDC](https://github.com/pingcap/ticdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供[开放数据协议](/ticdc/ticdc-open-protocol.md) (TiCDC Open Protocol)，支持其他系统订阅数据变更。
 
 ## TiCDC 架构
