@@ -125,8 +125,8 @@ SELECT * FROM T; -- MySQL 返回 1 2；TiDB 返回 1
 
 > **注意：**
 > 
-> 1. 本优化仅在乐观事务中生效。
-> 2. 本优化仅对普通的 `INSERT` 语句生效，对 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效。
+> + 本优化仅在乐观事务中生效。
+> + 本优化仅对普通的 `INSERT` 语句生效，对 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效。
 
 ## 语句回滚
 
