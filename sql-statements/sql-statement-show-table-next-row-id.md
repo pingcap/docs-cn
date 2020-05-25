@@ -23,32 +23,32 @@ category: reference
 
 + 创建一张表
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-CREATE TABLE t1 (a INT);
-```
+    ```sql
+    CREATE TABLE t1 (a INT);
+    ```
 
-```
-Query OK, 0 rows affected (0.12 sec)
-```
+    ```
+    Query OK, 0 rows affected (0.12 sec)
+    ```
 
-+ 执行SHOW 语句
++ 执行 SHOW 语句
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-SHOW TABLE T1 NEXT_ROW_ID;
-```
+    ```sql
+    SHOW TABLE T1 NEXT_ROW_ID;
+    ```
 
-```
-+---------+------------+-------------+--------------------+----------------+
-| DB_NAME | TABLE_NAME | COLUMN_NAME | NEXT_GLOBAL_ROW_ID | ID_TYPE        |
-+---------+------------+-------------+--------------------+----------------+
-| test    | T1         | _tidb_rowid |                  1 | AUTO_INCREMENT |
-+---------+------------+-------------+--------------------+----------------+
-1 row in set (0.01 sec)
-```
+    ```
+    +---------+------------+-------------+--------------------+----------------+
+    | DB_NAME | TABLE_NAME | COLUMN_NAME | NEXT_GLOBAL_ROW_ID | ID_TYPE        |
+    +---------+------------+-------------+--------------------+----------------+
+    | test    | T1         | _tidb_rowid |                  1 | AUTO_INCREMENT |
+    +---------+------------+-------------+--------------------+----------------+
+    1 row in set (0.01 sec)
+    ```
 
 ## 另请参阅
 
