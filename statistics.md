@@ -179,13 +179,13 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 你可以通过 `SHOW STATS_META` 来查看表的总行数以及修改的行数等信息。
 
-语法如下：
+`SHOW STATS_META` 的语法图为：
 
-{{< copyable "sql" >}}
+![ShowStatsMeta](/media/sqlgram/ShowStatsMeta.png)
 
-```sql
-SHOW STATS_META [ShowLikeOrWhere];
-```
+其中，`ShowLikeOrWhereOpt` 部分的语法图为：
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 该语句会输出所有表的总行数以及修改行数等信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
 
