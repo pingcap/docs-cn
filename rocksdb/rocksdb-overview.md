@@ -1,7 +1,6 @@
 ---
 title: RocksDB 简介
 category: reference
-aliases: ['/docs-cn/dev/reference/rocksdb/overview/']
 ---
 
 # RocksDB 简介
