@@ -81,7 +81,7 @@
   + [告警处理](/handle-alerts.md) @李宋高
   + [日常巡检](/daily-inspection.md) @王军
   + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
-  + [TiUP 常用运维操作](/tiup/manage-tiup-component.md) @王贤净
+  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 故障诊断
   + 硬件故障 @周强
@@ -191,6 +191,19 @@
   + [Loader](/loader-overview.md) @王相
   + [Mydumper](/mydumper-overview.md) @余峻岑
   + [Syncer](/syncer-overview.md) @王相
+  + TiUP @龙恒
+    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [概览](/tiup/tiup-overview.md)
+    + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
+    + [TiUP 组件管理](/tiup/tiup-component-management.md)
+    + [FAQ](/tiup/tiup-faq.md)
+    + [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    + TiUP 组件文档
+      + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
+      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md) @黄东旭
