@@ -29,13 +29,13 @@ TiDB 支持对 `Prepare` / `Execute` 请求的执行计划缓存。
 
 LRU 链表是设计成 session 级别的缓存，因为 `Prepare` / `Execute` 不能跨 session 执行。LRU 链表的每个元素是一个 key-value 对，value 是执行计划，key 由如下几部分组成：
 
-- 执行 `Execute` 时的数据库名；
-- `Prepare` 语句的标识符；
-- 当前的 schema 版本号；
-- 当前的 SQL Mode；
-- 当前的时区设置；
+- 执行 `Execute` 时所在数据库的名字；
+- `Prepare` 语句的标识符，即紧跟在 `PREPARE` 关键字后的名字；
+- 当前的 schema 版本，每条执行成功的 DDL 语句会修改 schema 版本；
+- 执行 `Execute` 时的 SQL Mode；
+- 当前设置的时区，即系统变量 `time_zone` 的值；
 
-key 中任何一项变动，或 LRU 淘汰机制触发都会导致 `Execute` 时无法命中执行计划缓存。
+key 中任何一项变动（如切换数据库，重命名 `Prepare` 语句，执行 DDL，或修改 SQL Mode / `time_zone` 的值），或 LRU 淘汰机制触发都会导致 `Execute` 时无法命中执行计划缓存。
 
 成功从缓存中获取到执行计划后，TiDB 会先检查执行计划是否依然合法，如果当前 `Execute` 在显式事务里执行，并且引用的表在事务前序语句中被修改，而缓存的执行计划对该表访问不包含 `UnionScan` 算子，则它不能被执行。
 
@@ -52,18 +52,34 @@ key 中任何一项变动，或 LRU 淘汰机制触发都会导致 `Execute` 时
 >
 > 执行计划缓存功能仅针对 `Prepare` / `Execute` 请求，对普通查询无效。
 
-在开启了执行计划缓存功能后，可以通过如下语句查看上一条 `Execute` 语句是否使用了缓存的执行计划：
+在开启了执行计划缓存功能后，可以通过 session 级别的系统变量 `last_plan_from_cache` 查看上一条 `Execute` 语句是否使用了缓存的执行计划，例如：
 
 {{< copyable "sql" >}}
 
 ```sql
+prepare stmt from 'select * from t where a = ?';
+set @a = 1;
+-- 第一次 execute 生成执行计划放入缓存
+execute stmt using @a;
+-- 执行 execute 时缓存为空，last_plan_from_cache 结果为 0
+select @@last_plan_from_cache;
+-- 第二次 execute 命中缓存
+execute stmt using @a;
+-- last_plan_from_cache 结果为 1
 select @@last_plan_from_cache;
 ```
 
-如果发现某一组 `Prepare` / `Execute` 由于执行计划缓存导致了非预期行为，可以通过如下语句让该组语句不使用缓存：
+如果发现某一组 `Prepare` / `Execute` 由于执行计划缓存导致了非预期行为，可以通过 SQL Hint `ignore_plan_cache()` 让该组语句不使用缓存。还是用上述的 `stmt` 为例：
 
 {{< copyable "sql" >}}
 
 ```sql
-prepare stmt from 'select /*+ ignore_plan_cache() */ ...';
+prepare stmt from 'select /*+ ignore_plan_cache() */ * from t where a = ?';
+set @a = 1;
+execute stmt using @a;
+-- 结果为 0
+select @@last_plan_from_cache;
+execute stmt using @a;
+-- 结果依然为 0
+select @@last_plan_from_cache;
 ```
