@@ -97,37 +97,37 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 
 如希望进行组件调用者身份认证，需要在生证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
 
-    - TiDB
+- TiDB
 
-        在 `config` 文件或命令行参数中设置：
+    在 `config` 文件或命令行参数中设置：
 
-        ```toml
-        [security]
-        cluster-verify-cn = [
-          "TiDB-Server",
-          "TiKV-Control",          
-        ]
-        ```
+    ```toml
+    [security]
+    cluster-verify-cn = [
+      "TiDB-Server",
+      "TiKV-Control",          
+    ]
+    ```
 
-    - TiKV
+- TiKV
 
-        在 `config` 文件或命令行参数中设置：
+    在 `config` 文件或命令行参数中设置：
 
-        ```toml
-        [security]
-        cert-allowed-cn = [
-            "TiDB-Server", "PD-Server", "TiKV-Control", "RawKvClient1",
-        ]
-        ```
+    ```toml
+    [security]
+    cert-allowed-cn = [
+        "TiDB-Server", "PD-Server", "TiKV-Control", "RawKvClient1",
+    ]
+    ```
 
-    - PD
+- PD
 
-        在 `config` 文件或命令行参数中设置：
+    在 `config` 文件或命令行参数中设置：
 
-        ```toml
-        [security]
-        cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
-        ```
+    ```toml
+    [security]
+    cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
+    ```
 
 ### 证书重加载 
 
