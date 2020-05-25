@@ -96,7 +96,7 @@ KeyN_Version1 -> Value
 
 ## 分布式 ACID 事务
 
-TiKV 的事务采用的是 Google 在 BigTable 中使用的事务模型：[Percolator](https://research.google.com/pubs/pub36726.html)，TiKV 根据这篇论文实现，并做了大量的优化。这个在后续的章节中会有详细的介绍。
+TiKV 的事务采用的是 Google 在 BigTable 中使用的事务模型： [Percolator](https://research.google.com/pubs/pub36726.html) ，TiKV 根据这篇论文实现，并做了大量的优化。这个在后续的章节中会有详细的介绍。
 
 在 TiKV 层的事务 API 的语义类似下面的伪代码：
 
