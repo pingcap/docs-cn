@@ -177,7 +177,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 在慢日志中记录执行计划
 + 默认值：1
-+ 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 tidb_record_plan_in_slow_log 的初始值。
++ 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/tidb-specific-system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
 
 ### `expensive-threshold`
 
