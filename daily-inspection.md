@@ -20,6 +20,7 @@ TiDB 作为分布式数据库，对比其他单机数据库更加复杂。优化
 ![img](/media/daily-inspection/status.png)
 
 * 注意项说明
+
   + 状态查看是否正常，如果在线可忽略。
   + 启动时间是关键指标，如果有发现启动时间有变动，那么需要排查组件重启的原因。
   + 版本、部署路径、Git 哈希值需要关注，避免有部署路径和版本有误的情况。
@@ -43,6 +44,7 @@ TiDB 作为分布式数据库，对比其他单机数据库更加复杂。优化
 ![img](/media/daily-inspection/region_staus.png)
 
 * 说明
+
   + miss 是缺副本，不会一直大于 0。
   + extra 是多副本。
   + empty 是空 Region，一般是 truncate/drop table 语句导致，如果较多，可以考虑开启跨表 Region merge 开启。
@@ -64,7 +66,8 @@ TiKV 当前 .99 (百分位) 的响应时间，如果发现有明显高的节点�
 
 ![img](/media/daily-inspection/PD_duration.png)
 
-* TiDB 从 PD 获取 TSO 的时间，如果相关响应时间较高，一般常见原因为：
+* TiDB 从 PD 获取 TSO 的时间，如果相关响应时间较高，一般常见原因为
+
   + TiDB 到 PD 的网络延迟较高，可以手动 Ping 一下网络延迟。
   + TiDB 压力较高，导致获取较慢。
   + PD 服务器压力较高，导致获取较慢。
