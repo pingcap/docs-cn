@@ -5,7 +5,7 @@ category: performance
 
 # TopN 和 Limit 下推
 
-sql 中的 limit 子句在 tidb 查询计划树中对应 limit 算子节点，order by 子句在查询计划树中对应 sort 算子节点，此外，我们会将相邻的 limit 和 sort 组合成 topn 算子节点，表示按某个排序规则提取记录的前 n 项。从另一方面来说，limit 节点等价于一个排序规则为空的 topn 节点。
+SQL 中的 LIMIT 子句在 TiDB 查询计划树中对应 Limit 算子节点，ORDER BY 子句在查询计划树中对应 Sort 算子节点，此外，我们会将相邻的 Limit 和 Sort 算子组合成 TopN 算子节点，表示按某个排序规则提取记录的前 N 项。从另一方面来说，Limit 节点等价于一个排序规则为空的 TopN 节点。
 
 和谓词下推类似，topn（及 limit，下同）下推将查询计划树中的 topn 计算尽可能下推到距离数据源最近的地方，以尽早完成数据的过滤，进而显著地减少数据传输或计算的开销。
 
