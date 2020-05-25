@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/set-variable/']
 
 ## 示例
 
-获取 `sql_mode` 的值
+获取 `sql_mode` 的值：
 
 {{< copyable "sql" >}}
 
@@ -57,7 +57,7 @@ SHOW SESSION VARIABLES LIKE 'sql_mode';
 1 row in set (0.00 sec)
 ```
 
-更新全局的 `sql_mode`
+更新全局的 `sql_mode`：
 
 {{< copyable "sql" >}}
 
@@ -69,7 +69,7 @@ SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';
 Query OK, 0 rows affected (0.03 sec)
 ```
 
-检查更新之后的 `sql_mode` 的取值，可以看到 SESSION 级别的值没有更新
+检查更新之后的 `sql_mode` 的取值，可以看到 SESSION 级别的值没有更新：
 
 {{< copyable "sql" >}}
 
@@ -101,7 +101,7 @@ SHOW SESSION VARIABLES LIKE 'sql_mode';
 1 row in set (0.00 sec)
 ```
 
-`SET SESSION` 则可以立即生效
+`SET SESSION` 则可以立即生效：
 
 {{< copyable "sql" >}}
 

@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-variables/']
 
 ## 示例
 
-查看 TiDB 定义的专用系统变量，关于这些变量的含义可以参考 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
+查看 TiDB 定义的专用系统变量，关于这些变量的含义参见 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
 
 {{< copyable "sql" >}}
 
