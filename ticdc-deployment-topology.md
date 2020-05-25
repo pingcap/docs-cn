@@ -6,7 +6,7 @@ category: how-to
 
 # TiCDC 部署拓扑
 
-本文介绍 TiCDC 部署的拓扑
+本文介绍 `TiCDC` 部署的拓扑，在最小拓扑的基础上，同时部署 `TiCDC`，`TiCDC` 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB/MySQL/MQ）。`TiCDC` 相比 `TiDB Binlog` ，有延迟更低、天然高可用等优点。
 
 ## 拓扑信息
 
@@ -26,9 +26,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单 TiCDC 配置](/simple-mini.yaml)
-[复杂 TiCDC 配置](/complex-mini.yaml)
+[简单 TiCDC 拓扑配置](/simple-cdc.yaml)
+[详细 TiCDC 拓扑配置](/complex-cdc.yaml)
 
 > **注意：**
 >
-> - 无需手动创建 tidb 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
