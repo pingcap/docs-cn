@@ -6,7 +6,7 @@ category: reference
 
 # SHOW ANALYZE STATUS
 
-`SHOW ANALYZE STATUS` 语句提供 TiDB 正在执行的收集统计信息的任务以及有限条历史任务记录。
+`SHOW ANALYZE STATUS` 语句提供 TiDB 正在执行的统计信息收集任务以及有限条历史任务记录。
 
 ## 语法图
 
@@ -46,4 +46,4 @@ show analyze status;
 
 ## 另请参阅
 
-* [ANALYZE_STATUS 表](/system-tables/system-table-information-schema.md#ANALYZE_STATUS-表)
+* [ANALYZE_STATUS 表](/system-tables/system-table-information-schema.md#analyze_status-表)
