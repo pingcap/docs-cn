@@ -23,20 +23,20 @@ category: reference
 {{< copyable "sql" >}}
 
 ```sql
-> CREATE TABLE t(a INT);
+CREATE TABLE t(a INT);
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-> SHOW STATS_META WHERE db_name='test' and table_name='t';
+SHOW STATS_META WHERE db_name='test' and table_name='t';
 ```
 
-```
+```sql
 +---------+------------+----------------+---------------------+--------------+-----------+
 | Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
 +---------+------------+----------------+---------------------+--------------+-----------+
@@ -48,20 +48,20 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-> DROP STATS t;
+DROP STATS t;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.00 sec)
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-> SHOW STATS_META WHERE db_name='test' and table_name='t';
+SHOW STATS_META WHERE db_name='test' and table_name='t';
 ```
 
-```
+```sql
 Empty set (0.00 sec)
 ```
 
