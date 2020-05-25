@@ -57,16 +57,38 @@ key 中任何一项变动（如切换数据库，重命名 `Prepare` 语句，�
 {{< copyable "sql" >}}
 
 ```sql
-prepare stmt from 'select * from t where a = ?';
-set @a = 1;
+MySQL [test]> create table t(a int);
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> prepare stmt from 'select * from t where a = ?';
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> set @a = 1;
+Query OK, 0 rows affected (0.00 sec)
+
 -- 第一次 execute 生成执行计划放入缓存
-execute stmt using @a;
--- 执行 execute 时缓存为空，last_plan_from_cache 结果为 0
-select @@last_plan_from_cache;
+MySQL [test]> execute stmt using @a;
+Empty set (0.00 sec)
+
+MySQL [test]> select @@last_plan_from_cache;
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+| 0                      |
++------------------------+
+1 row in set (0.00 sec)
+
 -- 第二次 execute 命中缓存
-execute stmt using @a;
--- last_plan_from_cache 结果为 1
-select @@last_plan_from_cache;
+MySQL [test]> execute stmt using @a;
+Empty set (0.00 sec)
+
+MySQL [test]> select @@last_plan_from_cache;
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+| 1                      |
++------------------------+
+1 row in set (0.00 sec)
 ```
 
 如果发现某一组 `Prepare` / `Execute` 由于执行计划缓存导致了非预期行为，可以通过 SQL Hint `ignore_plan_cache()` 让该组语句不使用缓存。还是用上述的 `stmt` 为例：
@@ -74,12 +96,31 @@ select @@last_plan_from_cache;
 {{< copyable "sql" >}}
 
 ```sql
-prepare stmt from 'select /*+ ignore_plan_cache() */ * from t where a = ?';
-set @a = 1;
-execute stmt using @a;
--- 结果为 0
-select @@last_plan_from_cache;
-execute stmt using @a;
--- 结果依然为 0
-select @@last_plan_from_cache;
+MySQL [test]> prepare stmt from 'select /*+ ignore_plan_cache() */ * from t where a = ?';
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> set @a = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> execute stmt using @a;
+Empty set (0.00 sec)
+
+MySQL [test]> select @@last_plan_from_cache;
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+| 0                      |
++------------------------+
+1 row in set (0.00 sec)
+
+MySQL [test]> execute stmt using @a;
+Empty set (0.00 sec)
+
+MySQL [test]> select @@last_plan_from_cache;
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+| 0                      |
++------------------------+
+1 row in set (0.00 sec)
 ```
