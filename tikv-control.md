@@ -6,9 +6,28 @@ aliases: ['/docs-cn/dev/reference/tools/tikv-control/']
 
 # TiKV Control 使用说明
 
-TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。
+TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装位置
 
-编译 TiKV 的同时也会编译 tikv-ctl 命令。如果通过 Ansible 部署集群，则对应的 `tidb-ansible/resources/bin` 目录下会存在 `tikv-ctl` 二进制文件。
+* 对于 ansible 部署的集群，在 ansible 目录下的 `resources/bin` 子目录下；
+* 对于 tiup 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 下。
+
+[tiup](https://github.com/pingcap-incubator/tiuptiup) 是晚于 `tidb-ansible` 推出的部署工具，使用方式更加简化，`tikv-ctl` 也集成在了 `tiup` 命令中。可以这样调用 `tikv-ctl` 工具：
+
+```
+$ tiup ctl tikv
+Starting component `ctl`: ~/.tiup/components/ctl/v4.0.0-rc.2/ctl tikv
+TiKV Control (tikv-ctl)
+Release Version:   4.0.0-rc.2
+Edition:           Community
+Git Commit Hash:   2fdb2804bf8ffaab4b18c4996970e19906296497
+Git Commit Branch: heads/refs/tags/v4.0.0-rc.2
+UTC Build Time:    2020-05-15 11:58:49
+Rust Version:      rustc 1.42.0-nightly (0de96d37f 2019-12-19)
+Enable Features:   jemalloc portable sse protobuf-codec
+Profile:           dist_release
+```
+
+在这后面再接上相应的参数与子命令即可。
 
 ## 通用参数
 
@@ -192,11 +211,11 @@ success!
 
 `compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样。
 
-### 设置一个 Region 副本为 tombstone
+### 设置一个 Region 副本为 tombstone 状态
 
 `tombstone` 命令常用于没有开启 sync-log，因为机器掉电导致 Raft 状态机丢失部分写入的情况。它可以在一个 TiKV 实例上将一些 Region 的副本设置为 Tombstone 状态，从而在重启时跳过这些 Region，避免因为这些 Region 的副本的 Raft 状态机损坏而无法启动服务。这些 Region 应该在其他 TiKV 上有足够多的健康的副本以便能够继续通过 Raft 机制进行读写。
 
-一般情况下，我们可以先在 PD 上将 Region 的副本通过 remove-peer 命令删除掉：
+一般情况下，可以先在 PD 上将 Region 的副本通过 `remove-peer` 命令删除掉：
 
 {{< copyable "" >}}
 
@@ -216,7 +235,9 @@ tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>
 success!
 ```
 
-但是有些情况下，当不能方便地从 PD 上移除这个副本时，可以指定 tikv-ctl 的 --force 选项来强制设置它为 tombstone：
+但是有些情况下，当不能方便地从 PD 上移除这个副本时，可以指定 tikv-ctl 的 `--force` 选项来强制设置它为 tombstone：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
