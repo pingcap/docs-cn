@@ -131,7 +131,7 @@
       + 物理优化
         + [物理优化概览](/sql-physical-optimization.md)
         + [索引的选择](/index-choose.md)
-        + [统计信息介绍](/statistics-intro.md)
+        + [统计信息简介](/statistics.md)
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
       + [执行计划缓存](/sql-prepare-plan-cache.md)
@@ -235,7 +235,7 @@
         + [AUTO_RANDOM](/auto-random.md) @谢腾进
       + [字面值](/literal-values.md) @邰凌翔
       + [Schema 对象名](/schema-object-names.md) @邰凌翔
-      + [关键字和保留字](/keywords-and-reserved-words.md) @@邰凌翔
+      + [关键字](/keywords.md) @@邰凌翔
       + [用户自定义变量](/user-defined-variables.md) @邰凌翔
       + [表达式语法](/expression-syntax.md) @邰凌翔
       + [注释语法](/comment-syntax.md) @邰凌翔
@@ -266,6 +266,7 @@
       - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
       - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
       - [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
+      - [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md)
       - [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)
       - [`DROP USER`](/sql-statements/sql-statement-drop-user.md)
       - [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)
@@ -293,6 +294,7 @@
       - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
       - [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
@@ -315,6 +317,8 @@
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/sql-statements/sql-statement-show-variables.md)
       - [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
+      - [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md)
+      - [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-row-id.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
@@ -407,6 +411,7 @@
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
     + TiKV
+      + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
