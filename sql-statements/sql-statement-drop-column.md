@@ -19,10 +19,6 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-column/']
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
 
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
 **ColumnName:**
 
 ![ColumnName](/media/sqlgram/ColumnName.png)
@@ -129,7 +125,8 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-* 不支持使用相同语句删除多个列。
+* 目前不支持在一条中同时删除多个列。
+* 目前不支持删除主键列或索引列。
 
 ## 另请参阅
 
