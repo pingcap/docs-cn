@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/shutdown/']
 
 **Statement:**
 
-![Statement](/media/sqlgram/Statement.png)
+![Statement](/media/sqlgram/ShutdownStmt.png)
 
 ## 示例
 
