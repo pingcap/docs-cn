@@ -85,26 +85,26 @@ Create Table: CREATE TABLE `t1` (
 
 * 不支持在单个 `ALTER TABLE` 语句修改多个列，例如：
 
-```sql
-ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
-ERROR 1105 (HY000): Unsupported multi schema change
-```
+    ```sql
+    ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
+    ERROR 1105 (HY000): Unsupported multi schema change
+    ```
 
 * 不支持有损变更，以及部分数据类型的更改（包括整数改为字符串或 BLOB 格式等）。例如：
 
-```sql
-CREATE TABLE t1 (col1 BIGINT);
-ALTER TABLE t1 MODIFY col1 INT;
-ERROR 8200 (HY000): Unsupported modify column length 11 is less than origin 20
-```
+    ```sql
+    CREATE TABLE t1 (col1 BIGINT);
+    ALTER TABLE t1 MODIFY col1 INT;
+    ERROR 8200 (HY000): Unsupported modify column length 11 is less than origin 20
+    ```
 
 * 不支持修改 decimal 类型的精度。例如：
 
-```sql
-CREATE TABLE t (a DECIMAL(5, 3));
-ALTER TABLE t MODIFY COLUMN a DECIMAL(6, 3);
-ERROR 8200 (HY000): Unsupported modify column: can't change decimal column precision
-```
+    ```sql
+    CREATE TABLE t (a DECIMAL(5, 3));
+    ALTER TABLE t MODIFY COLUMN a DECIMAL(6, 3);
+    ERROR 8200 (HY000): Unsupported modify column: can't change decimal column precision
+    ```
 
 ## 另请参阅
 
