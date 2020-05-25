@@ -40,7 +40,7 @@ Key:   tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue
 Value: RowID
 ```
 
-对于不需要满足唯一性约束的普通二级索引，一个键值可能对应多行，我们需要根据键值范围查询对应的 RowID。 因此，按照如下规则编码成  (Key, Value) 键值对：
+对于不需要满足唯一性约束的普通二级索引，一个键值可能对应多行，需要根据键值范围查询对应的 RowID。因此，按照如下规则编码成 (Key, Value) 键值对：
 
 ```
 Key:   tablePrefix{TableID}_indexPrefixSep{IndexID}_indexedColumnsValue_{RowID}
