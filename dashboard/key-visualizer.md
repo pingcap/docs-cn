@@ -1,26 +1,26 @@
 ---
-title: Key Visualizer 流量可视化
+title: 流量可视化页面
 category: how-to
-aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/']
+aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visualizer-monitoring-tool/']
 ---
 
 # 流量可视化页面
 
-流量可视化页面可用于分析 TiDB 集群的使用模式和排查流量热点。该页面可视化地呈现了 TiDB 集群一段时间的流量情况。
+流量可视化页面 (Key Visualizer) 可用于分析 TiDB 集群的使用模式和排查流量热点。该页面可视化地呈现了 TiDB 集群一段时间的流量情况。
 
-## 访问
+## 访问页面
 
 可以通过以下两种方法访问 Key Visualizer 流量可视化页面：
 
-* 登录后，左侧导航条点击「流量可视化」（Key Visualizer）：
+* 登录 TiDB Dashboard 后，点击左侧导航条的 **Key Visualizer**（流量可视化）：
 
 ![访问](/media/dashboard/key-visualizer/access.png)
 
-* 在浏览器中访问 `http://127.0.0.1:2379/dashboard/#/keyviz`（将 127.0.0.1:2379 替换为任意实际 PD 地址和端口）。
+* 在浏览器中访问 `http://127.0.0.1:2379/dashboard/#/keyviz`（将 `127.0.0.1:2379` 替换为实际的 PD 地址和端口）。
 
 > **注意：**
 >
-> 流量可视化功能默认关闭，在初次使用时需要手动打开。请依据界面指引来开启该功能，或参见本文档「设置」章节。
+> 流量可视化功能默认关闭，在初次使用时需要手动打开。请依据界面指引来开启该功能，或参见本文档[设置](#设置)部分。
 
 ## 界面示例
 
@@ -30,13 +30,13 @@ aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/']
 
 从以上流量可视化界面可以观察到以下信息：
 
-1. 一个大型热力图，显示整体访问流量随时间的变化情况。
-2. 热力图某个坐标的详细信息。
-3. 左侧为表、索引等标识信息。
++ 一个大型热力图，显示整体访问流量随时间的变化情况。
++ 热力图某个坐标的详细信息。
++ 左侧为表、索引等标识信息。
 
 ## 基本概念
 
-本章节介绍流量可视化涉及的一些基本概念。
+本节介绍流量可视化涉及的一些基本概念。
 
 ### Region
 
@@ -64,9 +64,11 @@ aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/']
 
 ## 使用介绍
 
+本节介绍如何使用流量可视化页面。
+
 ### 设置
 
-首次使用需要先通过设置页面手动开启此功能。参考页面指引，点击「打开设置」（Open Settings）即可打开设置页面：
+首次使用流量可视化页面需要先通过**设置**页面手动开启此功能。参考页面指引，点击 **Open Settings**（打开设置）即可打开设置页面：
 
 ![功能未开启](/media/dashboard/key-visualizer/not-enabled.png)
 
@@ -78,7 +80,7 @@ aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/']
 
 ![设置页面](/media/dashboard/key-visualizer/settings.png)
 
-通过开关设定好是否开启收集，并点击「保存」（Save）后生效。开启后，在界面上观察到工具栏已经可以使用：
+通过开关设定好是否开启收集，并点击 **Save**（保存）后生效。开启后，在界面上观察到工具栏已经可以使用：
 
 ![工具栏](/media/dashboard/key-visualizer/toolbar.png)
 
@@ -89,22 +91,22 @@ aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/']
 打开流量可视化页面时，默认会显示最近六小时整个数据库内的热力图。其中，越靠近右侧（当前时间）时，每列 Bucket 对应的时间间隔会越小。如果你想观察某个特定时间段或者特定的 Region 范围，则可以通过放大来获得更多细节。具体操作描述如下：
 
 * 在热力图中向上或向下滚动。
-* 点击 「框选」（Select & Zoom）按钮，然后点击并拖动以选择要放大的区域。
+* 点击 **Select & Zoom**（框选）按钮，然后点击并拖动以选择要放大的区域。
 
 ![框选](/media/dashboard/key-visualizer/select-zoom.gif)
 
-* 点击 「重置」（Reset）按钮，将 Region 范围重置为整个数据库。
-* 点击 「时间选择框」（界面的 6 hours 处），重新选择观察时间段。
+* 点击 **Reset**（重置）按钮，将 Region 范围重置为整个数据库。
+* 点击「时间选择框」（界面的 **6 hours** 处），重新选择观察时间段。
 
 ![时间选择](/media/dashboard/key-visualizer/select-time.png)
 
 > **注意：**
 >
-> 使用后三种方法，将引起热力图的重新绘制。你可能观察到热力图与放大前有较大差异。这是一个正常的现象，可能是由于在进行局部观察时，Region 压缩的粒度发生了变化，或者是局部范围内，“热”的基准发生了改变。
+> 进行后三种操作，将引起热力图的重新绘制。你可能观察到热力图与放大前有较大差异。这是一个正常的现象，可能是由于在进行局部观察时，Region 压缩的粒度发生了变化，或者是局部范围内，“热”的基准发生了改变。
 
 ### 调整亮度
 
-热力图使用颜色的明暗来表达一个 Bucket 的流量高低，颜色越暗 (cold) 表示该区域的 Region 在这个时间段上读写流量较低，颜色越亮 (hot) 表示读写流量越高，即越热。如果热力图中的颜色太亮或太暗，则可能很难观察到细节。此时，可以点击「调整亮度」（Brightness）按钮，然后通过滑块来调节页面的亮度。
+热力图使用颜色的明暗来表达一个 Bucket 的流量高低，颜色越暗 (cold) 表示该区域的 Region 在这个时间段上读写流量较低，颜色越亮 (hot) 表示读写流量越高，即越热。如果热力图中的颜色太亮或太暗，则可能很难观察到细节。此时，可以点击 **Brightness**（调整亮度）按钮，然后通过滑块来调节页面的亮度。
 
 > **注意：**
 >
@@ -114,7 +116,7 @@ aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/']
 
 ![指标选择](/media/dashboard/key-visualizer/select-type.png)
 
-你可以通过「指标选择框」（以上界面中 Write (bytes) 处）来查看你关心的指标：
+你可以通过「指标选择框」（以上界面中 **Write (bytes)** 处）来查看你关心的指标：
 
 * `Read (bytes)`：读取字节量
 * `Write (bytes)`：读取字节量
@@ -124,7 +126,7 @@ aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/']
 
 ### 刷新与自动刷新
 
-可以通过点击「刷新」（Refresh）按钮来重新获得基于当前时间的热力图。当需要实时观察数据库的流量分布情况时，可以点击按钮右侧的向下箭头，选择一个固定的时间间隔让热力图按此间隔自动刷新。
+可以通过点击 **Refresh**（刷新）按钮来重新获得基于当前时间的热力图。当需要实时观察数据库的流量分布情况时，可以点击按钮右侧的向下箭头，选择一个固定的时间间隔让热力图按此间隔自动刷新。
 
 > **注意：**
 >
