@@ -1,6 +1,7 @@
 ---
 title: TiDB 配置文件描述
 category: introduction
+aliases: ['/docs-cn/stable/architecture/']
 ---
 
 # TiDB 整体架构
