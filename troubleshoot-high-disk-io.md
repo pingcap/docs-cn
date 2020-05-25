@@ -29,8 +29,8 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 在 `TiKV-Details` > `Raft IO` 中，有更多信息，可以看到这两个实例当前的状态：
 
-- `Apply log duration`：该监控表明了存储 Raft 日志的 RocksDB 写入的响应时间，.99 响应应该在 100ms 以内。
-- `Append log duration`：该监控表明了存储真正数据的 RocksDB 写入的响应时间，.99 响应应该在 50ms 以内。
+- `Append log duration`：该监控表明了存储 Raft 日志的 RocksDB 写入的响应时间，.99 响应应该在 50ms 以内。
+- `Apply log duration`：该监控表明了存储真正数据的 RocksDB 写入的响应时间，.99 响应应该在 100ms 以内。
 
 这两个监控还有 `.. per server` 的监控面板来提供辅助查看热点写入的情况。
 
@@ -38,14 +38,13 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 在 `TiKV-Details` > `Storage` 中，有关于 storage 相关情况的监控：
 
-- `Storage command total`：可以查看相关的 I/O 操作次数统计。
-- `Storage async write duration`：可以查看相关的磁盘 sync duration。正常情况下，该项与 `Raft IO` 监控面板有强相关性；如果没有的话，可能需要通过 log 来检查相关组件的工作状态是否正常。
+- `Storage command total`：收到的不同命令的个数。
+- `Storage async write duration`：包括了磁盘 sync duration 等监控项，可能和 Raft IO 有关。如遇到异常情况，需要通过 log 来检查相关组件的工作状态是否正常。
 
 #### 其他面板
 
 此外，可能还需要一些其它内容来辅助确认瓶颈是否为 I/O，并可以尝试调整一些参数。通过查看 TiKV gRPC 的 prewrite/commit/raw-put（仅限 raw kv 集群）duration，确认确实是 TiKV 写入慢了。常见的几种情况如下：
 
-- scheduler CPU 繁忙（仅限 transaction kv）。prewrite/commit 的 scheduler command duration 比 scheduler latch wait duration + storage async write duartion 更长，并且 scheduler worker CPU 比较高，例如超过 scheduler-worker-pool-size * 100% 的 80%，并且或者整个机器的 CPU 资源比较紧张。如果写入量很大，确认下是否 [storage] scheduler-worker-pool-size 配置得太小。其他情况请报 bug。
 - append log 慢。TiKV Grafana 的 Raft I/O 和 append log duration 比较高，通常情况下是由于写盘慢了，可以检查 RocksDB - raft 的 WAL Sync Duration max 值来确认，否则可能需要报 bug。
 - raftstore 线程繁忙。TiKV grafana 的 Raft Propose/propose wait duration 明显高于 append log duration。请查看以下两点：
 
@@ -64,7 +63,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 ### 从 log 定位 I/O 问题
 
-客户端报 `server is busy` 错误。通过查看监控：grafana -> TiKV -> errors 监控确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，过一会儿再尝试。
+客户端报 `server is busy` 错误，特别是 `raftstore is busy` 会和 I/O 有相关性。通过查看监控：grafana -> TiKV -> errors 监控确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，过一会儿再尝试。
 
 TiKV RocksDB 出现 `write stall`：
 
@@ -74,7 +73,7 @@ TiKV RocksDB 出现 `write stall`：
 
 - 如果 pending compaction bytes 达到该阈值，RocksDB 会放慢写入速度。默认值 64GB，`[rocksdb.defaultcf] soft-pending-compaction-bytes-limit = "128GB"`
   
-    - 如果 pending compaction bytes 达到该阈值，RocksDB 会 stop 写入，通常不太可能触发该情况，因为在达到 soft-pending-compaction-bytes-limit 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"` 见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md)；
+    - 如果 pending compaction bytes 达到该阈值，RocksDB 会 stop 写入，通常不太可能触发该情况，因为在达到 soft-pending-compaction-bytes-limit 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"` 
 
     - 如果磁盘 I/O 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
       
