@@ -1,12 +1,9 @@
 ---
-title: SQL 语句分析详情页面
-summary: 查看单个 SQL 语句执行的详细情况
+title: 查看执行详情
 category: how-to
 ---
 
-# SQL 语句分析页面
-
-## 查看执行详情
+# 查看执行详情
 
 在列表中点击任意一行可以进入该 SQL 语句的详情页查看更详细的信息，这此信息包括三大部分：
 
@@ -16,7 +13,7 @@ category: how-to
 
 ![详情](/media/dashboard/statement/detail.png)
 
-### 执行计划详情
+## 执行计划详情
 
 执行计划详情包括以下内容：
 
@@ -26,13 +23,13 @@ category: how-to
 
 ![执行计划详情](/media/dashboard/statement/plans-detail.png)
 
-#### 基本信息
+### 基本信息
 
-包含关于表名、索引名、执行次数、累计耗时等信息。描述（Description）列对各个字段进行了具体描述。
+包含关于表名、索引名、执行次数、累计耗时等信息。**描述**（Description）列对各个字段进行了具体描述。
 
 ![基本信息](/media/dashboard/statement/plans-basic.png)
 
-#### 执行时间
+### 执行时间
 
 显示执行计划执行的各阶段所耗费时间。
 
@@ -42,19 +39,19 @@ category: how-to
 
 ![执行时间](/media/dashboard/statement/plans-time.png)
 
-#### Coprocessor 读取
+### Coprocessor 读取
 
 显示 Coprocessor 读取的相关信息。
 
 ![Coprocessor 读取](/media/dashboard/statement/plans-cop-read.png)
 
-#### 事务
+### 事务
 
 显示执行计划与事务相关的信息，比如平均写入 key 个数，最大写入 key 个数等。
 
 ![事务](/media/dashboard/statement/plans-transaction.png)
 
-#### 慢查询
+### 慢查询
 
 如果该执行计划执行过慢，则在慢查询标签页下可以看到其关联的慢查询记录。
 
