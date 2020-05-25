@@ -29,11 +29,11 @@
 
 ### TiKV 参数
 
-- 设置 gRPC 的压缩格式，默认为 none，为提高跨机房部署场景的目标节点间 gRPC 包的传输速度，建议设置为 gzip 格式。
+- 设置 gRPC 的压缩格式，默认为 `none`。为提高跨机房部署场景的目标节点间 gRPC 包的传输速度，建议设置为 gzip 格式。
     
-```yaml
-server.grpc-compression-type: gzip
-```
+    ```yaml
+    server.grpc-compression-type: gzip
+    ```
 
 - label 配置
 
@@ -52,32 +52,32 @@ server.grpc-compression-type: gzip
             host: host2
         ```
 
-- 防止异地 tikv 节点发起不必要的 Raft 选举，需要将异地的 TiKV 节点的发起选举时至少经过的 tick 个数和最多经过的 tick 个数都调大，这两个参数默认设置均为 0。
+- 防止异地 TiKV 节点发起不必要的 Raft 选举，需要将异地 TiKV 节点发起选举时经过最少的 tick 个数和最多经过的 tick 个数都调大，这两个参数默认设置均为 `0`。
 
-```yaml
-raftstore.raft-min-election-timeout-ticks: 1000
-raftstore.raft-max-election-timeout-ticks: 1020
-```
+    ```yaml
+    raftstore.raft-min-election-timeout-ticks: 1000
+    raftstore.raft-max-election-timeout-ticks: 1020
+    ```
 
 ### PD 参数
 
-- PD 元数据信息记录 TiKV 集群的拓扑信息，根据 4 个维度调度 Raft Group 副本。
+- PD 元数据信息记录 TiKV 集群的拓扑信息，根据四个维度调度 Raft Group 副本。
 
-```yaml
-replication.location-labels: ["zone","dc","rack","host"]
-```
+    ```yaml
+    replication.location-labels: ["zone","dc","rack","host"]
+    ```
 
-- 调整 Raft Group 的副本数据量为 5 ，保证集群的高可用性
+- 调整 Raft Group 的副本数据量为 5 ，保证集群的高可用性。
 
-```yaml
-replication.max-replicas: 5
-```
+    ```yaml
+    replication.max-replicas: 5
+    ```
 
 - 拒绝异地机房 TiKV 的 Raft 副本拒绝选举为 leader。
 
-```yaml
-label-property:
-      reject-leader:
-        - key: "dc"
-          value: "sha"
-```
+    ```yaml
+    label-property:
+          reject-leader:
+            - key: "dc"
+              value: "sha"
+    ```
