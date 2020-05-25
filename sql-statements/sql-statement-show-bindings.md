@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-bindings/']
 
 # SHOW DATABASES
 
-`SHOW BINDINGS` 语句用于显示所有创建过的 sql bind 的相关信息。
+`SHOW BINDINGS` 语句用于显示所有创建过的 SQL BIND 的相关信息。
 
 ## 语法图
 

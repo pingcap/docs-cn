@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-binding/']
 
 # CREATE DATABASE
 
-`CREATE BINDING` 语句用于在 TiDB 上创建新 sql bind。
+`CREATE BINDING` 语句用于在 TiDB 上创建新 SQL BIND。
 
 ## 语法图
 

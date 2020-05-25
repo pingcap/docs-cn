@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-binding/']
 
 # DROP DATABASE
 
-`DROP BINDING` 语句用于逻辑删除指定的 sql bind。
+`DROP BINDING` 语句用于逻辑删除指定的 SQL BIND。
 
 ## 语法图
 
