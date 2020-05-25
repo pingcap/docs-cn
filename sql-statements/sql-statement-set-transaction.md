@@ -94,7 +94,7 @@ SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 
 * TiDB 支持仅在语法中将事务设置为只读的功能。
 * 不支持隔离级别 `READ-UNCOMMITTED` 和 `SERIALIZABLE`。
-* 隔离级别 `REPEATABLE-READ` 在乐观事务中实现为快照隔离（Snapshot Isolation），在 TiDB 中称为 `REPEATABLE-READ` 是为了和 MySQL 保持一致。
+* 通过快照隔离（Snapshot Isolation）技术实现乐观事务的 `REPEATABLE-READ` 隔离级别，和 MySQL 兼容。
 在悲观事务中，TiDB 支持与 MySQL 兼容的 `REPEATABLE-READ` 和 `READ-COMMITTED` 两种隔离级别。具体描述详见 [Isolation Levels](/transaction-isolation-levels.md)。
 
 ## 另请参阅
