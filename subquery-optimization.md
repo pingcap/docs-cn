@@ -13,13 +13,13 @@ category: performance
 - `EXISTS (SELECT ... FROM ...)`
 - `... >/>=/</<=/=/!= (SELECT ... FROM ...)`
 
-有时，会遇到子查询中包含了非子查询中的列，如 `select * from t where t.a in (select * from t2 where t.b=t2.b)` 中子查询中的 `t.b` 便不是子查询中的列而是从子查询外面引入的列。这种子查询通常会被成为`关联子查询`，外部引入的列会被成为`关联列`，关联子查询相关的优化可以在[关联子查询去关联](/correlated-subquery-optimization.md)中查看。本节中我们主要关注不涉及关联列的子查询。
+有时，会遇到子查询中包含了非子查询中的列，如 `select * from t where t.a in (select * from t2 where t.b=t2.b)` 中，子查询中的 `t.b` 便不是子查询中的列，而是从子查询外面引入的列。这种子查询通常会被成为`关联子查询`，外部引入的列会被成为`关联列`，关联子查询相关的优化可以在[关联子查询去关联](/correlated-subquery-optimization.md)中查看。本节中我们主要关注不涉及关联列的子查询。
 
-子查询默认会以[理解 TiDB 执行计划](/query-execution-plan.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能
+子查询默认会以[理解 TiDB 执行计划](/query-execution-plan.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能。
 
 ## `... < ALL (SELECT ... FROM ...)` 或者 `... > ANY (SELECT ... FROM ...)`
 
-对于这种情况我们可以将 `ALL` 或者 `ANY` 用 `MAX` 以及 `MIN` 来代替。不过由于在表为空时，`MAX(EXPR)` 以及 `MIN(EXPR)` 的结果会为 NULL，其表现形式和 `EXPR` 是有 `NULL` 值的结果一样。以及外部表达式结果为 `NULL` 时也会影响表达式的最终结果，因此这里完整的改写会是如下的形式：
+对于这种情况，可以将 `ALL` 或者 `ANY` 用 `MAX` 以及 `MIN` 来代替。不过由于在表为空时，`MAX(EXPR)` 以及 `MIN(EXPR)` 的结果会为 `NULL`，其表现形式和 `EXPR` 是有 `NULL` 值的结果一样。以及外部表达式结果为 `NULL` 时也会影响表达式的最终结果，因此这里完整的改写会是如下的形式：
 
 - `t.id < all(select s.id from s)` 会被改写为 `t.id < min(s.id) and if(sum(s.id is null) != 0, null, true)`。
 - `t.id < any (select s.id from s)` 会被改写为 `t.id < max(s.id) or if(sum(s.id is null) != 0, null, false)`。
@@ -32,7 +32,7 @@ category: performance
 
 ## `... = ALL (SELECT ... FROM ...)`
 
-对于这种情况，当子查询中不同值的个数多于一种的话，那么这个表达式的结果必然为假。因此这样的子查询在 TiDB 中会改写为如下的形式。
+对于这种情况，当子查询中不同值的个数多于一种的话，那么这个表达式的结果必然为假。因此这样的子查询在 TiDB 中会改写为如下的形式：
 
 - `select * from t where t.id = all (select s.id from s)` 会被改写为 `select t.* from t, (select s.id, count(distinct s.id) as cnt_distinct from s) where (t.id = s.id and cnt_distinct <= 1)`
 
@@ -55,7 +55,7 @@ mysql> explain select * from t1 where t1.a in (select t2.a from t2);
 +------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
 ```
 
-这个改写会在 `IN` 子查询相对较小，而外部查询相对较大时产生更好的执行性能。因为不经过改写的情况下，我们无法使用以 t2 为驱动表的 `index join`。同时这里的弊端便是当改写删成的聚合无法被自动消去且 `t2` 表比较大时，反而会影响查询的性能。目前 TiDB 中使用 [tidb\_opt\_insubq\_to\_join\_and\_agg](/tidb-specific-system-variables.md#tidb_opt_insubq_to_join_and_agg) 变量来控制这个优化的打开与否。当遇到不合适这个优化的情况可以手动关闭。
+这个改写会在 `IN` 子查询相对较小，而外部查询相对较大时产生更好的执行性能。因为不经过改写的情况下，我们无法使用以 t2 为驱动表的 `index join`。同时这里的弊端便是，当改写删成的聚合无法被自动消去且 `t2` 表比较大时，反而会影响查询的性能。目前 TiDB 中使用 [tidb\_opt\_insubq\_to\_join\_and\_agg](/tidb-specific-system-variables.md#tidb_opt_insubq_to_join_and_agg) 变量来控制这个优化的打开与否。当遇到不合适这个优化的情况可以手动关闭。
 
 ## `EXISTS` 子查询以及 `... >/>=/</<=/=/!= (SELECT ... FROM ...)`
 
