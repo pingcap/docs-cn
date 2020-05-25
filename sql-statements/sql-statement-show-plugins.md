@@ -1,5 +1,5 @@
 ---
-title: SHOW PLUGINES
+title: SHOW PLUGINS
 summary: TiDB 数据库中 SHOW PLUGINS 的使用概况。
 category: reference
 ---
