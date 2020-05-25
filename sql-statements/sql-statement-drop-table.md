@@ -92,7 +92,6 @@ Query OK, 0 rows affected (0.23 sec)
 * 在尝试删除不存在的表时，使用 `IF EXISTS` 删除表不会返回警告。[Issue #7867](https://github.com/pingcap/tidb/issues/7867)
 * 目前 `RESTRICT` 和 `CASCADE` 仅在语法上支持。
 
-
 ## 另请参阅
 
 * [DROP VIEW](/sql-statements/sql-statement-drop-view.md)
