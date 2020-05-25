@@ -1,12 +1,20 @@
+
+---
+title: TiDB 锁冲突常见问题处理
+summary: 了解 TiDB 锁冲突常见问题以及处理方式。
+category: reference
+aliases: []
+---
+
 # 锁冲突 - 常见问题处理
 
-TiDB 支持完整的分布式事务，提供乐观事务与悲观事务（TiDB 3.0 中引入）两种事务模型。本文重点描述在使用乐观事务或者悲观事务的过程中常见的报错以及解决思路。
+TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与悲观事务两种事务模型。本文介绍在使用乐观事务或者悲观事务的过程中常见的报错以及解决思路。
 
 ## 乐观锁
 
 TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，示意图如下。本章节不再介绍相关细节，如果需要可以阅读 [Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)，来了解更多内容。
 
-![图片](media/troubleshooting-lock-pic-01.png)
+![optimistic](media/troubleshooting-lock-pic-01.png)
 
 ### Prewrite 阶段
 
@@ -14,13 +22,13 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
 
 #### 读写冲突
 
-为什么会出现读写冲突？
+在 TiDB 中，读取数据时，会获取一个包含当前物理时间且全局唯一递增的时间戳作为当前事务的 start_ts。事务在读取时，需要读到目标 key 的 commit_ts 小于这个事务的 start_ts 的最新的数据版本。当读取时发现目标 key 上存在 lock ，那么此时有一个关键问题是，当读事务遇到 Percolator 的 lock 时，是无法知道这个事务是在 Commit 阶段还是 Prewrite 阶段。所以就会出现读写冲突的情况，如下图：
 
-在 TiDB 中，事务要读到最新的 commit ts 小于事务 start ts 的数据。可能该 lock 所属事务已提交，且 commit ts 小于读事务的 start ts。在这个期间，有一个关键问题是，当读事务遇到 Percolator 的 lock 时，是无法知道这个事务是在 Commit 阶段还是 Prewrite 阶段。所以就会出现读写冲突的情况，如下图：
+![txnLockFast-optimistic](media/troubleshooting-lock-pic-04.png)
 
-![图片](media/troubleshooting-lock-pic-04.png)
-
-> Txn0 完成了 Prewrite ，在 Commit 的过程中 Txn1 对该 key 发起了读请求，Txn1 需要读取 start ts > commit ts 最近的 key 的版本。此时，Txn1 的 start ts > Txn0 的 lock ts ，需要读取的 key 上的锁信息仍未清理，故无法判断 Txn0 是否提交成功，Txn1 与 Txn0 出现了读写冲突。
+> **注意：**
+>
+> Txn0 完成了 Prewrite ，在 Commit 的过程中 Txn1 对该 key 发起了读请求，Txn1 需要读取 start_ts > commit_ts 最近的 key 的版本。此时，Txn1 的 start_ts > Txn0 的 lock_ts ，需要读取的 key 上的锁信息仍未清理，故无法判断 Txn0 是否提交成功，Txn1 与 Txn0 出现了读写冲突。
 
 我们可以通过下面两种途径来发现当前环境中是否存在读写冲突：
 
@@ -29,8 +37,8 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
 * 监控
 通过 TiDB Grafana 监控分析，监控项 KV Errors --> Lock Resolve OPS --> not_expired / resolve 以及监控项 KV Errors --> KV Backoff OPS --> txnLockFast ，如果有较为明显的上升趋势，那么可能是当前的环境中出现了大量的读写冲突问题。其中，not_expired 是指对应的锁还没有超时，resolve 是指尝试清锁的操作，txnLockFast 代表出现了读写冲突。
 
-![图片](media/troubleshooting-lock-pic-09.png)
-![图片](media/troubleshooting-lock-pic-08.png)
+![KV-backoff-txnLockFast-optimistic](media/troubleshooting-lock-pic-09.png)
+![KV-Errors-resolve-optimistic](media/troubleshooting-lock-pic-08.png)
 
 * 日志
 
@@ -40,7 +48,7 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
 [INFO] [coprocessor.go:743] ["[TIME_COP_PROCESS] resp_time:406.038899ms txnStartTS:416643508703592451 region_id:8297 store_addr:10.8.1.208:20160 backoff_ms:255 backoff_types:[txnLockFast,txnLockFast] kv_process_ms:333 scan_total_write:0 scan_processed_write:0 scan_total_data:0 scan_processed_data:0 scan_total_lock:0 scan_processed_lock:0"]
 ```
 
-  * txnStartTS：发起读请求的事务的 start ts，如上面示例中的 416643508703592451
+  * txnStartTS：发起读请求的事务的 start_ts，如上面示例中的 416643508703592451
   * backoff_types：读写发生了冲突，并且读请求进行了 backoff 重试，重试的类型为 txnLockFast
   * backoff_ms：读请求 backoff 重试的耗时，单位为 ms ，如上面示例中的 255
   * region_id：读请求访问的目标 region 的 id
@@ -57,7 +65,7 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
   这段报错报错信息表示出现了读写冲突，当读数据时发现 key 有锁阻碍读，这个锁包括未提交的乐观锁和未提交的 prewrite 后的悲观锁。
 
   * primary_lock：锁对应事务的 primary lock。
-  * lock_version：锁对应事务的 start ts。
+  * lock_version：锁对应事务的 start_ts。
   * key：表示被锁的 key。
   * lock_ttl: 锁的 TTL。
   * txn_size：锁所在事务在其 region 的 key 数量，指导清锁方式。
@@ -65,16 +73,13 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
 3. 处理建议
 
 * 在遇到读写冲突时会有 backoff 自动重试机制，如上述示例中 Txn1 会进行 backoff 重试，单次初始 100 ms，单次最大 3000 ms，总共最大 20000 ms
-* 可以使用 [mok](https://github.com/disksing/mok) 来 key 查对应的行的 table id 以及 handle id，如下：
+* 可以使用 TiDB Control 的子命令 [decoder](https://pingcap.com/docs-cn/stable/tidb-control/#decoder-%E5%AD%90%E5%91%BD%E4%BB%A4) 来查看指定 key 对应的行的 table id 以及  rowid，如下：
 
     ```sh
-    $ mok 7480000000000004D35F7280000000004C0748
-    "7480000000000004D35F7280000000004C0748"
-    └─## decode hex key
-    └─"t\200\000\000\000\000\000\004\323_r\200\000\000\000\000L\007H"
-        └─## table row key
-        ├─table: 1235
-        └─row: 4982600
+    ./tidb-ctl decoder -f table_row -k "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
+    
+    table_id: -9223372036854775780
+    row_id: -9223372036854775558
     ```
 
 #### KeyIsLocked
@@ -84,22 +89,22 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
 1. 监控信息
 如果在 TiKV 端，Prewrite 阶段大量的出现 KeyIsLocked。那么在 TiDB 端的 Grafana 监控中可以看到监控项 KV Errors --> Lock Resolve OPS --> resolve 以及监控项 KV Errors --> KV Backoff OPS --> txnLock 会有比较明显的上升趋势，其中 reslove 是指尝试清锁的操作，txnLock 代表出现了写冲突。
 
-![图片](media/troubleshooting-lock-pic-07.png)
-![图片](media/troubleshooting-lock-pic-08.png)
+![KV-backoff-txnLockFast-optimistic-01](media/troubleshooting-lock-pic-07.png)
+![KV-Errors-resolve-optimistic-01](media/troubleshooting-lock-pic-08.png)
 
 2. 处理建议
 
-* 监控中出现少量 txnLock ，无需过多关注。会在后台自动进行 backoff 重试，单次初始 200ms，单次最大 3000ms。
+* 监控中出现少量 txnLock ，无需过多关注。会在后台自动进行 backoff 重试，单次初始 200 ms，单次最大 3000 ms。
 * 如果出现大量的 txnLock ，需要从业务的角度评估下冲突的原因。
 * 使用悲观锁模式。
 
 ### Commit 阶段
 
-当 Prewrite 全部完成时，client 便会取得 commit ts，然后继续两阶段提交的第二阶段。这里需要注意的是，由于 primary key 是否提交成功标志着整个事务是否提交成功，因而 client 需要在单独 commit rimary key 之后再继续 commit 其余的 key。
+当 Prewrite 全部完成时，client 便会取得 commit_ts，然后继续两阶段提交的第二阶段。这里需要注意的是，由于 primary key 是否提交成功标志着整个事务是否提交成功，因而 client 需要在单独 commit rimary key 之后再继续 commit 其余的 key。
 
 #### 锁被清除 LockNotFound
 
-TxnLockNotFound 这个报错是指事务提交的慢了，超过了 TTL（默认为 3s ，且不可改，目前写死在代码中）。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](https://pingcap.com/docs-cn/stable/tidb-specific-system-variables/#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
+TxnLockNotFound 这个报错是指事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](https://pingcap.com/docs-cn/stable/tidb-specific-system-variables/#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
 
 1. TiDB 日志
 
@@ -123,7 +128,7 @@ Error: KV error safe to retry restarts txn: Txn(Mvcc(TxnLockNotFound)) [ERROR [K
 
 3. 处理建议
 
-* 当事务提交的慢了，超过了 TTL 被其他事务给 Rollback 掉了。在遇到这个问题时，通过检查 start_ts 和 commit_ts 之间的提交间隔，可以确认是否超过了默认的 TTL 3s 的时间。
+* 当事务提交的慢了，超过了 TTL 被其他事务给 Rollback 掉了。在遇到这个问题时，通过检查 start_ts 和 commit_ts 之间的提交间隔，可以确认是否超过了默认的 TTL 的时间。
 
     查看提交间隔：
 
@@ -142,7 +147,7 @@ Error: KV error safe to retry restarts txn: Txn(Mvcc(TxnLockNotFound)) [ERROR [K
 
 TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行时做了改造。在两阶段提交之前增加了 Acquire Pessimistic Lock 阶段, 简要步骤如下。本章节不再介绍相关细节，如果需要可以阅读 [TiDB 悲观锁实现原理](https://asktug.com/t/topic/33550)，来了解更多内容：
 
-![图片](media/troubleshooting-lock-pic-05.png)
+![pessimistic](media/troubleshooting-lock-pic-05.png)
 
 > 1.【与乐观锁共用】TiDB 收到来自客户端的 begin 请求，获取当前版本号作为本事务的 StartTS
 >
@@ -150,11 +155,11 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 >
 > 3.【与乐观锁共用】client 发起 commit ，TiDB 开始执行与乐观锁一样的两阶段提交。
 
-![图片](media/troubleshooting-lock-pic-06.png)
+![pessimistic-01](media/troubleshooting-lock-pic-06.png)
 
 ### Prewrite 阶段
 
-因为悲观锁模式下，在事务的提交阶段沿用的仍然是乐观锁模式，所以在 Prewrite 阶段乐观锁遇到的锁相关的一些报错，在悲观锁模式同样会遇到，如下：
+因为悲观锁模式下，在事务的提交阶段沿用的仍然是乐观锁模式，所以在 Prewrite 阶段乐观锁遇到的锁相关的一些报错，在悲观锁模式同样会遇到。
 
 #### 读写冲突
 
@@ -162,7 +167,7 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 
 ### Commit 阶段
 
-在乐观模型下，会出现 TxnLockNotFound ，而在悲观锁模型下，不会出现这个问题。同样的，悲观锁也有一个 TTL 的时间，默认为 20s ，且不可调整，txn heartbeat 会自动的更新事务的 TTL ，以确保第二个事务不会将第一个事务的锁清掉。
+在乐观模型下，会出现 TxnLockNotFound ，而在悲观锁模型下，不会出现这个问题。同样的，悲观锁也有一个 TTL 的时间。txn heartbeat 会自动的更新事务的 TTL ，以确保第二个事务不会将第一个事务的锁清掉。
 
 ### 其他
 
@@ -183,7 +188,7 @@ err="pessimistic lock retry limit reached"
 
 #### Lock wait timeout exceeded
 
-在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的[innodb_lock_wait_timeout](https://pingcap.com/docs-cn/stable/system-variables/#tidb-%E6%94%AF%E6%8C%81%E7%9A%84-mysql-%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F) 参数来定义， 这个是 sql statement 层面的最大允许等锁时间，即一个 sql 语句期望加锁，但锁一直获取不到，超过这个时间， TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
+在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的 [innodb_lock_wait_timeout](https://pingcap.com/docs-cn/stable/system-variables/#tidb-%E6%94%AF%E6%8C%81%E7%9A%84-mysql-%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F) 参数来定义， 这个是 sql statement 层面的最大允许等锁时间，即一个 sql 语句期望加锁，但锁一直获取不到，超过这个时间， TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
 
 1. 日志
 当出现等锁超时的情况时，会向客户端返回下述报错信息：
