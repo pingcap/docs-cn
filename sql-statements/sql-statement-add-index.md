@@ -136,7 +136,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ## MySQL 兼容性
 
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
-* 不支持 `VISIBLE/INVISIBLE` 索引。
+* 不支持 `VISIBLE/INVISIBLE` 索引（目前只有 master 分支上真正支持此功能）。
 * 不支持降序索引（类似于 MySQL 5.7）。
 * 目前尚不支持在一条中同时添加多个索引。
 * 默认无法向表中添加 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情可参考：[alter-primary-key](/tidb-configuration-file.md#alter-primary-key)。

@@ -110,8 +110,10 @@ ERROR 1105 (HY000): can't run multi schema change
 
 ## MySQL 兼容性
 
-* 目前尚不支持在单个 `ALTER TABLE` 语句中进行多个更改。
-* 仅支持特定的数据类型更改。例如，支持将 `INTEGER` 更改为 `BIGINT`，但不支持将 `BIGINT` 更改为 `INTEGER`。不支持从整数更改为字符串格式或 BLOB 类型。
+* 不支持在单个 `ALTER TABLE` 语句中进行多个更改。
+* 不支持有损变更，比如从 `BIGINT` 变为 INTEGER，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`。
+* 不支持修改 `DECIMAL` 类型的精度。
+* 不支持更改 `UNSIGNED` 属性。
 
 ## 另请参阅
 
