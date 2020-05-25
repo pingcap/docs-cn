@@ -1,7 +1,6 @@
 ---
-title: Cluster Diagnose Report 集群诊断报告
+title: 集群诊断页面
 category: how-to
-aliases: ['/docs-cn/dev/how-to/???']
 ---
 
 # 集群诊断页面
@@ -23,7 +22,7 @@ aliases: ['/docs-cn/dev/how-to/???']
 
 ![示例报表](/media/dashboard/diagnose/example-table.png)
 
-上图中，最上面蓝框内的 `Total Time Consume` 是报表名字。下面红框内的内容是对这个报表意义的解释，以及报表中各个字段的含义。
+上图中，最上面蓝框内的 **Total Time Consume** 是报表名字。下面红框内的内容是对这个报表意义的解释，以及报表中各个字段的含义。
 
 报表内容中，有几个小按钮的作用如下：
 
