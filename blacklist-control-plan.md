@@ -91,9 +91,18 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 ### 使用方法
 
+#### 加入黑名单
+
 执行以下步骤，可将一个或多个函数或运算符加入黑名单：
 
 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名以及希望禁止下推的存储类型集合。
+执行 `admin reload expr_pushdown_blacklist;`。
+
+#### 移出黑名单
+
+执行以下步骤，可将一个或多个函数及运算符移出黑名单：
+
+从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名或运算符名。
 执行 `admin reload expr_pushdown_blacklist;`。
 
 ### 表达式黑名单用法示例
