@@ -26,9 +26,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单 TiCDC 拓扑配置](/simple-cdc.yaml)
+[简单 TiCDC 配置模板](/simple-cdc.yaml)
 
-[详细 TiCDC 拓扑配置](/complex-cdc.yaml)
+[详细 TiCDC 配置模板](/complex-cdc.yaml)
 
 > **注意：**
 >
