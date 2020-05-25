@@ -18,6 +18,53 @@ category: reference
 
 ![TableName](/media/sqlgram/TableName.png)
 
+## 示例
+
+{{< copyable "sql" >}}
+
+```sql
+> CREATE TABLE t(a INT);
+```
+
+```
+Query OK, 0 rows affected (0.01 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+> SHOW STATS_META WHERE db_name='test' and table_name='t';
+```
+
+```
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          |                | 2020-05-25 20:34:33 |            0 |         0 |
++---------+------------+----------------+---------------------+--------------+-----------+
+1 row in set (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+> DROP STATS t;
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+> SHOW STATS_META WHERE db_name='test' and table_name='t';
+```
+
+```
+Empty set (0.00 sec)
+```
+
 ## 另请参阅
 
 * [统计信息简介](/statistics.md)
