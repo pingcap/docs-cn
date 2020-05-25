@@ -1,12 +1,12 @@
 ---
-title: 使用加密连接
+title: 为 TiDB 客户端服务端间通信开启加密传输
 category: how-to
-aliases: ['/docs-cn/dev/how-to/secure/enable-tls-clients/']
+aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-clients.md/']
 ---
 
 # 使用加密连接
 
-TiDB 服务端默认采用非加密连接，因而具备监视信道流量能力的第三方可以知悉 TiDB 服务端与客户端之间发送和接受的数据，包括但不限于查询语句内容、查询结果等。若信道是不可信的，例如客户端是通过公网连接到 TiDB 服务端的，则非加密连接容易造成信息泄露，建议使用加密连接确保安全性。
+TiDB 服务端与客户端之间默认采用非加密连接，因而具备监视信道流量能力的第三方可以知悉 TiDB 服务端与客户端之间发送和接受的数据，包括但不限于查询语句内容、查询结果等。若信道是不可信的，例如客户端是通过公网连接到 TiDB 服务端的，则非加密连接容易造成信息泄露，建议使用加密连接确保安全性。
 
 TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL 客户端如 MySQL 运维工具和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLS 1.0、TLS 1.1、TLS 1.2、TLS 1.3。
 
@@ -75,12 +75,6 @@ ssl-key = "certs/server-key.pem"
 ```
 
 若证书参数无误，则 TiDB 在启动时将会输出 `secure connection is enabled`，否则 TiDB 会输出 `secure connection is NOT ENABLED`。
-
-## 重加载证书、密钥和 CA
-
-在需要替换证书、密钥或 CA 时，可以在完成对应文件替换后，对运行中的 TiDB 实例执行 [`ALTER INSTANCE RELOAD TLS`](/sql-statements/sql-statement-alter-instance.md) 语句从原配置的证书 ([`ssl-cert`](/tidb-configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/tidb-configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/tidb-configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA，而无需重启 TiDB 实例。
-
-新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
 
 ## 配置 MySQL 客户端使用加密连接
 
@@ -177,3 +171,9 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 - TLS\_AES\_128\_GCM\_SHA256
 - TLS\_AES\_256\_GCM\_SHA384
 - TLS\_CHACHA20\_POLY1305\_SHA256
+
+## 重加载证书、密钥和 CA
+
+在需要替换证书、密钥或 CA 时，可以在完成对应文件替换后，对运行中的 TiDB 实例执行 [`ALTER INSTANCE RELOAD TLS`](/sql-statements/sql-statement-alter-instance.md) 语句从原配置的证书 ([`ssl-cert`](/tidb-configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/tidb-configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/tidb-configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA，而无需重启 TiDB 实例。
+
+新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。

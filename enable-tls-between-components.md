@@ -15,11 +15,11 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     
 目前暂不支持只开启其中部分组件的加密传输。
 
-### 配置开启机密传输
+### 配置开启加密传输
 
 1. 准备证书。
 
-    推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的 Control 工具则可选择共用 client 证书。
+    推荐为 TiDB、TiKV、PD 分别准备一个 Server 证书，并保证可以相互验证，而它们的 Control 工具则可选择共用 Client 证书。
 
     有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa`，`cfssl`。
 
