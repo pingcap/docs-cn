@@ -1,21 +1,20 @@
 ---
-title: 访问列表页面
+title: 访问慢查询列表页面
 category: how-to
-aliases: ['/docs-cn/dev/how-to/???']
 ---
 
-# 访问列表页面
+# 访问慢查询列表页面
 
-该功能可以查询整个集群中指定时间内执行时间较长的 SQL 查询。
+查询集群中所有慢查询语句，系统默认将执行时间超过 Session 变量 [tidb_slow_log_threshold](https://pingcap.com/docs-cn/stable/tidb-specific-system-variables/#tidb_slow_log_threshold) 或者 配置参数 [slow-threshold](https://pingcap.com/docs-cn/stable/tidb-configuration-file/#slow-threshold) 值的 SQL 语句视为慢查询语句，系统会自己记录到[慢查询日志](https://pingcap.com/docs-cn/stable/identify-slow-queries/) 中。此功能通过 SQL 将查询结果输出到页面。
 
 默认情况下，执行时间超过 300ms 的 SQL 就会被视为慢查询，被记录到 [慢查询日志](https://pingcap.com/docs-cn/stable/identify-slow-queries/) 中，并可通过本功能对记录到的慢查询进行查询。可调整 [tidb_slow_log_threshold](https://pingcap.com/docs-cn/stable/tidb-specific-system-variables/#tidb_slow_log_threshold) SESSION 变量或 TiDB [slow-threshold](https://pingcap.com/docs-cn/stable/tidb-configuration-file/#slow-threshold) 参数调整慢查询阈值。
 
 > 注意：
 > 若关闭了慢查询日志，则本功能不可用。慢查询日志默认开启，可通过修改 TiDB 配置 [enable-slow-log](https://pingcap.com/docs-cn/stable/tidb-configuration-file/#enable-slow-log) 开启或禁用。
 
-## 访问列表页面
+## 访问慢查询列表页面
 
-可以通过以下两种方法访问集群诊断页面：
+访问页面的两种方式，如下：
 
 * 登录后，左侧导航条点击「慢查询」（Slow Queries）：
 
@@ -27,12 +26,11 @@ aliases: ['/docs-cn/dev/how-to/???']
 
 ### 修改列表过滤条件
 
-页面顶部可修改显示的时间范围、按执行慢查询所在数据库进行过滤、按 SQL 关键字过滤、按 SQL 类型进行过滤及显示的数据条数，如下所示。默认显示 30 分钟内最近 100 条慢查询。
+可按时间范围、慢查询语句关联的数据库、SQL 关键字、SQL 类型、显示的慢查询语句数量等条件过滤，筛选慢查询句。如下所示，默认显示 30 分钟内最近 100 条慢查询。
 
 ![图 1 ](/media/dashboard/slow-queries/list1.png)
 
-
-### 显示其他字段
+### 显示更多列信息
 
 页面顶部「选择列」（Columns）选项中可选择显示更多列，可将鼠标移动到列名右侧的 (i) 图标处查看列的说明：
 
