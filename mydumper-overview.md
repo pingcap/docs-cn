@@ -7,10 +7,6 @@ aliases: ['/docs-cn/dev/reference/tools/mydumper/']
 
 # Mydumper 使用文档
 
-> **警告：**
-> 
-> 本文中提到的 `MyDumper` 导出方式我们已不再维护。建议使用新的数据导出工具 [Dumpling](/export-or-backup-using-dumpling.md)。
-
 ## Mydumper 简介
 
 [Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，针对 TiDB 的特性进行了优化，使用此工具可以完成对 TiDB 的逻辑备份。

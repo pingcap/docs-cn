@@ -6,10 +6,6 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning/',
 
 # 使用 Mydumper/TiDB Lightning 进行备份与恢复
 
-> **警告：**
-> 
-> 本文中提到的 `MyDumper` 导出方式我们已不再维护。建议使用新的数据导出工具 [Dumpling](/export-or-backup-using-dumpling.md)。
-
 本文档将详细介绍如何使用 Mydumper/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
 这里假定 TiDB 服务信息如下：
