@@ -22,4 +22,4 @@ category: performance
 
 ## 其他情况
 
-除去上述情况外，也存在因为数据的更新导致现有所有索引都再适合的情况。这时就需要对条件和数据分布进行分析，查看是否有新的索引可以加快查询速度，然后使用 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 命令增加新的索引。
+除去上述情况外，也存在因为数据的更新导致现有所有索引都不再适合的情况。这时就需要对条件和数据分布进行分析，查看是否有新的索引可以加快查询速度，然后使用 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 命令增加新的索引。
