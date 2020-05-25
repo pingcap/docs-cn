@@ -3,11 +3,15 @@ title: 常规拓扑架构
 category: how-to
 ---
 
-# 部署目标
+# 常规拓扑架构
+
+本文档介绍 TiDB 集群部署的常规拓扑架构。
+
+## 部署目标
 
 部署一个常规集群，采用最小拓扑，包括 3 * tidb-server、3 * tikv-server、3 * pd-server。
 
-# 拓扑信息
+## 拓扑信息
 
 |实例 | 个数 | 物理机配置 | IP |配置 |
 | :-- | :-- | :-- | :-- | :-- |
@@ -16,11 +20,11 @@ category: how-to
 | TiKV | 3 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口 <br> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.11 | 默认端口 <br> 全局目录配置 |
 
-# 拓扑图
+## 拓扑图
 
 待添加
 
-# 配置文件模版 topology.yaml
+## 配置文件模版 topology.yaml
 
 [简单最小拓扑配置](/simple-mini.yaml)
 
