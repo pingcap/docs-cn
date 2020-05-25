@@ -1,6 +1,7 @@
 ---
 title: 同城多数据中心部署
-summary: 本文档介绍同城多数据中心部署 TiDB 方案
+summary: 本文档介绍同城多数据中心部署 TiDB 方案。
+
 category: tutorial
 ---
 
