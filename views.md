@@ -16,7 +16,7 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 
 通过以下方式，可以查看 view 相关的信息。
 
-### `SHOW CREATE TABLE view_name` 或 `SHOW CREATE VIEW view_name`
+### 使用 `SHOW CREATE TABLE view_name` 或 `SHOW CREATE VIEW view_name` 语句
 
 示例：
 
