@@ -22,10 +22,10 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/overview-dashboard/']
 
 - PD role：当前 PD 的角色
 - Storage capacity：TiDB 集群总可用数据库空间大小
-- Current storage size：TiDB 集群目前已用数据库空间大小
+- Current storage size：TiDB 集群目前已用数据库空间大小，TiKV 多副本的空间占用也会包含在内
 - Normal stores：处于正常状态的节点数目
 - Abnormal stores：处于异常状态的节点数目，正常情况应当为 0
-- Number of Regions：当前集群的 Region 总量
+- Number of Regions：当前集群的 Region 总量，请注意 Region 数量与副本数无关
 - 99% completed\_cmds\_duration\_seconds：单位时间内，99% 的 pd-server 请求执行时间小于监控曲线的值，一般 <= 5ms
 - Handle\_requests\_duration\_seconds：PD 发送请求的网络耗时
 - Region health：每个 Region 的状态，通常情况下，pending 的 peer 应该少于 100，miss 的 peer 不能一直大于 0
@@ -38,8 +38,8 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/overview-dashboard/']
 
 - Statement OPS：不同类型 SQL 每秒执行数量。按 `SELECT`、`INSERT`、`UPDATE` 等来统计
 - Duration：执行的时间
-        - 客户端网络请求发送到 TiDB，到 TiDB 执行结束后返回给客户端的时间。一般情况下，客户端请求都是以 SQL 的形式发送，但也可以包含 COM_PING、COM_SLEEP、COM_STMT_FETCH、COM_SEND_LONG_DATA 之类的命令执行的时间
-        - 由于 TiDB 支持 Multi-Query，因此，可以接受客户端一次性发送的多条 SQL 语句，如：`select 1; select 1; select 1;`。此时，统计的执行时间是所有 SQL 执行完之后的总时间
+    - 客户端网络请求发送到 TiDB，到 TiDB 执行结束后返回给客户端的时间。一般情况下，客户端请求都是以 SQL 的形式发送，但也可以包含 `COM_PING`、`COM_SLEEP`、`COM_STMT_FETCH`、`COM_SEND_LONG_DATA` 之类的命令执行的时间
+    - 由于 TiDB 支持 Multi-Query，因此，可以接受客户端一次性发送的多条 SQL 语句，如：`select 1; select 1; select 1;`。此时，统计的执行时间是所有 SQL 执行完之后的总时间
 - QPS By Instance：每个 TiDB 上的 QPS。按照命令和执行结果成功或失败来统计
 - Failed Query OPM：每个 TiDB 实例上，每秒钟执行 SQL 语句发生错误按照错误类型的统计（例如语法错误、主键冲突等）。包含了错误所属的模块和错误码
 - Connection count：每个 TiDB 的连接数
