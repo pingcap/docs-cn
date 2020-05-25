@@ -59,12 +59,10 @@
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
   + [支持的迁移路径](/ecosystem-tool-user-guide.md) @王相
-  + [从 Oracle 迁移至 TiDB](/migrate-from-oracle-to-tidb.md) @王相
   + 从 MySQL 迁移至 TiDB
     + [从 CSV 文件迁移](/migrate-from-mysql-csv-files.md) @栾成
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md) @栾成
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md) @张学成，王相
-  + [从 PostgreSQL 迁移至 TiDB](/migrate-from-postgresql-to-tidb.md) @王相
   + [从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) @王相
 + 运维操作
   + 升级 TiDB 版本
@@ -82,7 +80,7 @@
   + [告警处理](/handle-alerts.md) @李宋高
   + [日常巡检](/daily-inspection.md) @王军
   + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
-  + [TiUP 常用运维操作](/tiup/manage-tiup-component.md) @王贤净
+  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 故障诊断
   + 硬件故障 @周强
@@ -109,11 +107,12 @@
 + 性能调优
   + 系统调优
     + [硬件](/tune-hardware-performance.md) @张文博
-    + [操作系统](/tune-operating-system.md) @张文博
+    + [操作系统性能参数调优](/tune-operating-system.md) @张文博
   + 软件调优
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
       + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+      + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
   + SQL 性能调优 @崔一丁
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + [理解 TiDB 执行计划](/query-execution-plan.md)
@@ -132,9 +131,10 @@
       + 物理优化
         + [物理优化概览](/sql-physical-optimization.md)
         + [索引的选择](/index-choose.md)
-        + [统计信息介绍](/statistics-intro.md)
+        + [统计信息简介](/statistics.md)
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
+      + [执行计划缓存](/sql-prepare-plan-cache.md)
       + 控制执行计划
         + [控制执行计划概览](/control-execution-plan.md)
         + [Optimizer Hints](/optimizer-hints.md)
@@ -190,6 +190,19 @@
   + [Loader](/loader-overview.md) @王相
   + [Mydumper](/mydumper-overview.md) @余峻岑
   + [Syncer](/syncer-overview.md) @王相
+  + TiUP @龙恒
+    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [概览](/tiup/tiup-overview.md)
+    + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
+    + [TiUP 组件管理](/tiup/tiup-component-management.md)
+    + [FAQ](/tiup/tiup-faq.md)
+    + [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    + TiUP 组件文档
+      + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
+      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md) @黄东旭
@@ -222,7 +235,7 @@
         + [AUTO_RANDOM](/auto-random.md) @谢腾进
       + [字面值](/literal-values.md) @邰凌翔
       + [Schema 对象名](/schema-object-names.md) @邰凌翔
-      + [关键字和保留字](/keywords-and-reserved-words.md) @@邰凌翔
+      + [关键字](/keywords.md) @@邰凌翔
       + [用户自定义变量](/user-defined-variables.md) @邰凌翔
       + [表达式语法](/expression-syntax.md) @邰凌翔
       + [注释语法](/comment-syntax.md) @邰凌翔
@@ -280,6 +293,7 @@
       - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
       - [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
@@ -302,6 +316,8 @@
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/sql-statements/sql-statement-show-variables.md)
       - [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
+      - [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md)
+      - [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-row-id.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
@@ -341,10 +357,12 @@
       + [隔离级别](/transaction-isolation-levels.md) @于帅鹏
       + [乐观事务](/optimistic-transaction.md) @于帅鹏
       + [悲观事务](/pessimistic-transaction.md) @于帅鹏
+    + 垃圾回收 (GC)
+      + [GC 机制简介](/garbage-collection-overview.md)
+      + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md) @徐怀宇
     + [分区表](/partitioned-table.md) @毛康力
     + [字符集和排序规则](/character-set-and-collation.md) @黄文俊
-    + [索引](/tidb-index.md) @冯立元
     + 系统表 @陈霜
       + [`mysql`](/system-tables/system-table-overview.md)
       + [`information_schema`](/system-tables/system-table-information-schema.md)
@@ -392,6 +410,7 @@
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
     + TiKV
+      + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
