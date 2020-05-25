@@ -87,7 +87,7 @@ sync-log = false
 capacity = "30GB"
 ```
 
-更详细的 TiKV 参数调优请参考 [TiKV 内存参数性能调优](/tune-tikv-performance-memory.md)。
+更详细的 TiKV 参数调优请参考 [TiKV 内存参数性能调优](/tune-tikv-memory-performance.md)。
 
 ## 测试过程
 
