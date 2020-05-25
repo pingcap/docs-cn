@@ -65,7 +65,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-* 对于 `COMMIT` 语句中 `CompletionTypeWithinTransaction` 选项，目前只在语法上支持。
+* 对于 `COMMIT` 语句中的 `CompletionTypeWithinTransaction` 选项，目前只在语法上支持。
 
 ## 另请参阅
 
