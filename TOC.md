@@ -134,6 +134,7 @@
         + [统计信息介绍](/statistics-intro.md)
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
+      + [执行计划缓存](/sql-prepare-plan-cache.md)
       + 控制执行计划
         + [控制执行计划概览](/control-execution-plan.md)
         + [Optimizer Hints](/optimizer-hints.md)
@@ -340,10 +341,12 @@
       + [隔离级别](/transaction-isolation-levels.md) @于帅鹏
       + [乐观事务](/optimistic-transaction.md) @于帅鹏
       + [悲观事务](/pessimistic-transaction.md) @于帅鹏
+    + 垃圾回收 (GC)
+      + [GC 机制简介](/garbage-collection-overview.md)
+      + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md) @徐怀宇
     + [分区表](/partitioned-table.md) @毛康力
     + [字符集和排序规则](/character-set-and-collation.md) @黄文俊
-    + [索引](/tidb-index.md) @冯立元
     + 系统表 @陈霜
       + [`mysql`](/system-tables/system-table-overview.md)
       + [`information_schema`](/system-tables/system-table-information-schema.md)
