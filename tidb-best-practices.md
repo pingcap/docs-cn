@@ -163,7 +163,9 @@ for i from 0 to 23:
 
 ### 监控 & 日志
 
-**Metrics 系统是了解系统状态的最佳方法，建议所有的用户都部署监控系统。**TiDB [使用 Grafana+Prometheus 监控系统状态](/tidb-monitoring-framework.md)，如果使用 TiUP 部署集群，那么会自动部署和配置监控系统。
+**Metrics 系统是了解系统状态的最佳方法，建议所有的用户都部署监控系统。**
+
+TiDB [使用 Grafana+Prometheus 监控系统状态](/tidb-monitoring-framework.md)，如果使用 TiUP 部署集群，那么会自动部署和配置监控系统。
 
 监控系统中的监控项很多，大部分是给 TiDB 开发者查看的内容，如果没有对源代码比较深入的了解，并没有必要了解这些监控项。我们会精简出一些和业务相关或者是系统关键组件状态相关的监控项，放在一个独立的 `overview` 面板中，供用户使用。
 
