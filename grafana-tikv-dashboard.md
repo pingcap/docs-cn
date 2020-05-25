@@ -392,12 +392,12 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Lock manager
 
 - Thread CPU：lock manager 的线程使用率
-- Handled tasks：收到的任务的总数量
-- Waiter lifetime duration：waiter 的持续时间
-- Wait table：wait table 的状态信息
+- Handled tasks：lock manager 处理的任务数量
+- Waiter lifetime duration：事务等待锁释放的时间
+- Wait table：wait table 的状态信息，包括锁的数量和等锁事务的数量
 - Deadlock detect duration：处理死锁检测请求的耗时
-- Detect error：检测的错误数量
-- Deadlock detector leader：死锁检测者 leader 数量
+- Detect error：死锁检测遇到的错误数量，包含死锁的数量
+- Deadlock detector leader：死锁检测器 leader 所在节点的信息
 
 ## Memory
 
@@ -428,18 +428,18 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 1. 使用事务型接口的命令：
 
-    - kv_get：一个事务型的 get 命令，在带有一个开始时间戳的事务中使用 key 查询 value
+    - kv_get：事务型的 get 命令，查询指定版本之前的数据
     - kv_scan：在带有一个开始时间戳的事务中，根据一个 key 的范围扫描 value
     - kv_prewrite：写入 TiKV 的第一个阶段，包含一个事务中所有要写入的数据
-    - kv_pessimistic_lock：锁定一系列的 key 以准备写入它们
-    - kv_pessimistic_rollback：解锁一系列的 key
-    - kv_txn_heart_beat：用于更新悲观事务或大事物的 `lock_ttl` 以防止其被杀掉
+    - kv_pessimistic_lock：对 key 加悲观锁，防止其他事务修改
+    - kv_pessimistic_rollback：删除 key 上的悲观锁
+    - kv_txn_heart_beat：更新悲观事务或大事务的 `lock_ttl` 以防止其被回滚
     - kv_check_txn_status：检查事务的状态
-    - kv_commit：写入 TiKV 的第二个阶段，这个请求命令将会提交一个事务
-    - kv_cleanup：清理一个 key（此命令将会在 4.0 中废除）
-    - kv_batch_get：与 `kv_get` 类似，带有批量的 key
-    - kv_batch_rollback：回滚一个预写的事务，这将从数据库中移除初步写入的数据，解锁相关的锁，置入一个回滚的墓碑
-    - kv_scan_lock：扫面数据库的锁，用于在 GC 的初始阶段找到所有的旧锁
+    - kv_commit：写入 TiKV 的第二个阶段，提交事务并使 prewrite 写下的数据可见
+    - kv_cleanup：回滚一个事务（此命令将会在 4.0 中废除）
+    - kv_batch_get：与 `kv_get` 类似，一次性获取批量 key 的 value
+    - kv_batch_rollback：回滚 prewrite 写下的锁和数据
+    - kv_scan_lock：扫描所有版本号在 `max_version` 之前的锁，用于在 GC 的初始阶段找到所有的旧锁
     - kv_resolve_lock：对于所有被 `start_version` 标记的事务锁定的 key，要么提交要么回滚
     - kv_gc：触发垃圾回收以清理 `safe_point` 之前的数据
     - kv_delete_range：从 TiKV 中删除一系列的数据
