@@ -22,6 +22,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-analyze-status/']
 ## 示例
 
 {{< copyable "sql" >}}
+
 ```sql
 create table t(x int, index idx(x)) partition by hash(x) partition 4;
 analyze table t;
