@@ -116,7 +116,7 @@ TiKV 收到加载 SST 文件的请求后，利用 Raft 机制保证加载 SST �
 * `backup`：`br` 的子命令
 * `full`：`backup` 的子命令
 * `-s` 或 `--storage`：备份保存的路径
-* `"local:///tmp/backup"`：`-s` 的参数，保存的路径为本地磁盘的 `/tmp/backup`
+* `"local:///tmp/backup"`：`-s` 的参数，保存的路径为各个存储节点（即 TiKV 节点）本地磁盘的 `/tmp/backup`
 * `--pd`：PD 服务地址
 * `"${PDIP}:2379"`：`--pd` 的参数
 
