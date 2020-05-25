@@ -197,7 +197,7 @@ unix_timestamp
 to_days
 ```
 
-例如，分区表达式是 `fn(col)` 形式，`fn` 为我们支持的单调函数 `to_days`，就可以使用分区裁剪:
+例如，分区表达式是 `fn(col)` 形式，`fn` 为我们支持的单调函数 `to_days`，就可以使用分区裁剪：
 
 {{< copyable "sql" >}}
 
