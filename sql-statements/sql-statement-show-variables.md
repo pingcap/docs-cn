@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-variables/']
 SHOW GLOBAL VARIABLES LIKE 'tidb%';
 ```
 
-```
+```sql
 +-------------------------------------+---------------------+
 | Variable_name                       | Value               |
 +-------------------------------------+---------------------+
