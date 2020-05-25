@@ -235,7 +235,7 @@
         + [AUTO_RANDOM](/auto-random.md) @谢腾进
       + [字面值](/literal-values.md) @邰凌翔
       + [Schema 对象名](/schema-object-names.md) @邰凌翔
-      + [关键字和保留字](/keywords-and-reserved-words.md) @@邰凌翔
+      + [关键字](/keywords.md) @@邰凌翔
       + [用户自定义变量](/user-defined-variables.md) @邰凌翔
       + [表达式语法](/expression-syntax.md) @邰凌翔
       + [注释语法](/comment-syntax.md) @邰凌翔
@@ -266,6 +266,7 @@
       - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
       - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
       - [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
+      - [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md)
       - [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)
       - [`DROP USER`](/sql-statements/sql-statement-drop-user.md)
       - [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)
