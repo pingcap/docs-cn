@@ -248,6 +248,8 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere];
 
 语法图：
 
+**SHOW STATUS_BUCKETS:**
+
 ![SHOW STATS_BUCKETS](/media/sqlgram/SHOW_STATS_BUCKETS.png)
 
 该语句会输出所有桶的信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
