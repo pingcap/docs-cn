@@ -17,11 +17,11 @@ server_configs:
   tidb:
     log.slow-threshold: 300
   tikv:
-    readpool.unified.max-thread-count: <取值参考部署文档的计算公式结果>
+    readpool.unified.max-thread-count: <The value refers to the calculation formula result of the multi-instance topology document.>
     readpool.storage.use-unified-pool: false
     readpool.coprocessor.use-unified-pool: true
-    storage.block-cache.capacity: "<取值参考部署文档的计算公式结果>"
-    raftstore.capacity: "<取值参考部署文档的计算公式结果>"
+    storage.block-cache.capacity: "<The value refers to the calculation formula result of the multi-instance topology document.>"
+    raftstore.capacity: "<The value refers to the calculation formula result of the multi-instance topology document.>"
   pd:
     replication.location-labels: ["host"]
     schedule.leader-schedule-limit: 4
