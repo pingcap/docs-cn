@@ -33,7 +33,7 @@ category: performance
 
 > **注意：**
 >
-> 以下操作都需要数据库的 root 权限。
+> 以下操作都需要数据库的 super privilege 权限。
 每个优化规则都有各自的名字，比如列裁剪的名字是 "column_prune"。所有优化规则的名字都可以在[重要的优化规则](#重要的优化规则)表格中第二列查到。
 
 当用户想禁用某些规则时，可以在 `mysql.opt_rule_blacklist` 表中写入规则的名字，比如：
@@ -41,15 +41,15 @@ category: performance
 {{< copyable "sql" >}}
 
 ```sql
-insert into mysql.opt_rule_blacklist values("join_reorder"),("topn_push_down");
+insert into mysql.opt_rule_blacklist values("join_reorder"), ("topn_push_down");
 ```
 
-执行以下 SQL 语句让禁用规则立即生效：
+执行以下 SQL 语句让禁用规则立即生效，包括相应 tidb-server 的所以旧链接：
 
 {{< copyable "sql" >}}
 
 ```sql
-admin reload opt_rule_blacklist
+admin reload opt_rule_blacklist;
 ```
 
 需要解除一条规则的禁用时，需要删除表中禁用该条规则的相应数据，再执行 `admin reload`：
@@ -57,8 +57,8 @@ admin reload opt_rule_blacklist
 {{< copyable "sql" >}}
 
 ```sql
-delete from mysql.opt_rule_blacklist where name in ("join_reoder", "topn_push_down")
-admin reload opt_rule_blacklist
+delete from mysql.opt_rule_blacklist where name in ("join_reoder", "topn_push_down");
+admin reload opt_rule_blacklist;
 ```
 
 ## 表达式下推黑名单
@@ -95,9 +95,11 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/query-execution-plan.md)）。
 
+#### 使用说明样例
+
+1. 对于以下 SQL，where 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
+
 ```sql
-tidb> create table t(a int);
-Query OK, 0 rows affected (0.06 sec)
 tidb> explain select * from t where a < 2 and a > 2;
 +-------------------------+----------+-----------+---------------+------------------------------------+
 | id                      | estRows  | task      | access object | operator info                      |
@@ -107,11 +109,22 @@ tidb> explain select * from t where a < 2 and a > 2;
 |   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
 +-------------------------+----------+-----------+---------------+------------------------------------+
 3 rows in set (0.00 sec)
-tidb> insert into mysql.expr_pushdown_blacklist values('<', 'tikv',''), ('>','tikv','');
+```
+
+2. 往 `mysql.expr_pushdown_blacklist` 表中插入禁用表达式，并且执行 `admin reload expr_pushdown_blacklist`。
+
+```sql
+tidb> insert into mysql.expr_pushdown_blacklist values('<','tikv',''), ('>','tikv','');
 Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
+
 tidb> admin reload expr_pushdown_blacklist;
 Query OK, 0 rows affected (0.00 sec)
+```
+
+3. 重新观察执行计划，发现表达式下推黑名单生效，where 条件被禁止下推。
+
+```sql
 tidb> explain select * from t where a < 2 and a > 2;
 +-------------------------+----------+-----------+---------------+------------------------------------+
 | id                      | estRows  | task      | access object | operator info                      |
@@ -121,10 +134,21 @@ tidb> explain select * from t where a < 2 and a > 2;
 |   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
 +-------------------------+----------+-----------+---------------+------------------------------------+
 3 rows in set (0.00 sec)
+```
+
+4. 将某一表达式（`>` 大于）禁用规则从黑名单表中删除，并且执行 `admin reload expr_pushdown_blacklist`。
+
+```sql
 tidb> delete from mysql.expr_pushdown_blacklist where name = '>';
 Query OK, 1 row affected (0.01 sec)
+
 tidb> admin reload expr_pushdown_blacklist;
 Query OK, 0 rows affected (0.00 sec)
+```
+
+5. 重新观察执行计划，被删除掉的表达式又可以重新被下推。
+
+```sql
 tidb> explain select * from t where a < 2 and a > 2;
 +---------------------------+----------+-----------+---------------+--------------------------------+
 | id                        | estRows  | task      | access object | operator info                  |
