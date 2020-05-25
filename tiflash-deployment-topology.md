@@ -1,5 +1,5 @@
 ---
-title:TiFlash部署拓扑
+title: TiFlash部署拓扑
 summary: 介绍 TiFlash 部署 TiDB 集群的拓扑结构。
 category: how-to
 ---
