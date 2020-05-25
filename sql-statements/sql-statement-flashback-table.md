@@ -1,7 +1,6 @@
 ---
 title: FLASHBACK TABLE
 category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/flashback-table/']
 ---
 
 # FLASHBACK TABLE
