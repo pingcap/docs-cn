@@ -18,9 +18,9 @@ Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访
 
 在此之前解决此类问题的办法是手动输入命令去拆分这一个或这几个 Region，但是这样有两个问题：
 
-1. 均匀拆分 Region 并不一定是最好的选择，请求可能集中在某几个 Key 上，即使均匀拆分后可能仍然落在其中一个 Region 上，可能需要经过多次均匀拆分才能达到目标。
+- 均匀拆分 Region 并不一定是最好的选择，请求可能集中在某几个 Key 上，即使均匀拆分后可能仍然落在其中一个 Region 上，可能需要经过多次均匀拆分才能达到目标。
 
-2. 需要人工介入，不够及时和易用。
+- 需要人工介入，不够及时和易用。
 
 ## 原理
 
@@ -34,13 +34,13 @@ Load Base Split 后的 Region 是否会被迅速 Merge，答案是否定的，�
 
 目前有两种办法修改配置：
 
-1. 通过 SQL 修改，`set config tikv split.qps-threshold=3000`
+- 通过 SQL 修改，`set config tikv split.qps-threshold=3000`
 
-2. 通过 TiKV 修改，`curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'`
+- 通过 TiKV 修改，`curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'`
 
 同理，目前也有两种办法查看配置：
 
-1. 通过 SQL 查看，`show config where type='tikv' and name like '%split.qps-threshold%'`
-2. 通过 TiKV 查看，`curl "http://ip:status_port/config"`
+- 通过 SQL 查看，`show config where type='tikv' and name like '%split.qps-threshold%'`
+- 通过 TiKV 查看，`curl "http://ip:status_port/config"`
 
 *注：使用 SQL 修改和查看配置的最低版本 4.0.0-rc2*
