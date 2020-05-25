@@ -1,7 +1,6 @@
 ---
-title: Cluster Diagnose Access 集群诊断访问
+title: 集群诊断页面
 category: how-to
-aliases: ['/docs-cn/dev/how-to/???']
 ---
 
 # 集群诊断页面
@@ -15,7 +14,7 @@ aliases: ['/docs-cn/dev/how-to/???']
 
 可以通过以下两种方法访问集群诊断页面：
 
-* 登录后，左侧导航条点击「集群诊断」（Cluster Diagnose）：
+* 登录后，左侧导航条点击**集群诊断**（Cluster Diagnose）：
 
 ![访问](/media/dashboard/diagnose/access.png)
 
@@ -34,7 +33,7 @@ aliases: ['/docs-cn/dev/how-to/???']
 > 提示：
 > 建议生成报告的时间范围在 1 min ~ 60 min 内，目前不建议生成超过 1 小时范围的报告。
 
-以上操作会生成 2020-05-21 14:40:00 至 2020-05-21 14:50:00 时间范围的诊断报告。点击 `开始` 后，会看到以下界面，`Progress` 是生成报告的进度条，生成报告完成后，点击`查看报告`即可。
+以上操作会生成 2020-05-21 14:40:00 至 2020-05-21 14:50:00 时间范围的诊断报告。点击**开始**后，会看到以下界面，**生成进度**是生成报告的进度条，生成报告完成后，点击**查看报告**即可。
 
 ![生成报告的进度](/media/dashboard/diagnose/gen-process.png)
 
@@ -55,6 +54,6 @@ aliases: ['/docs-cn/dev/how-to/???']
 
 ![生成对比报告](/media/dashboard/diagnose/gen-compare-report.png)
 
-然后同样等报告生成完成后点击 `查看报告` 即可。
+然后同样等报告生成完成后点击**查看报告**即可。
 
 另外，已生成的诊断报告会显式在诊断报告主页的列表里面，可以点击查看之前生成的报告，不用重复生成。
