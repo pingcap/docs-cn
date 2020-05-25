@@ -17,7 +17,7 @@ category: performance
 
 子查询默认会以[理解 TiDB 执行计划](/query-execution-plan.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能
 
-## `... < ALL (SELECT ... FROM ...)` 或者 ` ... > ANY (SELECT ... FROM ...)`
+## `... < ALL (SELECT ... FROM ...)` 或者 `... > ANY (SELECT ... FROM ...)`
 
 对于这种情况我们可以将 `ALL` 或者 `ANY` 用 `MAX` 以及 `MIN` 来代替。不过由于在表为空时，`MAX(EXPR)` 以及 `MIN(EXPR)` 的结果会为 NULL，其表现形式和 `EXPR` 是有 `NULL` 值的结果一样。以及外部表达式结果为 `NULL` 时也会影响表达式的最终结果，因此这里完整的改写会是如下的形式：
 
@@ -56,7 +56,6 @@ mysql> explain select * from t1 where t1.a in (select t2.a from t2);
 ```
 
 这个改写会在 `IN` 子查询相对较小，而外部查询相对较大时产生更好的执行性能。因为不经过改写的情况下，我们无法使用以 t2 为驱动表的 `index join`。同时这里的弊端便是当改写删成的聚合无法被自动消去且 `t2` 表比较大时，反而会影响查询的性能。目前 TiDB 中使用 [tidb\_opt\_insubq\_to\_join\_and\_agg](/tidb-specific-system-variables.md#tidb_opt_insubq_to_join_and_agg) 变量来控制这个优化的打开与否。当遇到不合适这个优化的情况可以手动关闭。
-
 
 ## `EXISTS` 子查询以及 `... >/>=/</<=/=/!= (SELECT ... FROM ...)`
 
