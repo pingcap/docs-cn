@@ -1,5 +1,6 @@
 ---
 title: 与 MySQL 兼容性对比
+summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出详细的对比。
 category: reference
 aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 ---
@@ -42,57 +43,13 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 ### 自增 ID
 
-TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
-
-在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值，否则在如下情况下会遇到问题。
-
-假设有这样一个带有自增 ID 的表：
-
-{{< copyable "sql" >}}
-
-```sql
-create table t(id int unique key AUTO_INCREMENT, c int);
-```
-
-TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用于分配（目前会缓存 30000 个 ID），用完这段值再去取下一段。
-
-假设集群中有两个 tidb-server 实例 A 和 B（A 缓存 [1,30000] 的自增 ID，B 缓存 [30001,60000] 的自增 ID），依次执行如下操作：
-
-1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
-2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
-
-另外，从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
-
-> **注意：**
->
-> 在没有指定主键的情况下 TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
-
-```sql
-mysql> create table t(id int unique key AUTO_INCREMENT);
-Query OK, 0 rows affected (0.05 sec)
-
-mysql> insert into t values(),(),();
-Query OK, 3 rows affected (0.00 sec)
-Records: 3  Duplicates: 0  Warnings: 0
-
-mysql> select _tidb_rowid, id from t;
-+-------------+------+
-| _tidb_rowid | id   |
-+-------------+------+
-|           4 |    1 |
-|           5 |    2 |
-|           6 |    3 |
-+-------------+------+
-3 rows in set (0.01 sec)
-```
-
-TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1.2、v3.0.14 和 v4.0.rc.2 版本开始，TiDB 引入了 `AUTO_ID_CACHE` 表选项来允许用户自主设置自增 ID 分配缓存的大小。其中缓存大小可能会被自增列和 `_tidb_rowid` 共同消耗。此外如果在 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入。
+TiDB 中，对于自增列隐式分配的值，只保证单节点的自增和全局节点的唯一，不保证连续性。TiDB 目前采用批量分配 ID 的方式，如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。此外，不恰当地混用自定义值和缺省值可能会破坏数据唯一性。详情参见 [AUTO_INCREMENT](/auto-increment.md)。
 
 ### Performance schema
 
 Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/monitor-a-tidb-cluster.md) 来监测性能指标。
 
-从 TiDB 3.0.4 版本开始，TiDB 支持 `events_statements_summary_by_digest`，参见 [Statement Summary Table](/statement-summary-tables.md)。
+针对 SQL 性能相关的问题，从 TiDB 4.0.0-rc.1 版本开始，TiDB 支持 `statements_summary`（和 MySQL 中的 `events_statements_summary_by_digest` 功能相似），用于监控和统计 SQL 语句。参见 [Statement Summary Table](/statement-summary-tables.md)。
 
 ### 查询计划
 
@@ -104,34 +61,23 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 ### DDL
 
-在 TiDB 中，运行的 DDL 操作不会影响对表的读取或写入。但是，目前 DDL 变更有如下一些限制：
+在 TiDB 中，运行的 DDL 操作不会影响对表的读取或写入。但是，目前 DDL 以下变更和 MySQL 的 DDL 变更有所区别：
 
-+ Add Index
-    - 不支持同时创建多个索引
-    - 其他类型的 Index Type (HASH/BTREE/RTREE) 只有语法支持，功能不支持
-+ Add Column
-    - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 AUTO_INCREMENT 属性
-+ Drop Column: 不支持删除主键列或索引列
-+ Change/Modify Column
-    - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
-    - 不支持修改 `DECIMAL` 类型的精度
-    - 不支持更改 `UNSIGNED` 属性
-    - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
-+ `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
-+ `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
-+ 单个 `ALTER TABLE` 语句中无法完成多个操作。例如，不能用一个语句来添加多个列或多个索引。
-+ Table Option 不支持以下语法
-    - `WITH/WITHOUT VALIDATION`
-    - `SECONDARY_LOAD/SECONDARY_UNLOAD`
-    - `CHECK/DROP CHECK`
-    - `STATS_AUTO_RECALC/STATS_SAMPLE_PAGES`
-    - `SECONDARY_ENGINE`
-    - `ENCRYPTION`
-+ Table Partition 不支持以下语法
-    - `PARTITION BY LIST`
-    - `PARTITION BY KEY`
-    - `SUBPARTITION`
-    - `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
+| 语句类型 | 描述 | 错误信息示例 |
+| :------ | :---- | :------ |
+| Alter Table | 不支持在单个 alter 语句中指定多个 alter 选项 | `Unsupported multi schema change` |
+| Table Option | 表选项除了 `AUTO_INCREMENT`、`CHARACTER SET`、`COLLATE`、`COMMENT` 以外，其他所有的选项都会被忽略 | N/A |
+| Add Column | 不支持将新列设为主键、唯一索引或自增 | `unsupported add column '%s' constraint PRIMARY/UNIQUE/AUTO_INCREMENT KEY` |
+| Change Column/Modify Column | 不支持列类型有损变更，例如 `BIGINT` -> `INT`，或者 `VARCHAR(255)` -> `VARCHAR(10)` | `length %d is less than origin %d` |
+| Change Column/Modify Column | 不支持修改 `DECIMAL` 类型的精度 | `can't change decimal column precision` |
+| Change Column/Modify Column | 不支持更改 `UNSIGNED` 属性 | `can't change unsigned integer to signed or vice versa` |
+| Drop Column | 不支持删除主键列或索引列 | `Unsupported drop integer primary key/column a with index covered` |
+| Add Index | 仅支持 `VISIBLE`/`INVISIBLE` 索引选项，其他索引选项将被忽略 | N/A |
+| Drop Primary Key | 仅支持删除建表时启用了 `alter-primary-key` 配置项的表的主键 | `Unsupported drop primary key when alter-primary-key is false` |
+| Order By | 所有列排序选项将被忽略 | N/A |
+| Lock | 所有锁选项将被忽略，TiDB 的 DDL 变更都不会锁表 | N/A |
+| Algorithm | 运行过程与 MySQL 有所不同，MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作；`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。| N/A |
+| Partition | 分区类型仅支持 Hash/Range；分区管理操作仅支持 Add/Drop/Truncate/Coalese；其他分区操作、分区类型和子分区语句会被忽略 | `Warning: Unsupported partition type, treat as normal table` |
 
 ### `ANALYZE TABLE`
 
@@ -158,7 +104,7 @@ Query OK, 0 rows affected (0.14 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE TABLE t1;
+SHOW CREATE TABLE t1\G;
 ```
 
 ```
@@ -180,7 +126,7 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
 - TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
 
-### 默认设置的区别
+### 默认设置
 
 + 默认字符集与 MySQL 不同：
     + TiDB 中为 `utf8mb4`
@@ -196,7 +142,7 @@ TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除
     + TiDB 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
     + MySQL 中默认设置：
         + MySQL 5.7 的默认 SQL mode 与 TiDB 相同
-        + MySQL 8.0 中为 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION`
+        + MySQL 8.0 中相对 5.7 少了 `NO_AUTO_CREATE_USER`， 即 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION`
 + `lower_case_table_names` 的默认值不同：
     + TiDB 中该值默认为 2，并且目前 TiDB 只支持设置该值为 2
     + MySQL 中默认设置：
