@@ -33,7 +33,7 @@ Value: [col1, col2, col3, col4]
 
 TiDB 同时支持主键和二级索引（包括唯一索引和非唯一索引）。与表数据映射方案类似，TiDB 为表中每个索引分配了一个索引 ID，用 `IndexID` 表示。
 
-对于主键和唯一索引，我们需要根据键值快速定位到对应的 RowID，因此，按照如下规则编码成  (Key, Value) 键值对：
+对于主键和唯一索引，需要根据键值快速定位到对应的 RowID，因此，按照如下规则编码成  (Key, Value) 键值对：
 
 ```
 Key:   tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue
