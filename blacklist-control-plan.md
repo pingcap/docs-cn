@@ -1,9 +1,12 @@
 ---
-title: 优化规则及表达式下推的黑名单
+title: 优化规则与表达式下推的黑名单
+summary: 了解优化规则与表达式下推的黑名单。
 category: performance
 ---
 
-# 优化规则及表达式下推的黑名单
+# 优化规则与表达式下推的黑名单
+
+本文主要介绍优化规则的黑名单与表达式下推的黑名单。
 
 ## 优化规则黑名单
 
@@ -27,39 +30,38 @@ category: performance
 
 ### 禁用优化规则
 
-当某些优化规则在一些特殊查询中的优化结果不理想时，用户可以使用**优化规则黑名单**禁用一些优化规则。
+当某些优化规则在一些特殊查询中的优化结果不理想时，可以使用**优化规则黑名单**禁用一些优化规则。
 
 #### 使用方法
 
 > **注意：**
 >
-> 以下操作都需要数据库的 super privilege 权限。
-每个优化规则都有各自的名字，比如列裁剪的名字是 "column_prune"。所有优化规则的名字都可以在[重要的优化规则](#重要的优化规则)表格中第二列查到。
+> 以下操作都需要数据库的 super privilege 权限。每个优化规则都有各自的名字，比如列裁剪的名字是 "column_prune"。所有优化规则的名字都可以在[重要的优化规则](#重要的优化规则)表格中第二列查到。
 
-当用户想禁用某些规则时，可以在 `mysql.opt_rule_blacklist` 表中写入规则的名字，比如：
+- 如果你想禁用某些规则，可以在 `mysql.opt_rule_blacklist` 表中写入规则的名字，例如：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-insert into mysql.opt_rule_blacklist values("join_reorder"), ("topn_push_down");
-```
+    ```sql
+    insert into mysql.opt_rule_blacklist values("join_reorder"), ("topn_push_down");
+    ```
 
-执行以下 SQL 语句让禁用规则立即生效，包括相应 tidb-server 的所以旧链接：
+    执行以下 SQL 语句可让禁用规则立即生效，包括相应 tidb-server 的所有旧链接：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-admin reload opt_rule_blacklist;
-```
+    ```sql
+    admin reload opt_rule_blacklist;
+    ```
 
-需要解除一条规则的禁用时，需要删除表中禁用该条规则的相应数据，再执行 `admin reload`：
+- 需要解除一条规则的禁用时，需要删除表中禁用该条规则的相应数据，再执行 `admin reload`：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-delete from mysql.opt_rule_blacklist where name in ("join_reoder", "topn_push_down");
-admin reload opt_rule_blacklist;
-```
+    ```sql
+    delete from mysql.opt_rule_blacklist where name in ("join_reoder", "topn_push_down");
+    admin reload opt_rule_blacklist;
+    ```
 
 ## 表达式下推黑名单
 
@@ -71,8 +73,13 @@ admin reload opt_rule_blacklist;
 
 `mysql.expr_pushdown_blacklist` 的 schema 如下：
 
+{{< copyable "sql" >}}
+
 ```sql
-tidb> desc mysql.expr_pushdown_blacklist;
+desc mysql.expr_pushdown_blacklist;
+```
+
+```sql
 +------------+--------------+------+------+-------------------+-------+
 | Field      | Type         | Null | Key  | Default           | Extra |
 +------------+--------------+------+------+-------------------+-------+
@@ -85,25 +92,27 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 以上结果字段解释如下：
 
-+ `name` 为禁止下推的函数名。
-+ `store_type` 指明希望禁止该函数下推到哪些存储引擎。目前 TiDB 支持三种存储引擎，分别为 `tikv`、`tidb` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间应以逗号隔开。
-+ `reason` 列可以记录该函数被加入黑名单的原因。
++ `name`：禁止下推的函数名。
++ `store_type`：用于指明希望禁止该函数下推到哪些存储引擎。目前 TiDB 支持三种存储引擎，分别为 `tikv`、`tidb` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
++ `reason`：用于记录该函数被加入黑名单的原因。
 
 ### 使用方法
 
 #### 加入黑名单
 
-执行以下步骤，可将一个或多个函数或运算符加入黑名单：
+如果要将一个或多个函数或运算符加入黑名单，执行以下步骤：
 
-向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名以及希望禁止下推的存储类型集合。
-执行 `admin reload expr_pushdown_blacklist;`。
+1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名以及希望禁止下推的存储类型集合。
+
+2. 执行 `admin reload expr_pushdown_blacklist;`。
 
 #### 移出黑名单
 
-执行以下步骤，可将一个或多个函数及运算符移出黑名单：
+如果要将一个或多个函数及运算符移出黑名单，执行以下步骤：
 
-从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名或运算符名。
-执行 `admin reload expr_pushdown_blacklist;`。
+1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名或运算符名。
+
+2. 执行 `admin reload expr_pushdown_blacklist;`。
 
 ### 表达式黑名单用法示例
 
@@ -111,69 +120,108 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/query-execution-plan.md)）。
 
-1. 对于以下 SQL，where 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
+1. 对于以下 SQL 语句，`where` 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
 
-```sql
-tidb> explain select * from t where a < 2 and a > 2;
-+-------------------------+----------+-----------+---------------+------------------------------------+
-| id                      | estRows  | task      | access object | operator info                      |
-+-------------------------+----------+-----------+---------------+------------------------------------+
-| TableReader_7           | 0.00     | root      |               | data:Selection_6                   |
-| └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
-|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
-+-------------------------+----------+-----------+---------------+------------------------------------+
-3 rows in set (0.00 sec)
-```
+    {{< copyable "sql" >}}
+
+    ```sql
+    explain select * from t where a < 2 and a > 2;
+    ```
+
+    ```sql
+    +-------------------------+----------+-----------+---------------+------------------------------------+
+    | id                      | estRows  | task      | access object | operator info                      |
+    +-------------------------+----------+-----------+---------------+------------------------------------+
+    | TableReader_7           | 0.00     | root      |               | data:Selection_6                   |
+    | └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
+    |   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
+    +-------------------------+----------+-----------+---------------+------------------------------------+
+    3 rows in set (0.00 sec)
+    ```
 
 2. 往 `mysql.expr_pushdown_blacklist` 表中插入禁用表达式，并且执行 `admin reload expr_pushdown_blacklist`。
 
-```sql
-tidb> insert into mysql.expr_pushdown_blacklist values('<','tikv',''), ('>','tikv','');
-Query OK, 2 rows affected (0.01 sec)
-Records: 2  Duplicates: 0  Warnings: 0
+    {{< copyable "sql" >}}
 
-tidb> admin reload expr_pushdown_blacklist;
-Query OK, 0 rows affected (0.00 sec)
-```
+    ```sql
+    insert into mysql.expr_pushdown_blacklist values('<','tikv',''), ('>','tikv','');
+    ```
 
-3. 重新观察执行计划，发现表达式下推黑名单生效，where 条件被禁止下推。
+    ```sql
+    Query OK, 2 rows affected (0.01 sec)
+    Records: 2  Duplicates: 0  Warnings: 0
+    ```
 
-```sql
-tidb> explain select * from t where a < 2 and a > 2;
-+-------------------------+----------+-----------+---------------+------------------------------------+
-| id                      | estRows  | task      | access object | operator info                      |
-+-------------------------+----------+-----------+---------------+------------------------------------+
-| Selection_7             | 10000.00 | root      |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
-| └─TableReader_6         | 10000.00 | root      |               | data:TableFullScan_5               |
-|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
-+-------------------------+----------+-----------+---------------+------------------------------------+
-3 rows in set (0.00 sec)
-```
+    {{< copyable "sql" >}}
+
+    ```sql
+    admin reload expr_pushdown_blacklist;
+    ```
+
+    ```sql
+    Query OK, 0 rows affected (0.00 sec)
+    ```
+
+3. 重新观察执行计划，发现表达式下推黑名单生效，`where` 条件被禁止下推。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    explain select * from t where a < 2 and a > 2;
+    ```
+
+    ```sql
+    +-------------------------+----------+-----------+---------------+------------------------------------+
+    | id                      | estRows  | task      | access object | operator info                      |
+    +-------------------------+----------+-----------+---------------+------------------------------------+
+    | Selection_7             | 10000.00 | root      |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
+    | └─TableReader_6         | 10000.00 | root      |               | data:TableFullScan_5               |
+    |   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
+    +-------------------------+----------+-----------+---------------+------------------------------------+
+    3 rows in set (0.00 sec)
+    ```
 
 4. 将某一表达式（`>` 大于）禁用规则从黑名单表中删除，并且执行 `admin reload expr_pushdown_blacklist`。
 
-```sql
-tidb> delete from mysql.expr_pushdown_blacklist where name = '>';
-Query OK, 1 row affected (0.01 sec)
+    {{< copyable "sql" >}}
 
-tidb> admin reload expr_pushdown_blacklist;
-Query OK, 0 rows affected (0.00 sec)
-```
+    ```sql
+    delete from mysql.expr_pushdown_blacklist where name = '>';
+    ```
+
+    ```sql
+    Query OK, 1 row affected (0.01 sec)
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    admin reload expr_pushdown_blacklist;
+    ```
+
+    ```sql
+    Query OK, 0 rows affected (0.00 sec)
+    ```
 
 5. 重新观察执行计划，被删除掉的表达式又可以重新被下推。
 
-```sql
-tidb> explain select * from t where a < 2 and a > 2;
-+---------------------------+----------+-----------+---------------+--------------------------------+
-| id                        | estRows  | task      | access object | operator info                  |
-+---------------------------+----------+-----------+---------------+--------------------------------+
-| Selection_8               | 0.00     | root      |               | lt(ssb_1.t.a, 2)               |
-| └─TableReader_7           | 0.00     | root      |               | data:Selection_6               |
-|   └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2)               |
-|     └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
-+---------------------------+----------+-----------+---------------+--------------------------------+
-4 rows in set (0.00 sec)
-```
+    {{< copyable "sql" >}}
+
+    ```sql
+    explain select * from t where a < 2 and a > 2;
+    ```
+
+    ```sql
+    +---------------------------+----------+-----------+---------------+--------------------------------+
+    | id                        | estRows  | task      | access object | operator info                  |
+    +---------------------------+----------+-----------+---------------+--------------------------------+
+    | Selection_8               | 0.00     | root      |               | lt(ssb_1.t.a, 2)               |
+    | └─TableReader_7           | 0.00     | root      |               | data:Selection_6               |
+    |   └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2)               |
+    |     └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
+    +---------------------------+----------+-----------+---------------+--------------------------------+
+    4 rows in set (0.00 sec)
+    ```
 
 > **注意：**
 >
