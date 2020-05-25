@@ -35,7 +35,7 @@ category: how-to
     Disk /dev/nvme0n1: 1000 GB
     ```
 
-2. 创建分区表。
+2. 创建分区。
 
     {{< copyable "shell-root" >}}
 
