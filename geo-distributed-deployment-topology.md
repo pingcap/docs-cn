@@ -6,7 +6,7 @@ category: how-to
 
 # 跨数据中心部署拓扑
 
-本文介绍跨数据中心部署的拓扑以及关键参数。
+本文以典型的两地三中心为例，介绍跨数据中心部署的拓扑以及关键参数。
 
 ## 拓扑信息
 
@@ -17,11 +17,21 @@ category: how-to
 | TiKV | 3 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.11 <br> 10.0.1.12 <br> 10.0.1.13 <br> 10.0.1.14 | 10.0.1.15 | 默认端口 <br> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.16 || 默认端口 <br> 全局目录配置 |
 
-## 关键参数配置
+## 通过 TiUP 部署集群的配置文件模版 topology.yaml
+
+### 部署目标
+
+通过 `tidb` 用户管理集群，部署一套跨数据中心的两地三中心拓扑的集群，端口默认，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
+
+### 拓扑模版
+
+[跨机房配置模板](/geo-redundancy-deployment.yaml)
+
+### 关键参数配置
 
 本节介绍跨数据中心部署 TiDB 集群的关键参数配置。
 
-### TiKV 参数
+#### TiKV 参数
 
 - 设置 gRPC 的压缩格式，默认为 `none`。为提高跨机房部署场景的目标节点间 gRPC 包的传输速度，建议设置为 gzip 格式。
     
@@ -53,7 +63,7 @@ category: how-to
     raftstore.raft-max-election-timeout-ticks: 1020
     ```
 
-### PD 参数
+#### PD 参数
 
 - PD 元数据信息记录 TiKV 集群的拓扑信息，根据四个维度调度 Raft Group 副本。
 
@@ -76,16 +86,6 @@ category: how-to
               value: "sha"
     ```
 
-## 通过 TiUP 部署集群的配置文件模版 topology.yaml
-
-### 部署目标
-
-通过 `tidb` 用户管理集群，部署一套跨数据中心的两地三中心拓扑的集群，端口默认，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
-
-### 拓扑模版
-
-[跨机房配置](/geo-redundancy-deployment.yaml)
-
 > **注意：**
 >
-> 无需手动创建 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
