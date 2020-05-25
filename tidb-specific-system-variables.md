@@ -736,3 +736,11 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
+
+### tidb_record_plan_in_slow_log <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值：1
+
+这个变量用来配置是否在慢查询日志中记录语句执行计划，默认开启。
