@@ -4,9 +4,9 @@ category: FAQ
 aliases: ['/docs-cn/dev/faq/upgrade/']
 ---
 
-# 升级与升级后常见问题
+## 升级与升级后常见问题
 
-## 升级
+### 升级
 
 #### 滚动升级有那些影响?
 
