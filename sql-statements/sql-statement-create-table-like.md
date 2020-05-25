@@ -83,7 +83,7 @@ Empty set (0.00 sec)
 
 ## Region 的预切分
 
-若被复制的表定义了 `PRE_SPLIT_REGIONS` 属性，通过 `CREATE TABLE LIKE` 语句复制的表，会继承该属性并在建表时进行 Region 的预切分，关于 `PRE_SPLIT_REGIONS` 属性的说明请参照 [CREATE TABLE 语句](/sql-statements/sql-statement-create-table.md)。
+如果被复制的表定义了 `PRE_SPLIT_REGIONS` 属性，则通过 `CREATE TABLE LIKE` 语句复制的表，会继承该属性并在建表时预切分 Region。关于 `PRE_SPLIT_REGIONS` 属性的说明，参见 [`CREATE TABLE` 语句](/sql-statements/sql-statement-create-table.md)。
 
 ## MySQL 兼容性
 
