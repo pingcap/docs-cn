@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/reference/sql/language-structure/user-defined-variables/
 
 ## 设置用户自定义变量
 
-用 `SET` 语句可以设置用户自定义变量，语法为 `SET @var_name = expr [, @var_name = expr] ...;`。例如，
+用 `SET` 语句可以设置用户自定义变量，语法为 `SET @var_name = expr [, @var_name = expr] ...;`。例如：
 
 {{< copyable "sql" >}}
 
