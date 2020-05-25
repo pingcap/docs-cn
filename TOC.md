@@ -60,7 +60,6 @@
 + 数据迁移
   + [支持的迁移路径](/data-migration-route.md)
   + 从 MySQL 迁移至 TiDB
-    + [从 CSV 文件迁移](/migrate-from-mysql-csv-files.md) @栾成
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md) @栾成
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
   + [从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) @王相
