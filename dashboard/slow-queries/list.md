@@ -1,9 +1,9 @@
 ---
-title: 访问慢查询列表页面
+title: 慢查询页面
 category: how-to
 ---
 
-# 访问慢查询列表页面
+# 慢查询页面
 
 查询集群中所有慢查询语句，系统默认将执行时间超过 Session 变量 [`tidb_slow_log_threshold`](/tidb-specific-system-variables.md#tidb_slow_log_threshold) 或者配置参数 [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 值的 SQL 语句视为慢查询语句，系统会自己记录到[慢查询日志](/identify-slow-queries.md) 中。此功能通过 SQL 将查询结果输出到页面。
 
@@ -13,7 +13,7 @@ category: how-to
 >
 > 若关闭了慢查询日志，则本功能不可用。慢查询日志默认开启，可通过修改 TiDB 配置 [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) 开启或禁用。
 
-## 访问慢查询列表页面
+## 访问列表页面
 
 访问页面的两种方式，如下：
 
