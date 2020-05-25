@@ -6,27 +6,29 @@ category: FAQ
 
 # 部署运维 FAQ
 
-## 安装部署
+本文介绍 TiDB 集群运维部署的常见问题、原因及解决方法。
 
-### 环境准备
+## 环境准备 FAQ
 
-#### 操作系统版本要求
+操作系统版本要求如下表：
 
-| **Linux 操作系统平台** | **版本** |
-| --- | --- |
+| Linux 操作系统平台 | 版本 |
+| :--- | :--- |
 | Red Hat Enterprise Linux | 7.3 及以上 |
 | CentOS | 7.3 及以上 |
 | Oracle Enterprise Linux | 7.3 及以上 |
 
-##### 为什么要在 CentOS 7 上部署 TiDB 集群？
+### 为什么要在 CentOS 7 上部署 TiDB 集群？
 
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](/hardware-and-software-requirements.md)。其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的Linux 操作系统。
+TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](/hardware-and-software-requirements.md)。
 
-#### 硬件要求
+其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的Linux 操作系统。
 
-TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发，测试，及生产环境的服务器硬件配置有以下要求和建议：
+## 硬件要求 FAQ
 
-##### 开发及测试环境
+TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、及生产环境的服务器硬件配置有以下要求和建议：
+
+**开发及测试环境**
 
 | **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
@@ -35,7 +37,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | TiKV | 8核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
 |   |   |   |   | 服务器总计 | 4 |
 
-##### 线上环境
+**线上环境**
 
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
@@ -45,47 +47,45 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | 监控 | 8核+ | 16 GB+ | SAS | 千兆网卡 | 1 |
 |   |   |   |   | 服务器总计 | 9 |
 
-##### 2 块网卡的目的是？万兆的目的是？
+### 两块网卡的目的是？万兆的目的是？
 
-作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。2 块网卡可以做 bond，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
+作为一个分布式集群，TiDB 对时间的要求还是比较高的，尤其是 PD 需要分发唯一的时间戳，如果 PD 时间不统一，如果有 PD 切换，将会等待更长的时间。两块网卡可以做 bond，保证数据传输的稳定，万兆可以保证数据传输的速度，千兆网卡容易出现瓶颈，我们强烈建议使用万兆网卡。
 
-##### SSD 不做 RAID 是否可行？
+### SSD 不做 RAID 是否可行？
 
 资源可接受的话，我们建议做 RAID 10，如果资源有限，也可以不做 RAID。
 
-##### TiDB 集群各个组件的配置推荐？
+### TiDB 集群各个组件的配置推荐？
 
-- TiDB 需要 CPU 和内存比较好的机器，参考官网配置要求，如果后期需要开启 Binlog，根据业务量的评估和 GC 时间的要求，也需要本地磁盘大一点，不要求 SSD 磁盘；
+- TiDB 需要 CPU 和内存比较好的机器，参考官网配置要求，如果后期需要开启 TiDB Binlog，根据业务量的评估和 GC 时间的要求，也需要本地磁盘大一点，不要求 SSD 磁盘；
 - PD 里面存了集群元信息，会有频繁的读写请求，对磁盘 I/O 要求相对比较高，磁盘太差会影响整个集群性能，推荐 SSD 磁盘，空间不用太大。另外集群 Region 数量越多对 CPU、内存的要求越高；
 - TiKV 对 CPU、内存、磁盘要求都比较高，一定要用 SSD 磁盘。
 
 详情可参考 [TiDB 软硬件环境需求](/hardware-and-software-requirements.md)。
 
-### 安装部署
+## 安装部署 FAQ
 
-#### 推荐部署方式
+如果用于生产环境，推荐使用 TiUP [使用 TiUP 部署](/production-deployment-using-tiup.md) TiDB 集群。
 
-[使用 TiUP 部署](/production-deployment-using-tiup.md)：如果用于生产环境，推荐使用 TiUP 部署 TiDB 集群。
-
-##### 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
+### 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
 这种情况一般是因为没有使用 `--config` 参数来指定配置文件（目前只会出现在 binary 部署的场景），TiKV/PD 会按默认值来设置。如果要使用配置文件，请设置 TiKV/PD 的 `--config` 参数。对于 TiKV 组件，修改配置后重启服务即可；对于 PD 组件，只会在第一次启动时读取配置文件，之后可以使用 pd-ctl 的方式来修改配置，详情可参考 [PD 配置参数](/command-line-flags-for-pd-configuration.md)。
 
-##### TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
+### TiDB 监控框架 Prometheus + Grafana 监控机器建议单独还是多台部署？
 
 监控机建议单独部署。建议 CPU 8 core，内存 16 GB 以上，硬盘 500 GB 以上。
 
-##### 有一部分监控信息显示不出来？
+### 有一部分监控信息显示不出来？
 
 查看访问监控的机器时间跟集群内机器的时间差，如果比较大，更正时间后即可显示正常。
 
-##### supervise/svc/svstat 服务具体起什么作用？
+### supervise/svc/svstat 服务具体起什么作用？
 
 - supervise 守护进程
 - svc 启停服务
 - svstat 查看进程状态
 
-##### inventory.ini 变量参数解读
+### inventory.ini 变量参数解读
 
 | **变量** | **含义** |
 | --- | --- |
@@ -105,15 +105,15 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
-#### TiDB 离线 Ansible 部署方案（4.0 版本后不推荐使用）
+### TiDB 离线 Ansible 部署方案（4.0 版本后不推荐使用）
 
 首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[离线 TiDB Ansible 部署方案](/offline-deployment-using-ansible.md)。
 
-#### Docker Compose 快速构建集群（单机部署）
+### Docker Compose 快速构建集群（单机部署）
 
 使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/deploy-test-cluster-using-docker-compose.md)。
 
-#### 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
+### 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
 1）TiDB 中，对慢查询的定义在 tidb-ansible 的 `conf/tidb.yml` 配置文件中，`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
 
@@ -126,17 +126,17 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 3）除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/identify-slow-queries.md#admin-show-slow-命令)。
 
-#### 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
+### 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
 
 TiDB 的 Label 设置是与集群的部署架构相关的，是集群部署中的重要内容，是 PD 进行全局管理和调度的依据。如果集群在初期部署过程中没有设置 Label，需要在后期对部署结构进行调整，就需要手动通过 PD 的管理工具 pd-ctl 来添加 location-labels 信息，例如：`config set location-labels "zone,rack,host"`（根据实际的 label 层级名字配置）。
 
 pd-ctl 的使用参考 [PD Control 使用说明](/pd-control.md)。
 
-#### 为什么测试磁盘的 dd 命令用 oflag=direct 这个选项？
+### 为什么测试磁盘的 dd 命令用 `oflag=direct` 这个选项？
 
 Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这样是为了绕开文件系统的缓存，可以直接测试磁盘的真实的 I/O 读写能力。
 
-#### 如何用 fio 命令测试 TiKV 实例的磁盘性能？
+### 如何用 fio 命令测试 TiKV 实例的磁盘性能？
 
 - 随机读测试：
 
@@ -154,7 +154,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
 
-#### 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 `UNREACHABLE! "msg": "Failed to connect to the host via ssh: "` 报错是什么原因？
+### 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 `UNREACHABLE! "msg": "Failed to connect to the host via ssh: "` 报错是什么原因？
 
 有两种可能性：
 
@@ -162,7 +162,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 - 如果涉及到单服务器分配了多角色的场景，例如多组件混合部署或单台服务器部署了多个 TiKV 实例，可能是由于 ssh 复用的机制引起这个报错，可以使用 `ansible … -f 1` 的选项来规避这个报错。
 
-## 集群管理
+## 集群管理 FAQ
 
 ### 集群日常管理
 
@@ -485,21 +485,16 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
 
-## 监控
+## 监控 FAQ
 
-### Prometheus 监控框架
++ Prometheus 监控框架详情可见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
++ 监控指标解读详细参考 [重要监控指标详解](/grafana-overview-dashboard.md)。
 
-详细参考 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
-
-### 监控指标解读
-
-详细参考 [重要监控指标详解](/grafana-overview-dashboard.md)。
-
-#### 目前的监控使用方式及主要监控指标，有没有更好看的监控？
+### 目前的监控使用方式及主要监控指标，有没有更好看的监控？
 
 TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括系统资源的监控指标，包括客户端连接与 SQL 运行的指标，包括内部通信和 Region 调度的指标，通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](/grafana-overview-dashboard.md)。
 
-#### Prometheus 监控数据默认 15 天自动清除一次，可以自己设定成 2 个月或者手动删除吗？
+### Prometheus 监控数据默认 15 天自动清除一次，可以自己设定成 2 个月或者手动删除吗？
 
 可以的，在 Prometheus 启动的机器上，找到启动脚本，然后修改启动参数，然后重启 Prometheus 生效。
 
@@ -507,15 +502,15 @@ TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统，�
 --storage.tsdb.retention="60d"
 ```
 
-#### Region Health 监控项
+### Region Health 监控项
 
 TiDB-2.0 版本中，PD metric 监控页面中，对 Region 健康度进行了监控，其中 Region Health 监控项是对所有 Region 副本状况的一些统计。其中 miss 是缺副本，extra 是多副本。同时也增加了按 Label 统计的隔离级别，level-1 表示这些 Region 的副本在第一级 Label 下是物理隔离的，没有配置 location label 时所有 Region 都在 level-0。
 
-#### Statement Count 监控项中的 selectsimplefull 是什么意思？
+### Statement Count 监控项中的 selectsimplefull 是什么意思？
 
 代表全表扫，但是可能是很小的系统表。
 
-#### 监控上的 QPS 和 Statement OPS 有什么区别？
+### 监控上的 QPS 和 Statement OPS 有什么区别？
 
 QPS 会统计执行的所有 SQL 命令，包括 use database、load data、begin、commit、set、show、insert、select 等。
 
