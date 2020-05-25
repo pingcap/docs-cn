@@ -293,6 +293,7 @@
       - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
       - [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
@@ -407,6 +408,7 @@
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
     + TiKV
+      + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
