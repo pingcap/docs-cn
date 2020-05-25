@@ -147,7 +147,7 @@ tiup cluster display <cluster-name>
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
 > 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
-> 2. 在 pd-ctl（目前 pd-ctl 还没有接入 TiUP Cluster，需要从[这里](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz) 手动进行下载）中输入 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
+> 2. 下载 [pd-ctl](https://download.pingcap.org/tidb-v4.0.0-rc-linux-amd64.tar.gz），执行 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
 
 如果要添加一个 TiFlash 节点，IP 地址为 10.0.1.4，可以按照如下步骤进行操作。
 
