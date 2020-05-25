@@ -41,7 +41,7 @@ category: how-to
 
 - label 配置
 
-    由于采用跨机房部署 TiKV，为了避免物理机宕机导致 Region Group 默认 5 副本的 3 副本丢失，导致集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同中心、同机柜、同机器 TiKV 实例不会出现 Region Group 有 3 副本的情况。
+    由于采用跨机房部署 TiKV，为了避免物理机宕机导致 Region Group 默认的 5 副本中丢失 3 副本，使集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同中心、同机柜、同机器 TiKV 实例不会出现 Region Group 有 3 副本的情况。
 
     - TiKV 配置
 
