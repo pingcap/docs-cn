@@ -57,7 +57,6 @@ TiDB Summary 面板是将 TiDB 面板中用户最为关心的部分抽取出来�
     - Transaction Statement Num：事务中的 SQL 语句数量
     - Transaction Retry Num：事务重试次数
     - Session Retry Error OPS：每秒事务重试时遇到的错误数量
-    - Local Latch Wait Duration：TiDB 内部事务排队等待时间（这个相关 feature 已经移除，不需要关注）
     - KV Transaction OPS：每个 TiDB 内部每秒执行的事务数量
         - 一个用户的事务，在 TiDB 内部可能会触发多次事务执行，其中包含，内部元数据的读取，用户事务原子性地多次重试执行等
         - TiDB 内部的定时任务也会通过事务来操作数据库，这部分也包含在这个面板里
