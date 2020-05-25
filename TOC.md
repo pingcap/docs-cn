@@ -304,6 +304,7 @@
       - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
       - [`SHOW [FULL] FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
       - [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+      - [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-histograms.md)
       - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
       - [`SHOW INDEX [FROM|IN]`](/sql-statements/sql-statement-show-index.md)
       - [`SHOW KEYS [FROM|IN]`](/sql-statements/sql-statement-show-keys.md)
