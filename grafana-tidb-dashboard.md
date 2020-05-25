@@ -44,11 +44,11 @@ TiDB Summary 面板是将 TiDB 面板中用户最为关心的部分抽取出来�
     - Go GC Count：每个 TiDB 实例的 Golang GC 执行次数统计
     - Go GC CPU Usage：每个 TiDB 实例的 Golang GC 使用的 CPU 统计
     - Events OPM：每个 TiDB 实例关键事件统计，例如 start，close，graceful-shutdown，kill，hang 等
-    - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数。意义不大，不需要关注。
+    - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数。通常不需要关注。
     - Prepare Statement Count：每个 TiDB 实例现存的 Prepare 语句数以及总数统计
-    - Time Jump Back OPS：每个 TiDB 实例上每秒钟操作系统时间回跳的次数
+    - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数
     - Write Binlog Error：每个 TiDB 每秒写入 Binlog 失败的次数
-    - Get Token Duration：每个连接后获取 Token 耗时
+    - Get Token Duration：每个连接获取 Token 耗时
     - Handshake Error OPS：每个 TiDB 实例每秒握手错误的次数统计
 
 - Transaction
