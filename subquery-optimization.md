@@ -13,7 +13,7 @@ category: performance
 - `EXISTS (SELECT ... FROM ...)`
 - `... >/>=/</<=/=/!= (SELECT ... FROM ...)`
 
-有时，会遇到子查询中包含了非子查询中的列，如 `select * from t where t.a in (select * from t2 where t.b=t2.b)` 中，子查询中的 `t.b` 便不是子查询中的列，而是从子查询外面引入的列。这种子查询通常会被成为`关联子查询`，外部引入的列会被成为`关联列`，关联子查询相关的优化可以在[关联子查询去关联](/correlated-subquery-optimization.md)中查看。本节中我们主要关注不涉及关联列的子查询。
+有时，会遇到子查询中包含了非子查询中的列，如 `select * from t where t.a in (select * from t2 where t.b=t2.b)` 中，子查询中的 `t.b` 便不是子查询中的列，而是从子查询外面引入的列。这种子查询通常会被称为`关联子查询`，外部引入的列会被称为`关联列`，关联子查询相关的优化可以在[关联子查询去关联](/correlated-subquery-optimization.md)中查看。本节中主要关注不涉及关联列的子查询。
 
 子查询默认会以[理解 TiDB 执行计划](/query-execution-plan.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能。
 
@@ -38,7 +38,7 @@ category: performance
 
 ## `... IN (SELECT ... FROM ...)`
 
-对于这种情况，我们会将其改写为 `IN` 的子查询改写为 `SELECT ... FROM ... GROUP ...` 的形式然后将 `IN` 改写为普通的 `JOIN` 的形式。
+对于这种情况，会将其改写为 `IN` 的子查询改写为 `SELECT ... FROM ... GROUP ...` 的形式，然后将 `IN` 改写为普通的 `JOIN` 的形式。
 如 `select * from t1 where t1.a in (select t2.a from t2)` 会被改写为 `select t1.* from t1, (select distinct(a) a from t2) t2 where t1.a = t2.a` 的形式。同时这里的 `DISTINCT` 可以在 `t2.a` 具有 `UNIQUE` 属性时被自动消去。
 
 ```
