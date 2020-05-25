@@ -9,6 +9,16 @@ aliases: ['/docs-cn/dev/reference/sql/statements/alter-database/']
 
 `ALTER DATABASE` 用于修改指定或当前数据库的默认字符集和排序规则。`ALTER SCHEMA` 跟 `ALTER DATABASE` 操作效果一样。
 
+## 语法图
+
+**AlterDatabaseStmt:**
+
+![AlterDatabaseStmt](/media/sqlgram/AlterDatabaseStmt.png)
+
+**DatabaseOption:**
+
+![DatabaseOption](/media/sqlgram/DatabaseOption.png)
+
 ## 示例
 
 {{< copyable "sql" >}}
