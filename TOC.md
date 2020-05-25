@@ -80,7 +80,7 @@
   + [告警处理](/handle-alerts.md) @李宋高
   + [日常巡检](/daily-inspection.md) @王军
   + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
-  + [TiUP 常用运维操作](/tiup/maintain-tidb-using-tiup.md) @王贤净
+  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 故障诊断
   + 硬件故障 @周强
