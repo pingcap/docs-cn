@@ -89,13 +89,18 @@ tidb> desc mysql.expr_pushdown_blacklist;
 + `store_type` 指明希望禁止该函数下推到哪些存储引擎。目前 TiDB 支持三种存储引擎，分别为 `tikv`、`tidb` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间应以逗号隔开。
 + `reason` 列可以记录该函数被加入黑名单的原因。
 
+### 使用方法
+
+执行以下步骤，可将一个或多个函数或运算符加入黑名单：
+
+向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名以及希望禁止下推的存储类型集合。
+执行 `admin reload expr_pushdown_blacklist;`。
+
 ### 表达式黑名单用法示例
 
 以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
 
 黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/query-execution-plan.md)）。
-
-#### 使用说明样例
 
 1. 对于以下 SQL，where 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
 
