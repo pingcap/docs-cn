@@ -43,7 +43,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 - Schedule operator timeout：已超时的 operator 的数量
 - Schedule operator replaced or canceled：已取消或者被替换的 operator 的数量
 - Schedule operators count by state：不同状态的 operator 的数量
-- Operator finish duration：已完成 operator 所花费的最长时间
+- Operator finish duration：已完成的 operator 所花费的最长时间
 - Operator step duration：已完成的 operator 的步骤所花费的最长时间
 
 ![PD Dashboard - Operator metrics](/media/pd-dashboard-operator-v4.png)
@@ -66,23 +66,23 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 
 ## Statistics - hot write
 
-- Hot Region's leader distribution：每个 TiKV 实例上写入热点的 leader 的数量
-- Total written bytes on hot leader Regions：每个 TiKV 实例上所有热点的 leader 的总的写入流量大小
-- Hot write Region's peer distribution：每个 TiKV 实例上写入热点的 peer 的数量
-- Total written bytes on hot peer Regions：每个 TiKV 实例上所有热点的 peer 的写入流量大小
+- Hot Region's leader distribution：每个 TiKV 实例上成为写入热点的 leader 的数量
+- Total written bytes on hot leader Regions：每个 TiKV 实例上所有成为写入热点的 leader 的总的写入流量大小
+- Hot write Region's peer distribution：每个 TiKV 实例上成为写入热点的 peer 的数量
+- Total written bytes on hot peer Regions：每个 TiKV 实例上所有成为写入热点的 peer 的写入流量大小
 - Store Write rate bytes：每个 TiKV 实例总的写入的流量
 - Store Write rate keys：每个 TiKV 实例总的写入 keys
 - Hot cache write entry number：每个 TiKV 实例进入热点统计模块的 peer 的数量
 - Selector events： 热点调度中选择器的事件发生次数
-- Direction of hotspot move leader：热点调度 leader 的调度方向，正数代表调入，负数代表调出
-- Direction of hotspot move peer： 热点调度 peer 的调度方向，正数代表调入，负数代表调出
+- Direction of hotspot move leader：热点调度中 leader 的调度方向，正数代表调入，负数代表调出
+- Direction of hotspot move peer： 热点调度中 peer 的调度方向，正数代表调入，负数代表调出
 
 ![PD Dashboard - Hot write metrics](/media/pd-dashboard-hotwrite-v4.png)
 
 ## Statistics - hot read
 
-- Hot Region's leader distribution：每个 TiKV 实例上读取热点的 leader 的数量
-- Total read bytes on hot leader Regions：每个 TiKV 实例上所有热点的 leader 的总的读取流量大小
+- Hot Region's leader distribution：每个 TiKV 实例上成为读取热点的 leader 的数量
+- Total read bytes on hot leader Regions：每个 TiKV 实例上所有成为读取热点的 leader 的总的读取流量大小
 - Store read rate bytes：每个 TiKV 实例总的读取的流量
 - Store read rate keys：每个 TiKV 实例总的读取 keys
 - Hot cache read entry number：每个 TiKV 实例进入热点统计模块的 peer 的数量
@@ -98,7 +98,6 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 - Balance Region event：balance Region 的事件数量
 - Balance leader scheduler：balance-leader scheduler 的状态
 - Balance Region scheduler：balance-region scheduler 的状态
-- Namespace checker：namespace checker 的状态
 - Replica checker：replica checker 的状态
 - Rule checker：rule checker 的状态
 - Region merge checker：merge checker 的状态
