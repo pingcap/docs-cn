@@ -131,7 +131,11 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 表达式索引
 
-表达式索引目前是一个实验特性。如果需要使用这一特性，在配置文件中进行以下设置：
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+如果需要使用这一特性，在配置文件中进行以下设置：
 
 {{< copyable "sql" >}}
 
@@ -184,6 +188,8 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## 另请参阅
 
+* [索引的选择](/index-choose.md)
+* [错误索引的解决方案](/wrong-index-solution.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
