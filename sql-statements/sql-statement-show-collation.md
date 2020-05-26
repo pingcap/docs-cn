@@ -69,8 +69,9 @@ SHOW COLLATION;
 
 ## MySQL 兼容性
 
-`SHOW COLLATION` 语句功能与 MySQL 完全兼容。注意，TiDB 中字符集的默认排序规则与 MySQL 有所不同，具体可参考[与 MySQL 兼容性对比](/mysql-compatibility.md)。对于其他问题导致的兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。  
+`SHOW COLLATION` 语句功能与 MySQL 完全兼容。注意，TiDB 中字符集的默认排序规则与 MySQL 有所不同，具体可参考[与 MySQL 兼容性对比](/mysql-compatibility.md#默认设置)。对于其他问题导致的兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
 
 ## 另请参阅
 
 * [SHOW CHARACTER SET](/sql-statements/sql-statement-show-character-set.md)
+* [字符集和排序规则](/character-set-and-collation.md)
