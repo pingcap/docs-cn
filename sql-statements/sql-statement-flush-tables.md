@@ -23,6 +23,10 @@ aliases: ['/docs-cn/dev/reference/sql/statements/flush-tables/']
 
 ![FlushOption](/media/sqlgram/FlushOption.png)
 
+**LogTypeOpt:**
+
+![LogTypeOpt](/media/sqlgram/LogTypeOpt.png)
+
 **TableOrTables:**
 
 ![TableOrTables](/media/sqlgram/TableOrTables.png)
