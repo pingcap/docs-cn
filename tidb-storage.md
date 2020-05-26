@@ -2,7 +2,6 @@
 title: TiDB 数据库的存储
 summary: 了解 TiDB 数据库的存储层。
 category: introduction
-aliases: ['/docs-cn/stable/architecture/']
 ---
 
 # TiDB 数据库的存储
