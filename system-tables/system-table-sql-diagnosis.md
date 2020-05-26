@@ -7,6 +7,10 @@ aliases: ['/docs-cn/dev/reference/system-databases/sql-diagnosis/']
 
 # SQL 诊断
 
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
 SQL 诊断功能是在 TiDB 4.0 版本中引入的特性，用于提升 TiDB 问题定位的效率。TiDB 4.0 版本以前，用户需要使用不同工具获取以异构的方式获取不同信息。
 新的 SQL 诊断系统对这些离散的信息进行了整体设计，它整合系统各个维度的信息，通过系统表的方式向上层提供一致的接口，提供监控汇总与自动诊断，方便用户查询集群信息。
 
@@ -14,7 +18,7 @@ SQL 诊断共分三大块：
 
 * **集群信息表**：TiDB 4.0 诊断系统添加了集群信息表，为原先离散的各实例信息提供了统一的获取方式。它将整个集群的集群拓扑、硬件信息、软件信息、内核参数、监控、系统信息、慢查询、语句、日志完全整合在表中，让用户能够统一使用 SQL 进行查询。
 * **集群监控表**：TiDB 4.0 诊断系统添加了集群监控系统表，所有表都在 `metrics_schema` 中，可以通过 SQL 语句来查询监控信息。比起原先的可视化监控，SQL 查询监控允许用户对整个集群的所有监控进行关联查询，并对比不同时间段的结果，迅速找出性能瓶颈。由于 TiDB 集群的监控指标数量较大，SQL 诊断还提供了监控汇总表，让用户能够更便捷地从众多监控中找出异常的监控项。
-* **自动诊断**：尽管用户可以手动执行 SQL 来查询集群信息表、集群监控表与汇总表，但自动诊断更加方便。所以 SQL 诊断基于已有的集群信息表和监控表，提供了与之相关的诊断结果表与诊断汇总表来执行自动诊断。
+* **自动诊断**：尽管用户可以手动执行 SQL 来查询集群信息表、集群监控表与汇总表来定位问题，但自动诊断可以快速对常见异常进行定位。SQL 诊断基于已有的集群信息表和监控表，提供了与之相关的诊断结果表与诊断汇总表来执行自动诊断。
 
 ## 集群信息表
 
@@ -39,11 +43,11 @@ TiDB 4.0 之前的系统表，只能查看当前实例信息，TiDB 4.0 实现�
 由于 TiDB 集群的监控指标数量较大，因此 TiDB 4.0 提供以下监控汇总表：
 
 * 监控汇总表 [`information_schema.metrics_summary`](/system-tables/system-table-metrics-summary.md) 用于汇总所有监控数据，以提升用户排查各监控指标的效率。
-* 监控汇总表 [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md) 同样用于汇总所有监控数据，不过该表会对不同的 label 进行区分统计。
+* 监控汇总并按 label 聚合表 [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md) 同样用于汇总所有监控数据，但该表会对各项监控的不同的 label 进行聚合统计。
 
 ## 自动诊断
 
-以上集群信息表和集群监控表均需要用户手动执行固定模式的 SQL 语句来排查集群问题。为了进一步优化用户体验，TiDB 根据已有的基础信息表，提供诊断相关的系统表，使诊断自动执行。自动诊断相关的系统表如下：
+以上集群信息表和集群监控表均需要用户手动执行 SQL 语句来排查集群问题。TiDB 4.0 中添加了自动诊断功能，根据已有的基础信息表，提供诊断相关的系统表，使诊断自动执行。自动诊断相关的系统表如下：
 
 * 诊断结果表 [`information_schema.inspection_result`](/system-tables/system-table-inspection-result.md) 用于展示对系统的诊断结果。诊断是惰性触发，使用 `select * from inspection_result` 会触发所有诊断规则对系统进行诊断，并在结果中展示系统中的故障或风险。
 * 诊断汇总表 [`information_schema.inspection_summary`](/system-tables/system-table-inspection-summary.md) 用于对特定链路或模块的监控进行汇总，用户可以根据整个模块或链路的上下文来排查定位问题。

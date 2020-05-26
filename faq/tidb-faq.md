@@ -50,7 +50,7 @@ TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQ
 
 #### 1.1.9 TiDB 支持分布式事务吗？
 
-支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/geo-redundancy-deployment.md)，TiDB 均支持 ACID 分布式事务。
+支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/multi-data-centers-in-one-city-deployment.md)，TiDB 均支持 ACID 分布式事务。
 
 TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。
 
@@ -925,7 +925,7 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 - 建议提升硬件配置，可以参考[部署建议](/hardware-and-software-requirements.md)。
 - 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 - 测试大数据量的 count。
-- 调优 TiKV 配置，可以参考[性能调优](/tune-tikv-performance.md)。
+- 调优 TiKV 配置，可以参考[线程池性能调优](/tune-tikv-thread-performance.md)与[内存性能调优](/tune-tikv-memory-performance.md)。
 
 #### 5.1.3 查看当前 DDL 的进度？
 
@@ -986,7 +986,7 @@ TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指�
 
 #### 6.2.1 TiKV 性能参数调优
 
-详情参考 [TiKV 性能参数调优](/tune-tikv-performance.md)。
+详情参考[线程池性能调优](/tune-tikv-thread-performance.md) 与[内存性能调优](/tune-tikv-memory-performance.md)。
 
 ## 七、监控
 
