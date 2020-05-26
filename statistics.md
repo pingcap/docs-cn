@@ -183,11 +183,11 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 {{< copyable "sql" >}}
 
+其中，`ShowLikeOrWhereOpt` 部分的语法图为：
+
 ```sql
 SHOW STATS_META [ShowLikeOrWhere];
 ```
-
-该语句会输出所有表的总行数以及修改行数等信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
 
 目前 `SHOW STATS_META` 会输出 6 列，具体如下：
 
