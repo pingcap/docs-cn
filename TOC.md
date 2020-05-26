@@ -451,6 +451,7 @@
   + [License FAQ](/faq/licensing-faq.md) @荣毅龙/启航
   + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
   + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
+  + [迁移 FAQ](/faq/migration-tidb-faq.md) @荣毅龙
 + [开发指南]
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
 + [术语表](/glossary.md) @李琳
