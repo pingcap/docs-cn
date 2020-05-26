@@ -4,7 +4,7 @@ summary: TiDB 数据库中 SHOW STATS_META 语句的简单说明。
 category: reference
 ---
 
-# SHOW STATS_HISTOGRAMS
+# SHOW STATS_META
 
 你可以通过 `SHOW STATS_META` 来查看表的总行数以及修改的行数等信息，可以通过 ShowLikeOrWhere 来筛选需要的信息。
 
