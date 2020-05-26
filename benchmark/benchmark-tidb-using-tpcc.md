@@ -77,12 +77,9 @@ NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
 NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
 ```
 
-之后可以通过修改 `{tidb_deploy_path}/scripts/run_tidb.sh` 启动脚本，加入 `numactl` 来启动 TiDB ：
+之后可以通过修改 `{tidb_deploy_path}/scripts/run_tidb.sh` 启动脚本，加入 `numactl` 来启动 TiDB：
 
-{{< copyable "shell-regular" >}}
-
-```shell
-$ cat run_tidb.sh 
+```text
 #!/bin/bash
 set -e
 
