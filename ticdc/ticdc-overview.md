@@ -69,7 +69,7 @@ TiCDC 的详细部署和任务管理说明请参考 [TiCDC 运维操作及任务
 
 ## TiCDC 常见问题
 
-在使用 TiCDC 过程中经常遇到的问题以及相对应的解决方案请参考 [TiCDC 常见问题](/troubleshoot-ticdc.md)。
+在使用 TiCDC 过程中经常遇到的问题以及相对应的解决方案请参考 [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)。
 
 ## TiCDC 开放数据协议
 
