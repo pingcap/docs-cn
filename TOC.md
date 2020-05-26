@@ -161,7 +161,25 @@
   + Backup & Restore (BR)
     + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md) @余峻岑
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @余峻岑
-  + TiDB Lightning @kenny
+  + TiDB Binlog
+    + [概述](/tidb-binlog/tidb-binlog-overview.md)
+    + [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
+    + [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
+    + [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
+      + [Pump](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
+      + [Drainer](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
+    + [版本升级](/tidb-binlog/upgrade-tidb-binlog.md)
+    + [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
+    + [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
+    + [Kafka 自定义开发](/tidb-binlog/binlog-slave-client.md)
+    + [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
+    + [集群间双向同步](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
+    + [术语表](/tidb-binlog/tidb-binlog-glossary.md)
+    + 故障诊断
+      + [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
+      + [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
+    + [FAQ](/tidb-binlog/tidb-binlog-faq.md)
+  + TiDB Lightning
     + [概述](/tidb-lightning/tidb-lightning-overview.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
