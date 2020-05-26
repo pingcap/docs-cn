@@ -77,7 +77,7 @@ category: how-to
 
 ### 诊断信息
 
-TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考 [information_schema.inspection-result](/system-tables/inspection-result.md) 系统表的内容。
+TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考 [information_schema.inspection-result](/system-tables/system-table-inspection-result.md) 系统表的内容。
 
 ### 负载信息
 
