@@ -29,7 +29,7 @@ dumpling \
   -F $(( 1024 * 1024 * 256 ))
 ```
 
-上述命令中，`-H`、`-P`、`-u` 是经典的“地址，端口，用户”三元组。如果需要密码验证，可以用 `-p $YOUR_SECRET_PASSWORD` 传给 Dumpling。
+上述命令中，`-H`、`-P`、`-u` 分别是地址，端口，用户。如果需要密码验证，可以用 `-p $YOUR_SECRET_PASSWORD` 传给 Dumpling。
 
 默认情况下，除了系统数据库中的表之外，Dumpling 会导出整个数据库的表。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。假如导出数据的格式是 CSV（使用 `--filetype csv` 即可导出 CSV 文件），还可以使用 `--sql <SQL>` 导出指定 SQL 选择出来的记录，例如，导出 `test.sbtest1` 中所有 `id < 100` 的记录：
 
@@ -45,7 +45,7 @@ dumpling \
   --sql "select * from `test`.`sbtest1` where id < 100"
 ```
 
-在导出目标为 SQL 的时候，`--sql` 暂时不可用。但是仍旧可以用 `--where` 来过滤要导出的行，使用以下指令，可以导出所有 `id < 100` 的记录：
+注意，`--sql` 选择暂时仅仅可用于导出 csv 的场景。但是仍旧可以用 `--where` 来过滤要导出的行，使用以下指令，可以导出所有 `id < 100` 的记录：
 
 > **注意：**
 > 
