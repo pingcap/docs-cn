@@ -47,7 +47,7 @@ TiDB 中，对于自增列隐式分配的值，只保证单节点的自增和全
 
 ### Performance schema
 
-Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/monitor-a-tidb-cluster.md) 来监测性能指标。
+Performance schema 表在 TiDB 中返回结果为空。TiDB 使用 [Prometheus 和 Grafana](/tidb-monitoring-api.md) 来监测性能指标。
 
 针对 SQL 性能相关的问题，从 TiDB 4.0.0-rc.1 版本开始，TiDB 支持 `statements_summary`（和 MySQL 中的 `events_statements_summary_by_digest` 功能相似），用于监控和统计 SQL 语句。参见 [Statement Summary Table](/statement-summary-tables.md)。
 
