@@ -198,7 +198,7 @@ mysql> show warnings;
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
 
-上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置。`db-name` 的取值可以为是 `rocksdb`，`raftdb`。
+上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置。`db-name` 的取值可为 `rocksdb`，`raftdb`。
 
 - 当 `db-name` 为 `rocksdb` 时，cf-name 的取值有: `defaultcf`，`writecf`，`lockcf`，`raftcf`；
 - 当 `db-name` 为 `raftdb` 时，cf-name 的取值有: `defaultcf`。
