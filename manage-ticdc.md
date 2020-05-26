@@ -14,33 +14,13 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 
 #### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
 
-  详细操作参考[使用 TiUP 部署 TiCDC](/production-deployment-using-tiup.md#场景-4通过-ticdc-同步到下游)。
+详细操作参考[使用 TiUP 部署 TiCDC](/production-deployment-using-tiup.md#场景-4通过-ticdc-同步到下游)。
 
 #### 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
 
 1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
 
 2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#扩容-tidbpdtikv-节点) 章节对 TiCDC 进行部署。
-
-   示例的扩容配置文件为：
-
-   ```shell
-   vi scale-out.yaml
-   ```
-
-   ```
-   cdc_servers:
-    - host: 10.0.1.5
-    - host: 10.0.1.6
-    - host: 10.0.1.7
-   ```
-
-   随后执行扩容命令即可：
-   {{< copyable "shell-regular" >}}
-
-   ```shell
-   tiup cluster scale-out <cluster-name> scale-out.yaml
-   ```
 
 ### 在原有 TiDB 集群上使用 binary 部署 TiCDC 组件
 
