@@ -133,3 +133,23 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 3. 确保整个集群使用的是同一最新版本的 `tzdata` (2018i 或更高版本)。
 
     如果你使用的是 CentOS 机器，你可以运行 `yum info tzdata` 命令查看 `tzdata` 的版本及是否有更新。然后运行 `yum upgrade tzdata` 命令升级 `tzdata`。
+<<<<<<< HEAD
+=======
+
+## `[Error 8025: entry too large, the max entry size is 6291456]`
+
+**原因**：TiDB Lightning 生成的单行 KV 超过了 TiDB 的限制。
+
+**解决办法**:
+
+目前无法绕过 TiDB 的限制，只能忽略这张表，确保其它表顺利导入。
+
+## switch-mode 时遇到 `rpc error: code = Unimplemented ...`
+
+**原因**：集群中有不支持 switch-mode 的节点。目前已知的组件中，4.0.0-rc.2 之前的 TiFlash [不支持 switch-mode 操作](https://github.com/pingcap/tidb-lightning/issues/273)。
+
+**解决办法**：
+
+- 如果集群中有 TiFlash 节点，可以将集群更新到 4.0.0-rc.2 或更新版本。
+- 如果不方便升级，可以临时禁用 TiFlash。
+>>>>>>> cbb3380... Add FAQ documents to BR (#3344)
