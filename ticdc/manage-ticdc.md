@@ -68,7 +68,7 @@ cdc cli changefeed list --pd=http://127.0.0.1:2379
 
 #### 查询特定同步任务
 
-使用以下命令来查询特定同步任务：
+使用以下命令来查询特定同步任务（对应某个同步任务的信息和状态）：
 
 {{< copyable "shell-regular" >}}
 
