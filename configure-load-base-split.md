@@ -1,6 +1,6 @@
 ---
 title: Load Base Split
-summary: 如何使用 Load Base Split 功能。
+summary: 介绍 Load Base Split 功能。
 category: how-to
 ---
 
@@ -8,7 +8,7 @@ category: how-to
 
 Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访问分布不均匀造成的热点问题，比如小表的全表扫描。
 
-## 背景
+## 场景描述
 
 在 TiDB 中，当流量集中在某些节点时很容易形成热点。PD 会尝试通过调度 Hot Region，尽可能让这些 Hot Region 均匀分布在各个节点上，以求获得更好的性能。
 
@@ -29,19 +29,34 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 
 ## 使用方法
 
-目前的 Load Base Split 的控制参数，主要是前文提到的阈值，也即 `split.qps-threshold`，这个阈值的含义是：如果连续 10s 内，某个 Region 每秒的各类读请求之和超过 `split.qps-threshold` ，那么就对对此 Region 进行拆分。
+目前的 Load Base Split 的控制参数为 `split.qps-threshold`。这个阈值的含义是：如果连续 10s 内，某个 Region 每秒的各类读请求之和超过 `split.qps-threshold`，那么就对此 Region 进行拆分。
 
-当下的策略是默认开启的，但相对保守，默认值是 3000。如果想要关闭这个功能，可以将这个阈值调到足够高即可。
+目前默认开启 Load Base Split，但配置相对保守，默认为 `3000`。如果想要关闭这个功能，可以将这个阈值调到足够高即可。
 
 目前有两种办法修改配置：
 
-- 通过 SQL 修改，`set config tikv split.qps-threshold=3000`。
+- 通过 SQL 语句修改，例如：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    set config tikv split.qps-threshold=3000
+    ```
 
 - 通过 TiKV 修改，`curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'`。
 
 同理，目前也有两种办法查看配置：
 
-- 通过 SQL 查看，`show config where type='tikv' and name like '%split.qps-threshold%'`。
+- 通过 SQL 查看，例如：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    show config where type='tikv' and name like '%split.qps-threshold%'
+    ```
+
 - 通过 TiKV 查看，`curl "http://ip:status_port/config"`。
 
-*注：从 4.0.0-rc.2 起可以使用 SQL 语句来修改和查看配置*
+> **注意**
+>
+> 从 v4.0.0-rc.2 起可以使用 SQL 语句来修改和查看配置。
