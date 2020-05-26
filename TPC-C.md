@@ -31,13 +31,15 @@ category: introduction
 
 #### v3.0
 
-#### tidb:
+#### tidb
+
     log.level: “error”
     performance.max-procs: 20
     prepared-plan-cache.enabled: true
     tikv-client.max-batch-wait-time: 2000000
     
-#### tikv:
+#### tikv
+
     storage.scheduler-worker-pool-size: 5
     raftstore.store-pool-size: 3
     raftstore.apply-pool-size: 3
@@ -49,13 +51,16 @@ category: introduction
     readpool.coprocessor.normal-concurrency: 5
 
 ### v4.0
-#### tidb:
+
+#### tidb
+
     log.level: "error"
     performance.max-procs: 20
     prepared-plan-cache.enabled: true
     tikv-client.max-batch-wait-time: 2000000
     
-#### tikv:
+#### tikv
+
     storage.scheduler-worker-pool-size: 5
     raftstore.store-pool-size: 3
     raftstore.apply-pool-size: 3
