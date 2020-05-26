@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 - Normal stores：处于正常状态的节点数目
 - Number of Regions：当前集群的 Region 总量
 - Abnormal stores：处于异常状态的节点数目，正常情况应当为 0
-- Region health：集群所有 Region 的状态，通常情况下，pending 或 down 的 peer 应该少于 100，miss 的 peer 不能一直大于 0, empty region 过多需及时打开 region merge
+- Region health：集群所有 Region 的状态，通常情况下，pending 或 down 的 peer 应该少于 100，miss 的 peer 不能一直大于 0， empty region 过多需及时打开 region merge
 - Current peer count：当前集群 peer 的总量
 ![PD Dashboard - Header](/media/pd-dashboard-header-v4.png)
 
