@@ -133,4 +133,5 @@ pessimistic-txn.pipelined: true
 
 #### TPC-C
 
-![TPC-C](/media/tpcc_v4vsv3.png)
+TODO
+<!-- ![TPC-C](/media/tpcc_v4vsv3.png) -->
