@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/overview/']
 >
 > TiCDC 目前为实验特性，不建议在生产环境中使用。
 
-[TiCDC](https://github.com/pingcap/ticdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供[开放数据协议](/ticdc-open-protocol.md) (TiCDC Open Protocol)，支持其他系统订阅数据变更。
+[TiCDC](https://github.com/pingcap/ticdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供[开放数据协议](/ticdc/ticdc-open-protocol.md) (TiCDC Open Protocol)，支持其他系统订阅数据变更。
 
 ## TiCDC 架构
 
@@ -65,7 +65,7 @@ TiCDC 的系统架构如下图所示：
 
 ## TiCDC 部署和任务管理
 
-TiCDC 的详细部署和任务管理说明请参考 [TiCDC 运维操作及任务管理](/manage-ticdc.md)。
+TiCDC 的详细部署和任务管理说明请参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)。
 
 ## TiCDC 常见问题
 
@@ -73,4 +73,4 @@ TiCDC 的详细部署和任务管理说明请参考 [TiCDC 运维操作及任务
 
 ## TiCDC 开放数据协议
 
-TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ(Message Queue) 等第三方数据媒介复制 TiDB 的数据变更。详细信息参考 [TiCDC 开放数据协议](/ticdc-open-protocol.md)。
+TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ(Message Queue) 等第三方数据媒介复制 TiDB 的数据变更。详细信息参考 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)。
