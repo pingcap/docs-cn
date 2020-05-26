@@ -115,7 +115,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Receive messages per server：每个 TiKV 实例接受 Raft 消息的 ops
 - Messages：发送不同类型的 Raft 消息的 ops
 - Vote：Raft 投票消息发送的 ops
-- Raft dropped messages：丢弃不同类型的 Raft 消息的 ops
+- Raft dropped messages：每秒钟丢弃不同类型的 Raft 消息的个数
 
 ![TiKV Dashboard - Raft message metrics](/media/tikv-dashboard-raft-message.png)
 
@@ -126,9 +126,9 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Raft read proposals per server：每个 TiKV 实例发起读 proposal 的 ops
 - Raft write proposals per server：每个 TiKV 实例发起写 proposal 的 ops
 - Propose wait duration：proposal 的等待时间的直方图
-- Propose wait duration per server：每秒钟内每个 TiKV 实例上每个 proposal 的等待时间
-- Apply wait duration：每秒钟内每个 apply 的等待时间
-- Apply wait duration per server：每秒钟每个 TiKV 实例上每个 apply 的等待时间
+- Propose wait duration per server：每个 TiKV 实例上每个 proposal 的等待时间的直方图
+- Apply wait duration：apply 的等待时间的直方图
+- Apply wait duration per server：每个 TiKV 实例上每个 apply 的等待时间的直方图
 - Raft log speed：peer propose 日志的平均速度
 
 ![TiKV Dashboard - Raft propose metrics](/media/tikv-dashboard-raft-propose.png)
@@ -249,19 +249,19 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Task
 
-- Worker handled tasks：worker 处理的任务 ops
-- Worker pending tasks：当前 worker 中，pending 和 running 的任务的 ops，正常情况下，应该小于 1000
-- FuturePool handled tasks：future pool 处理的任务的 ops
-- FuturePool pending tasks：当前 future pool 中，pending 和 running 的任务的 ops
+- Worker handled tasks：worker 每秒钟处理的任务的数量
+- Worker pending tasks：当前 worker 中，每秒钟 pending 和 running 的任务的数量，正常情况下，应该小于 1000
+- FuturePool handled tasks：future pool 每秒钟处理的任务的数量
+- FuturePool pending tasks：当前 future pool 中，每秒钟 pending 和 running 的任务的数量
 
 ## Coprocessor Overview
 
-- Request duration：从开始处理 coprocessor 请求到结束所消耗的总时间
+- Request duration：从收到 coprocessor 请求到处理结束所消耗的总时间
 - Total Requests：每种类型的总请求的 ops
 - Handle duration：每分钟实际处理 coprocessor 请求所消耗的时间的直方图
-- Total Request Errors：Coprocessor 请求错误的 ops，正常情况下，短时间内不应该有大量的错误
+- Total Request Errors：Coprocessor 每秒请求错误的数量，正常情况下，短时间内不应该有大量的错误
 - Total KV Cursor Operations：各种类型的 KV cursor 操作的总数量的 ops，例如 select、index、analyze_table、analyze_index、checksum_table、checksum_index 等
-- KV Cursor Operations：各种类型的 KV cursor 操作的数量的 ops，以直方图形式显示
+- KV Cursor Operations：每秒各种类型的 KV cursor 操作的数量，以直方图形式显示
 - Total RocksDB Perf Statistics：RocksDB 性能统计数据
 - Total Response Size：coprocessor 回应的数据大小
 
@@ -393,42 +393,28 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
     - kv_get：事务型的 get 命令，查询指定版本之前的数据
     - kv_scan：扫描指定 key 之后的 key/value pair
-    - kv_prewrite：写入 TiKV 的第一个阶段，包含一个事务中所有要写入的数据
+    - kv_prewrite：2PC 的第一阶段，预写入事务要提交的数据
     - kv_pessimistic_lock：对 key 加悲观锁，防止其他事务修改
     - kv_pessimistic_rollback：删除 key 上的悲观锁
     - kv_txn_heart_beat：更新悲观事务或大事务的 `lock_ttl` 以防止其被回滚
     - kv_check_txn_status：检查事务的状态
-    - kv_commit：写入 TiKV 的第二个阶段，提交事务并使 prewrite 写下的数据可见
+    - kv_commit：2PC 的第二阶段，提交 prewrite 阶段写入的数据
     - kv_cleanup：回滚一个事务（此命令将会在 4.0 中废除）
     - kv_batch_get：与 `kv_get` 类似，一次性获取批量 key 的 value
-    - kv_batch_rollback：回滚 prewrite 写下的锁和数据
-    - kv_scan_lock：扫描所有版本号在 `max_version` 之前的锁，用于在 GC 的初始阶段找到所有的旧锁
+    - kv_batch_rollback：批量回滚多个预写的事务
+    - kv_scan_lock：扫描所有版本号在 `max_version` 之前的锁，用于清理过期的事务
     - kv_resolve_lock：根据事务状态，提交或回滚事务的锁
-    - kv_gc：触发垃圾回收以清理 `safe_point` 之前的数据
-    - kv_delete_range：从 TiKV 中删除一系列的数据
+    - kv_gc：触发垃圾回收
+    - kv_delete_range：从 TiKV 中删除连续的一段数据
 
 2. 非事务型的裸命令：
 
-    - raw_get：使用 key 查询 value
-    - raw_batch_get：批量地使用 key 查询 value
-    - raw_scan：根据一个 key 的范围扫描 value
-    - raw_batch_scan：根据多个 key 的范围扫描 value
-    - raw_put：直接写入一对 key 和 value，需要提供写入的 CF
-    - raw_batch_put：直接写入多对 key 和 value，需要提供写入的 CF
-    - raw_delete：删除指定的 key，需要提供删除所在的 CF
-    - raw_batch_delete：批量删除多个指定的 key，需要提供删除所在的 CF
-    - raw_delete_range：删除一个范围的 key，需要提供删除所在的 CF
-
-3. 存储命令（发送到集群中所有的 TiKV 节点）：
-
-    - unsafe_destroy_range：绕过 raft 层直接从存储引擎删除一个范围的 key
-    - register_lock_observer：注册一个 observer，用于监听 max_ts 之前的锁
-    - check_lock_observer：检查之前 observer 的状态，取得其收集的锁
-    - remove_lock_observer：关闭相应的 observer，不再进行监听
-    - physical_scan_lock：绕过 raft 层直接在物理层扫描 Lock CF，返回 max_tx 之前的锁
-
-4. 在 Coprocessor 中执行 SQL 的命令（下推到 TiKV 执行的命令）：
-
-    - coprocessor：由 TiDB 发送的 coprocessor 请求
-    - coprocessor_stream：由 TiDB 发送的 coprocessor 请求，以流形式返回
-    - batch_coprocessor：由 TiDB 发送的多个 coprocessor 请求
+    - raw_get：获取 key 所对应的 value
+    - raw_batch_get：获取一批 key 所对应的 value
+    - raw_scan：扫描一段连续的数据
+    - raw_batch_scan：扫描多段连续的数据
+    - raw_put：直接写入一个 key/value 对
+    - raw_batch_put：直接写入一批 key/value 对
+    - raw_delete：删除一个 key/value 对
+    - raw_batch_delete：删除一批 key/value 对
+    - raw_delete_range：删除连续的一段区间
