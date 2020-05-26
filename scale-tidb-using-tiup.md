@@ -343,11 +343,33 @@ tiup cluster display <cluster-name>
 
 ### 5.2 手动缩容 TiFlash 节点
 
-1. 在 [pd-ctl](/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 store 命令，查看该 TiFlash 节点对应的 store id。
+1. 使用 pd-ctl 的 store 命令在 PD 中查看该 TiFlash 节点对应的 store id。
 
-2. 在 pd-ctl 中输入 `store delete <store_id>`，其中 <store_id> 为上一步查到的该 TiFlash 节点对应的 store id。
+    * 在 [pd-ctl](/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 store 命令。
+
+    * 若使用 TiUP 部署，则请调用以下命令：
+
+      {{< copyable "shell-regular" >}}
+
+      ```shell
+      tiup ctl pd -u <pd-address> store
+      ```
+
+2. 在 pd-ctl 中下线该 TiFlash 节点。
+
+    * 在 pd-ctl 中输入 `store delete <store_id>`，其中 <store_id> 为上一步查到的该 TiFlash 节点对应的 store id。
+
+    * 若通过 TiUP 部署，则请调用以下命令：
+
+      {{< copyable "shell-regular" >}}
+
+      ```shell
+      tiup ctl pd -u <pd-address> store delete <store_id>
+      ```
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
+
+4. 手动删除 TiFlash 的数据文件，其目录由用户先前配置于 TiFlash 配置文件中。
 
 > **注意：**
 >
