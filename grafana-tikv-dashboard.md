@@ -273,10 +273,10 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - 95% Wait duration by store：每秒钟 95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
 - Total DAG Requests：DAG 请求的总数量的 ops
 - Total DAG Executors：DAG executor 的总数量的 ops
-- Total Ops Details (Table Scan)：coprocessor 中请求为 select 的 scan 情况
-- Total Ops Details (Index Scan)：coprocessor 中请求为 index 的 scan 情况
-- Total Ops Details by CF (Table Scan)：coprocessor 中对于每个 CF 请求为 select 的 scan 情况
-- Total Ops Details by CF (Index Scan)：coprocessor 中对于每个 CF 请求为 index 的 scan 情况
+- Total Ops Details (Table Scan)：coprocessor 中请求为 select 的 scan 过程中每秒钟各种事件发生的次数
+- Total Ops Details (Index Scan)：coprocessor 中请求为 index 的 scan 过程中每秒钟各种事件发生的次数
+- Total Ops Details by CF (Table Scan)：coprocessor 中对于每个 CF 请求为 select 的 scan 过程中每秒钟各种事件发生的次数
+- Total Ops Details by CF (Index Scan)：coprocessor 中对于每个 CF 请求为 index 的 scan 过程中每秒钟各种事件发生的次数
 
 ## Threads
 
@@ -632,14 +632,3 @@ tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面
 - initializing：初始化 GC 管理器，包括启动新的线程分配 worker
 - idle：在没有到 safe point 时间之前保持 idle 状态
 - working：开始进行 GC 任务，参考 [GC doc](https://pingcap.com/docs-cn/dev/garbage-collection-overview/)
-
-### GC keys detail
-
-- total：
-- processed：
-- get：
-- next：
-- prev：
-- seek：
-- seek_for_prev：
-- over_seek_bound：
