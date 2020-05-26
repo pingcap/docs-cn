@@ -69,7 +69,8 @@
     + [使用 TiUP](/scale-tidb-using-tiup.md) @刘金龙
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
   + 备份与恢复
-    + [使用 Mydumper 和 TiDB Lightning](/backup-and-restore-using-mydumper-lightning.md) @栾成
+    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md) @栾成
+    + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
@@ -419,6 +420,7 @@
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
     + TiKV
+      + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
