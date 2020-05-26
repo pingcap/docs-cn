@@ -153,6 +153,7 @@
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) @李坤
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md) @李建俊
   + [Placement Rules 使用文档](/configure-placement-rules.md) @黄梦龙
+  + [Load Base Split 使用文档](/configure-load-base-split.md)
 + TiDB 生态工具
   + [工具使用指南](/ecosystem-tool-user-guide.md)
   + [工具下载](/download-ecosystem-tools.md)
