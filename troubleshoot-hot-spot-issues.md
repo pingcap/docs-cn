@@ -5,17 +5,17 @@ category: reference
 
 # TiDB 热点问题处理
 
-本文适用于 TiDB 4.0 版本，介绍了如何定位和解决读写热点问题。
+本文适用于 TiDB 4.0 版本，介绍如何定位和解决读写热点问题。
 
-TiDB 作为分布式数据库，自身拥有一些负载均衡机制，尽可能将业务负载均匀地分布到不同计算或存储节点上，更好地利用上整体系统资源。然而，机制不是万能的，在一些场景下仍会有部分业务负载不能被很好地分散，影响性能，形成单点的过高负载，也称为热点。
+TiDB 作为分布式数据库，内建负载均衡机制，尽可能将业务负载均匀地分布到不同计算或存储节点上，更好地利用上整体系统资源。然而，机制不是万能的，在一些场景下仍会有部分业务负载不能被很好地分散，影响性能，形成单点的过高负载，也称为热点。
 
 TiDB 提供了完整的方案用于排查、解决或规避这类热点。通过均衡负载热点，可以提升整体性能，包括提高 QPS 和降低延迟等。
 
 ## 常见热点场景
 
-### TiDB 编码规则介绍
+### TiDB 编码规则回顾
 
-TiDB 对每个表分配一个 TableID，每一个索引都会分配一个 IndexID，每一行分配一个 RowID（如果表有整数型的 Primary Key，那么会用 Primary Key 的值当做 RowID），其中 TableID 在整个集群内唯一，IndexID/RowID 在表内唯一，这些 ID 都是 int64 类型。
+TiDB 对每个表分配一个 TableID，每一个索引都会分配一个 IndexID，每一行分配一个 RowID（默认情况下，如果表使用整数型的 Primary Key，那么会用 Primary Key 的值当做 RowID）。其中 TableID 在整个集群内唯一，IndexID/RowID 在表内唯一，这些 ID 都是 int64 类型。
 
 每行数据按照如下规则进行编码成 Key-Value pair：
 
@@ -42,19 +42,19 @@ Value: null
 
 ### 表热点
 
-由 TiDB 编码规则可知，同一个表的数据会在以表 id 开头为前缀的一个 range 中，数据的顺序按照 RowID 的值顺序排列。在表 insert 的过程中如果 RowID 的值是递增的，则插入的行只能在末端追加。当 region 达到一定的大小之后会进行分裂，分裂之后还是只能在 range 范围的末端追加，此时永远只能在一个 region 上进行 insert 操作，形成热点。
+从 TiDB 编码规则可知，同一个表的数据会在以表 id 开头为前缀的一个 range 中，数据的顺序按照 RowID 的值顺序排列。在表 insert 的过程中如果 RowID 的值是递增的，则插入的行只能在末端追加。当 region 达到一定的大小之后会进行分裂，分裂之后还是只能在 range 范围的末端追加，永远只能在一个 region 上进行 insert 操作，形成热点。
 
-常见的 increment 类型自增主键就是顺序递增的，在主键为整数型时，会用主键值当做 RowID ，此时 RowID 为顺序递增，在大量 insert 时形成表的写入热点。
+常见的 increment 类型自增主键就是顺序递增的，默认情况下，在主键为整数型时，会用主键值当做 RowID ，此时 RowID 为顺序递增，在大量 insert 时形成表的写入热点。
 
 同时，TiDB 中 RowID 默认也按照自增的方式顺序递增，主键不为整数类型时，同样会遇到写入热点的问题。
 
 ### 索引热点
 
-索引热点与表热点类似，常见的热点场景出现在时间顺序递增的字段，或者插入大量重复值的场景。
+索引热点与表热点类似，常见的热点场景出现在时间顺序单调递增的字段，或者插入大量重复值的场景。
 
 ## 确定存在热点问题
 
-性能问题不一定是热点造成的，也有可能有多个因素共同影响，在排查前需要先确认是否与热点相关。
+性能问题不一定是热点造成的，也可能存在多个因素共同影响，在排查前需要先确认是否与热点相关。
 
 - 判断写热点依据：打开监控面板 TiKV-Trouble-Shooting 中 Hot Write 面板（如下图所示），观察 Raftstore CPU 监控是否存在个别 TiKV 节点的指标明显高于其他节点的现象。
 
@@ -99,7 +99,7 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 > SHARD_ROW_ID_BITS 的值可以动态修改，每次修改之后，只对新写入的数据生效。
 >
-> TiDB alter-primary-key 参数设置为 false 时，会使用表的整数型主键作为 RowID，因为 SHARD_ROW_ID_BITS 会改变 RowID 生成规则，所以此时无法使用 SHARD_ROW_ID_BITS 选项，在 alter-primary-key 参数设置为 true 时，TiDB 在建表时不再使用整数型主键作为 RowID，此时带有整数型主键的表也可以使用 SHARD_ROW_ID_BITS 特性。
+> TiDB alter-primary-key 参数设置为 false 时，会使用表的整数型主键作为 RowID，因为 SHARD_ROW_ID_BITS 会改变 RowID 生成规则，所以此时无法使用 SHARD_ROW_ID_BITS 选项。在 alter-primary-key 参数设置为 true 时，TiDB 在建表时不再使用整数型主键作为 RowID，此时带有整数型主键的表也可以使用 SHARD_ROW_ID_BITS 特性。
 
 以下是两张无主键情况下使用 SHARD_ROW_ID_BITS 打散热点后的流量图，第一张展示了打散前的情况，第二张展示了打散后的情况。
 
@@ -107,7 +107,7 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 ![Dashboard 示例6](/media/troubleshoot-hot-spot-issues-6.png)
 
-由流量图可见，设置 SHARD_ROW_ID_BITS 后，流量热点由之前的只在一个 Region 上变得很分散。
+从流量图可见，设置 SHARD_ROW_ID_BITS 后，流量热点由之前的只在一个 Region 上变得很分散。
 
 ## 使用 AUTO_RANDOM 处理自增主键热点表
 
@@ -122,7 +122,7 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 >注意，TiDB 生成的主键不再是自增的主键，可使用 LAST_INSERT_ID() 获取上次分配的主键值。
 
-将建表语句中的 AUTO_INCREMENT 改为 AUTO_RANDOM 即可使用该功能。\
+将建表语句中的 AUTO_INCREMENT 改为 AUTO_RANDOM 即可使用该功能，适用于主键只需要保证唯一，不包含业务意义的场景。\
 示例如下：
 
 ```sql
@@ -149,7 +149,7 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 ![Dashboard 示例8](/media/troubleshoot-hot-spot-issues-8.png)
 
-由流量图可见，使用 AUTO_RANDOM 代替 AUTO_INCREMENT 可以很好地打散热点情况。
+由流量图可见，使用 AUTO_RANDOM 代替 AUTO_INCREMENT 能很好地打散热点。
 
 更详细的说明可以阅读 [AUTO_RANDOM](https://pingcap.com/docs-cn/stable/reference/sql/attributes/auto-random/) 文档。
 
