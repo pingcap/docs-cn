@@ -121,7 +121,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Raft propose
 
-- Raft proposals per ready：在一个 batch 内，apply proposal 时每个 ready 中包含 proposal 的个数的直方图
+- Raft apply proposals per ready：在一个 batch 内，apply proposal 时每个 ready 中包含 proposal 的个数的直方图
 - Raft read/write proposals：不同类型的 proposal 的 ops
 - Raft read proposals per server：每个 TiKV 实例发起读 proposal 的 ops
 - Raft write proposals per server：每个 TiKV 实例发起写 proposal 的 ops
