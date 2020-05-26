@@ -1,7 +1,15 @@
-## SIG Leaders
+---
+title: 荣誉列表
+summary: 了解 TiDB 截止发稿开发者贡献列表及角色
+category: contribute
+---
 
-| sig         | github    |
-|--:|--:|
+TiDB 开发者社区以 SIG（Special Interest Groups） 为单位管理组织开发者。每个模块都有其固定的 SIG 负责新功能开发，性能优化，稳定性保障等。如果您想要成为 TiDB 的开发者，加入感兴趣的 SIG，与一线工程师面对面讨论，无疑是最好的方式。下文是截止 TiDB 4.0 GA，TiDB 社区开发者贡献列表及对应角色。
+
+## Committers
+
+| SIG name          | GitHub ID    |
+|:--|:--|
 |[planner](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-planner)|[winoros](https://github.com/winoros)|
 |[transaction](https://github.com/tikv/community/tree/master/sig/transaction)|[jackysp](https://github.com/jackysp)|
 |[k8s](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-k8s)|[cofyc](https://github.com/cofyc)|
@@ -13,11 +21,6 @@
 |[tiup](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tiup)|[lonng](https://github.com/lonng)|
 |[web](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-web)|[wd0517](https://github.com/wd0517)|
 |[ddl](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-ddl)|[zimulala](https://github.com/zimulala)|
-
-## Committers
-
-| sig         | github    |
-|--:|--:|
 |[transaction](https://github.com/tikv/community/tree/master/sig/transaction)|[bobotu](https://github.com/bobotu)|
 |[transaction](https://github.com/tikv/community/tree/master/sig/transaction)|[cfzjywxk](https://github.com/cfzjywxk)|
 |[transaction](https://github.com/tikv/community/tree/master/sig/transaction)|[lysu](https://github.com/lysu)|
@@ -92,8 +95,8 @@
 
 ## Reviewers
 
-| sig         | github    |
-|--:|--:|
+| SIG name          | GitHub ID    |
+|:--|:--|
 |[docs](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)|[anotherrachel](https://github.com/anotherrachel)|
 |[docs](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)|[aylei](https://github.com/aylei)|
 |[docs](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)|[crazycs520](https://github.com/crazycs520)|
@@ -119,8 +122,8 @@
 
 ## Active Contributors
 
-| sig         | github    |
-|--:|--:|
+| SIG name          | GitHub ID    |
+|:--|:--|
 |[k8s](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-k8s)|[cwen0](https://github.com/cwen0)|
 |[k8s](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-k8s)|[mikechengwei](https://github.com/mikechengwei)|
 |[k8s](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-k8s)|[shonge](https://github.com/shonge)|
