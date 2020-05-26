@@ -380,9 +380,9 @@ Empty set (0.00 sec)
 
 > **注意：**
 >
-> 这里 Hash 分区对 NULL 的处理跟 [MySQL 的文档描述](https://dev.mysql.com/doc/refman/8.0/en/partitioning-handling-nulls.html)一致，但是跟 MySQL 的实际行为并不一致。
-> 也就是说，MySQL 的文档跟它的实现并不一致。
-> TiDB 的最终行为以此处文档描述为准。
+> 这里 Hash 分区对 NULL 的处理跟 [MySQL 的文档描述](https://dev.mysql.com/doc/refman/8.0/en/partitioning-handling-nulls.html)一致，但是跟 MySQL 的实际行为并不一致。也就是说，MySQL 的文档跟它的实现并不一致。
+>
+> TiDB 的最终行为以本文档描述为准。
 
 ## 分区管理
 
@@ -468,11 +468,11 @@ ERROR 1463 (HY000): VALUES LESS THAN value must be strictly »
 
 {{< copyable "sql" >}}
 
-```
-mysql> alter table members optimize partition p0;
+```sql
+alter table members optimize partition p0;
 ```
 
-```
+```sql
 ERROR 8200 (HY000): Unsupported optimize partition
 ```
 
@@ -905,7 +905,7 @@ Query OK, 0 rows affected (0.12 sec)
 
 {{< copyable "sql" >}}
 
-```
+```sql
 CREATE TABLE t (a varchar(20), b blob,
     UNIQUE INDEX (a(5)))
     PARTITION by range columns (a) (
@@ -914,7 +914,7 @@ CREATE TABLE t (a varchar(20), b blob,
     PARTITION p2 values less than ('ccccc'));
 ```
 
-```
+```sql
 ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's partitioning function
 ```
 
@@ -1053,4 +1053,5 @@ select * from t;
 ```
 
 环境变量 `tidb_enable_table_partition` 可以控制是否启用分区表功能。如果该变量设置为 `off`，则建表时会忽略分区信息，以普通表的方式建表。
-该变量作用于建表时刻，已经建表之后再修改该变量无效。详见[TiDB 专用系统变量和语法](/tidb-specific-system-variables.md#tidb_enable_table_partition)
+
+该变量仅作用于建表，已经建表之后再修改该变量无效。详见 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md#tidb_enable_table_partition)。
