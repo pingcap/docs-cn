@@ -1,5 +1,6 @@
 ---
 title: 查看执行详情
+summary: 查看单个 SQL 语句执行的详细情况
 category: how-to
 ---
 
