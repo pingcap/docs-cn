@@ -242,7 +242,9 @@ table_option:
 |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
 |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info'|
 
-请注意 TiDB 配置文件中，`split-table` 默认情况下会开启，在此配置项开启时，建表操作会为每个表建立单独的 Region，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md) 。
+> **注意：**
+>
+> 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md) 。
 
 ## 示例
 
@@ -308,11 +310,11 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-* TiDB 不支持临时表，对于 `CREATE TEMPORARY TABLE` 语法，`TEMPORARY` 关键字会被忽略。
+* TiDB 不支持临时表，对于 `CREATE TEMPORARY TABLE` 语法，会忽略 `TEMPORARY` 关键字。
 * 支持除空间类型以外的所有数据类型。
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * `KEY_BLOCK_SIZE` 和 `ENGINE` 属性可被解析，但会被忽略。
-* `index_col_name` 属性支持 length 选项，最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](https://pingcap.com/docs-cn/dev/tidb-configuration-file/#max-index-length)。
+* `index_col_name` 属性支持 length 选项，最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md#max-index-length)。
 * `index_col_name` 属性支持 `ASC` 和 `DESC` 的索引排序选项。
 * `COMMENT` 属性最多支持 1024 个字符，不支持 `WITH PARSER` 选项。
 * TiDB 在单个表中最多支持 512 列。InnoDB 中相应的数量限制为 1017，MySQL 中的硬限制为 4096。
