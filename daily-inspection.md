@@ -75,7 +75,7 @@ TiDB 从 PD 获取 TSO 的时间。如果相关响应时间较高，一般常见
 
 ## 硬件监控
 
-### Overview
+### Overview 面板
 
 ![img](/media/daily-inspection/overview.png)
 
