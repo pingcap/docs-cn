@@ -1,10 +1,9 @@
 ---
-title: 管理集群和同步任务
+title: TiCDC 集群和同步任务管理
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 ---
 
-# 管理集群和同步任务
+# TiCDC 集群和同步任务管理
 
 目前 TiCDC 提供命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理集群和同步任务。
 

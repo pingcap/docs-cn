@@ -1,10 +1,9 @@
 ---
-title: 常见问题和故障处理
+title: TiCDC 常见问题和故障处理
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/ticdc/troubleshoot/']
 ---
 
-# 常见问题和故障处理
+# TiCDC 常见问题和故障处理
 
 本文档总结了在使用 TiCDC 过程中经常遇到的问题，给出合适的运维方法。本文档还总结了常见的运行故障，并给出相对应的解决方案。
 

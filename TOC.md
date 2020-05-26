@@ -102,7 +102,7 @@
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
   + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
-  + [TiCDC 常见问题](/troubleshoot-ticdc.md) @杨非
+  + [TiCDC 常见问题](/troubleshoot-ticdc.md)
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
 + 性能调优
   + 系统调优
@@ -173,14 +173,7 @@
     + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  + TiCDC
-    + [概述](/ticdc/ticdc-overview.md)
-    + [部署使用](/ticdc/deploy-ticdc.md)
-    + [集群和同步任务管理](/ticdc/manage-ticdc.md)
-    + [常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
-    + [Sink URI 配置规则](/ticdc/sink-url.md)
-    + [开放数据协议](/ticdc/ticdc-open-protocol.md)
-    + [Column 和 DDL 的类型码](/ticdc/column-ddl-type-codes.md)
+  + [TiCDC](/ticdc-overview.md)
   + sync-diff-inspector @王相
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)

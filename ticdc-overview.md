@@ -1,7 +1,6 @@
 ---
 title: TiCDC 简介
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/ticdc/overview/']
 ---
 
 # TiCDC 简介
@@ -62,3 +61,19 @@ TiCDC 的系统架构如下图所示：
 - 暂不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的-collation-支持)。如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现 collation 导致的无法定位数据的问题。
 - 暂不支持 TiDB 4.0 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md) 和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
 - 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。
+
+## TiCDC 部署
+
+TiCDC 的详细部署说明请参考 [TiCDC 部署](/deploy-ticdc.md)。
+
+## TiCDC 任务管理
+
+目前 TiCDC 提供命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理集群和同步任务，详细说明请参考 [TiCDC 集群和同步任务管理](/manage-ticdc.md)。
+
+## TiCDC 常见问题
+
+在使用 TiCDC 过程中经常遇到的问题以及相对应的解决方案请参考 [TiCDC 常见问题](/troubleshoot-ticdc.md)。
+
+## TiCDC 开放数据协议
+
+TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ(Message Queue) 等第三方数据媒介复制 TiDB 的数据变更。详细信息参考 [TiCDC 开放数据协议](/ticdc-open-protocol.md)。
