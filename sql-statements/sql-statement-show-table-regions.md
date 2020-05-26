@@ -9,13 +9,35 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-table-regions/']
 
 `SHOW TABLE REGIONS` 语句用于显示 TiDB 中某个表的 Region 信息。
 
-## 语法图
+## 语法
 
 ```sql
 SHOW TABLE [table_name] REGIONS [WhereClauseOptional];
 
 SHOW TABLE [table_name] INDEX [index_name] REGIONS [WhereClauseOptional];
 ```
+
+### 语法图
+
+**ShowTableRegionStmt:**
+
+![ShowTableRegionStmt](/media/sqlgram/ShowTableRegionStmt.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
+**WhereClauseOptional:**
+
+![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
+
+**WhereClause:**
+
+![WhereClause](/media/sqlgram/WhereClause.png)
 
 `SHOW TABLE REGIONS` 会返回如下列：
 
