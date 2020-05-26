@@ -18,7 +18,7 @@ category: FAQ
  
 事实上，建议在备份的时候挂载一块 NFS 网盘作为备份盘，[参考用例](/br/backup-and-restore-use-cases.md#将单表数据备份到网络盘推荐)。
  
-## BR 备份时，对写入影响多大？
+## BR 备份时，对集群影响多大？
  
 使用 sysbench 的 oltp_read_only 场景全速备份到非服务盘，对集群的影响依照表结构的不同，对集群 QPS 的影响在 15%~25% 之间。
  
