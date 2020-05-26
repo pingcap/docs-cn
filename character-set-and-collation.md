@@ -10,7 +10,9 @@ aliases: ['/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev
 
 ## 字符集和排序规则的概念
 
-字符集 (character set) 是符号与编码的集合。排序规则 (collation) 是在字符集中比较字符的规则。
+字符集 (character set) 是符号与编码的集合。
+
+排序规则 (collation) 是在字符集中比较字符的规则。
 
 ## 支持的字符集和排序规则
 
@@ -33,6 +35,22 @@ SHOW CHARACTER SET;
 | binary  | binary        | binary            |      1 |
 +---------|---------------|-------------------|--------+
 5 rows in set (0.00 sec)
+```
+
+支持的排序规则如下：
+
+```sql
+mysql> show collation;
++-------------+---------+------+---------+----------+---------+
+| Collation   | Charset | Id   | Default | Compiled | Sortlen |
++-------------+---------+------+---------+----------+---------+
+| utf8mb4_bin | utf8mb4 |   46 | Yes     | Yes      |       1 |
+| latin1_bin  | latin1  |   47 | Yes     | Yes      |       1 |
+| binary      | binary  |   63 | Yes     | Yes      |       1 |
+| ascii_bin   | ascii   |   65 | Yes     | Yes      |       1 |
+| utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
++-------------+---------+------+---------+----------+---------+
+5 rows in set (0.01 sec)
 ```
 
 > **注意：**
