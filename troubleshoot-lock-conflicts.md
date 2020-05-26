@@ -18,9 +18,9 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
 
 ### Prewrite 阶段
 
-在两阶段提交的 Prewrite 阶段，TiDB 会对目标 key 分别上 primary lock 和 secondary lock。在冲突严重的场景中，会出现写冲突 write-conflict、keyislocked 等报错。具体而言，这个阶段可能会遇到的锁相关的报错信息如下。
+在两阶段提交的 Prewrite 阶段，TiDB 会对目标 key 分别上 primary lock 和 secondary lock。在冲突严重的场景中，会出现写冲突 (write conflict)、keyislocked 等报错。具体而言，这个阶段可能会遇到的锁相关的报错信息如下。
 
-#### 读写冲突及检测方式
+#### 读写冲突
 
 在 TiDB 中，读取数据时，会获取一个包含当前物理时间且全局唯一递增的时间戳作为当前事务的 start_ts。事务在读取时，需要读到目标 key 的 commit_ts 小于这个事务的 start_ts 的最新的数据版本。当读取时发现目标 key 上存在 lock 时，因为无法知道上锁的那个事务是在 Commit 阶段还是 Prewrite 阶段，所以就会出现读写冲突的情况，如下图：
 
@@ -208,7 +208,7 @@ ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
 
 * 如果出现的次数非常频繁，建议从业务逻辑的角度来进行调整。
 
-#### 悲观事务执行时间限制
+#### TTL manager has timed out
 
 除了有不能超出 GC 时间的限制外，悲观锁的 TTL 有上限，默认为 10 分钟，所以执行时间超过 10 分钟的悲观事务有可能提交失败。这个超时时间由 TiDB 参数 [performance.max-txn-ttl](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 指定。
 
