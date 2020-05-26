@@ -14,8 +14,8 @@ category: introduction
 | 服务类型   | EC2 类型   |    节点数  |      
 |:----------|:----------|:----------|
 | PD        | m5.xlarge |     3     |
-| TiDB      | i3.4xlarge|     3     |
-| TiKV      | c5.4xlarge|     3     |
+| TiKV      | i3.4xlarge|     3     |
+| TiDB      | c5.4xlarge|     3     |
 | Sysbench  | m5.4xlarge|     1     |
 
 ### 软件版本
