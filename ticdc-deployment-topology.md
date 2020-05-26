@@ -6,7 +6,7 @@ category: how-to
 
 # TiCDC 部署拓扑
 
-本文介绍 `TiCDC` 部署的拓扑，在最小拓扑的基础上，同时部署 `TiCDC`，`TiCDC` 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB/MySQL/MQ）。`TiCDC` 相比 `TiDB Binlog` ，有延迟更低、天然高可用等优点。
+本文介绍 TiCDC 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。
 
 ## 拓扑信息
 
