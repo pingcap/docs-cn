@@ -1,12 +1,12 @@
 ---
-title: 最小拓扑架构
-summary: 介绍 TiDB 集群的最小拓扑。
+title: TiCDC 部署拓扑
+summary: 介绍 TiCDC 部署 TiDB 集群的拓扑结构。
 category: how-to
 ---
 
-# 最小拓扑架构
+# TiCDC 部署拓扑
 
-本文档介绍 TiDB 集群部署的最小拓扑架构。
+本文介绍 TiCDC 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。
 
 ## 拓扑信息
 
@@ -15,19 +15,20 @@ category: how-to
 | TiDB |3 | 16 VCore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | 默认端口 <br>  全局目录配置 |
 | PD | 3 | 4 VCore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | 默认端口 <br> 全局目录配置 |
 | TiKV | 3 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | 默认端口 <br> 全局目录配置 |
+| CDC | 3 | 8 VCore 16GB * 1 | 10.0.1.11 <br> 10.0.1.12 <br> 10.0.1.13 | 默认端口 <br> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.11 | 默认端口 <br> 全局目录配置 |
 
 ## 通过 TiUP 部署集群的配置文件模版 topology.yaml
 
 ### 部署目标
 
-通过 `tidb` 用户管理集群，部署一套最小的 TiDB 集群，端口默认，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
+通过 `tidb` 用户做集群管理，部署 3 个节点的 TiCDC 集群，使用默认 `22` 端口，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
 
 ### 拓扑模版
 
-[简单最小配置模板](/config-templates/simple-mini.yaml)
+[简单 TiCDC 配置模板](/config-templates/simple-cdc.yaml)
 
-[详细最小配置模板](/config-templates/complex-mini.yaml)
+[详细 TiCDC 配置模板](/config-templates/complex-cdc.yaml)
 
 > **注意：**
 >
