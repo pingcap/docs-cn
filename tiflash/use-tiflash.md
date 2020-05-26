@@ -154,7 +154,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
 > **注意：**
 >
-> 由于 dashboard 等组件需要读取一些存储于 TiDB 内存表区的系统表，因此建议实例级别 engine 配置中始终加入 "tidb" engine。
+> 由于 TiDB Dashboard 等组件需要读取一些存储于 TiDB 内存表区的系统表，因此建议实例级别 engine 配置中始终加入 "tidb" engine。
 
 如果查询中的表没有对应 engine 的副本，比如配置了 engine 为 "tiflash" 而该表没有 TiFlash 副本，则查询会报该表不存在该 engine 副本的错。
 
