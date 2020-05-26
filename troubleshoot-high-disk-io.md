@@ -83,7 +83,7 @@ TiKV RocksDB 日志出现 `write stall`：
 
 ### 从告警发现 I/O 问题
 
-集群部署工具 (TiDB-Ansible, TiUP) 默认部署的告警组件，官方已经预置了相关的告警项目和阈值，IO 相关包括：
+集群部署工具 (TiDB-Ansible, TiUP) 默认部署的告警组件，官方已经预置了相关的告警项目和阈值，I/O 相关项包括：
 
 - TiKV_write_stall
 - TiKV_raft_log_lag
