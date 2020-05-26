@@ -29,8 +29,7 @@ TiKV 数据存储的两个关键点：
 接下来 TiKV 的实现面临一件更难的事情：如何保证单机失效的情况下，数据不丢失，不出错？
 
 简单来说，需要想办法把数据复制到多台机器上，这样一台机器无法服务了，其他的机器上的副本还能提供服务；
-复杂来说，还需要这个数据复制方案是可靠和高效的，并且能处理副本失效的情况。TiKV 选择了 Raft 算法。Raft 是一个一致性协议，它和 Multi Paxos 实现一样的功能，但是更加易于理解。[这里](https://raft.github.io/raft.pdf) 是 Raft 的论文，感兴趣的可以看一下。本书只会对 Raft 做一个简要的介绍，细节问题可以参考论文。
-Raft 提供几个重要的功能：
+复杂来说，还需要这个数据复制方案是可靠和高效的，并且能处理副本失效的情况。TiKV 选择了 Raft 算法。Raft 是一个一致性协议，本文只会对 Raft 做一个简要的介绍，细节问题可以参考它的[论文](https://raft.github.io/raft.pdf)。Raft 提供几个重要的功能：
 
 - Leader（主副本）选举
 - 成员变更（如添加副本、删除副本、转移 Leader 等操作）
@@ -48,28 +47,28 @@ TiKV 利用 Raft 来做数据复制，每个数据变更都会落地为一条 Ra
 前面提到，TiKV 可以看做是一个巨大的有序的 KV Map，那么为了实现存储的水平扩展，数据将被分散在多台机器上。
 对于一个 KV 系统，将数据分散在多台机器上有两种比较典型的方案：
 
-* Hash：按照 Key 做 Hash，根据 Hash 值选择对应的存储节点
-* Range：按照 Key 分 Range，某一段连续的 Key 都保存在一个存储节点上
+* Hash：按照 Key 做 Hash，根据 Hash 值选择对应的存储节点。
+* Range：按照 Key 分 Range，某一段连续的 Key 都保存在一个存储节点上。
 
 TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，将每一段叫做一个 Region，并且会尽量保持每个 Region 中保存的数据不超过一定的大小，目前在 TiKV 中默认是 96MB。每一个 Region 都可以用 [StartKey，EndKey) 这样一个左闭右开区间来描述。
 
 ![Region in TiDB](/media/tidb-storage-2.png)
 
-注意，这里的 Region 还是和 SQL 中的表没什么关系。 请各位继续忘记 SQL，只谈 KV。
+注意，这里的 Region 还是和 SQL 中的表没什么关系。 这里的讨论依然不涉及 SQL，只和 KV 有关。
 将数据划分成 Region 后，TiKV 将会做两件重要的事情：
 
-* 以 Region 为单位，将数据分散在集群中所有的节点上，并且尽量保证每个节点上服务的 Region 数量差不多
-* 以 Region 为单位做 Raft 的复制和成员管理
+* 以 Region 为单位，将数据分散在集群中所有的节点上，并且尽量保证每个节点上服务的 Region 数量差不多。
+* 以 Region 为单位做 Raft 的复制和成员管理。
 
 这两点非常重要：
 
 * 先看第一点，数据按照 Key 切分成很多 Region，每个 Region 的数据只会保存在一个节点上面（暂不考虑多副本）。TiDB 系统会有一个组件（PD）来负责将 Region 尽可能均匀的散布在集群中所有的节点上，这样一方面实现了存储容量的水平扩展（增加新的节点后，会自动将其他节点上的 Region 调度过来），另一方面也实现了负载均衡（不会出现某个节点有很多数据，其他节点上没什么数据的情况）。同时为了保证上层客户端能够访问所需要的数据，系统中也会有一个组件（PD）记录 Region 在节点上面的分布情况，也就是通过任意一个 Key 就能查询到这个 Key 在哪个 Region 中，以及这个 Region 目前在哪个节点上（即 Key 的位置路由信息）。至于负责这两项重要工作的组件（PD），会在后续介绍。
-* 对于第二点，TiKV 是以 Region 为单位做数据的复制，也就是一个 Region 的数据会保存多个副本，TiKV 将每一个副本叫做一个 Replica。Replica 之间是通过 Raft 来保持数据的一致，一个 Region 的多个 Replica 会保存在不同的节点上，构成一个 Raft Group。其中一个 Replica 会作为这个 Group 的 Leader，其他的 Replica 作为 Follower。所有的读和写都是通过 Leader 进行，读操作在 Leader 上即可完成，而写操作再由 Leader 复制给 Follower。
+* 对于第二点，TiKV 是以 Region 为单位做数据的复制，也就是一个 Region 的数据会保存多个副本，TiKV 将每一个副本叫做一个 Replica。Replica 之间是通过 Raft 来保持数据的一致，一个 Region 的多个 Replica 会保存在不同的节点上，构成一个 Raft Group。其中一个 Replica 会作为这个 Group 的 Leader，其他的 Replica 作为 Follower。默认情况下，所有的读和写都是通过 Leader 进行，读操作在 Leader 上即可完成，而写操作再由 Leader 复制给 Follower。
 大家理解了 Region 之后，应该可以理解下面这张图：
 
 ![TiDB Storage](/media/tidb-storage-3.png)
 
-以 Region 为单位做数据的分散和复制，就有了一个分布式的具备一定容灾能力的 KeyValue 系统，不用再担心数据存不下，或者是磁盘故障丢失数据的问题。
+以 Region 为单位做数据的分散和复制，TiKV 就成为了一个分布式的具备一定容灾能力的 KeyValue 系统，不用再担心数据存不下，或者是磁盘故障丢失数据的问题。
 
 ## MVCC
 
