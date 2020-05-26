@@ -10,7 +10,7 @@ category: how-to
 
 ## 第 1 步：部署 TiDB Lightning
 
-具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
+使用 Lightning 将数据导入 TiDB，Lightning 具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
 
 > **注意：**
 >
