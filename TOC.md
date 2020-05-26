@@ -157,6 +157,7 @@
   + [工具使用指南](/ecosystem-tool-user-guide.md)
   + [工具下载](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
+    + [BR 常见问题解答](/br/backup-and-restore-faq.md)
     + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md) @余峻岑
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @余峻岑
   + TiDB Lightning @kenny
