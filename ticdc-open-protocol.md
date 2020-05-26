@@ -89,7 +89,7 @@ Value:
     | :---------- | :----- | :--------------------- |
     | UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "u"/"d" |
     | Column Name    | String | 列名   |
-    | Column Type    | Number | 列类型，详见：[Column 和 DDL 的类型码](/ticdc/column-ddl-type-codes.md) |
+    | Column Type    | Number | 列类型，详见：[Column 和 DDL 的类型码](#Column-和-DDL-的类型码) |
     | Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true |
     | Column Value   | Any    | 列值   |
 
