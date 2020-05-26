@@ -148,7 +148,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
     set SESSION tidb_isolation_read_engines = "逗号分隔的 engine list";
     ```
 
-    会话级别的默认配置继承自 TiDB 实例级别的配置。
+    **会话级别的默认配置继承自 TiDB 实例级别的配置。**
 
 最终的 engine 配置为会话级别配置，即会话级别配置会覆盖实例级别配置。比如实例级别配置了 "tikv"，而会话级别配置了 "tiflash"，则会读取 TiFlash 副本。当 engine 配置为 "tikv, tiflash"，即可以同时读取 TiKV 和 TiFlash 副本，优化器会自动选择。
 
