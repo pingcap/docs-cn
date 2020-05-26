@@ -65,7 +65,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tidb-dashboard/']
     - Commit Token Wait Duration：事务提交时的流控队列等待耗时。当出现较长等待时，代表提交事务过大，正在限流。如果系统还有资源可以使用，可以通过增大 TiDB 配置文件中 `committer-concurrency` 来加速提交
     - Transaction Max Write KV Num：单个事务写入的最大键值对数量
     - Transaction Max Write Size Bytes：单个事务写入的最大键值对大小
-    - Transaction Regions Num 90：单个事务写入的 region 数量的 90% 分位
+    - Transaction Regions Num 90：单个事务写入的 Region 数量的 90% 分位
     - Send HeartBeat Duration：事务发送心跳的时间间隔
     - TTL Lifetime Reach Counter：事务的 TTL 达到了上限的数量。TTL 上限默认值 10 分钟，它的含义是从悲观事务第一次加锁，或者乐观事务的第一个 prewrite 开始，超过了 10 分钟。可以通过修改 TiDB 配置文件中 `max-txn-ttl` 来改变 TTL 寿命上限
     - Statement Lock Keys：单个语句的加锁个数
