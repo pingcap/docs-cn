@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/reference/tikv-optimize/']
 
 # TiKV 线程池性能调优
 
-本文主要介绍 TiKV 的性能调优的主要手段，以及 TiKV 内部线程池的主要用途。
+本文主要介绍 TiKV 线程池性能调优的主要手段，以及 TiKV 内部线程池的主要用途。
 
 ## 线程池介绍
 
@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/reference/tikv-optimize/']
 * Scheduler 线程池负责检测写事务冲突，把事务的两阶段提交、悲观锁上锁、事务回滚等请求转化为 key-value 对数组，然后交给 Raftstore 线程进行 Raft 日志复制。
 * Raftstore 线程池负责处理所有的 Raft 消息以及添加新日志的提议（Propose）、将日志写入到磁盘，当日志在多数副本中达成一致（即 Raft 论文中描述的 Commit Index）后，它就会把该日志发送给 Apply 线程。
 * Apply 线程收到从 Raftstore 线程池发来的已提交日志后将其解析为 key-value 请求，然后写入 RocksDB 并且调用回调函数通知 gRPC 线程池中的写请求完成，返回结果给客户端。
-* RocksDB 线程池是 RocksDB 进行 Compact 和 Flush 任务的线程池，关于 RocksDB 的架构与 Compact 操作请参考 [RocksDB: A Persistent Key-Value Store for Flash and RAM Storage](https://github.com/facebook/rocksdb)
+* RocksDB 线程池是 RocksDB 进行 Compact 和 Flush 任务的线程池，关于 RocksDB 的架构与 Compact 操作请参考 [RocksDB: A Persistent Key-Value Store for Flash and RAM Storage](https://github.com/facebook/rocksdb)。
 * UnifyReadPool 是 TiKV 4.0 推出的新特性，它由之前的 Coprocessor 线程池与 Storage Read Pool 合并而来，所有的读取请求包括 kv get、kv batch get、raw kv get、coprocessor 等都会在这个线程池中执行。
 
 ## TiKV 的只读请求
