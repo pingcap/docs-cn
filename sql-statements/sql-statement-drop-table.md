@@ -9,8 +9,6 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-table/']
 
 `DROP TABLE` 语句用于从当前所选的数据库中删除表。如果表不存在则会报错，除非使用 `IF EXISTS` 修饰符。
 
-按照设计，`DROP TABLE` 也会删除视图，因为视图与表共享相同的命名空间。
-
 ## 语法图
 
 **DropTableStmt:**
@@ -94,7 +92,6 @@ Query OK, 0 rows affected (0.23 sec)
 
 ## 另请参阅
 
-* [DROP VIEW](/sql-statements/sql-statement-drop-view.md)
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
 * [SHOW TABLES](/sql-statements/sql-statement-show-tables.md)
