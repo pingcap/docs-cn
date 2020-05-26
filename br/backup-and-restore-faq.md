@@ -50,7 +50,7 @@ category: FAQ
  
 在使用 local storage 的时候，会在运行 BR 的节点生成 `backupmeta`，在各个 Region 的 Leader 节点生成备份文件。
  
-## 备份数据会有多大，备份会有副本 (replica) 吗？
+## 备份数据有多大，备份会有副本吗？
  
 备份的时候仅仅在每个 Region 的 Leader 处生成该 Region 的备份文件。因此备份的大小等于数据大小，不会有多余的副本数据。所以最终的总大小大约是 TiKV 数据总量除以副本数。
  
