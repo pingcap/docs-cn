@@ -38,7 +38,6 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
-
 #### 1.1.7 TiDB 支持分布式事务吗？
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/geo-redundancy-deployment.md)，TiDB 均支持 ACID 分布式事务。
@@ -53,11 +52,9 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB、RocksDB、BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
 
-
 #### 1.1.10 除了官方文档，有没有其他 TiDB 知识获取途径？
 
 目前[官方文档](/overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取，以及 [AskTUG 网站](asktug.com) 与技术专家互动交流。
-
 
 #### 1.1.11 TiDB 用户名长度限制？
 
@@ -70,7 +67,6 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然后 Atomikos 在操作 TM 和 RM（DB）的时候，会通过数据源的配置，发起带有 XA 指令到 JDBC 层，JDBC 层 XA 模式启用的情况下，会对 InnoDB（如果是 MySQL 的话）下发操作一连串 XA 逻辑的动作，包括 DML 去变更 redo log 等，就是两阶段递交的那些操作。TiDB 目前的引擎版本中，没有对上层应用层 JTA / XA 的支持，不解析这些 Atomikos 发过来的 XA 类型的操作。
 
 MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
-
 
 ### 1.2 TiDB 原理
 
@@ -91,7 +87,6 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 ##### 1.2.3.1 PD 详细解读
 
 [三篇文章了解 TiDB 技术内幕 - 谈调度](http://t.cn/RTKEZ0U)
-
 
 ## 二、Cloud TiDB
 
