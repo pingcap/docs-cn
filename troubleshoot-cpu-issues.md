@@ -3,15 +3,15 @@ title: CPU 占用过多导致读写延迟增加
 summary: 介绍读写延时增加、抖动时的排查思路，可能的原因和解决方法。
 category: troubleshoot
 ---
-# CPU 占用过多导致读写延迟增加
+# CPU 占用率过高导致读写延迟增加
 
-本文档介绍 CPU 占用过多导致读写延迟增加、抖动时的排查思路，可能的原因和解决方法。
+本文档介绍 CPU 占用率过高导致读写延迟增加、抖动时的排查思路，可能的原因和解决方法。
 
 ## 常见原因
 
 ### TiDB 执行计划不对导致延迟增高
 
-查询计划不稳定，偶尔执行计划走到错误的索引，导致查询延迟增加。
+查询语句的执行计划不稳定，偶尔执行计划选择错误的索引，导致查询延迟增加。
 
 **现象：**
 
@@ -33,7 +33,7 @@ category: troubleshoot
         * `set global tidb_auto_analyze_end_time='06:00 +0800';`
 * 绑定执行计划
     * 修改业务 SQL，使用 `use index` 固定使用列上的索引。
-    * v3.0 版本下，业务可以不用修改 SQL，使用 `create binding` 创建 `force index` 的绑定 SQL。
+    * v3.0 版本下，业务可以不用修改 SQL，使用 `create global binding` 创建 `force index` 的绑定 SQL。
     * 4.0 版本支持 SQL Plan Management，可以避免因执行计划不稳定导致的性能下降。
 
 ### PD 异常
@@ -44,13 +44,13 @@ category: troubleshoot
 
 **可能的原因：**
 
-* 磁盘问题。PD 所在的节点 I/O 被打满，排查是否有其他 I/O 高的组件与 PD 混合部署以及盘的健康情况，可通过监控 Grafana -> **disk performance** -> **latency** 和 **load** 等指标进行验证，必要时可以使用 fio 工具对盘进行检测，见案例 [case-292](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case292.md)。
+* 磁盘问题。PD 所在的节点 I/O 被占满，排查是否有其他 I/O 高的组件与 PD 混合部署以及磁盘的健康情况，可通过监控 Grafana -> **disk performance** -> **latency** 和 **load** 等指标进行验证，必要时可以使用 fio 工具对盘进行检测，见案例 [case-292](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case292.md)。
 
 * PD 之间的网络问题。PD 日志中有 `"lost the TCP streaming connection"`，排查 PD 之间网络是否有问题，可通过监控 Grafana -> **PD** -> **etcd** 的 **round trip** 来验证，见案例 [case-177](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case177.md)。
 
 * 系统负载高，日志中能看到 `"server is likely overloaded"`，见案例 [case-214](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case214.md)。
 
-* 选不出 leader。PD 日志中有 `"lease is not expired"`，见 issues [https://github.com/etcd-io/etcd/issues/10355](https://github.com/etcd-io/etcd/issues/10355)。v3.0.x 版本和 v2.1.19 版本已解决该问题，见案例 [case-875](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case875.md)。
+* 选举不出 leader。PD 日志中有 `"lease is not expired"`，见 issues [https://github.com/etcd-io/etcd/issues/10355](https://github.com/etcd-io/etcd/issues/10355)。v3.0.x 版本和 v2.1.19 版本已解决该问题，见案例 [case-875](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case875.md)。
 
 * 选举慢。Region 加载时间长，从 PD 日志中 `grep "regions cost"`（例如日志中可能是 `load 460927 regions cost 11.77099s`）, 如果出现秒级，则说明较慢，v3.0 版本可开启 Region Storage（设置 `use-region-storage` 为 `true`），该特性能极大缩短加载 Region 的时间，见案例 [case-429](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case429.md)。
 
@@ -74,7 +74,7 @@ category: troubleshoot
 
 **可能的原因：**
 
-* 查看 gRPC duration。gRPC duration 是请求在 TiKV 端的总耗时。通过对比 TiKV 的 gRPC duration 以及 TiDB 中的 KV duration 可以发现潜在的网络问题。比如 gRPC duration 很短但是 TiDB 的 KV duration 显示很长，说明 TiDB 和 TiKV 之间网络延迟可能很高，或者 TiDB 和 TiKV 之间的网卡带宽打满了。
+* 查看 gRPC duration。gRPC duration 是请求在 TiKV 端的总耗时。通过对比 TiKV 的 gRPC duration 以及 TiDB 中的 KV duration 可以发现潜在的网络问题。比如 gRPC duration 很短但是 TiDB 的 KV duration 显示很长，说明 TiDB 和 TiKV 之间网络延迟可能很高，或者 TiDB 和 TiKV 之间的网卡带宽被占满。
 
 * TiKV 重启了导致重新选举
     * TiKV panic 之后又被 `systemd` 重新拉起正常运行，可以通过查看 TiKV 的日志来确认是否有 `panic`，这种情况属于非预期，需要报 bug。
@@ -86,9 +86,9 @@ category: troubleshoot
 
 * TiKV 发生网络隔离导致重新选举。
 
-* `block-cache` 配置太大导致 OOM，在监控 Grafana -> **TiKV-details** 选中对应的 instance 之后查看 RocksDB 的 `block cache size` 监控来确认是否是该问题。同时请检查 `[storage.block-cache] capacity = # "1GB"` 参数是否设置合理，默认情况下 TiKV 的 `block-cache` 设置为机器总内存的 `45%`;在 container 部署的时候需要显式指定该参数，因为 TiKV 获取的是物理机的内存，可能会超出 container 的内存限制。
+* `block-cache` 配置太大导致 OOM，在监控 Grafana -> **TiKV-details** 选中对应的 instance 之后查看 RocksDB 的 `block cache size` 监控来确认是否是该问题。同时请检查 `[storage.block-cache] capacity = # "1GB"` 参数是否设置合理，默认情况下 TiKV 的 `block-cache` 设置为机器总内存的 `45%`;在容器化部署时需要显式指定该参数，因为 TiKV 获取的是物理机的内存，可能会超出单个 container 的内存限制。
 
-* Coprocessor 收到大量大查询，返回的数据量太大，gRPC 发送速度跟不上 Coprocessor 往外吐数据的速度导致 OOM。可以通过检查监控： Grafana -> **TiKV-details** -> **coprocessor overview** 的 `response size` 是否超过 `network outbound` 流量来确认是否属于这种情况。
+* Coprocessor 收到大量大查询，返回的数据量太大，gRPC 发送速度跟不上 Coprocessor 向客户端输出数据的速度导致 OOM。可以通过检查监控： Grafana -> **TiKV-details** -> **coprocessor overview** 的 `response size` 是否超过 `network outbound` 流量来确认是否属于这种情况。
 
 ### TiKV 单线程瓶颈
 
@@ -116,11 +116,11 @@ CPU 资源使用到达瓶颈
 
 ### 少数派副本离线
 
-TiDB 集群默认配置为 3 副本，每一个 Region 都会在集群中保存 3 份，它们之间通过 Raft 协议来选举 Leader 并同步数据。Raft 协议可以保证在数量小于副本数（注意：不是节点数）一半的节点挂掉或者隔离的情况下，仍然能够提供服务，并且不丢失任何数据。对于 3 副本集群，挂掉一个节点除了可能会导致性能有抖动之外，可用性和正确性理论上不会受影响
+TiDB 集群默认配置为 3 副本，每一个 Region 都会在集群中保存 3 份，它们之间通过 Raft 协议来选举 Leader 并同步数据。Raft 协议可以保证在数量小于副本数（注意：不是节点数）一半的节点挂掉或者隔离的情况下，仍然能够提供服务，并且不丢失任何数据。对于 3 副本集群，挂掉一个节点可能会导致性能抖动，可用性和正确性理论上不会受影响。
 
 ### 新增索引
 
-由于创建索引在扫表回填索引的时候会消耗大量资源，甚至与一些频繁更新的字段会发生冲突导致正常业务受到影响。大表创建索引的过程往往会持续很长时间，所以要尽可能地平衡执行时间和集群性能之间的关系。
+由于创建索引在扫表回填索引的时候会消耗大量资源，甚至与一些频繁更新的字段会发生冲突导致正常业务受到影响。大表创建索引的过程往往会持续很长时间，所以要尽可能地平衡执行时间和集群性能之间的关系，比如选择非高频更新时间段。
 
 **参数调整：**
 
