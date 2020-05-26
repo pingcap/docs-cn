@@ -1,12 +1,12 @@
 ---
-title: TiDB-binlog 部署拓扑
-summary: 在部署最小拓扑集群的基础上，同时部署 `TiDB Binlog`。
+title: TiDB Binlog 部署拓扑
+summary: 在部署最小拓扑集群的基础上，同时部署 TiDB Binlog。
 category: how-to
 ---
 
-# TiDB-binlog 部署拓扑
+# TiDB Binlog 部署拓扑
 
-本文介绍在部署最小拓扑集群的基础上，同时部署 `TiDB Binlog`，`TiDB Binlog` 是目前广泛使用的增量组件，可提供准实时备份和同步功能。
+本文介绍在部署最小拓扑集群的基础上，同时部署 TiDB Binlog。TiDB Binlog 是目前广泛使用的增量组件，可提供准实时备份和同步功能。
 
 ## 拓扑信息
 
@@ -22,15 +22,17 @@ category: how-to
 
 ### 部署目标
 
-设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.12:4000。
+需要设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.12:4000。
 
 ### 拓扑模版
 
-[简单 TiDB-binlog 配置模板](/config-templates/simple-tidb-binlog.yaml)
+[简单 TiDB Binlog 配置模板](/config-templates/simple-tidb-binlog.yaml)
 
-[详细 TiDB-binlog 配置模板](/config-templates/complex-tidb-binlog.yaml)
+[详细 TiDB Binlog 配置模板](/config-templates/complex-tidb-binlog.yaml)
 
 ### 关键参数介绍
+
+拓扑配置模版的关键参数如下：
 
 - `binlog.enable: true`
 
@@ -38,7 +40,7 @@ category: how-to
 
 - `binlog.ignore-error: true`
 
-    高可用场景建议开启，如果设置为 true，发生错误时，TiDB 会停止写入 binlog，并且在监控项 tidb_server_critical_error_total 上计数加 1；如果设置为 false，一旦写入 binlog 失败，会停止整个 TiDB 的服务。
+    高可用场景建议开启，如果设置为 true，发生错误时，TiDB 会停止写入 binlog，并且在监控项 `tidb_server_critical_error_total` 上计数加 1；如果设置为 false，一旦写入 binlog 失败，会停止整个 TiDB 的服务。
 
 > **注意：**
 >
