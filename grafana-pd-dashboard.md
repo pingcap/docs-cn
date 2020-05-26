@@ -75,7 +75,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 - Hot cache write entry number：每个 TiKV 实例进入热点统计模块的 peer 的数量
 - Selector events： 热点调度中选择器的事件发生次数
 - Direction of hotspot move leader：热点调度中 leader 的调度方向，正数代表调入，负数代表调出
-- Direction of hotspot move peer： 热点调度中 peer 的调度方向，正数代表调入，负数代表调出
+- Direction of hotspot move peer：热点调度中 peer 的调度方向，正数代表调入，负数代表调出
 
 ![PD Dashboard - Hot write metrics](/media/pd-dashboard-hotwrite-v4.png)
 
