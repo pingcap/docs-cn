@@ -41,6 +41,6 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 同理，目前也有两种办法查看配置：
 
 - 通过 SQL 查看，`show config where type='tikv' and name like '%split.qps-threshold%'`。
-- 通过 TiKV 查看，`curl "http://ip:status_port/config"`
+- 通过 TiKV 查看，`curl "http://ip:status_port/config"`。
 
 *注：从 4.0.0-rc.2 起可以使用 SQL 语句来修改和查看配置*
