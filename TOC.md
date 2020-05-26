@@ -55,11 +55,10 @@
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
-  + [支持的迁移路径](/ecosystem-tool-user-guide.md) @王相
+  + [支持的数据迁移路径](/data-migration-route.md)
   + 从 MySQL 迁移至 TiDB
-    + [从 CSV 文件迁移](/migrate-from-mysql-csv-files.md) @栾成
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md) @栾成
-    + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md) @张学成，王相
+    + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
   + [从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) @王相
 + 运维操作
   + 升级 TiDB 版本
@@ -70,7 +69,8 @@
     + [使用 TiUP](/scale-tidb-using-tiup.md) @刘金龙
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
   + 备份与恢复
-    + [使用 Mydumper 和 TiDB Lightning](/backup-and-restore-using-mydumper-lightning.md) @栾成
+    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md) @栾成
+    + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
@@ -102,7 +102,6 @@
   + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
-  + [执行计划不稳定导致性能波动](/troubleshoot-execution-plan.md) @姚珂男
   + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
   + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
@@ -142,7 +141,6 @@
         + [Optimizer Hints](/optimizer-hints.md)
         + [执行计划绑定](/execution-plan-binding.md)
         + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
-    + [性能监控](/monitor-sql-performance.md) @崔一丁
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)（[参考](https://pingcap.com/docs-cn/stable/geo-redundancy-deployment/)）@侯召墩
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md) 侯召墩
@@ -155,6 +153,7 @@
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) @李坤
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md) @李建俊
   + [Placement Rules 使用文档](/configure-placement-rules.md) @黄梦龙
+  + [Load Base Split 使用文档](/configure-load-base-split.md)
 + TiDB 生态工具
   + [工具使用指南](/ecosystem-tool-user-guide.md)
   + [工具下载](/download-ecosystem-tools.md)
@@ -269,6 +268,8 @@
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
+      - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
+      - [`CHANGE PUMP`](/sql-statements/sql-statement-change-pump.md)
       - [`CREATE BINDING`](/sql-statements/sql-statement-create-binding.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
       - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
@@ -325,16 +326,20 @@
       - [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md)
       - [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md)
       - [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md)
+      - [`SHOW DRAINER STATUS`](/sql-statements/sql-statement-show-drainer-status.md)
       - [`SHOW ENGINES`](/sql-statements/sql-statement-show-engines.md)
       - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
       - [`SHOW [FULL] FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
       - [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+      - [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-histograms.md)
       - [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
       - [`SHOW INDEX [FROM|IN]`](/sql-statements/sql-statement-show-index.md)
       - [`SHOW KEYS [FROM|IN]`](/sql-statements/sql-statement-show-keys.md)
+      - [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md)
       - [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md)
       - [`SHOW [FULL] PROCESSSLIST`](/sql-statements/sql-statement-show-processlist.md)
+      - [`SHOW PUMP STATUS`](/sql-statements/sql-statement-show-pump-status.md)
       - [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
       - [`SHOW [FULL] TABLES`](/sql-statements/sql-statement-show-tables.md)
       - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
@@ -435,6 +440,7 @@
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
     + TiKV
+      + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
