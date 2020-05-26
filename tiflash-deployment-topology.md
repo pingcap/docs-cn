@@ -26,9 +26,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单 TiFlash 配置模版](/simple-tiflash.yaml)
+[简单 TiFlash 配置模版](/config-templates/simple-tiflash.yaml)
 
-[详细 TiFlash 配置模版](/complex-tiflash.yaml)
+[详细 TiFlash 配置模版](/config-templates/complex-tiflash.yaml)
 
 ### 关键参数介绍
 
