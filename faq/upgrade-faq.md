@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/faq/upgrade/']
 
 ## 升级常见问题
 
-本小节介绍 TiDB 升级相关的常见问题与解决办法。
+本小节列出了 TiDB 升级相关的常见问题与解决办法。
 
 ### 滚动升级有那些影响?
 
@@ -79,7 +79,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
     ERROR 1105 (HY000): unsupported modify column charset utf8mb4 not match origin utf8
     ```
 
-**解决方案**：显式指定 column charset，保持和原来的 charset 一致即可。
+解决方案：显式指定 column charset，保持和原来的 charset 一致即可。
 
 {{< copyable "sql" >}}
 
