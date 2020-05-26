@@ -116,7 +116,7 @@ desc mysql.expr_pushdown_blacklist;
 
 如果要将一个或多个函数或运算符加入黑名单，执行以下步骤：
 
-1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名以及希望禁止下推的存储类型集合。
+1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名以及希望禁止下推的存储引擎集合。
 
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
