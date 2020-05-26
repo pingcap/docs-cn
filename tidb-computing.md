@@ -1,23 +1,24 @@
 ---
-title: TiDB 配置文件描述
+title: TiDB 数据库的计算
+summary: 了解 TiDB 数据库的计算层。
 category: introduction
 ---
 
-# 谈计算
+# TiDB 数据库的计算
 
-TiDB 在 TiKV 提供的分布式存储能力基础上，构建了兼具优异的交易处理能力与良好的数据分析能力的计算引擎。本章首先从数据映射算法入手揭秘 TiDB 如何将库表中的数据映射到 TiKV 中的 (Key, Value) 键值对，然后描述了 TiDB 元信息管理方式。在此基础上，本章最后一节介绍了 TiDB SQL 层的主要架构。
-需要注意的是，对于计算层依赖的存储方案，本章只介绍了基于 TiKV 的行存储结构。针对分析型业务的特点，TiDB 推出了作为 TiKV 扩展的列存储方案 TiFlash。
+TiDB 在 TiKV 提供的分布式存储能力基础上，构建了兼具优异的交易处理能力与良好的数据分析能力的计算引擎。本文首先从数据映射算法入手介绍 TiDB 如何将库表中的数据映射到 TiKV 中的 (Key, Value) 键值对，然后描述 TiDB 元信息管理方式，最后介绍 TiDB SQL 层的主要架构。
+需要注意的是，对于计算层依赖的存储方案，本文只介绍了基于 TiKV 的行存储结构。针对分析型业务的特点，TiDB 推出了作为 TiKV 扩展的列存储方案 [TiFlash](/tiflash/tiflash-overview.md)。
 
 ## 表数据与 Key-Value 的映射关系
 
-本小节为大家介绍 TiDB 中数据到 (Key, Value) 键值对的映射方案。这里的数据主要包括两个方面：
+本小节介绍 TiDB 中数据到 (Key, Value) 键值对的映射方案。这里的数据主要包括以下两个方面：
 
 - 表中每一行的数据，以下简称表数据
 - 表中所有索引的数据，以下简称索引数据
 
 ### 表数据与 Key-Value 的映射关系
 
-在关系型数据库中，一个表可能有很多列。要将一行中各列数据映射成一个 (Key, Value) 键值对 ，需要考虑如何构造 Key。首先，OLTP 场景下有大量针对单行或者多行的增、删、改、查等操作，要求数据库具备快速读取一行数据的能力。因此，对应的 Key 最好有一个唯一 ID（显示或隐式的 ID），以方便快速定位。其次，很多 OLAP 型查询需要进行全表扫描。如果能够将一个表中所有行的 Key 编码到一个区间内，就可以通过范围查询高效完成全表扫描的任务。
+在关系型数据库中，一个表可能有很多列。要将一行中各列数据映射成一个 (Key, Value) 键值对，需要考虑如何构造 Key。首先，OLTP 场景下有大量针对单行或者多行的增、删、改、查等操作，要求数据库具备快速读取一行数据的能力。因此，对应的 Key 最好有一个唯一 ID（显示或隐式的 ID），以方便快速定位。其次，很多 OLAP 型查询需要进行全表扫描。如果能够将一个表中所有行的 Key 编码到一个区间内，就可以通过范围查询高效完成全表扫描的任务。
 
 基于上述考虑，TiDB 中的表数据与 Key-Value 的映射关系作了如下设计：
 
@@ -37,7 +38,7 @@ Value: [col1, col2, col3, col4]
 
 TiDB 同时支持主键和二级索引（包括唯一索引和非唯一索引）。与表数据映射方案类似，TiDB 为表中每个索引分配了一个索引 ID，用 `IndexID` 表示。
 
-对于主键和唯一索引，需要根据键值快速定位到对应的 RowID，因此，按照如下规则编码成  (Key, Value) 键值对：
+对于主键和唯一索引，需要根据键值快速定位到对应的 RowID，因此，按照如下规则编码成 (Key, Value) 键值对：
 
 ```
 Key:   tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue
@@ -53,7 +54,7 @@ Value: null
 
 ### 映射关系小结
 
-最后，上述所有编码规则中的 `tablePrefix`，`recordPrefixSep` 和 `indexPrefixSep` 都是字符串常量，用于在 Key 空间内区分其他数据，定义如下：
+最后，上述所有编码规则中的 `tablePrefix`、`recordPrefixSep` 和 `indexPrefixSep` 都是字符串常量，用于在 Key 空间内区分其他数据，定义如下：
 
 ```
 tablePrefix     = []byte{'t'}
@@ -102,7 +103,7 @@ t10_i1_20_2 --> null
 t10_i1_30_3 --> null
 ```
 
-希望通过上面的例子，读者可以更好的理解 TiDB 中关系模型到 Key-Value 模型的映射规则以及选择该方案背后的考量。
+以上例子展示了 TiDB 中关系模型到 Key-Value 模型的映射规则，以及选择该方案背后的考量。
 
 ## 元信息管理
 
@@ -110,24 +111,24 @@ TiDB 中每个 `Database` 和 `Table` 都有元信息，也就是其定义以及
 
 每个 `Database`/`Table` 都被分配了一个唯一的 ID，这个 ID 作为唯一标识，并且在编码为 Key-Value 时，这个 ID 都会编码到 Key 中，再加上 `m_` 前缀。这样可以构造出一个 Key，Value 中存储的是序列化后的元信息。
 
-除此之外，TiDB 还用一个专门的 (Key, Value) 键值对存储当前所有表结构信息的最新版本号。这个键值对是全局的，每次 DDL 操作的状态改变时其版本号都会加1。目前，TiDB 把这个键值对存放在 PD Server 内置的 etcd 中，其Key 为"/tidb/ddl/global_schema_version"，Value 是类型为 int64 的版本号值。 TiDB 使用 Google F1 的 Online Schema 变更算法，有一个后台线程在不断的检查 etcd 中存储的表结构信息的版本号是否发生变化，并且保证在一定时间内一定能够获取版本的变化。
+除此之外，TiDB 还用一个专门的 (Key, Value) 键值对存储当前所有表结构信息的最新版本号。这个键值对是全局的，每次 DDL 操作的状态改变时其版本号都会加 1。目前，TiDB 把这个键值对存放在 PD Server 内置的 etcd 中，其Key 为"/tidb/ddl/global_schema_version"，Value 是类型为 int64 的版本号值。TiDB 使用 Google F1 的 Online Schema 变更算法，有一个后台线程在不断地检查 etcd 中存储的表结构信息的版本号是否发生变化，并且保证在一定时间内一定能够获取版本的变化。
 
 ## SQL 层简介
 
-TiDB 的 SQL层，即 TiDB Server，跟 Google 的 [F1](https://dbdb.io/db/google-f1) 比较类似，负责将 SQL 翻译成 Key-Value 操作，将其转发给共用的分布式 Key-Value 存储层 TiKV，然后组装 TiKV 返回的结果，最终将查询结果返回给客户端。
+TiDB 的 SQL 层，即 TiDB Server，与 Google 的 [F1](https://dbdb.io/db/google-f1) 比较类似，负责将 SQL 翻译成 Key-Value 操作，将其转发给共用的分布式 Key-Value 存储层 TiKV，然后组装 TiKV 返回的结果，最终将查询结果返回给客户端。
 
 这一层的节点都是无状态的，节点本身并不存储数据，节点之间完全对等。
 
 ### SQL 运算
 
-能想到的最简单的方案就是通过上一节所述的 [表中所有数据和 Key-Value 的映射关系](#1-表数据与-key-value-的映射关系) 映射方案，将 SQL 查询映射为对 KV 的查询，再通过 KV 接口获取对应的数据，最后执行各种计算。
+最简单的方案就是通过上一节所述的 [表中所有数据和 Key-Value 的映射关系](#1-表数据与-key-value-的映射关系)映射方案，将 SQL 查询映射为对 KV 的查询，再通过 KV 接口获取对应的数据，最后执行各种计算。
 
-比如 `select count(*) from user where name = "TiDB"` 这样一个 SQL, 它需要读取表中所有的数据，然后检查 `name` 字段是否是 `TiDB`，如果是的话，则返回这一行。具体流程是：
+比如 `select count(*) from user where name = "TiDB"` 这样一个 SQL 语句，它需要读取表中所有的数据，然后检查 `name` 字段是否是 `TiDB`，如果是的话，则返回这一行。具体流程如下：
 
-1. 构造出 Key Range：一个表中所有的 `RowID` 都在 `[0, MaxInt64)` 这个范围内，使用 `0` 和 `MaxInt64` 根据行数据的 `Key` 编码规则，就能构造出一个 `[StartKey, EndKey)`的左闭右开区间
-2. 扫描 Key Range：根据上面构造出的 Key Range，读取 TiKV 中的数据
-3. 过滤数据：对于读到的每一行数据，计算 `name = "TiDB"` 这个表达式，如果为真，则向上返回这一行，否则丢弃这一行数据
-4. 计算 `Count(*)`：对符合要求的每一行，累计到 `Count(*)` 的结果上面
+1. 构造出 Key Range：一个表中所有的 `RowID` 都在 `[0, MaxInt64)` 这个范围内，使用 `0` 和 `MaxInt64` 根据行数据的 `Key` 编码规则，就能构造出一个 `[StartKey, EndKey)`的左闭右开区间。
+2. 扫描 Key Range：根据上面构造出的 Key Range，读取 TiKV 中的数据。
+3. 过滤数据：对于读到的每一行数据，计算 `name = "TiDB"` 这个表达式，如果为真，则向上返回这一行，否则丢弃这一行数据。
+4. 计算 `Count(*)`：对符合要求的每一行，累计到 `Count(*)` 的结果上面。
 
 **整个流程示意图如下：**
 
@@ -141,15 +142,15 @@ TiDB 的 SQL层，即 TiDB Server，跟 Google 的 [F1](https://dbdb.io/db/googl
 
 ### 分布式 SQL 运算
 
-为了解决上述问题，计算应该需要尽量靠近存储节点，以避免大量的 RPC 调用。首先， SQL 中的谓词条件应被下推到存储节点进行计算，这样只需要返回有效的行，避免无意义的网络传输。然后，聚合函数 `Count(*)` 也可以被下推到存储节点，进行预聚合，每个节点只需要返回一个 `Count(*)` 的结果即可，再由 SQL 层将各个节点返回的 `Count(*)` 的结果累加求和。
+为了解决上述问题，计算应该需要尽量靠近存储节点，以避免大量的 RPC 调用。首先，SQL 中的谓词条件应被下推到存储节点进行计算，这样只需要返回有效的行，避免无意义的网络传输。然后，聚合函数 `Count(*)` 也可以被下推到存储节点，进行预聚合，每个节点只需要返回一个 `Count(*)` 的结果即可，再由 SQL 层将各个节点返回的 `Count(*)` 的结果累加求和。
 
-**这里有一个数据逐层返回的示意图：**
+以下是数据逐层返回的示意图：
 
 ![dist sql flow](/media/tidb-computing-dist-sql-flow.png)
 
 ### SQL 层架构
 
-通过上面的例子，希望大家对 SQL 语句的处理有一个基本的了解。实际上 TiDB 的 SQL 层要复杂的多，模块以及层次非常多，下面这个图列出了重要的模块以及调用关系：
+通过上面的例子，希望大家对 SQL 语句的处理有一个基本的了解。实际上 TiDB 的 SQL 层要复杂得多，模块以及层次非常多，下图列出了重要的模块以及调用关系：
 
 ![tidb sql layer](/media/tidb-computing-tidb-sql-layer.png)
 
