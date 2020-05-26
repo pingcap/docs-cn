@@ -120,7 +120,7 @@ TiDB 支持解析版本注释语法。示例如下：
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint primary key /*T!30100 auto_random */)
+create table t (a bigint primary key /*T![auto_rand] auto_random */)
 ```
 
 {{< copyable "sql" >}}
@@ -131,9 +131,9 @@ create table t (a bigint primary key auto_random)
 
 以上两个语句含义相同。
 
-在 `show create table` 的结果中，`AUTO_RANDOM` 属性会被注释掉。注释会附带一个版本号，例如 `/*T!30100 auto_random */`。其中 `30100` 表示 v3.1.0 引入该功能，低版本的 TiDB 能够忽略带有上述注释的 `AUTO_RANDOM` 属性。
+在 `show create table` 的结果中，`AUTO_RANDOM` 属性会被注释掉。注释会附带一个特性标识符，例如 `/*T![auto_rand] auto_random */`。其中 `auto_rand` 表示 `AUTO_RANDOM` 的特性标识符，只有实现了该标识符对应特性的 TiDB 版本才能够正常解析 SQL 语句片段。
 
-该功能支持向前兼容，即降级兼容。v3.1.0 以前的 TiDB 会忽略表（带有上述注释）的 `AUTO_RANDOM` 属性，因此能够使用含有该属性的表。
+该功能支持向前兼容，即降级兼容。没有实现对应特性的 TiDB 版本则会忽略表（带有上述注释）的 `AUTO_RANDOM` 属性，因此能够使用含有该属性的表。
 
 ## 使用限制
 
