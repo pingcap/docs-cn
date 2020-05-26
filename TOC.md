@@ -416,6 +416,7 @@
     + [pd-ctl](/pd-control.md) @陈书宁
     + [tidb-ctl](/tidb-control.md) @于帅鹏
     + [pd-recover](/pd-recover.md) @陈书宁
+    + [binlog-ctl](/tidb-binlog/binlog-control.md)
   + 命令行参数
     + [tidb-server](/command-line-flags-for-tidb-configuration.md) @于帅鹏
     + [tikv-server](/command-line-flags-for-tikv-configuration.md) @陈书宁
