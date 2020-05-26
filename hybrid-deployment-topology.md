@@ -4,7 +4,7 @@ summary: 介绍混合部署 TiDB 集群的拓扑结构。
 category: how-to
 ---
 
-# 混合部署
+# 混合部署拓扑
 
 本文介绍 TiDB 集群的 TiKV 和 TiDB 混合部署拓扑以及主要参数。
 
