@@ -74,7 +74,7 @@ mysql> select _tidb_rowid, id from t;
 
 ### Performance schema
 
-- TiDB 主要使用 [Prometheus 和 Grafana](/monitor-a-tidb-cluster.md) 来存储及查询相关的性能监控指标，故 Performance schema 部分表是空表。
+- TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标，故 Performance schema 部分表是空表。
 
 ### 查询计划
 
