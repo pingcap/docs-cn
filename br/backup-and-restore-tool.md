@@ -468,33 +468,33 @@ br restore raw --pd $PD_ADDR \
 
 在恢复的时候，写入过多的数据会影响在线集群的性能。为了尽量避免影响线上业务，BR 支持通过 [Placement rules](/configure-placement-rules.md) 隔离资源。让下载、导入 SST 的工作仅仅在指定的几个节点（下称“恢复节点”）上进行，具体操作如下：
 
-配置 PD，启动 Placement rules：
+1. 配置 PD，启动 Placement rules：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-echo "config set enable-placement-rules true" | pd-ctl
-```
+    ```shell
+    echo "config set enable-placement-rules true" | pd-ctl
+    ```
 
-编辑恢复节点 TiKV 的配置文件，在 `server` 一项中指定：
+2. 编辑恢复节点 TiKV 的配置文件，在 `server` 一项中指定：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```
-[server]
-labels = { exclusive = "restore" }
-```
+    ```
+    [server]
+    labels = { exclusive = "restore" }
+    ```
 
-启动恢复节点的 TiKV，使用 BR 恢复备份的文件，和非在线恢复相比，这里只需要加上 `--online` 标志即可：
+3. 启动恢复节点的 TiKV，使用 BR 恢复备份的文件，和非在线恢复相比，这里只需要加上 `--online` 标志即可：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```
-br restore full \
-    -s "local://$BACKUP_DIR" \
-    --pd $PD_ADDR \
-    --online
-```
+    ```
+    br restore full \
+        -s "local://$BACKUP_DIR" \
+        --pd $PD_ADDR \
+        --online
+    ```
 
 ## 最佳实践
 
