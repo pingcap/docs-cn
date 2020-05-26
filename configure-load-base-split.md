@@ -43,7 +43,13 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     set config tikv split.qps-threshold=3000
     ```
 
-- 通过 TiKV 修改，`curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'`。
+- 通过 TiKV 修改，例如：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'
+    ```
 
 同理，目前也有两种办法查看配置：
 
@@ -55,7 +61,13 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     show config where type='tikv' and name like '%split.qps-threshold%'
     ```
 
-- 通过 TiKV 查看，`curl "http://ip:status_port/config"`。
+- 通过 TiKV 查看，例如：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl "http://ip:status_port/config"
+    ```
 
 > **注意**
 >
