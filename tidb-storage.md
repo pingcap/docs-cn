@@ -39,7 +39,7 @@ Raft 提供几个重要的功能：
 
 TiKV 利用 Raft 来做数据复制，每个数据变更都会落地为一条 Raft 日志，通过 Raft 的日志复制功能，将数据安全可靠地同步到复制组的每一个节点中。不过在实际写入中，根据 Raft 的协议，只需要同步复制到多数节点，即可安全地认为数据写入成功。
 
-![1.png](/media/tidb-storage-1.png)
+![Raft in TiDB](/media/tidb-storage-1.png)
 
 总结一下，通过单机的 RocksDB，TiKV 可以将数据快速地存储在磁盘上；通过 Raft，将数据复制到多台机器上，以防单机失效。数据的写入是通过 Raft 这一层的接口写入，而不是直接写 RocksDB。通过实现 Raft，TiKV 变成了一个分布式的 Key-Value 存储，少数几台机器宕机也能通过原生的 Raft 协议自动把副本补全，可以做到对业务无感知。
 
@@ -54,7 +54,7 @@ TiKV 利用 Raft 来做数据复制，每个数据变更都会落地为一条 Ra
 
 TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，将每一段叫做一个 Region，并且会尽量保持每个 Region 中保存的数据不超过一定的大小，目前在 TiKV 中默认是 96MB。每一个 Region 都可以用 [StartKey，EndKey) 这样一个左闭右开区间来描述。
 
-![2.png](/media/tidb-storage-2.png)
+![Region in TiDB](/media/tidb-storage-2.png)
 
 注意，这里的 Region 还是和 SQL 中的表没什么关系。 请各位继续忘记 SQL，只谈 KV。
 将数据划分成 Region 后，TiKV 将会做两件重要的事情：
