@@ -1,12 +1,12 @@
 ---
 title: TiDB-binlog 部署拓扑
-summary: 介绍 TiDB-binlog 部署 TiDB 集群的拓扑结构。
+summary: 在部署最小拓扑集群的基础上，同时部署 `TiDB Binlog`。
 category: how-to
 ---
 
 # TiDB-binlog 部署拓扑
 
-本文介绍 TiDB-binlog 部署拓扑以及重要参数
+本文介绍在部署最小拓扑集群的基础上，同时部署 `TiDB Binlog`，`TiDB Binlog` 是目前广泛使用的增量组件，可提供准实时备份和同步功能。
 
 ## 拓扑信息
 
