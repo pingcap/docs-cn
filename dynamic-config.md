@@ -118,7 +118,7 @@ mysql> show warnings;
 | schedule.enable-one-way-merge | 用于开启单向 Merge（只允许和下一个相邻的 Region Merge） |
 | replication.max-replicas | 用于设置副本的数量 |
 | replication.location-labels | 用于设置 TiKV 集群的拓扑信息 |
-| replication.enable-placement-rules | 开启 placement rules |
+| replication.enable-placement-rules | 开启 Placement Rules |
 | replication.strictly-match-label | 开启 label 检查 |
 | pd-server.use-region-storage | 开启独立的 region 存储 |
 | pd-server.max-gap-reset-ts | 用于设置最大的重置 timestamp 的间隔（BR）|
