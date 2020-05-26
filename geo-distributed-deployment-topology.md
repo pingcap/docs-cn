@@ -43,18 +43,18 @@ category: how-to
 
     由于采用跨机房部署 TiKV，为了避免物理机宕机导致 Region Group 默认的 5 副本中丢失 3 副本，使集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同中心、同机柜、同机器 TiKV 实例不会出现 Region Group 有 3 副本的情况。
 
-    - TiKV 配置
+- TiKV 配置
 
-        相同物理机配置相同的 host 级别 label 信息：
+    相同物理机配置相同的 host 级别 label 信息：
 
-        ```yaml
-        config:
-          server.labels:
-            zone: bj
-            dc: bja
-            rack: rack1
-            host: host2
-        ```
+    ```yaml
+    config:
+      server.labels:
+        zone: bj
+        dc: bja
+        rack: rack1
+        host: host2
+    ```
 
 - 防止异地 TiKV 节点发起不必要的 Raft 选举，需要将异地 TiKV 节点发起选举时经过最少的 tick 个数和最多经过的 tick 个数都调大，这两个参数默认设置均为 `0`。
 
