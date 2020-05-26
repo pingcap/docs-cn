@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 
 ### 管理同步任务 (`changefeed`)
 
-#### 创建同步任务：
+#### 创建同步任务
 
 使用以下命令来创建同步任务：
 
@@ -48,7 +48,7 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:12
 create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-start-ts":null}}
 ```
 
-#### 查询同步任务列表：
+#### 查询同步任务列表
 
 使用以下命令来查询同步任务列表：
 
@@ -66,7 +66,7 @@ cdc cli changefeed list --pd=http://127.0.0.1:2379
 ]
 ```
 
-#### 查询特定同步任务，对应于某个同步任务的信息和状态：
+#### 查询特定同步任务，对应于某个同步任务的信息和状态
 
 使用以下命令来查询特定同步任务：
 
