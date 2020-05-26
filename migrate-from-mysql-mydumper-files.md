@@ -6,8 +6,7 @@ category: how-to
 
 # 从 MySQL SQL 文件迁移数据
 
-本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。
-如何生成 MySQL SQL 文件，可以参考 [MyDumper](/mydumper-overview.md) 或者 [Dumpling](/dumpling-overview.md)
+本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，可以参考 [Mydumper](/mydumper-overview.md) 或者 [Dumpling](/dumpling-overview.md) 文档。
 
 ## 第 1 步：部署 TiDB Lighitning
 
@@ -15,9 +14,9 @@ category: how-to
 
 > **注意：**
 >
-> 如果选用 Importer Backend 来导入数据，除需要部署 TiDB Lightning 组件外，也需要部署 TiKV Importer 组件。导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）
-> 如果选用 TiDB Backend 来导入数据，只需要部署 TiDB Lightning 组件。导入期间集群可以正常提供服务
-> 具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-tidb-backend.md)。
+> - 如果选用 Importer Backend 来导入数据，除需要部署 TiDB Lightning 组件外，也需要部署 TiKV Importer 组件。导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
+> - 如果选用 TiDB Backend 来导入数据，只需要部署 TiDB Lightning 组件。导入期间集群可以正常提供服务。
+> - 二者的具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-tidb-backend.md)。
 
 ## 第 2 步：配置 TiDB Lightning 的数据源
 
