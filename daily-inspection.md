@@ -45,24 +45,24 @@ TiDB 作为分布式数据库，对比其他单机数据库更加复杂。优化
 
 说明
 
-+ miss 是缺副本，不会一直大于 0。
-+ extra 是多副本。
-+ empty 是空 Region，一般是 `TRUNCATE TABLE`/`DROP TABLE` 语句导致，如果较多，可以考虑开启跨表 Region merge。
-+ pending 是 Raft log 落后的 Region。由于调度产生少量的 pending peer 是正常的，但是如果持续很高，就可能有问题。
-+ down 是 Raft leader 上报有不响应 peer 的 Region 数量。
-+ offline 是下线过程中的 Region 数量。
++ `miss-peer-region-count` 是缺副本，不会一直大于 0。
++ `extra-peer-region-count` 是多副本，调度过程中会有产生。
++ `empty-region-count` 是空 Region，一般是 `TRUNCATE TABLE`/`DROP TABLE` 语句导致，如果较多，可以考虑开启跨表 Region merge。
++ `pending-peer-region-count` 是 Raft log 落后的 Region。由于调度产生少量的 pending peer 是正常的，但是如果持续很高，就可能有问题。
++ `down-peer-region-count` 是 Raft leader 上报有不响应 peer 的 Region 数量。
++ `offline-peer-region-count` 是下线过程中的 Region 数量。
 
 原则上来说，该监控面板偶尔有数据是符合预期的，长期有数据可能需要排查下是否有些问题。
 
 ## 响应时间
 
-### KV duration
+### KV Request Duration
 
 ![img](/media/daily-inspection/KV_Duration.png)
 
 TiKV 当前 .99 (百分位) 的响应时间，如果发现有明显高的节点，可以排查是否有热点，或者是否相关节点性能较差。
 
-### PD duration
+### PD TSO Wait Duration
 
 ![img](/media/daily-inspection/PD_duration.png)
 
@@ -78,13 +78,13 @@ TiDB 从 PD 获取 TSO 的时间，如果相关响应时间较高，一般常见
 
 ![img](/media/daily-inspection/overview.png)
 
-常见的负载、内存、网络、IO 监控。发现有瓶颈时，推荐扩容，或者优化集群（优化 SQL、集群参数等）
+常见的负载、内存、网络、IO 监控。发现有瓶颈时，推荐扩容，或者优化集群：优化 SQL、集群参数等
 
 ## 异常监控
 
 ![img](/media/daily-inspection/Failed_query.png)
 
-每个 TiDB 实例上，执行 SQL 语句发生错误按照错误类型的统计（例如语法错误、主键冲突等）
+每个 TiDB 实例上，执行 SQL 语句发生错误按照错误类型的统计：例如语法错误、主键冲突等
 
 ## GC 状态
 
