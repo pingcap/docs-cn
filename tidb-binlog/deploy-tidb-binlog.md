@@ -15,6 +15,10 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 | Pump | 3 | 8核+   | SSD, 200 GB+ | 16G |
 | Drainer | 1 | 8核+ | SAS, 100 GB+ （如果输出 binlog 为本地文件，磁盘大小视保留数据天数而定） | 16G |
 
+## 使用 TiUP 部署 TiDB Binlog
+
+推荐使用 TiUP 部署 TiDB Binlog，详细部署方式参考 [TiUP 部署 TiDB Binlog](/production-deployment-using-tiup.md#场景-3通过-tidb-binlog-同步到下游)。
+
 ## 使用 TiDB Ansible 部署 TiDB Binlog
 
 ### 第 1 步：下载 TiDB Ansible
