@@ -41,4 +41,4 @@ ALTER INSTANCE RELOAD TLS;
 
 ## 另请参阅
 
-[MySQL 客户端开启 TLS](/encrypted-connections-with-tls-protocols.md)
+[MySQL 客户端开启 TLS](/enable-tls-between-clients.md)
