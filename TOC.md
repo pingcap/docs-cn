@@ -186,6 +186,12 @@
       - [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+<<<<<<< HEAD
+=======
+      - [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
+      - [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md)
+      - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
+>>>>>>> cca3fa7... add sql statement for show analyze status (#3329)
       - [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
