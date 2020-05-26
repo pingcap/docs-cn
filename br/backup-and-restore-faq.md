@@ -12,9 +12,9 @@ category: FAQ
 
 ## 恢复的时候，报错 “could not read local://...:download sst failed”，怎么办？
 
-在恢复的时候，每个节点都必须能够访问到**所有**的 SST 文件。
-默认情况下，假如使用 `local` storage，备份的 SST 文件会分散在各个节点中。
-此时是无法直接恢复的，必须将每个 TiKV 节点的备份数据拷贝到其它所有 TiKV 节点才能恢复。
+在恢复的时候，每个节点都必须能够访问到**所有**的备份文件（SST files）。
+默认情况下，假如使用 `local` storage，备份文件会分散在各个节点中。
+此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
  
 事实上，建议在备份的时候挂载一块 NFS 网盘作为备份盘，[参考用例](/br/backup-and-restore-use-cases.md#将单表数据备份到网络盘推荐)。
  
