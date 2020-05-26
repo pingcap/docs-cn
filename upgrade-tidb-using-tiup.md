@@ -23,6 +23,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/using-tiup/']
     - 启用了 `Lightning` / `Importer` 的集群
     - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）
     - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
+- 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 
 ## 2. 在中控机器上安装 TiUP
 
@@ -73,10 +74,11 @@ tiup update cluster
 > + 如果原集群已经是 TiUP 部署，可以跳过此步骤。
 > + 目前默认识别 `inventory.ini` 配置文件，如果你的配置为其他名称，请指定。
 > + 你需要确保当前集群的状态与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常。
+> + 如果在一个 TiDB Ansible 目录中管理多个不同的 `inventory.ini` 配置文件和 TiDB 集群，将其中一个集群导入到 TiUP 时，需要指定 `--no-backup` 以避免将 Ansible 目录移动到 TiUP 管理目录下面。
 
 ### 3.1 将 TiDB Ansible 集群导入到 TiUP 中
 
-1. 以 `/home/tidb/tidb-ansible` 为示例路径，使用如下命令将 TiDB Ansible 集群导入到 TiUP 中（不要在 Ansible 的目录下执行该命令，否则会报错）：
+1. 以 `/home/tidb/tidb-ansible` 为示例路径，使用如下命令将 TiDB Ansible 集群导入到 TiUP 中：
 
     {{< copyable "shell-regular" >}}
 
@@ -105,7 +107,7 @@ tiup update cluster
 
     + 若 Ansible 中原集群名与 TiUP 中任一已有集群的名称重复，将会给出警示信息并提示输入一个新的集群名。因此，请注意**不要重复对同一个集群执行导入**，导致 TiUP 中同一个集群有多个名字
 
-导入完成后，可以通过 `tiup cluster display <cluster-name>` 查看当前集群状态以验证导入结果。由于 `display` 命令会查询各结点的实时状态，所以命令执行可能需要等待少许时间。
+导入完成后，可以通过 `tiup cluster display <cluster-name>` 查看当前集群状态以验证导入结果。由于 `display` 命令会查询各节点的实时状态，所以命令执行可能需要等待少许时间。
 
 ### 3.2 编辑 TiUP 拓扑配置文件
 
@@ -127,7 +129,6 @@ tiup update cluster
     ```
 
 3. 参考 [topology](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
-如果集群有配置 label，目前也需要按模板中的格式在配置中补充，后续版本会自动导入 label。
 
 修改完成后 `wq` 保存并退出编辑模式，输入 `Y` 确认变更。
 
@@ -173,23 +174,9 @@ TiDB Version: v4.0.0-rc
 
 本部分介绍使用 TiUP 升级 TiDB 集群遇到的常见问题。
 
-### 5.1 升级时报错中断，处理完报错后，如何从中断的节点继续升级
+### 5.1 升级时报错中断，处理完报错后，如何继续升级
 
-可以指定 `--role` 或 `--node` 对指定的组件或节点进行升级。命令如下：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup cluster upgrade <cluster-name> v4.0.0-rc --role tidb
-```
-
-或者
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup cluster upgrade <cluster-name> v4.0.0-rc --node <ID>
-```
+重新执行 `upgrade` 命令进行升级。升级操作会重启之前已经升级完成的节点，后续版本支持从中断的位置继续升级。
 
 ### 5.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
@@ -219,4 +206,8 @@ https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
 
 - `oom-action` 参数设置为 `cancel` 时，当查询语句触发 OOM 阈值后会被 kill 掉，升级到 4.0 版本后除了 `select` 语句，还可能 kill 掉 `insert`/`update`/`delete` 等 DML 语句。
 - 4.0 版本增加了 `rename` 时对表名长度的检查，长度限制为 `64` 个字符。升级后 `rename` 后的表名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
+- 4.0 版本增加了对分区表的分区名长度的检查，长度限制为 `64` 个字符。升级后 `create table` 和 `alter table` 分区表时当分区名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
 - 4.0 版本对 `explain` 执行计划的输出格式做了改进，需要注意是否有针对 `explain` 制订了自动化的分析程序。
+- 4.0 版本支持 [Read Committed 隔离级别](https://pingcap.com/docs-cn/stable/transaction-isolation-levels/#读已提交隔离级别-read-committed)。升级到 4.0 后，在悲观事务里隔离级别设置为 `READ-COMMITTED` 会生效，3.0 及之前的版本则不会生效。
+- 4.0 版本执行 `alter reorganize partition` 会报错，之前的版本则不会报错，只是语法上支持没有实际效果。
+- 4.0 版本创建 `linear hash partition` 和 `subpartition` 分区表时实际不生效，会转换为普通表，之前的版本则转换为普通分区表。

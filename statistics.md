@@ -183,11 +183,11 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 {{< copyable "sql" >}}
 
+其中，`ShowLikeOrWhereOpt` 部分的语法图为：
+
 ```sql
 SHOW STATS_META [ShowLikeOrWhere];
 ```
-
-该语句会输出所有表的总行数以及修改行数等信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
 
 目前 `SHOW STATS_META` 会输出 6 列，具体如下：
 
@@ -208,13 +208,13 @@ SHOW STATS_META [ShowLikeOrWhere];
 
 通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0；当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100。
 
-通过以下命令来查看表的统计信息健康度，你可以通过 `ShowLikeOrWhere` 来筛选需要的信息：
+`SHOW STATS_HEALTHY` 的语法图为：
 
-{{< copyable "sql" >}}
+![ShowStatsHealthy](/media/sqlgram/ShowStatsHealthy.png)
 
-```sql
-SHOW STATS_HEALTHY [ShowLikeOrWhere];
-```
+其中，`ShowLikeOrWhereOpt` 部分的语法图为：
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 目前，`SHOW STATS_HEALTHY` 会输出 4 列，具体如下：
 
@@ -345,3 +345,7 @@ LOAD STATS 'file_name';
 ```
 
 `file_name` 为要导入的统计信息的文件名。
+
+## 另请参阅
+
+* [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
