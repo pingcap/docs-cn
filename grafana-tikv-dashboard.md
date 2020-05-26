@@ -111,7 +111,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Raft message
 
 - Sent messages per server：每个 TiKV 实例发送 Raft 消息的 ops
-- Flush messages per server：每个 TiKV 实例持久化 Raft 消息的 ops
+- Flush messages per server：每个 TiKV 实例中 raft client 往外 flush Raft 消息的 ops
 - Receive messages per server：每个 TiKV 实例接受 Raft 消息的 ops
 - Messages：发送不同类型的 Raft 消息的 ops
 - Vote：Raft 投票消息发送的 ops
@@ -121,11 +121,11 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Raft propose
 
-- Raft proposals per ready：在一个 batch 内，所有 region apply proposal 的速率
+- Raft proposals per ready：在一个 batch 内，apply proposal 时每个 ready 中包含 proposal 的个数的直方图
 - Raft read/write proposals：不同类型的 proposal 的 ops
 - Raft read proposals per server：每个 TiKV 实例发起读 proposal 的 ops
 - Raft write proposals per server：每个 TiKV 实例发起写 proposal 的 ops
-- Propose wait duration：每秒钟内每个 proposal 的等待时间
+- Propose wait duration：proposal 的等待时间的直方图
 - Propose wait duration per server：每秒钟内每个 TiKV 实例上每个 proposal 的等待时间
 - Apply wait duration：每秒钟内每个 apply 的等待时间
 - Apply wait duration per server：每秒钟每个 TiKV 实例上每个 apply 的等待时间
@@ -258,7 +258,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 - Request duration：从开始处理 coprocessor 请求到结束所消耗的总时间
 - Total Requests：每种类型的总请求的 ops
-- Handle duration：每分钟实际处理 coprocessor 请求所消耗的时间
+- Handle duration：每分钟实际处理 coprocessor 请求所消耗的时间的直方图
 - Total Request Errors：Coprocessor 请求错误的 ops，正常情况下，短时间内不应该有大量的错误
 - Total KV Cursor Operations：各种类型的 KV cursor 操作的总数量的 ops，例如 select、index、analyze_table、analyze_index、checksum_table、checksum_index 等
 - KV Cursor Operations：各种类型的 KV cursor 操作的数量的 ops，以直方图形式显示
@@ -267,7 +267,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Coprocessor Detail
 
-- Handle duration：每秒钟实际处理 coprocessor 请求所消耗的时间
+- Handle duration：每秒钟实际处理 coprocessor 请求所消耗的时间的直方图
 - 95% Handle duration by store：每秒钟中 95% 的情况下，每个 TiKV 实例处理 coprocessor 请求所花费的时间
 - Wait duration：coprocessor 每秒钟内请求的等待时间，99.99% 的情况下，应该小于 10s
 - 95% Wait duration by store：每秒钟 95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
@@ -281,48 +281,11 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 ## Threads
 
 - Threads state：TiKV 线程的状态
-- Threads IO：TiKV 各个线程的 I/O 使用量
+- Threads IO：TiKV 各个线程的 I/O 流量
 - Thread Voluntary Context Switches：TiKV 线程自主切换的次数
 - Thread Nonvoluntary Context Switches：TiKV 线程被动切换的次数
 
-## RocksDB - kv
-
-- Get operations：get 操作的 ops
-- Get duration：get 操作的耗时
-- Seek operations：seek 操作的 ops
-- Seek duration：seek 操作的耗时
-- Write operations：write 操作的 ops
-- Write duration：write 操作的耗时
-- WAL sync operations：sync WAL 操作的 ops
-- Write WAL duration：write 操作中写 WAL 的耗时
-- WAL sync duration：sync WAL 操作的耗时
-- Compaction operations：compaction 和 flush 操作的 ops
-- Compaction duration：compaction 和 flush 操作的耗时
-- SST read duration：读取 SST 所需的时间
-- Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
-- Memtable size：每个 CF 的 memtable 的大小
-- Memtable hit：memtable 的命中率
-- Block cache size：block cache 的大小。如果将 `shared block cache` 禁用，即为每个 CF 的 block cache 的大小
-- Block cache hit：block cache 的命中率
-- Block cache flow：不同 block cache 操作的流量
-- Block cache operations 不同 block cache 操作的个数
-- Keys flow：不同操作造成的 key 的流量
-- Total keys：每个 CF 中 key 的个数
-- Read flow：不同读操作的流量
-- Bytes / Read：每次读的大小
-- Write flow：不同写操作的流量
-- Bytes / Write：每次写的大小
-- Compaction flow：compaction 相关的流量
-- Compaction pending bytes：等待 compaction 的大小
-- Read amplification：每个 TiKV 实例的读放大
-- Compression ratio：每一层的压缩比
-- Number of snapshots：每个 TiKV 的 snapshot 的数量
-- Oldest snapshots duration：最旧的 snapshot 保留的时间
-- Number files at each level：每一层的文件个数
-- Ingest SST duration seconds：ingest SST 所花费的时间
-- Stall conditions changed of each CF：每个 CF stall 的原因
-
-## RocksDB - raft
+## RocksDB - kv/raft
 
 - Get operations：get 操作的 ops
 - Get duration：get 操作的耗时
@@ -391,7 +354,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Lock manager
 
-- Thread CPU：lock manager 的线程使用率
+- Thread CPU：lock manager 的线程 CPU 使用率
 - Handled tasks：lock manager 处理的任务数量
 - Waiter lifetime duration：事务等待锁释放的时间
 - Wait table：wait table 的状态信息，包括锁的数量和等锁事务的数量
@@ -405,7 +368,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Backup
 
-- Backup CPU：backup 的线程使用率
+- Backup CPU：backup 的线程 CPU 使用率
 - Range Size：backup range 的大小直方图
 - Backup Duration：backup 的耗时
 - Backup Flow：backup 总的字节大小
@@ -419,7 +382,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Encrypted files：被加密的文件数量
 - Encryption initialized：显示加密是否被启用，`1` 代表已经启用
 - Encryption meta files size：加密相关的元数据文件的大小
-- Encrypt/decrypt data nanos：每秒钟加密/解密数据所耗费的时间
+- Encrypt/decrypt data nanos：每次加密/解密数据的耗时的直方图
 - Read/write encryption meta duration：每秒钟读写加密文件所耗费的时间
 
 ## 面板常见参数的解释
@@ -469,166 +432,3 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
     - coprocessor：由 TiDB 发送的 coprocessor 请求
     - coprocessor_stream：由 TiDB 发送的 coprocessor 请求，以流形式返回
     - batch_coprocessor：由 TiDB 发送的多个 coprocessor 请求
-
-5. Raft 命令：
-
-    - raft：TiKV 节点间 raft 协议的消息
-    - batch_raft：批量发送的 raft 协议的消息
-    - snapshot：发送 raft 中状态机数据的一份快照，以流的形式发送多个打散的快照块
-
-6. 调试事务命令：
-
-    - mvcc_get_by_key：通过给定 key 返回 mvcc 信息
-    - mvcc_get_by_start_ts：通过给定 start ts 返回 mvcc 信息
-
-7. 其它命令：
-
-    - batch_commands：批量发送多个命令，用于减少传输量提高性能
-    - split_region：PD 发送 split region 请求给 TiKV 节点，同时指定需要 split 的 key
-    - read_index：通过 raft 的一些元数据来获取 read index
-
-### 底层数据库类型
-
-- raft：用于存储 raft 日志的底层数据库
-- kv：用于存储 key value 数据的底层数据库
-
-### Raftstore 错误类型
-
-- err_not_leader：对应的 peer 不是所查询 region 的 leader
-- err_region_not_found：没有在当前 store 中找到需要的 region
-- err_key_not_in_region：key 不在对应的 region 范围内
-- err_epoch_not_match：访问的 region 的 epoch 不匹配，意即此 snapshot 的数据过时，可能由于当前还未 merge 最新的 commit
-- err_server_is_busy：服务器太忙碌无法及时处理到达 TiKV 的请求，原因主要是 write stall、scheduler busy、线程池排队、raftstore 组件忙碌等
-- err_stale_command：命令已经失效，当前 leader 抛弃了该请求导致其无法继续处理
-- err_store_not_match：发送到错误的 store 节点上
-- err_raft_entry_too_large：用户一次进行了过多的操作，导致产生的 raft entry 过大而拒绝掉本次请求
-
-### Scheduler 错误类型
-
-- snapshot_err：获取 snapshot 失败
-- prepare_write_err：在 prewrite 阶段写入失败
-
-### Coprocessor 错误类型
-
-- meet_lock：当前的 key 已经被锁住
-- deadline_exceeded：由于超过了处理的截止期，Coprocessor 任务被终止
-- max_pending_tasks_exceeded：由于超过了最大挂起任务数量，Coprocessor 任务被终止
-
-### 请求 PD 的消息类型
-
-- get_region：获取给定 key 的 region 和该 region 的 leader
-- bootstrap_cluster：作为集群中第一个启动的 TiKV 节点尝试启动整个集群
-- is_cluster_bootstrapped：向 PD 查询当前集群是否已经被启动
-- alloc_id：取得一个新的 store id
-- put_store：上传一个 store 的元数据信息
-- get_store：通过 store id 获取相关的元数据信息
-- get_all_stores：获取集群所有 store 的元数据信息
-- get_cluster_config：获取当前集群的配置信息，如 id、单个 region 的最大 peer 数量等信息
-- get_region_by_id：通过 id 获取 region 的相关信息，如 region 范围、leader、follower 等信息
-- ask_split：请求分割一个 region，获取新 region id 和 peer id 信息
-- ask_batch_split：请求将一个 region 分成多个 region
-- store_heartbeat：发送关于当前 store 的心跳消息
-- report_batch_split：当 TiKV 完成了 split region 后将相关的 region 信息汇报给 PD 以更新 region 信息
-- get_gc_safe_point：获取当前 gc 的时间戳 safe point，参考 [GC doc](https://pingcap.com/docs-cn/dev/garbage-collection-overview/)
-- get_operator：获取给定 region 的 operator 的相关状态信息
-- tso：从 PD 获取全局时间戳 tso，仅给 CDC 使用
-- get_members：获取当前集群的成员列表，不用提供对应集群的 id
-
-### PD 心跳类型
-
-- send：发送到 PD 的心跳
-- noop：PD 返回的心跳没有包含任何命令
-- merge：PD 返回的心跳包含 merge 命令
-- change peer：PD 返回的心跳 change peer 命令
-- transfer leader：PD 返回的心跳包含 transfer leader 的命令
-- split region：PD 返回的心跳包含 split region 的命令
-
-### Raft ready 类型
-
-- message：raft ready 产生的需要发出给其它节点的消息
-- commit：raft ready 产生的需要 commit 的 entry 数量
-- append：raft ready 产生的需要 append 的 entry 数量
-- snapshot：raft ready 产生的需要应用的 snapshot 的数量
-- has_ready_region：具有 ready 消息的 raft group 的数量
-
-### Scheduler priority 级别
-
-- normal：SQL 提交会携带优先级，如果不指定则为 normal 优先级
-- high：SQL 提交会携带优先级，可以指定为 high，TiDB 在执行阶段会优先处理这条语句
-- low：SQL 提交会携带优先级，可以指定为 low，TiDB 在执行阶段会降低执行这条语句的优先级
-
-### Store tick 类型
-
-tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面具备的 tick 类型：
-
-- compact_check：驱动以检测当前的 TiKV store 是否有 region 需要开始进行 compaction
-- pd_store_heartbeat：驱动以发送心跳到 PD 节点以上传当前 store 的状态信息
-- snap_gc：驱动以将当前 store 内所有没有正在使用即空闲状态的 snapshot 删除
-- compact_lock_cf：驱动以创建一个合并 lock cf 的任务并直接调度，lock cf 是事务中存放 key 的 lock 的区域，但有时候大量读写操作会使这个区域过大影响性能，需要合并以增加检索效率
-- consistency_check：驱动以对当前 store 的所有 region 的数据进行一致性检查
-- cleanup_import_sst：驱动以将失效的 sst 删除，判断的规则是所在的 region 的 epoch 过期或者本地无法找到相关 region 信息，但是从 PD 中验证后可以删除
-
-### Peer tick 类型
-
-- raft：驱动 raft 消息在集群中发送
-- raft_log_gc：驱动删除过时的 raft log，判断标准是当 replicated index 和 compact index 的差值大于阈值即删除这部分差值的 log
-- split_region_check：驱动以在 leader peer 中检查是否需要将当前管理的 region 进行 split
-- pd_heartbeat：驱动以发送心跳到 PD 节点上传当前 region 的状态信息
-- check_merge：检测是否需要将相邻的小 region 进行合并
-- check_peer_stale_state：检查其它 peer 的状态，对于 follower 而言，如果检测到 leader 无法 ping 成功即发起新一轮选举
-
-### Raft 消息类型
-
-在发送阶段统计 raft 消息类型：
-
-- append：发送 append raft log
-- append_resp：回应 append raft log
-- prevote：预选举消息，和普通 vote 的区别在于当前 peer 的状态并未变成选举状态，因而不会阻塞正常的操作，减少了网络隔离之后的集群的网络抖动
-- prevote_resp：回应预选举消息
-- vote：raft 协议中的选举
-- vote_resp：回应选举消息
-- snapshot：发送 snapshot 给其它 peer，leader 用此方式快速同步 raft log 给其它 peer
-- request_snapshot：回应 snapshot 的接收状况
-- heartbeat：raft group 中的心跳消息
-- heartbeat_resp：回应 raft group 中的心跳消息
-- transfer_leader：发起转换 leader 给希望成为 leader 的 peer
-- timeout_now：在 transfer leader 过程中旧 leader 的租约提前到期
-- read_index：向 leader 发送最新的 read index 的请求，用于 follower read 的场景
-- read_index_resp：leader 回复自己的 read index
-
-### Raft 消息 drop 原因
-
-- mismatch_store_id：发到了错误的 store 上
-- mismatch_region_epoch：访问的 region 的 epoch 不匹配，意即此 snapshot 的数据过时，可能由于当前还未 merge 最新的 commit
-- stale_msg：raft 消息已经失效，当前 leader 抛弃了该请求导致无法继续处理
-- region_overlap：两个 region 重叠了，这里使用最新的 snapshot 的范围进行比对
-- region_no_peer：snapshot 消息中包含的 peer 和 snapshot 数据中的 peer 不匹配
-- region_tombstone_peer：tombstone peer 收到了一个过时的 raft 消息
-- region_nonexistent：所发送的 region 还不存在
-- applying_snap：正在 apply snapshot，此时无法处理 raft 消息
-
-### Raft proposal 消息类型 
-
-- local_read：直接处理 raft 请求而不通过 raft 的 SafeReadIndex 机制
-- read_index：处理读请求的机制，通过发送 heartbeat 确认自身仍为 leader 即可
-- normal：普通的 proposal 消息
-- conf_change：region 内的 raft group 进行 conf change 相关的消息
-- transfer_leader：转移自身 leader 角色的消息
-
-### Local read 拒绝类型
-
-- store_id_mismatch：请求的 store id 和自身不匹配
-- peer_id_mismatch：请求的 peer id 和自身不匹配
-- term_mismatch：请求的 term 和自身不匹配
-- lease_expire：leader 的 lease 过期，无法处理 read 请求
-- no_region：请求的 region 不匹配
-- rejected_by_no_lease：当前 leader 已无 lease 信息
-- rejected_by_epoch：访问的 region 的 epoch 不匹配
-- rejected_by_appiled_term：新 leader 还未 apply 新的 term
-- rejected_by_channel_full：用于缓存消息的 crossbeam channel 已满
-
-### GC manager 工作状态
-
-- initializing：初始化 GC 管理器，包括启动新的线程分配 worker
-- idle：在没有到 safe point 时间之前保持 idle 状态
-- working：开始进行 GC 任务，参考 [GC doc](https://pingcap.com/docs-cn/dev/garbage-collection-overview/)
