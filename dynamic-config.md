@@ -145,7 +145,7 @@ mysql> show warnings;
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
 | raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
-| raftstore.region-compact-check-step | 每轮校验人工 compaction 时，一次性检查的 region 个数 |
+| raftstore.region-compact-check-step | 每轮校验人工 compaction 时，一次性检查的 Region 个数 |
 | raftstore.region-compact-min-tombstones | 触发 RocksDB compaction 需要的 tombstone 个数 |
 | raftstore.region-compact-tombstones-percent | 触发 RocksDB compaction 需要的 tombstone 所占比例 |
 | raftstore.pd-heartbeat-tick-interval | 触发 Region 对 PD 心跳的时间间隔 |
