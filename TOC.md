@@ -418,7 +418,7 @@
     + [MySQL 系统变量](/system-variables.md)
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
-    + TiKV
+    + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
   + [错误码](/error-codes.md) @于帅鹏
