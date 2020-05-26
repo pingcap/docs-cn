@@ -152,7 +152,7 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，有一个 TiDB 的 hotfix 包放在 `/tmp/tidb-hotfix.tar.gz` 目录下。如果此时想要替换集群上的所有 TiDB，则可以执行以下命令：
+例如，有一个 TiDB 实例的 hotfix 包放在 `/tmp/tidb-hotfix.tar.gz` 目录下。如果此时想要替换集群上的所有 TiDB 实例，则可以执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
