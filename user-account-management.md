@@ -82,7 +82,7 @@ CREATE USER 'test';
 CREATE USER 'test'@'%' IDENTIFIED BY '';
 ```
 
-为一个不存在的用户授权，是否会自动创建用户，行为受到 `sql_mode` 影响。如果 `sql_mode` 中包含 `NO_AUTO_CREATE_USER`，则 `GRANT` 不会自动创建用户并报错。
+为一个不存在的用户授权时，是否会自动创建用户的行为受 `sql_mode` 影响。如果 `sql_mode` 中包含 `NO_AUTO_CREATE_USER`，则 `GRANT` 不会自动创建用户并报错。
 
 假设 `sql_mode` 不包含 `NO_AUTO_CREATE_USER`，下面的例子用 `CREATE USER` 和 `GRANT` 语句创建了四个账户：
 
@@ -215,8 +215,8 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 ## `FLUSH PRIVILEGES`
 
-用户以及权限相关的信息都是存储在 TiKV 服务器中的，TiDB 在进程内部会缓存。一般通过 `CREATE USER`，`GRANT` 等语句的修改，都能够在整个集群迅速生效。
-如果遇到网络或者其它因素影响，由于 TiDB 会周期性的更新缓存信息，正常情况最多 15 分钟左右生效。
+用户以及权限相关的信息都存储在 TiKV 服务器中，TiDB 在进程内部会缓存这些信息。一般通过 `CREATE USER`，`GRANT` 等语句来修改相关信息时，可在整个集群迅速生效。
+如果遇到网络或者其它因素影响，由于 TiDB 会周期性地更新缓存信息，正常情况下，最多 15 分钟左右生效。
 
 如果授权表已被直接修改，则不会通知 TiDB 节点更新缓存，运行如下命令可使改动立即生效：
 
