@@ -9,6 +9,14 @@ category: FAQ
 本文是 BR 的 FAQ，记录了一些在 BR 中的常见问题和解答。
  
 我们无法穷尽所有问题，如果遇到未在其中且无法解决的问题，[AskTUG](http://asktug.com) 社区中的友善成员很乐意解答您的问题。
+
+## 恢复的时候，报错 “could not read local://...:download sst failed”，怎么办？
+
+在恢复的时候，每个节点都必须能够访问到**所有**的 SST 文件。
+默认情况下，假如使用 `local` storage，备份的 SST 文件会分散在各个节点中。
+此时是无法直接恢复的，必须将每个 TiKV 节点的备份数据拷贝到其它所有 TiKV 节点才能恢复。
+ 
+事实上，建议在备份的时候挂载一块 NFS 网盘作为备份盘，[参考用例](/br/backup-and-restore-use-cases.md#将单表数据备份到网络盘推荐)。
  
 ## BR 备份时，对写入影响多大？
  
@@ -22,7 +30,7 @@ category: FAQ
  
 ## BR 遇到 Permission denied 错误，即便用 root 运行 BR 也没用，怎么办？
  
-确认 TiKV 是否有访问备份目录的权限。
+确认 TiKV 是否有访问备份目录的权限。如果是备份，请确认是否有写权限；如果是恢复，请确认是否有读权限。
  
 使用 root 运行 BR 仍旧有可能会因为磁盘权限而失败，因为 sst 文件的落盘是由 TiKV 执行的。
  
@@ -41,14 +49,6 @@ category: FAQ
 ## 使用 local storage 的时候，BR 备份的文件会存在哪里？
  
 在使用 local storage 的时候，会在运行 BR 的节点生成 backupmeta，在各个 Region 的 Leader 节点生成 SST 文件。
- 
-## 恢复的时候，报错 “could not read local://...:download sst failed”，怎么办？
- 
-在恢复的时候，每个节点都必须能够访问到**所有**的 SST 文件。
-默认情况下，假如使用 `local` storage，备份的 SST 文件会分散在各个节点中。
-此时是无法直接恢复的，必须将每个 TiKV 节点的备份数据拷贝到其它所有 TiKV 节点才能恢复。
- 
-事实上，建议在备份的时候挂载一块 NFS 网盘作为备份盘，[参考用例](/br/backup-and-restore-use-cases.md#将单表数据备份到网络盘推荐)。
  
 ## 备份数据会有多大，备份会有 replica 吗？
  
