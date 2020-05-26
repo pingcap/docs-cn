@@ -127,7 +127,7 @@ mysql> show warnings;
 | pd-server.dashboard-address | 用于设置 dashboard 的地址 |
 | replication-mode.replication-mode | 备份的模式 |
 
-具体参数意义可参考 [PD 配置文件描述](https://pingcap.com/docs-cn/stable/pd-configuration-file/)
+具体参数意义可参考 [PD 配置文件描述](/pd-configuration-file.md)
 
 ### TiKV
 
