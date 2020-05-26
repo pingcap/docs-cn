@@ -156,8 +156,8 @@ mysql> show warnings;
 | raftstore.lock-cf-compact-bytes-threshold | 触发对 lock CF 进行 compact 的大小 |
 | raftstore.messages-per-tick | 每轮处理的消息最大个数 |
 | raftstore.max-peer-down-duration | 副本允许的最长未响应时间 |
-| raftstore.max-leader-missing-duration | 允许副本处于无主状态的最长时间 |
-| raftstore.abnormal-leader-missing-duration | 允许副本处于无主状态的时间 |
+| raftstore.max-leader-missing-duration | 允许副本处于无主状态的最长时间，超过将会向 PD 校验自己是否已经被删除 |
+| raftstore.abnormal-leader-missing-duration | 允许副本处于无主状态的时间，超过将视为异常，标记在 metrics 和日志中 |
 | raftstore.peer-stale-state-check-interval | 触发检验副本是否处于无主状态的时间间隔 |
 | raftstore.consistency-check-interval | 触发一致性检查的时间间隔 |
 | raftstore.raft-store-max-leader-lease | Region 主可信任期的最长时间 |
