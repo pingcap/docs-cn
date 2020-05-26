@@ -166,5 +166,3 @@ sysbench $testname \
 #### Read Write
 
 ![Read Write](/media/sysbench_v4vsv3_read_write.png)
-
-
