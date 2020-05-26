@@ -4,7 +4,7 @@ summary: TiDB 数据库中 SHOW BINDINGS 的使用概况。
 category: reference
 ---
 
-# SHOW DATABASES
+# SHOW BINDINGS
 
 `SHOW BINDINGS` 语句用于显示所有创建过的 SQL BIND 的相关信息。
 
