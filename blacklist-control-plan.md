@@ -162,7 +162,7 @@ desc mysql.expr_pushdown_blacklist;
     Query OK, 0 rows affected (0.00 sec)
     ```
 
-3. 重新观察执行计划，发现表达式下推黑名单生效，`where` 条件被禁止下推。
+3. 重新观察执行计划，发现表达式下推黑名单生效，`where` 条件中的 `<` 和 `>` 没有被下推到 TiKV Coprocessor 上。
 
     {{< copyable "sql" >}}
 
