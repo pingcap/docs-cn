@@ -22,6 +22,9 @@ SQL 中的 LIMIT 子句在 TiDB 查询计划树中对应 Limit 算子节点，OR
 ```sql
 create table t(id int primary key, a int not null);
 explain select * from t order by a limit 10;
+```
+
+```
 +----------------------------+----------+-----------+---------------+--------------------------------+
 | id                         | estRows  | task      | access object | operator info                  |
 +----------------------------+----------+-----------+---------------+--------------------------------+
@@ -43,6 +46,9 @@ explain select * from t order by a limit 10;
 create table t(id int primary key, a int not null);
 create table s(id int primary key, a int not null);
 explain select * from t left join s on t.a = s.a order by t.a limit 10;
+```
+
+```
 +----------------------------------+----------+-----------+---------------+-------------------------------------------------+
 | id                               | estRows  | task      | access object | operator info                                   |
 +----------------------------------+----------+-----------+---------------+-------------------------------------------------+
@@ -68,6 +74,9 @@ explain select * from t left join s on t.a = s.a order by t.a limit 10;
 create table t(id int primary key, a int not null);
 create table s(id int primary key, a int not null);
 explain select * from t join s on t.a = s.a order by t.id limit 10;
+```
+
+```
 +-------------------------------+----------+-----------+---------------+--------------------------------------------+
 | id                            | estRows  | task      | access object | operator info                              |
 +-------------------------------+----------+-----------+---------------+--------------------------------------------+
@@ -93,6 +102,9 @@ TopN 无法下推过 Inner Join。以上面的查询为例，如果先 Join 得�
 create table t(id int primary key, a int not null);
 create table s(id int primary key, a int not null);
 explain select * from t left join s on t.a = s.a order by t.id limit 10;
+```
+
+```
 +----------------------------------+----------+-----------+---------------+-------------------------------------------------+
 | id                               | estRows  | task      | access object | operator info                                   |
 +----------------------------------+----------+-----------+---------------+-------------------------------------------------+
