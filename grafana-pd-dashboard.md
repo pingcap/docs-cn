@@ -21,14 +21,14 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 - Normal stores：处于正常状态的节点数目
 - Number of Regions：当前集群的 Region 总量
 - Abnormal stores：处于异常状态的节点数目，正常情况应当为 0
-- Region health：集群所有 Region 的状态，通常情况下，pending 或 down 的 peer 应该少于 100，miss 的 peer 不能一直大于 0， empty region 过多需及时打开 region merge
+- Region health：集群所有 Region 的状态。通常情况下，pending 或 down 的 peer 应该少于 100，miss 的 peer 不能一直大于 0，empty Region 过多需及时打开 Region Merge
 - Current peer count：当前集群 peer 的总量
 ![PD Dashboard - Header](/media/pd-dashboard-header-v4.png)
 
 ## Cluster
 
 - PD scheduler config：PD 调度配置列表
-- Cluster ID：集群的 cluster id， 唯一标识
+- Cluster ID：集群的 cluster id，唯一标识
 - Current TSO：当前分配 TSO 的物理时间戳部分
 - Current ID allocation：当前可分配 ID 的最大值
 - Region label isolation level：不同 label 所在的 level 的 Region 数量
@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 
 ## Operator
 
-- Schedule operator create：新创建的不同 operator 的数量， 单位 opm 代表一分钟内创建的个数 
+- Schedule operator create：新创建的不同 operator 的数量，单位 opm 代表一分钟内创建的个数 
 - Schedule operator check：已检查的 operator 的次数，主要检查是否当前步骤已经执行完成，如果是，则执行下一个步骤
 - Schedule operator finish：已完成调度的 operator 的数量
 - Schedule operator timeout：已超时的 operator 的数量
