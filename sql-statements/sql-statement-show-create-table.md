@@ -11,9 +11,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-create-table/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowCreateTableStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowCreateTableStmt](/media/sqlgram/ShowCreateTableStmt.png)
 
 **TableName:**
 
