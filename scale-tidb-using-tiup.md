@@ -22,7 +22,7 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 | 10.0.1.1   | TiKV   | 
 | 10.0.1.2   | TiKV    |
 
-## 1. 扩容 TiDB/PD/TiKV 节点
+## 扩容 TiDB/PD/TiKV 节点
 
 如果要添加一个 TiDB 节点，IP 地址为 10.0.1.5，可以按照如下步骤进行操作。
 
@@ -30,7 +30,7 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 >
 > 添加 PD 节点和添加 TiDB 节点的步骤类似。添加 TiKV 节点前，建议预先根据集群的负载情况调整 PD 调度参数。
 
-### 1.1 编写扩容拓扑配置
+### 1. 编写扩容拓扑配置
 
 > **注意：**
 >
@@ -89,7 +89,7 @@ pd_servers:
 
 可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置，默认会被 `scale-out.yaml` 继承。
 
-### 1.2 执行扩容命令
+### 2. 执行扩容命令
 
 {{< copyable "shell-regular" >}}
 
@@ -99,7 +99,7 @@ tiup cluster scale-out <cluster-name> scale-out.yaml
 
 预期输出 Scaled cluster `<cluster-name>` out successfully 信息，表示扩容操作成功。
 
-### 1.3 检查集群状态
+### 3. 检查集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -119,7 +119,7 @@ tiup cluster display <cluster-name>
 | 10.0.1.1   | TiKV    |
 | 10.0.1.2   | TiKV    |
 
-## 2. 扩容 TiFlash 节点
+## 扩容 TiFlash 节点
 
 > **注意：**
 >
@@ -130,7 +130,7 @@ tiup cluster display <cluster-name>
 
 如果要添加一个 TiFlash 节点，IP 地址为 10.0.1.4，可以按照如下步骤进行操作。
 
-### 2.1 添加节点信息到 scale-out.yaml 文件
+### 1. 添加节点信息到 scale-out.yaml 文件
 
 编写 scale-out.yaml 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
 
@@ -141,7 +141,7 @@ tiflash_servers:
   - host: 10.0.1.4
 ```
 
-### 2.2 运行扩容命令
+### 2. 运行扩容命令
 
 {{< copyable "shell-regular" >}}
 
@@ -149,7 +149,7 @@ tiflash_servers:
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
 
-### 2.3 查看集群状态
+### 3. 查看集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -169,11 +169,11 @@ tiup cluster display <cluster-name>
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
 
-## 3. 扩容 TiCDC 节点
+## 扩容 TiCDC 节点
 
 如果要添加 TiCDC 节点，IP 地址为 10.0.1.3、10.0.1.4，可以按照如下步骤进行操作。
 
-### 3.1 添加节点信息到 scale-out.yaml 文件
+### 1. 添加节点信息到 scale-out.yaml 文件
 
 编写 scale-out.yaml 文件：
 
@@ -185,7 +185,7 @@ cdc_servers:
   - host: 10.0.1.4
 ```
 
-### 3.2 运行扩容命令
+### 2. 运行扩容命令
 
 {{< copyable "shell-regular" >}}
 
@@ -193,7 +193,7 @@ cdc_servers:
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
 
-### 3.3 查看集群状态
+### 3. 查看集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -213,7 +213,7 @@ tiup cluster display <cluster-name>
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
 
-## 4. 缩容 TiDB/PD/TiKV 节点
+## 缩容 TiDB/PD/TiKV 节点
 
 如果要移除 IP 地址为 10.0.1.5 的一个 TiKV 节点，可以按照如下步骤进行操作。
 
@@ -221,7 +221,7 @@ tiup cluster display <cluster-name>
 >
 > 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
 
-### 4.1 查看节点 ID 信息
+### 1. 查看节点 ID 信息
 
 {{< copyable "shell-regular" >}}
 
@@ -267,7 +267,7 @@ ID              Role         Host        Ports                       
 10.0.1.5:9093   alertmanager 10.0.1.5    9093/9094                        Up      data/alertmanager-9093  deploy/alertmanager-9093
 ```
 
-### 4.2 执行缩容操作
+### 2. 执行缩容操作
 
 {{< copyable "shell-regular" >}}
 
@@ -279,7 +279,7 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
 
 预期输出 Scaled cluster `<cluster-name>` in successfully 信息，表示缩容操作成功。
 
-### 4.3 检查集群状态
+### 3. 检查集群状态
 
 下线需要一定时间，下线节点的状态变为 Tombstone 就说明下线成功。
 
@@ -303,11 +303,11 @@ tiup cluster display <cluster-name>
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
 
-## 5. 缩容 TiFlash 节点
+## 缩容 TiFlash 节点
 
 如果要缩容 IP 地址为 10.0.1.4 的一个 TiFlash 节点，可以按照如下步骤进行操作。
 
-### 5.1 根据 TiFlash 剩余节点数调整数据表的副本数
+### 1. 根据 TiFlash 剩余节点数调整数据表的副本数
 
 在下线节点之前，确保 TiFlash 集群剩余节点数大于等于所有数据表的最大副本数，否则需要修改相关表的 TiFlash 副本数。
 
@@ -321,9 +321,11 @@ tiup cluster display <cluster-name>
 
 2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/use-tiflash.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
 
+### 2. 执行缩容操作
+
 接下来，请任选下列方案其一进行缩容。
 
-### 5.2 通过 TiUP 缩容节点
+#### 方案一：通过 TiUP 缩容 TiFlash 节点
 
 1. 通过以下命令确定需要下线的节点名称：
 
@@ -341,7 +343,7 @@ tiup cluster display <cluster-name>
     tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
     ```
 
-### 5.3 手动缩容 TiFlash 节点
+#### 方案二：手动缩容 TiFlash 节点
 
 在特殊情况下（比如需要强制下线节点），或者 TiUP 操作失败的情况下，可以使用以下方法手动下线 TiFlash 节点。
 
@@ -428,7 +430,7 @@ tiup cluster display <cluster-name>
     curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
     ```
 
-### 5.3 查看集群状态
+### 3. 查看集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -448,11 +450,11 @@ tiup cluster display <cluster-name>
 | 10.0.1.1   | TiKV    | 
 | 10.0.1.2   | TiKV    | 
 
-## 6. 缩容 TiCDC 节点
+## 缩容 TiCDC 节点
 
 如果要缩容 IP 地址为 10.0.1.4 的一个 TiCDC 节点，可以按照如下步骤进行操作。
 
-### 6.1 下线该 TiCDC 节点
+### 1. 下线该 TiCDC 节点
 
 {{< copyable "shell-regular" >}}
 
@@ -460,7 +462,7 @@ tiup cluster display <cluster-name>
 tiup cluster scale-in <cluster-name> --node 10.0.1.4:8300
 ```
 
-### 6.2 查看集群状态
+### 2. 查看集群状态
 
 {{< copyable "shell-regular" >}}
 
