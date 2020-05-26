@@ -40,7 +40,7 @@ Query OK, 1 row affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE USER newuser;
+SHOW CREATE USER 'newuser';
 ```
 
 ```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -54,7 +54,7 @@ SHOW CREATE USER newuser;
 {{< copyable "sql" >}}
 
 ```sql
-SET PASSWORD FOR newuser = 'test';
+SET PASSWORD FOR 'newuser' = 'test';
 ```
 
 ```
@@ -64,7 +64,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE USER newuser;
+SHOW CREATE USER 'newuser';
 ```
 
 ```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -78,7 +78,7 @@ SHOW CREATE USER newuser;
 {{< copyable "sql" >}}
 
 ```sql
-SET PASSWORD FOR newuser = PASSWORD('test');
+SET PASSWORD FOR 'newuser' = PASSWORD('test');
 ```
 
 上述语法是早期 MySQL 版本的过时语法。
@@ -90,7 +90,7 @@ Query OK, 0 rows affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE USER newuser;
+SHOW CREATE USER 'newuser';
 ```
 
 ```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
