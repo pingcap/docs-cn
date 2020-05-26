@@ -12,6 +12,36 @@ aliases: ['/docs-cn/dev/reference/sql/statements/split-region/']
 
 为解决上述场景中的热点问题，TiDB 引入了预切分 Region 的功能，即可以根据指定的参数，预先为某个表切分出多个 Region，并打散到各个 TiKV 上去。
 
+## 语法图
+
+**SplitRegionStmt:**
+
+![SplitRegionStmt](/media/sqlgram/SplitRegionStmt.png)
+
+**SplitSyntaxOption:**
+
+![SplitSyntaxOption](/media/sqlgram/SplitSyntaxOption.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
+**SplitOption:**
+
+![SplitOption](/media/sqlgram/SplitOption.png)
+
+**RowValue:**
+
+![RowValue](/media/sqlgram/RowValue.png)
+
+**Int64Num:**
+
+![Int64Num](/media/sqlgram/Int64Num.png)
+
 ## Split Region 的使用
 
 Split Region 有 2 种不同的语法，具体如下：
