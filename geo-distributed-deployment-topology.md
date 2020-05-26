@@ -17,12 +17,6 @@ category: how-to
 | TiKV | 3 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.11 <br/> 10.0.1.12 <br/> 10.0.1.13 <br/> 10.0.1.14 | 10.0.1.15 | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.16 || 默认端口 <br/> 全局目录配置 |
 
-## 通过 TiUP 部署集群的配置文件模版 topology.yaml
-
-### 部署目标
-
-通过 `tidb` 用户管理集群，部署一套跨数据中心的两地三中心拓扑的集群，端口默认，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
-
 ### 拓扑模版
 
 [跨机房配置模板](/config-templates/geo-redundancy-deployment.yaml)
