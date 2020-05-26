@@ -36,10 +36,10 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
     * 通过 TiDB Grafana 监控分析：
 
-    观察 KV Errors 下 Lock Resolve OPS 面板中的 not_expired/resolve 监控项以及 KV Backoff OPS 面板中的 txnLockFast 监控项，如果有较为明显的上升趋势，那么可能是当前的环境中出现了大量的读写冲突。其中，not_expired 是指对应的锁还没有超时，resolve 是指尝试清锁的操作，txnLockFast 代表出现了读写冲突。
+        观察 KV Errors 下 Lock Resolve OPS 面板中的 not_expired/resolve 监控项以及 KV Backoff OPS 面板中的 txnLockFast 监控项，如果有较为明显的上升趋势，那么可能是当前的环境中出现了大量的读写冲突。其中，not_expired 是指对应的锁还没有超时，resolve 是指尝试清锁的操作，txnLockFast 代表出现了读写冲突。
 
-    ![KV-backoff-txnLockFast-optimistic](/media/troubleshooting-lock-pic-09.png)
-    ![KV-Errors-resolve-optimistic](/media/troubleshooting-lock-pic-08.png)
+        ![KV-backoff-txnLockFast-optimistic](/media/troubleshooting-lock-pic-09.png)
+        ![KV-Errors-resolve-optimistic](/media/troubleshooting-lock-pic-08.png)
 
     * 通过 TiDB 日志分析：
 
