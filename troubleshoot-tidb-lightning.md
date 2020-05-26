@@ -146,8 +146,9 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 **原因**：集群中有不支持 switch-mode 的节点。
 
+目前已知的组件中，4.0.0-rc.2 之前的 TiFlash [不支持 switch-mode 操作](https://github.com/pingcap/tidb-lightning/issues/273)。
+
 **解决办法**：
 
-目前已知的组件中，4.0.0-rc.2 之前的 TiFlash [不支持 switch-mode 操作](https://github.com/pingcap/tidb-lightning/issues/273)。
 - 如果集群中有 TiFlash 节点，可以将集群更新到 4.0.0-rc.2 或更新版本。
 - 如果不方便升级，可以临时禁用 TiFlash。
