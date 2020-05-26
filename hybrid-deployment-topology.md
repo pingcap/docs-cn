@@ -25,9 +25,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单混部配置模板](/simple-multi-instant.yaml)
+[简单混部配置模板](/config-templates/simple-multi-instance.yaml)
 
-[详细混部配置模板](/complex-multi-instant.yaml)
+[详细混部配置模板](/config-templates/complex-multi-instance.yaml)
 
 ### 混合部署的关键参数介绍
 
