@@ -84,7 +84,7 @@ dumpling \
 
 一切完成之后，你应该可以在 `/tmp/test` 看到导出的文件了：
 
-``` shell
+```shell
 $ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
 
 140B  metadata
