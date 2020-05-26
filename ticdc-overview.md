@@ -65,7 +65,7 @@ TiCDC 的系统架构如下图所示：
 
 ## TiCDC 部署和任务管理
 
-TiCDC 的详细部署和任务管理说明请参考 [TiCDC 部署和同步任务管理](/manage-ticdc.md)。
+TiCDC 的详细部署和任务管理说明请参考 [TiCDC 运维操作及任务管理](/manage-ticdc.md)。
 
 ## TiCDC 常见问题
 

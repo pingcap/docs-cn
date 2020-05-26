@@ -1,10 +1,10 @@
 ---
-title: TiCDC 部署和同步任务管理
+title: TiCDC 运维操作及任务管理
 category: reference
 aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 ---
 
-# TiCDC 部署和同步任务管理
+# TiCDC 运维操作及任务管理
 
 本文档介绍 TiCDC 的部署，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理集群和同步任务。
 

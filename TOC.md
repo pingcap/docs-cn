@@ -75,7 +75,7 @@
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
   + [日常巡检](/daily-inspection.md) @王军
-  + [TiCDC 部署和同步任务管理](/manage-ticdc.md)
+  + [TiCDC 运维操作及任务管理](/manage-ticdc.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 监控与告警
