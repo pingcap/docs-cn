@@ -144,9 +144,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 ## switch-mode 时遇到 `rpc error: code = Unimplemented ...`
 
-**原因**：集群中有不支持 switch-mode 的节点。
-
-目前已知的组件中，4.0.0-rc.2 之前的 TiFlash [不支持 switch-mode 操作](https://github.com/pingcap/tidb-lightning/issues/273)。
+**原因**：集群中有不支持 switch-mode 的节点。目前已知的组件中，4.0.0-rc.2 之前的 TiFlash [不支持 switch-mode 操作](https://github.com/pingcap/tidb-lightning/issues/273)。
 
 **解决办法**：
 
