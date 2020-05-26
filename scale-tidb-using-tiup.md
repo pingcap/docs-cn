@@ -349,7 +349,7 @@ tiup cluster display <cluster-name>
 
     * 在 [pd-ctl](/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 store 命令。
 
-    * 若使用 TiUP 部署，可以调用以下命令代替：
+    * 若使用 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
       {{< copyable "shell-regular" >}}
 
@@ -361,7 +361,7 @@ tiup cluster display <cluster-name>
 
     * 在 pd-ctl 中输入 `store delete <store_id>`，其中 <store_id> 为上一步查到的该 TiFlash 节点对应的 store id。
 
-    * 若通过 TiUP 部署，可以调用以下命令代替：
+    * 若通过 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
       {{< copyable "shell-regular" >}}
 
