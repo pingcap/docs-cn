@@ -64,7 +64,7 @@ explain select * from t left join s on t.a = s.a order by t.a limit 10;
 8 rows in set (0.01 sec)
 ```
 
-在该查询中，TopN 算子的排序规则仅依赖于外表 t 中的列，可以将 TopN 下推到了 Join 之前进行一次计算，以减少 Join 时的计算开销。除此之外，同样将 TopN 下推到了存储层中。
+在该查询中，TopN 算子的排序规则仅依赖于外表 t 中的列，可以将 TopN 下推到 Join 之前进行一次计算，以减少 Join 时的计算开销。除此之外，TiDB 同样将 TopN 下推到了存储层中。
 
 ### 示例 3：TopN 不能下推过 Join 的情况
 
