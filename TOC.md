@@ -171,6 +171,7 @@
     + [版本升级](/tidb-binlog/upgrade-tidb-binlog.md)
     + [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
     + [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
+    + [binlogctl 工具](/tidb-binlog/binlog-control.md)
     + [Kafka 自定义开发](/tidb-binlog/binlog-slave-client.md)
     + [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
     + [集群间双向同步](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)

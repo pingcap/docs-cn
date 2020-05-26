@@ -48,7 +48,7 @@ binlogctl 支持如下这些功能：
 * 暂停/下线 Pump/Drainer
 * Pump/Drainer 异常状态处理
 
-详细的介绍和使用方法请参考 [binlogctl 工具](/tidb-binlog/binlog-control.md#binlogctl-工具)。
+详细的介绍和使用方法请参考 [binlogctl 工具](/tidb-binlog/binlog-control.md)。
 
 ## 使用 TiDB SQL 管理 Pump/Drainer
 
