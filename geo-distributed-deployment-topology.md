@@ -25,7 +25,7 @@ category: how-to
 
 ### 拓扑模版
 
-[跨机房配置模板](/geo-redundancy-deployment.yaml)
+[跨机房配置模板](/config-templates/geo-redundancy-deployment.yaml)
 
 ### 关键参数配置
 
