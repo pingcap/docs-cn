@@ -194,14 +194,6 @@
     + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  + TiCDC
-    + [概述](/ticdc/ticdc-overview.md)
-    + [部署使用](/ticdc/deploy-ticdc.md)
-    + [集群和同步任务管理](/ticdc/manage-ticdc.md)
-    + [常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
-    + [Sink URI 配置规则](/ticdc/sink-url.md)
-    + [开放数据协议](/ticdc/ticdc-open-protocol.md)
-    + [Column 和 DDL 的类型码](/ticdc/column-ddl-type-codes.md)
   + sync-diff-inspector @王相
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -210,6 +202,7 @@
   + [Loader](/loader-overview.md) @王相
   + [Mydumper](/mydumper-overview.md) @余峻岑
   + [Syncer](/syncer-overview.md) @王相
+  + [TiCDC](/ticdc/ticdc-overview.md)
   + TiUP @龙恒
     + [文档指南](/tiup/tiup-documentation-guide.md)
     + [概览](/tiup/tiup-overview.md)
@@ -400,6 +393,7 @@
         + [`metrics_summary`](/system-tables/system-table-metrics-summary.md)
         + [`inspection_result`](/system-tables/system-table-inspection-result.md)
         + [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
+    + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + UI
     + TiDB Dashboard @施闻轩
       + 访问
