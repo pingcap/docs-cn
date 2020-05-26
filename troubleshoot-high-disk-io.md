@@ -6,7 +6,7 @@ category: reference
 
 # TiDB 磁盘 I/O 过高的处理办法
 
-在使用 TiDB 数据库时，磁盘 I/O 瓶颈是绕不开的问题，但同时由于线性扩展，也有了更多的解决方案和手段。本文介绍如何定位和处理 TiDB 存储 I/O 过高的问题。
+在使用 TiDB 数据库时，磁盘 I/O 瓶颈是绕不开的问题，本文介绍如何定位和处理 TiDB 存储 I/O 过高的问题。
 
 ## 确认当前 I/O 指标 
 
@@ -14,7 +14,7 @@ category: reference
 
 ### 从监控定位 I/O 问题
 
-最快速的定位手段是从监控来查看整体的 I/O 情况，可以从集群部署工具 (TiDB-Ansible, TiUP) 默认会部署的监控组件 Grafana 来查看对应的 I/O 监控。
+最快速的定位手段是从监控来查看整体的 I/O 情况，可以从集群部署工具 (TiDB-Ansible, TiUP) 默认会部署的监控组件 Grafana 来查看对应的 I/O 监控，跟 I/O 相关的 Dashboard 有 `Overview`，`Node_exporter`，`Disk-Performance`。
 
 #### 第一类面板
 
@@ -23,11 +23,13 @@ category: reference
 - 如果监控中只有一台机器的 I/O 高，那么可以辅助判断当前有读写热点。
 - 如果监控中大部分机器的 I/O 都高，那么集群现在有高 I/O 负载存在。
 
-TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 RocksDB 实例：一个用于存储 Raft 日志，位于 data/raft，一个用于存储真正的数据，位于 data/db。
+如果发现某台机器的 I/O 比较高，可以从监控 `Disk-Performance Dashboard` 进一步观察 I/O 的使用情况，结合 `Disk Latency`，`Disk Load` 等 metric 判断是否存在异常，必要时可以使用 fio 工具对磁盘进行检测。
 
 #### 第二类面板
 
-在 `TiKV-Details` > `Raft IO` 中，有更多信息，可以看到这两个实例当前的状态：
+TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 RocksDB 实例：一个用于存储 Raft 日志，位于 data/raft，一个用于存储真正的数据，位于 data/db。
+
+在 `TiKV-Details` > `Raft IO` 中，可以看到这两个实例磁盘写入的相关 metric：
 
 - `Append log duration`：该监控表明了存储 Raft 日志的 RocksDB 写入的响应时间，.99 响应应该在 50ms 以内。
 - `Apply log duration`：该监控表明了存储真正数据的 RocksDB 写入的响应时间，.99 响应应该在 100ms 以内。
@@ -51,7 +53,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
     - `[raftstore]` 的 `store-pool-size` 配置是否过小（该值建议在[1,5] 之间，不建议太大）。
     - 机器的 CPU 是不是不够了。
 
-- apply 慢了。TiKV Grafana 的 Raft I/O 和 apply log duration 比较高，通常会伴随着 Raft Propose/apply wait duration 比较高。可能的情况如下：
+- apply log 慢。TiKV Grafana 的 Raft I/O 和 apply log duration 比较高，通常会伴随着 Raft Propose/apply wait duration 比较高。可能的情况如下：
   
     - `[raftstore]` 的 `apply-pool-size` 配置过小（建议在 [1, 5] 之间，不建议太大），Thread CPU/apply cpu 比较高；
     - 机器的 CPU 资源不够了。
@@ -65,7 +67,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 客户端报 `server is busy` 错误，特别是 `raftstore is busy` 会和 I/O 有相关性。通过查看监控：grafana -> TiKV -> errors 监控确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，过一会儿再尝试。
 
-TiKV RocksDB 出现 `write stall`：
+TiKV RocksDB 日志出现 `write stall`：
 
 `level0 sst` 太多导致 stall，添加参数 `[rocksdb] max-sub-compactI/Ons = 2（或者 3）` 加快 level0 sst 往下 compact 的速度，该参数的意思是将 从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行。
 
