@@ -25,7 +25,7 @@ category: introduction
 | PD        | 3.0、4.0   |
 | TiDB      | 3.0、4.0   |
 | TiKV      | 3.0、4.0   |
-| Sysbench  | 1.0.20     |
+| Benchmarksql  | non     |
 
 ### 配置参数
 
