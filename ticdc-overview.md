@@ -63,13 +63,9 @@ TiCDC 的系统架构如下图所示：
 - 暂不支持 TiDB 4.0 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md) 和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
 - 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。
 
-## TiCDC 部署
+## TiCDC 部署和任务管理
 
-TiCDC 的详细部署说明请参考 [TiCDC 部署](/deploy-ticdc.md)。
-
-## TiCDC 任务管理
-
-目前 TiCDC 提供命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理集群和同步任务，详细说明请参考 [TiCDC 集群和同步任务管理](/manage-ticdc.md)。
+TiCDC 的详细部署和任务管理说明请参考 [TiCDC 部署和同步任务管理](/manage-ticdc.md)。
 
 ## TiCDC 常见问题
 

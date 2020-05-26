@@ -1,12 +1,68 @@
 ---
-title: TiCDC 集群和同步任务管理
+title: TiCDC 部署和同步任务管理
 category: reference
 aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 ---
 
-# TiCDC 集群和同步任务管理
+# TiCDC 部署和同步任务管理
 
-目前 TiCDC 提供命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理集群和同步任务。
+本文档介绍 TiCDC 的部署，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理集群和同步任务。
+
+## TiCDC 部署
+
+### 使用 TiUP 部署
+
+#### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
+
+  详细操作参考[使用 TiUP 部署 TiCDC](/production-deployment-using-tiup.md#场景-4通过-ticdc-同步到下游)。
+
+#### 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
+
+1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
+
+2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#扩容-tidbpdtikv-节点) 章节对 TiCDC 进行部署。
+
+   示例的扩容配置文件为：
+
+   ```shell
+   vi scale-out.yaml
+   ```
+
+   ```
+   cdc_servers:
+    - host: 10.0.1.5
+    - host: 10.0.1.6
+    - host: 10.0.1.7
+   ```
+
+   随后执行扩容命令即可：
+   {{< copyable "shell-regular" >}}
+
+   ```shell
+   tiup cluster scale-out <cluster-name> scale-out.yaml
+   ```
+
+### 在原有 TiDB 集群上使用 binary 部署 TiCDC 组件
+
+假设 PD 集群有一个可以提供服务的 PD 节点（client URL 为 `10.0.10.25:2379`）。若要部署三个 TiCDC 节点，可以按照以下命令启动集群。只需要指定相同的 PD 地址，新启动的节点就可以自动加入 TiCDC 集群。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_1.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --addr=0.0.0.0:8302 --advertise-addr=127.0.0.1:8302
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:8303 --advertise-addr=127.0.0.1:8303
+```
+
+对于 `cdc server` 命令中可用选项解释如下：
+
+- `gc-ttl`: TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，单位为秒，默认值为 `86400`，即 24 小时。
+- `pd`: PD client 的 URL。
+- `addr`: TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。
+- `advertise-addr`: TiCDC 对外访问地址。
+- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
+- `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
+- `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
