@@ -24,6 +24,20 @@ aliases: ['/docs-cn/dev/reference/sql/statements/flashback-table/']
 FLASHBACK TABLE table_name [TO other_table_name]
 ```
 
+### 语法图
+
+**FlashbackTableStmt:**
+
+![FlashbackTableStmt](/media/sqlgram/FlashbackTableStmt.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**FlashbackToNewName:**
+
+![FlashbackToNewName](/media/sqlgram/FlashbackToNewName.png)
+
 ## 注意事项
 
 如果删除了一张表并过了 GC lifetime，就不能再用 `FLASHBACK TABLE` 语句来恢复被删除的数据了，否则会返回错误，错误类似于 `Can't find dropped/truncated table 't' in GC safe point 2020-03-16 16:34:52 +0800 CST`。
