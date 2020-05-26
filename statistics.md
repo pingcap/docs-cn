@@ -265,6 +265,12 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 SHOW STATS_BUCKETS [ShowLikeOrWhere];
 ```
 
+语法图：
+
+**SHOW STATUS_BUCKETS:**
+
+![SHOW STATS_BUCKETS](/media/sqlgram/SHOW_STATS_BUCKETS.png)
+
 该语句会输出所有桶的信息，你可以通过 ShowLikeOrWhere 来筛选需要的信息。
 
 目前 `SHOW STATS_BUCKETS` 会输出 10 列，具体如下：
@@ -339,3 +345,7 @@ LOAD STATS 'file_name';
 ```
 
 `file_name` 为要导入的统计信息的文件名。
+
+## 另请参阅
+
+* [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
