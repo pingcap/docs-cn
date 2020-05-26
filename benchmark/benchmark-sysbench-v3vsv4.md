@@ -121,9 +121,9 @@ pessimistic-txn.pipelined: true
 
 - 启动 Sysbench 客户端，测试 point_select, read_write，update_index, update_non_index，通过 aws nlb 向 TIDB 加压，单次预热 1 分钟，测试 5 分钟。
 
-- 每轮完成后停止集群，使用之前的备份的数据覆盖，再启动集群
+- 每轮完成后停止集群，使用之前的备份的数据覆盖，再启动集群。
 
-### 准备数据命令：
+### 准备数据命令
 
 sysbench oltp_common \
     --threads=16 \
@@ -136,7 +136,7 @@ sysbench oltp_common \
     --mysql-password=password \
     prepare --tables=16 --table-size=10000000
  
-### 执行测试命令：
+### 执行测试命令
 
 sysbench $testname \
     --threads=$threads \
