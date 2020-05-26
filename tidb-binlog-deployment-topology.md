@@ -26,9 +26,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单 TiDB-binlog 配置模板](/simple-tidb-binlog.yaml)
+[简单 TiDB-binlog 配置模板](/config-templates/simple-tidb-binlog.yaml)
 
-[详细 TiDB-binlog 配置模板](/complex-tidb-binlog.yaml)
+[详细 TiDB-binlog 配置模板](/config-templates/complex-tidb-binlog.yaml)
 
 ### 关键参数介绍
 
