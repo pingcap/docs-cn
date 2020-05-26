@@ -360,26 +360,16 @@
         + [`inspection_result`](/system-tables/system-table-inspection-result.md)
         + [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
   + UI
-    + TiDB Dashboard
-      + [访问](/dashboard/access.md)
-      + [概况页面](/dashboard/overview.md)
-      + [集群信息页面](/dashboard/cluster-info.md)
+    + TiDB Dashboard @施闻轩
+      + 访问
+      + 概况页面
+      + 集群信息页面
       + 流量可视化页面
-        + [访问](/dashboard/keyviz/access.md)
-        + [基本概念](/dashboard/keyviz/concepts.md)
-        + [使用介绍](/dashboard/keyviz/usage.md)
-        + [常见热力图解读](/dashboard/keyviz/common-patterns.md)
       + SQL 语句分析页面
-        + [访问列表页面](/dashboard/statements/list.md)
-        + [查看执行详情](/dashboard/statements/detail.md)
       + 慢查询页面
-        + [访问列表页面](/dashboard/slow-queries/list.md)
-        + [查看执行详情](/dashboard/slow-queries/detail.md)
       + 集群诊断页面
-        + [访问](/dashboard/diagnostics/access.md)
-        + [查看报告](/dashboard/diagnostics/report.md)
-      + [日志搜索页面](/dashboard/log-search.md)
-      + [实例性能分析页面](/dashboard/profiling.md)
+      + 日志搜索页面
+      + 实例性能分析页面
   + CLI
     + [tikv-ctl](/tikv-control.md) @屈鹏
     + [pd-ctl](/pd-control.md) @陈书宁
