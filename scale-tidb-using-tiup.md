@@ -307,9 +307,9 @@ tiup cluster display <cluster-name>
 
 如果要缩容 IP 地址为 10.0.1.4 的一个 TiFlash 节点，，可以按照如下步骤进行操作。
 
-> **注意：**
->
-> 如果下线该 TiFlash 节点后，TiFlash 集群剩余节点数大于等于所有数据表的最大副本数，可跳过下列步骤。
+### 5.1 根据 TiFlash 剩余节点数调整数据表的副本数
+
+在下线节点之前，确保 TiFlash 集群剩余节点数大于等于所有数据表的最大副本数，否则需要修改相关表的 TiFlash 副本数。
 
 1. 在 TiDB 客户端中针对所有副本数大于集群剩余 TiFlash 节点数的表执行：
 
@@ -323,7 +323,7 @@ tiup cluster display <cluster-name>
 
 接下来，请任选下列方案其一进行缩容。
 
-### 5.1 通过 TiUP 缩容节点
+### 5.2 通过 TiUP 缩容节点
 
 1. 通过以下命令确定需要下线的节点名称：
 
@@ -341,8 +341,10 @@ tiup cluster display <cluster-name>
     tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
     ```
 
-### 5.2 手动缩容 TiFlash 节点
+### 5.3 手动缩容 TiFlash 节点
+
 在特殊情况下，比如需要强制下线节点，或者 TiUP 操作失败的情况下，可以使用以下方法手动下线 TiFlash 节点。
+
 1. 使用 pd-ctl 的 store 命令在 PD 中查看该 TiFlash 节点对应的 store id。
 
     * 在 [pd-ctl](/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 store 命令。
