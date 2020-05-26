@@ -247,7 +247,6 @@ tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>,<regio
 success!
 ```
 
-
 > **注意：**
 >
 > - **该命令只支持本地模式**
