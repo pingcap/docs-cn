@@ -12,7 +12,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，示意图如下。
 
-![TiDB 中乐观事务的两阶段提交](media/troubleshooting-lock-pic-01.png)
+![TiDB 中乐观事务的两阶段提交](/media/troubleshooting-lock-pic-01.png)
 
 相关细节本节不再赘述，详情可阅读 [Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
 
@@ -24,7 +24,7 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
 
 在 TiDB 中，读取数据时，会获取一个包含当前物理时间且全局唯一递增的时间戳作为当前事务的 start_ts。事务在读取时，需要读到目标 key 的 commit_ts 小于这个事务的 start_ts 的最新的数据版本。当读取时发现目标 key 上存在 lock 时，因为无法知道上锁的那个事务是在 Commit 阶段还是 Prewrite 阶段，所以就会出现读写冲突的情况，如下图：
 
-![读写冲突](media/troubleshooting-lock-pic-04.png)
+![读写冲突](/media/troubleshooting-lock-pic-04.png)
 
 分析：
 
@@ -38,8 +38,8 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
     观察 KV Errors 下 Lock Resolve OPS 面板中的 not_expired/resolve 监控项以及 KV Backoff OPS 面板中的 txnLockFast 监控项，如果有较为明显的上升趋势，那么可能是当前的环境中出现了大量的读写冲突。其中，not_expired 是指对应的锁还没有超时，resolve 是指尝试清锁的操作，txnLockFast 代表出现了读写冲突。
 
-    ![KV-backoff-txnLockFast-optimistic](media/troubleshooting-lock-pic-09.png)
-    ![KV-Errors-resolve-optimistic](media/troubleshooting-lock-pic-08.png)
+    ![KV-backoff-txnLockFast-optimistic](/media/troubleshooting-lock-pic-09.png)
+    ![KV-Errors-resolve-optimistic](/media/troubleshooting-lock-pic-08.png)
 
     * 通过 TiDB 日志分析：
 
@@ -150,7 +150,7 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
 
 TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行时做了改造。
 
-![TiDB 悲观事务的提交逻辑](media/troubleshooting-lock-pic-05.png)
+![TiDB 悲观事务的提交逻辑](/media/troubleshooting-lock-pic-05.png)
 
 在两阶段提交之前增加了 Acquire Pessimistic Lock 阶段，简要步骤如下。
 
@@ -158,7 +158,7 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 2. TiDB 收到来自客户端的更新数据的请求：TiDB 向 TiKV 发起加悲观锁请求，该锁持久化到 TiKV。
 3. （同乐观锁）客户端发起 commit，TiDB 开始执行与乐观锁一样的两阶段提交。
 
-![TiDB 中的悲观事务](media/troubleshooting-lock-pic-06.png)
+![TiDB 中的悲观事务](/media/troubleshooting-lock-pic-06.png)
 
 相关细节本节不再赘述，详情可阅读 [TiDB 悲观锁实现原理](https://asktug.com/t/topic/33550)。
 
