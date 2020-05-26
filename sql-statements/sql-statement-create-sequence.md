@@ -15,10 +15,6 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-sequence/']
 
 ![CreateSequenceStmt](/media/sqlgram/CreateSequenceStmt.png)
 
-**OptTemporary:**
-
-![OptTemporary](/media/sqlgram/OptTemporary.png)
-
 **IfNotExists:**
 
 ![IfNotExists](/media/sqlgram/IfNotExists.png)
@@ -31,13 +27,13 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-sequence/']
 
 ![CreateSequenceOptionListOpt](/media/sqlgram/CreateSequenceOptionListOpt.png)
 
+**SequenceOptionList:**
+
+![SequenceOptionList](/media/sqlgram/SequenceOptionList.png)
+
 **SequenceOption:**
 
 ![SequenceOption](/media/sqlgram/SequenceOption.png)
-
-**CreateTableOptionListOpt:**
-
-![CreateTableOptionListOpt](/media/sqlgram/CreateTableOptionListOpt.png)
 
 ## 语法说明
 
