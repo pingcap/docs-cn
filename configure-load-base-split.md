@@ -8,7 +8,7 @@ category: how-to
 
 Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访问分布不均匀造成的热点问题，比如小表的全表扫描。
 
-## 使用场景
+## 背景
 
 在 TiDB 中，当流量集中在某些节点时很容易形成热点。PD 会尝试通过调度 Hot Region，尽可能让这些 Hot Region 均匀分布在各个节点上，以求获得更好的性能。
 
@@ -21,7 +21,7 @@ Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访
 - 均匀拆分 Region 并不一定是最好的选择，请求可能集中在某几个 Key 上，即使均匀拆分后热点可能仍然集中在其中一个 Region 上，可能需要经过多次均匀拆分才能达到目标。
 - 人工介入不够及时和易用。
 
-## 原理
+## 实现原理
 
 Load Base Split 会基于统计信息自动拆分 Region。通过统计去识别出那些读流量在 10s 内持续超过阈值的 Region，并在合适的位置将这些 Region 拆分。在选择拆分的位置时，会尽可能平衡拆分后两个 Region 的访问量，并尽量避免跨 Region 的访问。
 
@@ -29,7 +29,9 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 
 ## 使用方法
 
-目前的 Load Base Split 的控制参数，主要是前文提到的阈值，也即 `split.qps-threshold`。当下的策略是默认开启的，但相对保守，默认值是 3000。也就是说，如果连续 10s 内，某个 Region 每秒的各类读请求之和超过 3000 ，那么就对对此 Region 进行拆分。如果想要关闭这个功能，可以将这个阈值调到足够高即可。
+目前的 Load Base Split 的控制参数，主要是前文提到的阈值，也即 `split.qps-threshold`，这个阈值的含义是：如果连续 10s 内，某个 Region 每秒的各类读请求之和超过 `split.qps-threshold` ，那么就对对此 Region 进行拆分。
+
+当下的策略是默认开启的，但相对保守，默认值是 3000。如果想要关闭这个功能，可以将这个阈值调到足够高即可。
 
 目前有两种办法修改配置：
 
