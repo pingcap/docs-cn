@@ -130,7 +130,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
     engines = ["tikv", "tidb", "tiflash"]
     ```
 
-    实例级别的默认配置为 `["tikv", "tidb", "tiflash"]`。
+    **实例级别的默认配置为 `["tikv", "tidb", "tiflash"]`。**
 
 2. 会话级别，即 SESSION 级别。设置语句：
 
