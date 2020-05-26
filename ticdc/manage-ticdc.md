@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 
 # TiCDC 运维操作及任务管理
 
-本文档介绍 TiCDC 的部署，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理集群和同步任务。
+本文档介绍如何部署 TiCDC 集群，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
 
 ## TiCDC 部署
 
@@ -14,13 +14,13 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 
 #### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
 
-详细操作参考[使用 TiUP 部署 TiCDC](/production-deployment-using-tiup.md#场景-4通过-ticdc-同步到下游)。
+详细操作参考[使用 TiUP 部署 TiCDC](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)。
 
 #### 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
 
 1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
 
-2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#扩容-tidbpdtikv-节点) 章节对 TiCDC 进行部署。
+2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点) 章节对 TiCDC 进行部署。
 
 ### 在原有 TiDB 集群上使用 binary 部署 TiCDC 组件
 
