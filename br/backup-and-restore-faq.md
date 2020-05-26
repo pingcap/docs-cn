@@ -40,7 +40,7 @@ category: FAQ
 > 假如备份表的数量特别多，可能会出现等了很长时间之后失败的情况。
 > 因此，最好在恢复前提前检查权限。
  
-## BR 遇到 Error: msg:“Io(Os { ... })” 错误，怎么办？
+## BR 遇到 错误信息 `Io(Os { ... })`，该如何处理？
  
 这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。检查备份目录的挂载方式和文件系统，试试看备份到其它文件夹或者其它硬盘。
  
@@ -48,7 +48,7 @@ category: FAQ
  
 ## 使用 local storage 的时候，BR 备份的文件会存在哪里？
  
-在使用 local storage 的时候，会在运行 BR 的节点生成 backupmeta，在各个 Region 的 Leader 节点生成备份文件。
+在使用 local storage 的时候，会在运行 BR 的节点生成 `backupmeta`，在各个 Region 的 Leader 节点生成备份文件。
  
 ## 备份数据会有多大，备份会有副本 (replica) 吗？
  
