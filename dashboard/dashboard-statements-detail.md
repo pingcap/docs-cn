@@ -58,4 +58,4 @@ category: how-to
 
 ![慢查询](/media/dashboard/statement/plans-slow-queries.png)
 
-该区域显示的内容结构与慢查询页面一致，详见[慢查询页面](/dashboard/slow-queries/list.md)。
+该区域显示的内容结构与慢查询页面一致，详见[慢查询页面](/dashboard/dashboard-slow-queries-list.md)。
