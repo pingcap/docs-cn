@@ -31,7 +31,7 @@ category: introduction
 
 #### v3.0
 
-#### tidb
+#### TiDB
 
 log.level: “error”
 
@@ -41,7 +41,7 @@ prepared-plan-cache.enabled: true
 
 tikv-client.max-batch-wait-time: 2000000
     
-#### tikv
+#### TiKV
 
 storage.scheduler-worker-pool-size: 5
 
@@ -63,7 +63,7 @@ readpool.coprocessor.normal-concurrency: 5
 
 ### v4.0
 
-#### tidb
+#### TiDB
 
 log.level: “error”
 
@@ -73,7 +73,7 @@ prepared-plan-cache.enabled: true
 
 tikv-client.max-batch-wait-time: 2000000
     
-#### tikv
+#### TiKV
 
 storage.scheduler-worker-pool-size: 5
 
