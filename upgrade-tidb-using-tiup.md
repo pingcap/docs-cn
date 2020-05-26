@@ -200,7 +200,7 @@ https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
 
 ### 5.4 升级过程中 TiFlash 组件升级失败
 
-由于 TiFlash 在 `v4.0.0-rc.2` 之前的版本可能有一些不兼容的问题，所以如果将包含 TiFlash 组件的集群由此前版本升级至 `v4.0.0-rc.2` 之后的过程中遇到问题，请访问 [ASK TUG](https://asktug.com/) 提出，会由研发方面人工解决。
+TiFlash 在 `v4.0.0-rc.2` 之前的版本可能有一些不兼容的问题。因此，如果将包含 TiFlash 组件的集群由此前版本升级至 `v4.0.0-rc.2` 之后版本的过程中遇到问题，可在 [ASK TUG](https://asktug.com/) 反馈，寻求研发人员支持。
 
 ## 6. TiDB 4.0 兼容性变化
 

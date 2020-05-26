@@ -305,7 +305,7 @@ tiup cluster display <cluster-name>
 
 ## 5. 缩容 TiFlash 节点
 
-如果要缩容 IP 地址为 10.0.1.4 的一个 TiFlash 节点，，可以按照如下步骤进行操作。
+如果要缩容 IP 地址为 10.0.1.4 的一个 TiFlash 节点，可以按照如下步骤进行操作。
 
 ### 5.1 根据 TiFlash 剩余节点数调整数据表的副本数
 
@@ -333,7 +333,7 @@ tiup cluster display <cluster-name>
     tiup cluster display <cluster-name>
     ```
 
-2. 调用 scale-in 命令执行下线节点，例如步骤 1 中获得该节点名为 `10.0.1.4:9000`
+2. 执行 scale-in 命令来下线节点，假设步骤 1 中获得该节点名为 `10.0.1.4:9000`
 
     {{< copyable "shell-regular" >}}
 
@@ -343,7 +343,7 @@ tiup cluster display <cluster-name>
 
 ### 5.3 手动缩容 TiFlash 节点
 
-在特殊情况下，比如需要强制下线节点，或者 TiUP 操作失败的情况下，可以使用以下方法手动下线 TiFlash 节点。
+在特殊情况下（比如需要强制下线节点），或者 TiUP 操作失败的情况下，可以使用以下方法手动下线 TiFlash 节点。
 
 1. 使用 pd-ctl 的 store 命令在 PD 中查看该 TiFlash 节点对应的 store id。
 
