@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/architecture/']
 
 # TiDB 整体架构
 
-TiDB 相比传统的单机数据库，TiDB 有以下的一些优势：
+与传统的单机数据库相比，TiDB 具有以下优势：
 
 * 纯分布式架构，拥有良好的扩展性，支持弹性的扩缩容
 * 支持 SQL，对外暴露 MySQL 的网络协议，并兼容大多数 MySQL 的语法，在大多数场景下可以直接替换 MySQL
