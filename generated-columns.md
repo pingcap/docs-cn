@@ -57,6 +57,22 @@ CREATE TABLE person (
 SELECT name, id FROM person WHERE city = 'Beijing';
 ```
 
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT name, id FROM person WHERE city = 'Beijing';
++---------------------------------+---------+-----------+--------------------------------+-------------------------------------------------------------+
+| id                              | estRows | task      | access object                  | operator info                                               |
++---------------------------------+---------+-----------+--------------------------------+-------------------------------------------------------------+
+| Projection_4                    | 10.00   | root      |                                | test.person.name, test.person.id                            |
+| └─IndexLookUp_10                | 10.00   | root      |                                |                                                             |
+|   ├─IndexRangeScan_8(Build)     | 10.00   | cop[tikv] | table:person, index:city(city) | range:["Beijing","Beijing"], keep order:false, stats:pseudo |
+|   └─TableRowIDScan_9(Probe)     | 10.00   | cop[tikv] | table:person                   | keep order:false, stats:pseudo                              |
++---------------------------------+---------+-----------+--------------------------------+-------------------------------------------------------------+
+```
+
+从执行计划中，我们可以看出使用了 `city` 这个索引来读取满足 `city = 'Beijing'` 这个条件的行的 `HANDLE`，再用这个 `HANDLE` 来读取该行的数据。
+
 如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义虚拟生成列：
 
 {{< copyable "sql" >}}
