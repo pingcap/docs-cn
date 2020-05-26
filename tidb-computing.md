@@ -5,7 +5,7 @@ category: introduction
 
 # 谈计算
 
-作为一个优秀的 NewSQL 数据库，TiDB 在 TiKV 提供的分布式存储能力基础上，构建了兼具优异的交易处理能力与良好的数据分析能力的计算引擎。本章首先从数据映射算法入手揭秘 TiDB 如何将库表中的数据映射到 TiKV 中的 (Key, Value) 键值对，然后描述了 TiDB 元信息管理方式。在此基础上，本章最后一节介绍了 TiDB SQL 层的主要架构。
+TiDB 在 TiKV 提供的分布式存储能力基础上，构建了兼具优异的交易处理能力与良好的数据分析能力的计算引擎。本章首先从数据映射算法入手揭秘 TiDB 如何将库表中的数据映射到 TiKV 中的 (Key, Value) 键值对，然后描述了 TiDB 元信息管理方式。在此基础上，本章最后一节介绍了 TiDB SQL 层的主要架构。
 需要注意的是，对于计算层依赖的存储方案，本章只介绍了基于 TiKV 的行存储结构。针对分析型业务的特点，TiDB 推出了作为 TiKV 扩展的列存储方案 TiFlash。
 
 ## 表数据与 Key-Value 的映射关系
@@ -14,8 +14,6 @@ category: introduction
 
 - 表中每一行的数据，以下简称表数据
 - 表中所有索引的数据，以下简称索引数据
-
-下面分别对这两个方面进行介绍。
 
 ### 表数据与 Key-Value 的映射关系
 
@@ -108,7 +106,7 @@ t10_i1_30_3 --> null
 
 ## 元信息管理
 
-上节介绍了表中的数据和索引如何映射为 (Key, Value) 键值对，本节介绍一下元信息的存储。TiDB 中每个 `Database` 和 `Table` 都有元信息，也就是其定义以及各项属性。这些信息也需要持久化，TiDB 将这些信息也存储在了 TiKV 中。
+TiDB 中每个 `Database` 和 `Table` 都有元信息，也就是其定义以及各项属性。这些信息也需要持久化，TiDB 将这些信息也存储在了 TiKV 中。
 
 每个 `Database`/`Table` 都被分配了一个唯一的 ID，这个 ID 作为唯一标识，并且在编码为 Key-Value 时，这个 ID 都会编码到 Key 中，再加上 `m_` 前缀。这样可以构造出一个 Key，Value 中存储的是序列化后的元信息。
 
@@ -133,7 +131,7 @@ TiDB 的 SQL层，即 TiDB Server，跟 Google 的 [F1](https://dbdb.io/db/googl
 
 **整个流程示意图如下：**
 
-![naive sql flow](http://img.mp.sohu.com/upload/20170524/cbd683354f5a4a03b1ff70e1cee4a520_th.png)
+![naive sql flow](/media/tidb-computing-native-sql-flow.jpeg)
 
 这个方案是直观且可行的，但是在分布式数据库的场景下有一些显而易见的问题：
 
@@ -147,12 +145,12 @@ TiDB 的 SQL层，即 TiDB Server，跟 Google 的 [F1](https://dbdb.io/db/googl
 
 **这里有一个数据逐层返回的示意图：**
 
-![dist sql flow](http://img.mp.sohu.com/upload/20170524/8cbf1c1e550c46688093afcfce6bbdb6_th.png)
+![dist sql flow](/media/tidb-computing-dist-sql-flow.png)
 
 ### SQL 层架构
 
 通过上面的例子，希望大家对 SQL 语句的处理有一个基本的了解。实际上 TiDB 的 SQL 层要复杂的多，模块以及层次非常多，下面这个图列出了重要的模块以及调用关系：
 
-![tidb sql layer](http://img.mp.sohu.com/upload/20170524/2bc80d3743ad4d029f8a8e6be5a70ec6_th.png)
+![tidb sql layer](/media/tidb-computing-tidb-sql-layer.png)
 
 用户的 SQL 请求会直接或者通过 `Load Balancer` 发送到 TiDB Server，TiDB Server 会解析 `MySQL Protocol Packet`，获取请求内容，对 SQL 进行语法解析和语义分析，制定和优化查询计划，执行查询计划并获取和处理数据。数据全部存储在 TiKV 集群中，所以在这个过程中 TiDB Server 需要和 TiKV 交互，获取数据。最后 TiDB Server 需要将查询结果返回给用户。

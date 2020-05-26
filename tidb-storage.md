@@ -8,6 +8,8 @@ aliases: ['/docs-cn/stable/architecture/']
 
 在[TiDB 整体架构](/tidb-architecture.md)中，主要介绍了 TiDB 项目的几个主要的组成部分，本节向大家介绍一下 TiKV 的一些设计思想和关键概念。
 
+![storage-architecture](/media/tidb-storage-architecture.png)
+
 ## Key-Value Pairs (键值对)
 
 作为保存数据的系统，首先要决定的是数据的存储模型，也就是数据以什么样的形式保存下来。TiKV 的选择是 Key-Value 模型，并且提供有序遍历方法。
