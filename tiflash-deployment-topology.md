@@ -1,12 +1,12 @@
 ---
-title: TiFlash 部署拓扑
-summary: 介绍 TiFlash 部署 TiDB 集群的拓扑结构。
+title: TiFlash部署拓扑
+summary: 了解在部署最小拓扑集群的基础上，部署 TiFlash 的拓扑结构。
 category: how-to
 ---
 
 # TiFlash 部署拓扑
 
-本文介绍 TiFlash 部署拓扑以及部署 TiFlash 的注意事项。
+本文介绍在部署最小拓扑集群的基础上，部署 TiFlash 的拓扑结构。TiFlash 是列式的存储引擎，已经成为集群拓扑的标配。适合 Real-Time HTAP 业务。
 
 ## 拓扑信息
 
