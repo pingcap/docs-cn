@@ -440,7 +440,7 @@
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
-    + TiFlash
+    + [TiFlash](/tiflash/tiflash-overview.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
