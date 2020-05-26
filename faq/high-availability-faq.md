@@ -8,10 +8,6 @@ category: FAQ
 
 本文档介绍高可用相关的常见问题。
 
-## TiDB 具备高可用的特性吗？
-
-TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](/key-features.md#高可用)。
-
 ## TiDB 数据是强一致的吗？
 
 TiDB 实现了快照隔离 (Snapshot Isolation) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。
