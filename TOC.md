@@ -38,7 +38,7 @@
   + 安装与启动
     + Linux
       + [使用 TiUP 部署](/production-deployment-using-tiup.md) @李仲舒
-      + [使用 TiUP 离线部署](/production-deployment-using-tiup-offline.md) @刘金龙
+      + [使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md) @刘金龙
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
@@ -102,7 +102,6 @@
   + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
-  + [执行计划不稳定导致性能波动](/troubleshoot-execution-plan.md) @姚珂男
   + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
   + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
@@ -142,7 +141,6 @@
         + [Optimizer Hints](/optimizer-hints.md)
         + [执行计划绑定](/execution-plan-binding.md)
         + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
-    + [性能监控](/monitor-sql-performance.md) @崔一丁
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)（[参考](https://pingcap.com/docs-cn/stable/geo-redundancy-deployment/)）@侯召墩
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md) 侯召墩
@@ -218,8 +216,9 @@
     + [TiKV 面板](/grafana-tikv-dashboard.md) @刘新韬
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md) @孙若曦
   + 安全加固
-    + [使用 TLS 加密连接](/encrypted-connections-with-tls-protocols.md) @苏立
-    + [为 TiDB 组件间开启 TLS 和数据加密存储](/enable-tls-between-components.md) @苏立
+    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md) @苏立
+    + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md) @苏立
+    + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md) @苏立
     + [生成自签名证书](/generate-self-signed-certificates.md) @刘新韬
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md) @毛康力
@@ -249,6 +248,7 @@
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
+      - [`CREATE BINDING`](/sql-statements/sql-statement-create-binding.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
       - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
       - [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)
@@ -261,6 +261,7 @@
       - [`DESC`](/sql-statements/sql-statement-desc.md)
       - [`DESCRIBE`](/sql-statements/sql-statement-describe.md)
       - [`DO`](/sql-statements/sql-statement-do.md)
+      - [`DROP BINDING`](/sql-statements/sql-statement-drop-binding.md)
       - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
       - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
       - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
@@ -293,6 +294,8 @@
       - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
+      - [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md)
       - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
       - [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
@@ -305,6 +308,8 @@
       - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
       - [`SHOW [FULL] FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
       - [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+      - [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-histograms.md)
+      - [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
       - [`SHOW INDEX [FROM|IN]`](/sql-statements/sql-statement-show-index.md)
       - [`SHOW KEYS [FROM|IN]`](/sql-statements/sql-statement-show-keys.md)
