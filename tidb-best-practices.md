@@ -125,9 +125,7 @@ TiDB 支持完整的二级索引，并且是全局索引，很多查询可以通
 
 ### 导入数据
 
-如果有 Unique Key 并且业务端可以保证数据中没有冲突，可以在 Session 内打开这个开关： `SET @@session.tidb_skip_constraint_check=1;`
-
-另外为了提高写入性能，可以对 TiKV 的参数进行调优，具体的文档查看 [TiKV 性能参数调优](/tune-tikv-performance.md)。
+为了提高导入数据期间的写入性能，可以对 TiKV 的参数进行调优，具体的文档查看 [TiKV 性能参数调优](/tune-tikv-performance.md)。
 
 ### 写入
 
