@@ -58,5 +58,6 @@ nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
 导入开始后，可以用两种方式查看进度
+
 1. 通过 grep 日志关键字 progress 查看进度，默认5分钟更新一次。
 2. 通过监控面板查看进度。具体介绍请参考[TiDB-Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)
