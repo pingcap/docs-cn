@@ -18,7 +18,7 @@ TiDB Dashboard 从用户角度出发，简化管理员对 TiDB 数据库的运�
 
 ### 实例面板
 
-![实例面板](/media/daily-inspection/status.png)
+![实例面板](/media/daily-inspection/instance-status-panel.png)
 
 以上实例面板注意项说明如下：
 
@@ -28,13 +28,13 @@ TiDB Dashboard 从用户角度出发，简化管理员对 TiDB 数据库的运�
 
 ### 主机面板
 
-![主机面板](/media/daily-inspection/host.png)
+![主机面板](/media/daily-inspection/host-panel.png)
 
 通过主机面板可以查看 CPU、内存、磁盘使用率。当任何资源的平均使用率超过 60%，推荐安排扩容计划，达到 80%，推荐进行扩容。
 
 ### SQL 分析
 
-![SQL 分析面板](/media/daily-inspection/sql_analysis.png)
+![SQL 分析面板](/media/daily-inspection/sql-analysis-panel.png)
 
 通过 SQL 分析面板可以分析对集群影响较大的慢 SQL，然后进行对应的 SQL 优化。
 
@@ -42,7 +42,7 @@ TiDB Dashboard 从用户角度出发，简化管理员对 TiDB 数据库的运�
 
 ## Region 信息
 
-![Region 信息面板](/media/daily-inspection/region_staus.png)
+![Region 信息面板](/media/daily-inspection/region-panel.png)
 
 以上面板说明如下：
 
@@ -59,13 +59,13 @@ TiDB Dashboard 从用户角度出发，简化管理员对 TiDB 数据库的运�
 
 ### KV Request Duration
 
-![TiKV 相应时间](/media/daily-inspection/KV_Duration.png)
+![TiKV 相应时间](/media/daily-inspection/kv-duration-panel.png)
 
 TiKV 当前 .99（百分位）的响应时间。如果发现有明显高的节点，可以排查是否有热点，或者相关节点性能较差。
 
 ### PD TSO Wait Duration
 
-![TiDB 从 PD 获取 TSO 的时间](/media/daily-inspection/PD_duration.png)
+![TiDB 从 PD 获取 TSO 的时间](/media/daily-inspection/pd-duration-panel.png)
 
 TiDB 从 PD 获取 TSO 的时间。如果相关响应时间较高，一般常见原因如下：
 
@@ -77,18 +77,18 @@ TiDB 从 PD 获取 TSO 的时间。如果相关响应时间较高，一般常见
 
 ### Overview 面板
 
-![Overview 面板](/media/daily-inspection/overview.png)
+![Overview 面板](/media/daily-inspection/overview-panel.png)
 
 以上面板展示常见的负载、内存、网络、IO 监控。发现有瓶颈时，推荐扩容或者优化集群拓扑，优化 SQL、集群参数等。
 
 ## 异常监控
 
-![异常监控面板](/media/daily-inspection/Failed_query.png)
+![异常监控面板](/media/daily-inspection/failed-query-panel.png)
 
 以上面板展示每个 TiDB 实例上，执行 SQL 语句发生的错误，并按照错误类型进行统计，例如语法错误、主键冲突等。
 
 ## GC 状态
 
-![GC 状态面板](/media/daily-inspection/GC.png)
+![GC 状态面板](/media/daily-inspection/garbage-collation-panel.png)
 
 以上面板展示最后 GC（垃圾清理）的时间，观察 GC 是否正常。如果 GC 发生异常，可能会造成历史数据存留过多，影响访问效率。
