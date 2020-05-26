@@ -126,7 +126,7 @@ server_configs:
 
 ## Hotfix 版本替换
 
-常规的升级集群请参考 [升级文档](/tiup/tiup-cluster.md#升级操作)，但是在某些场景下（例如 Debug)，可能需要用一个临时的包替换正在运行的组件，此时可以用 `patch` 命令：
+常规的升级集群请参考[升级文档](/tiup/tiup-cluster.md#升级操作)，但是在某些场景下（例如 Debug），可能需要用一个临时的包替换正在运行的组件，此时可以用 `patch` 命令：
 
 {{< copyable "shell-root" >}}
 
