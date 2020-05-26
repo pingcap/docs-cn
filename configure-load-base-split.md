@@ -1,6 +1,6 @@
 ---
 title: Load Base Split
-summary: 如何配置 Load Base Split。
+summary: 如何使用 Load Base Split 功能。
 category: how-to
 ---
 
