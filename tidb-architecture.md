@@ -14,13 +14,9 @@ TiDB 相比传统的单机数据库，TiDB 有以下的一些优势：
 * 支持 ACID 事务，对于一些有强一致需求的场景友好，例如：银行转账
 * 具有丰富的工具链生态，覆盖数据迁移、同步、备份等多种场景
 
-TiDB 分布式数据库最初的设计受到 Google 内部开发的知名分布式数据库 Spanner 和 F1 的启发，在内核设计上将整体的架构拆分成多个大的模块，大的模块之间互相通信，组成完整的 TiDB 系统。大的架构如下：
+TiDB 分布式数据库最初的设计受到 Google 内部开发的知名分布式数据库 Spanner 和 F1 的启发，在内核设计上将整体的架构拆分成多个大的模块，大的模块之间互相通信，组成完整的 TiDB 系统。对应的架构图为：
 
-![1.png](/media/tidb-architecture-1.png)
-
-这三个大模块相互通信，每个模块都是分布式的架构，在 TiDB 中，对应的架构图为：
-
-![2.png](/media/tidb-architecture-2.png)
+![architecture](/media/tidb-architecture-1.png)
 
 - TiDB Server：SQL 层，对外暴露 MySQL 协议的连接 endpoint，负责接受客户端的连接，执行 SQL 解析和优化，最终生成分布式执行计划。TiDB 层本身是无状态的，实践中可以启动多个 TiDB 实例，通过负载均衡组件（如 LVS、HAProxy 或 F5）对外提供统一的接入地址，客户端的连接可以均匀的分摊在多个 TiDB 实例上以达到负载均衡的效果。TiDB Server 本身并不存储数据，只是解析 SQL，将实际的数据读取请求转发给底层的存储节点 TiKV（或 TiFlash）。
 
