@@ -1,6 +1,7 @@
 ---
 title: TiCDC 集群和同步任务管理
 category: reference
+aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 ---
 
 # TiCDC 集群和同步任务管理
