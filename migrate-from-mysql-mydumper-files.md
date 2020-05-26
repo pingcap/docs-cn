@@ -8,7 +8,7 @@ category: how-to
 
 本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，可以参考 [Mydumper](/mydumper-overview.md) 或者 [Dumpling](/dumpling-overview.md) 文档。
 
-## 第 1 步：部署 TiDB Lighitning
+## 第 1 步：部署 TiDB Lightning
 
 具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
 
@@ -22,28 +22,28 @@ category: how-to
 
 本文以选用 TiDB Backend 导入数据为例。增加 `tidb-lightning.toml 配置文件`，在文件中添加以下主要配置：
 
-* 将 `[mydumper]` 下的 `data-source-dir` 设置为 MySQL 的 SQL 文件路径。
+1. 将 `[mydumper]` 下的 `data-source-dir` 设置为 MySQL 的 SQL 文件路径。
 
-```
-[mydumper]
-# 数据源目录
-data-source-dir = "/data/export"
-```
+    ```
+    [mydumper]
+    # 数据源目录
+    data-source-dir = "/data/export"
+    ```
 
-> **注意：**
->
-> 如果下游已经存在对应的 schema，那么可以设置 `no-schema=true` 来跳过 schema 创建的步骤。
+    > **注意：**
+    >
+    > 如果下游已经存在对应的 schema，那么可以设置 `no-schema=true` 来跳过 schema 创建的步骤。
 
-* 增加目标集群 TiDB 的配置。
+2. 增加目标集群 TiDB 的配置。
 
-```
-[tidb]
-# 目标集群的信息。tidb-server 的地址，填一个即可
-host = "172.16.31.1"
-port = 4000
-user = "root"
-password = ""
-```
+    ```
+    [tidb]
+    # 目标集群的信息。tidb-server 的地址，填一个即可
+    host = "172.16.31.1"
+    port = 4000
+    user = "root"
+    password = ""
+    ```
 
 其它配置参考 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)。
 
@@ -56,7 +56,7 @@ password = ""
 nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
-导入开始后，可以用两种方式查看进度
+导入开始后，可以采用以下两种方式查看进度：
 
-1. 通过 grep 日志关键字 progress 查看进度，默认5分钟更新一次。
-2. 通过监控面板查看进度。具体介绍请参考[TiDB-Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)
+- 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
+- 通过监控面板查看进度，具体参见 [TiDB-Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
