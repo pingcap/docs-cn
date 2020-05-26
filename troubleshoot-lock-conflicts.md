@@ -6,7 +6,7 @@ category: reference
 
 # TiDB 锁冲突问题处理
 
-TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与悲观事务两种事务模型。本文介绍在使用乐观事务或者悲观事务的过程中常见的报错以及解决思路。
+TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与悲观事务两种事务模型。本文介绍在使用乐观事务或者悲观事务的过程中常见的锁冲突问题以及解决思路。
 
 ## 乐观锁
 
@@ -22,7 +22,7 @@ TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，
 
 #### 读写冲突及检测方式
 
-在 TiDB 中读取数据时，会获取一个包含当前物理时间且全局唯一递增的时间戳作为当前事务的 start_ts。事务在读取时，需要读到目标 key 的 commit_ts 小于这个事务的 start_ts 的最新的数据版本。如果读取时发现目标 key 上存在 lock，那么此时有一个关键问题是，当读事务遇到 Percolator 的 lock 时，是无法知道这个事务是在 Commit 阶段还是 Prewrite 阶段。所以就会出现读写冲突的情况，如下图：
+在 TiDB 中，读取数据时，会获取一个包含当前物理时间且全局唯一递增的时间戳作为当前事务的 start_ts。事务在读取时，需要读到目标 key 的 commit_ts 小于这个事务的 start_ts 的最新的数据版本。当读取时发现目标 key 上存在 lock 时，因为无法知道上锁的那个事务是在 Commit 阶段还是 Prewrite 阶段，所以就会出现读写冲突的情况，如下图：
 
 ![读写冲突](media/troubleshooting-lock-pic-04.png)
 
@@ -70,7 +70,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
     * lock_ttl: 锁的 TTL。
     * txn_size：锁所在事务在其 Region 的 key 数量，指导清锁方式。
 
-读写冲突处理建议：
+处理建议：
 
 * 在遇到读写冲突时会有 backoff 自动重试机制，如上述示例中 Txn1 会进行 backoff 重试，单次初始 100 ms，单次最大 3000 ms，总共最大 20000 ms
 
@@ -94,7 +94,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 ![KV-backoff-txnLockFast-optimistic-01](/media/troubleshooting-lock-pic-07.png)
 ![KV-Errors-resolve-optimistic-01](/media/troubleshooting-lock-pic-08.png)
 
-KeyIsLocked 错误处理建议：
+处理建议：
 
 * 监控中出现少量 txnLock，无需过多关注。后台会自动进行 backoff 重试，单次初始 200 ms，单次最大 3000 ms。
 * 如果出现大量的 txnLock，需要从业务的角度评估下冲突的原因。
@@ -104,7 +104,7 @@ KeyIsLocked 错误处理建议：
 
 当 Prewrite 全部完成时，客户端便会取得 commit_ts，然后继续两阶段提交的第二阶段。这里需要注意的是，由于 primary key 是否提交成功标志着整个事务是否提交成功，因而客户端需要在单独 commit primary key 之后再继续 commit 其余的 key。
 
-#### 锁被清除 LockNotFound 错误
+#### 锁被清除 (LockNotFound) 错误
 
 TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](/tidb-specific-system-variables.md#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
 
@@ -129,7 +129,7 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
     Error: KV error safe to retry restarts txn: Txn(Mvcc(TxnLockNotFound)) [ERROR [Kv.rs:708] ["KvService::batch_raft send response fail"] [err=RemoteStoped]
     ```
 
-LockNotFound 报错的处理建议：
+处理建议：
 
 * 通过检查 start_ts 和 commit_ts 之间的提交间隔，可以确认是否超过了默认的 TTL 的时间。
 
@@ -178,7 +178,7 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 
 #### pessimistic lock retry limit reached
 
-在冲突非常严重的场景下，当发生 write conflict 时，乐观事务会直接终止，而悲观事务会尝试用最新数据重试该语句直到没有 write conflict。因为 TiDB 的加锁操作是一个写入操作，且操作过程是先读后写，需要 2 次 RPC。如果在这中间发生了 write conflict，那么会重试。每次重试都会打印日志，不用特别关注。重试次数由 [pessimistic-txn.max-retry-count](/tidb-configuration-file.md#max-retry-count) 定义。
+在冲突非常严重的场景下，或者当发生 write conflict 时，乐观事务会直接终止，而悲观事务会尝试用最新数据重试该语句直到没有 write conflict。因为 TiDB 的加锁操作是一个写入操作，且操作过程是先读后写，需要 2 次 RPC。如果在这中间发生了 write conflict，那么会重试。每次重试都会打印日志，不用特别关注。重试次数由 [pessimistic-txn.max-retry-count](/tidb-configuration-file.md#max-retry-count) 定义。
 
 可通过查看 TiDB 日志查看报错信息：
 
@@ -188,7 +188,7 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 err="pessimistic lock retry limit reached"
 ```
 
-该错误的处理建议：
+处理建议：
 
 * 如果上述报错出现的比较频繁，建议从业务的角度进行调整。
 
@@ -204,7 +204,7 @@ err="pessimistic lock retry limit reached"
 ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
 ```
 
-该错误的处理建议：
+处理建议：
 
 * 如果出现的次数非常频繁，建议从业务逻辑的角度来进行调整。
 
@@ -220,7 +220,7 @@ ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
 TTL manager has timed out, pessimistic locks may expire, please commit or rollback this transaction
 ```
 
-该错误的处理建议：
+处理建议：
 
 * 当遇到该报错时，建议确认下业务逻辑是否可以进行优化，如将大事务拆分为小事务。在未使用[大事务](/tidb-configuration-file.md#txn-total-size-limit)的前提下，大事务可能会触发 TiDB 的事务限制。
 
@@ -236,6 +236,6 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 [err="[executor:1213]Deadlock found when trying to get lock; try restarting transaction"]
 ```
 
-该错误的处理建议：
+处理建议：
 
 * 如果出现非常频繁，需要调整业务代码来降低死锁发生概率。
