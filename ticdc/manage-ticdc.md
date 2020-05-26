@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
-以下内容介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。
+以下内容介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `127.0.0.1`，端口为 `2379`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli capture list
+    cdc cli capture list --pd=http://127.0.0.1:2379
     ```
 
     ```
@@ -37,67 +37,115 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 
 ### 管理同步任务 (`changefeed`)
 
-- 创建 `changefeed`：
+#### 创建同步任务：
 
-    {{< copyable "shell-regular" >}}
+使用以下命令来创建同步任务：
 
-    ```shell
-    cdc cli changefeed create --sink-uri="mysql://root:123456@127.0.0.1:3306/"
-    create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-commit-ts":null}}
-    ```
+{{< copyable "shell-regular" >}}
 
-- 查询 `changefeed` 列表：
+```shell
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
+create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-start-ts":null}}
+```
 
-    {{< copyable "shell-regular" >}}
+#### 查询同步任务列表：
 
-    ```shell
-    cdc cli changefeed list
-    ```
+使用以下命令来查询同步任务列表：
 
-    ```
-    [
-            {
-                    "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
-            }
-    ]
-    ```
+{{< copyable "shell-regular" >}}
 
-- 查询特定 `changefeed`，对应于某个同步任务的信息和状态：
+```shell
+cdc cli changefeed list --pd=http://127.0.0.1:2379
+```
 
-    {{< copyable "shell-regular" >}}
+```
+[
+        {
+                "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
+        }
+]
+```
 
-    ```shell
-    cdc cli changefeed query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
-    ```
+#### 查询特定同步任务，对应于某个同步任务的信息和状态：
 
-    ```
-    {
-            "info": {
-                    "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
-                    "opts": {},
-                    "create-time": "2020-03-12T22:04:08.103600025+08:00",
-                    "start-ts": 415241823337054209,
-                    "target-ts": 0,
-                    "admin-job-type": 0,
-                    "config": {
-                            "filter-case-sensitive": false,
-                            "filter-rules": null,
-                            "ignore-txn-commit-ts": null
-                    }
-            },
-            "status": {
-                    "resolved-ts": 415241860902289409,
-                    "checkpoint-ts": 415241860640145409,
-                    "admin-job-type": 0
-            }
-    }
-    ```
+使用以下命令来查询特定同步任务：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+```
+{
+        "info": {
+                "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
+                "opts": {},
+                "create-time": "2020-03-12T22:04:08.103600025+08:00",
+                "start-ts": 415241823337054209,
+                "target-ts": 0,
+                "admin-job-type": 0,
+                "config": {
+                        "filter-case-sensitive": false,
+                        "filter-rules": null,
+                        "ignore-txn-start-ts": null
+                }
+        },
+        "status": {
+                "resolved-ts": 415241860902289409,
+                "checkpoint-ts": 415241860640145409,
+                "admin-job-type": 0
+        }
+}
+```
+
+以上命令中：
 
 - `admin-job-type` 代表一个 changefeed 的状态：
     - `0`: 状态正常，也是初始状态。
     - `1`: 任务暂停。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
     - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
     - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+
+### 停止同步任务
+
+使用以下命令来停止同步任务：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed pause --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+以上命令中：
+
+- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+
+### 恢复同步任务
+
+使用以下命令恢复同步任务：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed resume --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+以上命令中：
+
+- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+
+### 删除同步任务
+
+使用以下命令删除同步任务：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed remove --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
 
 ### 管理同步子任务处理单元 (`processor`)
 
@@ -106,7 +154,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor list
+    cdc cli processor list --pd=http://127.0.0.1:2379
     ```
 
     ```
@@ -124,7 +172,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
+    cdc cli processor query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
     ```
 
     ```
@@ -198,43 +246,3 @@ curl -X POST http://127.0.0.1:8301/capture/owner/resign
 ```
 election: not leader
 ```
-
-### 停止同步任务
-
-使用以下命令来停止同步任务：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f pause
-```
-
-以上命令中：
-
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
-
-### 恢复同步任务
-
-使用以下命令恢复同步任务：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f resume
-```
-
-以上命令中：
-
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
-
-### 删除同步任务
-
-使用以下命令删除同步任务：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f remove
-```
-
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
