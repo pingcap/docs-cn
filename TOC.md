@@ -38,7 +38,7 @@
   + 安装与启动
     + Linux
       + [使用 TiUP 部署](/production-deployment-using-tiup.md) @李仲舒
-      + [使用 TiUP 离线部署](/production-deployment-using-tiup-offline.md) @刘金龙
+      + [使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md) @刘金龙
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
