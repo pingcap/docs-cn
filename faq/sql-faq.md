@@ -140,7 +140,7 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 
 并发执行 DDL 时，建议将 DDL 数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
 
-## 二、SQL 优化
+## SQL 优化
 
 ## TiDB 执行计划解读
 
@@ -171,7 +171,7 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 admin show ddl;
 ```
 
-```
+```sql
 *************************** 1. row ***************************
   SCHEMA_VER: 140
        OWNER: 1a1c4174-0fcd-4ba0-add9-12d08c4077dc
@@ -204,20 +204,16 @@ ID 没什么规律，只要是唯一就行，不过生成的时候，是有一�
 
 目前 TiDB 的计算任务隶属于两种不同的 task：cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。一般来讲 root task 的输入数据是来自于 cop task 的；但是 root task 在处理数据的时候，TiKV 上的 cop task 也可以同时处理数据，等待 TiDB 的 root task 拉取，所以从这个观点上来看，他们是并行的；但是存在数据上下游关系；在执行的过程中，某些时间段其实也是并行的，第一个 cop task 在处理 [100, 200] 的数据，第二个 cop task 在处理 [1, 100] 的数据。执行计划的理解，请参考[理解 TiDB 执行计划](/query-execution-plan.md)。
 
-## 三、数据库优化
+## 数据库优化
 
-## TiDB
-
-## TiDB 参数及调整
+### TiDB 参数及调整
 
 详情参考 [TiDB 配置参数](/command-line-flags-for-tidb-configuration.md)。
 
-## 如何打散热点
+### 如何打散热点
 
 TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md#shard_row_id_bits)中 `SHARD_ROW_ID_BITS` 的介绍。
 
-## TiKV
-
-## TiKV 性能参数调优
+### TiKV 性能参数调优
 
 详情参考 [TiKV 性能参数调优](/tune-tikv-performance.md)。
