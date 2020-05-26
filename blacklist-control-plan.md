@@ -53,6 +53,9 @@ category: performance
     ```sql
     admin reload opt_rule_blacklist;
     ```
+> **注意：**
+> 
+> `admin reload opt_rule_blacklist;` 只会让链接的 tidb-server 立即生效，如果需要让集群内所有 tidb-server 都生效需要对每个 tidb 节点执行一次该语句。
 
 - 需要解除一条规则的禁用时，需要删除表中禁用该条规则的相应数据，再执行 `admin reload`：
 
@@ -66,6 +69,17 @@ category: performance
 ## 表达式下推黑名单
 
 **表达式下推黑名单**是针对表达式下推的调优手段之一，主要用于对于某些存储类型手动禁用一些表达式。
+
+### 已支持下推的表达式
+
+| 表达式分类 | 具体操作 |
+| :-------------- | :------------------------------------- |
+| [逻辑运算](/functions-and-operators/operators.md#逻辑操作符) | AND (&&), OR (&#124;&#124;), NOT (!) |
+| [比较运算](/functions-and-operators/operators.md#比较方法和操作符) | <, <=, =, != (<>), >, >=, [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to), [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in), IS NULL, LIKE, IS TRUE, IS FALSE, [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) |
+| [数值运算](/functions-and-operators/numeric-functions-and-operators.md) | +, -, *, /, [`ABS()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_abs), [`CEIL()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceil), [`CEILING()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceiling), [`FLOOR()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_floor) |
+| [控制流运算](/functions-and-operators/control-flow-functions.md) | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case), [`IF()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_if), [`IFNULL()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_ifnull) |
+| [JSON运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br> [JSON_UNQUOTE(json_val)][json_unquote],<br> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br> [JSON_ARRAY([val[, val] ...])][json_array],<br> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge],<br> [JSON_SET(json_doc, path, val[, path, val] ...)][json_set],<br> [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert],<br> [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace],<br> [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
+| [日期运算](/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format)  |
 
 ### 禁止特定表达式下推
     
@@ -113,6 +127,10 @@ desc mysql.expr_pushdown_blacklist;
 1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名或运算符名。
 
 2. 执行 `admin reload expr_pushdown_blacklist;`。
+
+> **注意：**
+> 
+> `admin reload expr_pushdown_blacklist;` 只会让链接的 tidb-server 立即生效，如果需要让集群内所有 tidb-server 都生效需要对每个 tidb 节点执行一次该语句。
 
 ### 表达式黑名单用法示例
 
