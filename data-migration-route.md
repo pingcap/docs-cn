@@ -16,7 +16,7 @@ category: reference
 
 #### 适合场景
 
-适合 MySQL 全量数据的大小大于 1TB 的场景。该方案只能迁移全量数据，如果需要继续同步增量数据，需要再使用 TiDB Data Migration（DM）创建增量同步任务。
+适合 MySQL 全量数据的大小大于 1TB 的场景。该方案只能迁移全量数据，如果需要继续同步增量数据，需要再使用 TiDB Data Migration (DM) 创建增量同步任务。
 
 #### 迁移方法
 
