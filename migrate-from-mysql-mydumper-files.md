@@ -28,6 +28,8 @@ category: how-to
 [mydumper]
 # 数据源目录
 data-source-dir = "/data/export"
+```
+
 > **注意：**
 >
 > 如果下游已经存在对应的 schema，那么可以设置 `no-schema=true` 来跳过 schema 创建的步骤。
