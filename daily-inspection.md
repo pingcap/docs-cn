@@ -1,5 +1,6 @@
 ---
 title: 日常巡检
+summary: 介绍 TiDB 集群需要常关注的性能指标。
 category: reference
 ---
 
@@ -12,8 +13,6 @@ TiDB 作为分布式数据库，对比其他单机数据库更加复杂。TiDB �
 从 4.0 版本开始，TiDB 提供了一个新的 Dashboard 运维管理工具，集成在 PD 组件上，默认地址为 <http://pd-ip:pd_port/dashboard>。
 
 TiDB Dashboard 从用户角度出发，最大限度简化管理员对 TiDB 数据库的运维，可在一个界面查看到整个分布式数据库集群的运行状况，包括数据热点、SQL 运行情况、集群信息、日志搜索、实时性能分析等。
-
-本章主要介绍日常需要关注的指标：SQL 分析和集群信息。
 
 ## 集群状态
 
