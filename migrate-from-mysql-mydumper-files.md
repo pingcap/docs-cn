@@ -33,9 +33,10 @@ data-source-dir = "/data/export"
 > 如果下游已经存在对应的 schema，那么可以设置 `no-schema=true` 来跳过 schema 创建的步骤。
 
 2. 增加目标集群 TiDB 的配置。
+
 ```
 [tidb]
-# 目标集群的信息。tidb-server 的地址，填一个即可。
+# 目标集群的信息。tidb-server 的地址，填一个即可
 host = "172.16.31.1"
 port = 4000
 user = "root"
@@ -49,6 +50,6 @@ password = ""
 运行 TiDB Lightning。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
 ```
-#!/bin/bash
+# !/bin/bash
 nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
