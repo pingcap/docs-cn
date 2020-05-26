@@ -150,7 +150,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
     会话级别的默认配置继承自 TiDB 实例级别的配置。
 
-最终的 engine 配置是实例级别和会话级别两者配置的交集。比如实例级别配置了 "tikv, tidb, tiflash"，而会话级别配置了 "tiflash"，则只会读取 TiFlash 副本。当 engine 配置为 "tikv, tiflash"，即可以同时读取 TiKV 和 TiFlash 副本，优化器会自动选择。
+最终的 engine 配置为会话级别配置，即会话级别配置会覆盖实例级别配置。比如实例级别配置了 "tikv"，而会话级别配置了 "tiflash"，则会读取 TiFlash 副本。当 engine 配置为 "tikv, tiflash"，即可以同时读取 TiKV 和 TiFlash 副本，优化器会自动选择。
 
 > **注意：**
 >
@@ -186,7 +186,7 @@ select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 
 
 ### 三种方式之间关系的总结
 
-上述三种读取 TiFlash 副本的方式中，Engine 隔离规定了总的可使用副本 engine 的范围（其中实例级别配置可以通过会话级别配置进一步缩小），手工 Hint 可以在该范围内进一步实现语句级别及表级别的细粒度的 engine 指定，最终由 CBO 在指定的 engine 范围内根据代价估算最终选取某个 engine 上的副本。
+上述三种读取 TiFlash 副本的方式中，Engine 隔离规定了总的可使用副本 engine 的范围，手工 Hint 可以在该范围内进一步实现语句级别及表级别的细粒度的 engine 指定，最终由 CBO 在指定的 engine 范围内根据代价估算最终选取某个 engine 上的副本。
 
 ## 使用 TiSpark 读取 TiFlash
 
