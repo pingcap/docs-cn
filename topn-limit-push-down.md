@@ -9,7 +9,7 @@ SQL 中的 LIMIT 子句在 TiDB 查询计划树中对应 Limit 算子节点，OR
 
 和谓词下推类似，TopN（及 Limit，下同）下推将查询计划树中的 TopN 计算尽可能下推到距离数据源最近的地方，以尽早完成数据的过滤，进而显著地减少数据传输或计算的开销。
 
-如果要关闭这个规则，可以在参照[优化规则及表达式下推的黑名单](/blacklist-control-plan.md)中的关闭方法。
+如果要关闭这个规则，可参照[优化规则及表达式下推的黑名单](/blacklist-control-plan.md)中的关闭方法。
 
 ## 示例
 
@@ -36,7 +36,7 @@ explain select * from t order by a limit 10;
 4 rows in set (0.00 sec)
 ```
 
-在该查询中，将 TopN 算子节点下推到 tikv 上对数据进行过滤，每个 coprocessor 只向 tidb 传输 10 条记录。在 tidb 将数据整合后，再进行最终的过滤。
+在该查询中，将 TopN 算子节点下推到 TiKV 上对数据进行过滤，每个 Coprocessor 只向 TiDB 传输 10 条记录。在 TiDB 将数据整合后，再进行最终的过滤。
 
 ### 示例 2：TopN 下推过 Join 的情况（排序规则仅依赖于外表中的列）
 
@@ -121,4 +121,4 @@ explain select * from t left join s on t.a = s.a order by t.id limit 10;
 
 ```
 
-在上面的查询中，TopN 首先推到了外表 t 上。然后因为它要对 t.id 进行排序，而 t.id 是表 t 的主键，可以直接按顺序读出（`keep order:true`），从而省略了 TopN 中的排序，将其简化为 Limit.
+在上面的查询中，TopN 首先推到了外表 t 上。然后因为它要对 `t.id` 进行排序，而 `t.id` 是表 t 的主键，可以直接按顺序读出 (`keep order:true`)，从而省略了 TopN 中的排序，将其简化为 Limit。
