@@ -18,12 +18,6 @@ category: how-to
 | Pump| 3 |8 VCore 16GB |10.0.1.1 <br> 10.0.1.7 <br> 10.0.1.8 | 默认端口配置； <br> 设置 GC 时间 7 天 |
 | Drainer | 1 | 8 VCore 16GB | 10.0.1.12 | 默认端口配置；<br> 设置默认初始化 commitTS -1 为最近的时间戳 <br> 配置下游目标 TiDB 10.0.1.12:4000 |
 
-## 通过 TiUP 部署集群的配置文件模版 topology.yaml
-
-### 部署目标
-
-需要设置默认部署目录 `/tidb-deploy` 和数据目录 `/tidb-data`，通过 TiDB Binlog 同步到下游机器 10.0.1.12:4000。
-
 ### 拓扑模版
 
 [简单 TiDB Binlog 配置模板](/config-templates/simple-tidb-binlog.yaml)
