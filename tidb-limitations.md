@@ -1,5 +1,5 @@
 ---
-title: TiDB 限制
+title: TiDB 使用限制
 category: reference
 summary: 了解 TiDB 标识符长度的限制和不同对象的数量限制。
 ---
