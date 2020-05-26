@@ -391,7 +391,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 1. 使用事务型接口的命令：
 
-    - kv_get：事务型的 get 命令，查询指定版本之前的数据
+    - kv_get：事务型的 get 命令
     - kv_scan：扫描连续的一段数据
     - kv_prewrite：2PC 的第一阶段，预写入事务要提交的数据
     - kv_pessimistic_lock：对 key 加悲观锁，防止其他事务修改
