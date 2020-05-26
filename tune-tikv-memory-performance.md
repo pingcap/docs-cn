@@ -1,7 +1,7 @@
 ---
 title: TiKV 内存参数性能调优
 category: reference
-aliases: ['/docs-cn/dev/reference/performance/tune-tikv/']
+aliases: ['/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
 ---
 
 # TiKV 性能参数调优
