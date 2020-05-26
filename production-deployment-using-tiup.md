@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 [TiUP](https://github.com/pingcap-incubator/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap-incubator/tiup-cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数。
 
-目前 TiUP 可以支持部署 `TiDB`、`TiFlash`、`TiDB Binlog`、`TiCDC`。本文将介绍不同集群拓扑的具体部署步骤：
+目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC。本文将介绍不同集群拓扑的具体部署步骤：
 
 ## 第 1 步：软硬件环境需求及前置检查
 
@@ -62,7 +62,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     tiup update cluster
     ```
     
-    预期输出 `“Update successfully!”` 字样：
+    预期输出 `“Update successfully!”` 字样。
 
 5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
 
@@ -80,27 +80,27 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 - [最小拓扑架构](/minimal-deployment-topology.md)
 
-  最基本的集群拓扑，包括 tidb-server、tikv-server、pd-server。适合 OLTP 业务。
-  
-- [增加 `TiFlash` 拓扑架构](/tiflash-deployment-topology.md)
+    最基本的集群拓扑，包括 tidb-server、tikv-server、pd-server，适合 OLTP 业务。
 
-  包含最小拓扑的基础上，同时部署 `TiFlash`，`TiFlash` 是列式的存储引擎，已经逐步成为集群拓扑的标配。适合 Real-Time HTAP 业务。
-  
-- [增加 `TiCDC` 拓扑架构](/ticdc-deployment-topology.md)
+- [增加 TiFlash 拓扑架构](/tiflash-deployment-topology.md)
 
-  包含最小拓扑的基础上，同时部署 `TiCDC`，`TiCDC` 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB/MySQL/MQ）。`TiCDC` 相比 `TiDB Binlog` ，有延迟更低、天然高可用等优点。在部署完成后，需要启动 TiCDC，[通过 `cdc cli` 创建同步任务](/ticdc/manage-ticdc.md)。
-  
-- [增加 `TiDB Binlog` 拓扑架构](/tidb-binlog-deployment-topology.md)
+    包含最小拓扑的基础上，同时部署 TiFlash。TiFlash 是列式的存储引擎，已经逐步成为集群拓扑的标配。适合 Real-Time HTAP 业务。
 
-  包含最小拓扑的基础上，同时部署 `TiDB Binlog`，`TiDB Binlog` 是目前广泛使用的增量组件，可提供准实时备份和同步功能。
+- [增加 TiCDC 拓扑架构](/ticdc-deployment-topology.md)
 
-- [混合部署 拓扑架构](/hybrid-deployment-topology.md)
+    包含最小拓扑的基础上，同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。在部署完成后，需要启动 TiCDC，[通过 `cdc cli` 创建同步任务](/ticdc/manage-ticdc.md)。
 
-  适用于单台机器，混合部署多个实例的情况，也包括单机多实例，需要额外增加 目录、端口、资源配比、label 等配置。
+- [增加 TiDB Binlog 拓扑架构](/tidb-binlog-deployment-topology.md)
+
+    包含最小拓扑的基础上，同时部署 TiDB Binlog。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
+
+- [混合部署拓扑架构](/hybrid-deployment-topology.md)
+
+    适用于单台机器，混合部署多个实例的情况，也包括单机多实例，需要额外增加目录、端口、资源配比、label 等配置。
 
 - [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)
 
-  以典型的 `两地三中心` 架构为例，介绍跨机房部署架构，以及需要注意的关键设置。
+    以典型的 `两地三中心` 架构为例，介绍跨机房部署架构，以及需要注意的关键设置。
 
 ### 第 4 步：执行部署命令
 
@@ -141,7 +141,7 @@ tiup cluster list
 Starting /home/tidb/.tiup/components/cluster/v0.4.3/cluster list
 Name              User  Version        Path                                                        PrivateKey
 ----              ----  -------        ----                                                        ----------
-tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
+tidb-test         tidb  v4.0.0-rc.2      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
 ### 第 6 步：检查部署的 TiDB 集群情况
@@ -154,7 +154,7 @@ tidb-test         tidb  v4.0.0-rc      /home/tidb/.tiup/storage/cluster/clusters
 tiup cluster display tidb-test
 ```
 
-预期输出包括 `tidb-test` 集群中实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息：
+预期输出包括 `tidb-test` 集群中实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息。
 
 ### 第 7 步：启动集群
 
