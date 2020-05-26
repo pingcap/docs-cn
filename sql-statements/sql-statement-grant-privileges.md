@@ -8,6 +8,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/grant-privileges/']
 # GRANT <privileges>
 
 `GRANT <privileges>` 语句用于为 TiDB 中已存在的用户分配权限。TiDB 中的权限系统同 MySQL 一样，都基于数据库/表模式来分配凭据。
+执行 `GRANT <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
 
 ## 语法图
 
@@ -44,7 +45,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/grant-privileges/']
 {{< copyable "sql" >}}
 
 ```sql
-CREATE USER newuser IDENTIFIED BY 'mypassword';
+CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 ```
 
 ```

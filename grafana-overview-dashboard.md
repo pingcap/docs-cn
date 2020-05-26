@@ -85,4 +85,4 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/overview-dashboard/']
 
 ## 图例
 
-![overview](/media/overview.png)
+![overview](/media/grafana_monitor_overview.png)
