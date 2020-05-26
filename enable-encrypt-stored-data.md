@@ -1,5 +1,6 @@
 ---
 title: 为 TiDB 开启数据加密存储
+summary: 介绍如何为 TiDB 开启数据加密存储。
 category: how-to
 ---
 
