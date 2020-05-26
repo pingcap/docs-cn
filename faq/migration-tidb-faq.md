@@ -1,5 +1,5 @@
 ---
-title: TiDB FAQ
+title: 迁移常见问题
 category: FAQ
 ---
 
