@@ -120,7 +120,7 @@ mysql> show warnings;
 | replication.location-labels | 用于设置 TiKV 集群的拓扑信息 |
 | replication.enable-placement-rules | 开启 Placement Rules |
 | replication.strictly-match-label | 开启 label 检查 |
-| pd-server.use-region-storage | 开启独立的 region 存储 |
+| pd-server.use-region-storage | 开启独立的 Region 存储 |
 | pd-server.max-gap-reset-ts | 用于设置最大的重置 timestamp 的间隔（BR）|
 | pd-server.key-type| 用于设置集群 key 的类型 |
 | pd-server.metric-storage | 用于设置集群 metrics 的存储地址 |
