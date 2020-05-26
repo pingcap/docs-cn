@@ -10,7 +10,7 @@ category: reference
 
 > **注意：**
 >
-> Drainer 在正常运行时会自动上报状态到 PD，仅在 Drainer 处于异常情况时实际状态与 PD 中保存的状态信息不一致时，使用该语句修改 PD 中存储的 Drainer 状态信息。
+> Drainer 在正常运行时会自动上报状态到 PD，仅在 Drainer 处于异常情况导致实际状态与 PD 中保存的状态信息不一致时，使用该语句修改 PD 中存储的 Drainer 状态信息。
 
 ## 示例
 
