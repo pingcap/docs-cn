@@ -4,7 +4,7 @@ category: how-to
 aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 ---
 
-## 支持使用加密传输的组件
+## 为 TiDB 组件间通信开启加密传输
 
 本部分介绍如何为 TiDB 集群内各部组件间开启加密传输，一旦开启以下组件间均将使用加密传输：
 

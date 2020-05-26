@@ -1,14 +1,13 @@
 ---
 title: 为 TiDB 开启数据加密存储
 category: how-to
-aliases: ['/docs-cn/dev/how-to/secure/enable-encrypt-stored-data/']
 ---
 
-## 开启数据加密存储
+# 为 TiDB 开启数据加密存储
 
 在 TiDB 集群中，用户的数据都存储在 TiKV 中，配置了 TiKV 数据加密存储功能，就代表 TiDB 集群已经加密存储了用户的数据。本部分主要介绍如何配置 TiKV 的加密存储功能。
 
-### 操作流程
+## 操作流程
 
 1. 生成 token 文件。
 
@@ -22,7 +21,7 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-encrypt-stored-data/']
 
     > **注意：**
     >
-    > TiKV 只接受 hex 格式的 token 文件，文件的长度必须是 2^n，并且小于等于 1024。
+    > TiKV 只接受 hex 格式的 token 文件，文件的长度必须是 2<sup>n</sup>，并且小于等于 1024。
 
 2. 配置 TiKV。
 
@@ -34,9 +33,9 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-encrypt-stored-data/']
 
 > **注意：**
 >
-> 若使用 [Lightning](/tidb-lightning/tidb-lightning-overview.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。
+> 若使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 SST 文件也必须是加密的格式。
 
-### 使用限制
+## 使用限制
 
 目前 TiKV 数据加密存储存在以下限制：
 
