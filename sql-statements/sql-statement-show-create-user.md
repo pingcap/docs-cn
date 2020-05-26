@@ -11,9 +11,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-create-user/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowCreateUserStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowCreateUserStmt](/media/sqlgram/ShowCreateUserStmt.png)
 
 **Username:**
 
