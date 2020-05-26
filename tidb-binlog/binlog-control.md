@@ -6,7 +6,7 @@ category: reference
 
 # binlogctl 工具
 
-## binlogctl 介绍
+Binlog Control（以下简称 binlogctl）是 TiDB Binlog 的命令行工具，用于管理 TiDB Binlog 集群。
 
 binlogctl 支持如下这些功能：
 
@@ -19,6 +19,8 @@ binlogctl 支持如下这些功能：
 * 同步出现故障/检查运行情况，需要查看 Pump/Drainer 的状态
 * 维护集群，需要暂停/下线 Pump/Drainer
 * Pump/Drainer 异常退出，状态没有更新，或者状态不符合预期，对业务造成影响
+
+## binlogctl 下载
 
 binlogctl 下载链接：
 
@@ -80,7 +82,6 @@ Usage of binlogctl:
     如果设置时区，在 "generate_meta" 模式下会打印出获取到的 tso 对应的时间。例如 "Asia/Shanghai" 为 CST 时区，"Local" 为本地时区
 -show-offline-nodes
     在用 `-cmd pumps` 或 `-cmd drainers` 命令时使用，这两个命令默认不显示 offline 的节点，仅当明确指定 `-show-offline-nodes` 时会显示
-
 ```
 
 命令示例：
