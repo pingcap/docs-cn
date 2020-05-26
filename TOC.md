@@ -414,7 +414,7 @@
     + TiKV
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
-  + [TiCDC](/ticdc-overview.md)
+  + [TiCDC 简介](/ticdc-overview.md)
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md) @荣毅龙/启航
