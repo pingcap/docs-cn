@@ -40,9 +40,12 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 以上结果字段解释如下：
 
-+ `name` 为禁止下推的函数名。
-+ `store_type` 指明希望禁止该函数下推到哪些存储引擎。目前 TiDB 支持三种存储引擎，分别为 `tikv`、`tidb` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间应以逗号隔开。
-+ `reason` 列可以记录该函数被加入黑名单的原因。
++ `name`：禁止下推的函数名。
++ `store_type`：用于指明希望禁止该函数下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
+    - `store_type` 为 `tidb` 时表示在读取 TiDB 内存表时，是否允许该函数在其他 TiDB Server 上执行。
+    - `store_type` 为 `tikv` 时表示是否允许该函数在 TiKV Server 的 Coprocessor 模块中执行。
+    - `store_type` 为 `tiflash` 时表示是否允许该函数在 TiFlash Server 的 Coprocessor 模块中执行。
++ `reason`：用于记录该函数被加入黑名单的原因。
 
 > **注意**：
 >
