@@ -413,7 +413,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
     - raw_batch_get：获取一批 key 所对应的 value
     - raw_scan：扫描一段连续的数据
     - raw_batch_scan：扫描多段连续的数据
-    - raw_put：直接写入一个 key/value 对
+    - raw_put：写入一个 key/value 对
     - raw_batch_put：直接写入一批 key/value 对
     - raw_delete：删除一个 key/value 对
     - raw_batch_delete：删除一批 key/value 对
