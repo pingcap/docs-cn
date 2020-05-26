@@ -39,23 +39,23 @@ desc information_schema.inspection_result;
 字段解释：
 
 * `RULE`：诊断规则名称，目前实现了以下规则：
-    * `config`：配置一致性检测。如果同一个配置在不同实例不一致，会生成 `warning` 诊断结果。
+    * `config`：配置一致性以及合理性检测。如果同一个配置在不同实例不一致，会生成 `warning` 诊断结果。
     * `version`：版本一致性检测。如果同一类型的实例版本不同，会生成 `critical` 诊断结果。
-    * `node-load`：如果当前系统负载太高，会生成对应的 `warning` 诊断结果。
+    * `node-load`：服务器负载检测。如果当前系统负载太高，会生成对应的 `warning` 诊断结果。
     * `critical-error`：系统各个模块定义了严重的错误，如果某一个严重错误在对应时间段内超过阈值，会生成 `warning` 诊断结果。
-    * `threshold-check`：诊断系统会对大量指标进行阈值判断，如果超过阈值会生成对应的诊断信息。
+    * `threshold-check`：诊断系统会对一些关键指标进行阈值判断，如果超过阈值会生成对应的诊断信息。
 * `ITEM`：每一个规则会对不同的项进行诊断，该字段表示对应规则下面的具体诊断项。
 * `TYPE`：诊断的实例类型，可取值为 `tidb`，`pd` 和 `tikv`。
 * `INSTANCE`：诊断的具体实例地址。
 * `STATUS_ADDRESS`：实例的 HTTP API 服务地址。
 * `VALUE`：针对这个诊断项得到的值。
-* `REFERENCE`：针对这个诊断项的参考值（阈值）。如果 `VALUE` 和阈值相差较大，就会产生对应的诊断信息。
+* `REFERENCE`：针对这个诊断项的参考值（阈值）。如果 `VALUE` 超过阈值，就会产生对应的诊断信息。
 * `SEVERITY`：严重程度，取值为 `warning` 或 `critical`。
 * `DETAILS`：诊断的详细信息，可能包含进一步调查的 SQL 或文档链接。
 
 ## 诊断示例
 
-诊断集群当前时间的问题。
+对当前时间的集群进行诊断。
 
 {{< copyable "sql" >}}
 
@@ -160,7 +160,7 @@ select * from information_schema.inspection_result where rule='critical-error';
 
 ## 诊断规则介绍
 
-诊断模块内部包含一系列的规则，这些规则会通过查询已有的监控表和集群信息表，对结果和预先设定的阈值进行对比。如果结果超过阈值或低于阈值将生成 `warning` 或 `critical` 的结果，并在 `details` 列中提供相应信息。
+诊断模块内部包含一系列的规则，这些规则会通过查询已有的监控表和集群信息表，对结果和阈值进行对比。如果结果超过阈值将生成 `warning` 或 `critical` 的结果，并在 `details` 列中提供相应信息。
 
 可以通过查询 `inspection_rules` 系统表查询已有的诊断规则:
 
@@ -261,7 +261,7 @@ DETAILS   | the cluster has 2 different tidb versions, execute the sql to see mo
     | TiDB | panic-count | tidb_panic_count_total_count | TiDB 出现 panic 错误 |
     | TiDB | binlog-error | tidb_binlog_error_total_count | TiDB 写 binlog 时出现的错误 |
     | TiKV | critical-error | tikv_critical_error_total_coun | TiKV 的 critical error |
-    | TiKV | scheduler-is-busy       | tikv_scheduler_is_busy_total_count | TiKV 的 scheduler 太忙，该使 TiKV 临时不可用 |
+    | TiKV | scheduler-is-busy       | tikv_scheduler_is_busy_total_count | TiKV 的 scheduler 太忙，会导致 TiKV 临时不可用 |
     | TiKV | coprocessor-is-busy | tikv_coprocessor_is_busy_total_count | TiKV 的 coprocessor 太忙 |
     | TiKV | channel-is-full | tikv_channel_full_total_count | TiKV 出现 channel full 的错误 |
     | TiKV | tikv_engine_write_stall | tikv_engine_write_stall | TiKV 出现写入 stall 的错误 |
@@ -274,9 +274,9 @@ DETAILS   | the cluster has 2 different tidb versions, execute the sql to see mo
 
 |  组件  | 监控指标 | 相关监控表 | 预期值 |  说明  |
 |  :----  | :----  |  :----  |  :----  |  :----  |
-| TiDB | tso-duration              | pd_tso_wait_duration                | 小于 50 ms  |  获取事务 TSO 时间戳的耗时 |
+| TiDB | tso-duration              | pd_tso_wait_duration                | 小于 50 ms  |  获取事务 TSO 时间戳的等待耗时 |
 | TiDB | get-token-duration        | tidb_get_token_duration             | 小于 1 ms   |  查询获取 token 的耗时，相关的 TiDB 配置参数是 token-limit  |
-| TiDB | load-schema-duration      | tidb_load_schema_duration           | 小于 1 s    |  TiDB 更新获取表元信息的耗时 |
+| TiDB | load-schema-duration      | tidb_load_schema_duration           | 小于 1 s    |  TiDB 更新表元信息的耗时 |
 | TiKV | scheduler-cmd-duration    | tikv_scheduler_command_duration     | 小于 0.1 s  |  TiKV 执行 KV cmd 请求的耗时 |
 | TiKV | handle-snapshot-duration  | tikv_handle_snapshot_duration       | 小于 30 s   |  TiKV 处理 snapshot 的耗时 |
 | TiKV | storage-write-duration    | tikv_storage_async_request_duration | 小于 0.1 s  |  TiKV 写入的延迟 |
