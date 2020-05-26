@@ -452,6 +452,7 @@
   + [部署运维 FAQ](/faq/deploy-and-maintain-faq.md) @荣毅龙/启航
   + [升级 FAQ](/faq/upgrade-faq.md) @荣毅龙/启航
   + [License FAQ](/faq/licensing-faq.md) @荣毅龙/启航
+  + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
   + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
   + [迁移 FAQ](/faq/migration-tidb-faq.md) @荣毅龙
 + [术语表](/glossary.md) @李琳
