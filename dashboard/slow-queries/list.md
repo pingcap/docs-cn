@@ -17,31 +17,31 @@ category: how-to
 
 访问页面的两种方式，如下：
 
-* 登录后，左侧导航条点击**慢查询**（**Slow Queries**）：
+* 登录后，左侧导航条点击**慢查询** (**Slow Queries**)：
 
 ![access 访问页面](/media/dashboard/slow-queries/access.png)
 
 * 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/slow_query>（将 `127.0.0.1:2379` 替换为任意实际 PD 地址和端口）。
 
-慢查询页面所展示的所有数据都来自于 TiDB 慢查询系统表及慢查询日志，参见[慢查询日志](/identify-slow-queries.md) 文档了解详细情况。
+慢查询页面所展示的所有数据都来自于 TiDB 慢查询系统表及慢查询日志，参见[慢查询日志](/identify-slow-queries.md)文档了解详细情况。
 
 ### 修改列表过滤条件
 
 可按时间范围、慢查询语句关联的数据库、SQL 关键字、SQL 类型、显示的慢查询语句数量等条件过滤，筛选慢查询句。如下所示，默认显示 30 分钟内最近 100 条慢查询。
 
-![图 1 ](/media/dashboard/slow-queries/list1.png)
+![修改列表过滤条件](/media/dashboard/slow-queries/list1.png)
 
 ### 显示更多列信息
 
-页面顶部**选择列**（**Columns**）选项中可选择显示更多列，可将鼠标移动到列名右侧的 (i) 图标处查看列的说明：
+页面顶部**选择列** (**Columns**) 选项中可选择显示更多列，可将鼠标移动到列名右侧的 **(i)** 图标处查看列的说明：
 
-![图 2 ](/media/dashboard/slow-queries/list2.png)
+![显示更多列信息](/media/dashboard/slow-queries/list2.png)
 
 ### 修改列表排序依据
 
-列表默认以**结束运行时间**（**Finish Time**）逆序排序，点击不同的列标题可以修改排序依据或切换排序顺序：
+列表默认以**结束运行时间** (**Finish Time**) 逆序排序，点击不同的列标题可以修改排序依据或切换排序顺序：
 
-![图 3 ](/media/dashboard/slow-queries/list3.png)
+![修改列表排序依据](/media/dashboard/slow-queries/list3.png)
 
 ## 查看执行详情
 
@@ -51,10 +51,10 @@ category: how-to
 - 执行计划：慢查询的执行计划，参阅[理解 TiDB 执行计划](/query-execution-plan.md)文档了解如何解读执行计划（下图中区域 2）
 - 其他分类好的 SQL 执行信息（下图中区域 3）
 
-![detail 示例](/media/dashboard/slow-queries/detail1.png)
+![查看执行详情](/media/dashboard/slow-queries/detail1.png)
 
-点击**展开**（**Expand**）链接可以展开相应项的完整内容，点击**复制**（**Copy**）链接可以复制完整内容到剪贴板。
+点击**展开** (**Expand**) 链接可以展开相应项的完整内容，点击**复制** (**Copy**) 链接可以复制完整内容到剪贴板。
 
 点击标签页标题可切换显示不同分类的 SQL 执行信息：
 
-![detail 执行示例](/media/dashboard/slow-queries/detail2.png)
+![显示不同分类执行信息](/media/dashboard/slow-queries/detail2.png)
