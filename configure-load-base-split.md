@@ -28,7 +28,7 @@ Load Base Split 会基于统计信息来自动地解决这个问题，通过统�
 
 Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeChecker` 会跳过 hot Region ，另一方面 PD 也会针对心跳信息中的 `QPS`去进行判断，避免 Merge 两个 `QPS` 很高的 Region。
 
-## 使用
+## 使用方法
 
 目前的 Load Base Split 的控制参数，主要是前文提到的阈值，也即 `split.qps-threshold`。当下的策略是默认开启的，但相对保守，默认值是 3000。也就是说，如果连续 10s 内，某个 Region 每秒的各类读请求之和超过 3000 ，那么就对对此 Region 进行拆分。如果想要关闭这个功能，可以将这个阈值调到足够高即可。
 
