@@ -70,7 +70,7 @@ ant
 | RAM | 128GB |
 | DISK | Optane 500GB SSD |
 
-因为该型号 CPU 是 NUMA 架构，建议用 `numactl` 进行绑核。首先[安装 numactl 工具](/production-deployment-using-tiup.md#如何安装-numactl-工具) ，然后用 `lscpu` 查看 NUMA node，比如：
+因为该型号 CPU 是 NUMA 架构，建议用 `numactl` 进行绑核。首先[安装 numactl 工具](/check-before-deployment.md#安装-numactl-工具) ，然后用 `lscpu` 查看 NUMA node，比如：
 
 ```text
 NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
@@ -107,7 +107,7 @@ exec numactl --cpunodebind=0  --membind=0 bin/tidb-server \
     --log-file="/home/damon/deploy/tidb1-1/log/tidb.log" 2>> "/home/damon/deploy/tidb1-1/log/tidb_stderr.log"
 ```
 
->注意：直接修改 run_tidb.sh 可能会被覆盖。因此在生产环境中，如有绑核需求，建议使用 [Tiup 绑核](/production-deployment-using-tiup.md#拓扑信息-1) 。
+>注意：直接修改 run_tidb.sh 可能会被覆盖。因此在生产环境中，如有绑核需求，建议使用 Tiup 绑核
 
 最后，可以选择部署一个 HAproxy 来进行多个 TiDB node 的负载均衡，推荐配置 nbproc 为 CPU 核数。
 
