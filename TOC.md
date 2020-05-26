@@ -102,7 +102,6 @@
   + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
-  + [执行计划不稳定导致性能波动](/troubleshoot-execution-plan.md) @姚珂男
   + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
   + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
@@ -142,7 +141,6 @@
         + [Optimizer Hints](/optimizer-hints.md)
         + [执行计划绑定](/execution-plan-binding.md)
         + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
-    + [性能监控](/monitor-sql-performance.md) @崔一丁
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)（[参考](https://pingcap.com/docs-cn/stable/geo-redundancy-deployment/)）@侯召墩
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md) 侯召墩
@@ -310,6 +308,7 @@
       - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
       - [`SHOW [FULL] FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
       - [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+      - [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-histograms.md)
       - [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
       - [`SHOW INDEX [FROM|IN]`](/sql-statements/sql-statement-show-index.md)
