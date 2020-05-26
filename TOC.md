@@ -33,12 +33,15 @@
   + [环境与系统配置检查](/check-before-deployment.md) @李仲舒
   + 配置拓扑结构
     + [最小部署拓扑结构](/minimal-deployment-topology.md) @李仲舒
-    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) @李仲舒（[参考](/location-awareness.md)）
+    + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
+    + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
+    + [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
+    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md) @李仲舒
   + 安装与启动
     + Linux
-      + [使用 TiUP 部署](/production-deployment-using-tiup.md) @李仲舒
-      + [使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md) @刘金龙
+      + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md) @李仲舒
+      + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md) @刘金龙
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
@@ -112,7 +115,8 @@
   + 软件调优
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
-      + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+      + [TiKV 线程调优](/tune-tikv-thread-performance.md) @刘玮
+      + [TiKV 内存调优](/tune-tikv-memory-performance.md) @刘玮
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
   + SQL 性能调优 @崔一丁
     + [SQL 性能调优概览](/sql-tuning-overview.md)
@@ -158,9 +162,29 @@
   + [工具使用指南](/ecosystem-tool-user-guide.md)
   + [工具下载](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
+    + [BR 常见问题](/br/backup-and-restore-faq.md)
     + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md) @余峻岑
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @余峻岑
-  + TiDB Lightning @kenny
+  + TiDB Binlog
+    + [概述](/tidb-binlog/tidb-binlog-overview.md)
+    + [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
+    + [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
+    + [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
+      + [Pump](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
+      + [Drainer](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
+    + [版本升级](/tidb-binlog/upgrade-tidb-binlog.md)
+    + [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
+    + [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
+    + [binlogctl 工具](/tidb-binlog/binlog-control.md)
+    + [Kafka 自定义开发](/tidb-binlog/binlog-slave-client.md)
+    + [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
+    + [集群间双向同步](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
+    + [术语表](/tidb-binlog/tidb-binlog-glossary.md)
+    + 故障诊断
+      + [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
+      + [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
+    + [FAQ](/tidb-binlog/tidb-binlog-faq.md)
+  + TiDB Lightning
     + [概述](/tidb-lightning/tidb-lightning-overview.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
@@ -397,8 +421,8 @@
     + [tikv-ctl](/tikv-control.md) @屈鹏
     + [pd-ctl](/pd-control.md) @陈书宁
     + [tidb-ctl](/tidb-control.md) @于帅鹏
-    + [binlog-ctl](/tidb-binlog/binlog-control.md) @王相
     + [pd-recover](/pd-recover.md) @陈书宁
+    + [binlog-ctl](/tidb-binlog/binlog-control.md)
   + 命令行参数
     + [tidb-server](/command-line-flags-for-tidb-configuration.md) @于帅鹏
     + [tikv-server](/command-line-flags-for-tikv-configuration.md) @陈书宁
