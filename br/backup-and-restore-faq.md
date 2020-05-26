@@ -1,16 +1,16 @@
 ---
-title: BR 常见问题解答
-summary: BR FAQ & troubleshooting
+title: Backup & Restore 常见问题
+summary: BR 相关的常见问题以及解决方法。
 category: FAQ
 ---
  
-# BR 常见问题解答
+# Backup & Restore 常见问题
  
-本文是 BR 的 FAQ，记录了一些在 BR 中的常见问题和解答。
+本文列出了在使用 Backup & Restore (BR) 时，可能会遇到的问题及相应的解决方法。
  
-我们无法穷尽所有问题，如果遇到未在其中且无法解决的问题，[AskTUG](http://asktug.com) 社区中的友善成员很乐意解答您的问题。
+如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](http://asktug.com) 社区中提问。
 
-## 恢复的时候，报错 “could not read local://...:download sst failed”，怎么办？
+## 恢复的时候，报错 `could not read local://...:download sst failed`，该如何处理？
 
 在恢复的时候，每个节点都必须能够访问到**所有**的备份文件（SST files）。
 默认情况下，假如使用 `local` storage，备份文件会分散在各个节点中。
