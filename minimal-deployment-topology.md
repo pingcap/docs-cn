@@ -4,7 +4,7 @@ summary: 介绍 TiDB 集群的最小拓扑。
 category: how-to
 ---
 
-# 常规拓扑架构
+# 最小拓扑架构
 
 本文档介绍 TiDB 集群部署的最小拓扑架构。
 
