@@ -33,47 +33,73 @@ category: introduction
 
 #### tidb
 
-    log.level: “error”
-    performance.max-procs: 20
-    prepared-plan-cache.enabled: true
-    tikv-client.max-batch-wait-time: 2000000
+log.level: “error”
+
+performance.max-procs: 20
+
+prepared-plan-cache.enabled: true
+
+tikv-client.max-batch-wait-time: 2000000
     
 #### tikv
 
-    storage.scheduler-worker-pool-size: 5
-    raftstore.store-pool-size: 3
-    raftstore.apply-pool-size: 3
-    rocksdb.max-background-jobs: 3
-    raftdb.max-background-jobs: 3
-    raftdb.allow-concurrent-memtable-write: true
-    server.grpc-concurrency: 6
-    readpool.storage.normal-concurrency: 10
-    readpool.coprocessor.normal-concurrency: 5
+storage.scheduler-worker-pool-size: 5
+
+raftstore.store-pool-size: 3
+
+raftstore.apply-pool-size: 3
+
+rocksdb.max-background-jobs: 3
+
+raftdb.max-background-jobs: 3
+
+raftdb.allow-concurrent-memtable-write: true
+
+server.grpc-concurrency: 6
+
+readpool.storage.normal-concurrency: 10
+
+readpool.coprocessor.normal-concurrency: 5
 
 ### v4.0
 
 #### tidb
 
-    log.level: "error"
-    performance.max-procs: 20
-    prepared-plan-cache.enabled: true
-    tikv-client.max-batch-wait-time: 2000000
+log.level: “error”
+
+performance.max-procs: 20
+
+prepared-plan-cache.enabled: true
+
+tikv-client.max-batch-wait-time: 2000000
     
 #### tikv
 
-    storage.scheduler-worker-pool-size: 5
-    raftstore.store-pool-size: 3
-    raftstore.apply-pool-size: 3
-    rocksdb.max-background-jobs: 3
-    raftdb.max-background-jobs: 3
-    raftdb.allow-concurrent-memtable-write: true
-    server.request-batch-enable-cross-command: false
-    server.grpc-concurrency: 6
-    readpool.unifiy-read-pool: true
-    readpool.unified.min-thread-count: 5
-    readpool.unified.max-thread-count: 20
-    readpool.storage.normal-concurrency: 10
-    pessimistic-txn.pipelined: true
+storage.scheduler-worker-pool-size: 5
+
+raftstore.store-pool-size: 3
+
+raftstore.apply-pool-size: 3
+
+rocksdb.max-background-jobs: 3
+
+raftdb.max-background-jobs: 3
+
+raftdb.allow-concurrent-memtable-write: true
+
+server.request-batch-enable-cross-command: false
+
+server.grpc-concurrency: 6
+
+readpool.unifiy-read-pool: true
+
+readpool.unified.min-thread-count: 5
+
+readpool.unified.max-thread-count: 20
+
+readpool.storage.normal-concurrency: 10
+
+pessimistic-txn.pipelined: true
 
 #### 全局变量
 
