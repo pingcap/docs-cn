@@ -33,12 +33,15 @@
   + [环境与系统配置检查](/check-before-deployment.md) @李仲舒
   + 配置拓扑结构
     + [最小部署拓扑结构](/minimal-deployment-topology.md) @李仲舒
-    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) @李仲舒（[参考](/location-awareness.md)）
+    + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
+    + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
+    + [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
+    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md) @李仲舒
   + 安装与启动
     + Linux
-      + [使用 TiUP 部署](/production-deployment-using-tiup.md) @李仲舒
-      + [使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md) @刘金龙
+      + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md) @李仲舒
+      + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md) @刘金龙
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
@@ -75,7 +78,7 @@
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
   + [日常巡检](/daily-inspection.md) @王军
-  + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
+  + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 监控与告警
@@ -103,7 +106,7 @@
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
   + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
-  + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
+  + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
 + 性能调优
   + 系统调优
@@ -112,7 +115,8 @@
   + 软件调优
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
-      + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+      + [TiKV 线程调优](/tune-tikv-thread-performance.md) @刘玮
+      + [TiKV 内存调优](/tune-tikv-memory-performance.md) @刘玮
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
   + SQL 性能调优 @崔一丁
     + [SQL 性能调优概览](/sql-tuning-overview.md)
@@ -195,14 +199,7 @@
     + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  + TiCDC
-    + [概述](/ticdc/ticdc-overview.md)
-    + [部署使用](/ticdc/deploy-ticdc.md)
-    + [集群和同步任务管理](/ticdc/manage-ticdc.md)
-    + [常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
-    + [Sink URI 配置规则](/ticdc/sink-url.md)
-    + [开放数据协议](/ticdc/ticdc-open-protocol.md)
-    + [Column 和 DDL 的类型码](/ticdc/column-ddl-type-codes.md)
+  + [TiCDC](/ticdc/ticdc-overview.md)
   + sync-diff-inspector @王相
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -443,7 +440,8 @@
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
-    + TiFlash
+    + [TiFlash](/tiflash/tiflash-overview.md)
+  + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md) @荣毅龙/启航
@@ -453,6 +451,9 @@
   + [License FAQ](/faq/licensing-faq.md) @荣毅龙/启航
   + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
   + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
+  + [迁移 FAQ](/faq/migration-tidb-faq.md) @荣毅龙
++ [开发指南]
+  + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
 + [术语表](/glossary.md) @李琳
 + [版本发布历史](/releases/release-notes.md)
   + v4.0
