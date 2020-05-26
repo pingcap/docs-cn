@@ -153,16 +153,20 @@ sysbench $testname \
 
 #### Point Select
 
-![Point Select](/media/sysbench_v4vsv3_point_select.png)
+TODO
+<!-- TODO ![Point Select](/media/sysbench_v4vsv3_point_select.png) -->
 
 #### Update Non-index
 
-![Update Non-index](/media/sysbench_v4vsv3_update_non_index.png)
+TODO
+<!-- TODO ![Update Non-index](/media/sysbench_v4vsv3_update_non_index.png)-->
 
 #### Update Index
 
-![Update Index](/media/sysbench_v4vsv3_update_index.png)
+TODO
+<!-- TODO ![Update Index](/media/sysbench_v4vsv3_update_index.png)-->
 
 #### Read Write
 
-![Read Write](/media/sysbench_v4vsv3_read_write.png)
+TODO
+<!-- ![Read Write](/media/sysbench_v4vsv3_read_write.png)-->
