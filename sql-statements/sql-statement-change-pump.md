@@ -39,7 +39,7 @@ SHOW PUMP STATUS;
 CHANGE PUMP TO NODE_STATE ='paused' FOR NODE_ID 'pump1';
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 
@@ -49,7 +49,7 @@ Query OK, 0 rows affected (0.01 sec)
 SHOW PUMP STATUS;
 ```
 
-```
+```sql
 +--------|----------------|--------|--------------------|---------------------|
 | NodeID |     Address    | State  |   Max_Commit_Ts    |    Update_Time      |
 +--------|----------------|--------|--------------------|---------------------|
