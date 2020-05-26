@@ -11,16 +11,13 @@ TiDB 的 GC 相关的配置存储于 `mysql.tidb` 系统表中，可以通过 SQ
 {{< copyable "sql" >}}
 
 ```sql
-select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb;
+select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "tikv_gc%";
 ```
 
 ```
 +--------------------------+----------------------------------------------------------------------------------------------------+
 | VARIABLE_NAME            | VARIABLE_VALUE                                                                                     |
 +--------------------------+----------------------------------------------------------------------------------------------------+
-| bootstrapped             | True                                                                                               |
-| tidb_server_version      | 33                                                                                                 |
-| system_tz                | UTC                                                                                                |
 | tikv_gc_leader_uuid      | 5afd54a0ea40005                                                                                    |
 | tikv_gc_leader_desc      | host:tidb-cluster-tidb-0, pid:215, start at 2019-07-15 11:09:14.029668932 +0000 UTC m=+0.463731223 |
 | tikv_gc_leader_lease     | 20190715-12:12:14 +0000                                                                            |
@@ -45,11 +42,11 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 > **注意：**
 >
-> `mysql.tidb` 系统表中除了下文将要列出的 GC 的配置以外，还包含一些 TiDB 用于储存部分集群状态（包括 GC 状态）的记录。请勿手动更改这些记录。其中，与 GC 有关的记录如下：
+> `mysql.tidb` 系统表中除了下文列出的 GC 的配置以外，还包含一些 TiDB 用于储存部分集群状态（包括 GC 状态）的记录。请勿手动更改这些记录。其中，与 GC 有关的记录如下：
 >
 > - `tikv_gc_leader_uuid`，`tikv_gc_leader_desc` 和 `tikv_gc_leader_lease` 用于记录 GC leader 的状态
-> - `tikv_gc_last_run_time`：上次 GC 运行时间
-> - `tikv_gc_safe_point`：当前 GC 的 safe point
+> - `tikv_gc_last_run_time`：最近一次 GC 运行的时间（每轮 GC 开始时更新）
+> - `tikv_gc_safe_point`：当前的 safe point （每轮 GC 开始时更新）
 
 ## `tikv_gc_enable`
 
@@ -68,11 +65,10 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 > **注意：**
 >
-> - `tikv_gc_life_time` 的值必须大于 TiDB 的配置文件中的 [`max-txn-time-use`](/tidb-configuration-file.md#max-txn-time-use) 的值至少 10 秒，且不低于 10 分钟。
->
 > - 在数据更新频繁的场景下，如果将 `tikv_gc_life_time` 设置得比较大（如数天甚至数月），可能会有一些潜在的问题，如：
 >     - 磁盘空间占用较多。
 >     - 大量的历史版本会在一定程度上影响性能，尤其是范围查询（如 `select count(*) from t`）。
+> - 如果存在运行时间很长、超过了 `tikv_gc_life_time` 的事务，那么在 GC 时，会保留自该事务的开始时间 (start_ts) 以来的数据，以允许该事务继续运行。例如，如果 `tikv_gc_life_time` 配置为 10 分钟，而某次 GC 时，集群中正在运行的事务中开始时间最早的一个事务已经运行了 15 分钟，那么本次 GC 便会保留最近 15 分钟的数据。
 
 ## `tikv_gc_mode`
 
@@ -96,6 +92,29 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - 手动设置 GC concurrency。要使用该参数，必须将 [`tikv_gc_auto_concurrency`](#tikv_gc_auto_concurrency) 设为 `false` 。
 - 默认值：2
 
+## `tikv_gc_scan_lock_mode`
+
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+设定 GC 的 Resolve Locks 阶段中，扫描锁的方式，即是否开启 Green GC（实验性特性）。Resolve Locks 阶段需要扫描整个集群的锁。在不开启 Green GC 的情况下，TiDB 会以 Region 为单位进行扫描。Green GC 提供了“物理扫描”的功能，即每台 TiKV 节点分别绕过 Raft 层直接扫描数据。该功能可以有效缓解 [Hibernate Region](/tikv-configuration-file.md#raftstorehibernate-regions-实验特性) 功能开启时，GC 唤醒全部 Region 的现象，并一定程度上提升 Resolve Locks 阶段的执行速度。
+
+- `"legacy"`（默认）：使用旧的扫描方式，即关闭 Green GC。
+- `"physical"`：使用物理扫描的方式，即开启 Green GC。
+
+> **注意：**
+>
+> Green GC 目前是实验性功能，不建议在生产环境中使用。
+> 
+> 该项配置是隐藏配置。首次开启需要执行：
+> 
+> {{< copyable "sql" >}}
+> 
+> ```sql
+> insert into mysql.tidb values ('tikv_gc_scan_lock_mode', 'legacy', '');
+> ```
+
 ## 关于 GC 流程的说明
 
 从 TiDB 3.0 版本起，由于对分布式 GC 模式和并行 Resolve Locks 的支持，部分配置选项的作用发生了变化。可根据下表理解不同版本中这些配置的区别：
@@ -114,6 +133,8 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - 并行：使用 `tikv_gc_concurrency` 选项所指定的线程数，并行地向每个 Region 发送请求。
 - 自动并行：使用 TiKV 节点的个数作为线程数，并行地向每个 Region 发送请求。
 - 分布式：无需 TiDB 通过对 TiKV 发送请求的方式来驱动，而是每台 TiKV 自行工作。
+
+另外，如果 Green GC （实验特性）开启（即 [`tikv_gc_scan_lock_mode`](#tikv_gc_scan_lock_mode-实验特性) 配置项设为 `"physical"`），Resolve Lock 的执行将不受上述并行配置的影响。
 
 ## 流控
 
