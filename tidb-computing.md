@@ -112,11 +112,11 @@ t10_i1_30_3 --> null
 
 每个 `Database`/`Table` 都被分配了一个唯一的 ID，这个 ID 作为唯一标识，并且在编码为 Key-Value 时，这个 ID 都会编码到 Key 中，再加上 `m_` 前缀。这样可以构造出一个 Key，Value 中存储的是序列化后的元信息。
 
-除此之外，TiDB 还用一个专门的 (Key, Value) 键值对存储当前所有表结构信息的最新版本号。这个键值对是全局的，每次 DDL 操作的状态改变时其版本号都会加1。目前，TiDB 把这个键值对存放在 pd-server 内置的 etcd 中，其Key 为"/tidb/ddl/global_schema_version"，Value 是类型为 int64 的版本号值。 TiDB 使用 Google F1 的 Online Schema 变更算法，有一个后台线程在不断的检查 etcd 中存储的表结构信息的版本号是否发生变化，并且保证在一定时间内一定能够获取版本的变化。
+除此之外，TiDB 还用一个专门的 (Key, Value) 键值对存储当前所有表结构信息的最新版本号。这个键值对是全局的，每次 DDL 操作的状态改变时其版本号都会加1。目前，TiDB 把这个键值对存放在 PD Server 内置的 etcd 中，其Key 为"/tidb/ddl/global_schema_version"，Value 是类型为 int64 的版本号值。 TiDB 使用 Google F1 的 Online Schema 变更算法，有一个后台线程在不断的检查 etcd 中存储的表结构信息的版本号是否发生变化，并且保证在一定时间内一定能够获取版本的变化。
 
 ## SQL 层简介
 
-TiDB 的 SQL层，即 tidb-server，跟 Google 的 [F1](https://dbdb.io/db/google-f1) 比较类似，负责将 SQL 翻译成 Key-Value 操作，将其转发给共用的分布式 Key-Value 存储层 TiKV，然后组装 TiKV 返回的结果，最终将查询结果返回给客户端。
+TiDB 的 SQL层，即 TiDB Server，跟 Google 的 [F1](https://dbdb.io/db/google-f1) 比较类似，负责将 SQL 翻译成 Key-Value 操作，将其转发给共用的分布式 Key-Value 存储层 TiKV，然后组装 TiKV 返回的结果，最终将查询结果返回给客户端。
 
 这一层的节点都是无状态的，节点本身并不存储数据，节点之间完全对等。
 
@@ -155,4 +155,4 @@ TiDB 的 SQL层，即 tidb-server，跟 Google 的 [F1](https://dbdb.io/db/googl
 
 ![tidb sql layer](http://img.mp.sohu.com/upload/20170524/2bc80d3743ad4d029f8a8e6be5a70ec6_th.png)
 
-用户的 SQL 请求会直接或者通过 `Load Balancer` 发送到 tidb-server，tidb-server 会解析 `MySQL Protocol Packet`，获取请求内容，对 SQL 进行语法解析和语义分析，制定和优化查询计划，执行查询计划并获取和处理数据。数据全部存储在 TiKV 集群中，所以在这个过程中 tidb-server 需要和 TiKV 交互，获取数据。最后 tidb-server 需要将查询结果返回给用户。
+用户的 SQL 请求会直接或者通过 `Load Balancer` 发送到 TiDB Server，TiDB Server 会解析 `MySQL Protocol Packet`，获取请求内容，对 SQL 进行语法解析和语义分析，制定和优化查询计划，执行查询计划并获取和处理数据。数据全部存储在 TiKV 集群中，所以在这个过程中 TiDB Server 需要和 TiKV 交互，获取数据。最后 TiDB Server 需要将查询结果返回给用户。
