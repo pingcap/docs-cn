@@ -736,3 +736,13 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
+
+### tidb_allow_batch_cop <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+这个变量用来设置从 TiFlash 读取数据时，是否把 Region 的请求进行合并。
+
+当查询的表拥有 TiFlash 副本，且查询涉及的 Region 数量比较多，可以尝试设置该变量为 `1`（对带 `aggregation` 下推到 TiFlash Coprocessor 的请求生效），或设置该变量为 `2`（对全部下推到 TiFlash Coprocessor 请求生效）。
