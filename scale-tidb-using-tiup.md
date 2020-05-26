@@ -48,12 +48,12 @@ vi scale-out.yaml
 
 ```ini
 tidb_servers:
- - host: 10.0.1.5
-   ssh_port: 22
-   port: 4000
-   status_port: 10080
-   deploy_dir: /data/deploy/install/deploy/tidb-4000
-   log_dir: /data/deploy/install/log/tidb-4000
+  - host: 10.0.1.5
+    ssh_port: 22
+    port: 4000
+    status_port: 10080
+    deploy_dir: /data/deploy/install/deploy/tidb-4000
+    log_dir: /data/deploy/install/log/tidb-4000
 ```
 
 TiKV 配置文件参考：
@@ -62,13 +62,13 @@ TiKV 配置文件参考：
 
 ```ini
 tikv_servers:
- - host: 10.0.1.5
-   ssh_port: 22
-   port: 20160
-   status_port: 20180
-   deploy_dir: /data/deploy/install/deploy/tikv-20160
-   data_dir: /data/deploy/install/data/tikv-20160
-   log_dir: /data/deploy/install/log/tikv-20160
+  - host: 10.0.1.5
+    ssh_port: 22
+    port: 20160
+    status_port: 20180
+    deploy_dir: /data/deploy/install/deploy/tikv-20160
+    data_dir: /data/deploy/install/data/tikv-20160
+    log_dir: /data/deploy/install/log/tikv-20160
 ```
 
 PD 配置文件参考：
@@ -77,14 +77,14 @@ PD 配置文件参考：
 
 ```ini
 pd_servers:
- - host: 10.0.1.5
-   ssh_port: 22
-   name: pd-1
-   client_port: 2379
-   peer_port: 2380
-   deploy_dir: /data/deploy/install/deploy/pd-2379
-   data_dir: /data/deploy/install/data/pd-2379
-   log_dir: /data/deploy/install/log/pd-2379
+  - host: 10.0.1.5
+    ssh_port: 22
+    name: pd-1
+    client_port: 2379
+    peer_port: 2380
+    deploy_dir: /data/deploy/install/deploy/pd-2379
+    data_dir: /data/deploy/install/data/pd-2379
+    log_dir: /data/deploy/install/log/pd-2379
 ```
 
 可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置，默认会被 `scale-out.yaml` 继承。
@@ -138,7 +138,7 @@ tiup cluster display <cluster-name>
 
 ```ini
 tiflash_servers:
-    - host: 10.0.1.4
+  - host: 10.0.1.4
 ```
 
 ### 2.2 运行扩容命令
@@ -181,8 +181,8 @@ tiup cluster display <cluster-name>
 
 ```ini
 cdc_servers:
-    - host: 10.0.1.3
-    - host: 10.0.1.4
+  - host: 10.0.1.3
+  - host: 10.0.1.4
 ```
 
 ### 3.2 运行扩容命令
