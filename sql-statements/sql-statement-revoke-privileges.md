@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/revoke-privileges/']
 
 # REVOKE <privileges>
 
-`REVOKE <privileges>` 语句用于删除已有用户的权限。执行 `REVOKE <privileges>` 语句需要拥有需要分配的权限，并且拥有 `GRANT OPTION` 权限。
+`REVOKE <privileges>` 语句用于删除已有用户的权限。执行 `REVOKE <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
 
 ## 语法图
 
