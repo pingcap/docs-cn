@@ -1,24 +1,29 @@
 ---
 title: 升级与升级后常见问题
+summary: TiDB 升级与升级后的常见问题与解决办法。
 category: FAQ
 aliases: ['/docs-cn/dev/faq/upgrade/']
 ---
 
 # 升级与升级后常见问题
 
-### 升级
+本文介绍 TiDB 升级与升级后的常见问题与解决办法。
 
-#### 滚动升级有那些影响?
+## 升级常见问题
 
-滚动升级 TiDB 服务，滚动升级期间不影响业务运行，需要配置最小集群拓扑（TiDB \* 2、PD \* 3、TiKV \* 3），如果集群环境中有 Pump/Drainer 服务，建议先停止 Drainer 后滚动升级（升级 TiDB 时会升级 Pump）。
+本小节介绍 TiDB 升级相关的常见问题与解决办法。
 
-#### Binary 如何升级？
+### 滚动升级有那些影响?
 
-Binary 不是我们建议的安装方式，对升级支持也不友好，建议换成 TiUP 部署。
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行。需要配置最小集群拓扑（TiDB \* 2、PD \* 3、TiKV \* 3），如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
+
+### Binary 如何升级？
+
+Binary 不是建议的安装方式，对升级支持也不友好，建议换成 [TiUP 部署](/production-deployment-using-tiup.md)。
 
 ## 升级后常见问题
 
-本文列出了一些升级后可能会遇到的问题与解决办法。
+本小节列出了一些升级后可能会遇到的问题与解决办法。
 
 ### 执行 DDL 操作时遇到的字符集 (charset) 问题
 
@@ -26,9 +31,8 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
 
 要避免该问题，需注意以下两个要点：
 
-1. 在 v2.1.3 之前，TiDB 不支持修改 column 的 charset。所以，执行 DDL 操作时，新 column 的 charset 需要和旧 column 的 charset 保持一致。
-
-2. 在 v2.1.3 之前，即使 column 的 charset 和 table 的 charset 不一样，`show create table` 也不会显示 column 的 charset，但可以通过 HTTP API 获取 table 的元信息来查看 column 的 charset，下文提供了示例。
+- 在 v2.1.3 之前，TiDB 不支持修改 column 的 charset。所以，执行 DDL 操作时，新 column 的 charset 需要和旧 column 的 charset 保持一致。
+- 在 v2.1.3 之前，即使 column 的 charset 和 table 的 charset 不一样，`show create table` 也不会显示 column 的 charset，但可以通过 HTTP API 获取 table 的元信息来查看 column 的 charset，下文提供了示例。
 
 #### `unsupported modify column charset utf8mb4 not match origin utf8`
 
@@ -75,7 +79,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
     ERROR 1105 (HY000): unsupported modify column charset utf8mb4 not match origin utf8
     ```
 
-解决方案：显式指定 column charset，保持和原来的 charset 一致即可。
+**解决方案**：显式指定 column charset，保持和原来的 charset 一致即可。
 
 {{< copyable "sql" >}}
 
