@@ -9,7 +9,11 @@ aliases: ['/docs-cn/v3.0/reference/tools/mydumper/','/docs-cn/tools/mydumper/']
 
 ## Mydumper 简介
 
+<<<<<<< HEAD
 [Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，针对 TiDB 的特性进行了优化，推荐使用此工具对 TiDB 进行逻辑备份。
+=======
+[Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，可以用于对 **MySQL** 或者 **TiDB** 进行逻辑备份，并针对 TiDB 的特性进行了优化。
+>>>>>>> 7abbe84... migrate: migrate from mysql files (#3252)
 
 Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/download-ecosystem-tools.md)。
 
