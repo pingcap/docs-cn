@@ -6,7 +6,15 @@ aliases: ['/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev
 
 # 字符集和排序规则
 
-字符集 (character set) 是符号与编码的集合。排序规则 (collation) 是在字符集中比较字符的规则。
+本文介绍了 TiDB 中支持的字符集和排序规则。
+
+## 字符集和排序规则的概念
+
+字符集 (character set) 是符号与编码的集合。
+
+排序规则 (collation) 是在字符集中比较字符的规则。
+
+## 支持的字符集和排序规则
 
 目前 TiDB 支持以下字符集：
 
@@ -27,6 +35,22 @@ SHOW CHARACTER SET;
 | binary  | binary        | binary            |      1 |
 +---------|---------------|-------------------|--------+
 5 rows in set (0.00 sec)
+```
+
+支持的排序规则如下：
+
+```sql
+mysql> show collation;
++-------------+---------+------+---------+----------+---------+
+| Collation   | Charset | Id   | Default | Compiled | Sortlen |
++-------------+---------+------+---------+----------+---------+
+| utf8mb4_bin | utf8mb4 |   46 | Yes     | Yes      |       1 |
+| latin1_bin  | latin1  |   47 | Yes     | Yes      |       1 |
+| binary      | binary  |   63 | Yes     | Yes      |       1 |
+| ascii_bin   | ascii   |   65 | Yes     | Yes      |       1 |
+| utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
++-------------+---------+------+---------+----------+---------+
+5 rows in set (0.01 sec)
 ```
 
 > **注意：**
@@ -51,11 +75,11 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 2 rows in set (0.00 sec)
 ```
 
-## 集群的字符集和排序规则
+## 不同范围的字符集和排序规则
 
-暂不支持
+字符集和排序规则可以在设置在不同的层次。
 
-## 数据库的字符集和排序规则
+### 数据库的字符集和排序规则
 
 每个数据库都有相应的字符集和排序规则。数据库的字符集和排序规则可以通过以下语句来设置：
 
@@ -154,7 +178,7 @@ SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME
 FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'db_name';
 ```
 
-## 表的字符集和排序规则
+### 表的字符集和排序规则
 
 表的字符集和排序规则可以通过以下语句来设置：
 
@@ -182,7 +206,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 如果表的字符集和排序规则没有设置，那么数据库的字符集和排序规则就作为其默认值。
 
-## 列的字符集和排序规则
+### 列的字符集和排序规则
 
 列的字符集和排序规则的语法如下：
 
@@ -198,7 +222,7 @@ col_name {ENUM | SET} (val_list)
 
 如果列的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。
 
-## 字符串的字符集和排序规则
+### 字符串的字符集和排序规则
 
 每一个字符串都对应一个字符集和一个排序规则，在使用字符串时指此选项可选，如下：
 
@@ -222,7 +246,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 * 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `charset_name` 字符集和 `charset_name` 对应的默认排序规则。
 * 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用 `character_set_connection` 和 `collation_connection` 系统变量给出的字符集和排序规则。
 
-## 客户端连接的字符集和排序规则
+### 客户端连接的字符集和排序规则
 
 * 服务器的字符集和排序规则可以通过系统变量 `character_set_server` 和 `collation_server` 获取。
 * 数据库的字符集和排序规则可以通过环境变量 `character_set_database` 和 `collation_database` 获取。
@@ -246,7 +270,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
     SET character_set_connection = charset_name;
     ```
 
-    `COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则。
+    `COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则设置 `collation_connection`。
 
 * `SET CHARACTER SET 'charset_name'`
 
@@ -257,14 +281,15 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
     ```sql
     SET character_set_client = charset_name;
     SET character_set_results = charset_name;
+    SET charset_connection = @@charset_database;
     SET collation_connection = @@collation_database;
     ```
 
-## 集群、服务器、数据库、表、列、字符串的字符集和排序规则的优先级
+## 服务器、数据库、表、列、字符串的字符集和排序规则的优先级
 
 优先级从高到低排列顺序为：
 
-字符串 > 列 > 表 > 数据库 > 服务器 > 集群
+字符串 > 列 > 表 > 数据库 > 服务器
 
 ## 字符集和排序规则的通用选择规则
 
@@ -349,13 +374,13 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 
 + 显式 `COLLATE` 子句的 coercibility 值为 `0`。
 + 如果两个字符串的排序规则不兼容，这两个字符串 `concat` 结果的 coercibility 值为 `1`。目前所实现的排序规则都是互相兼容的。
-+ 列的排序规则的 coercibility 值为 `2`。
++ 列或者 `CAST()`、`CONVERT()` 和 `BINARY()` 的排序规则的 coercibility 值为 `2`。
 + 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 `3`。
 + 常量的 coercibility 值为 `4`。
 + 数字或者中间变量的 coercibility 值为 `5`。
 + `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为 `6`。
 
-在推断排序规则时，TiDB 优先使用 coercibility 值较低的表达式的排序规则（与 MySQL 一致）。如果 coercibility 值相同，则按以下优先级确定排序规则：
+在推断排序规则时，TiDB 优先使用 coercibility 值较低的表达式的排序规则。如果 coercibility 值相同，则按以下优先级确定排序规则：
 
 binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
 

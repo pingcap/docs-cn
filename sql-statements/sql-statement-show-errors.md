@@ -13,13 +13,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-errors/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowErrorsStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowErrorsStmt](/media/sqlgram/ShowErrorsStmt.png)
 
 ## 示例
 
