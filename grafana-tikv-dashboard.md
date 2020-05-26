@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - IO utilization：每个 TiKV 实例 IO 的使用率
 - MBps：每个 TiKV 实例写入和读取的数据量大小
 - QPS：每个 TiKV 实例上各种命令的 QPS
-- Errps：每个 TiKV 实例上 gRPC 消息失败的个数
+- Errps：每个 TiKV 实例上 gRPC 消息失败的速率
 - leader：每个 TiKV 实例 leader 的个数
 - Region：每个 TiKV 实例 Region 的个数
 - Uptime：自上次重启以来 TiKV 正常运行的时间
@@ -60,8 +60,8 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## gRPC
 
-- gRPC message count：每种 gRPC 请求的个数
-- gRPC message failed：失败的 gRPC 请求的个数
+- gRPC message count：每种 gRPC 请求的速度
+- gRPC message failed：失败的 gRPC 请求的速度
 - 99% gRPC message duration：99% gRPC 请求的执行时间小于该值
 - Average gRPC message duration：gRPC 请求平均的执行时间
 - gRPC batch size：TiDB 与 TiKV 之间 grpc 请求的 batch 大小
@@ -83,10 +83,10 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## PD
 
-- PD requests：TiKV 发送给 PD 的请求个数
+- PD requests：TiKV 发送给 PD 的请求速度
 - PD request duration (average)：TiKV 发送给 PD 的请求处理的平均时间
-- PD heartbeats：发送给 PD 的心跳个数
-- PD validate peers：通过 PD 验证 TiKV 的 peer 有效的个数
+- PD heartbeats：发送给 PD 的心跳的速度
+- PD validate peers：TiKV 发送给 PD 用于验证 TiKV 的 peer 有效的消息的速度
 
 ## Raft IO
 
@@ -101,7 +101,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Raft process
 
-- Ready handled：Raft 中不同 ready 类型的个数
+- Ready handled：Raft 中不同 ready 类型的 ops
 - 0.99 Duration of Raft store events：99% 的 raftstore 事件所花费的时间
 - Process ready duration：处理 ready 所花费的时间
 - Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
@@ -110,34 +110,34 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Raft message
 
-- Sent messages per server：每个 TiKV 实例发送 Raft 消息的个数
-- Flush messages per server：每个 TiKV 实例持久化 Raft 消息的个数
-- Receive messages per server：每个 TiKV 实例接受 Raft 消息的个数
-- Messages：发送不同类型的 Raft 消息的个数
-- Vote：Raft 投票消息发送的个数
-- Raft dropped messages：丢弃不同类型的 Raft 消息的个数
+- Sent messages per server：每个 TiKV 实例发送 Raft 消息的 ops
+- Flush messages per server：每个 TiKV 实例持久化 Raft 消息的 ops
+- Receive messages per server：每个 TiKV 实例接受 Raft 消息的 ops
+- Messages：发送不同类型的 Raft 消息的 ops
+- Vote：Raft 投票消息发送的 ops
+- Raft dropped messages：丢弃不同类型的 Raft 消息的 ops
 
 ![TiKV Dashboard - Raft message metrics](/media/tikv-dashboard-raft-message.png)
 
 ## Raft propose
 
-- Raft proposals per ready：在一个 tick 内，所有 Region proposal 的个数
-- Raft read/write proposals：不同类型的 proposal 的个数
-- Raft read proposals per server：每个 TiKV 实例发起读 proposal 的个数
-- Raft write proposals per server：每个 TiKV 实例发起写 proposal 的个数
-- Propose wait duration：每个 proposal 的等待时间
-- Propose wait duration per server：每个 TiKV 实例上每个 proposal 的等待时间
-- Apply wait duration：每个 apply 的等待时间
-- Apply wait duration per server：每个 TiKV 实例上每个 apply 的等待时间
-- Raft log speed：peer propose 日志的速度
+- Raft proposals per ready：在一个 batch 内，所有 region apply proposal 的速率
+- Raft read/write proposals：不同类型的 proposal 的 ops
+- Raft read proposals per server：每个 TiKV 实例发起读 proposal 的 ops
+- Raft write proposals per server：每个 TiKV 实例发起写 proposal 的 ops
+- Propose wait duration：每秒钟内每个 proposal 的等待时间
+- Propose wait duration per server：每秒钟内每个 TiKV 实例上每个 proposal 的等待时间
+- Apply wait duration：每秒钟内每个 apply 的等待时间
+- Apply wait duration per server：每秒钟每个 TiKV 实例上每个 apply 的等待时间
+- Raft log speed：peer propose 日志的平均速度
 
 ![TiKV Dashboard - Raft propose metrics](/media/tikv-dashboard-raft-propose.png)
 
 ## Raft admin
 
-- Admin proposals：admin proposal 的个数
-- Admin apply：apply 命令的个数
-- Check split：split check 命令的个数
+- Admin proposals：admin proposal 的 ops
+- Admin apply：apply 命令的 ops
+- Check split：split check 命令的 ops
 - 99.99% Check split duration：99.99% 的情况下，split check 所需花费的时间
 
 ![TiKV Dashboard - Raft admin metrics](/media/tikv-dashboard-raft-admin.png)
@@ -156,8 +156,8 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Storage
 
-- Storage command total：收到不同命令的个数
-- Storage async request error：异步请求出错的个数
+- Storage command total：收到不同命令的 ops
+- Storage async request error：异步请求出错的 ops
 - Storage async snapshot duration：异步处理 snapshot 所花费的时间，99% 的情况下，应该小于 1s
 - Storage async write duration：异步写所花费的时间，99% 的情况下，应该小于 1s
 
@@ -165,16 +165,16 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Scheduler
 
-- Scheduler stage total：每种命令不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+- Scheduler stage total：每种命令不同阶段的 ops，正常情况下，不会在短时间内出现大量的错误
 - Scheduler writing bytes：每个 TiKV 实例正在处理的命令的写入字节数量
-- Scheduler priority commands：不同优先级命令的个数
-- Scheduler pending commands：每个 TiKV 实例上 pending 命令的个数
+- Scheduler priority commands：不同优先级命令的 ops
+- Scheduler pending commands：每个 TiKV 实例上 pending 命令的 ops
 
 ![TiKV Dashboard - Scheduler metrics](/media/tikv-dashboard-scheduler.png)
 
 ## Scheduler - commit
 
-- Scheduler stage total：commit 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+- Scheduler stage total：commit 中每个命令所处不同阶段的 ops，正常情况下，不会在短时间内出现大量的错误
 - Scheduler command duration：执行 commit 命令所需花费的时间，正常情况下，应该小于 1s
 - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
 - Scheduler keys read：commit 命令读取 key 的个数
@@ -188,7 +188,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Scheduler - pessimistic_rollback
 
-- Scheduler stage total：pessimistic_rollback 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+- Scheduler stage total：pessimistic_rollback 中每个命令所处不同阶段的 ops，正常情况下，不会在短时间内出现大量的错误
 - Scheduler command duration：执行 pessimistic_rollback 命令所需花费的时间，正常情况下，应该小于 1s
 - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
 - Scheduler keys read：pessimistic_rollback 命令读取 key 的个数
@@ -200,7 +200,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Scheduler - prewrite
 
-- Scheduler stage total：prewrite 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+- Scheduler stage total：prewrite 中每个命令所处不同阶段的 ops，正常情况下，不会在短时间内出现大量的错误
 - Scheduler command duration：执行 prewrite 命令所需花费的时间，正常情况下，应该小于 1s
 - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
 - Scheduler keys read：prewrite 命令读取 key 的个数
@@ -212,7 +212,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Scheduler - rollback
 
-- Scheduler stage total：rollback 中每个命令所处不同阶段的个数，正常情况下，不会在短时间内出现大量的错误
+- Scheduler stage total：rollback 中每个命令所处不同阶段的 ops，正常情况下，不会在短时间内出现大量的错误
 - Scheduler command duration：执行 rollback 命令所需花费的时间，正常情况下，应该小于 1s
 - Scheduler latch wait duration：由于 latch wait 造成的时间开销，正常情况下，应该小于 1s
 - Scheduler keys read：rollback 命令读取 key 的个数
@@ -249,30 +249,30 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## Task
 
-- Worker handled tasks：worker 处理的任务个数
-- Worker pending tasks：当前 worker 中，pending 和 running 的任务个数，正常情况下，应该小于 1000
-- FuturePool handled tasks：future pool 处理的任务个数
-- FuturePool pending tasks：当前 future pool 中，pending 和 running 的任务个数
+- Worker handled tasks：worker 处理的任务 ops
+- Worker pending tasks：当前 worker 中，pending 和 running 的任务的 ops，正常情况下，应该小于 1000
+- FuturePool handled tasks：future pool 处理的任务的 ops
+- FuturePool pending tasks：当前 future pool 中，pending 和 running 的任务的 ops
 
 ## Coprocessor Overview
 
 - Request duration：从开始处理 coprocessor 请求到结束所消耗的总时间
-- Total Requests：每种类型的总请求数量
-- Handle duration：实际处理 coprocessor 请求所消耗的时间
-- Total Request Errors：Coprocessor 请求错误个数，正常情况下，短时间内不应该有大量的错误
-- Total KV Cursor Operations：各种类型的 KV cursor 操作的总数量，例如 select、index、analyze_table、analyze_index、checksum_table、checksum_index 等
-- KV Cursor Operations：各种类型的 KV cursor 操作的数量，以直方图形式显示
+- Total Requests：每种类型的总请求的 ops
+- Handle duration：每分钟实际处理 coprocessor 请求所消耗的时间
+- Total Request Errors：Coprocessor 请求错误的 ops，正常情况下，短时间内不应该有大量的错误
+- Total KV Cursor Operations：各种类型的 KV cursor 操作的总数量的 ops，例如 select、index、analyze_table、analyze_index、checksum_table、checksum_index 等
+- KV Cursor Operations：各种类型的 KV cursor 操作的数量的 ops，以直方图形式显示
 - Total RocksDB Perf Statistics：RocksDB 性能统计数据
 - Total Response Size：coprocessor 回应的数据大小
 
 ## Coprocessor Detail
 
-- Handle duration：实际处理 coprocessor 请求所消耗的时间
-- 95% Handle duration by store：95% 的情况下，每个 TiKV 实例处理 coprocessor 请求所花费的时间
-- Wait duration：coprocessor 请求的等待时间，99.99% 的情况下，应该小于 10s
-- 95% Wait duration by store：95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
-- Total DAG Requests：DAG 请求的总数量
-- Total DAG executors：DAG executor 的总数量
+- Handle duration：每秒钟实际处理 coprocessor 请求所消耗的时间
+- 95% Handle duration by store：每秒钟中 95% 的情况下，每个 TiKV 实例处理 coprocessor 请求所花费的时间
+- Wait duration：coprocessor 每秒钟内请求的等待时间，99.99% 的情况下，应该小于 10s
+- 95% Wait duration by store：每秒钟 95% 的情况下，每个 TiKV 实例上 coprocessor 请求的等待时间
+- Total DAG Requests：DAG 请求的总数量的 ops
+- Total DAG Executors：DAG executor 的总数量的 ops
 - Total Ops Details (Table Scan)：coprocessor 中请求为 select 的 scan 情况
 - Total Ops Details (Index Scan)：coprocessor 中请求为 index 的 scan 情况
 - Total Ops Details by CF (Table Scan)：coprocessor 中对于每个 CF 请求为 select 的 scan 情况
@@ -287,16 +287,16 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## RocksDB - kv
 
-- Get operations：get 操作的个数
+- Get operations：get 操作的 ops
 - Get duration：get 操作的耗时
-- Seek operations：seek 操作的个数
+- Seek operations：seek 操作的 ops
 - Seek duration：seek 操作的耗时
-- Write operations：write 操作的个数
+- Write operations：write 操作的 ops
 - Write duration：write 操作的耗时
-- WAL sync operations：sync WAL 操作的个数
+- WAL sync operations：sync WAL 操作的 ops
 - Write WAL duration：write 操作中写 WAL 的耗时
 - WAL sync duration：sync WAL 操作的耗时
-- Compaction operations：compaction 和 flush 操作的个数
+- Compaction operations：compaction 和 flush 操作的 ops
 - Compaction duration：compaction 和 flush 操作的耗时
 - SST read duration：读取 SST 所需的时间
 - Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
@@ -324,16 +324,16 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 
 ## RocksDB - raft
 
-- Get operations：get 操作的个数
+- Get operations：get 操作的 ops
 - Get duration：get 操作的耗时
-- Seek operations：seek 操作的个数
+- Seek operations：seek 操作的 ops
 - Seek duration：seek 操作的耗时
-- Write operations：write 操作的个数
+- Write operations：write 操作的 ops
 - Write duration：write 操作的耗时
-- WAL sync operations：sync WAL 操作的个数
+- WAL sync operations：sync WAL 操作的 ops
 - Write WAL duration：write 操作中写 WAL 的耗时
 - WAL sync duration：sync WAL 操作的耗时
-- Compaction operations：compaction 和 flush 操作的个数
+- Compaction operations：compaction 和 flush 操作的 ops
 - Compaction duration：compaction 和 flush 操作的耗时
 - SST read duration：读取 SST 所需的时间
 - Write stall duration：由于 write stall 造成的时间开销，正常情况下应为 0
@@ -419,8 +419,8 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 - Encrypted files：被加密的文件数量
 - Encryption initialized：显示加密是否被启用，`1` 代表已经启用
 - Encryption meta files size：加密相关的元数据文件的大小
-- Encrypt/decrypt data nanos：加密/解密数据所耗费的时间
-- Read/write encryption meta duration：读写加密文件所耗费的时间
+- Encrypt/decrypt data nanos：每秒钟加密/解密数据所耗费的时间
+- Read/write encryption meta duration：每秒钟读写加密文件所耗费的时间
 
 ## 面板常见参数的解释
 
@@ -429,7 +429,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
 1. 使用事务型接口的命令：
 
     - kv_get：事务型的 get 命令，查询指定版本之前的数据
-    - kv_scan：在带有一个开始时间戳的事务中，根据一个 key 的范围扫描 value
+    - kv_scan：扫描指定 key 之后的 key/value pair
     - kv_prewrite：写入 TiKV 的第一个阶段，包含一个事务中所有要写入的数据
     - kv_pessimistic_lock：对 key 加悲观锁，防止其他事务修改
     - kv_pessimistic_rollback：删除 key 上的悲观锁
@@ -440,7 +440,7 @@ aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
     - kv_batch_get：与 `kv_get` 类似，一次性获取批量 key 的 value
     - kv_batch_rollback：回滚 prewrite 写下的锁和数据
     - kv_scan_lock：扫描所有版本号在 `max_version` 之前的锁，用于在 GC 的初始阶段找到所有的旧锁
-    - kv_resolve_lock：对于所有被 `start_version` 标记的事务锁定的 key，要么提交要么回滚
+    - kv_resolve_lock：根据事务状态，提交或回滚事务的锁
     - kv_gc：触发垃圾回收以清理 `safe_point` 之前的数据
     - kv_delete_range：从 TiKV 中删除一系列的数据
 
@@ -624,7 +624,7 @@ tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面
 - no_region：请求的 region 不匹配
 - rejected_by_no_lease：当前 leader 已无 lease 信息
 - rejected_by_epoch：访问的 region 的 epoch 不匹配
-- rejected_by_appiled_term：// todo
+- rejected_by_appiled_term：新 leader 还未 apply 新的 term
 - rejected_by_channel_full：用于缓存消息的 crossbeam channel 已满
 
 ### GC manager 工作状态
@@ -632,3 +632,14 @@ tick 为驱动 Raft 状态机的行为，下面是对于一个 TiKV store 层面
 - initializing：初始化 GC 管理器，包括启动新的线程分配 worker
 - idle：在没有到 safe point 时间之前保持 idle 状态
 - working：开始进行 GC 任务，参考 [GC doc](https://pingcap.com/docs-cn/dev/garbage-collection-overview/)
+
+### GC keys detail
+
+- total：
+- processed：
+- get：
+- next：
+- prev：
+- seek：
+- seek_for_prev：
+- over_seek_bound：
