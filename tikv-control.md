@@ -6,15 +6,20 @@ aliases: ['/docs-cn/dev/reference/tools/tikv-control/']
 
 # TiKV Control 使用说明
 
-TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装位置
+TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装目录如下：
 
-* 对于 ansible 部署的集群，在 ansible 目录下的 `resources/bin` 子目录下；
-* 对于 tiup 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 下。
+* 如果是使用 TiDB Ansible 部署的集群，在 `ansible` 目录下的 `resources/bin` 子目录下。
+* 如果是使用 TiUP 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 目录下。
 
-[tiup](https://github.com/pingcap-incubator/tiuptiup) 是晚于 `tidb-ansible` 推出的部署工具，使用方式更加简化，`tikv-ctl` 也集成在了 `tiup` 命令中。可以这样调用 `tikv-ctl` 工具：
+[TiUP](https://github.com/pingcap-incubator/tiuptiup) 是晚于 `tidb-ansible` 推出的部署工具，使用方式更加简化，`tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup ctl tikv
+```
 
 ```
-$ tiup ctl tikv
 Starting component `ctl`: ~/.tiup/components/ctl/v4.0.0-rc.2/ctl tikv
 TiKV Control (tikv-ctl)
 Release Version:   4.0.0-rc.2
@@ -27,7 +32,7 @@ Enable Features:   jemalloc portable sse protobuf-codec
 Profile:           dist_release
 ```
 
-在这后面再接上相应的参数与子命令即可。
+你可以在 `tiup ctl tikv` 后面再接上相应的参数与子命令。
 
 ## 通用参数
 
@@ -91,7 +96,7 @@ AAFF
 
 `raft` 子命令可以查看 Raft 状态机在某一时刻的状态。状态信息包括 **RegionLocalState**、**RaftLocalState** 和 **RegionApplyState** 三个结构体，及某一条 log 对应的 Entries。
 
-您可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。它们的用法及输出内容如下所示：
+你可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。其用法及输出内容如下所示：
 
 {{< copyable "shell-regular" >}}
 
@@ -111,7 +116,7 @@ apply state: Some(applied_index: 314617 truncated_state {index: 313474 term: 151
 
 ### 查看 Region 的大小
 
-`size` 命令可以查看 Region 的大小：
+使用 `size` 命令可以查看 Region 的大小：
 
 {{< copyable "shell-regular" >}}
 
@@ -146,7 +151,7 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 
 ### 查看给定 key 的 MVCC
 
-与上个命令类似，`mvcc` 命令可以查看给定 key 的 MVCC：
+与 `scan` 命令类似，`mvcc` 命令可以查看给定 key 的 MVCC：
 
 {{< copyable "shell-regular" >}}
 
@@ -195,7 +200,11 @@ middle_key_by_approximate_size:
 
 ### 手动 compact 单个 TiKV 的数据
 
-`compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。`--host` 参数可以指定要 compact 的 TiKV，`-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。`--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大， compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+`compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。
+
+- `--host` 参数可以指定要 compact 的 TiKV。
+- `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
+- `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
 
 {{< copyable "shell-regular" >}}
 
@@ -303,7 +312,7 @@ all regions are healthy
 
 ### 查看 Region 属性
 
-本地查看部署在 `/path/to/tikv` 的 tikv 上面 Region 2 的 properties 信息：
+本地查看部署在 `/path/to/tikv` 的 TiKV 上面 Region 2 的 properties 信息：
 
 {{< copyable "shell-regular" >}}
 
@@ -311,7 +320,7 @@ all regions are healthy
 tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
 ```
 
-在线查看运行在 `127.0.0.1:20160` 的 tikv 上面 Region 2 的 properties 信息：
+在线查看运行在 `127.0.0.1:20160` 的 TiKV 上面 Region 2 的 properties 信息：
 
 {{< copyable "shell-regular" >}}
 
@@ -405,7 +414,8 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 
 `recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会交叉检查 3 个 CF ("default", "write", "lock")。
 
-`-r` 选项可以通过 `region_id` 指定包含的 Region，`-p` 选项可以指定 PD 的 endpoints。
+- `-r` 选项可以通过 `region_id` 指定包含的 Region。
+- `-p` 选项可以指定 PD 的 endpoints。
 
 {{< copyable "shell-regular" >}}
 
@@ -425,11 +435,11 @@ success!
 
 ### Ldb 命令
 
-ldb 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
+`ldb` 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
 
-数据访问序列示例如下。
+数据访问序列的示例如下：
 
-用 HEX 格式 dump 现有 RocksDB 数据:
+用 HEX 格式 dump 现有 RocksDB 数据：
 
 {{< copyable "shell-regular" >}}
 
@@ -437,7 +447,7 @@ ldb 命令行工具提供多种数据访问以及数据库管理命令。下方�
 tikv-ctl ldb --hex --db=/tmp/db dump
 ```
 
-dump 现有 RocksDB 的声明：
+Dump 现有 RocksDB 的声明：
 
 {{< copyable "shell-regular" >}}
 
