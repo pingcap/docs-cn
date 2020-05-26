@@ -2,7 +2,6 @@
 title: binlogctl 工具
 summary: 介绍 binlogctl 的使用方法。 
 category: reference
-aliases: ['/docs-cn/dev/reference/tidb-binlog/maintain/','/docs-cn/dev/how-to/maintain/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/maintain/']
 ---
 
 # binlogctl 工具
