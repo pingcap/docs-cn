@@ -127,5 +127,5 @@ SELECT * FROM t1;
 
 ## See also
 
-* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
 * [CREATE VIEW](/sql-statements/sql-statement-create-view.md)
+* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
