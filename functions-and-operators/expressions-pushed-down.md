@@ -49,7 +49,7 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 > **注意**：
 >
-> `tidb` 是一种特殊的 store_type，其含义是 tidb 内存表，比如：`PERFORMANCE_SCHEMA.events_statements_summary_by_digest`，属于系统表的一种，非特殊情况不用考虑这种存储引擎。
+> `tidb` 是一种特殊的 store_type，其含义是 TiDB 内存表，比如：`PERFORMANCE_SCHEMA.events_statements_summary_by_digest`，属于系统表的一种，非特殊情况不用考虑这种存储引擎。
 
 ### 加入黑名单
 
