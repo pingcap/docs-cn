@@ -4,7 +4,7 @@ category: reference
 summary: 本文列出 TiDB 上的部分限制
 ---
 
-## TiDB 限制
+## TiDB 使用限制
 
 本文列出了 TiDB 各方面的限制，包括标识符长度限制和不同对象的数量限制。
 
