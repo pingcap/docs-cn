@@ -115,7 +115,8 @@
   + 软件调优
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
-      + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+      + [TiKV 线程调优](/tune-tikv-thread-performance.md) @刘玮
+      + [TiKV 内存调优](/tune-tikv-memory-performance.md) @刘玮
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
   + SQL 性能调优 @崔一丁
     + [SQL 性能调优概览](/sql-tuning-overview.md)
