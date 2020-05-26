@@ -13,11 +13,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-database/']
 
 **CreateDatabaseStmt:**
 
-![CreateDatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
-
-**DatabaseSym:**
-
-![DatabaseSym](/media/sqlgram/DatabaseSym.png)
+![CreateDaatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
 
 **IfNotExists:**
 
