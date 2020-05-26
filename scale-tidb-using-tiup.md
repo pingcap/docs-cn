@@ -351,11 +351,11 @@ tiup cluster display <cluster-name>
 
     * 若使用 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
-      {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-      ```shell
-      tiup ctl pd -u <pd-address> store
-      ```
+        ```shell
+        tiup ctl pd -u <pd-address> store
+        ```
 
 2. 在 pd-ctl 中下线该 TiFlash 节点。
 
@@ -363,11 +363,11 @@ tiup cluster display <cluster-name>
 
     * 若通过 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
-      {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-      ```shell
-      tiup ctl pd -u <pd-address> store delete <store_id>
-      ```
+        ```shell
+        tiup ctl pd -u <pd-address> store delete <store_id>
+        ```
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 
@@ -375,11 +375,11 @@ tiup cluster display <cluster-name>
 
    **注意以下命令会直接丢弃该 TiFlash 节点上的副本，有可能导致查询失败**
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   curl -X POST 'http://<pd-address>/pd/api/v1/store/<store_id>/state?state=Tombstone'
-   ```
+    ```shell
+    curl -X POST 'http://<pd-address>/pd/api/v1/store/<store_id>/state?state=Tombstone'
+    ```
 
 4. 手动删除 TiFlash 的数据文件，具体位置请查看 TiFlash 的配置文件。
 
