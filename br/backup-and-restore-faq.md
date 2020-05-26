@@ -22,7 +22,7 @@ category: FAQ
  
 使用 sysbench 的 oltp_read_only 场景全速备份到非服务盘，对集群的影响依照表结构的不同，对集群 QPS 的影响在 15%~25% 之间。
  
-如果需要控制备份带去的影响，可以使用 `--ratelimit` 选项限速。
+如果需要控制备份带来的影响，可以使用 `--ratelimit` 选项限速。
  
 ## BR 会备份系统表吗？ 等恢复的时候，这些系统表会冲突吗？
  
@@ -32,7 +32,7 @@ category: FAQ
  
 确认 TiKV 是否有访问备份目录的权限。如果是备份，请确认是否有写权限；如果是恢复，请确认是否有读权限。
  
-使用 root 运行 BR 仍旧有可能会因为磁盘权限而失败，因为 sst 文件的落盘是由 TiKV 执行的。
+使用 root 运行 BR 仍旧有可能会因为磁盘权限而失败，因为备份文件 (SST) 的保存是由 TiKV 执行的。
  
 > **提示：**
 >
@@ -48,10 +48,10 @@ category: FAQ
  
 ## 使用 local storage 的时候，BR 备份的文件会存在哪里？
  
-在使用 local storage 的时候，会在运行 BR 的节点生成 backupmeta，在各个 Region 的 Leader 节点生成 SST 文件。
+在使用 local storage 的时候，会在运行 BR 的节点生成 backupmeta，在各个 Region 的 Leader 节点生成备份文件。
  
-## 备份数据会有多大，备份会有 replica 吗？
+## 备份数据会有多大，备份会有副本 (replica) 吗？
  
-备份的时候仅仅在每个 region 的 Leader 处生成该 region 的 SST 文件。因此备份的大小等于数据大小，不会有 replica。所以最终的总大小大约是 TiKV 数据总量 ／ replica 数。
+备份的时候仅仅在每个 region 的 Leader 处生成该 region 的备份文件。因此备份的大小等于数据大小，不会有多余的副本数据。所以最终的总大小大约是 TiKV 数据总量 ／副本数。
  
-但是假如想要从本地恢复数据，因为每个 TiKV 都必须要能访问到所有 SST 文件，在最终恢复的时候会有等同于恢复时 TiKV 节点数量的 replica。
+但是假如想要从本地恢复数据，因为每个 TiKV 都必须要能访问到所有备份文件，在最终恢复的时候会有等同于恢复时 TiKV 节点数量的副本。
