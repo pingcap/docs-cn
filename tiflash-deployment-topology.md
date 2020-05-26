@@ -35,7 +35,7 @@ category: how-to
 
 - `tiflash_servers` 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
 
-- TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](/tiflash-configuration.md)。
+- TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](/tiflash/tiflash-configuration.md)。
 
 > **注意：**
 >
