@@ -128,7 +128,8 @@ TiDB 支持完整的二级索引，并且是全局索引，很多查询可以通
 
 ### 导入数据
 
-为了提高导入数据期间的写入性能，可以对 TiKV 的参数进行调优，具体的文档查看 [TiKV 性能参数调优](/tune-tikv-performance.md)。
+为了提高导入数据期间的写入性能，可以对 TiKV 的参数进行调优，具体的文档查看 [TiKV 性能参数调优](/tune-tikv-memory-performance.md)。
+
 
 ### 写入
 
