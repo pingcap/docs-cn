@@ -211,7 +211,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
 
-设置 `skip-grant-table` 之后，启动 TiDB 进程会增加检查，只有操作系统的 `root` 用户才能执行。
+设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
 
 ## `FLUSH PRIVILEGES`
 
