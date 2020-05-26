@@ -160,7 +160,7 @@ Global Flags:
 tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -R tidb
 ```
 
-或者只替换其中一个 TiDB：
+或者只替换其中一个 TiDB 实例：
 
 {{< copyable "shell-regular" >}}
 
