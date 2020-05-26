@@ -203,4 +203,4 @@ mysql> show warnings;
 - 当 `db-name` 为 `rocksdb` 时，cf-name 的取值有: `defaultcf`，`writecf`，`lockcf`，`raftcf`；
 - 当 `db-name` 为 `raftdb` 时，cf-name 的取值有: `defaultcf`。
 
-具体参数意义可参考 [TiKV 配置文件描述](https://github.com/pingcap/docs-cn/blob/master/reference/configuration/tikv-server/configuration-file.md)
+具体参数意义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)
