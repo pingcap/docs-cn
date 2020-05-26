@@ -1,97 +1,13 @@
 ---
-title: TiDB 集群监控
+title: 集群监控部署
 category: how-to
-aliases: ['/docs-cn/dev/how-to/monitor/monitor-a-cluster/']
 ---
 
-# TiDB 集群监控
+# TiDB 集群监控部署
 
-TiDB 提供了以下两种接口来监控集群状态：
+本文档适用于希望手动部署 TiDB 监控报警系统的用户。TiUP 部署方式，会同时自动部署监控报警系统，无需手动部署。
 
-- [状态接口](#使用状态接口)：通过 HTTP 接口对外汇报组件的信息。
-- [Metrics 接口](#使用-metrics-接口)：使用 Prometheus 记录组件中各种操作的详细信息，使用 Grafana 进行可视化展示。
-
-## 使用状态接口
-
-状态接口用于监控组件的一些基本信息，并且可以作为 keepalive 的监测接口。另外，通过 PD 的状态接口可以看到整个 TiKV 集群的详细信息。
-
-### TiDB Server
-
-- TiDB API 地址：`http://${host}:${port}`
-- 默认端口：10080
-- 各类 `api_name` 详细信息：参见 [TiDB API 文档](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)
-
-以下示例中，通过访问 `http://${host}:${port}/status` 获取当前 TiDB Server 的状态，并判断该 TiDB Server 是否存活。结果以 **JSON** 格式返回：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-curl http://127.0.0.1:10080/status
-```
-
-```
-{
-    connections: 0,  # 当前 TiDB Server 上的客户端连接数
-    version: "5.7.25-TiDB-v3.0.0-beta-250-g778c3f4a5",  # TiDB 版本号
-    git_hash: "778c3f4a5a716880bcd1d71b257c8165685f0d70"  # TiDB 当前代码的 Git Hash
-}
-```
-
-### PD Server
-
-- PD API 地址：`http://${host}:${port}/pd/api/v1/${api_name}`
-- 默认端口：2379
-- 各类 `api_name` 详细信息：参见 [PD API Doc](https://download.pingcap.com/pd-api-doc.html)
-
-通过该接口可以获取当前所有 TiKV 节点的状态以及负载均衡信息。下面以一个单节点的 TiKV 集群为例，说明用户需要了解的信息：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-curl http://127.0.0.1:2379/pd/api/v1/stores
-```
-
-```
-{
-  "count": 1,  # TiKV 节点数量
-  "stores": [  # TiKV 节点的列表
-    # 集群中单个 TiKV 节点的信息
-    {
-      "store": {
-        "id": 1,
-        "address": "127.0.0.1:20160",
-        "version": "3.0.0-beta",
-        "state_name": "Up"
-      },
-      "status": {
-        "capacity": "20 GiB",  # 存储总容量
-        "available": "16 GiB",  # 存储剩余容量
-        "leader_count": 17,
-        "leader_weight": 1,
-        "leader_score": 17,
-        "leader_size": 17,
-        "region_count": 17,
-        "region_weight": 1,
-        "region_score": 17,
-        "region_size": 17,
-        "start_ts": "2019-03-21T14:09:32+08:00",  # 启动时间
-        "last_heartbeat_ts": "2019-03-21T14:14:22.961171958+08:00",  # 最后一次心跳的时间
-        "uptime": "4m50.961171958s"
-      }
-    }
-  ]
-```
-
-## 使用 metrics 接口
-
-Metrics 接口用于监控整个集群的状态和性能。
-
-- 如果使用 TiDB Ansible 部署 TiDB 集群，监控系统（Prometheus 和 Grafana）会同时部署。
-- 如果使用其他方式部署 TiDB 集群，在使用 metrics 接口前，需先[部署 Prometheus 和 Grafana](#部署-prometheus-和-grafana)。
-
-成功部署 Prometheus 和 Grafana 之后，[配置 Grafana](#配置-grafana)。
-
-### 部署 Prometheus 和 Grafana
+## 部署 Prometheus 和 Grafana
 
 假设 TiDB 的拓扑结构如下：
 
@@ -104,7 +20,7 @@ Metrics 接口用于监控整个集群的状态和性能。
 | Node5 | 192.168.199.117| TiKV2, node_export |
 | Node6 | 192.168.199.118| TiKV3, node_export |
 
-#### 第 1 步：下载二进制包
+### 第 1 步：下载二进制包
 
 下载二进制包：
 
@@ -126,7 +42,7 @@ tar -xzf node_exporter-0.17.0.linux-amd64.tar.gz
 tar -xzf grafana-6.1.6.linux-amd64.tar.gz
 ```
 
-#### 第 2 步：在 Node1，Node2，Node3，Node4 上启动 `node_exporter`
+### 第 2 步：在 Node1，Node2，Node3，Node4 上启动 `node_exporter`
 
 {{< copyable "shell-regular" >}}
 
@@ -143,7 +59,7 @@ cd node_exporter-0.17.0.linux-amd64
     --log.level="info" &
 ```
 
-#### 第 3 步：在 Node1 上启动 Prometheus
+### 第 3 步：在 Node1 上启动 Prometheus
 
 编辑 Prometheus 的配置文件：
 
@@ -217,7 +133,7 @@ scrape_configs:
     --storage.tsdb.retention="15d" &
 ```
 
-#### 第 4 步：在 Node1 上启动 Grafana
+### 第 4 步：在 Node1 上启动 Grafana
 
 编辑 Grafana 的配置文件：
 
@@ -278,11 +194,11 @@ url = https://grafana.net
     --config="./conf/grafana.ini" &
 ```
 
-### 配置 Grafana
+## 配置 Grafana
 
 本小节介绍如何配置 Grafana。
 
-#### 第 1 步：添加 Prometheus 数据源
+### 第 1 步：添加 Prometheus 数据源
 
 1. 登录 Grafana 界面。
 
@@ -307,7 +223,7 @@ url = https://grafana.net
 
 5. 点击 **Add** 保存新的数据源。
 
-#### 第 2 步：导入 Grafana 面板
+### 第 2 步：导入 Grafana 面板
 
 执行以下步骤，为 PD Server、TiKV Server 和 TiDB Server 分别导入 Grafana 面板：
 
@@ -327,7 +243,7 @@ url = https://grafana.net
 
 6. 点击 **Import**，Prometheus 面板即导入成功。
 
-### 查看组件 metrics
+## 查看组件 metrics
 
 在顶部菜单中，点击 **New dashboard**，选择要查看的面板。
 
