@@ -18,7 +18,7 @@ TiKV 数据存储的两个关键点：
 1. 这是一个巨大的 Map（可以类比一下 C++ 的 std::map），也就是存储的是 Key-Value Pairs（键值对）
 2. 这个 Map 中的 Key-Value pair 按照 Key 的二进制顺序有序，也就是可以 Seek 到某一个 Key 的位置，然后不断地调用 Next 方法以递增的顺序获取比这个 Key 大的 Key-Value。
 
-注意，本文所说的 **TiKV 的 KV 存储模型和 SQL 中的 Table 无关。**，本文不讨论 SQL 中的任何概念，专注于讨论如何实现 TiKV 这样一个高性能、高可靠性、分布式的 Key-Value 存储。
+注意，本文所说的 **TiKV 的 KV 存储模型和 SQL 中的 Table 无关**。本文不讨论 SQL 中的任何概念，专注于讨论如何实现 TiKV 这样一个高性能、高可靠性、分布式的 Key-Value 存储。
 
 ## 本地存储 (RocksDB)
 
