@@ -55,7 +55,7 @@
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
-  + [支持的迁移路径](/data-migration-route.md)
+  + [支持的数据迁移路径](/data-migration-route.md)
   + 从 MySQL 迁移至 TiDB
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md) @栾成
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)

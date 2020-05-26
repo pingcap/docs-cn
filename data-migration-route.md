@@ -1,16 +1,19 @@
 ---
-title: 支持的迁移路径
+title: 支持的数据迁移路径
 summary: 本文档介绍支持哪些路径将数据迁移到 TiDB。
 category: reference
 ---
 
-# 支持的迁移路径
+# 支持的数据迁移路径
 
 本文档介绍支持从哪些路径将数据迁移到 TiDB，包括从 MySQL 迁移到 TiDB 和从 CSV 文件迁移到 TiDB。
 
 ## 从 MySQL 迁移到 TiDB
 
 目前推荐使用以下两种方式将 MySQL 数据迁移到 TiDB。
+
+- [使用 Mydumper 和 TiDB Lightning 迁移全量数据](#使用-mydumper-和-tidb-lightning-迁移全量数据)
+- [使用 DM 迁移数据](#使用-dm-迁移数据)
 
 ### 使用 Mydumper 和 TiDB Lightning 迁移全量数据
 
