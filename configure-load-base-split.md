@@ -34,7 +34,7 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 
 目前有两种办法修改配置：
 
-- 通过 SQL 修改，`set config tikv split.qps-threshold=3000`
+- 通过 SQL 修改，`set config tikv split.qps-threshold=3000`。
 
 - 通过 TiKV 修改，`curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'`
 
