@@ -37,109 +37,166 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 
 ### 管理同步任务 (`changefeed`)
 
-- 创建 `changefeed`：
+#### 创建 `changefeed`
+
+使用如下示例命令创建 `changefeed`：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --sink-uri="mysql://root:123456@127.0.0.1:3306/"
+create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-commit-ts":null}}
+```
+
+其中 `--sink-uri` 需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
+
+{{< copyable "" >}}
+
+```
+[scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+```
+
+- Sink URI 配置 `mysql`/`tidb`
+
+    配置样例如下所示：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed create --sink-uri="mysql://root:123456@127.0.0.1:3306/"
-    create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-commit-ts":null}}
+    --sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
     ```
 
-- 查询 `changefeed` 列表：
+    以上配置命令中的参数解析如下：
+
+    | 参数         | 解析                                             |
+    | :------------ | :------------------------------------------------ |
+    | `root`        | 下游数据库的用户名                             |
+    | `123456`       | 下游数据库密码                                     |
+    | `127.0.0.1`    | 下游数据库的 IP                                |
+    | `3306`         | 下游数据的连接端口                                 |
+    | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
+    | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
+
+- Sink URI 配置 `kafka`
+
+    配置样例如下所示：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed list
+    --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
     ```
 
-    ```
-    [
-            {
-                    "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
-            }
-    ]
-    ```
+    以上配置命令中的参数解析如下：
 
-- 查询特定 `changefeed`，对应于某个同步任务的信息和状态：
+    | 参数               | 解析                                                         |
+    | :------------------ | :------------------------------------------------------------ |
+    | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
+    | `9092`               | 下游 Kafka 的连接端口                                          |
+    | `cdc-test`           | 使用的 Kafka topic 名字                                      |
+    | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+    | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
+    | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
+    | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 
-    {{< copyable "shell-regular" >}}
+#### 查询 `changefeed` 列表
 
-    ```shell
-    cdc cli changefeed query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
-    ```
+{{< copyable "shell-regular" >}}
 
-    ```
-    {
-            "info": {
-                    "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
-                    "opts": {},
-                    "create-time": "2020-03-12T22:04:08.103600025+08:00",
-                    "start-ts": 415241823337054209,
-                    "target-ts": 0,
-                    "admin-job-type": 0,
-                    "config": {
-                            "filter-case-sensitive": false,
-                            "filter-rules": null,
-                            "ignore-txn-commit-ts": null
-                    }
-            },
-            "status": {
-                    "resolved-ts": 415241860902289409,
-                    "checkpoint-ts": 415241860640145409,
-                    "admin-job-type": 0
-            }
-    }
-    ```
+```shell
+cdc cli changefeed list
+```
+
+```
+[
+        {
+                "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
+        }
+]
+```
+
+#### 查询特定 `changefeed`
+
+查询特定 `changefeed`，对应于某个同步任务的的信息和状态：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+```
+{
+        "info": {
+                "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
+                "opts": {},
+                "create-time": "2020-03-12T22:04:08.103600025+08:00",
+                "start-ts": 415241823337054209,
+                "target-ts": 0,
+                "admin-job-type": 0,
+                "config": {
+                        "filter-case-sensitive": false,
+                        "filter-rules": null,
+                        "ignore-txn-commit-ts": null
+                }
+        },
+        "status": {
+                "resolved-ts": 415241860902289409,
+                "checkpoint-ts": 415241860640145409,
+                "admin-job-type": 0
+        }
+}
+```
 
 ### 管理同步子任务处理单元 (`processor`)
 
-- 查询 `processor` 列表：
+#### 查询 `processor` 列表
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    cdc cli processor list
-    ```
+```shell
+cdc cli processor list
+```
 
-    ```
-    [
-            {
-                    "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
-                    "capture-id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                    "changefeed-id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
-            }
-    ]
-    ```
+```
+[
+        {
+                "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
+                "capture-id": "b293999a-4168-4988-a4f4-35d9589b226b",
+                "changefeed-id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
+        }
+]
+```
 
-- 查询特定 `processor`，对应于某个节点处理的同步子任务信息和状态：
+#### 查询特定 `processor`
 
-    {{< copyable "shell-regular" >}}
+查询特定 `processor`，对应于某个节点处理的同步子任务信息和状态：
 
-    ```shell
-    cdc cli processor query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
-    ```
+{{< copyable "shell-regular" >}}
 
-    ```
-    {
-            "status": {
-                    "table-infos": [
-                            {
-                                    "id": 45,
-                                    "start-ts": 415241823337054209
-                            }
-                    ],
-                    "table-p-lock": null,
-                    "table-c-lock": null,
-                    "admin-job-type": 0
-            },
-            "position": {
-                    "checkpoint-ts": 415241893447467009,
-                    "resolved-ts": 415241893971492865
-            }
-    }
-    ```
+```shell
+cdc cli processor query --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
+```
+
+```
+{
+        "status": {
+                "table-infos": [
+                        {
+                                "id": 45,
+                                "start-ts": 415241823337054209
+                        }
+                ],
+                "table-p-lock": null,
+                "table-c-lock": null,
+                "admin-job-type": 0
+        },
+        "position": {
+                "checkpoint-ts": 415241893447467009,
+                "resolved-ts": 415241893971492865
+        }
+}
+```
 
 ## 使用 HTTP 接口管理集群状态和数据同步
 

@@ -74,7 +74,7 @@
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
   + [日常巡检](/daily-inspection.md) @王军
-  + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
+  + [TiCDC 任务管理](/manage-ticdc.md) @沈泰宁
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 监控与告警
@@ -102,7 +102,7 @@
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
   + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
-  + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
+  + [TiCDC 常见问题](/troubleshoot-ticdc.md) @杨非
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
 + 性能调优
   + 系统调优
@@ -421,6 +421,7 @@
     + TiKV
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + TiFlash
+  + [TiCDC](/ticdc-overview.md)
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md) @荣毅龙/启航
@@ -430,6 +431,8 @@
   + [License FAQ](/faq/licensing-faq.md) @荣毅龙/启航
   + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
   + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
++ [开发指南]
+  + [TiCDC 开放数据协议](/ticdc-open-protocol.md)
 + [术语表](/glossary.md) @李琳
 + [版本发布历史](/releases/release-notes.md)
   + v4.0
