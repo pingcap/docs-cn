@@ -25,9 +25,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单最小配置模板](/simple-mini.yaml)
+[简单最小配置模板](/config-templates/simple-mini.yaml)
 
-[详细最小配置模板](/complex-mini.yaml)
+[详细最小配置模板](/config-templates/complex-mini.yaml)
 
 > **注意：**
 >
