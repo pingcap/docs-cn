@@ -39,7 +39,7 @@ SHOW DRAINER STATUS;
 CHANGE DRAINER TO NODE_STATE ='paused' FOR NODE_ID 'drainer1';
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 

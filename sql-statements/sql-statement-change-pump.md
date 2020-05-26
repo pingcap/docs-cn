@@ -4,7 +4,7 @@ summary: TiDB 数据库中 CHANGE PUMP 的使用概况。
 category: reference
 ---
 
-# CHANGE DRAINER
+# CHANGE PUMP
 
 `CHANGE PUMP` 语句用于修改集群中 Pump 的状态信息。
 
@@ -20,7 +20,7 @@ category: reference
 SHOW PUMP STATUS;
 ```
 
-```
+```sql
 +--------|----------------|--------|--------------------|---------------------|
 | NodeID |     Address    | State  |   Max_Commit_Ts    |    Update_Time      |
 +--------|----------------|--------|--------------------|---------------------|

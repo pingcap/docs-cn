@@ -4,7 +4,7 @@ summary: TiDB 数据库中 SHOW PUMP STATUS 的使用概况。
 category: reference
 ---
 
-# SHOW DRAINER STATUS
+# SHOW PUMP STATUS
 
 `SHOW PUMP STATUS` 语句用于显示集群中所有 Pump 的状态信息。
 
