@@ -7,6 +7,7 @@ category: how-to
 # 从 MySQL SQL 文件迁移数据
 
 本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。
+如何生成 MySQL SQL 文件，可以参考 [MyDumper](/mydumper-overview.md) 或者 [Dumpling](/dumpling-overview.md)
 
 ## 第 1 步：部署 TiDB Lighitning
 
@@ -22,7 +23,7 @@ category: how-to
 
 本文以选用 TiDB Backend 导入数据为例。增加 `tidb-lightning.toml 配置文件`，在文件中添加以下主要配置：
 
-1. 将 `[mydumper]` 下的 `data-source-dir` 设置为 MySQL 的 SQL 文件路径。
+* 将 `[mydumper]` 下的 `data-source-dir` 设置为 MySQL 的 SQL 文件路径。
 
 ```
 [mydumper]
@@ -34,7 +35,7 @@ data-source-dir = "/data/export"
 >
 > 如果下游已经存在对应的 schema，那么可以设置 `no-schema=true` 来跳过 schema 创建的步骤。
 
-2. 增加目标集群 TiDB 的配置。
+* 增加目标集群 TiDB 的配置。
 
 ```
 [tidb]
@@ -55,3 +56,7 @@ password = ""
 # !/bin/bash
 nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
+
+导入开始后，可以用两种方式查看进度
+1. 通过 grep 日志关键字 progress 查看进度，默认5分钟更新一次。
+2. 通过监控面板查看进度。具体介绍请参考[TiDB-Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)
