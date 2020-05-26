@@ -38,7 +38,7 @@
   + 安装与启动
     + Linux
       + [使用 TiUP 部署](/production-deployment-using-tiup.md) @李仲舒
-      + [使用 TiUP 离线部署](/production-deployment-using-tiup-offline.md) @刘金龙
+      + [使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md) @刘金龙
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
@@ -46,9 +46,6 @@
     + AWS
     + GCP
     + Alibaba Cloud
-  + 监控与告警设置
-    + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
-    + [监控 API](/tidb-monitoring-api.md) @李宋高
   + [测试验证](/post-installation-check.md) @李仲舒
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md) @周跃跃
@@ -77,11 +74,16 @@
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
-  + [告警处理](/handle-alerts.md) @李宋高
   + [日常巡检](/daily-inspection.md) @王军
   + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
++ 监控与告警
+  + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
+  + [监控 API](/tidb-monitoring-api.md) @李宋高
+  + [手动部署监控](/deploy-monitoring-services.md) @李宋高
+  + [TiDB 集群报警规则与处理方法](/alert-rules.md) @李宋高
+  + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md) @孙若曦
 + 故障诊断
   + 硬件故障 @周强
     + [整机](/troubleshoot-machine-issues.md)
@@ -131,7 +133,7 @@
       + 物理优化
         + [物理优化概览](/sql-physical-optimization.md)
         + [索引的选择](/index-choose.md)
-        + [统计信息介绍](/statistics-intro.md)
+        + [统计信息简介](/statistics.md)
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
       + [执行计划缓存](/sql-prepare-plan-cache.md)
@@ -215,12 +217,10 @@
     + [PD 面板](/grafana-pd-dashboard.md) @PD Team/陈书宁
     + [TiKV 面板](/grafana-tikv-dashboard.md) @刘新韬
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md) @孙若曦
-  + 告警信息
-    + [TiDB 集群报警规则与处理方法](/alert-rules.md)
-    + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md) @孙若曦
   + 安全加固
-    + [使用 TLS 加密连接](/encrypted-connections-with-tls-protocols.md) @苏立
-    + [为 TiDB 组件间开启 TLS 和数据加密存储](/enable-tls-between-components.md) @苏立
+    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md) @苏立
+    + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md) @苏立
+    + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md) @苏立
     + [生成自签名证书](/generate-self-signed-certificates.md) @刘新韬
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md) @毛康力
@@ -235,7 +235,7 @@
         + [AUTO_RANDOM](/auto-random.md) @谢腾进
       + [字面值](/literal-values.md) @邰凌翔
       + [Schema 对象名](/schema-object-names.md) @邰凌翔
-      + [关键字和保留字](/keywords-and-reserved-words.md) @@邰凌翔
+      + [关键字](/keywords.md) @@邰凌翔
       + [用户自定义变量](/user-defined-variables.md) @邰凌翔
       + [表达式语法](/expression-syntax.md) @邰凌翔
       + [注释语法](/comment-syntax.md) @邰凌翔
@@ -250,6 +250,7 @@
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
+      - [`CREATE BINDING`](/sql-statements/sql-statement-create-binding.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
       - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
       - [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)
@@ -262,10 +263,12 @@
       - [`DESC`](/sql-statements/sql-statement-desc.md)
       - [`DESCRIBE`](/sql-statements/sql-statement-describe.md)
       - [`DO`](/sql-statements/sql-statement-do.md)
+      - [`DROP BINDING`](/sql-statements/sql-statement-drop-binding.md)
       - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
       - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
       - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
       - [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
+      - [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md)
       - [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)
       - [`DROP USER`](/sql-statements/sql-statement-drop-user.md)
       - [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)
@@ -293,6 +296,8 @@
       - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
+      - [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md)
       - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
       - [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
@@ -305,6 +310,7 @@
       - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
       - [`SHOW [FULL] FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
       - [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+      - [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
       - [`SHOW INDEX [FROM|IN]`](/sql-statements/sql-statement-show-index.md)
       - [`SHOW KEYS [FROM|IN]`](/sql-statements/sql-statement-show-keys.md)
@@ -316,6 +322,8 @@
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
       - [`SHOW [GLOBAL|SESSION] VARIABLES`](/sql-statements/sql-statement-show-variables.md)
       - [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
+      - [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md)
+      - [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-row-id.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)

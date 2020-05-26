@@ -92,6 +92,10 @@ pd-ctl config placement-rules enable
 
 PD 同样将根据系统的 `max-replicas` 及 `location-labels` 生成默认的规则。
 
+> **注意：**
+>
+> 开启 Placement Rules 后，原先的 `max-replicas` 及 `location-labels` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
+
 ### 关闭 Placement Rules 特性
 
 使用 pd-ctl 可以关闭 Placement Rules 特性，切换为之前的调度策略。
