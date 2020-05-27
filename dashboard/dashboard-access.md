@@ -27,7 +27,7 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 
 首次访问 TiDB Dashboard 将会显示用户登录界面，如下图所示，可使用 TiDB root 账号登录。
 
-![登录界面](/media/dashboard/access-login.png)
+![登录界面](/media/dashboard/dashboard-access-login.png)
 
 如果存在以下情况，则可能会登录失败：
 
@@ -47,10 +47,10 @@ TiDB Dashboard 目前支持以下语言：
 
 在登录界面中，可点击 Switch Language 下拉框切换界面显示语言：
 
-![切换语言](/media/dashboard/access-switch-language.png)
+![切换语言](/media/dashboard/dashboard-access-switch-language.png)
 
 ## 登出
 
 登录后，在左侧导航处点击登录用户名，可切换到用户页面。在用户页面点击 **登出**（Logout）按钮即可登出当前用户。登出后，需重新输入用户名密码。
 
-![登出](/media/dashboard/access-logout.png)
+![登出](/media/dashboard/dashboard-access-logout.png)
