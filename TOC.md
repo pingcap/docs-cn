@@ -470,6 +470,7 @@
   + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
   + [迁移 FAQ](/faq/migration-tidb-faq.md) @荣毅龙
 + [开发指南]
+  + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
 + [术语表](/glossary.md) @李琳
 + [版本发布历史](/releases/release-notes.md)

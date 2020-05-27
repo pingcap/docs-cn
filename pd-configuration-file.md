@@ -255,7 +255,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + TiKV 集群的拓扑信息。
 + 默认：[]
-+ [配置集群拓扑](/location-awareness.md)
++ [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
 
 ### `strictly-match-label`
 
