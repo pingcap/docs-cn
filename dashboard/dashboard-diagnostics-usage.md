@@ -7,13 +7,13 @@ category: how-to
 
 ## 对比诊断功能示例
 
-对比报告中有一个对比诊断的功能，通过对比2个时间段的监控项差异来尝试帮助 DBA 定位问题。先看几个示例。
+对比报告中有一个对比诊断的功能，通过对比两个时间段的监控项差异来尝试帮助 DBA 定位问题。先看几个示例。
 
-### 大查询/写入导致 qps 抖动或延迟上升诊断
+### 大查询/写入导致 QPS 抖动或延迟上升诊断
 
 #### 示例 1
 
-![QPS 图](/media/dashboard/diagnostics-usage1.png)
+![QPS 图](/media/dashboard/dashboard-diagnostics-usage1.png)
 
 上图中，是在跑 go-ycsb 的压测，可以发现，在 2020-03-10 13:24:30 时，QPS 突然开始下降，3 分钟后，QPS 开始恢复正常，这是为什么呢？
 
@@ -22,11 +22,11 @@ category: how-to
 T1: 2020-03-10 13:21:00 ，2020-03-10 13:23:00 ，正常时间段，又叫参考时间段
 T2: 2020-03-10 13:24:30 ， 2020-03-10 13:27:30 ，QPS 开始下降的异常时间段
 
-这里2个时间间隔都是 3 分钟，因为抖动的影响范围就是3分钟。因为诊断时会用一些监控的平均值做对比，所有间隔时间太长会导致平均值差异不明显，然后无法准确定位问题。
+这里2个时间间隔都是 3 分钟，因为抖动的影响范围就是 3 分钟。因为诊断时会用一些监控的平均值做对比，所有间隔时间太长会导致平均值差异不明显，然后无法准确定位问题。
 
 生成报告后查看 **Compare Diagnose** 报表内容如下：
 
-![对比诊断结果](/media/dashboard/diagnostics-usage2.png)
+![对比诊断结果](/media/dashboard/dashboard-diagnostics-usage2.png)
 
 上面诊断结果显示，在诊断的时间内可能有大查询，下面的每一行的含义是：
 
@@ -62,18 +62,18 @@ digest             | 24bd6d8a9b238086c9b8c3d240ad4ef32f79ce94cf5a468c0b8fe1eb5f8
 
 如果大查询一直没执行完，就不会记录慢日志，这个时候也能诊断吗？下面再看一个例子。
 
-![QPS 图](/media/dashboard/diagnostics-usage3.png)
+![QPS 图](/media/dashboard/dashboard-diagnostics-usage3.png)
 
 上图中，也是在跑 go-ycsb 的压测，可以发现，在 2020-03-08 01:46:30 时，QPS 突然开始下降，并且一直没有恢复。
 
-生成以下2个时间范围的对比报告：
+生成以下 2 个时间范围的对比报告：
 
-T1 : 2020-03-08 01:36:00 ，2020-03-08 01:41:00 ，正常时间段，又叫参考时间段
+T1: 2020-03-08 01:36:00 ，2020-03-08 01:41:00 ，正常时间段，又叫参考时间段
 T2: 2020-03-08 01:46:30 ，2020-03-08 01:51:30 ，QPS 开始下降的异常时间段
 
 生成报告后看 `Compare Diagnose` 报表的内容如下：
 
-![对比诊断结果](/media/dashboard/diagnostics-usage4.png)
+![对比诊断结果](/media/dashboard/dashboard-diagnostics-usage4.png)
 
 上面诊断结果和例 1 类似，这里不再重复赘述，直接看最后一行，提示可能有慢查询，并提示用 SQL 查询 TiDB 日志中的 expensive query。在 TiDB 中执行结果如下：
 
@@ -86,13 +86,13 @@ LEVEL    | WARN
 MESSAGE  | [expensivequery.go:167] [expensive_query] [cost_time=60.085949605s] [process_time=2.52s] [wait_time=2.52s] [request_count=9] [total_keys=996009] [process_keys=996000] [num_cop_tasks=9] [process_avg_time=0.28s] [process_p90_time=0.344s] [process_max_time=0.344s] [process_max_addr=172.16.5.40:20150] [wait_avg_time=0.000777777s] [wait_p90_time=0.003s] [wait_max_time=0.003s] [wait_max_addr=172.16.5.40:20150] [stats=t_wide:pseudo] [conn_id=19717] [user=root] [database=test] [table_ids="[80,80]"] [txn_start_ts=415132076148785201] [mem_max="23583169 Bytes (22.490662574768066 MB)"] [sql="select count(*) from t_wide as t1 join t_wide as t2 where t1.c0>t2.c1 and t1.c2>0"]
 ```
 
-上面查询结果显示，在 172.16.5.40:4009 这台 TiDB 上，2020/03/08 01:47:35.846 有一个已经执行了 60s，但还没有执行完的 的 expensive_query, 这个query 是个笛卡尔积的 join , 应该是有用户手抖了。
+上面查询结果显示，在 172.16.5.40:4009 这台 TiDB 上，2020/03/08 01:47:35.846 有一个已经执行了 60s，但还没有执行完的 的 expensive_query，这个query 是个笛卡尔积的 join , 应该是有用户手抖了。
 
 ## 用对比报告定位问题
 
 诊断有可能是误诊，使用对比报告或许可以帮助 DBA 更快速的定位问题。参考以下示例。
 
-![QPS 图](/media/dashboard/diagnostics-usage5.png)
+![QPS 图](/media/dashboard/dashboard-diagnostics-usage5.png)
 
 上图中，也是在跑 go-ycsb 的压测，可以发现，在 2020-05-22 22:14:00 时，QPS 突然开始下降，大概在持续 3 分钟后恢复。
 
@@ -103,7 +103,7 @@ T2: 2020-05-22 22:14:00 ，2020-05-22 22:17:00 ，QPS 开始下降的异常时�
 
 生成对比报告后，查看 **Max diff item** 报表，它是对比2个时间段的监控项后，按照监控项的差异大小排序，这个表的结果如下：
 
-![对比结果](/media/dashboard/diagnostics-usage6.png)
+![对比结果](/media/dashboard/dashboard-diagnostics-usage6.png)
 
 从上面结果可以看出，T2 时间段新增了很多倍的 Coprocessor 请求，可以猜测可能是 T2 时间段出现了一些大查询，或者是查询较多的负载。
 
