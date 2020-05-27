@@ -12,7 +12,7 @@ category: how-to
 
 登录 Dashboard 后点击左侧导航的**日志搜索**可以进入此功能页面：
 
-![日志搜索首页](/media/dashboard/log-search/home.png)
+![日志搜索首页](/media/dashboard/dashboard-log-search-home.png)
 
 该页面提供 4 个搜索参数，包括：
 
@@ -27,7 +27,7 @@ category: how-to
 
 搜索结果详情页面如下图所示：
 
-![搜索结果](/media/dashboard/log-search/result.png)
+![搜索结果](/media/dashboard/dashboard-log-search-result.png)
 
 整个页面分为三个部分：
 
@@ -61,12 +61,12 @@ category: how-to
 
 在日志搜索首页点击**查看搜索历史**链接，进入搜索历史列表页面：
 
-![搜索历史入口](/media/dashboard/log-search/history-entry.png)
+![搜索历史入口](/media/dashboard/dashboard-log-search-history-entry.png)
 
-![搜索历史列表](/media/dashboard/log-search/history.png)
+![搜索历史列表](/media/dashboard/dashboard-log-search-history.png)
 
 该列表显示每次搜索的日志的时间范围、日志等级、组件、关键字以及搜索状态等信息。点击**操作**列的**查看详情**链接将跳转到此次搜索的结果详情页面。
 
 可以对不再需要的搜索历史执行删除操作，点击右上角的**删除全部任务**，或者先选中需要删除的某些行后再点击**删除选中的任务**进行删除：
 
-![删除搜索历史](/media/dashboard/log-search/delete-history.png)
+![删除搜索历史](/media/dashboard/dashboard-log-search-delete-history.png)

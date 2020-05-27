@@ -16,7 +16,7 @@ category: how-to
 
 - 登录后，左侧导航条点击**SQL 语句分析**（SQL Statements）：
 
-  ![访问](/media/dashboard/statement/access.png)
+  ![访问](/media/dashboard/dashboard-statement-access.png)
 
 - 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/statement>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
@@ -26,29 +26,29 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
 
 页面顶部可修改显示的时间范围、按执行 SQL 所在数据库进行过滤，或按 SQL 类型进行过滤，如下所示。默认显示最近一个收集周期（默认最近 30 分钟）内的所有 SQL 语句执行情况。
 
-![修改过滤条件](/media/dashboard/statement/filter-options.png)
+![修改过滤条件](/media/dashboard/dashboard-statement-filter-options.png)
 
 ### 显示其他字段
 
 页面顶部**选择列**（Columns）选项中可选择显示更多列，可将鼠标移动到列名右侧的 (i) 图标处查看列的说明：
 
-![选择列](/media/dashboard/statement/columns-selector.png)
+![选择列](/media/dashboard/dashboard-statement-columns-selector.png)
 
 ### 修改列表排序依据
 
 列表默认以**累计耗时**（Total Latency）从高到低进行排序，点击不同的列标题可以修改排序依据或切换排序顺序：
 
-![修改列排序](/media/dashboard/statement/change-order.png)
+![修改列排序](/media/dashboard/dashboard-statement-change-order.png)
 
 ### 修改数据收集设置
 
 在列表页面，点击顶部右侧的**设置**（Settings）按钮，即可对 SQL 语句分析功能进行设置：
 
-![设置入口](/media/dashboard/statement/setting-entry.png)
+![设置入口](/media/dashboard/dashboard-statement-setting-entry.png)
 
 点击后设置界面如下图所示：
 
-![设置](/media/dashboard/statement/settings.png)
+![设置](/media/dashboard/dashboard-statement-settings.png)
 
 在设置中可以选择关闭或开启 SQL 语句分析功能。在开启 SQL 语句分析功能时可以修改以下选项：
 
