@@ -92,6 +92,10 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## readpool.unified
 
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
 
 ### `min-thread-count`
@@ -1159,11 +1163,16 @@ import 相关的配置项。
 
 ### `wait-for-lock-timeout`
 
-+ 悲观事务在 TiKV 中等待其他事务释放锁的最长时间，单位为毫秒。若超时则会返回错误给 TiDB 并由 TiDB 重试加锁，语句最长等锁时间由 `innodb_lock_wait_timeout` 控制。
-+ 默认值：1000
-+ 最小值：1
++ 悲观事务在 TiKV 中等待其他事务释放锁的最长时间。若超时则会返回错误给 TiDB 并由 TiDB 重试加锁，语句最长等锁时间由 `innodb_lock_wait_timeout` 控制。
++ 默认值：1s
++ 最小值：1ms
 
 ### `wait-up-delay-duration`
 
-+ 悲观事务释放锁时，只会唤醒等锁事务中 start ts 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 毫秒之后被唤醒。
-+ 默认值：20
++ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 之后被唤醒。
++ 默认值：20ms
+
+### `pipelined`
+
++ 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
++ 默认值：false
