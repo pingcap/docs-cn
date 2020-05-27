@@ -6,7 +6,7 @@ category: reference
 
 # 支持的数据迁移路径
 
-本文档介绍支持从哪些路径将数据迁移到 TiDB，包括从 MySQL 迁移到 TiDB 和从 CSV 文件迁移到 TiDB。
+本文档介绍支持从哪些路径将数据迁移到 TiDB，包括从 MySQL 迁移到 TiDB 和从 CSV/SQL 文件迁移到 TiDB。
 
 ## 从 MySQL 迁移到 TiDB
 
@@ -35,12 +35,38 @@ category: reference
 
 DM 支持将 MySQL 全量数据迁移到 TiDB，并同步 MySQL 的增量数据到 TiDB，详细信息可参考[使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
 
-## 从 CSV 文件迁移到 TiDB
+## 从文件迁移到 TiDB
 
-### 适合场景
+支持将 CSV 和 SQL 两种格式文件迁移到 TiDB。
+
+### 从 CSV 文件迁移到 TiDB
+
+#### 适合场景
 
 适合将不兼容 MySQL 协议的异构数据库的数据迁移到 TiDB。
 
-### 迁移方法
+#### 迁移方法
 
-将全量数据导出到 CSV 格式的文件中，再使用 TiDB Lightning 将 CSV 格式的数据迁移到 TiDB，详细信息可参考[从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+将全量数据导出到 CSV 格式的文件中，将 CSV 文件导入到 TiDB 有以下两种方法：
+
+- 使用 TiDB Lightning 将 CSV 格式的数据导入到 TiDB
+  
+    TiDB Lightning 导入速度快，适合 CSV 文件数据量较大的场景。详细信息可参考[从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)。
+
+- 使用 `LOAD DATA` 语句将 CSV 格式的数据导入到 TiDB
+
+    在 TiDB 中执行 `LOAD DATA` SQL 语句导入 CSV 格式的数据，这种导入方法使用比较方便，但是如果在导入过程中出现错误或者中断，需要人工介入，检查数据的一致性和完整性，因此不建议在生产环境中使用。详细信息可参考 [LOAD DATA](/sql-statements/sql-statement-load-data.md)。
+
+### 从 SQL 文件迁移到 TiDB
+
+#### 适合场景
+
+适合迁移少量的数据。
+
+#### 迁移方法
+
+使用 MySQL 客户端进行迁移，下面是一个示例命令：
+
+```mysql
+mysql -h 127.0.0.1 -u root -P4000 < test.sql
+```

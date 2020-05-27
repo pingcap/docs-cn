@@ -62,7 +62,9 @@
   + 从 MySQL 迁移至 TiDB
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md) @栾成
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
-  + [从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) @王相
+  + [从 CSV 文件迁移至 TiDB]
+    + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+    + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
 + 运维操作
   + 升级 TiDB 版本
     + [使用 TiUP](/upgrade-tidb-using-tiup.md) @戚铮
