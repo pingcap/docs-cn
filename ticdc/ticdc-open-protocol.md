@@ -1,7 +1,7 @@
 ---
 title: TiCDC Open Protocol
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/ticdc/open-protocol/','/docs-cn/dev/ticdc/column-ddl-type-codes/','/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
+aliases: ['/docs-cn/stable/reference/tools/ticdc/open-protocol/','/docs-cn/stable/ticdc/column-ddl-type-codes/','/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
 ---
 
 # TiCDC Open Protocol
