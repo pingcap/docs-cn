@@ -18,7 +18,7 @@ category: how-to
 
   ![访问](/media/dashboard/statement/access.png)
 
-- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/statement>（将 127.0.0.1:2379 替换为任意实际 PD 地址和端口）。
+- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/statement>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
 SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统表，参见 [Statement Summary Tables](https://pingcap.com/docs-cn/dev/statement-summary-tables) 文档了解该系统表的详细情况。
 
