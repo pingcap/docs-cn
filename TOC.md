@@ -432,14 +432,14 @@
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [错误码](/error-codes.md)
 + 常见问题解答 (FAQ)
-  + [产品 FAQ](/faq/tidb-faq.md) @荣毅龙/启航
-  + [SQL FAQ](/faq/sql-faq.md) @荣毅龙/启航
-  + [部署运维 FAQ](/faq/deploy-and-maintain-faq.md) @荣毅龙/启航
-  + [升级 FAQ](/faq/upgrade-faq.md) @荣毅龙/启航
-  + [License FAQ](/faq/licensing-faq.md) @荣毅龙/启航
-  + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
-  + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
-  + [迁移 FAQ](/faq/migration-tidb-faq.md) @荣毅龙
+  + [产品 FAQ](/faq/tidb-faq.md)
+  + [SQL FAQ](/faq/sql-faq.md)
+  + [部署运维 FAQ](/faq/deploy-and-maintain-faq.md)
+  + [升级 FAQ](/faq/upgrade-faq.md)
+  + [License FAQ](/faq/licensing-faq.md)
+  + [高可用 FAQ](/faq/high-availability-faq.md)
+  + [高可靠 FAQ](/faq/high-reliability-faq.md)
+  + [迁移 FAQ](/faq/migration-tidb-faq.md)
 + 开发指南
   + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
