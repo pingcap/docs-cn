@@ -60,11 +60,3 @@ DM 支持将 MySQL 全量数据迁移到 TiDB，并同步 MySQL 的增量数据�
 ### 从 SQL 文件迁移到 TiDB
 
 该部分内容与[使用 Mydumper 和 TiDB Lightning 迁移全量数据](#使用-mydumper-和-tidb-lightning-迁移全量数据)相同。
-
-#### 适合场景
-
-适合 MySQL 全量数据的大小大于 1TB 的场景。该方案只能迁移全量数据，如果需要继续同步增量数据，需要再使用 TiDB Data Migration (DM) 创建增量同步任务。
-
-#### 迁移方法
-
-使用 Mydumper 导出 MySQL 的全量数据，再使用 TiDB Lightning 将全量数据导入到 TiDB，详细信息可参考[从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
