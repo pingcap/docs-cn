@@ -436,7 +436,6 @@
   + [SQL FAQ](/faq/sql-faq.md)
   + [部署运维 FAQ](/faq/deploy-and-maintain-faq.md)
   + [升级 FAQ](/faq/upgrade-faq.md)
-  + [License FAQ](/faq/licensing-faq.md)
   + [高可用 FAQ](/faq/high-availability-faq.md)
   + [高可靠 FAQ](/faq/high-reliability-faq.md)
   + [迁移 FAQ](/faq/migration-tidb-faq.md)
