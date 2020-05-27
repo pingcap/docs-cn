@@ -24,9 +24,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单 TiCDC 配置模板](/config-templates/simple-cdc.yaml)
+[简单 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-cdc.yaml)
 
-[详细 TiCDC 配置模板](/config-templates/complex-cdc.yaml)
+[详细 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-cdc.yaml)
 
 > **注意：**
 >
