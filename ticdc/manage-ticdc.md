@@ -1,12 +1,48 @@
 ---
-title: 管理集群和同步任务
+title: TiCDC 运维操作及任务管理
 category: reference
 aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 ---
 
-# 管理集群和同步任务
+# TiCDC 运维操作及任务管理
 
-目前 TiCDC 提供命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理集群和同步任务。
+本文档介绍如何部署 TiCDC 集群，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
+
+## TiCDC 部署
+
+### 使用 TiUP 部署
+
+#### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
+
+详细操作参考[使用 TiUP 部署 TiCDC](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)。
+
+#### 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
+
+1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
+
+2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点) 章节对 TiCDC 进行部署。
+
+### 在原有 TiDB 集群上使用 binary 部署 TiCDC 组件
+
+假设 PD 集群有一个可以提供服务的 PD 节点（client URL 为 `10.0.10.25:2379`）。若要部署三个 TiCDC 节点，可以按照以下命令启动集群。只需要指定相同的 PD 地址，新启动的节点就可以自动加入 TiCDC 集群。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_1.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --addr=0.0.0.0:8302 --advertise-addr=127.0.0.1:8302
+cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:8303 --advertise-addr=127.0.0.1:8303
+```
+
+对于 `cdc server` 命令中可用选项解释如下：
+
+- `gc-ttl`: TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，单位为秒，默认值为 `86400`，即 24 小时。
+- `pd`: PD client 的 URL。
+- `addr`: TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。
+- `advertise-addr`: TiCDC 对外访问地址。
+- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
+- `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
+- `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
@@ -47,6 +83,57 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/']
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
 create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-start-ts":null}}
 ```
+
+其中 `--sink-uri` 需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
+
+{{< copyable "" >}}
+
+```
+[scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+```
+
+- Sink URI 配置 `mysql`/`tidb`
+
+    配置样例如下所示：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    --sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
+    ```
+
+    以上配置命令中的参数解析如下：
+
+    | 参数         | 解析                                             |
+    | :------------ | :------------------------------------------------ |
+    | `root`        | 下游数据库的用户名                             |
+    | `123456`       | 下游数据库密码                                     |
+    | `127.0.0.1`    | 下游数据库的 IP                                |
+    | `3306`         | 下游数据的连接端口                                 |
+    | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
+    | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
+
+- Sink URI 配置 `kafka`
+
+    配置样例如下所示：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+    ```
+
+    以上配置命令中的参数解析如下：
+
+    | 参数               | 解析                                                         |
+    | :------------------ | :------------------------------------------------------------ |
+    | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
+    | `9092`               | 下游 Kafka 的连接端口                                          |
+    | `cdc-test`           | 使用的 Kafka topic 名字                                      |
+    | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+    | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
+    | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
+    | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 
 #### 查询同步任务列表
 
