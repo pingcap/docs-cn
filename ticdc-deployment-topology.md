@@ -4,6 +4,10 @@ summary: 介绍 TiCDC 部署 TiDB 集群的拓扑结构。
 category: how-to
 ---
 
+> **注意：**
+>
+> TiCDC 目前为实验特性，不建议在生产环境中使用。
+
 # TiCDC 部署拓扑
 
 本文介绍 TiCDC 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。

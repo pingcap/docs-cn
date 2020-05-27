@@ -42,10 +42,6 @@ TiCDC 的系统架构如下图所示：
 - MySQL 协议兼容的数据库，提供最终一致性支持。
 - 以 TiCDC Open Protocol 输出到 Kafka，可实现行级别有序、最终一致性或严格事务一致性三种一致性保证。
 
-### 库表同步黑白名单
-
-用户可以通过编写黑白名单过滤规则，来过滤或只同步某些数据库或某些表的所有变更数据。过滤规则类似于 MySQL `replication-rules-db` 或 `replication-rules-table`。
-
 ## 同步限制
 
 将数据同步到 TiDB 或 MySQL，需要满足以下条件才能保证正确性：
@@ -62,6 +58,11 @@ TiCDC 的系统架构如下图所示：
 - 暂不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的-collation-支持)。如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现 collation 导致的无法定位数据的问题。
 - 暂不支持 TiDB 4.0 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md) 和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
 - 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。
+
+TiCDC 本身也有部分功能尚未完善，将在后续的 TiCDC 版本逐渐修复：
+
+- TiCDC 集群扩容后，不支持将已有的同步表调度到新的 TiCDC 节点中。
+- 暂不支持库表同步黑白名单。
 
 ## TiCDC 部署和任务管理
 
