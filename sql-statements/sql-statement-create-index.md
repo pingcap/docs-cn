@@ -15,33 +15,61 @@ aliases: ['/docs-cn/stable/reference/sql/statements/create-index/']
 
 ![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
 
-**CreateIndexStmtUnique:**
+**IndexKeyTypeOpt:**
 
-![CreateIndexStmtUnique](/media/sqlgram/CreateIndexStmtUnique.png)
+![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
 
-**Identifier:**
+**IfNotExists:**
 
-![Identifier](/media/sqlgram/Identifier.png)
+![IfNotExists](/media/sqlgram/IfNotExists.png)
 
 **IndexTypeOpt:**
 
 ![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
 
-**TableName:**
+**IndexPartSpecificationList:**
 
-![TableName](/media/sqlgram/TableName.png)
-
-**IndexColNameList:**
-
-![IndexColNameList](/media/sqlgram/IndexColNameList.png)
+![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
 
 **IndexOptionList:**
 
 ![IndexOptionList](/media/sqlgram/IndexOptionList.png)
 
+**IndexLockAndAlgorithmOpt:**
+
+![IndexLockAndAlgorithmOpt](/media/sqlgram/IndexLockAndAlgorithmOpt.png)
+
+**IndexType:**
+
+![IndexType](/media/sqlgram/IndexType.png)
+
+**IndexPartSpecification:**
+
+![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
+
 **IndexOption:**
 
 ![IndexOption](/media/sqlgram/IndexOption.png)
+
+**IndexTypeName:**
+
+![IndexTypeName](/media/sqlgram/IndexTypeName.png)
+
+**ColumnName:**
+
+![ColumnName](/media/sqlgram/ColumnName.png)
+
+**OptFieldLen:**
+
+![OptFieldLen](/media/sqlgram/OptFieldLen.png)
+
+**IndexNameList:**
+
+![IndexNameList](/media/sqlgram/IndexNameList.png)
+
+**KeyOrIndex:**
+
+![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
 
 ## 示例
 
@@ -131,7 +159,11 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 表达式索引
 
-表达式索引目前是一个实验特性。如果需要使用这一特性，在配置文件中进行以下设置：
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+如果需要使用这一特性，在配置文件中进行以下设置：
 
 {{< copyable "sql" >}}
 
@@ -173,6 +205,8 @@ CREATE INDEX idx ON t ((lower(name)));
 
 ## 另请参阅
 
+* [索引的选择](/choose-index.md)
+* [错误索引的解决方案](/wrong-index-solution.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)

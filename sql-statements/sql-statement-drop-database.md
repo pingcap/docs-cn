@@ -15,17 +15,9 @@ aliases: ['/docs-cn/stable/reference/sql/statements/drop-database/']
 
 ![DropDatabaseStmt](/media/sqlgram/DropDatabaseStmt.png)
 
-**DatabaseSym:**
-
-![DatabaseSym](/media/sqlgram/DatabaseSym.png)
-
 **IfExists:**
 
 ![IfExists](/media/sqlgram/IfExists.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
 
 ## 示例
 

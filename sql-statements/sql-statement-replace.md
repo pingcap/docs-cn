@@ -27,6 +27,10 @@ aliases: ['/docs-cn/stable/reference/sql/statements/replace/']
 
 ![TableName](/media/sqlgram/TableName.png)
 
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
 **InsertValues:**
 
 ![InsertValues](/media/sqlgram/InsertValues.png)

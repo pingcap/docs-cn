@@ -15,6 +15,10 @@ aliases: ['/docs-cn/stable/reference/sql/statements/update/']
 
 ![UpdateStmt](/media/sqlgram/UpdateStmt.png)
 
+**PriorityOpt:**
+
+![PriorityOpt](/media/sqlgram/PriorityOpt.png)
+
 **TableRef:**
 
 ![TableRef](/media/sqlgram/TableRef.png)

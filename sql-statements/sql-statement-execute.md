@@ -15,10 +15,6 @@ aliases: ['/docs-cn/stable/reference/sql/statements/execute/']
 
 ![ExecuteStmt](/media/sqlgram/ExecuteStmt.png)
 
-**Identifier:**
-
-![Identifier](/media/sqlgram/Identifier.png)
-
 ## 示例
 
 {{< copyable "sql" >}}

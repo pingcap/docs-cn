@@ -11,17 +11,17 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-table-status/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowTableStatusStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowTableStatusStmt](/media/sqlgram/ShowTableStatusStmt.png)
 
-**ShowTargetFilterable:**
+**FromOrIn:**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![FromOrIn](/media/sqlgram/FromOrIn.png)
 
-**ShowDatabaseNameOpt:**
+**StatusTableName:**
 
-![ShowDatabaseNameOpt](/media/sqlgram/ShowDatabaseNameOpt.png)
+![StatusTableName](/media/sqlgram/StatusTableName.png)
 
 ## 示例
 

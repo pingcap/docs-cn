@@ -11,9 +11,33 @@ aliases: ['/docs-cn/stable/reference/sql/statements/set-names/']
 
 ## 语法图
 
-**SetStmt:**
+**SetNamesStmt:**
 
-![SetStmt](/media/sqlgram/SetStmt.png)
+![SetNamesStmt](/media/sqlgram/SetNamesStmt.png)
+
+**VariableAssignmentList:**
+
+![VariableAssignmentList](/media/sqlgram/VariableAssignmentList.png)
+
+**VariableAssignment:**
+
+![VariableAssignment](/media/sqlgram/VariableAssignment.png)
+
+**CharsetName:**
+
+![CharsetName](/media/sqlgram/CharsetName.png)
+
+**StringName:**
+
+![StringName](/media/sqlgram/StringName.png)
+
+**CharsetKw:**
+
+![CharsetKw](/media/sqlgram/CharsetKw.png)
+
+**CharsetNameOrDefault:**
+
+![CharsetNameOrDefault](/media/sqlgram/CharsetNameOrDefault.png)
 
 ## 示例
 
@@ -110,5 +134,5 @@ SHOW VARIABLES LIKE 'character_set%';
 ## 另请参阅
 
 * [SHOW \[GLOBAL|SESSION\] VARIABLES](/sql-statements/sql-statement-show-variables.md)
-* [SET <variable>](/sql-statements/sql-statement-set-variable.md)
+* [`SET <variable>`](/sql-statements/sql-statement-set-variable.md)
 * [Character Set Support](/character-set-and-collation.md)

@@ -7,4 +7,4 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-schemas/']
 
 # SHOW SCHEMAS
 
-`SHOW SCHEMAS` 语句是 [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) 的别名。包含该语句提供了 MySQL 兼容性。。
+`SHOW SCHEMAS` 语句是 [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) 的别名。包含该语句提供了 MySQL 兼容性。

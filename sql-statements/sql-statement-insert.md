@@ -15,6 +15,10 @@ aliases: ['/docs-cn/stable/reference/sql/statements/insert/']
 
 ![InsertIntoStmt](/media/sqlgram/InsertIntoStmt.png)
 
+**TableOptimizerHints**
+
+![TableOptimizerHints](/media/sqlgram/TableOptimizerHints.png)
+
 **PriorityOpt:**
 
 ![PriorityOpt](/media/sqlgram/PriorityOpt.png)
@@ -31,16 +35,24 @@ aliases: ['/docs-cn/stable/reference/sql/statements/insert/']
 
 ![TableName](/media/sqlgram/TableName.png)
 
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
 **InsertValues:**
 
 ![InsertValues](/media/sqlgram/InsertValues.png)
+
+**OnDuplicateKeyUpdate:**
+
+![OnDuplicateKeyUpdate](/media/sqlgram/OnDuplicateKeyUpdate.png)
 
 ## 示例
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (a int);
+CREATE TABLE t1 (a INT);
 ```
 
 ```
