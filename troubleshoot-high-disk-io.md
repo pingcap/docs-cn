@@ -69,7 +69,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
     可以通过查看监控：grafana -> TiKV -> errors 监控确认具体 busy 原因。其中，`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，过一会儿再尝试。
 
-- TiKV RocksDB 日志出现 `write stall`：
+- TiKV RocksDB 日志出现 `write stall`。
 
     可能是 `level0 sst` 太多导致 stall。可以添加参数 `[rocksdb] max-sub-compactI/Ons = 2（或者 3）` 加快 level0 sst 往下 compact 的速度，该参数的意思是将 从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行。
 
