@@ -59,7 +59,7 @@ Slow Query 基础信息：
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
-* `Prepared`：表示这个语句是否是 `Prepare` / `Execute` 的请求。
+* `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
 
 和事务执行相关的字段：
