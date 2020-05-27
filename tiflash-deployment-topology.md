@@ -20,9 +20,9 @@ category: how-to
 
 ### 拓扑模版
 
-- [简单 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tiflash.yaml)
+- [简单 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-tiflash.yaml)
 
-- [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)
+- [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-tiflash.yaml)
 
 ### 关键参数介绍
 

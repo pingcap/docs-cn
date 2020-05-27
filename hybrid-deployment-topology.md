@@ -19,9 +19,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-multi-instance.yaml)
+[简单混部配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-multi-instance.yaml)
 
-[详细混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-multi-instance.yaml)
+[详细混部配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-multi-instance.yaml)
 
 ### 混合部署的关键参数介绍
 

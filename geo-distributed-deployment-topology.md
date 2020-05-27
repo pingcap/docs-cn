@@ -19,7 +19,7 @@ category: how-to
 
 ### 拓扑模版
 
-[跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml)
+[跨机房配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/geo-redundancy-deployment.yaml)
 
 ### 关键参数配置
 

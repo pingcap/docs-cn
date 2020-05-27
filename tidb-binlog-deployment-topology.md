@@ -20,9 +20,9 @@ category: how-to
 
 ### 拓扑模版
 
-[简单 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tidb-binlog.yaml)
+[简单 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-tidb-binlog.yaml)
 
-[详细 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tidb-binlog.yaml)
+[详细 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-tidb-binlog.yaml)
 
 ### 关键参数介绍
 
