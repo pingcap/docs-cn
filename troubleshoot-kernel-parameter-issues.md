@@ -1,3 +1,3 @@
 ---
-draft:true
+draft: true
 ---
