@@ -60,9 +60,12 @@
 + 数据迁移
   + [支持的数据迁移路径](/data-migration-route.md)
   + 从 MySQL 迁移至 TiDB
-    + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md) @栾成
+    + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
-  + [从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) @王相
+  + 从 CSV 文件迁移至 TiDB
+    + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+    + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
+  + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
 + 运维操作
   + 升级 TiDB 版本
     + [使用 TiUP](/upgrade-tidb-using-tiup.md) @戚铮
@@ -428,6 +431,7 @@
       + 集群诊断页面
         + [访问](/dashboard/dashboard-diagnostics-access.md)
         + [查看报告](/dashboard/dashboard-diagnostics-report.md)
+        + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
       + [实例性能分析页面](/dashboard/dashboard-profiling.md)
   + CLI
