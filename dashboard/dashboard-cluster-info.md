@@ -16,7 +16,7 @@ category: how-to
 
   ![访问](/media/dashboard/cluster-info/access.png)
 
-- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/cluster_info/instance>（将 127.0.0.1:2379 替换为任意实际 PD 地址和端口）。
+- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/cluster_info/instance>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
 ## 实例列表
 
