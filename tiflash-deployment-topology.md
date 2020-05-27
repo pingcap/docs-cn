@@ -18,15 +18,10 @@ category: how-to
 | TiFlash | 1 | 32 VCore 64 GB 2TB (nvme ssd) * 1  | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
 
-## 通过 TiUP 部署集群的配置文件模版 topology.yaml
-
-### 部署目标
-
-通过 `tidb` 用户管理集群，部署一套 TiFlash 单实例的 HTAP 集群，端口默认，部署目录为 `/tidb-deploy`，数据目录为 `/tidb-data`。
-
 ### 拓扑模版
 
 - [简单 TiFlash 配置模版](/config-templates/simple-tiflash.yaml)
+
 - [详细 TiFlash 配置模版](/config-templates/complex-tiflash.yaml)
 
 ### 关键参数介绍
