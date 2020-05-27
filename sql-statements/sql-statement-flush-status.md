@@ -101,4 +101,4 @@ show status;
 
 ## 另请参阅
 
-* [SHOW \[GLOBAL|SESSION\] STATUS](/sql-statements/sql-statement-show-status.md)
+* [`SHOW [GLOBAL|SESSION] STATUS`](/sql-statements/sql-statement-show-status.md)

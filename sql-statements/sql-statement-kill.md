@@ -51,4 +51,4 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## 另请参阅
 
-* [SHOW \[FULL\] PROCESSLIST](/sql-statements/sql-statement-show-processlist.md)
+* [`SHOW [FULL] PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md)
