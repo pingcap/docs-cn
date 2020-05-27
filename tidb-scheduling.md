@@ -75,7 +75,7 @@ TiKV 节点（Store）与 PD 之间存在心跳包，一方面 PD 通过心跳�
 * 数据写入/读取速度
 * 发送/接受的 Snapshot 数量（Replica 之间可能会通过 Snapshot 同步数据）
 * 是否过载
-* labels 标签信息（标签是具备层级关系的一系列 Tag，能够[感知拓扑信息](/location-awareness.md)）
+* labels 标签信息（标签是具备层级关系的一系列 Tag，能够[感知拓扑信息](/schedule-replicas-by-topology-labels.md)）
 
 **每个 Raft Group 的 Leader 会定期向 PD 汇报 Region 的状态信息**
 
