@@ -33,12 +33,15 @@
   + [环境与系统配置检查](/check-before-deployment.md) @李仲舒
   + 配置拓扑结构
     + [最小部署拓扑结构](/minimal-deployment-topology.md) @李仲舒
-    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) @李仲舒（[参考](/location-awareness.md)）
+    + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
+    + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
+    + [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
+    + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md) @李仲舒
   + 安装与启动
     + Linux
-      + [使用 TiUP 部署](/production-deployment-using-tiup.md) @李仲舒
-      + [使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md) @刘金龙
+      + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md) @李仲舒
+      + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md) @刘金龙
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
@@ -69,12 +72,13 @@
     + [使用 TiUP](/scale-tidb-using-tiup.md) @刘金龙
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
   + 备份与恢复
-    + [使用 Mydumper 和 TiDB Lightning](/backup-and-restore-using-mydumper-lightning.md) @栾成
+    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md) @栾成
+    + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
   + [日常巡检](/daily-inspection.md) @王军
-  + [TiCDC 任务管理](/ticdc/manage-ticdc.md) @沈泰宁
+  + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
 + 监控与告警
@@ -102,7 +106,7 @@
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
   + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
-  + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md) @杨非
+  + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
 + 性能调优
   + 系统调优
@@ -111,7 +115,8 @@
   + 软件调优
     + [软件版本](/tune-software-version.md) @张文博
     + 配置
-      + [TiKV 调优](/tune-tikv-performance.md) @刘玮
+      + [TiKV 线程调优](/tune-tikv-thread-performance.md) @刘玮
+      + [TiKV 内存调优](/tune-tikv-memory-performance.md) @刘玮
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
   + SQL 性能调优 @崔一丁
     + [SQL 性能调优概览](/sql-tuning-overview.md)
@@ -152,13 +157,34 @@
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) @李坤
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md) @李建俊
   + [Placement Rules 使用文档](/configure-placement-rules.md) @黄梦龙
+  + [Load Base Split 使用文档](/configure-load-base-split.md)
 + TiDB 生态工具
   + [工具使用指南](/ecosystem-tool-user-guide.md)
   + [工具下载](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
+    + [BR 常见问题](/br/backup-and-restore-faq.md)
     + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md) @余峻岑
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @余峻岑
-  + TiDB Lightning @kenny
+  + TiDB Binlog
+    + [概述](/tidb-binlog/tidb-binlog-overview.md)
+    + [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
+    + [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
+    + [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
+      + [Pump](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
+      + [Drainer](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
+    + [版本升级](/tidb-binlog/upgrade-tidb-binlog.md)
+    + [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
+    + [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
+    + [binlogctl 工具](/tidb-binlog/binlog-control.md)
+    + [Kafka 自定义开发](/tidb-binlog/binlog-slave-client.md)
+    + [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
+    + [集群间双向同步](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
+    + [术语表](/tidb-binlog/tidb-binlog-glossary.md)
+    + 故障诊断
+      + [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
+      + [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
+    + [FAQ](/tidb-binlog/tidb-binlog-faq.md)
+  + TiDB Lightning
     + [概述](/tidb-lightning/tidb-lightning-overview.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
@@ -173,14 +199,7 @@
     + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  + TiCDC
-    + [概述](/ticdc/ticdc-overview.md)
-    + [部署使用](/ticdc/deploy-ticdc.md)
-    + [集群和同步任务管理](/ticdc/manage-ticdc.md)
-    + [常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
-    + [Sink URI 配置规则](/ticdc/sink-url.md)
-    + [开放数据协议](/ticdc/ticdc-open-protocol.md)
-    + [Column 和 DDL 的类型码](/ticdc/column-ddl-type-codes.md)
+  + [TiCDC](/ticdc/ticdc-overview.md)
   + sync-diff-inspector @王相
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -408,8 +427,8 @@
     + [tikv-ctl](/tikv-control.md) @屈鹏
     + [pd-ctl](/pd-control.md) @陈书宁
     + [tidb-ctl](/tidb-control.md) @于帅鹏
-    + [binlog-ctl](/tidb-binlog/binlog-control.md) @王相
     + [pd-recover](/pd-recover.md) @陈书宁
+    + [binlog-ctl](/tidb-binlog/binlog-control.md)
   + 命令行参数
     + [tidb-server](/command-line-flags-for-tidb-configuration.md) @于帅鹏
     + [tikv-server](/command-line-flags-for-tikv-configuration.md) @陈书宁
@@ -425,8 +444,10 @@
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
   + 存储引擎
     + TiKV
+      + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
-    + TiFlash
+    + [TiFlash](/tiflash/tiflash-overview.md)
+  + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [错误码](/error-codes.md) @于帅鹏
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md) @荣毅龙/启航
@@ -436,6 +457,9 @@
   + [License FAQ](/faq/licensing-faq.md) @荣毅龙/启航
   + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
   + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
+  + [迁移 FAQ](/faq/migration-tidb-faq.md) @荣毅龙
++ [开发指南]
+  + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
 + [术语表](/glossary.md) @李琳
 + [版本发布历史](/releases/release-notes.md)
   + v4.0

@@ -6,7 +6,7 @@ category: how-to
 
 # 混合部署拓扑
 
-本文介绍 TiDB 集群的 TiKV 和 TiDB 混合部署拓扑以及主要参数。
+本文介绍 TiDB 集群的 TiKV 和 TiDB 混合部署拓扑以及主要参数。常见的场景为，部署机为多路 CPU 处理器，内存也充足，为提高物理机资源利用率，可单机多实例部署，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
 
 ## 拓扑信息
 
@@ -16,12 +16,6 @@ category: how-to
 | PD | 3 | 16 VCore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | 配置 location_lables 参数 |
 | TiKV | 6 | 32 VCore 64GB | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | 1. 区分实例级别的 port、status_port；<br> 2. 配置全局参数 readpool、storage 以及 raftstore 参数；<br> 3. 配置实例级别 host 维度的 labels；<br> 4. 配置 numa 绑核操作|
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd)  | 10.0.1.10 | 默认配置 |
-
-## 通过 TiUP 部署集群的配置文件模版 topology.yaml
-
-### 部署目标
-
-部署 TiDB 和 TiKV 组件的物理机为 2 路处理器，每路 16 VCore，内存也达标，为提高物理机资源利用率，可为单机多实例，即 TiDB、TiKV 通过 numa 绑核，隔离 CPU 资源。PD 和 Prometheus 混合部署，但两者的数据目录需要使用独立的文件系统。
 
 ### 拓扑模版
 
