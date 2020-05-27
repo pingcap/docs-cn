@@ -46,7 +46,7 @@ category: how-to
 
 ![界面](/media/dashboard/dashboard-overview-top-statements.png)
 
-该区域显示的内容与 [SQL 语句分析页面](/dashboard/dashboard-statements-list.md)一致，可点击 **Top SQL 语句**（Top SQL Statements）标题查看完整列表。关于该表格中各列详情，见 [SQL 语句分析页面](/dashboard/dashboard-statements-list.md)。
+该区域显示的内容与 [SQL 语句分析页面](/dashboard/dashboard-statement-list.md)一致，可点击 **Top SQL 语句**（Top SQL Statements）标题查看完整列表。关于该表格中各列详情，见 [SQL 语句分析页面](/dashboard/dashboard-statement-list.md)。
 
 > **注意：**
 >
