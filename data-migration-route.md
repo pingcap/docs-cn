@@ -37,7 +37,7 @@ DM 支持将 MySQL 全量数据迁移到 TiDB，并同步 MySQL 的增量数据�
 
 ## 从文件迁移到 TiDB
 
-支持将 CSV 和 SQL 两种格式文件迁移到 TiDB。
+支持通过 CSV 和 SQL 两种格式文件将数据迁移到 TiDB。
 
 ### 从 CSV 文件迁移到 TiDB
 
