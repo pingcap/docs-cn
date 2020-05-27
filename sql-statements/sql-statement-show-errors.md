@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-errors/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select invalid;
@@ -29,7 +29,7 @@ select invalid;
 ERROR 1054 (42S22): Unknown column 'invalid' in 'field list'
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create invalid;
@@ -39,7 +39,7 @@ create invalid;
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 14 near "invalid"
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW ERRORS;
@@ -55,7 +55,7 @@ SHOW ERRORS;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE invalid2;
@@ -65,7 +65,7 @@ CREATE invalid2;
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 15 near "invalid2"
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT 1;
@@ -80,7 +80,7 @@ SELECT 1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW ERRORS;

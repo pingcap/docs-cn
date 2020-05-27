@@ -20,7 +20,7 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 
 示例：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show create view v;
@@ -41,7 +41,7 @@ show create view v;
 
 示例:
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.views;
@@ -152,7 +152,7 @@ curl http://127.0.0.1:10080/schema/test/v
 
 以下例子将创建一个视图，并在该视图上进行查询，最后删除该视图。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(a int, b int);
@@ -162,7 +162,7 @@ create table t(a int, b int);
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 insert into t values(1, 1),(2,2),(3,3);
@@ -173,7 +173,7 @@ Query OK, 3 rows affected (0.00 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table s(a int);
@@ -183,7 +183,7 @@ create table s(a int);
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 insert into s values(2),(3);
@@ -194,7 +194,7 @@ Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create view v as select s.a from t left join s on t.a = s.a;
@@ -204,7 +204,7 @@ create view v as select s.a from t left join s on t.a = s.a;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from v;
@@ -221,7 +221,7 @@ select * from v;
 3 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 drop view v;

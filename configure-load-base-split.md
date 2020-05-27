@@ -37,7 +37,7 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 
 - 通过 SQL 语句修改，例如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set config tikv split.qps-threshold=3000
@@ -55,7 +55,7 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 
 - 通过 SQL 查看，例如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show config where type='tikv' and name like '%split.qps-threshold%'

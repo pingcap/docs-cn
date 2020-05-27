@@ -22,7 +22,7 @@ category: reference
 
 下面是一个绝对路径的例子：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 LOAD STATS '/tmp/stats.json';

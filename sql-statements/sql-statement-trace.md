@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/trace/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 trace format='row' select * from mysql.user;
@@ -48,7 +48,7 @@ trace format='row' select * from mysql.user;
 13 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT);
@@ -58,7 +58,7 @@ CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
@@ -69,7 +69,7 @@ Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 TRACE FORMAT='json' SELECT * FROM t1 WHERE id = 2;

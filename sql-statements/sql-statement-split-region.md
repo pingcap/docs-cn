@@ -93,7 +93,7 @@ t22_r11
 
 例如，对于表 t，如果想要从 `minInt64`~`maxInt64` 之间均匀切割出 16 个 Region，可以用以下语句：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t BETWEEN (-9223372036854775808) AND (9223372036854775807) REGIONS 16;
@@ -101,7 +101,7 @@ SPLIT TABLE t BETWEEN (-9223372036854775808) AND (9223372036854775807) REGIONS 1
 
 该语句会把表 t 从 minInt64 到 maxInt64 之间均匀切割出 16 个 Region。如果已知主键的范围没有这么大，比如只会在 0~1000000000 之间，那可以用 0 和 1000000000 分别代替上面的 minInt64 和 maxInt64 来切分 Region。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t BETWEEN (0) AND (1000000000) REGIONS 16;
@@ -111,7 +111,7 @@ SPLIT TABLE t BETWEEN (0) AND (1000000000) REGIONS 16;
 
 如果已知数据不是均匀分布的，比如想要 -inf ~ 10000 切一个 Region，10000 ~ 90000 切一个 Region，90000 ~ +inf 切一个 Region，可以通过手动指定点来切分 Region，示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t BY (10000), (90000);
@@ -141,7 +141,7 @@ t22_i5abc
 
 如果索引 idx 的列也是整数类型，可以用如下 SQL 语句切分索引数据：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807) REGIONS 16;
@@ -151,7 +151,7 @@ SPLIT TABLE t INDEX idx BETWEEN (-9223372036854775808) AND (9223372036854775807)
 
 如果索引 idx1 的列是 varchar 类型，希望根据前缀字母来切分索引数据：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 25;
@@ -161,7 +161,7 @@ SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 25;
 
 上面的切分方法，以 y 和 z 前缀的索引数据都会写到 region 25, 因为 `z` 并不是一个上界，真正的上界是 `z` 在 ASCII 码中的下一位 `{`，所以更准确的切分方法如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("{") REGIONS 26;
@@ -171,7 +171,7 @@ SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("{") REGIONS 26;
 
 如果索引 idx2 的列是 timestamp/datetime 等时间类型，希望根据时间区间来切分索引数据：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t INDEX idx2 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:00") REGIONS 10;
@@ -185,7 +185,7 @@ SPLIT TABLE t INDEX idx2 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:
 
 比如索引 `idx3 (a, b)` 包含 2 列，a 是 timestamp，b 是 int。如果只想根据 a 列做时间范围的切分，可以用切分单列时间索引的 SQL 语句来切分，`lower_value` 和 `upper_velue` 中不指定 b 列的值即可。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:00") REGIONS 10;
@@ -193,7 +193,7 @@ SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:
 
 如果想在时间相同的情况下，根据 b 列再做一次切分，在切分时指定 b 列的值即可。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00", "a") AND ("2010-01-01 00:00:00", "z") REGIONS 10;
@@ -207,7 +207,7 @@ SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00", "a") AND ("2010-01-01 0
 
 假如有 idx4 (a,b)，其中 a 列是 varchar 类型， b 列是 timestamp 类型。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE t1 INDEX idx4 BY ("a", "2000-01-01 00:00:01"), ("b", "2019-04-17 14:26:19"), ("c", "");
@@ -228,7 +228,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 - 均匀切分的语法如下：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SPLIT [PARTITION] TABLE t [PARTITION] [(partition_name_list...)] [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
@@ -236,7 +236,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 - 不均匀切分的语法如下：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SPLIT [PARTITION] TABLE table_name [PARTITION (partition_name_list...)] [INDEX index_name] BY (value_list) [, (value_list)] ...
@@ -246,7 +246,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 1. 首先创建一个分区表。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t (a int,b int,index idx(a)) partition by hash(a) partitions 2;
@@ -254,7 +254,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
     此时建完表后会为每个 partition 都单独 split 一个 Region，用 `SHOW TABLE REGIONS` 语法查看该表的 Region 如下：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show table t regions;
@@ -271,7 +271,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 2. 用 `SPLIT` 语法为每个 partition 切分 Region，示例如下，在 [0,10000] 范围内切分成 4 个 Region。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     split partition table t between (0) and (10000) regions 4;
@@ -279,7 +279,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 3. 用 `SHOW TABLE REGIONS` 语法查看该表的 Region。如下会发现该表现在一共有 10 个 Region，每个 partition 分别有 5 个 Region，其中 4 个 Region 是表的行数据，1 个 Region 是表的索引数据。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show table t regions;
@@ -304,7 +304,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 4. 也可以给每个分区的索引切分 Region，如将索引 `idx` 的 [1000,10000] 范围切分成 2 个 Region：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     split partition table t index idx between (1000) and (10000) regions 2;
@@ -316,7 +316,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 1. 首先创建一个分区表：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t ( a int, b int, index idx(b)) partition by range( a ) ( 
@@ -327,7 +327,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 2. 为 `p1` 分区的 [0,10000] 预切分 2 个 Region：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     split partition table t partition (p1) between (0) and (10000) regions 2;
@@ -335,7 +335,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 3. 为 `p2` 分区的 [10000,20000] 预切分 2 个 Region：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     split partition table t partition (p2) between (10000) and (20000) regions 2;
@@ -343,7 +343,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 4. 用 `SHOW TABLE REGIONS` 语法查看该表的 Region 如下：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show table t regions;
@@ -363,7 +363,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 5. 为 `p1` 和 `p2` 分区的索引 `idx` 的 [0,20000] 范围预切分 2 个 Region:
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     split partition table t partition (p1,p2) index idx between (0) and (20000) regions 2;
@@ -379,7 +379,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ### 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=2;

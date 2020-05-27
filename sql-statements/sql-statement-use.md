@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/use/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 USE mysql;
@@ -34,7 +34,7 @@ You can turn off this feature to get a quicker startup with -A
 Database changed
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW TABLES;
@@ -68,7 +68,7 @@ SHOW TABLES;
 20 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE DATABASE newtest;
@@ -78,7 +78,7 @@ CREATE DATABASE newtest;
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 USE newtest;
@@ -88,7 +88,7 @@ USE newtest;
 Database changed
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW TABLES;
@@ -98,7 +98,7 @@ SHOW TABLES;
 Empty set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a int);
@@ -108,7 +108,7 @@ CREATE TABLE t1 (a int);
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW TABLES;

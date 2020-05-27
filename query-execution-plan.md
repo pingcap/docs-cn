@@ -344,7 +344,7 @@ mysql> EXPLAIN SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = 
 
 使用 [bikeshare example database](https://pingcap.com/docs/dev/how-to/get-started/import-example-database/):
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
@@ -366,13 +366,13 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 
 上述查询中，虽然大部分计算逻辑都下推到了 TiKV 的 coprocessor 上，但是其执行效率还是不够高，可以添加适当的索引来消除 `TableScan_18` 对 trips 的全表扫，进一步加速查询的执行：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE trips ADD INDEX (start_date);
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';

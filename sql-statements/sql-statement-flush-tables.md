@@ -41,7 +41,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/flush-tables/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 FLUSH TABLES;
@@ -51,7 +51,7 @@ FLUSH TABLES;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 FLUSH TABLES WITH READ LOCK;

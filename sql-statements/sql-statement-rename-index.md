@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/rename-index/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL, INDEX col1 (c1));
@@ -31,7 +31,7 @@ CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL, IN
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE TABLE t1;
@@ -49,7 +49,7 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE t1 RENAME INDEX col1 TO c1;
@@ -59,7 +59,7 @@ ALTER TABLE t1 RENAME INDEX col1 TO c1;
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE TABLE t1;

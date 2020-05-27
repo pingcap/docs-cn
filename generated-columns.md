@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/reference/sql/generated-columns/']
 
 MySQL 5.7 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE person (
@@ -37,7 +37,7 @@ CREATE TABLE person (
 
 以 `city` 这一 `address_info` 中的字段为例，可以为其建立一个虚拟生成列并添加索引：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE person (
@@ -51,13 +51,13 @@ CREATE TABLE person (
 
 该表中，`city` 列是一个虚拟生成列。并且在该列上建立了索引。以下语句能够利用索引加速语句的执行速度：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT name, id FROM person WHERE city = 'Beijing';
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT name, id FROM person WHERE city = 'Beijing';
@@ -78,7 +78,7 @@ EXPLAIN SELECT name, id FROM person WHERE city = 'Beijing';
 
 如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义虚拟生成列：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE person (
@@ -94,7 +94,7 @@ CREATE TABLE person (
 
 `INSERT` 和 `UPDATE` 语句都会检查生成列计算得到的值是否满足生成列的定义。未通过有效性检测的行会返回错误：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO person (name, address_info) VALUES ('Morgan', JSON_OBJECT('Country', 'Canada'));
@@ -110,7 +110,7 @@ ERROR 1048 (23000): Column 'city' cannot be null
 
 例如，下面的例子为 `a+1` 这个表达式创建生成列并添加索引，从而加速了查询。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(a int);

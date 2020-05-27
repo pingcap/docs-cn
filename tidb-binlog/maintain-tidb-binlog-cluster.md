@@ -56,7 +56,7 @@ binlogctl 支持如下这些功能：
 
 - 查看 TiDB 是否开启 binlog
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show variables like "log_bin";
@@ -74,7 +74,7 @@ binlogctl 支持如下这些功能：
 
 - 查看 Pump/Drainer 状态
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show pump status;
@@ -90,7 +90,7 @@ binlogctl 支持如下这些功能：
     +--------|----------------|--------|--------------------|---------------------|
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show drainer status;
@@ -108,7 +108,7 @@ binlogctl 支持如下这些功能：
 
 - 异常情况下修改 Pump/Drainer 状态
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     change pump to node_state ='paused' for node_id 'pump1';
@@ -118,7 +118,7 @@ binlogctl 支持如下这些功能：
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     change drainer to node_state ='paused' for node_id 'drainer1';

@@ -200,7 +200,7 @@ docker run -d --name tidb \
 mysql -h 127.0.0.1 -P 4000 -u root -D test
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show databases;

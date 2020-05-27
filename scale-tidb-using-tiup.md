@@ -313,7 +313,7 @@ tiup cluster display <cluster-name>
 
 1. 在 TiDB 客户端中针对所有副本数大于集群剩余 TiFlash 节点数的表执行：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     alter table <db-name>.<table-name> set tiflash replica 0;

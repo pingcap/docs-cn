@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/alter-index/']
 
 ## 语法
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE [table_name] ALTER INDEX [index_name] {VISIBLE | INVISIBLE}
@@ -35,7 +35,7 @@ ALTER TABLE [table_name] ALTER INDEX [index_name] {VISIBLE | INVISIBLE}
 
 可以通过 `ALTER TABLE ... ALTER INDEX ...` 语句，修改索引的可见性：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (c1 INT, UNIQUE(c1));
@@ -46,7 +46,7 @@ ALTER TABLE t1 ALTER INDEX c1 INVISIBLE;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE TABLE t1;
@@ -69,7 +69,7 @@ SHOW CREATE TABLE t1;
 
 不可见索引 (Invisible Indexes) 是 MySQL 8.0 引入的新功能，将一个索引设置为不可见，使优化器不会再使用这条索引。这个功能可以方便地验证使用或者不使用一条索引的查询计划，避免了 `Drop index` 或 `Add index` 这种资源消耗较多的操作。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
@@ -78,7 +78,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 可以通过 `Create Table` 语句查看，不可见的索引会用 `/*!80000 INVISIBLE */` 标识出：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE TABLE t1;
@@ -101,7 +101,7 @@ SHOW CREATE TABLE t1;
 
 优化器将无法使用 `c1` 这个**不可见的索引**：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT c1 FROM t1 ORDER BY c1; 
@@ -120,7 +120,7 @@ EXPLAIN SELECT c1 FROM t1 ORDER BY c1;
 
 作为对比，c2 是**可见的索引**，优化器将可以使用索引：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT c2 FROM t1 ORDER BY c2; 
@@ -138,7 +138,7 @@ EXPLAIN SELECT c2 FROM t1 ORDER BY c2;
 
 即使用 SQL Hint `USE INDEX` 强制使用索引，优化器也无法使用不可见索引，否则 SQL 语句会报错：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t1 USE INDEX(c1);
@@ -152,7 +152,7 @@ ERROR 1176 (42000): Key 'c1' doesn't exist in table 't1'
 >
 > “不可见”是仅仅对优化器而言的，不可见索引仍然可以被修改或删除。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE t1 DROP INDEX c1;
@@ -166,7 +166,7 @@ Query OK, 0 rows affected (0.02 sec)
 
 MySQL 对不可见索引有一条限制：不能将**主键**设置为不可见。TiDB 兼容这条限制，将主键设置为不可见后会抛出错误。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t2(c1 INT, PRIMARY KEY(c1) INVISIBLE);
@@ -186,7 +186,7 @@ ERROR 3522 (HY000): A primary key index cannot be invisible
 >
 > TiDB 并不会实际创建一个**隐式的主键**，这个限制仅仅在行为上兼容 MySQL。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t2(c1 INT NOT NULL, UNIQUE(c1) INVISIBLE);

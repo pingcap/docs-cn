@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/alter-instance/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER INSTANCE RELOAD TLS;

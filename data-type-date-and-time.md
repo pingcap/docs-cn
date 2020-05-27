@@ -16,7 +16,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
 - 如果日期的年份部分是 2 位数，TiDB 会根据[年份为两位数的具体规则](#年份为两位数)进行转换。
 - 如果格式必须是数值类型，TiDB 会自动将日期或时间值转换为数值类型。例如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT NOW(), NOW()+0, NOW(3)+0;
@@ -32,7 +32,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
 
 - TiDB 可以自动将无效值转换同一类型的零值。是否进行转换取决于 SQL 模式的设置。比如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show create table t1;
@@ -49,7 +49,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
     1 row in set (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select @@sql_mode;
@@ -64,7 +64,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
     1 row in set (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert into t1 values (`2090-11-32:22:33:44`);
@@ -74,7 +74,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
     ERROR 1292 (22007): Truncated incorrect time value: `2090-11-32:22:33:44`
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@sql_mode=``;
@@ -84,7 +84,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert into t1 values (`2090-11-32:22:33:44`);
@@ -94,7 +94,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
     Query OK, 1 row affected, 1 warning (0.01 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from t1;
@@ -135,7 +135,7 @@ TiDB 支持 MySQL 所有的日期和时间类型，包括 `DATE`、`TIME`、`DAT
 
 在定义列的时候，`TIMESTAMP` 和 `DATETIME` 可以通过 `DEFAULT CURRENT_TIMESTAMP` 和 `ON UPDATE CURRENT_TIMESTAMP` 来设置。`DEFAULT` 也可以设置为一个特定的值，例如 `DEFAULT 0` 或 `DEFAULT '2000-01-01 00:00:00'`。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (
@@ -146,7 +146,7 @@ CREATE TABLE t1 (
 
 除非指定 `DATETIME` 的值为 `NOT NULL`，否则默认 `DATETIME` 的值为 `NULL`。指定 `DATETIME` 的值为 `NOT NULL` 时，如果没有设置默认值，则默认值为 `0`。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (
@@ -161,7 +161,7 @@ CREATE TABLE t1 (
 
 + 使用 `type_name(fsp)` 可以定义精确到小数的列，其中 `type_name` 可以是`TIME`、`DATETIME` 或 `TIMESTAMP`。例如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     CREATE TABLE t1 (t TIME(3), dt DATETIME(6));
@@ -173,7 +173,7 @@ CREATE TABLE t1 (
 
 + 当插入包含小数部分的 `TIME`、`DATETIME` 或 `TIMESTAMP` 时，如果小数部分的位数过少或过多，可能需要进行四舍五入。例如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     CREATE TABLE fractest( c1 TIME(2), c2 DATETIME(2), c3 TIMESTAMP(2) );
@@ -183,7 +183,7 @@ CREATE TABLE t1 (
     Query OK, 0 rows affected (0.33 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     INSERT INTO fractest VALUES
@@ -194,7 +194,7 @@ CREATE TABLE t1 (
     Query OK, 1 row affected (0.03 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT * FROM fractest;
@@ -229,7 +229,7 @@ CREATE TABLE t1 (
 
 使用 `CAST()` 函数可以显式地将值转换为 `DATE` 类型。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 date_col = CAST(datetime_col AS DATE)
@@ -237,7 +237,7 @@ date_col = CAST(datetime_col AS DATE)
 
 将 `TIME` 和 `DATETIME` 转换为数字格式。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT CURTIME(), CURTIME()+0, CURTIME(3)+0;
@@ -251,7 +251,7 @@ SELECT CURTIME(), CURTIME()+0, CURTIME(3)+0;
 +-----------|-------------|--------------+
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT NOW(), NOW()+0, NOW(3)+0;
@@ -286,7 +286,7 @@ SELECT NOW(), NOW()+0, NOW(3)+0;
 
 `DATE` 类型只包含日期部分，不包含时间部分。`DATE` 类型的格式为 `YYYY-MM-DD`，支持的范围是 `1000-01-01` 到 `9999-12-31`。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DATE
@@ -296,7 +296,7 @@ DATE
 
 `TIME` 类型的格式为 `HH:MM:SS[.fraction]`，支持的范围是 `-838:59:59.000000` 到 `838:59:59.000000`。`TIME` 不仅可用于指示一天内的时间，还可用于指两个事件之间的时间间隔。`fsp` 参数表示秒精度，取值范围为：0 ~ 6，默认值为 0。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 TIME[(fsp)]
@@ -310,7 +310,7 @@ TIME[(fsp)]
 
 `DATETIME` 类型是日期和时间的组合，格式为 `YYYY-MM-DD HH:MM:SS[.fraction]`。支持的范围是 `1000-01-01 00:00:00.000000` 到 `9999-12-31 23:59:59.999999`。`fsp` 参数表示秒精度，取值范围为 0~6，默认值为 0。TiDB 支持字符串或数字转换为 `DATETIME` 类型。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DATETIME[(fsp)]
@@ -320,7 +320,7 @@ DATETIME[(fsp)]
 
 `TIMESTAMP` 类型是日期和时间的组合，支持的范围是 UTC 时间从 `1970-01-01 00:00:01.000000` 到 `2038-01-19 03:14:07.999999`。`fsp` 参数表示秒精度，取值范围为 0~6，默认值为 0。在 `TIMESTAMP` 中，不允许零出现在月份部分或日期部分，唯一的例外是零值本身 `0000-00-00 00:00:00`。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 TIMESTAMP[(fsp)]
@@ -338,7 +338,7 @@ TIMESTAMP[(fsp)]
 
 `YEAR` 类型的格式为 `YYYY`，支持的值范围是 `1901` 到 `2155`，也支持零值 `0000`。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 YEAR[(4)]

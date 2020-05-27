@@ -222,7 +222,7 @@ port = 4000
 
 ### 在 MySQL 中插入新的数据
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 VALUES (4, 4), (5, 5);
@@ -236,7 +236,7 @@ INSERT INTO t1 VALUES (4, 4), (5, 5);
 mysql -h127.0.0.1 -P4000 -uroot -p
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t1;
@@ -390,7 +390,7 @@ target-table = "order_2017"
 
     可通过以下命令查看 `server-id`：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show global variables like 'server_id';
@@ -414,7 +414,7 @@ target-table = "order_2017"
 
         使用如下命令确认是否开启了 binlog：
 
-        {{< copyable "sql" >}}
+        
 
         ```sql
         show global variables like 'log_bin';
@@ -483,7 +483,7 @@ target-table = "order_2017"
 
         为所同步的数据库或者表，执行下面的 GRANT 语句：
 
-        {{< copyable "sql" >}}
+        
 
         ```sql
         GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
@@ -493,7 +493,7 @@ target-table = "order_2017"
 
     必须确认上下游的 SQL mode 一致；如果不一致，则会出现数据同步的错误。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show variables like '%sql_mode%';

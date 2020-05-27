@@ -28,7 +28,7 @@ category: reference
 
 ## 语法说明
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhereOpt];

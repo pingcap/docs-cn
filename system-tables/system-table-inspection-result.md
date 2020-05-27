@@ -13,7 +13,7 @@ TiDB 内置了一些诊断规则，用于检测系统中的故障以及隐患。
 
 诊断结果表 `information_schema.inspection_result` 的表结构如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.inspection_result;
@@ -57,7 +57,7 @@ desc information_schema.inspection_result;
 
 对当前时间的集群进行诊断。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.inspection_result\G
@@ -110,7 +110,7 @@ DETAILS   | max duration of 172.16.5.40:20151 tikv rocksdb-write-duration was to
 
 诊断集群在时间段 "2020-03-26 00:03:00", "2020-03-26 00:08:00" 的问题。指定时间范围需要使用 `/*+ time_range() */` 的 SQL Hint，参考下面的查询示例：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ time_range("2020-03-26 00:03:00", "2020-03-26 00:08:00") */ * from information_schema.inspection_result\G
@@ -144,7 +144,7 @@ DETAILS   | max duration of 172.16.5.40:10089 tidb get-token-duration is too slo
 
 也可以指定条件，比如只查询 `critical` 严重级别的诊断结果：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.inspection_result where severity='critical';
@@ -152,7 +152,7 @@ select * from information_schema.inspection_result where severity='critical';
 
 只查询 `critical-error` 规则的诊断结果:
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.inspection_result where rule='critical-error';
@@ -164,7 +164,7 @@ select * from information_schema.inspection_result where rule='critical-error';
 
 可以通过查询 `inspection_rules` 系统表查询已有的诊断规则:
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.inspection_rules where type='inspection';
@@ -232,7 +232,7 @@ select * from information_schema.inspection_rules where type='inspection';
 
 `version` 诊断规则通过查询 `CLUSTER_INFO` 系统表，检测相同组件的版本 hash 是否一致。示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.inspection_result where rule='version'\G

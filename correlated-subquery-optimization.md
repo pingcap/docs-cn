@@ -22,7 +22,7 @@ TiDB 之所以要进行这样的改写，是因为关联子查询每次子查询
 
 ## 样例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t1(a int, b int);
@@ -51,7 +51,7 @@ explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.
 
 接下来，关闭关联规则：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 insert into mysql.opt_rule_blacklist values("decorrelate");

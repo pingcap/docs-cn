@@ -20,7 +20,7 @@ category: reference
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW PLUGINS;
@@ -37,7 +37,7 @@ SHOW PLUGINS;
 
 `SHOW PLUGINS` 也支持模糊匹配：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW PLUGINS LIKE 'a%';

@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/reference/sql/partitioning/']
 
 下列场景中，假设你要创建一个人事记录的表：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE employees (
@@ -34,7 +34,7 @@ CREATE TABLE employees (
 
 你可以根据需求按各种方式进行 Range 分区。其中一种方式是按 `store_id` 列进行分区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE employees (
@@ -59,7 +59,7 @@ PARTITION BY RANGE (store_id) (
 
 新插入一行数据 `(72, 'Mitchell', 'Wilson', '1998-06-25', NULL, 13)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE employees (
@@ -84,7 +84,7 @@ PARTITION BY RANGE (store_id) (
 
 你也可以按员工的职位编号进行分区，也就是使用 `job_code` 列的值进行分区。假设两位数字编号是用于普通员工，三位数字编号是用于办公室以及客户支持，四位数字编号是管理层职位，那么你可以这样建表：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE employees (
@@ -108,7 +108,7 @@ PARTITION BY RANGE (job_code) (
 
 除了可以按 `store_id` 切分，你还可以按日期切分。例如，假设按员工离职的年份进行分区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE employees (
@@ -131,7 +131,7 @@ PARTITION BY RANGE ( YEAR(separated) ) (
 
 在 Range 分区中，可以基于 `timestamp` 列的值分区，并使用 `unix_timestamp()` 函数，例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE quarterly_report_status (
@@ -170,7 +170,7 @@ Hash 分区主要用于保证数据均匀地分散到一定数量的分区里面
 
 下面的语句将创建一个 Hash 分区表，按 `store_id` 分成 4 个分区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE employees (
@@ -191,7 +191,7 @@ PARTITIONS 4;
 
 你也可以使用一个返回整数的 SQL 表达式。例如，你可以按入职年份分区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE employees (
@@ -220,7 +220,7 @@ PARTITIONS 4;
 
 使用 `PARTITIION BY HASH` 的时候，TiDB 通过表达式的结果做“取余”运算，决定数据落在哪个分区。换句话说，如果分区表达式是 `expr`，分区数是 `num`，则由 `MOD(expr, num)` 决定存储的分区。假设 `t1` 定义如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (col1 INT, col2 CHAR(5), col3 DATE)
@@ -244,7 +244,7 @@ TiDB 允许计算结果为 NULL 的分区表达式。注意，NULL 不是一个�
 
 如果插入一行到 Range 分区表，它的分区列的计算结果是 NULL，那么这一行会被插入到最小的那个分区。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (
@@ -263,7 +263,7 @@ PARTITION BY RANGE(c1) (
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t1 partition(p0);
@@ -278,7 +278,7 @@ select * from t1 partition(p0);
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t1 partition(p1);
@@ -288,7 +288,7 @@ select * from t1 partition(p1);
 Empty set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t1 partition(p2);
@@ -300,7 +300,7 @@ Empty set (0.00 sec)
 
 删除 `p0` 后验证：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 alter table t1 drop partition p0;
@@ -310,7 +310,7 @@ alter table t1 drop partition p0;
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t1;
@@ -324,7 +324,7 @@ Empty set (0.00 sec)
 
 在 Hash 分区中 NULL 值的处理有所不同，如果分区表达式的计算结果为 NULL，它会被当作 0 值处理。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE th (
@@ -340,7 +340,7 @@ PARTITIONS 2;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO th VALUES (NULL, 'mothra'), (0, 'gigan');
@@ -350,7 +350,7 @@ INSERT INTO th VALUES (NULL, 'mothra'), (0, 'gigan');
 Query OK, 2 rows affected (0.04 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from th partition (p0);
@@ -366,7 +366,7 @@ select * from th partition (p0);
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from th partition (p1);
@@ -392,7 +392,7 @@ Empty set (0.00 sec)
 
 创建分区表：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE members (
@@ -411,7 +411,7 @@ PARTITION BY RANGE( YEAR(dob) ) (
 
 删除分区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE members DROP PARTITION p2;
@@ -423,7 +423,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 清空分区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE members TRUNCATE PARTITION p1;
@@ -439,7 +439,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 添加分区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE members ADD PARTITION (PARTITION p3 VALUES LESS THAN (2010));
@@ -447,7 +447,7 @@ ALTER TABLE members ADD PARTITION (PARTITION p3 VALUES LESS THAN (2010));
 
 Range 分区中，`ADD PARTITION` 只能在分区列表的最后面添加，如果是添加到已存在的分区范围则会报错：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE members
@@ -466,7 +466,7 @@ ERROR 1463 (HY000): VALUES LESS THAN value must be strictly »
 
 目前 TiDB 的实现暂时不支持 `ALTER TABLE ... COALESCE PARTITION`。对于暂不支持的分区管理语句，TiDB 会返回错误。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 alter table members optimize partition p0;
@@ -482,7 +482,7 @@ ERROR 8200 (HY000): Unsupported optimize partition
 
 假设创建一个分区表 `t1`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (
@@ -502,7 +502,7 @@ PARTITION BY RANGE( region_code ) (
 
 如果你想获得这个 select 语句的结果：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT fname, lname, region_code, dob
@@ -523,7 +523,7 @@ SELECT fname, lname, region_code, dob
 
     例如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t1 (x int) partition by range (x) (
@@ -532,7 +532,7 @@ SELECT fname, lname, region_code, dob
     create table t2 (x int);
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     explain select * from t1 left join t2 on t1.x = t2.x where t2.x > 5;
@@ -540,7 +540,7 @@ SELECT fname, lname, region_code, dob
 
     在这个查询中，外连接可以简化成内连接，然后由 `t1.x = t2.x` 和 `t2.x > 5` 可以推出条件 `t1.x > 5`，于是可以分区裁剪并且只使用 `p1` 分区。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     explain select * from t1 left join t2 on t1.x = t2.x and t2.x > 5;
@@ -552,7 +552,7 @@ SELECT fname, lname, region_code, dob
 
     例如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t1 (x int) partition by range (x) (
@@ -560,7 +560,7 @@ SELECT fname, lname, region_code, dob
         partition p1 values less than (10));
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     explain select * from t2 where x < (select * from t1 where t2.x < t1.x and t2.x < 2);
@@ -591,7 +591,7 @@ SELECT fname, lname, region_code, dob
 
     例如，分区表达式是简单列的情况：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t (id int) partition by range (id) (
@@ -602,7 +602,7 @@ SELECT fname, lname, region_code, dob
 
     分区表达式是 `fn(col)` 的形式，`fn` 是我们支持的单调函数 `to_days`：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t (dt datetime) partition by range (to_days(id)) (
@@ -613,7 +613,7 @@ SELECT fname, lname, region_code, dob
 
     有一处例外是 `floor(unix_timestamp(ts))` 作为分区表达式，TiDB 针对这个场景做了特殊处理，可以支持分区裁剪。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t (ts timestamp(3) not null default current_timestamp(3))
@@ -627,7 +627,7 @@ SELECT fname, lname, region_code, dob
 
 SELECT 语句中支持分区选择。实现通过使用一个 `PARTITION` 选项实现。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE employees  (
@@ -659,7 +659,7 @@ INSERT INTO employees VALUES
 
 你可以查看存储在分区 `p1` 中的行：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM employees PARTITION (p1);
@@ -682,7 +682,7 @@ SELECT * FROM employees PARTITION (p1);
 
 使用分区选择时，仍然可以使用 where 条件，以及 ORDER BY 和 LIMIT 等选项。使用 HAVING 和 GROUP BY 等聚合选项也是支持的。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM employees PARTITION (p0, p2)
@@ -699,7 +699,7 @@ SELECT * FROM employees PARTITION (p0, p2)
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT id, CONCAT(fname, ' ', lname) AS name
@@ -718,7 +718,7 @@ SELECT id, CONCAT(fname, ' ', lname) AS name
 4 rows in set (0.06 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT store_id, COUNT(department_id) AS c
@@ -752,7 +752,7 @@ SELECT store_id, COUNT(department_id) AS c
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (
@@ -783,7 +783,7 @@ PARTITIONS 4;
 
 下面是一些合法的语句的例子：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (
@@ -811,7 +811,7 @@ PARTITIONS 4;
 
 下例中会产生一个报错：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t3 (
@@ -835,7 +835,7 @@ ERROR 1491 (HY000): A PRIMARY KEY must include all columns in the table's partit
 
 下面这个表就没法做分区了，因为无论如何都不可能找到满足条件的分区键：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t4 (
@@ -850,7 +850,7 @@ CREATE TABLE t4 (
 
 根据定义，主键也是唯一键，下面两个建表语句是无效的：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t5 (
@@ -883,7 +883,7 @@ PARTITIONS 4;
 
 DDL 变更时，添加唯一索引也需要考虑到这个限制。比如创建了这样一个表：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t_no_pk (c1 INT, c2 INT)
@@ -903,7 +903,7 @@ Query OK, 0 rows affected (0.12 sec)
 
 使用分区表时，前缀索引是不能指定为唯一属性的：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t (a varchar(20), b blob,
@@ -962,7 +962,7 @@ INFORMATION_SCHEMA.PARTITION 表暂不支持。
 
 Load Data 暂时不支持分区选择。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (id int, val int) partition by hash(id) partitions 4;
@@ -970,7 +970,7 @@ create table t (id int, val int) partition by hash(id) partitions 4;
 
 普通的 Load Data 操作在 TiDB 中是支持的，如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 load local data infile "xxx" into t ...
@@ -978,7 +978,7 @@ load local data infile "xxx" into t ...
 
 但 Load Data 不支持分区选择操作：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 load local data infile "xxx" into t partition (p1)...
@@ -986,7 +986,7 @@ load local data infile "xxx" into t partition (p1)...
 
 对于分区表，`select * from t` 的返回结果是分区之间无序的。这跟 MySQL 不同，MySQL 的返回结果是分区之间有序，分区内部无序。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (id int, val int) partition by range (id) (
@@ -999,7 +999,7 @@ create table t (id int, val int) partition by range (id) (
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 insert into t values (1, 2), (3, 4),(5, 6),(7,8),(9,10);
@@ -1012,7 +1012,7 @@ Records: 5  Duplicates: 0  Warnings: 0
 
 TiDB 每次返回结果会不同，例如：
 
-{{< copyable "sql" >}}
+
 
 ```
 select * from t;
@@ -1033,7 +1033,7 @@ select * from t;
 
 MySQL 的返回结果：
 
-{{< copyable "sql" >}}
+
 
 ```
 select * from t;

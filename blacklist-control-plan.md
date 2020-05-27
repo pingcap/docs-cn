@@ -40,7 +40,7 @@ category: performance
 
 - 如果你想禁用某些规则，可以在 `mysql.opt_rule_blacklist` 表中写入规则的名字，例如：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert into mysql.opt_rule_blacklist values("join_reorder"), ("topn_push_down");
@@ -48,7 +48,7 @@ category: performance
 
     执行以下 SQL 语句可让禁用规则立即生效，包括相应 TiDB Server 的所有旧链接：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     admin reload opt_rule_blacklist;
@@ -60,7 +60,7 @@ category: performance
 
 - 需要解除一条规则的禁用时，需要删除表中禁用该条规则的相应数据，再执行 `admin reload`：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     delete from mysql.opt_rule_blacklist where name in ("join_reoder", "topn_push_down");
@@ -88,7 +88,7 @@ category: performance
 
 `mysql.expr_pushdown_blacklist` 的 schema 如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc mysql.expr_pushdown_blacklist;
@@ -144,7 +144,7 @@ desc mysql.expr_pushdown_blacklist;
 
 1. 对于以下 SQL 语句，`where` 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     explain select * from t where a < 2 and a > 2;
@@ -163,7 +163,7 @@ desc mysql.expr_pushdown_blacklist;
 
 2. 往 `mysql.expr_pushdown_blacklist` 表中插入禁用表达式，并且执行 `admin reload expr_pushdown_blacklist`。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert into mysql.expr_pushdown_blacklist values('<','tikv',''), ('>','tikv','');
@@ -174,7 +174,7 @@ desc mysql.expr_pushdown_blacklist;
     Records: 2  Duplicates: 0  Warnings: 0
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     admin reload expr_pushdown_blacklist;
@@ -186,7 +186,7 @@ desc mysql.expr_pushdown_blacklist;
 
 3. 重新观察执行计划，发现表达式下推黑名单生效，`where` 条件中的 `<` 和 `>` 没有被下推到 TiKV Coprocessor 上。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     explain select * from t where a < 2 and a > 2;
@@ -205,7 +205,7 @@ desc mysql.expr_pushdown_blacklist;
 
 4. 将某一表达式（`>` 大于）禁用规则从黑名单表中删除，并且执行 `admin reload expr_pushdown_blacklist`。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     delete from mysql.expr_pushdown_blacklist where name = '>';
@@ -215,7 +215,7 @@ desc mysql.expr_pushdown_blacklist;
     Query OK, 1 row affected (0.01 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     admin reload expr_pushdown_blacklist;
@@ -227,7 +227,7 @@ desc mysql.expr_pushdown_blacklist;
 
 5. 重新观察执行计划，`<` 和 `>` 表达式又可以重新被下推到 TiKV Coprocessor。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     explain select * from t where a < 2 and a > 2;

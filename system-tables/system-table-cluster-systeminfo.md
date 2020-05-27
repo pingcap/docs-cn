@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-systeminfo/']
 
 集群负载表 `CLUSTER_SYSTEMINFO` 用于查询集群所有实例所在服务器的内核配置信息。目前支持查询 `sysctl` 的信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.cluster_systeminfo;

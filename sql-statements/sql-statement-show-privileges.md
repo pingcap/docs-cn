@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-privileges/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show privileges;

@@ -13,7 +13,7 @@ JSON 类型可以存储 JSON 这种半结构化的数据，相比于直接将 JS
 
 JSON 字段本身上，并不能创建索引。相反，可以对 JSON 文档中的某个子字段创建索引。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE city (

@@ -16,7 +16,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 Optimizer Hints 通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面（`INSERT` 关键字后不支持 Optimizer Hints），常见形式如 `/*+ HINT_NAME([t1_name [, t2_name] ...]) */`。Hint 名称不区分大小写，多个不同的 Hint 之间需用逗号隔开。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ USE_INDEX(t1, idx1), HASH_AGG(), HASH_JOIN(t1) */ count(*) from t t1, t t2 where t1.a = t2.b;
@@ -32,7 +32,7 @@ TiDB 目前支持的 Optimizer Hints 根据生效范围的不同可以划分为�
 
 每条语句中每一个查询和子查询都对应着一个不同的查询块，每个查询块有自己对应的名字。以下面这条语句为例：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from (select * from t) t1, (select * from t) t2;
@@ -44,7 +44,7 @@ select * from (select * from t) t1, (select * from t) t2;
 
 这类 Hint 可以跟在查询语句中**任意** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。通过在 Hint 中使用查询块名字可以控制 Hint 的生效范围，以及准确标识查询中的每一个表（有可能表的名字或者别名相同），方便明确 Hint 的参数指向。若不显式地在 Hint 中指定查询块，Hint 默认作用于当前查询块。以如下查询为例：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
@@ -62,7 +62,7 @@ select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1
 
 当查询语句是包含多层嵌套子查询的复杂语句时，识别某个查询块的序号和名字很可能会出错，Hint `QB_NAME` 可以方便我们使用查询块。`QB_NAME` 是 Query Block Name 的缩写，用于为某个查询块指定新的名字，同时查询块原本默认的名字依然有效。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
@@ -78,7 +78,7 @@ select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 
 `MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Sort Merge Join 算法。这个算法通常会占用更少的内存，但执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ MERGE_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
@@ -92,7 +92,7 @@ select /*+ MERGE_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 `INL_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
@@ -116,7 +116,7 @@ select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 `HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ HASH_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
@@ -130,7 +130,7 @@ select /*+ HASH_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 
 `HASH_AGG()` 提示优化器对指定查询块中所有聚合函数使用 Hash Aggregation 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ HASH_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
@@ -140,7 +140,7 @@ select /*+ HASH_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
 
 `STREAM_AGG()` 提示优化器对指定查询块中所有聚合函数使用 Stream Aggregation 算法。这个算法通常会占用更少的内存，但执行时间会更久。数据量太大，或系统内存不足时，建议尝试使用。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ STREAM_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
@@ -152,7 +152,7 @@ select /*+ STREAM_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
 
 下面例子的效果等价于 `select * from t t1 use index(idx1, idx2);`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ USE_INDEX(t1, idx1, idx2) */ * from t t1;
@@ -168,7 +168,7 @@ select /*+ USE_INDEX(t1, idx1, idx2) */ * from t t1;
 
 下面例子的效果等价于 `select * from t t1 ignore index(idx1, idx2);`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ IGNORE_INDEX(t1, idx1, idx2) */ * from t t1;
@@ -178,7 +178,7 @@ select /*+ IGNORE_INDEX(t1, idx1, idx2) */ * from t t1;
 
 `AGG_TO_COP()` 提示优化器将指定查询块中的聚合函数下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ AGG_TO_COP() */ sum(t1.a) from t t1;
@@ -188,7 +188,7 @@ select /*+ AGG_TO_COP() */ sum(t1.a) from t t1;
 
 `READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])` 提示优化器从指定的存储引擎来读取指定的表，目前支持的存储引擎参数有 `TIKV` 和 `TIFLASH`。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 where t1.a = t2.a;
@@ -198,7 +198,7 @@ select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 wher
 
 `USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 10 or t1.b > 10;
@@ -229,7 +229,7 @@ select /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * from t t1 where t1.a > 
 
 下面的例子不会使用 index merge：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
@@ -247,7 +247,7 @@ select /*+ NO_INDEX_MERGE() */ * from t where t.a > 0 or t.b > 0;
 
 下面的例子会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
@@ -261,7 +261,7 @@ select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from 
 
 下面的 Hint 设置了 1000 毫秒（即 1 秒）超时：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.id;
@@ -275,7 +275,7 @@ select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.
 
 下面的 Hint 设置了 1024 MB 的内存限制：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
@@ -289,7 +289,7 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 
 下面的例子会从 follower 节点读取数据：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ READ_CONSISTENT_REPLICA() */ * from t;
@@ -305,7 +305,7 @@ select /*+ READ_CONSISTENT_REPLICA() */ * from t;
 
 以下示例强制该 `prepare` 语句不使用 plan cache：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id = ?';

@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/information-schema/']
 
 `ANALYZE_STATUS` 表提供正在执行的收集统计信息的任务以及有限条历史任务记录。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from `ANALYZE_STATUS`;
@@ -36,7 +36,7 @@ select * from `ANALYZE_STATUS`;
 
 `CHARACTER_SETS` 表提供[字符集](/character-set-and-collation.md)相关的信息。TiDB 目前仅支持部分字符集。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM character_sets;
@@ -59,7 +59,7 @@ SELECT * FROM character_sets;
 
 `COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM collations WHERE character_set_name='utf8mb4';
@@ -103,7 +103,7 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 
 `COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射至适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了兼容 MySQL。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM collation_character_set_applicability WHERE character_set_name='utf8mb4';
@@ -147,7 +147,7 @@ SELECT * FROM collation_character_set_applicability WHERE character_set_name='ut
 
 `COLUMNS` 表提供了表的所有列的信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE test.t1 (a int);
@@ -157,7 +157,7 @@ CREATE TABLE test.t1 (a int);
 1 row in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM information_schema.columns WHERE table_schema='test' AND TABLE_NAME='t1';
@@ -191,7 +191,7 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 
 对应的 `SHOW` 语句如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW COLUMNS FROM t1 FROM test;
@@ -210,7 +210,7 @@ SHOW COLUMNS FROM t1 FROM test;
 
 `ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM engines;
@@ -231,7 +231,7 @@ TRANSACTIONS: YES
 
 `KEY_COLUMN_USAGE` 表描述了列的键约束，比如主键约束。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM key_column_usage WHERE table_schema='mysql' and table_name='user';
@@ -285,7 +285,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 
 `SCHEMATA` 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM schemata;
@@ -308,7 +308,7 @@ SELECT * FROM schemata;
 
 `SESSION_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 `SHOW SESSION VARIABLES` 语句执行结果类似。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM session_variables LIMIT 10;
@@ -336,7 +336,7 @@ SELECT * FROM session_variables LIMIT 10;
 
 `SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/identify-slow-queries.md)。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.slow_query;
@@ -400,7 +400,7 @@ desc information_schema.slow_query;
 
 `CLUSTER_SLOW_QUERY` 表中提供了集群所有节点的慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，该表使用上和 [`SLOW_QUERY`](#slow_query-表) 一样，表结构上比 `SLOW_QUERY` 多一列 `INSTANCE`，表示该行慢查询信息来自的 TiDB 节点地址。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/identify-slow-queries.md)。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.cluster_slow_query;
@@ -465,7 +465,7 @@ desc information_schema.cluster_slow_query;
 
 `STATISTICS` 表提供了关于表索引的信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc statistics;
@@ -498,7 +498,7 @@ desc statistics;
 
 下列语句是等价的：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM INFORMATION_SCHEMA.STATISTICS
@@ -506,7 +506,7 @@ SELECT * FROM INFORMATION_SCHEMA.STATISTICS
   AND table_schema = 'db_name'
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW INDEX
@@ -518,7 +518,7 @@ SHOW INDEX
 
 `TABLES` 表提供了数据库里面关于表的信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM tables WHERE table_schema='mysql' AND table_name='user';
@@ -554,7 +554,7 @@ TIDB_ROW_ID_SHARDING_INFO: NULL
 
 以下操作是等价的：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT table_name FROM INFORMATION_SCHEMA.TABLES
@@ -562,7 +562,7 @@ SELECT table_name FROM INFORMATION_SCHEMA.TABLES
   [AND table_name LIKE 'wild']
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW TABLES
@@ -584,7 +584,7 @@ SHOW TABLES
 
 `TABLE_CONSTRAINTS` 表记录了表的约束信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM table_constraints WHERE constraint_type='UNIQUE';
@@ -644,7 +644,7 @@ CONSTRAINT_CATALOG: def
 
 `TIDB_HOT_REGIONS` 表提供了关于热点 REGION 的相关信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc TIDB_HOT_REGIONS;
@@ -670,7 +670,7 @@ desc TIDB_HOT_REGIONS;
 
 `TIDB_INDEXES` 记录了所有表中的 INDEX 信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc TIDB_INDEXES;
@@ -696,7 +696,7 @@ desc TIDB_INDEXES;
 
 `TIKV_REGION_PEERS` 表提供了所有 REGION 的 peer 信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc TIKV_REGION_PEERS;
@@ -720,7 +720,7 @@ desc TIKV_REGION_PEERS;
 
 `TIKV_REGION_STATUS` 表提供了所有 REGION 的状态信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc TIKV_REGION_STATUS;
@@ -746,7 +746,7 @@ desc TIKV_REGION_STATUS;
 
 `TIKV_STORE_STATUS` 表提供了所有 TiKV Store 的状态信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc TIKV_STORE_STATUS;
@@ -782,7 +782,7 @@ desc TIKV_STORE_STATUS;
 
 `USER_PRIVILEGES` 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc USER_PRIVILEGES;
@@ -804,7 +804,7 @@ desc USER_PRIVILEGES;
 
 `VIEWS` 表提供了关于 SQL 视图的信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create view test.v1 as select 1;
@@ -814,7 +814,7 @@ create view test.v1 as select 1;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from views;

@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-status/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show status;
@@ -45,7 +45,7 @@ show status;
 6 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show global status;

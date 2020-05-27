@@ -16,7 +16,7 @@ category: reference
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW PROFILES

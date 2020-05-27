@@ -38,7 +38,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 1. 初始化阶段，创建一个表，并插入几行数据：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t (c int);
@@ -48,7 +48,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert into t values (1), (2), (3);
@@ -60,7 +60,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 2. 查看表中的数据：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from t;
@@ -79,7 +79,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 3. 查看当前时间：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select now();
@@ -96,7 +96,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 4. 更新某一行数据：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     update t set c=22 where c=2;
@@ -108,7 +108,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 5. 确认数据已经被更新：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from t;
@@ -127,7 +127,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 6. 设置一个特殊的环境变量，这个是一个 session scope 的变量，其意义为读取这个时间之前的最新的一个版本。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@tidb_snapshot="2016-10-08 16:45:26";
@@ -144,7 +144,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
     这里读取到的内容即为 update 之前的内容，也就是历史版本：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from t;
@@ -163,7 +163,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 7. 清空这个变量后，即可读取最新版本数据：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@tidb_snapshot="";
@@ -173,7 +173,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
     Query OK, 0 rows affected (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from t;

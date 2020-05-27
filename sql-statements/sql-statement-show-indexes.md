@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-indexes/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT, INDEX(col1));
@@ -43,7 +43,7 @@ CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT, INDEX(col
 Query OK, 0 rows affected (0.12 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW INDEXES FROM t1;
@@ -61,7 +61,7 @@ SHOW INDEXES FROM t1;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW INDEX FROM t1;
@@ -79,7 +79,7 @@ SHOW INDEX FROM t1;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW KEYS FROM t1;

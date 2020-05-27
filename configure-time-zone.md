@@ -14,7 +14,7 @@ TiDB 使用的时区由 `time_zone` 全局变量和 session 变量决定。`time
 
 在运行过程中可以修改全局时区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET GLOBAL time_zone = timezone;
@@ -22,7 +22,7 @@ SET GLOBAL time_zone = timezone;
 
 TiDB 还可以通过设置 session 变量 `time_zone` 为每个连接维护各自的时区。默认条件下，这个值取的是全局变量 `time_zone` 的值。修改 session 使用的时区：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET time_zone = timezone;
@@ -30,7 +30,7 @@ SET time_zone = timezone;
 
 查看当前使用的时区的值：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT @@global.time_zone, @@session.time_zone;
@@ -48,9 +48,9 @@ SELECT @@global.time_zone, @@session.time_zone;
 >
 > 只有 Timestamp 数据类型的值是受时区影响的。可以理解为，Timestamp 数据类型的实际表示使用的是 (字面值 + 时区信息)。其它时间和日期类型，比如 Datetime/Date/Time 是不包含时区信息的，所以也不受到时区变化的影响。
 
-{{< copyable "sql" >}}
 
-{{< copyable "sql" >}}
+
+
 
 ```sql
 create table t (ts timestamp, dt datetime);
@@ -60,7 +60,7 @@ create table t (ts timestamp, dt datetime);
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@time_zone = 'UTC';
@@ -70,7 +70,7 @@ set @@time_zone = 'UTC';
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 insert into t values ('2017-09-30 11:11:11', '2017-09-30 11:11:11');
@@ -80,7 +80,7 @@ insert into t values ('2017-09-30 11:11:11', '2017-09-30 11:11:11');
 Query OK, 1 row affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@time_zone = '+8:00';
@@ -90,7 +90,7 @@ set @@time_zone = '+8:00';
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t;

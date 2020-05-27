@@ -24,7 +24,7 @@ category: reference
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show stats_histograms;
@@ -41,7 +41,7 @@ show stats_histograms;
 3 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show stats_histograms where table_name = 't2';

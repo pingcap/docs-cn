@@ -116,7 +116,7 @@ TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢日志，即�
 
 不指定时间范围时，只会解析当前 TiDB 正在写入的慢日志文件的慢查询数据：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select count(*),
@@ -135,7 +135,7 @@ from slow_query;
 
 指定查询 `2020-03-10 00:00:00` 到 `2020-03-11 00:00:00` 时间范围后，会定位指定时间范围内的慢日志文件后解析慢查询数据：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select count(*),
@@ -168,7 +168,7 @@ TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/system-tables/system-table-informa
 
 查询 Top 2 的用户慢查询。`is_internal=false` 表示排除 TiDB 内部的慢查询，只看用户的慢查询：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select query_time, query
@@ -193,7 +193,7 @@ limit 2;
 
 下面例子中搜索 test 用户执行的慢查询 SQL，且按执行消耗时间逆序排序显式前 2 条：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select query_time, query, user
@@ -220,7 +220,7 @@ limit 2;
 
 先获取 Top N 的慢查询和对应的 SQL 指纹：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select query_time, query, digest
@@ -242,7 +242,7 @@ limit 1;
 
 再根据 SQL 指纹搜索同类慢查询：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select query, query_time
@@ -263,7 +263,7 @@ where digest = "4751cb6008fda383e22dacb601fde85425dc8f8cf669338d55d944bafb46a6fa
 
 ### 搜索统计信息为 pseudo 的慢查询 SQL 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select query, query_time, stats
@@ -290,7 +290,7 @@ where is_internal = false
 
 由于统计信息过时，或者统计信息因为误差无法精确反映数据的真实分布情况时，可能导致同类型 SQL 的执行计划发生改变导致执行变慢，可以用以下 SQL 查询哪些 SQL 具有不同的执行计划：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select count(distinct plan_digest) as count,
@@ -321,7 +321,7 @@ min(query) | SELECT DISTINCT c FROM sbtest11 WHERE id BETWEEN ? AND ? ORDER BY c
 
 然后可以用查询结果中的 SQL 指纹进一步查询不同的 plan
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select min(plan),
@@ -350,7 +350,7 @@ plan_digest: 6afbbd21f60ca6c6fdf3d3cd94f7c7a49dd93c00fcf8774646da492e50e204ee
 
 ### 查询集群各个 TIDB 节点的慢查询数量
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select instance, count(*) from information_schema.cluster_slow_query where time >= "2020-03-06 00:00:00" and time < now() group by instance;
@@ -371,7 +371,7 @@ select instance, count(*) from information_schema.cluster_slow_query where time 
 
 假如发现 `2020-03-10 13:24:00` ~ `2020-03-10 13:27:00` 的 QPS 降低或者延迟上升等问题，可能是由于突然出现大查询导致的，可以用下面 SQL 查询仅出现在异常时间段的慢日志，其中 `2020-03-10 13:20:00` ~ `2020-03-10 13:23:00` 为正常时间段。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM
@@ -424,7 +424,7 @@ digest             | 24bd6d8a9b238086c9b8c3d240ad4ef32f79ce94cf5a468c0b8fe1eb5f8
 
 TiDB 通过 session 变量 `tidb_slow_query_file` 控制查询 `INFORMATION_SCHEMA.SLOW_QUERY` 时要读取和解析的文件，可通过修改改 session 变量的值来查询其他慢查询日志文件的内容：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set tidb_slow_query_file = "/path-to-log/tidb-slow.log"
@@ -480,13 +480,13 @@ pt-query-digest --report tidb-slow.log
 
 除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `admin show slow` SQL 命令：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 admin show slow recent N;
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 admin show slow top [internal | all] N;
@@ -494,7 +494,7 @@ admin show slow top [internal | all] N;
 
 `recent N` 会显示最近的 N 条慢查询记录，例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 admin show slow recent 10;
@@ -502,7 +502,7 @@ admin show slow recent 10;
 
 `top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 admin show slow top 3;

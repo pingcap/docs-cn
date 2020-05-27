@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/reference/performance/execution-plan-bind/']
 
 ### 创建绑定
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
@@ -60,7 +60,7 @@ select * from t where a > ？
 
 需要注意的是原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本必须相同，否则创建会失败，例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE a > 2;
@@ -68,7 +68,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 可以创建成功，因为原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本都是 `select * from t where a > ?`，而
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2;
@@ -78,7 +78,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 ### 删除绑定
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP [GLOBAL | SESSION] BINDING FOR SelectStmt;
@@ -102,7 +102,7 @@ explain select * from t1,t2 where t1.id = t2.id;
 
 ### 查看绑定
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
@@ -143,7 +143,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 通过以下语句可以开启自动演进绑定功能：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set global tidb_evolve_plan_baselines = on;
@@ -159,7 +159,7 @@ set global tidb_evolve_plan_baselines = on;
 
 假如有表 `t` 定义如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(a int, b int, key(a), key(b));
@@ -167,7 +167,7 @@ create table t(a int, b int, key(a), key(b));
 
 在表 `t` 上进行如下查询：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t where a < 100 and b < 100;
@@ -175,7 +175,7 @@ select * from t where a < 100 and b < 100;
 
 表上满足条件 `a < 100` 的行很少。但由于某些原因，优化器没能选中使用索引 `a` 这个最优执行计划，而是误选了速度慢的全表扫，那么用户首先可以通过如下语句创建一个绑定：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create global binding for select * from t where a < 100 and b < 100 using select * from t use index(a) where a < 100 and b < 100;

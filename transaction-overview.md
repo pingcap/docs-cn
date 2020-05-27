@@ -17,19 +17,19 @@ TiDB 支持完整的分布式事务，提供[乐观事务](/optimistic-transacti
 
 语法：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 BEGIN;
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 START TRANSACTION;
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 START TRANSACTION WITH CONSISTENT SNAPSHOT;
@@ -45,7 +45,7 @@ START TRANSACTION WITH CONSISTENT SNAPSHOT;
 
 语法：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 COMMIT;
@@ -57,7 +57,7 @@ COMMIT;
 
 语法：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ROLLBACK;
@@ -69,7 +69,7 @@ ROLLBACK;
 
 语法：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET autocommit = {0 | 1}
@@ -83,13 +83,13 @@ SET autocommit = {0 | 1}
 
 另外，`autocommit` 也是一个系统变量，你可以通过变量赋值语句修改当前 Session 或 Global 的值。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET @@SESSION.autocommit = {0 | 1};
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET @@GLOBAL.autocommit = {0 | 1};
@@ -109,7 +109,7 @@ TiDB 中，对于普通的 `INSERT` 语句写入的值，会进行惰性检查�
 
 举例：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE T (I INT KEY);
@@ -132,7 +132,7 @@ SELECT * FROM T; -- MySQL 返回 1 2；TiDB 返回 1
 
 TiDB 支持语句执行失败后的原子性回滚。在事务内部执行一个语句，遇到错误时，该语句整体不会生效。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 begin;
@@ -144,7 +144,7 @@ commit;
 
 上面的例子里面，第二条语句执行失败，但第一和第三条语句仍然能正常提交。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 begin;

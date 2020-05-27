@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-user/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP USER 'idontexist';
@@ -32,7 +32,7 @@ DROP USER 'idontexist';
 ERROR 1396 (HY000): Operation DROP USER failed for idontexist@%
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP USER IF EXISTS 'idontexist';
@@ -42,7 +42,7 @@ DROP USER IF EXISTS 'idontexist';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
@@ -52,7 +52,7 @@ CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 Query OK, 1 row affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 GRANT ALL ON test.* TO 'newuser';
@@ -62,7 +62,7 @@ GRANT ALL ON test.* TO 'newuser';
 Query OK, 0 rows affected (0.03 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GRANTS FOR 'newuser';
@@ -78,7 +78,7 @@ SHOW GRANTS FOR 'newuser';
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 REVOKE ALL ON test.* FROM 'newuser';
@@ -88,7 +88,7 @@ REVOKE ALL ON test.* FROM 'newuser';
 Query OK, 0 rows affected (0.03 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GRANTS FOR 'newuser';
@@ -103,7 +103,7 @@ SHOW GRANTS FOR 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP USER 'newuser';
@@ -113,7 +113,7 @@ DROP USER 'newuser';
 Query OK, 0 rows affected (0.14 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GRANTS FOR 'newuser';

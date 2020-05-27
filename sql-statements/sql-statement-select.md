@@ -86,7 +86,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/select/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -96,7 +96,7 @@ CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
@@ -107,7 +107,7 @@ Query OK, 5 rows affected (0.03 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t1;

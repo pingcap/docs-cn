@@ -27,7 +27,7 @@ category: reference
 
 对于新建的表，由于没有任何的 Row ID 分配，NEXT_GLOBAL_ROW_ID 值为 1
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(a int);

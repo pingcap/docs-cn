@@ -71,7 +71,7 @@ TiDB Lightning 默认会对导入数据计算校验和 (checksum)，如果校验
 
 TiDB 也支持从 MySQL 命令行运行 `ADMIN CHECKSUM TABLE` 指令来计算校验和。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN CHECKSUM TABLE `schema`.`table`;

@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/inspection-summary/']
 
 诊断汇总表 `information_schema.inspection_summary` 的表结构如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.inspection_summary;
@@ -55,7 +55,7 @@ desc information_schema.inspection_summary;
 * `(2020-01-16 16:00:54.933, 2020-01-16 16:10:54.933)`
 * `(2020-01-16 16:10:54.933, 2020-01-16 16:20:54.933)` 
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT

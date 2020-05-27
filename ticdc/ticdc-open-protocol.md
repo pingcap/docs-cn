@@ -150,7 +150,7 @@ Value:
 
 假设在上游执行以下 SQL 语句，MQ Partition 数量为 2：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE test.t1(id int primary key, val varchar(16));
@@ -167,7 +167,7 @@ CREATE TABLE test.t1(id int primary key, val varchar(16));
 
 在上游执行以下 SQL 语句：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 BEGIN;
@@ -191,7 +191,7 @@ COMMIT;
 
 在上游执行以下 SQL 语句：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 BEGIN;

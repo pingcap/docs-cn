@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/kill/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW PROCESSLIST;
@@ -39,7 +39,7 @@ SHOW PROCESSLIST;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 KILL TIDB 2;

@@ -154,7 +154,7 @@ tidb-ctl base64decode [table_id] [base64_data]
 
 1. 准备环境，执行以下 SQL
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     use test;

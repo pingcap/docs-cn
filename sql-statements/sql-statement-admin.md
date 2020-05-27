@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/admin/']
 
 ### `admin show DDL` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN SHOW DDL;
@@ -22,7 +22,7 @@ ADMIN SHOW DDL;
 
 ### `admin show DDL jobs` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
@@ -35,7 +35,7 @@ ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 
 ### `admin show DDL queries` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
@@ -45,7 +45,7 @@ ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 
 ### `admin cancel DDL jobs` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
@@ -63,7 +63,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 
 ### `admin check` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
@@ -71,7 +71,7 @@ ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 
 以上语句用于对表 `tbl_name` 中的所有数据和对应索引进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN CHECK INDEX tbl_name idx_name;
@@ -79,7 +79,7 @@ ADMIN CHECK INDEX tbl_name idx_name;
 
 以上语句用于对 `tbl_name` 表中 `idx_name` 索引对应列数据和索引数据进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN CHECK INDEX tbl_name idx_name (lower_val, upper_val) [, (lower_val, upper_val)] ...;
@@ -89,7 +89,7 @@ ADMIN CHECK INDEX tbl_name idx_name (lower_val, upper_val) [, (lower_val, upper_
 
 ### `admin checksum` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN CHECKSUM TABLE tbl_name [, tbl_name] ...;
@@ -99,7 +99,7 @@ ADMIN CHECKSUM TABLE tbl_name [, tbl_name] ...;
 
 ### `admin reload` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN RELOAD expr_pushdown_blacklist;
@@ -107,7 +107,7 @@ ADMIN RELOAD expr_pushdown_blacklist;
 
 以上语句用于重新加载表达式下推的黑名单。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN RELOAD opt_rule_blacklist;
@@ -117,7 +117,7 @@ ADMIN RELOAD opt_rule_blacklist;
 
 ### `admin plugin` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
@@ -125,7 +125,7 @@ ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
 
 以上语句用于启用 `plugin_name` 插件。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
@@ -135,7 +135,7 @@ ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
 
 ### `admin ... bindings` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN FLUSH bindings;
@@ -143,7 +143,7 @@ ADMIN FLUSH bindings;
 
 以上语句用于持久化 SQL Plan 绑定的信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN CAPTURE bindings;
@@ -151,7 +151,7 @@ ADMIN CAPTURE bindings;
 
 以上语句可以将出现超过一次的 `select`execution-plan 语句生成 SQL Plan 的绑定。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN EVOLVE bindings;
@@ -159,7 +159,7 @@ ADMIN EVOLVE bindings;
 
 开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划绑定](/execution-plan-binding.md)。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN RELOAD bindings;
@@ -169,7 +169,7 @@ ADMIN RELOAD bindings;
 
 ### `admin repair table` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
@@ -179,13 +179,13 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 
 ### `admin show slow` 语句
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN SHOW SLOW RECENT N;
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
@@ -203,7 +203,7 @@ ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 
 执行以下命令，可查看正在执行的 DDL 任务中最近 10 条已经完成的 DDL 任务。未指定 `NUM` 时，默认只显示最近 10 条已经执行完的 DDL 任务。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 admin show ddl jobs;
@@ -229,7 +229,7 @@ admin show ddl jobs;
 
 执行以下命令，可查看正在执行的 DDL 任务中最近 5 条已经执行完的 DDL 任务：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 admin show ddl jobs 5;
@@ -250,7 +250,7 @@ admin show ddl jobs 5;
 
 执行以下命令，可查看 test 数据库中未执行完成的 DDL 任务，包括正在执行中以及最近 5 条已经执行完但是执行失败的 DDL 任务。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 admin show ddl jobs 5 where state!='synced' and db_name='test';

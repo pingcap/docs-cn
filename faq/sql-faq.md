@@ -90,7 +90,7 @@ TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_pr
 
 1. 通过在数据库中写 SQL 的方式来调整优先级：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
@@ -167,7 +167,7 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 
 通过 `admin show ddl` 查看当前 job 进度。操作如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 admin show ddl;

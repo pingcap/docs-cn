@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/execute/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 PREPARE mystmt FROM 'SELECT ? as num FROM DUAL';
@@ -27,7 +27,7 @@ PREPARE mystmt FROM 'SELECT ? as num FROM DUAL';
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET @number = 5;
@@ -37,7 +37,7 @@ SET @number = 5;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXECUTE mystmt USING @number;
@@ -52,7 +52,7 @@ EXECUTE mystmt USING @number;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DEALLOCATE PREPARE mystmt;

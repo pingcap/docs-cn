@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/alter-database/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER {DATABASE | SCHEMA} [db_name]

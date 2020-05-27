@@ -281,7 +281,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 + `require cipher`：配置该项检查客户端支持的 cipher method。可以使用以下语句来查看支持的列表：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SHOW SESSION STATUS LIKE 'Ssl_cipher_list';
@@ -293,7 +293,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 + 可以在创建用户 (`create user`) 时配置登陆时需要校验的证书信息：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create user 'u1'@'%'  require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
@@ -301,7 +301,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 + 可以在赋予权限 (`grant`) 时配置登陆时需要校验的证书信息：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     grant all on *.* to 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
@@ -309,7 +309,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 + 还可以在修改已有用户 (alter user) 时配置登陆时需要校验的证书信息：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     alter user 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
@@ -325,7 +325,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 连接 MySQL 客户端并执行：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 \s
@@ -345,7 +345,7 @@ SSL:                 Cipher in use is TLS_AES_256_GCM_SHA384
 
 然后执行：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show variables like '%ssl%';

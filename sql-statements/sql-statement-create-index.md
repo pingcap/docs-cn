@@ -73,7 +73,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-index/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -83,7 +83,7 @@ CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
@@ -94,7 +94,7 @@ Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
@@ -111,7 +111,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 3 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE INDEX c1 ON t1 (c1);
@@ -121,7 +121,7 @@ CREATE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.30 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
@@ -137,7 +137,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE t1 DROP INDEX c1;
@@ -147,7 +147,7 @@ ALTER TABLE t1 DROP INDEX c1;
 Query OK, 0 rows affected (0.30 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE UNIQUE INDEX c1 ON t1 (c1);
@@ -165,7 +165,7 @@ Query OK, 0 rows affected (0.31 sec)
 
 如果需要使用这一特性，在配置文件中进行以下设置：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 allow-expression-index = true
@@ -175,7 +175,7 @@ TiDB 不仅能将索引建立在表中的一个或多个列上，还可以将索
 
 考虑以下查询：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t WHERE lower(name) = "pingcap";
@@ -183,7 +183,7 @@ SELECT * FROM t WHERE lower(name) = "pingcap";
 
 如果建立了如下的表达式索引，就可以使用索引加速以上查询：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE INDEX idx ON t ((lower(name)));

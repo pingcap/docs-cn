@@ -14,7 +14,7 @@ TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY
 
 定长字符串。`CHAR` 列的长度固定为创建表时声明的长度。当保存 CHAR 值时，不足固定长度的字符串在后面填充空格，以达到指定的长度。M 表示列长度（字符的个数，不是字节的个数）。长度可以为从 0 到 255 的任何值。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 [NATIONAL] CHAR[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -34,7 +34,7 @@ TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY
 | utf8 | 3 | (0, 21845] |
 | utf8mb4 | 4 | (0, 16383] |
 
-{{< copyable "sql" >}}
+
 
 ```sql
 [NATIONAL] VARCHAR(M) [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -44,7 +44,7 @@ TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY
 
 文本串。M 表示最大列长度（字符的最大个数），范围是 0 到 65535。在选择 `TEXT` 长度时，应当根据最长的行的大小和使用的字符集确定。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -54,7 +54,7 @@ TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
 
 类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 255。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -64,7 +64,7 @@ TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 16,777,215。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -74,7 +74,7 @@ MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 LONGTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -84,7 +84,7 @@ LONGTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 类似于 [`CHAR`](#char-类型)，区别在于 `BINARY` 存储的是二进制字符串。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 BINARY(M)
@@ -94,7 +94,7 @@ BINARY(M)
 
 类似于 [`VARCHAR`](#varchar-类型)，区别在于 `VARBINARY` 存储的是二进制字符串。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 VARBINARY(M)
@@ -104,7 +104,7 @@ VARBINARY(M)
 
 二进制大文件。M 表示最大列长度，单位是字节，范围是 0 到 65535。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 BLOB[(M)]
@@ -114,7 +114,7 @@ BLOB[(M)]
 
 类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 255。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 TINYBLOB
@@ -124,7 +124,7 @@ TINYBLOB
 
 类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16777215。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 MEDIUMBLOB
@@ -134,7 +134,7 @@ MEDIUMBLOB
 
 类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 LONGBLOB
@@ -144,7 +144,7 @@ LONGBLOB
 
 枚举类型是一个字符串，它只能有一个值的字符串对象。其值必须是从一个固定集合中选取，这个固定集合在创建表的时候定义，语法是：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -152,7 +152,7 @@ ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name
 
 例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ENUM('apple', 'orange', 'pear')
@@ -174,7 +174,7 @@ ENUM('apple', 'orange', 'pear')
 
 集合类型是一个包含零个或多个值的字符串，其中每个值必须是从一个固定集合中选取，这个固定集合在创建表的时候定义，语法是：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -182,7 +182,7 @@ SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
 
 例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET('1', '2') NOT NULL

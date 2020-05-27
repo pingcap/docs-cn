@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/reference/sql/language-structure/schema-object-names/']
 
 标识符可以被反引号包裹，即 `SELECT * FROM t` 也可以写成 `` SELECT * FROM `t` ``。但如果标识符中存在至少一个特殊符号，或者它是一个保留关键字，那就必须使用反引号包裹来引用它所代表的模式对象。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM `table` WHERE `table`.id = 20;
@@ -36,7 +36,7 @@ Query OK, 0 rows affected (0.012 sec)
 
 如果要在被引用的标识符中使用反引号这个字符，则需要重复两次反引号，例如创建一个表 a`b：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE `a``b` (a int);
@@ -44,7 +44,7 @@ CREATE TABLE `a``b` (a int);
 
 在 select 语句中，alias 部分可以用标识符或者字符串：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT 1 AS `identifier`, 2 AS 'string';
@@ -65,7 +65,7 @@ SELECT 1 AS `identifier`, 2 AS 'string';
 
 Object Names (对象名字) 有时可以被限定或者省略。例如在创建表的时候可以省略数据库限定名：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t (i int);
@@ -73,7 +73,7 @@ CREATE TABLE t (i int);
 
 如果之前没有使用 `USE` 或者连接参数来设定数据库，会报 `ERROR 1046 (3D000): No database selected` 错误。此时可以指定数据库限定名：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE test.t (i int);

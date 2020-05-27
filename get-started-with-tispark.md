@@ -87,7 +87,7 @@ mysql --local-infile=1 -h 192.168.0.2 -P 4000 -u root < dss.ddl
 mysql -uroot -P4000 -h192.168.0.2
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show databases;
@@ -106,7 +106,7 @@ show databases;
 5 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 use TPCH_001;
@@ -119,7 +119,7 @@ You can turn off this feature to get a quicker startup with -A
 Database changed
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show tables;

@@ -38,7 +38,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
 
 - 升级前：v2.1.0 及之前版本
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t(a varchar(10)) charset=utf8;
@@ -49,7 +49,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
     Time: 0.106s
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show create table t
@@ -69,7 +69,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
 
 - 升级后：v2.1.1、v2.1.2 会出现下面的问题，v2.1.3 以及之后版本不会出现下面的问题。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     alter table t change column a a varchar(20);
@@ -81,7 +81,7 @@ TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字�
 
 解决方案：显式指定 column charset，保持和原来的 charset 一致即可。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 alter table t change column a a varchar(22) character set utf8;
@@ -135,7 +135,7 @@ alter table t change column a a varchar(22) character set utf8;
 
 - 升级前：v2.1.1，v2.1.2
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t(a varchar(10)) charset=utf8;
@@ -146,7 +146,7 @@ alter table t change column a a varchar(22) character set utf8;
     Time: 0.109s
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show create table t;
@@ -166,7 +166,7 @@ alter table t change column a a varchar(22) character set utf8;
 
 - 升级后：v2.1.3 及之后版本
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show create table t;
@@ -184,7 +184,7 @@ alter table t change column a a varchar(22) character set utf8;
     Time: 0.007s
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     alter table t change column a a varchar(20);
@@ -198,7 +198,7 @@ alter table t change column a a varchar(22) character set utf8;
 
 - 因为在 v2.1.3 之后，TiDB 支持修改 column 和 table 的 charset，所以这里推荐修改 table 的 charset 为 UTF8MB4。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     alter table t convert to character set utf8mb4;
@@ -206,7 +206,7 @@ alter table t change column a a varchar(22) character set utf8;
 
 - 也可以像问题 1 一样指定 column 的 charset，保持和 column 原来的 charset (UTF8MB4) 一致即可。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     alter table t change column a a varchar(20) character set utf8mb4;
@@ -218,7 +218,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
 
 - 升级前：v2.1.1 及之前版本
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t(a varchar(100) charset utf8);
@@ -228,7 +228,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
     Query OK, 0 rows affected
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert t values (unhex('f09f8c80'));
@@ -240,7 +240,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
 
 - 升级后：v2.1.2 及之后版本
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert t values (unhex('f09f8c80'));
@@ -254,7 +254,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
 
 - v2.1.2 版本：该版本不支持修改 column charset，所以只能跳过 UTF8 的检查。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@session.tidb_skip_utf8_check=1;
@@ -264,7 +264,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
     Query OK, 0 rows affected
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert t values (unhex('f09f8c80'));
@@ -276,7 +276,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
 
 - v2.1.3 及之后版本：建议修改 column 的 charset 为 UTF8MB4。或者也可以设置 `tidb_skip_utf8_check` 变量跳过 UTF8 的检查。如果跳过 UTF8 的检查，在需要将数据从 TiDB 同步回 MySQL 的时候，可能会失败，因为 MySQL 会执行该检查。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     alter table t change column a a varchar(100) character set utf8mb4;
@@ -286,7 +286,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
     Query OK, 0 rows affected
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert t values (unhex('f09f8c80'));
@@ -324,7 +324,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
 
         * 执行下列命令启用 Session 变量：
 
-            {{< copyable "sql" >}}
+            
 
             ```sql
             set @@session.tidb_check_mb4_value_in_utf8 = 1;
@@ -332,7 +332,7 @@ TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 
 
         * 执行下列命令禁用 Session 变量：
 
-            {{< copyable "sql" >}}
+            
 
             ```sql
             set @@session.tidb_check_mb4_value_in_utf8 = 0;

@@ -41,7 +41,7 @@ String Literals 是一个 bytes 或者 characters 的序列，两端被单引号
 
 例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT _latin1'string';
@@ -51,7 +51,7 @@ SELECT _utf8'string' COLLATE utf8_bin;
 
 你可以使用 N'literal' 或者 n'literal' 来创建使用 national character set 的字符串，下列语句是一样的：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT N'some text';
@@ -132,7 +132,7 @@ Time 类型的小数点也是 `.`，精度最多小数点后 6 位。
 
 常量 `TRUE` 和 `FALSE` 等于 1 和 0，它是大小写不敏感的。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT TRUE, true, tRuE, FALSE, FaLsE, false;
@@ -171,7 +171,7 @@ X'1z' (z 不是合法的十六进制值)
 
 对于使用 `X'val'` 格式的十六进制字面值，`val` 必须要有一个数字，可以在前面补一个 0 来避免语法错误。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select X'aff';
@@ -181,7 +181,7 @@ select X'aff';
 ERROR 1105 (HY000): line 0 column 13 near ""hex literal: invalid hexadecimal format, must even numbers, but 3 (total length 13)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select X'0aff';
@@ -200,7 +200,7 @@ select X'0aff';
 
 如果需要将一个字符串或者数字转换为十六进制字面值，可以使用内建函数 `HEX()`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT HEX('TiDB');
@@ -215,7 +215,7 @@ SELECT HEX('TiDB');
 1 row in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT X'54694442';
@@ -249,7 +249,7 @@ SELECT X'54694442';
 
 Bit-value 是作为二进制返回的，所以输出到 MySQL Client 可能会显示不出来，如果要转换为可打印的字符，可以使用内建函数 `BIN()` 或者 `HEX()`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t (b BIT(8));
@@ -258,7 +258,7 @@ INSERT INTO t SET b = b'1110';
 INSERT INTO t SET b = b'100101';
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT b+0, BIN(b), HEX(b) FROM t;

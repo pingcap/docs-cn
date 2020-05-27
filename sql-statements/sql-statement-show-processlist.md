@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-processlist/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW PROCESSLIST;

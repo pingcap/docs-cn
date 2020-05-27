@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-info/']
 
 集群拓扑表 `CLUSTER_INFO` 提供集群当前的拓扑信息，以及各个节点的版本信息、版本对应的 Git Hash、各节点的启动时间、各实例的运行时间。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.cluster_info;
@@ -40,7 +40,7 @@ desc information_schema.cluster_info;
 * `START_TIME`：对应节点的启动时间。
 * `UPTIME`：对应节点已经运行的时间。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.cluster_info;

@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-database/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW DATABASES;
@@ -39,7 +39,7 @@ SHOW DATABASES;
 4 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP DATABASE test;
@@ -49,7 +49,7 @@ DROP DATABASE test;
 Query OK, 0 rows affected (0.25 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW DATABASES;

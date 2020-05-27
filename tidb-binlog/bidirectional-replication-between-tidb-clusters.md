@@ -45,7 +45,7 @@ Drainer 与下游的每个连接可以使用一个 ID 以避免冲突。`channel
 
 `_drainer_repl_mark` 标识表的结构如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE `_drainer_repl_mark` (
@@ -59,7 +59,7 @@ CREATE TABLE `_drainer_repl_mark` (
 
 Drainer 使用如下 SQL 语句更新 `_drainer_repl_mark` 可保证数据改动，从而保证产生 binlog：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 update drainer_repl_mark set val = val + 1 where id = ? && channel_id = ?;

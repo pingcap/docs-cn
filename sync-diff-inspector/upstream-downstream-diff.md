@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/']
 
 在下游 TiDB 中执行以下 SQL 语句：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from tidb_binlog.checkpoint;

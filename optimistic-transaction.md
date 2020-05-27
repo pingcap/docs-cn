@@ -84,13 +84,13 @@ tidb_retry_limit = 10
 
 - Session 级别设置：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@tidb_disable_txn_auto_retry = off;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@tidb_retry_limit = 10;
@@ -98,13 +98,13 @@ tidb_retry_limit = 10
 
 - Global 级别设置：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@global.tidb_disable_txn_auto_retry = off;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@global.tidb_retry_limit = 10;

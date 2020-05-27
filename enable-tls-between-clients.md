@@ -112,7 +112,7 @@ create user 'u1'@'%'  require x509;
 
 以下是一个安全连接中执行该语句的结果。由于客户端支持的 TLS 版本号和加密协议会有所不同，执行结果相应地也会有所变化。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW STATUS LIKE "%Ssl%";
@@ -128,7 +128,7 @@ SHOW STATUS LIKE "%Ssl%";
 
 除此以外，对于 MySQL 自带客户端，还可以使用 `STATUS` 或 `\s` 语句查看连接情况：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 \s

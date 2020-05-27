@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-create-table/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a INT);
@@ -31,7 +31,7 @@ CREATE TABLE t1 (a INT);
 Query OK, 0 rows affected (0.12 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE TABLE t1;

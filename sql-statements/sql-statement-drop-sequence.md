@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-sequence/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP SEQUENCE seq;
@@ -39,7 +39,7 @@ DROP SEQUENCE seq;
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP SEQUENCE seq, seq2;

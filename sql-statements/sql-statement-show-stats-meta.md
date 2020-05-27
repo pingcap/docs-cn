@@ -39,7 +39,7 @@ category: reference
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show stats_meta;
@@ -58,7 +58,7 @@ show stats_meta;
 5 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show stats_meta where table_name = 't2';

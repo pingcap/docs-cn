@@ -21,7 +21,7 @@ SHOW ENGINES;
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW ENGINES;

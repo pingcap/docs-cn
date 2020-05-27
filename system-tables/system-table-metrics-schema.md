@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/metrics-schema/']
 
 查询 `information_schema.metrics_tables` 中关于 `tidb_query_duration` 表相关的信息如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.metrics_tables where table_name='tidb_query_duration';
@@ -37,7 +37,7 @@ select * from information_schema.metrics_tables where table_name='tidb_query_dur
 
 再来看 `tidb_query_duration` 的表结构：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show create table metrics_schema.tidb_query_duration;
@@ -64,7 +64,7 @@ show create table metrics_schema.tidb_query_duration;
 
 下面是查询时间 [`2020-03-25 23:40:00`, `2020-03-25 23:42:00`] 范围内的 P99 的 TiDB Query 耗时：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from metrics_schema.tidb_query_duration where value is not null and time>='2020-03-25 23:40:00' and time <= '2020-03-25 23:42:00' and quantile=0.99;
@@ -93,7 +93,7 @@ select * from metrics_schema.tidb_query_duration where value is not null and tim
 
 进一步再查看上面语句的执行计划如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc select * from metrics_schema.tidb_query_duration where value is not null and time>='2020-03-25 23:40:00' and time <= '2020-03-25 23:42:00' and quantile=0.99;
@@ -123,7 +123,7 @@ desc select * from metrics_schema.tidb_query_duration where value is not null an
 >
 > Prometheus 支持查询的最小粒度为 30 秒。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@tidb_metric_query_step=30;
@@ -132,7 +132,7 @@ set @@tidb_metric_query_range_duration=30;
 
 再查询 `tidb_query_duration` 监控如下，可以发现在三分钟时间范围内，每个 label 有六个时间的值，每个值时间间隔是 30 秒。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from metrics_schema.tidb_query_duration where value is not null and time>='2020-03-25 23:40:00' and time <= '2020-03-25 23:42:00' and quantile=0.99;
@@ -162,7 +162,7 @@ select * from metrics_schema.tidb_query_duration where value is not null and tim
 
 最后查看执行计划，也会发现执行计划中的 `PromQL` 以及 `step` 的值都已经变成了 30 秒。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc select * from metrics_schema.tidb_query_duration where value is not null and time>='2020-03-25 23:40:00' and time <= '2020-03-25 23:42:00' and quantile=0.99;

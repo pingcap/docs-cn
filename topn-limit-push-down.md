@@ -17,7 +17,7 @@ SQL 中的 LIMIT 子句在 TiDB 查询计划树中对应 Limit 算子节点，OR
 
 ### 示例 1：下推到存储层 Coprocessor
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(id int primary key, a int not null);
@@ -40,7 +40,7 @@ explain select * from t order by a limit 10;
 
 ### 示例 2：TopN 下推过 Join 的情况（排序规则仅依赖于外表中的列）
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(id int primary key, a int not null);
@@ -68,7 +68,7 @@ explain select * from t left join s on t.a = s.a order by t.a limit 10;
 
 ### 示例 3：TopN 不能下推过 Join 的情况
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(id int primary key, a int not null);
@@ -96,7 +96,7 @@ TopN 无法下推过 Inner Join。以上面的查询为例，如果先 Join 得�
 
 ### 示例 4：TopN 转换成 Limit 的情况
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(id int primary key, a int not null);

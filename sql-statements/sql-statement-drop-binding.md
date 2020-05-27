@@ -24,7 +24,7 @@ category: reference
 
 ## 语法说明
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP [GLOBAL | SESSION] BINDING FOR SelectStmt;

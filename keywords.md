@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/keywords-and-reserved-words/','/docs-cn/dev/reference/sq
 
 对于保留字，必须使用反引号包裹，才能作为标识符被使用。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE select (a INT);
@@ -23,7 +23,7 @@ CREATE TABLE select (a INT);
 ERROR 1105 (HY000): line 0 column 19 near " (a INT)" (total length 27)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE `select` (a INT);
@@ -35,7 +35,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 而非保留字则不需要反引号也能直接作为标识符。例如 `BEGIN` 和 `END` 是非保留字，以下语句能够正常执行：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE `select` (BEGIN int, END int);
@@ -47,7 +47,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 有一种特殊情况，如果使用了限定符 `.`，那么也不需要用反引号：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE test.select (BEGIN int, END int);

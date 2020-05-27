@@ -84,7 +84,7 @@ curl http://{TiDBIP}:10080/db-table/{tableID}
 
 通过 indexID 查找具体的索引名：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM INFORMATION_SCHEMA.TIDB_INDEXES WHERE TABLE_SCHEMA='{table_name}' AND TABLE_NAME='{table_name}' AND INDEX_ID={indexID};

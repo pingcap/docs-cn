@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/metrics-summary/']
 
 这两张表用于汇总所有监控数据，用户排查各个监控指标会更有效率。其中 `information_schema.metrics_summary_by_label` 会对不同的 label 进行区分统计。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.metrics_summary;
@@ -47,7 +47,7 @@ desc information_schema.metrics_summary;
 
 查询 `'2020-03-08 13:23:00', '2020-03-08 13:33:00'` 时间范围内 TiDB 集群中平均耗时最高的三组监控项。可直接查询 `information_schema.metrics_summary` 表，并通过 `/*+ time_range() */` 这个 hint 来指定时间范围，构造的 SQL 语句如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
@@ -88,7 +88,7 @@ COMMENT      | The quantile of kv requests durations by store
 
 类似的，查询 `metrics_summary_by_label` 监控汇总表示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
@@ -142,7 +142,7 @@ COMMENT      | The quantile of TiDB query durations(second)
 
 对两个时间段的监控按照 `METRICS_NAME` 进行 join，并按照差异值大小排序。其中 `TIME_RANGE` 是用于指定查询时间的 hint。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT GREATEST(t1.avg_value,t2.avg_value)/LEAST(t1.avg_value,

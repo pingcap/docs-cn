@@ -160,7 +160,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 例如，将 `tikv_gc_life_time` 调整为 `720h`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \

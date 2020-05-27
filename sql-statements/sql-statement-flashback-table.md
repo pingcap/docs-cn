@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/flashback-table/']
 
 查询集群的 `tikv_gc_safe_point` 和 `tikv_gc_life_time`。只要被 `DROP` 或 `TRUNCATE` 删除的表是在 `tikv_gc_safe_point` 时间之后，都能用 `FLASHBACK TABLE` 语法来恢复。  
 
-{{< copyable "sql" >}}
+
 
   ```sql
   select * from mysql.tidb where variable_name in ('tikv_gc_safe_point','tikv_gc_life_time');
@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/flashback-table/']
 
 ## 语法
 
-{{< copyable "sql" >}}
+
 
 ```sql
 FLASHBACK TABLE table_name [TO other_table_name]
@@ -53,13 +53,13 @@ FLASHBACK TABLE table_name [TO other_table_name]
 
 - 恢复被 `DROP` 删除的表数据：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     DROP TABLE t;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     FLASHBACK TABLE t;
@@ -71,7 +71,7 @@ FLASHBACK TABLE table_name [TO other_table_name]
     TRUNCATE TABLE t;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     FLASHBACK TABLE t TO t1;

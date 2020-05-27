@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev
 
 目前 TiDB 支持以下字符集：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CHARACTER SET;
@@ -59,7 +59,7 @@ mysql> show collation;
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW COLLATION WHERE Charset = 'utf8mb4';
@@ -99,7 +99,7 @@ ALTER DATABASE db_name
 
 通过系统变量 `character_set_database` 和 `collation_database` 可以查看到当前数据库的字符集以及排序规则：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create schema test1 character set utf8mb4 COLLATE uft8mb4_general_ci;
@@ -109,7 +109,7 @@ create schema test1 character set utf8mb4 COLLATE uft8mb4_general_ci;
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 use test1;
@@ -119,7 +119,7 @@ use test1;
 Database changed
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT @@character_set_database, @@collation_database;
@@ -134,7 +134,7 @@ SELECT @@character_set_database, @@collation_database;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create schema test2 character set latin1 COLLATE latin1_bin;
@@ -144,7 +144,7 @@ create schema test2 character set latin1 COLLATE latin1_bin;
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 use test2;
@@ -154,7 +154,7 @@ use test2;
 Database changed
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT @@character_set_database, @@collation_database;
@@ -171,7 +171,7 @@ SELECT @@character_set_database, @@collation_database;
 
 在 INFORMATION_SCHEMA 中也可以查看到这两个值：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME
@@ -194,7 +194,7 @@ ALTER TABLE tbl_name
 
 例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1(a int) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -232,7 +232,7 @@ col_name {ENUM | SET} (val_list)
 
 示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT 'string';
@@ -262,7 +262,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
     `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。
     `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SET character_set_client = charset_name;
@@ -276,7 +276,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
     跟 `SET NAMES` 类似，等价于下面语句的组合：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SET character_set_client = charset_name;
@@ -315,7 +315,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 在 4.0 版本之前，TiDB 中可以指定大部分 MySQL 中的排序规则，并把这些排序规则按照默认排序规则处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 在比较字符前按照排序规则的 PADDING 属性将字符末尾的空格删除，因此会造成以下的行为区别：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci primary key);
@@ -332,7 +332,7 @@ Query OK, 1 row affected # MySQL 中，由于补齐空格比较，报错 Duplica
 
 TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用新排序规则框架：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';
@@ -351,7 +351,7 @@ select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled
 
 使用 `utf8_general_ci` 或者 `utf8mb4_general_ci` 时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci primary key);
@@ -390,7 +390,7 @@ binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_
 
 TiDB 支持使用 `COLLATE` 子句来指定一个表达式的排序规则，该表达式的 coercibility 值为 `0`，具有最高的优先级。示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select 'a' = 'A' collate utf8mb4_general_ci;

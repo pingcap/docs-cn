@@ -14,7 +14,7 @@ category: reference
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW DRAINER STATUS;
@@ -33,7 +33,7 @@ SHOW DRAINER STATUS;
 
 可以看出 `drainer1` 已经超过一天没有更新状态，该 Drainer 处于异常状态，但是 State 仍然为 `Online`，使用 `CHANGE DRAINER` 将该 Drainer 状态修改为 `paused`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CHANGE DRAINER TO NODE_STATE ='paused' FOR NODE_ID 'drainer1';
@@ -43,7 +43,7 @@ CHANGE DRAINER TO NODE_STATE ='paused' FOR NODE_ID 'drainer1';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW DRAINER STATUS;

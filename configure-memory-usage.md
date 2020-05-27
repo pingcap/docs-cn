@@ -45,7 +45,7 @@ mem-quota-query = 34359738368
 
 配置整条 SQL 的内存使用阈值为 8GB：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@tidb_mem_quota_query = 8 << 30;
@@ -53,7 +53,7 @@ set @@tidb_mem_quota_query = 8 << 30;
 
 配置整条 SQL 的内存使用阈值为 8MB：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@tidb_mem_quota_query = 8 << 20;
@@ -61,7 +61,7 @@ set @@tidb_mem_quota_query = 8 << 20;
 
 配置整条 SQL 的内存使用阈值为 8KB：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@tidb_mem_quota_query = 8 << 10;

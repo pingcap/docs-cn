@@ -238,7 +238,7 @@ beeline> !connect jdbc:hive2://localhost:10000
 No rows selected (0.013 seconds)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select count(*) from account;

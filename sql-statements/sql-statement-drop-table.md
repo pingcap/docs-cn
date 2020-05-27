@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-table/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a INT);
@@ -35,7 +35,7 @@ CREATE TABLE t1 (a INT);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP TABLE t1;
@@ -45,7 +45,7 @@ DROP TABLE t1;
 Query OK, 0 rows affected (0.22 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP TABLE table_not_exists;
@@ -55,7 +55,7 @@ DROP TABLE table_not_exists;
 ERROR 1051 (42S02): Unknown table 'test.table_not_exists'
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP TABLE IF EXISTS table_not_exists;
@@ -65,7 +65,7 @@ DROP TABLE IF EXISTS table_not_exists;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE VIEW v1 AS SELECT 1;
@@ -75,7 +75,7 @@ CREATE VIEW v1 AS SELECT 1;
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP TABLE v1;

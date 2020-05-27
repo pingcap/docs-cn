@@ -695,7 +695,7 @@ TiDB 兼容 MySQL，因此可使用 MySQL 客户端直接连接 TiDB。推荐配
 
 1. 使用 MySQL 客户端连接 TiDB 集群。TiDB 服务的默认端口为 `4000`。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     mysql -u root -h 172.16.10.1 -P 4000

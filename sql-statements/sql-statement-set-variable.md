@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/set-variable/']
 
 获取 `sql_mode` 的值：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GLOBAL VARIABLES LIKE 'sql_mode';
@@ -42,7 +42,7 @@ SHOW GLOBAL VARIABLES LIKE 'sql_mode';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW SESSION VARIABLES LIKE 'sql_mode';
@@ -59,7 +59,7 @@ SHOW SESSION VARIABLES LIKE 'sql_mode';
 
 更新全局的 `sql_mode`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';
@@ -71,7 +71,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 检查更新之后的 `sql_mode` 的取值，可以看到 SESSION 级别的值没有更新：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GLOBAL VARIABLES LIKE 'sql_mode';
@@ -86,7 +86,7 @@ SHOW GLOBAL VARIABLES LIKE 'sql_mode';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW SESSION VARIABLES LIKE 'sql_mode';
@@ -103,7 +103,7 @@ SHOW SESSION VARIABLES LIKE 'sql_mode';
 
 `SET SESSION` 则可以立即生效：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';
@@ -113,7 +113,7 @@ SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW SESSION VARIABLES LIKE 'sql_mode';

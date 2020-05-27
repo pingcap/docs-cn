@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-collation/']
 
 若未开启新排序规则框架，仅展示二进制排序规则：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 
@@ -45,7 +45,7 @@ SHOW COLLATION;
 
 若开启了新排序规则框架，则在二进制排序规则之外，额外支持 `utf8_general_ci` 和 `utf8mb4_general_ci` 两种大小写和口音不敏感的排序规则：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 

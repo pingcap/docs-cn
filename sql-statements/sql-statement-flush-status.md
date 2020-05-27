@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/flush-status/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show status;
@@ -45,7 +45,7 @@ show status;
 6 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show global status;
@@ -65,7 +65,7 @@ show global status;
 6 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 flush status;
@@ -75,7 +75,7 @@ flush status;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show status;

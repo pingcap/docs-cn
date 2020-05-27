@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-table-like/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a INT NOT NULL);
@@ -31,7 +31,7 @@ CREATE TABLE t1 (a INT NOT NULL);
 Query OK, 0 rows affected (0.13 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
@@ -42,7 +42,7 @@ Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t1;
@@ -61,7 +61,7 @@ SELECT * FROM t1;
 5 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t2 LIKE t1;
@@ -71,7 +71,7 @@ CREATE TABLE t2 LIKE t1;
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t2;

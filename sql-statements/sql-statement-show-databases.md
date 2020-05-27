@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-databases/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW DATABASES;
@@ -41,7 +41,7 @@ SHOW DATABASES;
 4 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE DATABASE mynewdb;
@@ -51,7 +51,7 @@ CREATE DATABASE mynewdb;
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW DATABASES;

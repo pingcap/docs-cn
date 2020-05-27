@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS TEST_HOTSPOT(
 
 这个表的结构非常简单，除了 `id` 为主键以外，没有额外的二级索引。将数据写入该表的语句如下，`id` 通过随机数离散生成：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
@@ -109,13 +109,13 @@ INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 
 TiDB 在 v3.0.x 以及 v2.1.13 后支持一个叫 [Split Region](/sql-statements/sql-statement-split-region.md) 的新特性。这个特性提供了新的语法：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)]
@@ -135,7 +135,7 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)]
 
 由于测试的写入数据在正数范围内完全离散，所以用以下语句，在 Int64 空间内提前将表切分为 128 个 Region：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
@@ -185,7 +185,7 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 示例：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=3;

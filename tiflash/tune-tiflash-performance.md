@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/reference/tiflash/tune-performance/']
 
 1. 对于 OLAP/TiFlash 专属的 TiDB 节点，建议调大读取并发数 [`tidb_distsql_scan_concurrency`](/tidb-specific-system-variables.md#tidb_distsql_scan_concurrency) 到 80：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@tidb_distsql_scan_concurrency = 80;
@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/reference/tiflash/tune-performance/']
 
     [`tidb_allow_batch_cop`](/tidb-specific-system-variables.md#tidb_allow_batch_cop) 变量用来设置从 TiFlash 读取时，是否把 Region 的请求进行合并。当查询中涉及的 Region 数量比较大，可以尝试设置该变量为 `1`（对带 `aggregation` 下推到 TiFlash Coprocessor 的请求生效），或设置该变量为 `2`（对全部下推到 TiFlash Coprocessor 请求生效）。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@tidb_allow_batch_cop = 1;
@@ -36,7 +36,7 @@ aliases: ['/docs-cn/dev/reference/tiflash/tune-performance/']
 
     [`tidb_opt_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_agg_push_down) 变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@tidb_opt_agg_push_down = 1;
@@ -46,7 +46,7 @@ aliases: ['/docs-cn/dev/reference/tiflash/tune-performance/']
 
     [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@tidb_opt_distinct_agg_push_down = 1;

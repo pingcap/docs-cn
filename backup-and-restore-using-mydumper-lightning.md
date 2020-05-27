@@ -61,7 +61,7 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning/',
 
 1. 执行 `mydumper` 命令前，查询 TiDB 集群的 [GC](/garbage-collection-overview.md) 值并使用 MySQL 客户端将其调整为合适的值：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
@@ -76,7 +76,7 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning/',
     1 rows in set (0.02 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
@@ -84,7 +84,7 @@ aliases: ['/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning/',
 
 2. 执行 `mydumper` 命令后，将 TiDB 集群的 GC 值恢复到第 1 步中的初始值：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';

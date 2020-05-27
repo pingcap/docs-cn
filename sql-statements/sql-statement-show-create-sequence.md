@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-create-sequence/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE seq;
@@ -31,7 +31,7 @@ CREATE TABLE seq;
 Query OK, 0 rows affected (0.03 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE SEQUENCE seq;

@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/reference/performance/max-min-eliminate/']
 
 例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select max(a) from t
@@ -30,7 +30,7 @@ select max(a) from t
 
 这时 `max`/`min` 消除优化规则会将其重写为：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select max(a) from (select a from t where a is not null order by a desc limit 1) t
@@ -64,7 +64,7 @@ mysql> explain select max(a) from t;
 
 下面是一个简单的例子：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select max(a) - min(a) from t
@@ -72,7 +72,7 @@ select max(a) - min(a) from t
 
 优化规则会先检查 `a` 列是否存在索引能够为其保序，如果存在，这个 SQL 会先被重写为两个子查询的笛卡尔积：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select max_a - min_a
@@ -83,7 +83,7 @@ from
 
 这样，两个子句中的 `max`/`min` 函数就可以使用上述“只有一个 `max`/`min` 函数时的优化规则”分别进行优化，最终重写为：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select max_a - min_a

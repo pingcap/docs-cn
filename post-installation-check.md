@@ -50,7 +50,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 + 登录成功
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
@@ -64,7 +64,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 + 检查 TiDB 版本
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select tidb_version()\G
@@ -89,7 +89,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 + 创建 PingCAP database
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create database pingcap;
@@ -99,7 +99,7 @@ mysql -u root -h 10.0.1.4 -P 4000
     Query OK, 0 rows affected (0.10 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     use pingcap;
@@ -113,7 +113,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 + 创建 `tab_tidb` 表
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     CREATE TABLE `tab_tidb` (
@@ -133,7 +133,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 + 插入数据
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert into `tab_tidb` values (1,'TiDB',5,'TiDB-v4.0.0');
@@ -147,7 +147,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 + 查看 `tab_tidb` 结果
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from tab_tidb;
@@ -166,7 +166,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 + 查看 TiKV store 状态、`store_id`、存储情况以及启动时间
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select STORE_ID,ADDRESS,STORE_STATE,STORE_STATE_NAME,CAPACITY,AVAILABLE,UPTIME from INFORMATION_SCHEMA.TIKV_STORE_STATUS;
@@ -187,7 +187,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 + 退出
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     exit

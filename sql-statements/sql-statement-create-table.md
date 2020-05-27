@@ -77,7 +77,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-table/']
 
 以下是 `CREATE TABLE` 相关的语法说明：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] tbl_name
@@ -87,7 +87,7 @@ CREATE TABLE [IF NOT EXISTS] tbl_name
 
 使用 `IF NOT EXIST` 时，即使创建的表已经存在，也不会报错，如果不指定时，则报错。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] tbl_name
@@ -248,7 +248,7 @@ table_option:
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a int);
@@ -258,7 +258,7 @@ CREATE TABLE t1 (a int);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t2 LIKE t1;
@@ -268,7 +268,7 @@ CREATE TABLE t2 LIKE t1;
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DESC t1;
@@ -283,7 +283,7 @@ DESC t1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 VALUES (1);
@@ -293,7 +293,7 @@ INSERT INTO t1 VALUES (1);
 Query OK, 1 row affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t1;

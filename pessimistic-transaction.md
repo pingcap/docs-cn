@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/reference/transactions/transaction-pessimistic/']
 
 你可以使用 [`tidb_txn_mode`](/tidb-specific-system-variables.md#tidb_txn_mode) 系统变量设置事务模式。执行以下命令，即可使整个集群中所有新创建 session 执行的所有显示事务（即非 autocommit 的事务）进入悲观事务模式：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@global.tidb_txn_mode = 'pessimistic';
@@ -25,13 +25,13 @@ set @@global.tidb_txn_mode = 'pessimistic';
 
 除此之外，还可以执行以下 SQL 语句显式地开启悲观事务：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 BEGIN PESSIMISTIC;
 ```
 
-{{< copyable "sql" >}}
+
 
 ```
 BEGIN /*!90000 PESSIMISTIC */;

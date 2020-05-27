@@ -41,7 +41,7 @@ TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT 1;
@@ -57,7 +57,7 @@ EXPLAIN SELECT 1;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -67,7 +67,7 @@ CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.10 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 (c1) VALUES (1), (2), (3);
@@ -78,7 +78,7 @@ Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE id = 1;
@@ -93,7 +93,7 @@ EXPLAIN SELECT * FROM t1 WHERE id = 1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DESC SELECT * FROM t1 WHERE id = 1;
@@ -108,7 +108,7 @@ DESC SELECT * FROM t1 WHERE id = 1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DESCRIBE SELECT * FROM t1 WHERE id = 1;
@@ -123,7 +123,7 @@ DESCRIBE SELECT * FROM t1 WHERE id = 1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN INSERT INTO t1 (c1) VALUES (4);
@@ -138,7 +138,7 @@ EXPLAIN INSERT INTO t1 (c1) VALUES (4);
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN UPDATE t1 SET c1=5 WHERE c1=3;
@@ -156,7 +156,7 @@ EXPLAIN UPDATE t1 SET c1=5 WHERE c1=3;
 4 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 EXPLAIN DELETE FROM t1 WHERE c1=3;
@@ -178,7 +178,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT ="dot"`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(a bigint, b bigint);

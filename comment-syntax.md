@@ -13,7 +13,7 @@ TiDB 支持三种注释风格：
 
 * 用 `#` 注释一行：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT 1+1;     # 注释文字
@@ -30,7 +30,7 @@ TiDB 支持三种注释风格：
 
 * 用 `--` 注释一行：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT 1+1;     -- 注释文字
@@ -47,7 +47,7 @@ TiDB 支持三种注释风格：
 
     用 `--` 注释时，必须要在其之后留出至少一个空格，否则注释不生效：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT 1+1--1;
@@ -64,7 +64,7 @@ TiDB 支持三种注释风格：
 
 * 用 `/* */` 注释一块，可以注释多行：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT 1 /* 这是行内注释文字 */ + 1;
@@ -79,7 +79,7 @@ TiDB 支持三种注释风格：
     1 row in set (0.01 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT 1+
@@ -131,7 +131,7 @@ TiDB 也有独立的注释语法，称为 TiDB 可执行注释语法，格式为
 
 还有一种注释会被当做是优化器 Hint 特殊对待：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT /*+ hint */ FROM ...;

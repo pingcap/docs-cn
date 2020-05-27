@@ -44,7 +44,7 @@ category: performance
 对于这种情况，会将其改写为 `IN` 的子查询改写为 `SELECT ... FROM ... GROUP ...` 的形式，然后将 `IN` 改写为普通的 `JOIN` 的形式。
 如 `select * from t1 where t1.a in (select t2.a from t2)` 会被改写为 `select t1.* from t1, (select distinct(a) a from t2) t2 where t1.a = t2.a` 的形式。同时这里的 `DISTINCT` 可以在 `t2.a` 具有 `UNIQUE` 属性时被自动消去。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 explain select * from t1 where t1.a in (select t2.a from t2);
@@ -69,7 +69,7 @@ explain select * from t1 where t1.a in (select t2.a from t2);
 
 当前对于这种场景的子查询，当它不是关联子查询时，TiDB 会在优化阶段提前展开它，将其直接替换为一个结果集直接判断结果。如下图中，`EXISTS` 会提前在优化阶段被执行为 `TRUE`，从而不会在最终的执行结果中看到它。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t1(a int);

@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-variables/']
 
 查看 TiDB 定义的专用系统变量，关于这些变量的含义参见 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GLOBAL VARIABLES LIKE 'tidb%';
@@ -149,7 +149,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 108 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GLOBAL VARIABLES LIKE 'time_zone%';

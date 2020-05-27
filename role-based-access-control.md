@@ -18,7 +18,7 @@ TiDB 的基于角色的访问控制 (RBAC) 系统的实现类似于 MySQL 8.0 �
 
 创建角色 app_developer，app_read 和 app_write：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE ROLE 'app_developer', 'app_read', 'app_write';
@@ -35,7 +35,7 @@ CREATE ROLE 'app_developer', 'app_read', 'app_write';
 
 为 `app_read` 角色授予数据库 `app_db` 的读权限：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 GRANT SELECT ON app_db.* TO 'app_read'@'%';
@@ -43,7 +43,7 @@ GRANT SELECT ON app_db.* TO 'app_read'@'%';
 
 为 `app_write` 角色授予数据库 `app_db` 的写权限：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 GRANT INSERT, UPDATE, DELETE ON app_db.* TO 'app_write'@'%';
@@ -51,7 +51,7 @@ GRANT INSERT, UPDATE, DELETE ON app_db.* TO 'app_write'@'%';
 
 为 `app_developer` 角色授予 `app_db` 数据库的全部权限：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 GRANT ALL ON app_db.* TO 'app_developer';
@@ -62,7 +62,7 @@ GRANT ALL ON app_db.* TO 'app_developer';
 假设有一个用户拥有开发者角色，可以对 `app_db` 的所有操作权限；另外有两个用户拥有 `app_db` 的只读权限；还有一个用户拥有 `app_db` 的读写权限。
 首先用 `CREATE USER` 来创建用户。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'dev1'@'localhost' IDENTIFIED BY 'dev1pass';
@@ -73,7 +73,7 @@ CREATE USER 'rw_user1'@'localhost' IDENTIFIED BY 'rw_user1pass';
 
 然后使用 `GRANT` 授予用户对应的角色。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 GRANT 'app_developer' TO 'dev1'@'localhost';
@@ -104,7 +104,7 @@ TiDB 允许这种多层授权关系存在，可以使用多层授权关系实现
 可以通过 `SHOW GRANTS` 语句查看用户被授予了哪些角色。
 当用户查看其他用户权限相关信息时，需要对 `mysql` 数据库拥有 `SELECT` 权限。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GRANTS FOR 'dev1'@'localhost';
@@ -121,7 +121,7 @@ SHOW GRANTS FOR 'dev1'@'localhost';
 
 可以通过使用 `SHOW GRANTS` 的 `USING` 选项来查看角色对应的权限。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GRANTS FOR 'dev1'@'localhost' USING 'app_developer';
@@ -137,7 +137,7 @@ SHOW GRANTS FOR 'dev1'@'localhost' USING 'app_developer';
 +----------------------------------------------------------+
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GRANTS FOR 'rw_user1'@'localhost' USING 'app_read', 'app_write';
@@ -153,7 +153,7 @@ SHOW GRANTS FOR 'rw_user1'@'localhost' USING 'app_read', 'app_write';
 +------------------------------------------------------------------------------+
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GRANTS FOR 'read_user1'@'localhost' USING 'app_read';
@@ -178,7 +178,7 @@ SHOW GRANTS FOR 'read_user1'@'localhost' USING 'app_read';
 
 可以对用户设置默认启用的角色；用户在登陆时，默认启用的角色会被自动启用。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET DEFAULT ROLE
@@ -188,7 +188,7 @@ SET DEFAULT ROLE
 
 比如将 `app_read` 和 `app_wirte` 设置为 `rw_user1@localhost` 的默认启用角色：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET DEFAULT ROLE app_read, app_write TO 'rw_user1'@'localhost';
@@ -196,7 +196,7 @@ SET DEFAULT ROLE app_read, app_write TO 'rw_user1'@'localhost';
 
 将 `dev1@localhost` 的所有角色，设为其默认启用角色：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET DEFAULT ROLE ALL TO 'dev1'@'localhost';
@@ -204,7 +204,7 @@ SET DEFAULT ROLE ALL TO 'dev1'@'localhost';
 
 关闭 `dev1@localhost` 的所有默认启用角色：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET DEFAULT ROLE NONE TO 'dev1'@'localhost';
@@ -228,7 +228,7 @@ SET ROLE {
 
 例如，登陆 `rw_user1` 后，为当前用户启用角色 `app_read` 和 `app_write` ，仅在当前 session 有效：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET ROLE 'app_read', 'app_write';
@@ -236,7 +236,7 @@ SET ROLE 'app_read', 'app_write';
 
 启用当前用户的默认角色：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET ROLE DEFAULT
@@ -244,7 +244,7 @@ SET ROLE DEFAULT
 
 启用授予给当前用户的所有角色：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET ROLE ALL
@@ -252,7 +252,7 @@ SET ROLE ALL
 
 不启用任何角色：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET ROLE NONE
@@ -260,7 +260,7 @@ SET ROLE NONE
 
 启用除 `app_read` 外的角色：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET ROLE ALL EXCEPT 'app_read'
@@ -276,7 +276,7 @@ SET ROLE ALL EXCEPT 'app_read'
 
 例如，先对 `rw_user1'@'localhost` 设置默认角色：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET DEFAULT ROLE ALL TO 'rw_user1'@'localhost';
@@ -284,7 +284,7 @@ SET DEFAULT ROLE ALL TO 'rw_user1'@'localhost';
 
 用 `rw_user1@localhost` 登陆后：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT CURRENT_ROLE();
@@ -298,7 +298,7 @@ SELECT CURRENT_ROLE();
 +--------------------------------+
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET ROLE 'app_read'; SELECT CURRENT_ROLE();
@@ -316,7 +316,7 @@ SET ROLE 'app_read'; SELECT CURRENT_ROLE();
 
 解除角色 `app_read` 与用户 `read_user1@localhost`、`read_user2@localhost` 的授权关系。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 REVOKE 'app_read' FROM 'read_user1'@'localhost', 'read_user2'@'localhost';
@@ -324,7 +324,7 @@ REVOKE 'app_read' FROM 'read_user1'@'localhost', 'read_user2'@'localhost';
 
 解除角色 `app_read`、`app_write` 与用户 `rw_user1@localhost` 的授权关系。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 REVOKE 'app_read', 'app_write' FROM 'rw_user1'@'localhost';
@@ -336,7 +336,7 @@ REVOKE 'app_read', 'app_write' FROM 'rw_user1'@'localhost';
 
 `REVOKE` 语句与 `GRANT` 对应，可以使用 `REVOKE` 来撤销 `app_write` 的权限。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 REVOKE INSERT, UPDATE, DELETE ON app_db.* FROM 'app_write';
@@ -348,7 +348,7 @@ REVOKE INSERT, UPDATE, DELETE ON app_db.* FROM 'app_write';
 
 删除角色 `app_read` 和 `app_write`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP ROLE 'app_read', 'app_write';
@@ -366,7 +366,7 @@ DROP ROLE 'app_read', 'app_write';
 
 以下是 `mysql.role_edges` 所包含的数据。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from mysql.role_edges;
@@ -385,7 +385,7 @@ select * from mysql.role_edges;
 
 `mysql.default_roles` 中包含了每个用户默认启用了哪些角色。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from mysql.default_roles;

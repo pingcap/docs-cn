@@ -39,7 +39,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-user/']
 
 创建一个密码为 `newuserpassword` 的用户。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
@@ -51,7 +51,7 @@ Query OK, 1 row affected (0.04 sec)
 
 创建一个只能在 `192.168.1.1` 登陆的用户，密码为 `newuserpassword`。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'newuser2'@'192.168.1.1' IDENTIFIED BY 'newuserpassword';
@@ -63,7 +63,7 @@ Query OK, 1 row affected (0.02 sec)
 
 创建一个要求在登录时使用 TLS 连接的用户。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'newuser3'@'%' REQUIRE SSL IDENTIFIED BY 'newuserpassword';
@@ -75,7 +75,7 @@ Query OK, 1 row affected (0.02 sec)
 
 创建一个要求在登录时提供指定客户端证书的用户。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'newuser4'@'%' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O=PingCAP' IDENTIFIED BY 'newuserpassword';

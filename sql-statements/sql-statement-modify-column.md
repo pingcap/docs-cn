@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/modify-column/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
@@ -43,7 +43,7 @@ CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 (col1) VALUES (1),(2),(3),(4),(5);
@@ -54,7 +54,7 @@ Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE t1 MODIFY col1 BIGINT;
@@ -64,7 +64,7 @@ ALTER TABLE t1 MODIFY col1 BIGINT;
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE TABLE t1\G;

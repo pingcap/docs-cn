@@ -131,7 +131,7 @@ db-driver=mysql
 
 在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行如下命令：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set global tidb_disable_txn_auto_retry = off;
@@ -141,7 +141,7 @@ set global tidb_disable_txn_auto_retry = off;
 
 重新启动 MySQL 客户端执行以下 SQL 语句，创建数据库 `sbtest`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create database sbtest;
@@ -174,7 +174,7 @@ Sysbench 1.0.14 没有提供数据预热的功能，因此需要手动进行数�
 
 以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
@@ -182,7 +182,7 @@ SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
 
 统计信息收集有助于优化器选择更为准确的执行计划，可以通过 `analyze` 命令来收集表 sbtest 的统计信息，每个表都需要统计。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ANALYZE TABLE sbtest7;

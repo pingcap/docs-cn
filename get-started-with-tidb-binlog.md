@@ -249,7 +249,7 @@ Check Table Before Drop: false
     MariaDB [(none)]>
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show databases;
@@ -272,7 +272,7 @@ Check Table Before Drop: false
 
     如下表格是包含 `checkpoint` 表格的 `tidb_binlog` 数据库。`drainer` 使用 `checkpoint` 表格，记录 TiDB 集群中的 binlog 已经更新到了哪个位置。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     use tidb_binlog;
@@ -282,7 +282,7 @@ Check Table Before Drop: false
     Database changed
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from checkpoint;
@@ -305,7 +305,7 @@ Check Table Before Drop: false
     mysql -h 127.0.0.1 -P 4000 --prompt='TiDB [\d]> ' -u root
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create database tidbtest;
@@ -315,7 +315,7 @@ Check Table Before Drop: false
     Query OK, 0 rows affected (0.12 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     use tidbtest;
@@ -325,7 +325,7 @@ Check Table Before Drop: false
     Database changed
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     create table t1 (id int unsigned not null AUTO_INCREMENT primary key);
@@ -335,7 +335,7 @@ Check Table Before Drop: false
     Query OK, 0 rows affected (0.11 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     insert into t1 () values (),(),(),(),();
@@ -346,7 +346,7 @@ Check Table Before Drop: false
     Records: 5  Duplicates: 0  Warnings: 0
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from t1;
@@ -367,7 +367,7 @@ Check Table Before Drop: false
 
     切换回 MariaDB 客户端可看到新的数据库、新的表格和最近插入的行数据。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     use tidbtest;
@@ -380,7 +380,7 @@ Check Table Before Drop: false
     Database changed
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     show tables;
@@ -395,7 +395,7 @@ Check Table Before Drop: false
     1 row in set (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     select * from t1;

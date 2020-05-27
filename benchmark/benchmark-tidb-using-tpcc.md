@@ -152,7 +152,7 @@ loadWorkers=32  # 导入数据的并发数
 
 首先用 MySQL 客户端连接到 TiDB-Server 并执行：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create database tpcc

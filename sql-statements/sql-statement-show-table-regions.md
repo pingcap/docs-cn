@@ -59,7 +59,7 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS [WhereClauseOptional];
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (id int key,name varchar(50), index (name));
@@ -71,7 +71,7 @@ Query OK, 0 rows affected
 
 默认新建表后会单独 split 出一个 Region 来存放该表的数据，开始时行数据和索引数据都会写到这个 Region。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show table t regions;
@@ -93,7 +93,7 @@ show table t regions;
 
 用 `SPLIT TABLE REGION` 语法切分行数据的 Region，下面语法把表 t 的行数据切分成 5 个 Region。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 split table t between (0) and (100000) regions 5;
@@ -115,7 +115,7 @@ split table t between (0) and (100000) regions 5;
 
 表 t 现在一共有 6 个 Region，其中 102、106、110、114、3 用来存行数据，Region 98 用来存索引数据。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show table t regions;
@@ -142,7 +142,7 @@ show table t regions;
 
 查看表 t 在 store 1 上的 region，用 where 条件过滤。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show table t regions where leader_store_id =1;
@@ -158,7 +158,7 @@ show table t regions where leader_store_id =1;
 
 用 `SPLIT TABLE REGION` 语法切分索引数据的 Region，下面语法把表 t 的索引 name 数据在 [a,z] 范围内切分成 2 个 Region。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 split table t index name between ("a") and ("z") regions 2;
@@ -175,7 +175,7 @@ split table t index name between ("a") and ("z") regions 2;
 
 现在表 t 一共有 7 个 Region，其中 5 个 Region (102, 106, 110, 114, 3) 用来存表 t 的 record 数据，另外 2 个 Region (135, 98) 用来存 name 索引的数据。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show table t regions;

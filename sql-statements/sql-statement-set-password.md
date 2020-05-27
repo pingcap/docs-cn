@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/set-password/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET PASSWORD='test';
@@ -27,7 +27,7 @@ SET PASSWORD='test';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'newuser' IDENTIFIED BY 'test';
@@ -37,7 +37,7 @@ CREATE USER 'newuser' IDENTIFIED BY 'test';
 Query OK, 1 row affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE USER 'newuser';
@@ -51,7 +51,7 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET PASSWORD FOR 'newuser' = 'test';
@@ -61,7 +61,7 @@ SET PASSWORD FOR 'newuser' = 'test';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE USER 'newuser';
@@ -75,7 +75,7 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET PASSWORD FOR 'newuser' = PASSWORD('test');
@@ -87,7 +87,7 @@ SET PASSWORD FOR 'newuser' = PASSWORD('test');
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE USER 'newuser';

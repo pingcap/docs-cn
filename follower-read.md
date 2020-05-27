@@ -21,7 +21,7 @@ Follower Read 功能是指在强一致性读的前提下使用 Region 的 follow
 
 要开启 TiDB 的 Follower Read 功能，将 SESSION 变量 `tidb_replica_read` 的值设置为 `follower` 或 `leader-and-follower` 即可：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@tidb_replica_read = '<目标值>';

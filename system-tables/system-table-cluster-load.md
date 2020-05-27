@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-load/']
 
 集群负载表 `CLUSTER_LOAD` 提供集群各个实例所在服务器的的当前负载信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.cluster_load;
@@ -43,7 +43,7 @@ desc information_schema.cluster_load;
 
 查询集群当前的 CPU 负载信息示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.cluster_load where device_type='cpu' and device_name='cpu';

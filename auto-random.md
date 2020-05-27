@@ -31,7 +31,7 @@ insert into t(b) values ('a'), ('b'), ('c')
 
 如以上语句，由于未指定主键列的值（`a` 列），TiDB 会使用连续自增的行值作为行 ID，可能导致单个 TiKV 节点上产生写入热点，进而影响对外提供服务的性能。要避免这种性能下降，可以在执行建表语句时为 `a` 列指定 `AUTO_RANDOM` 属性而不是 `AUTO_INCREMENT` 属性。示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (a bigint primary key auto_random, b varchar(255))
@@ -39,7 +39,7 @@ create table t (a bigint primary key auto_random, b varchar(255))
 
 或者
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (a bigint auto_random, b varchar(255), primary key (a))
@@ -56,7 +56,7 @@ create table t (a bigint auto_random, b varchar(255), primary key (a))
 
 若要使用一个不同的 shard bits 的数量，可以在 `AUTO_RANDOM` 后面加一对括号，并在括号中指定想要的 shard bits 数量。示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (a bigint primary key auto_random(3), b varchar(255))
@@ -66,7 +66,7 @@ create table t (a bigint primary key auto_random(3), b varchar(255))
 
 创建完表后，使用 `SHOW WARNINGS` 可以查看当前表可支持的最大隐式分配的次数：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show warnings
@@ -89,7 +89,7 @@ show warnings
 
 `AUTO RANDOM` 列隐式分配的值会影响 `last_insert_id()`。可以使用 `select last_insert_id()` 获取上一次 TiDB 隐式分配的 ID，例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 insert into t (b) values ("b")
@@ -117,13 +117,13 @@ select last_insert_id()
 
 TiDB 支持解析版本注释语法。示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (a bigint primary key /*T![auto_rand] auto_random */)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (a bigint primary key auto_random)

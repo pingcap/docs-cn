@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-character-set/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CHARACTER SET;

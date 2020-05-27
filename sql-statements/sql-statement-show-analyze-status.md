@@ -20,7 +20,7 @@ category: reference
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(x int, index idx(x)) partition by hash(x) partition 4;

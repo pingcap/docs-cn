@@ -55,7 +55,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-columns-from/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create view v1 as select 1;
@@ -65,7 +65,7 @@ create view v1 as select 1;
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show columns from v1;
@@ -80,7 +80,7 @@ show columns from v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc v1;
@@ -95,7 +95,7 @@ desc v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 describe v1;
@@ -110,7 +110,7 @@ describe v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 explain v1;
@@ -125,7 +125,7 @@ explain v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show fields from v1;
@@ -140,7 +140,7 @@ show fields from v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show full columns from v1;
@@ -155,7 +155,7 @@ show full columns from v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 show full columns from mysql.user;

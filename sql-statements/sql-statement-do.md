@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/do/']
 
 这条 `SELECT` 语句会暂停执行，但同时也会返回一个结果集。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT SLEEP(5);
@@ -50,7 +50,7 @@ SELECT SLEEP(5);
 
 如果使用 `DO` 的话，语句同样会暂停，但不会返回结果集。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DO SLEEP(5);
@@ -60,7 +60,7 @@ DO SLEEP(5);
 Query OK, 0 rows affected (5.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DO SLEEP(1), SLEEP(1.5);

@@ -47,7 +47,7 @@ Count-Min Sketch 是一种哈希结构，当查询中出现诸如 `a = 1` 或者
 
 收集 TableNameList 中所有表的统计信息：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
@@ -61,7 +61,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
@@ -71,7 +71,7 @@ IndexNameList 为空时会收集所有索引列的统计信息。
 
 收集 TableName 中所有的 PartitionNameList 中分区的统计信息：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
@@ -79,7 +79,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKE
 
 收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
@@ -98,7 +98,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BU
 
 增量收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
@@ -106,7 +106,7 @@ ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN
 
 增量收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
@@ -151,7 +151,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 语法如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW ANALYZE STATUS [ShowLikeOrWhere];
@@ -181,7 +181,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 语法如下：
 
-{{< copyable "sql" >}}
+
 
 其中，`ShowLikeOrWhereOpt` 部分的语法图为：
 
@@ -231,7 +231,7 @@ SHOW STATS_META [ShowLikeOrWhere];
 
 语法如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
@@ -259,7 +259,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 
 语法如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW STATS_BUCKETS [ShowLikeOrWhere];
@@ -294,7 +294,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere];
 
 语法如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP STATS TableName;
@@ -338,7 +338,7 @@ http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${tabl
 
 语法如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 LOAD STATS 'file_name';

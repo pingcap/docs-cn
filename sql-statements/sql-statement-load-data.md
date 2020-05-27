@@ -48,7 +48,7 @@ LINES TERMINATED BY '\n'
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE trips (
@@ -75,7 +75,7 @@ Query OK, 0 rows affected (0.14 sec)
 
 [ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/faq/tidb-faq.md#923-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
 
-{{< copyable "sql" >}}
+
 
 ```sql
 LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikeshare-tripdata.csv' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (duration, start_date, end_date, start_station_number, start_station, end_station_number, end_station, bike_number, member_type);
@@ -88,7 +88,7 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 
 `LOAD DATA` 也支持使用十六进制 ASCII 字符表达式或二进制 ASCII 字符表达式作为 `FIELDS ENCLOSED BY` 和 `FIELDS TERMINATED BY` 的参数。示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikeshare-tripdata.csv' INTO TABLE trips FIELDS TERMINATED BY x'2c' ENCLOSED BY b'100010' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (duration, start_date, end_date, start_station_number, start_station, end_station_number, end_station, bike_number, member_type);

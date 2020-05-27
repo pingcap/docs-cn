@@ -9,7 +9,7 @@ category: performance
 
 假设表 t 里面有 a b c d 四列，执行如下语句：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select a from t where b > 5

@@ -49,7 +49,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/insert/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a INT);
@@ -59,7 +59,7 @@ CREATE TABLE t1 (a INT);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t2 LIKE t1;
@@ -69,7 +69,7 @@ CREATE TABLE t2 LIKE t1;
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 VALUES (1);
@@ -79,7 +79,7 @@ INSERT INTO t1 VALUES (1);
 Query OK, 1 row affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 (a) VALUES (1);
@@ -89,7 +89,7 @@ INSERT INTO t1 (a) VALUES (1);
 Query OK, 1 row affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t2 SELECT * FROM t1;
@@ -100,7 +100,7 @@ Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t1;
@@ -116,7 +116,7 @@ SELECT * FROM t1;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t2;
@@ -132,7 +132,7 @@ SELECT * FROM t2;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t2 VALUES (2),(3),(4);
@@ -143,7 +143,7 @@ Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t2;

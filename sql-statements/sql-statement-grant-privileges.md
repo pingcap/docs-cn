@@ -42,7 +42,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/grant-privileges/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
@@ -52,7 +52,7 @@ CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 Query OK, 1 row affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 GRANT ALL ON test.* TO 'newuser';
@@ -62,7 +62,7 @@ GRANT ALL ON test.* TO 'newuser';
 Query OK, 0 rows affected (0.03 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW GRANTS FOR 'newuser';

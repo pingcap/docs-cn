@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/rollback/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
@@ -27,7 +27,7 @@ CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
 Query OK, 0 rows affected (0.12 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 BEGIN;
@@ -37,7 +37,7 @@ BEGIN;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 VALUES (1);
@@ -47,7 +47,7 @@ INSERT INTO t1 VALUES (1);
 Query OK, 1 row affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ROLLBACK;
@@ -57,7 +57,7 @@ ROLLBACK;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t1;

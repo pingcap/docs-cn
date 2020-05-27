@@ -10,13 +10,13 @@ aliases: ['/docs-cn/dev/reference/sql/statements/recover-table/']
 
 ## 语法
 
-{{< copyable "sql" >}}
+
 
 ```sql
 RECOVER TABLE table_name
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 RECOVER TABLE BY JOB ddl_job_id
@@ -68,13 +68,13 @@ TiDB Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使�
 
 - 根据表名恢复被删除的表。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     DROP TABLE t;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     RECOVER TABLE t;
@@ -89,13 +89,13 @@ TiDB Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使�
 
     如果第一次删除表 t 后，又新建了一个表 t，然后又把新建的表 t 删除了，此时如果想恢复最开始删除的表 t, 就需要用到指定 DDL JOB ID 的语法了。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     DROP TABLE t;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     ADMIN SHOW DDL JOBS 1;
@@ -111,7 +111,7 @@ TiDB Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使�
     +--------+---------+------------+------------+--------------+-----------+----------+-----------+-----------------------------------+--------+
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     RECOVER TABLE BY JOB 53;

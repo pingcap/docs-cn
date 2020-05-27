@@ -12,13 +12,13 @@ summary: 介绍 TiDB 的 `AUTO_INCREMENT` 列属性。
 
 `AUTO_INCREMENT` 是用于自动填充缺省列值的列属性。当 `INSERT` 语句没有指定 `AUTO_INCREMENT` 列的具体值时，系统会自动地为该列分配一个值。该值满足唯一性，以及**特殊情况下**的递增性和连续性。使用示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t(id int primary key AUTO_INCREMENT, c int);
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 insert into t(c) values (1);
@@ -42,7 +42,7 @@ mysql> select * from t;
 
 此外，`AUTO_INCREMENT` 还支持显式指定列值的插入语句，此时 TiDB 会保存显式指定的值：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 insert into t(id, c) values (6, 6);

@@ -16,13 +16,13 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 * 在变量名前加 `GLOBAL` 关键词或者是使用 `@@global.` 作为修饰符:
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SET GLOBAL autocommit = 1;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SET @@global.autocommit = 1;
@@ -36,19 +36,19 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 * 在变量名前加 `SESSION` 关键词或者是使用 `@@session.` 作为修饰符，或者是不加任何修饰符:
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SET SESSION autocommit = 1;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SET @@session.autocommit = 1;
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SET @@autocommit = 1;
@@ -60,7 +60,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 * 会话范围的系统变量仅仅会在创建会话时才会根据全局范围系统变量初始化自己的值。更改全局范围的系统变量不会改变已经创建的会话正在使用的系统变量的值。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT @@GLOBAL.autocommit;
@@ -75,7 +75,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
     1 row in set (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT @@SESSION.autocommit;
@@ -90,7 +90,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
     1 row in set (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SET GLOBAL autocommit = OFF;
@@ -102,7 +102,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
     会话范围的系统变量不会改变，会话中执行的事务依旧是以自动提交的形式来进行：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT @@SESSION.autocommit;
@@ -117,7 +117,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
     1 row in set (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT @@GLOBAL.autocommit;
@@ -132,7 +132,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
     1 row in set (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     exit

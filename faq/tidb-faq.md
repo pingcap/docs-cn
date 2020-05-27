@@ -128,7 +128,7 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 
 `GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，可使用如下命令增加 `GC Life Time`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';

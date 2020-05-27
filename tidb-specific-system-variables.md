@@ -12,7 +12,7 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 
 变量可以通过 SET 语句设置，例如
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@tidb_distsql_scan_concurrency = 10;
@@ -20,7 +20,7 @@ set @@tidb_distsql_scan_concurrency = 10;
 
 如果需要设置全局变量，执行
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@global.tidb_distsql_scan_concurrency = 10;
@@ -485,7 +485,7 @@ mysql> desc select count(distinct a) from test.t;
 
 示例：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set tidb_slow_log_threshold = 200;
@@ -501,7 +501,7 @@ set tidb_slow_log_threshold = 200;
 
 示例：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set tidb_query_log_max_len = 20;
@@ -533,7 +533,7 @@ TiDB 支持乐观事务模型，即在执行写入时，假设不存在冲突。
 
 默认关闭 tidb_constraint_check_in_place 时的行为：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (i int key);
@@ -548,7 +548,7 @@ Query OK, 1 row affected
 
 commit 时才去做检查：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 commit;
@@ -560,7 +560,7 @@ ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
 
 打开 tidb_constraint_check_in_place 后：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 set @@tidb_constraint_check_in_place=1;
@@ -594,7 +594,7 @@ ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
 
 打开这个优化规则后，会将下面子查询做如下变化：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t where t.a in (select aa from t1);
@@ -602,7 +602,7 @@ select * from t where t.a in (select aa from t1);
 
 将子查询转成 join 如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa;
@@ -610,7 +610,7 @@ select * from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa;
 
 如果 t1 在列 aa 上有 unique 且 not null 的限制，可以直接改写为如下，不需要添加 aggregation。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from t, t1 where t.a=t1.a;

@@ -141,7 +141,7 @@ Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 s
 
 1. 在备份前，使用 MySQL 客户端查询 TiDB 集群的 `tikv_gc_life_time` 的值，并将其调整为一个合适的值：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
@@ -156,7 +156,7 @@ Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 s
     1 rows in set (0.02 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
@@ -164,7 +164,7 @@ Mydumper 备份 TiDB 数据时为了保证数据的一致性使用了 TiDB 的 s
 
 2. 备份完成后，将 `tikv_gc_life_time` 调整为原来的值：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     update mysql.tidb set VARIABLE_VALUE = '10m0s' where VARIABLE_NAME = 'tikv_gc_life_time';

@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-view/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -35,7 +35,7 @@ CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
@@ -46,7 +46,7 @@ Query OK, 5 rows affected (0.03 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE VIEW v1 AS SELECT * FROM t1 WHERE c1 > 2;
@@ -56,7 +56,7 @@ CREATE VIEW v1 AS SELECT * FROM t1 WHERE c1 > 2;
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t1;
@@ -75,7 +75,7 @@ SELECT * FROM t1;
 5 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM v1;
@@ -92,7 +92,7 @@ SELECT * FROM v1;
 3 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP VIEW v1;
@@ -102,7 +102,7 @@ DROP VIEW v1;
 Query OK, 0 rows affected (0.23 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM t1;

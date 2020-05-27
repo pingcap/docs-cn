@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-log/']
 
 TiDB 4.0 版本之前，要获取集群的日志，用户需要逐个登录各个节点汇总日志。TiDB 4.0 的集群日志表提供了一个全局且时间有序的日志搜索结果，为跟踪全链路事件提供了便利的手段。例如按照某一个 `region id` 搜索日志，可以查询该 Region 生命周期内的所有日志；类似地，通过慢日志的 `txn id` 搜索全链路日志，可以查询该事务在各个节点扫描的 key 数量以及流量等信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.cluster_log;
@@ -46,7 +46,7 @@ desc information_schema.cluster_log;
 
 查询某个 DDL 的执行过程示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select time,instance,left(message,150) from information_schema.cluster_log where message like '%ddl%job%ID.80%' and type='tidb' and time > '2020-05-18 20:40:00' and time<'2020-05-18 21:40:00'

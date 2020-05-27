@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/alter-user/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
@@ -43,7 +43,7 @@ CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE USER 'newuser';
@@ -57,7 +57,7 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER USER 'newuser' IDENTIFIED BY 'newnewpassword';
@@ -67,7 +67,7 @@ ALTER USER 'newuser' IDENTIFIED BY 'newnewpassword';
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE USER 'newuser';

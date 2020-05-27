@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-hardware/']
 
 集群硬件表 `CLUSTER_HARDWARE` 提供了集群各实例所在服务器的硬件信息。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc information_schema.cluster_hardware;
@@ -43,7 +43,7 @@ desc information_schema.cluster_hardware;
 
 查询集群 CPU 信息的示例如下：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select * from information_schema.cluster_hardware where device_type='cpu' and device_name='cpu' and name like '%cores';

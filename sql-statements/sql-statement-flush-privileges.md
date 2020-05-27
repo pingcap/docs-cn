@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/flush-privileges/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 FLUSH PRIVILEGES;

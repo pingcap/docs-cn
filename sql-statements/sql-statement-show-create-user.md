@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-create-user/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW CREATE USER 'root';

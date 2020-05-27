@@ -14,7 +14,7 @@ category: reference
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW PUMP STATUS;
@@ -33,7 +33,7 @@ SHOW PUMP STATUS;
 
 可以看出 `pump1` 已经超过一天没有更新状态，该 Pump 处于异常状态，但是 State 仍然为 `Online`，使用 `CHANGE PUMP` 将该 Pump 状态修改为 `paused`：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CHANGE PUMP TO NODE_STATE ='paused' FOR NODE_ID 'pump1';
@@ -43,7 +43,7 @@ CHANGE PUMP TO NODE_STATE ='paused' FOR NODE_ID 'pump1';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW PUMP STATUS;

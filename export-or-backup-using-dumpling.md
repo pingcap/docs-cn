@@ -99,7 +99,7 @@ $ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
 
 另外，假如数据量非常大，可以提前调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
@@ -107,7 +107,7 @@ update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_lif
 
 在操作结束之后，再将 GC 时间调回原样（默认是 `10m`）：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';

@@ -26,7 +26,7 @@ category: reference
 
 ## 语法说明
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;

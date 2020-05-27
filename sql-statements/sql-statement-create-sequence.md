@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-sequence/']
 
 ## 语法说明
 
-{{< copyable "sql" >}}
+
 
 ```
 CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
@@ -88,7 +88,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 创建一个默认参数的序列对象。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     CREATE SEQUENCE seq;
@@ -100,7 +100,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 使用 `nextval()` 函数获取序列对象的下一个值。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT nextval(seq);
@@ -117,7 +117,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 使用 `lastval()` 函数获取本会话上一次调用序列对象所产生的值。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT lastval(seq);
@@ -134,7 +134,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 使用 `setval()` 函数设置序列对象当前值的位置。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT setval(seq, 10);
@@ -151,7 +151,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 也可使用 `next value for` 语法获取序列的下一个值。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT next value for seq;
@@ -168,7 +168,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 创建一个默认自定义参数的序列对象。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     CREATE SEQUENCE seq2 start 3 increment 2 minvalue 1 maxvalue 10 cache 3;
@@ -180,7 +180,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 当本会话还未使用过序列对象时，`lastval()` 函数返回 NULL 值。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT lastval(seq2);
@@ -197,7 +197,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 序列对象 `nextval()` 的第一个有效值为 `start` 值。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT nextval(seq2);
@@ -214,7 +214,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 使用 `setval()` 虽然可以改变序列对象当前值的位置，但是无法改变下一个值的等差规律。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT setval(seq2, 6);
@@ -231,7 +231,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 使用 `nextval()` 下一个值获取时，会遵循序列定义的等差规律。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT next value for seq2;
@@ -248,7 +248,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 可以将序列的下一个值作为列的默认值来使用。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     CREATE TABLE t(a int default next value for seq2);
@@ -260,7 +260,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 下列示例中，因为没有指定值，会直接获取 `seq2` 的默认值来使用。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     INSERT into t values();
@@ -270,7 +270,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     Query OK, 1 row affected (0.00 sec)
     ```
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     SELECT * from t;
@@ -287,7 +287,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + 下列示例中，因为没有指定值，会直接获取 `seq2` 的默认值来使用。由于 `seq2` 的下一个值超过了上述示例 (`CREATE SEQUENCE seq2 start 3 increment 2 minvalue 1 maxvalue 10 cache 3;`) 的定义范围，所以会显示报错。
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     INSERT into t values();

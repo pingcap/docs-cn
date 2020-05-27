@@ -12,7 +12,7 @@ TiDB 支持的约束与 MySQL 的基本相同。
 
 TiDB 支持的非空约束规则与 MySQL 支持的一致。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE users (
@@ -22,7 +22,7 @@ CREATE TABLE users (
 );
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO users (id,age,last_login) VALUES (NULL,123,NOW());
@@ -32,7 +32,7 @@ INSERT INTO users (id,age,last_login) VALUES (NULL,123,NOW());
 Query OK, 1 row affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO users (id,age,last_login) VALUES (NULL,NULL,NOW());
@@ -42,7 +42,7 @@ INSERT INTO users (id,age,last_login) VALUES (NULL,NULL,NOW());
 ERROR 1048 (23000): Column 'age' cannot be null
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO users (id,age,last_login) VALUES (NULL,123,NULL);
@@ -62,7 +62,7 @@ Query OK, 1 row affected (0.03 sec)
 
 在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#事务的惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -74,7 +74,7 @@ CREATE TABLE users (
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 START TRANSACTION;
@@ -84,7 +84,7 @@ START TRANSACTION;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
@@ -95,7 +95,7 @@ Query OK, 3 rows affected (0.00 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO users (username) VALUES ('steve'),('elizabeth');
@@ -106,7 +106,7 @@ Query OK, 2 rows affected (0.00 sec)
 Records: 2  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 COMMIT;
@@ -130,7 +130,7 @@ CREATE TABLE users (
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET tidb_constraint_check_in_place = 1;
@@ -140,7 +140,7 @@ SET tidb_constraint_check_in_place = 1;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 START TRANSACTION;
@@ -150,7 +150,7 @@ START TRANSACTION;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
@@ -167,7 +167,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 与 MySQL 行为一样，主键约束包含了唯一约束，即创建了主键约束相当于拥有了唯一约束。此外，TiDB 其他的主键约束规则也与 MySQL 相似。例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
@@ -177,7 +177,7 @@ CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
 Query OK, 0 rows affected (0.12 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t2 (a INT NULL PRIMARY KEY);
@@ -187,7 +187,7 @@ CREATE TABLE t2 (a INT NULL PRIMARY KEY);
 ERROR 1171 (42000): All parts of a PRIMARY KEY must be NOT NULL; if you need NULL in a key, use UNIQUE instead
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t3 (a INT NOT NULL PRIMARY KEY, b INT NOT NULL PRIMARY KEY);
@@ -197,7 +197,7 @@ CREATE TABLE t3 (a INT NOT NULL PRIMARY KEY, b INT NOT NULL PRIMARY KEY);
 ERROR 1068 (42000): Multiple primary key defined
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t4 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b));
@@ -238,7 +238,7 @@ CREATE TABLE orders (
 );
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT table_name, column_name, constraint_name, referenced_table_name, referenced_column_name
@@ -258,7 +258,7 @@ FROM information_schema.key_column_usage WHERE table_name IN ('users', 'orders')
 
 TiDB 也支持使用 `ALTER TABLE` 命令来删除外键（`DROP FOREIGN KEY`）和添加外键（`ADD FOREIGN KEY`）：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE orders DROP FOREIGN KEY fk_user_id;

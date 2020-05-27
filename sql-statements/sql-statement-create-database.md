@@ -31,7 +31,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-database/']
 
 `CREATE DATABASE` 用于创建数据库，并可以指定数据库的默认属性（如数据库默认字符集、排序规则）。`CREATE SCHEMA` 跟 `CREATE DATABASE` 操作效果一样。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE {DATABASE | SCHEMA} [IF NOT EXISTS] db_name
@@ -48,7 +48,7 @@ create_specification:
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE DATABASE mynewdatabase;
@@ -58,7 +58,7 @@ CREATE DATABASE mynewdatabase;
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 USE mynewdatabase;
@@ -68,7 +68,7 @@ USE mynewdatabase;
 Database changed
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a int);
@@ -78,7 +78,7 @@ CREATE TABLE t1 (a int);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW TABLES;

@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/set-transaction/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW SESSION VARIABLES LIKE 'transaction_isolation';
@@ -40,7 +40,7 @@ SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
@@ -50,7 +50,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW SESSION VARIABLES LIKE 'transaction_isolation';
@@ -65,7 +65,7 @@ SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 1 row in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SET SESSION transaction_isolation = 'REPEATABLE-READ';
@@ -75,7 +75,7 @@ SET SESSION transaction_isolation = 'REPEATABLE-READ';
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW SESSION VARIABLES LIKE 'transaction_isolation';

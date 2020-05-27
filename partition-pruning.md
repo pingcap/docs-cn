@@ -17,7 +17,7 @@ category: performance
 
 只有等值比较的查询条件能够支持 Hash 分区表的裁剪。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (x int) partition by hash(x) partitions 4;
@@ -42,7 +42,7 @@ explain select * from t where x = 1;
 
 不能确定查询结果只在一个分区上的条件：如 `in`, `between`, `> < >= <=` 等查询条件，不能使用分区裁剪的优化。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (x int) partition by hash(x) partitions 4;
@@ -75,7 +75,7 @@ explain select * from t where x > 2;
 
 由于分区裁剪的规则优化是在查询计划的生成阶段，对于执行阶段才能获取到过滤条件的场景，无法利用分区裁剪的优化。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (x int) partition by hash(x) partitions 4;
@@ -113,7 +113,7 @@ explain select * from t2 where x = (select * from t1 where t2.x = t1.x and t2.x 
 
 等值比较的查询条件可以使用分区裁剪。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (x int) partition by range (x) (
@@ -136,7 +136,7 @@ explain select * from t where x = 3;
 
 使用 `in` 条件的等值比较查询条件也可以使用分区裁剪。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (x int) partition by range (x) (
@@ -167,7 +167,7 @@ explain select * from t where x in(1,13);
 
 区间比较的查询条件如 `between`, `> < = >= <=` 可以使用分区裁剪。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (x int) partition by range (x) (
@@ -205,7 +205,7 @@ to_days
 
 例如，分区表达式是 `fn(col)` 形式，`fn` 为我们支持的单调函数 `to_days`，就可以使用分区裁剪：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t (id datetime) partition by range (to_days(id)) (
@@ -228,7 +228,7 @@ explain select * from t where id > '2020-04-18';
 
 由于分区裁剪的规则优化是在查询计划的生成阶段，对于执行阶段才能获取到过滤条件的场景，无法利用分区裁剪的优化。
 
-{{< copyable "sql" >}}
+
 
 ```sql
 create table t1 (x int) partition by range (x) (

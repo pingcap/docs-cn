@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/rename-table/']
 
 ## 示例
 
-{{< copyable "sql" >}}
+
 
 ```sql
 CREATE TABLE t1 (a int);
@@ -31,7 +31,7 @@ CREATE TABLE t1 (a int);
 Query OK, 0 rows affected (0.12 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW TABLES;
@@ -46,7 +46,7 @@ SHOW TABLES;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 RENAME TABLE t1 TO t2;
@@ -56,7 +56,7 @@ RENAME TABLE t1 TO t2;
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SHOW TABLES;

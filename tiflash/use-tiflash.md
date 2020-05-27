@@ -17,7 +17,7 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 
 TiFlash 接入 TiKV 集群后，默认不会开始同步数据。可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的表建立 TiFlash 副本：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE table_name SET TIFLASH REPLICA count
@@ -31,7 +31,7 @@ ALTER TABLE table_name SET TIFLASH REPLICA count
 
 为表建立 2 个副本：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
@@ -39,7 +39,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
 
 删除副本：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
@@ -49,7 +49,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * 假设有一张表 t 已经通过上述的 DDL 语句同步到 TiFlash，则通过以下语句创建的表也会自动同步到 TiFlash：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     CREATE TABLE table_name like t
@@ -63,7 +63,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>'
@@ -82,7 +82,7 @@ TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本
 
 对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。具体有没有选择 TiFlash 副本，可以通过 `desc` 或 `explain analyze` 语句查看，例如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 desc select count(*) from test.t;
@@ -99,7 +99,7 @@ desc select count(*) from test.t;
 3 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+
 
 ```sql
 explain analyze select count(*) from test.t;
@@ -134,7 +134,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
 2. 会话级别，即 SESSION 级别。设置语句：
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set @@session.tidb_isolation_read_engines = "逗号分隔的 engine list";
@@ -142,7 +142,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
     或者
 
-    {{< copyable "sql" >}}
+    
 
     ```sql
     set SESSION tidb_isolation_read_engines = "逗号分隔的 engine list";
@@ -162,7 +162,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
 手工 Hint 可以在满足 engine 隔离的前提下，强制 TiDB 对于某张或某几张表使用指定的副本，使用方法为：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ read_from_storage(tiflash[table_name]) */ ... from table_name;
@@ -170,7 +170,7 @@ select /*+ read_from_storage(tiflash[table_name]) */ ... from table_name;
 
 如果在查询语句中对表设置了别名，在 Hint 语句中必须使用别名才能使 Hint 生效。比如：
 
-{{< copyable "sql" >}}
+
 
 ```sql
 select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 as alias_a, table_name_2 as alias_b where alias_a.column_1 = alias_b.column_2;
