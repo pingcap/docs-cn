@@ -5,7 +5,7 @@ category: reference
 aliases: ['/docs-cn/v2.1/reference/sql/statements/grant-privileges/']
 ---
 
-# GRANT <privileges>
+# `GRANT <privileges>`
 
 `GRANT <privileges>` 语句用于为 TiDB 中已存在的用户分配权限。TiDB 中的权限系统同 MySQL 一样，都基于数据库/表模式来分配凭据。
 
@@ -66,6 +66,6 @@ mysql> SHOW GRANTS FOR 'newuser';
 
 ## 另请参阅
 
-* [REVOKE <privileges>](/sql-statements/sql-statement-revoke-privileges.md)
+* [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
 * [Privilege Management](/privilege-management.md)

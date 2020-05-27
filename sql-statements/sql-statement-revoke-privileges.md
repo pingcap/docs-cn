@@ -5,7 +5,7 @@ category: reference
 aliases: ['/docs-cn/v2.1/reference/sql/statements/revoke-privileges/']
 ---
 
-# REVOKE <privileges>
+# `REVOKE <privileges>`
 
 `REVOKE <privileges>` 语句用于删除已有用户的权限。
 
@@ -81,6 +81,6 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## 另请参阅
 
-* [GRANT <privileges>](/sql-statements/sql-statement-grant-privileges.md)
+* [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
 * [Privilege Management](/privilege-management.md)
