@@ -6,24 +6,11 @@
 ## 目录
 
 + 关于 TiDB
-  + 基本信息
-    + [TiDB 简介](/overview.md)
-    + [开源信息说明](/licensing.md)
-    + [核心用户列表](/adopters.md)
+  + [TiDB 简介](/overview.md)
   + [核心特性](/basic-features.md)
-    + 数据类型
-    + SQL 与功能
-    + 安全性
-    + 可靠性
-    + 可用性
-    + 性能数据
-    + 配套工具
-    + 企业版特性
   + 兼容性
-    + [与标准 SQL 的兼容性](/differences-from-standard-sql.md)
     + [与 MySQL 的兼容性](/mysql-compatibility.md)
     + [使用限制](/tidb-limitations.md)
-  + [使用场景](/use-cases.md)
   + [荣誉列表](/credits.md)
 + 快速上手
   + [快速上手指南](/quick-start-with-tidb.md)
@@ -45,16 +32,11 @@
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
-    + Kubernetes
-    + AWS
-    + GCP
-    + Alibaba Cloud
   + [测试验证](/post-installation-check.md)
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
     + [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
-    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
@@ -91,14 +73,6 @@
   + [TiDB 集群报警规则与处理方法](/alert-rules.md)
   + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 + 故障诊断
-  + 硬件故障
-    + [整机](/troubleshoot-machine-issues.md)
-    + [硬盘](/troubleshoot-disk-issues.md)
-    + [网络](/troubleshoot-network-issues.md)
-    + [内存](/troubleshoot-memory-issues.md)
-  + 操作系统故障
-    + [版本](/troubleshoot-operating-system-issues.md)
-    + [内核参数](/troubleshoot-kernel-parameter-issues.md)
   + [定位慢查询](/identify-slow-queries.md)
   + [SQL 诊断](/system-tables/system-table-sql-diagnosis.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
@@ -108,15 +82,12 @@
   + [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
-  + [从性能监控分析问题](/performance-tuning-monitor.md)
   + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 + 性能调优
   + 系统调优
-    + [硬件](/tune-hardware-performance.md)
     + [操作系统性能参数调优](/tune-operating-system.md)
   + 软件调优
-    + [软件版本](/tune-software-version.md)
     + 配置
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
@@ -152,7 +123,7 @@
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
   + 最佳实践
-    + [TiDB 最佳实践](/tidb-best-practices.md)
+    + [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
     + [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
     + [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md)
     + [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
@@ -465,14 +436,14 @@
   + [SQL FAQ](/faq/sql-faq.md)
   + [部署运维 FAQ](/faq/deploy-and-maintain-faq.md)
   + [升级 FAQ](/faq/upgrade-faq.md)
-  + [License FAQ](/faq/licensing-faq.md)
   + [高可用 FAQ](/faq/high-availability-faq.md)
   + [高可靠 FAQ](/faq/high-reliability-faq.md)
   + [迁移 FAQ](/faq/migration-tidb-faq.md)
 + [开发指南]
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
 + [术语表](/glossary.md)
-+ [版本发布历史](/releases/release-notes.md)
++ 版本发布历史
+  + [发布版本汇总](/releases/release-notes.md)
   + v4.0
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
     - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)

@@ -1,6 +1,6 @@
 ---
 title: SQL 操作常见问题
-summary: 介绍SQL 操作相关的常见问题。
+summary: 介绍 SQL 操作相关的常见问题。
 category: FAQ
 ---
 
