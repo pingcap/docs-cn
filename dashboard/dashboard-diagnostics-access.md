@@ -17,7 +17,7 @@ category: how-to
 
 * 登录后，左侧导航条点击**集群诊断**（Cluster Diagnose）：
 
-![访问](/media/dashboard/diagnose/access.png)
+![访问](/media/dashboard/diagnostics-access.png)
 
 * 在浏览器中访问 [http://127.0.0.1:2379/dashboard/#/diagnose](http://127.0.0.1:2379/dashboard/#/diagnose)（将 127.0.0.1:2379 替换为任意实际 PD 地址和端口）。
 
@@ -29,7 +29,7 @@ category: how-to
 2. 设置区间长度。例如 10 min 。
 3. 点击开始。
 
-![生成单个时间段的诊断报告](/media/dashboard/diagnose/gen-report.png)
+![生成单个时间段的诊断报告](/media/dashboard/diagnostics-gen-report.png)
 
 > **建议：**
 >
@@ -37,7 +37,7 @@ category: how-to
 
 以上操作会生成 2020-05-21 14:40:00 至 2020-05-21 14:50:00 时间范围的诊断报告。点击**开始**后，会看到以下界面，**生成进度**是生成报告的进度条，生成报告完成后，点击**查看报告**即可。
 
-![生成报告的进度](/media/dashboard/diagnose/gen-process.png)
+![生成报告的进度](/media/dashboard/diagnostics-gen-process.png)
 
 ## 生成对比诊断报告
 
@@ -54,7 +54,7 @@ category: how-to
 4. 设置基线开始时间，即想要对比的系统正常时段的开始时间，如 2020-05-21 14:30:00
 5. 点击开始
 
-![生成对比报告](/media/dashboard/diagnose/gen-compare-report.png)
+![生成对比报告](/media/dashboard/diagnostics-gen-compare-report.png)
 
 然后同样等报告生成完成后点击**查看报告**即可。
 

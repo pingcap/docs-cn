@@ -421,6 +421,7 @@
       + 集群诊断页面
         + [访问](/dashboard/dashboard-diagnostics-access.md)
         + [查看报告](/dashboard/dashboard-diagnostics-report.md)
+        + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
       + [实例性能分析页面](/dashboard/dashboard-profiling.md)
   + CLI
