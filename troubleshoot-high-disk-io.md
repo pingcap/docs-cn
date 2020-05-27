@@ -6,7 +6,7 @@ category: reference
 
 # TiDB 磁盘 I/O 过高的处理办法
 
-在使用 TiDB 数据库时，磁盘 I/O 瓶颈是绕不开的问题，本文介绍如何定位和处理 TiDB 存储 I/O 过高的问题。
+本文主要介绍如何定位和处理 TiDB 存储 I/O 过高的问题。
 
 ## 确认当前 I/O 指标 
 
@@ -65,21 +65,23 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 ### 从 log 定位 I/O 问题
 
-客户端报 `server is busy` 错误，特别是 `raftstore is busy` 会和 I/O 有相关性。通过查看监控：grafana -> TiKV -> errors 监控确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，过一会儿再尝试。
+如果客户端报 `server is busy` 错误：
+
+特别是 `raftstore is busy`  的错误信息，会和 I/O 有相关性。可以通过查看监控：grafana -> TiKV -> errors 监控确认具体 busy 原因。其中，`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，过一会儿再尝试。
 
 TiKV RocksDB 日志出现 `write stall`：
 
-`level0 sst` 太多导致 stall，添加参数 `[rocksdb] max-sub-compactI/Ons = 2（或者 3）` 加快 level0 sst 往下 compact 的速度，该参数的意思是将 从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行。
+- 这边可能是 `level0 sst` 太多导致 stall，可以添加参数 `[rocksdb] max-sub-compactI/Ons = 2（或者 3）` 加快 level0 sst 往下 compact 的速度，该参数的意思是将 从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行。
 
-- `pending compaction bytes` 太多导致 stall，磁盘 I/O 能力在业务高峰跟不上写入，可以通过调大对应 cf 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解。
+`pending compaction bytes` 太多导致 stall，磁盘 I/O 能力在业务高峰跟不上写入，可以通过调大对应 cf 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解。
 
-- 如果 pending compaction bytes 达到该阈值，RocksDB 会放慢写入速度。默认值 64GB，`[rocksdb.defaultcf] soft-pending-compaction-bytes-limit = "128GB"`
+- 如果 pending compaction bytes 达到该阈值，RocksDB 会放慢写入速度。`soft-pending-compaction-bytes-limit` 默认值 64GB，可以调大到 128GB
   
-    - 通常不太可能触发 RocksDB stop 写入，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"` 
+- 通常不太可能触发 RocksDB stop 写入，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后会放慢写入速度。 如果触发了，可以调大 `hard-pending-compaction-bytes-limit` ，默认值 256GB，调整至 256GB
 
-    - 如果磁盘 I/O 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
-      
-       比如 default cf compaction 压力比较大，调整参数 `[rocksdb.defaultcf] compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]` 改成 `compression-per-level = ["no", "no", "zstd", "zstd", "zstd", "zstd", "zstd"]`
+- 如果磁盘 I/O 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
+  
+  - 比如 default cf compaction 压力比较大，调整参数 `[rocksdb.defaultcf] compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]` 改成 `compression-per-level = ["no", "no", "zstd", "zstd", "zstd", "zstd", "zstd"]`
 
 ### 从告警发现 I/O 问题
 
@@ -94,6 +96,6 @@ TiKV RocksDB 日志出现 `write stall`：
 
 ## I/O 问题处理方案
 
-1. 当确认为热点 I/O 问题的时候，需要参考[热点问题处理](/troubleshoot-hot-spot-issues.md)来消除相关的热点 I/O 情况。
+1. 当确认为热点 I/O 问题的时候，需要参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)来消除相关的热点 I/O 情况。
 2. 当确认整体 I/O 已经到达瓶颈的时候，且从业务侧能够判断 I/O 的能力会持续的跟不上，那么就可以利用分布式数据库的 scale 的能力，采用扩容 TiKV 节点数量的方案来获取更大的整体 I/O 吞吐量。
 3. 调整上述说明中的一些参数，使用计算/内存资源来换取磁盘的存储资源。
