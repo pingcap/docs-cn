@@ -216,7 +216,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## 另请参阅
 
-* [索引的选择](/index-choose.md)
+* [索引的选择](/choose-index.md)
 * [错误索引的解决方案](/wrong-index-solution.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
