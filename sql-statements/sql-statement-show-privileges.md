@@ -70,4 +70,4 @@ show privileges;
 ## 另请参阅
 
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
-* [GRANT <privileges>](/sql-statements/sql-statement-grant-privileges.md)
+* [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)

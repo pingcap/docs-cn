@@ -43,4 +43,4 @@ SHOW PROCESSLIST;
 
 ## 另请参阅
 
-* [KILL \[TIDB\]](/sql-statements/sql-statement-kill.md)
+* [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)
