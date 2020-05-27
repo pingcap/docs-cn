@@ -41,6 +41,6 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## 另请参阅
 
-* [GRANT](/sql-statements/sql-statement-grant-privileges.md)
-* [REVOKE <privileges>](/sql-statements/sql-statement-revoke-privileges.md)
+* [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)
+* [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
 * [Privilege Management](/privilege-management.md)

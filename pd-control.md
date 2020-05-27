@@ -107,7 +107,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 - 打印版本信息并退出
 - 默认值: false
 
-## 命令(command)
+## 命令 (command)
 
 ### cluster
 
@@ -128,7 +128,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 }
 ```
 
-### config [show | set \<option> \<value> | placement-rules]
+### `config [show | set <option> <value> | placement-rules]`
 
 用于显示或调整配置信息。示例如下。
 
@@ -437,7 +437,7 @@ config set cluster-version 1.0.8
 
 `enable-placement-rules` 用于开启 placement rules。
 
-### config placement-rules [disable | enable | load | save | show]
+### `config placement-rules [disable | enable | load | save | show]`
 
 用于配置 Placement Rules。 具体使用说明可参考[Placement Rules 使用文档](/configure-placement-rules.md)。
 
@@ -468,7 +468,7 @@ config set cluster-version 1.0.8
 ]
 ```
 
-### hot [read | write | store]
+### `hot [read | write | store]`
 
 用于显示集群热点信息。示例如下。
 
@@ -496,7 +496,7 @@ config set cluster-version 1.0.8
 >> hot store
 ```
 
-### label [store \<name> \<value>]
+### `label [store <name> <value>]`
 
 用于显示集群标签信息。示例如下。
 
@@ -516,7 +516,7 @@ config set cluster-version 1.0.8
 >> label store zone cn
 ```
 
-### member [delete | leader_priority | leader [show | resign | transfer <member_name>]]
+### `member [delete | leader_priority | leader [show | resign | transfer <member_name>]]`
 
 用于显示 PD 成员信息，删除指定成员，设置成员的 leader 优先级。示例如下。
 
@@ -602,7 +602,7 @@ Success!
 ......
 ```
 
-### operator [check | show | add | remove]
+### `operator [check | show | add | remove]`
 
 用于显示和控制调度操作，或者对 Region 进行分裂或合并。
 
@@ -629,7 +629,7 @@ Success!
 
 其中，Region 的分裂都是尽可能地从靠近中间的位置开始。对这个位置的选择支持两种策略，即 scan 和 approximate。它们之间的区别是，前者通过扫描这个 Region 的方式来确定中间的 key，而后者是通过查看 SST 文件中记录的统计信息，来得到近似的位置。一般来说，前者更加精确，而后者消耗更少的 I/O，可以更快地完成。
 
-### ping
+### `ping`
 
 用于显示`ping` PD 所需要花费的时间
 
@@ -645,7 +645,7 @@ Success!
 time: 43.12698ms
 ```
 
-### region <region_id> [--jq="\<query string>"]
+### `region <region_id> [--jq="<query string>"]`
 
 用于显示 Region 信息。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
 
@@ -700,7 +700,7 @@ time: 43.12698ms
 }
 ```
 
-### region key [--format=raw|encode] \<key>
+### `region key [--format=raw|encode] <key>`
 
 用于查询某个 key 在哪个 Region 上，支持 raw 和 encoding 格式。使用 encoding 格式时，key 需要使用单引号。
 
@@ -738,7 +738,7 @@ Encoding 格式示例：
 }
 ```
 
-### region scan
+### `region scan`
 
 用于获取所有 Region。
 
@@ -757,7 +757,7 @@ Encoding 格式示例：
 }
 ```
 
-### region sibling <region_id>
+### `region sibling <region_id>`
 
 用于查询某个 Region 相邻的 Region。
 
@@ -776,7 +776,7 @@ Encoding 格式示例：
 }
 ```
 
-### region startkey [--format=raw|encode|hex] <key> <limit>
+### `region startkey [--format=raw|encode|hex] <key> <limit>`
 
 用于查询从某个 key 开始的所有 Region。
 
@@ -909,7 +909,7 @@ Encoding 格式示例：
 }
 ```
 
-### region check [miss-peer | extra-peer | down-peer | pending-peer]
+### `region check [miss-peer | extra-peer | down-peer | pending-peer]`
 
 用于查询处于异常状态的 Region，各类型的意义如下
 
@@ -933,7 +933,7 @@ Encoding 格式示例：
 }
 ```
 
-### scheduler [show | add | remove | pause | resume | config]
+### `scheduler [show | add | remove | pause | resume | config]`
 
 用于显示和控制调度策略。
 
@@ -955,7 +955,7 @@ Encoding 格式示例：
 >> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
 ```
 
-### store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="\<query string>"]
+### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
 
@@ -1041,7 +1041,7 @@ Encoding 格式示例：
 >
 > store limit 的生效情况和执行命令的先后顺序有关。如先执行 `store limit 1 5 region-add` 会将 store 1 添加 peer 的速度上限设置为每分钟 5 个，然后执行 `store limit 1 10 region-add`。此时 store 1 添加 peer 的速度上限会被修改为每分钟 10 个；反之，如先执行 `store limit 1 10 region-add`，会将全部 store 添加 peer 的速度上限设置为为每分钟 10 个，然后执行 `store limit 1 5 region-add`。此时只有 store 1 添加 peer 的速度上限被修改为每分钟 5 个。
 
-### log [fatal | error | warn | info | debug]
+### `log [fatal | error | warn | info | debug]`
 
 用于设置 PD leader 的日志级别。
 
@@ -1051,7 +1051,7 @@ Encoding 格式示例：
 >> log warn
 ```
 
-### tso
+### `tso`
 
 用于解析 TSO 到物理时间和逻辑时间。示例如下。
 

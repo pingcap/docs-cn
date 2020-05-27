@@ -34,9 +34,9 @@ aliases: ['/docs-cn/dev/reference/tiflash/maintain/']
 
 | 日志信息          | 日志含义                |
 |---------------|---------------------|
-| [ 23 ] <Information> KVStore: Start to persist [region 47, applied: term 6 index 10] | 在 TiFlash 中看到类似日志代表数据开始同步（该日志开头方括号内的数字代表线程号，下同） |
-| [ 30 ] <Debug> CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute() | Handling DAG request，该日志代表 TiFlash 开始处理一个 Coprocessor 请求 |
-| [ 30 ] <Debug> CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute() | Handle DAG request done，该日志代表 TiFlash 完成 Coprocessor 请求的处理 |
+| [ 23 ] `<Information>` KVStore: Start to persist [region 47, applied: term 6 index 10] | 在 TiFlash 中看到类似日志代表数据开始同步（该日志开头方括号内的数字代表线程号，下同） |
+| [ 30 ] `<Debug>` CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute() | Handling DAG request，该日志代表 TiFlash 开始处理一个 Coprocessor 请求 |
+| [ 30 ] `<Debug>` CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute() | Handle DAG request done，该日志代表 TiFlash 完成 Coprocessor 请求的处理 |
 
 你可以找到一个 Coprocessor 请求的开始或结束，然后通过日志前面打印的线程号找到该 Coprocessor 请求的其他相关日志。
 
