@@ -1,10 +1,10 @@
 ---
 title: Store Limit
-summary: Store Limit 使用文档。
+summary: 介绍 Store Limit 功能。
 category: how-to
 ---
 
-# Store Limit 使用文档
+# Store Limit
 
 Store Limit 是 PD 在 3.0 版本引入的特性，旨在能够更加细粒度的控制调度的速度，针对不同调度场景进行调优。
 
