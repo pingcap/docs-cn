@@ -6,55 +6,37 @@
 ## 目录
 
 + 关于 TiDB
-  + 基本信息 @段兵
-    + [TiDB 简介](/overview.md)
-    + [开源信息说明](/licensing.md)
-    + [核心用户列表](/adopters.md)
-  + [核心特性](/basic-features.md) @段兵
-    + 数据类型
-    + SQL 与功能
-    + 安全性
-    + 可靠性
-    + 可用性
-    + 性能数据
-    + 配套工具
-    + 企业版特性
-  + 兼容性 @段兵
-    + [与标准 SQL 的兼容性](/differences-from-standard-sql.md)
+  + [TiDB 简介](/overview.md)
+  + [核心特性](/basic-features.md)
+  + 兼容性
     + [与 MySQL 的兼容性](/mysql-compatibility.md)
     + [使用限制](/tidb-limitations.md)
-  + [使用场景](/use-cases.md) @段兵
-  + [荣誉列表](/credits.md) @姚维
+  + [荣誉列表](/credits.md)
 + 快速上手
-  + [快速上手指南](/quick-start-with-tidb.md) @李坤
-  + [SQL 基本操作](/basic-sql-operations.md) @庄培培
+  + [快速上手指南](/quick-start-with-tidb.md)
+  + [SQL 基本操作](/basic-sql-operations.md)
 + 部署集群
-  + [软硬件环境需求](/hardware-and-software-requirements.md) @李仲舒
-  + [环境与系统配置检查](/check-before-deployment.md) @李仲舒
+  + [软硬件环境需求](/hardware-and-software-requirements.md)
+  + [环境与系统配置检查](/check-before-deployment.md)
   + 配置拓扑结构
-    + [最小部署拓扑结构](/minimal-deployment-topology.md) @李仲舒
+    + [最小部署拓扑结构](/minimal-deployment-topology.md)
     + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
     + [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
     + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
-    + [混合部署拓扑结构](/hybrid-deployment-topology.md) @李仲舒
+    + [混合部署拓扑结构](/hybrid-deployment-topology.md)
   + 安装与启动
-    + Linux
-      + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md) @李仲舒
-      + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md) @刘金龙
+    + Linux 环境
+      + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+      + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [使用 Docker 部署](/test-deployment-using-docker.md)
-    + Kubernetes
-    + AWS
-    + GCP
-    + Alibaba Cloud
-  + [测试验证](/post-installation-check.md) @李仲舒
+  + [验证集群状态](/post-installation-check.md)
   + 性能测试报告及重现指南
-    + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md) @周跃跃
-    + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md) @梁启斌
+    + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
+    + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
     + [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
-    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
@@ -68,60 +50,49 @@
   + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
 + 运维操作
   + 升级 TiDB 版本
-    + [使用 TiUP](/upgrade-tidb-using-tiup.md) @戚铮
+    + [使用 TiUP](/upgrade-tidb-using-tiup.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
-    + [使用 TiUP](/scale-tidb-using-tiup.md) @刘金龙
+    + [使用 TiUP](/scale-tidb-using-tiup.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
   + 备份与恢复
-    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md) @栾成
+    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
     + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     + 使用 BR 工具
-      + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md) @栾成
-      + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @栾成
-  + [日常巡检](/daily-inspection.md) @王军
+      + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
+      + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+  + [日常巡检](/daily-inspection.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
-  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md) @王贤净
-  + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md) @雷宇
+  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
+  + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
 + 监控与告警
-  + [监控框架概述](/tidb-monitoring-framework.md) @李宋高
-  + [监控 API](/tidb-monitoring-api.md) @李宋高
-  + [手动部署监控](/deploy-monitoring-services.md) @李宋高
-  + [TiDB 集群报警规则与处理方法](/alert-rules.md) @李宋高
-  + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md) @孙若曦
+  + [监控框架概述](/tidb-monitoring-framework.md)
+  + [监控 API](/tidb-monitoring-api.md)
+  + [手动部署监控](/deploy-monitoring-services.md)
+  + [TiDB 集群报警规则与处理方法](/alert-rules.md)
+  + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 + 故障诊断
-  + 硬件故障 @周强
-    + [整机](/troubleshoot-machine-issues.md)
-    + [硬盘](/troubleshoot-disk-issues.md)
-    + [网络](/troubleshoot-network-issues.md)
-    + [内存](/troubleshoot-memory-issues.md)（[相关参考](https://pingcap.com/docs-cn/stable/configure-memory-usage/)）
-  + 操作系统故障 @周强
-    + [版本](/troubleshoot-operating-system-issues.md)
-    + [内核参数](/troubleshoot-kernel-parameter-issues.md)
-  + [定位慢查询](/identify-slow-queries.md) @张原嘉
-  + [SQL 诊断](/system-tables/system-table-sql-diagnosis.md) @SQL Infra
+  + [定位慢查询](/identify-slow-queries.md)
+  + [SQL 诊断](/system-tables/system-table-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
-  + [SQL 语句统计](/statement-summary-tables.md) @SQL Infra
-  + [热点问题处理](/troubleshoot-hot-spot-issues.md) @郭大瑞
-  + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md) @高恺迪
-  + [写冲突与写性能下降](/troubleshoot-write-conflicts.md) @沈刚
-  + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md) @陶政
-  + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md) @高振娇
-  + [从性能监控分析问题](/performance-tuning-monitor.md) @李坤
+  + [SQL 语句统计](/statement-summary-tables.md)
+  + [热点问题处理](/troubleshoot-hot-spot-issues.md)
+  + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
+  + [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
+  + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
+  + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
   + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
-  + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md) @孙若曦
+  + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 + 性能调优
   + 系统调优
-    + [硬件](/tune-hardware-performance.md) @张文博
-    + [操作系统性能参数调优](/tune-operating-system.md) @张文博
+    + [操作系统性能参数调优](/tune-operating-system.md)
   + 软件调优
-    + [软件版本](/tune-software-version.md) @张文博
     + 配置
-      + [TiKV 线程调优](/tune-tikv-thread-performance.md) @刘玮
-      + [TiKV 内存调优](/tune-tikv-memory-performance.md) @刘玮
+      + [TiKV 线程调优](/tune-tikv-thread-performance.md)
+      + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
-  + SQL 性能调优 @崔一丁
+  + SQL 性能调优
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + [理解 TiDB 执行计划](/query-execution-plan.md)
     + SQL 优化
@@ -138,7 +109,7 @@
         + [Join Reorder](/join-reorder.md)
       + 物理优化
         + [物理优化概览](/sql-physical-optimization.md)
-        + [索引的选择](/index-choose.md)
+        + [索引的选择](/choose-index.md)
         + [统计信息简介](/statistics.md)
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
@@ -149,17 +120,17 @@
         + [执行计划绑定](/execution-plan-binding.md)
         + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
 + 教程
-  + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)（[参考](https://pingcap.com/docs-cn/stable/geo-redundancy-deployment/)）@侯召墩
-  + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md) 侯召墩
+  + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
+  + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
   + 最佳实践
-    + [TiDB 最佳实践](/tidb-best-practices.md)（[参考相关博客](https://pingcap.com/blog-cn/tidb-best-practice/)）@李坤
-    + [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md) @李坤
-    + [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md) @李坤
-    + [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md) @李坤
-    + [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md) @李坤
-    + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) @李坤
-    + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md) @李建俊
-  + [Placement Rules 使用文档](/configure-placement-rules.md) @黄梦龙
+    + [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
+    + [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
+    + [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md)
+    + [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
+    + [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md)
+    + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
+    + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
+  + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
 + TiDB 生态工具
@@ -167,8 +138,8 @@
   + [工具下载](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
     + [BR 常见问题](/br/backup-and-restore-faq.md)
-    + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md) @余峻岑
-    + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md) @余峻岑
+    + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md)
+    + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
     + [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
@@ -204,15 +175,15 @@
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + [TiCDC](/ticdc/ticdc-overview.md)
-  + sync-diff-inspector @王相
+  + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-  + [Loader](/loader-overview.md) @王相
-  + [Mydumper](/mydumper-overview.md) @余峻岑
-  + [Syncer](/syncer-overview.md) @王相
-  + TiUP @龙恒
+  + [Loader](/loader-overview.md)
+  + [Mydumper](/mydumper-overview.md)
+  + [Syncer](/syncer-overview.md)
+  + TiUP
     + [文档指南](/tiup/tiup-documentation-guide.md)
     + [概览](/tiup/tiup-overview.md)
     + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
@@ -227,39 +198,39 @@
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
 + 参考指南
   + 架构
-    + [概述](/tidb-architecture.md) @黄东旭
-    + [存储](/tidb-storage.md) @冯立元
-    + [计算](/tidb-computing.md) @黄东旭
-    + [调度](/tidb-scheduling.md) @陈书宁
+    + [概述](/tidb-architecture.md)
+    + [存储](/tidb-storage.md)
+    + [计算](/tidb-computing.md)
+    + [调度](/tidb-scheduling.md)
   + 监控指标
-    + [Overview 面板](/grafana-overview-dashboard.md) @王聪
-    + [TiDB 面板](/grafana-tidb-dashboard.md) @于帅鹏
-    + [PD 面板](/grafana-pd-dashboard.md) @PD Team/陈书宁
-    + [TiKV 面板](/grafana-tikv-dashboard.md) @刘新韬
-    + [TiFlash 监控指标](/tiflash/monitor-tiflash.md) @孙若曦
+    + [Overview 面板](/grafana-overview-dashboard.md)
+    + [TiDB 面板](/grafana-tidb-dashboard.md)
+    + [PD 面板](/grafana-pd-dashboard.md)
+    + [TiKV 面板](/grafana-tikv-dashboard.md)
+    + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
   + 安全加固
-    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md) @苏立
-    + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md) @苏立
-    + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md) @苏立
-    + [生成自签名证书](/generate-self-signed-certificates.md) @刘新韬
+    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md)
+    + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
+    + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md)
+    + [生成自签名证书](/generate-self-signed-certificates.md)
   + 权限
-    + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md) @毛康力
-    + [权限管理](/privilege-management.md) @毛康力
-    + [TiDB 用户账户管理](/user-account-management.md) @毛康力
-    + [基于角色的访问控制](/role-based-access-control.md) @宋翎宇
-    + [TiDB 证书鉴权使用指南](/certificate-authentication.md) @苏立
+    + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
+    + [权限管理](/privilege-management.md)
+    + [TiDB 用户账户管理](/user-account-management.md)
+    + [基于角色的访问控制](/role-based-access-control.md)
+    + [TiDB 证书鉴权使用指南](/certificate-authentication.md)
   + SQL
     + SQL 语言结构和语法
       + 属性
-        + [AUTO_INCREMENT](/auto-increment.md) @谢腾进
-        + [AUTO_RANDOM](/auto-random.md) @谢腾进
-      + [字面值](/literal-values.md) @邰凌翔
-      + [Schema 对象名](/schema-object-names.md) @邰凌翔
-      + [关键字](/keywords.md) @@邰凌翔
-      + [用户自定义变量](/user-defined-variables.md) @邰凌翔
-      + [表达式语法](/expression-syntax.md) @邰凌翔
-      + [注释语法](/comment-syntax.md) @邰凌翔
-    + SQL 语句 @张明/李霞
+        + [AUTO_INCREMENT](/auto-increment.md)
+        + [AUTO_RANDOM](/auto-random.md)
+      + [字面值](/literal-values.md)
+      + [Schema 对象名](/schema-object-names.md)
+      + [关键字](/keywords.md)
+      + [用户自定义变量](/user-defined-variables.md)
+      + [表达式语法](/expression-syntax.md)
+      + [注释语法](/comment-syntax.md)
+    + SQL 语句
       - [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
       - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
@@ -364,14 +335,14 @@
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
       - [`USE`](/sql-statements/sql-statement-use.md)
-    + 数据类型 @张原嘉
+    + 数据类型
       + [数据类型概述](/data-type-overview.md)
       + [数据类型默认值](/data-type-default-values.md)
       + [数值类型](/data-type-numeric.md)
       + [日期和时间类型](/data-type-date-and-time.md)
       + [字符串类型](/data-type-string.md)
       + [JSON 类型](/data-type-json.md)
-    + 函数与操作符 @张原嘉
+    + 函数与操作符
       + [函数与操作符概述](/functions-and-operators/functions-and-operators-overview.md)
       + [表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)
       + [操作符](/functions-and-operators/operators.md)
@@ -389,21 +360,21 @@
       + [其它函数](/functions-and-operators/miscellaneous-functions.md)
       + [精度数学](/functions-and-operators/precision-math.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
-    + [约束](/constraints.md) @于帅鹏
-    + [生成列](/generated-columns.md) @黄文俊
-    + [SQL 模式](/sql-mode.md) @张原嘉
+    + [约束](/constraints.md)
+    + [生成列](/generated-columns.md)
+    + [SQL 模式](/sql-mode.md)
     + 事务
-      + [事务概览](/transaction-overview.md) @于帅鹏
-      + [隔离级别](/transaction-isolation-levels.md) @于帅鹏
-      + [乐观事务](/optimistic-transaction.md) @于帅鹏
-      + [悲观事务](/pessimistic-transaction.md) @于帅鹏
+      + [事务概览](/transaction-overview.md)
+      + [隔离级别](/transaction-isolation-levels.md)
+      + [乐观事务](/optimistic-transaction.md)
+      + [悲观事务](/pessimistic-transaction.md)
     + 垃圾回收 (GC)
       + [GC 机制简介](/garbage-collection-overview.md)
       + [GC 配置](/garbage-collection-configuration.md)
-    + [视图](/views.md) @徐怀宇
-    + [分区表](/partitioned-table.md) @毛康力
-    + [字符集和排序规则](/character-set-and-collation.md) @黄文俊
-    + 系统表 @陈霜
+    + [视图](/views.md)
+    + [分区表](/partitioned-table.md)
+    + [字符集和排序规则](/character-set-and-collation.md)
+    + 系统表
       + [`mysql`](/system-tables/system-table-overview.md)
       + [`information_schema`](/system-tables/system-table-information-schema.md)
       + `sql-diagnosis`
@@ -435,21 +406,21 @@
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
       + [实例性能分析页面](/dashboard/dashboard-profiling.md)
   + CLI
-    + [tikv-ctl](/tikv-control.md) @屈鹏
-    + [pd-ctl](/pd-control.md) @陈书宁
-    + [tidb-ctl](/tidb-control.md) @于帅鹏
-    + [pd-recover](/pd-recover.md) @陈书宁
+    + [tikv-ctl](/tikv-control.md)
+    + [pd-ctl](/pd-control.md)
+    + [tidb-ctl](/tidb-control.md)
+    + [pd-recover](/pd-recover.md)
     + [binlog-ctl](/tidb-binlog/binlog-control.md)
   + 命令行参数
-    + [tidb-server](/command-line-flags-for-tidb-configuration.md) @于帅鹏
-    + [tikv-server](/command-line-flags-for-tikv-configuration.md) @陈书宁
-    + [tiflash-server](/tiflash/tiflash-command-line-flags.md) @孙若曦
-    + [pd-server](/command-line-flags-for-pd-configuration.md) @陈书宁
+    + [tidb-server](/command-line-flags-for-tidb-configuration.md)
+    + [tikv-server](/command-line-flags-for-tikv-configuration.md)
+    + [tiflash-server](/tiflash/tiflash-command-line-flags.md)
+    + [pd-server](/command-line-flags-for-pd-configuration.md)
   + 配置文件参数
-    + [tidb-server](/tidb-configuration-file.md) @于帅鹏
-    + [tikv-server](/tikv-configuration-file.md) @陈书宁
-    + [tiflash-server](/tiflash/tiflash-configuration.md) @孙若曦
-    + [pd-server](/pd-configuration-file.md) @陈书宁
+    + [tidb-server](/tidb-configuration-file.md)
+    + [tikv-server](/tikv-configuration-file.md)
+    + [tiflash-server](/tiflash/tiflash-configuration.md)
+    + [pd-server](/pd-configuration-file.md)
   + 系统变量
     + [MySQL 系统变量](/system-variables.md)
     + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
@@ -459,7 +430,7 @@
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + [TiFlash](/tiflash/tiflash-overview.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
-  + [错误码](/error-codes.md) @于帅鹏
+  + [错误码](/error-codes.md)
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md) @荣毅龙/启航
   + [SQL FAQ](/faq/sql-faq.md) @荣毅龙/启航
@@ -469,11 +440,12 @@
   + [高可用 FAQ](/faq/high-availability-faq.md) @荣毅龙/启航
   + [高可靠 FAQ](/faq/high-reliability-faq.md) @荣毅龙/启航
   + [迁移 FAQ](/faq/migration-tidb-faq.md) @荣毅龙
-+ [开发指南]
++ 开发指南
   + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
-+ [术语表](/glossary.md) @李琳
-+ [版本发布历史](/releases/release-notes.md)
++ [术语表](/glossary.md)
++ 版本发布历史
+  + [发布版本汇总](/releases/release-notes.md)
   + v4.0
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
     - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/reference/performance/statistics/']
 
 # 统计信息简介
 
-在[索引的选择](/index-choose.md)章节中，提到了 TiDB 会使用统计信息来决定选择哪个索引。在 TiDB 中，我们维护的统计信息包括表的总行数，列的等深直方图，Count-Min Sketch，Null 值的个数，平均长度，不同值的数目等等。本文将简单介绍直方图和 Count-Min Sketch，以及详细介绍统计信息的收集和维护。
+在[索引的选择](/choose-index.md)章节中，提到了 TiDB 会使用统计信息来决定选择哪个索引。在 TiDB 中，我们维护的统计信息包括表的总行数，列的等深直方图，Count-Min Sketch，Null 值的个数，平均长度，不同值的数目等等。本文将简单介绍直方图和 Count-Min Sketch，以及详细介绍统计信息的收集和维护。
 
 ## 直方图简介
 
