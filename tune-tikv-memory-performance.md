@@ -1,11 +1,7 @@
 ---
 title: TiKV 内存参数性能调优
 category: reference
-<<<<<<< HEAD:tune-tikv-performance.md
-aliases: ['/docs-cn/stable/reference/performance/tune-tikv/']
-=======
-aliases: ['/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372):tune-tikv-memory-performance.md
+aliases: ['/docs-cn/dev/reference/performance/tune-tikv/','/docs-cn/dev/tune-tikv-performance/']
 ---
 
 # TiKV 性能参数调优

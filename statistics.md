@@ -1,12 +1,7 @@
 ---
 title: 统计信息简介
-<<<<<<< HEAD
-category: reference
-aliases: ['/docs-cn/stable/reference/performance/statistics/']
-=======
 category: performance
-aliases: ['/docs-cn/dev/reference/performance/statistics/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372)
+aliases: ['/docs-cn/stable/reference/performance/statistics/']
 ---
 
 # 统计信息简介

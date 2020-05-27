@@ -1,12 +1,7 @@
 ---
 title: SQL 优化流程简介
-<<<<<<< HEAD
-category: reference
-aliases: ['/docs-cn/stable/reference/performance/sql-optimizer-overview/']
-=======
 category: performance
-aliases: ['/docs-cn/dev/reference/performance/sql-optimizer-overview/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372)
+aliases: ['/docs-cn/stable/reference/performance/sql-optimizer-overview/']
 ---
 
 # SQL 优化流程简介

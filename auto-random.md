@@ -1,12 +1,8 @@
 ---
 title: AUTO_RANDOM
 category: reference
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/reference/sql/attributes/auto-random/']
-=======
 summary: 本文介绍了 TiDB 的 `AUTO_RANDOM` 列属性。
-aliases: ['/docs-cn/dev/reference/sql/attributes/auto-random/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372)
+aliases: ['/docs-cn/stable/reference/sql/attributes/auto-random/']
 ---
 
 # AUTO_RANDOM <span class="version-mark">从 v3.1.0 版本开始引入</span>

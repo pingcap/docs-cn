@@ -1,10 +1,7 @@
 ---
 title: 集群监控部署
 category: how-to
-<<<<<<< HEAD:monitor-a-tidb-cluster.md
-aliases: ['/docs-cn/stable/how-to/monitor/monitor-a-cluster/']
-=======
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372):deploy-monitoring-services.md
+aliases: ['/docs-cn/dev/monitor-a-tidb-cluster/','/docs-cn/dev/how-to/monitor/monitor-a-cluster/']
 ---
 
 # TiDB 集群监控部署

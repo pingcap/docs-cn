@@ -1,11 +1,7 @@
 ---
 title: 使用 TiUP 命令管理组件
 category: tools
-<<<<<<< HEAD:tiup/manage-tiup-component.md
-aliases: ['/docs-cn/stable/reference/tools/tiup/manage-component/']
-=======
-aliases: ['/docs-cn/dev/reference/tools/tiup/manage-component/','/docs-cn/dev/reference/tools/tiup/manage-tiup-component/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372):tiup/tiup-component-management.md
+aliases: ['/docs-cn/stable/reference/tools/tiup/manage-component/','/docs-cn/stable/reference/tools/tiup/manage-tiup-component/']
 ---
 
 # 使用 TiUP 命令管理组件

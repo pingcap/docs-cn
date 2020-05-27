@@ -1,12 +1,8 @@
 ---
 title: 关键字
 category: reference
-<<<<<<< HEAD:keywords-and-reserved-words.md
-aliases: ['/docs-cn/stable/reference/sql/language-structure/keywords-and-reserved-words/']
-=======
 summary: 本文介绍 TiDB 的关键字。
 aliases: ['/docs-cn/dev/keywords-and-reserved-words/','/docs-cn/dev/reference/sql/language-structure/keywords-and-reserved-words/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372):keywords.md
 ---
 
 # 关键字

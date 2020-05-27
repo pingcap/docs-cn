@@ -82,43 +82,7 @@ mysql> select _tidb_rowid, id from t;
 
 ### 内建函数
 
-<<<<<<< HEAD
-TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经支持，具体请参考[语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
-
-### DDL
-
-在 TiDB 中，运行的 DDL 操作不会影响对表的读取或写入。但是，目前 DDL 变更有如下一些限制：
-
-+ Add Index
-    - 不支持同时创建多个索引
-    - 不支持 `VISIBLE/INVISIBLE` 的索引
-    - 其他类型的 Index Type (HASH/BTREE/RTREE) 只有语法支持，功能不支持
-+ Add Column
-    - 不支持同时创建多个列
-    - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 AUTO_INCREMENT 属性
-+ Drop Column: 不支持删除主键列或索引列
-+ Change/Modify Column
-    - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
-    - 不支持修改 `DECIMAL` 类型的精度
-    - 不支持更改 `UNSIGNED` 属性
-    - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
-+ `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`: TiDB 支持的语法，但是在 TiDB 中不会生效。所有支持的 DDL 变更都不会锁表。
-+ `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`: TiDB 完全支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但运行过程与 MySQL 有所不同，因为 MySQL 中的一些 `INPLACE` 操作实际上是 TiDB 中的 `INSTANT` 操作。`ALGORITHM=COPY` 语法在 TiDB 中不会生效，会返回警告信息。
-+ 单个 `ALTER TABLE` 语句中无法完成多个操作。例如，不能用一个语句来添加多个列或多个索引。
-+ Table Option 不支持以下语法
-    - `WITH/WITHOUT VALIDATION`
-    - `SECONDARY_LOAD/SECONDARY_UNLOAD`
-    - `CHECK/DROP CHECK`
-    - `STATS_AUTO_RECALC/STATS_SAMPLE_PAGES`
-    - `SECONDARY_ENGINE`
-    - `ENCRYPTION`
-+ Table Partition 不支持以下语法
-    - `PARTITION BY LIST`
-    - `PARTITION BY KEY`
-    - `SUBPARTITION`
-    - `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
-=======
-- 支持常用的 MySQL 内建函数，有部分函数并未支持，参考[SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
+- 支持常用的 MySQL 内建函数，有部分函数并未支持，参考 [SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
 
 ### DDL 的限制
 
@@ -166,7 +130,6 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     + `PARTITION BY KEY`
     + `SUBPARTITION`
     + `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372)
 
 ### `ANALYZE TABLE`
 

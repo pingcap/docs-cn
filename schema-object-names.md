@@ -1,12 +1,8 @@
 ---
 title: Schema 对象名
 category: reference
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/reference/sql/language-structure/schema-object-names/']
-=======
 summary: 本文介绍 TiDB SQL 语句中的模式对象名。
-aliases: ['/docs-cn/dev/reference/sql/language-structure/schema-object-names/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372)
+aliases: ['/docs-cn/stable/reference/sql/language-structure/schema-object-names/']
 ---
 
 # Schema 对象名

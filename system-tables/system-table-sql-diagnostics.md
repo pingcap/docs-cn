@@ -2,11 +2,7 @@
 title: SQL 诊断
 summary: 了解 SQL 诊断功能。
 category: reference
-<<<<<<< HEAD:system-tables/system-table-sql-diagnosis.md
-aliases: ['/docs-cn/stable/reference/system-databases/sql-diagnosis/']
-=======
 aliases: ['/docs-cn/dev/reference/system-databases/sql-diagnosis/','/docs-cn/dev/system-tables/system-table-sql-diagnosis/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372):system-tables/system-table-sql-diagnostics.md
 ---
 
 # SQL 诊断

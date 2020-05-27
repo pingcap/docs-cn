@@ -1,12 +1,8 @@
 ---
 title: 用户自定义变量
 category: reference
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/reference/sql/language-structure/user-defined-variables/']
-=======
 summary: 本文介绍 TiDB 的用户自定义变量。
-aliases: ['/docs-cn/dev/reference/sql/language-structure/user-defined-variables/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372)
+aliases: ['/docs-cn/stable/reference/sql/language-structure/user-defined-variables/']
 ---
 
 # 用户自定义变量

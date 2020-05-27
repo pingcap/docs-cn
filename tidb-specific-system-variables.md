@@ -767,8 +767,6 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值：0
 
 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
-<<<<<<< HEAD
-=======
 
 ### ddl_slow_threshold
 
@@ -951,4 +949,3 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值: 60
 
 这个变量设置了查询 METRIC_SCHEMA 时生成的 Prometheus 语句的 range duration，单位为秒。
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372)

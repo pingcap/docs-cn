@@ -2,10 +2,7 @@
 title: 表达式语法
 summary: 本文列出 TiDB 的表达式语法。
 category: reference
-<<<<<<< HEAD
 aliases: ['/docs-cn/stable/reference/sql/language-structure/expression-syntax/']
-=======
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372)
 ---
 
 # 表达式语法 (Expression Syntax)

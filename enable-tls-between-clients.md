@@ -1,11 +1,7 @@
 ---
 title: 为 TiDB 客户端服务端间通信开启加密传输
 category: how-to
-<<<<<<< HEAD:encrypted-connections-with-tls-protocols.md
-aliases: ['/docs-cn/stable/how-to/secure/enable-tls-clients/']
-=======
 aliases: ['/docs-cn/dev/how-to/secure/enable-tls-clients/','/docs-cn/dev/encrypted-connections-with-tls-protocols/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372):enable-tls-between-clients.md
 ---
 
 # 为 TiDB 客户端服务端间通信开启加密传输

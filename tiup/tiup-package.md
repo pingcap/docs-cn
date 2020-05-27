@@ -1,11 +1,7 @@
 ---
 title: 打包 TiUP 组件
 category: tools
-<<<<<<< HEAD:tiup/package-tiup-component.md
-aliases: ['/docs-cn/stable/reference/tools/tiup/package-component/']
-=======
-aliases: ['/docs-cn/dev/reference/tools/tiup/package-component/','/docs-cn/dev/reference/tools/tiup/package-tiup-component/']
->>>>>>> a3c0b95... Merge docs special week branch to master (#3372):tiup/tiup-package.md
+aliases: ['/docs-cn/stable/reference/tools/tiup/package-component/','/docs-cn/stable/reference/tools/tiup/package-tiup-component/']
 ---
 
 # 打包 TiUP 组件
