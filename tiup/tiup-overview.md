@@ -127,11 +127,3 @@ Use "tiup [command] --help" for more information about a command.
 > - 组件的可用版本列表也会持续增加，以 `tiup list <component> --refresh` 输出结果为准。
 
 命令和组件的区别在于，命令是 TiUP 自带的，用于进行包管理的操作。而组件是 TiUP 通过包管理操作安装的独立组件包。比如执行 `tiup list` 命令，TiUP 会直接运行自己内部的代码，而执行 `tiup playground` 命令则会先检查本地有没有叫做 playground 的组件包，若没有则先从镜像上下载过来，然后运行这个组件包。
-
-[使用 TiUP 管理组件](/tiup/manage-tiup-component.md)一节中介绍了所有的 TiUP 命令，组件的介绍则按照不同的组件分为以下几个章节:
-
-- [本地快速部署 TiDB 集群](/tiup/tiup-playground.md)：playground 组件
-- [部署运维 TiDB 线上集群](/tiup/tiup-cluster.md)：cluster 组件
-- [搭建私有镜像](/tiup/tiup-mirrors.md)：mirrors 组件
-- [打包组件](/tiup/package-tiup-component.md)：package 组件
-- [使用 TiUP 压测 TiDB](/tiup/tiup-bench.md)：bench 组件

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/stable/how-to/deploy/hardware-recommendations/']
 
 # TiDB 软件和硬件环境建议配置
 
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
+TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
 
 ## Linux 操作系统版本要求
 
@@ -23,9 +23,29 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 > - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 Linux 操作系统来部署 TiDB。
 > - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM、XEN 主流虚拟化环境上。
 
+## 软件配置要求
+
+### 中控机软件配置
+
+| 软件 | 版本 |
+| :----------------------- | :----------: |
+| sshpass | 1.06 及以上 |
+| TiUP | 0.6.2 及以上 |
+
+> **注意：**
+>
+> 中控机需要[部署 TiUP 软件](/tiup/tiup-cluster.md)完成 TiDB 集群运维管理。
+
+### 目标主机建议配置软件
+
+| 软件 | 版本 |
+| :----- | :----------: |
+| sshpass | 1.06 及以上 |
+| numa | 2.0.12 及以上 |
+
 ## 服务器建议配置
 
-TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发，测试，及生产环境的服务器硬件配置（不包含操作系统 OS 本身的占用）有以下要求和建议：
+TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台或者 ARM 架构的硬件服务器平台。对于开发，测试，及生产环境的服务器硬件配置（不包含操作系统 OS 本身的占用）有以下要求和建议：
 
 ### 开发及测试环境
 
@@ -40,7 +60,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - 验证测试环境中的 TiDB 和 PD 可以部署在同一台服务器上。
 > - 如进行性能相关的测试，避免采用低性能存储和网络硬件配置，防止对测试结果的正确性产生干扰。
 > - TiKV 的 SSD 盘推荐使用 NVME 接口以保证读写更快。
-> - 如果仅验证功能，建议使用 [Docker Compose 部署方案](/deploy-test-cluster-using-docker-compose.md)单机进行测试。
+> - 如果仅验证功能，建议使用 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行单机功能测试。
 > - TiDB 对于磁盘的使用以存放日志为主，因此在测试环境中对于磁盘类型和容量并无特殊要求。
 
 ### 生产环境
@@ -69,15 +89,21 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | TiKV |  20160 | TiKV 通信端口 |
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | PD 集群节点间通信端口 |
+|TiFlash|9000|TiFlash TCP 服务端口|
+|TiFlash|8123|TiFlash HTTP 服务端口|
+|TiFlash|3930|TiFlash RAFT 服务和 Coprocessor 服务端口|
+|TiFlash|20170|TiFlash Proxy 服务端口|
+|TiFlash|20292|Prometheus 拉取 TiFlash Proxy metrics 端口|
+|TiFlash|8234|Prometheus 拉取 TiFlash metrics 端口|
 | Pump | 8250 | Pump 通信端口 |
 | Drainer | 8249 | Drainer 通信端口 |
-| Prometheus |  9090 | Prometheus 服务通信端口 |
-| Pushgateway |  9091 | tikv-importer 聚合和上报端口 |
-| Node_exporter |  9100 | TiDB 集群每个节点的系统信息上报通信端口 |
+| CDC | 8300 | CDC 通信接口 |
+| Prometheus | 9090 | Prometheus 服务通信端口 |
+| Node_exporter | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | 3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
-| Grafana | 8686 | grafana_collector 通信端口，用于将 Dashboard 导出为 PDF 格式 |
-| Kafka_exporter | 9308 | Kafka_exporter 通信端口，用于监控 binlog kafka 集群 |
+| Alertmanager | 9093 | 告警 web 服务端口 |
+| Alertmanager | 9094 | 告警通信端口 |
 
 ## 客户端 Web 浏览器要求
 

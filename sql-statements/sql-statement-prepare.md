@@ -15,6 +15,10 @@ aliases: ['/docs-cn/stable/reference/sql/statements/prepare/']
 
 ![PreparedStmt](/media/sqlgram/PreparedStmt.png)
 
+**PrepareSQL:**
+
+![PrepareSQL](/media/sqlgram/PrepareSQL.png)
+
 ## 示例
 
 {{< copyable "sql" >}}

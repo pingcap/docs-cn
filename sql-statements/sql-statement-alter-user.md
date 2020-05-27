@@ -23,6 +23,14 @@ aliases: ['/docs-cn/stable/reference/sql/statements/alter-user/']
 
 ![UserSpec](/media/sqlgram/UserSpec.png)
 
+**Username:**
+
+![Username](/media/sqlgram/Username.png)
+
+**AuthOption:**
+
+![AuthOption](/media/sqlgram/AuthOption.png)
+
 ## 示例
 
 {{< copyable "sql" >}}

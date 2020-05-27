@@ -13,13 +13,13 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-databases/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowDatabasesStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowDatabasesStmt](/media/sqlgram/ShowDatabasesStmt.png)
 
-**ShowTargetFilterable:**
+**ShowLikeOrWhereOpt:**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 ## 示例
 

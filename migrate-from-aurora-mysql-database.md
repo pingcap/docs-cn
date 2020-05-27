@@ -1,11 +1,11 @@
 ---
-title: 从 MySQL 迁移数据 —— 以 Amazon Aurora MySQL 为例
+title: 从 MySQL 迁移数据——以 Amazon Aurora MySQL 为例
 summary: 使用 DM 从 MySQL/Amazon Aurora MySQL 迁移数据。
 category: how-to
 aliases: ['/docs-cn/stable/how-to/migrate/from-mysql-aurora/']
 ---
 
-# 从 MySQL 迁移数据 —— 以 Amazon Aurora MySQL 为例
+# 从 MySQL 迁移数据——以 Amazon Aurora MySQL 为例
 
 本文以 [Amazon Aurora MySQL](https://aws.amazon.com/cn/rds/aurora/details/mysql-details/) 为例介绍如何使用 DM 从 MySQL 协议数据库迁移数据到 TiDB。
 
