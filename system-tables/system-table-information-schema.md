@@ -388,6 +388,7 @@ desc information_schema.slow_query;
 | Cop_wait_addr             | varchar(64)         | YES  |     | <null>  |       |
 | Mem_max                   | bigint(20) unsigned | YES  |     | <null>  |       |
 | Succ                      | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Plan_from_cache           | tinyint(1)          | YES  |     | <null>  |       |
 | Plan                      | longblob unsigned   | YES  |     | <null>  |       |
 | Plan_digest               | varchar(128)        | YES  |     | <null>  |       |
 | Prev_stmt                 | longblob unsigned   | YES  |     | <null>  |       |
@@ -452,6 +453,7 @@ desc information_schema.cluster_slow_query;
 | Cop_wait_addr             | varchar(64)         | YES  |     | <null>  |       |
 | Mem_max                   | bigint(20) unsigned | YES  |     | <null>  |       |
 | Succ                      | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Plan_from_cache           | tinyint(1)          | YES  |     | <null>  |       |
 | Plan                      | longblob unsigned   | YES  |     | <null>  |       |
 | Plan_digest               | varchar(128)        | YES  |     | <null>  |       |
 | Prev_stmt                 | longblob unsigned   | YES  |     | <null>  |       |
