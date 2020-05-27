@@ -1,11 +1,7 @@
 ---
 title: TiCDC Open Protocol
 category: reference
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/reference/tools/ticdc/open-protocol/']
-=======
 aliases: ['/docs-cn/dev/reference/tools/ticdc/open-protocol/','/docs-cn/dev/ticdc/column-ddl-type-codes/','/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
->>>>>>> 072cff7... change absolute path to relative path of docs-cn repo files (#3381)
 ---
 
 # TiCDC Open Protocol

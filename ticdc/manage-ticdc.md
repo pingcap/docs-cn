@@ -1,11 +1,7 @@
 ---
 title: TiCDC 运维操作及任务管理
 category: reference
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/reference/tools/ticdc/manage/']
-=======
 aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/tools/ticdc/sink/','/docs-cn/dev/ticdc/sink-url/']
->>>>>>> 072cff7... change absolute path to relative path of docs-cn repo files (#3381)
 ---
 
 # TiCDC 运维操作及任务管理
