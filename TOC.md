@@ -411,7 +411,7 @@
       + [访问](/dashboard/dashboard-access.md)
       + [概况页面](/dashboard/dashboard-overview.md)
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
-      + [流量可视化页面](/dashboard/dashboard-keyvisualizer.md)
+      + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       + SQL 语句分析页面
         + [访问列表页面](/dashboard/dashboard-statements-list.md)
         + [查看执行详情](/dashboard/dashboard-statements-detail.md)

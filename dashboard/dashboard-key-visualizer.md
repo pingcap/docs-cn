@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visual
 
 ![访问](/media/dashboard/dashboard-keyviz-access.png)
 
-* 在浏览器中访问 `http://127.0.0.1:2379/dashboard/#/keyviz`（将 `127.0.0.1:2379` 替换为实际的 PD 地址和端口）。
+* 在浏览器中访问 `http://127.0.0.1:2379/dashboard/#/keyviz`（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
 > **注意：**
 >
