@@ -208,6 +208,6 @@ TiFlash 在 `v4.0.0-rc.2` 之前的版本可能有一些不兼容的问题。因
 - 4.0 版本增加了 `rename` 时对表名长度的检查，长度限制为 `64` 个字符。升级后 `rename` 后的表名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
 - 4.0 版本增加了对分区表的分区名长度的检查，长度限制为 `64` 个字符。升级后 `create table` 和 `alter table` 分区表时当分区名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
 - 4.0 版本对 `explain` 执行计划的输出格式做了改进，需要注意是否有针对 `explain` 制订了自动化的分析程序。
-- 4.0 版本支持 [Read Committed 隔离级别](https://pingcap.com/docs-cn/stable/transaction-isolation-levels/#读已提交隔离级别-read-committed)。升级到 4.0 后，在悲观事务里隔离级别设置为 `READ-COMMITTED` 会生效，3.0 及之前的版本则不会生效。
+- 4.0 版本支持 [Read Committed 隔离级别](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。升级到 4.0 后，在悲观事务里隔离级别设置为 `READ-COMMITTED` 会生效，3.0 及之前的版本则不会生效。
 - 4.0 版本执行 `alter reorganize partition` 会报错，之前的版本则不会报错，只是语法上支持没有实际效果。
 - 4.0 版本创建 `linear hash partition` 和 `subpartition` 分区表时实际不生效，会转换为普通表，之前的版本则转换为普通分区表。

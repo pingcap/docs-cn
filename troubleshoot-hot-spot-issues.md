@@ -86,9 +86,11 @@ TiDB Dashboard 中的「热点可视化」功能可帮助用户缩小热点排�
 
 通过设置 SHARD_ROW_ID_BITS，可以把 RowID 打散写入多个不同的 Region，缓解写入热点问题。但是设置的过大会造成 RPC 请求数放大，增加 CPU 和网络开销。
 
+```
 SHARD_ROW_ID_BITS = 4 表示 16 个分片\
 SHARD_ROW_ID_BITS = 6 表示 64 个分片\
 SHARD_ROW_ID_BITS = 0 表示默认值 1 个分片
+```
 
 语句示例：
 
@@ -97,9 +99,9 @@ CREATE TABLE：CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;
 ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 ```
 
-> SHARD_ROW_ID_BITS 的值可以动态修改，每次修改之后，只对新写入的数据生效。
->
-> TiDB alter-primary-key 参数设置为 false 时，会使用表的整数型主键作为 RowID，因为 SHARD_ROW_ID_BITS 会改变 RowID 生成规则，所以此时无法使用 SHARD_ROW_ID_BITS 选项。在 alter-primary-key 参数设置为 true 时，TiDB 在建表时不再使用整数型主键作为 RowID，此时带有整数型主键的表也可以使用 SHARD_ROW_ID_BITS 特性。
+SHARD_ROW_ID_BITS 的值可以动态修改，每次修改之后，只对新写入的数据生效。
+
+TiDB alter-primary-key 参数设置为 false 时，会使用表的整数型主键作为 RowID，因为 SHARD_ROW_ID_BITS 会改变 RowID 生成规则，所以此时无法使用 SHARD_ROW_ID_BITS 选项。在 alter-primary-key 参数设置为 true 时，TiDB 在建表时不再使用整数型主键作为 RowID，此时带有整数型主键的表也可以使用 SHARD_ROW_ID_BITS 特性。
 
 以下是两张无主键情况下使用 SHARD_ROW_ID_BITS 打散热点后的流量图，第一张展示了打散前的情况，第二张展示了打散后的情况。
 
@@ -113,10 +115,12 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 使用 AUTO_RANDOM 处理自增主键热点表，适用于代替自增主键，解决自增主键带来的写入热点。
 
+> **注意：**
+>
 > 该功能目前还是实验性功能，不推荐生产环境使用。可使用以下配置启用：
 >
->[experimental]\
->allow-auto-random = true
+> [experimental]\
+> allow-auto-random = true
 
 使用该功能后，将由 TiDB 生成随机分布且空间耗尽前不重复的主键，达到离散写入、打散写入热点的目的。
 
@@ -151,14 +155,15 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 由流量图可见，使用 AUTO_RANDOM 代替 AUTO_INCREMENT 能很好地打散热点。
 
-更详细的说明可以阅读 [AUTO_RANDOM](https://pingcap.com/docs-cn/stable/reference/sql/attributes/auto-random/) 文档。
+更详细的说明可以阅读 [AUTO_RANDOM](/auto-random.md) 文档。
 
 ## 小表热点的优化
 
 TiDB 从 4.0 起支持下推计算结果缓存（即 Coprocessor Cache 功能）。开启该功能后，将在 TiDB 实例侧缓存下推给 TiKV 计算的结果，对于小表读热点能起到比较好的效果。
 
-更详细的说明可以阅读[下推计算结果缓存](https://pingcap.com/docs-cn/stable/coprocessor-cache/#%E9%85%8D%E7%BD%AE)文档
+更详细的说明可以阅读[下推计算结果缓存](/coprocessor-cache.md#配置)文档
 
-**其他相关资料**\
-[TiDB 高并发写入场景最佳实践](https://pingcap.com/docs-cn/dev/reference/best-practices/high-concurrency/)\
-[Split Region 使用文档](https://pingcap.com/docs-cn/stable/reference/sql/statements/split-region/#split-region-%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3)
+**其他相关资料**：
+
++ [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
++ [Split Region 使用文档](/sql-statements/sql-statement-split-region.md)
