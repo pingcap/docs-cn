@@ -1,7 +1,7 @@
 ---
 title: 为 TiDB 客户端服务端间通信开启加密传输
 category: how-to
-aliases: ['/docs-cn/dev/how-to/secure/enable-tls-clients/','/docs-cn/dev/encrypted-connections-with-tls-protocols/']
+aliases: ['/docs-cn/stable/how-to/secure/enable-tls-clients/','/docs-cn/stable/encrypted-connections-with-tls-protocols/']
 ---
 
 # 为 TiDB 客户端服务端间通信开启加密传输

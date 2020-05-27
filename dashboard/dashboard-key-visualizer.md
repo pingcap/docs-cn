@@ -1,7 +1,7 @@
 ---
 title: 流量可视化页面
 category: how-to
-aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visualizer-monitoring-tool/']
+aliases: ['/docs-cn/stable/how-to/monitor/key-visualizer/','/docs-cn/stable/key-visualizer-monitoring-tool/']
 ---
 
 # 流量可视化页面

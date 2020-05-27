@@ -1,7 +1,7 @@
 ---
 title: 通过拓扑 label 进行副本调度
 category: how-to
-aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/','/docs-cn/dev/location-awareness/']
+aliases: ['/docs-cn/stable/how-to/deploy/geographic-redundancy/location-awareness/','/docs-cn/stable/location-awareness/']
 ---
 
 # 通过拓扑 label 进行副本调度
