@@ -1,11 +1,11 @@
 ---
-title: REVOKE <privileges>
-summary: TiDB 数据库中 REVOKE <privileges> 的使用概况。
+title: `REVOKE <privileges>`
+summary: TiDB 数据库中 `REVOKE <privileges>` 的使用概况。
 category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/revoke-privileges/']
 ---
 
-# REVOKE <privileges>
+# `REVOKE <privileges>`
 
 `REVOKE <privileges>` 语句用于删除已有用户的权限。执行 `REVOKE <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
 
@@ -128,6 +128,6 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## 另请参阅
 
-* [GRANT <privileges>](/sql-statements/sql-statement-grant-privileges.md)
+* [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
 * [Privilege Management](/privilege-management.md)

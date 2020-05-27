@@ -100,7 +100,7 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 TiDB Lightning TiDB-backend 可以完全取代 [Loader](/loader-overview.md)。下表说明了如何将 [Loader](/loader-overview.md) 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
 <table align="left">
-<thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thread>
+<thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thead>
 <tbody>
 <tr><td>
 

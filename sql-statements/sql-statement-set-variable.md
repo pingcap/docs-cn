@@ -1,11 +1,11 @@
 ---
-title: SET [GLOBAL|SESSION] <variable>
-summary: TiDB 数据库中 SET [GLOBAL|SESSION] <variable> 的使用概况。
+title: `SET [GLOBAL|SESSION] <variable>`
+summary: TiDB 数据库中 `SET [GLOBAL|SESSION] <variable>` 的使用概况。
 category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/set-variable/']
 ---
 
-# SET [GLOBAL|SESSION] <variable>
+# `SET [GLOBAL|SESSION] <variable>`
 
 `SET [GLOBAL|SESSION]` 语句用于在 `SESSION` 或 `GLOBAL` 的范围内，对某个 TiDB 的内置变量进行更改。
 
