@@ -122,7 +122,7 @@ TiDB 的 SQL 层，即 TiDB Server，负责将 SQL 翻译成 Key-Value 操作，
 
 ### SQL 运算
 
-最简单的方案就是通过上一节所述的[表中所有数据和 Key-Value 的映射关系](#1-表数据与-key-value-的映射关系)映射方案，将 SQL 查询映射为对 KV 的查询，再通过 KV 接口获取对应的数据，最后执行各种计算。
+最简单的方案就是通过上一节所述的[表数据与 Key-Value 的映射关系](#表数据与-key-value-的映射关系)映射方案，将 SQL 查询映射为对 KV 的查询，再通过 KV 接口获取对应的数据，最后执行各种计算。
 
 比如 `select count(*) from user where name = "TiDB"` 这样一个 SQL 语句，它需要读取表中所有的数据，然后检查 `name` 字段是否是 `TiDB`，如果是的话，则返回这一行。具体流程如下：
 
