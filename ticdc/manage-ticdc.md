@@ -1,7 +1,7 @@
 ---
 title: TiCDC 运维操作及任务管理
 category: reference
-aliases: ['/docs-cn/stable/reference/tools/ticdc/manage/']
+aliases: ['/docs-cn/stable/reference/tools/ticdc/manage/','/docs-cn/stable/reference/tools/ticdc/sink/','/docs-cn/stable/ticdc/sink-url/']
 ---
 
 # TiCDC 运维操作及任务管理
