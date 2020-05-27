@@ -10,7 +10,7 @@
     + [TiDB 简介](/overview.md)
     + [开源信息说明](/licensing.md)
     + [核心用户列表](/adopters.md)
-  + [核心特性](/key-features.md) @段兵
+  + [核心特性](/basic-features.md) @段兵
     + 数据类型
     + SQL 与功能
     + 安全性
@@ -158,6 +158,7 @@
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md) @李建俊
   + [Placement Rules 使用文档](/configure-placement-rules.md) @黄梦龙
   + [Load Base Split 使用文档](/configure-load-base-split.md)
+  + [Store Limit 使用文档](/configure-store-limit.md)
 + TiDB 生态工具
   + [工具使用指南](/ecosystem-tool-user-guide.md)
   + [工具下载](/download-ecosystem-tools.md)
@@ -413,11 +414,9 @@
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       + SQL 语句分析页面
-        + [访问列表页面](/dashboard/dashboard-statements-list.md)
-        + [查看执行详情](/dashboard/dashboard-statements-detail.md)
-      + 慢查询页面
-        + [访问列表页面](/dashboard/dashboard-slow-queries-list.md)
-        + [查看执行详情](/dashboard/dashboard-slow-queries-detail.md)
+        + [访问列表页面](/dashboard/dashboard-statement-list.md)
+        + [查看执行详情](/dashboard/dashboard-statement-detail.md)
+      + [慢查询页面](/dashboard/dashboard-slow-query.md)
       + 集群诊断页面
         + [访问](/dashboard/dashboard-diagnostics-access.md)
         + [查看报告](/dashboard/dashboard-diagnostics-report.md)
