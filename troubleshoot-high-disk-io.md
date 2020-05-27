@@ -71,7 +71,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 - TiKV RocksDB 日志出现 `write stall`：
 
-    - 可能是 `level0 sst` 太多导致 stall。可以添加参数 `[rocksdb] max-sub-compactI/Ons = 2（或者 3）` 加快 level0 sst 往下 compact 的速度，该参数的意思是将 从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行。
+    可能是 `level0 sst` 太多导致 stall。可以添加参数 `[rocksdb] max-sub-compactI/Ons = 2（或者 3）` 加快 level0 sst 往下 compact 的速度，该参数的意思是将 从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行。
 
 - `pending compaction bytes` 太多导致 stall，磁盘 I/O 能力在业务高峰跟不上写入，可以通过调大对应 cf 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解。
 
