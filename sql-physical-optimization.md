@@ -9,7 +9,7 @@ category: performance
 
 [理解 TiDB 执行计划](/query-execution-plan.md) 文档已对每个物理算子进行了一些介绍。在本章我们会重点介绍以下方面：
 
-- 在[索引的选择](/index-choose.md)中会介绍 TiDB 在一张表有多个索引时，如何选择最优的索引进行表的访问。
+- 在[索引的选择](/choose-index.md)中会介绍 TiDB 在一张表有多个索引时，如何选择最优的索引进行表的访问。
 - 在[统计信息简介](/statistics.md)中会介绍 TiDB 收集了哪些统计信息来获得表的数据分布情况
 - 在[错误索引的解决方案](/wrong-index-solution.md)中会介绍当发现 TiDB 索引选错时，你应该使用那些手段来让它使用正确的索引
 - 在 [Distinct 优化](/agg-distinct-optimization.md)中会介绍在物理优化中会做的一个有关 `DISTINCT` 关键字的优化，在这一小节中会介绍它的优缺点以及如何使用它。
