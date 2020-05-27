@@ -1,7 +1,11 @@
 ---
 title: 集群监控部署
 category: how-to
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/monitor-a-tidb-cluster/','/docs-cn/stable/how-to/monitor/monitor-a-cluster/']
+=======
+aliases: ['/docs-cn/dev/monitor-a-tidb-cluster/','/docs-cn/dev/how-to/monitor/monitor-a-cluster/']
+>>>>>>> c7164ea... change aliases (#3378)
 ---
 
 # TiDB 集群监控部署
