@@ -1069,7 +1069,7 @@ raftdb 相关配置项。
 
 ## import
 
-import 相关的配置项。
+与 import 相关的配置项。
 
 ### `num-threads`
 
