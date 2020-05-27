@@ -14,7 +14,7 @@ category: how-to
 
 - 登录后，左侧导航条点击**集群信息**：
 
-  ![访问](/media/dashboard/cluster-info/access.png)
+  ![访问](/media/dashboard/dashboard-cluster-info-access.png)
 
 - 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/cluster_info/instance>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
@@ -22,7 +22,7 @@ category: how-to
 
 点击**实例**可查看实例列表：
 
-![实例](/media/dashboard/cluster-info/instances.png)
+![实例](/media/dashboard/dashboard-cluster-info-instances.png)
 
 实例列表列出了该集群中 TiDB、TiKV、PD 和 TiFlash 组件所有实例的概况信息。
 
@@ -51,7 +51,7 @@ category: how-to
 
 点击**主机**可查看主机列表：
 
-![主机](/media/dashboard/cluster-info/hosts.png)
+![主机](/media/dashboard/dashboard-cluster-info-hosts.png)
 
 主机列表列出了该集群中 TiDB、TiKV、PD 和 TiFlash 组件所有实例对应主机的运行情况。
 

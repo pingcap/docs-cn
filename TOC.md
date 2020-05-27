@@ -414,11 +414,9 @@
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       + SQL 语句分析页面
-        + [访问列表页面](/dashboard/dashboard-statements-list.md)
-        + [查看执行详情](/dashboard/dashboard-statements-detail.md)
-      + 慢查询页面
-        + [访问列表页面](/dashboard/dashboard-slow-queries-list.md)
-        + [查看执行详情](/dashboard/dashboard-slow-queries-detail.md)
+        + [访问列表页面](/dashboard/dashboard-statement-list.md)
+        + [查看执行详情](/dashboard/dashboard-statement-detail.md)
+      + [慢查询页面](/dashboard/dashboard-slow-query.md)
       + 集群诊断页面
         + [访问](/dashboard/dashboard-diagnostics-access.md)
         + [查看报告](/dashboard/dashboard-diagnostics-report.md)
