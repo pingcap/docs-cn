@@ -1,5 +1,5 @@
 ---
-title: SHOW PLUGINS
+title: SET ROLE
 summary: TiDB 数据库中 SET ROLE 的使用概况。
 category: reference
 ---
