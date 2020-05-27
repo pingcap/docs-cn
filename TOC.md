@@ -10,7 +10,7 @@
     + [TiDB 简介](/overview.md)
     + [开源信息说明](/licensing.md)
     + [核心用户列表](/adopters.md)
-  + [核心特性](/key-features.md) @段兵
+  + [核心特性](/basic-features.md) @段兵
     + 数据类型
     + SQL 与功能
     + 安全性
