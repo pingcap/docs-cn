@@ -11,13 +11,9 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-indexes/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowIndexStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowIndexStmt](/media/sqlgram/ShowIndexStmt.png)
 
 **ShowIndexKwd:**
 
@@ -30,6 +26,10 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-indexes/']
 **TableName:**
 
 ![TableName](/media/sqlgram/TableName.png)
+
+**ShowLikeOrWhereOpt:**
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 ## 示例
 

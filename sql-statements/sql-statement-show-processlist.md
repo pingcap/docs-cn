@@ -11,9 +11,9 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-processlist/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowProcesslistStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowProcesslistStmt](/media/sqlgram/ShowProcesslistStmt.png)
 
 **OptFull:**
 
@@ -39,7 +39,7 @@ SHOW PROCESSLIST;
 
 ## MySQL 兼容性
 
-* TiDB 中的 `State` 列是非描述性的。在 TiDB 中，将状态表示为单个值更复杂，因为查询是并行执行的，而且每个 GO 线程在任一时刻都有不同的状态。
+* TiDB 中的 `State` 列是非描述性的。在 TiDB 中，将状态表示为单个值更复杂，因为查询是并行执行的，而且每个 Go 线程在任一时刻都有不同的状态。
 
 ## 另请参阅
 

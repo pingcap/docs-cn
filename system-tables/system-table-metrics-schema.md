@@ -7,13 +7,13 @@ aliases: ['/docs-cn/stable/reference/system-databases/metrics-schema/']
 
 # Metrics Schema
 
-为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有表都在 metrics schema 中，可以通过 SQL 的方式查询监控。实际上，SQL 诊断，以及 `metrics_summary`，`metrics_summary_by_label`，`inspection_result` 这三个监控相关的汇总表数据都是通过查询 metrics schema 库中的各种监控表来获取信息的。目前添加的系统表数量较多，用户可以通过 [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md) 查询这些表的相关信息。
+为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有表都在 `metrics_schema` 数据库中，可以通过 SQL 的方式查询监控。实际上，SQL 诊断，以及 `metrics_summary`，`metrics_summary_by_label`，`inspection_result` 这三个监控相关的汇总表数据都是通过查询 metrics schema 库中的各种监控表来获取信息的。目前添加的系统表数量较多，用户可以通过 [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md) 查询这些表的相关信息。
 
-## 概览
+## 监控表的使用与原理
 
-下面以 `tidb_query_duration` 表来作为示例介绍监控表相关的使用和原理，其他的监控表原理都是类似的。
+下面以 `metrics_schema` 中的 `tidb_query_duration` 监控表为例，介绍监控表相关的使用和原理，其他的监控表原理均类似。
 
-先查询 `information_schema.metrics_tables` 中关于 `tidb_query_duration` 表相关的信息：
+查询 `information_schema.metrics_tables` 中关于 `tidb_query_duration` 表相关的信息如下：
 
 {{< copyable "sql" >}}
 
@@ -29,9 +29,9 @@ select * from information_schema.metrics_tables where table_name='tidb_query_dur
 +---------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------+----------+----------------------------------------------+
 ```
 
-* `TABLE_NAME`：对应于 metrics schema 中的表名，这里表名是 `tidb_query_duration`。
-* `PROMQL`：因为监控表的原理是将 SQL 映射成 `PromQL`，并将 Prometheus 结果转换成 SQL 查询结果。这个字段是 `PromQL` 的表达式模板，获取监控表数据时使用查询条件改写模板中的变量，生成最终的查询表达式。
-* `LABELS`：监控定义的 label，`tidb_query_duration` 有两个 label，分别是 `instance` 和 `sql_type`。
+* `TABLE_NAME`：对应于 `metrics_schema` 中的表名，这里表名是 `tidb_query_duration`。
+* `PROMQL`：因为监控表的原理是将 SQL 映射成 `PromQL` 后向 Prometheus 请求数据，并将 Prometheus 返回的结果转换成 SQL 查询结果。该字段是 `PromQL` 的表达式模板，查询监控表数据时使用查询条件改写模板中的变量，生成最终的查询表达式。
+* `LABELS`：监控项定义的 label，`tidb_query_duration` 有两个 label，分别是 `instance` 和 `sql_type`。
 * `QUANTILE`：百分位。直方图类型的监控数据会指定一个默认百分位。如果值为 `0`，表示该监控表对应的监控不是直方图。`tidb_query_duration` 默认查询 0.9 ，也就是 P90 的监控值。
 * `COMMENT`：对这个监控表的解释。可以看出 `tidb_query_duration` 表是用来查询 TiDB query 执行的百分位时间，如 P999/P99/P90 的查询耗时，单位是秒。
 
@@ -110,7 +110,7 @@ desc select * from metrics_schema.tidb_query_duration where value is not null an
 
 可以发现执行计划中有一个 `PromQL`, 以及查询监控的 `start_time` 和 `end_time`，还有 `step` 值，在实际执行时，TiDB 会调用 Prometheus 的 `query_range` HTTP API 接口来查询监控数据。
 
-从以上结果可知，在 [`2020-03-25 23:40:00`, `2020-03-25 23:42:00`] 时间范围内，每个 label 只有三个时间的值，执行计划中的 `step` 值为一分钟，这实际上是由下面两个 session 变量决定的：
+从以上结果可知，在 [`2020-03-25 23:40:00`, `2020-03-25 23:42:00`] 时间范围内，每个 label 只有三个时间的值，间隔时间是 1 分钟，即执行计划中的 `step` 值。该间隔时间由以下两个 session 变量决定：
 
 * `tidb_metric_query_step`：查询的分辨率步长。从 Prometheus 的 `query_range` 接口查询数据时需要指定 `start_time`，`end_time` 和 `step`，其中 `step` 会使用该变量的值。
 * `tidb_metric_query_range_duration`：查询监控时，会将 `PROMQL` 中的 `$RANGE_DURATION` 替换成该变量的值，默认值是 60 秒。

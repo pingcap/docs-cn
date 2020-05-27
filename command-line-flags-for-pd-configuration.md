@@ -98,12 +98,6 @@ PD 可以通过命令行参数或环境变量配置。
 + 包含 X509 key 的 PEM 文件路径，用于开启 TLS。
 + 默认：""
 
-## `--namespace-classifier`
-
-+ 指定 PD 使用的 namespace 分类器。
-+ 默认："table"
-+ 如果 TiKV 不与 TiDB 集群配合运行，建议配置为 'default'。
-
 ## `--metrics-addr`
 
 + 指定 Prometheus Pushgateway 的地址。
