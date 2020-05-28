@@ -13,6 +13,10 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 - [使用 TiDB 读取 TiFlash](#使用-tidb-读取-tiflash)
 - [使用 TiSpark 读取 TiFlash](#使用-tispark-读取-tiflash)
 
+> **注意：**
+>
+> 如果在含有写的事务中（例如事务中包含 `SELECT ... FOR UPDATE` 接 `UPDATE ...`）读取 TiFlash（见 [使用 TiDB 读取 TiFlash](#使用-tidb-读取-tiflash) ），目前行为是未定义，后续版本中会取消这个限制。
+
 ## 按表构建 TiFlash 副本
 
 TiFlash 接入 TiKV 集群后，默认不会开始同步数据。可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的表建立 TiFlash 副本：
