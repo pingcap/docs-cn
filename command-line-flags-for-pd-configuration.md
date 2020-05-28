@@ -102,12 +102,6 @@ PD is configurable using command-line flags and environment variables.
 - The path of the PEM file including the X509 key, used to enable TLS
 - Default: ""
 
-## `--namespace-classifier`
-
-- To specify the namespace classifier used by PD
-- Default: "table"
-- If you use TiKV separately, not in the entire TiDB cluster, it is recommended to configure the value to 'default'.
-
 ## `--metrics-addr`
 
 - The address of Prometheus Pushgateway, which does not push data to Promethus by default.

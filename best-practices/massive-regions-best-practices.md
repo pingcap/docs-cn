@@ -40,7 +40,7 @@ You can check the following monitoring metrics in Grafana's **TiKV Dashboard**:
 
 + `Raft store CPU` in the **Thread-CPU** panel
 
-    Reference value: lower than `raftstore.store-pool-size * 85%`. TiDB v2.1 does not have the `raftstore.store-pool-size`  configuration item, so you can take this item's value as `1` in v2.1 versions.
+    Reference value: lower than `raftstore.store-pool-size * 85%`.
 
     ![Check Raftstore CPU](/media/best-practices/raft-store-cpu.png)
 
@@ -61,7 +61,7 @@ After finding out the cause of a performance problem, try to solve it from the f
 
 ### Method 1: Increase Raftstore concurrency
 
-Raftstore in TiDB v3.0 has been upgraded to a multi-threaded module, which greatly reduces the possibility that a Raftstore thread becomes the bottleneck.
+Raftstore has been upgraded to a multi-threaded module since TiDB v3.0, which greatly reduces the possibility that a Raftstore thread becomes the bottleneck.
 
 By default, `raftstore.store-pool-size` is configured to `2` in TiKV. If a bottleneck occurs in Raftstore, you can properly increase the value of this configuration item according to the actual situation. But to avoid introducing unnecessary thread switching overhead, it is recommended that you do not set this value too high.
 
@@ -69,13 +69,13 @@ By default, `raftstore.store-pool-size` is configured to `2` in TiKV. If a bottl
 
 In the actual situation, read and write requests are not evenly distributed on every Region. Instead, they are concentrated on a few Regions. Then you can minimize the number of messages between the Raft leader and the followers for the temporarily idle Regions, which is the feature of Hibernate Region. In this feature, Raftstore does sent tick messages to the Raft state machines of idle Regions if not necessary. Then these Raft state machines will not be triggered to generate heartbeat messages, which can greatly reduce the workload of Raftstore.
 
-Up to TiDB v3.0.9 or v3.1.0-beta.1, Hibernate Region is still an experimental feature, which is enabled by default in [TiKV master](https://github.com/tikv/tikv/tree/master). You can enable this feature according to your needs. For the configuration of Hibernate Region, refer to [Configure Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region).
+Hibernate Region is enabled by default in [TiKV master](https://github.com/tikv/tikv/tree/master). You can enable this feature according to your needs. For the configuration of Hibernate Region, refer to [Configure Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region).
 
 ### Method 3: Enable `Region Merge`
 
 > **Note:**
 >
-> `Region Merge` is enabled in TiDB v3.0 by default.
+> `Region Merge` is enabled by default since TiDB v3.0.
 
 You can also reduce the number of Regions by enabling `Region Merge`. Contrary to `Region Split`, `Region Merge` is the process of merging adjacent small Regions through scheduling. After dropping data or executing the `Drop Table` or `Truncate Table` statement, you can merge small Regions or even empty Regions to reduce resource consumption.
 
@@ -133,7 +133,7 @@ This section describes some other problems and solutions.
 
 PD needs to persist Region Meta information on etcd to ensure that PD can quickly resume to provide Region routing services after switching the PD Leader node. As the number of Regions increases, the performance problem of etcd appears, making it slower for PD to get Region Meta information from etcd when PD is switching the Leader. With millions of Regions, it might take more than ten seconds or even tens of seconds to get the meta information from etcd.
 
-To address this problem, `use-region-storage` is enabled by default in PD in TiDB v3.0. With this feature enabled, PD stores Region Meta information on local LevelDB and synchronizes the information among PD nodes through other mechanisms.
+To address this problem, `use-region-storage` is enabled by default in PD since TiDB v3.0. With this feature enabled, PD stores Region Meta information on local LevelDB and synchronizes the information among PD nodes through other mechanisms.
 
 ### PD routing information is not updated in time
 
@@ -143,8 +143,8 @@ You can check **Worker pending tasks** under **Task** in the **TiKV Grafana** pa
 
 ![Check pd-worker](/media/best-practices/pd-worker-metrics.png)
 
-Currently, pd-worker is optimized for better efficiency in [#5620](https://github.com/tikv/tikv/pull/5620) on [TiKV master](https://github.com/tikv/tikv/tree/master), which is applied since [v3.0.5](/releases/release-3.0.5.md#tikv). If you encounter a similar problem, it is recommended to upgrade to v3.0.5 or later versions.
+pd-worker has been optimized for better performance since [v3.0.5](/releases/release-3.0.5.md#tikv). If you encounter a similar problem, it is recommended to upgrade to the latest version.
 
 ### Prometheus is slow to query metrics
 
-In a large-scale cluster, as the number of TiKV instances increases, Prometheus has greater pressure to query metrics, making it slower for Grafana to display these metrics. To ease this problem, metrics pre-calculation is configured in v3.0.
+In a large-scale cluster, as the number of TiKV instances increases, Prometheus has greater pressure to query metrics, making it slower for Grafana to display these metrics. To ease this problem, metrics pre-calculation is configured since v3.0.
