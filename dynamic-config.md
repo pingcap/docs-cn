@@ -19,8 +19,11 @@ category: reference
 
 可以通过 SQL `show config` 来直接查看集群所有实例的配置信息，结果如下：
 
+```sql
+show config;
 ```
-mysql> show config;
+
+```
 +------+-----------------+-----------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Type | Instance        | Name                                                      | Value                                                                                                                                                                                                                                                                            |
 +------+-----------------+-----------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -38,36 +41,43 @@ mysql> show config;
 
 还可以根据对应的字段进行过滤，如：
 
-```
-mysql> show config where type='tidb'
-mysql> show config where instance in (...)
-mysql> show config where name like '%log%'
-mysql> show config where type='tikv' and name='log-level'
+```sql
+show config where type='tidb'
+show config where instance in (...)
+show config where name like '%log%'
+show config where type='tikv' and name='log-level'
 ```
 
 ### 修改实例配置
 
 执行 SQL 语句 `set config`，可以结合实例地址和类型来修改配置，如：
 
-```
+```sql
 set config tikv log.level="info"
 set config "127.0.0.1:2379" log.level="info"
 ```
 
 设置成功会返回 `Query OK`：
 
-```
-mysql> set config '127.0.0.1:2379' log.level='info';
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 
 在批量修改时如果有错误发生，会以 warning 的形式返回：
 
+```sql
+set config tikv log-level='warn';
 ```
-mysql> set config tikv log-level='warn';
-Query OK, 0 rows affected, 1 warning (0.04 sec)
 
-mysql> show warnings;
+```
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+```
+
+```sql
+show warnings;
+```
+
+```
 +---------+------+---------------------------------------------------------------------------------------------------------------+
 | Level   | Code | Message                                                                                                       |
 +---------+------+---------------------------------------------------------------------------------------------------------------+
