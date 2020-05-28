@@ -31,7 +31,6 @@
       + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
-      + [使用 Docker 部署](/test-deployment-using-docker.md)
   + [验证集群状态](/post-installation-check.md)
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
