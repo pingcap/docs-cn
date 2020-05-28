@@ -50,7 +50,7 @@ show config where type='tikv' and name='log-level'
 
 ### 修改实例配置
 
-执行 SQL 语句 `set config`，可以结合实例地址和类型来修改配置，如：
+执行 SQL 语句 `set config`，可以结合实例地址或组件类型来修改单个实例配置或全部实例配置，如：
 
 ```sql
 set config tikv log.level="info"
