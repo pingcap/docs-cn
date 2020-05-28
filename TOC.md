@@ -315,6 +315,7 @@
     - [Execution Plan Binding](/execution-plan-binding.md)
     - [Access Tables Using `IndexMerge`](/index-merge.md)
     - [Statement Summary Table](/statement-summary-tables.md)
+    - [Coprocessor Cache](/coprocessor-cache.md)
     - [Tune TiKV](/tune-tikv-performance.md)
   + Key Monitoring Metrics
     - [Overview](/grafana-overview-dashboard.md)

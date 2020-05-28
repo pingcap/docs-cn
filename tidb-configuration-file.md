@@ -6,6 +6,7 @@ aliases: ['/docs/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
 <!-- markdownlint-disable MD001 -->
+<!-- markdownlint-disable MD024 -->
 
 # TiDB Configuration File
 
@@ -416,6 +417,33 @@ The Plan Cache configuration of the `PREPARE` statement.
 
 - The threshold of the TiKV load. If the TiKV load exceeds this threshold, more `batch` packets are collected to relieve the pressure of TiKV. It is valid only when the value of `tikv-client.max-batch-size` is greater than `0`. It is recommended not to modify this value.
 - Default value: `200`
+
+## tikv-client.copr-cache <span class="version-mark">New in v4.0.0</span>
+
+This section introduces configuration items related to the Coprocessor Cache feature.
+
+### `enable`
+
+- Determines whether to enable [Coprocessor Cache](/coprocessor-cache.md).
+- Default value: `false` (which means that Coprocessor Cache is disabled by default)
+
+### `capacity-mb`
+
+- The total size of the cached data. When the cache space is full, old cache entries are evicted.
+- Default value: `1000`
+- Unit: MB
+
+### `admission-max-result-mb`
+
+- Specifies the largest single push-down calculation result set that can be cached. If the result set of a single push-down calculation returned on the Coprocessor is larger than the result set specified by this parameter, the result set is cached. Increasing this value means that more types of push-down requests are cached, but also cause the cache space to be occupied more easily. Note that the size of each push-down calculation result set is generally smaller than the size of the Region. Therefore, it is meaningless to set this value far beyond the size of a Region.
+- Default value: `10`
+- Unit: MB
+
+### `admission-min-process-ms`
+
+- Specifies the minimum calculation time for a single push-down calculation result set that can be cached. If the calculation time of a single push-down calculation on the Coprocessor is less than the time specified by this parameter, the result set is not cached. Requests that are processed quickly do not need to be cached, and only the requests that take a long time to process need to be cached, which makes the cache less likely to be evicted.
+- Default value: `5`
+- Unit: ms
 
 ### txn-local-latches
 
