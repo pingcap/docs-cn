@@ -183,19 +183,6 @@
   + [Loader](/loader-overview.md)
   + [Mydumper](/mydumper-overview.md)
   + [Syncer](/syncer-overview.md)
-  + TiUP
-    + [文档指南](/tiup/tiup-documentation-guide.md)
-    + [概览](/tiup/tiup-overview.md)
-    + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
-    + [TiUP 组件管理](/tiup/tiup-component-management.md)
-    + [FAQ](/tiup/tiup-faq.md)
-    + [故障排查](/tiup/tiup-troubleshooting-guide.md)
-    + TiUP 组件文档
-      + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
-      + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
-      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
-      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
-      + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md)
@@ -429,6 +416,19 @@
       + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + [TiFlash](/tiflash/tiflash-overview.md)
+  + TiUP
+    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [概览](/tiup/tiup-overview.md)
+    + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
+    + [TiUP 组件管理](/tiup/tiup-component-management.md)
+    + [FAQ](/tiup/tiup-faq.md)
+    + [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    + TiUP 组件文档
+      + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
+      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [错误码](/error-codes.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
