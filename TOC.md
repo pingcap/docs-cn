@@ -75,6 +75,7 @@
   + Monitor
     - [Overview](/tidb-monitoring-framework.md)
     - [Monitor a TiDB Cluster](/monitor-a-tidb-cluster.md)
+    - [Monitor Traffic Using Key Visualizer](/key-visualizer-monitoring-tool.md)
   + Migrate
     - [Migration Tools User Guide](/ecosystem-tool-user-guide.md)
     + Migrate from MySQL
