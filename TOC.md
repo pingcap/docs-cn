@@ -7,10 +7,10 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [核心特性](/basic-features.md)
+  + [基本功能](/basic-features.md)
   + 兼容性
     + [与 MySQL 的兼容性](/mysql-compatibility.md)
-    + [使用限制](/tidb-limitations.md)
+  + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
 + 快速上手
   + [快速上手指南](/quick-start-with-tidb.md)
@@ -429,8 +429,10 @@
       + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + [TiFlash](/tiflash/tiflash-overview.md)
-  + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [错误码](/error-codes.md)
+  + [TiCDC 简介](/ticdc/ticdc-overview.md)
+  + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
+  + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md)
   + [SQL FAQ](/faq/sql-faq.md)
@@ -439,9 +441,6 @@
   + [高可用 FAQ](/faq/high-availability-faq.md)
   + [高可靠 FAQ](/faq/high-reliability-faq.md)
   + [迁移 FAQ](/faq/migration-tidb-faq.md)
-+ 开发指南
-  + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
-  + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
 + [术语表](/glossary.md)
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
