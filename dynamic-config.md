@@ -52,8 +52,15 @@ show config where type='tikv' and name='log-level'
 
 执行 SQL 语句 `set config`，可以结合实例地址或组件类型来修改单个实例配置或全部实例配置，如：
 
+修改全部 TiKV 实例参数：
+
 ```sql
 set config tikv log.level="info"
+```
+
+修改单个 TiKV 实例参数：
+
+```sql
 set config "127.0.0.1:2379" log.level="info"
 ```
 
@@ -90,7 +97,9 @@ show warnings;
 
 某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``tikv-client.`store-limit` ``；
 
-批量修改配置不保证原子性，可能出现某些实例成功，而某些失败。如使用 `set tikv key=val` 修改整个 tikv 集群配置时，可能有部分实例失败，请使用 `show warnings` 进行查看。
+批量修改配置不保证原子性，可能出现某些实例成功，而某些失败。如使用 `set tikv key=val` 修改整个 tikv 集群配置时，可能有部分实例失败，请使用 `show warnings` 进行查看。如遇到部分修改失败的情况，需要重新执行对应的修改语句，或通过修改单个实例的方式完成修改。对于由于网络或者机器故障等原因无法访问到的 TiKV，需要等到恢复后再次进行修改。
+
+针对 TiKV 可动态修改的参数，如果成功修改后，修改的结果会被持久化到配置文件中，后续以配置文件中的参数为准。而针对 PD 可动态修改的参数，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的参数为准。
 
 ## 支持参数列表
 
