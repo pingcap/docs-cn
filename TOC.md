@@ -7,10 +7,10 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [核心特性](/basic-features.md)
+  + [基本功能](/basic-features.md)
   + 兼容性
     + [与 MySQL 的兼容性](/mysql-compatibility.md)
-    + [使用限制](/tidb-limitations.md)
+  + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
 + 快速上手
   + [快速上手指南](/quick-start-with-tidb.md)
@@ -36,8 +36,6 @@
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
-    + [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
-    + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
   + [支持的数据迁移路径](/data-migration-route.md)
@@ -183,19 +181,6 @@
   + [Loader](/loader-overview.md)
   + [Mydumper](/mydumper-overview.md)
   + [Syncer](/syncer-overview.md)
-  + TiUP
-    + [文档指南](/tiup/tiup-documentation-guide.md)
-    + [概览](/tiup/tiup-overview.md)
-    + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
-    + [TiUP 组件管理](/tiup/tiup-component-management.md)
-    + [FAQ](/tiup/tiup-faq.md)
-    + [故障排查](/tiup/tiup-troubleshooting-guide.md)
-    + TiUP 组件文档
-      + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
-      + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
-      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
-      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
-      + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md)
@@ -428,8 +413,23 @@
       + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
     + [TiFlash](/tiflash/tiflash-overview.md)
-  + [TiCDC 简介](/ticdc/ticdc-overview.md)
+  + TiUP
+    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [概览](/tiup/tiup-overview.md)
+    + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
+    + [TiUP 组件管理](/tiup/tiup-component-management.md)
+    + [FAQ](/tiup/tiup-faq.md)
+    + [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    + TiUP 组件文档
+      + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
+      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [错误码](/error-codes.md)
+  + [TiCDC 简介](/ticdc/ticdc-overview.md)
+  + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
+  + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md)
   + [SQL FAQ](/faq/sql-faq.md)
@@ -438,9 +438,6 @@
   + [高可用 FAQ](/faq/high-availability-faq.md)
   + [高可靠 FAQ](/faq/high-reliability-faq.md)
   + [迁移 FAQ](/faq/migration-tidb-faq.md)
-+ 开发指南
-  + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
-  + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
 + [术语表](/glossary.md)
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
