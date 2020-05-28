@@ -1,12 +1,8 @@
 ---
 title: TiDB Docker 部署方案
 category: how-to
-<<<<<<< HEAD
 aliases: ['/docs-cn/v2.1/how-to/deploy/orchestrated/docker/']
-=======
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/docker/']
 draft: true
->>>>>>> 6507de2... *: remove testing deployment using Docker (#3395)
 ---
 
 # TiDB Docker 部署方案
