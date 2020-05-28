@@ -507,6 +507,8 @@ desc select count(*) from information_schema.cluster_slow_query where user = 'u1
 
 目前由于没有对系统表收集统计信息，所以有时会导致某些聚合算子不能下推，导致执行较慢，用户可以通过手动指定聚合下推的 SQL HINT 来将聚合算子下推，示例如下：
 
+{{< copyable "sql" >}}
+
 ```sql
 select /*+ AGG_TO_COP() */ count(*) from information_schema.cluster_slow_query group by user;
 ```
