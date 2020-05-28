@@ -124,6 +124,50 @@ server_configs:
 
 然后执行 `tiup cluster reload ${cluster-name} -N tidb` 命令滚动重启。
 
+## Hotfix 版本替换
+
+常规的升级集群请参考[升级文档](/tiup/tiup-cluster.md#升级操作)，但是在某些场景下（例如 Debug），可能需要用一个临时的包替换正在运行的组件，此时可以用 `patch` 命令：
+
+{{< copyable "shell-root" >}}
+
+```bash
+tiup cluster patch --help
+```
+
+```
+Replace the remote package with a specified package and restart the service
+
+Usage:
+  tiup cluster patch <cluster-name> <package-path> [flags]
+
+Flags:
+  -h, --help                   帮助信息
+  -N, --node strings           指定被替换的节点
+      --overwrite              在未来的 scale-out 操作中使用当前指定的临时包
+  -R, --role strings           指定被替换的服务类型
+      --transfer-timeout int   transfer leader 的超时时间
+
+Global Flags:
+      --ssh-timeout int   SSH 连接的超时时间
+  -y, --yes               跳过所有的确认步骤
+```
+
+例如，有一个 TiDB 实例的 hotfix 包放在 `/tmp/tidb-hotfix.tar.gz` 目录下。如果此时想要替换集群上的所有 TiDB 实例，则可以执行以下命令：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -R tidb
+```
+
+或者只替换其中一个 TiDB 实例：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
+```
+
 ## 关闭集群
 
 关闭集群操作会按 Drainer -> TiFlash -> TiDB -> Pump -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
