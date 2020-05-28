@@ -1067,9 +1067,9 @@ raftdb 相关配置项。
 + 包含 X509 key 的 PEM 文件路径
 + 默认：""
 
-## import
+## `import`
 
-import 相关的配置项。
+与 `import` 相关的配置项。
 
 ### `num-threads`
 
