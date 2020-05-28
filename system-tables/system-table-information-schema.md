@@ -304,6 +304,28 @@ SELECT * FROM schemata;
 5 rows in set (0.00 sec)
 ```
 
+## CLUSTER_PROCESSLIST
+
+`CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.cluster_processlist;
+```
+
+```
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) |
+| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) |
+| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) |
+| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) |
+| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+```
+
 ## SESSION_VARIABLES 表
 
 `SESSION_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 `SHOW SESSION VARIABLES` 语句执行结果类似。
@@ -459,6 +481,34 @@ desc information_schema.cluster_slow_query;
 | Prev_stmt                 | longblob unsigned   | YES  |     | <null>  |       |
 | Query                     | longblob unsigned   | YES  |     | <null>  |       |
 +---------------------------+---------------------+------+-----+---------+-------+
+```
+
+查询集群系统表时，TiDB 也会将相关计算下推给其他节点执行，而不是把所有节点的数据都取回来，可以查看执行计划如下：
+
+{{< copyable "sql" >}}
+
+```sql
+desc select count(*) from information_schema.cluster_slow_query where user = 'u1';
+```
+
+```
++--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
+| id                       | estRows  | task      | access object            | operator info                                        |
++--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
+| StreamAgg_20             | 1.00     | root      |                          | funcs:count(Column#53)->Column#51                    |
+| └─TableReader_21         | 1.00     | root      |                          | data:StreamAgg_9                                     |
+|   └─StreamAgg_9          | 1.00     | cop[tidb] |                          | funcs:count(1)->Column#53                            |
+|     └─Selection_19       | 10.00    | cop[tidb] |                          | eq(information_schema.cluster_slow_query.user, "u1") |
+|       └─TableFullScan_18 | 10000.00 | cop[tidb] | table:CLUSTER_SLOW_QUERY | keep order:false, stats:pseudo                       |
++--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
+```
+
+上面执行计划表示，会将 `user = u1` 条件下推给其他的 （`cop`） TiDB 节点执行，也会把聚合算子下推（即图中的 `StreamAgg` 算子）。
+
+目前由于没有对系统表收集统计信息，所以有时会导致某些聚合算子不能下推，导致执行较慢，用户可以通过手动指定聚合下推的 SQL HINT 来将聚合算子下推，示例如下：
+
+```sql
+select /*+ AGG_TO_COP() */ count(*) from information_schema.cluster_slow_query group by user;
 ```
 
 ## STATISTICS 表
