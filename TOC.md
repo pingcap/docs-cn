@@ -33,7 +33,6 @@
     + 集群部署方式
       - [使用 Ansible 部署（推荐）](/online-deployment-using-ansible.md)
       - [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
-      - [使用 Docker 部署](/test-deployment-using-docker.md)
     + 跨地域冗余
       - [跨数据中心部署方案](/geo-redundancy-deployment.md)
       - [配置集群拓扑](/location-awareness.md)
