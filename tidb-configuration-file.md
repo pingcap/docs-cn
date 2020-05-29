@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration-file/'
 
 # TiDB 配置文件描述
 
-TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](https://pingcap.com/docs-cn/dev/reference/configuration/tidb-server/configuration)中的参数。
+TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/command-line-flags-for-tidb-configuration.md)中的参数。
 
 ### `split-table`
 
@@ -16,9 +16,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果需要创建大量的表，我们建议把这个参数设置为 false。
 
+### `token-limit`
+
++ 可以同时执行请求的 session 个数
++ 默认值：1000
+
 ### `mem-quota-query`
 
-+ 单条 SQL 语句可以占用的最大内存阈值。
++ 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
 + 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
 + 该值作为系统变量 [`tidb_mem_quota_query`](/tidb-specific-system-variables.md#tidb_mem_quota_query) 的初始值。
@@ -44,8 +49,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-action`
 
+> **注意：**
+>
+> 该功能目前会对写入过程中的内存进行统计，为实验特性，对于希望依赖该特性取消写入操作的用户，不建议在生产环境中将其配置为 `cancel`。
+
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
-+ 默认值："cancel"
++ 默认值："log"
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
 ### `enable-streaming`
@@ -168,6 +177,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：300ms
 + 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
 
+### `record-plan-in-slow-log`
+
++ 在慢日志中记录执行计划
++ 默认值：1
++ 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/tidb-specific-system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
+
 ### `expensive-threshold`
 
 + 输出 `expensive` 操作的行数阈值。
@@ -208,12 +223,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
 
-#### `log-rotate`
-
-+ 是否每日创建一个新的日志文件。
-+ 默认值：true
-+ 如果设置为 true，每天会新建新的日志文件，如果设置为 false，那么只会输出到一个日志文件。
-
 ## security
 
 安全相关配置。
@@ -253,11 +262,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + ssl 私钥文件路径，用于用 tls 连接 TiKV/PD
 + 默认值：""
 
-### `skip-grant-table`
-
-+ 是否跳过权限检查
-+ 默认值：false
-
 ## performance
 
 性能相关配置。
@@ -270,19 +274,19 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `max-memory`
 
-+ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio) 会剔除 LRU 中的元素。
++ TiDB 最大使用内存，单位为字节
 + 默认值：0
-+ 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
++ 默认值 0 表示不受限制
 
 ### `txn-total-size-limit`
 
-+ TiDB 事务大小限制
++ TiDB 单个事务大小限制
 + 默认值：104857600 (Byte)
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `10737418240`（表示 10GB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
 
 ### `stmt-count-limit`
 
-+ TiDB 一个事务允许的最大语句条数限制。
++ TiDB 单个事务允许的最大语句条数限制。
 + 默认值：5000
 + 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在可重试的乐观事务中生效，如果使用悲观事务或者关闭了[事务重试](/optimistic-transaction.md#事务的重试)，事务中的语句数将不受此限制。
 
@@ -391,11 +395,12 @@ prepare 语句的 Plan cache 设置。
 + 默认值：41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
 
-### `max-txn-time-use`
+### `max-txn-ttl`
 
-+ 单个事务允许的最大执行时间。
-+ 默认值：590
-+ 单位：秒
++ 单个事务持锁的最长时间，超过该时间，该事务的锁可能会被其他事务清除，导致该事务无法成功提交。
++ 默认值：600000
++ 单位：毫秒
++ 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
 
 ### `max-batch-size`
 
@@ -528,7 +533,7 @@ TiDB 服务状态相关配置。
 
 ### max-retry-count
 
-+ 悲观事务中每个语句最大重试次数，超出该限制将会报错。
++ 悲观事务中单个语句最大重试次数，重试次数超过该限制，语句执行将会报错。
 + 默认值：256
 
 ## experimental

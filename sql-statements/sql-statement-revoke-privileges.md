@@ -5,9 +5,9 @@ category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/revoke-privileges/']
 ---
 
-# REVOKE <privileges>
+# `REVOKE <privileges>`
 
-`REVOKE <privileges>` 语句用于删除已有用户的权限。
+`REVOKE <privileges>` 语句用于删除已有用户的权限。执行 `REVOKE <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
 
 ## 语法图
 
@@ -44,7 +44,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/revoke-privileges/']
 {{< copyable "sql" >}}
 
 ```sql
-CREATE USER newuser IDENTIFIED BY 'mypassword';
+CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 ```
 
 ```
@@ -105,7 +105,7 @@ SHOW GRANTS FOR 'newuser';
 {{< copyable "sql" >}}
 
 ```sql
-DROP USER newuser;
+DROP USER 'newuser';
 ```
 
 ```
@@ -115,7 +115,7 @@ Query OK, 0 rows affected (0.14 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW GRANTS FOR newuser;
+SHOW GRANTS FOR 'newuser';
 ```
 
 ```
@@ -128,6 +128,6 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## 另请参阅
 
-* [GRANT <privileges>](/sql-statements/sql-statement-grant-privileges.md)
+* [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
 * [Privilege Management](/privilege-management.md)
