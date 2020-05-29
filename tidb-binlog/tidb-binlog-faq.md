@@ -132,7 +132,6 @@ TiDB 配置开启 `ignore-error` 写 binlog 失败后触发 critical error 告�
     [2020/05/21 09:51:58.019 +08:00] [INFO] [syncer.go:398] ["add ddl item to syncer, you can add this commit ts to `ignore-txn-commit-ts` to skip this ddl if needed"] [sql="ALTER TABLE `test` ADD INDEX (`index1`)"] ["commit ts"=416815754209656834]。
     ```
 
-    通过以上日志中 `sql` 记录的语句查找到这行日志，然后获取到 `commit ts` 信息。
 4. 编辑 `drainer.toml` 配置文件，在 `ignore-txn-commit-ts` 项中添加该 commit-ts，重启 Drainer。
 
 在绝大部分情况下，TiDB 和 MySQL 的语句都是兼容的。用户需要注意的是上下游的 `sql_mode` 应当保持一致。
