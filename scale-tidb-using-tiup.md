@@ -1,7 +1,8 @@
 ---
 title: Scale the TiDB Cluster Using TiUP
-summary:
-Category: how-to
+summary: Learn how to scale the TiDB cluster using TiUP.
+category: how-to
+aliases: ['/docs/dev/how-to/scale/with-tiup/']
 ---
 
 # Scale the TiDB Cluster Using TiUP
