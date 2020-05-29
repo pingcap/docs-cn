@@ -177,9 +177,9 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /home/tidblk/.tiup/components/cluster/v0.4.3/cluster display <cluster-name>
+Starting /home/tidblk/.tiup/components/cluster/v1.0.0/cluster display <cluster-name>
 TiDB Cluster: <cluster-name>
-TiDB Version: v4.0.0-rc
+TiDB Version: v4.0.0
 ```
 
 ## 5. 升级 FAQ
@@ -197,12 +197,12 @@ TiDB Version: v4.0.0-rc
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster upgrade <cluster-name> v4.0.0-rc --force
+tiup cluster upgrade <cluster-name> v4.0.0 --force
 ```
 
 ### 5.3 升级完成后，如何更新 pd-ctl 等周边工具版本
 
-目前 TiUP 没有对周边工具的版本进行管理更新，如需下载最新版本的工具包，直接下载 TiDB 安装包即可，将 `{version}` 替换为对应的版本如 `v4.0.0-rc`，下载地址如下：
+目前 TiUP 没有对周边工具的版本进行管理更新，如需下载最新版本的工具包，直接下载 TiDB 安装包即可，将 `{version}` 替换为对应的版本如 `v4.0.0`，下载地址如下：
 
 {{< copyable "" >}}
 
