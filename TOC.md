@@ -72,6 +72,7 @@
       - [Enable TLS For MySQL Clients](/encrypted-connections-with-tls-protocols.md)
       - [Enable TLS Between TiDB Components](/enable-tls-between-components.md)
     - [Generate Self-signed Certificates](/generate-self-signed-certificates.md)
+    - [Encryption-At-Rest](/encryption-at-rest.md)
   + Monitor
     - [Overview](/tidb-monitoring-framework.md)
     - [Monitor a TiDB Cluster](/monitor-a-tidb-cluster.md)
