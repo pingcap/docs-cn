@@ -22,14 +22,9 @@ aliases: ['/docs-cn/stable/reference/tiflash/tune-performance/']
     set @@tidb_distsql_scan_concurrency = 80;
     ```
 
-<<<<<<< HEAD
 2. 开启 Super batch 功能：
 
     [`tidb_allow_batch_cop`](/tidb-specific-system-variables.md#tidb_allow_batch_cop) 变量用来设置从 TiFlash 读取时，是否把 Region 的请求进行合并。当查询中涉及的 Region 数量比较大，可以尝试设置该变量为 `1`（对带 `aggregation` 下推到 TiFlash Coprocessor 的请求生效），或设置该变量为 `2`（对全部下推到 TiFlash Coprocessor 请求生效）。
-=======
-2. 开启 Super batch 功能：  
-[`tidb_allow_batch_cop`](/tidb-specific-system-variables.md#tidb_allow_batch_cop) 变量用来设置从 TiFlash 读取时，是否把 Region 的请求进行合并。当查询中涉及的 Region 数量比较大，可以尝试设置该变量为 `1`（对带 `aggregation` 下推到 TiFlash Coprocessor 的请求生效），或设置该变量为 `2`（对全部下推到 TiFlash Coprocessor 请求生效）。
->>>>>>> adaf792... Add explaination about tidb_allow_batch_cop (#3265)
 
     {{< copyable "sql" >}}
 
@@ -37,14 +32,9 @@ aliases: ['/docs-cn/stable/reference/tiflash/tune-performance/']
     set @@tidb_allow_batch_cop = 1;
     ```
 
-<<<<<<< HEAD
 3. 尝试开启聚合推过 `Join` / `Union` 等 TiDB 算子的优化：
 
     [`tidb_opt_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_agg_push_down) 变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
-=======
-3. 尝试开启聚合推过 `Join` / `Union` 等 TiDB 算子的优化：  
-[`tidb_opt_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_agg_push_down) 变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
->>>>>>> adaf792... Add explaination about tidb_allow_batch_cop (#3265)
 
     {{< copyable "sql" >}}
 
@@ -52,14 +42,9 @@ aliases: ['/docs-cn/stable/reference/tiflash/tune-performance/']
     set @@tidb_opt_agg_push_down = 1;
     ```
 
-<<<<<<< HEAD
 4. 尝试开启 `Distince` 推过 `Join` / `Union` 等 TiDB 算子的优化：
 
     [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
-=======
-4. 尝试开启 `Distince` 推过 `Join` / `Union` 等 TiDB 算子的优化：  
-[`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
->>>>>>> adaf792... Add explaination about tidb_allow_batch_cop (#3265)
 
     {{< copyable "sql" >}}
 

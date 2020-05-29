@@ -768,7 +768,6 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
-<<<<<<< HEAD
 ### ddl_slow_threshold
 
 作用域：SESSION
@@ -867,13 +866,10 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 这个变量用来设置一天中允许自动演进的结束时间。
 
-=======
->>>>>>> adaf792... Add explaination about tidb_allow_batch_cop (#3265)
 ### tidb_allow_batch_cop <span class="version-mark">从 v4.0 版本开始引入</span>
 
 作用域：SESSION | GLOBAL
 
-<<<<<<< HEAD
 默认值: 0
 
 这个变量用于控制 TiDB 向 TiFlash 发送 coprocessor 请求的方式，有以下几种取值：
@@ -953,10 +949,3 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 默认值: 60
 
 这个变量设置了查询 METRIC_SCHEMA 时生成的 Prometheus 语句的 range duration，单位为秒。
-=======
-默认值：0
-
-这个变量用来设置从 TiFlash 读取数据时，是否把 Region 的请求进行合并。
-
-当查询的表拥有 TiFlash 副本，且查询涉及的 Region 数量比较多，可以尝试设置该变量为 `1`（对带 `aggregation` 下推到 TiFlash Coprocessor 的请求生效），或设置该变量为 `2`（对全部下推到 TiFlash Coprocessor 请求生效）。
->>>>>>> adaf792... Add explaination about tidb_allow_batch_cop (#3265)
