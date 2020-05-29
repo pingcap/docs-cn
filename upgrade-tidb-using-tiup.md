@@ -69,7 +69,7 @@ tiup update cluster
 
 > **注意：**
 >
-> 如果 `tiup --version` 显示 `tiup` 版本低于 `v1.0.0`，请在执行 `tiup update cluster` 之前先执行 `tiup update --self` 命令更新 `tiup` 版本
+> 如果 `tiup --version` 显示 `tiup` 版本低于 `v1.0.0`，请在执行 `tiup update cluster` 之前先执行 `tiup update --self` 命令更新 `tiup` 版本。
 
 ## 3. 将 TiDB Ansible 及 `inventory.ini` 配置导入到 TiUP
 
