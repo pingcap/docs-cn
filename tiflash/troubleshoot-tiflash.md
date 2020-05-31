@@ -41,10 +41,11 @@ category: reference
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
+    echo 'config placement-rules show' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
     ```
 
-    再确认 "max-replicas" 参数值。
+    再确认 "default: count" 参数值。
+    > 开启 Placement Rules 后，原先的 max-replicas 及 location-labels 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
 
 6. 检查 TiFlash 节点对应 store 所在机器剩余的磁盘空间是否充足。默认情况下当磁盘剩余空间小于该 store 的 capacity 的 20%（通过 low-space-ratio 参数控制）时，PD 不会向 TiFlash 调度数据。
 
