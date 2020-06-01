@@ -112,7 +112,6 @@ Use "tiup [command] --help" for more information about a command.
     - playground：在本机启动集群
     - client：连接本机的集群
     - cluster：部署用于生产环境的集群
-    - package：打包一个新的 TiUP 组件
     - bench：对数据库进行压力测试
     - doc：打开在线文档
 

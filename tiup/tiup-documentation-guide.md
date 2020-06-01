@@ -18,7 +18,6 @@ category: tools
 - [tiup-playground](/tiup/tiup-playground.md)：介绍如何使用 TiUP Playground 组件快速搭建本地测试集群
 - [tiup-cluster](/tiup/tiup-cluster.md)：介绍 TiUP 的生产集群部署、运维组件 TiUP Cluster 的用法和命令行参数解释
 - [tiup-mirror](/tiup/tiup-mirror.md)：介绍如何使用 TiUP Mirror 组件自定义一个本地离线镜像
-- [tiup-package](/tiup/tiup-package.md)：介绍如何使用 TiUP Package 组件将自已开发的程序打包为一个符合 TiUP 组件规范的包
 - [tiup-bench](/tiup/tiup-bench.md)：介绍如何使用 TiUP Bench 组件进行常见的压力测试，如 TPCC/TPCH
 
 ## TiUP 资源

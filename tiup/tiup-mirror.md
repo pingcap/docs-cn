@@ -90,14 +90,14 @@ tiup mirror clone <target-dir> [global-version] [flags]
 
 ### 使用 TiUP 离线安装 TiDB 集群
 
-以在隔离的环境中安装一个 v4.0.0-rc 的 TiDB 集群为例，可以执行以下步骤：
+以在隔离的环境中安装一个 v4.0.0 的 TiDB 集群为例，可以执行以下步骤：
 
 1. 在一台和外网相通的机器上拉取需要的组件：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup mirror clone package v4.0.0-rc --os=linux --arch=amd64
+    tiup mirror clone package v4.0.0 --os=linux --arch=amd64
     ```
 
     该命令会在当前目录下创建一个名叫 `package` 的目录，里面有启动一个集群必要的组件包。
