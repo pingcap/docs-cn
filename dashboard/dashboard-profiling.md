@@ -1,5 +1,5 @@
 ---
-title: 实例性能分析页面
+title: TiDB Dashboard 实例性能分析页面
 category: how-to
 ---
 

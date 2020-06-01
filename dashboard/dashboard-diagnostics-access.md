@@ -1,5 +1,5 @@
 ---
-title: 集群诊断页面
+title: TiDB Dashboard 集群诊断页面
 category: how-to
 ---
 

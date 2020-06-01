@@ -1,5 +1,5 @@
 ---
-title: 使用诊断报告定位问题
+title: 使用 TiDB Dashboard 诊断报告定位问题
 category: how-to
 ---
 

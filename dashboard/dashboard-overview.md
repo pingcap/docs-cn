@@ -1,5 +1,5 @@
 ---
-title: 概况页面
+title: TiDB Dashboard 概况页面
 category: how-to
 ---
 
