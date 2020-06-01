@@ -385,6 +385,14 @@ tiup cluster display <cluster-name>
 
 4. 手动删除 TiFlash 的数据文件，具体位置请查看 TiFlash 的配置文件。
 
+5. 手动更新 TiUP 的集群配置文件，在编辑模式中手动删除我们已经下线的 TiFlash 节点信息：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster edit-config <cluster-name>
+    ```
+
 > **注意：**
 >
 > 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
