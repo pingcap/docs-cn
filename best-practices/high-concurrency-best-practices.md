@@ -180,8 +180,10 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 `SHARD_ROW_ID_BITS` 用于将 `_tidb_rowid` 列生成的行 ID 随机打散。`pre_split_regions` 用于在建完表后预先进行 Split region。
 
 > **注意：**
+> 1. `pre_split_regions` 必须小于等于 `shard_row_id_bits`。
 >
-> `pre_split_regions` 必须小于或等于 `shard_row_id_bits`。
+> 2. 以下 global variable 会影响 `pre_split_regions` 的行为，需要特别注意：
+>     * `tidb_scatter_region`： 该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回。如果建表后有大批量写入，需要设置该变量值为 1，表示等待所有 region 都切分和打散完成后再返回给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
 
 示例：
 
