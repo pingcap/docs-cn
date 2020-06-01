@@ -125,7 +125,7 @@ server_configs:
    tiup cluster reload CLUSTER_NAME -R pd
    ```
 
-详情请参阅 [TiUP 常见运维操作 - 修改配置参数](/maintain-tidb-using-tiup.md/#修改配置参数)。
+详情请参阅 [TiUP 常见运维操作 - 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
 若希望运行在根路径（如 `http://example.com/`）下，相应的配置为：
 
