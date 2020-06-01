@@ -283,7 +283,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 + `require san`：指定签发用户证书的 CA 证书的 `Subject Alternative Name` 内容。配置内容对应生成 client 证书的使用的 [openssl.cnf 配置文件的 alt_names 信息](/generate-self-signed-certificates.md)。
 
-    可以执行以下命令来获取该项的信息：
+    可以执行以下命令来获取已生成证书中的该项的信息：
      
     {{< copyable "shell-regular" >}}
     
@@ -291,13 +291,13 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     openssl x509 -noout -ext subjectAltName -in client.crt
     ```
 
-    `require san` 支持配置多个 Subject Alternative Name 检查项有：
+    `require san` 目前支持的 Subject Alternative Name 检查项有：
     
         + URI
         + IP
         + DNS 
         
-    多个检查项可通过逗号连接后配置，例如对用户 u1 进行以下配置
+    多个检查项可通过逗号连接后进行配置，例如，对用户 u1 进行以下配置
     
     ```sql       
     create user 'u1'@'%' require san 'DNS:d1,URI:spiffe://example.org/myservice1,URI:spiffe://example.org/myservice2'
