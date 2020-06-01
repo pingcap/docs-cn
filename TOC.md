@@ -425,7 +425,7 @@
     + TiUP 组件文档
       + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
-      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
+      + [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [错误码](/error-codes.md)

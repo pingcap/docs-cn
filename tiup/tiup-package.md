@@ -66,7 +66,7 @@ Flags:
 
     环境变量 `TIUP_COMPONENT_INSTALL_DIR` 会由 TiUP 在运行时传入，指向该组件的安装目录。
 
-3. 参考[搭建私有镜像](/tiup/tiup-mirrors.md) 搭建离线镜像或私有镜像（因为目前官方镜像未开放 publish 功能，所以不能发布自己的包），搭建完之后确保 `TIUP_MIRRORS` 变量指向搭建的镜像。
+3. 参考[搭建私有镜像](/tiup/tiup-mirror.md) 搭建离线镜像或私有镜像（因为目前官方镜像未开放 publish 功能，所以不能发布自己的包），搭建完之后确保 `TIUP_MIRRORS` 变量指向搭建的镜像。
 
 4. 打包：
 
@@ -80,7 +80,7 @@ Flags:
 
 5. 上传到仓库：
 
-    由于目前官方仓库未开放上传，我们只能上传到第 3 步中自己搭建的镜像上，上传方式就是直接将 package 中的所有文件拷贝到第 3 步 `tiup mirrors` 的 `<target-dir>` 中。
+    由于目前官方仓库未开放上传，我们只能上传到第 3 步中自己搭建的镜像上，上传方式就是直接将 package 中的所有文件拷贝到第 3 步 `tiup mirror` 的 `<target-dir>` 中。
 
     {{< copyable "shell-regular" >}}
 
