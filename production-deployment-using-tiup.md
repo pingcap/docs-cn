@@ -135,7 +135,7 @@ tiup cluster deploy tidb-test v4.0.0 ./topology.yaml --user root [-p] [-i /home/
 tiup cluster list
 ```
 
-TiUP 自持多集群管理，预期输出当前通过 TiUP cluster 管理的所有集群信息，包括集群名称、部署用户、版本、密钥信息等：
+TiUP 支持管理多个 TiDB 集群，该命令会输出当前通过 TiUP cluster 管理的所有集群信息，包括集群名称、部署用户、版本、密钥信息等：
 
 ```log
 Starting /home/tidb/.tiup/components/cluster/v1.0.0/cluster list
