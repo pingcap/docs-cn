@@ -44,7 +44,7 @@ category: how-to
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup mirrors package --os=linux v4.0.0-rc.1
+    tiup mirror clone package v4.0.0-rc.1 --os=linux --arch=amd64
     ```
 
     该命令会在当前目录下创建一个名叫 `package` 的目录，里面有启动一个集群必要的组件包。
@@ -224,7 +224,7 @@ alertmanager_servers:
 
 ## 6. 部署 TiDB 集群
 
-`/path/to/mirror` 是 `tiup mirrors <target-dir>` 中输出的 package 所在离线机器的位置:
+`/path/to/mirror` 是执行 `local_install.sh` 提示中输出的离线镜像包的位置:
 
 {{< copyable "shell-regular" >}}
 
