@@ -180,6 +180,7 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 `SHARD_ROW_ID_BITS` 用于将 `_tidb_rowid` 列生成的行 ID 随机打散。`pre_split_regions` 用于在建完表后预先进行 Split region。
 
 > **注意：**
+>
 > 1. `pre_split_regions` 必须小于等于 `shard_row_id_bits`。
 >
 > 2. 以下 global variable 会影响 `pre_split_regions` 的行为，需要特别注意：
