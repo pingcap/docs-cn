@@ -94,7 +94,7 @@ Examples:
   $ tiup update --all                  # Update all installed components to the latest version
   $ tiup update --nightly              # Update all installed components to the nightly version
   $ tiup update --self                 # Update the "tiup" to the latest version
-  $ tiup list --refresh                # Fetch the latest supported components list
+  $ tiup list                          # Fetch the latest supported components list
   $ tiup status                        # Display all running/terminated instances
   $ tiup clean <name>                  # Clean the data of running/terminated instance (Kill process if it's running)
   $ tiup clean --all                   # Clean the data of all running/terminated instances
@@ -123,7 +123,7 @@ Use "tiup [command] --help" for more information about a command.
 
 > **注意：**
 >
-> - 可用的组件会持续增加，以 `tiup list --refresh` 输出结果为准。
-> - 组件的可用版本列表也会持续增加，以 `tiup list <component> --refresh` 输出结果为准。
+> - 可用的组件会持续增加，以 `tiup list` 输出结果为准。
+> - 组件的可用版本列表也会持续增加，以 `tiup list <component>` 输出结果为准。
 
 命令和组件的区别在于，命令是 TiUP 自带的，用于进行包管理的操作。而组件是 TiUP 通过包管理操作安装的独立组件包。比如执行 `tiup list` 命令，TiUP 会直接运行自己内部的代码，而执行 `tiup playground` 命令则会先检查本地有没有叫做 playground 的组件包，若没有则先从镜像上下载过来，然后运行这个组件包。
