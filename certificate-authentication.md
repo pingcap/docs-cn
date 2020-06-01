@@ -274,39 +274,39 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 + `require issuer`：指定签发用户证书的 CA 证书的 `subject` 内容。配置内容对应[生成 CA 密钥和证书](#生成-ca-密钥和证书) 中的录入信息。
 
     可以执行以下命令来获取该项的信息：
-     
+
     {{< copyable "shell-regular" >}}
-    
+
     ```
     openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
     ```
 
 + `require san`：指定签发用户证书的 CA 证书的 `Subject Alternative Name` 内容。配置内容对应生成客户端证书使用的 [openssl.cnf 配置文件的 `alt_names` 信息](/generate-self-signed-certificates.md)。
 
-    可以执行以下命令来获取已生成证书中的 `require san` 项的信息：
-     
+    + 可以执行以下命令来获取已生成证书中的 `require san` 项的信息：
+
         {{< copyable "shell-regular" >}}
 
         ```shell
         openssl x509 -noout -ext subjectAltName -in client.crt
         ```
 
-    `require san` 目前支持以下 `Subject Alternative Name` 检查项：
-    
+    + `require san` 目前支持以下 `Subject Alternative Name` 检查项：
+
         - URI
         - IP
-        - DNS 
-        
-    多个检查项可通过逗号连接后进行配置。例如，对用户 `u1` 进行以下配置：
-    
+        - DNS
+
+    + 多个检查项可通过逗号连接后进行配置。例如，对用户 `u1` 进行以下配置：
+
         {{< copyable "sql" >}}
-    
-        ```sql       
+
+        ```sql
         create user 'u1'@'%' require san 'DNS:d1,URI:spiffe://example.org/myservice1,URI:spiffe://example.org/myservice2'
-        ``` 
-    
+        ```
+
     以上配置只允许用户 `u1` 使用 URI 项为 `spiffe://example.org/myservice1` 或 `spiffe://example.org/myservice2`、DNS 项为 `d1` 的证书登录 TiDB。
-  
+
 + `require cipher`：配置该项检查客户端支持的 `cipher method`。可以使用以下语句来查看支持的列表：
 
     {{< copyable "sql" >}}
