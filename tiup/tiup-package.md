@@ -95,7 +95,7 @@ Flags:
     {{< copyable "shell-root" >}}
 
     ```bash
-    tiup list hello --refresh
+    tiup list hello
     ```
 
     ```

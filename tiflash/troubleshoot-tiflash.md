@@ -8,6 +8,32 @@ category: reference
 
 本文介绍了一些 TiFlash 常见问题、原因及解决办法。
 
+## TiFlash 未能正常启动
+
+该问题可能由多个因素构成，可以通过以下步骤依次排查：
+
+1. 检查系统环境是否是 CentOS8。
+
+    CentOS8 中缺少 `libnsl.so` 系统库，可以通过手动安装的方式解决：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    dnf install libnsl
+    ```
+
+2. 检查系统的 `ulimit` 参数设置。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ulimit -n 1000000
+    ```
+
+3. 使用 PD Control 工具检查在该节点（相同 IP 和 Port）是否有之前未成功下线的 TiFlash 实例，并将它们强制下线。（下线步骤参考[手动缩容 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)）
+
+如果遇到上述方法无法解决的问题，可以打包 TiFlash 的 log 文件夹，并在 [AskTUG](http://asktug.com) 社区中提问。
+
 ## TiFlash 副本始终处于不可用状态
 
 该问题一般由于配置错误或者环境问题导致 TiFlash 处于异常状态，可以先通过以下步骤定位问题组件：
