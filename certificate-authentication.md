@@ -293,9 +293,9 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
     `require san` 目前支持的 Subject Alternative Name 检查项有：
     
-    + URI
-    + IP
-    + DNS 
+    - URI
+    - IP
+    - DNS 
         
     多个检查项可通过逗号连接后进行配置，例如，对用户 u1 进行以下配置
     
