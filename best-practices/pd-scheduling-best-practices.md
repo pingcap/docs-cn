@@ -263,9 +263,9 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
     - TiKV: `split-region-on-table` 设为 `false`，该参数不支持动态修改
     - PD: 
        1. `key-type` 设为 `"txn"` 或者 `"raw"`，该参数支持动态修改
-       2. `key-type` 保持 `"table"`，同时设置`"EnabledCrossTableMerge"`为 True.
+       2. `key-type` 保持 `"table"`，同时设置`"enable-cross-table-merge"`为 True，该参数支持动态修改
        
-       注：在开启`placement-rules`后，请合理切换`txn`和`raw`，避免无法正常解码 key 。
+       注：在开启`placement-rules`后，请合理切换`txn`和`raw`，避免无法正常解码 key
 
 - 对于 3.0.4 和 2.1.16 以前的版本，Region 中 Key 的个数（`approximate_keys`）在特定情况下（大部分发生在删表之后）统计不准确，造成 keys 的统计值很大，无法满足 `max-merge-region-keys` 的约束。你可以通过调大 `max-merge-region-keys` 来避免这个问题。
 
