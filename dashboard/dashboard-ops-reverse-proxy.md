@@ -25,6 +25,15 @@ tiup cluster display CLUSTER_NAME --dashboard
 http://192.168.0.123:2379/dashboard/
 ```
 
+> **注意：**
+>
+> 该功能仅在较新版本的 `tiup cluster` 部署工具中提供。可通过以下命令升级 `tiup cluster`：
+>
+> ```bash
+> tiup update --self
+> tiup update cluster --force
+> ```
+
 ### 步骤 2. 配置反向代理
 
 #### NGINX

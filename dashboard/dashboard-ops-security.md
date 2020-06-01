@@ -45,6 +45,15 @@ tiup cluster display CLUSTER_NAME --dashboard
 
 输出即为实际 TiDB Dashboard 地址。
 
+> **注意：**
+>
+> 该功能仅在较新版本的 `tiup cluster` 部署工具中提供。可通过以下命令升级 `tiup cluster`：
+>
+> ```bash
+> tiup update --self
+> tiup update cluster --force
+> ```
+
 以下是一个样例输出：
 
 ```
