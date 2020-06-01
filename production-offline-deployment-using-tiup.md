@@ -224,7 +224,7 @@ alertmanager_servers:
 
 ## 6. 部署 TiDB 集群
 
-`/path/to/mirror` 是执行 `local_install.sh` 提示中输出的离线镜像包的位置:
+`/path/to/mirror` 是执行 `local_install.sh` 命令时输出的离线镜像包的位置:
 
 {{< copyable "shell-regular" >}}
 
