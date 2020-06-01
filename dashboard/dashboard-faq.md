@@ -3,7 +3,7 @@ title: TiDB Dashboard 常见问题
 category: how-to
 ---
 
-# 常见问题
+# TiDB Dashboard 常见问题
 
 ## 访问
 
