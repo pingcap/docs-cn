@@ -15,7 +15,7 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 
 > **注意：**
 >
-> 如果在含有写的事务中（例如事务中包含 `SELECT ... FOR UPDATE` 且后接 `UPDATE ...`）读取 TiFlash（见 [使用 TiDB 读取 TiFlash](#使用-tidb-读取-tiflash) ），目前行为是未定义，后续版本中会取消这个限制。
+> 如果在含有写的事务中（例如事务中包含 `SELECT ... FOR UPDATE` 且后接 `UPDATE ...`）读取 TiFlash（见[使用 TiDB 读取 TiFlash](#使用-tidb-读取-tiflash)），目前行为是未定义，后续版本中会取消这个限制。
 
 ## 按表构建 TiFlash 副本
 
