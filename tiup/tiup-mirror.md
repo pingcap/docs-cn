@@ -1,7 +1,7 @@
 ---
 title: 搭建私有镜像
 category: tools
-aliases: ['/docs-cn/dev/reference/tools/tiup/mirror/']
+aliases: ['/docs-cn/dev/tiup/tiup-mirrors/','/docs-cn/dev/reference/tools/tiup/mirror/']
 ---
 
 # 搭建私有镜像
@@ -56,7 +56,7 @@ tiup mirror clone <target-dir> [global-version] [flags]
 - `target-dir`：指需要把克隆下来的数据放到哪个目录里。
 - `global-version`：用于为所有组件快速设置一个共同的版本。
 
-`tiup mirror` 命令提供了很多可选参数，日后可能会提供更多。但这些参数其实可以分为四类：
+`tiup mirror clone` 命令提供了很多可选参数，日后可能会提供更多。但这些参数其实可以分为四类：
 
 1. 克隆时是否使用前缀匹配方式匹配版本
 
@@ -97,7 +97,7 @@ tiup mirror clone <target-dir> [global-version] [flags]
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup mirror clone package v4.0.0-rc --os=linux
+    tiup mirror clone package v4.0.0-rc --os=linux --arch=amd64
     ```
 
     该命令会在当前目录下创建一个名叫 `package` 的目录，里面有启动一个集群必要的组件包。

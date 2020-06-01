@@ -7,7 +7,24 @@ category: how-to
 
 本文介绍如何使用 TiUP 离线部署 TiDB 集群，具体的操作步骤如下。
 
-## 1. 部署在线环境 TiUP 组件
+## 1. 准备 TiUP 离线组件包
+
+### 方式一：下载官方 TiUP 离线组件包
+
+在 download.pingcap.org 有官方预先打好的离线镜像包，下载指令为：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+wget https://download.pingcap.org/xxx.tar.gz
+mv xxx.tar.gz package.tar.gz
+```
+
+此时，`package.tar.gz` 就是一个独立的离线环境包。
+
+### 方式二：使用 tiup mirror clone 命令手动打包离线组件包
+
+#### 1.1 部署在线环境 TiUP 组件
 
 使用普通用户登录一台开放外网访问的机器：
 
@@ -35,7 +52,7 @@ category: how-to
     which tiup
     ```
 
-## 2. 使用 TiUP 拉取镜像
+#### 1.2 使用 TiUP 拉取镜像
 
 以 tidb 用户在隔离的环境中安装一个 v4.0.0 的 TiDB 集群为例，可以执行以下步骤：
 
@@ -59,7 +76,7 @@ category: how-to
 
     此时，`package.tar.gz` 就是一个独立的离线环境包。
 
-## 3. 部署离线环境 TiUP 组件
+## 2. 部署离线环境 TiUP 组件
 
 1. 将包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
 
@@ -72,7 +89,7 @@ category: how-to
     source /home/tidb/.bash_profile
     ```
 
-## 4. TiKV 数据盘挂载
+## 3. TiKV 数据盘挂载
 
 > **注意：**
 >
@@ -172,9 +189,9 @@ category: how-to
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 5. 配置初始化参数文件 `topology.yaml`
+## 4. 配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
 
 {{< copyable "shell-regular" >}}
 
@@ -222,7 +239,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-## 6. 部署 TiDB 集群
+## 5. 部署 TiDB 集群
 
 `/path/to/mirror` 是执行 `local_install.sh` 命令时输出的离线镜像包的位置:
 

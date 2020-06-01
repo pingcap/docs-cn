@@ -24,5 +24,4 @@ category: tools
 ## TiUP 资源
 
 - [AskTUG TiUP](https://asktug.com/c/qa/set-up-deploy)：AskTUG.com 部署板块
-- [TiUP Issues](https://github.com/pingcap-incubator/tiup/issues)：TiUP Github Issues 列表
-- [TiUP Cluster Issues](https://github.com/pingcap-incubator/tiup-cluster/issues)：TiUP Cluster Github Issues 列表
+- [TiUP Issues](https://github.com/pingcap/tiup/issues)：TiUP Github Issues 列表
