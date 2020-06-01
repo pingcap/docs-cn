@@ -28,7 +28,7 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 
 ## Server recommendations
 
-You can deploy and run TiDB on the 64-bit generic hardware server platform in the Intel x86-64 architecture. The requirements and recommendations about server hardware configuration for development, test and production environments are as follows:
+You can deploy and run TiDB on the 64-bit generic hardware server platform in the Intel x86-64 architecture. The requirements and recommendations about server hardware configuration (ignoring the resources occupied by the operating system itself) for development, test, and production environments are as follows:
 
 ### Development and test environments
 
