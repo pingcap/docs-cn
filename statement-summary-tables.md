@@ -267,4 +267,4 @@ SQL 的基础信息：
 和 plan cache 相关的字段：
 
 - `PLAN_CACHE_HITS`：这类 SQL 命中 plan cache 的总次数
-- `PLAN_IN_CACHE`：这类 SQL 上次执行是否命中了 plan ache
+- `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache。
