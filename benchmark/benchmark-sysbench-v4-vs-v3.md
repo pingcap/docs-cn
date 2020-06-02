@@ -13,7 +13,7 @@ category: benchmark
 
 ### 硬件配置
 
-| 服务类型   | EC2 类型   |    节点数  |
+| 服务类型   | EC2 类型   |    实例数  |
 |:----------|:----------|:----------|
 | PD        | m5.xlarge |     3     |
 | TiKV      | i3.4xlarge|     3     |
@@ -102,13 +102,15 @@ set global tidb_disable_txn_auto_retry=0;
 ## 测试方案
 
 1. 通过 TiUP 部署 TiDB v4.0 和 v3.0。
-2. 通过 Sysbench 导入 16 张表，每张表数据 1000 万数据。
+2. 通过 Sysbench 导入 16 张表，每张表数据 1000 行数据。
 3. 分别对每个表执行 `analyze table` 命令。
 4. 备份数据，用于不同并发测试前进行数据恢复，以保证每次数据一致。
 5. 启动 Sysbench 客户端，进行 `point_select`、`read_write`、`update_index` 和 `update_non_index` 测试。通过 AWS NLB 向 TiDB 加压，单轮预热 1 分钟，测试 5 分钟。
 6. 每轮完成后停止集群，使用之前的备份的数据覆盖，再启动集群。
 
-### 准备数据命令
+### 准备测试数据
+
+执行以下命令来准备测试数据：
 
 {{< copyable "shell-regular" >}}
 
@@ -126,6 +128,8 @@ sysbench oltp_common \
 ```
 
 ### 执行测试命令
+
+执行以下命令来执行测试：
 
 {{< copyable "shell-regular" >}}
 
