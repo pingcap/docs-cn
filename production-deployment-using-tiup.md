@@ -61,7 +61,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     ```shell
     tiup update --self && tiup update cluster
     ```
-    
+
     预期输出 `“Update successfully!”` 字样。
 
 5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
@@ -88,7 +88,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 - [增加 TiCDC 拓扑架构](/ticdc-deployment-topology.md)
 
-    包含最小拓扑的基础上，同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。在部署完成后，需要启动 TiCDC，[通过 `cdc cli` 创建同步任务](/ticdc/manage-ticdc.md)。
+    包含最小拓扑的基础上，同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。在部署完成后，需要启动 TiCDC，[通过 `cdc cli` 创建同步任务](/ticdc/ticdc-overview.md)。
 
 - [增加 TiDB Binlog 拓扑架构](/tidb-binlog-deployment-topology.md)
 
