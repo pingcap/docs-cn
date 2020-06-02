@@ -8,9 +8,9 @@ category: how-to
 
 本文档介绍如何使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)。该工具可以把存储在 TiDB 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
 
-如果需要直接备份 SST 文件（KV 对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc/ticdc-overview.md)。
+如果需要直接备份 SST 文件（KV 对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc.md)。
 
-使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。 
+使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
 ## 从 TiDB 导出数据
 
@@ -48,7 +48,7 @@ dumpling \
 注意，`--sql` 选项暂时仅仅可用于导出 csv 的场景。但是仍旧可以用 `--where` 来过滤要导出的行，使用以下指令，可以导出所有 `id < 100` 的记录：
 
 > **注意：**
-> 
+>
 > 这里需要在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
 
 {{< copyable "shell-regular" >}}
@@ -63,7 +63,7 @@ dumpling \
 ```
 
 > **注意：**
-> 
+>
 > 目前 Dumpling 不支持仅导出用户指定的某几张表（即 `-T` 标志，见[这个 issue](https://github.com/pingcap/dumpling/issues/76)）。如果你确实需要这些功能，可以先使用 [MyDumper](/backup-and-restore-using-mydumper-lightning.md)。
 
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用参数如下：

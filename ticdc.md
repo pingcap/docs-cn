@@ -1,10 +1,10 @@
 ---
-title: TiCDC 简介
+title: TiCDC
 category: reference
 aliases: ['/docs-cn/dev/reference/tools/ticdc/overview/']
 ---
 
-# TiCDC 简介
+# TiCDC
 
 > **注意：**
 >

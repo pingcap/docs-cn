@@ -62,7 +62,7 @@
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + [日常巡检](/daily-inspection.md)
-  + [TiCDC 运维操作及任务管理](/ticdc/ticdc-overview.md)
+  + [TiCDC 运维操作及任务管理](/ticdc.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
 + 监控与告警
@@ -174,7 +174,7 @@
     + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  + [TiCDC](/ticdc/ticdc-overview.md)
+  + [TiCDC](/ticdc.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -430,7 +430,7 @@
       + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [错误码](/error-codes.md)
-  + [TiCDC 简介](/ticdc/ticdc-overview.md)
+  + [TiCDC 简介](/ticdc.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
   + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
 + 常见问题解答 (FAQ)

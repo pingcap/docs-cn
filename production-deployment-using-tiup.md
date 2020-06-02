@@ -88,7 +88,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 - [增加 TiCDC 拓扑架构](/ticdc-deployment-topology.md)
 
-    包含最小拓扑的基础上，同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。在部署完成后，需要启动 TiCDC，[通过 `cdc cli` 创建同步任务](/ticdc/ticdc-overview.md)。
+    包含最小拓扑的基础上，同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。在部署完成后，需要启动 TiCDC，[通过 `cdc cli` 创建同步任务](/ticdc.md)。
 
 - [增加 TiDB Binlog 拓扑架构](/tidb-binlog-deployment-topology.md)
 
