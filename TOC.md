@@ -50,7 +50,7 @@
     - [TiDB Lightning Tutorial](/get-started-with-tidb-lightning.md)
     - [TiSpark Quick Start Guide](/get-started-with-tispark.md)
   + Deploy
-    - [Hardware Recommendations](/hardware-and-software-requirements.md)
+    - [Software and Hardware Requirements](/hardware-and-software-requirements.md)
     + From Binary Tarball
       - [For Testing Environments](/test-deployment-from-binary-tarball.md)
       - [For Production Environments](/production-deployment-from-binary-tarball.md)
