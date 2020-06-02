@@ -89,6 +89,7 @@
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
+    + [下推计算结果缓存](/coprocessor-cache.md)
   + SQL 性能调优
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + [理解 TiDB 执行计划](/query-execution-plan.md)
