@@ -195,6 +195,8 @@ SQL 的基础信息：
 - `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个
 - `PLAN_DIGEST`：执行计划的 digest
 - `PLAN`：原执行计划，多条语句只取其中一条的执行计划
+- `PLAN_CACHE_HITS`：这类 SQL 命中 plan cache 的总次数
+- `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache
 
 执行时间相关的信息：
 
@@ -263,8 +265,3 @@ SQL 的基础信息：
 - `BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为 `类型:次数`。如有多种错误则用 `,` 分隔，例如 `txnLock:2,pdRPC:1`
 - `AVG_AFFECTED_ROWS`：平均影响行数
 - `PREV_SAMPLE_TEXT`：当 SQL 是 `COMMIT` 时，该字段为 `COMMIT` 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
-
-和 plan cache 相关的字段：
-
-- `PLAN_CACHE_HITS`：这类 SQL 命中 plan cache 的总次数
-- `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache。
