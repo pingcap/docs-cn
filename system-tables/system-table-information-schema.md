@@ -190,6 +190,7 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 ```
 
 `columns` 表中列的含义如下：
+
 * `TABLE_CATALOG`：包含列的表所属的目录的名称。该值始终为 `def`。
 * `TABLE_SCHEMA`：包含列的表所属的数据库的名称。
 * `TABLE_NAME`：包含列的表的名称。
@@ -255,6 +256,7 @@ TRANSACTIONS: YES
 ```
 
 `engines` 表中列的含义如下：
+
 * `ENGINE`：存储引擎的名称。
 * `SUPPORT`：服务器对存储引擎的支持级别，在 TiDB 中此值一直是 `DEFAULT`。
 * `COMMENT`：存储引擎的简要描述。
@@ -303,6 +305,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 ```
 
 `key_column_usage` 表中列的含义如下：
+
 * `CONSTRAINT_CATALOG`：约束所属的目录的名称。该值始终为 `def`。
 * `CONSTRAINT_SCHEMA`：约束所属的数据库的名称。
 * `CONSTRAINT_NAME`：约束名称。
