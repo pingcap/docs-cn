@@ -46,6 +46,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhereOpt];
 | update_time | 更新时间 |
 | charset | 字符集 |
 | collation | 排序规则 |
+| source | 创建方式，包括 manual （由 `create [global] binding` 生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
 
 ## 另请参阅
 
