@@ -264,7 +264,7 @@ SQL 的基础信息：
 - `AVG_AFFECTED_ROWS`：平均影响行数
 - `PREV_SAMPLE_TEXT`：当 SQL 是 `COMMIT` 时，该字段为 `COMMIT` 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
 
-和 plan cache 相关的字段
+和 plan cache 相关的字段：
 
 - `PLAN_CACHE_HITS`：这类 SQL 命中 plan cache 的总次数
 - `PLAN_IN_CACHE`：这类 SQL 上次执行是否命中了 plan ache
