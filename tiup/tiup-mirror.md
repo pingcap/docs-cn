@@ -90,55 +90,7 @@ tiup mirror clone <target-dir> [global-version] [flags]
 
 ### 使用 TiUP 离线安装 TiDB 集群
 
-以在隔离的环境中安装一个 v4.0.0 的 TiDB 集群为例，可以执行以下步骤：
-
-1. 在一台和外网相通的机器上拉取需要的组件：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tiup mirror clone package v4.0.0 --os=linux --arch=amd64
-    ```
-
-    该命令会在当前目录下创建一个名叫 `package` 的目录，里面有启动一个集群必要的组件包。
-
-2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tar czvf package.tar.gz package
-    ```
-
-    此时，`package.tar.gz` 就是一个独立的离线环境。
-
-3. 将包发送到目标集群的中控机后，执行以下命令安装 TiUP：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tar xzvf package.tar.gz
-    cd package
-    sh local_install.sh
-    ```
-
-4. 根据提示安装完 TiUP 之后，再部署 TiDB 集群：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    export TIUP_MIRRORS=/path/to/mirror
-    tiup cluster deploy <cluster-name> <cluster-version> <topology-file>
-    tiup cluster start <cluster-name>
-    ```
-
-    `/path/to/mirror` 是执行 `local_install.sh` 命令时输出的离线镜像包的位置，如果在 `/tmp/package` 则：
-
-    ```bash
-    export TIUP_MIRRORS=/tmp/package
-    ```
-
-部署完成后，集群相关操作可参考 [cluster 命令](/tiup/tiup-cluster.md)。
+这里可以参考[使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md)安装 TiUP 离线镜像，部署并启动 TiDB 集群。
 
 ### 构建私有镜像
 

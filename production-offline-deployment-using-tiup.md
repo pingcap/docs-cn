@@ -11,18 +11,20 @@ category: how-to
 
 ### 方式一：下载官方 TiUP 离线组件包
 
-在 download.pingcap.org 有官方预先打好的离线镜像包，下载指令为：
+在 <download.pingcap.org> 有官方预先打好的离线镜像包，下载指令为：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-wget https://download.pingcap.org/xxx.tar.gz
-mv xxx.tar.gz package.tar.gz
+wget http://download.pingcap.org/tidb-community-server-${version}-linux-amd64.tar.gz
+mv tidb-community-server-${version}-linux-amd64.tar.gz package.tar.gz
 ```
+
+其中 ${version} 处填入希望下载的离线镜像包版本，例如 v4.0.0。
 
 此时，`package.tar.gz` 就是一个独立的离线环境包。
 
-### 方式二：使用 tiup mirror clone 命令手动打包离线组件包
+### 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包
 
 #### 1.1 部署在线环境 TiUP 组件
 
@@ -78,7 +80,7 @@ mv xxx.tar.gz package.tar.gz
 
 ## 2. 部署离线环境 TiUP 组件
 
-1. 将包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
+将包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
 
     {{< copyable "shell-regular" >}}
 
