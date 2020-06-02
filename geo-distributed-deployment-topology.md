@@ -71,7 +71,7 @@ category: how-to
     replication.max-replicas: 5
     ```
 
-- 拒绝异地机房 TiKV 的 Raft 副本拒绝选举为 leader。
+- 拒绝异地机房 TiKV 的 Raft 副本选举为 Leader。
 
     ```yaml
     label-property:
