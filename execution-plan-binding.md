@@ -120,6 +120,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | update_time | 更新时间 |
 | charset | 字符集 |
 | collation | 排序规则 |
+| source | 创建方式 |
 
 ### 自动创建绑定
 
