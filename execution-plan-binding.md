@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/performance/execution-plan-bind/']
 
 在[优化器 Hints](/optimizer-hints.md) 中介绍了可以通过 Hint 的方式选择指定的执行计划，但有的时候需要在不修改 SQL 语句的情况下干预执行计划的选择。执行计划绑定提供了一系列功能使得可以在不修改 SQL 语句的情况下选择指定的执行计划。
 
-执行计划绑定是 SPM(SQL Plan Management) 的基础，在可以在[自动演进绑定](/execution-plan-binding.md#自动演进绑定)中查看 SPM 的使用。
+执行计划绑定是 SPM (SQL Plan Management) 的基础，你可以在[自动演进绑定](#自动演进绑定)中查看 SPM 的使用。
 
 ## 语法
 
