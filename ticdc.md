@@ -142,7 +142,6 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 
-
 ### 停止同步任务
 
 使用以下命令来停止同步任务：
@@ -243,7 +242,6 @@ cdc cli changefeed query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-231
     - `1`: 任务暂停。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
     - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
     - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
-
 
 ## 管理 TiCDC 服务进程 (`capture`)
 
