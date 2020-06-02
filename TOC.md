@@ -91,6 +91,7 @@
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
+    + [下推计算结果缓存](/coprocessor-cache.md)
   + SQL 性能调优
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + [理解 TiDB 执行计划](/query-execution-plan.md)
@@ -425,8 +426,7 @@
     + TiUP 组件文档
       + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
-      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
-      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [错误码](/error-codes.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
