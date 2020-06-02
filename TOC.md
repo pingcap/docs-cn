@@ -341,7 +341,7 @@
   - [TiDB FAQ](/faq/tidb-faq.md)
   - [TiDB Lightning FAQ](/tidb-lightning/tidb-lightning-faq.md)
   - [升级 FAQ](/faq/upgrade-faq.md)
-  - [BR FAQ](/br/backup-and-restore-faq.md)
+  - [BR 工具 FAQ](/br/backup-and-restore-faq.md)
 + 技术支持
   - [支持渠道](/support.md)
   - [反馈问题](/report-issue.md)
