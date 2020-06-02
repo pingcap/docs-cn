@@ -82,14 +82,14 @@ mv tidb-community-server-${version}-linux-amd64.tar.gz package.tar.gz
 
 将包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    tar xzvf package.tar.gz &&
-    cd package &&
-    sh local_install.sh &&
-    source /home/tidb/.bash_profile
-    ```
+```bash
+tar xzvf package.tar.gz &&
+cd package &&
+sh local_install.sh &&
+source /home/tidb/.bash_profile
+```
 
 ## 3. TiKV 数据盘挂载
 
