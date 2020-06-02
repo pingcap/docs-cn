@@ -1,7 +1,7 @@
 ---
 title: TiCDC
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/ticdc/overview/']
+aliases: ['/docs-cn/dev/reference/tools/ticdc/overview/', '/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/tools/ticdc/sink/','/docs-cn/dev/ticdc/sink-url/']
 ---
 
 # TiCDC
