@@ -117,18 +117,18 @@ sysbench $testname \
 
 ## 测试结果
 
-### Point Select
+### Point Select 性能提升 14%
 
 ![Point Select](/media/sysbench_v4vsv3_point_select.png)
 
-### Update Non-index
+### Update Non-index 性能提升 15%
 
 ![Update Non-index](/media/sysbench_v4vsv3_update_non_index.png)
 
-### Update Index
+### Update Index 性能提升 17%
 
 ![Update Index](/media/sysbench_v4vsv3_update_index.png)
 
-### Read Write
+### Read Write 性能提升 31%
 
 ![Read Write](/media/sysbench_v4vsv3_read_write.png)
