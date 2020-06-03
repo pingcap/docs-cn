@@ -122,7 +122,7 @@ sysctl -p
 
 ## 检测及关闭目标部署机器的防火墙
 
-本段介绍如何关闭目标主机防火墙配置，因为在 TiDB 集群中，需要将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。否则建议[按照端口使用规则](/hardware-and-software-requirements.md)，将端口信息配置到防火墙服务的白名单中。
+本段介绍如何关闭目标主机防火墙配置，因为在 TiDB 集群中，需要将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。否则建议[按照端口使用规则](/hardware-and-software-requirements.md#网络要求)，将端口信息配置到防火墙服务的白名单中。
 
 1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
@@ -161,6 +161,8 @@ sysctl -p
 
 TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，从而确保 ACID 模型的事务线性一致性。目前解决授时的普遍方案是采用 NTP 服务，可以通过互联网中的 `pool.ntp.org` 授时服务来保证节点的时间同步，也可以使用离线环境自己搭建的 NTP 服务来解决授时。
 
+采用如下步骤检查是否安装 NTP 服务以及与 NTP 服务器正常同步：
+
 1. 执行以下命令，如果输出 `running` 表示 NTP 服务正在运行：
 
     {{< copyable "shell-regular" >}}
@@ -175,67 +177,57 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
     ```
 
-2. 执行 `ntpstat` 命令，如果输出 `synchronised to NTP server`（正在与 NTP server 同步），表示在正常同步：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ntpstat
-    ```
-
-    ```
-    synchronised to NTP server (85.199.214.101) at stratum 2
-    time correct to within 91 ms
-    polling server every 1024 s
-    ```
+2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 
     > **注意：**
     >
     > Ubuntu 系统需安装 `ntpstat` 软件包。
 
-- 以下情况表示 NTP 服务未正常同步：
-
     {{< copyable "shell-regular" >}}
 
     ```bash
     ntpstat
     ```
 
-    ```
-    unsynchronised
-    ```
+    - 如果输出 `synchronised to NTP server`，表示正在与 NTP 服务器正常同步：
 
-- 以下情况表示 NTP 服务未正常运行：
+        ```
+        synchronised to NTP server (85.199.214.101) at stratum 2
+        time correct to within 91 ms
+        polling server every 1024 s
+        ```
 
-    {{< copyable "shell-regular" >}}
+    - 以下情况表示 NTP 服务未正常同步：
 
-    ```bash
-    ntpstat
-    ```
+        ```
+        unsynchronised
+        ```
 
-    ```
-    Unable to talk to NTP daemon. Is it running?
-    ```
+    - 以下情况表示 NTP 服务未正常运行：
 
-- 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP server：
+        ```
+        Unable to talk to NTP daemon. Is it running?
+        ```
 
-    {{< copyable "shell-regular" >}}
+如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP 服务器：
 
-    ```bash
-    sudo systemctl stop ntpd.service && \
-    sudo ntpdate pool.ntp.org && \
-    sudo systemctl start ntpd.service
-    ```
+{{< copyable "shell-regular" >}}
 
-- 如果要在 CentOS 7 系统上手动安装 NTP 服务，可执行以下命令：
+```bash
+sudo systemctl stop ntpd.service && \
+sudo ntpdate pool.ntp.org && \
+sudo systemctl start ntpd.service
+```
 
-    {{< copyable "shell-regular" >}}
+如果要在 CentOS 7 系统上手动安装 NTP 服务，可执行以下命令：
 
-    ```bash
-    sudo yum install ntp ntpdate && \
-    sudo systemctl start ntpd.service && \
-    sudo systemctl enable ntpd.service
-    ```
+{{< copyable "shell-regular" >}}
+
+```bash
+sudo yum install ntp ntpdate && \
+sudo systemctl start ntpd.service && \
+sudo systemctl enable ntpd.service
+```
 
 ## 手动配置 SSH 互信及 sudo 免密码
 
