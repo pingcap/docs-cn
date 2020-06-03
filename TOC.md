@@ -366,7 +366,7 @@
     + 系统表
       + [`mysql`](/system-tables/system-table-overview.md)
       + [`information_schema`](/system-tables/system-table-information-schema.md)
-      + `sql-diagnosis`
+      + sql-diagnosis
         + [`cluster_info`](/system-tables/system-table-cluster-info.md)
         + [`cluster_hardware`](/system-tables/system-table-cluster-hardware.md)
         + [`cluster_config`](/system-tables/system-table-cluster-config.md)
