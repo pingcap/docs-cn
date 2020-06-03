@@ -102,7 +102,7 @@ set global tidb_disable_txn_auto_retry=0;
 ## 测试方案
 
 1. 通过 TiUP 部署 TiDB v4.0 和 v3.0。
-2. 通过 Sysbench 导入 16 张表，每张表数据 1000 行数据。
+2. 通过 Sysbench 导入 16 张表，每张表有 1000 万行数据。
 3. 分别对每个表执行 `analyze table` 命令。
 4. 备份数据，用于不同并发测试前进行数据恢复，以保证每次数据一致。
 5. 启动 Sysbench 客户端，进行 `point_select`、`read_write`、`update_index` 和 `update_non_index` 测试。通过 AWS NLB 向 TiDB 加压，单轮预热 1 分钟，测试 5 分钟。
