@@ -543,3 +543,43 @@ etcdctl [args] = tiup ctl etcd [args]
 ```bash
 tiup ctl pd -u http://127.0.0.1:2379 store
 ```
+
+## 部署机环境检查
+
+使用 `check` 子命令可以对部署机的环境进行一系列检查，并输出检查结果。通过执行 `check` 子命令，可以发现常见的不合理配置或不支持情况。命令参数列表如下：
+
+```bash
+Usage:
+  tiup cluster check <topology.yml | cluster-name> [flags]
+
+Flags:
+      --apply                  Try to fix failed checks
+      --cluster                Check existing cluster, the input is a cluster name.
+      --enable-cpu             Enable CPU thread count check
+      --enable-disk            Enable disk IO (fio) check
+      --enable-mem             Enable memory size check
+  -h, --help                   help for check
+  -i, --identity_file string   The path of the SSH identity file. If specified, public key authentication will be used.
+  -p, --password               Use password of target hosts. If specified, password authentication will be used.
+      --user string            The user name to login via SSH. The user must has root (or sudo) privilege.
+```
+
+默认情况下，此功能用于在部署前进行环境检查，通过指定 `--cluster` 参数切换模式，也可以用于对已部署集群的部署机进行检查，例如：
+
+```bash
+# check deploy servers before deploy
+tiup cluster check topology.yml --user tidb -p
+
+# check deploy servers of an existing cluster
+tiup cluster check <cluster-name> --cluster
+```
+
+其中，CPU 线程数检查、内存大小检查和磁盘性能检查三项默认关闭，对于生产环境，建议将此三项检测开启并确保通过，以获得最佳性能。
+
+- CPU: 线程数大于等于16为通过
+- 内存：物理内存总大小大于等于32G为通过
+- 磁盘：对 `data_dir` 所在分区执行 `fio` 测试并记录结果
+
+在运行检测时，若指定了 `--apply` 参数，程序将尝试对其中未通过的项目自动修复。自动修复仅限于部分可通过修改配置或系统参数调整的项目，其它未修复的项目需要根据实际情况手工处理。
+
+环境检查不是部署集群的必需流程，对于生产环境建议在部署前执行并通过所有检测项；未通过全部检查项也可能可以正常部署和运行集群，但可能无法获得最佳性能表现。
