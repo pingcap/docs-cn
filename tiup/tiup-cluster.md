@@ -61,7 +61,11 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 该命令需要提供集群的名字、集群使用的 TiDB 版本，以及一个集群的拓扑文件。
 
-拓扑文件的编写可参考[示例](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
+拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
+
+> **注意：**
+>
+> TiUP Cluster 组件的部署和扩容拓扑是使用 [yaml](https://yaml.org/spec/1.2/spec.html) 语法编写，所以需要注意缩进。
 
 ```yaml
 ---
@@ -404,8 +408,7 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 
 ## 导入 TiDB Ansible 集群
 
-在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。
-import 命令用法如下：
+在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。import 命令用法如下：
 
 {{< copyable "shell-root" >}}
 

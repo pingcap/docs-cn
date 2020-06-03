@@ -28,21 +28,24 @@ trace format='row' select * from mysql.user;
 ```
 
 ```
-+---------------------------+-----------------+------------+
-| operation                 | startTS         | duration   |
-+---------------------------+-----------------+------------+
-| session.getTxnFuture      | 10:33:34.647148 | 3.847µs    |
-|   ├─session.Execute       | 10:33:34.647146 | 536.233µs  |
-|   ├─session.ParseSQL      | 10:33:34.647182 | 19.868µs   |
-|   ├─executor.Compile      | 10:33:34.647219 | 295.688µs  |
-|   ├─session.runStmt       | 10:33:34.647533 | 116.229µs  |
-|   ├─session.CommitTxn     | 10:33:34.647631 | 5.44µs     |
-|   ├─recordSet.Next        | 10:33:34.647707 | 833.103µs  |
-|   ├─tableReader.Next      | 10:33:34.647709 | 806.783µs  |
-|   ├─recordSet.Next        | 10:33:34.648572 | 19.367µs   |
-|   └─tableReader.Next      | 10:33:34.648575 | 1.783µs    |
-+---------------------------+-----------------+------------+
-10 rows in set (0.00 sec)
++--------------------------------------------+-----------------+------------+
+| operation                                  | startTS         | duration   |
++--------------------------------------------+-----------------+------------+
+| trace                                      | 17:03:31.938237 | 886.086µs  |
+|   ├─session.Execute                        | 17:03:31.938247 | 507.812µs  |
+|   │ ├─session.ParseSQL                     | 17:03:31.938254 | 22.504µs   |
+|   │ ├─executor.Compile                     | 17:03:31.938321 | 278.931µs  |
+|   │ │ └─session.getTxnFuture               | 17:03:31.938337 | 1.515µs    |
+|   │ └─session.runStmt                      | 17:03:31.938613 | 109.578µs  |
+|   │   ├─TableReaderExecutor.Open           | 17:03:31.938645 | 50.657µs   |
+|   │   │ └─distsql.Select                   | 17:03:31.938666 | 21.066µs   |
+|   │   │   └─RPCClient.SendRequest          | 17:03:31.938799 | 158.411µs  |
+|   │   └─session.CommitTxn                  | 17:03:31.938705 | 12.06µs    |
+|   │     └─session.doCommitWitRetry         | 17:03:31.938709 | 2.437µs    |
+|   ├─*executor.TableReaderExecutor.Next     | 17:03:31.938781 | 224.327µs  |
+|   └─*executor.TableReaderExecutor.Next     | 17:03:31.939019 | 6.266µs    |
++--------------------------------------------+-----------------+------------+
+13 rows in set (0.00 sec)
 ```
 
 {{< copyable "sql" >}}
@@ -73,86 +76,12 @@ TRACE FORMAT='json' SELECT * FROM t1 WHERE id = 2;
 ```
 
 ```
-operation: [
-    {"ID":{"Trace":"60d20d005593de87","Span":"44e5b309242ffe2f","Parent":"79d146dac9a29a7e"},
-        "Annotations":[
-            {"Key":"Name","Value":"c2Vzc2lvbi5nZXRUeG5GdXR1cmU="},
-            {"Key":"_schema:name","Value":null},
-            {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MTQ3ODYtMDY6MDA="},
-            {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MjA0MDYtMDY6MDA="},
-            {"Key":"_schema:Timespan","Value":null}
-        ],
-        "Sub":[
-            {"ID":{"Trace":"60d20d005593de87","Span":"4dbf8f2ca373b4b0","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"c2Vzc2lvbi5QYXJzZVNRTA=="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2NjE1MTQtMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3MDYxNjgtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"6b6d6916df809604","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"ZXhlY3V0b3IuQ29tcGlsZQ=="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3NTcyODUtMDY6MDA="},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3MzE0MjYtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"3f1bcdd402a72911","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"c2Vzc2lvbi5Db21taXRUeG4="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3OTgyNjItMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4MDU1NzYtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"58c1f7d66dc5afbc","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"c2Vzc2lvbi5ydW5TdG10"},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Msg","Value":"eyJzcWwiOiJTRUxFQ1QgKiBGUk9NIHQxIFdIRVJFIGlkID0gMiJ9"},
-                {"Key":"Time","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3ODA1NjgtMDY6MDA="},
-                {"Key":"_schema:log","Value":null},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4MTk5MzMtMDY6MDA="},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE3NzcyNDItMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"6bd8cc440fb31ed7","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"c2Vzc2lvbi5FeGVjdXRl"},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE2MTEwODktMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4NTU0My0wNjowMA=="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"61d0b809f6cc018b","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDE4NzQ1NTYtMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIyOTg4NjYtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null},
-            {"ID":{"Trace":"60d20d005593de87","Span":"2bd2c3d47ccb1133","Parent":"79d146dac9a29a7e"},
-            "Annotations":[
-                {"Key":"Name","Value":"cmVjb3JkU2V0Lk5leHQ="},
-                {"Key":"_schema:name","Value":null},
-                {"Key":"Span.Start","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIzMjY0ODgtMDY6MDA="},
-                {"Key":"Span.End","Value":"MjAxOS0wNC0xN1QxMDozOToxMC45NDIzMjkwMDMtMDY6MDA="},
-                {"Key":"_schema:Timespan","Value":null}
-            ],
-            "Sub":null}
-        ]
-    }
-]
-1 row in set (0.00 sec)
+| operation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [{"ID":{"Trace":"2765b9a0e81e6f19","Span":"46ecd59cc05b24b4","Parent":"0000000000000000"},"Annotations":[{"Key":"Name","Value":"dHJhY2U="},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"ZXhlY3V0ZSBkb25lLCBSZXR1cm5Sb3c6IDEsIE1vZGlmeVJvdzogMA=="},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTMxMjErMDg6MDA="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTIzMDIrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTMyMjkwNTIrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"2765b9a0e81e6f19","Span":"790bf8a6e585defa","Parent":"46ecd59cc05b24b4"},"Annotations":[{"Key":"Name","Value":"KmV4ZWN1dG9yLlRhYmxlUmVhZGVyRXhlY3V0b3IuTmV4dA=="},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"dGFibGUgc2NhbiB0YWJsZTogdXNlciwgcmFuZ2U6IFtbLWluZiwraW5mXV0="},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI4MjgrMDg6MDA="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI4MjErMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTMwODI1ODErMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"2765b9a0e81e6f19","Span":"6861b0f966baeb2e","Parent":"46ecd59cc05b24b4"},"Annotations":[{"Key":"Name","Value":"KmV4ZWN1dG9yLlRhYmxlUmVhZGVyRXhlY3V0b3IuTmV4dA=="},{"Key":"_schema:name","Value":null},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTMxMDcrMDg6MDA="},{"Key":"Msg","Value":"dGFibGUgc2NhbiB0YWJsZTogdXNlciwgcmFuZ2U6IFtbLWluZiwraW5mXV0="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTMxKzA4OjAw"},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTMxMDk2MTgrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null},{"ID":{"Trace":"2765b9a0e81e6f19","Span":"0ea5f408c9fb7aac","Parent":"46ecd59cc05b24b4"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5FeGVjdXRl"},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"ZXhlY3V0ZTogc2VsZWN0ICogZnJvbSBteXNxbC51c2Vy"},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTIzMSswODowMA=="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTIzMDcrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3OTY0NjkrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"2765b9a0e81e6f19","Span":"40469c89e055ac62","Parent":"0ea5f408c9fb7aac"},"Annotations":[{"Key":"Name","Value":"ZXhlY3V0b3IuQ29tcGlsZQ=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTIzNTMrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI2NDQxOTMrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"2765b9a0e81e6f19","Span":"6986898a1054b4a8","Parent":"40469c89e055ac62"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5nZXRUeG5GdXR1cmU="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTIzNzQrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTIzNzU5MzkrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null}]},{"ID":{"Trace":"2765b9a0e81e6f19","Span":"1c1bae77dd0b8ee3","Parent":"0ea5f408c9fb7aac"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5ydW5TdG10"},{"Key":"_schema:name","Value":null},{"Key":"Msg","Value":"eyJzcWwiOiJzZWxlY3QgKiBmcm9tIG15c3FsLnVzZXIifQ=="},{"Key":"Time","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI2NTkrMDg6MDA="},{"Key":"_schema:log","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI2NTcrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3NzQxNjErMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"2765b9a0e81e6f19","Span":"74d18c632970a406","Parent":"1c1bae77dd0b8ee3"},"Annotations":[{"Key":"Name","Value":"VGFibGVSZWFkZXJFeGVjdXRvci5PcGVu"},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI2ODkrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3NDQ0NDMrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}] |
+| ,"Sub":[{"ID":{"Trace":"2765b9a0e81e6f19","Span":"4fdb738d1891ea9f","Parent":"74d18c632970a406"},"Annotations":[{"Key":"Name","Value":"ZGlzdHNxbC5TZWxlY3Q="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3MTMrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3MzU3MjErMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"2765b9a0e81e6f19","Span":"29d71ba0becaa63e","Parent":"4fdb738d1891ea9f"},"Annotations":[{"Key":"Name","Value":"UlBDQ2xpZW50LlNlbmRSZXF1ZXN0"},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI4NTgrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTMwMzQwMTIrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null}]}]},{"ID":{"Trace":"2765b9a0e81e6f19","Span":"21b485f846699ad3","Parent":"1c1bae77dd0b8ee3"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5Db21taXRUeG4="},{"Key":"_schema:name","Value":null},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3NjgyNzcrMDg6MDA="},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3NTUrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":[{"ID":{"Trace":"2765b9a0e81e6f19","Span":"481bec0817b86a53","Parent":"21b485f846699ad3"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5kb0NvbW1pdFdpdFJldHJ5"},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3NTkrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTI3NjE1NTErMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null}]}]},{"ID":{"Trace":"2765b9a0e81e6f19","Span":"714676cb2046434e","Parent":"0ea5f408c9fb7aac"},"Annotations":[{"Key":"Name","Value":"c2Vzc2lvbi5QYXJzZVNRTA=="},{"Key":"_schema:name","Value":null},{"Key":"Span.Start","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTIzMTIrMDg6MDA="},{"Key":"Span.End","Value":"MjAyMC0wNS0yMlQxNzo1MDowNC40MTIzMjY4MTUrMDg6MDA="},{"Key":"_schema:Timespan","Value":null}],"Sub":null}]}]}] |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
 ```
 
 可将 JSON 格式的跟踪文件粘贴到跟踪查看器中。查看器可通过 TiDB 状态端口访问：

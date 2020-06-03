@@ -28,7 +28,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/set-transaction/']
 {{< copyable "sql" >}}
 
 ```sql
-SHOW SESSION VARIABLES like 'transaction_isolation';
+SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 ```
 
 ```
@@ -53,7 +53,7 @@ Query OK, 0 rows affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW SESSION VARIABLES like 'transaction_isolation';
+SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 ```
 
 ```
@@ -78,7 +78,7 @@ Query OK, 0 rows affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW SESSION VARIABLES like 'transaction_isolation';
+SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 ```
 
 ```
@@ -94,9 +94,10 @@ SHOW SESSION VARIABLES like 'transaction_isolation';
 
 * TiDB 支持仅在语法中将事务设置为只读的功能。
 * 不支持隔离级别 `READ-UNCOMMITTED` 和 `SERIALIZABLE`。
-* 隔离级别 `REPEATABLE-READ` 在技术上属于快照隔离（Snapshot Isolation）。在 TiDB 中称为 `REPEATABLE-READ` 是为了和 MySQL 保持一致。
+* 通过快照隔离 (Snapshot Isolation) 技术，实现乐观事务的 `REPEATABLE-READ` 隔离级别，和 MySQL 兼容。
+* 在悲观事务中，TiDB 支持与 MySQL 兼容的 `REPEATABLE-READ` 和 `READ-COMMITTED` 两种隔离级别。具体描述详见 [Isolation Levels](/transaction-isolation-levels.md)。
 
 ## 另请参阅
 
-* [SET \[GLOBAL|SESSION\] <variable>](/sql-statements/sql-statement-set-variable.md)
+* [`SET \[GLOBAL|SESSION\] <variable>`](/sql-statements/sql-statement-set-variable.md)
 * [Isolation Levels](/transaction-isolation-levels.md)
