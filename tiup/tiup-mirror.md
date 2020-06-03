@@ -91,27 +91,3 @@ tiup mirror clone <target-dir> [global-version] [flags]
 ### 使用 TiUP 离线安装 TiDB 集群
 
 参考[使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md#方式二使用-tiup-mirror-clone-命令手动打包离线组件包)安装 TiUP 离线镜像，部署并启动 TiDB 集群。
-
-### 构建私有镜像
-
-构建私有镜像的方式和离线安装包的制作过程相同，只需要将 package 目录中的内容上传到 CDN 或者文件服务器即可，最简单的方式是：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-cd package
-python -m SimpleHTTPServer 8000
-```
-
-这样就在 <http://127.0.0.1:8000> 这个地址建立了私有镜像。
-
-通过私有镜像安装 TiUP：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-export TIUP_MIRRORS=http://127.0.0.1:8000
-curl $TIUP_MIRRORS/local_install.sh | sh
-```
-
-导入 PATH 变量之后就可以正常使用 TiUP 了（需要保持 `TIUP_MIRRORS` 变量指向私有镜像）。
