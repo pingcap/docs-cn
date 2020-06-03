@@ -269,8 +269,6 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
     - 访问 TiDB 数据库，密码为空：
 
-        {{< copyable "shell-regular" >}}
-        
         ```shell
         mysql -h 10.0.1.1 -P 4000 -u root
         ```
@@ -284,17 +282,13 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         通过 <http://{pd-ip}:2379/dashboard> 访问集群 TiDB Dashboard 监控页面，默认用户名为 root，密码为空。
     
     - 执行以下命令确认当前已经部署的集群列表：
-    
-        {{< copyable "shell-regular" >}}
-        
+
         ```shell
         tiup cluster list
         ```
     
     - 执行以下命令查看集群的拓扑结构和状态：
-    
-        {{< copyable "shell-regular" >}}
-        
+
         ```shell
         tiup cluster display <cluster-name>
         ```
