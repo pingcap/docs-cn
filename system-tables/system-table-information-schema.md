@@ -38,7 +38,7 @@ select * from `ANALYZE_STATUS`;
 * `TABLE_NAME`: 表的名称。
 * `PARTITION_NAME`: 分区表的名称。
 * `JOB_INFO`: 任务信息。
-* `PROCESSED_ROWS`: 进程数量。
+* `PROCESSED_ROWS`: 已经处理的行数。
 * `START_TIME`: 开始时间。
 * `STATE`: 状态。
 
@@ -577,7 +577,7 @@ desc statistics;
 * `COMMENT`: 索引没有在列中描述的信息。
 * `INDEX_COMMENT`: 在创建索引时为索引提供的带有注释属性的任何注释。
 * `IS_VISIBLE`: 优化器能否使用该索引。
-* `Expression` 对于非表达式部分的索引键，这个值为 `NULL`；对于表达式部分的索引键，这个值为表达式本身。可参考[表达式索引](/sql-statements/sql-statement-create-index.md/#表达式索引)
+* `Expression` 对于非表达式部分的索引键，这个值为 `NULL`；对于表达式部分的索引键，这个值为表达式本身。可参考[表达式索引](/sql-statements/sql-statement-create-index.md)
 
 下列语句是等价的：
 
