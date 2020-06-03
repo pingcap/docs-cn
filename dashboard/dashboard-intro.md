@@ -3,7 +3,7 @@ title: TiDB Dashboard 介绍
 category: how-to
 ---
 
-# TiDB Dashboard
+# TiDB Dashboard 介绍
 
 TiDB Dashboard 是 TiDB 自 4.0 版本起提供的图形化界面，可用于监控及诊断 TiDB 集群。TiDB Dashboard 内置于 TiDB 的 PD 组件中，无需独立部署。
 

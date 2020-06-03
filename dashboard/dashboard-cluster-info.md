@@ -4,7 +4,7 @@ summary: 查看整个集群中 TiDB、TiKV、PD、TiFlash 组件的运行状态�
 category: how-to
 ---
 
-# 集群信息页面
+# TiDB Dashboard 集群信息页面
 
 该页面上允许用户查看整个集群中 TiDB、TiKV、PD、TiFlash 组件的运行状态及其所在主机的运行状态。
 

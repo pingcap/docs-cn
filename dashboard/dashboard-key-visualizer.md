@@ -4,7 +4,7 @@ category: how-to
 aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visualizer-monitoring-tool/']
 ---
 
-# 流量可视化页面
+# TiDB Dashboard 流量可视化页面
 
 流量可视化页面 (Key Visualizer) 可用于分析 TiDB 集群的使用模式和排查流量热点。该页面可视化地呈现了 TiDB 集群一段时间的流量情况。
 

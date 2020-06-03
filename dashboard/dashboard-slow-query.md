@@ -4,7 +4,7 @@ summary: 了解如何在 TiDB Dashboard 中查看慢查询。
 category: how-to
 ---
 
-# 慢查询页面
+# TiDB Dashboard 慢查询页面
 
 该页面上能检索和查看集群中所有慢查询。
 

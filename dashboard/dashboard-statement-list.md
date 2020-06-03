@@ -4,7 +4,7 @@ summary: 查看所有 SQL 语句在集群上执行情况
 category: how-to
 ---
 
-# SQL 语句分析页面
+# TiDB Dashboard SQL 语句分析执行详情页面
 
 该页面可以查看所有 SQL 语句在集群上执行情况，常用于分析总耗时或单次耗时执行耗时较长的 SQL 语句。
 
@@ -65,4 +65,4 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
 
 ## 下一步
 
-阅读 [查看执行详情](/dashboard/dashboard-statement-detail.md) 章节了解如何进一步查看 SQL 语句的详细执行情况。
+阅读[查看执行详情](/dashboard/dashboard-statement-detail.md)章节了解如何进一步查看 SQL 语句的详细执行情况。

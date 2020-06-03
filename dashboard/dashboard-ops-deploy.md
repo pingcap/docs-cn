@@ -9,7 +9,7 @@ TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需
 
 请参阅下列文档了解如何部署标准 TiDB 集群：
 
-+ [快速试用 TiDB 集群](/quick-start-with-tidb.md#第二种：使用-tiup-playground-快速部署本地测试环境)
++ [快速试用 TiDB 集群](/quick-start-with-tidb.md#第二种使用-tiup-playground-快速部署本地测试环境)
 + [生产环境部署](/production-deployment-using-tiup.md)
 + [Kubernetes 环境部署](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/access-dashboard/)
 
@@ -21,7 +21,7 @@ TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需
 
 当集群中部署了多个 PD 实例时，其中仅有一个 PD 实例会固定地提供 TiDB Dashboard 服务。
 
-各个 PD 首次运行时会自动协商出其中某一个实例提供 TiDB Dashboard 服务。协商完毕后，无论重启或扩容，都会固定在这个实例上运行 TiDB Dashboard 服务，除非该实例被手工缩容。其他 PD 实例不会运行 TiDB Dashboard 服务。这个协商过程无需用户介入，会自动完成。
+各个 PD 首次运行时会自动协商出其中某一个实例提供 TiDB Dashboard 服务。协商完毕后，无论重启或扩容，都会固定在这个实例上运行 TiDB Dashboard 服务，除非该实例被手动缩容。其他 PD 实例不会运行 TiDB Dashboard 服务。这个协商过程无需用户介入，会自动完成。
 
 当用户访问不提供 TiDB Dashboard 服务的 PD 实例时，浏览器将会收到重定向指令，自动引导用户重新访问提供了 TiDB Dashboard 服务的 PD 实例，从而能正常使用。流程如下图所示。
 
@@ -99,10 +99,10 @@ Dashboard is not started.
 
 ## 重新启用 TiDB Dashboard
 
-参见上文 [切换其他 PD 实例提供 TiDB Dashboard 服务](#切换其他-PD-实例提供-TiDB-Dashboard-服务)。
+参见上文[切换其他 PD 实例提供 TiDB Dashboard 服务](#切换其他-PD-实例提供-TiDB-Dashboard-服务)。
 
 ## 下一步
 
-- 参阅 [访问 TiDB Dashboard](/dashboard/dashboard-access.md) 章节了解如何访问及登录集群上的 TiDB Dashboard 界面。
+- 参阅[访问 TiDB Dashboard](/dashboard/dashboard-access.md) 章节了解如何访问及登录集群上的 TiDB Dashboard 界面。
 
-- 参阅 [提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md) 章节了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。
+- 参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md) 章节了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。

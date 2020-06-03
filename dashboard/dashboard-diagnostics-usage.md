@@ -3,7 +3,9 @@ title: 使用 TiDB Dashboard 诊断报告定位问题
 category: how-to
 ---
 
-# 使用诊断报告定位问题
+# 使用 TiDB Dashboard 诊断报告定位问题
+
+本文介绍如何使用 TiDB Dashboard 诊断报告定位问题。
 
 ## 对比诊断功能示例
 

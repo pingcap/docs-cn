@@ -377,7 +377,7 @@
         + [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
   + UI
     + TiDB Dashboard
-      + [介绍](/dashboard/dashboard-intro.md)
+      + [简介](/dashboard/dashboard-intro.md)
       + 运维
         + [部署](/dashboard/dashboard-ops-deploy.md)
         + [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
@@ -388,7 +388,7 @@
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       + SQL 语句分析
         + [列表页面](/dashboard/dashboard-statement-list.md)
-        + [执行详情页面](/dashboard/dashboard-statement-detail.md)
+        + [执行详情页面](/dashboard/dashboard-statement-details.md)
       + [慢查询页面](/dashboard/dashboard-slow-query.md)
       + 集群诊断页面
         + [访问](/dashboard/dashboard-diagnostics-access.md)

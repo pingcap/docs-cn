@@ -5,7 +5,7 @@ category: how-to
 
 # 提高 TiDB Dashboard 安全性
 
-尽管访问 TiDB Dashboard 需要登录，但它被设计为默认供可信的用户实体访问。当您希望将 TiDB Dashboard 提供给外部网络用户或不可信用户访问时，需要注意采取以下措施以避免安全漏洞。
+尽管访问 TiDB Dashboard 需要登录，但它被设计为默认供可信的用户实体访问。当你希望将 TiDB Dashboard 提供给外部网络用户或不可信用户访问时，需要注意采取以下措施以避免安全漏洞。
 
 ## 为 TiDB `root` 用户设置强密码
 
@@ -25,7 +25,7 @@ TiDB Dashboard 通过 PD Client 端口提供服务，默认为 <http://IP:2379/d
 
    注意，TiDB、TiKV 等组件需要通过 PD Client 端口与 PD 组件进行通信，因此请勿对组件内部网络阻止访问，这将导致集群不可用。
 
-2. 参见 [通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md) 了解如何配置反向代理将 TiDB Dashboard 服务在另一个端口上安全地提供给外部网络。
+2. 参见[通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md) 了解如何配置反向代理将 TiDB Dashboard 服务在另一个端口上安全地提供给外部网络。
 
 ### 如何在多 PD 实例部署时开放 TiDB Dashboard 端口访问
 

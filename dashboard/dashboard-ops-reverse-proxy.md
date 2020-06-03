@@ -5,13 +5,13 @@ category: how-to
 
 # 通过反向代理使用 TiDB Dashboard
 
-您可以使用反向代理将 TiDB Dashboard 服务安全从内部网络提供给外部网络。
+你可以使用反向代理将 TiDB Dashboard 服务安全从内部网络提供给外部网络。
 
 ## 操作步骤
 
-### 步骤 1. 获取实际 TiDB Dashboard 地址
+### 第 1 步：获取实际 TiDB Dashboard 地址
 
-当集群中部署有多个 PD 实例时，其中仅有一个 PD 实例会真正运行 TiDB Dashboard，因此需要确保反向代理的上游（Upstream）指向了正确的地址。关于该机制的详情，可参阅 [TiDB Dashboard 多 PD 实例部署](/dashboard/dashboard-ops-deploy.md#多-PD-实例部署) 章节。
+当集群中部署有多个 PD 实例时，其中仅有一个 PD 实例会真正运行 TiDB Dashboard，因此需要确保反向代理的上游 (Upstream) 指向了正确的地址。关于该机制的详情，可参阅 [TiDB Dashboard 多 PD 实例部署](/dashboard/dashboard-ops-deploy.md#多-PD-实例部署) 章节。
 
 使用 TiUP 部署工具时，操作命令如下（将 `CLUSTER_NAME` 替换为集群名称）：
 
@@ -34,7 +34,7 @@ http://192.168.0.123:2379/dashboard/
 > tiup update cluster --force
 > ```
 
-### 步骤 2. 配置反向代理
+### 第 2 步：配置反向代理
 
 #### NGINX
 
@@ -55,9 +55,9 @@ http://192.168.0.123:2379/dashboard/
 
    > **警告：**
    >
-   > 请务必保留 `proxy_pass` 指令中的 `/dashboard/` 路径，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见 [提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
+   > 请务必保留 `proxy_pass` 指令中的 `/dashboard/` 路径，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
 
-2. 重启 NGINX 生效配置
+2. 重启 NGINX，以使配置生效。
 
 3. 测试反向代理是否生效：访问 NGINX 所在机器的 80 端口下 `/dashboard/` 地址，如 <http://example.com/dashboard/> ，即可访问 TiDB Dashboard。
 
@@ -65,7 +65,7 @@ http://192.168.0.123:2379/dashboard/
 
 TiDB Dashboard 默认在 `/dashboard/` 路径下提供服务，即使是反向代理也是如此，例如 `http://example.com/dashboard/`。若要配置反向代理以非默认的路径提供 TiDB Dashboard 服务，例如 `http://example.com/foo` 或 `http://example.com/`，可参考以下步骤。
 
-### 步骤 1. 修改 PD 配置指定 TiDB Dashboard 服务路径前缀
+### 第 1 步：修改 PD 配置指定 TiDB Dashboard 服务路径前缀
 
 修改 PD 配置中 `[dashboard]` 类别的 `public-path-prefix` 配置项，可指定服务路径前缀。该配置修改后需要重启 PD 实例生效。
 
@@ -139,7 +139,7 @@ server_configs:
 >
 > 修改自定义路径前缀生效后，直接访问将不能正常使用 TiDB Dashboard，您只能通过和路径前缀匹配的反向代理访问。
 
-### 步骤 2. 修改反向代理配置
+### 第 2 步：修改反向代理配置
 
 #### NGINX
 
