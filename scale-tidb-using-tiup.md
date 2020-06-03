@@ -383,7 +383,7 @@ tiup cluster display <cluster-name>
     curl -X POST 'http://<pd-address>/pd/api/v1/store/<store_id>/state?state=Tombstone'
     ```
 
-4. 手动删除 TiFlash 的数据文件，具体位置请查看 TiFlash 的配置文件。
+4. 手动删除 TiFlash 的数据文件，具体位置可查看在集群拓扑配置文件中 TiFlash 配置部分下的 data_dir 目录。
 
 5. 手动更新 TiUP 的集群配置文件，在编辑模式中手动删除我们已经下线的 TiFlash 节点信息：
 
