@@ -65,4 +65,4 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
 
 ## 下一步
 
-阅读[查看执行详情](/dashboard/dashboard-statement-detail.md)章节了解如何进一步查看 SQL 语句的详细执行情况。
+阅读[查看执行详情](/dashboard/dashboard-statement-details.md)章节了解如何进一步查看 SQL 语句的详细执行情况。
