@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 # 使用 TiUP 部署 TiDB 集群
 
-[TiUP](https://github.com/pingcap-incubator/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap-incubator/tiup-cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数。
+[TiUP](https://github.com/pingcap/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数。
 
 目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC。本文将介绍不同集群拓扑的具体部署步骤。
 
@@ -120,7 +120,7 @@ tiup cluster deploy tidb-test v4.0.0 ./topology.yaml --user root [-p] [-i /home/
 以上部署命令中：
 
 - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
-- 部署版本为 `v4.0.0`，最新版本可以通过执行 `tiup list tidb --refresh` 来查看 TiUP 支持的版本
+- 部署版本为 `v4.0.0`，最新版本可以通过执行 `tiup list tidb` 来查看 TiUP 支持的版本
 - 初始化配置文件为 `topology.yaml`
 - --user root：通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 - [-i] 及 [-p]：非必选项，如果已经配置免密登陆目标机，则不需填写。否则选择其一即可，[-i] 为可登录到部署机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
