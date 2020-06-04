@@ -21,7 +21,7 @@ aliases: ['/docs-cn/stable/how-to/troubleshoot/diagnose-map/']
 
 - 1.1.4 多台 TiKV 启动不了，导致 Region 没有 Leader。单台物理主机部署多个 TiKV 实例，一个物理机挂掉，由于 label 配置错误导致 Region 没有 Leader，见案例 [case-228](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case228.md)。
 
-- 1.1.5 follower apply 落后，成为 Leader 之后把收到的请求以 `epoch not match` 理由打回，见案例 [case-958](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case958.md)（TiKV 内部需要优化改机制）。
+- 1.1.5 follower apply 落后，成为 Leader 之后把收到的请求以 `epoch not match` 理由打回，见案例 [case-958](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case958.md)（TiKV 内部需要优化该机制）。
 
 ### 1.2 PD 异常导致服务不可用
 
@@ -268,7 +268,7 @@ aliases: ['/docs-cn/stable/how-to/troubleshoot/diagnose-map/']
 
 - 4.5.6 Raft commit log 慢了。
 
-    - TiKV Grafana 的 **Raft IO**/`commit log duration` 比较高（4.x 版本的 Grafana 才有该 metric）。每个 Region 对应一个独立的 Raft group，Raft 本身是有流控机制的，类似 TCP 的滑动窗口机制，通过参数 `[raftstore] raft-max-inflight-msgs = 256` 来控制滑动窗口的大小，如果有热点写入并且 `commit log duration` 比较高可以适度调大改参数，比如 1024。
+    - TiKV Grafana 的 **Raft IO**/`commit log duration` 比较高（4.x 版本的 Grafana 才有该 metric）。每个 Region 对应一个独立的 Raft group，Raft 本身是有流控机制的，类似 TCP 的滑动窗口机制，通过参数 `[raftstore] raft-max-inflight-msgs = 256` 来控制滑动窗口的大小，如果有热点写入并且 `commit log duration` 比较高可以适度调大该参数，比如 1024。
 
 - 4.5.7 其他情况，请参考 [Performance Map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 上的写入路径来分析。
 
