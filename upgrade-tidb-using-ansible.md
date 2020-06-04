@@ -26,7 +26,7 @@ This document is targeted for users who want to upgrade from TiDB 2.0, 2.1, 3.0,
 >
 > Do not execute any DDL statements during the upgrading process, otherwise the undefined behavior error might occur.
 
-## Step 1: Install Ansible and dependencies on the Control Machine
+## Step 1: Install Ansible and dependencies on the control machine
 
 > **Note:**
 >
@@ -34,7 +34,7 @@ This document is targeted for users who want to upgrade from TiDB 2.0, 2.1, 3.0,
 
 The latest development version of TiDB Ansible depends on Ansible 2.4.2 ~ 2.7.11 (`2.4.2 ≦ ansible ≦ 2.7.11`, Ansible 2.7.11 recommended) and the Python modules of `jinja2 ≧ 2.9.6` and `jmespath ≧ 0.9.0`.
 
-To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the Control Machine](/online-deployment-using-ansible.md#step-4-install-tidb-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the Control Machine](/offline-deployment-using-ansible.md#step-3-install-tidb-ansible-and-its-dependencies-offline-on-the-control-machine).
+To make it easy to manage dependencies, use `pip` to install Ansible and its dependencies. For details, see [Install Ansible and its dependencies on the control machine](/online-deployment-using-ansible.md#step-4-install-tidb-ansible-and-its-dependencies-on-the-control-machine). For offline environment, see [Install Ansible and its dependencies offline on the control machine](/offline-deployment-using-ansible.md#step-3-install-tidb-ansible-and-its-dependencies-offline-on-the-control-machine).
 
 After the installation is finished, you can view the version information using the following command:
 
@@ -76,9 +76,9 @@ Version: 0.9.0
 > - Make sure that the Jinja2 version is correct, otherwise an error occurs when you start Grafana.
 > - Make sure that the jmespath version is correct, otherwise an error occurs when you perform a rolling update to TiKV.
 
-## Step 2: Download TiDB Ansible to the Control Machine
+## Step 2: Download TiDB Ansible to the control machine
 
-1. Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb` directory.
+1. Log in to the control machine using the `tidb` user account and enter the `/home/tidb` directory.
 
 2. Back up the `tidb-ansible` folders of TiDB 2.0, 2.1, 3.0, or an earlier `latest` version using the following command:
 
@@ -88,7 +88,7 @@ Version: 0.9.0
     mv tidb-ansible tidb-ansible-bak
     ```
 
-3. Download the tidb-ansible with the tag corresponding to the `latest` version of TiDB. For more details, See [Download TiDB-Ansible to the Control Machine](/online-deployment-using-ansible.md#step-3-download-tidb-ansible-to-the-control-machine). The default folder name is `tidb-ansible`.
+3. Download the tidb-ansible with the tag corresponding to the `latest` version of TiDB. For more details, See [Download TiDB-Ansible to the control machine](/online-deployment-using-ansible.md#step-3-download-tidb-ansible-to-the-control-machine). The default folder name is `tidb-ansible`.
 
     {{< copyable "shell-regular" >}}
 
@@ -98,7 +98,7 @@ Version: 0.9.0
 
 ## Step 3: Edit the `inventory.ini` file and the configuration file
 
-Log in to the Control Machine using the `tidb` user account and enter the `/home/tidb/tidb-ansible` directory.
+Log in to the control machine using the `tidb` user account and enter the `/home/tidb/tidb-ansible` directory.
 
 ### Edit the `inventory.ini` file
 
@@ -116,7 +116,7 @@ Edit the `inventory.ini` file. For IP information, see the `/home/tidb/tidb-ansi
     ansible_user = tidb
     ```
 
-    You can refer to [How to configure SSH mutual trust and sudo rules on the Control Machine](/online-deployment-using-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine) to automatically configure the mutual trust among hosts.
+    You can refer to [How to configure SSH mutual trust and sudo rules on the control machine](/online-deployment-using-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine) to automatically configure the mutual trust among hosts.
 
 2. Keep the `process_supervision` variable consistent with that in the previous version. It is recommended to use `systemd` by default.
 
@@ -180,9 +180,9 @@ If you have previously customized the configuration file of TiDB cluster compone
     TiKV3-2 ansible_host=172.16.10.6 deploy_dir=/data2/deploy tikv_port=20172 tikv_status_port=20182 labels="host=tikv3"
     ```
 
-## Step 4: Download TiDB latest binary to the Control Machine
+## Step 4: Download TiDB latest binary to the control machine
 
-Make sure that `tidb_version = latest` in the `tidb-ansible/inventory.ini` file, and then run the following command to download TiDB latest binary to the Control Machine:
+Make sure that `tidb_version = latest` in the `tidb-ansible/inventory.ini` file, and then run the following command to download TiDB latest binary to the control machine:
 
 {{< copyable "shell-regular" >}}
 

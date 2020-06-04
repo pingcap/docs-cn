@@ -117,7 +117,7 @@ If you want to install a TiDB cluster of the v4.0.0-rc version in an isolated en
 
     Then a `package` directory is created in the current directory. This `package` directory contains necessary components packages to start a cluster.
 
-2. Use the `tar` command to pack the components package and send this package to the central control machine that is in the isolated environment:
+2. Use the `tar` command to pack the components package and send this package to the control machine that is in the isolated environment:
 
     {{< copyable "shell-regular" >}}
 
@@ -127,7 +127,7 @@ If you want to install a TiDB cluster of the v4.0.0-rc version in an isolated en
 
     Then `package.tar.gz` is an isolated, offline environment.
 
-3. After sending the package to the central control machine of the target cluster, execute the following command to install TiUP:
+3. After sending the package to the control machine of the target cluster, execute the following command to install TiUP:
 
     {{< copyable "shell-regular" >}}
 

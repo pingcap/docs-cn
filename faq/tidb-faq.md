@@ -248,7 +248,7 @@ Check the time difference between the machine time of the monitor and the time w
 
 #### Deploy TiDB offline using TiDB Ansible
 
-It is not recommended to deploy TiDB offline using TiDB Ansible. If the Control Machine has no access to external network, you can deploy TiDB offline using TiDB Ansible. For details, see [Offline Deployment Using TiDB Ansible](/offline-deployment-using-ansible.md).
+It is not recommended to deploy TiDB offline using TiDB Ansible. If the control machine has no access to external network, you can deploy TiDB offline using TiDB Ansible. For details, see [Offline Deployment Using TiDB Ansible](/offline-deployment-using-ansible.md).
 
 #### How to deploy TiDB quickly using Docker Compose on a single machine?
 

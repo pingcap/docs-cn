@@ -29,7 +29,7 @@ In environments of development, testing and production, the requirements on serv
 
 ### Step 1: Download TiDB Ansible
 
-1. Use the TiDB user account to log in to the central control machine and go to the `/home/tidb` directory. The information about the branch of TiDB Ansible and the corresponding TiDB version is as follows. If you have questions regarding which version to use, email to [info@pingcap.com](mailto:info@pingcap.com) for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
+1. Use the TiDB user account to log in to the control machine and go to the `/home/tidb` directory. The information about the branch of TiDB Ansible and the corresponding TiDB version is as follows. If you have questions regarding which version to use, email to [info@pingcap.com](mailto:info@pingcap.com) for more information or [file an issue](https://github.com/pingcap/tidb-ansible/issues/new).
 
     | tidb-ansible branch | TiDB version | Note |
     | :------------------- | :------------ | :---- |
@@ -56,7 +56,7 @@ In environments of development, testing and production, the requirements on serv
         enable_binlog = True
         ```
 
-    2. Add the deployment machine IPs for `pump_servers`.
+    2. Add the target machine IPs for `pump_servers`.
 
         ```ini
         ## Binlog Part
@@ -173,7 +173,7 @@ In environments of development, testing and production, the requirements on serv
 
 2. Modify the `tidb-ansible/inventory.ini` file.
 
-    Add the deployment machine IPs for `drainer_servers`. Set `initial_commit_ts` to the value you have obtained, which is only used for the initial start of Drainer.
+    Add the target machine IPs for `drainer_servers`. Set `initial_commit_ts` to the value you have obtained, which is only used for the initial start of Drainer.
 
     - Assume that the downstream is MySQL with the alias `drainer_mysql`:
 

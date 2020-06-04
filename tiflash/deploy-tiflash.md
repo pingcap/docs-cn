@@ -22,7 +22,7 @@ This section provides hardware configuration recommendations based on different 
 * Minimum configuration: 32 VCore, 64 GB RAM, 1 SSD + n HDD
 * Recommended configuration: 48 VCore, 128 GB RAM, 1 NVMe SSD + n SSD
 
-There is no limit to the number of deployment machines (one at least). A single machine can use multiple disks, but deploying multiple instances on a single machine is not recommended.
+There is no limit to the number of target machines (one at least). A single machine can use multiple disks, but deploying multiple instances on a single machine is not recommended.
 
 It is recommended to use an SSD disk to buffer the real-time data being replicated and written to TiFlash. The performance of this disk need to be not lower than the hard disk used by TiKV. It is recommended that you use a better performance NVMe SSD and the SSD's capacity is not less than 10% of the total capacity. Otherwise, it might become the bottleneck of the amount of data that this node can handle.
 

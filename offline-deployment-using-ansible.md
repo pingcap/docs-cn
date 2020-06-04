@@ -18,22 +18,22 @@ Before you start, make sure that you have:
     - The machine must have access to the Internet in order to download TiDB Ansible, TiDB and related packages.
     - For Linux operating system, it is recommended to install CentOS 7.3 or later.
 
-2. Several target machines and one Control Machine
+2. Several target machines and one control machine
 
     - For system requirements and configuration, see [Prepare the environment](/online-deployment-using-ansible.md#prepare).
     - It is acceptable without access to the Internet.
 
-## Step 1: Install system dependencies on the Control Machine
+## Step 1: Install system dependencies on the control machine
 
-Take the following steps to install system dependencies on the Control Machine installed with the CentOS 7 system.
+Take the following steps to install system dependencies on the control machine installed with the CentOS 7 system.
 
-1. Download the [`pip`](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz) offline installation package on the download machine and then upload it to the Control Machine.
+1. Download the [`pip`](https://download.pingcap.org/ansible-system-rpms.el7.tar.gz) offline installation package on the download machine and then upload it to the control machine.
 
     > **Note:**
     >
     > This offline installation package includes `pip` and `sshpass`, and only supports the CentOS 7 system.
 
-2. Install system dependencies on the Control Machine.
+2. Install system dependencies on the control machine.
 
     {{< copyable "shell-root" >}}
 
@@ -60,15 +60,15 @@ Take the following steps to install system dependencies on the Control Machine i
 >
 > If `pip` is already installed to your system, make sure that the version is 8.1.2 or later. Otherwise, compatibility error occurs when you install TiDB Ansible and its dependencies offline.
 
-## Step 2: Create the `tidb` user on the Control Machine and generate the SSH key
+## Step 2: Create the `tidb` user on the control machine and generate the SSH key
 
-See [Create the `tidb` user on the Control Machine and generate the SSH key](/online-deployment-using-ansible.md#step-2-create-the-tidb-user-on-the-control-machine-and-generate-the-ssh-key).
+See [Create the `tidb` user on the control machine and generate the SSH key](/online-deployment-using-ansible.md#step-2-create-the-tidb-user-on-the-control-machine-and-generate-the-ssh-key).
 
-## Step 3: Install TiDB Ansible and its dependencies offline on the Control Machine
+## Step 3: Install TiDB Ansible and its dependencies offline on the control machine
 
 Currently, all the versions of TiDB Ansible from 2.4 to 2.7.11 are supported. The versions of TiDB Ansible and the related dependencies are listed in the `tidb-ansible/requirements.txt` file. The following installation steps take Ansible 2.5 as an example.
 
-1. Download [Ansible 2.5 offline installation package](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz) on the download machine and then upload it to the Control Machine.
+1. Download [Ansible 2.5 offline installation package](https://download.pingcap.org/ansible-2.5.0-pip.tar.gz) on the download machine and then upload it to the control machine.
 
 2. Install TiDB Ansible and its dependencies offline.
 
@@ -140,11 +140,11 @@ Currently, all the versions of TiDB Ansible from 2.4 to 2.7.11 are supported. Th
     ansible-playbook local_prepare.yml
     ```
 
-4. After running the above command, copy the `tidb-ansible` folder to the `/home/tidb` directory of the Control Machine. The ownership authority of the file must be the `tidb` user.
+4. After running the above command, copy the `tidb-ansible` folder to the `/home/tidb` directory of the control machine. The ownership authority of the file must be the `tidb` user.
 
-## Step 5: Configure the SSH mutual trust and sudo rules on the Control Machine
+## Step 5: Configure the SSH mutual trust and sudo rules on the control machine
 
-See [Configure the SSH mutual trust and sudo rules on the Control Machine](/online-deployment-using-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
+See [Configure the SSH mutual trust and sudo rules on the control machine](/online-deployment-using-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine).
 
 ## Step 6: Install the NTP service on the target machines
 

@@ -33,7 +33,7 @@ TiDB Ansible version: 3.0.11
     + Support the TLS configuration [#44](https://github.com/tikv/importer/pull/44) [#270](https://github.com/pingcap/tidb-lightning/pull/270)
 
 * TiDB Ansible
-    + Modify the logic of `create_users.yml` so that users of the central control machine do not have to be consistent with `ansible_user` [#1184](https://github.com/pingcap/tidb-ansible/pull/1184)
+    + Modify the logic of `create_users.yml` so that users of the control machine do not have to be consistent with `ansible_user` [#1184](https://github.com/pingcap/tidb-ansible/pull/1184)
 
 ## Bug Fixes
 

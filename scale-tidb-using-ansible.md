@@ -111,7 +111,7 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
 
 2. Initialize the newly added node.
 
-    1. Configure the SSH mutual trust and sudo rules of the deployment machine on the central control machine:
+    1. Configure the SSH mutual trust and sudo rules of the target machine on the control machine:
 
         {{< copyable "shell-regular" >}}
 
@@ -119,7 +119,7 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
         ansible-playbook -i hosts.ini create_users.yml -l 172.16.10.101,172.16.10.102 -u root -k
         ```
 
-    2. Install the NTP service on the deployment target machine:
+    2. Install the NTP service on the target machine:
 
         {{< copyable "shell-regular" >}}
 
@@ -127,7 +127,7 @@ For example, if you want to add two TiDB nodes (node101, node102) with the IP ad
         ansible-playbook -i hosts.ini deploy_ntp.yml -u tidb -b
         ```
 
-    3. Initialize the node on the deployment target machine:
+    3. Initialize the node on the target machine:
 
         {{< copyable "shell-regular" >}}
 

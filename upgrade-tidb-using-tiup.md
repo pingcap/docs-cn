@@ -25,9 +25,9 @@ If you have deployed the TiDB cluster using TiDB Ansible, you can use TiUP to im
     - You still use the `'push'` method to collect monitoring metrics (since v3.0, `pull` is the default mode, which is supported if you have not modified this mode).
     - In the `inventory.ini` configuration file, the `node_exporter` or `blackbox_exporter` item of the machine is set to non-default ports through `node_exporter_port` or `blackbox_exporter_port`, which is compatible if you have unified the configuration in the `group_vars` directory.
 
-## Install TiUP on the Control Machine
+## Install TiUP on the control machine
 
-1. Execute the following command on the Control Machine to install TiUP:
+1. Execute the following command on the control machine to install TiUP:
 
     {{< copyable "shell-regular" >}}
 
