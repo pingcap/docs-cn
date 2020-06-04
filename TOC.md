@@ -324,11 +324,22 @@
 + 技术支持
   - [支持渠道](/support.md)
   - [反馈问题](/report-issue.md)
-+ [贡献](/contribute.md)
++ 贡献
   - [贡献代码](/contribute.md#成为-tidb-的贡献者)
   - [改进文档](/contribute.md#改进文档)
 + [TiDB 路线图](/roadmap.md)
+<<<<<<< HEAD
 + [版本发布历史](/releases/release-notes.md)
+=======
++ 版本发布历史
+  + v3.1
+    - [3.1.1](/releases/release-3.1.1.md)
+    - [3.1.0 GA](/releases/release-3.1.0-ga.md)
+    - [3.1.0-rc](/releases/release-3.1.0-rc.md)
+    - [3.1.0-beta.2](/releases/release-3.1.0-beta.2.md)
+    - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
+    - [3.1.0-beta](/releases/release-3.1.0-beta.md)
+>>>>>>> 47927b1... toc: remove links at folder level (#3495)
   + v3.0
     - [3.0.14](/releases/release-3.0.14.md)
     - [3.0.13](/releases/release-3.0.13.md)
