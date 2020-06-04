@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 本文档从生态工具的功能与适用场景这两个维度出发，介绍 TiDB 相关生态工具的功能及部分常见场景下的工具选择，同时也简单介绍部分工具之间的替代关系。
 
-## 生态工具概览
+## 生态工具功能
 
 ### 全量导出
 
