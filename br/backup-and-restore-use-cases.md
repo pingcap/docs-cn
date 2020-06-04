@@ -84,7 +84,7 @@ For the detailed usage of the `br backup` command, refer to [BR command-line des
     {{< copyable "sql" >}}
 
     ```sql
-    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+    UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
 ### Preparation for restoration
@@ -121,7 +121,12 @@ Execute the `br backup` command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file backup-nfs.log
+bin/br backup table \
+    --db batchmark \
+    --table order_line \
+    -s local:///br_data \
+    --pd ${PD_ADDR}:2379 \
+    --log-file backup-nfs.log
 ```
 
 #### Monitoring metrics for the backup
@@ -166,7 +171,17 @@ During the backup process, pay attention to the following metrics on the monitor
 Before executing the backup command, a path in which the log is stored has been specified. You can get the statistical information of the backup operation from this log. Search "summary" in this log, you can see the following information:
 
 ```
-["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 986.43, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 358.09"] ["backup total regions"=7196] ["backup checksum"=6m28.291772955s] ["backup fast checksum"=24.950298ms]
+["Table backup summary: 
+    total backup ranges: 4, 
+    total success: 4, 
+    total failed: 0, 
+    total take(s): 986.43, 
+    total kv: 5659888624, 
+    total size(MB): 353227.18, 
+    avg speed(MB/s): 358.09"] 
+    ["backup total regions"=7196] 
+    ["backup checksum"=6m28.291772955s] 
+    ["backup fast checksum"=24.950298ms]
 ```
 
 The above log includes the following information:
@@ -185,7 +200,13 @@ If the resource usage of TiKV does not become an obvious bottleneck during the b
 {{< copyable "shell-regular" >}}
 
 ```shell
-bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file backup-nfs.log --concurrency 16
+bin/br backup table \
+    --db batchmark \
+    --table order_line \
+    -s local:///br_data/ \
+    --pd ${PD_ADDR}:2379 \
+    --log-file backup-nfs.log \
+    --concurrency 16
 ```
 
 ![img](/media/br/backup-diff.png)
@@ -261,7 +282,18 @@ During the restoration process, pay attention to the following metrics on the mo
 Before executing the restoration command, a path in which the log is stored has been specified. You can get the statistical information of the restoration operation from this log. Search "summary" in this log, you can see the following information:
 
 ```
-["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 961.37, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 367.42"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=49.049182743s] ["restore checksum"=6m34.879439498s]
+["Table Restore summary: 
+    total restore tables: 1, 
+    total success: 1, 
+    total failed: 0, 
+    total take(s): 961.37, 
+    total kv: 5659888624, 
+    total size(MB): 353227.18, 
+    avg speed(MB/s): 367.42"] 
+    ["restore files"=9263] 
+    ["restore ranges"=6888] 
+    ["split region"=49.049182743s] 
+    ["restore checksum"=6m34.879439498s]
 ```
 
 The above log includes the following information:
@@ -321,7 +353,12 @@ Execute the `br backup` command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file backup_local.log
+bin/br backup table \
+    --db batchmark \
+    --table order_line \
+    -s local:///home/tidb/backup_local/ \
+    --pd ${PD_ADDR}:2379 \
+    --log-file backup_local.log
 ```
 
 During the backup process, pay attention to the metrics on the monitoring panels to get the status of the backup process. See [Monitoring metrics for the backup](#monitoring-metrics-for-the-backup) for details.
