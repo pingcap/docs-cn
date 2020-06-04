@@ -297,7 +297,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
 - 如果你刚刚部署好一套 TiDB 本地测试集群：
     - 学习 [TiDB SQL 操作](/basic-sql-operations.md)
-    - 导入测试数据
+    - [迁移数据到 TiDB](/data-migration-route.md)
     - 了解 [TiDB 的核心特性与核心应用场景](/overview.md)
     - 了解 [TiDB 与 MySQL 的兼容性](mysql-compatibility.md)
 
