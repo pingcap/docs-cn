@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 本文档主要从使用场景出发介绍适用于该场景的相关 TiDB 生态工具，并简单介绍部分生态工具之间的替代关系。
 
-#### 全量导出
+## 全量导出
 
 [Mydumper](/mydumper-overview.md) 用于对 MySQL/TiDB 进行全量逻辑导出。
 
