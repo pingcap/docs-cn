@@ -830,21 +830,49 @@ desc TIKV_REGION_PEERS;
 desc TIKV_REGION_STATUS;
 ```
 
-```sql
-+------------------+---------------------+------+-----+---------+-------+
-| Field            | Type                | Null | Key | Default | Extra |
-+------------------+---------------------+------+-----+---------+-------+
-| REGION_ID        | bigint(21) unsigned | YES  |     | <null>  |       |
-| START_KEY        | text                | YES  |     | <null>  |       |
-| END_KEY          | text                | YES  |     | <null>  |       |
-| EPOCH_CONF_VER   | bigint(21) unsigned | YES  |     | <null>  |       |
-| EPOCH_VERSION    | bigint(21) unsigned | YES  |     | <null>  |       |
-| WRITTEN_BYTES    | bigint(21) unsigned | YES  |     | <null>  |       |
-| READ_BYTES       | bigint(21) unsigned | YES  |     | <null>  |       |
-| APPROXIMATE_SIZE | bigint(21) unsigned | YES  |     | <null>  |       |
-| APPROXIMATE_KEYS | bigint(21) unsigned | YES  |     | <null>  |       |
-+------------------+---------------------+------+-----+---------+-------+
 ```
++---------------------------+-------------+------+------+---------+-------+
+| Field                     | Type        | Null | Key  | Default | Extra |
++---------------------------+-------------+------+------+---------+-------+
+| REGION_ID                 | bigint(21)  | YES  |      | NULL    |       |
+| START_KEY                 | text        | YES  |      | NULL    |       |
+| END_KEY                   | text        | YES  |      | NULL    |       |
+| TABLE_ID                  | bigint(21)  | YES  |      | NULL    |       |
+| DB_NAME                   | varchar(64) | YES  |      | NULL    |       |
+| TABLE_NAME                | varchar(64) | YES  |      | NULL    |       |
+| IS_INDEX                  | tinyint(1)  | NO   |      | 0       |       |
+| INDEX_ID                  | bigint(21)  | YES  |      | NULL    |       |
+| INDEX_NAME                | varchar(64) | YES  |      | NULL    |       |
+| EPOCH_CONF_VER            | bigint(21)  | YES  |      | NULL    |       |
+| EPOCH_VERSION             | bigint(21)  | YES  |      | NULL    |       |
+| WRITTEN_BYTES             | bigint(21)  | YES  |      | NULL    |       |
+| READ_BYTES                | bigint(21)  | YES  |      | NULL    |       |
+| APPROXIMATE_SIZE          | bigint(21)  | YES  |      | NULL    |       |
+| APPROXIMATE_KEYS          | bigint(21)  | YES  |      | NULL    |       |
+| REPLICATIONSTATUS_STATE   | varchar(64) | YES  |      | NULL    |       |
+| REPLICATIONSTATUS_STATEID | bigint(21)  | YES  |      | NULL    |       |
++---------------------------+-------------+------+------+---------+-------+
+```
+
+`TIKV_REGION_STATUS ` 表中列的含义如下：
+
+* `REGION_ID`：Region 的 ID。
+* `START_KEY`：Region 的起始 key 的值。
+* `END_KEY`：Region 的末尾 key 的值。
+* `TABLE_ID`：Region 所在的表的 ID。
+* `DB_NAME`：Region 所在的表的所属数据库的名称。
+* `TABLE_NAME`：Region 所在的表的名称。
+* `IS_INDEX`：Region 所在的表是否是索引。
+* `INDEX_ID`：
+* `INDEX_NAME`：
+* `EPOCH_CONF_VER`：
+* `EPOCH_VERSION`：
+* `WRITTEN_BYTES`：
+* `READ_BYTES`：
+* `APPROXIMATE_SIZE`：
+* `APPROXIMATE_KEYS`：
+* `REPLICATIONSTATUS_STATE`：
+* `REPLICATIONSTATUS_STATEID`：
 
 ## TIKV_STORE_STATUS 表
 
@@ -881,6 +909,28 @@ desc TIKV_STORE_STATUS;
 | UPTIME            | varchar(64)         | YES  |     | <null>  |       |
 +-------------------+---------------------+------+-----+---------+-------+
 ```
+
+`TIKV_STORE_STATUS ` 表中列的含义如下：
+
+* `STORE_ID`：Store 的 ID。
+* `ADDRESS`：Store 的地址。
+* `STORE_STATE`：Store 的状态。
+* `STORE_STATE_NAME`：。
+* `LABEL`：Store 的标签。
+* `VERSION`：。
+* `CAPACITY`：。
+* `AVAILABLE`：
+* `LEADER_COUNT`：
+* `LEADER_WEIGHT`：
+* `LEADER_SCORE`：
+* `LEADER_SIZE`：
+* `REGION_COUNT`：
+* `REGION_WEIGHT`：
+* `REGION_SCORE`：
+* `REGION_SIZE`：
+* `START_TS`：
+* `LAST_HEARTBEAT_TS`：Store 上一次心跳的时间戳。
+* `UPTIME`：
 
 ## USER_PRIVILEGES 表
 
