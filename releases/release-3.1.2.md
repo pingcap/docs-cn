@@ -1,5 +1,5 @@
 ---
-title: TiDB 3.1.1 Release Notes
+title: TiDB 3.1.2 Release Notes
 category: Releases
 ---
 
