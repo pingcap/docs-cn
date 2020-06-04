@@ -52,11 +52,12 @@
   + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
 + 运维操作
   + 升级 TiDB 版本
-    + [使用 TiUP](/upgrade-tidb-using-tiup.md)
+    + [使用 TiUP（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
-    + [使用 TiUP](/scale-tidb-using-tiup.md)
+    + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
+    + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
@@ -66,8 +67,9 @@
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + [日常巡检](/daily-inspection.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
-  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
+  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
+  + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
