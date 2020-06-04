@@ -9,8 +9,6 @@ category: Releases
 
 TiDB 版本：3.1.2
 
-TiUP 版本： 1.0.1
-
 ## Bug 修复
 
 + TiKV
