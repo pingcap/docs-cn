@@ -62,7 +62,7 @@ http://192.168.0.123:2379/dashboard/
 
 在这个样例中，需要为防火墙配置开放 IP `192.168.0.123` 的 `2379` 端口入站访问，并通过 <http://192.168.0.123:2379/dashboard/> 访问 TiDB Dashboard。
 
-## 反向代理仅代理 TiDB Dashboard API
+## 反向代理仅代理 TiDB Dashboard
 
 如前文所述，PD Client 端口下提供的服务不仅有 TiDB Dashboard（位于 <http://IP:2379/dashboard/>），还有其他 PD 内部特权接口（如 <http://IP:2379/pd/api/v1/members>）。因此，使用反向代理将 TiDB Dashboard 提供给外部网络时，应当确保仅提供 `/dashboard` 前缀下的服务，而非该端口下所有服务，避免外部网络能通过反向代理访问到 PD 内部特权接口。
 
