@@ -16,12 +16,12 @@ Similar to [Homebrew](/deploy-tidb-from-homebrew.md), the DBdeployer installatio
 > Internally this installation uses goleveldb as the storage engine. It is much slower than TiKV, and any benchmarks will be unreliable.
 
 <main class="tabs">
-  <input id="tabMacOS" type="radio" name="tabs" value="MacOSContent" checked>
+  <input id="tabMacOS" type="radio" name="tabs" value="MacOSContent" checked />
   <label for="tabMacOS">
       <span><img src="media/mac-os-20.png" width="20"></img></span>
       <span class="label__title">macOS</span>
   </label>
-  <input id="tabLinux" type="radio" name="tabs" value="LinuxContent">
+  <input id="tabLinux" type="radio" name="tabs" value="LinuxContent" />
   <label for="tabLinux">
       <span><img src="media/linux-20.png" width="20"></img></span>
       <span class="label__title">Linux</span>
