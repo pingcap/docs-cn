@@ -308,10 +308,10 @@ The following sections provide a cluster configuration template for each of the 
 
 | Instance | Count | Physical Machine Configuration | IP | Other Configuration |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 3 | 16 Vcore 32GB * 1 | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration; <br> Global directory configuration |
-| TiDB |3 | 16 Vcore 32GB * 1 | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration; <br>  Global directory configuration |
-| PD | 3 |4 Vcore 8GB * 1 |10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration; <br> Global directory configuration |
-| TiFlash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | Default port configuration; <br> Global directory configuration |
+| TiKV | 3 | 16 Vcore 32GB * 1 | 10.0.1.1 <br/> 10.0.1.2 <br/> 10.0.1.3 | Default port configuration; <br/> Global directory configuration |
+| TiDB |3 | 16 Vcore 32GB * 1 | 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | Default port configuration; <br/>  Global directory configuration |
+| PD | 3 |4 Vcore 8GB * 1 |10.0.1.4 <br/> 10.0.1.5 <br/> 10.0.1.6 | Default port configuration; <br/> Global directory configuration |
+| TiFlash | 1 | 32 VCore 64 GB * 1 | 10.0.1.10 | Default port configuration; <br/> Global directory configuration |
 
 #### Edit the configuration file template topology.yaml
 
@@ -645,10 +645,10 @@ You need to fill in the result in the configuration file (as described in the St
 
 | Instance | Count | Physical Machine Configuration | IP | Other Configuration |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br> 10.0.1.2<br> 10.0.1.3 | 1. Distinguish between instance-level port and status_port; <br> 2. Configure `readpool` and `storage` global parameters and the `raftstore` parameter; <br> 3. Configure instance-level host-dimension labels; <br> 4. Configure numa to bind cores|
-| TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br> 10.0.1.8<br> 10.0.1.9 | Configure numa to bind cores |
-| PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br> 10.0.1.5<br> 10.0.1.6 | Configure `location_lables` parameter |
-| TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | Default port; <br> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data` |
+| TiKV | 6 | 32 Vcore 64GB * 3 | 10.0.1.1<br/> 10.0.1.2<br/> 10.0.1.3 | 1. Distinguish between instance-level port and status_port; <br/> 2. Configure `readpool` and `storage` global parameters and the `raftstore` parameter; <br/> 3. Configure instance-level host-dimension labels; <br/> 4. Configure numa to bind cores|
+| TiDB | 6 | 32 Vcore 64GB * 3 | 10.0.1.7<br/> 10.0.1.8<br/> 10.0.1.9 | Configure numa to bind cores |
+| PD | 3 | 16 Vcore 32 GB | 10.0.1.4<br/> 10.0.1.5<br/> 10.0.1.6 | Configure `location_lables` parameter |
+| TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | Default port; <br/> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data` |
 
 #### Edit the configuration file template topology.yaml
 
@@ -930,12 +930,12 @@ Key parameters of TiDB:
 
 | Instance | Count | Physical Machine Configuration | IP | Other Configuration |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 3 | 16 Vcore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration |
-|TiDB | 3 | 16 Vcore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration;<br>`enable_binlog` enabled; <br> `ignore-error` enabled |
-| PD | 3 | 4 Vcore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration |
-| TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | Default port configuration; <br> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data,/data2/tiflash/data` for [multi-disk deployment](/tiflash/tiflash-configuration.md#multi-disk-deployment) |
-| Pump| 3 | 8 Vcore 16GB |10.0.1.6<br>10.0.1.7<br>10.0.1.8 | Default port configuration; <br> The GC time is set to 7 days |
-| Drainer | 1 | 8 Vcore 16GB | 10.0.1.9 | Default port configuration; <br>Set default initialization commitTS |
+| TiKV | 3 | 16 Vcore 32 GB | 10.0.1.1 <br/> 10.0.1.2 <br/> 10.0.1.3 | Default port configuration |
+|TiDB | 3 | 16 Vcore 32 GB | 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | Default port configuration;<br/>`enable_binlog` enabled; <br/> `ignore-error` enabled |
+| PD | 3 | 4 Vcore 8 GB | 10.0.1.4 <br/> 10.0.1.5 <br/> 10.0.1.6 | Default port configuration |
+| TiFlash | 1 | 32 VCore 64 GB | 10.0.1.10 | Default port configuration; <br/> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data,/data2/tiflash/data` for [multi-disk deployment](/tiflash/tiflash-configuration.md#multi-disk-deployment) |
+| Pump| 3 | 8 Vcore 16GB |10.0.1.6<br/>10.0.1.7<br/>10.0.1.8 | Default port configuration; <br/> The GC time is set to 7 days |
+| Drainer | 1 | 8 Vcore 16GB | 10.0.1.9 | Default port configuration; <br/>Set default initialization commitTS |
 
 #### Edit the configuration file template topology.yaml
 
@@ -1107,11 +1107,11 @@ alertmanager_servers:
 
 | Instance | Count | Physical Machine Configuration | IP | Other Configuration |
 | :-- | :-- | :-- | :-- | :-- |
-| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br> 10.0.1.2 <br> 10.0.1.3 | Default port configuration |
-| TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br> 10.0.1.8 <br> 10.0.1.9 | Default port configuration |
-| PD | 3| 4 VCore 8 GB | 10.0.1.4 <br> 10.0.1.5 <br> 10.0.1.6 | Default port configuration |
-| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | Default port configuration; <br> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data,/data2/tiflash/data` for [multi-disk deployment](/tiflash/tiflash-configuration.md#multi-disk-deployment) |
-| CDC | 3 | 8 VCore 16GB | 10.0.1.6<br>10.0.1.7<br>10.0.1.8 | Default port configuration |
+| TiKV | 3 | 16 VCore 32 GB | 10.0.1.1 <br/> 10.0.1.2 <br/> 10.0.1.3 | Default port configuration |
+| TiDB | 3 | 16 VCore 32 GB | 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | Default port configuration |
+| PD | 3| 4 VCore 8 GB | 10.0.1.4 <br/> 10.0.1.5 <br/> 10.0.1.6 | Default port configuration |
+| TiFlash | 1 | 32 VCore 64 GB  | 10.0.1.10 | Default port configuration; <br/> Customized deployment directory - the `data_dir` parameter is set to `/data1/tiflash/data,/data2/tiflash/data` for [multi-disk deployment](/tiflash/tiflash-configuration.md#multi-disk-deployment) |
+| CDC | 3 | 8 VCore 16GB | 10.0.1.6<br/>10.0.1.7<br/>10.0.1.8 | Default port configuration |
 
 #### Edit the configuration file template topology.yaml
 

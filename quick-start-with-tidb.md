@@ -126,11 +126,11 @@ The smallest TiDB cluster topology is as follows:
 
 | Instance | Count | IP | Configuration |
 |:-- | :-- | :-- | :-- |
-| TiKV | 3 | 10.0.1.1 <br> 10.0.1.1 <br> 10.0.1.1 | Avoid conflict between the port and the directory |
-| TiDB | 1 | 10.0.1.1 | The default port <br> Global directory configuration |
-| PD | 1 | 10.0.1.1 | The default port <br> Global directory configuration |
-| TiFlash | 1 | 10.0.1.1 | The default port <br> Global directory configuration |
-| Monitor | 1 | 10.0.1.1 | The default port <br> Global directory configuration |
+| TiKV | 3 | 10.0.1.1 <br/> 10.0.1.1 <br/> 10.0.1.1 | Avoid conflict between the port and the directory |
+| TiDB | 1 | 10.0.1.1 | The default port <br/> Global directory configuration |
+| PD | 1 | 10.0.1.1 | The default port <br/> Global directory configuration |
+| TiFlash | 1 | 10.0.1.1 | The default port <br/> Global directory configuration |
+| Monitor | 1 | 10.0.1.1 | The default port <br/> Global directory configuration |
 
 Other requirements for the deployment machine:
 
