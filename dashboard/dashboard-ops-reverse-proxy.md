@@ -129,7 +129,7 @@ server_configs:
 
 若希望运行在根路径（如 `http://example.com/`）下，相应的配置为：
 
-```
+```yaml
 server_configs:
   pd:
     dashboard.public-path-prefix: /
