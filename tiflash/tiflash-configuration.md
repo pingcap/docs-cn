@@ -18,7 +18,8 @@ aliases: ['/docs-cn/dev/reference/tiflash/configuration/']
     >
     > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
 
-- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate)：用于限制每个 store 的调度速度
+- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate)：用于限制每个 store （即 TiKV 或 TiFlash）的 region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
+- `pd-ctl -u <pd_id:pd_port> store limit <store_id> <value>` 单独设置某个 store 的 region 调度速度. 如果没有单独设置，则继承 `store-balance-rate`。用 `pd-ctl -u <pd_id:pd_port> store limit` 参看当前设置值。
 
 ## TiFlash 配置参数
 
@@ -31,6 +32,8 @@ path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配�
 listen_host = tiflash 服务监听 host # 一般配置成 0.0.0.0
 tcp_port = tiflash tcp 服务端口
 http_port = tiflash http 服务端口
+mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，通常不需要修改
+minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 ```
 
 ```
@@ -67,6 +70,10 @@ http_port = tiflash http 服务端口
     pd_addr = pd 服务地址 # 多个地址以逗号隔开
 [status]
     metrics_port = Prometheus 拉取 metrics 信息的端口
+[profiles]
+[profiles.default]
+    dt_enable_logical_split = true # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会照成一定的空间浪费。默认为 true
+    max_memory_usage_for_all_queries = 0 # 查询过程中，中间数据的内存限制，单位为 byte。默认为 0 不限制
 ```
 
 ### 配置文件 tiflash-learner.toml
