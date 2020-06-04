@@ -4,7 +4,7 @@ category: reference
 aliases: ['/docs-cn/dev/reference/performance/execution-plan-bind/','/docs-cn/dev/execution-plan-binding/']
 ---
 
-# 执行计划管理 (SPM, SQL plan management)
+# 执行计划管理 (SPM)
 
 ## 执行计划绑定 (SQL bind)
 
