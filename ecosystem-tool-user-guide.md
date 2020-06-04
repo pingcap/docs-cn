@@ -6,9 +6,11 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 # TiDB 生态工具使用指南
 
-本文档主要从使用场景出发介绍适用于该场景的相关 TiDB 生态工具，并简单介绍部分生态工具之间的替代关系。
+本文档从生态工具的功能与适用场景这两个维度出发，介绍 TiDB 相关生态工具的功能及部分常见场景下的工具选择，同时也简单介绍部分工具之间的替代关系。
 
-## 全量导出
+## 生态工具概览
+
+### 全量导出
 
 [Mydumper](/mydumper-overview.md) 是一个用于从 MySQL/TiDB 进行全量逻辑导出的工具。
 
@@ -19,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 - 适用 TiDB 版本：所有版本
 - Kubernetes 支持：[备份与恢复](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/backup-and-restore-using-helm-charts/)
 
-## 全量导入
+### 全量导入
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一个用于将全量数据导入到 TiDB 集群的工具。
 
@@ -40,7 +42,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 >
 > 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代，详细信息请参考 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
 
-## 备份和恢复
+### 备份和恢复
 
 [BR](/br/backup-and-restore-tool.md) 是一个对 TiDB 进行分布式备份和恢复的工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
 
@@ -50,7 +52,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 - 适用 TiDB 版本：v3.1 及 v4.0
 - Kubernetes 支持：已支持，文档撰写中
 
-## 增量导出
+### 增量导出
 
 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。
 
@@ -61,7 +63,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 - 适用 TiDB 版本：v2.1 及以上
 - Kubernetes 支持：[TiDB Binlog 运维文档](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-binlog/)，[Kubernetes 上的 TiDB Binlog Drainer 配置](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer/)
 
-## 数据迁入
+### 数据迁入
 
 [TiDB Data Migration (DM)](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
 
@@ -83,3 +85,33 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 > **注意：**
 >
 > - 原 Syncer 工具已停止维护，不再推荐使用，相关场景请使用 DM 的增量迁移模式进行替代。
+
+## 常见适用场景
+
+### 从 MySQL/Aurora 导入全量数据
+
+当需要从 MySQL/Aurora 导入全量数据时，可先使用 [Mydumper](/mydumper-overview.md) 将数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB 集群。
+
+如果已有其他工具导出的格式兼容的 CSV 或 SQL dump files，则可直接使用 TiDB Lightning 进行导入。
+
+### 从 MySQL/Aurora 迁移数据
+
+当既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/) 完成全量数据和增量数据的迁移。
+
+如果全量数据量较大（TB 级别），则可先使用 [Mydumper](/mydumper-overview.md) 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 完成全量数据的迁移，再使用 DM 完成增量数据的迁移。
+
+### TiDB 集群备份与恢复
+
+当需要对 TiDB 集群进行备份或在之后对 TiDB 集群进行恢复时，可使用 [BR](/br/backup-and-restore-tool.md)。
+
+另外，BR 也可以对 TiDB 的增量数据进行备份和恢复。
+
+### 迁出数据到 MySQL/TiDB
+
+当需要将 TiDB 集群的数据迁出到 MySQL 或其他 TiDB 集群时，可使用 [Mydumper](/mydumper-overview.md) 从 TiDB 将全量数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 MySQL/TiDB。
+
+如果还需要执行增量数据的迁移，则可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
+
+### TiDB 增量数据订阅
+
+当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
