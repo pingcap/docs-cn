@@ -117,7 +117,7 @@
       + 控制执行计划
         + [控制执行计划概览](/control-execution-plan.md)
         + [Optimizer Hints](/optimizer-hints.md)
-        + [执行计划绑定](/execution-plan-binding.md)
+        + [执行计划管理](/sql-plan-management.md)
         + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)

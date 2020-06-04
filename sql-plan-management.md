@@ -1,16 +1,16 @@
 ---
-title: 执行计划绑定
+title: 执行计划管理 (SPM，SQL Plan Management)
 category: reference
-aliases: ['/docs-cn/dev/reference/performance/execution-plan-bind/']
+aliases: ['/docs-cn/dev/reference/performance/sql-plan-management/']
 ---
 
-# 执行计划绑定
+# 执行计划管理 (SPM, SQL plan management)
+
+## 执行计划绑定 (SQL bind)
 
 在[优化器 Hints](/optimizer-hints.md) 中介绍了可以通过 Hint 的方式选择指定的执行计划，但有的时候需要在不修改 SQL 语句的情况下干预执行计划的选择。执行计划绑定提供了一系列功能使得可以在不修改 SQL 语句的情况下选择指定的执行计划。
 
 执行计划绑定是 SPM (SQL Plan Management) 的基础，你可以在[自动演进绑定](#自动演进绑定)中查看 SPM 的使用。
-
-## 语法
 
 ### 创建绑定
 
@@ -123,7 +123,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | charset | 字符集 |
 | collation | 排序规则 |
 
-### 自动创建绑定
+## 自动创建绑定 (Baseline Capturing)
 
 通过将 `tidb_capture_plan_baselines` 的值设置为 `on`（其默认值为 `off`）可以打开自动创建绑定功能。
 
@@ -137,7 +137,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 >
 > 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动创建绑定时会默认屏蔽内嵌 SQL。
 
-### 自动演进绑定
+## 自动演进绑定 (Baseline Evolution)
 
 自动演进绑定，又称 SPM (SQL Plan Management)，在 TiDB 4.0.0-rc 版本引入。
 
@@ -145,7 +145,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 另外自动演进绑定还可以一定程度上避免统计信息改动后，对执行计划带来的抖动。
 
-#### 使用方式
+### 使用方式
 
 通过以下语句可以开启自动演进绑定功能：
 
@@ -195,7 +195,7 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
 为了减少自动演进对集群的影响，可以通过 `tidb_evolve_plan_task_max_time` 来限制每个执行计划运行的最长时间，其默认值为 `600s`；通过 `tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time` 可以限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
 
-#### 注意事项
+### 注意事项
 
 由于自动演进绑定会自动地创建新的绑定，当查询的环境发生变动时，自动创建的绑定可能会有多种行为的选择。这里列出一些注意事项：
 
