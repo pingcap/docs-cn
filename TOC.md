@@ -35,6 +35,9 @@
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
+    + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
+    + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
+    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
     + [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
@@ -49,11 +52,12 @@
   + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
 + 运维操作
   + 升级 TiDB 版本
-    + [使用 TiUP](/upgrade-tidb-using-tiup.md)
+    + [使用 TiUP（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
-    + [使用 TiUP](/scale-tidb-using-tiup.md)
+    + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
+    + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
@@ -63,8 +67,9 @@
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + [日常巡检](/daily-inspection.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
-  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
+  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
+  + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
@@ -91,6 +96,7 @@
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
+    + [下推计算结果缓存](/coprocessor-cache.md)
   + SQL 性能调优
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + [理解 TiDB 执行计划](/query-execution-plan.md)
@@ -116,7 +122,7 @@
       + 控制执行计划
         + [控制执行计划概览](/control-execution-plan.md)
         + [Optimizer Hints](/optimizer-hints.md)
-        + [执行计划绑定](/execution-plan-binding.md)
+        + [执行计划管理](/sql-plan-management.md)
         + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
@@ -363,7 +369,7 @@
     + 系统表
       + [`mysql`](/system-tables/system-table-overview.md)
       + [`information_schema`](/system-tables/system-table-information-schema.md)
-      + `sql-diagnosis`
+      + sql-diagnosis
         + [`cluster_info`](/system-tables/system-table-cluster-info.md)
         + [`cluster_hardware`](/system-tables/system-table-cluster-hardware.md)
         + [`cluster_config`](/system-tables/system-table-cluster-config.md)
@@ -431,8 +437,7 @@
     + TiUP 组件文档
       + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
-      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
-      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [错误码](/error-codes.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
