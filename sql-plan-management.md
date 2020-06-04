@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/reference/performance/execution-plan-bind/','/docs-cn/de
 
 # 执行计划管理 (SPM)
 
-执行计划管理，又称 SPM (SQL plan management)，是通过执行计划绑定，对执行计划进行人为干预的一系列功能，包括执行计划绑定、自动创建绑定、自动演进绑定等。
+执行计划管理，又称 SPM (SQL plan management)，是通过执行计划绑定，对执行计划进行人为干预的一系列功能，包括执行计划绑定、自动捕获绑定、自动演进绑定等。
 
 ## 执行计划绑定 (SQL Binding)
 
