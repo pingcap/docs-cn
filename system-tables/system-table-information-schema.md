@@ -854,7 +854,7 @@ desc TIKV_REGION_STATUS;
 +---------------------------+-------------+------+------+---------+-------+
 ```
 
-`TIKV_REGION_STATUS ` 表中列的含义如下：
+`TIKV_REGION_STATUS` 表中列的含义如下：
 
 * `REGION_ID`：Region 的 ID。
 * `START_KEY`：Region 的起始 key 的值。
