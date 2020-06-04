@@ -69,7 +69,7 @@
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
-  + [Ansible 常用运维操作](maintain-tidb-using-ansible.md)
+  + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)

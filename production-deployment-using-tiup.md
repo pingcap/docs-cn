@@ -186,4 +186,4 @@ tiup cluster display tidb-test
 mysql -u root -h 10.0.1.4 -P 4000
 ```
 
-此外，也需要验证监控系统、dashboard 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
+此外，也需要验证监控系统、TiDB Dashboard 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
