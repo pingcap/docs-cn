@@ -139,7 +139,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 ## 自动演进绑定 (Baseline Evolution)
 
-自动演进绑定，又称 SPM (SQL Plan Management)，在 TiDB 4.0.0-rc 版本引入。
+自动演进绑定，在 TiDB 4.0.0-rc 版本引入，是执行计划管理的重要功能之一。
 
 主要为了解决某些数据的变更后，原先绑定的执行计划可能是一个不优的计划，自动演进绑定功能可以自动优化已经绑定的执行计划。
 
