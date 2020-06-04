@@ -52,7 +52,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 - 适用 TiDB 版本：v3.1 及 v4.0
 - Kubernetes 支持：已支持，文档撰写中
 
-### 增量导出
+### TiDB Binlog
 
 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。
 
@@ -104,7 +104,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 当需要对 TiDB 集群进行备份或在之后对 TiDB 集群进行恢复时，可使用 [BR](/br/backup-and-restore-tool.md)。
 
-另外，BR 也可以对 TiDB 的增量数据进行备份和恢复。
+另外，BR 也可以对 TiDB 的数据进行[增加备份](/br/backup-and-restore-tool.md#增量备份)和[增量恢复](/br/backup-and-restore-tool.md#增量恢复)。
 
 ### 迁出数据到 MySQL/TiDB
 
@@ -114,4 +114,4 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 ### TiDB 增量数据订阅
 
-当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
+当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/binlog-slave-client.md)。
