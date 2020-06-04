@@ -324,11 +324,11 @@
 + 技术支持
   - [支持渠道](/support.md)
   - [反馈问题](/report-issue.md)
-+ [贡献](/contribute.md)
++ 贡献
   - [贡献代码](/contribute.md#成为-tidb-的贡献者)
   - [改进文档](/contribute.md#改进文档)
 + [TiDB 路线图](/roadmap.md)
-+ [版本发布历史](/releases/release-notes.md)
++ 版本发布历史
   + v3.0
     - [3.0.14](/releases/release-3.0.14.md)
     - [3.0.13](/releases/release-3.0.13.md)
