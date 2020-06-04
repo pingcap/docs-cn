@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 ## 全量导出
 
-[Mydumper](/mydumper-overview.md) 用于对 MySQL/TiDB 进行全量逻辑导出。
+[Mydumper](/mydumper-overview.md) 是一个用于从 MySQL/TiDB 进行全量逻辑导出的工具。
 
 基本信息：
 
@@ -42,7 +42,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 ## 备份和恢复
 
-[BR](/br/backup-and-restore-tool.md) 是 TiDB 进行分布式备份和恢复的命令行工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
+[BR](/br/backup-and-restore-tool.md) 是一个对 TiDB 进行分布式备份和恢复的工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
 
 基本信息：
 
@@ -52,7 +52,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 ## 增量导出
 
-[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的 slave。
+[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。
 
 基本信息：
 
@@ -65,20 +65,20 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 [TiDB Data Migration (DM)](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
 
-以下是 DM 的一些基本信息：
+基本信息：
 
-- DM 的输入：MySQL/MariaDB 的全量数据以及 binlog
-- DM 的输出：以 SQL 形式写入 TiDB
+- DM 的输入：MySQL/MariaDB
+- DM 的输出：TiDB 集群
 - 适用 TiDB 版本：所有版本
 - Kubernetes 支持：开发中
 
-如果数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL 数据到 TiDB（迁移的过程包括全量导出导入和增量的同步）。
+如果数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL/MariaDB 数据到 TiDB（迁移的过程包括全量数据的导出导入和增量数据的同步）。
 
 如果数据量在 TB 级别，推荐的迁移步骤如下：
 
-1. 使用 [Mydumper](/mydumper-overview.md) 导出 MySQL 全量数据。
-2. 使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将 MySQL 全量导出数据导入 TiDB 集群。
-3. 使用 DM 迁移 MySQL 增量数据到 TiDB。
+1. 使用 [Mydumper](/mydumper-overview.md) 导出 MySQL/MariaDB 全量数据。
+2. 使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将全量导出数据导入 TiDB 集群。
+3. 使用 DM 迁移 MySQL/MariaDB 增量数据到 TiDB。
 
 > **注意：**
 >
