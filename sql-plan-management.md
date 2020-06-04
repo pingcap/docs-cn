@@ -124,19 +124,19 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | collation | 排序规则 |
 | source | 创建方式，包括 manual （由 `create [global] binding` 生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
 
-## 自动创建绑定 (Baseline Capturing)
+## 自动捕获绑定 (Baseline Capturing)
 
-通过将 `tidb_capture_plan_baselines` 的值设置为 `on`（其默认值为 `off`）可以打开自动创建绑定功能。
+通过将 `tidb_capture_plan_baselines` 的值设置为 `on`（其默认值为 `off`）可以打开自动捕获绑定功能。
 
 > **注意：**
 >
 > 自动绑定功能依赖于 [Statement Summary](/statement-summary-tables.md)，因此在使用自动绑定之前需打开 Statement Summary 开关。
 
-开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）会遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
+开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）会遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动捕获绑定。
 
 > **注意：**
 >
-> 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动创建绑定时会默认屏蔽内嵌 SQL。
+> 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动捕获绑定时会默认屏蔽内嵌 SQL。
 
 ## 自动演进绑定 (Baseline Evolution)
 
