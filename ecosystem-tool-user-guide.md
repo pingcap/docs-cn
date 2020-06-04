@@ -16,13 +16,13 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 ### 从 MySQL/Aurora 导入全量数据
 
-当需要从 MySQL/Aurora 导入全量数据时，可先使用 [Mydumper](/mydumper-overview.md) 将数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB 集群。
+当需要从 MySQL/Aurora 导入全量数据时，可先使用 [Dumpling](/export-or-backup-using-dumpling.md) 将数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB 集群。
 
 ### 从 MySQL/Aurora 迁移数据
 
 当既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/) 完成全量数据和增量数据的迁移。
 
-如果全量数据量较大（TB 级别），则可先使用 [Mydumper](/mydumper-overview.md) 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 完成全量数据的迁移，再使用 DM 完成增量数据的迁移。
+如果全量数据量较大（TB 级别），则可先使用 [Dumpling](/export-or-backup-using-dumpling.md) 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 完成全量数据的迁移，再使用 DM 完成增量数据的迁移。
 
 ### TiDB 集群备份与恢复
 
@@ -32,7 +32,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 ### 迁出数据到 MySQL/TiDB
 
-当需要将 TiDB 集群的数据迁出到 MySQL 或其他 TiDB 集群时，可使用 [Mydumper](/mydumper-overview.md) 从 TiDB 将全量数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 MySQL/TiDB。
+当需要将 TiDB 集群的数据迁出到 MySQL 或其他 TiDB 集群时，可使用 [Dumpling](/export-or-backup-using-dumpling.md) 从 TiDB 将全量数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 MySQL/TiDB。
 
 如果还需要执行增量数据的迁移，则可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
@@ -44,12 +44,12 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 ### 全量导出
 
-[Mydumper](/mydumper-overview.md) 是一个用于从 MySQL/TiDB 进行全量逻辑导出的工具。
+[Dumpling](/export-or-backup-using-dumpling.md) 是一个用于从 MySQL/TiDB 进行全量逻辑导出的工具。
 
 基本信息：
 
-- Mydumper 的输入：MySQL/TiDB 集群
-- Mydumper 的输出：SQL 文件
+- Dumpling 的输入：MySQL/TiDB 集群
+- Dumpling 的输出：SQL/CSV 文件
 - 适用 TiDB 版本：所有版本
 - Kubernetes 支持：[备份与恢复](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/backup-and-restore-using-helm-charts/)
 
@@ -65,8 +65,8 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 基本信息：
 
 - Lightning 的输入：
-    - Mydumper 或 Dumpling 输出文件
-    - CSV 格式文件
+    - Dumpling 输出文件
+    - 其他格式兼容的 CSV 文件
 - 适用 TiDB 版本：v2.1 及以上
 - Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/)
 
@@ -110,7 +110,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 如果数据量在 TB 级别，推荐的迁移步骤如下：
 
-1. 使用 [Mydumper](/mydumper-overview.md) 导出 MySQL/MariaDB 全量数据。
+1. 使用 [Dumpling](/export-or-backup-using-dumpling.md) 导出 MySQL/MariaDB 全量数据。
 2. 使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将全量导出数据导入 TiDB 集群。
 3. 使用 DM 迁移 MySQL/MariaDB 增量数据到 TiDB。
 
