@@ -10,8 +10,6 @@ Release date: May 9, 2020
 
 TiDB version: 3.0.14
 
-TiUP version: 3.0.14
-
 ## Compatibility Changes
 
 + TiDB
