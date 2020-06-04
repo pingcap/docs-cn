@@ -35,6 +35,9 @@
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
+    + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
+    + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
+    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
     + [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
@@ -364,7 +367,7 @@
     + 系统表
       + [`mysql`](/system-tables/system-table-overview.md)
       + [`information_schema`](/system-tables/system-table-information-schema.md)
-      + `sql-diagnosis`
+      + sql-diagnosis
         + [`cluster_info`](/system-tables/system-table-cluster-info.md)
         + [`cluster_hardware`](/system-tables/system-table-cluster-hardware.md)
         + [`cluster_config`](/system-tables/system-table-cluster-config.md)
@@ -426,8 +429,7 @@
     + TiUP 组件文档
       + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
-      + [tiup-mirrors 定制离线镜像](/tiup/tiup-mirrors.md)
-      + [tiup-package 打包 TiUP 组件](/tiup/tiup-package.md)
+      + [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [错误码](/error-codes.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
