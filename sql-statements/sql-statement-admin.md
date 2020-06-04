@@ -157,7 +157,7 @@ ADMIN CAPTURE bindings;
 ADMIN EVOLVE bindings;
 ```
 
-开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划绑定](/execution-plan-binding.md)。
+开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划管理](/sql-plan-management.md)。
 
 {{< copyable "sql" >}}
 

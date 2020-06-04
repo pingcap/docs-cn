@@ -820,7 +820,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值: on
 
-这个变量用于控制是否开启执行计划绑定功能，默认打开，可通过赋值 off 来关闭。关于执行计划绑定功能的使用可以参考[执行计划绑定文档](/execution-plan-binding.md#创建绑定)。
+这个变量用于控制是否开启执行计划绑定功能，默认打开，可通过赋值 off 来关闭。关于执行计划绑定功能的使用可以参考[执行计划绑定文档](/sql-plan-management.md#创建绑定)。
 
 ### tidb_capture_plan_baselines <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -838,7 +838,7 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值: off
 
-这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/execution-plan-binding.md#自动演进绑定)。
+这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)。
 
 为了减少自动演进对集群的影响，可以通过 `tidb_evolve_plan_task_max_time` 来限制每个执行计划运行的最长时间，其默认值为 600s；通过 `tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time` 可以限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
 
