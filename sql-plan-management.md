@@ -1,11 +1,7 @@
 ---
 title: 执行计划管理 (SPM)
 category: reference
-<<<<<<< HEAD:execution-plan-binding.md
-aliases: ['/docs-cn/stable/reference/performance/execution-plan-bind/']
-=======
-aliases: ['/docs-cn/dev/reference/performance/execution-plan-bind/','/docs-cn/dev/execution-plan-binding/']
->>>>>>> 06bf85a... docs-cn: add SPM feature in sql bindings doc (#3450):sql-plan-management.md
+aliases: ['/docs-cn/stable/reference/performance/execution-plan-bind/','/docs-cn/stable/execution-plan-binding/']
 ---
 
 # 执行计划管理 (SPM)
