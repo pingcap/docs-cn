@@ -52,11 +52,12 @@
   + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
 + 运维操作
   + 升级 TiDB 版本
-    + [使用 TiUP](/upgrade-tidb-using-tiup.md)
+    + [使用 TiUP（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
-    + [使用 TiUP](/scale-tidb-using-tiup.md)
+    + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
+    + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
@@ -66,8 +67,9 @@
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + [日常巡检](/daily-inspection.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
-  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
+  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
+  + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
@@ -120,7 +122,7 @@
       + 控制执行计划
         + [控制执行计划概览](/control-execution-plan.md)
         + [Optimizer Hints](/optimizer-hints.md)
-        + [执行计划绑定](/execution-plan-binding.md)
+        + [执行计划管理](/sql-plan-management.md)
         + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
@@ -381,13 +383,18 @@
         + [`inspection_summary`](/system-tables/system-table-inspection-summary.md)
   + UI
     + TiDB Dashboard
+      + [简介](/dashboard/dashboard-intro.md)
+      + 运维
+        + [部署](/dashboard/dashboard-ops-deploy.md)
+        + [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
+        + [安全](/dashboard/dashboard-ops-security.md)
       + [访问](/dashboard/dashboard-access.md)
       + [概况页面](/dashboard/dashboard-overview.md)
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
-      + SQL 语句分析页面
-        + [访问列表页面](/dashboard/dashboard-statement-list.md)
-        + [查看执行详情](/dashboard/dashboard-statement-detail.md)
+      + SQL 语句分析
+        + [列表页面](/dashboard/dashboard-statement-list.md)
+        + [执行详情页面](/dashboard/dashboard-statement-details.md)
       + [慢查询页面](/dashboard/dashboard-slow-query.md)
       + 集群诊断页面
         + [访问](/dashboard/dashboard-diagnostics-access.md)
@@ -395,6 +402,7 @@
         + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
       + [实例性能分析页面](/dashboard/dashboard-profiling.md)
+      + [常见问题](/dashboard/dashboard-faq.md)
   + CLI
     + [tikv-ctl](/tikv-control.md)
     + [pd-ctl](/pd-control.md)

@@ -1,9 +1,9 @@
 ---
-title: 概况页面
+title: TiDB Dashboard 概况页面
 category: how-to
 ---
 
-# 概况页面
+# TiDB Dashboard 概况页面
 
 该页面显示了整个集群的概况，包含以下信息：
 
