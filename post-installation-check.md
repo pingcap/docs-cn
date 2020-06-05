@@ -46,7 +46,7 @@ category: how-to
 mysql -u root -h 10.0.1.4 -P 4000
 ```
 
-登录成功：
+输出下列信息表示登录成功：
 
 ```sql
 Welcome to the MySQL monitor.  Commands end with ; or \g.
