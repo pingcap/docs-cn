@@ -43,5 +43,5 @@ TiDB 版本：3.0.15
 + TiKV
 
     - 修复长时间运行后由于处理逻辑不正确导致碎片整理不再有效的问题 [#7790](https://github.com/tikv/tikv/pull/7790)
-    - 修复系统意外重启后错误地将删除 snapshot 文件导致系统 panic 问题 [#7925](https://github.com/tikv/tikv/pull/7925)
-    - 修复因消息包过大导致导致 gRPC 连接断开的问题 [#7822](https://github.com/tikv/tikv/pull/7822)
+    - 修复系统意外重启后错误地删除 snapshot 文件导致系统 panic 的问题 [#7925](https://github.com/tikv/tikv/pull/7925)
+    - 修复因消息包过大导致 gRPC 连接断开的问题 [#7822](https://github.com/tikv/tikv/pull/7822)
