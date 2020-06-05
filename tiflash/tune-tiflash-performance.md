@@ -42,7 +42,7 @@ aliases: ['/docs-cn/stable/reference/tiflash/tune-performance/']
     set @@tidb_opt_agg_push_down = 1;
     ```
 
-4. 尝试开启 `Distince` 推过 `Join` / `Union` 等 TiDB 算子的优化：
+4. 尝试开启 `Distinct` 推过 `Join` / `Union` 等 TiDB 算子的优化：
 
     [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
