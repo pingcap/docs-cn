@@ -55,7 +55,7 @@
     - [从 CSV 迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
   + 运维
     - [Ansible 常见运维操作](/maintain-tidb-using-ansible.md)
-    + [备份与恢复]
+    + 备份与恢复
       - [使用 Mydumper 和 Loader 进行备份与恢复](/backup-and-restore.md)
       - [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     - [定位慢查询](/identify-slow-queries.md)
