@@ -339,12 +339,12 @@ SELECT * FROM schemata;
 ```
 
 `SCHEMATA` 表各列含义如下：
+
 * CATALOG_NAME：数据库归属的目录名，该列值永远为 `def`。
 * SCHEMA_NAME：数据库的名字。
 * DEFAULT_CHARACTER_SET_NAME：数据库的默认字符集。
 * DEFAULT_COLLATION_NAME：数据库的默认 collation。
 * SQL_PATH：该项值永远为 `NULL`。
-
 
 ## SESSION_VARIABLES 表
 
