@@ -10,8 +10,6 @@ aliases: ['/docs-cn/dev/releases/3.0.13/']
 
 TiDB 版本：3.0.13
 
-TiUP 版本：3.0.13
-
 ## Bug 修复
 
 + TiDB
