@@ -75,7 +75,7 @@ TiDB 版本：4.0.0
     + 修复某些情况下优化器处理逻辑不正确导致错误地选择 `Index Merge Join` 的问题 [#17365](https://github.com/pingcap/tidb/pull/17365)
     + 修复 Grafana 中 `SELECT` 语句的 `duration` 的监控指标不准确的问题 [#16561](https://github.com/pingcap/tidb/pull/16561)
     + 修复当系统发生错误时，GC 线程卡住的问题 [#16915](https://github.com/pingcap/tidb/pull/16915)
-    + 修复 列的类型是 `Boolean` 时 由于 `UNIQUE` 约束比较的逻辑不正确导致输出结果不正确的问题 [#17306](https://github.com/pingcap/tidb/pull/17306)
+    + 修复当列的类型是 `Boolean` 时，由于 `UNIQUE` 约束比较的逻辑不正确导致输出结果不正确的问题 [#17306](https://github.com/pingcap/tidb/pull/17306)
     + 修复 `tidb_opt_agg_push_down` 开启且聚合函数下推分区表信息时，由于逻辑处理不正确导致系统 panic 的问题 [#17328](https://github.com/pingcap/tidb/pull/17328)
     + 修复某些情况下会访问已经发生故障的 TiKV 的问题 [#17342](https://github.com/pingcap/tidb/pull/17342)
     + 修复 `tidb.toml` 中的配置项 `isolation-read` 不生效时的问题 [#17322](https://github.com/pingcap/tidb/pull/17322)
