@@ -58,6 +58,7 @@
     - [Ansible 常见运维操作](/maintain-tidb-using-ansible.md)
     + 备份与恢复
       - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
+      - [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
       - [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     + 定位异常查询
@@ -308,7 +309,8 @@
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
   + 周边工具
-    - [工具使用指南](/ecosystem-tool-user-guide.md)
+    + [功能概览](/ecosystem-tool-user-guide.md)
+    + [适用场景](/ecosystem-tool-user-case.md)
     - [Mydumper](/mydumper-overview.md)
     - [Loader](/loader-overview.md)
     - [Syncer](/syncer-overview.md)
