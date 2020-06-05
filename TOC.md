@@ -139,7 +139,7 @@
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
 + TiDB 生态工具
-  + [工具概览](/ecosystem-tool-user-guide.md)
+  + [功能概览](/ecosystem-tool-user-guide.md)
   + [适用场景](/ecosystem-tool-user-case.md)
   + [工具下载](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
