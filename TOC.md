@@ -62,6 +62,7 @@
       - [Use TiDB Ansible](/online-deployment-using-ansible.md)
       - [Use TiDB Ansible Offline](/offline-deployment-using-ansible.md)
       - [Use Docker](/test-deployment-using-docker.md)
+    + [Check Cluster Status](/post-installation-check.md)
     + Geographic Redundancy
       - [Overview](/geo-redundancy-deployment.md)
       - [Configure Location Awareness](/location-awareness.md)
