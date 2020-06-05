@@ -113,18 +113,18 @@ haproxy --help
 | `-vv` | Displays the version, build options, libraries versions and usable pollers. |
 | `-d` | Enables debug mode. |
 | `-db` | Disables background mode and multi-process mode. |
-| `-dM [<byte>]` | Forces memory poisoning, which means that each and every memory region allocated with malloc() or pool_alloc2() will be filled with \<byte> before being passed to the caller. |
+| `-dM [<byte>]` | Forces memory poisoning, which means that each and every memory region allocated with malloc() or pool_alloc2() will be filled with `<byte>` before being passed to the caller. |
 | `-V` | Enables verbose mode (disables quiet mode). |
 | `-D` | Starts as a daemon.|
-| `-C <dir>` | Changes to directory \<dir> before loading configuration files. |
+| `-C <dir>` | Changes to directory `<dir>` before loading configuration files. |
 | `-W` | Master-worker mode. |
 | `-q` | Sets "quiet" mode: This disables some messages during the configuration parsing and during startup. |
 | `-c` | Only performs a check of the configuration files and exits before trying to bind. |
-| `-n <limit>` | Limits the per-process connection limit to \<limit>. |
-| `-m <limit>` | Limits the total allocatable memory to \<limit> megabytes across all processes. |
-| `-N <limit>` | Sets the default per-proxy maxconn to \<limit> instead of the builtin default value (usually 2000). |
-| `-L <name>` | Changes the local peer name to \<name>, which defaults to the local hostname. |
-| `-p <file>` | Writes all processes' PIDs into \<file> during startup. |
+| `-n <limit>` | Limits the per-process connection limit to `<limit>`. |
+| `-m <limit>` | Limits the total allocatable memory to `<limit>` megabytes across all processes. |
+| `-N <limit>` | Sets the default per-proxy maxconn to `<limit>` instead of the builtin default value (usually 2000). |
+| `-L <name>` | Changes the local peer name to `<name>`, which defaults to the local hostname. |
+| `-p <file>` | Writes all processes' PIDs into `<file>` during startup. |
 | `-de` | Disables the use of epoll(7). epoll(7) is available only on Linux 2.6 and some custom Linux 2.4 systems. |
 | `-dp` | Disables the use of poll(2). select(2) might be used instead. |
 | `-dS` | Disables the use of splice(2), which is broken on older kernels. |

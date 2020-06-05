@@ -5,7 +5,7 @@ category: reference
 aliases: ['/docs/dev/reference/sql/statements/grant-privileges/']
 ---
 
-# GRANT <privileges>
+# `GRANT <privileges>`
 
 This statement allocates privileges to a pre-existing user in TiDB. The privilege system in TiDB follows MySQL, where credentials are assigned based on a database/table pattern.
 
@@ -66,6 +66,6 @@ mysql> SHOW GRANTS FOR 'newuser';
 
 ## See also
 
-* [REVOKE <privileges>](/sql-statements/sql-statement-revoke-privileges.md)
+* [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
 * [Privilege Management](/privilege-management.md)

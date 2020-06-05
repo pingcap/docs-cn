@@ -65,4 +65,4 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 ## See also
 
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
-* [GRANT <privileges>](/sql-statements/sql-statement-grant-privileges.md)
+* [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)

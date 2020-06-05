@@ -46,7 +46,7 @@ This document describes the operators precedence, comparison functions and opera
 | [%, MOD](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_mod) | Modulo operator |
 | [NOT, !](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_not) | Negates value |
 | [NOT BETWEEN ... AND ...](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-between) | Check whether a value is not within a range of values |
-| [!=, <>](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | Not equal operator |
+| [!=, `<>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | Not equal operator |
 | [NOT LIKE](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like) | Negation of simple pattern matching |
 | [NOT REGEXP](https://dev.mysql.com/doc/refman/5.7/en/regexp.html#operator_not-regexp) | Negation of REGEXP |
 | [\|\|, OR](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | Logical OR |
@@ -108,7 +108,7 @@ For details, see [Operator Precedence](https://dev.mysql.com/doc/refman/5.7/en/o
 | [<=](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than-or-equal) | Less than or equal operator |
 | [LIKE](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like) | Simple pattern matching |
 | [NOT BETWEEN ... AND ...](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-between) | Check whether a value is not within a range of values |
-| [!=, <>](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | Not equal operator |
+| [!=, `<>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | Not equal operator |
 | [NOT IN()](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_not-in) | Check whether a value is not within a set of values |
 | [NOT LIKE](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like) | Negation of simple pattern matching |
 | [STRCMP()](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#function_strcmp) | Compare two strings |
