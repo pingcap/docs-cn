@@ -38,7 +38,7 @@ aliases: ['/docs-cn/v2.1/reference/tools/user-guide/','/docs-cn/v2.1/how-to/migr
 
 > **注意：**
 >
-> 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代，详细信息请参考 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
+> 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代，详细信息请参考 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-overview.md)。
 
 ## 备份和恢复
 
