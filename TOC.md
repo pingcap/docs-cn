@@ -10,8 +10,10 @@
   + Benchmarks
     - [How to Test TiDB Using Sysbench](/benchmark/benchmark-tidb-using-sysbench.md)
     - [How to Run TPC-C Test on TiDB](/benchmark/benchmark-tidb-using-tpcc.md)
+    + [Sysbench Performance Test - v4.0 vs. v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
+    + [TPC-H Performance Test - v4.0 vs. v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
+    + [TPC-C Performance Test - v4.0 vs. v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
     - [Sysbench Performance Test - v3.0 vs. v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
-    - [TPC-C Performance Test - v4.0 vs. v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
     - [TPC-C Performance Test - v3.0 vs. v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     - [Interaction Test on Online Workloads and `ADD INDEX` Operations](/benchmark/online-workloads-and-add-index-operations.md)
 - [Quick Start with TiDB](/quick-start-with-tidb.md)
