@@ -1020,7 +1020,6 @@ Cloud TiDB 目前已经在腾讯云、UCloud 上线，都是数据库一级入�
 另外，Cloud TiDB 还支持在 [Google GKE](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)，[AWS EKS](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-aws-eks/) 和 [阿里云 ACK](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud/) 上部署使用。
 
 ## 九、故障排除
-=======
 
 ### 9.1 TiDB 自定义报错汇总
 
