@@ -4,7 +4,7 @@ category: reference
 aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrate/from-mysql/', '/docs-cn/dev/how-to/migrate/incrementally-from-mysql/', '/docs-cn/dev/how-to/migrate/overview/', '/docs-cn/dev/reference/tools/use-guide/']
 ---
 
-# TiDB 生态工具概览
+# TiDB 生态工具功能概览
 
 本文档从生态工具的功能出发，介绍部分生态工具的功能以及它们之间的替代关系。
 
