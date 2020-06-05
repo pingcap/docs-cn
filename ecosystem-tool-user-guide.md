@@ -84,7 +84,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 - 适用 TiDB 版本：v3.1 及 v4.0
 - Kubernetes 支持：已支持，文档撰写中
 
-### TiDB Binlog
+### TiDB 增量日志同步
 
 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。
 
