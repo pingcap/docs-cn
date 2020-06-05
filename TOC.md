@@ -55,8 +55,17 @@
     - [从 CSV 迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
   + 运维
     - [Ansible 常见运维操作](/maintain-tidb-using-ansible.md)
+<<<<<<< HEAD
     + [备份与恢复](/backup-and-restore.md)
     - [定位慢查询](/identify-slow-queries.md)
+=======
+    + [备份与恢复]
+      - [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
+      - [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
+    + 定位异常查询
+      - [定位慢查询](/identify-slow-queries.md)
+      - [定位消耗系统资源多的查询](/identify-expensive-queries.md)
+>>>>>>> e57d8a8... reference refine the ecosystem tools user guide (#3519)
   + 扩容缩容
     - [使用 Ansible 扩容缩容](/scale-tidb-using-ansible.md)
   + 升级
@@ -264,6 +273,11 @@
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
   + 周边工具
+<<<<<<< HEAD
+=======
+    - [功能概览](/ecosystem-tool-user-guide.md)
+    - [适用场景](/ecosystem-tool-user-case.md)
+>>>>>>> e57d8a8... reference refine the ecosystem tools user guide (#3519)
     - [Mydumper](/mydumper-overview.md)
     - [Loader](/loader-overview.md)
     - [Syncer](/syncer-overview.md)
