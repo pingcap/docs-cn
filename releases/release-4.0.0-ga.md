@@ -55,7 +55,7 @@ TiDB 版本：4.0.0
     + 添加 `Direction of hotspot move leader`、`Direction of hotspot move peer` 和 `Hot cache read entry number` 等监控 [#2448](https://github.com/pingcap/pd/pull/2448)
 
 * Tools
-    + BR
+    + Backup & Restore (BR)
         - 支持备份与恢复 `Sequence` 和 `View` [#242](https://github.com/pingcap/br/pull/242)
     + TiCDC
         - 创建 `Changefeed` 时新增检查 Sink URI 的合法性 [#561](https://github.com/pingcap/ticdc/pull/561)
