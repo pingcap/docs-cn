@@ -7,7 +7,7 @@ category: Releases
 
 发版日期：2020 年 5 月 28 日
 
-TiDB 版本：4.0.0 GA
+TiDB 版本：4.0.0
 
 ## 兼容性变化
 
