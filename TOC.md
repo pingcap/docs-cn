@@ -456,7 +456,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
-    - [4.0.0 GA](/releases/release-4.0.0-ga.md)
+    - [4.0 GA](/releases/release-4.0-ga.md)
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
     - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)
     - [4.0.0-rc](/releases/release-4.0.0-rc.md)
@@ -472,6 +472,7 @@
     - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/release-3.1.0-beta.md)
   + v3.0
+    - [3.0.15](/releases/release-3.0.15.md)
     - [3.0.14](/releases/release-3.0.14.md)
     - [3.0.13](/releases/release-3.0.13.md)
     - [3.0.12](/releases/release-3.0.12.md)
