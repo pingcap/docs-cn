@@ -33,7 +33,7 @@ TiDB 版本：4.0.0
 * TiDB
     + 新增 `committer-concurrency` 配置项，用于控制 retry commit 阶段的 goroutine 数量 [#16849](https://github.com/pingcap/tidb/pull/16849)
     + 支持 `show table partition regions` 语法 [#17294](https://github.com/pingcap/tidb/pull/17294)
-    + 新增 `tmp-storage-quota` 配置项用于限制 tidb-server 使用的临时磁盘空间 [#15700](https://github.com/pingcap/tidb/pull/15700)
+    + 新增 `tmp-storage-quota` 配置项，用于限制 tidb-server 使用的临时磁盘空间 [#15700](https://github.com/pingcap/tidb/pull/15700)
     + 创建和更改表时新增检查分区表是否使用唯一前缀索引的功能 [#17213](https://github.com/pingcap/tidb/pull/17213)
     + 支持 `insert/replace into tbl_name partition`(`partition_name_list`) 语句 [#17313](https://github.com/pingcap/tidb/pull/17313)
     + Distinct 函数支持检查 collations 的值 [#17240](https://github.com/pingcap/tidb/pull/17240)
