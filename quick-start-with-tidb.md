@@ -294,3 +294,17 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         ```shell
         tiup cluster display <cluster-name>
         ```
+
+## 探索更多
+
+- 如果你刚刚部署好一套 TiDB 本地测试集群：
+    - 学习 [TiDB SQL 操作](/basic-sql-operations.md)
+    - [迁移数据到 TiDB](/data-migration-route.md)
+    - 了解 [TiDB 的核心特性与核心应用场景](/overview.md)
+    - 了解 [TiDB 的整体架构](/tidb-architecture.md)
+    - 了解 [TiDB 与 MySQL 的兼容性](/mysql-compatibility.md)
+
+- 如果你准备好在生产环境部署 TiDB 了：
+    - 在线部署：[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
+    - 离线部署：[使用 TiUP 离线部署 TiDB 集群](/production-offline-deployment-using-tiup.md)
+    - [使用 TiDB Operator 在云上部署 TiDB](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)
