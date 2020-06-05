@@ -255,7 +255,7 @@ Other requirements for the target machine:
     ```
 
     - `<cluster-name>`: Set the cluster name
-    - `<tidb-version>`: Set the TiDB cluster version. You can see all the supported TiDB versions by running the `tiup list tidb --refresh` command
+    - `<tidb-version>`: Set the TiDB cluster version. You can see all the supported TiDB versions by running the `tiup list tidb` command
 
     Enter "y" and the `root` user's password to complete the deployment:
 

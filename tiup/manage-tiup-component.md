@@ -44,7 +44,7 @@ Example 2: Get a list of the TiKV component of all installable versions from the
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup list tikv --refresh
+tiup list tikv
 ```
 
 ## Install components

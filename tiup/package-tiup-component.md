@@ -104,7 +104,7 @@ To make it simple, the bash script is used to develop this component. See the fo
     {{< copyable "shell-root" >}}
 
     ```bash
-    tiup list hello --refresh
+    tiup list hello
     ```
 
     ```

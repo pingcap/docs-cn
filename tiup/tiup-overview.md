@@ -95,7 +95,7 @@ Examples:
   $ tiup update --all                  # Update all installed components to the latest version
   $ tiup update --nightly              # Update all installed components to the nightly version
   $ tiup update --self                 # Update the "tiup" to the latest version
-  $ tiup list --refresh                # Fetch the latest supported components list
+  $ tiup list                          # Fetch the latest supported components list
   $ tiup status                        # Display all running/terminated instances
   $ tiup clean <name>                  # Clean the data of running/terminated instance (Kill process if it's running)
   $ tiup clean --all                   # Clean the data of all running/terminated instances
@@ -124,8 +124,8 @@ The output is long but you can focus on only two parts:
 
 > **Note:**
 >
-> - The number of available components will continue to grow. To check the latest supported components, execute the `tiup list --refresh` command.
-> - The list of available versions of components will also continue to grow. To check the latest supported component versions, execute the `tiup list <component> --refresh` command.
+> - The number of available components will continue to grow. To check the latest supported components, execute the `tiup list` command.
+> - The list of available versions of components will also continue to grow. To check the latest supported component versions, execute the `tiup list <component>` command.
 
 TiUP commands are implemented in TiUP's internal code and used for package management operations, while TiUP components are independent component packages installed by TiUP commands.
 
