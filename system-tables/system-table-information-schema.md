@@ -189,7 +189,7 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 1 row in set (0.01 sec)
 ```
 
-`columns` 表中列的含义如下：
+`COLUMNS` 表中列的含义如下：
 
 * `TABLE_CATALOG`：包含列的表所属的目录的名称。该值始终为 `def`。
 * `TABLE_SCHEMA`：包含列的表所属的数据库的名称。
@@ -236,7 +236,7 @@ SHOW COLUMNS FROM t1 FROM test;
 
 ## ENGINES 表
 
-`ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。此外，`engines` 表中其它列值也都是定值。
+`ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。此外，`ENGINES` 表中其它列值也都是定值。
 
 {{< copyable "sql" >}}
 
@@ -255,7 +255,7 @@ TRANSACTIONS: YES
 1 row in set (0.00 sec)
 ```
 
-`engines` 表中列的含义如下：
+`ENGINES` 表中列的含义如下：
 
 * `ENGINE`：存储引擎的名称。
 * `SUPPORT`：服务器对存储引擎的支持级别，在 TiDB 中此值一直是 `DEFAULT`。
@@ -304,7 +304,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 2 rows in set (0.00 sec)
 ```
 
-`key_column_usage` 表中列的含义如下：
+`KEY_COLUMN_USAGE` 表中列的含义如下：
 
 * `CONSTRAINT_CATALOG`：约束所属的目录的名称。该值始终为 `def`。
 * `CONSTRAINT_SCHEMA`：约束所属的数据库的名称。
