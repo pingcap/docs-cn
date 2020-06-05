@@ -106,6 +106,6 @@ TiDB 版本：4.0.0
     * BR
         + 修复从云存储恢复数据时因网络原因导致恢复失败的问题 [#298](https://github.com/pingcap/br/pull/298)
     * TiCDC
-        + 修复若干因数据争用（data race）导致系统 panic 的问题 [#565](https://github.com/pingcap/ticdc/pull/565) [#566](https://github.com/pingcap/ticdc/pull/566)
+        + 修复若干因数据争用 (data race) 导致系统 panic 的问题 [#565](https://github.com/pingcap/ticdc/pull/565) [#566](https://github.com/pingcap/ticdc/pull/566)
         + 修复若干因处理逻辑不正确导致资源泄露或系统阻塞的问题 [#574](https://github.com/pingcap/ticdc/pull/574) [#586](https://github.com/pingcap/ticdc/pull/586)
         + 修复 CLI 因连接不上 PD 时会导致命令行阻塞的问题 [#579](https://github.com/pingcap/ticdc/pull/579)
