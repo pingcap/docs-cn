@@ -38,7 +38,7 @@ TiDB 版本：4.0.0
     + 支持 `insert/replace into tbl_name partition`(`partition_name_list`) 语句 [#17313](https://github.com/pingcap/tidb/pull/17313)
     + Distinct 函数支持检查 collations 的值 [#17240](https://github.com/pingcap/tidb/pull/17240)
     + 哈希分区裁剪时支持 `is null` 过滤条件 [#17310](https://github.com/pingcap/tidb/pull/17310)
-    + 分区表中支持 `admin check index`、`admin cleanup index` 和 `admin recover index` [#17392](https://github.com/pingcap/tidb/pull/17392) [#17405](https://github.com/pingcap/tidb/pull/17405)  [#17317](https://github.com/pingcap/tidb/pull/17317)
+    + 分区表中支持 `admin check index`、`admin cleanup index` 和 `admin recover index` [#17392](https://github.com/pingcap/tidb/pull/17392) [#17405](https://github.com/pingcap/tidb/pull/17405) [#17317](https://github.com/pingcap/tidb/pull/17317)
     + 支持 `in` 表达式的范围分区裁剪 [#17320](https://github.com/pingcap/tidb/pull/17320)
 
 * TiFlash
