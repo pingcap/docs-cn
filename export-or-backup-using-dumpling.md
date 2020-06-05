@@ -62,7 +62,7 @@ dumpling \
 
 > **注意：**
 > 
-> 目前 Dumpling 不支持仅导出用户指定的某几张表（即 `-T` 标志，见[这个 issue](https://github.com/pingcap/dumpling/issues/76)）。如果你确实需要这些功能，可以先使用 [MyDumper](/backup-and-restore-using-mydumper-lightning.md)。
+> 目前 Dumpling 不支持仅导出用户指定的某几张表（即 `-T` 标志，见[这个 issue](https://github.com/pingcap/dumpling/issues/76)）。如果你确实需要这些功能，可以先使用 [MyDumper](/mydumper-overview.md)。
 
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用参数如下：
 
@@ -111,4 +111,4 @@ update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_lif
 update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
 ```
 
-最后，所有的这些导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-tidb-backend.md) 导入回 TiDB。
+最后，所有的这些导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入回 TiDB。
