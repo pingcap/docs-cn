@@ -11,7 +11,7 @@ category: how-to
 
 ### 方式一：下载官方 TiUP 离线组件包
 
-在 <download.pingcap.org> 有官方预先打好的离线镜像包，下载指令为：
+在 `download.pingcap.org` 有官方预先打好的离线镜像包，下载指令为：
 
 {{< copyable "shell-regular" >}}
 
