@@ -23,7 +23,7 @@ TiDB 版本：4.0.0
 * TiKV
     + 修复 BR 备份时出现 `DefaultNotFound` 错误的问题 [#7937](https://github.com/tikv/tikv/pull/7937)
     + 修复 `ReadIndex` 因响应的数据包乱序而导致系统 panic 的问题 [#7930](https://github.com/tikv/tikv/pull/7930)
-    + 修复 TiKV 重启后由于 snapshot 文件被错误的删除导致系统 panic 问题 [#7927](https://github.com/tikv/tikv/pull/7927)
+    + 修复 TiKV 重启后由于 snapshot 文件被错误删除导致系统 panic 的问题 [#7927](https://github.com/tikv/tikv/pull/7927)
 
 * TiFlash
     + 修复因 Raft Admin Command 处理逻辑不正确，系统 panic 导致数据可能会丢失的问题
