@@ -84,9 +84,13 @@ dumpling \
 
 一切完成之后，你应该可以在 `/tmp/test` 看到导出的文件了：
 
-```shell
-$ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
+{{< copyable "shell-regular" >}}
 
+```shell
+ls -lh /tmp/test | awk '{print $5 "\t" $9}'
+```
+
+```
 140B  metadata
 66B   test-schema-create.sql
 300B  test.sbtest1-schema.sql
