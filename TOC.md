@@ -288,7 +288,8 @@
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
   + 周边工具
-    - [工具使用指南](/ecosystem-tool-user-guide.md)
+    - [功能概览](/ecosystem-tool-user-guide.md)
+    - [适用场景](/ecosystem-tool-user-case.md)
     - [Mydumper](/mydumper-overview.md)
     - [Loader](/loader-overview.md)
     - [Syncer](/syncer-overview.md)
