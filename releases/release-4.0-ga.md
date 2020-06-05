@@ -1,9 +1,9 @@
 ---
-title: TiDB 4.0.0 GA Release Notes
+title: TiDB 4.0 GA Release Notes
 category: Releases
 ---
 
-# TiDB 4.0.0 GA Release Notes
+# TiDB 4.0 GA Release Notes
 
 发版日期：2020 年 5 月 28 日
 
