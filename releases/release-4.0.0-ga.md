@@ -26,7 +26,7 @@ TiDB 版本：4.0.0
     + 修复 TiKV 重启后由于 snapshot 文件被错误的删除导致系统 panic 问题 [#7927](https://github.com/tikv/tikv/pull/7927)
 
 * TiFlash
-    + 修复因 Raft Admin Command 处理逻辑不正确，系统 panic 导致可能会出现丢数据问题
+    + 修复因 Raft Admin Command 处理逻辑不正确，系统 panic 导致数据可能会丢失的问题
 
 ## 新功能
 
