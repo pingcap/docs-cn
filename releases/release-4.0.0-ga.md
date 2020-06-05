@@ -87,7 +87,7 @@ TiDB 版本：4.0.0
     + 默认关闭 Raft Compact Log Command 延迟处理的优化，避免节点大量写入数据时重启时间过长的问题
     + 修复部分场景因 TiDB 执行 `DROP DATABASE` 处理逻辑不正确导致系统启动不成功的问题
     + 修复采集 `Server_info` 中 CPU 信息方式与其他组件不一样的问题
-    + 修复开启 `batch coprocessor` 功能，执行 `Query` 报错 `Too Many Pings` 的问题
+    + 修复开启 `batch coprocessor` 功能时，执行 `Query` 报错 `Too Many Pings` 的问题
     + 修复 Dashboard 因未上报 `deploy path` 信息导致相关信息显示不正确的问题
 
 * TiKV
