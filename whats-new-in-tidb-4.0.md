@@ -53,7 +53,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 - 支持 `SELECT INTO outfile` 语句，该语句用来将表数据导出到指定的文本文件中，配合上 `LOAD DATA`，可以方便的在数据库之间导入/导出数据。
 - 支持自定义序列对象 Sequence，提供 `CACHE/NO_CACHE`、`CYCLE/NO_CYCLE` 选项定义序列的不同特性，满足序列生成的各种需求，用户可以通过 Sequence 替代第三方 ID 生成服务。详情参阅：[Sequence](/sql-statements/sql-statement-create-sequence.md)。
 - 新增 `Flashback` 命令，支持恢复被 `Truncate` 的表。详情参阅：[`Flashback`](/sql-statements/sql-statement-flashback-table.md)。
-- 新增查询数据时将 Join、Sort 中间结果写入本地磁盘，防止查询语句占用内存过多导致系统 OOM 的问题，提升系统的稳定性。。
+- 新增查询数据时将 Join、Sort 中间结果写入本地磁盘，防止查询语句占用内存过多导致系统 OOM 的问题，提升系统的稳定性。
 - 优化 `EXPLAIN` 和 `EXPLAIN ANALYZE` 的输出结果，显示更多的信息，提升排查问题的效率。详情参阅：[Explain Analyze](/sql-statements/sql-statement-explain-analyze.md)，[Explain](/sql-statements/sql-statement-explain.md)。
 - 支持 Index Merge 功能，Index Merge 是一种新的表访问方式，当单询只涉及到单张表时，优化器会自动根据查询条件读取多个索引数据并对结果求并集，提升查询单张表时的性能。详情参阅：[Index Merge](/query-execution-plan.md#indexmerge-示例)。
 - 支持表达式索引 (Expression Index) 功能，表达式索引也叫函数索引，在创建索引时索引的字段不一定要是一个具体的列，而可以由一个或者多个列讲算出来的表达式。对于快速访问那些基于计算结果的表非常有用（实验特性）。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。
