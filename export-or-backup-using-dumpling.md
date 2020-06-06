@@ -20,7 +20,7 @@ category: how-to
 
 ### 导出到 sql 文件
 
-dumpling 默认导出数据格式为 sql 文件。也可以通过设置 --filetype 为 sql 导出数据到 sql 文件：
+Dumpling 默认导出数据格式为 sql 文件。也可以通过设置 --filetype 为 sql 导出数据到 sql 文件：
 
 {{< copyable "shell-regular" >}}
 
