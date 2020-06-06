@@ -22,7 +22,7 @@ Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[�
 
 ### 导出到 sql 文件
 
-Dumpling 默认导出数据格式为 sql 文件。也可以通过设置 --filetype 为 sql 导出数据到 sql 文件：
+Dumpling 默认导出数据格式为 sql 文件。也可以通过设置 `--filetype sql` 导出数据到 sql 文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -52,7 +52,7 @@ dumpling \
   -h 127.0.0.1 \
   -o /tmp/test \
   --filetype csv \
-  --sql "select * from `test`.`sbtest1` where id < 100"
+  --sql 'select * from `test`.`sbtest1` where id < 100'
 ```
 
 > **注意：**
@@ -100,7 +100,13 @@ Dumpling 可以通过 --filter 指定 table-filter 来筛选特定的库表。ta
 
 #### 使用 `-B`，`-T` 指令筛选数据
 
-与 Mydumper 一致，Dumpling 也可以通过 -B 或 -T 参数导出特定的数据库/表。
+Dumpling 也可以通过 `-B` 或 `-T` 参数导出特定的数据库/数据表。
+
+> **注意：**
+>
+> 1. `--filter` 参数与 `-T` 参数不可同时使用。
+>
+> 2. `-T` 参数只能接受完整的 `库.表` 形式，不支持只指定表名，例如 `-T WorkOrder`。
 
 例如通过指定:
 
