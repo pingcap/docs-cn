@@ -7,11 +7,11 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
+  + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
   + [基本功能](/basic-features.md)
   + 兼容性
     + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
-  + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
   + [荣誉列表](/credits.md)
 + 快速上手
   + [快速上手指南](/quick-start-with-tidb.md)
