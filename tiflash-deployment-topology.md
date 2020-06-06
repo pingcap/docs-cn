@@ -36,9 +36,9 @@ category: how-to
 
 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
 
-2. 使用 pd-ctl 开启 PD 的 [Placement Rules](/configure-placement-rules.md) 功能，参考 [开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)。
+2. 使用 pd-ctl 开启 PD 的 [Placement Rules](/configure-placement-rules.md) 功能，参考[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)。
 
-3. 参考 [扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点) 章节对 TiFlash 进行部署。
+3. 参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点) 章节对 TiFlash 进行部署。
 
 > **注意：**
 >

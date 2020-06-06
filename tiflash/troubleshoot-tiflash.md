@@ -46,7 +46,7 @@ category: reference
     echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
     ```
 
-    预期结果为 `"enable-placement-rules": "true"`（已开启）。如未开启，具体开启方法参考 [开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)。
+    预期结果为 `"enable-placement-rules": "true"`（已开启）。如未开启，具体开启方法参考[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)。
 
 2. 通过 TiFlash-Summary 监控面板下的 UpTime 检查操作系统中 TiFlash 进程是否正常。
 
