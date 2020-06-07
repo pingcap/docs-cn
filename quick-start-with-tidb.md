@@ -67,10 +67,12 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v4.0.0-rc --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v4.0.0 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动一个 `v4.0.0-rc` 版本的集群，`--monitor` 表示同时部署监控组件。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动一个 `v4.0.0` 版本的集群，`--monitor` 表示同时部署监控组件。
+        最新版本可以通过执行 `tiup list tidb` 来查看。
+        运行结果将显示集群的访问方式：
         
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -159,7 +161,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     {{< copyable "shell-regular" >}}
     
     ```shell
-    tiup update cluster
+    tiup update --self && tiup update cluster
     ```
 
 4. 由于模拟多机部署，需要通过 `root` 用户调大 sshd 服务的连接数限制：
@@ -269,8 +271,6 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
     - 访问 TiDB 数据库，密码为空：
 
-        {{< copyable "shell-regular" >}}
-        
         ```shell
         mysql -h 10.0.1.1 -P 4000 -u root
         ```
@@ -284,17 +284,27 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
         通过 <http://{pd-ip}:2379/dashboard> 访问集群 TiDB Dashboard 监控页面，默认用户名为 root，密码为空。
     
     - 执行以下命令确认当前已经部署的集群列表：
-    
-        {{< copyable "shell-regular" >}}
-        
+
         ```shell
         tiup cluster list
         ```
     
     - 执行以下命令查看集群的拓扑结构和状态：
-    
-        {{< copyable "shell-regular" >}}
-        
+
         ```shell
         tiup cluster display <cluster-name>
         ```
+
+## 探索更多
+
+- 如果你刚刚部署好一套 TiDB 本地测试集群：
+    - 学习 [TiDB SQL 操作](/basic-sql-operations.md)
+    - [迁移数据到 TiDB](/data-migration-route.md)
+    - 了解 [TiDB 的核心特性与核心应用场景](/overview.md)
+    - 了解 [TiDB 的整体架构](/tidb-architecture.md)
+    - 了解 [TiDB 与 MySQL 的兼容性](/mysql-compatibility.md)
+
+- 如果你准备好在生产环境部署 TiDB 了：
+    - 在线部署：[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
+    - 离线部署：[使用 TiUP 离线部署 TiDB 集群](/production-offline-deployment-using-tiup.md)
+    - [使用 TiDB Operator 在云上部署 TiDB](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)

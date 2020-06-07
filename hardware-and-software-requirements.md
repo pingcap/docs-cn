@@ -34,7 +34,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 
 > **注意：**
 >
-> 中控机需要[部署 TiUP 软件](/tiup/tiup-cluster.md)完成 TiDB 集群运维管理。
+> 中控机需要部署 [TiUP 软件](/tiup/tiup-documentation-guide.md)来完成 TiDB 集群运维管理。
 
 ### 目标主机建议配置软件
 
