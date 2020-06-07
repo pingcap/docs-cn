@@ -192,7 +192,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 | max\_execution\_time | GLOBAL \| SESSION | 语句超时时间，单位为毫秒 |
 | innodb\_lock\_wait\_timeout | GLOBAL \| SESSION | 悲观事务语句等锁时间，单位为秒 |
 | windowing\_use\_high\_precision | GLOBAL \| SESSION | 计算窗口函数时采用高精度模式，默认值为 1 |
-| sql\_select\_limit | GLOBAL \| SESSION | SELECT 语句返回的最大行数，默认值为 2^64 - 1 |
+| sql\_select\_limit | GLOBAL \| SESSION | SELECT 语句返回的最大行数，默认值为 `2^64 - 1` |
 
 > **注意：**
 >
