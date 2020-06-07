@@ -82,7 +82,7 @@ dumpling \
 
 #### 使用 `--filter` 指令筛选数据
 
-Dumpling 可以通过 --filter 指定 table-filter 来筛选特定的库表。table-filter 的语法与 .gitignore 相似，[详细语法参考](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
+Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。table-filter 的语法与 .gitignore 相似，[详细语法参考](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
 
 {{< copyable "shell-regular" >}}
 
@@ -98,7 +98,7 @@ Dumpling 可以通过 --filter 指定 table-filter 来筛选特定的库表。ta
 
 上述命令将会导出 `employees` 数据库的所有表，以及所有数据库中的 `WorkOrder` 表。
 
-#### 使用 `-B`，`-T` 指令筛选数据
+#### 使用 `-B` 或 `-T` 指令筛选数据
 
 Dumpling 也可以通过 `-B` 或 `-T` 参数导出特定的数据库/数据表。
 
@@ -106,9 +106,9 @@ Dumpling 也可以通过 `-B` 或 `-T` 参数导出特定的数据库/数据表�
 >
 > 1. `--filter` 参数与 `-T` 参数不可同时使用。
 >
-> 2. `-T` 参数只能接受完整的 `库.表` 形式，不支持只指定表名。例：Dumpling 无法识别 `-T WorkOrder`。
+> 2. `-T` 参数只能接受完整的 `库名.表名` 形式，不支持只指定表名。例：Dumpling 无法识别 `-T WorkOrder`。
 
-例如通过指定:
+例如通过指定：
 
 - `-B employees` 导出 `employees` 数据库
 - `-T employees.WorkOrder` 导出 `employees.WorkOrder` 数据表
@@ -118,8 +118,8 @@ Dumpling 也可以通过 `-B` 或 `-T` 参数导出特定的数据库/数据表�
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用参数如下：
 
 - `-o` 用于选择存储导出文件的目录。
-- `-F` 选项用于指定单个文件的最大大小，默认单位为 `MiB`。可以接受类似 `5GiB`, `8KB` 的输入。
-- `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数），开启后 Dumpling 会开启表内并发，提高导大表速度。
+- `-F` 选项用于指定单个文件的最大大小，默认单位为 `MiB`。可以接受类似 `5GiB` 或 `8KB` 的输入。
+- `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数），开启后 Dumpling 会开启表内并发，提高导出大表的速度。
 
 利用以上参数可以让 Dumpling 的并行度更高。
 
