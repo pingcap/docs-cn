@@ -88,7 +88,7 @@ mysql> select _tidb_rowid, id from t;
 
 - Add Index
     + 同一条 SQL 语句不支持创建多个索引。
-    + 仅在语法在支持创建不同类刑的索引 (HASH/BTREE/RTREE），功能未实现。
+    + 仅在语法在支持创建不同类型的索引 (HASH/BTREE/RTREE），功能未实现。
 
 - Add Column
     + 不支持设置`PRIMARY KEY` 及 `UNIQUE KEY`，不支持设置 `AUTO_INCREMENT` 属性。可能输出的错误信息：`unsupported add column '%s' constraint PRIMARY/UNIQUE/AUTO_INCREMENT KEY`
