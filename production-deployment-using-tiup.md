@@ -6,9 +6,9 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
 # 使用 TiUP 部署 TiDB 集群
 
-[TiUP](https://github.com/pingcap-incubator/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap-incubator/tiup-cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数。
+[TiUP](https://github.com/pingcap/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数。
 
-目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC。本文将介绍不同集群拓扑的具体部署步骤。
+目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC，以及监控系统。本文将介绍不同集群拓扑的具体部署步骤。
 
 ## 第 1 步：软硬件环境需求及前置检查
 
@@ -61,7 +61,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
     ```shell
     tiup update --self && tiup update cluster
     ```
-    
+
     预期输出 `“Update successfully!”` 字样。
 
 5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
@@ -102,7 +102,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/']
 
     以典型的 `两地三中心` 架构为例，介绍跨机房部署架构，以及需要注意的关键设置。
 
-### 第 4 步：执行部署命令
+## 第 4 步：执行部署命令
 
 > **注意：**
 >
@@ -127,7 +127,7 @@ tiup cluster deploy tidb-test v4.0.0 ./topology.yaml --user root [-p] [-i /home/
 
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
-### 第 5 步：查看 TiUP 管理的集群情况
+## 第 5 步：查看 TiUP 管理的集群情况
 
 {{< copyable "shell-regular" >}}
 
@@ -144,7 +144,7 @@ Name              User  Version        Path                                     
 tidb-test         tidb  v4.0.0      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
-### 第 6 步：检查部署的 TiDB 集群情况
+## 第 6 步：检查部署的 TiDB 集群情况
 
 例如，执行如下命令检查 `tidb-test` 集群情况：
 
@@ -156,7 +156,7 @@ tiup cluster display tidb-test
 
 预期输出包括 `tidb-test` 集群中实例 ID、角色、主机、监听端口和状态（由于还未启动，所以状态为 Down/inactive）、目录信息。
 
-### 第 7 步：启动集群
+## 第 7 步：启动集群
 
 {{< copyable "shell-regular" >}}
 
@@ -166,7 +166,7 @@ tiup cluster start tidb-test
 
 预期结果输出 ```Started cluster `tidb-test` successfully``` 标志启动成功。
 
-### 第 8 步：验证集群运行状态
+## 第 8 步：验证集群运行状态
 
 - 通过 TiUP 检查集群状态
 
@@ -186,4 +186,4 @@ tiup cluster display tidb-test
 mysql -u root -h 10.0.1.4 -P 4000
 ```
 
-更多方式可参考[验证集群运行状态](/post-installation-check.md)。
+此外，也需要验证监控系统、TiDB Dashboard 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
