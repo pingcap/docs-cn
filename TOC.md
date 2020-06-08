@@ -428,7 +428,9 @@
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
-    + [TiFlash](/tiflash/tiflash-overview.md)
+    + TiFlash
+      + [TiFlash 简介](/tiflash/tiflash-overview.md)
+      + [使用 TiFlash](/tiflash/use-tiflash.md)
   + TiUP
     + [文档指南](/tiup/tiup-documentation-guide.md)
     + [概览](/tiup/tiup-overview.md)
