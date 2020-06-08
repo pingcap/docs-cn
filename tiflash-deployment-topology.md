@@ -32,14 +32,6 @@ category: how-to
 
 - TiFlash 具体的参数配置介绍可参考 [TiFlash 参数配置](/tiflash/tiflash-configuration.md)。
 
-### 在已有 TiDB 集群上新增 TiFlash 拓扑
-
-1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
-
-2. 使用 pd-ctl 开启 PD 的 [Placement Rules](/configure-placement-rules.md) 功能，参考[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)。
-
-3. 参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点) 章节对 TiFlash 进行部署。
-
 > **注意：**
 >
 > - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在目标主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
