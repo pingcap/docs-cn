@@ -237,7 +237,7 @@ aliases: ['/docs-cn/dev/test-deployment-using-docker/']
     {{< copyable "shell-regular" >}}
     
     ```shell
-    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root 
+    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root -p
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
