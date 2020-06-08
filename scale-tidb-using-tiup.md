@@ -87,7 +87,7 @@ pd_servers:
     log_dir: /data/deploy/install/log/pd-2379
 ```
 
-可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置，默认会被 `scale-out.yaml` 继承。
+可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置默认会被 `scale-out.yaml` 继承，因此也会在 `scale-out.yaml` 中生效。
 
 ### 2. 执行扩容命令
 
@@ -373,9 +373,9 @@ tiup cluster display <cluster-name>
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 
-   如果等待较长时间后，该节点仍然无法正常消失或者状态变成 Tombstone，可以考虑以下命令，把节点强制踢出集群：
+    如果等待较长时间后，该节点仍然无法正常消失或者状态变成 Tombstone，可以考虑以下命令，把节点强制踢出集群：
 
-   **注意以下命令会直接丢弃该 TiFlash 节点上的副本，有可能导致查询失败**
+    **注意以下命令会直接丢弃该 TiFlash 节点上的副本，有可能导致查询失败**
 
     {{< copyable "shell-regular" >}}
 
