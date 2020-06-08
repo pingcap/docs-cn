@@ -385,7 +385,7 @@ In special cases (such as when a node needs to be forcibly taken down), or if th
 
 5. Manually update TiUP's cluster configuration file (delete the information of the TiFlash node that goes down in edit mode).
 
-    {{< copyable "shell-regular">}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup cluster edit-config <cluster-name>
