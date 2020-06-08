@@ -53,7 +53,7 @@
   + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
 + 运维操作
   + 升级 TiDB 版本
-    + [使用 TiUP（推荐）](/upgrade-tidb-using-tiup.md)
+    + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
     + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
