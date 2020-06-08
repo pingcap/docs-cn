@@ -7,6 +7,7 @@
 
 + Introduction
   - [TiDB Introduction](/overview.md)
+  - [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
   + Benchmarks
     - [How to Test TiDB Using Sysbench](/benchmark/benchmark-tidb-using-sysbench.md)
     - [How to Run TPC-C Test on TiDB](/benchmark/benchmark-tidb-using-tpcc.md)
