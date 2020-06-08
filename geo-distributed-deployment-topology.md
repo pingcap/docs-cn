@@ -71,7 +71,7 @@ category: how-to
     replication.max-replicas: 5
     ```
 
-- 拒绝异地机房 TiKV 的 Raft 副本拒绝选举为 leader。
+- 拒绝异地机房 TiKV 的 Raft 副本选举为 Leader。
 
     ```yaml
     label-property:
@@ -82,4 +82,5 @@ category: how-to
 
 > **注意：**
 >
-> 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在目标主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> - 如果部署目录配置为相对路径，会部署在用户家目录下。
