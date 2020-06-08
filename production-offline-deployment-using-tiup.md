@@ -264,20 +264,3 @@ tiup cluster start tidb-test
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
 部署完成后，集群相关操作可参考 [cluster 命令](/tiup/tiup-cluster.md)。
-
-## 6. 更新 TiUP 离线镜像以升级本地集群
-
-如果用户希望升级更新本地的 TiUP 离线镜像，可以参考本文的步骤 1 与步骤 2。在执行 `local_install.sh` 后，TiUP 会完成覆盖升级。
-
-随后，需要按照 `local_install.sh` 执行的结果，重新声明全局环境变量，并将 TIUP_MIRRORS 指向执行 `local_install.sh` 命令时输出的离线镜像包的位置 `/path/to/mirror`。
-
-{{< copyable "shell-regular" >}}
-
-```bash
-source .bash_profile
-export TIUP_MIRRORS=/path/to/mirror
-```
-
-此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests` 后再次运行以上命令。
-
-在更新本地镜像后，如果需要升级本地集群，可参考[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#使用-tiup-升级-tidb)。
