@@ -189,6 +189,34 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 1 row in set (0.01 sec)
 ```
 
+`COLUMNS` 表中列的含义如下：
+
+* `TABLE_CATALOG`：包含列的表所属的目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：包含列的表所属的数据库的名称。
+* `TABLE_NAME`：包含列的表的名称。
+* `COLUMN_NAME`：列的名称。
+* `ORDINAL_POSITION`：表中列的位置。
+* `COLUMN_DEFAULT`：列的默认值。如果列的显式默认值为 `NULL`，或者列定义中不包含 `default` 子句，则此值为 `NULL`。
+* `IS_NULLABLE`：列的可空性。如果列中可以存储空值，则该值为 `YES`，则为 `NO`。
+* `DATA_TYPE`：列数据类型。
+* `CHARACTER_MAXIMUM_LENGTH`：对于字符串列，以字符为单位的最大长度。
+* `CHARACTER_OCTET_LENGTH`：对于字符串列，以字节为单位的最大长度。
+* `NUMERIC_PRECISION`：对于数字列，为数字精度。
+* `NUMERIC_SCALE`：对于数字列，为数字刻度。
+* `DATETIME_PRECISION`：对于时间列，小数秒精度。
+* `CHARACTER_SET_NAME`：对于字符串列，字符集名称。
+* `COLLATION_NAME`：对于字符串列，排序规则名称。
+* `COLUMN_TYPE`：列类型。
+* `COLUMN_KEY`：该列是否被索引。具体显示如下:
+    * 如果此值为空，则该列要么未被索引，要么被索引且是多列非唯一索引中的第二列。
+    * 如果此值是`PRI`，则该列是主键，或者是多列主键中的一列。
+    * 如果此值是`UNI`，则该列是唯一索引的第一列。
+    * 如果此值是`MUL`，则该列是非唯一索引的第一列，在该列中允许给定值的多次出现。
+* `EXTRA`：关于给定列的任何附加信息。
+* `PRIVILEGES`：当前用户对该列拥有的权限。目前在 TiDB 中，此值为定值，一直为 `select,insert,update,references`。
+* `COLUMN_COMMENT`：列定义中包含的注释。
+* `GENERATION_EXPRESSION`：对于生成的列，显示用于计算列值的表达式。对于未生成的列为空。
+
 对应的 `SHOW` 语句如下：
 
 {{< copyable "sql" >}}
@@ -208,7 +236,7 @@ SHOW COLUMNS FROM t1 FROM test;
 
 ## ENGINES 表
 
-`ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。
+`ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。此外，`ENGINES` 表中其它列值也都是定值。
 
 {{< copyable "sql" >}}
 
@@ -226,6 +254,15 @@ TRANSACTIONS: YES
   SAVEPOINTS: YES
 1 row in set (0.00 sec)
 ```
+
+`ENGINES` 表中列的含义如下：
+
+* `ENGINE`：存储引擎的名称。
+* `SUPPORT`：服务器对存储引擎的支持级别，在 TiDB 中此值一直是 `DEFAULT`。
+* `COMMENT`：存储引擎的简要描述。
+* `TRANSACTIONS`：存储引擎是否支持事务。
+* `XA`：存储引擎是否支持 XA 事务。
+* `SAVEPOINTS`：存储引擎是否支持 `savepoints`。
 
 ## KEY_COLUMN_USAGE 表
 
@@ -266,6 +303,21 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
        REFERENCED_COLUMN_NAME: NULL
 2 rows in set (0.00 sec)
 ```
+
+`KEY_COLUMN_USAGE` 表中列的含义如下：
+
+* `CONSTRAINT_CATALOG`：约束所属的目录的名称。该值始终为 `def`。
+* `CONSTRAINT_SCHEMA`：约束所属的数据库的名称。
+* `CONSTRAINT_NAME`：约束名称。
+* `TABLE_CATALOG`：表所属目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：表所属的架构数据库的名称。
+* `TABLE_NAME`：具有约束的表的名称。
+* `COLUMN_NAME`：具有约束的列的名称。
+* `ORDINAL_POSITION`：列在约束中的位置，而不是列在表中的位置。列位置从 1 开始编号。
+* `POSITION_IN_UNIQUE_CONSTRAINT`：唯一约束和主键约束为空。对于外键约束，此列是被引用的表的键的序号位置。
+* `REFERENCED_TABLE_SCHEMA`：约束引用的数据库的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
+* `REFERENCED_TABLE_NAME`：约束引用的表的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
+* `REFERENCED_COLUMN_NAME`：约束引用的列的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
 
 ## PROCESSLIST 表
 
