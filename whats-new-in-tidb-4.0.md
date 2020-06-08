@@ -63,7 +63,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
         - `cluster_info` 表，用于保存集群的拓扑信息。
         - `cluster_log` 表，用于保存系统的日志信息。
         - `cluster_hardware`，`cluster_systeminfo`，用于保存系统中服务器的硬件系统，操作系统信息等。
-    新增慢查询、诊断结果、性能监控等系统表，帮忙 DBA 快速分析系统的性能瓶颈：
+    - 新增慢查询、诊断结果、性能监控等系统表，帮忙 DBA 快速分析系统的性能瓶颈：
         - `cluster_slow_query` 表，用于记录保存全局的慢查询信息。
         - `cluster_processlist` 表，用于记录保存全局的 processlist。
         - `inspection_result` 表，4.0 版本新增自动性能诊断的功能，帮助 DBA 自动分析系统的性能瓶颈并自动输出相关的性能分析报告，方便 DBA 定位常见的问题和异常项，提升 DBA 运维的效率。
@@ -93,4 +93,4 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 
 ### TiCDC
 
-TiCDC 支持通过拉取 TiKV 变更日志实现 TiDB 集群之间数据同步，支持数据的高可靠、服务的高可用能力，确保数据不会丢失。用户可以通过订阅的方式订阅数据的变更信息，系统会自动将数据推送到下游系统，当前仅支持 MySQL 协议的数据库（例如：MySQL、TiDB)及 Kafka 作为 TiCDC 的下游，同时用户也可以通过 TiCDC 提供的[开放数据协议](/ticdc/ticdc-open-protocol.md)自行扩展支持的下游系统（实验特性）。详情参阅：[TiCDC](/ticdc//ticdc-overview.md)
+TiCDC 支持通过拉取 TiKV 变更日志实现 TiDB 集群之间数据同步，支持数据的高可靠、服务的高可用能力，确保数据不会丢失。用户可以通过订阅的方式订阅数据的变更信息，系统会自动将数据推送到下游系统，当前仅支持 MySQL 协议的数据库（例如：MySQL、TiDB)及 Kafka 作为 TiCDC 的下游，同时用户也可以通过 TiCDC 提供的[开放数据协议](/ticdc/ticdc-open-protocol.md)自行扩展支持的下游系统（实验特性）。详情参阅：[TiCDC](/ticdc//ticdc-overview.md)。
