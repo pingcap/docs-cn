@@ -92,7 +92,7 @@ Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。
   -P 4000 \
   -h 127.0.0.1 \
   -o /tmp/test \
-  --filter "employees.*"
+  --filter "employees.*" \
   --filter "*.WorkOrder"
 ```
 
