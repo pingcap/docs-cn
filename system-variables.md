@@ -118,6 +118,7 @@ The following MySQL system variables are fully supported in TiDB and have the sa
 | max\_execution\_time | GLOBAL \| SESSION | the execution timeout for a statement, in milliseconds |
 | innodb\_lock\_wait\_timeout | GLOBAL \| SESSION | the lock wait time for pessimistic transactions, in seconds |
 | windowing\_use\_high\_precision | GLOBAL \| SESSION |  whether to use the high precision mode when computing the window function. The default value is ON |
+| sql\_select\_limit | GLOBAL \| SESSION | The maximum number of rows to return from the `SELECT` statements. The default value is `2^64 - 1`. |
 
 > **Note:**
 >
