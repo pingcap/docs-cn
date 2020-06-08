@@ -2,6 +2,7 @@
 title: Quick Start Guide for the TiDB Database Platform
 summary: Learn how to quickly get started with the TiDB platform and see if TiDB is the right choice for you.
 category: how-to
+aliases: ['/docs/dev/test-deployment-using-docker/']
 ---
 
 # Quick Start Guide for the TiDB Database Platform
@@ -12,18 +13,9 @@ category: how-to
 
 This document describes how to try out TiDB, a distributed SQL database, in a few minutes. You can choose any of the following three methods to get started with the TiDB database platform:
 
-- [Try out TiDB with one click using TiDB-Wasm](#try-out-tidb-with-one-click-using-tidb-wasm)
 - [Deploy a local test environment using TiUP Playground](#deploy-a-local-test-environment-using-tiup-playground)
-- [Set up a test environment on a single machine using TiUP cluster](#set-up-a-test-environment-on-a-single-machine-using-tiup-cluster)
-
-## Try out TiDB with one click using TiDB-Wasm
-
-- Scenario: Experiment with TiDB SQL and test the TiDB compatibility with MySQL queries.
-- Time required: Instant
-
-TiDB-Wasm enables you to run a TiDB server instance in a browser so that you can experiment with SQL and test TiDB compatibility with MySQL queries.
-
-Click to try TiDB-Wasm playground: <https://tour.tidb.io>. It takes about 10 seconds to launch the TiDB server instance in your browser. The playground walks you through the basic TiDB SQL statements such as DDL, DML and CRUD operations.
+- [Set up a test environment on a single machine using TiUP Cluster](#set-up-a-test-environment-on-a-single-machine-using-tiup-cluster)
+- [Try out TiDB with one click using TiDB-Wasm](#try-out-tidb-with-one-click-using-tidb-wasm)
 
 ## Deploy a local test environment using TiUP Playground
 
@@ -67,12 +59,12 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v4.0.0-rc --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v4.0.0 --db 2 --pd 3 --kv 3 --monitor
         ```
     
-        The command downloads a v4.0.0-rc cluster to the local machine and starts it.
+        The command downloads a v4.0.0 cluster to the local machine and starts it. `--monitor` means that the monitoring component is also deployed.
 
-        `--monitor` means that the monitoring component is also deployed.
+        To view the latest version, run `tiup list tidb`.
 
         This command returns the access methods of the cluster:
 
@@ -168,7 +160,7 @@ Other requirements for the target machine:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup update cluster
+    tiup update --self && tiup update cluster
     ```
 
 4. Use the `root` user privilege to increase the connection limit of the `sshd` service. This is because TiUP needs to simulate deployment on multiple machines.
@@ -251,7 +243,7 @@ Other requirements for the target machine:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root 
+    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root -p
     ```
 
     - `<cluster-name>`: Set the cluster name
@@ -301,3 +293,26 @@ Other requirements for the target machine:
         ```shell
         tiup cluster display <cluster-name>
         ```
+
+## Try out TiDB with one click using TiDB-Wasm
+
+- Scenario: Experiment with TiDB SQL and test the TiDB compatibility with MySQL queries.
+- Time required: Instant
+
+TiDB-Wasm enables you to run a TiDB server instance in a browser so that you can experiment with SQL and test TiDB compatibility with MySQL queries.
+
+Click to try TiDB-Wasm playground: <https://tour.tidb.io>. It takes about 10 seconds to launch the TiDB server instance in your browser. The playground walks you through the basic TiDB SQL statements such as DDL, DML and CRUD operations.
+
+## What's next
+
+- If you have just deployed a TiDB cluster for the local test environment:
+
+    - Learn [Basic SQL operations in TiDB](/basic-sql-operations.md)
+    - Learn [TiDB key features and scenarios](/overview.md)
+    - Learn [TiDB's compatibility with MySQL](/mysql-compatibility.md)
+
+- If you are ready to deploy a TiDB cluster for the production environment:
+
+    - [Deploy TiDB online using TiUP](/production-deployment-using-tiup.md)
+    - [Deploy TiDB online using TiUP](/production-offline-deployment-using-tiup.md)
+    - [Deploy TiDB on Cloud using TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)
