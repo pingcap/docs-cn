@@ -246,7 +246,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
     {{< copyable "shell-regular" >}}
     
     ```shell
-    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root 
+    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root -p
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
