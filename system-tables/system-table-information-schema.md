@@ -314,10 +314,10 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 * `TABLE_NAME`：具有约束的表的名称。
 * `COLUMN_NAME`：具有约束的列的名称。
 * `ORDINAL_POSITION`：列在约束中的位置，而不是列在表中的位置。列位置从 1 开始编号。
-* `POSITION_IN_UNIQUE_CONSTRAINT`：唯一和主键约束为空。对于外键约束，此列是被引用的表的键的序号位置。
+* `POSITION_IN_UNIQUE_CONSTRAINT`：唯一约束和主键约束为空。对于外键约束，此列是被引用的表的键的序号位置。
 * `REFERENCED_TABLE_SCHEMA`：约束引用的数据库的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
 * `REFERENCED_TABLE_NAME`：约束引用的表的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
-* `REFERENCED_COLUMN_NAME`：约束引用的列的名称。。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
+* `REFERENCED_COLUMN_NAME`：约束引用的列的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
 
 ## PROCESSLIST 表
 
