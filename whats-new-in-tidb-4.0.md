@@ -59,11 +59,15 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 - 支持表达式索引 (Expression Index) 功能，表达式索引也叫函数索引，在创建索引时索引的字段不一定要是一个具体的列，而可以由一个或者多个列讲算出来的表达式。对于快速访问那些基于计算结果的表非常有用（实验特性）。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。
 - 支持 AutoRandom Key（实验特性）作为 TiDB 在列属性上的扩展语法，AutoRandom 被设计用于解决自增主键列的写热点问题，为使用自增主键列的用户提供最低成本的 MySQL 迁移方案。详情参阅：[AutoRandom Key](/auto-random.md)。
 - 新增集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息等系统表等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[infromation_shema](/system-tables/system-table-information-schema.md)，具体信息如下：
+
     - 新增集群拓扑、配置、日志、硬件、操作系统等信息表，帮助 DBA 快速了集群配置、状态信息：
+
         - `cluster_info` 表，用于保存集群的拓扑信息。
         - `cluster_log` 表，用于保存系统的日志信息。
         - `cluster_hardware`，`cluster_systeminfo`，用于保存系统中服务器的硬件系统，操作系统信息等。
-    - 新增慢查询、诊断结果、性能监控等系统表，帮忙 DBA 快速分析系统的性能瓶颈：
+ 
+    - 新增慢查询、诊断结果、性能监控等系统表，帮助 DBA 快速分析系统的性能瓶颈：
+
         - `cluster_slow_query` 表，用于记录保存全局的慢查询信息。
         - `cluster_processlist` 表，用于记录保存全局的 processlist。
         - `inspection_result` 表，4.0 版本新增自动性能诊断的功能，帮助 DBA 自动分析系统的性能瓶颈并自动输出相关的性能分析报告，方便 DBA 定位常见的问题和异常项，提升 DBA 运维的效率。
