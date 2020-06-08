@@ -91,7 +91,7 @@ To deploy TiCDC, take the following steps:
 
 1. Check if your TiDB version supports TiCDC. If not, upgrade the TiDB cluster to 4.0.0 rc.1 or later versions.
 
-2. Refer to [Scale out a TiDB/TiKV/PD/TiCDC node](/scale-tidb-using-tiup.md#scale-out-a-tidbtikvpdticdc-node) and deploy TiCDC.
+2. Refer to [Scale out a TiDB/TiKV/PD/TiCDC node](/scale-tidb-using-tiup.md#scale-out-a-tidbpdtikv-node) and deploy TiCDC.
 
     This is an example of the scale-out configuration file:
 
