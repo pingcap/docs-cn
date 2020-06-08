@@ -5,7 +5,7 @@ category: how-to
 
 # 使用 TiUP 离线镜像升级 TiDB
 
-本文档适用于通过升级 TiUP 离线镜像升级 TiDB 集群。
+本文档适用于通过升级 TiUP 离线镜像升级 TiDB 集群，升级步骤如下。
 
 ## 1. 更新 TiUP 离线镜像
 
