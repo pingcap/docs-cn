@@ -1,7 +1,11 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
 category: how-to
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/tiup/']
+=======
+aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/']
+>>>>>>> a174895... *: update using TiFlash in toc and index (#3532)
 ---
 
 # 使用 TiUP 部署 TiDB 集群
@@ -187,3 +191,17 @@ mysql -u root -h 10.0.1.4 -P 4000
 ```
 
 此外，也需要验证监控系统、TiDB Dashboard 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
+
+## 探索更多
+
+如果你已同时部署了 [TiFlash](/tiflash/tiflash-overview.md)，接下来可参阅以下文档：
+
+- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [TiFlash 集群运维](/tiflash/maintain-tiflash.md)
+- [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
+- [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
+
+如果你已同时部署了 [TiCDC](/ticdc/ticdc-overview.md)，接下来可参阅以下文档：
+
+- [TiCDC 任务管理](/ticdc/manage-ticdc.md)
+- [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
