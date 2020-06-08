@@ -52,6 +52,7 @@ BackupRequest{
     ClusterId,      // The cluster ID.
     StartKey,       // The starting key of the backup (backed up).
     EndKey,         // The ending key of the backup (not backed up).
+    StartVersion,   // The version of the last backup snapshot, used for the incremental backup.
     EndVersion,     // The backup snapshot time.
     StorageBackend, // The path where backup files are stored.
     RateLimit,      // Backup speed (MB/s).
@@ -61,6 +62,8 @@ BackupRequest{
 After receiving the backup request, the TiKV node traverses all Region leaders on the node to find the Regions that overlap with the KV ranges in this request. The TiKV node backs up some or all of the data within the range, and generates the corresponding SST file.
 
 After finishing backing up the data of the corresponding Region, the TiKV node returns the metadata to BR. BR collects the metadata and stores it in the `backupmeta` file which is used for restoration.
+
+If `StartVersion` is not `0`, the backup is seen as an incremental backup. In addition to KVs, BR also collects DDLs between `[StartVersion, EndVersion)`. During data restoration, these DDLs are restored first.
 
 If checksum is enabled when you execute the backup command, BR calculates the checksum of each backed up table for data check.
 
@@ -122,9 +125,19 @@ Explanations for the above command are as follows:
 * `backup`: the sub-command of `br`.
 * `full`: the sub-command of `backup`.
 * `-s` (or `--storage`): the option that specifies the path where the backup files are stored.
-* `"local:///tmp/backup"`: the parameter of `-s`. `/tmp/backup` is the path in the local disk where the backup files are stored.
+* `"local:///tmp/backup"`: the parameter of `-s`. `/tmp/backup` is the path in the local disk where the backed up files of each TiKV node are stored.
 * `--pd`: the option that specifies the Placement Driver (PD) service address.
 * `"${PDIP}:2379"`: the parameter of `--pd`.
+
+> **Note:**
+> 
+> - When the `local` storage is used, the backup data are scattered in the local file system of each node.
+>
+> - It is **not recommended** to back up to a local disk in the production environment because you **have to** manually aggregate these data to complete the data restoration. For more information, see [Restore Cluster Data](#restore-cluster-data).
+>
+> - Aggregating these backup data might cause redundancy and bring troubles to operation and maintenance. Even worse, if restoring data without aggregating these data, you can receive a rather confusing error message `SST file not found`.
+> 
+> - It is recommended to mount the NFS disk on each node, or back up to the `S3` object storage.
 
 ### Sub-commands
 
@@ -171,6 +184,12 @@ To back up all the cluster data, execute the `br backup full` command. To get he
 **Usage example:**
 
 Back up all the cluster data to the `/tmp/backup` path of each TiKV node and write the `backupmeta` file to this path.
+
+> **Note:**
+> 
+> + If the backup disk and the service disk are different, it has been tested that online backup reduces QPS of the read-only online service by about 15%-25% in case of full-speed backup. If you want to reduce the impact on QPS, use `--ratelimit` to limit the rate.
+> 
+> + If the backup disk and the service disk are the same, the backup competes with the service for I/O resources. This might decrease the QPS of the read-only online service by more than half. Therefore, it is **highly not recommended** to back up the online service data to the TiKV data disk.
 
 {{< copyable "shell-regular" >}}
 
@@ -246,9 +265,94 @@ The `table` sub-command has two options:
 * `--db`: specifies the database name
 * `--table`: specifies the table name.
 
-For descriptions of other options, see [Back up all cluster data](#back-up-all-cluster-data).
+For descriptions of other options, see [Back up all cluster data](#back-up-all-the-cluster-data).
 
 A progress bar is displayed in the terminal during the backup operation. When the progress bar advances to 100%, the backup is complete. Then the BR also checks the backup data to ensure data safety.
+
+### Back up data to Amazon S3 backend
+
+If you back up the data to the Amazon S3 backend, instead of `local` storage, you need to specify the S3 storage path in the `storage` sub-command, and allow the BR node and the TiKV node to access Amazon S3.
+
+You can refer to the [AWS Official Document](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html) to create an S3 `Bucket` in the specified `Region`. You can also refer to another [AWS Official Document](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-folder.html) to create a `Folder` in the `Bucket`.
+
+Pass `SecretKey` and `AccessKey` of the account that has privilege to access the S3 backend to the BR node. Here `SecretKey` and `AccessKey` are passed as environment variables. Then pass the privilege to the TiKV node through BR.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export AWS_ACCESS_KEY_ID=${AccessKey}
+export AWS_SECRET_ACCESS_KEY=${SecretKey}
+```
+
+When backing up using BR, explicitly specify the parameters `--s3.region` and `--send-credentials-to-tikv`. `--s3.region` indicates the region where S3 is located, and `--send-credentials-to-tikv` means passing the privilege to access S3 to the TiKV node.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --send-credentials-to-tikv=true \
+    --log-file backuptable.log
+```
+
+### Back up incremental data
+
+If you want to back up incrementally, you only need to specify the **last backup timestamp** `--lastbackupts`.
+
+The incremental backup has two limitations:
+
+- The incremental backup needs to be under a different path from the previous full backup.
+- No GC (Garbage Collection) happens between the start time of the incremental backup and `lastbackupts`.
+
+To back up the incremental data between `(LAST_BACKUP_TS, current PD timestamp]`, execute the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full\
+    --pd ${PDIP}:2379 \
+    -s local:///home/tidb/backupdata/incr \
+    --lastbackupts ${LAST_BACKUP_TS}
+```
+
+To get the timestamp of the last backup, execute the `validate` command. For example:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata`
+```
+
+In the above example, the incremental backup data includes the newly written data and the DDLs between `(LAST_BACKUP_TS, current PD timestamp]`. When restoring data, BR restores DDLs first and then restores the written data.
+
+### Back up Raw KV (experimental feature)
+
+> **Warning:**
+> 
+> This feature is experimental and not thoroughly tested. It is highly **not recommended** to use this feature in the production environment.
+
+In some scenarios, TiKV might run independently of TiDB. Given that, BR also supports bypassing the TiDB layer and backing up data in TiKV.
+
+For example, you can execute the following command to back up all keys between `[0x31, 0x3130303030303030)` in the default CF to `$BACKUP_DIR`:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup raw --pd $PD_ADDR \
+    -s "local://$BACKUP_DIR" \
+    --start 31 \
+    --end 3130303030303030 \
+    --format hex \
+    --cf default
+```
+
+Here, the parameters of `--start`  and `--end` are decoded using the method specified by `--format` before being sent to TiKV. Currently, the following methods are available:
+
+- "raw": The input string is directly encoded as a key in binary format.
+- "hex": The default encoding method. The input string is treated as a hexadecimal number.
+- "escape": First escape the input string, and then encode it into binary format.
 
 ## Restore cluster data
 
@@ -316,7 +420,7 @@ br restore db \
     --log-file restorefull.log
 ```
 
-In the above command, `--db` specifies the name of the database to be restored. For descriptions of other options, see [Restore all backup data](#restore-all-backup-data).
+In the above command, `--db` specifies the name of the database to be restored. For descriptions of other options, see [Restore all backup data](#restore-all-the-backup-data)).
 
 ### Restore a table
 
@@ -337,7 +441,96 @@ br restore table \
     --log-file restorefull.log
 ```
 
-In the above command, `--table` specifies the name of the table to be restored. For descriptions of other options, see [Restore all backup data](#restore-all-backup-data) and [Restore a database](#restore-a-database).
+In the above command, `--table` specifies the name of the table to be restored. For descriptions of other options, see [Restore all backup data](#restore-all-the-backup-data) and [Restore a database](#restore-a-database).
+
+### Restore data from Amazon S3 backend
+
+If you restore data from the Amazon S3 backend, instead of `local` storage, you need to specify the S3 storage path in the `storage` sub-command, and allow the BR node and the TiKV node to access Amazon S3.
+
+Pass `SecretKey` and `AccessKey` of the account that has privilege to access the S3 backend to the BR node. Here `SecretKey` and `AccessKey` are passed as environment variables. Then pass the privilege to the TiKV node through BR.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export AWS_ACCESS_KEY_ID=${AccessKey}
+export AWS_SECRET_ACCESS_KEY=${SecretKey}
+```
+
+When restoring data using BR, explicitly specify the parameters `--s3.region` and `--send-credentials-to-tikv`. `--s3.region` indicates the region where S3 is located, and `--send-credentials-to-tikv` means passing the privilege to access S3 to the TiKV node.
+
+`Bucket` and `Folder` in the `--storage` parameter represent the S3 bucket and the folder where the data to be restored is located.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --send-credentials-to-tikv=true \
+    --log-file restorefull.log
+```
+
+In the above command, `--table` specifies the name of the table to be restored. For descriptions of other options, see [Restore a database](#restore-a-database).
+
+### Restore incremental data
+
+Restoring incremental data is similar to [restoring full data using BR](#restore-all-the-backup-data). Note that when restoring incremental data, make sure that all the data backed up before `last backup ts` has been restored to the target cluster.
+
+### Restore Raw KV (experimental feature)
+
+> **Warning:**
+> 
+> This feature is in the experiment, without being thoroughly tested. It is highly **not recommended** to use this feature in the production environment.
+
+Similar to [backing up Raw KV](#back-up-raw-kv-experimental-feature), you can execute the following command to restore Raw KV:
+
+{{< copyable "shell-regular" >}}
+
+br restore raw --pd $PD_ADDR \
+    -s "local://$BACKUP_DIR" \
+    --start 31 \
+    --end 3130303030303030 \
+    --format hex \
+    --cf default
+
+In the above example, all the backed up keys in the range `[0x31, 0x3130303030303030)` are restored to the TiKV cluster. The coding methods of these keys are identical to that of [keys during the backup process](#back-up-raw-kv-experimental-feature)
+
+### Online restore (experimental feature)
+
+> **Warning:**
+> 
+> This feature is in the experiment, without being thoroughly tested. It also relies on the unstable `Placement Rules` feature of PD. It is highly **not recommended** to use this feature in the production environment.
+
+During data restoration, writing too much data affects the performance of the online cluster. To avoid this effect as much as possible, BR supports [Placement rules](/configure-placement-rules.md) to isolate resources. In this case, downloading and importing SST are only performed on a few specified nodes (or "restore nodes" for short). To complete the online restore, take the following steps.
+
+1. Configure PD, and start Placement rules:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    echo "config set enable-placement-rules true" | pd-ctl
+    ```
+
+2. Edit the configuration file of the "restore node" in TiKV, and specify "restore" to the `server` configuration item:
+
+    {{< copyable "" >}}
+
+    ```
+    [server]
+    labels = { exclusive = "restore" }
+    ```
+
+3. Start TiKV of the "restore node" and restore the backed up files using BR. Compared with the offline restore, you only need to add the `--online` flag:
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    br restore full \
+        -s "local://$BACKUP_DIR" \
+        --pd $PD_ADDR \
+        --online
+    ```
 
 ## Best practices
 
