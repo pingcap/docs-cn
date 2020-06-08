@@ -9,7 +9,7 @@ aliases: ['/docs/dev/how-to/deploy/orchestrated/tiup/']
 
 [TiUP](https://github.com/pingcap/tiup) is a cluster operation and maintenance tool introduced in TiDB 4.0. TiUP provides [TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster), a cluster management component written in Golang. By using TiUP cluster, you can easily perform daily database operations, including deploying, starting, stopping, destroying, scaling, and upgrading a TiDB cluster, and manage TiDB cluster parameters.
 
-TiUP supports deploying TiDB, TiFlash, TiDB Binlog, TiCDC, and monitoring system. This document introduces how to deploy TiDB clusters of different topologies.
+TiUP supports deploying TiDB, TiFlash, TiDB Binlog, TiCDC, and the monitoring system. This document introduces how to deploy TiDB clusters of different topologies.
 
 ## Step 1: Prerequisites and precheck
 
@@ -191,3 +191,16 @@ If the output log includes ```Started cluster `tidb-test` successfully```, the s
     ```
 
 In addition, you also need to verify the status of the monitoring system, TiDB Dashboard, and the execution of simple SQL commands. For the specific operations, see [Verify Cluster Status](/post-installation-check.md).
+
+## What's next
+
+If you have deployed [TiFlash](/tiflash/tiflash-overview.md) along with the TiDB cluster, see the following documents:
+
+- [Use TiFlash](/tiflash/use-tiflash.md)
+- [Maintain a TiFlash Cluster](/tiflash/maintain-tiflash.md)
+- [TiFlash Alert Rules and Solutions](/tiflash/tiflash-alert-rules.md)
+- [Troubleshoot TiFlash](/tiflash/troubleshoot-tiflash.md)
+
+If you have deployed [TiCDC](/ticdc/ticdc-overview.md) along with the TiDB cluster, see the following documents:
+
+- [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md)

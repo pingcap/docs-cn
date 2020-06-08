@@ -103,3 +103,4 @@ This section introduces the key parameters when you deploy multiple instances on
 > - When editing the configuration file template, modify the required parameter, IP, port, and directory.
 > - Each component uses the global `<deploy_dir>/<components_name>-<port>` as their `deploy_dir` by default. For example, if TiDB specifies the `4001` port, its `deploy_dir` is `/tidb-deploy/tidb-4001` by default. Therefore, in multi-instance scenarios, when specifying a non-default port, you do not need to specify the directory again.
 > - You do not need to manually create the `tidb` user in the configuration file. The TiUP cluster component automatically creates the `tidb` user on the target machines. You can customize the user, or keep the user consistent with the control machine.
+> - If you configure the deployment directory as a relative path, the cluster will be deployed in the home directory of the user.
