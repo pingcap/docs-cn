@@ -7,11 +7,7 @@ aliases: ['/docs/dev/reference/tools/tiup/overview/']
 
 # TiUP Overview
 
-Package manager or package management system is widely used to automate the process of installing and managing system software and application software. Package management tools greatly simplify software's installation, upgrade, and maintenance processes. For example, almost all Linux operating systems that use RPM use Yum for package management, while Anaconda makes it very easy to manage the Python environment and related packages.
-
-In the past, there was no dedicated package management tool in the TiDB ecosystem. Users could only manually manage various packages through different configuration files and folders. Some third-party monitoring and reporting tools such as Prometheus even required additional special management, which made the operation and maintenance work much more difficult.
-
-Starting with TiDB 4.0, TiUP, as a new tool, assumes the role of a package manager and is responsible for managing components in the TiDB ecosystem, such as TiDB, PD, TiKV, and so on. When you want to run any component in the TiDB ecosystem, you just need to execute a single line of TiUP commands, which is far easier to manage.
+Starting with TiDB 4.0, TiUP, as the package manager, makes it far easier to manage different cluster components in the TiDB ecosystem. Now you can run any component with only a single line of TiUP commands.
 
 ## Install TiUP
 
