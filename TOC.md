@@ -7,6 +7,7 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
+  + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
   + [基本功能](/basic-features.md)
   + 兼容性
     + [与 MySQL 的兼容性](/mysql-compatibility.md)
@@ -65,7 +66,7 @@
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-  + [日常巡检](/daily-inspection.md)
+  + [日常巡检](/daily-check.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
@@ -427,7 +428,9 @@
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
       + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
-    + [TiFlash](/tiflash/tiflash-overview.md)
+    + TiFlash
+      + [TiFlash 简介](/tiflash/tiflash-overview.md)
+      + [使用 TiFlash](/tiflash/use-tiflash.md)
   + TiUP
     + [文档指南](/tiup/tiup-documentation-guide.md)
     + [概览](/tiup/tiup-overview.md)
@@ -456,6 +459,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0 GA](/releases/release-4.0-ga.md)
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
     - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)
     - [4.0.0-rc](/releases/release-4.0.0-rc.md)
@@ -471,6 +475,7 @@
     - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/release-3.1.0-beta.md)
   + v3.0
+    - [3.0.15](/releases/release-3.0.15.md)
     - [3.0.14](/releases/release-3.0.14.md)
     - [3.0.13](/releases/release-3.0.13.md)
     - [3.0.12](/releases/release-3.0.12.md)
