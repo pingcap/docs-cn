@@ -31,13 +31,14 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 </NavColumn>
 
 <NavColumn>
-<ColumnTitle>部署集群</ColumnTitle>
+<ColumnTitle>部署使用</ColumnTitle>
 
 - [软硬件环境需求](/hardware-and-software-requirements.md)
 - [环境与系统配置检查](/check-before-deployment.md)
 - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
 - [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
 - [验证集群状态](/post-installation-check.md)
+- [使用 TiFlash](/tiflash/use-tiflash.md)
 
 </NavColumn>
 
