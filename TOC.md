@@ -316,7 +316,7 @@
     - [Optimizer Hints](/optimizer-hints.md)
     - [Follower Read](/follower-read.md)
     - [Check the TiDB Cluster Status Using SQL Statements](/check-cluster-status-using-sql-statements.md)
-    - [Execution Plan Binding](/execution-plan-binding.md)
+    - [SQL Plan Management](/sql-plan-management.md)
     - [Access Tables Using `IndexMerge`](/index-merge.md)
     - [Statement Summary Table](/statement-summary-tables.md)
     - [Coprocessor Cache](/coprocessor-cache.md)
