@@ -110,7 +110,7 @@ When the cluster is in operation, if you need to modify the parameters of a comp
                 log.slow-threshold: 300
         ```
     
-    For the parameter format, see the [TiUP parameter template](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml).
+    For the parameter format, see the [TiUP parameter template](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml).
 
     **Use `.` to represent the hierarchy of the configuration items**.
 
@@ -134,7 +134,51 @@ server_configs:
     performance.txn-total-size-limit: 1073741824
 ```
 
-Then run the `tiup cluster reload ${cluster-name} -N tidb` command to rolling restart the TiDB component.
+Then, run the `tiup cluster reload ${cluster-name} -R tidb` command to rolling restart the TiDB component.
+
+## Replace with a hotfix package
+
+For normal upgrade, see [Upgrade TiDB Using TiUP](/upgrade-tidb-using-tiup.md). But in some scenarios, such as debugging, you might need to replace the currently running component with a temporary package. To achieve this, use the `patch` command:
+
+{{< copyable "shell-root" >}}
+
+```bash
+tiup cluster patch --help
+```
+
+```
+Replace the remote package with a specified package and restart the service
+
+Usage:
+  cluster patch <cluster-name> <package-path> [flags]
+
+Flags:
+  -h, --help                   help for patch
+  -N, --node strings           Specify the nodes
+      --overwrite              Use this package in the future scale-out operations
+  -R, --role strings           Specify the role
+      --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 300)
+
+Global Flags:
+      --ssh-timeout int   Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
+  -y, --yes               Skip all confirmations and assumes 'yes'
+```
+
+If a TiDB hotfix package is in `/tmp/tidb-hotfix.tar.gz` and you want to replace all the TiDB packages in the cluster, run the following command:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -R tidb
+```
+
+You can also replace only one TiDB package in the cluster:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
+```
 
 ## Stop the cluster
 
