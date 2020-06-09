@@ -99,6 +99,7 @@
     + 配置
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
+      + [TiKV Follower Read](/follower-read.md)
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
     + [下推计算结果缓存](/coprocessor-cache.md)
   + SQL 性能调优
@@ -433,7 +434,6 @@
       + [RocksDB 简介](/storage-engine/rocksdb-overview.md)
       + [Titan 简介](/storage-engine/titan-overview.md)
       + [Titan 配置说明](/storage-engine/titan-configuration.md)
-      + [TiKV 使用 Follower Read](/follower-read.md)
     + TiFlash
       + [TiFlash 简介](/tiflash/tiflash-overview.md)
       + [使用 TiFlash](/tiflash/use-tiflash.md)
