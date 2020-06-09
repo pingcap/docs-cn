@@ -25,7 +25,7 @@ TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需
 
 当用户访问不提供 TiDB Dashboard 服务的 PD 实例时，浏览器将会收到重定向指令，自动引导用户重新访问提供了 TiDB Dashboard 服务的 PD 实例，从而能正常使用。流程如下图所示。
 
-![流程示意](/media/dashboard/dashboard-ops-multiple-pd.svg)
+![流程示意](/media/dashboard/dashboard-ops-multiple-pd.png)
 
 > **注意：**
 >
