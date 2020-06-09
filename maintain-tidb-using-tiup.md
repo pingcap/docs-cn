@@ -122,7 +122,7 @@ server_configs:
     performance.txn-total-size-limit: 1073741824
 ```
 
-然后执行 `tiup cluster reload ${cluster-name} -N tidb` 命令滚动重启。
+然后执行 `tiup cluster reload ${cluster-name} -R tidb` 命令滚动重启。
 
 ## Hotfix 版本替换
 
