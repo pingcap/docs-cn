@@ -1,13 +1,13 @@
 ---
-title: Enable TLS for MySQL Clients
+title: Enable TLS Between TiDB Clients and Servers
 summary: Use the encrypted connection to ensure data security.
 category: how-to
-aliases: ['/docs/dev/how-to/secure/enable-tls-clients/']
+aliases: ['/docs/dev/how-to/secure/enable-tls-clients/','/docs/dev/encrypted-connections-with-tls-protocols/']
 ---
 
-# Enable TLS for MySQL Clients
+# Enable TLS Between TiDB Clients and Servers
 
-It is recommended to use the encrypted connection to ensure data security because non-encrypted connection might lead to an information leak.
+Non-encrypted connection between TiDB's server and client is used by default, which enables third parties that monitor channel traffic to know the data sent and received between the server and the client, including but not limited to query content, query results, and so on. If a channel is untrustworthy (such as if the client is connected to the TiDB server via a public network), then a non-encrypted connection is prone to information leakage. In this case, for security reasons, it is recommended to use an encrypted connection.
 
 The TiDB server supports the encrypted connection based on the TLS (Transport Layer Security). The protocol is consistent with MySQL encrypted connections and is directly supported by existing MySQL clients such as MySQL operation tools and MySQL drivers. TLS is sometimes referred to as SSL (Secure Sockets Layer). Because the SSL protocol has [known security vulnerabilities](https://en.wikipedia.org/wiki/Transport_Layer_Security), TiDB does not support it. TiDB supports the following versions: TLS 1.0, TLS 1.1, and TLS 1.2, TLS 1.3.
 
@@ -78,12 +78,6 @@ ssl-key = "certs/server-key.pem"
 ```
 
 If the certificate parameters are correct, TiDB outputs `secure connection is enabled` when started; otherwise, it outputs `secure connection is NOT ENABLED`.
-
-## Reload certificate, key, and CA
-
-To replace the certificate, the key or CA, first replace the corresponding files, then execute the [`ALTER INSTANCE RELOAD TLS`](/sql-statements/sql-statement-alter-instance.md) statement on the running TiDB instance to reload the certificate ([`ssl-cert`](/tidb-configuration-file.md#ssl-cert)), the key ([`ssl-key`](/tidb-configuration-file.md#ssl-key)), and the CA ([`ssl-ca`](/tidb-configuration-file.md#ssl-ca)) from the original configuration path. In this way, you do not need to restart the TiDB instance.
-
-The newly loaded certificate, key, and CA take effect on the connection that is established after the statement is successfully executed. The connection established before the statement execution is not affected.
 
 ## Configure the MySQL client to use encrypted connections
 
@@ -181,3 +175,13 @@ The TLS versions, key exchange protocols and encryption algorithms supported by 
 - TLS\_AES\_128\_GCM\_SHA256
 - TLS\_AES\_256\_GCM\_SHA384
 - TLS\_CHACHA20\_POLY1305\_SHA256
+
+## Reload certificate, key, and CA
+
+To replace the certificate, the key or CA, first replace the corresponding files, then execute the [`ALTER INSTANCE RELOAD TLS`](/sql-statements/sql-statement-alter-instance.md) statement on the running TiDB instance to reload the certificate ([`ssl-cert`](/tidb-configuration-file.md#ssl-cert)), the key ([`ssl-key`](/tidb-configuration-file.md#ssl-key)), and the CA ([`ssl-ca`](/tidb-configuration-file.md#ssl-ca)) from the original configuration path. In this way, you do not need to restart the TiDB instance.
+
+The newly loaded certificate, key, and CA take effect on the connection that is established after the statement is successfully executed. The connection established before the statement execution is not affected.
+
+### See also
+
+- [Enable TLS Between TiDB Components](/enable-tls-between-components.md)。

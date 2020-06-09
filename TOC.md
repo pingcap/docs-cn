@@ -74,8 +74,9 @@
     - [Placement Rules](/configure-placement-rules.md)
   + Secure
     + Transport Layer Security (TLS)
-      - [Enable TLS For MySQL Clients](/encrypted-connections-with-tls-protocols.md)
+      - [Enable TLS for MySQL Clients and Servers](/enable-tls-between-clients-and-servers.md)
       - [Enable TLS Between TiDB Components](/enable-tls-between-components.md)
+    - [Encrypt Stored Data](/enable-encrypt-stored-data.md)
     - [Generate Self-signed Certificates](/generate-self-signed-certificates.md)
     - [Encryption-At-Rest](/encryption-at-rest.md)
   + Monitor

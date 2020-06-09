@@ -35,4 +35,4 @@ The `ALTER INSTANCE RELOAD TLS` statement only supports reloading from the origi
 
 ## See also
 
-[Enable Client TLS](/encrypted-connections-with-tls-protocols.md).
+[Enable TLS Between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md).

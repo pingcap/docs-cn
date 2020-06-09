@@ -1,34 +1,30 @@
 ---
-title: Enable TLS Authentication and Encrypt the Stored Data
-summary: Learn how to enable TLS authentication and encrypt the stored data in a TiDB cluster.
+title: Enable TLS Between TiDB Components
+summary: Learn how to enable TLS authentication between TiDB components.
 category: how-to
 aliases: ['/docs/dev/how-to/secure/enable-tls-between-components/']
 ---
 
-# Enable TLS Authentication and Encrypt the Stored Data
+# Enable TLS Between TiDB Components
 
-This document introduces how to enable TLS authentication and encrypt the stored data in a TiDB cluster.
+This document describes how to enable encrypted data transmission between components within a TiDB cluster. Once enabled, encrypted transmission is used between the following components:
 
-## Enable TLS Authentication
+- TiDB and TiKV; TiDB and PD
+- TiKV and PD
+- TiDB Control and TiDB; TiKV Control and TiKV; PD Control and PD
+- Internal communication within each TiKV, PD, TiDB cluster
 
-This section describes how to enable TLS authentication in a TiDB cluster. TLS authentication can be applied to the following scenarios:
+Currently, it is not supported to only enable encrypted transmission of some specific components.
 
-- The **mutual authentication** between TiDB components, including the authentication among TiDB, TiKV, and PD; the authentication between TiDB Control and TiDB, between TiKV Control and TiKV, between PD Control and PD; the authentication between TiKV peers, and between PD peers. Once enabled, the mutual authentication applies to all components, rather than to part of the components.
-- The **one-way** and **mutual authentication** between the TiDB server and the MySQL Client.
-
-> **Note:**
->
-> The authentication between the MySQL Client and the TiDB server uses one set of certificates, while the authentication among TiDB components uses another set of certificates.
-
-## Enable mutual TLS authentication among TiDB components
+## Configure and enable encrypted data transmission
 
 1. Prepare certificates.
 
-    It is recommended to prepare a server certificate for TiDB, TiKV, and PD separately. Make sure that these components can authenticate each other. The clients of TiDB, TiKV, and PD share one client certificate.
+    It is recommended to prepare a server certificate for TiDB, TiKV, and PD separately. Make sure that these components can authenticate each other. The Control tools of TiDB, TiKV, and PD can choose to share one client certificate.
 
     You can use tools like `openssl`, `easy-rsa` and `cfssl` to generate self-signed certificates.
 
-    If you choose `cfssl`, you can refer to [generating self-signed certificates](/generate-self-signed-certificates.md).
+    If you choose `openssl`, you can refer to [generating self-signed certificates](/generate-self-signed-certificates.md).
 
 2. Configure certificates.
 
@@ -74,11 +70,11 @@ This section describes how to enable TLS authentication in a TiDB cluster. TLS a
         key-path = "/path/to/pd-server-key.pem"
         ```
 
-    After certificates are configured as above, mutual authentication among TiDB components is enabled.
+    Now, encrypted transmission among TiDB components is enabled.
 
     > **Note:**
     >
-    > If you have enabled TLS in a TiDB cluster when you connect to the cluster using tidb-ctl, tikv-ctl, or pd-ctl, you need to specify the client certificate. For example:
+    > After enabling encrypted transmission in a TiDB cluster, if you need to connect to the cluster using tidb-ctl, tikv-ctl, or pd-ctl, specify the client certificate. For example:
 
     {{< copyable "shell-regular" >}}
 
@@ -98,84 +94,48 @@ This section describes how to enable TLS authentication in a TiDB cluster. TLS a
     ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
     ```
 
-3. Configure Common Name.
+### Verify component caller's identity
 
-    The Common Name is used for caller verification. In general, the callee needs to verify the caller's identity, in addition to verifying the key, the certificates, and the CA provided by the caller. For example, TiKV can only be accessed by TiDB, and other visitors are blocked even though they have legitimate certificates. It is recommended to mark the certificate user identity using `Common Name` when generating the certificate, and to check the caller's identity by configuring the `Common Name` list for the callee.
+The Common Name is used for caller verification. In general, the callee needs to verify the caller's identity, in addition to verifying the key, the certificates, and the CA provided by the caller. For example, TiKV can only be accessed by TiDB, and other visitors are blocked even though they have legitimate certificates.
 
-    - TiDB
+To verify component caller's identity, you need to mark the certificate user identity using `Common Name` when generating the certificate, and to check the caller's identity by configuring the `Common Name` list for the callee.
 
-        Configure in the configuration file or command line arguments:
+- TiDB
 
-        ```toml
-        [security]
-        cluster-verify-cn = [
-            "TiDB-Server",
-            "TiKV-Control",
-        ]
-        ```
-
-    - TiKV
-
-        Configure in the configuration file or command line arguments:
-
-        ```toml
-        [security]
-        cert-allowed-cn = [
-            "TiDB-Server", "PD-Server", "TiKV-Control", "RawKvClient1",
-        ]
-        ```
-
-    - PD
-
-        Configure in the configuration file or command line arguments:
-
-        ```toml
-        [security]
-        cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
-        ```
-
-4. Reload certificates.
-
-    To reload the certificates and the keys, TiDB, PD, and TiKV reread the current certificates and the key files each time a new connection is created. Currently, you cannot reload the CA certificate. 
-
-## Enable TLS authentication between the MySQL client and TiDB server
-
-Refer to [Use Encrypted Connections](/encrypted-connections-with-tls-protocols.md).
-
-## Encrypt stored data
-
-In a TiDB cluster, user data is stored in TiKV. Once you configure the encrypted storage feature in TiKV, the TiDB cluster encrypts this data. This section introduces how to configure the data encryption feature in TiKV.
-
-1. Generate the token file.
-
-    The token file stores the keys used to encrypt the user data and to decrypt the encrypted data.
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ./tikv-ctl random-hex --len 256 > cipher-file-256
-    ```
-
-    > **Note:**
-    >
-    > You can only use the hex-formatted token file. The file length must be 2 to the power of N, and is less than or equal to 1024.
-
-2. Configure TiKV as follows.
+    Configure in the configuration file or command line arguments:
 
     ```toml
     [security]
-    # Storage path of the Cipher file.
-    cipher-file = "/path/to/cipher-file-256"
+    cluster-verify-cn = [
+        "TiDB-Server",
+        "TiKV-Control",
+    ]
     ```
 
-> **Note:**
->
-> When you import data into a cluster using [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md), if the storage encryption feature is enabled in the target cluster, the SST files generated by TiDB Lightning must be encrypted.
+- TiKV
 
-### Limitations
+    Configure in the configuration file or command line arguments:
 
-The limitations of the storage encryption feature are as follows:
+    ```toml
+    [security]
+    cert-allowed-cn = [
+        "TiDB-Server", "PD-Server", "TiKV-Control", "RawKvClient1",
+    ]
+    ```
 
-- If the feature has not been enabled in the cluster before, you cannot enable this feature.
-- If the feature is enabled in the cluster, you cannot disable this feature.
-- You cannot enable the feature for some TiKV instances while disabling it for other instances in one cluster. You can only enable or disable this feature for all TiKV instances. This is because if you enable the encrypted storage feature, data are encrypted during data migration.
+- PD
+
+    Configure in the configuration file or command line arguments:
+
+    ```toml
+    [security]
+    cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
+    ```
+
+### Reload certificates
+
+To reload the certificates and the keys, TiDB, PD, TiKV, and all kinds of clients reread the current certificates and the key files each time a new connection is created. Currently, you cannot reload the CA certificate.
+
+## See also
+
+- [Enable TLS Between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md)
