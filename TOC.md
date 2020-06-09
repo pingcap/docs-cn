@@ -83,6 +83,8 @@
   + [SQL 诊断](/system-tables/system-table-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
   + [SQL 语句统计](/statement-summary-tables.md)
+  + [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
+  + [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
   + [热点问题处理](/troubleshoot-hot-spot-issues.md)
   + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
   + [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
@@ -97,6 +99,7 @@
     + 配置
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
+      + [TiKV Follower Read](/follower-read.md)
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
     + [下推计算结果缓存](/coprocessor-cache.md)
   + SQL 性能调优
@@ -428,7 +431,9 @@
   + 存储引擎
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
-      + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
+      + [RocksDB 简介](/storage-engine/rocksdb-overview.md)
+      + [Titan 简介](/storage-engine/titan-overview.md)
+      + [Titan 配置说明](/storage-engine/titan-configuration.md)
     + TiFlash
       + [TiFlash 简介](/tiflash/tiflash-overview.md)
       + [使用 TiFlash](/tiflash/use-tiflash.md)
