@@ -1,7 +1,11 @@
 ---
 title: 为 TiDB 客户端服务端间通信开启加密传输
 category: how-to
+<<<<<<< HEAD:enable-tls-between-clients.md
 aliases: ['/docs-cn/stable/how-to/secure/enable-tls-clients/','/docs-cn/stable/encrypted-connections-with-tls-protocols/']
+=======
+aliases: ['/docs-cn/dev/how-to/secure/enable-tls-clients/','/docs-cn/dev/encrypted-connections-with-tls-protocols/','/docs-cn/dev/enable-tls-between-clients/']
+>>>>>>> af377d7... secure: fix secure-related docs (#3507):enable-tls-between-clients-and-servers.md
 ---
 
 # 为 TiDB 客户端服务端间通信开启加密传输
@@ -178,6 +182,6 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 
 新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
 
-### TiDB 集群内组件间加密传输 
+## 另请参阅
 
-本文介绍的是 TiDB 服务端与客户端之间如何开启加密传输， 对于 TiDB 集群内组件的加密传输配置请参考[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
+- [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
