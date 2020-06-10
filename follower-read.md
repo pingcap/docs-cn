@@ -19,9 +19,9 @@ The Follower Read feature refers to using any follower replica of a Region to se
 
 ## Usage
 
-To enable TiDB's Follower Read feature, set the value of the `tidb_replica_read` session variable to `follower`:
+To enable TiDB's Follower Read feature, set the value of the `tidb_replica_read` session variable to `follower` or `leader-and-follower`:
 
-{{<copyable "sql">}}
+{{< copyable "sql" >}}
 
 ```sql
 set @@tidb_replica_read = 'follower';
@@ -35,6 +35,7 @@ This variable is used to set the data read mode expected by the current session.
 
 - When the value of `tidb_replica_read` is set to `leader` or an empty string, TiDB maintains its original behavior and sends all read operations to the leader replica to perform.
 - When the value of `tidb_replica_read` is set to `follower`, TiDB selects a follower replica of the Region to perform all read operations.
+- When the value of `tidb_replica_read` is set to `leader-and-follower`, TiDB can select any replicas to perform read operations.
 
 ## Implementation mechanism
 
