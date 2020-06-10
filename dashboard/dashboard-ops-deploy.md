@@ -47,7 +47,7 @@ http://192.168.0.123:2379/dashboard/
 
 > **注意：**
 >
-> 该功能仅在较新版本的 `tiup cluster` 部署工具中提供。可通过以下命令升级 `tiup cluster`：
+> 该功能仅在较新版本 (v1.0.3) 的 `tiup cluster` 部署工具中提供。可通过以下命令升级 `tiup cluster`：
 >
 > ```bash
 > tiup update --self
@@ -120,5 +120,4 @@ tiup cluster display CLUSTER_NAME --dashboard
 ## 下一步
 
 - 参阅[访问 TiDB Dashboard](/dashboard/dashboard-access.md) 章节了解如何访问及登录集群上的 TiDB Dashboard 界面。
-
 - 参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md) 章节了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。
