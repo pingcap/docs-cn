@@ -194,6 +194,9 @@
   + [Loader](/loader-overview.md)
   + [Mydumper](/mydumper-overview.md)
   + [Syncer](/syncer-overview.md)
+  + TiSpark
+    + [TiSpark 快速上手](/get-started-with-tispark.md)
+    + [TiSpark 用户指南](/tispark-overview.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md)
