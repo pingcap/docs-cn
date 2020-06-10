@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, ready_for_review]
   push: 
-    branch:
+    branches:
       - master
 
 jobs:
