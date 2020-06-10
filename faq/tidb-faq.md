@@ -40,7 +40,7 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 使用 MySQL 8.0 客户端时，如果遇到无法登陆的问题，可以尝试指定 `default-auth` 和 `default-character-set` 参数：
 
-{{< copyable "sql" >}}
+{{< copyable "shell-regular" >}}
 
 ```shell
 mysql -h 127.0.0.1 -u root -P 4000 --default-auth=mysql_native_password --default-character-set=utf8
