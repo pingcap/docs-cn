@@ -207,7 +207,7 @@
     + [TiKV 面板](/grafana-tikv-dashboard.md)
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
   + 安全加固
-    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md)
+    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
     + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md)
     + [生成自签名证书](/generate-self-signed-certificates.md)
