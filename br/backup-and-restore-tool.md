@@ -130,13 +130,13 @@ Explanations for the above command are as follows:
 * `"${PDIP}:2379"`: the parameter of `--pd`.
 
 > **Note:**
-> 
+>
 > - When the `local` storage is used, the backup data are scattered in the local file system of each node.
 >
 > - It is **not recommended** to back up to a local disk in the production environment because you **have to** manually aggregate these data to complete the data restoration. For more information, see [Restore Cluster Data](#restore-cluster-data).
 >
 > - Aggregating these backup data might cause redundancy and bring troubles to operation and maintenance. Even worse, if restoring data without aggregating these data, you can receive a rather confusing error message `SST file not found`.
-> 
+>
 > - It is recommended to mount the NFS disk on each node, or back up to the `S3` object storage.
 
 ### Sub-commands
@@ -145,7 +145,6 @@ A `br` command consists of multiple layers of sub-commands. Currently, BR has th
 
 * `br backup`: used to back up the data of the TiDB cluster.
 * `br restore`: used to restore the data of the TiDB cluster.
-* `br version`: used to check the version of BR.
 
 Each of the above three sub-commands might still include the following three sub-commands to specify the scope of an operation:
 
@@ -157,6 +156,7 @@ Each of the above three sub-commands might still include the following three sub
 
 * `--pd`: used for connection, specifying the PD server address. For example, `"${PDIP}:2379"`.
 * `-h` (or `--help`): used to get help on all sub-commands. For example, `br backup --help`.
+* `-V` (or `--version`): used to check the version of BR.
 * `--ca`: specifies the path to the trusted CA certificate in the PEM format.
 * `--cert`: specifies the path to the SSL certificate in the PEM format.
 * `--key`: specifies the path to the SSL certificate key in the PEM format.
@@ -186,9 +186,9 @@ To back up all the cluster data, execute the `br backup full` command. To get he
 Back up all the cluster data to the `/tmp/backup` path of each TiKV node and write the `backupmeta` file to this path.
 
 > **Note:**
-> 
+>
 > + If the backup disk and the service disk are different, it has been tested that online backup reduces QPS of the read-only online service by about 15%-25% in case of full-speed backup. If you want to reduce the impact on QPS, use `--ratelimit` to limit the rate.
-> 
+>
 > + If the backup disk and the service disk are the same, the backup competes with the service for I/O resources. This might decrease the QPS of the read-only online service by more than half. Therefore, it is **highly not recommended** to back up the online service data to the TiKV data disk.
 
 {{< copyable "shell-regular" >}}
@@ -330,7 +330,7 @@ In the above example, the incremental backup data includes the newly written dat
 ### Back up Raw KV (experimental feature)
 
 > **Warning:**
-> 
+>
 > This feature is experimental and not thoroughly tested. It is highly **not recommended** to use this feature in the production environment.
 
 In some scenarios, TiKV might run independently of TiDB. Given that, BR also supports bypassing the TiDB layer and backing up data in TiKV.
@@ -480,7 +480,7 @@ Restoring incremental data is similar to [restoring full data using BR](#restore
 ### Restore Raw KV (experimental feature)
 
 > **Warning:**
-> 
+>
 > This feature is in the experiment, without being thoroughly tested. It is highly **not recommended** to use this feature in the production environment.
 
 Similar to [backing up Raw KV](#back-up-raw-kv-experimental-feature), you can execute the following command to restore Raw KV:
@@ -499,7 +499,7 @@ In the above example, all the backed up keys in the range `[0x31, 0x313030303030
 ### Online restore (experimental feature)
 
 > **Warning:**
-> 
+>
 > This feature is in the experiment, without being thoroughly tested. It also relies on the unstable `Placement Rules` feature of PD. It is highly **not recommended** to use this feature in the production environment.
 
 During data restoration, writing too much data affects the performance of the online cluster. To avoid this effect as much as possible, BR supports [Placement rules](/configure-placement-rules.md) to isolate resources. In this case, downloading and importing SST are only performed on a few specified nodes (or "restore nodes" for short). To complete the online restore, take the following steps.
