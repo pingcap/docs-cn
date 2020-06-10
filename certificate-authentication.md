@@ -20,7 +20,7 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
 ## 创建安全密钥和证书
 
-目前推荐使用 [OpenSSL](https://www.openssl.org/) 来生成密钥和证书，生成证书的过程和[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md)过程类似，下面更多演示如何在证书中配置更多需校验的属性字段。
+目前推荐使用 [OpenSSL](https://www.openssl.org/) 来生成密钥和证书，生成证书的过程和[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)过程类似，下面更多演示如何在证书中配置更多需校验的属性字段。
 
 ### 生成 CA 密钥和证书
 
