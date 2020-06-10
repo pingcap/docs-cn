@@ -34,22 +34,20 @@ http://192.168.0.123:2379/dashboard/
 > tiup update cluster --force
 > ```
 
-### 第 2 步：配置反向代理
+### 第 2 步：配置 NGINX 反向代理
 
-#### NGINX
+[NGINX](https://nginx.org/) 作为反向代理时，配置方法如下。
 
-[NGINX](https://nginx.org/) 作为反向代理时，方法如下。
+1. 以在 `80` 端口反向代理 TiDB Dashboard 为例，在 NGINX 配置文件中，新增如下配置：
 
-1. 以在 80 端口反向代理 TiDB Dashboard 为例，在 NGINX 配置文件中，新增如下配置：
-
-   ```nginx
-   server {
-     listen 80;
-     location /dashboard/ {
-       proxy_pass http://192.168.0.123:2379/dashboard/;
-     }
-   }
-   ```
+    ```nginx
+    server {
+      listen 80;
+      location /dashboard/ {
+        proxy_pass http://192.168.0.123:2379/dashboard/;
+      }
+    }
+    ```
 
    配置 `proxy_pass` 中填写的 URL 即为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址。
 
@@ -59,7 +57,7 @@ http://192.168.0.123:2379/dashboard/
 
 2. 重启 NGINX，以使配置生效。
 
-3. 测试反向代理是否生效：访问 NGINX 所在机器的 80 端口下 `/dashboard/` 地址，如 <http://example.com/dashboard/> ，即可访问 TiDB Dashboard。
+3. 测试反向代理是否生效：访问 NGINX 所在机器的 `80` 端口下 `/dashboard/` 地址，如 <http://example.com/dashboard/>，即可访问 TiDB Dashboard。
 
 ## 自定义路径前缀
 
@@ -83,47 +81,47 @@ server_configs:
 
 1. 以编辑模式打开该集群的配置文件（将 `CLUSTER_NAME` 替换为集群名称）
 
-   ```bash
-   tiup cluster edit-config CLUSTER_NAME
-   ```
+    ```bash
+    tiup cluster edit-config CLUSTER_NAME
+    ```
 
 2. 在 `server_configs` 的 `pd` 配置下修改或新增配置项，若没有 `server_configs` 请在最顶层新增：
 
-   ```yaml
-   server_configs:
-     pd:
-       dashboard.public-path-prefix: /foo
-   ```
+    ```yaml
+    server_configs:
+      pd:
+        dashboard.public-path-prefix: /foo
+    ```
 
-   > 修改完成后的配置文件类似于：
-   >
-   >  ```yaml
-   >  server_configs:
-   >    pd:
-   >      dashboard.public-path-prefix: /foo
-   >  global:
-   >    user: tidb
-   >    ...
-   >  ```
-   >
-   > 或
-   >
-   > ```yaml
-   > monitored:
-   >   ...
-   > server_configs:
-   >   tidb: ...
-   >   tikv: ...
-   >   pd:
-   >     dashboard.public-path-prefix: /foo
-   >   ...
-   > ```
+    修改完成后的配置文件类似于：
+
+    ```yaml
+    server_configs:
+      pd:
+        dashboard.public-path-prefix: /foo
+    global:
+      user: tidb
+      ...
+    ```
+
+    或
+
+    ```yaml
+    monitored:
+      ...
+    server_configs:
+      tidb: ...
+      tikv: ...
+      pd:
+        dashboard.public-path-prefix: /foo
+      ...
+    ```
 
 3. 滚动重启所有 PD 实例生效配置（将 `CLUSTER_NAME` 替换为集群名称）
 
-   ```bash
-   tiup cluster reload CLUSTER_NAME -R pd
-   ```
+    ```bash
+    tiup cluster reload CLUSTER_NAME -R pd
+    ```
 
 详情请参阅 [TiUP 常见运维操作 - 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
@@ -139,9 +137,7 @@ server_configs:
 >
 > 修改自定义路径前缀生效后，直接访问将不能正常使用 TiDB Dashboard，您只能通过和路径前缀匹配的反向代理访问。
 
-### 第 2 步：修改反向代理配置
-
-#### NGINX
+### 第 2 步：修改 NGINX 反向代理配置
 
 以 `http://example.com/foo` 为例，相应的 NGINX 配置为：
 
