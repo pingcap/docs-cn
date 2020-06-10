@@ -8,9 +8,11 @@ category: how-to
 
 To access TiDB Dashboard, visit <http://127.0.0.1:2379/dashboard> via your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
 
+If multiple PD instances are deployed in your cluster and you can directly access **every** PD instance and port, you can simply replace `127.0.0.1:2379` in the <http://127.0.0.1:2379/dashboard/> address with **any** PD instance address and port.
+
 > **Note:**
 >
-> If you have deployed multiple PD components in your cluster, you can use the address of only one PD component to access TiDB Dashboard, because the Dashboard operates on only one PD component. If you access via other PD components, your browser is redirected to that PD component. Therefore, if the firewall is not configured for this instance on which PD operates, you might not be able to access TiDB Dashboard.
+> If a firewall or reverse proxy is configured and you cannot directly access every PD instance, you might not be able to access TiDB Dashboard. Usually, this is because the firewall or reverse proxy is not correctly configured. See [Use TiDB Dashboard behind Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md) and [Secure TiDB Dashboard](/dashboard/dashboard-ops-security.md) to learn correctly configure the firewall or reverse proxy when multiple PD instances are deployed.
 
 ## Browser compatibility
 
