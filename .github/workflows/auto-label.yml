@@ -2,6 +2,9 @@ name: Auto Label
 on:
   pull_request:
     types: [opened, ready_for_review]
+  push: 
+    branch:
+      - master
 
 jobs:
   auto-label:
