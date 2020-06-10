@@ -42,7 +42,7 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 {{< copyable "sql" >}}
 
-```
+```shell
 mysql -h 127.0.0.1 -u root -P 4000 --default-auth=mysql_native_password --default-character-set=utf8
 ```
 
