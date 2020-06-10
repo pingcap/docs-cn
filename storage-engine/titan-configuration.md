@@ -6,7 +6,7 @@ aliases: ['/docs-cn/stable/reference/titan/configuration/']
 
 # Titan 配置
 
-Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，在 value 较大的场景下，减少写放大，降低 RocksDB 后台 compaction 对 I/O 带宽和 CPU 的占用，以提高性能。详情参阅 [Titan 介绍](/titan-overview.md)。
+Titan 是基于 RocksDB 开发的存储引擎插件，通过把 key 和 value 分离存储，在 value 较大的场景下，减少写放大，降低 RocksDB 后台 compaction 对 I/O 带宽和 CPU 的占用，以提高性能。详情参阅 [Titan 介绍](/storage-engine/titan-overview.md)。
 
 本文档介绍如何如何通过 Titan 配置项来开启、关闭 Titan，相关参数介绍，以及 level merge 功能。
 
