@@ -111,7 +111,8 @@
     + [TiKV Performance Tuning with Massive Regions](/best-practices/massive-regions-best-practices.md)
   + [Use Placement Rules](/configure-placement-rules.md)
 + TiDB Ecosystem Tools
-  + [Tools Guide](/ecosystem-tool-user-guide.md)
+  + [Overview](/ecosystem-tool-user-guide.md)
+  + [Use Cases](/ecosystem-tool-user-case.md)
   + [Download](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
     + [BR FAQ](/br/backup-and-restore-faq.md)
