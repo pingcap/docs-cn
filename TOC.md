@@ -50,6 +50,7 @@
 + Maintain
   + Upgrade
     + [Use TiUP (Recommended)](/upgrade-tidb-using-tiup.md)
+    + [Use TiUP Offline (Recommended)](/upgrade-tidb-using-tiup-offline.md)
     + [Use TiDB Operator](https://pingcap.com/docs/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
     + [Use TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + Scale
