@@ -12,7 +12,7 @@ This section describes some commonly encountered issues when using TiFlash, the 
 
 This is because TiFlash is in an abnormal state caused by configuration errors or environment issues. Take the following steps to identify the faulty component:
 
-1. Check whether PD enables the `Placement Rules` feature (to enable the feature, see the step 2 of [Add TiFlash component to an existing TiDB cluster](/tiflash/deploy-tiflash.md#add-tiflash-component-to-an-existing-tidb-cluster):
+1. Check whether PD enables the `Placement Rules` feature:
 
     {{< copyable "shell-regular" >}}
 
@@ -20,7 +20,7 @@ This is because TiFlash is in an abnormal state caused by configuration errors o
     echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
     ```
 
-    The expected result is `"enable-placement-rules": "true"`.
+    The expected result is `"enable-placement-rules": "true"`. If not enabled, [enable the Placement Rules feature](/configure-placement-rules.md#enable-placement-rules).
 
 2. Check whether the TiFlash process is working correctly by viewing `UpTime` on the TiFlash-Summary monitoring panel.
 

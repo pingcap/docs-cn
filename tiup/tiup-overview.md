@@ -114,7 +114,6 @@ The output is long but you can focus on only two parts:
     - client: used to connect to a TiDB cluster in a local machine
     - mirrors: used to clone a private mirror from an official mirror
     - cluster: used to deploy a TiDB cluster for production environments
-    - package: used to package a new TiUP component
     - bench: used to stress test the database
     - doc: used to open online document
 
@@ -132,5 +131,4 @@ All TiUP commands are described in [Manage TiUP Components with TiUP Commands](/
 - [Quickly Deploy a Local TiDB Cluster](/tiup/tiup-playground.md): introduce the playground component
 - [Deploy and Maintain an Online TiDB Cluster](/tiup/tiup-cluster.md): introduce the cluster component
 - [Create a Private Mirror](/tiup/tiup-mirrors.md): introduce the mirrors component
-- [Package a Component](/tiup/package-tiup-component.md): introduce the package component
 - [Stress Test TiDB Using TiUP](/tiup/tiup-bench.md): introduce the bench component
