@@ -59,7 +59,7 @@ When you use [NGINX](https://nginx.org/) as the reverse proxy, take the followin
 
    > **Warning:**
    >
-   > You must keep the `/dashboard/` path in the `proxy_pass` directive to ensure that only the services under this path are reverse proxied. Otherwise, security risks will be introduced. See [Improve TiDB Dashboard Security](/dashboard/dashboard-ops-security.md).
+   > You must keep the `/dashboard/` path in the `proxy_pass` directive to ensure that only the services under this path are reverse proxied. Otherwise, security risks will be introduced. See [Secure TiDB Dashboard](/dashboard/dashboard-ops-security.md).
 
 2. Restart NGINX for the configuration to take effect.
 
@@ -180,7 +180,7 @@ server {
 
 > **Warning:**
 >
-> Keep the `/dashboard/` path in the `proxy_pass` directive to ensure that only the services under this path are reverse proxied. Otherwise, security risks will be introduced. See [Improve TiDB Dashboard Security](/dashboard/dashboard-ops-security.md).
+> Keep the `/dashboard/` path in the `proxy_pass` directive to ensure that only the services under this path are reverse proxied. Otherwise, security risks will be introduced. See [Secure TiDB Dashboard](/dashboard/dashboard-ops-security.md).
 
 Change `http://192.168.0.123:2379/dashboard/` in the configuration to the actual address of the TiDB Dashboard obtained in [Step 1: Get the actual TiDB Dashboard address](#step-1-get-the-actual-tidb-dashboard-address).
 

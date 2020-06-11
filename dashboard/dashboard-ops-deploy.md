@@ -136,4 +136,4 @@ You can also re-enable TiDB Dashboard by manually specifying the PD instance tha
 
 - To learn how to access and log into the TiDB Dashboard UI, see [Access TiDB Dashboard](/dashboard/dashboard-access.md).
 
-- To learn how to enhance the security of TiDB Dashboard, such as configuring a firewall, see [Improve TiDB Dashboard Security](/dashboard/dashboard-ops-security.md).
+- To learn how to enhance the security of TiDB Dashboard, such as configuring a firewall, see [Secure TiDB Dashboard](/dashboard/dashboard-ops-security.md).

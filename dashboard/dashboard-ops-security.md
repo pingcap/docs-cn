@@ -26,7 +26,7 @@ It is recommended that you take the following measures:
     >
     > TiDB, TiKV, and other components need to communicate with the PD component through the PD client port, so do not block access to the internal network between components. Otherwise, the cluster will become unavailable.
 
-+ See [Use TiDB Dashboard through Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md) to learn how to configure the reverse proxy to safely provide the TiDB Dashboard service on another port to the external network.
++ See [Use TiDB Dashboard behind a Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md) to learn how to configure the reverse proxy to safely provide the TiDB Dashboard service on another port to the external network.
 
 ### How to open access to TiDB Dashboard port when deploying multiple PD instances
 
@@ -71,7 +71,7 @@ In this example, the firewall needs to be configured with inbound access for the
 
 As mentioned in [Use a firewall to block untrusted access](#use-a-firewall-to-block-untrusted access), the services provided under the PD client port include not only TiDB Dashboard (located at <http://IP:2379/dashboard/>), but also other privileged interfaces in PD (such as <http://IP:2379/pd/api/v1/members>). Therefore, when using a reverse proxy to provide TiDB Dashboard to the external network, ensure that the services **ONLY** with the `/dashboard` prefix are provided (**NOT** all services under the port) to avoid that the external network can access the privileged interface in PD through the reverse proxy.
 
-It is recommended that you see [Use TiDB Dashboard through Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md) to learn a safe and recommended reverse proxy configuration.
+It is recommended that you see [Use TiDB Dashboard behind a Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md) to learn a safe and recommended reverse proxy configuration.
 
 ## Other recommended safety measures
 

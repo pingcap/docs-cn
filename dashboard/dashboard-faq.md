@@ -16,13 +16,13 @@ When multiple Placement Driver (PD) instances are deployed in a cluster, only on
 
 - See [TiDB Dashboard Multi-PD Instance Deployment](/dashboard/dashboard-ops-deploy.md#) to learn the working principle of TiDB Dashboard with multiple PD instances.
 - See [Use TiDB Dashboard through a Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md) to learn how to correctly configure a reverse proxy.
-- See [Improve TiDB Dashboard Security](/dashboard/dashboard-ops-security.md) to learn how to correctly configure the firewall.
+- See [Secure TiDB Dashboard](/dashboard/dashboard-ops-security.md) to learn how to correctly configure the firewall.
 
 ### When TiDB Dashboard is deployed with dual network interface cards (NICs), TiDB Dashboard cannot be accessed using another NIC
 
 For security reasons, TiDB Dashboard on PD only monitors the IP addresses specified during deployment (that is, it only listens on one NIC), not on `0.0.0.0`. Therefore, when multiple NICs are installed on the host, you cannot access TiDB Dashboard using another NIC.
 
-If you have deployed TiDB using the `tiup cluster` or `tiup playground` command, currently this problem cannot be solved. It is recommended that you use a reverse proxy to safely expose TiDB Dashboard to another NIC. For details, see [Use TiDB Dashboard through Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md).
+If you have deployed TiDB using the `tiup cluster` or `tiup playground` command, currently this problem cannot be solved. It is recommended that you use a reverse proxy to safely expose TiDB Dashboard to another NIC. For details, see [Use TiDB Dashboard behind a Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md).
 
 ## UI-related FAQ
 
