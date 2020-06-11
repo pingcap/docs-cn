@@ -73,7 +73,8 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 [profiles]
 [profiles.default]
     dt_enable_logical_split = true # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定的空间浪费。默认为 true
-    max_memory_usage_for_all_queries = 0 # 查询过程中，中间数据的内存限制，单位为 byte。默认为 0，表示不限制
+    max_memory_usage = 10000000000 # 单次 coprocessor 查询过程中，中间数据的内存限制，单位为 byte。如果设置为 0 表示不限制
+    max_memory_usage_for_all_queries = 0 # 所有查询过程中，中间数据的内存限制，单位为 byte。默认为 0，表示不限制
 ```
 
 ### 配置文件 tiflash-learner.toml
