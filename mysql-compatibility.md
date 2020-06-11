@@ -192,18 +192,11 @@ mysql> select _tidb_rowid, id from t;
 
 - MySQL 默认使用本地时区，依赖于系统内置的当前的时区规则（例如什么时候开始夏令时等）进行计算；且在未[导入时区表数据](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation)的情况下不能通过时区名称来指定时区。
 
-> **注意：**
-> 从 TiKV 4.0.0-beta 开始，TiKV 支持存储和读取任意时区下的时间，即使该时间在特定的时区下不存在，解决了 TiKV 3.0-rc 的遗留问题。
-
 #### 零月和零日
 
 - 与 MySQL 一样，TiDB 默认启用了 `NO_ZERO_DATE` 和 `NO_ZERO_IN_DATE` 模式，但是 TiDB 与 MySQL 在处理这两个 SQL 模式有以下不同：
     - TiDB 在非严格模式下启用以上两个 SQL 模式，插入零月/零日/零日期不会给出警告，MySQL 则会给出对应的警告。
     - TiDB 在严格模式下，启用了 `NO_ZERO_DATE` ，仍然能够插入零日期；如果启用了 `NO_ZERO_IN_DATE` 则无法插入零月/零日日期。MySQL 在严格模式下则都无法插入两种类型的日期。
-
-#### 非法日期
-
-- TiKV 4.0.0-beta 后，日期存储不再依赖 [chrono](https://docs.rs/chrono/0.4.11/chrono/)，可对插入的非法日期进行计算；例如存储和查询不存在的时间：`2020-04-31 00:00:00`，`1988-04-17 02:00:00+8:00`。
 
 ### 类型系统
 
