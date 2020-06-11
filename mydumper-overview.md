@@ -9,7 +9,7 @@ aliases: ['/docs/dev/reference/tools/mydumper/']
 
 ## What is Mydumper?
 
-[Mydumper](https://github.com/pingcap/mydumper) is a fork project optimized for TiDB. You can use this tool for logical backups of TiDB.
+[Mydumper](https://github.com/pingcap/mydumper) is a fork project optimized for TiDB. You can use this tool for logical backups of **MySQL** or **TiDB**.
 
 It can be [downloaded](/download-ecosystem-tools.md) as part of the Enterprise Tools package.
 
