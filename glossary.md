@@ -62,6 +62,10 @@ TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写�
 
 其机制是集群初始化时构建一个初始 Region 覆盖整个 key space，随后在运行过程中每当 Region 数据达到一定量之后就通过 Split 产生新的 Region。
 
+### Restore
+
+备份操作的逆过程，即利用保存的备份数据还原出原始数据的过程。
+
 ## S
 
 ### Scheduler
