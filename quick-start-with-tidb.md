@@ -314,5 +314,5 @@ Click to try TiDB-Wasm playground: <https://tour.tidb.io>. It takes about 10 sec
 - If you are ready to deploy a TiDB cluster for the production environment:
 
     - [Deploy TiDB online using TiUP](/production-deployment-using-tiup.md)
-    - [Deploy TiDB online using TiUP](/production-offline-deployment-using-tiup.md)
+    - [Deploy TiDB offline using TiUP](/production-offline-deployment-using-tiup.md)
     - [Deploy TiDB on Cloud using TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)
