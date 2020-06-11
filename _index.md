@@ -36,9 +36,8 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 - [软硬件环境需求](/hardware-and-software-requirements.md)
 - [环境与系统配置检查](/check-before-deployment.md)
 - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
-- [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
-- [验证集群状态](/post-installation-check.md)
 - [使用 TiFlash](/tiflash/use-tiflash.md)
+- [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
 </NavColumn>
 
@@ -93,7 +92,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 - [TiDB 架构](/tidb-architecture.md)
 - [监控指标](/grafana-overview-dashboard.md)
-- [安全加固](/enable-tls-between-clients.md)
+- [安全加固](/enable-tls-between-clients-and-servers.md)
 - [权限管理](/privilege-management.md)
 - [基于角色的访问控制](/role-based-access-control.md)
 - [证书鉴权](/certificate-authentication.md)
