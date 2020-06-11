@@ -1,0 +1,6 @@
+{
+    "rules": {
+      "translation/welcome": ["**"],
+      "PTAL": ["**"]
+    }
+}
