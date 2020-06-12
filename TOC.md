@@ -52,8 +52,10 @@
   + 迁移
     - [迁移工具使用指南](/ecosystem-tool-user-guide.md)
     + 从 MySQL 迁移
+      - [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
       - [以 Amazon Aurora MySQL 为例](/migrate-from-aurora-mysql-database.md)
-    - [从 CSV 迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+    - [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+    - [从 SQL 文件迁移](/migrate-from-mysql-mydumper-files.md)
   + 运维
     - [Ansible 常见运维操作](/maintain-tidb-using-ansible.md)
     + 备份与恢复
