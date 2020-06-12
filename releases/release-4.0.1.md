@@ -17,12 +17,12 @@ TiDB 版本：4.0.1
 
 + PD
 
-    - 为内嵌的 Dashboard 添加内部代理的支持 [#2511](https://github.com/pingcap/pd/pull/2511)
+    - 为内嵌的 TiDB Dashboard 添加内部代理的支持 [#2511](https://github.com/pingcap/pd/pull/2511)
     - 添加对 PD 客户端自定义超时的设置 [#2509](https://github.com/pingcap/pd/pull/2509)
 
 + TiFlash
 
-    - 支持 TiDB new collation framework
+    - 支持 TiDB `new collation framework` 排序规则框架
     - 支持函数 `If`/`BitAnd/BitOr`/`BitXor/BitNot`/`Json_length` 下推到 TiFlash
     - 支持 TiFlash 中对于大事务的 Resolve Lock 逻辑
 
@@ -51,5 +51,5 @@ TiDB 版本：4.0.1
 
 + TiFlash
 
-    - 修复 TiFlash 中 Bit 类型列的 Default Value 解析不正确的问题
+    - 修复 TiFlash 中 Bit 类型列的默认值解析不正确的问题
     - 修复 TiFlash 对于 1970-01-01 00:00:00 UTC 在部分时区下计算错误的问题
