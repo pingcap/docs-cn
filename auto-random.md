@@ -114,11 +114,7 @@ TiDB 支持解析版本注释语法。示例如下：
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
-create table t (a int primary key /*T!30100 auto_random */)
-=======
 create table t (a bigint primary key /*T![auto_rand] auto_random */)
->>>>>>> cd61a4c... update comment-syntax.md (#3193)
 ```
 
 {{< copyable "sql" >}}
