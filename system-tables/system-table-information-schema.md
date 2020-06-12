@@ -285,7 +285,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 
 * ID：客户连接 ID。
 * USER：执行当前 PROCESS 的用户名。
-* HOST： 客户连接的地址。
+* HOST：客户连接的地址。
 * DB：当前连接的默认数据库名。
 * COMMAND：当前 PROCESS 执行的命令类型。
 * TIME：当前 PROCESS 的已经执行的时间，单位是秒。
