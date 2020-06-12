@@ -7,6 +7,7 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
+  + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
   + [基本功能](/basic-features.md)
   + 兼容性
     + [与 MySQL 的兼容性](/mysql-compatibility.md)
@@ -52,13 +53,14 @@
   + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
 + 运维操作
   + 升级 TiDB 版本
-    + [使用 TiUP（推荐）](/upgrade-tidb-using-tiup.md)
-    + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
+    + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
+    + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
-    + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
     + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
@@ -81,6 +83,8 @@
   + [SQL 诊断](/system-tables/system-table-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
   + [SQL 语句统计](/statement-summary-tables.md)
+  + [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
+  + [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
   + [热点问题处理](/troubleshoot-hot-spot-issues.md)
   + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
   + [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
@@ -95,6 +99,7 @@
     + 配置
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
+      + [TiKV Follower Read](/follower-read.md)
       + [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
     + [下推计算结果缓存](/coprocessor-cache.md)
   + SQL 性能调优
@@ -189,6 +194,9 @@
   + [Loader](/loader-overview.md)
   + [Mydumper](/mydumper-overview.md)
   + [Syncer](/syncer-overview.md)
+  + TiSpark
+    + [TiSpark 快速上手](/get-started-with-tispark.md)
+    + [TiSpark 用户指南](/tispark-overview.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md)
@@ -202,7 +210,7 @@
     + [TiKV 面板](/grafana-tikv-dashboard.md)
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
   + 安全加固
-    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md)
+    + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
     + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md)
     + [生成自签名证书](/generate-self-signed-certificates.md)
@@ -425,8 +433,12 @@
   + 存储引擎
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
-      + [RocksDB 简介](/rocksdb/rocksdb-overview.md)
-    + [TiFlash](/tiflash/tiflash-overview.md)
+      + [RocksDB 简介](/storage-engine/rocksdb-overview.md)
+      + [Titan 简介](/storage-engine/titan-overview.md)
+      + [Titan 配置说明](/storage-engine/titan-configuration.md)
+    + TiFlash
+      + [TiFlash 简介](/tiflash/tiflash-overview.md)
+      + [使用 TiFlash](/tiflash/use-tiflash.md)
   + TiUP
     + [文档指南](/tiup/tiup-documentation-guide.md)
     + [概览](/tiup/tiup-overview.md)

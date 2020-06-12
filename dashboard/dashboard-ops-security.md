@@ -73,4 +73,4 @@ http://192.168.0.123:2379/dashboard/
 ## 其他建议的安全措施
 
 - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
-- [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md)
+- [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
