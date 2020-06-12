@@ -1,12 +1,8 @@
 ---
 title: 注释语法
 category: reference
-<<<<<<< HEAD
-aliases: ['/docs-cn/v3.1/reference/sql/language-structure/comment-syntax/']
-=======
 summary: 本文介绍 TiDB 支持的注释语法。
-aliases: ['/docs-cn/dev/reference/sql/language-structure/comment-syntax/']
->>>>>>> cd61a4c... update comment-syntax.md (#3193)
+aliases: ['/docs-cn/v3.1/reference/sql/language-structure/comment-syntax/']
 ---
 
 # 注释语法
