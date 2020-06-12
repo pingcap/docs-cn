@@ -124,7 +124,7 @@ TiKV 后续也会提供新的优化方案改进这一问题。
 TiDB 执行算子的优化参数一般是通过系统变量进行调整，例如 tidb_hash_join_concurrency, tidb_index_lookup_join_concurrency 等。
 
 这次测试中没有对这块参数进行调整，如果实际的业务负载测试中出现因为执行算子消耗过多 CPU 资源的情况，可以针对业务场景对特定的算子资源进行限制。
-这部分内容可以参考 https://pingcap.com/docs-cn/stable/tidb-specific-system-variables/ 
+这部分内容可以参考 [TiDB 系统变量文档](/tidb-specific-system-variables.md)
 
 #### `performance.max-procs`
 
