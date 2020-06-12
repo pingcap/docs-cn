@@ -55,12 +55,12 @@
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
-    + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
-    + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
     + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
@@ -194,6 +194,9 @@
   + [Loader](/loader-overview.md)
   + [Mydumper](/mydumper-overview.md)
   + [Syncer](/syncer-overview.md)
+  + TiSpark
+    + [TiSpark 快速上手](/get-started-with-tispark.md)
+    + [TiSpark 用户指南](/tispark-overview.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md)
