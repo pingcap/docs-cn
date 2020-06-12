@@ -7,9 +7,9 @@ aliases: ['/docs/dev/reference/transactions/overview/']
 
 # Transactions
 
-TiDB supports complete distributed transactions. Both [optimistic transaction model](/optimistic-transaction.md) and [pessimistic transaction model](/pessimistic-transaction.md)(introduced in TiDB 3.0) are available. This document introduces transaction-related statements, explicit and implicit transactions, isolation levels, lazy check for constraints, and transaction sizes.
+TiDB supports complete distributed transactions. Both [optimistic transaction model](/optimistic-transaction.md) and [pessimistic transaction model](/pessimistic-transaction.md)(introduced in TiDB 3.0) are available. This document introduces commonly used transaction-related statements, explicit and implicit transactions, isolation levels, lazy check for constraints, and transaction sizes.
 
-The common variables include [`autocommit`](#autocommit), [`tidb_disable_txn_auto_retry`](/tidb-specific-system-variables.md#tidb_disable_txn_auto_retry), and [`tidb_retry_limit`](/tidb-specific-system-variables.md#tidb_retry_limit).
+The common variables include [`autocommit`](#autocommit), [`tidb_disable_txn_auto_retry`](/tidb-specific-system-variables.md#tidb_disable_txn_auto_retry), [`tidb_retry_limit`](/tidb-specific-system-variables.md#tidb_retry_limit), and [`tidb_txn_mode`](/tidb-specific-system-variables.md#tidb_txn_mode).
 
 ## Common syntax
 
@@ -36,6 +36,10 @@ START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ```
 
 All of the above three statements are used to start a transaction with the same effect. You can explicitly start a new transaction by executing one of these statements. If the current session is in the process of a transaction when one of these statements is executed, TiDB automatically commits the current transaction before starting a new transaction.
+
+> **Note:**
+>
+> Unlike MySQL, TiDB takes a snapshot of the current database after executing the statements above. MySQL's `BEGIN` and `START TRANSACTION` take a snapshot after executing the first `SELECT` statement (not `SELECT FOR UPDATE`) that reads data from InnoDB after a transaction is started. `START TRANSACTION WITH CONSISTENT SNAPSHOT` takes a snapshot during the execution of the statement. As a result, `BEGIN`, `START TRANSACTION`, and `START TRANSACTION WITH CONSISTENT SNAPSHOT` are equivalent to `START TRANSACTION WITH CONSISTENT SNAPSHOT` in MySQL.
 
 ### `COMMIT`
 
@@ -101,14 +105,6 @@ If you set the value of `autocommit` to `1` and start a new transaction through 
 
 For DDL statements, the transaction is committed automatically and does not support rollback. If you run the DDL statement while the current session is in the process of a transaction, the DDL statement is executed after the current transaction is committed.
 
-## Transaction isolation level
-
-TiDB **only supports** `SNAPSHOT ISOLATION`. You can set the isolation level of the current session to `READ COMMITTED` using the following statement. However, TiDB is only compatible with the `READ COMMITTED` isolation level in syntax and transactions are still executed at the `SNAPSHOT ISOLATION` level.
-
-```sql
-SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
-```
-
 ## Lazy check of constraints
 
 **Lazy check** means that by default TiDB will not check [primary key](/constraints.md#primary-key) or [unique constraints](/constraints.md#unique) when an `INSERT` statement is executed, but instead checks when the transaction is committed. In TiDB, the lazy check is performed for values written by ordinary `INSERT` statements.
@@ -129,11 +125,12 @@ The lazy check is important because if you perform a unique constraint check on 
 
 > **Note:**
 >
-> This optimization does not take effect for `INSERT IGNORE` and `INSERT ON DUPLICATE KEY UPDATE`, only for normal `INSERT` statements. The behavior can also be disabled by setting `tidb_constraint_check_in_place=TRUE`.
+> + This optimization only takes effect in optimistic transactions.
+> + This optimization does not take effect for `INSERT IGNORE` and `INSERT ON DUPLICATE KEY UPDATE`, but only for normal `INSERT` statements. The behavior can also be disabled by setting `tidb_constraint_check_in_place=TRUE`.
 
 ## Statement rollback
 
-If you execute a statement within a transaction, the statement does not take effect when an error occurs.
+TiDB supports atomic rollback after statement execution failure. If you execute a statement within a transaction, the statement does not take effect when an error occurs.
 
 ```sql
 begin;
@@ -155,53 +152,20 @@ rollback;
 
 In the above example, the second `insert` statement fails, and this transaction does not insert any data into the database because `rollback` is called.
 
-## Transaction sizes
+## Transaction size limit
 
-In TiDB, a transaction either too small or too large can impair the overall performance.
+Due to the limitations of the underlying storage engine, TiDB requires a single row to be no more than 6 MB. All columns of a row are converted to bytes according to their data types and summed up to estimate the size of a single row.
 
-### Small transactions
+TiDB supports both optimistic and pessimistic transactions, and optimistic transactions are the basis for pessimistic transactions. Because optimistic transactions first cache the changes in private memory, TiDB limits the size of a single transaction.
 
-TiDB uses the default autocommit setting (that is, `autocommit = 1`), which automatically issues a commit when executing each SQL statement. Therefore, each of the following three statements is treated as a transaction:
+By default, TiDB sets the total size of a single transaction to no more than 100 MB. You can modify this default value via `txn-total-size-limit` in the configuration file. The maximum value of `txn-total-size-limit` is 10 GB.
 
-```sql
-UPDATE my_table SET a = 'new_value' WHERE id = 1;
-UPDATE my_table SET a = 'newer_value' WHERE id = 2;
-UPDATE my_table SET a = 'newest_value' WHERE id = 3;
-```
+The actual individual transaction size limit also depends on the amount of remaining memory available to the server, because when a transaction is executed, the memory usage of the TiDB process is approximately six times larger than the total size of transactions.
 
-In this case, the latency is increased because each statement, as a transaction, uses the two-phase commit which consumes more execution time.
-
-To improve the execution efficiency, you can use an explicit transaction instead, that is, to execute the above three statements within a transaction:
-
-```sql
-START TRANSACTION;
-UPDATE my_table SET a = 'new_value' WHERE id = 1;
-UPDATE my_table SET a = 'newer_value' WHERE id = 2;
-UPDATE my_table SET a = 'newest_value' WHERE id = 3;
-COMMIT;
-```
-
-Similarly, it is recommended to execute `INSERT` statements within an explicit transaction.
+Before v4.0, TiDB restricts the total number of key-value pairs for a single transaction to no more than 300,000. This limitation is removed since v4.0.
 
 > **Note:**
 >
-> The single-threaded workloads in TiDB might not fully use TiDB's distributed resources, so the performance of TiDB is lower than that of a single-instance deployment of MySQL. This difference is similar to the case of transactions with higher latency in TiDB.
-
-### Large transaction
-
-Due to the requirement of the two-phase commit, a large transaction can lead to the following issues:
-
-* OOM (Out of Memory) when excessive data is written in the memory
-* More conflicts in the prewrite phase
-* Long duration before transactions are actually committed
-
-Therefore, TiDB intentionally imposes some limits on transaction sizes:
-
-* The total number of SQL statements in a transaction is no more than 5,000 (default)
-* Each key-value pair is no more than 6 MB
-
-For each transaction, it is recommended to keep the number of SQL statements between 100 to 500 to achieve an optimal performance.
-
-TiDB sets a default limit of 100 MB for the total size of key-value pairs, which can be modified by the `txn-total-size-limit` configuration item in the configuration file. The maximum value of `txn-total-size-limit` is 10 GB. The actual size limit of one transaction also depends on the memory capacity. When executing large transactions, the memory usage of the TiDB process is approximately 6 times larger than the total size of transactions.
-
-In versions earlier than 4.0, TiDB limits the total number of key-value pairs for a single transaction to no more than 300,000. This limitation is removed since v4.0.
+> Usually, TiDB Binlog is enabled to replicate data to the downstream. In some scenarios, message middleware such as Kafka is used to consume binlogs that are replicated to the downstream.
+>
+> Taking Kafka as an example, the upper limit of Kafka's single message processing capability is 1 GB. Therefore, when `txn-total-size-limit` is set to more than 1 GB, it might happen that the transaction is successfully executed in TiDB, but the downstream Kafka reports an error. To avoid this situation, you need to decide the actual value of `txn-total-size-limit` according to the limit of the end consumer. For example, if Kafka is used downstream, `txn-total-size-limit` must not exceed 1 GB.
