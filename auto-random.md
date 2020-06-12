@@ -122,7 +122,7 @@ TiDB supports parsing the version comment syntax. See the following example:
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint primary key /*T!30100 auto_random */)
+create table t (a bigint primary key /*T![auto_rand] auto_random */)
 ```
 
 {{< copyable "sql" >}}
@@ -133,9 +133,9 @@ create table t (a bigint primary key auto_random)
 
 The above two statements have the same meaning.
 
-In the result of `show create table`, the `AUTO_RANDOM` attribute is commented out. This comment includes a version number (for example, `/*T!30100 auto_random */`). Here `30100` indicates that the `AUTO_RANDOM` attribute is introduced in v3.1.0. TiDB of a lower version ignores the `AUTO_RANDOM` attribute in the above comment.
+In the result of `show create table`, the `AUTO_RANDOM` attribute is commented out. This comment includes an attribute identifier (for example, `/*T![auto_rand] auto_random */`). Here `auto_rand` represents the `AUTO_RANDOM` attribute. Only the version of TiDB that implements the feature corresponding to this identifier can parse the SQL statement fragment properly.
 
-This attribute supports forward compatibility, namely, downgrade compatibility. TiDB earlier than v3.1.0 ignores the `AUTO_RANDOM` attribute of a table (with the above comment), so TiDB of earlier versions can also use the table with the attribute.
+This attribute supports forward compatibility, namely, downgrade compatibility. TiDB of earlier versions that do not implement this feature ignore the `AUTO_RANDOM` attribute of a table (with the above comment) and can also use the table with the attribute.
 
 ## Restrictions
 
