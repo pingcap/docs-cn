@@ -160,7 +160,7 @@ TiDB supports both optimistic and pessimistic transactions, and optimistic trans
 
 By default, TiDB sets the total size of a single transaction to no more than 100 MB. You can modify this default value via `txn-total-size-limit` in the configuration file. The maximum value of `txn-total-size-limit` is 10 GB.
 
-The actual individual transaction size limit also depends on the amount of remaining memory available to the server, because when a transaction is executed, the memory usage of the TiDB process is approximately six times larger than the total size of transactions.
+The actual individual transaction size limit also depends on the amount of remaining memory available to the server, because when a transaction is executed, the memory usage of the TiDB process is approximately six times the size of the transaction.
 
 Before v4.0, TiDB restricts the total number of key-value pairs for a single transaction to no more than 300,000. This limitation is removed since v4.0.
 
