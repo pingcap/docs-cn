@@ -392,8 +392,6 @@ SELECT * FROM schemata;
 
 `SCHEMATA` 表各列含义如下：
 
-
-
 * CATALOG_NAME：数据库归属的目录名，该列值永远为 `def`。
 * SCHEMA_NAME：数据库的名字。
 * DEFAULT_CHARACTER_SET_NAME：数据库的默认字符集。
