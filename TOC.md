@@ -82,6 +82,7 @@
   + [Statement Summary Tables](/statement-summary-tables.md)
   + [Troubleshoot Cluster Setup](/troubleshoot-tidb-cluster.md)
   + [TiDB Troubleshooting Map](/tidb-troubleshooting-map.md)
+  + [Handle TiCDC Issues](/ticdc/troubleshoot-ticdc.md)
   + [Troubleshoot TiFlash](/tiflash/troubleshoot-tiflash.md)
 + Performance Tuning
   + Software Tuning
