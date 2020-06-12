@@ -18,7 +18,7 @@ aliases: ['/docs-cn/stable/reference/system-databases/information-schema/']
 select * from `ANALYZE_STATUS`;
 ```
 
-```
+```sql
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
 | TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO          | PROCESSED_ROWS | START_TIME          | STATE    |
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
@@ -42,7 +42,7 @@ select * from `ANALYZE_STATUS`;
 SELECT * FROM character_sets;
 ```
 
-```
+```sql
 +--------------------+----------------------+---------------+--------+
 | CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION   | MAXLEN |
 +--------------------+----------------------+---------------+--------+
@@ -65,7 +65,7 @@ SELECT * FROM character_sets;
 SELECT * FROM collations WHERE character_set_name='utf8mb4';
 ```
 
-```
+```sql
 +------------------------+--------------------+------+------------+-------------+---------+
 | COLLATION_NAME         | CHARACTER_SET_NAME | ID   | IS_DEFAULT | IS_COMPILED | SORTLEN |
 +------------------------+--------------------+------+------------+-------------+---------+
@@ -109,7 +109,7 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 SELECT * FROM collation_character_set_applicability WHERE character_set_name='utf8mb4';
 ```
 
-```
+```sql
 +------------------------+--------------------+
 | COLLATION_NAME         | CHARACTER_SET_NAME |
 +------------------------+--------------------+
@@ -225,7 +225,7 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 SHOW COLUMNS FROM t1 FROM test;
 ```
 
-```
+```sql
 +-------+---------+------+------+---------+-------+
 | Field | Type    | Null | Key  | Default | Extra |
 +-------+---------+------+------+---------+-------+
@@ -343,7 +343,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 SELECT * FROM schemata;
 ```
 
-```
+```sql
 +--------------+--------------------+----------------------------+------------------------+----------+
 | CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
 +--------------+--------------------+----------------------------+------------------------+----------+
@@ -366,7 +366,7 @@ SELECT * FROM schemata;
 SELECT * FROM information_schema.cluster_processlist;
 ```
 
-```
+```sql
 +-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
 | INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
 +-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
@@ -388,7 +388,7 @@ SELECT * FROM information_schema.cluster_processlist;
 SELECT * FROM session_variables LIMIT 10;
 ```
 
-```
+```sql
 +----------------------------------+----------------------+
 | VARIABLE_NAME                    | VARIABLE_VALUE       |
 +----------------------------------+----------------------+
@@ -543,7 +543,7 @@ desc information_schema.cluster_slow_query;
 desc select count(*) from information_schema.cluster_slow_query where user = 'u1';
 ```
 
-```
+```sql
 +--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
 | id                       | estRows  | task      | access object            | operator info                                        |
 +--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
@@ -575,6 +575,7 @@ select /*+ AGG_TO_COP() */ count(*) from information_schema.cluster_slow_query g
 desc statistics;
 ```
 
+<<<<<<< HEAD
 ```
 +---------------|---------------------|------|------|---------|-------+
 | Field         | Type                | Null | Key  | Default | Extra |
@@ -596,6 +597,31 @@ desc statistics;
 | COMMENT       | varchar(16)         | YES  |      | NULL    |       |
 | INDEX_COMMENT | varchar(1024)       | YES  |      | NULL    |       |
 +---------------|---------------------|------|------|---------|-------+
+=======
+```sql
++---------------+---------------+------+------+---------+-------+
+| Field         | Type          | Null | Key  | Default | Extra |
++---------------+---------------+------+------+---------+-------+
+| TABLE_CATALOG | varchar(512)  | YES  |      | NULL    |       |
+| TABLE_SCHEMA  | varchar(64)   | YES  |      | NULL    |       |
+| TABLE_NAME    | varchar(64)   | YES  |      | NULL    |       |
+| NON_UNIQUE    | varchar(1)    | YES  |      | NULL    |       |
+| INDEX_SCHEMA  | varchar(64)   | YES  |      | NULL    |       |
+| INDEX_NAME    | varchar(64)   | YES  |      | NULL    |       |
+| SEQ_IN_INDEX  | bigint(2)     | YES  |      | NULL    |       | 
+| COLUMN_NAME   | varchar(21)   | YES  |      | NULL    |       |
+| COLLATION     | varchar(1)    | YES  |      | NULL    |       |
+| CARDINALITY   | bigint(21)    | YES  |      | NULL    |       |
+| SUB_PART      | bigint(3)     | YES  |      | NULL    |       |
+| PACKED        | varchar(10)   | YES  |      | NULL    |       |
+| NULLABLE      | varchar(3)    | YES  |      | NULL    |       |
+| INDEX_TYPE    | varchar(16)   | YES  |      | NULL    |       | 
+| COMMENT       | varchar(16)   | YES  |      | NULL    |       |
+| INDEX_COMMENT | varchar(1024) | YES  |      | NULL    |       |
+| IS_VISIBLE    | varchar(3)    | YES  |      | NULL    |       |
+| Expression    | varchar(64)   | YES  |      | NULL    |       | 
++---------------+---------------+------+------+---------+-------+
+>>>>>>> 963c20c... Update files in system-tables: add 'SQL' identifier in the execution result of SQL statement (#3606)
 ```
 
 下列语句是等价的：
@@ -752,7 +778,7 @@ CONSTRAINT_CATALOG: def
 desc TIDB_HOT_REGIONS;
 ```
 
-```
+```sql
 +----------------+---------------------+------+-----+---------+-------+
 | Field          | Type                | Null | Key | Default | Extra |
 +----------------+---------------------+------+-----+---------+-------+
@@ -778,7 +804,7 @@ desc TIDB_HOT_REGIONS;
 desc TIDB_INDEXES;
 ```
 
-```
+```sql
 +---------------+---------------------+------+-----+---------+-------+
 | Field         | Type                | Null | Key | Default | Extra |
 +---------------+---------------------+------+-----+---------+-------+
@@ -804,7 +830,7 @@ desc TIDB_INDEXES;
 desc TIKV_REGION_PEERS;
 ```
 
-```
+```sql
 +--------------+---------------------+------+-----+---------+-------+
 | Field        | Type                | Null | Key | Default | Extra |
 +--------------+---------------------+------+-----+---------+-------+
@@ -828,7 +854,7 @@ desc TIKV_REGION_PEERS;
 desc TIKV_REGION_STATUS;
 ```
 
-```
+```sql
 +------------------+---------------------+------+-----+---------+-------+
 | Field            | Type                | Null | Key | Default | Extra |
 +------------------+---------------------+------+-----+---------+-------+
@@ -854,7 +880,7 @@ desc TIKV_REGION_STATUS;
 desc TIKV_STORE_STATUS;
 ```
 
-```
+```sql
 +-------------------+---------------------+------+-----+---------+-------+
 | Field             | Type                | Null | Key | Default | Extra |
 +-------------------+---------------------+------+-----+---------+-------+
@@ -890,7 +916,7 @@ desc TIKV_STORE_STATUS;
 desc USER_PRIVILEGES;
 ```
 
-```
+```sql
 +----------------|--------------|------|------|---------|-------+
 | Field          | Type         | Null | Key  | Default | Extra |
 +----------------|--------------|------|------|---------|-------+

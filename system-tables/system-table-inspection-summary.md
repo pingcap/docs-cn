@@ -17,7 +17,7 @@ aliases: ['/docs-cn/stable/reference/system-databases/inspection-summary/']
 desc information_schema.inspection_summary;
 ```
 
-```
+```sql
 +--------------+--------------+------+------+---------+-------+
 | Field        | Type         | Null | Key  | Default | Extra |
 +--------------+--------------+------+------+---------+-------+
