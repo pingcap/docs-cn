@@ -24,8 +24,8 @@ TiDB can be deployed on-premise or in-cloud. The following deployment options ar
 
     Or deploy TiDB locally using:
 
-    - [kind](https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/)
-    - [Minikube](https://pingcap.com/docs/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube/)
+    - [kind](https://pingcap.com/docs/tidb-in-kubernetes/stable/get-started/#create-a-kubernetes-cluster-using-kind)
+    - [Minikube](https://pingcap.com/docs/tidb-in-kubernetes/stable/get-started/#create-a-kubernetes-cluster-using-minikube)
 
 - [Binary Tarball Deployment](/production-deployment-from-binary-tarball.md): This guide describes how to deploy TiDB from a binary tarball in production. Guides for [development](/deploy-tidb-from-binary.md) and [testing](/test-deployment-from-binary-tarball.md) environments are also available.
 
