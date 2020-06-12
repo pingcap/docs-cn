@@ -88,7 +88,7 @@ mysql> select _tidb_rowid, id from t;
 
 - Add Index
     + 同一条 SQL 语句不支持创建多个索引。
-    + 仅在语法在支持创建不同类刑的索引 (HASH/BTREE/RTREE），功能未实现。
+    + 仅在语法在支持创建不同类型的索引 (HASH/BTREE/RTREE），功能未实现。
     + 支持 `VISIBLE`/`INVISIBLE` 索引选项，忽略其它索引选项。
 
 - Add Column
