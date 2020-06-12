@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-systeminfo/']
 desc information_schema.cluster_systeminfo;
 ```
 
-```
+```sql
 +-------------+--------------+------+------+---------+-------+
 | Field       | Type         | Null | Key  | Default | Extra |
 +-------------+--------------+------+------+---------+-------+
@@ -44,7 +44,7 @@ desc information_schema.cluster_systeminfo;
 select * from information_schema.cluster_systeminfo where name like '%kernel.osrelease%'
 ```
 
-```
+```sql
 +------+-------------------+-------------+-------------+------------------+----------------------------+
 | TYPE | INSTANCE          | SYSTEM_TYPE | SYSTEM_NAME | NAME             | VALUE                      |
 +------+-------------------+-------------+-------------+------------------+----------------------------+
