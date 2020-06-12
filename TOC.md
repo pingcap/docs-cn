@@ -49,17 +49,11 @@
   + 迁移
     - [概述](/migration-overview.md)
     + 从 MySQL 迁移
-<<<<<<< HEAD
       - [全量迁移](/migrate-full-data-from-mysql.md)
       - [增量复制](/migrate-incremental-data-from-mysql.md)
     - [从 MySQL/Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
-    - [从 CSV 迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-=======
-      - [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
-      - [以 Amazon Aurora MySQL 为例](/migrate-from-aurora-mysql-database.md)
     - [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     - [从 SQL 文件迁移](/migrate-from-mysql-mydumper-files.md)
->>>>>>> 3358254... add migrate-from-mysql-mydumper-files.md to TOC (#3609)
   + 运维
     - [Ansible 常见运维操作](/maintain-tidb-using-ansible.md)
     + 备份与恢复
