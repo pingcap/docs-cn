@@ -181,7 +181,6 @@
   + Secure
     + [Enable TLS Between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md)
     + [Enable TLS Between TiDB Components](/enable-tls-between-components.md)
-    + [Encrypt Stored Data](/enable-encrypt-stored-data.md)
     + [Generate Self-signed Certificates](/generate-self-signed-certificates.md)
     + [Encryption-At-Rest](/encryption-at-rest.md)
   + Privileges
