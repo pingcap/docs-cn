@@ -188,7 +188,7 @@ cdc cli changefeed query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-231
 
 以上命令中：
 
-- `resolved-ts` 代表当前 changfeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
+- `resolved-ts` 代表当前 changefeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
 - `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
 - `admin-job-type` 代表一个 changefeed 的状态：
     - `0`: 状态正常，也是初始状态。
