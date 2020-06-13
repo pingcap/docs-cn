@@ -925,9 +925,9 @@ desc TIKV_STORE_STATUS;
 * `LEADER_SCORE`：Store 的 leader 评分。
 * `LEADER_SIZE`：Store 上的所有 leader 的近似总数据量 (MB)。
 * `REGION_COUNT`：Store 上的 Region 总数。
-* `REGION_WEIGHT`：Store 的 region 权重。
-* `REGION_SCORE`：Store 的 region 评分。
-* `REGION_SIZE`：Store 上的所有 region 的近似总数据量 (MB)。
+* `REGION_WEIGHT`：Store 的 Region 权重。
+* `REGION_SCORE`：Store 的 Region 评分。
+* `REGION_SIZE`：Store 上的所有 Region 的近似总数据量 (MB)。
 * `START_TS`：Store 启动时的时间戳。
 * `LAST_HEARTBEAT_TS`：Store 上次发出心跳的时间戳。
 * `UPTIME`：Store 启动以来的总时间。
