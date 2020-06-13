@@ -862,7 +862,7 @@ desc TIKV_REGION_STATUS;
 * `TABLE_ID`：Region 所属的表的 ID。
 * `DB_NAME`：`TABLE_ID` 所属的数据库的名称。
 * `TABLE_NAME`：Region 所属的表的名称。
-* `IS_INDEX`：Region 数据是否是索引，0 代表不是索引，1 代表是索引。如果当前 region 同时包含表数据和索引数据，会有多行记录，`IS_INDEX` 分别是 1 和 0。
+* `IS_INDEX`：Region 数据是否是索引，0 代表不是索引，1 代表是索引。如果当前 Region 同时包含表数据和索引数据，会有多行记录，`IS_INDEX` 分别是 1 和 0。
 * `INDEX_ID`：Region 所属的索引的 ID。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
 * `INDEX_NAME`：Region 所属的索引的名称。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
 * `EPOCH_CONF_VER`：Region 的配置的版本号，在增加或减少 peer 时版本号会递增。
@@ -870,8 +870,8 @@ desc TIKV_REGION_STATUS;
 * `WRITTEN_BYTES`：已经往 Region 写入的数据量 (bytes)。
 * `READ_BYTES`：已经从 Region 读取的数据量 (bytes)。
 * `APPROXIMATE_SIZE`：Region 的近似数据量 (MB)。
-* `APPROXIMATE_KEYS`：Region 的近似 key 的数量。
-* `REPLICATIONSTATUS_STATE`：Region 当前的同步状态，为 `UNKNOWN` / `SIMPLE_MAJORITY` / `INTEGRITY_OVER_LABEL` 中的一种。
+* `APPROXIMATE_KEYS`：Region 中 key 的近似数量。
+* `REPLICATIONSTATUS_STATE`：Region 当前的同步状态，可能为 `UNKNOWN` / `SIMPLE_MAJORITY` / `INTEGRITY_OVER_LABEL` 其中一种状态。
 * `REPLICATIONSTATUS_STATEID`：`REPLICATIONSTATUS_STATE` 对应的标识符。
 
 ## TIKV_STORE_STATUS 表
@@ -924,7 +924,7 @@ desc TIKV_STORE_STATUS;
 * `LEADER_WEIGHT`：Store 的 leader 权重。
 * `LEADER_SCORE`：Store 的 leader 评分。
 * `LEADER_SIZE`：Store 上的所有 leader 的近似总数据量 (MB)。
-* `REGION_COUNT`：Store 上的 region 总数。
+* `REGION_COUNT`：Store 上的 Region 总数。
 * `REGION_WEIGHT`：Store 的 region 权重。
 * `REGION_SCORE`：Store 的 region 评分。
 * `REGION_SIZE`：Store 上的所有 region 的近似总数据量 (MB)。
