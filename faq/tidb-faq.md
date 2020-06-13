@@ -248,7 +248,9 @@ Check the time difference between the machine time of the monitor and the time w
 
 #### Deploy TiDB offline using TiDB Ansible
 
-It is not recommended to deploy TiDB offline using TiDB Ansible. If the control machine has no access to external network, you can deploy TiDB offline using TiDB Ansible. For details, see [Offline Deployment Using TiDB Ansible](/offline-deployment-using-ansible.md).
+> **Warning:**
+>
+> It is not recommended to deploy TiDB using TiDB Ansible since TiDB v4.0. [Use TiUP to deploy TiDB](/production-offline-deployment-using-tiup.md) instead.
 
 #### How to deploy TiDB quickly using Docker Compose on a single machine?
 
@@ -323,7 +325,7 @@ When you apply rolling updates to the TiDB services, the running application is 
 
 #### How to upgrade when I deploy TiDB using Binary?
 
-It is not recommended to deploy TiDB using Binary. The support for upgrading using Binary is not as friendly as using TiDB Ansible. It is recommended to deploy TiDB using TiDB Ansible.
+It is not recommended to deploy TiDB using Binary. The support for upgrading using Binary is not as friendly as using TiUP. It is recommended to deploy TiDB using TiUP.
 
 #### Should I upgrade TiKV or all components generally?
 
@@ -411,7 +413,7 @@ Take `Release Version: v1.0.3-1-ga80e796` as an example of version number descri
 
 The TiDB community is highly active. After the 1.0 GA release, the engineers have been keeping optimizing and fixing bugs. Therefore, the TiDB version is updated quite fast. If you want to keep informed of the latest version, see [TiDB Weekly update](https://pingcap.com/weekly/).
 
-It is recommended to deploy the TiDB cluster using the latest version of TiDB Ansible, which will also be updated along with the TiDB version. TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
+It is not recommended to deploy the TiDB cluster using TiDB Ansible. [Deploy TiDB using TiUP](/production-deployment-using-tiup.md) instead. TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
 
 - `select tidb_version()`
 - `tidb-server -V`

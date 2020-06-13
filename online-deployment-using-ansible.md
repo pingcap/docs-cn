@@ -7,6 +7,12 @@ aliases: ['/docs/dev/how-to/deploy/orchestrated/ansible/']
 
 # Deploy TiDB Using TiDB Ansible
 
+> **Warning:**
+>
+> For production environments, it is recommended that you [deploy TiDB using TiUP](/production-deployment-using-tiup.md). Since v4.0, it is not recommended to deploy TiDB using TiDB Ansible. You can [import the TiDB cluster deployed by TiDB Ansible to TiUP](/upgrade-tidb-using-tiup.md#import-the-tidb-ansible-cluster-to-tiup).
+>
+> If you only want to try out TiDB and explore new features, refer to [Quick Start Guide](/quick-start-with-tidb.md) or [deploy TiDB using Docker Compose](/deploy-test-cluster-using-docker-compose.md) on a single machine.
+
 This guide describes how to deploy a TiDB cluster using TiDB Ansible. For the production environment, it is recommended to deploy TiDB using TiDB Ansible.
 
 ## Overview
@@ -27,10 +33,6 @@ You can use the TiDB Ansible configuration file to set up the cluster topology a
 - [Enable the cluster binlog](/tidb-binlog/tidb-binlog-overview.md)
 - [Clean up data of the TiDB cluster](/maintain-tidb-using-ansible.md#clean-up-cluster-data)
 - [Destroy the TiDB cluster](/maintain-tidb-using-ansible.md#destroy-a-cluster)
-
-> **Note:**
->
-> For production environments, it is recommended that you deploy TiDB [using TiUP](/production-deployment-using-tiup.md). You can also deploy TiDB using TiDB Ansible. If you only want to try TiDB out and explore the features, it is recommended to [deploy TiDB using Docker Compose](/deploy-test-cluster-using-docker-compose.md) on a single machine.
 
 ## Prepare
 

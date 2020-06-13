@@ -12,7 +12,7 @@ In this test, Sysbench 1.0.14 and TiDB 3.0 Beta are used. It is recommended to u
 
 - [Hardware recommendations](/hardware-and-software-requirements.md)
 
-- The TiDB cluster is deployed according to the [TiDB Deployment Guide](/online-deployment-using-ansible.md). Suppose there are 3 servers in total. It is recommended to deploy 1 TiDB instance, 1 PD instance and 1 TiKV instance on each server. As for disk space, supposing that there are 32 tables and 10M rows of data on each table, it is recommended that the disk space where TiKV's data directory resides is larger than 512 GB.
+- The TiDB cluster is deployed according to the [TiDB Deployment Guide](https://pingcap.com/docs/v3.0/online-deployment-using-ansible/). Suppose there are 3 servers in total. It is recommended to deploy 1 TiDB instance, 1 PD instance and 1 TiKV instance on each server. As for disk space, supposing that there are 32 tables and 10M rows of data on each table, it is recommended that the disk space where TiKV's data directory resides is larger than 512 GB.
 
 The number of concurrent connections to a single TiDB cluster is recommended to be under 500. If you need to increase the concurrency pressure on the entire system, you can add TiDB instances to the cluster whose number depends on the pressure of the test.
 
