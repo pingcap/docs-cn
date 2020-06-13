@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "translation/welcome": ["*.md", "*.yml", "*.yaml", "*.json", "media/", "scripts/"],
+    "PTAL": ["*.md", "*.yml", "*.yaml", "*.json", "media/", "scripts/"]
+  }
+}
