@@ -34,8 +34,5 @@
 
 # Changing all md files should request a language review in case of format failures.
 # TomShawn is the repo administrator.
-'*.md':
-  - TomShawn
-
-'media/':
+'*.*':
   - TomShawn
