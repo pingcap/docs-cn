@@ -1,0 +1,41 @@
+---
+# you can use glob pattern
+
+# Changing all md files should request a language review in case of format failures.
+# TomShawn is the repo administrator.
+'*.md':
+  - TomShawn
+
+'media/':
+  - TomShawn
+
+# You can set multiple reviewers
+'.github/':
+  - yikeke
+  - ran-huang
+
+'tiflash/':
+  - zanmato1984
+  - kissmydb
+  - yikeke
+
+'tiup/':
+  - lonng
+  - lucklove
+  - kissmydb
+  - yikeke
+
+'sql-statements/':
+  - bb7133
+
+'releases/':
+  - scsldb
+
+'dashboard/':
+  - breeswish
+
+'config-templates/':
+  - kissmydb
+
+'ticdc/':
+  - WangXiangUSTC
