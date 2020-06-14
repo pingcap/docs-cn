@@ -72,5 +72,3 @@ category: introduction
 |:----------|:----------|
 | 单条 INSERT statement 语句写入的 Key-Value 对数量       |  3000000      |
 | 单个事务写入的行数       |  3000000 / 单个表索引的数量      |
-| 单条 INSERT statement 语句写入的 Key-Value 对数量       |  3000000      |
-| 单个事务写入的行数       |  3000000 / 单个表索引的数量      |
