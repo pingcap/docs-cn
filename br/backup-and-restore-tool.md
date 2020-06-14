@@ -116,9 +116,19 @@ TiKV 收到加载 SST 文件的请求后，利用 Raft 机制保证加载 SST �
 * `backup`：`br` 的子命令
 * `full`：`backup` 的子命令
 * `-s` 或 `--storage`：备份保存的路径
-* `"local:///tmp/backup"`：`-s` 的参数，保存的路径为本地磁盘的 `/tmp/backup`
+* `"local:///tmp/backup"`：`-s` 的参数，保存的路径为各个 TiKV 节点本地磁盘的 `/tmp/backup`
 * `--pd`：PD 服务地址
 * `"${PDIP}:2379"`：`--pd` 的参数
+
+> **注意：**
+> 
+> 在使用 `local` storage 的时候，备份数据会分散在各个节点的本地文件系统中。
+>
+> **不建议**在生产环境中备份到本地磁盘，因为在日后恢复的时候，**必须**手动聚集这些数据才能完成恢复工作（见[恢复集群数据](#恢复集群数据)）。
+> 
+> 聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到颇为迷惑的 `SST file not found` 报错。
+> 
+> 建议在各个节点挂载 NFS 网盘，或者直接备份到 `S3` 对象存储中。
 
 ### 命令和子命令
 
@@ -163,6 +173,11 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 要备份全部集群数据，可使用 `br backup full` 命令。该命令的使用帮助可以通过 `br backup full -h` 或 `br backup full --help` 来获取。
 
 用例：将所有集群数据备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下。
+
+> **注意：**
+> 
+> + 经测试，在全速备份的情况下，如果备份盘和服务盘不同，在线备份会让只读线上服务的 QPS 下降 15%~25% 左右。如果希望降低影响，请参考 `--ratelimit` 进行限速。
+> + 假如备份盘和服务盘相同，备份将会和服务争夺 I/O 资源，这可能会让只读线上服务的 QPS 骤降一半以上。请尽量禁止将在线服务的数据备份到 TiKV 的数据盘。
 
 {{< copyable "shell-regular" >}}
 
@@ -254,9 +269,65 @@ br backup full \
     --pd "${PDIP}:2379" \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
-    --send-credentials-to-tikv true \
+    --send-credentials-to-tikv=true \
     --log-file backuptable.log
 ```
+
+### 增量备份
+
+如果想要备份增量，只需要在备份的时候指定**上一次的备份时间戳** `--lastbackupts` 即可。
+
+注意增量备份有以下限制：
+
+- 增量备份需要与前一次全量备份在不同的路径下
+- 增量备份开始时间与 `lastbackupts` 之间不能有 GC
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full\
+    --pd ${PDIP}:2379 \
+    -s local:///home/tidb/backupdata/incr \
+    --lastbackupts ${LAST_BACKUP_TS}
+```
+
+以上命令会备份 `(LAST_BACKUP_TS, current PD timestamp]` 之间的增量数据。
+
+你可以使用 `validate` 指令获取上一次备份的时间戳，示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata`
+```
+
+示例备份的增量数据包括 `(LAST_BACKUP_TS, current PD timestamp]` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复写入数据。
+
+### Raw KV 备份（实验性功能）
+
+> **警告：**
+> 
+> Raw KV 备份功能还在实验中，没有经过完备的测试。暂时请避免在生产环境中使用该功能。
+在某些使用场景下，TiKV 可能会独立于 TiDB 运行。考虑到这点，BR 也提供跳过 TiDB 层，直接备份 TiKV 中数据的功能：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup raw --pd $PD_ADDR \
+    -s "local://$BACKUP_DIR" \
+    --start 31 \
+    --end 3130303030303030 \
+    --format hex \
+    --cf default
+```
+
+以上命令会备份 default CF 上 `[0x31, 0x3130303030303030)` 之间的所有键到 `$BACKUP_DIR` 去。
+
+这里，`--start` 和 `--end` 的参数会先依照 `--format` 指定的方式解码，再被送到 TiKV 上去，目前支持以下解码方式：
+
+- "raw"：不进行任何操作，将输入的字符串直接编码为二进制格式的键。
+- "hex"：将输入的字符串视作十六进制数字。这是默认的编码方式。
+- "escape"：对输入的字符串进行转义之后，再编码为二进制格式。
 
 ## 恢复集群数据
 
@@ -358,36 +429,72 @@ br restore full \
     --pd "${PDIP}:2379" \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
-    --send-credentials-to-tikv true \
+    --send-credentials-to-tikv=true \
     --log-file restorefull.log
 ```
 
 以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复某个数据库](#恢复某个数据库)相同。
 
-### 增量备份恢复
+### 增量恢复
 
-如果想要增量备份，只需要在备份的时候指定 `--lastbackupts` 即可。
+增量恢复的方法和使用 BR 进行全量恢复的方法并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
 
-注意增量备份有两个限制：
+### Raw KV 恢复（实验性功能）
 
-- 增量备份需要与前一次全量备份在不同的路径下
-- 增量备份开始时间与 `lastbackupts` 之间不能有 GC
+> **警告：**
+> 
+> Raw KV 恢复功能还在实验中，没有经过完备的测试。暂时请避免在生产环境中使用该功能。
+
+和 [Raw KV 备份](#raw-kv-备份实验性功能)相似地，恢复 Raw KV 的命令如下：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-    LAST_BACKUP_TS=`./br validate decode --field="end-version" -s local:///home/tidb/backupdata`
-    ./br backup full\
-        --pd ${PDIP}:2379 \
-        -s local:///home/tidb/backupdata/incr \
-        --lastbackupts ${LAST_BACKUP_TS}
+br restore raw --pd $PD_ADDR \
+    -s "local://$BACKUP_DIR" \
+    --start 31 \
+    --end 3130303030303030 \
+    --format hex \
+    --cf default
 ```
 
-以上命令会备份 `[LAST_BACKUP_TS, current PD timestamp)` 之间的增量数据。你可以使用 `validate` 指令获取上一次备份的时间戳。
+以上命令会将范围在 `[0x31, 0x3130303030303030)` 的已备份键恢复到 TiKV 集群中。这里键的编码方式和备份时相同。
 
-示例备份的增量数据包括 `[LAST_BACKUP_TS, current PD timestamp)` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，我们会先把所有 DDL 恢复，而后才会恢复写入数据。
+### 在线恢复（实验性功能）
 
-在增量恢复的时候，使用 BR 的方法和全量恢复并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
+> **警告：**
+> 
+> 在线恢复功能还在实验中，没有经过完备的测试，同时还依赖 PD 的不稳定特性 Placement Rules。暂时请避免在生产环境中使用该功能。
+
+在恢复的时候，写入过多的数据会影响在线集群的性能。为了尽量避免影响线上业务，BR 支持通过 [Placement rules](/configure-placement-rules.md) 隔离资源。让下载、导入 SST 的工作仅仅在指定的几个节点（下称“恢复节点”）上进行，具体操作如下：
+
+1. 配置 PD，启动 Placement rules：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    echo "config set enable-placement-rules true" | pd-ctl
+    ```
+
+2. 编辑恢复节点 TiKV 的配置文件，在 `server` 一项中指定：
+
+    {{< copyable "" >}}
+
+    ```
+    [server]
+    labels = { exclusive = "restore" }
+    ```
+
+3. 启动恢复节点的 TiKV，使用 BR 恢复备份的文件，和非在线恢复相比，这里只需要加上 `--online` 标志即可：
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    br restore full \
+        -s "local://$BACKUP_DIR" \
+        --pd $PD_ADDR \
+        --online
+    ```
 
 ## 最佳实践
 
