@@ -2,7 +2,7 @@ name: Auto Label
 on:
   pull_request:
     branches:
-      - 'release-*'
+      - master
     types: [opened]
 
 jobs:
