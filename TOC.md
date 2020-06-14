@@ -67,7 +67,7 @@
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-  + [日常巡检](/daily-inspection.md)
+  + [日常巡检](/daily-check.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
@@ -212,7 +212,6 @@
   + 安全加固
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
-    + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md)
     + [生成自签名证书](/generate-self-signed-certificates.md)
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
@@ -467,6 +466,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.1](/releases/release-4.0.1.md)
     - [4.0 GA](/releases/release-4.0-ga.md)
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
     - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)
