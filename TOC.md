@@ -153,6 +153,7 @@
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
+    + [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
     + [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
     + [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
     + [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
