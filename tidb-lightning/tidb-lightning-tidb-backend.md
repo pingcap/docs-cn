@@ -205,5 +205,28 @@ password = ""
 ```
 
 </td></tr>
+<tr><td>
+
+```toml
+# [[route-rules]]
+# Table routes
+# pattern-schema = "shard_db_*"
+# pattern-table = "shard_table_*"
+# target-schema = "shard_db"
+# target-table = "shard_table"
+```
+
+</td><td>
+
+```toml
+# [[routes]]
+# Table routes
+# pattern-schema = "shard_db_*"
+# pattern-table = "shard_table_*"
+# target-schema = "shard_db"
+# target-table = "shard_table"
+```
+
+</td></tr>
 </tbody>
 </table>
