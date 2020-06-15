@@ -13,6 +13,36 @@ In the above case, because there is only one Region at the beginning, all write 
 
 To solve the hotspot problem in the above scenario, TiDB introduces the pre-split function, which can pre-split multiple Regions for a certain table according to the specified parameters and scatter them to each TiKV node.
 
+## Synopsis
+
+**SplitRegionStmt:**
+
+![SplitRegionStmt](/media/sqlgram/SplitRegionStmt.png)
+
+**SplitSyntaxOption:**
+
+![SplitSyntaxOption](/media/sqlgram/SplitSyntaxOption.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
+**SplitOption:**
+
+![SplitOption](/media/sqlgram/SplitOption.png)
+
+**RowValue:**
+
+![RowValue](/media/sqlgram/RowValue.png)
+
+**Int64Num:**
+
+![Int64Num](/media/sqlgram/Int64Num.png)
+
 ## Usage of Split Region
 
 There are two types of Split Region syntax:

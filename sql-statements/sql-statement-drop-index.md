@@ -11,21 +11,29 @@ This statement removes an index from a specified table, marking space as free in
 
 ## Synopsis
 
-**AlterTableStmt:**
+**AlterTableDropIndexStmt:**
 
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
+![AlterTableDropIndexStmt](/media/sqlgram/AlterTableDropIndexStmt.png)
 
-**AlterTableSpec:**
+**IgnoreOptional:**
 
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
+![IgnoreOptional](/media/sqlgram/IgnoreOptional.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**AlterTableDropIndexSpec:**
+
+![AlterTableDropIndexSpec](/media/sqlgram/AlterTableDropIndexSpec.png)
 
 **KeyOrIndex:**
 
 ![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
 
-**Identifier:**
+**IfExists:**
 
-![Identifier](/media/sqlgram/Identifier.png)
+![IfExists](/media/sqlgram/IfExists.png)
 
 ## Examples
 

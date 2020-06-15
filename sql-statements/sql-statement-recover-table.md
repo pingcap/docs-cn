@@ -23,6 +23,24 @@ RECOVER TABLE table_name
 RECOVER TABLE BY JOB ddl_job_id
 ```
 
+## Synopsis
+
+**RecoverTableStmt:**
+
+![RecoverTableStmt](/media/sqlgram/RecoverTableStmt.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**Int64Num:**
+
+![Int64Num](/media/sqlgram/Int64Num.png)
+
+**NUM:**
+
+![NUM](/media/sqlgram/NUM.png)
+
 > **Note:**
 >
 > + If a table is deleted and the GC lifetime is out, the table cannot be recovered with `RECOVER TABLE`. Execution of `RECOVER TABLE` in this scenario returns an error like: `snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`.

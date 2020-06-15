@@ -25,6 +25,20 @@ select * from mysql.tidb where variable_name in ('tikv_gc_safe_point','tikv_gc_l
 FLASHBACK TABLE table_name [TO other_table_name]
 ```
 
+## Synopsis
+
+**FlashbackTableStmt:**
+
+![FlashbackTableStmt](/media/sqlgram/FlashbackTableStmt.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**FlashbackToNewName:**
+
+![FlashbackToNewName](/media/sqlgram/FlashbackToNewName.png)
+
 ## Notes
 
 If a table is dropped and the GC lifetime has passed, you can no longer use the `FLASHBACK TABLE` statement to recover the dropped data. Otherwise, an error like `Can't find dropped / truncated table 't' in GC safe point 2020-03-16 16:34:52 +0800 CST` will be returned.
