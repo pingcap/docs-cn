@@ -257,6 +257,7 @@
       + [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       + [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       + [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      + [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
       + [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md)
       + [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       + [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
