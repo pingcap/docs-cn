@@ -12,13 +12,9 @@ aliases: ['/docs-cn/dev/test-deployment-using-docker/']
 
 本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
 
-- [TiDB 数据库快速上手指南](#tidb-数据库快速上手指南)
-  - [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
-  - [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
-    - [准备环境](#准备环境)
-    - [实施部署](#实施部署)
-  - [第三种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第三种使用-tidb-wasm-一键体验-tidb-数据库)
-  - [探索更多](#探索更多)
+- [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
+- [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
+- [第三种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第三种使用-tidb-wasm-一键体验-tidb-数据库)
 
 ## 第一种：使用 TiUP Playground 快速部署本地测试环境
 
