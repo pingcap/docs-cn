@@ -262,8 +262,8 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
     - TiKV: `split-region-on-table` 设为 `false`，该参数不支持动态修改。
     - PD: 
-       + `key-type` 设为 `txn` 或者 `raw`，该参数支持动态修改。
-       + `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
+        + `key-type` 设为 `txn` 或者 `raw`，该参数支持动态修改。
+        + `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
        
         > **注意：**
         >
