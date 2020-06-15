@@ -15,10 +15,6 @@ The `EXECUTE` statement provides an SQL interface to server-side prepared statem
 
 ![ExecuteStmt](/media/sqlgram/ExecuteStmt.png)
 
-**Identifier:**
-
-![Identifier](/media/sqlgram/Identifier.png)
-
 ## Examples
 
 ```sql

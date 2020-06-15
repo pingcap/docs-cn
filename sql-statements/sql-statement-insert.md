@@ -15,6 +15,10 @@ This statement inserts new rows into a table.
 
 ![InsertIntoStmt](/media/sqlgram/InsertIntoStmt.png)
 
+**TableOptimizerHints**
+
+![TableOptimizerHints](/media/sqlgram/TableOptimizerHints.png)
+
 **PriorityOpt:**
 
 ![PriorityOpt](/media/sqlgram/PriorityOpt.png)
@@ -31,14 +35,22 @@ This statement inserts new rows into a table.
 
 ![TableName](/media/sqlgram/TableName.png)
 
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
 **InsertValues:**
 
 ![InsertValues](/media/sqlgram/InsertValues.png)
 
+**OnDuplicateKeyUpdate:**
+
+![OnDuplicateKeyUpdate](/media/sqlgram/OnDuplicateKeyUpdate.png)
+
 ## Examples
 
 ```sql
-mysql> CREATE TABLE t1 (a int);
+mysql> CREATE TABLE t1 (a INT);
 Query OK, 0 rows affected (0.11 sec)
 
 mysql> CREATE TABLE t2 LIKE t1;

@@ -27,6 +27,10 @@ The `REPLACE` statement is semantically a combined `DELETE`+`INSERT` statement. 
 
 ![TableName](/media/sqlgram/TableName.png)
 
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
 **InsertValues:**
 
 ![InsertValues](/media/sqlgram/InsertValues.png)

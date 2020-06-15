@@ -26,7 +26,7 @@ The `SET TRANSACTION` statement can be used to change the current isolation leve
 ## Examples
 
 ```sql
-mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
+mysql> SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 +-----------------------+-----------------+
 | Variable_name         | Value           |
 +-----------------------+-----------------+
@@ -37,7 +37,7 @@ mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
 mysql> SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
+mysql> SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 +-----------------------+----------------+
 | Variable_name         | Value          |
 +-----------------------+----------------+
@@ -48,7 +48,7 @@ mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
 mysql> SET SESSION transaction_isolation = 'REPEATABLE-READ';
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
+mysql> SHOW SESSION VARIABLES LIKE 'transaction_isolation';
 +-----------------------+-----------------+
 | Variable_name         | Value           |
 +-----------------------+-----------------+
@@ -61,7 +61,8 @@ mysql> SHOW SESSION VARIABLES like 'transaction_isolation';
 
 * TiDB supports the ability to set a transaction as read-only in syntax only.
 * The isolation levels `READ-UNCOMMITTED` and `SERIALIZABLE` are not supported.
-* The isolation level `REPEATABLE-READ` is technically Snapshot Isolation. The name `REPEATABLE-READ` is used for compatibility with MySQL.
+* The `REPEATABLE-READ` isolation level is achieved through using the snapshot isolation technology, which is partly compatible with MySQL.
+* In pessimistic transactions, TiDB supports two isolation levels compatible with MySQL: `REPEATABLE-READ` and `READ-COMMITTED`. For a detailed description, see [Isolation Levels](/transaction-isolation-levels.md).
 
 ## See also
 
