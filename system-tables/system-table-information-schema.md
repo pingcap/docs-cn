@@ -805,8 +805,6 @@ COLLATION_CONNECTION: utf8_general_ci
 1 row in set (0.00 sec)
 ```
 
-<<<<<<< HEAD
-=======
 `VIEWS` 表中列的含义如下：
 
 * `TABLE_CATALOG`：视图所属的目录的名称。该值始终为 `def`。
@@ -820,21 +818,6 @@ COLLATION_CONNECTION: utf8_general_ci
 * `CHARACTER_SET_CLIENT`：在视图创建时 session 变量 `character_set_client` 的值。
 * `COLLATION_CONNECTION`：在视图创建时 session 变量 `collation_connection` 的值。
 
-## SQL 诊断相关的表
-
-* [`information_schema.cluster_info`](/system-tables/system-table-cluster-info.md)
-* [`information_schema.cluster_config`](/system-tables/system-table-cluster-config.md)
-* [`information_schema.cluster_hardware`](/system-tables/system-table-cluster-hardware.md)
-* [`information_schema.cluster_load`](/system-tables/system-table-cluster-load.md)
-* [`information_schema.cluster_systeminfo`](/system-tables/system-table-cluster-systeminfo.md)
-* [`information_schema.cluster_log`](/system-tables/system-table-cluster-log.md)
-* [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md)
-* [`information_schema.metrics_summary`](/system-tables/system-table-metrics-summary.md)
-* [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md)
-* [`information_schema.inspection_result`](/system-tables/system-table-inspection-result.md)
-* [`information_schema.inspection_summary`](/system-tables/system-table-inspection-summary.md)
-
->>>>>>> 73d3099... system-tables: add some descriptions for columns (#3468)
 ## 不支持的 Information Schema 表
 
 TiDB 包含以下 `INFORMATION_SCHEMA` 表，但仅会返回空行：
