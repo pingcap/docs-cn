@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-info/']
 desc information_schema.cluster_info;
 ```
 
-```
+```sql
 +----------------+-------------+------+------+---------+-------+
 | Field          | Type        | Null | Key  | Default | Extra |
 +----------------+-------------+------+------+---------+-------+
@@ -46,7 +46,7 @@ desc information_schema.cluster_info;
 select * from information_schema.cluster_info;
 ```
 
-```
+```sql
 +------+-----------------+-----------------+-------------+------------------------------------------+---------------------------+--------------+
 | TYPE | INSTANCE        | STATUS_ADDRESS  | VERSION     | GIT_HASH                                 | START_TIME                | UPTIME       |
 +------+-----------------+-----------------+-------------+------------------------------------------+---------------------------+--------------+
