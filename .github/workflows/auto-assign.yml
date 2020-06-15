@@ -4,6 +4,8 @@ on:
     branches:
       - master
     types: [opened, labeled]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   assign_reviewer:
@@ -12,4 +14,3 @@ jobs:
     - uses: shufo/auto-assign-reviewer-by-files@v1.0.0
       with:
         config: '.github/assign-by-files.yml'
-        token: ${{ secrets.GITHUB_TOKEN }}
