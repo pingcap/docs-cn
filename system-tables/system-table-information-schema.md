@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/information-schema/']
 select * from `ANALYZE_STATUS`;
 ```
 
-```
+```sql
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
 | TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO          | PROCESSED_ROWS | START_TIME          | STATE    |
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
@@ -42,7 +42,7 @@ select * from `ANALYZE_STATUS`;
 SELECT * FROM character_sets;
 ```
 
-```
+```sql
 +--------------------+----------------------+---------------+--------+
 | CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION   | MAXLEN |
 +--------------------+----------------------+---------------+--------+
@@ -65,7 +65,7 @@ SELECT * FROM character_sets;
 SELECT * FROM collations WHERE character_set_name='utf8mb4';
 ```
 
-```
+```sql
 +------------------------+--------------------+------+------------+-------------+---------+
 | COLLATION_NAME         | CHARACTER_SET_NAME | ID   | IS_DEFAULT | IS_COMPILED | SORTLEN |
 +------------------------+--------------------+------+------------+-------------+---------+
@@ -109,7 +109,7 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 SELECT * FROM collation_character_set_applicability WHERE character_set_name='utf8mb4';
 ```
 
-```
+```sql
 +------------------------+--------------------+
 | COLLATION_NAME         | CHARACTER_SET_NAME |
 +------------------------+--------------------+
@@ -225,7 +225,7 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 SHOW COLUMNS FROM t1 FROM test;
 ```
 
-```
+```sql
 +-------+---------+------+------+---------+-------+
 | Field | Type    | Null | Key  | Default | Extra |
 +-------+---------+------+------+---------+-------+
@@ -343,7 +343,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 SELECT * FROM schemata;
 ```
 
-```
+```sql
 +--------------+--------------------+----------------------------+------------------------+----------+
 | CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
 +--------------+--------------------+----------------------------+------------------------+----------+
@@ -366,7 +366,7 @@ SELECT * FROM schemata;
 SELECT * FROM information_schema.cluster_processlist;
 ```
 
-```
+```sql
 +-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
 | INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
 +-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
@@ -388,7 +388,7 @@ SELECT * FROM information_schema.cluster_processlist;
 SELECT * FROM session_variables LIMIT 10;
 ```
 
-```
+```sql
 +----------------------------------+----------------------+
 | VARIABLE_NAME                    | VARIABLE_VALUE       |
 +----------------------------------+----------------------+
@@ -543,7 +543,7 @@ desc information_schema.cluster_slow_query;
 desc select count(*) from information_schema.cluster_slow_query where user = 'u1';
 ```
 
-```
+```sql
 +--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
 | id                       | estRows  | task      | access object            | operator info                                        |
 +--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
@@ -575,7 +575,7 @@ select /*+ AGG_TO_COP() */ count(*) from information_schema.cluster_slow_query g
 desc statistics;
 ```
 
-```
+```sql
 +---------------+---------------+------+------+---------+-------+
 | Field         | Type          | Null | Key  | Default | Extra |
 +---------------+---------------+------+------+---------+-------+
@@ -754,7 +754,7 @@ CONSTRAINT_CATALOG: def
 desc TIDB_HOT_REGIONS;
 ```
 
-```
+```sql
 +----------------+---------------------+------+-----+---------+-------+
 | Field          | Type                | Null | Key | Default | Extra |
 +----------------+---------------------+------+-----+---------+-------+
@@ -780,7 +780,7 @@ desc TIDB_HOT_REGIONS;
 desc TIDB_INDEXES;
 ```
 
-```
+```sql
 +---------------+---------------------+------+-----+---------+-------+
 | Field         | Type                | Null | Key | Default | Extra |
 +---------------+---------------------+------+-----+---------+-------+
@@ -796,6 +796,18 @@ desc TIDB_INDEXES;
 +---------------+---------------------+------+-----+---------+-------+
 ```
 
+`TIDB_INDEXES` 表中列的含义如下：
+
+* `TABLE_SCHEMA`：索引所在表的所属数据库的名称。
+* `TABLE_NAME`：索引所在表的名称。
+* `NON_UNIQUE`：如果索引是唯一的，则为 `0`，否则为 `1`。
+* `KEY_NAME`：索引的名称。如果索引是主键，则名称为 `PRIMARY`。
+* `SEQ_IN_INDEX`：索引中列的顺序编号，从 `1` 开始。
+* `COLUMN_NAME`：索引所在的列名。
+* `SUB_PART`：索引前缀长度。如果列是部分被索引，则该值为被索引的字符数量，否则为 `NULL`。
+* `INDEX_COMMENT`：创建索引时以 `COMMENT` 标注的注释。
+* `INDEX_ID`：索引的 ID。
+
 ## TIKV_REGION_PEERS 表
 
 `TIKV_REGION_PEERS` 表提供了所有 REGION 的 peer 信息。
@@ -806,7 +818,7 @@ desc TIDB_INDEXES;
 desc TIKV_REGION_PEERS;
 ```
 
-```
+```sql
 +--------------+---------------------+------+-----+---------+-------+
 | Field        | Type                | Null | Key | Default | Extra |
 +--------------+---------------------+------+-----+---------+-------+
@@ -830,7 +842,7 @@ desc TIKV_REGION_PEERS;
 desc TIKV_REGION_STATUS;
 ```
 
-```
+```sql
 +------------------+---------------------+------+-----+---------+-------+
 | Field            | Type                | Null | Key | Default | Extra |
 +------------------+---------------------+------+-----+---------+-------+
@@ -856,7 +868,7 @@ desc TIKV_REGION_STATUS;
 desc TIKV_STORE_STATUS;
 ```
 
-```
+```sql
 +-------------------+---------------------+------+-----+---------+-------+
 | Field             | Type                | Null | Key | Default | Extra |
 +-------------------+---------------------+------+-----+---------+-------+
@@ -892,7 +904,7 @@ desc TIKV_STORE_STATUS;
 desc USER_PRIVILEGES;
 ```
 
-```
+```sql
 +----------------|--------------|------|------|---------|-------+
 | Field          | Type         | Null | Key  | Default | Extra |
 +----------------|--------------|------|------|---------|-------+
@@ -903,6 +915,13 @@ desc USER_PRIVILEGES;
 +----------------|--------------|------|------|---------|-------+
 4 rows in set (0.00 sec)
 ```
+
+`USER_PRIVILEGES` 表中列的含义如下：
+
+* `GRANTEE`：被授权的用户名称，格式为 `'user_name'@'host_name'`。
+* `TABLE_CATALOG`：表所属的目录的名称。该值始终为 `def`。
+* `PRIVILEGE_TYPE`：被授权的权限类型，每行只列一个权限。
+* `IS_GRANTABLE`：如果用户有 `GRANT OPTION` 的权限，则为 `YES`，否则为 `NO`。
 
 ## VIEWS 表
 
@@ -938,6 +957,19 @@ CHARACTER_SET_CLIENT: utf8
 COLLATION_CONNECTION: utf8_general_ci
 1 row in set (0.00 sec)
 ```
+
+`VIEWS` 表中列的含义如下：
+
+* `TABLE_CATALOG`：视图所属的目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：视图所属的数据库的名称。
+* `TABLE_NAME`：视图名称。
+* `VIEW_DEFINITION`：视图的定义，由创建视图时 `SELECT` 部分的语句组成。
+* `CHECK_OPTION`：`CHECK_OPTION` 的值。取值为 `NONE`、 `CASCADE` 或 `LOCAL`。
+* `IS_UPDATABLE`：`UPDATE`/`INSERT`/`DELETE` 是否对该视图可用。在 TiDB，始终为 `NO`。 
+* `DEFINER`：视图的创建者用户名称，格式为 `'user_name'@'host_name'`。
+* `SECURITY_TYPE`：`SQL SECURITY` 的值，取值为 `DEFINER` 或 `INVOKER`。
+* `CHARACTER_SET_CLIENT`：在视图创建时 session 变量 `character_set_client` 的值。
+* `COLLATION_CONNECTION`：在视图创建时 session 变量 `collation_connection` 的值。
 
 ## SQL 诊断相关的表
 
