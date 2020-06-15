@@ -14,6 +14,7 @@ Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行�
 - BR 只支持 TiDB v3.1 及以上版本。
 - 目前只支持在全新的集群上执行恢复操作。
 - BR 备份最好串行执行，否则不同备份任务之间会相互影响。
+- BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。
 
 ## 推荐部署配置
 
