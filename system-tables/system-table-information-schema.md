@@ -347,7 +347,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 
 ## CLUSTER_PROCESSLIST
 
-`CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
+`CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。`CLUSTER_PROCESSLIST` 表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
 
 {{< copyable "sql" >}}
 
@@ -355,7 +355,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 SELECT * FROM information_schema.cluster_processlist;
 ```
 
-```
+```sql
 +-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
 | INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
 +-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
@@ -390,7 +390,7 @@ SELECT * FROM schemata;
 5 rows in set (0.00 sec)
 ```
 
-`SCHEMATA` 表各列含义如下：
+`SCHEMATA` 表各列字段含义如下：
 
 * CATALOG_NAME：数据库归属的目录名，该列值永远为 `def`。
 * SCHEMA_NAME：数据库的名字。
