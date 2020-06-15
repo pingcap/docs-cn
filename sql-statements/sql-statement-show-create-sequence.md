@@ -11,9 +11,9 @@ The `SHOW CREATE SEQUENCE` shows the detailed information of a sequence, which i
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowCreateSequenceStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowCreateSequenceStmt](/media/sqlgram/ShowCreateSequenceStmt.png)
 
 **TableName:**
 
