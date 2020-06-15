@@ -2,4 +2,5 @@
   "rules": {
     "translation/welcome": ["*.md", "*.yml", "*.yaml", "*.json", "media/", "scripts/"],
     "status/PTAL": ["*.*"]
+  }
 }

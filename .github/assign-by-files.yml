@@ -1,4 +1,9 @@
 ---
+# Changing all md files should request a language review in case of format failures.
+# TomShawn is the repo administrator.
+'*.yml':
+  - TomShawn
+
 # you can use glob pattern
 
 # You can set multiple reviewers
@@ -31,8 +36,3 @@
 
 # 'ticdc/':
 #   - WangXiangUSTC
-
-# Changing all md files should request a language review in case of format failures.
-# TomShawn is the repo administrator.
-'*.*':
-  - TomShawn
