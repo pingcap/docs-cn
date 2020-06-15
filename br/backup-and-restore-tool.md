@@ -16,6 +16,11 @@ Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行�
 - BR 备份最好串行执行，否则不同备份任务之间会相互影响。
 - BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据，如果备份集群和恢复集群，采用不同的排序规则，那么就会使数据校验不通过。所以我们需要确保备份时通过 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';`获得的结果，与恢复集群中的查询结果一致，才可以进行恢复。
 
+    - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
+    - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
+
+    举例，对于在 v3.1 集群备份的数据，如果在 v4.0 集群中，查询 `new_collation_enabled` 的值为 `True`，则说明集群创建时打开了 new collation 开关，此时恢复数据，可能会出错。
+
 ## 推荐部署配置
 
 - 推荐 BR 部署在 PD 节点上。
