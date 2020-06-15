@@ -3,7 +3,7 @@
 #   pull_request:
 #     branches:
 #       - master
-#     types: [opened, labeled]
+#     types: [opened]
 
 # jobs:
 #   auto-label:
