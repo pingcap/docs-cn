@@ -77,7 +77,7 @@ category: introduction
 
 - 支持 IP 白名单。
 
-- 支持审记功能。
+- 支持审计功能。
 
 ## 工具
 
