@@ -12,9 +12,13 @@ aliases: ['/docs-cn/dev/test-deployment-using-docker/']
 
 本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
 
-- [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
-- [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
-- [第三种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第三种使用-tidb-wasm-一键体验-tidb-数据库)
+- [TiDB 数据库快速上手指南](#tidb-数据库快速上手指南)
+  - [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
+  - [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
+    - [准备环境](#准备环境)
+    - [实施部署](#实施部署)
+  - [第三种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第三种使用-tidb-wasm-一键体验-tidb-数据库)
+  - [探索更多](#探索更多)
 
 ## 第一种：使用 TiUP Playground 快速部署本地测试环境
 
@@ -299,7 +303,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
 - 如果你刚刚部署好一套 TiDB 本地测试集群：
     - 学习 [TiDB SQL 操作](/basic-sql-operations.md)
-    - [迁移数据到 TiDB](/data-migration-route.md)
+    - [迁移数据到 TiDB](/migration-overview.md)
     - 了解 [TiDB 的核心特性与核心应用场景](/overview.md)
     - 了解 [TiDB 的整体架构](/tidb-architecture.md)
     - 了解 [TiDB 与 MySQL 的兼容性](/mysql-compatibility.md)
