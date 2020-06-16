@@ -563,7 +563,7 @@ desc statistics;
 * `TABLE_CATALOG`: 包含索引的表所属的目录的名称。这个值总是 `def`。
 * `TABLE_SCHEMA`: 包含索引的表所属的数据库的名称。
 * `TABLE_NAME`: 包含索引的表的名称。
-* `NON_UNIQUE`: 如果索引不能包含重复项，则为 `0`;如果可以，则为 `1`。
+* `NON_UNIQUE`: 如果索引不能包含重复项，则为 `0`；如果可以，则为 `1`。
 * `INDEX_SCHEMA`: 索引所属的数据库的名称。
 * `INDEX_NAME`: 索引的名称。如果索引是主键，那么名称总是 `PRIMARY`。
 * `SEQ_IN_INDEX`: 索引中的列序号，从 1 开始。
