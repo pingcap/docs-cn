@@ -55,6 +55,13 @@ SELECT * FROM character_sets;
 5 rows in set (0.00 sec)
 ```
 
+`CHARACTER_SETS` 表中列的含义如下：
+
+* `CHARACTER_SET_NAME`：字符集名称
+* `DEFAULT_COLLATE_NAME`：字符集的默认排序规则名称
+* `DESCRIPTION`：字符集的描述信息
+* `MAXLEN`：该字符集存储一个字符所需要的最大字节数
+
 ## COLLATIONS 表
 
 `COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
@@ -99,6 +106,15 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 26 rows in set (0.00 sec)
 ```
 
+`COLLATION` 表中列的含义如下：
+
+* `COLLATION_NAME`：排序规则名称
+* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
+* `ID`：排序规则的 ID
+* `IS_DEFAULT`：该排序规则是否是所属字符集的默认排序规则
+* `IS_COMPILED`：字符集是否编译到服务器中
+* `SORTLEN`：排序规则在对字符进行排序时，所分配内存的最小长度
+
 ## COLLATION_CHARACTER_SET_APPLICABILITY 表
 
 `COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射至适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了兼容 MySQL。
@@ -110,38 +126,17 @@ SELECT * FROM collation_character_set_applicability WHERE character_set_name='ut
 ```
 
 ```sql
-+------------------------+--------------------+
-| COLLATION_NAME         | CHARACTER_SET_NAME |
-+------------------------+--------------------+
-| utf8mb4_general_ci     | utf8mb4            |
-| utf8mb4_bin            | utf8mb4            |
-| utf8mb4_unicode_ci     | utf8mb4            |
-| utf8mb4_icelandic_ci   | utf8mb4            |
-| utf8mb4_latvian_ci     | utf8mb4            |
-| utf8mb4_romanian_ci    | utf8mb4            |
-| utf8mb4_slovenian_ci   | utf8mb4            |
-| utf8mb4_polish_ci      | utf8mb4            |
-| utf8mb4_estonian_ci    | utf8mb4            |
-| utf8mb4_spanish_ci     | utf8mb4            |
-| utf8mb4_swedish_ci     | utf8mb4            |
-| utf8mb4_turkish_ci     | utf8mb4            |
-| utf8mb4_czech_ci       | utf8mb4            |
-| utf8mb4_danish_ci      | utf8mb4            |
-| utf8mb4_lithuanian_ci  | utf8mb4            |
-| utf8mb4_slovak_ci      | utf8mb4            |
-| utf8mb4_spanish2_ci    | utf8mb4            |
-| utf8mb4_roman_ci       | utf8mb4            |
-| utf8mb4_persian_ci     | utf8mb4            |
-| utf8mb4_esperanto_ci   | utf8mb4            |
-| utf8mb4_hungarian_ci   | utf8mb4            |
-| utf8mb4_sinhala_ci     | utf8mb4            |
-| utf8mb4_german2_ci     | utf8mb4            |
-| utf8mb4_croatian_ci    | utf8mb4            |
-| utf8mb4_unicode_520_ci | utf8mb4            |
-| utf8mb4_vietnamese_ci  | utf8mb4            |
-+------------------------+--------------------+
-26 rows in set (0.00 sec)
++----------------+--------------------+
+| COLLATION_NAME | CHARACTER_SET_NAME |
++----------------+--------------------+
+| utf8mb4_bin    | utf8mb4            |
++----------------+--------------------+
 ```
+
+`COLLATION_CHARACTER_SET_APPLICABILITY` 表中列的含义如下：
+
+* `COLLATION_NAME`：排序规则名称
+* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
 
 ## COLUMNS 表
 
