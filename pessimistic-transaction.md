@@ -7,37 +7,45 @@ aliases: ['/docs/dev/reference/transactions/transaction-pessimistic/']
 
 # TiDB Pessimistic Transaction Model
 
-In versions before 3.0.8, TiDB implements the optimistic transaction mode by default, in which the transaction commit might fail because of transaction conflict. To make sure that the commit succeeds, you need to modify the application and add an automatic retry mechanism. You can avoid this issue by using the pessimistic transaction mode of TiDB.
+To make the usage of TiDB closer to traditional databases and reduce the cost of migration, starting from v3.0, TiDB supports the pessimistic transaction model on top of the optimistic transaction model. This document describes the features of the TiDB pessimistic transaction model.
 
-## Usage
+> **Note:**
+>
+> Starting from v3.0.8, newly created TiDB clusters use the pessimistic transaction model by default. However, this does not affect your existing cluster if you upgrade it from v3.0.7 or earlier to v3.0.8 or later. In other words, **only newly created clusters default to using the pessimistic transaction model**.
 
-To apply the pessimistic transaction mode, choose any of the following three methods that suits your needs:
+## Switch transaction mode
 
-- Execute the `BEGIN PESSIMISTIC;` statement to allow the transaction to apply the pessimistic transaction mode. You can write it in comment style as `BEGIN /*!90000 PESSIMISTIC */;` to make it compatible with the MySQL syntax.
+You can set the transaction mode by configuring the [`tidb_txn_mode`](/tidb-specific-system-variables.md#tidb_txn_mode) system variable. The following command sets all explicit transactions (that is, non-autocommit transactions) executed by newly created sessions in the cluster to the pessimistic transaction mode:
 
-- Execute the `set @@tidb_txn_mode = 'pessimistic';` statement to allow all the explicit transactions (namely non-autocommit transactions) processed in this session to apply the pessimistic transaction mode.
+{{< copyable "sql" >}}
 
-- Execute the `set @@global.tidb_txn_mode = 'pessimistic';` statement to allow all newly created sessions of the entire cluster to apply the pessimistic transaction mode to execute explicit transactions.
+```sql
+set @@global.tidb_txn_mode = 'pessimistic';
+```
 
-After you set `global.tidb_txn_mode` to `pessimistic`, the pessimistic transaction mode is applied by default. To apply the optimistic transaction mode to the transaction, you can use any of the following three methods:
+You can also explicitly enable the pessimistic transaction mode by executing the following SQL statements:
 
-- Execute the `BEGIN OPTIMISTIC;` statement to allow the transaction to apply the optimistic transaction mode. You can write it in comment style as `BEGIN /*!90000 OPTIMISTIC */;` to make it compatible with the MySQL syntax.
+{{< copyable "sql" >}}
 
-- Execute the `set @@tidb_txn_mode = 'optimistic';` statement to allow all the transactions processed in this session to apply the optimistic transaction mode.
+```sql
+BEGIN PESSIMISTIC;
+```
 
-- Execute the `set @@global.tidb_txn_mode = 'optimistic;'` or `set @@global.tidb_txn_mode = '';` to allow all newly created sessions of the entire cluster to apply the optimistic transaction mode to the transactions.
+{{< copyable "sql" >}}
+
+```sql
+BEGIN /*!90000 PESSIMISTIC */;
+```
 
 The `BEGIN PESSIMISTIC;` and `BEGIN OPTIMISTIC;` statements take precedence over the `tidb_txn_mode` system variable. Transactions started with these two statements ignore the system variable and support using both the pessimistic and optimistic transaction modes.
-
-To disable the pessimistic transaction mode, modify the configuration file and add `enable = false` to the `[pessimistic-txn]` category.
 
 ## Behaviors
 
 Pessimistic transactions in TiDB behave similarly to those in MySQL. See the minor differences in [Difference with MySQL InnoDB](#difference-with-mysql-innoDB).
 
-- When you perform the `SELECT FOR UPDATE` statement, transactions read the last committed data and apply a pessimistic lock on the data being read.
+- When you perform the `SELECT FOR UPDATE` statement, transactions read the **lastest** committed data and apply a pessimistic lock on the data being read.
 
-- When you perform the `UPDATE`, `DELETE` or `INSERT` statement, transactions read the last committed data to execute on them and apply a pessimistic lock on the modified data.
+- When you perform the `UPDATE`, `DELETE` or `INSERT` statement, transactions read the **lastest** committed data to execute on them and apply a pessimistic lock on the modified data.
 
 - When a pessimistic lock is applied on a row of data, other write transactions attempting to modify the data are blocked and have to wait for the lock to be released.
 
@@ -61,7 +69,7 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
 
 1. When TiDB executes DML or `SELECT FOR UPDATE` statements that use range in the WHERE clause, the concurrent `INSERT` statements within the range are not blocked.
 
-    By implementing Gap Lock, InnoDB blocks the execution of concurrent `INSERT` statements within the range. It is mainly used to support statement-based binlog. Therefore, some applications lower the isolation level to READ COMMITTED to avoid concurrency performance problems caused by Gap Lock. TiDB does not support Gap Lock, so there is no need to pay the concurrency performance cost.
+    By implementing Gap Lock, InnoDB blocks the execution of concurrent `INSERT` statements within the range. It is mainly used to support statement-based binlog. Therefore, some applications lower the isolation level to Read Committed to avoid concurrency performance problems caused by Gap Lock. TiDB does not support Gap Lock, so there is no need to pay the concurrency performance cost.
 
 2. TiDB does not support `SELECT LOCK IN SHARE MODE`.
 
@@ -81,6 +89,33 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
 
 6. The data read by `EMBEDDED SELECT` in the statement is not locked.
 
+## Isolation level
+
+TiDB supports the following two isolation levels in the pessimistic transaction mode:
+
+- [Repeatable Read](/transaction-isolation-levels.md#repeatable-read-isolation-level) by default, which is the same as MySQL.
+
+    > **Note:**
+    >
+    > In this isolation level, DML operations are performed based on the latest committed data. The behavior is the same as MySQL, but differs from the optimistic transaction mode in TiDB. See [Difference between TiDB and MySQL Repeatable Read](/transaction-isolation-levels.md#difference-between-tidb-and-mysql-repeatable-read).
+
+- [Read Committed](/transaction-isolation-levels.md#read-committed-isolation-level). You can set this isolation level using the [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md) statement.
+
+## Pipelined locking process
+
+Adding a pessimistic lock requires writing data into TiKV. The response of successfully adding a lock can only be returned to TiDB after commit and apply through Raft. Therefore, compared with optimistic transactions, the pessimistic transaction mode inevitably has higher latency.
+
+To reduce the overhead of locking, TiKV implements the pipelined locking process: when the data meets the requirements for locking, TiKV immediately notifies TiDB to execute subsequent requests and writes into the pessimistic lock asynchronously. This process reduces most latency and significantly improves the performance of pessimistic transactions. However, there is a low probability that the asynchronous write into the pessimistic lock might fail, resulting in the commit failure of the pessimistic transaction.
+
+![Pipelined pessimistic lock](/media/pessimistic-transaction-pipelining.png)
+
+This feature is disabled by default. To enable it, modify the TiKV configuration:
+
+```toml
+[pessimistic-txn]
+pipelined = true
+```
+
 ## FAQ
 
 1. The TiDB log shows `pessimistic write conflict, retry statement`.
@@ -93,4 +128,4 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
 
 3. The execution time limit for pessimistic transactions.
 
-    The execution time of transactions cannot exceed the limit of `tikv_gc_life_time`. In addition, the pessimistic transactions have a TTL (Time to Live) limit of 10 minutes, so the pessimistic transactions that execute over 10 minutes might fail to commit.
+    In TiDB 4.0, garbage collection (GC) does not affect the running transactions, but the execution time of pessimistic transactions cannot exceed 10 minutes by default. You can modify this limit by editing `max-txn-ttl` under `[performance]` in the TiDB configuration file.
