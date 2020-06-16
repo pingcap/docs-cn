@@ -7,6 +7,10 @@ aliases: ['/docs/dev/reference/system-databases/sql-diagnosis/']
 
 # SQL Diagnosis
 
+> **Warning:**
+>
+> SQL diagnosis is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+
 SQL diagnosis is a feature introduced in TiDB v4.0. You can use this feature to locate problems in TiDB with higher efficiency. Before TiDB v4.0, you need to use different tools to obtain different information.
 
 The SQL diagnosis system has the following advantages:
