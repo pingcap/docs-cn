@@ -67,7 +67,7 @@
       + [BR Use Cases](/br/backup-and-restore-use-cases.md)
       + [BR storages](/br/backup-and-restore-storages.md)
   + [Daily Checklist](/daily-check.md)
-  + [Maintain TiCDC](/ticdc/manage-ticdc.md)
+  + [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md)
   + [Maintain TiFlash](/tiflash/maintain-tiflash.md)
   + [Maintain TiDB Using TiUP](/maintain-tidb-using-tiup.md)
   + [Maintain TiDB Using Ansible](/maintain-tidb-using-ansible.md)
@@ -82,7 +82,7 @@
   + [Statement Summary Tables](/statement-summary-tables.md)
   + [Troubleshoot Cluster Setup](/troubleshoot-tidb-cluster.md)
   + [TiDB Troubleshooting Map](/tidb-troubleshooting-map.md)
-  + [Handle TiCDC Issues](/ticdc/troubleshoot-ticdc.md)
+  + [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
   + [Troubleshoot TiFlash](/tiflash/troubleshoot-tiflash.md)
 + Performance Tuning
   + Software Tuning
@@ -154,11 +154,7 @@
     + [Troubleshoot](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [Glossary](/tidb-lightning/tidb-lightning-glossary.md)
-  + TiCDC
-    + [Overview](/ticdc/ticdc-overview.md)
-    + [Configure Sink URI](/ticdc/sink-url.md)
-    + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-    + [Column and DDL Type Codes](/ticdc/column-ddl-type-codes.md)
+  + [TiCDC](/ticdc/ticdc-overview.md)
   + sync-diff-inspector
     + [Overview](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [Data Check for Tables with Different Schema/Table Names](/sync-diff-inspector/route-diff.md)
@@ -399,6 +395,8 @@
       + [tiup-mirror](/tiup/tiup-mirrors.md)
       + [tiup-bench](/tiup/tiup-bench.md)
   + [Errors Codes](/error-codes.md)
+  + [TiCDC Overview](/ticdc/ticdc-overview.md)
+  + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
 + FAQs
   + [TiDB FAQs](/faq/tidb-faq.md)
   + [TiDB Lightning FAQs](/tidb-lightning/tidb-lightning-faq.md)

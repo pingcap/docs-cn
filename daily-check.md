@@ -26,7 +26,7 @@ TiDB Dashboard simplifies the operation and maintenance of the TiDB database. Yo
 
 ![Host panel](/media/host-panel.png)
 
-You can view the usage of CPU, memory, and disk. When the average usage of any resource exceeds 60%, it is recommended to plan to scale out the capacity. When the average usage reaches 80%, it is recommended to scale out the capacity.
+You can view the usage of CPU, memory, and disk. When the usage of any resource exceeds 80%, it is recommended to scale out the capacity accordingly.
 
 ### SQL analysis panel
 

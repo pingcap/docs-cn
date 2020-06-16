@@ -67,6 +67,10 @@ Currently, The following scenarios are not supported:
 
 For details, see [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md).
 
+## Troubleshoot TiCDC
+
+For details, refer to [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md).
+
 ## TiCDC Open Protocol
 
 TiCDC Open Protocol is a row-level data change notification protocol that provides data sources for monitoring, caching, full-text indexing, analysis engines, and master-slave replication between different databases. TiCDC complies with TiCDC Open Protocol and replicates data changes of TiDB to third-party data medium such as MQ (Message Queue). For more information, see [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md).
