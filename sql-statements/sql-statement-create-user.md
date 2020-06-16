@@ -37,17 +37,42 @@ This statement creates a new user, specified with a password. In the MySQL privi
 
 ## Examples
 
+Create a user with the `newuserpassword` password.
+
 ```sql
 mysql> CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.04 sec)
+```
 
+Create a user who can only log in to `192.168.1.1`.
+
+```sql
 mysql> CREATE USER 'newuser2'@'192.168.1.1' IDENTIFIED BY 'newuserpassword';
+Query OK, 1 row affected (0.02 sec)
+```
+
+Create a user who is enforced to log in using TLS connection.
+
+```sql
+CREATE USER 'newuser3'@'%' REQUIRE SSL IDENTIFIED BY 'newuserpassword';
+Query OK, 1 row affected (0.02 sec)
+``` 
+
+Create a user who is required to use X.509 certificate at login.
+
+```sql
+CREATE USER 'newuser4'@'%' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O=PingCAP' IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.02 sec)
 ```
 
 ## MySQL compatibility
 
-* Several of the `CREATE` options are not yet supported by TiDB, and will be parsed but ignored.
+The following `CREATE USER` options are not yet supported by TiDB, and will be parsed but ignored:
+
+* TiDB does not support `WITH MAX_QUERIES_PER_HOUR`, `WITH MAX_UPDATES_PER_HOUR`, and `WITH MAX_USER_CONNECTIONS` options.
+* TiDB does not support the `DEFAULT ROLE` option.
+* TiDB does not support `PASSWORD EXPIRE`, `PASSWORD HISTORY` or other options related to password.
+* TiDB does not support the `ACCOUNT LOCK` and `ACCOUNT UNLOCK` options.
 
 ## See also
 

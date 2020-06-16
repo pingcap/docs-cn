@@ -24,7 +24,7 @@ Query OK, 0 rows affected (0.01 sec)
 mysql> CREATE USER 'newuser' IDENTIFIED BY 'test';
 Query OK, 1 row affected (0.00 sec)
 
-mysql> SHOW CREATE USER newuser;
+mysql> SHOW CREATE USER 'newuser';
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -35,7 +35,7 @@ mysql> SHOW CREATE USER newuser;
 mysql> SET PASSWORD FOR newuser = 'test';
 Query OK, 0 rows affected (0.01 sec)
 
-mysql> SHOW CREATE USER newuser;
+mysql> SHOW CREATE USER 'newuser';
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -46,7 +46,7 @@ mysql> SHOW CREATE USER newuser;
 mysql> SET PASSWORD FOR newuser = PASSWORD('test'); -- deprecated syntax from earlier MySQL releases
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SHOW CREATE USER newuser;
+mysql> SHOW CREATE USER 'newuser';
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+

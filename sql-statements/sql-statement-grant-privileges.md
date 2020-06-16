@@ -8,6 +8,7 @@ aliases: ['/docs/dev/reference/sql/statements/grant-privileges/']
 # `GRANT <privileges>`
 
 This statement allocates privileges to a pre-existing user in TiDB. The privilege system in TiDB follows MySQL, where credentials are assigned based on a database/table pattern.
+Executing this statement requires the `GRANT OPTION` privilege and all privileges you allocate.
 
 ## Synopsis
 
@@ -42,7 +43,7 @@ This statement allocates privileges to a pre-existing user in TiDB. The privileg
 ## Examples
 
 ```sql
-mysql> CREATE USER newuser IDENTIFIED BY 'mypassword';
+mysql> CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 Query OK, 1 row affected (0.02 sec)
 
 mysql> GRANT ALL ON test.* TO 'newuser';
