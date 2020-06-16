@@ -83,7 +83,7 @@ tikv-7 labels="zone=z3,host=h1"
 tikv-8 labels="zone=z3,host=h2"
 
 [pd_servers:vars]
-location_labels = ["zone", "rack"]
+location_labels = ["zone", "host"]
 ```
 
 ## 基于拓扑 label 的 PD 调度策略
