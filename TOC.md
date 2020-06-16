@@ -11,6 +11,7 @@
   + [Key Features](/key-features.md)
   + Compatibility
     + [MySQL Compatibility](/mysql-compatibility.md)
+  + [TiDB Limitations](/tidb-limitations.md)
 + Quick Start
   + [Try Out TiDB](/quick-start-with-tidb.md)
   + [Learn TiDB SQL](/basic-sql-operations.md)
