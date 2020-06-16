@@ -566,7 +566,7 @@ desc statistics;
 * `NON_UNIQUE`: 如果索引不能包含重复项，则为 `0`;如果可以，则为 `1`。
 * `INDEX_SCHEMA`: 索引所属的数据库的名称。
 * `INDEX_NAME`: 索引的名称。如果索引是主键，那么名称总是 `PRIMARY`。
-* `SEQ_IN_INDEX`: 索引中的列序号，从1开始。
+* `SEQ_IN_INDEX`: 索引中的列序号，从 1 开始。
 * `COLUMN_NAME`: 列名。请参见表达式列的说明。
 * `COLLATION`: 列在索引中的排序方式。它可以有值 `A` (升序)、`D` (降序)或 `NULL` (未排序)。
 * `CARDINALITY`: 索引中唯一值的数量的估计。要更新这个数字，运行 `ANALYZE TABLE`。
