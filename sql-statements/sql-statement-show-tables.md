@@ -13,17 +13,21 @@ To show tables in a different database, use `SHOW TABLES IN DatabaseName`.
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowTablesStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowTablesStmt](/media/sqlgram/ShowTablesStmt.png)
 
-**ShowTargetFilterable:**
+**OptFull:**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![OptFull](/media/sqlgram/OptFull.png)
 
 **ShowDatabaseNameOpt:**
 
 ![ShowDatabaseNameOpt](/media/sqlgram/ShowDatabaseNameOpt.png)
+
+**ShowLikeOrWhereOpt:**
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 ## Examples
 
@@ -53,27 +57,31 @@ mysql> SHOW FULL TABLES;
 2 rows in set (0.00 sec)
 
 mysql> SHOW TABLES IN mysql;
-+----------------------+
-| Tables_in_mysql      |
-+----------------------+
-| GLOBAL_VARIABLES     |
-| bind_info            |
-| columns_priv         |
-| db                   |
-| default_roles        |
-| gc_delete_range      |
-| gc_delete_range_done |
-| help_topic           |
-| role_edges           |
-| stats_buckets        |
-| stats_feedback       |
-| stats_histograms     |
-| stats_meta           |
-| tables_priv          |
-| tidb                 |
-| user                 |
-+----------------------+
-16 rows in set (0.00 sec)
++-------------------------+
+| Tables_in_mysql         |
++-------------------------+
+| GLOBAL_VARIABLES        |
+| bind_info               |
+| columns_priv            |
+| db                      |
+| default_roles           |
+| expr_pushdown_blacklist |
+| gc_delete_range         |
+| gc_delete_range_done    |
+| global_priv             |
+| help_topic              |
+| opt_rule_blacklist      |
+| role_edges              |
+| stats_buckets           |
+| stats_feedback          |
+| stats_histograms        |
+| stats_meta              |
+| stats_top_n             |
+| tables_priv             |
+| tidb                    |
+| user                    |
++-------------------------+
+20 rows in set (0.00 sec)
 ```
 
 ## MySQL compatibility
