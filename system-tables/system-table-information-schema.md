@@ -322,6 +322,28 @@ DEFAULT_CHARACTER_SET_NAME: utf8mb4
 4 rows in set (0.00 sec)
 ```
 
+## CLUSTER_PROCESSLIST
+
+`CLUSTER_PROCESSLIST` is the cluster system table corresponding to `PROCESSLIST`. It is used to query the `PROCESSLIST` information of all TiDB nodes in the cluster. The table schema of `CLUSTER_PROCESSLIST` has one more column than `PROCESSLIST`, the `INSTANCE` column, which stores the address of the TiDB node this row of data is from.
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.cluster_processlist;
+```
+
+```
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) |
+| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) |
+| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) |
+| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) |
+| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+```
+
 ### SESSION_VARIABLES table
 
 The `SESSION_VARIABLES` table provides information about session variables. The table data is similar to the result of the `SHOW SESSION VARIABLES` statement:
@@ -406,6 +428,7 @@ desc information_schema.slow_query;
 | Cop_wait_addr             | varchar(64)         | YES  |     | <null>  |       |
 | Mem_max                   | bigint(20) unsigned | YES  |     | <null>  |       |
 | Succ                      | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Plan_from_cache           | tinyint(1)          | YES  |     | <null>  |       |
 | Plan                      | longblob unsigned   | YES  |     | <null>  |       |
 | Plan_digest               | varchar(128)        | YES  |     | <null>  |       |
 | Prev_stmt                 | longblob unsigned   | YES  |     | <null>  |       |
@@ -470,11 +493,42 @@ desc information_schema.cluster_slow_query;
 | Cop_wait_addr             | varchar(64)         | YES  |     | <null>  |       |
 | Mem_max                   | bigint(20) unsigned | YES  |     | <null>  |       |
 | Succ                      | tinyint(1) unsigned | YES  |     | <null>  |       |
+| Plan_from_cache           | tinyint(1)          | YES  |     | <null>  |       |
 | Plan                      | longblob unsigned   | YES  |     | <null>  |       |
 | Plan_digest               | varchar(128)        | YES  |     | <null>  |       |
 | Prev_stmt                 | longblob unsigned   | YES  |     | <null>  |       |
 | Query                     | longblob unsigned   | YES  |     | <null>  |       |
 +---------------------------+---------------------+------+-----+---------+-------+
+```
+
+When the cluster system table is queried, TiDB does not obtain data from all nodes, but pushes down the related calculation to other nodes. The execution plan is as follows:
+
+{{< copyable "sql" >}}
+
+```sql
+desc select count(*) from information_schema.cluster_slow_query where user = 'u1';
+```
+
+```
++--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
+| id                       | estRows  | task      | access object            | operator info                                        |
++--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
+| StreamAgg_20             | 1.00     | root      |                          | funcs:count(Column#53)->Column#51                    |
+| └─TableReader_21         | 1.00     | root      |                          | data:StreamAgg_9                                     |
+|   └─StreamAgg_9          | 1.00     | cop[tidb] |                          | funcs:count(1)->Column#53                            |
+|     └─Selection_19       | 10.00    | cop[tidb] |                          | eq(information_schema.cluster_slow_query.user, "u1") |
+|       └─TableFullScan_18 | 10000.00 | cop[tidb] | table:CLUSTER_SLOW_QUERY | keep order:false, stats:pseudo                       |
++--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
+```
+
+In the above execution plan, the `user = u1` condition is pushed down to other (`cop`) TiDB nodes, and the aggregate operator is also pushed down (the `StreamAgg` operator in the graph).
+
+Currently, because statistics of the system tables are not collected, sometimes some aggregation operators cannot be pushed down, which results in slow execution. In this case, you can manually specify the SQL HINT to push down the aggregation operators. For example:
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ AGG_TO_COP() */ count(*) from information_schema.cluster_slow_query group by user;
 ```
 
 ### STATISTICS table
