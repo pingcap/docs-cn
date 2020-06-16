@@ -15,6 +15,10 @@ The `UPDATE` statement is used to modify data in a specified table.
 
 ![UpdateStmt](/media/sqlgram/UpdateStmt.png)
 
+**PriorityOpt:**
+
+![PriorityOpt](/media/sqlgram/PriorityOpt.png)
+
 **TableRef:**
 
 ![TableRef](/media/sqlgram/TableRef.png)
