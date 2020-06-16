@@ -255,6 +255,7 @@
       + [`SELECT`](/sql-statements/sql-statement-select.md)
       + [`SET [NAMES|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md)
       + [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
+      + [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
       + [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       + [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
       + [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
