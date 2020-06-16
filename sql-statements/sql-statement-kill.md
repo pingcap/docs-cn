@@ -17,6 +17,10 @@ By design, this statement is not compatible with MySQL by default. This helps pr
 
 ![KillStmt](/media/sqlgram/KillStmt.png)
 
+**KillOrKillTiDB:**
+
+![KillOrKillTiDB](/media/sqlgram/KillOrKillTiDB.png)
+
 ## Examples
 
 ```sql

@@ -190,13 +190,13 @@ Currently, the `SHOW STATS_META` statement returns the following 6 columns:
 
 You can use the `SHOW STATS_HEALTHY` statement to check the health state of tables and roughly estimate the accuracy of the statistics. When `modify_count` >= `row_count`, the health state is 0; when `modify_count` < `row_count`, the health state is (1 - `modify_count`/`row_count`) * 100.
 
-The syntax is as follows. You can use `ShowLikeOrWhere` to filter the information you need:
+The synopsis of `SHOW STATS_HEALTHY` is:
 
-{{< copyable "sql" >}}
+![ShowStatsHealthy](/media/sqlgram/ShowStatsHealthy.png)
 
-```sql
-SHOW STATS_HEALTHY [ShowLikeOrWhere];
-```
+and the synopsis of the `ShowLikeOrWhereOpt` part is:
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 Currently, the `SHOW STATS_HEALTHY` statement returns the following 4 columns:
 

@@ -15,6 +15,10 @@ The `PREPARE` statement provides an SQL interface to server-side prepared statem
 
 ![PreparedStmt](/media/sqlgram/PreparedStmt.png)
 
+**PrepareSQL:**
+
+![PrepareSQL](/media/sqlgram/PrepareSQL.png)
+
 ## Examples
 
 ```sql
