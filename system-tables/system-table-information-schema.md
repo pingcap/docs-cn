@@ -40,7 +40,7 @@ select * from `ANALYZE_STATUS`;
 * `JOB_INFO`: 任务信息。
 * `PROCESSED_ROWS`: 已经处理的行数。
 * `START_TIME`: 开始时间。
-* `STATE`: 状态。
+* `STATE`: 状态。包括 `padding`，`running`，`finished`和`failed`。
 
 ## CHARACTER_SETS 表
 
@@ -570,11 +570,11 @@ desc statistics;
 * `COLUMN_NAME`: 列名。请参见表达式列的说明。
 * `COLLATION`: 列在索引中的排序方式。它可以有值 `A` (升序)、`D` (降序)或 `NULL` (未排序)。
 * `CARDINALITY`: 索引中唯一值的数量的估计。要更新这个数字，运行 `ANALYZE TABLE`。
-* `SUB_PART`: 索引的前缀。如果只对列的部分前缀索引，则为索引字符的数量;如果对整个列进行索引，则为 `NULL`。
+* `SUB_PART`: 索引的前缀。如果只对列的部分前缀索引，则为索引字符的数量；如果对整个列进行索引，则为 `NULL`。
 * `PACKED`: TiDB 未使用该字段。这个值总是 `NULL`。
 * `NULLABLE`: 如果列可能包含空值，则值为 `YES`；如果不包含，则值为 `''`。
 * `INDEX_TYPE`: 索引的类型。
-* `COMMENT`: 索引没有在列中描述的信息。
+* `COMMENT`: 其他与索引有关的信息。
 * `INDEX_COMMENT`: 在创建索引时为索引提供的带有注释属性的任何注释。
 * `IS_VISIBLE`: 优化器能否使用该索引。
 * `Expression` 对于非表达式部分的索引键，这个值为 `NULL`；对于表达式部分的索引键，这个值为表达式本身。可参考[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)
