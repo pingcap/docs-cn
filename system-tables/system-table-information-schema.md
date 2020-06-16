@@ -333,6 +333,40 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 +----+------+------+--------------------+---------+------+-------+---------------------------+-----+
 ```
 
+`PROCESSLIST` 表各列的含义如下：
+
+* ID：客户连接 ID。
+* USER：执行当前 PROCESS 的用户名。
+* HOST：客户连接的地址。
+* DB：当前连接的默认数据库名。
+* COMMAND：当前 PROCESS 执行的命令类型。
+* TIME：当前 PROCESS 的已经执行的时间，单位是秒。
+* STATE：当前连接的状态。
+* INFO：正在处理的请求语句。
+* MEM：正在处理的请求已使用的内存，单位是 byte。
+
+## CLUSTER_PROCESSLIST
+
+`CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。`CLUSTER_PROCESSLIST` 表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.cluster_processlist;
+```
+
+```sql
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) |
+| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) |
+| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) |
+| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) |
+| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+```
+
 ## SCHEMATA 表
 
 `SCHEMATA` 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
@@ -356,27 +390,13 @@ SELECT * FROM schemata;
 5 rows in set (0.00 sec)
 ```
 
-## CLUSTER_PROCESSLIST
+`SCHEMATA` 表各列字段含义如下：
 
-`CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM information_schema.cluster_processlist;
-```
-
-```sql
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
-| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
-| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) |
-| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) |
-| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) |
-| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) |
-| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) |
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
-```
+* CATALOG_NAME：数据库归属的目录名，该列值永远为 `def`。
+* SCHEMA_NAME：数据库的名字。
+* DEFAULT_CHARACTER_SET_NAME：数据库的默认字符集。
+* DEFAULT_COLLATION_NAME：数据库的默认 collation。
+* SQL_PATH：该项值永远为 `NULL`。
 
 ## SESSION_VARIABLES 表
 
@@ -829,6 +849,19 @@ desc TIKV_REGION_PEERS;
 | DOWN_SECONDS | bigint(21) unsigned | YES  |     | <null>  |       |
 +--------------+---------------------+------+-----+---------+-------+
 ```
+
+`TIKV_REGION_PEERS` 表各列含义如下：
+
+* REGION_ID：REGION 的 ID。
+* PEER_ID：REGION 中对应的副本 PEER 的 ID。
+* STORE_ID：REGION 所在 TiKV Store 的 ID。
+* IS_LEARNER：PEER 是否是 LEARNER。
+* IS_LEADER：PEER 是否是 LEADER。
+* STATUS：PEER 的状态，一共有 3 种状态：
+    * PENDING：暂时不可用状态。
+    * DOWN：下线转态，该 PEER 不再提供服务。
+    * NORMAL: 正常状态。
+* DOWN_SECONDS：处于下线状态的时间，单位是秒。
 
 ## TIKV_REGION_STATUS 表
 
