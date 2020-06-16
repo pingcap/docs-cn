@@ -291,6 +291,7 @@
     - [扩缩容集群](/tiflash/scale-tiflash.md)
     - [升级节点](/tiflash/upgrade-tiflash.md)
     - [配置参数](/tiflash/tiflash-configuration.md)
+    - [命令行参数](/tiflash/tiflash-command-line-flags.md)
     - [报警规则](/tiflash/tiflash-alert-rules.md)
     - [性能调优](/tiflash/tune-tiflash-performance.md)
     - [FAQ](/tiflash/tiflash-faq.md)
