@@ -90,6 +90,10 @@ pd-ctl config placement-rules enable
 
 PD also generates default rules based on the `max-replicas` and `location-labels` configurations.
 
+> **Note:**
+>
+> After enabling Placement Rules, the previously configured `max-replicas` and `location-labels` no longer take effect. To adjust the replica policy, use the interface related to Placement Rules.
+
 ### Disable Placement Rules
 
 You can use pd-ctl to disable the Placement Rules feature and switch to the previous scheduling strategy.
