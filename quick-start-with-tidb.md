@@ -1,7 +1,6 @@
 ---
 title: TiDB 数据库快速上手指南
 category: how-to
-aliases: ['/docs-cn/dev/test-deployment-using-docker/']
 ---
 
 # TiDB 数据库快速上手指南
