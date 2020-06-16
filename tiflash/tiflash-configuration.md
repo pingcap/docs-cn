@@ -11,7 +11,7 @@ This document introduces the configuration parameters related to the deployment 
 
 ## PD scheduling parameters
 
-You can adjust the PD scheduling parameters using [pd-ctl](/pd-control.md) (the binary file in `resources/bin` in the tidb-ansible directory):
+You can adjust the PD scheduling parameters using [pd-ctl](/pd-control.md). Note that you can use `tiup ctl pd` to replace `pd-ctl -u <pd_ip:pd_port>` when using tiup to deploy and manage your cluster.
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit): determines the rate at which the replica-related operator is generated. The parameter affects operations such as making nodes offline and add replicas.
 
@@ -19,7 +19,10 @@ You can adjust the PD scheduling parameters using [pd-ctl](/pd-control.md) (the 
     >
     > The value of this parameter should be less than that of `region-schedule-limit`. Otherwise, the normal Region scheduling among TiKV nodes is affected.
 
-- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate): limits the rate at which each store is scheduled.
+- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate): limits the rate at which Regions of each TiKV/TiFlash store are scheduled. Note that this parameter takes effect only when the stores have newly joined the cluster. If you want to change the setting for existing stores, use the following command.
+    - Execute the `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` command to set the scheduling rate of a specified store. (To get `store_id`, you can execute the `pd-ctl -u <pd_ip:pd_port> store` command. 
+    - If you do not set the scheduling rate for Regions of a specified store, this store inherits the setting of `store-balance-rate`. 
+    - You can execute the `pd-ctl -u <pd_ip:pd_port> store limit` command to view the current setting value of `store-balance-rate`.
 
 ## TiFlash configuration parameters
 
@@ -34,6 +37,8 @@ path_realtime_mode = false # The default value is `false`. If you set it to `tru
 listen_host = The TiFlash service listening host. # Generally, it is configured as `0.0.0.0`.
 tcp_port = The TiFlash TCP service port.
 http_port = The TiFlash HTTP service port.
+mark_cache_size = 5368709120 # The cache size limit of the metadata of a data block. Generally, you do not need to change this value.
+minmax_index_cache_size = 5368709120 # The cache size limit of the min-max index of a data block. Generally, you do not need to change this value.
 ```
 
 ```
@@ -70,6 +75,10 @@ Multiple TiFlash nodes elect a master to add or delete placement rules to PD, an
     pd_addr = PD service address. # Multiple addresses are separated with commas.
 [status]
     metrics_port = The port through which Prometheus pulls metrics information.
+[profiles]
+[profiles.default]
+    dt_enable_logical_split = true # The default value is `true`. This parameter determines whether the segment of DeltaTree Storage Engine uses logical split. Using the logical split can reduce the write amplification, and improve the write speed. However, these are at the cost of disk space waste.
+    max_memory_usage_for_all_queries = 0 # The memory usage limit of the generated intermediate data when queries are executed. The default value is `0` (in bytes), which means no limit.
 ```
 
 ### Configure the `tiflash-learner.toml` file
