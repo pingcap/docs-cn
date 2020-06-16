@@ -23,6 +23,10 @@ This statement is included for compatibility with MySQL. It has no effective usa
 
 ![FlushOption](/media/sqlgram/FlushOption.png)
 
+**LogTypeOpt:**
+
+![LogTypeOpt](/media/sqlgram/LogTypeOpt.png)
+
 **TableOrTables:**
 
 ![TableOrTables](/media/sqlgram/TableOrTables.png)
