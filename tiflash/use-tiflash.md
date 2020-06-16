@@ -119,7 +119,7 @@ explain analyze select count(*) from test.t;
 
 `cop[tiflash]` means that the task will be sent to TiFlash for processing. If you have not selected a TiFlash replica, you can try to update the statistics using the `analyze table` statement, and then check the result using the `explain analyze` statement.
 
-Note that if a table has only a single TiFlash replica and the related node cannot provide service, queries in the CBO mode will repeatedly retry. In this situation, you need to specify the engine or use the manual Hint to read data from TiKV.
+Note that if a table has only a single TiFlash replica and the related node cannot provide service, queries in the CBO mode will repeatedly retry. In this situation, you need to specify the engine or use the manual hint to read data from TiKV.
 
 ### Engine isolation
 
@@ -156,9 +156,9 @@ Engine isolation is to specify that all queries use a replica of the specified e
 
 When the engine is configured as "tikv, tiflash", it can read both TiKV and TiFlash replicas at the same time, and the optimizer automatically chooses to read which one. After the engine is specified, if the table in the query does not have a corresponding engine replica, an error is reported indicating that the table does not have the engine replica. Because the TiKV replica always exist, so the only situation is that the engine is configured as `tiflash` but the TiFlash replica does not exist.
 
-### Manual Hint
+### Manual hint
 
-Manual Hint can force TiDB to use TiFlash replicas for specific table(s). The priority of manual Hint is lower than that of engine isolation. If the engine specified in Hint is not in the engine list, a warning is returned. Here is an example of using the manual Hint:
+Manual hint can force TiDB to use TiFlash replicas for specific table(s). The priority of manual hint is lower than that of engine isolation. If the engine specified in hint is not in the engine list, a warning is returned. Here is an example of using the manual hint:
 
 {{< copyable "sql" >}}
 
@@ -166,7 +166,21 @@ Manual Hint can force TiDB to use TiFlash replicas for specific table(s). The pr
 select /*+ read_from_storage(tiflash[table_name]) */ ... from table_name;
 ```
 
-Engine isolation has higher priority over CBO and Hint, and Hint has higher priority over the cost estimation, which means that the cost estimation only selects the replica of the specified engine.
+If you set an alias to a table in a query statement, you must use the alias in the statement that includes a hint for the hint to take effect. For example:
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 as alias_a, table_name_2 as alias_b where alias_a.column_1 = alias_b.column_2;
+```
+
+For hint syntax details, refer to [READ_FROM_STORAGE](/optimizer-hints.md#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-).
+
+Engine isolation has higher priority over CBO and hint, and hint has higher priority over the cost estimation, which means that the cost estimation only selects the replica of the specified engine.
+
+> **Note:**
+>
+> The MySQL client of 5.7.7 or earlier versions clears optimizer hints by default. To use the hint syntax in these early versions, start the client with the `--comments` option, for example, `mysql -h 127.0.0.1 -P 4000 -uroot --comments`.
 
 ## Use TiSpark to read TiFlash replicas
 
