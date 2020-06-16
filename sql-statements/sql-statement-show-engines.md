@@ -7,9 +7,13 @@ aliases: ['/docs/dev/reference/sql/statements/show-engines/']
 
 # SHOW ENGINES
 
-This statement is included only for compatibility with MySQL.
+This statement is used to list all supported storage engines. The syntax is included only for compatibility with MySQL.
 
 ## Synopsis
+
+**ShowEnginesStmt:**
+
+![ShowEnginesStmt](/media/sqlgram/ShowEnginesStmt.png)
 
 ```sql
 SHOW ENGINES

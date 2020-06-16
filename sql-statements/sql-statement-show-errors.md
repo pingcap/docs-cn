@@ -13,13 +13,9 @@ The behavior of which statements generate errors vs. warnings is highly influenc
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowErrorsStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowErrorsStmt](/media/sqlgram/ShowErrorsStmt.png)
 
 ## Examples
 

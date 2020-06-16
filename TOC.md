@@ -259,6 +259,7 @@
       + [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
       + [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
       + [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md)
+      + [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
       + [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       + [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
       + [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
