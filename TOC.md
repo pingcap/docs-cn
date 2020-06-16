@@ -280,6 +280,7 @@
       + [`SHOW [FULL] PROCESSSLIST`](/sql-statements/sql-statement-show-processlist.md)
       + [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
       + [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md)
+      + [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md)
       + [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
       + [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
       + [`SHOW [FULL] TABLES`](/sql-statements/sql-statement-show-tables.md)

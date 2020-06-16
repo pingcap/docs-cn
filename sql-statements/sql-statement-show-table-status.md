@@ -11,17 +11,17 @@ This statement shows various statistics about tables in TiDB. If the statistics 
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowTableStatusStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowTableStatusStmt](/media/sqlgram/ShowTableStatusStmt.png)
 
-**ShowTargetFilterable:**
+**FromOrIn:**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![FromOrIn](/media/sqlgram/FromOrIn.png)
 
-**ShowDatabaseNameOpt:**
+**StatusTableName:**
 
-![ShowDatabaseNameOpt](/media/sqlgram/ShowDatabaseNameOpt.png)
+![StatusTableName](/media/sqlgram/StatusTableName.png)
 
 ## Examples
 

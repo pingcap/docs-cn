@@ -11,13 +11,9 @@ This statement shows a list of warnings that occurred for previously executed st
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowWarningsStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowWarningsStmt](/media/sqlgram/ShowWarningsStmt.png)
 
 ## Examples
 

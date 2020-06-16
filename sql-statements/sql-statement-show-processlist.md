@@ -11,9 +11,9 @@ This statement lists the current sessions connected to the same TiDB server. The
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowProcesslistStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowProcesslistStmt](/media/sqlgram/ShowProcesslistStmt.png)
 
 **OptFull:**
 
