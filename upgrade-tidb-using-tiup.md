@@ -7,7 +7,7 @@ aliases: ['/docs/dev/how-to/upgrade/using-tiup/']
 
 # Upgrade TiDB Using TiUP
 
-This document is targeted for users who want to upgrade from TiDB 3.0 versions to TiDB 4.0 versions, or from TiDB 4.0 to a later version.
+This document is targeted for users who want to upgrade from TiDB 3.0 or 3.1 versions to TiDB 4.0 versions, or from TiDB 4.0 to a later version.
 
 If you have deployed the TiDB cluster using TiDB Ansible, you can use TiUP to import the TiDB Ansible configuration and perform the upgrade.
 
