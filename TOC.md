@@ -72,6 +72,7 @@
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
   + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
+  + [时区支持](/configure-time-zone.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
@@ -92,6 +93,7 @@
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
   + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
+  + [TiDB 内存控制文档](/configure-memory-usage.md)
 + 性能调优
   + 系统调优
     + [操作系统性能参数调优](/tune-operating-system.md)
