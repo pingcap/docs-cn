@@ -109,7 +109,7 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 `COLLATION` 表中列的含义如下：
 
 * `COLLATION_NAME`：排序规则名称
-* `COLLATION_NAME`：排序规则所属的字符集名称
+* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
 * `ID`：排序规则的 ID
 * `IS_DEFAULT`：该排序规则是否是所属字符集的默认排序规则
 * `IS_COMPILED`：字符集是否编译到服务器中
