@@ -7,11 +7,11 @@ aliases: ['/docs/dev/reference/system-databases/metrics-schema/']
 
 # Metrics Schema
 
-To dynamically observe and compare cluster conditions of different time ranges, the SQL diagnosis system introduces cluster monitoring system tables. All monitoring tables are in the metrics schema, and you can query the monitoring information using SQL statements in this schema. The data of the three monitoring-related summary tables ([`metrics_summary`](/system-tables/system-table-metrics-summary.md), [`metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md), and `inspection_result`) are all obtained by querying the monitoring tables in the metrics schema. Currently, many system tables are added, so you can query the information of these tables using the [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md) table.
+To dynamically observe and compare cluster conditions of different time ranges, the SQL diagnosis system introduces cluster monitoring system tables. All monitoring tables are in the `metrics_schema` database. You can query the monitoring information using SQL statements in this schema. The data of the three monitoring-related summary tables ([`metrics_summary`](/system-tables/system-table-metrics-summary.md), [`metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md), and `inspection_result`) are all obtained by querying the monitoring tables in the metrics schema. Currently, many system tables are added, so you can query the information of these tables using the [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md) table.
 
 ## Overview
 
-The following example uses the `tidb_query_duration` table to introduce the usage and working principles of the monitoring table. The working principles of other monitoring tables are similar.
+Taking the `tidb_query_duration` monitoring table in `metrics_schema` as an example, this section illustrates how to use this monitoring table and how it works. The working principles of other monitoring tables are similar to `tidb_query_duration`.
 
 Query the information related to the `tidb_query_duration` table on `information_schema.metrics_tables`:
 
@@ -31,8 +31,8 @@ select * from information_schema.metrics_tables where table_name='tidb_query_dur
 
 Field description:
 
-* `TABLE_NAME`: Corresponds to the table name in the metrics schema. In this example, the table name is `tidb_query_duration`.
-* `PROMQL`: The working principle of the monitoring table is to map SQL statements to `PromQL` and convert Prometheus results into SQL query results. This field is the expression template of `PromQL`. When getting the data of the monitoring table, the query conditions are used to rewrite the variables in this template to generate the final query expression.
+* `TABLE_NAME`: Corresponds to the table name in `metrics_schema` . In this example, the table name is `tidb_query_duration`.
+* `PROMQL`: The working principle of the monitoring table is to first map SQL statements to `PromQL`, then to request data from Prometheus, and to convert Prometheus results into SQL query results. This field is the expression template of `PromQL`. When you query the data of the monitoring table, the query conditions are used to rewrite the variables in this template to generate the final query expression.
 * `LABELS`: The label for the monitoring item. `tidb_query_duration` has two labels: `instance` and `sql_type`.
 * `QUANTILE`: The percentile. For monitoring data of the histogram type, a default percentile is specified. If the value of this field is `0`, it means that the monitoring item corresponding to the monitoring table is not a histogram.
 * `COMMENT`: Explanations for the monitoring table. You can see that the `tidb_query_duration` table is used to query the percentile time of the TiDB query execution, such as the query time of P999/P99/P90. The unit is second.
@@ -112,7 +112,7 @@ desc select * from metrics_schema.tidb_query_duration where value is not null an
 
 From the result above, you can see that `PromQL`, `start_time`, `end_time`, and `step` are in the execution plan. During the execution process, TiDB calls the `query_range` HTTP API of Prometheus to query the monitoring data.
 
-You might find that in the range of [`2020-03-25 23:40:00`, `2020-03-25 23:42:00`], each label only has three time values. In the execution plan, the value of `step` is 1 minute, which is determined by the following two variables:
+You might find that in the range of [`2020-03-25 23:40:00`, `2020-03-25 23:42:00`], each label only has three time values. In the execution plan, the value of `step` is 1 minute, which means that the interval of these values is 1 minute. `step` is determined by the following two session variables:
 
 * `tidb_metric_query_step`: The query resolution step width. To get the `query_range` data from Prometheus, you need to specify `start_time`, `end_time`, and `step`. `step` uses the value of this variable.
 * `tidb_metric_query_range_duration`: When the monitoring data is queried, the value of the `$ RANGE_DURATION` field in `PROMQL` is replaced with the value of this variable. The default value is 60 seconds.

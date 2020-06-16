@@ -39,17 +39,17 @@ desc information_schema.inspection_result;
 Field description:
 
 * `RULE`: The name of the diagnosis rule. Currently, the following rules are available:
-    * `config`: The consistency check of configuration. If the same configuration is inconsistent on different instances, a `warning` diagnosis result is generated.
+    * `config`: Checks whether the configuration is consistent and proper. If the same configuration is inconsistent on different instances, a `warning` diagnosis result is generated.
     * `version`: The consistency check of version. If the same version is inconsistent on different instances, a `warning` diagnosis result is generated.
-    * `node-load`: If the current system load is too high, the corresponding `warning` diagnosis result is generated.
+    * `node-load`: Checks the server load. If the current system load is too high, the corresponding `warning` diagnosis result is generated.
     * `critical-error`: Each module of the system defines critical errors. If a critical error exceeds the threshold within the corresponding time period, a warning diagnosis result is generated.
-    * `threshold-check`: The diagnosis system checks the thresholds of a large number of metrics. If a threshold is exceeded, the corresponding diagnosis information is generated.
+    * `threshold-check`: The diagnosis system checks the thresholds of key metrics. If a threshold is exceeded, the corresponding diagnosis information is generated.
 * `ITEM`: Each rule diagnoses different items. This field indicates the specific diagnosis items corresponding to each rule.
 * `TYPE`: The instance type of the diagnosis. The optional values are `tidb`, `pd`, and `tikv`.
 * `INSTANCE`: The specific address of the diagnosed instance.
 * `STATUS_ADDRESS`: The HTTP API service address of the instance.
 * `VALUE`: The value of a specific diagnosis item.
-* `REFERENCE`: The reference value (threshold value) for this diagnosis item. If the difference between `VALUE` and the threshold is very large, the corresponding diagnosis information is generated.
+* `REFERENCE`: The reference value (threshold value) for this diagnosis item. If `VALUE` exceeds the threshold, the corresponding diagnosis information is generated.
 * `SEVERITY`: The severity level. The optional values are `warning` and `critical`.
 * `DETAILS`: Diagnosis details, which might also contain SQL statement(s) or document links for further diagnosis.
 
@@ -160,7 +160,7 @@ select * from information_schema.inspection_result where rule='critical-error';
 
 ## Diagnosis rules
 
-The diagnosis module contains a series of rules. These rules compare the results with the preset thresholds after querying the existing monitoring tables and cluster information tables. If the results exceed the thresholds or fall below the thresholds, the result of `warning` or `critical` is generated and the corresponding information is provided in the `details` column.
+The diagnosis module contains a series of rules. These rules compare the results with the thresholds after querying the existing monitoring tables and cluster information tables. If the results exceed the thresholds, the diagnosis of `warning` or `critical` is generated and the corresponding information is provided in the `details` column.
 
 You can query the existing diagnosis rules by querying the `inspection_rules` system table:
 
@@ -274,9 +274,9 @@ The `threshold-check` diagnosis rule checks whether the following metrics in the
 
 |  Component  | Monitoring metric | Monitoring table | Expected value |  Description  |
 |  :----  | :----  |  :----  |  :----  |  :----  |
-| TiDB | tso-duration              | pd_tso_wait_duration                | < 50ms  |   The time it takes to get the transaction TSO timestamp. |
+| TiDB | tso-duration              | pd_tso_wait_duration                | < 50ms  |   The wait duration of getting the TSO of transaction. |
 | TiDB | get-token-duration        | tidb_get_token_duration             | < 1ms   |  Queries the time it takes to get the token. The related TiDB configuration item is [`token-limit`](/command-line-flags-for-tidb-configuration.md#token-limit).  |
-| TiDB | load-schema-duration      | tidb_load_schema_duration           | < 1s    |   The time it takes for TiDB to update and load the schema metadata.|
+| TiDB | load-schema-duration      | tidb_load_schema_duration           | < 1s    |   The time it takes for TiDB to update the schema metadata.|
 | TiKV | scheduler-cmd-duration    | tikv_scheduler_command_duration     | < 0.1s  |  The time it takes for TiKV to execute the KV `cmd` request. |
 | TiKV | handle-snapshot-duration  | tikv_handle_snapshot_duration       | < 30s   |  The time it takes for TiKV to handle the snapshot. |
 | TiKV | storage-write-duration    | tikv_storage_async_request_duration | < 0.1s  |  The write latency of TiKV. |

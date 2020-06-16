@@ -7,7 +7,7 @@ aliases: ['/docs/dev/reference/system-databases/inspection-summary/']
 
 # INSPECTION_SUMMARY
 
-In some scenarios, you might pay attention only to the monitoring summary of specific links or modules. For example, the number of threads for Coprocessor in the thread pool is configured as 8. If the CPU usage of Coprocessor reaches 750%, you can determine that a risk exists and Coprocessor might become a bottleneck in advance. However, some monitoring metrics vary greatly due to different user workloads, so it is difficult to define specific thresholds. It is important to troubleshoot issues in this scenario, so TiDB provides the `inspection_summary` table for link summary.
+In some scenarios, you might need to pay attention only to the monitoring summary of specific links or modules. For example, the number of threads for Coprocessor in the thread pool is configured as 8. If the CPU usage of Coprocessor reaches 750%, you can determine that a risk exists and Coprocessor might become a bottleneck in advance. However, some monitoring metrics vary greatly due to different user workloads, so it is difficult to define specific thresholds. It is important to troubleshoot issues in this scenario, so TiDB provides the `inspection_summary` table for link summary.
 
 The structure of the `information_schema.inspection_summary` inspection summary table is as follows:
 
@@ -48,9 +48,12 @@ Field description:
 
 Usage example:
 
-Both the diagnosis result table and the diagnosis monitoring summary table can specify the diagnosis time range using `hint`. `select **+ time_range('2020-03-07 12:00:00','2020-03-07 13:00:00') */* from inspection_summary` is the monitoring summary for the `2020-03-07 12:00:00` to `2020-03-07 13:00:00` period. Like the monitoring summary table, you can use the diagnosis result table to quickly find the monitoring items with large differences by comparing the data of two different periods.
+Both the diagnosis result table and the diagnosis monitoring summary table can specify the diagnosis time range using `hint`. `select /*+ time_range('2020-03-07 12:00:00','2020-03-07 13:00:00') */* from inspection_summary` is the monitoring summary for the `2020-03-07 12:00:00` to `2020-03-07 13:00:00` period. Like the monitoring summary table, you can use the `inspection_summary` table to quickly find the monitoring items with large differences by comparing the data of two different periods.
 
-See the following example that diagnoses issues within a specified range, from "2020-01-16 16:00:54.933" to "2020-01-16 16:10:54.933":
+The following example compares the monitoring metrics of read links in two time periods:
+
+* `(2020-01-16 16:00:54.933, 2020-01-16 16:10:54.933)`
+* `(2020-01-16 16:10:54.933, 2020-01-16 16:20:54.933)` 
 
 {{< copyable "sql" >}}
 
@@ -68,7 +71,7 @@ FROM
   JOIN
   (
     SELECT
-      /*+ time_range("2020-01-16 16:10:54.933","2020-01-16 16:20:54.933")*/ *
+      /*+ time_range("2020-01-16 16:10:54.933", "2020-01-16 16:20:54.933")*/ *
     FROM information_schema.inspection_summary WHERE rule='read-link'
   ) t2
   ON t1.metrics_name = t2.metrics_name
