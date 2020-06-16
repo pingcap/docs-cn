@@ -390,15 +390,15 @@ election: not leader
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # 在 TiDB 集群 A 上创建表数据表。
+    # 在 TiDB 集群 A 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/"
 
-    # 在 TiDB 集群 B 上创建表数据表。
+    # 在 TiDB 集群 B 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/"
 
-    # 在 TiDB 集群 C 上创建表数据表。
+    # 在 TiDB 集群 C 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/"
     ```
@@ -422,7 +422,7 @@ election: not leader
         --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
         --cyclic-replica-id 2 \
         --cyclic-filter-replica-ids 3 \
-        --cyclic-sync-ddl false
+        --cyclic-sync-ddl true
 
     # 在 TiDB 集群 C 上创建环形同步任务。
     cdc cli changefeed create \
@@ -435,10 +435,10 @@ election: not leader
 
 ### 环形同步使用限制
 
-1. 环形复制功能使用到的表急表必须在创建环形同步任务前使用 `cdc cli changefeed cyclic create-marktables` 创建。
+1. 环形复制功能使用到的标记表必须在创建环形同步任务前使用 `cdc cli changefeed cyclic create-marktables` 创建。
 2. 开启环形复制的数据表只包含 [a-zA-z0-9_] 字符。
 3. 开启环形复制的数据表表必须在创建环形同步任务前创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
 5. 如果想在线 DDL，需要确保：
-    1. 多个集群中有且仅有一个集群的 CDC(s) 开启了 cyclic-sync-ddl，例如示例中的 A 集群 CDC
-    2. DDL 执行在开启 cyclic-sync-ddl 的集群上，例如示例中的 A 集群
+    1. 多个集群的 CDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 CDC 关闭 sync-ddl。
+    2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
