@@ -6,7 +6,7 @@ aliases: ['/docs-cn/stable/how-to/upgrade/using-tiup/']
 
 # 使用 TiUP 升级 TiDB
 
-本文档适用于使用 TiUP 从 TiDB 3.0 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
+本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
 
 如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
 
