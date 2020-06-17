@@ -340,9 +340,9 @@ election: not leader
 
 > **警告：**
 >
-> 环形同步功能还在实验中，没有经过完备的测试。暂时请避免在生产环境中使用该功能。
+> 目前环形同步属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
 
-环形同步功能可以在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A，B 和 C，它们都有一个数据表 `test.user_data`，并且各自对它有写入。环形同步功能可以将 A，B 和 C 对 `test.user_data` 的写入同步其它集群上，使三个集群上的 `test.user_data` 达到最终一致。
+环形同步功能支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 `test.user_data`，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 `test.user_data` 的写入同步其它集群上，使三个集群上的 `test.user_data` 达到最终一致。
 
 ### 环形同步使用示例
 
@@ -350,15 +350,15 @@ election: not leader
 
 ![TiCDC cyclic replication](/media/cdc-cyclic-replication.png)
 
-环形复制的使用需要设置同步任务的创建参数：
+使用环形同步功能时，需要设置同步任务的创建参数：
 
-+ `--cyclic-replica-id`，为上游集群的写入指定来源 ID，需要确保每个集群的 ID 唯一性。
-+ `--cyclic-filter-replica-ids`，指定需要过滤的写入来源 ID，通常为下游集群的 ID。
-+ `--cyclic-sync-ddl`，是否同步 DDL 到下游，只能在一个集群的 CDC 上开启同步 DDL。
++ `--cyclic-replica-id`：用于指定为上游集群的写入指定来源 ID，需要确保每个集群 ID 的唯一性。
++ `--cyclic-filter-replica-ids`：用于指定需要过滤的写入来源 ID，通常为下游集群的 ID。
++ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游，只能在一个集群的 CDC 上开启 DDL 同步。
 
 环形同步任务创建步骤如下：
 
-1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#TiCDC-部署)。
+1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#ticdc-部署)。
 
     {{< copyable "shell-regular" >}}
 
@@ -438,10 +438,10 @@ election: not leader
 
 ### 环形同步使用限制
 
-1. 环形复制功能使用到的标记表必须在创建环形同步任务前使用 `cdc cli changefeed cyclic create-marktables` 创建。
+1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形复制功能使用到的标记表。
 2. 开启环形复制的数据表只包含 [a-zA-z0-9_] 字符。
-3. 开启环形复制的数据表表必须在创建环形同步任务前创建完毕。
+3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
-5. 如果想在线 DDL，需要确保：
-    1. 多个集群的 CDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 CDC 关闭 sync-ddl。
+5. 如果想在线 DDL，需要确保以下两点：
+    1. 多个集群的 CDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 CDC 关闭了 sync-ddl。
     2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
