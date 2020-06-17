@@ -7,14 +7,20 @@ aliases: ['/docs/dev/reference/performance/statement-summary/']
 
 # Statement Summary Tables
 
-To better handle SQL performance related issues, MySQL has provided [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html) in `performance_schema` to monitor SQL with statistics. Among these tables, `events_statements_summary_by_digest` is very useful in locating SQL problems with its abundant fields such as latency, execution times, rows scanned, and full table scans.
+To better handle SQL performance issues, MySQL has provided [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html) in `performance_schema` to monitor SQL with statistics. Among these tables, `events_statements_summary_by_digest` is very useful in locating SQL problems with its abundant fields such as latency, execution times, rows scanned, and full table scans.
 
-Starting from v3.0.4, TiDB provides the support for the `events_statements_summary_by_digest`
-table. Starting from v3.0.8, TiDB provides the support for the `events_statements_summary_by_digest_history` table. In this document, you will learn about the two tables, and how to troubleshoot SQL performance issues using these tables.
+Therefore, starting from v4.0.0-rc.1, TiDB provides system tables in `information_schema`. These system tables are similar to `events_statements_summary_by_digest` in terms of features.
 
-## `events_statements_summary_by_digest`
+- [`statements_summary`](#statements_summary)
+- [`statements_summary_history`](#statements_summary_history)
+- [`cluster_statements_summary`](#cluster_statements_summary-and-cluster_statements_summary_history)
+- [`cluster_statements_summary_history`](#cluster_statements_summary-and-cluster_statements_summary_history)
 
-`events_statements_summary_by_digest` is a system table in `performance_schema`. It groups the SQL statements by the SQL digest and the plan digest, and provides statistics for each SQL category.
+This document details these tables and introduces how to use them to troubleshoot SQL performance issues.
+
+## `statements_summary`
+
+`statements_summary` is a system table in `performance_schema`. `statements_summary` groups the SQL statements by the SQL digest and the plan digest, and provides statistics for each SQL category.
 
 The "SQL digest" here means the same as used in slow logs, which is a unique identifier calculated through normalized SQL statements. The normalization process ignores constant, blank characters, and is case insensitive. Therefore, statements with consistent syntaxes have the same digest. For example:
 
@@ -36,18 +42,16 @@ select * from employee where id in (...) and salary between ? and ?;
 
 The "plan digest" here refers to the unique identifier calculated through normalized execution plan. The normalization process ignores constants. The same SQL statements might be grouped into different categories because the same statements might have different execution plans. SQL statements of the same category have the same execution plan.
 
-`events_statements_summary_by_digest` stores the aggregated results of SQL monitoring metrics. In general, each of the monitoring metrics includes the maximum value and average value. For example, the execution latency metric corresponds to two fields: `AVG_LATENCY` (average latency) and `MAX_LATENCY` (maximum latency).
+`statements_summary` stores the aggregated results of SQL monitoring metrics. In general, each of the monitoring metrics includes the maximum value and average value. For example, the execution latency metric corresponds to two fields: `AVG_LATENCY` (average latency) and `MAX_LATENCY` (maximum latency).
 
-To make sure that the monitoring metrics are up to date, data in the `events_statements_summary_by_digest` table is periodically cleared, and only recent aggregated results are retained and displayed. The periodical data clearing is controlled by the `tidb_stmt_summary_refresh_interval` system variable. If you happen to make a query right after the clearing, the data displayed might be very little.
+To make sure that the monitoring metrics are up to date, data in the `statements_summary` table is periodically cleared, and only recent aggregated results are retained and displayed. The periodical data clearing is controlled by the `tidb_stmt_summary_refresh_interval` system variable. If you happen to make a query right after the clearing, the data displayed might be very little.
 
-Some concepts in TiDB are different from those in MySQL. For this reason, the schema of the `events_statements_summary_by_digest` table in TiDB greatly differs from that in MySQL.
-
-The following is a sample output of querying `events_statements_summary_by_digest`:
+The following is a sample output of querying `statements_summary`:
 
 ```
    SUMMARY_BEGIN_TIME: 2020-01-02 11:00:00
      SUMMARY_END_TIME: 2020-01-02 11:30:00
-            STMT_TYPE: select
+            STMT_TYPE: Select
           SCHEMA_NAME: test
                DIGEST: 0611cc2fe792f8c146cc97d39b31d9562014cf15f8d41f23a4938ca341f54182
           DIGEST_TEXT: select * from employee where id = ?
@@ -79,7 +83,119 @@ The following is a sample output of querying `events_statements_summary_by_diges
 >
 > In TiDB, the time unit of fields in statement summary tables is nanosecond (ns), whereas in MySQL the time unit is picosecond (ps).
 
+## `statements_summary_history`
+
+The table schema of `statements_summary_history` is identical to that of `statements_summary`. `statements_summary_history` saves the historical data of a time range. By checking historical data, you can troubleshoot anomalies and compare monitoring metrics of different time ranges.
+
+The fields `SUMMARY_BEGIN_TIME` and `SUMMARY_END_TIME` represent the start time and the end time of the historical time range.
+
+## `cluster_statements_summary` and `cluster_statements_summary_history`
+
+`statements_summary` and `statements_summary_history` display the statement summary data of only a single TiDB server. To query the data of the entire cluster, you need to query `cluster_statements_summary` and `cluster_statements_summary_history`.
+
+`cluster_statements_summary` displays the `statements_summary` data of each TiDB server, and `cluster_statements_summary_history` displays the `statements_summary_history` data of each TiDB server. These two tables use the `INSTANCE` field to represent the address of the TiDB server. The other fields are the same as those in `statements_summary`.
+
+## Parameter configuration
+
+The following system variables are used to control the statement summary:
+
+- `tidb_enable_stmt_summary`: Determines whether to enable the statement summary feature. `1` represents `enable`, and `0` means `disable`. The feature is enabled by default. The statistics in the system table are cleared if this feature is disabled. The statistics are re-calculated next time this feature is enabled. Tests have shown that enabling this feature has little impact on performance.
+- `tidb_stmt_summary_refresh_interval`: The interval at which the `statements_summary` table is refreshed. The time unit is second (s). The default value is `1800`.
+- `tidb_stmt_summary_history_size`: The size of each SQL statement category stored in the `statements_summary_history` table. The default value is `24`.
+- `tidb_stmt_summary_max_stmt_count`: Limits the number of SQL statements that can be stored in statement summary tables. The default value is `200`. If the limit is exceeded, those SQL statements that recently remain unused are cleared.
+- `tidb_stmt_summary_max_sql_length`: Specifies the longest display length of `DIGEST_TEXT` and `QUERY_SAMPLE_TEXT`. The default value is `4096`.
+- `tidb_stmt_summary_internal_query`: Determines whether to count the TiDB SQL statements. `1` means to count, and `0` means not to count. The default value is `0`.
+
+An example of the statement summary configuration is shown as follows:
+
+{{< copyable "sql" >}}
+
+```sql
+set global tidb_enable_stmt_summary = true;
+set global tidb_stmt_summary_refresh_interval = 1800;
+set global tidb_stmt_summary_history_size = 24;
+```
+
+After the configuration above takes effect, every 30 minutes the `statements_summary` table is cleared. The `statements_summary_history` table stores data generated over the recent 12 hours.
+
+The system variables above have two scopes: global and session. These scopes work differently from other system variables:
+
+- After setting the global variable, your setting applies to the whole cluster immediately.
+- After setting the session variable, your setting applies to the current TiDB server immediately. This is useful when you debug on a single TiDB server instance.
+- The session variable has a higher read priority. The global variable is read only when no session variable is set.
+- If you set the session variable to a blank string, the global variable is re-read.
+
+> **Note:**
+>
+> The `tidb_stmt_summary_history_size`, `tidb_stmt_summary_max_stmt_count`, and `tidb_stmt_summary_max_sql_length` configuration items affect memory usage. It is recommended that you adjust these configurations based on your needs. It is not recommended to set them too large values.
+
+## Limitation
+
+The statement summary tables have the following limitation:
+
+The statement summary data will be lost when the TiDB server is restarted. This is because statement summary tables are memory tables, and the data is cached in memory instead of being persisted on storage.
+
+## Troubleshooting examples
+
+This section provides two examples to show how to use the statement summary feature to troubleshoot SQL performance issues.
+
+### Could high SQL latency be caused by the server end?
+
+In this example, the client shows slow performance with point queries on the `employee` table. You can perform a fuzzy search on SQL texts:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT avg_latency, exec_count, query_sample_text
+    FROM information_schema.statements_summary
+    WHERE digest_text LIKE 'select * from employee%';
+```
+
+ `1ms` and `0.3ms` are considered within the normal range of `avg_latency`. Therefore, it can be concluded that the server end is not the cause. You can troubleshoot with the client or the network.
+
+{{< copyable "sql" >}}
+
+```sql
++-------------+------------+------------------------------------------+
+| avg_latency | exec_count | query_sample_text                        |
++-------------+------------+------------------------------------------+
+|     1042040 |          2 | select * from employee where name='eric' |
+|      345053 |          3 | select * from employee where id=3100     |
++-------------+------------+------------------------------------------+
+2 rows in set (0.00 sec)
+```
+
+### Which categories of SQL statements consume the longest total time?
+
+If the QPS decrease significantly from 10:00 to 10:30, you can find out the three categories of SQL statements with the longest time consumption from the history table:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT sum_latency, avg_latency, exec_count, query_sample_text
+    FROM information_schema.statements_summary_history
+    WHERE summary_begin_time='2020-01-02 10:00:00'
+    ORDER BY sum_latency DESC LIMIT 3;
+```
+
+The result shows that the following three categories of SQL statements consume the longest time in total, which need to be optimized with high priority.
+
+{{< copyable "sql" >}}
+
+```sql
++-------------+-------------+------------+-----------------------------------------------------------------------+
+| sum_latency | avg_latency | exec_count | query_sample_text                                                     |
++-------------+-------------+------------+-----------------------------------------------------------------------+
+|     7855660 |     1122237 |          7 | select avg(salary) from employee where company_id=2013                |
+|     7241960 |     1448392 |          5 | select * from employee join company on employee.company_id=company.id |
+|     2084081 |     1042040 |          2 | select * from employee where name='eric'                              |
++-------------+-------------+------------+-----------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
 ### Fields description
+
+The following are descriptions of fields in the `statements_summary` table.
 
 Basic fields:
 
@@ -93,6 +209,8 @@ Basic fields:
 - `SAMPLE_USER`: The users who execute SQL statements of this category. Only one user is taken.
 - `PLAN_DIGEST`: The digest of the execution plan.
 - `PLAN`: The original execution plan. If there are multiple statements, the plan of only one statement is taken.
+- `PLAN_CACHE_HITS`: The total number of times that SQL statements of this category hit the plan cache.
+- `PLAN_IN_CACHE`: Indicates whether the previous execution of SQL statements of this category hit the plan cache.
 
 Fields related to execution time:
 
@@ -104,6 +222,8 @@ Fields related to execution time:
 Fields related to TiDB server:
 
 - `EXEC_COUNT`: Total execution times of SQL statements of this category.
+- `SUM_ERRORS`: The sum of errors occurred during execution.
+- `SUM_WARNINGS`: The sum of warnings occurred during execution.
 - `SUM_LATENCY`: The total execution latency of SQL statements of this category.
 - `MAX_LATENCY`: The maximum execution latency of SQL statements of this category.
 - `MIN_LATENCY`: The minimum execution latency of SQL statements of this category.
@@ -117,11 +237,9 @@ Fields related to TiDB server:
 
 Fields related to TiKV Coprocessor task:
 
-- `COP_TASK_NUM`: The number of Coprocessor requests that a SQL statement sends.
-- `AVG_COP_PROCESS_TIME`: The average execution time of Coprocessor tasks.
+- `SUM_COP_TASK_NUM`: The total number of Coprocessor requests sent.
 - `MAX_COP_PROCESS_TIME`: The maximum execution time of Coprocessor tasks.
 - `MAX_COP_PROCESS_ADDRESS`: The address of the Coprocessor task with the maximum execution time.
-- `AVG_COP_WAIT_TIME`: The average waiting time of Coprocessor tasks.
 - `MAX_COP_WAIT_TIME`: The maximum waiting time of Coprocessor tasks.
 - `MAX_COP_WAIT_ADDRESS`: The address of the Coprocessor task with the maximum waiting time.
 - `AVG_PROCESS_TIME`: The average processing time of SQL statements in TiKV.
@@ -161,114 +279,3 @@ Transaction-related fields:
 - `BACKOFF_TYPES`: All types of errors that require retries and the number of retries for each type. The format of the field is `type:number`. If there is more than one error type, each is separated by a comma, like `txnLock:2,pdRPC:1`.
 - `AVG_AFFECTED_ROWS`: The average number of rows affected.
 - `PREV_SAMPLE_TEXT`:  When the current SQL statement is `COMMIT`, `PREV_SAMPLE_TEXT` is the previous statement to `COMMIT`. In this case, SQL statements are grouped by the digest and `prev_sample_text`. This means that `COMMIT` statements with different `prev_sample_text` are grouped to different rows. When the current SQL statement is not `COMMIT`, the `PREV_SAMPLE_TEXT` field is an empty string.
-
-## `events_statements_summary_by_digest_history`
-
-The schema of the `events_statements_summary_by_digest_history` table is identical to that of the `events_statements_summary_by_digest` table. `events_statements_summary_by_digest_history` stores the historical data used to troubleshoot anomalies or to compare monitoring metrics of different time.
-
-The `SUMMARY_BEGIN_TIME` field and the `SUMMARY_END_TIME` field refer to the beginning time and the ending time of a historical period.
-
-## Troubleshooting examples
-
-This section shows how to use the statement summary feature to troubleshoot SQL performance issues using two sample questions.
-
-### Could high SQL latency be caused by the server end?
-
-In this example, the client shows slow performance with point queries on the employee table. You can perform a fuzzy search by SQL texts:
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT avg_latency, exec_count, query_sample_text
-    FROM performance_schema.events_statements_summary_by_digest
-    WHERE digest_text LIKE 'select * from employee%';
-```
-
-As shown in the result below, `avg_latency` of 1ms and 0.3ms are in the normal range. Therefore, it can be concluded that the server end is not the cause, and continue the troubleshooting with the client or the network.
-
-```
-+-------------+------------+------------------------------------------+
-| avg_latency | exec_count | query_sample_text                        |
-+-------------+------------+------------------------------------------+
-|     1042040 |          2 | select * from employee where name='eric' |
-|      345053 |          3 | select * from employee where id=3100     |
-+-------------+------------+------------------------------------------+
-2 rows in set (0.00 sec)
-```
-
-### Which categories of SQL statements consume the longest total time?
-
-If the QPS (queries/sec) decrease significantly from 10:00 A.M. to 10:30 A.M., you can find out the three categories of SQL statements with the longest time consumption from the history table:
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT sum_latency, avg_latency, exec_count, query_sample_text
-    FROM performance_schema.events_statements_summary_by_digest_history
-    WHERE summary_begin_time='2020-01-02 10:00:00'
-    ORDER BY sum_latency DESC LIMIT 3;
-```
-
-The result shows that the following three SQL categories consume the longest time in total, which require focus on optimization.
-
-```
-+-------------+-------------+------------+-----------------------------------------------------------------------+
-| sum_latency | avg_latency | exec_count | query_sample_text                                                     |
-+-------------+-------------+------------+-----------------------------------------------------------------------+
-|     7855660 |     1122237 |          7 | select avg(salary) from employee where company_id=2013                |
-|     7241960 |     1448392 |          5 | select * from employee join company on employee.company_id=company.id |
-|     2084081 |     1042040 |          2 | select * from employee where name='eric'                              |
-+-------------+-------------+------------+-----------------------------------------------------------------------+
-3 rows in set (0.00 sec)
-```
-
-## Configurations
-
-The statement summary feature is disabled by default. You can enable it by setting a system variable, for example:
-
-{{< copyable "sql" >}}
-
-```sql
-set global tidb_enable_stmt_summary = true;
-```
-
-The statistics in the system table will be cleared if the statement summary feature is disabled, and will be re-calculated next time the statement summary feature is enabled. Tests have shown that enabling this feature has little impact on performance.
-
-Another two system variables that control the statement summary:
-
-- `tidb_stmt_summary_refresh_interval`: The interval at which the `events_statements_summary_by_digest` table is refreshed. The time unit is second (s). The default value is `1800`.
-- `tidb_stmt_summary_history_size`: The size of each SQL statement category historically stored in the `events_statements_summary_by_digest_history` table. The default value is `24`.
-
-The following is a configuration example of statement summary:
-
-{{< copyable "sql" >}}
-
-```sql
-set global tidb_stmt_summary_refresh_interval = 1800;
-set global tidb_stmt_summary_history_size = 24;
-```
-
-When the above configuration takes effect, every 30 minutes the `events_statements_summary_by_digest` is cleared. `events_statements_summary_by_digest_history` stores data generated over the recent 12 hours.
-
-The above two system variables have two scopes - global and session, which work a little differently from other system variables, as described below:
-
-- Set the global variable to apply to the cluster immediately.
-- Set the session variable to apply to the current TiDB server immediately. This is useful when you debug on a single TiDB server instance.
-- The session variable has a higher read priority. The global variable will be read only if no session variable is set.
-- Set the session variable to a blank string to re-read the global variable.
-
-The statement summary tables are memory tables. To prevent potential memory issues, you need to limit the number of statements to be saved and the longest SQL display length. You can configure these limits using the following parameters under `[stmt-summary]` of `config.toml`:
-
-- `max-stmt-count` limits the number of SQL statements that can be stored. The default value is `200`. If the set limit is exceeded, those SQL statements that recently remain unused will be cleared.
-- `max-sql-length` specifies the longest display length of `DIGEST_TEXT` and `QUERY_SAMPLE_TEXT`. The default value is 4096.
-
-> **Note:**
->
-> The `tidb_stmt_summary_history_size`, `max-stmt-count`, and `max-sql-length` configuration items affect memory usage. It is recommended that you adjust these configurations based on your actual needs. It is not recommended to set them too large values.
-
-## Known limitations
-
-The statement summary tables have the following limitations:
-
-- Querying statement summary tables only returns the statement summary of the current TiDB server, not that of the entire cluster.
-- The statement summary will be lost when the TiDB server restarts. This is because statement summary tables are memory tables, and the data is cached in memory instead of being persisted on storage.
