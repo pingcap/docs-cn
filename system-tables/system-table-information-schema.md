@@ -701,7 +701,7 @@ SHOW TABLES
 * `TABLE_NAME`：表的名称。
 * `TABLE_TYPE`：表的类型。
 * `ENGINE`：存储引擎类型。该值暂为 ‘InnoDB’。
-* `VERSION`：版本，默认值为10。
+* `VERSION`：版本，默认值为 10。
 * `ROW_FORMAT`：行格式。该值暂为 ‘Compact’。
 * `TABLE_ROWS`：统计信息中该表所存的行数。
 * `AVG_ROW_LENGTH`：该表中所存数据的平均行长度。平均行长度 = DATA_LENGTH / 统计信息中的行数。
