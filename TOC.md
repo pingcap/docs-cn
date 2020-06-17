@@ -134,6 +134,7 @@
     + [Upgrade](/tidb-binlog/upgrade-tidb-binlog.md)
     + [Monitor](/tidb-binlog/monitor-tidb-binlog-cluster.md)
     + [Reparo](/tidb-binlog/tidb-binlog-reparo.md)
+    + [binlogctl](/tidb-binlog/binlog-control.md)
     + [Binlog Slave Client](/tidb-binlog/binlog-slave-client.md)
     + [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
     + [Bidirectional Replication Between TiDB Clusters](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
