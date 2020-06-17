@@ -423,8 +423,8 @@ SELECT * FROM session_variables LIMIT 10;
 
 `SESSION_VARIABLES` 表各列字段含义如下：
 
-* VARIABLE_NAME：数据库中 session 级变量的名称。
-* VARIABLE_VALUE：数据库中对应该 session 变量名的具体值。
+* `VARIABLE_NAME`：数据库中 session 级变量的名称。
+* `VARIABLE_VALUE`：数据库中对应该 session 变量名的具体值。
 
 ## SLOW_QUERY 表
 
