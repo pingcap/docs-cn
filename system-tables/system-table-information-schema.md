@@ -192,6 +192,34 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 1 row in set (0.01 sec)
 ```
 
+The description of columns in the `COLUMNS` table is as follows:
+
+* `TABLE_CATALOG`: The name of the catalog to which the table with the column belongs. The value is always `def`.
+* `TABLE_SCHEMA`: The name of the schema in which the table with the column is located.
+* `TABLE_NAME`: The name of the table with the column.
+* `COLUMN_NAME`: The name of the column.
+* `ORDINAL_POSITION`: The position of the column in the table.
+* `COLUMN_DEFAULT`: The default value of the column. If the explicit default value is `NULL`, or if the column definition does not include the `default` clause, this value is `NULL`.
+* `IS_NULLABLE`: Whether the column is nullable. If the column can store null values, this value is `YES`; otherwise, it is `NO`.
+* `DATA_TYPE`: The type of data in the column.
+* `CHARACTER_MAXIMUM_LENGTH`: For string columns, the maximum length in characters.
+* `CHARACTER_OCTET_LENGTH`: For string columns, the maximum length in bytes.
+* `NUMERIC_PRECISION`: The numeric precision of a number-type column.
+* `NUMERIC_SCALE`: The numeric scale of a number-type column.
+* `DATETIME_PRECISION`: For time-type columns, the fractional seconds precision.
+* `CHARACTER_SET_NAME`: The name of the character set of a string column.
+* `COLLATION_NAME`: The name of the collation of a string column.
+* `COLUMN_TYPE`: The column type.
+* `COLUMN_KEY`: Whether this column is indexed. This field might have the following values:
+    * Empty: This column is not indexed, or this column is indexed and is the second column in a multi-column non-unique index.
+    * `PRI`: This column is the primary key or one of multiple primary keys.
+    * `UNI`: This column is the first column of the unique index.
+    * `MUL`: The column is the first column of a non-unique index, in which a given value is allowed to occur for multiple times.
+* `EXTRA`: Any additional information of the given column.
+* `PRIVILEGES`: The privilege that the current user has on this column. Currently, this value is fixed in TiDB, and is always `select,insert,update,references`.
+* `COLUMN_COMMENT`: Comments contained in the column definition.
+* `GENERATION_EXPRESSION`: For generated columns, this value displays the expression used to calculate the column value. For non-generated columns, the value is empty.
+
 The corresponding `SHOW` statement is as follows:
 
 {{< copyable "sql" >}}
@@ -211,7 +239,7 @@ SHOW COLUMNS FROM t1 FROM test;
 
 ### ENGINES table
 
-The `ENGINES` table provides information about storage engines. For compatibility, TiDB will always describe InnoDB as the only supported engine:
+The `ENGINES` table provides information about storage engines. For compatibility, TiDB will always describe InnoDB as the only supported engine. In addition, other column values in the `ENGINES` table are also fixed values.
 
 {{< copyable "sql" >}}
 
@@ -229,6 +257,15 @@ TRANSACTIONS: YES
   SAVEPOINTS: YES
 1 row in set (0.00 sec)
 ```
+
+The description of columns in the `ENGINES` table is as follows:
+
+* `ENGINES`: The name of the storage engine.
+* `SUPPORT`: The level of support that the server has on the storage engine. In TiDB, the value is always `DEFAULT`.
+* `COMMENT`: The brief comment on the storage engine.
+* `TRANSACTIONS`：Whether the storage engine supports transactions.
+* `XA`: Whether the storage engine supports XA transactions.
+* `SAVEPOINTS`: Whether the storage engine supports `savepoints`.
 
 ### KEY_COLUMN_USAGE table
 
@@ -269,6 +306,21 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
        REFERENCED_COLUMN_NAME: NULL
 2 rows in set (0.00 sec)
 ```
+
+The description of columns in the `KEY_COLUMN_USAGE` table is as follows:
+
+* `CONSTRAINT_CATALOG`: The name of the catalog to which the constraint belongs. The value is always `def`.
+* `CONSTRAINT_SCHEMA`: The name of the schema to which the constraint belongs.
+* `CONSTRAINT_NAME`: The name of the constraint.
+* `TABLE_CATALOG`: The name of the catalog to which the table belongs. The value is always `def`.
+* `TABLE_SCHEMA`: The name of the schema to which the table belongs.
+* `TABLE_NAME`: The name of the table with constraints. 
+* `COLUMN_NAME`: The name of the column with constraints.
+* `ORDINAL_POSITION`: The position of the column in the constraint, rather than in the table. The position number starts from `1`.
+* `POSITION_IN_UNIQUE_CONSTRAINT`: The unique constraint and the primary key constraint are empty. For foreign key constraints, this column is the position of the referenced table's key.
+* `REFERENCED_TABLE_SCHEMA`: The name of the schema referenced by the constraint. Currently in TiDB, the value of this column in all constraints is `nil`, except for the foreign key constraint.
+* `REFERENCED_TABLE_NAME`: The name of the table referenced by the constraint. Currently in TiDB, the value of this column in all constraints is `nil`, except for the foreign key constraint.
+* `REFERENCED_COLUMN_NAME`: The name of the column referenced by the constraint. Currently in TiDB, the value of this column in all constraints is `nil`, except for the foreign key constraint.
 
 ### PROCESSLIST table
 
