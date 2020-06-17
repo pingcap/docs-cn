@@ -40,7 +40,7 @@ select * from `ANALYZE_STATUS`;
 * `JOB_INFO`: 任务信息。
 * `PROCESSED_ROWS`: 已经处理的行数。
 * `START_TIME`: 开始时间。
-* `STATE`: 状态。包括 `padding`，`running`，`finished`和`failed`。
+* `STATE`: 状态。包括 `padding`、`running`、`finished` 和 `failed`。
 
 ## CHARACTER_SETS 表
 
@@ -638,10 +638,10 @@ desc statistics;
 * `NON_UNIQUE`: 如果索引不能包含重复项，则为 `0`；如果可以，则为 `1`。
 * `INDEX_SCHEMA`: 索引所属的数据库的名称。
 * `INDEX_NAME`: 索引的名称。如果索引是主键，那么名称总是 `PRIMARY`。
-* `SEQ_IN_INDEX`: 索引中的列序号，从 1 开始。
+* `SEQ_IN_INDEX`: 索引中的列序号，从 `1` 开始。
 * `COLUMN_NAME`: 列名。请参见表达式列的说明。
-* `COLLATION`: 列在索引中的排序方式。它可以有值 `A` (升序)、`D` (降序)或 `NULL` (未排序)。
-* `CARDINALITY`: 索引中唯一值的数量的估计。要更新这个数字，运行 `ANALYZE TABLE`。
+* `COLLATION`: 列在索引中的排序方式。取值可以是 `A`（升序）、`D`（降序）或 `NULL`（未排序）。
+* `CARDINALITY`: 索引中唯一值的数量的估计。要更新这个数字，执行 `ANALYZE TABLE`。
 * `SUB_PART`: 索引的前缀。如果只对列的部分前缀索引，则为索引字符的数量；如果对整个列进行索引，则为 `NULL`。
 * `PACKED`: TiDB 未使用该字段。这个值总是 `NULL`。
 * `NULLABLE`: 如果列可能包含空值，则值为 `YES`；如果不包含，则值为 `''`。
@@ -820,7 +820,7 @@ CONSTRAINT_CATALOG: def
 * `CONSTRAINT_SCHEMA`: 约束所属的数据库的名称。
 * `CONSTRAINT_NAME`: 约束的名称。
 * `TABLE_NAME`: 表的名称。
-* `CONSTRAINT_TYPE`: 约束的类型。取值可以是 `UNIQUE`，`PRIMARY KEY`，或者 `FOREIGN KEY`。`UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
+* `CONSTRAINT_TYPE`: 约束的类型。取值可以是 `UNIQUE`、`PRIMARY KEY` 或者 `FOREIGN KEY`。`UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
 
 ## TIDB_HOT_REGIONS 表
 
