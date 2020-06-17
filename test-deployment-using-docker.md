@@ -1,29 +1,16 @@
 ---
 title: TiDB Docker 部署方案
 category: how-to
-<<<<<<< HEAD
 aliases: ['/docs-cn/v2.1/how-to/deploy/orchestrated/docker/']
-draft: true
-=======
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/docker/']
->>>>>>> 04f37ba... add deprecated warnings for outdated deployment methods (#3626)
 ---
 
 # TiDB Docker 部署方案
 
-<<<<<<< HEAD
-本文介绍如何使用 Docker 部署一个多节点的 TiDB 集群。
-
-> **注意：**
->
-> 对于生产环境，不要使用 Docker 进行部署，而应[使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md)。
-=======
 > **警告：**
 >
-> 本文提供的 Docker 部署方案已停止维护。如果只是为了测试 TiDB，推荐参考[TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行部署。对于**生产环境**，不要使用 Docker 进行部署，而应[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+> 本文提供的 Docker 部署方案已停止维护。如果只是为了测试 TiDB，推荐参考[TiDB 数据库快速上手指南](https://docs.pingcap.com/zh/tidb/dev/quick-start-with-tidb)进行部署。对于生产环境，不要使用 Docker 进行部署，而应[使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md)。
 
 本文介绍如何使用 Docker 在测试环境部署一个多节点的 TiDB 集群。
->>>>>>> 04f37ba... add deprecated warnings for outdated deployment methods (#3626)
 
 ## 环境准备
 
