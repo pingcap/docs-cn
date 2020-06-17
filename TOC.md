@@ -43,7 +43,7 @@
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
-  + [支持的数据迁移路径](/data-migration-route.md)
+  + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
@@ -55,12 +55,12 @@
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
-    + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster/)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
-    + [使用 TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
     + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
@@ -194,6 +194,9 @@
   + [Loader](/loader-overview.md)
   + [Mydumper](/mydumper-overview.md)
   + [Syncer](/syncer-overview.md)
+  + TiSpark
+    + [TiSpark 快速上手](/get-started-with-tispark.md)
+    + [TiSpark 用户指南](/tispark-overview.md)
 + 参考指南
   + 架构
     + [概述](/tidb-architecture.md)
@@ -209,7 +212,6 @@
   + 安全加固
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
-    + [为 TiDB 开启数据加密存储](/enable-encrypt-stored-data.md)
     + [生成自签名证书](/generate-self-signed-certificates.md)
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
@@ -465,6 +467,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.1](/releases/release-4.0.1.md)
     - [4.0 GA](/releases/release-4.0-ga.md)
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
     - [4.0.0-rc.1](/releases/release-4.0.0-rc.1.md)
