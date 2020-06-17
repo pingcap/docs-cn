@@ -1,7 +1,6 @@
 ---
 title: TiDB 数据库快速上手指南
 category: how-to
-aliases: ['/docs-cn/dev/test-deployment-using-docker/']
 ---
 
 # TiDB 数据库快速上手指南
@@ -299,7 +298,7 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
 - 如果你刚刚部署好一套 TiDB 本地测试集群：
     - 学习 [TiDB SQL 操作](/basic-sql-operations.md)
-    - [迁移数据到 TiDB](/data-migration-route.md)
+    - [迁移数据到 TiDB](/migration-overview.md)
     - 了解 [TiDB 的核心特性与核心应用场景](/overview.md)
     - 了解 [TiDB 的整体架构](/tidb-architecture.md)
     - 了解 [TiDB 与 MySQL 的兼容性](/mysql-compatibility.md)
