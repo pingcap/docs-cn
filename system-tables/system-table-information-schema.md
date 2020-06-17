@@ -709,7 +709,7 @@ SHOW TABLES
 * `MAX_DATA_LENGTH`：最大数据长度。该值暂为 0，表示没有最大数据长度的限制。
 * `INDEX_LENGTH`：索引长度。索引长度 = 统计信息中的行数 × 索引元组各列长度和，这里尚未考虑 TiKV 的副本数。
 * `DATA_FREE`：空间碎片。该值暂为 0。
-* `AUTO_INCREMENT`：该表中字增主键自动增量的当前值。
+* `AUTO_INCREMENT`：该表中自增主键自动增量的当前值。
 * `CREATE_TIME`：该表的创建时间。
 * `UPDATE_TIME`：该表的更新时间。
 * `CHECK_TIME`：该表的检查时间。
