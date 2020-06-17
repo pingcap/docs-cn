@@ -1,17 +1,17 @@
 ---
 title: INSPECTION_RESULT
-summary: Learn the `INSPECTION_RESULT` diagnosis result table.
+summary: Learn the `INSPECTION_RESULT` diagnostic result table.
 category: reference
 aliases: ['/docs/dev/reference/system-databases/inspection-result/']
 ---
 
 # INSPECTION_RESULT
 
-TiDB has some built-in diagnosis rules for detecting faults and hidden issues in the system.
+TiDB has some built-in diagnostic rules for detecting faults and hidden issues in the system.
 
-The `INSPECTION_RESULT` diagnosis feature can help you quickly find problems and reduce your repetitive manual work. You can use the `select * from information_schema.inspection_result` statement to trigger the internal diagnosis.
+The `INSPECTION_RESULT` diagnostic feature can help you quickly find problems and reduce your repetitive manual work. You can use the `select * from information_schema.inspection_result` statement to trigger the internal diagnostics.
 
-The structure of the `information_schema.inspection_result` diagnosis result table `information_schema.inspection_result` is as follows:
+The structure of the `information_schema.inspection_result` diagnostic result table `information_schema.inspection_result` is as follows:
 
 {{< copyable "sql" >}}
 
@@ -38,22 +38,22 @@ desc information_schema.inspection_result;
 
 Field description:
 
-* `RULE`: The name of the diagnosis rule. Currently, the following rules are available:
-    * `config`: Checks whether the configuration is consistent and proper. If the same configuration is inconsistent on different instances, a `warning` diagnosis result is generated.
-    * `version`: The consistency check of version. If the same version is inconsistent on different instances, a `warning` diagnosis result is generated.
-    * `node-load`: Checks the server load. If the current system load is too high, the corresponding `warning` diagnosis result is generated.
-    * `critical-error`: Each module of the system defines critical errors. If a critical error exceeds the threshold within the corresponding time period, a warning diagnosis result is generated.
-    * `threshold-check`: The diagnosis system checks the thresholds of key metrics. If a threshold is exceeded, the corresponding diagnosis information is generated.
-* `ITEM`: Each rule diagnoses different items. This field indicates the specific diagnosis items corresponding to each rule.
-* `TYPE`: The instance type of the diagnosis. The optional values are `tidb`, `pd`, and `tikv`.
+* `RULE`: The name of the diagnostic rule. Currently, the following rules are available:
+    * `config`: Checks whether the configuration is consistent and proper. If the same configuration is inconsistent on different instances, a `warning` diagnostic result is generated.
+    * `version`: The consistency check of version. If the same version is inconsistent on different instances, a `warning` diagnostic result is generated.
+    * `node-load`: Checks the server load. If the current system load is too high, the corresponding `warning` diagnostic result is generated.
+    * `critical-error`: Each module of the system defines critical errors. If a critical error exceeds the threshold within the corresponding time period, a warning diagnostic result is generated.
+    * `threshold-check`: The diagnostic system checks the thresholds of key metrics. If a threshold is exceeded, the corresponding diagnostic information is generated.
+* `ITEM`: Each rule diagnoses different items. This field indicates the specific diagnostic items corresponding to each rule.
+* `TYPE`: The instance type of the diagnostics. The optional values are `tidb`, `pd`, and `tikv`.
 * `INSTANCE`: The specific address of the diagnosed instance.
 * `STATUS_ADDRESS`: The HTTP API service address of the instance.
-* `VALUE`: The value of a specific diagnosis item.
-* `REFERENCE`: The reference value (threshold value) for this diagnosis item. If `VALUE` exceeds the threshold, the corresponding diagnosis information is generated.
+* `VALUE`: The value of a specific diagnostic item.
+* `REFERENCE`: The reference value (threshold value) for this diagnostic item. If `VALUE` exceeds the threshold, the corresponding diagnostic information is generated.
 * `SEVERITY`: The severity level. The optional values are `warning` and `critical`.
-* `DETAILS`: Diagnosis details, which might also contain SQL statement(s) or document links for further diagnosis.
+* `DETAILS`: Diagnostic details, which might also contain SQL statement(s) or document links for further diagnostics.
 
-## Diagnosis example
+## Diagnostics example
 
 Diagnose issues currently existing in the cluster.
 
@@ -102,7 +102,7 @@ SEVERITY  | warning
 DETAILS   | max duration of 172.16.5.40:20151 tikv rocksdb-write-duration was too slow
 ```
 
-The following issues can be detected from the diagnosis result above:
+The following issues can be detected from the diagnostic result above:
 
 * The first row indicates that TiDB's `log.slow-threshold` value is configured to `0`, which might affect performance.
 * The second row indicates that two different TiDB versions exist in the cluster.
@@ -137,12 +137,12 @@ SEVERITY  | warning
 DETAILS   | max duration of 172.16.5.40:10089 tidb get-token-duration is too slow
 ```
 
-The following issues can be detected from the diagnosis result above:
+The following issues can be detected from the diagnostic result above:
 
 * The first row indicates that the `172.16.5.40:4009` TiDB instance is restarted at `2020/03/26 00:05:45.670`.
 * The second row indicates that the maximum `get-token-duration` time of the `172.16.5.40:10089` TiDB instance is 0.234s, but the expected time is less than 0.001s.
 
-You can also specify conditions, for example, to query the `critical` level diagnosis results:
+You can also specify conditions, for example, to query the `critical` level diagnostic results:
 
 {{< copyable "sql" >}}
 
@@ -150,7 +150,7 @@ You can also specify conditions, for example, to query the `critical` level diag
 select * from information_schema.inspection_result where severity='critical';
 ```
 
-Query only the diagnosis result of the `critical-error` rule:
+Query only the diagnostic result of the `critical-error` rule:
 
 {{< copyable "sql" >}}
 
@@ -158,11 +158,11 @@ Query only the diagnosis result of the `critical-error` rule:
 select * from information_schema.inspection_result where rule='critical-error';
 ```
 
-## Diagnosis rules
+## Diagnostic rules
 
-The diagnosis module contains a series of rules. These rules compare the results with the thresholds after querying the existing monitoring tables and cluster information tables. If the results exceed the thresholds, the diagnosis of `warning` or `critical` is generated and the corresponding information is provided in the `details` column.
+The diagnostic module contains a series of rules. These rules compare the results with the thresholds after querying the existing monitoring tables and cluster information tables. If the results exceed the thresholds, the diagnostics of `warning` or `critical` is generated and the corresponding information is provided in the `details` column.
 
-You can query the existing diagnosis rules by querying the `inspection_rules` system table:
+You can query the existing diagnostic rules by querying the `inspection_rules` system table:
 
 {{< copyable "sql" >}}
 
@@ -182,9 +182,9 @@ select * from information_schema.inspection_rules where type='inspection';
 +-----------------+------------+---------+
 ```
 
-### `config` diagnosis rule
+### `config` diagnostic rule
 
-In the `config` diagnosis rule, the following two diagnosis rules are executed by querying the `CLUSTER_CONFIG` system table:
+In the `config` diagnostic rule, the following two diagnostic rules are executed by querying the `CLUSTER_CONFIG` system table:
 
 * Check whether the configuration values of the same component are consistent. Not all configuration items has this consistency check. The white list of consistency check is as follows:
 
@@ -228,9 +228,9 @@ In the `config` diagnosis rule, the following two diagnosis rules are executed b
     | TiDB | log.slow-threshold | larger than `0` |
     | TiKV | raftstore.sync-log | `true` |
 
-### `version` diagnosis rule
+### `version` diagnostic rule
 
-The `version` diagnosis rule checks whether the version hash of the same component is consistent by querying the `CLUSTER_INFO` system table. See the following example:
+The `version` diagnostic rule checks whether the version hash of the same component is consistent by querying the `CLUSTER_INFO` system table. See the following example:
 
 {{< copyable "sql" >}}
 
@@ -250,9 +250,9 @@ SEVERITY  | critical
 DETAILS   | the cluster has 2 different tidb versions, execute the sql to see more detail: select * from information_schema.cluster_info where type='tidb'
 ```
 
-### `critical-error` diagnosis rule
+### `critical-error` diagnostic rule
 
-In `critical-error` diagnosis rule, the following two diagnosis rules are executed:
+In `critical-error` diagnostic rule, the following two diagnostic rules are executed:
 
 * Detect whether the cluster has the following errors by querying the related monitoring system tables in the metrics schema:
 
@@ -268,9 +268,9 @@ In `critical-error` diagnosis rule, the following two diagnosis rules are execut
 
 * Check whether any component is restarted by querying the `metrics_schema.up` monitoring table and the `CLUSTER_LOG` system table.
 
-### `threshold-check` diagnosis rule
+### `threshold-check` diagnostic rule
 
-The `threshold-check` diagnosis rule checks whether the following metrics in the cluster exceed the threshold by querying the related monitoring system tables in the metrics schema:
+The `threshold-check` diagnostic rule checks whether the following metrics in the cluster exceed the threshold by querying the related monitoring system tables in the metrics schema:
 
 |  Component  | Monitoring metric | Monitoring table | Expected value |  Description  |
 |  :----  | :----  |  :----  |  :----  |  :----  |
@@ -308,4 +308,4 @@ In addition, this rule also checks whether the CPU usage of the following thread
 * storage-readpool-low-cpu
 * split-check-cpu
 
-The built-in diagnosis rules are constantly being improved. If you have more diagnosis rules, welcome to create a PR or an issue in the [`tidb` repository](https://github.com/pingcap/tidb).
+The built-in diagnostic rules are constantly being improved. If you have more diagnostic rules, welcome to create a PR or an issue in the [`tidb` repository](https://github.com/pingcap/tidb).
