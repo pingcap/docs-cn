@@ -13,13 +13,13 @@ This statement shows a list of databases that the current user has privileges to
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowDatabasesStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowDatabasesStmt](/media/sqlgram/ShowDatabasesStmt.png)
 
-**ShowTargetFilterable:**
+**ShowLikeOrWhereOpt:**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 ## Examples
 

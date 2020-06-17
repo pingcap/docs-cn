@@ -11,13 +11,25 @@ This statement shows a list of privileges associated with a user. As in MySQL, t
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowGrantsStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowGrantsStmt](/media/sqlgram/ShowGrantsStmt.png)
 
 **Username:**
 
 ![Username](/media/sqlgram/Username.png)
+
+**UsingRoles:**
+
+![UsingRoles](/media/sqlgram/UsingRoles.png)
+
+**RolenameList:**
+
+![RolenameList](/media/sqlgram/RolenameList.png)
+
+**Rolename:**
+
+![Rolename](/media/sqlgram/Rolename.png)
 
 ## Examples
 

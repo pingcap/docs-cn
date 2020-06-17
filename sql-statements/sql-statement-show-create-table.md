@@ -11,9 +11,9 @@ This statement shows the exact statement to recreate an existing table using SQL
 
 ## Synopsis
 
-**ShowStmt:**
+**ShowCreateTableStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowCreateTableStmt](/media/sqlgram/ShowCreateTableStmt.png)
 
 **TableName:**
 
