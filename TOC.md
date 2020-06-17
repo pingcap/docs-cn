@@ -42,7 +42,7 @@
     + [v3.0 TPC-C Performance Test](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [Interaction Test on Online Workloads and `ADD INDEX`](/benchmark/online-workloads-and-add-index-operations.md)
 + Migrate
-  + [Migration Tools Guide](/ecosystem-tool-user-guide.md)
+  + [Overview](/migration-overview.md)
   + Migrate from MySQL
     + [Migrate from Mydumper Files](/migrate-from-mysql-mydumper-files.md)
     + [Migrate from Amazon Aurora MySQL Using DM](/migrate-from-aurora-mysql-database.md)
