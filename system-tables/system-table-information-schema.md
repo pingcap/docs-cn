@@ -700,15 +700,15 @@ SHOW TABLES
 * `TABLE_SCHEMA`：表所属数据库的名称。
 * `TABLE_NAME`：表的名称。
 * `TABLE_TYPE`：表的类型。
-* `ENGINE`：存储引擎类型。
+* `ENGINE`：存储引擎类型。该值暂为 ‘InnoDB’。
 * `VERSION`：版本，默认值为10。
-* `ROW_FORMAT`：行格式。
-* `TABLE_ROWS`：该表中所存的行数。
-* `AVG_ROW_LENGTH`：该表中所存数据的平均行长度。
-* `DATA_LENGTH`：数据长度。
-* `MAX_DATA_LENGTH`：最大数据长度。
-* `INDEX_LENGTH`：索引长度。
-* `DATA_FREE`：空间碎片。
+* `ROW_FORMAT`：行格式。该值暂为 ‘Compact’。
+* `TABLE_ROWS`：统计信息中该表所存的行数。
+* `AVG_ROW_LENGTH`：该表中所存数据的平均行长度。平均行长度 = DATA_LENGTH / 统计信息中的行数。
+* `DATA_LENGTH`：数据长度。数据长度 = 统计信息中的行数 × 元组各列存储长度和，这里尚未考虑 TiKV 的副本数。
+* `MAX_DATA_LENGTH`：最大数据长度。该值暂为 0，表示没有最大数据长度的限制。
+* `INDEX_LENGTH`：索引长度。索引长度 = 统计信息中的行数 × 索引元组各列长度和，这里尚未考虑 TiKV 的副本数。
+* `DATA_FREE`：空间碎片。该值暂为 0。
 * `AUTO_INCREMENT`：该表中字增主键自动增量的当前值。
 * `CREATE_TIME`：该表的创建时间。
 * `UPDATE_TIME`：该表的更新时间。
