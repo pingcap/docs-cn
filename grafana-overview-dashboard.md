@@ -75,4 +75,4 @@ System Info | IO Util | the disk usage ratio, 100% at a maximum; generally you n
 
 ## Interface of the Overview dashboard
 
-![Overview Dashboard](/media/overview.png)
+![overview](/media/grafana-monitor-overview.png)

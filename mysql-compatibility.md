@@ -76,7 +76,7 @@ mysql> select _tidb_rowid, id from t;
 
 ### Performance schema
 
-TiDB uses a combination of Prometheus and Grafana to store and query the performance monitoring metrics. Some performance schema tables return empty results in TiDB.
+TiDB uses a combination of [Prometheus and Grafana](/tidb-monitoring-api.md) to store and query the performance monitoring metrics. Some performance schema tables return empty results in TiDB.
 
 ### Query Execution Plan
 
