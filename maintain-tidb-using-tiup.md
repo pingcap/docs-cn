@@ -1,11 +1,11 @@
 ---
-title: Common TiUP Operations
+title: TiUP Common Operations
 summary: Learn the common operations to operate and maintain a TiDB cluster using TiUP.
 category: how-to
 aliases: ['/docs/dev/how-to/maintain/tiup-operations/']
 ---
 
-# Common TiUP Operations
+# TiUP Common Operations
 
 This document describes the following common operations when you operate and maintain a TiDB cluster using TiUP.
 

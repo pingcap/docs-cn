@@ -1,11 +1,11 @@
 ---
-title: TiDB Lightning FAQ
+title: TiDB Lightning FAQs
 summary: Learn about the frequently asked questions (FAQs) and answers about TiDB Lightning.
 category: faq
 aliases: ['/docs/dev/faq/tidb-lightning/']
 ---
 
-# TiDB Lightning FAQ
+# TiDB Lightning FAQs
 
 >**Note:**
 >
