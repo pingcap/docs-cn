@@ -10,9 +10,9 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/t
 
 ## TiCDC 部署
 
-### 软件和硬件环境建议配置
+### 软件和硬件环境推荐配置
 
-TiCDC 生产环境软件和硬件推荐如下：
+在生产环境中，TiCDC 的软件和硬件配置推荐如下：
 
 | Linux 操作系统平台       | 版本         |
 | :----------------------- | :----------: |
@@ -21,9 +21,9 @@ TiCDC 生产环境软件和硬件推荐如下：
 
 | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- |
-| 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
+| 16 核以上 | 64 GB 以上 | SSD | 万兆网卡（2 块最佳） | 2 |
 
-更多信息参见[TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
+更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
 
 ### 使用 TiUP 部署
 
