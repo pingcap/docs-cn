@@ -263,6 +263,7 @@
       + [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
       + [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
       + [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
+      + [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)
       + [`SHOW CREATE SEQUENCE`](/sql-statements/sql-statement-show-create-sequence.md)
       + [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md)
       + [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md)
