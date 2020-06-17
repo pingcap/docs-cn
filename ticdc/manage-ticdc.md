@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/t
 
 | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- |
-| 16 核以上 | 64 GB 以上 | SSD | 万兆网卡（2 块最佳） | 2 |
+| 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
 
 更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
 
