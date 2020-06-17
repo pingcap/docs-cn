@@ -644,7 +644,7 @@ desc statistics;
 * `CARDINALITY`: 索引中唯一值的数量的估计。要更新这个数字，执行 `ANALYZE TABLE`。
 * `SUB_PART`: 索引的前缀。如果只对列的部分前缀进行索引，则为索引字符的数量；如果对整个列进行索引，则为 `NULL`。
 * `PACKED`: TiDB 未使用该字段。这个值总是 `NULL`。
-* `NULLABLE`: 如果列可能包含空值，则值为 `YES`；如果不包含，则值为 `''`。
+* `NULLABLE`: 如果列可能包含 `NULL` 值，则值为 `YES`；如果不包含，则值为 `''`。
 * `INDEX_TYPE`: 索引的类型。
 * `COMMENT`: 其他与索引有关的信息。
 * `INDEX_COMMENT`: 在创建索引时为索引提供的带有注释属性的任何注释。
