@@ -43,11 +43,11 @@ To migrate data based on GTID, set both `gtid-mode` and `enforce_gtid_consistenc
 
 ## Step 2: Deploy the DM cluster
 
-It is recommended to use DM-Ansible to deploy a DM cluster. See [Deploy Data Migration Using DM-Ansible](https://pingcap.com/docs/dev/how-to/deploy/data-migration-with-ansible/).
+It is recommended to use DM-Ansible to deploy a DM cluster. See [Deploy Data Migration Using DM-Ansible](https://pingcap.com/docs/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/).
 
 > **Note:**
 >
-> - Use password encrypted with dmctl in all the DM configuration files. If the database password is empty, it is unnecessary to encrypt it. For how to use dmctl to encrypt a cleartext password, see [Encrypt the upstream MySQL user password using dmctl](https://pingcap.com/docs/dev/how-to/deploy/data-migration-with-ansible/#encrypt-the-upstream-mysql-user-password-using-dmctl).
+> - Use password encrypted with dmctl in all the DM configuration files. If the database password is empty, it is unnecessary to encrypt it. For how to use dmctl to encrypt a cleartext password, see [Encrypt the upstream MySQL user password using dmctl](https://pingcap.com/docs/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/#encrypt-the-upstream-mysql-user-password-using-dmctl).
 > - Both the upstream and downstream users must have the corresponding read and write privileges.
 
 ## Step 3: Check the cluster informtaion

@@ -175,19 +175,19 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
     - Add the [`GetAllStores` interface](https://github.com/pingcap/kvproto/blob/8e3f33ac49297d7c93b61a955531191084a2f685/proto/pdpb.proto#L32), to support distributed GC in TiDB
 
     + pd-ctl supports:
-        - [using statistics for Region split](https://pingcap.com/docs/tools/pd-control/#operator-show--add--remove)
+        - [using statistics for Region split](/pd-control.md#operator-show--add--remove)
 
-        - [calling `jq` to format the JSON output](https://pingcap.com/docs/tools/pd-control/#jq-formatted-json-output-usage)
+        - [calling `jq` to format the JSON output](/pd-control.md#jq-formatted-json-output-usage)
 
-        - [checking the Region information of the specified store](https://pingcap.com/docs/tools/pd-control/#region-store-store-id)
+        - [checking the Region information of the specified store](/pd-control.md#region-store-store-id)
 
-        - [checking topN Region list sorted by versions](https://pingcap.com/docs/tools/pd-control/#region-topconfver-limit)
+        - [checking topN Region list sorted by versions](/pd-control.md#region-topconfver-limit)
 
-        - [checking topN Region list sorted by size](https://pingcap.com/docs/tools/pd-control/#region-topsize-limit)
+        - [checking topN Region list sorted by size](/pd-control.md#region-topsize-limit)
 
-        - [more precise TSO encoding](https://pingcap.com/docs/tools/pd-control/#tso)
+        - [more precise TSO encoding](/pd-control.md#tso)
 
-    - [pd-recover](https://pingcap.com/docs/tools/pd-recover) doesn't need to provide the `max-replica` parameter
+    - [pd-recover](/pd-recover.md) doesn't need to provide the `max-replica` parameter
 
 + Metrics
 
@@ -259,7 +259,7 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
 
 ## Tools
 
-- Fast full import of large amounts of data: [TiDB Lightning](https://pingcap.com/docs/tools/lightning/overview-architecture/)
+- Fast full import of large amounts of data: [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 
 - Support new [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)
 

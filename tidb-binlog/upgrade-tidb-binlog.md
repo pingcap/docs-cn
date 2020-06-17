@@ -48,7 +48,7 @@ Second, upgrade the Drainer component:
 
 ## Upgrade TiDB Binlog from Kafka/Local version to the cluster version
 
-The new TiDB versions (v2.0.8-binlog, v2.1.0-rc.5 or later) are not compatible with the [Kafka version](https://pingcap.com/docs/v2.1/reference/tidb-binlog/tidb-binlog-kafka/) or [Local version](https://pingcap.com/docs-cn/v2.1/reference/tidb-binlog/tidb-binlog-local/) of TiDB Binlog. If TiDB is upgraded to one of the new versions, it is required to use the cluster version of TiDB Binlog. If the Kafka or local version of TiDB Binlog is used before upgrading, you need to upgrade your TiDB Binlog to the cluster version.
+The new TiDB versions (v2.0.8-binlog, v2.1.0-rc.5 or later) are not compatible with the Kafka version or Local version of TiDB Binlog. If TiDB is upgraded to one of the new versions, it is required to use the cluster version of TiDB Binlog. If the Kafka or local version of TiDB Binlog is used before upgrading, you need to upgrade your TiDB Binlog to the cluster version.
 
 The corresponding relationship between TiDB Binlog versions and TiDB versions is shown in the following table:
 

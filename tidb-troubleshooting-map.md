@@ -164,7 +164,7 @@ Refer to [5 PD issues](#5-pd-issues).
 
     - For v3.0 and later versions, use the `SQL Bind` feature to bind the execution plan.
     
-    - Update the statistics. If you are roughly sure that the problem is caused by the statistics, [dump the statistics](https://pingcap.com/docs/stable/reference/performance/statistics/#export-statistics). If the cause is outdated statistics, such as the `modify count/row count` in `show stats_meta` is greater than a certain value (e.g. 0.3), or the table has an index of time column, you can try recovering by using `analyze table`. If `auto analyze` is configured, check whether the `tidb_auto_analyze_ratio` system variable is too large (e.g. > 0.3), and whether the current time is between `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
+    - Update the statistics. If you are roughly sure that the problem is caused by the statistics, [dump the statistics](/statistics.md#export-statistics). If the cause is outdated statistics, such as the `modify count/row count` in `show stats_meta` is greater than a certain value (e.g. 0.3), or the table has an index of time column, you can try recovering by using `analyze table`. If `auto analyze` is configured, check whether the `tidb_auto_analyze_ratio` system variable is too large (e.g. > 0.3), and whether the current time is between `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
 
     - For other situations, [report a bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md).
 
@@ -435,7 +435,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
     - Cause: When Pump is started, it notifies all Drainer nodes that are in the `online` state. If it fails to notify Drainer, this error log is printed.
     
-    - Solution: Use the binlogctl tool to check whether each Drainer node is normal or not. This is to ensure that all Drainer nodes in the `online` state are working normally. If the state of a Drainer node is not consistent with its actual working status, use the binlogctl tool to change its state and then restart Pump. See the case [fail-to-notify-all-living-drainer](https://pingcap.com/docs/stable/reference/tidb-binlog/troubleshoot/error-handling/#fail-to-notify-all-living-drainer-is-returned-when-pump-is-started).
+    - Solution: Use the binlogctl tool to check whether each Drainer node is normal or not. This is to ensure that all Drainer nodes in the `online` state are working normally. If the state of a Drainer node is not consistent with its actual working status, use the binlogctl tool to change its state and then restart Pump. See the case [fail-to-notify-all-living-drainer](/tidb-binlog/handle-tidb-binlog-errors.md#fail-to-notify-all-living-drainer-is-returned-when-pump-is-started).
 
 - 6.1.9 Draienr reports the `gen update sqls failed: table xxx: row data is corruption []` error.
 
@@ -523,30 +523,30 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
         - `AUTO_INCREMENT` columns need to be positive, and do not contain the value “0”.
         - UNIQUE and PRIMARY KEYs must not have duplicate entries.
 
-    - Solution: See [Troubleshooting Solution](https://pingcap.com/docs/stable/how-to/troubleshoot/tidb-lightning/#checksum-failed-checksum-mismatched-remote-vs-local).
+    - Solution: See [Troubleshooting Solution](/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local).
 
 - 6.3.4 `Checkpoint for … has invalid status:(error code)`
 
     - Cause: Checkpoint is enabled, and Lightning/Importer has previously abnormally exited. To prevent accidental data corruption, Lightning will not start until the error is addressed. The error code is an integer less than 25, with possible values as `0, 3, 6, 9, 12, 14, 15, 17, 18, 20 and 21`. The integer indicates the step where the unexpected exit occurs in the import process. The larger the integer is, the later the exit occurs.
 
-    - Solution: See [Troubleshooting Solution](https://pingcap.com/docs/stable/how-to/troubleshoot/tidb-lightning/#checkpoint-for--has-invalid-status-error-code).
+    - Solution: See [Troubleshooting Solution](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status-error-code).
 
 - 6.3.5 `ResourceTemporarilyUnavailable("Too many open engines …: 8")`
 
     - Cause: The number of concurrent engine files exceeds the limit specified by tikv-importer. This could be caused by misconfiguration. In addition, even when the configuration is correct, if tidb-lightning has exited abnormally before, an engine file might be left at a dangling open state, which could cause this error as well.
-    - Solution: See [Troubleshooting Solution](https://pingcap.com/docs/stable/how-to/troubleshoot/tidb-lightning/#resourcetemporarilyunavailabletoo-many-open-engines--).
+    - Solution: See [Troubleshooting Solution](/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--).
 
 - 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
     - Cause: TiDB Lightning only supports the UTF-8 and GB-18030 encodings. This error means the file is not in any of these encodings. It is also possible that the file has mixed encoding, such as containing a string in UTF-8 and another string in GB-18030, due to historical ALTER TABLE executions.
 
-    - Solution: See [Troubleshooting Solution](https://pingcap.com/docs/stable/how-to/troubleshoot/tidb-lightning/#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually).
+    - Solution: See [Troubleshooting Solution](/troubleshoot-tidb-lightning.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually).
 
 - 6.3.7 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
 
     - Cause: A timestamp type entry has a time value that does not exist. This is either because of DST changes or because the time value has exceeded the supported range (from Jan 1st 1970 to Jan 19th 2038).
 
-    - Solution: See [Troubleshooting Solution](https://pingcap.com/docs/stable/how-to/troubleshoot/tidb-lightning/#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-).
+    - Solution: See [Troubleshooting Solution](/troubleshoot-tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-).
 
 ## 7. Common log analysis
 

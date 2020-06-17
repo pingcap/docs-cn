@@ -37,4 +37,4 @@ On December 22, 2018, TiDB 2.1.2 is released. The corresponding TiDB Ansible 2.1
     - Fix the issue that `Too many open engines` occurs after the checkpoint is used to restart Lightning
 + TiDB Binlog
     - Eliminate some bottlenecks of Drainer writing data to Kafka
-    - Support the [Kafka version of TiDB Binlog](https://pingcap.com/docs/v2.1/reference/tidb-binlog/tidb-binlog-kafka/)
+    - Support the Kafka version of TiDB Binlog

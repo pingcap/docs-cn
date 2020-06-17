@@ -181,7 +181,7 @@ You can deploy TiDB Lightning using TiDB Ansible together with the [deployment o
 
 Before importing data, you need to have a deployed TiDB cluster, with the cluster version 2.0.9 or above. It is highly recommended to use the latest version.
 
-You can find deployment instructions in [TiDB Quick Start Guide](https://pingcap.com/docs/QUICKSTART/).
+You can find deployment instructions in [TiDB Quick Start Guide](/quick-start-with-tidb.md).
 
 #### Step 2: Download the TiDB Lightning installation package
 
