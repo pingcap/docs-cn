@@ -43,7 +43,7 @@
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
-  + [支持的数据迁移路径](/data-migration-route.md)
+  + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
@@ -153,6 +153,7 @@
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
+    + [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
     + [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
     + [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
     + [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
