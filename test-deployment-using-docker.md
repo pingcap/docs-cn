@@ -1,12 +1,7 @@
 ---
 title: TiDB Docker 部署方案
 category: how-to
-<<<<<<< HEAD
 aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/docker/']
-draft: true
-=======
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/docker/']
->>>>>>> 04f37ba... add deprecated warnings for outdated deployment methods (#3626)
 ---
 
 # TiDB Docker 部署方案
