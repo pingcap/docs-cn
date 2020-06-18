@@ -9,8 +9,6 @@ aliases: ['/docs/dev/reference/sql/statements/drop-table/']
 
 This statement drops a table from the currently selected database. An error is returned if the table does not exist, unless the `IF EXISTS` modifier is used.
 
-By design `DROP TABLE` will also drop views, as they share the same namespace as tables.
-
 ## Synopsis
 
 **DropTableStmt:**
@@ -52,7 +50,6 @@ Query OK, 0 rows affected (0.23 sec)
 
 ## See also
 
-* [DROP VIEW](/sql-statements/sql-statement-drop-view.md)
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
 * [SHOW TABLES](/sql-statements/sql-statement-show-tables.md)

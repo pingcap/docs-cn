@@ -80,5 +80,5 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 
 ## See also
 
-* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
 * [CREATE VIEW](/sql-statements/sql-statement-create-view.md)
+* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
