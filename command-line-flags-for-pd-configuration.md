@@ -98,12 +98,6 @@ PD 可以通过命令行参数或环境变量配置。
 + 包含 X509 key 的 PEM 文件路径，用于开启 TLS。
 + 默认：""
 
-## `--metrics-addr`
-
-+ 指定 Prometheus Pushgateway 的地址。
-+ 默认：""
-+ 如果留空，则不开启 Prometheus Push。
-
 ## `--force-new-cluster`
 
 + 强制使用当前节点创建新的集群。
