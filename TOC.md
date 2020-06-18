@@ -231,6 +231,7 @@
       + [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
       + [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
       + [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
+      - [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md)
       + [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)
       + [`DROP USER`](/sql-statements/sql-statement-drop-user.md)
       + [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)
