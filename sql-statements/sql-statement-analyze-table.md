@@ -1,15 +1,17 @@
 ---
-title: ANALYZE TABLE | TiDB SQL Statement Reference
-summary: An overview of the usage of ANALYZE TABLE for the TiDB database.
+title: ANALYZE | TiDB SQL Statement Reference
+summary: An overview of the usage of ANALYZE for the TiDB database.
 category: reference
 aliases: ['/docs/dev/reference/sql/statements/analyze-table/']
 ---
 
-# ANALYZE TABLE
+# ANALYZE
 
-This statement updates the statistics that TiDB builds on tables and indexes. It is recommended to run `ANALYZE TABLE` after performing a large batch update or import of records, or when you notice that query execution plans are sub-optimal.
+This statement updates the statistics that TiDB builds on tables and indexes. It is recommended to run `ANALYZE` after performing a large batch update or import of records, or when you notice that query execution plans are sub-optimal.
 
 TiDB will also automatically update its statistics over time as it discovers that they are inconsistent with its own estimates.
+
+Currently, TiDB collects statistical information in two ways: full collection (implemented using the `ANALYZE TABLE` statement) and incremental collection (implemented using the `ANALYZE INCREMENTAL TABLE` statement). For detailed usage of these two statements, refer to [introduction to statistics](/statistics.md)
 
 ## Synopsis
 
@@ -63,6 +65,8 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ## MySQL compatibility
 
 This statement is syntactically similar with MySQL. However, `ANALYZE TABLE` may take significantly longer to execute on TiDB, as internally it operates in a different manner.
+
+MySQL does not support the `ANALYZE INCREMENTAL TABLE` statement. TiDB supports incremental collection of statistics. For detailed usage, refer to [incremental collection](/statistics.md#incremental-collection).
 
 ## See also
 
