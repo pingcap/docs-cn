@@ -15,33 +15,61 @@ This statement adds a new index to an existing table. It is an alternative synta
 
 ![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
 
-**CreateIndexStmtUnique:**
+**IndexKeyTypeOpt:**
 
-![CreateIndexStmtUnique](/media/sqlgram/CreateIndexStmtUnique.png)
+![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
 
-**Identifier:**
+**IfNotExists:**
 
-![Identifier](/media/sqlgram/Identifier.png)
+![IfNotExists](/media/sqlgram/IfNotExists.png)
 
 **IndexTypeOpt:**
 
 ![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
 
-**TableName:**
+**IndexPartSpecificationList:**
 
-![TableName](/media/sqlgram/TableName.png)
-
-**IndexColNameList:**
-
-![IndexColNameList](/media/sqlgram/IndexColNameList.png)
+![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
 
 **IndexOptionList:**
 
 ![IndexOptionList](/media/sqlgram/IndexOptionList.png)
 
+**IndexLockAndAlgorithmOpt:**
+
+![IndexLockAndAlgorithmOpt](/media/sqlgram/IndexLockAndAlgorithmOpt.png)
+
+**IndexType:**
+
+![IndexType](/media/sqlgram/IndexType.png)
+
+**IndexPartSpecification:**
+
+![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
+
 **IndexOption:**
 
 ![IndexOption](/media/sqlgram/IndexOption.png)
+
+**IndexTypeName:**
+
+![IndexTypeName](/media/sqlgram/IndexTypeName.png)
+
+**ColumnName:**
+
+![ColumnName](/media/sqlgram/ColumnName.png)
+
+**OptFieldLen:**
+
+![OptFieldLen](/media/sqlgram/OptFieldLen.png)
+
+**IndexNameList:**
+
+![IndexNameList](/media/sqlgram/IndexNameList.png)
+
+**KeyOrIndex:**
+
+![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
 
 ## Examples
 

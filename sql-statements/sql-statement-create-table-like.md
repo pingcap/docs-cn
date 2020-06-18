@@ -13,15 +13,11 @@ This statement copies the definition of an existing table, without copying any d
 
 **CreateTableStmt:**
 
-![CreateTableStmt](/media/sqlgram/CreateTableStmt.png)
+![CreateTableLikeStmt](/media/sqlgram/CreateTableLikeStmt.png)
 
 **LikeTableWithOrWithoutParen:**
 
 ![LikeTableWithOrWithoutParen](/media/sqlgram/LikeTableWithOrWithoutParen.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
 
 ## Examples
 
@@ -51,6 +47,10 @@ Query OK, 0 rows affected (0.10 sec)
 mysql> SELECT * FROM t2;
 Empty set (0.00 sec)
 ```
+
+## Pre-split region
+
+If the table to be copied is defined with the `PRE_SPLIT_REGIONS` attribute, the table created using the `CREATE TABLE LIKE` statement inherits this attribute, and the Region on the new table will be split. For details of `PRE_SPLIT_REGIONS`, see [`CREATE TABLE` Statement](/sql-statements/sql-statement-create-table.md).
 
 ## MySQL compatibility
 

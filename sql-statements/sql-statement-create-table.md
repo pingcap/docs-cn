@@ -27,33 +27,49 @@ This statement creates a new table in the currently selected database. See also 
 
 ![TableElementListOpt](/media/sqlgram/TableElementListOpt.png)
 
+**TableElementList:**
+
+![TableElementList](/media/sqlgram/TableElementList.png)
+
 **TableElement:**
 
 ![TableElement](/media/sqlgram/TableElement.png)
-
-**PartitionOpt:**
-
-![PartitionOpt](/media/sqlgram/PartitionOpt.png)
 
 **ColumnDef:**
 
 ![ColumnDef](/media/sqlgram/ColumnDef.png)
 
-**ColumnName:**
-
-![ColumnName](/media/sqlgram/ColumnName.png)
-
-**Type:**
-
-![Type](/media/sqlgram/Type.png)
-
 **ColumnOptionListOpt:**
 
 ![ColumnOptionListOpt](/media/sqlgram/ColumnOptionListOpt.png)
 
-**TableOptionListOpt:**
+**ColumnOptionList:**
 
-![TableOptionListOpt](/media/sqlgram/TableOptionListOpt.png)
+![ColumnOptionList](/media/sqlgram/ColumnOptionList.png)
+
+**ColumnOption:**
+
+![ColumnOption](/media/sqlgram/ColumnOption.png)
+
+**CreateTableOptionListOpt:**
+
+![CreateTableOptionListOpt](/media/sqlgram/CreateTableOptionListOpt.png)
+
+**PartitionOpt:**
+
+![PartitionOpt](/media/sqlgram/PartitionOpt.png)
+
+**DuplicateOpt:**
+
+![DuplicateOpt](/media/sqlgram/DuplicateOpt.png)
+
+**TableOptionList:**
+
+![TableOptionList](/media/sqlgram/TableOptionList.png)
+
+**TableOption:**
+
+![TableOption](/media/sqlgram/TableOption.png)
 
 ## Syntax
 
@@ -215,10 +231,14 @@ The `table_option` currently only supports `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS`
 | `AUTO_INCREMENT` | The initial value of the increment field | `AUTO_INCREMENT` = 5 |
 |`SHARD_ROW_ID_BITS`| To set the number of bits for the implicit `_tidb_rowid` shards |`SHARD_ROW_ID_BITS` = 4|
 |`PRE_SPLIT_REGIONS`| To pre-split `2^(PRE_SPLIT_REGIONS)` Regions when creating a table |`PRE_SPLIT_REGIONS` = 4|
+|`AUTO_ID_CACHE`| To set the auto ID cache size in a TiDB instance. By default, TiDB automatically changes this size according to allocation speed of auto ID |`AUTO_ID_CACHE` = 200|
+|`AUTO_RANDOM_BASE`| To set the initial incremental part value of auto_random. This option can be considered as a part of the internal interface. Users can ignore this parameter |`AUTO_RANDOM_BASE` = 0|
 | `CHARACTER SET` | To specify the string code for the table; currently only support UTF8MB4 | `CHARACTER SET` =  'utf8mb4' |
 | `COMMENT` | The comment information | `COMMENT` = 'comment info' |
 
-The `split-table` configuration option is enabled by default. When it is enabled, a separate Region is created for each newly created table.
+> **Note:**
+>
+> The `split-table` configuration option is enabled by default. When it is enabled, a separate Region is created for each newly created table. For details, see [TiDB configuration file](/tidb-configuration-file.md).
 
 ## Examples
 
@@ -251,14 +271,15 @@ mysql> SELECT * FROM t1;
 
 ## MySQL compatibility
 
-* TiDB does not support the syntax `CREATE TEMPORARY TABLE`.
+* TiDB does not support temporary tables, but it ignores the `CREATE TEMPORARY TABLE` syntax.
 * All of the data types except spatial types are supported.
 * `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
 * The `KEY_BLOCK_SIZE` and `ENGINE` attributes are parsed but ignored.
-* The `index_col_name` attribute supports the length option with a maximum length limit of 3072 bytes. The length limit does not change depending on the storage engine, and character set used when building the table.
+* The `index_col_name` attribute supports the length option with a maximum length limit of 3072 bytes by default. The length limit can be changed through the `max-index-length` configuration option. For details, see [TiDB configuration file](/tidb-configuration-file.md#max-index-length).
 * The `index_col_name` attribute supports the index sorting options of `ASC` and `DESC`
 * The `COMMENT` attribute supports a maximum of 1024 characters and does not support the `WITH PARSER` option.
 * TiDB supports at most 512 columns in a single table. The corresponding number limit in InnoDB is 1017, and the hard limit in MySQL is 4096.
+* For partitioned tables, only Range, Hash and Range Columns (single column) are supported. For details, see [partitoned table](/partitioned-table.md).
 
 ## See also
 
