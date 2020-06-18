@@ -287,6 +287,7 @@
       + [`SHOW [FULL] TABLES`](/sql-statements/sql-statement-show-tables.md)
       + [`SHOW [GLOBAL|SESSION] VARIABLES`](/sql-statements/sql-statement-show-variables.md)
       + [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
+      + [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md)
       + [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       + [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       + [`TRACE`](/sql-statements/sql-statement-trace.md)
