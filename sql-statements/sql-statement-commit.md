@@ -17,6 +17,10 @@ In the absence of a `BEGIN` or `START TRANSACTION` statement, the default behavi
 
 ![CommitStmt](/media/sqlgram/CommitStmt.png)
 
+**CompletionTypeWithinTransaction:**
+
+![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
+
 ## Examples
 
 ```sql

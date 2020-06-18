@@ -67,6 +67,7 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ## MySQL compatibility
 
 * `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
+* `VISIBLE/INVISIBLE` index is not supported (currently only the master branch actually supports this feature).
 * Descending indexes are not supported (similar to MySQL 5.7).
 * Adding multiple indexes at the same time is currently not supported.
 * Adding the primary key constraint to a table is not supported by default. You can enable the feature by setting the `alter-primary-key` configuration item to `true`. For details, see [alter-primary-key](/tidb-configuration-file.md#alter-primary-key).
