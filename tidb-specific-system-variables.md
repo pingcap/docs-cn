@@ -768,6 +768,14 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
+### last_plan_from_binding <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来显示上一条执行的语句所使用的执行计划是不是来自 binding 中的。
+
 ### ddl_slow_threshold
 
 作用域：SESSION
