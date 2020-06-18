@@ -6,10 +6,12 @@ category: reference
 
 # SHOW TABLE NEXT_ROW_ID
 
-`SHOW TABLE NEXT_ROW_ID` can be used to show the implicitly allocated global Row ID of a table.
+`SHOW TABLE NEXT_ROW_ID` is used to show the details of some special columns of a table, including:
 
-- For most of the tables, TiDB allocates a unique number for each record. The max allocated ID is persisted in the storage layer. Each TiDB server applies for a range of IDs on demand and caches them for ID allocation. This syntax can be used to query the next value to allocate, recorded in the storage layer. 
-- For the tables with integer primary key for optimization, TiDB maps the values in the primary key column to Row ID. Thus, `SHOW TABLE NEXT_ROW_ID` is meaningless for these tables. 
+* `AUTO_INCREMENT` column automatically created by TiDB, namely, `_tidb_rowid` column.
+* `AUTO_INCREMENT` column created by users.
+* [`AUTO_RANDOM`](/auto-random.md) column created by users.
+* [`SEQUENCE`](/sql-statements/sql-statement-create-sequence.md) created by users.
 
 ## Synopsis
 
@@ -23,6 +25,8 @@ category: reference
 
 ## Examples
 
+For newly created tables, `NEXT_GLOBAL_ROW_ID` is `1` because no Row ID is allocated.
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -31,7 +35,6 @@ Query OK, 0 rows affected (0.06 sec)
 ```
 
 ```sql
-# For newly created tables, NEXT_GLOBAL_ROW_ID is 1 because no Row ID is allocated.
 show table t next_row_id;
 +---------+------------+-------------+--------------------+
 | DB_NAME | TABLE_NAME | COLUMN_NAME | NEXT_GLOBAL_ROW_ID |
@@ -41,6 +44,8 @@ show table t next_row_id;
 1 row in set (0.00 sec)
 ```
 
+Data have been written to the table. The TiDB server that inserts the data allocates and caches 30000 IDs at once. Thus, NEXT_GLOBAL_ROW_ID is 30001 now.
+
 ```sql
 insert into t values (), (), ();
 Query OK, 3 rows affected (0.02 sec)
@@ -49,7 +54,6 @@ Records: 3  Duplicates: 0  Warnings: 0
 
 ```sql
 show table t next_row_id;
-# Data have been written to the table. The TiDB server that inserts the data allocates and caches 30000 IDs at once. Thus, NEXT_GLOBAL_ROW_ID is 30001 now.
 +---------+------------+-------------+--------------------+
 | DB_NAME | TABLE_NAME | COLUMN_NAME | NEXT_GLOBAL_ROW_ID |
 +---------+------------+-------------+--------------------+
@@ -61,3 +65,9 @@ show table t next_row_id;
 ## MySQL compatibility
 
 `SHOW TABLE NEXT_ROW_ID` is specific to TiDB.
+
+## See also
+
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [AUTO_RANDOM](/auto-random.md)
+* [CREATE_SEQUENCE](/sql-statements/sql-statement-create-sequence.md)
