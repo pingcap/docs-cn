@@ -53,20 +53,32 @@ Create Table: CREATE TABLE `t1` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=30001
 1 row in set (0.00 sec)
-
-mysql> ALTER TABLE t1 MODIFY col1 INT;
-ERROR 1105 (HY000): unsupported modify column length 11 is less than origin 20
-mysql> ALTER TABLE t1 MODIFY col1 BLOB;
-ERROR 1105 (HY000): unsupported modify column type 252 not match origin 8
-mysql> ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
-ERROR 1105 (HY000): can't run multi schema change
 ```
 
 ## MySQL compatibility
 
-* Making multiple changes in a single `ALTER TABLE` statement is not currently supported.
-* Only certain types of data type changes are supported. For example, an `INTEGER` to `BIGINT` is supported, but the reverse is not possible. Changing from an integer to a string format or blob is not supported.
-* Modifying precision of the `DECIMAL` data type is not supported.
+* Does not support modifying multiple columns in a single `ALTER TABLE` statement. For example:
+
+    ```sql
+    ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
+    ERROR 1105 (HY000): Unsupported multi schema change
+    ```
+
+* Does not support changes of lossy data types and some other types (including changes from integer to string or to `BLOB`). For example:
+
+    ```sql
+    CREATE TABLE t1 (col1 BIGINT);
+    ALTER TABLE t1 MODIFY col1 INT;
+    ERROR 8200 (HY000): Unsupported modify column length 11 is less than origin 20
+    ```
+
+* Does not support modifying the precision of the `DECIMAL` data type. For example:
+
+    ```sql
+    CREATE TABLE t (a DECIMAL(5, 3));
+    ALTER TABLE t MODIFY COLUMN a DECIMAL(6, 3);
+    ERROR 8200 (HY000): Unsupported modify column: can't change decimal column precision
+    ```
 
 ## See also
 
