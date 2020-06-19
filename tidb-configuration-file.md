@@ -353,7 +353,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + nested loop join cache LRU 使用的最大内存限制。可以占用的最大内存阈值，单位为字节。
 + 默认值：20971520
-+ 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache. 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
++ 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
 
 ## prepared-plan-cache
 
