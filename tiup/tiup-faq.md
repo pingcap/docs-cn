@@ -40,6 +40,7 @@ TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境�
 如果不同集群是由同一个 TiUP 中控机部署的，会在部署和扩容时进行检测，如果属于不同的 TiUP 中控机，目前不支持检测。
 
 ## 集群部署期间，TiUP 收到报错 `ssh: handshake failed: read tcp 10.10.10.34:38980 -> 10.10.10.34:3600: read: connection reset by peer`
+
 该报错可能是因为 TiUP 默认并发超过 ssh 默认最大连接数导致的，可尝试加大默认连接数，然后重启 sshd 服务解决：
 
 ```
