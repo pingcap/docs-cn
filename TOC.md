@@ -253,6 +253,7 @@
     - [GC 机制简介](/garbage-collection-overview.md)
     - [GC 配置](/garbage-collection-configuration.md)
   + 性能调优
+    - [操作系统性能参数调优](/tune-operating-system.md)
     - [SQL 优化流程](/sql-optimization-concepts.md)
     - [理解 TiDB 执行计划](/query-execution-plan.md)
     - [执行计划绑定](/execution-plan-binding.md)
