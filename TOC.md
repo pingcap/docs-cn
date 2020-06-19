@@ -232,6 +232,7 @@
   - [支持的连接器和 API](/connectors-and-apis.md)
   - [垃圾回收 (GC)](/garbage-collection.md)
   + 性能调优
+    - [操作系统性能参数调优](/tune-operating-system.md)
     - [SQL 优化流程](/sql-optimization-concepts.md)
     - [理解 TiDB 执行计划](/query-execution-plan.md)
     - [统计信息概述](/statistics.md)
