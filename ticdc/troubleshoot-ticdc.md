@@ -59,7 +59,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235
 
 ## 创建同步任务或同步到 MySQL 时遇到 `Error 1298: Unknown or incorrect time zone: 'UTC'` 错误
 
-这是因为下游 MySQL 没有加载时区，可以通过以下命令加载时区，加载后就可以正常创建任务或同步任务。
+这是因为下游 MySQL 没有加载时区，可以通过 [mysql_tzinfo_to_sql](https://dev.mysql.com/doc/refman/8.0/en/mysql-tzinfo-to-sql.html) 命令加载时区，加载后就可以正常创建任务或同步任务。
 
 {{< copyable "shell-regular" >}}
 
@@ -80,7 +80,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 {{< copyable "shell-regular" >}}
 
 ```shell
-how variables like '%time_zone%';
+show variables like '%time_zone%';
 ```
 
 ```
