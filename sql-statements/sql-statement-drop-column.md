@@ -19,10 +19,6 @@ This statement drops a column from a specified table. `DROP COLUMN` is online in
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
 
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
 **ColumnName:**
 
 ![ColumnName](/media/sqlgram/ColumnName.png)
@@ -82,6 +78,7 @@ mysql> SELECT * FROM t1;
 ## MySQL compatibility
 
 * Dropping multiple columns in the same statement is not supported.
+* Dropping primary key columns or index columns is not supported.
 
 ## See also
 

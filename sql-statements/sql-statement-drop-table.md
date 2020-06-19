@@ -47,6 +47,7 @@ Query OK, 0 rows affected (0.23 sec)
 ## MySQL compatibility
 
 * Dropping a table with `IF EXISTS` does not return a warning when attempting to drop a table that does not exist. [Issue #7867](https://github.com/pingcap/tidb/issues/7867)
+* Currently `RESTRICT` and `CASCADE` are only supported syntactically.
 
 ## See also
 

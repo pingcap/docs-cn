@@ -15,10 +15,6 @@ This statement creates a new database in TiDB. The MySQL terminology for 'databa
 
 ![CreateDatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
 
-**DatabaseSym:**
-
-![DatabaseSym](/media/sqlgram/DatabaseSym.png)
-
 **IfNotExists:**
 
 ![IfNotExists](/media/sqlgram/IfNotExists.png)

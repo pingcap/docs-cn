@@ -61,8 +61,7 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL compatibility
 
-* All of the data types except spatial types are supported.
-* `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
+* All of the data types except spatial types are supported. For other unsupported cases, refer to: [compatibility of DDL statements with MySQL](/mysql-compatibility.md#ddl).
 
 ## See also
 

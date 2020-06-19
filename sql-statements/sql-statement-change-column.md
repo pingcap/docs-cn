@@ -19,10 +19,6 @@ The `ALTER TABLE.. CHANGE COLUMN` statement changes a column on an existing tabl
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
 
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
 **ColumnName:**
 
 ![ColumnName](/media/sqlgram/ColumnName.png)

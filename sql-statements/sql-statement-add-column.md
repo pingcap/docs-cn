@@ -19,10 +19,6 @@ The `ALTER TABLE.. ADD COLUMN` statement adds a column to an existing table. Thi
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
 
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
 **ColumnDef:**
 
 ![ColumnDef](/media/sqlgram/ColumnDef.png)
@@ -73,9 +69,10 @@ mysql> SELECT * FROM t1;
 
 ## MySQL compatibility
 
-* Adding multiple columns at the same time is currently not supported.
+* Adding multiple columns at the same time in a statement is currently not supported.
 * Adding a new column and setting it to the `PRIMARY KEY` is not supported.
 * Adding a new column and setting it to `AUTO_INCREMENT` is not supported.
+* There are limitations on adding generated columns, refer to: [generated column limitations](/generated-columns.md#limitations).
 
 ## See also
 

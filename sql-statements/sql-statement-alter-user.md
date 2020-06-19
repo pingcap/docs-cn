@@ -23,6 +23,14 @@ This statement changes an existing user inside the TiDB privilege system. In the
 
 ![UserSpec](/media/sqlgram/UserSpec.png)
 
+**Username:**
+
+![Username](/media/sqlgram/Username.png)
+
+**AuthOption:**
+
+![AuthOption](/media/sqlgram/AuthOption.png)
+
 ## Examples
 
 ```sql

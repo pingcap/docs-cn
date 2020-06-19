@@ -19,7 +19,13 @@ When an error occurs during reloading, by default, this error message is returne
 
 ## Syntax diagram
 
+**AlterInstanceStmt:**
+
 ![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
+
+**InstanceOption:**
+
+![InstanceOption](/media/sqlgram/InstanceOption.png)
 
 ## Example
 
