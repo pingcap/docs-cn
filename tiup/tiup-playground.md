@@ -44,7 +44,7 @@ Flags:
       --pd int                   设置集群中的 PD 数量（默认为1）
       --pd.binpath string        指定 PD 二进制文件的位置（开发调试用，可忽略）
       --pd.config string         指定 PD 的配置文件（开发调试用，可忽略）
-      --pump int                 指定集群中 Pump 数量(非 0 的时候 TiDB 会开启 binlog)
+      --pump int                 指定集群中 Pump 的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
       --pump.binpath string      指定 Pump 二进制文件的位置（开发调试用，可忽略）
       --pump.config string       指定 Pump 的配置文件（开发调试用，可忽略）
       --tiflash int              设置集群中 TiFlash 数量（默认为0）
@@ -139,7 +139,7 @@ Pid    Role     Uptime
 
 ## 扩容集群
 
-命令行参数与启动集群相似，如下可以扩容两个 TiDB:
+扩容集群的命令行参数与启动集群的相似。以下命令可以扩容两个 TiDB：
 
 {{< copyable "shell-regular" >}}
 
@@ -149,7 +149,7 @@ tiup playground scale-out --db 2
 
 ## 缩容集群
 
-指定 pid 缩容对应实例, pid 可以通过 `tiup playground display` 查看：
+可在 `tiup playground scale-in` 命令中指定 `pid`，以缩容对应的实例。可以通过 `tiup playground display` 命令查看 `pid`：
 
 {{< copyable "shell-regular" >}}
 
