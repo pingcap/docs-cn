@@ -95,7 +95,7 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 
 + PROXY Protocol 允许的代理服务器地址列表。如需配置多个地址，用 `,` 分隔。
 + 默认：""
-+ 如果该参数为空，TiDB 会禁用 PROXY Protocol 功能。地址可以使用 IP 地址 (192.168.1.50) 或者 CIDR (192.168.1.0/24)，`*` 代表所有地址。
++ 如果该参数为空，TiDB 会禁用 PROXY Protocol 功能。地址可以使用 IP 地址 (192.168.1.50) 或者 CIDR (192.168.1.0/24)，`*` 代表所有地址，但是不推荐，可能造成其他功能不可用，譬如 dashboard。
 
 ## `--proxy-protocol-header-timeout`
 
