@@ -72,7 +72,7 @@ ant
 
 因为该型号 CPU 是 NUMA 架构，建议用 `numactl` 进行绑核。
 
-1. [安装 numactl 工具](/check-before-deployment.md#安装-numactl-工具) 。
+1. [安装 numactl 工具](https://docs.pingcap.com/zh/tidb/v4.0/check-before-deployment#安装-numactl-工具) 。
 
 2. 用 `lscpu` 查看 NUMA node，比如：
 
