@@ -2,7 +2,7 @@
 title: 字面值
 category: reference
 summary: 本文介绍了 TiDB SQL 语句的字面值。
-aliases: ['/docs-cn/v3.0/reference/sql/language-structure/literal-values/']
+aliases: ['/docs-cn/v3.0/reference/sql/language-structure/literal-values/','/docs-cn/sql/literal-values/']
 ---
 
 TiDB 字面值包括字符字面值、数值字面值、时间日期字面值、十六进制、二进制字面值和 NULL 字面值。以下分别对这些字面值进行一一介绍。
