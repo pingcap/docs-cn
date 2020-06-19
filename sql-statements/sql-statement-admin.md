@@ -9,6 +9,10 @@ aliases: ['/docs/dev/reference/sql/statements/admin/']
 
 This statement is a TiDB extension syntax, used to view the status of TiDB and check the data of tables in TiDB.
 
+## DDL related statement
+
+### `admin show DDL`
+
 To view the currently running DDL jobs, use `ADMIN SHOW DDL`:
 
 {{< copyable "sql" >}}
@@ -16,6 +20,8 @@ To view the currently running DDL jobs, use `ADMIN SHOW DDL`:
 ```sql
 ADMIN SHOW DDL;
 ```
+
+### `admin show DDL jobs`
 
 To view all the results in the current DDL job queue (including tasks that are running and waiting to be run) and the last ten results in the completed DDL job queue, use `ADMIN SHOW DDL JOBS`:
 
@@ -28,6 +34,8 @@ ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 * `NUM`: to view the last `NUM` results in the completed DDL job queue. If not specified, `NUM` is by default 10.
 * `WHERE`: to add filter conditions.
 
+### `admin show DDL queries`
+
 To view the original SQL statements of the DDL job corresponding to `job_id`, use `ADMIN SHOW DDL JOB QUERIES`:
 
 {{< copyable "sql" >}}
@@ -37,6 +45,8 @@ ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ```
 
 You can only searches the running DDL job corresponding to `job_id` and the last ten results in the DDL history job queue.
+
+### `admin cancel DDL jobs`
 
 To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled, use `ADMIN CANCEL DDL JOBS`:
 
@@ -54,6 +64,8 @@ If the operation fails to cancel the jobs, specific reasons are displayed.
 > - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the `ADMIN SHOW DDL JOBS` statement.
 > - If the jobs you want to cancel are finished, the cancellation operation fails.
 
+## `ADMIN CHECK` related statement
+
 To check the consistency of all the data and corresponding indexes in the `tbl_name` table, use `ADMIN CHECK TABLE`:
 
 {{< copyable "sql" >}}
@@ -64,6 +76,104 @@ ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 
 If the consistency check is passed, an empty result is returned. Otherwise, an error message is returned indicating that the data is inconsistent.
 
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CHECK INDEX tbl_name idx_name;
+```
+
+The above statement is used to check the consistency of the column data and index data corresponding to the `idx_name` index in the `tbl_name` table. If the consistency check is passed, an empty result is returned; otherwise, an error message is returned indicating that the data is inconsistent.
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CHECK INDEX tbl_name idx_name (lower_val, upper_val) [, (lower_val, upper_val)] ...;
+```
+
+The above statement is used to check the consistency of the column data and index data corresponding to the `idx_name` index in the `tbl_name` table, with the data range (to be checked) specified. If the consistency check is passed, an empty result is returned. Otherwise, an error message is returned indicating that the data is inconsistent.
+
+### `admin checksum`
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CHECKSUM TABLE tbl_name [, tbl_name] ...;
+```
+
+The above statement is used to get the 64-bit checksum value of `tbl_name`. This value is obtained by calculating CRC64 of all key-value pairs (including row data and index data) in the table.
+
+## `ADMIN RELOAD` statement
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN RELOAD expr_pushdown_blacklist;
+```
+
+The above statement is used to reload the blacklist pushed down by the expression.
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN RELOAD opt_rule_blacklist;
+```
+
+The above statement is used to reload the blacklist of logic optimization rules.
+
+## `ADMIN PLUGINS` related statement
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
+```
+
+The above statement is used to enable the `plugin_name` plugin.
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
+```
+
+The above statement is used to disable the `plugin_name` plugin.
+
+## `ADMIN BINDINGS` related statement
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN FLUSH bindings;
+```
+
+The above statement is used to persist SQL Plan binding information.
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CAPTURE bindings;
+```
+
+The above statement can generate the binding of SQL Plan from the `SELECT` statement that occurs more than once.
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN EVOLVE bindings;
+```
+
+After the automatic binding feature is enabled, the evolution of SQL Plan binding information is triggered every `bind-info-leave` (the default value is `3s`). The above statement is used to proactively trigger this evolution.
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN RELOAD bindings;
+```
+
+The above statement is used to reload SQL Plan binding information.
+
+## `ADMIN REPAIR` statement
+
 To overwrite the metadata of the stored table in an untrusted way in extreme cases, use `ADMIN REPAIR TABLE`:
 
 {{< copyable "sql" >}}
@@ -73,6 +183,22 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 ```
 
 Here “untrusted” means that you need to manually ensure that the metadata of the original table can be covered by the `CREATE TABLE STATEMENT` operation. To use this `REPAIR` statement, enable the [`repair-mode`](/tidb-configuration-file.md#repair-mode) configuration item, and make sure that the tables to be repaired are listed in the [`repair-table-list`](/tidb-configuration-file.md#repair-table-list).
+
+## `ADMIN SHOW SLOW` statement
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW SLOW RECENT N;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
+```
+
+For details, refer to [admin show slow statement](/identify-slow-queries.md#admin-show-slow-command)
 
 ## Synopsis
 
