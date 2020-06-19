@@ -186,7 +186,11 @@
     + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  + [TiCDC](/ticdc/ticdc-overview.md)
+  + TiCDC
+    + [概述](/ticdc/ticdc-overview.md)
+    + [部署和任务管理](/ticdc/manage-ticdc.md)
+    + [FAQ](/ticdc/troubleshoot-ticdc.md)
+    + [开放数据协议](/ticdc/ticdc-open-protocol.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
