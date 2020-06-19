@@ -161,15 +161,13 @@ You can view the statistics status using the following statements.
 
 You can use the `SHOW STATS_META` statement to view the total number of rows and the number of updated rows.
 
-Syntax as follows:
+The syntax of `ShowLikeOrWhereOpt` is as follows:
 
 {{< copyable "sql" >}}
 
 ```sql
 SHOW STATS_META [ShowLikeOrWhere]
 ```
-
-This statement returns the total number of all the rows in all the tables and the number of updated rows. You can use `ShowLikeOrWhere` to filter the information you need.
 
 Currently, the `SHOW STATS_META` statement returns the following 6 columns:
 

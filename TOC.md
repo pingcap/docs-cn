@@ -287,6 +287,8 @@
       + [`SHOW [FULL] PROCESSSLIST`](/sql-statements/sql-statement-show-processlist.md)
       + [`SHOW PUMP STATUS`](/sql-statements/sql-statement-show-pump-status.md)
       + [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
+      + [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-histograms.md)
+      + [`SHOW STATES_META`](/sql-statements/sql-statement-show-stats-meta.md)
       + [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md)
       + [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md)
       + [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
