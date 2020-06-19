@@ -56,3 +56,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235
 > **注意：**
 >
 > TiCDC（4.0 发布版本）还不支持动态修改文件排序和内存排序。
+
+## 升级 TiCDC 后配置文件不兼容
+
+请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容注意事项)。

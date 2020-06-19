@@ -150,6 +150,18 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 
+如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
+
+使用方法如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
+```
+
+其中 “changefeed.toml” 为同步任务的配置文件。
+
 #### 查询同步任务列表
 
 使用以下命令来查询同步任务列表：
@@ -350,6 +362,54 @@ curl -X POST http://127.0.0.1:8301/capture/owner/resign
 ```
 election: not leader
 ```
+
+## 同步任务配置文件描述
+
+以下内容详细介绍了同步任务的配置。
+
+```toml
+# 指定配置文件中涉及的库名、表名是否为大小写敏感的
+# 该配置会同时影响 filter 和 sink 相关配置，默认为 true
+case-sensitive = true
+
+[filter]
+# 忽略指定 StartTs 的事务
+ignore-txn-start-ts = [1, 2]
+
+# 过滤器规则
+# 过滤规则语法： https://github.com/pingcap/tidb-tools/tree/master/pkg/table-filter#syntax
+rules = ['*.*', '!test.*']
+
+[mounter]
+# mounter 线程数，用于解码 TiKV 输出的数据
+worker-num = 16
+
+[sink]
+# 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
+# 分发器支持 default, ts, rowid, table 四种
+dispatchers = [
+	{matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
+	{matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
+]
+# 对于 MQ 类的 Sink，可以指定消息的协议格式
+# 协议目前支持 default, canal 两种，default 为 ticdc-open-protocol
+protocol = "default"
+
+[cyclic-replication]
+# 是否开启环形复制
+enable = false
+# 当前 CDC 的复制 ID
+replica-id = 1
+# 需要过滤掉的复制 ID
+filter-replica-ids = [2,3]
+# 是否同步 DDL
+sync-ddl = true
+```
+
+### 配置文件兼容注意事项
+
+* 4.0.0 移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start ts 过滤事务。
+* 4.0.0 移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库数据表过滤规则，[详细语法参考](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
 
 ## 环形同步
 
