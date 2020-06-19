@@ -1,0 +1,27 @@
+---
+title: SHOW PROFILES
+summary: An overview of the usage of SHOW PROFILES for the TiDB database.
+category: reference
+---
+
+# SHOW PROFILES
+
+The `SHOW PROFILES` statement currently only returns an empty result.
+
+## Synopsis
+
+**ShowStmt:**
+
+![ShowStmt](/media/sqlgram/ShowStmt.png)
+
+## Examples
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW PROFILES
+```
+
+```
+Empty set (0.00 sec)
+```
