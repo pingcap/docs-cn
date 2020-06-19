@@ -102,7 +102,6 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 >
 > 在 MySQL 中 CST 时区通常实际代表的是 China Standard Time (UTC+08:00)，通常系统中不能直接使用 `CST`，而是用 `Asia/Shanghai` 来替换。
 
-
 > **注意：**
 >
 > 请谨慎设置 TiCDC server 的时区，因为该时区会用于时间类型的转换。推荐上下游数据库使用相同的时区，并且启动 TiCDC server 时通过 `--tz` 参数指定该时区。TiCDC server 时区使用的优先级如下：
