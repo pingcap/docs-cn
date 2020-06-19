@@ -1,12 +1,8 @@
 ---
 title: 用户自定义变量
 category: reference
-<<<<<<< HEAD
-aliases: ['/docs-cn/v3.0/reference/sql/language-structure/user-defined-variables/','/docs-cn/sql/user-defined-variables/']
-=======
 summary: 本文介绍 TiDB 的用户自定义变量。
-aliases: ['/docs-cn/dev/reference/sql/language-structure/user-defined-variables/']
->>>>>>> 4cee944... update user-defined-variables.md (#3271)
+aliases: ['/docs-cn/v3.0/reference/sql/language-structure/user-defined-variables/','/docs-cn/sql/user-defined-variables/']
 ---
 
 # 用户自定义变量
