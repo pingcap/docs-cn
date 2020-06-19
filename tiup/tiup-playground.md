@@ -149,7 +149,7 @@ tiup playground scale-out --db 2
 
 ## 缩容集群
 
-可在 `tiup playground scale-in` 命令中指定 `pid`，以缩容对应的实例。可以通过 `tiup playground display` 命令查看 `pid`：
+可在 `tiup playground scale-in` 命令中指定 `pid`，以缩容对应的实例。可以通过 `tiup playground display` 命令查看 `pid`。
 
 {{< copyable "shell-regular" >}}
 
