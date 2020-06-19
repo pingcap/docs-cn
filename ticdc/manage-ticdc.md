@@ -388,8 +388,8 @@ worker-num = 16
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 分发器支持 default, ts, rowid, table 四种
 dispatchers = [
-	{matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
-	{matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
+    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
+    {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
 ]
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
 # 协议目前支持 default, canal 两种，default 为 ticdc-open-protocol
