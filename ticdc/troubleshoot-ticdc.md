@@ -105,6 +105,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 > **注意：**
 >
 > 请谨慎设置 TiCDC server 的时区，因为该时区会用于时间类型的转换。推荐上下游数据库使用相同的时区，并且启动 TiCDC server 时通过 `--tz` 参数指定该时区。TiCDC server 时区使用的优先级如下：
+>
 > - 最优先使用 `--tz` 传入的时区
 > - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区
 > - 如果还没有 `TZ` 环境变量，会从 TiCDC server 运行机器的默认时区
