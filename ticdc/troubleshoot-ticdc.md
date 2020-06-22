@@ -75,7 +75,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it
 Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
 ```
 
-如果是在特殊的公有云环境使用 MySQL，譬如阿里云 rds 并且没有修改 MySQL 的权限，就需要通过 `--tz` 参数指定时区。可以首先在 MySQL 查询其使用的时区，然后在创建同步任务和创建 cdc 服务时使用该时区。
+如果是在特殊的公有云环境使用 MySQL，譬如阿里云 RDS 并且没有修改 MySQL 的权限，就需要通过 `--tz` 参数指定时区。可以首先在 MySQL 查询其使用的时区，然后在创建同步任务和创建 TiCDC 服务时使用该时区。
 
 {{< copyable "shell-regular" >}}
 
