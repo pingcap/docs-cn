@@ -123,6 +123,7 @@ This statement outputs the execution plan bindings at the GLOBAL or SESSION leve
 | update_time | Updating time |
 | charset | Character set |
 | collation | Ordering rule |
+| source | The way in which a binding is created, including `manual` (created by the `create [global] binding` SQL statement), `capture` (captured automatically by TiDB), and `evolve` (evolved automatically by TiDB) |
 
 ## Baseline capturing
 
