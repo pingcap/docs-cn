@@ -12,9 +12,9 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 本节提供了两种方式获取 TiDB Control 工具。
 
-### 通过 TiUP 安装
+### 通过 TiDB Ansible 安装
 
-在安装 TiUP 之后， 可以使用 `tiup ctl tidb` 命令来获取 TiDB Control 的二进制程序以及运行 TiDB Control。
+对于使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署的 TiDB 集群，在 TiDB 的安装路径下可以找到 TiDB Control 的二进制程序 `tidb-ctl`。
 
 ### 从源代码编译安装
 
@@ -305,8 +305,6 @@ tidb-ctl base64decode [table_id] [base64_data]
 ### log 命令
 
 TiDB 错误日志的堆栈信息是一行的格式，可以使用 `tidb-ctl log` 将堆栈信息格式化成多行形式。
-<<<<<<< HEAD
-=======
 
 ### keyrange 命令
 
@@ -360,4 +358,3 @@ TiDB 错误日志的堆栈信息是一行的格式，可以使用 `tidb-ctl log`
         index c4: (74800000000000002f5f698000000000000003, 74800000000000002f5f698000000000000004)
       table rows: (74800000000000002f5f72, 748000000000000030)
     ```
->>>>>>> 48439ac... update document of tidb-ctl (#3189)
