@@ -9,6 +9,8 @@ category: Releases
 
 TiDB 版本：4.0.2
 
+## 兼容性
+
 ## 新功能
 
 + TiDB
