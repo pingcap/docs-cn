@@ -6,7 +6,7 @@ summary: 介绍 TiDB 的 `SHARD_ROW_ID_BITS` 表属性。
 
 # SHARD_ROW_ID_BITS
 
-本文介绍表属性 `SHARD_ROW_ID_BITS` ，它用来设置隐式 _tidb_rowid 的分片数量的 bit 位数	
+本文介绍表属性 `SHARD_ROW_ID_BITS` ，它用来设置隐式 _tidb_rowid 的分片数量的 bit 位数
 
 ## 基本概念
 
@@ -18,7 +18,7 @@ summary: 介绍 TiDB 的 `SHARD_ROW_ID_BITS` 表属性。
 - `SHARD_ROW_ID_BITS = 6` 表示 64 个分片
 - `SHARD_ROW_ID_BITS = 0` 表示默认值 1 个分片
 
-## 语句示例：
+## 语句示例
 
 - `CREATE TABLE`：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
 - `ALTER TABLE`：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
