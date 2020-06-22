@@ -64,4 +64,4 @@ category: FAQ
 
 另一方面，无法被同步到下游的恢复数据可能导致 CDC / Drainer 在执行 DDL 的时候发生异常。所以，如果一定要在 CDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 CDC / Drainer 的阻止名单。
 
-CDC 可以通过配置项中的 `[filter.rules](https://github.com/pingcap/ticdc/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16)` 项完成，Drainer 则可以通过 `[syncer.ignore-table](https://docs.pingcap.com/zh/tidb/dev/tidb-binlog-configuration-file#ignore-table)` 完成。
+CDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ticdc/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](https://docs.pingcap.com/zh/tidb/dev/tidb-binlog-configuration-file#ignore-table) 完成。
