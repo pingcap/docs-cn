@@ -6,11 +6,11 @@ aliases: ['/docs-cn/dev/how-to/get-started/deploy-tidb-from-docker-compose/']
 
 # 使用 Docker Compose 快速构建 TiDB 集群
 
-本文档介绍如何在单机上通过 Docker Compose 快速一键部署一套 TiDB 测试集群。[Docker Compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。
-
 > **警告：**
 >
-> 对于生产环境，不要使用 Docker Compose 进行部署，而应[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+> 本文提供的 Docker Compose 部署方案已停止维护。如果只是为了测试 TiDB，推荐参考[TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行部署。对于**生产环境**，不要使用 Docker Compose 进行部署，而应[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+
+本文档介绍如何在单机上通过 Docker Compose 快速一键部署一套 TiDB 测试集群。[Docker Compose](https://docs.docker.com/compose/overview) 可以通过一个 YAML 文件定义多个容器的应用服务，然后一键启动或停止。
 
 ## 准备环境
 

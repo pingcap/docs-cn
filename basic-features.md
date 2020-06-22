@@ -33,7 +33,7 @@ category: introduction
 
 ## SQL 语句
 
-- 完全支持标准的 Data Definition Statements 语句，例如：CREATE、DROP、ALTER、RENAME、RUNCATE 等。
+- 完全支持标准的 Data Definition Statements 语句，例如：CREATE、DROP、ALTER、RENAME、TRUNCATE 等。
 
 - 完全支持标准的 Data Manipulation Statements 语名，例如：INSERT、REPLACE、SELECT、Subqueries、UPDATE、LOAD DATA 等。
 
@@ -77,7 +77,7 @@ category: introduction
 
 - 支持 IP 白名单。
 
-- 支持审记功能。
+- 支持审计功能。
 
 ## 工具
 

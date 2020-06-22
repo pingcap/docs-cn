@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/metrics-tables/']
 desc information_schema.metrics_tables;
 ```
 
-```
+```sql
 +------------+--------------+------+------+---------+-------+
 | Field      | Type         | Null | Key  | Default | Extra |
 +------------+--------------+------+------+---------+-------+
