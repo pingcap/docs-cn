@@ -6,15 +6,11 @@ aliases: ['/docs-cn/v2.1/reference/sql/language-structure/user-defined-variables
 
 # 用户自定义变量
 
-<<<<<<< HEAD
-用户自定义变量格式为 `@var_name`。`var_name` 目前只支持字母，数字，`_$`组成。用户自定义变量是大小写不敏感的。
-=======
 > **警告：**
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-本文介绍 TiDB 的用户自定义变量的概念，以及设置和读取用户自定义变量的方法。
->>>>>>> ad970b2... *: add warnings for user variables (#3771)
+用户自定义变量格式为 `@var_name`。`var_name` 目前只支持字母，数字，`_$`组成。用户自定义变量是大小写不敏感的。
 
 用户自定义变量是跟 session 绑定的，也就是说只有当前连接可以看见设置的用户变量，其他客户端连接无法查看到。
 
