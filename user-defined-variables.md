@@ -6,6 +6,10 @@ aliases: ['/docs-cn/v2.1/reference/sql/language-structure/user-defined-variables
 
 # 用户自定义变量
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 用户自定义变量格式为 `@var_name`。`var_name` 目前只支持字母，数字，`_$`组成。用户自定义变量是大小写不敏感的。
 
 用户自定义变量是跟 session 绑定的，也就是说只有当前连接可以看见设置的用户变量，其他客户端连接无法查看到。
