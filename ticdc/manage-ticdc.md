@@ -409,7 +409,7 @@ sync-ddl = true
 ### 配置文件兼容注意事项
 
 * 4.0.0 移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start ts 过滤事务。
-* 4.0.0 移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库数据表过滤规则，[详细语法参考](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
+* 4.0.2 移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库数据表过滤规则，[详细语法参考](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
 
 ## 环形同步
 
