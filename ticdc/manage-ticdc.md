@@ -276,28 +276,35 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
     ```
     {
-            "status": {
-                    "table-infos": [
-                            {
-                                    "id": 45,
-                                    "start-ts": 415241823337054209
-                            }
-                    ],
-                    "table-p-lock": null,
-                    "table-c-lock": null,
-                    "admin-job-type": 0
-            },
-            "position": {
-                    "checkpoint-ts": 415241893447467009,
-                    "resolved-ts": 415241893971492865
-            }
+      "status": {
+        "tables": {
+          "56": {    # 56 表示同步表 id，对应 TiDB 中表的 tidb_table_id
+            "start-ts": 417474117955485702,
+            "mark-table-id": 0  # mark-table-id 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id
+          }
+        },
+        "operation": null,
+        "admin-job-type": 0
+      },
+      "position": {
+        "checkpoint-ts": 417474143881789441,
+        "resolved-ts": 417474143881789441,
+        "count": 0
+      }
     }
     ```
+
+以上命令中：
+
+- `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id；
+- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id；
+- `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO；
+- `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO；
 
 ## 使用 HTTP 接口管理集群状态和数据同步
 
