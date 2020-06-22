@@ -7,6 +7,10 @@ aliases: ['/docs-cn/v3.1/reference/sql/language-structure/user-defined-variables
 
 # 用户自定义变量
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 本文介绍 TiDB 的用户自定义变量的概念，以及设置和读取用户自定义变量的方法。
 
 用户自定义变量格式为 `@var_name`。组成 `var_name` 的字符可以是任何能够组成标识符 (identifier) 的字符，包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_`、美元符号 `$` 以及 UTF-8 字符。此外，还包括英文句号 `.`。用户自定义变量是大小写不敏感的。
