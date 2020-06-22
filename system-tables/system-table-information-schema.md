@@ -55,6 +55,13 @@ SELECT * FROM character_sets;
 5 rows in set (0.00 sec)
 ```
 
+`CHARACTER_SETS` 表中列的含义如下：
+
+* `CHARACTER_SET_NAME`：字符集名称
+* `DEFAULT_COLLATE_NAME`：字符集的默认排序规则名称
+* `DESCRIPTION`：字符集的描述信息
+* `MAXLEN`：该字符集存储一个字符所需要的最大字节数
+
 ## COLLATIONS 表
 
 `COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
@@ -99,6 +106,15 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 26 rows in set (0.00 sec)
 ```
 
+`COLLATION` 表中列的含义如下：
+
+* `COLLATION_NAME`：排序规则名称
+* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
+* `ID`：排序规则的 ID
+* `IS_DEFAULT`：该排序规则是否是所属字符集的默认排序规则
+* `IS_COMPILED`：字符集是否编译到服务器中
+* `SORTLEN`：排序规则在对字符进行排序时，所分配内存的最小长度
+
 ## COLLATION_CHARACTER_SET_APPLICABILITY 表
 
 `COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射至适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了兼容 MySQL。
@@ -110,38 +126,17 @@ SELECT * FROM collation_character_set_applicability WHERE character_set_name='ut
 ```
 
 ```sql
-+------------------------+--------------------+
-| COLLATION_NAME         | CHARACTER_SET_NAME |
-+------------------------+--------------------+
-| utf8mb4_general_ci     | utf8mb4            |
-| utf8mb4_bin            | utf8mb4            |
-| utf8mb4_unicode_ci     | utf8mb4            |
-| utf8mb4_icelandic_ci   | utf8mb4            |
-| utf8mb4_latvian_ci     | utf8mb4            |
-| utf8mb4_romanian_ci    | utf8mb4            |
-| utf8mb4_slovenian_ci   | utf8mb4            |
-| utf8mb4_polish_ci      | utf8mb4            |
-| utf8mb4_estonian_ci    | utf8mb4            |
-| utf8mb4_spanish_ci     | utf8mb4            |
-| utf8mb4_swedish_ci     | utf8mb4            |
-| utf8mb4_turkish_ci     | utf8mb4            |
-| utf8mb4_czech_ci       | utf8mb4            |
-| utf8mb4_danish_ci      | utf8mb4            |
-| utf8mb4_lithuanian_ci  | utf8mb4            |
-| utf8mb4_slovak_ci      | utf8mb4            |
-| utf8mb4_spanish2_ci    | utf8mb4            |
-| utf8mb4_roman_ci       | utf8mb4            |
-| utf8mb4_persian_ci     | utf8mb4            |
-| utf8mb4_esperanto_ci   | utf8mb4            |
-| utf8mb4_hungarian_ci   | utf8mb4            |
-| utf8mb4_sinhala_ci     | utf8mb4            |
-| utf8mb4_german2_ci     | utf8mb4            |
-| utf8mb4_croatian_ci    | utf8mb4            |
-| utf8mb4_unicode_520_ci | utf8mb4            |
-| utf8mb4_vietnamese_ci  | utf8mb4            |
-+------------------------+--------------------+
-26 rows in set (0.00 sec)
++----------------+--------------------+
+| COLLATION_NAME | CHARACTER_SET_NAME |
++----------------+--------------------+
+| utf8mb4_bin    | utf8mb4            |
++----------------+--------------------+
 ```
+
+`COLLATION_CHARACTER_SET_APPLICABILITY` 表中列的含义如下：
+
+* `COLLATION_NAME`：排序规则名称
+* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
 
 ## COLUMNS 表
 
@@ -426,6 +421,11 @@ SELECT * FROM session_variables LIMIT 10;
 10 rows in set (0.00 sec)
 ```
 
+`SESSION_VARIABLES` 表各列字段含义如下：
+
+* `VARIABLE_NAME`：数据库中 session 级变量的名称。
+* `VARIABLE_VALUE`：数据库中对应该 session 变量名的具体值。
+
 ## SLOW_QUERY 表
 
 `SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/identify-slow-queries.md)。
@@ -694,6 +694,30 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
+`TABLES` 表各列字段含义如下：
+
+* `TABLE_CATALOG`：表所属的目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：表所属数据库的名称。
+* `TABLE_NAME`：表的名称。
+* `TABLE_TYPE`：表的类型。
+* `ENGINE`：存储引擎类型。该值暂为 ‘InnoDB’。
+* `VERSION`：版本，默认值为 10。
+* `ROW_FORMAT`：行格式。该值暂为 ‘Compact’。
+* `TABLE_ROWS`：统计信息中该表所存的行数。
+* `AVG_ROW_LENGTH`：该表中所存数据的平均行长度。平均行长度 = DATA_LENGTH / 统计信息中的行数。
+* `DATA_LENGTH`：数据长度。数据长度 = 统计信息中的行数 × 元组各列存储长度和，这里尚未考虑 TiKV 的副本数。
+* `MAX_DATA_LENGTH`：最大数据长度。该值暂为 0，表示没有最大数据长度的限制。
+* `INDEX_LENGTH`：索引长度。索引长度 = 统计信息中的行数 × 索引元组各列长度和，这里尚未考虑 TiKV 的副本数。
+* `DATA_FREE`：空间碎片。该值暂为 0。
+* `AUTO_INCREMENT`：该表中自增主键自动增量的当前值。
+* `CREATE_TIME`：该表的创建时间。
+* `UPDATE_TIME`：该表的更新时间。
+* `CHECK_TIME`：该表的检查时间。
+* `TABLE_COLLATION`：该表的字符校验编码集。
+* `CHECKSUM`：校验和。
+* `CREATE_OPTIONS`：创建选项。
+* `TABLE_COMMENT`：表的注释、备注。
+
 表中的信息大部分定义自 MySQL，此外有两列是 TiDB 新增的：
 
 * `TIDB_TABLE_ID`：标识表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
@@ -790,6 +814,19 @@ desc TIDB_HOT_REGIONS;
 +----------------+---------------------+------+-----+---------+-------+
 ```
 
+`TIDB_HOT_REGIONS` 表各列字段含义如下：
+
+* TABLE_ID：热点 region 所在表的 ID。
+* INDEX_ID：热点 region 所在索引的 ID。
+* DB_NAME：热点 region 所在数据库对象的数据库名。
+* TABLE_NAME：热点 region 所在表的名称。
+* INDEX_NAME：热点 region 所在索引的名称。
+* REGION_ID：热点 region 的 ID。
+* TYPE：热点 region 的类型。
+* MAX_HOT_DEGREE：该 region 的最大热度。
+* REGION_COUNT：所在 instance 的 region 数量。
+* FLOW_BYTES：该 region 内读写的字节数量。
+
 ## TIDB_INDEXES 表
 
 `TIDB_INDEXES` 记录了所有表中的 INDEX 信息。
@@ -876,20 +913,48 @@ desc TIKV_REGION_STATUS;
 ```
 
 ```sql
-+------------------+---------------------+------+-----+---------+-------+
-| Field            | Type                | Null | Key | Default | Extra |
-+------------------+---------------------+------+-----+---------+-------+
-| REGION_ID        | bigint(21) unsigned | YES  |     | <null>  |       |
-| START_KEY        | text                | YES  |     | <null>  |       |
-| END_KEY          | text                | YES  |     | <null>  |       |
-| EPOCH_CONF_VER   | bigint(21) unsigned | YES  |     | <null>  |       |
-| EPOCH_VERSION    | bigint(21) unsigned | YES  |     | <null>  |       |
-| WRITTEN_BYTES    | bigint(21) unsigned | YES  |     | <null>  |       |
-| READ_BYTES       | bigint(21) unsigned | YES  |     | <null>  |       |
-| APPROXIMATE_SIZE | bigint(21) unsigned | YES  |     | <null>  |       |
-| APPROXIMATE_KEYS | bigint(21) unsigned | YES  |     | <null>  |       |
-+------------------+---------------------+------+-----+---------+-------+
++---------------------------+-------------+------+------+---------+-------+
+| Field                     | Type        | Null | Key  | Default | Extra |
++---------------------------+-------------+------+------+---------+-------+
+| REGION_ID                 | bigint(21)  | YES  |      | NULL    |       |
+| START_KEY                 | text        | YES  |      | NULL    |       |
+| END_KEY                   | text        | YES  |      | NULL    |       |
+| TABLE_ID                  | bigint(21)  | YES  |      | NULL    |       |
+| DB_NAME                   | varchar(64) | YES  |      | NULL    |       |
+| TABLE_NAME                | varchar(64) | YES  |      | NULL    |       |
+| IS_INDEX                  | tinyint(1)  | NO   |      | 0       |       |
+| INDEX_ID                  | bigint(21)  | YES  |      | NULL    |       |
+| INDEX_NAME                | varchar(64) | YES  |      | NULL    |       |
+| EPOCH_CONF_VER            | bigint(21)  | YES  |      | NULL    |       |
+| EPOCH_VERSION             | bigint(21)  | YES  |      | NULL    |       |
+| WRITTEN_BYTES             | bigint(21)  | YES  |      | NULL    |       |
+| READ_BYTES                | bigint(21)  | YES  |      | NULL    |       |
+| APPROXIMATE_SIZE          | bigint(21)  | YES  |      | NULL    |       |
+| APPROXIMATE_KEYS          | bigint(21)  | YES  |      | NULL    |       |
+| REPLICATIONSTATUS_STATE   | varchar(64) | YES  |      | NULL    |       |
+| REPLICATIONSTATUS_STATEID | bigint(21)  | YES  |      | NULL    |       |
++---------------------------+-------------+------+------+---------+-------+
 ```
+
+`TIKV_REGION_STATUS` 表中列的含义如下：
+
+* `REGION_ID`：Region 的 ID。
+* `START_KEY`：Region 的起始 key 的值。
+* `END_KEY`：Region 的末尾 key 的值。
+* `TABLE_ID`：Region 所属的表的 ID。
+* `DB_NAME`：`TABLE_ID` 所属的数据库的名称。
+* `TABLE_NAME`：Region 所属的表的名称。
+* `IS_INDEX`：Region 数据是否是索引，0 代表不是索引，1 代表是索引。如果当前 Region 同时包含表数据和索引数据，会有多行记录，`IS_INDEX` 分别是 1 和 0。
+* `INDEX_ID`：Region 所属的索引的 ID。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
+* `INDEX_NAME`：Region 所属的索引的名称。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
+* `EPOCH_CONF_VER`：Region 的配置的版本号，在增加或减少 peer 时版本号会递增。
+* `EPOCH_VERSION`：Region 的当前版本号，在分裂或合并时版本号会递增。
+* `WRITTEN_BYTES`：已经往 Region 写入的数据量 (bytes)。
+* `READ_BYTES`：已经从 Region 读取的数据量 (bytes)。
+* `APPROXIMATE_SIZE`：Region 的近似数据量 (MB)。
+* `APPROXIMATE_KEYS`：Region 中 key 的近似数量。
+* `REPLICATIONSTATUS_STATE`：Region 当前的同步状态，可能为 `UNKNOWN` / `SIMPLE_MAJORITY` / `INTEGRITY_OVER_LABEL` 其中一种状态。
+* `REPLICATIONSTATUS_STATEID`：`REPLICATIONSTATUS_STATE` 对应的标识符。
 
 ## TIKV_STORE_STATUS 表
 
@@ -926,6 +991,28 @@ desc TIKV_STORE_STATUS;
 | UPTIME            | varchar(64)         | YES  |     | <null>  |       |
 +-------------------+---------------------+------+-----+---------+-------+
 ```
+
+`TIKV_STORE_STATUS` 表中列的含义如下：
+
+* `STORE_ID`：Store 的 ID。
+* `ADDRESS`：Store 的地址。
+* `STORE_STATE`：Store 状态的标识符，与 `STORE_STATE_NAME` 相对应。
+* `STORE_STATE_NAME`：Store 状态的名字，为 `Up` / `Offline` / `Tombstone` 中的一种。
+* `LABEL`：给 Store 设置的标签。
+* `VERSION`：Store 的版本号。
+* `CAPACITY`：Store 的存储容量。
+* `AVAILABLE`：Store 的剩余存储空间。
+* `LEADER_COUNT`：Store 上的 leader 的数量。
+* `LEADER_WEIGHT`：Store 的 leader 权重。
+* `LEADER_SCORE`：Store 的 leader 评分。
+* `LEADER_SIZE`：Store 上的所有 leader 的近似总数据量 (MB)。
+* `REGION_COUNT`：Store 上的 Region 总数。
+* `REGION_WEIGHT`：Store 的 Region 权重。
+* `REGION_SCORE`：Store 的 Region 评分。
+* `REGION_SIZE`：Store 上的所有 Region 的近似总数据量 (MB)。
+* `START_TS`：Store 启动时的时间戳。
+* `LAST_HEARTBEAT_TS`：Store 上次发出心跳的时间戳。
+* `UPTIME`：Store 启动以来的总时间。
 
 ## USER_PRIVILEGES 表
 
