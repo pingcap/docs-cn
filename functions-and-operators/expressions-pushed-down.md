@@ -24,8 +24,6 @@ aliases: ['/docs-cn/v3.1/reference/sql/functions-and-operators/expressions-pushe
 
 当函数的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将上述支持的函数或运算符名加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。
 
-<<<<<<< HEAD
-=======
 `mysql.expr_pushdown_blacklist` 的 schema 如下：
 
 ```sql
@@ -53,7 +51,6 @@ tidb> desc mysql.expr_pushdown_blacklist;
 >
 > `tidb` 是一种特殊的 store_type，其含义是 TiDB 内存表，比如：`PERFORMANCE_SCHEMA.events_statements_summary_by_digest`，属于系统表的一种，非特殊情况不用考虑这种存储引擎。
 
->>>>>>> 93bf0e1... perf-tuning: add blacklist-control-plan.md (#3253)
 ### 加入黑名单
 
 执行以下步骤，可将一个或多个函数或运算符加入黑名单：
