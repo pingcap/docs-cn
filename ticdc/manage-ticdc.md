@@ -149,6 +149,7 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
     | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
+    | `protocol` | 输出到 kafka 消息协议，可选值 default, canal（可选，默认值 `default`）    |
 
 如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
 
