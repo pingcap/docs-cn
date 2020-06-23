@@ -7,6 +7,10 @@ aliases: ['/docs/dev/reference/sql/language-structure/user-defined-variables/']
 
 # User-Defined Variables
 
+> **Warning:**
+>
+> User-defined variables are still an experimental feature. It is **NOT** recommended that you use them in the production environment.
+
 The format of the user-defined variables is `@var_name`. `@var_name` consists of alphanumeric characters, `_`, and `$`. The user-defined variables are case-insensitive.
 
 The user-defined variables are session specific, which means a user variable defined by one client cannot be seen or used by other clients.
