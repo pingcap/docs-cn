@@ -17,6 +17,9 @@ TiDB 版本：4.0.2
     - `CLUSTER_INFO` 表中不再显示 tombstone 状态的 TiKV 和 TiFlash 结点。[#17953](https://github.com/pingcap/tidb/pull/17953)
     - 诊断规则 `current-load` 变更为 `node-check`。[#17660](https://github.com/pingcap/tidb/pull/17660)
 
++ PD
+    - 持久化 `store-limit` 配置项，弃用 `store-balance-rate` 配置。[#2557](https://github.com/pingcap/pd/pull/2557)
+
 + TiFlash
     - 提升从旧版本升级时的兼容性. [#786](https://github.com/pingcap/tics/pull/786)
 
@@ -43,8 +46,8 @@ TiDB 版本：4.0.2
 
 
 + PD
-
-
+    - 对 leader 执行 `remove-peer` 操作时，让这个 operator 不等待超时，立刻失败。[#2551](https://github.com/pingcap/pd/pull/2551)
+    - 对 TiFlash 节点设置更合理的 store limit 配置默认值。[#2559](https://github.com/pingcap/pd/pull/2559)
 
 + TiFlash
     - Coprocessor 支持新的聚合函数 `APPROX_COUNT_DISTINCT`. [#798](https://github.com/pingcap/tics/pull/798)
@@ -109,8 +112,11 @@ TiDB 版本：4.0.2
 
 
 + PD
-
-
+    - 验证 `pd-server.dashboard-address` 配置项的正确性。[#2517](https://github.com/pingcap/pd/pull/2517)
+    - 修复设置 `store-limit-mode` 为 `auto` 时可能引起 PD panic 的问题。[#2544](https://github.com/pingcap/pd/pull/2544)
+    - 修复某些情况下热点不能识别的问题。[#2463](https://github.com/pingcap/pd/pull/2463)
+    - 修复某些情况下 Placement Rules 会使 store 状态变更为 tombstone 的进程被阻塞的问题。[#2546](https://github.com/pingcap/pd/pull/2546)
+    - 修复某些情况下从低版本升级后，PD 无法正常启动的问题。[#2564](https://github.com/pingcap/pd/pull/2564)
 
 + TiFlash
     - 修正 proxy 遇到 region not found 时可能的 panic 的问题. [#807](https://github.com/pingcap/tics/pull/807)
