@@ -61,10 +61,10 @@ TiDB 版本：4.0.2
 ## Improvements
 
 + TiDB
-    - Reduce the query latency caused by golang memory allocation when there are lots of memory consumed by CM-Sketch. [#17545](https://github.com/pingcap/tidb/pull/17545)
-    - Reduce the QPS recover duration when a TiKV server is in the failure recovere progress. [#17681](https://github.com/pingcap/tidb/pull/17681)
-    - Support pushing aggregate functions to TiKV/TiFlash coprocessor on partition table. [#17655](https://github.com/pingcap/tidb/pull/17655)
-    - Improve row count estimation for index equal condition. [#17611](https://github.com/pingcap/tidb/pull/17611)
+    - 降低当集群中 CM-Skech 占用过多内存时，golang 内存分配带来的查询延迟。[#17545](https://github.com/pingcap/tidb/pull/17545)
+    - 缩短 TiKV 故障恢复时集群 QPS 的恢复时间。[#17681](https://github.com/pingcap/tidb/pull/17681)
+    - 为 partition 表上的查询支持聚合函数下推到 TiKV 或者 TiFlash coprocessor。[#17655](https://github.com/pingcap/tidb/pull/17655)
+    - 提升索引上等值条件的行数估算准确度。[#17611](https://github.com/pingcap/tidb/pull/17611)
 
 ## Bug 修复
 
