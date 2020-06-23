@@ -45,7 +45,7 @@ Pump or Drainer state description:
 
 For how to pause, close, check, and modify the state of Drainer, see the [binlogctl guide](#binlogctl-guide) as follows.
 
-## `binlogctl` guide
+## Use `binlogctl` to manage Pump/Drainer
 
 [`binlogctl`](https://github.com/pingcap/tidb-binlog/tree/master/binlogctl) is an operations tool for TiDB Binlog with the following features:
 
@@ -53,130 +53,7 @@ For how to pause, close, check, and modify the state of Drainer, see the [binlog
 * Pausing or closing Pump or Drainer
 * Handling the abnormal state of Pump or Drainer
 
-### Usage scenarios of `binlogctl`
-
-* An error occurs during data replication and you need to check the running status and state of Pump or Drainer.
-* While maintaining the cluster, you need to pause or close Pump or Drainer.
-* Pump or Drainer process is exited abnormally, but the node state is not updated or is unexpected, which influences the application.
-
-### Download `binlogctl`
-
-Your distribution of TiDB or TiDB Binlog might already include binlogctl. If not, download `binlogctl`:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz && \
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
-```
-
-The following command checks the file integrity. If the result is OK, the file is correct.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-{version}-linux-amd64.sha256
-```
-
-For TiDB v2.1.0 GA or later versions, binlogctl is already included in the TiDB download package. For earlier versions, you need to download binlogctl separately.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz && \
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-```
-
-The following command checks the file integrity. If the result is OK, the file is correct.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-```
-
-### `binlogctl` usage description
-
-Command line parameters:
-
-```
-Usage of binlogctl:
--V
-    Outputs the binlogctl version information
--cmd string
-    the command mode, including "generate_meta" (deprecated), "pumps", "drainers", "update-pump" ,"update-drainer", "pause-pump", "pause-drainer", "offline-pump", and "offline-drainer"
--data-dir string
-    the file path where the checkpoint file of Drainer is stored ("binlog_position" by default) (deprecated)
--node-id string
-    ID of Pump or Drainer
--pd-urls string
-    the address of PD. If multiple addresses exist, use "," to separate each ("http://127.0.0.1:2379" by default)
--ssl-ca string
-    the file path of SSL CAs
--ssl-cert string
-    the file path of the X509 certificate file in the PEM format
--ssl-key string
-    the file path of X509 key file of the PEM format
--time-zone string
-    If a time zone is set, the corresponding time of the obtained `tso` is printed in the "generate_meta" mode. For example, "Asia/Shanghai" is the CST time zone and "Local" is the local time zone
--show-offline-nodes
-    used with the `-cmd pumps` or `-cmd drainers` command. The two commands do not show the offline node by default unless this parameter is explicitly specified
-```
-
-Command example:
-
-- Check the state of all the Pump or Drainer nodes:
-
-    Set `cmd` as `pumps` or `drainers` to check the state of all the Pump or Drainer nodes. For example,
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pumps
-    ```
-
-    ```
-    [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=pump] [node="{NodeID: 1.1.1.1:8250, Addr: pump:8250, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
-    ```
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd drainers
-    ```
-
-    ```
-    [2019/04/28 09:29:59.016 +00:00] [INFO] [nodes.go:48] ["query node"] [type=drainer] [node="{NodeID: 1.1.1.1:8249, Addr: 1.1.1.1:8249, State: online, MaxCommitTS: 408012403141509121, UpdateTime: 2019-04-28 09:29:57 +0000 UTC}"]
-    ```
-
-- Pause or close Pump or Drainer:
-
-    binlogctl provides the following commands to pause or close services:
-
-    | cmd             | Description           | Example                                                                                             |
-    | :--------------- | :------------- | :------------------------------------------------------------------------------------------------|
-    | pause-pump      | Pause Pump      | `bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-pump -node-id ip-127-0-0-1:8250`       |
-    | pause-drainer   | Pause Drainer   | `bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd pause-drainer -node-id ip-127-0-0-1:8249`    |
-    | offline-pump    | Close Pump      | `bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd offline-pump -node-id ip-127-0-0-1:8250`     |
-    | offline-drainer | Close Drainer   | `bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd offline-drainer -node-id ip-127-0-0-1:8249`  |
-
-    binlogctl sends the HTTP request to the Pump or Drainer node. After receiving the request, the node executes the corresponding exiting procedures.
-
-- Modify the state of a Pump or Drainer node in abnormal situations
-
-    When a Pump or Drainer node runs normally or when it is paused or closed in the normal process, it is in the right state. But in some abnormal situations, the Pump or Drainer node cannot correctly maintain its state, which can influence data replication tasks. In these situations, use the binlogctl tool to repair the state information.
-
-    Set `cmd` to `update-pump` or `update-drainer` to update the state of a Pump or Drainer node. The state can be `paused` or `offline`. For example:
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    bin/binlogctl -pd-urls=http://127.0.0.1:2379 -cmd update-pump -node-id ip-127-0-0-1:8250 -state paused
-    ```
-
-    > **Note:**
-    >
-    > When a Pump or Drainer node runs normally, it regularly updates its state to PD. But the above command is used to directly modify the Pump or Drainer state saved in PD, so do not use the command when the Pump or Drainer node runs normally. Refer to [TiDB Binlog FAQ](/tidb-binlog/tidb-binlog-faq.md) to see in what situation you need to use it.
+For detailed usage of `binlogctl`, refer to [binlogctl overview](/tidb-binlog/binlog-control.md).
 
 ## Use SQL statements to manage Pump or Drainer
 
