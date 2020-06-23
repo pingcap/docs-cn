@@ -35,8 +35,8 @@ TiDB 版本：4.0.2
     - `MYSQL.BIND_INFO` 表新增 `SOURCE` 列，用于展示 binding 的创建方式。[#17587](https://github.com/pingcap/tidb/pull/17587)
     - `PERFORMANCE_SCHEMA.EVENTS_STATEMENTS_SUMMARY_BY_DIGEST` 表新增 `PLAN_IN_CACHE` 和 `PLAN_CACHE_HITS` 列，用于展示 plan cache 的使用情况。[#17493](https://github.com/pingcap/tidb/pull/17493)
     - 新增配置项 `enable-collect-execution-info` 和会话级变量 `tidb_enable_collect_execution_info` 用于控制是否在记录 SQL 的运行时信息并打印到慢查询日志中。[#18073](https://github.com/pingcap/tidb/pull/18073), [#18072](https://github.com/pingcap/tidb/pull/18072)
-    - Add the global variable `tidb_slow_log_masking` to control whether to desensitize the query in slow query log. [#17694](https://github.com/pingcap/tidb/pull/17694)
-    - Add config check for `storage.block-cache.capacity` of TiKV config in `INFORMATION_SCHEMA.INSPECTION_RESULT`. [#17671](https://github.com/pingcap/tidb/pull/17671)
+    - 新增全局变量 `tidb_slow_log_masking`，用于控制是否脱敏慢查询日志中的用户数据。[#17694](https://github.com/pingcap/tidb/pull/17694)
+    - 增加对 TiKV 配置项 `storage.block-cache.capacity` 的诊断规则。[#17671](https://github.com/pingcap/tidb/pull/17671)
 
 + TiKV
 
