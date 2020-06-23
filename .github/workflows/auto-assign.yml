@@ -3,7 +3,7 @@ on:
   pull_request:
     branches:
       - master
-    types: [opened, labeled]
+    types: [opened]
 
 jobs:
   assign_reviewer:
