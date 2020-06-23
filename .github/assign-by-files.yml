@@ -9,10 +9,10 @@
   - yikeke
   - ran-huang
 
-'benchmark/**/*.md':
-  - jackysp
-  - kissmydb
-  - TomShawn
+# 'benchmark/**/*.md':
+#   - jackysp
+#   - kissmydb
+#   - TomShawn
 
 'best-practices/**/*.md':
   - kissmydb
