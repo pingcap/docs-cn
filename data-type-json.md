@@ -7,6 +7,10 @@ aliases: ['/docs/dev/reference/sql/data-types/json/']
 
 # JSON Type
 
+> **Warning:**
+>
+> This is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+
 TiDB supports the `JSON` (JavaScript Object Notation) data type, which is useful for storing semi-structured data.  The `JSON` data type provides the following advantages over storing `JSON`-format strings in a string column:
 
 - Use the Binary format for serialization. The internal format permits quick read access to `JSON` document elements.
