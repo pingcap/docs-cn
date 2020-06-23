@@ -12,10 +12,10 @@ TiDB 版本：4.0.2
 ## 兼容性
 
 + TiDB
-    - Remove sensitive information in slow query log and statement summary table. [#18130](https://github.com/pingcap/tidb/pull/18130)
-    - Forbid negative value in the sequence cache. [#18103](https://github.com/pingcap/tidb/pull/18103)
-    - Remove tombstone TiKV and TiFlash servers from the `CLUSTER_INFO` table. [#17953](https://github.com/pingcap/tidb/pull/17953)
-    - Change diagnos rule `current-load` to `node-check`. [#17660](https://github.com/pingcap/tidb/pull/17660)
+    - 移除慢查询日志和 stateemnt summary 表中的敏感信息。[#18130](https://github.com/pingcap/tidb/pull/18130)
+    - 禁止在 sequence 缓存中出现负数。[#18103](https://github.com/pingcap/tidb/pull/18103)
+    - `CLUSTER_INFO` 表中不再显示 tombstone 状态的 TiKV 和 TiFlash 结点。[#17953](https://github.com/pingcap/tidb/pull/17953)
+    - 诊断规则 `current-load` 变更为 `node-check`。[#17660](https://github.com/pingcap/tidb/pull/17660)
 
 + TiFlash
     - 提升从旧版本升级时的兼容性. [#786](https://github.com/pingcap/tics/pull/786)
@@ -23,18 +23,18 @@ TiDB 版本：4.0.2
 ## 新功能
 
 + TiDB
-    - Support the `MEMORY_QUOTA()` hint in `INSERT` statements. [#18101](https://github.com/pingcap/tidb/pull/18101)
-    - Support authentication based on TLS certificate SAN field [#17698](https://github.com/pingcap/tidb/pull/17698)
-    - Support collation for the `REGEXP()` function. [#17581](https://github.com/pingcap/tidb/pull/17581)
-    - Support the `sql_select_limit` session and global vairable. [#17604](https://github.com/pingcap/tidb/pull/17604)
-    - Support spliting the region for the newly added partition by default. [#17665](https://github.com/pingcap/tidb/pull/17665)
-    - Support pushing the `IF()`/`BITXOR()`/`BITNEG()`/`JSON_LENGTH()` functions to the TiFlash Coprocessor. [#17651](https://github.com/pingcap/tidb/pull/17651), [#17592](https://github.com/pingcap/tidb/pull/17592)
-    - Support a new aggregate function `APPROX_COUNT_DISTINCT()` to calculate the approximate result of `COUNT(DISTINCT)`. [#18120](https://github.com/pingcap/tidb/pull/18120)
-    - Support collation in TiFlash, enable push collation related functions to tiflash. [#17705](https://github.com/pingcap/tidb/pull/17705)
-    - Add the `STATUS_ADDRESS` column in the `INFORMATION_SCHEMA.INSPECTION_RESULT` table to indicate the status address of servers. [#17695](https://github.com/pingcap/tidb/pull/17695)
-    - Add the `SOURCE` column in the `MYSQL.BIND_INFO` table to indicate the how the bindings are created. [#17587](https://github.com/pingcap/tidb/pull/17587)
-    - Add the `PLAN_IN_CACHE` and `PLAN_CACHE_HITS` columns in `PERFORMANCE_SCHEMA.EVENTS_STATEMENTS_SUMMARY_BY_DIGEST` table to indicate the plan cache usage of sql statements. [#17493](https://github.com/pingcap/tidb/pull/17493)
-    - Add the config `enable-collect-execution-info` and session variable `tidb_enable_collect_execution_info` to control whether to collect execution information of each operator and record it in the slow query log. [#18073](https://github.com/pingcap/tidb/pull/18073), [#18072](https://github.com/pingcap/tidb/pull/18072)
+    - 支持在 `INSERT` 语句中使用 `MEMORY_QUOTA()` hint。[#18101](https://github.com/pingcap/tidb/pull/18101)
+    - 支持基于 TLS 证书 SAN 属性的登录认证。[#17698](https://github.com/pingcap/tidb/pull/17698)
+    - `REGEXP()` 函数支持 collation。[#17581](https://github.com/pingcap/tidb/pull/17581)
+    - 支持会话和全局变量 `sql_select_limit`。[#17604](https://github.com/pingcap/tidb/pull/17604)
+    - 支持新增分区时自动分裂 region 的功能。[#17665](https://github.com/pingcap/tidb/pull/17665)
+    - 支持函数 `IF()`/`BITXOR()`/`BITNEG()`/`JSON_LENGTH()` 下推到 TiFlash Coprocessor 上执行。[#17651](https://github.com/pingcap/tidb/pull/17651), [#17592](https://github.com/pingcap/tidb/pull/17592)
+    - 支持聚合函数 `APPROX_COUNT_DISTINCT()`，用于快速计算 `COUNT(DISTINCT)` 的近似值。[#18120](https://github.com/pingcap/tidb/pull/18120)
+    - TiFlash 支持了 collation，支持相应的函数下推。[#17705](https://github.com/pingcap/tidb/pull/17705)
+    - `INFORMATION_SCHEMA.INSPECTION_RESULT` 表新增 `STATUS_ADDRESS` 列，用于展示结点的 status 地址。[#17695](https://github.com/pingcap/tidb/pull/17695)
+    - `MYSQL.BIND_INFO` 表新增 `SOURCE` 列，用于展示 binding 的创建方式。[#17587](https://github.com/pingcap/tidb/pull/17587)
+    - `PERFORMANCE_SCHEMA.EVENTS_STATEMENTS_SUMMARY_BY_DIGEST` 表新增 `PLAN_IN_CACHE` 和 `PLAN_CACHE_HITS` 列，用于展示 plan cache 的使用情况。[#17493](https://github.com/pingcap/tidb/pull/17493)
+    - 新增配置项 `enable-collect-execution-info` 和会话级变量 `tidb_enable_collect_execution_info` 用于控制是否在记录 SQL 的运行时信息并打印到慢查询日志中。[#18073](https://github.com/pingcap/tidb/pull/18073), [#18072](https://github.com/pingcap/tidb/pull/18072)
     - Add the global variable `tidb_slow_log_masking` to control whether to desensitize the query in slow query log. [#17694](https://github.com/pingcap/tidb/pull/17694)
     - Add config check for `storage.block-cache.capacity` of TiKV config in `INFORMATION_SCHEMA.INSPECTION_RESULT`. [#17671](https://github.com/pingcap/tidb/pull/17671)
 
