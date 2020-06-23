@@ -27,7 +27,18 @@ There are several reasons why TiDB Lightning becomes slow:
 
 Every additional index will introduce a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the Mydumper output. If the indices are negligible, you may first remove them from the schema, and add them back via `CREATE INDEX` after import is complete.
 
-**Cause 3**: TiDB Lightning is too old.
+**Cause 3**: Each file is too large.
+
+TiDB Lightning works the best when the data source are broken down into multiple files of size around 256 MB, so that the data can be processed in parallel. Lightning seems unresponsive if each file is too large.
+
+If the data source is CSV, and all CSV files have no fields containing literal new line characters (U+000A and U+000D), you can turn on "strict format" to let Lightning automatically split the large files.
+
+```toml
+[mydumper]
+strict-format = true
+```
+
+**Cause 4**: TiDB Lightning is too old.
 
 Try the latest version! Maybe there is new speed improvement.
 

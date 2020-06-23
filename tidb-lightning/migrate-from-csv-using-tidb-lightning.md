@@ -16,6 +16,7 @@ A CSV file representing a whole table must be named as `db_name.table_name.csv`.
 restored as a table `table_name` inside the database `db_name`.
 
 If a table spans multiple CSV files, they should be named like `db_name.table_name.003.csv`.
+The number part do not need to be continuous, but must be increasing and zero-padded.
 
 The file extension must be `*.csv`, even if the content is not separated by commas.
 
@@ -25,7 +26,8 @@ CSV files are schema-less. To import them into TiDB, a table schema must be prov
 done either by:
 
 * Providing a file named `db_name.table_name-schema.sql` containing the `CREATE TABLE` DDL
-    statement
+    statement, and also a file named `db_name-schema-create.sql` containing the `CREATE DATABASE`
+    DDL statement.
 * Creating the empty tables directly in TiDB in the first place, and then setting
     `[mydumper] no-schema = true` in `tidb-lightning.toml`.
 
@@ -149,6 +151,33 @@ TiDB Lightning does not support every option supported by the `LOAD DATA` statem
 * There cannot be line prefixes (`LINES STARTING BY`).
 * The header cannot be simply skipped (`IGNORE n LINES`), it must be valid column names if present.
 * Delimiters and separators can only be a single ASCII character.
+
+## Strict format
+
+Lightning works the best when the input files have uniform size around 256 MB. When the input is a
+single huge CSV file, Lightning can only use one thread to process it, which slows down import speed
+a lot.
+
+This can be fixed by splitting the CSV into multiple files first. For the generic CSV format, there
+is no way to quickly identify when a row starts and ends without reading the whole file. Therefore,
+Lightning by default does *not* automatically split a CSV file. However, if you are certain that the
+CSV input adheres to certain restrictions, you can enable the `strict-format` setting to allow
+Lightning to split the file into multiple 256 MB-sized chunks for parallel processing.
+
+```toml
+[mydumper]
+strict-format = true
+```
+
+Currently, a strict CSV file means every field occupies only a single line. In the other words, one
+of the following must be true:
+
+* Delimiter is empty, or
+* Every field does not contain CR (`\r`) or LF (`\n`).
+
+If a CSV file is not strict, but `strict-format` was wrongly set to `true`, a field spanning
+multiple lines may be cut in half into two chunks, causing parse failure, or even worse, quietly
+importing corrupted data.
 
 ## Common configurations
 

@@ -19,7 +19,7 @@ Before starting TiDB Lightning, note that:
 - If `tidb-lightning` crashes, the cluster is left in "import mode". Forgetting to switch back to "normal mode" can lead to a high amount of uncompacted data on the TiKV cluster, and cause abnormally high CPU usage and stall. You can manually switch the cluster back to "normal mode" via the `tidb-lightning-ctl` tool:
 
     ```sh
-    bin/tidb-lightning-ctl -switch-mode=normal
+    bin/tidb-lightning-ctl --switch-mode=normal
     ```
 
 - TiDB Lightning is required to have the following privileges in the downstream TiDB:
@@ -201,18 +201,13 @@ Refer to the [TiDB enterprise tools download page](/download-ecosystem-tools.md#
     # Log level: trace, debug, info, warn, error, off.
     log-level = "info"
 
+    # Listening address of the status server.
+    status-server-address = "0.0.0.0:8286"
+
     [server]
     # The listening address of tikv-importer. tidb-lightning needs to connect to
     # this address to write data.
-    addr = "192.168.20.10:8287"
-
-    [metric]
-    # The Prometheus client push job name.
-    job = "tikv-importer"
-    # The Prometheus client push interval.
-    interval = "15s"
-    # The Prometheus Pushgateway address.
-    address = ""
+    addr = "0.0.0.0:8287"
 
     [import]
     # The directory to store engine files.

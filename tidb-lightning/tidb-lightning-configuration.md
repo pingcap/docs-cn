@@ -64,6 +64,15 @@ table-concurrency = 6
 # medium, this value might need to be adjusted for optimal performance.
 io-concurrency = 5
 
+[security]
+# Specifies certificates and keys for TLS connections within the cluster.
+# Public certificate of the CA. Leave empty to disable TLS.
+# ca-path = "/path/to/ca.pem"
+# Public certificate of this service.
+# cert-path = "/path/to/lightning.pem"
+# Private key of this service.
+# key-path = "/path/to/lightning.key"
+
 [checkpoint]
 # Whether to enable checkpoints.
 # While importing data, TiDB Lightning records which tables have been imported, so
@@ -141,6 +150,20 @@ no-schema = false
 # schema encoding.
 character-set = "auto"
 
+# Assumes the input data are "strict" to speed up processing.
+# Implications of strict-format = true are:
+#  * in CSV, every value cannot contain literal new lines (U+000A and U+000D, or \r and \n) even
+#    when quoted, i.e. new lines are strictly used to separate rows.
+# Strict format allows Lightning to quickly locate split positions of a large file for parallel
+# processing. However, if the input data is not strict, it may split a valid data in half and
+# corrupt the result.
+# The default value is false for safety over speed.
+strict-format = false
+
+# If strict-format is true, Lightning will split large CSV files into multiple chunks to process in
+# parallel. max-region-size is the maximum size of each chunk after splitting.
+# max-region-size = 268_435_456 # Byte (default = 256 MB)
+
 # Configures how CSV files are parsed.
 [mydumper.csv]
 # Separator between fields, should be an ASCII character.
@@ -184,10 +207,28 @@ index-serial-scan-concurrency = 20
 checksum-table-concurrency = 16
 
 # The default SQL mode used to parse and execute the SQL statements.
-sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
+sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
 # Sets maximum packet size allowed for SQL connections.
 # Set this to 0 to automatically fetch the `max_allowed_packet` variable from server on every connection.
 max-allowed-packet = 67_108_864
+
+# Whether to use TLS for SQL connections. Valid values are:
+#  * ""            - force TLS (same as "cluster") if [tidb.security] section is populated, otherwise same as "false"
+#  * "false"       - disable TLS
+#  * "cluster"     - force TLS and verify the server's certificate with the CA specified in the [tidb.security] section
+#  * "skip-verify" - force TLS but do not verify the server's certificate (insecure!)
+#  * "preferred"   - same as "skip-verify", but if the server does not support TLS, fallback to unencrypted connection
+# tls = ""
+
+# Specifies certificates and keys for TLS-enabled MySQL connections.
+# Defaults to a copy of the [security] section.
+# [tidb.security]
+# Public certificate of the CA. Set to empty string to disable TLS for SQL.
+# ca-path = "/path/to/ca.pem"
+# Public certificate of this service. Default to copy of `security.cert-path`
+# cert-path = "/path/to/lightning.pem"
+# Private key of this service. Default to copy of `security.key-path`
+# key-path = "/path/to/lightning.key"
 
 # When data importing is complete, tidb-lightning can automatically perform
 # the Checksum, Compact and Analyze operations. It is recommended to leave
@@ -231,14 +272,19 @@ log-file = "tikv-importer.log"
 # Log level: trace, debug, info, warn, error, off.
 log-level = "info"
 
+# Listening address of the status server. Prometheus can scrape metrics from this address.
+status-server-address = "0.0.0.0:8286"
+
 [server]
 # The listening address of tikv-importer. tidb-lightning needs to connect to
 # this address to write data.
-addr = "192.168.20.10:8287"
+addr = "0.0.0.0:8287"
 # Size of the thread pool for the gRPC server.
 grpc-concurrency = 16
 
 [metric]
+# These settings are relevant when using Prometheus Pushgateway. Normally you should let Prometheus
+# to scrape metrics from the status-server-address.
 # The Prometheus client push job name.
 job = "tikv-importer"
 # The Prometheus client push interval.
@@ -265,6 +311,12 @@ compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
 [rocksdb.writecf]
 # (same as above)
 compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
+
+[security]
+# The path for TLS certificates. Empty string means disabling secure connections.
+# ca-path = ""
+# cert-path = ""
+# key-path = ""
 
 [import]
 # The directory to store engine files.
@@ -300,7 +352,7 @@ min-available-ratio = 0.05
 | -d *directory* | Directory of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
 | --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-tidb-backend.md) (`importer` or `tidb`) | `tikv-importer.backend` |
-| --log-file *file* | Log file path | `lightning.log-file` |
+| --log-file *file* | Log file path (default = a temporary file in `/tmp`) | `lightning.log-file` |
 | --status-addr *ip:port* | Listening address of the TiDB Lightning server | `lightning.status-port` |
 | --importer *host:port* | Address of TiKV Importer | `tikv-importer.addr` |
 | --pd-urls *host:port* | PD endpoint address | `tidb.pd-addr` |
@@ -309,6 +361,15 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB status port (default = 10080) | `tidb.status-port` |
 | --tidb-user *user* | User name to connect to TiDB | `tidb.user` |
 | --tidb-password *password* | Password to connect to TiDB | `tidb.password` |
+| --no-schema | Ignore schema files, get schema directly from TiDB | `mydumper.no-schema` |
+| --enable-checkpoint *bool* | Whether to enable checkpoints (default = true) | `checkpoint.enable` |
+| --analyze *bool* | Analyze tables after importing (default = true) | `post-restore.analyze` |
+| --checksum *bool* | Compare checksum after importing (default = true) | `post-restore.checksum` |
+| --check-requirements *bool* | Check cluster version compatibility before starting (default = true) | `lightning.check-requirements` |
+| --ca *file* | CA certificate path for TLS connection | `security.ca-path` |
+| --cert *file* | Certificate path for TLS connection | `security.cert-path` |
+| --key *file* | Private key path for TLS connection | `security.key-path` |
+| --server-mode | Start Lightning in server mode | `lightning.server-mode` |
 
 If a command line parameter and the corresponding setting in the configuration file are both provided, the command line parameter will be used. For example, running `./tidb-lightning -L debug --config cfg.toml` would always set the log level to "debug" regardless of the content of `cfg.toml`.
 
@@ -320,6 +381,7 @@ This tool can execute various actions given one of the following parameters:
 |:----|:----|
 | --compact | Performs a full compaction |
 | --switch-mode *mode* | Switches every TiKV store to the given mode: normal, import |
+| --fetch-mode | Prints the current mode of every TiKV store |
 | --import-engine *uuid* | Imports the closed engine file from TiKV Importer into the TiKV cluster |
 | --cleanup-engine *uuid* | Deletes the engine file from TiKV Importer |
 | --checkpoint-dump *folder* | Dumps current checkpoint as CSVs into the folder |
@@ -338,6 +400,7 @@ Additionally, all parameters of `tidb-lightning` described in the section above 
 | -C, --config *file* | Reads configuration from *file*. If not specified, the default configuration would be used. | |
 | -V, --version | Prints program version | |
 | -A, --addr *ip:port* | Listening address of the TiKV Importer server | `server.addr` |
+| --status-server *ip:port* | Listening address of the status server | `status-server-address` |
 | --import-dir *dir* | Stores engine files in this directory | `import.import-dir` |
 | --log-level *level* | Log level: trace, debug, info, warn, error, off | `log-level` |
 | --log-file *file* | Log file path | `log-file` |
