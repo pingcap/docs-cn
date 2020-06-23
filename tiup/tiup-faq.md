@@ -43,7 +43,7 @@ TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境�
 
 该报错可能是因为 TiUP 默认并发超过 ssh 默认最大连接数导致，可尝试加大 ssh 默认连接数，然后重启 sshd 服务解决：
 
-```
+```shell
 vi /etc/ssh/sshd_config
 MaxSessions 1000
 MaxStartups 1000 
