@@ -5,39 +5,39 @@
 # you can use glob pattern
 
 # You can set multiple reviewers
-'.github/**/.yml':
+'.github/**/*.yml':
   - yikeke
   - ran-huang
 
-'tiflash/**/.md':
+'tiflash/**/*.md':
   - ilovesoup
   - zanmato1984
   - kissmydb
   - yikeke
 
-'tiup/**/.md':
+'tiup/**/*.md':
   - lonng
   - lucklove
   - kissmydb
   - yikeke
 
-'sql-statements/**/.md':
+'sql-statements/**/*.md':
   - bb7133
   - zimulala
 
-'releases/**/.md':
+'releases/**/*.md':
   - scsldb
   - uglyengineer
 
-'dashboard/**/.md':
+'dashboard/**/*.md':
   - breeswish
   - hundundm
 
-'config-templates/**/.yaml':
+'config-templates/**/*.yaml':
   - kissmydb
   - superlzs0476
 
-'ticdc/**/.md':
+'ticdc/**/*.md':
   - WangXiangUSTC
   - 3pointer
 
