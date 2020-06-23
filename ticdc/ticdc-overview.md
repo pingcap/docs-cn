@@ -42,6 +42,29 @@ TiCDC 的系统架构如下图所示：
 - MySQL 协议兼容的数据库，提供最终一致性支持。
 - 以 TiCDC Open Protocol 输出到 Kafka，可实现行级别有序、最终一致性或严格事务一致性三种一致性保证。
 
+### 同步顺序保证和一致性保证
+
+#### 数据同步顺序
+
+- TiCDC 对于所有的 DDL/DML 都能对外输出**至少一次**。
+- TiCDC 在 TiKV/TiCDC 集群故障期间可能会重复发相同的 DDL/DML。对于重复的 DDL/DML：
+    - MySQL sink 可以重复执行 DDL，对于在下游可重入的 DDL （譬如 truncate table）直接执行成功；对于在下游不可重入的 DDL（譬如 create table），执行失败，TiCDC 会忽略错误继续同步。
+    - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved Ts 的约束，用户可以在 Kafka 消费端进行过滤。
+
+#### 数据同步一致性
+
+- MySQL sink
+
+    - TiCDC 不拆分表内事务，**保证**单表事务一致性，但**不保证**上游表内事务的顺序一致。
+    - TiCDC 以表为单位拆分跨表事务，**不保证**跨表的事务始终一致。
+    - TiCDC **保证**单行的更新与上游更新顺序一致。
+
+- Kafka sink
+
+    - TiCDC 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。
+    - 不同分发策略下 consumer 的不同实现方式，可以实现不同级别的一致性，包括行级别有序、最终一致性或跨表事务一致性。
+    - TiCDC 没有提供 Kafka 消费端实现，只提供了 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)，用户可以依据该协议实现 Kafka 数据的消费端。
+
 ## 同步限制
 
 将数据同步到 TiDB 或 MySQL，需要满足以下条件才能保证正确性：
