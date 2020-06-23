@@ -42,7 +42,7 @@ category: introduction
 
 - 完全支持标准的 Database Administration 语句，例如：SHOW、SET 等。
 
-- 完全支持标准的 Utility Statements 语句，例如：DESCRIBE、EXPLAIN、USE 等。
+- 完全支持标准的 Utility 语句，例如：DESCRIBE、EXPLAIN、USE 等。
 
 - 完全支持 SQL GROUP BY 和 ORDER BY 子语句。
 
