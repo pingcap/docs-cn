@@ -477,11 +477,15 @@ mysql> desc select count(distinct a) from test.t;
 
 ### tidb_slow_log_threshold
 
-作用域：SESSION
+作用域：SESSION ( SERVER)
 
 默认值：300
 
 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300ms。
+
+> 注意：
+>
+> 该变量实际作用域是 SERVER 级别，即设置后会立即在当前 TiDB Server 中生效，同时也对其他的连接立即生效。
 
 示例：
 
@@ -490,6 +494,14 @@ mysql> desc select count(distinct a) from test.t;
 ```sql
 set tidb_slow_log_threshold = 200;
 ```
+
+### tidb_enable_collect_execution_info
+
+作用域：SESSION ( SERVER)
+
+默认值：0
+
+这个变量用于控制是否在记录 slow log 时，同时记录各个执行算子的执行信息。
 
 ### tidb_query_log_max_len
 
@@ -506,6 +518,16 @@ set tidb_slow_log_threshold = 200;
 ```sql
 set tidb_query_log_max_len = 20;
 ```
+
+### tidb_slow_log_masking
+
+作用域：GLOBAL
+
+默认值：0
+
+这个变量用于控制是否在记录 slow log 时，将用户 SQL 中的数据遮蔽。
+
+将该变量设置为 `1` 后，假设执行 SQL 是 `insert into t values (1,2)` 且执行耗时超过 `tidb_slow_log_threshold` 后，在 slow log 中记录的 SQL 会是 `insert into t values (?,?)`。
 
 ### tidb_txn_mode
 

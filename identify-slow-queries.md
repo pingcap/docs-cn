@@ -104,6 +104,15 @@ Slow Query 基础信息：
 * `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
 * `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
 
+## 相关系统变量
+
+* `tidb_slow_log_threshold`：设置慢日志的阈值。默认值是 300 ms。
+* `tidb_query_log_max_len`：设置慢日志记录 SQL 语句最大长度。默认值是 4096 byte。
+* `tidb_slow_log_masking`：设置是否将 SQL 中的用户数据遮蔽而用 `?` 代替。默认值是 0 ，即关闭该功能。
+* `tidb_enable_collect_execution_info`：设置是否记录执行计划中各个算子的执行信息，默认值是 0 ，但建议用户开启该功能，对性能的影响约为 3%。
+
+更多详细信息，可以参见 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
+
 ## 慢日志内存映射表
 
 用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [Information Schema](/system-tables/system-table-information-schema.md#information-schema) 中关于 `SLOW_QUERY` 表的介绍。
