@@ -20,8 +20,6 @@ TiDB 版本：4.0.2
 + PD
     - 持久化 `store-limit` 配置项，弃用 `store-balance-rate` 配置。[#2557](https://github.com/pingcap/pd/pull/2557)
 
-+ TiFlash
-    - 提升从旧版本升级时的兼容性. [#786](https://github.com/pingcap/tics/pull/786)
 
 ## 新功能
 
@@ -53,8 +51,6 @@ TiDB 版本：4.0.2
     - Coprocessor 支持新的聚合函数 `APPROX_COUNT_DISTINCT`. [#798](https://github.com/pingcap/tics/pull/798)
     - 存储引擎中的粗糙索引默认开启. [#777](https://github.com/pingcap/tics/pull/777)
     - 支持运行在 ARM 架构. [#769](https://github.com/pingcap/tics/pull/769)
-    - 降低 delta index 的内存使用量. [#787](https://github.com/pingcap/tics/pull/787)
-    - 使用更高效的 delta index update 算法. [#794](https://github.com/pingcap/tics/pull/794)
     - Coprocessor 支持 `JSON_LENGTH` 函数下推. [#742](https://github.com/pingcap/tics/pull/742)
 
 
@@ -68,7 +64,13 @@ TiDB 版本：4.0.2
     - 缩短 TiKV 故障恢复时集群 QPS 的恢复时间。[#17681](https://github.com/pingcap/tidb/pull/17681)
     - 为 partition 表上的查询支持聚合函数下推到 TiKV 或者 TiFlash coprocessor。[#17655](https://github.com/pingcap/tidb/pull/17655)
     - 提升索引上等值条件的行数估算准确度。[#17611](https://github.com/pingcap/tidb/pull/17611)
-
+    
++ TiFlash
+    - 提升从旧版本升级时的兼容性. [#786](https://github.com/pingcap/tics/pull/786)
+    - 降低 delta index 的内存使用量. [#787](https://github.com/pingcap/tics/pull/787)
+    - 使用更高效的 delta index update 算法. [#794](https://github.com/pingcap/tics/pull/794)
+    
+    
 ## Bug 修复
 
 + TiDB
