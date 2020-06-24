@@ -118,7 +118,8 @@ aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/tiup/','/docs-cn/stable/ti
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
 >
 > - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
-> - 如果是密码方式，无需添加其他参数，`Enter` 即可进入密码交互窗口。
+> - 如果是密码方式，可以通过 `-p` 进入密码交互窗口；
+> - 如果已经配置免密登陆目标机，则不需填写认证。
 
 {{< copyable "shell-regular" >}}
 
@@ -132,7 +133,7 @@ tiup cluster deploy tidb-test v4.0.0 ./topology.yaml --user root [-p] [-i /home/
 - 部署版本为 `v4.0.0`，最新版本可以通过执行 `tiup list tidb` 来查看 TiUP 支持的版本
 - 初始化配置文件为 `topology.yaml`
 - --user root：通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
-- [-i] 及 [-p]：非必选项，如果已经配置免密登陆目标机，则不需填写。否则选择其一即可，[-i] 为可登录到部署机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
+- [-i] 及 [-p]：非必选项，如果已经配置免密登陆目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
 
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
@@ -210,7 +211,10 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 - [TiCDC 任务管理](/ticdc/manage-ticdc.md)
 - [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
+<<<<<<< HEAD
 
 > **注意：**
 >
 > TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+=======
+>>>>>>> 850e9bc... Update production-deployment-using-tiup.md (#3768)
