@@ -94,7 +94,6 @@ SELECT user,host FROM mysql.user WHERE user='xxxx';
 
 上述示例中，`xxxx@%` 即自动添加的用户。
 
-<<<<<<< HEAD
 `GRANT` 对于数据库或者表的授权，不检查数据库或表是否存在。
 
 {{< copyable "sql" >}}
@@ -132,10 +131,7 @@ mysql> SELECT user,host FROM mysql.tables_priv WHERE user='xxxx';
 1 row in set (0.00 sec)
 ```
 
-`GRANT` 可以模糊匹配地授予数据库和表：
-=======
 `GRANT` 还可以模糊匹配地授予用户数据库的权限：
->>>>>>> 47c6f1a... update document of privilege management (#3202)
 
 {{< copyable "sql" >}}
 
