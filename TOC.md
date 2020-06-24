@@ -391,6 +391,7 @@
   + Command Line Flags
     + [tidb-server](/command-line-flags-for-tidb-configuration.md)
     + [tikv-server](/command-line-flags-for-tikv-configuration.md)
+    + [tiflash-server](/tiflash/tiflash-command-line-flags.md)
     + [pd-server](/command-line-flags-for-pd-configuration.md)
   + Configuration File Parameters
     + [tidb-server](/tidb-configuration-file.md)
