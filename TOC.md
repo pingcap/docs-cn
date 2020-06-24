@@ -262,6 +262,7 @@
     - [操作系统性能参数调优](/tune-operating-system.md)
     - [SQL 优化流程](/sql-optimization-concepts.md)
     - [理解 TiDB 执行计划](/query-execution-plan.md)
+    - [优化规则与表达式下推的黑名单](/blacklist-control-plan.md)
     - [执行计划绑定](/execution-plan-binding.md)
     - [统计信息概述](/statistics.md)
     - [Optimizer Hints](/optimizer-hints.md)
