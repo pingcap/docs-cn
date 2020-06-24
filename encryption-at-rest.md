@@ -97,7 +97,7 @@ key-id = "0987dcba-09fe-87dc-65ba-ab0987654321"
 region = "us-west-2"
 ```
 
-### Monitoring
+### Monitoring and Debugging
 
 To monitor encryption-at-rest, if you deploy TiKV with Grafana, you can look at the **Encryption** panel in the **TiKV-Details** dashboard. There are a few metrics to look for:
 
@@ -106,6 +106,8 @@ To monitor encryption-at-rest, if you deploy TiKV with Grafana, you can look at 
 * Encrypted files: number of encrypted data files currently exists. Compare this number to existings data files in the data directory to estimate portion of data being encrypted, when turning on encryption for a previously unencrypted cluster.
 * Encryption meta file size: size of the encryption meta data files.
 * Read/Write encryption meta duration: the extra overhead to operate on metadata for encryption.
+
+For debugging, the `tikv-ctl` command can be used to dump encryption metadata such as encryption method and data key id used to encryption the file, as well as list of data keys. Since the operation can expose senstive data, it is not recommended to use in production. Please refer to [TiKV Control](/tikv-control.md#dump-encryption-metadata] document.
 
 ## BR S3 server-side encryption
 
