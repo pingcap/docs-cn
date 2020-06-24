@@ -20,10 +20,11 @@ TiDB supports the `JSON` (JavaScript Object Notation) data type, which is useful
 
 ```sql
 CREATE TABLE city (
-id INT PRIMARY KEY,
-detail JSON,
-population INT AS (JSON_EXTRACT(detail, '$.population'))
-);
+    id INT PRIMARY KEY,
+    detail JSON,
+    population INT AS (JSON_EXTRACT(detail, '$.population')),
+    index index_name (population)
+    );
 INSERT INTO city (id,detail) VALUES (1, '{"name": "Beijing", "population": 100}');
 SELECT id FROM city WHERE population >= 100;
 ```

@@ -33,7 +33,7 @@ Each CF also has a separate `write buffer`. You can configure the size by settin
 ## Parameter specification
 
 ```
-# Log level: trace, debug, info, warn, error, off.
+# Log level: trace, debug, warn, error, info, off.
 log-level = "info"
 
 [server]
