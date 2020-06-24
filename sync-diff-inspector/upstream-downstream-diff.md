@@ -18,7 +18,7 @@ mysql> select * from tidb_binlog.checkpoint;
 +---------------------+---------------------------------------------------------------------------------------------------------+
 | clusterID           | checkPoint                                                                                              |
 +---------------------+---------------------------------------------------------------------------------------------------------+
-| 6711243465327639221 | {"commitTS":409622383615541249,"ts-map":{"master-ts":409621863377928194,"slave-ts":409621863377928345}} |
+| 6711243465327639221 | {"commitTS":409622383615541249,"ts-map":{"primary-ts":409621863377928194,"secondary-ts":409621863377928345}} |
 +---------------------+---------------------------------------------------------------------------------------------------------+
 ```
 
@@ -39,7 +39,7 @@ Here is a configuration example of the `Databases config` section:
     password = "123456"
     # The instance ID of the source database, the unique identifier of a database instance
     instance-id = "source-1"
-    # Uses the snapshot function of TiDB, corresponding to the master-ts in ts-map
+    # Uses the snapshot function of TiDB, corresponding to the primary-ts in ts-map
     snapshot = "409621863377928194"
 
 # Configuration of the target database instance
@@ -48,7 +48,7 @@ Here is a configuration example of the `Databases config` section:
     port = 4001
     user = "root"
     password = "123456"
-    # Uses the snapshot function of TiDB, corresponding to the slave-ts in ts-map
+    # Uses the snapshot function of TiDB, corresponding to the secondary-ts in ts-map
     snapshot = "409621863377928345"
 ```
 
@@ -56,3 +56,4 @@ Here is a configuration example of the `Databases config` section:
 >
 > - Set `db-type` of Drainer to `tidb` to ensure that `ts-map` is saved in the checkpoint.
 > - Modify the Garbage Collection (GC) time of TiKV to ensure that the historical data corresponding to snapshot is not collected by GC during the data check. It is recommended that you modify the GC time to 1 hour and recover the setting after the check.
+> - In some versions of TiDB Binlog, `master-ts` and `slave-ts` are stored in `ts-map`. `master-ts` is equivalent to `primary-ts` and `slave-ts` is equivalent to `secondary-ts`.
