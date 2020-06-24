@@ -495,7 +495,7 @@ region = "us-west-2"
 
 `--ids` 选项可以指定以逗号分隔的数据加密密钥 id 列表。如果不指定 `--ids` 选项，本命令打印所有的数据加密密钥，以及最新的数据加密密钥的 id。
 
-本命令会输出一个警告提示，提示本命令会泄漏敏感数据。根据提示输入 "I consent" 即可。
+本命令会输出一个警告，提示本命令会泄漏敏感数据。根据提示输入 "I consent" 即可。
 
 ```bash
 $ ./tikv-ctl --config=./conf.toml encryption-meta dump-key
