@@ -19,7 +19,7 @@ Assuming that you want to migrate data from two Aurora clusters to TiDB, the inf
 | Aurora-1 | pingcap-1-us-east-2a.h8emfqdptyc4.us-east-2.rds.amazonaws.com | 3306 | Reader |
 | Aurora-2 | pingcap-2.h8emfqdptyc4.us-east-2.rds.amazonaws.com | 3306 | Writer |
 
-DM relies on the `ROW` format of binlog during the incremental replication process, so you need to set the binlog format as `ROW`. If binlog is not enabled or is incorrectly configured, DM cannot replicate data normally. For more details, see [Checking items](https://pingcap.com/docs/tidb-data-migration/stable/precheck/#checking-items).
+DM relies on the `ROW` format of binlog during the incremental replication process, so you need to set the binlog format as `ROW`. If binlog is not enabled or is incorrectly configured, DM cannot replicate data normally. For more details, see [Checking items](https://docs.pingcap.com/tidb-data-migration/v1.0/precheck#checking-items).
 
 > **Note:**
 >
@@ -43,11 +43,11 @@ To migrate data based on GTID, set both `gtid-mode` and `enforce_gtid_consistenc
 
 ## Step 2: Deploy the DM cluster
 
-It is recommended to use DM-Ansible to deploy a DM cluster. See [Deploy Data Migration Using DM-Ansible](https://pingcap.com/docs/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/).
+It is recommended to use DM-Ansible to deploy a DM cluster. See [Deploy Data Migration Using DM-Ansible](https://docs.pingcap.com/tidb-data-migration/v1.0/deploy-a-dm-cluster-using-ansible).
 
 > **Note:**
 >
-> - Use password encrypted with dmctl in all the DM configuration files. If the database password is empty, it is unnecessary to encrypt it. For how to use dmctl to encrypt a cleartext password, see [Encrypt the upstream MySQL user password using dmctl](https://pingcap.com/docs/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/#encrypt-the-upstream-mysql-user-password-using-dmctl).
+> - Use password encrypted with dmctl in all the DM configuration files. If the database password is empty, it is unnecessary to encrypt it. For how to use dmctl to encrypt a cleartext password, see [Encrypt the upstream MySQL user password using dmctl](https://docs.pingcap.com/tidb-data-migration/v1.0/deploy-a-dm-cluster-using-ansible#encrypt-the-upstream-mysql-user-password-using-dmctl).
 > - Both the upstream and downstream users must have the corresponding read and write privileges.
 
 ## Step 3: Check the cluster informtaion

@@ -50,7 +50,7 @@ Download [BR](/br/backup-and-restore-tool.md) by using the download link in the 
 
 ## TiDB DM (Data Migration)
 
-Download [DM](https://pingcap.com/docs/tidb-data-migration/stable/overview/) by using the download link in the following table:
+Download [DM](https://docs.pingcap.com/tidb-data-migration/v1.0/overview) by using the download link in the following table:
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|

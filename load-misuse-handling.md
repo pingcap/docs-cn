@@ -6,7 +6,7 @@ aliases: ['/docs/dev/reference/tools/error-case-handling/load-misuse-handling/']
 
 # Common Misuses During Full Data Import
 
-This document introduces the common error scenarios in using [Loader](/loader-overview.md) or [TiDB Data Migration](https://pingcap.com/docs/tidb-data-migration/stable/overview/) (DM) during the full data import process, and also provides their reasons and solutions.
+This document introduces the common error scenarios in using [Loader](/loader-overview.md) or [TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v1.0/overview) (DM) during the full data import process, and also provides their reasons and solutions.
 
 ## Error: ```Try adjusting the `max_allowed_packet` variable```
 

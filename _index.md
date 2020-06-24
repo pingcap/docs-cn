@@ -34,7 +34,7 @@ category: introduction
 - [Check Environment and Configuration](/check-before-deployment.md)
 - [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md)
 - [Use TiFlash for Analytical Processing](/tiflash/use-tiflash.md)
-- [Deploy TiDB in Kubernetes](https://pingcap.com/docs/tidb-in-kubernetes/stable/)
+- [Deploy TiDB in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.1)
 
 </NavColumn>
 

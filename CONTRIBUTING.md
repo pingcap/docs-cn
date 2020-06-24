@@ -4,7 +4,7 @@ Welcome to [TiDB](https://github.com/pingcap/tidb) documentation! We are excited
 
 ## What you can contribute
 
-You can start from any one of the following items to help improve [TiDB Docs at the PingCAP website](https://pingcap.com/docs/stable/):
+You can start from any one of the following items to help improve [TiDB Docs at the PingCAP website](https://docs.pingcap.com/tidb/v4.0):
 
 - Fix typos or format (punctuation, space, indentation, code block, etc.)
 - Fix or update inappropriate or outdated descriptions
@@ -34,8 +34,8 @@ Currently, we maintain four versions of TiDB documentation, each with a separate
 | Docs branch name | Version description |
 | :--- | :--- |
 | `master` branch | the latest development version |
-| `release-4.0` branch | the 4.0 Beta version |
-| `release-3.1` branch | the 3.1 RC version |
+| `release-4.0` branch | the 4.0 stable version |
+| `release-3.1` branch | the 3.1 stable version |
 | `release-3.0` branch | the 3.0 stable version |
 | `release-2.1` branch | the 2.1 stable version |
 

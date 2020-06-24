@@ -20,7 +20,7 @@ aliases: ['/docs/dev/reference/tools/br/use-cases/']
 
 ## Audience
 
-You are expected to have a basic understanding of [TiDB](https://pingcap.com/docs/stable/) and [TiKV](https://tikv.org/). Before reading this document, it is recommended that you read [Use BR to Back up and Restore Data](/br/backup-and-restore-tool.md) first.
+You are expected to have a basic understanding of [TiDB](https://docs.pingcap.com/tidb/v4.0) and [TiKV](https://tikv.org/). Before reading this document, it is recommended that you read [Use BR to Back up and Restore Data](/br/backup-and-restore-tool.md) first.
 
 ## Prerequisites
 
