@@ -8,6 +8,32 @@ category: reference
 
 This section describes some commonly encountered issues when using TiFlash, the reasons, and the solutions.
 
+## TiFlash fails to start
+
+The issue might occur due to different reasons. It is recommended that you troubleshoot it following the steps below:
+
+1. Check whether your system is CentOS8.
+
+     CentOS8 does not have the `libnsl.so` system library. You can manually install it via the following command:
+
+     {{< copyable "shell-regular" >}}
+
+     ```shell
+     dnf install libnsl
+     ```
+
+2. Check your system's `ulimit` parameter setting.
+
+     {{< copyable "shell-regular" >}}
+
+     ```shell
+     ulimit -n 1000000
+     ```
+
+3. Use the PD Control tool to check whether there is any TiFlash instance that failed to go offline on the node (same IP and Port) and force the instance(s) to go offline. For detailed steps, refer to [Scale in a TiFlash node](/scale-tidb-using-tiup.md#scale-in-a-tiflash-node).
+
+If the above methods cannot resolve your issue, save the TiFlash log files and email to [info@pingcap.com](mailto:info@pingcap.com) for more information.
+
 ## TiFlash replica is always unavailable
 
 This is because TiFlash is in an abnormal state caused by configuration errors or environment issues. Take the following steps to identify the faulty component:
