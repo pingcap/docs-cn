@@ -6,6 +6,10 @@ aliases: ['/docs-cn/dev/reference/sql/data-types/json/']
 
 # JSON 类型
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 JSON 类型可以存储 JSON 这种半结构化的数据，相比于直接将 JSON 存储为字符串，它的好处在于：
 
 1. 使用 Binary 格式进行序列化，对 JSON 的内部字段的查询、解析加快；
