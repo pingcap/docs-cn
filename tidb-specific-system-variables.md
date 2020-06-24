@@ -571,3 +571,13 @@ set tidb_query_log_max_len = 20
 - Scope: SESSION
 - Default value: 0
 - This variable is used to show whether the execution plan used in the previous `execute` statement is taken directly from the plan cache.
+
+### tidb_allow_batch_cop <span class="version-mark">New in v4.0 version</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 0
+- This variable is used to control how TiDB sends a coprocessor request to TiFlash. It has the following values:
+
+    * `0`: Never send requests in batches
+    * `1`: Aggregation and join requests are sent in batches
+    * `2`: All coprocessor requests are sent in batches
