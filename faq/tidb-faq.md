@@ -46,7 +46,7 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 mysql -h 127.0.0.1 -u root -P 4000 --default-auth=mysql_native_password --default-character-set=utf8
 ```
 
-原因是字符集支持以及[密码验证方式的兼容性](/security-compatibility-with-mysql.md)。
+无法登陆的原因是 MySQL 8.0 会更改了 MySQL 5.7 默认的[密码加密方式](/security-compatibility-with-mysql.md)，所以需要添加以上参数指定使用旧的加密方式。
 
 #### 1.1.7 TiDB 支持分布式事务吗？
 
