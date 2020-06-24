@@ -24,7 +24,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
     
 - 云原生的分布式数据库
 
-    专为云而设计的分布式数据库，通过 [TiDB Operator](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/tidb-operator-overview/) 可在公有云、私有云、混合云中实现部署工具化、自动化。
+    专为云而设计的分布式数据库，通过 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/tidb-operator-overview) 可在公有云、私有云、混合云中实现部署工具化、自动化。
 
 - 兼容 MySQL 5.7 协议和 MySQL 生态
 

@@ -114,7 +114,7 @@ batch-import-ratio = 0.75
 
 # mydumper 本地源数据目录。
 data-source-dir = "/data/my_database"
-# 如果 no-shcema = false，那么 TiDB Lightning 假设目标 TiDB 集群上
+# 如果 no-shcema = true，那么 TiDB Lightning 假设目标 TiDB 集群上
 # 已有表结构，并且不会执行 `CREATE TABLE` 语句。
 no-schema = false
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
