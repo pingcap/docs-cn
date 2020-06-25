@@ -2,6 +2,7 @@
 title: SHOW DRAINER STATUS
 summary: An overview of the usage of SHOW DRAINER STATUS for the TiDB database.
 category: reference
+aliases: ['/docs/dev/sql-statements/sql-statement-show-drainer-status/']
 ---
 
 # SHOW DRAINER STATUS

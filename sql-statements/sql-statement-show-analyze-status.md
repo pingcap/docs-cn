@@ -2,6 +2,7 @@
 title: SHOW ANALYZE STATUS
 summary: An overview of the usage of SHOW ANALYZE STATUS for the TiDB database。
 category: reference
+aliases: ['/docs/dev/sql-statements/sql-statement-show-analyze-status/']
 ---
 
 # SHOW ANALYZE STATUS

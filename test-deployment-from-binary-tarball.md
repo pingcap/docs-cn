@@ -2,7 +2,7 @@
 title: Testing Deployment from Binary Tarball
 summary: Use the binary to deploy a TiDB cluster.
 category: how-to
-aliases: ['/docs/dev/how-to/deploy/from-tarball/testing-environment/']
+aliases: ['/docs/dev/test-deployment-from-binary-tarball/','/docs/dev/how-to/deploy/from-tarball/testing-environment/']
 ---
 
 # Testing Deployment from Binary Tarball

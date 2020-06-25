@@ -2,7 +2,7 @@
 title: ALTER DATABASE | TiDB SQL Statement Reference
 summary: An overview of the usage of ALTER DATABASE for the TiDB database.
 category: reference
-aliases: ['/docs/dev/reference/sql/statements/alter-database/']
+aliases: ['/docs/dev/sql-statements/sql-statement-alter-database/','/docs/dev/reference/sql/statements/alter-database/']
 ---
 
 # ALTER DATABASE

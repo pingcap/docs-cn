@@ -2,7 +2,7 @@
 title: Metrics Schema
 summary: Learn the `METRICS_SCHEMA` schema.
 category: reference
-aliases: ['/docs/dev/reference/system-databases/metrics-schema/']
+aliases: ['/docs/dev/system-tables/system-table-metrics-schema/','/docs/dev/reference/system-databases/metrics-schema/']
 ---
 
 # Metrics Schema

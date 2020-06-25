@@ -2,6 +2,7 @@
 title: CHANGE PUMP
 summary: An overview of the usage of CHANGE PUMP for the TiDB database.
 category: reference
+aliases: ['/docs/dev/sql-statements/sql-statement-change-pump/']
 ---
 
 # CHANGE PUMP

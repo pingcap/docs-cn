@@ -2,7 +2,7 @@
 title: Binlog Slave Client User Guide
 summary: Use Binlog Slave Client to consume TiDB slave binlog data from Kafka and output the data in a specific format.
 category: reference
-aliases: ['/docs/dev/reference/tidb-binlog/binlog-slave-client/']
+aliases: ['/docs/dev/tidb-binlog/binlog-slave-client/','/docs/dev/reference/tidb-binlog/binlog-slave-client/']
 ---
 
 # Binlog Slave Client User Guide

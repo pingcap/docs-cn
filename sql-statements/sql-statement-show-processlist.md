@@ -2,7 +2,7 @@
 title: SHOW [FULL] PROCESSLIST | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW [FULL] PROCESSLIST for the TiDB database.
 category: reference
-aliases: ['/docs/dev/reference/sql/statements/show-processlist/']
+aliases: ['/docs/dev/sql-statements/sql-statement-show-processlist/','/docs/dev/reference/sql/statements/show-processlist/']
 ---
 
 # SHOW [FULL] PROCESSLIST

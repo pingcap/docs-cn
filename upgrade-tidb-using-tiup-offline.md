@@ -2,6 +2,7 @@
 title: Upgrade TiDB Using TiUP Offline Mirror
 summary: Learn how to upgrade TiDB using the TiUP offline mirror.
 category: how-to
+aliases: ['/docs/dev/upgrade-tidb-using-tiup-offline/']
 ---
 
 # Upgrade TiDB Using TiUP Offline Mirror

@@ -2,7 +2,7 @@
 title: ANALYZE | TiDB SQL Statement Reference
 summary: An overview of the usage of ANALYZE for the TiDB database.
 category: reference
-aliases: ['/docs/dev/reference/sql/statements/analyze-table/']
+aliases: ['/docs/dev/sql-statements/sql-statement-analyze-table/','/docs/dev/reference/sql/statements/analyze-table/']
 ---
 
 # ANALYZE

@@ -2,7 +2,7 @@
 title: SHOW TABLE REGIONS
 summary: Learn how to use SHOW TABLE REGIONS in TiDB.
 category: reference
-aliases: ['/docs/dev/reference/sql/statements/show-table-regions/']
+aliases: ['/docs/dev/sql-statements/sql-statement-show-table-regions/','/docs/dev/reference/sql/statements/show-table-regions/']
 ---
 
 # SHOW TABLE REGIONS

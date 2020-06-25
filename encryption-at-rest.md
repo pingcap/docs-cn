@@ -2,6 +2,7 @@
 title: Encryption-At-Rest for TiKV
 summary: Learn how to enable encryption-at-rest to protect sensitive data.
 category: reference
+aliases: ['/docs/dev/encryption-at-rest/']
 ---
 
 # Encryption-At-Rest for TiKV <span class="version-mark">New in v4.0.0</span>

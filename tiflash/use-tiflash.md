@@ -1,7 +1,7 @@
 ---
 title: Use TiFlash
 category: reference
-aliases: ['/docs/dev/reference/tiflash/use-tiflash/']
+aliases: ['/docs/dev/tiflash/use-tiflash/','/docs/dev/reference/tiflash/use-tiflash/']
 ---
 
 # Use TiFlash

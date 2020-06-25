@@ -2,7 +2,7 @@
 title: SHOW GRANTS | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW GRANTS for the TiDB database.
 category: reference
-aliases: ['/docs/dev/reference/sql/statements/show-grants/']
+aliases: ['/docs/dev/sql-statements/sql-statement-show-grants/','/docs/dev/reference/sql/statements/show-grants/']
 ---
 
 # SHOW GRANTS

@@ -2,7 +2,7 @@
 title: Best Practices for Monitoring TiDB Using Grafana
 summary: Learn seven tips for efficiently using Grafana to monitor TiDB.
 category: reference
-aliases: ['/docs/dev/reference/best-practices/grafana-monitor/']
+aliases: ['/docs/dev/best-practices/grafana-monitor-best-practices/','/docs/dev/reference/best-practices/grafana-monitor/']
 ---
 
 # Best Practices for Monitoring TiDB Using Grafana

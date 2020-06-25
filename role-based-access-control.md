@@ -2,7 +2,7 @@
 title: Role-Based Access Control
 summary: This document introduces TiDB RBAC operations and implementation.
 category: reference
-aliases: ['/docs/dev/reference/security/role-based-access-control/']
+aliases: ['/docs/dev/role-based-access-control/','/docs/dev/reference/security/role-based-access-control/']
 ---
 
 # Role-Based Access Control

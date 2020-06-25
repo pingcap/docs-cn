@@ -2,7 +2,7 @@
 title: CLUSTER_CONFIG
 summary: Learn the `CLUSTER_CONFIG` cluster configuration system table.
 category: reference
-aliases: ['/docs/dev/reference/system-databases/cluster-config/']
+aliases: ['/docs/dev/system-tables/system-table-cluster-config/','/docs/dev/reference/system-databases/cluster-config/']
 ---
 
 # CLUSTER_CONFIG

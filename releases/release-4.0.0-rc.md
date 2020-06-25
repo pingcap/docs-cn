@@ -1,7 +1,7 @@
 ---
 title: TiDB 4.0 RC Release Notes
 category: Releases
-aliases: ['/docs/dev/releases/4.0.0-rc/']
+aliases: ['/docs/dev/releases/release-4.0.0-rc/','/docs/dev/releases/4.0.0-rc/']
 ---
 
 # TiDB 4.0 RC Release Notes

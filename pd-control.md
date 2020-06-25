@@ -2,7 +2,7 @@
 title: PD Control User Guide
 summary: Use PD Control to obtain the state information of a cluster and tune a cluster.
 category: reference
-aliases: ['/docs/dev/reference/tools/pd-control/']
+aliases: ['/docs/dev/pd-control/','/docs/dev/reference/tools/pd-control/']
 ---
 
 # PD Control User Guide

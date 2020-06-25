@@ -2,7 +2,7 @@
 title: CLUSTER_LOG
 summary: Learn the `CLUSTER_LOG` cluster log table.
 category: reference
-aliases: ['/docs/dev/reference/system-databases/cluster-log/']
+aliases: ['/docs/dev/system-tables/system-table-cluster-log/','/docs/dev/reference/system-databases/cluster-log/']
 ---
 
 # CLUSTER_LOG

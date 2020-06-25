@@ -2,6 +2,7 @@
 title: Migration Overview
 summary: This document describes how to migrate data from databases or data formats (CSV/SQL).
 category: reference
+aliases: ['/docs/dev/migration-overview/']
 ---
 
 # Migration Overview

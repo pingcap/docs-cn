@@ -2,7 +2,7 @@
 title: PREPARE | TiDB SQL Statement Reference
 summary: An overview of the usage of PREPARE for the TiDB database.
 category: reference
-aliases: ['/docs/dev/reference/sql/statements/prepare/']
+aliases: ['/docs/dev/sql-statements/sql-statement-prepare/','/docs/dev/reference/sql/statements/prepare/']
 ---
 
 # PREPARE

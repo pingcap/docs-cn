@@ -2,7 +2,7 @@
 title: CLUSTER_INFO
 summary: Learn the `CLUSTER_INFO` cluster topology information table.
 category: reference
-aliases: ['/docs/dev/reference/system-databases/cluster-info/']
+aliases: ['/docs/dev/system-tables/system-table-cluster-info/','/docs/dev/reference/system-databases/cluster-info/']
 ---
 
 # CLUSTER_INFO

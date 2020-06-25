@@ -2,7 +2,7 @@
 title: SHOW COLLATION | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW COLLATION for the TiDB database.
 category: reference
-aliases: ['/docs/dev/reference/sql/statements/show-collation/']
+aliases: ['/docs/dev/sql-statements/sql-statement-show-collation/','/docs/dev/reference/sql/statements/show-collation/']
 ---
 
 # SHOW COLLATION

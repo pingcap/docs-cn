@@ -2,7 +2,7 @@
 title: TiKV Memory Parameters Performance Tuning
 summary: Learn how to tune the TiKV parameters for optimal performance.
 category: reference
-aliases: ['/docs/dev/reference/performance/tune-tikv/']
+aliases: ['/docs/dev/tune-tikv-performance/','/docs/dev/reference/performance/tune-tikv/']
 ---
 
 # TiKV Memory Parameters Performance Tuning

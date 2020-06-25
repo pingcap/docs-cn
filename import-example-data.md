@@ -2,7 +2,7 @@
 title: Import Example Database
 summary: Install the Bikeshare example database.
 category: how-to
-aliases: ['/docs/dev/how-to/get-started/import-example-database/']
+aliases: ['/docs/dev/import-example-data/','/docs/dev/how-to/get-started/import-example-database/']
 ---
 
 # Import Example Database

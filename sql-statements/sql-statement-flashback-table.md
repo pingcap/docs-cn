@@ -2,7 +2,7 @@
 title: FLASHBACK TABLE
 summary: Learn how to recover tables using the `FLASHBACK TABLE` statement.
 category: reference
-aliases: ['/docs/dev/reference/sql/statements/flashback-table/']
+aliases: ['/docs/dev/sql-statements/sql-statement-flashback-table/','/docs/dev/reference/sql/statements/flashback-table/']
 ---
 
 # FLASHBACK TABLE

@@ -2,7 +2,7 @@
 title: The System Variables
 summary: Learn how to use the system variables in TiDB.
 category: reference
-aliases: ['/docs/dev/reference/configuration/tidb-server/mysql-variables/']
+aliases: ['/docs/dev/system-variables/','/docs/dev/reference/configuration/tidb-server/mysql-variables/']
 ---
 
 # The System Variables

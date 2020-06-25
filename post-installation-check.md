@@ -2,6 +2,7 @@
 title: Check Cluster Status
 summary: Learn how to check the running status of the TiDB cluster.
 category: how-to
+aliases: ['/docs/dev/post-installation-check/']
 ---
 
 # Check Cluster Status

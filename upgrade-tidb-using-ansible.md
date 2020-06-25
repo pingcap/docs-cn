@@ -2,7 +2,7 @@
 title: Upgrade TiDB Using TiDB Ansible
 summary: Learn how to upgrade TiDB using TiDB Ansible.
 category: how-to
-aliases: ['/docs/dev/how-to/upgrade/from-previous-version/','/docs/dev/how-to/upgrade/rolling-updates-with-ansible/']
+aliases: ['/docs/dev/upgrade-tidb-using-ansible/','/docs/dev/how-to/upgrade/from-previous-version/','/docs/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
 # Upgrade TiDB Using TiDB Ansible

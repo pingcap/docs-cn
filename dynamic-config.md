@@ -2,6 +2,7 @@
 title: Dynamic Configuration Change
 summary: Learn how to use dynamic configuration change.
 category: reference
+aliases: ['/docs/dev/dynamic-config/']
 ---
 
 # Dynamic Configuration Change

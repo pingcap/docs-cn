@@ -2,7 +2,7 @@
 title: Generated Columns
 summary: Learn how to use generated columns.
 category: reference
-aliases: ['/docs/dev/reference/sql/generated-columns/']
+aliases: ['/docs/dev/generated-columns/','/docs/dev/reference/sql/generated-columns/']
 ---
 
 # Generated Columns

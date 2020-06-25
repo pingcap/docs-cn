@@ -2,7 +2,7 @@
 title: TiDB FAQ
 summary: Learn about the most frequently asked questions (FAQs) relating to TiDB.
 category: faq
-aliases: ['/docs/dev/faq/tidb/']
+aliases: ['/docs/dev/faq/tidb-faq/','/docs/dev/faq/tidb/']
 ---
 
 # TiDB FAQ

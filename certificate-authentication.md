@@ -2,7 +2,7 @@
 title: Certificate-Based Authentication for Login
 summary: Learn the certificate-based authentication used for login.
 category: reference
-aliases: ['/docs/dev/reference/security/cert-based-authentication/']
+aliases: ['/docs/dev/certificate-authentication/','/docs/dev/reference/security/cert-based-authentication/']
 ---
 
 # Certificate-Based Authentication for Login

@@ -1,7 +1,7 @@
 ---
 title: TiDB 2.1 GA Release Notes
 category: Releases
-aliases: ['/docs/dev/releases/2.1ga/']
+aliases: ['/docs/dev/releases/release-2.1-ga/','/docs/dev/releases/2.1ga/']
 ---
 
 # TiDB 2.1 GA Release Notes
