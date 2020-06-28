@@ -224,7 +224,7 @@ br backup full \
 注意增量备份有以下限制：
 
 - 增量备份需要与前一次全量备份在不同的路径下
-- 增量备份开始时间与 `lastbackupts` 之间不能有 GC
+- GC safepoint 必须在 `lastbackupts` 之前
 
 {{< copyable "shell-regular" >}}
 
