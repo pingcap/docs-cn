@@ -85,7 +85,7 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# 选择后端：“importer” 或 “tidb“
+# 选择后端：“importer” 或 “local” 或 “tidb”
 # backend = "importer"
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
@@ -94,6 +94,14 @@ addr = "172.16.31.10:8287"
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
+# 当后端是 “local” 时，控制生成 SST 文件的大小，最好跟 tikv 里面的 region 大小保持一致，默认是 96MB。
+#region-split-size = 100_663_296
+# 当后端是 “local” 时，一次请求中发送的 KV 数量。
+#send-kv-pairs = 32768
+# 当后端是 “local” 时，本地进行 KV 排序的路径。最好跟设置成跟 `data-source-dir` 不同的磁盘中，可以有效提升性能。
+#sorted-kv-dir = ""
+# 当后端是 “local” 时，写 tikv 的区间并发度，当 lightning 和 tikv 直接网络传输速度达到万兆的时候，可以适当增加这个值。
+#range-concurrency = 16
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
@@ -281,7 +289,7 @@ min-available-ratio = 0.05
 | -V | 输出程序的版本 | |
 | -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
-| --backend *backend* | 选择后端的模式：`importer` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
+| --backend *backend* | 选择后端的模式：`importer` `local` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径 | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
