@@ -236,6 +236,7 @@
     - [SQL 优化流程](/sql-optimization-concepts.md)
     - [理解 TiDB 执行计划](/query-execution-plan.md)
     - [统计信息概述](/statistics.md)
+    - [TopN 和 Limit 下推](/topn-limit-push-down.md)
     - [Optimizer Hints](/optimizer-hints.md)
     - [TiKV 调优](/tune-tikv-performance.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
