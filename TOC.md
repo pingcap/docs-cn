@@ -109,6 +109,7 @@
 + Tutorials
   + [Geo-Redundant Deployment](/geo-redundancy-deployment.md)
   + Best Practices
+    + [Use TiDB](/tidb-best-practices.md)
     + [Java Application Development](/best-practices/java-app-best-practices.md)
     + [Use HAProxy](/best-practices/haproxy-best-practices.md)
     + [Highly Concurrent Write](/best-practices/high-concurrency-best-practices.md)
