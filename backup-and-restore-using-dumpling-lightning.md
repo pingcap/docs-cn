@@ -13,7 +13,7 @@ Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[�
 
 使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
-### Dumpling/TiDB Lightning 全量备份恢复最佳实践
+## Dumpling/TiDB Lightning 全量备份恢复最佳实践
 
 为了快速地备份恢复数据 (特别是数据量巨大的库)，可以参考以下建议：
 
