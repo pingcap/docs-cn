@@ -1,24 +1,36 @@
 ---
-title: 使用 Dumpling 导出或备份 TiDB 数据
-summary: 使用新的导出工具 Dumpling 导出或者备份数据。
-category: how-to
+title: Dumpling 使用文档
+summary: 使用 Dumpling 从 TiDB 导出数据。
+category: reference
 ---
 
-# 使用 Dumpling 导出或备份 TiDB 数据
+# Dumpling 使用文档
 
-本文档介绍如何使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)。该工具可以把存储在 TiDB 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
+本文档将详细介绍如何使用 Mydumper/TiDB Lightning 对 TiDB 进行全量备份与恢复。
 
 如果需要直接备份 SST 文件（KV 对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc/ticdc-overview.md)。
 
-Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[中文使用手册](https://github.com/pingcap/dumpling/blob/master/docs/cn/user-guide.md)。
+这里假定 TiDB 服务信息如下：
 
-使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。 
+|Name|Address|Port|User|Password|
+|----|-------|----|----|--------|
+|TiDB|127.0.0.1|4000|root|*|
 
-## 下载地址
+在这个备份恢复过程中，会用到下面的工具：
 
-最新版 Dumpling 的下载地址见[下载链接](https://download.pingcap.org/dumpling-nightly-linux-amd64.tar.gz)。
+- [Dumpling](/mydumper-overview.md) 从 TiDB 导出数据
+- [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据到 TiDB
 
-## 从 TiDB 导出数据
+## 使用 Dumpling/TiDB Lightning 全量备份恢复数据
+
+`dumpling` 是使用 go 开发的数据备份工具，项目地址可以参考 [`dumpling`](https://github.com/pingcap/dumpling)。
+
+### 需要的权限
+
+- SELECT
+- RELOAD
+- LOCK TABLES
+- REPLICATION CLIENT
 
 ### 导出到 sql 文件
 
@@ -152,7 +164,11 @@ $ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
 190K  test.sbtest3.0.sql
 ```
 
-另外，假如数据量非常大，可以提前调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败：
+### 导出大规模数据时的 TiDB GC 设置
+
+如果导出的 TiDB 版本大于 v4.0.0，并且 dumpling 和 PD 集群处于同一网络中，dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
+
+其他情况下，假如导出的数据量非常大，可以提前调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败：
 
 {{< copyable "sql" >}}
 
@@ -168,4 +184,4 @@ update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_lif
 update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
 ```
 
-最后，所有的这些导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-tidb-backend.md) 导入回 TiDB。
+最后，所有的导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-tidb-backend.md) 导入回 TiDB。
