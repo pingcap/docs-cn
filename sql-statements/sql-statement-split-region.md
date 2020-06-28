@@ -76,7 +76,7 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
 > 以下会话变量会影响 `SPLIT` 语句的行为，需要特别注意：
 > 
 > * `tidb_wait_split_region_finish`：打散 Region 的时间可能较长，由 PD 调度以及 TiKV 的负载情况所决定。这个变量用来设置在执行 `SPLIT REGION` 语句时，是否同步等待所有 Region 都打散完成后再返回结果给客户端。默认 `1` 代表等待打散完成后再返回结果。`0` 代表不等待 Region 打散完成就返回结果。
-> * `tidb_wait_split_region_timeout`: 这个变量用来设置 `SPLIT REGION` 语句的执行超时时间，单位是秒，默认值是 300 秒，如果超时还未完成 Split ，就返回一个超时错误。
+> * `tidb_wait_split_region_timeout`：这个变量用来设置 `SPLIT REGION` 语句的执行超时时间，单位是秒，默认值是 300 秒，如果超时还未完成 `Split` 操作，就返回一个超时错误。
 
 ### Split Table Region
 
