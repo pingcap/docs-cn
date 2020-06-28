@@ -388,14 +388,14 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-使用带有 `shard_row_id_bits` 的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions)` 个 Region。
+使用带有 `SHARD_ROW_ID_BITS` 的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `PRE_SPLIT_REGIONS` 一起使用，用来在建表成功后就开始预均匀切分 `2^(PRE_SPLIT_REGIONS)` 个 Region。
 
 > **注意：**
 >
 > + `PRE_SPLIT_REGIONS` 必须小于等于 `SHARD_ROW_ID_BITS`。
 >
-> + 以下全局变量会影响 `pre_split_regions` 的行为，需要特别注意：
->     * `tidb_scatter_region`：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `1`，表示等待所有 Region 都切分和打散完成后再返回结果给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
+> + 以下全局变量会影响 `PRE_SPLIT_REGIONS` 的行为，需要特别注意：
+>       * `tidb_scatter_region`：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `1`，表示等待所有 Region 都切分和打散完成后再返回结果给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
 
 ### 示例
 
