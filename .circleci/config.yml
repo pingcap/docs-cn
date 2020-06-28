@@ -58,7 +58,7 @@ jobs:
           name: "Publish PDF"
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
-            if [ "${CIRCLE_BRANCH}" == "release-3.0" ]; then
+            if [ "${CIRCLE_BRANCH}" == "release-3.1" ]; then
               python3 scripts/upload.py output.pdf tidb-v3.1-zh-manual.pdf;
             fi
 

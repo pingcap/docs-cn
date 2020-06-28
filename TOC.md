@@ -265,6 +265,7 @@
     - [优化规则与表达式下推的黑名单](/blacklist-control-plan.md)
     - [执行计划绑定](/execution-plan-binding.md)
     - [统计信息概述](/statistics.md)
+    - [TopN 和 Limit 下推](/topn-limit-push-down.md)
     - [Optimizer Hints](/optimizer-hints.md)
     - [Follower Read](/follower-read.md)
     - [使用 SQL 语句检查 TiDB 集群状态](/check-cluster-status-using-sql-statements.md)
