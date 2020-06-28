@@ -111,7 +111,13 @@ TiDB 版本：4.0.2
     - 修复少数情况下发给 TiKV 的请求错发给 TiFlash 的问题。[#18105](https://github.com/pingcap/tidb/pull/18105)
 
 + TiKV
-
+    - 修改 status server 的内存安全问题。[#8101](https://github.com/tikv/tikv/pull/8101)
+    - 修复 json 数字比较的精度丢失问题。[#8087](https://github.com/tikv/tikv/pull/8087)
+    - 修改错误的慢查询日志。[#8050](https://github.com/tikv/tikv/pull/8050)
+    - 修复 merge 可能导致 peer 无法被移除的问题。[#8048](https://github.com/tikv/tikv/pull/8048)
+    - 修复 `tikv-ctl recover-mvcc`  未清除无效的悲观锁。[#8047](https://github.com/tikv/tikv/pull/8047)
+    - 修复一些遗漏的 Titan 监控。[#7997](https://github.com/tikv/tikv/pull/7997)
+    - 修复向 TiCDC 返回 `duplicated error` 的问题。[#7887](https://github.com/tikv/tikv/pull/7887)
 
 
 + PD
