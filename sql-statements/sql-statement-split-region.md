@@ -392,7 +392,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 > **注意：**
 >
-> + `PRE_SPLIT_REGIONS` 必须小于等于 `SHARD_ROW_ID_BITS`。
+> `PRE_SPLIT_REGIONS` 必须小于等于 `SHARD_ROW_ID_BITS`。
 
 以下全局变量会影响 `PRE_SPLIT_REGIONS` 的行为，需要特别注意：
 
