@@ -35,7 +35,6 @@ aliases: ['/docs-cn/stable/reference/mysql-compatibility/']
 * `CREATE TEMPORARY TABLE` 语法
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
-* `SELECT INTO FILE` 语法
 
 ## 与 MySQL 有差异的特性详细说明
 
