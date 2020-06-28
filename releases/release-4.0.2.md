@@ -40,7 +40,8 @@ TiDB 版本：4.0.2
     - 增加对 TiKV 配置项 `storage.block-cache.capacity` 的诊断规则。[#17671](https://github.com/pingcap/tidb/pull/17671)
 
 + TiKV
-
+    - tikv-ctl 支持 encrption-meta 命令。[#8103](https://github.com/tikv/tikv/pull/8103)
+    - 增加 `RocksDB::WriteImpl` 相关的 perf context 监控 [#7991](https://github.com/tikv/tikv/pull/7991)
 
 
 + PD
