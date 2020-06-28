@@ -78,7 +78,8 @@ Multiple TiFlash nodes elect a master to add or delete placement rules to PD, an
 [profiles]
 [profiles.default]
     dt_enable_logical_split = true # The default value is `true`. This parameter determines whether the segment of DeltaTree Storage Engine uses logical split. Using the logical split can reduce the write amplification, and improve the write speed. However, these are at the cost of disk space waste.
-    max_memory_usage_for_all_queries = 0 # The memory usage limit of the generated intermediate data when queries are executed. The default value is `0` (in bytes), which means no limit.
+    max_memory_usage = 10000000000 # The memory usage limit for the generated intermediate data when a single coprocessor query is executed. The default value is 10,000,000,000 (in bytes). If set to 0, it means no limit.
+    max_memory_usage_for_all_queries = 0 # The memory usage limit for the generated intermediate data when all queries are executed. The default value is 0 (in bytes), which means no limit.
 ```
 
 ### Configure the `tiflash-learner.toml` file
