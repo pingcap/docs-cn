@@ -487,12 +487,14 @@ Similar to [backing up Raw KV](#back-up-raw-kv-experimental-feature), you can ex
 
 {{< copyable "shell-regular" >}}
 
+```shell
 br restore raw --pd $PD_ADDR \
     -s "local://$BACKUP_DIR" \
     --start 31 \
     --end 3130303030303030 \
     --format hex \
     --cf default
+```
 
 In the above example, all the backed up keys in the range `[0x31, 0x3130303030303030)` are restored to the TiKV cluster. The coding methods of these keys are identical to that of [keys during the backup process](#back-up-raw-kv-experimental-feature)
 
