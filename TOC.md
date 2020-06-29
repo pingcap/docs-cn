@@ -265,6 +265,7 @@
     - [Statement Summary Table](/statement-summary-tables.md)
     - [TiKV 调优](/tune-tikv-performance.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
+    - [列裁剪](/column-pruning.md)
   + 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)
