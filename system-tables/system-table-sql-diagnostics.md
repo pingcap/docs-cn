@@ -47,12 +47,12 @@ On the system tables earlier than TiDB v4.0, you can only view the current insta
 
 To dynamically observe and compare cluster conditions in different time periods, the SQL diagnostic system introduces cluster monitoring system tables. All monitoring tables are in `metrics_schema`, and you can query the monitoring information using SQL statements. Using this method, you can perform correlated queries on all monitoring information of the entire cluster and compare the results of different time periods to quickly identify performance bottlenecks.
 
-+ [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md)): Because many system tables exist now, you can query meta-information of these monitoring tables on the `information_schema.metrics_tables` table.
++ [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md): Because many system tables exist now, you can query meta-information of these monitoring tables on the `information_schema.metrics_tables` table.
 
 Because the TiDB cluster has many monitoring metrics, TiDB provides the following monitoring summary tables in v4.0:
 
 + The monitoring summary table [`information_schema.metrics_summary`](/system-tables/system-table-metrics-summary.md) summarizes all monitoring data to for you to check each monitoring metric with higher efficiency.
-+ [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md)) also summarizes all monitoring data. Particularly, this table aggregates statistics using different labels of each monitoring metric.
++ [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md) also summarizes all monitoring data. Particularly, this table aggregates statistics using different labels of each monitoring metric.
 
 ## Automatic diagnostics
 
