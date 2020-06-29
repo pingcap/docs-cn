@@ -51,7 +51,7 @@ ADMIN SHOW TELEMETRY;
 
 使用 TiUP 时，可通过设置 `TIUP_CLUSTER_DEBUG=enable` 环境变量输出执行命令时收集的使用情况信息，例如：
 
-{{< copyable "shell" >}}
+{{< copyable "shell-regular" >}}
 
 ```bash
 TIUP_CLUSTER_DEBUG=enable tiup cluster list
@@ -70,8 +70,6 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 创建配置文件 `tidb_config.toml` 包含如下内容：
 
-{{< copyable "toml" >}}
-
 ```toml
 enable-telemetry = false
 ```
@@ -87,15 +85,13 @@ enable-telemetry = false
 
 创建配置文件 `tidb_config.toml` 包含如下内容：
 
-{{< copyable "toml" >}}
-
 ```toml
 enable-telemetry = false
 ```
 
 启动 TiUP Playground 时，指定命令行参数 `--db.config tidb_config.toml` 使得该配置生效，如：
 
-{{< copyable "shell" >}}
+{{< copyable "shell-regular" >}}
 
 ```bash
 tiup playground --db.config tidb_config.toml
@@ -109,8 +105,6 @@ tiup playground --db.config tidb_config.toml
   <summary>通过 TiUP Cluster 部署</summary>
 
 修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
-
-{{< copyable "yaml" >}}
 
 ```yaml
 server_configs:
@@ -171,8 +165,6 @@ SET GLOBAL tidb_enable_telemetry = 0;
 
 创建配置文件 `pd_config.toml` 包含如下内容：
 
-{{< copyable "toml" >}}
-
 ```toml
 [dashboard]
 disable-telemetry = true
@@ -189,8 +181,6 @@ disable-telemetry = true
 
 创建配置文件 `pd_config.toml` 包含如下内容：
 
-{{< copyable "toml" >}}
-
 ```toml
 [dashboard]
 disable-telemetry = true
@@ -198,7 +188,7 @@ disable-telemetry = true
 
 启动 TiUP Playground 时，指定命令行参数 `--pd.config pd_config.toml` 使得该配置生效，如：
 
-{{< copyable "shell" >}}
+{{< copyable "shell-regular" >}}
 
 ```bash
 tiup playground --pd.config pd_config.toml
@@ -212,8 +202,6 @@ tiup playground --pd.config pd_config.toml
   <summary>通过 TiUP Cluster 部署</summary>
 
 修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
-
-{{< copyable "yaml" >}}
 
 ```yaml
 server_configs:
@@ -259,7 +247,7 @@ dashboard:
 
 可通过执行以下命令禁用 TiUP 遥测功能：
 
-{{< copyable "shell" >}}
+{{< copyable "shell-regular" >}}
 
 ```bash
 tiup telemetry disable
@@ -279,7 +267,7 @@ ADMIN SHOW TELEMETRY;
 
 对于 TiUP 遥测，可通过执行以下命令查看遥测状态：
 
-{{< copyable "shell" >}}
+{{< copyable "shell-regular" >}}
 
 ```bash
 tiup telemetry status
