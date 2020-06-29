@@ -394,7 +394,7 @@ worker-num = 16
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
-# 分发器支持 default、ts、rowid、table 四种
+# 支持 default、ts、rowid、table 四种分发器
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
