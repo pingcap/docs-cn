@@ -86,7 +86,7 @@ TiDB 版本：4.0.2
 
 + Tools
 
-    - BR
+    - Backup & Restore (BR)
 
         - 提升多表场景下的恢复数据性能 [#266](https://github.com/pingcap/br/pull/266)
 
@@ -114,7 +114,7 @@ TiDB 版本：4.0.2
     - 修复 `COUNT()` 函数的返回类型中 `DECIMAL` 不正确的问题 [#17704](https://github.com/pingcap/tidb/pull/17704)
     - 修复 `HEX()` 函数的输入类型是二进制字符串时结果不正确的问题 [#17620](https://github.com/pingcap/tidb/pull/17620)
     - 修复查询 `INFORMATION_SCHEMA.INSPECTION_SUMMARY` 表没有指定过滤条件时返回结果为空的问题 [#17697](https://github.com/pingcap/tidb/pull/17697)
-    - 修复 `ALTER USER` 语句使用哈希后的密码更新密码后，密码不符合预期的问题 [#17646](https://github.com/pingcap/tidb/pull/17646)
+    - 修复 `ALTER USER` 语句使用哈希后的密码更新用户信息后，密码不符合预期的问题 [#17646](https://github.com/pingcap/tidb/pull/17646)
     - 为 `ENUM` 和 `SET` 类型支持 collation [#17701](https://github.com/pingcap/tidb/pull/17701)
     - 修复 `CREATE TABLE` 时预切分 Region 的超时机制不生效的问题 [#17619](https://github.com/pingcap/tidb/pull/17619)
     - 修复某些情况下 DDL 后台作业重试时，schema 未正确更新导致的 DDL 原子性问题 [#17608](https://github.com/pingcap/tidb/pull/17608)
