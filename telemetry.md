@@ -52,9 +52,9 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 ## 禁用遥测功能
 
-### 启动 TiDB 前禁用 TiDB 遥测
+### 部署 TiDB 时禁用 TiDB 遥测
 
-对于尚未启动的 TiDB 集群，可以为每个 TiDB 配置 [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry) 设置以禁用 TiDB 遥测功能。对于已启动的集群也可以修改该配置，但需要重启 TiDB 后才能生效。
+部署 TiDB 集群时，可以为每个 TiDB 配置 [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry) 设置以禁用 TiDB 遥测功能。对于已部署的集群也可以修改该配置，但需要重启 TiDB 后才能生效。
 
 以下列出了各个部署工具中进行配置修改的具体步骤。
 
@@ -124,13 +124,14 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 <details>
   <summary>通过 TiDB Operator 在 Kubernetes 部署</summary>
 
-  在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Restource 中配置 `spec.tidb.config.enable-telemetry: false`。
+  在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.tidb.config.enable-telemetry: false`。
+
   详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
 </details>
 
 ### 动态禁用 TiDB 遥测
 
-对于已启动的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry) 动态禁用 TiDB 遥测功能：
+对于已部署的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry) 动态禁用 TiDB 遥测功能：
 
 ```sql
 SET GLOBAL tidb_enable_telemetry = 0;
@@ -216,7 +217,8 @@ SET GLOBAL tidb_enable_telemetry = 0;
 <details>
   <summary>通过 TiDB Operator 在 Kubernetes 部署</summary>
 
-  在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Restource 中配置 `spec.pd.config.dashboard.disable-telemetry: true`。
+  在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.pd.config.dashboard.disable-telemetry: true`。
+
   详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
 </details>
 
