@@ -58,6 +58,12 @@ TiDB 版本：4.0.2
     - 支持运行在 ARM 架构
     - Coprocessor 支持 `JSON_LENGTH` 函数下推
 
++ TiCDC
+
+    - 支持 Capture 节点扩容时迁移部分子任务到新加节点 [#665](https://github.com/pingcap/ticdc/pull/665)
+    - Cli 中添加清理 TiCDC GC TTL 的功能 [#652](https://github.com/pingcap/ticdc/pull/652)
+    - 在 MQ sink 中支持输出 Canal 协议 [#649](https://github.com/pingcap/ticdc/pull/649)
+
 ## Improvements
 
 + TiDB
