@@ -15,7 +15,7 @@ TiDB 版本：4.0.2
 
     - 移除慢查询日志和 statement summary 表中的敏感信息 [#18130](https://github.com/pingcap/tidb/pull/18130)
     - 禁止在 sequence 缓存中出现负数 [#18103](https://github.com/pingcap/tidb/pull/18103)
-    - `CLUSTER_INFO` 表中不再显示 tombstone 状态的 TiKV 和 TiFlash 结点 [#17953](https://github.com/pingcap/tidb/pull/17953)
+    - `CLUSTER_INFO` 表中不再显示 tombstone 状态的 TiKV 和 TiFlash 节点 [#17953](https://github.com/pingcap/tidb/pull/17953)
     - 诊断规则 `current-load` 变更为 `node-check` [#17660](https://github.com/pingcap/tidb/pull/17660)
 
 + PD
@@ -34,17 +34,17 @@ TiDB 版本：4.0.2
     - 支持函数 `IF()`/`BITXOR()`/`BITNEG()`/`JSON_LENGTH()` 下推到 TiFlash Coprocessor 上执行 [#17651](https://github.com/pingcap/tidb/pull/17651) [#17592](https://github.com/pingcap/tidb/pull/17592)
     - 支持聚合函数 `APPROX_COUNT_DISTINCT()`，用于快速计算 `COUNT(DISTINCT)` 的近似值 [#18120](https://github.com/pingcap/tidb/pull/18120)
     - TiFlash 支持了 collation，支持相应的函数下推 [#17705](https://github.com/pingcap/tidb/pull/17705)
-    - `INFORMATION_SCHEMA.INSPECTION_RESULT` 表新增 `STATUS_ADDRESS` 列，用于展示结点的 status 地址 [#17695](https://github.com/pingcap/tidb/pull/17695)
+    - `INFORMATION_SCHEMA.INSPECTION_RESULT` 表新增 `STATUS_ADDRESS` 列，用于展示节点的 status 地址 [#17695](https://github.com/pingcap/tidb/pull/17695)
     - `MYSQL.BIND_INFO` 表新增 `SOURCE` 列，用于展示 binding 的创建方式 [#17587](https://github.com/pingcap/tidb/pull/17587)
     - `PERFORMANCE_SCHEMA.EVENTS_STATEMENTS_SUMMARY_BY_DIGEST` 表新增 `PLAN_IN_CACHE` 和 `PLAN_CACHE_HITS` 列，用于展示 plan cache 的使用情况 [#17493](https://github.com/pingcap/tidb/pull/17493)
-    - 新增配置项 `enable-collect-execution-info` 和会话级变量 `tidb_enable_collect_execution_info` 用于控制是否在记录 SQL 的运行时信息并打印到慢查询日志中 [#18073](https://github.com/pingcap/tidb/pull/18073) [#18072](https://github.com/pingcap/tidb/pull/18072)
-    - 新增全局变量 `tidb_slow_log_masking`，用于控制是否脱敏慢查询日志中的用户数据 [#17694](https://github.com/pingcap/tidb/pull/17694)
+    - 新增配置项 `enable-collect-execution-info` 和会话级变量 `tidb_enable_collect_execution_info` 用于控制是否记录算子的执行信息并打印到慢查询日志中 [#18073](https://github.com/pingcap/tidb/pull/18073) [#18072](https://github.com/pingcap/tidb/pull/18072)
+    - 新增全局变量 `tidb_slow_log_masking`，用于控制是否脱敏慢查询日志中的查询 [#17694](https://github.com/pingcap/tidb/pull/17694)
     - 增加对 TiKV 配置项 `storage.block-cache.capacity` 的诊断规则 [#17671](https://github.com/pingcap/tidb/pull/17671)
     - 新增 SQL 语法 backup/restore 来进行备份恢复[#15274](https://github.com/pingcap/tidb/pull/15274)
 
 + TiKV
 
-    - TiKV Control 支持 encryption-meta 命令 [#8103](https://github.com/tikv/tikv/pull/8103)
+    - TiKV Control 支持 `encryption-meta` 命令 [#8103](https://github.com/tikv/tikv/pull/8103)
     - 增加 `RocksDB::WriteImpl` 相关的 perf context 监控 [#7991](https://github.com/tikv/tikv/pull/7991)
 
 + PD
@@ -59,11 +59,17 @@ TiDB 版本：4.0.2
     - 支持运行在 ARM 架构
     - Coprocessor 支持 `JSON_LENGTH` 函数下推
 
++ TiCDC
+
+    - 支持 Capture 节点扩容时迁移部分子任务到新加节点 [#665](https://github.com/pingcap/ticdc/pull/665)
+    - Cli 中添加清理 TiCDC GC TTL 的功能 [#652](https://github.com/pingcap/ticdc/pull/652)
+    - 在 MQ sink 中支持输出 Canal 协议 [#649](https://github.com/pingcap/ticdc/pull/649)
+
 ## Improvements
 
 + TiDB
 
-    - 降低当集群中 CM-Sketch 占用过多内存时，golang 内存分配带来的查询延迟 [#17545](https://github.com/pingcap/tidb/pull/17545)
+    - 降低当集群中 CM-Sketch 占用过多内存时，Golang 内存分配带来的查询延迟 [#17545](https://github.com/pingcap/tidb/pull/17545)
     - 缩短 TiKV 故障恢复时集群 QPS 的恢复时间 [#17681](https://github.com/pingcap/tidb/pull/17681)
     - 为 partition 表上的查询支持聚合函数下推到 TiKV 或者 TiFlash coprocessor [#17655](https://github.com/pingcap/tidb/pull/17655)
     - 提升索引上等值条件的行数估算准确度 [#17611](https://github.com/pingcap/tidb/pull/17611)
@@ -92,16 +98,16 @@ TiDB 版本：4.0.2
     - 修复某些情况下 `EXPLAIN FOR CONNECTION` 返回运行时错误的问题 [#18124](https://github.com/pingcap/tidb/pull/18124)
     - 修复某些情况下 `last_plan_from_cache` 结果不正确的问题 [#18111](https://github.com/pingcap/tidb/pull/18111)
     - 修复执行 plan cache 中的 `UNIX_TIMESTAMP()` 时的运行时错误 [#18002](https://github.com/pingcap/tidb/pull/18002) [#17673](https://github.com/pingcap/tidb/pull/17673)
-    - 修复 `HashJoin` 算子的孩子结点返回 `NULL` 类型的结果时，计算过程中的运行时错误 [#17937](https://github.com/pingcap/tidb/pull/17937)
-    - 修复当并发执行 `DROP DATABASE` 语句和被删除的数据库中的表相关的 DDL 语句时的运行时错误 [#17659](https://github.com/pingcap/tidb/pull/17659)
+    - 修复 `HashJoin` 算子的孩子节点返回 `NULL` 类型的结果时，计算过程中的运行时错误 [#17937](https://github.com/pingcap/tidb/pull/17937)
+    - 修复当在同一个数据库中并发执行 `DROP DATABASE` 语句和相关 DDL 语句时的运行错误 [#17659](https://github.com/pingcap/tidb/pull/17659)
     - 修复当 `COERCIBILITY()` 的输入参数是用户变量时结果不正确的问题 [#17890](https://github.com/pingcap/tidb/pull/17890)
     - 修复 `IndexMergeJoin` 算子偶尔卡住的问题 [#18091](https://github.com/pingcap/tidb/pull/18091)
     - 修复 `IndexMergeJoin` 算子触发 oom-action 后被取消执行时卡住的问题 [#17654](https://github.com/pingcap/tidb/pull/17654)
     - 修复 `Insert` 和 `Replace` 算子的内存统计过大的问题 [#18062](https://github.com/pingcap/tidb/pull/18062)
     - 修复在执行 `DROP DATABASE` 的同时对同一个数据库中的表 `DROP TABLE` 时，数据不再向 TiFlash 同步的问题 [#17901](https://github.com/pingcap/tidb/pull/17901)
-    - 修复TiDB 和对象存储服务之间 `BACKUP`/`RESTORE` 失败的问题 [#17844](https://github.com/pingcap/tidb/pull/17844)
+    - 修复 TiDB 和对象存储服务之间 `BACKUP`/`RESTORE` 失败的问题 [#17844](https://github.com/pingcap/tidb/pull/17844)
     - 修复权限检查失败时的错误信息 [#17724](https://github.com/pingcap/tidb/pull/17724)
-    - 修复 `DELETE`/`UPDATE` 语句的 feedback 被错误的收集的问题 [#17843](https://github.com/pingcap/tidb/pull/17843)
+    - 修复 `DELETE`/`UPDATE` 语句的 feedback 被错误收集的问题 [#17843](https://github.com/pingcap/tidb/pull/17843)
     - 禁止更改非 `AUTO_RANDOM` 表的 `AUTO_RANDOM_BASE` 值 [#17828](https://github.com/pingcap/tidb/pull/17828)
     - 修复系统变量 `tidb_isolation_read_engines` 的值中没有 `tidb` 时某些系统表无法访问的问题 [#17719](https://github.com/pingcap/tidb/pull/17719)
     - 修复 JSON 中大整数和浮点数比较的精度问题 [#17717](https://github.com/pingcap/tidb/pull/17717)
@@ -116,7 +122,7 @@ TiDB 版本：4.0.2
     - 修复某些情况下 `max_execution_time` hint 不生效的问题 [#17536](https://github.com/pingcap/tidb/pull/17536)
     - 修复某些情况下 `EXPLAIN ANALYZE` 的结果中并发信息被多次打印的问题 [#17350](https://github.com/pingcap/tidb/pull/17350)
     - 修复对 `STR_TO_DATE` 函数的 `%h` 解析和 MySQL 不兼容问题 [#17498](https://github.com/pingcap/tidb/pull/17498)
-    - 修复`tidb_replica_read` 设置成 `follower`，并且 Region 的 leader 和 follower/learner 之间出现网络分区后，TiDB 发送的 request 一直重试的问题 [#17443](https://github.com/pingcap/tidb/pull/17443)
+    - 修复 `tidb_replica_read` 设置成 `follower`，并且 Region 的 leader 和 follower/learner 之间出现网络分区后，TiDB 发送的 request 一直重试的问题 [#17443](https://github.com/pingcap/tidb/pull/17443)
     - 修复某些情况下 TiDB 一直 ping PD 的 follower 的问题 [#17947](https://github.com/pingcap/tidb/pull/17947)
     - 修复老版本的 range partition 表无法在 4.0 集群中加载的问题 [#17983](https://github.com/pingcap/tidb/pull/17983)
     - 修复当多个 Region 的请求同时超时时整个 SQL 语句超时的问题 [#17585](https://github.com/pingcap/tidb/pull/17585)
