@@ -61,72 +61,76 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 <details>
   <summary>通过二进制手工部署</summary>
 
-  创建配置文件 `tidb_config.toml` 包含如下内容：
+创建配置文件 `tidb_config.toml` 包含如下内容：
 
-  ```toml
-  enable-telemetry = false
-  ```
+```toml
+enable-telemetry = false
+```
 
-  启动 TiDB 时指定命令行参数 `--config=tidb_config.toml` 使得该配置生效。
+启动 TiDB 时指定命令行参数 `--config=tidb_config.toml` 使得该配置生效。
 
-  详情参见 [TiDB 配置参数](/command-line-flags-for-tidb-configuration.md#--config)、[TiDB 配置文件描述](/tidb-configuration-file.md#enable-telemetry)。
+详情参见 [TiDB 配置参数](/command-line-flags-for-tidb-configuration.md#--config)、[TiDB 配置文件描述](/tidb-configuration-file.md#enable-telemetry)。
+
 </details>
 
 <details>
   <summary>通过 TiUP Playground 试用修改步骤</summary>
 
-  创建配置文件 `tidb_config.toml` 包含如下内容：
+创建配置文件 `tidb_config.toml` 包含如下内容：
 
-  ```toml
-  enable-telemetry = false
-  ```
+```toml
+enable-telemetry = false
+```
 
-  启动 TiUP Playground 时，指定命令行参数 `--db.config tidb_config.toml` 使得该配置生效，如：
+启动 TiUP Playground 时，指定命令行参数 `--db.config tidb_config.toml` 使得该配置生效，如：
 
-  ```bash
-  tiup playground --db.config tidb_config.toml
-  ```
+```bash
+tiup playground --db.config tidb_config.toml
+```
 
-  详情参见 [TiUP - 本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+详情参见 [TiUP - 本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+
 </details>
 
 <details>
   <summary>通过 TiUP Cluster 部署</summary>
 
-  修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
 
-  ```yaml
-  server_configs:
-    tidb:
-      enable-telemetry: false
-  ```
+```yaml
+server_configs:
+  tidb:
+    enable-telemetry: false
+```
 
 </details>
 
 <details>
   <summary>通过 Ansible 部署</summary>
 
-  找到部署配置文件 `tidb-ansible/conf/tidb.yml` 中以下内容：
+找到部署配置文件 `tidb-ansible/conf/tidb.yml` 中以下内容：
 
-  ```yaml
-  # enable-telemetry: true
-  ```
+```yaml
+# enable-telemetry: true
+```
 
-  将其修改为：
+将其修改为：
 
-  ```yaml
-  enable-telemetry: false
-  ```
+```yaml
+enable-telemetry: false
+```
 
-  详情参见[使用 Ansible 部署](/online-deployment-using-ansible.md)。
+详情参见[使用 Ansible 部署](/online-deployment-using-ansible.md)。
+
 </details>
 
 <details>
   <summary>通过 TiDB Operator 在 Kubernetes 部署</summary>
 
-  在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.tidb.config.enable-telemetry: false`。
+在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.tidb.config.enable-telemetry: false`。
 
-  详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
+详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
+
 </details>
 
 ### 动态禁用 TiDB 遥测
@@ -148,78 +152,82 @@ SET GLOBAL tidb_enable_telemetry = 0;
 <details>
   <summary>通过二进制手工部署</summary>
 
-  创建配置文件 `pd_config.toml` 包含如下内容：
+创建配置文件 `pd_config.toml` 包含如下内容：
 
-  ```toml
-  [dashboard]
-  disable-telemetry = true
-  ```
+```toml
+[dashboard]
+disable-telemetry = true
+```
 
-  启动 PD 时指定命令行参数 `--config=pd_config.toml` 使得该配置生效。
+启动 PD 时指定命令行参数 `--config=pd_config.toml` 使得该配置生效。
 
-  详情参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md#--config)、[PD 配置文件描述](/pd-configuration-file.md#disable-telemetry)。
+详情参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md#--config)、[PD 配置文件描述](/pd-configuration-file.md#disable-telemetry)。
+
 </details>
 
 <details>
   <summary>通过 TiUP Playground 试用</summary>
 
-  创建配置文件 `pd_config.toml` 包含如下内容：
+创建配置文件 `pd_config.toml` 包含如下内容：
 
-  ```toml
-  [dashboard]
-  disable-telemetry = true
-  ```
+```toml
+[dashboard]
+disable-telemetry = true
+```
 
-  启动 TiUP Playground 时，指定命令行参数 `--pd.config pd_config.toml` 使得该配置生效，如：
+启动 TiUP Playground 时，指定命令行参数 `--pd.config pd_config.toml` 使得该配置生效，如：
 
-  ```bash
-  tiup playground --pd.config pd_config.toml
-  ```
+```bash
+tiup playground --pd.config pd_config.toml
+```
 
-  详情参见 [TiUP - 本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+详情参见 [TiUP - 本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+
 </details>
 
 <details>
   <summary>通过 TiUP Cluster 部署</summary>
 
-  修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
 
-  ```yaml
-  server_configs:
-    pd:
-      dashboard.disable-telemetry: true
-  ```
+```yaml
+server_configs:
+  pd:
+    dashboard.disable-telemetry: true
+```
 
 </details>
 
 <details>
   <summary>通过 Ansible 部署</summary>
 
-  找到部署配置文件 `tidb-ansible/conf/pd.yml` 中以下内容：
+找到部署配置文件 `tidb-ansible/conf/pd.yml` 中以下内容：
 
-  ```yaml
-  dashboard:
-    ...
-    # disable-telemetry: false
-  ```
+```yaml
+dashboard:
+  ...
+  # disable-telemetry: false
+```
 
-  将其修改为：
+将其修改为：
 
-  ```yaml
-  dashboard:
-    ...
-    disable-telemetry: true
-  ```
+```yaml
+dashboard:
+  ...
+  disable-telemetry: true
+```
 
-  详情参见[使用 Ansible 部署](/online-deployment-using-ansible.md)。
+详情参见[使用 Ansible 部署](/online-deployment-using-ansible.md)。
+
 </details>
 
 <details>
   <summary>通过 TiDB Operator 在 Kubernetes 部署</summary>
 
-  在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.pd.config.dashboard.disable-telemetry: true`。
+在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.pd.config.dashboard.disable-telemetry: true`。
 
-  详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
+详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
+
 </details>
 
 ### 禁用 TiUP 遥测
