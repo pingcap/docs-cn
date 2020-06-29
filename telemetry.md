@@ -1,0 +1,289 @@
+---
+title: 遥测
+category: reference
+---
+
+# 遥测
+
+TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况数据，并将其分享给 PingCAP 用于理解和改善产品，例如，通过这些使用情况数据，PingCAP 可以了解常见的 TiDB 集群规模，从而确定新功能优先级。
+
+## 哪些使用情况数据会被收集？
+
+收集的使用情况数据包括集群的部署情况、硬件情况及操作情况等。在任何情况下，集群中的用户数据都不会被收集。名称、路径、IP 地址等则将会使用下划线或其不可逆哈希值 SHA1 代替。另请参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)。
+
+以下具体描述了各个组件收集并分享的使用情况数据。若收集的使用情况数据有变化，将在版本更新说明中告知。
+
+### TiDB
+
+当 TiDB 遥测功能开启时，TiDB 集群将会以 24 小时为周期收集使用情况数据并分享给 PingCAP，包括（但不限于）：
+
+- 随机生成的遥测标示符
+- 集群的部署情况，包括各个组件所在的硬件信息（CPU、内存、磁盘）、组件版本号、操作系统版本号等
+
+可以通过执行以下 SQL 语句查看 TiDB 收集的使用情况数据内容：
+
+```sql
+ADMIN SHOW TELEMETRY;
+```
+
+### TiDB Dashboard
+
+当 TiDB Dashboard 遥测功能开启时，用户在 TiDB Dashboard 网页界面上进行操作时会将使用情况数据分享给 PingCAP，包括（但不限于）：
+
+- 随机生成的遥测标示符
+- 界面访问情况，如访问的 TiDB Dashboard 功能页面名称
+- 用户浏览器及操作系统信息，如浏览器名称和版本号、操作系统名称、屏幕分辨率等
+
+可以使用 [Chrome 开发者工具](https://developers.google.com/web/tools/chrome-devtools) 或 [Firefox 开发者工具](https://developer.mozilla.org/zh-CN/docs/Tools) 查看 TiDB Dashboard 发送的使用情况数据内容。
+
+### TiUP
+
+当 TiUP 遥测功能开启时，执行 TiUP 命令时将会将使用情况数据分享给 PingCAP，包括（但不限于）：
+
+- 随机生成的遥测标示符
+- TiUP 命令的执行情况，如命令执行是否成功、命令执行耗时等
+- 使用 TiUP 进行部署情况，如部署的目标机器硬件信息、组件版本号、修改过的部署配置名称等
+
+使用 TiUP 时，可通过设置 `TIUP_CLUSTER_DEBUG=enable` 环境变量输出执行命令时收集的使用情况数据，例如：
+
+```bash
+TIUP_CLUSTER_DEBUG=enable tiup cluster list
+```
+
+## 禁用遥测功能
+
+### 启动 TiDB 前禁用 TiDB 遥测
+
+对于尚未启动的 TiDB 集群，可以为每个 TiDB 配置 [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry) 设置以禁用 TiDB 遥测功能。对于已启动的集群也可以修改该配置，但需要重启 TiDB 后才能生效。
+
+对于不同部署工具，该配置的修改具体步骤如下：
+
+- 通过二进制手工部署
+
+  <details>
+    <summary>展开步骤</summary>
+
+    创建配置文件 `tidb_config.toml` 包含如下内容：
+
+    ```toml
+    enable-telemetry = false
+    ```
+
+    启动 TiDB 时指定命令行参数 `--config=tidb_config.toml` 使得该配置生效。
+
+    详情参见 [TiDB 配置参数](/command-line-flags-for-tidb-configuration.md#--config)、[TiDB 配置文件描述](/tidb-configuration-file.md#enable-telemetry)。
+  </details>
+
+- 通过 TiUP Playground 试用
+
+  <details>
+    <summary>展开步骤</summary>
+
+    创建配置文件 `tidb_config.toml` 包含如下内容：
+
+    ```toml
+    enable-telemetry = false
+    ```
+
+    启动 TiUP Playground 时，指定命令行参数 `--db.config tidb_config.toml` 使得该配置生效，如：
+
+    ```bash
+    tiup playground --db.config tidb_config.toml
+    ```
+
+    详情参见 [TiUP - 本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+  </details>
+
+- 通过 TiUP Cluster 部署
+
+  <details>
+    <summary>展开步骤</summary>
+
+    修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+
+    ```yaml
+    server_configs:
+      tidb:
+        enable-telemetry: false
+    ```
+
+    详情参见 TODO。
+
+  </details>
+
+- 通过 Ansible 部署
+
+  <details>
+    <summary>展开步骤</summary>
+
+    找到部署配置文件 `tidb-ansible/conf/tidb.yml` 中以下内容：
+
+    ```yaml
+    # enable-telemetry: true
+    ```
+
+    将其修改为：
+
+    ```yaml
+    enable-telemetry: false
+    ```
+
+    详情参见[使用 Ansible 部署](/online-deployment-using-ansible.md)。
+  </details>
+
+- 通过 TiDB Operator 在 K8S 部署
+
+  <details>
+    <summary>展开步骤</summary>
+
+    TODO
+  </details>
+
+### 动态禁用 TiDB 遥测
+
+对于已启动的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry) 动态禁用 TiDB 遥测功能：
+
+```sql
+SET @@GLOBAL.tidb_enable_telemetry = 0;
+```
+
+配置文件的禁用优先级高于全局变量。若通过配置文件禁用了遥测功能，则全局变量的配置将不起作用，遥测功能总是处于关闭状态。
+
+### 禁用 TiDB Dashboard 遥测
+
+可以修改 PD 配置中 [`dashboard.disable-telemetry = true`](/pd-configuration-file.md#disable-telemetry) 禁用 TiDB Dashboard 遥测功能。对于已启动的集群，该配置需要重启后才能生效。
+
+对于不同部署工具，该配置的修改具体步骤如下：
+
+- 通过二进制手工部署
+
+  <details>
+    <summary>展开步骤</summary>
+
+    创建配置文件 `pd_config.toml` 包含如下内容：
+
+    ```toml
+    [dashboard]
+    disable-telemetry = true
+    ```
+
+    启动 PD 时指定命令行参数 `--config=pd_config.toml` 使得该配置生效。
+
+    详情参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md#--config)、[PD 配置文件描述](/pd-configuration-file.md#disable-telemetry)。
+  </details>
+
+- 通过 TiUP Playground 试用
+
+  <details>
+    <summary>展开步骤</summary>
+
+    创建配置文件 `pd_config.toml` 包含如下内容：
+
+    ```toml
+    [dashboard]
+    disable-telemetry = true
+    ```
+
+    启动 TiUP Playground 时，指定命令行参数 `--pd.config pd_config.toml` 使得该配置生效，如：
+
+    ```bash
+    tiup playground --pd.config pd_config.toml
+    ```
+
+    详情参见 [TiUP - 本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+  </details>
+
+- 通过 TiUP Cluster 部署
+
+  <details>
+    <summary>展开步骤</summary>
+
+    修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+
+    ```yaml
+    server_configs:
+      pd:
+        dashboard.disable-telemetry: true
+    ```
+
+    详情参见 TODO。
+  </details>
+
+- 通过 Ansible 部署
+
+  <details>
+    <summary>展开步骤</summary>
+
+    找到部署配置文件 `tidb-ansible/conf/pd.yml` 中以下内容：
+
+    ```yaml
+    [dashboard]
+    ...
+    # disable-telemetry: false
+    ```
+
+    将其修改为：
+
+    ```yaml
+    [dashboard]
+    ...
+    disable-telemetry: true
+    ```
+
+    详情参见[使用 Ansible 部署](/online-deployment-using-ansible.md)。
+  </details>
+
+- 通过 TiDB Operator 在 K8S 部署
+
+  <details>
+    <summary>展开步骤</summary>
+
+    TODO
+  </details>
+
+### 禁用 TiUP 遥测
+
+可通过执行以下命令禁用 TiUP 遥测功能：
+
+```bash
+tiup telemetry disable
+```
+
+## 重置遥测标示符
+
+TiDB、TiDB Dashboard、TiUP 分享的使用情况数据中都包含一个随机生成的遥测标示符。这个标示符用于区分不同的集群或操作者。
+
+如果需要重置并生成新的遥测标示符，方法如下。
+
+### 重置 TiDB 遥测标示符
+
+可以通过执行以下 SQL 语句生成一个新的 TiDB 遥测标示符：
+
+```sql
+ADMIN RESET TELEMETRY_ID;
+```
+
+### 重置 TiDB Dashboard 遥测标示符
+
+TODO
+
+### 重置 TiUP 遥测标示符
+
+可通过执行以下命令生成一个新的 TiUP 遥测标示符：
+
+```bash
+tiup telemetry reset
+```
+
+## 查看遥测状态
+
+TODO
+
+## 遥测数据合规性
+
+为了满足不同国家或地区对于此类数据的合规性要求，使用情况数据会按照操作者的 IP 地址的不同发送到位于不同国家服务器，具体如下：
+
+- 当 IP 为中国大陆 IP 地址时，使用情况数据将会发送并存储于中国大陆境内的公有云服务器。
+- 当 IP 为中国大陆以外 IP 地址时，使用情况数据将会发送并存储于美国的公有云服务器。
+
+可参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)了解详情。
