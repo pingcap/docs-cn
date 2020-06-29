@@ -75,6 +75,7 @@ TiDB 版本：4.0.2
     - 提升索引上等值条件的行数估算准确度 [#17611](https://github.com/pingcap/tidb/pull/17611)
 
 + TiKV
+
     - 优化 PD client panic 日志信息。 [#8093](https://github.com/tikv/tikv/pull/8093)
     - 重新加回 `process_cpu_seconds_total` 和 `process_start_time_seconds` 监控。[#8029](https://github.com/tikv/tikv/pull/8029)
 
