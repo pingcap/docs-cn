@@ -15,7 +15,7 @@ TiDB 版本：4.0.2
 
     - 移除慢查询日志和 statement summary 表中的敏感信息 [#18130](https://github.com/pingcap/tidb/pull/18130)
     - 禁止在 sequence 缓存中出现负数 [#18103](https://github.com/pingcap/tidb/pull/18103)
-    - `CLUSTER_INFO` 表中不再显示 tombstone 状态的 TiKV 和 TiFlash 结点 [#17953](https://github.com/pingcap/tidb/pull/17953)
+    - `CLUSTER_INFO` 表中不再显示 tombstone 状态的 TiKV 和 TiFlash 节点 [#17953](https://github.com/pingcap/tidb/pull/17953)
     - 诊断规则 `current-load` 变更为 `node-check` [#17660](https://github.com/pingcap/tidb/pull/17660)
 
 + PD
@@ -34,11 +34,11 @@ TiDB 版本：4.0.2
     - 支持函数 `IF()`/`BITXOR()`/`BITNEG()`/`JSON_LENGTH()` 下推到 TiFlash Coprocessor 上执行 [#17651](https://github.com/pingcap/tidb/pull/17651) [#17592](https://github.com/pingcap/tidb/pull/17592)
     - 支持聚合函数 `APPROX_COUNT_DISTINCT()`，用于快速计算 `COUNT(DISTINCT)` 的近似值 [#18120](https://github.com/pingcap/tidb/pull/18120)
     - TiFlash 支持了 collation，支持相应的函数下推 [#17705](https://github.com/pingcap/tidb/pull/17705)
-    - `INFORMATION_SCHEMA.INSPECTION_RESULT` 表新增 `STATUS_ADDRESS` 列，用于展示结点的 status 地址 [#17695](https://github.com/pingcap/tidb/pull/17695)
+    - `INFORMATION_SCHEMA.INSPECTION_RESULT` 表新增 `STATUS_ADDRESS` 列，用于展示节点的 status 地址 [#17695](https://github.com/pingcap/tidb/pull/17695)
     - `MYSQL.BIND_INFO` 表新增 `SOURCE` 列，用于展示 binding 的创建方式 [#17587](https://github.com/pingcap/tidb/pull/17587)
     - `PERFORMANCE_SCHEMA.EVENTS_STATEMENTS_SUMMARY_BY_DIGEST` 表新增 `PLAN_IN_CACHE` 和 `PLAN_CACHE_HITS` 列，用于展示 plan cache 的使用情况 [#17493](https://github.com/pingcap/tidb/pull/17493)
-    - 新增配置项 `enable-collect-execution-info` 和会话级变量 `tidb_enable_collect_execution_info` 用于控制是否在记录 SQL 的运行时信息并打印到慢查询日志中 [#18073](https://github.com/pingcap/tidb/pull/18073) [#18072](https://github.com/pingcap/tidb/pull/18072)
-    - 新增全局变量 `tidb_slow_log_masking`，用于控制是否脱敏慢查询日志中的用户数据 [#17694](https://github.com/pingcap/tidb/pull/17694)
+    - 新增配置项 `enable-collect-execution-info` 和会话级变量 `tidb_enable_collect_execution_info` 用于控制是否记录算子的执行信息并打印到慢查询日志中 [#18073](https://github.com/pingcap/tidb/pull/18073) [#18072](https://github.com/pingcap/tidb/pull/18072)
+    - 新增全局变量 `tidb_slow_log_masking`，用于控制是否脱敏慢查询日志中的查询 [#17694](https://github.com/pingcap/tidb/pull/17694)
     - 增加对 TiKV 配置项 `storage.block-cache.capacity` 的诊断规则 [#17671](https://github.com/pingcap/tidb/pull/17671)
 
 + TiKV
@@ -62,7 +62,7 @@ TiDB 版本：4.0.2
 
 + TiDB
 
-    - 降低当集群中 CM-Sketch 占用过多内存时，golang 内存分配带来的查询延迟 [#17545](https://github.com/pingcap/tidb/pull/17545)
+    - 降低当集群中 CM-Sketch 占用过多内存时，Golang 内存分配带来的查询延迟 [#17545](https://github.com/pingcap/tidb/pull/17545)
     - 缩短 TiKV 故障恢复时集群 QPS 的恢复时间 [#17681](https://github.com/pingcap/tidb/pull/17681)
     - 为 partition 表上的查询支持聚合函数下推到 TiKV 或者 TiFlash coprocessor [#17655](https://github.com/pingcap/tidb/pull/17655)
     - 提升索引上等值条件的行数估算准确度 [#17611](https://github.com/pingcap/tidb/pull/17611)
