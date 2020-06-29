@@ -213,6 +213,8 @@ tiup playground --pd.config pd_config.toml
 
 修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
 
+{{< copyable "yaml" >}}
+
 ```yaml
 server_configs:
   pd:
