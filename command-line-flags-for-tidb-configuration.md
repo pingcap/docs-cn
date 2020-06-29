@@ -39,6 +39,11 @@ When you start the TiDB cluster, you can use command-line options or environment
 - The TiDB server monitors this address.
 - The "0.0.0.0" address monitors all network cards by default. If you have multiple network cards, specify the network card that provides service, such as `192.168.100.113`.
 
+## `--enable-binlog`
+
++ Enables or disables TiDB binlog generation
++ Default: false
+
 ## `-L`
 
 - The log level
@@ -151,3 +156,33 @@ When you start the TiDB cluster, you can use command-line options or environment
 
 - Outputs the version of TiDB
 - Default: ""
+
+## `--plugin-dir`
+
++ The storage directory for plugins.
++ Default: "/data/deploy/plugin"
+
+## `--plugin-load`
+
++ The names of the plugins to be loaded, each separated by a comma.
++ Default: ""
+
+## `--affinity-cpus`
+
++ Sets the CPU affinity of TiDB servers, which is separated by commas. For example, "1,2,3".
++ Default: ""
+
+## `--repair-mode`
+
++ Determines whether to enable the repair mode, which is only used in the data repair scenario.
++ Default: false
+
+## `--repair-list`
+
++ The names of the tables to be repaired in the repair mode.
++ Default: ""
+
+## `--require-secure-transport`
+
++ Determines whether to require the client to use the secure mode for data transport.
++ Default: false

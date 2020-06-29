@@ -396,6 +396,12 @@ Usage of statements:
 - If you upgrade from a TiDB version earlier than 4.0.0 to 4.0.0, the format version is not changed, and TiDB continues to use the old format of version `1` to write data to the table, which means that **only newly created clusters use the new data format by default**.
 - Note that modifying this variable does not affect the old data that has been saved, but applies the corresponding version format only to the newly written data after modifying this variable.
 
+### tidb_record_plan_in_slow_log
+
+- Scope: SESSION
+- Default value: `1`
+- Controls whether to include the execution plan of slow queries in the slow log.
+
 ## tidb_slow_log_threshold
 
 - Scope: SESSION
