@@ -98,9 +98,9 @@ addr = "172.16.31.10:8287"
 #region-split-size = 100_663_296
 # 当后端是 “local” 时，一次请求中发送的 KV 数量。
 #send-kv-pairs = 32768
-# 当后端是 “local” 时，本地进行 KV 排序的路径。最好跟设置成跟 `data-source-dir` 不同的磁盘中，可以有效提升性能。
+# 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘中，可有效提升导入性能。
 #sorted-kv-dir = ""
-# 当后端是 “local” 时，写 tikv 的区间并发度，当 lightning 和 tikv 直接网络传输速度达到万兆的时候，可以适当增加这个值。
+# 当后端是 “local” 时，tikv 写入 kv 数据的并发度，当 lightning 和 tikv 直接网络传输速度超过万兆的时候，可以适当增加这个值。
 #range-concurrency = 16
 
 [mydumper]
@@ -109,7 +109,7 @@ read-block-size = 65536 # Byte (默认为 64 KB)
 
 # （源数据文件）单个导入区块大小的最小值。
 # Lightning 根据该值将一张大表分割为多个数据引擎文件。
-batch-size = 107_374_182_400 # Byte (默认为 100 GB)
+# batch-size = 107_374_182_400 # Byte (默认为 100 GB)
 
 # 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，
 # 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，Lightning
