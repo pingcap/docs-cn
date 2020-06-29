@@ -310,4 +310,4 @@ TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用�
 
 > **注意：**
 >
-> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将其分享给 PingCAP 用于改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](/telemetry.md)章节。
+> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](/telemetry.md)章节。

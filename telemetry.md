@@ -5,13 +5,15 @@ category: reference
 
 # 遥测
 
-TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将其分享给 PingCAP 用于改善产品，例如，通过这些使用情况信息，PingCAP 可以了解常见的 TiDB 集群规模，从而确定新功能优先级。
+TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品，例如，通过这些使用情况信息，PingCAP 可以了解常见的 TiDB 集群规模，从而确定新功能优先级。
 
 ## 哪些使用情况信息会被收集？
 
-收集的使用情况信息包括集群的部署情况、硬件情况及操作情况等。以下具体描述了各个组件收集并分享的使用情况信息。若收集的使用情况信息有变化，将在版本更新说明中告知。
+以下具体描述了各个组件收集并分享的使用情况信息。若收集的使用情况信息有变化，将在版本更新说明中告知。
 
-在任何情况下，集群中用户存储的数据都不会被收集。另请参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)。
+> **注意：**
+>
+> 在**任何情况**下，集群中用户存储的数据都**不会**被收集。另请参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)。
 
 ### TiDB
 
@@ -21,6 +23,8 @@ TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将其分�
 - 集群的部署情况，包括各个组件所在的硬件信息（CPU、内存、磁盘）、组件版本号、操作系统版本号等
 
 可以通过执行以下 SQL 语句查看 TiDB 收集的使用情况信息内容：
+
+{{< copyable "sql" >}}
 
 ```sql
 ADMIN SHOW TELEMETRY;
@@ -42,9 +46,11 @@ ADMIN SHOW TELEMETRY;
 
 - 随机生成的遥测标示符
 - TiUP 命令的执行情况，如命令执行是否成功、命令执行耗时等
-- 使用 TiUP 进行部署情况，如部署的目标机器硬件信息、组件版本号、修改过的部署配置名称等
+- 使用 TiUP 进行部署的情况，如部署的目标机器硬件信息、组件版本号、修改过的部署配置名称等
 
 使用 TiUP 时，可通过设置 `TIUP_CLUSTER_DEBUG=enable` 环境变量输出执行命令时收集的使用情况信息，例如：
+
+{{< copyable "shell" >}}
 
 ```bash
 TIUP_CLUSTER_DEBUG=enable tiup cluster list
@@ -63,6 +69,8 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 创建配置文件 `tidb_config.toml` 包含如下内容：
 
+{{< copyable "toml" >}}
+
 ```toml
 enable-telemetry = false
 ```
@@ -78,11 +86,15 @@ enable-telemetry = false
 
 创建配置文件 `tidb_config.toml` 包含如下内容：
 
+{{< copyable "toml" >}}
+
 ```toml
 enable-telemetry = false
 ```
 
 启动 TiUP Playground 时，指定命令行参数 `--db.config tidb_config.toml` 使得该配置生效，如：
+
+{{< copyable "shell" >}}
 
 ```bash
 tiup playground --db.config tidb_config.toml
@@ -96,6 +108,8 @@ tiup playground --db.config tidb_config.toml
   <summary>通过 TiUP Cluster 部署</summary>
 
 修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+
+{{< copyable "yaml" >}}
 
 ```yaml
 server_configs:
@@ -137,6 +151,8 @@ enable-telemetry: false
 
 对于已部署的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry) 动态禁用 TiDB 遥测功能：
 
+{{< copyable "sql" >}}
+
 ```sql
 SET GLOBAL tidb_enable_telemetry = 0;
 ```
@@ -154,6 +170,8 @@ SET GLOBAL tidb_enable_telemetry = 0;
 
 创建配置文件 `pd_config.toml` 包含如下内容：
 
+{{< copyable "toml" >}}
+
 ```toml
 [dashboard]
 disable-telemetry = true
@@ -170,12 +188,16 @@ disable-telemetry = true
 
 创建配置文件 `pd_config.toml` 包含如下内容：
 
+{{< copyable "toml" >}}
+
 ```toml
 [dashboard]
 disable-telemetry = true
 ```
 
 启动 TiUP Playground 时，指定命令行参数 `--pd.config pd_config.toml` 使得该配置生效，如：
+
+{{< copyable "shell" >}}
 
 ```bash
 tiup playground --pd.config pd_config.toml
@@ -234,6 +256,8 @@ dashboard:
 
 可通过执行以下命令禁用 TiUP 遥测功能：
 
+{{< copyable "shell" >}}
+
 ```bash
 tiup telemetry disable
 ```
@@ -247,6 +271,8 @@ TiDB、TiDB Dashboard、TiUP 分享的使用情况信息中都包含一个随机
 ### 重置 TiDB 遥测标示符
 
 可以通过执行以下 SQL 语句生成一个新的 TiDB 遥测标示符：
+
+{{< copyable "sql" >}}
 
 ```sql
 ADMIN RESET TELEMETRY_ID;
@@ -263,6 +289,8 @@ ADMIN RESET TELEMETRY_ID;
 
 可通过执行以下命令生成一个新的 TiUP 遥测标示符：
 
+{{< copyable "shell" >}}
+
 ```bash
 tiup telemetry reset
 ```
@@ -271,6 +299,8 @@ tiup telemetry reset
 
 对于 TiDB 遥测，可通过执行以下 SQL 语句查看遥测状态：
 
+{{< copyable "sql" >}}
+
 ```sql
 ADMIN SHOW TELEMETRY;
 ```
@@ -278,6 +308,8 @@ ADMIN SHOW TELEMETRY;
 若 `DATA_PREVIEW` 列为空，说明遥测没有开启，否则说明遥测已开启。还可以从 `LAST_STATUS` 列了解上次分享使用情况信息的时间、是否成功等。
 
 对于 TiUP 遥测，可通过执行以下命令查看遥测状态：
+
+{{< copyable "shell" >}}
 
 ```bash
 tiup telemetry status
