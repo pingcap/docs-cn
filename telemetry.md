@@ -10,7 +10,7 @@ TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些�
 
 ## 哪些使用情况信息会被收集？
 
-以下具体描述了各个组件收集并分享的使用情况信息。若收集的使用情况信息有变化，将在版本更新说明中告知。
+以下章节具体描述了各个组件收集并分享的使用情况信息。若收集的使用情况信息有变化，将在版本更新说明中告知。
 
 > **注意：**
 >
@@ -53,7 +53,7 @@ ADMIN SHOW TELEMETRY;
 
 {{< copyable "shell-regular" >}}
 
-```bash
+```shell
 TIUP_CLUSTER_DEBUG=enable tiup cluster list
 ```
 
@@ -70,6 +70,8 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 创建配置文件 `tidb_config.toml` 包含如下内容：
 
+{{< copyable "" >}}
+
 ```toml
 enable-telemetry = false
 ```
@@ -85,6 +87,8 @@ enable-telemetry = false
 
 创建配置文件 `tidb_config.toml` 包含如下内容：
 
+{{< copyable "" >}}
+
 ```toml
 enable-telemetry = false
 ```
@@ -93,7 +97,7 @@ enable-telemetry = false
 
 {{< copyable "shell-regular" >}}
 
-```bash
+```shell
 tiup playground --db.config tidb_config.toml
 ```
 
@@ -105,6 +109,8 @@ tiup playground --db.config tidb_config.toml
   <summary>通过 TiUP Cluster 部署</summary>
 
 修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+
+{{< copyable "" >}}
 
 ```yaml
 server_configs:
@@ -165,6 +171,8 @@ SET GLOBAL tidb_enable_telemetry = 0;
 
 创建配置文件 `pd_config.toml` 包含如下内容：
 
+{{< copyable "" >}}
+
 ```toml
 [dashboard]
 disable-telemetry = true
@@ -181,6 +189,8 @@ disable-telemetry = true
 
 创建配置文件 `pd_config.toml` 包含如下内容：
 
+{{< copyable "" >}}
+
 ```toml
 [dashboard]
 disable-telemetry = true
@@ -190,7 +200,7 @@ disable-telemetry = true
 
 {{< copyable "shell-regular" >}}
 
-```bash
+```shell
 tiup playground --pd.config pd_config.toml
 ```
 
@@ -202,6 +212,8 @@ tiup playground --pd.config pd_config.toml
   <summary>通过 TiUP Cluster 部署</summary>
 
 修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+
+{{< copyable "" >}}
 
 ```yaml
 server_configs:
@@ -249,7 +261,7 @@ dashboard:
 
 {{< copyable "shell-regular" >}}
 
-```bash
+```shell
 tiup telemetry disable
 ```
 
@@ -269,7 +281,7 @@ ADMIN SHOW TELEMETRY;
 
 {{< copyable "shell-regular" >}}
 
-```bash
+```shell
 tiup telemetry status
 ```
 
