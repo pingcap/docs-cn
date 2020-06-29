@@ -101,6 +101,16 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/
 - [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)
 
     以典型的 `两地三中心` 架构为例，介绍跨机房部署架构，以及需要注意的关键设置。
+    
+> **配置编写说明：**
+>
+> - 对于需要全局生效的参数，请在配置文件中 `server_configs` 的对应组件下配置；
+>
+> - 对于需要某个节点生效的参数，请在具体节点的 `config` 中配置；
+>
+> - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)；
+>
+> - 更多参数说明，请参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 、 [pd `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [tiflash config](https://docs.pingcap.com/zh/tidb/v4.0/tiflash-configuration)
 
 ## 第 4 步：执行部署命令
 
