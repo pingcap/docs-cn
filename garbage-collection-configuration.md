@@ -94,7 +94,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 ## `tikv_gc_scan_lock_mode`
 
-> **注意：**
+> **警告：**
 >
 > Green GC 目前是实验性功能，不建议在生产环境中使用。
 
