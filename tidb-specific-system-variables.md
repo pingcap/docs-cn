@@ -956,4 +956,4 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 默认值: 1
 
-这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 0 可以关闭 TiDB 遥测功能。当所有 TiDB 都有设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry) 为 `false` 时将忽略该系统变量、总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)章节了解该功能详情。
+这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 0 可以关闭 TiDB 遥测功能。当所有 TiDB 都有设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry) 为 `false` 时将忽略该系统变量、总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。

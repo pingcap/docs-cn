@@ -297,4 +297,4 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 + 是否禁用 TiDB Dashboard 遥测功能。
 + 默认：false
-+ 参阅[遥测](/telemetry.md)章节了解该功能详情。
++ 参阅[遥测](/telemetry.md)了解该功能详情。
