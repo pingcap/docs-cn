@@ -43,7 +43,7 @@ TiDB 版本：4.0.2
 
 + TiKV
 
-    - TiKV Control 支持 encryption-meta 命令 [#8103](https://github.com/tikv/tikv/pull/8103)
+    - TiKV Control 支持 `encryption-meta` 命令 [#8103](https://github.com/tikv/tikv/pull/8103)
     - 增加 `RocksDB::WriteImpl` 相关的 perf context 监控 [#7991](https://github.com/tikv/tikv/pull/7991)
 
 + PD
