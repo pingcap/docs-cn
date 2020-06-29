@@ -124,9 +124,10 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 </details>
 
 <details>
-  <summary>通过 TiDB Operator 在 K8S 部署</summary>
+  <summary>通过 TiDB Operator 在 Kubernetes 部署</summary>
 
-  TODO
+  在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Restource 中配置 `spec.tidb.config.enable-telemetry: false`。
+  详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
 </details>
 
 ### 动态禁用 TiDB 遥测
@@ -216,9 +217,10 @@ SET GLOBAL tidb_enable_telemetry = 0;
 </details>
 
 <details>
-  <summary>通过 TiDB Operator 在 K8S 部署</summary>
+  <summary>通过 TiDB Operator 在 Kubernetes 部署</summary>
 
-  TODO
+  在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Restource 中配置 `spec.pd.config.dashboard.disable-telemetry: true`。
+  详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
 </details>
 
 ### 禁用 TiUP 遥测
