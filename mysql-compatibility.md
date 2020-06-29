@@ -35,7 +35,6 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 * `CREATE TEMPORARY TABLE` 语法
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
-* `SELECT INTO FILE` 语法
 
 ## 与 MySQL 有差异的特性详细说明
 
@@ -206,4 +205,4 @@ mysql> select _tidb_rowid, id from t;
 
 + 不支持 SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)。
 
-+ 不支持 SQL_TSI_* （包括 SQL_TSI_YEAR、SQL_TSI_MONTH、SQL_TSI_WEEK、SQL_TSI_DAY、SQL_TSI_HOUR、SQL_TSI_MINUTE 和 SQL_TSI_SECOND）。
++ 不支持 `SQL_TSI_*`（包括 SQL_TSI_YEAR、SQL_TSI_MONTH、SQL_TSI_WEEK、SQL_TSI_DAY、SQL_TSI_HOUR、SQL_TSI_MINUTE 和 SQL_TSI_SECOND）。
