@@ -47,6 +47,7 @@ TiDB 版本：4.0.2
     - 增加 `RocksDB::WriteImpl` 相关的 perf context 监控 [#7991](https://github.com/tikv/tikv/pull/7991)
 
 + PD
+
     - 对 leader 执行 `remove-peer` 操作时，让这个 operator 不等待超时，立刻失败 [#2551](https://github.com/pingcap/pd/pull/2551)
     - 对 TiFlash 节点设置更合理的 store limit 配置默认值 [#2559](https://github.com/pingcap/pd/pull/2559)
 
@@ -66,14 +67,15 @@ TiDB 版本：4.0.2
     - 为 partition 表上的查询支持聚合函数下推到 TiKV 或者 TiFlash coprocessor [#17655](https://github.com/pingcap/tidb/pull/17655)
     - 提升索引上等值条件的行数估算准确度 [#17611](https://github.com/pingcap/tidb/pull/17611)
 
++ TiKV
+    - 优化 PD client panic 日志信息。 [#8093](https://github.com/tikv/tikv/pull/8093)
+    - 重新加回 `process_cpu_seconds_total` 和 `process_start_time_seconds` 监控。[#8029](https://github.com/tikv/tikv/pull/8029)
+
 + TiFlash
 
     - 提升从旧版本升级时的兼容性
     - 降低 delta index 的内存使用量
     - 使用更高效的 delta index update 算法
-+ TiKV
-    - 优化 PD client panic 日志信息。 [#8093](https://github.com/tikv/tikv/pull/8093)
-    - 重新加回 `process_cpu_seconds_total` 和 `process_start_time_seconds` 监控。[#8029](https://github.com/tikv/tikv/pull/8029)
  
 ## Bug 修复
 
