@@ -265,39 +265,6 @@ dashboard:
 tiup telemetry disable
 ```
 
-## 重置遥测标示符
-
-TiDB、TiDB Dashboard、TiUP 分享的使用情况信息中都包含一个随机生成的遥测标示符。这个标示符用于区分不同的集群或操作者。
-
-如果需要重置并生成新的遥测标示符，方法如下。
-
-### 重置 TiDB 遥测标示符
-
-可以通过执行以下 SQL 语句生成一个新的 TiDB 遥测标示符：
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN RESET TELEMETRY_ID;
-```
-
-### 重置 TiDB Dashboard 遥测标示符
-
-访问 TiDB Dashboard 后，可以使用 Chrome 开发者工具或 Firefox 开发者工具清除前缀为 `mp_` 的 Local Storage 项来重置 TiDB Dashboard 遥测标示符：
-
-- [使用 Chrome 开发者工具查看和编辑 Local Storage](https://developers.google.com/web/tools/chrome-devtools/storage/localstorage)
-- [使用 Firefox 开发者工具查看和编辑 Local Storage](https://developer.mozilla.org/zh-CN/docs/Tools/%E5%AD%98%E5%82%A8%E6%9F%A5%E7%9C%8B%E5%99%A8#%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8Session%E5%AD%98%E5%82%A8)
-
-### 重置 TiUP 遥测标示符
-
-可通过执行以下命令生成一个新的 TiUP 遥测标示符：
-
-{{< copyable "shell" >}}
-
-```bash
-tiup telemetry reset
-```
-
 ## 查看遥测启用状态
 
 对于 TiDB 遥测，可通过执行以下 SQL 语句查看遥测状态：
