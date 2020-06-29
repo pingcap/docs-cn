@@ -101,8 +101,6 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
       enable-telemetry: false
   ```
 
-  详情参见 TODO。
-
 </details>
 
 <details>
@@ -191,7 +189,6 @@ SET GLOBAL tidb_enable_telemetry = 0;
       dashboard.disable-telemetry: true
   ```
 
-  详情参见 TODO。
 </details>
 
 <details>
