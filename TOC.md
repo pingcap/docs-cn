@@ -210,7 +210,6 @@
     + [PD 面板](/grafana-pd-dashboard.md)
     + [TiKV 面板](/grafana-tikv-dashboard.md)
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
-  + [遥测上报](/telemetry.md)
   + 安全加固
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
@@ -453,6 +452,7 @@
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       + [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
+  + [遥测](/telemetry.md)
   + [错误码](/error-codes.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)

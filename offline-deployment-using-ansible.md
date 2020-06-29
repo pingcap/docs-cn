@@ -158,3 +158,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/offline-ansible/']
 ## 测试集群
 
 参考[测试集群](/online-deployment-using-ansible.md#测试集群)即可。
+
+> **注意：**
+>
+> TiDB 默认会定期收集使用情况信息，并将其分享给 PingCAP 用于理解和改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](/telemetry.md)章节。

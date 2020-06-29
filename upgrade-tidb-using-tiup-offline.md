@@ -25,3 +25,7 @@ export TIUP_MIRRORS=/path/to/mirror
 ## 2. 升级 TiDB 集群
 
 在更新本地镜像后，可参考[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#使用-tiup-升级-tidb)升级 TiDB 集群。
+
+> **注意：**
+>
+> TiUP 及 TiDB (v4.0.2 版本起) 默认会收集使用情况信息，并将其分享给 PingCAP 用于理解和改善产品。若要了解收集的信息详情及如何禁用这个行为，请参见[遥测](/telemetry.md)章节。

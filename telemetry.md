@@ -5,22 +5,22 @@ category: reference
 
 # 遥测
 
-TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况数据，并将其分享给 PingCAP 用于理解和改善产品，例如，通过这些使用情况数据，PingCAP 可以了解常见的 TiDB 集群规模，从而确定新功能优先级。
+TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将其分享给 PingCAP 用于理解和改善产品，例如，通过这些使用情况信息，PingCAP 可以了解常见的 TiDB 集群规模，从而确定新功能优先级。
 
-## 哪些使用情况数据会被收集？
+## 哪些使用情况信息会被收集？
 
-收集的使用情况数据包括集群的部署情况、硬件情况及操作情况等。在任何情况下，集群中的用户数据都不会被收集。名称、路径、IP 地址等则将会使用下划线或其不可逆哈希值 SHA1 代替。另请参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)。
+收集的使用情况信息包括集群的部署情况、硬件情况及操作情况等。以下具体描述了各个组件收集并分享的使用情况信息。若收集的使用情况信息有变化，将在版本更新说明中告知。
 
-以下具体描述了各个组件收集并分享的使用情况数据。若收集的使用情况数据有变化，将在版本更新说明中告知。
+在任何情况下，集群中用户存储的数据都不会被收集。另请参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)。
 
 ### TiDB
 
-当 TiDB 遥测功能开启时，TiDB 集群将会以 24 小时为周期收集使用情况数据并分享给 PingCAP，包括（但不限于）：
+当 TiDB 遥测功能开启时，TiDB 集群将会以 24 小时为周期收集使用情况信息并分享给 PingCAP，包括（但不限于）：
 
 - 随机生成的遥测标示符
 - 集群的部署情况，包括各个组件所在的硬件信息（CPU、内存、磁盘）、组件版本号、操作系统版本号等
 
-可以通过执行以下 SQL 语句查看 TiDB 收集的使用情况数据内容：
+可以通过执行以下 SQL 语句查看 TiDB 收集的使用情况信息内容：
 
 ```sql
 ADMIN SHOW TELEMETRY;
@@ -28,23 +28,23 @@ ADMIN SHOW TELEMETRY;
 
 ### TiDB Dashboard
 
-当 TiDB Dashboard 遥测功能开启时，用户在 TiDB Dashboard 网页界面上进行操作时会将使用情况数据分享给 PingCAP，包括（但不限于）：
+当 TiDB Dashboard 遥测功能开启时，用户在 TiDB Dashboard 网页界面上进行操作时会将使用情况信息分享给 PingCAP，包括（但不限于）：
 
 - 随机生成的遥测标示符
 - 界面访问情况，如访问的 TiDB Dashboard 功能页面名称
 - 用户浏览器及操作系统信息，如浏览器名称和版本号、操作系统名称、屏幕分辨率等
 
-可以使用 [Chrome 开发者工具](https://developers.google.com/web/tools/chrome-devtools)的[网络功能](https://developers.google.com/web/tools/chrome-devtools/network)或 [Firefox 开发者工具](https://developer.mozilla.org/zh-CN/docs/Tools)的[网络监视器功能](https://developer.mozilla.org/zh-CN/docs/Tools/Network_Monitor)查看 TiDB Dashboard 发送的使用情况数据内容。
+可以使用 [Chrome 开发者工具](https://developers.google.com/web/tools/chrome-devtools)的[网络功能](https://developers.google.com/web/tools/chrome-devtools/network)或 [Firefox 开发者工具](https://developer.mozilla.org/zh-CN/docs/Tools)的[网络监视器功能](https://developer.mozilla.org/zh-CN/docs/Tools/Network_Monitor)查看 TiDB Dashboard 发送的使用情况信息内容。
 
 ### TiUP
 
-当 TiUP 遥测功能开启时，执行 TiUP 命令时将会将使用情况数据分享给 PingCAP，包括（但不限于）：
+当 TiUP 遥测功能开启时，执行 TiUP 命令时将会将使用情况信息分享给 PingCAP，包括（但不限于）：
 
 - 随机生成的遥测标示符
 - TiUP 命令的执行情况，如命令执行是否成功、命令执行耗时等
 - 使用 TiUP 进行部署情况，如部署的目标机器硬件信息、组件版本号、修改过的部署配置名称等
 
-使用 TiUP 时，可通过设置 `TIUP_CLUSTER_DEBUG=enable` 环境变量输出执行命令时收集的使用情况数据，例如：
+使用 TiUP 时，可通过设置 `TIUP_CLUSTER_DEBUG=enable` 环境变量输出执行命令时收集的使用情况信息，例如：
 
 ```bash
 TIUP_CLUSTER_DEBUG=enable tiup cluster list
@@ -134,7 +134,7 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 对于已启动的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry) 动态禁用 TiDB 遥测功能：
 
 ```sql
-SET @@GLOBAL.tidb_enable_telemetry = 0;
+SET GLOBAL tidb_enable_telemetry = 0;
 ```
 
 配置文件的禁用优先级高于全局变量。若通过配置文件禁用了遥测功能，则全局变量的配置将不起作用，遥测功能总是处于关闭状态。
@@ -231,7 +231,7 @@ tiup telemetry disable
 
 ## 重置遥测标示符
 
-TiDB、TiDB Dashboard、TiUP 分享的使用情况数据中都包含一个随机生成的遥测标示符。这个标示符用于区分不同的集群或操作者。
+TiDB、TiDB Dashboard、TiUP 分享的使用情况信息中都包含一个随机生成的遥测标示符。这个标示符用于区分不同的集群或操作者。
 
 如果需要重置并生成新的遥测标示符，方法如下。
 
@@ -266,7 +266,7 @@ tiup telemetry reset
 ADMIN SHOW TELEMETRY;
 ```
 
-若 `DATA_PREVIEW` 列为空，说明遥测没有开启，否则说明遥测已开启。还可以从 `LAST_STATUS` 列了解上次分享遥测数据的时间、是否成功等。
+若 `DATA_PREVIEW` 列为空，说明遥测没有开启，否则说明遥测已开启。还可以从 `LAST_STATUS` 列了解上次分享使用情况信息的时间、是否成功等。
 
 对于 TiUP 遥测，可通过执行以下命令查看遥测状态：
 
@@ -274,11 +274,11 @@ ADMIN SHOW TELEMETRY;
 tiup telemetry status
 ```
 
-## 遥测数据合规性
+## 使用情况信息合规性
 
-为了满足不同国家或地区对于此类数据的合规性要求，使用情况数据会按照操作者的 IP 地址的不同发送到位于不同国家服务器，具体如下：
+为了满足不同国家或地区对于此类信息的合规性要求，使用情况信息会按照操作者的 IP 地址的不同发送到位于不同国家服务器，具体如下：
 
-- 当 IP 为中国大陆 IP 地址时，使用情况数据将会发送并存储于中国大陆境内的公有云服务器。
-- 当 IP 为中国大陆以外 IP 地址时，使用情况数据将会发送并存储于美国的公有云服务器。
+- 当 IP 为中国大陆 IP 地址时，使用情况信息将会发送并存储于中国大陆境内的公有云服务器。
+- 当 IP 为中国大陆以外 IP 地址时，使用情况信息将会发送并存储于美国的公有云服务器。
 
 可参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)了解详情。
