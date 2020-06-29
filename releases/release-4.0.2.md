@@ -71,7 +71,10 @@ TiDB 版本：4.0.2
     - 提升从旧版本升级时的兼容性
     - 降低 delta index 的内存使用量
     - 使用更高效的 delta index update 算法
-
++ TiKV
+    - 优化 PD client panic 日志信息。 [#8093](https://github.com/tikv/tikv/pull/8093)
+    - 重新加回 `process_cpu_seconds_total` 和 `process_start_time_seconds` 监控。[#8029](https://github.com/tikv/tikv/pull/8029)
+ 
 ## Bug 修复
 
 + TiDB
