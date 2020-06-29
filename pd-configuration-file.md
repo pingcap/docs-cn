@@ -291,7 +291,7 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 + 通过反向代理访问 TiDB Dashboard 时，配置反向代理提供服务的路径前缀。
 + 默认："/dashboard"
-+ 若不通过反向代理访问 TiDB Dashboard，请勿配置该配置项，否则可能导致 TiDB Dashboard 无法正常访问。关于该配置的详细使用场景，参见 [通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md)。
++ 若不通过反向代理访问 TiDB Dashboard，**请勿配置该配置项**，否则可能导致 TiDB Dashboard 无法正常访问。关于该配置的详细使用场景，参见[通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md)。
 
 ### `disable-telemetry`
 

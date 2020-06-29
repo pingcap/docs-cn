@@ -1,5 +1,6 @@
 ---
 title: 遥测
+summary: 介绍遥测的场景，如何禁用、重置功能和查看遥测状态。
 category: reference
 ---
 
@@ -60,9 +61,9 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 ### 部署 TiDB 时禁用 TiDB 遥测
 
-部署 TiDB 集群时，可以为每个 TiDB 配置 [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry) 设置以禁用 TiDB 遥测功能。对于已部署的集群也可以修改该配置，但需要重启 TiDB 后才能生效。
+部署 TiDB 集群时，可以为每个 TiDB 集群设置 [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry) 以禁用 TiDB 遥测功能。也可以在已部署的 TiDB 集群上修改该配置项，但需要重启集群后才能生效。
 
-以下列出了各个部署工具中进行配置修改的具体步骤。
+以下是在各个部署工具中修改遥测配置的具体步骤。
 
 <details>
   <summary>通过二进制手工部署</summary>
@@ -82,7 +83,7 @@ enable-telemetry = false
 </details>
 
 <details>
-  <summary>通过 TiUP Playground 试用修改步骤</summary>
+  <summary>通过 TiUP Playground 试用</summary>
 
 创建配置文件 `tidb_config.toml` 包含如下内容：
 
@@ -120,7 +121,7 @@ server_configs:
 </details>
 
 <details>
-  <summary>通过 Ansible 部署</summary>
+  <summary>通过 TiDB Ansible 部署</summary>
 
 找到部署配置文件 `tidb-ansible/conf/tidb.yml` 中以下内容：
 
@@ -134,12 +135,12 @@ server_configs:
 enable-telemetry: false
 ```
 
-详情参见[使用 Ansible 部署](/online-deployment-using-ansible.md)。
+详情参见[使用 TiDB Ansible 部署](/online-deployment-using-ansible.md)。
 
 </details>
 
 <details>
-  <summary>通过 TiDB Operator 在 Kubernetes 部署</summary>
+  <summary>通过 TiDB Operator 在 Kubernetes 上部署</summary>
 
 在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.tidb.config.enable-telemetry: false`。
 
@@ -163,7 +164,7 @@ SET GLOBAL tidb_enable_telemetry = 0;
 
 可以修改 PD 配置中 [`dashboard.disable-telemetry = true`](/pd-configuration-file.md#disable-telemetry) 禁用 TiDB Dashboard 遥测功能。对于已启动的集群，该配置需要重启后才能生效。
 
-以下列出了各个部署工具中进行配置修改的具体步骤。
+以下列出在各个部署工具中修改遥测配置的具体步骤。
 
 <details>
   <summary>通过二进制手工部署</summary>
@@ -221,7 +222,7 @@ server_configs:
 </details>
 
 <details>
-  <summary>通过 Ansible 部署</summary>
+  <summary>通过 TiDB Ansible 部署</summary>
 
 找到部署配置文件 `tidb-ansible/conf/pd.yml` 中以下内容：
 
@@ -239,12 +240,12 @@ dashboard:
   disable-telemetry: true
 ```
 
-详情参见[使用 Ansible 部署](/online-deployment-using-ansible.md)。
+详情参见[使用 TiDB Ansible 部署](/online-deployment-using-ansible.md)。
 
 </details>
 
 <details>
-  <summary>通过 TiDB Operator 在 Kubernetes 部署</summary>
+  <summary>通过 TiDB Operator 在 Kubernetes 上部署</summary>
 
 在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.pd.config.dashboard.disable-telemetry: true`。
 
@@ -317,9 +318,9 @@ tiup telemetry status
 
 ## 使用情况信息合规性
 
-为了满足不同国家或地区对于此类信息的合规性要求，使用情况信息会按照操作者的 IP 地址的不同发送到位于不同国家服务器，具体如下：
+为了满足不同国家或地区对于此类信息的合规性要求，使用情况信息会按照不同的操作者 IP 地址发送到位于不同国家的服务器，具体如下：
 
-- 当 IP 为中国大陆 IP 地址时，使用情况信息将会发送并存储于中国大陆境内的公有云服务器。
-- 当 IP 为中国大陆以外 IP 地址时，使用情况信息将会发送并存储于美国的公有云服务器。
+- 若为中国大陆 IP 地址，使用情况信息将会发送并存储于中国大陆境内的公有云服务器。
+- 若为中国大陆以外 IP 地址，使用情况信息将会发送并存储于美国的公有云服务器。
 
 可参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)了解详情。
