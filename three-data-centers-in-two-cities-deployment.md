@@ -20,7 +20,6 @@ TiDB 分布式数据库通过 Raft 算法原生支持两地三中心架构的建
 
 本例中，北京有两个机房 IDC1 和 IDC2，异地西安一个机房 IDC3。北京同城两机房之间网络延迟低于 3 ms，北京与西安之间的网络使用 ISP 专线，延迟约 20 ms。
 
-
 下图为集群部署架构图，具体如下：
 
 - 集群采用两地三中心部署方式，分别为北京 IDC1，北京 IDC2，西安 IDC3；
@@ -165,7 +164,6 @@ tikv_servers:
 
 - 启用 TiKV gRPC 消息压缩。由于涉及到集群中的数据在网络中传输，需要开启 gRPC 消息压缩，降低网络流量。
 
-
     ```
     server.grpc-compression-type: gzip
     ```
@@ -184,7 +182,6 @@ tikv_servers:
     ```
 
 - 调度设置。在集群启动后，通过 `tiup ctl pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
-
 
     ```
     config set max-replicas 5
