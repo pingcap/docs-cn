@@ -264,3 +264,7 @@ tiup cluster start tidb-test
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
 部署完成后，集群相关操作可参考 [cluster 命令](/tiup/tiup-cluster.md)。
+
+> **注意：**
+>
+> TiDB 和 TiUP 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
