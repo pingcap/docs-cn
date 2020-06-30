@@ -62,7 +62,7 @@ set @c = b'1000001' + b'1000001';
 {{< copyable "sql" >}}
 
 ```sql
-SELECT @a1, @a2, @t3
+SELECT @a1, @a2, @a3
 ```
 
 ```
@@ -76,7 +76,7 @@ SELECT @a1, @a2, @t3
 还可以在 `SELECT` 语句中赋值：
 
 ```sql
-SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
+SELECT @a1, @a2, @a3, @a4 := @a1+@a2+@a3;
 ```
 
 ```
