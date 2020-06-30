@@ -24,7 +24,7 @@ TiDB 版本：4.0.2
 
 ## 新更改
 
-- TiDB 及 TiDB Dashboard 默认收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品 [#18180](https://github.com/pingcap/tidb/pull/18180)。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
+- TiDB 及 TiDB Dashboard 默认收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品 [#18180](https://github.com/pingcap/tidb/pull/18180)。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档
 
 ## 新功能
 
@@ -44,7 +44,7 @@ TiDB 版本：4.0.2
     - 新增配置项 `enable-collect-execution-info` 和会话级变量 `tidb_enable_collect_execution_info` 用于控制是否记录算子的执行信息并打印到慢查询日志中 [#18073](https://github.com/pingcap/tidb/pull/18073) [#18072](https://github.com/pingcap/tidb/pull/18072)
     - 新增全局变量 `tidb_slow_log_masking`，用于控制是否脱敏慢查询日志中的查询 [#17694](https://github.com/pingcap/tidb/pull/17694)
     - 增加对 TiKV 配置项 `storage.block-cache.capacity` 的诊断规则 [#17671](https://github.com/pingcap/tidb/pull/17671)
-    - 新增 SQL 语法 backup/restore 来进行备份恢复[#15274](https://github.com/pingcap/tidb/pull/15274)
+    - 新增 SQL 语法 backup/restore 来进行备份恢复 [#15274](https://github.com/pingcap/tidb/pull/15274)
 
 + TiKV
 
@@ -80,8 +80,8 @@ TiDB 版本：4.0.2
 
 + TiKV
 
-    - 优化 PD client panic 日志信息。 [#8093](https://github.com/tikv/tikv/pull/8093)
-    - 重新加回 `process_cpu_seconds_total` 和 `process_start_time_seconds` 监控。[#8029](https://github.com/tikv/tikv/pull/8029)
+    - 优化 PD client panic 日志信息 [#8093](https://github.com/tikv/tikv/pull/8093)
+    - 重新加回 `process_cpu_seconds_total` 和 `process_start_time_seconds` 监控 [#8029](https://github.com/tikv/tikv/pull/8029)
 
 + TiFlash
 
