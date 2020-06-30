@@ -67,6 +67,7 @@
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+  + [读取历史数据](/read-historical-data.md)
   + [日常巡检](/daily-check.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
