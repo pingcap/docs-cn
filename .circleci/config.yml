@@ -33,6 +33,11 @@ jobs:
          command: |
            scripts/verify-links.sh
 
+      - run:
+         name: "Check link anchors"
+         command: |
+           scripts/verify-link-anchors.sh
+
   build:
     docker:
       - image: andelf/doc-build:0.1.9
