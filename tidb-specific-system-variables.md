@@ -587,3 +587,9 @@ set tidb_query_log_max_len = 20
     * `0`: Never send requests in batches
     * `1`: Aggregation and join requests are sent in batches
     * `2`: All coprocessor requests are sent in batches
+
+### tidb_enable_telemetry <span class="version-mark">New in v4.0.2 version</span>
+
+- Scope: GLOBAL
+- Default value: 1
+- This variable dynamically controls whether the telemetry collection in TiDB is enabled. By setting the value to `0`, the telemetry collection is disabled. If the [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry) TiDB configuration item is set to `false` on all TiDB instances, the telemetry collection is always disabled and this system variable will not take effect. See [Telemetry](/telemetry.md) for details.

@@ -29,3 +29,7 @@ This document describes how to upgrade TiDB using TiUP offline mirror. The upgra
 ## Upgrade TiDB cluster
 
 After the local mirror is updated, refer to [Upgrade TiDB Using TiUP](/upgrade-tidb-using-tiup.md) to upgrade the TiDB cluster.
+
+> **Note:**
+>
+> By default, TiUP and TiDB (starting from v4.0.2) share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).

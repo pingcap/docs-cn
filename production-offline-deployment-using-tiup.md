@@ -276,3 +276,7 @@ tiup cluster start tidb-test
 If you see the ``Deployed cluster `tidb-test` successfully`` output at the end of the log, the deployment is successful.
 
 After the deployment, see [Deploy and Maintain TiDB Using TiUP](/tiup/tiup-cluster.md) for the cluster operations.
+
+> **Note:**
+>
+> By default, TiDB and TiUP share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).

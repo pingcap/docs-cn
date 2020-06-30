@@ -414,6 +414,7 @@
       + [tiup-cluster](/tiup/tiup-cluster.md)
       + [tiup-mirror](/tiup/tiup-mirrors.md)
       + [tiup-bench](/tiup/tiup-bench.md)
+  + [Telemetry](/telemetry.md)
   + [Errors Codes](/error-codes.md)
   + [TiCDC Overview](/ticdc/ticdc-overview.md)
   + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)

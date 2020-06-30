@@ -42,7 +42,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
     ```shell
     source .bash_profile
-    ``` 
+    ```
 
 3. Start the cluster in the current session:
 
@@ -53,7 +53,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         ```shell
         tiup playground
         ```
-    
+
     - If you want to specify the TiDB version and the number of the instances of each component, run a command like this:
 
         {{< copyable "shell-regular" >}}
@@ -61,7 +61,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         ```shell
         tiup playground v4.0.0 --db 2 --pd 3 --kv 3 --monitor
         ```
-    
+
         The command downloads a v4.0.0 cluster to the local machine and starts it. `--monitor` means that the monitoring component is also deployed.
 
         To view the latest version, run `tiup list tidb`.
@@ -188,12 +188,12 @@ Other requirements for the target machine:
      ssh_port: 22
      deploy_dir: "/tidb-deploy"
      data_dir: "/tidb-data"
-     
+
     # # Monitored variables are applied to all the machines.
     monitored:
      node_exporter_port: 9100
      blackbox_exporter_port: 9115
-     
+
     server_configs:
      tidb:
        log.slow-threshold: 300
@@ -204,32 +204,32 @@ Other requirements for the target machine:
        replication.enable-placement-rules: true
      tiflash:
        logger.level: "info"
-     
+
     pd_servers:
      - host: 10.0.1.1
-     
+
     tidb_servers:
      - host: 10.0.1.1
-     
+
     tikv_servers:
      - host: 10.0.1.1
        port: 20160
        status_port: 20180
-     
+
      - host: 10.0.1.1
        port: 20161
        status_port: 20181
-     
+
      - host: 10.0.1.1
        port: 20162
        status_port: 20182
-     
+
     tiflash_servers:
      - host: 10.0.1.1
-     
+
     monitoring_servers:
      - host: 10.0.1.1
-     
+
     grafana_servers:
      - host: 10.0.1.1
     ```
@@ -273,7 +273,7 @@ Other requirements for the target machine:
         ```shell
         mysql -h 10.0.1.1 -P 4000 -u root
         ```
-    
+
     - Access the Grafana monitoring dashboard at <http://{grafana-ip}:3000>. The default username and password are both `admin`.
 
     - Access the TiDB Dashboard at <http://{pd-ip}:2379/dashboard>. The default username is `root`, and the password is empty.
@@ -285,7 +285,7 @@ Other requirements for the target machine:
         ```shell
         tiup cluster list
         ```
-    
+
     - To view the cluster topology and status:
 
          {{< copyable "shell-regular" >}}
@@ -316,3 +316,7 @@ Click to try TiDB-Wasm playground: <https://tour.tidb.io>. It takes about 10 sec
     - [Deploy TiDB online using TiUP](/production-deployment-using-tiup.md)
     - [Deploy TiDB offline using TiUP](/production-offline-deployment-using-tiup.md)
     - [Deploy TiDB on Cloud using TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/v1.1)
+
+> **Note:**
+>
+> By default, TiDB, TiUP and TiDB Dashboard share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).

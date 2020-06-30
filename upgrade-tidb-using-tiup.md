@@ -193,6 +193,10 @@ TiDB Cluster: <cluster-name>
 TiDB Version: v4.0.0
 ```
 
+> **Note:**
+>
+> By default, TiUP and TiDB (starting from v4.0.2) share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
+
 ## FAQ
 
 This section describes common problems encountered when updating the TiDB cluster using TiUP.

@@ -738,6 +738,10 @@ Because TiDB is compatible with MySQL, you must use the MySQL client to connect 
     - Address: <http://172.16.10.1:3000>
     - Default account and password: `admin`; `admin`
 
+> **Note:**
+>
+> By default, TiDB periodically shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
+
 ## Deployment FAQs
 
 This section lists the common questions about deploying TiDB using TiDB Ansible.

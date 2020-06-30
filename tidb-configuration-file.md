@@ -142,6 +142,12 @@ The TiDB configuration file supports more options than command-line parameters. 
 - Unit: byte
 - Currently, the valid value range is `[3072, 3072*4]`. MySQL and TiDB (version < v3.0.11) do not have this configuration item, but both limit the length of the newly created index. This limit in MySQL is `3072`. In TiDB (version =< 3.0.7), this limit is `3072*4`. In TiDB (3.0.7 < version < 3.0.11), this limit is `3072`. This configuration is added to be compatible with MySQL and earlier versions of TiDB.
 
+### `enable-telemetry` <span class="version-mark">New in v4.0.2</span>
+
+- Enables or disables the telemetry collection in TiDB.
+- Default value: `true`
+- When this configuration is set to `false` on all TiDB instances, the telemetry collection in TiDB is disabled and the [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry) system variable does not take effect. See [Telemetry](/telemetry.md) for details.
+
 ## Log
 
 Configuration items related to log.
