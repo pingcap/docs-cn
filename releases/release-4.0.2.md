@@ -22,6 +22,10 @@ TiDB 版本：4.0.2
 
     - 持久化 `store-limit` 配置项，弃用 `store-balance-rate` 配置 [#2557](https://github.com/pingcap/pd/pull/2557)
 
+## 新更改
+
+- TiDB 及 TiDB Dashboard 默认收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品 [#18180](https://github.com/pingcap/tidb/pull/18180)。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
+
 ## 新功能
 
 + TiDB
