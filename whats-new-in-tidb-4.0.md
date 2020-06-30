@@ -23,7 +23,7 @@ category: introduction
 
 ### TiDB Dashboard
 
-+ DBA 通过 TiDB Dashboard UI 可以快速了解集群的集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息、SQL 访问信息、诊断报告信息等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[Dashboard UI](/dashboard/dashboard-access.md)，具体信息如下：
++ DBA 通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) UI 可以快速了解集群的集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息、SQL 访问信息、诊断报告信息等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，具体信息如下：
     - Cluster Info，提供集群中所有组件，包括： TiDB、TiKV、PD、TiFlash 运行状态及其所在主机的运行状态。
     - Key Visualizer，系统可视化输出 TiDB 集群一段时间内的流量情况，用于 DBA 分析 TiDB 集群的使用模式和排查流量热点。
     - SQL Statements，记录当系统执行的所有 SQL 以及 SQL 相关的统计信息，包括：执行次数、执行时间汇总等，帮助用户快速分析系统的 SQL 执行状况，判断系统中有哪些热点 SQL 语句等。
@@ -65,7 +65,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
         - `cluster_info` 表，用于保存集群的拓扑信息。
         - `cluster_log` 表，用于保存系统的日志信息。
         - `cluster_hardware`，`cluster_systeminfo`，用于保存系统中服务器的硬件系统，操作系统信息等。
- 
+
     - 新增慢查询、诊断结果、性能监控等系统表，帮助 DBA 快速分析系统的性能瓶颈：
 
         - `cluster_slow_query` 表，用于记录保存全局的慢查询信息。

@@ -1,6 +1,6 @@
 ---
 title: 遥测
-summary: 介绍遥测的场景，如何禁用、重置功能和查看遥测状态。
+summary: 介绍遥测的场景，如何禁用功能和查看遥测状态。
 category: reference
 ---
 
