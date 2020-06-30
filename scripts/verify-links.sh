@@ -49,7 +49,7 @@ fi
 while read -r tasks; do
     for task in $tasks; do
         (
-            output=$(markdown-link-check --color --config "$CONFIG_TMP" "$task" -q)
+            output=$(markdown-link-check --config "$CONFIG_TMP" "$task" -q)
             if [ $? -ne 0 ]; then
                 printf "$output" >> $ERROR_REPORT
             fi
