@@ -3,7 +3,7 @@ version: 2
 jobs:
   lint:
     docker:
-      - image: circleci/ruby:2.4.1-node
+      - image: circleci/node:lts
     working_directory: ~/pingcap/docs-cn
     steps:
       - checkout
@@ -11,6 +11,7 @@ jobs:
       - run:
           name: "Install markdownlint"
           command: |
+            sudo npm cache clean -f
             sudo npm install -g markdownlint-cli@0.17.0
 
       - run:
