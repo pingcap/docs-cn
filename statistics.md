@@ -237,13 +237,17 @@ Currently, the `SHOW STATS_HISTOGRAMS` statement returns the following 8 columns
 
 You can use the `SHOW STATS_BUCKETS` statement to view each bucket of the histogram.
 
-Syntax as follows:
+The syntax is as follows:
 
 {{< copyable "sql" >}}
 
 ```sql
 SHOW STATS_BUCKETS [ShowLikeOrWhere]
 ```
+
+The diagram is as follows:
+
+![SHOW STATS_BUCKETS](/media/sqlgram/SHOW_STATS_BUCKETS.png)
 
 This statement returns information about all the buckets. You can use `ShowLikeOrWhere` to filter the information you need.
 
