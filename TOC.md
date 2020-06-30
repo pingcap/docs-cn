@@ -406,7 +406,6 @@
     + TiFlash
       + [Overview](/tiflash/tiflash-overview.md)
       + [Use TiFlash](/tiflash/use-tiflash.md)
-      + [FAQ](/tiflash/tiflash-faq.md)
   + TiUP
     + [Overview](/tiup/tiup-overview.md)
     + [Manage TiUP Components](/tiup/manage-tiup-component.md)
