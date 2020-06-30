@@ -359,7 +359,7 @@ Query OK, 0 rows affected (0.00 sec)
 insert into t values ('A');
 Query OK, 1 row affected (0.00 sec)
 insert into t values ('a');
-ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY' # TiDB 兼容了 MySQL 的 CI collate .
+ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY' # TiDB 兼容了 MySQL 的 case insensitive collation。
 insert into t values ('a ');
 ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PADDING` 行为，与 MySQL 兼容。
 ```
