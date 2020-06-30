@@ -18,7 +18,7 @@ TiDB 分布式数据库通过 Raft 算法原生支持两地三中心架构的建
 
 本文以北京和西安为例，阐述 TiDB 分布式数据库两地三中心架构的部署模型。
 
-例中，北京有两个机房 IDC1 和 IDC2，异地西安一个机房 IDC3。北京同城两机房之间网络延迟低于 3ms，北京与西安之间的网络使用 ISP 专线，延迟约 20ms。
+例中，北京有两个机房 IDC1 和 IDC2，异地西安一个机房 IDC3。北京同城两机房之间网络延迟低于 3 ms，北京与西安之间的网络使用 ISP 专线，延迟约 20 ms。
 
 下图为集群部署架构图，具体如下：
 
@@ -51,7 +51,7 @@ TiDB 分布式数据库通过 Raft 算法原生支持两地三中心架构的建
 - 如上图所示，北京有两个机房 IDC1 和 IDC2，机房 IDC1 中有三套机架 RAC1、RAC2、RAC3，机房 IDC2 有机架 RAC4、RAC5；西安机房 IDC3 有机架 RAC6。
 - 如上图中 RAC1 机架所示，TiDB、PD 服务部署在同一台服务器上，还有两台 TiKV 服务器；每台 TiKV 服务器部署 2 个 TiKV 实例（tikv-server），RAC2、RAC4、RAC5、RAC6 类似。
 - 机架 RAC3 上安放 TiDB Server 及中控 + 监控服务器。部署 TiDB Server，用于日常管理维护、备份使用。中控 + 监控服务器上部署 TiDB Ansible、Prometheus、Grafana 以及恢复工具；
-- 另可增加备份服务器，其上部署 Mydumper 及 Dranier，Drainer 以输出 file 文件的方式将 binlog 数据保存到指定位置，实现增量备份的目的。
+- 另可增加备份服务器，其上部署 Mydumper 及 Drainer，Drainer 以输出 file 文件的方式将 binlog 数据保存到指定位置，实现增量备份的目的。
 
 ## 配置
 
@@ -129,7 +129,7 @@ alertmanager_servers:
 
 ![label 逻辑定义图](/media/three-data-centers-in-two-cities-deployment-03.png)
 
-PD 设置为 PD 设置 TiKV 部署位置等级信息。
+PD 设置中添加 TiKV label 的等级配置。
 
 ```
 server_configs:
@@ -162,7 +162,7 @@ tikv_servers:
 
 在两地三中心的架构部署中，从性能优化的角度，除了常规参数配置外，还需要对集群中相关组件参数进行调整。
 
-- 启用 tikv grpc消息压缩 由于涉及到集群中的数据在网络中传输，需要开启 gRPC 消息压缩，降低网络流量。
+- 启用 TiKV gRPC 消息压缩 由于涉及到集群中的数据在网络中传输，需要开启 gRPC 消息压缩，降低网络流量。
 
     ```
     server.grpc-compression-type: gzip
@@ -181,13 +181,13 @@ tikv_servers:
     raftstore.raft-max-election-timeout-ticks: 1200
     ```
 
-- 调度设置，在集群启动后，通过 `tiup ctl pd` 工具进行调度策略修改。修改 TiKV raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
+- 调度设置，在集群启动后，通过 `tiup ctl pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
 
     ```
     config set max-replicas 5
     ```
 
-- 禁止向异地机房调度 Raft Leader，当 Raft Leader 在异地数据中心时，会造成不必要的本地数据中心与异地数据中心间的网络消耗，同时由于网络带宽和延迟的影响，也会对 TiDB 的集群性能产生影响。需要禁用异地中心的 raft leader 的调度。
+- 禁止向异地机房调度 Raft Leader，当 Raft Leader 在异地数据中心时，会造成不必要的本地数据中心与异地数据中心间的网络消耗，同时由于网络带宽和延迟的影响，也会对 TiDB 的集群性能产生影响。需要禁用异地中心的 Raft leader 的调度。
 
     ```
     config set label-property reject-leader dc 3
