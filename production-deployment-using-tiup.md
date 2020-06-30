@@ -201,3 +201,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 
 - [TiCDC 任务管理](/ticdc/manage-ticdc.md)
 - [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
+
+> **注意：**
+>
+> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。

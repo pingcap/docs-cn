@@ -190,6 +190,10 @@ TiDB Cluster: <cluster-name>
 TiDB Version: v4.0.0
 ```
 
+> **注意：**
+>
+> TiUP 及 TiDB（v4.0.2 起）默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+
 ## 5. 升级 FAQ
 
 本部分介绍使用 TiUP 升级 TiDB 集群遇到的常见问题。
