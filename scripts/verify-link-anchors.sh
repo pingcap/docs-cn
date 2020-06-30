@@ -1,13 +1,13 @@
 #!/bin/bash
 #
 # In addition to verify-links.sh, this script additionally check anchors.
+#
+# See https://github.com/glenpike/npm-g_nosudo if you meet permission problems when executing npm install.
 
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-if ! which remark &>/dev/null; then
-    sudo npm install -g remark-cli remark-lint breeswish/remark-lint-pingcap-docs-anchor
-fi
+npm install -g remark-cli remark-lint breeswish/remark-lint-pingcap-docs-anchor
 
 echo "info: checking links anchors under $ROOT directory..."
 

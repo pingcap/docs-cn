@@ -10,13 +10,12 @@
 # - When a file was moved, all other references are required to be updated for now, even if alias are given
 #   - This is recommended because of less redirects and better anchors support.
 #
+# See https://github.com/glenpike/npm-g_nosudo if you meet permission problems when executing npm install.
 
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-if ! which markdown-link-check &>/dev/null; then
-    sudo npm install -g markdown-link-check@3.7.3
-fi
+npm install -g markdown-link-check@3.8.1
 
 VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)

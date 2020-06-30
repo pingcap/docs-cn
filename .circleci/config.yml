@@ -9,14 +9,14 @@ jobs:
       - checkout
 
       - run:
-          name: "Install markdownlint"
+          name: Setup
           command: |
-            sudo npm cache clean -f
-            sudo npm install -g markdownlint-cli@0.17.0
+            wget -O- https://raw.githubusercontent.com/glenpike/npm-g_nosudo/master/npm-g-nosudo.sh | sh
 
       - run:
-          name: "Lint dev"
-          command: markdownlint dev/
+          name: "Install markdownlint"
+          command: |
+            npm install -g markdownlint-cli@0.17.0
 
       - run:
           name: "Lint README"
