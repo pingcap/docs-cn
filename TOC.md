@@ -88,7 +88,6 @@
   + [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
   + [热点问题处理](/troubleshoot-hot-spot-issues.md)
   + [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
-  + [TiDB 内存调优](/configure-memory-usage.md)
   + [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
@@ -99,6 +98,7 @@
     + [操作系统性能参数调优](/tune-operating-system.md)
   + 软件调优
     + 配置
+      + [TiDB 内存调优](/configure-memory-usage.md)
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiKV Follower Read](/follower-read.md)
