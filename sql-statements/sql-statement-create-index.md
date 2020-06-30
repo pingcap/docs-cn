@@ -142,6 +142,17 @@ Expression indexes have the same syntax and limitations as in MySQL. They are im
 
 Currently, the optimizer can use the indexed expressions when the expressions are only in the `FIELD` clause, `WHERE` clause, and `ORDER BY` clause. The `GROUP BY` clause will be supported in future updates.
 
+## Invisible index
+
+Invisible indexes are a new feature introduced in MySQL 8.0 that sets an index to invisible so that the optimizer no longer uses this index.
+
+```sql
+CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
+CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
+```
+
+For details, see [Invisible index](/sql-statements/sql-statement-alter-index.md#invisible-index)
+
 ## Associated session variables
 
 The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size` and `tidb_ddl_reorg_priority`. Refer to [TiDB-specific system variables](/tidb-specific-system-variables.md#tidb_ddl_reorg_worker_cnt) for details.
@@ -157,6 +168,7 @@ The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
+* [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)
 * [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [EXPLAIN](/sql-statements/sql-statement-explain.md)

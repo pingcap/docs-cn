@@ -206,6 +206,7 @@
       + [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
       + [`ADMIN`](/sql-statements/sql-statement-admin.md)
       + [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
+      + [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)
       + [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       + [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       + [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)

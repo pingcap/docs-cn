@@ -61,3 +61,4 @@ This statement is understood to be fully compatible with MySQL. Any compatibilit
 * [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [SHOW INDEX](/sql-statements/sql-statement-show-index.md)
+* [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)

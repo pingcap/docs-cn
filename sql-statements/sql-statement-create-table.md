@@ -185,6 +185,7 @@ index_option:
     KEY_BLOCK_SIZE [=] value
   | index_type
   | COMMENT 'string'
+  | {VISIBLE | INVISIBLE}
 ```
 
 The `KEY_BLOCK_SIZE` in `index_option` is currently only supported in syntax.

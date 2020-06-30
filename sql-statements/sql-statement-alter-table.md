@@ -70,6 +70,7 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
+* [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
