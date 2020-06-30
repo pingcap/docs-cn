@@ -32,6 +32,10 @@ Store Limit 与 PD 其他 limit 相关的参数（如 `region-schedule-limit`，
 
 Store Limit 相关的参数可以通过 `pd-ctl` 进行设置。
 
+> **注意：**
+>
+> 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且命令有部分变化
+
 ### 查看当前 store 的 limit 设置
 
 查看当前 store 的 limit 示例如下：
@@ -42,6 +46,16 @@ Store Limit 相关的参数可以通过 `pd-ctl` 进行设置。
 store limit                         // 显示所有 store 添加 learner/peer 的速度上限 （如不设置具体类型，则显示的是添加 learner/peer 的速度）。
 store limit region-add              // 显示所有 store 添加 learner/peer 的速度上限。
 store limit region-remove           // 显示所有 store 删除 peer 的速度上限。
+```
+
+4.0.2 版本之后：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+store limit                         // 显示所有 store 添加和删除 peer 的速度上限。
+store limit add-peer                // 显示所有 store 添加 peer 的速度上限。
+store limit remove-peer             // 显示所有 store 删除 peer 的速度上限。
 ```
 
 ### 设置全部 store 的 limit
@@ -56,6 +70,16 @@ store limit all 5 region-add        // 设置所有 store 添加 learner/peer �
 store limit all 5 region-remove     // 设置所有 store 删除 peer 的速度上限为每分钟 5 个。
 ```
 
+4.0.2 版本之后：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+store limit all 5                   // 设置所有 store 添加和删除 peer 的速度上限为每分钟 5 个。
+store limit all 5 add-peer          // 设置所有 store 添加 peer 的速度上限为每分钟 5 个。
+store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个。
+```
+
 ### 设置单个 store 的 limit
 
 设置单个 store 的 limit 示例如下：
@@ -66,6 +90,16 @@ store limit all 5 region-remove     // 设置所有 store 删除 peer 的速度�
 store limit 1 5                     // 设置 store 1 添加 learner/peer 的速度上限为每分钟 5 个（如不设置具体类型，则默认设置的是添加 learner/peer 的速度）。
 store limit 1 5 region-add          // 设置 store 1 添加 learner/peer 的速度上限为每分钟 5 个。
 store limit 1 5 region-remove       // 设置 store 1 删除 peer 的速度上限为每分钟 5 个。
+```
+
+4.0.2 版本之后：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+store limit 1 5                     // 设置 store 1 添加和删除 peer 的速度上限为每分钟 5 个。
+store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个。
+store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个。
 ```
 
 ### 持久化 store limit 修改
