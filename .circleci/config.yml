@@ -11,7 +11,9 @@ jobs:
       - run:
           name: Setup
           command: |
-            wget -O- https://raw.githubusercontent.com/glenpike/npm-g_nosudo/master/npm-g-nosudo.sh | sh
+            mkdir ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
 
       - run:
           name: "Install markdownlint"
