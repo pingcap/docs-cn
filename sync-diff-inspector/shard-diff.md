@@ -6,13 +6,15 @@ aliases: ['/docs-cn/dev/reference/tools/sync-diff-inspector/shard-diff/']
 
 # 分库分表场景下的数据校验
 
-sync-diff-inspector 支持对分库分表场景进行数据校验。例如有两个 MySQL 实例，使用同步工具 DM 同步到一个 TiDB 中，场景如图所示：
-
-![shard-table-sync](/media/shard-table-sync.png)
+sync-diff-inspector 支持对分库分表场景进行数据校验。例如有多个 MySQL 实例，使用同步工具 DM 同步到一个 TiDB 中，用户可以使用 sync-diff-inspector 对上下游数据进行校验。
 
 ## 使用 table-config 进行配置
 
-使用 `table-config` 对 `table-0` 进行特殊配置，设置 `is-sharding=true`，并且在 `table-config.source-tables` 中配置上游表信息。这种配置方式需要对所有分表进行设置，适合上游分表数量较少的场景。完整的示例配置如下：
+使用 `table-config` 对 `table-0` 进行特殊配置，设置 `is-sharding=true`，并且在 `table-config.source-tables` 中配置上游表信息。这种配置方式需要对所有分表进行设置，适合上游分表数量较少，且分表的命名规则没有规律的场景。场景如图所示：
+
+![shard-table-sync-1](/media/shard-table-sync-1.png)
+
+sync-diff-inspector 完整的示例配置如下：
 
 ```toml
 # Diff Configuration.
@@ -119,7 +121,11 @@ fix-sql-file = "fix.sql"
 
 ## 使用 table-rules 进行配置
 
-当上游分表较多，且所有分表的命名都符合一定的规则时，则可以使用 `table-rules` 进行配置。完整的示例配置如下：
+当上游分表较多，且所有分表的命名都符合一定的规则时，则可以使用 `table-rules` 进行配置。场景如图所示：
+
+![shard-table-sync-2](/media/shard-table-sync-2.png)
+
+sync-diff-inspector 完整的示例配置如下：
 
 ```
 # Diff Configuration.
