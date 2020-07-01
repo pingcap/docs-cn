@@ -53,7 +53,7 @@ At the bottom layer, TiKV uses a model of replication log + State Machine to rep
 
 #### Does TiDB support distributed transactions?
 
-Yes. TiDB distributes transactions across your cluster, whether it is a few nodes in a single location or many [nodes across multiple datacenters](/geo-redundancy-deployment.md).
+Yes. TiDB distributes transactions across your cluster, whether it is a few nodes in a single location or many [nodes across multiple data centers](/multi-data-centers-in-one-city-deployment.md).
 
 Inspired by Google's Percolator, the transaction model in TiDB is mainly a two-phase commit protocol with some practical optimizations. This model relies on a timestamp allocator to assign the monotone increasing timestamp for each transaction, so conflicts can be detected. [PD](/architecture.md#placement-driver-server) works as the timestamp allocator in a TiDB cluster.
 
