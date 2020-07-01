@@ -55,18 +55,19 @@
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
-    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
-    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
     + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+  + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -97,6 +98,7 @@
     + [操作系统性能参数调优](/tune-operating-system.md)
   + 软件调优
     + 配置
+      + [TiDB 内存调优](/configure-memory-usage.md)
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiKV Follower Read](/follower-read.md)
@@ -453,6 +455,7 @@
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       + [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
+  + [遥测](/telemetry.md)
   + [错误码](/error-codes.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
