@@ -75,5 +75,5 @@ store limit 1 5 region-remove       // 设置 store 1 删除 peer 的速度上�
 {{< copyable "shell-regular" >}}
 
 ```bash
-config set store-balance-rate 20    // 将所有 store 添加 learner/peer 和删除 peer 的速度上限为每分钟 20 个
+config set store-balance-rate 20    // 将所有 store 添加 learner/peer 和删除 peer 的速度上限为每分钟 20 个。
 ```
