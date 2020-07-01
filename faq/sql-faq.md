@@ -216,7 +216,6 @@ ID 没什么规律，只要是唯一就行，不过生成的时候，是有一�
 
 TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于非整数主键或没有主键的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)中的介绍。
 
-
 ### TiKV 性能参数调优
 
 详情参考 [TiKV 性能参数调优](/tune-tikv-memory-performance.md)。
