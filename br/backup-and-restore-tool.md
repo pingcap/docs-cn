@@ -19,7 +19,7 @@ Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行�
     - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
     - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
 
-    举例，对于在 v3.1 集群备份的数据，如果在 v4.0 集群中，查询 `new_collation_enabled` 的值为 `True`，则说明集群创建时打开了 new collation 开关，此时恢复数据，可能会出错。
+    例如，数据备份在 v3.1 集群。如果恢复到 v4.0 集群中，查询恢复集群的 `new_collation_enabled` 的值为 `true`，则说明创建恢复集群时打开了 new collation 支持的开关。此时恢复数据，可能会出错。
 
 ## 推荐部署配置
 
