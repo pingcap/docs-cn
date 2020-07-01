@@ -42,6 +42,35 @@ http://192.168.0.123:2379/dashboard/
 ### 第 2 步：配置反向代理
 
 <details>
+<summary>使用 HAProxy 反向代理</summary>
+
+[HAProxy](https://www.haproxy.org/) 作为反向代理时，方法如下：
+
+1. 以在 8033 端口反向代理 TiDB Dashboard 为例，在 HAProxy 配置文件中，新增如下配置：
+
+   ```haproxy
+   frontend tidb_dashboard_front
+     bind *:8033
+     use_backend tidb_dashboard_back if { path /dashboard } or { path_beg /dashboard/ }
+
+   backend tidb_dashboard_back
+     mode http
+     server tidb_dashboard 192.168.0.123:2379
+   ```
+
+   其中 `192.168.0.123:2379` 需替换为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址中的 IP 及端口部分。
+
+   > **警告：**
+   >
+   > 请务必保留 `use_backend` 指令中的 `if` 部分，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
+
+2. 重启 HAProxy，以使配置生效。
+
+3. 测试反向代理是否生效：访问 HAProxy 所在机器的 8033 端口下 `/dashboard/` 地址，如 <http://example.com:8033/dashboard/> ，即可访问 TiDB Dashboard。
+
+</details>
+
+<details>
 <summary>使用 NGINX 反向代理</summary>
 
 [NGINX](https://nginx.org/) 作为反向代理时，方法如下：
@@ -70,35 +99,6 @@ http://192.168.0.123:2379/dashboard/
    ```
 
 3. 测试反向代理是否生效：访问 NGINX 所在机器的 8033 端口下 `/dashboard/` 地址，如 <http://example.com:8033/dashboard/> ，即可访问 TiDB Dashboard。
-
-</details>
-
-<details>
-<summary>使用 HAProxy 反向代理</summary>
-
-[HAProxy](https://www.haproxy.org/) 作为反向代理时，方法如下：
-
-1. 以在 8033 端口反向代理 TiDB Dashboard 为例，在 HAProxy 配置文件中，新增如下配置：
-
-   ```haproxy
-   frontend tidb_dashboard_front
-     bind *:8033
-     use_backend tidb_dashboard_back if { path /dashboard } or { path_beg /dashboard/ }
-
-   backend tidb_dashboard_back
-     mode http
-     server tidb_dashboard 192.168.0.123:2379
-   ```
-
-   其中 `192.168.0.123:2379` 需替换为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址中的 IP 及端口部分。
-
-   > **警告：**
-   >
-   > 请务必保留 `use_backend` 指令中的 `if` 部分，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
-
-2. 重启 HAProxy，以使配置生效。
-
-3. 测试反向代理是否生效：访问 HAProxy 所在机器的 8033 端口下 `/dashboard/` 地址，如 <http://example.com:8033/dashboard/> ，即可访问 TiDB Dashboard。
 
 </details>
 
@@ -191,45 +191,6 @@ server_configs:
 ### 第 2 步：修改反向代理配置
 
 <details>
-<summary>使用 NGINX 反向代理</summary>
-
-以 `http://example.com:8033/foo/` 为例，相应的 NGINX 配置为：
-
-```nginx
-server {
-  listen 8033;
-  location /foo/ {
-    proxy_pass http://192.168.0.123:2379/dashboard/;
-  }
-}
-```
-
-其中 `http://192.168.0.123:2379/dashboard/` 需替换为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址。
-
-> **警告：**
->
-> 请务必保留 `proxy_pass` 指令中的 `/dashboard/` 路径，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见 [提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
-
-若希望运行在根路径（如 `http://example.com:8033/`），NGINX 配置为：
-
-```nginx
-server {
-  listen 8033;
-  location / {
-    proxy_pass http://192.168.0.123:2379/dashboard/;
-  }
-}
-```
-
-修改配置并重启 NGINX 后即可生效：
-
-```shell
-sudo nginx -s reload
-```
-
-</details>
-
-<details>
 <summary>使用 HAProxy 反向代理</summary>
 
 以 `http://example.com:8033/foo/` 为例，HAProxy 配置如下：
@@ -265,5 +226,44 @@ backend tidb_dashboard_back
 ```
 
 修改配置并重启 HAProxy 后即可生效。
+
+</details>
+
+<details>
+<summary>使用 NGINX 反向代理</summary>
+
+以 `http://example.com:8033/foo/` 为例，相应的 NGINX 配置为：
+
+```nginx
+server {
+  listen 8033;
+  location /foo/ {
+    proxy_pass http://192.168.0.123:2379/dashboard/;
+  }
+}
+```
+
+其中 `http://192.168.0.123:2379/dashboard/` 需替换为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址。
+
+> **警告：**
+>
+> 请务必保留 `proxy_pass` 指令中的 `/dashboard/` 路径，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见 [提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
+
+若希望运行在根路径（如 `http://example.com:8033/`），NGINX 配置为：
+
+```nginx
+server {
+  listen 8033;
+  location / {
+    proxy_pass http://192.168.0.123:2379/dashboard/;
+  }
+}
+```
+
+修改配置并重启 NGINX 后即可生效：
+
+```shell
+sudo nginx -s reload
+```
 
 </details>
