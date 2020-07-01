@@ -65,16 +65,11 @@ Available Commands:
   update      Update tiup components to the latest version
   status      List the status of instantiated components
   clean       Clean the data of instantiated components
+  mirror      Manage a repository mirror for TiUP components
   help        Help about any command or component
 
-Available Components:
-  playground          Bootstrap a local TiDB cluster
-  client              A simple mysql client to connect TiDB
-  package             A toolbox to package tiup component
-  cluster             Deploy a TiDB cluster for production
-  mirrors             Build a local mirrors and download all selected components
-  bench               Benchmark database with different workloads
-  doc                 Online document for TiDB
+Components Manifest:
+  use "tiup list" to fetch the latest components manifest
 
 Flags:
   -B, --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
@@ -83,7 +78,7 @@ Flags:
   -h, --help                           help for tiup
       --skip-version-check             Skip the strict version check, by default a version must be a valid SemVer string
   -T, --tag string                     Specify a tag for component instance
-      --version                        version for tiup
+  -v, --version                        version for tiup
 
 Component instances with the same "tag" will share a data directory ($TIUP_HOME/data/$tag):
   $ tiup --tag mycluster playground
@@ -112,11 +107,11 @@ The output is long but you can focus on only two parts:
     - update: used to update the component version
     - status: used to view the running history of components
     - clean: used to clear the running log of components
+    - mirror: used to clone a private mirror from the official mirror
     - help: used to print out help information
 - Available components
     - playground: used to start a TiDB cluster locally
     - client: used to connect to a TiDB cluster in a local machine
-    - mirrors: used to clone a private mirror from an official mirror
     - cluster: used to deploy a TiDB cluster for production environments
     - bench: used to stress test the database
     - doc: used to open online document
@@ -129,10 +124,3 @@ The output is long but you can focus on only two parts:
 TiUP commands are implemented in TiUP's internal code and used for package management operations, while TiUP components are independent component packages installed by TiUP commands.
 
 For example, if you run the `tiup list` command, TiUP directly runs its own internal code; if you run the `tiup playground` command, TiUP first checks whether there is a local package named "playground", and if not, TiUP downloads the package from the mirror, and then run it.
-
-All TiUP commands are described in [Manage TiUP Components with TiUP Commands](/tiup/manage-tiup-component.md). All TiUP components are divided into the following topics by component:
-
-- [Quickly Deploy a Local TiDB Cluster](/tiup/tiup-playground.md): introduce the playground component
-- [Deploy and Maintain an Online TiDB Cluster](/tiup/tiup-cluster.md): introduce the cluster component
-- [Create a Private Mirror](/tiup/tiup-mirrors.md): introduce the mirrors component
-- [Stress Test TiDB Using TiUP](/tiup/tiup-bench.md): introduce the bench component

@@ -15,7 +15,7 @@ You can either download the official package, or manually pack a component packa
 
 ### Download the official TiUP offline component package
 
-Download the prepared offline mirror package at <http://download.pingcap.org> by running the following command:
+Download the prepared offline mirror package at `http://download.pingcap.org` by running the following command:
 
 {{< copyable "shell-regular" >}}
 
