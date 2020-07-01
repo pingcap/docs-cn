@@ -44,7 +44,7 @@ TiDB 版本：4.0.2
     - 新增配置项 `enable-collect-execution-info` 和会话级变量 `tidb_enable_collect_execution_info` 用于控制是否记录算子的执行信息并打印到慢查询日志中 [#18073](https://github.com/pingcap/tidb/pull/18073) [#18072](https://github.com/pingcap/tidb/pull/18072)
     - 新增全局变量 `tidb_slow_log_masking`，用于控制是否脱敏慢查询日志中的查询 [#17694](https://github.com/pingcap/tidb/pull/17694)
     - 增加对 TiKV 配置项 `storage.block-cache.capacity` 的诊断规则 [#17671](https://github.com/pingcap/tidb/pull/17671)
-    - 新增 SQL 语法 backup/restore 来进行备份恢复 [#15274](https://github.com/pingcap/tidb/pull/15274)
+    - 新增 SQL 语法 `BACKUP`/`RESTORE` 来进行数据备份恢复 [#15274](https://github.com/pingcap/tidb/pull/15274)
 
 + TiKV
 
