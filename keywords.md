@@ -61,7 +61,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 {{< tabs-panel "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" >}}
 
-<a name="A" class="letter" href="#A">A</a>
+<a id="A" class="letter" href="#A">A</a>
 
 - ACCOUNT
 - ACTION
@@ -88,7 +88,7 @@ Query OK, 0 rows affected (0.08 sec)
 - AVG
 - AVG_ROW_LENGTH
 
-<a name="B" class="letter" href="#B">B</a>
+<a id="B" class="letter" href="#B">B</a>
 
 - BACKEND
 - BACKUP
@@ -112,7 +112,7 @@ Query OK, 0 rows affected (0.08 sec)
 - BY (R)
 - BYTE
 
-<a name="C" class="letter" href="#C">C</a>
+<a id="C" class="letter" href="#C">C</a>
 
 - CACHE
 - CANCEL (R)
@@ -170,7 +170,7 @@ Query OK, 0 rows affected (0.08 sec)
 - CURRENT_USER (R)
 - CYCLE
 
-<a name="D" class="letter" href="#D">D</a>
+<a id="D" class="letter" href="#D">D</a>
 
 - DATA
 - DATABASE (R)
@@ -209,7 +209,7 @@ Query OK, 0 rows affected (0.08 sec)
 - DUPLICATE
 - DYNAMIC
 
-<a name="E" class="letter" href="#E">E</a>
+<a id="E" class="letter" href="#E">E</a>
 
 - ELSE (R)
 - ENABLE
@@ -237,7 +237,7 @@ Query OK, 0 rows affected (0.08 sec)
 - EXPLAIN (R)
 - EXTENDED
 
-<a name="F" class="letter" href="#F">F</a>
+<a id="F" class="letter" href="#F">F</a>
 
 - FALSE (R)
 - FAULTS
@@ -258,7 +258,7 @@ Query OK, 0 rows affected (0.08 sec)
 - FULLTEXT (R)
 - FUNCTION
 
-<a name="G" class="letter" href="#G">G</a>
+<a id="G" class="letter" href="#G">G</a>
 
 - GENERAL
 - GENERATED (R)
@@ -268,7 +268,7 @@ Query OK, 0 rows affected (0.08 sec)
 - GROUP (R)
 - GROUPS (R-Window)
 
-<a name="H" class="letter" href="#H">H</a>
+<a id="H" class="letter" href="#H">H</a>
 
 - HASH
 - HAVING (R)
@@ -280,7 +280,7 @@ Query OK, 0 rows affected (0.08 sec)
 - HOUR_MINUTE (R)
 - HOUR_SECOND (R)
 
-<a name="I" class="letter" href="#I">I</a>
+<a id="I" class="letter" href="#I">I</a>
 
 - IDENTIFIED
 - IF (R)
@@ -314,21 +314,21 @@ Query OK, 0 rows affected (0.08 sec)
 - ISOLATION
 - ISSUER
 
-<a name="J" class="letter" href="#J">J</a>
+<a id="J" class="letter" href="#J">J</a>
 
 - JOB (R)
 - JOBS (R)
 - JOIN (R)
 - JSON
 
-<a name="K" class="letter" href="#K">K</a>
+<a id="K" class="letter" href="#K">K</a>
 
 - KEY (R)
 - KEYS (R)
 - KEY_BLOCK_SIZE
 - KILL (R)
 
-<a name="L" class="letter" href="#L">L</a>
+<a id="L" class="letter" href="#L">L</a>
 
 - LABELS
 - LAG (R-Window)
@@ -359,7 +359,7 @@ Query OK, 0 rows affected (0.08 sec)
 - LONGTEXT (R)
 - LOW_PRIORITY (R)
 
-<a name="M" class="letter" href="#M">M</a>
+<a id="M" class="letter" href="#M">M</a>
 
 - MASTER
 - MATCH (R)
@@ -388,7 +388,7 @@ Query OK, 0 rows affected (0.08 sec)
 - MODIFY
 - MONTH
 
-<a name="N" class="letter" href="#N">N</a>
+<a id="N" class="letter" href="#N">N</a>
 
 - NAMES
 - NATIONAL
@@ -416,7 +416,7 @@ Query OK, 0 rows affected (0.08 sec)
 - NUMERIC (R)
 - NVARCHAR
 
-<a name="O" class="letter" href="#O">O</a>
+<a id="O" class="letter" href="#O">O</a>
 
 - OFFSET
 - ON (R)
@@ -434,7 +434,7 @@ Query OK, 0 rows affected (0.08 sec)
 - OUTFILE (R)
 - OVER (R-Window)
 
-<a name="P" class="letter" href="#P">P</a>
+<a id="P" class="letter" href="#P">P</a>
 
 - PACK_KEYS
 - PAGE
@@ -462,14 +462,14 @@ Query OK, 0 rows affected (0.08 sec)
 - PROFILES
 - PUMP (R)
 
-<a name="Q" class="letter" href="#Q">Q</a>
+<a id="Q" class="letter" href="#Q">Q</a>
 
 - QUARTER
 - QUERIES
 - QUERY
 - QUICK
 
-<a name="R" class="letter" href="#R">R</a>
+<a id="R" class="letter" href="#R">R</a>
 
 - RANGE (R)
 - RANK (R-Window)
@@ -513,7 +513,7 @@ Query OK, 0 rows affected (0.08 sec)
 - ROW_NUMBER (R-Window)
 - RTREE
 
-<a name="S" class="letter" href="#S">S</a>
+<a id="S" class="letter" href="#S">S</a>
 
 - SAMPLES (R)
 - SECOND
@@ -586,7 +586,7 @@ Query OK, 0 rows affected (0.08 sec)
 - SWITCHES
 - SYSTEM_TIME
 
-<a name="T" class="letter" href="#T">T</a>
+<a id="T" class="letter" href="#T">T</a>
 
 - TABLE (R)
 - TABLES
@@ -618,7 +618,7 @@ Query OK, 0 rows affected (0.08 sec)
 - TRUNCATE
 - TYPE
 
-<a name="U" class="letter" href="#U">U</a>
+<a id="U" class="letter" href="#U">U</a>
 
 - UNBOUNDED
 - UNCOMMITTED
@@ -638,7 +638,7 @@ Query OK, 0 rows affected (0.08 sec)
 - UTC_TIME (R)
 - UTC_TIMESTAMP (R)
 
-<a name="V" class="letter" href="#V">V</a>
+<a id="V" class="letter" href="#V">V</a>
 
 - VALIDATION
 - VALUE
@@ -652,7 +652,7 @@ Query OK, 0 rows affected (0.08 sec)
 - VIRTUAL (R)
 - VISIBLE
 
-<a name="W" class="letter" href="#W">W</a>
+<a id="W" class="letter" href="#W">W</a>
 
 - WARNINGS
 - WEEK
@@ -665,16 +665,16 @@ Query OK, 0 rows affected (0.08 sec)
 - WITHOUT
 - WRITE (R)
 
-<a name="X" class="letter" href="#X">X</a>
+<a id="X" class="letter" href="#X">X</a>
 
 - X509
 - XOR (R)
 
-<a name="Y" class="letter" href="#Y">Y</a>
+<a id="Y" class="letter" href="#Y">Y</a>
 
 - YEAR
 - YEAR_MONTH (R)
 
-<a name="Z" class="letter" href="#Z">Z</a>
+<a id="Z" class="letter" href="#Z">Z</a>
 
 - ZEROFILL (R)

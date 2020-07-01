@@ -67,6 +67,7 @@
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+  + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -97,6 +98,7 @@
     + [操作系统性能参数调优](/tune-operating-system.md)
   + 软件调优
     + 配置
+      + [TiDB 内存调优](/configure-memory-usage.md)
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiKV Follower Read](/follower-read.md)
