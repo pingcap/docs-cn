@@ -84,7 +84,7 @@ fix-sql-file = "fix.sql"
     # 源数据库实例的 id
     instance-id = "MySQL-1"
     schema = "test"
-    table  = "table-2"
+    table  = "test-2"
 
     [[table-config.source-tables]]
     # 源数据库实例的 id
