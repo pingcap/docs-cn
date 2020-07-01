@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
     - Dumpling 输出文件
     - 其他格式兼容的 CSV 文件
 - 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning/)
+- Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning)
 
 > **注意：**
 >
@@ -48,7 +48,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 - [备份输出和恢复输入的文件类型](/br/backup-and-restore-tool.md#备份文件类型)：SST + `backupmeta` 文件
 - 适用 TiDB 版本：v3.1 及 v4.0
-- Kubernetes 支持：[使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br/), [使用 BR 工具恢复 S3 兼容存储上的备份数据](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br/)
+- Kubernetes 支持：[使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/backup-to-aws-s3-using-br), [使用 BR 工具恢复 S3 兼容存储上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/restore-from-aws-s3-using-br)
 
 ## TiDB 增量日志同步
 
@@ -59,11 +59,11 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 - TiDB Binlog 的输入：TiDB 集群
 - TiDB Binlog 的输出：TiDB 集群、MySQL、Kafka 或者增量备份文件
 - 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[TiDB Binlog 运维文档](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-binlog/)，[Kubernetes 上的 TiDB Binlog Drainer 配置](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer/)
+- Kubernetes 支持：[TiDB Binlog 运维文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-tidb-binlog)，[Kubernetes 上的 TiDB Binlog Drainer 配置](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/configure-tidb-binlog-drainer)
 
 ## 数据迁入
 
-[TiDB Data Migration (DM)](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
 
 基本信息：
 

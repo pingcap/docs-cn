@@ -43,7 +43,7 @@
     + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
-  + [支持的数据迁移路径](/data-migration-route.md)
+  + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
     + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
@@ -55,18 +55,19 @@
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
-    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
-    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   + 备份与恢复
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
     + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     + 使用 BR 工具
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+  + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -97,6 +98,7 @@
     + [操作系统性能参数调优](/tune-operating-system.md)
   + 软件调优
     + 配置
+      + [TiDB 内存调优](/configure-memory-usage.md)
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiKV Follower Read](/follower-read.md)
@@ -153,6 +155,7 @@
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
+    + [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
     + [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
     + [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
     + [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
@@ -451,6 +454,7 @@
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       + [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
+  + [遥测](/telemetry.md)
   + [错误码](/error-codes.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)

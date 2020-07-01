@@ -2,7 +2,7 @@
 title: 日常巡检
 summary: 介绍 TiDB 集群需要常关注的性能指标。
 category: reference
-aliases: ['/docs-cn/dev/daily-inspection/']
+aliases: ['/docs-cn/dev/daily-inspection/','/zh/tidb/dev/daily-inspection']
 ---
 
 # 日常巡检

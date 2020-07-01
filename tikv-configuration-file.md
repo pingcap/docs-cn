@@ -995,7 +995,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `blob-file-compression`
 
-+ Blob 文件所使用的压缩算法，可选值：no, snappy, zlib, bzip2, lz4, lz4hc, zstd。
++ Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
 + 默认值：lz4
 
 ### `blob-cache-size`
