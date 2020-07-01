@@ -225,6 +225,7 @@
       + 属性
         + [AUTO_INCREMENT](/auto-increment.md)
         + [AUTO_RANDOM](/auto-random.md)
+        + [SHARD_ROW_ID_BITS](/shard_row_id_bits.md)
       + [字面值](/literal-values.md)
       + [Schema 对象名](/schema-object-names.md)
       + [关键字](/keywords.md)
