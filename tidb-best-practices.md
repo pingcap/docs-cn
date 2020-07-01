@@ -148,7 +148,7 @@ It is recommended to deploy the TiDB cluster using [TiUP](/production-deployment
 
 ### Data import
 
-To improve the write performance during the import process, you can tune TiKV's parameters as stated in [Tune TiKV Performance](/tune-tikv-performance.md).
+To improve the write performance during the import process, you can tune TiKV's parameters as stated in [Tune TiKV Memory Parameter Performance](/tune-tikv-memory-performance.md).
 
 ### Write
 
