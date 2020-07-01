@@ -146,6 +146,10 @@ enable-telemetry: false
 
 详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
 
+> **注意：**
+>
+> 该配置需使用 TiDB Operator v1.1.2 或更高版本才能生效。
+
 </details>
 
 ### 动态禁用 TiDB 遥测
@@ -252,6 +256,10 @@ dashboard:
 在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.pd.config.dashboard.disable-telemetry: true`。
 
 详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
+
+> **注意：**
+>
+> 该配置需使用 TiDB Operator v1.1.2 或更高版本才能生效。
 
 </details>
 
