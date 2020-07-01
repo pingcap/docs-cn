@@ -136,7 +136,7 @@ TiDB 版本：4.0.2
 
 + TiKV
 
-    - 修改 status server 的内存安全问题 [#8101](https://github.com/tikv/tikv/pull/8101)
+    - 修复 status server 的内存安全问题 [#8101](https://github.com/tikv/tikv/pull/8101)
     - 修复 json 数字比较的精度丢失问题 [#8087](https://github.com/tikv/tikv/pull/8087)
     - 修改错误的慢查询日志 [#8050](https://github.com/tikv/tikv/pull/8050)
     - 修复 merge 可能导致 peer 无法被移除的问题 [#8048](https://github.com/tikv/tikv/pull/8048)
