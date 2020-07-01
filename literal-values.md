@@ -5,9 +5,9 @@ summary: 本文介绍了 TiDB SQL 语句的字面值。
 aliases: ['/docs-cn/dev/reference/sql/language-structure/literal-values/']
 ---
 
-TiDB 字面值包括字符字面值、数值字面值、时间日期字面值、十六进制、二进制字面值和 NULL 字面值。以下分别对这些字面值进行一一介绍。
-
 # 字面值
+
+TiDB 字面值包括字符字面值、数值字面值、时间日期字面值、十六进制、二进制字面值和 NULL 字面值。以下分别对这些字面值进行一一介绍。
 
 ## String Literals
 
