@@ -94,9 +94,9 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 ## `tikv_gc_scan_lock_mode`
 
-> **注意：**
+> **警告：**
 >
-> 该功能目前为实验特性，不建议在生产环境中使用。
+> Green GC 目前为实验特性，不建议在生产环境中使用。
 
 设定 GC 的 Resolve Locks 阶段中，扫描锁的方式，即是否开启 Green GC（实验性特性）。Resolve Locks 阶段需要扫描整个集群的锁。在不开启 Green GC 的情况下，TiDB 会以 Region 为单位进行扫描。Green GC 提供了“物理扫描”的功能，即每台 TiKV 节点分别绕过 Raft 层直接扫描数据。该功能可以有效缓解 [Hibernate Region](/tikv-configuration-file.md#raftstorehibernate-regions-实验特性) 功能开启时，GC 唤醒全部 Region 的现象，并一定程度上提升 Resolve Locks 阶段的执行速度。
 
@@ -104,8 +104,6 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - `"physical"`：使用物理扫描的方式，即开启 Green GC。
 
 > **注意：**
->
-> Green GC 目前是实验性功能，不建议在生产环境中使用。
 > 
 > 该项配置是隐藏配置。首次开启需要执行：
 > 
