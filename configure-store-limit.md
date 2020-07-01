@@ -34,7 +34,7 @@ Store Limit 相关的参数可以通过 `pd-ctl` 进行设置。
 
 > **注意：**
 >
-> 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且命令有部分变化
+> 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且命令有部分变化。
 
 ### 查看当前 store 的 limit 设置
 
