@@ -1,7 +1,7 @@
 ---
 title: SHARD_ROW_ID_BITS
-category: reference
 summary: 介绍 TiDB 的 `SHARD_ROW_ID_BITS` 表属性。
+category: reference
 ---
 
 # SHARD_ROW_ID_BITS
