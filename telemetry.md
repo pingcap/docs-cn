@@ -146,6 +146,10 @@ Configure `spec.tidb.config.enable-telemetry: false` in `tidb-cluster.yaml` or T
 
 See [Deploy TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-operator) for details.
 
+> **Note:**
+>
+> This configuration item requires TiDB Operator v1.1.2 or later to take effect.
+
 </details>
 
 ### Disable TiDB telemetry for deployed TiDB clusters
@@ -254,6 +258,10 @@ See [Deploy TiDB Using TiDB Ansible](/online-deployment-using-ansible.md) for de
 Configure `spec.pd.config.dashboard.disable-telemetry: true` in `tidb-cluster.yaml` or TidbCluster Custom Resource.
 
 See [Deploy TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-operator) for details.
+
+> **Note:**
+>
+> This configuration item requires TiDB Operator v1.1.2 or later to take effect.
 
 </details>
 
