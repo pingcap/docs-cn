@@ -110,7 +110,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/
 >
 > - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。
 >
-> - 更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 、 [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash-configuration.md)。
+> - 更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 、 [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
 
 ## 第 4 步：执行部署命令
 
