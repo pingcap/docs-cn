@@ -8,7 +8,7 @@
 + About TiDB
   + [TiDB Introduction](/overview.md)
   + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
-  + [Key Features](/key-features.md)
+  + [Basic Features](/basic-features.md)
   + Compatibility
     + [MySQL Compatibility](/mysql-compatibility.md)
   + [TiDB Limitations](/tidb-limitations.md)
