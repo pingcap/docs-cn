@@ -69,5 +69,5 @@ store limit 1 5                     // 设置 store 1 添加 learner/peer 的速
 {{< copyable "shell-regular" >}}
 
 ```bash
-config set store-balance-rate 20    // 将所有 store 添加 learner/peer 上限为每分钟 20 个.
+config set store-balance-rate 20    // 设置所有 store 添加 learner/peer 上限为每分钟 20 个。
 ```
