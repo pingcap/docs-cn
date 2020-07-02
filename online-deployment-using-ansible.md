@@ -917,7 +917,7 @@ ansible-playbook start.yml
 
 ### You need to install jmespath prior to running json_query filter 报错
 
-1. 请参照[在中控机器上安装 TiDB Ansible 及其依赖](#在中控机器上安装-tidb-ansible-及其依赖) 在中控机上通过 `pip` 安装 TiDB Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
+1. 请参照[在中控机器上安装 TiDB Ansible 及其依赖](#第-4-步在中控机器上安装-tidb-ansible-及其依赖) 在中控机上通过 `pip` 安装 TiDB Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
 
 2. 执行以下命令，验证 `jmespath` 是否安装成功：
 
