@@ -2,6 +2,7 @@
 title: Dumpling 使用文档
 summary: 使用 Dumpling 从 TiDB 导出数据。
 category: reference
+aliases: ['/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling']
 ---
 
 # Dumpling 使用文档
