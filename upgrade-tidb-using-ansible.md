@@ -76,11 +76,7 @@ Version: 0.9.0
 mv tidb-ansible tidb-ansible-bak
 ```
 
-<<<<<<< HEAD
-[**下载 TiDB 4.0 版本对应的 TiDB Ansible**](/online-deployment-using-ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。`$tag` 需替换为选定的 TAG 版本的值，例如 `v4.0.0-rc`。
-=======
-下载 TiDB latest 版本对应的 tidb-ansible  [**下载 TiDB Ansible**](/online-deployment-using-ansible.md#第-3-步在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
->>>>>>> ac19406... Add scripts to verify anchors (#3835)
+[**下载 TiDB 4.0 版本对应的 TiDB Ansible**](/online-deployment-using-ansible.md#第-3-步在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。`$tag` 需替换为选定的 TAG 版本的值，例如 `v4.0.0-rc`。
 
 {{< copyable "shell-regular" >}}
 
