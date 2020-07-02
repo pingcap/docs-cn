@@ -65,7 +65,12 @@ aliases: ['/docs-cn/dev/reference/tools/download/']
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/dumpling-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/dumpling-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+
+> **注意：**
+>
+> 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v4.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.2-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
+> Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64 版 Dumpling.
 
 ## Syncer，Loader 和 Mydumper
 
