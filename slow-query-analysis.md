@@ -8,7 +8,7 @@ category: how-to
 1. 从大量查询中定位出哪一类查询比较慢；
 2. 分析这类慢查询的原因；
 
-第一步已经可以通过 [慢日志](/identify-slow-queries.md), [statement-summary](/statement-summary-tables.md) 等功能方便的定位，本篇博客聚焦第二步。
+第一步已经可以通过 [慢日志](/identify-slow-queries.md), [statement-summary](/statement-summary-tables.md) 等功能方便的定位，本文聚焦第二步。
 
 首先将慢查询归因成两大类：
 1. 优化器问题：如选错索引，选错 Join 类型或顺序；
