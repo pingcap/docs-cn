@@ -1,6 +1,7 @@
 ---
 title: 使用 Dumpling/TiDB Lightning 进行备份与恢复
 category: how-to
+aliases: ['/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling']
 ---
 
 # 使用 Dumpling/TiDB Lightning 进行备份与恢复
