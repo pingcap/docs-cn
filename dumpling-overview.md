@@ -14,14 +14,18 @@ category: reference
 
 * 支持导出多种数据形式，包括 SQL/CSV
 * 支持全新的 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)，筛选数据更加方便
-* 针对 TiDB 进行了更多优化，比如单条 SQL 内存限制，自动调整 GC 时间等
-* Go 语言开发，更方便进行二次开发
+* 针对 TiDB 进行了更多优化：
+  - 支持配置 TiDB 单条 SQL 内存限制
+  - 针对 TiDB v4.0.0 以上版本支持自动调整 TiDB GC 时间
+  - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能
+  - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
+
 
 ## Dumpling 简介
 
 `dumpling` 是使用 go 开发的数据备份工具，项目地址可以参考 [`dumpling`](https://github.com/pingcap/dumpling)。
 
-Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[中文使用手册](https://github.com/pingcap/dumpling/blob/master/docs/cn/user-guide.md)。
+Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看 [Dumpling 主要参数表](#Dumpling-主要参数表)。
 
 使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
@@ -205,7 +209,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 
 最后，所有的导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-tidb-backend.md) 导入回 TiDB。
 
-## 附录：Dumpling 主要参数表
+## Dumpling 主要参数表
 
 | 主要参数 | 用途 | 默认值 |
 | --------| --- | --- |
