@@ -7,24 +7,19 @@ aliases: ['/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-o
 
 # Dumpling 使用文档
 
-本文档将详细介绍如何使用 Mydumper/TiDB Lightning 对 TiDB 进行全量备份与恢复。
+本文档介绍如何使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)。该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
 
-如果需要直接备份 SST 文件（KV 对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc/ticdc-overview.md)。
+如果需要直接备份 SST 文件（键值对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc/ticdc-overview.md)。
 
-这里假定 TiDB 服务信息如下：
-
-|Name|Address|Port|User|Password|
-|----|-------|----|----|--------|
-|TiDB|127.0.0.1|4000|root|*|
-
-在这个备份恢复过程中，会用到下面的工具：
-
-- [Dumpling](/mydumper-overview.md) 从 TiDB 导出数据
-- [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据到 TiDB
-
-## 使用 Dumpling/TiDB Lightning 全量备份恢复数据
+## Dumpling 简介
 
 `dumpling` 是使用 go 开发的数据备份工具，项目地址可以参考 [`dumpling`](https://github.com/pingcap/dumpling)。
+
+Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[中文使用手册](https://github.com/pingcap/dumpling/blob/master/docs/cn/user-guide.md)。
+
+使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
+
+Dumpling 包含在 tidb-toolkit 安装包中，可[在此下载](/download-ecosystem-tools.md)。
 
 ### 需要的权限
 
