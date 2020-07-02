@@ -89,6 +89,8 @@
   + [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
   + [Troubleshoot TiFlash](/tiflash/troubleshoot-tiflash.md)
 + Performance Tuning
+  + System Tuning
+    + [Operating System Tuning](/tune-operating-system.md)
   + Software Tuning
     + Configuration
       + [Tune TiDB Memory](/configure-memory-usage.md)
