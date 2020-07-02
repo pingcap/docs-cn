@@ -5,9 +5,9 @@ summary: 本文介绍了 TiDB SQL 语句的字面值。
 aliases: ['/docs-cn/dev/reference/sql/language-structure/literal-values/']
 ---
 
-TiDB 字面值包括字符字面值、数值字面值、时间日期字面值、十六进制、二进制字面值和 NULL 字面值。以下分别对这些字面值进行一一介绍。
-
 # 字面值
+
+TiDB 字面值包括字符字面值、数值字面值、时间日期字面值、十六进制、二进制字面值和 NULL 字面值。以下分别对这些字面值进行一一介绍。
 
 ## String Literals
 
@@ -26,7 +26,7 @@ String Literals 是一个 bytes 或者 characters 的序列，两端被单引号
 "a" ' ' "string"
 ```
 
-如果 `ANSI_QUOTES` SQL MODE 开启了，那么只有单引号内的会被认为是 String Literals，对于双引号内的字符串，会被认为是一个 identifier。
+如果开启了 `ANSI_QUOTES` SQL MODE，那么只有单引号内的会被认为是 String Literals，对于双引号内的字符串，会被认为是一个 identifier。
 
 字符串分为以下两种：
 
@@ -49,7 +49,7 @@ SELECT _binary'string';
 SELECT _utf8'string' COLLATE utf8_bin;
 ```
 
-你可以使用 N'literal' 或者 n'literal' 来创建使用 national character set 的字符串，下列语句是一样的：
+你可以使用 `N'literal'` 或者 `n'literal'` 来创建使用 national character set 的字符串，下列语句是一样的：
 
 {{< copyable "sql" >}}
 
@@ -77,7 +77,7 @@ SELECT _utf8'some text';
 
 如果要在 `'` 包围的字符串中表示 `"`，或者在 `"` 包围的字符串中表示 `'`，可以不使用转义字符。
 
-更多[细节](https://dev.mysql.com/doc/refman/5.7/en/string-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/string-literals.html)。
 
 ## Numeric Literals
 
@@ -89,7 +89,7 @@ integer 可以包括 `.` 作为小数点分隔，数字前可以有 `-` 或者 `
 
 科学记数法也是被允许的，表示为如下格式：`1.2E3, 1.2E-3, -1.2E3, -1.2E-3`。
 
-更多[细节](https://dev.mysql.com/doc/refman/5.7/en/number-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/number-literals.html)。
 
 ## Date and Time Literals
 
@@ -98,9 +98,11 @@ Date 跟 Time 字面值有几种格式，例如用字符串表示，或者直接
 TiDB 的 Date 值有以下几种格式：
 
 * `'YYYY-MM-DD'` 或者 `'YY-MM-DD'`，这里的 `-` 分隔符并不是严格的，可以是任意的标点符号。比如 `'2017-08-24'`，`'2017&08&24'`， `'2012@12^31'` 都是一样的。唯一需要特别对待的是 '.' 号，它被当做是小数点，用于分隔整数和小数部分。
- Date 和 Time 部分可以被 'T' 分隔，它的作用跟空格符是一样的，例如 `2017-8-24 10:42:00` 跟 `2017-8-24T10:42:00` 是一样的。
+
+    Date 和 Time 部分可以被 'T' 分隔，它的作用跟空格符是一样的，例如 `2017-8-24 10:42:00` 跟 `2017-8-24T10:42:00` 是一样的。
+
 * `'YYYYMMDDHHMMSS'` 或者 `'YYMMDDHHMMSS'`，例如 `'20170824104520'` 和 `'170824104520'` 被当做是 `'2017-08-24 10:45:20'`，但是如果你提供了一个超过范围的值，例如`'170824304520'`，那这就不是一个有效的 Date 字面值。
-* `YYYYMMDDHHMMSS` 或者 `YYMMDDHHMMSS` 注意这里没有单引号或者双引号，是一个数字。例如 `20170824104520`表示为 `'2017-08-24 10:45:20'`。
+* `YYYYMMDDHHMMSS` 或者 `YYMMDDHHMMSS`，注意这里没有单引号或者双引号，是一个数字。例如 `20170824104520`表示为 `'2017-08-24 10:45:20'`。
 
 DATETIME 或者 TIMESTAMP 值可以接一个小数部分，用来表示微秒（精度最多到小数点后 6 位），用小数点 `.` 分隔。
 
@@ -126,7 +128,7 @@ DATETIME 或者 TIMESTAMP 值可以接一个小数部分，用来表示微秒（
 
 Time 类型的小数点也是 `.`，精度最多小数点后 6 位。
 
-更多[细节](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-literals.html)。
 
 ## Boolean Literals
 
@@ -232,7 +234,7 @@ SELECT X'54694442';
 
 ## Bit-Value Literals
 
-位值字面值用 `b` 或者 `0b` 做前缀，后接以 0 跟 1 组成的二进制数字。其中 `0b` 是区分大小写的，`0B` 则会报错。
+位值字面值用 `b` 或者 `0b` 做前缀，后接以 0 和 1 组成的二进制数字。其中 `0b` 是区分大小写的，`0B` 则会报错。
 
 合法的 Bit-value：
 
@@ -247,7 +249,7 @@ SELECT X'54694442';
 
 默认情况，位值字面值是一个二进制字符串。
 
-Bit-value 是作为二进制返回的，所以输出到 MySQL Client 可能会显示不出来，如果要转换为可打印的字符，可以使用内建函数 `BIN()` 或者 `HEX()`：
+Bit-value 是作为二进制返回的，所以输出到 MySQL Client 可能会无法显示，如果要转换为可打印的字符，可以使用内建函数 `BIN()` 或者 `HEX()`：
 
 {{< copyable "sql" >}}
 
@@ -277,7 +279,7 @@ SELECT b+0, BIN(b), HEX(b) FROM t;
 
 ## NULL Values
 
-`NULL` 代表数据为空，它是大小写不敏感的，与 `\N`(大小写敏感) 同义。
+`NULL` 代表数据为空，它是大小写不敏感的，与 `\N`（大小写敏感）同义。
 
 > **注意：**
 >
