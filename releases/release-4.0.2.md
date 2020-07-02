@@ -116,6 +116,7 @@ TiDB version: 4.0.2
     - Fix the incorrect error message of privilege check failure when access is denied [#17724](https://github.com/pingcap/tidb/pull/17724)
     - Discard the query feedbacks generated from the `DELETE`/`UPDATE` statement [#17843](https://github.com/pingcap/tidb/pull/17843)
     - Forbid altering `AUTO_RANDOM_BASE` for a table without `AUTO_RANDOM` property [#17828](https://github.com/pingcap/tidb/pull/17828)
+    - Fix the issue that the `AUTO_RANDOM` column is allocated wrong results when the table is moved between databases by `ALTER TABLE ... RENAME` [#18243](https://github.com/pingcap/tidb/pull/18243)
     - Fix the issue that some system tables cannot be accessed when setting the value of `tidb_isolation_read_engines` without `tidb` [#17719](https://github.com/pingcap/tidb/pull/17719)
     - Fix the inaccurate result of JSON comparison on large integers and float values [#17717](https://github.com/pingcap/tidb/pull/17717)
     - Fix the incorrect decimal property for the result of the `COUNT()` function [#17704](https://github.com/pingcap/tidb/pull/17704)
@@ -135,6 +136,7 @@ TiDB version: 4.0.2
     - Fix the SQL statement timeout issue when multiple Region requests fail at the same time by assigning different `Backoffer` for each Region [#17585](https://github.com/pingcap/tidb/pull/17585)
     - Fix the MySQL incompatible behavior when parsing `DateTime` delimiters [#17501](https://github.com/pingcap/tidb/pull/17501)
     - Fix the issue that TiKV requests are occasionally sent to the TiFlash server [#18105](https://github.com/pingcap/tidb/pull/18105)
+    - Fix the data inconsistency issue occurred because the lock of a written and deleted primary key in one transaction is resolved by another transaction [#18250](https://github.com/pingcap/tidb/pull/18250)
 
 + TiKV
 
