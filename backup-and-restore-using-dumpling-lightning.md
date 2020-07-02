@@ -7,7 +7,7 @@ category: how-to
 
 本文档介绍如何使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)。该工具可以把存储在 TiDB 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
 
-如果需要直接备份 SST 文件（KV 对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc/ticdc-overview.md)。
+如果需要直接备份 SST 文件（键值对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc/ticdc-overview.md)。
 
 Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[中文使用手册](https://github.com/pingcap/dumpling/blob/master/docs/cn/user-guide.md)。
 
@@ -17,7 +17,7 @@ Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[�
 
 为了快速地备份恢复数据 (特别是数据量巨大的库)，可以参考以下建议：
 
-* 导出来的数据文件应当尽可能的小，可以通过设置参数 `-F` 来控制导出来的文件大小。如果后续使用 TiDB Lightning 对备份文件进行恢复，建议把 `dumpling` -F 参数的值设置为 `256`（单位 MB）。
+* 导出来的数据文件应当尽可能的小，可以通过设置参数 `-F` 来控制导出来的文件大小。如果后续使用 TiDB Lightning 对备份文件进行恢复，建议把 `dumpling` -F 参数的值设置为 `256m`。
 * 如果导出的表中有数据表的行数非常多，可以通过设置参数 `-r` 来开启表内并发。
 
 ## 从 TiDB 备份数据
@@ -27,12 +27,12 @@ Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[�
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/dumpling -h 127.0.0.1 -P 4000 -u root -t 32 -F 256 -T test.t1 -T test.t2 -o ./var/test
+./bin/dumpling -h 127.0.0.1 -P 4000 -u root -t 32 -F 256m -T test.t1 -T test.t2 -o ./var/test
 ```
 
 上面，用 `-T test.t1 -T test.t2` 表明只导出 `test`.`t1`，`test`.`t2` 两张表。更多导出数据筛选方式可以参考[筛选导出的数据](/dumpling-overview.md#筛选导出的数据)。
 
-`-t 32` 表明使用 32 个线程去导出数据。`-F 256` 是将实际的表切分成一定大小的 chunk，这里的 chunk 大小为 256MB。
+`-t 32` 表明使用 32 个线程去导出数据。`-F 256m` 是将实际的表切分成一定大小的 chunk，这里的 chunk 大小为 256MB。
 
 如果 `dumpling` 出现以下报错：
 
