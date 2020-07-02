@@ -190,11 +190,11 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 4. `select b from t where c=3`：多列索引没有前缀条件就用不上，所以会用 `IndexFullScan`；
 5. ...
 
-上面举例了数据读入相关的算子，在[理解 TiDB 执行计划](https://pingcap.com/docs-cn/stable/query-execution-plan/)中描述了更多算子的情况；
+上面举例了数据读入相关的算子，在[理解 TiDB 执行计划](/query-execution-plan.md)中描述了更多算子的情况；
 
-另外阅读 [SQL 性能调优 ](https://pingcap.com/docs-cn/stable/sql-tuning-overview/)整个小节能增加你对 TiDB 优化器的了解，帮助判断执行计划是否合理。
+另外阅读 [SQL 性能调优](/sql-tuning-overview/)整个小节能增加你对 TiDB 优化器的了解，帮助判断执行计划是否合理。
 
-由于大多数优化器问题在 [SQL 性能调优](https://pingcap.com/docs-cn/stable/sql-tuning-overview/) 已经有解释，这里就直接列举出来跳转过去：
-1. [索引选择错误](https://pingcap.com/docs-cn/stable/wrong-index-solution/)
-2. [Join 顺序错误](https://pingcap.com/docs-cn/stable/join-reorder/)
-3. [表达式未下推](
+由于大多数优化器问题在 [SQL 性能调优](/sql-tuning-overview.md) 已经有解释，这里就直接列举出来跳转过去：
+1. [索引选择错误](/wrong-index-solution.md)
+2. [Join 顺序错误](/join-reorder.md)
+3. [表达式未下推](/blacklist-control-plan.md)
