@@ -71,4 +71,3 @@ TiFlash 监控说明，请参考 [TiFlash 监控](/tiflash/monitor-tiflash.md)
 TiFlash 报警规则，请参考 [TiFlash 报警](/tiflash/tiflash-alert-rules.md)
 
 TiFlash 常见问题处理，请参考 [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
-
