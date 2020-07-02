@@ -51,7 +51,7 @@ http://192.168.0.123:2379/dashboard/
    }
    ```
 
-   配置 `proxy_pass` 中填写的 URL 即为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址。
+   配置 `proxy_pass` 中填写的 URL 即为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-tidb-dashboard-地址)中取得的 TiDB Dashboard 实际地址。
 
    > **警告：**
    >
@@ -158,7 +158,7 @@ server {
 >
 > 请务必保留 `proxy_pass` 指令中的 `/dashboard/` 路径，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见 [提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
 
-请调整配置中 `http://192.168.0.123:2379/dashboard/` 为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址。
+请调整配置中 `http://192.168.0.123:2379/dashboard/` 为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-tidb-dashboard-地址)中取得的 TiDB Dashboard 实际地址。
 
 若希望运行在根路径（如 `http://example.com/`），NGINX 配置为：
 

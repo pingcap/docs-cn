@@ -111,7 +111,7 @@ tiup ctl pd -u http://127.0.0.1:2379 config set dashboard-address auto
 tiup cluster display CLUSTER_NAME --dashboard
 ```
 
-还可以通过手动指定哪个 PD 实例运行 TiDB Dashboard 服务的方式重新启用 TiDB Dashboard，具体操作参见上文[切换其他 PD 实例提供 TiDB Dashboard 服务](#切换其他-PD-实例提供-TiDB-Dashboard-服务)。
+还可以通过手动指定哪个 PD 实例运行 TiDB Dashboard 服务的方式重新启用 TiDB Dashboard，具体操作参见上文[切换其他 PD 实例提供 TiDB Dashboard 服务](#切换其他-pd-实例提供-tidb-dashboard-服务)。
 
 > **警告：**
 >

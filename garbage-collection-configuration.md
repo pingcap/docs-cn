@@ -132,7 +132,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - 自动并行：使用 TiKV 节点的个数作为线程数，并行地向每个 Region 发送请求。
 - 分布式：无需 TiDB 通过对 TiKV 发送请求的方式来驱动，而是每台 TiKV 自行工作。
 
-另外，如果 Green GC （实验特性）开启（即 [`tikv_gc_scan_lock_mode`](#tikv_gc_scan_lock_mode-实验特性) 配置项设为 `"physical"`），Resolve Lock 的执行将不受上述并行配置的影响。
+另外，如果 Green GC （实验特性）开启（即 [`tikv_gc_scan_lock_mode`](#tikv_gc_scan_lock_mode) 配置项设为 `"physical"`），Resolve Lock 的执行将不受上述并行配置的影响。
 
 ## 流控
 
