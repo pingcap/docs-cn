@@ -182,12 +182,12 @@ Configuration items related to scheduling
 ### `region-schedule-limit`
 
 + The number of Region scheduling tasks performed at the same time
-+ Default value: `4`
++ Default value: `2048`
 
 ### `replica-schedule-limit`
 
 + The number of Replica scheduling tasks performed at the same time
-+ Default value: `8`
++ Default value: `64`
 
 ### `merge-schedule-limit`
 
@@ -197,7 +197,7 @@ Configuration items related to scheduling
 ### `high-space-ratio`
 
 + The threshold ratio below which the capacity of the store is sufficient
-+ Default value: `0.6`
++ Default value: `0.7`
 + Minimum value: greater than `0`
 + Maximum value: less than `1`
 
@@ -211,7 +211,7 @@ Configuration items related to scheduling
 ### `tolerant-size-ratio`
 
 + Controls the `balance` buffer size
-+ Default value: `5`
++ Default value: `0` (automatically adjusts the buffer size)
 + Minimum value: `0`
 
 ### `disable-remove-down-replica`
@@ -257,6 +257,19 @@ Configuration items related to replicas
 
 + The topology information of a TiKV cluster
 + Default value: `[]`
++ [Cluster topology configuration](/location-awareness.md)
+
+### `strictly-match-label`
+
++ Enables the strict check for whether the TiKV label matches PD's `location-labels`.
++ Default value: `false`
+
+### `enable-placement-rules`
+
++ Enables `placement-rules`.
++ Default value: `false`
++ See [Placement Rules](/configure-placement-rules.md).
++ An experimental feature of TiDB 4.0.
 
 ## `label-property`
 
