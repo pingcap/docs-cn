@@ -24,7 +24,7 @@ category: reference
 
 `dumpling` 是使用 go 开发的数据备份工具，项目地址可以参考 [`dumpling`](https://github.com/pingcap/dumpling)。
 
-Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看 [Dumpling 主要参数表](#Dumpling-主要参数表)。
+Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看 [Dumpling 主要参数表](#dumpling-主要参数表)。
 
 使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
