@@ -21,6 +21,8 @@ Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看[�
 
 Dumpling 包含在 tidb-toolkit 安装包中，可[在此下载](/download-ecosystem-tools.md)。
 
+## 从 TiDB/MySQL 导出数据
+
 ### 需要的权限
 
 - SELECT
