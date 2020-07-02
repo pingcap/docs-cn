@@ -12,14 +12,13 @@ category: reference
 
 ## 相比于 Mydumper，Dumpling 有哪些改进之处？
 
-* 支持导出多种数据形式，包括 SQL/CSV
-* 支持全新的 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)，筛选数据更加方便
-* 针对 TiDB 进行了更多优化：
-  - 支持配置 TiDB 单条 SQL 内存限制
-  - 针对 TiDB v4.0.0 以上版本支持自动调整 TiDB GC 时间
-  - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能
-  - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
-
+1. 支持导出多种数据形式，包括 SQL/CSV
+2. 支持全新的 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)，筛选数据更加方便
+3. 针对 TiDB 进行了更多优化：
+    - 支持配置 TiDB 单条 SQL 内存限制
+    - 针对 TiDB v4.0.0 以上版本支持自动调整 TiDB GC 时间
+    - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能
+    - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
 ## Dumpling 简介
 
