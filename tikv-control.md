@@ -458,3 +458,60 @@ tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
 您可以通过 `--column_family=<string>` 指定查询的目标列族。
 
 通过 `--try_load_options` 命令加载数据库选项文件以打开数据库。在数据库运行时，建议您保持该命令为开启的状态。如果您使用默认配置打开数据库，LSM-tree 存储组织可能会出现混乱，且无法自动恢复。
+
+### 打印加密元数据
+
+`encryption-meta` 命令用于打印加密元数据。该子命令可以打印两种加密元数据：数据文件的加密信息，以及所有的数据加密密钥。
+
+使用 `encryption-meta dump-file` 子命令打印数据文件的加密信息。你需要创建一个 TiKV 配置文件用以指定 TiKV 的数据目录：
+
+```
+# conf.toml
+[storage]
+data-dir = "/path/to/tikv/data"
+```
+
+`--path` 选项可以指定数据文件的绝对或者相对路径。如果指定的文件是明文存储的，本命令有可能没有输出。如果不指定 `--path` 选项，本命令打印所有数据文件的加密信息。
+
+```bash
+$ tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/data/db/CURRENT
+/path/to/tikv/data/db/CURRENT: key_id: 9291156302549018620 iv: E3C2FDBF63FC03BFC28F265D7E78283F method: Aes128Ctr
+```
+
+使用 `encryption-meta dump-key` 打印数据加密密钥。使用本命令的时候，除了在 TiKV 配置文件中指定 TiKV 的数据目录以外，还需要指定当前的主加密密钥。请参阅[静态加密](https://docs.pingcap.com/tidb/v4.0/encryption-at-rest)文档关于配置 TiKV 主加密密钥的说明。使用本命令时 `security.encryption.previous-master-key` 配置项不生效，即使配置文件中使用了该配置，本命令也不会触发更换主加密密钥。
+
+```
+# conf.toml
+[storage]
+data-dir = "/path/to/tikv/data"
+
+[security.encryption.master-key]
+type = "kms"
+key-id = "0987dcba-09fe-87dc-65ba-ab0987654321"
+region = "us-west-2"
+```
+
+注意如果使用了 AWS KMS 作为主加密密钥，使用本命令时 `tikv-ctl` 需要该 KMS 密钥的访问权限。KMS 访问权限可以通过环境变量、AWS 默认配置文件或 IAM 的方式传递给 `tikv-ctl`。详情请参阅相关 AWS 文档。
+
+`--ids` 选项可以指定以逗号分隔的数据加密密钥 id 列表。如果不指定 `--ids` 选项，本命令打印所有的数据加密密钥，以及最新的数据加密密钥的 id。
+
+本命令会输出一个警告，提示本命令会泄漏敏感数据。根据提示输入 "I consent" 即可。
+
+```bash
+$ ./tikv-ctl --config=./conf.toml encryption-meta dump-key
+This action will expose encryption key(s) as plaintext. Do not output the result in file on disk.
+Type "I consent" to continue, anything else to exit: I consent
+current key id: 9291156302549018620
+9291156302549018620: key: 8B6B6B8F83D36BE2467ED55D72AE808B method: Aes128Ctr creation_time: 1592938357
+```
+
+```bash
+$ ./tikv-ctl --config=./conf.toml encryption-meta dump-key --ids=9291156302549018620
+This action will expose encryption key(s) as plaintext. Do not output the result in file on disk.
+Type "I consent" to continue, anything else to exit: I consent
+9291156302549018620: key: 8B6B6B8F83D36BE2467ED55D72AE808B method: Aes128Ctr creation_time: 1592938357
+```
+
+> **注意：**
+>
+> 本命令会以明文方式打印数据加密密钥。在生产环境中，请勿将本命令的输出重定向到磁盘文件中。即使使用以后删除该文件也不能保证文件内容从磁盘中干净清除。
