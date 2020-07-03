@@ -14,7 +14,7 @@ TiDB 版本：3.0.16
 + TiDB
 
     - 在 hash partition pruning 中支持 `is null` 过滤条件 [#17308](https://github.com/pingcap/tidb/pull/17308)
-    - 为每个 `region` 设置单独的 `Backoff` 避免多个 `region` 同时失败引起等待时间过长 [#17583](https://github.com/pingcap/tidb/pull/17583)
+    - 为每个 Region 设置单独的 `Backoffer` 避免多个 Region 同时失败引起等待时间过长 [#17583](https://github.com/pingcap/tidb/pull/17583)
     - 添加新 partition 更新已有 partition 的分裂信息 [#17668](https://github.com/pingcap/tidb/pull/17668)
     - 丢弃来自 `delete` / `update` 语句的 feedbacks [#17841](https://github.com/pingcap/tidb/pull/17841)
     - 调整 job.DecodeArgs 中 json.Unmarshal 的使用以兼容新的 Go 版本 [#17887](https://github.com/pingcap/tidb/pull/17887)
