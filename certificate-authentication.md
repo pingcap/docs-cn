@@ -259,7 +259,7 @@ First, connect TiDB using the client to configure the login verification. Then, 
 
 The user certificate information can be specified by `require subject`, `require issuer`, `require san`, and `require cipher`, which are used to check the X509 certificate attributes.
 
-+ `require subject`: Specifies the `subject` information of the client certificate when you log in. With this option specified, you do not need to configure `require ssl` or x509. The information to be specified is consistent with the entered `subject` information in [Generate client keys and certificates](#generate-client-keys-and-certificates).
++ `require subject`: Specifies the `subject` information of the client certificate when you log in. With this option specified, you do not need to configure `require ssl` or x509. The information to be specified is consistent with the entered `subject` information in [Generate client keys and certificates](#generate-client-key-and-certificate).
 
     To get this option, execute the following command:
 
@@ -502,4 +502,4 @@ Also replace the old CA certificate with the combined certificate so that the cl
     sudo openssl x509 -req -in server-req.new.pem -days 365000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.new.pem
     ```
 
-3. Configure the TiDB server to use the new server key and certificate. See [Configure TiDB server](#configure-tidb-server) for details.
+3. Configure the TiDB server to use the new server key and certificate. See [Configure TiDB server](#configure-tidb-and-the-client-to-use-certificates) for details.

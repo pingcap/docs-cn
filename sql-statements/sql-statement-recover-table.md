@@ -63,7 +63,7 @@ When you use `RECOVER TABLE` in the upstream TiDB during TiDB Binlog replication
 
 + Latency occurs during replication between upstream and downstream databases. An error instance: `snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`.
 
-For the above three situations, you can resume data replication from TiDB Binlog with a [full import of the deleted table](/ecosystem-tool-user-guide.md#full-backup-and-restore-of-tidb-cluster-data-1).
+For the above three situations, you can resume data replication from TiDB Binlog with a [full import of the deleted table](/ecosystem-tool-user-guide.md#backup-and-restore).
 
 ## Examples
 

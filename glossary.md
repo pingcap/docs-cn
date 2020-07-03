@@ -13,7 +13,7 @@ aliases: ['/docs/dev/glossary/']
 
 ACID refers to the four key properties of a transaction: atomicity, consistency, isolation, and durability. Each of these properties is described below.
 
-- **Atomicity** means that either all the changes of an operation are performed, or none of them are. TiDB ensures the atomicity of the [Region](#region) that stores the Primary Key to achieve the atomicity of transactions.
+- **Atomicity** means that either all the changes of an operation are performed, or none of them are. TiDB ensures the atomicity of the [Region](#regionpeerraft-group) that stores the Primary Key to achieve the atomicity of transactions.
 
 - **Consistency** means that transactions always bring the database from one consistent state to another. In TiDB, data consistency is ensured before writing data to the memory.
 

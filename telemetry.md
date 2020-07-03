@@ -61,7 +61,7 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 ### Disable TiDB telemetry at deployment
 
-When deploying TiDB clusters, configure [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry) to disable the TiDB telemetry collection on all TiDB instances. You can also use this setting to disable telemetry in an existing TiDB cluster, which does not take effect until you restart the cluster.
+When deploying TiDB clusters, configure [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry-new-in-v402) to disable the TiDB telemetry collection on all TiDB instances. You can also use this setting to disable telemetry in an existing TiDB cluster, which does not take effect until you restart the cluster.
 
 Detailed steps to disable telemetry in different deployment tools are listed below.
 
@@ -78,7 +78,7 @@ enable-telemetry = false
 
 Specify the `--config=tidb_config.toml` command-line parameter when starting TiDB for the configuration file above to take effect.
 
-See [TiDB Configuration Options](/command-line-flags-for-tidb-configuration.md#--config) and [TiDB Configuration File](/tidb-configuration-file.md#enable-telemetry) for details.
+See [TiDB Configuration Options](/command-line-flags-for-tidb-configuration.md#--config) and [TiDB Configuration File](/tidb-configuration-file.md#enable-telemetry-new-in-v402) for details.
 
 </details>
 
@@ -154,7 +154,7 @@ See [Deploy TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubern
 
 ### Disable TiDB telemetry for deployed TiDB clusters
 
-In existing TiDB clusters, you can also modify the system variable [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry) to dynamically disable the TiDB telemetry collection:
+In existing TiDB clusters, you can also modify the system variable [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry-new-in-v402-version) to dynamically disable the TiDB telemetry collection:
 
 {{< copyable "sql" >}}
 

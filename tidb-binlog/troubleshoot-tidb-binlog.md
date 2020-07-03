@@ -13,7 +13,7 @@ If you encounter errors while running TiDB Binlog, take the following steps to t
 
 1. Check whether each monitoring metric is normal or not. Refer to [TiDB Binlog Monitoring](/tidb-binlog/monitor-tidb-binlog-cluster.md) for details.
 
-2. Use the [binlogctl tool](/tidb-binlog/maintain-tidb-binlog-cluster.md#binlogctl-guide) to check whether the state of each Pump or Drainer node is normal or not.
+2. Use the [binlogctl tool](/tidb-binlog/binlog-control.md) to check whether the state of each Pump or Drainer node is normal or not.
 
 3. Check whether `ERROR` or `WARN` exists in the Pump log or Drainer log.
 

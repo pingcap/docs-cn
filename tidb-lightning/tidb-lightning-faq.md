@@ -61,7 +61,7 @@ If `tikv-importer` needs to be restarted:
 4. Start `tikv-importer`.
 5. Start `tidb-lightning` *and wait until the program fails with CHECKSUM error, if any*.
     * Restarting `tikv-importer` would destroy all engine files still being written, but `tidb-lightning` did not know about it. As of v3.0 the simplest way is to let `tidb-lightning` go on and retry.
-6. [Destroy the failed tables and checkpoints](/troubleshoot-tidb-lightning.md#checkpoint-for-has-invalid-status)
+6. [Destroy the failed tables and checkpoints](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status-error-code)
 7. Start `tidb-lightning` again.
 
 ## How to ensure the integrity of the imported data?

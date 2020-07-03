@@ -33,4 +33,4 @@ Solution: Clean up the disk space and then restart Pump.
 
 Cause: When Pump is started, it notifies all Drainer nodes that are in the `online` state. If it fails to notify Drainer, this error log is printed.
 
-Solution: Use the [binlogctl tool](/tidb-binlog/maintain-tidb-binlog-cluster.md#binlog-guide) to check whether each Drainer node is normal or not. This is to ensure that all Drainer nodes that are in the `online` state are working normally. If the state of a Drainer node is not consistent with its actual working status, use the binlogctl tool to change its state and then restart Pump.
+Solution: Use the [binlogctl tool](/tidb-binlog/binlog-control.md) to check whether each Drainer node is normal or not. This is to ensure that all Drainer nodes that are in the `online` state are working normally. If the state of a Drainer node is not consistent with its actual working status, use the binlogctl tool to change its state and then restart Pump.

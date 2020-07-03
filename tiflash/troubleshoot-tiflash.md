@@ -91,6 +91,6 @@ In this case, you can balance the load pressure by adding more TiFlash nodes.
 
 Take the following steps to handle the data file corruption:
 
-1. Refer to [Take a TiFlash node down](#take-a-tiflash-node-down) to take the corresponding TiFlash node down.
+1. Refer to [Take a TiFlash node down](/scale-tidb-using-tiup.md#scale-in-a-tiflash-node) to take the corresponding TiFlash node down.
 2. Delete the related data of the TiFlash node.
 3. Redeploy the TiFlash node in the cluster.

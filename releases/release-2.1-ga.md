@@ -179,7 +179,7 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
 
         - [calling `jq` to format the JSON output](/pd-control.md#jq-formatted-json-output-usage)
 
-        - [checking the Region information of the specified store](/pd-control.md#region-store-store-id)
+        - [checking the Region information of the specified store](/pd-control.md#region-store-store_id)
 
         - [checking topN Region list sorted by versions](/pd-control.md#region-topconfver-limit)
 

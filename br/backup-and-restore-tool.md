@@ -82,7 +82,7 @@ The SST file is named in the format of `storeID_regionID_regionEpoch_keyHash_cf`
 - `regionID` is the Region ID;
 - `regionEpoch` is the version number of the Region;
 - `keyHash` is the Hash (sha256) value of the startKey of a range, which ensures the uniqueness of a key;
-- `cf` indicates the [Column Family](/tune-tikv-memory-performance.md#tune-tikv-performance) of RocksDB (`default` or `write` by default).
+- `cf` indicates the [Column Family](/tune-tikv-memory-performance.md) of RocksDB (`default` or `write` by default).
 
 ### Restoration principle
 
