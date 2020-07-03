@@ -35,7 +35,7 @@ aliases: ['/docs-cn/v3.1/reference/tidb-binlog/bidirectional-replication/','/doc
 > **注意：**
 >
 > * 更新 `_drainer_repl_mark` 标识表时，一定要有数据改动才会产生 binlog。
-> * DDL 操作没有事务概念，因此采取单向同步的方案，见 [同步 DDL](#同步-ddl-操作)
+> * DDL 操作没有事务概念，因此采取单向同步的方案，见 [同步 DDL](#同步-ddl)
 
 Drainer 与下游的每个连接可以使用一个 ID 以避免冲突。`channel_id` 用来表示进行双向同步的一个通道。A 和 B 两个集群进行双向同步的配置应使用相同的值。
 

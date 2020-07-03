@@ -136,7 +136,7 @@ aliases: ['/docs-cn/v3.1/how-to/deploy/orchestrated/offline-ansible/']
 
 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/online-deployment-using-ansible.md#第-6-步在部署目标机器上安装-ntp-服务)。
 
-参考[在部署目标机器上安装 NTP 服务](/online-deployment-using-ansible.md#在部署目标机器上安装-ntp-服务)即可。
+参考[在部署目标机器上安装 NTP 服务](/online-deployment-using-ansible.md#第-6-步在部署目标机器上安装-ntp-服务)即可。
 
 ## 在部署目标机器上配置 CPUfreq 调节器模式
 
