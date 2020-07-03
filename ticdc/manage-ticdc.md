@@ -380,6 +380,7 @@ curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf06
 ```
 
 参数说明
+
 | 参数名        | 说明 |
 | :----------- | :--- |
 | cf-id        | 进行调度的 Changefeed ID |
