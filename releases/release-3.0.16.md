@@ -37,7 +37,7 @@ TiDB 版本：3.0.16
     - 修复 JSON 数据中 int 和 float 类型比较的问题 [#17715](https://github.com/pingcap/tidb/pull/17715)
     - 修复 Failpoint 测试造成的 DATA RACE 问题 [#17710](https://github.com/pingcap/tidb/pull/17710)
     - 修复 Region 预分裂超时在创建表时可能不生效的问题 [#17617](https://github.com/pingcap/tidb/pull/17617)
-    - 修复 BatchClient 中因为失败可能导致的主动 panic [#17378](https://github.com/pingcap/tidb/pull/17378)
+    - 修复 `BatchClient` 中因为失败可能导致的主动 panic [#17378](https://github.com/pingcap/tidb/pull/17378)
     - 修复访问被拒绝时的错误信息 [#17722](https://github.com/pingcap/tidb/pull/17722)
     - 修复 `FLASHBACK TABLE` 在某些情况下可能失败的问题 [#17165](https://github.com/pingcap/tidb/pull/17165)
     - 修复只有 string 列时 range 范围计算可能不准确的问题 [#16658](https://github.com/pingcap/tidb/pull/16658)
