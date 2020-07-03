@@ -52,4 +52,4 @@ TiDB 版本：3.0.16
 
 + PD
 
-    - 修复一些情况下使用 pd-ctl 查询 Region 报 404 错误的问题
+    - 修复一些情况下使用 PD Control 查询 Region 报 `404` 错误的问题
