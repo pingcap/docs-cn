@@ -33,7 +33,7 @@ TiDB 版本：3.0.16
 
     - 修复当锁住的 primary key 在当前事务被插入/删除时可能造成的结果不一致问题 [#18248](https://github.com/pingcap/tidb/pull/18248)
     - 修复因字段含义不一致导致日志中出现大量 "Got too many pings" grpc 错误的问题 [#17944](https://github.com/pingcap/tidb/pull/17944)
-    - 修复当 HashJoin 返回 Null 类型列可能造成的 panic 问题 [#17935](https://github.com/pingcap/tidb/pull/17935)
+    - 修复当 HashJoin 返回 `Null` 类型列可能造成的 panic 问题 [#17935](https://github.com/pingcap/tidb/pull/17935)
     - 修复 JSON 数据中 int 和 float 类型比较的问题 [#17715](https://github.com/pingcap/tidb/pull/17715)
     - 修复 Failpoint 测试造成的 DATA RACE 问题 [#17710](https://github.com/pingcap/tidb/pull/17710)
     - 修复 region 预分裂超时在创建表时可能不生效的问题 [#17617](https://github.com/pingcap/tidb/pull/17617)
