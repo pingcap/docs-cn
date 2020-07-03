@@ -153,7 +153,7 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
 
 如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
 
-使用方法如下：
+使用配置文件创建同步任务的方法如下：
 
 {{< copyable "shell-regular" >}}
 
