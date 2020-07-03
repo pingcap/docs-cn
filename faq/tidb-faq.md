@@ -38,7 +38,21 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
+<<<<<<< HEAD
 #### 1.1.7 TiDB 具备高可用的特性吗？
+=======
+使用 MySQL 8.0 客户端时，如果遇到无法登陆的问题，可以尝试指定 `default-auth` 和 `default-character-set` 参数：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+mysql -h 127.0.0.1 -u root -P 4000 --default-auth=mysql_native_password --default-character-set=utf8
+```
+
+无法登陆的原因是 MySQL 8.0 会更改了 MySQL 5.7 默认的[密码加密方式](/security-compatibility-with-mysql.md)，所以需要添加以上参数指定使用旧的加密方式。
+
+#### 1.1.7 TiDB 支持分布式事务吗？
+>>>>>>> 3d19bdd... faq: update mysql8 client fail to connect tidb (#3577)
 
 TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](/key-features.md#高可用)。
 
