@@ -20,7 +20,7 @@ TiDB 版本：3.0.16
     - 调整 job.DecodeArgs 中 json.Unmarshal 的使用以兼容新的 Go 版本 [#17887](https://github.com/pingcap/tidb/pull/17887)
     - 移除 `slow log` 和 `statement summary` 中一些敏感信息 [#18128](https://github.com/pingcap/tidb/pull/18128)
     - `Datetime` 解析的分隔符和 MySQL 兼容 [#17499](https://github.com/pingcap/tidb/pull/17499)
-    - 解析日期的 `%h` 时限定在 1..12 范围内 [#17496](https://github.com/pingcap/tidb/pull/17496)
+    - 解析日期的 `%h` 时限定在 `1..12` 范围内 [#17496](https://github.com/pingcap/tidb/pull/17496)
 
 + TiKV
 
