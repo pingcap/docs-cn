@@ -17,7 +17,7 @@ TiDB 版本：3.0.16
     - 为每个 Region 设置单独的 `Backoffer` 避免多个 Region 同时失败引起等待时间过长 [#17583](https://github.com/pingcap/tidb/pull/17583)
     - 添加新 partition 更新已有 partition 的分裂信息 [#17668](https://github.com/pingcap/tidb/pull/17668)
     - 丢弃来自 `delete` / `update` 语句的 feedbacks [#17841](https://github.com/pingcap/tidb/pull/17841)
-    - 调整 job.DecodeArgs 中 json.Unmarshal 的使用以兼容新的 Go 版本 [#17887](https://github.com/pingcap/tidb/pull/17887)
+    - 调整 `job.DecodeArgs` 中 `json.Unmarshal` 的使用以兼容新的 Go 版本 [#17887](https://github.com/pingcap/tidb/pull/17887)
     - 移除 `slow log` 和 `statement summary` 中一些敏感信息 [#18128](https://github.com/pingcap/tidb/pull/18128)
     - `Datetime` 解析的分隔符和 MySQL 兼容 [#17499](https://github.com/pingcap/tidb/pull/17499)
     - 解析日期的 `%h` 时限定在 `1..12` 范围内 [#17496](https://github.com/pingcap/tidb/pull/17496)
