@@ -112,4 +112,4 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 
 ## 升级 TiCDC 后配置文件不兼容
 
-请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容注意事项)。
+请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
