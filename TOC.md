@@ -280,6 +280,7 @@
     - [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
     - [海量 Region 集群调优最佳实践](/best-practices/massive-regions-best-practices.md)
   + [TiSpark 使用指南](/tispark-overview.md)
+  + [TiKV](/tikv-overview.md)
   + TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
