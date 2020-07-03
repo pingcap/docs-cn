@@ -22,7 +22,7 @@ aliases: ['/docs-cn/v2.1/how-to/upgrade/from-previous-version/','/docs-cn/op-gui
 
 ## 在中控机器上安装 TiDB Ansible 及其依赖
 
-TiDB Ansible release-2.1 版本依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible < 2.7.11`），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 TiDB Ansible 及其依赖，可参照[在中控机器上安装 TiDB Ansible 及其依赖](/online-deployment-using-ansible.md#在中控机器上安装-tidb-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 TiDB Ansible 及其依赖](/offline-deployment-using-ansible.md#在中控机器上离线安装-tidb-ansible-及其依赖)。
+TiDB Ansible release-2.1 版本依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible < 2.7.11`），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，新版本使用 `pip` 安装 TiDB Ansible 及其依赖，可参照[在中控机器上安装 TiDB Ansible 及其依赖](/online-deployment-using-ansible.md#第-4-步在中控机器上安装-tidb-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 TiDB Ansible 及其依赖](/offline-deployment-using-ansible.md#在中控机器上离线安装-tidb-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
