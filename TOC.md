@@ -343,6 +343,7 @@
 + [TiDB 路线图](/roadmap.md)
 + 版本发布历史
   + v3.0
+    - [3.0.16](/releases/release-3.0.16.md)
     - [3.0.15](/releases/release-3.0.15.md)
     - [3.0.14](/releases/release-3.0.14.md)
     - [3.0.13](/releases/release-3.0.13.md)
