@@ -64,7 +64,7 @@ When you use [NGINX](https://nginx.org/) as the reverse proxy, take the followin
 
 2. Restart NGINX for the configuration to take effect.
 
-3. Test whether the reverse proxy is effective: access the `/dashboard/` address on the `80` port of the machine where NGINX is located (such as <http://example.com/dashboard/>) to access TiDB Dashboard.
+3. Test whether the reverse proxy is effective: access the `/dashboard/` address on the `80` port of the machine where NGINX is located (such as `http://example.com/dashboard/`) to access TiDB Dashboard.
 
 ## Customize path prefix
 
