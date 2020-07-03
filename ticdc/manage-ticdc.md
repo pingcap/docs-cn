@@ -371,6 +371,31 @@ curl -X POST http://127.0.0.1:8301/capture/owner/resign
 election: not leader
 ```
 
+### 手动调度表到其他节点
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf060953-036c-4f31-899f-5afa0ad0c2f9&target-cp-id=6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5&table-id=49'
+```
+
+参数说明
+
+| 参数名        | 说明 |
+| :----------- | :--- |
+| `cf-id`        | 进行调度的 Changefeed ID |
+| `target-cp-id` | 目标 Capture ID |
+| `table-id`     | 需要调度的 Table ID |
+
+以上命令仅对 owner 节点请求有效。对非 owner 节点将会返回错误。
+
+```
+{
+ "status": true,
+ "message": ""
+}
+```
+
 ## 同步任务配置文件描述
 
 以下内容详细介绍了同步任务的配置。
