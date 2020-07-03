@@ -383,11 +383,11 @@ curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf06
 
 | 参数名        | 说明 |
 | :----------- | :--- |
-| cf-id        | 进行调度的 Changefeed ID |
-| target-cp-id | 目标 Capture ID |
-| table-id     | 需要调度的 Table ID |
+| `cf-id`        | 进行调度的 Changefeed ID |
+| `target-cp-id` | 目标 Capture ID |
+| `table-id`     | 需要调度的 Table ID |
 
-以上命令仅对 owner 节点请求有效，非 owner 节点将会返回错误。
+以上命令仅对 owner 节点请求有效。对非 owner 节点将会返回错误。
 
 ```
 {
