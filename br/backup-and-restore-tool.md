@@ -269,6 +269,25 @@ For descriptions of other options, see [Back up all cluster data](#back-up-all-t
 
 A progress bar is displayed in the terminal during the backup operation. When the progress bar advances to 100%, the backup is complete. Then the BR also checks the backup data to ensure data safety.
 
+### Back up with table filter
+
+To back up multiple tables with more complex criteria, execute the `br backup full` command and specify the [table filters](/table-filter.md) with `--filter` or `-f`.
+
+**Usage example:**
+
+The following command backs up the data of all tables in the form `db*.tbl*` to the `/tmp/backup` path on each TiKV node and writes the `backupmeta` file to this path.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full \
+    --pd "${PDIP}:2379" \
+    --filter 'db*.tbl*' \
+    --storage "local:///tmp/backup" \
+    --ratelimit 120 \
+    --log-file backupfull.log
+```
+
 ### Back up data to Amazon S3 backend
 
 If you back up the data to the Amazon S3 backend, instead of `local` storage, you need to specify the S3 storage path in the `storage` sub-command, and allow the BR node and the TiKV node to access Amazon S3.
@@ -442,6 +461,24 @@ br restore table \
 ```
 
 In the above command, `--table` specifies the name of the table to be restored. For descriptions of other options, see [Restore all backup data](#restore-all-the-backup-data) and [Restore a database](#restore-a-database).
+
+### Restore with table filter
+
+To restore multiple tables with more complex criteria, execute the `br restore full` command and specify the [table filters](/table-filter.md) with `--filter` or `-f`.
+
+**Usage example:**
+
+The following command restores a subset of tables backed up in the `/tmp/backup` path to the cluster.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full \
+    --pd "${PDIP}:2379" \
+    --filter 'db*.tbl*' \
+    --storage "local:///tmp/backup" \
+    --log-file restorefull.log
+```
 
 ### Restore data from Amazon S3 backend
 

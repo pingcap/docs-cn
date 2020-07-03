@@ -164,6 +164,9 @@ strict-format = false
 # parallel. max-region-size is the maximum size of each chunk after splitting.
 # max-region-size = 268_435_456 # Byte (default = 256 MB)
 
+# Only import tables if these wildcard rules are matched. See the corresponding section for details.
+filter = ['*.*']
+
 # Configures how CSV files are parsed.
 [mydumper.csv]
 # Separator between fields, should be an ASCII character.
@@ -256,10 +259,6 @@ analyze = true
 switch-mode = "5m"
 # Duration between which an import progress is printed to the log.
 log-progress = "5m"
-
-# Table filter options. See the corresponding section for details.
-#[black-white-list]
-# ...
 ```
 
 ### TiKV Importer
@@ -351,6 +350,7 @@ min-available-ratio = 0.05
 | -V | Prints program version | |
 | -d *directory* | Directory of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
+| -f *rule* | [Table filter rules](/table-filter.md) (can be specified multiple times) | `mydumper.filter` |
 | --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-tidb-backend.md) (`importer` or `tidb`) | `tikv-importer.backend` |
 | --log-file *file* | Log file path (default = a temporary file in `/tmp`) | `lightning.log-file` |
 | --status-addr *ip:port* | Listening address of the TiDB Lightning server | `lightning.status-port` |

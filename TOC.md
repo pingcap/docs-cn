@@ -159,7 +159,7 @@
     + [Configure](/tidb-lightning/tidb-lightning-configuration.md)
     + Key Features
       + [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
-      + [Table Filter](/tidb-lightning/tidb-lightning-table-filter.md)
+      + [Table Filter](/table-filter.md)
       + [CSV Support](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       + [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
       + [Web Interface](/tidb-lightning/tidb-lightning-web-interface.md)
@@ -431,6 +431,7 @@
   + [Errors Codes](/error-codes.md)
   + [TiCDC Overview](/ticdc/ticdc-overview.md)
   + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+  + [Table Filter](/table-filter.md)
 + FAQs
   + [TiDB FAQs](/faq/tidb-faq.md)
   + [TiDB Lightning FAQs](/tidb-lightning/tidb-lightning-faq.md)
