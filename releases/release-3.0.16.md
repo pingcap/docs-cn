@@ -39,7 +39,7 @@ TiDB 版本：3.0.16
     - 修复 Region 预分裂超时在创建表时可能不生效的问题 [#17617](https://github.com/pingcap/tidb/pull/17617)
     - 修复 BatchClient 中因为失败可能导致的主动 panic [#17378](https://github.com/pingcap/tidb/pull/17378)
     - 修复访问被拒绝时的错误信息 [#17722](https://github.com/pingcap/tidb/pull/17722)
-    - 修复 flashback 表某些情况下可能失败的问题 [#17165](https://github.com/pingcap/tidb/pull/17165)
+    - 修复 `FLASHBACK TABLE` 在某些情况下可能失败的问题 [#17165](https://github.com/pingcap/tidb/pull/17165)
     - 修复只有 string 列时 range 范围计算可能不准确的问题 [#16658](https://github.com/pingcap/tidb/pull/16658)
     - 修复 `only_full_group_by` 模式下的错误 [#16620](https://github.com/pingcap/tidb/pull/16620)
     - 修复 `case when` 函数返回字段长度不准确的问题 [#16562](https://github.com/pingcap/tidb/pull/16562)
