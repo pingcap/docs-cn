@@ -287,6 +287,7 @@
     - [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
     - [海量 Region 集群调优最佳实践](/best-practices/massive-regions-best-practices.md)
   + [TiSpark 使用指南](/tispark-overview.md)
+  + [TiKV](/tikv-overview.md)
   + TiFlash
     - [概述](/tiflash/tiflash-overview.md)
     - [部署集群](/tiflash/deploy-tiflash.md)
