@@ -24,8 +24,8 @@ TiDB 版本：3.0.16
 
 + TiKV
 
-    - 避免在收到 snapshot 之后发送心跳给 PD 以提高稳定性
-    - 优化了 PD client 的日志
+    - 避免在收到 snapshot 之后发送心跳给 PD 以提高稳定性 [#8145](https://github.com/tikv/tikv/pull/8145)
+    - 优化了 PD client 的日志 [#8091](https://github.com/tikv/tikv/pull/8091)
 
 ## Bug 修复
 
@@ -47,9 +47,9 @@ TiDB 版本：3.0.16
 
 + TiKV
 
-    - 修复了潜在的 ingest file 导致的读取结果错误的问题
-    - 修复了多次 merge 过程中被隔离的节点上的副本无法被正确移除的问题
+    - 修复了潜在的 ingest file 导致的读取结果错误的问题 [#8039](https://github.com/tikv/tikv/pull/8039)
+    - 修复了多次 merge 过程中被隔离的节点上的副本无法被正确移除的问题 [#8005](https://github.com/tikv/tikv/pull/8005)
 
 + PD
 
-    - 修复一些情况下使用 PD Control 查询 Region 报 `404` 错误的问题
+    - 修复一些情况下使用 PD Control 查询 Region 报 `404` 错误的问题 [#2577](https://github.com/pingcap/pd/pull/2577)
