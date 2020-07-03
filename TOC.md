@@ -205,7 +205,7 @@
         + [AUTO_RANDOM](/auto-random.md)
       + [Literal Values](/literal-values.md)
       + [Schema Object Names](/schema-object-names.md)
-      + [Keywords and Reserved Words](/keywords-and-reserved-words.md)
+      + [Keywords and Reserved Words](/keywords.md)
       + [User-Defined Variables](/user-defined-variables.md)
       + [Expression Syntax](/expression-syntax.md)
       + [Comment Syntax](/comment-syntax.md)
