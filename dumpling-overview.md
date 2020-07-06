@@ -188,7 +188,7 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 
 ### 导出大规模数据时的 TiDB GC 设置
 
-如果导出的 TiDB 版本大于 v4.0.0，并且 dumpling 可以访问 TiDB 集群的 PD 地址，dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
+如果导出的 TiDB 版本大于 v4.0.0，并且 dumpling 可以访问 TiDB 集群的 PD 地址，dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。v4.0.0 之前的版本依然需要手动修改 GC。
 
 其他情况下，假如导出的数据量非常大，可以提前调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败：
 
