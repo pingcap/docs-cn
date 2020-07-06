@@ -47,7 +47,7 @@ tiup cluster display CLUSTER_NAME --dashboard
 
 > **注意：**
 >
-> 该功能仅在较新版本的 TiUP Cluster 部署工具中提供。
+> 该功能在 TiUP Cluster v1.0.3 或更高版本部署工具中提供。
 >
 > <details>
 > <summary>升级 TiUP Cluster 步骤</summary>
