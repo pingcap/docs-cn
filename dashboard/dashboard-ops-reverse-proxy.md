@@ -119,14 +119,14 @@ server_configs:
 ```
 
 <details>
-  <summary>使用 TiUP 全新部署集群的具体修改配置步骤</summary>
+  <summary>使用 TiUP 部署全新集群时修改配置</summary>
 
 若要全新部署集群，可在 TiUP 拓扑文件 `topology.yaml` 中加入上述配置项后进行部署，具体步骤参阅 [TiUP 部署文档](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)。
 
 </details>
 
 <details>
-  <summary>使用 TiUP 对已部署的集群的具体修改配置步骤</summary>
+  <summary>使用 TiUP 修改已部署集群的配置</summary>
 
 1. 以编辑模式打开该集群的配置文件（将 `CLUSTER_NAME` 替换为集群名称）
 
