@@ -497,7 +497,7 @@ aliases: ['/docs-cn/v3.1/how-to/troubleshoot/diagnose-map/']
 
     - 原因：并行打开的引擎文件 (engine files) 超出 tikv-importer 里的限制。这可能由配置错误引起。即使配置没问题，如果 tidb-lightning 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
 
-    - 解决办法：参考[官网步骤处理](/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--8)。
+    - 解决办法：参考[官网步骤处理](/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--)。
 
 - 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
@@ -509,7 +509,7 @@ aliases: ['/docs-cn/v3.1/how-to/troubleshoot/diagnose-map/']
 
     - 原因：一个 timestamp 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏令时切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 
-    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-0-45-0-0)处理。
+    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-)处理。
 
 ## 7. 常见日志分析
 
