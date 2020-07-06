@@ -52,7 +52,7 @@ http://192.168.0.123:2379/dashboard/
 > <details>
 > <summary>升级 TiUP Cluster 步骤</summary>
 >
-> ```bash
+> ```shell
 > tiup update --self
 > tiup update cluster --force
 > ```

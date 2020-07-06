@@ -52,7 +52,7 @@ tiup cluster display CLUSTER_NAME --dashboard
 > <details>
 > <summary>升级 TiUP Cluster 步骤</summary>
 >
-> ```bash
+> ```shell
 > tiup update --self
 > tiup update cluster --force
 > ```
