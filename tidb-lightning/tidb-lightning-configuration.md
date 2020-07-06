@@ -94,14 +94,14 @@ addr = "172.16.31.10:8287"
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
-# 当后端是 “local” 时，控制生成 SST 文件的大小，最好跟 tikv 里面的 region 大小保持一致，默认是 96MB。
-#region-split-size = 100_663_296
+# 当后端是 “local” 时，控制生成 SST 文件的大小，最好跟 TiKV 里面的 Region 大小保持一致，默认是 96 MB。
+# region-split-size = 100_663_296
 # 当后端是 “local” 时，一次请求中发送的 KV 数量。
-#send-kv-pairs = 32768
-# 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘中，可有效提升导入性能。
-#sorted-kv-dir = ""
-# 当后端是 “local” 时，tikv 写入 kv 数据的并发度，当 lightning 和 tikv 直接网络传输速度超过万兆的时候，可以适当增加这个值。
-#range-concurrency = 16
+# send-kv-pairs = 32768
+# 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
+# sorted-kv-dir = ""
+# 当后端是 “local” 时，TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
+# range-concurrency = 16
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
