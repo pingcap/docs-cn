@@ -129,7 +129,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > * 该功能在 TiCDC 4.0.2 版本引入。
 > * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 Kafka。
 
-更多信息可以参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
+更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
 
 ## 如何查看 TiCDC 同步任务的延时？
 
@@ -167,7 +167,21 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 * 请参考 [如何查看 TiCDC 同步任务是否正常？](/ticdc/troubleshoot-ticdc.md#如何查看-TiCDC-同步任务是否正常) 检查下同步任务的状态是否正常。
 * 请适当调整 Kafka 的以下参数：
-    * message.max.bytes
-    * replica.fetch.max.bytes
-    * fetch.message.max.bytes
-    * socket.request.max.bytes
+    * `message.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 33554432 （32 MB）。
+    * `replica.fetch.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 33554432 （32 MB）。
+    * `fetch.message.max.bytes`，适当调大 comsumer.properties 中该参数，确保大于 `message.max.bytes`。
+
+## 如何查看 TiCDC Open protocol 输出变更数据中的时间戳、表名和库名？
+
+这些信息包含在 Kafka 消息的 Key 中，比如：
+
+```json
+{
+    "ts":<TS>,
+    "scm":<Schema Name>,
+    "tbl":<Table Name>,
+    "t":1
+}
+```
+
+更多信息请参考[Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#event-格式定义)
