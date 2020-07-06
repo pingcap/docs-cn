@@ -82,27 +82,7 @@ mysql> SELECT user,host,password FROM mysql.user WHERE user='idontexist';
 1 row in set (0.00 sec)
 ```
 
-> **Note:**
->
-> Granting privileges to a database or table does not check if the database or table exists.
-
-```sql
-mysql> SELECT * FROM test.xxxx;
-ERROR 1146 (42S02): Table 'test.xxxx' doesn't exist
-
-mysql> GRANT ALL PRIVILEGES ON test.xxxx TO xxxx;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> SELECT user,host FROM mysql.tables_priv WHERE user='xxxx';
-+------|------+
-| user | host |
-+------|------+
-| xxxx | %    |
-+------|------+
-1 row in set (0.00 sec)
-```
-
-You can use fuzzy matching to grant privileges to databases and tables.
+You can use fuzzy matching in `GRANT` to grant privileges to databases.
 
 ```sql
 mysql> GRANT ALL PRIVILEGES ON `te%`.* TO genius;
@@ -172,28 +152,35 @@ You can use the `SHOW GRANTS` statement to see what privileges are granted to a 
 
 ```sql
 SHOW GRANTS; -- show grants for the current user
+
++-------------------------------------------------------------+
+| Grants for User                                             |
++-------------------------------------------------------------+
+| GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION |
++-------------------------------------------------------------+
 SHOW GRANTS FOR 'root'@'%'; -- show grants for a specific user
 ```
 
-To be more precise, you can check the privilege information in the `Grant` table. For example, you can use the following steps to check if the `test@%` user has the `Insert` privilege on `db1.t`:
+For example, create a user `rw_user@192.168.%` and grant the user with write privilege on the `test.write_table` table and global read privilege.
 
-1. Check if `test@%` has global `Insert` privilege:
+```sql
+CREATE USER `rw_user`@`192.168.%`;
+GRANT SELECT ON *.* TO `rw_user`@`192.168.%`;
+GRANT INSERT, UPDATE ON `test`.`write_table` TO `rw_user`@`192.168.%`;
+```
 
-    ```sql
-    SELECT Insert_priv FROM mysql.user WHERE user='test' AND host='%';
-    ```
+Show granted privileges of the `rw_user@192.168.%` user:
 
-2. If not, check if `test@%` has database-level `Insert` privilege at `db1`:
+```sql
+SHOW GRANTS FOR `rw_user`@`192.168.%`;
 
-    ```sql
-    SELECT Insert_priv FROM mysql.db WHERE user='test' AND host='%';
-    ```
-
-3. If the result is still empty, check whether `test@%` has table-level `Insert` privilege at `db1.t`:
-
-    ```sql
-    SELECT table_priv FROM mysql.tables_priv WHERE user='test' AND host='%' AND db='db1';
-    ```
++------------------------------------------------------------------+
+| Grants for rw_user@192.168.%                                     |
++------------------------------------------------------------------+
+| GRANT Select ON *.* TO 'rw_user'@'192.168.%'                     |
+| GRANT Insert,Update ON test.write_table TO 'rw_user'@'192.168.%' |
++------------------------------------------------------------------+
+```
 
 ## Privileges required for TiDB operations
 
@@ -212,6 +199,8 @@ You can check privileges of TiDB users in the `INFORMATION_SCHEMA.USER_PRIVILEGE
 | Insert         | `InsertPriv`     | Inserts data to a table             |
 | Update         | `UpdatePriv`     | Updates the table data             |
 | Delete         | `DeletePriv`     | Deleted the table data             |
+| Reload         | `ReloadPriv`     | Executes the `FLUSH` statement       |
+| Config         | `ConfigPriv`     | Dynamically reloads configuration             |
 | Trigger        | `TriggerPriv`    | /                 |
 | Process        | `ProcessPriv`    | Displays the running task       |
 | Execute        | `ExecutePriv`    | Executes the `EXECUTE` statement       |
@@ -268,6 +257,10 @@ Requires the `INDEX` privilege for the table.
 
 Requires the `DROP` privilege for the table.
 
+### LOAD DATA
+
+Requires the `INSERT` privilege for the table.
+
 ### TRUNCATE TABLE
 
 Requires the `DROP` privilege for the table.
@@ -285,6 +278,8 @@ Requires the `INSERT` and `SELECT` privileges for the table.
 `SHOW CREATE TABLE` requires any single privilege to the table.
 
 `SHOW CREATE VIEW` requires the `SHOW VIEW` privilege.
+
+`SHOW GRANTS` requires the `SELECT` privilege to the `mysql` database. If the target user is current user, `SHOW GRANTS` does not require any privilege.
 
 ### CREATE ROLE/USER
 
@@ -306,9 +301,31 @@ Requires the `CREATE USER` privilege.
 
 Requires the `GRANT` privilege with the privileges granted by `GRANT`.
 
+Requires additional `CREATE USER` privilege to create a user implicitly.
+
+`GRANT ROLE` requires `SUPER` privilege.
+
 ### REVOKE
 
-Requires the `SUPER` privilege.
+Requires the `GRANT` privilege and those privileges targeted by the `REVOKE` statement.
+
+`REVOKE ROLE` requires `SUPER` privilege.
+
+### SET GLOBAL
+
+Requires `SUPER` privilege to set global variables.
+
+### ADMIN
+
+Requires `SUPER` privilege.
+
+### SET DEFAULT ROLE
+
+Requires `SUPER` privilege.
+
+### KILL
+
+Requires `SUPER` privilege to kill other user sessions.
 
 ## Implementation of the privilege system
 
