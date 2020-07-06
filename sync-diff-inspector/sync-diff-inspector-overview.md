@@ -108,7 +108,8 @@ fix-sql-file = "fix.sql"
 
 ######################### Tables config #########################
 
-# 如果需要对比大量的不同库名或者表名的表的数据，可以通过 table-rule 来设置映射关系。可以只配置 schema 或者 table 的映射关系，也可以都配置
+# 如果需要对比大量的不同库名或者表名的表的数据，或者用于校验上游多个分表与下游总表的数据，可以通过 table-rule 来设置映射关系
+# 可以只配置 schema 或者 table 的映射关系，也可以都配置
 #[[table-rules]]
     # schema-pattern 和 table-pattern 支持通配符 *?
     #schema-pattern = "test_*"
