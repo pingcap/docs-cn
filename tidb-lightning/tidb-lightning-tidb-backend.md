@@ -68,7 +68,7 @@ The speed of TiDB Lightning using TiDB-backend is limited by the SQL processing 
 
 ### Manual deployment
 
-You do not need to download and configure `tikv-importer`.
+You do not need to download and configure `tikv-importer`. You can download TiDB Lightning from [here](/download-ecosystem-tools.md#tidb-lightning).
 
 Before running `tidb-lightning`, add the following lines into the configuration file:
 

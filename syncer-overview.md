@@ -7,6 +7,10 @@ aliases: ['/docs/dev/syncer-overview/','/docs/dev/reference/tools/syncer/']
 
 # Syncer User Guide
 
+> **Warning:**
+>
+> Syncer is no longer maintained. Its features are completely superseded by [TiDB Data Migration](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/). It is strongly recommended that you use TiDB Data Migration instead.
+
 ## About Syncer
 
 Syncer is a tool used to import data incrementally. It is a part of the TiDB enterprise toolset.
