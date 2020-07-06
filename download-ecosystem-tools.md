@@ -59,6 +59,19 @@ aliases: ['/docs-cn/dev/reference/tools/download/']
 >
 > 下载链接中的 `{version}` 为 DM 的版本号。例如，`v1.0.1` 版本的下载链接为 `https://download.pingcap.org/dm-v1.0.1-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
 
+## Dumpling
+
+使用下表中的链接下载 [Dumpling](/dumpling-overview.md):
+
+| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
+|:---|:---|:---|:---|
+| `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+
+> **注意：**
+>
+> 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v4.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.2-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
+> Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
+
 ## Syncer，Loader 和 Mydumper
 
 如需下载最新版本的 [Syncer](/syncer-overview.md)，[Loader](/loader-overview.md) 或 [Mydumper](/mydumper-overview.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
