@@ -1,7 +1,7 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
 category: how-to
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/']
+aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
@@ -197,7 +197,7 @@ tiup cluster display tidb-test
 mysql -u root -h 10.0.1.4 -P 4000
 ```
 
-此外，也需要验证监控系统、TiDB Dashboard 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
+此外，也需要验证监控系统、[TiDB Dashboard](/dashboard/dashboard-intro.md) 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
 
 ## 探索更多
 

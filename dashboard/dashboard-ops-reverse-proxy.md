@@ -59,7 +59,7 @@ http://192.168.0.123:2379/dashboard/
 
 2. 重启 NGINX，以使配置生效。
 
-3. 测试反向代理是否生效：访问 NGINX 所在机器的 80 端口下 `/dashboard/` 地址，如 <http://example.com/dashboard/> ，即可访问 TiDB Dashboard。
+3. 测试反向代理是否生效：访问 NGINX 所在机器的 80 端口下 `/dashboard/` 地址，如 `http://example.com/dashboard/`，即可访问 TiDB Dashboard。
 
 ## 自定义路径前缀
 
