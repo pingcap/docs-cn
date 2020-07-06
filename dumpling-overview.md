@@ -175,7 +175,7 @@ $ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
 
 Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-historical-data.md#操作流程) 时的数据。
 
-`--snapshot` 参数可设为 TSO（`SHOW MASTER STATUS` 输出的 `Position` 字段） 或有效的 `datetime` 时间，例如：
+`--snapshot` 参数可设为 TSO（`SHOW MASTER STATUS` 输出的 `Position` 字段）或有效的 `datetime` 时间，例如：
 
 {{< copyable "shell-regular" >}}
 

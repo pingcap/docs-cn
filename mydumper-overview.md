@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/reference/tools/mydumper/']
 
 > **警告：**
 >
-> Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md)取代，强烈建议切换到 Dumpling。
+> Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
 [Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，可以用于对 **MySQL** 或者 **TiDB** 进行逻辑备份，并针对 TiDB 的特性进行了优化。
 
