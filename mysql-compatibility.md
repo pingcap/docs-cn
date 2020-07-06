@@ -36,7 +36,6 @@ However, some features of MySQL have not been implemented in the distributed dat
 + `CREATE TEMPORARY TABLE` syntax
 + `CHECK TABLE` syntax
 + `CHECKSUM TABLE` syntax
-+ `SELECT INTO FILE` syntax
 + `GET_LOCK` and `RELEASE_LOCK` functions
 
 ## Features that are different from MySQL
@@ -183,20 +182,12 @@ TiDB supports storage engine abstraction similar to MySQL, but you need to speci
 + TiDB uses all time zone rules currently installed in the system for calculation (usually the `tzdata` package). You can use all time zone names without importing the time zone table data. You cannot modify the calculation rules by importing the time zone table data.
 + MySQL uses the local time zone by default and relies on the current time zone rules built into the system (such as when to start daylight saving time) for calculation; and the time zone cannot be specified by the time zone name without [importing the time zone table data](https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html#time-zone-installation).
 
-> **Note:**
->
-> TiKV calculates time-related expressions that can be pushed down to it. This calculation uses the built-in time zone rule and does not depend on the time zone rule installed in the system. If the time zone rule installed in the system does not match the version of the built-in time zone rule in TiKV, the time data that can be inserted might result in a statement error in a few cases.
->
-> For example, if the tzdata 2018a timezone rule is installed in the system, the time `1988-04-17 02:00:00` can be inserted into TiDB of the 3.0 RC.1 version when the timezone is set to Asia/Shanghai or the timezone is set to the local timezone and the local timezone is Asia/Shanghai. But reading this record might result in a statement error because this time does not exist in the Asia/Shanghai timezone according to the tzdata 2018i timezone rule used by TiKV 3.0 RC.1. Daylight saving time is one hour late.
->
-> The named timezone rules in TiKV of two versions are as follows:
->
-> - 3.0.0 RC.1 and later: [tzdata 2018i](https://github.com/eggert/tz/tree/2018i)
-> - 2.1.0 RC.1 and later: [tzdata 2018e](https://github.com/eggert/tz/tree/2018e)
-
 #### Zero month and zero day
 
-It is not recommended to unset the `NO_ZERO_DATE` and `NO_ZERO_IN_DATE` SQL modes, which are enabled by default in TiDB as in MySQL. Although TiDB supports operating with these modes disabled, the TiKV coprocessor might be affected. Executing certain statements that push down date and time processing functions to TiKV might result in a statement error.
+By default, the `NO_ZERO_DATE` and `NO_ZERO_IN_DATE` modes are enabled in TiDB, which is the same in MySQL, but TiDB and MySQL handle the two SQL modes differently in the following aspects:
+
+- The two SQL modes above are enabled in TiDB in the non-strict mode where no warning is prompted for inserting values of zero month/zero day/zero date. In MySQL, such `INSERT` operations prompt warning.
+- In the strict mode, when `NO_ZERO_DATE` is enabled, you can still insert values of zero date; when `NO_ZERO_IN_DATE` is enabled, you cannot insert date of zero month/zero day. In the strict mode of MySQL, you can insert neither of them.
 
 ### Type system differences
 
