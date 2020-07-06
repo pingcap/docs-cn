@@ -58,7 +58,7 @@ http://192.168.0.123:2379/dashboard/
      server tidb_dashboard 192.168.0.123:2379
    ```
 
-   其中 `192.168.0.123:2379` 需替换为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址中的 IP 及端口部分。
+   其中 `192.168.0.123:2379` 需替换为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-tidb-dashboard-地址)中取得的 TiDB Dashboard 实际地址中的 IP 及端口部分。
 
    > **警告：**
    >
@@ -206,7 +206,7 @@ backend tidb_dashboard_back
   server tidb_dashboard 192.168.0.123:2379
 ```
 
-其中 `192.168.0.123:2379` 需替换为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-TiDB-Dashboard-地址)中取得的 TiDB Dashboard 实际地址中的 IP 及端口部分。
+其中 `192.168.0.123:2379` 需替换为[第 1 步：获取实际 TiDB Dashboard 地址](#第-1-步获取实际-tidb-dashboard-地址)中取得的 TiDB Dashboard 实际地址中的 IP 及端口部分。
 
 > **警告：**
 >
