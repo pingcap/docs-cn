@@ -7,13 +7,13 @@ aliases: ['/docs/dev/deploy-test-cluster-using-docker-compose/','/docs/dev/how-t
 
 # TiDB Docker Compose Deployment
 
+> **Warning:**
+>
+> The Docker Compose deployment method provided in this document is no longer maintained. If you want to test TiDB, it is recommended to refer to [Quick Start Guide for the TiDB Database Platform](/quick-start-with-tidb.md) for deployment. For **production environment**, **do not use** Docker Compose for deployment, but [deploy TiDB with TiUP](/production-deployment-using-tiup.md) or [TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/deploy-tidb-operator).
+
 This document describes how to quickly deploy a TiDB testing cluster with a single command using [Docker Compose](https://docs.docker.com/compose/overview).
 
 With Docker Compose, you can use a YAML file to configure application services in multiple containers. Then, with a single command, you can create and start all the services from your configuration.
-
-> **Warning:**
->
-> This is for testing only. DO NOT USE in production! It is recommended to deploy TiDB using [TiUP](/production-deployment-using-tiup.md) or [TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/deploy-tidb-operator) in production.
 
 ## Prerequisites
 
