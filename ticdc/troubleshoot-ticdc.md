@@ -109,3 +109,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 > - 最优先使用 `--tz` 传入的时区
 > - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区
 > - 如果还没有 `TZ` 环境变量，会从 TiCDC server 运行机器的默认时区
+
+## 升级 TiCDC 后配置文件不兼容
+
+请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
