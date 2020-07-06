@@ -42,7 +42,7 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 2. 升级后，部署包含监控节点的新集群时，应当能正常显示监控。
 
-3. 对于现有集群，可通过再次启动集群的方法汇报监控地址（将 `CLUSTER_NAME` 替换为实际集群名称）：
+3. 升级后，对于现有集群，可通过再次启动集群的方法汇报监控地址（将 `CLUSTER_NAME` 替换为实际集群名称）：
 
    ```bash
    tiup cluster start CLUSTER_NAME
