@@ -277,10 +277,10 @@ ID                  Role        Host          Ports        Status     Data Dir  
     ---
 
     pd_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
 
     tikv_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
     ```
 
 2. 执行扩容操作。TiUP cluster 根据 scale.yaml 文件中声明的端口、目录等信息在集群中添加相应的节点：
