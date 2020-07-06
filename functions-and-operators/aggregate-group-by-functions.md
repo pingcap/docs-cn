@@ -82,7 +82,7 @@ select a, b, sum(c) from t group by a;
 ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'b' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-目前，TiDB 默认开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/mysql-compatibility.md#默认设置的区别)。
+目前，TiDB 默认开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/mysql-compatibility.md#sql-模式)。
 
 ### 与 MySQL 的区别
 

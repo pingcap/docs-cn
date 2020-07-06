@@ -90,6 +90,6 @@ category: reference
 
 可依照如下步骤进行处理：
 
-1. 参照[下线 TiFlash 节点](/tiflash/maintain-tiflash.md#下线-tiflash-节点)一节下线对应的 TiFlash 节点。
+1. 参照[下线 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)一节下线对应的 TiFlash 节点。
 2. 清除该 TiFlash 节点的相关数据。
 3. 重新在集群中部署 TiFlash 节点。

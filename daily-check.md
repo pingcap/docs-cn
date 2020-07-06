@@ -9,9 +9,9 @@ aliases: ['/docs-cn/stable/daily-inspection/','/zh/tidb/v4.0/daily-inspection']
 
 TiDB 作为分布式数据库，对比单机数据库机制更加复杂，其自带的监控项也很丰富。为了更便捷地运维 TiDB，本文介绍了运维 TiDB 集群需要常关注的关键性能指标。
 
-## Dashboard 关键指标
+## TiDB Dashboard 关键指标
 
-从 4.0 版本开始，TiDB 提供了一个新的 Dashboard 运维管理工具，集成在 PD 组件上，默认地址为 `http://${pd-ip}:${pd_port}/dashboard`。
+从 4.0 版本开始，TiDB 提供了一个新的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 运维管理工具，集成在 PD 组件上，默认地址为 `http://${pd-ip}:${pd_port}/dashboard`。
 
 使用 TiDB Dashboard，简化了对 TiDB 数据库的运维，可在一个界面查看整个分布式数据库集群的运行状况。下面举例说明。
 

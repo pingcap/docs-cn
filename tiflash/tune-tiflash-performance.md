@@ -24,7 +24,7 @@ aliases: ['/docs-cn/stable/reference/tiflash/tune-performance/']
 
 2. 开启 Super batch 功能：
 
-    [`tidb_allow_batch_cop`](/tidb-specific-system-variables.md#tidb_allow_batch_cop) 变量用来设置从 TiFlash 读取时，是否把 Region 的请求进行合并。当查询中涉及的 Region 数量比较大，可以尝试设置该变量为 `1`（对带 `aggregation` 下推到 TiFlash Coprocessor 的请求生效），或设置该变量为 `2`（对全部下推到 TiFlash Coprocessor 请求生效）。
+    [`tidb_allow_batch_cop`](/tidb-specific-system-variables.md#tidb_allow_batch_cop-从-v40-版本开始引入) 变量用来设置从 TiFlash 读取时，是否把 Region 的请求进行合并。当查询中涉及的 Region 数量比较大，可以尝试设置该变量为 `1`（对带 `aggregation` 下推到 TiFlash Coprocessor 的请求生效），或设置该变量为 `2`（对全部下推到 TiFlash Coprocessor 请求生效）。
 
     {{< copyable "sql" >}}
 
