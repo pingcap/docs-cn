@@ -372,10 +372,11 @@ The Plan Cache configuration of the `PREPARE` statement.
 
 - The number of cached statements.
 - Default value: `100`
+- The type is `uint`. Values less than `0` are converted to large integers.
 
 ### `memory-guard-ratio`
 
-- It is used to prevent `performance.max-memory` from being exceeded. When `max-proc * (1 - prepared-plan-cache.memory-guard-ratio)` is exceeded, the elements in the LRU are removed.
+- It is used to prevent `performance.max-memory` from being exceeded. When `max-memory * (1 - prepared-plan-cache.memory-guard-ratio)` is exceeded, the elements in the LRU are removed.
 - Default value: `0.1`
 - The minimum value is `0`; the maximum value is `1`.
 
