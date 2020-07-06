@@ -41,6 +41,7 @@
     - [时区](/configure-time-zone.md)
     - [内存控制](/configure-memory-usage.md)
     - [Placement Rules](/configure-placement-rules.md)
+    - [Store Limit](/configure-store-limit.md)
   + 安全
     + 安全传输层协议 (TLS)
       - [为 MySQL 客户端开启 TLS](/encrypted-connections-with-tls-protocols.md)
