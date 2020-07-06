@@ -46,6 +46,8 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace] | Replaces existing values in a JSON document and returns the result |
 | [JSON_SET(json_doc, path, val[, path, val] ...)][json_set]  | Inserts or updates data in a JSON document and returns the result |
 | [JSON_UNQUOTE(json_val)][json_unquote] |  Unquotes a JSON value and returns the result as a string |
+| [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)][json_array_append] | Appends values to the end of the indicated arrays within a JSON document and returns the result |
+| [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)][json_array_insert] | Insert values into the specified location of a JSON document and returns the result |
 
 ## Functions that return JSON value attributes
 
@@ -54,16 +56,15 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | [JSON_DEPTH(json_doc)][json_depth] | Returns the maximum depth of a JSON document |
 | [JSON_LENGTH(json_doc[, path])][json_length] | Returns the length of a JSON document, or, if a path argument is given, the length of the value within the path |
 | [JSON_TYPE(json_val)][json_type] | Returns a string indicating the type of a JSON value |
+| [JSON_VALID(json_val)][json_valid] | Returns 0 or 1 to indicate whether a value is valid JSON |
 
 ## Unsupported functions
 
 The following JSON functions are unsupported in TiDB. You can track the progress in adding them in [TiDB #7546](https://github.com/pingcap/tidb/issues/7546):
 
-* `JSON_ARRAY_INSERT`
 * `JSON_MERGE_PATCH`
 * `JSON_PRETTY`
 * `JSON_STORAGE_SIZE`
-* `JSON_VALID`
 * `JSON_ARRAYAGG`
 * `JSON_OBJECTAGG`
 
@@ -91,3 +92,5 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 [json_search]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-search
 [json_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append
 [json_array_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append
+[json_array_insert]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert
+[json_search]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-search

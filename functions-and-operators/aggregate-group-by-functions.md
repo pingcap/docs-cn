@@ -21,7 +21,9 @@ This section describes the supported MySQL group (aggregate) functions in TiDB.
 | [`AVG()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_avg)                       | Return the average value of the argument          |
 | [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_max)                       | Return the maximum value                          |
 | [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_min)                       | Return the minimum value                          |
-| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | Return a concatenated string                      |
+| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | Return a concatenated string                     |
+| [`VARIANCE()`, `VAR_POP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_var-pop) | Return the population standard variance|
+| [`JSON_OBJECTAGG(key, value)`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-objectagg) | Return the result set as a single JSON object containing key-value pairs |
 
 - Unless otherwise stated, group functions ignore `NULL` values.
 - If you use a group function in a statement containing no `GROUP BY` clause, it is equivalent to grouping on all rows.
@@ -118,7 +120,5 @@ The following aggregate functions are currently unsupported in TiDB. You can tra
 
 - `STD`, `STDDEV`, `STDDEV_POP`
 - `STDDEV_SAMP`
-- `VARIANCE`, `VAR_POP`
 - `VAR_SAMP`
 - `JSON_ARRAYAGG`
-- `JSON_OBJECTAGG`
