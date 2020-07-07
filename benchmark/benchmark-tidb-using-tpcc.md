@@ -68,23 +68,47 @@ For example, the hardware configuration is as follows:
 | RAM | 128GB |
 | DISK | Optane 500GB SSD |
 
-1. Because this type of CPU has an NUMA architecture, it is recommended to bind the core using `taskset` and view the NUMA node using `lscpu`. For example:
+1. Because this type of CPU has a NUMA architecture, it is recommended to [bind the core using `numactl`](/check-before-deployment.md#install-the-numactl-tool).
+
+2. Execute the `lscpu` command to view the NUMA nodes. The result is similar to:
 
     ```text
     NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
     NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
     ```
 
-2. Start TiDB using the following command:
+3. Start TiDB by adding `numactl` to the `{tidb_deploy_path}/scripts/run_tidb.sh` start-up script:
 
-    {{< copyable "shell-regular" >}}
+    ```text
+    #!/bin/bash
+    set -e
 
-    ```shell
-    nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server &&
-    nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb-server
+    ulimit -n 1000000
+
+    # WARNING: This file was auto-generated. Do not edit!
+    #          All your edit might be overwritten!
+    DEPLOY_DIR=/home/damon/deploy/tidb1-1
+
+    cd "${DEPLOY_DIR}" || exit 1
+
+    export TZ=Asia/Shanghai
+
+    # You need to specify different cpunodebind and membind for different TiDB instances on the same machine to bind different Numa nodes.
+    exec numactl --cpunodebind=0  --membind=0 bin/tidb-server \
+        -P 4111 \
+        --status="10191" \
+        --advertise-address="172.16.4.53" \
+        --path="172.16.4.10:2490" \
+        --config=conf/tidb.toml \
+        --log-slow-query="/home/damon/deploy/tidb1-1/log/tidb_slow_query.log" \
+        --log-file="/home/damon/deploy/tidb1-1/log/tidb.log" 2>> "/home/damon/deploy/tidb1-1/log/tidb_stderr.log"
     ```
 
-3. You can deploy a HAproxy to balance the load of multiple TiDB nodes. It is recommended to configure `nbproc` as the number of CPU cores.
+    > **Note:**
+    >
+    > Direct modification of `run_tidb.sh` may be overwritten. So in a production environment, it is recommended to use TiUP if you need to bind the core.
+
+4. You can deploy an HAproxy to balance the loads on multiple TiDB nodes. It is recommended to configure `nbproc` as the number of CPU cores.
 
 ## Edit the configuration
 
