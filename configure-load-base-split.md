@@ -2,6 +2,7 @@
 title: Load Base Split
 summary: Learn the feature of Load Base Split.
 category: tutorials
+aliases: ['/docs/dev/configure-load-base-split/']
 ---
 
 # Load Base Split
