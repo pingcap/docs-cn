@@ -501,17 +501,17 @@ sync-ddl = true
     # 在 TiDB 集群 A 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/" \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}"
 
     # 在 TiDB 集群 B 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/" \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}"
 
     # 在 TiDB 集群 C 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/" \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}"
     ```
 
 3. 在 TiDB 集群 A，B 和 C 上创建环形同步任务。
