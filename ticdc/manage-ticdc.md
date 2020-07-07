@@ -10,6 +10,21 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/t
 
 ## TiCDC 部署
 
+### 软件和硬件环境推荐配置
+
+在生产环境中，TiCDC 的软件和硬件配置推荐如下：
+
+| Linux 操作系统平台       | 版本         |
+| :----------------------- | :----------: |
+| Red Hat Enterprise Linux | 7.3 及以上   |
+| CentOS                   | 7.3 及以上   |
+
+| **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
+| --- | --- | --- | --- | --- |
+| 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
+
+更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
+
 ### 使用 TiUP 部署
 
 #### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
@@ -46,7 +61,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
-以下内容介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `127.0.0.1`，端口为 `2379`。
+以下内容介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
@@ -55,7 +70,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli capture list --pd=http://127.0.0.1:2379
+    cdc cli capture list --pd=http://10.0.10.25:2379
     ```
 
     ```
@@ -80,7 +95,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
 create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-start-ts":null}}
 ```
 
@@ -134,6 +149,19 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
     | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
+    | `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
+
+如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
+
+使用配置文件创建同步任务的方法如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
+```
+
+其中 `changefeed.toml` 为同步任务的配置文件。
 
 #### 查询同步任务列表
 
@@ -142,7 +170,7 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed list --pd=http://127.0.0.1:2379
+cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
 ```
@@ -160,7 +188,7 @@ cdc cli changefeed list --pd=http://127.0.0.1:2379
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 ```
@@ -203,7 +231,7 @@ cdc cli changefeed query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-231
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 以上命令中：
@@ -217,7 +245,7 @@ cdc cli changefeed pause --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-231
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed resume --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 以上命令中：
@@ -231,7 +259,7 @@ cdc cli changefeed resume --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-23
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed remove --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 - `--changefeed=uuid` 为需要操作的 `changefeed` ID。
@@ -243,7 +271,7 @@ cdc cli changefeed remove --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-23
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor list --pd=http://127.0.0.1:2379
+    cdc cli processor list --pd=http://10.0.10.25:2379
     ```
 
     ```
@@ -261,28 +289,35 @@ cdc cli changefeed remove --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-23
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
     ```
     {
-            "status": {
-                    "table-infos": [
-                            {
-                                    "id": 45,
-                                    "start-ts": 415241823337054209
-                            }
-                    ],
-                    "table-p-lock": null,
-                    "table-c-lock": null,
-                    "admin-job-type": 0
-            },
-            "position": {
-                    "checkpoint-ts": 415241893447467009,
-                    "resolved-ts": 415241893971492865
-            }
+      "status": {
+        "tables": {
+          "56": {    # 56 表示同步表 id，对应 TiDB 中表的 tidb_table_id
+            "start-ts": 417474117955485702,
+            "mark-table-id": 0  # mark-table-id 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id
+          }
+        },
+        "operation": null,
+        "admin-job-type": 0
+      },
+      "position": {
+        "checkpoint-ts": 417474143881789441,
+        "resolved-ts": 417474143881789441,
+        "count": 0
+      }
     }
     ```
+
+以上命令中：
+
+- `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id；
+- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id；
+- `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO；
+- `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO；
 
 ## 使用 HTTP 接口管理集群状态和数据同步
 
@@ -335,3 +370,186 @@ curl -X POST http://127.0.0.1:8301/capture/owner/resign
 ```
 election: not leader
 ```
+
+### 手动调度表到其他节点
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf060953-036c-4f31-899f-5afa0ad0c2f9&target-cp-id=6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5&table-id=49'
+```
+
+参数说明
+
+| 参数名        | 说明 |
+| :----------- | :--- |
+| `cf-id`        | 进行调度的 Changefeed ID |
+| `target-cp-id` | 目标 Capture ID |
+| `table-id`     | 需要调度的 Table ID |
+
+以上命令仅对 owner 节点请求有效。对非 owner 节点将会返回错误。
+
+```
+{
+ "status": true,
+ "message": ""
+}
+```
+
+## 同步任务配置文件描述
+
+以下内容详细介绍了同步任务的配置。
+
+```toml
+# 指定配置文件中涉及的库名、表名是否为大小写敏感
+# 该配置会同时影响 filter 和 sink 相关配置，默认为 true
+case-sensitive = true
+
+[filter]
+# 忽略指定 start_ts 的事务
+ignore-txn-start-ts = [1, 2]
+
+# 过滤器规则
+# 过滤规则语法：https://github.com/pingcap/tidb-tools/tree/master/pkg/table-filter#syntax
+rules = ['*.*', '!test.*']
+
+[mounter]
+# mounter 线程数，用于解码 TiKV 输出的数据
+worker-num = 16
+
+[sink]
+# 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
+# 支持 default、ts、rowid、table 四种分发器
+dispatchers = [
+    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
+    {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
+]
+# 对于 MQ 类的 Sink，可以指定消息的协议格式
+# 目前支持 default 和 canal 两种协议。default 为 TiCDC Open Protocol
+protocol = "default"
+
+[cyclic-replication]
+# 是否开启环形同步
+enable = false
+# 当前 TiCDC 的复制 ID
+replica-id = 1
+# 需要过滤掉的同步 ID
+filter-replica-ids = [2,3]
+# 是否同步 DDL
+sync-ddl = true
+```
+
+### 配置文件兼容性的注意事项
+
+* TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
+* TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考 [Table Filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
+
+## 环形同步
+
+> **警告：**
+>
+> 目前环形同步属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
+
+环形同步功能支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 `test.user_data`，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 `test.user_data` 的写入同步其它集群上，使三个集群上的 `test.user_data` 达到最终一致。
+
+### 环形同步使用示例
+
+在三个集群 A、B 和 C 上开启环形复制，其中 A 到 B 的同步使用两个 TiCDC。A 作为三个集群的 DDL 入口。
+
+![TiCDC cyclic replication](/media/cdc-cyclic-replication.png)
+
+使用环形同步功能时，需要设置同步任务的创建参数：
+
++ `--cyclic-replica-id`：用于指定为上游集群的写入指定来源 ID，需要确保每个集群 ID 的唯一性。
++ `--cyclic-filter-replica-ids`：用于指定需要过滤的写入来源 ID，通常为下游集群的 ID。
++ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游，只能在一个集群的 CDC 上开启 DDL 同步。
+
+环形同步任务创建步骤如下：
+
+1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#ticdc-部署)。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 在 TiDB 集群 A 上启动 TiCDC 组件。
+    cdc server \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+        --log-file=ticdc_1.log \
+        --addr=0.0.0.0:8301 \
+        --advertise-addr=127.0.0.1:8301
+
+    # 在 TiDB 集群 B 上启动 TiCDC 组件。
+    cdc server \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+        --log-file=ticdc_2.log \
+        --addr=0.0.0.0:8301 \
+        --advertise-addr=127.0.0.1:8301
+
+    # 在 TiDB 集群 C 上启动 TiCDC 组件。
+    cdc server \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+        --log-file=ticdc_3.log \
+        --addr=0.0.0.0:8301 \
+        --advertise-addr=127.0.0.1:8301
+    ```
+
+2. 在 TiDB 集群 A，B 和 C 上创建环形同步需要使用的标记数据表 (`mark table`)。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 在 TiDB 集群 A 上创建标记数据表。
+    cdc cli changefeed cyclic create-marktables \
+        --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/" \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+
+    # 在 TiDB 集群 B 上创建标记数据表。
+    cdc cli changefeed cyclic create-marktables \
+        --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/" \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+
+    # 在 TiDB 集群 C 上创建标记数据表。
+    cdc cli changefeed cyclic create-marktables \
+        --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/" \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+    ```
+
+3. 在 TiDB 集群 A，B 和 C 上创建环形同步任务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 在 TiDB 集群 A 上创建环形同步任务。
+    cdc cli changefeed create \
+        --sink-uri="mysql://root@${TiDB_B_HOST}/" \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+        --cyclic-replica-id 1 \
+        --cyclic-filter-replica-ids 2 \
+        --cyclic-sync-ddl true
+
+    # 在 TiDB 集群 B 上创建环形同步任务。
+    cdc cli changefeed create \
+        --sink-uri="mysql://root@${TiDB_C_HOST}/" \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+        --cyclic-replica-id 2 \
+        --cyclic-filter-replica-ids 3 \
+        --cyclic-sync-ddl true
+
+    # 在 TiDB 集群 C 上创建环形同步任务。
+    cdc cli changefeed create \
+        --sink-uri="mysql://root@${TiDB_A_HOST}/" \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+        --cyclic-replica-id 3 \
+        --cyclic-filter-replica-ids 1 \
+        --cyclic-sync-ddl false
+    ```
+
+### 环形同步使用限制
+
+1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形复制功能使用到的标记表。
+2. 开启环形复制的数据表只包含 [a-zA-z0-9_] 字符。
+3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
+4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
+5. 如果想在线 DDL，需要确保以下两点：
+    1. 多个集群的 CDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 CDC 关闭了 sync-ddl。
+    2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。

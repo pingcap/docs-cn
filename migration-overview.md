@@ -1,10 +1,11 @@
 ---
-title: 支持的数据迁移路径
+title: 数据迁移概述
 summary: 本文档介绍支持哪些路径将数据迁移到 TiDB。
 category: reference
+aliases: ['/docs-cn/dev/data-migration-route','/zh/tidb/dev/data-migration-route']
 ---
 
-# 支持的数据迁移路径
+# 数据迁移概述
 
 本文档介绍支持从哪些路径将数据迁移到 TiDB，包括从 MySQL 迁移到 TiDB 和从 CSV/SQL 文件迁移到 TiDB。
 

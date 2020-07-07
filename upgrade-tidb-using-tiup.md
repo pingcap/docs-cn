@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/using-tiup/']
 
 # 使用 TiUP 升级 TiDB
 
-本文档适用于使用 TiUP 从 TiDB 3.0 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
+本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
 
 如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
 
@@ -189,6 +189,10 @@ Starting /home/tidblk/.tiup/components/cluster/v1.0.0/cluster display <cluster-n
 TiDB Cluster: <cluster-name>
 TiDB Version: v4.0.0
 ```
+
+> **注意：**
+>
+> TiUP 及 TiDB（v4.0.2 起）默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
 
 ## 5. 升级 FAQ
 
