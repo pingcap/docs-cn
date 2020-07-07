@@ -100,7 +100,7 @@ aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 
 > *警告：*
 >
-> `*` 需谨慎使用，因为它可能引入安全风险，允许来自任何 IP 的客户端自行汇报其 IP 地址。另外，这可能会导致部分直接连接 TiDB 的 TiDB 内部组件无法使用，例如 TiDB Dashboard。
+>  需谨慎使用 `*` 符号，因为它可能引入安全风险，允许来自任何 IP 的客户端自行汇报其 IP 地址。另外，它可能会导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
 
 ## `--proxy-protocol-header-timeout`
 
