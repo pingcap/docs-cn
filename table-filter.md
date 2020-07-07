@@ -28,7 +28,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
     #                 ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
-* [Dumpling](backup-and-restore-using-dumpling-lightning.md)：
+* [Dumpling](/backup-and-restore-using-dumpling-lightning.md)：
 
     {{< copyable "shell-regular" >}}
 
