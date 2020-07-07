@@ -38,7 +38,7 @@ aliases: ['/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/main
 
 > **注意：**
 >
-> v4.0.2 为文档在编写时的最新版本，推荐读者使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
+> v4.0.2 为编写本文档时的最新版本。推荐读者使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
 
 ### TiKV 集群硬件信息
 
