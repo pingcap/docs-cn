@@ -1,7 +1,6 @@
 ---
 title: Loader 使用文档
 category: reference
-<<<<<<< HEAD
 aliases: ['/docs-cn/stable/reference/tools/loader/','/docs-cn/stable/load-misuse-handling/']
 ---
 

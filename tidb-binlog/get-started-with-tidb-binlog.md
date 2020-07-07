@@ -1,11 +1,7 @@
 ---
 title: TiDB Binlog 教程
 category: how-to
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/how-to/get-started/tidb-binlog/']
-=======
-aliases: ['/docs-cn/dev/how-to/get-started/tidb-binlog/','/docs-cn/dev/get-started-with-tidb-binlog/']
->>>>>>> b1f401f... Add missing aliases for binlog docs (#3918)
+aliases: ['/docs-cn/stable/how-to/get-started/tidb-binlog/','/docs-cn/stable/get-started-with-tidb-binlog/']
 ---
 
 # TiDB Binlog 教程
