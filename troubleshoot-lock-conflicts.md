@@ -74,7 +74,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
 * 在遇到读写冲突时会有 backoff 自动重试机制，如上述示例中 Txn1 会进行 backoff 重试，单次初始 100 ms，单次最大 3000 ms，总共最大 20000 ms
 
-* 可以使用 TiDB Control 的子命令 [decoder](/tidb-control.md#decoder-子命令) 来查看指定 key 对应的行的 table id 以及 rowid：
+* 可以使用 TiDB Control 的子命令 [decoder](/tidb-control.md#decoder-命令) 来查看指定 key 对应的行的 table id 以及 rowid：
 
     ```sh
     ./tidb-ctl decoder -f table_row -k "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
