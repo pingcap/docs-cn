@@ -5,6 +5,10 @@ category: how-to
 
 # TiDB Dashboard 介绍
 
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
 TiDB Dashboard 是 TiDB 自 4.0 版本起提供的图形化界面，可用于监控及诊断 TiDB 集群。TiDB Dashboard 内置于 TiDB 的 PD 组件中，无需独立部署。
 
 ![界面](/media/dashboard/dashboard-intro.gif)
@@ -60,3 +64,7 @@ TiDB Dashboard 在 GitHub 上[开源](https://github.com/pingcap-incubator/tidb-
 高级调试功能：无需第三方工具，在线地对各个组件进行性能分析，剖析组件实例在分析时间段内执行的各种内部操作及比例。
 
 参阅[实例性能分析页面](/dashboard/dashboard-profiling.md)了解详情。
+
+> **注意：**
+>
+> TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。

@@ -43,7 +43,7 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/troubleshoot/']
 
 从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何小于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
 
-启动 CDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间，该值默认为 86400 秒。
+启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间，该值默认为 86400 秒。
 
 如果同步任务长时间中断，累积未消费的数据比较多，初始启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的文件排序功能，该功能会使用文件系统文件进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=file` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
 
@@ -56,3 +56,60 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235
 > **注意：**
 >
 > TiCDC（4.0 发布版本）还不支持动态修改文件排序和内存排序。
+
+## 创建同步任务或同步到 MySQL 时遇到 `Error 1298: Unknown or incorrect time zone: 'UTC'` 错误
+
+这是因为下游 MySQL 没有加载时区，可以通过 [mysql_tzinfo_to_sql](https://dev.mysql.com/doc/refman/8.0/en/mysql-tzinfo-to-sql.html) 命令加载时区，加载后就可以正常创建任务或同步任务。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql -p
+```
+
+```
+Enter password:
+Warning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.
+Warning: Unable to load '/usr/share/zoneinfo/leap-seconds.list' as time zone. Skipping it.
+Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it.
+Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
+```
+
+如果是在特殊的公有云环境使用 MySQL，譬如阿里云 RDS 并且没有修改 MySQL 的权限，就需要通过 `--tz` 参数指定时区。可以首先在 MySQL 查询其使用的时区，然后在创建同步任务和创建 TiCDC 服务时使用该时区。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+show variables like '%time_zone%';
+```
+
+```
++------------------+--------+
+| Variable_name    | Value  |
++------------------+--------+
+| system_time_zone | CST    |
+| time_zone        | SYSTEM |
++------------------+--------+
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Shanghai
+```
+
+> **注意：**
+>
+> 在 MySQL 中 CST 时区通常实际代表的是 China Standard Time (UTC+08:00)，通常系统中不能直接使用 `CST`，而是用 `Asia/Shanghai` 来替换。
+
+> **注意：**
+>
+> 请谨慎设置 TiCDC server 的时区，因为该时区会用于时间类型的转换。推荐上下游数据库使用相同的时区，并且启动 TiCDC server 时通过 `--tz` 参数指定该时区。TiCDC server 时区使用的优先级如下：
+>
+> - 最优先使用 `--tz` 传入的时区
+> - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区
+> - 如果还没有 `TZ` 环境变量，会从 TiCDC server 运行机器的默认时区
+
+## 升级 TiCDC 后配置文件不兼容
+
+请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
