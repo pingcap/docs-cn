@@ -1,7 +1,11 @@
 ---
 title: Loader 使用文档
 category: reference
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/reference/tools/loader/']
+=======
+aliases: ['/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/load-misuse-handling/']
+>>>>>>> b1f401f... Add missing aliases for binlog docs (#3918)
 ---
 
 # Loader 使用文档
