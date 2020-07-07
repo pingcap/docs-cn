@@ -74,15 +74,15 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 指定 GC 模式。可选值如下：
 
-- `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
+- `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
 
-- `"central"`：集中 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。
+- `"central"`：集中 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。
 
 ## `tikv_gc_auto_concurrency`
 
 控制是否由 TiDB 自动决定 GC concurrency，即同时进行 GC 的线程数。
 
-当 `tikv_gc_mode` 设为 `"distributed"`，GC concurrency 将应用于 [Resolve Locks](/garbage-collection-overview.md#resolve-locks) 阶段。当 [`tikv_gc_mode`](#tikv_gc_mode) 设为 `"central"` 时，GC concurrency 将应用于 Resolve Locks 以及 [Do GC](/garbage-collection-overview.md#do-gc) 两个阶段。
+当 `tikv_gc_mode` 设为 `"distributed"`，GC concurrency 将应用于 [Resolve Locks](/garbage-collection-overview.md#resolve-locks清理锁) 阶段。当 [`tikv_gc_mode`](#tikv_gc_mode) 设为 `"central"` 时，GC concurrency 将应用于 Resolve Locks 以及 [Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 两个阶段。
 
 - `true`（默认）：自动以 TiKV 节点的个数作为 GC concurrency
 - `false`：使用 [`tikv_gc_concurrency`](#tikv_gc_concurrency) 的值作为 GC 并发数
@@ -132,7 +132,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - 自动并行：使用 TiKV 节点的个数作为线程数，并行地向每个 Region 发送请求。
 - 分布式：无需 TiDB 通过对 TiKV 发送请求的方式来驱动，而是每台 TiKV 自行工作。
 
-另外，如果 Green GC （实验特性）开启（即 [`tikv_gc_scan_lock_mode`](#tikv_gc_scan_lock_mode-实验特性) 配置项设为 `"physical"`），Resolve Lock 的执行将不受上述并行配置的影响。
+另外，如果 Green GC （实验特性）开启（即 [`tikv_gc_scan_lock_mode`](#tikv_gc_scan_lock_mode) 配置项设为 `"physical"`），Resolve Lock 的执行将不受上述并行配置的影响。
 
 ## 流控
 
