@@ -9,8 +9,6 @@ category: Releases
 
 TiDB 版本：4.0.0-rc.2
 
-TiUP 版本：4.0.0-rc.2
-
 ## 兼容性变化
 
 + TiDB

@@ -47,13 +47,13 @@ category: introduction
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Sze       | 6MB       |
+| Size       | 6MB       |
 
 ## 单列的限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Sze       | 6MB       |
+| Size       | 6MB       |
 
 ## 字符串类型限制
 
@@ -70,7 +70,4 @@ category: introduction
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| 单条 INSERT statement 语句写入的 Key-Value 对数量       |  3000000      |
-| 单个事务写入的行数       |  3000000 / 单个表索引的数量      |
-| 单条 INSERT statement 语句写入的 Key-Value 对数量       |  3000000      |
-| 单个事务写入的行数       |  3000000 / 单个表索引的数量      |
+| 单个事务最大语句数 |  在使用乐观事务并开启事务重试的情况下，默认限制 5000，可通过 [`stmt-count-limit`](/tidb-configuration-file.md#stmt-count-limit) 调整 |

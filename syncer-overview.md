@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/tools/syncer/']
 
 > **警告：**
 >
-> Syncer 目前已经不再维护，其功能已经完全被 [TiDB Data Migration](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/)取代，强烈建议切换到 TiDB DM。
+> Syncer 目前已经不再维护，其功能已经完全被 [TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/overview)取代，强烈建议切换到 TiDB DM。
 
 ## Syncer 简介
 

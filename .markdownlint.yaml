@@ -1,4 +1,4 @@
-comment: 'Rules for PingCAP docs-cn'
+comment: 'Markdownlint Rules for PingCAP docs-cn'
 
 # disable all by default
 default: false

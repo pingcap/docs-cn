@@ -1,18 +1,14 @@
 ---
-title: 慢查询页面
+title: TiDB Dashboard 慢查询页面
 summary: 了解如何在 TiDB Dashboard 中查看慢查询。
 category: how-to
 ---
 
-# 慢查询页面
+# TiDB Dashboard 慢查询页面
 
-本文档介绍如何在 TiDB Dashboard 中查看慢查询页面。
+该页面上能检索和查看集群中所有慢查询。
 
-## 慢查询简介
-
-查询集群中所有慢查询语句，系统默认将执行时间超过 Session 变量 [`tidb_slow_log_threshold`](/tidb-specific-system-variables.md#tidb_slow_log_threshold) 或者配置参数 [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 值的 SQL 语句视为慢查询语句，系统会自己记录到[慢查询日志](/identify-slow-queries.md) 中。此功能通过 SQL 将查询结果输出到页面。
-
-默认情况下，执行时间超过 300ms 的 SQL 就会被视为慢查询，被记录到[慢查询日志](/identify-slow-queries.md)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/tidb-specific-system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 参数调整慢查询阈值。
+默认情况下，执行时间超过 300ms 的 SQL 查询就会被视为慢查询，被记录到[慢查询日志](/identify-slow-queries.md)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/tidb-specific-system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 参数调整慢查询阈值。
 
 > **注意：**
 >
@@ -20,7 +16,7 @@ category: how-to
 
 ## 访问列表页面
 
-访问页面的两种方式，如下：
+可以通过以下两种方法访问慢查询页面：
 
 * 登录后，左侧导航条点击**慢查询** (**Slow Queries**)：
 

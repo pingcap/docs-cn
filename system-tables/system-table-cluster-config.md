@@ -15,7 +15,7 @@ summary: 了解 TiDB 集群配置表 `CLUSTER_CONFIG`。
 desc information_schema.cluster_config;
 ```
 
-```
+```sql
 +----------+--------------+------+------+---------+-------+
 | Field    | Type         | Null | Key  | Default | Extra |
 +----------+--------------+------+------+---------+-------+
@@ -41,7 +41,7 @@ desc information_schema.cluster_config;
 select * from information_schema.cluster_config where type='tikv' and `key` like 'coprocessor%';
 ```
 
-```
+```sql
 +------+-----------------+-----------------------------------+----------+
 | TYPE | INSTANCE        | KEY                               | VALUE    |
 +------+-----------------+-----------------------------------+----------+

@@ -38,6 +38,16 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
+使用 MySQL 8.0 客户端时，如果遇到无法登陆的问题，可以尝试指定 `default-auth` 和 `default-character-set` 参数：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+mysql -h 127.0.0.1 -u root -P 4000 --default-auth=mysql_native_password --default-character-set=utf8
+```
+
+无法登陆的原因是 MySQL 8.0 会更改了 MySQL 5.7 默认的[密码加密方式](/security-compatibility-with-mysql.md)，所以需要添加以上参数指定使用旧的加密方式。
+
 #### 1.1.7 TiDB 支持分布式事务吗？
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/multi-data-centers-in-one-city-deployment.md)，TiDB 均支持 ACID 分布式事务。
@@ -90,11 +100,13 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 ## 二、Cloud TiDB
 
-### 2.1 腾讯云
+### 2.1 公有云
 
-#### 2.1.1 目前 Cloud TiDB 都有那些云厂商？
+#### 2.1.1 目前 TiDB Cloud 都支持哪些云厂商？
 
-Cloud TiDB 目前已经在京东云、UCloud 上线，都是数据库一级入口，欢迎大家使用。
+TiDB Cloud 目前已经在京东云、UCloud 上线，都是数据库一级入口，欢迎大家使用。
+
+另外，TiDB Cloud 还支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)，[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和 [阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
 
 ## 三、故障排除
 

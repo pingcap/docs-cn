@@ -24,7 +24,7 @@ category: FAQ
  
 ## BR 会备份系统表吗？在数据恢复的时候，这些系统表会冲突吗？
  
-全量备份的时候会过滤掉系统库（`information_schema`，`performance_schema`，`mysql`）。参考[备份原理](/br/backup-and-restore-tool.md#备份原理)。
+全量备份的时候会过滤掉系统库（`information_schema`，`performance_schema`，`mysql`）。参考[备份原理](/br/backup-and-restore-tool.md#工作原理)。
 
 因为这些系统库根本不可能存在于备份中，恢复的时候自然不可能发生冲突。
  
@@ -36,9 +36,9 @@ category: FAQ
  
 > **注意：**
 >
-> 在恢复的时候也可能遇到同样的问题。BR 的恢复中，在检验读权限的时机是在第一次读取 SST 文件时，考虑到执行 DDL 的耗时，这个时刻可能会离开始运行 BR 的时间很远。
+> 在恢复的时候也可能遇到同样的问题。
 > 
-> 这样可能会出现等了很长时间之后遇到 Permission denied 错误失败的情况。
+> 使用 BR 进行数据的恢复时，检验读权限的时机是在第一次读取 SST 文件时，考虑到执行 DDL 的耗时，这个时刻可能会离开始运行 BR 的时间很远。这样可能会出现等了很长时间之后遇到 Permission denied 错误失败的情况。
 > 
 > 因此，最好在恢复前提前检查权限。
  

@@ -18,7 +18,7 @@ category: performance
 
 对于等值查询，在[统计信息简介](/statistics.md)中提到了一种可能的情况。这时可以先检查是不是这种特殊情况，然后进行对应的处理。
 
-如果经过检查发现不是上面的可能情况，可以使用 [Optimizer Hints](/optimizer-hints.md) 中提到的 `USE_INDEX` 或者 `use index` 来强制选择索引。同时也可以使用[执行计划绑定](/execution-plan-binding.md)中提到的方式来非侵入地更改查询的行为。
+如果经过检查发现不是上面的可能情况，可以使用 [Optimizer Hints](/optimizer-hints.md) 中提到的 `USE_INDEX` 或者 `use index` 来强制选择索引。同时也可以使用[执行计划管理](/sql-plan-management.md)中提到的方式来非侵入地更改查询的行为。
 
 ## 其他情况
 

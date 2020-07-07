@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/reference/tiflash/configuration/']
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）调整参数：
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 tiup 部署，可以用 `tiup ctl pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
@@ -18,7 +18,8 @@ aliases: ['/docs-cn/dev/reference/tiflash/configuration/']
     >
     > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
 
-- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate)：用于限制每个 store 的调度速度
+- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate)：用于限制每个 TiKV store 或 TiFlash store 的 Region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
+    - 使用 `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` 命令单独设置某个 store 的 Region 调度速度。（`store_id` 可通过 `pd-ctl -u <pd_ip:pd_port> store` 命令获得）如果没有单独设置，则继承 `store-balance-rate` 的设置。你也可以使用 `pd-ctl -u <pd_ip:pd_port> store limit` 命令查看当前设置值。
 
 ## TiFlash 配置参数
 
@@ -31,6 +32,8 @@ path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配�
 listen_host = tiflash 服务监听 host # 一般配置成 0.0.0.0
 tcp_port = tiflash tcp 服务端口
 http_port = tiflash http 服务端口
+mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，通常不需要修改
+minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 ```
 
 ```
@@ -67,6 +70,11 @@ http_port = tiflash http 服务端口
     pd_addr = pd 服务地址 # 多个地址以逗号隔开
 [status]
     metrics_port = Prometheus 拉取 metrics 信息的端口
+[profiles]
+[profiles.default]
+    dt_enable_logical_split = true # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定的空间浪费。默认为 true
+    max_memory_usage = 10000000000 # 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 10000000000。如果设置为 0 表示不限制
+    max_memory_usage_for_all_queries = 0 # 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
 ```
 
 ### 配置文件 tiflash-learner.toml

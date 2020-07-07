@@ -4,7 +4,7 @@ category: how-to
 aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 ---
 
-## 为 TiDB 组件间通信开启加密传输
+# 为 TiDB 组件间通信开启加密传输
 
 本部分介绍如何为 TiDB 集群内各部组件间开启加密传输，一旦开启以下组件间均将使用加密传输：
 
@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     
 目前暂不支持只开启其中部分组件的加密传输。
 
-### 配置开启加密传输
+## 配置开启加密传输
 
 1. 准备证书。
 
@@ -91,7 +91,7 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
     ```
    
-### 认证组件调用者身份   
+## 认证组件调用者身份   
 
 通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份以防止拥有有效证书的非法访问者进行访问（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。
 
@@ -129,10 +129,10 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
     ```
 
-### 证书重加载 
+## 证书重加载 
 
 TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。目前暂不支持 CA 的重加载。
 
-### TiDB 服务端与客户端加密传输
+## 另请参阅
 
-本文介绍的是 TiDB 集群内各部组件如何开启加密传输， 对于 TiDB 服务端与客户端之间的加密传输配置请参考[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients.md)，客户端应用与 TiDB 之间通讯可以使用与本文介绍的内部集群间通讯证书完全不同的另一套证书。
+- [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)

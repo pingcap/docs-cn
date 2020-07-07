@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
 
 - 1.1.4 多台 TiKV 启动不了，导致 Region 没有 Leader。单台物理主机部署多个 TiKV 实例，一个物理机挂掉，由于 label 配置错误导致 Region 没有 Leader，见案例 [case-228](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case228.md)。
 
-- 1.1.5 follower apply 落后，成为 Leader 之后把收到的请求以 `epoch not match` 理由打回，见案例 [case-958](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case958.md)（TiKV 内部需要优化改机制）。
+- 1.1.5 follower apply 落后，成为 Leader 之后把收到的请求以 `epoch not match` 理由打回，见案例 [case-958](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case958.md)（TiKV 内部需要优化该机制）。
 
 ### 1.2 PD 异常导致服务不可用
 
@@ -268,7 +268,7 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
 
 - 4.5.6 Raft commit log 慢了。
 
-    - TiKV Grafana 的 **Raft IO**/`commit log duration` 比较高（4.x 版本的 Grafana 才有该 metric）。每个 Region 对应一个独立的 Raft group，Raft 本身是有流控机制的，类似 TCP 的滑动窗口机制，通过参数 `[raftstore] raft-max-inflight-msgs = 256` 来控制滑动窗口的大小，如果有热点写入并且 `commit log duration` 比较高可以适度调大改参数，比如 1024。
+    - TiKV Grafana 的 **Raft IO**/`commit log duration` 比较高（4.x 版本的 Grafana 才有该 metric）。每个 Region 对应一个独立的 Raft group，Raft 本身是有流控机制的，类似 TCP 的滑动窗口机制，通过参数 `[raftstore] raft-max-inflight-msgs = 256` 来控制滑动窗口的大小，如果有热点写入并且 `commit log duration` 比较高可以适度调大该参数，比如 1024。
 
 - 4.5.7 其他情况，请参考 [Performance Map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 上的写入路径来分析。
 
@@ -416,7 +416,7 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
 
     - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。
 
-    - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](https://pingcap.com/docs-cn/tidb-data-migration/stable/precheck/)。
+    - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/precheck)。
 
     - 同一套 DM 集群，混合部署不同版本的 DM-worker/DM-master/dmctl，见案例 [AskTUG-1049](https://asktug.com/t/dm1-0-0-ga-access-denied-for-user/1049/5)。
 
@@ -440,9 +440,9 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
 
     - 在 DM 进行 relay log 拉取与增量同步过程中，如果遇到了上游超过 4 GB 的 binlog 文件，就可能出现这两个错误。原因是 DM 在写 relay log 时需要依据 binlog position 及文件大小对 event 进行验证，且需要保存同步的 binlog position 信息作为 checkpoint。但是 MySQL binlog position 官方定义使用 uint32 存储，所以超过 4 GB 部分的 binlog position 的 offset 值会溢出，进而出现上面的错误。
 
-        - 对于 relay 处理单元， 可通过官网步骤进行[手动处理](https://pingcap.com/docs-cn/tidb-data-migration/stable/error-handling/)。
+        - 对于 relay 处理单元，可通过官网步骤进行[手动处理](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/error-handling)。
 
-        - 对于 binlog replication 处理单元，可通过官网步骤进行[手动处理](https://pingcap.com/docs-cn/tidb-data-migration/stable/error-handling/)。
+        - 对于 binlog replication 处理单元，可通过官网步骤进行[手动处理](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/error-handling)。
 
 - 6.2.6 DM 同步中断，日志报错 `ERROR 1236 (HY000) The slave is connecting using CHANGE MASTER TO MASTER_AUTO_POSITION = 1, but the master has purged binary logs containing GTIDs that the slave requires.`。
 
@@ -497,7 +497,7 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
 
     - 原因：并行打开的引擎文件 (engine files) 超出 tikv-importer 里的限制。这可能由配置错误引起。即使配置没问题，如果 tidb-lightning 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
 
-    - 解决办法：参考[官网步骤处理](/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--8)。
+    - 解决办法：参考[官网步骤处理](/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--)。
 
 - 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
@@ -509,7 +509,7 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
 
     - 原因：一个 timestamp 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏令时切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 
-    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-0-45-0-0)处理。
+    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-)处理。
 
 ## 7. 常见日志分析
 

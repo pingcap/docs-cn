@@ -10,7 +10,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 ## 设置系统变量
 
-通过 [`SET` 语句](/sql-statements/sql-statement-admin.md#set-语句)可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
+通过 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
 
 ### 全局范围值
 
@@ -192,6 +192,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 | max\_execution\_time | GLOBAL \| SESSION | 语句超时时间，单位为毫秒 |
 | innodb\_lock\_wait\_timeout | GLOBAL \| SESSION | 悲观事务语句等锁时间，单位为秒 |
 | windowing\_use\_high\_precision | GLOBAL \| SESSION | 计算窗口函数时采用高精度模式，默认值为 1 |
+| sql\_select\_limit | GLOBAL \| SESSION | SELECT 语句返回的最大行数，默认值为 `2^64 - 1` |
 
 > **注意：**
 >

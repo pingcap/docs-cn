@@ -10,8 +10,6 @@ aliases: ['/docs-cn/dev/releases/4.0.0-rc.1/']
 
 TiDB 版本：4.0.0-rc.1
 
-TiUP 版本：4.0.0-rc.1
-
 ## 兼容性变化
 
 + TiKV

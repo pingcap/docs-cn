@@ -1,10 +1,11 @@
 ---
-title: 查看执行详情
+title: TiDB Dashboard SQL 语句分析执行详情页面
 summary: 查看单个 SQL 语句执行的详细情况
 category: how-to
+aliases: ['/docs-cn/dev/dashboard/dashboard-statement-detail/']
 ---
 
-# 查看执行详情
+# TiDB Dashboard SQL 语句分析执行详情页面
 
 在列表中点击任意一行可以进入该 SQL 语句的详情页查看更详细的信息，这此信息包括三大部分：
 

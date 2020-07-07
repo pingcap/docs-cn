@@ -1,9 +1,9 @@
 ---
-title: 集群诊断页面
+title: TiDB Dashboard 诊断报告
 category: how-to
 ---
 
-# 集群诊断页面
+# TiDB Dashboard 诊断报告
 
 本文档主要介绍诊断报告的内容以及查看技巧，访问集群诊断和生成报告请参考 [诊断报告访问文档](/dashboard/dashboard-diagnostics-access.md)
 

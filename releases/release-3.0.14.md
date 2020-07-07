@@ -10,8 +10,6 @@ aliases: ['/docs-cn/dev/releases/3.0.14/']
 
 TiDB 版本：3.0.14
 
-TiUP 版本：3.0.14
-
 ## 兼容性变化
 
 + TiDB
