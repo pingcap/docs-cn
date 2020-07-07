@@ -229,7 +229,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | --filetype| 导出文件类型 csv/sql | "sql" |
 | -o 或 --output | 设置导出文件路径 | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该指令不支持并发导出 |
-| --consistency | flush: dump 前用 FTWRL <br> snapshot: 通过 tso 指定 dump 位置 <br> lock: 对需要 dump 的所有表执行 lock tables read <br> none: 不加锁 dump，无法保证一致性 <br> auto: MySQL flush, TiDB snapshot | "auto" |
+| --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 tso 指定 dump 位置 <br/> lock: 对需要 dump 的所有表执行 lock tables read <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: MySQL flush, TiDB snapshot | "auto" |
 | --snapshot | snapshot tso, 只在 consistency=snapshot 下生效 |
 | --where | 对备份的数据表通过 where 条件指定范围 |
 | -p 或 --password | 链接密码 |
