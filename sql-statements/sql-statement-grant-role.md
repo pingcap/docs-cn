@@ -4,7 +4,7 @@ summary: An overview of the usage of GRANT <role> for the TiDB database.
 category: reference
 ---
 
-# GRANT <role>
+# `GRANT <role>`
 
 Assigns a previously created role to an existing user. The user can use then use the statement `SET ROLE <rolename>` to assume the privileges of the role, or `SET ROLE ALL` to assume all roles that have been assigned.
 

@@ -206,7 +206,7 @@ This statement is understood to be fully compatible with roles, which are a feat
 
 * [CREATE ROLE](/sql-statements/sql-statement-create-role.md)
 * [DROP ROLE](/sql-statements/sql-statement-drop-role.md)
-* [GRANT <role>](/sql-statements/sql-statement-grant-role.md)
+* [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
 * [SET ROLE](/sql-statements/sql-statement-set-role.md)
 * [SET DEFAULT ROLE](/sql-statements/sql-statement-set-default-role.md)
 * [Role-Based Access Control](/role-based-access-control.md)
