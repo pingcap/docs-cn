@@ -26,7 +26,7 @@ The `SET ROLE` statement is used to enable roles in the current session. After e
 ## Examples
 
 Create a user `'u1'@'%'` and three roles: `'r1'@'%'`, `'r2'@'%'` and `'r3'@'%'`.
-Grant these roles to `'u1'@'%'` and set `'r1'@'%'` as the defualt role of `'u1'@'%'`.
+Grant these roles to `'u1'@'%'` and set `'r1'@'%'` as the default role of `'u1'@'%'`.
 
 {{< copyable "sql" >}}
 
@@ -109,6 +109,15 @@ SELECT CURRENT_ROLE();
 1 row in set (0.000 sec)
 ```
 
+## MySQL compatibility
+
+This statement is understood to be fully compatible with roles, which are a feature of MySQL 8.0. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+
 ## See also
 
+* [CREATE ROLE](/sql-statements/sql-statement-create-role.md)
+* [DROP ROLE](/sql-statements/sql-statement-drop-role.md)
+* [GRANT <role>](/sql-statements/sql-statement-grant-role.md)
+* [REVOKE <role>](/sql-statements/sql-statement-revoke-role.md)
+* [SET DEFAULT ROLE](/sql-statements/sql-statement-set-default-role.md)
 * [Role-Based Access Control](/role-based-access-control.md)
