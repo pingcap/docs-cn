@@ -27,18 +27,18 @@ aliases: ['/docs-cn/v3.1/reference/tools/br/use-cases/','/docs-cn/v3.1/how-to/ma
 
 ### 部署方式
 
-推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
+推荐使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
 
 ### 集群版本
 
-* TiDB: v4.0.2
-* TiKV: v4.0.2
-* PD: v4.0.2
-* BR: v4.0.2
+* TiDB: v3.1.2
+* TiKV: v3.1.2
+* PD: v3.1.2
+* BR: v3.1.2
 
 > **注意：**
 >
-> v4.0.2 为编写本文档时的最新版本。推荐读者使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
+> v3.1.2 为编写本文档时的最新版本。推荐读者使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
 
 ### TiKV 集群硬件信息
 
