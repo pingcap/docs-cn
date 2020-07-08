@@ -501,17 +501,17 @@ sync-ddl = true
     # 在 TiDB 集群 A 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/" \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}"
 
     # 在 TiDB 集群 B 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/" \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}"
 
     # 在 TiDB 集群 C 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/" \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}"
     ```
 
 3. 在 TiDB 集群 A，B 和 C 上创建环形同步任务。
@@ -547,7 +547,7 @@ sync-ddl = true
 ### 环形同步使用限制
 
 1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形复制功能使用到的标记表。
-2. 开启环形复制的数据表只包含 [a-zA-z0-9_] 字符。
+2. 开启环形复制的数据表只包含 [a-zA-Z0-9_] 字符。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
 5. 如果想在线 DDL，需要确保以下两点：
