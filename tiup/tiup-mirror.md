@@ -88,4 +88,4 @@ This section introduces the usage examples of the `mirror` command.
 
 ### Deploy a TiDB Cluster offline using TiUP
 
-Refer to [Deploy a TiDB Cluster Offline Using TiUP](/production-offline-deployment-using-tiup.md#manually-pack-an-offline-component-package-using-tiup-mirror-clone) to install the TiUP offline mirror, deploy a TiDB cluster, and start it.
+Refer to [Deploy a TiDB Cluster Offline Using TiUP](/production-offline-deployment-using-tiup.md#option-2-manually-pack-an-offline-component-package-using-tiup-mirror-clone) to install the TiUP offline mirror, deploy a TiDB cluster, and start it.
