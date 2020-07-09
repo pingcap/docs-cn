@@ -6,7 +6,7 @@ category: reference
 
 # TiKV 静态加密 <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-静态加密 (encryption at rest) 即在存储数据时进行数据加密。对于数据库，静态加密功能也叫透明数据加密 (TDE)，区别于传输数据加密 (TLS) 或使用数据加密（很少使用）。SSD 驱动器、文件系统、云供应商等都可进行静态加密。若使 TiKV 在存储数据前就进行数据加密，攻击者必须通过数据库的身份验证才能访问数据。例如，当攻击者获得物理机的访问权限时，无法通过复制磁盘上的文件来访问数据。
+静态加密 (encryption at rest) 即在存储数据时进行数据加密。对于数据库，静态加密功能也叫透明数据加密 (TDE)，区别于传输数据加密 (TLS) 或使用数据加密（很少使用）。SSD 驱动器、文件系统、云供应商等都可进行静态加密。若 TiKV 在存储数据前就进行数据加密，攻击者必须通过数据库的身份验证才能访问数据。例如，当攻击者获得物理机的访问权限时，无法通过复制磁盘上的文件来访问数据。
 
 TiKV 从 v4.0.0 起支持静态加密，即在 [CTR](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) 模式下使用 [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) 对数据文件进行透明加密。要启用静态加密，用户须提供一个加密密钥，即主密钥。可以通过 AWS Key Management Service（推荐），即 KMS，提供主密钥 (master key)，也可以指定将密钥以明文形式存储在文件中。TiKV 自动轮换 (rotate) 用于加密实际数据文件的密钥，有时也可手动轮换主密钥。请注意，静态加密仅加密静态数据（即磁盘上的数据），而不加密网络传输中的数据。建议 TLS 与静态加密一起使用。
 
@@ -59,7 +59,7 @@ region = "us-west-2"
 endpoint = "https://kms.us-west-2.amazonaws.com"
 ```
 
-`key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。除非您使用非 AWS 厂商的 AWS KMS 兼容服务，否则 `endpoint` 为可选项，通常无需指定。
+`key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。除非你使用非 AWS 厂商的 AWS KMS 兼容服务，否则 `endpoint` 为可选项，通常无需指定。
 
 要指定存储在文件中的主密钥，主密钥配置应如下所示：
 
