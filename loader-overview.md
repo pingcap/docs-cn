@@ -1,7 +1,7 @@
 ---
 title: Loader 使用文档
 category: reference
-aliases: ['/docs-cn/dev/reference/tools/loader/']
+aliases: ['/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/']
 ---
 
 # Loader 使用文档
@@ -157,3 +157,37 @@ pattern-table = "table_*"
 target-schema = "example_db"
 target-table = "table"
 ```
+
+### 全量导入过程中遇到报错 `packet for query is too large. Try adjusting the 'max_allowed_packet' variable`
+
+#### 原因
+
+* MySQL client 和 MySQL/TiDB Server 都有 `max_allowed_packet` 配额的限制，如果在使用过程中违反其中任何一个 `max_allowed_packet` 配额，客户端程序就会收到对应的报错。目前最新版本的 Loader 和 TiDB Server 的默认 `max_allowed_packet` 配额都为 `64M`。
+
+    * 请使用最新版本，或者最新稳定版本的工具。[下载页面](/download-ecosystem-tools.md)。
+
+* Loader 的全量数据导入处理模块不支持对 dump sqls 文件进行切分，原因是 Mydumper 采用了最简单的编码实现，正如 Mydumper 代码注释 `/* Poor man's data dump code */` 所言。如果在 Loader 实现文件切分，那么需要在 `TiDB parser` 基础上实现一个完备的解析器才能正确的处理数据切分，但是随之会带来以下的问题：
+
+    * 工作量大
+
+    * 复杂度高，不容易保证正确性
+
+    * 性能的极大降低
+
+#### 解决方案
+
+* 依据上面的原因，在代码层面不能简单的解决这个困扰，我们推荐的方式是：利用 Mydumper 提供的控制 `Insert Statement` 大小的功能 `-s, --statement-size`: `Attempted size of INSERT statement in bytes, default 1000000`。
+
+    依据默认的 `--statement-size` 设置，Mydumper 默认生成的 `Insert Statement` 大小会尽量接近在 `1M` 左右，使用默认值就可以确保绝大部分情况不会出现该问题。
+
+    有时候在 dump 过程中会出现下面的 `WARN` log，但是这个报错不影响 dump 的过程，只是表达了 dump 的表可能是宽表。
+
+    ```
+    Row bigger than statement_size for xxx
+    ```
+
+* 如果宽表的单行超过了 `64M`，那么需要修改以下两个配置，并且使之生效。
+
+    * 在 TiDB Server 执行 `set @@global.max_allowed_packet=134217728` （`134217728 = 128M`）
+
+    * 根据实际情况为 Loader 的配置文件中的 db 配置增加 `max-allowed-packet=128M`，然后重启进程或者任务

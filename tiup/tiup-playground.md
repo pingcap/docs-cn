@@ -22,7 +22,7 @@ tiup playground [version] [flags]
 - 如果 playground 从未安装过任何版本的 TiDB/TiKV/PD 组件，TiUP 会先安装这些组件的最新稳定版，然后再启动运行这些组件的实例
 - 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v4.0.0-rc，则该命令相当于 tiup playground:v0.0.6 v4.0.0-rc
 - 因为该命令也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV 和 1 个 PD 实例构成的最小化集群
-- 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 TiDB Dashboard 等
+- 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等
 
 playground 的命令行参数说明：
 
@@ -31,6 +31,10 @@ Flags:
       --db int                   设置集群中的 TiDB 数量（默认为1）
       --db.binpath string        指定 TiDB 二进制文件的位置（开发调试用，可忽略）
       --db.config string         指定 TiDB 的配置文件（开发调试用，可忽略）
+      --db.host host             指定 TiDB 的监听地址
+      --drainer int              设置集群中 Drainer 数据
+      --drainer.binpath string   指定 Drainer 二进制文件的位置（开发调试用，可忽略）
+      --drainer.config string    指定 Drainer 的配置文件
   -h, --help                     打印帮助信息
       --host string              设置每个组件的监听地址（默认为 127.0.0.1），如果要提供给别的电脑访问，可设置为 0.0.0.0
       --kv int                   设置集群中的 TiKV 数量（默认为1）
@@ -40,6 +44,9 @@ Flags:
       --pd int                   设置集群中的 PD 数量（默认为1）
       --pd.binpath string        指定 PD 二进制文件的位置（开发调试用，可忽略）
       --pd.config string         指定 PD 的配置文件（开发调试用，可忽略）
+      --pump int                 指定集群中 Pump 的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
+      --pump.binpath string      指定 Pump 二进制文件的位置（开发调试用，可忽略）
+      --pump.config string       指定 Pump 的配置文件（开发调试用，可忽略）
       --tiflash int              设置集群中 TiFlash 数量（默认为0）
       --tiflash.binpath string   指定 TiFlash 的二进制文件位置（开发调试用，可忽略）
       --tiflash.config string    指定 TiFlash 的配置文件（开发调试用，可忽略）
@@ -84,7 +91,7 @@ tiup playground --pd.config ~/config/pd.toml
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground --db.binpath /xx/tidb-server 
+tiup playground --db.binpath /xx/tidb-server
 ```
 
 ### 启动多个组件实例
@@ -108,3 +115,44 @@ tiup client
 ```
 
 该命令会在控制台上提供当前机器上由 playground 启动的 TiDB 集群列表，选中需要连接的 TiDB 集群，点击回车后，可以打开一个自带的 MySQL 客户端以连接 TiDB。
+
+## 查看已启动集群的信息
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground display
+```
+
+可以看到如下信息：
+
+```
+Pid    Role     Uptime
+---    ----     ------
+84518  pd       35m22.929404512s
+84519  tikv     35m22.927757153s
+84520  pump     35m22.92618275s
+86189  tidb     exited
+86526  tidb     34m28.293148663s
+86190  drainer  35m19.91349249s
+```
+
+## 扩容集群
+
+扩容集群的命令行参数与启动集群的相似。以下命令可以扩容两个 TiDB：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground scale-out --db 2
+```
+
+## 缩容集群
+
+可在 `tiup playground scale-in` 命令中指定 `pid`，以缩容对应的实例。可以通过 `tiup playground display` 命令查看 `pid`。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground scale-in --pid 86526
+```
