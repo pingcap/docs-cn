@@ -477,7 +477,7 @@ mysql> desc select count(distinct a) from test.t;
 
 ### tidb_slow_log_threshold
 
-作用域：SESSION ( SERVER)
+作用域：SESSION（INSTANCE)
 
 默认值：300
 
