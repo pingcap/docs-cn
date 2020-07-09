@@ -138,13 +138,28 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed statistics --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
-上述命令的输出中：
+上述命令输出如下：
 
-* `replication_gap` 是 TiCDC 已经同步到下游的数据于上游的数据差了多少时间。
-* `sink_gap` 是 TiCDC 从上游获取的数据和最新的数据差了多少时间。
+```json
+[{
+    "id": "4e24dde6-53c1-40b6-badf-63620e4940dc",
+    "summary": {
+      "state": "normal",
+      "tso": 417886179132964865,
+      "checkpoint": "2020-07-07 16:07:44.881",
+      "error": null
+    }
+}]
+```
+
+* `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
+
+> **注意：**
+>
+> 该功能在 TiCDC 4.0.3 版本引入。
 
 ## 如何查看 TiCDC 同步任务是否正常？
 
@@ -171,7 +186,19 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
     * `replica.fetch.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 33554432 （32 MB）。
     * `fetch.message.max.bytes`，适当调大 comsumer.properties 中该参数，确保大于 `message.max.bytes`。
 
-## 如何查看 TiCDC Open protocol 输出变更数据中的时间戳、表名和库名？
+## TiCDC 把数据同步到 Kafka 时，是把一个事务内的所有变更都写到一个消息中吗？如果不是，是根据什么划分的？
+
+不是，根据配置的分发策略不同，有不同的划分方式，包括 default, row id, table, ts，更多请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
+
+## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
+
+不能，目前 TiCDC 控制了消息大小 4MB
+
+## TiCDC 把数据同步到 Kafka 时，一条消息中会不会包含多种数据变更？
+
+会，一条消息中可能出现多个 update 或 delete，update 和 delete 也有可能同时存在。
+
+## TiCDC 把数据同步到 Kafka 时，如何查看 TiCDC Open protocol 输出变更数据中的时间戳、表名和库名？
 
 这些信息包含在 Kafka 消息的 Key 中，比如：
 
@@ -185,3 +212,17 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 ```
 
 更多信息请参考[Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#event-格式定义)
+
+## TiCDC 把数据同步到 Kafka 时，如何确定一条消息中包含的数据变更发生在哪个时间点？
+
+把 Kafka 消息的 Key 中的 ts 右移 18 位即得 unix timestamp。
+
+## TiCDC Open protocol 如何标示 null 值？
+
+Open protocol 的输出中 type = 6 即为 null，比如：
+
+| 类型         | Code | 输出示例 | 说明 |
+| :---------- | :--- | :------ | :-- |
+| Null        | 6    | {"t":6,"v":null} | |
+
+更多信息请参考[Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-type-code)。
