@@ -50,6 +50,10 @@ show config where type='tikv' and name='log-level'
 
 ### 修改实例配置
 
+> **注意：**
+>
+> 修改配置后，需要使用 `tiup edit_config` 修改对应的配置，否则 `upgrade` 等运维操作会将动态配置修改的结果进行覆盖。
+
 执行 SQL 语句 `set config`，可以结合实例地址或组件类型来修改单个实例配置或全部实例配置，如：
 
 修改全部 TiKV 实例参数：
@@ -61,7 +65,7 @@ set config tikv log.level="info"
 修改单个 TiKV 实例参数：
 
 ```sql
-set config "127.0.0.1:2379" log.level="info"
+set config "127.0.0.1:20180" log.level="info"
 ```
 
 设置成功会返回 `Query OK`：
