@@ -485,7 +485,7 @@ mysql> desc select count(distinct a) from test.t;
 
 > 注意：
 >
-> 该变量实际作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB Server 中生效，同时也对其他的连接立即生效。
+> 该变量实际作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB INSTANCE 中生效，同时也对其他的连接立即生效。
 
 示例：
 
@@ -497,7 +497,7 @@ set tidb_slow_log_threshold = 200;
 
 ### tidb_enable_collect_execution_info
 
-作用域：SESSION ( SERVER)
+作用域：SESSION (INSTANCE)
 
 默认值：0
 
