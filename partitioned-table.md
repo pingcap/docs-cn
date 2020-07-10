@@ -11,13 +11,13 @@ This document introduces TiDB's implementation of partitioning.
 
 ## Partitioning types
 
-This section introduces the types of partitioning which are available in TiDB. Currently, TiDB supports range partitioning and hash partitioning.
+This section introduces the types of partitioning which are available in TiDB. Currently, TiDB supports Range partitioning and Hash partitioning.
 
 Range partitioning is used to resolve the performance issues caused by a large amount of deletions in the application, and it supports fast drop partition operations. Hash partitioning is used to scatter the data when there are a large amount of writes.
 
 ### Range partitioning
 
-When a table is partitioned by range, each partition contains rows for which the partitioning expression value lies within a given range. Ranges have to be contiguous but not overlapping. You can define it by using the `VALUES LESS THAN` operation.
+When a table is partitioned by Range, each partition contains rows for which the partitioning expression value lies within a given Range. Ranges have to be contiguous but not overlapping. You can define it by using `VALUES LESS THAN`.
 
 Assume you need to create a table that contains personnel records as follows:
 
@@ -35,7 +35,7 @@ CREATE TABLE employees (
 );
 ```
 
-You can partition a table by range in various ways as needed. For example, you can partition it by using the `store_id` column:
+You can partition a table by Range in various ways as needed. For example, you can partition it by using the `store_id` column:
 
 {{< copyable "sql" >}}
 
@@ -132,7 +132,7 @@ PARTITION BY RANGE ( YEAR(separated) ) (
 );
 ```
 
-In range partitioning, you can partition based on the values of the `timestamp` column and use the `unix_timestamp()` function, for example:
+In Range partitioning, you can partition based on the values of the `timestamp` column and use the `unix_timestamp()` function, for example:
 
 {{< copyable "sql" >}}
 
@@ -157,7 +157,7 @@ PARTITION BY RANGE ( UNIX_TIMESTAMP(report_updated) ) (
 );
 ```
 
-It is not allowed to use any other partitioning expression that contains the timestamp values.
+It is not allowed to use any other partitioning expression that contains the timestamp column.
 
 Range partitioning is particularly useful when one or more of the following conditions are satisfied:
 
@@ -167,11 +167,11 @@ Range partitioning is particularly useful when one or more of the following cond
 
 ### Hash partitioning
 
-Hash partitioning is used to make sure that data is evenly scattered into a certain number of partitions. With range partitioning, you must specify the range of the column values for each partition when you use range partitioning, while you just need to specify the number of partitions when you use hash partitioning.
+Hash partitioning is used to make sure that data is evenly scattered into a certain number of partitions. With Range partitioning, you must specify the range of the column values for each partition when you use Range partitioning, while you just need to specify the number of partitions when you use Hash partitioning.
 
-Partitioning by hash requires you to append a `PARTITION BY HASH (expr)` clause to the `CREATE TABLE` statement. `expr` is an expression that returns an integer. It can be a column name if the type of this column is integer. In addition, you might also need to append `PARTITIONS num`, where `num` is a positive integer indicating how many partitions a table is divided into.
+Partitioning by Hash requires you to append a `PARTITION BY HASH (expr)` clause to the `CREATE TABLE` statement. `expr` is an expression that returns an integer. It can be a column name if the type of this column is integer. In addition, you might also need to append `PARTITIONS num`, where `num` is a positive integer indicating how many partitions a table is divided into.
 
-The following operation creates a hash partitioned table, which is divided into 4 partitions by `store_id`:
+The following operation creates a Hash partitioned table, which is divided into 4 partitions by `store_id`:
 
 {{< copyable "sql" >}}
 
@@ -211,13 +211,13 @@ PARTITION BY HASH( YEAR(hired) )
 PARTITIONS 4;
 ```
 
-The most efficient hash function is one which operates upon a single table column, and whose value increases or decreases consistently with the column value, as this allows for “pruning” on ranges of partitions.
+The most efficient Hash function is one which operates upon a single table column, and whose value increases or decreases consistently with the column value.
 
-For example, `date_col` is a column whose type is `DATE`, and the value of the `TO_DAYS(date_col)` expression varies with the value of `date_col`. `YEAR(date_col)` is different from `TO_DAYS(date_col)`, because not every possible change in `date_col` produces an equivalent change in `YEAR(date_col)`. Even so, `YEAR(date_col)` is still a good hash function, because its value varies in proportion to the value of `date_col`.
+For example, `date_col` is a column whose type is `DATE`, and the value of the `TO_DAYS(date_col)` expression varies with the value of `date_col`. `YEAR(date_col)` is different from `TO_DAYS(date_col)`, because not every possible change in `date_col` produces an equivalent change in `YEAR(date_col)`.
 
-In contrast, assume that you have an `int_col` column whose type is `INT`. Now consider about the expression `POW(5-int_col,3) + 6`. It is not a good hash function though, because as the value of `int_col` changes, the result of the expression does not change proportionally. A value change in `int_col` might result in a huge change in the expression result. For example, when `int_col` changes from 5 to 6, the change of the expression result is -1. But the result change might be -7 when `int_col` changes from 6 to 7.
+In contrast, assume that you have an `int_col` column whose type is `INT`. Now consider about the expression `POW(5-int_col,3) + 6`. It is not a good Hash function though, because as the value of `int_col` changes, the result of the expression does not change proportionally. A value change in `int_col` might result in a huge change in the expression result. For example, when `int_col` changes from 5 to 6, the change of the expression result is -1. But the result change might be -7 when `int_col` changes from 6 to 7.
 
-In conclusion, when the expression has a form that is closer to `y = cx`, it is more suitable to be a hash function. Because the more non-linear an expression is, the more unevenly scattered the data among the partitions tends to be.
+In conclusion, when the expression has a form that is closer to `y = cx`, it is more suitable to be a Hash function. Because the more non-linear an expression is, the more unevenly scattered the data among the partitions tends to be.
 
 In theory, pruning is also possible for expressions involving more than one column value, but determining which of such expressions are suitable can be quite difficult and time-consuming. For this reason, the use of hashing expressions involving multiple columns is not particularly recommended.
 
@@ -247,9 +247,9 @@ It is allowed in TiDB to use `NULL` as the calculation result of a partitioning 
 >
 > `NULL` is not an integer. TiDB's partitioning implementation treats `NULL` as being less than any other integer values, just as `ORDER BY` does.
 
-#### Handling of NULL with range partitioning
+#### Handling of NULL with Range partitioning
 
-When you insert a row into a table partitioned by range, and the column value used to determine the partition is `NULL`, then this row is inserted into the lowest partition.
+When you insert a row into a table partitioned by Range, and the column value used to determine the partition is `NULL`, then this row is inserted into the lowest partition.
 
 {{< copyable "sql" >}}
 
@@ -327,9 +327,9 @@ select * from t1;
 Empty set (0.00 sec)
 ```
 
-#### Handling of NULL with hash partitioning
+#### Handling of NULL with Hash partitioning
 
-When partitioning tables by hash, there is a different way of handling `NULL` value - if the calculation result of the partitioning expression is `NULL`, it is considered as `0`.
+When partitioning tables by Hash, there is a different way of handling `NULL` value - if the calculation result of the partitioning expression is `NULL`, it is considered as `0`.
 
 {{< copyable "sql" >}}
 
@@ -384,6 +384,11 @@ Empty set (0.00 sec)
 ```
 
 You can see that the inserted record `(NULL, 'mothra')` falls into the same partition as `(0, 'gigan')`.
+
+> **Note:**
+> `NULL` values by Hash partitions in TiDB are handled in the same way as described in [How MySQL Partitioning Handles NULL](https://dev.mysql.com/doc/refman/8.0/en/partitioning-handling-nulls.html), which, however, is not consistent with the actual behavior of MySQL. In other words, MySQL's implementation in this case is not consistent with its documentation.
+> 
+> In this case, the actual behavior of TiDB is in line with the description of this document.
 
 ## Partition management
 
@@ -446,7 +451,7 @@ Add a partition:
 ALTER TABLE members ADD PARTITION (PARTITION p3 VALUES LESS THAN (2010));
 ```
 
-When partitioning tables by range, `ADD PARTITION` can be only appended to the very end of a partition list. If it is appended to an existing partition range, an error is reported:
+When partitioning tables by Range, `ADD PARTITION` can be only appended to the very end of a partition list. If it is appended to an existing Range partition, an error is reported:
 
 {{< copyable "sql" >}}
 
@@ -463,9 +468,19 @@ ERROR 1463 (HY000): VALUES LESS THAN value must be strictly »
 
 ### Hash partition management
 
-Unlike range partitioning, `DROP PARTITION` is not supported in hash partitioning.
+Unlike Range partitioning, `DROP PARTITION` is not supported in Hash partitioning.
 
-Currently, `ALTER TABLE ... COALESCE PARTITION` is not supported in TiDB as well.
+Currently, `ALTER TABLE ... COALESCE PARTITION` is not supported in TiDB as well. For partition management statements that are not currently supported, TiDB returns an error.
+
+{{< copyable "sql" >}}
+
+```sql
+alter table members optimize partition p0;
+```
+
+```sql
+ERROR 8200 (HY000): Unsupported optimize partition
+```
 
 ## Partition pruning
 
@@ -563,9 +578,9 @@ The optimizer can prune partitions through `WHERE` conditions in the following t
 
     If the TiKV coprocessor does not support this `fn` function, `fn(col)` would not be pushed down to the leaf node. Instead, it becomes a `Selection` node above the leaf node. The current partition pruning implementation does not support this kind of plan tree.
 
-4. For hash partition, the only query supported by partition pruning is the equal condition.
+4. For Hash partition, the only query supported by partition pruning is the equal condition.
 
-5. For range partition, for partition pruning to take effect, the partition expression must be in those forms: `col` or `fn(col)`, and the query condition must be one of `>`, `<`, `=`, `>=`, and `<=`. If the partition expression is in the form of `fn(col)`, the `fn` function must be monotonous.
+5. For Range partition, for partition pruning to take effect, the partition expression must be in those forms: `col` or `fn(col)`, and the query condition must be one of `>`, `<`, `=`, `>=`, and `<=`. If the partition expression is in the form of `fn(col)`, the `fn` function must be monotonous.
 
     If the `fn` function is monotonous, for any `x` and `y`, if `x > y`, then `fn(x) > fn(y)`. Then this `fn` function can be called strictly monotonous. For any `x` and `y`, if `x > y`, then `fn(x) >= fn(y)`. In this case, `fn` could also be called "monotonous". In theory, all monotonous functions are supported by partition pruning.
 
@@ -723,7 +738,7 @@ SELECT store_id, COUNT(department_id) AS c
 2 rows in set (0.00 sec)
 ```
 
-Partition selection is supported for all types of table partitioning, including range partitioning and hash partitioning. For hash partitions, if partition names are not specified, `p0`, `p1`, `p2`,..., or `pN-1` is automatically used as the partition name.
+Partition selection is supported for all types of table partitioning, including Range partitioning and Hash partitioning. For Hash partitions, if partition names are not specified, `p0`, `p1`, `p2`,..., or `pN-1` is automatically used as the partition name.
 
 `SELECT` in `INSERT ... SELECT` can also use partition selection.
 
@@ -886,20 +901,37 @@ Query OK, 0 rows affected (0.12 sec)
 
 You can add a non-unique index by using `ALTER TABLE` statements. But if you want to add a unique index, the `c1` column must be included in the unique index.
 
+When using a partitioned table, you cannot specify the prefix index as a unique attribute:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t (a varchar(20), b blob,
+    UNIQUE INDEX (a(5)))
+    PARTITION by range columns (a) (
+    PARTITION p0 values less than ('aaaaa'),
+    PARTITION p1 values less than ('bbbbb'),
+    PARTITION p2 values less than ('ccccc'));
+```
+
+```sql
+ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's partitioning function
+```
+
 ### Partitioning limitations relating to functions
 
 Only the functions shown in the following list are allowed in partitioning expressions:
 
 ```
 ABS()
-CEILING() (see CEILING() and FLOOR())
+CEILING()
 DATEDIFF()
 DAY()
 DAYOFMONTH()
 DAYOFWEEK()
 DAYOFYEAR()
 EXTRACT() (see EXTRACT() function with WEEK specifier)
-FLOOR() (see CEILING() and FLOOR())
+FLOOR()
 HOUR()
 MICROSECOND()
 MINUTE()
@@ -918,11 +950,11 @@ YEARWEEK()
 
 ### Compatibility with MySQL
 
-Currently, TiDB only supports range partitioning and hash partitioning. Other partitioning types that are available in MySQL such as list partitioning and key partitioning are not supported yet in TiDB.
+Currently, TiDB only supports Range partitioning and Hash partitioning. Other partitioning types that are available in MySQL such as list partitioning and key partitioning are not supported yet in TiDB.
 
 For a table partitioned by `RANGE COLUMNS`, currently TiDB only supports using a single partitioning column.
 
-With regard to partition management, any operation that requires moving data in the bottom implementation is not supported currently, including but not limited to: adjust the number of partitions in a hash partitioned table, modify the range of a range partitioned table, merge partitions and exchange partitions.
+With regard to partition management, any operation that requires moving data in the bottom implementation is not supported currently, including but not limited to: adjust the number of partitions in a Hash partitioned table, modify the Range of a Range partitioned table, merge partitions and exchange partitions.
 
 For the unsupported partitioning types, when you create a table in TiDB, the partitioning information is ignored and the table is created in the regular form with a warning reported. `INFORMATION_SCHEMA.PARTITION` tables are not supported currently in TiDB.
 
@@ -1017,3 +1049,7 @@ select * from t;
 +------|------+
 5 rows in set (0.00 sec)
 ```
+
+The `tidb_enable_table_partition` environment variable controls whether to enable the partitioned table feature. If this variable is set to `off`, the partition information will be ignored when a table is created, and this table will be created as a normal table.
+
+This variable is only used in table creation. After the table is created, modify this variable value takes no effect. For details, see [TiDB specific system variables](/tidb-specific-system-variables.md#tidb_enable_table_partition).
