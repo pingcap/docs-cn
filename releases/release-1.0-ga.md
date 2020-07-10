@@ -1,6 +1,5 @@
 ---
 title: TiDB 1.0 release notes
-category: Releases
 aliases: ['/docs-cn/v2.1/releases/ga/']
 ---
 

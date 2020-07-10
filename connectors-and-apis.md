@@ -1,6 +1,5 @@
 ---
 title: 连接器和 API
-category: reference
 aliases: ['/docs-cn/v2.1/reference/supported-clients/']
 ---
 

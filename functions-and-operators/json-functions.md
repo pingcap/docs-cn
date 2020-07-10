@@ -1,6 +1,5 @@
 ---
 title: JSON 函数及语法糖
-category: reference
 aliases: ['/docs-cn/v2.1/reference/sql/functions-and-operators/json-functions/']
 ---
 

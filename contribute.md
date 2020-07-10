@@ -1,6 +1,5 @@
 ---
 title: 成为贡献者
-category: contribute
 ---
 
 # 成为贡献者

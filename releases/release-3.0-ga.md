@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0 GA Release Notes
-category: Releases
 aliases: ['/docs-cn/v2.1/releases/3.0-ga/']
 ---
 

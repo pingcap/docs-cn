@@ -1,6 +1,5 @@
 ---
 title: TiDB 核心特性
-category: introduction
 ---
 
 # TiDB 核心特性

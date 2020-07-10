@@ -1,6 +1,5 @@
 ---
 title: TiKV 性能参数调优
-category: reference
 aliases: ['/docs-cn/v2.1/reference/performance/tune-tikv/']
 ---
 
