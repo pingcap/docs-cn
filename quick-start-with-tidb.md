@@ -82,7 +82,7 @@ category: how-to
 
 5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
-6. 通过 <http://127.0.0.1:2379/dashboard> 访问 TiDB 的 Dashboard 页面，默认用户名为 root，密码为空。
+6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
 
 7. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
 
@@ -271,7 +271,7 @@ category: how-to
 
     - 访问 TiDB 的 Dashboard：
 
-        通过 <http://{pd-ip}:2379/dashboard> 访问集群 TiDB Dashboard 监控页面，默认用户名为 root，密码为空。
+        通过 <http://{pd-ip}:2379/dashboard> 访问集群 [TiDB Dashboard](/dashboard/dashboard-intro.md) 监控页面，默认用户名为 root，密码为空。
 
     - 执行以下命令确认当前已经部署的集群列表：
 
