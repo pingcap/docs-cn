@@ -64,7 +64,7 @@ TiFlash 常用运维操作，请参考 [TiFlash 运维](/tiflash/maintain-tiflas
 
 TiFlash 性能调优，请参考 [TiFlash 性能调优](/tiflash/tune-tiflash-performance.md)
 
-TiFlash 配置参数介绍 [TiFlash 参数](/tiflash/tiflash-configuration.md)
+TiFlash 配置参数介绍，请参考 [TiFlash 参数](/tiflash/tiflash-configuration.md)
 
 TiFlash 监控说明，请参考 [TiFlash 监控](/tiflash/monitor-tiflash.md)
 
