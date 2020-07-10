@@ -1,7 +1,6 @@
 ---
 title: RESTORE
 summary: TiDB 数据库中 RESTORE 的使用概况。
-category: reference
 ---
 
 # RESTORE
