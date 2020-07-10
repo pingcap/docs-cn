@@ -29,14 +29,6 @@ set @@global.tidb_distsql_scan_concurrency = 10
 - Default value: ""
 - This variable is used to set the time point at which the data is read by the session. For example, when you set the variable to "2017-11-11 20:20:20" or a TSO number like "400036290571534337", the current session reads the data of this moment.
 
-### tidb_import_data
-
-- Scope: SESSION
-- Default value: 0
-- This variable indicates whether to import data from the dump file currently.
-- To speed up importing, the unique index constraint is not checked when the variable is set to 1.
-- This variable is only used by Lightning. Do not modify it.
-
 ### tidb_opt_agg_push_down
 
 - Scope: SESSION
@@ -396,11 +388,17 @@ Usage of statements:
 - If you upgrade from a TiDB version earlier than 4.0.0 to 4.0.0, the format version is not changed, and TiDB continues to use the old format of version `1` to write data to the table, which means that **only newly created clusters use the new data format by default**.
 - Note that modifying this variable does not affect the old data that has been saved, but applies the corresponding version format only to the newly written data after modifying this variable.
 
+### tidb_enable_slow_log
+
+- Scope: SESSION
+- Default value: `1`
+- This variable is used to control whether to enable the slow log feature. It is enabled by default.
+
 ### tidb_record_plan_in_slow_log
 
 - Scope: SESSION
 - Default value: `1`
-- Controls whether to include the execution plan of slow queries in the slow log.
+- This variable is used to control whether to include the execution plan of slow queries in the slow log.
 
 ## tidb_slow_log_threshold
 
@@ -563,8 +561,38 @@ set tidb_query_log_max_len = 20
 ### tidb_enable_stmt_summary <span class="version-mark">New in v3.0.4</span>
 
 - Scope: SESSION | GLOBAL
-- Default value: 0
-- This variable is used to enable or disable the statement summary feature. If enabled, SQL execution information like time consumption is recorded to the `performance_schema.events_statements_summary_by_digest` table to identify and troubleshoot SQL performance issues.
+- Default value: 1 (the value of the default configuration file)
+- This variable is used to control whether to enable the statement summary feature. If enabled, SQL execution information like time consumption is recorded to the `performance_schema.events_statements_summary_by_digest` system table to identify and troubleshoot SQL performance issues.
+
+### tidb_stmt_summary_internal_query <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 0 (the value of the default configuration file)
+- This variable is used to control whether to include the SQL information of TiDB in the statement summary.
+
+### tidb_stmt_summary_refresh_interval <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 1800 (the value of the default configuration file)
+- This variable is used to set the refresh time of the statement summary. The unit is second.
+
+### tidb_stmt_summary_history_size <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 24 (the value of the default configuration file)
+- This variable is used to set the history capacity of the statement summary.
+
+### tidb_stmt_summary_max_stmt_count <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 200 (the value of the default configuration file)
+- This variable is used to set the maximum number of statements that the statement summary stores in memory.
+
+### tidb_stmt_summary_max_sql_length <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 4096 (the value of the default configuration file)
+- This variable is used to control the length of the SQL string in the statement summary.
 
 ### tidb_enable_chunk_rpc <span class="version-mark">New in v4.0</span>
 
@@ -578,18 +606,145 @@ set tidb_query_log_max_len = 20
 - Default value: 0
 - This variable is used to show whether the execution plan used in the previous `execute` statement is taken directly from the plan cache.
 
+### ddl_slow_threshold
+
+- Scope: SESSION
+- Default value: 300
+- DDL operations whose execution time exceeds the threshold value are output to the log. The unit is millisecond.
+
+### tidb_pprof_sql_cpu <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION
+- Default value: 0
+- This variable is used to control whether to mark the corresponding SQL statement in the profile output to identify and troubleshoot performance issues.
+
+### tidb_skip_isolation_level_check
+
+- Scope: SESSION
+- Default value: 0
+- After this switch is enabled, if an isolation level unsupported by TiDB is assigned to `tx_isolation`, no error is reported.
+
+### tidb_low_resolution_tso
+
+- Scope: SESSION
+- Default value: 0
+- This variable is used to set whether to enable the low precision TSO feature. After this feature is enabled, new transactions use a timestamp updated every 2 seconds to read data.
+- The main applicable scenario is to reduce the overhead of acquiring TSO for small read-only transactions when reading old data is acceptable.
+
+### tidb_replica_read <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION
+- Default value: leader
+- This variable is used to control where TiDB reads data. Here are three options:
+    - leader: Read only from leader node
+    - follower: Read only from follower node
+    - leader-and-follower: Read from leader or follower node
+
+### tidb_use_plan_baselines <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: on
+- This variable is used to control whether to enable the execution plan binding feature. It is enabled by default, and can be disabled by assigning the `off` value. For the use of the execution plan binding, see [Execution Plan Binding](/sql-plan-management.md#create-a-binding).
+
+### tidb_capture_plan_baselines <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: off
+- This variable is used to control whether to enable the [baseline capturing](/sql-plan-management.md#baseline-capturing) feature. This feature depends on the statement summary, so you need to enable the statement summary before you use baseline capturing.
+- After this feature is enabled, the historical SQL statements in the statement summary are traversed periodically, and bindings are automatically created for SQL statements that appear at least twice.
+
+### tidb_evolve_plan_baselines <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: off
+- This variable is used to control whether to enable the baseline evolution feature. For detailed introduction or usage , see [Baseline Evolution](/sql-plan-management.md#baseline-evolution).
+- To reduce the impact of baseline evolution on the cluster, use the following configurations:
+    - Set `tidb_evolve_plan_task_max_time` to limit the maximum execution time of each execution plan. The default value is 600s.
+    - Set `tidb_evolve_plan_task_start_time` and `tidb_evolve_plan_task_end_time` to limit the time window. The default values are respectively `00:00 +0000` and `23:59 +0000`.
+
+### tidb_evolve_plan_task_max_time <span class="version-mark">New in v4.0</span>
+
+- Scope: GLOBAL
+- Default value: 600
+- This variable is used to limit the maximum execution time of each execution plan in the baseline evolution feature. The unit is second.
+
+### tidb_evolve_plan_task_start_time <span class="version-mark">New in v4.0</span>
+
+- Scope: GLOBAL
+- Default value: 00:00 +0000
+- This variable is used to set the start time of baseline evolution in a day.
+
+### tidb_evolve_plan_task_end_time <span class="version-mark">New in v4.0</span>
+
+- Scope: GLOBAL
+- Default value: 23:59 +0000
+- This variable is used to set the end time of baseline evolution in a day.
+
 ### tidb_allow_batch_cop <span class="version-mark">New in v4.0 version</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: 0
 - This variable is used to control how TiDB sends a coprocessor request to TiFlash. It has the following values:
+    - `0`: Never send requests in batches
+    - `1`: Aggregation and join requests are sent in batches
+    - `2`: All coprocessor requests are sent in batches
 
-    * `0`: Never send requests in batches
-    * `1`: Aggregation and join requests are sent in batches
-    * `2`: All coprocessor requests are sent in batches
+### tidb_enable_cascades_planner
+
+- Scope: SESSION | GLOBAL
+- Default value: 0
+- This variable is used to control whether to enable the cascades planner feature.
+
+### tidb_window_concurrency <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 4
+- This variable is used to set the concurrency degree of the window operator. 
+
+### tidb_enable_vectorized_expression <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 1
+- This variable is used to control whether to enable vectorized execution.
+
+### tidb_enable_index_merge <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 0
+- This variable is used to control whether to enable the index merge feature.
+
+### tidb_enable_noop_functions <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 0
+- This variable is used to control whether to enable `get_lock` and `release_lock` functions. These two functions are not implemented, and always return 1 in the current version of TiDB.
+
+### tidb_isolation_read_engines <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION
+- Default value: tikv, tiflash, tidb
+- This variable is used to set the storage engine list that TiDB can use when reading data.
+
+### tidb_store_limit <span class="version-mark">New in v3.0.4 and v4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 0
+- This variable is used to limit the maximum number of requests TiDB can send to TiKV at the same time. 0 means no limit.
+
+### tidb_metric_query_step <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION
+- Default value: 60
+- This variable is used to set the step of the Prometheus statement generated when querying METRIC_SCHEMA. The unit is second.
+
+### tidb_metric_query_range_duration <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION
+- Default value: 60
+- This variable is used to set the range duration of the Prometheus statement generated when querying METRIC_SCHEMA. The unit is second.
 
 ### tidb_enable_telemetry <span class="version-mark">New in v4.0.2 version</span>
 
 - Scope: GLOBAL
 - Default value: 1
-- This variable dynamically controls whether the telemetry collection in TiDB is enabled. By setting the value to `0`, the telemetry collection is disabled. If the [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-new-in-v402) TiDB configuration item is set to `false` on all TiDB instances, the telemetry collection is always disabled and this system variable will not take effect. See [Telemetry](/telemetry.md) for details.
+- This variable is used to dynamically control whether the telemetry collection in TiDB is enabled. By setting the value to `0`, the telemetry collection is disabled. If the [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-new-in-v402) TiDB configuration item is set to `false` on all TiDB instances, the telemetry collection is always disabled and this system variable will not take effect. See [Telemetry](/telemetry.md) for details.
