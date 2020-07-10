@@ -51,3 +51,15 @@ TiDB 可以自动选择使用 TiFlash 列存或者 TiKV 行存，甚至在同一
 ### 计算加速
 
 TiFlash 对 TiDB 的计算加速分为两部分：列存本身的读取效率提升以及为 TiDB 分担计算。其中分担计算的原理和 TiKV 的协处理器一致：TiDB 会将可以由存储层分担的计算下推。能否下推取决于 TiFlash 是否可以支持相关下推。具体介绍请参阅[“TiFlash 支持的计算下推”](/tiflash/use-tiflash.md#tiflash-支持的计算下推)一节。
+
+## 另请参阅
+
+- 全新部署一个包含 TiFlash 节点的集群，请参考 [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
+- 已有集群新增一个 TiFlash 节点，请参考 [扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)
+- 部署完成后，如何使用 TiFlash 节点，请参考 [使用 TiFlash](/tiflash/use-tiflash.md)
+- TiFlash 常用运维操作，请参考 [TiFlash 运维](/tiflash/maintain-tiflash.md)
+- TiFlash 性能调优，请参考 [TiFlash 性能调优](/tiflash/tune-tiflash-performance.md)
+- TiFlash 配置参数介绍，请参考 [TiFlash 参数](/tiflash/tiflash-configuration.md)
+- TiFlash 监控说明，请参考 [TiFlash 监控](/tiflash/monitor-tiflash.md)
+- TiFlash 报警规则，请参考 [TiFlash 报警](/tiflash/tiflash-alert-rules.md)
+- TiFlash 常见问题处理，请参考 [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
