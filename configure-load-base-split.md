@@ -1,7 +1,6 @@
 ---
 title: Load Base Split
 summary: 介绍 Load Base Split 功能。
-category: how-to
 ---
 
 # Load Base Split 

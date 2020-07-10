@@ -1,6 +1,5 @@
 ---
 title: TiDB 使用限制
-category: introduction
 ---
 
 # 使用限制

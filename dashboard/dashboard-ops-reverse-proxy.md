@@ -1,6 +1,5 @@
 ---
 title: 通过反向代理使用 TiDB Dashboard
-category: how-to
 ---
 
 # 通过反向代理使用 TiDB Dashboard

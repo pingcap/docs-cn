@@ -1,7 +1,6 @@
 ---
 title: TiDB 基本功能
 summary: 了解 TiDB 的基本功能。
-category: introduction
 ---
 
 # TiDB 基本功能

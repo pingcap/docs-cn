@@ -1,7 +1,6 @@
 ---
 title: CPU 占用过多导致读写延迟增加
 summary: 介绍读写延时增加、抖动时的排查思路，可能的原因和解决方法。
-category: troubleshoot
 ---
 
 # CPU 占用率过高导致读写延迟增加

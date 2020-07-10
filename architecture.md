@@ -1,6 +1,5 @@
 ---
 title: TiDB 整体架构
-category: introduction
 ---
 
 # TiDB 整体架构
