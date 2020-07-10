@@ -1,6 +1,5 @@
 ---
 title: TiDB 简介
-category: introduction
 ---
 
 # TiDB 简介

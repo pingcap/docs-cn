@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.1 升级操作指南
-category: how-to
 aliases: ['/docs-cn/v2.1/how-to/upgrade/from-previous-version/','/docs-cn/op-guide/tidb-v2.1-upgrade-guide/','/docs-cn/v2.1/how-to/upgrade/to-tidb-2.1/','/docs-cn/dev/how-to/upgrade/to-tidb-2.1/','/docs-cn/v3.0/how-to/upgrade/to-tidb-2.1/',/docs-cn/v3.1/how-to/upgrade/to-tidb-2.1/,'/docs-cn/v2.1/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 

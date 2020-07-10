@@ -1,6 +1,5 @@
 ---
 title: 系统变量
-category: reference
 aliases: ['/docs-cn/v2.1/reference/configuration/tidb-server/mysql-variables/']
 ---
 

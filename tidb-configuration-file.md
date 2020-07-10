@@ -1,6 +1,5 @@
 ---
 title: TiDB 配置文件描述
-category: reference
 aliases: ['/docs-cn/v2.1/reference/configuration/tidb-server/configuration-file/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: 生成自签名证书
-category: how-to
 aliases: ['/docs-cn/v2.1/how-to/secure/generate-self-signed-certificates/']
 ---
 

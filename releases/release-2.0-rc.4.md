@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0 RC4 Release Notes
-category: Releases
 aliases: ['/docs-cn/v2.1/releases/2rc4/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB 垃圾回收 (GC)
-category: reference
 aliases: ['/docs-cn/v2.1/reference/garbage-collection/']
 ---
 

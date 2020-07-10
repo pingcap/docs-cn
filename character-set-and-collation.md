@@ -1,6 +1,5 @@
 ---
 title: 字符集支持
-category: reference
 aliases: ['/docs-cn/v2.1/reference/sql/character-set/']
 ---
 
