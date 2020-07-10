@@ -1,7 +1,6 @@
 ---
 title: TiDB 锁冲突问题处理
 summary: 了解 TiDB 锁冲突问题以及处理方式。
-category: troubleshoot
 ---
 
 # TiDB 锁冲突问题处理

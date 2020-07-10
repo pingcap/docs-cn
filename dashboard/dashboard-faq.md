@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 常见问题
-category: how-to
 ---
 
 # TiDB Dashboard 常见问题

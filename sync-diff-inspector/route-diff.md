@@ -1,6 +1,5 @@
 ---
 title: 不同库名或表名的数据校验
-category: tools
 aliases: ['/docs-cn/stable/reference/tools/sync-diff-inspector/route-diff/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: 字符串函数
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/string-functions/']
 ---
 

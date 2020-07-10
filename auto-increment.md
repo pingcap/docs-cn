@@ -1,6 +1,5 @@
 ---
 title: AUTO_INCREMENT
-category: reference
 summary: 介绍 TiDB 的 `AUTO_INCREMENT` 列属性。
 ---
 

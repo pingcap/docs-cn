@@ -1,6 +1,5 @@
 ---
 title: 字面值
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/language-structure/literal-values/']
 ---
 

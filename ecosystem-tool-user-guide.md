@@ -1,6 +1,5 @@
 ---
 title: TiDB 生态工具功能概览
-category: reference
 aliases: ['/docs-cn/stable/reference/tools/user-guide/']
 ---
 

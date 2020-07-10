@@ -1,6 +1,5 @@
 ---
 title: 执行计划管理 (SPM)
-category: reference
 aliases: ['/docs-cn/stable/reference/performance/execution-plan-bind/','/docs-cn/stable/execution-plan-binding/']
 ---
 

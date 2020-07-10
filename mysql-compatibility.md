@@ -1,7 +1,6 @@
 ---
 title: 与 MySQL 兼容性对比
 summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出详细的对比。
-category: reference
 aliases: ['/docs-cn/stable/reference/mysql-compatibility/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: SQL 优化流程简介
-category: performance
 aliases: ['/docs-cn/stable/reference/performance/sql-optimizer-overview/']
 ---
 

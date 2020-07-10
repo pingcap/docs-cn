@@ -1,6 +1,5 @@
 ---
 title: 数据类型的默认值
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/data-types/default-values/']
 ---
 

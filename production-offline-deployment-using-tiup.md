@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 离线部署 TiDB 集群
-category: how-to
 ---
 
 # 使用 TiUP 离线部署 TiDB 集群

@@ -1,6 +1,5 @@
 ---
 title: Overview 面板重要监控指标详解
-category: reference
 aliases: ['/docs-cn/stable/reference/key-monitoring-metrics/overview-dashboard/']
 ---
 

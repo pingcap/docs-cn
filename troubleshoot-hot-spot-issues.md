@@ -1,6 +1,5 @@
 ---
 title: TiDB 热点问题处理
-category: reference
 ---
 
 # TiDB 热点问题处理
