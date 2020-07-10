@@ -1,6 +1,5 @@
 ---
 title: 表达式语法
-category: reference
 aliases: ['/docs-cn/v3.1/reference/sql/language-structure/expression-syntax/']
 ---
 

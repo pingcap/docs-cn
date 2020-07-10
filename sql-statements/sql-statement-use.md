@@ -1,7 +1,6 @@
 ---
 title: USE
 summary: TiDB 数据库中 USE 的使用概况。
-category: reference
 aliases: ['/docs-cn/v3.1/reference/sql/statements/use/']
 ---
 

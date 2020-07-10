@@ -1,7 +1,6 @@
 ---
 title: Store Limit
 summary: 介绍 Store Limit 功能。
-category: how-to
 ---
 
 # Store Limit

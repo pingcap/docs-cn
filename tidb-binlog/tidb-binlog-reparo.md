@@ -1,6 +1,5 @@
 ---
 title: Reparo 使用文档
-category: reference
 aliases: ['/docs-cn/v3.1/reference/tidb-binlog/reparo/']
 ---
 

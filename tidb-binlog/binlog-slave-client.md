@@ -1,6 +1,5 @@
 ---
 title: Binlog Slave Client 用户文档
-category: reference
 aliases: ['/docs-cn/v3.1/reference/tidb-binlog/binlog-slave-client/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB Binlog 集群部署
-category: reference
 aliases: ['/docs-cn/v3.1/reference/tidb-binlog/deploy/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: 分区表
-category: reference
 aliases: ['/docs-cn/v3.1/reference/sql/partitioning/']
 ---
 

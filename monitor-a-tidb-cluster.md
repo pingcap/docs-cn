@@ -1,6 +1,5 @@
 ---
 title: TiDB 集群监控
-category: how-to
 aliases: ['/docs-cn/v3.1/how-to/monitor/monitor-a-cluster/']
 ---
 
