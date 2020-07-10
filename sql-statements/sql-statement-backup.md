@@ -66,8 +66,8 @@ BACKUP DATABASE `test` TO 'local:///mnt/backup/2020/04/';
 | `Destination` | 目标存储的 URL |
 | `Size` |  备份文件的总大小，单位为字节 |
 | `BackupTS` | 创建备份时的快照 TSO（用于[增量备份](#增量备份)） |
-| `Queue Time` | `BACKUP` 任务开始排队的 timestamp（当前时区） |
-| `Execution Time` | `BACKUP` 任务开始执行的 timestamp（当前时区） |
+| `Queue Time` | `BACKUP` 任务开始排队的时间戳（当前时区） |
+| `Execution Time` | `BACKUP` 任务开始执行的时间戳（当前时区） |
 
 ### 备份表
 
@@ -91,7 +91,7 @@ BACKUP TABLE sbtest02, sbtest03, sbtest04 TO 'local:///mnt/backup/sbtest/';
 BACKUP DATABASE * TO 'local:///mnt/backup/full/';
 ```
 
-注意，备份中不包含系统表 (`mysql.*`, `INFORMATION_SCHEMA.*`, `PERFORMANCE_SCHEMA.*`, …)。
+注意，备份中不包含系统表 (`mysql.*`、`INFORMATION_SCHEMA.*`、`PERFORMANCE_SCHEMA.*` 等)。
 
 ### 远端存储
 

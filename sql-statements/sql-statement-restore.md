@@ -8,11 +8,11 @@ category: reference
 
 `RESTORE` 语句用于执行分布式恢复，把 [`BACKUP` 语句](/sql-statements/sql-statement-backup.md)生成的备份文件恢复到 TiDB 集群中。
 
-`RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
+`RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
 
 执行 `RESTORE` 语句前，确保集群已满足以下要求：
 
-* 集群处于“下线”状态，当前的 TiDB 会话是唯一在访问要恢复的表的活跃 SQL 连接。
+* 集群处于“下线”状态，当前的 TiDB 会话是唯一在访问待恢复表的活跃 SQL 连接。
 * 执行全量恢复时，确保即将恢复的表不存在于集群中，因为现有的数据可能被覆盖，从而导致数据与索引不一致。
 * 执行增量恢复时，表的状态应该与创建备份时 `LAST_BACKUP` 时间戳的状态完全一致。
 
@@ -22,7 +22,7 @@ category: reference
 
 一次只能执行一个 `BACKUP` 和 `RESTORE` 任务。如果 TiDB server 上已经在执行一个 `BACKUP` 或 `RESTORE` 语句，新的 `RESTORE` 将等待前面所有的任务完成后再执行。
 
-`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "mocktikv" 存储引擎， `RESTORE` 操作会失败。
+`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "mocktikv" 存储引擎，`RESTORE` 操作会失败。
 
 ## 语法图
 
@@ -70,12 +70,12 @@ RESTORE DATABASE * FROM 'local:///mnt/backup/2020/04/';
 | `Destination` | 读取的目标存储 URL |
 | `Size` |  备份文件的总大小，单位为字节 |
 | `BackupTS` | 不适用 |
-| `Queue Time` | `RESTORE` 任务开始排队的 timestamp（当前时区） |
-| `Execution Time` | `RESTORE` 任务开始执行的 timestamp（当前时区） |
+| `Queue Time` | `RESTORE` 任务开始排队的时间戳（当前时区） |
+| `Execution Time` | `RESTORE` 任务开始执行的时间戳（当前时区） |
 
 ### 部分恢复
 
-你可以指定恢复部分数据库或表的数据。如果备份文件中缺失了某些数据库或表，缺失的部分将被忽略。此时，`RESTORE` 语句不进行任何操作即完成执行。
+你可以指定恢复部分数据库或部分表数据。如果备份文件中缺失了某些数据库或表，缺失的部分将被忽略。此时，`RESTORE` 语句不进行任何操作即完成执行。
 
 {{< copyable "sql" >}}
 
