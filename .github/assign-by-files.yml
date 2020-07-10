@@ -64,6 +64,16 @@
   - bb7133
   - zimulala
   - TomShawn
+  - nullnotnil
+
+'mysql-compatibility.md':
+  - nullnotnil
+
+'sql-mode.md':
+  - nullnotnil
+
+'information-schema/**/*.md':
+  - nullnotnil
 
 # 'storage-engine/**/*.md':
 #   - TomShawn
