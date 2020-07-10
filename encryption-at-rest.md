@@ -8,7 +8,7 @@ category: reference
 
 静态加密 (encryption at rest) 即在存储数据时进行数据加密。对于数据库，静态加密功能也叫透明数据加密 (TDE)，区别于传输数据加密 (TLS) 或使用数据加密（很少使用）。SSD 驱动器、文件系统、云供应商等都可进行静态加密。但区别于这些加密方式，若 TiKV 在存储数据前就进行数据加密，攻击者则必须通过数据库的身份验证才能访问数据。例如，即使攻击者获得物理机的访问权限时，他也无法通过复制磁盘上的文件来访问数据。
 
-TiKV 从 v4.0.0 起支持静态加密，即在 [CTR](https://zh.wikipedia.org/wiki/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F) 模式下使用 [AES](https://zh.wikipedia.org/wiki/%E9%AB%98%E7%BA%A7%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86) 对数据文件进行透明加密。要启用静态加密，用户须提供一个加密密钥，即主密钥。可以通过 AWS Key Management Service（推荐），即 KMS，提供主密钥 (master key)，也可以指定将密钥以明文形式存储在文件中。TiKV 自动轮换 (rotate) 用于加密实际数据文件的密钥，有时也可手动轮换主密钥。请注意，静态加密仅加密静态数据（即磁盘上的数据），而不加密网络传输中的数据。建议 TLS 与静态加密一起使用。
+TiKV 从 v4.0.0 起支持静态加密，即在 [CTR](https://zh.wikipedia.org/wiki/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F) 模式下使用 [AES](https://zh.wikipedia.org/wiki/%E9%AB%98%E7%BA%A7%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86) 对数据文件进行透明加密。要启用静态加密，用户须提供一个加密密钥，即主密钥。可以通过 AWS Key Management Service（推荐），即 KMS，提供主密钥 (master key)，也可以指定将密钥以明文形式存储在文件中。TiKV 自动轮换 (rotate) 用于加密实际数据文件的密钥，主密钥则可以由用户手动轮换。请注意，静态加密仅加密静态数据（即磁盘上的数据），而不加密网络传输中的数据。建议 TLS 与静态加密一起使用。
 
 同样，从 v4.0.0 起，Backup & Restore (BR) 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密。
 
