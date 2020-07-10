@@ -1,6 +1,5 @@
 ---
 title: 读取历史数据
-category: how-to
 aliases: ['/docs-cn/v3.0/how-to/get-started/read-historical-data/','/docs-cn/op-guide/history-read/']
 ---
 

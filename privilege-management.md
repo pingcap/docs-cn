@@ -1,6 +1,5 @@
 ---
 title: 权限管理
-category: reference
 aliases: ['/docs-cn/v3.0/reference/security/privilege-system/','/docs-cn/sql/privilege/']
 ---
 

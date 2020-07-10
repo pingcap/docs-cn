@@ -1,6 +1,5 @@
 ---
 title: GC 配置
-category: reference
 aliases: ['/docs-cn/v3.0/reference/garbage-collection/configuration/']
 ---
 

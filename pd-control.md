@@ -1,6 +1,5 @@
 ---
 title: PD Control 使用说明
-category: reference
 aliases: ['/docs-cn/v3.0/reference/tools/pd-control/','/docs-cn/tools/pd-control/']
 ---
 

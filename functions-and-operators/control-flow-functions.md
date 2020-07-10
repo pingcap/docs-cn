@@ -1,6 +1,5 @@
 ---
 title: 控制流程函数
-category: reference
 aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/control-flow-functions/','/docs-cn/sql/control-flow-functions/']
 ---
 

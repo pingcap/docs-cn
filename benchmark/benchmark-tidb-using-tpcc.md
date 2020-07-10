@@ -1,6 +1,5 @@
 ---
 title: 如何对 TiDB 进行 TPC-C 测试
-category: benchmark
 aliases: ['/docs-cn/v3.0/benchmark/how-to-run-tpcc/']
 ---
 

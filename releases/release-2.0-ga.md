@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0 release notes
-category: Releases
 aliases: ['/docs-cn/v3.0/releases/2.0ga/','/docs-cn/releases/2.0ga/']
 ---
 

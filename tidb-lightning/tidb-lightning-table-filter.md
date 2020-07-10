@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 表库过滤
 summary: 使用黑白名单把一些表剔出要导入的范围。
-category: reference
 aliases: ['/docs-cn/v3.0/reference/tools/tidb-lightning/table-filter/','/docs-cn/tools/lightning/filter/','/docs-cn/v3.0/reference/tools/tidb-lightning/filter/']
 ---
 

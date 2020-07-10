@@ -1,6 +1,5 @@
 ---
 title: 关键字和保留字
-category: reference
 aliases: ['/docs-cn/v3.0/reference/sql/language-structure/keywords-and-reserved-words/','/docs-cn/sql/keywords-and-reserved-words/']
 ---
 

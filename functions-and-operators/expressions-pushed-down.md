@@ -1,7 +1,6 @@
 ---
 title: 下推到 TiKV 的表达式列表
 summary: TiDB 中下推到 TiKV 的表达式列表及相关设置。
-category: reference
 aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/expressions-pushed-down/']
 ---
 

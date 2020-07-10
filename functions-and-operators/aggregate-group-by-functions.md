@@ -1,6 +1,5 @@
 ---
 title: GROUP BY 聚合函数
-category: reference
 aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/aggregate-group-by-functions/','/docs-cn/sql/aggregate-group-by-functions/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: 数据类型概述
-category: reference
 aliases: ['/docs-cn/v3.0/reference/sql/data-types/overview/','/docs-cn/sql/datatype/','/docs-cn/v3.0/reference/sql/data-types/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: 窗口函数
-category: reference
 aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/window-functions/']
 ---
 
