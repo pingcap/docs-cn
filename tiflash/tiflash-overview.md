@@ -54,7 +54,7 @@ TiFlash 对 TiDB 的计算加速分为两部分：列存本身的读取效率提
 
 ## 另请参阅
 
-全新部署一个包含 TiFlash 节点的集群 ，请参考 [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
+全新部署一个包含 TiFlash 节点的集群，请参考 [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
 
 已有集群新增一个 TiFlash 节点，请参考 [扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)
 
