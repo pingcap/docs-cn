@@ -342,7 +342,7 @@ mysql> EXPLAIN SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = 
 
 ## 优化实例
 
-使用 [bikeshare example database](https://pingcap.com/docs/dev/how-to/get-started/import-example-database/):
+使用 [bikeshare example database](https://github.com/pingcap/docs/blob/073d804df82dd65a96af15d5cc3a519449b871dd/import-example-data.md):
 
 {{< copyable "sql" >}}
 
