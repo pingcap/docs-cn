@@ -2,7 +2,6 @@
 title: Troubleshoot Write Conflicts in Optimistic Transactions
 summary: Learn about the reason of and solutions to write conflicts in optimistic transactions.
 category: troubleshoot
-aliases: ['/docs/dev/troubleshoot-write-conflicts/']
 ---
 
 # Troubleshoot Write Conflicts in Optimistic Transactions
