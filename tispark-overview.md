@@ -292,6 +292,10 @@ df.write
 
 推荐将 `isolationLevel` 设置为 `NONE`，否则单一大事务有可能造成 TiDB 服务器内存溢出。
 
+> **注意：**
+>
+> TiSpark 使用 JDBC 时默认 `isolationLevel` 为 `READ_UNCOMMITTED`，会造成事务隔离级别不支持的错误。推荐将 `isolationLevel` 设置为 `NONE`。
+
 ## 统计信息
 
 TiSpark 可以使用 TiDB 的统计信息：
