@@ -1,7 +1,7 @@
 ---
 title: 表库过滤
 summary: 在 TiDB 生态工具中使用表库过滤功能。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-table-filter/','/docs-cn/dev/reference/tools/tidb-lightning/table-filter/','/zh/tidb/dev/tidb-lightning-table-filter/']
+aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-table-filter/','/docs-cn/stable/reference/tools/tidb-lightning/table-filter/','/zh/tidb/stable/tidb-lightning-table-filter/']
 ---
 
 # 表库过滤
