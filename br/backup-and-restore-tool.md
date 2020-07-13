@@ -188,6 +188,23 @@ br backup table \
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
 
+### 使用表库过滤功能备份多张表的数据
+
+如果你需要以更复杂的过滤条件来备份多个表，执行 `br backup full` 命令，并使用 `--filter` 或 `-f` 来指定[表库过滤](/table-filter.md)规则。
+
+用例：以下命令将所有 `db*.tbl*` 形式的表格数据备份到每个 TiKV 节点上的 `/tmp/backup` 路径，并将 `backupmeta` 文件写入该路径。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full \
+    --pd "${PDIP}:2379" \
+    --filter 'db*.tbl*' \
+    --storage "local:///tmp/backup" \
+    --ratelimit 120 \
+    --log-file backupfull.log
+```
+
 ### 备份数据到 Amazon S3 后端存储
 
 如果备份的存储并不是在本地，而是在 Amazon 的 S3 后端存储，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
@@ -347,6 +364,22 @@ br restore table \
     --pd "${PDIP}:2379" \
     --db "test" \
     --table "usertable" \
+    --storage "local:///tmp/backup" \
+    --log-file restorefull.log
+```
+
+### 使用表库过滤功能恢复数据
+
+如果你需要用复杂的过滤条件来恢复多个表，执行 `br restore full` 命令，并用 `--filter` 或 `-f` 指定使用[表库过滤](/table-filter.md)。
+
+用例：以下命令将备份在 `/tmp/backup` 路径的表的子集恢复到集群中。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full \
+    --pd "${PDIP}:2379" \
+    --filter 'db*.tbl*' \
     --storage "local:///tmp/backup" \
     --log-file restorefull.log
 ```
