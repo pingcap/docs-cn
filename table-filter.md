@@ -1,14 +1,14 @@
 ---
 title: 表库过滤
 summary: 在 TiDB 生态工具中使用表库过滤功能。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-table-filter/','/docs-cn/dev/reference/tools/tidb-lightning/table-filter/','/zh/tidb/dev/tidb-lightning-table-filter/']
+aliases: ['/docs-cn/v3.1/tidb-lightning/tidb-lightning-table-filter/','/docs-cn/v3.1/reference/tools/tidb-lightning/table-filter/','/zh/tidb/v3.1/tidb-lightning-table-filter/']
 ---
 
 # 表库过滤
 
 TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，往往只需要作用于其中的部分子集。例如，用户只想处理 `foo*` 和 `bar*` 形式的表，而无需对其他表进行操作。
 
-从 TiDB 4.0 起，所有 TiDB 生态系统工具都使用一个通用的过滤语法来定义子集。本文档介绍如何使用表库过滤功能。
+所有 TiDB 生态系统工具都使用一个通用的过滤语法来定义子集。本文档介绍如何使用表库过滤功能。
 
 ## 使用表库过滤
 
@@ -54,17 +54,6 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
     ```toml
     [mydumper]
     filter = ['foo*.*', 'bar*.*']
-    ```
-
-* [TiCDC](/ticdc/ticdc-overview.md)：
-
-    ```toml
-    [filter]
-    rules = ['foo*.*', 'bar*.*']
-    
-    [[sink.dispatchers]]
-    matcher = ['db1.*', 'db2.*', 'db3.*']
-    dispatcher = 'ts'
     ```
 
 ## 表库过滤语法

@@ -368,7 +368,7 @@ br restore table \
     --log-file restorefull.log
 ```
 
-### 使用表库功能过滤恢复数据
+### 使用表库过滤功能恢复数据
 
 如果你需要用复杂的过滤条件来恢复多个表，执行 `br restore full` 命令，并用 `--filter` 或 `-f` 指定使用[表库过滤](/table-filter.md)。
 
