@@ -66,6 +66,8 @@ select * from employee where id in (...) and salary between ? and ?;
   ...........
               AVG_MEM: 103
               MAX_MEM: 103
+              AVG_DISK: 65535
+              MAX_DISK: 65535
     AVG_AFFECTED_ROWS: 0
            FIRST_SEEN: 2020-01-02 11:12:54
             LAST_SEEN: 2020-01-02 11:25:24
@@ -220,6 +222,8 @@ SQL 的基础信息：
 - `MAX_COMPILE_LATENCY`：优化器的最大延时
 - `AVG_MEM`：使用的平均内存，单位 byte
 - `MAX_MEM`：使用的最大内存，单位 byte
+- `AVG_DISK`：使用的平均硬盘空间，单位 byte
+- `MAX_DISK`：使用的最大硬盘空间，单位 byte
 
 和 TiKV Coprocessor Task 相关的字段：
 
