@@ -41,6 +41,11 @@ server_configs:
     schedule.region-schedule-limit: 2048
     schedule.replica-schedule-limit: 64
     replication.enable-placement-rules: true
+  tiflash:
+    # Maximum memory usage for processing a single query. Zero means unlimited.
+    profiles.default.max_memory_usage: 10000000000
+    # Maximum memory usage for processing all concurrently running queries on the server. Zero means unlimited.
+    profiles.default.max_memory_usage_for_all_queries: 0
 
 pd_servers:
   - host: 10.0.1.4
