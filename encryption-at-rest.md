@@ -35,7 +35,7 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR 和 AES256-CTR。
 
 数据密钥由 TiKV 生成并传递给底层存储引擎（即 RocksDB）。RocksDB 写入的所有文件，包括 SST 文件，WAL 文件和 MANIFEST 文件，均由当前数据密钥加密。TiKV 使用的其他临时文件（可能包括用户数据）也由相同的数据密钥加密。默认情况下，TiKV 每周自动轮换数据密钥，但是该时间段是可配置的。密钥轮换时，TiKV 不会重写全部现有文件来替换密钥，但如果集群的写入量恒定，则 RocksDB compaction 会将使用最新的数据密钥对数据重新加密。TiKV 跟踪密钥和加密方法，并使用密钥信息对读取的内容进行解密。
 
-无论采用哪种数据加密方法，数据密钥都使用 AES256 在 GCM 模式下进行加密，以进行其他身份验证。所以使用文件而不是 KMS 传递密钥时，主密钥必须为 256 位（32 字节）。
+无论用户配置了哪种数据加密方法，数据密钥都使用 AES256-GCM 算法进行加密，以方便对主密钥进行验证。所以当使用文件而不是 KMS 方式指定主密钥时，主密钥必须为 256位（32字节）
 
 ## 配置加密
 
@@ -47,9 +47,9 @@ data-encryption-method = aes128-ctr
 data-key-rotation-period = 7d
 ```
 
-`data-encryption-method` 的可选值为 `aes128-ctr`、`aes192-ctr`、`aes256-ctr` 和 `plaintext`。默认值为 `plaintext`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 集群或现有 TiKV 集群开启加密，尽管只保证启用后写入的数据才能被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值设为 `plaintext`，然后重启 TiKV。
+`data-encryption-method` 的可选值为 `aes128-ctr`、`aes192-ctr`、`aes256-ctr` 和 `plaintext`。默认值为 `plaintext`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 群集或现有 TiKV 群集开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `plaintext`，然后重启 TiKV。
 
-如果启用了加密（即 `data-encryption-method` 的值不是 `plaintext`），则必须指定主密钥。要将 AWS KMS CMK 指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+如果启用了加密（即 `data-encryption-method` 的值不是 `plaintext`），则必须指定主密钥。要使用 AWS KMS 方式指定为主密钥，请在`[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
 
 ```
 [security.encryption.master-key]
@@ -79,7 +79,7 @@ path = "/path/to/key/file"
 
 要轮换主密钥，你必须在配置中同时指定新的主密钥和旧的主密钥，然后重启 TiKV。用 `security.encryption.master-key` 指定新的主密钥，用 `security.encryption.previous-master-key` 指定旧的主密钥。`security.encryption.previous-master-key` 配置的格式与 `encryption.master-key` 相同。重启时，TiKV 必须能同时访问旧主密钥和新主密钥，但一旦 TiKV 启动并运行，就只需访问新密钥。此后，可以将 `encryption.previous-master-key` 项保留在配置文件中。即使重启时，TiKV 也只会在无法使用新的主密钥解密现有数据时尝试使用旧密钥。
 
-当前不支持在线轮换主密钥，因此你需要重启 TiKV 进行主密钥轮换。建议对运行中的、提供在线查询的 TiKV 集群进行滚动重启。
+TiKV 当前不支持在线轮换主密钥，因此你需要重启 TiKV 进行主密钥轮换。建议对运行中的、提供在线查询的 TiKV 集群进行滚动重启。
 
 轮换 KMS CMK 的配置示例如下：
 
@@ -99,7 +99,7 @@ region = "us-west-2"
 
 要监控静态加密（如果 TiKV 中部署了 Grafana 组件），可以查看 **TiKV-Details** -> **Encryption** 面板中的监控项：
 
-* Encryption initialized：如果在 TiKV 启动期间初始化了加密，则为 `1`，否则为 `0`。如果发生了主密钥轮换，则在初始化加密后，TiKV 不需要访问先前（旧）的主密钥。
+* Encryption initialized：如果在 TiKV 启动期间初始化了加密，则为 `1`，否则为 `0`。进行主密钥轮换时可通过该监控项确认主密钥轮换是否已完成。
 * Encryption data keys：现有数据密钥的数量。每次轮换数据密钥后，该数字都会增加 `1`。通过此监控指标可以监测数据密钥是否按预期轮换。
 * Encrypted files：当前的加密数据文件数量。为先前未加密的群集启用加密时，将此数量与数据目录中的当前数据文件进行比较，可通过此监控指标估计已经被加密的数据量。
 * Encryption meta file size：加密元数据文件的大小。
