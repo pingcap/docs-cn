@@ -280,12 +280,8 @@ min-available-ratio = 0.05
 | -V | 输出程序的版本 | |
 | -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
-<<<<<<< HEAD
-| --backend *backend* | 选择后端的模式：`importer` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
-=======
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend *backend* | 选择后端的模式：`importer` `local` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
->>>>>>> a4c0315... *: replace black-white-list by table filter (#3916)
+| --backend *backend* | 选择后端的模式：`importer` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径 | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
