@@ -39,7 +39,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 ### 用例
 
-使用 [bikeshare example database](https://github.com/pingcap/docs/blob/release-3.1/import-example-data.md):
+使用 [bikeshare example database](https://github.com/pingcap/docs/blob/release-3.0/import-example-data.md):
 
 {{< copyable "sql" >}}
 
