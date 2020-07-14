@@ -156,6 +156,10 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
 * `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
+* `state` 为该同步任务的状态：
+    * `normal`: 正常同步
+    * `stopped`: 停止同步（手动暂停或出错）
+    * `removed`: 已删除任务
 
 > **注意：**
 >
@@ -182,8 +186,8 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 * 请参考 [如何查看 TiCDC 同步任务是否正常？](/ticdc/troubleshoot-ticdc.md#如何查看-ticdc-同步任务是否正常) 检查下同步任务的状态是否正常。
 * 请适当调整 Kafka 的以下参数：
-    * `message.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 33554432 （32 MB）。
-    * `replica.fetch.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 33554432 （32 MB）。
+    * `message.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 1073741824 （1 GB）。
+    * `replica.fetch.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 1073741824 （1 GB）。
     * `fetch.message.max.bytes`，适当调大 comsumer.properties 中该参数，确保大于 `message.max.bytes`。
 
 ## TiCDC 把数据同步到 Kafka 时，是把一个事务内的所有变更都写到一个消息中吗？如果不是，是根据什么划分的？
@@ -192,7 +196,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 ## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
 
-不能，目前 TiCDC 控制了消息大小 4MB
+不能，目前 TiCDC 控制了向 Kafka 发送的消息批量的大小最大为 512MB，其中单个消息的大小最大为 4MB。
 
 ## TiCDC 把数据同步到 Kafka 时，一条消息中会不会包含多种数据变更？
 
