@@ -17,7 +17,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 * **TiDB-backend**：`tidb-lightning` 先将数据编码成 `INSERT` 语句，然后直接在 TiDB 节点上运行这些 SQL 语句进行数据导入。
 
 | 后端 | Local-backend | Importer-backend | TiDB-backend |
-|:---|:---|:---|
+|:---|:---|:---|:---|
 | 速度 | 快 (~500 GB/小时) | 快 (~500 GB/小时) | 慢 (~50 GB/小时) |
 | 资源使用率 | 高 | 高 | 低 |
 | 占用网络带宽 | 高 | 中  | 低 |
