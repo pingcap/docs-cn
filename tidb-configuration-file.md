@@ -54,7 +54,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 > 该功能目前会对写入过程中的内存进行统计，为实验特性，对于希望依赖该特性取消写入操作的用户，不建议在生产环境中将其配置为 `cancel`。
 
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
-+ 默认值："log"
++ 默认值："cancel"（注：v4.0.2 及之前的版本中，默认值为 "log"）
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
 ### `enable-streaming`
@@ -64,7 +64,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `lower-case-table-names`
 
-+ 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
++ 这个选项可以设置 TiDB 的系统变量 `lower-case-table-names` 的值。
 + 默认值：2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
 
@@ -144,7 +144,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 是否开启 TiDB 遥测功能。
 + 默认值：true
-+ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
++ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
 ## log
 

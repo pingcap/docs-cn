@@ -94,7 +94,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-* 支持除空间类型外的所有数据类型。其它不支持的情况可参考：[DDL 语句与 MySQL 的兼容性情况](/mysql-compatibility.md#ddl)。
+* 支持除空间类型外的所有数据类型。其它不支持的情况可参考：[DDL 语句与 MySQL 的兼容性情况](/mysql-compatibility.md#ddl-的限制)。
 
 ## 另请参阅
 

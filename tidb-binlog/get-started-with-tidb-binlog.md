@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog 教程
 category: how-to
-aliases: ['/docs-cn/dev/how-to/get-started/tidb-binlog/']
+aliases: ['/docs-cn/dev/how-to/get-started/tidb-binlog/','/docs-cn/dev/get-started-with-tidb-binlog/']
 ---
 
 # TiDB Binlog 教程
@@ -418,7 +418,7 @@ Check Table Before Drop: false
 
 ## binlogctl
 
-加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](/tidb-binlog/maintain-tidb-binlog-cluster.md#binlogctl-工具)。
+加入到集群的 Pump 和 Drainer 的数据存储在 Placement Driver (PD) 中。binlogctl 可用于查询和修改状态信息。更多信息请参考 [binlogctl guide](/tidb-binlog/binlog-control.md)。
 
 使用 `binlogctl` 查看集群中 Pump 和 Drainer 的当前状态：
 

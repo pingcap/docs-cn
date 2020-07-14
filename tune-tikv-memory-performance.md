@@ -4,7 +4,7 @@ category: reference
 aliases: ['/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
 ---
 
-# TiKV 性能参数调优
+# TiKV 内存参数性能调优
 
 本文档用于描述如何根据机器配置情况来调整 TiKV 的参数，使 TiKV 的性能达到最优。
 
