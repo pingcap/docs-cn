@@ -355,6 +355,12 @@ Configuration items related to performance.
 - Default: `NO_PRIORITY`
 - Optional values: `NO_PRIORITY`, `LOW_PRIORITY`, `HIGH_PRIORITY` and `DELAYED`.
 
+### `nested-loop-join-cache-capacity`
+
++ The maximum memory usage for the Least Recently Used (LRU) algorithm of the nested loop join cache (in bytes).
++ Default value: `20971520`
++ When `nested-loop-join-cache-capacity` is set to `0`, nested loop join cache is disabled by default. When the LRU size is larger than the value of `nested-loop-join-cache-capacity`, the elements in the LRU are removed.
+
 ## prepared-plan-cache
 
 The Plan Cache configuration of the `PREPARE` statement.
