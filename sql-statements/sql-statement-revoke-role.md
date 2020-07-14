@@ -1,7 +1,6 @@
 ---
 title: REVOKE <role> | TiDB SQL Statement Reference
 summary: An overview of the usage of REVOKE <role> for the TiDB database.
-category: reference
 ---
 
 # `REVOKE <role>`

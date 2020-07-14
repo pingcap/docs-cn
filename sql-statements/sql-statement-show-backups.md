@@ -1,7 +1,6 @@
 ---
 title: SHOW [BACKUPS|RESTORES] | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW [BACKUPS|RESTORES] for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-show-backups/']
 ---
 

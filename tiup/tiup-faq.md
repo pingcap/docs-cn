@@ -1,7 +1,6 @@
 ---
 title: TiUP FAQ
 summary: Provide answers to common questions asked by TiUP users.
-category: tools
 aliases: ['/docs/dev/tiup/tiup-faq/']
 ---
 

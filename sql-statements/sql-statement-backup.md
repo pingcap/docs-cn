@@ -1,7 +1,6 @@
 ---
 title: BACKUP | TiDB SQL Statement Reference
 summary: An overview of the usage of BACKUP for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-backup/']
 ---
 

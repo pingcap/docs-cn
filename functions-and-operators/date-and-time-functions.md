@@ -1,7 +1,6 @@
 ---
 title: Date and Time Functions
 summary: Learn how to use the data and time functions.
-category: reference
 aliases: ['/docs/dev/functions-and-operators/date-and-time-functions/','/docs/dev/reference/sql/functions-and-operators/date-and-time-functions/']
 ---
 

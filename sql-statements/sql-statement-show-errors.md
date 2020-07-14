@@ -1,7 +1,6 @@
 ---
 title: SHOW ERRORS | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW ERRORS for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-show-errors/','/docs/dev/reference/sql/statements/show-errors/']
 ---
 

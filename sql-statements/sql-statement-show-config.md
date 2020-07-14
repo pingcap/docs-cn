@@ -1,7 +1,6 @@
 ---
 title: SHOW CONFIG
 summary: Overview of the use of SHOW CONFIG in the TiDB database
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-show-config/']
 ---
 

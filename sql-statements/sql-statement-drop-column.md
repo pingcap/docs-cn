@@ -1,7 +1,6 @@
 ---
 title: DROP COLUMN | TiDB SQL Statement Reference
 summary: An overview of the usage of DROP COLUMN for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-drop-column/','/docs/dev/reference/sql/statements/drop-column/']
 ---
 

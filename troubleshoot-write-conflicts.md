@@ -1,7 +1,6 @@
 ---
 title: Troubleshoot Write Conflicts in Optimistic Transactions
 summary: Learn about the reason of and solutions to write conflicts in optimistic transactions.
-category: troubleshoot
 ---
 
 # Troubleshoot Write Conflicts in Optimistic Transactions

@@ -1,7 +1,6 @@
 ---
 title: BR Usage Scenarios
 summary: Learn the scenarios of backing up and restoring data using BR.
-category: how-to
 aliases: ['/docs/dev/br/backup-and-restore-use-cases/','/docs/dev/reference/tools/br/use-cases/']
 ---
 

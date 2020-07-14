@@ -1,7 +1,6 @@
 ---
 title: PD Recover User Guide
 summary: Use PD Recover to recover a PD cluster which cannot start or provide services normally.
-category: reference
 aliases: ['/docs/dev/pd-recover/','/docs/dev/reference/tools/pd-recover/']
 ---
 

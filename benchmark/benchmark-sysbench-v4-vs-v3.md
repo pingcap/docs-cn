@@ -1,7 +1,6 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v4.0 vs. v3.0
 summary: Compare the Sysbench performance of TiDB 4.0 and TiDB 3.0.
-category: benchmark
 aliases: ['/docs/dev/benchmark/benchmark-sysbench-v4-vs-v3/']
 ---
 

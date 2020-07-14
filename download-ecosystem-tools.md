@@ -1,7 +1,6 @@
 ---
 title: Download
 summary: Download the most officially maintained versions of TiDB enterprise tools.
-category: reference
 aliases: ['/docs/dev/download-ecosystem-tools/','/docs/dev/reference/tools/download/']
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: SHOW CREATE SEQUENCE
 summary: An overview of the usage of SHOW CREATE SEQUENCE for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-show-create-sequence/','/docs/dev/reference/sql/statements/show-create-sequence/']
 ---
 

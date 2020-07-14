@@ -1,7 +1,6 @@
 ---
 title: Cluster Topology Configuration
 summary: Learn to configure cluster topology to maximize the capacity for disaster recovery.
-category: how-to
 aliases: ['/docs/dev/location-awareness/','/docs/dev/how-to/deploy/geographic-redundancy/location-awareness/']
 ---
 

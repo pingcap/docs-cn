@@ -1,7 +1,6 @@
 ---
 title: Check the TiDB Cluster Status Using SQL Statements
 summary: This document introduces that TiDB offers some SQL statements and system tables to check the TiDB cluster status.
-category: reference
 aliases: ['/docs/dev/check-cluster-status-using-sql-statements/','/docs/dev/reference/performance/check-cluster-status-using-sql-statements/']
 ---
 

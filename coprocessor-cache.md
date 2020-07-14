@@ -1,7 +1,6 @@
 ---
 title: Coprocessor Cache
 summary: Learn the features of Coprocessor Cache.
-category: reference
 aliases: ['/docs/dev/coprocessor-cache/']
 ---
 

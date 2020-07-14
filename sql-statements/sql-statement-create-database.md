@@ -1,7 +1,6 @@
 ---
 title: CREATE DATABASE | TiDB SQL Statement Reference
 summary: An overview of the usage of CREATE DATABASE for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-create-database/','/docs/dev/reference/sql/statements/create-database/']
 ---
 

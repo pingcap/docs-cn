@@ -1,7 +1,6 @@
 ---
 title: Manage TiUP Components with TiUP Commands
 summary: Learn how to manage TiUP components using TiUP commands.
-category: tools
 aliases: ['/tidb/dev/manage-tiup-component','/docs/dev/tiup/manage-tiup-component/','/docs/dev/reference/tools/tiup/manage-component/']
 ---
 

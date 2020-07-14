@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning Troubleshooting
 summary: Learn about common errors and solutions of TiDB Lightning.
-category: how-to
 aliases: ['/docs/dev/troubleshoot-tidb-lightning/','/docs/dev/how-to/troubleshoot/tidb-lightning/']
 ---
 

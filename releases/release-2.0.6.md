@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0.6 Release Notes
-category: Releases
 aliases: ['/docs/dev/releases/release-2.0.6/','/docs/dev/releases/206/']
 ---
 

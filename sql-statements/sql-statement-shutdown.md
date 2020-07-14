@@ -1,7 +1,6 @@
 ---
 title: SHUTDOWN
 summary: An overview of the usage of SHUTDOWN for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-shutdown/']
 ---
 

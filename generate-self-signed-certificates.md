@@ -1,7 +1,6 @@
 ---
 title: Generate Self-signed Certificates
 summary: Use `openssl` to generate self-signed certificates.
-category: how-to
 aliases: ['/docs/dev/generate-self-signed-certificates/','/docs/dev/how-to/secure/generate-self-signed-certificates/']
 ---
 

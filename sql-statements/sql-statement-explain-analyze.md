@@ -1,7 +1,6 @@
 ---
 title: EXPLAIN ANALYZE | TiDB SQL Statement Reference
 summary: An overview of the usage of EXPLAIN ANALYZE for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-explain-analyze/','/docs/dev/reference/sql/statements/explain-analyze/']
 ---
 

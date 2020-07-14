@@ -1,7 +1,6 @@
 ---
 title: Data Check for TiDB Upstream and Downstream Clusters
 summary: Learn how to check data for TiDB upstream and downstream clusters.
-category: tools
 aliases: ['/docs/dev/sync-diff-inspector/upstream-downstream-diff/','/docs/dev/reference/tools/sync-diff-inspector/tidb-diff/']
 ---
 

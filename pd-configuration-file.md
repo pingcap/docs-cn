@@ -1,7 +1,6 @@
 ---
 title: PD Configuration File
 summary: Learn the PD configuration file.
-category: reference
 aliases: ['/docs/dev/pd-configuration-file/','/docs/dev/reference/configuration/pd-server/configuration-file/']
 ---
 

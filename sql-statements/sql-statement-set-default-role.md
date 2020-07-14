@@ -1,7 +1,6 @@
 ---
 title: SET DEFAULT ROLE | TiDB SQL Statement Reference
 summary: An overview of the usage of SET DEFAULT ROLE for the TiDB database.
-category: reference
 ---
 
 # `SET DEFAULT ROLE`

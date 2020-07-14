@@ -1,7 +1,6 @@
 ---
 title: SHOW [FULL] COLUMNS FROM | TiDB SQL Statement Reference
 summary: An overview of the usage of SHOW [FULL] COLUMNS FROM for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-show-columns-from/','/docs/dev/reference/sql/statements/show-columns-from/']
 ---
 

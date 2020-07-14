@@ -1,7 +1,6 @@
 ---
 title: TiDB Introduction
 summary: Learn about the NewSQL database TiDB that supports HTAP workloads.
-category: introduction
 aliases: ['/docs/dev/']
 ---
 

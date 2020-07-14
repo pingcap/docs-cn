@@ -1,7 +1,6 @@
 ---
 title: SHOW BINDINGS
 summary: Use of SHOW BINDINGS binding in TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-show-bindings/']
 ---
 

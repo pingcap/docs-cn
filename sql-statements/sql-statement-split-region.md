@@ -1,7 +1,6 @@
 ---
 title: Split Region
 summary: An overview of the usage of Split Region for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-split-region/','/docs/dev/reference/sql/statements/split-region/']
 ---
 

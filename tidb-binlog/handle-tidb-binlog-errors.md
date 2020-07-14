@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog Error Handling
 summary: Learn how to handle TiDB Binlog errors.
-category: reference
 aliases: ['/docs/dev/tidb-binlog/handle-tidb-binlog-errors/','/docs/dev/reference/tidb-binlog/troubleshoot/error-handling/']
 ---
 

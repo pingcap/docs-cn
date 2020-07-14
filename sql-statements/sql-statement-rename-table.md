@@ -1,7 +1,6 @@
 ---
 title: RENAME TABLE | TiDB SQL Statement Reference
 summary: An overview of the usage of RENAME TABLE for the TiDB database.
-category: reference
 aliases: ['/docs/dev/sql-statements/sql-statement-rename-table/','/docs/dev/reference/sql/statements/rename-table/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v2.1 vs. v2.0
-category: benchmark
 aliases: ['/docs/dev/benchmark/benchmark-sysbench-v3/','/docs/dev/benchmark/sysbench-v3/']
 ---
 

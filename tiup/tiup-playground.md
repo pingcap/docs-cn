@@ -1,7 +1,6 @@
 ---
 title: Quickly Deploy a Local TiDB Cluster
 summary: Learn how to quickly deploy a local TiDB cluster using the playground component of TiUP.
-category: tools
 aliases: ['/docs/dev/tiup/tiup-playground/','/docs/dev/reference/tools/tiup/playground/']
 ---
 

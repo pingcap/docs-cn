@@ -1,7 +1,6 @@
 ---
 title: TiKV Control User Guide
 summary: Use TiKV Control to manage a TiKV cluster.
-category: reference
 aliases: ['/docs/dev/tikv-control/','/docs/dev/reference/tools/tikv-control/']
 ---
 

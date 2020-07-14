@@ -1,7 +1,6 @@
 ---
 title: Software and Hardware Recommendations
 summary: Learn the software and hardware recommendations for deploying and running TiDB.
-category: how-to
 aliases: ['/docs/dev/hardware-and-software-requirements/','/docs/dev/how-to/deploy/hardware-recommendations/']
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: What's New in TiDB 4.0
 summary: Learn the new features of TiDB v4.0.
-category: introduction
 aliases: ['/docs/dev/whats-new-in-tidb-4.0/']
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: Type Conversion in Expression Evaluation
 summary: Learn about the type conversion in expression evaluation.
-category: reference
 aliases: ['/docs/dev/functions-and-operators/type-conversion-in-expression-evaluation/','/docs/dev/reference/sql/functions-and-operators/type-conversion/']
 ---
 

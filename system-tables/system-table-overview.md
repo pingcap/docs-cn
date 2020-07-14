@@ -1,7 +1,6 @@
 ---
 title: TiDB System Tables
 summary: Learn the TiDB system tables.
-category: reference
 aliases: ['/docs/dev/system-tables/system-table-overview/','/docs/dev/reference/system-databases/mysql/']
 ---
 

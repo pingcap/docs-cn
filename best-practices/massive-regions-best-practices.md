@@ -1,7 +1,6 @@
 ---
 title: Best Practices for TiKV Performance Tuning with Massive Regions
 summary: Learn how to tune the performance of TiKV with a massive amount of Regions.
-category: reference
 aliases: ['/docs/dev/best-practices/massive-regions-best-practices/','/docs/dev/reference/best-practices/massive-regions/']
 ---
 

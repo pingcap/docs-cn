@@ -1,7 +1,6 @@
 ---
 title: Date and Time Types
 summary: Learn about the supported date and time types.
-category: reference
 aliases: ['/docs/dev/data-type-date-and-time/','/docs/dev/reference/sql/data-types/date-and-time/']
 ---
 

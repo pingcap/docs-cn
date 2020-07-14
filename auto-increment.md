@@ -1,7 +1,6 @@
 ---
 title: AUTO_INCREMENT
 summary: Learn the `AUTO_INCREMENT` column attribute of TiDB.
-category: reference
 aliases: ['/docs/dev/auto-increment/']
 ---
 

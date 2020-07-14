@@ -1,7 +1,6 @@
 ---
 title: TiDB Dashboard Cluster Information Page
 summary: View the running status of TiDB, TiKV, PD, TiFlash components in the entire cluster and the running status of the host on which these components are located.
-category: how-to
 aliases: ['/docs/dev/dashboard/dashboard-cluster-info/']
 ---
 
