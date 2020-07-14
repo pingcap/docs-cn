@@ -225,7 +225,7 @@ desc mysql.expr_pushdown_blacklist;
     Query OK, 0 rows affected (0.00 sec)
     ```
 
-5. 重新观察执行计划，`<` 和 `>` 表达式又可以重新被下推到 TiKV Coprocessor。
+5. 重新观察执行计划，可以看到只有 `>` 表达式被重新下推到 TiKV Coprocessor，`<` 表达式仍然被禁用下推。
 
     {{< copyable "sql" >}}
 
