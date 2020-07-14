@@ -1088,7 +1088,7 @@ See [The TiDB Command Options](/command-line-flags-for-tidb-configuration.md).
 
 #### How to scatter the hotspots?
 
-In TiDB, data is divided into Regions for management. Generally, the TiDB hotspot means the Read/Write hotspot in a Region. In TiDB, for the table whose primary key (PK) is not an integer or which has no PK, you can properly break Regions by configuring `SHARD_ROW_ID_BITS` to scatter the Region hotspots. For details, see the introduction of `SHARD_ROW_ID_BITS` in [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md#shard_row_id_bits).
+In TiDB, data is divided into Regions for management. Generally, the TiDB hotspot means the Read/Write hotspot in a Region. In TiDB, for the table whose primary key (PK) is not an integer or which has no PK, you can properly break Regions by configuring `SHARD_ROW_ID_BITS` to scatter the Region hotspots. For details, see the introduction of [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md).
 
 ### TiKV
 

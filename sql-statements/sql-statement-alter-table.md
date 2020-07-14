@@ -58,21 +58,6 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
-## SHARD_ROW_ID_BITS
-
-For tables with a non-integer `PRIMARY KEY` or without a `PRIMARY KEY`, TiDB uses an implicit auto-increment ROW ID. Because regions are automatically sharded using a range-based scheme on the `PRIMARY KEY`, hotspots can occur when there are a large number of `INSERT` operations.
-
-To mitigate the hot spot issue, you can configure `SHARD_ROW_ID_BITS`. The ROW ID is scattered and the data is written into multiple different Regions. But setting an overlarge value might lead to an excessively large number of RPC requests, which increases the CPU and network overhead.
-
-- `SHARD_ROW_ID_BITS = 4` indicates 16 shards
-- `SHARD_ROW_ID_BITS = 6` indicates 64 shards
-- `SHARD_ROW_ID_BITS = 0` indicates the default 1 shard
-
-Usage:
-
-- `CREATE TABLE`: `CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
-- `ALTER TABLE`: `ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
-
 ## MySQL compatibility
 
 * All of the data types except spatial types are supported. For other unsupported cases, refer to: [compatibility of DDL statements with MySQL](/mysql-compatibility.md#ddl).

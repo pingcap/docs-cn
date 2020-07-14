@@ -180,7 +180,7 @@ In this case, the table is simple. In other cases, you might also need to consid
 
 **Problem one:**
 
-If a table does not have a primary key, or the primary key is not the `Int` type and you do not want to generate a randomly distributed primary key ID, TiDB provides an implicit `_tidb_rowid` column as the row ID. Generally, when you do not use the `SHARD_ROW_ID_BITS` parameter, the values of the `_tidb_rowid` column are also monotonically increasing, which might causes hotspots too. Refer to [`SHARD_ROW_ID_BITS`](/sql-statements/sql-statement-create-table.md#shard_row_id_bits) for more details.
+If a table does not have a primary key, or the primary key is not the `Int` type and you do not want to generate a randomly distributed primary key ID, TiDB provides an implicit `_tidb_rowid` column as the row ID. Generally, when you do not use the `SHARD_ROW_ID_BITS` parameter, the values of the `_tidb_rowid` column are also monotonically increasing, which might causes hotspots too. Refer to [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) for more details.
 
 To avoid the hotspot problem in this situation, you can use `SHARD_ROW_ID_BITS` and `PRE_SPLIT_REGIONS` when creating a table. For more details about `PRE_SPLIT_REGIONS`, refer to [Pre-split Regions](/sql-statements/sql-statement-split-region.md#pre_split_regions).
 

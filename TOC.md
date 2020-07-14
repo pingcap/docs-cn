@@ -206,6 +206,7 @@
       + Attributes
         + [AUTO_INCREMENT](/auto-increment.md)
         + [AUTO_RANDOM](/auto-random.md)
+        + [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
       + [Literal Values](/literal-values.md)
       + [Schema Object Names](/schema-object-names.md)
       + [Keywords and Reserved Words](/keywords.md)
