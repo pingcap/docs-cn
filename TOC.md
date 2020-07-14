@@ -303,6 +303,7 @@
   + 周边工具
     - [功能概览](/ecosystem-tool-user-guide.md)
     - [适用场景](/ecosystem-tool-user-case.md)
+    - [表库过滤](/table-filter.md)
     - [Mydumper](/mydumper-overview.md)
     - [Loader](/loader-overview.md)
     - [Syncer](/syncer-overview.md)
@@ -312,7 +313,7 @@
       - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
       - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
       - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      - [表库过滤](/tidb-lightning/tidb-lightning-table-filter.md)
+      - [表库过滤](/table-filter.md)
       - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       - [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
