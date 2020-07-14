@@ -55,7 +55,7 @@ The following are descriptions of options available in the `cdc server` command:
 
 ## Use `cdc cli` to manage cluster status and data replication task
 
-This section introduces how to use `cdc cli` to manage a TiCDC cluster and data replication tasks. The following interface description assumes that PD listens on `127.0.0.1` and the port is `2379`.
+This section introduces how to use `cdc cli` to manage a TiCDC cluster and data replication tasks. The following interface description assumes that PD listens on `10.0.10.25` and the port is `2379`.
 
 ### Manage TiCDC service progress (`capture`)
 
@@ -64,7 +64,7 @@ This section introduces how to use `cdc cli` to manage a TiCDC cluster and data 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli capture list --pd=http://127.0.0.1:2379
+    cdc cli capture list --pd=http://10.0.10.25:2379
     ```
 
     ```
@@ -89,7 +89,7 @@ Execute the following commands to create a replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
 create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-start-ts":null}}
 ```
 
@@ -143,6 +143,19 @@ Configure `--sink-uri`  according to the following format. Currently, the scheme
     | `partition-num`      | The number of the downstream Kafka partitions (Optional. The value must be **no greater than** the actual number of partitions. If you do not configure this parameter, the partition number is obtained automatically.) |
     | `max-message-bytes`  | The maximum size of data that is sent to Kafka broker each time (optional, `64MB` by default) |
     | `replication-factor` | The number of Kafka message replicas that can be saved (optional, `1` by default)                       |
+    | `protocol` | The protocol with which messages are output to Kafka. The optional values are `default` and `canal` (`default` by default.)    |
+
+For more replication configuration (for example, specify replicating a single table), see [Task configuration file](#task-configuration-file).
+
+You can use a configuration file to create a replication task in the following way:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
+```
+
+In the command above, `changefeed.toml` is the configuration file for the replication task.
 
 #### Query the replication task list
 
@@ -151,7 +164,7 @@ Execute the following command to query the replication task list:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed list --pd=http://127.0.0.1:2379
+cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
 ```
@@ -169,7 +182,7 @@ Execute the following command to query a specific replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 The information returned consists of `"info"` and `"status"` of the replication task.
@@ -214,7 +227,7 @@ Execute the following command to pause a replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 In the above command:
@@ -228,7 +241,7 @@ Execute the following command to resume a paused replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed resume --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 In the above command:
@@ -242,7 +255,7 @@ Execute the following command to remove a replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed remove --pd=http://127.0.0.1:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 In the above command:
@@ -256,7 +269,7 @@ In the above command:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor list --pd=http://127.0.0.1:2379
+    cdc cli processor list --pd=http://10.0.10.25:2379
     ```
 
     ```
@@ -274,7 +287,7 @@ In the above command:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --pd=http://127.0.0.1:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
     ```
 
     ```
@@ -299,7 +312,7 @@ In the above command:
 
 ## Use HTTP interface to manage cluster status and data replication task
 
-Currently, the HTTP interface provides some basic features for query and maintenance. 
+Currently, the HTTP interface provides some basic features for query and maintenance.
 
 In the following examples, suppose that the TiCDC server listens on `127.0.0.1`, and the port is `8300` (you can specify the IP and port in `--addr=ip:port` when starting the TiCDC server).
 
@@ -350,3 +363,156 @@ For nodes other than owner nodes, executing the above command will return the fo
 ```
 election: not leader
 ```
+
+## Task configuration file
+
+This section introduces the configuration of a replication task.
+
+```toml
+# Specifies whether the database names and tables in the configuration file are case-sensitive.
+# The default value is true.
+# This configuration item affects configurations related to filter and sink.
+case-sensitive = true
+
+[filter]
+# Ignores the transaction of specified start_ts.
+ignore-txn-start-ts = [1, 2]
+
+# Filter rules.
+# Filter syntax: https://github.com/pingcap/tidb-tools/tree/master/pkg/table-filter#syntax.
+rules = ['*.*', '!test.*']
+
+[mounter]
+# mounter thread counts, which is used to decode the TiKV output data.
+worker-num = 16
+
+[sink]
+# For the sink of MQ type, you can use dispatchers to configure the event dispatcher.
+# Supports four dispatchers: default, ts, rowid, and table
+dispatchers = [
+    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
+    {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
+]
+# For the sink of MQ type, you can specify the protocol format of the message.
+# Currently two protocols are supported: default and canal. The default protocol is TiCDC Open Protocol.
+protocol = "default"
+
+[cyclic-replication]
+# Whether to enable cyclic replication.
+enable = false
+# The replica ID of the current TiCDC.
+replica-id = 1
+# The replica ID to be filtered.
+filter-replica-ids = [2,3]
+# Whether to replicate DDL statements.
+sync-ddl = true
+```
+
+### Notes for compatibility
+
+* In TiCDC v4.0.0, `ignore-txn-commit-ts` is removed and `ignore-txn-start-ts` is added, which uses start_ts to filter transactions.
+* In TiCDC v4.0.2, `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables` are removed and `rules` is added, which uses new filter rules for databases and tables. For detailed filter syntax, see [Table Filter](/table-filter.md).
+
+## Cyclic replication
+
+> **Warning:**
+>
+> Currently (v4.0.2), cyclic replication is still an experimental feature. It is **NOT** recommended to use it in the production environment.
+
+The cyclic replication feature supports replicating data across multiple independent TiDB clusters. For example, TiDB clusters A, cluster B, and cluster C all have a table named `test.user_data` and write data into this table respectively. With the cyclic replication feature, the data written into `test.user_data` in one cluster can be replicated to the other two clusters, so that the `test.user_data` table in the three clusters is consistent with each other.
+
+### Usage example
+
+Enable cyclic replication in the three clusters of A, B, and C. Two TiCDC clusters are used for the replication from cluster A to cluster B. Among the three clusters, DDL statements enters cluster A first.
+
+![TiCDC cyclic replication](/media/cdc-cyclic-replication.png)
+
+To use the cyclic replication feature, you need to configure the following parameters for the replication task upon the task creation.
+
++ `--cyclic-replica-id`: Specifies the data source (to be written) ID of the upstream cluster. Each cluster ID must be unique.
++ `--cyclic-filter-replica-ids`: Specifies the data source ID to be filtered, which is usually the downstream cluster ID.
++ `--cyclic-sync-ddl`: Determines whether to replicate DDL statements to the downstream. DDL replication can only be enabled in the TiCDC component of one cluster.
+
+To create a cyclic replication task, take the following steps:
+
+1. [Enable the TiCDC component](#deploy-ticdc) in TiDB cluster A, cluster B, and cluster C.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # Enables TiCDC in cluster A.
+    cdc server \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+        --log-file=ticdc_1.log \
+        --addr=0.0.0.0:8301 \
+        --advertise-addr=127.0.0.1:8301
+    # Enables TiCDC in cluster B.
+    cdc server \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+        --log-file=ticdc_2.log \
+        --addr=0.0.0.0:8301 \
+        --advertise-addr=127.0.0.1:8301
+    # Enables TiCDC in cluster C.
+    cdc server \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+        --log-file=ticdc_3.log \
+        --addr=0.0.0.0:8301 \
+        --advertise-addr=127.0.0.1:8301
+    ```
+
+2. Create the mark tables used for the cyclic replication in cluster A, cluster B, and cluster C.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # Creates mark tables in cluster A.
+    cdc cli changefeed cyclic create-marktables \
+        --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/" \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}"
+    # Creates mark tables in cluster B.
+    cdc cli changefeed cyclic create-marktables \
+        --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/" \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}"
+    # Creates mark tables in cluster C.
+    cdc cli changefeed cyclic create-marktables \
+        --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/" \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}"
+    ```
+
+3. Create the cyclic replication task in cluster A, cluster B, and cluster C.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # Creates the cyclic replication task in cluster A.
+    cdc cli changefeed create \
+        --sink-uri="mysql://root@${TiDB_B_HOST}/" \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+        --cyclic-replica-id 1 \
+        --cyclic-filter-replica-ids 2 \
+        --cyclic-sync-ddl true
+    # Creates the cyclic replication task in cluster B.
+    cdc cli changefeed create \
+        --sink-uri="mysql://root@${TiDB_C_HOST}/" \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+        --cyclic-replica-id 2 \
+        --cyclic-filter-replica-ids 3 \
+        --cyclic-sync-ddl true
+    # Creates the cyclic replication task in cluster C.
+    cdc cli changefeed create \
+        --sink-uri="mysql://root@${TiDB_A_HOST}/" \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+        --cyclic-replica-id 3 \
+        --cyclic-filter-replica-ids 1 \
+        --cyclic-sync-ddl false
+    ```
+
+### Usage notes
+
++ Before creating the cyclic replication task, you must execute `cdc cli changefeed cyclic create-marktables` to create the mark tables for the cyclic replication.
++ Tables with cyclic replication enabled only contain the `[a-zA-Z0-9_]` characters.
++ Before creating the cyclic replication task, the tables for the task must be created.
++ After enabling the cyclic replication, you cannot create a table that will be replicated by the cyclic replication task.
++ To perform online DDL operations, ensure the following requirements are met:
+    - The TiCDC components of multiple clusters form a one-way DDL replication chain, which is not cyclic. For example, in the example above, only the TiCDC component of cluster C disables `sync-ddl`.
+    - DDL operations must be performed on the cluster that is the starting point of the one-way DDL replication chain, such as cluster A in the example above.
