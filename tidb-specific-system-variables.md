@@ -485,7 +485,7 @@ mysql> desc select count(distinct a) from test.t;
 
 > **注意：**
 >
-> 该变量实际作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB INSTANCE 中生效，同时也对其他的连接立即生效。
+> 该变量实际作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
 
 示例：
 
