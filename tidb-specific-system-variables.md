@@ -477,13 +477,13 @@ mysql> desc select count(distinct a) from test.t;
 
 ### tidb_slow_log_threshold
 
-作用域：SESSION（INSTANCE)
+作用域：SESSION (INSTANCE)
 
 默认值：300
 
 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300ms。
 
-> 注意：
+> **注意：**
 >
 > 该变量实际作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB INSTANCE 中生效，同时也对其他的连接立即生效。
 

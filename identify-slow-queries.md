@@ -129,7 +129,7 @@ Slow Query 基础信息：
 +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-`Plan` 字段显示的格式基本和 [EXPLAIN](/sql-statements/sql-statement-explain.md) 或者 [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md) 一致。可以查看 [EXPLAIN](/sql-statements/sql-statement-explain.md) 或者 [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md) 文档了解更多关于执行计划的信息。
+`Plan` 字段显示的格式和 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或者 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 大致一致。可以查看 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或者 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 文档了解更多关于执行计划的信息。
 
 更多详细信息，可以参见 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
 
