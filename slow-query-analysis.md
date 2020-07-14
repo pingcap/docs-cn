@@ -4,6 +4,7 @@ category: how-to
 ---
 
 # 慢查询分析
+
 处理慢查询分为两步：
 1. 从大量查询中定位出哪一类查询比较慢；
 2. 分析这类慢查询的原因；
@@ -24,6 +25,7 @@ category: how-to
 接下来会分别介绍上面几点。
 
 ## 定位查询瓶颈
+
 定位查询瓶颈需要对查询过程有一个大致理解，TiDB 处理查询过程的关键阶段都在 [performance-map](https://raw.githubusercontent.com/pingcap/tidb-map/master/maps/performance-map.png) 图中了。
 
 定位单个查询的耗时，目前有两个工具：
@@ -37,6 +39,7 @@ category: how-to
 总的来说，利用慢日志和 `explain analyze` 可以比较准确的定位查询的瓶颈点，帮助你判断这条 SQL 慢在哪个模块（TiDB/TiKV），慢在哪个阶段，下面会有一些例子。
 
 ## 分析系统性问题
+
 对于系统性问题，我们根据执行阶段，分成三个大类：
 1. TiKV 处理慢：如 coprocessor 处理数据慢；
 2. TiDB 执行慢：主要指执行阶段，如某个 Join 算子处理数据慢；
@@ -45,7 +48,9 @@ category: how-to
 拿到一个慢查询，我们应该先根据已有信息判断大致是哪个大类，再具体分析。
 
 ### TiKV 处理慢
+
 如果是 TiKV 处理慢可以很明显的通过 `explain analyze` 中看出来，如下面这个例子，可以看到 `StreamAgg_8` 和 `TableFullScan_15` 这俩 `tikv-task` 花费了 170ms，而 TiDB 部分的算子耗时，减去这 170ms 后，耗时占比非常小，说明瓶颈在 TiKV。
+
 ```
 +----------------------------+---------+---------+-----------+---------------+------------------------------------------------------------------------------+---------------------------------+-----------+------+
 | id                         | estRows | actRows | task      | access object | execution info                                                               | operator info                   | memory    | disk |
@@ -56,7 +61,9 @@ category: how-to
 |     └─TableFullScan_15     | 7.00    | 28672   | cop[tikv] | table:t       | time:170ms, loops:29                                                          | keep order:false, stats:pseudo  | N/A       | N/A  |
 +----------------------------+---------+---------+-----------+---------------+------------------------------------------------------------------------------+---------------------------------+-----------+------
 ```
+
 另外在慢日志中，`Cop_process` 和 `Cop_wait` 字段也可以帮助判断，如下面这个例子，查询整个耗时是 180.85ms 左右，而最大的那个 `coptask` 就消耗了 171ms，可以说明对这个查询而言，瓶颈在 TiKV 侧。
+
 ```
 # Query_time: 0.18085
 ...
@@ -64,21 +71,27 @@ category: how-to
 # Cop_process: Avg_time: 170ms P90_time: 170ms Max_time: 170ms Max_addr: 10.6.131.78
 # Cop_wait: Avg_time: 1ms P90_time: 1ms Max_time: 1ms Max_Addr: 10.6.131.78
 ```
+
 根据上述方式判断是 TiKV 慢后，可以依次排查 TiKV 慢的原因。
 
 #### TiKV 实例忙
+
 一条 SQL 可能会去从多个 TiKV 上拿数据，如果某个 TiKV 响应慢，可能拖慢整个 SQL 的处理速度。
 
 慢日志中的 `Cop_wait` 可以帮忙判断这个问题：
+
 ```
 # Cop_wait: Avg_time: 1ms P90_time: 2ms Max_time: 110ms Max_Addr: 10.6.131.78
 ```
+
 如上图，发给 `10.6.131.78` 的一个 `cop-task` 等待了 110ms 才被执行，可以判断是当时该实例忙，此时可以打开当时的 CPU 监控辅助判断。
 
 #### 过期 key 多
+
 如果 TiKV 上过期的数据比较多，在扫描的时候则需要处理这些不必要的数据，影响处理速度。
 
 这可以通过 `Total_keys` 和 `Processed_keys` 判断，如果两者相差较大，则说明旧版本的 key 太多：
+
 ```
 ...
 # Total_keys: 2215187529 Processed_keys: 1108056368
@@ -86,21 +99,29 @@ category: how-to
 ```
 
 ### 其他关键阶段慢
+
 #### 取 TS 慢
+
 可以对比慢日志中的 `Wait_TS` 和 `Query_time` ，因为 TS 有预取操作，通常来说 `Wait_TS` 应该很低。
+
 ```
 # Query_time: 0.0300000
 ...
 # Wait_TS: 0.02500000
 ```
+
 #### Region 信息过期
+
 TiDB 侧 region 信息可能过期，此时 TiKV 可能返回 `regionMiss` 的错误，然后 TiDB 会从 PD 去重新获取 region 信息，这些信息会被反应在 `Cop_backoff` 信息内，失败的次数和总耗时都会被记录下来。
 ```
 # Cop_backoff_regionMiss_total_times: 200 Cop_backoff_regionMiss_total_time: 0.2 Cop_backoff_regionMiss_max_time: 0.2 Cop_backoff_regionMiss_max_addr: 127.0.0.1 Cop_backoff_regionMiss_avg_time: 0.2 Cop_backoff_regionMiss_p90_time: 0.2
 # Cop_backoff_rpcPD_total_times: 200 Cop_backoff_rpcPD_total_time: 0.2 Cop_backoff_rpcPD_max_time: 0.2 Cop_backoff_rpcPD_max_addr: 127.0.0.1 Cop_backoff_rpcPD_avg_time: 0.2 Cop_backoff_rpcPD_p90_time: 0.2
 ```
+
 #### 子查询被提前执行
+
 对于带有非关联子查询的语句，子查询部分可能被提前执行，如：`select * from t1 there a = (select max(a) from t2)` ，`select max(a) from t2` 部分可能在优化阶段被提前执行，这种查询用 `explain analyze` 看不到对应的耗时，如下：
+
 ```
 mysql> explain analyze select count(*) from t where a=(select max(t1.a) from t t1, t t2 where t1.a=t2.a);
 +------------------------------+----------+---------+-----------+---------------+--------------------------+----------------------------------+-----------+------+
@@ -114,21 +135,27 @@ mysql> explain analyze select count(*) from t where a=(select max(t1.a) from t t
 +------------------------------+----------+---------+-----------+---------------+--------------------------+----------------------------------+-----------+------+
 5 rows in set (7.77 sec)
 ```
+
 不过可以从慢日志中排查这种情况：
+
 ```
 # Query_time: 7.770634843
 ...
 # Rewrite_time: 7.765673663 Preproc_subqueries: 1 Preproc_subqueries_time: 7.765231874
 ```
+
 可以看到有 1 个子查询被提前执行，花费了 7.76s。
 
 ### TiDB 执行慢
+
 这里我们假设 TiDB 的执行计划正确（不正确的情况下一小节说明），但是执行上很慢；
 
 解决这类问题主要靠调整参数或利用 hint，并结合 `explain analyze` 对 SQL 进行调整。
 
 #### 并发太低
+
 如果发现瓶颈在有并发的算子上，可以通过调整并发度来尝试提速，如下面的执行计划中：
+
 ```
 mysql> explain analyze select sum(t1.a) from t t1, t t2 where t1.a=t2.a;
 +----------------------------------+--------------+-----------+-----------+---------------+-------------------------------------------------------------------------------------+------------------------------------------------+------------------+---------+
@@ -146,10 +173,13 @@ mysql> explain analyze select sum(t1.a) from t t1, t t2 where t1.a=t2.a;
 +----------------------------------+--------------+-----------+-----------+---------------+-------------------------------------------------------------------------------------+------------------------------------------------+------------------+---------+
 9 rows in set (9.67 sec)
 ```
+
 发现耗时主要在 `HashJoin_14` 和 `Projection_24` ，可以酌情通过 SQL 变量来提高他们的并发度进行提速。
 
 #### 产生了落盘
+
 执行慢的另一个原因是执行过程中，因为到达内存限制，产生了落盘，这点在执行计划和慢日志中都能看到：
+
 ```
 +-------------------------+-----------+---------+-----------+---------------+------------------------------+----------------------+-----------------------+----------------+
 | id                      | estRows   | actRows | task      | access object | execution info               | operator info        | memory                | disk           |
@@ -159,6 +189,7 @@ mysql> explain analyze select sum(t1.a) from t t1, t t2 where t1.a=t2.a;
 |   └─TableFullScan_7     | 462144.00 | -1      | cop[tikv] | table:t       | time:0s, loops:0             | keep order:false     | N/A                   | N/A            |
 +-------------------------+-----------+---------+-----------+---------------+------------------------------+----------------------+-----------------------+----------------+
 ```
+
 ```
 ...
 # Disk_max: 229974016
@@ -166,6 +197,7 @@ mysql> explain analyze select sum(t1.a) from t t1, t t2 where t1.a=t2.a;
 ```
 
 #### 做了笛卡尔积的 Join
+
 做笛卡尔积的 Join 会产生 `左边孩子行数 * 右边孩子行数` 这么多数据，效率较低，应该尽量避免；
 
 目前对于产生笛卡尔积的 Join 会在执行计划中显示的标明 `CARTESIAN`，如下：
@@ -186,6 +218,7 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 ```
 
 ## 分析优化器问题
+
 分析优化问题需要有判断执行计划是否合理的能力，这需要对优化过程和各算子有一定了解；
 
 下面是一组例子，假设表结构为 `create table t (id int, a int, b int, c int, primary key(id), key(a), key(b, c))`：
