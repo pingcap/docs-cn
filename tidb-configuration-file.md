@@ -354,6 +354,12 @@ Configuration items related to performance.
 - Default: `NO_PRIORITY`
 - Optional values: `NO_PRIORITY`, `LOW_PRIORITY`, `HIGH_PRIORITY` and `DELAYED`.
 
+### `distinct-agg-push-down`
+
+- Determines whether the optimizer executes the operation that pushes down the aggregation function with `Distinct` (such as `select count(distinct a) from t`) to Coprocessors.
+- Default: `false`
+- This variable is the initial value of the system variable [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down).
+
 ### `nested-loop-join-cache-capacity`
 
 + The maximum memory usage for the Least Recently Used (LRU) algorithm of the nested loop join cache (in bytes).
