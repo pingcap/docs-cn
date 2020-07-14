@@ -95,11 +95,14 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
-create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-start-ts":null}}
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+Create changefeed successfully!
+ID: simple-replication-task
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
-其中 `--sink-uri` 需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
+- `--changefeed-id`: 同步任务的 id，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。
+- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
 
 {{< copyable "" >}}
 
@@ -174,12 +177,22 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
 ```
-[
-        {
-                "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
-        }
-]
+[{
+    "id": "simple-replication-task",
+    "summary": {
+      "state": "normal",
+      "tso": 417886179132964865,
+      "checkpoint": "2020-07-07 16:07:44.881",
+      "error": null
+    }
+}]
 ```
+
+- `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
+- `state` 为该同步任务的状态：
+    - `normal`: 正常同步
+    - `stopped`: 停止同步（手动暂停或出错）
+    - `removed`: 已删除任务
 
 #### 查询特定同步任务
 
@@ -188,7 +201,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
 ```
 
 ```
@@ -231,7 +244,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-23
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 以上命令中：
@@ -245,7 +258,7 @@ cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 以上命令中：
@@ -259,7 +272,7 @@ cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 - `--changefeed=uuid` 为需要操作的 `changefeed` ID。
@@ -279,7 +292,7 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2
             {
                     "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
                     "capture-id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                    "changefeed-id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
+                    "changefeed-id": "simple-replication-task"
             }
     ]
     ```
@@ -289,7 +302,7 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
+    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
     ```
@@ -501,17 +514,17 @@ sync-ddl = true
     # 在 TiDB 集群 A 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/" \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}"
 
     # 在 TiDB 集群 B 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/" \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}"
 
     # 在 TiDB 集群 C 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/" \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}"
     ```
 
 3. 在 TiDB 集群 A，B 和 C 上创建环形同步任务。
@@ -547,7 +560,7 @@ sync-ddl = true
 ### 环形同步使用限制
 
 1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形复制功能使用到的标记表。
-2. 开启环形复制的数据表只包含 [a-zA-z0-9_] 字符。
+2. 开启环形复制的数据表名字需要符合正则表达式 `^[a-zA-Z0-9_]+$`。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
 5. 如果想在线 DDL，需要确保以下两点：
