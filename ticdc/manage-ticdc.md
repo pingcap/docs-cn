@@ -410,7 +410,7 @@ case-sensitive = true
 ignore-txn-start-ts = [1, 2]
 
 # 过滤器规则
-# 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter
+# 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#%E8%A1%A8%E5%BA%93%E8%BF%87%E6%BB%A4%E8%AF%AD%E6%B3%95
 rules = ['*.*', '!test.*']
 
 [mounter]
