@@ -106,9 +106,9 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 >
 > 请谨慎设置 TiCDC server 的时区，因为该时区会用于时间类型的转换。推荐上下游数据库使用相同的时区，并且启动 TiCDC server 时通过 `--tz` 参数指定该时区。TiCDC server 时区使用的优先级如下：
 >
-> - 最优先使用 `--tz` 传入的时区
-> - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区
-> - 如果还没有 `TZ` 环境变量，会从 TiCDC server 运行机器的默认时区
+> - 最优先使用 `--tz` 传入的时区。
+> - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区。
+> - 如果还没有 `TZ` 环境变量，会从 TiCDC server 运行机器的默认时区。
 
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
 
@@ -116,7 +116,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 
 ## TiCDC 是否支持输出 Canal 格式的变更数据？
 
-支持。要开启 Canal 格式输出，只需在 --sink-uri 中指定 protocol 为 cancal 即可，比如：
+支持。要开启 Canal 格式输出，只需在 `--sink-uri` 中指定 protocol 为 `canal` 即可，例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -133,7 +133,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 
 ## 如何查看 TiCDC 同步任务的延时？
 
-可以使用 cdc cli 查询同步任务的延时。比如：
+可以使用 `cdc cli` 查询同步任务的延时。例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -155,11 +155,11 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 }]
 ```
 
-* `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
+* `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
 * `state` 为该同步任务的状态：
-    * `normal`: 正常同步
-    * `stopped`: 停止同步（手动暂停或出错）
-    * `removed`: 已删除任务
+    * `normal`：正常同步。
+    * `stopped`：停止同步（手动暂停或出错）。
+    * `removed`：已删除任务。
 
 > **注意：**
 >
@@ -167,7 +167,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 
 ## 如何查看 TiCDC 同步任务是否正常？
 
-可以使用 cdc cli 查询同步任务的状态。比如：
+可以使用 `cdc cli` 查询同步任务的状态。例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -186,21 +186,21 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 * 请参考 [如何查看 TiCDC 同步任务是否正常？](/ticdc/troubleshoot-ticdc.md#如何查看-ticdc-同步任务是否正常) 检查下同步任务的状态是否正常。
 * 请适当调整 Kafka 的以下参数：
-    * `message.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 1073741824 （1 GB）。
-    * `replica.fetch.max.bytes`，将 Kafka 的 server.properties 中该参数调大到 1073741824 （1 GB）。
-    * `fetch.message.max.bytes`，适当调大 comsumer.properties 中该参数，确保大于 `message.max.bytes`。
+    * `message.max.bytes`，将 Kafka 的 `server.properties` 中该参数调大到 `1073741824` (1 GB)。
+    * `replica.fetch.max.bytes`，将 Kafka 的 `server.properties` 中该参数调大到 `1073741824` (1 GB)。
+    * `fetch.message.max.bytes`，适当调大 `consumer.properties` 中该参数，确保大于 `message.max.bytes`。
 
 ## TiCDC 把数据同步到 Kafka 时，是把一个事务内的所有变更都写到一个消息中吗？如果不是，是根据什么划分的？
 
-不是，根据配置的分发策略不同，有不同的划分方式，包括 default, row id, table, ts，更多请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
+不是，根据配置的分发策略不同，有不同的划分方式，包括 `default`、`row id`、`table`、`ts`。更多请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
 
 ## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
 
-不能，目前 TiCDC 控制了向 Kafka 发送的消息批量的大小最大为 512MB，其中单个消息的大小最大为 4MB。
+不能，目前 TiCDC 控制了向 Kafka 发送的消息批量的大小最大为 512 MB，其中单个消息的大小最大为 4 MB。
 
 ## TiCDC 把数据同步到 Kafka 时，一条消息中会不会包含多种数据变更？
 
-会，一条消息中可能出现多个 update 或 delete，update 和 delete 也有可能同时存在。
+会，一条消息中可能出现多个 `update` 或 `delete`，`update` 和 `delete` 也有可能同时存在。
 
 ## TiCDC 把数据同步到 Kafka 时，如何查看 TiCDC Open protocol 输出变更数据中的时间戳、表名和库名？
 
@@ -215,11 +215,11 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 }
 ```
 
-更多信息请参考[Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#event-格式定义)
+更多信息请参考 [Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#event-格式定义)
 
 ## TiCDC 把数据同步到 Kafka 时，如何确定一条消息中包含的数据变更发生在哪个时间点？
 
-把 Kafka 消息的 Key 中的 ts 右移 18 位即得 unix timestamp。
+把 Kafka 消息的 Key 中的 `ts` 右移 18 位即得 unix timestamp。
 
 ## TiCDC Open protocol 如何标示 null 值？
 
@@ -227,6 +227,6 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 | 类型         | Code | 输出示例 | 说明 |
 | :---------- | :--- | :------ | :-- |
-| Null        | 6    | {"t":6,"v":null} | |
+| Null        | 6    | `{"t":6,"v":null}` | |
 
-更多信息请参考[Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-type-code)。
+更多信息请参考 [Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-type-code)。
