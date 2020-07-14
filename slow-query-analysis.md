@@ -238,7 +238,7 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 
 上面举例了数据读入相关的算子，在 [理解 TiDB 执行计划](/query-execution-plan.md) 中描述了更多算子的情况；
 
-另外阅读 [SQL 性能调优](/sql-tuning-overview/) 整个小节能增加你对 TiDB 优化器的了解，帮助判断执行计划是否合理。
+另外阅读 [SQL 性能调优](/sql-tuning-overview.md) 整个小节能增加你对 TiDB 优化器的了解，帮助判断执行计划是否合理。
 
 由于大多数优化器问题在 [SQL 性能调优](/sql-tuning-overview.md) 已经有解释，这里就直接列举出来跳转过去：
 
