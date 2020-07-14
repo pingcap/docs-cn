@@ -501,7 +501,7 @@ set tidb_slow_log_threshold = 200;
 
 默认值：0
 
-这个变量用于控制是否在记录 slow log 时，同时记录各个执行算子的执行信息。
+这个变量用于控制在记录 slow log 时，是否同时记录各个执行算子的执行信息。
 
 ### tidb_query_log_max_len
 
