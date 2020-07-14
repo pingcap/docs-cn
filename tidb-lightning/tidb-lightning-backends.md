@@ -89,7 +89,7 @@ NOTE: Local-Backend 只支持 v4.0.0 以上的集群
 ```toml
 [tikv-importer]
 backend = "tidb"
-sorted-kv-dir: "/tmp/sorted-kv"     # <-- 设置为本地磁盘的路径，对应的磁盘需要有足够大的存储空间
+sorted-kv-dir = "/tmp/sorted-kv"     # <-- 设置为本地磁盘的路径，对应的磁盘需要有足够大的存储空间
 ```
 
 或者在用命令行启动 `tidb-lightning` 时，传入参数 `--backend local`。
