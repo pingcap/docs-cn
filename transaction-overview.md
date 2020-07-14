@@ -9,7 +9,7 @@ aliases: ['/docs/dev/transaction-overview/','/docs/dev/reference/transactions/ov
 
 TiDB supports complete distributed transactions. Both [optimistic transaction model](/optimistic-transaction.md) and [pessimistic transaction model](/pessimistic-transaction.md)(introduced in TiDB 3.0) are available. This document introduces commonly used transaction-related statements, explicit and implicit transactions, isolation levels, lazy check for constraints, and transaction sizes.
 
-The common variables include [`autocommit`](#autocommit), [`tidb_disable_txn_auto_retry`](/tidb-specific-system-variables.md#tidb_disable_txn_auto_retry), [`tidb_retry_limit`](/tidb-specific-system-variables.md#tidb_retry_limit), and [`tidb_txn_mode`](/tidb-specific-system-variables.md#tidb_txn_mode).
+The common variables include [`autocommit`](#autocommit), [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry), [`tidb_retry_limit`](/system-variables.md#tidb_retry_limit), and [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode).
 
 ## Common syntax
 

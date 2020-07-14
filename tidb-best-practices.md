@@ -117,21 +117,21 @@ Lots of MySQL experience is also applicable to TiDB. It is noted that TiDB has i
 
     As data is distributed across many Regions, queries run in TiDB concurrently. But the concurrency by default is not high in case it consumes lots of system resources. Besides, the OLTP query usually does not involve a large amount of data and the low concurrency is enough. But for the OLAP query, the concurrency is high and TiDB modifies the query concurrency through the following system variables:
 
-    - [`tidb_distsql_scan_concurrency`](/tidb-specific-system-variables.md#tidb_distsql_scan_concurrency):
+    - [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency):
     
         The concurrency of scanning data, including scanning the table and index data.
 
-    - [`tidb_index_lookup_size`](/tidb-specific-system-variables.md#tidb_index_lookup_size):
+    - [`tidb_index_lookup_size`](/system-variables.md#tidb_index_lookup_size):
         
         If it needs to access the index to get row IDs before accessing the table data, it uses a batch of row IDs as a single request to access the table data. This parameter sets the size of a batch. The larger batch increases latency, while the smaller one might lead to more queries. The proper size of this parameter is related to the amount of data that the query involves. Generally, no modification is required.
     
-    - [`tidb_index_lookup_concurrency`](/tidb-specific-system-variables.md#tidb_index_lookup_concurrency):
+    - [`tidb_index_lookup_concurrency`](/system-variables.md#tidb_index_lookup_concurrency):
 
         If it needs to access the index to get row IDs before accessing the table data, the concurrency of getting data through row IDs every time is modified through this parameter.
     
 * Ensure the order of results through indexes
 
-    You can use indexes to filter or sort data. Firstly, get row IDs according to the index order. Then, return the row content according to the return order of row IDs. In this way, the returned results are ordered according to the index column. It has been mentioned earlier that the model of scanning index and getting row is parallel + pipeline. If the row is returned according to the index order, a high concurrency between two queries does not reduce latency. Thus, the concurrency is low by default, but it can be modified through the [`tidb_index_serial_scan_concurrency`](/tidb-specific-system-variables.md#tidb_index_serial_scan_concurrency) variable.
+    You can use indexes to filter or sort data. Firstly, get row IDs according to the index order. Then, return the row content according to the return order of row IDs. In this way, the returned results are ordered according to the index column. It has been mentioned earlier that the model of scanning index and getting row is parallel + pipeline. If the row is returned according to the index order, a high concurrency between two queries does not reduce latency. Thus, the concurrency is low by default, but it can be modified through the [`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) variable.
 
 * Reverse index scan
 
@@ -176,7 +176,7 @@ This pseudocode means to split huge chunks of data into small ones and then dele
 
 ### Query
 
-For query requirements and specific statements, refer to [TiDB Specific System Variables](/tidb-specific-system-variables.md).
+For query requirements and specific statements, refer to [System Variables](/system-variables.md).
 
 You can control the concurrency of SQL execution through the `SET` statement and the selection of the `Join` operator through hints.
 

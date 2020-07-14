@@ -28,7 +28,7 @@ The TiDB configuration file supports more options than command-line parameters. 
 - The maximum memory available for a single SQL statement.
 - Default value: `1073741824` (in bytes)
 - Requests that require more memory than this value are handled based on the behavior defined by `oom-action`.
-- This value is the initial value of the system variable [`tidb_mem_quota_query`](/tidb-specific-system-variables.md#tidb_mem_quota_query).
+- This value is the initial value of the system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query).
 
 ### `oom-use-tmp-storage`
 
@@ -146,7 +146,7 @@ The TiDB configuration file supports more options than command-line parameters. 
 
 - Enables or disables the telemetry collection in TiDB.
 - Default value: `true`
-- When this configuration is set to `false` on all TiDB instances, the telemetry collection in TiDB is disabled and the [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry-new-in-v402-version) system variable does not take effect. See [Telemetry](/telemetry.md) for details.
+- When this configuration is set to `false` on all TiDB instances, the telemetry collection in TiDB is disabled and the [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-new-in-v402-version) system variable does not take effect. See [Telemetry](/telemetry.md) for details.
 
 ## Log
 
@@ -193,7 +193,7 @@ Configuration items related to log.
 
 + Determines whether to record execution plans in the slow log.
 + Default value: `1`
-+ `0` means to disable, and `1` (by default) means to enable. The value of this parameter is the initial value of the [`tidb_record_plan_in_slow_log`](/tidb-specific-system-variables.md#tidb_record_plan_in_slow_log) system variable.
++ `0` means to disable, and `1` (by default) means to enable. The value of this parameter is the initial value of the [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) system variable.
 
 ### `expensive-threshold`
 

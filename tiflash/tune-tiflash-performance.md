@@ -15,7 +15,7 @@ If you want to save machine resources and have no requirement on isolation, you 
 
 ## Tune TiDB parameters
 
-1. For the TiDB node dedicated to OLAP/TiFlash, it is recommended that you increase the value of the [`tidb_distsql_scan_concurrency`](/tidb-specific-system-variables.md#tidb_distsql_scan_concurrency) configuration item for this node to `80`:
+1. For the TiDB node dedicated to OLAP/TiFlash, it is recommended that you increase the value of the [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) configuration item for this node to `80`:
 
     {{< copyable "sql" >}}
 
@@ -25,7 +25,7 @@ If you want to save machine resources and have no requirement on isolation, you 
 
 2. Enable the super batch feature:
 
-    You can use the [`tidb_allow_batch_cop`](/tidb-specific-system-variables.md#tidb_allow_batch_cop-new-in-v40-version) variable to set whether to merge Region requests when reading from TiFlash.
+    You can use the [`tidb_allow_batch_cop`](/system-variables.md#tidb_allow_batch_cop-new-in-v40-version) variable to set whether to merge Region requests when reading from TiFlash.
 
     When the number of Regions involved in the query is relatively large, try to set this variable to `1` (effective for coprocessor requests with `aggregation` operators that are pushed down to TiFlash), or set this variable to `2` (effective for all coprocessor requests that are pushed down to TiFlash).
 
@@ -37,7 +37,7 @@ If you want to save machine resources and have no requirement on isolation, you 
 
 3. Enable the optimization of pushing down aggregate functions before TiDB operators such as `JOIN` or `UNION`:
 
-    You can use the [`tidb_opt_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_agg_push_down) variable to control the optimizer to execute this optimization. When the aggregate operations are quite slow in the query, try to set this variable to `1`.
+    You can use the [`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) variable to control the optimizer to execute this optimization. When the aggregate operations are quite slow in the query, try to set this variable to `1`.
 
     {{< copyable "sql" >}}
 
@@ -47,7 +47,7 @@ If you want to save machine resources and have no requirement on isolation, you 
 
 4. Enable the optimization of pushing down aggregate functions with `Distinct` before TiDB operators such as `JOIN` or `UNION`:
 
-    You can use the [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) variable to control the optimizer to execute this optimization. When the aggregate operations with `Distinct` are quite slow in the query, try to set this variable to `1`.
+    You can use the [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) variable to control the optimizer to execute this optimization. When the aggregate operations with `Distinct` are quite slow in the query, try to set this variable to `1`.
 
     {{< copyable "sql" >}}
 

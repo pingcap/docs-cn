@@ -225,7 +225,7 @@ table_option:
   | STATS_PERSISTENT [=] {DEFAULT|0|1}
 ```
 
-The `table_option` currently only supports `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS` (see [TiDB Specific System Variables](/tidb-specific-system-variables.md#shard_row_id_bits) for details), `PRE_SPLIT_REGIONS`, `CHARACTER SET`, `COLLATE`, and `COMMENT`, while the others are only supported in syntax. The clauses are separated by a comma `,`. See the following table for details:
+The `table_option` currently only supports `AUTO_INCREMENT`, `SHARD_ROW_ID_BITS`, `PRE_SPLIT_REGIONS`, `CHARACTER SET`, `COLLATE`, and `COMMENT`, while the others are only supported in syntax. The clauses are separated by a comma `,`. See the following table for details:
 
 | Parameters | Description | Example |
 | ---------- | ---------- | ------- |
@@ -269,6 +269,21 @@ mysql> SELECT * FROM t1;
 +------+
 1 row in set (0.00 sec)
 ```
+
+## SHARD_ROW_ID_BITS
+
+For tables with a non-integer `PRIMARY KEY` or without a `PRIMARY KEY`, TiDB uses an implicit auto-increment ROW ID. Because regions are automatically sharded using a range-based scheme on the `PRIMARY KEY`, hotspots can occur when there are a large number of `INSERT` operations.
+
+To mitigate the hot spot issue, you can configure `SHARD_ROW_ID_BITS`. The ROW ID is scattered and the data is written into multiple different Regions. But setting an overlarge value might lead to an excessively large number of RPC requests, which increases the CPU and network overhead.
+
+- `SHARD_ROW_ID_BITS = 4` indicates 16 shards
+- `SHARD_ROW_ID_BITS = 6` indicates 64 shards
+- `SHARD_ROW_ID_BITS = 0` indicates the default 1 shard
+
+Usage:
+
+- `CREATE TABLE`: `CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
+- `ALTER TABLE`: `ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
 
 ## MySQL compatibility
 

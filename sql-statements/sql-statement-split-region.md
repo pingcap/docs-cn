@@ -391,10 +391,7 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
-## Related session variable
+## See also
 
-There are two `SPLIT REGION` related session variables: `tidb_scatter_region`, `tidb_wait_split_region_finish` and `tidb_wait_split_region_timeout`. For details, see [TiDB specific system variables and syntax](/tidb-specific-system-variables.md).
-
-## Reference
-
-[SHOW TABLE REGIONS](/sql-statements/sql-statement-show-table-regions.md)
+* [SHOW TABLE REGIONS](/sql-statements/sql-statement-show-table-regions.md)
+* Session variables: [`tidb_scatter_region`](/system-variables.md#tidb_scatter_region), [`tidb_wait_split_region_finish`](/system-variables.md#tidb_wait_split_region_finish) and [`tidb_wait_split_region_timeout`](/system-variables.md#tidb_wait_split_region_timeout).

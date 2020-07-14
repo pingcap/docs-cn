@@ -561,7 +561,7 @@ When TiDB is executing a SQL statement, the query will be `EXPENSIVE_QUERY` if e
 
 #### How to control or change the execution priority of SQL commits?
 
-TiDB supports changing the priority on a [per-session](/tidb-specific-system-variables.md#tidb_force_priority), [global](/tidb-configuration-file.md#force-priority) or individual statement basis. Priority has the following meaning:
+TiDB supports changing the priority on a [per-session](/system-variables.md#tidb_force_priority), [global](/tidb-configuration-file.md#force-priority) or individual statement basis. Priority has the following meaning:
 
 - `HIGH_PRIORITY`: this statement has a high priority, that is, TiDB gives priority to this statement and executes it first.
 
@@ -1024,7 +1024,7 @@ See [Introduction to Statistics](/statistics.md).
 
 #### How to optimize `select count(1)`?
 
-The `count(1)` statement counts the total number of rows in a table. Improving the degree of concurrency can significantly improve the speed. To modify the concurrency, refer to the [document](/tidb-specific-system-variables.md#tidb_distsql_scan_concurrency). But it also depends on the CPU and I/O resources. TiDB accesses TiKV in every query. When the amount of data is small, all MySQL is in memory, and TiDB needs to conduct a network access.
+The `count(1)` statement counts the total number of rows in a table. Improving the degree of concurrency can significantly improve the speed. To modify the concurrency, refer to the [document](/system-variables.md#tidb_distsql_scan_concurrency). But it also depends on the CPU and I/O resources. TiDB accesses TiKV in every query. When the amount of data is small, all MySQL is in memory, and TiDB needs to conduct a network access.
 
 Recommendations:
 
@@ -1089,7 +1089,7 @@ See [The TiDB Command Options](/command-line-flags-for-tidb-configuration.md).
 
 #### How to scatter the hotspots?
 
-In TiDB, data is divided into Regions for management. Generally, the TiDB hotspot means the Read/Write hotspot in a Region. In TiDB, for the table whose primary key (PK) is not an integer or which has no PK, you can properly break Regions by configuring `SHARD_ROW_ID_BITS` to scatter the Region hotspots. For details, see the introduction of `SHARD_ROW_ID_BITS` in [TiDB Specific System Variables and Syntax](/tidb-specific-system-variables.md#shard_row_id_bits).
+In TiDB, data is divided into Regions for management. Generally, the TiDB hotspot means the Read/Write hotspot in a Region. In TiDB, for the table whose primary key (PK) is not an integer or which has no PK, you can properly break Regions by configuring `SHARD_ROW_ID_BITS` to scatter the Region hotspots. For details, see the introduction of `SHARD_ROW_ID_BITS` in [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md#shard_row_id_bits).
 
 ### TiKV
 

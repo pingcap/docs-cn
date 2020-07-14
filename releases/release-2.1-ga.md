@@ -92,15 +92,15 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
 
     - [Add the `auto_analyze_ratio` system variables to contorl the ratio of Analyze](/faq/tidb-faq.md#whats-the-trigger-strategy-for-auto-analyze-in-tidb)
 
-    - [Add the `tidb_retry_limit` system variable to control the automatic retry times of transactions](/tidb-specific-system-variables.md#tidb_retry_limit)
+    - [Add the `tidb_retry_limit` system variable to control the automatic retry times of transactions](/system-variables.md#tidb_retry_limit)
 
-    - [Add the `tidb_disable_txn_auto_retry` system variable to control whether the transaction retries automatically](/tidb-specific-system-variables.md#tidb_disable_txn_auto_retry)
+    - [Add the `tidb_disable_txn_auto_retry` system variable to control whether the transaction retries automatically](/system-variables.md#tidb_disable_txn_auto_retry)
 
     - [Support using`admin show slow` statement to obtain the slow queries](/identify-slow-queries.md#admin-show-slow-command)
 
-    - [Add the `tidb_slow_log_threshold` environment variable to set the threshold of slow log automatically](/tidb-specific-system-variables.md#tidb_slow_log_threshold)
+    - [Add the `tidb_slow_log_threshold` environment variable to set the threshold of slow log automatically](/system-variables.md#tidb_slow_log_threshold)
 
-    - [Add the `tidb_query_log_max_len` environment variable to set the length of the SQL statement to be truncated in the log dynamically](/tidb-specific-system-variables.md#tidb_query_log_max_len)
+    - [Add the `tidb_query_log_max_len` environment variable to set the length of the SQL statement to be truncated in the log dynamically](/system-variables.md#tidb_query_log_max_len)
 
 + DDL
 

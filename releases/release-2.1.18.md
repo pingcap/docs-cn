@@ -49,7 +49,7 @@ TiDB Ansible version: 2.1.18
     - Fix the issue that the `COM_STMT_FETCH` time record in slow query logs is inconsistent with that in MySQL [#12953](https://github.com/pingcap/tidb/pull/12953)
     - Add an error code in the error message for write conflicts to quickly locate the cause [#12878](https://github.com/pingcap/tidb/pull/12878)
 + DDL
-    - Disallow dropping the `AUTO INCREMENT` attribute of a column by default. Modify the value of the `tidb_allow_remove_auto_inc` variable if you do need to drop this attribute. See [TiDB Specific System Variables](/tidb-specific-system-variables.md#tidb_allow_remove_auto_inc-new-in-v2118-and-v304) for more details. [#12146](https://github.com/pingcap/tidb/pull/12146)
+    - Disallow dropping the `AUTO INCREMENT` attribute of a column by default. Modify the value of the `tidb_allow_remove_auto_inc` variable if you do need to drop this attribute. See [System Variables](/system-variables.md#tidb_allow_remove_auto_inc-new-in-v2118-and-v304) for more details. [#12146](https://github.com/pingcap/tidb/pull/12146)
     - Support multiple `unique`s when creating a unique index in the `Create Table` statement [#12469](https://github.com/pingcap/tidb/pull/12469)
     - Fix a compatibility issue that if the foreign key constraint in `CREATE TABLE` statement has no schema, schema of the created table should be used instead of returning a `No Database selected` error [#12678](https://github.com/pingcap/tidb/pull/12678)
     - Fix the issue that the `invalid list index` error is reported when executing `ADMIN CANCEL DDL JOBS` [#12681](https://github.com/pingcap/tidb/pull/12681)

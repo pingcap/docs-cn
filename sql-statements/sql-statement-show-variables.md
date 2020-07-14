@@ -25,7 +25,7 @@ This statement shows a list of variables for the scope of either `GLOBAL` or `SE
 
 ## Examples
 
-List all TiDB specific variables. For detailed description, refer to [TiDB Specific System Variables](/tidb-specific-system-variables.md).
+List all TiDB specific variables. For detailed description, refer to [System Variables](/system-variables.md).
 
 ```sql
 mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';
@@ -155,3 +155,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 ## MySQL compatibility
 
 This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+
+## See also
+
+* [`SET [GLOBAL|SESSION]`](/sql-statements/sql-statement-set-variable.md)

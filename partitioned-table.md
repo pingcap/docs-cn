@@ -1052,4 +1052,4 @@ select * from t;
 
 The `tidb_enable_table_partition` environment variable controls whether to enable the partitioned table feature. If this variable is set to `off`, the partition information will be ignored when a table is created, and this table will be created as a normal table.
 
-This variable is only used in table creation. After the table is created, modify this variable value takes no effect. For details, see [TiDB specific system variables](/tidb-specific-system-variables.md#tidb_enable_table_partition).
+This variable is only used in table creation. After the table is created, modify this variable value takes no effect. For details, see [system variables](/system-variables.md#tidb_enable_table_partition).

@@ -415,9 +415,7 @@
     + [tikv-server](/tikv-configuration-file.md)
     + [tiflash-server](/tiflash/tiflash-configuration.md)
     + [pd-server](/pd-configuration-file.md)
-  + System Variables
-    + [MySQL System Variables](/system-variables.md)
-    + [TiDB Specific System Variables](/tidb-specific-system-variables.md)
+  + [System Variables](/system-variables.md)
   + Storage Engines
     + TiKV
       + [TiKV Overview](/tikv-overview.md)
