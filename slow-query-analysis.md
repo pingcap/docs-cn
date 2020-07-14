@@ -6,18 +6,21 @@ category: how-to
 # 慢查询分析
 
 处理慢查询分为两步：
+
 1. 从大量查询中定位出哪一类查询比较慢；
 2. 分析这类慢查询的原因；
 
 第一步已经可以通过 [慢日志](/identify-slow-queries.md), [statement-summary](/statement-summary-tables.md) 等功能方便的定位，本文聚焦第二步。
 
 首先将慢查询归因成两大类：
+
 1. 优化器问题：如选错索引，选错 Join 类型或顺序；
 2. 系统性问题：将非优化器问题都归结于此类，如：某个 TiKV 实例忙导致处理请求慢，region 信息过期导致查询变慢；
 
 实际中，优化器问题可能造成系统性问题，如某类查询，优化器应使用索引，但却使用了全表扫，这可能导致这类 SQL 消耗大量资源，造成某些 KV 实例 CPU 飚高等，表现上看就是一个系统性问题，但本质是优化器问题。
 
 分析优化器问题需要有判断执行计划是否合理的能力，而系统性问题的定位相对简单，因此面对慢查询推荐的分析过程如下：
+
 1. 定位查询瓶颈：即查询过程中耗时多的部分；
 2. 分析系统性问题：根据瓶颈点，结合当时的监控/日志等信息，分析可能的原因；
 3. 分析优化器问题：分析是否有更好的执行计划；
@@ -29,10 +32,12 @@ category: how-to
 定位查询瓶颈需要对查询过程有一个大致理解，TiDB 处理查询过程的关键阶段都在 [performance-map](https://raw.githubusercontent.com/pingcap/tidb-map/master/maps/performance-map.png) 图中了。
 
 定位单个查询的耗时，目前有两个工具：
+
 1. [慢日志](/identify-slow-queries.md)
 2. [explain analyze 语句](/sql-statements/sql-statement-explain-analyze.md)
 
 这两个工具侧重不同：
+
 1. 慢日志记录了 SQL 从解析到返回，几乎所有阶段耗时，较为全面；
 2. explain analyze 可以拿到 SQL 实际执行中每个执行算子的耗时，对执行耗时有更细分的统计；
 
@@ -41,6 +46,7 @@ category: how-to
 ## 分析系统性问题
 
 对于系统性问题，我们根据执行阶段，分成三个大类：
+
 1. TiKV 处理慢：如 coprocessor 处理数据慢；
 2. TiDB 执行慢：主要指执行阶段，如某个 Join 算子处理数据慢；
 3. 其他关键阶段慢：如取时间戳慢；
@@ -113,6 +119,7 @@ category: how-to
 #### Region 信息过期
 
 TiDB 侧 region 信息可能过期，此时 TiKV 可能返回 `regionMiss` 的错误，然后 TiDB 会从 PD 去重新获取 region 信息，这些信息会被反应在 `Cop_backoff` 信息内，失败的次数和总耗时都会被记录下来。
+
 ```
 # Cop_backoff_regionMiss_total_times: 200 Cop_backoff_regionMiss_total_time: 0.2 Cop_backoff_regionMiss_max_time: 0.2 Cop_backoff_regionMiss_max_addr: 127.0.0.1 Cop_backoff_regionMiss_avg_time: 0.2 Cop_backoff_regionMiss_p90_time: 0.2
 # Cop_backoff_rpcPD_total_times: 200 Cop_backoff_rpcPD_total_time: 0.2 Cop_backoff_rpcPD_max_time: 0.2 Cop_backoff_rpcPD_max_addr: 127.0.0.1 Cop_backoff_rpcPD_avg_time: 0.2 Cop_backoff_rpcPD_p90_time: 0.2
@@ -222,6 +229,7 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 分析优化问题需要有判断执行计划是否合理的能力，这需要对优化过程和各算子有一定了解；
 
 下面是一组例子，假设表结构为 `create table t (id int, a int, b int, c int, primary key(id), key(a), key(b, c))`：
+
 1. `select * from t`: 没有过滤条件，会扫全表，所以会用 `TableFullScan` 算子读取数据；
 2. `select a from t where a=2`：有过滤条件且只读索引列，所以会用 `IndexReader` 算子读取数据；
 3. `select * from t where a=2`：在 `a` 有过滤条件，但索引 `a` 不能完全覆盖需要读取的内容，因此会采用 `IndexLookup`；
@@ -233,6 +241,7 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 另外阅读 [SQL 性能调优](/sql-tuning-overview/) 整个小节能增加你对 TiDB 优化器的了解，帮助判断执行计划是否合理。
 
 由于大多数优化器问题在 [SQL 性能调优](/sql-tuning-overview.md) 已经有解释，这里就直接列举出来跳转过去：
+
 1. [索引选择错误](/wrong-index-solution.md)
 2. [Join 顺序错误](/join-reorder.md)
 3. [表达式未下推](/blacklist-control-plan.md)
