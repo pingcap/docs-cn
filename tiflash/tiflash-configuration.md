@@ -18,6 +18,11 @@ aliases: ['/docs-cn/dev/reference/tiflash/configuration/']
     > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
 
 - [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate)：用于限制每个 TiKV store 或 TiFlash store 的 Region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
+
+    > **注意：**
+    >
+    > 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且 `store limit` 命令有部分变化。该命令变化的细节请参考 [store-limit 文档](/configure-store-limit.md)。
+
     - 使用 `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` 命令单独设置某个 store 的 Region 调度速度。（`store_id` 可通过 `pd-ctl -u <pd_ip:pd_port> store` 命令获得）如果没有单独设置，则继承 `store-balance-rate` 的设置。你也可以使用 `pd-ctl -u <pd_ip:pd_port> store limit` 命令查看当前设置值。
 
 ## TiFlash 配置参数

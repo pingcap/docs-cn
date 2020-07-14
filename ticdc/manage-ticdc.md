@@ -218,8 +218,8 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-23
 - `resolved-ts` 代表当前 changefeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
 - `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
 - `admin-job-type` 代表一个 changefeed 的状态：
-    - `0`: 状态正常，也是初始状态。
-    - `1`: 任务暂停。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+    - `0`: 状态正常。
+    - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
     - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
     - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
 
@@ -441,7 +441,7 @@ sync-ddl = true
 ### 配置文件兼容性的注意事项
 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
-* TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考 [Table Filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
+* TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
 
 ## 环形同步
 
