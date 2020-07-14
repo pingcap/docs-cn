@@ -525,7 +525,7 @@ set tidb_query_log_max_len = 20;
 
 默认值：0
 
-这个变量用于控制是否在记录 slow log 时，将用户 SQL 中的数据遮蔽。
+这个变量用于控制是否在记录 slow log 时，将 SQL 中的用户信息遮蔽。
 
 将该变量设置为 `1` 后，假设执行 SQL 是 `insert into t values (1,2)` 且执行耗时超过 `tidb_slow_log_threshold` 后，在 slow log 中记录的 SQL 会是 `insert into t values (?,?)`。
 
