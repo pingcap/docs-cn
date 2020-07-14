@@ -371,6 +371,31 @@ curl -X POST http://127.0.0.1:8301/capture/owner/resign
 election: not leader
 ```
 
+### 手动调度表到其他节点
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf060953-036c-4f31-899f-5afa0ad0c2f9&target-cp-id=6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5&table-id=49'
+```
+
+参数说明
+
+| 参数名        | 说明 |
+| :----------- | :--- |
+| `cf-id`        | 进行调度的 Changefeed ID |
+| `target-cp-id` | 目标 Capture ID |
+| `table-id`     | 需要调度的 Table ID |
+
+以上命令仅对 owner 节点请求有效。对非 owner 节点将会返回错误。
+
+```
+{
+ "status": true,
+ "message": ""
+}
+```
+
 ## 同步任务配置文件描述
 
 以下内容详细介绍了同步任务的配置。
@@ -417,7 +442,7 @@ sync-ddl = true
 ### 配置文件兼容性的注意事项
 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
-* TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考 [Table Filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
+* TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
 
 ## 环形同步
 

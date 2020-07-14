@@ -62,7 +62,7 @@ Value: null
 
 ## 使用 TiDB Dashboard 定位热点表
 
-TiDB Dashboard 中的「热点可视化」功能可帮助用户缩小热点排查范围到表级别。以下是一个「热点可视化」功能展示的热力图样例，该图横坐标是时间，纵坐标排列了各个表和索引，颜色越亮代表其流量越大。可在工具栏中切换显示读或写流量。
+[TiDB Dashboard](/dashboard/dashboard-intro.md) 中的**流量可视化**功能可帮助用户缩小热点排查范围到表级别。以下是一个「热点可视化」功能展示的热力图样例，该图横坐标是时间，纵坐标排列了各个表和索引，颜色越亮代表其流量越大。可在工具栏中切换显示读或写流量。
 
 ![Dashboard 示例1](/media/troubleshoot-hot-spot-issues-1.png)
 
