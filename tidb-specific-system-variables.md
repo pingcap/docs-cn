@@ -499,7 +499,7 @@ set tidb_slow_log_threshold = 200;
 
 作用域：SESSION (INSTANCE)
 
-默认值：0
+默认值：1
 
 这个变量用于控制在记录 slow log 时，是否同时记录各个执行算子的执行信息。
 
