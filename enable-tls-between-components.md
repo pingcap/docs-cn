@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 - TiKV 与 PD
 - TiDB Control 与 TiDB，TiKV Control 与 TiKV，PD Control 与 PD
 - TiKV、PD、TiDB 各自集群内内部通讯
-    
+
 目前暂不支持只开启其中部分组件的加密传输。
 
 ## 配置开启加密传输
@@ -67,6 +67,16 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
         key-path = "/path/to/pd-server-key.pem"
         ```
 
+    - TiCDC
+
+        在启动命令行中设置，并设置相应的 URL 为 https：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem
+        ```
+
     此时 TiDB 集群各个组件间已开启加密传输。
 
     > **注意：**
@@ -78,7 +88,7 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     ```bash
     ./tidb-ctl -u https://127.0.0.1:10080 --ca /path/to/ca.pem --ssl-cert /path/to/client.pem --ssl-key /path/to/client-key.pem
     ```
-   
+
     {{< copyable "shell-regular" >}}
 
     ```bash
@@ -90,8 +100,8 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     ```bash
     ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
     ```
-   
-## 认证组件调用者身份   
+
+## 认证组件调用者身份
 
 通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份以防止拥有有效证书的非法访问者进行访问（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。
 
@@ -105,7 +115,7 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     [security]
     cluster-verify-cn = [
       "TiDB-Server",
-      "TiKV-Control",          
+      "TiKV-Control",
     ]
     ```
 
@@ -129,7 +139,19 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
     ```
 
-## 证书重加载 
+<!--
+- TiCDC
+
+    在启动命令行中设置：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
+    ```
+-->
+
+## 证书重加载
 
 TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。目前暂不支持 CA 的重加载。
 

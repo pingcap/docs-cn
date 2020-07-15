@@ -58,6 +58,9 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
 - `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
 - `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
+- `ca`: TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
+- `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
+- `ca`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
@@ -130,6 +133,9 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     | `3306`         | 下游数据的连接端口                                 |
     | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
     | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
+    | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
+    | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
+    | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
 
 - Sink URI 配置 `kafka`
 
