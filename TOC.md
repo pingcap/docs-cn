@@ -105,6 +105,8 @@
     + SQL Optimization
       + [SQL Optimization Process](/sql-optimization-concepts.md)
       + Logic Optimization
+        + [Subquery Related Optimizations](/subquery-optimization.md)
+        + [Decorrelation of Correlated Subquery](/correlated-subquery-optimization.md)
         + [Predicates Push Down](/predicates-push-down.md)
         + [Join Reorder](/join-reorder.md)
       + Physical Optimization
