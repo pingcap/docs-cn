@@ -113,7 +113,7 @@ Slow Query 基础信息：
 
 * `tidb_slow_log_threshold`：设置慢日志的阈值。默认值是 300 ms。
 * `tidb_query_log_max_len`：设置慢日志记录 SQL 语句最大长度。默认值是 4096 byte。
-* `tidb_slow_log_masking`：设置是否将 SQL 中的用户数据遮蔽而用 `?` 代替。默认值是 0 ，即关闭该功能。
+* `tidb_log_desensitization`：设置慢日志记录 SQL 是否将用户数据遮蔽而用 `?` 代替。默认值是 0 ，即关闭该功能。
 * `tidb_enable_collect_execution_info`：设置是否记录执行计划中各个算子的执行信息，默认值是 1 。该功能对性能的影响约为 3%。开启后查看 `Plan` 示例如下：
 
 ```sql
