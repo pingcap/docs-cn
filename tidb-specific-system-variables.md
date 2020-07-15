@@ -155,6 +155,20 @@ mysql> desc select count(distinct a) from test.t;
 
 这个变量用来设置 index lookup 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
+### tidb_executor_concurrency <span class="version-mark">从 v5.0 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值：5
+
+这个变量用来设置 index lookup，index lookup join，hash join，hash aggregation，window，projection 算子的并发度。
+
+`tidb_executor_concurrency` 主要整合了之前的 `tidb_index_lookup_concurrency`，`tidb_index_lookup_join_concurrency`，`tidb_hash_join_concurrency`，`tidb_hashagg_partial_concurrency`，`tidb_hashagg_final_concurrency`，`tidb_projection_concurrency` 及 `tidb_window_concurrency` 这七个系统变量，方便管理。
+
+用户仍可以对上述七个系统变量做单独修改（会有废弃警告），修改只影响单个算子，后续对 `tidb_executor_concurrency` 的修改也不会影响该算子。可以通过将其值设置为`-1`，还原成通过 `tidb_executor_concurrency` 来管理该算子的并发度。
+
+对于从 5.0.0 之前的版本升级到 5.0.0 的系统， 如果用户对上述七个变量没有做过改动（即 `tidb_hash_join_concurrency` 值为5，其他值为4），则会迁移到使用 `tidb_executor_concurrency` 来统一管理并发度， 否则继续沿用之前的变量值对相应的算子做并发控制。
+
 ### tidb_index_lookup_concurrency
 
 作用域：SESSION | GLOBAL
