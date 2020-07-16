@@ -1,6 +1,5 @@
 ---
 title: TiCDC 常见问题和故障处理
-category: reference
 aliases: ['/docs-cn/stable/reference/tools/ticdc/troubleshoot/']
 ---
 

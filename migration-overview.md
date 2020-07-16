@@ -1,7 +1,6 @@
 ---
 title: 数据迁移概述
 summary: 本文档介绍支持哪些路径将数据迁移到 TiDB。
-category: reference
 aliases: ['/docs-cn/stable/data-migration-route/','/zh/tidb/v4.0/migration-overview']
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: 验证集群运行状态
 summary: 介绍如何验证集群运行状态。
-category: how-to
 ---
 
 # 验证集群运行状态

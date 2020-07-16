@@ -1,6 +1,5 @@
 ---
 title: 控制执行计划
-category: performance
 ---
 
 # 控制执行计划

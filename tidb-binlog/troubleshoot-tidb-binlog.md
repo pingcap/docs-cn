@@ -1,6 +1,5 @@
 ---
 title: TiDB Binlog 故障诊断
-category: reference
 aliases: ['/docs-cn/stable/reference/tidb-binlog/troubleshoot/binlog/']
 ---
 

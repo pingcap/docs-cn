@@ -1,7 +1,6 @@
 ---
 title: INSPECTION_RESULT
 summary: 了解 TiDB 系统表 `INSPECTION_RESULT`。
-category: reference
 aliases: ['/docs-cn/stable/reference/system-databases/inspection-result/']
 ---
 

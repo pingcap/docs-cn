@@ -1,6 +1,5 @@
 ---
 title: TiDB 简介
-category: introduction
 aliases: ['/docs-cn/stable/key-features/']
 ---
 

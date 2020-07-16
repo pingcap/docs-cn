@@ -1,6 +1,5 @@
 ---
 title: 集群监控部署
-category: how-to
 aliases: ['/docs-cn/stable/monitor-a-tidb-cluster/','/docs-cn/stable/how-to/monitor/monitor-a-cluster/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: 提高 TiDB Dashboard 安全性
-category: how-to
 ---
 
 # 提高 TiDB Dashboard 安全性

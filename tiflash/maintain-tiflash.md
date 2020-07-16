@@ -1,6 +1,5 @@
 ---
 title: TiFlash 集群运维
-category: reference
 aliases: ['/docs-cn/stable/reference/tiflash/maintain/']
 ---
 

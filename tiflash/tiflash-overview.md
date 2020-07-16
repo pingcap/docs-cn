@@ -1,6 +1,5 @@
 ---
 title: TiFlash 简介
-category: reference
 aliases: ['/docs-cn/stable/reference/tiflash/overview/']
 ---
 
