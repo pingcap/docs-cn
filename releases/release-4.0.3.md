@@ -48,7 +48,9 @@ TiDB 版本：4.0.3
 
 + TiKV
 
-
+  - 添加了新的配置项 `backup.num-threads` 用语控制 backup 线程池的大小 [#8199](https://github.com/tikv/tikv/pull/8199)
+  - 收取 snapshot 时不再发送 store heartbeat [#8136](https://github.com/tikv/tikv/pull/8136)
+  - 支持动态调整 shared block cache 的大小 [#8232](https://github.com/tikv/tikv/pull/8232)
 
 + PD
 
@@ -70,7 +72,8 @@ TiDB 版本：4.0.3
 
 + TiKV
 
-
+  - 修复 merge 期间可能读到过期数据的问题 [#8113](https://github.com/tikv/tikv/pull/8113)
+  - 修复聚合函数 min/max 下推到 TiKV 时，collation 不能正确工作的问题 [#8108](https://github.com/tikv/tikv/pull/8108)
 
 + PD
 
