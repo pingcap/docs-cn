@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 - TiDB 100% 兼容 MySQL5.7 协议、MySQL5.7 常用的功能及语法，MySQL5.7 生态中系统的工具（PHPMyAdmin, Navicat, MySQL Workbench、mysqldump、Mydumper/myloader）、客户端等均用于 TiDB。
 
-- TiDB 是一款分布式数据库， MySQL5.7 中的部分特性由于工程实现难较大，投入产出比较低等多种原因在 TiDB 未能实现或者仅兼容语法但功能并没有实现，因此使用过程中请特别注意。例如：`CREATE TABLE` 语句中 `ENGINE`，仅兼容语法功能并没有实现，因此 TiDB 中没有 `ENGINE` 这类的概念。
+- TiDB 是一款分布式数据库， MySQL5.7 中的部分特性由于工程实现难度大，投入产出比较低等多种原因在 TiDB 未能实现或者仅兼容语法但功能并没有实现，因此使用过程中请特别注意。例如：`CREATE TABLE` 语句中 `ENGINE`，仅兼容语法，功能并没有实现，因此 TiDB 中没有 `ENGINE` 这类的概念。
 
 > **注意：**
 >
@@ -87,7 +87,7 @@ mysql> select _tidb_rowid, id from t;
 
 - Add Index
     + 同一条 SQL 语句不支持创建多个索引。
-    + 仅在语法在支持创建不同类型的索引 (HASH/BTREE/RTREE），功能未实现。
+    + 仅在语法上支持创建不同类型的索引 (HASH/BTREE/RTREE），功能未实现。
     + 支持 `VISIBLE`/`INVISIBLE` 索引选项，忽略其它索引选项。
 
 - Add Column
@@ -95,10 +95,10 @@ mysql> select _tidb_rowid, id from t;
 
 - Drop Column
     + 不支持删除主键列及索引列，可能输出的错误信息：`Unsupported drop integer primary key/column a with index covered`。
-    
+
 - Drop Primary Key
     + 仅支持删除建表时启用了 `alter-primary-key` 配置项的表的主键,可能输出的错误信息: `Unsupported drop primary key when alter-primary-key is false`。
-    
+
 - Order By 忽略所有列排序相关的选项。
 
 - Change/Modify Column
