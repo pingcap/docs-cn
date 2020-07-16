@@ -52,7 +52,7 @@ show config where type='tikv' and name='log-level'
 
 > **注意：**
 >
-> 修改配置后，需要使用 `tiup edit_config` 修改对应的配置，否则 `upgrade` 等运维操作会将动态配置修改的结果进行覆盖。
+> 动态修改 TiKV 配置后，同时会自动修改 TiKV 的配置文件。但还需要使用 `tiup edit-config` 修改对应的配置，否则 `upgrade` `reload` 等运维操作会将动态配置修改的结果覆盖。修改配置的操作请参考：[修改配置](/maintain-tidb-using-tiup.md#修改配置参数)，`tiup edit-config` 后不需要执行 `tiup reload` 操作。
 
 执行 SQL 语句 `set config`，可以结合实例地址或组件类型来修改单个实例配置或全部实例配置，如：
 
