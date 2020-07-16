@@ -89,6 +89,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 2. 将数据源也上传到同样的服务器。
 
 3. 配置 `tidb-lightning.toml`。
+
     ```
     [lightning]
     # 日志
@@ -117,7 +118,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
     pd-addr = "172.16.31.3:2379"
     ```
 
-3. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
+4. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
     {{< copyable "shell-regular" >}}
 
