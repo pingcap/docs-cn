@@ -92,7 +92,7 @@ show warnings;
 +---------+------+---------------------------------------------------------------------------------------------------------------+
 | Level   | Code | Message                                                                                                       |
 +---------+------+---------------------------------------------------------------------------------------------------------------+
-| Warning | 1105 | bad request to http://127.0.0.1:20180/config: fail to update, error: "config log-level can not be change" |
+| Warning | 1105 | bad request to http://127.0.0.1:20180/config: fail to update, error: "config log-level can not be changed" |
 +---------+------+---------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
@@ -154,7 +154,6 @@ show warnings;
 
 | 参数 | 简介 |
 | --- | --- |
-| refresh-config-interval | 尝试更新配置的时间间隔 |
 | raftstore.sync-log | 数据、log 落盘是否 sync |
 | raftstore.raft-entry-max-size | 单个日志最大大小 |
 | raftstore.raft-log-gc-tick-interval | 删除 Raft 日志的轮询任务调度间隔时间 |
@@ -186,6 +185,7 @@ show warnings;
 | raftstore.merge-check-tick-interval | 触发 Merge 完成检查的时间间隔 |
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
+| raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间最大值 |
@@ -194,9 +194,12 @@ show warnings;
 | coprocessor.region-split-keys | 分裂后新 Region 的 key 的个数 |
 | pessimistic-txn.wait-for-lock-timeout | 悲观事务遇到锁后的等待的最长时间 |
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
+| pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
 | gc.batch-keys | 一轮处理 key 的个数 |
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
+| gc.enable-compaction-filter | 是否使用 compaction filter |
+| gc.compaction-filter-skip-version-check | 是否跳过 compaction filter 的集群版本检查（未 release）|
 | {db-name}.max-total-wal-size | WAL 总大小限制 |
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
 | {db-name}.max-open-files | RocksDB 可以打开的文件总数 |
@@ -218,6 +221,14 @@ show warnings;
 | {db-name}.{cf-name}.soft-pending-compaction-bytes-limit | pending compaction bytes 的软限制 |
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
+| storage.block-cache.capacity | 共享 block cache 的大小（自 4.0.3 起支持） |
+| backup.num-threads | backup 线程的数量（自 4.0.3 起支持） |
+| split.qps-threshold | |
+| split.split-balance-score | |
+| split.split-contained-score | |
+| split.detect-times | |
+| split.sample-num | |
+| split.sample-threshold | |
 
 上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置。`db-name` 的取值可为 `rocksdb`，`raftdb`。
 
