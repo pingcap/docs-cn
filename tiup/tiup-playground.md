@@ -33,6 +33,10 @@ Flags:
       --db int                   TiDB instance number (default 1)
       --db.binpath string        TiDB instance binary path
       --db.config string         TiDB instance configuration file
+      --db.host host             Set the listening address of TiDB
+      --drainer int              Set the Drainer data of the cluster
+      --drainer.binpath string   Specify the location of the Drainer binary files (optional, for debugging)
+      --drainer.config string    Specify the Drainer configuration file
   -h, --help                     help for tiup
       --host string              Playground cluster host (default "127.0.0.1")
       --kv int                   TiKV instance number (default 1)
@@ -42,6 +46,9 @@ Flags:
       --pd int                   PD instance number (default 1)
       --pd.binpath string        PD instance binary path
       --pd.config string         PD instance configuration file
+      --pump int                 Specify the number of Pump nodes in the cluster. If the value is not "0", TiDB Binlog is enabled.
+      --pump.binpath string      Specify the location of the Pump binary files (optional, for debugging)
+      --pump.config string       Specify the Pump configuration file (optional, for debugging)
       --tiflash int              TiFlash instance number
       --tiflash.binpath string   TiFlash instance binary path
       --tiflash.config string    TiFlash instance configuration file
@@ -110,3 +117,44 @@ tiup client
 ```
 
 This command provides a list of TiDB clusters that are started by playground on the current machine on the console. Select the TiDB cluster to be connected. After clicking <kbd>Enter</kbd>, a built-in MySQL client is opened to connect to TiDB.
+
+## View information of the started cluster
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground display
+```
+
+The command above returns the following results:
+
+```
+Pid    Role     Uptime
+---    ----     ------
+84518  pd       35m22.929404512s
+84519  tikv     35m22.927757153s
+84520  pump     35m22.92618275s
+86189  tidb     exited
+86526  tidb     34m28.293148663s
+86190  drainer  35m19.91349249s
+```
+
+## Scale out a cluster
+
+The command-line parameter for scaling out a cluster is similar to that for starting a cluster. You can scale out two TiDB instances by executing the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground scale-out --db 2
+```
+
+## Scale in clusters
+
+You can specify a `pid` in the `tiup playground scale-in` command to scale in the corresponding instance. To view the `pid`, execute `tiup playground display`.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground scale-in --pid 86526
+```
