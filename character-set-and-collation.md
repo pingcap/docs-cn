@@ -31,7 +31,7 @@ SHOW CHARACTER SET;
 
 > **Note:**
 >
-> Each character set might correspond to multiple collations, but by default each character set corresponds to only one collation.
+> The default collations in TiDB (binary collations, with the suffix `_bin`) are different than [the default collations in MySQL](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html) (typically general collations, with the suffix `_general_ci`). This can cause incompatible behavior when specifying an explicit character set but relying on the implicit default collation to be chosen.
 
 You can use the following statement to view the collations (under the [new framework for collations](#new-framework-for-collations)) that corresponds to the character set.
 
