@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs
 
 > **警告：**
 >
-> Loader 目前已经不再维护，其功能已经完全被 [TiDB Lightning 的 TiDB backend 功能](/tidb-lightning/tidb-lightning-tidb-backend.md)取代，强烈建议切换到 TiDB Lightning。
+> Loader 目前已经不再维护，其功能已经完全被 [TiDB Lightning 的 TiDB backend 功能](/tidb-lightning/tidb-lightning-backends.md#TiDB-Lightning-TiDB-Backend)取代，强烈建议切换到 TiDB Lightning。
 
 ## Loader 简介
 

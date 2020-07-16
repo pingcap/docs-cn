@@ -206,7 +206,7 @@ update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_lif
 update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
 ```
 
-最后，所有的导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-tidb-backend.md) 导入回 TiDB。
+最后，所有的导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-backends.md) 导入回 TiDB。
 
 ## Dumpling 主要参数表
 
