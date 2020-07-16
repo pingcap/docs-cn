@@ -30,7 +30,7 @@ TiDB Lightning 需要以下权限：
 * CREATE
 * DROP
 
-如果选择 [TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#TiDB-Lightning-TiDB-Backend) 模式，或目标数据库用于存储断点，则 TiBD Lightning 额外需要以下权限：
+如果选择 [TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 模式，或目标数据库用于存储断点，则 TiBD Lightning 额外需要以下权限：
 
 * INSERT
 * DELETE

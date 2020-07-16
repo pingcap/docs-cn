@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 
 本文主要介绍 TiDB Lightning 使用 Importer-backend（默认）进行数据导入的硬件需求，以及使用 TiDB Ansible 部署与手动部署 TiDB Lightning 这两种部署方式。
 
-如果你不希望影响 TiDB 集群的对外服务，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#TiDB-Lightning-TiDB-Backend) 中的硬件需求与部署方式进行数据导入。
+如果你不希望影响 TiDB 集群的对外服务，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 中的硬件需求与部署方式进行数据导入。
 
 ## 注意事项
 
