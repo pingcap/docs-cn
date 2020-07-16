@@ -185,7 +185,9 @@ mysql> desc select count(distinct a) from test.t;
 
 这个变量用来设置 index lookup 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
-注意：从 5.0.0 版本开始，该变量已被废弃，请使用 [tidb_executor_concurrency](/tidb-specific-system-variables.md#tidb_executor_concurrency) 进行设置。
+**注意**
+
+从 5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 ### tidb_index_lookup_join_concurrency
 
@@ -195,7 +197,9 @@ mysql> desc select count(distinct a) from test.t;
 
 这个变量用来设置 index lookup join 算法的并发度。
 
-注意：从 5.0.0 版本开始，该变量已被废弃，请使用 [tidb_executor_concurrency](/tidb-specific-system-variables.md#tidb_executor_concurrency) 进行设置
+**注意**
+
+从 5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 ### tidb_hash_join_concurrency
 
@@ -205,7 +209,9 @@ mysql> desc select count(distinct a) from test.t;
 
 这个变量用来设置 hash join 算法的并发度。
 
-注意：从 5.0.0 版本开始，该变量已被废弃，请使用 [tidb_executor_concurrency](/tidb-specific-system-variables.md#tidb_executor_concurrency) 进行设置
+**注意**
+
+从 5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 ### tidb_index_serial_scan_concurrency
 
@@ -223,7 +229,9 @@ mysql> desc select count(distinct a) from test.t;
 
 这个变量用来设置 Projection 算子的并发度。
 
-注意：从 5.0.0 版本开始，该变量已被废弃，请使用 [tidb_executor_concurrency](/tidb-specific-system-variables.md#tidb_executor_concurrency) 进行设置
+**注意**
+
+从 5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。置
 
 ### tidb_hashagg_partial_concurrency
 
@@ -233,7 +241,9 @@ mysql> desc select count(distinct a) from test.t;
 
 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 
-注意：从 5.0.0 版本开始，该变量已被废弃，请使用 [tidb_executor_concurrency](/tidb-specific-system-variables.md#tidb_executor_concurrency) 进行设置
+**注意**
+
+从 5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 ### tidb_hashagg_final_concurrency
 
@@ -243,7 +253,9 @@ mysql> desc select count(distinct a) from test.t;
 
 这个变量用来设置并行 hash aggregation 算法 final 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 
-注意：从 5.0.0 版本开始，该变量已被废弃，请使用 [tidb_executor_concurrency](/tidb-specific-system-variables.md#tidb_executor_concurrency) 进行设置
+**注意**
+
+从 5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 ### tidb_index_join_batch_size
 
@@ -928,7 +940,9 @@ TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在�
 
 这个变量用于设置 window 算子的并行度。
 
-注意：从 5.0.0 版本开始，该变量已被废弃，请使用 [tidb_executor_concurrency](/tidb-specific-system-variables.md#tidb_executor_concurrency) 进行设置
+**注意**
+
+从 5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 ### tidb_enable_vectorized_expression <span class="version-mark">从 v4.0 版本开始引入</span>
 
