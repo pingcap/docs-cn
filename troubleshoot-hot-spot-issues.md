@@ -125,7 +125,7 @@ To resolve the write hotspots brought by auto-increment primary keys, use `AUTO_
 > Currently, this is an experimental feature, so it is not recommended to use it in the production environment. To enable this feature, use the following configuration:
 >
 > ```
-> [experimental]\
+> [experimental]
 > allow-auto-random = true
 > ```
 
