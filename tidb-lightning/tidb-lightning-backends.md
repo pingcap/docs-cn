@@ -18,13 +18,21 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 
 | 后端 | Local-backend | Importer-backend | TiDB-backend |
 |:---|:---|:---|:---|
-| 速度 | 快 (~500 GB/小时) | 快 (~500 GB/小时) | 慢 (~50 GB/小时) |
+| 速度 | 快 (~400 GB/小时) | 快 (~400 GB/小时) | 慢 (~50 GB/小时) |
 | 资源使用率 | 高 | 高 | 低 |
 | 占用网络带宽 | 高 | 中  | 低 |
 | 导入时是否满足 ACID | 否 | 否 | 是 |
 | 目标表 | 必须为空 | 必须为空 | 可以不为空 |
 | 额外组件 | 无 | TiKV Importer | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
+
+
+# 如何选择使用的 Backend
+
+- 对于大部分场景，导入的目标集群为 v4.0 以上版本，请优先考虑使用 Local-Backend 模式。Local-Backend 部署更简单并且性能也较其他两个模式更高
+- 如果目标集群为 v3.x 或以下，则建议使用 Importer-Backend 模式
+- 如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则最好使用 TiDB-Backend 模式
+
 
 
 # TiDB Lightning Local-Backend
