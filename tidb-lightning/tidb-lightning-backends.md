@@ -26,14 +26,11 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 | 额外组件 | 无 | TiKV Importer | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
 
-
 # 如何选择使用的 Backend
 
 - 对于大部分场景，导入的目标集群为 v4.0 以上版本，请优先考虑使用 Local-Backend 模式。Local-Backend 部署更简单并且性能也较其他两个模式更高
 - 如果目标集群为 v3.x 或以下，则建议使用 Importer-Backend 模式
 - 如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则最好使用 TiDB-Backend 模式
-
-
 
 # TiDB Lightning Local-Backend
 
@@ -102,11 +99,7 @@ sorted-kv-dir = "/tmp/sorted-kv"     # <-- 设置为本地磁盘的路径，对�
 
 或者在用命令行启动 `tidb-lightning` 时，传入参数 `--backend local`。
 
-
-
-
 # TiDB Lightning TiDB-Backend
-
 
 ## 部署 TiDB-backend
 
