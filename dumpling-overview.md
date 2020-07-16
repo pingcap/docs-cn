@@ -212,7 +212,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 
 | 主要参数 | 用途 | 默认值 |
 | --------| --- | --- |
-| -V 或 --version | 输出 dumpling 版本并直接退出 |
+| -V 或 --version | 输出 Dumpling 版本并直接退出 |
 | -B 或 --database | 导出指定数据库 |
 | -T 或 --tables-list | 导出指定数据表 |
 | -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) | `*.*` 导出所有库表 |
