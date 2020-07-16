@@ -190,7 +190,7 @@
     + [User Guide](/tispark-overview.md)
 + Reference
   + Cluster Architecture
-    + [Overview](/architecture.md)
+    + [Overview](/tidb-architecture.md)
   + Key Monitoring Metrics
     + [Overview](/grafana-overview-dashboard.md)
     + [TiDB](/grafana-tidb-dashboard.md)

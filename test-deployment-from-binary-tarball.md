@@ -12,7 +12,7 @@ See also [local deployment](/deploy-tidb-from-binary.md) and [production environ
 
 ## Prepare
 
-Before you start, see [TiDB architecture](/architecture.md) and [Software and Hardware Recommendations](/hardware-and-software-requirements.md). Make sure the following requirements are satisfied:
+Before you start, see [TiDB architecture](/tidb-architecture.md) and [Software and Hardware Recommendations](/hardware-and-software-requirements.md). Make sure the following requirements are satisfied:
 
 ### Operating system
 

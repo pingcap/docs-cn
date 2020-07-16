@@ -8,7 +8,7 @@ aliases: ['/docs/dev/get-started-with-tidb-binlog/','/docs/dev/how-to/get-starte
 
 This tutorial starts with a simple TiDB Binlog deployment with a single node of each component (Placement Driver, TiKV Server, TiDB Server, Pump, and Drainer), set up to push data into a MariaDB Server instance.
 
-This tutorial is targeted toward users who have some familiarity with the [TiDB Architecture](/architecture.md), who may have already set up a TiDB cluster (not mandatory), and who wants to gain hands-on experience with TiDB Binlog. This tutorial is a good way to "kick the tires" of TiDB Binlog and to familiarize yourself with the concepts of its architecture.
+This tutorial is targeted toward users who have some familiarity with the [TiDB Architecture](/tidb-architecture.md), who may have already set up a TiDB cluster (not mandatory), and who wants to gain hands-on experience with TiDB Binlog. This tutorial is a good way to "kick the tires" of TiDB Binlog and to familiarize yourself with the concepts of its architecture.
 
 > **Warning:**
 >

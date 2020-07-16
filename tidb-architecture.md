@@ -1,7 +1,7 @@
 ---
 title: TiDB Architecture
 summary: The key architecture components of the TiDB platform
-aliases: ['/docs/dev/architecture/']
+aliases: ['/docs/dev/architecture/','/tidb/dev/architecture']
 ---
 
 # TiDB Architecture

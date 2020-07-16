@@ -12,7 +12,7 @@ aliases: ['/docs/dev/test-deployment-using-docker/','/docs/dev/how-to/deploy/orc
 
 This document shows you how to manually deploy a multi-node TiDB cluster on multiple machines using Docker.
 
-To learn more, see [TiDB architecture](/architecture.md) and [Software and Hardware Recommendations](/hardware-and-software-requirements.md).
+To learn more, see [TiDB architecture](/tidb-architecture.md) and [Software and Hardware Recommendations](/hardware-and-software-requirements.md).
 
 ## Preparation
 
