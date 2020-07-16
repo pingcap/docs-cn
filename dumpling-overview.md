@@ -215,7 +215,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -V 或 --version | 输出 dumpling 版本并直接退出 |
 | -B 或 --database | 导出指定数据库 |
 | -T 或 --tables-list | 导出指定数据表 |
-| -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](https://docs.pingcap.com/zh/tidb/stable/table-filter) | "\*.\*" 导出所有库表 |
+| -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) | `*.*` 导出所有库表 |
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
 | -h 或 --host| 链接节点地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
@@ -246,7 +246,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | --csv-delimiter | csv 文件中字符类型变量的定界符 | '"' |
 | --csv-separator | csv 文件中各值的分隔符 | ',' |
 | --csv-null-value | csv 文件空值的表示 | "\\N" |
-| --escape-backslash | 使用反斜线 ("\") 来注释导出文件中的特殊字符，为 false 时使用单引号 ("'") 注释 | true |
-| --output-filename-template | [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 '{{.DB}}','{{.Table}}','{{.Index}}' 三个参数 <br/> 分别表示数据文件的库名，表名，分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
-| --status-addr | dumpling 的服务地址，包含了运行时的 pprof 信息 | ":8281" |
+| --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
+| --output-filename-template | [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`,`{{.Table}}`,`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名，表名，分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
+| --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |
 | --tidb-mem-quota-query | 单条 dumpling 导出 sql 的内存限制，单位为 B，默认为 32GB | 34359738368 |
