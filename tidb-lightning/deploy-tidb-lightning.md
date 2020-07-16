@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 
 本文主要介绍 TiDB Lightning 使用 Importer-backend（默认）进行数据导入的硬件需求，以及使用 TiDB Ansible 部署与手动部署 TiDB Lightning 这两种部署方式。
 
-如果你不希望影响 TiDB 集群的对外服务，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#) 中的硬件需求与部署方式进行数据导入。
+如果你不希望影响 TiDB 集群的对外服务，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#TiDB-Lightning-TiDB-Backend) 中的硬件需求与部署方式进行数据导入。
 
 ## 注意事项
 
@@ -117,6 +117,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
 4. 将数据源写入 `data_source_dir` 指定的路径。
 
 5. 登录 `tidb-lightning` 的服务器, 编辑 `conf/tidb-lighting.toml` 如下配置项：
+
     ```
     [tikv-importer]
     # 选择使用的 import 后端 
@@ -124,7 +125,6 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
     ```
-
 
 6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
 
