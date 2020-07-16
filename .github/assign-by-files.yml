@@ -1,38 +1,111 @@
 ---
+# Changing all md files should request a language review in case of format failures.
+# TomShawn is the repo administrator.
+
 # you can use glob pattern
 
 # You can set multiple reviewers
-# '.github/':
-#   - yikeke
-#   - ran-huang
+'.github/**/*.yml':
+  - yikeke
+  - ran-huang
 
-# 'tiflash/':
-#   - zanmato1984
+# 'benchmark/**/*.md':
+#   - jackysp
 #   - kissmydb
-#   - yikeke
+#   - TomShawn
 
-# 'tiup/':
-#   - lonng
-#   - lucklove
+'best-practices/**/*.md':
+  - kissmydb
+  - lilin90
+  - TomShawn
+
+'br/**/*.md':
+  - kissmydb
+  - WangXiangUSTC
+  - TomShawn
+
+'config-templates/**/*.yaml':
+  - kissmydb
+  - superlzs0476
+  - TomShawn
+
+'dashboard/**/*.md':
+  - breeswish
+  - hundundm
+  - kissmydb
+  - TomShawn
+
+'faq/**/*.md':
+  - kissmydb
+  - TomShawn
+
+# 'functions-and-operators/**/*.md':
 #   - kissmydb
-#   - yikeke
+#   - TomShawn
 
-# 'sql-statements/':
-#   - bb7133
+# 'media/**/*':
+#   - TomShawn
+#   - lilin90
 
-# 'releases/':
-#   - scsldb
+'releases/**/*.md':
+  - scsldb
+  - uglyengineer
+  - TomShawn
 
-# 'dashboard/':
-#   - breeswish
+'resources/**/*':
+  - yikeke
+  - lilin90
 
-# 'config-templates/':
-#   - kissmydb
+'scripts/**/*':
+  - yikeke
+  - lilin90
 
-# 'ticdc/':
-#   - WangXiangUSTC
+'sql-statements/**/*.md':
+  - bb7133
+  - zimulala
+  - TomShawn
 
-# Changing all md files should request a language review in case of format failures.
-# TomShawn is the repo administrator.
-'*.*':
+# 'storage-engine/**/*.md':
+#   - TomShawn
+#   - 
+
+# 'sync-diff-inspector/**/*.md':
+#   - TomShawn
+#   - 
+
+# 'system-tables/**/*.md':
+#   - TomShawn
+#   - 
+
+'ticdc/**/*.md':
+  - WangXiangUSTC
+  - 3pointer
+  - kissmydb
+  - TomShawn
+
+'tidb-binlog/**/*.md':
+  - july2993
+  - kissmydb
+  - TomShawn
+
+'tidb-lightning/**/*.md':
+  - WangXiangUSTC
+  - kissmydb
+  - TomShawn
+
+'tiflash/**/*.md':
+  - ilovesoup
+  - zanmato1984
+  - kissmydb
+  - yikeke
+
+'tiup/**/*.md':
+  - lonng
+  - lucklove
+  - kissmydb
+  - yikeke
+
+# All other file pattern will match the following:
+
+'**/*':
   - TomShawn

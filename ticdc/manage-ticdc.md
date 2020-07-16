@@ -149,6 +149,19 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
     | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
+    | `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
+
+如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
+
+使用配置文件创建同步任务的方法如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
+```
+
+其中 `changefeed.toml` 为同步任务的配置文件。
 
 #### 查询同步任务列表
 
@@ -206,8 +219,8 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-23
 - `resolved-ts` 代表当前 changefeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
 - `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
 - `admin-job-type` 代表一个 changefeed 的状态：
-    - `0`: 状态正常，也是初始状态。
-    - `1`: 任务暂停。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+    - `0`: 状态正常。
+    - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
     - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
     - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
 
@@ -357,6 +370,79 @@ curl -X POST http://127.0.0.1:8301/capture/owner/resign
 ```
 election: not leader
 ```
+
+### 手动调度表到其他节点
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf060953-036c-4f31-899f-5afa0ad0c2f9&target-cp-id=6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5&table-id=49'
+```
+
+参数说明
+
+| 参数名        | 说明 |
+| :----------- | :--- |
+| `cf-id`        | 进行调度的 Changefeed ID |
+| `target-cp-id` | 目标 Capture ID |
+| `table-id`     | 需要调度的 Table ID |
+
+以上命令仅对 owner 节点请求有效。对非 owner 节点将会返回错误。
+
+```
+{
+ "status": true,
+ "message": ""
+}
+```
+
+## 同步任务配置文件描述
+
+以下内容详细介绍了同步任务的配置。
+
+```toml
+# 指定配置文件中涉及的库名、表名是否为大小写敏感
+# 该配置会同时影响 filter 和 sink 相关配置，默认为 true
+case-sensitive = true
+
+[filter]
+# 忽略指定 start_ts 的事务
+ignore-txn-start-ts = [1, 2]
+
+# 过滤器规则
+# 过滤规则语法：https://github.com/pingcap/tidb-tools/tree/master/pkg/table-filter#syntax
+rules = ['*.*', '!test.*']
+
+[mounter]
+# mounter 线程数，用于解码 TiKV 输出的数据
+worker-num = 16
+
+[sink]
+# 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
+# 支持 default、ts、rowid、table 四种分发器
+dispatchers = [
+    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
+    {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
+]
+# 对于 MQ 类的 Sink，可以指定消息的协议格式
+# 目前支持 default 和 canal 两种协议。default 为 TiCDC Open Protocol
+protocol = "default"
+
+[cyclic-replication]
+# 是否开启环形同步
+enable = false
+# 当前 TiCDC 的复制 ID
+replica-id = 1
+# 需要过滤掉的同步 ID
+filter-replica-ids = [2,3]
+# 是否同步 DDL
+sync-ddl = true
+```
+
+### 配置文件兼容性的注意事项
+
+* TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
+* TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
 
 ## 环形同步
 
