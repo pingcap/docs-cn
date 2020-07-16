@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 - TiDB 100% 兼容 MySQL5.7 协议、MySQL5.7 常用的功能及语法，MySQL5.7 生态中系统的工具（PHPMyAdmin, Navicat, MySQL Workbench、mysqldump、Mydumper/myloader）、客户端等均用于 TiDB。
 
-- TiDB 是一款分布式数据库， MySQL5.7 中的部分特性由于工程实现难度大，投入产出比较低等多种原因在 TiDB 未能实现或者仅兼容语法但功能并没有实现，因此使用过程中请特别注意。例如：`CREATE TABLE` 语句中 `ENGINE`，仅兼容语法，功能并没有实现，因此 TiDB 中没有 `ENGINE` 这类的概念。
+- TiDB 是一款分布式数据库， MySQL5.7 中的部分特性由于工程实现难度较大，投入产出比较低等多种原因在 TiDB 未能实现或者仅兼容语法但功能并没有实现，因此使用过程中请特别注意。例如：`CREATE TABLE` 语句中 `ENGINE`，仅兼容语法，功能并没有实现，因此 TiDB 中没有 `ENGINE` 这类的概念。
 
 > **注意：**
 >
