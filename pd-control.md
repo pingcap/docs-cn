@@ -1018,7 +1018,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store remove-tombstone              // 删除所有 tombstone 状态的 store 记录
+>> store remove-tombstone              // 删除所有 tombstone 状态的 store
 >> store limit                         // 显示所有 store 添加 peer 的速度上限
 >> store limit region-add              // 显示所有 store 添加 peer 的速度上限
 >> store limit region-remove           // 显示所有 store 删除 peer 的速度上限
