@@ -16,7 +16,7 @@ summary: 了解优化规则与表达式下推的黑名单。
 |**优化规则**|**规则名称**|**简介**|
 | :--- | :--- | :--- |
 | 列裁剪 | column_prune | 对于上层算子不需要的列，不在下层算子输出该列，减少计算 |
-| 子查询去关联 | decorrelate | 尝试对相关子查询进行改写，将其转换为普通 join 或 aggression 计算 |
+| 子查询去关联 | decorrelate | 尝试对相关子查询进行改写，将其转换为普通 join 或 aggregation 计算 |
 | 聚合消除 | aggregation_eliminate | 尝试消除执行计划中的某些不必要的聚合算子 |
 | 投影消除 | projection_eliminate |  消除执行计划中不必要的投影算子 |
 | 最大最小消除 | max_min_eliminate | 改写聚合中的 max/min 计算，转化为 `order by` + `limit 1` |
@@ -62,7 +62,7 @@ summary: 了解优化规则与表达式下推的黑名单。
     {{< copyable "sql" >}}
 
     ```sql
-    delete from mysql.opt_rule_blacklist where name in ("join_reoder", "topn_push_down");
+    delete from mysql.opt_rule_blacklist where name in ("join_reorder", "topn_push_down");
     admin reload opt_rule_blacklist;
     ```
 
@@ -78,7 +78,7 @@ summary: 了解优化规则与表达式下推的黑名单。
 | [比较运算](/functions-and-operators/operators.md#比较方法和操作符) | <, <=, =, != (`<>`), >, >=, [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to), [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in), IS NULL, LIKE, IS TRUE, IS FALSE, [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) |
 | [数值运算](/functions-and-operators/numeric-functions-and-operators.md) | +, -, *, /, [`ABS()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_abs), [`CEIL()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceil), [`CEILING()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceiling), [`FLOOR()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_floor) |
 | [控制流运算](/functions-and-operators/control-flow-functions.md) | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case), [`IF()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_if), [`IFNULL()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_ifnull) |
-| [JSON 运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br/> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br/> [JSON_UNQUOTE(json_val)][json_unquote],<br/> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br/> [JSON_ARRAY([val[, val] ...])][json_array],<br/> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge],<br/> [JSON_SET(json_doc, path, val[, path, val] ...)][json_set],<br/> [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert],<br/> [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace],<br/> [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
+| [JSON 运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-type),<br/> [JSON_EXTRACT(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract),<br/> [JSON_UNQUOTE(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-unquote),<br/> [JSON_OBJECT(key, val[, key, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object),<br/> [JSON_ARRAY([val[, val] ...])](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-array),<br/> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge),<br/> [JSON_SET(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-set),<br/> [JSON_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-insert),<br/> [JSON_REPLACE(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-replace),<br/> [JSON_REMOVE(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-remove) |
 | [日期运算](/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format)  |
 
 ### 禁止特定表达式下推
@@ -139,7 +139,7 @@ desc mysql.expr_pushdown_blacklist;
 
 以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
 
-黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/query-execution-plan.md)）。
+黑名单是否生效可以从 `explain` 结果中进行观察（参见[使用 `EXPLAIN` 来优化 SQL 语句](/query-execution-plan.md#使用-explain-来优化-sql-语句)）。
 
 1. 对于以下 SQL 语句，`where` 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
 
@@ -224,7 +224,7 @@ desc mysql.expr_pushdown_blacklist;
     Query OK, 0 rows affected (0.00 sec)
     ```
 
-5. 重新观察执行计划，`<` 和 `>` 表达式又可以重新被下推到 TiKV Coprocessor。
+5. 重新观察执行计划，可以看到只有 `>` 表达式被重新下推到 TiKV Coprocessor，`<` 表达式仍然被禁用下推。
 
     {{< copyable "sql" >}}
 
