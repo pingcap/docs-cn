@@ -1,6 +1,5 @@
 ---
 title: TiDB 用户账户管理
-category: reference
 aliases: ['/docs-cn/v3.0/reference/security/user-account-management/','/docs-cn/sql/user-account-management/']
 ---
 

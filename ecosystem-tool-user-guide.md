@@ -1,6 +1,5 @@
 ---
 title: TiDB 生态工具功能概览
-category: reference
 aliases: ['/docs-cn/v3.0/reference/tools/user-guide/','/docs-cn/v3.0/how-to/migrate/from-mysql/', '/docs-cn/v3.0/how-to/migrate/incrementally-from-mysql/', '/docs-cn/v3.0/how-to/migrate/overview/', '/docs-cn/v3.0/reference/tools/use-guide/']
 ---
 

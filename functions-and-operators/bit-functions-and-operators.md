@@ -1,6 +1,5 @@
 ---
 title: 位函数和操作符
-category: reference
 aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/bit-functions-and-operators/','/docs-cn/sql/bit-functions-and-operators/']
 ---
 

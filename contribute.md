@@ -1,6 +1,5 @@
 ---
 title: 成为贡献者
-category: contribute
 aliases: ['/docs-cn/contribute/']
 ---
 

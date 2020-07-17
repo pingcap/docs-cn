@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.1.19 Release Notes
-category: Releases
 aliases: ['/docs-cn/v3.0/releases/2.1.19/']
 ---
 

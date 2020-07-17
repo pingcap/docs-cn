@@ -1,6 +1,5 @@
 ---
 title: 使用 TiDB Ansible 部署 TiDB 集群
-category: how-to
 aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/ansible/','/docs-cn/op-guide/ansible-deployment/']
 ---
 

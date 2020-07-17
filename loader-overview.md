@@ -1,6 +1,5 @@
 ---
 title: Loader 使用文档
-category: reference
 aliases: ['/docs-cn/v3.0/reference/tools/loader/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: 支持资源
-category: resources
 aliases: ['/docs-cn/v3.0/support-resources/','/docs-cn/support/','/docs-cn/support-resources/']
 ---
 

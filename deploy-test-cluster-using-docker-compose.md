@@ -1,6 +1,5 @@
 ---
 title: 使用 Docker Compose 快速构建 TiDB 集群
-category: how-to
 aliases: ['/docs-cn/v3.0/how-to/get-started/deploy-tidb-from-docker-compose/','/docs-cn/v3.0/how-to/get-started/local-cluster/install-from-docker-compose/']
 ---
 

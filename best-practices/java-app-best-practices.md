@@ -1,6 +1,5 @@
 ---
 title: 开发 Java 应用使用 TiDB 的最佳实践
-category: reference
 aliases: ['/docs-cn/v3.0/reference/best-practices/java-app/','/docs-cn/v3.0/reference/best-practices/using-tidb-in-java/']
 ---
 
