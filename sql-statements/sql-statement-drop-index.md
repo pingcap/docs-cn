@@ -1,7 +1,6 @@
 ---
 title: DROP INDEX
 summary: TiDB 数据库中 DROP INDEX 的使用概况。
-category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/drop-index/']
 ---
 

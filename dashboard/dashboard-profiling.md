@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 实例性能分析页面
-category: how-to
 ---
 
 # TiDB Dashboard 实例性能分析页面

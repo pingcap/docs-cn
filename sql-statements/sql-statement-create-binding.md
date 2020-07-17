@@ -1,7 +1,6 @@
 ---
 title: CREATE BINDING
 summary: TiDB 数据库中 CREATE BINDING 的使用概况。
-category: reference
 ---
 
 # CREATE BINDING
