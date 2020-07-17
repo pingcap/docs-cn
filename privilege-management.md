@@ -1,6 +1,5 @@
 ---
 title: 权限管理
-category: reference
 aliases: ['/docs-cn/v3.1/reference/security/privilege-system/']
 ---
 

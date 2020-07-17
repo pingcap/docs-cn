@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning TiDB-Backend
 summary: 了解 TiDB Lightning TiDB-backend。
-category: reference
 aliases: ['/docs-cn/v3.1/reference/tools/tidb-lightning/tidb-backend/']
 ---
 

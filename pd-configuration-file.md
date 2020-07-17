@@ -1,6 +1,5 @@
 ---
 title: PD 配置文件描述
-category: reference
 aliases: ['/docs-cn/v3.1/reference/configuration/pd-server/configuration-file/']
 ---
 

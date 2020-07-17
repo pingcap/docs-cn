@@ -1,6 +1,5 @@
 ---
 title: SQL Mode
-category: reference
 aliases: ['/docs-cn/v3.1/reference/sql/sql-mode/']
 ---
 

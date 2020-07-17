@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.1 升级操作指南
-category: how-to
 aliases: ['/docs-cn/v3.1/how-to/upgrade/from-previous-version/']
 ---
 

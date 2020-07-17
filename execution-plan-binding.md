@@ -1,6 +1,5 @@
 ---
 title: 执行计划绑定
-category: reference
 aliases: ['/docs-cn/v3.1/reference/performance/execution-plan-bind/']
 ---
 

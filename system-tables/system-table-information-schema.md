@@ -1,6 +1,5 @@
 ---
 title: Information Schema
-category: reference
 aliases: ['/docs-cn/v3.1/reference/system-databases/information-schema/']
 ---
 

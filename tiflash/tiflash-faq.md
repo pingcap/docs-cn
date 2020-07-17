@@ -1,6 +1,5 @@
 ---
 title: TiFlash 常见问题
-category: faq
 aliases: ['/docs-cn/v3.1/reference/tiflash/faq/']
 ---
 

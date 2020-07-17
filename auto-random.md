@@ -1,6 +1,5 @@
 ---
 title: AUTO_RANDOM
-category: reference
 aliases: ['/docs-cn/v3.1/reference/sql/attributes/auto-random/']
 ---
 
