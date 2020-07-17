@@ -26,7 +26,7 @@ TiDB 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
 
 > **注意：**
 >
-> 若要使用 MySQL 8.0 的连接器连接到 TiDB，你必须显示地指定 `default-auth=mysql_native_password`，因为 `mysql_native_password` 不再是[默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
+> 若要使用 MySQL 8.0 的连接器连接到 TiDB，你必须显式地指定 `default-auth=mysql_native_password`，因为 `mysql_native_password` 不再是[默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
 
 ## 使用 MySQL 连接器连接 TiDB
 
