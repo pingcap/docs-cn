@@ -106,6 +106,7 @@
       + [SQL Optimization Process](/sql-optimization-concepts.md)
       + Logic Optimization
         + [Subquery Related Optimizations](/subquery-optimization.md)
+        + [Column Pruning](/column-pruning.md)
         + [Decorrelation of Correlated Subquery](/correlated-subquery-optimization.md)
         + [Predicates Push Down](/predicates-push-down.md)
         + [TopN and Limit Push Down](/topn-limit-push-down.md)
