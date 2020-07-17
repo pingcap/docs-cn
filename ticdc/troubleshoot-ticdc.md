@@ -130,9 +130,9 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 
 更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
 
-## 如何查看 TiCDC 同步任务的延时？
+## 如何查看 TiCDC 同步任务的状态？
 
-可以使用 `cdc cli` 查询同步任务的延时。例如：
+可以使用 `cdc cli` 查询同步任务的状态。例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -164,9 +164,9 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 >
 > 该功能在 TiCDC 4.0.3 版本引入。
 
-## 如何查看 TiCDC 同步任务是否正常？
+## 如何查看 TiCDC 同步任务是否被人为终止？
 
-可以使用 `cdc cli` 查询同步任务的状态。例如：
+可以使用 `cdc cli` 查询同步任务是否被人为终止。例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -176,7 +176,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 上述命令的输出中 `admin-job-type` 标志这个同步的任务的状态：
 
-* `0`: 状态正常。
+* `0`: 任务进行中，没有被人为停止。
 * `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
 * `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
 * `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
