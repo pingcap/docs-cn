@@ -60,7 +60,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
 - `ca`: TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
 - `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
-- `ca`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
+- `key`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
@@ -155,6 +155,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     | `9092`               | 下游 Kafka 的连接端口                                          |
     | `cdc-test`           | 使用的 Kafka topic 名字                                      |
     | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+    | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选） |
     | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
