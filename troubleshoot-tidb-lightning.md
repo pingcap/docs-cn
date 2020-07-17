@@ -1,11 +1,6 @@
 ---
 title: TiDB Lightning 故障诊断
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/how-to/troubleshoot/tidb-lightning/']
-=======
-category: reference
-aliases: ['/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/dev/tidb-lightning/tidb-lightning-misuse-handling/']
->>>>>>> 638fd60... remove a doc that is not in TOC (#3981)
+aliases: ['/docs-cn/stable/how-to/troubleshoot/tidb-lightning/','/docs-cn/stable/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/stable/tidb-lightning/tidb-lightning-misuse-handling/']
 ---
 
 # TiDB Lightning 故障诊断
