@@ -1,6 +1,5 @@
 ---
 title: TiFlash 命令行参数
-category: reference
 ---
 
 # TiFlash 命令行参数
