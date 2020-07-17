@@ -11,18 +11,6 @@ TiDB 版本：4.0.3
 
 ## 新功能
 
-+ TiDB
-
-    - 当 IndexHashJoin 遇到执行错误时，返回错误而不是空结果集 [#18586](https://github.com/pingcap/tidb/pull/18586)
-    - 修复 GRPC transportReader 导致的反复异常 [#18562](https://github.com/pingcap/tidb/pull/18562)
-    - 修复因为 green GCFix 不会扫描已下线 store 上的锁而可能导致数据不完整的问题 [#18550](https://github.com/pingcap/tidb/pull/18550)
-    - 非只读语句不会使用 TiFlash 引擎 [#18534](https://github.com/pingcap/tidb/pull/18534)
-    - 当查询连接异常时返回真实的错误信息 [#18500](https://github.com/pingcap/tidb/pull/18500)
-    - DDL：修复非 repair mode 的 TiDB 节点不会重新读取修复的表元信息的错误 [#18323](https://github.com/pingcap/tidb/pull/18323)
-    - 修复因为锁指向的 primary key 被其事务改删而导致的读写不一致的问题 [#18291](https://github.com/pingcap/tidb/pull/18291)
-    - 修复数据落盘为正确生效导致的内存溢出 [#18288](https://github.com/pingcap/tidb/pull/18288)
-    - 修复 REPLACE INTO 语句作用在包含生成列的表时会错误报错的问题 [#17907](https://github.com/pingcap/tidb/pull/17907)
-
 + TiKV
 
 
@@ -40,24 +28,39 @@ TiDB 版本：4.0.3
 
 
 
-+ Tools
++ BR
 
-    - Backup & Restore (BR)
-
-
-
-    - Dumpling
-
-
+    - 支持使用 zstd、lz4、snappy 算法压缩备份文件 [#404](https://github.com/pingcap/br/pull/404)
 
 + TiCDC
+
+    - 支持支持 sink-uri 中配置 Kafka 客户端的 ID [#706](https://github.com/pingcap/ticdc/pull/706)
+    - 支持离线更新同步任务的配置 [#699](https://github.com/pingcap/ticdc/pull/699)
+    - 支持支持同步任务的 ID [#727](https://github.com/pingcap/ticdc/pull/727)
+    - 支持使用 SSL 加密链接向 MySQL 输出数据 [#347](https://github.com/pingcap/ticdc/pull/347)
+    - 支持输出 Avro 格式的变更数据 [#753](https://github.com/pingcap/ticdc/pull/753)
+    - 支持向 Apach Pulsar 输出变更数据 [#751](https://github.com/pingcap/ticdc/pull/751)
+
++ Dumpling
+
+    - 支持自定义 CSV 文件的分隔符和换行符 [#116](https://github.com/pingcap/dumpling/pull/116)
+    - 支持自定义输出文件名格式 [#122](https://github.com/pingcap/dumpling/pull/122)
 
 
 ## 改进提升
 
 + TiDB
 
-
+  
+  - 增加全局变量 `tidb_log_desensitization` 来控制在日志中记录 SQL 时是否脱敏. [#18581](https://github.com/pingcap/tidb/pull/18581)
+  - 默认打开 `tidb_allow_batch_cop` [#18552](https://github.com/pingcap/tidb/pull/18552)
+  - 加速 `kill tidb sesesion_id` 的执行速度 [#18505](https://github.com/pingcap/tidb/pull/18505)
+  - 将内存超过限制时 TiDB 的默认行为改为 `OOMActionCancel` [#18502](https://github.com/pingcap/tidb/pull/18502)
+  - 函数 `tidb_decode_plan` 的结果增加表头输出 [#18501](https://github.com/pingcap/tidb/pull/18501)
+  - 配置检查器可以兼容旧版本的配置文件 [#18046](https://github.com/pingcap/tidb/pull/18046)
+  - 插入负值的整型主键时，不会触发自增 ID 的重新分配 [#17987](https://github.com/pingcap/tidb/pull/17987)
+  - 默认打开执行信息的收集 [#18518](https://github.com/pingcap/tidb/pull/18518)
+  - 增加系统表 `tiflash_tables` 和 `tiflash_segments` [#18536](https://github.com/pingcap/tidb/pull/18536)
 
 + TiKV
 
@@ -82,7 +85,19 @@ TiDB 版本：4.0.3
 
 
 
-+ Tools
++ TiCDC
+
+    - 将监控指标总的表 ID 替换为表名 [#695](https://github.com/pingcap/ticdc/pull/695)
+
++ BR
+
+    - 支持输出 JSON 格式的日志 [#336](https://github.com/pingcap/br/issues/336)
+    - 支持在运行 BR 期间动态开启 pprof [#372](https://github.com/pingcap/br/pull/372)
+    - 加速恢复的时 DDL 的执行速度 [#377](https://github.com/pingcap/br/pull/377)
+
++ TiDB Lightning
+
+    - 使用一种更加简单易懂的表过滤机制替换原先的黑白名单机制 [#332](https://github.com/pingcap/tidb-lightning/pull/332)
 
      
 
@@ -90,7 +105,16 @@ TiDB 版本：4.0.3
 
 + TiDB
 
-
+  - 当 IndexHashJoin 遇到执行中发生非内存相关的错误时，返回错误而不是空结果集 [#18586](https://github.com/pingcap/tidb/pull/18586)
+  - 修复 GRPC transportReader 导致的反复异常 [#18562](https://github.com/pingcap/tidb/pull/18562)
+  - 修复因为 green GCFix 不会扫描已下线 store 上的锁而可能导致数据不完整的问题 [#18550](https://github.com/pingcap/tidb/pull/18550)
+  - 非只读语句不会使用 TiFlash 引擎 [#18534](https://github.com/pingcap/tidb/pull/18534)
+  - 当查询连接异常时返回真实的错误信息 [#18500](https://github.com/pingcap/tidb/pull/18500)
+  - DDL：修复非 repair mode 的 TiDB 节点不会重新读取修复的表元信息的错误 [#18323](https://github.com/pingcap/tidb/pull/18323)
+  - 修复当锁住的 primary key 在当前事务被插入/删除时可能造成的结果不一致问题 [#18291](https://github.com/pingcap/tidb/pull/18291)
+  - 修复数据落盘为正确生效导致的内存溢出 [#18288](https://github.com/pingcap/tidb/pull/18288)
+  - 修复 REPLACE INTO 语句作用在包含生成列的表时会错误报错的问题 [#17907](https://github.com/pingcap/tidb/pull/17907)
+  - 当 IndexJoinExecutor 执行异常时抛出 “Out Of Memory Quota!”错误 [#18527](https://github.com/pingcap/tidb/pull/18527)
 
 + TiKV
 
@@ -126,4 +150,15 @@ TiDB 版本：4.0.3
 
 
 
-+ Tools
++ BR
+
+    - 解决了备份汇总报告中时间为负数的问题 [#405](https://github.com/pingcap/br/pull/405)
+
++ Dumpling
+
+    - 解决了 NULL 值在有 `--r` 参数时被忽略的问题 [#119](https://github.com/pingcap/dumpling/pull/119)
+    - 解决了导出数据时 flush table 没有正常工作的问题 [#117](https://github.com/pingcap/dumpling/pull/117)
+
++ TiDB Lightning
+
+    - 解决了 `--log-file` 参数不生效的问题 [#345](https://github.com/pingcap/tidb-lightning/pull/345)
