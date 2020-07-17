@@ -72,9 +72,9 @@ TiDB 版本：4.0.3
 + Dashboard
 
   - 优化keyviz中冷表的bucket合并 [#674](https://github.com/pingcap-incubator/tidb-dashboard/pull/674)
-  -     重命名配置项disable-telemetry以使遥测更一致 [#684](https://github.com/pingcap-incubator/tidb-dashboard/pull/684)
--     切换页面时显示进度条 [#661](https://github.com/pingcap-incubator/tidb-dashboard/pull/661)
-  -     保证慢日志查询和日志查询行为的一致性，即使在空格存在的情况 [#682](https://github.com/pingcap-incubator/tidb-dashboard/pull/682)
+  - 重命名配置项disable-telemetry以使遥测更一致 [#684](https://github.com/pingcap-incubator/tidb-dashboard/pull/684)
+  - 切换页面时显示进度条 [#661](https://github.com/pingcap-incubator/tidb-dashboard/pull/661)
+  - 保证慢日志查询和日志查询行为的一致性，即使在空格存在的情况 [#682](https://github.com/pingcap-incubator/tidb-dashboard/pull/682)
 
 
 
@@ -127,4 +127,3 @@ TiDB 版本：4.0.3
 
 
 + Tools
-
