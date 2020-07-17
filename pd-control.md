@@ -572,10 +572,10 @@ Success!
 
 ```
 {
-   "name": "pd",
-   "member_id": 13155432540099656863,
-   "peer_urls": [......],
-   "client_urls": [......]
+  "name": "pd",
+  "member_id": 13155432540099656863,
+  "peer_urls": [......],
+  "client_urls": [......]
 }
 ```
 
