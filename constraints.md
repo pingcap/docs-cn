@@ -1,6 +1,5 @@
 ---
 title: 约束
-category: reference
 aliases: ['/docs-cn/dev/reference/sql/constraints/']
 ---
 

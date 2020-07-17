@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.1.1 Release Notes
-category: Releases
 aliases: ['/docs-cn/dev/releases/3.1.1/']
 ---
 

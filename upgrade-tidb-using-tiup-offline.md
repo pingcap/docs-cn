@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 离线镜像升级 TiDB
-category: how-to
 ---
 
 # 使用 TiUP 离线镜像升级 TiDB

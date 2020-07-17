@@ -1,6 +1,5 @@
 ---
 title: TiDB 最佳实践
-category: reference
 ---
 
 # TiDB 最佳实践

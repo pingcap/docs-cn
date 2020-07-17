@@ -1,6 +1,5 @@
 ---
 title: 关键字
-category: reference
 summary: 本文介绍 TiDB 的关键字。
 aliases: ['/docs-cn/dev/keywords-and-reserved-words/','/docs-cn/dev/reference/sql/language-structure/keywords-and-reserved-words/']
 ---

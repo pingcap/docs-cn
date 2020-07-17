@@ -1,6 +1,5 @@
 ---
 title: TiDB FAQ
-category: FAQ
 aliases: ['/docs-cn/dev/faq/tidb/']
 ---
 
@@ -52,7 +51,7 @@ mysql -h 127.0.0.1 -u root -P 4000 --default-auth=mysql_native_password --defaul
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/multi-data-centers-in-one-city-deployment.md)，TiDB 均支持 ACID 分布式事务。
 
-TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/architecture.md#pd-server) 承担时间戳分配器的角色。
+TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶段提交协议，并进行了一些实用的优化。该模型依赖于一个时间戳分配器，为每个事务分配单调递增的时间戳，这样就检测到事务冲突。在 TiDB 集群中，[PD](/tidb-scheduling.md) 承担时间戳分配器的角色。
 
 #### 1.1.8 TiDB 支持哪些编程语言？
 
