@@ -1,42 +1,74 @@
 ---
 title: Schema Object Names
-summary: Learn about the schema object names (identifiers) in TiDB.
+summary: Learn about schema object names in TiDB SQL statements.
 aliases: ['/docs/dev/schema-object-names/','/docs/dev/reference/sql/language-structure/schema-object-names/']
 ---
 
 # Schema Object Names
 
-Some objects names in TiDB, including database, table, index, column, alias, etc., are known as identifiers.
+<!-- markdownlint-disable MD038 -->
 
-In TiDB, you can quote or unquote an identifier. If an identifier contains special characters or is a reserved word, you must quote it whenever you refer to it. To quote, use the backtick (\`) to wrap the identifier. For example:
+This document introduces schema object names in TiDB SQL statements.
+
+Schema object names are used to name all schema objects in TiDB, including database, table, index, column, alias, and so on. You can quote these objects using identifiers in SQL statements.
+
+You can use backticks to enclose the identifier. For example, `SELECT * FROM t` can also be written as `` SELECT * FROM `t` ``. But if the identifier includes one or more special characters or is a reserved keyword, it must be enclosed in backticks to quote the schema object it represents.
+
+{{< copyable "sql" >}}
 
 ```sql
-mysql> SELECT * FROM `table` WHERE `table`.id = 20;
+SELECT * FROM `table` WHERE `table`.id = 20;
 ```
 
-If the `ANSI_QUOTES` SQL mode is enabled, you can also quote identifiers within double quotation marks("):
+If you set `ANSI_QUOTES` in SQL MODE, TiDB will recognize the string enclosed in double quotation marks `"` as an identifier.
+
+{{< copyable "sql" >}}
 
 ```sql
-mysql> CREATE TABLE "test" (a varchar(10));
-ERROR 1105 (HY000): line 0 column 19 near " (a varchar(10))" (total length 35)
-
-mysql> SET SESSION sql_mode='ANSI_QUOTES';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> CREATE TABLE "test" (a varchar(10));
-Query OK, 0 rows affected (0.09 sec)
+CREATE TABLE "test" (a varchar(10));
 ```
 
-The quote characters can be included within an identifier. Double the character if the character to be included within the identifier is the same as that used to quote the identifier itself. For example, the following statement creates a table named a\`b:
-
 ```sql
-mysql> CREATE TABLE `a``b` (a int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 19 near ""test" (a varchar(10))" 
 ```
 
-In a `SELECT` statement, a quoted column alias can be specified using an identifier or a string quoting characters:
+{{< copyable "sql" >}}
 
 ```sql
-mysql> SELECT 1 AS `identifier`, 2 AS 'string';
+SET SESSION sql_mode='ANSI_QUOTES';
+```
+
+```sql
+Query OK, 0 rows affected (0.000 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE "test" (a varchar(10));
+```
+
+```sql
+Query OK, 0 rows affected (0.012 sec)
+```
+
+If you want to use the backtick character in the quoted identifier, repeat the backtick twice. For example, to create a table a`b:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE `a``b` (a int);
+```
+
+In a `SELECT` statement, you can use an identifier or a string to specify an alias:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT 1 AS `identifier`, 2 AS 'string';
+```
+
+```sql
 +------------+--------+
 | identifier | string |
 +------------+--------+
@@ -49,27 +81,33 @@ For more information, see [MySQL Schema Object Names](https://dev.mysql.com/doc/
 
 ## Identifier qualifiers
 
-Object names can be unqualified or qualified. For example, the following statement creates a table using the unqualified name `t`:
+Object names can be unqualified or qualified. For example, the following statement creates a table without a qualified name:
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t (i int);
 ```
 
-If there is no default database, the `ERROR 1046 (3D000): No database selected` is displayed. You can also use the qualified name `test.t`:
+If you have not used the `USE` statement or the connection parameter to configure the database, the `ERROR 1046 (3D000): No database selected` error is displayed. At this time, you can specify the database qualified name:
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE test.t (i int);
 ```
 
-The qualifier character is a separate token and need not be contiguous with the associated identifiers. For example, there can be white spaces around `.`, and `table_name.col_name` and `table_name . col_name` are equivalent.
+White spaces can exist around `.`. `table_name.col_name` and `table_name . col_name` are equivalent.
 
 To quote this identifier, use:
+
+{{< copyable "sql" >}}
 
 ```sql
 `table_name`.`col_name`
 ```
 
-Instead of
+Instead of:
 
 ```sql
 `table_name.col_name`
