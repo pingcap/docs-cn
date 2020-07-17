@@ -7,7 +7,12 @@ aliases: ['/docs-cn/v3.0/reference/security/compatibility/','/docs-cn/sql/securi
 
 除以下功能外，TiDB 支持与 MySQL 5.7 类似的安全特性。
 
+<<<<<<< HEAD
 - 仅支持 `mysql_native_password` 身份验证方案。
+=======
+- 仅支持 `mysql_native_password` 密码验证或证书验证登陆方案。
+    - MySQL 8.0 中，`mysql_native_password` 不再是[默认/推荐的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。若要使用 MySQL 8.0 的连接器连接到 TiDB，你必须显式地指定 `default-auth=mysql_native_password`。
+>>>>>>> 8e5278a... Add note about default-auth for MySQL 8.0 clients (#3969)
 - 不支持外部身份验证方式（如 LDAP）。
 - 不支持列级别权限设置。
 - 不支持密码过期，最后一次密码变更记录以及密码生存期。[#9709](https://github.com/pingcap/tidb/issues/9709)
