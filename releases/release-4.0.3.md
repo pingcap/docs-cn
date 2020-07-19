@@ -26,7 +26,7 @@ TiDB 版本：4.0.3
 
 + TiFlash
 
-
+    - TiFlash proxy 支持文件加密功能. [#888](https://github.com/pingcap/tics/pull/888)
 
 + BR
 
@@ -83,7 +83,8 @@ TiDB 版本：4.0.3
 
 + TiFlash
 
-
+    - 将 Grafana DDL Jobs 面板中的单位修改为 Operations per Minute. [#923](https://github.com/pingcap/tics/pull/923)
+    - 降低 TiFlash Proxy 的 IOPS [#856](https://github.com/pingcap/tics/pull/856)
 
 + TiCDC
 
@@ -148,7 +149,8 @@ TiDB 版本：4.0.3
 
 + TiFlash
 
-
+    - 修复更改主键列名后 TiFlash 崩溃的问题. [#916](https://github.com/pingcap/tics/pull/916)
+    - 修复 Learner Read 与 Remove Region 并发时可能的死锁问题. [#872](https://github.com/pingcap/tics/pull/872)
 
 + BR
 
