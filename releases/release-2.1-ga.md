@@ -159,7 +159,7 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
 
     - Optimize Region merge to consider the number of rows within the Region
 
-    - [Add more commands to control the scheduling policy](/pd-control.md#config-show--set-option-value)
+    - [Add more commands to control the scheduling policy](/pd-control.md#config-show--set-option-value--placement-rules)
 
     - Improve [PD simulator](https://github.com/pingcap/pd/tree/release-2.1/tools/pd-simulator) to simulate the scheduling scenarios
 
@@ -174,7 +174,7 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
     - Add the [`GetAllStores` interface](https://github.com/pingcap/kvproto/blob/8e3f33ac49297d7c93b61a955531191084a2f685/proto/pdpb.proto#L32), to support distributed GC in TiDB
 
     + pd-ctl supports:
-        - [using statistics for Region split](/pd-control.md#operator-show--add--remove)
+        - [using statistics for Region split](/pd-control.md#operator-check--show--add--remove)
 
         - [calling `jq` to format the JSON output](/pd-control.md#jq-formatted-json-output-usage)
 
