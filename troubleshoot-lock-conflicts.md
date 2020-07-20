@@ -193,7 +193,7 @@ err="pessimistic lock retry limit reached"
 
 #### Lock wait timeout exceeded
 
-在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的 [innodb_lock_wait_timeout](/system-variables.md#tidb-支持的-mysql-系统变量) 参数来定义，这个是 SQL 语句层面的最大允许等锁时间，即一个 SQL 语句期望加锁，但锁一直获取不到，超过这个时间，TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
+在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的 [innodb_lock_wait_timeout](/system-variables.md#innodb_lock_wait_timeout) 参数来定义，这个是 SQL 语句层面的最大允许等锁时间，即一个 SQL 语句期望加锁，但锁一直获取不到，超过这个时间，TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
 
 可通过查看 TiDB 日志查看报错信息：
 
