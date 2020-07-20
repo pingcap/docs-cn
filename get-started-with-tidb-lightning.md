@@ -96,7 +96,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
     file = "tidb-lightning.log"
 
     [tikv-importer]
-    # 选择使用的 import 后端 
+    # 选择使用的 local 后端
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"

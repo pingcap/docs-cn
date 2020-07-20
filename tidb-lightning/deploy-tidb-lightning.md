@@ -119,7 +119,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
 
     ```
     [tikv-importer]
-    # 选择使用的 import 后端 
+    # 选择使用 local 后端
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
@@ -163,11 +163,10 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     file = "tidb-lightning.log"
 
     [tikv-importer]
-    # tikv-importer 的监听地址，需改成 tikv-importer 服务器的实际地址。
+    # backend 设置为 local 模式
     backend = "local"
-    # 
+    # 设置本地临时存储路径
     sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
-    addr = "172.16.31.10:8287"
 
     [mydumper]
     # Mydumper 源数据目录。

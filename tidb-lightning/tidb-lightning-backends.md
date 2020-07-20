@@ -17,7 +17,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 
 | 后端 | Local-backend | Importer-backend | TiDB-backend |
 |:---|:---|:---|:---|
-| 速度 | 快 (~400 GB/小时) | 快 (~400 GB/小时) | 慢 (~50 GB/小时) |
+| 速度 | 快 (~500 GB/小时) | 快 (~400 GB/小时) | 慢 (~50 GB/小时) |
 | 资源使用率 | 高 | 高 | 低 |
 | 占用网络带宽 | 高 | 中  | 低 |
 | 导入时是否满足 ACID | 否 | 否 | 是 |
@@ -33,7 +33,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 
 # TiDB Lightning Local-Backend
 
-NOTE: Local-backend 只支持 v4.0.0 以上的集群
+NOTE: Local-backend 特性在 TiDB v4.0.3 发布，你需要使用 v4.0.3及以上的 tidb-lightning 才包含此特性。另外 Local-backend 只支持 v4.0.0 以上的集群
 
 ## 部署 Local-backend
 
