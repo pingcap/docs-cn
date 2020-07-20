@@ -50,8 +50,6 @@ TiDB 版本：4.0.3
 ## 改进提升
 
 + TiDB
-
-  
   - 增加全局变量 `tidb_log_desensitization` 来控制在日志中记录 SQL 时是否脱敏. [#18581](https://github.com/pingcap/tidb/pull/18581)
   - 默认打开 `tidb_allow_batch_cop` [#18552](https://github.com/pingcap/tidb/pull/18552)
   - 加速 `kill tidb sesesion_id` 的执行速度 [#18505](https://github.com/pingcap/tidb/pull/18505)
