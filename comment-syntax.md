@@ -1,6 +1,5 @@
 ---
 title: 注释语法
-category: reference
 summary: 本文介绍 TiDB 支持的注释语法。
 aliases: ['/docs-cn/v3.0/reference/sql/language-structure/comment-syntax/','/docs-cn/sql/comment-syntax/']
 ---

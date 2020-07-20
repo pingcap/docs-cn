@@ -1,6 +1,5 @@
 ---
 title: TiKV Control 使用说明
-category: reference
 aliases: ['/docs-cn/v3.0/reference/tools/tikv-control/']
 ---
 

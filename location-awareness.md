@@ -1,6 +1,5 @@
 ---
 title: 集群拓扑信息配置
-category: how-to
 aliases: ['/docs-cn/v3.0/how-to/deploy/geographic-redundancy/location-awareness/','/docs-cn/op-guide/location-awareness/']
 ---
 

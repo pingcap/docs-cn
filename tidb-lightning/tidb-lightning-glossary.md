@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 术语表
 summary: 了解 TiDB Lightning 相关的术语及定义。
-category: glossary
 aliases: ['/docs-cn/v3.0/reference/tools/tidb-lightning/glossary/']
 ---
 
@@ -34,12 +33,6 @@ aliases: ['/docs-cn/v3.0/reference/tools/tidb-lightning/glossary/']
 也称作 Back end（后端），用于接受 TiDB Lightning 解析结果。
 
 详情参阅 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)。
-
-### Black-white list
-
-黑白名单配置列表。用于指定要导入、忽略哪些表和库。
-
-详情参阅 [TiDB Lightning 表库过滤](/tidb-lightning/tidb-lightning-table-filter.md)。
 
 <!-- C -->
 
@@ -104,6 +97,16 @@ TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。Lightning 先�
 引擎使用 TiKV Importer 的 `import-dir` 作为临时存储，有时也会被称为引擎文件 (engine files)。
 
 另见[数据引擎](#data-engine)和[索引引擎](#index-engine)。
+
+<!-- F -->
+
+## F
+
+### Filter
+
+配置列表，用于指定需要导入或不允许导入的表。
+
+详情见[表库过滤](/table-filter.md)。
 
 <!-- I -->
 
