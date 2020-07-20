@@ -146,7 +146,7 @@ To remove one or more expressions from the blocklist, perform the following step
 
 In the following example, the `<` and `>` operators are added to the blocklist, and then the `>` operator is removed from the blocklist.
 
-To judge whether the blocklist takes effect, observe the results of `EXPLAIN` (See [Optimize SQL statements using `EXPLAIN`](/query-execution-plan.md#optimize-sql-statements-using-explain)).
+To judge whether the blocklist takes effect, observe the results of `EXPLAIN` (See [Optimize SQL statements using `EXPLAIN`](/query-execution-plan.md#explain-overview)).
 
 1. The predicates `a < 2` and `a > 2` in the `WHERE` clause of the following SQL statement can be pushed down to TiKV.
 

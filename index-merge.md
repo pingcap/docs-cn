@@ -30,13 +30,13 @@ explain select * from t where a = 1 or b = 1;
 In the above query, the filter condition is a `WHERE` clause that uses `OR` as the connector. Because you can use only one index per table, `a = 1` cannot be pushed down to the index `a`; neither can `b = 1` be pushed down to the index `b`. To ensure that the result is correct, the execution plan of `TableScan` is generated for the query:
 
 ```
-+---------------------+----------+-----------+------------------------------------------------------------+
-| id                  | count    | task      | operator info                                              |
-+---------------------+----------+-----------+------------------------------------------------------------+
-| TableReader_7       | 8000.00  | root      | data:Selection_6                                           |
-| └─Selection_6       | 8000.00  | cop[tikv] | or(eq(test.t.a, 1), eq(test.t.b, 1))                       |
-|   └─TableScan_5     | 10000.00 | cop[tikv] | table:t, range:[-inf,+inf], keep order:false, stats:pseudo |
-+---------------------+----------+-----------+------------------------------------------------------------+
++-------------------------+----------+-----------+---------------+--------------------------------------+
+| id                      | estRows  | task      | access object | operator info                        |
++-------------------------+----------+-----------+---------------+--------------------------------------+
+| TableReader_7           | 8000.00  | root      |               | data:Selection_6                     |
+| └─Selection_6           | 8000.00  | cop[tikv] |               | or(eq(test.t.a, 1), eq(test.t.b, 1)) |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo       |
++-------------------------+----------+-----------+---------------+--------------------------------------+
 ```
 
 The full table scan is inefficient when a huge volume of data exists in `t`, but the query returns only two rows at most. To handle such a scenario, `IndexMerge` is introduced in TiDB to access tables.
@@ -46,14 +46,14 @@ The full table scan is inefficient when a huge volume of data exists in `t`, but
 `IndexMerge` allows the optimizer to use multiple indexes per table, and merge the results returned by each index before further operation. Take the [above query](#applicable-scenarios) as an example, the generated execution plan is shown as follows:
 
 ```
-+--------------------+-------+-----------+---------------------------------------------------------------+
-| id                 | count | task      | operator info                                                 |
-+--------------------+-------+-----------+---------------------------------------------------------------+
-| IndexMerge_11      | 2.00  | root      |                                                               |
-| ├─IndexScan_8      | 1.00  | cop[tikv] | table:t, index:a, range:[1,1], keep order:false, stats:pseudo |
-| ├─IndexScan_9      | 1.00  | cop[tikv] | table:t, index:b, range:[1,1], keep order:false, stats:pseudo |
-| └─TableScan_10     | 2.00  | cop[tikv] | table:t, keep order:false, stats:pseudo                       |
-+--------------------+-------+-----------+---------------------------------------------------------------+
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| id                             | estRows | task      | access object       | operator info                               |
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| IndexMerge_11                  | 2.00    | root      |                     |                                             |
+| ├─IndexRangeScan_8(Build)      | 1.00    | cop[tikv] | table:t, index:a(a) | range:[1,1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_9(Build)      | 1.00    | cop[tikv] | table:t, index:b(b) | range:[1,1], keep order:false, stats:pseudo |
+| └─TableRowIDScan_10(Probe)     | 2.00    | cop[tikv] | table:t             | keep order:false, stats:pseudo              |
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
 ```
 
 The structure of the `IndexMerge` execution plan is similar to that of the `IndexLookUp`, both of which consist of index scans and full table scans. However, the index scan part of `IndexMerge` might include multiple `IndexScan`s. When the primary key index of the table is the integer type, index scans might even include `TableScan`. For example:
@@ -75,14 +75,14 @@ explain select * from t where a = 1 or b = 1;
 ```
 
 ```
-+--------------------+-------+-----------+---------------------------------------------------------------+
-| id                 | count | task      | operator info                                                 |
-+--------------------+-------+-----------+---------------------------------------------------------------+
-| IndexMerge_11      | 2.00  | root      |                                                               |
-| ├─TableScan_8      | 1.00  | cop[tikv] | table:t, range:[1,1], keep order:false, stats:pseudo          |
-| ├─IndexScan_9      | 1.00  | cop[tikv] | table:t, index:b, range:[1,1], keep order:false, stats:pseudo |
-| └─TableScan_10     | 2.00  | cop[tikv] | table:t, keep order:false, stats:pseudo                       |
-+--------------------+-------+-----------+---------------------------------------------------------------+
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| id                             | estRows | task      | access object       | operator info                               |
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| IndexMerge_11                  | 2.00    | root      |                     |                                             |
+| ├─TableRangeScan_8(Build)      | 1.00    | cop[tikv] | table:t             | range:[1,1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_9(Build)      | 1.00    | cop[tikv] | table:t, index:b(b) | range:[1,1], keep order:false, stats:pseudo |
+| └─TableRowIDScan_10(Probe)     | 2.00    | cop[tikv] | table:t             | keep order:false, stats:pseudo              |
++--------------------------------+---------+-----------+---------------------+---------------------------------------------+
 4 rows in set (0.01 sec)
 ```
 
