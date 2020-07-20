@@ -39,8 +39,6 @@
     + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
     + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
     + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
-    + [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
-    + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
   + [概述](/migration-overview.md)
@@ -65,8 +63,10 @@
     + 使用 BR 工具（推荐）
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+      + [BR 存储](/br/backup-and-restore-storages.md)
     + [使用 Dumpling 和 TiDB Lightning 进行备份与恢复（推荐）](/backup-and-restore-using-dumpling-lightning.md)
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
+  + [读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
@@ -180,7 +180,7 @@
     + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     + 主要功能
       + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      + [表库过滤](/tidb-lightning/tidb-lightning-table-filter.md)
+      + [表库过滤](/table-filter.md)
       + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       + [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
@@ -217,6 +217,7 @@
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
     + [生成自签名证书](/generate-self-signed-certificates.md)
+    + [静态加密](/encryption-at-rest.md)
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     + [权限管理](/privilege-management.md)
@@ -244,6 +245,7 @@
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
+      - [`BACKUP`](/sql-statements/sql-statement-backup.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
       - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
@@ -289,6 +291,7 @@
       - [`RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
+      - [`RESTORE`](/sql-statements/sql-statement-restore.md)
       - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
       - [`ROLLBACK`](/sql-statements/sql-statement-rollback.md)
       - [`SELECT`](/sql-statements/sql-statement-select.md)
@@ -297,6 +300,7 @@
       - [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md)
       - [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
       - [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md)
       - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
@@ -470,6 +474,7 @@
   + [迁移 FAQ](/faq/migration-tidb-faq.md)
 + [术语表](/glossary.md)
 + 版本发布历史
+  + [TiDB V4.0 Roadmap](/roadmap.md)
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
     - [4.0.2](/releases/release-4.0.2.md)

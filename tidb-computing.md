@@ -1,7 +1,6 @@
 ---
 title: TiDB 数据库的计算
 summary: 了解 TiDB 数据库的计算层。
-category: introduction
 ---
 
 # TiDB 数据库的计算

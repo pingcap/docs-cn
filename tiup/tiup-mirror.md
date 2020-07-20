@@ -1,6 +1,5 @@
 ---
 title: 搭建私有镜像
-category: tools
 aliases: ['/docs-cn/stable/tiup/tiup-mirrors/','/docs-cn/stable/reference/tools/tiup/mirror/']
 ---
 

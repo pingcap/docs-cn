@@ -1,7 +1,6 @@
 ---
 title: TiDB 集群报警规则
 summary: TiDB 集群中各组件的报警规则详解。
-category: reference
 aliases: ['/docs-cn/stable/reference/alert-rules/']
 ---
 

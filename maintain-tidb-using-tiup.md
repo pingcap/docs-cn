@@ -1,6 +1,5 @@
 ---
 title: TiUP 常见运维操作
-category: how-to
 aliases: ['/docs-cn/stable/how-to/maintain/tiup-operations/']
 ---
 

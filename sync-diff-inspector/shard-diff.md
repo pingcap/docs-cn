@@ -1,6 +1,5 @@
 ---
 title: 分库分表场景下的数据校验
-category: tools
 aliases: ['/docs-cn/stable/reference/tools/sync-diff-inspector/shard-diff/']
 ---
 

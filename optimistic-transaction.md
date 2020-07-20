@@ -1,7 +1,6 @@
 ---
 title: TiDB 乐观事务模型
 summary: 了解 TiDB 的乐观事务模型。
-category: reference
 aliases: ['/docs-cn/stable/reference/transactions/transaction-optimistic/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: 数值函数与操作符
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/numeric-functions-and-operators/']
 ---
 

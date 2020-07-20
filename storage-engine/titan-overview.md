@@ -1,6 +1,5 @@
 ---
 title: Titan 介绍
-category: reference
 aliases: ['/docs-cn/stable/reference/titan/overview/']
 ---
 

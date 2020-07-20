@@ -1,6 +1,5 @@
 ---
 title: 错误码与故障诊断
-category: reference
 aliases: ['/docs-cn/stable/reference/error-codes/']
 ---
 

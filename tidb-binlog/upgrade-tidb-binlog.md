@@ -1,6 +1,5 @@
 ---
 title: TiDB Binlog 版本升级方法
-category: reference
 aliases: ['/docs-cn/stable/reference/tidb-binlog/upgrade/']
 ---
 

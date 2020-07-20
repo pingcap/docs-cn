@@ -1,7 +1,6 @@
 ---
 title: TiDB Dashboard SQL 语句分析执行详情页面
 summary: 查看单个 SQL 语句执行的详细情况
-category: how-to
 aliases: ['/docs-cn/stable/dashboard/dashboard-statement-detail/']
 ---
 

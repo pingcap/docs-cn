@@ -1,6 +1,5 @@
 ---
 title: TiFlash 性能调优
-category: reference
 aliases: ['/docs-cn/stable/reference/tiflash/tune-performance/']
 ---
 

@@ -1,15 +1,14 @@
 ---
 title: 与 MySQL 兼容性对比
 summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出详细的对比。
-category: reference
 aliases: ['/docs-cn/stable/reference/mysql-compatibility/']
 ---
 
 # 与 MySQL 兼容性对比概览
 
-- TiDB 100% 兼容 MySQL5.7 协议、MySQL5.7 常用的功能及语法，MySQL5.7 生态中系统的工具（PHPMyAdmin, Navicat, MySQL Workbench、mysqldump、Mydumper/myloader）、客户端等均用于 TiDB。
+- TiDB 100% 兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均用于 TiDB。
 
-- TiDB 是一款分布式数据库， MySQL5.7 中的部分特性由于工程实现难较大，投入产出比较低等多种原因在 TiDB 未能实现或者仅兼容语法但功能并没有实现，因此使用过程中请特别注意。例如：`CREATE TABLE` 语句中 `ENGINE`，仅兼容语法功能并没有实现，因此 TiDB 中没有 `ENGINE` 这类的概念。
+- 由于 TiDB 是一款分布式数据库，MySQL 5.7 中的部分特性因工程实现难度较大，投入产出比较低等多种原因在 TiDB 中未能实现或者仅兼容语法但功能并没有实现，因此使用过程中请特别注意。例如：`CREATE TABLE` 语句中 `ENGINE`，仅兼容语法，功能并没有实现，因此 TiDB 中没有 `ENGINE` 这类的概念。
 
 > **注意：**
 >
@@ -42,15 +41,15 @@ aliases: ['/docs-cn/stable/reference/mysql-compatibility/']
 
 - TiDB 的自增列仅保证自增且唯一、但不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
 
-- TiDB 在工程实现上会在每一个 tidb-server 实例上缓存一段 ID 的值用于给表的自增列分配值，缓存 ID 的个数由表的 `AUTO_ID_CACHE` 确定，默认值：30000，请特别注意：自增列和`_tidb_rowid`都会消耗缓存的 ID，如果 `INSERT` 语句中所要求的连续的 ID 个数大于 `AUTO_ID_CACHE` 的值时系统会自动调整 `AUTO_ID_CACHE` 的值以确保该语句能正常执行。
+- TiDB 在工程实现上会在每一个 tidb-server 实例上缓存一段 ID 的值用于给表的自增列分配值，缓存 ID 的个数由表的 `AUTO_ID_CACHE` 确定，默认值：`30000`。请特别注意：自增列和 `_tidb_rowid`都会消耗缓存的 ID。如果 `INSERT` 语句中所要求的连续的 ID 个数大于 `AUTO_ID_CACHE` 的值时系统会自动调整 `AUTO_ID_CACHE` 的值以确保该语句能正常执行。
 
-- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性，删除列属性的语法是：`alter table modify` 或 `alter table change` 。
+- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change` 。
 
 > **注意：**
 >
 > * `tidb_allow_remove_auto_inc` 要求版本号 >= v2.1.18 或者 >= v3.0.4。
 > * 表的 `AUTO_ID_CACHE` 属性要求版本号 >= v3.0.14 或者 >= v3.1.2 或者 >= v4.0.rc-2。
-> * 若创建表时没有指定主键时， TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
+> * 若创建表时没有指定主键时，TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
 
 ```sql
 mysql> create table t(id int unique key AUTO_INCREMENT);
@@ -73,7 +72,7 @@ mysql> select _tidb_rowid, id from t;
 
 ### Performance schema
 
-- TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标，故 Performance schema 部分表是空表。
+- TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标，所以 Performance schema 部分表是空表。
 
 ### 查询计划
 
@@ -96,12 +95,12 @@ mysql> select _tidb_rowid, id from t;
     + 不支持删除主键列及索引列，可能输出的错误信息：`Unsupported drop integer primary key/column a with index covered`。
     
 - Drop Primary Key
-    + 仅支持删除建表时启用了 `alter-primary-key` 配置项的表的主键,可能输出的错误信息: `Unsupported drop primary key when alter-primary-key is false`。
+    + 仅支持删除建表时启用了 `alter-primary-key` 配置项的表的主键。可能输出的错误信息: `Unsupported drop primary key when alter-primary-key is false`。
     
 - Order By 忽略所有列排序相关的选项。
 
 - Change/Modify Column
-    + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`，可能输出的错误信息：`length %d is less than origin %d`
+    + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`，可能输出的错误信息：`length %d is less than origin %d`。
     + 不支持修改 `DECIMAL` 类型的精度，可能输出的错误信息：`can't change decimal column precision`。
     + 不支持更改 `UNSIGNED` 属性，可能输出的错误信息：`can't change unsigned integer to signed or vice versa`。
     + 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
@@ -123,7 +122,7 @@ mysql> select _tidb_rowid, id from t;
     + `SECONDARY_ENGINE`
     + `ENCRYPTION`
 
-- Table Partition 分区类型支持 Hash、Range；支持 Add/Drop/Truncate/Coalese；忽略其他分区操作，可能错误信息：`Warning: Unsupported partition type, treat as normal table`，不支持以下语法:
+- Table Partition 分区类型支持 Hash、Range；支持 Add/Drop/Truncate/Coalesce；忽略其他分区操作，可能错误信息：`Warning: Unsupported partition type, treat as normal table`，不支持以下语法:
     + `PARTITION BY LIST`
     + `PARTITION BY KEY`
     + `SUBPARTITION`
@@ -143,7 +142,7 @@ mysql> select _tidb_rowid, id from t;
 
 ### SQL 模式
 
-- 不支持兼容模式，例如： `ORACLE` 和 `POSTGRESQL`，MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`，MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
 
 - `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
 
@@ -166,19 +165,19 @@ mysql> select _tidb_rowid, id from t;
     + MySQL 5.7 默认： `ON`。
 
 - SQL mode：
-    + TiDB 默认： `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
+    + TiDB 默认： `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
     + MySQL 5.7 默认 与 TiDB 相同。
     + MySQL 8.0 默认 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION`。
 
 - `lower_case_table_names`：
-    + TiDB 默认： 2，且仅支持设置该值为 2。
+    + TiDB 默认：`2`，且仅支持设置该值为 `2`。
     + MySQL 默认如下：
-        - Linux 系统中该值为 0
-        - Windows 系统中该值为 1
-        - macOS 系统中该值为 2
+        - Linux 系统中该值为 `0`
+        - Windows 系统中该值为 `1`
+        - macOS 系统中该值为 `2`
 
 - `explicit_defaults_for_timestamp`：
-    + TiDB 默认： `ON`，且仅支持设置该值为 `ON`。
+    + TiDB 默认：`ON`，且仅支持设置该值为 `ON`。
     + MySQL 5.7 默认：`OFF`。
     + MySQL 8.0 默认：`ON`。
 

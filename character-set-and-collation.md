@@ -1,6 +1,5 @@
 ---
 title: 字符集和排序规则
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/characterset-and-collation/','/docs-cn/stable/reference/sql/character-set/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: PD Recover 使用文档
-category: reference
 aliases: ['/docs-cn/stable/reference/tools/pd-recover/']
 ---
 
