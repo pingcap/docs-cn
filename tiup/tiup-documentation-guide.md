@@ -1,6 +1,5 @@
 ---
 title: TiUP 文档指南
-category: tools
 ---
 
 # TiUP 文档指南

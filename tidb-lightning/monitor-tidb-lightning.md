@@ -1,6 +1,5 @@
 ---
 title: TiDB Lightning 监控告警
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/monitor/']
 ---
 

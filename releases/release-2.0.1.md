@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0.1 release notes
-category: Releases
 aliases: ['/docs-cn/dev/releases/201/']
 ---
 <!-- markdownlint-disable MD001 -->

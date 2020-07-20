@@ -1,6 +1,5 @@
 ---
 title: SQL 性能调优
-category: performance
 ---
 
 # SQL 性能调优

@@ -1,6 +1,5 @@
 ---
 title: TiDB Lightning 简介
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/overview/','/docs-cn/tools/lightning/overview-architecture/']
 ---
 
