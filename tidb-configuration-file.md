@@ -1,6 +1,5 @@
 ---
 title: TiDB 配置文件描述
-category: reference
 aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
@@ -48,10 +47,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 `tmp-storage-path` 的剩余可用容量低于 `tmp-storage-quota` 所定义的值时，TiDB server 启动时将会报出错误并退出。
 
 ### `oom-action`
-
-> **注意：**
->
-> 该功能目前会对写入过程中的内存进行统计，为实验特性，对于希望依赖该特性取消写入操作的用户，不建议在生产环境中将其配置为 `cancel`。
 
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
 + 默认值："cancel"（注：v4.0.2 及之前的版本中，默认值为 "log"）
