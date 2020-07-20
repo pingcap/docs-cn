@@ -1,6 +1,7 @@
 ---
 title: 表达式语法
 summary: 本文列出 TiDB 的表达式语法。
+aliases: ['/docs-cn/dev/reference/sql/language-structure/expression-syntax/']
 ---
 
 # 表达式语法 (Expression Syntax)
