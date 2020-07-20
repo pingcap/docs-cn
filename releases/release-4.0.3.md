@@ -82,6 +82,7 @@ TiDB 版本：4.0.3
 + TiFlash
 
     - 将 Grafana DDL Jobs 面板中的单位修改为 Operations per Minute. [#923](https://github.com/pingcap/tics/pull/923)
+    - 在 Grafana 中新增关于 TiFlash-Proxy 的详细监控指标面板. [#923](https://github.com/pingcap/tics/pull/923)
     - 降低 TiFlash Proxy 的 IOPS [#856](https://github.com/pingcap/tics/pull/856)
 
 + TiCDC
