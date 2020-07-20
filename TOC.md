@@ -193,6 +193,7 @@
 + Reference
   + Cluster Architecture
     + [Overview](/tidb-architecture.md)
+    + [Storage](/tidb-storage.md)
   + Key Monitoring Metrics
     + [Overview](/grafana-overview-dashboard.md)
     + [TiDB](/grafana-tidb-dashboard.md)
