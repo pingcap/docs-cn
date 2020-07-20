@@ -105,7 +105,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
 #### 锁被清除 (LockNotFound) 错误
 
-TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](/tidb-specific-system-variables.md#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
+TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](/system-variables.md#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
 
 你可以通过如下两种途径来查看 LockNotFound 报错信息：
 
