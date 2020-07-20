@@ -6,63 +6,32 @@ aliases: ['/docs/dev/expression-syntax/','/docs/dev/reference/sql/language-struc
 
 # Expression Syntax
 
-The following rules define the expression syntax in TiDB. You can find the definition in `parser/parser.y`. The syntax parsing in TiDB is based on Yacc.
+An expression is a combination of one or more values, operators, or functions. In TiDB, expressions are mainly used in various clauses of the `SELECT` statement, including Group by clause, Where clause, Having clause, Join condition and window function. In addition, some DDL statements also use expressions, such as the setting of the default values, columns, and partition rules when creating tables.
 
-```
-Expression:
-      singleAtIdentifier assignmentEq Expression
-    | Expression logOr Expression
-    | Expression "XOR" Expression
-    | Expression logAnd Expression
-    | "NOT" Expression
-    | Factor IsOrNotOp trueKwd
-    | Factor IsOrNotOp falseKwd
-    | Factor IsOrNotOp "UNKNOWN"
-    | Factor
+The expressions can be divided into the following types:
 
-Factor:
-      Factor IsOrNotOp "NULL"
-    | Factor CompareOp PredicateExpr
-    | Factor CompareOp singleAtIdentifier assignmentEq PredicateExpr
-    | Factor CompareOp AnyOrAll SubSelect
-    | PredicateExpr
+- Identifier. For reference, see [Schema object names](/schema-object-names.md).
 
-PredicateExpr:
-      PrimaryFactor InOrNotOp '(' ExpressionList ')'
-    | PrimaryFactor InOrNotOp SubSelect
-    | PrimaryFactor BetweenOrNotOp PrimaryFactor "AND" PredicateExpr
-    | PrimaryFactor LikeOrNotOp PrimaryExpression LikeEscapeOpt
-    | PrimaryFactor RegexpOrNotOp PrimaryExpression
-    | PrimaryFactor
+- Predicates, numeric values, strings, date expressions. The [Literal values](/literal-values.md) of these types are also expressions.
 
-PrimaryFactor:
-      PrimaryFactor '|' PrimaryFactor
-    | PrimaryFactor '&' PrimaryFactor
-    | PrimaryFactor "<<" PrimaryFactor
-    | PrimaryFactor ">>" PrimaryFactor
-    | PrimaryFactor '+' PrimaryFactor
-    | PrimaryFactor '-' PrimaryFactor
-    | PrimaryFactor '*' PrimaryFactor
-    | PrimaryFactor '/' PrimaryFactor
-    | PrimaryFactor '%' PrimaryFactor
-    | PrimaryFactor "DIV" PrimaryFactor
-    | PrimaryFactor "MOD" PrimaryFactor
-    | PrimaryFactor '^' PrimaryFactor
-    | PrimaryExpression
+- Function calls and window functions. For reference, see [Functions and operators overview](/functions-and-operators/functions-and-operators-overview.md) and [Window functions](/functions-and-operators/window-functions.md)
 
-PrimaryExpression:
-      Operand
-    | FunctionCallKeyword
-    | FunctionCallNonKeyword
-    | FunctionCallAgg
-    | FunctionCallGeneric
-    | Identifier jss stringLit
-    | Identifier juss stringLit
-    | SubSelect
-    | '!' PrimaryExpression
-    | '~'  PrimaryExpression
-    | '-' PrimaryExpression
-    | '+' PrimaryExpression
-    | "BINARY" PrimaryExpression
-    | PrimaryExpression "COLLATE" StringName
-```
+- ParamMarker (`?`), system variables, user variables and CASE expressions.
+
+The following rules are the expression syntax, which is based on the [parser.y](https://github.com/pingcap/parser/blob/master/parser.y) rules of TiDB parser. For the navigable version of the following syntax diagram, refer to [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/#Expression).
+
+**Expression:**
+
+![Expression](/media/sqlgram/Expression.png)
+
+**PredicateExpr:**
+
+![PredicateExpr](/media/sqlgram/PredicateExpr.png)
+
+**BitExpr:**
+
+![BitExpr](/media/sqlgram/BitExpr.png)
+
+**SimpleExpr:**
+
+![SimpleExpr](/media/sqlgram/SimpleExpr.png)
