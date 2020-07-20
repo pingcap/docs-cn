@@ -14,7 +14,7 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 
 ## Functions that create JSON values
 
-| Function Name and Syntactic Sugar | Description |
+| Function Name                     | Description |
 | --------------------------------- | ----------- |
 | [JSON_ARRAY([val[, val] ...])][json_array]  | Evaluates a (possibly empty) list of values and returns a JSON array containing those values |
 | [JSON_OBJECT(key, val[, key, val] ...)][json_object]   | Evaluates a (possibly empty) list of key-value pairs and returns a JSON object containing those pairs  |
@@ -22,22 +22,23 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 
 ## Functions that search JSON values
 
-| Function Name and Syntactic Sugar | Description |
+| Function Name                     | Description |
 | --------------------------------- | ----------- |
 | [JSON_CONTAINS(target, candidate[, path])][json_contains] | Indicates by returning 1 or 0 whether a given candidate JSON document is contained within a target JSON document |
 | [JSON_CONTAINS_PATH(json_doc, one_or_all, path[, path] ...)][json_contains_path] | Returns 0 or 1 to indicate whether a JSON document contains data at a given path or paths |
 | [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract]| Returns data from a JSON document, selected from the parts of the document matched by the `path` arguments |
-| [->][json_short_extract]  | Returns the value from a JSON column after the evaluating path; the syntactic sugar of `JSON_EXTRACT(doc, path_literal)`   |
-| [->>][json_short_extract_unquote]  | Returns the value from a JSON column after the evaluating path and unquoting the result; the syntactic sugar of `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` |
+| [->][json_short_extract]  | Returns the value from a JSON column after the evaluating path; an alias for `JSON_EXTRACT(doc, path_literal)`   |
+| [->>][json_short_extract_unquote]  | Returns the value from a JSON column after the evaluating path and unquoting the result; an alias for `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` |
 | [JSON_KEYS(json_doc[, path])][json_keys] | Returns the keys from the top-level value of a JSON object as a JSON array, or, if a path argument is given, the top-level keys from the selected path |
 | [JSON_SEARCH(json_doc, one_or_all, search_string)][json_search] | Search a JSON document for one or all matches of a string |
 
 ## Functions that modify JSON values
 
-| Function Name and Syntactic Sugar | Description |
+| Function Name                     | Description |
 | --------------------------------- | ----------- |
 | [JSON_APPEND(json_doc, path, value)][json_append] | An alias to `JSON_ARRAY_APPEND` |
 | [JSON_ARRAY_APPEND(json_doc, path, value)][json_array_append] | Appends a value to the end of a JSON array at a specified path |
+| [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)][json_array_insert] | Inserts an array into the json document and returns the modified document |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert] | Inserts data into a JSON document and returns the result |
 | [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | A deprecated alias for `JSON_MERGE_PRESERVE` |
 | [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)][json_merge_preserve]  | Merges two or more JSON documents and returns the merged result |
@@ -50,12 +51,24 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 
 ## Functions that return JSON value attributes
 
-| Function Name and Syntactic Sugar | Description |
+| Function Name                     | Description |
 | --------------------------------- | ----------- |
 | [JSON_DEPTH(json_doc)][json_depth] | Returns the maximum depth of a JSON document |
 | [JSON_LENGTH(json_doc[, path])][json_length] | Returns the length of a JSON document, or, if a path argument is given, the length of the value within the path |
 | [JSON_TYPE(json_val)][json_type] | Returns a string indicating the type of a JSON value |
-| [JSON_VALID(json_val)][json_valid] | Returns 0 or 1 to indicate whether a value is valid JSON |
+| [JSON_VALID(json_doc)][json_valid] | Checks if a json_doc is valid JSON. Useful for checking a column before converting it to the json type. |
+
+## Utility Functions
+
+| Function Name                     | Description |
+| --------------------------------- | ----------- |
+| [JSON_STORAGE_SIZE(json_doc)][json_storage_size] | Returns an approximate size of bytes required to store the json value. As the size does not account for TiKV using compression, the output of this function is not strictly compatible with MySQL. |
+
+## Aggregate Functions
+
+| Function Name                     | Description |
+| --------------------------------- | ----------- |
+| [JSON_OBJECTAGG(key, value)][json_objectagg] | Provides an aggregation of values for a given key. |
 
 ## Unsupported functions
 
@@ -63,9 +76,12 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 
 * `JSON_MERGE_PATCH`
 * `JSON_PRETTY`
-* `JSON_STORAGE_SIZE`
 * `JSON_ARRAYAGG`
-* `JSON_OBJECTAGG`
+
+## See also
+
+* [JSON Function Reference](https://dev.mysql.com/doc/refman/5.7/en/json-function-reference.html)
+* [JSON Data Type](/data-type-json.md)
 
 [json_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract
 [json_short_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#operator_json-column-path
@@ -92,4 +108,3 @@ The following JSON functions are unsupported in TiDB. You can track the progress
 [json_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append
 [json_array_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append
 [json_array_insert]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert
-[json_search]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-search
