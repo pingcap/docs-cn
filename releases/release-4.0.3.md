@@ -143,14 +143,15 @@ TiDB 版本：4.0.3
 
 + Tools
 
-    + Backup & Restore (BR)
-
-        - 解决了备份汇总报告中时间为负数的问题 [#405](https://github.com/pingcap/br/pull/405)
     + TiCDC
 
         - 解决了某些场景下可能发生的 OOM 问题 [#704](https://github.com/pingcap/ticdc/pull/704)
         - 解决了某些特殊表名可能导致 SQL 语法出错的问题 [#676](https://github.com/pingcap/ticdc/pull/676)
         - 解决了同步任务处理单元无法正常退出的问题 [#693](https://github.com/pingcap/ticdc/pull/693)
+
+    + Backup & Restore (BR)
+
+        - 解决了备份汇总报告中时间为负数的问题 [#405](https://github.com/pingcap/br/pull/405)
 
     + Dumpling
 
