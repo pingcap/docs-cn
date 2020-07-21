@@ -14,7 +14,7 @@ TiDB 版本：4.0.3
 
     - 显示详细的 TiDB Dashboard 版本信息 [#679](https://github.com/pingcap-incubator/tidb-dashboard/pull/679)
     - 显示不受支持的浏览器或过时的浏览器的兼容性通知 [#654](https://github.com/pingcap-incubator/tidb-dashboard/pull/654)
-    - 支持在 SQL 语句分析页面搜索 [#658](https://github.com/pingcap-incubator/tidb-dashboard/pull/658)
+    - 支持在 **SQL 语句**分析页面搜索 [#658](https://github.com/pingcap-incubator/tidb-dashboard/pull/658)
 
 + TiFlash
 
