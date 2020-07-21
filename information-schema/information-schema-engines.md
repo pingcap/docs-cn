@@ -48,6 +48,6 @@ The description of columns in the `ENGINES` table is as follows:
 * `ENGINES`: The name of the storage engine.
 * `SUPPORT`: The level of support that the server has on the storage engine. In TiDB, the value is always `DEFAULT`.
 * `COMMENT`: The brief comment on the storage engine.
-* `TRANSACTIONS`：Whether the storage engine supports transactions.
+* `TRANSACTIONS`: Whether the storage engine supports transactions.
 * `XA`: Whether the storage engine supports XA transactions.
 * `SAVEPOINTS`: Whether the storage engine supports `savepoints`.

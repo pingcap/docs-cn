@@ -45,3 +45,16 @@ WHERE
  AND peer.is_leader = 1
  AND peer.store_id = tikv.store_id;
  ```
+
+ Fields in the `TIKV_REGION_PEERS` table are described as follows:
+
+* REGION_ID: The Region ID.
+* PEER_ID: The ID of the Region peer.
+* STORE_ID: The ID of the TiKV store where the Region is located.
+* IS_LEARNER: Whether the peer is learner.
+* IS_LEADER: Whether the peer is leader.
+* STATUS: The statuses of a peer:
+    * PENDING: Temporarily unavailable.
+    * DOWN: Offline and converted. This peer no longer provides service.
+    * NORMAL: Running normally.
+* DOWN_SECONDS: The duration of being offline, in seconds.

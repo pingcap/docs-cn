@@ -54,9 +54,21 @@ SELECT * FROM processlist\G
    STATE: autocommit
     INFO: SELECT * FROM processlist
      MEM: 0
-TxnStart: 
+TxnStart:
 1 row in set (0.00 sec)
 ```
+
+Fields in the `PROCESSLIST` table are described as follows:
+
+* ID: The ID of the user connection.
+* USER: The name of the user who is executing `PROCESS`.
+* HOST: The address that the user is connecting to.
+* DB: The name of the currently connected default database.
+* COMMAND: The command type that `PROCESS` is executing.
+* TIME: The current execution duration of `PROCESS`, in seconds.
+* STATE: The current connection state.
+* INFO: The requested statement that is being processed.
+* MEM: The memory used by the request that is being processed, in bytes.
 
 ## CLUSTER_PROCESSLIST
 
@@ -65,10 +77,10 @@ TxnStart:
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM cluster_processlist;
+SELECT * FROM information_schema.cluster_processlist;
 ```
 
-```
+```sql
 +-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
 | INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
 +-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+

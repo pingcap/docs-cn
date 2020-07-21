@@ -77,7 +77,7 @@ The description of columns in the `KEY_COLUMN_USAGE` table is as follows:
 * `CONSTRAINT_NAME`: The name of the constraint.
 * `TABLE_CATALOG`: The name of the catalog to which the table belongs. The value is always `def`.
 * `TABLE_SCHEMA`: The name of the schema to which the table belongs.
-* `TABLE_NAME`: The name of the table with constraints. 
+* `TABLE_NAME`: The name of the table with constraints.
 * `COLUMN_NAME`: The name of the column with constraints.
 * `ORDINAL_POSITION`: The position of the column in the constraint, rather than in the table. The position number starts from `1`.
 * `POSITION_IN_UNIQUE_CONSTRAINT`: The unique constraint and the primary key constraint are empty. For foreign key constraints, this column is the position of the referenced table's key.

@@ -45,3 +45,11 @@ SELECT * FROM SCHEMATA;
 +--------------+--------------------+----------------------------+------------------------+----------+
 5 rows in set (0.00 sec)
 ```
+
+Fields in the `SCHEMATA` table are described as follows:
+
+* `CATALOG_NAME`: The catalog to which the database belongs.
+* `SCHEMA_NAME`: The database name.
+* `DEFAULT_CHARACTER_SET_NAME`: The default character set of the database.
+* `DEFAULT_COLLATION_NAME`: The default collation of the database.
+* `SQL_PATH`: The value of this item is always `NULL`.
