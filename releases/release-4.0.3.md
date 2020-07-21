@@ -28,7 +28,7 @@ TiDB 版本：4.0.3
 
     - 支持支持 sink-uri 中配置 Kafka 客户端的 ID [#706](https://github.com/pingcap/ticdc/pull/706)
     - 支持离线更新同步任务的配置 [#699](https://github.com/pingcap/ticdc/pull/699)
-    - 支持支持同步任务的 ID [#727](https://github.com/pingcap/ticdc/pull/727)
+    - 支持自定义同步任务的 ID [#727](https://github.com/pingcap/ticdc/pull/727)
     - 支持使用 SSL 加密链接向 MySQL 输出数据 [#347](https://github.com/pingcap/ticdc/pull/347)
     - 支持输出 Avro 格式的变更数据 [#753](https://github.com/pingcap/ticdc/pull/753)
     - 支持向 Apache Pulsar 输出变更数据 [#751](https://github.com/pingcap/ticdc/pull/751)
