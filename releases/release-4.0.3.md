@@ -155,4 +155,4 @@ TiDB 版本：4.0.3
 
     + TiDB Binlog
 
-       - 修复开启 TLS 写下游时用来保存 checkpoint 的 DB 没有开启 TLS 导致无法启动的问题 [#988](https://github.com/pingcap/tidb-binlog/pull/988)
+        - 修复开启 TLS 写下游时用来保存 checkpoint 的 DB 没有开启 TLS 导致无法启动的问题 [#988](https://github.com/pingcap/tidb-binlog/pull/988)
