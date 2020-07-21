@@ -545,11 +545,7 @@ sync-ddl = true
 
 ### 环形同步使用说明
 
-<<<<<<< HEAD
-1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形复制功能使用到的标记表。
-=======
 1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形同步功能使用到的标记表。
->>>>>>> 3e4d75f... ticdc: correct command line for cyclic replication (#3922)
 2. 开启环形复制的数据表只包含 [a-zA-Z0-9_] 字符。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
