@@ -1,6 +1,5 @@
 ---
 title: TiUP 故障排查
-category: tools
 ---
 
 # TiUP 故障排查

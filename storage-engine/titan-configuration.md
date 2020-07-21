@@ -1,6 +1,5 @@
 ---
 title: Titan 配置
-category: reference
 aliases: ['/docs-cn/dev/reference/titan/configuration/']
 ---
 

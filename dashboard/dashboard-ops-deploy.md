@@ -1,6 +1,5 @@
 ---
 title: 部署 TiDB Dashboard
-category: how-to
 ---
 
 # 部署 TiDB Dashboard

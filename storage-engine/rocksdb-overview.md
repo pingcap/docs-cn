@@ -1,6 +1,5 @@
 ---
 title: RocksDB 简介
-category: reference
 ---
 
 # RocksDB 简介
