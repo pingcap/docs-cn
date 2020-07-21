@@ -106,6 +106,8 @@ TiDB 版本：4.0.3
     - 修复数据落盘为正确生效导致的内存溢出 [#18288](https://github.com/pingcap/tidb/pull/18288)
     - 修复 `REPLACE INTO` 语句作用在包含生成列的表时会错误报错的问题 [#17907](https://github.com/pingcap/tidb/pull/17907)
     - 当 `IndexHashJoin` 及 `IndexMergeJoin` 执行异常时抛出 `Out Of Memory Quota!` 错误 [#18527](https://github.com/pingcap/tidb/pull/18527)
+    - 修复当 `Index Join` 使用的索引包含整型主键时，特殊情况下执行结果可能出错的问题 [#18565](https://github.com/pingcap/tidb/pull/18565)
+    - 修复当开启 new collation 时，若在事务内的更新涉及了 new collation 列，并在该事务内通过唯一索引读取更新数据时，被更新的数据无法被读取到的问题 [#18703](https://github.com/pingcap/tidb/pull/18703)
 
 + TiKV
 
