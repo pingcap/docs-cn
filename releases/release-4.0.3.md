@@ -47,7 +47,6 @@ TiDB 版本：4.0.3
     - 增加全局变量 `tidb_log_desensitization` 来控制在日志中记录 SQL 时是否脱敏 [#18581](https://github.com/pingcap/tidb/pull/18581)
     - 默认打开 `tidb_allow_batch_cop` [#18552](https://github.com/pingcap/tidb/pull/18552)
     - 加速 `kill tidb sesesion_id` 的执行速度 [#18505](https://github.com/pingcap/tidb/pull/18505)
-    - 将内存超过限制时 TiDB 的默认行为改为 `OOMActionCancel` [#18502](https://github.com/pingcap/tidb/pull/18502)
     - 函数 `tidb_decode_plan` 的结果增加表头输出 [#18501](https://github.com/pingcap/tidb/pull/18501)
     - 配置检查器可以兼容旧版本的配置文件 [#18046](https://github.com/pingcap/tidb/pull/18046)
     - 插入负值的整型主键时，不会触发自增 ID 的重新分配 [#17987](https://github.com/pingcap/tidb/pull/17987)
@@ -145,6 +144,11 @@ TiDB 版本：4.0.3
     + Backup & Restore (BR)
 
         - 解决了备份汇总报告中时间为负数的问题 [#405](https://github.com/pingcap/br/pull/405)
+    + TiCDC
+
+        - 解决了某些场景下可能发生的 OOM 问题 [#704](https://github.com/pingcap/ticdc/pull/704)
+        - 解决了某些特殊表名可能导致 SQL 语法出错的问题 [#676](https://github.com/pingcap/ticdc/pull/676)
+        - 解决了同步任务处理单元无法正常退出的问题 [#693](https://github.com/pingcap/ticdc/pull/693)
 
     + Dumpling
 
