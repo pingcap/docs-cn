@@ -997,21 +997,14 @@ Statement OPS 只统计 select、update、insert 等业务相关的，所以 Sta
 
 ## 八、云上部署
 
-### 8.1 腾讯云
+### 8.1 公有云
 
-<<<<<<< HEAD
-#### 8.1.1 目前 Cloud TiDB 都有那些云厂商？
-=======
 #### 8.1.1 目前 TiDB 云上部署都支持哪些云厂商？
->>>>>>> 8b6f19a... faq: update descriptions about deploying TiDB on cloud (#4006)
 
 关于云上部署，TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和 [阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
 
-<<<<<<< HEAD
-=======
 此外，TiDB 云上部署也已在京东云、UCloud 上线，均为数据库一级入口，欢迎大家使用。
 
->>>>>>> 8b6f19a... faq: update descriptions about deploying TiDB on cloud (#4006)
 ## 九、故障排除
 
 ### 9.1 TiDB 自定义报错汇总
