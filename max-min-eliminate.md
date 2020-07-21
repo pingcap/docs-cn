@@ -1,6 +1,5 @@
 ---
 title: Max/Min 函数消除规则
-category: reference
 aliases: ['/docs-cn/dev/reference/performance/max-min-eliminate/']
 ---
 
@@ -10,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/performance/max-min-eliminate/']
 
 根据 `select` 语句中 `max`/`min` 函数的个数，这一优化规则有以下两种表现形式：
 
-+ [存在多个 max/min 函数时的优化规则](#存在多个-maxmin-函数时的优化规则)
++ [只有一个 max/min 函数时的优化规则](#只有一个-maxmin-函数时的优化规则)
 + [存在多个 max/min 函数时的优化规则](#存在多个-maxmin-函数时的优化规则)
 
 ## 只有一个 max/min 函数时的优化规则

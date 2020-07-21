@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 概况页面
-category: how-to
 ---
 
 # TiDB Dashboard 概况页面
