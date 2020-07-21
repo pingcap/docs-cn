@@ -10,7 +10,7 @@ title: 使用 TiUP 离线部署 TiDB 集群
 
 ### 方式一：下载官方 TiUP 离线组件包
 
-在 [官方下载页面](https://pingcap.com/download) 选择对应版本的离线镜像包。
+在 [官方下载页面](https://pingcap.com/download-cn/) 选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
 
 ### 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包
 
