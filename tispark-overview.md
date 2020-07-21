@@ -230,6 +230,10 @@ df.write
 
 It is recommended to set `isolationLevel` to `NONE` to avoid large single transactions which might potentially lead to TiDB OOM.
 
+> **Note:**
+>
+> When you use JDBC, the default value of `isolationLevel` is `READ_UNCOMMITTED`, which causes the error of unsupported isolation level transactions. It is recommended to set the value of `isolationLevel` to `NONE`.
+
 ## Statistics information
 
 TiSpark uses TiDB statistic information for the following items:
