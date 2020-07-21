@@ -62,7 +62,7 @@ The fields in the table above are described as follows:
 
 #### Cluster Topology Info
 
-The `Cluster Info` table shows the cluster topology information. The information in this table are from TiDB [information_schema.cluster_info](/system-tables/system-table-cluster-info.md) system table.
+The `Cluster Info` table shows the cluster topology information. The information in this table are from TiDB [information_schema.cluster_info](/information-schema/information-schema-cluster-info.md) system table.
 
 ![Cluster info](/media/dashboard/dashboard-diagnostics-cluster-info.png)
 
@@ -78,7 +78,7 @@ The fields in the table above are described as follows:
 
 ### Diagnostic information
 
-TiDB has built-in automatic diagnostic results. For the description of each field, see [information_schema.inspection-result](/system-tables/system-table-inspection-result.md) system table.
+TiDB has built-in automatic diagnostic results. For the description of each field, see [information_schema.inspection-result](/information-schema/information-schema-inspection-result.md) system table.
 
 ### Load Info
 

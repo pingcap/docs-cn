@@ -106,7 +106,7 @@ TiKV Coprocessor Task fields:
 
 ## Memory mapping in slow log
 
-You can query the content of the slow query log by querying the `INFORMATION_SCHEMA.SLOW_QUERY` table. Each column name in the table corresponds to one field name in the slow log. For table structure, see the introduction to the `SLOW_QUERY` table in [Information Schema](/system-tables/system-table-information-schema.md#information-schema).
+You can query the content of the slow query log by querying the `INFORMATION_SCHEMA.SLOW_QUERY` table. Each column name in the table corresponds to one field name in the slow log. For table structure, see the introduction to the `SLOW_QUERY` table in [Information Schema](/information-schema/information-schema-slow-query.md).
 
 > **Note:**
 >
@@ -158,7 +158,7 @@ For TiDB 4.0, `SLOW_QUERY` supports querying the slow log of any period of time,
 >
 > If the slow log files of the specified time range are removed, or there is no slow query, the query returns NULL.
 
-TiDB 4.0 adds the [`CLUSTER_SLOW_QUERY`](/system-tables/system-table-information-schema.md#cluster_slow_query-table) system table to query the slow query information of all TiDB nodes. The table schema of the `CLUSTER_SLOW_QUERY` table differs from that of the `SLOW_QUERY` table in that an `INSTANCE` column is added to `CLUSTER_SLOW_QUERY`. The `INSTANCE` column represents the TiDB node address of the row information on the slow query. You can use `CLUSTER_SLOW_QUERY` the way you do with [`SLOW_QUERY`](/system-tables/system-table-information-schema.md#slow_query-table).
+TiDB 4.0 adds the [`CLUSTER_SLOW_QUERY`](/information-schema/information-schema-slow-query.md#cluster_slow_query-table) system table to query the slow query information of all TiDB nodes. The table schema of the `CLUSTER_SLOW_QUERY` table differs from that of the `SLOW_QUERY` table in that an `INSTANCE` column is added to `CLUSTER_SLOW_QUERY`. The `INSTANCE` column represents the TiDB node address of the row information on the slow query. You can use `CLUSTER_SLOW_QUERY` the way you do with [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md).
 
 When you query the `CLUSTER_SLOW_QUERY` table, TiDB pushes the computation and the judgment down to other nodes, instead of retrieving all slow query information from other nodes and executing the operations on one TiDB node.
 

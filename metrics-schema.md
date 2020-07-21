@@ -1,14 +1,102 @@
 ---
 title: Metrics Schema
 summary: Learn the `METRICS_SCHEMA` schema.
-aliases: ['/docs/dev/system-tables/system-table-metrics-schema/','/docs/dev/reference/system-databases/metrics-schema/']
+aliases: ['/docs/dev/system-tables/system-table-metrics-schema/','/docs/dev/reference/system-databases/metrics-schema/','/tidb/dev/system-table-metrics-schema/']
 ---
 
 # Metrics Schema
 
-To dynamically observe and compare cluster conditions of different time ranges, the SQL diagnostic system introduces cluster monitoring system tables. All monitoring tables are in the `metrics_schema` database. You can query the monitoring information using SQL statements in this schema. The data of the three monitoring-related summary tables ([`metrics_summary`](/system-tables/system-table-metrics-summary.md), [`metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md), and `inspection_result`) are all obtained by querying the monitoring tables in the metrics schema. Currently, many system tables are added, so you can query the information of these tables using the [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md) table.
+The `METRICS_SCHEMA` is a set of views on top of TiDB metrics that are stored in Prometheus. The source of the PromQL (Prometheus Query Language) for each of the tables is available in [`INFORMATION_SCHEMA.METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md).
 
-## Overview
+{{< copyable "sql" >}}
+
+```sql
+use metrics_schema;
+SELECT * FROM uptime;
+SELECT * FROM information_schema.metrics_tables WHERE table_name='uptime'\G
+```
+
+```sql
++----------------------------+-----------------+------------+--------------------+
+| time                       | instance        | job        | value              |
++----------------------------+-----------------+------------+--------------------+
+| 2020-07-06 15:26:26.203000 | 127.0.0.1:10080 | tidb       | 123.60300016403198 |
+| 2020-07-06 15:27:26.203000 | 127.0.0.1:10080 | tidb       | 183.60300016403198 |
+| 2020-07-06 15:26:26.203000 | 127.0.0.1:20180 | tikv       | 123.60300016403198 |
+| 2020-07-06 15:27:26.203000 | 127.0.0.1:20180 | tikv       | 183.60300016403198 |
+| 2020-07-06 15:26:26.203000 | 127.0.0.1:2379  | pd         | 123.60300016403198 |
+| 2020-07-06 15:27:26.203000 | 127.0.0.1:2379  | pd         | 183.60300016403198 |
+| 2020-07-06 15:26:26.203000 | 127.0.0.1:9090  | prometheus | 123.72300004959106 |
+| 2020-07-06 15:27:26.203000 | 127.0.0.1:9090  | prometheus | 183.72300004959106 |
++----------------------------+-----------------+------------+--------------------+
+8 rows in set (0.00 sec)
+
+*************************** 1. row ***************************
+TABLE_NAME: uptime
+    PROMQL: (time() - process_start_time_seconds{$LABEL_CONDITIONS})
+    LABELS: instance,job
+  QUANTILE: 0
+   COMMENT: TiDB uptime since last restart(second)
+1 row in set (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show tables;
+```
+
+```sql
++---------------------------------------------------+
+| Tables_in_metrics_schema                          |
++---------------------------------------------------+
+| abnormal_stores                                   |
+| etcd_disk_wal_fsync_rate                          |
+| etcd_wal_fsync_duration                           |
+| etcd_wal_fsync_total_count                        |
+| etcd_wal_fsync_total_time                         |
+| go_gc_count                                       |
+| go_gc_cpu_usage                                   |
+| go_gc_duration                                    |
+| go_heap_mem_usage                                 |
+| go_threads                                        |
+| goroutines_count                                  |
+| node_cpu_usage                                    |
+| node_disk_available_size                          |
+| node_disk_io_util                                 |
+| node_disk_iops                                    |
+| node_disk_read_latency                            |
+| node_disk_size                                    |
+..
+| tikv_storage_async_request_total_time             |
+| tikv_storage_async_requests                       |
+| tikv_storage_async_requests_total_count           |
+| tikv_storage_command_ops                          |
+| tikv_store_size                                   |
+| tikv_thread_cpu                                   |
+| tikv_thread_nonvoluntary_context_switches         |
+| tikv_thread_voluntary_context_switches            |
+| tikv_threads_io                                   |
+| tikv_threads_state                                |
+| tikv_total_keys                                   |
+| tikv_wal_sync_duration                            |
+| tikv_wal_sync_max_duration                        |
+| tikv_worker_handled_tasks                         |
+| tikv_worker_handled_tasks_total_num               |
+| tikv_worker_pending_tasks                         |
+| tikv_worker_pending_tasks_total_num               |
+| tikv_write_stall_avg_duration                     |
+| tikv_write_stall_max_duration                     |
+| tikv_write_stall_reason                           |
+| up                                                |
+| uptime                                            |
++---------------------------------------------------+
+626 rows in set (0.00 sec)
+```
+
+The `METRICS_SCHEMA` is used as a data source for monitoring-related summary tables such as ([`metrics_summary`](/information-schema/information-schema-metrics-summary.md), [`metrics_summary_by_label`](/information-schema/information-schema-metrics-summary.md) and [`inspection_summary`](/information-schema/information-schema-inspection-summary.md).
+
+## Additional Examples
 
 Taking the `tidb_query_duration` monitoring table in `metrics_schema` as an example, this section illustrates how to use this monitoring table and how it works. The working principles of other monitoring tables are similar to `tidb_query_duration`.
 

@@ -46,4 +46,4 @@ show analyze status;
 
 ## See also
 
-* [ANALYZE_STATUS table](/system-tables/system-table-information-schema.md#analyze_status-table)
+* [ANALYZE_STATUS table](/information-schema/information-schema-analyze-status.md)

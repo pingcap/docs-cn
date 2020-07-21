@@ -1,0 +1,47 @@
+---
+title: TIKV_REGION_PEERS
+summary: Learn the `TIKV_REGION_PEERS` information_schema table.
+---
+
+# TIKV_REGION_PEERS
+
+The `TIKV_REGION_PEERS` table shows detailed information of a single Region node in TiKV, such as whether it is a learner or leader.
+
+{{< copyable "sql" >}}
+
+```sql
+USE information_schema;
+DESC tikv_region_peers;
+```
+
+```
++--------------+-------------+------+------+---------+-------+
+| Field        | Type        | Null | Key  | Default | Extra |
++--------------+-------------+------+------+---------+-------+
+| REGION_ID    | bigint(21)  | YES  |      | NULL    |       |
+| PEER_ID      | bigint(21)  | YES  |      | NULL    |       |
+| STORE_ID     | bigint(21)  | YES  |      | NULL    |       |
+| IS_LEARNER   | tinyint(1)  | NO   |      | 0       |       |
+| IS_LEADER    | tinyint(1)  | NO   |      | 0       |       |
+| STATUS       | varchar(10) | YES  |      | 0       |       |
+| DOWN_SECONDS | bigint(21)  | YES  |      | 0       |       |
++--------------+-------------+------+------+---------+-------+
+7 rows in set (0.01 sec)
+```
+
+For example, you can query the specific TiKV addresses for the top 3 Regions with the maximum value of `WRITTEN_BYTES` using the following SQL statement:
+
+```sql
+SELECT
+ address,
+ tikv.address,
+ region.region_id
+FROM
+ tikv_store_status tikv,
+ tikv_region_peers peer,
+ (SELECT * FROM tikv_region_status ORDER BY written_bytes DESC LIMIT 3) region
+WHERE
+  region.region_id = peer.region_id
+ AND peer.is_leader = 1
+ AND peer.store_id = tikv.store_id;
+ ```
