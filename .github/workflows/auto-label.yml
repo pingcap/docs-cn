@@ -1,10 +1,11 @@
-name: Auto Label
-on:
-  pull_request:
-    branches:
-      - master
-    types: [opened]
+# name: Auto Label
+# on:
+#   pull_request:
+#     branches:
+#       - master
+#     types: [opened]
 
+<<<<<<< HEAD
 jobs:
   auto-label:
     name: Auto Label
@@ -14,3 +15,14 @@ jobs:
       - uses: banyan/auto-label@1.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+=======
+# jobs:
+#   auto-label:
+#     name: Auto Label
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: banyan/auto-label@1.2
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+>>>>>>> f90f655... disable 3 github actions (#4007)
