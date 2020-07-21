@@ -1,6 +1,5 @@
 ---
 title: 理解 TiDB 执行计划
-category: performance
 aliases: ['/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/']
 ---
 
@@ -342,7 +341,7 @@ mysql> EXPLAIN SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = 
 
 ## 优化实例
 
-使用 [bikeshare example database](https://pingcap.com/docs/dev/how-to/get-started/import-example-database/):
+使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/import-example-data.md):
 
 {{< copyable "sql" >}}
 

@@ -1,7 +1,6 @@
 ---
 title: 混合部署拓扑
 summary: 介绍混合部署 TiDB 集群的拓扑结构。
-category: how-to
 ---
 
 # 混合部署拓扑

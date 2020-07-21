@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 集群诊断页面
-category: how-to
 ---
 
 # TiDB Dashboard 集群诊断页面
