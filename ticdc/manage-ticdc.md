@@ -543,12 +543,16 @@ sync-ddl = true
         --cyclic-sync-ddl false
     ```
 
-### 环形同步使用限制
+### 环形同步使用说明
 
+<<<<<<< HEAD
 1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形复制功能使用到的标记表。
+=======
+1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形同步功能使用到的标记表。
+>>>>>>> 3e4d75f... ticdc: correct command line for cyclic replication (#3922)
 2. 开启环形复制的数据表只包含 [a-zA-Z0-9_] 字符。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
 5. 如果想在线 DDL，需要确保以下两点：
-    1. 多个集群的 CDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 CDC 关闭了 sync-ddl。
+    1. 多个集群的 TiCDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 TiCDC 关闭了 `sync-ddl`。
     2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
