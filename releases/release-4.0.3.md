@@ -28,7 +28,7 @@ TiDB 版本：4.0.3
 
     + TiCDC
 
-        - 支持支持 sink-uri 中配置 Kafka 客户端的 ID [#706](https://github.com/pingcap/ticdc/pull/706)
+        - 支持 sink-uri 中配置 Kafka 客户端的 ID [#706](https://github.com/pingcap/ticdc/pull/706)
         - 支持离线更新同步任务的配置 [#699](https://github.com/pingcap/ticdc/pull/699)
         - 支持自定义同步任务的 ID [#727](https://github.com/pingcap/ticdc/pull/727)
         - 支持使用 SSL 加密链接向 MySQL 输出数据 [#347](https://github.com/pingcap/ticdc/pull/347)
@@ -73,7 +73,7 @@ TiDB 版本：4.0.3
 
 + TiFlash
 
-    - 将 Grafana **DDL Jobs** 面板中的单位修改为 `Operations per Minute`
+    - 将 Grafana **DDL Jobs** 面板中的单位修改为 `operations per minute`
     - 在 Grafana 中新增关于 **TiFlash-Proxy** 的详细监控指标面板
     - 降低 TiFlash Proxy 的 IOPS
 
@@ -99,13 +99,13 @@ TiDB 版本：4.0.3
 
     - 当 `IndexHashJoin` 遇到执行中发生非内存相关的错误时，返回错误而不是空结果集 [#18586](https://github.com/pingcap/tidb/pull/18586)
     - 修复 gRPC transportReader 导致的反复异常 [#18562](https://github.com/pingcap/tidb/pull/18562)
-    - 修复因为 green GCFix 不会扫描已下线 store 上的锁而可能导致数据不完整的问题 [#18550](https://github.com/pingcap/tidb/pull/18550)
+    - 修复因为 Green GC 不会扫描已下线 store 上的锁而可能导致数据不完整的问题 [#18550](https://github.com/pingcap/tidb/pull/18550)
     - 非只读语句不会使用 TiFlash 引擎 [#18534](https://github.com/pingcap/tidb/pull/18534)
     - 当查询连接异常时返回真实的错误信息 [#18500](https://github.com/pingcap/tidb/pull/18500)
     - 修复非 repair mode 的 TiDB 节点不会重新读取修复的表元信息的错误 [#18323](https://github.com/pingcap/tidb/pull/18323)
     - 修复当锁住的 primary key 在当前事务被插入/删除时可能造成的结果不一致问题 [#18291](https://github.com/pingcap/tidb/pull/18291)
     - 修复数据落盘为正确生效导致的内存溢出 [#18288](https://github.com/pingcap/tidb/pull/18288)
-    - 修复 REPLACE INTO 语句作用在包含生成列的表时会错误报错的问题 [#17907](https://github.com/pingcap/tidb/pull/17907)
+    - 修复 `REPLACE INTO` 语句作用在包含生成列的表时会错误报错的问题 [#17907](https://github.com/pingcap/tidb/pull/17907)
     - 当 `IndexJoinExecutor` 执行异常时抛出 `Out Of Memory Quota!` 错误 [#18527](https://github.com/pingcap/tidb/pull/18527)
 
 + TiKV
@@ -115,7 +115,7 @@ TiDB 版本：4.0.3
 
 + PD
 
-    - 修复如果服务器崩溃，创建 TSO 流可能会阻塞一段时间的问题 [#2648](https://github.com/pingcap/pd/pull/2648)
+    - 修复如果服务器崩溃，创建 TSO 流可能会被阻塞一段时间的问题 [#2648](https://github.com/pingcap/pd/pull/2648)
     - 修复 `getSchedulers` 可能导致数据争用的问题 [#2638](https://github.com/pingcap/pd/pull/2638)
     - 修复删除 `scheduler` 时导致死锁的问题 [#2637](https://github.com/pingcap/pd/pull/2637)
     - 修复 `balance-leader-scheduler` 没有考虑 placement rule 的问题 [#2636](https://github.com/pingcap/pd/pull/2636)
@@ -157,4 +157,4 @@ TiDB 版本：4.0.3
 
     + TiDB Binlog
 
-        - 修复开启 TLS 写下游时用来保存 checkpoint 的 DB 没有开启 TLS 导致无法启动的问题 [#988](https://github.com/pingcap/tidb-binlog/pull/988)
+        - 修复开启 TLS 写下游时用来保存 checkpoint 的 DB 没有开启 TLS 导致 Drainer 无法启动的问题 [#988](https://github.com/pingcap/tidb-binlog/pull/988)
