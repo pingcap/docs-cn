@@ -47,3 +47,9 @@ SELECT * FROM session_variables ORDER BY variable_name LIMIT 10;
 +-----------------------------------+------------------+
 10 rows in set (0.00 sec)
 ```
+
+The description of columns in the `SESSION_VARIABLES` table is as follows:
+
+* `VARIABLE_NAME`: The name of the session-level variable in the database.
+* `VARIABLE_VALUE`: The value of the session-level
+variable in the database.

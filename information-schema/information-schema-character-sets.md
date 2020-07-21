@@ -44,3 +44,10 @@ SELECT * FROM `character_sets`;
 +--------------------+----------------------+---------------+--------+
 5 rows in set (0.00 sec)
 ```
+
+The description of columns in the `CHARACTER_SETS` table is as follows:
+
+* `CHARACTER_SET_NAME`: The name of the character set.
+* `DEFAULT_COLLATE_NAME` The default collation name of the character set.
+* `DESCRIPTION` The description of the character set.
+* `MAXLEN` The maximum length required to store a character in this character set.

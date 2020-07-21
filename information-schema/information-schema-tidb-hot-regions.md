@@ -32,5 +32,15 @@ DESC tidb_hot_regions;
 10 rows in set (0.00 sec)
 ```
 
-- `TABLE_ID` and `INDEX_ID` are IDs generated for the corresponding table and index in TiDB.
-- `TYPE` is the type for a hot Region. Its value can be `READ` or `WRITE`.
+The description of columns in the `TIDB_HOT_REGIONS` table is as follows:
+
+* `TABLE_ID`: ID of located.
+* `INDEX_ID`: ID of the table in which the hot Region is the index in which the hot Region is located.
+* `DB_NAME`: The database name of the object in which the hot Region is located.
+* `TABLE_NAME`: The name of the table in which the hot Region is located.
+* `INDEX_NAME`: The name of the index in which the hot Region is located.
+* `REGION_ID`: ID of the hot Region.
+* `TYPE`: The type of the hot Region.
+* `MAX_HOT_DEGREE`: The maximum hot degree of the Region.
+* `REGION_COUNT`: The number of Regions in the instance. 
+* `FLOW_BYTES`: The number of bytes written and read in the Region.

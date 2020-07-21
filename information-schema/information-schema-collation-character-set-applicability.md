@@ -38,3 +38,13 @@ SELECT * FROM collation_character_set_applicability WHERE character_set_name='ut
 +----------------+--------------------+
 1 row in set (0.00 sec)
 ```
+
++----------------+--------------------+
+| COLLATION_NAME | CHARACTER_SET_NAME |
+| utf8mb4_bin | utf8mb4 |
++----------------+--------------------+
+
+The description of columns in the `COLLATION_CHARACTER_SET_APPLICABILITY` table is as follows:
+
+* `COLLATION_NAME`: The name of the collation.
+* `CHARACTER_SET_NAME`: The name of the character set which the collation belongs to.

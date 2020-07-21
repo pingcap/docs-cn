@@ -91,6 +91,30 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
+The description of columns in the `TABLES` table is as follows:
+
+* `TABLE_CATALOG`: The name of the catalog which the table belongs to. The value is always `def`.
+* `TABLE_SCHEMA`: The name of the schema which the table belongs to.
+* `TABLE_NAME`: The name of the table.
+* `TABLE_TYPE`: The type of the table.
+* `ENGINE`: The type of the storage engine. The value is currently `InnoDB`.
+* `VERSION`: Version. The value is `10` by default.
+* `ROW_FORMAT`: The row format. The value is currently `Compact`.
+* `TABLE_ROWS`: The number of rows in the table in statistics.
+* `AVG_ROW_LENGTH`: The average row length of the table. `AVG_ROW_LENGTH` = `DATA_LENGTH` / `TABLE_ROWS`.
+* `DATA_LENGTH`: Data length. `DATA_LENGTH` = `TABLE_ROWS` \* the sum of storage lengths of the columns in the tuple. The replicas of TiKV are not taken into account.
+* `MAX_DATA_LENGTH`: The maximum data length. The value is currently `0`, which means the data length has no upper limit.
+* `INDEX_LENGTH`: The index length. `INDEX_LENGTH` = `TABLE_ROWS` \* the sum of lengths of the columns in the index tuple. The replicas of TiKV are not taken into account.
+* `DATA_FREE`: Data fragment. The value is currently `0`.
+* `AUTO_INCREMENT`: The current step of the auto- increment primary key.
+* `CREATE_TIME`: The time at which the table is created.
+* `UPDATE_TIME`: The time at which the table is updated.
+* `CHECK_TIME`: The time at which the table is checked.
+* `TABLE_COLLATION`: The collation of strings in the table.
+* `CHECKSUM`: Checksum.
+* `CREATE_OPTIONS`: Creates options.
+* `TABLE_COMMENT`: The comments and notes of the table.
+
 Most of the information in the table is the same as MySQL. Only two columns are newly defined by TiDB:
 
 * `TIDB_TABLE_ID`: to indicate the internal ID of a table. This ID is unique in a TiDB cluster.

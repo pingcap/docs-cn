@@ -42,3 +42,17 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 +----------------+--------------------+------+------------+-------------+---------+
 1 row in set (0.00 sec)
 ```
+
+The description of columns in the `COLLATION` table is
+as follows:
+
+* `COLLATION_NAME`: The name of the collation.
+* `CHARACTER_SET_NAME`: The name of the character set
+which the collation belongs to.
+* `ID`: The ID of the collation.
+* `IS_DEFAULT`: Whether this collation is the default
+collation of the character set it belongs to.
+* `IS_COMPILED`: Whether the character set is compiled
+into the server.
+* `SORTLEN`: The minimum length of memory allocated when
+the collation sorts characters.
