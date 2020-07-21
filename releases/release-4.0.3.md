@@ -106,7 +106,7 @@ TiDB 版本：4.0.3
     - 修复当锁住的 primary key 在当前事务被插入/删除时可能造成的结果不一致问题 [#18291](https://github.com/pingcap/tidb/pull/18291)
     - 修复数据落盘为正确生效导致的内存溢出 [#18288](https://github.com/pingcap/tidb/pull/18288)
     - 修复 `REPLACE INTO` 语句作用在包含生成列的表时会错误报错的问题 [#17907](https://github.com/pingcap/tidb/pull/17907)
-    - 当 `IndexJoinExecutor` 执行异常时抛出 `Out Of Memory Quota!` 错误 [#18527](https://github.com/pingcap/tidb/pull/18527)
+    - 当 `IndexHashJoin` 及 `IndexMergeJoin` 执行异常时抛出 `Out Of Memory Quota!` 错误 [#18527](https://github.com/pingcap/tidb/pull/18527)
 
 + TiKV
 
