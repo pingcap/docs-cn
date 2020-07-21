@@ -1018,15 +1018,15 @@ QPS 会统计执行的所有 SQL 命令，包括 use database、load data、begi
 
 Statement OPS 只统计 select、update、insert 等业务相关的，所以 Statement OPS 的统计和业务比较相符。
 
-## 八、Cloud TiDB
+## 八、云上部署
 
 ### 8.1 公有云
 
-#### 8.1.1 目前 Cloud TiDB 都支持哪些云厂商？
+#### 8.1.1 目前 TiDB 云上部署都支持哪些云厂商？
 
-Cloud TiDB 目前已经在腾讯云、UCloud 上线，都是数据库一级入口，欢迎大家使用。
+TiDB 云上部署目前已经在腾讯云、UCloud 上线，都是数据库一级入口，欢迎大家使用。
 
-另外，Cloud TiDB 还支持在 [Google GKE](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)，[AWS EKS](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-aws-eks/) 和 [阿里云 ACK](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud/) 上部署使用。
+另外，TiDB 云上部署还支持在 [Google GKE](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)，[AWS EKS](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-aws-eks/) 和 [阿里云 ACK](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud/) 上部署使用。
 
 ## 九、故障排除
 
