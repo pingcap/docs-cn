@@ -1,7 +1,6 @@
 ---
 title: LOAD STATS
 summary: TiDB 数据库中 LOAD STATS 的使用概况。
-category: reference
 ---
 
 # LOAD STATS

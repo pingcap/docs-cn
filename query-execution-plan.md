@@ -1,6 +1,5 @@
 ---
 title: 理解 TiDB 执行计划
-category: performance
 aliases: ['/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: TiSpark 用户指南
-category: reference
 aliases: ['/docs-cn/dev/reference/tispark/']
 ---
 

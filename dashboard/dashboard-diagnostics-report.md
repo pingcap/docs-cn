@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 诊断报告
-category: how-to
 ---
 
 # TiDB Dashboard 诊断报告

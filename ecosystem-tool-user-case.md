@@ -1,6 +1,5 @@
 ---
 title: TiDB 生态工具适用场景
-category: reference
 summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择。
 ---
 

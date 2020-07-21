@@ -1,7 +1,6 @@
 ---
 title: TiKV 线程池性能调优
 summary: 了解 TiKV 线程池性能调优。
-category: reference
 ---
 
 # TiKV 线程池性能调优
