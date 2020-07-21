@@ -87,7 +87,7 @@ TiDB 版本：4.0.3
 
         - 支持输出 JSON 格式的日志 [#336](https://github.com/pingcap/br/issues/336)
         - 支持在运行 BR 期间动态开启 pprof [#372](https://github.com/pingcap/br/pull/372)
-        - 加速恢复的时 DDL 的执行速度 [#377](https://github.com/pingcap/br/pull/377)
+        - 加速恢复时 DDL 的执行速度 [#377](https://github.com/pingcap/br/pull/377)
 
     + TiDB Lightning
 
