@@ -484,8 +484,12 @@
   + [Table Filter](/table-filter.md)
 + FAQs
   + [TiDB FAQs](/faq/tidb-faq.md)
-  + [TiDB Lightning FAQs](/tidb-lightning/tidb-lightning-faq.md)
+  + [SQL FAQs](/faq/sql-faq.md)
+  + [Deploy and Maintain FAQs](/faq/deploy-and-maintain-faq.md)
   + [Upgrade FAQs](/faq/upgrade-faq.md)
+  + [High Availability FAQs](/faq/high-availability-faq.md)
+  + [High Reliability FAQs](/faq/high-reliability-faq.md)
+  + [Migration FAQs](/faq/migration-tidb-faq.md)
 + [Glossary](/glossary.md)
 + Release Notes
   + [All Releases](/releases/release-notes.md)

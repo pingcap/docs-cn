@@ -89,7 +89,7 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
 
         - Check the TiDB cluster information
 
-    - [Add the `auto_analyze_ratio` system variables to contorl the ratio of Analyze](/faq/tidb-faq.md#whats-the-trigger-strategy-for-auto-analyze-in-tidb)
+    - [Add the `auto_analyze_ratio` system variables to contorl the ratio of Analyze](/faq/sql-faq.md#whats-the-trigger-strategy-for-auto-analyze-in-tidb)
 
     - [Add the `tidb_retry_limit` system variable to control the automatic retry times of transactions](/system-variables.md#tidb_retry_limit)
 
