@@ -20,23 +20,25 @@ TiDB 版本：4.0.3
 
     - TiFlash proxy 支持文件加密功能
 
-+ Backup & Restore (BR)
++ Tools
 
-    - 支持使用 zstd、lz4、snappy 算法压缩备份文件 [#404](https://github.com/pingcap/br/pull/404)
+    + Backup & Restore (BR)
 
-+ TiCDC
+        - 支持使用 zstd、lz4、snappy 算法压缩备份文件 [#404](https://github.com/pingcap/br/pull/404)
 
-    - 支持支持 sink-uri 中配置 Kafka 客户端的 ID [#706](https://github.com/pingcap/ticdc/pull/706)
-    - 支持离线更新同步任务的配置 [#699](https://github.com/pingcap/ticdc/pull/699)
-    - 支持自定义同步任务的 ID [#727](https://github.com/pingcap/ticdc/pull/727)
-    - 支持使用 SSL 加密链接向 MySQL 输出数据 [#347](https://github.com/pingcap/ticdc/pull/347)
-    - 支持输出 Avro 格式的变更数据 [#753](https://github.com/pingcap/ticdc/pull/753)
-    - 支持向 Apache Pulsar 输出变更数据 [#751](https://github.com/pingcap/ticdc/pull/751)
+    + TiCDC
 
-+ Dumpling
+        - 支持支持 sink-uri 中配置 Kafka 客户端的 ID [#706](https://github.com/pingcap/ticdc/pull/706)
+        - 支持离线更新同步任务的配置 [#699](https://github.com/pingcap/ticdc/pull/699)
+        - 支持自定义同步任务的 ID [#727](https://github.com/pingcap/ticdc/pull/727)
+        - 支持使用 SSL 加密链接向 MySQL 输出数据 [#347](https://github.com/pingcap/ticdc/pull/347)
+        - 支持输出 Avro 格式的变更数据 [#753](https://github.com/pingcap/ticdc/pull/753)
+        - 支持向 Apache Pulsar 输出变更数据 [#751](https://github.com/pingcap/ticdc/pull/751)
 
-    - 支持自定义 CSV 文件的分隔符和换行符 [#116](https://github.com/pingcap/dumpling/pull/116)
-    - 支持自定义输出文件名格式 [#122](https://github.com/pingcap/dumpling/pull/122)
+    + Dumpling
+
+        - 支持自定义 CSV 文件的分隔符和换行符 [#116](https://github.com/pingcap/dumpling/pull/116)
+        - 支持自定义输出文件名格式 [#122](https://github.com/pingcap/dumpling/pull/122)
 
 ## 改进提升
 
