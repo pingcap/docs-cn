@@ -97,15 +97,15 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 [三篇文章了解 TiDB 技术内幕 - 谈调度](http://t.cn/RTKEZ0U)
 
-## 二、Cloud TiDB
+## 二、云上部署
 
 ### 2.1 公有云
 
-#### 2.1.1 目前 TiDB Cloud 都支持哪些云厂商？
+#### 2.1.1 目前 TiDB 云上部署都支持哪些云厂商？
 
-TiDB Cloud 目前已经在京东云、UCloud 上线，都是数据库一级入口，欢迎大家使用。
+关于云上部署，TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和 [阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
 
-另外，TiDB Cloud 还支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)，[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和 [阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
+此外，TiDB 云上部署也已在京东云、UCloud 上线，均为数据库一级入口，欢迎大家使用。
 
 ## 三、故障排除
 
