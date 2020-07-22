@@ -61,6 +61,10 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
 - `key`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 
+## 使用加密传输 (TLS) 功能
+
+请参阅[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
+
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
 以下内容介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
@@ -159,6 +163,9 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
     | `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
+    | `ca`       | 连接下游 KafKa 实例所需的 CA 证书文件路径（可选） |
+    | `cert`     | 连接下游 KafKa 实例所需的证书文件路径（可选） |
+    | `key`      | 连接下游 KafKa 实例所需的证书密钥文件路径（可选） |
 
 如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
 

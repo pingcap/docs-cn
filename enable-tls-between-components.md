@@ -138,7 +138,6 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
     ```
 
-<!--
 - TiCDC
 
     在启动命令行中设置：
@@ -148,7 +147,6 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
     ```bash
     cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
     ```
--->
 
 ## 证书重加载
 
