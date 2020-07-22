@@ -10,7 +10,6 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 - 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
     - 有更好的解决方案，例如 JSON 取代 XML 函数。
-    - 存在安全问题，例如 `SELECT INTO OUTFILE`。
     - 目前对这些功能缺乏有力的需求，例如存储流程和函数。
     - 一些功能在分布式系统上难以实现。
 
