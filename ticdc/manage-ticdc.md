@@ -1,6 +1,5 @@
 ---
 title: TiCDC 运维操作及任务管理
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/tools/ticdc/sink/','/docs-cn/dev/ticdc/sink-url/']
 ---
 
@@ -239,8 +238,8 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
 - `resolved-ts` 代表当前 changefeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
 - `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
 - `admin-job-type` 代表一个 changefeed 的状态：
-    - `0`: 状态正常，也是初始状态。
-    - `1`: 任务暂停。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+    - `0`: 状态正常。
+    - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
     - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
     - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
 
@@ -564,12 +563,12 @@ sync-ddl = true
         --cyclic-sync-ddl false
     ```
 
-### 环形同步使用限制
+### 环形同步使用说明
 
-1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形复制功能使用到的标记表。
+1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形同步功能使用到的标记表。
 2. 开启环形同步的数据表名字需要符合正则表达式 `^[a-zA-Z0-9_]+$`。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
 5. 如果想在线 DDL，需要确保以下两点：
-    1. 多个集群的 CDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 CDC 关闭了 sync-ddl。
+    1. 多个集群的 TiCDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 TiCDC 关闭了 `sync-ddl`。
     2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。

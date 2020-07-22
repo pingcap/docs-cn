@@ -1,7 +1,6 @@
 ---
 title: 两地三中心部署
 summary: 介绍两地三中心部署方式。
-category: how-to
 ---
 
 # 两地三中心部署

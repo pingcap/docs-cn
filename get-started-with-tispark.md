@@ -1,6 +1,5 @@
 ---
 title: TiSpark 快速上手
-category: how-to
 aliases: ['/docs-cn/dev/how-to/get-started/tispark/']
 ---
 

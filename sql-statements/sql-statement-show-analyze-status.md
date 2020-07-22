@@ -1,7 +1,6 @@
 ---
 title: SHOW ANALYZE STATUS
 summary: TiDB 数据库中 SHOW ANALYZE STATUS 的使用概况。
-category: reference
 ---
 
 # SHOW ANALYZE STATUS

@@ -1,7 +1,6 @@
 ---
 title: TiDB 整体架构
 summary: 了解 TiDB 的整体架构。
-category: introduction
 aliases: ['/docs-cn/dev/architecture/']
 ---
 
