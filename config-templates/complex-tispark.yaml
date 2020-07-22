@@ -93,6 +93,8 @@ tikv_servers:
 # production at present.
 # To use TiSpark, you need to manually install Java Runtime Environment (JRE) 8 on the
 # host, see the OpenJDK doc for a reference: https://openjdk.java.net/install/
+# If you have already installed JRE 1.8 at a location other than the default of system's
+# package management system, you may use the "java_home" field to set the JAVA_HOME variable.
 # NOTE: Only 1 master node is supported for now
 tispark_masters:
   - host: 10.0.1.21
@@ -100,6 +102,7 @@ tispark_masters:
     # port: 7077
     # web_port: 8080
     # deploy_dir: "/tidb-deploy/tispark-master-7077"
+    # java_home: "/usr/local/bin/java-1.8.0"
     # spark_config:
     #   spark.driver.memory: "2g"
     #   spark.eventLog.enabled: "False"
@@ -121,6 +124,7 @@ tispark_workers:
     # port: 7078
     # web_port: 8081
     # deploy_dir: "/tidb-deploy/tispark-worker-7078"
+    # java_home: "/usr/local/bin/java-1.8.0"
   - host: 10.0.1.23
 
 monitoring_servers:
