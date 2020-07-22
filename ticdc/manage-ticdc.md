@@ -163,9 +163,9 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
     | `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
-    | `ca`       | 连接下游 KafKa 实例所需的 CA 证书文件路径（可选） |
-    | `cert`     | 连接下游 KafKa 实例所需的证书文件路径（可选） |
-    | `key`      | 连接下游 KafKa 实例所需的证书密钥文件路径（可选） |
+    | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
+    | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
+    | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
 
 如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
 
