@@ -1061,12 +1061,12 @@ Configuration items related to `rocksdb.defaultcf.titan`
 ### `level-merge`
 
 + Determines whether to optimize the read performance. When `level-merge` is enabled, there is more write amplification.
-+ Default value: `true`
++ Default value: `false`
 
 ### `gc-merge-rewrite`
 
 + Determines whether to use the merge operator to write back blob indexes for Titan GC. When `gc-merge-rewrite` is enabled, it reduces the effect of Titan GC on the writes in the foreground.
-+ Default value: `true`
++ Default value: `false`
 
 ## rocksdb.writecf
 
