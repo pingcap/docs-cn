@@ -146,6 +146,7 @@
     + [BR Use Cases](/br/backup-and-restore-use-cases.md)
   + TiDB Binlog
     + [Overview](/tidb-binlog/tidb-binlog-overview.md)
+    + [Quick Start](/tidb-binlog/get-started-with-tidb-binlog.md)
     + [Deploy](/tidb-binlog/deploy-tidb-binlog.md)
     + [Maintain](/tidb-binlog/maintain-tidb-binlog-cluster.md)
     + [Configure](/tidb-binlog/tidb-binlog-configuration-file.md)
