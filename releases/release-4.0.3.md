@@ -4,7 +4,7 @@ title: TiDB 4.0.3 Release Notes
 
 # TiDB 4.0.3 Release Notes
 
-发版日期：2020 年 7 月 22 日
+发版日期：2020 年 7 月 24 日
 
 TiDB 版本：4.0.3
 
