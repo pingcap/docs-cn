@@ -115,6 +115,7 @@
       + Physical Optimization
         + [Index Selection](/choose-index.md)
         + [Statistics](/statistics.md)
+        + [Wrong Index Solution](/wrong-index-solution.md)
         + [Distinct Optimization](/agg-distinct-optimization.md)
       + [Prepare Execution Plan Cache](/sql-prepare-plan-cache.md)
       + Control Execution Plan
