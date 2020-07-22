@@ -66,6 +66,7 @@
       + [Use BR Tool](/br/backup-and-restore-tool.md)
       + [BR Use Cases](/br/backup-and-restore-use-cases.md)
       + [BR storages](/br/backup-and-restore-storages.md)
+  + [Read Historical Data](/read-historical-data.md)
   + [Configure Time Zone](/configure-time-zone.md)
   + [Daily Checklist](/daily-check.md)
   + [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md)
