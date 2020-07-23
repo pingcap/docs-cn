@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/reference/transactions/transaction-optimistic/','/docs-c
 
 本文介绍 TiDB 乐观事务的原理，以及相关特性。
 
-TiDB 默认使用乐观事务模型。对于写写冲突，只有事务提交时，才会通过两阶段提交检测是否存在写写冲突。
+TiDB的乐观事务模型只有在两阶段事务提交时才会检测是否存在写写冲突。
 
 > **注意：**
 >
