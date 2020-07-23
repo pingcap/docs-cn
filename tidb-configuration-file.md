@@ -65,7 +65,7 @@ The TiDB configuration file supports more options than command-line parameters. 
 
 ### `lower-case-table-names`
 
-- Configures the value of the `lower_case_table_names` system variable.
+- Configures the value of the `lower-case-table-names` system variable.
 - Default value: `2`
 - For details, see the [MySQL description](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names) of this variable.
 
