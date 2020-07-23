@@ -12,10 +12,6 @@ You can either use TiDB to read TiFlash replicas for medium-scale analytical pro
 - [Use TiDB to read TiFlash replicas](#use-tidb-to-read-tiflash-replicas)
 - [Use TiSpark to read TiFlash replicas](#use-tispark-to-read-tiflash-replicas)
 
-> **Note:**
->
-> If you [use TiDB to read TiFlash replicas](#use-tidb-to-read-tiflash-replicas) in a transaction that contains any write operation (for example, `SELECT ... FOR UPDATE` followed by `UPDATE ...`), currently the behavior is undefined. This restriction will be removed in later versions.
-
 ## Create TiFlash replicas for tables
 
 After TiFlash is connected to the TiKV cluster, data replication by default does not begin. You can send a DDL statement to TiDB through a MySQL client to create a TiFlash replica for a specific table:
@@ -190,6 +186,10 @@ If the table specified by a hint does not have a replica of the specified engine
 ### The relationship of smart selection, engine isolation, and manual hint
 
 In the above three ways of reading TiFlash replicas, engine isolation specifies the overall range of available replicas of engines; within this range, manual hint provides statement-level and table-level engine selection that is more fine-grained; finally, CBO makes the decision and selects a replica of an engine based on cost estimation within the specified engine list.
+
+> **Note:**
+>
+> Before v4.0.3, the behavior of reading from TiFlash replica in a non-read-only SQL statement (for example, `INSERT INTO ... SELECT`, `SELECT ... FOR UPDATE`, `UPDATE ...`, `DELETE ...`) is undefined. In v4.0.3 and later versions, internally TiDB ignores the TiFlash replica for a non-read-only SQL statement to guarantee the data correctness. That is, for [smart selection](#smart-selection), TiDB automatically chooses the non-TiFlash replica; for [engine isolation](#engine-isolation) that specifies TiFlash replica **only**, TiDB reports an error; and for [manual hint](#manual-hint), TiDB ignores the hint.
 
 ## Use TiSpark to read TiFlash replicas
 
