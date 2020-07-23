@@ -24,7 +24,7 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-variables/']
 
 ## 示例
 
-查看 TiDB 定义的专用系统变量，关于这些变量的含义参见 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
+查看 TiDB 定义的专用系统变量，关于这些变量的含义参见[系统变量和语法](/system-variables.md)。
 
 {{< copyable "sql" >}}
 
@@ -169,4 +169,4 @@ SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 
 ## 另请参阅
 
-* [SET](/sql-statements/sql-statement-set-variable.md)
+* [`SET [GLOBAL|SESSION]`](/sql-statements/sql-statement-set-variable.md)

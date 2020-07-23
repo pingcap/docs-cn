@@ -1,5 +1,5 @@
 ---
-title: SQL Mode
+title: SQL 模式
 aliases: ['/docs-cn/stable/reference/sql/sql-mode/']
 ---
 

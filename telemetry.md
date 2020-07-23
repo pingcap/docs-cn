@@ -153,7 +153,7 @@ enable-telemetry: false
 
 ### 动态禁用 TiDB 遥测
 
-对于已部署的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 动态禁用 TiDB 遥测功能：
+对于已部署的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 动态禁用 TiDB 遥测功能：
 
 {{< copyable "sql" >}}
 
