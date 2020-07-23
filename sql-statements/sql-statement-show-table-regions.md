@@ -57,43 +57,83 @@ Executing `SHOW TABLE REGIONS` returns the following columns:
 
 ## Examples
 
+Create an example table with enough data that fills a few Regions:
+
+{{< copyable "sql" >}}
+
 ```sql
-test> create table t (id int key,name varchar(50), index (name));
-Query OK, 0 rows affected
+CREATE TABLE t1 (
+ id INT NOT NULL PRIMARY KEY auto_increment,
+ b INT NOT NULL,
+ pad1 VARBINARY(1024),
+ pad2 VARBINARY(1024),
+ pad3 VARBINARY(1024)
+);
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM dual;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+SELECT SLEEP(5);
+SHOW TABLE t1 REGIONS;
 ```
 
-After a table is created, the table data is stored in a newly split Region by default. In this initial phase, all row data and index data of the table are written into this Region.
+The output should show that the table is split into Regions. The `REGION_ID`, `START_KEY` and `END_KEY` may not match exactly:
 
 ```sql
-test> show table t regions;
-+-----------+-----------+---------+-----------+-----------------+-----------+------------+---------------+------------+----------------------+------------------+
-| REGION_ID | START_KEY | END_KEY | LEADER_ID | LEADER_STORE_ID | PEERS     | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
-+-----------+-----------+---------+-----------+-----------------+-----------+------------+---------------+------------+----------------------+------------------+
-| 3         | t_43_     |         | 73        | 9               | 5, 73, 93 | 0          | 35            | 0          | 1                    | 0                |
-+-----------+-----------+---------+-----------+-----------------+-----------+------------+---------------+------------+----------------------+------------------+
-1 row in set
+...
+mysql> SHOW TABLE t1 REGIONS;
++-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+
+| REGION_ID | START_KEY    | END_KEY      | LEADER_ID | LEADER_STORE_ID | PEERS | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
++-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+
+|        94 | t_75_        | t_75_r_31717 |        95 |               1 | 95    |          0 |             0 |          0 |                  112 |           207465 |
+|        96 | t_75_r_31717 | t_75_r_63434 |        97 |               1 | 97    |          0 |             0 |          0 |                   97 |                0 |
+|         2 | t_75_r_63434 |              |         3 |               1 | 3     |          0 |     269323514 |   66346110 |                  245 |           162020 |
++-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+
+3 rows in set (0.00 sec)
 ```
 
-In the above result, `t_43_` is the value of `START_KEY` row. In this value, `t` is the table prefix and `43` is the table ID. The value of `END_KEY` row is empty (""), which means that it is an infinite value.
+In the output above, a `START_KEY` of `t_75_r_31717` and `END_KEY` of `t_75_r_63434` shows that data with a PRIMARY KEY between `31717` and `63434` is stored in this Region. The prefix `t_75_` indicates that this is the Region for a table (`t`) which has an internal table ID of `75`. An empty key value for `START_KEY` or `END_KEY` indicates negative infinity or positive infinity respectively.
 
-Use the `SPLIT TABLE REGION` statement to split row data into five Regions.
+TiDB automatically rebalances Regions as needed. For manual rebalancing, use the `SPLIT TABLE REGION` statement:
 
 ```sql
-test> split table t between (0) and (100000) regions 5;
+mysql> SPLIT TABLE t1 BETWEEN (31717) AND (63434) REGIONS 2;
 +--------------------+----------------------+
 | TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
 +--------------------+----------------------+
-| 5                  | 1.0                  |
+|                  1 |                    1 |
 +--------------------+----------------------+
+1 row in set (42.34 sec)
+
+mysql> SHOW TABLE t1 REGIONS;
++-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+
+| REGION_ID | START_KEY    | END_KEY      | LEADER_ID | LEADER_STORE_ID | PEERS | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
++-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+
+|        94 | t_75_        | t_75_r_31717 |        95 |               1 | 95    |          0 |             0 |          0 |                  112 |           207465 |
+|        98 | t_75_r_31717 | t_75_r_47575 |        99 |               1 | 99    |          0 |          1325 |          0 |                   53 |            12052 |
+|        96 | t_75_r_47575 | t_75_r_63434 |        97 |               1 | 97    |          0 |          1526 |          0 |                   48 |                0 |
+|         2 | t_75_r_63434 |              |         3 |               1 | 3     |          0 |             0 |   55752049 |                   60 |                0 |
++-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+
+4 rows in set (0.00 sec)
 ```
 
-In the above example:
+The above output shows that Region 96 was split, with a new Region 98 being created. The remaining Regions in the table were unaffected by the split operation. This is confirmed by the output statistics:
 
-* `TOTAL_SPLIT_REGION` indicates the number of newly split Regions. In this example, the number is 5.
+* `TOTAL_SPLIT_REGION` indicates the number of newly split Regions. In this example, the number is 1.
 * `SCATTER_FINISH_RATIO` indicates the rate at which the newly split Regions are successfully scattered. `1.0` means that all Regions are scattered.
 
+For a more detailed example:
+
 ```sql
-test> show table t regions;
+mysql> show table t regions;
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+---------------+------------+----------------------+------------------+
 | REGION_ID | START_KEY    | END_KEY      | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS |
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+---------------+------------+----------------------+------------------+
@@ -154,6 +194,10 @@ test> show table t regions;
 +-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+---------------+------------+----------------------+------------------+
 7 rows in set
 ```
+
+## MySQL compatibility
+
+This statement is a TiDB extension to MySQL syntax.
 
 ## See also
 
