@@ -1,6 +1,11 @@
 ---
+<<<<<<< HEAD
 title: SQL Mode
 aliases: ['/docs-cn/stable/reference/sql/sql-mode/']
+=======
+title: SQL 模式
+aliases: ['/docs-cn/dev/reference/sql/sql-mode/']
+>>>>>>> eb30a69... sys_var: merge sys_vars with tidb specific sys_vars (#4001)
 ---
 
 # SQL 模式

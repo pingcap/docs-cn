@@ -435,9 +435,7 @@
     + [tikv-server](/tikv-configuration-file.md)
     + [tiflash-server](/tiflash/tiflash-configuration.md)
     + [pd-server](/pd-configuration-file.md)
-  + 系统变量
-    + [MySQL 系统变量](/system-variables.md)
-    + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
+  + [系统变量](/system-variables.md)
   + 存储引擎
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
