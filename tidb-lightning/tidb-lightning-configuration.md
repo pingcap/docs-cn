@@ -98,7 +98,7 @@ driver = "file"
 #keep-after-success = false
 
 [tikv-importer]
-# Delivery backend, can be "importer" or "tidb".
+# Delivery backend, can be "importer", "local", or "tidb".
 # backend = "importer"
 # The listening address of tikv-importer when backend is "importer". Change it to the actual address.
 addr = "172.16.31.10:8287"
@@ -106,7 +106,20 @@ addr = "172.16.31.10:8287"
 #  - replace: new entry replaces existing entry
 #  - ignore:  keep existing entry, ignore new entry
 #  - error:   report error and quit the program
-#on-duplicate = "replace"
+# on-duplicate = "replace"
+# The size limit of generated SST files in the "local" backend. It is better
+# to be the same as the Region size of TiKV (96 MB by default).
+# region-split-size = 100_663_296
+# The number of KV pairs sent in one request in the "local" backend.
+# send-kv-pairs = 32768
+# The directory of local KV sorting in the "local" backend. If the disk
+# performance is low (such as in HDD), it is recommended to set the directory
+# on a different disk from `data-source-dir` to improve import speed.
+# sorted-kv-dir = ""
+# The concurrency that TiKV writes KV data in the "local" backend.
+# When the network transmission speed between TiDB Lightning and TiKV
+# exceeds 10 Gigabit, you can increase this value accordingly.
+# range-concurrency = 16
 
 [mydumper]
 # Block size for file reading. Keep it longer than the longest string of
@@ -115,7 +128,7 @@ read-block-size = 65536 # Byte (default = 64 KB)
 
 # Minimum size (in terms of source data file) of each batch of import.
 # TiDB Lightning splits a large table into multiple data engine files according to this size.
-batch-size = 107_374_182_400 # Byte (default = 100 GB)
+# batch-size = 107_374_182_400 # Byte (default = 100 GB)
 
 # The engine file needs to be imported sequentially. Due to parallel processing,
 # multiple data engines will be imported at nearly the same time, and this
@@ -350,7 +363,7 @@ min-available-ratio = 0.05
 | -d *directory* | Directory of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
 | -f *rule* | [Table filter rules](/table-filter.md) (can be specified multiple times) | `mydumper.filter` |
-| --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-tidb-backend.md) (`importer` or `tidb`) | `tikv-importer.backend` |
+| --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-tidb-backend.md) (`importer`, `local`, or `tidb`) | `tikv-importer.backend` |
 | --log-file *file* | Log file path (default = a temporary file in `/tmp`) | `lightning.log-file` |
 | --status-addr *ip:port* | Listening address of the TiDB Lightning server | `lightning.status-port` |
 | --importer *host:port* | Address of TiKV Importer | `tikv-importer.addr` |
