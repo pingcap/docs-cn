@@ -1,10 +1,6 @@
 ---
 title: 系统变量
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/reference/configuration/tidb-server/mysql-variables/']
-=======
-aliases: ['/docs-cn/dev/reference/configuration/tidb-server/mysql-variables/','/docs-cn/dev/tidb-specific-system-variables/','/docs-cn/dev/reference/configuration/tidb-server/tidb-specific-variables/','/tidb/dev/tidb-specific-system-variables/']
->>>>>>> eb30a69... sys_var: merge sys_vars with tidb specific sys_vars (#4001)
+aliases: ['/docs-cn/stable/reference/configuration/tidb-server/mysql-variables/','/docs-cn/stable/tidb-specific-system-variables/','/docs-cn/stable/reference/configuration/tidb-server/tidb-specific-variables/','/tidb/stable/tidb-specific-system-variables/']
 ---
 
 # 系统变量
