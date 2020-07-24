@@ -1,6 +1,10 @@
 ---
 title: 系统变量
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/reference/configuration/tidb-server/mysql-variables/','/docs-cn/stable/tidb-specific-system-variables/','/docs-cn/stable/reference/configuration/tidb-server/tidb-specific-variables/','/tidb/stable/tidb-specific-system-variables/']
+=======
+aliases: ['/docs-cn/dev/reference/configuration/tidb-server/mysql-variables/','/docs-cn/dev/tidb-specific-system-variables/','/docs-cn/dev/reference/configuration/tidb-server/tidb-specific-variables/','/zh/tidb/dev/tidb-specific-system-variables/']
+>>>>>>> ae4e5e7... fix aliases in system-variables.md (#4045)
 ---
 
 # 系统变量
