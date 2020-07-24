@@ -103,7 +103,6 @@ show warnings;
 
 支持参数列表如下：
 
-
 | 参数 | 简介 |
 | --- | --- |
 | raftstore.sync-log | 数据、log 落盘是否 sync |
@@ -175,12 +174,9 @@ show warnings;
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 4.0.3 起支持） |
 | backup.num-threads | backup 线程的数量（自 4.0.3 起支持） |
-| split.qps-threshold | |
-| split.split-balance-score | |
-| split.split-contained-score | |
-| split.detect-times | |
-| split.sample-num | |
-| split.sample-threshold | |
+| split.qps-threshold | 对 Region 执行 load-base-split 的阈值，如果读 qps 连续 10s 内均超过这个值，则进行 split |
+| split.split-balance-score | load-base-split 控制参数，确保 split 后左右访问尽量均匀 |
+| split.split-contained-score | load-base-split 控制参数，尽量减少 split 后跨 region 访问 |
 
 上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置。`db-name` 的取值可为 `rocksdb`，`raftdb`。
 
@@ -250,14 +246,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ### 动态修改 TiDB 配置
 
-TiDB 使用 [SQL 变量](/system-variables.md)来控制行为，下表汇总了所有支持动态修改的配置项和相应的系统变量：
-
-| 配置项 | 对应变量 | 简介 |
-| --- | --- | --- |
-| mem-quota-query | tidb_mem_quota_query | Query 使用的内存限制 |
-| log.enable-slow-log | tidb_enable_slow_log | 慢日志开关 |
-| log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
-| log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
+TiDB 使用 [SQL 变量](/system-variables.md)来控制行为。
 
 下面例子展示了如何通过变量 `tidb_slow_log_threshold` 动态修改配置项 `slow-threshold`。`slow-threshold` 默认值是 200 毫秒，可以通过设置 `tidb_slow_log_threshold` 将其修改为 200 毫秒：
 
@@ -281,3 +270,12 @@ mysql> select @@tidb_slow_log_threshold;
 +---------------------------+
 1 row in set (0.00 sec)
 ```
+
+支持动态修改的配置项和相应的系统变量如下：
+
+| 配置项 | 对应变量 | 简介 |
+| --- | --- | --- |
+| mem-quota-query | tidb_mem_quota_query | Query 使用的内存限制 |
+| log.enable-slow-log | tidb_enable_slow_log | 慢日志开关 |
+| log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
+| log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
