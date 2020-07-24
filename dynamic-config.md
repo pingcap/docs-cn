@@ -97,6 +97,18 @@ show warnings;
 1 row in set (0.00 sec)
 ```
 
+PD 暂不支持单个实例拥有独立配置。所有实例共享一份配置，可以通过下列方式修改 PD 的参数：
+
+```sql
+set config pd log.level="info"
+```
+
+设置成功会返回 `Query OK`：
+
+```sql
+Query OK, 0 rows affected (0.01 sec)
+```
+
 为了避免和 SQL 变量混淆，TiDB 的配置可以通过 `show config` 查看但是不能进行修改，动态配置时会返回错误；如果想动态修改 TiDB 行为，请用对应的 SQL 变量去控制。
 
 某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``tikv-client.`store-limit` ``；
