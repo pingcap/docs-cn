@@ -327,7 +327,7 @@
       + [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
       + [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md)
       + [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-histograms.md)
-      + [`SHOW STATES_META`](/sql-statements/sql-statement-show-stats-meta.md)
+      + [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       + [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md)
       + [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md)
       + [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
