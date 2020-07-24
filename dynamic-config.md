@@ -107,6 +107,31 @@ show warnings;
 
 ## 支持参数列表
 
+### TiDB
+
+TiDB 使用 [SQL 变量](/system-variables.md)来控制行为，下面是一个例子：
+
+```sql
+set tidb_slow_log_threshold = 200;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+mysql> select @@tidb_slow_log_threshold;
+```
+
+```sql
++---------------------------+
+| @@tidb_slow_log_threshold |
++---------------------------+
+| 200                       |
++---------------------------+
+1 row in set (0.00 sec)
+```
+
 ### PD
 
 | 参数 | 简介 |
