@@ -353,7 +353,7 @@ No. Currently, TiDB only supports the distributed storage engine and the Golevel
 
 #### Can the `Information_schema` support more real information?
 
-As part of MySQL compatibility, TiDB supports a number of `INFORMATION_SCHEMA` tables. Many of these tables also have a corresponding SHOW command. For more information, see [Information Schema](/information-schema.md).
+As part of MySQL compatibility, TiDB supports a number of `INFORMATION_SCHEMA` tables. Many of these tables also have a corresponding SHOW command. For more information, see [Information Schema](/information-schema/information-schema.md).
 
 #### What's the explanation of the TiDB Backoff type scenario?
 
