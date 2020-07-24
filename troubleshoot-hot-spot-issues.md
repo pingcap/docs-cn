@@ -1,6 +1,5 @@
 ---
 title: TiDB 热点问题处理
-category: reference
 ---
 
 # TiDB 热点问题处理
@@ -24,7 +23,7 @@ Key: tablePrefix{tableID}_recordPrefixSep{rowID}
 Value: [col1, col2, col3, col4]
 ```
 
-其中 Key 的 tablePrefix/recordPrefixSep 都是特定的字符串常量，用于在 KV 空间内区分其他数据。
+其中 Key 的 `tablePrefix` 和 `recordPrefixSep` 都是特定的字符串常量，用于在 KV 空间内区分其他数据。
 
 对于 Index 数据，会按照如下规则编码成 Key-Value pair：
 
@@ -33,7 +32,7 @@ Key: tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue
 Value: rowID
 ```
 
-Index 数据还需要考虑 Unique Index 和非 Unique Index 两种情况，对于 Unique Index，可以按照上述编码规则。但是对于非 Unique Index，通过这种编码并不能构造出唯一的 Key，因为同一个 Index 的 tablePrefix{tableID}_indexPrefixSep{indexID} 都一样，可能有多行数据的 ColumnsValue 是一样的，所以对于非 Unique Index 的编码做了一点调整：
+Index 数据还需要考虑 Unique Index 和非 Unique Index 两种情况，对于 Unique Index，可以按照上述编码规则。但是对于非 Unique Index，通过这种编码并不能构造出唯一的 Key，因为同一个 Index 的 `tablePrefix{tableID}_indexPrefixSep{indexID}` 都一样，可能有多行数据的 `ColumnsValue` 是一样的，所以对于非 Unique Index 的编码做了一点调整：
 
 ```text
 Key: tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue_rowID
@@ -42,7 +41,7 @@ Value: null
 
 ### 表热点
 
-从 TiDB 编码规则可知，同一个表的数据会在以表 id 开头为前缀的一个 range 中，数据的顺序按照 RowID 的值顺序排列。在表 insert 的过程中如果 RowID 的值是递增的，则插入的行只能在末端追加。当 region 达到一定的大小之后会进行分裂，分裂之后还是只能在 range 范围的末端追加，永远只能在一个 region 上进行 insert 操作，形成热点。
+从 TiDB 编码规则可知，同一个表的数据会在以表 ID 开头为前缀的一个 range 中，数据的顺序按照 RowID 的值顺序排列。在表 insert 的过程中如果 RowID 的值是递增的，则插入的行只能在末端追加。当 Region 达到一定的大小之后会进行分裂，分裂之后还是只能在 range 范围的末端追加，永远只能在一个 Region 上进行 insert 操作，形成热点。
 
 常见的 increment 类型自增主键就是顺序递增的，默认情况下，在主键为整数型时，会用主键值当做 RowID ，此时 RowID 为顺序递增，在大量 insert 时形成表的写入热点。
 
@@ -58,15 +57,15 @@ Value: null
 
 - 判断写热点依据：打开监控面板 TiKV-Trouble-Shooting 中 Hot Write 面板（如下图所示），观察 Raftstore CPU 监控是否存在个别 TiKV 节点的指标明显高于其他节点的现象。
 
-- 判断读热点依据：打开监控面板 TIKV-Details 中 Thread_CPU，查看 coprocessor cpu 有没有明显的某个 tikv 特别高。
+- 判断读热点依据：打开监控面板 TIKV-Details 中 Thread_CPU，查看 coprocessor cpu 有没有明显的某个 TiKV 特别高。
 
 ## 使用 TiDB Dashboard 定位热点表
 
-TiDB Dashboard 中的「热点可视化」功能可帮助用户缩小热点排查范围到表级别。以下是一个「热点可视化」功能展示的热力图样例，该图横坐标是时间，纵坐标排列了各个表和索引，颜色越亮代表其流量越大。可在工具栏中切换显示读或写流量。
+[TiDB Dashboard](/dashboard/dashboard-intro.md) 中的[流量可视化](/dashboard/dashboard-key-visualizer.md)功能可帮助用户缩小热点排查范围到表级别。以下是流量可视化功能展示的一个热力图样例，该图横坐标是时间，纵坐标是各个表和索引，颜色越亮代表其流量越大。可在工具栏中切换显示读或写流量。
 
 ![Dashboard 示例1](/media/troubleshoot-hot-spot-issues-1.png)
 
-当图中写入流量图出现以下明亮斜线（斜向上或斜向下）时，由于写入只出现在末端，随着表 region 数量变多，呈现出阶梯状。此时说明该表构成了写入热点：
+当图中写入流量图出现以下明亮斜线（斜向上或斜向下）时，由于写入只出现在末端，随着表 Region 数量变多，呈现出阶梯状。此时说明该表构成了写入热点：
 
 ![Dashboard 示例2](/media/troubleshoot-hot-spot-issues-2.png)
 
@@ -99,47 +98,60 @@ CREATE TABLE：CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;
 ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 ```
 
-SHARD_ROW_ID_BITS 的值可以动态修改，每次修改之后，只对新写入的数据生效。
+`SHARD_ROW_ID_BITS` 的值可以动态修改，每次修改之后，只对新写入的数据生效。
 
-TiDB alter-primary-key 参数设置为 false 时，会使用表的整数型主键作为 RowID，因为 SHARD_ROW_ID_BITS 会改变 RowID 生成规则，所以此时无法使用 SHARD_ROW_ID_BITS 选项。在 alter-primary-key 参数设置为 true 时，TiDB 在建表时不再使用整数型主键作为 RowID，此时带有整数型主键的表也可以使用 SHARD_ROW_ID_BITS 特性。
+TiDB `alter-primary-key` 参数设置为 false 时，会使用表的整数型主键作为 RowID，因为 `SHARD_ROW_ID_BITS` 会改变 RowID 生成规则，所以此时无法使用 `SHARD_ROW_ID_BITS` 选项。在 `alter-primary-key` 参数设置为 true 时，TiDB 在建表时不再使用整数型主键作为 RowID，此时带有整数型主键的表也可以使用 `SHARD_ROW_ID_BITS` 特性。
 
-以下是两张无主键情况下使用 SHARD_ROW_ID_BITS 打散热点后的流量图，第一张展示了打散前的情况，第二张展示了打散后的情况。
+以下是两张无主键情况下使用 `SHARD_ROW_ID_BITS` 打散热点后的流量图，第一张展示了打散前的情况，第二张展示了打散后的情况。
 
 ![Dashboard 示例5](/media/troubleshoot-hot-spot-issues-5.png)
 
 ![Dashboard 示例6](/media/troubleshoot-hot-spot-issues-6.png)
 
-从流量图可见，设置 SHARD_ROW_ID_BITS 后，流量热点由之前的只在一个 Region 上变得很分散。
+从流量图可见，设置 `SHARD_ROW_ID_BITS` 后，流量热点由之前的只在一个 Region 上变得很分散。
 
 ## 使用 AUTO_RANDOM 处理自增主键热点表
 
-使用 AUTO_RANDOM 处理自增主键热点表，适用于代替自增主键，解决自增主键带来的写入热点。
+使用 `AUTO_RANDOM` 处理自增主键热点表，适用于代替自增主键，解决自增主键带来的写入热点。
 
 > **注意：**
 >
 > 该功能目前还是实验性功能，不推荐生产环境使用。可使用以下配置启用：
 >
+> ```
 > [experimental]\
 > allow-auto-random = true
+> ```
 
 使用该功能后，将由 TiDB 生成随机分布且空间耗尽前不重复的主键，达到离散写入、打散写入热点的目的。
 
->注意，TiDB 生成的主键不再是自增的主键，可使用 LAST_INSERT_ID() 获取上次分配的主键值。
+注意 TiDB 生成的主键不再是自增的主键，可使用 `LAST_INSERT_ID()` 获取上次分配的主键值。
 
-将建表语句中的 AUTO_INCREMENT 改为 AUTO_RANDOM 即可使用该功能，适用于主键只需要保证唯一，不包含业务意义的场景。\
-示例如下：
+将建表语句中的 `AUTO_INCREMENT` 改为 `AUTO_RANDOM` 即可使用该功能，适用于主键只需要保证唯一，不包含业务意义的场景。示例如下：
+
+{{< copyable "sql" >}}
 
 ```sql
-> CREATE TABLE t (a BIGINT PRIMARY KEY AUTO_RANDOM, b varchar(255));
-> INSERT INTO t (b) VALUES ("foo");
-> SELECT * FROM t;
+CREATE TABLE t (a BIGINT PRIMARY KEY AUTO_RANDOM, b varchar(255));
+INSERT INTO t (b) VALUES ("foo");
+SELECT * FROM t;
+```
+
+```sql
 +------------+---+
 | a          | b |
 +------------+---+
 | 1073741825 | b |
 +------------+---+
+```
 
-> SELECT LAST_INSERT_ID();
+{{< copyable "sql" >}}
+
+```sql
+SELECT LAST_INSERT_ID();
+```
+
+```sql
 +------------------+
 | LAST_INSERT_ID() |
 +------------------+
@@ -147,21 +159,21 @@ TiDB alter-primary-key 参数设置为 false 时，会使用表的整数型主�
 +------------------+
 ```
 
-以下是将 AUTO_INCREMENT 表改为 AUTO_RANDOM 打散热点后的流量图，第一张是 AUTO_INCREMENT，第二张是 AUTO_RANDOM。
+以下是将 `AUTO_INCREMENT` 表改为 `AUTO_RANDOM` 打散热点后的流量图，第一张是 `AUTO_INCREMENT`，第二张是 `AUTO_RANDOM`。
 
 ![Dashboard 示例7](/media/troubleshoot-hot-spot-issues-7.png)
 
 ![Dashboard 示例8](/media/troubleshoot-hot-spot-issues-8.png)
 
-由流量图可见，使用 AUTO_RANDOM 代替 AUTO_INCREMENT 能很好地打散热点。
+由流量图可见，使用 `AUTO_RANDOM` 代替 `AUTO_INCREMENT` 能很好地打散热点。
 
-更详细的说明可以阅读 [AUTO_RANDOM](/auto-random.md) 文档。
+更详细的说明参见 [`AUTO_RANDOM`](/auto-random.md) 文档。
 
 ## 小表热点的优化
 
-TiDB 从 4.0 起支持下推计算结果缓存（即 Coprocessor Cache 功能）。开启该功能后，将在 TiDB 实例侧缓存下推给 TiKV 计算的结果，对于小表读热点能起到比较好的效果。
+TiDB 从 4.0 起引入了 Coprocessor Cache 功能，支持下推计算结果缓存。开启该功能后，将在 TiDB 实例侧缓存下推给 TiKV 计算的结果，对于小表读热点能起到比较好的效果。
 
-更详细的说明可以阅读[下推计算结果缓存](/coprocessor-cache.md#配置)文档
+更详细的说明参见[下推计算结果缓存](/coprocessor-cache.md#配置)文档。
 
 **其他相关资料**：
 

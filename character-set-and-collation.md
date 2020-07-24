@@ -1,6 +1,5 @@
 ---
 title: 字符集和排序规则
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/characterset-and-collation/','/docs-cn/stable/reference/sql/character-set/']
 ---
 
@@ -323,9 +322,9 @@ Query OK, 0 rows affected
 insert into t values ('A');
 Query OK, 1 row affected
 insert into t values ('a');
-Query OK, 1 row affected # MySQL 中，由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'。
+Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'。
 insert into t1 values ('a ');
-Query OK, 1 row affected # MySQL 中，由于补齐空格比较，报错 Duplicate entry 'a '。
+Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于补齐空格比较，报错 Duplicate entry 'a '。
 ```
 
 ### 新框架下的排序规则支持
@@ -359,9 +358,9 @@ Query OK, 0 rows affected (0.00 sec)
 insert into t values ('A');
 Query OK, 1 row affected (0.00 sec)
 insert into t values ('a');
-ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY' # TiDB 兼容了 MySQL 的 case insensitive collation。
 insert into t values ('a ');
-ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PADDING` 行为，与 MySQL 兼容。
 ```
 
 > **注意：**
@@ -393,15 +392,15 @@ TiDB 支持使用 `COLLATE` 子句来指定一个表达式的排序规则，该�
 {{< copyable "sql" >}}
 
 ```sql
-select 'a' = 'A' collate utf8mb4_general_ci;
+select 'a' = _utf8mb4 'A' collate utf8mb4_general_ci;
 ```
 
 ```sql
-+--------------------------------------+
-| 'a' = 'A' collate utf8mb4_general_ci |
-+--------------------------------------+
-|                                    1 |
-+--------------------------------------+
++-----------------------------------------------+
+| 'a' = _utf8mb4 'A' collate utf8mb4_general_ci |
++-----------------------------------------------+
+|                                             1 |
++-----------------------------------------------+
 1 row in set (0.00 sec)
 ```
 

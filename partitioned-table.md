@@ -1,6 +1,5 @@
 ---
 title: 分区表
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/partitioning/']
 ---
 
@@ -1054,4 +1053,4 @@ select * from t;
 
 环境变量 `tidb_enable_table_partition` 可以控制是否启用分区表功能。如果该变量设置为 `off`，则建表时会忽略分区信息，以普通表的方式建表。
 
-该变量仅作用于建表，已经建表之后再修改该变量无效。详见 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md#tidb_enable_table_partition)。
+该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_table_partition)。

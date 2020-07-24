@@ -1,7 +1,6 @@
 ---
 title: SQL 操作常见问题
 summary: 介绍 SQL 操作相关的常见问题。
-category: FAQ
 ---
 
 # SQL 操作常见问题
@@ -75,13 +74,13 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
-+ 由于 TiDB 是分布式数据库，TiDB server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/overview.md#tidb-整体架构)），用户使用 MySQL 客户端登录的是哪个 TiDB server ，`show processlist` 就会显示当前连接的这个 TiDB server  中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
++ 由于 TiDB 是分布式数据库，TiDB server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/tidb-architecture.md)），用户使用 MySQL 客户端登录的是哪个 TiDB server ，`show processlist` 就会显示当前连接的这个 TiDB server  中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
 
 + TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
 
 ## 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_priority)、[全局](/tidb-configuration-file.md#force-priority)或单个语句的优先级。优先级包括：
+TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全局](/tidb-configuration-file.md#force-priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
@@ -214,7 +213,7 @@ ID 没什么规律，只要是唯一就行，不过生成的时候，是有一�
 
 ### 如何打散热点
 
-TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于 PK 非整数或没有 PK 的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md#shard_row_id_bits)中 `SHARD_ROW_ID_BITS` 的介绍。
+TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于非整数主键或没有主键的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)中的介绍。
 
 ### TiKV 性能参数调优
 

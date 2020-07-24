@@ -1,6 +1,5 @@
 ---
 title: Information Schema
-category: reference
 aliases: ['/docs-cn/stable/reference/system-databases/information-schema/']
 ---
 
@@ -18,7 +17,7 @@ aliases: ['/docs-cn/stable/reference/system-databases/information-schema/']
 select * from `ANALYZE_STATUS`;
 ```
 
-```
+```sql
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
 | TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO          | PROCESSED_ROWS | START_TIME          | STATE    |
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
@@ -42,7 +41,7 @@ select * from `ANALYZE_STATUS`;
 SELECT * FROM character_sets;
 ```
 
-```
+```sql
 +--------------------+----------------------+---------------+--------+
 | CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION   | MAXLEN |
 +--------------------+----------------------+---------------+--------+
@@ -55,6 +54,13 @@ SELECT * FROM character_sets;
 5 rows in set (0.00 sec)
 ```
 
+`CHARACTER_SETS` 表中列的含义如下：
+
+* `CHARACTER_SET_NAME`：字符集名称
+* `DEFAULT_COLLATE_NAME`：字符集的默认排序规则名称
+* `DESCRIPTION`：字符集的描述信息
+* `MAXLEN`：该字符集存储一个字符所需要的最大字节数
+
 ## COLLATIONS 表
 
 `COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。TiDB 当前仅支持二进制排序规则，包含该表仅为兼容 MySQL。
@@ -65,7 +71,7 @@ SELECT * FROM character_sets;
 SELECT * FROM collations WHERE character_set_name='utf8mb4';
 ```
 
-```
+```sql
 +------------------------+--------------------+------+------------+-------------+---------+
 | COLLATION_NAME         | CHARACTER_SET_NAME | ID   | IS_DEFAULT | IS_COMPILED | SORTLEN |
 +------------------------+--------------------+------+------------+-------------+---------+
@@ -99,6 +105,15 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 26 rows in set (0.00 sec)
 ```
 
+`COLLATION` 表中列的含义如下：
+
+* `COLLATION_NAME`：排序规则名称
+* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
+* `ID`：排序规则的 ID
+* `IS_DEFAULT`：该排序规则是否是所属字符集的默认排序规则
+* `IS_COMPILED`：字符集是否编译到服务器中
+* `SORTLEN`：排序规则在对字符进行排序时，所分配内存的最小长度
+
 ## COLLATION_CHARACTER_SET_APPLICABILITY 表
 
 `COLLATION_CHARACTER_SET_APPLICABILITY` 表将排序规则映射至适用的字符集名称。和 `COLLATIONS` 表一样，包含此表也是为了兼容 MySQL。
@@ -109,39 +124,18 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 SELECT * FROM collation_character_set_applicability WHERE character_set_name='utf8mb4';
 ```
 
+```sql
++----------------+--------------------+
+| COLLATION_NAME | CHARACTER_SET_NAME |
++----------------+--------------------+
+| utf8mb4_bin    | utf8mb4            |
++----------------+--------------------+
 ```
-+------------------------+--------------------+
-| COLLATION_NAME         | CHARACTER_SET_NAME |
-+------------------------+--------------------+
-| utf8mb4_general_ci     | utf8mb4            |
-| utf8mb4_bin            | utf8mb4            |
-| utf8mb4_unicode_ci     | utf8mb4            |
-| utf8mb4_icelandic_ci   | utf8mb4            |
-| utf8mb4_latvian_ci     | utf8mb4            |
-| utf8mb4_romanian_ci    | utf8mb4            |
-| utf8mb4_slovenian_ci   | utf8mb4            |
-| utf8mb4_polish_ci      | utf8mb4            |
-| utf8mb4_estonian_ci    | utf8mb4            |
-| utf8mb4_spanish_ci     | utf8mb4            |
-| utf8mb4_swedish_ci     | utf8mb4            |
-| utf8mb4_turkish_ci     | utf8mb4            |
-| utf8mb4_czech_ci       | utf8mb4            |
-| utf8mb4_danish_ci      | utf8mb4            |
-| utf8mb4_lithuanian_ci  | utf8mb4            |
-| utf8mb4_slovak_ci      | utf8mb4            |
-| utf8mb4_spanish2_ci    | utf8mb4            |
-| utf8mb4_roman_ci       | utf8mb4            |
-| utf8mb4_persian_ci     | utf8mb4            |
-| utf8mb4_esperanto_ci   | utf8mb4            |
-| utf8mb4_hungarian_ci   | utf8mb4            |
-| utf8mb4_sinhala_ci     | utf8mb4            |
-| utf8mb4_german2_ci     | utf8mb4            |
-| utf8mb4_croatian_ci    | utf8mb4            |
-| utf8mb4_unicode_520_ci | utf8mb4            |
-| utf8mb4_vietnamese_ci  | utf8mb4            |
-+------------------------+--------------------+
-26 rows in set (0.00 sec)
-```
+
+`COLLATION_CHARACTER_SET_APPLICABILITY` 表中列的含义如下：
+
+* `COLLATION_NAME`：排序规则名称
+* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
 
 ## COLUMNS 表
 
@@ -189,6 +183,34 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 1 row in set (0.01 sec)
 ```
 
+`COLUMNS` 表中列的含义如下：
+
+* `TABLE_CATALOG`：包含列的表所属的目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：包含列的表所属的数据库的名称。
+* `TABLE_NAME`：包含列的表的名称。
+* `COLUMN_NAME`：列的名称。
+* `ORDINAL_POSITION`：表中列的位置。
+* `COLUMN_DEFAULT`：列的默认值。如果列的显式默认值为 `NULL`，或者列定义中不包含 `default` 子句，则此值为 `NULL`。
+* `IS_NULLABLE`：列的可空性。如果列中可以存储空值，则该值为 `YES`，则为 `NO`。
+* `DATA_TYPE`：列数据类型。
+* `CHARACTER_MAXIMUM_LENGTH`：对于字符串列，以字符为单位的最大长度。
+* `CHARACTER_OCTET_LENGTH`：对于字符串列，以字节为单位的最大长度。
+* `NUMERIC_PRECISION`：对于数字列，为数字精度。
+* `NUMERIC_SCALE`：对于数字列，为数字刻度。
+* `DATETIME_PRECISION`：对于时间列，小数秒精度。
+* `CHARACTER_SET_NAME`：对于字符串列，字符集名称。
+* `COLLATION_NAME`：对于字符串列，排序规则名称。
+* `COLUMN_TYPE`：列类型。
+* `COLUMN_KEY`：该列是否被索引。具体显示如下:
+    * 如果此值为空，则该列要么未被索引，要么被索引且是多列非唯一索引中的第二列。
+    * 如果此值是`PRI`，则该列是主键，或者是多列主键中的一列。
+    * 如果此值是`UNI`，则该列是唯一索引的第一列。
+    * 如果此值是`MUL`，则该列是非唯一索引的第一列，在该列中允许给定值的多次出现。
+* `EXTRA`：关于给定列的任何附加信息。
+* `PRIVILEGES`：当前用户对该列拥有的权限。目前在 TiDB 中，此值为定值，一直为 `select,insert,update,references`。
+* `COLUMN_COMMENT`：列定义中包含的注释。
+* `GENERATION_EXPRESSION`：对于生成的列，显示用于计算列值的表达式。对于未生成的列为空。
+
 对应的 `SHOW` 语句如下：
 
 {{< copyable "sql" >}}
@@ -197,7 +219,7 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 SHOW COLUMNS FROM t1 FROM test;
 ```
 
-```
+```sql
 +-------+---------+------+------+---------+-------+
 | Field | Type    | Null | Key  | Default | Extra |
 +-------+---------+------+------+---------+-------+
@@ -208,7 +230,7 @@ SHOW COLUMNS FROM t1 FROM test;
 
 ## ENGINES 表
 
-`ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。
+`ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。此外，`ENGINES` 表中其它列值也都是定值。
 
 {{< copyable "sql" >}}
 
@@ -226,6 +248,15 @@ TRANSACTIONS: YES
   SAVEPOINTS: YES
 1 row in set (0.00 sec)
 ```
+
+`ENGINES` 表中列的含义如下：
+
+* `ENGINE`：存储引擎的名称。
+* `SUPPORT`：服务器对存储引擎的支持级别，在 TiDB 中此值一直是 `DEFAULT`。
+* `COMMENT`：存储引擎的简要描述。
+* `TRANSACTIONS`：存储引擎是否支持事务。
+* `XA`：存储引擎是否支持 XA 事务。
+* `SAVEPOINTS`：存储引擎是否支持 `savepoints`。
 
 ## KEY_COLUMN_USAGE 表
 
@@ -267,6 +298,21 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 2 rows in set (0.00 sec)
 ```
 
+`KEY_COLUMN_USAGE` 表中列的含义如下：
+
+* `CONSTRAINT_CATALOG`：约束所属的目录的名称。该值始终为 `def`。
+* `CONSTRAINT_SCHEMA`：约束所属的数据库的名称。
+* `CONSTRAINT_NAME`：约束名称。
+* `TABLE_CATALOG`：表所属目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：表所属的架构数据库的名称。
+* `TABLE_NAME`：具有约束的表的名称。
+* `COLUMN_NAME`：具有约束的列的名称。
+* `ORDINAL_POSITION`：列在约束中的位置，而不是列在表中的位置。列位置从 1 开始编号。
+* `POSITION_IN_UNIQUE_CONSTRAINT`：唯一约束和主键约束为空。对于外键约束，此列是被引用的表的键的序号位置。
+* `REFERENCED_TABLE_SCHEMA`：约束引用的数据库的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
+* `REFERENCED_TABLE_NAME`：约束引用的表的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
+* `REFERENCED_COLUMN_NAME`：约束引用的列的名称。目前在 TiDB 中，除了外键约束，其它约束此列的值都为 `nil`。
+
 ## PROCESSLIST 表
 
 `PROCESSLIST` 和 `show processlist` 的功能一样，都是查看当前正在处理的请求。
@@ -281,6 +327,40 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 +----+------+------+--------------------+---------+------+-------+---------------------------+-----+
 ```
 
+`PROCESSLIST` 表各列的含义如下：
+
+* ID：客户连接 ID。
+* USER：执行当前 PROCESS 的用户名。
+* HOST：客户连接的地址。
+* DB：当前连接的默认数据库名。
+* COMMAND：当前 PROCESS 执行的命令类型。
+* TIME：当前 PROCESS 的已经执行的时间，单位是秒。
+* STATE：当前连接的状态。
+* INFO：正在处理的请求语句。
+* MEM：正在处理的请求已使用的内存，单位是 byte。
+
+## CLUSTER_PROCESSLIST
+
+`CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。`CLUSTER_PROCESSLIST` 表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.cluster_processlist;
+```
+
+```sql
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) |
+| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) |
+| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) |
+| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) |
+| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
+```
+
 ## SCHEMATA 表
 
 `SCHEMATA` 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
@@ -291,7 +371,7 @@ POSITION_IN_UNIQUE_CONSTRAINT: NULL
 SELECT * FROM schemata;
 ```
 
-```
+```sql
 +--------------+--------------------+----------------------------+------------------------+----------+
 | CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
 +--------------+--------------------+----------------------------+------------------------+----------+
@@ -304,27 +384,13 @@ SELECT * FROM schemata;
 5 rows in set (0.00 sec)
 ```
 
-## CLUSTER_PROCESSLIST
+`SCHEMATA` 表各列字段含义如下：
 
-`CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM information_schema.cluster_processlist;
-```
-
-```
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
-| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               |
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
-| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) |
-| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) |
-| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) |
-| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) |
-| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) |
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+
-```
+* CATALOG_NAME：数据库归属的目录名，该列值永远为 `def`。
+* SCHEMA_NAME：数据库的名字。
+* DEFAULT_CHARACTER_SET_NAME：数据库的默认字符集。
+* DEFAULT_COLLATION_NAME：数据库的默认 collation。
+* SQL_PATH：该项值永远为 `NULL`。
 
 ## SESSION_VARIABLES 表
 
@@ -336,7 +402,7 @@ SELECT * FROM information_schema.cluster_processlist;
 SELECT * FROM session_variables LIMIT 10;
 ```
 
-```
+```sql
 +----------------------------------+----------------------+
 | VARIABLE_NAME                    | VARIABLE_VALUE       |
 +----------------------------------+----------------------+
@@ -353,6 +419,11 @@ SELECT * FROM session_variables LIMIT 10;
 +----------------------------------+----------------------+
 10 rows in set (0.00 sec)
 ```
+
+`SESSION_VARIABLES` 表各列字段含义如下：
+
+* `VARIABLE_NAME`：数据库中 session 级变量的名称。
+* `VARIABLE_VALUE`：数据库中对应该 session 变量名的具体值。
 
 ## SLOW_QUERY 表
 
@@ -491,7 +562,7 @@ desc information_schema.cluster_slow_query;
 desc select count(*) from information_schema.cluster_slow_query where user = 'u1';
 ```
 
-```
+```sql
 +--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
 | id                       | estRows  | task      | access object            | operator info                                        |
 +--------------------------+----------+-----------+--------------------------+------------------------------------------------------+
@@ -523,7 +594,7 @@ select /*+ AGG_TO_COP() */ count(*) from information_schema.cluster_slow_query g
 desc statistics;
 ```
 
-```
+```sql
 +---------------|---------------------|------|------|---------|-------+
 | Field         | Type                | Null | Key  | Default | Extra |
 +---------------|---------------------|------|------|---------|-------+
@@ -620,6 +691,30 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
+`TABLES` 表各列字段含义如下：
+
+* `TABLE_CATALOG`：表所属的目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：表所属数据库的名称。
+* `TABLE_NAME`：表的名称。
+* `TABLE_TYPE`：表的类型。
+* `ENGINE`：存储引擎类型。该值暂为 ‘InnoDB’。
+* `VERSION`：版本，默认值为 10。
+* `ROW_FORMAT`：行格式。该值暂为 ‘Compact’。
+* `TABLE_ROWS`：统计信息中该表所存的行数。
+* `AVG_ROW_LENGTH`：该表中所存数据的平均行长度。平均行长度 = DATA_LENGTH / 统计信息中的行数。
+* `DATA_LENGTH`：数据长度。数据长度 = 统计信息中的行数 × 元组各列存储长度和，这里尚未考虑 TiKV 的副本数。
+* `MAX_DATA_LENGTH`：最大数据长度。该值暂为 0，表示没有最大数据长度的限制。
+* `INDEX_LENGTH`：索引长度。索引长度 = 统计信息中的行数 × 索引元组各列长度和，这里尚未考虑 TiKV 的副本数。
+* `DATA_FREE`：空间碎片。该值暂为 0。
+* `AUTO_INCREMENT`：该表中自增主键自动增量的当前值。
+* `CREATE_TIME`：该表的创建时间。
+* `UPDATE_TIME`：该表的更新时间。
+* `CHECK_TIME`：该表的检查时间。
+* `TABLE_COLLATION`：该表的字符校验编码集。
+* `CHECKSUM`：校验和。
+* `CREATE_OPTIONS`：创建选项。
+* `TABLE_COMMENT`：表的注释、备注。
+
 表中的信息大部分定义自 MySQL，此外有两列是 TiDB 新增的：
 
 * `TIDB_TABLE_ID`：标识表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
@@ -700,7 +795,7 @@ CONSTRAINT_CATALOG: def
 desc TIDB_HOT_REGIONS;
 ```
 
-```
+```sql
 +----------------+---------------------+------+-----+---------+-------+
 | Field          | Type                | Null | Key | Default | Extra |
 +----------------+---------------------+------+-----+---------+-------+
@@ -716,6 +811,19 @@ desc TIDB_HOT_REGIONS;
 +----------------+---------------------+------+-----+---------+-------+
 ```
 
+`TIDB_HOT_REGIONS` 表各列字段含义如下：
+
+* TABLE_ID：热点 region 所在表的 ID。
+* INDEX_ID：热点 region 所在索引的 ID。
+* DB_NAME：热点 region 所在数据库对象的数据库名。
+* TABLE_NAME：热点 region 所在表的名称。
+* INDEX_NAME：热点 region 所在索引的名称。
+* REGION_ID：热点 region 的 ID。
+* TYPE：热点 region 的类型。
+* MAX_HOT_DEGREE：该 region 的最大热度。
+* REGION_COUNT：所在 instance 的 region 数量。
+* FLOW_BYTES：该 region 内读写的字节数量。
+
 ## TIDB_INDEXES 表
 
 `TIDB_INDEXES` 记录了所有表中的 INDEX 信息。
@@ -726,7 +834,7 @@ desc TIDB_HOT_REGIONS;
 desc TIDB_INDEXES;
 ```
 
-```
+```sql
 +---------------+---------------------+------+-----+---------+-------+
 | Field         | Type                | Null | Key | Default | Extra |
 +---------------+---------------------+------+-----+---------+-------+
@@ -742,6 +850,18 @@ desc TIDB_INDEXES;
 +---------------+---------------------+------+-----+---------+-------+
 ```
 
+`TIDB_INDEXES` 表中列的含义如下：
+
+* `TABLE_SCHEMA`：索引所在表的所属数据库的名称。
+* `TABLE_NAME`：索引所在表的名称。
+* `NON_UNIQUE`：如果索引是唯一的，则为 `0`，否则为 `1`。
+* `KEY_NAME`：索引的名称。如果索引是主键，则名称为 `PRIMARY`。
+* `SEQ_IN_INDEX`：索引中列的顺序编号，从 `1` 开始。
+* `COLUMN_NAME`：索引所在的列名。
+* `SUB_PART`：索引前缀长度。如果列是部分被索引，则该值为被索引的字符数量，否则为 `NULL`。
+* `INDEX_COMMENT`：创建索引时以 `COMMENT` 标注的注释。
+* `INDEX_ID`：索引的 ID。
+
 ## TIKV_REGION_PEERS 表
 
 `TIKV_REGION_PEERS` 表提供了所有 REGION 的 peer 信息。
@@ -752,7 +872,7 @@ desc TIDB_INDEXES;
 desc TIKV_REGION_PEERS;
 ```
 
-```
+```sql
 +--------------+---------------------+------+-----+---------+-------+
 | Field        | Type                | Null | Key | Default | Extra |
 +--------------+---------------------+------+-----+---------+-------+
@@ -766,6 +886,19 @@ desc TIKV_REGION_PEERS;
 +--------------+---------------------+------+-----+---------+-------+
 ```
 
+`TIKV_REGION_PEERS` 表各列含义如下：
+
+* REGION_ID：REGION 的 ID。
+* PEER_ID：REGION 中对应的副本 PEER 的 ID。
+* STORE_ID：REGION 所在 TiKV Store 的 ID。
+* IS_LEARNER：PEER 是否是 LEARNER。
+* IS_LEADER：PEER 是否是 LEADER。
+* STATUS：PEER 的状态，一共有 3 种状态：
+    * PENDING：暂时不可用状态。
+    * DOWN：下线转态，该 PEER 不再提供服务。
+    * NORMAL: 正常状态。
+* DOWN_SECONDS：处于下线状态的时间，单位是秒。
+
 ## TIKV_REGION_STATUS 表
 
 `TIKV_REGION_STATUS` 表提供了所有 REGION 的状态信息。
@@ -776,21 +909,49 @@ desc TIKV_REGION_PEERS;
 desc TIKV_REGION_STATUS;
 ```
 
+```sql
++---------------------------+-------------+------+------+---------+-------+
+| Field                     | Type        | Null | Key  | Default | Extra |
++---------------------------+-------------+------+------+---------+-------+
+| REGION_ID                 | bigint(21)  | YES  |      | NULL    |       |
+| START_KEY                 | text        | YES  |      | NULL    |       |
+| END_KEY                   | text        | YES  |      | NULL    |       |
+| TABLE_ID                  | bigint(21)  | YES  |      | NULL    |       |
+| DB_NAME                   | varchar(64) | YES  |      | NULL    |       |
+| TABLE_NAME                | varchar(64) | YES  |      | NULL    |       |
+| IS_INDEX                  | tinyint(1)  | NO   |      | 0       |       |
+| INDEX_ID                  | bigint(21)  | YES  |      | NULL    |       |
+| INDEX_NAME                | varchar(64) | YES  |      | NULL    |       |
+| EPOCH_CONF_VER            | bigint(21)  | YES  |      | NULL    |       |
+| EPOCH_VERSION             | bigint(21)  | YES  |      | NULL    |       |
+| WRITTEN_BYTES             | bigint(21)  | YES  |      | NULL    |       |
+| READ_BYTES                | bigint(21)  | YES  |      | NULL    |       |
+| APPROXIMATE_SIZE          | bigint(21)  | YES  |      | NULL    |       |
+| APPROXIMATE_KEYS          | bigint(21)  | YES  |      | NULL    |       |
+| REPLICATIONSTATUS_STATE   | varchar(64) | YES  |      | NULL    |       |
+| REPLICATIONSTATUS_STATEID | bigint(21)  | YES  |      | NULL    |       |
++---------------------------+-------------+------+------+---------+-------+
 ```
-+------------------+---------------------+------+-----+---------+-------+
-| Field            | Type                | Null | Key | Default | Extra |
-+------------------+---------------------+------+-----+---------+-------+
-| REGION_ID        | bigint(21) unsigned | YES  |     | <null>  |       |
-| START_KEY        | text                | YES  |     | <null>  |       |
-| END_KEY          | text                | YES  |     | <null>  |       |
-| EPOCH_CONF_VER   | bigint(21) unsigned | YES  |     | <null>  |       |
-| EPOCH_VERSION    | bigint(21) unsigned | YES  |     | <null>  |       |
-| WRITTEN_BYTES    | bigint(21) unsigned | YES  |     | <null>  |       |
-| READ_BYTES       | bigint(21) unsigned | YES  |     | <null>  |       |
-| APPROXIMATE_SIZE | bigint(21) unsigned | YES  |     | <null>  |       |
-| APPROXIMATE_KEYS | bigint(21) unsigned | YES  |     | <null>  |       |
-+------------------+---------------------+------+-----+---------+-------+
-```
+
+`TIKV_REGION_STATUS` 表中列的含义如下：
+
+* `REGION_ID`：Region 的 ID。
+* `START_KEY`：Region 的起始 key 的值。
+* `END_KEY`：Region 的末尾 key 的值。
+* `TABLE_ID`：Region 所属的表的 ID。
+* `DB_NAME`：`TABLE_ID` 所属的数据库的名称。
+* `TABLE_NAME`：Region 所属的表的名称。
+* `IS_INDEX`：Region 数据是否是索引，0 代表不是索引，1 代表是索引。如果当前 Region 同时包含表数据和索引数据，会有多行记录，`IS_INDEX` 分别是 1 和 0。
+* `INDEX_ID`：Region 所属的索引的 ID。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
+* `INDEX_NAME`：Region 所属的索引的名称。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
+* `EPOCH_CONF_VER`：Region 的配置的版本号，在增加或减少 peer 时版本号会递增。
+* `EPOCH_VERSION`：Region 的当前版本号，在分裂或合并时版本号会递增。
+* `WRITTEN_BYTES`：已经往 Region 写入的数据量 (bytes)。
+* `READ_BYTES`：已经从 Region 读取的数据量 (bytes)。
+* `APPROXIMATE_SIZE`：Region 的近似数据量 (MB)。
+* `APPROXIMATE_KEYS`：Region 中 key 的近似数量。
+* `REPLICATIONSTATUS_STATE`：Region 当前的同步状态，可能为 `UNKNOWN` / `SIMPLE_MAJORITY` / `INTEGRITY_OVER_LABEL` 其中一种状态。
+* `REPLICATIONSTATUS_STATEID`：`REPLICATIONSTATUS_STATE` 对应的标识符。
 
 ## TIKV_STORE_STATUS 表
 
@@ -802,7 +963,7 @@ desc TIKV_REGION_STATUS;
 desc TIKV_STORE_STATUS;
 ```
 
-```
+```sql
 +-------------------+---------------------+------+-----+---------+-------+
 | Field             | Type                | Null | Key | Default | Extra |
 +-------------------+---------------------+------+-----+---------+-------+
@@ -828,6 +989,28 @@ desc TIKV_STORE_STATUS;
 +-------------------+---------------------+------+-----+---------+-------+
 ```
 
+`TIKV_STORE_STATUS` 表中列的含义如下：
+
+* `STORE_ID`：Store 的 ID。
+* `ADDRESS`：Store 的地址。
+* `STORE_STATE`：Store 状态的标识符，与 `STORE_STATE_NAME` 相对应。
+* `STORE_STATE_NAME`：Store 状态的名字，为 `Up` / `Offline` / `Tombstone` 中的一种。
+* `LABEL`：给 Store 设置的标签。
+* `VERSION`：Store 的版本号。
+* `CAPACITY`：Store 的存储容量。
+* `AVAILABLE`：Store 的剩余存储空间。
+* `LEADER_COUNT`：Store 上的 leader 的数量。
+* `LEADER_WEIGHT`：Store 的 leader 权重。
+* `LEADER_SCORE`：Store 的 leader 评分。
+* `LEADER_SIZE`：Store 上的所有 leader 的近似总数据量 (MB)。
+* `REGION_COUNT`：Store 上的 Region 总数。
+* `REGION_WEIGHT`：Store 的 Region 权重。
+* `REGION_SCORE`：Store 的 Region 评分。
+* `REGION_SIZE`：Store 上的所有 Region 的近似总数据量 (MB)。
+* `START_TS`：Store 启动时的时间戳。
+* `LAST_HEARTBEAT_TS`：Store 上次发出心跳的时间戳。
+* `UPTIME`：Store 启动以来的总时间。
+
 ## USER_PRIVILEGES 表
 
 `USER_PRIVILEGES` 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
@@ -838,7 +1021,7 @@ desc TIKV_STORE_STATUS;
 desc USER_PRIVILEGES;
 ```
 
-```
+```sql
 +----------------|--------------|------|------|---------|-------+
 | Field          | Type         | Null | Key  | Default | Extra |
 +----------------|--------------|------|------|---------|-------+
@@ -849,6 +1032,13 @@ desc USER_PRIVILEGES;
 +----------------|--------------|------|------|---------|-------+
 4 rows in set (0.00 sec)
 ```
+
+`USER_PRIVILEGES` 表中列的含义如下：
+
+* `GRANTEE`：被授权的用户名称，格式为 `'user_name'@'host_name'`。
+* `TABLE_CATALOG`：表所属的目录的名称。该值始终为 `def`。
+* `PRIVILEGE_TYPE`：被授权的权限类型，每行只列一个权限。
+* `IS_GRANTABLE`：如果用户有 `GRANT OPTION` 的权限，则为 `YES`，否则为 `NO`。
 
 ## VIEWS 表
 
@@ -884,6 +1074,19 @@ CHARACTER_SET_CLIENT: utf8
 COLLATION_CONNECTION: utf8_general_ci
 1 row in set (0.00 sec)
 ```
+
+`VIEWS` 表中列的含义如下：
+
+* `TABLE_CATALOG`：视图所属的目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：视图所属的数据库的名称。
+* `TABLE_NAME`：视图名称。
+* `VIEW_DEFINITION`：视图的定义，由创建视图时 `SELECT` 部分的语句组成。
+* `CHECK_OPTION`：`CHECK_OPTION` 的值。取值为 `NONE`、 `CASCADE` 或 `LOCAL`。
+* `IS_UPDATABLE`：`UPDATE`/`INSERT`/`DELETE` 是否对该视图可用。在 TiDB，始终为 `NO`。 
+* `DEFINER`：视图的创建者用户名称，格式为 `'user_name'@'host_name'`。
+* `SECURITY_TYPE`：`SQL SECURITY` 的值，取值为 `DEFINER` 或 `INVOKER`。
+* `CHARACTER_SET_CLIENT`：在视图创建时 session 变量 `character_set_client` 的值。
+* `COLLATION_CONNECTION`：在视图创建时 session 变量 `collation_connection` 的值。
 
 ## SQL 诊断相关的表
 

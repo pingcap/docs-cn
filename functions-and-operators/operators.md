@@ -1,6 +1,5 @@
 ---
 title: 操作符
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/operators/']
 ---
 

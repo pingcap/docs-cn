@@ -1,6 +1,5 @@
 ---
 title: TiDB Binlog 常见错误修复
-category: reference
 aliases: ['/docs-cn/stable/reference/tidb-binlog/troubleshoot/error-handling/']
 ---
 
@@ -30,4 +29,4 @@ fetch.message.max.bytes=1073741824
 
 报错原因：Pump 启动时需要通知所有 Online 状态的 Drainer，如果通知失败则会打印该错误日志。
 
-解决方法：可以使用 [binlogctl 工具](/tidb-binlog/maintain-tidb-binlog-cluster.md#binlogctl-工具)查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。
+解决方法：可以使用 [binlogctl 工具](/tidb-binlog/binlog-control.md)查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。

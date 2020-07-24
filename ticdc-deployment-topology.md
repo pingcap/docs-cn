@@ -1,7 +1,6 @@
 ---
 title: TiCDC 部署拓扑
 summary: 介绍 TiCDC 部署 TiDB 集群的拓扑结构。
-category: how-to
 aliases: ['/docs-cn/stable/reference/tools/ticdc/deploy/','/docs-cn/stable/ticdc/deploy-ticdc/']
 ---
 
@@ -31,4 +30,5 @@ aliases: ['/docs-cn/stable/reference/tools/ticdc/deploy/','/docs-cn/stable/ticdc
 
 > **注意：**
 >
-> - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在目标主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
+> - 如果部署目录配置为相对路径，会部署在用户家目录下。

@@ -1,6 +1,5 @@
 ---
 title: 物理优化
-category: performance
 ---
 
 # 物理优化

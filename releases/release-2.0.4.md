@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0.4 release notes
-category: Releases
 aliases: ['/docs-cn/stable/releases/204/']
 ---
 

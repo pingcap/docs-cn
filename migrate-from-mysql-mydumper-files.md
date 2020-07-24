@@ -1,12 +1,11 @@
 ---
 title: 从 MySQL SQL 文件迁移数据
 summary: 使用 TiDB Lightning 从 MySQL 迁移数据。
-category: how-to
 ---
 
 # 从 MySQL SQL 文件迁移数据
 
-本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，可以参考 [Mydumper](/mydumper-overview.md) 或者 [Dumpling](/export-or-backup-using-dumpling.md) 文档。
+本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，可以参考 [Mydumper](/mydumper-overview.md) 或者 [Dumpling](/dumpling-overview.md) 文档。
 
 ## 第 1 步：部署 TiDB Lightning
 

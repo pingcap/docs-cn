@@ -1,7 +1,6 @@
 ---
 title: COMMIT
 summary: TiDB 数据库中 COMMIT 的使用概况。
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/statements/commit/']
 ---
 
@@ -74,4 +73,4 @@ Query OK, 0 rows affected (0.01 sec)
 * [START TRANSACTION](/sql-statements/sql-statement-start-transaction.md)
 * [ROLLBACK](/sql-statements/sql-statement-rollback.md)
 * [BEGIN](/sql-statements/sql-statement-begin.md)
-* [事务的惰性检查](/transaction-overview.md#事务的惰性检查)
+* [事务的惰性检查](/transaction-overview.md#惰性检查)

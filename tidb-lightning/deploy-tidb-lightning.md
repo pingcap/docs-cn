@@ -1,6 +1,5 @@
 ---
 title: TiDB Lightning 部署与执行
-category: reference
 aliases: ['/docs-cn/stable/reference/tools/tidb-lightning/deployment/']
 ---
 
@@ -67,7 +66,7 @@ aliases: ['/docs-cn/stable/reference/tools/tidb-lightning/deployment/']
 >
 > - `tikv-importer` 将中间数据存储缓存到内存上以加速导入过程。占用内存大小可以通过 **(`max-open-engines` × `write-buffer-size` × 2) + (`num-import-jobs` × `region-split-size` × 2)** 计算得来。如果磁盘写入速度慢，缓存可能会带来更大的内存占用。
 
-此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/tidb-faq.md#326-每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
+此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/deploy-and-maintain-faq.md#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
 
 ## 导出数据
 
@@ -178,7 +177,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
 
 #### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，建议使用最新版。部署方法可参考 [TiDB 快速入门指南](/overview.md#部署方式)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群 (版本要求 2.0.9 以上)，建议使用最新版。部署方法可参考 [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
 #### 第 2 步：下载 TiDB Lightning 安装包
 

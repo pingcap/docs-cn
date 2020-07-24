@@ -1,6 +1,5 @@
 ---
 title: TiDB 配置参数
-category: reference
 aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 ---
 
@@ -93,9 +92,14 @@ aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 
 ## `--proxy-protocol-networks`
 
-+ PROXY Protocol 允许的代理服务器地址列表。如需配置多个地址，用 `,` 分隔。
++ 允许使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt) 连接 TiDB 的代理服务器地址列表。
 + 默认：""
-+ 如果该参数为空，TiDB 会禁用 PROXY Protocol 功能。地址可以使用 IP 地址 (192.168.1.50) 或者 CIDR (192.168.1.0/24)，`*` 代表所有地址。
++ 通常情况下，通过反向代理使用 TiDB 时，TiDB 会将反向代理服务器的 IP 地址视为客户端 IP 地址。对于支持 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt) 的反向代理（如 HAProxy），开启 PROXY 协议后能让反向代理透传客户端真实的 IP 地址给 TiDB。
++ 配置该参数后，TiDB 将允许配置的源 IP 地址使用 PROXY 协议连接到 TiDB，且拒绝这些源 IP 地址使用非 PROXY 协议连接。若该参数为空，则任何源 IP 地址都不能使用 PROXY 协议连接到 TiDB。地址可以使用 IP 地址格式 (192.168.1.50) 或者 CIDR 格式 (192.168.1.0/24)，并可用 `,` 分隔多个地址，或用 `*` 代表所有 IP 地址。
+
+> **警告：**
+>
+> 需谨慎使用 `*` 符号，因为它可能引入安全风险，允许来自任何 IP 的客户端自行汇报其 IP 地址。另外，它可能会导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
 
 ## `--proxy-protocol-header-timeout`
 
