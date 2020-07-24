@@ -250,7 +250,16 @@ Query OK, 0 rows affected (0.01 sec)
 
 ### 动态修改 TiDB 配置
 
-为了避免和 SQL 变量混淆，TiDB 的配置可以通过 `show config` 查看但是不能进行修改，动态配置时会返回错误；如果想动态修改 TiDB 行为，请用对应的 [SQL 变量](/system-variables.md)去控制。下面是一个例子：
+TiDB 使用 [SQL 变量](/system-variables.md)来控制行为，下表汇总了所有支持动态修改的配置项和相应的系统变量：
+
+| 配置项 | 对应变量 | 简介 |
+| --- | --- | --- |
+| mem-quota-query | tidb_mem_quota_query | Query 使用的内存限制 |
+| log.enable-slow-log | tidb_enable_slow_log | 慢日志开关 |
+| log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
+| log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
+
+下面例子展示了如何通过变量 `tidb_slow_log_threshold` 动态修改配置项 `slow-threshold`。`slow-threshold` 默认值是 200 毫秒，可以通过设置 `tidb_slow_log_threshold` 将其修改为 200 毫秒：
 
 ```sql
 set tidb_slow_log_threshold = 200;
