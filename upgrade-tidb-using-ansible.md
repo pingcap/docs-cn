@@ -1,6 +1,5 @@
 ---
 title: 使用 TiDB Ansible 升级 TiDB
-category: how-to
 aliases: ['/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 

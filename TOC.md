@@ -220,6 +220,7 @@
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
     + [生成自签名证书](/generate-self-signed-certificates.md)
+    + [静态加密](/encryption-at-rest.md)
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     + [权限管理](/privilege-management.md)
@@ -438,9 +439,7 @@
     + [tikv-server](/tikv-configuration-file.md)
     + [tiflash-server](/tiflash/tiflash-configuration.md)
     + [pd-server](/pd-configuration-file.md)
-  + 系统变量
-    + [MySQL 系统变量](/system-variables.md)
-    + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
+  + [系统变量](/system-variables.md)
   + 存储引擎
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
@@ -477,6 +476,7 @@
   + [迁移 FAQ](/faq/migration-tidb-faq.md)
 + [术语表](/glossary.md)
 + 版本发布历史
+  + [TiDB V4.0 Roadmap](/roadmap.md)
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
     - [4.0.2](/releases/release-4.0.2.md)
