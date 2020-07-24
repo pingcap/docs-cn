@@ -49,9 +49,15 @@ TiDB 版本：4.0.3
     - 加速 `kill tidb sesesion_id` 的执行速度 [#18505](https://github.com/pingcap/tidb/pull/18505)
     - 函数 `tidb_decode_plan` 的结果增加表头输出 [#18501](https://github.com/pingcap/tidb/pull/18501)
     - 配置检查器可以兼容旧版本的配置文件 [#18046](https://github.com/pingcap/tidb/pull/18046)
-    - 插入负值的整型主键时，不会触发自增 ID 的重新分配 [#17987](https://github.com/pingcap/tidb/pull/17987)
     - 默认打开执行信息的收集 [#18518](https://github.com/pingcap/tidb/pull/18518)
     - 增加系统表 `tiflash_tables` 和 `tiflash_segments` [#18536](https://github.com/pingcap/tidb/pull/18536)
+    - AUTO RANDOM 被移出实验特性并正式 GA，有如下的改进和兼容性修改：
+        - 在配置文件中，将 experimental.allow-auto-random 废弃，该无论该选项如何配置，都可以在列上定义 AUTO_RANDOM 属性 #18613 #18623
+        - 为避免显式写入 AUTO_RANDOM 列造成非预期的 AUTO_RANDOM_BASE 的更新，新增 Session 变量 tidb_allow_auto_random_explicit_insert 用于控制``AUTO_RANDOM列的显式写入，改变量默认为False` #18508
+        - 为避免分配空间被快速消耗，AUTO_RANDOM 列现在仅允许在 BIGINT 和 UNSIGNED BIGINT 列上定义，并将最大的 Shard Bit 数量限制为 15 #18538
+        - 当在 BIGINT 列上定义 AUTO_RANDOM 属性，并显示插入负值的整型主键时，将不会再触发 AUTO_RANDOM_BASE 的更新 #17987
+        - 当在 UNSIGNED BIGINT 列上定义 AUTO_RANDOM 属性，分配 ID 时将利用整数的最高位以获得更大的分配空间 #18404
+        - 在 SHOW CREATE TABLE 的结果中支持 AUTO_RANDOM_BASE 属性的更新 #18316
 
 + TiKV
 
