@@ -36,5 +36,5 @@ TiDB Lightning 整体工作原理如下：
 
 7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
 
-如果需要导入的目标集群是 v3.x 或以下的版本，需要使用 Importer-Backend 来完成数据的导入。在这个模式下， `tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入；另外
+如果需要导入的目标集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下， `tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入；另外
 TiDB Lightning 还支持使用TiDB-backend 作为后端导入数据。TiDB-backend 使用和 Loader 类似，`tidb-lightning` 将数据转换为 `INSERT` 语句，然后直接在目标集群上执行这些语句。详见 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。

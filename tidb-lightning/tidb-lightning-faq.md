@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/faq/tidb-lightning/']
 
 ## TiDB Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
 
-TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式，最低版本要求为 4.0.0. 如果使用 Importer-backend 或 TiDB-Backend 模式 最低版本要求是 2.0.9，但建议使用最新的稳定版本 3.0。
+TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式，最低版本要求为 4.0.0. 如果使用 Importer-backend 或 TiDB-backend 模式 最低版本要求是 2.0.9，但建议使用最新的稳定版本 3.0。
 
 ## TiDB Lightning 支持导入多个库吗？
 
@@ -29,7 +29,7 @@ TiDB Lightning 需要以下权限：
 * CREATE
 * DROP
 
-如果选择 [TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 模式，或目标数据库用于存储断点，则 TiBD Lightning 额外需要以下权限：
+如果选择 [TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 模式，或目标数据库用于存储断点，则 TiDB Lightning 额外需要以下权限：
 
 * INSERT
 * DELETE
