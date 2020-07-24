@@ -48,7 +48,7 @@ show config where name like '%log%'
 show config where type='tikv' and name='log-level'
 ```
 
-### 修改实例配置
+### 动态修改 TiKV 配置
 
 > **注意：**
 >
@@ -97,97 +97,12 @@ show warnings;
 1 row in set (0.00 sec)
 ```
 
-PD 暂不支持单个实例拥有独立配置。所有实例共享一份配置，可以通过下列方式修改 PD 的参数：
-
-```sql
-set config pd log.level="info"
-```
-
-设置成功会返回 `Query OK`：
-
-```sql
-Query OK, 0 rows affected (0.01 sec)
-```
-
-为了避免和 SQL 变量混淆，TiDB 的配置可以通过 `show config` 查看但是不能进行修改，动态配置时会返回错误；如果想动态修改 TiDB 行为，请用对应的 SQL 变量去控制。
-
-某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``tikv-client.`store-limit` ``；
-
 批量修改配置不保证原子性，可能出现某些实例成功，而某些失败。如使用 `set tikv key=val` 修改整个 tikv 集群配置时，可能有部分实例失败，请使用 `show warnings` 进行查看。如遇到部分修改失败的情况，需要重新执行对应的修改语句，或通过修改单个实例的方式完成修改。对于由于网络或者机器故障等原因无法访问到的 TiKV，需要等到恢复后再次进行修改。
 
-针对 TiKV 可动态修改的参数，如果成功修改后，修改的结果会被持久化到配置文件中，后续以配置文件中的参数为准。而针对 PD 可动态修改的参数，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的参数为准。
+针对 TiKV 可动态修改的参数，如果成功修改后，修改的结果会被持久化到配置文件中，后续以配置文件中的参数为准。某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``raftstore.raft-log-gc-size-limit` ``；
 
-## 支持参数列表
+支持参数列表如下：
 
-### TiDB
-
-TiDB 使用 [SQL 变量](/system-variables.md)来控制行为，下面是一个例子：
-
-```sql
-set tidb_slow_log_threshold = 200;
-```
-
-```sql
-Query OK, 0 rows affected (0.00 sec)
-```
-
-```sql
-mysql> select @@tidb_slow_log_threshold;
-```
-
-```sql
-+---------------------------+
-| @@tidb_slow_log_threshold |
-+---------------------------+
-| 200                       |
-+---------------------------+
-1 row in set (0.00 sec)
-```
-
-### PD
-
-| 参数 | 简介 |
-| --- | --- |
-| log.level| 日志级别 |
-| cluster-version | 集群的版本 |
-| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MB） |
-| schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
-| schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
-| schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
-| schedule.max-snapshot-count | 控制单个 store 最多同时接收或发送的 snapshot 数量 |
-| schedule.max-pending-peer-count | 控制单个 store 的 pending peer 上限 |
-| schedule.max-store-down-time | PD 认为失联 store 无法恢复的时间 |
-| schedule.leader-schedule-policy | 用于控制 leader 调度的策略 |
-| schedule.leader-schedule-limit | 可以控制同时进行 leader 调度的任务个数 |
-| schedule.region-schedule-limit | 可以控制同时进行 Region 调度的任务个数 |
-| schedule.replica-schedule-limit | 可以控制同时进行 replica 调度的任务个数 |
-| schedule.merge-schedule-limit | 控制同时进行的 Region Merge 调度的任务 |
-| schedule.hot-region-schedule-limit | 可以控制同时进行的热点调度的任务个数 |
-| schedule.hot-region-cache-hits-threshold | 用于设置 Region 被视为热点的阈值 |
-| schedule.high-space-ratio | 用于设置 store 空间充裕的阈值 |
-| schedule.low-space-ratio | 用于设置 store 空间不足的阈值 |
-| schedule.tolerant-size-ratio | 控制 balance 缓冲区大小 |
-| schedule.enable-remove-down-replica | 用于开启自动删除 DownReplica 的特性 |
-| schedule.enable-replace-offline-replica | 用于开启迁移 OfflineReplica 的特性 |
-| schedule.enable-make-up-replica | 用于开启补充副本的特性 |
-| schedule.enable-remove-extra-replica | 用于开启删除多余副本的特性 |
-| schedule.enable-location-replacement | 用于开启隔离级别检查 |
-| schedule.enable-cross-table-merge | 用于开启跨表 Merge |
-| schedule.enable-one-way-merge | 用于开启单向 Merge（只允许和下一个相邻的 Region Merge） |
-| replication.max-replicas | 用于设置副本的数量 |
-| replication.location-labels | 用于设置 TiKV 集群的拓扑信息 |
-| replication.enable-placement-rules | 开启 Placement Rules |
-| replication.strictly-match-label | 开启 label 检查 |
-| pd-server.use-region-storage | 开启独立的 Region 存储 |
-| pd-server.max-gap-reset-ts | 用于设置最大的重置 timestamp 的间隔（BR）|
-| pd-server.key-type| 用于设置集群 key 的类型 |
-| pd-server.metric-storage | 用于设置集群 metrics 的存储地址 |
-| pd-server.dashboard-address | 用于设置 dashboard 的地址 |
-| replication-mode.replication-mode | 备份的模式 |
-
-具体参数意义可参考 [PD 配置文件描述](/pd-configuration-file.md)
-
-### TiKV
 
 | 参数 | 简介 |
 | --- | --- |
@@ -273,3 +188,87 @@ mysql> select @@tidb_slow_log_threshold;
 - 当 `db-name` 为 `raftdb` 时，cf-name 的取值有: `defaultcf`。
 
 具体参数意义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)
+
+### 动态修改 PD 配置
+
+PD 暂不支持单个实例拥有独立配置。所有实例共享一份配置，可以通过下列方式修改 PD 的参数：
+
+```sql
+set config pd log.level="info"
+```
+
+设置成功会返回 `Query OK`：
+
+```sql
+Query OK, 0 rows affected (0.01 sec)
+```
+
+针对 PD 可动态修改的参数，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的参数为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ``` 包裹起来，如 ``schedule.`leader-schedule-limit` ``；
+
+支持参数列表如下：
+
+| 参数 | 简介 |
+| --- | --- |
+| log.level| 日志级别 |
+| cluster-version | 集群的版本 |
+| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MB） |
+| schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
+| schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
+| schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
+| schedule.max-snapshot-count | 控制单个 store 最多同时接收或发送的 snapshot 数量 |
+| schedule.max-pending-peer-count | 控制单个 store 的 pending peer 上限 |
+| schedule.max-store-down-time | PD 认为失联 store 无法恢复的时间 |
+| schedule.leader-schedule-policy | 用于控制 leader 调度的策略 |
+| schedule.leader-schedule-limit | 可以控制同时进行 leader 调度的任务个数 |
+| schedule.region-schedule-limit | 可以控制同时进行 Region 调度的任务个数 |
+| schedule.replica-schedule-limit | 可以控制同时进行 replica 调度的任务个数 |
+| schedule.merge-schedule-limit | 控制同时进行的 Region Merge 调度的任务 |
+| schedule.hot-region-schedule-limit | 可以控制同时进行的热点调度的任务个数 |
+| schedule.hot-region-cache-hits-threshold | 用于设置 Region 被视为热点的阈值 |
+| schedule.high-space-ratio | 用于设置 store 空间充裕的阈值 |
+| schedule.low-space-ratio | 用于设置 store 空间不足的阈值 |
+| schedule.tolerant-size-ratio | 控制 balance 缓冲区大小 |
+| schedule.enable-remove-down-replica | 用于开启自动删除 DownReplica 的特性 |
+| schedule.enable-replace-offline-replica | 用于开启迁移 OfflineReplica 的特性 |
+| schedule.enable-make-up-replica | 用于开启补充副本的特性 |
+| schedule.enable-remove-extra-replica | 用于开启删除多余副本的特性 |
+| schedule.enable-location-replacement | 用于开启隔离级别检查 |
+| schedule.enable-cross-table-merge | 用于开启跨表 Merge |
+| schedule.enable-one-way-merge | 用于开启单向 Merge（只允许和下一个相邻的 Region Merge） |
+| replication.max-replicas | 用于设置副本的数量 |
+| replication.location-labels | 用于设置 TiKV 集群的拓扑信息 |
+| replication.enable-placement-rules | 开启 Placement Rules |
+| replication.strictly-match-label | 开启 label 检查 |
+| pd-server.use-region-storage | 开启独立的 Region 存储 |
+| pd-server.max-gap-reset-ts | 用于设置最大的重置 timestamp 的间隔（BR）|
+| pd-server.key-type| 用于设置集群 key 的类型 |
+| pd-server.metric-storage | 用于设置集群 metrics 的存储地址 |
+| pd-server.dashboard-address | 用于设置 dashboard 的地址 |
+| replication-mode.replication-mode | 备份的模式 |
+
+具体参数意义可参考 [PD 配置文件描述](/pd-configuration-file.md)
+
+### 动态修改 TiDB 配置
+
+为了避免和 SQL 变量混淆，TiDB 的配置可以通过 `show config` 查看但是不能进行修改，动态配置时会返回错误；如果想动态修改 TiDB 行为，请用对应的 [SQL 变量](/system-variables.md)去控制。下面是一个例子：
+
+```sql
+set tidb_slow_log_threshold = 200;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+mysql> select @@tidb_slow_log_threshold;
+```
+
+```sql
++---------------------------+
+| @@tidb_slow_log_threshold |
++---------------------------+
+| 200                       |
++---------------------------+
+1 row in set (0.00 sec)
+```
