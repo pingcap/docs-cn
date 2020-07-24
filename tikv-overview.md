@@ -1,6 +1,5 @@
 ---
 title: TiKV 简介
-category: reference
 ---
 
 # TiKV 简介

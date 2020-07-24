@@ -1,8 +1,7 @@
 ---
 title: SQL 诊断
 summary: 了解 SQL 诊断功能。
-category: reference
-aliases: ['/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/']
+aliases: ['/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/','/zh/tidb/stable/check-cluster-status-using-sql-statements']
 ---
 
 # SQL 诊断

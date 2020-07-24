@@ -1,7 +1,6 @@
 ---
 title: CLUSTER_INFO
 summary: 了解 TiDB 集群拓扑表 `CLUSTER_INFO`。
-category: reference
 aliases: ['/docs-cn/stable/reference/system-databases/cluster-info/']
 ---
 
@@ -15,7 +14,7 @@ aliases: ['/docs-cn/stable/reference/system-databases/cluster-info/']
 desc information_schema.cluster_info;
 ```
 
-```
+```sql
 +----------------+-------------+------+------+---------+-------+
 | Field          | Type        | Null | Key  | Default | Extra |
 +----------------+-------------+------+------+---------+-------+
@@ -46,7 +45,7 @@ desc information_schema.cluster_info;
 select * from information_schema.cluster_info;
 ```
 
-```
+```sql
 +------+-----------------+-----------------+-------------+------------------------------------------+---------------------------+--------------+
 | TYPE | INSTANCE        | STATUS_ADDRESS  | VERSION     | GIT_HASH                                 | START_TIME                | UPTIME       |
 +------+-----------------+-----------------+-------------+------------------------------------------+---------------------------+--------------+

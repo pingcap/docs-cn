@@ -1,6 +1,5 @@
 ---
 title: BR 备份与恢复场景示例
-category: reference
 aliases: ['/docs-cn/stable/reference/tools/br/use-cases/']
 ---
 
@@ -27,13 +26,18 @@ aliases: ['/docs-cn/stable/reference/tools/br/use-cases/']
 
 ### 部署方式
 
-推荐使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
+推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
 
 ### 集群版本
 
-* TiKV: v3.1.0-beta.1
-* PD: v3.1.0-beta.1
-* br: v3.1.0-beta.1
+* TiDB: v4.0.2
+* TiKV: v4.0.2
+* PD: v4.0.2
+* BR: v4.0.2
+
+> **注意：**
+>
+> v4.0.2 为编写本文档时的最新版本。推荐读者使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
 
 ### TiKV 集群硬件信息
 
@@ -170,16 +174,16 @@ bin/br backup table \
 使用 BR 前已设置日志的存放路径。从路径下存放的日志中可以获取此次备份的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
 
 ```
-["Table backup summary: 
-    total backup ranges: 4, 
-    total success: 4, 
-    total failed: 0, 
-    total take(s): 986.43, 
-    total kv: 5659888624, 
-    total size(MB): 353227.18, 
-    avg speed(MB/s): 358.09"] 
-    ["backup total regions"=7196] 
-    ["backup checksum"=6m28.291772955s] 
+["Table backup summary:
+    total backup ranges: 4,
+    total success: 4,
+    total failed: 0,
+    total take(s): 986.43,
+    total kv: 5659888624,
+    total size(MB): 353227.18,
+    avg speed(MB/s): 358.09"]
+    ["backup total regions"=7196]
+    ["backup checksum"=6m28.291772955s]
     ["backup fast checksum"=24.950298ms]
 ```
 
@@ -282,17 +286,17 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 使用 BR 前已设置日志的存放路径。从路径下存放的日志中可以获取此次恢复的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
 
 ```
-["Table Restore summary: 
-    total restore tables: 1, 
-    total success: 1, 
-    total failed: 0, 
-    total take(s): 961.37, 
-    total kv: 5659888624, 
-    total size(MB): 353227.18, 
-    avg speed(MB/s): 367.42"] 
-    ["restore files"=9263] 
-    ["restore ranges"=6888] 
-    ["split region"=49.049182743s] 
+["Table Restore summary:
+    total restore tables: 1,
+    total success: 1,
+    total failed: 0,
+    total take(s): 961.37,
+    total kv: 5659888624,
+    total size(MB): 353227.18,
+    avg speed(MB/s): 367.42"]
+    ["restore files"=9263]
+    ["restore ranges"=6888]
+    ["split region"=49.049182743s]
     ["restore checksum"=6m34.879439498s]
 ```
 

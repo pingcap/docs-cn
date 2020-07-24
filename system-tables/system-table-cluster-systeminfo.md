@@ -1,7 +1,6 @@
 ---
 title: CLUSTER_SYSTEMINFO
 summary: 了解 TiDB 集群负载表 `CLUSTER_SYSTEMINFO`。
-category: reference
 aliases: ['/docs-cn/stable/reference/system-databases/cluster-systeminfo/']
 ---
 
@@ -15,7 +14,7 @@ aliases: ['/docs-cn/stable/reference/system-databases/cluster-systeminfo/']
 desc information_schema.cluster_systeminfo;
 ```
 
-```
+```sql
 +-------------+--------------+------+------+---------+-------+
 | Field       | Type         | Null | Key  | Default | Extra |
 +-------------+--------------+------+------+---------+-------+
@@ -44,7 +43,7 @@ desc information_schema.cluster_systeminfo;
 select * from information_schema.cluster_systeminfo where name like '%kernel.osrelease%'
 ```
 
-```
+```sql
 +------+-------------------+-------------+-------------+------------------+----------------------------+
 | TYPE | INSTANCE          | SYSTEM_TYPE | SYSTEM_NAME | NAME             | VALUE                      |
 +------+-------------------+-------------+-------------+------------------+----------------------------+

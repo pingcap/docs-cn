@@ -1,7 +1,6 @@
 ---
 title: CLUSTER_HARDWARE
 summary: 了解 TiDB 集群硬件表 `CLUSTER_HARDWARE`。
-category: reference
 aliases: ['/docs-cn/stable/reference/system-databases/cluster-hardware/']
 ---
 
@@ -15,7 +14,7 @@ aliases: ['/docs-cn/stable/reference/system-databases/cluster-hardware/']
 desc information_schema.cluster_hardware;
 ```
 
-```
+```sql
 +-------------+--------------+------+------+---------+-------+
 | Field       | Type         | Null | Key  | Default | Extra |
 +-------------+--------------+------+------+---------+-------+
@@ -49,7 +48,7 @@ desc information_schema.cluster_hardware;
 select * from information_schema.cluster_hardware where device_type='cpu' and device_name='cpu' and name like '%cores';
 ```
 
-```
+```sql
 +------+-----------------+-------------+-------------+--------------------+-------+
 | TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME               | VALUE |
 +------+-----------------+-------------+-------------+--------------------+-------+

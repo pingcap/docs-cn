@@ -1,6 +1,5 @@
 ---
 title: TiKV 监控指标详解
-category: reference
 aliases: ['/docs-cn/stable/reference/key-monitoring-metrics/tikv-dashboard/']
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: ALTER INSTANCE
 summary: TiDB 数据库中 ALTER INSTANCE 的使用概况。
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/statements/alter-instance/']
 ---
 
@@ -41,4 +40,4 @@ ALTER INSTANCE RELOAD TLS;
 
 ## 另请参阅
 
-[MySQL 客户端开启 TLS](/enable-tls-between-clients.md)
+[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)

@@ -1,11 +1,14 @@
 ---
 title: 用户自定义变量
-category: reference
 summary: 本文介绍 TiDB 的用户自定义变量。
 aliases: ['/docs-cn/stable/reference/sql/language-structure/user-defined-variables/']
 ---
 
 # 用户自定义变量
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
 
 本文介绍 TiDB 的用户自定义变量的概念，以及设置和读取用户自定义变量的方法。
 
@@ -58,7 +61,7 @@ set @c = b'1000001' + b'1000001';
 {{< copyable "sql" >}}
 
 ```sql
-SELECT @a1, @a2, @t3
+SELECT @a1, @a2, @a3
 ```
 
 ```
@@ -72,7 +75,7 @@ SELECT @a1, @a2, @t3
 还可以在 `SELECT` 语句中赋值：
 
 ```sql
-SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
+SELECT @a1, @a2, @a3, @a4 := @a1+@a2+@a3;
 ```
 
 ```

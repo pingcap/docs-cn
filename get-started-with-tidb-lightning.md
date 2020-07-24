@@ -1,6 +1,5 @@
 ---
 title: TiDB Lightning 教程
-category: how-to
 aliases: ['/docs-cn/stable/how-to/get-started/tidb-lightning/']
 ---
 
@@ -48,7 +47,7 @@ TiDB Lightning 主要包含两个部分:
 
 ### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群（版本要求 2.0.9 以上），本教程使用 TiDB 3.0.4 版本。部署方法可参考 [TiDB 快速入门指南](/overview.md#部署方式)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群（版本要求 2.0.9 以上），本教程使用 TiDB 3.0.4 版本。部署方法可参考 [TiDB 部署方式](https://docs.pingcap.com/zh/tidb/v3.0/overview#部署方式)。
 
 ### 第 2 步：下载 TiDB Lightning 安装包
 

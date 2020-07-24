@@ -1,7 +1,6 @@
 ---
 title: TiDB 事务概览
 summary: 了解 TiDB 中的事务。
-category: reference
 aliases: ['/docs-cn/stable/reference/transactions/overview/']
 ---
 
@@ -9,7 +8,7 @@ aliases: ['/docs-cn/stable/reference/transactions/overview/']
 
 TiDB 支持完整的分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)（TiDB 3.0 中引入）两种事务模型。本文主要介绍涉及到常用事务的语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
 
-常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/tidb-specific-system-variables.md#tidb_disable_txn_auto_retry)、[`tidb_retry_limit`](/tidb-specific-system-variables.md#tidb_retry_limit) 以及 [`tidb_txn_mode`](/tidb-specific-system-variables.md#tidb_txn_mode)。
+常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)、[`tidb_retry_limit`](/system-variables.md#tidb_retry_limit) 以及 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode)。
 
 ## 常用事务语句
 
