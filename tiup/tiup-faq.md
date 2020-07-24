@@ -1,6 +1,5 @@
 ---
 title: TiUP FAQ
-category: tools
 ---
 
 # TiUP FAQ

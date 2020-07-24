@@ -1,6 +1,5 @@
 ---
 title: sync-diff-inspector 用户文档
-category: tools
 aliases: ['/docs-cn/dev/reference/tools/sync-diff-inspector/overview/']
 ---
 
@@ -24,7 +23,7 @@ GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree
 
 ### 使用限制
 
-* 目前不支持在线校验，需要保证上下游校验的表中没有数据写入，或者保证某个范围内的数据不再变更，通过配置 `range` 来校验这个范围内的数据。
+* 对于 MySQL 和 TiDB 之间的数据同步不支持在线校验，需要保证上下游校验的表中没有数据写入，或者保证某个范围内的数据不再变更，通过配置 `range` 来校验这个范围内的数据。
 
 * 不支持 JSON、BIT、BINARY、BLOB 等类型的数据，在校验时需要设置 `ignore-columns` 忽略检查这些类型的数据。
 

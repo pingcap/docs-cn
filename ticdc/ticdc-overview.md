@@ -1,6 +1,5 @@
 ---
 title: TiCDC 简介
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/ticdc/overview/']
 ---
 

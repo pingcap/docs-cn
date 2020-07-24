@@ -1,7 +1,6 @@
 ---
 title: INSPECTION_SUMMARY
 summary: 了解 TiDB 系统表 `INSPECTION_SUMMARY`。
-category: reference
 aliases: ['/docs-cn/dev/reference/system-databases/inspection-summary/']
 ---
 

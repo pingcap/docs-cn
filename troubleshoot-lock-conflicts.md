@@ -1,7 +1,6 @@
 ---
 title: TiDB 锁冲突问题处理
 summary: 了解 TiDB 锁冲突问题以及处理方式。
-category: troubleshoot
 ---
 
 # TiDB 锁冲突问题处理
@@ -106,7 +105,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
 #### 锁被清除 (LockNotFound) 错误
 
-TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](/tidb-specific-system-variables.md#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
+TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](/system-variables.md#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
 
 你可以通过如下两种途径来查看 LockNotFound 报错信息：
 
@@ -194,7 +193,7 @@ err="pessimistic lock retry limit reached"
 
 #### Lock wait timeout exceeded
 
-在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的 [innodb_lock_wait_timeout](/system-variables.md#tidb-支持的-mysql-系统变量) 参数来定义，这个是 SQL 语句层面的最大允许等锁时间，即一个 SQL 语句期望加锁，但锁一直获取不到，超过这个时间，TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
+在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的 [innodb_lock_wait_timeout](/system-variables.md#innodb_lock_wait_timeout) 参数来定义，这个是 SQL 语句层面的最大允许等锁时间，即一个 SQL 语句期望加锁，但锁一直获取不到，超过这个时间，TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
 
 可通过查看 TiDB 日志查看报错信息：
 

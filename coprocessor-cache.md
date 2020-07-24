@@ -1,6 +1,5 @@
 ---
 title: 下推计算结果缓存
-category: reference
 ---
 
 # 下推计算结果缓存

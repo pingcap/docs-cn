@@ -1,6 +1,5 @@
 ---
-title: SQL Mode
-category: reference
+title: SQL 模式
 aliases: ['/docs-cn/dev/reference/sql/sql-mode/']
 ---
 
