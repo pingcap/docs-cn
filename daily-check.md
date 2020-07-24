@@ -8,9 +8,9 @@ aliases: ['/docs/dev/daily-check/']
 
 As a distributed database, TiDB is more complicated than the stand-alone database in terms of the mechanism, and monitoring items. To help operate and maintain TiDB in a more convenient way, this document introduces some key performance indicators.
 
-## Key indicators of Dashboard
+## Key indicators of TiDB Dashboard
 
-Starting from v4.0, TiDB provides a new operation and maintenance management tool, TiDB Dashboard. This tool is integrated into the PD component. You can access TiDB Dashboard at the default address `http://${pd-ip}:${pd_port}/dashboard`.
+Starting from v4.0, TiDB provides a new operation and maintenance management tool, [TiDB Dashboard](/dashboard/dashboard-intro.md). This tool is integrated into the PD component. You can access TiDB Dashboard at the default address `http://${pd-ip}:${pd_port}/dashboard`.
 
 TiDB Dashboard simplifies the operation and maintenance of the TiDB database. You can view the running status of the entire TiDB cluster through one interface. The following are descriptions of some performance indicators.
 

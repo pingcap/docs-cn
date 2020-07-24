@@ -23,7 +23,7 @@ TiDB v4.0 was officially released on May 28th, 2020. In this release, we have ma
 
 ### TiDB Dashboard
 
-Using TiDB Dashboard, DBAs can quickly find out the cluster topology, cluster configuration, log information, hardware information, operating system, slow queries, SQL query information, diagnostics, and so on. These information helps them quickly learn and analyze various system metrics using SQL statements:
+Using [TiDB Dashboard](/dashboard/dashboard-intro.md), DBAs can quickly find out the cluster topology, cluster configuration, log information, hardware information, operating system, slow queries, SQL query information, diagnostics, and so on. These information helps them quickly learn and analyze various system metrics using SQL statements:
 
 - Cluster Info, which is the running status of all components in the cluster (including TiDB, TiKV, and PD) and the running status of the machine on which these components are hosted.
 - Key Visualizer, which visually displays the traffic of TiDB over a certain period of time and can be used by DBAs to analyze the usage mode of TiDB and the traffic hotspots.

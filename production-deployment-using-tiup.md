@@ -189,7 +189,7 @@ If the output log includes ```Started cluster `tidb-test` successfully```, the s
     mysql -u root -h 10.0.1.4 -P 4000
     ```
 
-In addition, you also need to verify the status of the monitoring system, TiDB Dashboard, and the execution of simple SQL commands. For the specific operations, see [Verify Cluster Status](/post-installation-check.md).
+In addition, you also need to verify the status of the monitoring system, [TiDB Dashboard](/dashboard/dashboard-intro.md), and the execution of simple SQL commands. For the specific operations, see [Verify Cluster Status](/post-installation-check.md).
 
 ## What's next
 

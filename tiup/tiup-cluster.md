@@ -195,7 +195,7 @@ ID                  Role        Host          Ports        Status     Data Dir  
 
 The `Status` column uses `Up` or `Down` to indicate whether the service is running normally.
 
-For the PD component, `|L` or `|UI` might be appended to `Up` or `Down`. `|L` indicates that the PD node is a Leader, and `|UI` indicates that TiDB Dashboard is running on the PD node.
+For the PD component, `|L` or `|UI` might be appended to `Up` or `Down`. `|L` indicates that the PD node is a Leader, and `|UI` indicates that [TiDB Dashboard](/dashboard/dashboard-intro.md) is running on the PD node.
 
 ## Scale in a node
 

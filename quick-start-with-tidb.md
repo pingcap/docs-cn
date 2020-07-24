@@ -85,7 +85,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 5. Access the Prometheus dashboard of TiDB at <http://127.0.0.1:9090>.
 
-6. Access the TiDB Dashboard at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
+6. Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
 
 7. After the test, you can clean the cluster by taking the following steps:
 
@@ -275,7 +275,7 @@ Other requirements for the target machine:
 
     - Access the Grafana monitoring dashboard at <http://{grafana-ip}:3000>. The default username and password are both `admin`.
 
-    - Access the TiDB Dashboard at <http://{pd-ip}:2379/dashboard>. The default username is `root`, and the password is empty.
+    - Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://{pd-ip}:2379/dashboard>. The default username is `root`, and the password is empty.
 
     - To view the currently deployed cluster list:
 

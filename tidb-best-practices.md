@@ -195,7 +195,7 @@ There are lots of items in the monitoring system, the majority of which are for 
 
 In addition to monitoring, you can also view the system logs. The three components of TiDB, tidb-server, tikv-server, and pd-server, each has a `--log-file` parameter. If this parameter has been configured when the cluster is started, logs are stored in the file configured by the parameter and log files are automatically archived on a daily basis. If the `--log-file` parameter has not been configured, the log is output to `stderr`.
 
-Starting from TiDB 4.0, TiDB provides TiDB Dashboard UI to improve usability. You can access TiDB Dashboard by visiting <http://${PD_IP}:${PD_PORT}/dashboard> in your browser. TiDB Dashboard provides features such as viewing cluster status, performance analysis, traffic visualization, cluster diagnostics, and log searching.
+Starting from TiDB 4.0, TiDB provides [TiDB Dashboard](/dashboard/dashboard-intro.md) UI to improve usability. You can access TiDB Dashboard by visiting <http://${PD_IP}:${PD_PORT}/dashboard> in your browser. TiDB Dashboard provides features such as viewing cluster status, performance analysis, traffic visualization, cluster diagnostics, and log searching.
 
 ### Documentation
 

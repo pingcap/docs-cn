@@ -6,11 +6,11 @@ aliases: ['/docs/dev/post-installation-check/']
 
 # Check Cluster Status
 
-This document describes how to check the cluster status via TiDB Dashboard and Grafana, and how to log in to the TiDB database to perform simple DML and DDL operations and SQL queries.
+This document describes how to check the cluster status via [TiDB Dashboard](/dashboard/dashboard-intro.md) and Grafana, and how to log in to the TiDB database to perform simple DML and DDL operations and SQL queries.
 
 ## Check the TiDB cluster status
 
-This section describes how to check the TiDB cluster status using TiDB Dashboard and Grafana.
+This section describes how to check the TiDB cluster status using [TiDB Dashboard](/dashboard/dashboard-intro.md) and Grafana.
 
 ### Use TiDB Dashboard
 
