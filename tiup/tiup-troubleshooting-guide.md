@@ -1,32 +1,31 @@
 ---
 title: TiUP 故障排查
-category: tools
 ---
 
 # TiUP 故障排查
 
 本文介绍 TiUP 使用过程中一些常见的故障及排查方式，如果本文不包含你目前遇到的问题，可以通过以下方式求助：
 
-1. [Github Issues](https://github.com/pingcap-incubator/tiup/issues) 新建一个 Issue。
+1. [Github Issues](https://github.com/pingcap/tiup/issues) 新建一个 Issue。
 2. 在 [AskTUG](https://asktug.com/) 提交你的问题。
 
 ## 1. TiUP 命令故障排查
 
 ### 1.1 使用 `tiup list` 看不到最新的组件列表
 
-TiUP 并不会每次都从镜像服务器更新最新的组件列表，可以通过 `tiup list --refresh` 来强制刷新组件列表。
+TiUP 并不会每次都从镜像服务器更新最新的组件列表，可以通过 `tiup list` 来强制刷新组件列表。
 
 ### 1.2 使用 `tiup list <component>` 看不到一个组件的最新版本信息
 
-同 1.1 一样，组件的版本信息只会在本地无缓存的情况下从镜像服务器获取，可以通过 `tiup list <component> --refresh` 刷新组件列表。
+同 1.1 一样，组件的版本信息只会在本地无缓存的情况下从镜像服务器获取，可以通过 `tiup list <component>` 刷新组件列表。
 
 ### 1.3 下载组件的过程中中断
 
-如果下载组件的过程中网络中断，可能是由于网络不稳定导致的，可以尝试重新下载，如果多次不能成功下载，请反馈到 [Github Issues](https://github.com/pingcap-incubator/tiup/issues)，可能是由于 CDN 服务器导致的。
+如果下载组件的过程中网络中断，可能是由于网络不稳定导致的，可以尝试重新下载，如果多次不能成功下载，请反馈到 [Github Issues](https://github.com/pingcap/tiup/issues)，可能是由于 CDN 服务器导致的。
 
 ### 1.4 下载组件过程中出现 checksum 错误
 
-由于 CDN 会有短暂的缓存时间，导致新的 checksum 文件和组件包不匹配，建议过 5 分钟后重试，如果依然不匹配，请反馈到 [Github Issues](https://github.com/pingcap-incubator/tiup/issues)。
+由于 CDN 会有短暂的缓存时间，导致新的 checksum 文件和组件包不匹配，建议过 5 分钟后重试，如果依然不匹配，请反馈到 [Github Issues](https://github.com/pingcap/tiup/issues)。
 
 ## 2. TiUP Cluster 组件故障排查
 

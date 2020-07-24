@@ -1,18 +1,43 @@
 ---
 title: TiFlash 常见问题
 summary: 介绍 TiFlash 的常见问题、原因及解决办法。
-category: reference
 ---
 
 # TiFlash 常见问题
 
 本文介绍了一些 TiFlash 常见问题、原因及解决办法。
 
+## TiFlash 未能正常启动
+
+该问题可能由多个因素构成，可以通过以下步骤依次排查：
+
+1. 检查系统环境是否是 CentOS8。
+
+    CentOS8 中缺少 `libnsl.so` 系统库，可以通过手动安装的方式解决：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    dnf install libnsl
+    ```
+
+2. 检查系统的 `ulimit` 参数设置。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    ulimit -n 1000000
+    ```
+
+3. 使用 PD Control 工具检查在该节点（相同 IP 和 Port）是否有之前未成功下线的 TiFlash 实例，并将它们强制下线。（下线步骤参考[手动缩容 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)）
+
+如果遇到上述方法无法解决的问题，可以打包 TiFlash 的 log 文件夹，并在 [AskTUG](http://asktug.com) 社区中提问。
+
 ## TiFlash 副本始终处于不可用状态
 
 该问题一般由于配置错误或者环境问题导致 TiFlash 处于异常状态，可以先通过以下步骤定位问题组件：
 
-1. 检查 PD 是否开启 Placement Rules 功能（开启方法见[在原有 TiDB 集群上新增 TiFlash 组件](/tiflash/deploy-tiflash.md#在原有-tidb-集群上新增-tiflash-组件)的第 2 步）：
+1. 使用 pd-ctl 检查 PD 的 [Placement Rules](/configure-placement-rules.md) 功能是否开启：
 
     {{< copyable "shell-regular" >}}
 
@@ -20,7 +45,7 @@ category: reference
     echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
     ```
 
-    预期结果为 `"enable-placement-rules": "true"`。
+    预期结果为 `"enable-placement-rules": "true"`（已开启）。如未开启，具体开启方法参考[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)。
 
 2. 通过 TiFlash-Summary 监控面板下的 UpTime 检查操作系统中 TiFlash 进程是否正常。
 
@@ -65,6 +90,6 @@ category: reference
 
 可依照如下步骤进行处理：
 
-1. 参照[下线 TiFlash 节点](/tiflash/maintain-tiflash.md#下线-tiflash-节点)一节下线对应的 TiFlash 节点。
+1. 参照[下线 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)一节下线对应的 TiFlash 节点。
 2. 清除该 TiFlash 节点的相关数据。
 3. 重新在集群中部署 TiFlash 节点。

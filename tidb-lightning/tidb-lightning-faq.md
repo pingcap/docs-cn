@@ -1,6 +1,5 @@
 ---
 title: TiDB Lightning 常见问题
-category: FAQ
 aliases: ['/docs-cn/stable/faq/tidb-lightning/']
 ---
 

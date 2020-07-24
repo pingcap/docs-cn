@@ -1,6 +1,5 @@
 ---
 title: TiDB 内存控制文档
-category: how-to
 aliases: ['/docs-cn/stable/how-to/configure/memory-control/']
 ---
 

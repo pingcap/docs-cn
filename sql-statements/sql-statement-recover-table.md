@@ -1,6 +1,5 @@
 ---
 title: RECOVER TABLE
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/statements/recover-table/']
 ---
 
@@ -62,7 +61,7 @@ TiDB Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使�
 
 * 上下游数据库的同步延迟。类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
 
-只能通过重新[全量导入被删除的表](/ecosystem-tool-user-guide.md#tidb-集群数据的全量备份及恢复-1)来恢复 TiDB Binlog 的数据同步。
+只能通过重新[全量导入被删除的表](/ecosystem-tool-user-guide.md#备份和恢复)来恢复 TiDB Binlog 的数据同步。
 
 ## 示例
 

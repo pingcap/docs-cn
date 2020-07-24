@@ -1,6 +1,5 @@
 ---
 title: TiUP 简介
-category: tools
 aliases: ['/docs-cn/stable/reference/tools/tiup/overview/']
 ---
 
@@ -31,6 +30,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 ```bash
 tiup --version
 ```
+
+> **注意：**
+>
+> TiUP 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
 
 ## TiUP 生态介绍
 
@@ -64,16 +67,11 @@ Available Commands:
   update      Update tiup components to the latest version
   status      List the status of instantiated components
   clean       Clean the data of instantiated components
+  mirror      Manage a repository mirror for TiUP components
   help        Help about any command or component
 
-Available Components:
-  playground          Bootstrap a local TiDB cluster
-  client              A simple mysql client to connect TiDB
-  package             A toolbox to package tiup component
-  cluster             Deploy a TiDB cluster for production
-  mirrors             Build a local mirrors and download all selected components
-  bench               Benchmark database with different workloads
-  doc                 Online document for TiDB
+Components Manifest:
+  use "tiup list" to fetch the latest components manifest
 
 Flags:
   -B, --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
@@ -82,7 +80,7 @@ Flags:
   -h, --help                           help for tiup
       --skip-version-check             Skip the strict version check, by default a version must be a valid SemVer string
   -T, --tag string                     Specify a tag for component instance
-      --version                        version for tiup
+  -v, --version                        version for tiup
 
 Component instances with the same "tag" will share a data directory ($TIUP_HOME/data/$tag):
   $ tiup --tag mycluster playground
@@ -94,7 +92,7 @@ Examples:
   $ tiup update --all                  # Update all installed components to the latest version
   $ tiup update --nightly              # Update all installed components to the nightly version
   $ tiup update --self                 # Update the "tiup" to the latest version
-  $ tiup list --refresh                # Fetch the latest supported components list
+  $ tiup list                          # Fetch the latest supported components list
   $ tiup status                        # Display all running/terminated instances
   $ tiup clean <name>                  # Clean the data of running/terminated instance (Kill process if it's running)
   $ tiup clean --all                   # Clean the data of all running/terminated instances
@@ -111,19 +109,18 @@ Use "tiup [command] --help" for more information about a command.
     - update：更新组件版本
     - status：查看组件运行记录
     - clean：清除组件运行记录
+    - mirror：从官方镜像克隆一个私有镜像
     - help：输出帮助信息
 - 可用的组件
     - playground：在本机启动集群
     - client：连接本机的集群
-    - mirrors：从官方镜像克隆一个私有镜像
     - cluster：部署用于生产环境的集群
-    - package：打包一个新的 TiUP 组件
     - bench：对数据库进行压力测试
     - doc：打开在线文档
 
 > **注意：**
 >
-> - 可用的组件会持续增加，以 `tiup list --refresh` 输出结果为准。
-> - 组件的可用版本列表也会持续增加，以 `tiup list <component> --refresh` 输出结果为准。
+> - 可用的组件会持续增加，以 `tiup list` 输出结果为准。
+> - 组件的可用版本列表也会持续增加，以 `tiup list <component>` 输出结果为准。
 
 命令和组件的区别在于，命令是 TiUP 自带的，用于进行包管理的操作。而组件是 TiUP 通过包管理操作安装的独立组件包。比如执行 `tiup list` 命令，TiUP 会直接运行自己内部的代码，而执行 `tiup playground` 命令则会先检查本地有没有叫做 playground 的组件包，若没有则先从镜像上下载过来，然后运行这个组件包。

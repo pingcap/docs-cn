@@ -1,6 +1,5 @@
 ---
 title: 表达式求值的类型转换
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/type-conversion/']
 ---
 

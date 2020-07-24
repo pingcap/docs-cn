@@ -1,6 +1,5 @@
 ---
 title: 离线 TiDB Ansible 部署方案
-category: how-to
 aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/offline-ansible/']
 ---
 
@@ -158,3 +157,7 @@ aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/offline-ansible/']
 ## 测试集群
 
 参考[测试集群](/online-deployment-using-ansible.md#测试集群)即可。
+
+> **注意：**
+>
+> TiDB 默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。

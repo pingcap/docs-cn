@@ -1,6 +1,5 @@
 ---
 title: Statement Summary Tables
-category: reference
 aliases: ['/docs-cn/stable/reference/performance/statement-summary/']
 ---
 
@@ -66,6 +65,8 @@ select * from employee where id in (...) and salary between ? and ?;
   ...........
               AVG_MEM: 103
               MAX_MEM: 103
+              AVG_DISK: 65535
+              MAX_DISK: 65535
     AVG_AFFECTED_ROWS: 0
            FIRST_SEEN: 2020-01-02 11:12:54
             LAST_SEEN: 2020-01-02 11:25:24
@@ -195,6 +196,8 @@ SQL 的基础信息：
 - `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个
 - `PLAN_DIGEST`：执行计划的 digest
 - `PLAN`：原执行计划，多条语句只取其中一条的执行计划
+- `PLAN_CACHE_HITS`：这类 SQL 语句命中 plan cache 的总次数
+- `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache
 
 执行时间相关的信息：
 
@@ -218,6 +221,8 @@ SQL 的基础信息：
 - `MAX_COMPILE_LATENCY`：优化器的最大延时
 - `AVG_MEM`：使用的平均内存，单位 byte
 - `MAX_MEM`：使用的最大内存，单位 byte
+- `AVG_DISK`：使用的平均硬盘空间，单位 byte
+- `MAX_DISK`：使用的最大硬盘空间，单位 byte
 
 和 TiKV Coprocessor Task 相关的字段：
 

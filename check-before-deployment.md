@@ -1,7 +1,6 @@
 ---
 title: TiDB 环境与系统配置检查
 summary: 了解部署 TiDB 前的环境检查操作。
-category: how-to
 ---
 
 # TiDB 环境与系统配置检查
@@ -11,10 +10,6 @@ category: how-to
 ## 在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数
 
 生产环境部署，建议使用 EXT4 类型文件系统的 NVME 类型的 SSD 磁盘存储 TiKV 数据文件。这个配置方案为最佳实施方案，其可靠性、安全性、稳定性已经在大量线上场景中得到证实。
-
-> **注意：**
->
-> 推荐 TiKV 部署目标机器的数据目录使用 EXT4 文件系统格式。相比于 XFS 文件系统格式，EXT4 文件系统格式在 TiDB 集群部署案例较多，生产环境优先选择使用 EXT4 文件系统格式。
 
 使用 `root` 用户登录目标机器，将部署目标机器数据盘格式化成 ext4 文件系统，挂载时添加 `nodelalloc` 和 `noatime` 挂载参数。`nodelalloc` 是必选参数，否则 TiUP 安装时检测无法通过；`noatime` 是可选建议参数。
 
@@ -126,7 +121,7 @@ sysctl -p
 
 ## 检测及关闭目标部署机器的防火墙
 
-本段介绍如何关闭目标主机防火墙配置，因为在 TiDB 集群中，需要将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。否则建议[按照端口使用规则](/hardware-and-software-requirements.md)，将端口信息配置到防火墙服务的白名单中。
+本段介绍如何关闭目标主机防火墙配置，因为在 TiDB 集群中，需要将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。否则建议[按照端口使用规则](/hardware-and-software-requirements.md#网络要求)，将端口信息配置到防火墙服务的白名单中。
 
 1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
@@ -165,6 +160,8 @@ sysctl -p
 
 TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，从而确保 ACID 模型的事务线性一致性。目前解决授时的普遍方案是采用 NTP 服务，可以通过互联网中的 `pool.ntp.org` 授时服务来保证节点的时间同步，也可以使用离线环境自己搭建的 NTP 服务来解决授时。
 
+采用如下步骤检查是否安装 NTP 服务以及与 NTP 服务器正常同步：
+
 1. 执行以下命令，如果输出 `running` 表示 NTP 服务正在运行：
 
     {{< copyable "shell-regular" >}}
@@ -179,67 +176,57 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
     ```
 
-2. 执行 `ntpstat` 命令，如果输出 `synchronised to NTP server`（正在与 NTP server 同步），表示在正常同步：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ntpstat
-    ```
-
-    ```
-    synchronised to NTP server (85.199.214.101) at stratum 2
-    time correct to within 91 ms
-    polling server every 1024 s
-    ```
+2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 
     > **注意：**
     >
     > Ubuntu 系统需安装 `ntpstat` 软件包。
 
-- 以下情况表示 NTP 服务未正常同步：
-
     {{< copyable "shell-regular" >}}
 
     ```bash
     ntpstat
     ```
 
-    ```
-    unsynchronised
-    ```
+    - 如果输出 `synchronised to NTP server`，表示正在与 NTP 服务器正常同步：
 
-- 以下情况表示 NTP 服务未正常运行：
+        ```
+        synchronised to NTP server (85.199.214.101) at stratum 2
+        time correct to within 91 ms
+        polling server every 1024 s
+        ```
 
-    {{< copyable "shell-regular" >}}
+    - 以下情况表示 NTP 服务未正常同步：
 
-    ```bash
-    ntpstat
-    ```
+        ```
+        unsynchronised
+        ```
 
-    ```
-    Unable to talk to NTP daemon. Is it running?
-    ```
+    - 以下情况表示 NTP 服务未正常运行：
 
-- 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP server：
+        ```
+        Unable to talk to NTP daemon. Is it running?
+        ```
 
-    {{< copyable "shell-regular" >}}
+如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP 服务器：
 
-    ```bash
-    sudo systemctl stop ntpd.service && \
-    sudo ntpdate pool.ntp.org && \
-    sudo systemctl start ntpd.service
-    ```
+{{< copyable "shell-regular" >}}
 
-- 如果要在 CentOS 7 系统上手动安装 NTP 服务，可执行以下命令：
+```bash
+sudo systemctl stop ntpd.service && \
+sudo ntpdate pool.ntp.org && \
+sudo systemctl start ntpd.service
+```
 
-    {{< copyable "shell-regular" >}}
+如果要在 CentOS 7 系统上手动安装 NTP 服务，可执行以下命令：
 
-    ```bash
-    sudo yum install ntp ntpdate && \
-    sudo systemctl start ntpd.service && \
-    sudo systemctl enable ntpd.service
-    ```
+{{< copyable "shell-regular" >}}
+
+```bash
+sudo yum install ntp ntpdate && \
+sudo systemctl start ntpd.service && \
+sudo systemctl enable ntpd.service
+```
 
 ## 手动配置 SSH 互信及 sudo 免密码
 
@@ -300,7 +287,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
 
 ## 安装 numactl 工具
 
-本段主要介绍如果安装 NUMA 工具。在线上环境中，因为硬件采购机器配置较高，为了更合理规划资源，会考虑单机多实例部署 TiDB 或者 TiKV。NUMA 绑核工具的使用，主要为了防止 CPU 资源的争抢，引发性能衰退。
+本段主要介绍如果安装 NUMA 工具。在生产环境中，因为硬件机器配置往往高于需求，为了更合理规划资源，会考虑单机多实例部署 TiDB 或者 TiKV。NUMA 绑核工具的使用，主要为了防止 CPU 资源的争抢，引发性能衰退。
 
 > **注意：**
 >

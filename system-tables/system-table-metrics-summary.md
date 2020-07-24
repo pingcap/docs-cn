@@ -1,7 +1,6 @@
 ---
 title: METRICS_SUMMARY
 summary: 了解 TiDB 系统表 `METRICS_SUMMARY`。
-category: reference
 aliases: ['/docs-cn/stable/reference/system-databases/metrics-summary/']
 ---
 
@@ -20,7 +19,7 @@ aliases: ['/docs-cn/stable/reference/system-databases/metrics-summary/']
 desc information_schema.metrics_summary;
 ```
 
-```
+```sql
 +--------------+--------------+------+------+---------+-------+
 | Field        | Type         | Null | Key  | Default | Extra |
 +--------------+--------------+------+------+---------+-------+
@@ -59,7 +58,7 @@ order by avg_value desc
 limit 3\G
 ```
 
-```
+```sql
 ***************************[ 1. row ]***************************
 METRICS_NAME | tidb_get_token_duration
 QUANTILE     | 0.99
@@ -161,7 +160,7 @@ JOIN
 ORDER BY  ratio DESC limit 10;
 ```
 
-```
+```sql
 +----------------+------------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+
 | ratio          | metrics_name                             | t1_avg_value   | t2_avg_value     | comment                                                                                     |
 +----------------+------------------------------------------+----------------+------------------+---------------------------------------------------------------------------------------------+

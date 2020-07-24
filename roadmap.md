@@ -1,6 +1,5 @@
 ---
 title: TiDB V4.0 Roadmap
-category: Roadmap
 ---
 
 <!-- markdownlint-disable MD001 -->

@@ -1,7 +1,6 @@
 ---
 title: SHOW DRAINER STATUS
 summary: TiDB 数据库中 SHOW DRAINER STATUS 的使用概况。
-category: reference
 ---
 
 # SHOW DRAINER STATUS

@@ -1,6 +1,5 @@
 ---
 title: TiDB Binlog 配置说明
-category: reference
 aliases: ['/docs-cn/stable/reference/tidb-binlog/configs/']
 ---
 
