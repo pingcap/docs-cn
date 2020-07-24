@@ -68,7 +68,7 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 
     - TiCDC
 
-        在启动命令行中设置，并设置相应的 URL 为 https：
+        在启动命令行中设置，并设置相应的 URL 为 `https`：
 
         {{< copyable "shell-regular" >}}
 
