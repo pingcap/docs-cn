@@ -11,6 +11,12 @@ summary: 使用 TiDB Lightning 从 MySQL 迁移数据。
 
 使用 Lightning 将数据导入 TiDB，Lightning 具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
 
+> **注意：**
+> 
+> - 如果选用 Local Backend 来导入数据，导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
+> - 如果选用 TiDB Backend 来导入数据，导入期间集群可以正常提供服务, 但相对导入速度较慢。
+> - 二者的具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-backends.md)。
+
 ## 第 2 步：配置 TiDB Lightning 的数据源
 
 本文以选用 TiDB Backend 导入数据为例。增加 `tidb-lightning.toml 配置文件`，在文件中添加以下主要配置：

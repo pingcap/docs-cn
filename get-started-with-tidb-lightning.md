@@ -50,38 +50,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 - **v4.0.3**: [tidb-toolkit-v4.0.3-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v4.0.3-linux-amd64.tar.gz)
 
-### 第 3 步：启动 `tikv-importer`
-
-1. 将安装包里的 `bin/tikv-importer` 上传至部署 TiDB Lightning 的服务器。
-
-2. 配置 `tikv-importer.toml`。
-
-    ```toml
-    # TiKV Importer 配置文件模版
-
-    # 日志文件。
-    log-file = "tikv-importer.log"
-    # 日志等级：trace、debug、info、warn、error、off。
-    log-level = "info"
-
-    [server]
-    # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "192.168.20.10:8287"
-
-    [import]
-    # 存储引擎文档 (engine file) 的文件夹路径。
-    import-dir = "/mnt/ssd/data.import/"
-    ```
-
-3. 运行 `tikv-importer`。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    nohup ./tikv-importer -C tikv-importer.toml > nohup.out &
-    ```
-
-### 第 4 步：启动 `tidb-lightning`
+### 第 3 步：启动 `tidb-lightning`
 
 1. 将安装包里的 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl` 上传至部署 TiDB Lightning 的服务器。
 
@@ -126,7 +95,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
     nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
     ```
 
-### 第 5 步：检查数据
+### 第 4 步：检查数据
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 
