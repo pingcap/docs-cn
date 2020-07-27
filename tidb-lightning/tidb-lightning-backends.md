@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning Backends
 summary: 了解 TiDB 不同导入模式
-aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/backends/']
+aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/backends/','/zh/tidb/dev/tidb-lightning-tidb-backend']
 ---
 
 # Lightning Backends Overview
