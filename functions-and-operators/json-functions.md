@@ -35,6 +35,8 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 
 | 函数        | 功能描述 |
 | --------------------------------- | ----------- |
+| [JSON_APPEND(json_doc, path, value)][json_append] | `JSON_ARRAY_APPEND` 的别名 |
+| [JSON_ARRAY_APPEND(json_doc, path, value)][json_array_append] | 将值追加到指定路径的 JSON 数组的末尾 |
 | [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)][json_array_insert] | 将数组插入 JSON 文档，并返回修改后的文档 |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert] | 在 JSON 文档中在某一路径下插入子文档 |
 | [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | 已废弃的 `JSON_MERGE_PRESERVE` 别名 |
@@ -101,5 +103,6 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_contains_path]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path
 [json_arrayagg]: https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_json-arrayagg
 [json_depth]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-depth
+[json_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append
 [json_array_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append
 [json_array_insert]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert
