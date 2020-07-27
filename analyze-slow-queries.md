@@ -10,7 +10,7 @@ summary: 学习如何定位和分析慢查询。
 1. 从大量查询中定位出哪一类查询比较慢
 2. 分析这类慢查询的原因
 
-第一步已经可以通过[慢日志](/identify-slow-queries.md)、[statement-summary](/statement-summary-tables.md) 等功能方便地定位，本文聚焦第二步。
+第一步可以通过 [慢日志](/identify-slow-queries.md)、[statement-summary](/statement-summary-tables.md) 方便地定位，推荐直接使用 [dashboard](/dashboard-overview.md)，它整合了前面两个功能，且能方便直观的在浏览器中展示出来。本文聚焦第二步。
 
 首先将慢查询归因成两大类：
 
@@ -31,17 +31,19 @@ summary: 学习如何定位和分析慢查询。
 
 定位查询瓶颈需要对查询过程有一个大致理解，TiDB 处理查询过程的关键阶段都在 [performance-map](https://raw.githubusercontent.com/pingcap/tidb-map/master/maps/performance-map.png) 图中了。
 
-定位单个查询的耗时，目前有两个工具：
+查询的耗时信息可以从下面几种方式获得：
 
-- [慢日志](/identify-slow-queries.md)
+- [慢日志](/identify-slow-queries.md) 或 [dashboard](/dashboard-overview.md)
 - [`explain analyze` 语句](/sql-statements/sql-statement-explain-analyze.md)
 
-这两个工具侧重不同：
+他们的侧重不同：
 
-- 慢日志记录了 SQL 从解析到返回，几乎所有阶段的耗时，较为全面
-- `explain analyze` 可以拿到 SQL 实际执行中每个执行算子的耗时，对执行耗时有更细分的统计
+- 慢日志记录了 SQL 从解析到返回，几乎所有阶段的耗时，较为全面；在 dashboard 可以方便的看到慢日志信息；
+- `explain analyze` 可以拿到 SQL 实际执行中每个执行算子的耗时，对执行耗时有更细分的统计；
 
 总的来说，利用慢日志和 `explain analyze` 可以比较准确地定位查询的瓶颈点，帮助你判断这条 SQL 慢在哪个模块（TiDB/TiKV），慢在哪个阶段，下面会有一些例子。
+
+另外在 4.0.3 之后，慢日志中的 `Plan` 字段也会包含 SQL 的执行信息，也就是 `explain analyze` 的结果，这样一来 SQL 的所有耗时信息都可以在慢日志中找到。
 
 ## 分析系统性问题
 
