@@ -1,6 +1,10 @@
 ---
 title: 理解 TiDB 执行计划
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/reference/performance/understanding-the-query-execution-plan/']
+=======
+aliases: ['/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/','/docs-cn/dev/index-merge/','/docs-cn/dev/reference/performance/index-merge/']
+>>>>>>> 5c5236b... Add index-merge.md aliases to query-execution-plan.md (#4054)
 ---
 
 # 理解 TiDB 执行计划
