@@ -286,6 +286,21 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项。
 
+### `tidb-cacert-path`
+
++ CA 根证书，用于用 TLS 连接 TiDB 的 SQL 服务
++ 默认值：""
+
+### `tidb-cert-path`
+
++ SSL 证书文件路径，用于用 TLS 连接 TiDB 的 SQL 服务
++ 默认值：""
+
+### `tidb-key-path`
+
++ SSL 私钥文件路径，用于用 TLS 连接 TiDB 的 SQL 服务
++ 默认值：""
+
 ### `public-path-prefix`
 
 + 通过反向代理访问 TiDB Dashboard 时，配置反向代理提供服务的路径前缀。
