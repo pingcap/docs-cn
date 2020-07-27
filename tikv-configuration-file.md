@@ -1139,7 +1139,7 @@ raftdb 相关配置项。
 
 ## import
 
-用于 Lightning 导入及 BR 恢复相关的配置项。
+用于 TiDB Lightning 导入及 BR 恢复相关的配置项。
 
 ### `num-threads`
 
@@ -1159,7 +1159,7 @@ raftdb 相关配置项。
 
 ### `num-threads`
 
-+ 处理备份工作线程数。
++ 处理备份的工作线程数。
 + 默认值：CPU * 0.75，但最大为 32
 + 最小值：1
 
