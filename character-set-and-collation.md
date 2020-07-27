@@ -364,15 +364,15 @@ TiDB supports using the `COLLATE` clause to specify the collation of an expressi
 {{< copyable "sql" >}}
 
 ```sql
-select 'a' = 'A' collate utf8mb4_general_ci;
+select 'a' = _utf8mb4 'A' collate utf8mb4_general_ci;
 ```
 
 ```sql
-+--------------------------------------+
-| 'a' = 'A' collate utf8mb4_general_ci |
-+--------------------------------------+
-|                                    1 |
-+--------------------------------------+
++-----------------------------------------------+
+| 'a' = _utf8mb4 'A' collate utf8mb4_general_ci |
++-----------------------------------------------+
+|                                             1 |
++-----------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
