@@ -147,7 +147,7 @@ enable-telemetry: false
 
 > **注意：**
 >
-> 该配置需使用 TiDB Operator v1.1.2 或更高版本才能生效。
+> 该配置需使用 TiDB Operator v1.1.3 或更高版本才能生效。
 
 </details>
 
