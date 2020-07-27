@@ -292,8 +292,8 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 + 默认："/dashboard"
 + 若不通过反向代理访问 TiDB Dashboard，**请勿配置该项**，否则可能导致 TiDB Dashboard 无法正常访问。关于该配置的详细使用场景，参见[通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md)。
 
-### `disable-telemetry`
+### `enable-telemetry`
 
-+ 是否禁用 TiDB Dashboard 遥测功能。
-+ 默认：false
++ 是否启用 TiDB Dashboard 遥测功能。
++ 默认：true
 + 参阅[遥测](/telemetry.md)了解该功能详情。
