@@ -110,6 +110,7 @@
         + [Subquery Related Optimizations](/subquery-optimization.md)
         + [Column Pruning](/column-pruning.md)
         + [Decorrelation of Correlated Subquery](/correlated-subquery-optimization.md)
+        + [Eliminate Max/Min](/max-min-eliminate.md)
         + [Predicates Push Down](/predicates-push-down.md)
         + [TopN and Limit Push Down](/topn-limit-push-down.md)
         + [Join Reorder](/join-reorder.md)

@@ -15,7 +15,7 @@ Based on rules, logical optimization applies some optimization rules to the inpu
 - Column pruning
 - Eliminate projection
 - Decorrelate correlated subqueries
-- Eliminate Max/Min
+- [Eliminate Max/Min](/max-min-eliminate.md)
 - Push down predicates
 - Partition pruning
 - Push down TopN and Limit
