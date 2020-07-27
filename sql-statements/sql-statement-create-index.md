@@ -162,7 +162,7 @@ Query OK, 0 rows affected (0.31 sec)
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
-如果需要使用这一特性，在配置文件中进行以下设置：
+如果需要使用这一特性，在 [TiDB 配置文件](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#allow-expression-index-%E4%BB%8E-v400-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)中进行以下设置：
 
 {{< copyable "sql" >}}
 
