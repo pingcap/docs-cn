@@ -107,7 +107,3 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append
 [json_array_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append
 [json_array_insert]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert
-<<<<<<< HEAD
-[json_search]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-search
-=======
->>>>>>> c7d529e... functions-and-operators: Update JSON functions (#4049)
