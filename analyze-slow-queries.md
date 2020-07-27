@@ -10,7 +10,7 @@ summary: 学习如何定位和分析慢查询。
 1. 从大量查询中定位出哪一类查询比较慢
 2. 分析这类慢查询的原因
 
-第一步可以通过 [慢日志](/identify-slow-queries.md)、[statement-summary](/statement-summary-tables.md) 方便地定位，推荐直接使用 [dashboard](/dashboard-overview.md)，它整合了前面两个功能，且能方便直观的在浏览器中展示出来。本文聚焦第二步。
+第一步可以通过 [慢日志](/identify-slow-queries.md)、[statement-summary](/statement-summary-tables.md) 方便地定位，推荐直接使用 [dashboard](/dashboard/dashboard-overview.md)，它整合了前面两个功能，且能方便直观的在浏览器中展示出来。本文聚焦第二步。
 
 首先将慢查询归因成两大类：
 
@@ -33,7 +33,7 @@ summary: 学习如何定位和分析慢查询。
 
 查询的耗时信息可以从下面几种方式获得：
 
-- [慢日志](/identify-slow-queries.md) 或 [dashboard](/dashboard-overview.md)
+- [慢日志](/identify-slow-queries.md) 或 [dashboard](/dashboard/dashboard-overview.md)
 - [`explain analyze` 语句](/sql-statements/sql-statement-explain-analyze.md)
 
 他们的侧重不同：
