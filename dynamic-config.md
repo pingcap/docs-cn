@@ -1,17 +1,15 @@
 ---
-title: 动态配置变更
-summary: 介绍动态配置项功能。
+title: 在线修改集群配置
+summary: 介绍在线修改集群配置的功能。
 ---
 
-# 动态配置变更
+# 在线配置变更
 
 > **注意：**
 >
 > 该功能目前是实验性阶段，不建议在生产环境中使用。
 
-动态配置变更主要是通过利用 SQL 对包括 TiKV、PD 在内的各组件的配置进行在线更新。用户可以通过利用动态配置变更对各组件进行性能调优而无需重启集群组件。
-
-动态配置不可用于更新 TiDB 的配置，如果想动态改变 TiDB 的行为，请直接修改其对应的 SQL 变量。
+在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过利用在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和其他组件（TiKV、PD）有所不同。
 
 ## 常用操作
 
@@ -48,21 +46,21 @@ show config where name like '%log%'
 show config where type='tikv' and name='log-level'
 ```
 
-### 动态修改 TiKV 配置
+### 在线修改 TiKV 配置
 
 > **注意：**
 >
-> 动态修改 TiKV 配置后，同时会自动修改 TiKV 的配置文件。但还需要使用 `tiup edit-config` 修改对应的配置，否则 `upgrade` `reload` 等运维操作会将动态配置修改的结果覆盖。修改配置的操作请参考：[修改配置](/maintain-tidb-using-tiup.md#修改配置参数)，`tiup edit-config` 后不需要执行 `tiup reload` 操作。
+> 在线修改 TiKV 配置项后，同时会自动修改 TiKV 的配置文件。但还需要使用 `tiup edit-config` 修改对应的配置项，否则 `upgrade` `reload` 等运维操作会将在线修改配置后的结果覆盖。修改配置的操作请参考：[修改配置](/maintain-tidb-using-tiup.md#修改配置参数)，`tiup edit-config` 后不需要执行 `tiup reload` 操作。
 
 执行 SQL 语句 `set config`，可以结合实例地址或组件类型来修改单个实例配置或全部实例配置，如：
 
-修改全部 TiKV 实例参数：
+修改全部 TiKV 实例配置：
 
 ```sql
 set config tikv log.level="info"
 ```
 
-修改单个 TiKV 实例参数：
+修改单个 TiKV 实例配置：
 
 ```sql
 set config "127.0.0.1:20180" log.level="info"
@@ -101,11 +99,11 @@ show warnings;
 
 如遇到部分修改失败的情况，需要重新执行对应的修改语句，或通过修改单个实例的方式完成修改。对于由于网络或者机器故障等原因无法访问到的 TiKV，需要等到恢复后再次进行修改。
 
-针对 TiKV 可动态修改的参数，如果成功修改后，修改的结果会被持久化到配置文件中，后续以配置文件中的参数为准。某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``raftstore.raft-log-gc-size-limit` ``；
+针对 TiKV 可在线修改的配置项，如果成功修改后，修改的结果会被持久化到配置文件中，后续以配置文件中的配置为准。某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``raftstore.raft-log-gc-size-limit` ``；
 
-支持参数列表如下：
+支持配置项列表如下：
 
-| 参数 | 简介 |
+| 配置项 | 简介 |
 | --- | --- |
 | raftstore.sync-log | 数据、log 落盘是否 sync |
 | raftstore.raft-entry-max-size | 单个日志最大大小 |
@@ -180,16 +178,16 @@ show warnings;
 | split.split-balance-score | load-base-split 控制参数，确保 split 后左右访问尽量均匀 |
 | split.split-contained-score | load-base-split 控制参数，尽量减少 split 后跨 region 访问 |
 
-上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的参数是 RocksDB 相关的配置。`db-name` 的取值可为 `rocksdb`，`raftdb`。
+上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的是 RocksDB 相关的配置项。`db-name` 的取值可为 `rocksdb`，`raftdb`。
 
 - 当 `db-name` 为 `rocksdb` 时，cf-name 的取值有: `defaultcf`，`writecf`，`lockcf`，`raftcf`；
 - 当 `db-name` 为 `raftdb` 时，cf-name 的取值有: `defaultcf`。
 
-具体参数意义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)
+具体配置项意义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)
 
-### 动态修改 PD 配置
+### 在线修改 PD 配置
 
-PD 暂不支持单个实例拥有独立配置。所有实例共享一份配置，可以通过下列方式修改 PD 的参数：
+PD 暂不支持单个实例拥有独立配置。所有实例共享一份配置，可以通过下列方式修改 PD 的配置项：
 
 ```sql
 set config pd log.level="info"
@@ -201,11 +199,11 @@ set config pd log.level="info"
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-针对 PD 可动态修改的参数，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的参数为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ``` 包裹起来，如 ``schedule.`leader-schedule-limit` ``；
+针对 PD 可在线修改的配置项，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的配置为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ``` 包裹起来，如 ``schedule.`leader-schedule-limit` ``；
 
-支持参数列表如下：
+支持配置项列表如下：
 
-| 参数 | 简介 |
+| 配置项 | 简介 |
 | --- | --- |
 | log.level| 日志级别 |
 | cluster-version | 集群的版本 |
@@ -244,13 +242,13 @@ Query OK, 0 rows affected (0.01 sec)
 | pd-server.dashboard-address | 用于设置 dashboard 的地址 |
 | replication-mode.replication-mode | 备份的模式 |
 
-具体参数意义可参考 [PD 配置文件描述](/pd-configuration-file.md)
+具体配置项意义可参考 [PD 配置文件描述](/pd-configuration-file.md)
 
-### 动态修改 TiDB 配置
+### 在线修改 TiDB 配置
 
 TiDB 使用 [SQL 变量](/system-variables.md)来控制行为。
 
-下面例子展示了如何通过变量 `tidb_slow_log_threshold` 动态修改配置项 `slow-threshold`。`slow-threshold` 默认值是 200 毫秒，可以通过设置 `tidb_slow_log_threshold` 将其修改为 200 毫秒：
+下面例子展示了如何通过变量 `tidb_slow_log_threshold` 在线修改配置项 `slow-threshold`。`slow-threshold` 默认值是 200 毫秒，可以通过设置 `tidb_slow_log_threshold` 将其修改为 200 毫秒：
 
 ```sql
 set tidb_slow_log_threshold = 200;
@@ -273,7 +271,7 @@ mysql> select @@tidb_slow_log_threshold;
 1 row in set (0.00 sec)
 ```
 
-支持动态修改的配置项和相应的系统变量如下：
+支持在线修改的配置项和相应的系统变量如下：
 
 | 配置项 | 对应变量 | 简介 |
 | --- | --- | --- |
