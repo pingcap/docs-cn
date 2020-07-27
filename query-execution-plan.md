@@ -1,16 +1,16 @@
 ---
 title: Understand the Query Execution Plan
 summary: Learn about the execution plan information returned by the `EXPLAIN` statement in TiDB.
-aliases: ['/docs/dev/query-execution-plan/','/docs/dev/reference/performance/understanding-the-query-execution-plan/']
+aliases: ['/docs/dev/query-execution-plan/','/docs/dev/reference/performance/understanding-the-query-execution-plan/','/docs/dev/index-merge/','/docs/dev/reference/performance/index-merge/','/tidb/dev/index-merge']
 ---
 
 # Understand the Query Execution Plan
 
-Based on the details of your tables, the TiDB optimizer chooses the most efficient query execution plan, which consists of a series of operators. This document details the execution plan information returned by the `EXPLAIN` statement in TiDB.
+Based on the latest statistics of your tables, the TiDB optimizer chooses the most efficient query execution plan, which consists of a series of operators. This document details the execution plan in TiDB.
 
 ## `EXPLAIN` overview
 
-The result of the `EXPLAIN` statement provides information about how TiDB executes SQL queries:
+You can use the `EXPLAIN` command in TiDB to view the execution plan. The result of the `EXPLAIN` statement provides information about how TiDB executes SQL queries:
 
 - `EXPLAIN` works together with statements such as `SELECT` and `DELETE`.
 - When you execute the `EXPLAIN` statement, TiDB returns the final optimized physical execution plan. In other words, `EXPLAIN` displays the complete information about how TiDB executes the SQL statement, such as in which order, how tables are joined, and what the expression tree looks like.
@@ -84,6 +84,10 @@ Currently, calculation tasks of TiDB can be divided into two categories: cop tas
 
 One of the goals of SQL optimization is to push the calculation down to TiKV as much as possible. The Coprocessor in TiKV supports most of the built-in SQL functions (including the aggregate functions and the scalar functions), SQL `LIMIT` operations, index scans, and table scans. However, all `Join` operations can only be performed as root tasks in TiDB.
 
+### Access Object overview
+
+Access Object is the data item accessed by the operator, including `table`, `partition`, and `index` (if any). Only operators that directly access the data have this information.
+
 ### Range query
 
 In the `WHERE`/`HAVING`/`ON` conditions, the TiDB optimizer analyzes the result returned by the primary key query or the index key query. For example, these conditions might include comparison operators of the numeric and date type, such as `>`, `<`, `=`, `>=`, `<=`, and the character type such as `LIKE`.
@@ -153,6 +157,8 @@ The `IndexLookUp_6` operator has two child nodes: `IndexFullScan_4(Build)` and `
 
 This execution plan is not as efficient as using `TableReader` to perform a full table scan, because `IndexLookUp` performs an extra index scan (which comes with additional overhead), apart from the table scan.
 
+For table scan operations, the operator info column in the `explain` table shows whether the data is sorted. In the above example, the `keep order:false` in the `IndexFullScan` operator indicates that the data is unsorted. The `stats:pseudo` in the operator info means that there is no statistics, or that the statistics will not be used for estimation because it is outdated. For other scan operations, the operator info involves similar information.
+
 #### `TableReader` example
 
 {{< copyable "sql" >}}
@@ -178,32 +184,44 @@ In the above example, the child node of the `TableReader_7` operator is `Selecti
 
 #### `IndexMerge` example
 
-{{< copyable "sql" >}}
+`IndexMerge` is a method introduced in TiDB v4.0 to access tables. Using this method, the TiDB optimizer can use multiple indexes per table and merge the results returned by each index. In some scenarios, this method makes the query more efficient by avoiding full table scans.
 
 ```sql
-set @@tidb_enable_index_merge = 1;
-explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
+mysql> explain select * from t where a = 1 or b = 1;
++-------------------------+----------+-----------+---------------+--------------------------------------+
+| id                      | estRows  | task      | access object | operator info                        |
++-------------------------+----------+-----------+---------------+--------------------------------------+
+| TableReader_7           | 8000.00  | root      |               | data:Selection_6                     |
+| └─Selection_6           | 8000.00  | cop[tikv] |               | or(eq(test.t.a, 1), eq(test.t.b, 1)) |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo       |
++-------------------------+----------+-----------+---------------+--------------------------------------+
+mysql> set @@tidb_enable_index_merge = 1;
+mysql> explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
++--------------------------------+---------+-----------+-------------------------+------------------------------------------------+
+| id                             | estRows | task      | access object           | operator info                                  |
++--------------------------------+---------+-----------+-------------------------+------------------------------------------------+
+| IndexMerge_16                  | 6666.67 | root      |                         |                                                |
+| ├─IndexRangeScan_13(Build)     | 3333.33 | cop[tikv] | table:t, index:idx_a(a) | range:(1,+inf], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_14(Build)     | 3333.33 | cop[tikv] | table:t, index:idx_b(b) | range:(1,+inf], keep order:false, stats:pseudo |
+| └─TableRowIDScan_15(Probe)     | 6666.67 | cop[tikv] | table:t                 | keep order:false, stats:pseudo                 |
++--------------------------------+---------+-----------+-------------------------+------------------------------------------------+
 ```
 
-```sql
-+------------------------------+---------+-----------+-------------------------+------------------------------------------------+
-| id                           | estRows | task      | access object           | operator info                                  |
-+------------------------------+---------+-----------+-------------------------+------------------------------------------------+
-| IndexMerge_16                | 6666.67 | root      |                         |                                                |
-| ├─IndexRangeScan_13(Build)   | 3333.33 | cop[tikv] | table:t, index:idx_a(a) | range:(1,+inf], keep order:false, stats:pseudo |
-| ├─IndexRangeScan_14(Build)   | 3333.33 | cop[tikv] | table:t, index:idx_b(b) | range:(1,+inf], keep order:false, stats:pseudo |
-| └─TableRowIDScan_15(Probe)   | 6666.67 | cop[tikv] | table:t                 | keep order:false, stats:pseudo                 |
-+------------------------------+---------+-----------+-------------------------+------------------------------------------------+
-4 rows in set (0.00 sec)
-```
+In the above query, the filter condition is a `WHERE` clause that uses `OR` as the connector. Without `IndexMerge`, you can use only one index per table. `a = 1` cannot be pushed down to the index `a`; neither can `b = 1` be pushed down to the index `b`. The full table scan is inefficient when a huge volume of data exists in `t`. To handle such a scenario, `IndexMerge` is introduced in TiDB to access tables.
 
-`IndexMerge` makes it possible that multiple indexes are used during table scans. In the above example, the `IndexMerge_16` operator has three child nodes, among which `IndexRangeScan_13` and `IndexRangeScan_14` get all the `RowID`s that meet the conditions based on the result of range scan, and then the `TableRowIDScan_15` operator accurately reads all the data that meet the conditions according to these `RowID`s.
+`IndexMerge` allows the optimizer to use multiple indexes per table, and merge the results returned by each index to generate the execution plan of the latter `IndexMerge` in the figure above. Here the `IndexMerge_16` operator has three child nodes, among which `IndexRangeScan_13` and `IndexRangeScan_14` get all the `RowID`s that meet the conditions based on the result of range scan, and then the `TableRowIDScan_15` operator accurately reads all the data that meets the conditions according to these `RowID`s.
+
+For the scan operation that is performed on a specific range of data, such as `IndexRangeScan`/`TableRangeScan`, the `operator info` column in the result has additional information about the scan range compared with other scan operations like `IndexFullScan`/`TableFullScan`. In the above example, the `range:(1,+inf]` in the `IndexRangeScan_13` operator indicates that the operator scans the data from 1 to positive infinity.
 
 > **Note:**
 >
-> At present, the `IndexMerge` feature is disabled by default in TiDB 4.0.0-rc.1. In addition, the currently supported scenarios of `IndexMerge` in TiDB 4.0 are limited to the disjunctive normal form (expressions connected by `or`). The conjunctive normal form (expressions connected by `and`) will be supported in later versions.
+> At present, the `IndexMerge` feature is disabled by default in TiDB 4.0.0-rc.1. In addition, the currently supported scenarios of `IndexMerge` in TiDB 4.0 are limited to the disjunctive normal form (expressions connected by `or`). The conjunctive normal form (expressions connected by `and`) will be supported in later versions. Enable the `IndexMerge` in one of two ways:
 >
-> You can enable `IndexMerge` by configuring the `session` or `global` variables: execute the `set @@tidb_enable_index_merge = 1;` statement in the client.
+> - Set the `tidb_enable_index_merge` system variable to 1;
+>
+> - Use the SQL Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) in the query.
+>
+> SQL Hint has a higher priority than system variables.
 
 ### Read the aggregated execution plan
 
@@ -238,6 +256,8 @@ Generally speaking, `Hash Aggregate` is executed in two stages.
 
 - One is on the Coprocessor of TiKV/TiFlash, with the intermediate results of the aggregation function calculated when the table scan operator reads the data.
 - The other is at the TiDB layer, with the final result calculated through aggregating the intermediate results of all Coprocessor Tasks.
+
+The operator info column in the `explain` table also records other information about `Hash Aggregation`. You need to pay attention to what aggregate function that `Hash Aggregation` uses. In the above example, the operator info of the `Hash Aggregation` operator is `funcs:count(Column#7)->Column#4`. It means that `Hash Aggregation` uses the aggregate function `count` for calculation. The operator info of the `Stream Aggregation` operator in the following example is the same with this one.
 
 #### `Stream Aggregate` example
 
@@ -308,6 +328,8 @@ The execution process of `Hash Join` is as follows:
 3. Read the data at the `Probe` side.
 4. Use the data of the `Probe` side to probe the Hash Table.
 5. Return qualified data to the user.
+
+The operator info column in the `explain` table also records other information about `Hash Join`, including whether the query is Inner Join or Outer Join, and what are the conditions of Join. In the above example, the query is an Inner Join, where the Join condition `equal:[eq(test.t1.id, test.t2.id)]` partly corresponds with the query statement `where t1.id = t2. id`. The operator info of the other Join operators in the following examples is similar to this one.
 
 #### `Merge Join` example
 
@@ -470,9 +492,14 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 
 After adding the index, use `IndexScan_24` to directly read the data that meets the `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` condition. The estimated number of rows to be scanned decreases from 19117643.00 to 8166.73. In the test environment, the execution time of this query decreases from 50.41 seconds to 0.01 seconds.
 
+## Operator-related system variables
+
+Based on MySQL, TiDB defines some special system variables and syntax to optimize performance. Some system variables are related to specific operators, such as the concurrency of the operator, the upper limit of the operator memory, and whether to use partitioned tables. These can be controlled by system variables, thereby affecting the efficiency of each operator.
+
 ## See also
 
 * [EXPLAIN](/sql-statements/sql-statement-explain.md)
 * [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md)
 * [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
 * [TRACE](/sql-statements/sql-statement-trace.md)
+* [System Variables](/system-variables.md)

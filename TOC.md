@@ -123,7 +123,6 @@
       + Control Execution Plan
         + [Optimizer Hints](/optimizer-hints.md)
         + [SQL Plan Management](/sql-plan-management.md)
-        + [Access Tables Using `IndexMerge`](/index-merge.md)
         + [The Blocklist of Optimization Rules and Expression Pushdown](/blocklist-control-plan.md)
 + Tutorials
   + [Multiple Data Centers in One City Deployment](/multi-data-centers-in-one-city-deployment.md)
