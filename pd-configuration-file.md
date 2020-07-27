@@ -288,17 +288,17 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 ### `tidb-cacert-path`
 
-+ CA 根证书，用于用 TLS 连接 TiDB 的 SQL 服务
++ CA 根证书文件路径。可配置该路径来使用 TLS 连接 TiDB 的 SQL 服务。
 + 默认值：""
 
 ### `tidb-cert-path`
 
-+ SSL 证书文件路径，用于用 TLS 连接 TiDB 的 SQL 服务
++ SSL 证书文件路径。可配置该路径来使用 TLS 连接 TiDB 的 SQL 服务。
 + 默认值：""
 
 ### `tidb-key-path`
 
-+ SSL 私钥文件路径，用于用 TLS 连接 TiDB 的 SQL 服务
++ SSL 私钥文件路径。可配置该路径来使用 TLS 连接 TiDB 的 SQL 服务。
 + 默认值：""
 
 ### `public-path-prefix`
