@@ -1,11 +1,6 @@
 ---
-<<<<<<< HEAD
-title: JSON 函数及语法糖
-aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/json-functions/']
-=======
 title: JSON 函数
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/json-functions/']
->>>>>>> c7d529e... functions-and-operators: Update JSON functions (#4049)
+aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/json-functions/']
 ---
 
 # JSON 函数
