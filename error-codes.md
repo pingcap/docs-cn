@@ -13,6 +13,12 @@ This document describes the problems encountered during the use of TiDB and prov
 TiDB is compatible with the error codes in MySQL, and in most cases returns the same error code as MySQL. For a list of error codes for MySQL, see [Server Error Message Reference](https://dev.mysql.com/doc/refman/5.7/en/server-error-reference.html).
 In addition, TiDB has the following unique error codes:
 
+> **Note:**
+>
+> Some error codes stand for internal errors. Normally, TiDB handles the error rather than return it to the user, so some error codes are not listed here.
+>
+> If you encounter an error code that is not listed here, [contact PingCAP](mailto:info@pingcap.com) for support.
+
 * Error Number: 8001
 
     The memory used by the request exceeds the threshold limit for the TiDB memory usage.
@@ -29,7 +35,7 @@ In addition, TiDB has the following unique error codes:
 
     If the data in a row is not consistent with the index when executing the `ADMIN CHECK TABLE` command, TiDB returns this error. This error is commonly seen when you check the data corruption in the table.
 
-    You can contact PingCAP for support or seek help in the official forum.
+    You can [contact PingCAP](mailto:info@pingcap.com) for support.
 
 * Error Number: 8004
 
@@ -79,7 +85,7 @@ In addition, TiDB has the following unique error codes:
 
     Invalid transactions. If TiDB finds that no transaction ID (Start Timestamp) is obtained for the transaction that is being executed, which means this transaction is invalid, this error is returned.
 
-    Usually this error does not occur. If you encounter this error, contact PingCAP for support or seek help in the official forum.
+    Usually this error does not occur. If you encounter this error, [contact PingCAP](mailto:info@pingcap.com) for support.
 
 * Error Number: 8025
 
@@ -133,29 +139,9 @@ In addition, TiDB has the following unique error codes:
 
     The field fails to obtain the default value. This error is usually used internally, and is converted to a specific type of error for external applications.
 
-* Error Number: 8039
+* Error Number: 8040
 
-    Index offset is out of range.
-
-* Error Number: 8042
-
-    The state of table schema does not exist.
-
-* Error Number: 8043
-
-    The state of column information does not exist.
-
-* Error Number: 8044
-
-    The state of index does not exist.
-
-* Error Number: 8045
-
-    Invalid table data.
-
-* Error Number: 8046
-
-    The state of column information is invisible.
+    Unsupported operations are performed. For example, you perform a table locking operation on a view or a sequence.
 
 * Error Number: 8047
 
@@ -163,71 +149,85 @@ In addition, TiDB has the following unique error codes:
 
 * Error Number: 8048
 
-    An unsupported database isolation level is set.
+    An unsupported database isolation level is set. 
+    
+    If you cannot modify the codes because you are using a third-party tool or framework, consider using `tidb_skip_isolation_level_check` to bypass this check.
 
-* Error Number: 8049
+    {{< copyable "sql" >}}
 
-    It fails to load the privilege related table.
+    ```sql
+    set @@tidb_skip_isolation_level_check = 1;
+    ```
 
 * Error Number: 8050
 
     An unsupported privilege type is set.
 
+    See [Privileges required for TiDB operations](/privilege-management.md#privileges-required-for-tidb-operations) for the solution.
+
 * Error Number: 8051
 
-    Unknown field type.
+    Unknown data type is encountered when TiDB parses the Exec argument list sent by the client. 
+    
+    If you encounter this error, check the client. If the client is normal, [contact PingCAP](mailto:info@pingcap.com) for support.
 
 * Error Number: 8052
 
-    The serial number of the data packet from the client is incorrect.
-
-* Error Number: 8053
-
-    An invalid auto-incrementing column value is obtained.
+    The serial number of the data packet from the client is incorrect. 
+    
+    If you encounter this error, check the client. If the client is normal, [contact PingCAP](mailto:info@pingcap.com) for support.
 
 * Error Number: 8055
 
-    The current snapshot is too old. The data may have been garbage collected.
+    The current snapshot is too old. The data may have been garbage collected. You can increase the value of `tikv_gc_life_time` to avoid this problem. The new version of TiDB automatically reserves data for long-running transactions. Usually this error does not occur. 
+    
+    See [garbage collection overview](/garbage-collection-overview.md) and [garbage collection configuration](/garbage-collection-configuration.md).
 
-* Error Number: 8056
+    {{< copyable "sql" >}}
 
-    Invalid table ID.
-
-* Error Number: 8057
-
-    Invalid field type.
-
-* Error Number: 8058
-
-    You apply an automatic variable type that does not exist.
+    ```sql
+    update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";
+    ```
 
 * Error Number: 8059
 
-    It fails to obtain an auto-random ID.
+    The auto-random ID is exhausted and cannot be allocated. There is no way to recover from such errors currently. It is recommended to use bigint when using the auto random feature to obtain the maximum number of assignment. And try to avoid manually assigning values to the auto random column.
+
+    See [auto random](/auto-random.md) for reference.
 
 * Error Number: 8060
 
-    Invalid auto-incrementing offset.
+    Invalid auto-incrementing offset. Check the values of `auto_increment_increment` and `auto_increment_offset`.
 
 * Error Number: 8061
 
     Unsupported SQL Hint.
 
+    See [Optimizer Hints](/optimizer-hints.md) to check and modify the SQL Hint.
+
 * Error Number: 8062
 
     An invalid token is used in SQL Hint. It conflicts with reserved words in SQL Hint.
+
+    See [Optimizer Hints](/optimizer-hints.md) to check and modify the SQL Hint.
 
 * Error Number: 8063
 
     The limited memory usage set in SQL Hint exceeds the upper limit of the system. The setting in SQL Hint is ignored.
 
+    See [Optimizer Hints](/optimizer-hints.md) to check and modify the SQL Hint.
+
 * Error Number: 8064
 
     It fails to parse SQL Hint.
 
+    See [Optimizer Hints](/optimizer-hints.md) to check and modify the SQL Hint.
+
 * Error Number: 8065
 
     An invalid integer is used in SQL Hint.
+
+    See [Optimizer Hints](/optimizer-hints.md) to check and modify the SQL Hint.
 
 * Error Number: 8066
 
@@ -241,15 +241,21 @@ In addition, TiDB has the following unique error codes:
 
 * Error Number: 8102
 
-    Unable to read the plugin definition information.
+    Unable to read the plugin definition information. 
+    
+    Check the configuration related to the plugin.
 
 * Error Number: 8103
 
-    The plugin name is incorrect.
+    The plugin name is incorrect. 
+    
+    Check the configuration of the plugin.
 
 * Error Number: 8104
 
-    The plugin version does not match.
+    The plugin version does not match. 
+    
+    Check the configuration of the plugin.
 
 * Error Number: 8105
 
@@ -257,15 +263,21 @@ In addition, TiDB has the following unique error codes:
 
 * Error Number: 8106
 
-    The plugin defines a system variable whose name does not begin with the plugin name.
+    The plugin defines a system variable whose name does not begin with the plugin name. 
+    
+    Contact the developer of the plugin to modify.
 
 * Error Number: 8107
 
-    The loaded plugin does not specify a version, or the specified version is too low.
+    The loaded plugin does not specify a version, or the specified version is too low. 
+    
+    Check the configuration of the plugin.
 
 * Error Number: 8108
 
-    Unsupported execution plan type.
+    Unsupported execution plan type. This error is an internal error. 
+    
+    If you encounter this error, [contact PingCAP](mailto:info@pingcap.com) for support.
 
 * Error Number: 8109
 
@@ -289,10 +301,6 @@ In addition, TiDB has the following unique error codes:
 
     The table schema related in the `EXECUTE` statement has changed after the `Prepare` statement is executed.
 
-* Error Number: 8114
-
-    Unknown execution plan type.
-
 * Error Number: 8115
 
     It is not supported to prepare multiple lines of statements.
@@ -301,17 +309,17 @@ In addition, TiDB has the following unique error codes:
 
     It is not supported to prepare DDL statements.
 
-* Error Number: 8118
-
-    Executor build fails.
-
 * Error Number: 8120
 
-    The `start tso` of transactions cannot be obtained.
+    The `start tso` of transactions cannot be obtained.  
+    
+    Check the state/monitor/log of the PD server and the network between the TiDB server and the PD server.
 
 * Error Number: 8121
 
-    Privilege check fails.
+    Privilege check fails. 
+    
+    Check the privilege configuration of the database.
 
 * Error Number: 8122
 
@@ -319,83 +327,43 @@ In addition, TiDB has the following unique error codes:
 
 * Error Number: 8123
 
-    An SQL query with aggregate functions returns non-aggregated columns, which violates the `only_full_group_by` mode.
+    An SQL query with aggregate functions returns non-aggregated columns, which violates the `only_full_group_by` mode. 
+    
+    Modify the SQL statement or disable the `only_full_group_by` mode.
 
 * Error Number: 8200
 
     The DDL syntax is not yet supported.
 
-* Error Number: 8201
-
-    TiDB is currently not the DDL owner.
-
-* Error Number: 8202
-
-    The index cannot be decoded.
-
-* Error Number: 8203
-
-    Invalid DDL worker.
-
-* Error Number: 8204
-
-    Invalid DDL job.
-
-* Error Number: 8205
-
-    Invalid DDL job mark.
-
-* Error Number: 8206
-
-    The DDL operation in `re-organize` phase timed out.
-
-* Error Number: 8207
-
-    Invalid storage nodes.
-
-* Error Number: 8210
-
-    Invalid DDL state.
-
-* Error Number: 8211
-
-    Panic occurs during the DDL operation in `re-organize` phase.
-
-* Error Number: 8212
-
-    Invalid split range of Region.
-
-* Error Number: 8213
-
-    Invalid DDL job version.
+    See [compatibility of MySQL DDL](/mysql-compatibility.md#ddl) for reference.
 
 * Error Number: 8214
 
-    The DDL operation is terminated.
+    The DDL operation is terminated by the `admin cancel` operation.
 
 * Error Number: 8215
 
-    `ADMIN REPAIR TABLE` fails.
+    `ADMIN REPAIR TABLE` fails. 
+    
+    If you encounter this error, [contact PingCAP](mailto:info@pingcap.com) for support.
 
 * Error Number: 8216
 
-    Invalid automatic random columns.
+    The usage of automatic random columns is incorrect.
 
-* Error Number: 8221
-
-    Incorrect Key encoding.
-
-* Error Number: 8222
-
-    Incorrect index Key encoding.
+    See [auto random](/auto-random.md) to modify.
 
 * Error Number: 8223
 
-    This error occurs when detecting that the data is not consistent with the index.
+    This error occurs when detecting that the data is not consistent with the index. 
+    
+    If you encounter this error, [contact PingCAP](mailto:info@pingcap.com) for support.
 
 * Error Number: 8224
 
-    The DDL job cannot be found.
+    The DDL job cannot be found. 
+    
+    Check whether the job id specified by the `restore` operation exists.
 
 * Error Number: 8225
 
@@ -409,11 +377,23 @@ In addition, TiDB has the following unique error codes:
 
     Unsupported options are used when creating Sequence.
 
+    See [Sequence documentation](/sql-statements/sql-statement-create-sequence.md#parameters) to find the list of the supported options.
+
+* Error Number: 8228
+
+    Unsupported types are specified when using `setval` on Sequence.
+    
+    See [Sequence documentation](/sql-statements/sql-statement-create-sequence.md#examples) to find the example of the function.
+    
 * Error Number: 8229
 
     The transaction exceeds the survival time.
 
     Commit or roll back the current transaction, and start a new transaction.
+
+* Error Number: 8230
+
+    TiDB currently does not support using Sequence as the default value on newly added columns, and reports this error if you use it. 
 
 * Error Number: 9001
 
@@ -465,7 +445,15 @@ In addition, TiDB has the following unique error codes:
 
 * Error Number: 9008
 
-    Too many requests are sent to TiKV at the same time. The number exceeds limit.
+    Too many requests are sent to TiKV at the same time. The number exceeds limit. 
+    
+    Increase `tidb_store_limit` or set it to `0` to remove the limit on the traffic of requests.
+
+* Error Number: 9010
+
+    TiKV cannot process this raft log.
+    
+    Check the state/monitor/log of the TiKV server.
 
 ## Troubleshooting
 
