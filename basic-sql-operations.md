@@ -12,9 +12,47 @@ To experiment with SQL and test out TiDB compatibility with MySQL queries, you c
 
 This page walks you through the basic TiDB SQL statements such as DDL, DML and CRUD operations. For a complete list of TiDB statements, see [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/).
 
-## Create, show, and drop a database
+## Category
 
-### Create a database
+SQL is divided into the following 4 types according to their functions:
+
+- DDL (Data Definition Language): It is used to define database objects, including databases, tables, views, and indexes.
+
+- DML (Data Manipulation Language): It is used to manipulate application related records.
+
+- DQL (Data Query Language): It is used to query the records after conditional filtering.
+
+- DCL (Data Control Language): It is used to define access privileges and security levels.
+
+Common DDL features are creating, modifying, and deleting objects (such as tables and indexes). The corresponding commands are `CREATE`, `ALTER`, and `DROP`.
+
+## Show, create and drop a database
+
+A database in TiDB can be considered as a collection of objects such as tables and indexes.
+
+To show the list of databases, use the `SHOW DATABASES` statement:
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW DATABASES;
+```
+
+To use the database named `mysql`, use the following statement:
+
+{{< copyable "sql" >}}
+
+```sql
+use mysql;
+```
+
+To show all the tables in a database, use the `SHOW TABLES` statement:
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW TABLES FROM mysql;
+```
 
 To create a database, use the `CREATE DATABASE` statement:
 
@@ -24,7 +62,7 @@ To create a database, use the `CREATE DATABASE` statement:
 CREATE DATABASE db_name [options];
 ```
 
-For example, to create a database named `samp_db`:
+To create a database named `samp_db`, use the following statement:
 
 {{< copyable "sql" >}}
 
@@ -32,17 +70,7 @@ For example, to create a database named `samp_db`:
 CREATE DATABASE IF NOT EXISTS samp_db;
 ```
 
-### Show the databases
-
-To show the databases, use the `SHOW DATABASES` statement:
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW DATABASES;
-```
-
-### Delete a database
+Add `IF NOT EXISTS` to prevent an error if the database exists.
 
 To delete a database, use the `DROP DATABASE` statement:
 
@@ -54,67 +82,33 @@ DROP DATABASE samp_db;
 
 ## Create, show, and drop a table
 
-### Create a table
+To create a table, use the `CREATE TABLE` statement:
 
-- To create a table, use the `CREATE TABLE` statement:
+{{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
+```sql
+CREATE TABLE table_name column_name data_type constraint;
+```
 
-    ```sql
-    CREATE TABLE table_name column_name data_type constraint;
-    ```
+For example, to create a table named `person` which includes fields such as number, name, and birthday, use the following statement:
 
-    For example:
+{{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
-
-    ```sql
-    CREATE TABLE person (
-        number INT(11),
-        name VARCHAR(255),
-        birthday DATE
+```sql
+CREATE TABLE person (
+    id INT(11),
+    name VARCHAR(255),
+    birthday DATE
     );
-    ```
+```
 
-- Add `IF NOT EXISTS` to prevent an error if the table exists:
+To view the statement that creates the table (DDL), use the `SHOW CREATE` statement:
 
-    {{< copyable "sql" >}}
+{{< copyable "sql" >}}
 
-    ```sql
-    CREATE TABLE IF NOT EXISTS person (
-        number INT(11),
-        name VARCHAR(255),
-        birthday DATE
-    );
-    ```
-
-- To view the statement that creates the table, use the `SHOW CREATE` statement:
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SHOW CREATE table person;
-    ```
-
-### Show the tables
-
-- To show all the tables in a database, use the `SHOW TABLES` statement:
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SHOW TABLES FROM samp_db;
-    ```
-
-- To show all the columns in a table, use the `SHOW FULL COLUMNS` statement:
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SHOW FULL COLUMNS FROM person;
-    ```
-
-### Delete a table
+```sql
+SHOW CREATE table person;
+```
 
 To delete a table, use the `DROP TABLE` statement:
 
@@ -124,51 +118,39 @@ To delete a table, use the `DROP TABLE` statement:
 DROP TABLE person;
 ```
 
-or
+## Create, show, and drop an index
+
+Indexes are used to speed up queries on indexed columns. To create an index for the column whose value is not unique, use the `CREATE INDEX` statement:
 
 {{< copyable "sql" >}}
 
 ```sql
-DROP TABLE IF EXISTS person;
+CREATE INDEX person_id ON person (id);
 ```
 
-## Create, show, and drop an index
+Or use the `ALTER TABLE` statement:
 
-### Create an index
+{{< copyable "sql" >}}
 
-- To create an index for the column whose value is not unique, use the `CREATE INDEX` or `ALTER TABLE` statement:
+```sql
+ALTER TABLE person ADD INDEX person_id (id);
+```
 
-    {{< copyable "sql" >}}
+To create a unique index for the column whose value is unique, use the `CREATE UNIQUE INDEX` statement:
 
-    ```sql
-    CREATE INDEX person_num ON person (number);
-    ```
+{{< copyable "sql" >}}
 
-    or
+```sql
+CREATE UNIQUE INDEX person_unique_id ON person (id);
+```
 
-    {{< copyable "sql" >}}
+Or use the `ALTER TABLE` statement:
 
-    ```sql
-    ALTER TABLE person ADD INDEX person_num (number);
-    ```
+{{< copyable "sql" >}}
 
-- To create a unique index for the column whose value is unique, use the `CREATE UNIQUE INDEX` or `ALTER TABLE` statement:
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    CREATE UNIQUE INDEX person_num ON person (number);
-    ```
-
-    or
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    ALTER TABLE person ADD UNIQUE person_num (number);
-    ```
-
-### Show the indexes
+```sql
+ALTER TABLE person ADD UNIQUE person_unique_id (id);
+```
 
 To show all the indexes in a table, use the `SHOW INDEX` statement:
 
@@ -178,25 +160,27 @@ To show all the indexes in a table, use the `SHOW INDEX` statement:
 SHOW INDEX from person;
 ```
 
-### Delete an index
-
-To delete an index, use the `DROP INDEX` or `ALTER TABLE` statement:
+To delete an index, use the `DROP INDEX` or `ALTER TABLE` statement. `DROP INDEX` can be nested in `ALTER TABLE`:
 
 {{< copyable "sql" >}}
 
 ```sql
-DROP INDEX person_num ON person;
+DROP INDEX person_id ON person;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE person DROP INDEX person_num;
+ALTER TABLE person DROP INDEX person_unique_id;
 ```
 
-## Insert, select, update, and delete data
+> **Note:**
+> 
+> DDL operations are not transactions. You don't need to run a `COMMIT` statement when executing DDL operations.
 
-### Insert data
+## Insert, update, and delete data
+
+Common DML features are adding, modifying, and deleting table records. The corresponding commands are `INSERT`, `UPDATE`, and `DELETE`.
 
 To insert data into a table, use the `INSERT` statement:
 
@@ -206,7 +190,37 @@ To insert data into a table, use the `INSERT` statement:
 INSERT INTO person VALUES("1","tom","20170912");
 ```
 
-### Select data
+To insert a record containing data of some fields into a table, use the `INSERT` statement:
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO person(id,name) VALUES("2","bob");
+```
+
+To update some fields of a record in a table, use the `UPDATE` statement:
+
+{{< copyable "sql" >}}
+
+```sql
+UPDATE person SET birthday='20180808' WHERE id=2;
+```
+
+To delete the data in a table, use the `DELETE` statement:
+
+{{< copyable "sql" >}}
+
+```sql
+DELETE FROM person WHERE id=2;
+```
+
+> **Note:**
+> 
+> The `UPDATE` and `DELETE` statements without the `WHERE` clause as a filter operate on the entire table.
+
+## Query data
+
+DQL is used to retrieve the desired data rows from a table or multiple tables.
 
 To view the data in a table, use the `SELECT` statement:
 
@@ -216,61 +230,30 @@ To view the data in a table, use the `SELECT` statement:
 SELECT * FROM person;
 ```
 
-```
-+--------+------+------------+
-| number | name | birthday   |
-+--------+------+------------+
-|      1 | tom  | 2017-09-12 |
-+--------+------+------------+
-```
-
-### Update data
-
-To update the data in a table, use the `UPDATE` statement:
+To query a specific column, add the column name after the `SELECT` keyword:
 
 {{< copyable "sql" >}}
 
 ```sql
-UPDATE person SET birthday='20171010' WHERE name='tom';
+SELECT name FROM person;
++------+
+| name |
++------+
+| tom  |
++------+
 ```
+
+Use the `WHERE` clause to filter all records that match the conditions and then return the result:
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM person;
-```
-
-```
-+--------+------+------------+
-| number | name | birthday   |
-+--------+------+------------+
-|      1 | tom  | 2017-10-10 |
-+--------+------+------------+
-```
-
-### Delete data
-
-To delete the data in a table, use the `DELETE` statement:
-
-{{< copyable "sql" >}}
-
-```sql
-DELETE FROM person WHERE number=1;
-```
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM person;
-```
-
-```
-Empty set (0.00 sec)
+SELECT * FROM person where id<5;
 ```
 
 ## Create, authorize, and delete a user
 
-### Create a user
+DCL are usually used to create or delete users, and manage user privileges.
 
 To create a user, use the `CREATE USER` statement. The following example creates a user named `tiuser` with the password `123456`:
 
@@ -280,25 +263,21 @@ To create a user, use the `CREATE USER` statement. The following example creates
 CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 ```
 
-### Authorize a user
+To grant `tiuser` the privilege to retrieve the tables in the `samp_db` database:
 
-- To grant `tiuser` the privilege to retrieve the tables in the `samp_db` database:
+{{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
+```sql
+GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
+```
 
-    ```sql
-    GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
-    ```
+To check the privileges of `tiuser`:
 
-- To check the privileges of `tiuser`:
+{{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
-
-    ```sql
-    SHOW GRANTS for tiuser@localhost;
-    ```
-
-### Delete a user
+```sql
+SHOW GRANTS for tiuser@localhost;
+```
 
 To delete `tiuser`:
 
