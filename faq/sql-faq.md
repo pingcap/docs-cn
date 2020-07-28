@@ -9,11 +9,13 @@ This document summarizes the FAQs related to SQL operations in TiDB.
 
 ## What are the MySQL variables that TiDB is compatible with?
 
-See [The System Variables](/system-variables.md).
+See [System Variables](/system-variables.md).
 
-## Does TiDB support `select for update`?
+## Does TiDB support `SELECT FOR UPDATE`?
 
-Yes. But it differs from MySQL in syntax. As a distributed database, TiDB uses the optimistic lock. `select for update` does not lock data when the transaction is started, but checks conflicts when the transaction is committed. If the check reveals conflicts, the committing transaction rolls back.
+Yes. When using pessimistic locking (the default since TiDB v3.0) the `SELECT FOR UPDATE` execution behaves similar to MySQL.
+
+When using optimistic locking, `SELECT FOR UPDATE` does not lock data when the transaction is started, but checks conflicts when the transaction is committed. If the check reveals conflicts, the committing transaction rolls back.
 
 ## Can the codec of TiDB guarantee that the UTF-8 string is memcomparable? Is there any coding suggestion if our key needs to support UTF-8?
 
@@ -27,9 +29,9 @@ The maximum number of statements in a transaction is 5000 by default.
 
 The auto-increment ID feature in TiDB is only guaranteed to be automatically incremental and unique but is not guaranteed to be allocated sequentially. Currently, TiDB is allocating IDs in batches. If data is inserted into multiple TiDB servers simultaneously, the allocated IDs are not sequential. When multiple threads concurrently insert data to multiple `tidb-server` instances, the auto-increment ID of the later inserted data may be smaller. TiDB allows specifying `AUTO_INCREMENT` for the integer field, but allows only one `AUTO_INCREMENT` field in a single table. For details, see [Auto-increment ID](/mysql-compatibility.md#auto-increment-id).
 
-## How to modify the `sql_mode` in TiDB except using the `set` command?
+## How do I modify the `sql_mode` in TiDB?
 
-The configuration method of TiDB `sql_mode` is different from that of MySQL `sql_mode`. TiDB does not support using the configuration file to configure `sql_mode` of the database; it only supports using the `set` command to configure `sql_mode` of the database. You can use `set @@global.sql_mode = 'STRICT_TRANS_TABLES';` to configure it.
+TiDB supports modifying the [`sql_mode`](/sql-mode.md) as a [system variable](/system-variables.md#sql_mode), as in MySQL. Currently, TiDB does not permit modifying the `sql mode` in a configuration file, but system variable changes made with [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) propagate to all TiDB servers in the cluster and persist across restarts.
 
 ## Error: `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` while using Sqoop to write data into TiDB in batches
 
@@ -62,9 +64,9 @@ Two solutions:
 
 None of the `DELETE`, `TRUNCATE` and `DROP` operations release data immediately. For the `TRUNCATE` and `DROP` operations, after the TiDB GC (Garbage Collection) time (10 minutes by default), the data is deleted and the space is released. For the `DELETE` operation, the data is deleted but the space is not released according to TiDB GC. When subsequent data is written into RocksDB and executes `COMPACT`, the space is reused.
 
-## Does TiDB support the `replace into` syntax?
+## Does TiDB support the `REPLACE INTO` syntax?
 
-Yes. But the `load data` does not support the `replace into` syntax.
+Yes. The exception being that `LOAD DATA` does not currently support the `REPLACE INTO` syntax.
 
 ## Why does the query speed get slow after data is deleted?
 
@@ -80,9 +82,9 @@ You can configure concurrent GC to increase the speed of reclaiming storage spac
 update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";
 ```
 
-## Does `show processlist` display the system process ID?
+## Does `SHOW PROCESSLIST` display the system process ID?
 
-The display content of TiDB `show processlist` is almost the same as that of MySQL `show processlist`. TiDB `show processlist` does not display the system process ID. The ID that it displays is the current session ID. The differences between TiDB `show processlist` and MySQL `show processlist` are as follows:
+The display content of TiDB `SHOW PROCESSLIST` is almost the same as that of MySQL `SHOW PROCESSLIST`. TiDB `show processlist` does not display the system process ID. The ID that it displays is the current session ID. The differences between TiDB `show processlist` and MySQL `show processlist` are as follows:
 
 - As TiDB is a distributed database, the `tidb-server` instance is a stateless engine for parsing and executing the SQL statements (for details, see [TiDB architecture](/tidb-architecture.md)). `show processlist` displays the session list executed in the `tidb-server` instance that the user logs in to from the MySQL client, not the list of all the sessions running in the cluster. But MySQL is a standalone database and its `show processlist` displays all the SQL statements executed in MySQL.
 - The `State` column in TiDB is not continually updated during query execution. As TiDB supports parallel query, each statement may be in multiple _states_ at once, and thus it is difficult to simplify to a single value.
@@ -117,9 +119,9 @@ Trigger strategy: `auto analyze` is automatically triggered when the number of p
 
 When the modified number or the current total row number is larger than `tidb_auto_analyze_ratio`, the `analyze` statement is automatically triggered. The default value of `tidb_auto_analyze_ratio` is 0.5, indicating that this feature is enabled by default. To ensure safety, its minimum value is 0.3 when the feature is enabled, and it must be smaller than `pseudo-estimate-ratio` whose default value is 0.8, otherwise pseudo statistics will be used for a period of time. It is recommended to set `tidb_auto_analyze_ratio` to 0.5.
 
-## How to use a specific index with hint in a SQL statement?
+## Can I use hints to override the optimizer behavior?
 
-Its usage is similar to MySQL:
+TiDB supports multiple ways to override the default query optimizer behavior, including [hints](/optimizer-hints.md) and [SQL Plan Management](/sql-plan-management.md). The basic usage is similar to MySQL, with several TiDB specific extensions:
 
 {{< copyable "sql" >}}
 
@@ -176,6 +178,7 @@ Recommendations:
 2. Improve the concurrency. The default value is 10. You can improve it to 50 and have a try. But usually the improvement is 2-4 times of the default value.
 3. Test the `count` in the case of large amount of data.
 4. Optimize the TiKV configuration. See [Tune TiKV Thread Performance](/tune-tikv-thread-performance.md) and [Tune TiKV Memory Performance](/tune-tikv-memory-performance.md).
+5. Enable the [Coprocessor Cache](/coprocessor-cache.md).
 
 ### How to view the progress of the current DDL job?
 

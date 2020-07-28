@@ -107,9 +107,9 @@ It is recommended to use the official standard statements when modifying the use
 
 The auto-increment ID feature in TiDB is only guaranteed to be automatically incremental and unique but is not guaranteed to be allocated sequentially. Currently, TiDB is allocating IDs in batches. If data is inserted into multiple TiDB servers simultaneously, the allocated IDs are not sequential. When multiple threads concurrently insert data to multiple `tidb-server` instances, the auto-increment ID of the later inserted data may be smaller. TiDB allows specifying `AUTO_INCREMENT` for the integer field, but allows only one `AUTO_INCREMENT` field in a single table. For details, see [MySQL Compatibility](/mysql-compatibility.md#auto-increment-id).
 
-#### How to modify the `sql_mode` in TiDB except using the `set` command?
+#### How do I modify the `sql_mode` in TiDB?
 
-The configuration method of TiDB `sql_mode` is different from that of MySQL `sql_mode`. TiDB does not support using the configuration file to configure `sql\_mode` of the database; it only supports using the `set` command to configure `sql\_mode` of the database. You can use `set @@global.sql_mode = 'STRICT_TRANS_TABLES';` to configure it.
+TiDB supports modifying the [`sql_mode`](/sql-mode.md) as a [system variable](/system-variables.md#sql_mode), as in MySQL. Currently, TiDB does not permit modifying the sql mode in a configuration file, but system variable changes made with [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) propagate to all TiDB servers in the cluster and persist across restarts.
 
 #### Does TiDB support modifying the MySQL version string of the server to a specific one that is required by the security vulnerability scanning tool?
 
