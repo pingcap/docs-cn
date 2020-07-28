@@ -593,7 +593,12 @@ tiup cluster check <cluster-name> --cluster
 
 ## 使用中控机系统自带的 SSH 客户端连接集群
 
-在以上所有操作中，涉及到对集群机器的操作都是通过 TiUP 内置的 SSH 客户端连接集群，但是在某些场景下，我们需要使用系统自带的 SSH 客户端来对集群执行操作，这时候我们可以使用 `--native-ssh` 参数，例如：
+在以上所有操作中，涉及到对集群机器的操作都是通过 TiUP 内置的 SSH 客户端连接集群执行命令，但是在某些场景下，需要使用系统自带的 SSH 客户端来对集群执行操作，比如：
+
+- 使用 SSH 插件来做认证
+- 使用定制的 SSH 客户端
+
+此时可以通过命令行参数 `--native-ssh` 启用系统自带命令行：
 
 - 部署集群: `tiup cluster deploy <cluster-name> <version> <topo> --native-ssh`
 - 启动集群: `tiup cluster start <cluster-name> --native-ssh`
