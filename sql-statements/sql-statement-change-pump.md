@@ -1,7 +1,6 @@
 ---
 title: CHANGE PUMP
 summary: TiDB 数据库中 CHANGE PUMP 的使用概况。
-category: reference
 ---
 
 # CHANGE PUMP

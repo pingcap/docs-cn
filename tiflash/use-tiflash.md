@@ -1,6 +1,5 @@
 ---
 title: 使用 TiFlash
-category: reference
 aliases: ['/docs-cn/dev/reference/tiflash/use-tiflash/']
 ---
 
@@ -154,7 +153,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 
 > **注意：**
 >
-> 由于 TiDB Dashboard 等组件需要读取一些存储于 TiDB 内存表区的系统表，因此建议实例级别 engine 配置中始终加入 "tidb" engine。
+> 由于 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等组件需要读取一些存储于 TiDB 内存表区的系统表，因此建议实例级别 engine 配置中始终加入 "tidb" engine。
 
 如果查询中的表没有对应 engine 的副本，比如配置了 engine 为 "tiflash" 而该表没有 TiFlash 副本，则查询会报该表不存在该 engine 副本的错。
 
@@ -188,6 +187,10 @@ select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 
 
 上述三种读取 TiFlash 副本的方式中，Engine 隔离规定了总的可使用副本 engine 的范围，手工 Hint 可以在该范围内进一步实现语句级别及表级别的细粒度的 engine 指定，最终由 CBO 在指定的 engine 范围内根据代价估算最终选取某个 engine 上的副本。
 
+> **注意：**
+>
+> TiDB 4.0.3 版本之前，在非只读 SQL 语句中（比如 `INSERT INTO ... SELECT`、`SELECT ... FOR UPDATE`、`UPDATE ...`、`DELETE ...`）读取 TiFlash，行为是未定义。TiDB 4.0.3 以及后续的版本，TiDB 内部会对非只读 SQL 语句忽略 TiFlash 副本以保证数据写入、更新、删除的正确性。对应的，如果使用了[智能选择](#智能选择)的方式，TiDB 会自动选择非 TiFlash 副本；如果使用了 [Engine 隔离](#engine-隔离)的方式指定**仅**读取 TiFlash 副本，则查询会报错；而如果使用了[手工 Hint](#手工-hint) 的方式，则 Hint 会被忽略。
+
 ## 使用 TiSpark 读取 TiFlash
 
 TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方式是通过配置参数 `spark.tispark.use.tiflash` 为 `true`（或 `false`）。
@@ -214,15 +217,22 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 > **注意：**
 >
-> 目前 TiFlash 支持 TiDB 新排序规则框架的功能正在开发中，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，后续版本会去除这个限制。
+> TiDB 4.0.2 版本之前，TiFlash 不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
 
 TiFlash 主要支持谓词、聚合下推计算，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型主要是表连接和 DISTINCT COUNT，会在后续版本逐步优化。
 
-目前 TiFlash 支持了有限的常用表达式下推，支持下推的表达式可参考[该文件](https://github.com/pingcap/tidb/blob/692e0098b1207ef26ea18bedfcc9ba067604da3c/expression/expression.go#L1115)。
+目前 TiFlash 支持了有限的常用表达式下推，支持下推的表达式包括：
+
+```
++, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, mod, bitand, or, and, like, not,
+case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor, cast(int as decimal), date_add(datetime, int), date_add(datetime, string)
+```
+
+其中，`cast` 和 `date_add` 的下推默认不开启，若需要手动开启，请参考[优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
 
 目前 TiFlash 不支持下推的情况包括：
 
-- 所有包含 Duration 和 JSON 的表达式均不能下推
-- 在聚合函数或者 WHERE 条件中包含了不在[该文件](https://github.com/pingcap/tidb/blob/692e0098b1207ef26ea18bedfcc9ba067604da3c/expression/expression.go#L1115)列表中的表达式，聚合或者相关的谓词过滤均不能下推
+- 所有包含 Duration 的表达式均不能下推
+- 在聚合函数或者 WHERE 条件中包含了不在上述列表中的表达式，聚合或者相关的谓词过滤均不能下推
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的表达式，将会在后续陆续加入支持，也可以联系官方沟通。

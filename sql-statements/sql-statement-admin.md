@@ -1,6 +1,5 @@
 ---
 title: ADMIN
-category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/admin/']
 ---
 
@@ -61,7 +60,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 >
 > + 如果希望取消的作业已经完成，则取消操作将会失败。
 
-### `admin check` 语句
+## `admin check` 语句
 
 {{< copyable "sql" >}}
 
@@ -97,7 +96,7 @@ ADMIN CHECKSUM TABLE tbl_name [, tbl_name] ...;
 
 以上语句会获取 `tbl_name` 的 64 位的 checksum 值，该值可通过计算了表中所有的键值对（包括行数据和索引数据）的 CRC64 获得。
 
-### `admin reload` 语句
+## `admin reload` 语句
 
 {{< copyable "sql" >}}
 
@@ -115,7 +114,7 @@ ADMIN RELOAD opt_rule_blacklist;
 
 以上语句用于重新加载逻辑优化规则的黑名单。
 
-### `admin plugin` 语句
+## `admin plugin` 语句
 
 {{< copyable "sql" >}}
 
@@ -133,7 +132,7 @@ ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
 
 以上语句用于禁用 `plugin_name` 插件。
 
-### `admin ... bindings` 语句
+## `admin ... bindings` 语句
 
 {{< copyable "sql" >}}
 
@@ -157,7 +156,7 @@ ADMIN CAPTURE bindings;
 ADMIN EVOLVE bindings;
 ```
 
-开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划绑定](/execution-plan-binding.md)。
+开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划管理](/sql-plan-management.md)。
 
 {{< copyable "sql" >}}
 
@@ -167,7 +166,7 @@ ADMIN RELOAD bindings;
 
 以上语句用于重新加载 SQL Plan 绑定的信息。
 
-### `admin repair table` 语句
+## `admin repair table` 语句
 
 {{< copyable "sql" >}}
 
@@ -177,7 +176,7 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 
 `ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/tidb-configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/tidb-configuration-file.md#repair-table-list) 名单中。
 
-### `admin show slow` 语句
+## `admin show slow` 语句
 
 {{< copyable "sql" >}}
 

@@ -1,10 +1,9 @@
 ---
-title: 日志搜索页面
+title: TiDB Dashboard 日志搜索页面
 summary: 在集群中搜索所有节点上的日志
-category: how-to
 ---
 
-# 日志搜索页面
+# TiDB Dashboard 日志搜索页面
 
 该页面上允许用户在集群中搜索所有节点上的日志，在页面上预览搜索结果和下载日志。
 

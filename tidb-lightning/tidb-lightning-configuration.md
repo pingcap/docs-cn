@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 配置参数
 summary: 使用配置文件或命令行配置 TiDB Lightning。
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/config/']
 ---
 
@@ -85,7 +84,7 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# 选择后端：“importer” 或 “tidb“
+# 选择后端：“importer” 或 “local” 或 “tidb”
 # backend = "importer"
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
@@ -94,6 +93,14 @@ addr = "172.16.31.10:8287"
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
+# 当后端是 “local” 时，控制生成 SST 文件的大小，最好跟 TiKV 里面的 Region 大小保持一致，默认是 96 MB。
+# region-split-size = 100_663_296
+# 当后端是 “local” 时，一次请求中发送的 KV 数量。
+# send-kv-pairs = 32768
+# 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
+# sorted-kv-dir = ""
+# 当后端是 “local” 时，TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
+# range-concurrency = 16
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
@@ -101,7 +108,7 @@ read-block-size = 65536 # Byte (默认为 64 KB)
 
 # （源数据文件）单个导入区块大小的最小值。
 # Lightning 根据该值将一张大表分割为多个数据引擎文件。
-batch-size = 107_374_182_400 # Byte (默认为 100 GB)
+# batch-size = 107_374_182_400 # Byte (默认为 100 GB)
 
 # 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，
 # 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，Lightning
@@ -114,7 +121,7 @@ batch-import-ratio = 0.75
 
 # mydumper 本地源数据目录。
 data-source-dir = "/data/my_database"
-# 如果 no-shcema = false，那么 TiDB Lightning 假设目标 TiDB 集群上
+# 如果 no-shcema = true，那么 TiDB Lightning 假设目标 TiDB 集群上
 # 已有表结构，并且不会执行 `CREATE TABLE` 语句。
 no-schema = false
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
@@ -124,6 +131,9 @@ no-schema = false
 #  - binary：不尝试转换编码。
 # 注意：**数据** 文件始终解析为 binary 文件。
 character-set = "auto"
+
+# 只导入与该通配符规则相匹配的表。详情见相应章节。
+filter = ['*.*']
 
 # 配置 CSV 文件的解析方式。
 [mydumper.csv]
@@ -195,10 +205,6 @@ analyze = true
 switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
-
-# 设置表库过滤。详情参见“TiDB Lightning 表库过滤”文档。
-# [black-white-list]
-# ...
 ```
 
 ### TiKV Importer 配置参数
@@ -281,7 +287,8 @@ min-available-ratio = 0.05
 | -V | 输出程序的版本 | |
 | -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
-| --backend *backend* | 选择后端的模式：`importer` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
+| -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
+| --backend *backend* | 选择后端的模式：`importer` `local` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径 | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
