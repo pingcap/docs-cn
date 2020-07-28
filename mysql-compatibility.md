@@ -9,7 +9,11 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, Mydumper/myloader）等都可以直接使用。
 
-不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine`，是解析并忽略。
+但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
+
+- 有更好的解决方案，例如 JSON 取代 XML 函数。
+- 目前对这些功能的需求度不高，例如存储流程和函数。
+- 一些功能在分布式系统上的实现难度较大。
 
 > **注意：**
 >
@@ -180,11 +184,12 @@ Create Table: CREATE TABLE `t1` (
 
 ### SQL 模式
 
-TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除外：
+TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下：
 
-- TiDB 不支持兼容模式（例如 `ORACLE` 和 `POSTGRESQL`）。MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
-- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
-- `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
+- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+- TiDB 的 `ONLY_FULL_GROUP_BY` 模式与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
+
+MySQL 中的 `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 的 SQL 模式可用于解决兼容性问题，并不适用于 TiDB。
 
 ### 默认设置的区别
 
