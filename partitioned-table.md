@@ -483,7 +483,7 @@ ERROR 8200 (HY000): Unsupported optimize partition
 
 ## Partition pruning
 
-Partition pruning is an optimization which is based on a very simple idea - do not scan the partitions that do not match.
+[Partition pruning](/partition-pruning.md) is an optimization which is based on a very simple idea - do not scan the partitions that do not match.
 
 Assume that you create a partitioned table `t1`:
 
