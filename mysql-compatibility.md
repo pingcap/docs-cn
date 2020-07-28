@@ -151,11 +151,21 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 出于兼容性原因，TiDB 支持使用备用存储引擎创建表的语法。元数据命令将表描述为 InnoDB 存储引擎：
 
+<<<<<<< HEAD
 {{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (a INT) ENGINE=MyISAM;
 ```
+=======
+TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下：
+
+- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+
+- TiDB 的 `ONLY_FULL_GROUP_BY` 模式与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
+
+- MySQL 中的 `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 的 SQL 模式可用于解决兼容性问题，并不适用于 TiDB。
+>>>>>>> 2505f1a... sql-mode: update compatibility (#4027)
 
 ```
 Query OK, 0 rows affected (0.14 sec)
