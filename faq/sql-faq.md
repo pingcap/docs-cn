@@ -191,7 +191,8 @@ RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganiz
 
 ### TiDB 是否支持基于 COST 的优化（CBO），如果支持，实现到什么程度？
 
-是的，TiDB 使用的基于成本的优化器（CBO），我们有一个小组单独会对代价模型、统计信息持续优化，除此之外，我们支持 hash join、soft-merge 等 join 算法。
+是的，TiDB 使用的是基于成本的优化器 (CBO)，会对代价模型、统计信息持续优化。除此之外，TiDB 还支持 hash join、soft-merge join 等 join 算法。
+
 
 ### 如何确定某张表是否需要做 analyze ？
 
