@@ -1150,7 +1150,7 @@ Configuration items related to security
 
 ## `import`
 
-Configuration items related to `import`
+Configuration items related to TiDB Lightning import and BR restore.
 
 ### `num-threads`
 
@@ -1163,6 +1163,16 @@ Configuration items related to `import`
 + The number of jobs imported concurrently
 + Default value: `8`
 + Minimum value: `1`
+  
+## backup
+
+Configuration items related to BR backup.
+
+### `num-threads`
+
++ The number of worker threads to process backup
++ Default value: `MIN(CPU * 0.75, 32)`.
++ Minimum value: `1` 
 
 ## pessimistic-txn
 
