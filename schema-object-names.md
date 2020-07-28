@@ -1,6 +1,5 @@
 ---
 title: Schema 对象名
-category: reference
 summary: 本文介绍 TiDB SQL 语句中的模式对象名。
 aliases: ['/docs-cn/dev/reference/sql/language-structure/schema-object-names/']
 ---
