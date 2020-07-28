@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 离线部署 TiDB 集群
-category: how-to
 ---
 
 # 使用 TiUP 离线部署 TiDB 集群
@@ -11,83 +10,67 @@ category: how-to
 
 ### 方式一：下载官方 TiUP 离线组件包
 
-在 `download.pingcap.org` 有官方预先打好的离线镜像包，下载指令为：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-wget http://download.pingcap.org/tidb-community-server-${version}-linux-amd64.tar.gz
-mv tidb-community-server-${version}-linux-amd64.tar.gz package.tar.gz
-```
-
-其中 ${version} 处填入希望下载的离线镜像包版本，例如 v4.0.0。
-
-此时，`package.tar.gz` 就是一个独立的离线环境包。
+在 [官方下载页面](https://pingcap.com/download-cn/) 选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
 
 ### 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包
 
-#### 1.1 部署在线环境 TiUP 组件
+- 在线环境中安装 TiUP 包管理器工具
 
-使用普通用户登录一台开放外网访问的机器：
+    1. 执行如下命令安装 TiUP 工具：
 
-1. 执行如下命令安装 TiUP 工具：
+        {{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
+        ```shell
+        curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+        ```
 
-    ```shell
-    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-    ```
+    2. 重新声明全局环境变量：
 
-2. 重新声明全局环境变量：
+        {{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
+        ```shell
+        source .bash_profile
+        ```
 
-    ```shell
-    source .bash_profile
-    ```
+    3. 确认 TiUP 工具是否安装：
 
-3. 确认 TiUP 工具是否安装：
+        {{< copyable "shell-regular" >}}
 
-    {{< copyable "shell-regular" >}}
+        ```shell
+        which tiup
+        ```
 
-    ```shell
-    which tiup
-    ```
+- 使用 TiUP 制作离线镜像
 
-#### 1.2 使用 TiUP 拉取镜像
+    1. 在一台和外网相通的机器上拉取需要的组件：
 
-以 tidb 用户在隔离的环境中安装一个 v4.0.0 的 TiDB 集群为例，可以执行以下步骤：
+        {{< copyable "shell-regular" >}}
 
-1. 在一台和外网相通的机器上拉取需要的组件：
+        ```bash
+        tiup mirror clone tidb-community-server-${version}-linux-amd64 ${version} --os=linux --arch=amd64
+        ```
 
-    {{< copyable "shell-regular" >}}
+        该命令会在当前目录下创建一个名叫 `tidb-community-server-${version}-linux-amd64` 的目录，里面包含 TiUP 管理的组件包。
 
-    ```bash
-    tiup mirror clone package v4.0.0 --os=linux --arch=amd64
-    ```
+    2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
 
-    该命令会在当前目录下创建一个名叫 `package` 的目录，里面有启动一个集群必要的组件包。
+        {{< copyable "shell-regular" >}}
 
-2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
+        ```bash
+        tar czvf tidb-community-server-${version}-linux-amd64.tar.gz tidb-community-server-${version}-linux-amd64
+        ```
 
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tar czvf package.tar.gz package
-    ```
-
-    此时，`package.tar.gz` 就是一个独立的离线环境包。
+        此时，`tidb-community-server-${version}-linux-amd64.tar.gz` 就是一个独立的离线环境包。
 
 ## 2. 部署离线环境 TiUP 组件
 
-将包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
+将离线包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar xzvf package.tar.gz &&
-cd package &&
-sh local_install.sh &&
+tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz &&
+sh tidb-community-server-${version}-linux-amd64/local_install.sh
 source /home/tidb/.bash_profile
 ```
 
@@ -264,3 +247,7 @@ tiup cluster start tidb-test
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
 部署完成后，集群相关操作可参考 [cluster 命令](/tiup/tiup-cluster.md)。
+
+> **注意：**
+>
+> TiDB 和 TiUP 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。

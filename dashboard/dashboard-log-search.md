@@ -1,7 +1,6 @@
 ---
 title: TiDB Dashboard 日志搜索页面
 summary: 在集群中搜索所有节点上的日志
-category: how-to
 ---
 
 # TiDB Dashboard 日志搜索页面

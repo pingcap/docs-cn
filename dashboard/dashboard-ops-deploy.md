@@ -1,6 +1,5 @@
 ---
 title: 部署 TiDB Dashboard
-category: how-to
 ---
 
 # 部署 TiDB Dashboard
@@ -9,9 +8,9 @@ TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需
 
 请参阅下列文档了解如何部署标准 TiDB 集群：
 
-+ [快速试用 TiDB 集群](/quick-start-with-tidb.md#第二种使用-tiup-playground-快速部署本地测试环境)
-+ [生产环境部署](/production-deployment-using-tiup.md)
-+ [Kubernetes 环境部署](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/access-dashboard/)
+- [快速试用 TiDB 集群](/quick-start-with-tidb.md#第一种使用-tiup-playground-快速部署本地测试环境)
+- [生产环境部署](/production-deployment-using-tiup.md)
+- [Kubernetes 环境部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/access-dashboard/)
 
 > **注意：**
 >
@@ -47,12 +46,17 @@ http://192.168.0.123:2379/dashboard/
 
 > **注意：**
 >
-> 该功能仅在较新版本的 `tiup cluster` 部署工具中提供。可通过以下命令升级 `tiup cluster`：
+> 该功能在 TiUP Cluster v1.0.3 或更高版本部署工具中提供。
 >
-> ```bash
+> <details>
+> <summary>升级 TiUP Cluster 步骤</summary>
+>
+> ```shell
 > tiup update --self
 > tiup update cluster --force
 > ```
+>
+> </details>
 
 ### 切换其他 PD 实例提供 TiDB Dashboard 服务
 
@@ -111,7 +115,7 @@ tiup ctl pd -u http://127.0.0.1:2379 config set dashboard-address auto
 tiup cluster display CLUSTER_NAME --dashboard
 ```
 
-还可以通过手动指定哪个 PD 实例运行 TiDB Dashboard 服务的方式重新启用 TiDB Dashboard，具体操作参见上文[切换其他 PD 实例提供 TiDB Dashboard 服务](#切换其他-PD-实例提供-TiDB-Dashboard-服务)。
+还可以通过手动指定哪个 PD 实例运行 TiDB Dashboard 服务的方式重新启用 TiDB Dashboard，具体操作参见上文[切换其他 PD 实例提供 TiDB Dashboard 服务](#切换其他-pd-实例提供-tidb-dashboard-服务)。
 
 > **警告：**
 >

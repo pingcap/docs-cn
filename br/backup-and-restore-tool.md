@@ -1,7 +1,6 @@
 ---
 title: 使用 BR 进行备份与恢复
 summary: 了解如何使用 BR 工具进行集群数据备份和恢复。
-category: how-to
 aliases: ['/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/']
 ---
 
@@ -14,6 +13,12 @@ Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行�
 - BR 只支持 TiDB v3.1 及以上版本。
 - 目前只支持在全新的集群上执行恢复操作。
 - BR 备份最好串行执行，否则不同备份任务之间会相互影响。
+- BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
+
+    - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
+    - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
+
+    例如，数据备份在 v3.1 集群。如果恢复到 v4.0 集群中，查询恢复集群的 `new_collation_enabled` 的值为 `true`，则说明创建恢复集群时打开了 new collation 支持的开关。此时恢复数据，可能会出错。
 
 ## 推荐部署配置
 
@@ -26,54 +31,18 @@ Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行�
 
 ## 工作原理
 
-BR 是分布式备份恢复的工具，它将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令后执行相应的备份或恢复操作。在一次备份或恢复中，各个 TiKV 节点都会有一个对应的备份路径，TiKV 备份时产生的备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。
+BR 是分布式备份恢复的工具，它将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令后执行相应的备份或恢复操作。在一次备份或恢复中，各个 TiKV 节点都会有一个对应的备份路径，TiKV 备份时产生的备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。更多信息请参阅[备份恢复设计方案](https://github.com/pingcap/br/blob/980627aa90e5d6f0349b423127e0221b4fa09ba0/docs/cn/2019-08-05-new-design-of-backup-restore.md)
 
-### 备份原理
+![br-arch](/media/br-arch.png)
 
-BR 执行备份操作时，会先从 PD 获取到以下信息：
-
-- 当前的 TS 作为备份快照的时间点
-- 当前集群的 TiKV 节点信息
-
-然后 BR 根据这些信息，在内部启动一个 TiDB 实例，获取对应 TS 的数据库或表信息，同时过滤掉系统库 (`information_schema`，`performance_schema`，`mysql`)。
-
-此时根据备份子命令，会有两种备份逻辑：
-
-- 全量备份：BR 遍历全部库表，并且根据每一张表构建需要备份的 KV Range
-- 单表备份：BR 根据该表构建需要备份的 KV Range
-
-最后，BR 将需要备份的 KV Range 收集后，构造完整的备份请求分发给集群内的 TiKV 节点。
-
-该请求的主要结构如下：
-
-```
-BackupRequest{
-    ClusterId,      // 集群 ID
-    StartKey,       // 备份起始点，startKey 会被备份
-    EndKey,         // 备份结束点，endKey 不会被备份
-    StartVersion,   // 上一次备份快照的版本，用于增量备份
-    EndVersion,     // 备份快照时间点
-    StorageBackend, // 备份文件存储地址
-    RateLimit,      // 备份速度 (MB/s)
-}
-```
-
-TiKV 节点收到备份请求后，会遍历节点上所有的 Region Leader，找到和请求中 KV Range 有重叠范围的 Region，将该范围下的部分或者全部数据进行备份，在备份路径下生成对应的 SST 文件。
-
-TiKV 节点在备份完对应 Region Leader 的数据后将元信息返回给 BR。BR 将这些元信息收集并存储进 `backupmeta` 文件中，等待恢复时使用。
-
-假如 `StartVersion` 不为 0，这次备份会被视作增量备份。BR 除了收集 KV 以外，还会收集 `[StartVersion, EndVersion)` 之间的 DDL，在进行恢复的时候，会先恢复这些 DDL。 
-
-如果执行命令时开启了 checksum，那么 BR 在最后会对备份的每一张表计算 checksum 用于校验。
-
-#### 备份文件类型
+### 备份文件类型
 
 备份路径下会生成以下两种类型文件：
 
 - SST 文件：存储 TiKV 备份下来的数据信息
 - `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
 
-#### SST 文件命名格式
+### SST 文件命名格式
 
 SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式名的解释如下：
 
@@ -82,26 +51,6 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 - regionEpoch：Region 版本号
 - keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
 - cf：RocksDB 的 ColumnFamily（默认为 `default` 或 `write`）
-
-### 恢复原理
-
-BR 执行恢复操作时，会按顺序执行以下任务：
-
-1. 解析备份路径下的 backupMeta 文件，根据解析出来的库表信息，在内部启动一个 TiDB 实例在新集群创建对应的库表。
-
-2. 把解析出来的 SST 文件，根据表进行聚合。
-
-3. 根据 SST 文件的 Key Range 进行预切分 Region，使得每个 Region 至少对应一个 SST 文件。
-
-4. 遍历要恢复的每一张表，以及这个表对应的 SST 文件。
-
-5. 找到该文件对应的 Region，发送下载文件的请求到对应的 TiKV 节点，并在下载成功后，发送加载请求。
-
-TiKV 收到加载 SST 文件的请求后，利用 Raft 机制保证加载 SST 数据的强一致性。在加载成功后，下载下来的 SST 文件会被异步删除。
-
-在执行完恢复操作后，BR 会对恢复后的数据进行 checksum 计算，用于和备份下来的数据进行对比。
-
-![br-arch](/media/br-arch.png)
 
 ## BR 命令行描述
 
@@ -121,13 +70,13 @@ TiKV 收到加载 SST 文件的请求后，利用 Raft 机制保证加载 SST �
 * `"${PDIP}:2379"`：`--pd` 的参数
 
 > **注意：**
-> 
+>
 > 在使用 `local` storage 的时候，备份数据会分散在各个节点的本地文件系统中。
 >
 > **不建议**在生产环境中备份到本地磁盘，因为在日后恢复的时候，**必须**手动聚集这些数据才能完成恢复工作（见[恢复集群数据](#恢复集群数据)）。
-> 
+>
 > 聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到颇为迷惑的 `SST file not found` 报错。
-> 
+>
 > 建议在各个节点挂载 NFS 网盘，或者直接备份到 `S3` 对象存储中。
 
 ### 命令和子命令
@@ -175,7 +124,7 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 用例：将所有集群数据备份到各个 TiKV 节点的 `/tmp/backup` 路径，同时也会将备份的元信息文件 `backupmeta` 写到该路径下。
 
 > **注意：**
-> 
+>
 > + 经测试，在全速备份的情况下，如果备份盘和服务盘不同，在线备份会让只读线上服务的 QPS 下降 15%~25% 左右。如果希望降低影响，请参考 `--ratelimit` 进行限速。
 > + 假如备份盘和服务盘相同，备份将会和服务争夺 I/O 资源，这可能会让只读线上服务的 QPS 骤降一半以上。请尽量禁止将在线服务的数据备份到 TiKV 的数据盘。
 
@@ -245,6 +194,23 @@ br backup table \
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
 
+### 使用表库过滤功能备份多张表的数据
+
+如果你需要以更复杂的过滤条件来备份多个表，执行 `br backup full` 命令，并使用 `--filter` 或 `-f` 来指定[表库过滤](/table-filter.md)规则。
+
+用例：以下命令将所有 `db*.tbl*` 形式的表格数据备份到每个 TiKV 节点上的 `/tmp/backup` 路径，并将 `backupmeta` 文件写入该路径。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full \
+    --pd "${PDIP}:2379" \
+    --filter 'db*.tbl*' \
+    --storage "local:///tmp/backup" \
+    --ratelimit 120 \
+    --log-file backupfull.log
+```
+
 ### 备份数据到 Amazon S3 后端存储
 
 如果备份的存储并不是在本地，而是在 Amazon 的 S3 后端存储，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
@@ -280,7 +246,7 @@ br backup full \
 注意增量备份有以下限制：
 
 - 增量备份需要与前一次全量备份在不同的路径下
-- 增量备份开始时间与 `lastbackupts` 之间不能有 GC
+- GC safepoint 必须在 `lastbackupts` 之前
 
 {{< copyable "shell-regular" >}}
 
@@ -306,7 +272,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 ### Raw KV 备份（实验性功能）
 
 > **警告：**
-> 
+>
 > Raw KV 备份功能还在实验中，没有经过完备的测试。暂时请避免在生产环境中使用该功能。
 
 在某些使用场景下，TiKV 可能会独立于 TiDB 运行。考虑到这点，BR 也提供跳过 TiDB 层，直接备份 TiKV 中数据的功能：
@@ -408,6 +374,22 @@ br restore table \
     --log-file restorefull.log
 ```
 
+### 使用表库功能过滤恢复数据
+
+如果你需要用复杂的过滤条件来恢复多个表，执行 `br restore full` 命令，并用 `--filter` 或 `-f` 指定使用[表库过滤](/table-filter.md)。
+
+用例：以下命令将备份在 `/tmp/backup` 路径的表的子集恢复到集群中。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full \
+    --pd "${PDIP}:2379" \
+    --filter 'db*.tbl*' \
+    --storage "local:///tmp/backup" \
+    --log-file restorefull.log
+```
+
 ### 从 Amazon S3 后端存储恢复数据
 
 如果需要恢复的数据并不是存储在本地，而是在 Amazon 的 S3 后端，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
@@ -434,7 +416,7 @@ br restore full \
     --log-file restorefull.log
 ```
 
-以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复某个数据库](#恢复某个数据库)相同。
+以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复单个数据库](#恢复单个数据库的数据)相同。
 
 ### 增量恢复
 
@@ -443,7 +425,7 @@ br restore full \
 ### Raw KV 恢复（实验性功能）
 
 > **警告：**
-> 
+>
 > Raw KV 恢复功能还在实验中，没有经过完备的测试。暂时请避免在生产环境中使用该功能。
 
 和 [Raw KV 备份](#raw-kv-备份实验性功能)相似地，恢复 Raw KV 的命令如下：
@@ -464,7 +446,7 @@ br restore raw --pd $PD_ADDR \
 ### 在线恢复（实验性功能）
 
 > **警告：**
-> 
+>
 > 在线恢复功能还在实验中，没有经过完备的测试，同时还依赖 PD 的不稳定特性 Placement Rules。暂时请避免在生产环境中使用该功能。
 
 在恢复的时候，写入过多的数据会影响在线集群的性能。为了尽量避免影响线上业务，BR 支持通过 [Placement rules](/configure-placement-rules.md) 隔离资源。让下载、导入 SST 的工作仅仅在指定的几个节点（下称“恢复节点”）上进行，具体操作如下：

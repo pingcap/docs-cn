@@ -1,6 +1,5 @@
 ---
 title: TiDB 4.0 GA Release Notes
-category: Releases
 ---
 
 # TiDB 4.0 GA Release Notes
