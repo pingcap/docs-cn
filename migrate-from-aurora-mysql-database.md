@@ -1,7 +1,6 @@
 ---
 title: 从 MySQL 迁移数据——以 Amazon Aurora MySQL 为例
 summary: 使用 DM 从 MySQL/Amazon Aurora MySQL 迁移数据。
-category: how-to
 aliases: ['/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/']
 ---
 
@@ -19,7 +18,7 @@ aliases: ['/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/
 | Aurora-1 | pingcap-1-us-east-2a.h8emfqdptyc4.us-east-2.rds.amazonaws.com | 3306 | 读取器 |
 | Aurora-2 | pingcap-2.h8emfqdptyc4.us-east-2.rds.amazonaws.com | 3306 | 写入器 |
 
-DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog 及设置正确的 binlog 格式，则不能正常使用 DM 进行数据同步，具体可参见[检查内容](https://pingcap.com/docs-cn/tidb-data-migration/stable/precheck/#检查内容)。
+DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog 及设置正确的 binlog 格式，则不能正常使用 DM 进行数据同步，具体可参见[检查内容](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/precheck#检查内容)。
 
 > **注意：**
 >
@@ -43,11 +42,11 @@ DM 在增量同步阶段依赖 `ROW` 格式的 binlog，如果未启用 binlog �
 
 ## 第 2 步：部署 DM 集群
 
-目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照[使用 DM-Ansible 部署 DM 集群](https://pingcap.com/docs-cn/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/)。
+目前推荐使用 DM-Ansible 部署 DM 集群，具体部署方法参照[使用 DM-Ansible 部署 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/deploy-a-dm-cluster-using-ansible)。
 
 > **注意：**
 >
-> - 在 DM 所有的配置文件中，数据库的密码要使用 dmctl 加密后的密文。如果数据库密码为空，则不需要加密。关于如何使用 dmctl 加密明文密码，参考[使用 dmctl 加密上游 MySQL 用户密码](https://pingcap.com/docs-cn/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/#使用-dmctl-加密上游-mysql-用户密码)。
+> - 在 DM 所有的配置文件中，数据库的密码要使用 dmctl 加密后的密文。如果数据库密码为空，则不需要加密。关于如何使用 dmctl 加密明文密码，参考[使用 dmctl 加密上游 MySQL 用户密码](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/deploy-a-dm-cluster-using-ansible#使用-dmctl-加密上游-mysql-用户密码)。
 > - 上下游数据库用户必须拥有相应的读写权限。
 
 ## 第 3 步：检查集群信息
