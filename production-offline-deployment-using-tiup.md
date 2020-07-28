@@ -1,78 +1,80 @@
 ---
 title: 使用 TiUP 离线部署 TiDB 集群
-category: how-to
 ---
 
 # 使用 TiUP 离线部署 TiDB 集群
 
 本文介绍如何使用 TiUP 离线部署 TiDB 集群，具体的操作步骤如下。
 
-## 1. 部署在线环境 TiUP 组件
+## 1. 准备 TiUP 离线组件包
 
-使用普通用户登录一台开放外网访问的机器：
+### 方式一：下载官方 TiUP 离线组件包
 
-1. 执行如下命令安装 TiUP 工具：
+在 [官方下载页面](https://pingcap.com/download-cn/) 选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
 
-    {{< copyable "shell-regular" >}}
+### 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包
 
-    ```shell
-    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-    ```
+- 在线环境中安装 TiUP 包管理器工具
 
-2. 重新声明全局环境变量：
+    1. 执行如下命令安装 TiUP 工具：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    source .bash_profile
-    ```
+        ```shell
+        curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+        ```
 
-3. 确认 TiUP 工具是否安装：
+    2. 重新声明全局环境变量：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    which tiup
-    ```
+        ```shell
+        source .bash_profile
+        ```
 
-## 2. 使用 TiUP 拉取镜像
+    3. 确认 TiUP 工具是否安装：
 
-以 tidb 用户在隔离的环境中安装一个 v4.0.0 的 TiDB 集群为例，可以执行以下步骤：
+        {{< copyable "shell-regular" >}}
 
-1. 在一台和外网相通的机器上拉取需要的组件：
+        ```shell
+        which tiup
+        ```
 
-    {{< copyable "shell-regular" >}}
+- 使用 TiUP 制作离线镜像
 
-    ```bash
-    tiup mirrors package --os=linux v4.0.0
-    ```
+    1. 在一台和外网相通的机器上拉取需要的组件：
 
-    该命令会在当前目录下创建一个名叫 `package` 的目录，里面有启动一个集群必要的组件包。
+        {{< copyable "shell-regular" >}}
 
-2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
+        ```bash
+        tiup mirror clone tidb-community-server-${version}-linux-amd64 ${version} --os=linux --arch=amd64
+        ```
 
-    {{< copyable "shell-regular" >}}
+        该命令会在当前目录下创建一个名叫 `tidb-community-server-${version}-linux-amd64` 的目录，里面包含 TiUP 管理的组件包。
 
-    ```bash
-    tar czvf package.tar.gz package
-    ```
+    2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
 
-    此时，`package.tar.gz` 就是一个独立的离线环境包。
+        {{< copyable "shell-regular" >}}
 
-## 3. 部署离线环境 TiUP 组件
+        ```bash
+        tar czvf tidb-community-server-${version}-linux-amd64.tar.gz tidb-community-server-${version}-linux-amd64
+        ```
 
-1. 将包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
+        此时，`tidb-community-server-${version}-linux-amd64.tar.gz` 就是一个独立的离线环境包。
 
-    {{< copyable "shell-regular" >}}
+## 2. 部署离线环境 TiUP 组件
 
-    ```bash
-    tar xzvf package.tar.gz &&
-    cd package &&
-    sh local_install.sh &&
-    source /home/tidb/.bash_profile
-    ```
+将离线包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
 
-## 4. TiKV 数据盘挂载
+{{< copyable "shell-regular" >}}
+
+```bash
+tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz &&
+sh tidb-community-server-${version}-linux-amd64/local_install.sh
+source /home/tidb/.bash_profile
+```
+
+## 3. TiKV 数据盘挂载
 
 > **注意：**
 >
@@ -172,9 +174,9 @@ category: how-to
     /dev/nvme0n1p1 on /data1 type ext4 (rw,noatime,nodelalloc,data=ordered)
     ```
 
-## 5. 配置初始化参数文件 `topology.yaml`
+## 4. 配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
 
 {{< copyable "shell-regular" >}}
 
@@ -222,9 +224,9 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-## 6. 部署 TiDB 集群
+## 5. 部署 TiDB 集群
 
-`/path/to/mirror` 是 `tiup mirrors <target-dir>` 中输出的 package 所在离线机器的位置:
+`/path/to/mirror` 是执行 `local_install.sh` 命令时输出的离线镜像包的位置:
 
 {{< copyable "shell-regular" >}}
 
@@ -245,3 +247,7 @@ tiup cluster start tidb-test
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
 部署完成后，集群相关操作可参考 [cluster 命令](/tiup/tiup-cluster.md)。
+
+> **注意：**
+>
+> TiDB 和 TiUP 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。

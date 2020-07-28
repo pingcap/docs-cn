@@ -1,6 +1,5 @@
 ---
 title: TiUP 简介
-category: tools
 aliases: ['/docs-cn/dev/reference/tools/tiup/overview/']
 ---
 
@@ -31,6 +30,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 ```bash
 tiup --version
 ```
+
+> **注意：**
+>
+> TiUP 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
 
 ## TiUP 生态介绍
 
@@ -64,16 +67,11 @@ Available Commands:
   update      Update tiup components to the latest version
   status      List the status of instantiated components
   clean       Clean the data of instantiated components
+  mirror      Manage a repository mirror for TiUP components
   help        Help about any command or component
 
-Available Components:
-  playground          Bootstrap a local TiDB cluster
-  client              A simple mysql client to connect TiDB
-  package             A toolbox to package tiup component
-  cluster             Deploy a TiDB cluster for production
-  mirrors             Build a local mirrors and download all selected components
-  bench               Benchmark database with different workloads
-  doc                 Online document for TiDB
+Components Manifest:
+  use "tiup list" to fetch the latest components manifest
 
 Flags:
   -B, --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
@@ -82,7 +80,7 @@ Flags:
   -h, --help                           help for tiup
       --skip-version-check             Skip the strict version check, by default a version must be a valid SemVer string
   -T, --tag string                     Specify a tag for component instance
-      --version                        version for tiup
+  -v, --version                        version for tiup
 
 Component instances with the same "tag" will share a data directory ($TIUP_HOME/data/$tag):
   $ tiup --tag mycluster playground
@@ -111,13 +109,12 @@ Use "tiup [command] --help" for more information about a command.
     - update：更新组件版本
     - status：查看组件运行记录
     - clean：清除组件运行记录
+    - mirror：从官方镜像克隆一个私有镜像
     - help：输出帮助信息
 - 可用的组件
     - playground：在本机启动集群
     - client：连接本机的集群
-    - mirrors：从官方镜像克隆一个私有镜像
     - cluster：部署用于生产环境的集群
-    - package：打包一个新的 TiUP 组件
     - bench：对数据库进行压力测试
     - doc：打开在线文档
 

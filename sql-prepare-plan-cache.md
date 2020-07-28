@@ -1,6 +1,5 @@
 ---
 title: 执行计划缓存
-category: performance
 ---
 
 # 执行计划缓存

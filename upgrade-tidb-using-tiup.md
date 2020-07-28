@@ -1,18 +1,17 @@
 ---
 title: 使用 TiUP 升级 TiDB
-category: how-to
 aliases: ['/docs-cn/dev/how-to/upgrade/using-tiup/']
 ---
 
 # 使用 TiUP 升级 TiDB
 
-本文档适用于使用 TiUP 从 TiDB 3.0 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
+本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
 
 如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
 
 ## 1. 升级兼容性说明
 
-- 不支持在升级后回退至 3.0 版本。
+- 不支持在升级后回退至 3.0 或更旧版本。
 - 3.0 之前的版本，需要先通过 TiDB Ansible 升级到 3.0 版本，然后按照本文档的说明，使用 TiUP 将 TiDB Ansible 配置导入，再升级到 4.0 版本。
 - TiDB Ansible 配置导入到 TiUP 中管理后，不能再通过 TiDB Ansible 对集群进行操作，否则可能因元信息不一致造成冲突。
 - 对于满足以下情况之一的 TiDB Ansible 部署的集群，暂不支持导入：
@@ -24,6 +23,14 @@ aliases: ['/docs-cn/dev/how-to/upgrade/using-tiup/']
     - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）
     - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
+- 从 2.0.6 之前的版本升级到 4.0 版本之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
+- 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 4.0 版本，可以选择下面两种方案：
+    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本
+    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本
+
+> **注意：**
+>
+> 在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
 
 ## 2. 在中控机器上安装 TiUP
 
@@ -132,7 +139,7 @@ tiup update cluster
     tiup cluster edit-config <cluster-name>
     ```
 
-3. 参考 [topology](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
+3. 参考 [topology](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
 
 修改完成后 `wq` 保存并退出编辑模式，输入 `Y` 确认变更。
 
@@ -182,13 +189,17 @@ TiDB Cluster: <cluster-name>
 TiDB Version: v4.0.0
 ```
 
+> **注意：**
+>
+> TiUP 及 TiDB（v4.0.2 起）默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+
 ## 5. 升级 FAQ
 
 本部分介绍使用 TiUP 升级 TiDB 集群遇到的常见问题。
 
 ### 5.1 升级时报错中断，处理完报错后，如何继续升级
 
-重新执行 `upgrade` 命令进行升级。升级操作会重启之前已经升级完成的节点，后续版本支持从中断的位置继续升级。
+重新执行 `tiup cluster upgrade` 命令进行升级，升级操作会重启之前已经升级完成的节点。TiDB 4.0 后续版本将支持从中断的位置继续升级。
 
 ### 5.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
@@ -218,7 +229,7 @@ TiFlash 在 `v4.0.0-rc.2` 之前的版本可能有一些不兼容的问题。因
 
 - `oom-action` 参数设置为 `cancel` 时，当查询语句触发 OOM 阈值后会被 kill 掉，升级到 4.0 版本后除了 `select` 语句，还可能 kill 掉 `insert`/`update`/`delete` 等 DML 语句。
 - 4.0 版本增加了 `rename` 时对表名长度的检查，长度限制为 `64` 个字符。升级后 `rename` 后的表名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
-- 4.0 版本增加了对分区表的分区名长度的检查，长度限制为 `64` 个字符。升级后 `create table` 和 `alter table` 分区表时当分区名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
+- 4.0 版本增加了对分区表的分区名长度的检查，长度限制为 `64` 个字符。升级后，当你创建和修改分区表时，如果分区名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
 - 4.0 版本对 `explain` 执行计划的输出格式做了改进，需要注意是否有针对 `explain` 制订了自动化的分析程序。
 - 4.0 版本支持 [Read Committed 隔离级别](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。升级到 4.0 后，在悲观事务里隔离级别设置为 `READ-COMMITTED` 会生效，3.0 及之前的版本则不会生效。
 - 4.0 版本执行 `alter reorganize partition` 会报错，之前的版本则不会报错，只是语法上支持没有实际效果。

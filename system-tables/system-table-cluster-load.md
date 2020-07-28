@@ -1,7 +1,6 @@
 ---
 title: CLUSTER_LOAD
 summary: 了解 TiDB 集群负载表 `CLUSTER_LOAD`。
-category: reference
 aliases: ['/docs-cn/dev/reference/system-databases/cluster-load/']
 ---
 
@@ -15,7 +14,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-load/']
 desc information_schema.cluster_load;
 ```
 
-```
+```sql
 +-------------+--------------+------+------+---------+-------+
 | Field       | Type         | Null | Key  | Default | Extra |
 +-------------+--------------+------+------+---------+-------+
@@ -49,7 +48,7 @@ desc information_schema.cluster_load;
 select * from information_schema.cluster_load where device_type='cpu' and device_name='cpu';
 ```
 
-```
+```sql
 +------+-----------------+-------------+-------------+--------+-------+
 | TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME   | VALUE |
 +------+-----------------+-------------+-------------+--------+-------+

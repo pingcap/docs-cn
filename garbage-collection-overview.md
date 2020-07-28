@@ -1,6 +1,5 @@
 ---
 title: GC 机制简介
-category: reference
 aliases: ['/docs-cn/dev/reference/garbage-collection/overview/']
 ---
 
