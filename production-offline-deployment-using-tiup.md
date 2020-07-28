@@ -252,7 +252,7 @@ tiup cluster start tidb-test
 > - The deployment version is `v4.0.0`. To obtain other supported versions, run `tiup list tidb`.
 > - The initialization configuration file is `topology.yaml`.
 > - `–user tidb`: log in to the target machine using the `tidb` user account to complete the cluster deployment. The `tidb` user needs to have `ssh` and `sudo` privileges of the target machine. You can use other users with `ssh` and `sudo` privileges to complete the deployment.
-> - `[-i]` and `[-p]`: optional. If you have configured login to the target machine without password, these parameters are not required. If not, choose one of the two parameters. `[-i]` is the private key of the `root` user (or other users specified by `-user`) that has access to the deployment machine. `[-p]` is used to input the user password interactively.
+> - `[-i]` and `[-p]`: optional. If you have configured login to the target machine without password, these parameters are not required. If not, choose one of the two parameters. `[-i]` is the private key of the `root` user (or other users specified by `-user`) that has access to the target machine. `[-p]` is used to input the user password interactively.
 
 If you see the ``Deployed cluster `tidb-test` successfully`` output at the end of the log, the deployment is successful.
 
