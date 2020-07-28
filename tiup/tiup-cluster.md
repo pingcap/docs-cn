@@ -601,7 +601,7 @@ tiup cluster check <cluster-name> --cluster
 
 所有涉及集群操作的步骤都可以加上 `--native-ssh` 来使用系统自带的客户端。
 
-如果觉得这样每个命令都加 `--native-ssh` 太冗余，我们可以使用环境变量来指定:
+也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--native-ssh` 参数：
 
 ```sh
 export TIUP_NATIVE_SSH=true
