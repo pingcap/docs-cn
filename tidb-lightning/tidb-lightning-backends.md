@@ -1,15 +1,14 @@
 ---
 title: TiDB Lightning Backends
-summary: 了解 TiDB 不同导入模式
-aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/backends/','/zh/tidb/dev/tidb-lightning-tidb-backend']
+summary: 了解 TiDB 不同导入模式。
+aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend']
 ---
 
 # Lightning Backends Overview
 
 TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持 Importer-backend（默认）、Local-backend 和 TiDB-backend 三种后端，它们导入数据的区别如下：
 
-* **Local-backend**: `tidb-lightning` 先将数据编码成键值对并排序存储在本地临时目录，
-然后批量将这些键值对写到各个 TiKV 节点，然后由 TiKV 将它们 Ingest 到集群中。和 `Importer-backend` 原理相同，不过不依赖额外的 `tikv-importer` 组件。
+* **Local-backend**: `tidb-lightning` 先将数据编码成键值对并排序存储在本地临时目录，然后批量将这些键值对写到各个 TiKV 节点，然后由 TiKV 将它们 Ingest 到集群中。和 `Importer-backend` 原理相同，不过不依赖额外的 `tikv-importer` 组件。
 
 * **Importer-backend**：`tidb-lightning` 先将 SQL 或 CSV 数据编码成键值对，由 `tikv-importer` 对写入的键值对进行排序，然后把这些键值对 Ingest 到 TiKV 节点中。
 
@@ -22,7 +21,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 | 占用网络带宽 | 高 | 中  | 低 |
 | 导入时是否满足 ACID | 否 | 否 | 是 |
 | 目标表 | 必须为空 | 必须为空 | 可以不为空 |
-| 额外组件 | 无 | TiKV Importer | 无 |
+| 额外组件 | 无 | `tikv-importer` | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
 
 # 如何选择使用的 Backend
@@ -31,24 +30,24 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 - 如果目标集群为 v3.x 或以下，则建议使用 Importer-backend 模式
 - 如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则最好使用 TiDB-backend 模式
 
-# TiDB Lightning Local-Backend
+## TiDB Lightning Local-backend
 
-NOTE: Local-backend 特性在 TiDB v4.0.3 发布，你需要使用 v4.0.3及以上的 tidb-lightning 才包含此特性。另外 Local-backend 只支持 v4.0.0 以上的集群
+Local-backend 特性在 TiDB v4.0.3 发布，v4.0.3 及以上的 TiDB Lightning 才包含此特性。另外 Local-backend 只支持 v4.0.0 以上的集群。
 
-## 部署 Local-backend
+### 部署 Local-backend
 
-见 [TiDB Lightning 部署与执行](/tidb-lightning/deploy-tidb-lightning.md)
+Local-backend 的部署方法见 [TiDB Lightning 部署与执行](/tidb-lightning/deploy-tidb-lightning.md)。
 
-# TiDB Lightning TiDB-Backend
+## TiDB Lightning TiDB-backend
 
-## 部署 TiDB-backend
+### 部署 TiDB-backend
 
 使用 TiDB-backend 时，你无需部署 `tikv-importer`。与[标准部署过程](/tidb-lightning/deploy-tidb-lightning.md)相比，部署 TiDB-backend 时有如下不同：
 
 * 可以跳过所有涉及 `tikv-importer` 的步骤。
 * 必须更改相应配置申明使用的是 TiDB-backend。
 
-### 硬件需求
+#### 硬件需求
 
 使用 TiDB-backend 时， TiDB Lightning 的速度仅受限于 TiDB 执行 SQL 语句的速度。因此，即使是低配的机器也足够发挥出最佳性能。推荐的硬件配置如下：
 
@@ -56,7 +55,7 @@ NOTE: Local-backend 特性在 TiDB v4.0.3 发布，你需要使用 v4.0.3及以�
 * 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
 * 千兆网卡
 
-### 使用 TiDB Ansible 部署
+#### 使用 TiDB Ansible 部署
 
 1. `inventory.ini` 文件中，`[importer_server]` 部分可以留空。
 
@@ -87,7 +86,7 @@ NOTE: Local-backend 特性在 TiDB v4.0.3 发布，你需要使用 v4.0.3及以�
 
 5. 启动 `tidb-lightning`。
 
-### 手动部署
+#### 手动部署
 
 手动部署时，你无需下载和配置 `tikv-importer`，TiDB Lightning 可[在此下载](/download-ecosystem-tools.md#tidb-lightning)。
 
@@ -100,7 +99,7 @@ backend = "tidb"
 
 或者在用命令行启动 `tidb-lightning` 时，传入参数 `--backend tidb`。
 
-## 冲突解决
+### 冲突解决
 
 TiDB-backend 支持导入到已填充的表（非空表）。但是，新数据可能会与旧数据的唯一键冲突。你可以通过使用如下任务配置来控制遇到冲突时的默认行为：
 
@@ -116,7 +115,7 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 | ignore | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
 | error | 中止导入 | `INSERT INTO ...` |
 
-## 从 Loader 迁移到 TiDB Lightning TiDB-backend
+### 从 Loader 迁移到 TiDB Lightning TiDB-backend
 
 TiDB Lightning TiDB-backend 可以完全取代 [Loader](/loader-overview.md)。下表说明了如何将 [Loader](/loader-overview.md) 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
@@ -252,7 +251,7 @@ password = ""
 </tbody>
 </table>
 
-# TiDB Lightning Importer-Backend
+## TiDB Lightning Importer-backend
 
 ## 部署 Importer-backend
 
@@ -274,7 +273,7 @@ password = ""
     - 32+ 逻辑核 CPU
     - 40 GB+ 内存
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
-        * 硬盘必须大于最大的 N 个表的大小总和，其中 N = max(index-concurrency, table-concurrency)。
+        * 硬盘必须大于最大的 N 个表的大小总和，其中 `N` = `max(index-concurrency, table-concurrency)`。
     - 使用万兆网卡，带宽需 300 MB/s 以上
     - 运行过程中 CPU、I/O 和网络带宽都可能占满，建议单独部署。
 
