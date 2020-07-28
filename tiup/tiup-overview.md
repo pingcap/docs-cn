@@ -1,6 +1,5 @@
 ---
 title: TiUP 简介
-category: tools
 aliases: ['/docs-cn/dev/reference/tools/tiup/overview/']
 ---
 
@@ -31,6 +30,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 ```bash
 tiup --version
 ```
+
+> **注意：**
+>
+> TiUP 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
 
 ## TiUP 生态介绍
 

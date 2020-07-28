@@ -1,6 +1,5 @@
 ---
 title: TiDB 集群监控 API
-category: how-to
 ---
 
 # TiDB 集群监控 API

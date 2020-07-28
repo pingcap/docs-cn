@@ -1,6 +1,5 @@
 ---
 title: 访问 TiDB Dashboard
-category: how-to
 ---
 
 # 访问 TiDB Dashboard

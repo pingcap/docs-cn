@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
-category: tools
 aliases: ['/docs-cn/dev/reference/tools/tiup/cluster/']
 ---
 
@@ -18,8 +17,8 @@ tiup cluster
 
 ```
 The component `cluster` is not installed; downloading from repository.
-download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s                                                   
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster 
+download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s
+Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -69,7 +68,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 ```yaml
 ---
-  
+
 pd_servers:
   - host: 172.16.5.134
     name: pd-134
@@ -178,9 +177,9 @@ TiDB Version: v3.0.12
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
 --                  ----        ----          -----        ------     --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
-172.16.5.134:2379   pd          172.16.5.134  2379/2380    Healthy|L  data/pd-2379          deploy/pd-2379
-172.16.5.139:2379   pd          172.16.5.139  2379/2380    Healthy    data/pd-2379          deploy/pd-2379
-172.16.5.140:2379   pd          172.16.5.140  2379/2380    Healthy    data/pd-2379          deploy/pd-2379
+172.16.5.134:2379   pd          172.16.5.134  2379/2380    Up|L       data/pd-2379          deploy/pd-2379
+172.16.5.139:2379   pd          172.16.5.139  2379/2380    Up|UI      data/pd-2379          deploy/pd-2379
+172.16.5.140:2379   pd          172.16.5.140  2379/2380    Up         data/pd-2379          deploy/pd-2379
 172.16.5.134:9090   prometheus  172.16.5.134  9090         Up         data/prometheus-9090  deploy/prometheus-9090
 172.16.5.134:4000   tidb        172.16.5.134  4000/10080   Up         -                     deploy/tidb-4000
 172.16.5.139:4000   tidb        172.16.5.139  4000/10080   Up         -                     deploy/tidb-4000
@@ -190,7 +189,7 @@ ID                  Role        Host          Ports        Status     Data Dir  
 172.16.5.140:20160  tikv        172.16.5.140  20160/20180  Up         data/tikv-20160       deploy/tikv-20160
 ```
 
-对于普通的组件，Status 列会显示 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件，Status 会显示 `Healthy` 或者 `Down`，同时可能会带有 |L 表示该 PD 是 Leader。
+Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件，同时可能会带有 `|L` 表示该 PD 是 Leader，`|UI` 表示该 PD 运行着 [TiDB Dashboard](/dashboard/dashboard-intro.md)。
 
 ## 缩容节点
 
@@ -243,9 +242,9 @@ TiDB Version: v3.0.12
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
 --                  ----        ----          -----        ------     --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
-172.16.5.134:2379   pd          172.16.5.134  2379/2380    Healthy|L  data/pd-2379          deploy/pd-2379
-172.16.5.139:2379   pd          172.16.5.139  2379/2380    Healthy    data/pd-2379          deploy/pd-2379
-172.16.5.140:2379   pd          172.16.5.140  2379/2380    Healthy    data/pd-2379          deploy/pd-2379
+172.16.5.134:2379   pd          172.16.5.134  2379/2380    Up|L       data/pd-2379          deploy/pd-2379
+172.16.5.139:2379   pd          172.16.5.139  2379/2380    Up|UI      data/pd-2379          deploy/pd-2379
+172.16.5.140:2379   pd          172.16.5.140  2379/2380    Up         data/pd-2379          deploy/pd-2379
 172.16.5.134:9090   prometheus  172.16.5.134  9090         Up         data/prometheus-9090  deploy/prometheus-9090
 172.16.5.134:4000   tidb        172.16.5.134  4000/10080   Up         -                     deploy/tidb-4000
 172.16.5.139:4000   tidb        172.16.5.139  4000/10080   Up         -                     deploy/tidb-4000
@@ -277,10 +276,10 @@ ID                  Role        Host          Ports        Status     Data Dir  
     ---
 
     pd_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
 
     tikv_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
     ```
 
 2. 执行扩容操作。TiUP cluster 根据 scale.yaml 文件中声明的端口、目录等信息在集群中添加相应的节点：
@@ -352,7 +351,7 @@ tiup cluster upgrade tidb-test v4.0.0-rc
 tiup cluster edit-config prod-cluster
 ```
 
-然后 TiUP cluster 组件会使用 vi 打开配置文件供编辑，编辑完之后保存即可。此时的配置并没有应用到集群，如果想要让它生效，还需要执行：
+然后 TiUP cluster 组件会使用 vi 打开配置文件供编辑（如果你想要使用其他编辑器，请使用 `EDITOR` 环境变量自定义编辑器，例如 `export EDITOR=nano`），编辑完之后保存即可。此时的配置并没有应用到集群，如果想要让它生效，还需要执行：
 
 {{< copyable "shell-regular" >}}
 
@@ -543,3 +542,43 @@ etcdctl [args] = tiup ctl etcd [args]
 ```bash
 tiup ctl pd -u http://127.0.0.1:2379 store
 ```
+
+## 部署机环境检查
+
+使用 `check` 子命令可以对部署机的环境进行一系列检查，并输出检查结果。通过执行 `check` 子命令，可以发现常见的不合理配置或不支持情况。命令参数列表如下：
+
+```bash
+Usage:
+  tiup cluster check <topology.yml | cluster-name> [flags]
+
+Flags:
+      --apply                  Try to fix failed checks
+      --cluster                Check existing cluster, the input is a cluster name.
+      --enable-cpu             Enable CPU thread count check
+      --enable-disk            Enable disk IO (fio) check
+      --enable-mem             Enable memory size check
+  -h, --help                   help for check
+  -i, --identity_file string   The path of the SSH identity file. If specified, public key authentication will be used.
+  -p, --password               Use password of target hosts. If specified, password authentication will be used.
+      --user string            The user name to login via SSH. The user must has root (or sudo) privilege.
+```
+
+默认情况下，此功能用于在部署前进行环境检查，通过指定 `--cluster` 参数切换模式，也可以用于对已部署集群的部署机进行检查，例如：
+
+```bash
+# check deploy servers before deploy
+tiup cluster check topology.yml --user tidb -p
+
+# check deploy servers of an existing cluster
+tiup cluster check <cluster-name> --cluster
+```
+
+其中，CPU 线程数检查、内存大小检查和磁盘性能检查三项默认关闭，对于生产环境，建议将此三项检测开启并确保通过，以获得最佳性能。
+
+- CPU：线程数大于等于 16 为通过检查
+- 内存：物理内存总大小大于等于 32 GB 为通过检查
+- 磁盘：对 `data_dir` 所在分区执行 `fio` 测试并记录结果
+
+在运行检测时，若指定了 `--apply` 参数，程序将尝试对其中未通过的项目自动修复。自动修复仅限于部分可通过修改配置或系统参数调整的项目，其它未修复的项目需要根据实际情况手工处理。
+
+环境检查不是部署集群的必需流程。对于生产环境建议在部署前执行环境检查并通过所有检测项。如果未通过全部检查项，也可能正常部署和运行集群，但可能无法获得最佳性能表现。

@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 流量可视化页面
-category: how-to
 aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visualizer-monitoring-tool/']
 ---
 
