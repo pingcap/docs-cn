@@ -84,11 +84,7 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
-select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
-=======
-SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
->>>>>>> aea245c... Align updates from en to optimizer-hints.md (#4070)
+SELECT /*+ SM_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 ```
 
 > **注意：**
@@ -193,56 +189,6 @@ SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHERE t1.a = t2.a;
 ```
 
-<<<<<<< HEAD
-=======
-### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
-
-`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10 OR t1.b > 10;
-```
-
-当对同一张表有多个 `USE_INDEX_MERGE` Hint 时，优化器会从这些 Hint 指定的索引列表的并集中尝试选取索引。
-
-> **注意：**
->
-> `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
-
-目前该 Hint 生效的条件较为苛刻，包括：
-
-- 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
-- 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
-
-## 查询范围生效的 Hint
-
-这类 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，等同于在当前这条查询运行时对指定的系统变量进行修改，其优先级高于现有系统变量的值。
-
-> **注意：**
->
-> 这类 Hint 虽然也有隐藏的可选变量 `@QB_NAME`，但就算指定了该值，Hint 还是会在整个查询范围生效。
-
-### NO_INDEX_MERGE()
-
-`NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
-
-下面的例子不会使用 index merge：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT /*+ NO_INDEX_MERGE() */ * FROM t WHERE t.a > 0 or t.b > 0;
-```
-
-除了 Hint 外，系统变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
-
-> **注意：**
->
-> `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
-
->>>>>>> aea245c... Align updates from en to optimizer-hints.md (#4070)
 ### USE_TOJA(boolean_value)
 
 参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
@@ -298,20 +244,3 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
-<<<<<<< HEAD
-=======
-
-### IGNORE_PLAN_CACHE()
-
-`IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
-
-该 Hint 用于在 [prepare-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
-
-以下示例强制该 `prepare` 语句不使用 plan cache：
-
-{{< copyable "sql" >}}
-
-```sql
-prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
-```
->>>>>>> aea245c... Align updates from en to optimizer-hints.md (#4070)
