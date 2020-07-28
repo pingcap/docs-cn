@@ -332,7 +332,7 @@ mysql> select @@tidb_slow_log_threshold;
 | tidb_init_chunk_size | 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32 |
 | tidb_isolation_read_engines | 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表 |
 | tidb_low_resolution_tso | 这个变量用来设置是否启用低精度 tso 特性，开启该功能之后新事务会使用一个每 2s 更新的 ts 来读取数据 |
-| tidb_max_chunk_size | 最小值� |
+| tidb_max_chunk_size | 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题 |
 | tidb_max_delta_schema_count | 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持 |
 | tidb_mem_quota_hashjoin | 这个变量用来设置 `HashJoin` 算子的内存使用阈值 |
 | tidb_mem_quota_indexlookupjoin | 这个变量用来设置 `IndexLookupJoin` 算子的内存使用阈值 |
