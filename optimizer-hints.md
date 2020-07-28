@@ -13,15 +13,19 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ## 语法
 
-Optimizer Hints 通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面（`INSERT` 关键字后不支持 Optimizer Hints），常见形式如 `/*+ HINT_NAME([t1_name [, t2_name] ...]) */`。Hint 名称不区分大小写，多个不同的 Hint 之间需用逗号隔开。例如：
+Optimizer Hints 不区分大小写，通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。`INSERT` 关键字后不支持 Optimizer Hints。
+
+多个不同的 Hint 之间需用逗号隔开，例如：
 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ USE_INDEX(t1, idx1), HASH_AGG(), HASH_JOIN(t1) */ count(*) from t t1, t t2 where t1.a = t2.b;
+SELECT /*+ USE_INDEX(t1, idx1), HASH_AGG(), HASH_JOIN(t1) */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 ```
 
-Optimizer Hints 可以和 `Explain` / `Explain Analyze` 组合使用，通过这两个命令查看验证 Optimizer Hints 是否按照预期对查询产生了影响。如果 Optimizer Hints 包含语法错误，或者不适用于当前语句，查询会按照没有 Optimizer Hints 的情况执行，不会对 Optimizer Hints 部分报错，而是会记录 Warning，用户可以在查询结束后通过 `Show Warnings` 命令查看具体信息。
+可以通过 [`Explain`](/sql-statements/sql-statement-explain.md) / [`Explain Analyze`](/sql-statements/sql-statement-explain-analyze.md) 语句的输出，来查看 Optimizer Hints 对查询执行计划的影响。
+
+如果 Optimizer Hints 包含语法错误或不完整，查询语句不会报错，而是按照没有 Optimizer Hints 的情况执行。如果 Hint 不适用于当前语句，TiDB 会返回 Warning，用户可以在查询结束后通过 `Show Warnings` 命令查看具体信息。
 
 > **注意：**
 >
@@ -34,7 +38,7 @@ TiDB 目前支持的 Optimizer Hints 根据生效范围的不同可以划分为�
 {{< copyable "sql" >}}
 
 ```sql
-select * from (select * from t) t1, (select * from t) t2;
+SELECT * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 ```
 
 该查询语句有 3 个查询块，最外面一层 `SELECT` 所在的查询块的名字为 `sel_1`，两个 `SELECT` 子查询的名字依次为 `sel_2` 和 `sel_3`。其中数字序号根据 `SELECT` 出现的位置从左到右计数。如果分别用 `DELETE` 和 `UPDATE` 查询替代第一个 `SELECT` 查询，则对应的查询块名字分别为 `del_1` 和 `upd_1`。
@@ -46,7 +50,7 @@ select * from (select * from t) t1, (select * from t) t2;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1, t t2 where t1.a = t2.a) t1, t t3 where t1.b = t3.b;
+SELECT /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * FROM (SELECT t1.a, t1.b FROM t t1, t t2 WHERE t1.a = t2.a) t1, t t3 WHERE t1.b = t3.b;
 ```
 
 该 Hint 在 `sel_1` 这个查询块中生效，参数分别为 `sel_1` 中的 `t1` 表（`sel_2` 中也有一个 `t1` 表）和 `t3` 表。
@@ -64,7 +68,7 @@ select /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * from (select t1.a, t1.b from t t1
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
+SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 ```
 
 这条 Hint 将最外层 `SELECT` 查询块的命名为 `QB1`，此时 `QB1` 和默认名称 `sel_1` 对于这个查询块来说都是有效的。
@@ -80,7 +84,11 @@ select /*+ QB_NAME(QB1) */ * from (select * from t) t1, (select * from t) t2;
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
+=======
+SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
+>>>>>>> aea245c... Align updates from en to optimizer-hints.md (#4070)
 ```
 
 > **注意：**
@@ -94,10 +102,10 @@ select /*+ SM_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
+SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 ```
 
-`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `select /*+ INL_JOIN(t1) */ * from t t1, t t2 where t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
+`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `SELECT /*+ INL_JOIN(t1) */ * FROM t t1, t t2 WHERE t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
 
 > **注意：**
 >
@@ -110,7 +118,7 @@ select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ HASH_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
+SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 ```
 
 > **注意：**
@@ -124,7 +132,7 @@ select /*+ HASH_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ HASH_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
+SELECT /*+ HASH_AGG() */ count(*) FROM t1，t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
 
 ### STREAM_AGG()
@@ -134,19 +142,19 @@ select /*+ HASH_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ STREAM_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
+SELECT /*+ STREAM_AGG() */ count(*) FROM t1，t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
 
 ### USE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
 `USE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引。
 
-下面例子的效果等价于 `select * from t t1 use index(idx1, idx2);`：
+下面例子的效果等价于 `SELECT * FROM t t1 use index(idx1, idx2);`：
 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ USE_INDEX(t1, idx1, idx2) */ * from t t1;
+SELECT /*+ USE_INDEX(t1, idx1, idx2) */ * FROM t1;
 ```
 
 > **注意：**
@@ -157,12 +165,12 @@ select /*+ USE_INDEX(t1, idx1, idx2) */ * from t t1;
 
 `IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表忽略给出的索引。
 
-下面例子的效果等价于 `select * from t t1 ignore index(idx1, idx2);`：
+下面例子的效果等价于 `SELECT * FROM t t1 ignore index(idx1, idx2);`：
 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ IGNORE_INDEX(t1, idx1, idx2) */ * from t t1;
+SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 ```
 
 ### AGG_TO_COP()
@@ -172,7 +180,7 @@ select /*+ IGNORE_INDEX(t1, idx1, idx2) */ * from t t1;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ AGG_TO_COP() */ sum(t1.a) from t t1;
+SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 ```
 
 ### READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])
@@ -182,19 +190,69 @@ select /*+ AGG_TO_COP() */ sum(t1.a) from t t1;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 where t1.a = t2.a;
+SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHERE t1.a = t2.a;
 ```
 
-### USE_TOJA(boolean_value)
+<<<<<<< HEAD
+=======
+### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
-参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
-
-下面的例子会将 `in (select t2.a from t2) subq` 转换为等价的 join 和 aggregation：
+`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from t2) subq;
+SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10 OR t1.b > 10;
+```
+
+当对同一张表有多个 `USE_INDEX_MERGE` Hint 时，优化器会从这些 Hint 指定的索引列表的并集中尝试选取索引。
+
+> **注意：**
+>
+> `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
+
+目前该 Hint 生效的条件较为苛刻，包括：
+
+- 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
+- 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
+
+## 查询范围生效的 Hint
+
+这类 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，等同于在当前这条查询运行时对指定的系统变量进行修改，其优先级高于现有系统变量的值。
+
+> **注意：**
+>
+> 这类 Hint 虽然也有隐藏的可选变量 `@QB_NAME`，但就算指定了该值，Hint 还是会在整个查询范围生效。
+
+### NO_INDEX_MERGE()
+
+`NO_INDEX_MERGE()` 会关闭优化器的 index merge 功能。
+
+下面的例子不会使用 index merge：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NO_INDEX_MERGE() */ * FROM t WHERE t.a > 0 or t.b > 0;
+```
+
+除了 Hint 外，系统变量 `tidb_enable_index_merge` 也能决定是否开启该功能。
+
+> **注意：**
+>
+> `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
+
+>>>>>>> aea245c... Align updates from en to optimizer-hints.md (#4070)
+### USE_TOJA(boolean_value)
+
+参数 `boolean_value` 可以是 `TRUE` 或者 `FALSE`。`USE_TOJA(TRUE)` 会开启优化器尝试将 in (subquery) 条件转换为 join 和 aggregation 的功能。相对地，`USE_TOJA(FALSE)` 会关闭该功能。
+
+下面的例子会将 `in (SELECT t2.a FROM t2) subq` 转换为等价的 join 和 aggregation：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ USE_TOJA(TRUE) */ t1.a, t1.b FROM t1 WHERE t1.a in (SELECT t2.a FROM t2) subq;
 ```
 
 除了 Hint 外，系统变量 `tidb_opt_insubq_to_join_and_agg` 也能决定是否开启该功能。
@@ -208,7 +266,7 @@ select /*+ USE_TOJA(TRUE) */ t1.a, t1.b from t1 where t1.a in (select t2.a from 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.id;
+SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 inner join t2 WHERE t1.id = t2.id;
 ```
 
 除了 Hint 之外，系统变量 `global.max_execution_time` 也能对语句执行时间进行限制。
@@ -222,7 +280,7 @@ select /*+ MAX_EXECUTION_TIME(1000) */ * from t1 inner join t2 where t1.id = t2.
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
+SELECT /*+ MEMORY_QUOTA(1024 MB) */ * FROM t;
 ```
 
 除了 Hint 外，系统变量 `tidb_mem_quota_query` 也能限制语句执行的内存使用。
@@ -236,7 +294,24 @@ select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ READ_CONSISTENT_REPLICA() */ * from t;
+SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 ```
 
 除了 Hint 外，环境变量 `tidb_replica_read` 设为 `'follower'` 或者 `'leader'` 也能决定是否开启该特性。
+<<<<<<< HEAD
+=======
+
+### IGNORE_PLAN_CACHE()
+
+`IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
+
+该 Hint 用于在 [prepare-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
+
+以下示例强制该 `prepare` 语句不使用 plan cache：
+
+{{< copyable "sql" >}}
+
+```sql
+prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
+```
+>>>>>>> aea245c... Align updates from en to optimizer-hints.md (#4070)
