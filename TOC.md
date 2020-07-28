@@ -437,9 +437,7 @@
     + [tikv-server](/tikv-configuration-file.md)
     + [tiflash-server](/tiflash/tiflash-configuration.md)
     + [pd-server](/pd-configuration-file.md)
-  + 系统变量
-    + [MySQL 系统变量](/system-variables.md)
-    + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
+  + [系统变量](/system-variables.md)
   + 存储引擎
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
@@ -479,6 +477,7 @@
   + [TiDB V4.0 Roadmap](/roadmap.md)
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.3](/releases/release-4.0.3.md)
     - [4.0.2](/releases/release-4.0.2.md)
     - [4.0.1](/releases/release-4.0.1.md)
     - [4.0 GA](/releases/release-4.0-ga.md)
