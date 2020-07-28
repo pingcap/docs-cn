@@ -1,12 +1,12 @@
 ---
-title: TiDB Lightning Backends
+title: TiDB Lightning 后端导入模式
 summary: 了解 TiDB 不同导入模式。
 aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend']
 ---
 
-# Lightning Backends Overview
+# TiDB Lightning 后端导入模式
 
-TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持 Importer-backend（默认）、Local-backend 和 TiDB-backend 三种后端，它们导入数据的区别如下：
+TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持 Importer-backend（默认）、Local-backend 和 TiDB-backend 三种后端，它们导入数据的区别如下：
 
 * **Local-backend**: `tidb-lightning` 先将数据编码成键值对并排序存储在本地临时目录，然后批量将这些键值对写到各个 TiKV 节点，然后由 TiKV 将它们 Ingest 到集群中。和 `Importer-backend` 原理相同，不过不依赖额外的 `tikv-importer` 组件。
 
@@ -24,9 +24,9 @@ TiDB Lightning 的后端决定 `tidb-lightning` 将如何把将数据导入到�
 | 额外组件 | 无 | `tikv-importer` | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
 
-# 如何选择使用的 Backend
+# 如何选择使用的后端模式
 
-- 对于大部分场景，导入的目标集群为 v4.0 以上版本，请优先考虑使用 Local-backend 模式。Local-backend 部署更简单并且性能也较其他两个模式更高
+- 如果导入的目标集群为 v4.0 或以上版本，请优先考虑使用 Local-backend 模式。Local-backend 部署更简单并且性能也较其他两个模式更高
 - 如果目标集群为 v3.x 或以下，则建议使用 Importer-backend 模式
 - 如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则最好使用 TiDB-backend 模式
 
@@ -266,7 +266,7 @@ password = ""
     - 32+ 逻辑核 CPU
     - 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
     - 使用万兆网卡，带宽需 300 MB/s 以上
-    - 运行过程默认会占满 CPU，建议单独部署。条件不允许的情况下可以和其他组件（比如 `tidb-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 使用 CPU 资源。
+    - 运行过程默认会占满 CPU资源，因此建议将 `tidb-lightning` 部署到一台单独的机器上。条件不允许的情况下可以和其他组件（比如 `tidb-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 使用 CPU 资源。
 
 - `tikv-importer`
 
@@ -275,7 +275,7 @@ password = ""
     - 1 TB+ SSD 硬盘，IOPS 越高越好（要求 ≥8000）
         * 硬盘必须大于最大的 N 个表的大小总和，其中 `N` = `max(index-concurrency, table-concurrency)`。
     - 使用万兆网卡，带宽需 300 MB/s 以上
-    - 运行过程中 CPU、I/O 和网络带宽都可能占满，建议单独部署。
+    - 运行过程中 CPU、I/O 和网络带宽资源都可能占满，建议单独部署。
 
 如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后将源数据以表为粒度进行切分，并发导入。
 

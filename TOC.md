@@ -184,7 +184,7 @@
       + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
       + [表库过滤](/table-filter.md)
       + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      + [Different Backends](/tidb-lightning/tidb-lightning-backends.md)
+      + [后端导入模式](/tidb-lightning/tidb-lightning-backends.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     + [故障诊断](/troubleshoot-tidb-lightning.md)
