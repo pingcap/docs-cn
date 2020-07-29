@@ -1,7 +1,6 @@
 ---
 title: 使用 Dumpling 导出或备份 TiDB 数据
 summary: 使用新的导出工具 Dumpling 导出或者备份数据。
-category: how-to
 ---
 
 # 使用 Dumpling 导出或备份 TiDB 数据
@@ -82,7 +81,7 @@ dumpling \
 
 #### 使用 `--filter` 指令筛选数据
 
-Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。table-filter 的语法与 .gitignore 相似，[详细语法参考](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)。
+Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。table-filter 的语法与 .gitignore 相似，详细语法参考[表库过滤](/table-filter.md)。
 
 {{< copyable "shell-regular" >}}
 

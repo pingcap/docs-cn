@@ -1,6 +1,5 @@
 ---
 title: 升级后常见问题
-category: FAQ
 aliases: ['/docs-cn/v3.1/faq/upgrade/']
 ---
 

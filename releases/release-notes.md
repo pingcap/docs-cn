@@ -1,6 +1,5 @@
 ---
 title: TiDB 版本发布历史
-category: release
 aliases: ['/docs-cn/v3.1/releases/rn/']
 ---
 

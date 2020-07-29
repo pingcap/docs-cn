@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 配置参数
 summary: 使用配置文件或命令行配置 TiDB Lightning。
-category: reference
 aliases: ['/docs-cn/v3.1/reference/tools/tidb-lightning/config/']
 ---
 
@@ -125,6 +124,9 @@ no-schema = false
 # 注意：**数据** 文件始终解析为 binary 文件。
 character-set = "auto"
 
+# 只导入与该通配符规则相匹配的表。详情见相应章节。
+filter = ['*.*']
+
 # 配置 CSV 文件的解析方式。
 [mydumper.csv]
 # 字段分隔符，应为单个 ASCII 字符。
@@ -195,10 +197,6 @@ analyze = true
 switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
-
-# 设置表库过滤。详情参见“TiDB Lightning 表库过滤”文档。
-# [black-white-list]
-# ...
 ```
 
 ### TiKV Importer 配置参数
@@ -281,6 +279,7 @@ min-available-ratio = 0.05
 | -V | 输出程序的版本 | |
 | -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
+| -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend *backend* | 选择后端的模式：`importer` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径 | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
