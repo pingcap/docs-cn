@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0 GA Release Notes
-category: Releases
 aliases: ['/docs-cn/dev/releases/3.0-ga/']
 ---
 
@@ -29,7 +28,7 @@ TiDB Ansible 版本：3.0.0
     - 完善  Table Partition 功能：
         - Range Partition
         - Hash Partition
-    - 新增插件系统，官方提供 IP 白名单（**企业版特性**），审记日志（**企业版特性**）等插件
+    - 新增插件系统，官方提供 IP 白名单（**企业版特性**），审计日志（**企业版特性**）等插件
     - 新增 `SQL Plan Management` 功能，通过绑定 SQL 执行计划确保查询的稳定性（**实验特性**）
 + SQL 优化器
     - 优化`NOT EXISTS` 子查询，转化为 Anti Semi Join 提升性能

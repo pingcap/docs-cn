@@ -1,7 +1,6 @@
 ---
 title: SHOW MASTER STATUS
 summary: TiDB 数据库中 SHOW MASTER STATUS 的使用概况。
-category: reference
 ---
 
 # SHOW MASTER STATUS

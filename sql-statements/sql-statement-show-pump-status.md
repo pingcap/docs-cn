@@ -1,7 +1,6 @@
 ---
 title: SHOW PUMP STATUS
 summary: TiDB 数据库中 SHOW PUMP STATUS 的使用概况。
-category: reference
 ---
 
 # SHOW PUMP STATUS
