@@ -31,7 +31,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 ## 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 支持将 [`sql_mode`](/docs-cn/sql-mode.md) 修改为[系统变量](/doc-cn/system-variables.md#sql_mode)，就像 MySQL 中一样。目前，TiDB 不允许在配置文件中修改 sql_mode，但是集群中的所有 TiDB server 会获取到使用 [`SET GLOBAL`](/docs-cn/sql-statements/sql-statement-set-variable.md) 进行的系统变量更改，并且重启后依然有效。
+TiDB 支持将 [`sql_mode`](/sql-mode.md) 修改为[系统变量](/system-variables.md#sql_mode)，就像 MySQL 中一样。目前，TiDB 不允许在配置文件中修改 sql_mode，但是集群中的所有 TiDB server 会获取到使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 进行的系统变量更改，并且重启后依然有效。
 
 ## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
@@ -85,7 +85,7 @@ TiDB 的 `SHOW PROCESSLIST`  与 MySQL 的 `SHOW PROCESSLIST`  显示内容基�
 TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全局](/tidb-configuration-file.md#force-priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
-- LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+- LOW_PRIORITY：该语句为低优\先级语句，TiDB 在执行阶段会降低这条语句的优先级
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
@@ -111,7 +111,7 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 ## 可以使用 hints 控制优化器行为吗？
 
-TiDB 支持多种方法控制默认查询优化器的行为，包括 [Optimizer Hints](/docs-cn/optimizer-hints.md) 和 [SQL 执行管理](/docs-cn/sql-plan-management.md)。基本用法同 MySQL 中一致，并且包含 TiDB 特定扩展名：
+TiDB 支持多种方法控制默认查询优化器的行为，包括 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行管理](/sql-plan-management.md)。基本用法同 MySQL 中一致，并且包含 TiDB 特定扩展名：
 `select column_name from table_name use index（index_name）where where_condition;`
 
 ## 触发 Information schema is changed 错误的原因？
@@ -163,7 +163,7 @@ Count 就是暴力扫表，提高并发度能显著的提升速度，修改并�
 - 提升并发度，默认是 10，可以提升到 50 试试，但是一般提升在 2-4 倍之间。
 - 测试大数据量的 count。
 - 调优 TiKV 配置，可以参考[性能调优](/tune-tikv-memory-performance.md)。
-- 可以参考[下推计算结果缓存](/docs-cn/coprocessor-cache.md)。
+- 可以参考[下推计算结果缓存](/coprocessor-cache.md)。
 
 ### 查看当前 DDL 的进度？
 
