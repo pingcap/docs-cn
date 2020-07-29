@@ -336,7 +336,7 @@ min-available-ratio = 0.05
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend *backend* | 选择后端的模式：`importer` `local` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
-| --log-file *file* | 日志文件路径（默认是 `/tmp` 中的临时文件） | `lightning.log-file` |
+| --log-file *file* | 日志文件路径（默认是 `/tmp` 中的临时文件）| `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
 | --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
@@ -345,7 +345,7 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
-| --no-schema | 忽略 schema 文件，直接从 TiDB 获取 | `mydumper.no-schema` |
+| --no-schema | 先忽略表结构文件，再直接从 TiDB 获取表结构 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *bool* | 导入后统计信息分析 (默认值为 true) | `post-restore.analyze` |
 | --checksum *bool* | 导入后比较校验和 (默认值为 true) | `post-restore.checksum` |
