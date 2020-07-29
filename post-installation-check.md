@@ -1,16 +1,15 @@
 ---
 title: 验证集群运行状态
 summary: 介绍如何验证集群运行状态。
-category: how-to
 ---
 
 # 验证集群运行状态
 
-本文档介绍如何通过 TiDB Dashboard 和 Grafana 检查集群状态，以及登录数据库执行简单 DML、DDL 操作和查询 SQL 语句。
+本文档介绍如何通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana 检查集群状态，以及登录数据库执行简单 DML、DDL 操作和查询 SQL 语句。
 
 ## 通过 TiDB Dashboard 和 Grafana 检查集群状态
 
-本节介绍如何通过 TiDB Dashboard 和 Grafana 检查集群状态。
+本节介绍如何通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana 检查集群状态。
 
 ### 查看 TiDB Dashboard 检查 TiDB 集群状态
 

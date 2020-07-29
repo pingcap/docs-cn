@@ -1,6 +1,5 @@
 ---
 title: TiDB 配置文件描述
-category: reference
 aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
@@ -26,7 +25,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
 + 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
-+ 该值作为系统变量 [`tidb_mem_quota_query`](/tidb-specific-system-variables.md#tidb_mem_quota_query) 的初始值。
++ 该值作为系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的初始值。
 
 ### `oom-use-tmp-storage`
 
@@ -51,7 +50,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **注意：**
 >
-> 该功能目前会对写入过程中的内存进行统计，为实验特性，对于希望依赖该特性取消写入操作的用户，不建议在生产环境中将其配置为 `cancel`。
+> 目前 `oom-action` 为实验功能，会对写入过程中的内存进行统计。如果用户希望根据该特性取消写入操作，不建议在生产环境中将参数值配置为 `cancel`。
 
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
 + 默认值："log"
@@ -64,7 +63,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `lower-case-table-names`
 
-+ 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
++ 这个选项可以设置 TiDB 的系统变量 `lower-case-table-names` 的值。
 + 默认值：2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
 
@@ -140,6 +139,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：byte。
 + 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
 
+### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
+
++ 是否开启 TiDB 遥测功能。
++ 默认值：true
++ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
+
 ## log
 
 日志相关的配置项。
@@ -181,7 +186,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 在慢日志中记录执行计划
 + 默认值：1
-+ 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/tidb-specific-system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
++ 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
 
 ### `expensive-threshold`
 
@@ -347,7 +352,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置优化器是否执行将带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 + 默认值：false
-+ 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
++ 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
 
 ### `nested-loop-join-cache-capacity`
 
@@ -358,6 +363,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ## prepared-plan-cache
 
 prepare 语句的 Plan cache 设置。
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
 
 ### `enabled`
 

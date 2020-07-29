@@ -1,7 +1,6 @@
 ---
 title: CPU 占用过多导致读写延迟增加
 summary: 介绍读写延时增加、抖动时的排查思路，可能的原因和解决方法。
-category: troubleshoot
 ---
 
 # CPU 占用率过高导致读写延迟增加
@@ -62,7 +61,7 @@ category: troubleshoot
 
 * 使用 `/api/v1/regions` 接口时 Region 数量过多可能会导致 PD OOM。已于 v3.0.8 版本修复，见 [https://github.com/pingcap/pd/pull/1986](https://github.com/pingcap/pd/pull/1986)。
 
-* 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，已于 v3.0.6 版本修复，见 [https://github.com/pingcap/pd/pull/1952](https://github.com/pingcap/pd/pull/1952)。详情请参考案例 [case-852](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case852.md)。
+* 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，已于 v3.0.6 版本修复，见 [https://github.com/pingcap/pd/pull/1952](https://github.com/pingcap/pd/pull/1952)。
 
 * PD panic，报 bug。
 
@@ -97,7 +96,7 @@ category: troubleshoot
 TiKV 中存在一些单线程线程，可能会成为瓶颈。
 
 * 单个 TiKV region 过多导致单个 gRPC 线程成为瓶颈（查看 grafana -> TiKV-details -> `Thread CPU/gRPC CPU Per Thread` 监控），v3.x 以上版本可以开启 `hibernate region` 特性来解决，见案例 [case-612](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case612.md)。
-* v3.0 之前版本 raftstore 单线程或者 apply 单线程到达瓶颈（grafana -> TiKV-details -> `Thread CPU/raft store CPU 和 Async apply CPU` 超过 `80%`），可以选择扩容 TiKV（v2.x 版本）实例或者升级到多线程模型的 v3.x 版本，见案例 [case-517](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case517.md)。
+* v3.0 之前版本 raftstore 单线程或者 apply 单线程到达瓶颈（grafana -> TiKV-details -> `Thread CPU/raft store CPU 和 Async apply CPU` 超过 `80%`），可以选择扩容 TiKV（v2.x 版本）实例或者升级到多线程模型的 v3.x 版本。
 
 ### CPU Load 升高
 

@@ -1,6 +1,5 @@
 ---
 title: GC 配置
-category: reference
 aliases: ['/docs-cn/dev/reference/garbage-collection/configuration/']
 ---
 
@@ -74,15 +73,15 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 指定 GC 模式。可选值如下：
 
-- `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
+- `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
 
-- `"central"`：集中 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。
+- `"central"`：集中 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。
 
 ## `tikv_gc_auto_concurrency`
 
 控制是否由 TiDB 自动决定 GC concurrency，即同时进行 GC 的线程数。
 
-当 `tikv_gc_mode` 设为 `"distributed"`，GC concurrency 将应用于 [Resolve Locks](/garbage-collection-overview.md#resolve-locks) 阶段。当 [`tikv_gc_mode`](#tikv_gc_mode) 设为 `"central"` 时，GC concurrency 将应用于 Resolve Locks 以及 [Do GC](/garbage-collection-overview.md#do-gc) 两个阶段。
+当 `tikv_gc_mode` 设为 `"distributed"`，GC concurrency 将应用于 [Resolve Locks](/garbage-collection-overview.md#resolve-locks清理锁) 阶段。当 [`tikv_gc_mode`](#tikv_gc_mode) 设为 `"central"` 时，GC concurrency 将应用于 Resolve Locks 以及 [Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 两个阶段。
 
 - `true`（默认）：自动以 TiKV 节点的个数作为 GC concurrency
 - `false`：使用 [`tikv_gc_concurrency`](#tikv_gc_concurrency) 的值作为 GC 并发数
@@ -94,9 +93,9 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 ## `tikv_gc_scan_lock_mode`
 
-> **注意：**
+> **警告：**
 >
-> 该功能目前为实验特性，不建议在生产环境中使用。
+> Green GC 目前是实验性功能，不建议在生产环境中使用。
 
 设定 GC 的 Resolve Locks 阶段中，扫描锁的方式，即是否开启 Green GC（实验性特性）。Resolve Locks 阶段需要扫描整个集群的锁。在不开启 Green GC 的情况下，TiDB 会以 Region 为单位进行扫描。Green GC 提供了“物理扫描”的功能，即每台 TiKV 节点分别绕过 Raft 层直接扫描数据。该功能可以有效缓解 [Hibernate Region](/tikv-configuration-file.md#raftstorehibernate-regions-实验特性) 功能开启时，GC 唤醒全部 Region 的现象，并一定程度上提升 Resolve Locks 阶段的执行速度。
 
@@ -104,8 +103,6 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - `"physical"`：使用物理扫描的方式，即开启 Green GC。
 
 > **注意：**
->
-> Green GC 目前是实验性功能，不建议在生产环境中使用。
 > 
 > 该项配置是隐藏配置。首次开启需要执行：
 > 
@@ -134,7 +131,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 - 自动并行：使用 TiKV 节点的个数作为线程数，并行地向每个 Region 发送请求。
 - 分布式：无需 TiDB 通过对 TiKV 发送请求的方式来驱动，而是每台 TiKV 自行工作。
 
-另外，如果 Green GC （实验特性）开启（即 [`tikv_gc_scan_lock_mode`](#tikv_gc_scan_lock_mode-实验特性) 配置项设为 `"physical"`），Resolve Lock 的执行将不受上述并行配置的影响。
+另外，如果 Green GC （实验特性）开启（即 [`tikv_gc_scan_lock_mode`](#tikv_gc_scan_lock_mode) 配置项设为 `"physical"`），Resolve Lock 的执行将不受上述并行配置的影响。
 
 ## 流控
 

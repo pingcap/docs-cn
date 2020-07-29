@@ -1,7 +1,6 @@
 ---
 title: Backup & Restore 常见问题
 summary: BR 相关的常见问题以及解决方法。
-category: FAQ
 ---
  
 # Backup & Restore 常见问题
@@ -24,7 +23,7 @@ category: FAQ
  
 ## BR 会备份系统表吗？在数据恢复的时候，这些系统表会冲突吗？
  
-全量备份的时候会过滤掉系统库（`information_schema`，`performance_schema`，`mysql`）。参考[备份原理](/br/backup-and-restore-tool.md#备份原理)。
+全量备份的时候会过滤掉系统库（`information_schema`，`performance_schema`，`mysql`）。参考[备份原理](/br/backup-and-restore-tool.md#工作原理)。
 
 因为这些系统库根本不可能存在于备份中，恢复的时候自然不可能发生冲突。
  
