@@ -1,65 +1,87 @@
 ---
 title: Information Schema
-aliases: ['/docs-cn/dev/reference/system-databases/information-schema/']
+aliases: ['/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/system-tables/system-table-information-schema/','/zh/tidb/dev/system-table-information-schema/']]
 ---
 
 # Information Schema
 
-为了和 MySQL 保持兼容，TiDB 支持很多 `INFORMATION_SCHEMA` 表，其中有不少表都支持相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 表也为表的连接操作提供了可能。
+Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。除了包含与 MySQL 兼容的表外，TiDB 还提供了许多自定义的 `INFORMATION_SCHEMA` 表。
 
-## ANALYZE_STATUS 表
+许多 `INFORMATION_SCHEMA` 表都有相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 的好处是可以在表之间进行 `join` 操作。
 
-`ANALYZE_STATUS` 表提供正在执行的收集统计信息的任务以及有限条历史任务记录。
+## 与 MySQL 兼容的表
 
-{{< copyable "sql" >}}
+| 表名                                                                                    | 描述                 |
+|-----------------------------------------------------------------------------------------|-----------------------------|
+| [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)            | 提供 TiDB 支持的字符集列表。 |
+| [`COLLATIONS`](/information-schema/information-schema-collations.md)                    | 提供 TiDB 支持的排序规则列表。 |
+| [`COLLATION_CHARACTER_SET_APPLICABILITY`](/information-schema/information-schema-collation-character-set-applicability.md) | 说明哪些排序规则适用于哪些字符集。 |
+| [`COLUMNS`](/information-schema/information-schema-columns.md)                          | 提供所有表中列的列表。 |
+| `COLUMN_PRIVILEGES`                                                                     | TiDB 未实现，返回零行。 |
+| `COLUMN_STATISTICS`                                                                     | TiDB 未实现，返回零行。 |
+| [`ENGINES`](/information-schema/information-schema-engines.md)                          | 提供支持的存储引擎列表。 |
+| `EVENTS`                                                                                | TiDB 未实现，返回零行。 |
+| `FILES`                                                                                 | TiDB 未实现，返回零行。 |
+| `GLOBAL_STATUS`                                                                         | TiDB 未实现，返回零行。 |
+| `GLOBAL_VARIABLES`                                                                      | TiDB 未实现，返回零行。 |
+| [`KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)        | 描述列的键约束，例如主键约束。|
+| `OPTIMIZER_TRACE`                                                                       | TiDB 未实现，返回零行。 |
+| `PARAMETERS`                                                                            | TiDB 未实现，返回零行。 |
+| [`PARTITIONS`](/information-schema/information-schema-partitions.md)                    | 提供表分区的列表。 |
+| `PLUGINS`                                                                               | TiDB 未实现，返回零行。 |
+| [`PROCESSLIST`](/information-schema/information-schema-processlist.md)                  | 提供与 `SHOW PROCESSLIST` 命令类似的信息。 |
+| `PROFILING`                                                                             | TiDB 未实现，返回零行。 |
+| `REFERENTIAL_CONSTRAINTS`                                                               | TiDB 未实现，返回零行。 |
+| `ROUTINES`                                                                              | TiDB 未实现，返回零行。 |
+| [`SCHEMATA`](/information-schema/information-schema-schemata.md)                        | 提供与 `SHOW DATABASES` 命令类似的信息。 |
+| `SCHEMA_PRIVILEGES`                                                                     | TiDB 未实现，返回零行。 |
+| `SESSION_STATUS`                                                                        | TiDB 未实现，返回零行。 |
+| [`SESSION_VARIABLES`](/information-schema/information-schema-session-variables.md)      | 提供与 `SHOW SESSION VARIABLES` 命令类似的功能。|
+| [`STATISTICS`](/information-schema/information-schema-statistics.md)                    | 提供有关表索引的信息。 |
+| [`TABLES`](/information-schema/information-schema-tables.md)                            | 提供当前用户可见的表的列表。 类似于 `SHOW TABLES`。 |
+| `TABLESPACES`                                                                           | TiDB 未实现，返回零行。 |
+| [`TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)      | 提供有关主键、唯一索引和外键的信息。 |
+| `TABLE_PRIVILEGES`                                                                      | TiDB 未实现，返回零行。 |
+| `TRIGGERS`                                                                              | TiDB 未实现，返回零行。 |
+| [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)          | 汇总与当前用户相关的权限。 |
+| [`VIEWS`](/information-schema/information-schema-views.md)                              | 提供当前用户可见的视图列表。类似于 `SHOW FULL TABLES WHERE table_type = 'VIEW'`。 |
 
-```sql
-select * from `ANALYZE_STATUS`;
-```
+## TiDB 中的扩展表
 
-```sql
-+--------------+------------+----------------+-------------------+----------------+---------------------+----------+
-| TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO          | PROCESSED_ROWS | START_TIME          | STATE    |
-+--------------+------------+----------------+-------------------+----------------+---------------------+----------+
-| test         | t          |                | analyze index idx | 2              | 2019-06-21 19:51:14 | finished |
-| test         | t          |                | analyze columns   | 2              | 2019-06-21 19:51:14 | finished |
-| test         | t1         | p0             | analyze columns   | 0              | 2019-06-21 19:51:15 | finished |
-| test         | t1         | p3             | analyze columns   | 0              | 2019-06-21 19:51:15 | finished |
-| test         | t1         | p1             | analyze columns   | 0              | 2019-06-21 19:51:15 | finished |
-| test         | t1         | p2             | analyze columns   | 1              | 2019-06-21 19:51:15 | finished |
-+--------------+------------+----------------+-------------------+----------------+---------------------+----------+
-6 rows in set
-```
+| 表名                                                                                    | 描述 |
+|-----------------------------------------------------------------------------------------|-------------|
+| [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)            | 提供有关收集统计信息的任务的信息。 |
+| [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)            | 提供有关整个 TiDB 集群的配置设置的详细信息。 |
+| [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-info.md)            | 提供在每个 TiDB 组件上发现的底层物理硬件的详细信息。 |
+| [`CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md)                | 提供当前集群拓扑的详细信息。 |
+| [`CLUSTER_LOAD`](/information-schema/information-schema-cluster-load.md)                | 提供集群中 TiDB 服务器的当前负载信息。 |
+| [`CLUSTER_LOG`](/information-schema/information-schema-cluster-log.md)                  | 提供整个 TiDB 集群的日志。 |
+| `CLUSTER_PROCESSLIST`                                                                   | 提供 `PROCESSLIST` 表的集群级别的视图。 |
+| `CLUSTER_SLOW_QUERY`                                                                    | 提供 `SLOW_QUERY` 表的集群级别的视图。 |
+| `CLUSTER_STATEMENTS_SUMMARY`                                                            | 提供 `STATEMENTS_SUMMARY` 表的集群级别的视图。 |
+| `CLUSTER_STATEMENTS_SUMMARY_HISTORY`                                                    | 提供 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 表的集群级别的视图。 |
+| [`CLUSTER_SYSTEMINFO`](/information-schema/information-schema-cluster-systeminfo.md)    | 提供集群中服务器的内核参数配置的详细信息。 |
+| [`DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)                        | 提供与 `ADMIN SHOW DDL JOBS` 类似的输出。 |
+| [`INSPECTION_RESULT`](/information-schema/information-schema-inspection-result.md)      | 触发内部诊断检查。 |
+| [`INSPECTION_RULES`](/information-schema/information-schema-inspection-rules.md)        | 进行的内部诊断检查的列表。 |
+| [`INSPECTION_SUMMARY`](/information-schema/information-schema-inspection-summary.md)    | 重要监视指标的摘要报告。 |
+| [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)          | 从 Prometheus 获取的指标的摘要。 |
+| `METRICS_SUMMARY_BY_LABEL`                                                              | 参见 `METRICS_SUMMARY` 表。 |
+| [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)            | 为 `METRICS_SCHEMA` 中的表提供 PromQL 定义。 |
+| [`SEQUENCES`](/information-schema/information-schema-sequences.md)                      | 描述了基于 MariaDB 实现的 TiDB 序列。 |
+| [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md)                    | 提供当前 TiDB 服务器上慢查询的信息。 |
+| [`STATEMENTS_SUMMARY`](/statement-summary-tables.md)                                    | 类似于 MySQL 中的 performance_schema 语句摘要。 |
+| [`STATEMENTS_SUMMARY_HISTORY`](/statement-summary-tables.md)                            | 类似于 MySQL 中的 performance_schema 语句摘要历史。 |
+| [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md)  | 提供存储的表的大小的详细信息。 |
+| [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)        | 提供有关哪些 Region 访问次数最多的统计信息。|
+| [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)                | 提供有关 TiDB 表的索引信息。 |
+| [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)      | 提供 TiDB 服务器的列表 |
+| [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)          | 提供有关 TiFlash 副本的详细信息。 |
+| [`TIKV_REGION_PEERS`](/information-schema/information-schema-tikv-region-peers.md)      | 提供 Region 存储位置的详细信息。 |
+| [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)    | 提供 Region 的统计信息。 |
+| [`TIKV_STORE_STATUS`](/information-schema/information-schema-tikv-store-status.md)      | 提供 TiKV 服务器的基本信息。 |
 
-## CHARACTER_SETS 表
 
-`CHARACTER_SETS` 表提供[字符集](/character-set-and-collation.md)相关的信息。TiDB 目前仅支持部分字符集。
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM character_sets;
-```
-
-```sql
-+--------------------+----------------------+---------------+--------+
-| CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION   | MAXLEN |
-+--------------------+----------------------+---------------+--------+
-| utf8               | utf8_bin             | UTF-8 Unicode |      3 |
-| utf8mb4            | utf8mb4_bin          | UTF-8 Unicode |      4 |
-| ascii              | ascii_bin            | US ASCII      |      1 |
-| latin1             | latin1_bin           | Latin1        |      1 |
-| binary             | binary               | binary        |      1 |
-+--------------------+----------------------+---------------+--------+
-5 rows in set (0.00 sec)
-```
-
-`CHARACTER_SETS` 表中列的含义如下：
-
-* `CHARACTER_SET_NAME`：字符集名称
-* `DEFAULT_COLLATE_NAME`：字符集的默认排序规则名称
-* `DESCRIPTION`：字符集的描述信息
-* `MAXLEN`：该字符集存储一个字符所需要的最大字节数
 
 ## COLLATIONS 表
 
