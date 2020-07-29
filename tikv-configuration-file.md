@@ -822,7 +822,7 @@ rocksdb defaultcf 相关的配置项。
 ### `block-cache-size`
 
 + rocksdb block cache size。
-+ 默认值：机器总内存 / 4
++ 默认值：机器总内存 * 25%
 + 最小值：0
 + 单位：KB|MB|GB
 
