@@ -652,7 +652,7 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_query_log_max_len`
 
-- 作用域：SESSION
+- 作用域：SESSION (INSTANCE)
 - 默认值：4096 (bytes)
 - 最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
 
@@ -744,11 +744,15 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_slow_log_threshold`
 
-- 作用域：SESSION
+- 作用域：SESSION (INSTANCE)
 
 - 默认值：300
 
-- 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300ms。
+- 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300 ms。
+
+> **注意：**
+>
+> 该变量实际作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
 
 示例：
 
@@ -757,6 +761,24 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ```sql
 set tidb_slow_log_threshold = 200;
 ```
+
+### tidb_enable_collect_execution_info
+
+作用域：SESSION (INSTANCE)
+
+默认值：1
+
+这个变量用于控制在记录 slow log 时，是否同时记录各个执行算子的执行信息。
+
+### tidb_log_desensitization
+
+作用域：GLOBAL
+
+默认值：0
+
+这个变量用于控制是否在记录 TiDB 日志和慢日志时，将 SQL 中的用户信息遮蔽。
+
+将该变量设置为 `1` 后，假设执行 SQL 是 `insert into t values (1,2)` ，在日志中记录的 SQL 会是 `insert into t values (?,?)`。
 
 ### `tidb_slow_query_file`
 

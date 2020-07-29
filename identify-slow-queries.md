@@ -110,10 +110,10 @@ Slow Query 基础信息：
 
 ## 相关系统变量
 
-* `tidb_slow_log_threshold`：设置慢日志的阈值。默认值是 300 ms。
-* `tidb_query_log_max_len`：设置慢日志记录 SQL 语句最大长度。默认值是 4096 byte。
-* `tidb_log_desensitization`：设置慢日志记录 SQL 是否将用户数据遮蔽而用 `?` 代替。默认值是 0 ，即关闭该功能。
-* `tidb_enable_collect_execution_info`：设置是否记录执行计划中各个算子的执行信息，默认值是 1 。该功能对性能的影响约为 3%。开启后查看 `Plan` 示例如下：
+* [tidb_slow_log_threshold](/tidb-specific-system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值。默认值是 300 ms。
+* [tidb_query_log_max_len](/tidb-specific-system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句最大长度。默认值是 4096 byte。
+* [tidb_log_desensitization](/tidb-specific-system-variables.md#tidb_log_desensitization)：设置慢日志记录 SQL 是否将用户数据遮蔽而用 `?` 代替。默认值是 0 ，即关闭该功能。
+* [tidb_enable_collect_execution_info](/tidb-specific-system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的执行信息，默认值是 1 。该功能对性能的影响约为 3%。开启后查看 `Plan` 示例如下：
 
 ```sql
 > select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
@@ -126,6 +126,14 @@ Slow Query 基础信息：
 |       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
 |         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
 +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+在性能测试中可以关闭自动收集算子的执行信息：
+
+{{< copyable "sql" >}}
+
+```sql
+set @@tidb_enable_collect_execution_info=0;
 ```
 
 `Plan` 字段显示的格式和 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或者 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 大致一致。可以查看 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或者 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 文档了解更多关于执行计划的信息。
