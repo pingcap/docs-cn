@@ -39,15 +39,15 @@ aliases: ['/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-o
 
 `-t 32` 表明使用 32 个线程来导出数据。`-F 256m` 是将实际的表切分成一定大小的 chunk，这里的 chunk 大小为 256MB。
 
-从 v4.0.0 版本开始，Dumpling 可以自动延长 GC 时间（Dumpling 需要访问 TiDB 集群的 PD 地址），而 v4.0.0 之前的版本，需要手动调整 GC 时间， 否则 `dumpling` 备份时可能出现以下报错：
+从 v4.0.0 版本开始，Dumpling 可以自动延长 GC 时间（Dumpling 需要访问 TiDB 集群的 PD 地址），而 v4.0.0 之前的版本，需要手动调整 GC 时间，否则 `dumpling` 备份时可能出现以下报错：
 
-```
+```log
 Could not read data from testSchema.testTable: GC life time is shorter than transaction duration, transaction starts at 2019-08-05 21:10:01.451 +0800 CST, GC safe point is 2019-08-05 21:14:53.801 +0800 CST
 ```
 
-手动执行两步命令：
+手动调整 GC 时间的步骤如下：
 
-1. 执行 `dumpling` 命令前，查询 TiDB 集群的 [GC](/garbage-collection-overview.md) 值并使用 MySQL 客户端将其调整为合适的值：
+1. 执行 `dumpling` 命令前，查询 TiDB 集群的 [GC](/garbage-collection-overview.md) 值并在 MySQL 客户端执行下列语句将其调整为合适的值：
 
     {{< copyable "sql" >}}
 
@@ -55,7 +55,7 @@ Could not read data from testSchema.testTable: GC life time is shorter than tran
     SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
-    ```
+    ```sql
     +-----------------------+------------------------------------------------------------------------------------------------+
     | VARIABLE_NAME         | VARIABLE_VALUE                                                                                 |
     +-----------------------+------------------------------------------------------------------------------------------------+
