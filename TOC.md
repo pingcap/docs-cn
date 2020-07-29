@@ -9,8 +9,7 @@
   + [TiDB 简介](/overview.md)
   + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
   + [基本功能](/basic-features.md)
-  + 兼容性
-    + [与 MySQL 的兼容性](/mysql-compatibility.md)
+  + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
 + 快速上手
@@ -475,6 +474,7 @@
   + [TiDB V4.0 Roadmap](/roadmap.md)
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.3](/releases/release-4.0.3.md)
     - [4.0.2](/releases/release-4.0.2.md)
     - [4.0.1](/releases/release-4.0.1.md)
     - [4.0 GA](/releases/release-4.0-ga.md)

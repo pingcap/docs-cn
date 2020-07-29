@@ -142,11 +142,13 @@ mysql> select _tidb_rowid, id from t;
 
 ### SQL 模式
 
-- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`，MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下：
 
-- `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
+- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
 
-- `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` MySQL 用于解决兼容问题，并不适用于 TiDB。
+- TiDB 的 `ONLY_FULL_GROUP_BY` 模式与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
+
+- MySQL 中的 `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 的 SQL 模式可用于解决兼容性问题，并不适用于 TiDB。
 
 ### 默认设置
 

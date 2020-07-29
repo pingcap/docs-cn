@@ -88,7 +88,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
 你可以通过 TiDB Grafana 监控检测 KeyIsLocked 错误：
 
-观察 KV Errors 下 Lock Resolve OPS 面板中的 resolve 监控项以及 KV Backoff OPS 面板中的 txnLock 监控项，会有比较明显的上升趋势，其中 reslove 是指尝试清锁的操作，txnLock 代表出现了写冲突。
+观察 KV Errors 下 Lock Resolve OPS 面板中的 resolve 监控项以及 KV Backoff OPS 面板中的 txnLock 监控项，会有比较明显的上升趋势，其中 resolve 是指尝试清锁的操作，txnLock 代表出现了写冲突。
 
 ![KV-backoff-txnLockFast-optimistic-01](/media/troubleshooting-lock-pic-07.png)
 ![KV-Errors-resolve-optimistic-01](/media/troubleshooting-lock-pic-08.png)
