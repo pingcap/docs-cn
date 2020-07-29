@@ -26,13 +26,6 @@ DESC character_sets;
 4 rows in set (0.00 sec)
 ```
 
-`CHARACTER_SETS` 表中列的含义如下：
-
-* `CHARACTER_SET_NAME`：字符集名称
-* `DEFAULT_COLLATE_NAME`：字符集的默认排序规则名称
-* `DESCRIPTION`：字符集的描述信息
-* `MAXLEN`：该字符集存储一个字符所需要的最大字节数
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -51,3 +44,10 @@ SELECT * FROM `character_sets`;
 +--------------------+----------------------+---------------+--------+
 5 rows in set (0.00 sec)
 ```
+
+`CHARACTER_SETS` 表中列的含义如下：
+
+* `CHARACTER_SET_NAME`：字符集名称
+* `DEFAULT_COLLATE_NAME`：字符集的默认排序规则名称
+* `DESCRIPTION`：字符集的描述信息
+* `MAXLEN`：该字符集存储一个字符所需要的最大字节数
