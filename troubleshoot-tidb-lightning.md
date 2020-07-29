@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/refer
 
 ## 导入速度太慢
 
-TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 `256 MB` 的数据文件，如果速度远慢于这个数值就是有问题。导入的速度可以检查日志提及 `restore chunk … takes` 的记录，或者观察 Grafana 的监控信息。
+TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数据文件，如果速度远慢于这个数值就是有问题。导入的速度可以检查日志提及 `restore chunk … takes` 的记录，或者观察 Grafana 的监控信息。
 
 导入速度太慢一般有几个原因：
 
@@ -25,7 +25,7 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 `256 MB` �
 
 **原因 3**: 单个文件过大。
 
-当数据源拆分为多个大小约为 `256 MB` 的文件时，TiDB Lightning 可以并行处理数据, 达到最佳效果。如果每个文件太大，TiDB Lightning 可能无响应。
+当数据源拆分为多个大小约为 256 MB 的文件时，TiDB Lightning 可以并行处理数据, 达到最佳效果。如果每个文件太大，TiDB Lightning 可能无响应。
 
 如果数据源是 CSV 文件，并且所有 CSV 文件都没有包含字面值换行符（U+000A 及 U+000D)，则可以启用 `strict-format`，TiDB Lightning 则会自动拆分大文件。
 
