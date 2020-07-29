@@ -1,6 +1,5 @@
 ---
 title: TiKV 配置参数
-category: reference
 aliases: ['/docs-cn/stable/reference/configuration/tikv-server/configuration/']
 ---
 

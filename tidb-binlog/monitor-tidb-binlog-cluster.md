@@ -1,6 +1,5 @@
 ---
 title: TiDB Binlog 集群监控
-category: reference
 aliases: ['/docs-cn/stable/reference/tidb-binlog/monitor/']
 ---
 

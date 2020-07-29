@@ -1,7 +1,6 @@
 ---
 title: TiFlash 部署拓扑
 summary: 了解在部署最小拓扑集群的基础上，部署 TiFlash 的拓扑结构。
-category: how-to
 ---
 
 # TiFlash 部署拓扑

@@ -1,7 +1,6 @@
 ---
 title: ALTER TABLE
 summary: TiDB 数据库中 ALTER TABLE 的使用概况。
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/statements/alter-table/']
 ---
 
@@ -94,7 +93,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-* 支持除空间类型外的所有数据类型。其它不支持的情况可参考：[DDL 语句与 MySQL 的兼容性情况](/mysql-compatibility.md#ddl)。
+* 支持除空间类型外的所有数据类型。其它不支持的情况可参考：[DDL 语句与 MySQL 的兼容性情况](/mysql-compatibility.md#ddl-的限制)。
 
 ## 另请参阅
 

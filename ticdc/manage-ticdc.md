@@ -1,6 +1,5 @@
 ---
 title: TiCDC 运维操作及任务管理
-category: reference
 aliases: ['/docs-cn/stable/reference/tools/ticdc/manage/','/docs-cn/stable/reference/tools/ticdc/sink/','/docs-cn/stable/ticdc/sink-url/']
 ---
 
@@ -58,6 +57,13 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
 - `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
 - `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
+- `ca`: TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
+- `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
+- `key`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
+
+## 使用加密传输 (TLS) 功能
+
+请参阅[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
@@ -95,11 +101,14 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
-create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-start-ts":null}}
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+Create changefeed successfully!
+ID: simple-replication-task
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
-其中 `--sink-uri` 需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
+- `--changefeed-id`: 同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
+- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
 
 {{< copyable "" >}}
 
@@ -127,6 +136,9 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
     | `3306`         | 下游数据的连接端口                                 |
     | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
     | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
+    | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
+    | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
+    | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
 
 - Sink URI 配置 `kafka`
 
@@ -146,9 +158,26 @@ create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mys
     | `9092`               | 下游 Kafka 的连接端口                                          |
     | `cdc-test`           | 使用的 Kafka topic 名字                                      |
     | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+    | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
     | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
     | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
     | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
+    | `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
+    | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
+    | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
+    | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+
+如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
+
+使用配置文件创建同步任务的方法如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
+```
+
+其中 `changefeed.toml` 为同步任务的配置文件。
 
 #### 查询同步任务列表
 
@@ -161,12 +190,22 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
 ```
-[
-        {
-                "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
-        }
-]
+[{
+    "id": "simple-replication-task",
+    "summary": {
+      "state": "normal",
+      "tso": 417886179132964865,
+      "checkpoint": "2020-07-07 16:07:44.881",
+      "error": null
+    }
+}]
 ```
+
+- `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
+- `state` 为该同步任务的状态：
+    - `normal`: 正常同步
+    - `stopped`: 停止同步（手动暂停或出错）
+    - `removed`: 已删除任务
 
 #### 查询特定同步任务
 
@@ -175,7 +214,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
 ```
 
 ```
@@ -206,8 +245,8 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-23
 - `resolved-ts` 代表当前 changefeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
 - `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
 - `admin-job-type` 代表一个 changefeed 的状态：
-    - `0`: 状态正常，也是初始状态。
-    - `1`: 任务暂停。停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+    - `0`: 状态正常。
+    - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
     - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
     - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
 
@@ -218,7 +257,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-23
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 以上命令中：
@@ -232,7 +271,7 @@ cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 以上命令中：
@@ -246,7 +285,7 @@ cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 - `--changefeed=uuid` 为需要操作的 `changefeed` ID。
@@ -266,7 +305,7 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2
             {
                     "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
                     "capture-id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                    "changefeed-id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
+                    "changefeed-id": "simple-replication-task"
             }
     ]
     ```
@@ -276,28 +315,35 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
     ```
     {
-            "status": {
-                    "table-infos": [
-                            {
-                                    "id": 45,
-                                    "start-ts": 415241823337054209
-                            }
-                    ],
-                    "table-p-lock": null,
-                    "table-c-lock": null,
-                    "admin-job-type": 0
-            },
-            "position": {
-                    "checkpoint-ts": 415241893447467009,
-                    "resolved-ts": 415241893971492865
-            }
+      "status": {
+        "tables": {
+          "56": {    # 56 表示同步表 id，对应 TiDB 中表的 tidb_table_id
+            "start-ts": 417474117955485702,
+            "mark-table-id": 0  # mark-table-id 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id
+          }
+        },
+        "operation": null,
+        "admin-job-type": 0
+      },
+      "position": {
+        "checkpoint-ts": 417474143881789441,
+        "resolved-ts": 417474143881789441,
+        "count": 0
+      }
     }
     ```
+
+以上命令中：
+
+- `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id；
+- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id；
+- `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO；
+- `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO；
 
 ## 使用 HTTP 接口管理集群状态和数据同步
 
@@ -350,6 +396,79 @@ curl -X POST http://127.0.0.1:8301/capture/owner/resign
 ```
 election: not leader
 ```
+
+### 手动调度表到其他节点
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf060953-036c-4f31-899f-5afa0ad0c2f9&target-cp-id=6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5&table-id=49'
+```
+
+参数说明
+
+| 参数名        | 说明 |
+| :----------- | :--- |
+| `cf-id`        | 进行调度的 Changefeed ID |
+| `target-cp-id` | 目标 Capture ID |
+| `table-id`     | 需要调度的 Table ID |
+
+以上命令仅对 owner 节点请求有效。对非 owner 节点将会返回错误。
+
+```
+{
+ "status": true,
+ "message": ""
+}
+```
+
+## 同步任务配置文件描述
+
+以下内容详细介绍了同步任务的配置。
+
+```toml
+# 指定配置文件中涉及的库名、表名是否为大小写敏感
+# 该配置会同时影响 filter 和 sink 相关配置，默认为 true
+case-sensitive = true
+
+[filter]
+# 忽略指定 start_ts 的事务
+ignore-txn-start-ts = [1, 2]
+
+# 过滤器规则
+# 过滤规则语法：https://github.com/pingcap/tidb-tools/tree/master/pkg/table-filter#syntax
+rules = ['*.*', '!test.*']
+
+[mounter]
+# mounter 线程数，用于解码 TiKV 输出的数据
+worker-num = 16
+
+[sink]
+# 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
+# 支持 default、ts、rowid、table 四种分发器
+dispatchers = [
+    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
+    {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
+]
+# 对于 MQ 类的 Sink，可以指定消息的协议格式
+# 目前支持 default 和 canal 两种协议。default 为 TiCDC Open Protocol
+protocol = "default"
+
+[cyclic-replication]
+# 是否开启环形同步
+enable = false
+# 当前 TiCDC 的复制 ID
+replica-id = 1
+# 需要过滤掉的同步 ID
+filter-replica-ids = [2,3]
+# 是否同步 DDL
+sync-ddl = true
+```
+
+### 配置文件兼容性的注意事项
+
+* TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
+* TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
 
 ## 环形同步
 
@@ -408,17 +527,17 @@ election: not leader
     # 在 TiDB 集群 A 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/" \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
+        --pd="http://${PD_A_HOST}:${PD_A_PORT}"
 
     # 在 TiDB 集群 B 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/" \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
+        --pd="http://${PD_B_HOST}:${PD_B_PORT}"
 
     # 在 TiDB 集群 C 上创建标记数据表。
     cdc cli changefeed cyclic create-marktables \
         --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/" \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
+        --pd="http://${PD_C_HOST}:${PD_C_PORT}"
     ```
 
 3. 在 TiDB 集群 A，B 和 C 上创建环形同步任务。
@@ -451,12 +570,12 @@ election: not leader
         --cyclic-sync-ddl false
     ```
 
-### 环形同步使用限制
+### 环形同步使用说明
 
-1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形复制功能使用到的标记表。
-2. 开启环形复制的数据表只包含 [a-zA-z0-9_] 字符。
+1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形同步功能使用到的标记表。
+2. 开启环形同步的数据表名字需要符合正则表达式 `^[a-zA-Z0-9_]+$`。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
 5. 如果想在线 DDL，需要确保以下两点：
-    1. 多个集群的 CDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 CDC 关闭了 sync-ddl。
+    1. 多个集群的 TiCDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 TiCDC 关闭了 `sync-ddl`。
     2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。

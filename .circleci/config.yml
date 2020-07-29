@@ -3,19 +3,23 @@ version: 2
 jobs:
   lint:
     docker:
-      - image: circleci/ruby:2.4.1-node
+      - image: circleci/node:lts
     working_directory: ~/pingcap/docs-cn
     steps:
       - checkout
 
       - run:
-          name: "Install markdownlint"
+          name: Setup
           command: |
-            sudo npm install -g markdownlint-cli@0.17.0
+            mkdir ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+            echo 'export NODE_PATH=~/.npm-global/lib/node_modules:$NODE_PATH' >> $BASH_ENV
 
       - run:
-          name: "Lint dev"
-          command: markdownlint dev/
+          name: "Install markdownlint"
+          command: |
+            npm install -g markdownlint-cli@0.17.0
 
       - run:
           name: "Lint README"
@@ -32,6 +36,11 @@ jobs:
          name: "Check links"
          command: |
            scripts/verify-links.sh
+
+      - run:
+         name: "Check link anchors"
+         command: |
+           scripts/verify-link-anchors.sh
 
   build:
     docker:
@@ -59,7 +68,7 @@ jobs:
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "release-4.0" ]; then
-              python3 scripts/upload.py output.pdf tidb-v4.0-zh-manual.pdf;
+              python3 scripts/upload.py output.pdf tidb-stable-zh-manual.pdf;
             fi
 
       - run:

@@ -1,6 +1,5 @@
 ---
 title: SQL 基本操作
-category: how-to
 aliases: ['/docs-cn/stable/how-to/get-started/explore-sql/']
 ---
 

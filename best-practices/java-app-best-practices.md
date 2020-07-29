@@ -1,6 +1,5 @@
 ---
 title: 开发 Java 应用使用 TiDB 的最佳实践
-category: reference
 aliases: ['/docs-cn/stable/reference/best-practices/java-app/']
 ---
 

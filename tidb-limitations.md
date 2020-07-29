@@ -1,6 +1,5 @@
 ---
 title: TiDB 使用限制
-category: introduction
 ---
 
 # 使用限制
@@ -47,13 +46,13 @@ category: introduction
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Sze       | 6MB       |
+| Size       | 6MB       |
 
 ## 单列的限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Sze       | 6MB       |
+| Size       | 6MB       |
 
 ## 字符串类型限制
 

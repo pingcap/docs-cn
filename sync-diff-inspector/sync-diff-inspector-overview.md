@@ -1,6 +1,5 @@
 ---
 title: sync-diff-inspector 用户文档
-category: tools
 aliases: ['/docs-cn/stable/reference/tools/sync-diff-inspector/overview/']
 ---
 
@@ -24,7 +23,7 @@ GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree
 
 ### 使用限制
 
-* 目前不支持在线校验，需要保证上下游校验的表中没有数据写入，或者保证某个范围内的数据不再变更，通过配置 `range` 来校验这个范围内的数据。
+* 对于 MySQL 和 TiDB 之间的数据同步不支持在线校验，需要保证上下游校验的表中没有数据写入，或者保证某个范围内的数据不再变更，通过配置 `range` 来校验这个范围内的数据。
 
 * 不支持 JSON、BIT、BINARY、BLOB 等类型的数据，在校验时需要设置 `ignore-columns` 忽略检查这些类型的数据。
 
@@ -108,7 +107,8 @@ fix-sql-file = "fix.sql"
 
 ######################### Tables config #########################
 
-# 如果需要对比大量的不同库名或者表名的表的数据，可以通过 table-rule 来设置映射关系。可以只配置 schema 或者 table 的映射关系，也可以都配置
+# 如果需要对比大量的不同库名或者表名的表的数据，或者用于校验上游多个分表与下游总表的数据，可以通过 table-rule 来设置映射关系
+# 可以只配置 schema 或者 table 的映射关系，也可以都配置
 #[[table-rules]]
     # schema-pattern 和 table-pattern 支持通配符 *?
     #schema-pattern = "test_*"

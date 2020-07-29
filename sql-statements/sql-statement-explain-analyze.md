@@ -1,13 +1,16 @@
 ---
 title: EXPLAIN ANALYZE
 summary: TiDB 数据库中 EXPLAIN ANALYZE 的使用概况。
-category: reference
 aliases: ['/docs-cn/stable/reference/sql/statements/explain-analyze/']
 ---
 
 # EXPLAIN ANALYZE
 
 `EXPLAIN ANALYZE` 语句的工作方式类似于 `EXPLAIN`，主要区别在于前者实际上会执行语句。这样可以将查询计划中的估计值与执行时所遇到的实际值进行比较。如果估计值与实际值显著不同，那么应考虑在受影响的表上运行 `ANALYZE TABLE`。
+
+> **注意：**
+>
+> 在使用 `EXPLAIN ANALYZE` 执行 DML 语句时，数据的修改操作会被正常执行。但目前 DML 语句还无法展示执行计划。
 
 ## 语法图
 

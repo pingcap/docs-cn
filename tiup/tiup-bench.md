@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP bench 组件压测 TiDB
-category: tools
 aliases: ['/docs-cn/stable/reference/tools/tiup/bench/']
 ---
 
