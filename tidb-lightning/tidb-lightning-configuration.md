@@ -144,7 +144,7 @@ character-set = "auto"
 # 如果输入数据格式严格，则会加快处理速度。
 # 当 strict-format = true：
 #  * 在 CSV 文件中，即使使用引号，每个值也不能包含换行符（U+000A 和 U+000D, 即 \r 和 \n），应该严格将换行符作为行分隔符。
-# 如果输入数据格式严格，TiDB Lightning 则会快速定位大文件的拆分位置进行并行处理。 但是如果输入数据为非严格格式，则可能会将有效数据分成两半，从而损坏数据结果。
+# 如果输入数据格式严格，TiDB Lightning 则会快速定位大文件的拆分位置进行并行处理。但是如果输入数据为非严格格式，则可能会将有效数据分成两半，从而损坏数据结果。
 # 此时应该将默认值设置为 false。
 strict-format = false
 
@@ -345,7 +345,7 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
-| --no-schema | 先忽略表结构文件，再直接从 TiDB 获取表结构 | `mydumper.no-schema` |
+| --no-schema | 先忽略表结构文件，再直接从 TiDB 中获取表结构 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *bool* | 导入后统计信息分析 (默认值为 true) | `post-restore.analyze` |
 | --checksum *bool* | 导入后比较校验和 (默认值为 true) | `post-restore.checksum` |
