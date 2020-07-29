@@ -18,7 +18,8 @@ server_configs:
     server-version: 'YOUR_VERSION_STRING'
 ```
 
-并通过 `reload -R tidb` 使得以上修改生效，以避免出现安全漏洞扫描不通过的问题。
+并通过 `reload -R tidb` 命令使得以上修改生效，以避免出现安全漏洞扫描不通过的问题。
+
 
 ## TiDB 支持哪些认证协议，过程是怎样的？
 
