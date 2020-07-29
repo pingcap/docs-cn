@@ -60,7 +60,9 @@ TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远
 
 ### Chunk
 
-指数据源中的单个文件。
+连续范围内的源数据，通常相当于数据源中的单个文件。
+
+如果文件太大，TiDB Lightning 可以将单个文件拆分成多个文件。
 
 ### Compaction
 

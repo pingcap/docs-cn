@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
     {{< copyable "shell-regular" >}}
 
     ```sh
-    bin/tidb-lightning-ctl -switch-mode=normal
+    bin/tidb-lightning-ctl --switch-mode=normal
     ```
 
 - TiDB Lightning 需要下游 TiDB 有如下权限：
@@ -197,17 +197,12 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     # 日志等级：trace、debug、info、warn、error、off。
     log-level = "info"
 
+    # TiKV Importer 服务器的监听地址。
+    status-server-address = "0.0.0.0:8286"
+    
     [server]
     # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "192.168.20.10:8287"
-
-    [metric]
-    # 给 Prometheus 客户端的推送任务名称。
-    job = "tikv-importer"
-    # 给 Prometheus 客户端的推送间隔。
-    interval = "15s"
-    # Prometheus Pushgateway 地址。
-    address = ""
+    addr = "0.0.0.0:8287"
 
     [import]
     # 存储引擎文档 (engine file) 的文件夹路径。
