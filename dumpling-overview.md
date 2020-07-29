@@ -23,11 +23,11 @@ summary: 使用 Dumpling 从 TiDB 导出数据。
 
 `Dumpling` 是使用 go 开发的数据备份工具，项目地址可以参考 [`Dumpling`](https://github.com/pingcap/dumpling)。
 
-Dumpling 的更多具体用法可以使用 --help 指令查看，或者查看 [Dumpling 主要参数表](#dumpling-主要参数表)。
+Dumpling 的更多具体用法可以使用 --help 选项查看，或者查看 [Dumpling 主要选项表](#dumpling-主要选项表)。
 
 使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
-Dumpling 包含在 tidb-toolkit 安装包中，可[在此下载](/download-ecosystem-tools.md)。
+Dumpling 包含在 tidb-toolkit 安装包中，可[在此下载](/download-ecosystem-tools.md#dumpling)。
 
 ## 从 TiDB/MySQL 导出数据
 
@@ -81,7 +81,7 @@ dumpling \
 
 ### 筛选导出的数据
 
-#### 使用 `--where` 指令筛选数据
+#### 使用 `--where` 选项筛选数据
 
 默认情况下，除了系统数据库中的表之外，Dumpling 会导出整个数据库的表。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。
 
@@ -98,7 +98,7 @@ dumpling \
 
 上述命令将会导出各个表的 id < 100 的数据。
 
-#### 使用 `--filter` 指令筛选数据
+#### 使用 `--filter` 选项筛选数据
 
 Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。table-filter 的语法与 .gitignore 相似，详细语法参考[表库过滤](/table-filter.md)。
 
@@ -116,15 +116,15 @@ Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。
 
 上述命令将会导出 `employees` 数据库的所有表，以及所有数据库中的 `WorkOrder` 表。
 
-#### 使用 `-B` 或 `-T` 指令筛选数据
+#### 使用 `-B` 或 `-T` 选项筛选数据
 
-Dumpling 也可以通过 `-B` 或 `-T` 参数导出特定的数据库/数据表。
+Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表。
 
 > **注意：**
 >
-> 1. `--filter` 参数与 `-T` 参数不可同时使用。
+> 1. `--filter` 选项与 `-T` 选项不可同时使用。
 >
-> 2. `-T` 参数只能接受完整的 `库名.表名` 形式，不支持只指定表名。例：Dumpling 无法识别 `-T WorkOrder`。
+> 2. `-T` 选项只能接受完整的 `库名.表名` 形式，不支持只指定表名。例：Dumpling 无法识别 `-T WorkOrder`。
 
 例如通过指定：
 
@@ -133,13 +133,13 @@ Dumpling 也可以通过 `-B` 或 `-T` 参数导出特定的数据库/数据表�
 
 ### 通过并发提高 Dumpling 的导出效率
 
-默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用参数如下：
+默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用选项如下：
 
 - `-o` 用于选择存储导出文件的目录。
 - `-F` 选项用于指定单个文件的最大大小，默认单位为 `MiB`。可以接受类似 `5GiB` 或 `8KB` 的输入。
 - `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数），开启后 Dumpling 会开启表内并发，提高导出大表的速度。
 
-利用以上参数可以让 Dumpling 的并行度更高。
+利用以上选项可以让 Dumpling 的并行度更高。
 
 ### 调整 Dumpling 的数据一致性选项
 
@@ -147,7 +147,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 参数导出特定的数据库/数据表�
 >
 > 在大多数场景下，用户不需要调整 Dumpling 的默认数据一致性选项。
 
-Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。对于 TiDB 来说，默认情况下，会通过获取某个时间戳的快照来保证一致性（即 `--consistency snapshot`）。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 参数指定要备份的时间戳。还可以使用以下的一致性级别：
+Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。对于 TiDB 来说，默认情况下，会通过获取某个时间戳的快照来保证一致性（即 `--consistency snapshot`）。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 选项指定要备份的时间戳。还可以使用以下的一致性级别：
 
 - `flush`：使用 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 来保证一致性。
 - `snapshot`：获取指定时间戳的一致性快照并导出。
@@ -174,7 +174,7 @@ $ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
 
 Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-historical-data.md#操作流程) 时的数据。
 
-`--snapshot` 参数可设为 TSO（`SHOW MASTER STATUS` 输出的 `Position` 字段）或有效的 `datetime` 时间，例如：
+`--snapshot` 选项可设为 TSO（`SHOW MASTER STATUS` 输出的 `Position` 字段）或有效的 `datetime` 时间，例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -207,9 +207,9 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 
 最后，所有的导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-tidb-backend.md) 导入回 TiDB。
 
-## Dumpling 主要参数表
+## Dumpling 主要选项表
 
-| 主要参数 | 用途 | 默认值 |
+| 主要选项 | 用途 | 默认值 |
 | --------| --- | --- |
 | -V 或 --version | 输出 Dumpling 版本并直接退出 |
 | -B 或 --database | 导出指定数据库 |
@@ -230,7 +230,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
 | --filetype| 导出文件类型（csv/sql） | "sql" |
 | -o 或 --output | 导出文件路径 | "./export-${time}" |
-| -S 或 --sql | 根据指定的 sql 导出数据，该指令不支持并发导出 |
+| -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 tso 指定 dump 文件的位置 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: MySQL 默认用 flush, TiDB 默认用 snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |
 | --where | 对备份的数据表通过 where 条件指定范围 |
