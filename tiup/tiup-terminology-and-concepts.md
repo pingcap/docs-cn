@@ -1,6 +1,5 @@
 ---
 title: TiUP 术语及核心概念
-category: tools
 ---
 
 # TiUP 术语及核心概念
