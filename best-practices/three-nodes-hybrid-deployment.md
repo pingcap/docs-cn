@@ -1,6 +1,5 @@
 ---
 title: 三节点混合部署最佳实践
-category: reference
 ---
 
 # 三节点混合部署的最佳实践
