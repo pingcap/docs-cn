@@ -3,7 +3,7 @@ title: Migration FAQs
 summary: Learn about the FAQs related to data migration.
 ---
 
-# Migration FAQ
+# Migration FAQs
 
 This document summarizes the FAQs related to TiDB data migration.
 
