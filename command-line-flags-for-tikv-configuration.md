@@ -1,6 +1,5 @@
 ---
 title: TiKV 配置参数
-category: reference
 aliases: ['/docs-cn/dev/reference/configuration/tikv-server/configuration/']
 ---
 
@@ -21,7 +20,7 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 
 + TiKV 对外访问地址。
 + 默认：${addr}
-+ 在某些情况下，譬如 docker，或者 NAT 网络环境，客户端并不能通过  TiKV 自己监听的地址来访问到 TiKV，这时候，你就可以设置 advertise addr 来让 客户端访问
++ 在某些情况下，比如 Docker 或者 NAT 网络环境，客户端并不能通过 `--addr` 的地址来访问到 TiKV。这时候，你可以设置 `--advertise-addr` 来让客户端访问 TiKV。
 + 例如，docker 内部 IP 地址为 172.17.0.1，而宿主机的 IP 地址为 192.168.100.113 并且设置了端口映射 -p 20160:20160，那么可以设置为 \-\-advertise-addr="192.168.100.113:20160"，客户端可以通过 192.168.100.113:20160 来找到这个服务
 
 ## `--status-addr`
@@ -30,6 +29,13 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 + 默认："20180"
 + Prometheus 统计可以通过 `http://host:status_port/metrics` 访问
 + Profile 数据可以通过 `http://host:status_port/debug/pprof/profile` 访问
+
+## `--advertise-status-addr`
+
++ TiKV 对外访问服务状态地址
++ 默认：使用 `--status-addr`
++ 在某些情况下，例如 docker 或者 NAT 网络环境，客户端并不能通过 `--status-addr` 的地址来访问到 TiKV。此时，你可以设置 `--advertise-status-addr` 来让客户端访问 TiKV。
++ 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 20180:20180`，那么可以设置 `\-\-advertise-status-addr="192.168.100.113:20180"`，客户端可以通过 `192.168.100.113:20180` 来找到这个服务。
 
 ## `-C, --config`
 

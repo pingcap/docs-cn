@@ -1,7 +1,6 @@
 ---
 title: Placement Rules 使用文档
 summary: 如何配置 Placement Rules
-category: how-to
 aliases: ['/docs-cn/dev/how-to/configure/placement-rules/']
 ---
 
@@ -9,7 +8,7 @@ aliases: ['/docs-cn/dev/how-to/configure/placement-rules/']
 
 > **注意：**
 >
-> 该功能目前为实验特性，不建议在生产环境中使用。
+> 在配合使用 TiFlash 场景下，Placement Rules 功能进行过大量测试，可以在生产环境中使用。除配合使用 TiFlash 的场景外，单独开启 Placement Rules 没有经过大量测试，因此，不建议在生产环境单独开启该功能。
 
 Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。
 
