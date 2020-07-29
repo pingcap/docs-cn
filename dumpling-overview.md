@@ -222,8 +222,8 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -L, --logfile | 日志输出地址，为空时会输出到控制台 | "" |
 | --loglevel | 日志级别 {debug,info,warn,error,dpanic,panic,fatal} | "info" |
 | --logfmt | 日志输出格式 {text,json} | "text" |
-| -d 或 --no-data | 不导出数据, 适用于只导出 schema 场景 |
-| --no-header | 导出 table csv 数据，不生成 header |
+| -d 或 --no-data | 不导出数据，适用于只导出 schema 场景 |
+| --no-header | 导出 csv 格式的 table 数据，不生成 header |
 | -W 或 --no-views| 不导出 view | true |
 | -m 或 --no-schemas | 不导出 schema，只导出数据 |
 | -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
