@@ -1,6 +1,6 @@
 ---
 title: 理解 TiDB 执行计划
-aliases: ['/docs-cn/stable/reference/performance/understanding-the-query-execution-plan/']
+aliases: ['/docs-cn/stable/reference/performance/understanding-the-query-execution-plan/','/docs-cn/stable/index-merge/','/docs-cn/stable/reference/performance/index-merge/']
 ---
 
 # 理解 TiDB 执行计划
