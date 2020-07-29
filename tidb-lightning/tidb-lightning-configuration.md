@@ -386,7 +386,7 @@ min-available-ratio = 0.05
 | -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置| |
 | -V, --version | 输出程序的版本 | |
 | -A, --addr *ip:port* | TiKV Importer 服务器的监听地址 | `server.addr` |
-| --status-server *ip:port* | TiKV Importer服务器的监听地址 | `status-server-address` |
+| --status-server *ip:port* | TiKV Importer 服务器的监听地址 | `status-server-address` |
 | --import-dir *dir* | 引擎文件的存储目录 | `import.import-dir` |
 | --log-level *level* | 日志的等级： trace、debug、info、warn、error 或 off | `log-level` |
 | --log-file *file* | 日志文件路径 | `log-file` |
