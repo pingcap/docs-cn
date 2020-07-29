@@ -214,9 +214,9 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -V 或 --version | 输出 Dumpling 版本并直接退出 |
 | -B 或 --database | 导出指定数据库 |
 | -T 或 --tables-list | 导出指定数据表 |
-| -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) | `*.*` 导出所有库表 |
+| -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) | `*.*`（导出所有库表） |
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
-| -h 或 --host| 链接节点地址 | "127.0.0.1" |
+| -h 或 --host| 链接节点的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
 | -r 或 --rows | 将 table 划分成 row 行数据，一般针对大表操作并发生成多个文件。|
 | -L, --logfile | 日志输出地址，为空时会输出到控制台 | "" |
@@ -225,18 +225,18 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -d 或 --no-data | 不导出数据, 适用于只导出 schema 场景 |
 | --no-header | 导出 table csv 数据，不生成 header |
 | -W 或 --no-views| 不导出 view | true |
-| -m 或 --no-schemas | 不导出 schema , 只导出数据 |
-| -s 或--statement-size | 控制 Insert Statement 的大小，单位 bytes |
-| -F 或 --filesize | 将 table 数据划分出来的文件大小, 需指明单位 (如 `128B`, `64KiB`, `32MiB`, `1.5GiB`) |
-| --filetype| 导出文件类型 csv/sql | "sql" |
-| -o 或 --output | 设置导出文件路径 | "./export-${time}" |
+| -m 或 --no-schemas | 不导出 schema，只导出数据 |
+| -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
+| -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
+| --filetype| 导出文件类型（csv/sql） | "sql" |
+| -o 或 --output | 导出文件路径 | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该指令不支持并发导出 |
-| --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 tso 指定 dump 位置 <br/> lock: 对需要 dump 的所有表执行 lock tables read <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: MySQL flush, TiDB snapshot | "auto" |
-| --snapshot | snapshot tso, 只在 consistency=snapshot 下生效 |
+| --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 tso 指定 dump 文件的位置 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: MySQL 默认用 flush, TiDB 默认用 snapshot | "auto" |
+| --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |
 | --where | 对备份的数据表通过 where 条件指定范围 |
-| -p 或 --password | 链接密码 |
-| -P 或 --port | 链接端口 | 4000 |
-| -u 或 --user | 用户名 | "root" |
+| -p 或 --password | 链接节点的密码 |
+| -P 或 --port | 链接节点的端口 | 4000 |
+| -u 或 --user | 链接节点的用户名 | "root" |
 | --dump-empty-database | 导出空数据库的建库语句 | true |
 | --tidbMemQuotaQuery | 导出 TiDB 数据库时单条 query 最大使用的内存 | 34359738368(32GB) |
 | --ca | 用于 TLS 连接的 certificate authority 文件的地址 |
