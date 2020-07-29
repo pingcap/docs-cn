@@ -76,6 +76,10 @@ Mydumper 首先计算 `min(_tidb_rowid)` 和 `max(_tidb_rowid)`，然后按照 `
 
 ## FAQ
 
+### 使用的 `--tidb-snapshot` 导出时报错，怎么处理？
+
+需要执行命令时增加一个参数 --skip-tz-utc，如果不设置的话 Mydumper 会预先设置 UTC 时区，然后在设置 tidb-snapshot 的时候会做时区转化，就会有问题
+
 ### 如何判断使用的 Mydumper 是否为 PingCAP 优化的版本？
 
 执行如下命令：
