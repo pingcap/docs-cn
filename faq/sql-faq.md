@@ -76,7 +76,7 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 
 + 由于 TiDB 是分布式数据库，TiDB server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/tidb-architecture.md)），用户使用 MySQL 客户端登录的是哪个 TiDB server ，`show processlist` 就会显示当前连接的这个 TiDB server  中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
 
-+ 在查询执行期间，TiDB 中的 `State` 列不会持续更新。由于 TiDB 支持并行查询，每个语句可能同时处于多个状态，因此很难简化为单个值。
++ 在查询执行期间，TiDB 中的 `State` 列不会持续更新。由于 TiDB 支持并行查询，每个语句可能同时处于多个状态，因此很难显示为某一种状态。
 
 ## 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
