@@ -143,7 +143,7 @@ character-set = "auto"
 
 # 假设输入数据格式严格以加快处理速度。
 # strict-format = true：
-#  * 在 CSV 文件中，即使使用引号，每个值也不能包含字面值换行符（U + 000A 和 U + 000D 或 \r 和 \n），即严格将换行符用于分隔行。
+#  * 在 CSV 文件中，即使使用引号，每个值也不能包含字面值换行符（U+000A 和 U+000D, 即 \r 和 \n），即严格将换行符用于分隔行。
 # 如果输入数据格式严格，TiDB Lightning 则会快速定位大文件的拆分位置进行并行处理。 但是如果输入数据为非严格格式，则可能会将有效数据分成两半，从而破坏结果。
 # 默认值为 false 时是安全处理速度。
 strict-format = false
@@ -254,7 +254,7 @@ log-file = "tikv-importer.log"
 log-level = "info"
 
 # TiKV Importer 服务器的监听地址。 
-Prometheus 可以从这个地址抓取指标。
+# Prometheus 可以从这个地址抓取指标。
 status-server-address = "0.0.0.0:8286"
 
 [server]
