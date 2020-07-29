@@ -94,7 +94,7 @@ Dumpling can filter specific databases or tables by specifying the table filter 
   -P 4000 \
   -h 127.0.0.1 \
   -o /tmp/test \
-  --filter "employees.*"
+  --filter "employees.*" \
   --filter "*.WorkOrder"
 ```
 
