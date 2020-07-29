@@ -80,7 +80,7 @@ isolation-level = "zone"
 pd-ctl config set isolation-level zone
 ```
 
-其中，`location-labels` 配置是一个字符串，需要与 TiKV 的 `labels` 的其中一个 key 对应，它限制了 TiKV 拓扑集群的最小且强制隔离级别要求。
+其中，`isolation-level` 配置是一个字符串，需要与 `location-labels` 的其中一个 key 对应，它限制了 TiKV 拓扑集群的最小且强制隔离级别要求。
 
 > **注意：**
 >
