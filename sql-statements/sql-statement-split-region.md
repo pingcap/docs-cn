@@ -158,10 +158,20 @@ If the column of index idx1 is of varchar type, and you want to split index data
 {{< copyable "sql" >}}
 
 ```sql
-SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 26;
+SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 25;
 ```
 
-This statement splits index idx1 into 26 Regions from a~z. The range of Region 1 is `[minIndexValue, b)`; the range of Region 2 is `[b, c)`; … the range of Region 26 is `[z, minIndexValue]`. For the `idx` index, data with the `a` prefix is written into Region 1, while data with the `b` prefix is written into Region 2, and so on.
+This statement splits index idx1 into 25 Regions from a~z. The range of Region 1 is `[minIndexValue, b)`; the range of Region 2 is `[b, c)`; … the range of Region 25 is `[y, minIndexValue]`. For the `idx` index, data with the `a` prefix is written into Region 1, and data with the `b` prefix is written into Region 2, and so on.
+
+In the split method above, both data with the `y` and `z` prefixes are written into Region 25, because the upper bound is not `z`, but `{` (the character next to `z` in ASCII). Therefore, a more accurate split method is as follows:
+
+{{< copyable "sql" >}}
+
+```sql
+SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("{") REGIONS 26;
+```
+
+This statement splits index idx1 of the table `t` into 26 Regions from a~`{`. The range of Region 1 is `[minIndexValue, b)`; the range of Region 2 is `[b, c)`; … the range of Region 25 is `[y, z)`, and the range of Region 26 is `[z, maxIndexValue)`. 
 
 If the column of index idx2 is of time type like timestamp/datetime, and you want to split index Region by time interval:
 
