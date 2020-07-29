@@ -1,7 +1,6 @@
 ---
 title: What's New in TiDB 4.0
 summary: 了解 TiDB 4.0 版本的新特性。
-category: introduction
 ---
 
 # What's New in TiDB 4.0

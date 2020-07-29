@@ -1,6 +1,5 @@
 ---
 title: TiDB 重要监控指标详解
-category: reference
 aliases: ['/docs-cn/dev/reference/key-monitoring-metrics/tidb-dashboard/']
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: BR 备份与恢复场景示例
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','/docs-cn/dev/reference/tools/br/br-best-practices/']
 ---
 

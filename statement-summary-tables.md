@@ -1,6 +1,5 @@
 ---
 title: Statement Summary Tables
-category: reference
 aliases: ['/docs-cn/dev/reference/performance/statement-summary/']
 ---
 
