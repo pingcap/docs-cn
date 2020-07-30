@@ -9,13 +9,15 @@ summary: 介绍在线修改集群配置的功能。
 >
 > 该功能目前是实验性阶段，不建议在生产环境中使用。
 
-在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过利用在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和其他组件（TiKV、PD）有所不同。
+在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和修改其他组件（TiKV、PD）的有所不同。
 
 ## 常用操作
 
 ### 查看实例配置
 
-可以通过 SQL `show config` 来直接查看集群所有实例的配置信息，结果如下：
+可以通过 SQL语句 `show config` 来直接查看集群所有实例的配置信息，结果如下：
+
+{{< copyable "sql" >}}
 
 ```sql
 show config;
@@ -39,6 +41,8 @@ show config;
 
 还可以根据对应的字段进行过滤，如：
 
+{{< copyable "sql" >}}
+
 ```sql
 show config where type='tidb'
 show config where instance in (...)
@@ -50,11 +54,13 @@ show config where type='tikv' and name='log-level'
 
 > **注意：**
 >
-> 在线修改 TiKV 配置项后，同时会自动修改 TiKV 的配置文件。但还需要使用 `tiup edit-config` 修改对应的配置项，否则 `upgrade` `reload` 等运维操作会将在线修改配置后的结果覆盖。修改配置的操作请参考：[修改配置](/maintain-tidb-using-tiup.md#修改配置参数)，`tiup edit-config` 后不需要执行 `tiup reload` 操作。
+> 在线修改 TiKV 配置项后，同时会自动修改 TiKV 的配置文件。但还需要使用 `tiup edit-config` 命令来修改对应的配置项，否则 `upgrade` 和 `reload` 等运维操作会将在线修改配置后的结果覆盖。修改配置的操作请参考：[使用 TiUP 修改配置](/maintain-tidb-using-tiup.md#修改配置参数)。执行 `tiup edit-config` 后不需要执行 `tiup reload` 操作。
 
 执行 SQL 语句 `set config`，可以结合实例地址或组件类型来修改单个实例配置或全部实例配置，如：
 
 修改全部 TiKV 实例配置：
+
+{{< copyable "sql" >}}
 
 ```sql
 set config tikv log.level="info"
@@ -62,17 +68,23 @@ set config tikv log.level="info"
 
 修改单个 TiKV 实例配置：
 
+{{< copyable "sql" >}}
+
 ```sql
 set config "127.0.0.1:20180" log.level="info"
 ```
 
 设置成功会返回 `Query OK`：
 
+{{< copyable "sql" >}}
+
 ```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 
 在批量修改时如果有错误发生，会以 warning 的形式返回：
+
+{{< copyable "sql" >}}
 
 ```sql
 set config tikv log-level='warn';
@@ -81,6 +93,8 @@ set config tikv log-level='warn';
 ```sql
 Query OK, 0 rows affected, 1 warning (0.04 sec)
 ```
+
+{{< copyable "sql" >}}
 
 ```sql
 show warnings;
@@ -95,17 +109,17 @@ show warnings;
 1 row in set (0.00 sec)
 ```
 
-批量修改配置不保证原子性，可能出现某些实例成功，而某些失败。如使用 `set tikv key=val` 修改整个 TiKV 集群配置时，可能有部分实例失败，请使用 `show warnings` 进行查看。
+批量修改配置不保证原子性，可能出现某些实例成功，而某些失败的情况。如使用 `set tikv key=val` 命令修改整个 TiKV 集群配置时，可能有部分实例失败，请执行 `show warnings` 进行查看。
 
-如遇到部分修改失败的情况，需要重新执行对应的修改语句，或通过修改单个实例的方式完成修改。对于由于网络或者机器故障等原因无法访问到的 TiKV，需要等到恢复后再次进行修改。
+如遇到部分修改失败的情况，需要重新执行对应的修改语句，或通过修改单个实例的方式完成修改。如果因网络或者机器故障等原因无法访问到的 TiKV，需要等到恢复后再次进行修改。
 
-针对 TiKV 可在线修改的配置项，如果成功修改后，修改的结果会被持久化到配置文件中，后续以配置文件中的配置为准。某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`，`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``raftstore.raft-log-gc-size-limit` ``；
+针对 TiKV 可在线修改的配置项，如果成功修改后，修改的结果会被持久化到配置文件中，后续以配置文件中的配置为准。某些配置项名称可能和 TiDB 预留关键字冲突，如 `limit`、`key` 等，对于此类配置项，需要用反引号 ``` ` ``` 包裹起来，如 ``` `raftstore.raft-log-gc-size-limit` ```。
 
-支持配置项列表如下：
+支持的配置项列表如下：
 
 | 配置项 | 简介 |
 | --- | --- |
-| raftstore.sync-log | 数据、log 落盘是否 sync |
+| raftstore.sync-log | 数据、log 落盘是否同步 |
 | raftstore.raft-entry-max-size | 单个日志最大大小 |
 | raftstore.raft-log-gc-tick-interval | 删除 Raft 日志的轮询任务调度间隔时间 |
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
@@ -137,13 +151,13 @@ show warnings;
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
-| coprocessor.split-region-on-table | 开启按 table 分裂 Region的开关 |
+| coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
-| coprocessor.region-max-size | Region 容量空间最大值 |
+| coprocessor.region-max-size | Region 容量空间的最大值 |
 | coprocessor.region-split-size | 分裂后新 Region 的大小 |
 | coprocessor.region-max-keys | Region 最多允许的 key 的个数 |
 | coprocessor.region-split-keys | 分裂后新 Region 的 key 的个数 |
-| pessimistic-txn.wait-for-lock-timeout | 悲观事务遇到锁后的等待的最长时间 |
+| pessimistic-txn.wait-for-lock-timeout | 悲观事务遇到锁后的最长等待时间 |
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
@@ -155,8 +169,8 @@ show warnings;
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
 | {db-name}.max-open-files | RocksDB 可以打开的文件总数 |
 | {db-name}.compaction-readahead-size | Compaction 时候 readahead 的大小 |
-| {db-name}.bytes-per-sync | 异步 Sync 限速速率 |
-| {db-name}.wal-bytes-per-sync | WAL Sync 限速速率 |
+| {db-name}.bytes-per-sync | 异步同步的限速速率 |
+| {db-name}.wal-bytes-per-sync | WAL 同步的限速速率 |
 | {db-name}.writable-file-max-buffer-size | WritableFileWrite 所使用的最大的 buffer 大小 |
 | {db-name}.{cf-name}.block-cache-size | block cache size 大小 |
 | {db-name}.{cf-name}.write-buffer-size | memtable 大小 |
@@ -172,22 +186,24 @@ show warnings;
 | {db-name}.{cf-name}.soft-pending-compaction-bytes-limit | pending compaction bytes 的软限制 |
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
-| storage.block-cache.capacity | 共享 block cache 的大小（自 4.0.3 起支持） |
-| backup.num-threads | backup 线程的数量（自 4.0.3 起支持） |
-| split.qps-threshold | 对 Region 执行 load-base-split 的阈值，如果读 qps 连续 10s 内均超过这个值，则进行 split |
-| split.split-balance-score | load-base-split 控制参数，确保 split 后左右访问尽量均匀 |
-| split.split-contained-score | load-base-split 控制参数，尽量减少 split 后跨 region 访问 |
+| storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
+| backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
+| split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果读 QPS 连续 10 秒内均超过这个值，则进行 split |
+| split.split-balance-score | load-base-split 的控制参数，确保 split 后左右访问尽量均匀 |
+| split.split-contained-score | load-base-split 的控制参数，尽量减少 split 后跨 Region 访问 |
 
-上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的是 RocksDB 相关的配置项。`db-name` 的取值可为 `rocksdb`，`raftdb`。
+上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的是 RocksDB 相关的配置项。`db-name` 的取值可为 `rocksdb` 或 `raftdb`。
 
-- 当 `db-name` 为 `rocksdb` 时，cf-name 的取值有: `defaultcf`，`writecf`，`lockcf`，`raftcf`；
-- 当 `db-name` 为 `raftdb` 时，cf-name 的取值有: `defaultcf`。
+- 当 `db-name` 为 `rocksdb` 时，`cf-name` 的可取值有：`defaultcf`、`writecf`、`lockcf`、`raftcf`；
+- 当 `db-name` 为 `raftdb` 时，`cf-name` 的可取值有：`defaultcf`。
 
-具体配置项意义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)
+具体配置项的意义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)
 
 ### 在线修改 PD 配置
 
 PD 暂不支持单个实例拥有独立配置。所有实例共享一份配置，可以通过下列方式修改 PD 的配置项：
+
+{{< copyable "sql" >}}
 
 ```sql
 set config pd log.level="info"
@@ -199,7 +215,7 @@ set config pd log.level="info"
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-针对 PD 可在线修改的配置项，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的配置为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ``` 包裹起来，如 ``schedule.`leader-schedule-limit` ``；
+针对 PD 可在线修改的配置项，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的配置为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ```  包裹此类配置项，例如 ``` `schedule.leader-schedule-limit` ```。
 
 支持配置项列表如下：
 
@@ -242,13 +258,15 @@ Query OK, 0 rows affected (0.01 sec)
 | pd-server.dashboard-address | 用于设置 dashboard 的地址 |
 | replication-mode.replication-mode | 备份的模式 |
 
-具体配置项意义可参考 [PD 配置文件描述](/pd-configuration-file.md)
+具体配置项意义可参考 [PD 配置文件描述](/pd-configuration-file.md)。
 
 ### 在线修改 TiDB 配置
 
-在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，我们通过 [SQL 变量](/system-variables.md) 来完成。
+在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，用户通过 [SQL 变量](/system-variables.md)来完成修改。
 
 下面例子展示了如何通过变量 `tidb_slow_log_threshold` 在线修改配置项 `slow-threshold`。`slow-threshold` 默认值是 200 毫秒，可以通过设置 `tidb_slow_log_threshold` 将其修改为 200 毫秒：
+
+{{< copyable "sql" >}}
 
 ```sql
 set tidb_slow_log_threshold = 200;
@@ -258,8 +276,10 @@ set tidb_slow_log_threshold = 200;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select @@tidb_slow_log_threshold;
+select @@tidb_slow_log_threshold;
 ```
 
 ```sql
@@ -271,11 +291,11 @@ mysql> select @@tidb_slow_log_threshold;
 1 row in set (0.00 sec)
 ```
 
-支持在线修改的配置项和相应的系统变量如下：
+支持在线修改的配置项和相应的 TiDB 系统变量如下：
 
 | 配置项 | 对应变量 | 简介 |
 | --- | --- | --- |
-| mem-quota-query | tidb_mem_quota_query | Query 使用的内存限制 |
-| log.enable-slow-log | tidb_enable_slow_log | 慢日志开关 |
+| mem-quota-query | tidb_mem_quota_query | 查询语句的内存使用限制 |
+| log.enable-slow-log | tidb_enable_slow_log | 慢日志的开关 |
 | log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
 | log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
