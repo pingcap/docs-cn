@@ -436,7 +436,7 @@ case-sensitive = true
 ignore-txn-start-ts = [1, 2]
 
 # 过滤器规则
-# 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#%E8%A1%A8%E5%BA%93%E8%BF%87%E6%BB%A4%E8%AF%AD%E6%B3%95
+# 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
 rules = ['*.*', '!test.*']
 
 [mounter]
@@ -446,7 +446,7 @@ worker-num = 16
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 default、ts、rowid、table 四种分发器
-# matcher 匹配语法和过滤器相同
+# matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
