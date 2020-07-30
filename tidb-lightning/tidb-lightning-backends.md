@@ -24,7 +24,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导�
 | 额外组件 | 无 | `tikv-importer` | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
 
-# 如何选择使用的后端模式
+## 如何选择后端模式
 
 - 如果导入的目标集群为 v4.0 或以上版本，请优先考虑使用 Local-backend 模式。Local-backend 部署更简单并且性能也较其他两个模式更高
 - 如果目标集群为 v3.x 或以下，则建议使用 Importer-backend 模式
@@ -34,9 +34,9 @@ TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导�
 
 Local-backend 特性在 TiDB v4.0.3 发布，v4.0.3 及以上的 TiDB Lightning 才包含此特性。另外 Local-backend 只支持 v4.0.0 以上的集群。
 
-### 部署和配置 TiDB Lightning 
+### 部署和配置 TiDB Lightning
 
-TiDB Lightning Local-backend模式 的部署方法见 [TiDB Lightning 部署与执行](/tidb-lightning/deploy-tidb-lightning.md)。
+TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与执行](/tidb-lightning/deploy-tidb-lightning.md)。
 
 ## TiDB Lightning TiDB-backend
 
