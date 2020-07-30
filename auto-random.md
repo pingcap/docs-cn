@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/sql/attributes/auto-random/']
 
 > **警告：**
 >
-> 当前 `AUTO_RANDOM` 属性于 v4.0.0 版本已为正式功能，**可以在生产环境中使用**。
+> 当前 `AUTO_RANDOM` 属性于 v4.0.3 版本已为正式功能，**可以在生产环境中使用**。
 
 使用 `AUTO_RANDOM` 功能前，须在 TiDB 配置文件 `experimental` 部分设置 `allow-auto-random = true`。该参数详情可参见 [`allow-auto-random`](/tidb-configuration-file.md#allow-auto-random)。
 
