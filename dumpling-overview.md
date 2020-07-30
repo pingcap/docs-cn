@@ -238,7 +238,6 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -P 或 --port | 连接的数据库主机的端口 | 4000 |
 | -u 或 --user | 连接的数据库主机的用户名 | "root" |
 | --dump-empty-database | 导出空数据库的建库语句 | true |
-| --tidbMemQuotaQuery | 导出 TiDB 数据库时单条 query 最大使用的内存 | 34359738368(32GB) |
 | --ca | 用于 TLS 连接的 certificate authority 文件的地址 |
 | --cert | 用于 TLS 连接的 client certificate 文件的地址 |
 | --key | 用于 TLS 连接的 client private key 文件的地址 |
