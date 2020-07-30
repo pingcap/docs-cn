@@ -149,7 +149,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
 
 2. 将数据源写入到同样的机器。
 
-3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。 `sorted-kv-dir`需要设置为一个空的目录，并且确保所在的磁盘有较多空闲的空间。
+3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。`sorted-kv-dir`需要设置为一个空的目录，并且确保所在的磁盘有较多空闲的空间。
 
     ```toml
     [lightning]
