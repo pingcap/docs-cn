@@ -29,8 +29,6 @@ DESC analyze_status;
 7 rows in set (0.00 sec)
 ```
 
-`STATE` 列表示特定 `ANALYZE` 任务的执行状态。其值可以是 `pending`、`running`、`finished` 或者 `failed`。
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -50,3 +48,13 @@ SELECT * FROM `ANALYZE_STATUS`;
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
 6 rows in set
 ```
+
+`ANALYZE_STATUS` 表中列的含义如下：
+
+* `TABLE_SCHEMA`：表所属的数据库的名称。
+* `TABLE_NAME`：表的名称。
+* `PARTITION_NAME`：分区表的名称。
+* `JOB_INFO`：ANALYZE` 任务的信息。
+* `PROCESSED_ROWS`：已经处理的行数。
+* `START_TIME`：`ANALYZE` 任务的开始时间。
+* `STATE`：`ANALYZE` 任务的执行状态。其值可以是 `pending`、`running`、`finished` 或者 `failed`。

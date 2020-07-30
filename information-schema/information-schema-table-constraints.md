@@ -49,7 +49,10 @@ SELECT * FROM table_constraints WHERE constraint_type='UNIQUE';
 7 rows in set (0.01 sec)
 ```
 
-其中：
+`TABLE_CONSTRAINTS` 表中列的含义如下：
 
-* `CONSTRAINT_TYPE` 的取值可以是 `UNIQUE`，`PRIMARY KEY`，或者 `FOREIGN KEY`。
-* `UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
+* `CONSTRAINT_CATALOG`：约束所属的目录的名称。这个值总是 `def`。
+* `CONSTRAINT_SCHEMA`：约束所属的数据库的名称。
+* `CONSTRAINT_NAME`：约束的名称。
+* `TABLE_NAME`：表的名称。
+* `CONSTRAINT_TYPE`：约束的类型。取值可以是 `UNIQUE`、`PRIMARY KEY` 或者 `FOREIGN KEY`。`UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
