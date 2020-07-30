@@ -51,7 +51,7 @@ Placement Rules 示意图如下所示：
 
 `LocationLabels` 的意义和作用与 PD v4.0 之前的版本相同。比如配置 `[zone,rack,host]` 定义了三层的拓扑结构：集群分为多个 zone（可用区），每个 zone 下有多个 rack（机架），每个 rack 下有多个 host（主机）。PD 在调度时首先会尝试将 Region 的 Peer 放置在不同的 zone，假如无法满足（比如配置 3 副本但总共只有 2 个 zone）则保证放置在不同的 rack；假如 rack 的数量也不足以保证隔离，那么再尝试 host 级别的隔离，以此类推。
 
-`IsolationLevel` 的意义和作用详细请参考 [配置集群拓扑](/schedule-replicas-by-topology-labels.md)。比如配置了 `LocationLabels` 为 `[zone,rack,host]` 的前提下，设置 `IsolationLevel` 为 `zone`，则 PD 在调度时会保证每个 Region 的所有 Peer 均放置在不同的 zone，假如无法满足（比如配置 3 副本但总共只有 2 个 zone），PD 也不会尝试进行补足，以满足 `IsolationLevel` 的最小强制隔离级别限制。`IsolationLevel` 默认值为空字符串，即不开启状态。
+`IsolationLevel` 的意义和作用详细请参考[配置集群拓扑](/schedule-replicas-by-topology-labels.md)。例如已配置 `LocationLabels` 为 `[zone,rack,host]` 的前提下，设置 `IsolationLevel` 为 `zone`，则 PD 在调度时会保证每个 Region 的所有 Peer 均被放置在不同的 zone。假如无法满足 `IsolationLevel` 的最小强制隔离级别限制（比如配置 3 副本但总共只有 2 个 zone），PD 也不会尝试补足，以满足该限制。`IsolationLevel` 默认值为空字符串，即禁用状态。
 
 ## 配置规则操作步骤
 
