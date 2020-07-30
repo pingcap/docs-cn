@@ -54,7 +54,7 @@ SELECT * FROM `ANALYZE_STATUS`;
 * `TABLE_SCHEMA`：表所属的数据库的名称。
 * `TABLE_NAME`：表的名称。
 * `PARTITION_NAME`：分区表的名称。
-* `JOB_INFO`：ANALYZE` 任务的信息。
+* `JOB_INFO`：`ANALYZE` 任务的信息。
 * `PROCESSED_ROWS`：已经处理的行数。
 * `START_TIME`：`ANALYZE` 任务的开始时间。
 * `STATE`：`ANALYZE` 任务的执行状态。其值可以是 `pending`、`running`、`finished` 或者 `failed`。
