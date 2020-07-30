@@ -216,7 +216,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -T 或 --tables-list | 导出指定数据表 |
 | -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) | `*.*`（导出所有库表） |
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
-| -h 或 --host| 链接节点的地址 | "127.0.0.1" |
+| -h 或 --host| 连接的数据库主机的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
 | -r 或 --rows | 将 table 划分成 row 行数据，一般针对大表操作并发生成多个文件。|
 | -L 或 --logfile | 日志输出地址，为空时会输出到控制台 | "" |
