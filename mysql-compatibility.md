@@ -10,8 +10,8 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 - 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
     - 有更好的解决方案，例如 JSON 取代 XML 函数。
-    - 目前对这些功能缺乏有力的需求，例如存储流程和函数。
-    - 一些功能在分布式系统上难以实现。
+    - 目前对这些功能的需求度不高，例如存储流程和函数。
+    - 一些功能在分布式系统上的实现难度较大。
 
 > **注意：**
 >
@@ -84,13 +84,13 @@ TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控
 
 ### 内建函数
 
-支持常用的 MySQL 内建函数，有部分函数并未支持。可通过执行 `SHOW BUILTINS` 语句查看可用的内建函数。参考[SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
+支持常用的 MySQL 内建函数，有部分函数并未支持。可通过执行 `SHOW BUILTINS` 语句查看可用的内建函数。参考 [SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
 
 ### DDL 的限制
 
-TiDB 中，所有支持的 DDL 变更操作都是在线执行的。`ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 这两条 MySQL DDL 断言还可用于断言使用哪种算法来修改表（可能与 MySQL 不同）。
+TiDB 中，所有支持的 DDL 变更操作都是在线执行的。可能与 MySQL 不同的是，在 TiDB 中，`ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 这两种 MySQL DDL 算法可用于指定使用哪种算法来修改表。
 
-以下限制适用于 DDL 与 MySQL：
+与 MySQL 相比，TiDB 中的 DDL 存在以下限制：
 
 * 不能在单条 `ALTER TABLE` 语句中完成多个操作。例如，不能在单个语句中添加多个列或索引，否则，可能会输出 `Unsupported multi schema change` 的错误。
 * 不支持不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
@@ -124,7 +124,7 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 - `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
 
-- `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` MySQL 可用于解决兼容问题，并不适用于 TiDB。
+- `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 仅用于解决与 MySQL 的兼容性问题，并不适用于 TiDB。
 
 ### 默认设置
 
