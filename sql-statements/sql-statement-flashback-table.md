@@ -44,8 +44,8 @@ If a table is dropped and the GC lifetime has passed, you can no longer use the 
 
 Pay attention to the following conditions and requirements when you enable TiDB Binlog and use the `FLASHBACK TABLE` statement:
 
-* The downstream slave cluster must also support `FLASHBACK TABLE`.
-* The GC lifetime of the slave cluster must be longer than that of the master cluster.
+* The downstream secondary cluster must also support `FLASHBACK TABLE`.
+* The GC lifetime of the secondary cluster must be longer than that of the primary cluster.
 * The delay of replication between the upstream and downstream might also cause the failure to recover data to the downstream.
 * If an error occurs when TiDB Binlog is replicating a table, you need to filter that table in TiDB Binlog and manually import all data of that table.
 

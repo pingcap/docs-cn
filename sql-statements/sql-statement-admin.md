@@ -109,7 +109,7 @@ The above statement is used to get the 64-bit checksum value of `tbl_name`. This
 ADMIN RELOAD expr_pushdown_blacklist;
 ```
 
-The above statement is used to reload the blacklist pushed down by the expression.
+The above statement is used to reload the blocklist pushed down by the expression.
 
 {{< copyable "sql" >}}
 
@@ -117,7 +117,7 @@ The above statement is used to reload the blacklist pushed down by the expressio
 ADMIN RELOAD opt_rule_blacklist;
 ```
 
-The above statement is used to reload the blacklist of logic optimization rules.
+The above statement is used to reload the blocklist of logic optimization rules.
 
 ## `ADMIN PLUGINS` related statement
 

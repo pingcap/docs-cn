@@ -63,7 +63,7 @@ TiDB Ansible version: 3.0.4
     - Support using aliases for tables in the point queries (for example, `select * from t tmp where a = "aa"`) [#12282](https://github.com/pingcap/tidb/pull/12282)
     - Fix the error occurred when not handling negative values as unsigned when inserting negative numbers into BIT type columns  [#12423](https://github.com/pingcap/tidb/pull/12423)
     - Fix the incorrectly rounding of time (for example, `2019-09-11 11:17:47.999999666` should be rounded to `2019-09-11 11:17:48`.) [#12258](https://github.com/pingcap/tidb/pull/12258)
-    - Refine the usage of expression blacklist (for example, `<` is equivalent to `It`.) [#11975](https://github.com/pingcap/tidb/pull/11975)
+    - Refine the usage of expression blocklist (for example, `<` is equivalent to `It`.) [#11975](https://github.com/pingcap/tidb/pull/11975)
     - Add the database prefix to the message of non-existing function error (for example, `[expression:1305]FUNCTION test.std_samp does not exist`) [#12111](https://github.com/pingcap/tidb/pull/12111)
 - Server
     - Add the `Prev_stmt` field in slow query logs to output the previous statement when the last statement is `COMMIT` [#12180](https://github.com/pingcap/tidb/pull/12180)

@@ -186,10 +186,10 @@ select * from information_schema.inspection_rules where type='inspection';
 
 In the `config` diagnostic rule, the following two diagnostic rules are executed by querying the `CLUSTER_CONFIG` system table:
 
-* Check whether the configuration values of the same component are consistent. Not all configuration items has this consistency check. The white list of consistency check is as follows:
+* Check whether the configuration values of the same component are consistent. Not all configuration items has this consistency check. The allowlist of consistency check is as follows:
 
     ```go
-    // The whitelist of the TiDB configuration consistency check
+    // The allowlist of the TiDB configuration consistency check
     port
     status.status-port
     host
@@ -200,7 +200,7 @@ In the `config` diagnostic rule, the following two diagnostic rules are executed
     log.slow-query-file
     tmp-storage-path
 
-    // The whitelist of the PD configuration consistency check
+    // The allowlist of the PD configuration consistency check
     advertise-client-urls
     advertise-peer-urls
     client-urls
@@ -211,7 +211,7 @@ In the `config` diagnostic rule, the following two diagnostic rules are executed
     name
     peer-urls
 
-    // The whitelist of the TiKV configuration consistency check
+    // The allowlist of the TiKV configuration consistency check
     server.addr
     server.advertise-addr
     server.status-addr

@@ -50,7 +50,7 @@ RECOVER TABLE BY JOB ddl_job_id
 >
 >     - Binglog version is 3.0.1 or later.
 >     - TiDB 3.0 is used both in the upstream cluster and the downstream cluster.
->     - The GC life time of the slave cluster must be longer than that of the master cluster. However, as latency occurs during data replication between upstream and downstream databases, data recovery might fail in the downstream.
+>     - The GC life time of the secondary cluster must be longer than that of the primary cluster. However, as latency occurs during data replication between upstream and downstream databases, data recovery might fail in the downstream.
 
 ### Troubleshoot errors during TiDB Binlog replication
 

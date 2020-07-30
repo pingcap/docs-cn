@@ -31,7 +31,7 @@ Ensure that you have `SUPER` privilege when setting SQL mode at `GLOBAL` level, 
 | `IGNORE_SPACE` | If this mode is enabled, the system ignores space. For example: "user" and "user " are the same. (full support)|
 | `ONLY_FULL_GROUP_BY` | If a non-aggregated column that is referred to in `SELECT`, `HAVING`, or `ORDER BY` is absent in `GROUP BY`, this SQL statement is invalid, because it is abnormal for a column to be absent in `GROUP BY` but displayed by query. (full support) |
 | `NO_UNSIGNED_SUBTRACTION` | Does not mark the result as `UNSIGNED` if an operand has no symbol in subtraction. (full support)|
-| `NO_DIR_IN_CREATE` | Ignores all `INDEX DIRECTORY` and `DATA DIRECTORY` directives when a table is created. This option is only useful for slave replication servers (syntax support only) |
+| `NO_DIR_IN_CREATE` | Ignores all `INDEX DIRECTORY` and `DATA DIRECTORY` directives when a table is created. This option is only useful for secondary replication servers (syntax support only) |
 | `NO_KEY_OPTIONS` | When you use the `SHOW CREATE TABLE` statement, MySQL-specific syntaxes such as `ENGINE` are not exported. Consider this option when migrating across DB types using mysqldump. (syntax support only)|
 | `NO_FIELD_OPTIONS` | When you use the `SHOW CREATE TABLE` statement, MySQL-specific syntaxes such as `ENGINE` are not exported. Consider this option when migrating across DB types using mysqldump. (syntax support only) |
 | `NO_TABLE_OPTIONS` | When you use the `SHOW CREATE TABLE` statement, MySQL-specific syntaxes such as `ENGINE` are not exported. Consider this option when migrating across DB types using mysqldump. (syntax support only)|
