@@ -254,7 +254,7 @@ DETAILS   | the cluster has 2 different tidb versions, execute the sql to see mo
 
 `critical-error` 诊断规则执行以下两个诊断规则：
 
-* 通过查询 [metrics schema](/information-schema/information-schema-metrics-schema.md) 数据库中相关的监控系统表，检测集群是否有出现以下比较严重的错误：
+* 通过查询 [metrics schema](/metrics-schema.md) 数据库中相关的监控系统表，检测集群是否有出现以下比较严重的错误：
 
     |  组件  | 错误名字 | 相关监控表 | 错误说明 |
     |  ----  | ----  |  ----  |  ----  |
