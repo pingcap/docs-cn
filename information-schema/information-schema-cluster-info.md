@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_INFO
 summary: 了解 TiDB 集群拓扑表 `CLUSTER_INFO`。
-aliases: ['/docs-cn/dev/reference/system-databases/cluster-info/','/zh/tidb/dev/system-table-cluster-info/']
+aliases: ['/docs-cn/dev/reference/system-databases/cluster-info/','/zh/tidb/dev/system-table-cluster-info/','/docs-cn/dev/system-tables/system-table-cluster-info/']
 ---
 
 # CLUSTER_INFO
