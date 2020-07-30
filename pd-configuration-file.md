@@ -256,6 +256,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 默认：[]
 + [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
 
+### `isolation-level`
+
++ TiKV 集群的最小强制拓扑隔离级别。
++ 默认：""
++ [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
+
 ### `strictly-match-label`
 
 + 打开强制 TiKV Label 和 PD 的 localtion-labels 是否匹配的检查
