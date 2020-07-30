@@ -8,7 +8,7 @@ title: TiDB 3.0.17 Release Notes
 
 TiDB 版本：3.0.17
 
-## 优化
+## Bug 修复
 
 + TiDB
 
@@ -21,13 +21,13 @@ TiDB 版本：3.0.17
 
 + TiKV
 
-    - 新增 `hibernate-timeout` 配置支持推后 Region 休眠时间，减少 Region 休眠对滚动升级的影响 [#8207](https://github.com/tikv/tikv/pull/8207)
+    - 修复在 Region 合并过程中可能导致读到旧数据的问题 [#8111](https://github.com/tikv/tikv/pull/8111)
 
 + TiDB-Lightning
 
-    - 废弃 `[black-white-list]` 参数，新增一种更加简单易用的过滤规则。 [#332](https://github.com/pingcap/tidb-lightning/pull/332)
+    - 解决 `log-file` 参数不生效的问题。 [#345](https://github.com/pingcap/tidb-lightning/pull/345)
 
-## Bug 修复
+## 优化
 
 + TiDB
 
@@ -39,8 +39,8 @@ TiDB 版本：3.0.17
 
 + TiKV
 
-    - 修复在 Region 合并过程中可能导致读到旧数据的问题 [#8111](https://github.com/tikv/tikv/pull/8111)
+    - 新增 `hibernate-timeout` 配置支持推后 Region 休眠时间，减少 Region 休眠对滚动升级的影响 [#8207](https://github.com/tikv/tikv/pull/8207)
 
 + TiDB-Lightning
 
-    - 解决 `log-file` 参数不生效的问题。 [#345](https://github.com/pingcap/tidb-lightning/pull/345)
+    - 废弃 `[black-white-list]` 参数，新增一种更加简单易用的过滤规则。 [#332](https://github.com/pingcap/tidb-lightning/pull/332)
