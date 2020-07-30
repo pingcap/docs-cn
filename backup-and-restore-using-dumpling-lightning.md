@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-o
 
 # 使用 Dumpling/TiDB Lightning 进行备份与恢复
 
-本文档将详细介绍如何使用 Dumpling/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
+本文档将详细介绍如何使用 Dumpling/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份和同步可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
 这里假定 TiDB 服务器信息如下：
 
