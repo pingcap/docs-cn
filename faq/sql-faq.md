@@ -13,9 +13,9 @@ summary: 介绍 SQL 操作相关的常见问题。
 
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
-支持。当 TiDB 使用悲观锁（TiDB v3.0 以来的默认设置）时，它的行为与 MySQL 基本一致。
+支持。当 TiDB 使用悲观锁（TiDB v3.0 以来的默认设置）时，`SELECT FOR UPDATE` 表现与 MySQL 中基本一致。
 
-当使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时锁定数据，而是在提交事务时检查冲突。如果显示冲突，则提交的事务会进行回滚。
+当 TiDB 使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时锁定数据，而是在提交事务时检查冲突。如果显示冲突，则提交的事务会进行回滚。
 
 ## TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
@@ -31,7 +31,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 ## 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 支持将 [`sql_mode`](/sql-mode.md) 修改为[系统变量](/system-variables.md#sql_mode)，就像 MySQL 中一样。目前，TiDB 不允许在配置文件中修改 sql_mode，但是集群中的所有 TiDB server 会获取到使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 进行的系统变量更改，并且重启后依然有效。
+TiDB 支持将 [`sql_mode`](/sql-mode.md) 修改为[系统变量](/system-variables.md#sql_mode)，操作与 MySQL 中一致。目前，TiDB 不允许在配置文件中修改 `sql_mode`，但是集群中的所有 TiDB server 会获取到使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 进行的系统变量更改，并且重启后更改依然有效。
 
 ## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
@@ -85,7 +85,7 @@ TiDB 的 `SHOW PROCESSLIST`  与 MySQL 的 `SHOW PROCESSLIST`  显示内容基�
 TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全局](/tidb-configuration-file.md#force-priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
-- LOW_PRIORITY：该语句为低优\先级语句，TiDB 在执行阶段会降低这条语句的优先级
+- LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
@@ -109,9 +109,9 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
-## 可以使用 hints 控制优化器行为吗？
+## 可以使用 Hints 控制优化器行为吗？
 
-TiDB 支持多种方法控制默认查询优化器的行为，包括 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行管理](/sql-plan-management.md)。基本用法同 MySQL 中一致，并且包含 TiDB 特定扩展名：
+TiDB 支持多种方法以控制默认查询优化器行为，包括 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行管理](/sql-plan-management.md)。基本用法同 MySQL 中一致，并且包含 TiDB 特定扩展名：
 `select column_name from table_name use index（index_name）where where_condition;`
 
 ## 触发 Information schema is changed 错误的原因？
@@ -147,11 +147,11 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 
 ### TiDB 执行计划解读
 
-详细解读 [理解 TiDB 执行计划](/query-execution-plan.md)。
+详细解读[理解 TiDB 执行计划](/query-execution-plan.md)。
 
 ### 统计信息收集
 
-详细解读 [统计信息](/statistics.md)。
+详细解读[统计信息](/statistics.md)。
 
 ### Count 如何加速？
 
@@ -216,7 +216,7 @@ ID 没什么规律，只要是唯一就行，不过生成的时候，是有一�
 
 ### 如何打散热点
 
-TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于非整数主键或没有主键的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)中的介绍。
+TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于非整数主键或没有主键的表，可以通过设置 `SHARD_ROW_ID_BITS` 来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考官网 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 中的介绍。
 
 ### TiKV 性能参数调优
 
