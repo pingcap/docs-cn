@@ -142,7 +142,7 @@ no-schema = false
 character-set = "auto"
 
 # 如果输入数据源为严格格式，则会加快处理速度。
-# 当 strict-format = true：
+# strict-format = true 要求：
 # 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D, 即 \r 和 \n），
 # 甚至使用转义符时都不可以，即严格将换行符作为行分隔符。
 # 输入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
