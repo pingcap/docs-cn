@@ -1,7 +1,6 @@
 ---
 title: TiDB Dashboard SQL 语句分析列表页面
 summary: 查看所有 SQL 语句在集群上执行情况
-category: how-to
 ---
 
 # TiDB Dashboard SQL 语句分析执行详情页面

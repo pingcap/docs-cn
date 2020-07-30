@@ -1,7 +1,6 @@
 ---
 title: CREATE INDEX
 summary: CREATE INDEX 在 TiDB 中的使用概况
-category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/create-index/']
 ---
 
@@ -163,7 +162,7 @@ Query OK, 0 rows affected (0.31 sec)
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
-如果需要使用这一特性，在配置文件中进行以下设置：
+如果需要使用这一特性，在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
 
 {{< copyable "sql" >}}
 
@@ -206,7 +205,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## 相关 session 变量
 
-和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/tidb-specific-system-variables.md#tidb_ddl_reorg_worker_cnt)。
+和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考[系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 

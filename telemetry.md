@@ -1,7 +1,6 @@
 ---
 title: 遥测
 summary: 介绍遥测的场景，如何禁用功能和查看遥测状态。
-category: reference
 ---
 
 # 遥测
@@ -148,13 +147,13 @@ enable-telemetry: false
 
 > **注意：**
 >
-> 该配置需使用 TiDB Operator v1.1.2 或更高版本才能生效。
+> 该配置需使用 TiDB Operator v1.1.3 或更高版本才能生效。
 
 </details>
 
 ### 动态禁用 TiDB 遥测
 
-对于已部署的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/tidb-specific-system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 动态禁用 TiDB 遥测功能：
+对于已部署的 TiDB 集群，还可以修改系统全局变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 动态禁用 TiDB 遥测功能：
 
 {{< copyable "sql" >}}
 
@@ -166,7 +165,7 @@ SET GLOBAL tidb_enable_telemetry = 0;
 
 ### 禁用 TiDB Dashboard 遥测
 
-可以修改 PD 配置中 [`dashboard.disable-telemetry = true`](/pd-configuration-file.md#disable-telemetry) 禁用 TiDB Dashboard 遥测功能。对于已启动的集群，该配置需要重启后才能生效。
+可以修改 PD 配置中 [`dashboard.enable-telemetry = false`](/pd-configuration-file.md#enable-telemetry) 禁用 TiDB Dashboard 遥测功能。对于已启动的集群，该配置需要重启后才能生效。
 
 以下列出在各个部署工具中修改遥测配置的具体步骤。
 
@@ -179,12 +178,12 @@ SET GLOBAL tidb_enable_telemetry = 0;
 
 ```toml
 [dashboard]
-disable-telemetry = true
+enable-telemetry = false
 ```
 
 启动 PD 时指定命令行参数 `--config=pd_config.toml` 使得该配置生效。
 
-详情参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md#--config)、[PD 配置文件描述](/pd-configuration-file.md#disable-telemetry)。
+详情参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md#--config)、[PD 配置文件描述](/pd-configuration-file.md#enable-telemetry)。
 
 </details>
 
@@ -197,7 +196,7 @@ disable-telemetry = true
 
 ```toml
 [dashboard]
-disable-telemetry = true
+enable-telemetry = false
 ```
 
 启动 TiUP Playground 时，指定命令行参数 `--pd.config pd_config.toml` 使得该配置生效，如：
@@ -222,7 +221,7 @@ tiup playground --pd.config pd_config.toml
 ```yaml
 server_configs:
   pd:
-    dashboard.disable-telemetry: true
+    dashboard.enable-telemetry: false
 ```
 
 </details>
@@ -235,7 +234,7 @@ server_configs:
 ```yaml
 dashboard:
   ...
-  # disable-telemetry: false
+  # enable-telemetry: true
 ```
 
 将其修改为：
@@ -243,7 +242,7 @@ dashboard:
 ```yaml
 dashboard:
   ...
-  disable-telemetry: true
+  enable-telemetry: false
 ```
 
 详情参见[使用 TiDB Ansible 部署](/online-deployment-using-ansible.md)。
@@ -253,13 +252,13 @@ dashboard:
 <details>
   <summary>通过 TiDB Operator 在 Kubernetes 上部署</summary>
 
-在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.pd.config.dashboard.disable-telemetry: true`。
+在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.pd.config.dashboard.enable-telemetry: false`。
 
 详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
 
 > **注意：**
 >
-> 该配置需使用 TiDB Operator v1.1.2 或更高版本才能生效。
+> 该配置需使用 TiDB Operator v1.1.3 或更高版本才能生效。
 
 </details>
 
