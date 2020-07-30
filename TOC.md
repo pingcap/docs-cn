@@ -89,6 +89,7 @@
   + [Troubleshoot Hotspot Issues](/troubleshoot-hot-spot-issues.md)
   + [Troubleshoot Cluster Setup](/troubleshoot-tidb-cluster.md)
   + [Troubleshoot High Disk I/O Usage](/troubleshoot-high-disk-io.md)
+  + [Troubleshoot Lock Conflicts](/troubleshoot-lock-conflicts.md)
   + [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
   + [Troubleshoot TiFlash](/tiflash/troubleshoot-tiflash.md)
   + [Troubleshoot Write Conflicts in Optimistic Transactions](/troubleshoot-write-conflicts.md)
