@@ -830,7 +830,7 @@ Configuration items related to `rocksdb.defaultcf`
 ### `block-cache-size`
 
 + The cache size of a RocksDB block
-+ Default value: `Total machine memory / 4`
++ Default value: `Total machine memory * 25%`
 + Minimum value: `0`
 + Unit: KB|MB|GB
 
