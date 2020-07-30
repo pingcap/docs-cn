@@ -1,6 +1,6 @@
 ---
 title: Information Schema
-aliases: ['/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/system-tables/system-table-information-schema/','/zh/tidb/dev/system-table-information-schema/']]
+aliases: ['/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/system-tables/system-table-information-schema/','/zh/tidb/dev/system-table-information-schema/']
 ---
 
 # Information Schema
@@ -83,8 +83,6 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 
 ## SQL 诊断相关的表
 
-* [`information_schema.cluster_config`](/system-tables/system-table-cluster-config.md)
-* [`information_schema.cluster_hardware`](/system-tables/system-table-cluster-hardware.md)
 * [`information_schema.cluster_load`](/system-tables/system-table-cluster-load.md)
 * [`information_schema.cluster_systeminfo`](/system-tables/system-table-cluster-systeminfo.md)
 * [`information_schema.cluster_log`](/system-tables/system-table-cluster-log.md)

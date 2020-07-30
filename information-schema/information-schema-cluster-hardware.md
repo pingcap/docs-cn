@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_HARDWARE
 summary: 了解 TiDB 集群硬件表 `CLUSTER_HARDWARE`。
-aliases: ['/docs-cn/dev/reference/system-databases/cluster-hardware/']
+aliases: ['/docs-cn/dev/reference/system-databases/cluster-hardware/','/zh/tidb/dev/system-table-cluster-hardware/','/docs-cn/dev/system-tables/system-table-cluster-hardware/']
 ---
 
 # CLUSTER_HARDWARE
@@ -11,7 +11,8 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-hardware/']
 {{< copyable "sql" >}}
 
 ```sql
-desc information_schema.cluster_hardware;
+USE information_schema;
+DESC cluster_hardware;
 ```
 
 ```sql
@@ -25,12 +26,13 @@ desc information_schema.cluster_hardware;
 | NAME        | varchar(256) | YES  |      | NULL    |       |
 | VALUE       | varchar(128) | YES  |      | NULL    |       |
 +-------------+--------------+------+------+---------+-------+
+6 rows in set (0.00 sec)
 ```
 
 字段解释：
 
-* `TYPE`：对应集群信息表 [`information_schema.cluster_info`](/system-tables/system-table-cluster-info.md) 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 和 `tikv`。
-* `INSTANCE`：对应于集群信息表 `information_schema.cluster_info` 中的 `INSTANCE` 字段。
+* `TYPE`：对应集群信息表 [`information_schema.cluster_info`](/information-schema/information-schema-cluster-info.md) 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 和 `tikv`。
+* `INSTANCE`：对应于集群信息表 [`information_schema.cluster_info`](/information-schema/information-schema-cluster-info.md) 中的 `INSTANCE` 字段。
 * `DEVICE_TYPE`：硬件类型。目前可以查询的硬件类型有 `cpu`、`memory`、`disk` 和 `net`。
 * `DEVICE_NAME`：硬件名。对于不同的 `DEVICE_TYPE`，`DEVICE_NAME` 的取值不同。
     * `cpu`：硬件名为 cpu。
@@ -45,18 +47,19 @@ desc information_schema.cluster_hardware;
 {{< copyable "sql" >}}
 
 ```sql
-select * from information_schema.cluster_hardware where device_type='cpu' and device_name='cpu' and name like '%cores';
+SELECT * FROM cluster_hardware WHERE device_type='cpu' AND device_name='cpu' AND name LIKE '%cores';
 ```
 
 ```sql
 +------+-----------------+-------------+-------------+--------------------+-------+
 | TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME               | VALUE |
 +------+-----------------+-------------+-------------+--------------------+-------+
-| tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-logical-cores  | 8     |
-| tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-physical-cores | 4     |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-logical-cores  | 8     |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-physical-cores | 4     |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | cpu-logical-cores  | 8     |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | cpu-physical-cores | 4     |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-logical-cores  | 16     |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | cpu-physical-cores | 8     |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-logical-cores  | 16     |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | cpu-physical-cores | 8     |
+| tikv | 127.0.0.1:20165 | cpu         | cpu         | cpu-logical-cores  | 16     |
+| tikv | 127.0.0.1:20165 | cpu         | cpu         | cpu-physical-cores | 8     |
 +------+-----------------+-------------+-------------+--------------------+-------+
+6 rows in set (0.03 sec)
 ```
