@@ -81,10 +81,6 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)    | 提供 Region 的统计信息。 |
 | [`TIKV_STORE_STATUS`](/information-schema/information-schema-tikv-store-status.md)      | 提供 TiKV 服务器的基本信息。 |
 
-## SQL 诊断相关的表
-
-* [`information_schema.inspection_summary`](/system-tables/system-table-inspection-summary.md)
-
 ## 不支持的 Information Schema 表
 
 TiDB 包含以下 `INFORMATION_SCHEMA` 表，但仅会返回空行：
