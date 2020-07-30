@@ -83,8 +83,6 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 
 ## SQL 诊断相关的表
 
-* [`information_schema.metrics_summary_by_label`](/system-tables/system-table-metrics-summary.md)
-* [`information_schema.inspection_result`](/system-tables/system-table-inspection-result.md)
 * [`information_schema.inspection_summary`](/system-tables/system-table-inspection-summary.md)
 
 ## 不支持的 Information Schema 表
