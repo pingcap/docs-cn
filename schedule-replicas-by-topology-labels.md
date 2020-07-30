@@ -63,7 +63,7 @@ pd-ctl config set location-labels zone,rack,host
 
 ### 设置 PD 的 `isolation-level` 配置
 
-在配置了 `location-labels` 的前提下，你可以还通过 `isolation-level` 配置来进一步增强对 TiKV 集群的拓扑隔离要求。假设按照上面的说明通过 `location-labels` 将集群的拓扑结构分成三层：机房（zone) -> 机架（rack）-> 主机（host），并对 `isolation-level` 作如下配置：
+在配置了 `location-labels` 的前提下，用户可以还通过 `isolation-level` 配置来进一步加强对 TiKV 集群的拓扑隔离要求。假设按照上面的说明通过 `location-labels` 将集群的拓扑结构分成三层：机房（zone) -> 机架（rack）-> 主机（host），并对 `isolation-level` 作如下配置：
 
 {{< copyable "" >}}
 
