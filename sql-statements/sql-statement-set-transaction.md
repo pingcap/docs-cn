@@ -1,7 +1,6 @@
 ---
 title: SET TRANSACTION
 summary: TiDB 数据库中 SET TRANSACTION 的使用概况。
-category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/set-transaction/']
 ---
 

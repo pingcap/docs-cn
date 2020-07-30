@@ -1,6 +1,5 @@
 ---
 title: TiDB 4.0 RC.2 Release Notes
-category: Releases
 ---
 
 # TiDB 4.0 RC.2 Release Notes

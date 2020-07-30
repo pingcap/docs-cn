@@ -1,6 +1,5 @@
 ---
 title: TiDB 数据库快速上手指南
-category: how-to
 ---
 
 # TiDB 数据库快速上手指南
