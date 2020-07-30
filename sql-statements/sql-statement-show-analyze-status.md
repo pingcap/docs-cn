@@ -45,4 +45,4 @@ show analyze status;
 
 ## 另请参阅
 
-* [ANALYZE_STATUS 表](/system-tables/system-table-information-schema.md#analyze_status-表)
+* [ANALYZE_STATUS 表](/information-schema/information-schema-analyze-status.md)

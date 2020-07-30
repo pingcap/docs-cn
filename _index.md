@@ -78,7 +78,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 <ColumnTitle>故障诊断</ColumnTitle>
 
 - [定位慢查询](/identify-slow-queries.md)
-- [SQL 诊断](/system-tables/system-table-sql-diagnostics.md)
+- [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
 - [热点问题处理](/troubleshoot-hot-spot-issues.md)
 - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
 - [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
