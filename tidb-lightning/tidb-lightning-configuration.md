@@ -141,14 +141,17 @@ no-schema = false
 # 注意：**数据** 文件始终解析为 binary 文件。
 character-set = "auto"
 
-# 如果输入数据格式严格，则会加快处理速度。
+# 如果输入数据源为严格格式，则会加快处理速度。
 # 当 strict-format = true：
-#  * 在 CSV 文件中，即使使用引号，每个值也不能包含换行符（U+000A 和 U+000D, 即 \r 和 \n），应该严格将换行符作为行分隔符。
-# 如果输入数据格式严格，TiDB Lightning 则会快速定位大文件的拆分位置进行并行处理。但是如果输入数据为非严格格式，则可能会将有效数据分成两半，从而损坏数据结果。
-# 此时应该将默认值设置为 false。
+# 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D, 即 \r 和 \n），
+# 甚至使用转义符时都不可以，即严格将换行符作为行分隔符。
+# 输入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
+# 但是如果输入数据源为非严格格式，会将一条完整的数据值分解成两块，
+# 导致结果出错。
+# 为了保证数据安全而非追求速度，默认值设置为 false。
 strict-format = false
 
-# 如果格式严格，则 TiDB Lightning 会将大型 CSV 文件拆分为多个文件进行并行处理。 max-region-size 是分割后每个文件的最大大小。
+# 如果 strict-format = true，TiDB Lightning 会将大型 CSV 文件分割为多个文件块进行并行处理。 max-region-size 是分割后每个文件块的最大大小。
 # max-region-size = 268_435_456 # Byte (默认是 256 MB)
 
 # 只导入与该通配符规则相匹配的表。详情见相应章节。
@@ -345,7 +348,7 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
-| --no-schema | 先忽略表结构文件，再直接从 TiDB 中获取表结构 | `mydumper.no-schema` |
+| --no-schema | 先忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *bool* | 导入后统计信息分析 (默认值为 true) | `post-restore.analyze` |
 | --checksum *bool* | 导入后比较校验和 (默认值为 true) | `post-restore.checksum` |
