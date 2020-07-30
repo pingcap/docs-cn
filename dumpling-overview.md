@@ -234,9 +234,9 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 tso 指定 dump 文件的位置 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: MySQL 默认用 flush, TiDB 默认用 snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |
 | --where | 对备份的数据表通过 where 条件指定范围 |
-| -p 或 --password | 链接节点的密码 |
-| -P 或 --port | 链接节点的端口 | 4000 |
-| -u 或 --user | 链接节点的用户名 | "root" |
+| -p 或 --password | 连接的数据库主机的密码 |
+| -P 或 --port | 连接的数据库主机的端口 | 4000 |
+| -u 或 --user | 连接的数据库主机的用户名 | "root" |
 | --dump-empty-database | 导出空数据库的建库语句 | true |
 | --tidbMemQuotaQuery | 导出 TiDB 数据库时单条 query 最大使用的内存 | 34359738368(32GB) |
 | --ca | 用于 TLS 连接的 certificate authority 文件的地址 |
