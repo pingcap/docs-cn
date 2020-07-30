@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_LOG
-summary: 了解 TiDB 集群日志表 `CLUSTER_LOG`。
-aliases: ['/docs-cn/dev/reference/system-databases/cluster-log/']
+summary: 了解 information_schema 表 `CLUSTER_LOG`。
+aliases: ['/docs-cn/dev/reference/system-databases/cluster-log/','/zh/tidb/dev/system-table-cluster-log/','/docs-cn/dev/system-tables/system-table-cluster-log/']
 ---
 
 # CLUSTER_LOG
@@ -13,7 +13,8 @@ TiDB 4.0 版本之前，要获取集群的日志，用户需要逐个登录各�
 {{< copyable "sql" >}}
 
 ```sql
-desc information_schema.cluster_log;
+USE information_schema;
+DESC cluster_log;
 ```
 
 ```sql
@@ -48,7 +49,7 @@ desc information_schema.cluster_log;
 {{< copyable "sql" >}}
 
 ```sql
-select time,instance,left(message,150) from information_schema.cluster_log where message like '%ddl%job%ID.80%' and type='tidb' and time > '2020-05-18 20:40:00' and time<'2020-05-18 21:40:00'
+SELECT time,instance,left(message,150) FROM cluster_log WHERE message LIKE '%ddl%job%ID.80%' AND type='tidb' AND time > '2020-05-18 20:40:00' AND time < '2020-05-18 21:40:00'
 ```
 
 ```sql
