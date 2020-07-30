@@ -1,7 +1,6 @@
 ---
 title: SHOW TABLE NEXT_ROW_ID
 summary: TiDB 数据库中 SHOW TABLE NEXT_ROW_ID 的使用概况。
-category: reference
 ---
 
 # SHOW TABLE NEXT_ROW_ID

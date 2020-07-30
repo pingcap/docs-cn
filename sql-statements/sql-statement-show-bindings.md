@@ -1,7 +1,6 @@
 ---
 title: SHOW BINDINGS
 summary: TiDB 数据库中 SHOW BINDINGS 的使用概况。
-category: reference
 ---
 
 # SHOW BINDINGS

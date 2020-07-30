@@ -1,7 +1,6 @@
 ---
 title: 高可用常见问题
 summary: 介绍高可用相关的常见问题。
-category: FAQ
 ---
 
 # 高可用常见问题

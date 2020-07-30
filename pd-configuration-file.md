@@ -1,6 +1,5 @@
 ---
 title: PD 配置文件描述
-category: reference
 aliases: ['/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
 ---
 
@@ -257,6 +256,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 默认：[]
 + [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
 
+### `isolation-level`
+
++ TiKV 集群的最小强制拓扑隔离级别。
++ 默认：""
++ [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
+
 ### `strictly-match-label`
 
 + 打开强制 TiKV Label 和 PD 的 localtion-labels 是否匹配的检查
@@ -282,3 +287,34 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 拒绝 leader 的 store 带有的 label value。
 + 默认：""
+
+## dashboard
+
+PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项。
+
+### `tidb-cacert-path`
+
++ CA 根证书文件路径。可配置该路径来使用 TLS 连接 TiDB 的 SQL 服务。
++ 默认值：""
+
+### `tidb-cert-path`
+
++ SSL 证书文件路径。可配置该路径来使用 TLS 连接 TiDB 的 SQL 服务。
++ 默认值：""
+
+### `tidb-key-path`
+
++ SSL 私钥文件路径。可配置该路径来使用 TLS 连接 TiDB 的 SQL 服务。
++ 默认值：""
+
+### `public-path-prefix`
+
++ 通过反向代理访问 TiDB Dashboard 时，配置反向代理提供服务的路径前缀。
++ 默认："/dashboard"
++ 若不通过反向代理访问 TiDB Dashboard，**请勿配置该项**，否则可能导致 TiDB Dashboard 无法正常访问。关于该配置的详细使用场景，参见[通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md)。
+
+### `enable-telemetry`
+
++ 是否启用 TiDB Dashboard 遥测功能。
++ 默认：true
++ 参阅[遥测](/telemetry.md)了解该功能详情。

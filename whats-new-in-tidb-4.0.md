@@ -1,7 +1,6 @@
 ---
 title: What's New in TiDB 4.0
 summary: 了解 TiDB 4.0 版本的新特性。
-category: introduction
 ---
 
 # What's New in TiDB 4.0
@@ -23,7 +22,7 @@ category: introduction
 
 ### TiDB Dashboard
 
-+ DBA 通过 TiDB Dashboard UI 可以快速了解集群的集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息、SQL 访问信息、诊断报告信息等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[Dashboard UI](/dashboard/dashboard-access.md)，具体信息如下：
++ DBA 通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) UI 可以快速了解集群的集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息、SQL 访问信息、诊断报告信息等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，具体信息如下：
     - Cluster Info，提供集群中所有组件，包括： TiDB、TiKV、PD、TiFlash 运行状态及其所在主机的运行状态。
     - Key Visualizer，系统可视化输出 TiDB 集群一段时间内的流量情况，用于 DBA 分析 TiDB 集群的使用模式和排查流量热点。
     - SQL Statements，记录当系统执行的所有 SQL 以及 SQL 相关的统计信息，包括：执行次数、执行时间汇总等，帮助用户快速分析系统的 SQL 执行状况，判断系统中有哪些热点 SQL 语句等。
@@ -55,8 +54,8 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 - 新增 `Flashback` 命令，支持恢复被 `Truncate` 的表。详情参阅：[`Flashback`](/sql-statements/sql-statement-flashback-table.md)。
 - 新增查询数据时将 Join、Sort 中间结果写入本地磁盘，防止查询语句占用内存过多导致系统 OOM 的问题，提升系统的稳定性。
 - 优化 `EXPLAIN` 和 `EXPLAIN ANALYZE` 的输出结果，显示更多的信息，提升排查问题的效率。详情参阅：[Explain Analyze](/sql-statements/sql-statement-explain-analyze.md)，[Explain](/sql-statements/sql-statement-explain.md)。
-- 支持 Index Merge 功能，Index Merge 是一种新的表访问方式，当单询只涉及到单张表时，优化器会自动根据查询条件读取多个索引数据并对结果求并集，提升查询单张表时的性能。详情参阅：[Index Merge](/query-execution-plan.md#indexmerge-示例)。
-- 支持表达式索引 (Expression Index) 功能，表达式索引也叫函数索引，在创建索引时索引的字段不一定要是一个具体的列，而可以由一个或者多个列讲算出来的表达式。对于快速访问那些基于计算结果的表非常有用（实验特性）。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。
+- 支持 Index Merge 功能，Index Merge 是一种新的表访问方式，当查询只涉及到单张表时，优化器会自动根据查询条件读取多个索引数据并对结果求并集，提升查询单张表时的性能。详情参阅：[Index Merge](/query-execution-plan.md#indexmerge-示例)。
+- 支持表达式索引 (Expression Index) 功能，表达式索引也叫函数索引，在创建索引时索引的字段不一定要是一个具体的列，而可以由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用（实验特性）。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。
 - 支持 AutoRandom Key（实验特性）作为 TiDB 在列属性上的扩展语法，AutoRandom 被设计用于解决自增主键列的写热点问题，为使用自增主键列的用户提供最低成本的 MySQL 迁移方案。详情参阅：[AutoRandom Key](/auto-random.md)。
 - 新增集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息等系统表等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[infromation_shema](/system-tables/system-table-information-schema.md)，具体信息如下：
 
@@ -65,7 +64,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
         - `cluster_info` 表，用于保存集群的拓扑信息。
         - `cluster_log` 表，用于保存系统的日志信息。
         - `cluster_hardware`，`cluster_systeminfo`，用于保存系统中服务器的硬件系统，操作系统信息等。
- 
+
     - 新增慢查询、诊断结果、性能监控等系统表，帮助 DBA 快速分析系统的性能瓶颈：
 
         - `cluster_slow_query` 表，用于记录保存全局的慢查询信息。
@@ -81,7 +80,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 ### 安全
 
 + 完善客户端与服务端，组件与组件之间的加密通信，确保连接安全性，保护接收与发送的任何数据不会被网络犯罪分子读取和修改。主要支持基于证书的登录认证、在线更新证书、校验 TLS 证书的 `CommonName` 属性等功能。详情参阅：[开启加密传输](/enable-tls-between-clients-and-servers.md)。
-+ 透明数据加密 (Transparent Data Encryption)，简称 TDE，是 TiDB 推出的一个新特性，用来对整个数据库提供保护。数据库开启 TDE 加密功能后，对于连接到数据库的应用程序来说是完全透明的，它不需要对现有应用程序做任何改变。因为TDE 的加密特性是基本于文件级别的，系统会在将数据写到磁盘之前加密，在读取到内存之前解密，确保数据的安全性。目前主要支持 AES128-CTR、AES192-CTR、AES256-CTR 三种加密算法，支持通过 AWS KMS 管理密钥等功能。
++ 透明数据加密 (Transparent Data Encryption)，简称 TDE，是 TiDB 推出的一个新特性，用来对整个数据库提供保护。数据库开启 TDE 加密功能后，对于连接到数据库的应用程序来说是完全透明的，它不需要对现有应用程序做任何改变。因为 TDE 的加密特性是基本于文件级别的，系统会在将数据写到磁盘之前加密，在读取到内存之前解密，确保数据的安全性。目前主要支持 AES128-CTR、AES192-CTR、AES256-CTR 三种加密算法，支持通过 AWS KMS 管理密钥等功能。详情参阅[静态加密](/encryption-at-rest.md)。
 
 ### 备份与恢复
 
