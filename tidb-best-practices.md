@@ -1,6 +1,5 @@
 ---
 title: TiDB 最佳实践
-category: reference
 ---
 
 # TiDB 最佳实践
@@ -96,21 +95,21 @@ TiDB 支持完整的二级索引，并且是全局索引，很多查询可以通
 
     数据分散在很多 Region 上，所以 TiDB 在做查询的时候会并发进行，默认的并发度比较保守，因为过高的并发度会消耗大量的系统资源，且对于 OLTP 类型的查询，往往不会涉及到大量的数据，较低的并发度已经可以满足需求。对于 OLAP 类型的 Query，往往需要较高的并发度。所以 TiDB 支持通过 System Variable 来调整查询并发度。
 
-    - [tidb_distsql_scan_concurrency](/tidb-specific-system-variables.md#tidb_distsql_scan_concurrency)
+    - [tidb_distsql_scan_concurrency](/system-variables.md#tidb_distsql_scan_concurrency)
 
     在进行扫描数据的时候的并发度，这里包括扫描 Table 以及索引数据。
 
-    - [tidb_index_lookup_size](/tidb-specific-system-variables.md#tidb_index_lookup_size)
+    - [tidb_index_lookup_size](/system-variables.md#tidb_index_lookup_size)
 
     如果是需要访问索引获取行 ID 之后再访问 Table 数据，那么每次会把一批行 ID 作为一次请求去访问 Table 数据，这个参数可以设置 Batch 的大小，较大的 Batch 会使得延迟增加，较小的 Batch 可能会造成更多的查询次数。这个参数的合适大小与查询涉及的数据量有关。一般不需要调整。
 
-    - [tidb_index_lookup_concurrency](/tidb-specific-system-variables.md#tidb_index_lookup_concurrency)
+    - [tidb_index_lookup_concurrency](/system-variables.md#tidb_index_lookup_concurrency)
 
     如果是需要访问索引获取行 ID 之后再访问 Table 数据，每次通过行 ID 获取数据时候的并发度通过这个参数调节。
 
 + 通过索引保证结果顺序
 
-    索引除了可以用来过滤数据之外，还能用来对数据排序，首先按照索引的顺序获取行 ID，然后再按照行 ID 的返回顺序返回行的内容，这样可以保证返回结果按照索引列有序。前面提到了扫索引和获取 Row 之间是并行 + Pipeline 模式，如果要求按照索引的顺序返回 Row，那么这两次查询之间的并发度设置的太高并不会降低延迟，所以默认的并发度比较保守。可以通过 [tidb_index_serial_scan_concurrency](/tidb-specific-system-variables.md#tidb_index_serial_scan_concurrency) 变量进行并发度调整。
+    索引除了可以用来过滤数据之外，还能用来对数据排序，首先按照索引的顺序获取行 ID，然后再按照行 ID 的返回顺序返回行的内容，这样可以保证返回结果按照索引列有序。前面提到了扫索引和获取 Row 之间是并行 + Pipeline 模式，如果要求按照索引的顺序返回 Row，那么这两次查询之间的并发度设置的太高并不会降低延迟，所以默认的并发度比较保守。可以通过 [tidb_index_serial_scan_concurrency](/system-variables.md#tidb_index_serial_scan_concurrency) 变量进行并发度调整。
 
 + 逆序索引
 
@@ -155,7 +154,7 @@ for i from 0 to 23:
 
 ### 查询
 
-看业务的查询需求以及具体的语句，可以参考 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)这篇文档
+看业务的查询需求以及具体的语句，可以参考[系统变量和语法](/system-variables.md)这篇文档。
 可以通过 SET 语句控制 SQL 执行的并发度，另外通过 Hint 控制 Join 物理算子选择。
 
 另外 MySQL 标准的索引选择 Hint 语法，也可以用，通过 `Use Index/Ignore Index hint` 控制优化器选择索引。
@@ -174,7 +173,7 @@ TiDB [使用 Grafana + Prometheus 监控系统状态](/tidb-monitoring-framework
 
 除了监控之外，查看日志也是了解系统状态的常用方法。TiDB 的三个组件 tidb-server/tikv-server/pd-server 都有一个 `--log-file` 的参数。如果启动的时候设置了这个参数，那么日志会保存着参数所设置的文件的位置，另外会自动的按天对 Log 文件做归档。如果没有设置 `--log-file` 参数，日志会输出在 `stderr` 中。
 
-从 4.0 版本开始，从解决易用性的角度出发，提供了 Dashboard UI 系统，通过浏览器访问 `http://PD_IP:PD_PORT/dashboard` 即可打开 TiDB Dashboard。Dashboard 可以提供集群状态、性能分析、流量可视化、SQL 诊断、日志搜索等功能。
+从 4.0 版本开始，从解决易用性的角度出发，提供了 [TiDB Dashboard](/dashboard/dashboard-intro.md) UI 系统，通过浏览器访问 `http://PD_IP:PD_PORT/dashboard` 即可打开 TiDB Dashboard。TiDB Dashboard 可以提供集群状态、性能分析、流量可视化、SQL 诊断、日志搜索等功能。
 
 ### 文档
 

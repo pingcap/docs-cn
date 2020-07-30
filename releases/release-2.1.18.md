@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.1.18 Release Notes
-category: Releases
 aliases: ['/docs-cn/dev/releases/2.1.18/']
 ---
 
@@ -49,7 +48,7 @@ TiDB Ansible 版本：2.1.18
     - 修复 COM_STMT_FETCH 慢日志时间记录和 MySQL 不一致问题 [#12953](https://github.com/pingcap/tidb/pull/12953)
     - 当遇到写冲突时，在报错信息中添加错误码，以方便对冲突原因进行诊断 [#12878](https://github.com/pingcap/tidb/pull/12878)
 + DDL
-    - 为避免误操作，TiDB 默认不再允许删除列的 `AUTO INCREMENT` 属性，当确实需要删除时，请更改系统变量 `tidb_allow_remove_auto_inc`；相关文档请见：[TiDB 专用系统变量和语法](/tidb-specific-system-variables.md) [#12146](https://github.com/pingcap/tidb/pull/12146)
+    - 为避免误操作，TiDB 默认不再允许删除列的 `AUTO INCREMENT` 属性，当确实需要删除时，请更改系统变量 `tidb_allow_remove_auto_inc`；相关文档请见[系统变量和语法](/system-variables.md) [#12146](https://github.com/pingcap/tidb/pull/12146)
     - 支持 Create Table 语句中建唯一索引时带多个 Unique [#12469](https://github.com/pingcap/tidb/pull/12469)
     - 修复 `CreateTable` 语句中指定外键约束时，外键表在没有指定 Database 时未能使用主表的 Database 导致报错的问题 [#12678](https://github.com/pingcap/tidb/pull/12678)
     - 修复 `ADMIN CANCEL DDL JOBS` 时报 `invalid list index` 错的问题 [#12681](https://github.com/pingcap/tidb/pull/12681)

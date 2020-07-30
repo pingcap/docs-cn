@@ -1,6 +1,5 @@
 ---
 title: Split Region 使用文档
-category: reference
 aliases: ['/docs-cn/dev/reference/sql/statements/split-region/']
 ---
 
@@ -396,10 +395,8 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
-## 相关 session 变量
-
-和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_scatter_region`，`tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
-
 ## 另请参阅
 
 * [SHOW TABLE REGIONS](/sql-statements/sql-statement-show-table-regions.md)
+
+* Session 变量：[`tidb_scatter_region`](/system-variables.md#tidb_scatter_region)，[`tidb_wait_split_region_finish`](/system-variables.md#tidb_wait_split_region_finish) 和[`tidb_wait_split_region_timeout`](/system-variables.md#tidb_wait_split_region_timeout).

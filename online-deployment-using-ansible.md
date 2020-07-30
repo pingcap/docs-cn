@@ -1,6 +1,5 @@
 ---
 title: 使用 TiDB Ansible 部署 TiDB 集群
-category: how-to
 aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/ansible/']
 ---
 
@@ -24,7 +23,7 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 > **警告：**
 >
 > 对于生产环境，推荐[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。从 TiDB 4.0 版本开始，不再推荐使用 TiDB Ansible 部署 TiDB 集群，但可以使用 TiUP 直接支持之前的 Ansible 集群。
-> 
+>
 > 如果只是希望测试 TiDB 或体验 TiDB 特性，可参考 [TiDB 快速上手指南](/quick-start-with-tidb.md)或者[使用 Docker Compose 在单机上快速部署 TiDB 集群](/deploy-test-cluster-using-docker-compose.md)。
 
 ## 准备机器
@@ -706,6 +705,10 @@ TiDB 兼容 MySQL，因此可使用 MySQL 客户端直接连接 TiDB。推荐配
     - 地址：<http://172.16.10.1:3000>
     - 默认帐号与密码：`admin`；`admin`
 
+> **注意：**
+>
+> TiDB 默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+
 ## 常见部署问题
 
 本小节介绍使用 TiDB Ansible 部署 TiDB 集群过程中的常见问题与解决方案。
@@ -910,7 +913,7 @@ ansible-playbook start.yml
 
 ### You need to install jmespath prior to running json_query filter 报错
 
-1. 请参照[在中控机器上安装 TiDB Ansible 及其依赖](#在中控机器上安装-tidb-ansible-及其依赖) 在中控机上通过 `pip` 安装 TiDB Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
+1. 请参照[在中控机器上安装 TiDB Ansible 及其依赖](#第-4-步在中控机器上安装-tidb-ansible-及其依赖) 在中控机上通过 `pip` 安装 TiDB Ansible 及相关依赖的指定版本，默认会安装 `jmespath`。
 
 2. 执行以下命令，验证 `jmespath` 是否安装成功：
 

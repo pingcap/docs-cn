@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning Web 界面
 summary: 了解 TiDB Lightning 的服务器模式——通过 Web 界面来控制 TiDB Lightning。
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/web/']
 ---
 
@@ -58,7 +57,7 @@ TiDB Lightning 启动后，可以访问 `http://127.0.0.1:8289` 来管理程序�
 
 ![提交任务对话框](/media/lightning-web-submit.png)
 
-任务 (task) 为 TOML 格式的文件，具体参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置参数)。你也可以点击 **UPLOAD** 上传一个本地的 TOML 文件。
+任务 (task) 为 TOML 格式的文件，具体参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。你也可以点击 **UPLOAD** 上传一个本地的 TOML 文件。
 
 点击 **SUBMIT** 运行任务。如果当前有任务正在运行，新增任务会加入队列并在当前任务结束后执行。
 
