@@ -80,25 +80,3 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`TIKV_REGION_PEERS`](/information-schema/information-schema-tikv-region-peers.md)      | 提供 Region 存储位置的详细信息。 |
 | [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)    | 提供 Region 的统计信息。 |
 | [`TIKV_STORE_STATUS`](/information-schema/information-schema-tikv-store-status.md)      | 提供 TiKV 服务器的基本信息。 |
-
-## 不支持的 Information Schema 表
-
-TiDB 包含以下 `INFORMATION_SCHEMA` 表，但仅会返回空行：
-
-* `COLUMN_PRIVILEGES`
-* `EVENTS`
-* `FILES`
-* `GLOBAL_STATUS`
-* `GLOBAL_VARIABLES`
-* `OPTIMIZER_TRACE`
-* `PARAMETERS`
-* `PARTITIONS`
-* `PLUGINS`
-* `PROFILING`
-* `REFERENTIAL_CONSTRAINTS`
-* `ROUTINES`
-* `SCHEMA_PRIVILEGES`
-* `SESSION_STATUS`
-* `TABLESPACES`
-* `TABLE_PRIVILEGES`
-* `TRIGGERS`
