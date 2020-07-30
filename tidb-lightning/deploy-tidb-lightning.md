@@ -41,9 +41,10 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 `tidb-lightning`为资源密集程序，为了优化效能，建议硬件配置如下：
 
 - 32+ 逻辑核 CPU
+- 20GB+ 内存
 - 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
 - 使用万兆网卡，带宽需要 1GB/s 以上
-- 运行过程默认会占满 CPU，建议单独部署。条件不允许的情况下可以和其他组件（比如 `tidb-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 使用 CPU 资源。
+- 运行过程默认会占满 CPU，建议单独部署。条件不允许的情况下可以和其他组件（比如 `tikv-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 使用 CPU 资源。
 
 > **注意：**
 >
@@ -119,7 +120,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
 
     ```
     [tikv-importer]
-    # 选择使用 local 后端
+    # 选择使用 local 模式
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
@@ -149,7 +150,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
 
 2. 将数据源写入到同样的机器。
 
-3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。 `sorted-kv-dir`需要设置为一个空的目录，并且确保所在的磁盘有较多空闲的空间。
+3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。`sorted-kv-dir`需要设置为一个空的目录，并且确保所在的磁盘有较多空闲的空间。
 
     ```toml
     [lightning]

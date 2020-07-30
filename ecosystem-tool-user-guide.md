@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 使用 TiDB Lightning 导入数据到 TiDB 时，有三种模式：
 
 - `local` 模式：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
-- `importer` 模式：和 `local` 模式类似， 但是需要部署额外的组件 `tikv-importer` 协助完成键值对的导入。对于 4.0 以上的目标集群，请优先使用 `local` 模式进行导入。
+- `importer` 模式：和 `local` 模式类似，但是需要部署额外的组件 `tikv-importer` 协助完成键值对的导入。对于 4.0 以上的目标集群，请优先使用 `local` 模式进行导入。
 - `tidb` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `local` 和 `importer` 模式的导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
 
 基本信息：
