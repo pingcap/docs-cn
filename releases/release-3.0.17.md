@@ -21,7 +21,7 @@ TiDB 版本：3.0.17
 
 + TiKV
 
-    - 
+    - 新增 `hibernate-timeout` 配置支持推后 Region 休眠时间，减少 Region 休眠对滚动升级的影响 [#8207](https://github.com/tikv/tikv/pull/8207)
 
 + TiDB-Lightning
 
@@ -39,6 +39,7 @@ TiDB 版本：3.0.17
 
 + TiKV
 
+    - 修复在 Region 合并过程中可能导致读到旧数据的问题 [#8111](https://github.com/tikv/tikv/pull/8111)
 
 + TiDB-Lightning
 
