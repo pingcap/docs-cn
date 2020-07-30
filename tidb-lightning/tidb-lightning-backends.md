@@ -34,13 +34,13 @@ TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导�
 
 Local-backend 特性在 TiDB v4.0.3 发布，v4.0.3 及以上的 TiDB Lightning 才包含此特性。另外 Local-backend 只支持 v4.0.0 以上的集群。
 
-### 部署 Local-backend
+### 部署和配置 TiDB Lightning 
 
-Local-backend 的部署方法见 [TiDB Lightning 部署与执行](/tidb-lightning/deploy-tidb-lightning.md)。
+TiDB Lightning Local-backend模式 的部署方法见 [TiDB Lightning 部署与执行](/tidb-lightning/deploy-tidb-lightning.md)。
 
 ## TiDB Lightning TiDB-backend
 
-### 部署 TiDB-backend
+### 部署和配置 TiDB Lightning
 
 使用 TiDB-backend 时，你无需部署 `tikv-importer`。与[标准部署过程](/tidb-lightning/deploy-tidb-lightning.md)相比，部署 TiDB-backend 时有如下不同：
 
@@ -279,9 +279,9 @@ password = ""
 
 如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后将源数据以表为粒度进行切分，并发导入。
 
-### 部署 TiDB Lightning
+### 部署和配置 TiDB Lightning
 
-本节介绍 TiDB Lightning 的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 使用 Importer 模式的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
 
 #### 使用 TiDB Ansible 部署 TiDB Lightning
 
