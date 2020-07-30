@@ -1,0 +1,21 @@
+name: Repsitory dispatch workflow from docs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v1.1.1
+      with:
+          token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
+          repository: Ti-FE/website-docs/
+          event-type: triggered
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'
