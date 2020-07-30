@@ -1,6 +1,6 @@
 ---
 title: CLUSTER_CONFIG
-summary: 了解 TiDB information_schema 表 `CLUSTER_CONFIG`。
+summary: 了解 information_schema 表 `CLUSTER_CONFIG`。
 aliases: ['/docs-cn/dev/reference/system-databases/cluster-config/','/zh/tidb/dev/system-table-cluster-config/','/docs-cn/dev/system-tables/system-table-cluster-config/']
 ---
 

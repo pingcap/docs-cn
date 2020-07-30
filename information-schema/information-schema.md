@@ -83,7 +83,6 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 
 ## SQL 诊断相关的表
 
-* [`information_schema.cluster_load`](/system-tables/system-table-cluster-load.md)
 * [`information_schema.cluster_systeminfo`](/system-tables/system-table-cluster-systeminfo.md)
 * [`information_schema.cluster_log`](/system-tables/system-table-cluster-log.md)
 * [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md)
