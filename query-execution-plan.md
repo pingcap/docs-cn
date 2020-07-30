@@ -1,6 +1,5 @@
 ---
 title: 理解 TiDB 执行计划
-category: performance
 aliases: ['/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/']
 ---
 
@@ -342,7 +341,7 @@ mysql> EXPLAIN SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = 
 
 ## 优化实例
 
-使用 [bikeshare example database](https://pingcap.com/docs/dev/how-to/get-started/import-example-database/):
+使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/import-example-data.md):
 
 {{< copyable "sql" >}}
 
@@ -396,7 +395,7 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 
 TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用来优化性能。其中一些系统变量和具体的算子相关，比如算子的并发度，算子的内存使用上限，是否允许使用分区表等。这些都可以通过系统变量进行控制，从而影响各个算子执行的效率。
 
-如果读者想要详细了解所有的系统变量及其使用规则，可以参见 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
+如果读者想要详细了解所有的系统变量及其使用规则，可以参见[系统变量和语法](/system-variables.md)。
 
 ## 另请参阅
 
@@ -405,4 +404,4 @@ TiDB 在 MySQL 的基础上，定义了一些专用的系统变量和语法用�
 * [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
 * [TRACE](/sql-statements/sql-statement-trace.md)
 * [TiDB in Action](https://book.tidb.io/session3/chapter1/sql-execution-plan.html)
-* [System Variables](/tidb-specific-system-variables.md)
+* [System Variables](/system-variables.md)

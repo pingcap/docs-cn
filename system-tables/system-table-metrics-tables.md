@@ -1,7 +1,6 @@
 ---
 title: METRICS_TABLES
 summary: 了解 TiDB 系统表 `METRICS_TABLES`。
-category: reference
 aliases: ['/docs-cn/dev/reference/system-databases/metrics-tables/']
 ---
 
@@ -15,7 +14,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/metrics-tables/']
 desc information_schema.metrics_tables;
 ```
 
-```
+```sql
 +------------+--------------+------+------+---------+-------+
 | Field      | Type         | Null | Key  | Default | Extra |
 +------------+--------------+------+------+---------+-------+

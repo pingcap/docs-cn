@@ -1,6 +1,5 @@
 ---
 title: TiUP 术语及核心概念
-category: tools
 ---
 
 # TiUP 术语及核心概念
@@ -27,5 +26,5 @@ TiUP 的所有组件都从镜像仓库 (mirrors) 下载，镜像仓库包含各�
 
 镜像仓库可以是本地文件目录或在线 HTTP 服务器：
 
-1. `TIUP_MIRRORS=/path/to/local tiup list --refresh`
-2. `TIUP_MIRRORS=https://private-mirrors.example.com tiup list --refresh`
+1. `TIUP_MIRRORS=/path/to/local tiup list`
+2. `TIUP_MIRRORS=https://private-mirrors.example.com tiup list`

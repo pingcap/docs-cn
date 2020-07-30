@@ -1,16 +1,15 @@
 ---
 title: 验证集群运行状态
 summary: 介绍如何验证集群运行状态。
-category: how-to
 ---
 
 # 验证集群运行状态
 
-本文档介绍如何通过 TiDB Dashboard 和 Grafana 检查集群状态，以及登录数据库执行简单 DML、DDL 操作和查询 SQL 语句。
+本文档介绍如何通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana 检查集群状态，以及登录数据库执行简单 DML、DDL 操作和查询 SQL 语句。
 
 ## 通过 TiDB Dashboard 和 Grafana 检查集群状态
 
-本节介绍如何通过 TiDB Dashboard 和 Grafana 检查集群状态。
+本节介绍如何通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana 检查集群状态。
 
 ### 查看 TiDB Dashboard 检查 TiDB 集群状态
 
@@ -46,21 +45,23 @@ category: how-to
 mysql -u root -h 10.0.1.4 -P 4000
 ```
 
+输出下列信息表示登录成功：
+
+```sql
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.25-TiDB-v4.0.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+
+Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+```
+
 ### 数据库操作
-
-+ 登录成功
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    Welcome to the MariaDB monitor.  Commands end with ; or \g.
-    Your MySQL connection id is 1
-    Server version: 5.7.25-TiDB-v4.0.0-beta-446-g5268094af TiDB Server (Apache License 2.0), MySQL 5.7 compatible
-
-    Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-
-    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-    ```
 
 + 检查 TiDB 版本
 
@@ -74,17 +75,16 @@ mysql -u root -h 10.0.1.4 -P 4000
 
     ```sql
     *************************** 1. row ***************************
-    tidb_version(): Release Version: v4.0.0-beta-446-g5268094af
-    Git Commit Hash: 5268094afe05c7efef0d91d2deeec428cc85abe6
-    Git Branch: master
-    UTC Build Time: 2020-03-17 02:22:07
-    GoVersion: go1.13
+    tidb_version(): Release Version: v4.0.0
+    Edition: Community
+    Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
+    Git Branch: HEAD
+    UTC Build Time: 2020-05-28 11:09:45
+    GoVersion: go1.13.4
     Race Enabled: false
     TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
     Check Table Before Drop: false
     1 row in set (0.00 sec)
-    MySQL [tidb]> create database pingcap;
-    Query OK, 0 rows affected (0.10 sec)
     ```
 
 + 创建 PingCAP database

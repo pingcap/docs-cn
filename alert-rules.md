@@ -1,7 +1,6 @@
 ---
 title: TiDB 集群报警规则
 summary: TiDB 集群中各组件的报警规则详解。
-category: reference
 aliases: ['/docs-cn/dev/reference/alert-rules/']
 ---
 
@@ -15,7 +14,7 @@ aliases: ['/docs-cn/dev/reference/alert-rules/']
 
 ### 紧急级别报警项
 
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
+紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预。
 
 #### `TiDB_schema_error`
 

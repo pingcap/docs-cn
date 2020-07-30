@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 命令管理组件
-category: tools
 aliases: ['/docs-cn/dev/reference/tools/tiup/manage-component/','/docs-cn/dev/reference/tools/tiup/manage-tiup-component/']
 ---
 
@@ -25,10 +24,11 @@ TiUP 主要通过以下一些命令来管理组件：
 - `tiup list`：查看当前有哪些组件可以安装
 - `tiup list ${component}`：查看某个组件有哪些版本可以安装
 
-你也可以在命令中组合使用以下两个参数 (flag)：
+你也可以在命令中组合使用以下参数 (flag)：
 
 - `--installed`：查看本地已经安装了哪些组件，或者已经安装了某个组件的哪些版本
-- `--refresh`：获取服务器上最新的组件列表，以及它们的版本列表
+- `--all`：显式隐藏的组件
+- `--verbose`：显式所有列（安装的版本、支持的平台）
 
 示例一：查看当前已经安装的所有组件
 
@@ -43,7 +43,7 @@ tiup list --installed
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup list tikv --refresh
+tiup list tikv
 ```
 
 ## 安装组件

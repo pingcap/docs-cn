@@ -1,6 +1,5 @@
 ---
 title: PD 配置文件描述
-category: reference
 aliases: ['/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
 ---
 
@@ -282,3 +281,19 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 拒绝 leader 的 store 带有的 label value。
 + 默认：""
+
+## dashboard
+
+PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项。
+
+### `public-path-prefix`
+
++ 通过反向代理访问 TiDB Dashboard 时，配置反向代理提供服务的路径前缀。
++ 默认："/dashboard"
++ 若不通过反向代理访问 TiDB Dashboard，**请勿配置该项**，否则可能导致 TiDB Dashboard 无法正常访问。关于该配置的详细使用场景，参见[通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md)。
+
+### `disable-telemetry`
+
++ 是否禁用 TiDB Dashboard 遥测功能。
++ 默认：false
++ 参阅[遥测](/telemetry.md)了解该功能详情。
