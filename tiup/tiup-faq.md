@@ -11,7 +11,7 @@ TiUP 支持通过环境变量 TIUP_MIRRORS 指定镜像源，镜像源的地址�
 如果在使用非官方镜像之后想要切回官方镜像可以从以下两种方式中任选一种：
 
 - 将 TIUP_MIRRORS 变量设置成官方镜像的地址: `https://tiup-mirrors.pingcap.com`
-- 使用命令 `unset TIUP_MIRRORS && tiup mirror set https://tiup-mirrors.pingcap.com`
+- 先确保 TIUP_MIRRORS 变量没有设置，再使用命令 `tiup mirror set https://tiup-mirrors.pingcap.com`
 
 ## 如何将自己编写的组件放入 TiUP 镜像仓库？
 
