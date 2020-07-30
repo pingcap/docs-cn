@@ -78,7 +78,6 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群
-* `br version` 用于查看 BR 工具版本信息
 
 以上三个子命令可能还包含这些子命令：
 
@@ -90,6 +89,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `--pd`：用于连接的选项，表示 PD 服务地址，例如 `"${PDIP}:2379"`。
 * `-h`/`--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
+* `-V` (或 `--version`): 检查 BR 版本。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -119,6 +119,7 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 > **注意：**
 >
 > + 经测试，在全速备份的情况下，如果备份盘和服务盘不同，在线备份会让只读线上服务的 QPS 下降 15%~25% 左右。如果希望降低影响，请参考 `--ratelimit` 进行限速。
+>
 > + 假如备份盘和服务盘相同，备份将会和服务争夺 I/O 资源，这可能会让只读线上服务的 QPS 骤降一半以上。请尽量禁止将在线服务的数据备份到 TiKV 的数据盘。
 
 {{< copyable "shell-regular" >}}
