@@ -1,7 +1,7 @@
 ---
 title: SQL Diagnostics
 summary: Understand SQL diagnostics in TiDB.
-aliases: ['/docs/dev/system-tables/system-table-sql-diagnostics/','/docs/dev/reference/system-databases/sql-diagnosis/','/docs/dev/system-tables/system-table-sql-diagnosis/','/tidb/dev/system-table-sql-diagnostics/']
+aliases: ['/docs/dev/system-tables/system-table-sql-diagnostics/','/docs/dev/reference/system-databases/sql-diagnosis/','/docs/dev/system-tables/system-table-sql-diagnosis/','/tidb/dev/system-table-sql-diagnostics/','/tidb/dev/check-cluster-status-using-sql-statements','/docs/dev/check-cluster-status-using-sql-statements/','/docs/dev/reference/performance/check-cluster-status-using-sql-statements/']
 ---
 
 # SQL Diagnostics

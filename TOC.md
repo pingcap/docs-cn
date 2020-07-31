@@ -14,6 +14,7 @@
 + Quick Start
   + [Try Out TiDB](/quick-start-with-tidb.md)
   + [Learn TiDB SQL](/basic-sql-operations.md)
+  + [Import Example Database](/import-example-data.md)
 + Deploy
   + [Software and Hardware Requirements](/hardware-and-software-requirements.md)
   + [Environment Configuration Checklist](/check-before-deployment.md)
