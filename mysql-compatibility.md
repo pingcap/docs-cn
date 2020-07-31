@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 ## 与 MySQL 有差异的特性详细说明
 
-### [自增 ID](/auto-increment.md)
+### 自增 ID
 
 - TiDB 的自增列仅保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
 
