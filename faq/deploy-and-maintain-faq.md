@@ -399,7 +399,7 @@ Currently, some files of TiKV primary node have a higher compression rate, which
 
 TiKV implements the Column Family (CF) feature of RocksDB. By default, the KV data is eventually stored in the 3 CFs (default, write and lock) within RocksDB.
 
-- The default CF stores real data and the corresponding parameter is in `[rocksdb.defaultcf]`. 
+- The default CF stores real data and the corresponding parameter is in `[rocksdb.defaultcf]`.
 - The write CF stores the data version information (MVCC) and index-related data, and the corresponding parameter is in `[rocksdb.writecf]`.
 - The lock CF stores the lock information and the system uses the default parameter.
 - The Raft RocksDB instance stores Raft logs. The default CF mainly stores Raft logs and the corresponding parameter is in `[raftdb.defaultcf]`.
@@ -450,7 +450,7 @@ WAL belongs to ordered writing, and currently, we do not apply a unique configur
 - Cache strategy of RAID card and I/O scheduling strategy of the operating system: currently no specific best practices; you can use the default configuration in Linux 7 or later
 - NUMA: no specific suggestion; for memory allocation strategy, you can use `interleave = all`
 - File system: ext4
-  
+
 #### How is the write performance in the most strict data available mode (`sync-log = true`)?
 
 Generally, enabling `sync-log` reduces about 30% of the performance. For write performance when `sync-log` is set to `false`, see [Performance test result for TiDB using Sysbench](/benchmark/v3.0-performance-benchmarking-with-sysbench.md).
@@ -513,11 +513,7 @@ TiDB is not suitable for tables of small size (such as below ten million level),
 
 #### How to back up data in TiDB?
 
-Currently, the preferred method for backup is using the [PingCAP fork of Mydumper](/mydumper-overview.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is poorer than [`mydumper`](/mydumper-overview.md)/[`loader`](/loader-overview.md) and it needs much more time to back up and restore large volumes of data.
-
-Keep the size of the data file exported from `mydumper` as small as possible. It is recommended to keep the size within 64M. You can set value of the `-F` parameter to 64.
-
-You can edit the `t` parameter of `loader` based on the number of TiKV instances and load status. For example, in scenarios of three TiKV instances, you can set its value to `3 * (1 ～ n)`. When the TiKV load is very high and `backoffer.maxSleep 15000ms is exceeded` displays a lot in `loader` and TiDB logs, you can adjust the parameter to a smaller value. When the TiKV load is not very high, you can adjust the parameter to a larger value accordingly.
+Currently, for the backup of a large volume of data, the preferred method is using [BR](/br/backup-and-restore-tool.md). Otherwise, the recommended tool is [Dumpling](/export-or-backup-using-dumpling.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is worse than [BR](/br/backup-and-restore-tool.md) and it needs much more time to back up and restore large volumes of data.
 
 ## Monitoring
 
