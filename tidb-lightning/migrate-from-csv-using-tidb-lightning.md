@@ -137,7 +137,7 @@ TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例�
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
 * 定界符和分隔符只能为单个 ASCII 字符。
 
-## `strict-format`
+## 严格格式
 
 导入文件的大小统一约为 256 MB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
 
