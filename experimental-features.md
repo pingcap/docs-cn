@@ -1,9 +1,11 @@
 ---
-title: Experimental Features
-summary: 了解 TiDB 4.0 版本的 Experimental Features。
+title: 实验特性
+summary: 了解 TiDB 4.0 版本的实验特性。
 ---
 
-# Experimental Features
+# 实验特性
+
+本文档介绍 TiDB 4.0 版本中的实验特性。**不建议**在生产环境中使用实验特性。
 
 ## 核心特性
 
