@@ -44,7 +44,7 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 - TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
 
-- TiDB 不添加列的 `AUTO_INCREMENT` 属性，移除后不可恢复。
+- TiDB 不支持添加列的 `AUTO_INCREMENT` 属性，移除后不可恢复。
 
 自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
 
