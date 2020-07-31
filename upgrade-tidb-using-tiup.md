@@ -147,7 +147,7 @@ tiup update cluster
 >
 > 升级到 4.0 版本前，请确认 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
 >
-> TiUP 版本 <= v1.0.8 可能无法正确获取 tiflash 的数据目录, 需要确认 `data_dir` 与 tiflash 配置的 `path` 值是否一致，不一致如下修正配置：
+> TiUP 版本 <= v1.0.8 可能无法正确获取 TiFlash 的数据目录, 需要确认 `data_dir` 与 TiFlash 配置的 `path` 值是否一致。若不一致需要如下把 TiFlash 的 `data_dir` 改成与 `path` 一致的值：
 >
 >  * 运行 `tiup cluster edit-config <cluster-name>` 修改配置文件
 >
@@ -156,7 +156,7 @@ tiup update cluster
 >  ```yaml
 >    tiflash_servers:
 >      - host: 10.0.1.14
->       data_dir: data/tiflash-11315 # 修改为 tiflash 配置文件的`path` 值
+>       data_dir: data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
 >  ```
 
 ## 4. 滚动升级 TiDB 集群
