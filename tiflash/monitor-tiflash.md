@@ -11,7 +11,9 @@ aliases: ['/docs-cn/dev/reference/tiflash/monitor/']
 
 TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details**。通过面板上的指标，可以了解 TiFlash 当前的状态。其中 **TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details** 主要为 TiFlash 的 Raft 层信息，其监控指标信息可参考 [TiKV 监控指标详解](/grafana-tikv-dashboard.md)
 
-> 注：低版本的 TiFlash 监控信息较不完善，如有需要推荐使用 v4.0.5 或更高版本的 TiDB 集群。
+> **注意：**
+>
+> 低版本的 TiFlash 监控信息较不完善，如有需要推荐使用 v4.0.5 或更高版本的 TiDB 集群。
 
 以下为 **TiFlash-Summary** 默认的监控信息：
 
@@ -27,8 +29,9 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - File Open OPS：每个 TiFlash 实例每秒进行 open 操作的次数。
 - Opened File Count：当前每个 TiFlash 实例打开的文件句柄数。
 
-> 注：
-> Store size, FSync OPS, File Open OPS, Opened File Count 目前仅包含了 TiFlash 存储层的统计指标，未包括 TiFlash-Proxy 内的信息。
+> **注意：**
+>
+> Store size、FSync OPS、File Open OPS、Opened File Count 目前仅包含了 TiFlash 存储层的统计指标，未包括 TiFlash-Proxy 内的信息。
 
 ## Coprocessor
 
@@ -47,6 +50,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Schema Apply Duration：所有 TiFlash 实例 apply schema 消耗的时间。
 
 ## Storage
+
 - Write Command OPS：所有 TiFlash 实例存储层每秒收到的写请求数量。
 - Write Amplification：每个 TiFlash 实例写放大倍数（实际磁盘写入量/逻辑数据写入量）。total 为自此次启动以来的写放大倍数，5min 为最近 5 分支内的写放大倍数。
 - Read Tasks OPS：每个 TiFlash 实例每秒存储层内部读取任务的数量。
@@ -60,7 +64,8 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Write flow：所有 TiFlash 实例磁盘写操作的流量。
 - Read flow：所有 TiFlash 实例磁盘读操作的流量。
 
-> 注：
+> **注意：**
+>
 > 目前这部分监控指标仅包含了 TiFlash 存储层的统计指标，未包括 TiFlash-Proxy 内的信息。
 
 ## Raft
