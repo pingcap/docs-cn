@@ -9,8 +9,7 @@
   + [TiDB 简介](/overview.md)
   + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
   + [基本功能](/basic-features.md)
-  + 兼容性
-    + [与 MySQL 的兼容性](/mysql-compatibility.md)
+  + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
 + 快速上手
@@ -24,6 +23,7 @@
     + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
     + [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
+    + [TiSpark 部署拓扑](/tispark-deployment-topology.md)
     + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md)
   + 安装与启动
@@ -32,6 +32,7 @@
       + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
+      + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
   + 性能测试报告及重现指南
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
@@ -55,23 +56,27 @@
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
-    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
     + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
-    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
+    + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   + 备份与恢复
-    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
-    + [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
-    + 使用 BR 工具
+    + 使用 BR 工具（推荐）
       + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+      + [BR 存储](/br/backup-and-restore-storages.md)
+    + [使用 Dumpling 和 TiDB Lightning 进行备份与恢复（推荐）](/backup-and-restore-using-dumpling-lightning.md)
+    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
+  + [读取历史数据](/read-historical-data.md)
+  + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
   + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
+  + [在线修改集群配置](/dynamic-config.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
@@ -97,6 +102,7 @@
     + [操作系统性能参数调优](/tune-operating-system.md)
   + 软件调优
     + 配置
+      + [TiDB 内存调优](/configure-memory-usage.md)
       + [TiKV 线程调优](/tune-tikv-thread-performance.md)
       + [TiKV 内存调优](/tune-tikv-memory-performance.md)
       + [TiKV Follower Read](/follower-read.md)
@@ -140,6 +146,7 @@
     + [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md)
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
+    + [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
   + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
@@ -153,6 +160,7 @@
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
+    + [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
     + [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
     + [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
     + [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
@@ -177,7 +185,7 @@
     + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     + 主要功能
       + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      + [表库过滤](/tidb-lightning/tidb-lightning-table-filter.md)
+      + [表库过滤](/table-filter.md)
       + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       + [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
@@ -186,6 +194,7 @@
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + [TiCDC](/ticdc/ticdc-overview.md)
+  + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -213,6 +222,7 @@
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
     + [生成自签名证书](/generate-self-signed-certificates.md)
+    + [静态加密](/encryption-at-rest.md)
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     + [权限管理](/privilege-management.md)
@@ -224,6 +234,7 @@
       + 属性
         + [AUTO_INCREMENT](/auto-increment.md)
         + [AUTO_RANDOM](/auto-random.md)
+        + [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
       + [字面值](/literal-values.md)
       + [Schema 对象名](/schema-object-names.md)
       + [关键字](/keywords.md)
@@ -240,6 +251,7 @@
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
+      - [`BACKUP`](/sql-statements/sql-statement-backup.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
       - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
@@ -285,6 +297,7 @@
       - [`RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
+      - [`RESTORE`](/sql-statements/sql-statement-restore.md)
       - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
       - [`ROLLBACK`](/sql-statements/sql-statement-rollback.md)
       - [`SELECT`](/sql-statements/sql-statement-select.md)
@@ -293,6 +306,7 @@
       - [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET [GLOBAL|SESSION] <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md)
       - [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
       - [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md)
       - [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md)
@@ -427,9 +441,7 @@
     + [tikv-server](/tikv-configuration-file.md)
     + [tiflash-server](/tiflash/tiflash-configuration.md)
     + [pd-server](/pd-configuration-file.md)
-  + 系统变量
-    + [MySQL 系统变量](/system-variables.md)
-    + [TiDB 特定系统变量](/tidb-specific-system-variables.md)
+  + [系统变量](/system-variables.md)
   + 存储引擎
     + TiKV
       + [TiKV 简介](/tikv-overview.md)
@@ -451,6 +463,7 @@
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       + [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
+  + [遥测](/telemetry.md)
   + [错误码](/error-codes.md)
   + [TiCDC 简介](/ticdc/ticdc-overview.md)
   + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
@@ -465,8 +478,11 @@
   + [迁移 FAQ](/faq/migration-tidb-faq.md)
 + [术语表](/glossary.md)
 + 版本发布历史
+  + [TiDB V4.0 Roadmap](/roadmap.md)
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.3](/releases/release-4.0.3.md)
+    - [4.0.2](/releases/release-4.0.2.md)
     - [4.0.1](/releases/release-4.0.1.md)
     - [4.0 GA](/releases/release-4.0-ga.md)
     - [4.0.0-rc.2](/releases/release-4.0.0-rc.2.md)
@@ -484,6 +500,7 @@
     - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/release-3.1.0-beta.md)
   + v3.0
+    - [3.0.16](/releases/release-3.0.16.md)
     - [3.0.15](/releases/release-3.0.15.md)
     - [3.0.14](/releases/release-3.0.14.md)
     - [3.0.13](/releases/release-3.0.13.md)

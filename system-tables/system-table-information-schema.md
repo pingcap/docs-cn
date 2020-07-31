@@ -1,6 +1,5 @@
 ---
 title: Information Schema
-category: reference
 aliases: ['/docs-cn/dev/reference/system-databases/information-schema/']
 ---
 
@@ -31,6 +30,16 @@ select * from `ANALYZE_STATUS`;
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
 6 rows in set
 ```
+
+`ANALYZE_STATUS` 表中列的含义如下：
+
+* `TABLE_SCHEMA`: 表所属的数据库的名称。
+* `TABLE_NAME`: 表的名称。
+* `PARTITION_NAME`: 分区表的名称。
+* `JOB_INFO`: 任务信息。
+* `PROCESSED_ROWS`: 已经处理的行数。
+* `START_TIME`: 开始时间。
+* `STATE`: 状态。包括 `padding`、`running`、`finished` 和 `failed`。
 
 ## CHARACTER_SETS 表
 
@@ -421,6 +430,11 @@ SELECT * FROM session_variables LIMIT 10;
 10 rows in set (0.00 sec)
 ```
 
+`SESSION_VARIABLES` 表各列字段含义如下：
+
+* `VARIABLE_NAME`：数据库中 session 级变量的名称。
+* `VARIABLE_VALUE`：数据库中对应该 session 变量名的具体值。
+
 ## SLOW_QUERY 表
 
 `SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询请参考[慢查询日志文档](/identify-slow-queries.md)。
@@ -615,6 +629,27 @@ desc statistics;
 +---------------+---------------+------+------+---------+-------+
 ```
 
+`STATISTICS` 表中列的含义如下：
+
+* `TABLE_CATALOG`: 包含索引的表所属的目录的名称。这个值总是 `def`。
+* `TABLE_SCHEMA`: 包含索引的表所属的数据库的名称。
+* `TABLE_NAME`: 包含索引的表的名称。
+* `NON_UNIQUE`: 如果索引不能包含重复项，则为 `0`；如果可以，则为 `1`。
+* `INDEX_SCHEMA`: 索引所属的数据库的名称。
+* `INDEX_NAME`: 索引的名称。如果索引是主键，那么名称总是 `PRIMARY`。
+* `SEQ_IN_INDEX`: 索引中的列序号，从 `1` 开始。
+* `COLUMN_NAME`: 列名。请参见表达式列的说明。
+* `COLLATION`: 列在索引中的排序方式。取值可以是 `A`（升序）、`D`（降序）或 `NULL`（未排序）。
+* `CARDINALITY`: 索引中唯一值的数量的估计。要更新这个数字，执行 `ANALYZE TABLE`。
+* `SUB_PART`: 索引的前缀。如果只对列的部分前缀进行索引，则为索引字符的数量；如果对整个列进行索引，则为 `NULL`。
+* `PACKED`: TiDB 未使用该字段。这个值总是 `NULL`。
+* `NULLABLE`: 如果列可能包含 `NULL` 值，则值为 `YES`；如果不包含，则值为 `''`。
+* `INDEX_TYPE`: 索引的类型。
+* `COMMENT`: 其他与索引有关的信息。
+* `INDEX_COMMENT`: 在创建索引时为索引提供的带有注释属性的任何注释。
+* `IS_VISIBLE`: 优化器能否使用该索引。
+* `Expression` 对于非表达式部分的索引键，这个值为 `NULL`；对于表达式部分的索引键，这个值为表达式本身。可参考[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)
+
 下列语句是等价的：
 
 {{< copyable "sql" >}}
@@ -689,6 +724,30 @@ SHOW TABLES
   [LIKE 'wild']
 ```
 
+`TABLES` 表各列字段含义如下：
+
+* `TABLE_CATALOG`：表所属的目录的名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：表所属数据库的名称。
+* `TABLE_NAME`：表的名称。
+* `TABLE_TYPE`：表的类型。
+* `ENGINE`：存储引擎类型。该值暂为 ‘InnoDB’。
+* `VERSION`：版本，默认值为 10。
+* `ROW_FORMAT`：行格式。该值暂为 ‘Compact’。
+* `TABLE_ROWS`：统计信息中该表所存的行数。
+* `AVG_ROW_LENGTH`：该表中所存数据的平均行长度。平均行长度 = DATA_LENGTH / 统计信息中的行数。
+* `DATA_LENGTH`：数据长度。数据长度 = 统计信息中的行数 × 元组各列存储长度和，这里尚未考虑 TiKV 的副本数。
+* `MAX_DATA_LENGTH`：最大数据长度。该值暂为 0，表示没有最大数据长度的限制。
+* `INDEX_LENGTH`：索引长度。索引长度 = 统计信息中的行数 × 索引元组各列长度和，这里尚未考虑 TiKV 的副本数。
+* `DATA_FREE`：空间碎片。该值暂为 0。
+* `AUTO_INCREMENT`：该表中自增主键自动增量的当前值。
+* `CREATE_TIME`：该表的创建时间。
+* `UPDATE_TIME`：该表的更新时间。
+* `CHECK_TIME`：该表的检查时间。
+* `TABLE_COLLATION`：该表的字符校验编码集。
+* `CHECKSUM`：校验和。
+* `CREATE_OPTIONS`：创建选项。
+* `TABLE_COMMENT`：表的注释、备注。
+
 表中的信息大部分定义自 MySQL，此外有两列是 TiDB 新增的：
 
 * `TIDB_TABLE_ID`：标识表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
@@ -754,10 +813,13 @@ CONSTRAINT_CATALOG: def
    CONSTRAINT_TYPE: UNIQUE
 ```
 
-其中：
+`TABLE_CONSTRAINTS` 表中列的含义如下：
 
-* `CONSTRAINT_TYPE` 的取值可以是 `UNIQUE`，`PRIMARY KEY`，或者 `FOREIGN KEY`。
-* `UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
+* `CONSTRAINT_CATALOG`: 约束所属的目录的名称。这个值总是 `def`。
+* `CONSTRAINT_SCHEMA`: 约束所属的数据库的名称。
+* `CONSTRAINT_NAME`: 约束的名称。
+* `TABLE_NAME`: 表的名称。
+* `CONSTRAINT_TYPE`: 约束的类型。取值可以是 `UNIQUE`、`PRIMARY KEY` 或者 `FOREIGN KEY`。`UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
 
 ## TIDB_HOT_REGIONS 表
 
@@ -784,6 +846,19 @@ desc TIDB_HOT_REGIONS;
 | FLOW_BYTES     | bigint(21) unsigned | YES  |     | <null>  |       |
 +----------------+---------------------+------+-----+---------+-------+
 ```
+
+`TIDB_HOT_REGIONS` 表各列字段含义如下：
+
+* TABLE_ID：热点 region 所在表的 ID。
+* INDEX_ID：热点 region 所在索引的 ID。
+* DB_NAME：热点 region 所在数据库对象的数据库名。
+* TABLE_NAME：热点 region 所在表的名称。
+* INDEX_NAME：热点 region 所在索引的名称。
+* REGION_ID：热点 region 的 ID。
+* TYPE：热点 region 的类型。
+* MAX_HOT_DEGREE：该 region 的最大热度。
+* REGION_COUNT：所在 instance 的 region 数量。
+* FLOW_BYTES：该 region 内读写的字节数量。
 
 ## TIDB_INDEXES 表
 
@@ -902,7 +977,7 @@ desc TIKV_REGION_STATUS;
 * `TABLE_ID`：Region 所属的表的 ID。
 * `DB_NAME`：`TABLE_ID` 所属的数据库的名称。
 * `TABLE_NAME`：Region 所属的表的名称。
-* `IS_INDEX`：Region 数据是否是索引，0 代表不是索引，1 代表是索引。如果当前 Region 同时包含表数据和索引数据，会有多行记录，`IS_INDEX` 分别是 1 和 0。
+* `IS_INDEX`：Region 数据是否是索引，0 代表不是索引，1 代表是索引。如果当前 Region 同时包含表数据和索引数据，会有多行记录，`IS_INDEX` 分别是 0 和 1。
 * `INDEX_ID`：Region 所属的索引的 ID。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
 * `INDEX_NAME`：Region 所属的索引的名称。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
 * `EPOCH_CONF_VER`：Region 的配置的版本号，在增加或减少 peer 时版本号会递增。

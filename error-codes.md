@@ -1,6 +1,5 @@
 ---
 title: 错误码与故障诊断
-category: reference
 aliases: ['/docs-cn/dev/reference/error-codes/']
 ---
 
@@ -32,11 +31,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8004
 
-    单个事务过大，原因及解决方法请参考[这里](/faq/tidb-faq.md#433-transaction-too-large-是什么原因怎么解决) 
+    单个事务过大，原因及解决方法请参考[这里](/faq/migration-tidb-faq.md#transaction-too-large-是什么原因怎么解决) 
 
 * Error Number: 8005
 
-    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#九故障排除) 
+    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除) 
 
 * Error Number: 8018
 
@@ -263,7 +262,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8200
 
-    尚不支持的 DDL 语法。请参考 [与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl)。
+    尚不支持的 DDL 语法。请参考 [与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
 
 * Error Number: 8214
 
@@ -335,7 +334,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9007
 
-    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#九故障排除)。 
+    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除)。 
 
 * Error Number: 9008
 
