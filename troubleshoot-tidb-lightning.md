@@ -25,9 +25,9 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 
 **原因 3**: 单个文件过大。
 
-当数据源拆分为多个大小约为 256 MB 的文件时，TiDB Lightning 可以并行处理数据, 达到最佳效果。如果输入的每个文件过大，TiDB Lightning 可能无响应。
+把源数据分割为单个大小约为 256 MB 的多个文件时，TiDB Lightning 会并行处理数据，达到最佳效果。如果导入的单个文件过大，TiDB Lightning 可能无响应。
 
-如果数据源是 CSV 格式文件，并且所有 CSV 文件内字段都没有字符换行符（U+000A 及 U+000D)，则可以启用 `strict-format`，TiDB Lightning 会自动分割大文件。
+如果源数据是 CSV 格式文件，并且所有的 CSV 文件内都不存在包含字符换行符的字段 (U+000A 及 U+000D)，则可以启用 `strict-format`，TiDB Lightning 会自动分割大文件。
 
 ```toml
 [mydumper]

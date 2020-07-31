@@ -367,7 +367,7 @@ min-available-ratio = 0.05
 |:----|:----------|
 | --compact | 执行 full compact |
 | --switch-mode *mode* | 将每个 TiKV Store 切换到指定模式（normal 或 import） |
-| --fetch-mode | 打印每个 TiKV 存储的当前模式 |
+| --fetch-mode | 打印每个 TiKV Store 的当前模式 |
 | --import-engine *uuid* | 将 TiKV Importer 上关闭的引擎文件导入到 TiKV 集群 |
 | --cleanup-engine *uuid* | 删除 TiKV Importer 上的引擎文件 |
 | --checkpoint-dump *folder* | 将当前的断点以 CSV 格式存储到文件夹中 |
@@ -388,7 +388,7 @@ min-available-ratio = 0.05
 | -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置| |
 | -V, --version | 输出程序的版本 | |
 | -A, --addr *ip:port* | TiKV Importer 服务器的监听地址 | `server.addr` |
-| --status-server *ip:port* | TiKV Importer 服务器的监听地址 | `status-server-address` |
+| --status-server *ip:port* | 状态服务器的监听地址 | `status-server-address` |
 | --import-dir *dir* | 引擎文件的存储目录 | `import.import-dir` |
 | --log-level *level* | 日志的等级： trace、debug、info、warn、error 或 off | `log-level` |
 | --log-file *file* | 日志文件路径 | `log-file` |
