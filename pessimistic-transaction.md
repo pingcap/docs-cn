@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/reference/transactions/transaction-pessimistic/']
 
 ## 事务模式的修改方法
 
-你可以使用 [`tidb_txn_mode`](/tidb-specific-system-variables.md#tidb_txn_mode) 系统变量设置事务模式。执行以下命令，即可使整个集群中所有新创建 session 执行的所有显示事务（即非 autocommit 的事务）进入悲观事务模式：
+你可以使用 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode) 系统变量设置事务模式。执行以下命令，即可使整个集群中所有新创建 session 执行的所有显示事务（即非 autocommit 的事务）进入悲观事务模式：
 
 {{< copyable "sql" >}}
 
