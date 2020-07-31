@@ -58,7 +58,7 @@ enabled = true
 
 升高 TiKV 的日志级别同样有利于提高性能表现。
 
-TiKV 集群存在三个 Column Family（Default CF、Write CF 和 Lock CF），主要用于存储不同类型的数据。对于 Sysbench 测试，需要关注 Default CF 和 Write CF，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
+TiKV 集群存在多个 Column Family，包括 Default CF、Write CF 和 LockCF，主要用于存储不同类型的数据。对于 Sysbench 测试，需要关注 Default CF 和 Write CF，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
 
 Default CF : Write CF = 4 : 1
 
