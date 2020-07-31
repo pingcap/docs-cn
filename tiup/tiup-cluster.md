@@ -409,7 +409,7 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 
 > **注意：**
 >
-> TiUP Cluster 对 TiSpark 的支持目前为实验性特性，暂不支持导入启用了 TiSpark 组件的集群。
+> TiUP cluster 组件对 TiSpark 的支持目前为实验性特性，暂不支持导入启用了 TiSpark 组件的集群。
 
 在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。import 命令用法如下：
 
