@@ -7,11 +7,13 @@ aliases: ['/docs-cn/dev/reference/tools/pd-control/']
 
 PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整集群。
 
-## 使用 TiUP
+## 安装方式
+
+### 使用 TiUP
 
 可直接通过 `tiup ctl pd -- -u http://<pd_ip>:<pd_port> [-i]` 使用。
 
-## 下载安装包
+### 下载安装包
 
 如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可，因为 `pd-ctl` 包含在 TiDB 安装包中。
 
@@ -23,7 +25,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 >
 > 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v4.0.0-rc.2` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
 
-## 源码编译
+### 源码编译
 
 1. [Go](https://golang.org/) Version 1.13 以上
 2. 在 PD 项目根目录使用 `make` 或者 `make pd-ctl` 命令进行编译，生成 bin/pd-ctl
@@ -63,45 +65,45 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ./pd-ctl -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
 ```
 
-## 命令行参数(flags)
+## 命令行参数 (flags)
 
-### --cacert
+### `--cacert`
 
 - 指定 PEM 格式的受信任 CA 证书的文件路径
 - 默认值：""
 
-### --cert
+### `--cert`
 
 - 指定 PEM 格式的 SSL 证书的文件路径
 - 默认值：""
 
-### --detach,-d
+### `--detach` / `-d`
 
 + 使用单命令行模式(不进入 readline)
 + 默认值: true
 
-### --help,-h
+### `--help` / `-h`
 
 + 输出帮助信息
 + 默认值：false
 
-### --interact,-i
+### `--interact` / `-i`
 
 + 使用交互模式（进入 readline）
 + 默认值：false
 
-### --key
+### `--key`
 
 - 指定 PEM 格式的 SSL 证书密钥文件路径，即 `--cert` 所指定的证书的私钥
 - 默认值: ""
 
-### --pd,-u
+### `--pd` / `-u`
 
 + 指定 PD 的地址
 + 默认地址：`http://127.0.0.1:2379`
 + 环境变量：`PD_ADDR`
 
-### --version,-V
+### `--version` / `-V`
 
 - 打印版本信息并退出
 - 默认值: false
@@ -143,6 +145,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 {
   "replication": {
     "enable-placement-rules": "false",
+    "isolation-level": "",
     "location-labels": "",
     "max-replicas": 3,
     "strictly-match-label": "false"
@@ -199,6 +202,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 {
   "max-replicas": 3,
+  "isolation-level": "",
   "location-labels": "",
   "strictly-match-label": "false",
   "enable-placement-rules": "false"
@@ -570,10 +574,10 @@ Success!
 
 ```
 {
-   "name": "pd",
-   "member_id": 13155432540099656863,
-   "peer_urls": [......],
-   "client_urls": [......]
+  "name": "pd",
+  "member_id": 13155432540099656863,
+  "peer_urls": [......],
+  "client_urls": [......]
 }
 ```
 
@@ -947,10 +951,10 @@ Encoding 格式示例：
 >> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
 >> scheduler remove grant-leader-scheduler-1      // 把对应的 scheduler 删掉
->> schedule pause balance-region-scheduler 10     // 暂停运行 balance-region 调度器 10 秒
->> schedule pause all 10                          // 暂停运行所有的调度器 10 秒
->> schedule resume balance-region-scheduler       // 继续运行 balance-region 调度器 
->> schedule resume all                            // 继续运行所有的调度器 
+>> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
+>> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
+>> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器 
+>> scheduler resume all                           // 继续运行所有的调度器 
 >> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
 ```
 
@@ -1016,7 +1020,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store remove-tombstone              // 删除所有 tombstone 状态的 store 记录
+>> store remove-tombstone              // 删除所有 tombstone 状态的 store
 >> store limit                         // 显示所有 store 添加 peer 的速度上限
 >> store limit region-add              // 显示所有 store 添加 peer 的速度上限
 >> store limit region-remove           // 显示所有 store 删除 peer 的速度上限
