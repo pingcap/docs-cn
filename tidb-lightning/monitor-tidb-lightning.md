@@ -27,7 +27,7 @@ pprof-port = 8289
 监控的端口也可在 `tikv-importer.toml` 配置:
 
 ```toml
-# TiKV Importer 服务器的监听地址
+# 状态服务器的监听地址
 status-server-address = '0.0.0.0:8286'
 ```
 

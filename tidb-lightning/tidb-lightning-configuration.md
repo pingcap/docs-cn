@@ -60,10 +60,10 @@ table-concurrency = 6
 io-concurrency = 5
 
 [security]
-# 指定集群中 TLS 连接的证书和密钥。
+# 指定集群中用于 TLS 连接的证书和密钥。
 # CA 的公钥证书。如果留空，则可禁用 TLS。
 # ca-path = "/path/to/ca.pem"
-# 此服务的公共证书。
+# 此服务的公钥证书。
 # cert-path = "/path/to/lightning.pem"
 # 该服务的密钥。
 # key-path = "/path/to/lightning.key"
@@ -255,7 +255,7 @@ log-file = "tikv-importer.log"
 # 日志等级：trace, debug, info, warn, error 和 off
 log-level = "info"
 
-# TiKV Importer 服务器的监听地址。 
+# 状态服务器的监听地址。 
 # Prometheus 可以从这个地址抓取监控指标。
 status-server-address = "0.0.0.0:8286"
 
@@ -266,7 +266,7 @@ addr = "0.0.0.0:8287"
 grpc-concurrency = 16
 
 [metric]
-# 当使用 Prometheus Pushgateway 时会涉及相关设置。通常可以通过 Prometheus 从 TikV Importer 服务器地址中抓取指标。
+# 当使用 Prometheus Pushgateway 时会涉及相关设置。通常可以通过 Prometheus 从 状态服务器地址中抓取指标。
 # 给 Prometheus 客户端推送的 job 名称。
 job = "tikv-importer"
 # 给 Prometheus 客户端推送的间隔。

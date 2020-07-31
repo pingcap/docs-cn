@@ -197,7 +197,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     # 日志等级：trace、debug、info、warn、error、off。
     log-level = "info"
 
-    # TiKV Importer 服务器的监听地址。
+    # 状态服务器的监听地址。
     status-server-address = "0.0.0.0:8286"
     
     [server]
