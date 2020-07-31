@@ -21,6 +21,7 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 * 事件
 * 自定义函数
 * 外键约束
+* 临时表
 * 全文/空间函数与索引
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * SYS schema
@@ -41,7 +42,9 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 - TiDB 的自增列仅保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
 
-- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
+- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
+
+- TiDB 不添加列的 `AUTO_INCREMENT` 属性，移除后不可恢复。
 
 自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
 
@@ -102,6 +105,7 @@ mysql> select _tidb_rowid, id from t;
 
 - Change/Modify Column
     + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`，可能输出的错误信息：`length %d is less than origin %d`。
+    + 不支持字段类型修改为它的超集，比如从 `INTEGER` 变为 `VARCHAR`，或者从 `TIMESTAMP` 变为 `DATETIME` 可能输出的错误信息：`Unsupported modify column: type %d not match origin %d`。
     + 不支持修改 `DECIMAL` 类型的精度，可能输出的错误信息：`can't change decimal column precision`。
     + 不支持更改 `UNSIGNED` 属性，可能输出的错误信息：`can't change unsigned integer to signed or vice versa`。
     + 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
@@ -132,6 +136,11 @@ mysql> select _tidb_rowid, id from t;
 ### `ANALYZE TABLE`
 
 - [`ANALYZE TABLE`](/statistics.md#手动收集) 语句会完全重构表的统计数据，语句执行过程较长，但在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短。
+
+### SELECT 的限制
+
+- 不支持 SELECT ... INTO @变量 语法。
+- 不支持 SELECT ... GROUP BY ... WITH ROLLUP 语法。
 
 ### 视图
 
