@@ -46,7 +46,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 ### 自增 ID
 
-TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
+TiDB 中，自增列只保证自增且唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证连续分配。TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
 
 在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值，否则在如下情况下会遇到问题。
 
