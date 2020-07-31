@@ -1,6 +1,5 @@
 ---
 title: 访问 TiDB Dashboard
-category: how-to
 ---
 
 # 访问 TiDB Dashboard
@@ -49,7 +48,7 @@ TiDB Dashboard 目前支持以下语言：
 - 简体中文
 - 英文
 
-在登录界面中，可点击 Switch Language 下拉框切换界面显示语言：
+在登录界面中，可点击 **Switch Language** 下拉框切换界面显示语言：
 
 ![切换语言](/media/dashboard/dashboard-access-switch-language.png)
 

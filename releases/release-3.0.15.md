@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.15 Release Notes
-category: Releases
 ---
 
 # TiDB 3.0.15 Release Notes
