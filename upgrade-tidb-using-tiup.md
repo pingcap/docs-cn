@@ -149,15 +149,15 @@ tiup update cluster
 >
 > TiUP 版本 <= v1.0.8 可能无法正确获取 TiFlash 的数据目录, 需要确认 `data_dir` 与 TiFlash 配置的 `path` 值是否一致。若不一致需要如下把 TiFlash 的 `data_dir` 改成与 `path` 一致的值：
 >
->  * 运行 `tiup cluster edit-config <cluster-name>` 修改配置文件
+> 1. 运行 `tiup cluster edit-config <cluster-name>` 修改配置文件
 >
->  * 修改对应 tiflash 的 `data_dir`配置：
+> 2. 修改对应 TiFlash 的 `data_dir` 配置：
 >
->  ```yaml
->    tiflash_servers:
->      - host: 10.0.1.14
->       data_dir: data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
->  ```
+>     ```yaml
+>       tiflash_servers:
+>         - host: 10.0.1.14
+>           data_dir: data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
+>     ```
 
 ## 4. 滚动升级 TiDB 集群
 
