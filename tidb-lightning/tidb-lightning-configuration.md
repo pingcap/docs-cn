@@ -61,11 +61,11 @@ io-concurrency = 5
 
 [security]
 # 指定集群中 TLS 连接的证书和密钥。
-# CA 的公共证书。如果留空，则可禁用 TLS。
+# CA 的公钥证书。如果留空，则可禁用 TLS。
 # ca-path = "/path/to/ca.pem"
 # 此服务的公共证书。
 # cert-path = "/path/to/lightning.pem"
-# 此服务的密钥。
+# 该服务的密钥。
 # key-path = "/path/to/lightning.key"
 
 [checkpoint]
@@ -141,18 +141,17 @@ no-schema = false
 # 注意：**数据** 文件始终解析为 binary 文件。
 character-set = "auto"
 
-# 如果输入数据源为严格格式，则会加快处理速度。
+# 严格格式的导入数据可加快处理速度。
 # strict-format = true 要求：
-# 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D, 即 \r 和 \n），
+# 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D，即 \r 和 \n）
 # 甚至使用转义符时都不可以，即严格将换行符作为行分隔符。
-# 输入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
-# 但是如果输入数据源为非严格格式，会将一条完整的数据值分解成两块，
-# 导致结果出错。
-# 为了保证数据安全而非追求速度，默认值设置为 false。
+# 导入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
+# 但是如果输入数据为非严格格式，可能会将一条完整的数据分割成两部分，导致结果出错。
+# 为了保证数据安全而非追求速度，默认值为 false。
 strict-format = false
 
-# 如果 strict-format = true，TiDB Lightning 会将大型 CSV 文件分割为多个文件块进行并行处理。 max-region-size 是分割后每个文件块的最大大小。
-# max-region-size = 268_435_456 # Byte (默认是 256 MB)
+# 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
+# max-region-size = 268_435_456 # Byte（默认是 256 MB）
 
 # 只导入与该通配符规则相匹配的表。详情见相应章节。
 filter = ['*.*']
@@ -204,21 +203,21 @@ sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
 # 会使用下游数据库 global 级别的 `max_allowed_packet`。
 max-allowed-packet = 67_108_864
 
-# 是否将 TLS 用于 SQL 连接。当有效值为：
-#  * ""            - 如果填充了[tidb.security]部分，则强制使用 TLS（与 "cluster" 情况相同），否则与 "false" 情况相同
+# SQL 连接是否使用 TLS。可选值为：
+#  * ""            - 如果填充了 [tidb.security] 部分，则强制使用 TLS（与 "cluster" 情况相同），否则与 "false" 情况相同
 #  * "false"       - 禁用 TLS
 #  * "cluster"     - 强制使用 TLS 并使用 [tidb.security] 部分中指定的 CA 验证服务器的证书
 #  * "skip-verify" - 强制使用 TLS，但不验证服务器的证书（不安全！）
 #  * "preferred"   - 与 "skip-verify" 相同，但是如果服务器不支持 TLS，则会退回到未加密的连接
 # tls = ""
-# 指定启用 TLS 的 MySQL 连接的证书和密钥。
-# 默认为[security]部分的副本。
+# 指定证书和密钥用于 TLS 连接 MySQL。
+# 默认为 [security] 部分的副本。
 # [tidb.security]
-# CA 的公共证书。 设置为空字符串可禁用 SQL 的 TLS。
+# CA 的公钥证书。设置为空字符串可禁用 SQL 的 TLS。
 # ca-path = "/path/to/ca.pem"
-# 此服务的公共证书。 默认为 `security.cert-path` 的副本
+# 该服务的公钥证书。默认为 `security.cert-path` 的副本
 # cert-path = "/path/to/lightning.pem"
-# 此服务的私钥。 默认为 `security.key-path` 的副本
+# 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
 # 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作。
@@ -257,7 +256,7 @@ log-file = "tikv-importer.log"
 log-level = "info"
 
 # TiKV Importer 服务器的监听地址。 
-# Prometheus 可以从这个地址抓取指标。
+# Prometheus 可以从这个地址抓取监控指标。
 status-server-address = "0.0.0.0:8286"
 
 [server]
@@ -348,9 +347,9 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
-| --no-schema | 先忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
+| --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
-| --analyze *bool* | 导入后统计信息分析 (默认值为 true) | `post-restore.analyze` |
+| --analyze *bool* | 导入后分析表信息 (默认值为 true) | `post-restore.analyze` |
 | --checksum *bool* | 导入后比较校验和 (默认值为 true) | `post-restore.checksum` |
 | --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |

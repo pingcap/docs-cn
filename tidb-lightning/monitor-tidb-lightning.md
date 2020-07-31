@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/monitor/']
 - 如果是使用 TiDB Ansible 部署 Lightning，只要将服务器地址加到 `inventory.ini` 文件里的 `[monitored_servers]` 部分即可。
 - 如果是手动部署 Lightning，则参照以下步骤进行配置。
 
-只要 Prometheus 能发现 `tidb-lightning` 和 `tikv-importer` 的监控地址，就能收集监控指标。
+只要 Prometheus 能发现 `tidb-lightning` 和 `tikv-importer` 的监控地址，就能收集对应的监控指标。
 
 监控的端口可在 `tidb-lightning.toml` 中配置：
 
