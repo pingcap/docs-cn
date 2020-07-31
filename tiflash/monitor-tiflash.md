@@ -52,7 +52,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 ## Storage
 
 - Write Command OPS：所有 TiFlash 实例存储层每秒收到的写请求数量。
-- Write Amplification：每个 TiFlash 实例写放大倍数（实际磁盘写入量/逻辑数据写入量）。total 为自此次启动以来的写放大倍数，5min 为最近 5 分支内的写放大倍数。
+- Write Amplification：每个 TiFlash 实例写放大倍数（实际磁盘写入量/逻辑数据写入量）。total 为自此次启动以来的写放大倍数，5min 为最近 5 分钟内的写放大倍数。
 - Read Tasks OPS：每个 TiFlash 实例每秒存储层内部读取任务的数量。
 - Rough Set Filter Rate：每个 TiFlash 实例最近 1 分钟内读取的 packet 数被存储层粗糙索引过滤的比例。
 - Internal Tasks OPS：所有 TiFlash 实例每秒进行内部数据整理任务的次数。
