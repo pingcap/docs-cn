@@ -7,9 +7,9 @@ aliases: ['/docs/dev/backup-and-restore-using-mydumper-lightning/','/docs/dev/ho
 
 This document describes how to perform full backup and restoration of the TiDB data using Mydumper and TiDB Lightning. For incremental backup and restoration, refer to [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md).
 
-Suppose that the TiDB service information is as follows:
+Suppose that the TiDB server information is as follows:
 
-|Name|Address|Port|User|Password|
+|Server Name|Server Address|Port|User|Password|
 |:----|:-------|:----|:----|:--------|
 |TiDB|127.0.0.1|4000|root|*|
 
@@ -32,11 +32,11 @@ Use [Mydumper](/mydumper-overview.md) to export data from TiDB and use [TiDB Lig
 
 To quickly backup and restore data (especially large amounts of data), refer to the following recommendations:
 
-* Keep the exported data file as small as possible. It is recommended to use the `-F` parameter to set the file size. If you use TiDB Lightning to restore data, it is recommended that you set the value of `-F` to `256` (MB). If you use `loader` for restoration, it is recommended to set the value to `64` (MB).
+* Keep the exported data file as small as possible. It is recommended to use the `-F` option of Mydumper to set the file size. If you use TiDB Lightning to restore data, it is recommended that you set the value of `-F` to `256` (MB). If you use `loader` for restoration, it is recommended to set the value to `64` (MB).
 
 ## Backup data from TiDB
 
-Use `mydumper` to backup data from TiDB.
+Use the following `mydumper` command to backup data from TiDB:
 
 {{< copyable "shell-regular" >}}
 
@@ -44,13 +44,13 @@ Use `mydumper` to backup data from TiDB.
 ./bin/mydumper -h 127.0.0.1 -P 4000 -u root -t 32 -F 256 -B test -T t1,t2 --skip-tz-utc -o ./var/test
 ```
 
-In this command,
+In this command:
 
-`-B test` means that the data is exported from the `test` database.
-`-T t1,t2` means that only the `t1` and `t2` tables are exported.
-`-t 32` means that 32 threads are used to export the data.
-`-F 256` means that a table is partitioned into chunks, and one chunk is 256MB.
-`--skip-tz-utc` means to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
+- `-B test` means that the data is exported from the `test` database.
+- `-T t1,t2` means that only the `t1` and `t2` tables are exported.
+- `-t 32` means that 32 threads are used to export the data.
+- `-F 256` means that a table is partitioned into chunks, and one chunk is 256MB.
+- `--skip-tz-utc` means to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
 
 If `mydumper` returns the following error:
 

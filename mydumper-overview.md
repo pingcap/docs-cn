@@ -6,6 +6,10 @@ aliases: ['/docs/dev/mydumper-overview/','/docs/dev/reference/tools/mydumper/']
 
 # Mydumper Instructions
 
+> **Warning:**
+>
+> The maintainers have stopped developing new features for Mydumper, and most of its features have been replaced by [Dumpling](/dumpling-overview.md). It is strongly recommended that you switch to Dumpling.
+
 ## What is Mydumper?
 
 [Mydumper](https://github.com/pingcap/mydumper) is a fork project optimized for TiDB. You can use this tool for logical backups of **MySQL** or **TiDB**.

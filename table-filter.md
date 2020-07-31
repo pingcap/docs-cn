@@ -27,7 +27,7 @@ Table filters can be applied to the tools using multiple `-f` or `--filter` comm
     #                 ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
-* [Dumpling](/export-or-backup-using-dumpling.md):
+* [Dumpling](/dumpling-overview.md):
 
     {{< copyable "shell-regular" >}}
 

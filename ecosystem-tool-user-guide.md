@@ -9,7 +9,7 @@ This document introduces the functionalities of TiDB ecosystem tools and their r
 
 ## Full data export 
 
-[Dumpling](/export-or-backup-using-dumpling.md) is a tool for the logical full data export from MySQL or TiDB.
+[Dumpling](/dumpling-overview.md) is a tool for the logical full data export from MySQL or TiDB.
 
 The following are the basics of Dumpling:
 
@@ -76,7 +76,7 @@ If the data volume is below the TB level, it is recommended to migrate data from
 
 If the data volume is at the TB level, take the following steps:
 
-1. Use [Dumpling](/export-or-backup-using-dumpling.md) to export the full data from MySQL/MariaDB.
+1. Use [Dumpling](/dumpling-overview.md) to export the full data from MySQL/MariaDB.
 2. Use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to import the data exported in Step 1 to the TiDB cluster.
 3. Use DM to migrate the incremental data from MySQL/MariaDB to TiDB.
 
