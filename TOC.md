@@ -43,13 +43,6 @@
   + 性能测试方法
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
-<<<<<<< HEAD
-    + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
-    + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
-    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
-    + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
-=======
->>>>>>> af993f7... Add experimental-features.md (#3943)
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
