@@ -11,6 +11,8 @@ aliases: ['/docs-cn/dev/reference/tiflash/monitor/']
 
 TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details**。通过面板上的指标，可以了解 TiFlash 当前的状态。其中 **TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details** 主要为 TiFlash 的 Raft 层信息，其监控指标信息可参考 [TiKV 监控指标详解](/grafana-tikv-dashboard.md)
 
+> 注：低版本的 TiFlash 监控信息较不完善，如有需要推荐使用 v4.0.5 或更高版本的 TiDB 集群。
+
 以下为 **TiFlash-Summary** 默认的监控信息：
 
 ## Server
