@@ -23,7 +23,6 @@ However, some features of MySQL are not supported. This could be because there i
 + `FOREIGN KEY` constraints [#18209](https://github.com/pingcap/tidb/issues/18209)
 + `FULLTEXT`/`SPATIAL` functions and indexes [#1793](https://github.com/pingcap/tidb/issues/1793)
 + Character sets other than `utf8`, `utf8mb4`, `ascii`, `latin1` and `binary`
-+ Add/drop primary key
 + SYS schema
 + Optimizer trace
 + XML Functions
