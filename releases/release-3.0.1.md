@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.1 Release Notes
-category: Releases
 aliases: ['/docs-cn/dev/releases/3.0.1/']
 ---
 
@@ -18,7 +17,7 @@ TiDB Ansible 版本：3.0.1
 + 新增 `tidb_wait_split_region_finish_backoff` Session 变量，用于控制 Region 打散的 Backoff 时间 [#11166](https://github.com/pingcap/tidb/pull/11166)
 + 新增根据负载情况自动调整 Auto ID 分配的步长功能，步长自动调整范围最小 1000，最大 2000000 [#11006](https://github.com/pingcap/tidb/pull/11006)
 + 新增 `ADMIN PLUGINS ENABLE`/`ADMIN PLUGINS DISABLE` SQL 语句，管理 Plugin 的动态开启或关闭 [#11157](https://github.com/pingcap/tidb/pull/11157)
-+ Audit Plugin 新增审记连接功能 [#11013](https://github.com/pingcap/tidb/pull/11013)
++ Audit Plugin 新增审计连接功能 [#11013](https://github.com/pingcap/tidb/pull/11013)
 + 修改 Region 打散时的默认行为为等待 PD 调度完成 [#11166](https://github.com/pingcap/tidb/pull/11166)
 + 禁止 Window Function 在 Prepare Plan Cache 中被缓存，避免某些情况下出现结果不正确的问题 [#11048](https://github.com/pingcap/tidb/pull/11048)
 + 禁止使用 Alter 语句修改 Stored Generated Column 的定义 [#11068](https://github.com/pingcap/tidb/pull/11068)

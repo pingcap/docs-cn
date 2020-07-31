@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.1.15 Release Notes
-category: Releases
 aliases: ['/docs-cn/dev/releases/2.1.15/']
 ---
 
@@ -21,7 +20,7 @@ TiDB Ansible 版本：2.1.15
 + 新增 `SHOW TABLE REGIONS` 的语句，支持通过 SQL 查询表的 Region 分布情况 [#11238](https://github.com/pingcap/tidb/pull/11238)
 + 修复 `UPDATE … SELECT` 语句因 `SELECT` 子查询中使用投影消除来优化规则所导致的报错 [#11254](https://github.com/pingcap/tidb/pull/11254)
 + 新增 `ADMIN PLUGINS ENABLE/DISABLE` SQL 语句，支持通过 SQL 动态开启/关闭 Plugin [#11189](https://github.com/pingcap/tidb/pull/11189)
-+ Audit Plugin 新增审记连接功能 [#11189](https://github.com/pingcap/tidb/pull/11189)
++ Audit Plugin 新增审计连接功能 [#11189](https://github.com/pingcap/tidb/pull/11189)
 + 修复点查时，某列被查询多次而且结果为 NULL 时会 Panic 的问题 [#11227](https://github.com/pingcap/tidb/pull/11227)
 + 新增 `tidb_scatter_region` 配置项，控制创建表时是否开启自己打散 Record Region [#11213](https://github.com/pingcap/tidb/pull/11213)
 + 修复 `RAND` 函数由于非线程安全的 `rand.Rand` 导致的 Data Race 问题 [#11170](https://github.com/pingcap/tidb/pull/11170)

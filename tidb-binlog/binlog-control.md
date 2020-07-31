@@ -1,7 +1,6 @@
 ---
 title: binlogctl 工具
 summary: 介绍 binlogctl 的使用方法。 
-category: reference
 ---
 
 # binlogctl 工具

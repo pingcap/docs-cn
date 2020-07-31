@@ -1,7 +1,6 @@
 ---
 title: Placement Rules 使用文档
 summary: 如何配置 Placement Rules
-category: how-to
 aliases: ['/docs-cn/dev/how-to/configure/placement-rules/']
 ---
 
@@ -9,7 +8,7 @@ aliases: ['/docs-cn/dev/how-to/configure/placement-rules/']
 
 > **注意：**
 >
-> 该功能目前为实验特性，不建议在生产环境中使用。
+> 在配合使用 TiFlash 场景下，Placement Rules 功能进行过大量测试，可以在生产环境中使用。除配合使用 TiFlash 的场景外，单独开启 Placement Rules 没有经过大量测试，因此，不建议在生产环境单独开启该功能。
 
 Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。
 
@@ -41,6 +40,7 @@ Placement Rules 示意图如下所示：
 | `Count`           | `int`，正整数                     | 副本数量                            |
 | `LabelConstraint` | `[]Constraint`                    | 用于按 label 筛选节点               |
 | `LocationLabels`  | `[]string`                        | 用于物理隔离                        |
+| `IsolationLevel`  | `string`                          | 用于设置最小强制物理隔离级别             |
 
 `LabelConstraint` 与 Kubernetes 中的功能类似，支持通过 `in`、`notIn`、`exists` 和 `notExists` 四种原语来筛选 label。这四种原语的意义如下：
 
@@ -50,6 +50,8 @@ Placement Rules 示意图如下所示：
 + `notExists`：不包含给定的 label key。
 
 `LocationLabels` 的意义和作用与 PD v4.0 之前的版本相同。比如配置 `[zone,rack,host]` 定义了三层的拓扑结构：集群分为多个 zone（可用区），每个 zone 下有多个 rack（机架），每个 rack 下有多个 host（主机）。PD 在调度时首先会尝试将 Region 的 Peer 放置在不同的 zone，假如无法满足（比如配置 3 副本但总共只有 2 个 zone）则保证放置在不同的 rack；假如 rack 的数量也不足以保证隔离，那么再尝试 host 级别的隔离，以此类推。
+
+`IsolationLevel` 的意义和作用详细请参考[配置集群拓扑](/schedule-replicas-by-topology-labels.md)。例如已配置 `LocationLabels` 为 `[zone,rack,host]` 的前提下，设置 `IsolationLevel` 为 `zone`，则 PD 在调度时会保证每个 Region 的所有 Peer 均被放置在不同的 zone。假如无法满足 `IsolationLevel` 的最小强制隔离级别限制（比如配置 3 副本但总共只有 2 个 zone），PD 也不会尝试补足，以满足该限制。`IsolationLevel` 默认值为空字符串，即禁用状态。
 
 ## 配置规则操作步骤
 
@@ -78,7 +80,8 @@ enable-placement-rules = true
   "end_key": "",
   "role": "voter",
   "count": 3,
-  "location_labels": ["zone", "rack", "host"]
+  "location_labels": ["zone", "rack", "host"],
+  "isolation_level": ""
 }
 ```
 

@@ -1,10 +1,9 @@
 ---
-title: 流量可视化页面
-category: how-to
+title: TiDB Dashboard 流量可视化页面
 aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visualizer-monitoring-tool/']
 ---
 
-# 流量可视化页面
+# TiDB Dashboard 流量可视化页面
 
 流量可视化页面 (Key Visualizer) 可用于分析 TiDB 集群的使用模式和排查流量热点。该页面可视化地呈现了 TiDB 集群一段时间的流量情况。
 
@@ -17,10 +16,6 @@ aliases: ['/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visual
 ![访问](/media/dashboard/dashboard-keyviz-access.png)
 
 * 在浏览器中访问 `http://127.0.0.1:2379/dashboard/#/keyviz`（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
-
-> **注意：**
->
-> 流量可视化功能默认关闭，在初次使用时需要手动打开。请依据界面指引来开启该功能，或参见本文档[设置](#设置)部分。
 
 ## 界面示例
 

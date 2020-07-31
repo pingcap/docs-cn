@@ -1,7 +1,6 @@
 ---
 title: TiDB 简介
 summary: 了解 TiDB 数据库。
-category: introduction
 ---
 
 <!-- markdownlint-disable MD046 -->
@@ -31,20 +30,20 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 </NavColumn>
 
 <NavColumn>
-<ColumnTitle>部署集群</ColumnTitle>
+<ColumnTitle>部署使用</ColumnTitle>
 
 - [软硬件环境需求](/hardware-and-software-requirements.md)
 - [环境与系统配置检查](/check-before-deployment.md)
 - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
-- [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
-- [验证集群状态](/post-installation-check.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md)
+- [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
 </NavColumn>
 
 <NavColumn>
 <ColumnTitle>数据迁移</ColumnTitle>
 
-- [支持的数据迁移路径](/data-migration-route.md)
+- [概述](/migration-overview.md)
 - [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
 - [从 Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
 - [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
@@ -92,7 +91,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 - [TiDB 架构](/tidb-architecture.md)
 - [监控指标](/grafana-overview-dashboard.md)
-- [安全加固](/enable-tls-between-clients.md)
+- [安全加固](/enable-tls-between-clients-and-servers.md)
 - [权限管理](/privilege-management.md)
 - [基于角色的访问控制](/role-based-access-control.md)
 - [证书鉴权](/certificate-authentication.md)

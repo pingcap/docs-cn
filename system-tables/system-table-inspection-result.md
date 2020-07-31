@@ -1,7 +1,6 @@
 ---
 title: INSPECTION_RESULT
 summary: 了解 TiDB 系统表 `INSPECTION_RESULT`。
-category: reference
 aliases: ['/docs-cn/dev/reference/system-databases/inspection-result/']
 ---
 
@@ -19,7 +18,7 @@ TiDB 内置了一些诊断规则，用于检测系统中的故障以及隐患。
 desc information_schema.inspection_result;
 ```
 
-```
+```sql
 +----------------+--------------+------+------+---------+-------+
 | Field          | Type         | Null | Key  | Default | Extra |
 +----------------+--------------+------+------+---------+-------+
@@ -63,7 +62,7 @@ desc information_schema.inspection_result;
 select * from information_schema.inspection_result\G
 ```
 
-```
+```sql
 ***************************[ 1. row ]***************************
 RULE      | config
 ITEM      | log.slow-threshold
@@ -116,7 +115,7 @@ DETAILS   | max duration of 172.16.5.40:20151 tikv rocksdb-write-duration was to
 select /*+ time_range("2020-03-26 00:03:00", "2020-03-26 00:08:00") */ * from information_schema.inspection_result\G
 ```
 
-```
+```sql
 ***************************[ 1. row ]***************************
 RULE      | critical-error
 ITEM      | server-down
@@ -170,7 +169,7 @@ select * from information_schema.inspection_result where rule='critical-error';
 select * from information_schema.inspection_rules where type='inspection';
 ```
 
-```
+```sql
 +-----------------+------------+---------+
 | NAME            | TYPE       | COMMENT |
 +-----------------+------------+---------+
