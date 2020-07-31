@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
-category: tools
 aliases: ['/docs-cn/dev/reference/tools/tiup/cluster/']
 ---
 
@@ -352,7 +351,7 @@ tiup cluster upgrade tidb-test v4.0.0-rc
 tiup cluster edit-config prod-cluster
 ```
 
-然后 TiUP cluster 组件会使用 vi 打开配置文件供编辑，编辑完之后保存即可。此时的配置并没有应用到集群，如果想要让它生效，还需要执行：
+然后 TiUP cluster 组件会使用 vi 打开配置文件供编辑（如果你想要使用其他编辑器，请使用 `EDITOR` 环境变量自定义编辑器，例如 `export EDITOR=nano`），编辑完之后保存即可。此时的配置并没有应用到集群，如果想要让它生效，还需要执行：
 
 {{< copyable "shell-regular" >}}
 
@@ -407,6 +406,10 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
 
 ## 导入 TiDB Ansible 集群
+
+> **注意：**
+>
+> TiUP cluster 组件对 TiSpark 的支持目前为实验性特性，暂不支持导入启用了 TiSpark 组件的集群。
 
 在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。import 命令用法如下：
 
