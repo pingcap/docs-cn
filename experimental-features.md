@@ -1,7 +1,6 @@
 ---
 title: Experimental Features
 summary: 了解 TiDB 4.0 版本的 Experimental Features。
-category: introduction
 ---
 
 # Experimental Features
