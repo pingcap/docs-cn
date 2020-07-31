@@ -8,7 +8,13 @@
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
   + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
+  + [TiDB 4.0 实验特性](/experimental-features-4.0.md)
   + [基本功能](/basic-features.md)
+  + 性能测试报告
+    + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
+    + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
+    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
+    + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
@@ -34,13 +40,16 @@
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
-  + 性能测试报告及重现指南
+  + 性能测试方法
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
+<<<<<<< HEAD
     + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
     + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
     + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
+=======
+>>>>>>> af993f7... Add experimental-features.md (#3943)
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
