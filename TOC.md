@@ -24,6 +24,7 @@
     + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
     + [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
+    + [TiSpark 部署拓扑](/tispark-deployment-topology.md)
     + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md)
   + 安装与启动
