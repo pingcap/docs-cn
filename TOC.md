@@ -309,7 +309,6 @@
 + 贡献
   - [贡献代码](/contribute.md#成为-tidb-的贡献者)
   - [改进文档](/contribute.md#改进文档)
-- [TiDB 路线图](/roadmap.md)
 + 版本发布历史
   + v2.1
     - [2.1.19](/releases/release-2.1.19.md)
