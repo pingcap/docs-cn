@@ -62,7 +62,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ## TiDB 是否支持 `REPLACE INTO` 语法？
 
-支持，例外情况是 `LOAD DATA` 当前不支持 `REPLACE INTO` 语法。
+支持，例外是当前 `LOAD DATA` 不支持 `REPLACE INTO` 语法。
 
 ## 数据删除后查询速度为何会变慢？
 
