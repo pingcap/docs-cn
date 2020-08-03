@@ -14,7 +14,7 @@ USE information_schema;
 DESC tables;
 ```
 
-```
+```sql
 +---------------------------+---------------+------+------+----------+-------+
 | Field                     | Type          | Null | Key  | Default  | Extra |
 +---------------------------+---------------+------+------+----------+-------+
@@ -51,7 +51,7 @@ DESC tables;
 SELECT * FROM tables WHERE table_schema='mysql' AND table_name='user'\G
 ```
 
-```
+```sql
 *************************** 1. row ***************************
             TABLE_CATALOG: def
              TABLE_SCHEMA: mysql

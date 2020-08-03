@@ -29,8 +29,6 @@ DESC analyze_status;
 7 rows in set (0.00 sec)
 ```
 
-The `STATE` column shows the execution status of a specific `ANALYZE` task. Its value can be `pending`, `running`,`finished` or `failed`.
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -50,3 +48,13 @@ SELECT * FROM `ANALYZE_STATUS`;
 +--------------+------------+----------------+-------------------+----------------+---------------------+----------+
 6 rows in set
 ```
+
+Fields in the `ANALYZE_STATUS` table are described as follows:
+
+* `TABLE_SCHEMA`: The name of the database to which the table belongs.
+* `TABLE_NAME`: The name of the table.
+* `PARTITION_NAME`: The name of the partitioned table.
+* `JOB_INFO`: The information of the `ANALYZE` task.
+* `PROCESSED_ROWS`: The number of rows that have been processed.
+* `START_TIME`: The start time of the `ANALYZE` task.
+* `STATE`: The execution status of the `ANALYZE` task. Its value can be `pending`, `running`,`finished` or `failed`.

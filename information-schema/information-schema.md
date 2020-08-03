@@ -67,7 +67,7 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | [`INSPECTION_RULES`](/information-schema/information-schema-inspection-rules.md)        | A list of internal diagnostic checks performed. |
 | [`INSPECTION_SUMMARY`](/information-schema/information-schema-inspection-summary.md)    | A summarized report of important monitoring metrics. |
 | [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)          | A summary of metrics extracted from Prometheus. |
-| `METRICS_SUMMARY_BY_LABEL`                                                              | See `METRICS_SUMAMARY` table. |
+| `METRICS_SUMMARY_BY_LABEL`                                                              | See `METRICS_SUMMARY` table. |
 | [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)            | Provides the PromQL definitions for tables in `METRICS_SCHEMA`. |
 | [`SEQUENCES`](/information-schema/information-schema-sequences.md)                      | The TiDB implementation of sequences is based on MariaDB. |
 | [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md)                    | Provides information on slow queries on the current TiDB server. |

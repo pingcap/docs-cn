@@ -14,7 +14,7 @@ USE information_schema;
 DESC table_constraints;
 ```
 
-```
+```sql
 +--------------------+--------------+------+------+---------+-------+
 | Field              | Type         | Null | Key  | Default | Extra |
 +--------------------+--------------+------+------+---------+-------+
@@ -34,7 +34,7 @@ DESC table_constraints;
 SELECT * FROM table_constraints WHERE constraint_type='UNIQUE';
 ```
 
-```
+```sql
 +--------------------+--------------------+-------------------------+--------------------+-------------------------------------+-----------------+
 | CONSTRAINT_CATALOG | CONSTRAINT_SCHEMA  | CONSTRAINT_NAME         | TABLE_SCHEMA       | TABLE_NAME                          | CONSTRAINT_TYPE |
 +--------------------+--------------------+-------------------------+--------------------+-------------------------------------+-----------------+
@@ -49,5 +49,10 @@ SELECT * FROM table_constraints WHERE constraint_type='UNIQUE';
 7 rows in set (0.01 sec)
 ```
 
-- The `CONSTRAINT_TYPE` value can be `UNIQUE`, `PRIMARY KEY`, or `FOREIGN KEY`.
-- The `UNIQUE` and `PRIMARY KEY` information is similar to the result of the `SHOW INDEX` statement.
+Fields in the `TABLE_CONSTRAINTS` table are described as follows:
+
+* `CONSTRAINT_CATALOG`: The name of the catalog to which the constraint belongs. This value is always `def`.
+* `CONSTRAINT_SCHEMA`: The name of the database to which the constraint belongs.
+* `CONSTRAINT_NAME`: The name of the constraint.
+* `TABLE_NAME`: The name of the table.
+* `CONSTRAINT_TYPE`: The type of the constraint. The value can be `UNIQUE`, `PRIMARY KEY` or `FOREIGN KEY`. The `UNIQUE` and `PRIMARY KEY` information is similar to the execution result of the `SHOW INDEX` statement.

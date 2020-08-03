@@ -14,7 +14,7 @@ USE information_schema;
 DESC session_variables;
 ```
 
-```
+```sql
 +----------------+---------------+------+------+---------+-------+
 | Field          | Type          | Null | Key  | Default | Extra |
 +----------------+---------------+------+------+---------+-------+
@@ -30,7 +30,7 @@ DESC session_variables;
 SELECT * FROM session_variables ORDER BY variable_name LIMIT 10;
 ```
 
-```
+```sql
 +-----------------------------------+------------------+
 | VARIABLE_NAME                     | VARIABLE_VALUE   |
 +-----------------------------------+------------------+
@@ -51,5 +51,4 @@ SELECT * FROM session_variables ORDER BY variable_name LIMIT 10;
 The description of columns in the `SESSION_VARIABLES` table is as follows:
 
 * `VARIABLE_NAME`: The name of the session-level variable in the database.
-* `VARIABLE_VALUE`: The value of the session-level
-variable in the database.
+* `VARIABLE_VALUE`: The value of the session-level variable in the database.

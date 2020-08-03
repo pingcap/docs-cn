@@ -44,9 +44,9 @@ WHERE
   region.region_id = peer.region_id
  AND peer.is_leader = 1
  AND peer.store_id = tikv.store_id;
- ```
+```
 
- Fields in the `TIKV_REGION_PEERS` table are described as follows:
+Fields in the `TIKV_REGION_PEERS` table are described as follows:
 
 * REGION_ID: The Region ID.
 * PEER_ID: The ID of the Region peer.

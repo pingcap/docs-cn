@@ -30,7 +30,7 @@ DESC collation_character_set_applicability;
 SELECT * FROM collation_character_set_applicability WHERE character_set_name='utf8mb4';
 ```
 
-```
+```sql
 +----------------+--------------------+
 | COLLATION_NAME | CHARACTER_SET_NAME |
 +----------------+--------------------+
@@ -38,11 +38,6 @@ SELECT * FROM collation_character_set_applicability WHERE character_set_name='ut
 +----------------+--------------------+
 1 row in set (0.00 sec)
 ```
-
-+----------------+--------------------+
-| COLLATION_NAME | CHARACTER_SET_NAME |
-| utf8mb4_bin | utf8mb4 |
-+----------------+--------------------+
 
 The description of columns in the `COLLATION_CHARACTER_SET_APPLICABILITY` table is as follows:
 
