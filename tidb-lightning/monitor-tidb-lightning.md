@@ -12,30 +12,7 @@ aliases: ['/docs-cn/stable/reference/tools/tidb-lightning/monitor/']
 - 如果是使用 TiDB Ansible 部署 Lightning，只要将服务器地址加到 `inventory.ini` 文件里的 `[monitored_servers]` 部分即可。
 - 如果是手动部署 Lightning，则参照以下步骤进行配置。
 
-<<<<<<< HEAD
-### `tikv-importer`
-
-`tikv-importer` v2.1 使用 [Pushgateway](https://github.com/prometheus/pushgateway) 来推送监控指标。需要配置 `tikv-importer.toml` 来连接 Pushgateway：
-
-```toml
-[metric]
-
-# 给 Prometheus 客户端的推送任务名称。
-job = "tikv-importer"
-
-# 给 Prometheus 客户端的推送间隔。
-interval = "15s"
-
-# Prometheus Pushgateway 地址。
-address = ""
-```
-
-### `tidb-lightning`
-
-只要 Prometheus 能发现 `tidb-lightning` 的监控地址，就能收集监控指标。
-=======
 只要 Prometheus 能发现 `tidb-lightning` 和 `tikv-importer` 的监控地址，就能收集对应的监控指标。
->>>>>>> 8bc72fd... tidb-lightning: update docs (#4094)
 
 监控的端口可在 `tidb-lightning.toml` 中配置：
 
