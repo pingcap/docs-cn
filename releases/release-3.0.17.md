@@ -16,7 +16,7 @@ TiDB 版本：3.0.17
     - 修复形如 `SELECT a FROM t HAVING t.a` 的查询返回 `UnknowColumn` 错误的问题 [#18432](https://github.com/pingcap/tidb/pull/18432)
     - 当一张表没有主键，或其主键为整型时，禁止在这张表上执行添加主键 [#18342](https://github.com/pingcap/tidb/pull/18342)
     - 对 `EXPLAIN FORMAT="dot" FOR CONNECTION` 始终返回空结果 [#17157](https://github.com/pingcap/tidb/pull/17157)
-    - 修复 `STR_TO_DATE` 函数处理 `'%r'`, `'%h'` 的行为 [#18725](https://github.com/pingcap/tidb/pull/18725)
+    - 修复 `STR_TO_DATE` 函数处理 `'%r'` 和 `'%h'` 的行为 [#18725](https://github.com/pingcap/tidb/pull/18725)
 
 + TiKV
 
