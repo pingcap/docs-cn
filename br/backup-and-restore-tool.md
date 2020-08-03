@@ -55,6 +55,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 - cf：RocksDB 的 ColumnFamily（默认为 `default` 或 `write`）
 
 ## 使用方式
+
 目前支持两种方式来运行备份恢复，分别是 SQL 和 命令行工具。
 
 ### 通过 SQL
