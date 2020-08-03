@@ -5,31 +5,12 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/monitor/']
 
 # TiDB Lightning 监控告警
 
-`tidb-lightning` 和 `tikv-importer` 都支持使用 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB Lightning 的监控配置与监控指标。
+`tidb-lightning` 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB Lightning 的监控配置与监控指标。
 
 ## 监控配置
 
 - 如果是使用 TiDB Ansible 部署 Lightning，只要将服务器地址加到 `inventory.ini` 文件里的 `[monitored_servers]` 部分即可。
 - 如果是手动部署 Lightning，则参照以下步骤进行配置。
-
-### `tikv-importer`
-
-`tikv-importer` v2.1 使用 [Pushgateway](https://github.com/prometheus/pushgateway) 来推送监控指标。需要配置 `tikv-importer.toml` 来连接 Pushgateway：
-
-```toml
-[metric]
-
-# 给 Prometheus 客户端的推送任务名称。
-job = "tikv-importer"
-
-# 给 Prometheus 客户端的推送间隔。
-interval = "15s"
-
-# Prometheus Pushgateway 地址。
-address = ""
-```
-
-### `tidb-lightning`
 
 只要 Prometheus 能发现 `tidb-lightning` 的监控地址，就能收集监控指标。
 
