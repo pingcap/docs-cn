@@ -39,11 +39,11 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 ### 自增 ID
 
-- TiDB 的自增列仅保证自增且唯一、但不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
+- TiDB 的自增列仅保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
 
-- TiDB 在工程实现上会在每一个 tidb-server 实例上缓存一段 ID 的值用于给表的自增列分配值，缓存 ID 的个数由表的 `AUTO_ID_CACHE` 确定，默认值：`30000`。请特别注意：自增列和 `_tidb_rowid`都会消耗缓存的 ID。如果 `INSERT` 语句中所要求的连续的 ID 个数大于 `AUTO_ID_CACHE` 的值时系统会自动调整 `AUTO_ID_CACHE` 的值以确保该语句能正常执行。
+- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
 
-- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change` 。
+自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
 
 > **注意：**
 >
@@ -143,11 +143,13 @@ mysql> select _tidb_rowid, id from t;
 
 ### SQL 模式
 
-- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`，MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下：
 
-- `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
+- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
 
-- `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` MySQL 用于解决兼容问题，并不适用于 TiDB。
+- TiDB 的 `ONLY_FULL_GROUP_BY` 模式与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
+
+- MySQL 中的 `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 的 SQL 模式可用于解决兼容性问题，并不适用于 TiDB。
 
 ### 默认设置
 

@@ -8,9 +8,14 @@
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
   + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
+  + [TiDB 4.0 实验特性](/experimental-features-4.0.md)
   + [基本功能](/basic-features.md)
-  + 兼容性
-    + [与 MySQL 的兼容性](/mysql-compatibility.md)
+  + 性能测试报告
+    + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
+    + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
+    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
+    + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
+  + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
 + 快速上手
@@ -24,6 +29,7 @@
     + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
     + [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
+    + [TiSpark 部署拓扑](/tispark-deployment-topology.md)
     + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md)
   + 安装与启动
@@ -32,16 +38,11 @@
       + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
       + [使用 Ansible 部署](/online-deployment-using-ansible.md)
       + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
+      + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
-  + 性能测试报告及重现指南
+  + 性能测试方法
     + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
-    + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
-    + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
-    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
-    + [Sysbench 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)
-    + [TPC-C 性能对比 - v3.0 对比 v2.1](/benchmark/v3.0-performance-benchmarking-with-tpcc.md)
-    + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
@@ -75,6 +76,7 @@
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
   + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
+  + [在线修改集群配置](/dynamic-config.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
@@ -144,6 +146,7 @@
     + [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md)
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
+    + [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
   + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
@@ -475,9 +478,9 @@
   + [迁移 FAQ](/faq/migration-tidb-faq.md)
 + [术语表](/glossary.md)
 + 版本发布历史
-  + [TiDB V4.0 Roadmap](/roadmap.md)
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.4](/releases/release-4.0.4.md)
     - [4.0.3](/releases/release-4.0.3.md)
     - [4.0.2](/releases/release-4.0.2.md)
     - [4.0.1](/releases/release-4.0.1.md)
