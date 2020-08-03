@@ -6,29 +6,12 @@ aliases: ['/docs/dev/sql-optimization-concepts/','/docs/dev/reference/performanc
 
 # SQL Optimization Process
 
-In TiDB, the process of SQL optimization consists of two phases: logical optimization and physical optimization. This document describes the logical and physical optimization to help you understand the whole process.
+In TiDB, the process from inputting a query to getting the execution result according to the final execution plan is illustrated as follows:
 
-## Logical optimization
+![SQL Optimization Process](/media/sql-optimization.png)
 
-Based on rules, logical optimization applies some optimization rules to the input logical execution plan in order, to make the whole logical execution plan better. The optimization rules include:
+After parsing the original query text by `parser` and some simple validity checks, TiDB first makes some logically equivalent changes to the query. For detailed changes, see [SQL Logical Optimization](/sql-logical-optimization.md).
 
-- Column pruning
-- Eliminate projection
-- Decorrelate correlated subqueries
-- [Eliminate Max/Min](/max-min-eliminate.md)
-- Push down predicates
-- Partition pruning
-- Push down TopN and Limit
-- [Join Reorder](/join-reorder.md)
+Through these equivalent changes, this query becomes easier to handle in the logical execution plan. After the equivalent change is done, TiDB obtains a query plan structure equivalent to the original query, and then obtains a final execution plan based on the data distribution and the specific execution cost of an operator. For details, see [SQL Physical Optimization](/sql-physical-optimization.md).
 
-## Physical optimization
-
-Based on cost, physical optimization makes the physical execution plan for the logical execution plan generated in the previous phase.
-
-In this phase, the optimizer selects the specific physical implementation for each operator in the logical execution plan. Different physical implementations of logical operators differ in time complexity, resource consumption, physical properties, and so on. During this process, the optimizer determines the cost of different physical implementations according to data statistics, and selects the physical execution plan with the minimum whole cost.
-
-The logical execution plan is a tree structure and each node corresponds to a logical operator in SQL. Similarly, the physical execution plan is also a tree structure, and each node corresponds to a physical operator in SQL.
-
-The logical operator only describes the function of an operator, while the physical operator describes the concrete algorithm that implements this function. A single logical operator might have multiple physical operator implementations. For example, to implement `LogicalAggregate`, you can use either `HashAggregate` the of the hash algorithm, or `StreamAggregate` of the stream type.
-
-Different physical operators have different physical properties, and have different requirements on the physical properties of their subnodes. The physical properties include the data's order, distribution, and so on. Currently, only the data order is considered in TiDB.
+At the same time, when TiDB executes the [`PREPARE`](/sql-statements/sql-statement-prepare.md) statement, you can choose to enable caching to reduce the cost of generating the execution plan in TiDB. For details, see [Execution Plan Cache](/sql-prepare-plan-cache.md).

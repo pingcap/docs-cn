@@ -35,7 +35,7 @@ A replication task might be interrupted in the following known scenarios:
     - In this scenario, TiCDC saves the task information. Because TiCDC has set the service GC safepoint in PD, the data after the task checkpoint is not cleaned by TiKV GC within the valid period of `gc-ttl`.
     - Handling procedures:
         1. Query the status information of the replication task using the `cdc cli changefeed query` command and record the value of `checkpoint-ts`.
-        2. Use the new task configuration file and add the `ignore-txn-commit-ts` parameter to skip the transaction corresponding to the specified `commit-ts`.
+        2. Use the new task configuration file and add the `ignore-txn-start-ts` parameter to skip the transaction corresponding to the specified `start-ts`.
         3. Stop the old replication task via HTTP API. Execute `cdc cli changefeed create` to create a new task and specify the new task configuration file. Specify `checkpoint-ts` recorded in step 1 as the `start-ts` and start a new task to resume the replication.
 
 ## `gc-ttl` and file sorting

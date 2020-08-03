@@ -172,6 +172,8 @@ The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_
 
 ## See also
 
+* [Index Selection](/choose-index.md)
+* [Wrong Index Solution](/wrong-index-solution.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)

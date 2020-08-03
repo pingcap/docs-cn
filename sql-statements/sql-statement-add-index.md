@@ -109,6 +109,8 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## See also
 
+* [Index Selection](/choose-index.md)
+* [Wrong Index Solution](/wrong-index-solution.md)
 * [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
