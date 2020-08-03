@@ -137,10 +137,10 @@ mysql> select _tidb_rowid, id from t;
 
 - [`ANALYZE TABLE`](/statistics.md#手动收集) 语句会完全重构表的统计数据，语句执行过程较长，但在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短。
 
-### SELECT 的限制
+### `SELECT` 的限制
 
 - 不支持 SELECT ... INTO @变量 语法。
-- 不支持 SELECT ... GROUP BY ... WITH ROLLUP 语法。
+- 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
 
 ### 视图
 
