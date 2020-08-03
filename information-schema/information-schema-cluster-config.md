@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-config/','/zh/tidb/de
 
 # CLUSTER_CONFIG
 
-`CLUSTER_CONFIG` 表用于获取集群当前所有组件实例的配置。在 TiDB 早前的版本，用户需要逐个访问各个实例的 HTTP API 才能收集到所有组件配置。TiDB v4.0 后，该表的引入提高了易用性。
+`CLUSTER_CONFIG` 表用于获取集群当前所有组件实例的配置。在 TiDB 早期的版本，用户需要逐个访问各个实例的 HTTP API 才能收集到所有组件配置。TiDB v4.0 后，该表的引入提高了易用性。
 
 {{< copyable "sql" >}}
 
