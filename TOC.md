@@ -344,6 +344,7 @@
   - [改进文档](/contribute.md#改进文档)
 + 版本发布历史
   + v3.0
+    - [3.0.17](/releases/release-3.0.17.md)
     - [3.0.16](/releases/release-3.0.16.md)
     - [3.0.15](/releases/release-3.0.15.md)
     - [3.0.14](/releases/release-3.0.14.md)
