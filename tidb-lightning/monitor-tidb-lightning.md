@@ -5,14 +5,14 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/monitor/']
 
 # TiDB Lightning 监控告警
 
-`tidb-lightning` 和 `tikv-importer` 都支持使用 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB Lightning 的监控配置与监控指标。
+`tidb-lightning` 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标 (metrics)。本文主要介绍 TiDB Lightning 的监控配置与监控指标。
 
 ## 监控配置
 
 - 如果是使用 TiDB Ansible 部署 Lightning，只要将服务器地址加到 `inventory.ini` 文件里的 `[monitored_servers]` 部分即可。
 - 如果是手动部署 Lightning，则参照以下步骤进行配置。
 
-只要 Prometheus 能发现 `tidb-lightning` 和 `tikv-importer` 的监控地址，就能收集对应的监控指标。
+只要 Prometheus 能发现 `tidb-lightning` 的监控地址，就能收集监控指标。
 
 监控的端口可在 `tidb-lightning.toml` 中配置：
 
@@ -24,26 +24,16 @@ pprof-port = 8289
 ...
 ```
 
-监控的端口也可在 `tikv-importer.toml` 配置:
-
-```toml
-# 状态服务器的监听地址
-status-server-address = '0.0.0.0:8286'
-```
-
-配置 Prometheus 后，`tidb-lightning` 才能发现服务器。配置方法如下，将服务器地址直接添加至 `scrape_configs` 部分：
+要让 Prometheus 发现 Lightning，可以将地址直接写入其配置文件，例如：
 
 {{< copyable "" >}}
 
 ```yaml
 ...
 scrape_configs:
-  - job_name: 'lightning'
+  - job_name: 'tidb-lightning'
     static_configs:
       - targets: ['192.168.20.10:8289']
-  - job_name: 'tikv-importer'
-    static_configs:
-      - targets: ['192.168.20.9:8286']
 ```
 
 ## Grafana 面板
