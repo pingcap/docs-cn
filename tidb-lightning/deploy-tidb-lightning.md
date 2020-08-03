@@ -19,7 +19,7 @@ aliases: ['/docs-cn/stable/reference/tools/tidb-lightning/deployment/']
     {{< copyable "shell-regular" >}}
 
     ```sh
-    bin/tidb-lightning-ctl -switch-mode=normal
+    bin/tidb-lightning-ctl --switch-mode=normal
     ```
 
 - TiDB Lightning 需要下游 TiDB 有如下权限：
