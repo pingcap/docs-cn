@@ -1,7 +1,6 @@
 ---
 title: TiKV 线程池性能调优
 summary: 了解 TiKV 线程池性能调优。
-category: reference
 ---
 
 # TiKV 线程池性能调优
@@ -46,7 +45,7 @@ TiKV 的读取请求分为两类：
 
     由于存在 I/O，Raftstore 线程理论上不可能达到 100% 的 CPU。为了尽可能地减少写磁盘次数，将多个写请求攒在一起写入 RocksDB，最好控制其整体 CPU 使用在 60% 以下（按照线程数默认值 2，则 Grafana 监控上的 TiKV-Details.Thread CPU.Raft store CPU 上的数值控制在 120% 以内较为合理）。不要为了提升写性能盲目增大 Raftstore 线程池大小，这样可能会适得其反，增加了磁盘负担让性能变差。
 
-* UnifyReadPool 负责处理所有的读取请求。默认配置（`readpool.unified.max-thread-count`）大小为机器 CPU 数的 80% （如机器为 16核，则默认线程池大小为 12）。
+* UnifyReadPool 负责处理所有的读取请求。默认配置（`readpool.unified.max-thread-count`）大小为机器 CPU 数的 80% （如机器为 16 核，则默认线程池大小为 12）。
 
     通常建议根据业务负载特性调整其 CPU 使用率在线程池大小的 60%～90% 之间 (如果用户 Grafana 上 TiKV-Details.Thread CPU.Unified read pool CPU 的峰值不超过 800%， 那么建议用户将 `readpool.unified.max-thread-count` 设置为 10，过多的线程数会造成更频繁的线程切换，并且抢占其他线程池的资源)。
 
@@ -54,7 +53,7 @@ TiKV 的读取请求分为两类：
 
     * 如果机器 CPU 核数较少，可将 `rocksdb.max-background-jobs` 与 `raftdb.max-background-jobs` 同时设置为 4。
     * 如果遇到了 Write Stall，可查看 Grafana 监控上 **RocksDB-kv** 中的 Write Stall Reason 有哪些指标不为 0。
-        * 如果是由 pending compaction bytes 相关原因引起的，可将 `rocksdb.max-sub-compactions` 设置为 2 或者 3（该配置表示单次 compaction job 允许使用的子线程数量，TiKV 4.0 版本默认值为 3， 3.0 版本默认值为 1）。
+        * 如果是由 pending compaction bytes 相关原因引起的，可将 `rocksdb.max-sub-compactions` 设置为 2 或者 3（该配置表示单次 compaction job 允许使用的子线程数量，TiKV 4.0 版本默认值为 3，3.0 版本默认值为 1）。
         * 如果原因是 memtable count 相关，建议调大所有列的 `max-write-buffer-number`（默认为 5）。
         * 如果原因是 level0 file limit 相关，建议调大如下参数为 64 或者更高：
 

@@ -1,6 +1,5 @@
 ---
 title: 本地快速部署 TiDB 集群
-category: tools
 aliases: ['/docs-cn/dev/reference/tools/tiup/playground/']
 ---
 
@@ -22,7 +21,7 @@ tiup playground [version] [flags]
 - 如果 playground 从未安装过任何版本的 TiDB/TiKV/PD 组件，TiUP 会先安装这些组件的最新稳定版，然后再启动运行这些组件的实例
 - 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v4.0.0-rc，则该命令相当于 tiup playground:v0.0.6 v4.0.0-rc
 - 因为该命令也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV 和 1 个 PD 实例构成的最小化集群
-- 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 TiDB Dashboard 等
+- 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等
 
 playground 的命令行参数说明：
 
@@ -91,7 +90,7 @@ tiup playground --pd.config ~/config/pd.toml
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground --db.binpath /xx/tidb-server 
+tiup playground --db.binpath /xx/tidb-server
 ```
 
 ### 启动多个组件实例

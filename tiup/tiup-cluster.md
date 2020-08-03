@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
-category: tools
 aliases: ['/docs-cn/dev/reference/tools/tiup/cluster/']
 ---
 
@@ -18,8 +17,8 @@ tiup cluster
 
 ```
 The component `cluster` is not installed; downloading from repository.
-download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s                                                   
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster 
+download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s
+Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -69,7 +68,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 ```yaml
 ---
-  
+
 pd_servers:
   - host: 172.16.5.134
     name: pd-134
@@ -190,7 +189,7 @@ ID                  Role        Host          Ports        Status     Data Dir  
 172.16.5.140:20160  tikv        172.16.5.140  20160/20180  Up         data/tikv-20160       deploy/tikv-20160
 ```
 
-Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件，同时可能会带有 `|L` 表示该 PD 是 Leader，`|UI` 表示该 PD 运行着 TiDB Dashboard。
+Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件，同时可能会带有 `|L` 表示该 PD 是 Leader，`|UI` 表示该 PD 运行着 [TiDB Dashboard](/dashboard/dashboard-intro.md)。
 
 ## 缩容节点
 
@@ -277,10 +276,10 @@ ID                  Role        Host          Ports        Status     Data Dir  
     ---
 
     pd_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
 
     tikv_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
     ```
 
 2. 执行扩容操作。TiUP cluster 根据 scale.yaml 文件中声明的端口、目录等信息在集群中添加相应的节点：
@@ -352,7 +351,7 @@ tiup cluster upgrade tidb-test v4.0.0-rc
 tiup cluster edit-config prod-cluster
 ```
 
-然后 TiUP cluster 组件会使用 vi 打开配置文件供编辑，编辑完之后保存即可。此时的配置并没有应用到集群，如果想要让它生效，还需要执行：
+然后 TiUP cluster 组件会使用 vi 打开配置文件供编辑（如果你想要使用其他编辑器，请使用 `EDITOR` 环境变量自定义编辑器，例如 `export EDITOR=nano`），编辑完之后保存即可。此时的配置并没有应用到集群，如果想要让它生效，还需要执行：
 
 {{< copyable "shell-regular" >}}
 
@@ -407,6 +406,10 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
 
 ## 导入 TiDB Ansible 集群
+
+> **注意：**
+>
+> TiUP cluster 组件对 TiSpark 的支持目前为实验性特性，暂不支持导入启用了 TiSpark 组件的集群。
 
 在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。import 命令用法如下：
 

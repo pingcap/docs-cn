@@ -1,7 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
-category: how-to
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/']
+aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
@@ -94,6 +93,10 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/
 
     包含最小拓扑的基础上，同时部署 TiDB Binlog。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
 
+- [增加 TiSpark 拓扑架构](/tispark-deployment-topology.md)
+
+    包含最小拓扑的基础上，同时部署 TiSpark 组件。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。TiUP cluster 组件对 TiSpark 的支持目前为实验性特性。
+
 - [混合部署拓扑架构](/hybrid-deployment-topology.md)
 
     适用于单台机器，混合部署多个实例的情况，也包括单机多实例，需要额外增加目录、端口、资源配比、label 等配置。
@@ -101,6 +104,16 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/
 - [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)
 
     以典型的 `两地三中心` 架构为例，介绍跨机房部署架构，以及需要注意的关键设置。
+    
+> **注意：**
+>
+> - 对于需要全局生效的参数，请在配置文件中 `server_configs` 的对应组件下配置。
+>
+> - 对于需要某个节点生效的参数，请在具体节点的 `config` 中配置。
+>
+> - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。
+>
+> - 更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 、 [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
 
 ## 第 4 步：执行部署命令
 
@@ -187,7 +200,7 @@ tiup cluster display tidb-test
 mysql -u root -h 10.0.1.4 -P 4000
 ```
 
-此外，也需要验证监控系统、TiDB Dashboard 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
+此外，也需要验证监控系统、[TiDB Dashboard](/dashboard/dashboard-intro.md) 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
 
 ## 探索更多
 

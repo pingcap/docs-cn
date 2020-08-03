@@ -1,6 +1,5 @@
 ---
 title: TiDB 数据库快速上手指南
-category: how-to
 ---
 
 # TiDB 数据库快速上手指南
@@ -82,7 +81,7 @@ category: how-to
 
 5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
-6. 通过 <http://127.0.0.1:2379/dashboard> 访问 TiDB 的 Dashboard 页面，默认用户名为 root，密码为空。
+6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
 
 7. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
 
@@ -119,7 +118,7 @@ category: how-to
 部署主机软件和环境要求：
 
 - 部署需要使用部署主机的 root 用户及密码
-- 部署主机[关闭防火墙](/production-deployment-using-tiup.md#如何关闭部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
+- 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
 - 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
@@ -271,7 +270,7 @@ category: how-to
 
     - 访问 TiDB 的 Dashboard：
 
-        通过 <http://{pd-ip}:2379/dashboard> 访问集群 TiDB Dashboard 监控页面，默认用户名为 root，密码为空。
+        通过 <http://{pd-ip}:2379/dashboard> 访问集群 [TiDB Dashboard](/dashboard/dashboard-intro.md) 监控页面，默认用户名为 root，密码为空。
 
     - 执行以下命令确认当前已经部署的集群列表：
 

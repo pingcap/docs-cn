@@ -1,6 +1,5 @@
 ---
 title: TiDB 监控框架概述
-category: how-to
 aliases: ['/docs-cn/dev/how-to/monitor/overview/']
 ---
 

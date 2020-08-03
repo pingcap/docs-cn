@@ -1,19 +1,25 @@
 ---
 title: 使用 BR 进行备份与恢复
 summary: 了解如何使用 BR 工具进行集群数据备份和恢复。
-category: how-to
 aliases: ['/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/']
 ---
 
 # 使用 BR 进行备份与恢复
 
-Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/backup-and-restore-using-mydumper-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
+[Backup & Restore](https://github.com/pingcap/br)（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/backup-and-restore-using-mydumper-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
 
 ## 使用限制
 
 - BR 只支持 TiDB v3.1 及以上版本。
 - 目前只支持在全新的集群上执行恢复操作。
 - BR 备份最好串行执行，否则不同备份任务之间会相互影响。
+- BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。
+- BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
+
+    - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
+    - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
+
+    例如，数据备份在 v3.1 集群。如果恢复到 v4.0 集群中，查询恢复集群的 `new_collation_enabled` 的值为 `true`，则说明创建恢复集群时打开了 new collation 支持的开关。此时恢复数据，可能会出错。
 
 ## 推荐部署配置
 
@@ -80,7 +86,6 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群
-* `br version` 用于查看 BR 工具版本信息
 
 以上三个子命令可能还包含这些子命令：
 
@@ -92,6 +97,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `--pd`：用于连接的选项，表示 PD 服务地址，例如 `"${PDIP}:2379"`。
 * `-h`/`--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
+* `-V` (或 `--version`): 检查 BR 版本。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -121,6 +127,7 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 > **注意：**
 >
 > + 经测试，在全速备份的情况下，如果备份盘和服务盘不同，在线备份会让只读线上服务的 QPS 下降 15%~25% 左右。如果希望降低影响，请参考 `--ratelimit` 进行限速。
+>
 > + 假如备份盘和服务盘相同，备份将会和服务争夺 I/O 资源，这可能会让只读线上服务的 QPS 骤降一半以上。请尽量禁止将在线服务的数据备份到 TiKV 的数据盘。
 
 {{< copyable "shell-regular" >}}
@@ -188,6 +195,23 @@ br backup table \
 `table` 子命令有 `--db` 和 `--table` 两个选项，分别用来指定数据库名和表名。其他选项的含义与[备份全部集群数据](#备份全部集群数据)相同。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。在完成备份后，BR 为了确保数据安全性，还会校验备份数据。
+
+### 使用表库过滤功能备份多张表的数据
+
+如果你需要以更复杂的过滤条件来备份多个表，执行 `br backup full` 命令，并使用 `--filter` 或 `-f` 来指定[表库过滤](/table-filter.md)规则。
+
+用例：以下命令将所有 `db*.tbl*` 形式的表格数据备份到每个 TiKV 节点上的 `/tmp/backup` 路径，并将 `backupmeta` 文件写入该路径。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full \
+    --pd "${PDIP}:2379" \
+    --filter 'db*.tbl*' \
+    --storage "local:///tmp/backup" \
+    --ratelimit 120 \
+    --log-file backupfull.log
+```
 
 ### 备份数据到 Amazon S3 后端存储
 
@@ -352,6 +376,22 @@ br restore table \
     --log-file restorefull.log
 ```
 
+### 使用表库功能过滤恢复数据
+
+如果你需要用复杂的过滤条件来恢复多个表，执行 `br restore full` 命令，并用 `--filter` 或 `-f` 指定使用[表库过滤](/table-filter.md)。
+
+用例：以下命令将备份在 `/tmp/backup` 路径的表的子集恢复到集群中。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full \
+    --pd "${PDIP}:2379" \
+    --filter 'db*.tbl*' \
+    --storage "local:///tmp/backup" \
+    --log-file restorefull.log
+```
+
 ### 从 Amazon S3 后端存储恢复数据
 
 如果需要恢复的数据并不是存储在本地，而是在 Amazon 的 S3 后端，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
@@ -378,7 +418,7 @@ br restore full \
     --log-file restorefull.log
 ```
 
-以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复某个数据库](#恢复某个数据库)相同。
+以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复单个数据库](#恢复单个数据库的数据)相同。
 
 ### 增量恢复
 

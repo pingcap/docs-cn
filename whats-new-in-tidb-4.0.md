@@ -1,7 +1,6 @@
 ---
 title: What's New in TiDB 4.0
 summary: 了解 TiDB 4.0 版本的新特性。
-category: introduction
 ---
 
 # What's New in TiDB 4.0
@@ -12,8 +11,6 @@ category: introduction
 
 ### 调度功能
 
-+ Cascading Placement Rules（实验特性）是一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。详情参阅：[Cascading Placement Rules](/configure-placement-rules.md)。
-+ 弹性调度功能（实验特性），结合 Kubernetes，可根据实时负载状态，动态扩缩节点，能够有效地缓解业务高峰的压力并且节约不必要的成本开销。
 + 热点调度支持更多维度。热点调度在决策时，除了根据写入/读取流量作为调度依据外，新引入 key 的维度。可以很大程度改善原有单一维度决策造成的 CPU 资源利用率不均衡的问题。详情参阅：[调度](/tidb-scheduling.md)。
 
 ### 存储引擎
@@ -23,7 +20,7 @@ category: introduction
 
 ### TiDB Dashboard
 
-+ DBA 通过 TiDB Dashboard UI 可以快速了解集群的集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息、SQL 访问信息、诊断报告信息等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[Dashboard UI](/dashboard/dashboard-access.md)，具体信息如下：
++ DBA 通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) UI 可以快速了解集群的集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息、SQL 访问信息、诊断报告信息等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，具体信息如下：
     - Cluster Info，提供集群中所有组件，包括： TiDB、TiKV、PD、TiFlash 运行状态及其所在主机的运行状态。
     - Key Visualizer，系统可视化输出 TiDB 集群一段时间内的流量情况，用于 DBA 分析 TiDB 集群的使用模式和排查流量热点。
     - SQL Statements，记录当系统执行的所有 SQL 以及 SQL 相关的统计信息，包括：执行次数、执行时间汇总等，帮助用户快速分析系统的 SQL 执行状况，判断系统中有哪些热点 SQL 语句等。
@@ -55,9 +52,8 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 - 新增 `Flashback` 命令，支持恢复被 `Truncate` 的表。详情参阅：[`Flashback`](/sql-statements/sql-statement-flashback-table.md)。
 - 新增查询数据时将 Join、Sort 中间结果写入本地磁盘，防止查询语句占用内存过多导致系统 OOM 的问题，提升系统的稳定性。
 - 优化 `EXPLAIN` 和 `EXPLAIN ANALYZE` 的输出结果，显示更多的信息，提升排查问题的效率。详情参阅：[Explain Analyze](/sql-statements/sql-statement-explain-analyze.md)，[Explain](/sql-statements/sql-statement-explain.md)。
-- 支持 Index Merge 功能，Index Merge 是一种新的表访问方式，当单询只涉及到单张表时，优化器会自动根据查询条件读取多个索引数据并对结果求并集，提升查询单张表时的性能。详情参阅：[Index Merge](/query-execution-plan.md#indexmerge-示例)。
-- 支持表达式索引 (Expression Index) 功能，表达式索引也叫函数索引，在创建索引时索引的字段不一定要是一个具体的列，而可以由一个或者多个列讲算出来的表达式。对于快速访问那些基于计算结果的表非常有用（实验特性）。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。
-- 支持 AutoRandom Key（实验特性）作为 TiDB 在列属性上的扩展语法，AutoRandom 被设计用于解决自增主键列的写热点问题，为使用自增主键列的用户提供最低成本的 MySQL 迁移方案。详情参阅：[AutoRandom Key](/auto-random.md)。
+- 支持 Index Merge 功能，Index Merge 是一种新的表访问方式，当查询只涉及到单张表时，优化器会自动根据查询条件读取多个索引数据并对结果求并集，提升查询单张表时的性能。详情参阅：[Index Merge](/query-execution-plan.md#indexmerge-示例)。
+- 支持 AutoRandom Key 作为 TiDB 在列属性上的扩展语法，AutoRandom 被设计用于解决自增主键列的写热点问题，为使用自增主键列的用户提供最低成本的 MySQL 迁移方案。详情参阅：[AutoRandom Key](/auto-random.md)。
 - 新增集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息等系统表等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[infromation_shema](/system-tables/system-table-information-schema.md)，具体信息如下：
 
     - 新增集群拓扑、配置、日志、硬件、操作系统等信息表，帮助 DBA 快速了集群配置、状态信息：
@@ -65,7 +61,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
         - `cluster_info` 表，用于保存集群的拓扑信息。
         - `cluster_log` 表，用于保存系统的日志信息。
         - `cluster_hardware`，`cluster_systeminfo`，用于保存系统中服务器的硬件系统，操作系统信息等。
- 
+
     - 新增慢查询、诊断结果、性能监控等系统表，帮助 DBA 快速分析系统的性能瓶颈：
 
         - `cluster_slow_query` 表，用于记录保存全局的慢查询信息。
@@ -81,7 +77,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 ### 安全
 
 + 完善客户端与服务端，组件与组件之间的加密通信，确保连接安全性，保护接收与发送的任何数据不会被网络犯罪分子读取和修改。主要支持基于证书的登录认证、在线更新证书、校验 TLS 证书的 `CommonName` 属性等功能。详情参阅：[开启加密传输](/enable-tls-between-clients-and-servers.md)。
-+ 透明数据加密 (Transparent Data Encryption)，简称 TDE，是 TiDB 推出的一个新特性，用来对整个数据库提供保护。数据库开启 TDE 加密功能后，对于连接到数据库的应用程序来说是完全透明的，它不需要对现有应用程序做任何改变。因为TDE 的加密特性是基本于文件级别的，系统会在将数据写到磁盘之前加密，在读取到内存之前解密，确保数据的安全性。目前主要支持 AES128-CTR、AES192-CTR、AES256-CTR 三种加密算法，支持通过 AWS KMS 管理密钥等功能。
++ 透明数据加密 (Transparent Data Encryption)，简称 TDE，是 TiDB 推出的一个新特性，用来对整个数据库提供保护。数据库开启 TDE 加密功能后，对于连接到数据库的应用程序来说是完全透明的，它不需要对现有应用程序做任何改变。因为 TDE 的加密特性是基本于文件级别的，系统会在将数据写到磁盘之前加密，在读取到内存之前解密，确保数据的安全性。目前主要支持 AES128-CTR、AES192-CTR、AES256-CTR 三种加密算法，支持通过 AWS KMS 管理密钥等功能。详情参阅[静态加密](/encryption-at-rest.md)。
 
 ### 备份与恢复
 
@@ -89,12 +85,6 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 
 ### 服务级别功能
 
-+ TiDB 实例支持以 Region 为单位缓存算子下推到 TiKV 的的返回结果，提升 SQL 语句完全一致、SQL 语句包含一个变化条件且仅限于表主键或分区主键，其他部分一致和 SQL 语句包含多个变化的条件且条件完全匹配一个复合索引列，其他部分一致场景时 SQL 执行的效率（实验特性）。详情参阅：[缓存查询结果](/coprocessor-cache.md)。
 + 支持缓存 `Prepare`/`Execute` 请求的执行计划，提升 SQL 的执行效率。详情参阅：[缓存执行计划](/sql-prepare-plan-cache.md)。
-+ 支持将配置参数持久化存储到 PD 中，支持动态修改配置项功能，提升产品易用性。
 + 支持自适应线程池功能，精简线程池数量，优化请求处理调度方式，提升产品易用性，提升产品的性能。
 + Follower Read 功能是指在强一致性读的前提下使用 Region 的 follower 副本来承载数据读取的任务，从而提升 TiDB 集群的吞吐能力并降低 leader 负载。Follower Read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。TiKV 的 Follower Read 可以保证数据读取的一致性，可以为用户提供强一致的数据读取能力。详情参阅：[Follower Read](/follower-read.md)。
-
-### TiCDC
-
-TiCDC 支持通过拉取 TiKV 变更日志实现 TiDB 集群之间数据同步，支持数据的高可靠、服务的高可用能力，确保数据不会丢失。用户可以通过订阅的方式订阅数据的变更信息，系统会自动将数据推送到下游系统，当前仅支持 MySQL 协议的数据库（例如：MySQL、TiDB)及 Kafka 作为 TiCDC 的下游，同时用户也可以通过 TiCDC 提供的[开放数据协议](/ticdc/ticdc-open-protocol.md)自行扩展支持的下游系统（实验特性）。详情参阅：[TiCDC](/ticdc//ticdc-overview.md)。

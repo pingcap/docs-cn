@@ -1,6 +1,5 @@
 ---
 title: TiDB 生态工具功能概览
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrate/from-mysql/', '/docs-cn/dev/how-to/migrate/incrementally-from-mysql/', '/docs-cn/dev/how-to/migrate/overview/', '/docs-cn/dev/reference/tools/use-guide/']
 ---
 
@@ -10,7 +9,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 ## 全量导出
 
-[Dumpling](/export-or-backup-using-dumpling.md) 是一个用于从 MySQL/TiDB 进行全量逻辑导出的工具。
+[Dumpling](/dumpling-overview.md) 是一个用于从 MySQL/TiDB 进行全量逻辑导出的工具。
 
 基本信息：
 
@@ -76,7 +75,7 @@ aliases: ['/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrat
 
 如果数据量在 TB 级别，推荐的迁移步骤如下：
 
-1. 使用 [Dumpling](/export-or-backup-using-dumpling.md) 导出 MySQL/MariaDB 全量数据。
+1. 使用 [Dumpling](/dumpling-overview.md) 导出 MySQL/MariaDB 全量数据。
 2. 使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将全量导出数据导入 TiDB 集群。
 3. 使用 DM 迁移 MySQL/MariaDB 增量数据到 TiDB。
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB 1.1 Beta Release Notes
-category: Releases
 aliases: ['/docs-cn/dev/releases/11beta/']
 ---
 

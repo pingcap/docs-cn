@@ -1,6 +1,5 @@
 ---
 title: TiCDC 简介
-category: reference
 aliases: ['/docs-cn/dev/reference/tools/ticdc/overview/']
 ---
 
@@ -77,11 +76,10 @@ TiCDC 的系统架构如下图所示：
 目前 TiCDC（4.0 发布版本）暂不支持的场景如下：
 
 - 暂不支持单独使用 RawKV 的 TiKV 集群。
-- 暂不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的-collation-支持)。如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现 collation 导致的无法定位数据的问题。
+- 暂不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)。如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现 collation 导致的无法定位数据的问题。
 - 暂不支持 TiDB 4.0 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md) 和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
 - 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。
 - TiCDC 集群扩容后，不支持将已有的同步表调度到新的 TiCDC 节点中。
-- 暂不支持库表同步黑白名单。
 
 ## TiCDC 部署和任务管理
 
