@@ -61,7 +61,7 @@ io-concurrency = 5
 
 [security]
 # 指定集群中用于 TLS 连接的证书和密钥。
-# CA 的公钥证书。如果留空，则可禁用 TLS。
+# CA 的公钥证书。如果留空，则禁用 TLS。
 # ca-path = "/path/to/ca.pem"
 # 此服务的公钥证书。
 # cert-path = "/path/to/lightning.pem"
@@ -141,13 +141,13 @@ no-schema = false
 # 注意：**数据** 文件始终解析为 binary 文件。
 character-set = "auto"
 
-# 严格格式的导入数据可加快处理速度。
+# “严格”格式的导入数据可加快处理速度。
 # strict-format = true 要求：
 # 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D，即 \r 和 \n）
-# 甚至使用转义符时都不可以，即严格将换行符作为行分隔符。
+# 甚至被引号包裹的字符换行符都不可包含，即换行符只可用来分隔行。
 # 导入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
 # 但是如果输入数据为非严格格式，可能会将一条完整的数据分割成两部分，导致结果出错。
-# 为了保证数据安全而非追求速度，默认值为 false。
+# 为保证数据安全而非追求处理速度，默认值为 false。
 strict-format = false
 
 # 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。

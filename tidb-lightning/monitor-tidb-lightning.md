@@ -31,7 +31,7 @@ pprof-port = 8289
 status-server-address = '0.0.0.0:8286'
 ```
 
-需要配置 Prometheus 才能发现服务器。例如，将服务器地址直接添加至 `scrape_configs` 部分：
+配置 Prometheus 后，`tidb-lightning` 才能发现服务器。配置方法如下，将服务器地址直接添加至 `scrape_configs` 部分：
 
 {{< copyable "" >}}
 

@@ -12,7 +12,7 @@ TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他�
 包含整张表的 CSV 文件需命名为 `db_name.table_name.csv`，该文件会被解析为数据库 `db_name` 里名为 `table_name` 的表。
 
 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `db_name.table_name.003.csv`。
-数字部分不需要连续，但必须递增并用零填充。
+数字部分不需要连续但必须递增，并用零填充。
 
 文件扩展名必须为 `*.csv`，即使文件的内容并非逗号分隔。
 
@@ -137,11 +137,11 @@ TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例�
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
 * 定界符和分隔符只能为单个 ASCII 字符。
 
-## 严格格式
+## 设置 `strict-format` 启用严格格式
 
 导入文件的大小统一约为 256 MB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
 
-要解决此问题，可先将 CSV 文件分割为多个文件。对于通用 CSV 格式文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用 `strict-format` 设置。启用后，TiDB Lightning 会将单个 CSV 大文件分割为多个 256 MB 的文件块进行并行处理。
+要解决此问题，可先将 CSV 文件分割为多个文件。对于通用格式的 CSV 文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用 `strict-format` 设置。启用后，TiDB Lightning 会将单个 CSV 大文件分割为单个大小为 256 MB 的多个文件块进行并行处理。
 
 ```toml
 [mydumper]
