@@ -78,6 +78,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
+## `interactive_timeout`
+
+- 作用域：
+- 默认值：
+- 
+
 ## `sql_mode`
 
 - 作用域：SESSION | GLOBAL
