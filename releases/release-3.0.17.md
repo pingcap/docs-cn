@@ -31,7 +31,7 @@ TiDB version: 3.0.17
 
 + TiDB
 
-    - Ease the impact of statistics feedback on the cluster [#18770](https://github.com/pingcap/tidb/pull/18770)
+    - Decrease the default value of the `query-feedback-limit` configuration item from 1024 to 512, and improve the statistics feedback mechanism to ease its impact on the cluster [#18770](https://github.com/pingcap/tidb/pull/18770)
     - Limit batch split count for one request [#18694](https://github.com/pingcap/tidb/pull/18694)
     - Accelerate `/tiflash/replica` HTTP API when there are many history DDL jobs in the TiDB cluster [#18386](https://github.com/pingcap/tidb/pull/18386)
     - Improve row count estimation for index equal condition [#17609](https://github.com/pingcap/tidb/pull/17609)
