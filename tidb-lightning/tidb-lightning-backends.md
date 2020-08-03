@@ -1,10 +1,10 @@
 ---
-title: TiDB Lightning 后端导入模式
+title: TiDB Lightning 导入模式
 summary: 了解 TiDB 不同导入模式。
 aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/']
 ---
 
-# TiDB Lightning 后端导入模式
+# TiDB Lightning 导入模式
 
 TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持 Importer-backend（默认）、Local-backend 和 TiDB-backend 三种后端，它们导入数据的区别如下：
 
