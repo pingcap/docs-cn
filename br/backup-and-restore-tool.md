@@ -26,9 +26,20 @@ aliases: ['/docs-cn/stable/reference/tools/br/br/']
 - 推荐 BR 部署在 PD 节点上。
 - 推荐使用一块高性能 SSD 网盘，挂载到 BR 节点和所有 TiKV 节点上，网盘推荐万兆网卡，否则带宽有可能成为备份恢复时的性能瓶颈。
 
-## 下载 Binary
+> **注意：**
+>
+> 如果没有挂载网盘或者使用其他共享存储，那么 BR 备份的数据会生成在各个 TiKV 节点上。由于 BR 只备份 leader 副本，所以各个节点预留的空间需要根据 leader size 来预估。
+> 同时由于 v4.0 默认使用 leader count 进行平衡，所以会出现 leader size 差别大的问题，导致各个节点备份数据不均衡。
+
+## 使用方式
+
+### 下载 Binary
 
 详见[下载链接](/download-ecosystem-tools.md#快速备份和恢复br)。
+
+### 通过 SQL
+
+详见 [Backup 语法](/sql-statements/sql-statement-backup.md#backup) 以及 [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
 
 ## 工作原理
 
