@@ -61,7 +61,7 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
 
 4. 查看 pd buddy 是否正常打印日志（日志路径的对应配置项 [flash.flash_cluster] log 设置的值，默认为 TiFlash 配置文件配置的 tmp 目录下）。
 
-5. 检查集群副本数是否小于等于集群 TiKV 节点数。若集群副本数超过 TiKV 节点数，则 PD 不会向 TiFlash 同步数据；
+5. 检查配置的副本数是否小于等于集群 TiKV 节点数。若配置的副本数超过 TiKV 节点数，则 PD 不会向 TiFlash 同步数据；
 
     {{< copyable "shell-regular" >}}
 
