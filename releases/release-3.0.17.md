@@ -21,6 +21,7 @@ TiDB 版本：3.0.17
 + TiKV
 
     - 修复在 Region 合并过程中可能导致读到旧数据的问题 [#8111](https://github.com/tikv/tikv/pull/8111)
+    - 修复调度时可能产生内存泄漏的问题 [#8355](https://github.com/tikv/tikv/pull/8355)
 
 + TiDB Lightning
 
