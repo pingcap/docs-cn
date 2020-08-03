@@ -343,6 +343,18 @@
   - [贡献代码](/contribute.md#成为-tidb-的贡献者)
   - [改进文档](/contribute.md#改进文档)
 + 版本发布历史
+<<<<<<< HEAD
+=======
+  - [发布版本汇总](/releases/release-notes.md)
+  + v3.1
+    - [3.1.2](/releases/release-3.1.2.md)
+    - [3.1.1](/releases/release-3.1.1.md)
+    - [3.1.0 GA](/releases/release-3.1.0-ga.md)
+    - [3.1.0-rc](/releases/release-3.1.0-rc.md)
+    - [3.1.0-beta.2](/releases/release-3.1.0-beta.2.md)
+    - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
+    - [3.1.0-beta](/releases/release-3.1.0-beta.md)
+>>>>>>> dad30b4... add all releases to TOC (#4160)
   + v3.0
     - [3.0.16](/releases/release-3.0.16.md)
     - [3.0.15](/releases/release-3.0.15.md)
