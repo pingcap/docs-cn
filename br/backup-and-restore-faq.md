@@ -47,6 +47,12 @@ summary: BR 相关的常见问题以及解决方法。
  
 目前已知备份到 samba 搭建的网盘时可能会遇到 `Code: 22(invalid argument)` 错误。
  
+## BR 遇到错误信息 `rpc error: code = Unavailable desc =...`，该如何处理？
+ 
+该问题一般是因为使用 BR 恢复数据的时候，恢复集群的性能不足导致的。可以从恢复集群的监控或者 TiKV 日志来辅助确认。
+
+要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
+ 
 ## 使用 local storage 的时候，BR 备份的文件会存在哪里？
  
 在使用 local storage 的时候，会在运行 BR 的节点生成 `backupmeta`，在各个 Region 的 Leader 节点生成备份文件。
