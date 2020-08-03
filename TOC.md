@@ -364,6 +364,7 @@
   - [贡献代码](/contribute.md#成为-tidb-的贡献者)
   - [改进文档](/contribute.md#改进文档)
 + 版本发布历史
+  - [发布版本汇总](/releases/release-notes.md)
   + v3.1
     - [3.1.2](/releases/release-3.1.2.md)
     - [3.1.1](/releases/release-3.1.1.md)
