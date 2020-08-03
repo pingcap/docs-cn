@@ -56,3 +56,11 @@ summary: BR 相关的常见问题以及解决方法。
 备份的时候仅仅在每个 Region 的 Leader 处生成该 Region 的备份文件。因此备份的大小等于数据大小，不会有多余的副本数据。所以最终的总大小大约是 TiKV 数据总量除以副本数。
  
 但是假如想要从本地恢复数据，因为每个 TiKV 都必须要能访问到所有备份文件，在最终恢复的时候会有等同于恢复时 TiKV 节点数量的副本。
+
+## BR 恢复到 TiCDC / Drainer 的上游集群时，要注意些什么？
+
++ **BR 恢复的数据无法被同步到下游**，因为 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
+
++ 无法被同步到下游的恢复数据可能导致 TiCDC / Drainer 在执行 DDL 的时候发生异常。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
+
+TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ticdc/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
