@@ -310,6 +310,7 @@
   - [贡献代码](/contribute.md#成为-tidb-的贡献者)
   - [改进文档](/contribute.md#改进文档)
 + 版本发布历史
+  - [发布版本汇总](/releases/release-notes.md)
   + v2.1
     - [2.1.19](/releases/release-2.1.19.md)
     - [2.1.18](/releases/release-2.1.18.md)

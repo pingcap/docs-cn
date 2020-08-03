@@ -7,16 +7,6 @@ aliases: ['/docs-cn/v2.1/releases/rn/']
 
 TiDB 历史版本发布声明如下：
 
-## 3.0
-
-- [3.0.1](/releases/release-3.0.1.md)
-- [3.0 GA](/releases/release-3.0-ga.md)
-- [3.0.0-rc.3](/releases/release-3.0.0-rc.3.md)
-- [3.0.0-rc.2](/releases/release-3.0.0-rc.2.md)
-- [3.0.0-rc.1](/releases/release-3.0.0-rc.1.md)
-- [3.0.0-beta.1](/releases/release-3.0.0-beta.1.md)
-- [3.0.0-beta](/releases/release-3.0-beta.md)
-
 ## 2.1
 
 - [2.1.19](/releases/release-2.1.19.md)
