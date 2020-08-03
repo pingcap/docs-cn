@@ -60,7 +60,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 ### 通过 SQL
 
-在 v4.0.3 及以上版本的 TiDB 中，已经可以支持通过 SQL 语句进行备份恢复，详见 [Backup 语法](/sql-statements/sql-statement-backup.md#backup) 以及 [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
+在 v4.0.2 及以上版本的 TiDB 中，已经可以支持通过 SQL 语句进行备份恢复，详见 [Backup 语法](/sql-statements/sql-statement-backup.md#backup) 以及 [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
 
 ### 通过命令行工具
 
