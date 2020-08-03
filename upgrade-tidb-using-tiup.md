@@ -82,6 +82,7 @@ tiup update cluster
 
 > **注意：**
 >
+> + 目前 TiUP 仅支持 systemd 的进程管理模式，如果 TiDB Ansible 部署时选择了 supervise，需要先按[此文档](https://docs.pingcap.com/zh/tidb/stable/online-deployment-using-ansible#%E5%A6%82%E4%BD%95%E8%B0%83%E6%95%B4%E8%BF%9B%E7%A8%8B%E7%9B%91%E7%AE%A1%E6%96%B9%E5%BC%8F%E4%BB%8E-supervise-%E5%88%B0-systemd)迁移到 systemd
 > + 如果原集群已经是 TiUP 部署，可以跳过此步骤。
 > + 目前默认识别 `inventory.ini` 配置文件，如果你的配置为其他名称，请指定。
 > + 你需要确保当前集群的状态与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常。
