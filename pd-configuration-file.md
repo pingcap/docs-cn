@@ -6,6 +6,7 @@ aliases: ['/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
 # PD 配置文件描述
 
 <!-- markdownlint-disable MD001 -->
+<!-- markdownlint-disable MD034 -->
 
 PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/master/conf/config.toml) 找到默认的配置文件。
 
