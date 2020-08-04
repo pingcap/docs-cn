@@ -1,6 +1,6 @@
 ---
 title: PD 配置参数
-aliases: ['/docs-cn/v2.1/reference/configuration/pd-server/configuration/']
+aliases: ['/docs-cn/v2.1/pd-configuration-file/','/docs-cn/v2.1/reference/configuration/pd-server/configuration/']
 ---
 
 # PD 配置参数

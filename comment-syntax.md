@@ -1,6 +1,6 @@
 ---
 title: 注释语法
-aliases: ['/docs-cn/v2.1/reference/sql/language-structure/comment-syntax/']
+aliases: ['/docs-cn/v2.1/comment-syntax/','/docs-cn/v2.1/reference/sql/language-structure/comment-syntax/']
 ---
 
 # 注释语法

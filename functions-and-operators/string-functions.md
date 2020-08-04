@@ -1,6 +1,6 @@
 ---
 title: 字符串函数
-aliases: ['/docs-cn/v2.1/reference/sql/functions-and-operators/string-functions/']
+aliases: ['/docs-cn/v2.1/functions-and-operators/string-functions/','/docs-cn/v2.1/reference/sql/functions-and-operators/string-functions/']
 ---
 
 # 字符串函数

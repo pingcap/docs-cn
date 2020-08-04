@@ -1,6 +1,6 @@
 ---
 title: 字符串类型
-aliases: ['/docs-cn/v2.1/reference/sql/data-types/string/']
+aliases: ['/docs-cn/v2.1/data-type-string/','/docs-cn/v2.1/reference/sql/data-types/string/']
 ---
 
 # 字符串类型

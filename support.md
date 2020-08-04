@@ -1,6 +1,6 @@
 ---
 title: 支持资源
-aliases: ['/docs-cn/v2.1/support-resources/']
+aliases: ['/docs-cn/v2.1/support/','/docs-cn/v2.1/support-resources/']
 ---
 
 # 支持资源

@@ -1,6 +1,6 @@
 ---
 title: CSV 支持
-aliases: ['/docs-cn/v2.1/reference/tools/tidb-lightning/csv/']
+aliases: ['/docs-cn/v2.1/tidb-lightning/migrate-from-csv-using-tidb-lightning/','/docs-cn/v2.1/reference/tools/tidb-lightning/csv/']
 ---
 
 # CSV 支持

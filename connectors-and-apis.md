@@ -1,6 +1,6 @@
 ---
 title: 连接器和 API
-aliases: ['/docs-cn/v2.1/reference/supported-clients/']
+aliases: ['/docs-cn/v2.1/connectors-and-apis/','/docs-cn/v2.1/reference/supported-clients/']
 ---
 
 # 连接器和 API

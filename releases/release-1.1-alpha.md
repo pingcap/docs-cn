@@ -1,6 +1,6 @@
 ---
 title: TiDB 1.1 Alpha Release Notes
-aliases: ['/docs-cn/v2.1/releases/11alpha/']
+aliases: ['/docs-cn/v2.1/releases/release-1.1-alpha/','/docs-cn/v2.1/releases/11alpha/']
 ---
 
 # TiDB 1.1 Alpha Release Notes

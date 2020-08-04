@@ -1,6 +1,6 @@
 ---
 title: 跨数据中心部署方案
-aliases: ['/docs-cn/v2.1/how-to/deploy/geographic-redundancy/overview/']
+aliases: ['/docs-cn/v2.1/geo-redundancy-deployment/','/docs-cn/v2.1/how-to/deploy/geographic-redundancy/overview/']
 ---
 
 # 跨数据中心部署方案

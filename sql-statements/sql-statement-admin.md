@@ -1,6 +1,6 @@
 ---
 title: ADMIN 语句
-aliases: ['/docs-cn/v2.1/reference/sql/statements/admin/']
+aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-admin/','/docs-cn/v2.1/reference/sql/statements/admin/']
 ---
 
 # `ADMIN` 语句

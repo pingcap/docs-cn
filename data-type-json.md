@@ -1,6 +1,6 @@
 ---
 title: JSON 类型
-aliases: ['/docs-cn/v2.1/reference/sql/data-types/json/']
+aliases: ['/docs-cn/v2.1/data-type-json/','/docs-cn/v2.1/reference/sql/data-types/json/']
 ---
 
 # JSON 类型

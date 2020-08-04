@@ -1,7 +1,7 @@
 ---
 title: SHOW INDEXES [FROM|IN]
 summary: TiDB 数据库中 SHOW INDEXES [FROM|IN] 的使用概况。
-aliases: ['/docs-cn/v2.1/reference/sql/statements/show-indexes/']
+aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-show-indexes/','/docs-cn/v2.1/reference/sql/statements/show-indexes/']
 ---
 
 # SHOW INDEXES [FROM|IN]

@@ -1,7 +1,7 @@
 ---
 title: SHOW [FULL] TABLES
 summary: TiDB 数据库中 SHOW [FULL] TABLES 的使用概况。
-aliases: ['/docs-cn/v2.1/reference/sql/statements/show-tables/']
+aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-show-tables/','/docs-cn/v2.1/reference/sql/statements/show-tables/']
 ---
 
 # SHOW [FULL] TABLES

@@ -1,6 +1,6 @@
 ---
 title: TiKV Control 使用说明
-aliases: ['/docs-cn/v2.1/reference/tools/tikv-control/']
+aliases: ['/docs-cn/v2.1/tikv-control/','/docs-cn/v2.1/reference/tools/tikv-control/']
 ---
 
 # TiKV Control 使用说明

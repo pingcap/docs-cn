@@ -1,7 +1,7 @@
 ---
 title: SHOW DATABASES
 summary: TiDB 数据库中 SHOW DATABASES 的使用概况。
-aliases: ['/docs-cn/v2.1/reference/sql/statements/show-databases/']
+aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-show-databases/','/docs-cn/v2.1/reference/sql/statements/show-databases/']
 ---
 
 # SHOW DATABASES
