@@ -1,7 +1,7 @@
 ---
 title: TiDB 简介
 summary: 了解 TiDB 数据库。
-aliases: ['/docs-cn/stable/_index/','/docs-cn/v4.0/_index/']
+aliases: ['/docs-cn/','/docs-cn/stable/','/docs-cn/v4.0/']
 ---
 
 <!-- markdownlint-disable MD046 -->
