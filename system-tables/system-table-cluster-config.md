@@ -1,6 +1,6 @@
 ---
 title: CLUSTER_CONFIG
-aliases: ['/docs-cn/dev/reference/system-databases/cluster-config/']
+aliases: ['/docs-cn/dev/system-tables/system-table-cluster-config/','/docs-cn/dev/reference/system-databases/cluster-config/']
 summary: 了解 TiDB 集群配置表 `CLUSTER_CONFIG`。
 ---
 

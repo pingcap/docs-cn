@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_LOAD
 summary: 了解 TiDB 集群负载表 `CLUSTER_LOAD`。
-aliases: ['/docs-cn/dev/reference/system-databases/cluster-load/']
+aliases: ['/docs-cn/dev/system-tables/system-table-cluster-load/','/docs-cn/dev/reference/system-databases/cluster-load/']
 ---
 
 # CLUSTER_LOAD

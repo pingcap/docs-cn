@@ -1,6 +1,7 @@
 ---
 title: SHOW BINDINGS
 summary: TiDB 数据库中 SHOW BINDINGS 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-bindings/']
 ---
 
 # SHOW BINDINGS
