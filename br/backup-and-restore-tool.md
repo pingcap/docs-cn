@@ -6,13 +6,14 @@ aliases: ['/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/ba
 
 # 使用 BR 进行备份与恢复
 
-Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/backup-and-restore-using-mydumper-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
+[Backup & Restore](https://github.com/pingcap/br)（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`mydumper`/`loader`](/backup-and-restore-using-mydumper-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
 
 ## 使用限制
 
 - BR 只支持 TiDB v3.1 及以上版本。
 - 目前只支持在全新的集群上执行恢复操作。
 - BR 备份最好串行执行，否则不同备份任务之间会相互影响。
+- BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。
 - BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
 
     - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
@@ -25,9 +26,20 @@ Backup & Restore（以下简称 BR）是 TiDB 分布式备份恢复的命令行�
 - 推荐 BR 部署在 PD 节点上。
 - 推荐使用一块高性能 SSD 网盘，挂载到 BR 节点和所有 TiKV 节点上，网盘推荐万兆网卡，否则带宽有可能成为备份恢复时的性能瓶颈。
 
-## 下载 Binary
+> **注意：**
+>
+> 如果没有挂载网盘或者使用其他共享存储，那么 BR 备份的数据会生成在各个 TiKV 节点上。由于 BR 只备份 leader 副本，所以各个节点预留的空间需要根据 leader size 来预估。
+> 同时由于 v4.0 默认使用 leader count 进行平衡，所以会出现 leader size 差别大的问题，导致各个节点备份数据不均衡。
+
+## 使用方式
+
+### 下载 Binary
 
 详见[下载链接](/download-ecosystem-tools.md#快速备份和恢复br)。
+
+### 通过 SQL
+
+详见 [Backup 语法](/sql-statements/sql-statement-backup.md#backup) 以及 [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
 
 ## 工作原理
 
@@ -85,7 +97,6 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群
-* `br version` 用于查看 BR 工具版本信息
 
 以上三个子命令可能还包含这些子命令：
 
@@ -97,6 +108,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `--pd`：用于连接的选项，表示 PD 服务地址，例如 `"${PDIP}:2379"`。
 * `-h`/`--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
+* `-V` (或 `--version`): 检查 BR 版本。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -126,6 +138,7 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
 > **注意：**
 >
 > + 经测试，在全速备份的情况下，如果备份盘和服务盘不同，在线备份会让只读线上服务的 QPS 下降 15%~25% 左右。如果希望降低影响，请参考 `--ratelimit` 进行限速。
+>
 > + 假如备份盘和服务盘相同，备份将会和服务争夺 I/O 资源，这可能会让只读线上服务的 QPS 骤降一半以上。请尽量禁止将在线服务的数据备份到 TiKV 的数据盘。
 
 {{< copyable "shell-regular" >}}
