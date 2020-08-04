@@ -54,7 +54,7 @@ mysql> show collation;
 
 > **注意：**
 >
-> TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci`。当用户指定了显式字符集，但依赖于隐式地选择默认排序规则时，这个差异可能导致兼容性问题。
+> TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci`。当用户指定了显式字符集，但依赖于待选的隐式默认排序规则时，这个差异可能导致兼容性问题。
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
 
