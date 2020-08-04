@@ -319,7 +319,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_enable_slow_log`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用于控制是否开启 slow log 功能，默认开启。
 
@@ -680,7 +680,7 @@ set tidb_query_log_max_len = 20;
 
 ### `tidb_record_plan_in_slow_log`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用于控制是否在 slow log 里包含慢查询的执行计划。
 
@@ -846,7 +846,7 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：INSTANCE | GLOBAL
 
 - 默认值: 0
 
