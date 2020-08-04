@@ -1,6 +1,6 @@
 ---
 title: 系统变量
-aliases: ['/docs-cn/v3.1/reference/configuration/tidb-server/mysql-variables/']
+aliases: ['/docs-cn/v3.1/system-variables/','/docs-cn/v3.1/reference/configuration/tidb-server/mysql-variables/']
 
 ---
 

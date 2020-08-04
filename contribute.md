@@ -1,5 +1,6 @@
 ---
 title: 成为贡献者
+aliases: ['/docs-cn/v3.1/contribute/']
 ---
 
 # 成为贡献者

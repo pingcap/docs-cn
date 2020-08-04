@@ -1,6 +1,6 @@
 ---
 title: 使用 Docker Compose 快速构建 TiDB 集群
-aliases: ['/docs-cn/v3.1/how-to/get-started/deploy-tidb-from-docker-compose/']
+aliases: ['/docs-cn/v3.1/deploy-test-cluster-using-docker-compose/','/docs-cn/v3.1/how-to/get-started/deploy-tidb-from-docker-compose/']
 ---
 
 # 使用 Docker Compose 快速构建 TiDB 集群

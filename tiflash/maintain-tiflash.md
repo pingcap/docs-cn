@@ -1,6 +1,6 @@
 ---
 title: TiFlash 集群运维
-aliases: ['/docs-cn/v3.1/reference/tiflash/maintain/']
+aliases: ['/docs-cn/v3.1/tiflash/maintain-tiflash/','/docs-cn/v3.1/reference/tiflash/maintain/']
 ---
 
 # TiFlash 集群运维

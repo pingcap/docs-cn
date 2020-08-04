@@ -1,7 +1,7 @@
 ---
 title: SHOW ENGINES
 summary: TiDB 数据库中 SHOW ENGINES 的使用概况。
-aliases: ['/docs-cn/v3.1/reference/sql/statements/show-engines/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-show-engines/','/docs-cn/v3.1/reference/sql/statements/show-engines/']
 ---
 
 # SHOW ENGINES

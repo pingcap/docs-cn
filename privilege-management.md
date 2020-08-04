@@ -1,6 +1,6 @@
 ---
 title: 权限管理
-aliases: ['/docs-cn/v3.1/reference/security/privilege-system/']
+aliases: ['/docs-cn/v3.1/privilege-management/','/docs-cn/v3.1/reference/security/privilege-system/']
 ---
 
 # 权限管理

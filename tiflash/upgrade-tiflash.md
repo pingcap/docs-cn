@@ -1,6 +1,6 @@
 ---
 title: 升级 TiFlash 节点
-aliases: ['/docs-cn/v3.1/reference/tiflash/upgrade/']
+aliases: ['/docs-cn/v3.1/tiflash/upgrade-tiflash/','/docs-cn/v3.1/reference/tiflash/upgrade/']
 ---
 
 # 升级 TiFlash 节点

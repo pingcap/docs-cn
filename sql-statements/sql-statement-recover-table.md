@@ -1,6 +1,6 @@
 ---
 title: RECOVER TABLE
-aliases: ['/docs-cn/v3.1/reference/sql/statements/recover-table/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-recover-table/','/docs-cn/v3.1/reference/sql/statements/recover-table/']
 ---
 
 # RECOVER TABLE

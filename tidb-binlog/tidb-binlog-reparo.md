@@ -1,6 +1,6 @@
 ---
 title: Reparo 使用文档
-aliases: ['/docs-cn/v3.1/reference/tidb-binlog/reparo/']
+aliases: ['/docs-cn/v3.1/tidb-binlog/tidb-binlog-reparo/','/docs-cn/v3.1/reference/tidb-binlog/reparo/']
 ---
 
 # Reparo 使用文档

@@ -1,6 +1,6 @@
 ---
 title: 与 MySQL 安全特性差异
-aliases: ['/docs-cn/v3.1/reference/security/compatibility/']
+aliases: ['/docs-cn/v3.1/security-compatibility-with-mysql/','/docs-cn/v3.1/reference/security/compatibility/']
 ---
 
 # 与 MySQL 安全特性差异

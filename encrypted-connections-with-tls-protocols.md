@@ -1,6 +1,6 @@
 ---
 title: 使用加密连接
-aliases: ['/docs-cn/v3.1/how-to/secure/enable-tls-clients/']
+aliases: ['/docs-cn/v3.1/encrypted-connections-with-tls-protocols/','/docs-cn/v3.1/how-to/secure/enable-tls-clients/']
 ---
 
 # 使用加密连接

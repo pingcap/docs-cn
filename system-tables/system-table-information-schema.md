@@ -1,6 +1,6 @@
 ---
 title: Information Schema
-aliases: ['/docs-cn/v3.1/reference/system-databases/information-schema/']
+aliases: ['/docs-cn/v3.1/system-tables/system-table-information-schema/','/docs-cn/v3.1/reference/system-databases/information-schema/']
 ---
 
 # Information Schema
