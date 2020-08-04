@@ -1,7 +1,7 @@
 ---
 title: EXECUTE
 summary: TiDB 数据库中 EXECUTE 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/execute/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-execute/','/docs-cn/dev/reference/sql/statements/execute/']
 ---
 
 # EXECUTE
