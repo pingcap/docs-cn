@@ -9,11 +9,51 @@ aliases: ['/docs-cn/dev/releases/release-4.0.5/']
 
 TiDB 版本：4.0.5
 
-## 新功能
+## 兼容性变化
 
-+ TiCDC
++ TiDB
 
     - 
+
+## 新功能
+
++ TiFlash
+
+    - 
+
++ Tools
+
+    - TiCDC
+
+        - 
+
+## 优化提升
+
++ TiDB
+
+    - 
+
++ PD
+
+    - 
+
++ TiKV
+
+    - 
+
++ TiFlash
+
+    - 
+
++ Tools
+
+    + TiCDC
+
+        -
+
+    + Backup & Restore (BR)
+
+        -
 
 ## Bug 修复
 
@@ -33,38 +73,12 @@ TiDB 版本：4.0.5
 
     - 
 
++ Tools
 
-+ TiCDC
+    + TiCDC
 
-    -
+        -
 
-+ BR
+    + BR
 
-    -
-
-## 新优化
-
-+ TiDB
-
-    - 
-
-+ PD
-
-    - 
-
-+ TiKV
-
-    - 
-
-+ TiFlash
-
-    - 
-
-+ TiCDC
-
-    -
-
-+ BR
-
-    -
-
+        -
