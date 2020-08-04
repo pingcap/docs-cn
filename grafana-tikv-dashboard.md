@@ -1,6 +1,6 @@
 ---
 title: TiKV 监控指标详解
-aliases: ['/docs-cn/stable/reference/key-monitoring-metrics/tikv-dashboard/']
+aliases: ['/docs-cn/stable/grafana-tikv-dashboard/','/docs-cn/v4.0/grafana-tikv-dashboard/','/docs-cn/stable/reference/key-monitoring-metrics/tikv-dashboard/']
 ---
 
 # TiKV 监控指标详解

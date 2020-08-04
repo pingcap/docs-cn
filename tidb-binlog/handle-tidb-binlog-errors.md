@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 常见错误修复
-aliases: ['/docs-cn/stable/reference/tidb-binlog/troubleshoot/error-handling/']
+aliases: ['/docs-cn/stable/tidb-binlog/handle-tidb-binlog-errors/','/docs-cn/v4.0/tidb-binlog/handle-tidb-binlog-errors/','/docs-cn/stable/reference/tidb-binlog/troubleshoot/error-handling/']
 ---
 
 # TiDB Binlog 常见错误修复

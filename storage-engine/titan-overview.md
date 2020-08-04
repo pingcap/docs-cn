@@ -1,6 +1,6 @@
 ---
 title: Titan 介绍
-aliases: ['/docs-cn/stable/reference/titan/overview/']
+aliases: ['/docs-cn/stable/storage-engine/titan-overview/','/docs-cn/v4.0/storage-engine/titan-overview/','/docs-cn/stable/reference/titan/overview/']
 ---
 
 # Titan 介绍

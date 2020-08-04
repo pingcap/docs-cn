@@ -1,7 +1,7 @@
 ---
 title: USE
 summary: TiDB 数据库中 USE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/use/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-use/','/docs-cn/v4.0/sql-statements/sql-statement-use/','/docs-cn/stable/reference/sql/statements/use/']
 ---
 
 # USE

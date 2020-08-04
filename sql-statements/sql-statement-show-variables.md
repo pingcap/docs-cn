@@ -1,7 +1,7 @@
 ---
 title: SHOW [GLOBAL|SESSION] VARIABLES
 summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] VARIABLES 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/show-variables/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-variables/','/docs-cn/v4.0/sql-statements/sql-statement-show-variables/','/docs-cn/stable/reference/sql/statements/show-variables/']
 ---
 
 # SHOW [GLOBAL|SESSION] VARIABLES

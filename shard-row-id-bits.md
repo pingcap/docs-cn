@@ -1,6 +1,7 @@
 ---
 title: SHARD_ROW_ID_BITS
 summary: 介绍 TiDB 的 `SHARD_ROW_ID_BITS` 表属性。
+aliases: ['/docs-cn/stable/shard-row-id-bits/','/docs-cn/v4.0/shard-row-id-bits/']
 ---
 
 # SHARD_ROW_ID_BITS

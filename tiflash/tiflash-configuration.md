@@ -1,6 +1,6 @@
 ---
 title: TiFlash 配置参数
-aliases: ['/docs-cn/stable/reference/tiflash/configuration/']
+aliases: ['/docs-cn/stable/tiflash/tiflash-configuration/','/docs-cn/v4.0/tiflash/tiflash-configuration/','/docs-cn/stable/reference/tiflash/configuration/']
 ---
 
 # TiFlash 配置参数

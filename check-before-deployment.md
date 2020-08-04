@@ -1,6 +1,7 @@
 ---
 title: TiDB 环境与系统配置检查
 summary: 了解部署 TiDB 前的环境检查操作。
+aliases: ['/docs-cn/stable/check-before-deployment/','/docs-cn/v4.0/check-before-deployment/']
 ---
 
 # TiDB 环境与系统配置检查

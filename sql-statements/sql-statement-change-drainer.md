@@ -1,6 +1,7 @@
 ---
 title: CHANGE DRAINER
 summary: TiDB 数据库中 CHANGE DRAINER 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-change-drainer/','/docs-cn/v4.0/sql-statements/sql-statement-change-drainer/']
 ---
 
 # CHANGE DRAINER

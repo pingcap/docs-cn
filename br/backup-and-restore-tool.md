@@ -1,7 +1,7 @@
 ---
 title: 使用 BR 进行备份与恢复
 summary: 了解如何使用 BR 工具进行集群数据备份和恢复。
-aliases: ['/docs-cn/stable/reference/tools/br/br/']
+aliases: ['/docs-cn/stable/br/backup-and-restore-tool/','/docs-cn/v4.0/br/backup-and-restore-tool/','/docs-cn/stable/reference/tools/br/br/']
 ---
 
 # 使用 BR 进行备份与恢复

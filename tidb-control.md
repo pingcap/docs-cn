@@ -1,6 +1,6 @@
 ---
 title: TiDB Control 使用说明
-aliases: ['/docs-cn/stable/reference/tools/tidb-control/']
+aliases: ['/docs-cn/stable/tidb-control/','/docs-cn/v4.0/tidb-control/','/docs-cn/stable/reference/tools/tidb-control/']
 ---
 
 # TiDB Control 使用说明

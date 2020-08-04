@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 介绍
+aliases: ['/docs-cn/stable/dashboard/dashboard-intro/','/docs-cn/v4.0/dashboard/dashboard-intro/']
 ---
 
 # TiDB Dashboard 介绍

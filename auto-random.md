@@ -1,7 +1,7 @@
 ---
 title: AUTO_RANDOM
 summary: 本文介绍了 TiDB 的 `AUTO_RANDOM` 列属性。
-aliases: ['/docs-cn/stable/reference/sql/attributes/auto-random/']
+aliases: ['/docs-cn/stable/auto-random/','/docs-cn/v4.0/auto-random/','/docs-cn/stable/reference/sql/attributes/auto-random/']
 ---
 
 # AUTO_RANDOM <span class="version-mark">从 v3.1.0 版本开始引入</span>

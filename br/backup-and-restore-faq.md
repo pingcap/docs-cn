@@ -1,6 +1,7 @@
 ---
 title: Backup & Restore 常见问题
 summary: BR 相关的常见问题以及解决方法。
+aliases: ['/docs-cn/stable/br/backup-and-restore-faq/','/docs-cn/v4.0/br/backup-and-restore-faq/']
 ---
  
 # Backup & Restore 常见问题

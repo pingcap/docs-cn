@@ -1,6 +1,6 @@
 ---
 title: TiDB 系统表
-aliases: ['/docs-cn/stable/reference/system-databases/mysql/']
+aliases: ['/docs-cn/stable/system-tables/system-table-overview/','/docs-cn/v4.0/system-tables/system-table-overview/','/docs-cn/stable/reference/system-databases/mysql/']
 ---
 
 # TiDB 系统表

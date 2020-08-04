@@ -1,6 +1,6 @@
 ---
 title: Titan 配置
-aliases: ['/docs-cn/stable/reference/titan/configuration/']
+aliases: ['/docs-cn/stable/storage-engine/titan-configuration/','/docs-cn/v4.0/storage-engine/titan-configuration/','/docs-cn/stable/reference/titan/configuration/']
 ---
 
 # Titan 配置

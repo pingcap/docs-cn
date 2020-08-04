@@ -1,5 +1,6 @@
 ---
 title: TiDB 集群监控 API
+aliases: ['/docs-cn/stable/tidb-monitoring-api/','/docs-cn/v4.0/tidb-monitoring-api/']
 ---
 
 # TiDB 集群监控 API

@@ -1,6 +1,7 @@
 ---
 title: Dumpling 使用文档
 summary: 使用 Dumpling 从 TiDB 导出数据。
+aliases: ['/docs-cn/stable/dumpling-overview/','/docs-cn/v4.0/dumpling-overview/']
 ---
 
 # Dumpling 使用文档

@@ -1,6 +1,6 @@
 ---
 title: 使用 TiFlash
-aliases: ['/docs-cn/stable/reference/tiflash/use-tiflash/']
+aliases: ['/docs-cn/stable/tiflash/use-tiflash/','/docs-cn/v4.0/tiflash/use-tiflash/','/docs-cn/stable/reference/tiflash/use-tiflash/']
 ---
 
 # 使用 TiFlash

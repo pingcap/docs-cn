@@ -1,6 +1,6 @@
 ---
 title: PD Control 使用说明
-aliases: ['/docs-cn/stable/reference/tools/pd-control/']
+aliases: ['/docs-cn/stable/pd-control/','/docs-cn/v4.0/pd-control/','/docs-cn/stable/reference/tools/pd-control/']
 ---
 
 # PD Control 使用说明

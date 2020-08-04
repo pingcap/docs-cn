@@ -1,7 +1,7 @@
 ---
 title: TiDB 高并发写入场景最佳实践
 summary: 了解 TiDB 在高并发写入场景下的最佳实践。
-aliases: ['/docs-cn/stable/reference/best-practices/high-concurrency/']
+aliases: ['/docs-cn/stable/best-practices/high-concurrency-best-practices/','/docs-cn/v4.0/best-practices/high-concurrency-best-practices/','/docs-cn/stable/reference/best-practices/high-concurrency/']
 ---
 
 # TiDB 高并发写入场景最佳实践

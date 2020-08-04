@@ -1,6 +1,6 @@
 ---
 title: TiCDC 简介
-aliases: ['/docs-cn/stable/reference/tools/ticdc/overview/']
+aliases: ['/docs-cn/stable/ticdc/ticdc-overview/','/docs-cn/v4.0/ticdc/ticdc-overview/','/docs-cn/stable/reference/tools/ticdc/overview/']
 ---
 
 # TiCDC 简介

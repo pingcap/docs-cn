@@ -1,6 +1,7 @@
 ---
 title: 子查询相关的优化
 summary: 了解子查询相关的优化。
+aliases: ['/docs-cn/stable/subquery-optimization/','/docs-cn/v4.0/subquery-optimization/']
 ---
 
 # 子查询相关的优化

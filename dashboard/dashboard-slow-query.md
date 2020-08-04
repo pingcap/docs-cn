@@ -1,6 +1,7 @@
 ---
 title: TiDB Dashboard 慢查询页面
 summary: 了解如何在 TiDB Dashboard 中查看慢查询。
+aliases: ['/docs-cn/stable/dashboard/dashboard-slow-query/','/docs-cn/v4.0/dashboard/dashboard-slow-query/']
 ---
 
 # TiDB Dashboard 慢查询页面

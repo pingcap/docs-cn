@@ -1,6 +1,6 @@
 ---
 title: TiDB 生态工具功能概览
-aliases: ['/docs-cn/stable/reference/tools/user-guide/']
+aliases: ['/docs-cn/stable/ecosystem-tool-user-guide/','/docs-cn/v4.0/ecosystem-tool-user-guide/','/docs-cn/stable/reference/tools/user-guide/']
 ---
 
 # TiDB 生态工具功能概览

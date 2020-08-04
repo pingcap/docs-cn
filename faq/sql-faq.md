@@ -1,6 +1,7 @@
 ---
 title: SQL 操作常见问题
 summary: 介绍 SQL 操作相关的常见问题。
+aliases: ['/docs-cn/stable/faq/sql-faq/','/docs-cn/v4.0/faq/sql-faq/']
 ---
 
 # SQL 操作常见问题

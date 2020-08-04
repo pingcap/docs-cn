@@ -1,6 +1,6 @@
 ---
 title: 读取历史数据
-aliases: ['/docs-cn/stable/how-to/get-started/read-historical-data/']
+aliases: ['/docs-cn/stable/read-historical-data/','/docs-cn/v4.0/read-historical-data/','/docs-cn/stable/how-to/get-started/read-historical-data/']
 ---
 
 # 读取历史数据

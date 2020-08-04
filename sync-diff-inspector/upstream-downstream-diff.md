@@ -1,6 +1,6 @@
 ---
 title: TiDB 主从集群的数据校验
-aliases: ['/docs-cn/stable/reference/tools/sync-diff-inspector/tidb-diff/']
+aliases: ['/docs-cn/stable/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/v4.0/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/stable/reference/tools/sync-diff-inspector/tidb-diff/']
 ---
 
 # TiDB 主从集群的数据校验

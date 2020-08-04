@@ -1,6 +1,6 @@
 ---
 title: TiDB 用户账户管理
-aliases: ['/docs-cn/stable/reference/security/user-account-management/']
+aliases: ['/docs-cn/stable/user-account-management/','/docs-cn/v4.0/user-account-management/','/docs-cn/stable/reference/security/user-account-management/']
 ---
 
 # TiDB 用户账户管理

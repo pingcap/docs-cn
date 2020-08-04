@@ -1,6 +1,6 @@
 ---
 title: TiDB 重要监控指标详解
-aliases: ['/docs-cn/stable/reference/key-monitoring-metrics/tidb-dashboard/']
+aliases: ['/docs-cn/stable/grafana-tidb-dashboard/','/docs-cn/v4.0/grafana-tidb-dashboard/','/docs-cn/stable/reference/key-monitoring-metrics/tidb-dashboard/']
 ---
 
 # TiDB 重要监控指标详解

@@ -1,6 +1,6 @@
 ---
 title: sync-diff-inspector 用户文档
-aliases: ['/docs-cn/stable/reference/tools/sync-diff-inspector/overview/']
+aliases: ['/docs-cn/stable/sync-diff-inspector/sync-diff-inspector-overview/','/docs-cn/v4.0/sync-diff-inspector/sync-diff-inspector-overview/','/docs-cn/stable/reference/tools/sync-diff-inspector/overview/']
 ---
 
 # sync-diff-inspector 用户文档

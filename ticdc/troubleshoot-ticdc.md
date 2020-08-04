@@ -1,6 +1,6 @@
 ---
 title: TiCDC 常见问题和故障处理
-aliases: ['/docs-cn/stable/reference/tools/ticdc/troubleshoot/']
+aliases: ['/docs-cn/stable/ticdc/troubleshoot-ticdc/','/docs-cn/v4.0/ticdc/troubleshoot-ticdc/','/docs-cn/stable/reference/tools/ticdc/troubleshoot/']
 ---
 
 # TiCDC 常见问题和故障处理

@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
-aliases: ['/docs-cn/stable/reference/tools/tiup/cluster/']
+aliases: ['/docs-cn/stable/tiup/tiup-cluster/','/docs-cn/v4.0/tiup/tiup-cluster/','/docs-cn/stable/reference/tools/tiup/cluster/']
 ---
 
 # 使用 TiUP 部署运维 TiDB 线上集群

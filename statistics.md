@@ -1,6 +1,6 @@
 ---
 title: 统计信息简介
-aliases: ['/docs-cn/stable/reference/performance/statistics/']
+aliases: ['/docs-cn/stable/statistics/','/docs-cn/v4.0/statistics/','/docs-cn/stable/reference/performance/statistics/']
 ---
 
 # 统计信息简介

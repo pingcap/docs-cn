@@ -1,6 +1,7 @@
 ---
 title: What's New in TiDB 4.0
 summary: 了解 TiDB 4.0 版本的新特性。
+aliases: ['/docs-cn/stable/whats-new-in-tidb-4.0/','/docs-cn/v4.0/whats-new-in-tidb-4.0/']
 ---
 
 # What's New in TiDB 4.0

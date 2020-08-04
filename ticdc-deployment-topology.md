@@ -1,7 +1,7 @@
 ---
 title: TiCDC 部署拓扑
 summary: 介绍 TiCDC 部署 TiDB 集群的拓扑结构。
-aliases: ['/docs-cn/stable/reference/tools/ticdc/deploy/','/docs-cn/stable/ticdc/deploy-ticdc/']
+aliases: ['/docs-cn/stable/ticdc-deployment-topology/','/docs-cn/v4.0/ticdc-deployment-topology/','/docs-cn/stable/reference/tools/ticdc/deploy/','/docs-cn/stable/ticdc/deploy-ticdc/']
 ---
 
 > **注意：**

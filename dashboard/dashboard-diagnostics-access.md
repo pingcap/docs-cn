@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 集群诊断页面
+aliases: ['/docs-cn/stable/dashboard/dashboard-diagnostics-access/','/docs-cn/v4.0/dashboard/dashboard-diagnostics-access/']
 ---
 
 # TiDB Dashboard 集群诊断页面

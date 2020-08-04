@@ -1,6 +1,6 @@
 ---
 title: SQL 优化流程简介
-aliases: ['/docs-cn/stable/reference/performance/sql-optimizer-overview/']
+aliases: ['/docs-cn/stable/sql-optimization-concepts/','/docs-cn/v4.0/sql-optimization-concepts/','/docs-cn/stable/reference/performance/sql-optimizer-overview/']
 ---
 
 # SQL 优化流程简介

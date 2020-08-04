@@ -1,6 +1,7 @@
 ---
 title: AUTO_INCREMENT
 summary: 介绍 TiDB 的 `AUTO_INCREMENT` 列属性。
+aliases: ['/docs-cn/stable/auto-increment/','/docs-cn/v4.0/auto-increment/']
 ---
 
 # AUTO_INCREMENT

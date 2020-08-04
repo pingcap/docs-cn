@@ -1,6 +1,6 @@
 ---
 title: 使用 TiDB Ansible 部署 TiDB 集群
-aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/ansible/']
+aliases: ['/docs-cn/stable/online-deployment-using-ansible/','/docs-cn/v4.0/online-deployment-using-ansible/','/docs-cn/stable/how-to/deploy/orchestrated/ansible/']
 ---
 
 # 使用 TiDB Ansible 部署 TiDB 集群

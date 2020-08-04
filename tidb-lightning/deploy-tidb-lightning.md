@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 部署与执行
-aliases: ['/docs-cn/stable/reference/tools/tidb-lightning/deployment/']
+aliases: ['/docs-cn/stable/tidb-lightning/deploy-tidb-lightning/','/docs-cn/v4.0/tidb-lightning/deploy-tidb-lightning/','/docs-cn/stable/reference/tools/tidb-lightning/deployment/']
 ---
 
 # TiDB Lightning 部署与执行

@@ -1,6 +1,6 @@
 ---
 title: Join Reorder 算法简介
-aliases: ['/docs-cn/stable/reference/performance/join-reorder/']
+aliases: ['/docs-cn/stable/join-reorder/','/docs-cn/v4.0/join-reorder/','/docs-cn/stable/reference/performance/join-reorder/']
 ---
 
 # Join Reorder 算法简介

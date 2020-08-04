@@ -1,6 +1,6 @@
 ---
 title: TiDB 版本发布历史
-aliases: ['/docs-cn/stable/releases/rn/']
+aliases: ['/docs-cn/stable/releases/release-notes/','/docs-cn/v4.0/releases/release-notes/','/docs-cn/stable/releases/rn/']
 ---
 
 # TiDB 版本发布历史

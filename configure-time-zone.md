@@ -1,6 +1,6 @@
 ---
 title: 时区支持
-aliases: ['/docs-cn/stable/how-to/configure/time-zone/']
+aliases: ['/docs-cn/stable/configure-time-zone/','/docs-cn/v4.0/configure-time-zone/','/docs-cn/stable/how-to/configure/time-zone/']
 ---
 
 # 时区支持

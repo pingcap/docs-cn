@@ -1,6 +1,6 @@
 ---
 title: TiDB 配置文件描述
-aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration-file/']
+aliases: ['/docs-cn/stable/tidb-configuration-file/','/docs-cn/v4.0/tidb-configuration-file/','/docs-cn/stable/reference/configuration/tidb-server/configuration-file/']
 ---
 
 <!-- markdownlint-disable MD001 -->

@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 简介
-aliases: ['/docs-cn/stable/reference/tools/tidb-lightning/overview/']
+aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-overview/','/docs-cn/v4.0/tidb-lightning/tidb-lightning-overview/','/docs-cn/stable/reference/tools/tidb-lightning/overview/']
 ---
 
 # TiDB Lightning 简介
