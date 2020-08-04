@@ -1,6 +1,7 @@
 ---
 title: LOAD STATS
 summary: TiDB 数据库中 LOAD STATS 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-stats/']
 ---
 
 # LOAD STATS

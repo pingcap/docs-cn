@@ -1,5 +1,6 @@
 ---
 title: 谓词下推
+aliases: ['/docs-cn/dev/predicate-push-down/']
 ---
 
 # 谓词下推
