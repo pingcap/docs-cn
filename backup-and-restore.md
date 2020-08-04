@@ -1,6 +1,6 @@
 ---
 title: 备份与恢复
-aliases: ['/docs-cn/v2.1/how-to/maintain/backup-and-restore/']
+aliases: ['/docs-cn/v2.1/backup-and-restore/','/docs-cn/v2.1/how-to/maintain/backup-and-restore/']
 ---
 
 # 备份与恢复

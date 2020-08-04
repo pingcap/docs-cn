@@ -1,6 +1,6 @@
 ---
 title: TiDB 中的基本 SQL 操作
-aliases: ['/docs-cn/v2.1/how-to/get-started/explore-sql/']
+aliases: ['/docs-cn/v2.1/basic-sql-operations/','/docs-cn/v2.1/how-to/get-started/explore-sql/']
 ---
 
 # TiDB 中的基本 SQL 操作

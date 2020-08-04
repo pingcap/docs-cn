@@ -1,6 +1,6 @@
 ---
 title: TiKV 配置参数
-aliases: ['/docs-cn/v2.1/reference/configuration/tikv-server/configuration/']
+aliases: ['/docs-cn/v2.1/tikv-configuration-file/','/docs-cn/v2.1/reference/configuration/tikv-server/configuration/']
 ---
 
 # TiKV 配置参数

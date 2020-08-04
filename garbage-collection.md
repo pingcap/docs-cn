@@ -1,6 +1,6 @@
 ---
 title: TiDB 垃圾回收 (GC)
-aliases: ['/docs-cn/v2.1/reference/garbage-collection/']
+aliases: ['/docs-cn/v2.1/garbage-collection/','/docs-cn/v2.1/reference/garbage-collection/']
 ---
 
 # TiDB 垃圾回收 (GC)

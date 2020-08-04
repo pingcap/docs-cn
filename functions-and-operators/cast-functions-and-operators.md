@@ -1,6 +1,6 @@
 ---
 title: Cast 函数和操作符
-aliases: ['/docs-cn/v2.1/reference/sql/functions-and-operators/cast-functions-and-operators/']
+aliases: ['/docs-cn/v2.1/functions-and-operators/cast-functions-and-operators/','/docs-cn/v2.1/reference/sql/functions-and-operators/cast-functions-and-operators/']
 ---
 
 # Cast 函数和操作符

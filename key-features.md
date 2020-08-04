@@ -1,5 +1,6 @@
 ---
 title: TiDB 核心特性
+aliases: ['/docs-cn/v2.1/key-features/']
 ---
 
 # TiDB 核心特性

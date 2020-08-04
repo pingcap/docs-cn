@@ -1,6 +1,6 @@
 ---
 title: 字符集支持
-aliases: ['/docs-cn/v2.1/reference/sql/character-set/']
+aliases: ['/docs-cn/v2.1/character-set-and-collation/','/docs-cn/v2.1/reference/sql/character-set/']
 ---
 
 # 字符集支持

@@ -1,7 +1,7 @@
 ---
 title: DROP DATABASE
 summary: TiDB 数据库中 DROP DATABASE 的使用概况。
-aliases: ['/docs-cn/v2.1/reference/sql/statements/drop-database/']
+aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-drop-database/','/docs-cn/v2.1/reference/sql/statements/drop-database/']
 ---
 
 # DROP DATABASE

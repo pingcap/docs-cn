@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog Local 部署方案
-aliases: ['/docs-cn/v2.1/reference/tidb-binlog/tidb-binlog-local/','/docs-cn/v2.1/reference/tools/tidb-binlog/tidb-binlog-local/']
+aliases: ['/docs-cn/v2.1/tidb-binlog/tidb-binlog-local-deployment/','/docs-cn/v2.1/reference/tidb-binlog/tidb-binlog-local/','/docs-cn/v2.1/reference/tools/tidb-binlog/tidb-binlog-local/']
 ---
 
 # TiDB Binlog Local 部署方案

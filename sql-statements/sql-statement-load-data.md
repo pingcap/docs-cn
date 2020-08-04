@@ -1,7 +1,7 @@
 ---
 title: LOAD DATA
 summary: TiDB 数据库中 LOAD DATA 的使用概况。
-aliases: ['/docs-cn/v2.1/reference/sql/statements/load-data/']
+aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-load-data/','/docs-cn/v2.1/reference/sql/statements/load-data/']
 ---
 
 # LOAD DATA

@@ -1,6 +1,6 @@
 ---
 title: 操作符
-aliases: ['/docs-cn/v2.1/reference/sql/functions-and-operators/operators/']
+aliases: ['/docs-cn/v2.1/functions-and-operators/operators/','/docs-cn/v2.1/reference/sql/functions-and-operators/operators/']
 ---
 
 # 操作符

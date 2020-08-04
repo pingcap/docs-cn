@@ -1,6 +1,6 @@
 ---
 title: 生成自签名证书
-aliases: ['/docs-cn/v2.1/how-to/secure/generate-self-signed-certificates/']
+aliases: ['/docs-cn/v2.1/generate-self-signed-certificates/','/docs-cn/v2.1/how-to/secure/generate-self-signed-certificates/']
 ---
 
 # 生成自签名证书

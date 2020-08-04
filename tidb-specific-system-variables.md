@@ -1,6 +1,6 @@
 ---
 title: TiDB 专用系统变量和语法
-aliases: ['/docs-cn/v2.1/reference/configuration/tidb-server/tidb-specific-variables/']
+aliases: ['/docs-cn/v2.1/tidb-specific-system-variables/','/docs-cn/v2.1/reference/configuration/tidb-server/tidb-specific-variables/']
 ---
 
 # TiDB 专用系统变量和语法

@@ -1,6 +1,6 @@
 ---
 title: 用户自定义变量
-aliases: ['/docs-cn/v2.1/reference/sql/language-structure/user-defined-variables/']
+aliases: ['/docs-cn/v2.1/user-defined-variables/','/docs-cn/v2.1/reference/sql/language-structure/user-defined-variables/']
 ---
 
 # 用户自定义变量

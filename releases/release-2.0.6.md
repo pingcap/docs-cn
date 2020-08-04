@@ -1,6 +1,6 @@
 ---
 title: TiDB 2.0.6 release notes
-aliases: ['/docs-cn/v2.1/releases/206/']
+aliases: ['/docs-cn/v2.1/releases/release-2.0.6/','/docs-cn/v2.1/releases/206/']
 ---
 
 # TiDB 2.0.6 Release Notes

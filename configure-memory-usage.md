@@ -1,6 +1,6 @@
 ---
 title: TiDB 内存控制文档
-aliases: ['/docs-cn/v2.1/how-to/configure/memory-control/']
+aliases: ['/docs-cn/v2.1/configure-memory-usage/','/docs-cn/v2.1/how-to/configure/memory-control/']
 ---
 
 # TiDB 内存控制文档

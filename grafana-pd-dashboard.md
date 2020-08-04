@@ -1,6 +1,6 @@
 ---
 title: PD 重要监控指标详解
-aliases: ['/docs-cn/v2.1/reference/key-monitoring-metrics/pd-dashboard/']
+aliases: ['/docs-cn/v2.1/grafana-pd-dashboard/','/docs-cn/v2.1/reference/key-monitoring-metrics/pd-dashboard/']
 ---
 
 # PD 重要监控指标详解

@@ -1,6 +1,6 @@
 ---
 title: TiDB 生态工具功能概览
-aliases: ['/docs-cn/v2.1/reference/tools/user-guide/','/docs-cn/v2.1/how-to/migrate/from-mysql/', '/docs-cn/v2.1/how-to/migrate/incrementally-from-mysql/', '/docs-cn/v2.1/how-to/migrate/overview/', '/docs-cn/v2.1/reference/tools/use-guide/']
+aliases: ['/docs-cn/v2.1/ecosystem-tool-user-guide/','/docs-cn/v2.1/reference/tools/user-guide/','/docs-cn/v2.1/how-to/migrate/from-mysql/', '/docs-cn/v2.1/how-to/migrate/incrementally-from-mysql/', '/docs-cn/v2.1/how-to/migrate/overview/', '/docs-cn/v2.1/reference/tools/use-guide/']
 ---
 
 # TiDB 生态工具功能概览

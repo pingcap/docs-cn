@@ -1,7 +1,7 @@
 ---
 title: REPLACE
 summary: TiDB 数据库中 REPLACE 的使用概况。
-aliases: ['/docs-cn/v2.1/reference/sql/statements/replace/']
+aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-replace/','/docs-cn/v2.1/reference/sql/statements/replace/']
 ---
 
 # REPLACE

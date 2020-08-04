@@ -1,6 +1,6 @@
 ---
 title: 全量数据迁移
-aliases: ['/docs-cn/v2.1/how-to/migrate/from-mysql/']
+aliases: ['/docs-cn/v2.1/migrate-full-data-from-mysql/','/docs-cn/v2.1/how-to/migrate/from-mysql/']
 ---
 
 # 全量数据迁移
