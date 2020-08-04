@@ -1,6 +1,6 @@
 ---
 title: FLASHBACK TABLE
-aliases: ['/docs-cn/stable/reference/sql/statements/flashback-table/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-flashback-table/','/docs-cn/v4.0/sql-statements/sql-statement-flashback-table/','/docs-cn/stable/reference/sql/statements/flashback-table/']
 ---
 
 # FLASHBACK TABLE

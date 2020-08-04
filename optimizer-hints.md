@@ -1,6 +1,6 @@
 ---
 title: Optimizer Hints
-aliases: ['/docs-cn/stable/reference/performance/optimizer-hints/']
+aliases: ['/docs-cn/stable/optimizer-hints/','/docs-cn/v4.0/optimizer-hints/','/docs-cn/stable/reference/performance/optimizer-hints/']
 ---
 
 # Optimizer Hints

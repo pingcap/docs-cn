@@ -1,6 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v2.0.0 对比 v1.0.0
-aliases: ['/docs-cn/stable/benchmark/sysbench-v2/']
+aliases: ['/docs-cn/stable/benchmark/benchmark-sysbench-v2/','/docs-cn/v4.0/benchmark/benchmark-sysbench-v2/','/docs-cn/stable/benchmark/sysbench-v2/']
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v2.0.0 对比 v1.0.0

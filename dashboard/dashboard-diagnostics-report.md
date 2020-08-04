@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 诊断报告
+aliases: ['/docs-cn/stable/dashboard/dashboard-diagnostics-report/','/docs-cn/v4.0/dashboard/dashboard-diagnostics-report/']
 ---
 
 # TiDB Dashboard 诊断报告

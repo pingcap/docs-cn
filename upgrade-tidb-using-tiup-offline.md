@@ -1,5 +1,6 @@
 ---
 title: 使用 TiUP 离线镜像升级 TiDB
+aliases: ['/docs-cn/stable/upgrade-tidb-using-tiup-offline/','/docs-cn/v4.0/upgrade-tidb-using-tiup-offline/']
 ---
 
 # 使用 TiUP 离线镜像升级 TiDB

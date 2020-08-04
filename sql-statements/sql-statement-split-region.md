@@ -1,6 +1,6 @@
 ---
 title: Split Region 使用文档
-aliases: ['/docs-cn/stable/reference/sql/statements/split-region/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-split-region/','/docs-cn/v4.0/sql-statements/sql-statement-split-region/','/docs-cn/stable/reference/sql/statements/split-region/']
 ---
 
 # Split Region 使用文档

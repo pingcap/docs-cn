@@ -1,7 +1,7 @@
 ---
 title: CREATE DATABASE
 summary: TiDB 数据库中 CREATE DATABASE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/create-database/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-create-database/','/docs-cn/v4.0/sql-statements/sql-statement-create-database/','/docs-cn/stable/reference/sql/statements/create-database/']
 ---
 
 # CREATE DATABASE

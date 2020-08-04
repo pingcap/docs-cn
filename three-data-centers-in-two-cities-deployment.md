@@ -1,6 +1,7 @@
 ---
 title: 两地三中心部署
 summary: 介绍两地三中心部署方式。
+aliases: ['/docs-cn/stable/three-data-centers-in-two-cities-deployment/','/docs-cn/v4.0/three-data-centers-in-two-cities-deployment/']
 ---
 
 # 两地三中心部署

@@ -1,6 +1,7 @@
 ---
 title: BACKUP
 summary: TiDB 数据库中 BACKUP 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-backup/','/docs-cn/v4.0/sql-statements/sql-statement-backup/']
 ---
 
 # BACKUP

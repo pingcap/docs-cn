@@ -1,5 +1,6 @@
 ---
 title: SQL 性能调优
+aliases: ['/docs-cn/stable/sql-tuning-overview/','/docs-cn/v4.0/sql-tuning-overview/']
 ---
 
 # SQL 性能调优

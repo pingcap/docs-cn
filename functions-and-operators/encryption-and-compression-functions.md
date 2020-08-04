@@ -1,6 +1,6 @@
 ---
 title: 加密和压缩函数
-aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/encryption-and-compression-functions/']
+aliases: ['/docs-cn/stable/functions-and-operators/encryption-and-compression-functions/','/docs-cn/v4.0/functions-and-operators/encryption-and-compression-functions/','/docs-cn/stable/reference/sql/functions-and-operators/encryption-and-compression-functions/']
 ---
 
 # 加密和压缩函数

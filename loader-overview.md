@@ -1,6 +1,6 @@
 ---
 title: Loader 使用文档
-aliases: ['/docs-cn/stable/reference/tools/loader/','/docs-cn/stable/load-misuse-handling/']
+aliases: ['/docs-cn/stable/loader-overview/','/docs-cn/v4.0/loader-overview/','/docs-cn/stable/reference/tools/loader/','/docs-cn/stable/load-misuse-handling/']
 ---
 
 # Loader 使用文档

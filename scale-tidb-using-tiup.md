@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 扩容缩容 TiDB 集群
-aliases: ['/docs-cn/stable/how-to/scale/with-tiup/']
+aliases: ['/docs-cn/stable/scale-tidb-using-tiup/','/docs-cn/v4.0/scale-tidb-using-tiup/','/docs-cn/stable/how-to/scale/with-tiup/']
 ---
 
 # 使用 TiUP 扩容缩容 TiDB 集群

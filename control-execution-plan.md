@@ -1,5 +1,6 @@
 ---
 title: 控制执行计划
+aliases: ['/docs-cn/stable/control-execution-plan/','/docs-cn/v4.0/control-execution-plan/']
 ---
 
 # 控制执行计划

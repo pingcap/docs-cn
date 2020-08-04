@@ -1,6 +1,6 @@
 ---
 title: TiFlash 报警规则
-aliases: ['/docs-cn/stable/reference/tiflash/alert-rules/']
+aliases: ['/docs-cn/stable/tiflash/tiflash-alert-rules/','/docs-cn/v4.0/tiflash/tiflash-alert-rules/','/docs-cn/stable/reference/tiflash/alert-rules/']
 ---
 
 # TiFlash 报警规则

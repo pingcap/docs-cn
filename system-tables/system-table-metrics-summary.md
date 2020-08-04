@@ -1,7 +1,7 @@
 ---
 title: METRICS_SUMMARY
 summary: 了解 TiDB 系统表 `METRICS_SUMMARY`。
-aliases: ['/docs-cn/stable/reference/system-databases/metrics-summary/']
+aliases: ['/docs-cn/stable/system-tables/system-table-metrics-summary/','/docs-cn/v4.0/system-tables/system-table-metrics-summary/','/docs-cn/stable/reference/system-databases/metrics-summary/']
 ---
 
 # METRICS_SUMMARY

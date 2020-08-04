@@ -1,5 +1,6 @@
 ---
 title: 部署 TiDB Dashboard
+aliases: ['/docs-cn/stable/dashboard/dashboard-ops-deploy/','/docs-cn/v4.0/dashboard/dashboard-ops-deploy/']
 ---
 
 # 部署 TiDB Dashboard

@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 常见问题
+aliases: ['/docs-cn/stable/dashboard/dashboard-faq/','/docs-cn/v4.0/dashboard/dashboard-faq/']
 ---
 
 # TiDB Dashboard 常见问题

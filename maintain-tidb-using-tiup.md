@@ -1,6 +1,6 @@
 ---
 title: TiUP 常见运维操作
-aliases: ['/docs-cn/stable/how-to/maintain/tiup-operations/']
+aliases: ['/docs-cn/stable/maintain-tidb-using-tiup/','/docs-cn/v4.0/maintain-tidb-using-tiup/','/docs-cn/stable/how-to/maintain/tiup-operations/']
 ---
 
 # TiUP 常见运维操作

@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 教程
-aliases: ['/docs-cn/stable/how-to/get-started/tidb-binlog/','/docs-cn/stable/get-started-with-tidb-binlog/']
+aliases: ['/docs-cn/stable/tidb-binlog/get-started-with-tidb-binlog/','/docs-cn/v4.0/tidb-binlog/get-started-with-tidb-binlog/','/docs-cn/stable/how-to/get-started/tidb-binlog/','/docs-cn/stable/get-started-with-tidb-binlog/']
 ---
 
 # TiDB Binlog 教程

@@ -1,7 +1,7 @@
 ---
 title: Metrics Schema
 summary: 了解 TiDB METRICS SCHEMA 系统数据库。
-aliases: ['/docs-cn/stable/reference/system-databases/metrics-schema/']
+aliases: ['/docs-cn/stable/system-tables/system-table-metrics-schema/','/docs-cn/v4.0/system-tables/system-table-metrics-schema/','/docs-cn/stable/reference/system-databases/metrics-schema/']
 ---
 
 # Metrics Schema

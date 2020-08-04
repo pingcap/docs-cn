@@ -1,7 +1,7 @@
 ---
 title: SHOW CREATE TABLE
 summary: TiDB 数据库中 SHOW CREATE TABLE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/show-create-table/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-create-table/','/docs-cn/v4.0/sql-statements/sql-statement-show-create-table/','/docs-cn/stable/reference/sql/statements/show-create-table/']
 ---
 
 # SHOW CREATE TABLE

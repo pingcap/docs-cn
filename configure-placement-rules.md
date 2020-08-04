@@ -1,7 +1,7 @@
 ---
 title: Placement Rules 使用文档
 summary: 如何配置 Placement Rules
-aliases: ['/docs-cn/stable/how-to/configure/placement-rules/']
+aliases: ['/docs-cn/stable/configure-placement-rules/','/docs-cn/v4.0/configure-placement-rules/','/docs-cn/stable/how-to/configure/placement-rules/']
 ---
 
 # Placement Rules 使用文档

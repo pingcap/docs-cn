@@ -1,5 +1,6 @@
 ---
 title: TiUP 术语及核心概念
+aliases: ['/docs-cn/stable/tiup/tiup-terminology-and-concepts/','/docs-cn/v4.0/tiup/tiup-terminology-and-concepts/']
 ---
 
 # TiUP 术语及核心概念

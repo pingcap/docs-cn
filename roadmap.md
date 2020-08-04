@@ -1,5 +1,6 @@
 ---
 title: TiDB V4.0 Roadmap
+aliases: ['/docs-cn/stable/roadmap/','/docs-cn/v4.0/roadmap/']
 ---
 
 <!-- markdownlint-disable MD001 -->

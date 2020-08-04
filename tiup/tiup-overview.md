@@ -1,6 +1,6 @@
 ---
 title: TiUP 简介
-aliases: ['/docs-cn/stable/reference/tools/tiup/overview/']
+aliases: ['/docs-cn/stable/tiup/tiup-overview/','/docs-cn/v4.0/tiup/tiup-overview/','/docs-cn/stable/reference/tools/tiup/overview/']
 ---
 
 # TiUP 简介

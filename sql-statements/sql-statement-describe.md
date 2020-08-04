@@ -1,7 +1,7 @@
 ---
 title: DESCRIBE
 summary: TiDB 数据库中 DESCRIBE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/describe/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-describe/','/docs-cn/v4.0/sql-statements/sql-statement-describe/','/docs-cn/stable/reference/sql/statements/describe/']
 ---
 
 # DESCRIBE

@@ -1,7 +1,7 @@
 ---
 title: TiDB 整体架构
 summary: 了解 TiDB 的整体架构。
-aliases: ['/docs-cn/stable/architecture/']
+aliases: ['/docs-cn/stable/tidb-architecture/','/docs-cn/v4.0/tidb-architecture/','/docs-cn/stable/architecture/']
 ---
 
 # TiDB 整体架构

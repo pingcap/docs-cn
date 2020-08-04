@@ -1,7 +1,7 @@
 ---
 title: ALTER INSTANCE
 summary: TiDB 数据库中 ALTER INSTANCE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/alter-instance/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-alter-instance/','/docs-cn/v4.0/sql-statements/sql-statement-alter-instance/','/docs-cn/stable/reference/sql/statements/alter-instance/']
 ---
 
 # ALTER INSTANCE

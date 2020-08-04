@@ -1,5 +1,6 @@
 ---
 title: 使用 TiDB Dashboard 诊断报告定位问题
+aliases: ['/docs-cn/stable/dashboard/dashboard-diagnostics-usage/','/docs-cn/v4.0/dashboard/dashboard-diagnostics-usage/']
 ---
 
 # 使用 TiDB Dashboard 诊断报告定位问题

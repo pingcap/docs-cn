@@ -1,6 +1,6 @@
 ---
 title: TiDB Pre-GA Release Notes
-aliases: ['/docs-cn/stable/releases/prega/']
+aliases: ['/docs-cn/stable/releases/release-pre-ga/','/docs-cn/v4.0/releases/release-pre-ga/','/docs-cn/stable/releases/prega/']
 ---
 
 # TiDB Pre-GA Release Notes

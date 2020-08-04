@@ -1,6 +1,7 @@
 ---
 title: 高可靠常见问题
 summary: 介绍高可靠相关的常见问题。
+aliases: ['/docs-cn/stable/faq/high-reliability-faq/','/docs-cn/v4.0/faq/high-reliability-faq/']
 ---
 
 # 高可靠常见问题

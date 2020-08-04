@@ -1,6 +1,6 @@
 ---
 title: 慢查询日志
-aliases: ['/docs-cn/stable/how-to/maintain/identify-abnormal-queries/identify-slow-queries/']
+aliases: ['/docs-cn/stable/identify-slow-queries/','/docs-cn/v4.0/identify-slow-queries/','/docs-cn/stable/how-to/maintain/identify-abnormal-queries/identify-slow-queries/']
 ---
 
 # 慢查询日志

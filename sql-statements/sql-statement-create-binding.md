@@ -1,6 +1,7 @@
 ---
 title: CREATE BINDING
 summary: TiDB 数据库中 CREATE BINDING 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-create-binding/','/docs-cn/v4.0/sql-statements/sql-statement-create-binding/']
 ---
 
 # CREATE BINDING

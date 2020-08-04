@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 简介
-aliases: ['/docs-cn/stable/reference/tidb-binlog/overview/']
+aliases: ['/docs-cn/stable/tidb-binlog/tidb-binlog-overview/','/docs-cn/v4.0/tidb-binlog/tidb-binlog-overview/','/docs-cn/stable/reference/tidb-binlog/overview/']
 ---
 
 # TiDB Binlog 简介

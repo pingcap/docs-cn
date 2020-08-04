@@ -1,7 +1,7 @@
 ---
 title: SHOW [FULL] COLUMNS FROM
 summary: TiDB 数据库中 SHOW [FULL] COLUMNS FROM 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/show-columns-from/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-columns-from/','/docs-cn/v4.0/sql-statements/sql-statement-show-columns-from/','/docs-cn/stable/reference/sql/statements/show-columns-from/']
 ---
 
 # SHOW [FULL] COLUMNS FROM

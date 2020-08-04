@@ -1,6 +1,7 @@
 ---
 title: 操作系统性能参数调优
 summary: 了解如何进行 CentOS 7 系统的性能调优。
+aliases: ['/docs-cn/stable/tune-operating-system/','/docs-cn/v4.0/tune-operating-system/']
 ---
 
 # 操作系统性能参数调优

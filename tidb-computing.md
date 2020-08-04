@@ -1,6 +1,7 @@
 ---
 title: TiDB 数据库的计算
 summary: 了解 TiDB 数据库的计算层。
+aliases: ['/docs-cn/stable/tidb-computing/','/docs-cn/v4.0/tidb-computing/']
 ---
 
 # TiDB 数据库的计算

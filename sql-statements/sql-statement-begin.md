@@ -1,7 +1,7 @@
 ---
 title: BEGIN
 summary: TiDB 数据库中 BEGIN 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/begin/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-begin/','/docs-cn/v4.0/sql-statements/sql-statement-begin/','/docs-cn/stable/reference/sql/statements/begin/']
 ---
 
 # BEGIN

@@ -1,7 +1,7 @@
 ---
 title: SHOW SCHEMAS
 summary: TiDB 数据库中 SHOW SCHEMAS 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/show-schemas/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-schemas/','/docs-cn/v4.0/sql-statements/sql-statement-show-schemas/','/docs-cn/stable/reference/sql/statements/show-schemas/']
 ---
 
 # SHOW SCHEMAS

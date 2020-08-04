@@ -1,5 +1,6 @@
 ---
 title: TiDB 热点问题处理
+aliases: ['/docs-cn/stable/troubleshoot-hot-spot-issues/','/docs-cn/v4.0/troubleshoot-hot-spot-issues/']
 ---
 
 # TiDB 热点问题处理

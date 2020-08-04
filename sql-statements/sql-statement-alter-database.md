@@ -1,7 +1,7 @@
 ---
 title: ALTER DATABASE
 summary: TiDB 数据库中 ALTER DATABASE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/alter-database/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-alter-database/','/docs-cn/v4.0/sql-statements/sql-statement-alter-database/','/docs-cn/stable/reference/sql/statements/alter-database/']
 ---
 
 # ALTER DATABASE
