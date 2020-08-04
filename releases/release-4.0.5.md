@@ -79,6 +79,6 @@ TiDB 版本：4.0.5
 
         -
 
-    + BR
+    + Backup & Restore (BR)
 
         -
