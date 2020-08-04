@@ -258,6 +258,12 @@ Configuration items related to replicas
 + Default value: `[]`
 + [Cluster topology configuration](/location-awareness.md)
 
+### `isolation-level`
+
++ The minimum topological isolation level of a TiKV cluster
++ Default value: `""`
++ [Cluster topology configuration](/location-awareness.md)
+
 ### `strictly-match-label`
 
 + Enables the strict check for whether the TiKV label matches PD's `location-labels`.

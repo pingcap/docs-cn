@@ -128,6 +128,7 @@ Usage:
 {
   "replication": {
     "enable-placement-rules": "false",
+    "isolation-level": "",
     "location-labels": "",
     "max-replicas": 3,
     "strictly-match-label": "false"
@@ -169,6 +170,7 @@ Usage:
 {
   "max-replicas": 3,
   "location-labels": "",
+  "isolation-level": "",
   "strictly-match-label": "false",
   "enable-placement-rules": "false"
 }

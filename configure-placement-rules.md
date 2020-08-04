@@ -38,6 +38,7 @@ The following table shows the meaning of each field in a rule:
 | `Count`           | `int`, positive integer                     |  The number of replicas.                            |
 | `LabelConstraint` | `[]Constraint`                    |  Filers nodes based on the label.               |
 | `LocationLabels`  | `[]string`                        |  Used for physical isolation.                       |
+| `IsolationLevel`  | `string`                          |  Used to set the minimum physical isolation level    
 
 `LabelConstraint` is similar to the function in Kubernetes that filters labels based on these four primitives: `in`, `notIn`, `exists`, and `notExists`. The meanings of these four primitives are as follows:
 
@@ -47,6 +48,8 @@ The following table shows the meaning of each field in a rule:
 + `notExists`: does not include the given label key.
 
 The meaning and function of `LocationLabels` are the same with those earlier than v4.0. For example, if you have deployed `[zone,rack,host]` that defines a three-layer topology: the cluster has multiple zones (Availability Zones), each zone has multiple racks, and each rack has multiple hosts. When performing schedule, PD first tries to place the Region's peers in different zones. If this try fails (such as there are three replicas but only two zones in total), PD guarantees to place these replicas in different racks. If the number of racks is not enough to guarantee isolation, then PD tries the host-level isolation.
+
+The meaning and function of `IsolationLevel` is elaborated in [Cluster topology configuration](/location-awareness.md). For example, if you have deployed `[zone,rack,host]` that defines a three-layer topology with `LocationLabels` and set `IsolationLevel` to `zone`, then PD ensures that all peers of each Region are placed in different zones during the scheduling. If the minimum isolation level restriction on `IsolationLevel` cannot be met (for example, 3 replicas are configured but there are only 2 data zones in total), PD will not try to make up to meet this restriction. The default value of `IsolationLevel` is an empty string, which means that it is disabled.
 
 ## Configure rules
 
@@ -75,7 +78,8 @@ In this way, PD enables this feature after the cluster is successfully bootstrap
   "end_key": "",
   "role": "voter",
   "count": 3,
-  "location_labels": ["zone", "rack", "host"]
+  "location_labels": ["zone", "rack", "host"],
+  "isolation_level": ""
 }
 ```
 
