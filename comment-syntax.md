@@ -1,7 +1,7 @@
 ---
 title: 注释语法
 summary: 本文介绍 TiDB 支持的注释语法。
-aliases: ['/docs-cn/v3.0/reference/sql/language-structure/comment-syntax/','/docs-cn/sql/comment-syntax/']
+aliases: ['/docs-cn/v3.0/comment-syntax/','/docs-cn/v3.0/reference/sql/language-structure/comment-syntax/','/docs-cn/sql/comment-syntax/']
 ---
 
 # 注释语法

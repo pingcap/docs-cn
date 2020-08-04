@@ -1,7 +1,7 @@
 ---
 title: CREATE TABLE LIKE
 summary: TiDB 数据库中 CREATE TABLE LIKE 的使用概况。
-aliases: ['/docs-cn/v3.0/reference/sql/statements/create-table-like/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-create-table-like/','/docs-cn/v3.0/reference/sql/statements/create-table-like/']
 ---
 
 # CREATE TABLE LIKE

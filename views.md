@@ -1,6 +1,6 @@
 ---
 title: 视图
-aliases: ['/docs-cn/v3.0/reference/sql/view/']
+aliases: ['/docs-cn/v3.0/views/','/docs-cn/v3.0/reference/sql/view/']
 ---
 
 # 视图

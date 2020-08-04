@@ -1,6 +1,6 @@
 ---
 title: Loader 使用文档
-aliases: ['/docs-cn/v3.0/reference/tools/loader/']
+aliases: ['/docs-cn/v3.0/loader-overview/','/docs-cn/v3.0/reference/tools/loader/']
 ---
 
 # Loader 使用文档

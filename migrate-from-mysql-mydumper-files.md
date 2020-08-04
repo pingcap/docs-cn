@@ -1,6 +1,7 @@
 ---
 title: 从 MySQL SQL 文件迁移数据
 summary: 使用 TiDB Lightning 从 MySQL 迁移数据。
+aliases: ['/docs-cn/v3.0/migrate-from-mysql-mydumper-files/']
 ---
 
 # 从 MySQL SQL 文件迁移数据

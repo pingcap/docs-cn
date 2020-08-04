@@ -1,6 +1,6 @@
 ---
 title: TiDB 软件和硬件环境建议配置
-aliases: ['/docs-cn/v3.0/how-to/deploy/hardware-recommendations/','/docs-cn/op-guide/recommendation/']
+aliases: ['/docs-cn/v3.0/hardware-and-software-requirements/','/docs-cn/v3.0/how-to/deploy/hardware-recommendations/','/docs-cn/op-guide/recommendation/']
 ---
 
 # TiDB 软件和硬件环境建议配置

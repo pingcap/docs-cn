@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 常见的错误用法
-aliases: ['/docs-cn/v3.0/reference/tools/error-case-handling/lightning-misuse-handling/']
+aliases: ['/docs-cn/v3.0/tidb-lightning/tidb-lightning-misuse-handling/','/docs-cn/v3.0/reference/tools/error-case-handling/lightning-misuse-handling/']
 ---
 
 # TiDB Lightning 常见的错误用法

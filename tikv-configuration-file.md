@@ -1,6 +1,6 @@
 ---
 title: TiKV 配置文件描述
-aliases: ['/docs-cn/v3.0/reference/configuration/tikv-server/configuration-file/']
+aliases: ['/docs-cn/v3.0/tikv-configuration-file/','/docs-cn/v3.0/reference/configuration/tikv-server/configuration-file/']
 ---
 
 <!-- markdownlint-disable MD001 -->

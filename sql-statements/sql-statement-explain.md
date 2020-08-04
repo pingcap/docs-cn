@@ -1,7 +1,7 @@
 ---
 title: EXPLAIN
 summary: TiDB 数据库中 EXPLAIN 的使用概况。
-aliases: ['/docs-cn/v3.0/reference/sql/statements/explain/','/docs-cn/sql/util/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-explain/','/docs-cn/v3.0/reference/sql/statements/explain/','/docs-cn/sql/util/']
 ---
 
 # EXPLAIN

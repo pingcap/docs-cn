@@ -1,6 +1,6 @@
 ---
 title: TiDB 3.0 升级操作指南
-aliases: ['/docs-cn/v3.0/how-to/upgrade/from-previous-version/','/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upgrade/to-tidb-3.0','/docs-cn/v2.1/how-to/upgrade/to-tidb-3.0/','/docs-cn/v3.0/how-to/upgrade/rolling-updates-with-ansible/']
+aliases: ['/docs-cn/v3.0/upgrade-tidb-using-ansible/','/docs-cn/v3.0/how-to/upgrade/from-previous-version/','/docs-cn/op-guide/tidb-v3.0-upgrade-guide/','/docs-cn/v3.0/how-to/upgrade/to-tidb-3.0','/docs-cn/v2.1/how-to/upgrade/to-tidb-3.0/','/docs-cn/v3.0/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
 # TiDB 3.0 升级操作指南

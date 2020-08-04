@@ -1,6 +1,6 @@
 ---
 title: TiDB 2.1 RC1 Release Notes
-aliases: ['/docs-cn/v3.0/releases/21rc1/','/docs-cn/releases/21rc1/']
+aliases: ['/docs-cn/v3.0/releases/release-2.1-rc.1/','/docs-cn/v3.0/releases/21rc1/','/docs-cn/releases/21rc1/']
 ---
 
 # TiDB 2.1 RC1 Release Notes

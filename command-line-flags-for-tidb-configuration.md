@@ -1,6 +1,6 @@
 ---
 title: TiDB 命令行参数
-aliases: ['/docs-cn/v3.0/reference/configuration/tidb-server/configuration/','/docs-cn/op-guide/configuration/','/docs-cn/sql/server-command-option/','/docs-cn/sql/tidb-server/']
+aliases: ['/docs-cn/v3.0/command-line-flags-for-tidb-configuration/','/docs-cn/v3.0/reference/configuration/tidb-server/configuration/','/docs-cn/op-guide/configuration/','/docs-cn/sql/server-command-option/','/docs-cn/sql/tidb-server/']
 ---
 
 # TiDB 命令行参数

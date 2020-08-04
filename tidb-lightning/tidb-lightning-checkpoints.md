@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 断点续传
-aliases: ['/docs-cn/v3.0/reference/tools/tidb-lightning/checkpoints/','/docs-cn/tools/lightning/checkpoints/']
+aliases: ['/docs-cn/v3.0/tidb-lightning/tidb-lightning-checkpoints/','/docs-cn/v3.0/reference/tools/tidb-lightning/checkpoints/','/docs-cn/tools/lightning/checkpoints/']
 ---
 
 # TiDB Lightning 断点续传

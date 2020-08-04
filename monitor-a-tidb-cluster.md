@@ -1,6 +1,6 @@
 ---
 title: TiDB 集群监控
-aliases: ['/docs-cn/v3.0/how-to/monitor/monitor-a-cluster/','/docs-cn/op-guide/monitor/']
+aliases: ['/docs-cn/v3.0/monitor-a-tidb-cluster/','/docs-cn/v3.0/how-to/monitor/monitor-a-cluster/','/docs-cn/op-guide/monitor/']
 ---
 
 # TiDB 集群监控

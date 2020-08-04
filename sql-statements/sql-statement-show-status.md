@@ -1,7 +1,7 @@
 ---
 title: SHOW [GLOBAL|SESSION] STATUS
 summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] STATUS 的使用概况。
-aliases: ['/docs-cn/v3.0/reference/sql/statements/show-status/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-show-status/','/docs-cn/v3.0/reference/sql/statements/show-status/']
 ---
 
 # SHOW [GLOBAL|SESSION] STATUS
