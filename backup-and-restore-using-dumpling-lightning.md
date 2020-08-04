@@ -1,6 +1,6 @@
 ---
 title: 使用 Dumpling/TiDB Lightning 进行备份与恢复
-aliases: ['/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling']
+aliases: ['/docs-cn/dev/backup-and-restore-using-dumpling-lightning/','/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling']
 ---
 
 # 使用 Dumpling/TiDB Lightning 进行备份与恢复
@@ -80,4 +80,4 @@ Could not read data from testSchema.testTable: GC life time is shorter than tran
 
 ## 向 TiDB 恢复数据
 
-使用 TiDB Lightning 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/tidb-lightning/tidb-lightning-tidb-backend.md)。
+使用 TiDB Lightning 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/tidb-lightning/tidb-lightning-backends.md)
