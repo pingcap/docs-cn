@@ -1,7 +1,7 @@
 ---
 title: CREATE TABLE
 summary: TiDB 数据库中 CREATE TABLE 的使用概况
-aliases: ['/docs-cn/v3.0/reference/sql/statements/create-table/','/docs-cn/sql/ddl/','/docs-cn/v3.0/reference/sql/statements/ddl/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-create-table/','/docs-cn/v3.0/reference/sql/statements/create-table/','/docs-cn/sql/ddl/','/docs-cn/v3.0/reference/sql/statements/ddl/']
 ---
 
 # CREATE TABLE

@@ -1,6 +1,6 @@
 ---
 title: 与 MySQL 兼容性对比
-aliases: ['/docs-cn/v3.0/reference/mysql-compatibility/']
+aliases: ['/docs-cn/v3.0/mysql-compatibility/','/docs-cn/v3.0/reference/mysql-compatibility/']
 ---
 
 # 与 MySQL 兼容性对比

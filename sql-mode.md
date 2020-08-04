@@ -1,6 +1,6 @@
 ---
 title: SQL Mode
-aliases: ['/docs-cn/v3.0/reference/sql/sql-mode/']
+aliases: ['/docs-cn/v3.0/sql-mode/','/docs-cn/v3.0/reference/sql/sql-mode/']
 ---
 
 # SQL 模式

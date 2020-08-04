@@ -1,7 +1,7 @@
 ---
 title: SHOW WARNINGS
 summary: TiDB 数据库中 SHOW WARNINGS 的使用概况。
-aliases: ['/docs-cn/v3.0/reference/sql/statements/show-warnings/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-show-warnings/','/docs-cn/v3.0/reference/sql/statements/show-warnings/']
 ---
 
 # SHOW WARNINGS

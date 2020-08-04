@@ -1,6 +1,6 @@
 ---
 title: 执行计划绑定
-aliases: ['/docs-cn/v3.0/reference/performance/execution-plan-bind/']
+aliases: ['/docs-cn/v3.0/execution-plan-binding/','/docs-cn/v3.0/reference/performance/execution-plan-bind/']
 ---
 
 # 执行计划绑定

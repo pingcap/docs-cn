@@ -1,6 +1,6 @@
 ---
 title: TiDB 3.0.0-rc.2 Release Notes
-aliases: ['/docs-cn/v3.0/releases/3.0.0-rc.2/','/docs-cn/releases/3.0.0-rc.2/']
+aliases: ['/docs-cn/v3.0/releases/release-3.0.0-rc.2/','/docs-cn/v3.0/releases/3.0.0-rc.2/','/docs-cn/releases/3.0.0-rc.2/']
 ---
 
 # TiDB 3.0.0-rc.2 Release Notes

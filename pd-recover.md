@@ -1,6 +1,6 @@
 ---
 title: PD Recover 使用文档
-aliases: ['/docs-cn/v3.0/reference/tools/pd-recover/']
+aliases: ['/docs-cn/v3.0/pd-recover/','/docs-cn/v3.0/reference/tools/pd-recover/']
 ---
 
 # PD Recover 使用文档

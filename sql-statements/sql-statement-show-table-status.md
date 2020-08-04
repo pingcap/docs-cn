@@ -1,7 +1,7 @@
 ---
 title: SHOW TABLE STATUS
 summary: TiDB 数据库中 SHOW TABLE STATUS 的使用概况。
-aliases: ['/docs-cn/v3.0/reference/sql/statements/show-table-status/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-show-table-status/','/docs-cn/v3.0/reference/sql/statements/show-table-status/']
 ---
 
 # SHOW TABLE STATUS

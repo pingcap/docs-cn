@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 集群部署
-aliases: ['/docs-cn/v3.0/reference/tidb-binlog/deploy/','/docs-cn/tools/binlog/deploy/','/docs-cn/v3.0/how-to/deploy/tidb-binlog/','/docs-cn/v3.0/reference/tools/tidb-binlog/deploy/']
+aliases: ['/docs-cn/v3.0/tidb-binlog/deploy-tidb-binlog/','/docs-cn/v3.0/reference/tidb-binlog/deploy/','/docs-cn/tools/binlog/deploy/','/docs-cn/v3.0/how-to/deploy/tidb-binlog/','/docs-cn/v3.0/reference/tools/tidb-binlog/deploy/']
 ---
 
 # TiDB Binlog 集群部署

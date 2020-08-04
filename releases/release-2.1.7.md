@@ -1,6 +1,6 @@
 ---
 title: TiDB 2.1.7 Release Notes
-aliases: ['/docs-cn/v3.0/releases/2.1.7/','/docs-cn/releases/2.1.7/']
+aliases: ['/docs-cn/v3.0/releases/release-2.1.7/','/docs-cn/v3.0/releases/2.1.7/','/docs-cn/releases/2.1.7/']
 ---
 
 # TiDB 2.1.7 Release Notes

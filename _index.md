@@ -1,5 +1,6 @@
 ---
 title: TiDB 简介
+aliases: ['/docs-cn/v3.0/_index/']
 ---
 
 # TiDB 简介

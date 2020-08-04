@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.16 Release Notes
+aliases: ['/docs-cn/v3.0/releases/release-3.0.16/']
 ---
 
 # TiDB 3.0.16 Release Notes

@@ -1,6 +1,6 @@
 ---
 title: TiDB Docker 部署方案
-aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/docker/','/docs-cn/op-guide/docker-deployment/']
+aliases: ['/docs-cn/v3.0/test-deployment-using-docker/','/docs-cn/v3.0/how-to/deploy/orchestrated/docker/','/docs-cn/op-guide/docker-deployment/']
 ---
 
 # TiDB Docker 部署方案

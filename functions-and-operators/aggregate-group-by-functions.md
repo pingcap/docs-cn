@@ -1,6 +1,6 @@
 ---
 title: GROUP BY 聚合函数
-aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/aggregate-group-by-functions/','/docs-cn/sql/aggregate-group-by-functions/']
+aliases: ['/docs-cn/v3.0/functions-and-operators/aggregate-group-by-functions/','/docs-cn/v3.0/reference/sql/functions-and-operators/aggregate-group-by-functions/','/docs-cn/sql/aggregate-group-by-functions/']
 ---
 
 # GROUP BY 聚合函数

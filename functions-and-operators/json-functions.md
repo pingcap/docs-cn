@@ -1,6 +1,6 @@
 ---
 title: JSON 函数及语法糖
-aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/json-functions/','/docs-cn/sql/json-functions/']
+aliases: ['/docs-cn/v3.0/functions-and-operators/json-functions/','/docs-cn/v3.0/reference/sql/functions-and-operators/json-functions/','/docs-cn/sql/json-functions/']
 ---
 
 # JSON 函数及语法糖

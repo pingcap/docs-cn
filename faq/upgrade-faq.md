@@ -1,6 +1,6 @@
 ---
 title: 升级后常见问题
-aliases: ['/docs-cn/v3.0/faq/upgrade/','/docs-cn/op-guide/upgrade-faq/','/docs-cn/faq/upgrade/']
+aliases: ['/docs-cn/v3.0/faq/upgrade-faq/','/docs-cn/v3.0/faq/upgrade/','/docs-cn/op-guide/upgrade-faq/','/docs-cn/faq/upgrade/']
 ---
 
 # 升级后常见问题

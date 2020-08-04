@@ -1,6 +1,6 @@
 ---
 title: 控制流程函数
-aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/control-flow-functions/','/docs-cn/sql/control-flow-functions/']
+aliases: ['/docs-cn/v3.0/functions-and-operators/control-flow-functions/','/docs-cn/v3.0/reference/sql/functions-and-operators/control-flow-functions/','/docs-cn/sql/control-flow-functions/']
 ---
 
 # 控制流程函数

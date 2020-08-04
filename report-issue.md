@@ -1,6 +1,6 @@
 ---
 title: 提交 Issue
-aliases: ['/docs-cn/report-issue/']
+aliases: ['/docs-cn/v3.0/report-issue/','/docs-cn/report-issue/']
 ---
 
 # 提交 Issue
