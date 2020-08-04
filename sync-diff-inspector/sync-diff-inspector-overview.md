@@ -99,7 +99,7 @@ fix-sql-file = "fix.sql"
 
 ######################### Tables config #########################
 
-# If you need to compare the data of a large number of tables with different schema names or table names, use the table-rule to configure the mapping relationship. You can configure the mapping rule only for the schema or table, or you can also configure the mapping rules for both the schema and table.
+# To compare the data of a large number of tables with different schema names or table names, or check the data of multiple upstream sharded tables and downstream table family, use the table-rule to configure the mapping relationship. You can configure the mapping rule only for the schema or table. Also, you can configure the mapping rules for both the schema and the table.
 #[[table-rules]]
     # schema-pattern and table-pattern support the wildcard *?
     # schema-pattern = "test_*"
