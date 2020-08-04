@@ -11,6 +11,62 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md)。
 
+### `name`
+
++ PD 节点名称。
++ 默认："pd"
++ 如果你需要启动多个 PD，一定要给 PD 使用不同的名字
+
+### `data-dir`
+
++ PD 存储数据路径。
++ 默认："default.${name}"
+
+### `client-urls`
+
++ 处理客户端请求监听 URL 列表。
++ 默认："http://127.0.0.1:2379"
++ 如果部署一个集群，client-urls 必须指定当前主机的 IP 地址，例如 `http://192.168.100.113:2379"`，如果是运行在 docker 则需要指定为 `http://0.0.0.0:2379`。
+
+### `advertise-client-urls`
+
++ 对外客户端访问 URL 列表。
++ 默认："${client-urls}"
++ 在某些情况下，譬如 docker，或者 NAT 网络环境，客户端并不能通过 PD 自己监听的 client URLs 来访问到 PD，这时候，你就可以设置 advertise urls 来让客户端访问
++ 例如，docker 内部 IP 地址为 172.17.0.1，而宿主机的 IP 地址为 192.168.100.113 并且设置了端口映射 `-p 2379:2379`，那么可以设置为 `--advertise-client-urls="http://192.168.100.113:2379"`，客户端可以通过 `http://192.168.100.113:2379` 来找到这个服务。
+
+### `peer-urls`
+
++ 处理其他 PD 节点请求监听 URL 列表。
++ 默认: "http://127.0.0.1:2380"
++ 如果部署一个集群，peer-urls 必须指定当前主机的 IP 地址，例如 `http://192.168.100.113:2380`，如果是运行在 docker 则需要指定为 `http://0.0.0.0:2380`。
+
+### `advertise-peer-urls`
+
++ 对外其他 PD 节点访问 URL 列表。
++ 默认："${peer-urls}"
++ 在某些情况下，譬如 docker，或者 NAT 网络环境，其他节点并不能通过 PD 自己监听的 peer URLs 来访问到 PD，这时候，你就可以设置 advertise urls 来让其他节点访问
++ 例如，docker 内部 IP 地址为 172.17.0.1，而宿主机的 IP 地址为 192.168.100.113 并且设置了端口映射 `-p 2380:2380`，那么可以设置为 `--advertise-peer-urls="http://192.168.100.113:2380"`，其他 PD 节点可以通过 `http://192.168.100.113:2380` 来找到这个服务。
+
+### `initial-cluster`
+
++ 初始化 PD 集群配置。
++ 默认：`"{name}=http://{advertise-peer-url}"`
++ 例如，如果 name 是 "pd", 并且 `advertise-peer-urls` 是 `http://192.168.100.113:2380`, 那么 `initial-cluster` 就是 `pd=http://192.168.100.113:2380`。
++ 如果启动三台 PD，那么 `initial-cluster` 可能就是
+  `pd1=http://192.168.100.113:2380, pd2=http://192.168.100.114:2380, pd3=192.168.100.115:2380`。
+
+### `initial-cluster-state`
+
++ 集群初始状态
++ 默认："new"
+
+### `initial-cluster-token`
+
++ 用于在集群初始化阶段标识不同的集群。
++ 默认："pd-cluster"
++ 如果先后部署多个集群，且多个集群有相同配置的节点，应指定不同的 token 来隔离不同的集群。
+
 ### `lease`
 
 + PD Leader Key 租约超时时间，超时系统重新选举 Leader。
@@ -21,11 +77,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + TSO 分配的时间窗口,实时持久存储。
 + 默认：3s
-
-### `initial-cluster-state`
-
-+ 集群初始状态
-+ 默认：new
 
 ### `enable-prevote`
 
