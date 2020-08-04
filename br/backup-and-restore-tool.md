@@ -13,6 +13,7 @@ aliases: ['/docs-cn/v3.1/reference/tools/br/br/','/docs-cn/v3.1/how-to/maintain/
 - BR 只支持 TiDB v3.1 及以上版本。
 - 目前只支持在全新的集群上执行恢复操作。
 - BR 备份最好串行执行，否则不同备份任务之间会相互影响。
+- BR 恢复到 Drainer 的上游集群时，恢复数据无法由 Drainer 同步到下游。
 
 ## 推荐部署配置
 
