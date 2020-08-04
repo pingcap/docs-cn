@@ -145,6 +145,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 {
   "replication": {
     "enable-placement-rules": "false",
+    "isolation-level": "",
     "location-labels": "",
     "max-replicas": 3,
     "strictly-match-label": "false"
@@ -201,6 +202,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 {
   "max-replicas": 3,
+  "isolation-level": "",
   "location-labels": "",
   "strictly-match-label": "false",
   "enable-placement-rules": "false"
