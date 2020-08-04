@@ -13,7 +13,7 @@ aliases: ['/docs-cn/v3.1/reference/tools/br/br/','/docs-cn/v3.1/how-to/maintain/
 - BR 只支持 TiDB v3.1 及以上版本。
 - 目前只支持在全新的集群上执行恢复操作。
 - BR 备份最好串行执行，否则不同备份任务之间会相互影响。
-- BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。
+- BR 恢复到 Drainer 的上游集群时，恢复数据无法由 Drainer 同步到下游。
 - BR 只支持在 `new_collations_enabled_on_first_bootstrap` 开关值相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
 
     - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
