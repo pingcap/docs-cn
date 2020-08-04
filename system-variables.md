@@ -32,7 +32,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `ddl_slow_threshold`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：300
 - 耗时超过该阈值的 DDL 操作会被输出到日志，单位为毫秒。
 
@@ -166,7 +166,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_check_mb4_value_in_utf8`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
 - 如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade-faq.md)。
@@ -396,20 +396,20 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_expensive_query_time_threshold`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：60
 - 这个变量用来控制打印 expensive query 日志的阈值时间，单位是秒，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
 
 ### `tidb_force_priority`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：`NO_PRIORITY`
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
 ### `tidb_general_log`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：0
 - 这个变量用来设置是否在日志里记录所有的 SQL 语句。
 
@@ -660,7 +660,7 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_query_log_max_len`
 
-- 作用域：SESSION (INSTANCE)
+- 作用域：INSTANCE
 - 默认值：4096 (bytes)
 - 最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
 
@@ -674,7 +674,7 @@ set tidb_query_log_max_len = 20;
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：0
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
 
@@ -752,7 +752,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_slow_log_threshold`
 
-- 作用域：SESSION (INSTANCE)
+- 作用域：INSTANCE
 
 - 默认值：300
 
@@ -760,7 +760,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **注意：**
 >
-> 该变量实际作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
+> 该变量作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
 
 示例：
 
@@ -772,7 +772,7 @@ set tidb_slow_log_threshold = 200;
 
 ### tidb_enable_collect_execution_info
 
-作用域：SESSION (INSTANCE)
+作用域：INSTANCE
 
 默认值：1
 
