@@ -110,7 +110,7 @@ Slow Query 基础信息：
 
 ## 相关系统变量
 
-* [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值。默认值是 300 ms。
+* [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
 * [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句最大长度。默认值是 4096 byte。
 * [tidb_log_desensitization](/system-variables.md#tidb_log_desensitization)：设置慢日志记录 SQL 是否将用户数据脱敏用 `?` 代替。默认值是 0 ，即关闭该功能。
 * [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的执行信息，默认值是 1 。该功能对性能的影响约为 3%。开启后查看 `Plan` 示例如下：
