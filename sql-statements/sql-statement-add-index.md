@@ -1,7 +1,7 @@
 ---
 title: ADD INDEX
 summary: TiDB 数据库中 ADD INDEX 的使用概况。
-aliases: ['/docs-cn/v3.1/reference/sql/statements/add-index/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-add-index/','/docs-cn/v3.1/reference/sql/statements/add-index/']
 ---
 
 # ADD INDEX

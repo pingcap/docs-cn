@@ -1,6 +1,6 @@
 ---
 title: GC 机制简介
-aliases: ['/docs-cn/v3.1/reference/garbage-collection/overview/']
+aliases: ['/docs-cn/v3.1/garbage-collection-overview/','/docs-cn/v3.1/reference/garbage-collection/overview/']
 ---
 
 # GC 机制简介

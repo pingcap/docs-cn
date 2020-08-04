@@ -1,6 +1,6 @@
 ---
 title: TiDB 工具下载
-aliases: ['/docs-cn/v3.1/reference/tools/download/']
+aliases: ['/docs-cn/v3.1/download-ecosystem-tools/','/docs-cn/v3.1/reference/tools/download/']
 ---
 
 # TiDB 工具下载

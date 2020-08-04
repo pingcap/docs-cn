@@ -1,6 +1,6 @@
 ---
 title: TiFlash 集群监控
-aliases: ['/docs-cn/v3.1/reference/tiflash/monitor/']
+aliases: ['/docs-cn/v3.1/tiflash/monitor-tiflash/','/docs-cn/v3.1/reference/tiflash/monitor/']
 ---
 
 # TiFlash 集群监控

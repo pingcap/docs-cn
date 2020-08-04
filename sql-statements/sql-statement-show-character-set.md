@@ -1,7 +1,7 @@
 ---
 title: SHOW CHARACTER SET
 summary: TiDB 数据库中 SHOW CHARACTER SET 的使用概况。
-aliases: ['/docs-cn/v3.1/reference/sql/statements/show-character-set/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-show-character-set/','/docs-cn/v3.1/reference/sql/statements/show-character-set/']
 ---
 
 # SHOW CHARACTER SET

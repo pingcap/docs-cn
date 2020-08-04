@@ -1,6 +1,6 @@
 ---
 title: 数据类型的默认值
-aliases: ['/docs-cn/v3.1/reference/sql/data-types/default-values/']
+aliases: ['/docs-cn/v3.1/data-type-default-values/','/docs-cn/v3.1/reference/sql/data-types/default-values/']
 ---
 
 # 数据类型的默认值

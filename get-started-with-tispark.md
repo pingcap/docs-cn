@@ -1,6 +1,6 @@
 ---
 title: TiSpark 快速入门指南
-aliases: ['/docs-cn/v3.1/how-to/get-started/tispark/']
+aliases: ['/docs-cn/v3.1/get-started-with-tispark/','/docs-cn/v3.1/how-to/get-started/tispark/']
 ---
 
 # TiSpark 快速入门指南

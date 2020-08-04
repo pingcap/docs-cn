@@ -1,7 +1,7 @@
 ---
 title: DESC
 summary: TiDB 数据库中 DESC 的使用概况。
-aliases: ['/docs-cn/v3.1/reference/sql/statements/desc/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-desc/','/docs-cn/v3.1/reference/sql/statements/desc/']
 ---
 
 # DESC

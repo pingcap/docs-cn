@@ -1,7 +1,7 @@
 ---
 title: SET [NAMES|CHARACTER SET]
 summary: TiDB 数据库中 SET [NAMES|CHARACTER SET] 的使用概况。
-aliases: ['/docs-cn/v3.1/reference/sql/statements/set-names/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-set-names/','/docs-cn/v3.1/reference/sql/statements/set-names/']
 ---
 
 # SET [NAMES|CHARACTER SET]

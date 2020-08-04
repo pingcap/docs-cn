@@ -1,7 +1,7 @@
 ---
 title: RENAME TABLE
 summary: TiDB 数据库中 RENAME TABLE 的使用概况。
-aliases: ['/docs-cn/v3.1/reference/sql/statements/rename-table/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-rename-table/','/docs-cn/v3.1/reference/sql/statements/rename-table/']
 ---
 
 # RENAME TABLE

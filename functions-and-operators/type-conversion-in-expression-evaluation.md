@@ -1,6 +1,6 @@
 ---
 title: 表达式求值的类型转换
-aliases: ['/docs-cn/v3.1/reference/sql/functions-and-operators/type-conversion/']
+aliases: ['/docs-cn/v3.1/functions-and-operators/type-conversion-in-expression-evaluation/','/docs-cn/v3.1/reference/sql/functions-and-operators/type-conversion/']
 ---
 
 # 表达式求值的类型转换
