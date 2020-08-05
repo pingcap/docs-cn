@@ -1,7 +1,7 @@
 ---
 title: METRICS_SUMMARY
 summary: 了解 TiDB 系统表 `METRICS_SUMMARY`。
-aliases: ['/docs-cn/dev/system-tables/system-table-metrics-summary/','/docs-cn/dev/reference/system-databases/metrics-summary/']
+aliases: ['/docs-cn/dev/system-tables/system-table-metrics-summary/','/docs-cn/dev/reference/system-databases/metrics-summary/','/zh/tidb/dev/system-table-metrics-summary/']
 ---
 
 # METRICS_SUMMARY
@@ -16,7 +16,8 @@ aliases: ['/docs-cn/dev/system-tables/system-table-metrics-summary/','/docs-cn/d
 {{< copyable "sql" >}}
 
 ```sql
-desc information_schema.metrics_summary;
+USE information_schema;
+DESC metrics_summary;
 ```
 
 ```sql
@@ -31,6 +32,7 @@ desc information_schema.metrics_summary;
 | MAX_VALUE    | double(22,6) | YES  |      | NULL    |       |
 | COMMENT      | varchar(256) | YES  |      | NULL    |       |
 +--------------+--------------+------+------+---------+-------+
+7 rows in set (0.00 sec)
 ```
 
 字段解释：
@@ -49,13 +51,13 @@ desc information_schema.metrics_summary;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
-from information_schema.metrics_summary
-where metrics_name like 'tidb%duration'
- and avg_value > 0
- and quantile = 0.99
-order by avg_value desc
-limit 3\G
+SELECT /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
+FROM information_schema.metrics_summary
+WHERE metrics_name LIKE 'tidb%duration'
+ AND avg_value > 0
+ AND quantile = 0.99
+ORDER BY avg_value DESC
+LIMIT 3\G
 ```
 
 ```sql
@@ -90,16 +92,16 @@ COMMENT      | The quantile of kv requests durations by store
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
-from information_schema.metrics_summary_by_label
-where metrics_name like 'tidb%duration'
- and avg_value > 0
- and quantile = 0.99
-order by avg_value desc
-limit 10\G
+SELECT /*+ time_range('2020-03-08 13:23:00','2020-03-08 13:33:00') */ *
+FROM information_schema.metrics_summary_by_label
+WHERE metrics_name LIKE 'tidb%duration'
+ AND avg_value > 0
+ AND quantile = 0.99
+ORDER BY avg_value DESC
+LIMIT 10\G
 ```
 
-```
+```sql
 ***************************[ 1. row ]***************************
 INSTANCE     | 172.16.5.40:10089
 METRICS_NAME | tidb_get_token_duration
@@ -157,7 +159,7 @@ JOIN
     (SELECT /*+ time_range("2020-03-03 17:18:00", "2020-03-03 17:21:00")*/ *
     FROM information_schema.metrics_summary ) t2
     ON t1.metrics_name = t2.metrics_name
-ORDER BY  ratio DESC limit 10;
+ORDER BY ratio DESC LIMIT 10;
 ```
 
 ```sql
