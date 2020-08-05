@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 本文档介绍如何部署 TiCDC 集群，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
 
-## TiCDC 部署
+## 部署安装 TiCDC
 
 ### 软件和硬件环境推荐配置
 
@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
 
-### 使用 TiUP 部署
+### 使用 TiUP 部署安装 TiCDC
 
 #### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
 

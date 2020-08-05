@@ -85,6 +85,8 @@ TiCDC 的系统架构如下图所示：
 
 TiCDC 的详细部署和任务管理说明请参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)。
 
+TiCDC 已支持使用 TiUP 部署，只需在 TiUP 启动 TiDB 集群时的配置项中 [加入 TiCDC 部分](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件) 即可。
+
 ## TiCDC 常见问题
 
 在使用 TiCDC 过程中经常遇到的问题以及相对应的解决方案请参考 [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)。
