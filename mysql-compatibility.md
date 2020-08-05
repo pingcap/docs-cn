@@ -104,7 +104,7 @@ mysql> select _tidb_rowid, id from t;
 - Order By 忽略所有列排序相关的选项。
 
 - Change/Modify Column
-    + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`，可能输出的错误信息：`length %d is less than origin %d`。
+    + 不支持有损变更，比如不支持从 `BIGINT` 修改为 `INTEGER`，或者从 `VARCHAR(255)` 修改为 `VARCHAR(10)`，否则可能输出的错误信息 `length %d is less than origin %d`。
     + 不支持字段类型修改为它的超集，比如从 `INTEGER` 变为 `VARCHAR`，或者从 `TIMESTAMP` 变为 `DATETIME` 可能输出的错误信息：`Unsupported modify column: type %d not match origin %d`。
     + 不支持修改 `DECIMAL` 类型的精度，可能输出的错误信息：`can't change decimal column precision`。
     + 不支持更改 `UNSIGNED` 属性，可能输出的错误信息：`can't change unsigned integer to signed or vice versa`。
