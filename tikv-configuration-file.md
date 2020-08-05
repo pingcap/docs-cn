@@ -1,6 +1,6 @@
 ---
 title: TiKV 配置文件描述
-aliases: ['/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
+aliases: ['/docs-cn/dev/tikv-configuration-file/','/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
 ---
 
 # TiKV 配置文件描述
@@ -822,7 +822,7 @@ rocksdb defaultcf 相关的配置项。
 ### `block-cache-size`
 
 + rocksdb block cache size。
-+ 默认值：机器总内存 / 4
++ 默认值：机器总内存 * 25%
 + 最小值：0
 + 单位：KB|MB|GB
 

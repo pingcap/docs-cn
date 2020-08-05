@@ -1,6 +1,6 @@
 ---
 title: PD 配置文件描述
-aliases: ['/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
+aliases: ['/docs-cn/dev/pd-configuration-file/','/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
 ---
 
 # PD 配置文件描述
@@ -254,6 +254,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + TiKV 集群的拓扑信息。
 + 默认：[]
++ [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
+
+### `isolation-level`
+
++ TiKV 集群的最小强制拓扑隔离级别。
++ 默认：""
 + [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
 
 ### `strictly-match-label`

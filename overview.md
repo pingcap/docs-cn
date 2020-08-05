@@ -1,6 +1,6 @@
 ---
 title: TiDB 简介
-aliases: ['/docs-cn/dev/key-features/']
+aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 ---
 
 # TiDB 简介
