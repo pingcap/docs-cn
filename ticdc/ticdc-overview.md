@@ -83,7 +83,7 @@ TiCDC 的系统架构如下图所示：
 
 ## TiCDC 安装和部署
 
-在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 集群，只需在 TiUP 启动 TiDB 集群时的配置文件中 [加入 TiCDC 部分](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件) 即可。
+在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件，只需在 TiUP 启动 TiDB 集群时的配置文件中 [加入 TiCDC 部分](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件) 即可。
 
 目前也支持使用 TiUP 或 binary 方式在原有 TiDB 集群上新增 TiCDC 组件，详细部署方案请参考 [部署安装 TiCDC](/ticdc/manage-ticdc.md#部署安装-ticdc)。
 
