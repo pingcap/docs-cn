@@ -1,6 +1,6 @@
 ---
 title: 数值类型
-aliases: ['/docs-cn/dev/reference/sql/data-types/numeric/']
+aliases: ['/docs-cn/dev/data-type-numeric/','/docs-cn/dev/reference/sql/data-types/numeric/']
 ---
 
 # 数值类型

@@ -1,6 +1,6 @@
 ---
 title: PD 配置参数
-aliases: ['/docs-cn/dev/reference/configuration/pd-server/configuration/']
+aliases: ['/docs-cn/dev/command-line-flags-for-pd-configuration/','/docs-cn/dev/reference/configuration/pd-server/configuration/']
 ---
 
 # PD 配置参数
