@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD:system-tables/system-table-overview.md
 title: TiDB 系统表
-aliases: ['/docs-cn/stable/system-tables/system-table-overview/','/docs-cn/v4.0/system-tables/system-table-overview/','/docs-cn/stable/reference/system-databases/mysql/']
-=======
-title: mysql Schema
-summary: 了解 TiDB 系统表。
-aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/reference/system-databases/mysql/','/zh/tidb/dev/system-table-overview/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):mysql-schema.md
+aliases: ['/docs-cn/stable/system-tables/system-table-overview/','/docs-cn/v4.0/system-tables/system-table-overview/','/docs-cn/stable/reference/system-databases/mysql/','/zh/tidb/stable/system-table-overview/']
 ---
 
 # `mysql` Schema
