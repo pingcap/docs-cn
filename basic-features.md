@@ -1,6 +1,7 @@
 ---
 title: TiDB 基本功能
 summary: 了解 TiDB 的基本功能。
+aliases: ['/docs-cn/dev/basic-features/']
 ---
 
 # TiDB 基本功能

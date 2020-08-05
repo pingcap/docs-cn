@@ -1,7 +1,7 @@
 ---
 title: INSPECTION_RESULT
 summary: 了解 TiDB 系统表 `INSPECTION_RESULT`。
-aliases: ['/docs-cn/dev/reference/system-databases/inspection-result/']
+aliases: ['/docs-cn/dev/system-tables/system-table-inspection-result/','/docs-cn/dev/reference/system-databases/inspection-result/','/zh/tidb/dev/system-table-inspection-result/']
 ---
 
 # INSPECTION_RESULT
@@ -15,7 +15,8 @@ TiDB 内置了一些诊断规则，用于检测系统中的故障以及隐患。
 {{< copyable "sql" >}}
 
 ```sql
-desc information_schema.inspection_result;
+USE information_schema;
+DESC inspection_result;
 ```
 
 ```sql
@@ -59,7 +60,7 @@ desc information_schema.inspection_result;
 {{< copyable "sql" >}}
 
 ```sql
-select * from information_schema.inspection_result\G
+SELECT * FROM information_schema.inspection_result\G
 ```
 
 ```sql
@@ -234,10 +235,10 @@ select * from information_schema.inspection_rules where type='inspection';
 {{< copyable "sql" >}}
 
 ```sql
-select * from information_schema.inspection_result where rule='version'\G
+SELECT * FROM information_schema.inspection_result WHERE rule='version'\G
 ```
 
-```
+```sql
 ***************************[ 1. row ]***************************
 RULE      | version
 ITEM      | git_hash
@@ -246,14 +247,14 @@ INSTANCE  |
 VALUE     | inconsistent
 REFERENCE | consistent
 SEVERITY  | critical
-DETAILS   | the cluster has 2 different tidb versions, execute the sql to see more detail: select * from information_schema.cluster_info where type='tidb'
+DETAILS   | the cluster has 2 different tidb versions, execute the sql to see more detail: SELECT * FROM information_schema.cluster_info WHERE type='tidb'
 ```
 
 ### `critical-error` 诊断规则
 
 `critical-error` 诊断规则执行以下两个诊断规则：
 
-* 通过查询 [metrics schema](/system-tables/system-table-metrics-schema.md) 数据库中相关的监控系统表，检测集群是否有出现以下比较严重的错误：
+* 通过查询 [metrics schema](/metrics-schema.md) 数据库中相关的监控系统表，检测集群是否有出现以下比较严重的错误：
 
     |  组件  | 错误名字 | 相关监控表 | 错误说明 |
     |  ----  | ----  |  ----  |  ----  |
@@ -269,7 +270,7 @@ DETAILS   | the cluster has 2 different tidb versions, execute the sql to see mo
 
 ### `threshold-check` 诊断规则
 
-`threshold-check` 诊断规则通过查询 [metrics schema](/system-tables/system-table-metrics-schema.md) 数据库中相关的监控系统表，检测集群中以下指标是否超出阈值：
+`threshold-check` 诊断规则通过查询 [metrics schema](/metrics-schema.md) 数据库中相关的监控系统表，检测集群中以下指标是否超出阈值：
 
 |  组件  | 监控指标 | 相关监控表 | 预期值 |  说明  |
 |  :----  | :----  |  :----  |  :----  |  :----  |

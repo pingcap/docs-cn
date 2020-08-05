@@ -1,7 +1,7 @@
 ---
 title: DEALLOCATE
 summary: TiDB 数据库中 DEALLOCATE 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/deallocate/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-deallocate/','/docs-cn/dev/reference/sql/statements/deallocate/']
 ---
 
 # DEALLOCATE

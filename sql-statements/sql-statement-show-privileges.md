@@ -1,7 +1,7 @@
 ---
 title: SHOW PRIVILEGES
 summary: TiDB 数据库中 SHOW PRIVILEGES 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/show-privileges/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-privileges/','/docs-cn/dev/reference/sql/statements/show-privileges/']
 ---
 
 # SHOW PRIVILEGES
