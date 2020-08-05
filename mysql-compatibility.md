@@ -139,7 +139,7 @@ mysql> select _tidb_rowid, id from t;
 
 ### `SELECT` 的限制
 
-- 不支持 SELECT ... INTO @变量 语法。
+- 不支持 `SELECT ... INTO @变量` 语法。
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
 
 ### 视图
