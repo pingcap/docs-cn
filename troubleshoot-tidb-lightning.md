@@ -1,6 +1,10 @@
 ---
 title: TiDB Lightning 故障诊断
+<<<<<<< HEAD
 aliases: ['/docs-cn/v3.0/troubleshoot-tidb-lightning/','/docs-cn/v3.0/how-to/troubleshoot/tidb-lightning/','/docs-cn/tools/lightning/errors/']
+=======
+aliases: ['/docs-cn/v3.1/troubleshoot-tidb-lightning/','/docs-cn/v3.1/how-to/troubleshoot/tidb-lightning/','/docs-cn/v3.1/tidb-lightning/tidb-lightning-misuse-handling/','/docs-cn/v3.1/reference/tools/error-case-handling/lightning-misuse-handling/','/zh/tidb/v3.1/tidb-lightning-misuse-handling']
+>>>>>>> b984c16... Remove 2 docs that are not in toc (#4198)
 ---
 
 # TiDB Lightning 故障诊断
