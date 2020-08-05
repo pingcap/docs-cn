@@ -1,11 +1,11 @@
 ---
 title: TiDB 系统表
-aliases: ['/docs-cn/stable/system-tables/system-table-overview/','/docs-cn/v4.0/system-tables/system-table-overview/','/docs-cn/stable/reference/system-databases/mysql/']
+aliases: ['/docs-cn/stable/system-tables/system-table-overview/','/docs-cn/v4.0/system-tables/system-table-overview/','/docs-cn/stable/reference/system-databases/mysql/','/zh/tidb/stable/system-table-overview/']
 ---
 
-# TiDB 系统表
+# `mysql` Schema
 
-本文档主要介绍 TiDB 支持的系统表。
+`mysql` 库里存储的是 TiDB 系统表。该设计类似于 MySQL 中的 `mysql` 库，其中 `mysql.user` 之类的表可以直接编辑。该库还包含许多 MySQL 的扩展表。
 
 ## 权限系统表
 

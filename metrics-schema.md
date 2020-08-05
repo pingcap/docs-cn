@@ -1,14 +1,101 @@
 ---
 title: Metrics Schema
-summary: 了解 TiDB METRICS SCHEMA 系统数据库。
-aliases: ['/docs-cn/stable/system-tables/system-table-metrics-schema/','/docs-cn/v4.0/system-tables/system-table-metrics-schema/','/docs-cn/stable/reference/system-databases/metrics-schema/']
+summary: 了解 TiDB `METRICS SCHEMA` 系统数据库。
+aliases: ['/docs-cn/stable/system-tables/system-table-metrics-schema/','/docs-cn/v4.0/system-tables/system-table-metrics-schema/','/docs-cn/stable/reference/system-databases/metrics-schema/','/zh/tidb/stable/system-table-metrics-schema/']
 ---
 
 # Metrics Schema
 
-为了能够动态地观察并对比不同时间段的集群情况，TiDB 4.0 诊断系统添加了集群监控系统表。所有表都在 `metrics_schema` 数据库中，可以通过 SQL 的方式查询监控。实际上，SQL 诊断，以及 `metrics_summary`，`metrics_summary_by_label`，`inspection_result` 这三个监控相关的汇总表数据都是通过查询 metrics schema 库中的各种监控表来获取信息的。目前添加的系统表数量较多，用户可以通过 [`information_schema.metrics_tables`](/system-tables/system-table-metrics-tables.md) 查询这些表的相关信息。
+`METRICS_SCHEMA` 是基于 Prometheus 中 TiDB 监控指标的一组视图。每个表的 PromQL（Prometheus 查询语言）的源均可在 [`INFORMATION_SCHEMA.METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md) 表中找到。
 
-## 监控表的使用与原理
+{{< copyable "sql" >}}
+
+```sql
+use metrics_schema;
+SELECT * FROM uptime;
+SELECT * FROM information_schema.metrics_tables WHERE table_name='uptime'\G
+```
+
+```sql
++----------------------------+-----------------+------------+--------------------+
+| time                       | instance        | job        | value              |
++----------------------------+-----------------+------------+--------------------+
+| 2020-07-06 15:26:26.203000 | 127.0.0.1:10080 | tidb       | 123.60300016403198 |
+| 2020-07-06 15:27:26.203000 | 127.0.0.1:10080 | tidb       | 183.60300016403198 |
+| 2020-07-06 15:26:26.203000 | 127.0.0.1:20180 | tikv       | 123.60300016403198 |
+| 2020-07-06 15:27:26.203000 | 127.0.0.1:20180 | tikv       | 183.60300016403198 |
+| 2020-07-06 15:26:26.203000 | 127.0.0.1:2379  | pd         | 123.60300016403198 |
+| 2020-07-06 15:27:26.203000 | 127.0.0.1:2379  | pd         | 183.60300016403198 |
+| 2020-07-06 15:26:26.203000 | 127.0.0.1:9090  | prometheus | 123.72300004959106 |
+| 2020-07-06 15:27:26.203000 | 127.0.0.1:9090  | prometheus | 183.72300004959106 |
++----------------------------+-----------------+------------+--------------------+
+8 rows in set (0.00 sec)
+*************************** 1. row ***************************
+TABLE_NAME: uptime
+    PROMQL: (time() - process_start_time_seconds{$LABEL_CONDITIONS})
+    LABELS: instance,job
+  QUANTILE: 0
+   COMMENT: TiDB uptime since last restart(second)
+1 row in set (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+show tables;
+```
+
+```sql
++---------------------------------------------------+
+| Tables_in_metrics_schema                          |
++---------------------------------------------------+
+| abnormal_stores                                   |
+| etcd_disk_wal_fsync_rate                          |
+| etcd_wal_fsync_duration                           |
+| etcd_wal_fsync_total_count                        |
+| etcd_wal_fsync_total_time                         |
+| go_gc_count                                       |
+| go_gc_cpu_usage                                   |
+| go_gc_duration                                    |
+| go_heap_mem_usage                                 |
+| go_threads                                        |
+| goroutines_count                                  |
+| node_cpu_usage                                    |
+| node_disk_available_size                          |
+| node_disk_io_util                                 |
+| node_disk_iops                                    |
+| node_disk_read_latency                            |
+| node_disk_size                                    |
+..
+| tikv_storage_async_request_total_time             |
+| tikv_storage_async_requests                       |
+| tikv_storage_async_requests_total_count           |
+| tikv_storage_command_ops                          |
+| tikv_store_size                                   |
+| tikv_thread_cpu                                   |
+| tikv_thread_nonvoluntary_context_switches         |
+| tikv_thread_voluntary_context_switches            |
+| tikv_threads_io                                   |
+| tikv_threads_state                                |
+| tikv_total_keys                                   |
+| tikv_wal_sync_duration                            |
+| tikv_wal_sync_max_duration                        |
+| tikv_worker_handled_tasks                         |
+| tikv_worker_handled_tasks_total_num               |
+| tikv_worker_pending_tasks                         |
+| tikv_worker_pending_tasks_total_num               |
+| tikv_write_stall_avg_duration                     |
+| tikv_write_stall_max_duration                     |
+| tikv_write_stall_reason                           |
+| up                                                |
+| uptime                                            |
++---------------------------------------------------+
+626 rows in set (0.00 sec)
+```
+
+`METRICS_SCHEMA` 是监控相关的 summary 表的数据源，例如 [`metrics_summary`](/information-schema/information-schema-metrics-summary.md)、[`metrics_summary_by_label`](/information-schema/information-schema-metrics-summary.md) 和 [`inspection_summary`](/information-schema/information-schema-inspection-summary.md)。
+
+## 更多例子
 
 下面以 `metrics_schema` 中的 `tidb_query_duration` 监控表为例，介绍监控表相关的使用和原理，其他的监控表原理均类似。
 

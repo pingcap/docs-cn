@@ -1,7 +1,7 @@
 ---
 title: INSPECTION_SUMMARY
 summary: 了解 TiDB 系统表 `INSPECTION_SUMMARY`。
-aliases: ['/docs-cn/stable/system-tables/system-table-inspection-summary/','/docs-cn/v4.0/system-tables/system-table-inspection-summary/','/docs-cn/stable/reference/system-databases/inspection-summary/']
+aliases: ['/docs-cn/stable/system-tables/system-table-inspection-summary/','/docs-cn/v4.0/system-tables/system-table-inspection-summary/','/docs-cn/stable/reference/system-databases/inspection-summary/','/zh/tidb/stable/system-table-inspection-summary/']
 ---
 
 # INSPECTION_SUMMARY
@@ -13,7 +13,8 @@ aliases: ['/docs-cn/stable/system-tables/system-table-inspection-summary/','/doc
 {{< copyable "sql" >}}
 
 ```sql
-desc information_schema.inspection_summary;
+USE information_schema;
+DESC inspection_summary;
 ```
 
 ```sql
@@ -30,7 +31,7 @@ desc information_schema.inspection_summary;
 | MAX_VALUE    | double(22,6) | YES  |      | NULL    |       |
 | COMMENT      | varchar(256) | YES  |      | NULL    |       |
 +--------------+--------------+------+------+---------+-------+
-9 rows in set
+9 rows in set (0.00 sec)
 ```
 
 字段解释：
