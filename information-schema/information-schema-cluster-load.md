@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_LOAD
-summary: 了解 TiDB 集群负载表 `CLUSTER_LOAD`。
-aliases: ['/docs-cn/dev/reference/system-databases/cluster-load/']
+summary: 了解 information_schema 表 `CLUSTER_LOAD`。
+aliases: ['/docs-cn/dev/system-tables/system-table-cluster-load/','/docs-cn/dev/reference/system-databases/cluster-load/','/zh/tidb/dev/system-table-cluster-load/']
 ---
 
 # CLUSTER_LOAD
@@ -11,7 +11,8 @@ aliases: ['/docs-cn/dev/reference/system-databases/cluster-load/']
 {{< copyable "sql" >}}
 
 ```sql
-desc information_schema.cluster_load;
+USE information_schema;
+DESC cluster_load;
 ```
 
 ```sql
@@ -25,12 +26,13 @@ desc information_schema.cluster_load;
 | NAME        | varchar(256) | YES  |      | NULL    |       |
 | VALUE       | varchar(128) | YES  |      | NULL    |       |
 +-------------+--------------+------+------+---------+-------+
+6 rows in set (0.00 sec)
 ```
 
 字段解释：
 
-* `TYPE`：对应于节点信息表 [`information_schema.cluster_info`](/system-tables/system-table-cluster-info.md) 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 和 `tikv`。
-* `INSTANCE`：对应于节点信息表 `information_schema.cluster_info` 中的 `INSTANCE` 字段。
+* `TYPE`：对应于节点信息表 [`information_schema.cluster_info`](/information-schema/information-schema-cluster-info.md) 中的 `TYPE` 字段，可取值为 `tidb`，`pd` 和 `tikv`。
+* `INSTANCE`：对应于节点信息表 [`information_schema.cluster_info`](/information-schema/information-schema-cluster-info.md) 中的 `INSTANCE` 字段。
 * `DEVICE_TYPE`：硬件类型，目前可以查询的硬件类型有 `cpu`、`memory`、`disk` 和 `net`。
 * `DEVICE_NAME`：硬件名。对于不同的 `DEVICE_TYPE`，`DEVICE_NAME` 取值不同。
     * `cpu`：硬件名为 cpu。
@@ -45,21 +47,22 @@ desc information_schema.cluster_load;
 {{< copyable "sql" >}}
 
 ```sql
-select * from information_schema.cluster_load where device_type='cpu' and device_name='cpu';
+SELECT * FROM cluster_load WHERE device_type='cpu' AND device_name='cpu';
 ```
 
 ```sql
 +------+-----------------+-------------+-------------+--------+-------+
 | TYPE | INSTANCE        | DEVICE_TYPE | DEVICE_NAME | NAME   | VALUE |
 +------+-----------------+-------------+-------------+--------+-------+
-| tidb | 0.0.0.0:4000    | cpu         | cpu         | load1  | 0.39  |
-| tidb | 0.0.0.0:4000    | cpu         | cpu         | load5  | 0.36  |
-| tidb | 0.0.0.0:4000    | cpu         | cpu         | load15 | 0.66  |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load1  | 0.39  |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load5  | 0.36  |
-| pd   | 127.0.0.1:2379  | cpu         | cpu         | load15 | 0.66  |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load1  | 0.39  |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load5  | 0.36  |
-| tikv | 127.0.0.1:20160 | cpu         | cpu         | load15 | 0.66  |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load1  | 0.13  |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load5  | 0.25  |
+| tidb | 0.0.0.0:4000    | cpu         | cpu         | load15 | 0.31  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load1  | 0.13  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load5  | 0.25  |
+| pd   | 127.0.0.1:2379  | cpu         | cpu         | load15 | 0.31  |
+| tikv | 127.0.0.1:20165 | cpu         | cpu         | load1  | 0.13  |
+| tikv | 127.0.0.1:20165 | cpu         | cpu         | load5  | 0.25  |
+| tikv | 127.0.0.1:20165 | cpu         | cpu         | load15 | 0.31  |
 +------+-----------------+-------------+-------------+--------+-------+
+9 rows in set (1.50 sec)
 ```

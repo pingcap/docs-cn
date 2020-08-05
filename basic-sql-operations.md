@@ -1,6 +1,6 @@
 ---
 title: SQL 基本操作
-aliases: ['/docs-cn/dev/how-to/get-started/explore-sql/']
+aliases: ['/docs-cn/dev/basic-sql-operations/','/docs-cn/dev/how-to/get-started/explore-sql/']
 ---
 
 # SQL 基本操作
