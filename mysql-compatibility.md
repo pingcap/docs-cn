@@ -1,7 +1,7 @@
 ---
 title: 与 MySQL 兼容性对比
 summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出详细的对比。
-aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
+aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-compatibility/']
 ---
 
 # 与 MySQL 兼容性对比概览
@@ -39,11 +39,11 @@ aliases: ['/docs-cn/dev/reference/mysql-compatibility/']
 
 ### 自增 ID
 
-- TiDB 的自增列仅保证自增且唯一、但不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
+- TiDB 的自增列仅保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
 
-- TiDB 在工程实现上会在每一个 tidb-server 实例上缓存一段 ID 的值用于给表的自增列分配值，缓存 ID 的个数由表的 `AUTO_ID_CACHE` 确定，默认值：`30000`。请特别注意：自增列和 `_tidb_rowid`都会消耗缓存的 ID。如果 `INSERT` 语句中所要求的连续的 ID 个数大于 `AUTO_ID_CACHE` 的值时系统会自动调整 `AUTO_ID_CACHE` 的值以确保该语句能正常执行。
+- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
 
-- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change` 。
+自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
 
 > **注意：**
 >

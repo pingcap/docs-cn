@@ -1,6 +1,6 @@
 ---
 title: 窗口函数
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/window-functions/']
+aliases: ['/docs-cn/dev/functions-and-operators/window-functions/','/docs-cn/dev/reference/sql/functions-and-operators/window-functions/']
 ---
 
 # 窗口函数

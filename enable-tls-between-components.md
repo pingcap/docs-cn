@@ -1,6 +1,6 @@
 ---
 title: 为 TiDB 组件间通信开启加密传输
-aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
+aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 ---
 
 # 为 TiDB 组件间通信开启加密传输

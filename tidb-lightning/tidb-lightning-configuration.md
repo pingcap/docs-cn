@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 配置参数
 summary: 使用配置文件或命令行配置 TiDB Lightning。
-aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/config/']
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-configuration/','/docs-cn/dev/reference/tools/tidb-lightning/config/']
 ---
 
 # TiDB Lightning 配置参数
@@ -58,6 +58,15 @@ table-concurrency = 6
 # 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
 # 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
 io-concurrency = 5
+
+[security]
+# 指定集群中用于 TLS 连接的证书和密钥。
+# CA 的公钥证书。如果留空，则禁用 TLS。
+# ca-path = "/path/to/ca.pem"
+# 此服务的公钥证书。
+# cert-path = "/path/to/lightning.pem"
+# 该服务的密钥。
+# key-path = "/path/to/lightning.key"
 
 [checkpoint]
 # 是否启用断点续传。
@@ -121,7 +130,7 @@ batch-import-ratio = 0.75
 
 # mydumper 本地源数据目录。
 data-source-dir = "/data/my_database"
-# 如果 no-shcema = true，那么 TiDB Lightning 假设目标 TiDB 集群上
+# 如果 no-schema = true，那么 TiDB Lightning 假设目标 TiDB 集群上
 # 已有表结构，并且不会执行 `CREATE TABLE` 语句。
 no-schema = false
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
@@ -131,6 +140,18 @@ no-schema = false
 #  - binary：不尝试转换编码。
 # 注意：**数据** 文件始终解析为 binary 文件。
 character-set = "auto"
+
+# “严格”格式的导入数据可加快处理速度。
+# strict-format = true 要求：
+# 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D，即 \r 和 \n）
+# 甚至被引号包裹的字符换行符都不可包含，即换行符只可用来分隔行。
+# 导入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
+# 但是如果输入数据为非严格格式，可能会将一条完整的数据分割成两部分，导致结果出错。
+# 为保证数据安全而非追求处理速度，默认值为 false。
+strict-format = false
+
+# 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
+# max-region-size = 268_435_456 # Byte（默认是 256 MB）
 
 # 只导入与该通配符规则相匹配的表。详情见相应章节。
 filter = ['*.*']
@@ -176,11 +197,28 @@ index-serial-scan-concurrency = 20
 checksum-table-concurrency = 16
 
 # 解析和执行 SQL 语句的默认 SQL 模式。
-sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
+sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
 # `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
 # 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
 # 会使用下游数据库 global 级别的 `max_allowed_packet`。
 max-allowed-packet = 67_108_864
+
+# SQL 连接是否使用 TLS。可选值为：
+#  * ""            - 如果填充了 [tidb.security] 部分，则强制使用 TLS（与 "cluster" 情况相同），否则与 "false" 情况相同
+#  * "false"       - 禁用 TLS
+#  * "cluster"     - 强制使用 TLS 并使用 [tidb.security] 部分中指定的 CA 验证服务器的证书
+#  * "skip-verify" - 强制使用 TLS，但不验证服务器的证书（不安全！）
+#  * "preferred"   - 与 "skip-verify" 相同，但是如果服务器不支持 TLS，则会退回到未加密的连接
+# tls = ""
+# 指定证书和密钥用于 TLS 连接 MySQL。
+# 默认为 [security] 部分的副本。
+# [tidb.security]
+# CA 的公钥证书。设置为空字符串可禁用 SQL 的 TLS。
+# ca-path = "/path/to/ca.pem"
+# 该服务的公钥证书。默认为 `security.cert-path` 的副本
+# cert-path = "/path/to/lightning.pem"
+# 此服务的私钥。默认为 `security.key-path` 的副本
+# key-path = "/path/to/lightning.key"
 
 # 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作。
 # 在生产环境中，建议这将些参数都设为 true。
@@ -217,13 +255,18 @@ log-file = "tikv-importer.log"
 # 日志等级：trace, debug, info, warn, error 和 off
 log-level = "info"
 
+# 状态服务器的监听地址。 
+# Prometheus 可以从这个地址抓取监控指标。
+status-server-address = "0.0.0.0:8286"
+
 [server]
 # tikv-importer 的监听地址，tidb-lightning 需要连到这个地址进行数据写入。
-addr = "192.168.20.10:8287"
+addr = "0.0.0.0:8287"
 # gRPC 服务器的线程池大小。
 grpc-concurrency = 16
 
 [metric]
+# 当使用 Prometheus Pushgateway 时会涉及相关设置。通常可以通过 Prometheus 从 状态服务器地址中抓取指标。
 # 给 Prometheus 客户端推送的 job 名称。
 job = "tikv-importer"
 # 给 Prometheus 客户端推送的间隔。
@@ -250,6 +293,12 @@ compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
 [rocksdb.writecf]
 # 同上
 compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
+
+[security]
+# TLS 证书的路径。空字符串表示禁用安全连接。
+# ca-path = ""
+# cert-path = ""
+# key-path = ""
 
 [import]
 # 存储引擎文件的文件夹路径
@@ -288,8 +337,8 @@ min-available-ratio = 0.05
 | -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend *backend* | 选择后端的模式：`importer` `local` 或 [`tidb`](/tidb-lightning/tidb-lightning-tidb-backend.md) | `tikv-importer.backend` |
-| --log-file *file* | 日志文件路径 | `lightning.log-file` |
+| --backend [*backend*](/tidb-lightning/tidb-lightning-backends.md) | 选择后端的模式：`importer`、`local` 或 `tidb` | `tikv-importer.backend` |
+| --log-file *file* | 日志文件路径（默认是 `/tmp` 中的临时文件） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
 | --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
@@ -298,6 +347,15 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
+| --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
+| --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
+| --analyze *bool* | 导入后分析表信息 (默认值为 true) | `post-restore.analyze` |
+| --checksum *bool* | 导入后比较校验和 (默认值为 true) | `post-restore.checksum` |
+| --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
+| --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
+| --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
+| --key *file* | TLS 连接的私钥路径 | `security.key-path` |
+| --server-mode | 在服务器模式下启动 TiDB Lightning | `lightning.server-mode` |
 
 如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `./tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
 
@@ -309,6 +367,7 @@ min-available-ratio = 0.05
 |:----|:----------|
 | --compact | 执行 full compact |
 | --switch-mode *mode* | 将每个 TiKV Store 切换到指定模式（normal 或 import） |
+| --fetch-mode | 打印每个 TiKV Store 的当前模式 |
 | --import-engine *uuid* | 将 TiKV Importer 上关闭的引擎文件导入到 TiKV 集群 |
 | --cleanup-engine *uuid* | 删除 TiKV Importer 上的引擎文件 |
 | --checkpoint-dump *folder* | 将当前的断点以 CSV 格式存储到文件夹中 |
@@ -329,6 +388,7 @@ min-available-ratio = 0.05
 | -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置| |
 | -V, --version | 输出程序的版本 | |
 | -A, --addr *ip:port* | TiKV Importer 服务器的监听地址 | `server.addr` |
+| --status-server *ip:port* | 状态服务器的监听地址 | `status-server-address` |
 | --import-dir *dir* | 引擎文件的存储目录 | `import.import-dir` |
 | --log-level *level* | 日志的等级： trace、debug、info、warn、error 或 off | `log-level` |
 | --log-file *file* | 日志文件路径 | `log-file` |
