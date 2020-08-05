@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 | Red Hat Enterprise Linux | 7.3 及以上   |
 | CentOS                   | 7.3 及以上   |
 
-| **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
+| **CPU** | **内存** | **硬盘类型** | **网络** | **TiCDC 集群实例数量（生产环境最低要求）** |
 | --- | --- | --- | --- | --- |
 | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
 
