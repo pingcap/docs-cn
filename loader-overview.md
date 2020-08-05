@@ -1,10 +1,6 @@
 ---
 title: Loader 使用文档
-<<<<<<< HEAD
-aliases: ['/docs-cn/v3.0/loader-overview/','/docs-cn/v3.0/reference/tools/loader/']
-=======
-aliases: ['/docs-cn/v3.1/loader-overview/','/docs-cn/v3.1/reference/tools/loader/','/docs-cn/v3.1/load-misuse-handling/','/docs-cn/v3.1/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/v3.1/load-misuse-handling']
->>>>>>> b984c16... Remove 2 docs that are not in toc (#4198)
+aliases: ['/docs-cn/v3.0/loader-overview/','/docs-cn/v3.0/reference/tools/loader/','/docs-cn/v3.0/load-misuse-handling/','/docs-cn/v3.0/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/v3.0/load-misuse-handling']
 ---
 
 # Loader 使用文档
