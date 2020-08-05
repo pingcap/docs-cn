@@ -1,5 +1,6 @@
 ---
 title: 索引的选择
+aliases: ['/docs-cn/stable/choose-index/','/docs-cn/v4.0/choose-index/']
 ---
 
 # 索引的选择

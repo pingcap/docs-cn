@@ -1,6 +1,7 @@
 ---
 title: TiDB 社区荣誉列表
 summary: 了解 TiDB 社区贡献者列表及角色。
+aliases: ['/docs-cn/stable/credits/','/docs-cn/v4.0/credits/']
 ---
 
 # TiDB 社区荣誉列表

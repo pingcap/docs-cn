@@ -1,6 +1,6 @@
 ---
 title: 字符集和排序规则
-aliases: ['/docs-cn/stable/reference/sql/characterset-and-collation/','/docs-cn/stable/reference/sql/character-set/']
+aliases: ['/docs-cn/stable/character-set-and-collation/','/docs-cn/v4.0/character-set-and-collation/','/docs-cn/stable/reference/sql/characterset-and-collation/','/docs-cn/stable/reference/sql/character-set/']
 ---
 
 # 字符集和排序规则

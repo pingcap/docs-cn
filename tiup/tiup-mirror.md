@@ -1,6 +1,6 @@
 ---
 title: 搭建私有镜像
-aliases: ['/docs-cn/stable/tiup/tiup-mirrors/','/docs-cn/stable/reference/tools/tiup/mirror/']
+aliases: ['/docs-cn/stable/tiup/tiup-mirror/','/docs-cn/v4.0/tiup/tiup-mirror/','/docs-cn/stable/tiup/tiup-mirrors/','/docs-cn/stable/reference/tools/tiup/mirror/']
 ---
 
 # 搭建私有镜像

@@ -1,5 +1,6 @@
 ---
 title: 调度概述
+aliases: ['/docs-cn/stable/tidb-scheduling/','/docs-cn/v4.0/tidb-scheduling/']
 ---
 
 # 调度概述

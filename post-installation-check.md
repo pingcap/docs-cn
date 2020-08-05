@@ -1,6 +1,7 @@
 ---
 title: 验证集群运行状态
 summary: 介绍如何验证集群运行状态。
+aliases: ['/docs-cn/stable/post-installation-check/','/docs-cn/v4.0/post-installation-check/']
 ---
 
 # 验证集群运行状态

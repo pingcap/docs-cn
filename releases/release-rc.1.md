@@ -1,6 +1,6 @@
 ---
 title: TiDB RC1 Release Notes
-aliases: ['/docs-cn/stable/releases/rc1/']
+aliases: ['/docs-cn/stable/releases/release-rc.1/','/docs-cn/v4.0/releases/release-rc.1/','/docs-cn/stable/releases/rc1/']
 ---
 
 # TiDB RC1 Release Notes

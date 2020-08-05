@@ -1,6 +1,6 @@
 ---
 title: 定位消耗系统资源多的查询
-aliases: ['/docs-cn/stable/how-to/maintain/identify-abnormal-queries/identify-expensive-queries/']
+aliases: ['/docs-cn/stable/identify-expensive-queries/','/docs-cn/v4.0/identify-expensive-queries/','/docs-cn/stable/how-to/maintain/identify-abnormal-queries/identify-expensive-queries/']
 ---
 
 # 定位消耗系统资源多的查询

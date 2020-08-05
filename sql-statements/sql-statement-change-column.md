@@ -1,7 +1,7 @@
 ---
 title: CHANGE COLUMN
 summary: TiDB 数据库中 CHANGE COLUMN 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/change-column/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-change-column/','/docs-cn/v4.0/sql-statements/sql-statement-change-column/','/docs-cn/stable/reference/sql/statements/change-column/']
 ---
 
 # CHANGE COLUMN

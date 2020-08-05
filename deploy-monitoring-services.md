@@ -1,6 +1,6 @@
 ---
 title: 集群监控部署
-aliases: ['/docs-cn/stable/monitor-a-tidb-cluster/','/docs-cn/stable/how-to/monitor/monitor-a-cluster/']
+aliases: ['/docs-cn/stable/deploy-monitoring-services/','/docs-cn/v4.0/deploy-monitoring-services/','/docs-cn/stable/monitor-a-tidb-cluster/','/docs-cn/stable/how-to/monitor/monitor-a-cluster/']
 ---
 
 # TiDB 集群监控部署

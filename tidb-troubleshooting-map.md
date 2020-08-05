@@ -1,7 +1,7 @@
 ---
 title: TiDB 集群问题导图
 summary: 了解如何处理 TiDB 集群常见问题。
-aliases: ['/docs-cn/stable/how-to/troubleshoot/diagnose-map/']
+aliases: ['/docs-cn/stable/tidb-troubleshooting-map/','/docs-cn/v4.0/tidb-troubleshooting-map/','/docs-cn/stable/how-to/troubleshoot/diagnose-map/']
 ---
 
 # TiDB 集群问题导图

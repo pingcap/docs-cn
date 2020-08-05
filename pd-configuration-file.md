@@ -1,6 +1,6 @@
 ---
 title: PD 配置文件描述
-aliases: ['/docs-cn/stable/reference/configuration/pd-server/configuration-file/']
+aliases: ['/docs-cn/stable/pd-configuration-file/','/docs-cn/v4.0/pd-configuration-file/','/docs-cn/stable/reference/configuration/pd-server/configuration-file/']
 ---
 
 # PD 配置文件描述

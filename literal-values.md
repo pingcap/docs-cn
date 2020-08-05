@@ -1,6 +1,6 @@
 ---
 title: 字面值
-aliases: ['/docs-cn/stable/reference/sql/language-structure/literal-values/']
+aliases: ['/docs-cn/stable/literal-values/','/docs-cn/v4.0/literal-values/','/docs-cn/stable/reference/sql/language-structure/literal-values/']
 ---
 
 # 字面值

@@ -1,7 +1,7 @@
 ---
 title: CREATE VIEW
 summary: TiDB 数据库中 CREATE VIEW 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/create-view/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-create-view/','/docs-cn/v4.0/sql-statements/sql-statement-create-view/','/docs-cn/stable/reference/sql/statements/create-view/']
 ---
 
 # CREATE VIEW

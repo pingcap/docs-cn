@@ -1,6 +1,7 @@
 ---
 title: 部署运维 FAQ
 summary: 介绍 TiDB 集群运维部署的常见问题、原因及解决方法。
+aliases: ['/docs-cn/stable/faq/deploy-and-maintain-faq/','/docs-cn/v4.0/faq/deploy-and-maintain-faq/']
 ---
 
 # 部署运维 FAQ
@@ -340,7 +341,7 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 #### TiDB 同时支持的最大并发连接数？
 
-当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
+默认情况下，每个 TiDB 服务器的最大连接数没有限制。如有需要，可以在 `config.toml` 文件中设置 `max-server-connections` 来限制最大连接数。如果并发量过大导致响应时间增加，建议通过添加 TiDB 节点进行扩容。
 
 #### 如何查看某张表创建的时间？
 

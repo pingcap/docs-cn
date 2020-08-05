@@ -1,6 +1,6 @@
 ---
 title: TiCDC 运维操作及任务管理
-aliases: ['/docs-cn/stable/reference/tools/ticdc/manage/','/docs-cn/stable/reference/tools/ticdc/sink/','/docs-cn/stable/ticdc/sink-url/']
+aliases: ['/docs-cn/stable/ticdc/manage-ticdc/','/docs-cn/v4.0/ticdc/manage-ticdc/','/docs-cn/stable/reference/tools/ticdc/manage/','/docs-cn/stable/reference/tools/ticdc/sink/','/docs-cn/stable/ticdc/sink-url/']
 ---
 
 # TiCDC 运维操作及任务管理
@@ -436,7 +436,7 @@ case-sensitive = true
 ignore-txn-start-ts = [1, 2]
 
 # 过滤器规则
-# 过滤规则语法：https://github.com/pingcap/tidb-tools/tree/master/pkg/table-filter#syntax
+# 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
 rules = ['*.*', '!test.*']
 
 [mounter]
@@ -446,6 +446,7 @@ worker-num = 16
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 default、ts、rowid、table 四种分发器
+# matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},

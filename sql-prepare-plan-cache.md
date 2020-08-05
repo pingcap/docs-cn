@@ -1,5 +1,6 @@
 ---
 title: 执行计划缓存
+aliases: ['/docs-cn/stable/sql-prepare-plan-cache/','/docs-cn/v4.0/sql-prepare-plan-cache/']
 ---
 
 # 执行计划缓存

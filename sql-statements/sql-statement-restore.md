@@ -1,6 +1,7 @@
 ---
 title: RESTORE
 summary: TiDB 数据库中 RESTORE 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-restore/','/docs-cn/v4.0/sql-statements/sql-statement-restore/']
 ---
 
 # RESTORE

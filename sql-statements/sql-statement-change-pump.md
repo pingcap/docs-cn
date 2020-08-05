@@ -1,6 +1,7 @@
 ---
 title: CHANGE PUMP
 summary: TiDB 数据库中 CHANGE PUMP 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-change-pump/','/docs-cn/v4.0/sql-statements/sql-statement-change-pump/']
 ---
 
 # CHANGE PUMP

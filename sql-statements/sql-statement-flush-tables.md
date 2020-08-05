@@ -1,7 +1,7 @@
 ---
 title: FLUSH TABLES
 summary: TiDB 数据库中 FLUSH TABLES 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/flush-tables/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-flush-tables/','/docs-cn/v4.0/sql-statements/sql-statement-flush-tables/','/docs-cn/stable/reference/sql/statements/flush-tables/']
 ---
 
 # FLUSH TABLES

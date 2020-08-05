@@ -1,5 +1,6 @@
 ---
 title: 提高 TiDB Dashboard 安全性
+aliases: ['/docs-cn/stable/dashboard/dashboard-ops-security/','/docs-cn/v4.0/dashboard/dashboard-ops-security/']
 ---
 
 # 提高 TiDB Dashboard 安全性

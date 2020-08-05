@@ -1,6 +1,6 @@
 ---
 title: 分区表
-aliases: ['/docs-cn/stable/reference/sql/partitioning/']
+aliases: ['/docs-cn/stable/partitioned-table/','/docs-cn/v4.0/partitioned-table/','/docs-cn/stable/reference/sql/partitioning/']
 ---
 
 # 分区表
@@ -477,7 +477,7 @@ ERROR 8200 (HY000): Unsupported optimize partition
 
 ## 分区裁剪
 
-有一个优化叫做“分区裁剪”，它基于一个非常简单的概念：不需要扫描那些匹配不上的分区。
+有一个优化叫做[“分区裁剪”](/partition-pruning.md)，它基于一个非常简单的概念：不需要扫描那些匹配不上的分区。
 
 假设创建一个分区表 `t1`：
 

@@ -1,7 +1,7 @@
 ---
 title: 用户自定义变量
 summary: 本文介绍 TiDB 的用户自定义变量。
-aliases: ['/docs-cn/stable/reference/sql/language-structure/user-defined-variables/']
+aliases: ['/docs-cn/stable/user-defined-variables/','/docs-cn/v4.0/user-defined-variables/','/docs-cn/stable/reference/sql/language-structure/user-defined-variables/']
 ---
 
 # 用户自定义变量

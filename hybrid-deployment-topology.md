@@ -1,6 +1,7 @@
 ---
 title: 混合部署拓扑
 summary: 介绍混合部署 TiDB 集群的拓扑结构。
+aliases: ['/docs-cn/stable/hybrid-deployment-topology/','/docs-cn/v4.0/hybrid-deployment-topology/']
 ---
 
 # 混合部署拓扑

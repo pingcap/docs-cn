@@ -1,6 +1,7 @@
 ---
 title: DROP BINDING
 summary: TiDB 数据库中 DROP BINDING 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-binding/','/docs-cn/v4.0/sql-statements/sql-statement-drop-binding/']
 ---
 
 # DROP BINDING

@@ -1,7 +1,7 @@
 ---
 title: SELECT
 summary: TiDB 数据库中 SELECT 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/select/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-select/','/docs-cn/v4.0/sql-statements/sql-statement-select/','/docs-cn/stable/reference/sql/statements/select/']
 ---
 
 # SELECT

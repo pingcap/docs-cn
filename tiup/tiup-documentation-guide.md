@@ -1,5 +1,6 @@
 ---
 title: TiUP 文档指南
+aliases: ['/docs-cn/stable/tiup/tiup-documentation-guide/','/docs-cn/v4.0/tiup/tiup-documentation-guide/']
 ---
 
 # TiUP 文档指南

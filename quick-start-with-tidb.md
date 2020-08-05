@@ -1,5 +1,6 @@
 ---
 title: TiDB 数据库快速上手指南
+aliases: ['/docs-cn/stable/quick-start-with-tidb/','/docs-cn/v4.0/quick-start-with-tidb/']
 ---
 
 # TiDB 数据库快速上手指南

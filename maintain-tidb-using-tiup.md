@@ -1,6 +1,6 @@
 ---
 title: TiUP 常见运维操作
-aliases: ['/docs-cn/stable/how-to/maintain/tiup-operations/']
+aliases: ['/docs-cn/stable/maintain-tidb-using-tiup/','/docs-cn/v4.0/maintain-tidb-using-tiup/','/docs-cn/stable/how-to/maintain/tiup-operations/']
 ---
 
 # TiUP 常见运维操作
@@ -147,6 +147,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```

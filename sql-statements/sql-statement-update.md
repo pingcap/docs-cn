@@ -1,7 +1,7 @@
 ---
 title: UPDATE
 summary: TiDB 数据库中 UPDATE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/update/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-update/','/docs-cn/v4.0/sql-statements/sql-statement-update/','/docs-cn/stable/reference/sql/statements/update/']
 ---
 
 # UPDATE

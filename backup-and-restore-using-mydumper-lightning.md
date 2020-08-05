@@ -1,15 +1,15 @@
 ---
 title: 使用 Mydumper/TiDB Lightning 进行备份与恢复
-aliases: ['/docs-cn/stable/how-to/maintain/backup-and-restore/mydumper-lightning/']
+aliases: ['/docs-cn/stable/backup-and-restore-using-mydumper-lightning/','/docs-cn/v4.0/backup-and-restore-using-mydumper-lightning/','/docs-cn/stable/how-to/maintain/backup-and-restore/mydumper-lightning/']
 ---
 
 # 使用 Mydumper/TiDB Lightning 进行备份与恢复
 
 本文档将详细介绍如何使用 Mydumper/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份与恢复可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
-这里假定 TiDB 服务信息如下：
+这里假定 TiDB 服务器信息如下：
 
-|Name|Address|Port|User|Password|
+|服务器名称|服务器地址|端口|用户名|密码|
 |----|-------|----|----|--------|
 |TiDB|127.0.0.1|4000|root|*|
 
@@ -91,4 +91,4 @@ aliases: ['/docs-cn/stable/how-to/maintain/backup-and-restore/mydumper-lightning
 
 ## 向 TiDB 恢复数据
 
-使用 TiDB Lightning 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/tidb-lightning/tidb-lightning-tidb-backend.md)
+使用 TiDB Lightning 将之前导出的数据导入到 TiDB，完成恢复操作。具体的使用方法见 [TiDB Lightning 使用文档](/tidb-lightning/tidb-lightning-backends.md)

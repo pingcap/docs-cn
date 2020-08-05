@@ -1,7 +1,7 @@
 ---
 title: TiDB Dashboard SQL 语句分析执行详情页面
 summary: 查看单个 SQL 语句执行的详细情况
-aliases: ['/docs-cn/stable/dashboard/dashboard-statement-detail/']
+aliases: ['/docs-cn/stable/dashboard/dashboard-statement-details/','/docs-cn/v4.0/dashboard/dashboard-statement-details/','/docs-cn/stable/dashboard/dashboard-statement-detail/']
 ---
 
 # TiDB Dashboard SQL 语句分析执行详情页面

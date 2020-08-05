@@ -1,5 +1,6 @@
 ---
 title: TiDB 使用限制
+aliases: ['/docs-cn/stable/tidb-limitations/','/docs-cn/v4.0/tidb-limitations/']
 ---
 
 # 使用限制

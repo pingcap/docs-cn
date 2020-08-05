@@ -1,6 +1,7 @@
 ---
 title: 关联子查询去关联
 summary: 了解如何给关联子查询解除关联。
+aliases: ['/docs-cn/stable/correlated-subquery-optimization/','/docs-cn/v4.0/correlated-subquery-optimization/']
 ---
 
 # 关联子查询去关联

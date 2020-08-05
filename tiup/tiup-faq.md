@@ -1,5 +1,6 @@
 ---
 title: TiUP FAQ
+aliases: ['/docs-cn/stable/tiup/tiup-faq/','/docs-cn/v4.0/tiup/tiup-faq/']
 ---
 
 # TiUP FAQ

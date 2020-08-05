@@ -1,6 +1,6 @@
 ---
 title: TiDB 2.0.11 Release Notes
-aliases: ['/docs-cn/stable/releases/2.0.11/']
+aliases: ['/docs-cn/stable/releases/release-2.0.11/','/docs-cn/v4.0/releases/release-2.0.11/','/docs-cn/stable/releases/2.0.11/']
 ---
 
 # TiDB 2.0.11 Release Notes

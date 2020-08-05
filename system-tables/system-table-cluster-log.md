@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_LOG
 summary: 了解 TiDB 集群日志表 `CLUSTER_LOG`。
-aliases: ['/docs-cn/stable/reference/system-databases/cluster-log/']
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-log/','/docs-cn/v4.0/system-tables/system-table-cluster-log/','/docs-cn/stable/reference/system-databases/cluster-log/']
 ---
 
 # CLUSTER_LOG

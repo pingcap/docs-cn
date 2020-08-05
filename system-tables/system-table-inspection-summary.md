@@ -1,7 +1,7 @@
 ---
 title: INSPECTION_SUMMARY
 summary: 了解 TiDB 系统表 `INSPECTION_SUMMARY`。
-aliases: ['/docs-cn/stable/reference/system-databases/inspection-summary/']
+aliases: ['/docs-cn/stable/system-tables/system-table-inspection-summary/','/docs-cn/v4.0/system-tables/system-table-inspection-summary/','/docs-cn/stable/reference/system-databases/inspection-summary/']
 ---
 
 # INSPECTION_SUMMARY

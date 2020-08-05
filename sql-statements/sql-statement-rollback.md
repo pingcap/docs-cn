@@ -1,7 +1,7 @@
 ---
 title: ROLLBACK
 summary: TiDB 数据库中 ROLLBACK 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/rollback/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-rollback/','/docs-cn/v4.0/sql-statements/sql-statement-rollback/','/docs-cn/stable/reference/sql/statements/rollback/']
 ---
 
 # ROLLBACK
