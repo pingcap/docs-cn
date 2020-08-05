@@ -129,11 +129,11 @@ SHOW SESSION VARIABLES LIKE 'sql_mode';
 
 ## MySQL 兼容性
 
-以下为 TiDB 与 MySQL 兼容性方面的表现差异，适用于：
+使用 `SET [GLOBAL|SESSION] <variable>` 更改系统变量上，TiDB 与 MySQL 存在以下差异
 
-* 与 MySQL 不同，集群中的全部 TiDB 实例会获取 `SET GLOBAL` 所做的更改。而在 MySQL 中的更改不会应用到副本。
-* TiDB 提供了一些既可读又可设置，同时是 MySQL 兼容性必需的变量。因为通常都是由应用程序和连接器读取 MySQL 变量。例如：尽管不依赖兼容性差异，JDBC 连接器会同时读取和设置缓存查询。
-* 即使在 TiDB 服务器重启后，`SET GLOBAL` 的更改也仍然有效。即 TiDB 中的 `SET GLOBAL` 表现与 MySQL 8.0 及更高版本中的 `SET PERSIST` 设置更加类似。
+* 与 MySQL 不同，TiDB 中使用 `SET GLOBAL` 所作的修改会应用于集群中的全部 TiDB 实例。而在 MySQL 中，修改不会应用于副本。
+* TiDB 中的若干变量可读又可设置，这是与 MySQL 相兼容的要求，因为应用程序和连接器常读取 MySQL 变量。例如：JDBC 连接器同时读取和设置缓存查询的参数，尽管并不依赖这一行为。
+* 即使在 TiDB 服务器重启后，`SET GLOBAL` 的更改也仍然有效。这样，TiDB 中的 `SET GLOBAL` 更类似于 MySQL 8.0 及更高版本中的 `SET PERSIST`。
 
 ## 另请参阅
 

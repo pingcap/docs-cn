@@ -13,9 +13,9 @@ summary: 介绍 SQL 操作相关的常见问题。
 
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
-支持。当 TiDB 使用悲观锁（TiDB v3.0 以来的默认设置）时，`SELECT FOR UPDATE` 表现与 MySQL 中基本一致。
+支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
 
-当 TiDB 使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时锁定数据，而是在提交事务时检查冲突。如果显示冲突，则提交的事务会进行回滚。
+当 TiDB 使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。
 
 ## TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
@@ -31,7 +31,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 ## 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 支持将 [`sql_mode`](/sql-mode.md) 修改为[系统变量](/system-variables.md#sql_mode)，操作与 MySQL 中一致。目前，TiDB 不允许在配置文件中修改 `sql_mode`，但是集群中的所有 TiDB server 会获取到使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 进行的系统变量更改，并且重启后更改依然有效。
+TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables.md#sql_mode)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
 
 ## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
@@ -50,7 +50,7 @@ TiDB 支持将 [`sql_mode`](/sql-mode.md) 修改为[系统变量](/system-variab
         --batch
     ```
 
-- 也可以选择增大 TiDB 的单个事物语句数量限制，不过此操作会导致内存上涨。
+- 也可以选择增大 TiDB 的单个事物语句数量限制，不过此操作会导致内存增加。
 
 ## TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
@@ -74,7 +74,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ## `SHOW PROCESSLIST` 是否显示系统进程号？
 
-TiDB 的 `SHOW PROCESSLIST`  与 MySQL 的 `SHOW PROCESSLIST`  显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
+TiDB 的 `SHOW PROCESSLIST` 与 MySQL 的 `SHOW PROCESSLIST` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
 + 由于 TiDB 是分布式数据库，TiDB server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/tidb-architecture.md)），用户使用 MySQL 客户端登录的是哪个 TiDB server ，`show processlist` 就会显示当前连接的这个 TiDB server  中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
 
