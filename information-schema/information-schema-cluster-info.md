@@ -1,11 +1,7 @@
 ---
 title: CLUSTER_INFO
 summary: 了解 TiDB 集群拓扑表 `CLUSTER_INFO`。
-<<<<<<< HEAD:system-tables/system-table-cluster-info.md
-aliases: ['/docs-cn/stable/system-tables/system-table-cluster-info/','/docs-cn/v4.0/system-tables/system-table-cluster-info/','/docs-cn/stable/reference/system-databases/cluster-info/']
-=======
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-info/','/docs-cn/dev/reference/system-databases/cluster-info/','/zh/tidb/dev/system-table-cluster-info/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):information-schema/information-schema-cluster-info.md
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-info/','/docs-cn/v4.0/system-tables/system-table-cluster-info/','/docs-cn/stable/reference/system-databases/cluster-info/','/zh/tidb/stable/system-table-cluster-info/']
 ---
 
 # CLUSTER_INFO

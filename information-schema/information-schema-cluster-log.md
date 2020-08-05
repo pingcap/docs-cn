@@ -1,12 +1,7 @@
 ---
 title: CLUSTER_LOG
-<<<<<<< HEAD:system-tables/system-table-cluster-log.md
-summary: 了解 TiDB 集群日志表 `CLUSTER_LOG`。
-aliases: ['/docs-cn/stable/system-tables/system-table-cluster-log/','/docs-cn/v4.0/system-tables/system-table-cluster-log/','/docs-cn/stable/reference/system-databases/cluster-log/']
-=======
 summary: 了解 information_schema 表 `CLUSTER_LOG`。
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-log/','/docs-cn/dev/reference/system-databases/cluster-log/','/zh/tidb/dev/system-table-cluster-log/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):information-schema/information-schema-cluster-log.md
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-log/','/docs-cn/v4.0/system-tables/system-table-cluster-log/','/docs-cn/stable/reference/system-databases/cluster-log/','/zh/tidb/stable/system-table-cluster-log/']
 ---
 
 # CLUSTER_LOG

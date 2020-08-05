@@ -1,11 +1,7 @@
 ---
 title: INSPECTION_SUMMARY
 summary: 了解 TiDB 系统表 `INSPECTION_SUMMARY`。
-<<<<<<< HEAD:system-tables/system-table-inspection-summary.md
-aliases: ['/docs-cn/stable/system-tables/system-table-inspection-summary/','/docs-cn/v4.0/system-tables/system-table-inspection-summary/','/docs-cn/stable/reference/system-databases/inspection-summary/']
-=======
-aliases: ['/docs-cn/dev/system-tables/system-table-inspection-summary/','/docs-cn/dev/reference/system-databases/inspection-summary/','/zh/tidb/dev/system-table-inspection-summary/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):information-schema/information-schema-inspection-summary.md
+aliases: ['/docs-cn/stable/system-tables/system-table-inspection-summary/','/docs-cn/v4.0/system-tables/system-table-inspection-summary/','/docs-cn/stable/reference/system-databases/inspection-summary/','/zh/tidb/stable/system-table-inspection-summary/']
 ---
 
 # INSPECTION_SUMMARY

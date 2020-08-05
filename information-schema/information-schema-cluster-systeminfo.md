@@ -1,11 +1,7 @@
 ---
 title: CLUSTER_SYSTEMINFO
 summary: 了解 TiDB 集群负载表 `CLUSTER_SYSTEMINFO`。
-<<<<<<< HEAD:system-tables/system-table-cluster-systeminfo.md
-aliases: ['/docs-cn/stable/system-tables/system-table-cluster-systeminfo/','/docs-cn/v4.0/system-tables/system-table-cluster-systeminfo/','/docs-cn/stable/reference/system-databases/cluster-systeminfo/']
-=======
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-systeminfo/','/docs-cn/dev/reference/system-databases/cluster-systeminfo/','/zh/tidb/dev/system-table-cluster-systeminfo/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):information-schema/information-schema-cluster-systeminfo.md
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-systeminfo/','/docs-cn/v4.0/system-tables/system-table-cluster-systeminfo/','/docs-cn/stable/reference/system-databases/cluster-systeminfo/','/zh/tidb/stable/system-table-cluster-systeminfo/']
 ---
 
 # CLUSTER_SYSTEMINFO

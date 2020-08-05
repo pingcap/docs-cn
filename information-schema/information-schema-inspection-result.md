@@ -1,11 +1,7 @@
 ---
 title: INSPECTION_RESULT
 summary: 了解 TiDB 系统表 `INSPECTION_RESULT`。
-<<<<<<< HEAD:system-tables/system-table-inspection-result.md
-aliases: ['/docs-cn/stable/system-tables/system-table-inspection-result/','/docs-cn/v4.0/system-tables/system-table-inspection-result/','/docs-cn/stable/reference/system-databases/inspection-result/']
-=======
-aliases: ['/docs-cn/dev/system-tables/system-table-inspection-result/','/docs-cn/dev/reference/system-databases/inspection-result/','/zh/tidb/dev/system-table-inspection-result/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):information-schema/information-schema-inspection-result.md
+aliases: ['/docs-cn/stable/system-tables/system-table-inspection-result/','/docs-cn/v4.0/system-tables/system-table-inspection-result/','/docs-cn/stable/reference/system-databases/inspection-result/','/zh/tidb/stable/system-table-inspection-result/']
 ---
 
 # INSPECTION_RESULT

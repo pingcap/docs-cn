@@ -1,12 +1,7 @@
 ---
 title: CLUSTER_LOAD
-<<<<<<< HEAD:system-tables/system-table-cluster-load.md
-summary: 了解 TiDB 集群负载表 `CLUSTER_LOAD`。
-aliases: ['/docs-cn/stable/system-tables/system-table-cluster-load/','/docs-cn/v4.0/system-tables/system-table-cluster-load/','/docs-cn/stable/reference/system-databases/cluster-load/']
-=======
 summary: 了解 information_schema 表 `CLUSTER_LOAD`。
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-load/','/docs-cn/dev/reference/system-databases/cluster-load/','/zh/tidb/dev/system-table-cluster-load/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):information-schema/information-schema-cluster-load.md
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-load/','/docs-cn/v4.0/system-tables/system-table-cluster-load/','/docs-cn/stable/reference/system-databases/cluster-load/','/zh/tidb/stable/system-table-cluster-load/']
 ---
 
 # CLUSTER_LOAD

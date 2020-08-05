@@ -1,11 +1,7 @@
 ---
 title: SQL 诊断
 summary: 了解 SQL 诊断功能。
-<<<<<<< HEAD:system-tables/system-table-sql-diagnostics.md
-aliases: ['/docs-cn/stable/system-tables/system-table-sql-diagnostics/','/docs-cn/v4.0/system-tables/system-table-sql-diagnostics/','/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/','/zh/tidb/stable/check-cluster-status-using-sql-statements','/docs-cn/stable/reference/performance/check-cluster-status-using-sql-statements/']
-=======
-aliases: ['/docs-cn/dev/system-tables/system-table-sql-diagnostics/','/docs-cn/dev/reference/system-databases/sql-diagnosis/','/docs-cn/dev/system-tables/system-table-sql-diagnosis/','/zh/tidb/dev/check-cluster-status-using-sql-statements','/docs-cn/dev/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/dev/system-table-sql-diagnostics/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):information-schema/information-schema-sql-diagnostics.md
+aliases: ['/docs-cn/stable/system-tables/system-table-sql-diagnostics/','/docs-cn/v4.0/system-tables/system-table-sql-diagnostics/','/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/','/zh/tidb/stable/check-cluster-status-using-sql-statements','/docs-cn/stable/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/stable/system-table-sql-diagnostics/']
 ---
 
 # SQL 诊断

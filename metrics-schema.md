@@ -1,12 +1,7 @@
 ---
 title: Metrics Schema
-<<<<<<< HEAD:system-tables/system-table-metrics-schema.md
-summary: 了解 TiDB METRICS SCHEMA 系统数据库。
-aliases: ['/docs-cn/stable/system-tables/system-table-metrics-schema/','/docs-cn/v4.0/system-tables/system-table-metrics-schema/','/docs-cn/stable/reference/system-databases/metrics-schema/']
-=======
 summary: 了解 TiDB `METRICS SCHEMA` 系统数据库。
-aliases: ['/docs-cn/dev/system-tables/system-table-metrics-schema/','/docs-cn/dev/reference/system-databases/metrics-schema/','/zh/tidb/dev/system-table-metrics-schema/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):metrics-schema.md
+aliases: ['/docs-cn/stable/system-tables/system-table-metrics-schema/','/docs-cn/v4.0/system-tables/system-table-metrics-schema/','/docs-cn/stable/reference/system-databases/metrics-schema/','/zh/tidb/stable/system-table-metrics-schema/']
 ---
 
 # Metrics Schema

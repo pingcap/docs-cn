@@ -1,12 +1,7 @@
 ---
 title: CLUSTER_CONFIG
-<<<<<<< HEAD:system-tables/system-table-cluster-config.md
-aliases: ['/docs-cn/stable/system-tables/system-table-cluster-config/','/docs-cn/v4.0/system-tables/system-table-cluster-config/','/docs-cn/stable/reference/system-databases/cluster-config/']
-summary: 了解 TiDB 集群配置表 `CLUSTER_CONFIG`。
-=======
 summary: 了解 information_schema 表 `CLUSTER_CONFIG`。
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-config/','/docs-cn/dev/reference/system-databases/cluster-config/','/zh/tidb/dev/system-table-cluster-config/']
->>>>>>> 9bdd50e... refactor/improve clarity: change system-table to information-schema (#4109):information-schema/information-schema-cluster-config.md
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-config/','/docs-cn/v4.0/system-tables/system-table-cluster-config/','/docs-cn/stable/reference/system-databases/cluster-config/','/zh/tidb/stable/system-table-cluster-config/']
 ---
 
 # CLUSTER_CONFIG
