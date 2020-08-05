@@ -493,7 +493,7 @@ sync-ddl = true
 
 环形同步任务创建步骤如下：
 
-1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#ticdc-部署)。
+1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#部署安装-TiCDC)。
 
     {{< copyable "shell-regular" >}}
 
