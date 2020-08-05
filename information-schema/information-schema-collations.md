@@ -34,7 +34,7 @@ DESC collations;
 SELECT * FROM collations WHERE character_set_name='utf8mb4';
 ```
 
-```
+```sql
 +----------------+--------------------+------+------------+-------------+---------+
 | COLLATION_NAME | CHARACTER_SET_NAME | ID   | IS_DEFAULT | IS_COMPILED | SORTLEN |
 +----------------+--------------------+------+------------+-------------+---------+

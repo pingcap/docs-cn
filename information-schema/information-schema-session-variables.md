@@ -14,7 +14,7 @@ USE information_schema;
 DESC session_variables;
 ```
 
-```
+```sql
 +----------------+---------------+------+------+---------+-------+
 | Field          | Type          | Null | Key  | Default | Extra |
 +----------------+---------------+------+------+---------+-------+
@@ -30,7 +30,7 @@ DESC session_variables;
 SELECT * FROM session_variables ORDER BY variable_name LIMIT 10;
 ```
 
-```
+```sql
 +-----------------------------------+------------------+
 | VARIABLE_NAME                     | VARIABLE_VALUE   |
 +-----------------------------------+------------------+

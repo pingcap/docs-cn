@@ -63,6 +63,8 @@ DESC tikv_region_status;
 
 你可以使用以下 SQL 语句查询写入数据最多的前 3 个 Region：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM tikv_region_status ORDER BY written_bytes DESC LIMIT 3;
 ```

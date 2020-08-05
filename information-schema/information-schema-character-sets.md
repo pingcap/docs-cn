@@ -14,7 +14,7 @@ USE information_schema;
 DESC character_sets;
 ```
 
-```
+```sql
 +----------------------+-------------+------+------+---------+-------+
 | Field                | Type        | Null | Key  | Default | Extra |
 +----------------------+-------------+------+------+---------+-------+
@@ -32,7 +32,7 @@ DESC character_sets;
 SELECT * FROM `character_sets`;
 ```
 
-```
+```sql
 +--------------------+----------------------+---------------+--------+
 | CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION   | MAXLEN |
 +--------------------+----------------------+---------------+--------+

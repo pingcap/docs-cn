@@ -30,7 +30,7 @@ DESC collation_character_set_applicability;
 SELECT * FROM collation_character_set_applicability WHERE character_set_name='utf8mb4';
 ```
 
-```
+```sql
 +----------------+--------------------+
 | COLLATION_NAME | CHARACTER_SET_NAME |
 +----------------+--------------------+

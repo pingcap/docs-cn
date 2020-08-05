@@ -14,7 +14,7 @@ USE information_schema;
 DESC key_column_usage;
 ```
 
-```
+```sql
 +-------------------------------+--------------+------+------+---------+-------+
 | Field                         | Type         | Null | Key  | Default | Extra |
 +-------------------------------+--------------+------+------+---------+-------+
@@ -40,7 +40,7 @@ DESC key_column_usage;
 SELECT * FROM key_column_usage WHERE table_schema='mysql' and table_name='user';
 ```
 
-```
+```sql
 *************************** 1. row ***************************
            CONSTRAINT_CATALOG: def
             CONSTRAINT_SCHEMA: mysql
