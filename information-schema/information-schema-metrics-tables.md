@@ -1,7 +1,7 @@
 ---
 title: METRICS_TABLES
 summary: 了解 TiDB 系统表 `METRICS_TABLES`。
-aliases: ['/docs-cn/dev/reference/system-databases/metrics-tables/','/zh/tidb/dev/system-table-metrics-tables/','/docs-cn/dev/system-tables/system-table-metrics-tables/']
+aliases: ['/docs-cn/stable/system-tables/system-table-metrics-tables/','/docs-cn/v4.0/system-tables/system-table-metrics-tables/','/docs-cn/stable/reference/system-databases/metrics-tables/','/zh/tidb/stable/system-table-metrics-tables/']
 ---
 
 # METRICS_TABLES
