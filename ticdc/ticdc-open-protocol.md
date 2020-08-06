@@ -151,8 +151,6 @@ Value:
 | Flag           | Number | 列标志位，详见：[列标志位](#列标志位) |
 | Column Value   | Any    | 列值   |
 
-> 注：  
-> 1. 在 Update 事件中，只有开启 OldValue 特性，才会
 
 ### DDL Event
 
@@ -352,7 +350,6 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 | Create Sequence                   | 34 |
 | Alter Sequence                    | 35 |
 | Drop Sequence                     | 36 |
-
 
 ### 列标志位
 
