@@ -69,6 +69,7 @@ Value:
 + **Value:**
 
     `Insert` 事件，输出新增的行数据。
+
     ```
     {
         "u":{
@@ -89,6 +90,7 @@ Value:
     ```
 
     `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")，仅当 Old Value 特性开启时，才会输出修改前的行数据。
+
     ```
     {
         "u":{
@@ -123,6 +125,7 @@ Value:
     ```
 
     `Delete` 事件，输出被删除的行数据。当 Old Value 特性开启时，`Delete` 事件中包含被删除的行数据中的所有列；当 Old Value 特性关闭时，`Delete` 事件中仅包含 [HandleKey](#列标志位) 列。
+
     ```
     {
         "d":{
@@ -149,7 +152,6 @@ Value:
 | Where Handle（**已弃用**）   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true。该参数已弃用，被 Flag 中的 HandleKeyFlag 代替 |
 | Flag           | Number | 列标志位，详见：[列标志位](#列标志位) |
 | Column Value   | Any    | 列值   |
-
 
 ### DDL Event
 
