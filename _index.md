@@ -35,7 +35,7 @@ Designed for the cloud, TiDB provides flexible scalability, reliability and secu
 - [Hardware and Software Requirements](/hardware-and-software-requirements.md)
 - [Check Environment and Configuration](/check-before-deployment.md)
 - [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md)
-- [Use TiFlash for Analytical Processing](/tiflash/use-tiflash.md)
+- [Use TiFlash for Analytical Processing](/tiflash/tiflash-overview.md)
 - [Deploy TiDB in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable)
 
 </NavColumn>
