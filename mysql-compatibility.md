@@ -52,7 +52,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 > **注意：**
 >
 > * `tidb_allow_remove_auto_inc` 要求版本号 >= v2.1.18 或者 >= v3.0.4。
-> * 表的 `AUTO_ID_CACHE` 属性要求版本号 >= v3.0.14 或者 >= v3.1.2 或者 >= v4.0.rc-2。
+> * 表的 `AUTO_ID_CACHE` 属性要求版本号 >= v3.0.14 或者 >= v3.1.2 或者 >= v4.0.0-rc.2。
 > * 若创建表时没有指定主键时，TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
 
 ```sql
@@ -131,19 +131,19 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 - 字符集：
     + TiDB 默认：`utf8mb4`。
     + MySQL 5.7 默认：`latin1`。
-    + MySQL 8.0 默认： `utf8mb4`。
+    + MySQL 8.0 默认：`utf8mb4`。
 
 - 排序规则：
-    + TiDB 中 `utf8mb4` 字符集默认: `utf8mb4_bin`。
-    + MySQL 5.7 中 `utf8mb4` 字符集默认: `utf8mb4_general_ci`。
-    + MySQL 8.0 中 `utf8mb4` 字符集默认: `utf8mb4_0900_ai_ci`。
+    + TiDB 中 `utf8mb4` 字符集默认：`utf8mb4_bin`。
+    + MySQL 5.7 中 `utf8mb4` 字符集默认：`utf8mb4_general_ci`。
+    + MySQL 8.0 中 `utf8mb4` 字符集默认：`utf8mb4_0900_ai_ci`。
 
 - `foreign_key_checks`：
-    + TiDB 默认: `OFF`，且仅支持设置该值为 `OFF`。
-    + MySQL 5.7 默认： `ON`。
+    + TiDB 默认：`OFF`，且仅支持设置该值为 `OFF`。
+    + MySQL 5.7 默认：`ON`。
 
 - SQL mode：
-    + TiDB 默认： `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
+    + TiDB 默认：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
     + MySQL 5.7 默认 与 TiDB 相同。
     + MySQL 8.0 默认 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION`。
 
@@ -163,7 +163,7 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 #### 时区
 
-- TiDB 采用系统当前安装的所有时区规则进行计算（一般为 `tzdata` 包）, 不需要导入时区表数据就能使用所有时区名称，无法通过导入时区表数据的形式修改计算规则。
+- TiDB 采用系统当前安装的所有时区规则进行计算（一般为 `tzdata` 包），不需要导入时区表数据就能使用所有时区名称，无法通过导入时区表数据的形式修改计算规则。
 
 - MySQL 默认使用本地时区，依赖于系统内置的当前的时区规则（例如什么时候开始夏令时等）进行计算；且在未[导入时区表数据](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation)的情况下不能通过时区名称来指定时区。
 
@@ -171,7 +171,7 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 - 与 MySQL 一样，TiDB 默认启用了 `NO_ZERO_DATE` 和 `NO_ZERO_IN_DATE` 模式，但是 TiDB 与 MySQL 在处理这两个 SQL 模式有以下不同：
     - TiDB 在非严格模式下启用以上两个 SQL 模式，插入零月/零日/零日期不会给出警告，MySQL 则会给出对应的警告。
-    - TiDB 在严格模式下，启用了 `NO_ZERO_DATE` ，仍然能够插入零日期；如果启用了 `NO_ZERO_IN_DATE` 则无法插入零月/零日日期。MySQL 在严格模式下则都无法插入两种类型的日期。
+    - TiDB 在严格模式下，启用了 `NO_ZERO_DATE`，仍然能够插入零日期；如果启用了 `NO_ZERO_IN_DATE` 则无法插入零月/零日日期。MySQL 在严格模式下则都无法插入两种类型的日期。
 
 ### 类型系统
 
@@ -181,4 +181,4 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 + 不支持 SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)。
 
-+ 不支持 `SQL_TSI_*`（包括 SQL_TSI_YEAR、SQL_TSI_MONTH、SQL_TSI_WEEK、SQL_TSI_DAY、SQL_TSI_HOUR、SQL_TSI_MINUTE 和 SQL_TSI_SECOND）。
++ 不支持 `SQL_TSI_*`（包括 `SQL_TSI_YEAR`、`SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`）。
