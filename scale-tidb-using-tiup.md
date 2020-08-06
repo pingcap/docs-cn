@@ -98,6 +98,10 @@ pd_servers:
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
 
+> **注意：**
+>
+> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
+
 预期输出 Scaled cluster `<cluster-name>` out successfully 信息，表示扩容操作成功。
 
 ### 3. 检查集群状态
@@ -150,6 +154,10 @@ tiflash_servers:
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
 
+> **注意：**
+>
+> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
+
 ### 3. 查看集群状态
 
 {{< copyable "shell-regular" >}}
@@ -193,6 +201,10 @@ cdc_servers:
 ```shell
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
+
+> **注意：**
+>
+> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
 
 ### 3. 查看集群状态
 

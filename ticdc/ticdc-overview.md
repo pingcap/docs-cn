@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 
 # TiCDC 简介
 
-> **注意：**
+> **警告：**
 >
 > TiCDC 目前为实验特性，不建议在生产环境中使用。
 
@@ -81,9 +81,18 @@ TiCDC 的系统架构如下图所示：
 - 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。
 - TiCDC 集群扩容后，不支持将已有的同步表调度到新的 TiCDC 节点中。
 
-## TiCDC 部署和任务管理
+## TiCDC 安装和部署
 
-TiCDC 的详细部署和任务管理说明请参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)。
+在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件，只需在 TiUP 启动 TiDB 集群时的配置文件中 [加入 TiCDC 部分](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件) 即可。
+
+目前也支持使用 TiUP 或 binary 方式在原有 TiDB 集群上新增 TiCDC 组件，详细部署方案请参考 [部署安装 TiCDC](/ticdc/manage-ticdc.md#部署安装-ticdc)。
+
+## TiCDC 集群管理和同步任务管理
+
+目前支持使用 `cdc cli` 工具或 HTTP 接口来管理 TiCDC 集群状态和数据同步任务。详细操作见：
+
+- [使用 `cdc cli` 工具来管理集群状态和数据同步](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)
+- [使用 HTTP 接口管理集群状态和数据同步](/ticdc/manage-ticdc.md#使用-http-接口管理集群状态和数据同步)
 
 ## TiCDC 常见问题
 
