@@ -1,28 +1,28 @@
 ---
-title: Encryption-At-Rest for TiKV
-summary: Learn how to enable encryption-at-rest to protect sensitive data.
-aliases: ['/docs/dev/encryption-at-rest/']
+title: Encryption at Rest for TiKV
+summary: Learn how to enable encryption at rest to protect sensitive data.
+aliases: ['/docs/dev/encryption at rest/']
 ---
 
-# Encryption-At-Rest for TiKV <span class="version-mark">New in v4.0.0</span>
+# Encryption at Rest for TiKV <span class="version-mark">New in v4.0.0</span>
 
-Encryption-at-rest means that data is encrypted when it is stored. For databases, this feature is also referred to as TDE (transparent data encryption). This is opposed to encryption in flight (TLS) or encryption in use (rarely used). Different things could be doing encryption-at-rest (SSD drive, file system, cloud vendor, etc), but by having TiKV do the encryption before storage this helps ensure that attackers must authenticate with the database to gain access to data. For example, when an attacker gains access to the physical machine, data cannot be accessed by copying files on disk.
+Encryption at rest means that data is encrypted when it is stored. For databases, this feature is also referred to as TDE (transparent data encryption). This is opposed to encryption in flight (TLS) or encryption in use (rarely used). Different things could be doing encryption at rest (SSD drive, file system, cloud vendor, etc), but by having TiKV do the encryption before storage this helps ensure that attackers must authenticate with the database to gain access to data. For example, when an attacker gains access to the physical machine, data cannot be accessed by copying files on disk.
 
-TiKV supports encryption-at-rest starting from v4.0.0. The feature allows TiKV to transparently encrypt data files using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [CTR](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation)  mode. To enable encryption-at-rest, an encryption key must be provided by user and this key is called master key. The master key can be provided via AWS KMS (recommended), or specifying a key stored as plaintext in a file. TiKV automatically rotates data keys that it used to encrypt actual data files. Manually rotating the master key can be done occassionally. Note that encryption-at-rest only encrypts data at rest (i.e. on disk) and not while data is transferred over network. It is advised to use TLS together with encryption-at-rest.
+TiKV supports encryption at rest starting from v4.0.0. The feature allows TiKV to transparently encrypt data files using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [CTR](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation)  mode. To enable encryption at rest, an encryption key must be provided by user and this key is called master key. The master key can be provided via AWS KMS (recommended), or specifying a key stored as plaintext in a file. TiKV automatically rotates data keys that it used to encrypt actual data files. Manually rotating the master key can be done occasionally. Note that encryption at rest only encrypts data at rest (i.e. on disk) and not while data is transferred over network. It is advised to use TLS together with encryption at rest.
 
-Also from v4.0.0, BR supports S3 server-side encryption (SSE) when backing up to S3. A customer owned AWS KMS key can also be used together with S3 server-side encrytion.
+Also from v4.0.0, BR supports S3 server-side encryption (SSE) when backing up to S3. A customer owned AWS KMS key can also be used together with S3 server-side encryption.
 
 ## Caveats
 
 The current version of TiKV encryption has some drawbacks that we are working actively to address in the future versions.
 
-* When a TiDB cluster is deployed, the majority of user data is stored in TiKV nodes, and that data will be encrypted when encryption is enabled. However, a small amount of user data is stored in PD nodes as metadata (for example, secondary index keys used as TiKV region boundaries). As of v4.0.0, PD doesn't support encryption-at-rest. It is recommended to use storage-level encryption (for example, file system encryption) to help protect sensitive data stored in PD.
-* As of v4.0.0, TiFlash doesn't support encryption-at-rest. When deploying TiKV with TiFlash, data stored in TiFlash is not encrypted.
-* TiKV currently does not exclude encryption keys and user data from core dumps. It is advised to disable core dumps for the TiKV process when using encryption-at-rest. This is not currently handled by TiKV itself.
+* When a TiDB cluster is deployed, the majority of user data is stored in TiKV nodes, and that data will be encrypted when encryption is enabled. However, a small amount of user data is stored in PD nodes as metadata (for example, secondary index keys used as TiKV region boundaries). As of v4.0.0, PD doesn't support encryption at rest. It is recommended to use storage-level encryption (for example, file system encryption) to help protect sensitive data stored in PD.
+* As of v4.0.0, TiFlash doesn't support encryption at rest. When deploying TiKV with TiFlash, data stored in TiFlash is not encrypted.
+* TiKV currently does not exclude encryption keys and user data from core dumps. It is advised to disable core dumps for the TiKV process when using encryption at rest. This is not currently handled by TiKV itself.
 * TiKV tracks encrypted data files using the absolute path of the files. As a result, once encryption is turned on for a TiKV node, the user should not change data file paths config such as `storage.data-dir`, `raftstore.raftdb-path`, `rocksdb.wal-dir` and `raftdb.wal-dir`.
 * TiKV info log contains user data for debugging purposes. The info log and this data in it are not encrypted.
 
-## TiKV Encryption-At-Rest
+## TiKV encryption at rest
 
 ### Overview
 
@@ -99,15 +99,15 @@ region = "us-west-2"
 
 ### Monitoring and Debugging
 
-To monitor encryption-at-rest, if you deploy TiKV with Grafana, you can look at the **Encryption** panel in the **TiKV-Details** dashboard. There are a few metrics to look for:
+To monitor encryption at rest, if you deploy TiKV with Grafana, you can look at the **Encryption** panel in the **TiKV-Details** dashboard. There are a few metrics to look for:
 
 * Encryption initialized: 1 if encryption is initialized during TiKV startup, 0 otherwise. In case of master key rotation, after encryption is initialized, TiKV do not need access to the previous master key.
-* Encryption data keys: number of existings data keys. The number is bumped by 1 after each time data key rotation happened. Use this metrics to monitor if data key rotation works as expected.
-* Encrypted files: number of encrypted data files currently exists. Compare this number to existings data files in the data directory to estimate portion of data being encrypted, when turning on encryption for a previously unencrypted cluster.
+* Encryption data keys: number of existing data keys. The number is bumped by 1 after each time data key rotation happened. Use this metrics to monitor if data key rotation works as expected.
+* Encrypted files: number of encrypted data files currently exists. Compare this number to existing data files in the data directory to estimate portion of data being encrypted, when turning on encryption for a previously unencrypted cluster.
 * Encryption meta file size: size of the encryption meta data files.
 * Read/Write encryption meta duration: the extra overhead to operate on metadata for encryption.
 
-For debugging, the `tikv-ctl` command can be used to dump encryption metadata such as encryption method and data key id used to encryption the file, as well as list of data keys. Since the operation can expose senstive data, it is not recommended to use in production. Please refer to [TiKV Control](/tikv-control.md#dump-encryption-metadata] document.
+For debugging, the `tikv-ctl` command can be used to dump encryption metadata such as encryption method and data key id used to encryption the file, as well as list of data keys. Since the operation can expose sensitive data, it is not recommended to use in production. Please refer to [TiKV Control](/tikv-control.md#dump-encryption-metadata] document.
 
 ## BR S3 server-side encryption
 
