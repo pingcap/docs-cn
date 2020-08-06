@@ -12,7 +12,8 @@ TiDB 版本：4.0.5
 
 + TiDB
 
-    - 
+    - 修改 `drop partition` 和 `truncate partition` 的参数 [#18930](https://github.com/pingcap/tidb/pull/18930)
+    - 为 `add partition` 操作添加状态检查 [#18865](https://github.com/pingcap/tidb/pull/18865)
 
 ## 新功能
 
