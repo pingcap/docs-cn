@@ -84,51 +84,6 @@ TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控
 
 ### 内建函数
 
-<<<<<<< HEAD
-- 支持常用的 MySQL 内建函数，有部分函数并未支持，参考 [SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
-
-### DDL 的限制
-
-- Add Index
-    + 同一条 SQL 语句不支持创建多个索引。
-    + 仅在语法在支持创建不同类型的索引 (HASH/BTREE/RTREE），功能未实现。
-
-- Add Column
-    + 不支持设置`PRIMARY KEY` 及 `UNIQUE KEY`，不支持设置 `AUTO_INCREMENT` 属性。可能输出的错误信息：`unsupported add column '%s' constraint PRIMARY/UNIQUE/AUTO_INCREMENT KEY`
-
-- Drop Column
-    + 不支持删除主键列及索引列，可能输出的错误信息：`Unsupported drop integer primary key/column a with index covered`。
-    
-- Drop Primary Key
-    + 仅支持删除建表时启用了 `alter-primary-key` 配置项的表的主键。可能输出的错误信息: `Unsupported drop primary key when alter-primary-key is false`。
-    
-- Order By 忽略所有列排序相关的选项。
-
-- Change/Modify Column
-    + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`，可能输出的错误信息：`length %d is less than origin %d`。
-    + 不支持修改 `DECIMAL` 类型的精度，可能输出的错误信息：`can't change decimal column precision`。
-    + 不支持更改 `UNSIGNED` 属性，可能输出的错误信息：`can't change unsigned integer to signed or vice versa`。
-    + 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
-
-- `LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}`
-    + 仅在语法上支持，功能未实现，故所有的 DDL 都不会锁表。
-
-- `ALGORITHM [=] {DEFAULT|INSTANT|INPLACE|COPY}`
-    + 支持 `ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 语法，但行为与 MySQL 有所不同，MySQL 中的一些 `INPLACE` 操作在 TiDB 中的 是`INSTANT` 操作。
-    + 仅在语法上支持 `ALGORITHM=COPY`，功能未实现，会返回警告信息。
-
-- 单条 `ALTER TABLE` 语句中无法完成多个操作。例如：不能用一条语句来添加多个列或多个索引。可能输出的错误信息：`Unsupported multi schema change`。
-
-- Table Option 仅支持`AUTO_INCREMENT`、`CHARACTER SET`、`COLLATE`、`COMMENT`，不支持以下语法:
-    + `WITH/WITHOUT VALIDATION`
-    + `SECONDARY_LOAD/SECONDARY_UNLOAD`
-    + `CHECK/DROP CHECK`
-    + `STATS_AUTO_RECALC/STATS_SAMPLE_PAGES`
-    + `SECONDARY_ENGINE`
-    + `ENCRYPTION`
-
-- Table Partition 分区类型支持 Hash、Range；支持 Add/Drop/Truncate/Coalesce；忽略其他分区操作，可能错误信息：`Warning: Unsupported partition type, treat as normal table`，不支持以下语法:
-=======
 支持常用的 MySQL 内建函数，有部分函数并未支持。可通过执行 `SHOW BUILTINS` 语句查看可用的内建函数。参考 [SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
 
 ### DDL 的限制
@@ -144,7 +99,6 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。可能与 MyS
 * 更改/修改十进制列时，不支持更改预置。
 * 更改/修改整数列时，不允许更改 `UNSIGNED` 属性。
 * 分区表支持 Hash、Range 和 `Add`/`Drop`/`Truncate`/`Coalesce`。其他分区操作将被忽略，可能会报 `Warning: Unsupported partition type, treat as normal table` 错误。不支持以下分区表语法：
->>>>>>> 32eed4a... mysql-compatibility: Improve MySQL Compatibility (#4024)
     + `PARTITION BY LIST`
     + `PARTITION BY KEY`
     + `SUBPARTITION`
