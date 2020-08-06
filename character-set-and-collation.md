@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/character-set-and-collation/','/docs-cn/dev/reference/sq
 
 ## 字符集和排序规则的概念
 
-字符集 (character set) 是符号与编码的集合。TiDB 中的默认字符集是 utf8mb4，与 MySQL 8.0 及更高版本中的默认字符匹配。
+字符集 (character set) 是符号与编码的集合。TiDB 中的默认字符集是 utf8mb4，与 MySQL 8.0 及更高版本中的默认字符集匹配。
 
 排序规则 (collation) 是在字符集中比较字符以及字符排序顺序的规则。例如，在二进制排序规则中，比较“A”和“a”的结果是不一样的：
 
@@ -43,7 +43,7 @@ mysql> SELECT 'A' = 'a';
 1 row in set (0.00 sec)
 ```
 
-TiDB 默认使用二进制排序规则。与 MySQL 不同，MySQL 默认使用不区分大小写的排序规则。
+TiDB 默认使用二进制排序规则。这一点与 MySQL 不同，MySQL 默认使用不区分大小写的排序规则。
 
 ## 支持的字符集和排序规则
 
@@ -84,7 +84,7 @@ mysql> show collation;
 5 rows in set (0.01 sec)
 ```
 
-TiDB支持以下排序规则：
+TiDB 支持以下排序规则：
 
 ```sql
 mysql> show collation;
@@ -122,13 +122,13 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 2 rows in set (0.00 sec)
 ```
 
-## TiDB中的`utf8`和`ut8mb4`
+## TiDB 中的 `utf8` 和 `ut8mb4`
 
-MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以在基本多语言平面（BMP）中存储字符，但不足以存储表情符号等字符。因此，建议改用字符集`utf8mb4`。
+MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以在基本多语言平面 (BMP) 中存储字符，但不足以存储表情符号等字符。因此，建议改用字符集`utf8mb4`。
 
-默认情况下，TiDB同样限制字符集 `utf8` 为最多 3 个字节，以确保TiDB中创建的数据可以在 MySQL 中顺利恢复。可以在 TiDB 配置文件中将 `check-mb4-value-in-utf8` 的值更改为 `FALSE` 来禁用此功能。
+默认情况下，TiDB 同样限制字符集 `utf8` 为最多 3 个字节，以确保 TiDB 中创建的数据可以在 MySQL 中顺利恢复。你可以禁用此功能，方法是在 TiDB 配置文件中将 `check-mb4-value-in-utf8` 的值更改为 `FALSE`。
 
-以下示例演示了在表中插入 4 字节的表情符号字符时的默认行为。`utf8` 字符集下`INSERT` 语句不能执行，`ut8mb4` 字符集下可以执行 `INSERT` 语句：
+以下示例演示了在表中插入 4 字节的表情符号字符时的默认行为。`utf8` 字符集下 `INSERT` 语句不能执行，`ut8mb4` 字符集下可以执行 `INSERT` 语句：
 
 ```sql
 mysql> CREATE TABLE utf8_test (
