@@ -36,7 +36,7 @@ TiDB 版本：4.0.5
 + TiDB
 
     - 优化 `Union` 场景下 `DecodePlan` 的开销 [#18941](https://github.com/pingcap/tidb/pull/18941)
-    - Reduce GC scan locks when meeting region cache miss [#18876](https://github.com/pingcap/tidb/pull/18876)
+    - 减少 GC 在遇到 region miss 时 scan lock 的次数 [#18876](https://github.com/pingcap/tidb/pull/18876)
     - 减少统计信息 feedback 对集群性能的影响 [#18772](https://github.com/pingcap/tidb/pull/18772)
     - 支持在 RPC 请求返回结果前取消操作. [#18580](https://github.com/pingcap/tidb/pull/18580)
     - 支持使用 HTTP API 生成带有相关监控项名称的 profile. [#18531](https://github.com/pingcap/tidb/pull/18531)
@@ -47,6 +47,7 @@ TiDB 版本：4.0.5
     - 解决 `MemTracker` 潜在的死锁问题 [#18395](https://github.com/pingcap/tidb/pull/18395)
     - 提高字符串转换为整数类型和小数类型的兼容性，支持将 json 转换为时间日期类型. [#18159](https://github.com/pingcap/tidb/pull/18159)
     - 支持限制 `TableReader` 算子内存使用. [#18392](https://github.com/pingcap/tidb/pull/18392)
+    - 在 `batch cop` 请求重试时避免多次 backoff [#18999](https://github.com/pingcap/tidb/pull/18999)
 
 + PD
 
@@ -62,7 +63,11 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 
+    - 添加更多的 Grafana 监控面板，比如 CPU/IO/RAM 使用量，以及存储引擎的各项指标等。[#965](https://github.com/pingcap/tics/pull/965)
+    - 通过优化 Raft logs 的处理逻辑，减少 IO 操作。[#960](https://github.com/pingcap/tics/pull/960)
+    - 加快 add partition ddl 之后 region 的调度性能。[#959](https://github.com/pingcap/tics/pull/959)
+    - 优化 DeltaTree 引擎中 delta 数据的整理，减少读写放大。[#952](https://github.com/pingcap/tics/pull/952)
+    - 通过使用多线程对 region snapshot 进行预处理，优化 apply 性能。[#944](https://github.com/pingcap/tics/pull/944)
 
 + Tools
 
@@ -100,6 +105,8 @@ TiDB 版本：4.0.5
     - 修复由于错误的设置 collation 导致 `collation` 函数返回错误结果的问题 [#17231](https://github.com/pingcap/tidb/pull/17231)
     - 修复 `STR_TO_DATE` 和 MySQL 行为不一致的问题 [#18727](https://github.com/pingcap/tidb/pull/18727)
     - 修复 `cluster_info` 表中，TiDB 版本和 PD/TiKV 不一致的问题. [#18413](https://github.com/pingcap/tidb/pull/18413)
+    - 修复悲观事务未能检查出重复数据导致可以重复写入冲突数据的问题. [#19004](https://github.com/pingcap/tidb/pull/19004)
+    - 修复 `union select for update` 存在并发竞态的问题 . [#19006](https://github.com/pingcap/tidb/pull/19006)
 
 + PD
 
