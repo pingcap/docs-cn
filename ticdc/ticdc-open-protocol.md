@@ -183,7 +183,7 @@ Value:
     | 参数       | 类型   | 说明           |
     | :-------- | :----- | :------------ |
     | DDL Query | String | DDL Query SQL |
-    | DDL Type  | String | DDL 类型，详见：[Column 和 DDL 的类型码](#column-和-ddl-的类型码)  |
+    | DDL Type  | String | DDL 类型，详见：[DDL 的类型码](#ddl-的类型码)  |
 
 ### Resolved Event
 
