@@ -59,7 +59,7 @@ TiDB 版本：4.0.5
 
 + TiKV
 
-    - 
+    - 定义错误代码 [#8387](https://github.com/tikv/tikv/pull/8387)
 
 + TiFlash
 
@@ -116,7 +116,8 @@ TiDB 版本：4.0.5
 
 + TiKV
 
-    - 
+    - 修复开启 hibernate region 时，某些情况下 leader 选举慢的问题 [#8292](https://github.com/tikv/tikv/pull/8292) [#8319](https://github.com/tikv/tikv/pull/8319)
+    - 修复 Region 调度产生的一个内存泄露问题 [#8357](https://github.com/tikv/tikv/pull/8357)
 
 + TiFlash
 
