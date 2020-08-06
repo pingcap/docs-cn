@@ -14,7 +14,7 @@ TiDB Ansible 版本：2.1.17
 - 新特性
     - TiDB 的 `SHOW TABLE REGIONS` 语法新增 `WHERE` 条件子句
     - TiKV、PD 新增 `config-check` 功能，用于配置项检查
-    - pd-ctl 新增 `remove-tomestone` 命令，支持清理 tombstone store 记录
+    - pd-ctl 新增 `remove-tomstone` 命令，支持清理 tombstone store 记录
     - Reparo 新增 `worker-count` 和 `txn-batch` 配置项，用于控制恢复速率
 
 - 改进提升
