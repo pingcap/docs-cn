@@ -45,7 +45,11 @@ TiDB 版本：4.0.5
 
 + PD
 
-    - 
+    - 支持打散特殊存储引擎节点（例如 TiFlash）上的 Region [#2706](https://github.com/pingcap/pd/pull/2706)
+    - 支持通过 API 指定某范围内的 Region 优先进行调度 [#2687](https://github.com/pingcap/pd/pull/2687)
+    - 优化 Region 打散操作，使得 Leader 分布更均匀 [#2684](https://github.com/pingcap/pd/pull/2684)
+    - 针对 TSO 请求添加更多测试和日志 [#2678](https://github.com/pingcap/pd/pull/2678)
+    - 避免 Region Leader 变化时可能产生的不必要的缓存更新 [#2672](https://github.com/pingcap/pd/pull/2672)
 
 + TiKV
 
@@ -85,7 +89,8 @@ TiDB 版本：4.0.5
 
 + PD
 
-    - 
+    - 修复 PD leader 切换时可能导致一段时间内 TSO 不可用的问题 [#2666](https://github.com/pingcap/pd/pull/2666)
+    - 修复开启 Placement Rule 时，某些情况下 Region 无法调度至最佳状态的问题 [#2720](https://github.com/pingcap/pd/pull/2720)
 
 + TiKV
 
