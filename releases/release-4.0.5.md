@@ -112,6 +112,7 @@ TiDB 版本：4.0.5
 
     - 修复 PD leader 切换时可能导致一段时间内 TSO 不可用的问题 [#2666](https://github.com/pingcap/pd/pull/2666)
     - 修复开启 Placement Rule 时，某些情况下 Region 无法调度至最佳状态的问题 [#2720](https://github.com/pingcap/pd/pull/2720)
+    - 修复开启 Placement Rule 后，Leader Balance 不工作的问题 [#2726](https://github.com/pingcap/pd/pull/2726)
 
 + TiKV
 
