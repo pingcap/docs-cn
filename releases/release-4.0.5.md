@@ -18,7 +18,8 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 
+    - 支持与 TiDB 统一的 log 格式。[#977](https://github.com/pingcap/tics/pull/977), [#978](https://github.com/pingcap/tics/pull/978)
+
 
 + Tools
 
