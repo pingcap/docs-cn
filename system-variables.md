@@ -419,7 +419,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：-1
 - 这个变量用来设置 hash join 算法的并发度。
 
-> **注意**
+> **注意：**
 >
 > 从 v5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
@@ -429,7 +429,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：-1
 - 这个变量用来设置并行 hash aggregation 算法 final 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 
-> **注意**
+> **注意：**
 >
 > 从 v5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
@@ -439,7 +439,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：-1
 - 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 
-> **注意**
+> **注意：**
 >
 > 从 v5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
@@ -455,7 +455,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：-1
 - 这个变量用来设置 index lookup 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
-> **注意**
+> **注意：**
 >
 > 从 v5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
@@ -465,7 +465,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：-1
 - 这个变量用来设置 index lookup join 算法的并发度。
 
-> **注意**
+> **注意：**
 >
 > 从 v5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
@@ -481,8 +481,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 默认值：5
 
-这个变量用来统一设置各个 SQL 算子的并发度。
-包括：
+这个变量用来统一设置各个 SQL 算子的并发度。包括：
 
 - index lookup
 - index lookup join
@@ -700,7 +699,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：-1
 - 这个变量用来设置 `Projection` 算子的并发度。
 
-> **注意**
+> **注意：**
 >
 > 从 v5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
@@ -922,7 +921,7 @@ set tidb_slow_log_threshold = 200;
 
 - 这个变量用于设置 window 算子的并行度。
 
-> **注意**
+> **注意：**
 >
 > 从 v5.0.0 版本开始，该变量将被废弃，请使用 [tidb_executor_concurrency](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
