@@ -73,7 +73,7 @@ TiDB Ansible 版本：2.1.17
 ## PD
 
 - PD 新增 `config-check` 选项，用于检查 PD 配置项是否合法 [#1725](https://github.com/pingcap/pd/pull/1725)
-- pd-ctl 新增 `remove-tomestone` 命令，支持清理 tombstone store 记录 [#1705](https://github.com/pingcap/pd/pull/1705)
+- pd-ctl 新增 `remove-tombstone` 命令，支持清理 tombstone store 记录 [#1705](https://github.com/pingcap/pd/pull/1705)
 - 支持主动下发 Operator，加快调度速度 [#1686](https://github.com/pingcap/pd/pull/1686)
 
 ## Tools
