@@ -18,7 +18,7 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 支持与 TiDB 统一的 log 格式。[#977](https://github.com/pingcap/tics/pull/977), [#978](https://github.com/pingcap/tics/pull/978)
+    - 支持与 TiDB 统一的 log 格式
 
 
 + Tools
@@ -63,11 +63,11 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 添加更多的 Grafana 监控面板，比如 CPU/IO/RAM 使用量，以及存储引擎的各项指标等。[#965](https://github.com/pingcap/tics/pull/965)
-    - 通过优化 Raft logs 的处理逻辑，减少 IO 操作。[#960](https://github.com/pingcap/tics/pull/960)
-    - 加快 add partition ddl 之后 region 的调度性能。[#959](https://github.com/pingcap/tics/pull/959)
-    - 优化 DeltaTree 引擎中 delta 数据的整理，减少读写放大。[#952](https://github.com/pingcap/tics/pull/952)
-    - 通过使用多线程对 region snapshot 进行预处理，优化 apply 性能。[#944](https://github.com/pingcap/tics/pull/944)
+    - 添加更多的 Grafana 监控面板，比如 CPU/IO/RAM 使用量，以及存储引擎的各项指标等
+    - 通过优化 Raft logs 的处理逻辑，减少 IO 操作
+    - 加快 add partition DDL 之后 region 的调度性能
+    - 优化 DeltaTree 引擎中 delta 数据的整理，减少读写放大
+    - 通过使用多线程对 region snapshot 进行预处理，优化 apply 性能
 
 + Tools
 
@@ -120,8 +120,8 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 修复 TiFlash 从旧版本升级到新版本的过程中，由于包含特殊字符而导致进程无法启动的问题。[#971](https://github.com/pingcap/tics/pull/971)
-    - 修复 TiFlash 进程在初始化过程中，一旦出现任何异常就无法退出的问题。[#953](https://github.com/pingcap/tics/pull/953)
+    - 修复 TiFlash 从旧版本升级到新版本的过程中，由于包含特殊字符而导致进程无法启动的问题
+    - 修复 TiFlash 进程在初始化过程中，一旦出现任何异常就无法退出的问题
 
 + Tools
 
