@@ -86,7 +86,6 @@ TiDB 版本：4.0.5
 
         - 优化了日志 [#352](https://github.com/pingcap/tidb-lightning/pull/352)
 
-
 ## Bug 修复
 
 + TiDB
@@ -96,14 +95,14 @@ TiDB 版本：4.0.5
     - 修复大事务提前终止的问题 [#18813](https://github.com/pingcap/tidb/pull/18813)
     - 修复使用 `collation` 相关函数查询结果错误的问题 [#18735](https://github.com/pingcap/tidb/pull/18735)
     - 修复 `getAutoIncrementID()` 函数逻辑错误导致导出工具报 'table not exist' 错误的问题 [#18692](https://github.com/pingcap/tidb/pull/18692)
-    - 修复 `select a from t having t.a` 报 `unknown column error` 的问题  [#18434](https://github.com/pingcap/tidb/pull/18434)
+    - 修复 `select a from t having t.a` 报 `unknown column error` 的问题 [#18434](https://github.com/pingcap/tidb/pull/18434)
     - 修复 hash 分区表分区键为整数类型时，写入64位无符号类型导致溢出 panic 的问题 [#18186](https://github.com/pingcap/tidb/pull/18186)
     - 修复 `char` 函数行为错误的问题 [#18122](https://github.com/pingcap/tidb/pull/18122)
     - 修复 `ADMIN REPAIR TABLE` 无法解析 range 分区表表达式中整数的问题 [#17988](https://github.com/pingcap/tidb/pull/17988)
     - 修复 `SET CHARSET` 行为不正确的问题 [#17289](https://github.com/pingcap/tidb/pull/17289)
     - 修复由于错误的设置 collation 导致 `collation` 函数返回错误结果的问题 [#17231](https://github.com/pingcap/tidb/pull/17231)
     - 修复 `STR_TO_DATE` 和 MySQL 行为不一致的问题 [#18727](https://github.com/pingcap/tidb/pull/18727)
-    - 修复 `cluster_info` 表中，TiDB 版本和 PD/TiKV 不一致的问题. [#18413](https://github.com/pingcap/tidb/pull/18413)
+    - 修复 `cluster_info` 表中，TiDB 版本和 PD/TiKV 不一致的问题 [#18413](https://github.com/pingcap/tidb/pull/18413)
     - 修复悲观事务未能检查出重复数据导致可以重复写入冲突数据的问题 [#19004](https://github.com/pingcap/tidb/pull/19004)
     - 修复 `union select for update` 存在并发竞态的问题 [#19006](https://github.com/pingcap/tidb/pull/19006)
     - 修复自查询含有 `PointGet` 算子时返回结果错误的问题 [#19046](https://github.com/pingcap/tidb/pull/19046)
@@ -116,7 +115,7 @@ TiDB 版本：4.0.5
 
 + TiKV
 
-    - 修复开启 hibernate region 时，某些情况下 leader 选举慢的问题
+    - 修复开启 Hibernate Region 时，某些情况下 leader 选举慢的问题
     - 修复 Region 调度产生的一个内存泄露问题
 
 + TiFlash
