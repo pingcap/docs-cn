@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_INFO
 summary: 了解 TiDB 集群拓扑表 `CLUSTER_INFO`。
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-info/','/docs-cn/dev/reference/system-databases/cluster-info/']
+aliases: ['/docs-cn/dev/system-tables/system-table-cluster-info/','/docs-cn/dev/reference/system-databases/cluster-info/','/zh/tidb/dev/system-table-cluster-info/']
 ---
 
 # CLUSTER_INFO
@@ -11,7 +11,8 @@ aliases: ['/docs-cn/dev/system-tables/system-table-cluster-info/','/docs-cn/dev/
 {{< copyable "sql" >}}
 
 ```sql
-desc information_schema.cluster_info;
+USE information_schema;
+desc cluster_info;
 ```
 
 ```sql
@@ -42,15 +43,16 @@ desc information_schema.cluster_info;
 {{< copyable "sql" >}}
 
 ```sql
-select * from information_schema.cluster_info;
+SELECT * FROM cluster_info;
 ```
 
 ```sql
-+------+-----------------+-----------------+-------------+------------------------------------------+---------------------------+--------------+
-| TYPE | INSTANCE        | STATUS_ADDRESS  | VERSION     | GIT_HASH                                 | START_TIME                | UPTIME       |
-+------+-----------------+-----------------+-------------+------------------------------------------+---------------------------+--------------+
-| tidb | 0.0.0.0:4000    | 0.0.0.0:10080   | 4.0.0-beta  | b5ea3232afa970f00db7a0fb13ed10857db1912e | 2020-03-02T16:27:28+08:00 | 4m18.845924s |
-| pd   | 127.0.0.1:2379  | 127.0.0.1:2379  | 4.1.0-alpha | 4b9bcbc1425c96848042b6d700eb63f84e72b338 | 2020-03-02T16:27:17+08:00 | 4m29.845928s |
-| tikv | 127.0.0.1:20160 | 127.0.0.1:20180 | 4.1.0-alpha | 7c4202a1c8faf60eda659dfe0e64e31972488e78 | 2020-03-02T16:27:28+08:00 | 4m18.845929s |
-+------+-----------------+-----------------+-------------+------------------------------------------+---------------------------+--------------+
++------+-----------------+-----------------+--------------+------------------------------------------+---------------------------+---------------------+
+| TYPE | INSTANCE        | STATUS_ADDRESS  | VERSION      | GIT_HASH                                 | START_TIME                | UPTIME              |
++------+-----------------+-----------------+--------------+------------------------------------------+---------------------------+---------------------+
+| tidb | 0.0.0.0:4000    | 0.0.0.0:10080   | 4.0.0-beta.2 | 0df3b74f55f8f8fbde39bbd5d471783f49dc10f7 | 2020-07-05T09:25:53-06:00 | 26h39m4.352862693s  |
+| pd   | 127.0.0.1:2379  | 127.0.0.1:2379  | 4.1.0-alpha  | 1ad59bcbf36d87082c79a1fffa3b0895234ac862 | 2020-07-05T09:25:47-06:00 | 26h39m10.352868103s |
+| tikv | 127.0.0.1:20165 | 127.0.0.1:20180 | 4.1.0-alpha  | b45e052df8fb5d66aa8b3a77b5c992ddbfbb79df | 2020-07-05T09:25:50-06:00 | 26h39m7.352869963s  |
++------+-----------------+-----------------+--------------+------------------------------------------+---------------------------+---------------------+
+3 rows in set (0.00 sec)
 ```
