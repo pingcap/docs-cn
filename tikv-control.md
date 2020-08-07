@@ -329,9 +329,9 @@ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 
 ### 动态修改 TiKV 的配置
 
-使用 `modify-tikv-config` 命令可以动态修改配置参数，目前支持动态修改的配置与具体的行为与通过 SQL 动态修改配置功能相同，可参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-TiKV-配置)。
+使用 `modify-tikv-config` 命令可以动态修改配置参数。目前可动态修改的 TiKV 配置与具体的修改行为与 SQL 动态修改配置功能相同，可参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-TiKV-配置)。
 
-- `-n` 用于指定完整配置名。支持动态修改的配置名可以参考 [在线修改 TiKV 配置](/dynamic-config.md#在线修改-TiKV-配置)中支持的配置项列表。
+- `-n` 用于指定完整的配置名。支持动态修改的配置名可以参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-TiKV-配置)中支持的配置项列表。
 - `-v` 用于指定配置值。
 
 设置 `shared block cache` 的大小：
