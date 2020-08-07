@@ -121,8 +121,8 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 修复 TiFlash 从旧版本升级到新版本的过程中，由于包含特殊字符而导致进程无法启动的问题
-    - 修复 TiFlash 进程在初始化过程中，一旦出现任何异常就无法退出的问题
+    - 修复 TiFlash 从旧版本升级到新版本的过程中，由于包含特殊字符而导致进程无法启动的问题 [#971](https://github.com/pingcap/tics/pull/971)
+    - 修复 TiFlash 进程在初始化过程中，一旦出现任何异常就无法退出的问题 [#953](https://github.com/pingcap/tics/pull/953)
 
 + Tools
 
