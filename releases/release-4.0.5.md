@@ -108,6 +108,7 @@ TiDB 版本：4.0.5
     - 修复 `cluster_info` 表中，TiDB 版本和 PD/TiKV 不一致的问题. [#18413](https://github.com/pingcap/tidb/pull/18413)
     - 修复悲观事务未能检查出重复数据导致可以重复写入冲突数据的问题. [#19004](https://github.com/pingcap/tidb/pull/19004)
     - 修复 `union select for update` 存在并发竞态的问题 . [#19006](https://github.com/pingcap/tidb/pull/19006)
+    - 修复自查询含有 `PointGet` 算子时返回结果错误的问题. [#19046](https://github.com/pingcap/tidb/pull/19046)
 
 + PD
 
