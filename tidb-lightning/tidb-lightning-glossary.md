@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 术语表
 summary: 了解 TiDB Lightning 相关的术语及定义。
-aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/glossary/']
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/reference/tools/tidb-lightning/glossary/']
 ---
 
 # TiDB Lightning 术语表
@@ -32,7 +32,7 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/glossary/']
 
 也称作 Back end（后端），用于接受 TiDB Lightning 解析结果。
 
-详情参阅 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)。
+详情参阅 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
 
 <!-- C -->
 
@@ -60,7 +60,9 @@ TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远
 
 ### Chunk
 
-指数据源中的单个文件。
+一段连续的源数据，通常相当于数据源中的单个文件。
+
+如果单个文件太大，TiDB Lightning 可以将单个文件拆分成多个文件块。
 
 ### Compaction
 
