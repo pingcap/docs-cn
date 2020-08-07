@@ -431,6 +431,9 @@ curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf06
 # 该配置会同时影响 filter 和 sink 相关配置，默认为 true
 case-sensitive = true
 
+# 是否输出 old value，从 v4.0.5 开始支持
+enable-old-value = false
+
 [filter]
 # 忽略指定 start_ts 的事务
 ignore-txn-start-ts = [1, 2]
