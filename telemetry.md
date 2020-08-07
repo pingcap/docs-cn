@@ -148,7 +148,7 @@ See [Deploy TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubern
 
 > **Note:**
 >
-> This configuration item requires TiDB Operator v1.1.2 or later to take effect.
+> This configuration item requires TiDB Operator v1.1.3 or later to take effect.
 
 </details>
 
@@ -168,7 +168,7 @@ SET GLOBAL tidb_enable_telemetry = 0;
 
 ### Disable TiDB Dashboard telemetry
 
-Configure [`dashboard.disable-telemetry = true`](/pd-configuration-file.md#disable-telemetry) to disable the TiDB Dashboard telemetry collection on all PD instances. You need to restart the running clusters for the configuration to take effect.
+Configure [`dashboard.enable-telemetry = false`](/pd-configuration-file.md#enable-telemetry) to disable the TiDB Dashboard telemetry collection on all PD instances. You need to restart the running clusters for the configuration to take effect.
 
 Detailed steps to disable telemetry for different deployment tools are listed below.
 
@@ -181,12 +181,12 @@ Create a configuration file `pd_config.toml` with the following content:
 
 ```toml
 [dashboard]
-disable-telemetry = true
+enable-telemetry = false
 ```
 
 Specify the `--config=pd_config.toml` command-line parameter when starting PD to take effect.
 
-See [PD Configuration Flags](/command-line-flags-for-pd-configuration.md#--config) and [PD Configuration File](/pd-configuration-file.md#disable-telemetry) for details.
+See [PD Configuration Flags](/command-line-flags-for-pd-configuration.md#--config) and [PD Configuration File](/pd-configuration-file.md#enable-telemetry) for details.
 
 </details>
 
@@ -199,7 +199,7 @@ Create a configuration file `pd_config.toml` with the following content:
 
 ```toml
 [dashboard]
-disable-telemetry = true
+enable-telemetry = false
 ```
 
 When starting TiUP Playground, specify the `--pd.config pd_config.toml` command-line parameter to take effect, for example:
@@ -224,7 +224,7 @@ Modify the deployment topology file `topology.yaml` to add the following content
 ```yaml
 server_configs:
   pd:
-    dashboard.disable-telemetry: true
+    dashboard.enable-telemetry: false
 ```
 
 </details>
@@ -237,7 +237,7 @@ Locate the following content in the `tidb-ansible/conf/pd.yml` configuration fil
 ```yaml
 dashboard:
   ...
-  # disable-telemetry: false
+  # enable-telemetry: true
 ```
 
 And change the content as follows:
@@ -245,7 +245,7 @@ And change the content as follows:
 ```yaml
 dashboard:
   ...
-  disable-telemetry: true
+  enable-telemetry: false
 ```
 
 See [Deploy TiDB Using TiDB Ansible](/online-deployment-using-ansible.md) for details.
@@ -255,13 +255,13 @@ See [Deploy TiDB Using TiDB Ansible](/online-deployment-using-ansible.md) for de
 <details>
   <summary>Deployment in Kubernetes via TiDB Operator</summary>
 
-Configure `spec.pd.config.dashboard.disable-telemetry: true` in `tidb-cluster.yaml` or TidbCluster Custom Resource.
+Configure `spec.pd.config.dashboard.enable-telemetry: false` in `tidb-cluster.yaml` or TidbCluster Custom Resource.
 
 See [Deploy TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-operator) for details.
 
 > **Note:**
 >
-> This configuration item requires TiDB Operator v1.1.2 or later to take effect.
+> This configuration item requires TiDB Operator v1.1.3 or later to take effect.
 
 </details>
 

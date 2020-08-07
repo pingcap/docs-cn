@@ -294,14 +294,29 @@ Configuration items related to labels
 
 Configuration items related to the [TiDB Dashboard](/dashboard/dashboard-intro.md) built in PD.
 
+### `tidb-cacert-path`
+
++ The path of the root CA certificate file. You can configure this path when you connect to TiDB's SQL services using TLS.
++ Default value: `""`
+
+### `tidb-cert-path`
+
++ The path of the SSL certificate file. You can configure this path when you connect to TiDB's SQL services using TLS.
++ Default value: `""`
+
+### `tidb-key-path`
+
++ The path of the SSL private key file. You can configure this path when you connect to TiDB's SQL services using TLS.
++ Default value: `""`
+
 ### `public-path-prefix`
 
 + When TiDB Dashboard is accessed behind a reverse proxy, this item sets the public URL path prefix for all web resources.
 + Default value: `/dashboard`
 + Do **not** modify this configuration item when TiDB Dashboard is accessed not behind a reverse proxy; otherwise, access issues might occur. See [Use TiDB Dashboard behind a Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md) for details.
 
-### `disable-telemetry`
+### `enable-telemetry`
 
-+ Determines whether to disable the telemetry collection feature in TiDB Dashboard.
-+ Default value: `false`
++ Determines whether to enable the telemetry collection feature in TiDB Dashboard.
++ Default value: `true`
 + See [Telemetry](/telemetry.md) for details.
