@@ -24,6 +24,7 @@ aliases: ['/docs-cn/stable/mysql-compatibility/','/docs-cn/v4.0/mysql-compatibil
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
+* 临时表
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * SYS schema
@@ -45,7 +46,9 @@ aliases: ['/docs-cn/stable/mysql-compatibility/','/docs-cn/v4.0/mysql-compatibil
 
 - TiDB 的自增列仅保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收 `Duplicated Error` 的错误信息。
 
-- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
+- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
+
+- TiDB 不支持添加列的 `AUTO_INCREMENT` 属性，移除该属性后不可恢复。
 
 自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
 
@@ -95,6 +98,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。可能与 MyS
 * 不能在单条 `ALTER TABLE` 语句中完成多个操作。例如，不能在单个语句中添加多个列或索引，否则，可能会输出 `Unsupported multi schema change` 的错误。
 * 不支持不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
 * 不支持添加/删除主键，除非开启了 [`alter-primary-key`](/tidb-configuration-file.md#alter-primary-key) 配置项。
+* 不支持将字段类型修改为其超集，例如不支持从 `INTEGER` 修改为 `VARCHAR`，或者从 `TIMESTAMP` 修改为 `DATETIME`，否则可能输出的错误信息 `Unsupported modify column: type %d not match origin %d`。
 * 更改/修改数据类型时，尚未支持“有损更改”，例如不支持从 BIGINT 更改为 INT。
 * 更改/修改十进制列时，不支持更改预置。
 * 更改/修改整数列时，不允许更改 `UNSIGNED` 属性。
@@ -109,6 +113,11 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。可能与 MyS
 TiDB 中的[信息统计](/statistics.md#手动收集) 与 MySQL 中的有所不同：TiDB 中的信息统计会完全重构表的统计数据，语句执行过程较长，但在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短。
 
 更多信息统计的差异请参阅 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)。
+
+### `SELECT` 的限制
+
+- 不支持 `SELECT ... INTO @变量` 语法。
+- 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
 
 ### 视图
 
