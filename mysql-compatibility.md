@@ -25,8 +25,14 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 触发器
 * 事件
 * 自定义函数
+<<<<<<< HEAD
 * 外键约束
 * 全文/空间函数与索引
+=======
+* 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
+* 临时表
+* 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
+>>>>>>> 2674b99... add more details  (#4150)
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * `BINARY` 之外的排序规则
 * 增加/删除主键
@@ -63,8 +69,14 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 
 假设集群中有两个 tidb-server 实例 A 和 B（A 缓存 [1,30000] 的自增 ID，B 缓存 [30001,60000] 的自增 ID），依次执行如下操作：
 
+<<<<<<< HEAD
 1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
 2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
+=======
+- TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
+
+- TiDB 不支持添加列的 `AUTO_INCREMENT` 属性，移除该属性后不可恢复。
+>>>>>>> 2674b99... add more details  (#4150)
 
 另外，从 TiDB 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
 
@@ -105,6 +117,7 @@ TiDB 的查询计划（`EXPLAIN`/`EXPLAIN FOR`）输出格式与 MySQL 差别较
 
 ### 内建函数
 
+<<<<<<< HEAD
 TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经支持，具体请参考[语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
 
 ### DDL
@@ -142,10 +155,37 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - `PARTITION BY KEY`
     - `SUBPARTITION`
     - `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
+=======
+支持常用的 MySQL 内建函数，有部分函数并未支持。可通过执行 `SHOW BUILTINS` 语句查看可用的内建函数。参考 [SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
+
+### DDL 的限制
+
+TiDB 中，所有支持的 DDL 变更操作都是在线执行的。可能与 MySQL 不同的是，在 TiDB 中，`ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 这两种 MySQL DDL 算法可用于指定使用哪种算法来修改表。
+
+与 MySQL 相比，TiDB 中的 DDL 存在以下限制：
+
+* 不能在单条 `ALTER TABLE` 语句中完成多个操作。例如，不能在单个语句中添加多个列或索引，否则，可能会输出 `Unsupported multi schema change` 的错误。
+* 不支持不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
+* 不支持添加/删除主键，除非开启了 [`alter-primary-key`](/tidb-configuration-file.md#alter-primary-key) 配置项。
+* 不支持将字段类型修改为其超集，例如不支持从 `INTEGER` 修改为 `VARCHAR`，或者从 `TIMESTAMP` 修改为 `DATETIME`，否则可能输出的错误信息 `Unsupported modify column: type %d not match origin %d`。
+* 更改/修改数据类型时，尚未支持“有损更改”，例如不支持从 BIGINT 更改为 INT。
+* 更改/修改十进制列时，不支持更改预置。
+* 更改/修改整数列时，不允许更改 `UNSIGNED` 属性。
+* 分区表支持 Hash、Range 和 `Add`/`Drop`/`Truncate`/`Coalesce`。其他分区操作将被忽略，可能会报 `Warning: Unsupported partition type, treat as normal table` 错误。不支持以下分区表语法：
+    + `PARTITION BY LIST`
+    + `PARTITION BY KEY`
+    + `SUBPARTITION`
+    + `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
+>>>>>>> 2674b99... add more details  (#4150)
 
 ### `ANALYZE TABLE`
 
 - [`ANALYZE TABLE`](/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
+
+### `SELECT` 的限制
+
+- 不支持 `SELECT ... INTO @变量` 语法。
+- 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
 
 ### 视图
 
