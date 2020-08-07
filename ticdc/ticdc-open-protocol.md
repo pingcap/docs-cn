@@ -272,9 +272,7 @@ COMMIT;
 14. [partition=1] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
 ```
 
-## 附录
-
-### Column 的类型码
+## Column 的类型码
 
 Column 的类型码用于标识 Row Changed Event 中列的数据类型。
 
@@ -309,7 +307,7 @@ Column 的类型码用于标识 Row Changed Event 中列的数据类型。
 | String      | 254  | {"t":254,"v":"测试"} | value 编码为 UTF-8 |
 | Geometry    | 255  |  | 尚不支持 |
 
-### DDL 的类型码
+## DDL 的类型码
 
 DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 
@@ -352,7 +350,7 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 | Alter Sequence                    | 35 |
 | Drop Sequence                     | 36 |
 
-### 列标志位
+## 列标志位
 
 列标志位以 Bit flags 形式标记列的相关属性。
 
