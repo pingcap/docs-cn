@@ -80,9 +80,9 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ## `interactive_timeout`
 
-- 作用域：
-- 默认值：
-- 
+- 作用域：SESSION | GLOBAL
+- 默认值：28800
+- 该变量表示交互式用户会话的空闲超时，单位为秒。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 客户端）。该变量与 MySQL 完全兼容。
 
 ## `sql_mode`
 
