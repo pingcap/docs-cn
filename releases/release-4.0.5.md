@@ -19,8 +19,7 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 支持与 TiDB 统一的 log 格式
-
+    - 支持与 TiDB 统一的 log 格式 [#978](https://github.com/pingcap/tics/pull/978)
 
 + Tools
 
@@ -30,7 +29,6 @@ TiDB 版本：4.0.5
         - 支持输出 old value [#708](https://github.com/pingcap/ticdc/pull/708)
         - 添加列的特征的标识 [#796](https://github.com/pingcap/ticdc/pull/796)
         - 支持输出上一版本的 DDL 和表结构 [#799](https://github.com/pingcap/ticdc/pull/799)
-
 
 ## 优化提升
 
