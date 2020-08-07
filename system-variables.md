@@ -16,7 +16,62 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 * 在变量名前加 `GLOBAL` 关键词或者是使用 `@@global.` 作为修饰符:
 
+<<<<<<< HEAD
     {{< copyable "sql" >}}
+=======
+### `max_execution_time`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：0
+- 语句最长执行时间，单位为毫秒。默认值 (0) 表示无限制。
+
+> **注意：**
+>
+> `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
+
+## `interactive_timeout`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：28800
+- 该变量表示交互式用户会话的空闲超时，单位为秒。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 客户端）。该变量与 MySQL 完全兼容。
+
+## `sql_mode`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
+- 这个变量控制许多 MySQL 兼容行为。详情见 [SQL 模式](/sql-mode.md)。
+
+### `sql_select_limit` <span class="version-mark">从 v4.0.2 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`2^64 - 1` (18446744073709551615)
+- `SELECT` 语句返回的最大行数。
+
+### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值: 0
+- 这个变量用于控制 TiDB 向 TiFlash 发送 coprocessor 请求的方式，有以下几种取值：
+
+    * 0：从不批量发送请求
+    * 1：aggregation 和 join 的请求会进行批量发送
+    * 2：所有的 cop 请求都会批量发送
+
+### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：0
+- 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`0`) 为不允许。
+
+### `tidb_auto_analyze_end_time`
+
+- 作用域：GLOBAL
+- 默认值：23:59 +0000
+- 这个变量用来设置一天中允许自动 ANALYZE 更新统计信息的结束时间。例如，只允许在凌晨 1:00 至 3:00 之间自动更新统计信息，可以设置如下：
+
+    - `tidb_auto_analyze_start_time='01:00 +0000'`
+    - `tidb_auto_analyze_end_time='03:00 +0000'`
+>>>>>>> 7abd45b... Add `interactive_timeout` variable (#4172)
 
     ```sql
     SET GLOBAL autocommit = 1;
