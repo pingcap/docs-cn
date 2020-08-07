@@ -30,7 +30,7 @@ The architecture of TiCDC is shown in the following figure:
 - `capture`: The operating process of TiCDC. Multiple `capture`s form a TiCDC cluster that replicates KV change logs.
 
     - Each `capture` pulls a part of KV change logs.
-    - Sorts the pulled the KV change log(s).
+    - Sorts the pulled KV change log(s).
     - Restores the transaction to downstream or outputs the log based on the TiCDC open protocol.
 
 ## Replication features
@@ -43,6 +43,30 @@ Currently, the TiCDC sink component supports replicating data to the following d
 
 - Databases compatible with MySQL protocol. The sink component provides the final consistency support.
 - Kafka based on the TiCDC Open Protocol. The sink component ensures the row-level order, final consistency or strict transactional consistency.
+
+### Ensure replication order and consistency
+
+#### Replication order
+
+- For all DDL or DML statements, TiCDC outputs them **at least once**.
+- When the TiKV or TiCDC cluster encounters failure, TiCDC might send the same DDL/DML statement repeatedly. For duplicated DDL/DML statements:
+
+    - MySQL sink can execute DDL statements repeatedly. For DDL statements that can be executed repeatedly in the downstream, such as `truncate table`, the statement is executed successfully. For those that cannot be executed repeatedly, such as `create table`, the execution fails, and TiCDC ignores the error and continues the replication.
+    - Kafka sink sends messages repeatedly, but the duplicate messages do not affect the constraints of `Resolved Ts`. Users can filter the duplicated messages from Kafka consumers.
+
+#### Replication consistency
+
+- MySQL sink
+
+    - TiCDC does not split in-table transactions. This is to **ensure** the transactional consistency within a single table. However, TiCDC does **not ensure** that the transactional order in the upstream table is consistent.
+    - TiCDC splits cross-table transactions in the unit of tables. TiCDC does **not ensure** that cross-table transactions are always consistent.
+    - TiCDC **ensures** that the order of single-row updates are consistent with that in the upstream.
+
+- Kafka sink
+
+    - TiCDC provides different strategies for data distribution. You can distribute data to different Kafka partitions based on the table, primary key, or timestamp.
+    - For different distribution strategies, the different consumer implementations can achieve different levels of consistency, including row-level consistency, eventual consistency, or cross-table transactional consistency.
+    - TiCDC does not have an implementation of Kafka consumers, but only provides [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md). You can implement the Kafka consumer according to this protocol.
 
 ## Restrictions
 

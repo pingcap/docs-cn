@@ -230,7 +230,7 @@ In the above command:
 - `resolved-ts`: The largest transaction `TS` in the current `changefeed`. Note that this `TS` has been successfully sent from TiKV to TiCDC.
 - `checkpoint-ts`: The largest transaction `TS` in the current `changefeed` that has been successfully written to the downstream.
 - `admin-job-type`: The status of a `changefeed`:
-    - `0`: The state is normal. It is the initial status.
+    - `0`: The state is normal.
     - `1`: The task is paused. When the task is paused, all replicated `processor`s exit. The configuration and the replication status of the task are retained, so you can resume the task from `checkpiont-ts`.
     - `2`: The task is resumed. The replication task resumes from `checkpoint-ts`.
     - `3`: The task is removed. When the task is removed, all replicated `processor`s are ended, and the configuration information of the replication task is cleared up. Only the replication status is retained for later queries.
@@ -302,28 +302,35 @@ In the above command:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
     ```
     {
-            "status": {
-                    "table-infos": [
-                            {
-                                    "id": 45,
-                                    "start-ts": 415241823337054209
-                            }
-                    ],
-                    "table-p-lock": null,
-                    "table-c-lock": null,
-                    "admin-job-type": 0
-            },
-            "position": {
-                    "checkpoint-ts": 415241893447467009,
-                    "resolved-ts": 415241893971492865
-            }
+      "status": {
+        "tables": {
+          "56": {    # ID of the replication table, corresponding to tidb_table_id of a table in TiDB
+            "start-ts": 417474117955485702,
+            "mark-table-id": 0  # ID of mark tables in the cyclic replication, corresponding to tidb_table_id of mark tables in TiDB
+          }
+        },
+        "operation": null,
+        "admin-job-type": 0
+      },
+      "position": {
+        "checkpoint-ts": 417474143881789441,
+        "resolved-ts": 417474143881789441,
+        "count": 0
+      }
     }
     ```
+
+    In the command above:
+
+    - `status.tables`: Each key number represents the ID of the replication table, corresponding to `tidb_table_id` of a table in TiDB.
+    - `mark-table-id`: The ID of mark tables in the cyclic replication, corresponding to `tidb_table_id` of mark tables in TiDB.
+    - `resolved-ts`: The largest TSO among the sorted data in the current processor.
+    - `checkpoint-ts`: The largest TSO that has been successfully written to the downstream in the current processor.
 
 ## Use HTTP interface to manage cluster status and data replication task
 
