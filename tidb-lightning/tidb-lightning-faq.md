@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 常见问题
-aliases: ['/docs-cn/dev/faq/tidb-lightning/']
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/']
 ---
 
 # TiDB Lightning 常见问题
@@ -141,7 +141,15 @@ sql-mode = ""
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
-如果 `tidb-lightning` 曾经异常退出，集群可能仍留在“导入模式” (import mode)，不适合在生产环境工作。此时需要强制切换回“普通模式” (normal mode)：
+如果 `tidb-lightning` 异常退出，集群可能仍处于“导入模式” (import mode)，该模式不适用于生产环境。此时可执行以下命令查看当前使用的模式：
+
+{{< copyable "shell-regular" >}}
+
+```sh
+tidb-lightning-ctl --fetch-mode
+```
+
+可执行以下命令强制切换回“普通模式” (normal mode)：
 
 {{< copyable "shell-regular" >}}
 

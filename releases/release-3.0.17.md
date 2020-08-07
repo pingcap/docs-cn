@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.17 Release Notes
+aliases: ['/docs-cn/dev/releases/release-3.0.17/']
 ---
 
 # TiDB 3.0.17 Release Notes
@@ -31,7 +32,7 @@ TiDB 版本：3.0.17
 
 + TiDB
 
-    - 消除统计信息反馈对集群的性能影响 [#18770](https://github.com/pingcap/tidb/pull/18770)
+    - 将配置项 `query-feedback-limit` 默认值从 1024 修改为 512, 并优化统计信息反馈机制，降低其对集群的性能影响 [#18770](https://github.com/pingcap/tidb/pull/18770)
     - 限制单次 split 请求中的 Region 个数 [#18694](https://github.com/pingcap/tidb/pull/18694)
     - 加速 HTTP API `/tiflash/replica` 在集群中存在大量历史 DDL 记录时的访问速度 [#18386](https://github.com/pingcap/tidb/pull/18386)
     - 提升索引等值条件下的行数估算准确率 [#17609](https://github.com/pingcap/tidb/pull/17609)

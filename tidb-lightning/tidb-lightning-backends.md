@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 导入模式
 summary: 了解 TiDB 不同导入模式。
-aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/']
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/']
 ---
 
 # TiDB Lightning 导入模式
@@ -388,9 +388,12 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     # 日志等级：trace、debug、info、warn、error、off。
     log-level = "info"
 
+    # 状态服务器的监听地址。
+    status-server-address = "0.0.0.0:8286"
+
     [server]
     # tikv-importer 监听的地址，tidb-lightning 需要连到这个地址进行数据写入。
-    addr = "192.168.20.10:8287"
+    addr = "0.0.0.0:8287"
 
     [metric]
     # 给 Prometheus 客户端的推送任务名称。

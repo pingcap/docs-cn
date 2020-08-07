@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 部署与执行
-aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
+aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 ---
 
 # TiDB Lightning 部署与执行
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
     {{< copyable "shell-regular" >}}
 
     ```sh
-    bin/tidb-lightning-ctl -switch-mode=normal
+    bin/tidb-lightning-ctl --switch-mode=normal
     ```
 
 - TiDB Lightning 需要下游 TiDB 有如下权限：

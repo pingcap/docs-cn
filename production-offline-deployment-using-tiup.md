@@ -1,5 +1,6 @@
 ---
 title: 使用 TiUP 离线部署 TiDB 集群
+aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/']
 ---
 
 # 使用 TiUP 离线部署 TiDB 集群
