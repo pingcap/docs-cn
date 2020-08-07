@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 升级 TiDB
-aliases: ['/docs-cn/dev/how-to/upgrade/using-tiup/']
+aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/']
 ---
 
 # 使用 TiUP 升级 TiDB
@@ -82,6 +82,7 @@ tiup update cluster
 
 > **注意：**
 >
+> + 目前 TiUP 仅支持 `systemd` 的进程管理模式。如果此前使用 TiDB Ansible 部署时选择了 `supervise`，需要先按[使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md#如何调整进程监管方式从-supervise-到-systemd)迁移到 `systemd`。
 > + 如果原集群已经是 TiUP 部署，可以跳过此步骤。
 > + 目前默认识别 `inventory.ini` 配置文件，如果你的配置为其他名称，请指定。
 > + 你需要确保当前集群的状态与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常。
@@ -145,7 +146,19 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 4.0 版本前，请确认 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
+> 升级到 4.0 版本前，请确认已在 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
+>
+> TiUP 版本 <= v1.0.8 可能无法正确获取 TiFlash 的数据目录，需要确认 `data_dir` 与 TiFlash 配置的 `path` 值是否一致。若不一致需要进行如下操作把 TiFlash 的 `data_dir` 改成与 `path` 一致的值：
+>
+>    1. 执行 `tiup cluster edit-config <cluster-name>` 命令修改配置文件。
+>
+>    2. 修改对应 TiFlash 的 `data_dir` 配置：
+>
+>        ```yaml
+>          tiflash_servers:
+>            - host: 10.0.1.14
+>              data_dir: data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
+>        ```
 
 ## 4. 滚动升级 TiDB 集群
 

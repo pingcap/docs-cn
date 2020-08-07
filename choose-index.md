@@ -1,5 +1,6 @@
 ---
 title: 索引的选择
+aliases: ['/docs-cn/dev/choose-index/']
 ---
 
 # 索引的选择

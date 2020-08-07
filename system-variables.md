@@ -1,6 +1,6 @@
 ---
 title: 系统变量
-aliases: ['/docs-cn/dev/reference/configuration/tidb-server/mysql-variables/','/docs-cn/dev/tidb-specific-system-variables/','/docs-cn/dev/reference/configuration/tidb-server/tidb-specific-variables/','/zh/tidb/dev/tidb-specific-system-variables/']
+aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration/tidb-server/mysql-variables/','/docs-cn/dev/tidb-specific-system-variables/','/docs-cn/dev/reference/configuration/tidb-server/tidb-specific-variables/','/zh/tidb/dev/tidb-specific-system-variables/']
 ---
 
 # 系统变量
@@ -59,6 +59,14 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 作用域：SESSION
 - 默认值：0
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
+
+### last_plan_from_binding <span class="version-mark">从 v4.0 版本开始引入</span>
+
+作用域：SESSION
+
+默认值：0
+
+这个变量用来显示上一条执行的语句所使用的执行计划是不是来自 binding 的执行计划。
 
 ### `max_execution_time`
 

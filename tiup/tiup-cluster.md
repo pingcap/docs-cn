@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
-aliases: ['/docs-cn/dev/reference/tools/tiup/cluster/']
+aliases: ['/docs-cn/dev/tiup/tiup-cluster/','/docs-cn/dev/reference/tools/tiup/cluster/']
 ---
 
 # 使用 TiUP 部署运维 TiDB 线上集群
@@ -46,6 +46,8 @@ Available Commands:
 
 Flags:
   -h, --help              帮助信息
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -329,6 +331,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -385,6 +389,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -406,6 +412,10 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
 
 ## 导入 TiDB Ansible 集群
+
+> **注意：**
+>
+> TiUP cluster 组件对 TiSpark 的支持目前为实验性特性，暂不支持导入启用了 TiSpark 组件的集群。
 
 在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。import 命令用法如下：
 
@@ -429,6 +439,8 @@ Flags:
   -r, --rename NAME        重命名被导入的集群
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -582,3 +594,34 @@ tiup cluster check <cluster-name> --cluster
 在运行检测时，若指定了 `--apply` 参数，程序将尝试对其中未通过的项目自动修复。自动修复仅限于部分可通过修改配置或系统参数调整的项目，其它未修复的项目需要根据实际情况手工处理。
 
 环境检查不是部署集群的必需流程。对于生产环境建议在部署前执行环境检查并通过所有检测项。如果未通过全部检查项，也可能正常部署和运行集群，但可能无法获得最佳性能表现。
+
+## 使用中控机系统自带的 SSH 客户端连接集群
+
+在以上所有操作中，涉及到对集群机器的操作都是通过 TiUP 内置的 SSH 客户端连接集群执行命令，但是在某些场景下，需要使用系统自带的 SSH 客户端来对集群执行操作，比如：
+
+- 使用 SSH 插件来做认证
+- 使用定制的 SSH 客户端
+
+此时可以通过命令行参数 `--native-ssh` 启用系统自带命令行：
+
+- 部署集群: `tiup cluster deploy <cluster-name> <version> <topo> --native-ssh`
+- 启动集群: `tiup cluster start <cluster-name> --native-ssh`
+- 升级集群: `tiup cluster upgrade ... --native-ssh`
+
+所有涉及集群操作的步骤都可以加上 `--native-ssh` 来使用系统自带的客户端。
+
+也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--native-ssh` 参数：
+
+```sh
+export TIUP_NATIVE_SSH=true
+# 或者
+export TIUP_NATIVE_SSh=1
+# 或者
+export TIUP_NATIVE_SSH=enable
+```
+
+若环境变量和 `--native-ssh` 同时指定，则以 `--native-ssh` 为准。
+
+> **注意：**
+>
+> 在部署集群的步骤中，若需要使用密码的方式连接 (-p)，或者密钥文件设置了 passphrase，则需要保证中控机上安装了 sshpass，否则连接时会报错。

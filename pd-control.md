@@ -1,6 +1,6 @@
 ---
 title: PD Control 使用说明
-aliases: ['/docs-cn/dev/reference/tools/pd-control/']
+aliases: ['/docs-cn/dev/pd-control/','/docs-cn/dev/reference/tools/pd-control/']
 ---
 
 # PD Control 使用说明
@@ -11,7 +11,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 使用 TiUP
 
-可直接通过 `tiup ctl pd -- -u http://<pd_ip>:<pd_port> [-i]` 使用。
+可直接通过 `tiup ctl pd -u http://<pd_ip>:<pd_port> [-i]` 使用。
 
 ### 下载安装包
 
@@ -145,6 +145,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 {
   "replication": {
     "enable-placement-rules": "false",
+    "isolation-level": "",
     "location-labels": "",
     "max-replicas": 3,
     "strictly-match-label": "false"
@@ -201,6 +202,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 {
   "max-replicas": 3,
+  "isolation-level": "",
   "location-labels": "",
   "strictly-match-label": "false",
   "enable-placement-rules": "false"
