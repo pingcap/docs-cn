@@ -107,6 +107,11 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 * 在 MySQL 上不支持 `ANALYZE INCREMENTAL TABLE` 语句，它的使用可参考[增量收集文档](/statistics.md#增量收集)。
 
+TiDB 与 MySQL 在以下方面存在区别：所收集的统计信息，以及查询执行过程中统计信息是如何被使用的。虽然 TiDB 中的 `ANALYZE` 语句在语法上与 MySQL 类似，但存在以下差异：
+
++ 执行 `ANALYZE TABLE` 时，TiDB 可能不包含最近提交的更改。若对行进行了批量更改，在执行 `ANALYZE TABLE` 之前，你可能需要先执行 `sleep(1)`，这样统计信息更新才能反映这些更改。参见 [#16570](https://github.com/pingcap/tidb/issues/16570)。
++ `ANALYZE TABLE` 在 TiDB 中的执行时间比在 MySQL 中的执行时间要长得多。但你可以通过执行 `SET GLOBAL tidb_enable_fast_analyze=1` 来启用快速分析，这样能部分抵消这种执行上的性能差异。快速分析利用了采样，会导致统计信息的准确性降低。因此快速分析仍是一项实验特性。
+
 ## 另请参阅
 
 * [EXPLAIN](/sql-statements/sql-statement-explain.md)
