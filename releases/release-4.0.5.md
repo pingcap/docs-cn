@@ -19,7 +19,7 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 支持与 TiDB 统一的 log 格式 [#978](https://github.com/pingcap/tics/pull/978)
+    - 支持与 TiDB 统一的 log 格式
 
 + Tools
 
@@ -116,8 +116,8 @@ TiDB 版本：4.0.5
 
 + TiKV
 
-    - 修复开启 hibernate region 时，某些情况下 leader 选举慢的问题 [#8292](https://github.com/tikv/tikv/pull/8292) [#8319](https://github.com/tikv/tikv/pull/8319)
-    - 修复 Region 调度产生的一个内存泄露问题 [#8357](https://github.com/tikv/tikv/pull/8357)
+    - 修复开启 hibernate region 时，某些情况下 leader 选举慢的问题
+    - 修复 Region 调度产生的一个内存泄露问题
 
 + TiFlash
 
