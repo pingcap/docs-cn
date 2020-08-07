@@ -31,16 +31,6 @@ aliases: ['/docs-cn/stable/br/backup-and-restore-tool/','/docs-cn/v4.0/br/backup
 > 如果没有挂载网盘或者使用其他共享存储，那么 BR 备份的数据会生成在各个 TiKV 节点上。由于 BR 只备份 leader 副本，所以各个节点预留的空间需要根据 leader size 来预估。
 > 同时由于 v4.0 默认使用 leader count 进行平衡，所以会出现 leader size 差别大的问题，导致各个节点备份数据不均衡。
 
-## 使用方式
-
-### 下载 Binary
-
-详见[下载链接](/download-ecosystem-tools.md#快速备份和恢复br)。
-
-### 通过 SQL
-
-详见 [Backup 语法](/sql-statements/sql-statement-backup.md#backup) 以及 [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
-
 ## 工作原理
 
 BR 是分布式备份恢复的工具，它将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令后执行相应的备份或恢复操作。在一次备份或恢复中，各个 TiKV 节点都会有一个对应的备份路径，TiKV 备份时产生的备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。更多信息请参阅[备份恢复设计方案](https://github.com/pingcap/br/blob/980627aa90e5d6f0349b423127e0221b4fa09ba0/docs/cn/2019-08-05-new-design-of-backup-restore.md)
@@ -63,6 +53,20 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 - regionEpoch：Region 版本号
 - keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
 - cf：RocksDB 的 ColumnFamily（默认为 `default` 或 `write`）
+
+## 使用方式
+
+目前支持两种方式来运行备份恢复，分别是 SQL 和命令行工具。
+
+### 通过 SQL
+
+在 v4.0.2 及以上版本的 TiDB 中，已经可以支持通过 SQL 语句进行备份恢复，详见 [Backup 语法](/sql-statements/sql-statement-backup.md#backup) 以及 [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
+
+### 通过命令行工具
+
+同时也支持命令行工具的方式。首先需要下载一个 BR 工具的 Binary，详见[下载链接](/download-ecosystem-tools.md#快速备份和恢复br)。
+
+下面以命令行工具为例，介绍备份恢复的执行方式。
 
 ## BR 命令行描述
 
