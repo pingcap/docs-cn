@@ -62,15 +62,19 @@ This is because TiFlash is in an abnormal state caused by configuration errors o
 
 4. Check whether `pd buddy` can correctly print the logs (the log path is the value of `log` in the [flash.flash_cluster] configuration item; the default log path is under the `tmp` directory configured in the TiFlash configuration file).
 
-5. Check whether the value of `max-replicas` in PD is less than or equal to the number of TiKV nodes in the cluster. If not, PD cannot replicate data to TiFlash:
+5. Check whether the number of configured replicas is less than or equal to the number of TiKV nodes in the cluster. If not, PD cannot replicate data to TiFlash:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
+    echo 'config placement-rules show' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
     ```
 
-    Reconfirm the value of `max-replicas`.
+    Reconfirm the value of `default: count`.
+
+    > **Note:**
+    >
+    > After the [placement rules](/configure-placement-rules.md) feature is enabled, the previously configured `max-replicas` and `location-labels` no longer take effect. To adjust the replica policy, use the interface related to placement rules.
 
 6. Check whether the remaining disk space of the machine (where `store` of the TiFlash node is) is sufficient. By default, when the remaining disk space is less than 20% of the `store` capacity (which is controlled by the `low-space-ratio` parameter), PD cannot schedule data to this TiFlash node.
 
