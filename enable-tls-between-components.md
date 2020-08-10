@@ -65,6 +65,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
         # Path of file that contains X509 key in PEM format.
         key-path = "/path/to/pd-server-key.pem"
         ```
+
     - TiFlash
     	在 `config` 文件中设置，并将 `http_port` 项改为 `https_port`:
 
