@@ -124,7 +124,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 
 ## TiDB 中的 `utf8` 和 `ut8mb4`
 
-MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以在基本多语言平面 (BMP) 中存储字符，但不足以存储表情符号等字符。因此，建议改用字符集`utf8mb4`。
+MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (BMP) 中的字符，但不足以存储表情符号等字符。因此，建议改用字符集`utf8mb4`。
 
 默认情况下，TiDB 同样限制字符集 `utf8` 为最多 3 个字节，以确保 TiDB 中创建的数据可以在 MySQL 中顺利恢复。你可以禁用此功能，方法是在 TiDB 配置文件中将 `check-mb4-value-in-utf8` 的值更改为 `FALSE`。
 
