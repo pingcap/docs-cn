@@ -58,6 +58,26 @@ Query OK, 1 row affected (0.03 sec)
 * The second `INSERT` statement fails because the `age` column is defined as `NOT NULL`.
 * The third `INSERT` statement succeeds because the `last_login` column is not explicitly defined as `NOT NULL`. NULL values ​​are allowed by default.
 
+## CHECK
+
+TiDB parses but ignores `CHECK` constraints. This is MySQL 5.7 compatible behavior.
+
+For example:
+
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ username VARCHAR(60) NOT NULL,
+ UNIQUE KEY (username),
+ CONSTRAINT min_username_length CHECK (CHARACTER_LENGTH(username) >=4)
+);
+INSERT INTO users (username) VALUES ('a');
+SELECT * FROM users;
+```
+
 ## UNIQUE KEY
 
 In TiDB's optimistic transaction mode, UNIQUE constraints are [checked lazily](/transaction-overview.md#lazy-check-of-constraints) by default. By batching checks when the transaction is committed, TiDB can reduce network overhead and improve performance.
@@ -282,5 +302,3 @@ ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
     INSERT INTO orders (user_id, doc) VALUES (123, NULL);
     COMMIT;
     ```
-
-* TiDB does not display foreign key information in the result of executing the `SHOW CREATE TABLE` statement.
