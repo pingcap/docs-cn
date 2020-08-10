@@ -73,9 +73,9 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
         # Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
         ca_path = "/path/to/ca.pem"
         # Path of file that contains X509 certificate in PEM format.
-        cert_path = "/path/to/pd-server.pem"
+        cert_path = "/path/to/tiflash-server.pem"
         # Path of file that contains X509 key in PEM format.
-        key_path = "/path/to/pd-server-key.pem"
+        key_path = "/path/to/tiflash-server-key.pem"
 	```
 
     - TiCDC
@@ -166,7 +166,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
+    cert-allowed-cn = ["TiKV-Server", "TiDB-Server"]
     ```
 
 ## 证书重加载
