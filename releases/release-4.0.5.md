@@ -52,9 +52,6 @@ TiDB 版本：4.0.5
     - 支持限制 `TableReader` 算子内存使用 [#18392](https://github.com/pingcap/tidb/pull/18392)
     - 在 `batch cop` 请求重试时避免多次 backoff [#18999](https://github.com/pingcap/tidb/pull/18999)
 
-+ TiKV
-
-    - 定义错误代码 [#8387](https://github.com/tikv/tikv/pull/8387)
 + PD
 
     - 支持打散特殊存储引擎节点（例如 TiFlash）上的 Region [#2706](https://github.com/pingcap/pd/pull/2706)
