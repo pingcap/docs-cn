@@ -1,13 +1,13 @@
 ---
 title: TiCDC 运维操作及任务管理
-aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/tools/ticdc/sink/','/docs-cn/dev/ticdc/sink-url/']
+aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/tools/ticdc/sink/','/docs-cn/dev/ticdc/sink-url/']
 ---
 
 # TiCDC 运维操作及任务管理
 
 本文档介绍如何部署 TiCDC 集群，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
 
-## TiCDC 部署
+## 部署安装 TiCDC
 
 ### 软件和硬件环境推荐配置
 
@@ -18,13 +18,13 @@ aliases: ['/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/t
 | Red Hat Enterprise Linux | 7.3 及以上   |
 | CentOS                   | 7.3 及以上   |
 
-| **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
+| **CPU** | **内存** | **硬盘类型** | **网络** | **TiCDC 集群实例数量（生产环境最低要求）** |
 | --- | --- | --- | --- | --- |
 | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
 
 更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
 
-### 使用 TiUP 部署
+### 使用 TiUP 部署安装 TiCDC
 
 #### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
 
@@ -431,12 +431,15 @@ curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf06
 # 该配置会同时影响 filter 和 sink 相关配置，默认为 true
 case-sensitive = true
 
+# 是否输出 old value，从 v4.0.5 开始支持
+enable-old-value = false
+
 [filter]
 # 忽略指定 start_ts 的事务
 ignore-txn-start-ts = [1, 2]
 
 # 过滤器规则
-# 过滤规则语法：https://github.com/pingcap/tidb-tools/tree/master/pkg/table-filter#syntax
+# 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
 rules = ['*.*', '!test.*']
 
 [mounter]
@@ -446,6 +449,7 @@ worker-num = 16
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 default、ts、rowid、table 四种分发器
+# matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
@@ -492,7 +496,7 @@ sync-ddl = true
 
 环形同步任务创建步骤如下：
 
-1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#ticdc-部署)。
+1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#部署安装-ticdc)。
 
     {{< copyable "shell-regular" >}}
 

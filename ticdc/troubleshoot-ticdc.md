@@ -1,6 +1,6 @@
 ---
 title: TiCDC 常见问题和故障处理
-aliases: ['/docs-cn/dev/reference/tools/ticdc/troubleshoot/']
+aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools/ticdc/troubleshoot/']
 ---
 
 # TiCDC 常见问题和故障处理
@@ -228,4 +228,4 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 | :---------- | :--- | :------ | :-- |
 | Null        | 6    | `{"t":6,"v":null}` | |
 
-更多信息请参考 [Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-type-code)。
+更多信息请参考 [Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-的类型码)。

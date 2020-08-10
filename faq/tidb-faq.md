@@ -1,6 +1,6 @@
 ---
 title: TiDB FAQ
-aliases: ['/docs-cn/dev/faq/tidb/']
+aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 ---
 
 # FAQ
