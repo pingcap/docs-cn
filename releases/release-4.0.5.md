@@ -44,11 +44,11 @@ TiDB 版本：4.0.5
     - 支持在 RPC 请求返回结果前取消操作 [#18580](https://github.com/pingcap/tidb/pull/18580)
     - 支持使用 HTTP API 生成带有相关监控项名称的 profile [#18531](https://github.com/pingcap/tidb/pull/18531)
     - 支持分区表的预打散功能 [#17863](https://github.com/pingcap/tidb/pull/17863)
-    - 在监控面板中显示每个实例的内存使用详情
+    - 在监控面板中显示每个实例的内存使用详情 [#18679](https://github.com/pingcap/tidb/pull/18679)
     - 在 `EXPLAIN` 中显示 `BatchPointGet` 算子的详细运行信息 [#18892](https://github.com/pingcap/tidb/pull/18892)
     - 在 `EXPLAIN` 中显示 `PointGet` 算子的详细运行信息 [#18817](https://github.com/pingcap/tidb/pull/18817)
     - 解决 `MemTracker` 潜在的死锁问题 [#18395](https://github.com/pingcap/tidb/pull/18395)
-    - 提高字符串转换为整数类型和小数类型的兼容性，支持将 json 转换为时间日期类型 [#18159](https://github.com/pingcap/tidb/pull/18159)
+    - 提高字符串转换为整数类型和小数类型的兼容性，支持将 JSON 转换为时间日期类型 [#18159](https://github.com/pingcap/tidb/pull/18159)
     - 支持限制 `TableReader` 算子内存使用 [#18392](https://github.com/pingcap/tidb/pull/18392)
     - 在 `batch cop` 请求重试时避免多次 backoff [#18999](https://github.com/pingcap/tidb/pull/18999)
 
@@ -66,17 +66,17 @@ TiDB 版本：4.0.5
 
 + TiFlash
 
-    - 添加更多的 Grafana 监控面板，比如 CPU/IO/RAM 使用量，以及存储引擎的各项指标等
-    - 通过优化 Raft logs 的处理逻辑，减少 IO 操作
-    - 加快 add partition DDL 之后 region 的调度性能
+    - 添加更多的 Grafana 监控面板，比如 CPU、I/O、RAM 使用量，以及存储引擎的各项指标
+    - 通过优化 Raft logs 的处理逻辑，减少 I/O 操作
+    - 加快 `add partition` DDL 之后 Region 的调度速度
     - 优化 DeltaTree 引擎中 delta 数据的整理，减少读写放大
-    - 通过使用多线程对 region snapshot 进行预处理，优化 apply 性能
+    - 通过使用多线程对 Region snapshot 进行预处理，优化 `apply` 性能
 
 + Tools
 
     + TiCDC
 
-        - 减少了取时间戳的频率 [#801](https://github.com/pingcap/ticdc/pull/801)
+        - 减少了获取时间戳的频率 [#801](https://github.com/pingcap/ticdc/pull/801)
 
     + Backup & Restore (BR)
 
@@ -94,13 +94,13 @@ TiDB 版本：4.0.5
 
 + TiDB
 
-    - 修复 `builtinCastRealAsDecimalSig` 函数中未正确处理 `ErrTruncate/Overflow` 错误导致报 "should ensure all columns have the same length" 错误的问题 [#18967](https://github.com/pingcap/tidb/pull/18967)
+    - 修复 `builtinCastRealAsDecimalSig` 函数中未正确处理 `ErrTruncate/Overflow` 错误导致报 `should ensure all columns have the same length` 错误的问题 [#18967](https://github.com/pingcap/tidb/pull/18967)
     - 修复 `pre_split_regions` 对分区表不生效的问题 [#18837](https://github.com/pingcap/tidb/pull/18837)
     - 修复大事务提前终止的问题 [#18813](https://github.com/pingcap/tidb/pull/18813)
     - 修复使用 `collation` 相关函数查询结果错误的问题 [#18735](https://github.com/pingcap/tidb/pull/18735)
-    - 修复 `getAutoIncrementID()` 函数逻辑错误导致导出工具报 'table not exist' 错误的问题 [#18692](https://github.com/pingcap/tidb/pull/18692)
+    - 修复 `getAutoIncrementID()` 函数逻辑错误导致导出工具报 `table not exist` 错误的问题 [#18692](https://github.com/pingcap/tidb/pull/18692)
     - 修复 `select a from t having t.a` 报 `unknown column error` 的问题 [#18434](https://github.com/pingcap/tidb/pull/18434)
-    - 修复 hash 分区表分区键为整数类型时，写入64位无符号类型导致溢出 panic 的问题 [#18186](https://github.com/pingcap/tidb/pull/18186)
+    - 修复 Hash 分区表的分区键为整数类型时，写入 64 位无符号类型导致溢出 panic 的问题 [#18186](https://github.com/pingcap/tidb/pull/18186)
     - 修复 `char` 函数行为错误的问题 [#18122](https://github.com/pingcap/tidb/pull/18122)
     - 修复 `ADMIN REPAIR TABLE` 无法解析 range 分区表表达式中整数的问题 [#17988](https://github.com/pingcap/tidb/pull/17988)
     - 修复 `SET CHARSET` 行为不正确的问题 [#17289](https://github.com/pingcap/tidb/pull/17289)
@@ -115,12 +115,12 @@ TiDB 版本：4.0.5
 
     - 修复 PD leader 切换时可能导致一段时间内 TSO 不可用的问题 [#2666](https://github.com/pingcap/pd/pull/2666)
     - 修复开启 Placement Rule 时，某些情况下 Region 无法调度至最佳状态的问题 [#2720](https://github.com/pingcap/pd/pull/2720)
-    - 修复开启 Placement Rule 后，Leader Balance 不工作的问题 [#2726](https://github.com/pingcap/pd/pull/2726)
+    - 修复开启 Placement Rules 后，`Balance Leader` 不工作的问题 [#2726](https://github.com/pingcap/pd/pull/2726)
 
 + TiKV
 
-    - 修复开启 Hibernate Region 时，某些情况下 leader 选举慢的问题
-    - 修复 Region 调度产生的一个内存泄露问题
+    - 修复开启 Hibernate Region 时，某些情况下 leader 选举慢的问题 [#8292](https://github.com/tikv/tikv/pull/8292)
+    - 修复 Region 调度产生的一个内存泄露问题 [#8357](https://github.com/tikv/tikv/pull/8357)
 
 + TiFlash
 
