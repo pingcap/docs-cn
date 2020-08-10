@@ -84,6 +84,10 @@ The following TiDB versions supports the `_tidb_rowid` index:
 
 ## FAQ
 
+### How to resolve the error that occurs when the `--tidb-snapshot` option is used to export data?
+
+In this situation, you need to add a `--skip-tz-utc` option. Otherwise, Mydumper will pre-configure the UTC time zone and convert the time zone when `tidb-snapshot` is configured, which causes this error.
+
 ### How to determine if the Mydumper I am using is the PingCAP optimized version?
 
 Execute the following command：
