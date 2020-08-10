@@ -39,7 +39,7 @@ TiDB 版本：4.0.5
 + TiDB
 
     - 优化 `Union` 场景下 `DecodePlan` 的开销 [#18941](https://github.com/pingcap/tidb/pull/18941)
-    - 减少 GC 在遇到 region miss 时 scan lock 的次数 [#18876](https://github.com/pingcap/tidb/pull/18876)
+    - 减少 GC 在遇到 `Region cache miss` 错误时扫描锁的次数 [#18876](https://github.com/pingcap/tidb/pull/18876)
     - 减少统计信息 feedback 对集群性能的影响 [#18772](https://github.com/pingcap/tidb/pull/18772)
     - 支持在 RPC 请求返回结果前取消操作 [#18580](https://github.com/pingcap/tidb/pull/18580)
     - 支持使用 HTTP API 生成带有相关监控项名称的 profile [#18531](https://github.com/pingcap/tidb/pull/18531)
