@@ -17,6 +17,10 @@ TiDB 版本：4.0.5
 
 ## 新功能
 
++ TiKV
+
+    - 为错误定义错误码 [#8387](https://github.com/tikv/tikv/pull/8387)
+
 + TiFlash
 
     - 支持与 TiDB 统一的 log 格式
