@@ -67,9 +67,9 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
         ```
 
     - TiFlash
-    	在 `config` 文件中设置，并将 `http_port` 项改为 `https_port`:
+        在 `config` 文件中设置，并将 `http_port` 项改为 `https_port`:
 
-	```toml
+        ```toml
         [security]
         # Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
         ca_path = "/path/to/ca.pem"
@@ -77,7 +77,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
         cert_path = "/path/to/tiflash-server.pem"
         # Path of file that contains X509 key in PEM format.
         key_path = "/path/to/tiflash-server-key.pem"
-	```
+        ```
 
     - TiCDC
 
