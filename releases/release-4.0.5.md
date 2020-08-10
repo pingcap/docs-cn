@@ -52,6 +52,9 @@ TiDB 版本：4.0.5
     - 支持限制 `TableReader` 算子内存使用 [#18392](https://github.com/pingcap/tidb/pull/18392)
     - 在 `batch cop` 请求重试时避免多次 backoff [#18999](https://github.com/pingcap/tidb/pull/18999)
 
++ TiKV
+
+    - 定义错误代码 [#8387](https://github.com/tikv/tikv/pull/8387)
 + PD
 
     - 支持打散特殊存储引擎节点（例如 TiFlash）上的 Region [#2706](https://github.com/pingcap/pd/pull/2706)
@@ -59,10 +62,6 @@ TiDB 版本：4.0.5
     - 优化 Region 打散操作，使得 Leader 分布更均匀 [#2684](https://github.com/pingcap/pd/pull/2684)
     - 针对 TSO 请求添加更多测试和日志 [#2678](https://github.com/pingcap/pd/pull/2678)
     - 避免 Region Leader 变化时可能产生的不必要的缓存更新 [#2672](https://github.com/pingcap/pd/pull/2672)
-
-+ TiKV
-
-    - 定义错误代码 [#8387](https://github.com/tikv/tikv/pull/8387)
 
 + TiFlash
 
@@ -111,16 +110,16 @@ TiDB 版本：4.0.5
     - 修复 `union select for update` 存在并发竞态的问题 [#19006](https://github.com/pingcap/tidb/pull/19006)
     - 修复自查询含有 `PointGet` 算子时返回结果错误的问题 [#19046](https://github.com/pingcap/tidb/pull/19046)
 
++ TiKV
+
+    - 修复开启 Hibernate Region 时，某些情况下 leader 选举慢的问题 [#8292](https://github.com/tikv/tikv/pull/8292)
+    - 修复 Region 调度产生的一个内存泄露问题 [#8357](https://github.com/tikv/tikv/pull/8357)
+
 + PD
 
     - 修复 PD leader 切换时可能导致一段时间内 TSO 不可用的问题 [#2666](https://github.com/pingcap/pd/pull/2666)
     - 修复开启 Placement Rule 时，某些情况下 Region 无法调度至最佳状态的问题 [#2720](https://github.com/pingcap/pd/pull/2720)
     - 修复开启 Placement Rules 后，`Balance Leader` 不工作的问题 [#2726](https://github.com/pingcap/pd/pull/2726)
-
-+ TiKV
-
-    - 修复开启 Hibernate Region 时，某些情况下 leader 选举慢的问题 [#8292](https://github.com/tikv/tikv/pull/8292)
-    - 修复 Region 调度产生的一个内存泄露问题 [#8357](https://github.com/tikv/tikv/pull/8357)
 
 + TiFlash
 
