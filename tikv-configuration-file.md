@@ -652,7 +652,7 @@ Configuration items related to RocksDB
 ### `max-sub-compactions`
 
 + The number of sub-compaction operations performed concurrently in RocksDB
-+ Default value: `1`
++ Default value: `3`
 + Minimum value: `1`
 
 ### `max-open-files`
@@ -1121,7 +1121,7 @@ Configuration items related to `raftdb`
 ### `max-sub-compactions`
 
 + The number of concurrent sub-compaction operations performed in RocksDB
-+ Default value: `1`
++ Default value: `2`
 + Minimum value: `1`
 
 ### `wal-dir`
