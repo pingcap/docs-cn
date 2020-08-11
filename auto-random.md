@@ -10,7 +10,6 @@ aliases: ['/docs-cn/dev/auto-random/','/docs-cn/dev/reference/sql/attributes/aut
 >
 > `AUTO_RANDOM` 属性已于 v4.0.3 版本成为正式功能。
 
-
 ## 使用场景
 
 `AUTO_RANDOM` 用于解决大批量写数据入 TiDB 时因含有**整型自增主键列**的表而产生的热点问题。详情参阅 [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)。
