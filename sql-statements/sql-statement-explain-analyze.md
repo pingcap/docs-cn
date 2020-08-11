@@ -8,6 +8,10 @@ aliases: ['/docs/dev/sql-statements/sql-statement-explain-analyze/','/docs/dev/r
 
 The `EXPLAIN ANALYZE` statement works similar to `EXPLAIN`, with the major difference being that it will actually execute the statement. This allows you to compare the estimates used as part of query planning to actual values encountered during execution.  If the estimates differ significantly from the actual values, you should consider running `ANALYZE TABLE` on the affected tables.
 
+> **Note:**
+>
+> When you use `EXPLAIN ANALYZE` to execute DML statements, modification to data is normally executed. Currently, the execution plan for DML statements **cannot** be shown yet.
+
 ## Synopsis
 
 **ExplainSym:**
