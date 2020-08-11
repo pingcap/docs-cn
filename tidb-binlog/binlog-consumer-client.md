@@ -1,9 +1,14 @@
 ---
+<<<<<<< HEAD:tidb-binlog/binlog-slave-client.md
 title: Binlog Slave Client 用户文档
 aliases: ['/docs-cn/v3.1/tidb-binlog/binlog-slave-client/','/docs-cn/v3.1/reference/tidb-binlog/binlog-slave-client/']
+=======
+title: Binlog Consumer Client 用户文档
+aliases: ['/zh/tidb/dev/binlog-slave-client','/docs-cn/dev/tidb-binlog/binlog-slave-client/','/docs-cn/dev/reference/tidb-binlog/binlog-slave-client/','/docs-cn/dev/reference/tools/tidb-binlog/binlog-slave-client/']
+>>>>>>> 9f6ed63... binlog: change binlog slave to binlog consumer (#4237):tidb-binlog/binlog-consumer-client.md
 ---
 
-# Binlog Slave Client 用户文档
+# Binlog Consumer Client 用户文档
 
 目前 Drainer 提供了多种输出方式，包括 MySQL、TiDB、file 等。但是用户往往有一些自定义的需求，比如输出到 Elasticsearch、Hive 等，这些需求 Drainer 现在还没有实现，因此 Drainer 增加了输出到 Kafka 的功能，将 binlog 数据解析后按一定的格式再输出到 Kafka 中，用户编写代码从 Kafka 中读出数据再进行处理。
 
@@ -117,7 +122,7 @@ message Binlog {
 }
 ```
 
-查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/slave_binlog_proto/proto/binlog.proto)。
+查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/binlog.proto)。
 
 ### Driver
 
