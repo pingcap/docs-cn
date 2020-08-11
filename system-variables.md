@@ -32,9 +32,9 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：SESSION (v4.0.4 开始为 SESSION | GLOBAL)
 - 默认值：0
-- 是否允许在 `INSERT` 语句中显式指定含有 auto_random 属性的列的值，`1` 为允许，`0` 为不允许。
+- 是否允许在 `INSERT` 语句中显式指定含有 `AUTO_RANDOM` 属性的列的值，`1` 为允许，`0` 为不允许。
 
 ### `ddl_slow_threshold`
 
