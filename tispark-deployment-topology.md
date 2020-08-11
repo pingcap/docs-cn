@@ -1,6 +1,7 @@
 ---
 title: TiSpark 部署拓扑
 summary: 介绍 TiUP 部署包含 TiSpark 组件的 TiDB 集群的拓扑结构。
+aliases: ['/docs-cn/dev/tispark-deployment-topology/']
 ---
 
 > **注意：**

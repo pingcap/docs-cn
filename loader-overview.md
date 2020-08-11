@@ -1,13 +1,13 @@
 ---
 title: Loader 使用文档
-aliases: ['/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/']
+aliases: ['/docs-cn/dev/loader-overview/','/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/']
 ---
 
 # Loader 使用文档
 
 > **警告：**
 >
-> Loader 目前已经不再维护，其功能已经完全被 [TiDB Lightning 的 TiDB backend 功能](/tidb-lightning/tidb-lightning-tidb-backend.md)取代，强烈建议切换到 TiDB Lightning。
+> Loader 目前已经不再维护，其功能已经完全被 [TiDB Lightning 的 TiDB backend 功能](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend)取代，强烈建议切换到 TiDB Lightning。
 
 ## Loader 简介
 

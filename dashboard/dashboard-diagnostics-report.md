@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 诊断报告
+aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-report/']
 ---
 
 # TiDB Dashboard 诊断报告
@@ -60,7 +61,7 @@ title: TiDB Dashboard 诊断报告
 
 #### Cluster Info
 
-**Cluster Info** 为集群拓扑信息。表中信息来自 TiDB 的 [information_schema.cluster_info](/system-tables/system-table-cluster-info.md) 系统表。
+**Cluster Info** 为集群拓扑信息。表中信息来自 TiDB 的 [information_schema.cluster_info](/information-schema/information-schema-cluster-info.md) 系统表。
 
 ![Cluster Info 报表](/media/dashboard/dashboard-diagnostics-cluster-info.png)
 
@@ -76,7 +77,7 @@ title: TiDB Dashboard 诊断报告
 
 ### 诊断信息
 
-TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考 [information_schema.inspection_result](/system-tables/system-table-inspection-result.md) 系统表的内容。
+TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考 [information_schema.inspection_result](/information-schema/information-schema-inspection-result.md) 系统表的内容。
 
 ### 负载信息
 

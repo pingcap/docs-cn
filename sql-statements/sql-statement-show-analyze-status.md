@@ -1,6 +1,7 @@
 ---
 title: SHOW ANALYZE STATUS
 summary: TiDB 数据库中 SHOW ANALYZE STATUS 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-analyze-status/']
 ---
 
 # SHOW ANALYZE STATUS
@@ -45,4 +46,4 @@ show analyze status;
 
 ## 另请参阅
 
-* [ANALYZE_STATUS 表](/system-tables/system-table-information-schema.md#analyze_status-表)
+* [ANALYZE_STATUS 表](/information-schema/information-schema-analyze-status.md)

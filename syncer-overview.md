@@ -1,6 +1,6 @@
 ---
 title: Syncer 使用文档
-aliases: ['/docs-cn/dev/reference/tools/syncer/']
+aliases: ['/docs-cn/dev/syncer-overview/','/docs-cn/dev/reference/tools/syncer/']
 ---
 
 # Syncer 使用文档

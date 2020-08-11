@@ -1,5 +1,6 @@
 ---
 title: TiUP FAQ
+aliases: ['/docs-cn/dev/tiup/tiup-faq/']
 ---
 
 # TiUP FAQ
@@ -7,6 +8,11 @@ title: TiUP FAQ
 ## TiUP 是否可以不使用官方镜像源？
 
 TiUP 支持通过环境变量 TIUP_MIRRORS 指定镜像源，镜像源的地址可以是一个本地目录或 HTTP 服务器地址。如果用户的环境不能访问网络，可以建立自己的离线镜像源使用 TiUP。
+
+如果在使用非官方镜像之后想要切回官方镜像可以采取以下任一措施：
+
+- 将 TIUP_MIRRORS 变量设置成官方镜像的地址：`https://tiup-mirrors.pingcap.com`。
+- 先确保 TIUP_MIRRORS 变量没有设置，再使用执行 `tiup mirror set https://tiup-mirrors.pingcap.com` 命令。
 
 ## 如何将自己编写的组件放入 TiUP 镜像仓库？
 
