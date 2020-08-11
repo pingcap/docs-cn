@@ -8,9 +8,8 @@ aliases: ['/docs-cn/dev/auto-random/','/docs-cn/dev/reference/sql/attributes/aut
 
 > **注意：**
 >
-> `AUTO_RANDOM` 属性已于 v4.0.3 版本成为正式功能，**可以在生产环境中使用该功能**。
+> `AUTO_RANDOM` 属性已于 v4.0.3 版本成为正式功能。
 
-使用 `AUTO_RANDOM` 功能前，须在 TiDB 配置文件 `experimental` 部分设置 `allow-auto-random = true`。该参数详情可参见 [`allow-auto-random`](/tidb-configuration-file.md#allow-auto-random-从-v310-版本开始引入)。
 
 ## 使用场景
 
@@ -28,7 +27,7 @@ create table t (a bigint primary key auto_increment, b varchar(255))
 insert into t(b) values ('a'), ('b'), ('c')
 ```
 
-如以上语句，由于未指定主键列的值（`a` 列），TiDB 会使用连续自增的行值作为行 ID，可能导致单个 TiKV 节点上产生写入热点，进而影响对外提供服务的性能。要避免这种性能下降，可以在执行建表语句时为 `a` 列指定 `AUTO_RANDOM` 属性而不是 `AUTO_INCREMENT` 属性。示例如下：
+如以上语句，由于未指定主键列的值（`a` 列），TiDB 会使用连续自增的行值作为行 ID，可能导致单个 TiKV 节点上产生写入热点，进而影响对外提供服务的性能。要避免这种写入热点，可以在执行建表语句时为 `a` 列指定 `AUTO_RANDOM` 属性而不是 `AUTO_INCREMENT` 属性。示例如下：
 
 {{< copyable "sql" >}}
 
@@ -48,6 +47,10 @@ create table t (a bigint auto_random, b varchar(255), primary key (a))
 
 + 隐式分配：如果该 `INSERT` 语句没有指定整型主键列（`a` 列）的值，或者指定为 `NULL`，TiDB 会为该列自动分配值。该值不保证自增，不保证连续，只保证唯一，避免了连续的行 ID 带来的热点问题。
 + 显式插入：如果该 `INSERT` 语句显式指定了整型主键列的值，和 `AUTO_INCREMENT` 属性类似，TiDB 会保存该值。注意，如果未在系统变量 `@@sql_mode` 中设置 `NO_AUTO_VALUE_ON_ZERO`， 即使显式指定整型主键列的值为 `0`，TiDB 也会为该列自动分配值。
+
+> **注意：**
+>
+> 从 v4.0.3 开始，要使用显式插入的功能，需要将系统变量 `@@allow_auto_random_explicit_insert` 的值设置为 `1`（默认值为 `0`）。默认不支持显式插入的具体原因请参考 [使用限制](#使用限制) 一节。
 
 自动分配值的计算方式如下：
 
@@ -80,9 +83,9 @@ show warnings
 
 ```
 
-> **警告：**
+> **注意：**
 >
-> 建议用户使用 `bigint` 作为 `AUTO_RANDOM` 列类型，以获得最大的可隐式分配次数。
+> 为保证可隐式分配的次数最大，从 v4.0.3 开始，`AUTO_RANDOM` 列类型只能为 `BIGINT`。
 
 另外，要查看某张含有 `AUTO_RANDOM` 属性的表的 shard bits 数量，可以在系统表 `information_schema.tables` 中 `TIDB_ROW_ID_SHARDING_INFO` 一列看到模式为 `PK_AUTO_RANDOM_BITS=x` 的值，其中 `x` 为 shard bits 的数量。
 
@@ -138,14 +141,9 @@ create table t (a bigint primary key auto_random)
 
 目前在 TiDB 中使用 `AUTO_RANDOM` 有以下限制：
 
-- 该属性必须指定在整数类型的主键列上，否则会报错。例外情况见[关于 `alter-primary-key` 配置项的说明](#关于-alter-primary-key-配置项的说明)。
+- 该属性必须指定在整数类型的主键列上，否则会报错。此外，当配置项 `alter-primary-key` 的值为 `true` 时，即使是整型主键列，也不支持使用 `AUTO_RANDOM`。
 - 不支持使用 `ALTER TABLE` 来修改 `AUTO_RANDOM` 属性，包括添加或移除该属性。
 - 不支持修改含有 `AUTO_RANDOM` 属性的主键列的列类型。
 - 不支持与 `AUTO_INCREMENT` 同时指定在同一列上。
 - 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。
 - 插入数据时，不建议自行显式指定含有 `AUTO_RANDOM` 列的值。不恰当地显式赋值，可能会导致该表提前耗尽用于自动分配的数值。
-
-### 关于 `alter-primary-key` 配置项的说明
-
-- 当 `alter-primary-key = true` 时，即使是整型主键列，也不支持使用 `AUTO_RANDOM`。
-- 配置文件中的 `alter-primary-key` 和 `allow-auto-random` 两个配置项的值不允许同时为 `true`。
