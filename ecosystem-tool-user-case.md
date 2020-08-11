@@ -36,4 +36,4 @@ aliases: ['/docs-cn/stable/ecosystem-tool-user-case/','/docs-cn/v4.0/ecosystem-t
 
 ## TiDB 增量数据订阅
 
-当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/binlog-slave-client.md)。
+当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/binlog-consumer-client.md)。
