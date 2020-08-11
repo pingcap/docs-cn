@@ -1,188 +1,71 @@
 ---
-title: TiDB V4.0 Roadmap
-aliases: ['/docs-cn/dev/roadmap/','/docs-cn/ROADMAP/','/docs-cn/roadmap/']
+title: TiDB  Roadmap
+category: Roadmap
+aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ---
 
 <!-- markdownlint-disable MD001 -->
 
-# TiDB V4.0 Roadmap
+# TiDB Roadmap
 
-## TiDB
+## Improve System Stability
 
-### TiDB Server
+- [ ] Create binding for `update`/`delete`/`insert` queries.
+- [ ] Optimized the pessimistic transaction model when the DDL and DML were executed at the same time, the system error problem, improved the stability of the system.
+- [ ] Reduce latency jitter.
 
-#### 功能
+## Improve System Performance and Reduce Latency
 
-* 支持 TiFlash 存储引擎
-* 支持 Optimizer Trace
-* 支持多列统计信息
-* 为普通 CM-Sketch 支持 TopN 统计信息
-* 完善 Plan Cache 功能
-* 支持自适应 SQL 引擎
-* 支持 SQL Tuning Advisor
-* 支持 SQL Plan Management
-* 事务
-    + 悲观锁 GA
-    + 事务内不限制语句数量
-    + 支持 10 GB 事务
+- [ ] Optimize the performance and efficiency of bulk deletion.
+- [ ] Improve Memory Management .
+- [ ] Improve the Accuracy and Robustness of Index Selection.
+- [ ] Improve partition pruning and data access performance on the partition table.
+- [ ] Async Commit.
+- [ ] Clustered Index.
+- [ ] Support Cross-Region Deployment & Geo-Partition.
 
-#### 性能
+## Improve System Security
 
-* 提升 load CSV/data 性能
-* 提升 Prepare 语句性能
-* Generated Column 支持 Index
-* 优化 SQL 引擎部分算子
-    + 提升通过索引回表查询的性能
-    + Index Join 拆分为 Index Merge Join 和 Index Hash Join
-    + Radix Hash Join
-    + Index Merge
-    + Parallel Stream Aggregate
-    + Parallel Merge Sort
-    + Parallel Merge Join
-    + Full Vectorized Expression Evaluation
-* Indexes on Expressions
-* Multi-Index Scan
-* Join、Aggregate 和 Sort 算子支持外部存储
-* 优化执行引擎并发模型
-* 支持新 Cascades 优化器，支持 Cascades Planner，扩大优化器的搜索空间
+### Authentication
 
-#### 易用性
+- [ ] Transport Layer Security(TLS) for TiFlash.
+- [ ] TLS in the internal communication of TiDB cluster.
+- [ ] SSH LDAP extension for TiUP
 
-* 完善 Optimizer Hint 功能
-* 快速修复数据库或者表元信息及数据
-* 动态修改配置项
-* 空闲连接自动断开
-* 完善支持 MySQL 5.7 DDL 语句
-* 重构日志内容
-* 支持使用 `admin checksum from … to …` 校验数据完整性
-* 支持使用标准 SQL 查询 DDL 历史记录
-* 支持使用标准 SQL 管理 Binlog
-* 支持使用标准 SQL 管理集群
-* 多个 Ctrl 工具合并一个工具
+### Transparent Data Encryption(TDE).
 
-#### 高可用
+- [ ] Transparent Data Encryption(TDE) for TiFlash.
+- [ ] Transparent Data Encryption(TDE) for PD.
 
-* Binlog 支持服务高可用
-* Binlog 支持数据高可靠
+### Mask
 
-### TiKV Server
+- [ ] De-Sensitization TiDB General Log.
 
-#### 功能
+## Cost-Effective
 
-* 集群规模最大支持 200+ 节点
-* 全量快速备份恢复
-* 动态 Split 和 Merge 热点 Region
-* 精细的内存控制
-* Raft
-    + Joint consensus
-    + 只读副本
+- [ ] Optimize the performance and stability of TiDB running on AWS i3.xlarge/i3.2xlarge.
+- [ ] Optimize the performance and stability of TiDB running on No-NVME SSD or Cloud disk (like AWS EBS gp2).
+- [ ] Easier discover performance issues and diagnose causes.
 
-#### 性能
+## New Feature
 
-* 提升 Scan 性能
-* 动态扩展工作线程数量
-* 弹性扩展只读副本
-* 优化调度系统确保 QPS 不抖动
-
-#### 易用性
-
-* 重构日志内容
-
-### TiFlash
-
-#### 功能
-
-* 列式存储
-* 通过 Raft learner 从 TiKV 同步数据
-* snapshot read
-
-### TiSpark
-
-#### 功能
-
-* 支持 batch write
-* 接入 TiFlash
-
-## Data Migration
-
-### 功能
-
-* 完善前向检查
-* 可视化管理同步规则
-* 可视化管理同步任务
-* 数据同步在线校验
-
-### 易用性
-
-* 重构日志格式及内容
-
-### 高可用
-
-* 支持服务高可用
-* 支持数据高可靠
-
-## TiDB Toolkit
-
-### 功能
-
-* Loader 集成到 TiDB
-* TiDB Lightning 集成到 TiDB
-
-### 性能
-
-* TiDB Lightning 支持多 lightning + importer 实例并行导入
-
-## TiDB 未来规划
-
-### TiDB Server
-
-#### 功能
-
-* Common Table Expression
-* Invisible Index
-* 支持修改列类型
-* 分区表支持二级分区
-* 分区表与普通表相互转换
-* 视图支持写入及更新
-* Multi-Schema Change
-* 按 Table 配置副本数及分布策略
-* 精细的 QoS 控制
-* 闪回到任意时间点
-
-#### 性能
-
-* Coprocessor Cache
-* 新 Row 存储格式
-* Distributed Execution Engine
-
-#### 易用性
-
-* 全链路 Trace 工具
-* Help 信息补齐
-
-#### 安全
-
-* 列级别权限
-
-### TiKV Server
-
-#### 功能
-
-* 增量快速备份恢复
-* 闪回到任意时间点
-* 分级存储
-* 精细的 QoS 控制
-* 按 Region 配置副本数及分布策略
-* Raft
-    + 链式复制数据
-    + Witness Role
-* 存储引擎
-    + 支持 RocksDB 在 compaction 时按照 Guard 信息切分 SSTable
-    + 冷热数据分离
-
-#### 性能
-
-* 提升快速备份性能
-* 1PC
-* 支持 Storage Class Memory 硬件
-* 新 Raft 引擎
+- [ ] Point-in-Time Recovery.
+- [ ] Changing Column Types.
+- [ ] Auto-Scaling on DBaaS.
+- [ ] Support collation `utf8mb4_unicode_ci` and `utf8_unicode_ci`.
+- [ ] Make TiCDC a complete alternative to TiDB-Binlog.
+   - [ ] Support distinguish update and insert in a row changed event.
+   - [ ] Support to provide old values in the row changed event, including old values in delete or update SQL.
+- [ ] snapshot level consistent replication in disasters
+   - [ ] Support MySQL sink can replicate to a snapshot level consistent state when upstream meets a disaster.
+- [ ] Management TiCDC by SQL statements.
+- [ ] Management TiCDC by API.
+- [ ] SQL based import command.
+- [ ] Support Avro sink and make TiCDC compatible with Kafka connect.
+- [ ] Support Spark-3.0.
+- [ ] Support `EXCEPT`/`INTERSECT` Operators.
+- [ ] Direct write into TiFlash without going through TiKV.
+- [ ] TiUP/Operator deployment and management DM 2.0.
+- [ ] TiDB-Operator deploying one TiDB Cluster across multiple regions or data centers.
+- [ ] TiDB operator supports heterogeneous design
+- [ ] Support the migration of RDS (for example: MySQL/Aurora) on the cloud to TiDB.
