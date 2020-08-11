@@ -1,11 +1,6 @@
 ---
-<<<<<<< HEAD:tidb-binlog/binlog-slave-client.md
-title: Binlog Slave Client 用户文档
-aliases: ['/docs-cn/v3.1/tidb-binlog/binlog-slave-client/','/docs-cn/v3.1/reference/tidb-binlog/binlog-slave-client/']
-=======
 title: Binlog Consumer Client 用户文档
-aliases: ['/zh/tidb/dev/binlog-slave-client','/docs-cn/dev/tidb-binlog/binlog-slave-client/','/docs-cn/dev/reference/tidb-binlog/binlog-slave-client/','/docs-cn/dev/reference/tools/tidb-binlog/binlog-slave-client/']
->>>>>>> 9f6ed63... binlog: change binlog slave to binlog consumer (#4237):tidb-binlog/binlog-consumer-client.md
+aliases: ['/zh/tidb/v3.1/binlog-slave-client','/docs-cn/v3.1/tidb-binlog/binlog-slave-client/','/docs-cn/v3.1/reference/tidb-binlog/binlog-slave-client/']
 ---
 
 # Binlog Consumer Client 用户文档
@@ -144,7 +139,7 @@ TiDB-Tools 项目提供了用于读取 Kafka 中 binlog 数据的 Driver，具�
 * 使用该 Driver 将数据同步到 MySQL，该示例包含将 binlog 转化为 SQL 的具体方法
 * 使用该 Driver 将数据打印出来
 
-Driver 项目地址：[Binlog Slave Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver)。
+Driver 项目地址：[TiDB Binlog Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver)。
 
 > **注意：**
 >
