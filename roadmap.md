@@ -32,7 +32,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 - [ ] TLS in the internal communication of TiDB cluster.
 - [ ] SSH LDAP extension for TiUP
 
-### Transparent Data Encryption(TDE).
+### Transparent Data Encryption(TDE)
 
 - [ ] Transparent Data Encryption(TDE) for TiFlash.
 - [ ] Transparent Data Encryption(TDE) for PD.
@@ -54,10 +54,10 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 - [ ] Auto-Scaling on DBaaS.
 - [ ] Support collation `utf8mb4_unicode_ci` and `utf8_unicode_ci`.
 - [ ] Make TiCDC a complete alternative to TiDB-Binlog.
-   - [ ] Support distinguish update and insert in a row changed event.
-   - [ ] Support to provide old values in the row changed event, including old values in delete or update SQL.
+    - [ ] Support distinguish update and insert in a row changed event.
+    - [ ] Support to provide old values in the row changed event, including old values in delete or update SQL.
 - [ ] snapshot level consistent replication in disasters
-   - [ ] Support MySQL sink can replicate to a snapshot level consistent state when upstream meets a disaster.
+    - [ ] Support MySQL sink can replicate to a snapshot level consistent state when upstream meets a disaster.
 - [ ] Management TiCDC by SQL statements.
 - [ ] Management TiCDC by API.
 - [ ] SQL based import command.
