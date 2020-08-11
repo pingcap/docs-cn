@@ -86,7 +86,7 @@ SELECT SLEEP(5);
 SHOW TABLE t1 REGIONS;
 ```
 
-结果显示示例表被切分成多个 Regions，`REGION_ID`， `START_KEY` 和 `END_KEY` 可能不完全匹配：
+结果显示示例表被切分成多个 Regions，`REGION_ID`，`START_KEY` 和 `END_KEY` 可能不完全匹配：
 
 {{< copyable "sql" >}}
 
