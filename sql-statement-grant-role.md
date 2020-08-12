@@ -3,7 +3,7 @@ title: GRANT <role>
 summary: TiDB 数据库中 GRANT <role> 的使用概况。
 ---
 
-# GRANT <role>
+# `GRANT <role>`
 
 `GRANT <role>` 语句用于将之前创建的角色授予给现有用户。用户可以通过 `SET ROLE <rolename>` 语句拥有角色权限，或者通过 `SET ROLE ALL` 语句拥有被授予的所有角色。
 
