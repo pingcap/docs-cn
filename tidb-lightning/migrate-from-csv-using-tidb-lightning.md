@@ -121,8 +121,7 @@ recognized and transformed:
     | `\t`     | Tab (U+0009)             |
     | `\Z`     | Windows EOF (U+001A)     |
 
-    In all other cases (e.g. `\"`) the backslash is simply stripped, leaving the next character (`"`)
-in the field.
+    In all other cases (for example, `\"`) the backslash is simply stripped, leaving the next character (`"`) in the field. The character left has no special roles (for example, delimiters) and is just an ordinary character.
 
 - Quoting will not affect whether backslash escapes are interpreted.
 
