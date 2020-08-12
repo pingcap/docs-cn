@@ -49,7 +49,7 @@ create table t (a bigint auto_random, b varchar(255), primary key (a))
 
 > **注意：**
 >
-> 从 v4.0.3 开始，要使用显式插入的功能，需要将系统变量 `@@allow_auto_random_explicit_insert` 的值设置为 `1`（默认值为 `0`）。默认不支持显式插入的具体原因请参考 [使用限制](#使用限制) 一节。
+> 从 v4.0.3 开始，要使用显式插入的功能，需要将系统变量 `@@allow_auto_random_explicit_insert` 的值设置为 `1`（默认值为 `0`）。默认不支持显式插入的具体原因请参考[使用限制](#使用限制)一节。
 
 自动分配值的计算方式如下：
 
