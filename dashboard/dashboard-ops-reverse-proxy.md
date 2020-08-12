@@ -270,4 +270,4 @@ sudo nginx -s reload
 
 ## 下一步
 
-- 参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md) 章节了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。
+参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)文档了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。
