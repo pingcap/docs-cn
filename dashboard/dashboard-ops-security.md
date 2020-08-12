@@ -61,7 +61,7 @@ The output is the actual TiDB Dashboard address.
 > tiup update --self
 > tiup update cluster --force
 > ```
-
+>
 > </details>
 
 The following is a sample output:
