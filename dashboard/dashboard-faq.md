@@ -45,7 +45,7 @@ If your deployment tool is TiUP, take the following steps to solve this problem.
 
 2. After the upgrade, when a new cluster is deployed with Prometheus instances, the metrics can be displayed normally.
 
-3. For an existing cluster, you can restart this cluster to report the metrics addresses. Replace `CLUSTER_NAME` with the actual cluster name:
+3. After the upgrade, for an existing cluster, you can restart this cluster to report the metrics addresses. Replace `CLUSTER_NAME` with the actual cluster name:
 
     {{< copyable "shell-regular" >}}
 

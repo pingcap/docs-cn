@@ -50,7 +50,10 @@ The output is the actual TiDB Dashboard address.
 
 > **Note:**
 >
-> This feature is available only in the later version of the `tiup cluster` deployment tool (v1.0.3 or later). You can upgrade `tiup cluster` with the following commands:
+> This feature is available only in the later version of the `tiup cluster` deployment tool (v1.0.3 or later).
+>
+> <details>
+> <summary>Upgrade TiUP Cluster</summary>
 >
 > {{< copyable "shell-regular" >}}
 >
@@ -58,6 +61,8 @@ The output is the actual TiDB Dashboard address.
 > tiup update --self
 > tiup update cluster --force
 > ```
+
+> </details>
 
 The following is a sample output:
 
