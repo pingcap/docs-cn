@@ -1,8 +1,7 @@
 ---
 title: CREATE INDEX
 summary: CREATE INDEX 在 TiDB 中的使用概况
-category: reference
-aliases: ['/docs-cn/v3.1/reference/sql/statements/create-index/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-create-index/','/docs-cn/v3.1/reference/sql/statements/create-index/']
 ---
 
 # CREATE INDEX

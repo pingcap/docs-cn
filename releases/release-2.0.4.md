@@ -1,7 +1,6 @@
 ---
 title: TiDB 2.0.4 release notes
-category: Releases
-aliases: ['/docs-cn/v3.1/releases/204/']
+aliases: ['/docs-cn/v3.1/releases/release-2.0.4/','/docs-cn/v3.1/releases/204/']
 ---
 
 # TiDB 2.0.4 Release Notes

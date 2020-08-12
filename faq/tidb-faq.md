@@ -1,7 +1,6 @@
 ---
 title: TiDB FAQ
-category: FAQ
-aliases: ['/docs-cn/v3.1/faq/tidb/']
+aliases: ['/docs-cn/v3.1/faq/tidb-faq/','/docs-cn/v3.1/faq/tidb/']
 ---
 
 # FAQ
@@ -116,7 +115,7 @@ TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本�
 
 1）由于 TiDB 是分布式数据库，tidb-server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/architecture.md)），用户使用 MySQL 客户端登录的是哪个 tidb-server，`show processlist` 就会显示当前连接的这个 tidb-server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
 
-2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
+2）在查询执行期间，TiDB 中的 `State` 列不会持续更新。由于 TiDB 支持并行查询，每个语句可能同时处于多个状态，因此很难显示为某一种状态。
 
 #### 1.1.21 如何修改用户名密码和权限？
 
@@ -533,7 +532,7 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 #### 3.3.8 TiDB 同时支持的最大并发连接数？
 
-当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
+默认情况下，每个 TiDB 服务器的最大连接数没有限制。如有需要，可以在 `config.toml` 文件中设置 `max-server-connections` 来限制最大连接数。如果并发量过大导致响应时间增加，建议通过添加 TiDB 节点进行扩容。
 
 #### 3.3.9 如何查看某张表创建的时间？
 
@@ -953,7 +952,7 @@ RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganiz
 
 #### 5.1.5 TiDB 是否支持基于 COST 的优化（CBO），如果支持，实现到什么程度？
 
-是的，TiDB 使用的基于成本的优化器（CBO），我们有一个小组单独会对代价模型、统计信息持续优化，除此之外，我们支持 hash join、soft merge 等关联算法。
+是的，TiDB 使用的是基于成本的优化器 (CBO)，会对代价模型、统计信息持续优化。除此之外，TiDB 还支持 hash join、soft-merge join 等 join 算法。
 
 #### 5.1.6 如何确定某张表是否需要做 analyze ？
 
@@ -1021,15 +1020,15 @@ QPS 会统计执行的所有 SQL 命令，包括 use database、load data、begi
 
 Statement OPS 只统计 select、update、insert 等业务相关的，所以 Statement OPS 的统计和业务比较相符。
 
-## 八、Cloud TiDB
+## 八、云上部署
 
 ### 8.1 公有云
 
-#### 8.1.1 目前 Cloud TiDB 都支持哪些云厂商？
+#### 8.1.1 目前 TiDB 云上部署都支持哪些云厂商？
 
-Cloud TiDB 目前已经在腾讯云、UCloud 上线，都是数据库一级入口，欢迎大家使用。
+关于云上部署，TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和 [阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
 
-另外，Cloud TiDB 还支持在 [Google GKE](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)，[AWS EKS](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-aws-eks/) 和 [阿里云 ACK](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud/) 上部署使用。
+此外，TiDB 云上部署也已在京东云、UCloud 上线，均为数据库一级入口，欢迎大家使用。
 
 ## 九、故障排除
 

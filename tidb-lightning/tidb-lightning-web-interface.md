@@ -1,8 +1,7 @@
 ---
 title: TiDB Lightning Web 界面
 summary: 了解 TiDB Lightning 的服务器模式——通过 Web 界面来控制 TiDB Lightning。
-category: reference
-aliases: ['/docs-cn/v3.1/reference/tools/tidb-lightning/web/']
+aliases: ['/docs-cn/v3.1/tidb-lightning/tidb-lightning-web-interface/','/docs-cn/v3.1/reference/tools/tidb-lightning/web/']
 ---
 
 # TiDB Lightning Web 界面

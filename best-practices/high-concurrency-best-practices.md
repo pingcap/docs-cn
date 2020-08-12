@@ -1,8 +1,7 @@
 ---
 title: TiDB 高并发写入场景最佳实践
 summary: 了解 TiDB 在高并发写入场景下的最佳实践。
-category: reference
-aliases: ['/docs-cn/v3.1/reference/best-practices/high-concurrency/']
+aliases: ['/docs-cn/v3.1/best-practices/high-concurrency-best-practices/','/docs-cn/v3.1/reference/best-practices/high-concurrency/']
 ---
 
 # TiDB 高并发写入场景最佳实践
@@ -177,22 +176,26 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 要避免由 `_tidb_rowid` 带来的写入热点问题，可以在建表时，使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 这两个建表选项（参阅 [`PRE_SPLIT_REGIONS` 的详细说明](/sql-statements/sql-statement-split-region.md#pre_split_regions)）。
 
-`SHARD_ROW_ID_BITS` 用于将 `_tidb_rowid` 列生成的行 ID 随机打散。`pre_split_regions` 用于在建完表后预先进行 Split region。
+`SHARD_ROW_ID_BITS` 用于将 `_tidb_rowid` 列生成的行 ID 随机打散。`PRE_SPLIT_REGIONS` 用于在建完表后预先进行 Split region。
 
 > **注意：**
 >
-> `pre_split_regions` 必须小于或等于 `shard_row_id_bits`。
+> `PRE_SPLIT_REGIONS` 的值必须小于或等于 `SHARD_ROW_ID_BITS`。
+
+以下全局变量会影响 `PRE_SPLIT_REGIONS` 的行为，需要特别注意：
+
++ `tidb_scatter_region`：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `1`，表示等待所有 Region 都切分和打散完成后再返回结果给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
 
 示例：
 
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=3;
+create table t (a int, b int) SHARD_ROW_ID_BITS = 4 PRE_SPLIT_REGIONS=3;
 ```
 
 - `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 （16=2^4） 个范围区间。
-- `pre_split_regions=3` 表示建完表后提前切分出 8 (2^3) 个 Region。
+- `PRE_SPLIT_REGIONS=3` 表示建完表后提前切分出 8 (2^3) 个 Region。
 
 开始写数据进表 t 后，数据会被写入提前切分好的 8 个 Region 中，这样也避免了刚开始建表完后因为只有一个 Region 而存在的写热点问题。
 

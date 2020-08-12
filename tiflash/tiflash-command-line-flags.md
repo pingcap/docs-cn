@@ -1,6 +1,6 @@
 ---
 title: TiFlash 命令行参数
-category: reference
+aliases: ['/docs-cn/v3.1/tiflash/tiflash-command-line-flags/']
 ---
 
 # TiFlash 命令行参数

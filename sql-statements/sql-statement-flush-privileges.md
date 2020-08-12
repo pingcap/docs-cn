@@ -1,8 +1,7 @@
 ---
 title: FLUSH PRIVILEGES
 summary: TiDB 数据库中 FLUSH PRIVILEGES 的使用概况。
-category: reference
-aliases: ['/docs-cn/v3.1/reference/sql/statements/flush-privileges/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-flush-privileges/','/docs-cn/v3.1/reference/sql/statements/flush-privileges/']
 ---
 
 # FLUSH PRIVILEGES

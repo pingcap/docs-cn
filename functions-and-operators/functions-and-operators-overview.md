@@ -1,7 +1,6 @@
 ---
 title: 函数和操作符概述
-category: reference
-aliases: ['/docs-cn/v3.1/reference/sql/functions-and-operators/reference/']
+aliases: ['/docs-cn/v3.1/functions-and-operators/functions-and-operators-overview/','/docs-cn/v3.1/reference/sql/functions-and-operators/reference/']
 ---
 
 # 函数和操作符概述

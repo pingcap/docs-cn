@@ -1,7 +1,7 @@
 ---
 title: SHOW ANALYZE STATUS
 summary: TiDB 数据库中 SHOW ANALYZE STATUS 的使用概况。
-category: reference
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-show-analyze-status/']
 ---
 
 # SHOW ANALYZE STATUS

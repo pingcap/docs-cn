@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 故障诊断
-category: reference
-aliases: ['/docs-cn/v3.1/how-to/troubleshoot/tidb-lightning/']
+aliases: ['/docs-cn/v3.1/troubleshoot-tidb-lightning/','/docs-cn/v3.1/how-to/troubleshoot/tidb-lightning/','/docs-cn/v3.1/tidb-lightning/tidb-lightning-misuse-handling/','/docs-cn/v3.1/reference/tools/error-case-handling/lightning-misuse-handling/','/zh/tidb/v3.1/tidb-lightning-misuse-handling']
 ---
 
 # TiDB Lightning 故障诊断

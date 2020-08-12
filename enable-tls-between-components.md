@@ -1,7 +1,6 @@
 ---
 title: 为 TiDB 组件间开启 TLS 和数据加密存储
-category: how-to
-aliases: ['/docs-cn/v3.1/how-to/secure/enable-tls-between-components/']
+aliases: ['/docs-cn/v3.1/enable-tls-between-components/','/docs-cn/v3.1/how-to/secure/enable-tls-between-components/']
 ---
 
 # 为 TiDB 组件间开启 TLS 和数据加密存储

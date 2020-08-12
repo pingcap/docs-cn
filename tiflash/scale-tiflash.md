@@ -1,7 +1,6 @@
 ---
 title: TiFlash 集群扩缩容
-category: reference
-aliases: ['/docs-cn/v3.1/reference/tiflash/scale/']
+aliases: ['/docs-cn/v3.1/tiflash/scale-tiflash/','/docs-cn/v3.1/reference/tiflash/scale/']
 ---
 
 # TiFlash 集群扩缩容

@@ -1,8 +1,7 @@
 ---
 title: TiDB 事务概览
 summary: 了解 TiDB 中的事务。
-category: reference
-aliases: ['/docs-cn/v3.1/reference/transactions/overview/']
+aliases: ['/docs-cn/v3.1/transaction-overview/','/docs-cn/v3.1/reference/transactions/overview/']
 ---
 
 # TiDB 事务概览

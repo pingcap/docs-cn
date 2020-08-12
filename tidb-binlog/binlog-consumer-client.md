@@ -1,10 +1,9 @@
 ---
-title: Binlog Slave Client 用户文档
-category: reference
-aliases: ['/docs-cn/v3.1/reference/tidb-binlog/binlog-slave-client/']
+title: Binlog Consumer Client 用户文档
+aliases: ['/zh/tidb/v3.1/binlog-slave-client','/docs-cn/v3.1/tidb-binlog/binlog-slave-client/','/docs-cn/v3.1/reference/tidb-binlog/binlog-slave-client/']
 ---
 
-# Binlog Slave Client 用户文档
+# Binlog Consumer Client 用户文档
 
 目前 Drainer 提供了多种输出方式，包括 MySQL、TiDB、file 等。但是用户往往有一些自定义的需求，比如输出到 Elasticsearch、Hive 等，这些需求 Drainer 现在还没有实现，因此 Drainer 增加了输出到 Kafka 的功能，将 binlog 数据解析后按一定的格式再输出到 Kafka 中，用户编写代码从 Kafka 中读出数据再进行处理。
 
@@ -118,7 +117,7 @@ message Binlog {
 }
 ```
 
-查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/slave_binlog_proto/proto/binlog.proto)。
+查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/binlog.proto)。
 
 ### Driver
 
@@ -140,7 +139,7 @@ TiDB-Tools 项目提供了用于读取 Kafka 中 binlog 数据的 Driver，具�
 * 使用该 Driver 将数据同步到 MySQL，该示例包含将 binlog 转化为 SQL 的具体方法
 * 使用该 Driver 将数据打印出来
 
-Driver 项目地址：[Binlog Slave Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver)。
+Driver 项目地址：[TiDB Binlog Driver](https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/driver)。
 
 > **注意：**
 >

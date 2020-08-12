@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog 版本升级方法
-category: reference
-aliases: ['/docs-cn/v3.1/reference/tidb-binlog/upgrade/','/docs-cn/v3.1/how-to/upgrade/tidb-binlog/','/docs-cn/v3.1/reference/tools/tidb-binlog/upgrade/']
+aliases: ['/docs-cn/v3.1/tidb-binlog/upgrade-tidb-binlog/','/docs-cn/v3.1/reference/tidb-binlog/upgrade/','/docs-cn/v3.1/how-to/upgrade/tidb-binlog/','/docs-cn/v3.1/reference/tools/tidb-binlog/upgrade/']
 ---
 
 # TiDB Binlog 版本升级方法

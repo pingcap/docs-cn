@@ -151,6 +151,7 @@
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
+      - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
       - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
@@ -211,6 +212,7 @@
       - [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md)
       - [`SHOW [FULL] PROCESSSLIST`](/sql-statements/sql-statement-show-processlist.md)
       - [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
+      - [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md)
       - [`SHOW [FULL] TABLES`](/sql-statements/sql-statement-show-tables.md)
       - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
@@ -312,7 +314,7 @@
     - [版本升级](/tidb-binlog/upgrade-tidb-binlog.md)
     - [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
     - [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
-    - [Kafka 自定义开发](/tidb-binlog/binlog-slave-client.md)
+    - [Kafka 自定义开发](/tidb-binlog/binlog-consumer-client.md)
     - [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
     - [集群间双向同步](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
     - [术语表](/tidb-binlog/tidb-binlog-glossary.md)
@@ -323,6 +325,7 @@
   + 周边工具
     + [功能概览](/ecosystem-tool-user-guide.md)
     + [适用场景](/ecosystem-tool-user-case.md)
+    - [表库过滤](/table-filter.md)
     - [Mydumper](/mydumper-overview.md)
     - [Loader](/loader-overview.md)
     - [Syncer](/syncer-overview.md)
@@ -332,7 +335,7 @@
       - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
       - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
       - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      - [表库过滤](/tidb-lightning/tidb-lightning-table-filter.md)
+      - [表库过滤](/table-filter.md)
       - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       - [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
@@ -362,8 +365,8 @@
 + 贡献
   - [贡献代码](/contribute.md#成为-tidb-的贡献者)
   - [改进文档](/contribute.md#改进文档)
-+ [TiDB 路线图](/roadmap.md)
 + 版本发布历史
+  - [发布版本汇总](/releases/release-notes.md)
   + v3.1
     - [3.1.2](/releases/release-3.1.2.md)
     - [3.1.1](/releases/release-3.1.1.md)
@@ -373,6 +376,7 @@
     - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/release-3.1.0-beta.md)
   + v3.0
+    - [3.0.17](/releases/release-3.0.17.md)
     - [3.0.16](/releases/release-3.0.16.md)
     - [3.0.15](/releases/release-3.0.15.md)
     - [3.0.14](/releases/release-3.0.14.md)

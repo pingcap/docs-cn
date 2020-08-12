@@ -1,6 +1,6 @@
 ---
 title: 操作系统性能参数调优
-category: reference
+aliases: ['/docs-cn/v3.1/tune-operating-system/']
 ---
 
 # 操作系统性能参数调优

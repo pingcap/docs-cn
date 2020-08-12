@@ -1,7 +1,7 @@
 ---
 title: TiDB 生态工具适用场景
-category: reference
 summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择。
+aliases: ['/docs-cn/v3.1/ecosystem-tool-user-case/']
 ---
 
 # TiDB 生态工具适用场景
@@ -36,4 +36,4 @@ summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择�
 
 ## TiDB 增量数据订阅
 
-当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/binlog-slave-client.md)。
+当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/binlog-consumer-client.md)。

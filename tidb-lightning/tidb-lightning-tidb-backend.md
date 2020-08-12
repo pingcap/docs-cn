@@ -1,8 +1,7 @@
 ---
 title: TiDB Lightning TiDB-Backend
 summary: 了解 TiDB Lightning TiDB-backend。
-category: reference
-aliases: ['/docs-cn/v3.1/reference/tools/tidb-lightning/tidb-backend/']
+aliases: ['/docs-cn/v3.1/tidb-lightning/tidb-lightning-tidb-backend/','/docs-cn/v3.1/reference/tools/tidb-lightning/tidb-backend/']
 ---
 
 # TiDB Lightning TiDB-Backend
@@ -210,8 +209,8 @@ password = ""
 ```toml
 # [[route-rules]]
 # Table routes
-# pattern-schema = "shard_db_*"
-# pattern-table = "shard_table_*"
+# schema-pattern = "shard_db_*"
+# table-pattern = "shard_table_*"
 # target-schema = "shard_db"
 # target-table = "shard_table"
 ```
@@ -220,9 +219,8 @@ password = ""
 
 ```toml
 # [[routes]]
-# Table routes
-# pattern-schema = "shard_db_*"
-# pattern-table = "shard_table_*"
+# schema-pattern = "shard_db_*"
+# table-pattern = "shard_table_*"
 # target-schema = "shard_db"
 # target-table = "shard_table"
 ```

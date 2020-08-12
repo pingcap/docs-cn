@@ -1,8 +1,7 @@
 ---
 title: COMMIT
 summary: TiDB 数据库中 COMMIT 的使用概况。
-category: reference
-aliases: ['/docs-cn/v3.1/reference/sql/statements/commit/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-commit/','/docs-cn/v3.1/reference/sql/statements/commit/']
 ---
 
 # COMMIT

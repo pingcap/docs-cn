@@ -1,8 +1,7 @@
 ---
 title: 从 MySQL 迁移数据 —— 以 Amazon Aurora MySQL 为例
 summary: 使用 DM 从 MySQL/Amazon Aurora MySQL 迁移数据。
-category: how-to
-aliases: ['/docs-cn/v3.1/how-to/migrate/from-mysql-aurora/','/docs-cn/v3.1/how-to/migrate/from-aurora/']
+aliases: ['/docs-cn/v3.1/migrate-from-aurora-mysql-database/','/docs-cn/v3.1/how-to/migrate/from-mysql-aurora/','/docs-cn/v3.1/how-to/migrate/from-aurora/']
 ---
 
 # 从 MySQL 迁移数据 —— 以 Amazon Aurora MySQL 为例

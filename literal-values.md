@@ -1,8 +1,7 @@
 ---
 title: 字面值
-category: reference
 summary: 本文介绍了 TiDB SQL 语句的字面值。
-aliases: ['/docs-cn/v3.1/reference/sql/language-structure/literal-values/']
+aliases: ['/docs-cn/v3.1/literal-values/','/docs-cn/v3.1/reference/sql/language-structure/literal-values/']
 ---
 
 # 字面值

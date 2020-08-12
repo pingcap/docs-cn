@@ -1,7 +1,6 @@
 ---
 title: TiDB 3.1 升级操作指南
-category: how-to
-aliases: ['/docs-cn/v3.1/how-to/upgrade/from-previous-version/']
+aliases: ['/docs-cn/v3.1/upgrade-tidb-using-ansible/','/docs-cn/v3.1/how-to/upgrade/from-previous-version/']
 ---
 
 # TiDB 3.1 升级操作指南

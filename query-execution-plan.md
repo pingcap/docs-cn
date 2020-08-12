@@ -1,7 +1,6 @@
 ---
 title: 理解 TiDB 执行计划
-category: reference
-aliases: ['/docs-cn/v3.1/reference/performance/understanding-the-query-execution-plan/']
+aliases: ['/docs-cn/v3.1/query-execution-plan/','/docs-cn/v3.1/reference/performance/understanding-the-query-execution-plan/']
 ---
 
 # 理解 TiDB 执行计划
@@ -39,7 +38,7 @@ TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计
 
 ### 用例
 
-使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/dev/how-to/get-started/import-example-database.md):
+使用 [bikeshare example database](https://github.com/pingcap/docs/blob/release-3.1/import-example-data.md):
 
 {{< copyable "sql" >}}
 

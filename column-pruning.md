@@ -1,6 +1,6 @@
 ---
 title: 列裁剪
-category: performance
+aliases: ['/docs-cn/v3.1/column-pruning/']
 ---
 
 # 列裁剪

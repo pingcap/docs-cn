@@ -1,7 +1,7 @@
 ---
 title: 术语表
 summary: 了解 TiDB 相关术语。
-category: glossary
+aliases: ['/docs-cn/v3.1/glossary/']
 ---
 
 # 术语表

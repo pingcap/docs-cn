@@ -1,7 +1,7 @@
 ---
 title: SET ROLE
 summary: TiDB 数据库中 SET ROLE 的使用概况。
-category: reference
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-set-role/']
 ---
 
 # SET ROLE

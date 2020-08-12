@@ -1,8 +1,7 @@
 ---
 title: KILL [TIDB]
 summary: TiDB 数据库中 KILL [TIDB] 的使用概况。
-category: reference
-aliases: ['/docs-cn/v3.1/reference/sql/statements/kill/']
+aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-kill/','/docs-cn/v3.1/reference/sql/statements/kill/']
 ---
 
 # KILL [TIDB]

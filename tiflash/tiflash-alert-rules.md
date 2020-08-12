@@ -1,7 +1,6 @@
 ---
 title: TiFlash 报警规则
-category: reference
-aliases: ['/docs-cn/v3.1/reference/tiflash/alert-rules/']
+aliases: ['/docs-cn/v3.1/tiflash/tiflash-alert-rules/','/docs-cn/v3.1/reference/tiflash/alert-rules/']
 ---
 
 # TiFlash 报警规则
