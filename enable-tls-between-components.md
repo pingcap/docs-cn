@@ -167,7 +167,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiKV-Server", "TiDB-Server"]
+    cert_allowed_cn = ["TiKV-Server", "TiDB-Server"]
     ```
 
 ## 证书重加载
