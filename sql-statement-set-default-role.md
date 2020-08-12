@@ -1,7 +1,6 @@
 ---
 title: SET DEFAULT ROLE
-summary: An overview of the usage of SET DEFAULT ROLE for the TiDB database.
-category: reference
+summary: TiDB 数据库中 SET DEFAULT ROLE 的使用概况。
 ---
 
 # `SET DEFAULT ROLE`
