@@ -27,13 +27,18 @@ This section introduces the recommended method of deploying TiDB, cluster versio
 
 ### Deployment method
 
-It is recommended that you deploy the TiDB cluster using [TiDB Ansible](/online-deployment-using-ansible.md) and get BR by downloading [TiDB Toolkit](/download-ecosystem-tools.md#br-backup-and-restore).
+It is recommended that you deploy the TiDB cluster using [TiUP](/tiup/tiup-cluster.md) and get BR by downloading [TiDB Toolkit](/download-ecosystem-tools.md#br-backup-and-restore).
 
 ### Cluster versions
 
-* TiKV: v3.1.0-beta.1
-* PD: v3.1.0-beta.1
-* br: v3.1.0-beta.1
+* TiDB: v4.0.2
+* TiKV: v4.0.2
+* PD: v4.0.2
+* BR: v4.0.2
+
+> **Note:**
+>
+> v4.0.2 was the latest version at the time this document was written. It is recommended that you use the latest version of [TiDB/TiKV/PD/BR](/releases/release-notes.md) and make sure that the BR version is **consistent with** the TiDB version.
 
 ### TiKV hardware information
 
@@ -170,16 +175,16 @@ During the backup process, pay attention to the following metrics on the monitor
 Before executing the backup command, a path in which the log is stored has been specified. You can get the statistical information of the backup operation from this log. Search "summary" in this log, you can see the following information:
 
 ```
-["Table backup summary: 
-    total backup ranges: 4, 
-    total success: 4, 
-    total failed: 0, 
-    total take(s): 986.43, 
-    total kv: 5659888624, 
-    total size(MB): 353227.18, 
-    avg speed(MB/s): 358.09"] 
-    ["backup total regions"=7196] 
-    ["backup checksum"=6m28.291772955s] 
+["Table backup summary:
+    total backup ranges: 4,
+    total success: 4,
+    total failed: 0,
+    total take(s): 986.43,
+    total kv: 5659888624,
+    total size(MB): 353227.18,
+    avg speed(MB/s): 358.09"]
+    ["backup total regions"=7196]
+    ["backup checksum"=6m28.291772955s]
     ["backup fast checksum"=24.950298ms]
 ```
 
@@ -281,17 +286,17 @@ During the restoration process, pay attention to the following metrics on the mo
 Before executing the restoration command, a path in which the log is stored has been specified. You can get the statistical information of the restoration operation from this log. Search "summary" in this log, you can see the following information:
 
 ```
-["Table Restore summary: 
-    total restore tables: 1, 
-    total success: 1, 
-    total failed: 0, 
-    total take(s): 961.37, 
-    total kv: 5659888624, 
-    total size(MB): 353227.18, 
-    avg speed(MB/s): 367.42"] 
-    ["restore files"=9263] 
-    ["restore ranges"=6888] 
-    ["split region"=49.049182743s] 
+["Table Restore summary:
+    total restore tables: 1,
+    total success: 1,
+    total failed: 0,
+    total take(s): 961.37,
+    total kv: 5659888624,
+    total size(MB): 353227.18,
+    avg speed(MB/s): 367.42"]
+    ["restore files"=9263]
+    ["restore ranges"=6888]
+    ["split region"=49.049182743s]
     ["restore checksum"=6m34.879439498s]
 ```
 
