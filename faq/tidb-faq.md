@@ -127,7 +127,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 #### 1.1.23 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables.md#sql_mode)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
+TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables.md)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
 
 #### 1.1.23 我们的安全漏洞扫描工具对 MySQL version 有要求，TiDB 是否支持修改 server 版本号呢？
 
