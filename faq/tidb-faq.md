@@ -75,9 +75,9 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.15 TiDB 是否支持 `SELECT FOR UPDATE`？
 
-支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
+支持。当 TiDB 使用乐观锁（自 TiDB v2.1 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。 
 
-当 TiDB 使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。
+TiDB v3.0 默认更改成使用悲观锁，此时 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
 
 #### 1.1.16 TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
@@ -117,7 +117,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 #### 1.1.23 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables.md)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
+TiDB 支持将 `sql_mode` 作为[系统变量](/system-variables.md)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
 
 #### 1.1.23 我们的安全漏洞扫描工具对 MySQL version 有要求，TiDB 是否支持修改 server 版本号呢？
 
