@@ -149,8 +149,8 @@ Value:
 | :---------- | :----- | :--------------------- |
 | Column Name    | String | 列名   |
 | Column Type    | Number | 列类型，详见：[Column 的类型码](#column-的类型码) |
-| Where Handle（**已弃用**）   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true。该参数已弃用，被 Flag 中的 HandleKeyFlag 代替 |
-| Flag           | Number | 列标志位，详见：[列标志位](#列标志位) |
+| Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true。 |
+| Flag（**实验性**）          | Number | 列标志位，详见：[列标志位](#列标志位) |
 | Column Value   | Any    | 列值   |
 
 ### DDL Event
@@ -382,5 +382,7 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 
 > **注意：**
 >
+> + 该功能为实验性功能，请勿在生产环境使用。
+> + 目前已知当某一列为组合索引时，这一列的 UniqueKeyFlag 输出不正常。
 > + BinaryFlag 仅在列为 Blob/Text（包括 Tiny Blob/Tiny Blob、Long Blob/Long Blob 等）类型时才有意义。当上游列为 Blob 类型时，BinaryFlag 置 `1`；当上游列为 Text 类型时，BinaryFlag 置 `0`。
 > + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
