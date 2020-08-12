@@ -32,6 +32,7 @@ TiDB enables the slow query log by default. You can enable or disable the featur
 # Cop_backoff_rpcPD_total_times: 200 Cop_backoff_rpcPD_total_time: 0.2 Cop_backoff_rpcPD_max_time: 0.2 Cop_backoff_rpcPD_max_addr: 127.0.0.1 Cop_backoff_rpcPD_avg_time: 0.2 Cop_backoff_rpcPD_p90_time: 0.2
 # Cop_backoff_rpcTiKV_total_times: 200 Cop_backoff_rpcTiKV_total_time: 0.2 Cop_backoff_rpcTiKV_max_time: 0.2 Cop_backoff_rpcTiKV_max_addr: 127.0.0.1 Cop_backoff_rpcTiKV_avg_time: 0.2 Cop_backoff_rpcTiKV_p90_time: 0.2
 # Mem_max: 525211
+# Disk_max: 65536
 # Prepared: false
 # Plan_from_cache: false
 # Succ: true
@@ -75,6 +76,10 @@ The following fields are related to transaction execution:
 Memory usage fields:
 
 * `Mem_max`: The maximum memory space used during the execution period of a SQL statement (the unit is byte).
+
+Hard disk fields:
+
+* `Disk_max`: The maximum disk space used during the execution period of a SQL statement (the unit is byte).
 
 User fields:
 
