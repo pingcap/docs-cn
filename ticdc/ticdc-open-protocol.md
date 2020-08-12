@@ -383,6 +383,6 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 > **注意：**
 >
 > + 该功能为实验性功能，请勿在生产环境使用。
-> + *目前已知当某一列为组合索引时，这一列的 UniqueKeyFlag 输出不正常。*
+> + 目前已知当某一列为组合索引时，这一列的 UniqueKeyFlag 输出不正常。
 > + BinaryFlag 仅在列为 Blob/Text（包括 Tiny Blob/Tiny Blob、Long Blob/Long Blob 等）类型时才有意义。当上游列为 Blob 类型时，BinaryFlag 置 `1`；当上游列为 Text 类型时，BinaryFlag 置 `0`。
 > + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
