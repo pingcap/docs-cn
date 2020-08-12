@@ -327,12 +327,11 @@ tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
 tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 ```
 
-### 动态修改 TiKV 的 RocksDB 相关配置
+### 动态修改 TiKV 的配置
 
-使用 `modify-tikv-config` 命令可以动态修改配置参数，暂时仅支持对于 RocksDB 相关参数的动态更改。
+使用 `modify-tikv-config` 命令可以动态修改配置参数。目前可动态修改的 TiKV 配置与具体的修改行为与 SQL 动态修改配置功能相同，可参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)。
 
-- `-m` 用于指定要修改的模块，有 `storage`、`kvdb` 和 `raftdb` 三个值可以选择。
-- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[storage]`、`[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `storage`、`kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置。对于 `kvdb` 有 `default`、`write` 和 `lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
+- `-n` 用于指定完整的配置名。支持动态修改的配置名可以参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)中支持的配置项列表。
 - `-v` 用于指定配置值。
 
 设置 `shared block cache` 的大小：
@@ -340,11 +339,11 @@ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl modify-tikv-config -m storage -n block_cache.capacity -v 10GB
+tikv-ctl --host ip:port modify-tikv-config -n storage.block-cache.capacity -v 10GB
 ```
 
 ```
-success!
+success
 ```
 
 当禁用 `shared block cache` 时，为 `write` CF 设置 `block cache size`：
@@ -352,31 +351,31 @@ success!
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl modify-tikv-config -m kvdb -n write.block_cache_size -v 256MB
+tikv-ctl --host ip:port modify-tikv-config -n rocksdb.writecf.block-cache-size -v 256MB
 ```
 
 ```
-success!
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
-```
-
-```
-success!
+success
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
+tikv-ctl --host ip:port modify-tikv-config -n raftdb.defaultcf.disable-auto-compactions -v true
 ```
 
 ```
-success!
+success
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
+```
+
+```
+success
 ```
 
 ### 强制 Region 从多副本失败状态恢复服务
