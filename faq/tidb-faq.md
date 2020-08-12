@@ -73,9 +73,11 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 详细可参考[系统变量](/system-variables.md)。
 
-#### 1.1.15 TiDB 是否支持 select for update？
+#### 1.1.15 TiDB 是否支持 `SELECT FOR UPDATE`？
 
-支持，但语义上和 MySQL 有区别，TiDB 是分布式数据库，采用的乐观锁机制，也就说 select for update 不在事务开启就锁住数据，而是其他事务在提交的时候进行冲突检查，如有冲突，会进行回滚。
+支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
+
+当 TiDB 使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。
 
 #### 1.1.16 TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
@@ -111,11 +113,11 @@ TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set 
 
 #### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
-TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/mysql-compatibility.md#自增-id)。
+TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 TiDB-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB 允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/mysql-compatibility.md#自增-id)。
 
-#### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
+#### 1.1.23 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不支持配置文件配置设置数据库的 sql\_mode，而只能使用 set 命令去设置，具体方法为：`set @@global.sql_mode = 'STRICT_TRANS_TABLES';`。
+TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables.md)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
 
 #### 1.1.23 我们的安全漏洞扫描工具对 MySQL version 有要求，TiDB 是否支持修改 server 版本号呢？
 
@@ -553,9 +555,9 @@ TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_pr
 
 当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
-#### 3.3.12 SQL 中如何通过 hint 使用一个具体的 index？
+#### 3.3.12 可以使用 Hints 控制优化器行为吗？
 
-同 MySQL 的用法一致，例如：
+在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，比如 [Optimizer Hints](/optimizer-hints.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：
 `select column_name from table_name use index（index_name）where where_condition;`
 
 #### 3.3.13 触发 Information schema is changed 错误的原因？
@@ -775,7 +777,7 @@ sqoop export \
     --batch
 ```
 
-- 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
+- 也可以选择增大 TiDB 的单个事物语句数量限制，不过这个会导致内存增加。
 
 #### 4.1.9 TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
@@ -785,7 +787,7 @@ sqoop export \
 
 #### 4.2.1 Syncer 架构
 
-详细参考 [解析 TiDB 在线数据同步工具 Syncer](https://pingcap.com/blog-cn/tidb-syncer/)。
+详细参考[解析 TiDB 在线数据同步工具 Syncer](https://pingcap.com/blog-cn/tidb-syncer/)。
 
 ##### 4.2.1.1 Syncer 使用文档
 
@@ -886,11 +888,11 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ### 5.1 TiDB 执行计划解读
 
-详细解读 [理解 TiDB 执行计划](/query-execution-plan.md)。
+详细解读[理解 TiDB 执行计划](/query-execution-plan.md)。
 
 #### 5.1.1 统计信息收集
 
-详细解读 [统计信息](/statistics.md)。
+详细解读[统计信息](/statistics.md)。
 
 #### 5.1.2 Count 如何加速？
 
