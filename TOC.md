@@ -266,7 +266,7 @@
     - [版本升级](/tidb-binlog/upgrade-tidb-binlog.md)
     - [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
     - [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
-    - [Kafka 自定义开发](/tidb-binlog/binlog-slave-client.md)
+    - [Kafka 自定义开发](/tidb-binlog/binlog-consumer-client.md)
     - [术语表](/tidb-binlog/tidb-binlog-glossary.md)
     + 故障诊断
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
