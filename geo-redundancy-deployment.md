@@ -49,7 +49,7 @@ TiDB, TiKV, PD 分别分布在 3 个不同的中心，这是最常规，可用�
 
 ## 两数据中心 + binlog 同步方案
 
-两数据中心 + binlog 同步类似于传统的 MySQL 中 master/slave 方案。两个数据中心分别部署一套完整的 TiDB 集群，我们称之为主集群和从集群。正常情况下所有的请求都在主集群，写入的数据通过 binlog 异步同步至从集群并写入。
+两数据中心 + binlog 同步类似于传统的 MySQL 中 source/replica 方案。两个数据中心分别部署一套完整的 TiDB 集群，我们称之为主集群和从集群。正常情况下所有的请求都在主集群，写入的数据通过 binlog 异步同步至从集群并写入。
 
 ![binlog 同步部署方案](/media/deploy-binlog.png)
 
