@@ -12,8 +12,8 @@ TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、
 TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件，Event 分为三类：
 
 * Row Changed Event：代表一行的数据变化，在行发生变更时该 Event 被发出，包含变更后该行的相关信息。
-* DDL Event：代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中
-* Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的
+* DDL Event：代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中。
+* Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。
 
 ## 协议约束
 
@@ -68,30 +68,90 @@ Value:
 
 + **Value:**
 
+    `Insert` 事件，输出新增的行数据。
+
     ```
     {
-        <UpdateOrDelete>:{
+        "u":{
             <Column Name>:{
                 "t":<Column Type>,
                 "h":<Where Handle>,
+                "f":<Flag>,
                 "v":<Column Value>
             },
             <Column Name>:{
                 "t":<Column Type>,
                 "h":<Where Handle>,
+                "f":<Flag>,
                 "v":<Column Value>
             }
         }
     }
     ```
 
-    | 参数         | 类型   | 说明                    |
-    | :---------- | :----- | :--------------------- |
-    | UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "u"/"d" |
-    | Column Name    | String | 列名   |
-    | Column Type    | Number | 列类型，详见：[Column 和 DDL 的类型码](#column-和-ddl-的类型码) |
-    | Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true |
-    | Column Value   | Any    | 列值   |
+    `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")，仅当 Old Value 特性开启时，才会输出修改前的行数据。
+
+    ```
+    {
+        "u":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        },
+        "p":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        }
+    }
+    ```
+
+    `Delete` 事件，输出被删除的行数据。当 Old Value 特性开启时，`Delete` 事件中包含被删除的行数据中的所有列；当 Old Value 特性关闭时，`Delete` 事件中仅包含 [HandleKey](#列标志位) 列。
+
+    ```
+    {
+        "d":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        }
+    }
+    ```
+
+| 参数         | 类型   | 说明                    |
+| :---------- | :----- | :--------------------- |
+| Column Name    | String | 列名   |
+| Column Type    | Number | 列类型，详见：[Column 的类型码](#column-的类型码) |
+| Where Handle（**已弃用**）   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true。该参数已弃用，被 Flag 中的 HandleKeyFlag 代替 |
+| Flag           | Number | 列标志位，详见：[列标志位](#列标志位) |
+| Column Value   | Any    | 列值   |
 
 ### DDL Event
 
@@ -124,7 +184,7 @@ Value:
     | 参数       | 类型   | 说明           |
     | :-------- | :----- | :------------ |
     | DDL Query | String | DDL Query SQL |
-    | DDL Type  | String | DDL 类型，详见：[Column 和 DDL 的类型码](#column-和-ddl-的类型码)  |
+    | DDL Type  | String | DDL 类型，详见：[DDL 的类型码](#ddl-的类型码)  |
 
 ### Resolved Event
 
@@ -212,11 +272,9 @@ COMMIT;
 14. [partition=1] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
 ```
 
-## Column 和 DDL 的类型码
+## Column 的类型码
 
-Column 和 DDL 的类型码是由 TiCDC Open Protocol 定义的 Column 和 DDL 类型编码，Column Type Code 标识 Row Changed Event 中的列数据类型，DDL Type Code 标识 DDL Event 中的 DDL 语句类型。
-
-### Column Type Code
+Column 的类型码用于标识 Row Changed Event 中列的数据类型。
 
 | 类型         | Code | 输出示例 | 说明 |
 | :---------- | :--- | :------ | :-- |
@@ -241,15 +299,17 @@ Column 和 DDL 的类型码是由 TiCDC Open Protocol 定义的 Column 和 DDL �
 | New Decimal | 246  | {"t":246,"v":"129012.1230000"} | |
 | Enum        | 247  | {"t":247,"v":1} | |
 | Set         | 248  | {"t":248,"v":3} | |
-| Tiny Blob   | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| Medium Blob | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| Long Blob   | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| Blob        | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| Tiny Blob/Tiny Text   | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| Medium Blob/Medium Text | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| Long Blob/Long Text   | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| Blob/Text        | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
 | Var String  | 253  | {"t":253,"v":"测试"} | value 编码为 UTF-8 |
 | String      | 254  | {"t":254,"v":"测试"} | value 编码为 UTF-8 |
 | Geometry    | 255  |  | 尚不支持 |
 
-### DDL Type Code
+## DDL 的类型码
+
+DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 
 | 类型                               | Code |
 | :-------------------------------- | :- |
@@ -289,3 +349,38 @@ Column 和 DDL 的类型码是由 TiCDC Open Protocol 定义的 Column 和 DDL �
 | Create Sequence                   | 34 |
 | Alter Sequence                    | 35 |
 | Drop Sequence                     | 36 |
+
+## 列标志位
+
+列标志位以 Bit flags 形式标记列的相关属性。
+
+| 位移 | 值 | 名称 | 说明 |
+| :-- | :- | :- | :- |
+| 1   | 0x01 | BinaryFlag          | 该列是否为二进制编码列  |
+| 2   | 0x02 | HandleKeyFlag       | 该列是否为 Handle 列 |
+| 3   | 0x04 | GeneratedColumnFlag | 该列是否为生成列      |
+| 4   | 0x08 | PrimaryKeyFlag      | 该列是否为主键列      |
+| 5   | 0x10 | UniqueKeyFlag       | 该列是否为唯一索引列   |
+| 6   | 0x20 | MultipleKeyFlag     | 该列是否为组合索引列   |
+| 7   | 0x40 | NullableFlag        | 该列是否为可空列          |
+
+示例：
+
+若某列 Flag 值为 85，则代表这一列为可空列、唯一索引列、生成列、二进制编码列。
+
+```
+85 == 0b_101_0101
+   == NullableFlag | UniqueKeyFlag | GeneratedColumnFlag | BinaryFlag
+```
+
+若某列 Flag 值为 46，则代表这一列为组合索引列、主键列、生成列、Handle 列。
+
+```
+46 == 0b_010_1110
+   == MultipleKeyFlag | PrimaryKeyFlag | GeneratedColumnFlag | HandleKeyFlag
+```
+
+> **注意：**
+>
+> + BinaryFlag 仅在列为 Blob/Text（包括 Tiny Blob/Tiny Blob、Long Blob/Long Blob 等）类型时才有意义。当上游列为 Blob 类型时，BinaryFlag 置 `1`；当上游列为 Text 类型时，BinaryFlag 置 `0`。
+> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。

@@ -78,6 +78,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
+## `interactive_timeout`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：28800
+- 该变量表示交互式用户会话的空闲超时，单位为秒。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 客户端）。该变量与 MySQL 完全兼容。
+
 ## `sql_mode`
 
 - 作用域：SESSION | GLOBAL

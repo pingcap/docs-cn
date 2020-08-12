@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 
 # TiCDC 简介
 
-> **注意：**
+> **警告：**
 >
 > TiCDC 目前为实验特性，不建议在生产环境中使用。
 
@@ -66,10 +66,12 @@ TiCDC 的系统架构如下图所示：
 
 ## 同步限制
 
-将数据同步到 TiDB 或 MySQL，需要满足以下条件才能保证正确性：
+TiCDC 只能同步至少存在一个**有效索引**的表，**有效索引**的定义如下：
 
-- 表必须要有主键或者唯一索引。
-- 如果表只存在唯一索引，至少有一个唯一索引的每一列在表结构中明确定义 `NOT NULL`。
+- 主键 (`PRIMARY KEY`) 为有效索引。
+- 同时满足下列条件的唯一索引 (`UNIQUE INDEX`) 为有效索引：
+    - 索引中每一列在表结构中明确定义非空 (`NOT NULL`)。
+    - 索引中不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
 
 ### 暂不支持的场景
 
@@ -79,11 +81,19 @@ TiCDC 的系统架构如下图所示：
 - 暂不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)。如果开启该功能，需保证下游集群为 TiDB 并使用与上游相同的 collation，否则会出现 collation 导致的无法定位数据的问题。
 - 暂不支持 TiDB 4.0 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md) 和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
 - 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。
-- TiCDC 集群扩容后，不支持将已有的同步表调度到新的 TiCDC 节点中。
 
-## TiCDC 部署和任务管理
+## TiCDC 安装和部署
 
-TiCDC 的详细部署和任务管理说明请参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)。
+在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件，只需在 TiUP 启动 TiDB 集群时的配置文件中 [加入 TiCDC 部分](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件) 即可。
+
+目前也支持使用 TiUP 或 binary 方式在原有 TiDB 集群上新增 TiCDC 组件，详细部署方案请参考 [部署安装 TiCDC](/ticdc/manage-ticdc.md#部署安装-ticdc)。
+
+## TiCDC 集群管理和同步任务管理
+
+目前支持使用 `cdc cli` 工具或 HTTP 接口来管理 TiCDC 集群状态和数据同步任务。详细操作见：
+
+- [使用 `cdc cli` 工具来管理集群状态和数据同步](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)
+- [使用 HTTP 接口管理集群状态和数据同步](/ticdc/manage-ticdc.md#使用-http-接口管理集群状态和数据同步)
 
 ## TiCDC 常见问题
 
