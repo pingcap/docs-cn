@@ -184,24 +184,30 @@ If a table does not have a primary key, or the primary key is not the `Int` type
 
 To avoid the hotspot problem in this situation, you can use `SHARD_ROW_ID_BITS` and `PRE_SPLIT_REGIONS` when creating a table. For more details about `PRE_SPLIT_REGIONS`, refer to [Pre-split Regions](/sql-statements/sql-statement-split-region.md#pre_split_regions).
 
-`SHARD_ROW_ID_BITS` is used to randomly scatter the row ID generated in the `_tidb_rowid` column. `pre_split_regions` is used to pre-split the Region after a table is created.
+`SHARD_ROW_ID_BITS` is used to randomly scatter the row ID generated in the `_tidb_rowid` column. `PRE_SPLIT_REGIONS` is used to pre-split the Region after a table is created.
 
 > **Note:**
 >
-> The value of `pre_split_regions` must be smaller or equal to that of `shard_row_id_bits`.
+> The value of `PRE_SPLIT_REGIONS` must be smaller than or equal to that of `SHARD_ROW_ID_BITS`.
 
 Example:
 
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int) shard_row_id_bits = 4 pre_split_regions=3;
+create table t (a int, b int) SHARD_ROW_ID_BITS = 4 PRE_SPLIT_REGIONS=3;
 ```
 
 - `SHARD_ROW_ID_BITS = 4` means that the values of `tidb_rowid` will be randomly distributed into 16 (16=2^4) ranges.
-- `pre_split_regions=3` means that the table will be pre-split into 8 (2^3) Regions after it is created.
+- `PRE_SPLIT_REGIONS=3` means that the table will be pre-split into 8 (2^3) Regions after it is created.
 
 When data starts to be written into table `t`, the data is written into the pre-split 8 Regions, which avoids the hotspot problem that might be caused if only one Region exists after table creation.
+
+> **Note:**
+>
+> The `tidb_scatter_region` global variable affects the behavior of `PRE_SPLIT_REGIONS`.
+>
+> This variable controls whether to wait for Regions to be pre-split and scattered before returning results after the table creation. If there are intensive writes after creating the table, you need to set the value of this variable to `1`, then TiDB will not return the results to the client until all the Regions are split and scattered. Otherwise, TiDB writes data before the scattering is completed, which will have a significant impact on write performance.
 
 **Problem two:**
 
