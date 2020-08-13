@@ -21,6 +21,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > - 在 TiDB 中，`GLOBAL` 变量的设置即使重启后也仍然有效。每隔 2 秒，其他 TiDB server 会获取到对变量设置的更改。详情见 [TiDB #14531](https://github.com/pingcap/tidb/issues/14531)。
 > - 此外，由于应用和连接器通常需要读 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 5.7 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
+> - 作用域是 INSTANCE 级别作用域的变量，设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
 
 ## 变量参考
 
@@ -763,10 +764,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：300
 
 - 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300 ms。
-
-> **注意：**
->
-> 该变量作用域是 INSTANCE 级别，即设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
 
 示例：
 
