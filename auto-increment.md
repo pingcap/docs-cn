@@ -10,9 +10,11 @@ This document introduces the `AUTO_INCREMENT` column attribute, including its co
 
 ## Concept 
 
-`AUTO_INCREMENT` is a column attribute that is used to automatically fill in default column values. When the `INSERT` statement does not specify values for the `AUTO_INCREMENT` column, the system automatically assigns values to this column. Each value is unique, as well as incremental and continuous in **special cases**.
+`AUTO_INCREMENT` is a column attribute that is used to automatically fill in default column values. When the `INSERT` statement does not specify values for the `AUTO_INCREMENT` column, the system automatically assigns values to this column.
 
-You can use it as in the following example:
+For performance reasons, `AUTO_INCREMENT` numbers are allocated in a batch of values (30 thousand by default) to each TiDB server. This means that while `AUTO_INCREMENT` numbers are guaranteed to be unique, values assigned to an `INSERT` statement will only be monotonic on a per TiDB server basis.
+
+The following is a basic example of `AUTO_INCREMENT`:
 
 {{< copyable "sql" >}}
 
@@ -105,9 +107,9 @@ TiDB guarantees that implicitly assigned values of the `AUTO_INCREMENT` column a
 
 In the example above, if you first execute an `INSERT` statement on instance `B`, and then execute an `INSERT` statement on instance `A`. Because of the behavior of caching auto-increment ID, the auto-increment column might be implicitly assigned `30002` and `2` respectively. The assigned values are not incremental in the time order.
 
-### Continuity
+### Monotonic
 
-In a cluster with multiple TiDB instances, the `AUTO_INCREMENT` assigned values are **only** continuous in the batch insert statement.
+In a cluster with multiple TiDB instances, the `AUTO_INCREMENT` assigned values are **only** monotonic on a per-server basis.
 
 Take the following table as an example:
 
@@ -121,7 +123,7 @@ Execute the following statement on the table:
 insert into t values (), (), (), ()
 ```
 
-Even if other TiDB instances are performing concurrent write operations, or if the current instance does not have enough cached IDs left, the assigned values are still continuous.
+Even if other TiDB instances are performing concurrent write operations, or if the current instance does not have enough cached IDs left, the assigned values are still monotonic.
 
 ### Relation with `_tidb_rowid`
 
