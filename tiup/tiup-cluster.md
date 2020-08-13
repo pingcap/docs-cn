@@ -372,7 +372,9 @@ If you want to dynamically update the component configurations, the TiUP cluster
 tiup cluster edit-config prod-cluster
 ```
 
-TiUP cluster opens the configuration file in the vi editor. After editing the file, save the changes. To apply the new configuration to the cluster, execute the following command:
+TiUP cluster opens the configuration file in the vi editor. If you want to use other editors, use the `EDITOR` environment variable to customize the editor, such as `export EDITOR=nano`.
+
+After editing the file, save the changes. To apply the new configuration to the cluster, execute the following command:
 
 {{< copyable "shell-regular" >}}
 
