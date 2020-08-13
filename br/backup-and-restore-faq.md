@@ -26,7 +26,7 @@ The system libraries (`information_schema`, `performance_schema`, `mysql`) are f
 
 Because these system libraries do not exist in the backup files, no conflict occurs among system tables during data restoration.
 
-## What should I do to resolve the `Permission denied` error, even if I have tried to run BR using root in vain?
+## What should I do to handle the `Permission denied` error, even if I have tried to run BR using root in vain?
 
 You need to confirm whether TiKV has access to the backup directory. To back up data, confirm whether TiKV has the write permission. To restore data, confirm whether it has the read permission.
 
@@ -38,11 +38,17 @@ Running BR with the root access might fail due to the disk permission, because t
 >
 > Therefore, It is recommended to check the permission before data restoration.
 
-## What should I do to resolve the `Io(Os...)` error?
+## What should I do to handle the `Io(Os...)` error?
 
 Almost all of these problems are system call errors that occur when TiKV writes data to the disk. You can check the mounting method and the file system of the backup directory, and try to back up data to another folder or another hard disk.
  
 For example, you might encounter the `Code: 22(invalid argument)` error when backing up data to the network disk built by `samba`.
+
+## What should I do to handle the `rpc error: code = Unavailable desc =...` error occurred in BR?
+ 
+This error might occur when the capacity of the cluster to restore (using BR) is insufficient. You can further confirm the cause by checking the monitoring metrics of this cluster or the TiKV log.
+
+To handle this issue, you can try to scale out the cluster resources, reduce the concurrency during restore, and enable the `RATE_LIMIT` option.
 
 ## Where are the backed up files stored when I use `local` storage?
  
