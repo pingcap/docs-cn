@@ -253,9 +253,11 @@ password = ""
 
 ## TiDB Lightning Importer-backend
 
-## 部署 Importer-backend
+### 部署 Importer-backend
 
-### 硬件需求
+本节介绍 TiDB Lightning 使用 Importer 模式的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
+
+#### 硬件需求
 
 `tidb-lightning` 和 `tikv-importer` 这两个组件皆为资源密集程序，建议各自单独部署。
 
@@ -278,10 +280,6 @@ password = ""
     - 运行过程中 CPU、I/O 和网络带宽资源都可能占满，建议单独部署。
 
 如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后将源数据以表为粒度进行切分，并发导入。
-
-### 部署和配置 TiDB Lightning
-
-本节介绍 TiDB Lightning 使用 Importer 模式的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
 
 #### 使用 TiDB Ansible 部署 TiDB Lightning
 
