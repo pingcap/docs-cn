@@ -100,3 +100,7 @@ From the above process, you can see that TiDB always operates on the metadata of
 > You cannot use `FLASHBACK` statements to restore the same deleted table multiple times, because the ID of the restored table is the same ID of the dropped table, and TiDB requires that all existing tables must have a globally unique table ID.
 
 The `FLASHBACK TABLE` operation is done by TiDB obtaining the table metadata through snapshot read, and then going through the process of table creation similar to `CREATE TABLE`. Therefore, `FLASHBACK TABLE` is, in essence, a kind of DDL operation.
+
+## MySQL compatibility
+
+This statement is a TiDB extension to MySQL syntax.

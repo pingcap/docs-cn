@@ -39,7 +39,7 @@ This statement is understood to be partly compatible with MySQL.
 * `START TRANSACTION` is equivalent to MySQL’s `START TRANSACTION WITH CONSISTENT SNAPSHOT`, that is, after `START TRANSACTION`, a `SELECT` statement (not `SELECT FOR UPDATE`) is executed to read data from any table in InnoDB.
 * `READ ONLY` and its extended options are only syntactically compatible, and its effect is equivalent to `START TRANSACTION`.
 
-Any compatibility differences should be [reported via an issue](/report-issue.md) on GitHub.
+Any compatibility differences should be [reported via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
 
 ## See also
 

@@ -134,7 +134,7 @@ mysql> EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 
 ## MySQL compatibility
 
-This statement is a TiDB extension.
+This statement is a TiDB extension to MySQL syntax.
 
 ## See also
 

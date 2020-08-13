@@ -75,7 +75,7 @@ show stats_meta where table_name = 't2';
 
 ## MySQL compatibility
 
-`SHOW STATS_META` is a TiDB specific syntax, and thus not compatible with MySQL.
+This statement is a TiDB extension to MySQL syntax.
 
 ## See also
 

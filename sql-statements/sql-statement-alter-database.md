@@ -30,6 +30,10 @@ alter_specification:
 
 The `alter_specification` option specifies the `CHARACTER SET` and `COLLATE` of a specified database. Currently, TiDB only supports some character sets and collations. See [Character Set and Collation Support](/character-set-and-collation.md) for details.
 
+## MySQL compatibility
+
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
+
 ## See also
 
 * [CREATE DATABASE](/sql-statements/sql-statement-create-database.md)

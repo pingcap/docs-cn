@@ -113,5 +113,4 @@ In the above example, `x'2c'` is the hexadecimal representation of the `,` chara
 ## See also
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
-* [Optimistic Transaction Model](/optimistic-transaction.md)
 * [Import Example Database](/import-example-data.md)

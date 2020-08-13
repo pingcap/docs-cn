@@ -141,7 +141,7 @@ Original_sql: select * from t1 where b = ?
 
 ## MySQL compatibility
 
-This statement is a TiDB extension.
+This statement is a TiDB extension to MySQL syntax.
 
 ## See also
 

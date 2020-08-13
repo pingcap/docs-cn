@@ -83,7 +83,7 @@ SHOW CONFIG LIKE 'tidb';
 
 ## MySQL compatibility
 
-`SHOW CONFIG` is the extended syntax of TiDB, with no counterpart in MySQL.
+This statement is a TiDB extension to MySQL syntax.
 
 ## See also
 

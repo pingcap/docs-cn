@@ -300,4 +300,4 @@ SHOW BUILTINS;
 
 ## MySQL compatibility
 
-`SHOW BUILTINS` is a new syntax in TiDB.
+This statement is a TiDB extension to MySQL syntax.

@@ -133,7 +133,7 @@ Empty set (0.00 sec)
 
 ## MySQL compatibility
 
-This statement is a TiDB extension.
+This statement is a TiDB extension to MySQL syntax.
 
 ## See also
 
