@@ -32,6 +32,10 @@ DROP [GLOBAL | SESSION] BINDING FOR SelectStmt;
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内删除指定的执行计划绑定，在不指定作用域时默认作用域为 SESSION。
 
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
+
 ## 另请参阅
 
 * [CREATE BINDING](/sql-statements/sql-statement-create-binding.md)
