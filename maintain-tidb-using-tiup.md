@@ -201,15 +201,50 @@ tiup cluster stop ${cluster-name} -N 1.2.3.4:4000,1.2.3.5:4000
 
 此操作会关闭所有服务，并清空其数据目录或/和日志目录，并且无法恢复，需要**谨慎操作**。
 
+清空集群所有服务的数据，但保留日志：
+
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster clean ${cluster-name} --data                                   # 清空集群所有服务的数据，但保留日志
-tiup cluster clean ${cluster-name} --log                                    # 清空集群所有服务的日志，但保留数据
-tiup cluster clean ${cluster-name} --all                                    # 清空集群所有服务的数据和日志
-tiup cluster clean ${cluster-name} --all --ignore-role prometheus           # 清空 prometheus 以外的所有服务的日志和数据
-tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.11:9000    # 清空节点 172.16.13.11:9000 以外的所有服务的日志和数据
-tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12         # 清空部署在 172.16.13.12 以外的所有服务的日志和数据
+tiup cluster clean ${cluster-name} --data
+```
+
+清空集群所有服务的日志，但保留数据：
+
+```bash
+tiup cluster clean ${cluster-name} --log
+```
+
+清空集群所有服务的数据和日志：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all 
+```
+
+清空 prometheus 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-role prometheus
+```
+
+清空节点 172.16.13.11:9000 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.11:9000
+```
+
+清空部署在 172.16.13.12 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12
 ```
 
 ## 销毁集群
