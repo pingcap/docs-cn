@@ -18,7 +18,7 @@ Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本�
 
 多条规则的 key range 可以有重叠部分的，即一个 Region 能匹配到多条规则。这种情况下 PD 根据 Rule 的属性来决定规则是相互覆盖还是同时生效。如果有多条规则同时生效，PD 会按照规则的堆叠次序依次去生成调度进行规则匹配。
 
-此外，为了满足不同来源的规则相互隔离的需求，还引入了分组（Group）的概念。如果某条规则不希望与系统中的其他规则相互影响（比如被覆盖），可以使用单独的分组。
+此外，为了满足不同来源的规则相互隔离的需求，支持更灵活的方式来组织规则，还引入了分组（Group）的概念。通常情况下，我们根据规则的不同来源把规则放置在不同的 Group。
 
 Placement Rules 示意图如下所示：
 
@@ -52,6 +52,18 @@ Placement Rules 示意图如下所示：
 `LocationLabels` 的意义和作用与 PD v4.0 之前的版本相同。比如配置 `[zone,rack,host]` 定义了三层的拓扑结构：集群分为多个 zone（可用区），每个 zone 下有多个 rack（机架），每个 rack 下有多个 host（主机）。PD 在调度时首先会尝试将 Region 的 Peer 放置在不同的 zone，假如无法满足（比如配置 3 副本但总共只有 2 个 zone）则保证放置在不同的 rack；假如 rack 的数量也不足以保证隔离，那么再尝试 host 级别的隔离，以此类推。
 
 `IsolationLevel` 的意义和作用详细请参考[配置集群拓扑](/schedule-replicas-by-topology-labels.md)。例如已配置 `LocationLabels` 为 `[zone,rack,host]` 的前提下，设置 `IsolationLevel` 为 `zone`，则 PD 在调度时会保证每个 Region 的所有 Peer 均被放置在不同的 zone。假如无法满足 `IsolationLevel` 的最小强制隔离级别限制（比如配置 3 副本但总共只有 2 个 zone），PD 也不会尝试补足，以满足该限制。`IsolationLevel` 默认值为空字符串，即禁用状态。
+
+### 规则分组字段
+
+以下是规则分组字段的含义：
+
+| 字段名 | 类型及约束  | 说明 |
+| :--- | :--- | :--- |
+| `ID` | `string` | 分组 ID，用于标识规则来源 |
+| `Index` | `int` | 不同分组的堆叠次序 |
+| `Override` | `true`/`false` | 是否覆盖 index 更小的分组 |
+
+如果不单独设置规则分组，默认 `Override=false`，对应的行为是不同分组之间相互不影响，不同分组内的规则是同时生效的。
 
 ## 配置规则操作步骤
 
@@ -217,6 +229,40 @@ pd-ctl config placement-rules load --group=pd --out=rule.txt
 
 以上命令将 PD Group 的规则转存至 rule.txt 文件。
 
+### 使用 pd-ctl 设置规则分组
+
++ 查看所有的规则分组列表
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config placement-rules rule-group show
+    ```
+
++ 查看指定 id 的规则分组
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config placement-rules rule-group show pd
+    ```
+
++ 设置规则分组的 index 和 override 属性
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config placement-rules rule-group set pd 100 true
+    ```
+
++ 删除规则分组配置
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config placement-rules rule-group delete pd
+    ```
+
 ### 使用 tidb-ctl 查询表相关的 key range
 
 若需要针对元数据或某个特定的表进行特殊配置，可以通过 [tidb-ctl](https://github.com/pingcap/tidb-ctl) 的 [`keyrange` 命令](https://github.com/pingcap/tidb-ctl/blob/master/doc/tidb-ctl_keyrange.md) 来查询相关的 key。注意要添加 `--encode` 返回 PD 中的表示形式。
@@ -355,5 +401,40 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
     {"key": "disk", "op": "notIn", "values": ["hdd"]}
   ],
   "location_labels": ["host"]
+}
+```
+
+### 场景五：将某张表迁移至 TiFlash 集群
+
+与场景三不同，这个场景不是要在原有配置的基础上增加新副本，而是要强制覆盖一段数据的其它配置，因此需要通过配置规则分组来指定一个足够大的 index 以及设置 override 来覆盖原有规则。
+
+规则：
+
+{{< copyable "" >}}
+
+```json
+{
+  "group_id": "tiflash-override",
+  "id": "learner-replica-table-ttt",
+  "start_key": "7480000000000000ff2d5f720000000000fa",
+  "end_key": "7480000000000000ff2e00000000000000f8",
+  "role": "voter",
+  "count": 3,
+  "label_constraints": [
+    {"key": "engine", "op": "in", "values": ["tiflash"]}
+  ],
+  "location_labels": ["host"]
+}
+```
+
+规则分组：
+
+{{< copyable "" >}}
+
+```json
+{
+  "id": "tiflash-override",
+  "index": 1024,
+  "override": true,
 }
 ```
