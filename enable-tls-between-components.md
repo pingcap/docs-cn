@@ -66,6 +66,20 @@ aliases: ['/docs-cn/stable/enable-tls-between-components/','/docs-cn/v4.0/enable
         key-path = "/path/to/pd-server-key.pem"
         ```
 
+    - TiFlash
+    
+        在 `config` 文件中设置，将 `http_port` 项改为 `https_port`:
+
+        ```toml
+        [security]
+        # Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
+        ca_path = "/path/to/ca.pem"
+        # Path of file that contains X509 certificate in PEM format.
+        cert_path = "/path/to/tiflash-server.pem"
+        # Path of file that contains X509 key in PEM format.
+        key_path = "/path/to/tiflash-server-key.pem"
+        ```
+
     - TiCDC
 
         在启动命令行中设置，并设置相应的 URL 为 `https`：
@@ -146,6 +160,15 @@ aliases: ['/docs-cn/stable/enable-tls-between-components/','/docs-cn/v4.0/enable
 
     ```bash
     cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
+    ```
+
+- TiFlash
+
+    在 `config` 文件或命令行参数中设置：
+
+    ```toml
+    [security]
+    cert_allowed_cn = ["TiKV-Server", "TiDB-Server"]
     ```
 
 ## 证书重加载
