@@ -275,23 +275,55 @@ If the command is successfully executed, it prints the above information. If the
     $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
     ```
 
-### Modify the RocksDB configuration of TiKV dynamically
+### Modify the TiKV configuration dynamically
 
-You can use the `modify-tikv-config` command to dynamically modify the configuration arguments. Currently, it only supports dynamically modifying RocksDB related arguments.
+You can use the `modify-tikv-config` command to dynamically modify the configuration arguments. Currently, the TiKV configuration items that can be dynamically modified and the detailed modification are consistent with modifying configuration using SQL statements. For details, see [Modify TiKV configuration online](/dynamic-config.md#modify-tikv-configuration-online).
 
-- `-m` is used to specify the target RocksDB. You can set it to `kvdb` or `raftdb`.
-- `-n` is used to specify the configuration name.
-    You can refer to the arguments of `[rocksdb]` and `[raftdb]` (corresponding to `kvdb` and `raftdb`) in the [TiKV configuration template](https://github.com/tikv/tikv/blob/master/etc/config-template.toml#L213-L500).
-    You can use `default|write|lock + . + argument name` to specify the configuration of different CFs. For `kvdb`, you can set it to `default`, `write`, or `lock`; for `raftdb`, you can only set it to `default`.
+- `-n` is used to specify the full name of the configuration item. For the list of configuration items that can be modified online, see [Modify TiKV configuration online](/dynamic-config.md#modify-tikv-configuration-online).
 - `-v` is used to specify the configuration value.
 
-```bash
-$ tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
-success！
-$ tikv-ctl modify-tikv-config -m kvdb -n write.block-cache-size -v 256MB
-success!
-$ tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
-success!
+Set the size of `shared block cache`:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n storage.block-cache.capacity -v 10GB
+```
+
+```
+success
+```
+
+When `shared block cache` is disabled, set `block cache size` for the `write` CF:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n rocksdb.writecf.block-cache-size -v 256MB
+```
+
+```
+success
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n raftdb.defaultcf.disable-auto-compactions -v true
+```
+
+```
+success
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
+```
+
+```
+success
 ```
 
 ### Force Region to recover the service from failure of multiple replicas
