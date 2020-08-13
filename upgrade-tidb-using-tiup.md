@@ -149,6 +149,17 @@ After the import is complete, you can check the current cluster status by execut
 > **Note:**
 >
 > Before upgrading to v4.0, confirm that the parameters modified in v3.0 are compatible in v4.0. See [configuration template](/tikv-configuration-file.md) for details.
+>
+> If the TiUP version <= v1.0.8, TiUP might not correctly obtain the data directory of TiFlash, and you need to check whether `data_dir` and `path` configured in TiFlash is consistent. If not, configure `data_dir` of TiFlash to the same value as `path` by taking the following steps:
+>
+> 1. Execute `tiup cluster edit-config <cluster-name>` to modify the configuration file.
+> 2. Modify the corresponding `data_dir` value of TiFlash:
+>
+>    ```yaml
+>      tiflash_servers:
+>            - host: 10.0.1.14
+>              data_dir: data/tiflash-11315 # Modify it to the `path` value of the TiFlash configuration file
+>    ```
 
 ## Perform a rolling upgrade to the TiDB cluster
 
