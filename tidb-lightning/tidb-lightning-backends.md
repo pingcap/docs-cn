@@ -38,7 +38,7 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 
 ## TiDB Lightning Local-backend
 
-Local-backend 特性在 TiDB v4.0.3 发布，v4.0.3 及以上的 TiDB Lightning 才包含此特性。另外 Local-backend 只支持 v4.0.0 以上的集群。
+自 TiDB 4.0.3 版本起，TiDB Lightning 引入了 Local-backend 特性。该特性支持导入数据到 v4.0.0 以上的 TiDB 集群。
 
 ### 部署和配置 TiDB Lightning
 
