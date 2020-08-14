@@ -1,12 +1,18 @@
 ---
-title: TiDB Lightning 导入模式
-summary: 了解 TiDB 不同导入模式。
+title: TiDB Lightning 后端
+summary: 了解 TiDB Lightning 的不同后端。
 aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/']
 ---
 
-# TiDB Lightning 导入模式
+# TiDB Lightning 后端
 
-TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持 Importer-backend（默认）、Local-backend 和 TiDB-backend 三种后端，它们导入数据的区别如下：
+TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持以下后端：
+
++ [Importer-backend](#tidb-lightning-importer-backend)（默认）
++ [Local-backend](#tidb-lightning-local-backend)
++ [TiDB-backend](#tidb-lightning-tidb-backend)
+
+以上几种后端导入数据的区别如下：
 
 * **Local-backend**: `tidb-lightning` 先将数据编码成键值对并排序存储在本地临时目录，然后批量将这些键值对写到各个 TiKV 节点，然后由 TiKV 将它们 Ingest 到集群中。和 `Importer-backend` 原理相同，不过不依赖额外的 `tikv-importer` 组件。
 
