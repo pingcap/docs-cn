@@ -626,3 +626,18 @@ export TIUP_NATIVE_SSH=enable
 > **注意：**
 >
 > 在部署集群的步骤中，若需要使用密码的方式连接 (-p)，或者密钥文件设置了 passphrase，则需要保证中控机上安装了 sshpass，否则连接时会报错。
+
+## 迁移中控机与备份
+
+TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，若要迁移中控机只需要拷贝 `.tiup` 目录到对应目标机器即可。
+
+1. 在原机器 home 目录下执行 `tar czvf tiup.tar.gz .tiup`。
+2. 把 `tip.tar.gz` 拷贝到目标机器 home 目录。
+3. 在目标机器 home 目录下执行 `tar xzvf tiup.tar.gz`。
+4. 添加 `.tiup` 目录到 `PATH` 环境变量。
+
+    如使用 `bash` 并且是 `tidb` 用户，在 `~/.bashr` 中添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后执行 `source ~/.bashrc`，根据使用的 shell 与用户做相应调整。
+
+> **注意：**
+>
+> 为了避免中控机磁盘损坏等异常情况导致 TiUP 数据丢失，建议定时备份 `.tiup` 目录。
