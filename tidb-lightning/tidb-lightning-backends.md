@@ -1,12 +1,12 @@
 ---
 title: TiDB Lightning 后端
-summary: 了解 TiDB Lightning 的不同后端。
+summary: 了解使用 TiDB Lightning 导入数据时，如何选择不同的后端。
 aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/']
 ---
 
 # TiDB Lightning 后端
 
-TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持以下后端：
+TiDB Lightning 的[后端](/glossary.md#backend)决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持以下后端：
 
 + [Importer-backend](#tidb-lightning-importer-backend)（默认）
 + [Local-backend](#tidb-lightning-local-backend)
