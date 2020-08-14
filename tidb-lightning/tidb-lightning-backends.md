@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/r
 
 # TiDB Lightning 后端
 
-TiDB Lightning 的[后端](/tidb-lightning-glossary#backend)决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持以下后端：
+TiDB Lightning 的[后端](/tidb-lightning-glossary.md#backend)决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持以下后端：
 
 + [Importer-backend](#tidb-lightning-importer-backend)（默认）
 + [Local-backend](#tidb-lightning-local-backend)
