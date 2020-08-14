@@ -120,7 +120,7 @@ TiDB `alter-primary-key` 参数设置为 false 时，会使用表的整数型主
 > 该功能目前还是实验性功能，不推荐生产环境使用。可使用以下配置启用：
 >
 > ```
-> [experimental]\
+> [experimental]
 > allow-auto-random = true
 > ```
 
