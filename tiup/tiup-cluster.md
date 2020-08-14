@@ -635,6 +635,6 @@ TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，迁移
 2. 把 `tip.tar.gz` 拷贝到目标机器 home 目录
 3. 在目标机器 home 目录下运行 `tar xzvf tiup.tar.gz`
 4. 添加 `.tiup` 目录到 `PATH` 环境变量
-   * 如在 `~/.bashr` 添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后运行 `source ~/.bashrc`
+   * 如使用 `bash` 并且是 `tidb` 用户，在 `~/.bashr` 添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后运行 `source ~/.bashrc`，根据使用的 shell 与用户做相应调整
 
 > 为了避免中控机磁盘损坏等异常情况丢失 TiUP 的数据，建议定时备份 `.tiup` 目录。
