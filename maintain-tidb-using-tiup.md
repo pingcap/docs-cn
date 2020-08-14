@@ -223,7 +223,7 @@ tiup cluster clean ${cluster-name} --log
 tiup cluster clean ${cluster-name} --all 
 ```
 
-清空 prometheus 以外的所有服务的日志和数据：
+清空 Prometheus 以外的所有服务的日志和数据：
 
 {{< copyable "shell-regular" >}}
 
@@ -231,7 +231,7 @@ tiup cluster clean ${cluster-name} --all
 tiup cluster clean ${cluster-name} --all --ignore-role prometheus
 ```
 
-清空节点 172.16.13.11:9000 以外的所有服务的日志和数据：
+清空节点 `172.16.13.11:9000` 以外的所有服务的日志和数据：
 
 {{< copyable "shell-regular" >}}
 
@@ -239,7 +239,7 @@ tiup cluster clean ${cluster-name} --all --ignore-role prometheus
 tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.11:9000
 ```
 
-清空部署在 172.16.13.12 以外的所有服务的日志和数据：
+清空部署在 `172.16.13.12` 以外的所有服务的日志和数据：
 
 {{< copyable "shell-regular" >}}
 
