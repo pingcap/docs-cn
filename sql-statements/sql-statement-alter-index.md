@@ -6,7 +6,7 @@ aliases: ['/docs/dev/sql-statements/sql-statement-alter-index/']
 
 # ALTER INDEX
 
-The `ALTER INDEX` statement is used to modify the visibility of the index to `Visible` or `Invisible`. When the visibility of an index is set to `Invisible`, this index cannot be used by the optimizer.
+The `ALTER INDEX` statement is used to modify the visibility of the index to `Visible` or `Invisible`. Invisible indexes are maintained by DML statements, but will not be used by the query optimizer. This is useful in scenarios where you want to double-check before removing an index permanently.
 
 ## Synopsis
 
@@ -22,15 +22,7 @@ The `ALTER INDEX` statement is used to modify the visibility of the index to `Vi
 
 ![IndexInvisible](/media/sqlgram/IndexInvisible.png)
 
-## Syntax
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER TABLE [table_name] ALTER INDEX [index_name] {VISIBLE | INVISIBLE}
-```
-
-## Example
+## Examples
 
 You can modify the visibility of an index using the `ALTER TABLE ... ALTER INDEX ...` statement.
 
@@ -61,40 +53,6 @@ SHOW CREATE TABLE t1;
   UNIQUE KEY `c1` (`c1`) /*!80000 INVISIBLE */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
 +-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.00 sec)
-```
-
-## Invisible index
-
-Invisible indexes are a new feature introduced in MySQL 8.0 that sets an index to invisible so that the optimizer no longer uses this index. Using this feature, you can easily check whether to use or not to use the query plan of an index, and avoid resource-consuming operations such as `DROP INDEX` or `ADD INDEX`.
-
-{{< copyable "sql" >}}
-
-```sql
-CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
-CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
-```
-
-You can check an invisible index using the `CREATE TABLE` statement. The invisible index is identified with `/*!80000 INVISIBLE */`:
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW CREATE TABLE t1;
-```
-
-```sql
-+-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Table | Create Table
-                                                              |
-+-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| t1    | CREATE TABLE `t1` (
-  `c1` int(11) DEFAULT NULL,
-  `c2` int(11) DEFAULT NULL,
-  UNIQUE KEY `c2` (`c2`),
-  UNIQUE KEY `c1` (`c1`) /*!80000 INVISIBLE */
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
-+-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
@@ -161,39 +119,11 @@ ALTER TABLE t1 DROP INDEX c1;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-### Restriction
+## MySQL compatibility
 
-There is a restriction on invisible indexes in MySQL: the **primary key** cannot be set to `Invisible`. TiDB is compatible with this restriction. If you set the primary key to `Invisible` in TiDB, an error is returned.
-
-{{< copyable "sql" >}}
-
-```sql
-CREATE TABLE t2(c1 INT, PRIMARY KEY(c1) INVISIBLE);
-```
-
-```sql
-ERROR 3522 (HY000): A primary key index cannot be invisible
-```
-
-The **primary key** above includes both the explicit primary key (specified using the `PRIMARY KEY` keyword) and the implicit primary key.
-
-If the explicit primary key does not exist in the table, the first `UNIQUE` index (every column of the index must be `NOT NULL`) automatically becomes the implicit index.
-
-This means that you cannot set this implicit primary key to `Invisible`.
-
-> **Note:**
->
-> TiDB does not actually create an **implicit primary key**. TiDB is compatible with this MySQL restriction only in behaviors.
-
-{{< copyable "sql" >}}
-
-```sql
-CREATE TABLE t2(c1 INT NOT NULL, UNIQUE(c1) INVISIBLE);
-```
-
-```
-ERROR 3522 (HY000): A primary key index cannot be invisible
-```
+* Invisible indexes in TiDB are modeled on the equivalent feature from MySQL 8.0.
+* Similiar to MySQL, TiDB does not permit `PRIMARY KEY` indexes to be made invisible.
+* MySQL provides an optimizer switch `use_invisible_indexes=on` to make all invisible indexes _visible_ again. This functionality is not available in TiDB.
 
 ## See also
 
