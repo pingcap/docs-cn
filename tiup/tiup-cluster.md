@@ -32,6 +32,7 @@ Available Commands:
   restart     重启集群
   scale-in    集群缩容
   scale-out   集群扩容
+  clean       清理数据
   destroy     销毁集群
   upgrade     升级集群
   exec        在集群的一个或多个机器上执行命令
