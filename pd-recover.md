@@ -14,7 +14,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 ### 从源代码编译
 
 * [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go v1.13 或更新版本。
-* 在 [PD](https://github.com/pingcap/pd) 根目录下，运行 `make pd-recover` 命令来编译并生成 `bin/pd-recover`。
+* 在 [PD](https://github.com/pingcap/pd) 根目录下，运行 `make pd-recover` 命令来编译源代码并生成 `bin/pd-recover`。
 
 > **注意：**
 >
@@ -22,7 +22,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 ### 下载 TiDB 安装包
 
-PD Recover 包含在 TiDB 安装包中，因此直接下载 TiDB 安装包，即可获得最新版本的 PD Recover。
+PD Recover 包含在 TiDB 安装包中。直接下载 TiDB 安装包即可获取最新版本的 PD Recover。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -36,7 +36,7 @@ PD Recover 包含在 TiDB 安装包中，因此直接下载 TiDB 安装包，即
 
 ### 获取 Cluster ID
 
-一般在 PD、TiKV 或 TiDB 的日志中都可以获取 Cluster ID。你可以直接去服务器上查看日志以获取 Cluster id。
+一般在 PD、TiKV 或 TiDB 的日志中都可以获取 Cluster ID。你可以直接在服务器上查看日志以获取 Cluster ID。
 
 #### 从 PD 日志获取 Cluster ID（推荐）
 
@@ -87,15 +87,15 @@ cat {{/path/to}}/tikv.log | grep "connect to PD cluster"
 
 ### 获取已分配 ID
 
-在指定已分配 ID 时，需指定一个比当前最大的已分配 ID 更大的值。可以从监控中获取已分配 ID，也可以直接去服务器上查看日志。
+在指定已分配 ID 时，需指定一个比当前最大的已分配 ID 更大的值。可以从监控中获取已分配 ID，也可以直接在服务器上查看日志。
 
 #### 从监控中获取已分配 ID（推荐）
 
-要从监控中获取分配的ID，需要确保你所查看的监控指标是**上一任 PD Leader** 的指标。从 PD Dashboard 中的 **Current ID allocation** 面板中可以获取最大的已分配 ID。
+要从监控中获取已分配的 ID，需要确保你所查看的监控指标是**上一任 PD Leader** 的指标。可从 PD Dashboard 中 **Current ID allocation** 面板获取最大的已分配 ID。
 
-### 从 PD 日志获取已分配 ID
+#### 从 PD 日志获取已分配 ID
 
-要从 PD 日志中获取分配的ID，需要确保你所查看的日志是**上一任 PD Leader** 的日志。运行以下命令获取最大的已分配 ID：
+要从 PD 日志中获取分配的 ID，需要确保你所查看的日志是**上一任 PD Leader** 的日志。运行以下命令获取最大的已分配 ID：
 
 {{< copyable "shell-regular" >}}
 
@@ -112,7 +112,7 @@ cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{
 
 ### 部署一套新的 PD 集群
 
-部署新的 PD 集群之前，需要停止当前的 PD 集群，然后使用 `--data-dir` 指定并删除旧的数据目录。
+部署新的 PD 集群之前，需要停止当前的 PD 集群，然后删除旧的数据目录（用 `--data-dir` 指定）。
 
 ### 使用 pd-recover
 
