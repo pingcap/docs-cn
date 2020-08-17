@@ -16,6 +16,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 - [TiDB 简介](/overview.md)
 - [基本功能](/basic-features.md)
+- [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
 - [与 MySQL 的兼容性](/mysql-compatibility.md)
 - [使用限制](/tidb-limitations.md)
 - [荣誉列表](/credits.md)
