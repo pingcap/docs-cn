@@ -75,9 +75,9 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.15 TiDB 是否支持 `SELECT FOR UPDATE`？
 
-支持。当 TiDB 使用乐观锁（自 TiDB v2.1 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。 
+支持。TiDB v2.1 默认使用乐观锁，执行 `SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。 
 
-TiDB v3.0 默认更改成使用悲观锁，此时 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
+TiDB 自v3.0 起默认使用悲观锁，执行 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
 
 #### 1.1.16 TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
