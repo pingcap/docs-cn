@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 
 # 系统变量
 
-TiDB 系统变量的行为与 MySQL 相似，变量的作用范围可以是全局范围有效（Global Scope）或会话级别有效（Session Scope），也可以是全局及会话级别均有效。对 `GLOBAL` 作用域变量的更改，**只适用于**新增的 TiDB 连接。使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局或会话级别。
+TiDB 系统变量的行为与 MySQL 相似，变量的作用范围可以是全局范围有效（Global Scope）, 实例级别有效（Instance Scope），或会话级别有效（Session Scope），也可以是全局及会话级别均有效。对 `GLOBAL` 作用域变量的更改，**只适用于**新增的 TiDB 连接。使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局或会话级别。
 
 ```sql
 # 以下两个语句等价地改变一个 Session 变量
@@ -21,7 +21,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > - 在 TiDB 中，`GLOBAL` 变量的设置即使重启后也仍然有效。每隔 2 秒，其他 TiDB server 会获取到对变量设置的更改。详情见 [TiDB #14531](https://github.com/pingcap/tidb/issues/14531)。
 > - 此外，由于应用和连接器通常需要读 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 5.7 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
-> - 作用域是 INSTANCE 级别作用域的变量，设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
+> - 实例级别（INSTANCE）作用域的变量，设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
 
 ## 变量参考
 
