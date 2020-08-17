@@ -9,7 +9,7 @@ TiDB 系统变量的行为与 MySQL 相似但有一些不同，变量的作用�
 
 - 对 `GLOBAL` 作用域变量的更改，设置后**只对新 TiDB 连接会话生效**，当前活动连接会话不受影响。
 
-- 对 `INSTANCE` 作用域变量的更改，设置后会立即对当前 TiDB 实例所有活动连接会话或新连接会话生效，其他 TiDB 实例不生效。
+- 对 `INSTANCE` 作用域变量的更改，设置后会立即对当前 TiDB 实例所有活动连接会话或新连接会话生效，其他 TiDB 实例不生效。但当 TiDB 实例重启后，INSTANCE 级别的变量值会变为默认值。
 
 使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局级别、实例级别或会话级别。
 
@@ -27,7 +27,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > - 在 TiDB 中，`GLOBAL` 变量的设置即使重启后也仍然有效。每隔 2 秒，其他 TiDB server 会获取到对变量设置的更改。详情见 [TiDB #14531](https://github.com/pingcap/tidb/issues/14531)。
 > - 此外，由于应用和连接器通常需要读 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 5.7 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
-> - 实例级别（INSTANCE）作用域的变量，设置后会立即在当前 TiDB 实例中生效，同时也对其他的连接立即生效。
 
 ## 变量参考
 
