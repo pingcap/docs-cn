@@ -271,7 +271,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set split-merge-interval 24h
     ```
 
-- `enable-one-way-merge` 用于开启是否只允许和相邻的后一个 Region 进行合并。当设置为 false 时，PD 允许与相邻的前后 Region 进行合并。
+- `enable-one-way-merge` 用于控制是否只允许和相邻的后一个 Region 进行合并。当设置为 `false` 时，PD 允许与相邻的前后 Region 进行合并。
 
     设置只允许和相邻的后一个 Region 合并：
 
@@ -281,7 +281,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set enable-one-way-merge true
     ```
 
-- `enable-cross-table-merge` 用于开启跨表 Region 的合并。当设置为 false 时，PD 不会合并不同表的 Region。该选项只在键类型为 "table" 时生效。
+- `enable-cross-table-merge` 用于开启跨表 Region 的合并。当设置为 `false` 时，PD 不会合并不同表的 Region。该选项只在键类型为 "table" 时生效。
 
     设置允许跨表合并：
 
@@ -291,7 +291,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set enable-cross-table-merge true
     ```
 
-- `key-type` 用于指定集群的键编码类型。支持的选项有 `["table", "raw", "txn"]`，默认值为 "table"。
+- `key-type` 用于指定集群的键编码类型。支持的类型有 `["table", "raw", "txn"]`，默认值为 "table"。
 
     - 如果集群中不存在 TiDB 实例，`key-type` 的值为 "raw" 或 "txn"。此时，无论 `enable-cross-table-merge` 设置为何，PD 均可以跨表合并 Region。
     - 如果集群中存在 TiDB 实例，`key-type` 的值应当为 "table"。此时，`enable-cross-table-merge` 的设置决定了 PD 是否能跨表合并 Region。如果 `key-type` 的值为 "raw"，placement rules 不生效。
@@ -436,7 +436,7 @@ Leader 调度的开销较小，需要的时候可以适当调大。
 
 - `enable-placement-rules` 用于开启 placement rules。
 
-- `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行调整（实验性功能）。
+- `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
 
 ### `config placement-rules [disable | enable | load | save | show]`
 
@@ -1018,7 +1018,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set max-peer-number 1000
     ```
 
-- `byte-rate-rank-step-ratio`，`key-rate-rank-step-ratio`，和 `count-rank-step-ratio` 分别控制 byte、key、count 的 step ranks。rank step ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。统舱不需要修改这些配置项。
+- `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、count 的 step ranks。rank step ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set byte-rate-rank-step-ratio 0.05
@@ -1102,7 +1102,7 @@ Encoding 格式示例：
 >> store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
 >> store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
 >> store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
->> store limit-scene                   // 显示所有 limit 场景（实验性功能）
+>> store limit-scene                   // 显示所有的限速场景（实验性功能）
 {
   "Idle": 100,
   "Low": 50,
