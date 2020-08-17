@@ -176,7 +176,7 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster stop ${cluster-name} ${new-name}
+tiup cluster rename ${cluster-name} ${new-name}
 ```
 
 > **注意：**
