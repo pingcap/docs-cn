@@ -255,7 +255,7 @@ pd-ctl config placement-rules load --group=pd --out=rule.txt
     pd-ctl config placement-rules rule-group set pd 100 true
     ```
 
-+ 删除规则分组配置
++ 删除规则分组配置（如组内还有规则，则使用默认分组配置）
 
     {{< copyable "shell-regular" >}}
 
