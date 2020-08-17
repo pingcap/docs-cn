@@ -5,7 +5,13 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 
 # 系统变量
 
-TiDB 系统变量的行为与 MySQL 相似，变量的作用范围可以是全局范围有效（Global Scope）, 实例级别有效（Instance Scope），或会话级别有效（Session Scope），也可以是全局及会话级别均有效。对 `GLOBAL` 作用域变量的更改，**只适用于**新增的 TiDB 连接。使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局或会话级别。
+TiDB 系统变量的行为与 MySQL 相似但有一些不同，变量的作用范围可以是全局范围有效（Global Scope）、实例级别有效（Instance Scope）、会话级别有效（Session Scope），或组合了上述多个范围。其中：
+
+- 对 `GLOBAL` 作用域变量的更改，设置后**只对新 TiDB 连接会话生效**，当前活动连接会话不受影响。
+
+- 对 `INSTANCE` 作用域变量的更改，设置后会立即对当前 TiDB 实例所有活动连接会话或新连接会话生效，其他 TiDB 实例不生效。
+
+使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局级别、实例级别或会话级别。
 
 ```sql
 # 以下两个语句等价地改变一个 Session 变量
