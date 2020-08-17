@@ -1,6 +1,10 @@
 ---
 title: TiDB 数据库快速上手指南
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/quick-start-with-tidb/','/docs-cn/v4.0/quick-start-with-tidb/']
+=======
+aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started/local-cluster/install-from-docker-compose/']
+>>>>>>> b61de8e... Add 3 aliases to fix dead links (#4283)
 ---
 
 # TiDB 数据库快速上手指南

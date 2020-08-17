@@ -1,7 +1,11 @@
 ---
 title: CLUSTER_SYSTEMINFO
 summary: 了解 TiDB 集群负载表 `CLUSTER_SYSTEMINFO`。
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/system-tables/system-table-cluster-systeminfo/','/docs-cn/v4.0/system-tables/system-table-cluster-systeminfo/','/docs-cn/stable/reference/system-databases/cluster-systeminfo/','/zh/tidb/stable/system-table-cluster-systeminfo/']
+=======
+aliases: ['/docs-cn/dev/system-tables/system-table-cluster-systeminfo/','/docs-cn/dev/reference/system-databases/cluster-systeminfo/','/zh/tidb/dev/system-table-cluster-systeminfo/','/dev/information-schema/information-schema-cluster-systeminfo/']
+>>>>>>> b61de8e... Add 3 aliases to fix dead links (#4283)
 ---
 
 # CLUSTER_SYSTEMINFO
