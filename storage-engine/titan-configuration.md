@@ -1,10 +1,6 @@
 ---
 title: Titan 配置
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/storage-engine/titan-configuration/','/docs-cn/v4.0/storage-engine/titan-configuration/','/docs-cn/stable/reference/titan/configuration/']
-=======
-aliases: ['/docs-cn/dev/storage-engine/titan-configuration/','/docs-cn/dev/reference/titan/configuration/','/docs-cn/dev/titan-configuration/']
->>>>>>> b61de8e... Add 3 aliases to fix dead links (#4283)
+aliases: ['/docs-cn/stable/storage-engine/titan-configuration/','/docs-cn/v4.0/storage-engine/titan-configuration/','/docs-cn/stable/reference/titan/configuration/','/docs-cn/stable/titan-configuration/']
 ---
 
 # Titan 配置
