@@ -702,11 +702,25 @@ time: 43.12698ms
 }
 ```
 
-### `region key [--format=raw|encode] <key>`
+### `region key [--format=raw|encode|hex] <key>`
 
-用于查询某个 key 在哪个 Region 上，支持 raw 和 encoding 格式。使用 encoding 格式时，key 需要使用单引号。
+用于查询某个 key 位于哪一个 Region 上，支持 raw、encoding 和 hex 格式。使用 encoding 格式时，key 需要使用单引号。
 
-Raw 格式（默认）示例：
+Hex 格式（默认）示例：
+
+{{< copyable "" >}}
+
+```bash
+>> region key 7480000000000000FF1300000000000000F8
+{
+  "region": {
+    "id": 2,
+    ......
+  }
+}
+```
+
+Raw 格式示例：
 
 {{< copyable "" >}}
 
@@ -911,7 +925,7 @@ Encoding 格式示例：
 }
 ```
 
-### `region check [miss-peer | extra-peer | down-peer | pending-peer]`
+### `region check [miss-peer | extra-peer | down-peer | pending-peer | offline-peer | empty-region | hist-size | hist-keys]`
 
 用于查询处于异常状态的 Region，各类型的意义如下
 
