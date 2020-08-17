@@ -8,7 +8,7 @@ aliases: ['/docs/dev/ticdc/manage-ticdc/','/docs/dev/reference/tools/ticdc/manag
 
 This document describes how to deploy a TiCDC cluster and how to manage the TiCDC cluster and replication tasks through the command line tool `cdc cli` and the HTTP interface.
 
-## Deploy TiCDC
+## Deploy and install TiCDC
 
 You can deploy TiCDC using either TiUP or Binary.
 
@@ -21,13 +21,13 @@ In production environments, the recommendations of software and hardware for TiC
 | Red Hat Enterprise Linux | 7.3 or later versions   |
 | CentOS                   | 7.3 or later versions   |
 
-| **CPU** | **Memory** | **Disk Type** | **Network** | **Instances (Minimum Requirements)** |
+| **CPU** | **Memory** | **Disk type** | **Network** | **Number of TiCDC cluster instances (minimum requirements for production environment)** |
 | --- | --- | --- | --- | --- |
 | 16 core+ | 64 GB+ | SSD | 10 Gigabit network card (2 preferred） | 2 |
 
 For more information, see [Software and Hardware Recommendations](/hardware-and-software-requirements.md)
 
-### Use TiUP
+### Deploy and install TiCDC using TiUP
 
 If you use TiUP to deploy TiCDC, you can choose one of the following ways:
 
@@ -426,7 +426,7 @@ case-sensitive = true
 ignore-txn-start-ts = [1, 2]
 
 # Filter rules.
-# Filter syntax: https://github.com/pingcap/tidb-tools/tree/master/pkg/table-filter#syntax.
+# Filter syntax: https://docs.pingcap.com/tidb/stable/table-filter#syntax.
 rules = ['*.*', '!test.*']
 
 [mounter]
@@ -436,6 +436,7 @@ worker-num = 16
 [sink]
 # For the sink of MQ type, you can use dispatchers to configure the event dispatcher.
 # Supports four dispatchers: default, ts, rowid, and table
+# The matching syntax of matcher is the same as the filter rule syntax.
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
@@ -482,7 +483,7 @@ To use the cyclic replication feature, you need to configure the following param
 
 To create a cyclic replication task, take the following steps:
 
-1. [Enable the TiCDC component](#deploy-ticdc) in TiDB cluster A, cluster B, and cluster C.
+1. [Enable the TiCDC component](#deploy-and-install-ticdc) in TiDB cluster A, cluster B, and cluster C.
 
     {{< copyable "shell-regular" >}}
 

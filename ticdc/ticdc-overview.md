@@ -6,7 +6,7 @@ aliases: ['/docs/dev/ticdc/ticdc-overview/','/docs/dev/reference/tools/ticdc/ove
 
 # TiCDC Overview
 
-> **Note:**
+> **Warning:**
 >
 > TiCDC is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
 
@@ -85,9 +85,18 @@ Currently, The following scenarios are not supported:
 - The [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region). TiCDC prevents the Region from entering the hibernated state.
 - The scheduling of existing replication tables to new TiCDC nodes, after the capacity of the TiCDC cluster is scaled out.
 
+## Install and deploy TiCDC 
+
+You can deploy TiCDC components in the process of deploying a new TiDB cluster using TiUP. You only need to [add TiCDC](/production-deployment-using-tiup.md#step-3-edit-the-initialization-configuration-file) to the configuration file when TiUP starts the TiDB cluster.
+
+Currently, you can also add TiCDC components to an existing TiDB cluster using either TiUP or binary. For details, see [Deploy and install TiCDC](/ticdc/manage-ticdc.md#deploy-and-install-ticdc).
+
 ## Manage TiCDC Cluster and Replication Tasks
 
-For details, see [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md).
+Currently, you can use the `cdc cli` tool to manage the status of a TiCDC cluster and data replication tasks. For details, see: 
+
+- [Use `cdc cli` to manage cluster status and data replication task](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task)
+- [Use HTTP interface to manage cluster status and data replication task](/ticdc/manage-ticdc.md#use-http-interface-to-manage-cluster-status-and-data-replication-task)
 
 ## Troubleshoot TiCDC
 
