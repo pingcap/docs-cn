@@ -15,12 +15,12 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 #### 从 PD 日志获取 [info] Cluster ID（推荐）
 
-使用以下命令，从 PD 日志中获取 [info] Cluster ID：
+使用以下命令，从 PD 日志中获取 [info] 最近的 Cluster ID：
 
 {{< copyable "shell-regular" >}}
 
 ```
-ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd.log | grep "init cluster id" | head -10'
+ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd.log | grep "init cluster id"'
 ```
 
 ```
@@ -33,12 +33,12 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd.log |
 
 #### 从 TiDB 日志获取 [info] cluster id
 
-使用以下命令，从 TiDB 日志中获取 [info] cluster id：
+使用以下命令，从 TiDB 日志中获取 [info] cluster id 获取最近的 cluster id：
 
 {{< copyable "shell-regular" >}}
 
 ```
-ansible -i inventory.ini tidb_servers -m shell -a 'cat {{deploy_dir}}/log/tidb*.log | grep "init cluster id" | head -10'
+ansible -i inventory.ini tidb_servers -m shell -a 'cat {{deploy_dir}}/log/tidb*.log | grep "init cluster id"'
 ```
 
 ```
@@ -49,12 +49,12 @@ ansible -i inventory.ini tidb_servers -m shell -a 'cat {{deploy_dir}}/log/tidb*.
 
 #### 从 TiKV 日志获取 [info] PD cluster
 
-使用以下命令，从 TiKV 日志中获取 [info] PD cluster：
+使用以下命令，从 TiKV 日志中获取 [info] PD cluster 获取最近的 cluster id ：
 
 {{< copyable "shell-regular" >}}
 
 ```
-ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* | grep "PD cluster" | head -10'
+ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* | grep "PD cluster"'
 ```
 
 ```
@@ -67,14 +67,18 @@ ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* 
 
 在指定 `alloc-id` 时需指定一个比当前最大的 `Alloc ID` 更大的值。可以从中控机使用 `ansible ad-hoc`，也可以直接去服务器上翻日志。
 
-#### 从 PD 日志获取 [info] allocates id（推荐）
+#### 从 PD 监控中获取最大的 alloc id （推荐）
 
-使用以下命令，从 PD 日志中获取 [info] allocates id：
+在 PD 监控面板下的 Cluster 栏目下，可以找到 `Current ID allocation`, 代表当前已经分配出去的 id 的最大值。
+
+#### 从 PD 日志获取 [info] allocates id
+
+使用以下命令，从 PD 日志中找出最大的 [info] allocates id：
 
 {{< copyable "shell-regular" >}}
 
 ```
-ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | grep "allocates" | head -10'
+ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | grep "allocates"'
 ```
 
 ```
@@ -84,34 +88,7 @@ ansible -i inventory.ini pd_servers -m shell -a 'cat {{deploy_dir}}/log/pd* | gr
 ……
 ```
 
-或者也可以从 TiKV 的日志中获取。
 
-#### 从 TiKV 日志获取 [info] alloc store id
-
-使用以下命令，从 TiKV 日志获取 [info] alloc store id：
-
-{{< copyable "shell-regular" >}}
-
-```
-ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* | grep "alloc store" | head -10'
-```
-
-```
-10.0.1.13 | CHANGED | rc=0 >>
-[2019/10/14 07:06:35.516 +00:00] [INFO] [node.rs:229] ["alloc store id 4 "]
-
-10.0.1.14 | CHANGED | rc=0 >>
-[2019/10/14 07:06:35.734 +00:00] [INFO] [node.rs:229] ["alloc store id 5 "]
-
-10.0.1.15 | CHANGED | rc=0 >>
-[2019/10/14 07:06:35.418 +00:00] [INFO] [node.rs:229] ["alloc store id 1 "]
-
-10.0.1.21 | CHANGED | rc=0 >>
-[2019/10/15 03:15:05.826 +00:00] [INFO] [node.rs:229] ["alloc store id 2001 "]
-
-10.0.1.20 | CHANGED | rc=0 >>
-[2019/10/15 03:15:05.987 +00:00] [INFO] [node.rs:229] ["alloc store id 2002 "]
-```
 
 ### 部署一套新的 PD 集群
 
@@ -133,10 +110,11 @@ ansible-playbook start.yml --tags=pd
 
 ### 使用 pd-recover
 
+其中 max-alloc-id 是从日志中或者监控上找到的一个已经分配出去的最大的 alloc id，为了安全，可以将找出来的 id 加个安全的访问，比如加 1000000.
 {{< copyable "shell-regular" >}}
 
 ```
-./pd-recover -endpoints http://10.0.1.13:2379 -cluster-id 6747551640615446306 -alloc-id 10000
+./pd-recover -endpoints http://10.0.1.13:2379 -cluster-id 6747551640615446306 -alloc-id {$max-alloc-id}
 ```
 
 ### 重启 PD 集群
