@@ -154,9 +154,9 @@
   + [Use Cases](/ecosystem-tool-user-case.md)
   + [Download](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
-    + [BR FAQ](/br/backup-and-restore-faq.md)
-    + [Use BR Tool](/br/backup-and-restore-tool.md)
     + [BR Use Cases](/br/backup-and-restore-use-cases.md)
+    + [Use BR Tool](/br/backup-and-restore-tool.md)
+    + [BR FAQ](/br/backup-and-restore-faq.md)
   + TiDB Binlog
     + [Overview](/tidb-binlog/tidb-binlog-overview.md)
     + [Quick Start](/tidb-binlog/get-started-with-tidb-binlog.md)
