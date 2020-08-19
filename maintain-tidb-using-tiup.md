@@ -169,6 +169,21 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -R tidb
 tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
 
+## 重命名集群
+
+部署并启动集群后，可以通过 `tiup cluster rename` 命令来对集群重命名：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster rename ${cluster-name} ${new-name}
+```
+
+> **注意：**
+> 
+> + 重命名集群会重启监控（Prometheus 和 Grafana）。
+> + 重命名集群之后 Grafana 可能会残留一些旧集群名的面板，需要手动删除这些面板。
+
 ## 关闭集群
 
 关闭集群操作会按 Drainer -> TiFlash -> TiDB -> Pump -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
