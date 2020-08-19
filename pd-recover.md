@@ -110,7 +110,8 @@ ansible-playbook start.yml --tags=pd
 
 ### 使用 pd-recover
 
-其中 max-alloc-id 是从日志中或者监控上找到的一个已经分配出去的最大的 alloc id，为了安全，可以将找出来的 id 加个安全的访问，比如加 1000000.
+其中 `max-alloc-id` 是从日志或者监控中找到的一个已经分配出去的最大的 `alloc id`。出于安全考虑，可以将找出来的 ID 加个安全的访问，比如加 `1000000`。
+
 {{< copyable "shell-regular" >}}
 
 ```
