@@ -336,7 +336,7 @@ Leader 调度的开销较小，需要的时候可以适当调大。
     >> config set leader-schedule-limit 4
     ```
 
-- 通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。这个值可以避免创建过多的 Region balance 算子。默认值为 `2048`，对所有大小的集群都足够。设置为 `0` 则关闭调度。Region 调度的速度通常受到 `store-limit` 的限制，但除非你熟悉相关设置，否则不推荐自定义该参数。
+- 通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。这个值可以避免创建过多的 Region balance operator。默认值为 `2048`，对所有大小的集群都足够。设置为 `0` 则关闭调度。Region 调度的速度通常受到 `store-limit` 的限制，但除非你熟悉该设置，否则不推荐自定义该参数。
 
     最多同时进行 2 个 Region 调度：
 
@@ -1006,7 +1006,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set min-hot-key-rate 10
     ```
 
-- `max-zombie-rounds` 指一个算子可以被认为是 pending influence 的最大心跳次数。如果将它设置为更大的值，更多的算子可能会被包括在这个范围内。通常不需要修改这个值。pending influence 指的是在调度过程中产生的但仍有影响的算子影响。
+- `max-zombie-rounds` 指一个 operator 可被纳入 pending influence 所允许的最大心跳次数。如果将它设置为更大的值，更多的 operator 可能会被纳入 pending influence。通常用户不需要修改这个值。pending influence 指的是在调度中产生的、但仍生效的影响。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set max-zombie-rounds 3
