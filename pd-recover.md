@@ -67,7 +67,7 @@ ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* 
 
 在指定 `alloc-id` 时需指定一个比当前最大的 `Alloc ID` 更大的值。可以从中控机使用 `ansible ad-hoc`，也可以直接去服务器上翻日志。
 
-#### 从 PD 监控中获取最大的 alloc id （推荐）
+#### 从 PD 监控中获取最大的 alloc id（推荐）
 
 在 PD 监控面板下的 Cluster 栏目下，可以找到 `Current ID allocation`, 代表当前已经分配出去的 id 的最大值。
 
