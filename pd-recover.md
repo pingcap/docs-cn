@@ -69,7 +69,7 @@ ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* 
 
 #### 从 PD 监控中获取最大的 alloc id（推荐）
 
-在 PD 监控面板下的 Cluster 栏目下，可以找到 `Current ID allocation`, 代表当前已经分配出去的 id 的最大值。
+在 PD 监控面板下的 Cluster 栏目下，可以找到 `Current ID allocation`, 代表当前已经分配出去的 ID 的最大值。
 
 #### 从 PD 日志获取 [info] allocates id
 
