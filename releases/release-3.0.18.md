@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.18 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.18/']
 ---
 
 # TiDB 3.0.18 Release Notes
