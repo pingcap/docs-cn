@@ -196,9 +196,9 @@ URI 中可配置的的参数如下：
 | `maxPendingMessages` | Pending 消息的队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
 | `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值 10（毫秒）） |
-| `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值 `ZSTD` |
-| `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值 `Murmur3` |
-| `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，实例 `properties.location=Hangzhou` |
+| `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值 `ZSTD`) |
+| `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值 `JavaStringHash`) |
+| `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，实例 `properties.location=Hangzhou`) |
 
 更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
 
