@@ -8,6 +8,14 @@ title: TiDB 3.0.18 Release Notes
 
 TiDB 版本：3.0.18
 
+## 优化
+
++ Tools
+
+    + TiDB Binlog
+
+        - 支持更加细粒度的 Pump GC 时间 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
+
 ## Bug 修复
 
 + TiDB
@@ -17,19 +25,15 @@ TiDB 版本：3.0.18
     - 修复 Duplicate Key 检测在悲观事务下失效的问题 [#19236](https://github.com/pingcap/tidb/pull/19236)
     - 修复 `Apply` 算子和 `Union Scan` 算子执行导致结果错误的问题 [#19297](https://github.com/pingcap/tidb/pull/19297)
     - 修复某些缓存的执行计划在事务中执行结果错误的问题 [#19274](https://github.com/pingcap/tidb/pull/19274)
-    
+
 + TiKV
 
     - 将 GC 的失败日志从 Error 级别改成 Warning 级别 [#8444](https://github.com/tikv/tikv/pull/8444)
 
-+ TiDB Lightning
++ Tools
 
-    - 修复命令行参数 `--log-file` 无法生效的问题 [#345](https://github.com/pingcap/tidb-lightning/pull/345)
-    - 修复 TiDB-backend 遇到空的 binary/hex 报语法错误的问题 [#357](https://github.com/pingcap/tidb-lightning/pull/357)
-    - 修复使用 TiDB backend 时非预期的 `switch-mode` 调用 [#368](https://github.com/pingcap/tidb-lightning/pull/368)
+    + TiDB Lightning
 
-## 优化
-
-+ TiDB Binlog
-
-    - 支持更加细粒度的 Pump GC 时间 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
+        - 修复命令行参数 `--log-file` 无法生效的问题 [#345](https://github.com/pingcap/tidb-lightning/pull/345)
+        - 修复 TiDB-backend 遇到空的 binary/hex 报语法错误的问题 [#357](https://github.com/pingcap/tidb-lightning/pull/357)
+        - 修复使用 TiDB backend 时非预期的 `switch-mode` 调用 [#368](https://github.com/pingcap/tidb-lightning/pull/368)
