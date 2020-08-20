@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 
 TiDB 系统变量的行为与 MySQL 相似但有一些不同，变量的作用范围可以是全局范围有效（Global Scope）、实例级别有效（Instance Scope）、会话级别有效（Session Scope），或组合了上述多个范围。其中：
 
-- 对 `GLOBAL` 作用域变量的更改，设置后**只对新 TiDB 连接会话生效**，当前活动连接会话不受影响。
+- 对 `GLOBAL` 作用域变量的更改，设置后**只对新 TiDB 连接会话生效**，当前活动连接会话不受影响。更改会被持久化，重启后仍然生效。
 
 - 对 `INSTANCE` 作用域变量的更改，设置后会立即对当前 TiDB 实例所有活动连接会话或新连接会话生效，其他 TiDB 实例不生效。更改**不会**被持久化，重启 TiDB 后会**失效**。
 
