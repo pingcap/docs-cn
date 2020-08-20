@@ -61,6 +61,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - Default value: 0
 - This variable is used to show whether the execution plan used in the previous `execute` statement is taken directly from the plan cache.
 
+### last_plan_from_binding <span class="version-mark">New in v4.0</span>
+
+- Scope: SESSION
+- Default value: 0
+- This variable is used to show whether the execution plan used in the previous statement was influenced by a [plan binding](/sql-plan-management.md)
+
 ### max_execution_time
 
 - Scope: SESSION | GLOBAL
