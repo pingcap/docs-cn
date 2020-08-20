@@ -440,7 +440,7 @@ config set cluster-version 1.0.8
 
 `enable-placement-rules` 用于开启 placement rules。
 
-### `config placement-rules [disable | enable | load | save | show]`
+### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
 用于配置 Placement Rules。 具体使用说明可参考[Placement Rules 使用文档](/configure-placement-rules.md)。
 
