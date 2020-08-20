@@ -12,8 +12,8 @@ TiDB 版本：3.0.18
 
 + TiDB
 
-    - 修复 [#19185](https://github.com/pingcap/tidb/pull/19185)
-    - 修复 [#19172](https://github.com/pingcap/tidb/pull/19172)
+    - 修复 Hash 函数对 Decimal 类型的错误处理 [#19185](https://github.com/pingcap/tidb/pull/19185)
+    - 修复 Hash 函数对 Set 和 Enum 类型的错误处理  [#19175](https://github.com/pingcap/tidb/pull/19175)
 
 + TiKV
 
@@ -21,12 +21,12 @@ TiDB 版本：3.0.18
 
 + TiDB Lightning
 
-    - 修复 [#345](https://github.com/pingcap/tidb-lightning/pull/345)
-    - 修复 [#357](https://github.com/pingcap/tidb-lightning/pull/357)
-    - 修复 [#368](https://github.com/pingcap/tidb-lightning/pull/368)
+    - 修复命令行参数 `--log-file` 无法生效的问题 [#345](https://github.com/pingcap/tidb-lightning/pull/345)
+    - 修复 TiDB backend 遇到空的 binary/hex 报语法错误的问题 [#357](https://github.com/pingcap/tidb-lightning/pull/357)
+    - 修复使用 TiDB backend 时非预期的 `switch-mode` 调用 [#368](https://github.com/pingcap/tidb-lightning/pull/368)
 
 ## 优化
 
 + TiDB Binlog
 
-    - 支持 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
+    - 支持更加细粒度的 Pump GC 时间 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
