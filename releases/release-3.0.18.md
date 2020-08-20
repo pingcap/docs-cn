@@ -14,7 +14,7 @@ TiDB 版本：3.0.18
 
     - 修复 Hash 函数对 Decimal 类型的错误处理导致 HashJoin 结果错误的问题 [#19185](https://github.com/pingcap/tidb/pull/19185)
     - 修复 Hash 函数对 Set 和 Enum 类型的错误处理导致 HashJoin 结果错误的问题  [#19175](https://github.com/pingcap/tidb/pull/19175)
-    - 修复 Duplication Key 检测在悲观事务下失效的问题 [#19236](https://github.com/pingcap/tidb/pull/19236)
+    - 修复 Duplicate Key 检测在悲观事务下失效的问题 [#19236](https://github.com/pingcap/tidb/pull/19236)
     - 修复 Apply 算子和 Union Scan 算子执行导致结果错误的问题 [#19297](https://github.com/pingcap/tidb/pull/19297)
     - 修复某些 Cached Plan 在事务中结果错误的问题 [#19274](https://github.com/pingcap/tidb/pull/19274)
 + TiKV
