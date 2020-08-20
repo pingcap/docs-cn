@@ -31,7 +31,7 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 ### 第 2 步：打开 tidb-sketch-book 文件
 
-点击 [tidb-sketch-book](https://www.figma.com/file/MOBwqkBtuA03agMjeGEGUT/tidb-sketch-book) 查看该绘图模板文件。
+点击 [tidb-sketch-book](https://www.figma.com/file/dHQ9B7X4mF1q78NRIzNTs5/tidb-sketch-book-2020) 查看该绘图模板文件。
 
 > **注意：**
 >

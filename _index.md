@@ -1,63 +1,114 @@
 ---
 title: TiDB 简介
-category: introduction
+summary: 了解 TiDB 数据库。
+aliases: ['/docs-cn/dev/']
 ---
+
+<!-- markdownlint-disable MD046 -->
 
 # TiDB 简介
 
-TiDB 是 PingCAP 公司设计的开源分布式 HTAP (Hybrid Transactional and Analytical Processing) 数据库，结合了传统的 RDBMS 和 NoSQL 的最佳特性。TiDB 兼容 MySQL，支持无限的水平扩展，具备强一致性和高可用性。TiDB 的目标是为 OLTP (Online Transactional Processing) 和 OLAP (Online Analytical Processing) 场景提供一站式的解决方案。
+TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP）的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 5.7 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。
 
-TiDB 具备如下特性：
+<NavColumns>
+<NavColumn>
+<ColumnTitle>关于 TiDB</ColumnTitle>
 
-- 高度兼容 MySQL
+- [TiDB 简介](/overview.md)
+- [基本功能](/basic-features.md)
+- [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
+- [与 MySQL 的兼容性](/mysql-compatibility.md)
+- [使用限制](/tidb-limitations.md)
+- [荣誉列表](/credits.md)
 
-    [大多数情况下](/reference/mysql-compatibility.md)，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
+</NavColumn>
 
-- 水平弹性扩展
+<NavColumn>
+<ColumnTitle>快速上手</ColumnTitle>
 
-    通过简单地增加新节点即可实现 TiDB 的水平扩展，按需扩展吞吐或存储，轻松应对高并发、海量数据场景。
+- [快速上手指南](/quick-start-with-tidb.md)
+- [SQL 基本操作](/basic-sql-operations.md)
 
-- 分布式事务
+</NavColumn>
 
-    TiDB 100% 支持标准的 ACID 事务。
+<NavColumn>
+<ColumnTitle>部署使用</ColumnTitle>
 
-- 真正金融级高可用
+- [软硬件环境需求](/hardware-and-software-requirements.md)
+- [环境与系统配置检查](/check-before-deployment.md)
+- [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md)
+- [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
-    相比于传统主从 (M-S) 复制方案，基于 Raft 的多数派选举协议可以提供金融级的 100% 数据强一致性保证，且在不丢失大多数副本的前提下，可以实现故障的自动恢复 (auto-failover)，无需人工介入。
+</NavColumn>
 
-- 一站式 HTAP 解决方案
+<NavColumn>
+<ColumnTitle>数据迁移</ColumnTitle>
 
-    TiDB 作为典型的 OLTP 行存数据库，同时兼具强大的 OLAP 性能，配合 TiSpark，可提供一站式 HTAP 解决方案，一份存储同时处理 OLTP & OLAP，无需传统繁琐的 ETL 过程。
+- [概述](/migration-overview.md)
+- [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
+- [从 Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
+- [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+- [从 SQL 文件迁移](/migrate-from-mysql-mydumper-files.md)
 
-- 云原生 SQL 数据库
+</NavColumn>
 
-    TiDB 是为云而设计的数据库，支持公有云、私有云和混合云，使部署、配置和维护变得十分简单。
+<NavColumn>
+<ColumnTitle>运维操作</ColumnTitle>
 
-TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](/reference/tispark.md)来完成。
+- [升级 TiDB 版本](/upgrade-tidb-using-tiup.md)
+- [扩容与缩容](/scale-tidb-using-tiup.md)
+- [备份与恢复](/br/backup-and-restore-tool.md)
+- [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
+- [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
+- [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
 
-TiDB 对业务没有任何侵入性，能优雅的替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大的提升研发的生产力。
+</NavColumn>
 
-三篇文章了解 TiDB 技术内幕：
+<NavColumn>
+<ColumnTitle>监控告警</ColumnTitle>
 
-- [说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
-- [说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
-- [谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
+- [监控框架概述](/tidb-monitoring-framework.md)
+- [监控 API](/tidb-monitoring-api.md)
+- [部署监控](/deploy-monitoring-services.md)
+- [TiDB 集群报警规则与处理方法](/alert-rules.md)
+- [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 
-## 部署方式
+</NavColumn>
 
-TiDB 可以部署在本地和云平台上，支持公有云、私有云和混合云。你可以根据实际场景或需求，选择相应的方式来部署 TiDB 集群：
+<NavColumn>
+<ColumnTitle>故障诊断</ColumnTitle>
 
-- [使用 Ansible 部署](/how-to/deploy/orchestrated/ansible.md)：如果用于生产环境，须使用 TiDB Ansible 部署 TiDB 集群。
-- [使用 Ansible 离线部署](/how-to/deploy/orchestrated/offline-ansible.md)：如果部署环境无法访问网络，可使用 Ansible 进行离线部署。
-- [使用 Docker Compose 部署](/how-to/get-started/deploy-tidb-from-docker-compose.md)：如果你只是想测试 TiDB、体验 TiDB 的特性，或者用于开发环境，可以使用 Docker Compose 在本地快速部署 TiDB 集群。该部署方式不适用于生产环境。
-- [使用 Docker 部署](/how-to/deploy/orchestrated/docker.md)：你可以使用 Docker 部署 TiDB 集群，但该部署方式不适用于生产环境。
+- [定位慢查询](/identify-slow-queries.md)
+- [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
+- [热点问题处理](/troubleshoot-hot-spot-issues.md)
+- [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
+- [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
+- [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 
-## 项目源码
+</NavColumn>
 
-TiDB 集群所有组件的源码均可从 GitHub 上直接访问：
+<NavColumn>
+<ColumnTitle>参考指南</ColumnTitle>
 
-- [TiDB](https://github.com/pingcap/tidb)
-- [TiKV](https://github.com/tikv/tikv)
-- [PD](https://github.com/pingcap/pd)
-- [TiSpark](https://github.com/pingcap/tispark)
-- [TiDB Operator](https://github.com/pingcap/tidb-operator)
+- [TiDB 架构](/tidb-architecture.md)
+- [监控指标](/grafana-overview-dashboard.md)
+- [安全加固](/enable-tls-between-clients-and-servers.md)
+- [权限管理](/privilege-management.md)
+- [基于角色的访问控制](/role-based-access-control.md)
+- [证书鉴权](/certificate-authentication.md)
+
+</NavColumn>
+
+<NavColumn>
+<ColumnTitle>FAQ</ColumnTitle>
+
+- [产品 FAQ](/faq/tidb-faq.md)
+- [高可用 FAQ](/faq/high-availability-faq.md)
+- [SQL FAQ](/faq/sql-faq.md)
+- [部署运维 FAQ](/faq/deploy-and-maintain-faq.md)
+- [升级 FAQ](/faq/upgrade-faq.md)
+- [迁移 FAQ](/faq/migration-tidb-faq.md)
+
+</NavColumn>
+</NavColumns>

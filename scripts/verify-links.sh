@@ -10,13 +10,12 @@
 # - When a file was moved, all other references are required to be updated for now, even if alias are given
 #   - This is recommended because of less redirects and better anchors support.
 #
+# See https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally if you meet permission problems when executing npm install.
 
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-if ! which markdown-link-check &>/dev/null; then
-    sudo npm install -g markdown-link-check@3.7.3
-fi
+npm install -g markdown-link-check@3.8.1
 
 VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)
@@ -50,7 +49,7 @@ fi
 while read -r tasks; do
     for task in $tasks; do
         (
-            output=$(markdown-link-check --color --config "$CONFIG_TMP" "$task" -q)
+            output=$(markdown-link-check --config "$CONFIG_TMP" "$task" -q)
             if [ $? -ne 0 ]; then
                 printf "$output" >> $ERROR_REPORT
             fi
@@ -69,7 +68,7 @@ if [ "$error_files" -gt 0 ]; then
     echo "Link error: $error_files files have invalid links. The faulty files are listed below, please fix the wrong links!"
     echo ""
     echo "=== Hint on how to fix links === "
-    echo "Links in TiDB documentation follow a style like '/reference/tidb-binlog/deploy.md#服务器要求'. That is, you need to make sure that:"
+    echo "Links in TiDB documentation follow a style like '/tidb-binlog/deploy-tidb-binlog.md#服务器要求'. That is, you need to make sure that:"
     echo "1) Links start with a slash; 2) Anchor links are written in a '/dir/xxx.md#anchor-point' style; 3) Links don't start with a version, e.g. '/v3.0/...' is wrong and '/v3.0' should be removed."
     echo ""
     echo "=== ERROR REPORT == ":

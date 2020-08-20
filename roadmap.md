@@ -1,7 +1,6 @@
 ---
 title: TiDB V4.0 Roadmap
-category: Roadmap
-aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
+aliases: ['/docs-cn/dev/roadmap/','/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 ---
 
 <!-- markdownlint-disable MD001 -->
