@@ -31,7 +31,7 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
    - TiDB
 
-        Configure in the configuration file or command line arguments:
+        Configure in the configuration file or command-line arguments:
 
         ```toml
         [security]
@@ -45,7 +45,7 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
    - TiKV
 
-        Configure in the configuration file or command line arguments, and set the corresponding URL to https:
+        Configure in the configuration file or command-line arguments, and set the corresponding URL to `https`:
 
         ```toml
         [security]
@@ -57,7 +57,7 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
    - PD
 
-        Configure in the configuration file or command line arguments, and set the corresponding URL to https:
+        Configure in the configuration file or command-line arguments, and set the corresponding URL to `https`:
 
         ```toml
         [security]
@@ -67,6 +67,16 @@ Currently, it is not supported to only enable encrypted transmission of some spe
         cert-path = "/path/to/pd-server.pem"
         # Path of file that contains X509 key in PEM format.
         key-path = "/path/to/pd-server-key.pem"
+        ```
+
+    - TiCDC
+
+        Configure in the command-line arguments and set the corresponding URL to `https`:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem
         ```
 
     Now, encrypted transmission among TiDB components is enabled.
@@ -101,7 +111,7 @@ To verify component caller's identity, you need to mark the certificate user ide
 
 - TiDB
 
-    Configure in the configuration file or command line arguments:
+    Configure in the configuration file or command-line arguments:
 
     ```toml
     [security]
@@ -113,7 +123,7 @@ To verify component caller's identity, you need to mark the certificate user ide
 
 - TiKV
 
-    Configure in the configuration file or command line arguments:
+    Configure in the configuration file or command-line arguments:
 
     ```toml
     [security]
@@ -124,11 +134,21 @@ To verify component caller's identity, you need to mark the certificate user ide
 
 - PD
 
-    Configure in the configuration file or command line arguments:
+    Configure in the configuration file or command-line arguments:
 
     ```toml
     [security]
     cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
+    ```
+
+- TiCDC
+
+    Configure in the command-line arguments:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
     ```
 
 ### Reload certificates

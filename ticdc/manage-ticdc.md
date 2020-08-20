@@ -67,6 +67,13 @@ The following are descriptions of options available in the `cdc server` command:
 - `tz`: Time zone used by the TiCDC service. TiCDC uses this time zone when time data types such as `TIMESTAMP` are converted internally or when data are replicated to the downstream. The default is the local time zone in which the process runs.
 - `log-file`: The address of the running log of the TiCDC process. The default is `cdc.log`.
 - `log-level`: The log level when the TiCDC process is running. The default is `info`.
+- `ca`: The path of the CA certificate file used by TiCDC, in the PEM format (optional).
+- `cert`: The path of the certificate file used by TiCDC, in the PEM format (optional).
+- `key`: The path of the certificate key file used by TiCDC, in the PEM format (optional).
+
+## Use TLS
+
+For details about using encrypted data transmission (TLS), see [Enable TLS Between TiDB Components](/enable-tls-between-components.md).
 
 ## Use `cdc cli` to manage cluster status and data replication task
 
@@ -104,11 +111,17 @@ Execute the following commands to create a replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/"
-create changefeed ID: 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f info {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"config":{"filter-case-sensitive":false,"filter-rules":null,"ignore-txn-start-ts":null}}
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
-Configure `--sink-uri`  according to the following format. Currently, the scheme supports `mysql`/`tidb`/`kafka`.
+```shell
+Create changefeed successfully!
+ID: simple-replication-task
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+```
+
+- `--changefeed-id`: The ID of the replication task. The format must match the `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$` regular expression. If this ID is not specified, TiCDC automatically generates a UUID (the version 4 format) as the ID.
+- `--sink-uri`: The downstream address of the replication task. Configure `--sink-uri` according to the following format. Currently, the scheme supports `mysql`/`tidb`/`kafka`.
 
 {{< copyable "" >}}
 
@@ -136,6 +149,9 @@ Configure `--sink-uri`  according to the following format. Currently, the scheme
     | `3306`         | The port for the downstream data                                 |
     | `worker-count` | The number of SQL statements that can be concurrently executed to the downstream (optional, `16` by default)       |
     | `max-txn-row`  | The size of a transaction batch that can be executed to the downstream (optional, `256` by default)) |
+    | `ssl-ca` | The path of the CA certificate file needed to connect to the downstream MySQL instance (optional)  |
+    | `ssl-cert` | The path of the certificate file needed to connect to the downstream MySQL instance (optional) |
+    | `ssl-key` | The path of the certificate key file needed to connect to the downstream MySQL instance (optional) |
 
 - Configure sink URI with `kafka`
 
@@ -155,10 +171,14 @@ Configure `--sink-uri`  according to the following format. Currently, the scheme
     | `9092`               | The port for the downstream Kafka                                          |
     | `cdc-test`           | The name of the Kafka topic                                      |
     | `kafka-version`      | The version of the downstream Kafka (optional, `2.4.0` by default)                      |
+    | `kafka-client-id`    | Specifies the Kafka client ID of the replication task (optional, `TiCDC_sarama_producer_replication ID` by default) |
     | `partition-num`      | The number of the downstream Kafka partitions (Optional. The value must be **no greater than** the actual number of partitions. If you do not configure this parameter, the partition number is obtained automatically.) |
     | `max-message-bytes`  | The maximum size of data that is sent to Kafka broker each time (optional, `64MB` by default) |
     | `replication-factor` | The number of Kafka message replicas that can be saved (optional, `1` by default)                       |
     | `protocol` | The protocol with which messages are output to Kafka. The optional values are `default` and `canal` (`default` by default.)    |
+    | `ca` | The path of the CA certificate file needed to connect to the downstream Kafka instance (optional)  |
+    | `cert` | The path of the certificate file needed to connect to the downstream Kafka instance (optional) |
+    | `key` | The path of the certificate key file needed to connect to the downstream Kafka instance (optional) |
 
 For more replication configuration (for example, specify replicating a single table), see [Task configuration file](#task-configuration-file).
 
@@ -182,13 +202,23 @@ Execute the following command to query the replication task list:
 cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
+```shell
+[{
+    "id": "simple-replication-task",
+    "summary": {
+      "state": "normal",
+      "tso": 417886179132964865,
+      "checkpoint": "2020-07-07 16:07:44.881",
+      "error": null
+    }
+}]
 ```
-[
-        {
-                "id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
-        }
-]
-```
+
+- `checkpoint` indicates that TiCDC has already replicated data before this time point to the downstream.
+- `state` indicates the state of the replication task.
+    - `normal`: The replication task runs normally.
+    - `stopped`: The replication task is stopped (manually paused or stopped by an error).
+    - `removed`: The replication task is removed.
 
 #### Query a specific replication task
 
@@ -197,7 +227,7 @@ Execute the following command to query a specific replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
 ```
 
 The information returned consists of `"info"` and `"status"` of the replication task.
@@ -242,7 +272,7 @@ Execute the following command to pause a replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 In the above command:
@@ -256,7 +286,7 @@ Execute the following command to resume a paused replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 In the above command:
@@ -270,7 +300,7 @@ Execute the following command to remove a replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
 In the above command:
@@ -292,7 +322,7 @@ In the above command:
             {
                     "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
                     "capture-id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                    "changefeed-id": "28c43ffc-2316-4f4f-a70b-d1a7c59ba79f"
+                    "changefeed-id": "simple-replication-task"
             }
     ]
     ```
@@ -302,7 +332,7 @@ In the above command:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=28c43ffc-2316-4f4f-a70b-d1a7c59ba79f --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
+    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
     ```
@@ -558,7 +588,7 @@ To create a cyclic replication task, take the following steps:
 ### Usage notes
 
 + Before creating the cyclic replication task, you must execute `cdc cli changefeed cyclic create-marktables` to create the mark tables for the cyclic replication.
-+ Tables with cyclic replication enabled only contain the `[a-zA-Z0-9_]` characters.
++ The name of the table with cyclic replication enabled must match the `^[a-zA-Z0-9_]+$` regular expression.
 + Before creating the cyclic replication task, the tables for the task must be created.
 + After enabling the cyclic replication, you cannot create a table that will be replicated by the cyclic replication task.
 + To perform online DDL operations, ensure the following requirements are met:
