@@ -8,7 +8,7 @@ title: TiDB 3.0.18 Release Notes
 
 TiDB 版本：3.0.18
 
-## 优化
+## 提升改进
 
 + Tools
 
