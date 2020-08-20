@@ -329,3 +329,7 @@ prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
 ```sql
 SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
 ```
+
+> **注意：**
+>
+> `NTH_PLAN(N)` 主要用于测试用途，并且在未来不保证其兼容性，请谨慎使用。
