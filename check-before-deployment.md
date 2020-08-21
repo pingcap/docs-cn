@@ -115,7 +115,7 @@ aliases: ['/docs-cn/stable/check-before-deployment/','/docs-cn/v4.0/check-before
 {{< copyable "shell-regular" >}}
     
 ```bash
-echo "vm.swappiness = 0">> /etc/sysctl.conf 
+echo "vm.swappiness = 0">> /etc/sysctl.conf
 swapoff -a && swapon -a
 sysctl -p
 ```
