@@ -31,6 +31,7 @@ aliases: ['/docs/dev/releases/release-notes/','/docs/dev/releases/rn/']
 
 ## 3.0
 
+- [3.0.18](/releases/release-3.0.18.md)
 - [3.0.17](/releases/release-3.0.17.md)
 - [3.0.16](/releases/release-3.0.16.md)
 - [3.0.15](/releases/release-3.0.15.md)
