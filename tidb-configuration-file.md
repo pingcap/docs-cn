@@ -472,20 +472,6 @@ prepare 语句的 Plan cache 设置。
 + 默认值：5
 + 单位：ms
 
-## txn-local-latches
-
-事务内存锁相关配置，当本地事务冲突比较多时建议开启。
-
-### `enable`
-
-+ 开启或关闭事务内存锁
-+ 默认值：false
-
-### `capacity`
-
-+ Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
-+ 默认值：2048000
-
 ## binlog
 
 TiDB Binlog 相关配置。
