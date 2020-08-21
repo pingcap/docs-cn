@@ -438,7 +438,7 @@ Leader 调度的开销较小，需要的时候可以适当调大。
 
 - `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
 
-### `config placement-rules [disable | enable | load | save | show]`
+### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
 关于 `config placement-rules` 的具体用法，参考 [Placement Rules 使用文档](/configure-placement-rules.md#配置规则操作步骤)。
 
