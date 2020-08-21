@@ -1091,15 +1091,6 @@ Encoding 格式示例：
 
 ```bash
 >> store remove-tombstone              // 删除所有 tombstone 状态的 store
->> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
->> store limit add-peer                // 显示所有 store 添加 peer 的速度上限
->> store limit remove-peer             // 显示所有 store 删除 peer 的速度上限
->> store limit all 5                   // 设置所有 store 添加和删除 peer 的速度上限为每分钟 5 个
->> store limit 1 5                     // 设置 store 1 添加和删除 peer 的速度上限为每分钟 5 个
->> store limit all 5 add-peer          // 设置所有 store 添加 peer 的速度上限为每分钟 5 个
->> store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
->> store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
->> store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
 >> store limit-scene                   // 显示所有的限速场景（实验性功能）
 {
   "Idle": 100,
@@ -1110,9 +1101,7 @@ Encoding 格式示例：
 >> store limit-scene idle 100          // 设置 load 为 idle 场景下，添加/删除 peer 的速度上限为每分钟 100 个
 ```
 
-> **注意：**
->
-> 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+`store limit` 的用法见 [Store Limit](/configure-store-limit.md)。
 
 ### `log [fatal | error | warn | info | debug]`
 
