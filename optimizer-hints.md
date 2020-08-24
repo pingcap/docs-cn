@@ -318,7 +318,7 @@ prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
 
 `NTH_PLAN(N)` 提示优化器选用在物理优化阶段搜索到的第 `N` 个物理计划。`N` 必须是正整数。
 
-如果指定的 `N` 超出了物理优化阶段的搜索范围，TiDB 会返回 warning，并使用和没有该 Hint 时一样的策略选择最优物理计划。
+如果指定的 `N` 超出了物理优化阶段的搜索范围，TiDB 会返回 warning，并根据不存在该 Hint 时一样的策略选择最优物理计划。
 
 该 Hint 在启用 cascades planner 的情况下不会生效。
 
