@@ -45,7 +45,7 @@ GRANT analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-需要注意的是，默认情况下，用户 `jennifer` 需要启用 `SET ROLE analyticsteam`，才能使用与角色相关联的权限：
+需要注意的是，默认情况下，用户 `jennifer` 需要执行 `SET ROLE analyticsteam`，才能使用与角色相关联的权限：
 
 ```sql
 $ mysql -ujennifer

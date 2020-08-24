@@ -1,5 +1,5 @@
 ---
-title: DROP ROLE 
+title: DROP ROLE
 summary: TiDB 数据库中 DROP ROLE 的使用概况。
 ---
 
@@ -143,7 +143,7 @@ DROP ROLE analyticsteam;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-Jennifer 不再具有与 analyticsteam 关联的默认角色，或者可以将 analyticsteam 设为启用角色：
+Jennifer 不再具有与 analyticsteam 关联的默认角色，或不能再将 analyticsteam 设为启用角色：
 
 ```sql
 $ mysql -ujennifer

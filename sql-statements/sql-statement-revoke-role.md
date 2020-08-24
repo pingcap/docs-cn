@@ -131,7 +131,7 @@ SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-删除角色 `analyticsteam`：
+收回角色 `analyticsteam`：
 
 ```sql
 $ mysql -uroot

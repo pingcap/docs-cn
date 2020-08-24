@@ -5,7 +5,7 @@ summary: TiDB 数据库中 CREATE ROLE 的使用概况。
 
 # CREATE ROLE
 
-`CREATE ROLE` 语句是基于角色的访问控制 (RBAC) 操作的一部分，用于创建新角色并将其授予给用户。
+`CREATE ROLE` 语句是基于角色的访问控制 (RBAC) 操作的一部分，用于创建新角色并将新角色分配给用户。
 
 ## 语法图
 
@@ -23,7 +23,7 @@ summary: TiDB 数据库中 CREATE ROLE 的使用概况。
 
 ## 示例
 
-创建一个新角色 `analyticsteam` 和一个新用户 `jennifer`：
+创建新角色 `analyticsteam` 和新用户 `jennifer`：
 
 ```sql
 $ mysql -uroot
@@ -45,7 +45,7 @@ GRANT analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-需要注意的是，默认情况下，用户 `jennifer` 需要启用 `SET ROLE analyticsteam`，才能使用与角色相关联的权限：
+需要注意的是，默认情况下，用户 `jennifer` 需要执行 `SET ROLE analyticsteam` 语句才能使用与角色相关联的权限：
 
 ```sql
 $ mysql -ujennifer
@@ -87,7 +87,7 @@ SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-`SET DEFAULT ROLE` 语句可以对用户 `jennifer` 设置默认启用的角色，用户不用执行 `SET ROLE` 语句就能具有角色拥有的权限。
+执行 `SET DEFAULT ROLE` 语句将用户 `jennifer` 与某一角色相关联，这样该用户无需执行 `SET ROLE` 语句就能拥有与角色相关联的权限。
 
 ```sql
 $ mysql -uroot

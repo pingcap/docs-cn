@@ -135,7 +135,7 @@ SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-`SET DEFAULT ROLE` 语句不会自动 `GRANT` 用户相关角色。若尝试为 `jennifer` 尚未授予的角色启用 `SET DEFAULT ROLE` 会导致以下错误：
+`SET DEFAULT ROLE` 语句不会自动将相关角色授予 (`GRANT`) 用户。若尝试为 `jennifer` 尚未被授予的角色执行 `SET DEFAULT ROLE` 会导致以下错误：
 
 ```sql
 SET DEFAULT ROLE analyticsteam TO jennifer;
