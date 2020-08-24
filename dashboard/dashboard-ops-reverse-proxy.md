@@ -305,3 +305,7 @@ sudo nginx -s reload
 ```
 
 </details>
+
+## What's next
+
+To learn how to enhance the security of TiDB Dashboard, such as configuring a firewall, see [Secure TiDB Dashboard](/dashboard/dashboard-ops-security.md).

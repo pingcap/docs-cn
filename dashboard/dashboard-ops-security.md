@@ -78,6 +78,12 @@ As mentioned in [Use a firewall to block untrusted access](#use-a-firewall-to-bl
 
 It is recommended that you see [Use TiDB Dashboard behind a Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md) to learn a safe and recommended reverse proxy configuration.
 
+## Enable TLS for reverse proxy
+
+To further enhance the security of the transport layer, you can enable TLS for reverse proxy, and even introduce mTLS to authenticate user certificates.
+
+See [Configuring HTTPS servers](http://nginx.org/en/docs/http/configuring_https_servers.html) and [HAProxy SSL Termination](https://www.haproxy.com/blog/haproxy-ssl-termination/) for more details.
+
 ## Other recommended safety measures
 
 - [Enable TLS Authentication and Encrypt the Stored Data](/enable-tls-between-components.md)
