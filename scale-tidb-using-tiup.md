@@ -36,6 +36,7 @@ If you want to add a TiDB node to the `10.0.1.5` host, take the following steps.
     >
     > * The port and directory information is not required by default.
     > * If multiple instances are deployed on a single machine, you need to allocate different ports and directories for them. If the ports or directories have conflicts, you will receive a notification during deployment or scaling.
+    > * Since TiUP v1.0.0, the scale-out configuration will inherit the global configuration of the original cluster.
 
     Add the scale-out topology configuration in the `scale-out.yaml` file:
 
