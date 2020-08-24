@@ -30,6 +30,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：ON
 - 这个变量用来设置是否自动 Commit 事务。
 
+### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
+
+- 作用域：SESSION（v4.0.4 开始为 SESSION | GLOBAL）
+- 默认值：0
+- 是否允许在 `INSERT` 语句中显式指定含有 `AUTO_RANDOM` 属性的列的值，`1` 为允许，`0` 为不允许。
+
 ### `ddl_slow_threshold`
 
 - 作用域：SESSION
@@ -60,7 +66,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：0
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
-### last_plan_from_binding <span class="version-mark">从 v4.0 版本开始引入</span>
+### `last_plan_from_binding` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 作用域：SESSION
 

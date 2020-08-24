@@ -155,9 +155,9 @@
   + [适用场景](/ecosystem-tool-user-case.md)
   + [工具下载](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
-    + [BR 常见问题](/br/backup-and-restore-faq.md)
-    + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md)
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+    + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md)
+    + [BR 常见问题](/br/backup-and-restore-faq.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
     + [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -170,7 +170,7 @@
     + [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
     + [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
     + [binlogctl 工具](/tidb-binlog/binlog-control.md)
-    + [Kafka 自定义开发](/tidb-binlog/binlog-slave-client.md)
+    + [Kafka 自定义开发](/tidb-binlog/binlog-consumer-client.md)
     + [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
     + [集群间双向同步](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
     + [术语表](/tidb-binlog/tidb-binlog-glossary.md)
@@ -528,6 +528,7 @@
     - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/release-3.1.0-beta.md)
   + v3.0
+    - [3.0.18](/releases/release-3.0.18.md)
     - [3.0.17](/releases/release-3.0.17.md)
     - [3.0.16](/releases/release-3.0.16.md)
     - [3.0.15](/releases/release-3.0.15.md)
