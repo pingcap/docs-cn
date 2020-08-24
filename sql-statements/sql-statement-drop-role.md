@@ -5,7 +5,7 @@ summary: TiDB 数据库中 DROP ROLE 的使用概况。
 
 # DROP ROLE
 
-`DROP ROLE` 语句用于删除之前 `CREATE ROLE` 语句创建的角色。
+使用 `DROP ROLE` 语句可删除已用 `CREATE ROLE` 语句创建的角色。
 
 ## 语法图
 
