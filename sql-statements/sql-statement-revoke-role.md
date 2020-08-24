@@ -21,42 +21,53 @@ summary: TiDB 数据库中 REVOKE <role> 的使用概况。
 
 ![UsernameList](/media/sqlgram/UsernameList.png)
 
-## Examples
+## 示例
 
-为 `analyticsteam` 创建一个新角色和一个新用户 `jennifer`：
+创建新角色 `analyticsteam` 和新用户 `jennifer`：
 
 ```sql
 $ mysql -uroot
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 37
 Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
 Oracle is a registered trademark of Oracle Corporation and/or its
 affiliates. Other names may be trademarks of their respective
 owners.
+
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
 CREATE ROLE analyticsteam;
 Query OK, 0 rows affected (0.02 sec)
+
 GRANT SELECT ON test.* TO analyticsteam;
 Query OK, 0 rows affected (0.02 sec)
+
 CREATE USER jennifer;
 Query OK, 0 rows affected (0.01 sec)
+
 GRANT analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-需要注意的是，默认情况下，用户 `jennifer` 需要启用 `SET ROLE analyticsteam`，才能使用与角色相关联的权限：
+需要注意的是，默认情况下，用户 `jennifer` 需要执行 `SET ROLE analyticsteam` 语句才能使用与角色相关联的权限：
 
 ```sql
 $ mysql -ujennifer
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 32
 Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
 Oracle is a registered trademark of Oracle Corporation and/or its
 affiliates. Other names may be trademarks of their respective
 owners.
+
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
 SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
@@ -65,10 +76,12 @@ SHOW GRANTS;
 | GRANT 'analyticsteam'@'%' TO 'jennifer'@'%' |
 +---------------------------------------------+
 2 rows in set (0.00 sec)
+
 SHOW TABLES in test;
 ERROR 1044 (42000): Access denied for user 'jennifer'@'%' to database 'test'
 SET ROLE analyticsteam;
 Query OK, 0 rows affected (0.00 sec)
+
 SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
@@ -78,6 +91,7 @@ SHOW GRANTS;
 | GRANT 'analyticsteam'@'%' TO 'jennifer'@'%' |
 +---------------------------------------------+
 3 rows in set (0.00 sec)
+
 SHOW TABLES IN test;
 +----------------+
 | Tables_in_test |
@@ -87,18 +101,22 @@ SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-`SET DEFAULT ROLE` 语句可以对用户 `jennifer` 设置默认启用的角色，用户不用执行 `SET ROLE` 语句就能具有与角色关联的权限。
+执行 `SET DEFAULT ROLE` 语句将用户 `jennifer` 与某一角色相关联，这样该用户无需执行 `SET ROLE` 语句就能拥有与角色相关联的权限。
 
 ```sql
 $ mysql -uroot
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 34
 Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
 Oracle is a registered trademark of Oracle Corporation and/or its
 affiliates. Other names may be trademarks of their respective
 owners.
+
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
 SET DEFAULT ROLE analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.02 sec)
 ```
@@ -108,11 +126,15 @@ $ mysql -ujennifer
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 35
 Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
 Oracle is a registered trademark of Oracle Corporation and/or its
 affiliates. Other names may be trademarks of their respective
 owners.
+
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
 SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
@@ -122,6 +144,7 @@ SHOW GRANTS;
 | GRANT 'analyticsteam'@'%' TO 'jennifer'@'%' |
 +---------------------------------------------+
 3 rows in set (0.00 sec)
+
 SHOW TABLES IN test;
 +----------------+
 | Tables_in_test |
@@ -138,11 +161,15 @@ $ mysql -uroot
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 38
 Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
 Oracle is a registered trademark of Oracle Corporation and/or its
 affiliates. Other names may be trademarks of their respective
 owners.
+
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
 REVOKE analyticsteam FROM jennifer;
 Query OK, 0 rows affected (0.01 sec)
 ```
@@ -152,11 +179,15 @@ $ mysql -ujennifer
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 39
 Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
 Oracle is a registered trademark of Oracle Corporation and/or its
 affiliates. Other names may be trademarks of their respective
 owners.
+
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
 SHOW GRANTS;
 +--------------------------------------+
 | Grants for User                      |
