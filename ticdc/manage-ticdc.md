@@ -102,6 +102,9 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 ```shell
 cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+```
+
+```shell
 Create changefeed successfully!
 ID: simple-replication-task
 Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
@@ -430,6 +433,9 @@ curl -X POST curl 127.0.0.1:8300/capture/owner/move_table -X POST -d 'cf-id=cf06
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
 # 该配置会同时影响 filter 和 sink 相关配置，默认为 true
 case-sensitive = true
+
+# 是否输出 old value，从 v4.0.5 开始支持
+enable-old-value = false
 
 [filter]
 # 忽略指定 start_ts 的事务
