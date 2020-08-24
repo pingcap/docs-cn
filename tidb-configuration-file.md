@@ -269,6 +269,12 @@ Configuration items related to security.
 - The path of the SSL private key file used to connect TiKV or PD with TLS.
 - Default value: ""
 
+### `spilled-file-encryption-method`
+
++ Determines the encryption method used for saving the spilled files to disk.
++ Default value: `"plaintext"`, which disables encryption.
++ Optional values: `"plaintext"` and `"aes128-ctr"`
+
 ## Performance
 
 Configuration items related to performance.
