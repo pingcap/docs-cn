@@ -18,8 +18,8 @@ tiup cluster
 
 ```
 The component `cluster` is not installed; downloading from repository.
-download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s                                                   
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster 
+download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s
+Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -288,10 +288,10 @@ To scale out a TiKV node and a PD node in the `tidb-test` cluster, take the foll
 
     ```yaml
     ---
-    
+
     pd_servers:
       - ip: 172.16.5.140
-    
+
     tikv_servers:
       - ip: 172.16.5.140
     ```
@@ -607,3 +607,18 @@ The CPU thread count check, memory size check, and disk performance check are di
 When running the checks, if the `--apply` flag is specified, the program automatically repairs the failed items. Automatic repair is limited to some items that can be adjusted by modifying the configuration or system parameters. Other unrepaired items need to be handled manually according to the actual situation.
 
 Environment checks are not necessary for deploying a cluster. For the production environment, it is recommended to perform environment checks and pass all check items before deployment. If not all the check items are passed, the cluster might be deployed and run normally, but the best performance might not be obtained.
+
+## Migrate control machine and back up TiUP data
+
+The TiUP data is stored in the `.tiup` directory in the user's home directory. To migrate the control machine, you can take the following steps to copy the `.tiup` directory to the corresponding target machine:
+
+1. Execute `tar czvf tiup.tar.gz .tiup` in the home directory of the original machine.
+2. Copy `tip.tar.gz` to the home directory of the target machine.
+3. Execute `tar xzvf tiup.tar.gz` in the home directory of the target machine.
+4. Add the `.tiup` directory to the `PATH` environment variable.
+
+    If you use `bash` and you are a `tidb` user, you can add `export PATH=/home/tidb/.tiup/bin:$PATH` in `~/.bashr` and execute `source ~/.bashrc`. Then make corresponding adjustments according to the shell and the user you use.
+
+> **Note:**
+>
+> It is recommended that you back up the `.tiup` directory regularly to avoid the loss of TiUP data caused by abnormal conditions, such as disk damage of the control machine. 
