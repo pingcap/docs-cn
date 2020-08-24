@@ -113,7 +113,7 @@ aliases: ['/docs-cn/stable/check-before-deployment/','/docs-cn/v4.0/check-before
 建议执行以下命令关闭系统 swap：
 
 {{< copyable "shell-regular" >}}
-    
+
 ```bash
 echo "vm.swappiness = 0">> /etc/sysctl.conf 
 swapoff -a && swapon -a
