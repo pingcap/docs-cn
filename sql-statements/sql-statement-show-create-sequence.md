@@ -23,7 +23,7 @@ The `SHOW CREATE SEQUENCE` shows the detailed information of a sequence, which i
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE seq;
+CREATE SEQUENCE seq;
 ```
 
 ```
