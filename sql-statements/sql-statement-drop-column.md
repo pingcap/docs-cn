@@ -1,7 +1,7 @@
 ---
 title: DROP COLUMN
 summary: TiDB 数据库中 DROP COLUMN 的使用概况。
-aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-column/','/docs-cn/v4.0/sql-statements/sql-statement-drop-column/','/docs-cn/stable/reference/sql/statements/drop-column/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-column/','/docs-cn/v4.0/sql-statements/sql-statement-drop-column/','/docs-cn/stable/reference/sql/statements/drop-column/','/docs/v4.0/reference/sql/statements/drop-column/']
 ---
 
 # DROP COLUMN
