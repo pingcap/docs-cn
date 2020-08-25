@@ -8,7 +8,7 @@ aliases: ['/docs/dev/mydumper-overview/','/docs/dev/reference/tools/mydumper/']
 
 > **Warning:**
 >
-> The maintainers have stopped developing new features for Mydumper, and most of its features have been replaced by [Dumpling](/dumpling-overview.md). It is strongly recommended that you switch to Dumpling.
+> PingCAP previously maintained a fork of the [mydumper project](https://github.com/maxbube/mydumper) with enhancements specific to TiDB. This fork has since been replaced by [Dumpling](/dumpling-overview.md), which has been rewritten in Go, and supports more optimizations that are specific to TiDB. It is strongly recommended that you use Dumpling instead of mydumper.
 
 ## What is Mydumper?
 
