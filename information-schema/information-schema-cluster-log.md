@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_LOG
 summary: 了解 information_schema 表 `CLUSTER_LOG`。
-aliases: ['/docs-cn/stable/system-tables/system-table-cluster-log/','/docs-cn/v4.0/system-tables/system-table-cluster-log/','/docs-cn/stable/reference/system-databases/cluster-log/','/zh/tidb/stable/system-table-cluster-log/']
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-log/','/docs-cn/v4.0/system-tables/system-table-cluster-log/','/docs-cn/stable/reference/system-databases/cluster-log/','/zh/tidb/stable/system-table-cluster-log/','/docs-cn/stable/information-schema/information-schema-cluster-log/']
 ---
 
 # CLUSTER_LOG

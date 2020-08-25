@@ -1,6 +1,7 @@
 ---
 title: DDL_JOBS
 summary: 了解 information_schema 表 `DDL_JOBS`。
+aliases: ['/docs-cn/stable/information-schema/information-schema-ddl-jobs/']
 ---
 
 # DDL_JOBS

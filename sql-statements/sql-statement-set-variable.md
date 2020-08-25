@@ -1,7 +1,7 @@
 ---
 title: SET [GLOBAL|SESSION] <variable>
 summary: TiDB 数据库中 SET [GLOBAL|SESSION] <variable> 的使用概况。
-aliases: ['/docs-cn/stable/sql-statements/sql-statement-set-variable/','/docs-cn/v4.0/sql-statements/sql-statement-set-variable/','/docs-cn/stable/reference/sql/statements/set-variable/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-set-variable/','/docs-cn/v4.0/sql-statements/sql-statement-set-variable/','/docs-cn/stable/reference/sql/statements/set-variable/','/docs-cn/v4.0/reference/sql/statements/set-variable']
 ---
 
 # `SET [GLOBAL|SESSION] <variable>`

@@ -1,6 +1,7 @@
 ---
 title: SCHEMATA
 summary: 了解 information_schema 表 `SCHEMATA`。
+aliases: ['/docs-cn/stable/information-schema/information-schema-schemata/']
 ---
 
 # SCHEMATA
