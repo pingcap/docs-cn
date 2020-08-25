@@ -1,6 +1,12 @@
 ---
+<<<<<<< HEAD
 title: TiDB 系统表
 aliases: ['/docs-cn/stable/system-tables/system-table-overview/','/docs-cn/v4.0/system-tables/system-table-overview/','/docs-cn/stable/reference/system-databases/mysql/','/zh/tidb/stable/system-table-overview/']
+=======
+title: mysql Schema
+summary: 了解 TiDB 系统表。
+aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/reference/system-databases/mysql/','/zh/tidb/dev/system-table-overview/','/docs-cn/dev/mysql-schema/']
+>>>>>>> d4b1a54... Fix dead links (#4333)
 ---
 
 # `mysql` Schema
