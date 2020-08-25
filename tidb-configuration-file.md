@@ -267,6 +267,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + ssl 私钥文件路径，用于用 tls 连接 TiKV/PD
 + 默认值：""
 
+### `spilled-file-encryption-method`
+
++ 内存落盘文件的加密方式。
++ 默认值: `"plaintext"`，表示不进行加密
++ 可选值：`"plaintext"`、`"aes128-ctr"`
+
 ## performance
 
 性能相关配置。
