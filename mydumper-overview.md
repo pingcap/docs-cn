@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/mydumper-overview/','/docs-cn/dev/reference/tools/mydump
 
 > **警告：**
 >
-> [Mydumper](https://github.com/pingcap/mydumper) 是 Pingcap 之前维护的一个 fork 项目，可以针对 TiDB 的特性进行优化。 Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，且使用 Go 进行了重写。强烈建议切换到 Dumpling。
+> Pingcap 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代。Dumpling 工具使用 Go 语言编写，支持更多针对 TiDB 特性的优化。强烈建议切换到 Dumpling。
 
 ### 相比于普通的 Mydumper，此工具有哪些改进之处？
 
