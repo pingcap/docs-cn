@@ -6,4 +6,4 @@ aliases: ['/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-t
 
 # 从 MySQL 迁移数据——以 Amazon Aurora MySQL 为例
 
-见 DM 文档 [从 Aurora 迁移到 TiDB](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)。
+若要从 MySQL 协议数据库迁移数据到 TiDB，可参阅 DM 文档[从 Aurora 迁移到 TiDB](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)。
