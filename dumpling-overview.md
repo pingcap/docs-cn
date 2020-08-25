@@ -52,7 +52,7 @@ dumpling \
   --filetype sql \
   --threads 32 \
   -o /tmp/test \
-  -F 256
+  -F 256MiB
 ```
 
 In the above command, `-h`, `-P` and `-u` mean address, port and user, respectively. If password authentication is required, you can pass it to Dumpling with `-p $YOUR_SECRET_PASSWORD`.
