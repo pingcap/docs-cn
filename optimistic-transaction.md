@@ -6,13 +6,13 @@ aliases: ['/docs/dev/optimistic-transaction/','/docs/dev/reference/transactions/
 
 # TiDB Optimistic Transaction Model
 
-This document introduces the principles of TiDB's optimistic transaction model and related features.
+With optimistic transactions, conflicting changes are detected as part of a transaction commit. This helps improve the performance when concurrent transactions are infrequently modifying the same rows, because the process of acquiring row locks can be skipped. In the case that concurrent transactions frequently modify the same rows (a conflict), optimistic transactions may perform worse than [Pessimistic Transactions](/pessimistic-transaction.md).
 
-In TiDB's optimistic transaction model, write-write conflicts are detected only at the two-phase transactional commit.
+Before enabling optimistic transactions, make sure that your application correctly handles that a `COMMIT` statement could return errors. If you are unsure of how your application handles this, it is recommended to instead use Pessimistic Transactions.
 
 > **Note:**
 >
-> Starting from v3.0.8, newly created TiDB clusters use the [pessimistic transaction model](/pessimistic-transaction.md) by default. However, this does not affect your existing cluster if you upgrade it from v3.0.7 or earlier to v3.0.8 or later. In other words, **only newly created clusters default to using the pessimistic transaction model**.
+> Starting from v3.0.8, TiDB uses the [pessimistic transaction model](/pessimistic-transaction.md) by default. However, this does not affect your existing cluster if you upgrade it from v3.0.7 or earlier to v3.0.8 or later. In other words, **only newly created clusters default to using the pessimistic transaction model**.
 
 ## Principles of optimistic transactions
 
@@ -35,14 +35,14 @@ To support distributed transactions, TiDB adopts two-phase commit (2PC) in optim
 
 4. The client issues a commit request.
 
-5. TiDB begins 2PC, and persist data in store while guaranteeing the atomicity of transactions.
+5. TiDB begins 2PC, and persists data in store while guaranteeing the atomicity of transactions.
 
     1. TiDB selects a Primary Key from the data to be written.
     2. TiDB receives the information of Region distribution from PD, and groups all keys by Region accordingly.
     3. TiDB sends prewrite requests to all TiKV nodes involved. Then, TiKV checks whether there are conflict or expired versions. Valid data is locked.
     4. TiDB receives all requests in the prewrite phase and the prewrite is successful.
     5. TiDB receives a commit version number from PD and marks it as `commit_ts`.
-    6. TiDB initiates the second commit to the TiKV node where Primary Key is located. TiKV checks the data, and clean the locks left in the prewrite phase.
+    6. TiDB initiates the second commit to the TiKV node where Primary Key is located. TiKV checks the data, and cleans the locks left in the prewrite phase.
     7. TiDB receives the message that reports the second phase is successfully finished.
 
 6. TiDB returns a message to inform the client that the transaction is successfully committed.
@@ -69,7 +69,7 @@ In the optimistic transaction model, transactions might fail to be committed bec
 
 ### Automatic retry
 
-If a write-write conflict occurs during the transaction commit, TiDB automatically retries the SQL statement that includes write operations. You can enable the automatic retry by setting `tidb_disable_txn_auto_retry` to `off` and set the retry limit by configuring `tidb_retry_limit`:
+If a write-write conflict occurs during the transaction commit, TiDB automatically retries the SQL statement that includes write operations. You can enable the automatic retry by setting `tidb_disable_txn_auto_retry` to `OFF` and set the retry limit by configuring `tidb_retry_limit`:
 
 ```toml
 # Whether to disable automatic retry. ("on" by default)
@@ -86,13 +86,13 @@ You can enable the automatic retry in either session level or global level:
     {{< copyable "sql" >}}
 
     ```sql
-    set @@tidb_disable_txn_auto_retry = off;
+    SET tidb_disable_txn_auto_retry = OFF;
     ```
 
     {{< copyable "sql" >}}
 
     ```sql
-    set @@tidb_retry_limit = 10;
+    SET tidb_retry_limit = 10;
     ```
 
 2. Global level:
@@ -100,13 +100,13 @@ You can enable the automatic retry in either session level or global level:
     {{< copyable "sql" >}}
 
     ```sql
-    set @@global.tidb_disable_txn_auto_retry = off;
+    SET GLOBAL tidb_disable_txn_auto_retry = OFF;
     ```
 
     {{< copyable "sql" >}}
 
     ```sql
-    set @@global.tidb_retry_limit = 10;
+    SET GLOBAL tidb_retry_limit = 10;
     ```
 
 > **Note:**
@@ -138,8 +138,8 @@ The configuration is as follows:
 scheduler-concurrency = 2048000
 ```
 
-In addition, TiKV supports monitoring the time spent on waiting latches in scheduler.
+In addition, TiKV supports monitoring the time spent on waiting latches in the scheduler.
 
 ![Scheduler latch wait duration](/media/optimistic-transaction-metric.png)
 
-When `Scheduler latch wait duration` is high and there is no slow writes, it can be safely concluded that there are many write conflicts at this time.
+When `Scheduler latch wait duration` is high and there are no slow writes, it can be safely concluded that there are many write conflicts at this time.

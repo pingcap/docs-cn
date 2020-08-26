@@ -19,7 +19,7 @@ You can set the transaction mode by configuring the [`tidb_txn_mode`](/system-va
 {{< copyable "sql" >}}
 
 ```sql
-set @@global.tidb_txn_mode = 'pessimistic';
+SET GLOBAL tidb_txn_mode = 'pessimistic';
 ```
 
 You can also explicitly enable the pessimistic transaction mode by executing the following SQL statements:
@@ -33,7 +33,7 @@ BEGIN PESSIMISTIC;
 {{< copyable "sql" >}}
 
 ```sql
-BEGIN /*!90000 PESSIMISTIC */;
+BEGIN /*T! PESSIMISTIC */;
 ```
 
 The `BEGIN PESSIMISTIC;` and `BEGIN OPTIMISTIC;` statements take precedence over the `tidb_txn_mode` system variable. Transactions started with these two statements ignore the system variable and support using both the pessimistic and optimistic transaction modes.
@@ -60,9 +60,30 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
 
 ## Difference with MySQL InnoDB
 
-1. When TiDB executes DML or `SELECT FOR UPDATE` statements that use range in the WHERE clause, the concurrent `INSERT` statements within the range are not blocked.
-
-    By implementing Gap Lock, InnoDB blocks the execution of concurrent `INSERT` statements within the range. It is mainly used to support statement-based binlog. Therefore, some applications lower the isolation level to Read Committed to avoid concurrency performance problems caused by Gap Lock. TiDB does not support Gap Lock, so there is no need to pay the concurrency performance cost.
+1. When TiDB executes DML or `SELECT FOR UPDATE` statements that use range in the WHERE clause, concurrent DML statements within the range are not blocked.
+    
+    For example:
+    
+    ```sql
+    CREATE TABLE t1 (
+     id INT NOT NULL PRIMARY KEY,
+     pad1 VARCHAR(100)
+    );
+    INSERT INTO t1 (id) VALUES (1),(5),(10);
+    ```
+    
+    ```sql
+    BEGIN /*T! PESSIMISTIC */;
+    SELECT * FROM t1 WHERE id BETWEEN 1 AND 10 FOR UPDATE;
+    ```
+    
+    ```sql
+    BEGIN /*T! PESSIMISTIC */;
+    INSERT INTO t1 (id) VALUES (6); -- blocks only in MySQL
+    UPDATE t1 SET pad1='new value' WHERE id = 5; -- blocks waiting in both MySQL and TiDB
+    ```
+    
+    This behavior is because TiDB does not currently support _gap locking_.
 
 2. TiDB does not support `SELECT LOCK IN SHARE MODE`.
 
@@ -70,7 +91,7 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
 
 3. DDL may result in failure of the pessimistic transaction commit.
 
-    When DDL is executed in MySQL, it might be blocked by the transaction that is being executed. However, in this scenario, the DDL operation is not blocked in TiDB, which leads to failure of the pessimistic transaction commit: `ERROR 1105 (HY000): Information schema is changed. [try again later]`. TiDB executes the `TRUNCATE TABLE` statement during the transaction execution, which might result in the `table dosen't exist` error.
+    When DDL is executed in MySQL, it might be blocked by the transaction that is being executed. However, in this scenario, the DDL operation is not blocked in TiDB, which leads to failure of the pessimistic transaction commit: `ERROR 1105 (HY000): Information schema is changed. [try again later]`. TiDB executes the `TRUNCATE TABLE` statement during the transaction execution, which might result in the `table doesn't exist` error.
 
 4. After executing `START TRANSACTION WITH CONSISTENT SNAPSHOT`, MySQL can still read the tables that are created later in other transactions, while TiDB cannot.
 
