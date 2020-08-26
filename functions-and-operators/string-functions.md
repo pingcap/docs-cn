@@ -1,10 +1,7 @@
 ---
 title: 字符串函数
-<<<<<<< HEAD
-aliases: ['/docs-cn/v3.0/functions-and-operators/string-functions/','/docs-cn/v3.0/reference/sql/functions-and-operators/string-functions/','/docs-cn/sql/string-functions/']
-=======
-aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev/reference/sql/functions-and-operators/string-functions/','/docs-cn/dev/sql/string-functions/']
->>>>>>> 2df19b3... Fix a dead links (#4340)
+summary: 了解字符串函数。
+aliases: ['/docs-cn/v3.0/functions-and-operators/string-functions/','/docs-cn/v3.0/reference/sql/functions-and-operators/string-functions/','/docs-cn/sql/string-functions/','/docs-cn/v3.0/sql/string-functions/']
 ---
 
 # 字符串函数
