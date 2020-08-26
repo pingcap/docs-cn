@@ -32,16 +32,6 @@ aliases: ['/docs/dev/br/backup-and-restore-tool/','/docs/dev/reference/tools/br/
 >
 > Meanwhile, because TiDB v4.0 uses leader count for load balancing by default, leaders are greatly different in size, resulting in uneven distribution of backup data on each node.
 
-## Use BR
-
-### Use binary files
-
-Refer to the [download page](/download-ecosystem-tools.md#br-backup-and-restore) for more information.
-
-### Use SQL statements
-
-Refer to the [`BACKUP` syntax](/sql-statements/sql-statement-backup.md#backup) and [`RESTORE` syntax](/sql-statements/sql-statement-restore.md#restore) for more information.
-
 ## Implementation principles
 
 BR sends the backup or restoration commands to each TiKV node. After receiving these commands, TiKV performs the corresponding backup or restoration operations. Each TiKV node has a path in which the backup files generated in the backup operation are stored and from which the stored backup files are read during the restoration.
@@ -128,6 +118,20 @@ After TiKV receives the request to load the SST file, TiKV uses the Raft mechani
 After the restoration operation is completed, BR performs a checksum calculation on the restored data to compare the stored data with the backed up data.
 
 </details>
+
+## How to use BR
+
+Currently, you can use SQL statements or the command-line tool to back up and restore data.
+
+### Use SQL statements 
+
+TiDB v4.0.2 and later versions support backup and restore operations using SQL statements. For details, see the [Backup syntax](/sql-statements/sql-statement-backup.md#backup) and the [Restore syntax](/sql-statements/sql-statement-restore.md#restore).
+
+### Use the command-line tool
+
+Also, you can use the command-line tool to perform backup and restore. First, you need to download the binary file of the BR tool. For details, see [download link](/download-ecosystem-tools.md#br-backup-and-restore).
+
+The following section takes the command-line tool as an example to introduce how to perform backup and restore operations.
 
 ## Command-line description
 
