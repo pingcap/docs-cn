@@ -58,7 +58,11 @@ aliases: ['/docs-cn/v2.1/ecosystem-tool-user-guide/','/docs-cn/v2.1/reference/to
 
 ## 数据迁入
 
+<<<<<<< HEAD
 [TiDB Data Migration (DM)](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
+=======
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
+>>>>>>> 8866050... Update DM 2.0 related doc (#4324)
 
 基本信息：
 

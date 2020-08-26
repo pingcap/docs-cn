@@ -6,6 +6,7 @@ aliases: ['/docs-cn/v2.1/migrate-from-aurora-mysql-database/','/docs-cn/v2.1/how
 
 # 从 MySQL 迁移数据 —— 以 Amazon Aurora MySQL 为例
 
+<<<<<<< HEAD
 本文介绍如何使用 DM 从 [Amazon Aurora MySQL](https://aws.amazon.com/cn/rds/aurora/details/mysql-details/) 迁移数据到 TiDB。
 
 ## 第 1 步：在 Aurora 集群中启用 binlog
@@ -201,3 +202,6 @@ query-status
 > 1. 使用 `stop-task` 停止当前由于不能正常 dump 而已经转为 paused 的任务
 > 2. 将原 `task.yaml` 中的 `extra-args: "-B test_db -T test_table"` 更新为 `extra-args: "-B test_db -T test_table --no-locks"`
 > 3. 使用 `start-task` 重新启动任务
+=======
+若要从 MySQL 协议数据库迁移数据到 TiDB，可参阅 DM 文档[从 Aurora 迁移到 TiDB](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)。
+>>>>>>> 8866050... Update DM 2.0 related doc (#4324)
