@@ -39,13 +39,9 @@ aliases: ['/docs-cn/v2.1/migration-overview/','/docs-cn/v2.1/how-to/migrate/over
 
 详细操作参见 [MySQL 数据到 TiDB 的增量同步](/migrate-incremental-data-from-mysql.md)。
 
-<<<<<<< HEAD
 > **注意：**
 >
 > 在将 MySQL binlog 数据增量同步至 TiDB 前，需要[在 MySQL 中开启 binlog 功能](http://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html)，并且 binlog 必须[使用 `ROW` 格式](https://dev.mysql.com/doc/refman/5.7/en/binary-log-formats.html)。
-=======
-DM 支持将 MySQL 全量数据迁移到 TiDB，并同步 MySQL 的增量数据到 TiDB，详细信息可参考[使用 DM 工具从 Amazon Aurora MySQL 迁移](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)
->>>>>>> 8866050... Update DM 2.0 related doc (#4324)
 
 ### 非 MySQL 数据源的数据迁移
 
