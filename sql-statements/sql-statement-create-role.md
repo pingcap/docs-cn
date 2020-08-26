@@ -57,8 +57,6 @@ Query OK, 0 rows affected (0.01 sec)
 ```sql
 $ mysql -ujennifer
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
 SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
@@ -97,16 +95,12 @@ SHOW TABLES IN test;
 ```sql
 $ mysql -uroot
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
 SET DEFAULT ROLE analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
 ```sql
 $ mysql -ujennifer
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 SHOW GRANTS;
 +---------------------------------------------+
