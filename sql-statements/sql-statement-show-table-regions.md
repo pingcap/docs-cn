@@ -86,7 +86,7 @@ SELECT SLEEP(5);
 SHOW TABLE t1 REGIONS;
 ```
 
-结果显示示例表被切分成多个 Regions，`REGION_ID`，`START_KEY` 和 `END_KEY` 可能不完全匹配：
+结果显示示例表被切分成多个 Regions。`REGION_ID`、`START_KEY` 和 `END_KEY` 可能不完全匹配：
 
 {{< copyable "sql" >}}
 
@@ -104,9 +104,7 @@ SHOW TABLE t1 REGIONS;
 
 解释：
 
-- 上面 START_KEY 列的值 t_43_ 中，t 是表数据的前缀，43 是表 t 的 table ID。
-- END_KEY 列的值为空（""）表示无穷大。
-- 上面 START_KEY 列的值 `t_75_r_31717` 和 END_KEY 列的值 `t_75_r_63434` 表示主键在 `31717` 和 `63434` 之间的数据存储在该 Region 中。`t_75_` 是前缀，表示这是表格 (`t`) 的 Region，75 是表格的内部 ID。 `START_KEY` 或 `END_KEY` 的键值为空，分别表示负无穷大或正无穷大。
+- 上面 START_KEY 列的值 `t_75_r_31717` 和 END_KEY 列的值 `t_75_r_63434` 表示主键在 `31717` 和 `63434` 之间的数据存储在该 Region 中。`t_75_` 是前缀，表示这是表格 (`t`) 的 Region，75 是表格的内部 ID。若 `START_KEY` 或 `END_KEY` 的一对键值为空，分别表示负无穷大或正无穷大。
 
 TiDB 会根据需要自动重新平衡 Regions。建议使用 `SPLIT TABLE REGION` 语句手动进行平衡：
 
@@ -135,10 +133,10 @@ SHOW TABLE t1 REGIONS;
 4 rows in set (0.00 sec)
 ```
 
-上面的输出结果显示切分了 Region 96，并创建一个新的 Region 98。切分操作不会影响表中的其余 Regions。输出结果同样证实：
+上面的输出结果显示 Region 96 被切分，并创建一个新的 Region 98。切分操作不会影响表中的其他 Region。输出结果同样证实：
 
-- TOTAL_SPLIT_REGION 表示新切的 region 数量，这是新切了 1 个 region.
-- SCATTER_FINISH_RATIO 表示新切的 region 的打散成功率，1.0 表示都已经打散了。
+- TOTAL_SPLIT_REGION 表示新切的 Region 数量。以上示例新切了 1 个 Region。
+- SCATTER_FINISH_RATIO 表示新切的 Region 的打散成功率，1.0 表示都已经打散了。
 
 更详细的示例如下：
 
