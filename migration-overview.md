@@ -50,7 +50,7 @@ DM 支持将 MySQL 全量数据迁移到 TiDB，并同步 MySQL 的增量数据�
 将全量数据导出到 CSV 格式的文件中，将 CSV 文件导入到 TiDB 有以下两种方法：
 
 - 使用 TiDB Lightning 将 CSV 格式的数据导入到 TiDB
-  
+
     TiDB Lightning 导入速度快，适合 CSV 文件数据量较大的场景。详细信息可参考[从 CSV 文件迁移至 TiDB](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)。
 
 - 使用 `LOAD DATA` 语句将 CSV 格式的数据导入到 TiDB
