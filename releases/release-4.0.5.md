@@ -66,7 +66,7 @@ TiDB 版本：4.0.5
     - 通过优化 Raft logs 的处理逻辑，减少 I/O 操作
     - 加快 `add partition` DDL 之后 Region 的调度速度
     - 优化 DeltaTree 引擎中 delta 数据的整理，减少读写放大
-    - 通过使用多线程对 Region snapshot 进行预处理，优化 `apply` 性能
+    - 通过使用多线程对 Region snapshot 进行预处理，优化从 TiKV 同步 Region 副本的性能
     - 优化系统负载较低时打开文件描述符的数量，降低系统资源占用量
     - 减少 TiFlash 重启时新创建的文件数量
 
