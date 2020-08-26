@@ -58,7 +58,7 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS [WhereClauseOptional];
 
 ## 示例
 
-创建一个示例表，并在几个 Region 内填充足够的数据量:
+创建一个示例表，并在若干 Region 中填充足够的数据量：
 
 {{< copyable "sql" >}}
 
