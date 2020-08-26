@@ -1,6 +1,7 @@
 ---
 title: Loader 使用文档
-aliases: ['/docs-cn/stable/loader-overview/','/docs-cn/v4.0/loader-overview/','/docs-cn/stable/reference/tools/loader/','/docs-cn/stable/load-misuse-handling/']
+summary: 了解 Loader 工具以及使用方法。
+aliases: ['/docs-cn/stable/loader-overview/','/docs-cn/v4.0/loader-overview/','/docs-cn/stable/reference/tools/loader/','/docs-cn/stable/load-misuse-handling/','/docs-cn/v4.0/reference/tools/loader']
 ---
 
 # Loader 使用文档
