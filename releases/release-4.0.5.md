@@ -54,11 +54,16 @@ TiDB 版本：4.0.5
 
 + PD
 
-    - 支持打散特殊存储引擎节点（例如 TiFlash）上的 Region [#2706](https://github.com/pingcap/pd/pull/2706)
-    - 支持通过 API 指定某范围内的 Region 优先进行调度 [#2687](https://github.com/pingcap/pd/pull/2687)
-    - 优化 Region 打散操作，使得 Leader 分布更均匀 [#2684](https://github.com/pingcap/pd/pull/2684)
-    - 针对 TSO 请求添加更多测试和日志 [#2678](https://github.com/pingcap/pd/pull/2678)
-    - 避免 Region Leader 变化时可能产生的不必要的缓存更新 [#2672](https://github.com/pingcap/pd/pull/2672)
+    - 支持打散特殊存储引擎节点（例如 TiFlash）上的 Region [#2706](https://github.com/tikv/pd/pull/2706)
+    - 支持通过 API 指定某范围内的 Region 优先进行调度 [#2687](https://github.com/tikv/pd/pull/2687)
+    - 优化 Region 打散操作，使得 Leader 分布更均匀 [#2684](https://github.com/tikv/pd/pull/2684)
+    - 针对 TSO 请求添加更多测试和日志 [#2678](https://github.com/tikv/pd/pull/2678)
+    - 避免 Region Leader 变化时可能产生的不必要的缓存更新 [#2672](https://github.com/tikv/pd/pull/2672)
+    - 增加选项允许 `store.GetLimit` 返回 tombstone 状态的 store [#2743](https://github.com/tikv/pd/pull/2743)
+    - 支持 PD Leader 和 Follower 之间同步 Region Leader 变更 [#2795](https://github.com/tikv/pd/pull/2795)
+    - 增加查询 GC safepoint 服务的命令 [#2797](https://github.com/tikv/pd/pull/2797)
+    - 替换 filter 中的 `region.Clone` 调用，优化性能 [#2801](https://github.com/tikv/pd/pull/2801)
+    - 增加关闭 Region 流量统计缓存更新的选项，用于提升大规模集群的性能 [#2848](https://github.com/tikv/pd/pull/2848)
 
 + TiFlash
 
