@@ -111,7 +111,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 ```
 
 - `--changefeed-id`: 同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
+- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
 
 {{< copyable "" >}}
 
@@ -119,56 +119,90 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
-- Sink URI 配置 `mysql`/`tidb`
+#### Sink URI 配置 `mysql`/`tidb`
 
-    配置样例如下所示：
+配置样例如下所示：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    --sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
-    ```
+```shell
+--sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
+```
 
-    以上配置命令中的参数解析如下：
+URI 中可配置的的参数如下：
 
-    | 参数         | 解析                                             |
-    | :------------ | :------------------------------------------------ |
-    | `root`        | 下游数据库的用户名                             |
-    | `123456`       | 下游数据库密码                                     |
-    | `127.0.0.1`    | 下游数据库的 IP                                |
-    | `3306`         | 下游数据的连接端口                                 |
-    | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
-    | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
-    | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
-    | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
-    | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
+| 参数         | 解析                                             |
+| :------------ | :------------------------------------------------ |
+| `root`        | 下游数据库的用户名                             |
+| `123456`       | 下游数据库密码                                     |
+| `127.0.0.1`    | 下游数据库的 IP                                |
+| `3306`         | 下游数据的连接端口                                 |
+| `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
+| `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
+| `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
+| `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
+| `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
 
-- Sink URI 配置 `kafka`
+#### Sink URI 配置 `kafka`
 
-    配置样例如下所示：
+配置样例如下所示：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
-    ```
+```shell
+--sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+```
 
-    以上配置命令中的参数解析如下：
+URI 中可配置的的参数如下：
 
-    | 参数               | 解析                                                         |
-    | :------------------ | :------------------------------------------------------------ |
-    | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
-    | `9092`               | 下游 Kafka 的连接端口                                          |
-    | `cdc-test`           | 使用的 Kafka topic 名字                                      |
-    | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
-    | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
-    | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
-    | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
-    | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
-    | `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
-    | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
-    | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
-    | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+| 参数               | 解析                                                         |
+| :------------------ | :------------------------------------------------------------ |
+| `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
+| `9092`               | 下游 Kafka 的连接端口                                          |
+| `cdc-test`           | 使用的 Kafka topic 名字                                      |
+| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
+| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
+| `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
+| `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
+| `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
+| `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
+| `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+
+#### Sink URI 配置 `pulsar`
+
+配置样例如下所示：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="pulsar://127.0.0.1:6650/cdc-test?connectionTimeout=2s"
+```
+
+URI 中可配置的的参数如下：
+
+| 参数               | 解析                                                         |
+| :------------------ | :------------------------------------------------------------ |
+| `connectionTimeout` | 连接下游 Pulsar 的超时时间。可选参数，默认值为 30（秒） |
+| `operationTimeout` | 对下游 Pulsar 进行操作的超时时间（例如创建 topic）。可选参数，默认值为 30（秒）|
+| `tlsTrustCertsFilePath` | 连接下游 Pulsar 实例所需的 CA 证书文件路径（可选） |
+| `tlsAllowInsecureConnection` | 在开启 TLS 之后是否允许非加密连接（可选） |
+| `tlsValidateHostname` | 是否校验下游 Pulsar 证书中的 host name（可选） |
+| `maxConnectionsPerBroker` | 下游单个 Pulsar broker 最多允许的连接数（可选，默认值 1） |
+| `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `"{"tlsCertFile":"/path/to/cert", "tlsKeyFile":"/path/to/key"}"` |
+| `auth.token` | 使用 token 模式认证下游（可选，示例 `"{"token":"secret-token"}"` 或者 `"{"file":"path/to/secret-token-file"}"`|
+| `name` | TiCDC 中 Pulsar producer 名字（可选） |
+| `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值 1000） |
+| `disableBatching` | 禁止自动批量发送消息（可选） |
+| `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值 10（毫秒）） |
+| `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值 `ZSTD`) |
+| `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值 `JavaStringHash`) |
+| `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`) |
+
+更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
+
+#### 使用同步任务配置文件
 
 如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
 
