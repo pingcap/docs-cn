@@ -479,9 +479,9 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 #### TiDB 主要备份方式？
 
-目前，对于大量数据的备份方式，推荐使用 [BR](/br/backup-and-restore-tool.md)。除此之外，推荐使用 [Dumpling](/export-or-backup-using-dumpling.md) 进行备份。
+目前，对于大量数据的备份方式，推荐使用 [BR](/br/backup-and-restore-tool.md)。除此之外，推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
 
-尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [Dumpling](/export-or-backup-using-dumpling.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
+尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [Dumpling](/dumpling-overview.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
 
 ## 监控 FAQ
 
