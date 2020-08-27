@@ -245,36 +245,84 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
 
 ```
 {
-        "info": {
-                "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
-                "opts": {},
-                "create-time": "2020-03-12T22:04:08.103600025+08:00",
-                "start-ts": 415241823337054209,
-                "target-ts": 0,
-                "admin-job-type": 0,
-                "config": {
-                        "filter-case-sensitive": false,
-                        "filter-rules": null,
-                        "ignore-txn-start-ts": null
-                }
+  "info": {
+    "sink-uri": "mysql://127.0.0.1:3306/?max-txn-row=20\u0026worker-number=4",
+    "opts": {},
+    "create-time": "2020-08-27T10:33:41.687983832+08:00",
+    "start-ts": 419036036249681921,
+    "target-ts": 0,
+    "admin-job-type": 0,
+    "sort-engine": "memory",
+    "sort-dir": ".",
+    "config": {
+      "case-sensitive": true,
+      "enable-old-value": false,
+      "filter": {
+        "rules": [
+          "*.*"
+        ],
+        "ignore-txn-start-ts": null,
+        "ddl-allow-list": null
+      },
+      "mounter": {
+        "worker-num": 16
+      },
+      "sink": {
+        "dispatchers": null,
+        "protocol": "default"
+      },
+      "cyclic-replication": {
+        "enable": false,
+        "replica-id": 0,
+        "filter-replica-ids": null,
+        "id-buckets": 0,
+        "sync-ddl": false
+      },
+      "scheduler": {
+        "type": "table-number",
+        "polling-time": -1
+      }
+    },
+    "state": "normal",
+    "history": null,
+    "error": null
+  },
+  "status": {
+    "resolved-ts": 419036036249681921,
+    "checkpoint-ts": 419036036249681921,
+    "admin-job-type": 0
+  },
+  "count": 0,
+  "task-status": [
+    {
+      "capture-id": "97173367-75dc-490c-ae2d-4e990f90da0f",
+      "status": {
+        "tables": {
+          "47": {
+            "start-ts": 419036036249681921,
+            "mark-table-id": 0
+          }
         },
-        "status": {
-                "resolved-ts": 415241860902289409,
-                "checkpoint-ts": 415241860640145409,
-                "admin-job-type": 0
-        }
+        "operation": null,
+        "admin-job-type": 0
+      }
+    }
+  ]
 }
 ```
 
 以上命令中：
 
-- `resolved-ts` 代表当前 changefeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
-- `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
-- `admin-job-type` 代表一个 changefeed 的状态：
-    - `0`: 状态正常。
-    - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-    - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
-    - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+- `info` 代表查询 changefeed 的同步配置
+- `status` 代表查询 changefeed 的同步状态信息
+    - `resolved-ts` 代表当前 changefeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
+    - `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
+    - `admin-job-type` 代表一个 changefeed 的状态：
+        - `0`: 状态正常。
+        - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+        - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
+        - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+- `task-status` 代表查询 changefeed 所分配的各个同步子任务的状态信息
 
 ### 停止同步任务
 
