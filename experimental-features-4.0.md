@@ -21,7 +21,3 @@ aliases: ['/docs-cn/stable/experimental-features-4.0/','/docs-cn/v4.0/experiment
 
 + TiDB 实例支持以 Region 为单位缓存算子下推到 TiKV 的的返回结果，提升 SQL 语句完全一致、SQL 语句包含一个变化条件且仅限于表主键或分区主键，其他部分一致和 SQL 语句包含多个变化的条件且条件完全匹配一个复合索引列，其他部分一致场景时 SQL 执行的效率。详情参阅：[缓存查询结果](/coprocessor-cache.md)。
 + 支持将配置参数持久化存储到 PD 中，支持动态修改配置项功能，提升产品易用性。
-
-## TiCDC
-
-TiCDC 支持通过拉取 TiKV 变更日志实现 TiDB 集群之间数据同步，支持数据的高可靠、服务的高可用能力，确保数据不会丢失。用户可以通过订阅的方式订阅数据的变更信息，系统会自动将数据推送到下游系统，当前仅支持 MySQL 协议的数据库（例如：MySQL、TiDB)及 Kafka 作为 TiCDC 的下游，同时用户也可以通过 TiCDC 提供的[开放数据协议](/ticdc/ticdc-open-protocol.md)自行扩展支持的下游系统。详情参阅：[TiCDC](/ticdc//ticdc-overview.md)。
