@@ -51,6 +51,9 @@ TiDB 版本：4.0.5
     - 提高字符串转换为整数类型和小数类型的兼容性，支持将 JSON 转换为时间日期类型 [#18159](https://github.com/pingcap/tidb/pull/18159)
     - 支持限制 `TableReader` 算子内存使用 [#18392](https://github.com/pingcap/tidb/pull/18392)
     - 在 `batch cop` 请求重试时避免多次 backoff [#18999](https://github.com/pingcap/tidb/pull/18999)
+    - 提升 `ALTER TABLE` 的兼容性 [#19270](https://github.com/pingcap/tidb/pull/19270)
+    - 单个分区支持 `IndexJoin` [#19151](https://github.com/pingcap/tidb/pull/19151)
+    - 支持在 log 中存在非法字符时搜索 log [#18579](https://github.com/pingcap/tidb/pull/18579)
 
 + PD
 
