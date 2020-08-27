@@ -336,7 +336,7 @@ cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-repl
 
 以上命令中：
 
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+- `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
 
 ### 恢复同步任务
 
@@ -690,7 +690,7 @@ sync-ddl = true
 
 > **警告：**
 >
-> 目前输出行变更历史值属于实验特性，请勿用于生产环境。
+> 目前输出行变更历史值属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
 
 在默认配置下同步任务输出的 open protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)，也不满足 open protocol 的消费端使用行变更历史值的需求。
 
