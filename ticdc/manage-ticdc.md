@@ -350,7 +350,7 @@ cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 
 以上命令中：
 
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+- `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
 
 ### 删除同步任务
 
@@ -362,7 +362,7 @@ cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+- `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
 
 删除任务后会保留任务的同步状态信息 24 小时（主要用于记录同步的 checkpoint），24 小时内不能创建同名的任务。如果希望彻底删除任务信息，可以指定 `--force` 或 `-f` 参数删除，删除后 changefeed 的所有信息都会被清理，可以立即创建同名的 changefeed。
 
