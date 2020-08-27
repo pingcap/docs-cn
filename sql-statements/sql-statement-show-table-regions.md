@@ -146,6 +146,7 @@ show table t regions;
 查看表 t 在 store 1 上的 region，用 where 条件过滤。
 
 {{< copyable "sql" >}}
+
 ```sql
 show table t regions where leader_store_id =1;
 ```
