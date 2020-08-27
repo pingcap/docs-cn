@@ -187,7 +187,7 @@
       + [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
       + [Table Filter](/table-filter.md)
       + [CSV Support](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      + [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
+      + [Backends](/tidb-lightning/tidb-lightning-backends.md)
       + [Web Interface](/tidb-lightning/tidb-lightning-web-interface.md)
     + [Monitor](/tidb-lightning/monitor-tidb-lightning.md)
     + [Troubleshoot](/troubleshoot-tidb-lightning.md)

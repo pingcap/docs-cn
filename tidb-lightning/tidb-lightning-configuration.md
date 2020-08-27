@@ -363,7 +363,7 @@ min-available-ratio = 0.05
 | -d *directory* | Directory of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
 | -f *rule* | [Table filter rules](/table-filter.md) (can be specified multiple times) | `mydumper.filter` |
-| --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-tidb-backend.md) (`importer`, `local`, or `tidb`) | `tikv-importer.backend` |
+| --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-backends.md) (`importer`, `local`, or `tidb`) | `tikv-importer.backend` |
 | --log-file *file* | Log file path (default = a temporary file in `/tmp`) | `lightning.log-file` |
 | --status-addr *ip:port* | Listening address of the TiDB Lightning server | `lightning.status-port` |
 | --importer *host:port* | Address of TiKV Importer | `tikv-importer.addr` |

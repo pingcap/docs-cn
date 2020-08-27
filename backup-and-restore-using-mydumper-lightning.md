@@ -93,4 +93,4 @@ Then execute two more commands:
 
 ## Restore data into TiDB
 
-To restore data into TiDB, use TiDB Lightning to import the exported data. See [TiDB Lightning Tutorial](/tidb-lightning/tidb-lightning-tidb-backend.md).
+To restore data into TiDB, use TiDB Lightning to import the exported data. See [TiDB Lightning Tutorial](/tidb-lightning/tidb-lightning-backends.md).

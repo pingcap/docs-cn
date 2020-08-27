@@ -12,7 +12,7 @@ aliases: ['/docs/dev/tidb-lightning/tidb-lightning-faq/','/docs/dev/faq/tidb-lig
 
 ## What is the minimum TiDB/TiKV/PD cluster version supported by Lightning?
 
-The version of TiDB Lightning should be the same as the cluster. The earliest available version is 2.0.9, but we recommend using the latest stable version (3.0).
+The version of TiDB Lightning should be the same as the cluster. If you use the Local-backend mode, the earliest available version is 4.0.0. If you use the Importer-backend mode or the TiDB-backend mode, the earliest available version is 2.0.9, but it is recommended to use the 3.0 stable version.
 
 ## Does TiDB Lightning support importing multiple schemas (databases)?
 
@@ -28,12 +28,12 @@ TiDB Lightning requires the following privileges:
 * CREATE
 * DROP
 
-If the [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md) is chosen, or the target database is used to store checkpoints, it additionally requires these privileges:
+If the [TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) is chosen, or the target database is used to store checkpoints, it additionally requires these privileges:
 
 * INSERT
 * DELETE
 
-The Importer-backend does not require these two privileges because data is ingested into TiKV directly, which bypasses the entire TiDB privilege system. This is secure as long as the ports of TiKV, TiKV Importer and TiDB Lightning are not reachable outside the cluster.
+The Local-backend and Importer-backend do not require these two privileges because data is ingested into TiKV directly, which bypasses the entire TiDB privilege system. This is secure as long as the ports of TiKV, TiKV Importer and TiDB Lightning are not reachable outside the cluster.
 
 If the `checksum` configuration of TiDB Lightning is set to `true`, then the admin user privileges in the downstream TiDB need to be granted to TiDB Lightning.
 
@@ -130,7 +130,7 @@ It is potentially caused by starting `tidb-lightning` incorrectly, which causes 
 [2018/08/10 07:29:08.310 +08:00] [INFO] [main.go:41] ["got signal to exit"] [signal=hangup]
 ```
 
-It is not recommended to directly use `nohup` in the command line to start `tidb-lightning`. You can [start `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md#step-4-start-tidb-lightning) by executing a script.
+It is not recommended to directly use `nohup` in the command line to start `tidb-lightning`. You can [start `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md#step-3-start-tidb-lightning) by executing a script.
 
 ## Why my TiDB cluster is using lots of CPU resources and running very slowly after using TiDB Lightning?
 

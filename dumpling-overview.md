@@ -123,7 +123,7 @@ The above command exports all the tables in the `employees` database and the `Wo
 Dumpling can also export specific databases with the `-B` option or specific tables with the `-T` option.
 
 > **Note:**
-> 
+>
 > - The `--filter` option and the `-T` option cannot be used at the same time.
 > - The `-T` option can only accept a complete form of inputs like `database-name.table-name`, and inputs with only the table name are not accepted. Example: Dumpling cannot recognize `-T WorkOrder`.
 
@@ -210,7 +210,7 @@ After your operation is completed, set the GC time back (the default value is `1
 update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
 ```
 
-Finally, all the exported data can be imported back to TiDB using [Lightning](/tidb-lightning/tidb-lightning-tidb-backend.md).
+Finally, all the exported data can be imported back to TiDB using [Lightning](/tidb-lightning/tidb-lightning-backends.md).
 
 ## Option list of Dumpling
 
