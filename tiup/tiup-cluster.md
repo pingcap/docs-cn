@@ -626,7 +626,7 @@ export TIUP_NATIVE_SSH=enable
 > **注意：**
 >
 > 在部署集群的步骤中，若需要使用密码的方式连接 (-p)，或者密钥文件设置了 passphrase，则需要保证中控机上安装了 sshpass，否则连接时会报错。
-> tiup-cluster 的命令行参数 -i 有一个默认值，如果什么都不传的话会使用该默认值，最终 ssh 会接收到 -i <default-value>，如果这不符合预期，可以给 tiup-cluster 传 `-i ""` 覆盖默认值。
+> tiup-cluster 的命令行参数 -i 有一个默认值，如果什么都不传的话会使用该默认值，但当使用 `--native-ssh` 且不手动指定 -i 的情况下，tiup-cluster 会将该值置空来使用 ssh 客户端的默认行为。
 
 ## 迁移中控机与备份
 
