@@ -119,7 +119,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
-#### `mysql`/`tidb` sink URI 配置
+#### Sink URI 配置 `mysql`/`tidb`
 
 配置样例如下所示：
 
@@ -143,7 +143,7 @@ URI 中可配置的的参数如下：
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
 
-#### `kafka` sink URI 配置
+#### Sink URI 配置 `kafka`
 
 配置样例如下所示：
 
@@ -170,7 +170,7 @@ URI 中可配置的的参数如下：
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
 
-#### `pulsar` sink URI 配置
+#### Sink URI 配置 `pulsar`
 
 配置样例如下所示：
 
@@ -184,16 +184,16 @@ URI 中可配置的的参数如下：
 
 | 参数               | 解析                                                         |
 | :------------------ | :------------------------------------------------------------ |
-| `connectionTimeout` | 连接下游 Pulsar 超时时间（可选，默认值 30（秒）） |
-| `operationTimeout` | 操作下游 Pulsar 的超时时间，比如创建 topic（可选，默认值 30（秒））|
+| `connectionTimeout` | 连接下游 Pulsar 的超时时间。可选参数，默认值为 30（秒） |
+| `operationTimeout` | 对下游 Pulsar 进行操作的超时时间（例如创建 topic）。可选参数，默认值为 30（秒）|
 | `tlsTrustCertsFilePath` | 连接下游 Pulsar 实例所需的 CA 证书文件路径（可选） |
 | `tlsAllowInsecureConnection` | 在开启 TLS 之后是否允许非加密连接（可选） |
 | `tlsValidateHostname` | 是否校验下游 Pulsar 证书中的 host name（可选） |
-| `maxConnectionsPerBroker` | 连接下游单个 Pulsar 时最多允许的连接数（可选，默认值 1） |
+| `maxConnectionsPerBroker` | 下游单个 Pulsar broker 最多允许的连接数（可选，默认值 1） |
 | `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `"{"tlsCertFile":"/path/to/cert", "tlsKeyFile":"/path/to/key"}"` |
 | `auth.token` | 使用 token 模式认证下游（可选，示例 `"{"token":"secret-token"}"` 或者 `"{"file":"path/to/secret-token-file"}"`|
 | `name` | TiCDC 中 Pulsar producer 名字（可选） |
-| `maxPendingMessages` | Pending 消息的队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值 1000） |
+| `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
 | `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值 10（毫秒）） |
 | `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值 `ZSTD`) |
