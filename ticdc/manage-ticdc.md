@@ -234,7 +234,7 @@ cdc cli changefeed query -s --pd=http://10.0.10.25:2379 --changefeed-id=simple-r
 
 - `state` 代表当前 changefeed 的同步状态，各个状态必须和 `changefeed list` 中的状态相同；
 - `tso` 代表当前 changefeed 中最大的已经成功写入下游的事务 TSO；
-- `checkpoint` 代表当前 changefeed 中最大的已经成功写入下游的事务 TSO 对应的时间；
+- `checkpoint` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO 对应的时间；
 - `error` 记录当前 changefeed 是否有错误发生。
 
 {{< copyable "shell-regular" >}}
