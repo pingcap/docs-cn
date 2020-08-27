@@ -324,6 +324,26 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task --force
 ```
 
+### 更新同步任务配置
+
+TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed pause -c test-cf
+cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+cdc cli changefeed resume -c test-cf
+```
+
+当前支持修改的配置包括：
+
+- changefeed 的 sink-uri
+- changefeed 配置文件及文件内所有配置
+- changefeed 是否使用文件排序和排序目录
+- changefeed 使用的时区
+- changefeed 的 target-ts
+
 ### 管理同步子任务处理单元 (`processor`)
 
 - 查询 `processor` 列表：
