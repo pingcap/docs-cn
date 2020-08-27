@@ -118,6 +118,22 @@ TiDB 版本：4.0.5
     - 修复悲观事务未能检查出重复数据导致可以重复写入冲突数据的问题 [#19004](https://github.com/pingcap/tidb/pull/19004)
     - 修复 `union select for update` 存在并发竞态的问题 [#19006](https://github.com/pingcap/tidb/pull/19006)
     - 修复自查询含有 `PointGet` 算子时返回结果错误的问题 [#19046](https://github.com/pingcap/tidb/pull/19046)
+    - 修复 `IndexLookUp` 作为 `Apply` 的内连接算子时查询结果不正确的问题 [#19496](https://github.com/pingcap/tidb/pull/19496)
+    - 修复 `anti-semi-join` 查询结果不正确的问题 [#19472](https://github.com/pingcap/tidb/pull/19472)
+    - 修复 `BatchPointGet` 查询结果不正确的问题 [#19456](https://github.com/pingcap/tidb/pull/19456)
+    - 修复 `UnionScan` 作为 `Apply` 的内连接算子时查询结果不正确的问题 [#19496](https://github.com/pingcap/tidb/pull/19496)
+    - 修复使用 `EXECUTE` 语句产生大查询日志造成 panic 的问题 [#17419](https://github.com/pingcap/tidb/pull/17419)
+    - 修复 `IndexJoin` 在使用 `ENUM` 或 `SET` 类型作为连接键报错的问题 [#19235](https://github.com/pingcap/tidb/pull/19235)
+    - 修复在索引值为 `NULL` 时无法构建出查询范围的问题 [#19358](https://github.com/pingcap/tidb/pull/19358)
+    - 修复更新全局配置导致的数据竞态问题 [#17964](https://github.com/pingcap/tidb/pull/17964)
+    - 修复修改 schema 字符集导致 panic 的问题 [#19286](https://github.com/pingcap/tidb/pull/19286)
+    - 修复修改文件夹对中间结果落盘功能的影响 [#18970](https://github.com/pingcap/tidb/pull/18970)
+    - 修复 `decimal` 类型哈希值不正确的问题 [#19131](https://github.com/pingcap/tidb/pull/19131)
+    - 修复 `PointGet` 和 `BatchPointGet` 在分区表场景下报错的问题 [#19141](https://github.com/pingcap/tidb/issues/19141)
+    - 修复共同使用 `Apply` 算子和 `UnionScan` 算子时查询结果不正确的问题 [#19104](https://github.com/pingcap/tidb/issues/19104)
+    - 修复生成列索引结果不正确的问题 [#17989](https://github.com/pingcap/tidb/issues/17989)
+    - 修复并发收集统计信息 panic 的问题 [#17989](https://github.com/pingcap/tidb/issues/17989)
+    - 修复报 `should ensure all columns have the same length` 错误的问题 [#18961](https://github.com/pingcap/tidb/pull/18961)
 
 + TiKV
 
