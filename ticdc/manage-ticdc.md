@@ -208,11 +208,34 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 - `state` 为该同步任务的状态：
     - `normal`: 正常同步
     - `stopped`: 停止同步（手动暂停或出错）
-    - `removed`: 已删除任务
+    - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该类任务，但可通过 `query` 查询）
+    - `finished`: 任务已经同步到指定 `target-ts`，已完成状态（只在指定 `--all` 选项时才会显示该类任务，但可通过 `query` 查询）
 
 #### 查询特定同步任务
 
-使用以下命令来查询特定同步任务（对应某个同步任务的信息和状态）：
+使用 `changefeed query` 命令可以查询特定同步任务（对应某个同步任务的信息和状态），指定 `--simple`/`-s` 参数会简化输出，提供最基本的同步状态和 checkpoint 信息。不指定改参数会输出详细的任务配置、同步状态和同步表信息。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed query -s --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
+```
+
+```
+{
+ "state": "normal",
+ "tso": 419035700154597378,
+ "checkpoint": "2020-08-27 10:12:19.579",
+ "error": null
+}
+```
+
+以上命令中：
+
+- `state` 代表当前 changefeed 的同步状态，各个值得和 `changefeed list` 相同
+- `tso` 代表当前 changefeed 中最大的已经成功写入下游的事务 TSO；
+- `checkpoint` 代表当前 changefeed 中最大的已经成功写入下游的事务 TSO 对应的时间；
+- `error` 记录当前 changefeed 是否有错误发生
 
 {{< copyable "shell-regular" >}}
 
@@ -292,6 +315,14 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 ```
 
 - `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+
+删除后会保留同步任务的同步状态信息 24h（主要用于记录同步的 checkpoint），24h 内不能创建同名的任务。如果希望彻底删除任务信息，可以指定 `--force`/`-f` 参数删除，删除后 changefeed 的所有信息都会被清理，可以立即创建同名的 changefeed。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task --force
+```
 
 ### 管理同步子任务处理单元 (`processor`)
 
@@ -586,3 +617,17 @@ sync-ddl = true
 5. 如果想在线 DDL，需要确保以下两点：
     1. 多个集群的 TiCDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 TiCDC 关闭了 `sync-ddl`。
     2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
+
+## 输出行变更历史值特性
+
+> **警告：**
+>
+> 目前环形同步属于实验特性，尚未经过完备的测试，请在生产环境中谨慎使用该特性。
+
+在默认配置下同步任务输出的 open protocol 行变更数据只会包含变更后的值，不包含变更前行的值，这种情况不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)，也不满足 open protocol 的消费端使用行变更历史值的需求。从 v4.0.5 开始，TiCDC 支持通过开关开启输出行变更历史值的特性。开启改特性，需要在 changefeed 的配置文件根级别指定以下配置，开启后 open protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)，使用 MySQL sink 时 TiDB 4.0 新的 Collation 特性也会自动支持。
+
+{{< copyable "" >}}
+
+```toml
+enable-old-value = true
+```
