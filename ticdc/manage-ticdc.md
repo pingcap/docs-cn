@@ -213,7 +213,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 
 #### 查询特定同步任务
 
-使用 `changefeed query` 命令可以查询特定同步任务（对应某个同步任务的信息和状态），指定 `--simple`/`-s` 参数会简化输出，提供最基本的同步状态和 checkpoint 信息。不指定改参数会输出详细的任务配置、同步状态和同步表信息。
+使用 `changefeed query` 命令可以查询特定同步任务（对应某个同步任务的信息和状态），指定 `--simple` 或 `-s` 参数会简化输出，提供最基本的同步状态和 checkpoint 信息。不指定该参数会输出详细的任务配置、同步状态和同步表信息。
 
 {{< copyable "shell-regular" >}}
 
