@@ -34,6 +34,7 @@ Available Commands:
   restart     Restart a TiDB cluster
   scale-in    Scale in a TiDB cluster
   scale-out   Scale out a TiDB cluster
+  clean       Clean up cluster data
   destroy     Destroy a specified cluster
   upgrade     Upgrade a specified TiDB cluster
   exec        Run shell command on host in the tidb cluster

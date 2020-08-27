@@ -92,7 +92,7 @@ When the cluster is in operation, if you need to modify the parameters of a comp
 2. Configure the parameters:
 
     - If the configuration is globally effective for a component, edit `server_configs`:
-    
+
         ```
         server_configs:
           tidb:
@@ -108,7 +108,7 @@ When the cluster is in operation, if you need to modify the parameters of a comp
             config:
                 log.slow-threshold: 300
         ```
-    
+
     For the parameter format, see the [TiUP parameter template](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml).
 
     **Use `.` to represent the hierarchy of the configuration items**.
@@ -179,6 +179,21 @@ You can also replace only one TiDB package in the cluster:
 tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
 
+## Rename the cluster
+
+After deploying and starting the cluster, you can rename the cluster using the `tiup cluster rename` command:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster rename ${cluster-name} ${new-name}
+```
+
+> **Note:**
+>
+> + The operation of renaming a cluster restarts the monitoring system (Prometheus and Grafana).
+> + After a cluster is renamed, some panels with the old cluster name might remain on Grafana. You need to delete them manually.
+
 ## Stop the cluster
 
 The components in the TiDB cluster are stopped in the following order (The monitoring component is also stopped):
@@ -209,6 +224,58 @@ Similar to the `start` command, the `stop` command supports stopping some of the
 
     ```bash
     tiup cluster stop ${cluster-name} -N 1.2.3.4:4000,1.2.3.5:4000
+    ```
+
+## Clean up cluster data
+
+The operation of cleaning up cluster data stops all the services and cleans up the data directory or/and log directory. The operation cannot be reverted, so proceed **with caution**.
+
+- Clean up the data of all services in the cluster, but keep the logs:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster clean ${cluster-name} --data
+    ```
+
+- Clean up the logs of all services in the cluster, but keep the data:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster clean ${cluster-name} --log
+    ```
+
+- Clean up the data and logs of all services in the cluster:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster clean ${cluster-name} --all
+    ```
+
+- Clean up the logs and data of all services except Prometheus:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster clean ${cluster-name} --all --ignore-role prometheus
+    ```
+
+- Clean up the logs and data of all services except the `172.16.13.11:9000` instance:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.11:9000
+    ```
+
+- Clean up the logs and data of all services except the `172.16.13.12` node:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12
     ```
 
 ## Destroy the cluster
