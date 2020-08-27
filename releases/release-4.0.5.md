@@ -123,9 +123,10 @@ TiDB 版本：4.0.5
 
 + PD
 
-    - 修复 PD leader 切换时可能导致一段时间内 TSO 不可用的问题 [#2666](https://github.com/pingcap/pd/pull/2666)
-    - 修复开启 Placement Rule 时，某些情况下 Region 无法调度至最佳状态的问题 [#2720](https://github.com/pingcap/pd/pull/2720)
-    - 修复开启 Placement Rules 后，`Balance Leader` 不工作的问题 [#2726](https://github.com/pingcap/pd/pull/2726)
+    - 修复 PD leader 切换时可能导致一段时间内 TSO 不可用的问题 [#2666](https://github.com/tikv/pd/pull/2666)
+    - 修复开启 Placement Rule 时，某些情况下 Region 无法调度至最佳状态的问题 [#2720](https://github.com/tikv/pd/pull/2720)
+    - 修复开启 Placement Rules 后，`Balance Leader` 不工作的问题 [#2726](https://github.com/tikv/pd/pull/2726)
+    - 修复不健康的 Store 未从负载统计信息中过滤的问题 [#2805](https://github.com/tikv/pd/pull/2805)
 
 + TiFlash
 
