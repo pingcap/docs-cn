@@ -686,7 +686,7 @@ sync-ddl = true
     1. 多个集群的 TiCDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 TiCDC 关闭了 `sync-ddl`。
     2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
 
-## 输出行变更历史值特性
+## 输出行变更的历史值 <span class="version-mark">New in v4.0.5</span>
 
 > **警告：**
 >
