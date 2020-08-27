@@ -72,7 +72,7 @@ TiFlash shares the computing workload in the same way as the TiKV Coprocessor do
 ## See also
 
 - To deploy a new cluster with TiFlash nodes, see [Deploy a TiDB cluster using TiUP](/production-deployment-using-tiup.md).
-- To add a TiFlash node in a deployed cluster, see [Scale out a TiFlash node](/scale-tidb-using-tiup.md#scale-out-a-tiflash-node).
+- To add a TiFlash node in a deployed cluster, see [Scale out a TiFlash cluster](/scale-tidb-using-tiup.md#scale-out-a-tiflash-cluster).
 - [Use TiFlash](/tiflash/use-tiflash.md).
 - [Maintain a TiFlash cluster](/tiflash/maintain-tiflash.md).
 - [Tune TiFlash performance](/tiflash/tune-tiflash-performance.md).

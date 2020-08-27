@@ -42,7 +42,7 @@ For details, refer to [Deploy a TiDB Cluster Using TiUP](/production-deployment-
 
 1. First, make sure that the current TiDB version supports TiCDC; otherwise, you need to upgrade the TiDB cluster to `v4.0.0 rc.1` or later versions.
 
-2. To deploy TiCDC, refer to [Scale out a TiCDC node](/scale-tidb-using-tiup.md#scale-out-a-ticdc-node).
+2. To deploy TiCDC, refer to [Scale out a TiCDC cluster](/scale-tidb-using-tiup.md#scale-out-a-ticdc-cluster).
 
 ### Use Binary
 

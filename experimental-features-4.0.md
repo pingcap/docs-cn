@@ -10,7 +10,7 @@ This document introduces the experimental features of TiDB v4.0. It is **NOT** r
 ## Scheduling
 
 + Cascading Placement Rules is an experimental feature of the Placement Driver (PD) introduced in v4.0. It is a replica rule system that guides PD to generate corresponding schedules for different types of data. By combining different scheduling rules, you can finely control the attributes of any continuous data range, such as the number of replicas, the storage location, the host type, whether to participate in Raft election, and whether to act as the Raft leader. See [Cascading Placement Rules](/configure-placement-rules.md) for details.
-+ Elastic scheduling is an experimental feature based on Kubernetes, which enables TiDB to dynamically scale in and out nodes. This feature can effectively mitigate the high workload during peak hours of an application and saves unnecessary overhead. See [Enable TidbCluster Auto-scaling](https://docs.pingcap.com/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling) for details.
++ Elastic scheduling is an experimental feature based on Kubernetes, which enables TiDB to dynamically scale out and scale in clusters. This feature can effectively mitigate the high workload during peak hours of an application and saves unnecessary overhead. See [Enable TidbCluster Auto-scaling](https://docs.pingcap.com/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling) for details.
 
 ## SQL feature
 

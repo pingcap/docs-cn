@@ -90,5 +90,5 @@ The cluster deployment tools (TiDB Ansible and TiUP) deploy the cluster with ale
 ## Handle I/O issues
 
 + When an I/O hotspot issue is confirmed to occur, you need to refer to Handle TiDB Hotspot Issues to eliminate the I/O hotspots.
-+ When it is confirmed that the overall I/O performance has become the bottleneck, and you can determine that the I/O performance will keep falling behind in the application side, then you can take advantage of the distributed database's capability of scaling and scale out the number of TiKV nodes to have greater overall I/O throughput.
++ When it is confirmed that the overall I/O performance has become the bottleneck, and you can determine that the I/O performance will keep falling behind in the application side, then you can take advantage of the distributed database's capability of scaling and increase the number of TiKV nodes to have greater overall I/O throughput.
 + Adjust some of the parameters as described above, and use computing/memory resources to make up for disk storage resources.
