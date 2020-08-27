@@ -316,7 +316,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
 - `info` 代表查询 changefeed 的同步配置；
 - `status` 代表查询 changefeed 的同步状态信息；
     - `resolved-ts` 代表当前 changefeed 中已经成功从 TiKV 发送到 TiCDC 的最大事务 TS；
-    - `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
+    - `checkpoint-ts` 代表当前 changefeed 中已经成功写入下游的最大事务 TS；
     - `admin-job-type` 代表一个 changefeed 的状态：
         - `0`: 状态正常。
         - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
