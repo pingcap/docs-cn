@@ -97,6 +97,10 @@ The following topology documents provide a cluster configuration template for ea
 
     This is to deploy TiDB Binlog along with the minimal cluster topology. TiDB Binlog is the widely used component for replicating incremental data. It provides near real-time backup and replication.
 
+- [TiSpark deployment topology](/tispark-deployment-topology.md)
+
+    This is to deploy TiSpark along with the minimal cluster topology. TiSpark is a component built for running Apache Spark on top of TiDB/TiKV to answer the OLAP queries. Currently, TiUP cluster's support for TiSpark is still **experimental**.
+
 - [Hybrid deployment topology](/hybrid-deployment-topology.md)
 
     This is to deploy multiple instances on a single machine. You need to add extra configurations for the directory, port, resource ratio, and label.
