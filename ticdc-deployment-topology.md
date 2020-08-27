@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/ticdc-deployment-topology/','/docs-cn/dev/reference/tool
 
 > **注意：**
 >
-> TiCDC 目前为实验特性，不建议在生产环境中使用。
+> TiCDC 已于 v4.0.5 成为正式功能，可用于生产环境。
 
 # TiCDC 部署拓扑
 
