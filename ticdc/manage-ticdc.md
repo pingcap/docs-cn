@@ -232,9 +232,9 @@ cdc cli changefeed query -s --pd=http://10.0.10.25:2379 --changefeed-id=simple-r
 
 以上命令中：
 
-- `state` 代表当前 changefeed 的同步状态，各个状态必须和 `changefeed list` 中的状态相同；
-- `tso` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO；
-- `checkpoint` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO 对应的时间；
+- `state` 代表当前 changefeed 的同步状态，各个状态必须和 `changefeed list` 中的状态相同。
+- `tso` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO。
+- `checkpoint` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO 对应的时间。
 - `error` 记录当前 changefeed 是否有错误发生。
 
 {{< copyable "shell-regular" >}}
@@ -313,16 +313,16 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
 
 以上命令中：
 
-- `info` 代表查询 changefeed 的同步配置；
-- `status` 代表查询 changefeed 的同步状态信息；
-    - `resolved-ts` 代表当前 changefeed 中已经成功从 TiKV 发送到 TiCDC 的最大事务 TS；
-    - `checkpoint-ts` 代表当前 changefeed 中已经成功写入下游的最大事务 TS；
+- `info` 代表查询 changefeed 的同步配置。
+- `status` 代表查询 changefeed 的同步状态信息。
+    - `resolved-ts` 代表当前 changefeed 中已经成功从 TiKV 发送到 TiCDC 的最大事务 TS。
+    - `checkpoint-ts` 代表当前 changefeed 中已经成功写入下游的最大事务 TS。
     - `admin-job-type` 代表一个 changefeed 的状态：
         - `0`: 状态正常。
         - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
         - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
         - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
-- `task-status` 代表查询 changefeed 所分配的各个同步子任务的状态信息
+- `task-status` 代表查询 changefeed 所分配的各个同步子任务的状态信息。
 
 ### 停止同步任务
 
@@ -442,10 +442,10 @@ cdc cli changefeed resume -c test-cf
 
 以上命令中：
 
-- `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id；
-- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id；
-- `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO；
-- `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO；
+- `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id。
+- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id。
+- `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
+- `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
 
 ## 使用 HTTP 接口管理集群状态和数据同步
 
@@ -692,12 +692,14 @@ sync-ddl = true
 >
 > 目前输出行变更历史值属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
 
-在默认配置下同步任务输出的 open protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)，也不满足 open protocol 的消费端使用行变更历史值的需求。
+在默认配置下同步任务输出的 TiCDC Open Protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)，也不满足 TiCDC Open Protocol 的消费端使用行变更历史值的需求。
 
-从 v4.0.5 开始，TiCDC 支持输出行变更数据的历史值。若要开启该特性，需要在 changefeed 的配置文件的根级别指定以下配置。开启后，open protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)，使用 MySQL sink 时 TiDB 4.0 新的 Collation 特性也会自动支持。
+从 v4.0.5 开始，TiCDC 支持输出行变更数据的历史值。若要开启该特性，需要在 changefeed 的配置文件的根级别指定以下配置：
 
 {{< copyable "" >}}
 
 ```toml
 enable-old-value = true
 ```
+
+开启该特性后，TiCDC Open Protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)，使用 MySQL sink 时也会自动支持的 TiDB 4.0 新 Collation 特性。
