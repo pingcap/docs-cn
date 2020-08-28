@@ -9,6 +9,11 @@ aliases: ['/docs-cn/dev/tiup/tiup-faq/']
 
 TiUP 支持通过环境变量 TIUP_MIRRORS 指定镜像源，镜像源的地址可以是一个本地目录或 HTTP 服务器地址。如果用户的环境不能访问网络，可以建立自己的离线镜像源使用 TiUP。
 
+如果在使用非官方镜像之后想要切回官方镜像可以采取以下任一措施：
+
+- 将 TIUP_MIRRORS 变量设置成官方镜像的地址：`https://tiup-mirrors.pingcap.com`。
+- 先确保 TIUP_MIRRORS 变量没有设置，再使用执行 `tiup mirror set https://tiup-mirrors.pingcap.com` 命令。
+
 ## 如何将自己编写的组件放入 TiUP 镜像仓库？
 
 TiUP 暂时不支持外部开发的组件，但是 TiUP Team 已经制定了 TiUP 组件开发规范，同时正在开发 tiup-publish 组件，完成 tiup-publish 组件后，开发者可以通过 `tiup publish <comp> <version>` 将自己开发的组件发布到 TiUP 的官方镜像仓库。

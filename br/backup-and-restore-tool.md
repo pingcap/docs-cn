@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 ## 使用限制
 
 - BR 只支持 TiDB v3.1 及以上版本。
-- 目前只支持在全新的集群上执行恢复操作。
+- BR 支持在不同拓扑的集群上执行恢复，但恢复期间对在线业务影响很大，建议低峰期或者限速 (`rate-limit`) 执行恢复。
 - BR 备份最好串行执行，否则不同备份任务之间会相互影响。
 - BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。
 - BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
@@ -30,16 +30,6 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 >
 > 如果没有挂载网盘或者使用其他共享存储，那么 BR 备份的数据会生成在各个 TiKV 节点上。由于 BR 只备份 leader 副本，所以各个节点预留的空间需要根据 leader size 来预估。
 > 同时由于 v4.0 默认使用 leader count 进行平衡，所以会出现 leader size 差别大的问题，导致各个节点备份数据不均衡。
-
-## 使用方式
-
-### 下载 Binary
-
-详见[下载链接](/download-ecosystem-tools.md#快速备份和恢复br)。
-
-### 通过 SQL
-
-详见 [Backup 语法](/sql-statements/sql-statement-backup.md#backup) 以及 [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
 
 ## 工作原理
 
@@ -63,6 +53,20 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 - regionEpoch：Region 版本号
 - keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
 - cf：RocksDB 的 ColumnFamily（默认为 `default` 或 `write`）
+
+## 使用方式
+
+目前支持两种方式来运行备份恢复，分别是 SQL 和命令行工具。
+
+### 通过 SQL
+
+在 v4.0.2 及以上版本的 TiDB 中，已经可以支持通过 SQL 语句进行备份恢复，详见 [Backup 语法](/sql-statements/sql-statement-backup.md#backup) 以及 [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
+
+### 通过命令行工具
+
+同时也支持命令行工具的方式。首先需要下载一个 BR 工具的 Binary，详见[下载链接](/download-ecosystem-tools.md#快速备份和恢复br)。
+
+下面以命令行工具为例，介绍备份恢复的执行方式。
 
 ## BR 命令行描述
 
@@ -280,7 +284,7 @@ br backup full\
 LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata`
 ```
 
-示例备份的增量数据包括 `(LAST_BACKUP_TS, current PD timestamp]` 之间的新写入数据，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复写入数据。
+示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。
 
 ### Raw KV 备份（实验性功能）
 
