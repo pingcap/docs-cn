@@ -17,7 +17,7 @@ TiKV 从 v4.0.0 起支持静态加密，即在 [CTR](https://zh.wikipedia.org/wi
 当前版本 (v4.0.0) 的 TiKV 加密功能还存在待改善之处，将在未来版本中进行改善。
 
 * TiDB 集群部署后，大部分用户数据都存储在 TiKV 节点上。这部分数据可使用加密功能进行加密。但有少量元数据存储在 PD 节点上（例如用作 TiKV Region 边界的二级索引键）。截至 v4.0.0，PD 尚未支持静态加密功能。建议使用存储级加密（例如文件系统加密）来保护存储在 PD 中的敏感数据。
-* 截至 v4.0.0，TiFlash 尚未支持静态加密功能。TiKV 与 TiFlash 一起部署时，存储在 TiFlash 中的数据不会被加密。
+* TiFlash 从 v4.0.5 开始支持静态加密功能，详情参阅 [TiFlash 静态加密](/encryption-at-rest.md#tiflash-静态加密-从-v405-版本开始引入)。TiKV 与 v4.0.5 之前版本的 TiFlash 一起部署时，存储在 TiFlash 中的数据不会被加密。
 * TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据。建议在使用静态加密时禁用 TiKV 进程的核心转储。
 * TiKV 使用文件的绝对路径跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`、`raftstore.raftdb-path`、`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
 * TiKV 信息日志包含用于调试的用户数据。信息日志不会被加密。
@@ -126,3 +126,9 @@ region = "us-west-2"
 ```
 ./br restore full --pd <pd-address> --storage "s3://<bucket>/<prefix> --s3.region <region>"
 ```
+
+## TiFlash 静态加密 <span class="version-mark">从 v4.0.5 版本开始引入</span>
+
+TiFlash 从 v4.0.5 起支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 TiFlash Proxy）写入的所有文件，包括数据文件、Schema 文件、临时文件等，均由当前数据密钥加密。TiFlash 支持的加密算法、加密配置方法（配置项在 `tiflash-learner.toml` 中）和监控项含义等均与 TiKV 一致。
+
+如果 TiFlash 中部署了 Grafana 组件，可以查看 **TiFlash-Proxy-Details** -> **Encryption**。
