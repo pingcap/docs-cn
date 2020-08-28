@@ -138,6 +138,7 @@ TiDB 版本：4.0.5
 
     - 修复开启 Hibernate Region 时，某些情况下 leader 选举慢的问题 [#8292](https://github.com/tikv/tikv/pull/8292)
     - 修复 Region 调度产生的一个内存泄露问题 [#8357](https://github.com/tikv/tikv/pull/8357)
+    - 增加 hibernate-timeout 配置避免 leader 过快变为 Hibernate 状态 [#8208](https://github.com/tikv/tikv/pull/8208)
 
 + PD
 
