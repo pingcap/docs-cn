@@ -170,7 +170,6 @@ TiDB 版本：4.0.5
         - 解决了网络阻塞导致同步任务不能退出的问题 [#825](https://github.com/pingcap/ticdc/pull/825)
         - 修复在某些情况下无关数据被错误地到下游的问题 [#743](https://github.com/pingcap/ticdc/issues/743)
 
-
     + TiDB Lightning
 
         - 解决了 TiDB backend 遇到空 binary/hex 的时候出现语法错误的问题 [#357](https://github.com/pingcap/tidb-lightning/pull/357)
