@@ -143,7 +143,7 @@ show table t regions;
 - Region 102 的 START_KEY 和 END_KEY 中，t_43 是表数据前缀和 table ID，_r 是表 t record 数据的前缀，索引数据的前缀是 _i，所以 Region 102 的 START_KEY 和 END_KEY 表示用来存储 [-inf, 20000) 之前的 record 数据。其他 Region (103, 109, 113, 2) 的存储范围依次类推。
 - Region 98 用来存储索引数据存储。表 t 索引数据的起始 key 是 t_43_i，处于 Region 98 的存储范围内。
 
-查看表 t 在 store 1 上的 region，用 where 条件过滤。
+查看表 t 在 store 1 上的 Region，用 where 条件过滤。
 
 {{< copyable "sql" >}}
 
