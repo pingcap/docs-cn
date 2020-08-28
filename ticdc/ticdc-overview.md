@@ -6,9 +6,9 @@ aliases: ['/docs/dev/ticdc/ticdc-overview/','/docs/dev/reference/tools/ticdc/ove
 
 # TiCDC Overview
 
-> **Warning:**
+> **Note:**
 >
-> TiCDC is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+> TiCDC has been a feature of general availability (GA) since v4.0.5. You can use TiCDC in production environments.
 
 [TiCDC](https://github.com/pingcap/ticdc) is a tool for replicating the incremental data of TiDB. This tool is implemented by pulling TiKV change logs. It can restore data to a consistent state with any upstream TSO, and provides [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md) to support other systems to subscribe to data changes.
 
@@ -84,7 +84,7 @@ Currently, The following scenarios are not supported:
 - The [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region). TiCDC prevents the Region from entering the hibernated state.
 - The scheduling of existing replication tables to new TiCDC nodes, after the capacity of the TiCDC cluster is scaled out.
 
-## Install and deploy TiCDC 
+## Install and deploy TiCDC
 
 You can deploy TiCDC components in the process of deploying a new TiDB cluster using TiUP. You only need to [add TiCDC](/production-deployment-using-tiup.md#step-3-edit-the-initialization-configuration-file) to the configuration file when TiUP starts the TiDB cluster.
 
@@ -92,7 +92,7 @@ Currently, you can also add TiCDC components to an existing TiDB cluster using e
 
 ## Manage TiCDC Cluster and Replication Tasks
 
-Currently, you can use the `cdc cli` tool to manage the status of a TiCDC cluster and data replication tasks. For details, see: 
+Currently, you can use the `cdc cli` tool to manage the status of a TiCDC cluster and data replication tasks. For details, see:
 
 - [Use `cdc cli` to manage cluster status and data replication task](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task)
 - [Use HTTP interface to manage cluster status and data replication task](/ticdc/manage-ticdc.md#use-http-interface-to-manage-cluster-status-and-data-replication-task)
