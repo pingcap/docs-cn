@@ -59,13 +59,13 @@ SHOW STATS_HEALTHY;
 1 row in set (0.00 sec)
 ```
 
-删除大约 30％ 的记录并执行批量更新。检查统计信息的健康度：
+删除大约 30% 的记录并执行批量更新。检查统计信息的健康度：
 
 {{< copyable "sql" >}}
 
 ```sql
 DELETE FROM t1 WHERE id BETWEEN 101010 AND 201010; # delete about 30% of records
-SHOW STATS_HEALTHY; 
+SHOW STATS_HEALTHY;
 ```
 
 ```sql
