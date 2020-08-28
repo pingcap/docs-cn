@@ -66,8 +66,8 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
         key-path = "/path/to/pd-server-key.pem"
         ```
 
-    - TiFlash
-    
+    - TiFlash（从 v4.0.5 版本开始引入）
+
         在 `config` 文件中设置，将 `http_port` 项改为 `https_port`:
 
         ```toml
@@ -162,7 +162,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
     ```
 
-- TiFlash
+- TiFlash（从 v4.0.5 版本开始引入）
 
     在 `config` 文件或命令行参数中设置：
 
