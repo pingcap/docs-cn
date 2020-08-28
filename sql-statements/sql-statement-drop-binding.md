@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-binding/']
 
 # DROP [GLOBAL|SESSION] BINDING
 
-`DROP BINDING` 语句用于删除指定的 SQL 执行计划绑定。绑定不需要更改底层查询，可用于将优化器 Hint 插入语句中。
+`DROP BINDING` 语句用于删除指定的 SQL 绑定。绑定不需要更改底层查询，可用于将优化器 Hint 插入语句中。
 
 `BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内删除绑定执行计划。在不指定作用域时，默认隐式作用域为 `SESSION`。
 

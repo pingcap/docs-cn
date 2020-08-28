@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 
 # CREATE [GLOBAL|SESSION]
 
-`CREATE BINDING` 语句用于在 TiDB 中创建新的绑定执行计划。绑定不需要更改底层查询，可用于将优化器 Hint 插入语句中。
+`CREATE BINDING` 语句用于在 TiDB 中创建新的绑定。绑定不需要更改底层查询，可用于将优化器 Hint 插入语句中。
 
 `BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内绑定执行计划。在不指定作用域时，默认的隐式作用域为 `SESSION`。
 

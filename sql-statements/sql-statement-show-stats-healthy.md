@@ -25,7 +25,7 @@ summary: TiDB 数据库中 SHOW STATS_HEALTHY 的使用概况。
 
 ## 示例
 
-加载示例数据并运行 `ANALYZE`：
+加载示例数据并运行 `ANALYZE` 命令：
 
 {{< copyable "sql" >}}
 
