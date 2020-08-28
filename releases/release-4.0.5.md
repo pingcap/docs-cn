@@ -168,7 +168,7 @@ TiDB 版本：4.0.5
         - 修正了错误的删除事件 [#787](https://github.com/pingcap/ticdc/pull/787)
         - 解决了已停止的同步任务会卡住 GC 的问题 [#797](https://github.com/pingcap/ticdc/pull/797)
         - 解决了网络阻塞导致同步任务不能退出的问题 [#825](https://github.com/pingcap/ticdc/pull/825)
-        - 修复在某些情况下错误同步无关数据到下游的问题 [#743](https://github.com/pingcap/ticdc/issues/743)
+        - 修复在某些情况下无关数据被错误地到下游的问题 [#743](https://github.com/pingcap/ticdc/issues/743)
 
 
     + TiDB Lightning
