@@ -154,6 +154,12 @@ TiDB 版本：4.0.5
 
 + Tools
 
+    + Backup & Restore (BR)
+        - 修复 total kv 和 total bytes 被错误计算两次的问题 [#472](https://github.com/pingcap/br/pull/472)
+        - 修复 Switch Mode 不及时的问题，导致恢复缓慢 [#473](https://github.com/pingcap/br/pull/473)
+    + Dumpling
+        - 修复 FTWRL 锁没有及时释放的问题 [#128](https://github.com/pingcap/dumpling/pull/128)
+
     + TiCDC
 
         - 解决了同步任务不能被移除的问题 [#782](https://github.com/pingcap/ticdc/pull/782)
