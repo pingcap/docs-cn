@@ -301,7 +301,6 @@
       - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
       - [`ROLLBACK`](/sql-statements/sql-statement-rollback.md)
       - [`SELECT`](/sql-statements/sql-statement-select.md)
-      - [`SET DEFAULT ROLE`](/sql-statements/sql-statement-set-default-role.md)
       - [`SET [NAMES|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md)
       - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       - [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
