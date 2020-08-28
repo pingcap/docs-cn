@@ -133,7 +133,6 @@ TiDB 版本：4.0.5
     - 修复共同使用 `Apply` 算子和 `UnionScan` 算子时查询结果不正确的问题 [#19104](https://github.com/pingcap/tidb/issues/19104)
     - 修复生成列索引结果不正确的问题 [#17989](https://github.com/pingcap/tidb/issues/17989)
     - 修复并发收集统计信息 panic 的问题 [#18983](https://github.com/pingcap/tidb/pull/18983)
-    - 修复报 `should ensure all columns have the same length` 错误的问题 [#18961](https://github.com/pingcap/tidb/pull/18961)
 
 + TiKV
 
