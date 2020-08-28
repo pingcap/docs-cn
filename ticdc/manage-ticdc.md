@@ -423,7 +423,6 @@ cdc cli changefeed resume -c test-cf
 - changefeed 的 `sink-uri`
 - changefeed 配置文件及文件内所有配置
 - changefeed 是否使用文件排序和排序目录
-- changefeed 使用的时区
 - changefeed 的 `target-ts`
 
 ### 管理同步子任务处理单元 (`processor`)
