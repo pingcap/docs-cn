@@ -121,7 +121,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 ```
 
 - `--changefeed-id`: The ID of the replication task. The format must match the `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$` regular expression. If this ID is not specified, TiCDC automatically generates a UUID (the version 4 format) as the ID.
-- `--sink-uri`: The downstream address of the replication task. Configure `--sink-uri` according to the following format. Currently, the scheme supports `mysql`/`tidb`/`kafka`.
+- `--sink-uri`: The downstream address of the replication task. Configure `--sink-uri` according to the following format. Currently, the scheme supports `mysql`/`tidb`/`kafka`/`pulsar`.
 
 {{< copyable "" >}}
 
@@ -129,56 +129,90 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
-- Configure sink URI with `mysql`/`tidb`
+#### Configure sink URI with `mysql`/`tidb`
 
-    Sample configuration:
+Sample configuration:
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    --sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
-    ```
+```shell
+--sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
+```
 
-    The following are descriptions of parameters and parameter values in the sample configuration:
+The following are descriptions of parameters and parameter values that can be configured for the sink URI with `mysql`/`tidb`:
 
-    | Parameter/Parameter Value    | Description                                             |
-    | :------------ | :------------------------------------------------ |
-    | `root`        | The username of the downstream database                              |
-    | `123456`       | The password of the downstream database                                      |
-    | `127.0.0.1`    | The IP address of the downstream database                               |
-    | `3306`         | The port for the downstream data                                 |
-    | `worker-count` | The number of SQL statements that can be concurrently executed to the downstream (optional, `16` by default)       |
-    | `max-txn-row`  | The size of a transaction batch that can be executed to the downstream (optional, `256` by default)) |
-    | `ssl-ca` | The path of the CA certificate file needed to connect to the downstream MySQL instance (optional)  |
-    | `ssl-cert` | The path of the certificate file needed to connect to the downstream MySQL instance (optional) |
-    | `ssl-key` | The path of the certificate key file needed to connect to the downstream MySQL instance (optional) |
+| Parameter/Parameter Value    | Description                                             |
+| :------------ | :------------------------------------------------ |
+| `root`        | The username of the downstream database                              |
+| `123456`       | The password of the downstream database                                      |
+| `127.0.0.1`    | The IP address of the downstream database                               |
+| `3306`         | The port for the downstream data                                 |
+| `worker-count` | The number of SQL statements that can be concurrently executed to the downstream (optional, `16` by default)       |
+| `max-txn-row`  | The size of a transaction batch that can be executed to the downstream (optional, `256` by default) |
+| `ssl-ca` | The path of the CA certificate file needed to connect to the downstream MySQL instance (optional)  |
+| `ssl-cert` | The path of the certificate file needed to connect to the downstream MySQL instance (optional) |
+| `ssl-key` | The path of the certificate key file needed to connect to the downstream MySQL instance (optional) |
 
-- Configure sink URI with `kafka`
+#### Configure sink URI with `kafka`
 
-    Sample configuration:
+Sample configuration:
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
-    ```
+```shell
+--sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+```
 
-    The following are descriptions of parameters and parameter values in the sample configuration:
+The following are descriptions of parameters and parameter values that can be configured for the sink URI with `kafka`:
 
-    | Parameter/Parameter Value               | Description                                                        |
-    | :------------------ | :------------------------------------------------------------ |
-    | `127.0.0.1`          | The IP address of the downstream Kafka services                                 |
-    | `9092`               | The port for the downstream Kafka                                          |
-    | `cdc-test`           | The name of the Kafka topic                                      |
-    | `kafka-version`      | The version of the downstream Kafka (optional, `2.4.0` by default)                      |
-    | `kafka-client-id`    | Specifies the Kafka client ID of the replication task (optional, `TiCDC_sarama_producer_replication ID` by default) |
-    | `partition-num`      | The number of the downstream Kafka partitions (Optional. The value must be **no greater than** the actual number of partitions. If you do not configure this parameter, the partition number is obtained automatically.) |
-    | `max-message-bytes`  | The maximum size of data that is sent to Kafka broker each time (optional, `64MB` by default) |
-    | `replication-factor` | The number of Kafka message replicas that can be saved (optional, `1` by default)                       |
-    | `protocol` | The protocol with which messages are output to Kafka. The optional values are `default` and `canal` (`default` by default.)    |
-    | `ca` | The path of the CA certificate file needed to connect to the downstream Kafka instance (optional)  |
-    | `cert` | The path of the certificate file needed to connect to the downstream Kafka instance (optional) |
-    | `key` | The path of the certificate key file needed to connect to the downstream Kafka instance (optional) |
+| Parameter/Parameter Value               | Description                                                        |
+| :------------------ | :------------------------------------------------------------ |
+| `127.0.0.1`          | The IP address of the downstream Kafka services                                 |
+| `9092`               | The port for the downstream Kafka                                          |
+| `cdc-test`           | The name of the Kafka topic                                      |
+| `kafka-version`      | The version of the downstream Kafka (optional, `2.4.0` by default)                      |
+| `kafka-client-id`    | Specifies the Kafka client ID of the replication task (optional, `TiCDC_sarama_producer_replication ID` by default) |
+| `partition-num`      | The number of the downstream Kafka partitions (Optional. The value must be **no greater than** the actual number of partitions. If you do not configure this parameter, the partition number is obtained automatically.) |
+| `max-message-bytes`  | The maximum size of data that is sent to Kafka broker each time (optional, `64MB` by default) |
+| `replication-factor` | The number of Kafka message replicas that can be saved (optional, `1` by default)                       |
+| `protocol` | The protocol with which messages are output to Kafka. The optional values are `default` and `canal` (`default` by default.)    |
+| `ca` | The path of the CA certificate file needed to connect to the downstream Kafka instance (optional)  |
+| `cert` | The path of the certificate file needed to connect to the downstream Kafka instance (optional) |
+| `key` | The path of the certificate key file needed to connect to the downstream Kafka instance (optional) |
+
+#### Configure sink URI with `pulsar`
+
+Sample configuration:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="pulsar://127.0.0.1:6650/cdc-test?connectionTimeout=2s"
+```
+
+The following are descriptions of parameters that can be configured for the sink URI with `pulsar`:
+
+| Parameter  | Description                                            |
+| :------------------ | :------------------------------------------------------------ |
+| `connectionTimeout` | The timeout for establishing a connection to the downstream Pulsar, which is optional and defaults to 30 (seconds) |
+| `operationTimeout` | The timeout for performing an operation on the downstream Pulsar, which is optional and defaults to 30 (seconds) |
+| `tlsTrustCertsFilePath` | The path of the CA certificate file needed to connect to the downstream Pulsar instance (optional) |
+| `tlsAllowInsecureConnection` | Determines whether to allow unencrypted connection after TLS is enabled (optional) |
+| `tlsValidateHostname` |  Determines whether to verify the host name of the certificate from the downstream Pulsar (optional) |
+| `maxConnectionsPerBroker` | The maximum number of connections allowed to a single downstream Pulsar broker, which is optional and defaults to 1 |
+| `auth.tls` | Uses the TLS mode to verify the downstream Pulsar (optional). For example, `"{"tlsCertFile":"/path/to/cert", "tlsKeyFile":"/path/to/key"}"`. |
+| `auth.token` | Uses the token mode to verify the downstream Pulsar (optional). For example, `"{"token":"secret-token"}"` or `"{"file":"path/to/secret-token-file"}"`. |
+| `name` | The name of Pulsar producer in TiCDC (optional) |
+| `maxPendingMessages` | Sets the maximum size of the pending message queue, which is optional and defaults to 1000. For example, pending for the confirmation message from Pulsar. |
+| `disableBatching` |  Disables automatically sending messages in batches (optional) |
+| `batchingMaxPublishDelay` | Sets the duration within which the messages sent are batched (default: 10ms) |
+| `compressionType` | Sets the compression algorithm used for sending messages (optional). The value options are `LZ4`, `ZLIB`, and `ZSTD` (default). |
+| `hashingScheme` | The hash algorithm used for choosing the partition to which a message is sent (optional). The value options are `JavaStringHash` (default) and `Murmur3`. |
+| `properties.*` | The customized properties added to the Pulsar producer in TiCDC (optional). For example, `properties.location=Hangzhou`. |
+
+For more parameters of Pulsar, see [pulsar-client-go ClientOptions](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) and [pulsar-client-go ProducerOptions](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions).
+
+#### Use the task configuration file
 
 For more replication configuration (for example, specify replicating a single table), see [Task configuration file](#task-configuration-file).
 
