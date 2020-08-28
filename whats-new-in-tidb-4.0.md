@@ -87,7 +87,3 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 + 支持缓存 `Prepare`/`Execute` 请求的执行计划，提升 SQL 的执行效率。详情参阅：[缓存执行计划](/sql-prepare-plan-cache.md)。
 + 支持自适应线程池功能，精简线程池数量，优化请求处理调度方式，提升产品易用性，提升产品的性能。
 + Follower Read 功能是指在强一致性读的前提下使用 Region 的 follower 副本来承载数据读取的任务，从而提升 TiDB 集群的吞吐能力并降低 leader 负载。Follower Read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。TiKV 的 Follower Read 可以保证数据读取的一致性，可以为用户提供强一致的数据读取能力。详情参阅：[Follower Read](/follower-read.md)。
-
-## TiCDC
-
-TiCDC 支持通过拉取 TiKV 变更日志实现 TiDB 集群之间数据同步，支持数据的高可靠、服务的高可用能力，确保数据不会丢失。用户可以通过订阅的方式订阅数据的变更信息，系统会自动将数据推送到下游系统，当前仅支持 MySQL 协议的数据库（例如：MySQL、TiDB)，Kafka 及 Pulsar 作为 TiCDC 的下游，同时用户也可以通过 TiCDC 提供的[开放数据协议](/ticdc/ticdc-open-protocol.md)自行扩展支持的下游系统。详情参阅：[TiCDC](/ticdc//ticdc-overview.md)。
