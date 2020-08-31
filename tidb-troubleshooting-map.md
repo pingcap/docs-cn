@@ -413,7 +413,7 @@ aliases: ['/docs-cn/v3.0/tidb-troubleshooting-map/','/docs-cn/v3.0/how-to/troubl
 
 - 6.2.2 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`。
 
-    - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。在 v1.0.6 以后的版本可使用明文密码。
+    - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。在 v1.0.6 及以后的版本可使用明文密码。
 
     - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/precheck)。
 
