@@ -11,7 +11,7 @@ aliases: ['/docs/dev/tidb-lightning/tidb-lightning-overview/','/docs/dev/referen
 Currently, TiDB Lightning supports reading SQL dump exported via Mydumper or CSV data source. You can use it in the following two scenarios:
 
 - Importing **large amounts** of **new** data **quickly**
-- Back up and restore all the data
+- Restore all backup data
 
 ## TiDB Lightning architecture
 
