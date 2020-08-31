@@ -307,7 +307,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值: 1
+- 默认值：1
 - 这个变量用于控制是否开启 clustered index 特性。
     - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
     - 该特性只适用于主键为单列非 INT 类型的表和主键为多列的表，对于无主键的表和主键是单列 INT 类型的表不会有影响。
