@@ -112,7 +112,7 @@ SHOW TABLES IN test;
 
 ## MySQL 兼容性
 
-`CREATE ROLE` 语句与 MySQL 8.0 的“角色”功能完全兼容。如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`CREATE ROLE` 语句与 MySQL 8.0 的“角色”功能完全兼容。如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 
