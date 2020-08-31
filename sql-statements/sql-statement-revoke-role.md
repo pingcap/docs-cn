@@ -133,7 +133,7 @@ SHOW GRANTS;
 
 ## MySQL 兼容性
 
-`REVOKE <role>` 语句与 MySQL 8.0 的角色功能完全兼容。如有任何其他兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`REVOKE <role>` 语句与 MySQL 8.0 的角色功能完全兼容。如有任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 
