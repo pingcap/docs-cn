@@ -4,15 +4,15 @@ summary: 介绍 TiUP 部署包含 TiSpark 组件的 TiDB 集群的拓扑结构�
 aliases: ['/docs-cn/stable/tispark-deployment-topology/','/docs-cn/v4.0/tispark-deployment-topology/']
 ---
 
-> **注意：**
->
-> TiUP Cluster 的 TiSpark 支持目前为实验特性，不建议在生产环境中使用。
-
 # TiSpark 部署拓扑
 
 本文介绍 TiSpark 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiSpark。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。
 
 关于 TiSpark 的使用可以参考 [TiSpark 用户指南](/tispark-overview.md)
+
+> **警告：**
+>
+> TiUP Cluster 的 TiSpark 支持目前为实验特性，不建议在生产环境中使用。
 
 ## 拓扑信息
 
