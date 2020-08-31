@@ -102,13 +102,16 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 ```shell
 cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+```
+
+```shell
 Create changefeed successfully!
 ID: simple-replication-task
 Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
 - `--changefeed-id`: 同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`。
+- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
 
 {{< copyable "" >}}
 
@@ -116,56 +119,90 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
-- Sink URI 配置 `mysql`/`tidb`
+#### Sink URI 配置 `mysql`/`tidb`
 
-    配置样例如下所示：
+配置样例如下所示：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    --sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
-    ```
+```shell
+--sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
+```
 
-    以上配置命令中的参数解析如下：
+URI 中可配置的的参数如下：
 
-    | 参数         | 解析                                             |
-    | :------------ | :------------------------------------------------ |
-    | `root`        | 下游数据库的用户名                             |
-    | `123456`       | 下游数据库密码                                     |
-    | `127.0.0.1`    | 下游数据库的 IP                                |
-    | `3306`         | 下游数据的连接端口                                 |
-    | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
-    | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
-    | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
-    | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
-    | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
+| 参数         | 解析                                             |
+| :------------ | :------------------------------------------------ |
+| `root`        | 下游数据库的用户名                             |
+| `123456`       | 下游数据库密码                                     |
+| `127.0.0.1`    | 下游数据库的 IP                                |
+| `3306`         | 下游数据的连接端口                                 |
+| `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
+| `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
+| `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
+| `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
+| `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
 
-- Sink URI 配置 `kafka`
+#### Sink URI 配置 `kafka`
 
-    配置样例如下所示：
+配置样例如下所示：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
-    ```
+```shell
+--sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+```
 
-    以上配置命令中的参数解析如下：
+URI 中可配置的的参数如下：
 
-    | 参数               | 解析                                                         |
-    | :------------------ | :------------------------------------------------------------ |
-    | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
-    | `9092`               | 下游 Kafka 的连接端口                                          |
-    | `cdc-test`           | 使用的 Kafka topic 名字                                      |
-    | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
-    | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
-    | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
-    | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
-    | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
-    | `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
-    | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
-    | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
-    | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+| 参数               | 解析                                                         |
+| :------------------ | :------------------------------------------------------------ |
+| `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
+| `9092`               | 下游 Kafka 的连接端口                                          |
+| `cdc-test`           | 使用的 Kafka topic 名字                                      |
+| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
+| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
+| `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
+| `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
+| `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
+| `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
+| `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+
+#### Sink URI 配置 `pulsar`
+
+配置样例如下所示：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="pulsar://127.0.0.1:6650/cdc-test?connectionTimeout=2s"
+```
+
+URI 中可配置的的参数如下：
+
+| 参数               | 解析                                                         |
+| :------------------ | :------------------------------------------------------------ |
+| `connectionTimeout` | 连接下游 Pulsar 的超时时间。可选参数，默认值为 30s。 |
+| `operationTimeout` | 对下游 Pulsar 进行操作的超时时间（例如创建 topic）。可选参数，默认值为 30s。|
+| `tlsTrustCertsFilePath` | 连接下游 Pulsar 实例所需的 CA 证书文件路径（可选） |
+| `tlsAllowInsecureConnection` | 在开启 TLS 之后是否允许非加密连接（可选） |
+| `tlsValidateHostname` | 是否校验下游 Pulsar 证书中的 host name（可选） |
+| `maxConnectionsPerBroker` | 下游单个 Pulsar broker 最多允许的连接数（可选，默认值为 1） |
+| `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `"{"tlsCertFile":"/path/to/cert", "tlsKeyFile":"/path/to/key"}"`）|
+| `auth.token` | 使用 token 模式认证下游（可选，示例 `"{"token":"secret-token"}"` 或者 `"{"file":"path/to/secret-token-file"}"`）|
+| `name` | TiCDC 中 Pulsar producer 名字（可选） |
+| `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
+| `disableBatching` | 禁止自动批量发送消息（可选） |
+| `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值为 10ms） |
+| `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值为 `ZSTD`）|
+| `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
+| `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
+
+更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
+
+#### 使用同步任务配置文件
 
 如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
 
@@ -205,11 +242,34 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 - `state` 为该同步任务的状态：
     - `normal`: 正常同步
     - `stopped`: 停止同步（手动暂停或出错）
-    - `removed`: 已删除任务
+    - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
+    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
 
 #### 查询特定同步任务
 
-使用以下命令来查询特定同步任务（对应某个同步任务的信息和状态）：
+使用 `changefeed query` 命令可以查询特定同步任务（对应某个同步任务的信息和状态），指定 `--simple` 或 `-s` 参数会简化输出，提供最基本的同步状态和 checkpoint 信息。不指定该参数会输出详细的任务配置、同步状态和同步表信息。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed query -s --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
+```
+
+```
+{
+ "state": "normal",
+ "tso": 419035700154597378,
+ "checkpoint": "2020-08-27 10:12:19.579",
+ "error": null
+}
+```
+
+以上命令中：
+
+- `state` 代表当前 changefeed 的同步状态，各个状态必须和 `changefeed list` 中的状态相同。
+- `tso` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO。
+- `checkpoint` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO 对应的时间。
+- `error` 记录当前 changefeed 是否有错误发生。
 
 {{< copyable "shell-regular" >}}
 
@@ -219,36 +279,84 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
 
 ```
 {
-        "info": {
-                "sink-uri": "mysql://root:123456@127.0.0.1:3306/",
-                "opts": {},
-                "create-time": "2020-03-12T22:04:08.103600025+08:00",
-                "start-ts": 415241823337054209,
-                "target-ts": 0,
-                "admin-job-type": 0,
-                "config": {
-                        "filter-case-sensitive": false,
-                        "filter-rules": null,
-                        "ignore-txn-start-ts": null
-                }
+  "info": {
+    "sink-uri": "mysql://127.0.0.1:3306/?max-txn-row=20\u0026worker-number=4",
+    "opts": {},
+    "create-time": "2020-08-27T10:33:41.687983832+08:00",
+    "start-ts": 419036036249681921,
+    "target-ts": 0,
+    "admin-job-type": 0,
+    "sort-engine": "memory",
+    "sort-dir": ".",
+    "config": {
+      "case-sensitive": true,
+      "enable-old-value": false,
+      "filter": {
+        "rules": [
+          "*.*"
+        ],
+        "ignore-txn-start-ts": null,
+        "ddl-allow-list": null
+      },
+      "mounter": {
+        "worker-num": 16
+      },
+      "sink": {
+        "dispatchers": null,
+        "protocol": "default"
+      },
+      "cyclic-replication": {
+        "enable": false,
+        "replica-id": 0,
+        "filter-replica-ids": null,
+        "id-buckets": 0,
+        "sync-ddl": false
+      },
+      "scheduler": {
+        "type": "table-number",
+        "polling-time": -1
+      }
+    },
+    "state": "normal",
+    "history": null,
+    "error": null
+  },
+  "status": {
+    "resolved-ts": 419036036249681921,
+    "checkpoint-ts": 419036036249681921,
+    "admin-job-type": 0
+  },
+  "count": 0,
+  "task-status": [
+    {
+      "capture-id": "97173367-75dc-490c-ae2d-4e990f90da0f",
+      "status": {
+        "tables": {
+          "47": {
+            "start-ts": 419036036249681921,
+            "mark-table-id": 0
+          }
         },
-        "status": {
-                "resolved-ts": 415241860902289409,
-                "checkpoint-ts": 415241860640145409,
-                "admin-job-type": 0
-        }
+        "operation": null,
+        "admin-job-type": 0
+      }
+    }
+  ]
 }
 ```
 
 以上命令中：
 
-- `resolved-ts` 代表当前 changefeed 中最大的已经成功从 TiKV 发送到 TiCDC 的事务 TS；
-- `checkpoint-ts` 代表当前 changefeed 中最大的已经成功写入下游的事务 TS；
-- `admin-job-type` 代表一个 changefeed 的状态：
-    - `0`: 状态正常。
-    - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-    - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
-    - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+- `info` 代表查询 changefeed 的同步配置。
+- `status` 代表查询 changefeed 的同步状态信息。
+    - `resolved-ts` 代表当前 changefeed 中已经成功从 TiKV 发送到 TiCDC 的最大事务 TS。
+    - `checkpoint-ts` 代表当前 changefeed 中已经成功写入下游的最大事务 TS。
+    - `admin-job-type` 代表一个 changefeed 的状态：
+        - `0`: 状态正常。
+        - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+        - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
+        - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+- `task-status` 代表查询 changefeed 所分配的各个同步子任务的状态信息。
 
 ### 停止同步任务
 
@@ -262,7 +370,7 @@ cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-repl
 
 以上命令中：
 
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+- `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
 
 ### 恢复同步任务
 
@@ -276,7 +384,7 @@ cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 
 以上命令中：
 
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+- `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
 
 ### 删除同步任务
 
@@ -288,7 +396,34 @@ cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
-- `--changefeed=uuid` 为需要操作的 `changefeed` ID。
+- `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
+
+删除任务后会保留任务的同步状态信息 24 小时（主要用于记录同步的 checkpoint），24 小时内不能创建同名的任务。如果希望彻底删除任务信息，可以指定 `--force` 或 `-f` 参数删除，删除后 changefeed 的所有信息都会被清理，可以立即创建同名的 changefeed。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task --force
+```
+
+### 更新同步任务配置
+
+TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed pause -c test-cf
+cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+cdc cli changefeed resume -c test-cf
+```
+
+当前支持修改的配置包括：
+
+- changefeed 的 `sink-uri`
+- changefeed 配置文件及文件内所有配置
+- changefeed 是否使用文件排序和排序目录
+- changefeed 的 `target-ts`
 
 ### 管理同步子任务处理单元 (`processor`)
 
@@ -340,10 +475,10 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 
 以上命令中：
 
-- `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id；
-- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id；
-- `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO；
-- `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO；
+- `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id。
+- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id。
+- `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
+- `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
 
 ## 使用 HTTP 接口管理集群状态和数据同步
 
@@ -583,3 +718,21 @@ sync-ddl = true
 5. 如果想在线 DDL，需要确保以下两点：
     1. 多个集群的 TiCDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 TiCDC 关闭了 `sync-ddl`。
     2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
+
+## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
+
+> **警告：**
+>
+> 目前输出行变更历史值属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
+
+在默认配置下同步任务输出的 TiCDC Open Protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)，也不满足 TiCDC Open Protocol 的消费端使用行变更历史值的需求。
+
+从 v4.0.5 开始，TiCDC 支持输出行变更数据的历史值。若要开启该特性，需要在 changefeed 的配置文件的根级别指定以下配置：
+
+{{< copyable "" >}}
+
+```toml
+enable-old-value = true
+```
+
+开启该特性后，TiCDC Open Protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)，使用 MySQL sink 时也会自动支持的 TiDB 4.0 新 Collation 特性。
