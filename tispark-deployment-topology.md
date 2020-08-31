@@ -10,8 +10,7 @@ aliases: ['/docs-cn/dev/tispark-deployment-topology/']
 
 关于 TiSpark 的使用可以参考 [TiSpark 用户指南](/tispark-overview.md)
 
-
-> **注意：**
+> **警告：**
 >
 > TiUP Cluster 的 TiSpark 支持目前为实验特性，不建议在生产环境中使用。
 
