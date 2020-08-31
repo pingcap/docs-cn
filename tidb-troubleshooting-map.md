@@ -66,8 +66,8 @@ Refer to [5 PD issues](#5-pd-issues).
 
     - Solution:
 
-        - For cause 1, check the network connection between TiDB and TiKV/PD. 
-        - For cause 2 and 3, the issues are already fixed in later versions. You can upgrade TiDB to a later version. 
+        - For cause 1, check the network connection between TiDB and TiKV/PD.
+        - For cause 2 and 3, the issues are already fixed in later versions. You can upgrade TiDB to a later version.
         - For other causes, you can use the following solution of migrating the DDL owner.
 
     - DDL owner migration:
@@ -89,7 +89,7 @@ Refer to [5 PD issues](#5-pd-issues).
 
 - 3.1.4 TiDB reports `information schema is out of date` in log
 
-    - Cause 1：The TiDB server that is executing the DML statement is stopped by `graceful kill` and prepares to exit. The execution time of the transaction that contains the DML statement exceeds one DDL lease. An error is reported when the transaction is committed. 
+    - Cause 1：The TiDB server that is executing the DML statement is stopped by `graceful kill` and prepares to exit. The execution time of the transaction that contains the DML statement exceeds one DDL lease. An error is reported when the transaction is committed.
 
     - Cause 2: The TiDB server cannot connect to PD or TiKV when it is executing the DML statement, which causes the following problems:
 
@@ -99,7 +99,7 @@ Refer to [5 PD issues](#5-pd-issues).
     - Cause 3: TiKV has high load or network timed out. Check the node loads in **Grafana** -> **TiDB** and **TiKV**.
 
     - Solution:
-    
+
         - For cause 1, retry the DML operation when TiDB is started.
         - For cause 2, check the network between the TiDB server and PD/TiKV.
         - For cause 3, investigate why TiKV is busy. Refer to [4 TiKV issues](#4-tikv-issues).
@@ -120,7 +120,7 @@ Refer to [5 PD issues](#5-pd-issues).
 
         - In v2.1.8 or earlier versions, you can grep `fatal error: stack overflow` in the `tidb_stderr.log`.
 
-    - Monitor：The memory usage of tidb-server instances increases sharply in a short period of time. 
+    - Monitor：The memory usage of tidb-server instances increases sharply in a short period of time.
 
 - 3.2.2 Locate the SQL statement that causes OOM. (Currently all versions of TiDB cannot locate SQL accurately. You still need to analyze whether OOM is caused by the SQL statement after you locate one.)
 
@@ -147,12 +147,12 @@ Refer to [5 PD issues](#5-pd-issues).
 
 - 3.3.1 Symptom
 
-    - SQL query execution time is much longer compared with that of previous executions, or the execution plan suddenly changes. If the execution plan is logged in the slow log, you can directly compare the execution plans. 
+    - SQL query execution time is much longer compared with that of previous executions, or the execution plan suddenly changes. If the execution plan is logged in the slow log, you can directly compare the execution plans.
 
     - SQL query execution time is much longer compared with that of other databases such as MySQL. Compare the execution plan with other databases to see the differences, such as `Join Order`.
 
     - In slow log, the number of SQL execution time `Scan Keys` is large.
-    
+
 - 3.3.2 Investigate the execution plan
 
     - `explain analyze {SQL}`. When the execution time is acceptable, compare `count` in the result of `explain analyze` and the number of `row` in `execution info`. If a large difference is found in the `TableScan/IndexScan` row, it is likely that the statistics is incorrect. If a large difference is found in other rows, the problem might not be in the statistics.
@@ -162,7 +162,7 @@ Refer to [5 PD issues](#5-pd-issues).
 - 3.3.3 Mitigation
 
     - For v3.0 and later versions, use the `SQL Bind` feature to bind the execution plan.
-    
+
     - Update the statistics. If you are roughly sure that the problem is caused by the statistics, [dump the statistics](/statistics.md#export-statistics). If the cause is outdated statistics, such as the `modify count/row count` in `show stats_meta` is greater than a certain value (e.g. 0.3), or the table has an index of time column, you can try recovering by using `analyze table`. If `auto analyze` is configured, check whether the `tidb_auto_analyze_ratio` system variable is too large (e.g. > 0.3), and whether the current time is between `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
 
     - For other situations, [report a bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md).
@@ -195,7 +195,7 @@ Refer to [5 PD issues](#5-pd-issues).
 
 - 4.1.2 If TiKV is deployed on a virtual machine, when the virtual machine is killed or the physical machine is powered off, the `entries[X, Y]  is unavailable from storage` error is reported.
 
-    This issue is expected. The `fsync` of virtual machines is not reliable, so you need to restore the Region using `tikv-ctl`. 
+    This issue is expected. The `fsync` of virtual machines is not reliable, so you need to restore the Region using `tikv-ctl`.
 
 - 4.1.3 For other unexpected causes, [report a bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md).
 
@@ -203,8 +203,8 @@ Refer to [5 PD issues](#5-pd-issues).
 
 - 4.2.1 If the `block-cache` configuration is too large, it might cause OOM.
 
-    To verify the cause of the problem, check the `block cache size` of RocksDB by selecting the corresponding instance in the monitor **Grafana** -> **TiKV-details**. 
-    
+    To verify the cause of the problem, check the `block cache size` of RocksDB by selecting the corresponding instance in the monitor **Grafana** -> **TiKV-details**.
+
     Meanwhile, check whether the `[storage.block-cache] capacity = # "1GB"`parameter is set properly. By default, TiKV's `block-cache` is set to `45%` of the total memory of the machine. You need to explicitly specify this parameter when you deploy TiKV in the container, because TiKV obtains the memory of the physical machine, which might exceed the memory limit of the container.
 
 - 4.2.2 Coprocessor receives many large queries and returns a large volume of data. gRPC fails to send data as quickly as the coprocessor returns data, which results in OOM.
@@ -224,13 +224,13 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
     A TiKV instance has two RocksDB instances, one in `data/raft` to save the Raft log, another in `data/db` to save the real data. You can check the specific cause for stall by running `grep "Stalling" RocksDB` in the log. The RocksDB log is a file starting with `LOG`, and `LOG` is the current log.
 
     - Too many `level0 sst` causes stall. You can add the `[rocksdb] max-sub-compactions = 2` (or 3) parameter to speed up `level0 sst` compaction. The compaction task from level0 to level1 is divided into several subtasks (the max number of subtasks is the value of `max-sub-compactions`) to be executed concurrently. See [case-815](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case815.md) in Chinese.
-    
+
     - Too many `pending compaction bytes` causes stall. The disk I/O fails to keep up with the write operations in business peaks. You can mitigate this problem by increasing the `soft-pending-compaction-bytes-limit` and `hard-pending-compaction-bytes-limit` of the corresponding CF.
 
         - The default value of `[rocksdb.defaultcf] soft-pending-compaction-bytes-limit` is `64GB`. If the pending compaction bytes reaches the threshold, RocksDB slows down the write speed. You can set `[rocksdb.defaultcf] soft-pending-compaction-bytes-limit` to `128GB`.
-        
+
         - The default value of `hard-pending-compaction-bytes-limit` is `256GB`. If the pending compaction bytes reaches the threshold (this is not likely to happen, because RocksDB slows down the write after the pending compaction bytes reaches `soft-pending-compaction-bytes-limit`), RocksDB stops the write operation. You can set `hard-pending-compaction-bytes-limit` to `512GB`.<!-- See [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) in Chinese.-->
-        
+
         - If the disk I/O capacity fails to keep up with the write for a long time, it is recommended to scale up your disk. If the disk throughput reaches the upper limit and causes write stall (for example, the SATA SSD is much lower than NVME SSD), while the CPU resources is sufficient, you may apply a compression algorithm of higher compression ratio. This way, the CPU resources is traded for disk resources, and the pressure on the disk is eased.
 
         - If the default CF compaction sees a high pressure, change the `[rocksdb.defaultcf] compression-per-level` parameter from `["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]` to `["no", "no", "zstd", "zstd", "zstd", "zstd", "zstd"]`.
@@ -242,7 +242,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 - 4.3.2 `scheduler too busy`
 
     - Serious write conflict. `latch wait duration` is high. You can view `latch wait duration` in the monitor **Grafana** -> **TiKV-details** -> **scheduler prewrite**/**scheduler commit**. When the write tasks pile up in the scheduler, the pending write tasks exceed the threshold set in `[storage] scheduler-pending-write-threshold` (100MB). You can verify the cause by viewing the metric corresponding to `MVCC_CONFLICT_COUNTER`.
-    
+
     - Slow write causes write tasks to pile up. The data being written to TiKV exceeds the threshold set by `[storage] scheduler-pending-write-threshold` (100MB). Refer to [4.5](#45-tikv-write-is-slow).
 
 - 4.3.3 `raftstore is busy`. The processing of messages is slower than the receiving of messages. The short-term `channel full` status does not affect the service, but if the error persists for a long time, it might cause Leader switch.
@@ -258,11 +258,11 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 - 4.4.1 Re-election because TiKV is restarted
 
     - After TiKV panics, it is pulled up by systemd and runs normally. You can check whether panic has occurred by viewing the TiKV log. Because this issue is unexpected, [report a bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md) if it happens.
-    
-    - TiKV is stopped or killed by a third party and then pulled up by systemd. Check the cause by viewing `dmesg` and the TiKV log. 
-    
+
+    - TiKV is stopped or killed by a third party and then pulled up by systemd. Check the cause by viewing `dmesg` and the TiKV log.
+
     - TiKV is OOM, which causes restart. Refer to [4.2](#42-tikv-oom).
-    
+
     - TiKV is hung because of dynamically adjusting `THP` (Transparent Hugepage). See case [case-500](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case500.md) in Chinese.
 
 - 4.4.2 TiKV RocksDB encounters write stall and thus results in re-election. You can check if the monitor **Grafana** -> **TiKV-details** -> **errors** shows `server is busy`. Refer to [4.3.1](#43-the-client-reports-the-server-is-busy-error).
@@ -273,21 +273,21 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
 - 4.5.1 Check whether the TiKV write is low by viewing the `prewrite/commit/raw-put` duration of TiKV gRPC (only for raw KV clusters). Generally, you can locate the slow phase according to the [performance-map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png). Some common situations are listed as follows.
 
-- 4.5.2 The scheduler CPU is busy (only for transaction kv). 
+- 4.5.2 The scheduler CPU is busy (only for transaction kv).
 
     The `scheduler command duration` of prewrite/commit is longer than the sum of `scheduler latch wait duration` and `storage async write duration`. The scheduler worker has a high CPU demand, such as over 80% of `scheduler-worker-pool-size` * 100%, or the CPU resources of the entire machine are relatively limited. If the write workload is large, check if `[storage] scheduler-worker-pool-size` is set too small.
-    
+
     For other situations, [report a bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md).
 
 - 4.5.3 Append log is slow.
 
     The **Raft IO**/`append log duration` in TiKV Grafana is high, usually because the disk write operation is slow. You can verify the cause by checking the `WAL Sync Duration max` value of RocksDB - raft.
-    
+
     For other situations, [report a bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md).
 
 - 4.5.4 The raftstore thread is busy.
 
-    The **Raft Propose**/`propose wait duration` is significantly larger than the append log duration in TiKV Grafana. Take the following methods: 
+    The **Raft Propose**/`propose wait duration` is significantly larger than the append log duration in TiKV Grafana. Take the following methods:
 
     - Check whether the `[raftstore] store-pool-size` configuration value is too small. It is recommended to set the value between `1` and `5` and not too large.
     - Check whether the CPU resources on the machine are insufficient.
@@ -297,7 +297,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
     The **Raft IO**/`apply log duration` in TiKV Grafana is high, which usually comes with a high **Raft Propose**/`apply wait duration`. The possible causes are as follows:
 
     - `[raftstore] apply-pool-size` is too small (it is recommended to set the value between `1` and `5` and not too large), and the **Thread CPU**/`apply CPU` is large.
- 
+
     - The CPU resources on the machine are insufficient.
 
     - Region write hot spot. A single apply thread has high CPU usage. Currently, we cannot properly address the hot spot problem on a single Region, which is being improved. To view the CPU usage of each thread, modify the Grafana expression and add `by (instance, name)`.
@@ -328,7 +328,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
     - When a TiKV node is taken offline, some Region cannot be migrated to other nodes. This issue has been fixed in v3.0.4 ([#5526](https://github.com/tikv/tikv/pull/5526)). See [case-870](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case870.md) in Chinese.
 
-- 5.1.3 Balance 
+- 5.1.3 Balance
 
     - The Leader/Region count is not evenly distributed. See [case-394](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case394.md) and [case-759](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case759.md) in Chinese. The major cause is that the balance performs scheduling based on the size of Region/Leader, so this might result in the uneven distribution of the count. In TiDB 4.0, the `[leader-schedule-policy]` parameter is introduced, which enables you to set the scheduling policy of Leader to be `count`-based or `size`-based.
 
@@ -351,13 +351,13 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 - 5.2.3 PD timed out when TiDB executes SQL statements.
 
     - PD doesn't have a Leader or switches Leader. Refer to [5.2.1](#52-pd-election) and [5.2.2](#52-pd-election).
-    
+
     - Network issue. Check whether the network from TiDB to PD Leader is running normally by accessing the monitor **Grafana** -> **blackbox_exporter** -> **ping latency**.
-    
+
     - PD panics. [Report a bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md).
-    
+
     - PD is OOM. Refer to [5.3](#53-pd-oom).
-    
+
     - If the issue has other causes, get goroutine by running `curl http://127.0.0.1:2379/debug/pprof/goroutine?debug=2` and [report a bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md).
 
 - 5.2.4 Other issues
@@ -433,7 +433,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 - 6.1.8 Pump reports the `fail to notify all living drainer` error when it is started.
 
     - Cause: When Pump is started, it notifies all Drainer nodes that are in the `online` state. If it fails to notify Drainer, this error log is printed.
-    
+
     - Solution: Use the binlogctl tool to check whether each Drainer node is normal or not. This is to ensure that all Drainer nodes in the `online` state are working normally. If the state of a Drainer node is not consistent with its actual working status, use the binlogctl tool to change its state and then restart Pump. See the case [fail-to-notify-all-living-drainer](/tidb-binlog/handle-tidb-binlog-errors.md#fail-to-notify-all-living-drainer-is-returned-when-pump-is-started).
 
 - 6.1.9 Draienr reports the `gen update sqls failed: table xxx: row data is corruption []` error.
@@ -454,8 +454,8 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
 - 6.2.2 `Access denied for user 'root'@'172.31.43.27' (using password: YES)` shows when you run `query status` or check the log.
 
-    - The database related passwords in all the DM configuration files must be encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt the password.
-    - During DM operation, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges](https://docs.pingcap.com/tidb-data-migration/v1.0/precheck) automatically while starting the data replication task.
+    - The database related passwords in all the DM configuration files should be encrypted by `dmctl`. If a database password is empty, it is unnecessary to encrypt the password. Cleartext passwords can be used since v1.0.6.
+    - During DM operation, the user of the upstream and downstream databases must have the corresponding read and write privileges. Data Migration also [prechecks the corresponding privileges](https://docs.pingcap.com/tidb-data-migration/v2.0/precheck) automatically while starting the data replication task.
     - To deploy different versions of DM-worker/DM-master/dmctl in a DM cluster, see the [case study on AskTUG](https://asktug.com/t/dm1-0-0-ga-access-denied-for-user/1049/5) in Chinese.
 
 - 6.2.3 A replication task is interrupted with the `driver: bad connection` error returned.
@@ -475,7 +475,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 - 6.2.5 The relay unit reports the error `event from * in * diff from passed-in event *`, or a replication task is interrupted with an error that fails to get or parse binlog, such as `get binlog error ERROR 1236 (HY000) and binlog checksum mismatch, data may be corrupted returned`
 
     - During the process that DM pulls relay log or the incremental replication, this two errors might occur if the size of the upstream binlog file exceeds 4 GB.
-    
+
     - Cause: When writing relay logs, DM needs to perform event verification based on binlog positions and the binlog file size, and store the replicated binlog positions as checkpoints. However, the official MySQL uses uint32 to store binlog positions, which means the binlog position for a binlog file over 4 GB overflows, and then the errors above occur.
 
     - Solution:
@@ -489,7 +489,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
     - Check the position information recorded in `relay.meta`.
 
         - `relay.meta` has recorded the empty GTID information. DM-worker saves the GTID information in memory to `relay.meta` when it exits or in every 30s. When DM-worker does not obtain the upstream GTID information, it saves the empty GTID information to `relay.meta`. See [case-772](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case772.md) in Chinese.
-        
+    
         - The binlog event recorded in `relay.meta` triggers the incomplete recover process and records the wrong GTID information. This issue is fixed in v1.0.2, and might occur in earlier versions. <!--See [case-764](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case764.md).-->
 
 - 6.2.7 The DM replication process returns an error `Error 1366: incorrect utf8 value eda0bdedb29d(\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd)`.
@@ -554,7 +554,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 - 7.1.1 `GC life time is shorter than transaction duration`.
 
     The transaction duration exceeds the GC lifetime (10 minutes by default).
-    
+
     You can increase the GC lifetime by modifying the `mysql.tidb` table. Generally, it is not recommended to modify this parameter, because changing it might cause many old versions to pile up if this transaction has a large number of `update` and `delete` statements.
 
 - 7.1.2 `txn takes too much time`.
@@ -608,7 +608,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
     This transaction commit is too slow, which is rolled back by other transactions after TTL (3 seconds for a small transaction by default). This transaction will automatically retry, so the business is usually not affected.
 
-- 7.2.4  `PessimisticLockNotFound`. 
+- 7.2.4  `PessimisticLockNotFound`.
 
     Similar to `TxnLockNotFound`. The pessimistic transaction commit is too slow and thus rolled back by other transactions.
 
