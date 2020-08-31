@@ -375,18 +375,24 @@ tiup cluster reload prod-cluster
 
 grafana_servers:
   - host: 172.16.5.134
-    dashboard_dir: /local/dir/to/dashboards
+    dashboard_dir: /local/dashboards/dir
 
 monitoring_servers:
   - host: 172.16.5.134
-    rule_dir: /local/dir/to/rules
+    rule_dir: /local/rules/dir
 
 alertmanager_servers:
   - host: 172.16.5.134
-    config_file: /local/file
+    config_file: /local/alertmanager.yml
 ```
 
-这样在 reload 的时候 TiUP 会将中控机上对应的配置上传到目标机器的对应配置目录中。
+路径内容格式如下：
+
+- grafana_servers 的 `dashboard_dir` 字段指定的文件夹中应当含有完整的 `*.json`
+- monitoring_servers 的 `rule_dir` 字段定义的文件夹中应当含有完整的 `*.rules.yml`
+- alertmanager_servers 的 `config_file` 格式请参考[此处](https://github.com/pingcap/tiup/blob/master/templates/config/alertmanager.yml)
+
+这样在 reload 的时候 TiUP 会将中控机上对应的配置上传到目标机器的对应配置目录中，上传之前会删除目标机器中的老的配置文件，所以如果想要修改某一个配置文件，请确保将所有的（包含未修改的）配置文件都放在同一个目录中，例如，要修改 grafana 的 tidb.json，那么需要将 grafana 的 dashboards 目录中所有的 *.json 文件拷贝到本地目录中，再修改 tidb.json，否则最终的目标机器上将缺失其他的 json 文件。
 
 > **注意：**
 >
