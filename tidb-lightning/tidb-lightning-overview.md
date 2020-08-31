@@ -5,8 +5,7 @@ aliases: ['/docs-cn/v2.1/tidb-lightning/tidb-lightning-overview/','/docs-cn/v2.1
 
 # TiDB Lightning 简介
 
-<<<<<<< HEAD
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量数据的备份恢复。目前，支持 Mydumper 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
+TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量备份数据的恢复。目前，支持 Mydumper 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
 
 - **迅速**导入**大量新**数据。
 - 恢复所有备份数据。
