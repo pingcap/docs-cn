@@ -1,5 +1,4 @@
 ---
-<<<<<<< HEAD
 title: TiDB Lightning 导入模式
 summary: 了解 TiDB 不同导入模式。
 aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-backends/','/docs-cn/v4.0/tidb-lightning/tidb-lightning-backends/','/docs-cn/stable/reference/tools/tidb-lightning/tidb-backend/','/zh/tidb/stable/tidb-lightning-tidb-backend','/docs-cn/stable/tidb-lightning/tidb-lightning-tidb-backend/']
