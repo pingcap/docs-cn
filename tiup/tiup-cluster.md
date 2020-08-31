@@ -366,6 +366,36 @@ tiup cluster reload prod-cluster
 
 该操作会将配置发送到目标机器，重启集群，使配置生效。
 
+> **注意：**
+>
+> `tiup cluster edit-config` 命令不支持直接配置监控，但是可以传递一个本地路径进去间接配置，例如：
+
+```yaml
+---
+
+grafana_servers:
+  - host: 172.16.5.134
+    dashboard_dir: /local/dir/to/dashboards
+
+monitoring_servers:
+  - host: 172.16.5.134
+    rule_dir: /local/dir/to/rules
+
+alertmanager_servers:
+  - host: 172.16.5.134
+    config_file: /local/file
+```
+
+这样在 reload 的时候 TiUP 会将中控机上对应的配置上传到目标机器的对应配置目录中。
+
+> **注意：**
+>
+> 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在使用 `tiup cluster rename` 功能时需要注意：
+>
+> 1. 本地目录中的 dashboards 包含了集群名信息，需要修改本地 dashboards 中的集群名为新的集群名
+> 2. 本地目录中的 dashboards 中的 datasource 也要更新为新的集群名（datasource 是以集群名命名的）
+> 3. 执行 `tiup cluster reload -R grafana`
+
 ## 更新组件
 
 常规的升级集群可以使用 upgrade 命令，但是在某些场景下（例如 Debug)，可能需要用一个临时的包替换正在运行的组件，此时可以用 patch 命令：
