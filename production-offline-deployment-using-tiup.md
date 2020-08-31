@@ -232,8 +232,8 @@ alertmanager_servers:
 {{< copyable "shell-regular" >}}
 
 ```bash
-export TIUP_MIRRORS=/path/to/mirror &&
-tiup cluster deploy tidb-test v4.0.0 topology.yaml --user tidb [-p] [-i /home/root/.ssh/gcp_rsa] &&
+tiup mirror set /path/to/mirror
+tiup cluster deploy tidb-test v4.0.0 topology.yaml --user tidb [-p] [-i /home/root/.ssh/gcp_rsa]
 tiup cluster start tidb-test
 ```
 
