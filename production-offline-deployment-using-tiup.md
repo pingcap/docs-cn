@@ -70,10 +70,12 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/']
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz &&
+tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
 sh tidb-community-server-${version}-linux-amd64/local_install.sh
 source /home/tidb/.bash_profile
 ```
+
+在 local_install.sh 中，会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。若有多个离线包，后续可以通过手动执行 `tiup mirror set  <mirror-dir>` 的方式来切换。
 
 ## 3. TiKV 数据盘挂载
 
@@ -227,12 +229,9 @@ alertmanager_servers:
 
 ## 5. 部署 TiDB 集群
 
-`/path/to/mirror` 是执行 `local_install.sh` 命令时输出的离线镜像包的位置:
-
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup mirror set /path/to/mirror
 tiup cluster deploy tidb-test v4.0.0 topology.yaml --user tidb [-p] [-i /home/root/.ssh/gcp_rsa]
 tiup cluster start tidb-test
 ```
