@@ -38,6 +38,13 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
         2. 使用新的任务配置文件，增加`ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
         3. 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create` ，指定新的任务配置文件，指定 `start-ts` 为刚才记录的 `checkpoint-ts`，启动新的同步任务恢复同步。
 
+## 如何判断 TiCDC 同步任务出现中断？
+
+- 通过 Grafana 检查同步任务的 `changefeed checkpoint`（注意选择正确的 changefeed id）监控项，如果该值不发生变化（也可以查看 `checkpoint lag` 不断增大），可能任务出现同步中断。
+- 通过 Grafana 检查 `exit error count` 监控项，该监控项大于 0 代表同步任务出现错误。
+- 通过`cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。如果任务出错，也可以在 TiCDC server 日志中搜索 `error on running processor` 查看具体的错误堆栈。
+- 部分极端异常情况 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志。
+
 ## TiCDC 的 `gc-ttl` 和文件排序是什么？
 
 从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何小于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
