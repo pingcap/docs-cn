@@ -68,7 +68,7 @@ Empty set (0.01 sec)
 
 ## MySQL 兼容性
 
-`ROLLBACK` 语句与 MySQL 不完全兼容，TiDB 对任何 `CompletionTypeWithinTransaction` 仅有语法上的支持，即不支持事务回滚后，关闭连接或继续开启一个新事务的回滚选项。如有其他兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`ROLLBACK` 语句与 MySQL 不完全兼容，TiDB 对任何 `CompletionTypeWithinTransaction` 仅有语法上的支持，即不支持事务回滚后，关闭连接或继续开启一个新事务的回滚选项。如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 
