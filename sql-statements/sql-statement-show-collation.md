@@ -257,11 +257,7 @@ SHOW COLLATION;
 
 ## MySQL 兼容性
 
-<<<<<<< HEAD
 TiDB 不支持二进制以外的排序规则。`SHOW COLLATION` 语句仅用于确保与 MySQL 的兼容性。
-=======
-`SHOW COLLATION` 语句功能与 MySQL 完全兼容。注意，TiDB 中字符集的默认排序规则与 MySQL 有所不同，具体可参考[与 MySQL 兼容性对比](/mysql-compatibility.md#默认设置)。如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
->>>>>>> 73a3eca... sql-statements: improve language and fix links (#4375)
 
 ## 另请参阅
 
