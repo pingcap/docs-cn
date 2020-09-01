@@ -125,6 +125,11 @@ The following topology documents provide a cluster configuration template for ea
 > - If you use secret keys, you can specify the path of the keys through `-i` or `--identity_file`;
 > - If you use passwords, add the `-p` flag to enter the password interaction window;
 > - If password-free login to the target machine has been configured, no authentication is required.
+>
+> In general, TiUP creates the user and group specified in the `topology.yaml` file on the target machine, with the following exceptions:
+>
+> - The user name configured in `topology.yaml` already exists on the target machine.
+> - You have used the `--skip-create-user` option in the command line to explicitly skip the step of creating the user.
 
 {{< copyable "shell-regular" >}}
 
@@ -139,6 +144,7 @@ In the above command:
 - The initialization configuration file is `topology.yaml`.
 - `--user root`: Log in to the target machine through the `root` key to complete the cluster deployment, or you can use other users with `ssh` and `sudo` privileges to complete the deployment.
 - `[-i]` and `[-p]`: optional. If you have configured login to the target machine without password, these parameters are not required. If not, choose one of the two parameters. `[-i]` is the private key of the `root` user (or other users specified by `--user`) that has access to the target machine. `[-p]` is used to input the user password interactively.
+- If you need to specify the user group name to be created on the target machine, see [this example](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml#L7).
 
 At the end of the output log, you will see ```Deployed cluster `tidb-test` successfully```. This indicates that the deployment is successful.
 
