@@ -17,7 +17,7 @@ summary: TiDB 数据库中 SHOW STATS_HEALTHY 的使用概况。
 
 **ShowTargetFilterTable**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterTable.png)
+![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
 
 **ShowLikeOrWhereOpt**
 
