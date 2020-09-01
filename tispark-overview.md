@@ -1,7 +1,6 @@
 ---
 title: TiSpark 用户指南
-category: reference
-aliases: ['/docs-cn/v3.0/reference/tispark/']
+aliases: ['/docs-cn/v3.0/tispark-overview/','/docs-cn/v3.0/reference/tispark/']
 ---
 
 # TiSpark 用户指南
@@ -19,7 +18,8 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 + TiSpark 深度整合了 Spark Catalyst 引擎, 可以对计算提供精确的控制，使 Spark 能够高效的读取 TiKV 中的数据，提供索引支持以实现高速的点查。
 + 通过多种计算下推减少 Spark SQL 需要处理的数据大小，以加速查询；利用 TiDB 的内建的统计信息选择更优的查询计划。
 + 从数据集群的角度看，TiSpark + TiDB 可以让用户无需进行脆弱和难以维护的 ETL，直接在同一个平台进行事务和分析两种工作，简化了系统架构和运维。
-+ 除此之外，用户借助 TiSpark 项目可以在 TiDB 上使用 Spark 生态圈提供的多种工具进行数据处理。例如，使用 TiSpark 进行数据分析和 ETL；使用 TiKV 作为机器学习的数据源；借助调度系统产生定时报表等等。
++ 用户借助 TiSpark 项目可以在 TiDB 上使用 Spark 生态圈提供的多种工具进行数据处理。例如，使用 TiSpark 进行数据分析和 ETL；使用 TiKV 作为机器学习的数据源；借助调度系统产生定时报表等等。
++ 除此之外，TiSpark 还提供了分布式写入 TiKV 的功能。相比使用 Spark 结合 JDBC 的方式写入 TiDB，分布式写入 TiKV 可以实现事务（要么全部数据写入成功，要么全部都写入失败），并且写入速度会更快。
 
 ## 环境准备
 
@@ -95,6 +95,8 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 如果没有使用中的 Spark 集群，推荐使用 Saprk Standalone 方式部署。这里简单介绍下 Standalone 部署方式。如果遇到问题，可以去官网寻求[帮助](https://spark.apache.org/docs/latest/spark-standalone.html)；也欢迎在我们的 GitHub 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
 
+如果是使用 TiDB Ansible 部署的 TiDB 集群，也可以通过 TiDB Ansible 来部署 Spark Standalone 集群，TiSpark 也会同时部署。
+
 #### 下载安装包并安装
 
 你可以在 [Apache Spark™ 下载页面](https://spark.apache.org/downloads.html)下载 Apache Spark。
@@ -119,11 +121,11 @@ cd $SPARKPATH
 ./sbin/start-master.sh
 ```
 
-在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 <http://spark-master-hostname:8080> 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
+在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 <http://spark-master-hostname:8080> 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Worker 的时候，也可以通过这个面板来确认 Worker 是否已经加入集群。
 
-#### 启动 Slave
+#### 启动 Worker
 
-类似地，可以用如下命令启动 Spark-Slave 节点：
+类似地，可以用如下命令启动 Spark-Worker 节点：
 
 {{< copyable "shell-regular" >}}
 
@@ -131,7 +133,7 @@ cd $SPARKPATH
 ./sbin/start-slave.sh spark://spark-master-hostname:7077
 ```
 
-命令返回以后，即可通过刚才的面板查看这个 Slave 是否已经正确地加入了 Spark 集群。在所有 Slave 节点重复刚才的命令。确认所有的 Slave 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
+命令返回以后，即可通过刚才的面板查看这个 Worker 是否已经正确地加入了 Spark 集群。在所有 Worker 节点重复刚才的命令。确认所有的 Worker 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
 
 #### Spark SQL shell 和 JDBC 服务器
 

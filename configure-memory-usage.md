@@ -1,7 +1,6 @@
 ---
 title: TiDB 内存控制文档
-category: how-to
-aliases: ['/docs-cn/v3.0/how-to/configure/memory-control/','/docs-cn/sql/tidb-memory-control/']
+aliases: ['/docs-cn/v3.0/configure-memory-usage/','/docs-cn/v3.0/how-to/configure/memory-control/','/docs-cn/sql/tidb-memory-control/']
 ---
 
 # TiDB 内存控制文档

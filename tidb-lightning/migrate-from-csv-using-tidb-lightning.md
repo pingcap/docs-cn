@@ -1,7 +1,6 @@
 ---
 title: CSV 支持
-category: reference
-aliases: ['/docs-cn/v3.0/reference/tools/tidb-lightning/csv/','/docs-cn/tools/lightning/csv/']
+aliases: ['/docs-cn/v3.0/tidb-lightning/migrate-from-csv-using-tidb-lightning/','/docs-cn/v3.0/reference/tools/tidb-lightning/csv/','/docs-cn/tools/lightning/csv/']
 ---
 
 # CSV 支持
@@ -109,7 +108,7 @@ trim-last-separator = false
     | `\t`     | 制表符 (U+0009)             |
     | `\Z`     | Windows EOF (U+001A)     |
 
-    其他情况下（如 `\"`）反斜线会被移除，仅在字段中保留其后面的字符（`"`）。
+    其他情况下（如 `\"`）反斜线会被移除，仅在字段中保留其后面的字符（`"`），这种情况下，保留的字符仅作为普通字符，特殊功能（如界定符）都会失效。
 
 - 引用不会影响反斜线转义符的解析与否。
 

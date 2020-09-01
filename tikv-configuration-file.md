@@ -1,7 +1,6 @@
 ---
 title: TiKV 配置文件描述
-category: reference
-aliases: ['/docs-cn/v3.0/reference/configuration/tikv-server/configuration-file/']
+aliases: ['/docs-cn/v3.0/tikv-configuration-file/','/docs-cn/v3.0/reference/configuration/tikv-server/configuration-file/']
 ---
 
 <!-- markdownlint-disable MD001 -->
@@ -942,7 +941,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `blob-file-compression`
 
-+ Blob 文件所使用的压缩算法，可选值：no, snappy, zlib, bzip2, lz4, lz4hc, zstd。
++ Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
 + 默认值：lz4
 
 ### `blob-cache-size`
@@ -1040,7 +1039,7 @@ raftdb 相关配置项。
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发数。
-+ 默认值：1
++ 默认值：2
 + 最小值：1
 
 ### `wal-dir`

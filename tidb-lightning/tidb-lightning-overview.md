@@ -1,17 +1,16 @@
 ---
 title: TiDB Lightning 简介
-category: reference
-aliases: ['/docs-cn/v3.0/reference/tools/tidb-lightning/overview/']
+aliases: ['/docs-cn/v3.0/tidb-lightning/tidb-lightning-overview/','/docs-cn/v3.0/reference/tools/tidb-lightning/overview/']
 ---
 
 # TiDB Lightning 简介
 
 TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，可[在此下载](/download-ecosystem-tools.md#tidb-lightning)。
 
-TiDB Lightning 有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量数据的备份恢复。目前，Lightning 支持 Mydumper 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
+TiDB Lightning 有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量备份数据的恢复。目前，Lightning 支持 Mydumper 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
 
 - **迅速**导入**大量新**数据。
-- 备份恢复所有数据。
+- 恢复所有备份数据。
 
 ## TiDB Lightning 整体架构
 
@@ -38,7 +37,7 @@ TiDB Lightning 整体工作原理如下：
 
 6. 整张表相关联的所有引擎文件完成导入后，`tidb-lightning` 会对比本地数据源及下游集群的校验和 (checksum)，确保导入的数据无损，然后让 TiDB 分析 (`ANALYZE`) 这些新增的数据，以优化日后的操作。同时，`tidb-lightning` 调整 `AUTO_INCREMENT` 值防止之后新增数据时发生冲突。
 
-    表的自增 ID 是通过行数的**上界**估计值得到的，与表的数据文件总大小成正比。因此，最后的自增 ID 通常比实际行数大得多。这属于正常现象，因为在 TiDB 中自增 ID [不一定是连续分配的](/mysql-compatibility.md#auto-increment-id)。
+    表的自增 ID 是通过行数的**上界**估计值得到的，与表的数据文件总大小成正比。因此，最后的自增 ID 通常比实际行数大得多。这属于正常现象，因为在 TiDB 中自增 ID [不一定是连续分配的](/mysql-compatibility.md#自增-id)。
 
 7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
 

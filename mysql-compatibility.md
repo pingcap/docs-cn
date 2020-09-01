@@ -1,7 +1,6 @@
 ---
 title: 与 MySQL 兼容性对比
-category: reference
-aliases: ['/docs-cn/v3.0/reference/mysql-compatibility/']
+aliases: ['/docs-cn/v3.0/mysql-compatibility/','/docs-cn/v3.0/reference/mysql-compatibility/']
 ---
 
 # 与 MySQL 兼容性对比
@@ -10,7 +9,11 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 
 当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump, Mydumper/myloader）等都可以直接使用。
 
-不过一些特性由于在分布式环境下没法很好的实现，目前暂时不支持或者是表现与 MySQL 有差异。一些 MySQL 语法在 TiDB 中可以解析通过，但是不会做任何后续的处理，例如 `Create Table` 语句中 `Engine`，是解析并忽略。
+但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
+
+- 有更好的解决方案，例如 JSON 取代 XML 函数。
+- 目前对这些功能的需求度不高，例如存储流程和函数。
+- 一些功能在分布式系统上的实现难度较大。
 
 > **注意：**
 >
@@ -22,29 +25,30 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 触发器
 * 事件
 * 自定义函数
-* 外键约束
-* 全文/空间函数与索引
+* 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
+* 临时表
+* 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * `BINARY` 之外的排序规则
 * 增加/删除主键
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
-* X Protocol
-* Savepoints
-* 列级权限
+* X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
+* Savepoints [#6840](https://github.com/pingcap/tidb/issues/6840)
+* 列级权限 [#9766](https://github.com/pingcap/tidb/issues/9766)
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
-* `CREATE TABLE tblName AS SELECT stmt` 语法
-* `CREATE TEMPORARY TABLE` 语法
-* `CHECK TABLE` 语法
-* `CHECKSUM TABLE` 语法
-* `SELECT INTO FILE` 语法
+* `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
+* `CREATE TEMPORARY TABLE` 语法 [#1248](https://github.com/pingcap/tidb/issues/1248)
+* `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
+* `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
+* `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
 
 ## 与 MySQL 有差异的特性
 
 ### 自增 ID
 
-TiDB 中，自增列只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。
+TiDB 中，自增列只保证自增且唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证连续分配。TiDB 目前采用批量分配 ID 的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭删除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`alter table modify` 或 `alter table change`。
 
 在集群中有多个 tidb-server 实例时，如果表结构中有自增 ID，建议不要混用缺省值和自定义值，否则在如下情况下会遇到问题。
 
@@ -63,7 +67,7 @@ TiDB 实现自增 ID 的原理是每个 tidb-server 实例缓存一段 ID 值用
 1. 客户端向 B 插入一条将 `id` 设置为 1 的语句 `insert into t values (1, 1)`，并执行成功。
 2. 客户端向 A 发送 Insert 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配，当前 A 缓存了 [1, 30000] 这段 ID，所以会分配 1 为自增 ID 的值，并把本地计数器加 1。而此时数据库中已经存在 `id` 为 1 的数据，最终返回 `Duplicated Error` 错误。
 
-另外，从 TiDB 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
+另外，从 TiDB 3.0.4 版本开始，TiDB 将通过系统变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `alter table modify` 或 `alter table change` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。移除后不可再恢复（因为 TiDB 不支持添加列的 `AUTO_INCREMENT` 属性）
 
 > **注意：**
 >
@@ -118,9 +122,9 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - 不支持将新创建的列设为主键或唯一索引，也不支持将此列设成 AUTO_INCREMENT 属性
 + Drop Column: 不支持删除主键列或索引列
 + Change/Modify Column
-    - 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`
-    - 不支持修改 `DECIMAL` 类型的精度
-    - 不支持更改 `UNSIGNED` 属性
+    + 不支持有损变更，比如从 `BIGINT` 变为 `INTEGER`，或者从 `VARCHAR(255)` 变为 `VARCHAR(10)`，否则可能输出的错误信息 `length %d is less than origin %d`。
+    + 不支持修改 `DECIMAL` 类型的精度
+    + 不支持将字段类型修改为其超集，例如不支持从 `INTEGER` 修改为 `VARCHAR`，或者从 `TIMESTAMP` 修改为 `DATETIME`，否则可能输出的错误信息 `Unsupported modify column: type %d not match origin %d`。
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
 + Alter Database
     - 只支持将 `CHARACTER SET` 属性从 `utf8` 更改为 `utf8mb4`
@@ -143,6 +147,11 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 ### `ANALYZE TABLE`
 
 - [`ANALYZE TABLE`](/statistics.md#手动收集) 语句在 TiDB 和 MySQL 中表现不同。在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短；而在 TiDB 中，它会完全重构表的统计数据，语句执行过程较长。
+
+### `SELECT` 的限制
+
+- 不支持 `SELECT ... INTO @变量` 语法。
+- 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
 
 ### 视图
 
@@ -177,15 +186,16 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/command-line-flags-for-tidb-configuration.md#store) 选项指定的引擎中创建用户表。
+从架构上讲，TiDB 确实支持类似 MySQL 的存储引擎抽象，在启动 TiDB（通常是 `tikv`）时 [`--store`](/command-line-flags-for-tidb-configuration.md#--store) 选项指定的引擎中创建用户表。
 
 ### SQL 模式
 
-TiDB 支持 MySQL 5.7 中 **绝大多数的 SQL 模式**，以下几种模式除外：
+TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下：
 
-- TiDB 不支持兼容模式（例如 `ORACLE` 和 `POSTGRESQL`）。MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
-- TiDB 中的 `ONLY_FULL_GROUP_BY` 与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)，此问题日后将予以解决。
-- `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 这两种 SQL 模式用于解决兼容问题，但并不适用于 TiDB。
+- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+- TiDB 的 `ONLY_FULL_GROUP_BY` 模式与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
+
+MySQL 中的 `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 的 SQL 模式可用于解决兼容性问题，并不适用于 TiDB。
 
 ### 默认设置的区别
 

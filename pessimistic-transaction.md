@@ -1,8 +1,7 @@
 ---
 title: TiDB 悲观事务模型
 summary: 了解 TiDB 的悲观事务模型。
-category: reference
-aliases: ['/docs-cn/v3.0/reference/transactions/transaction-pessimistic/']
+aliases: ['/docs-cn/v3.0/pessimistic-transaction/','/docs-cn/v3.0/reference/transactions/transaction-pessimistic/']
 ---
 
 # TiDB 悲观事务模型

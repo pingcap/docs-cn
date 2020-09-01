@@ -1,7 +1,6 @@
 ---
 title: TiDB 软件和硬件环境建议配置
-category: how-to
-aliases: ['/docs-cn/v3.0/how-to/deploy/hardware-recommendations/','/docs-cn/op-guide/recommendation/']
+aliases: ['/docs-cn/v3.0/hardware-and-software-requirements/','/docs-cn/v3.0/how-to/deploy/hardware-recommendations/','/docs-cn/op-guide/recommendation/']
 ---
 
 # TiDB 软件和硬件环境建议配置
@@ -67,6 +66,7 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | TiDB |  4000  | 应用及 DBA 工具访问通信端口 |
 | TiDB | 10080  | TiDB 状态信息上报通信端口 |
 | TiKV |  20160 | TiKV 通信端口 |
+| TiKV |  20180 | TiKV 状态信息上报通信端口 |
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | PD 集群节点间通信端口 |
 | Pump | 8250 | Pump 通信端口 |

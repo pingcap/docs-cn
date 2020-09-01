@@ -1,6 +1,6 @@
 ---
 title: TiDB 简介
-category: introduction
+aliases: ['/docs-cn/v3.0/overview/']
 ---
 
 # TiDB 简介

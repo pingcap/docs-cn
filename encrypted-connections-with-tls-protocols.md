@@ -1,7 +1,6 @@
 ---
 title: 使用加密连接
-category: how-to
-aliases: ['/docs-cn/v3.0/how-to/secure/enable-tls-clients/','/docs-cn/sql/encrypted-connections/']
+aliases: ['/docs-cn/v3.0/encrypted-connections-with-tls-protocols/','/docs-cn/v3.0/how-to/secure/enable-tls-clients/','/docs-cn/sql/encrypted-connections/']
 ---
 
 # 使用加密连接

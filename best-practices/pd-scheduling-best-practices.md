@@ -1,8 +1,7 @@
 ---
 title: PD 调度策略最佳实践
 summary: 了解 PD 调度策略的最佳实践和调优方式
-category: reference
-aliases: ['/docs-cn/v3.0/reference/best-practices/pd-scheduling/']
+aliases: ['/docs-cn/v3.0/best-practices/pd-scheduling-best-practices/','/docs-cn/v3.0/reference/best-practices/pd-scheduling/']
 ---
 
 # PD 调度策略最佳实践
@@ -167,7 +166,7 @@ pd-ctl 支持动态创建和删除 Scheduler，你可以通过这些操作来控
 
 - `scheduler show`：显示当前系统中的 Scheduler
 - `scheduler remove balance-leader-scheduler`：删除（停用）balance region 调度器
-- `scheduler add evict-leader-scheduler-1`：添加移除 Store 1 的所有 Leader 的调度器
+- `scheduler add evict-leader-scheduler 1`：添加移除 Store 1 的所有 Leader 的调度器
 
 ### 手动添加 Operator
 

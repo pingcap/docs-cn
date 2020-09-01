@@ -1,8 +1,7 @@
 ---
 title: GRANT <privileges>
 summary: TiDB 数据库中 GRANT <privileges> 的使用概况。
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/statements/grant-privileges/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-grant-privileges/','/docs-cn/v3.0/reference/sql/statements/grant-privileges/']
 ---
 
 # `GRANT <privileges>`
@@ -85,6 +84,7 @@ SHOW GRANTS FOR 'newuser';
 
 ## 另请参阅
 
+* [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
 * [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
-* [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
-* [Privilege Management](/privilege-management.md)
+* [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+* [权限管理](/privilege-management.md)

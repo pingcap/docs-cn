@@ -1,7 +1,6 @@
 ---
 title: Optimizer Hints
-category: reference
-aliases: ['/docs-cn/v3.0/reference/performance/optimizer-hints/','/docs-cn/sql/optimizer-hints/']
+aliases: ['/docs-cn/v3.0/optimizer-hints/','/docs-cn/v3.0/reference/performance/optimizer-hints/','/docs-cn/sql/optimizer-hints/']
 ---
 
 # Optimizer Hints

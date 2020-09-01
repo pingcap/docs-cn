@@ -1,7 +1,6 @@
 ---
 title: 数值类型
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/data-types/numeric/']
+aliases: ['/docs-cn/v3.0/data-type-numeric/','/docs-cn/v3.0/reference/sql/data-types/numeric/']
 ---
 
 # 数值类型

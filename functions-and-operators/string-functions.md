@@ -1,7 +1,7 @@
 ---
 title: 字符串函数
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/string-functions/','/docs-cn/sql/string-functions/']
+summary: 了解字符串函数。
+aliases: ['/docs-cn/v3.0/functions-and-operators/string-functions/','/docs-cn/v3.0/reference/sql/functions-and-operators/string-functions/','/docs-cn/sql/string-functions/','/docs-cn/v3.0/sql/string-functions/']
 ---
 
 # 字符串函数

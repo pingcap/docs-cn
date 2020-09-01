@@ -1,7 +1,6 @@
 ---
 title: 离线 TiDB Ansible 部署方案
-category: how-to
-aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/offline-ansible/','/docs-cn/op-guide/offline-ansible-deployment/']
+aliases: ['/docs-cn/v3.0/offline-deployment-using-ansible/','/docs-cn/v3.0/how-to/deploy/orchestrated/offline-ansible/','/docs-cn/op-guide/offline-ansible-deployment/']
 ---
 
 # 离线 TiDB Ansible 部署方案
@@ -136,7 +135,7 @@ aliases: ['/docs-cn/v3.0/how-to/deploy/orchestrated/offline-ansible/','/docs-cn/
 
 如果你的部署目标机器时间、时区设置一致，已开启 NTP 服务且在正常同步时间，此步骤可忽略，可参考[如何检测 NTP 服务是否正常](/online-deployment-using-ansible.md#第-6-步在部署目标机器上安装-ntp-服务)。
 
-参考[在部署目标机器上安装 NTP 服务](/online-deployment-using-ansible.md#在部署目标机器上安装-ntp-服务)即可。
+参考[在部署目标机器上安装 NTP 服务](/online-deployment-using-ansible.md#第-6-步在部署目标机器上安装-ntp-服务)即可。
 
 ## 在部署目标机器上配置 CPUfreq 调节器模式
 

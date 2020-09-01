@@ -1,7 +1,6 @@
 ---
 title: TiDB FAQ
-category: FAQ
-aliases: ['/docs-cn/v3.0/faq/tidb/','/docs-cn/FAQ/','/docs-cn/faq/tidb/']
+aliases: ['/docs-cn/v3.0/faq/tidb-faq/','/docs-cn/v3.0/faq/tidb/','/docs-cn/FAQ/','/docs-cn/faq/tidb/']
 ---
 
 # FAQ
@@ -38,7 +37,17 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
-#### 1.1.7 TiDB 具备高可用的特性吗？
+使用 MySQL 8.0 客户端时，如果遇到无法登陆的问题，可以尝试指定 `default-auth` 和 `default-character-set` 参数：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+mysql -h 127.0.0.1 -u root -P 4000 --default-auth=mysql_native_password --default-character-set=utf8
+```
+
+无法登陆的原因是 MySQL 8.0 会更改了 MySQL 5.7 默认的[密码加密方式](/security-compatibility-with-mysql.md)，所以需要添加以上参数指定使用旧的加密方式。
+
+#### 1.1.7 TiDB 支持分布式事务吗？
 
 TiDB 天然具备高可用特性，TiDB、TiKV、PD 这三个组件都能容忍部分实例失效，不影响整个集群的可用性。具体见 [TiDB 高可用性](/key-features.md#高可用)。
 
@@ -74,9 +83,11 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 详细可参考[系统变量](/system-variables.md)。
 
-#### 1.1.15 TiDB 是否支持 select for update？
+#### 1.1.15 TiDB 是否支持 `SELECT FOR UPDATE`？
 
-支持，但语义上和 MySQL 有区别，TiDB 是分布式数据库，采用的乐观锁机制，也就说 select for update 不在事务开启就锁住数据，而是其他事务在提交的时候进行冲突检查，如有冲突，会进行回滚。
+支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
+
+当 TiDB 使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。
 
 #### 1.1.16 TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
@@ -102,9 +113,9 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 TiDB 的 `show processlist` 与 MySQL 的 `show processlist` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
-1）由于 TiDB 是分布式数据库，tidb-server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/overview.md#tidb-整体架构)），用户使用 MySQL 客户端登录的是哪个 tidb-server，`show processlist` 就会显示当前连接的这个 tidb-server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
+1）由于 TiDB 是分布式数据库，tidb-server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/architecture.md)），用户使用 MySQL 客户端登录的是哪个 tidb-server，`show processlist` 就会显示当前连接的这个 tidb-server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
 
-2）TiDB 的 `show processlist` 显示内容比起 MySQL 来讲，多了一个当前 session 使用内存的估算值（单位 Byte）。
+2）在查询执行期间，TiDB 中的 `State` 列不会持续更新。由于 TiDB 支持并行查询，每个语句可能同时处于多个状态，因此很难显示为某一种状态。
 
 #### 1.1.21 如何修改用户名密码和权限？
 
@@ -112,11 +123,11 @@ TiDB 作为分布式数据库，在 TiDB 中修改用户密码建议使用 `set 
 
 #### 1.1.22 TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
-TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 tidb-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/mysql-compatibility.md#自增-id)。
+TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 TiDB-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB 允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考[CREATE TABLE 语法](/mysql-compatibility.md#自增-id)。
 
-#### 1.1.23 sql_mode 默认除了通过命令 set 修改，配置文件怎么修改？
+#### 1.1.23 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 的 sql_mode 与 MySQL 的 sql_mode 设置方法有一些差别，TiDB 不支持配置文件配置设置数据库的 sql\_mode，而只能使用 set 命令去设置，具体方法为：`set @@global.sql_mode = 'STRICT_TRANS_TABLES';`。
+TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables.md)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
 
 #### 1.1.23 我们的安全漏洞扫描工具对 MySQL version 有要求，TiDB 是否支持修改 server 版本号呢？
 
@@ -521,7 +532,7 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 #### 3.3.8 TiDB 同时支持的最大并发连接数？
 
-当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
+默认情况下，每个 TiDB 服务器的最大连接数没有限制。如有需要，可以在 `config.toml` 文件中设置 `max-server-connections` 来限制最大连接数。如果并发量过大导致响应时间增加，建议通过添加 TiDB 节点进行扩容。
 
 #### 3.3.9 如何查看某张表创建的时间？
 
@@ -560,9 +571,9 @@ TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_pr
 
 当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
-#### 3.3.12 SQL 中如何通过 hint 使用一个具体的 index？
+#### 3.3.12 可以使用 Hints 控制优化器行为吗？
 
-同 MySQL 的用法一致，例如：
+在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，比如 [Optimizer Hints](/optimizer-hints.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：
 `select column_name from table_name use index（index_name）where where_condition;`
 
 #### 3.3.13 触发 Information schema is changed 错误的原因？
@@ -784,7 +795,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
         --batch
     ```
 
-- 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
+- 也可以选择增大 TiDB 的单个事物语句数量限制，不过这个会导致内存增加。
 
 #### 4.1.9 TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
@@ -794,7 +805,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 #### 4.2.1 Syncer 架构
 
-详细参考 [解析 TiDB 在线数据同步工具 Syncer](https://pingcap.com/blog-cn/tidb-syncer/)。
+详细参考[解析 TiDB 在线数据同步工具 Syncer](https://pingcap.com/blog-cn/tidb-syncer/)。
 
 ##### 4.2.1.1 Syncer 使用文档
 
@@ -895,11 +906,11 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ### 5.1 TiDB 执行计划解读
 
-详细解读 [理解 TiDB 执行计划](/query-execution-plan.md)。
+详细解读[理解 TiDB 执行计划](/query-execution-plan.md)。
 
 #### 5.1.1 统计信息收集
 
-详细解读 [统计信息](/statistics.md)。
+详细解读[统计信息](/statistics.md)。
 
 #### 5.1.2 Count 如何加速？
 
@@ -941,7 +952,7 @@ RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganiz
 
 #### 5.1.5 TiDB 是否支持基于 COST 的优化（CBO），如果支持，实现到什么程度？
 
-是的，TiDB 使用的基于成本的优化器（CBO），我们有一个小组单独会对代价模型、统计信息持续优化，除此之外，我们支持 hash join、soft merge 等关联算法。
+是的，TiDB 使用的是基于成本的优化器 (CBO)，会对代价模型、统计信息持续优化。除此之外，TiDB 还支持 hash join、soft-merge join 等 join 算法。
 
 #### 5.1.6 如何确定某张表是否需要做 analyze ？
 
@@ -1009,13 +1020,15 @@ QPS 会统计执行的所有 SQL 命令，包括 use database、load data、begi
 
 Statement OPS 只统计 select、update、insert 等业务相关的，所以 Statement OPS 的统计和业务比较相符。
 
-## 八、Cloud TiDB
+## 八、云上部署
 
-### 8.1 腾讯云
+### 8.1 公有云
 
-#### 8.1.1 目前 Cloud TiDB 都有那些云厂商？
+#### 8.1.1 目前 TiDB 云上部署都支持哪些云厂商？
 
-Cloud TiDB 目前已经在腾讯云、UCloud 上线，都是数据库一级入口，欢迎大家使用。
+关于云上部署，TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和 [阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
+
+此外，TiDB 云上部署也已在京东云、UCloud 上线，均为数据库一级入口，欢迎大家使用。
 
 ## 九、故障排除
 

@@ -1,8 +1,7 @@
 ---
 title: START TRANSACTION
 summary: TiDB 数据库中 START TRANSACTION 的使用概况。
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/statements/start-transaction/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-start-transaction/','/docs-cn/v3.0/reference/sql/statements/start-transaction/']
 ---
 
 # START TRANSACTION
@@ -61,7 +60,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-`START TRANSACTION` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`START TRANSACTION` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

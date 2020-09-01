@@ -1,7 +1,6 @@
 ---
 title: TiDB 3.0.13 Release Notes
-category: Releases
-aliases: ['/docs-cn/v3.0/releases/3.0.13/']
+aliases: ['/docs-cn/v3.0/releases/release-3.0.13/','/docs-cn/v3.0/releases/3.0.13/']
 ---
 
 # TiDB 3.0.13 Release Notes
@@ -9,8 +8,6 @@ aliases: ['/docs-cn/v3.0/releases/3.0.13/']
 发版日期：2020 年 04 月 22 日
 
 TiDB 版本：3.0.13
-
-TiUP 版本：3.0.13
 
 ## Bug 修复
 

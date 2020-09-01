@@ -1,6 +1,6 @@
 ---
 title: TiDB 整体架构
-category: introduction
+aliases: ['/docs-cn/v3.0/architecture/']
 ---
 
 # TiDB 整体架构

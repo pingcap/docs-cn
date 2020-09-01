@@ -1,7 +1,6 @@
 ---
 title: ADMIN
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/statements/admin/','/docs-cn/sql/admin/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-admin/','/docs-cn/v3.0/reference/sql/statements/admin/','/docs-cn/sql/admin/']
 ---
 
 # ADMIN

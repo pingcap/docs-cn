@@ -1,8 +1,7 @@
 ---
 title: SET [GLOBAL|SESSION] <variable>
 summary: TiDB 数据库中 SET [GLOBAL|SESSION] <variable> 的使用概况。
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/statements/set-variable/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-set-variable/','/docs-cn/v3.0/reference/sql/statements/set-variable/']
 ---
 
 # `SET [GLOBAL|SESSION] <variable>`
@@ -114,7 +113,11 @@ SHOW SESSION VARIABLES LIKE 'sql_mode';
 
 ## MySQL 兼容性
 
-`SET [GLOBAL|SESSION]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+使用 `SET [GLOBAL|SESSION] <variable>` 更改系统变量上，TiDB 与 MySQL 存在以下差异：
+
+* 与 MySQL 不同，TiDB 中使用 `SET GLOBAL` 所作的修改会应用于集群中的全部 TiDB 实例。而在 MySQL 中，修改不会应用于副本。
+* TiDB 中的若干变量可读又可设置，这是与 MySQL 相兼容的要求，因为应用程序和连接器常读取 MySQL 变量。例如：JDBC 连接器同时读取和设置缓存查询的参数，尽管并不依赖这一行为。
+* 即使在 TiDB 服务器重启后，`SET GLOBAL` 的更改也仍然有效。这样，TiDB 中的 `SET GLOBAL` 更类似于 MySQL 8.0 及更高版本中的 `SET PERSIST`。
 
 ## 另请参阅
 

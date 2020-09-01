@@ -1,15 +1,14 @@
 ---
 title: Mydumper 使用文档
 summary: 使用 Mydumper 从 TiDB 导出数据。
-category: reference
-aliases: ['/docs-cn/v3.0/reference/tools/mydumper/','/docs-cn/tools/mydumper/']
+aliases: ['/docs-cn/v3.0/mydumper-overview/','/docs-cn/v3.0/reference/tools/mydumper/','/docs-cn/tools/mydumper/']
 ---
 
 # Mydumper 使用文档
 
 ## Mydumper 简介
 
-[Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，针对 TiDB 的特性进行了优化，推荐使用此工具对 TiDB 进行逻辑备份。
+[Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，可以用于对 **MySQL** 或者 **TiDB** 进行逻辑备份，并针对 TiDB 的特性进行了优化。
 
 Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/download-ecosystem-tools.md)。
 
@@ -77,6 +76,10 @@ Mydumper 首先计算 `min(_tidb_rowid)` 和 `max(_tidb_rowid)`，然后按照 `
 在 Dump 操作前需要进行性能评估。由于并发 Scan 操作对 TiDB、TiKV 集群都会产生一定压力，所以需要评估与测试 Dump 操作对数据库集群和业务的影响。
 
 ## FAQ
+
+### 使用的 `--tidb-snapshot` 导出时报错，怎么处理？
+
+需要执行命令时增加一个参数 --skip-tz-utc，如果不设置的话 Mydumper 会预先设置 UTC 时区，然后在设置 tidb-snapshot 的时候会做时区转化，就会有问题
 
 ### 如何判断使用的 Mydumper 是否为 PingCAP 优化的版本？
 

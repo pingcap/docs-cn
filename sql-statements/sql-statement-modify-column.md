@@ -1,8 +1,7 @@
 ---
 title: MODIFY COLUMN
 summary: TiDB 数据库中 MODIFY COLUMN 的使用概况。
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/statements/modify-column/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-modify-column/','/docs-cn/v3.0/reference/sql/statements/modify-column/']
 ---
 
 # MODIFY COLUMN

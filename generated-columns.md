@@ -1,7 +1,6 @@
 ---
 title: 生成列
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/generated-columns/','/docs-cn/sql/generated-columns/']
+aliases: ['/docs-cn/v3.0/generated-columns/','/docs-cn/v3.0/reference/sql/generated-columns/','/docs-cn/sql/generated-columns/']
 ---
 
 # 生成列

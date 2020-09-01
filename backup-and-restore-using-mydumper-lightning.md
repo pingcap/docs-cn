@@ -1,7 +1,6 @@
 ---
 title: 使用 Mydumper/TiDB Lightning 进行备份与恢复
-category: how-to
-aliases: ['/docs-cn/v3.0/how-to/maintain/backup-and-restore/']
+aliases: ['/docs-cn/v3.0/backup-and-restore-using-mydumper-lightning/','/docs-cn/v3.0/how-to/maintain/backup-and-restore/']
 ---
 
 # 使用 Mydumper/TiDB Lightning 进行备份与恢复

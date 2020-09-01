@@ -1,7 +1,6 @@
 ---
 title: TiDB Binlog 故障诊断
-category: reference
-aliases: ['/docs-cn/v3.0/reference/tidb-binlog/troubleshoot/binlog/','/docs-cn/v3.0/how-to/troubleshoot/tidb-binlog/']
+aliases: ['/docs-cn/v3.0/tidb-binlog/troubleshoot-tidb-binlog/','/docs-cn/v3.0/reference/tidb-binlog/troubleshoot/binlog/','/docs-cn/v3.0/how-to/troubleshoot/tidb-binlog/']
 ---
 
 # TiDB Binlog 故障诊断

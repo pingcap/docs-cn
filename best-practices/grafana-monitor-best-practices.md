@@ -1,8 +1,7 @@
 ---
 title: 使用 Grafana 监控 TiDB 的最佳实践
 summary: 了解高效利用 Grafana 监控 TiDB 的七个技巧。
-category: reference
-aliases: ['/docs-cn/v3.0/reference/best-practices/grafana-monitor/']
+aliases: ['/docs-cn/v3.0/best-practices/grafana-monitor-best-practices/','/docs-cn/v3.0/reference/best-practices/grafana-monitor/']
 ---
 
 # 使用 Grafana 监控 TiDB 的最佳实践
@@ -15,7 +14,7 @@ Prometheus 是一个拥有多维度数据模型和灵活查询语句的时序数
 
 ![TiDB 监控整体架构](/media/prometheus-in-tidb.png)
 
-从 TiDB 2.1.3 版本开始，监控采用 pull 的方式，而之前版本采用的是 push 的方式，这是一个非常好的调整，它有以下几个优点：
+从 TiDB 2.1.3 版本开始，监控可以支持 pull，这是一个非常好的调整，它有以下几个优点：
 
 - 如果 Prometheus 需要迁移，无需重启整个 TiDB 集群。调整前，因为组件要调整 push 的目标地址，迁移 Prometheus 需要重启整个集群。
 - 支持部署 2 套独立的 Grafana + Prometheus 的监控平台（非 HA），防止监控的单点。方法是使用 TiDB Ansible 用不同的 IP 各执行一次部署命令。

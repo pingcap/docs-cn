@@ -1,7 +1,6 @@
 ---
 title: 日期和时间函数
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/functions-and-operators/date-and-time-functions/','/docs-cn/sql/date-and-time-functions/']
+aliases: ['/docs-cn/v3.0/functions-and-operators/date-and-time-functions/','/docs-cn/v3.0/reference/sql/functions-and-operators/date-and-time-functions/','/docs-cn/sql/date-and-time-functions/']
 ---
 
 # 日期和时间函数

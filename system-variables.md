@@ -1,7 +1,6 @@
 ---
 title: 系统变量
-category: reference
-aliases: ['/docs-cn/v3.0/reference/configuration/tidb-server/mysql-variables/','/docs-cn/sql/variable/']
+aliases: ['/docs-cn/v3.0/system-variables/','/docs-cn/v3.0/reference/configuration/tidb-server/mysql-variables/','/docs-cn/sql/variable/']
 
 ---
 
@@ -192,6 +191,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 | tx_isolation | GLOBAL \| SESSION | 事务隔离级别 |
 | max\_execution\_time | GLOBAL \| SESSION | 语句超时时间，单位为毫秒 |
 | innodb\_lock\_wait\_timeout | GLOBAL \| SESSION | 悲观事务语句等锁时间，单位为秒 |
+| interactive\_timeout | SESSION \| GLOBAL | 交互式用户会话的空闲超时，单位为秒 |
 
 > **注意：**
 >

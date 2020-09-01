@@ -1,7 +1,6 @@
 ---
 title: PD Control 使用说明
-category: reference
-aliases: ['/docs-cn/v3.0/reference/tools/pd-control/','/docs-cn/tools/pd-control/']
+aliases: ['/docs-cn/v3.0/pd-control/','/docs-cn/v3.0/reference/tools/pd-control/','/docs-cn/tools/pd-control/']
 ---
 
 # PD Control 使用说明
@@ -10,7 +9,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 源码编译
 
-1. [Go](https://golang.org/) Version 1.9 以上
+1. [Go](https://golang.org/) Version 1.13 以上
 2. 在 PD 项目根目录使用 `make` 命令进行编译，生成 bin/pd-ctl
 
 ## 下载安装包

@@ -1,8 +1,7 @@
 ---
 title: TRUNCATE
 summary: TiDB 数据库中 TRUNCATE 的使用概况。
-category: reference
-aliases: ['/docs-cn/v3.0/reference/sql/statements/truncate/']
+aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-truncate/','/docs-cn/v3.0/reference/sql/statements/truncate/']
 ---
 
 # TRUNCATE
