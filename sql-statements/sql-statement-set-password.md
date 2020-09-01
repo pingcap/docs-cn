@@ -102,7 +102,7 @@ SHOW CREATE USER 'newuser';
 
 ## MySQL 兼容性
 
-`SET PASSWORD` 语句与 MySQL 完全兼容。如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SET PASSWORD` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 
