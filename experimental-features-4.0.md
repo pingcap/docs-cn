@@ -23,3 +23,7 @@ Support the expression index feature. The expression index is also called the fu
     - The SQL statements contain a changing condition (limited to the primary key of tables or partitions), and the other parts are consistent.
     - The SQL statements contain multiple changing conditions and the other parts are consistent. The changing conditions exactly match a compound index column.
 + Support persisting configuration parameters in PD and dynamically modifying configuration items to improve product usability.
+
+## TiCDC
+
+TiCDC is a tool for replicating the incremental data of TiDB. This tool is implemented by pulling TiKV change logs, which ensures high reliability and availability of data. You can subscribe to the change information of data, and the system automatically sends data to the downstream. Currently, the downstream database must be MySQL compatible (such as MySQL and TiDB) or Kafka and Pulsar. You can also extend the supported downstream systems based on the [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md). See [TiCDC](/ticdc/ticdc-overview.md) for details.

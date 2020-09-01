@@ -8,7 +8,7 @@ aliases: ['/docs/dev/ticdc-deployment-topology/']
 
 > **Note:**
 >
-> TiCDC has been a feature of general availability (GA) since v4.0.5. You can use TiCDC in production environments.
+> TiCDC is still an experimental feature. It is **NOT** recommended to use it in the production environment.
 
 This document describes the deployment topology of TiCDC based on the minimal cluster topology.
 

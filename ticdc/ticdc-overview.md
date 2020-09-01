@@ -6,9 +6,9 @@ aliases: ['/docs/dev/ticdc/ticdc-overview/','/docs/dev/reference/tools/ticdc/ove
 
 # TiCDC Overview
 
-> **Note:**
+> **Warning:**
 >
-> TiCDC has been a feature of general availability (GA) since v4.0.5. You can use TiCDC in production environments.
+> TiCDC is still an experimental feature. It is **NOT** recommended to use it in the production environment.
 
 [TiCDC](https://github.com/pingcap/ticdc) is a tool for replicating the incremental data of TiDB. This tool is implemented by pulling TiKV change logs. It can restore data to a consistent state with any upstream TSO, and provides [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md) to support other systems to subscribe to data changes.
 
