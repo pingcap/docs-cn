@@ -4,7 +4,7 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-compatibility/']
 ---
 
-# 与 MySQL 兼容性对比概览
+# 与 MySQL 兼容性对比
 
 - TiDB 100% 兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
 
