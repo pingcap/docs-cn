@@ -60,10 +60,10 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-`START TRANSACTION` 语句与 MySQL 不完全兼容。	
+`START TRANSACTION` 语句与 MySQL 不完全兼容。
 
-* `START TRANSACTION` 相当于 MySQL 的 `START TRANSACTION WITH CONSISTENT SNAPSHOT`，即 `START TRANSACTION` 后执行了一个从 InnoDB 任意表读数据的 `SELECT` 语句（非 `SELECT FOR UPDATE`）。	
-* `READ ONLY` 及其扩展选项都都只是语法兼容，其效果等同于 `START TRANSACTION`。	
+* `START TRANSACTION` 相当于 MySQL 的 `START TRANSACTION WITH CONSISTENT SNAPSHOT`，即 `START TRANSACTION` 后执行了一个从 InnoDB 任意表读数据的 `SELECT` 语句（非 `SELECT FOR UPDATE`）。
+* `READ ONLY` 及其扩展选项都都只是语法兼容，其效果等同于 `START TRANSACTION`。
 
 如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
