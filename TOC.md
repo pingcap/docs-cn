@@ -187,7 +187,7 @@
       + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
       + [表库过滤](/table-filter.md)
       + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      + [导入模式](/tidb-lightning/tidb-lightning-backends.md)
+      + [后端](/tidb-lightning/tidb-lightning-backends.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     + [故障诊断](/troubleshoot-tidb-lightning.md)
@@ -509,6 +509,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.5](/releases/release-4.0.5.md)
     - [4.0.4](/releases/release-4.0.4.md)
     - [4.0.3](/releases/release-4.0.3.md)
     - [4.0.2](/releases/release-4.0.2.md)
