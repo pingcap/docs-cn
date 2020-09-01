@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-bindings/']
 
 # SHOW [GLOBAL|SESSION] BINDINGS
 
-`SHOW BINDINGS` 语句用于显示创建过的 SQL 绑定的相关信息。`BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内删除绑定执行计划。在不指定作用域时，默认隐式作用域为 `SESSION`。
+`SHOW BINDINGS` 语句用于显示创建过的 SQL 绑定的相关信息。`BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内显示执行计划绑定。在不指定作用域时，默认的作用域为 `SESSION`。
 
 ## 语法图
 

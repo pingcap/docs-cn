@@ -6,11 +6,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 
 # CREATE [GLOBAL|SESSION] BINDING
 
-`CREATE [GLOBAL|SESSION] BINDING` 语句用于在 TiDB 中创建新的绑定。绑定不需要更改底层查询，可用于将优化器 Hint 插入语句中。
+`CREATE [GLOBAL|SESSION] BINDING` 语句用于在 TiDB 中创建新的执行计划绑定。绑定可用于将优化器 Hint 插入语句中，而无需更改底层查询。
 
-`BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内绑定执行计划。在不指定作用域时，默认的隐式作用域为 `SESSION`。
+`BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内创建执行计划绑定。在不指定作用域时，默认的作用域为 `SESSION`。
 
-被绑定的 SQL 会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `ON`（其默认值为 `ON`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
+被绑定的 SQL 语句会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 语句和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `ON`（其默认值为 `ON`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
 
 ## 语法图
 
