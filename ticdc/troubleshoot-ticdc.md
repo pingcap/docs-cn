@@ -40,10 +40,10 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 ## 如何判断 TiCDC 同步任务出现中断？
 
-- 通过 Grafana 检查同步任务的 `changefeed checkpoint`（注意选择正确的 changefeed id）监控项，如果该值不发生变化（也可以查看 `checkpoint lag` 不断增大），可能任务出现同步中断。
+- 通过 Grafana 检查同步任务的 `changefeed checkpoint`（注意选择正确的 `changefeed id`）监控项。如果该值不发生变化（也可以查看 `checkpoint lag` 是否不断增大），可能同步任务出现中断。
 - 通过 Grafana 检查 `exit error count` 监控项，该监控项大于 0 代表同步任务出现错误。
-- 通过`cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息，任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
-- 部分极端异常情况 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
+- 通过 `cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
+- 部分极端异常情况下 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
 
 ## TiCDC 的 `gc-ttl` 和文件排序是什么？
 
