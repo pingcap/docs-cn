@@ -138,9 +138,9 @@ ERROR 3530 (HY000): `analyticsteam`@`%` is is not granted to jennifer@%
 
 ## 另请参阅
 
-* [CREATE ROLE](/sql-statements/sql-statement-create-role.md)
-* [GRANT <role>](/sql-statements/sql-statement-grant-role.md)
-* [REVOKE <role>](/sql-statements/sql-statement-revoke-role.md)
-* [SET ROLE](/sql-statements/sql-statement-set-role.md)
-* [SET DEFAULT ROLE](/sql-statements/sql-statement-set-default-role.md)
+* [`CREATE ROLE`](/sql-statements/sql-statement-create-role.md)
+* [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
+* [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
+* [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
+* [`SET DEFAULT ROLE`](/sql-statements/sql-statement-set-default-role.md)
 * [基于角色的访问控制](/role-based-access-control.md)
