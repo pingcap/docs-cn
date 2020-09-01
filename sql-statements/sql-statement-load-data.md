@@ -106,4 +106,3 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 ## 另请参阅
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
-* [Import Example Database](/import-example-data.md)
