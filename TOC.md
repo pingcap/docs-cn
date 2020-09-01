@@ -149,6 +149,11 @@
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
       - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
+<<<<<<< HEAD
+=======
+      - [`CREATE ROLE`](/sql-statements/sql-statement-create-role.md)
+      - [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)
+>>>>>>> c99beba... sql-statements: add statement reference for ROLES (#4313)
       - [`CREATE TABLE LIKE`](/sql-statements/sql-statement-create-table-like.md)
       - [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)
       - [`CREATE USER`](/sql-statements/sql-statement-create-user.md)
@@ -161,6 +166,12 @@
       - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
       - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
       - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
+<<<<<<< HEAD
+=======
+      - [`DROP ROLE`](/sql-statements/sql-statement-drop-role.md)
+      - [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
+      - [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md)
+>>>>>>> c99beba... sql-statements: add statement reference for ROLES (#4313)
       - [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)
       - [`DROP USER`](/sql-statements/sql-statement-drop-user.md)
       - [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)
@@ -171,6 +182,7 @@
       - [`FLUSH STATUS`](/sql-statements/sql-statement-flush-status.md)
       - [`FLUSH TABLES`](/sql-statements/sql-statement-flush-tables.md)
       - [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)
+      - [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
       - [`INSERT`](/sql-statements/sql-statement-insert.md)
       - [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)
       - [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)
@@ -182,8 +194,10 @@
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
       - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
+      - [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
       - [`ROLLBACK`](/sql-statements/sql-statement-rollback.md)
       - [`SELECT`](/sql-statements/sql-statement-select.md)
+      - [`SET DEFAULT ROLE`](/sql-statements/sql-statement-set-default-role.md)
       - [`SET [NAMES|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md)
       - [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md)
       - [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
