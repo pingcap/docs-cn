@@ -71,13 +71,7 @@ mysql> SHOW TABLES;
 
 ## MySQL 兼容性
 
-<<<<<<< HEAD
-`USE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
-=======
-在 2.0 版本中，用户可以使用 `USE` 访问任意数据库。在 3.0 及以后的版本中 `USE` 会检查用户是否拥有访问数据库的权限。
-
-目前 `USE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
->>>>>>> 73a3eca... sql-statements: improve language and fix links (#4375)
+`USE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

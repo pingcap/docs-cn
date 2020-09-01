@@ -40,11 +40,7 @@ mysql> SHOW CHARACTER SET;
 
 ## MySQL 兼容性
 
-<<<<<<< HEAD
-`SHOW CHARACTER SET` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
-=======
-`SHOW CHARACTER SET` 语句功能与 MySQL 完全兼容。注意，TiDB 中字符集的默认排序规则与 MySQL 有所不同，具体可以参考[与 MySQL 兼容性对比](/mysql-compatibility.md#默认设置)。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
->>>>>>> 73a3eca... sql-statements: improve language and fix links (#4375)
+`SHOW CHARACTER SET` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 
