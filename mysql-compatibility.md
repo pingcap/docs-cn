@@ -32,6 +32,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
+<<<<<<< HEAD
 * X Protocol
 * Savepoints
 * 列级权限
@@ -41,6 +42,17 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](/mydumper-overview.md)
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
+=======
+* X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
+* Savepoints [#6840](https://github.com/pingcap/tidb/issues/6840)
+* 列级权限 [#9766](https://github.com/pingcap/tidb/issues/9766)
+* `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
+* `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
+* `CREATE TEMPORARY TABLE` 语法 [#1248](https://github.com/pingcap/tidb/issues/1248)
+* `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
+* `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
+* `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
+>>>>>>> 6d6fd62... mysql compatibility:  add references (#4394)
 
 ## 与 MySQL 有差异的特性
 
