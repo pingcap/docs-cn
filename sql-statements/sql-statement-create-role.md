@@ -112,13 +112,13 @@ SHOW TABLES IN test;
 
 ## MySQL 兼容性
 
-`CREATE ROLE` 语句与 MySQL 8.0 的“角色”功能完全兼容。如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`CREATE ROLE` 语句与 MySQL 8.0 的“角色”功能完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 
-* [DROP ROLE](/sql-statements/sql-statement-drop-role.md)
-* [GRANT <role>](/sql-statements/sql-statement-grant-role.md)
-* [REVOKE <role>](/sql-statements/sql-statement-revoke-role.md)
-* [SET ROLE](/sql-statements/sql-statement-set-role.md)
-* [SET DEFAULT ROLE](/sql-statements/sql-statement-set-default-role.md)
+* [`DROP ROLE`](/sql-statements/sql-statement-drop-role.md)
+* [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
+* [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
+* [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
+* [`SET DEFAULT ROLE`](/sql-statements/sql-statement-set-default-role.md)
 * [基于角色的访问控制](/role-based-access-control.md)
