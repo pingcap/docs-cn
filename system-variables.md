@@ -311,6 +311,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用于控制是否开启 Clustered Index 特性。
     - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
     - 该特性只适用于主键为单列非 INT 类型的表和主键为多列的表。对于无主键的表和主键是单列 INT 类型的表不会有影响。
+    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了 Clustered Index 特性。
 - 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 row_id 上，并用额外创建的主键索引指向 row_id。
 
     对性能的影响主要体现在以下几个方面:
