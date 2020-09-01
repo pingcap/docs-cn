@@ -184,21 +184,21 @@ URI 中可配置的的参数如下：
 
 | 参数               | 解析                                                         |
 | :------------------ | :------------------------------------------------------------ |
-| `connectionTimeout` | 连接下游 Pulsar 的超时时间。可选参数，默认值为 30（秒） |
-| `operationTimeout` | 对下游 Pulsar 进行操作的超时时间（例如创建 topic）。可选参数，默认值为 30（秒）|
+| `connectionTimeout` | 连接下游 Pulsar 的超时时间。可选参数，默认值为 30s。 |
+| `operationTimeout` | 对下游 Pulsar 进行操作的超时时间（例如创建 topic）。可选参数，默认值为 30s。|
 | `tlsTrustCertsFilePath` | 连接下游 Pulsar 实例所需的 CA 证书文件路径（可选） |
 | `tlsAllowInsecureConnection` | 在开启 TLS 之后是否允许非加密连接（可选） |
 | `tlsValidateHostname` | 是否校验下游 Pulsar 证书中的 host name（可选） |
-| `maxConnectionsPerBroker` | 下游单个 Pulsar broker 最多允许的连接数（可选，默认值 1） |
-| `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `"{"tlsCertFile":"/path/to/cert", "tlsKeyFile":"/path/to/key"}"` |
-| `auth.token` | 使用 token 模式认证下游（可选，示例 `"{"token":"secret-token"}"` 或者 `"{"file":"path/to/secret-token-file"}"`|
+| `maxConnectionsPerBroker` | 下游单个 Pulsar broker 最多允许的连接数（可选，默认值为 1） |
+| `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `"{"tlsCertFile":"/path/to/cert", "tlsKeyFile":"/path/to/key"}"`）|
+| `auth.token` | 使用 token 模式认证下游（可选，示例 `"{"token":"secret-token"}"` 或者 `"{"file":"path/to/secret-token-file"}"`）|
 | `name` | TiCDC 中 Pulsar producer 名字（可选） |
-| `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值 1000） |
+| `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
-| `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值 10（毫秒）） |
-| `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值 `ZSTD`) |
-| `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值 `JavaStringHash`) |
-| `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`) |
+| `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值为 10ms） |
+| `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值为 `ZSTD`）|
+| `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
+| `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
 更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
 
@@ -423,7 +423,6 @@ cdc cli changefeed resume -c test-cf
 - changefeed 的 `sink-uri`
 - changefeed 配置文件及文件内所有配置
 - changefeed 是否使用文件排序和排序目录
-- changefeed 使用的时区
 - changefeed 的 `target-ts`
 
 ### 管理同步子任务处理单元 (`processor`)
