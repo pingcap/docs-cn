@@ -128,7 +128,7 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 | ├─IndexRangeScan_8(Build)     | 583.00  | 297     | cop[tikv] | table:t1, index:b(b) | time:0s, loops:4                                                        | range:[123,123], keep order:false | N/A            | N/A  |
 | └─TableRowIDScan_9(Probe)     | 583.00  | 297     | cop[tikv] | table:t1             | time:0s, loops:4                                                        | keep order:false                  | N/A            | N/A  |
 +-------------------------------+---------+---------+-----------+----------------------+-------------------------------------------------------------------------+-----------------------------------+----------------+------+
-3 rows in set (0.01 sec`CREATE BINDING` 语句是 TiDB 对 MySQL 语法的扩展。)
+3 rows in set (0.01 sec)
 ```
 
 ## MySQL 兼容性
