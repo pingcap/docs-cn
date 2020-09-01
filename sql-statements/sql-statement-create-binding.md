@@ -1,12 +1,12 @@
 ---
-title: CREATE [GLOBAL|SESSION]
-summary: TiDB 数据库中 CREATE BINDING 的使用概况。
+title: CREATE [GLOBAL|SESSION] BINDING
+summary: TiDB 数据库中 CREATE [GLOBAL|SESSION] BINDING 的使用概况。
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 ---
 
-# CREATE [GLOBAL|SESSION]
+# CREATE [GLOBAL|SESSION] BINDING
 
-`CREATE BINDING` 语句用于在 TiDB 中创建新的绑定。绑定不需要更改底层查询，可用于将优化器 Hint 插入语句中。
+`CREATE [GLOBAL|SESSION] BINDING` 语句用于在 TiDB 中创建新的绑定。绑定不需要更改底层查询，可用于将优化器 Hint 插入语句中。
 
 `BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内绑定执行计划。在不指定作用域时，默认的隐式作用域为 `SESSION`。
 
@@ -133,7 +133,7 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 
 ## MySQL 兼容性
 
-`CREATE BINDING` 语句是 TiDB 对 MySQL 语法的扩展。
+`CREATE [GLOBAL|SESSION] BINDING` 语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

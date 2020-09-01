@@ -1,6 +1,6 @@
 ---
 title: SHOW [GLOBAL|SESSION] BINDINGS
-summary: TiDB 数据库中 SHOW BINDINGS 的使用概况。
+summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] BINDINGS 的使用概况。
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-bindings/']
 ---
 
@@ -141,7 +141,7 @@ Original_sql: select * from t1 where b = ?
 
 ## MySQL 兼容性
 
-`SHOW BINDINGS` 语句是 TiDB 对 MySQL 语法的扩展。
+`SHOW [GLOBAL|SESSION] BINDINGS` 语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 
