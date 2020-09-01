@@ -76,6 +76,7 @@ SELECT SLEEP(1);
 |        0 |
 +----------+
 1 row in set (1.00 sec)
+
 ANALYZE TABLE t1;
 Query OK, 0 rows affected (1.33 sec)
 
