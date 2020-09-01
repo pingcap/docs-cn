@@ -7,7 +7,7 @@ summary: TiDB 数据库中 SHOW STATS_HEALTHY 的使用概况。
 
 `SHOW STATS_HEALTHY` 语句可以预估统计信息的准确度，也就是健康度。健康度低的表可能会生成次优查询执行计划。
 
-可以通过执行 `ANALYZE` 表命令来改善表的健康度。当表的健康度下降到低于[`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio)时，则会自动执行 `ANALYZE` 命令。
+可以通过执行 `ANALYZE` 表命令来改善表的健康度。当表的健康度下降到低于 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 时，则会自动执行 `ANALYZE` 命令。
 
 ## 语法图
 
@@ -15,9 +15,9 @@ summary: TiDB 数据库中 SHOW STATS_HEALTHY 的使用概况。
 
 ![ShowStmt](/media/sqlgram/ShowStmt.png)
 
-**ShowTargetFiltertable**
+**ShowTargetFilterTable**
 
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterTable.png)
 
 **ShowLikeOrWhereOpt**
 
@@ -48,9 +48,13 @@ ANALYZE TABLE t1;
 SHOW STATS_HEALTHY; # should be 100% healthy
 ```
 
+{{< copyable "sql" >}}
+
 ```sql
-...
 SHOW STATS_HEALTHY;
+```
+
+```sql
 +---------+------------+----------------+---------+
 | Db_name | Table_name | Partition_name | Healthy |
 +---------+------------+----------------+---------+
@@ -59,7 +63,7 @@ SHOW STATS_HEALTHY;
 1 row in set (0.00 sec)
 ```
 
-删除大约 30% 的记录并执行批量更新。检查统计信息的健康度：
+执行批量更新来删除大约 30% 的记录，然后检查统计信息的健康度：
 
 {{< copyable "sql" >}}
 
