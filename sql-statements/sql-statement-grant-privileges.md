@@ -84,6 +84,13 @@ SHOW GRANTS FOR 'newuser';
 
 ## 另请参阅
 
+<<<<<<< HEAD
 * [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
 * [Privilege Management](/privilege-management.md)
+=======
+* [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
+* [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
+* [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+* [权限管理](/privilege-management.md)
+>>>>>>> 66221e7... Wrap all <role> in back ticks (#4407)
