@@ -32,7 +32,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
-* X Protocol
+* X-Protocol
 * Savepoints
 * 列级权限
 * `CREATE TABLE tblName AS SELECT stmt` 语法
