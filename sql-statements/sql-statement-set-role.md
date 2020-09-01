@@ -114,9 +114,9 @@ SELECT CURRENT_ROLE();
 
 ## 另请参阅
 
-* [CREATE ROLE](/sql-statements/sql-statement-create-role.md)
-* [DROP ROLE](/sql-statements/sql-statement-drop-role.md)
-* [GRANT <role>](/sql-statements/sql-statement-grant-role.md)
-* [REVOKE <role>](/sql-statements/sql-statement-revoke-role.md)
-* [SET DEFAULT ROLE](/sql-statements/sql-statement-set-default-role.md)
+* [`CREATE ROLE`](/sql-statements/sql-statement-create-role.md)
+* [`DROP ROLE`](/sql-statements/sql-statement-drop-role.md)
+* [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
+* [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
+* [`SET DEFAULT ROLE`](/sql-statements/sql-statement-set-default-role.md)
 * [基于角色的访问控制](/role-based-access-control.md)
