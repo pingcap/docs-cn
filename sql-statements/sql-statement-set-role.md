@@ -108,6 +108,13 @@ SELECT CURRENT_ROLE();
 1 row in set (0.000 sec)
 ```
 
+<<<<<<< HEAD
+=======
+## MySQL 兼容性
+
+`SET ROLE` 语句与 MySQL 8.0 的角色功能完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+
+>>>>>>> 73a3eca... sql-statements: improve language and fix links (#4375)
 ## 另请参阅
 
 * [基于角色的访问控制](/role-based-access-control.md)
