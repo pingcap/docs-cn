@@ -1,14 +1,14 @@
 ---
-title: Compatibility with MySQL
+title: MySQL Compatibility
 summary: Learn about the compatibility of TiDB with MySQL, and the unsupported and different features.
 aliases: ['/docs/dev/mysql-compatibility/','/docs/dev/reference/mysql-compatibility/']
 ---
 
-# Compatibility with MySQL
+# MySQL Compatibility
 
 TiDB is fully compatible with the MySQL 5.7 protocol and the common features and syntax of MySQL 5.7. The ecosystem tools for MySQL 5.7 (PHPMyAdmin, Navicat, MySQL Workbench, mysqldump, and Mydumper/myloader) and the MySQL client can be used for TiDB.
 
-However, some features of MySQL are not supported. This could be because there is now a better way to solve the problem (such as XML functions superceded by JSON), or a lack of current demand versus effort required (such as stored procedures and functions). Some features might also be difficult to implement as a distributed system.
+However, some features of MySQL are not supported. This could be because there is now a better way to solve the problem (such as XML functions superseded by JSON), or a lack of current demand versus effort required (such as stored procedures and functions). Some features might also be difficult to implement as a distributed system.
 
 > **Note:**
 >
@@ -26,14 +26,14 @@ However, some features of MySQL are not supported. This could be because there i
 + SYS schema
 + Optimizer trace
 + XML Functions
-+ X-Protocol
-+ Savepoints
-+ Column-level privileges
++ X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
++ Savepoints [#6840](https://github.com/pingcap/tidb/issues/6840)
++ Column-level privileges [#9766](https://github.com/pingcap/tidb/issues/9766)
 + `XA` syntax (TiDB uses a two-phase commit internally, but this is not exposed via an SQL interface)
-+ `CREATE TABLE tblName AS SELECT stmt` syntax
-+ `CREATE TEMPORARY TABLE` syntax
-+ `CHECK TABLE` syntax
-+ `CHECKSUM TABLE` syntax
++ `CREATE TABLE tblName AS SELECT stmt` syntax [#4754](https://github.com/pingcap/tidb/issues/4754)
++ `CREATE TEMPORARY TABLE` syntax [#1248](https://github.com/pingcap/tidb/issues/1248)
++ `CHECK TABLE` syntax [#4673](https://github.com/pingcap/tidb/issues/4673)
++ `CHECKSUM TABLE` syntax [#1895](https://github.com/pingcap/tidb/issues/1895)
 + `GET_LOCK` and `RELEASE_LOCK` functions [#14994](https://github.com/pingcap/tidb/issues/14994)
 
 ## Features that are different from MySQL
@@ -107,7 +107,7 @@ The following major restrictions apply to DDL versus MySQL:
 
 [Statistics Collection](/statistics.md#manual-collection) works differently in TiDB than in MySQL, in that it is a relatively lightweight and short-lived operation in MySQL/InnoDB, while in TiDB it completely rebuilds the statistics for a table and can take much longer to complete.
 
-These differences are documented futher in [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md).
+These differences are documented further in [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md).
 
 ### Views
 
