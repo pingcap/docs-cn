@@ -134,7 +134,7 @@ The system variables above have two scopes: global and session. These scopes wor
 
 The statement summary tables have the following limitation:
 
-The statement summary data will be lost when the TiDB server is restarted. This is because statement summary tables are memory tables, and the data is cached in memory instead of being persisted on storage.
+All data of the statement summary tables above will be lost when the TiDB server is restarted. This is because statement summary tables are all memory tables, and the data is cached in memory instead of being persisted on storage.
 
 ## Troubleshooting examples
 
