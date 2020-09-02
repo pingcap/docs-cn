@@ -1,6 +1,10 @@
 ---
 title: Loader 使用文档
+<<<<<<< HEAD
 aliases: ['/docs-cn/v3.1/loader-overview/','/docs-cn/v3.1/reference/tools/loader/','/docs-cn/v3.1/load-misuse-handling/','/docs-cn/v3.1/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/v3.1/load-misuse-handling']
+=======
+aliases: ['/docs-cn/dev/loader-overview/','/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/','/docs-cn/dev/reference/tools/error-case-handling/load-misuse-handling/']
+>>>>>>> afcd6ee... Add 4 aliases to fix dead links (#4416)
 ---
 
 # Loader 使用文档
