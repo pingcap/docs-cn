@@ -1,7 +1,11 @@
 ---
 title: Loader 使用文档
+<<<<<<< HEAD
 summary: 了解 Loader 工具以及使用方法。
 aliases: ['/docs-cn/stable/loader-overview/','/docs-cn/v4.0/loader-overview/','/docs-cn/stable/reference/tools/loader/','/docs-cn/stable/load-misuse-handling/','/docs-cn/v4.0/reference/tools/loader']
+=======
+aliases: ['/docs-cn/dev/loader-overview/','/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/','/docs-cn/dev/reference/tools/error-case-handling/load-misuse-handling/']
+>>>>>>> afcd6ee... Add 4 aliases to fix dead links (#4416)
 ---
 
 # Loader 使用文档
