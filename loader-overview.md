@@ -1,6 +1,5 @@
 ---
 title: Loader 使用文档
-<<<<<<< HEAD
 aliases: ['/docs-cn/v2.1/loader-overview/','/docs-cn/v2.1/reference/tools/loader/','/docs-cn/v2.1/reference/tools/error-case-handling/load-misuse-handling/']
 ---
 
