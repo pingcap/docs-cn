@@ -100,6 +100,7 @@ As an open source distributed NewSQL database, TiDB requires the following netwo
 | TiDB |  4000  | the communication port for the application and DBA tools |
 | TiDB | 10080  | the communication port to report TiDB status |
 | TiKV | 20160 | the TiKV communication port |
+| TiKV |  20180 | the communication port to report TiKV status |
 | PD | 2379 | the communication port between TiDB and PD |
 | PD | 2380 | the inter-node communication port within the PD cluster |
 | TiFlash | 9000 | the TiFlash TCP service port |
