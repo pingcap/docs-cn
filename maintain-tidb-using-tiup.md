@@ -159,6 +159,9 @@ Flags:
       --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 300)
 
 Global Flags:
+
+      --native-ssh        Use the system's native SSH client
+      --wait-timeout int  Timeout of waiting the operation
       --ssh-timeout int   Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
   -y, --yes               Skip all confirmations and assumes 'yes'
 ```
