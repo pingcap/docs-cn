@@ -38,7 +38,7 @@ TiDB, TiKV and PD are distributed among three DCs, which is the most common depl
 
 - All replicas are distributed among three DCs, with high availability and disaster recovery capability.
 - No data will be lost if one DC is down (RPO = 0).
-- Even if one DC is down, the other two DCs will automatically start leader election and automatically resume services within a reasonable amount of time (within 20 seconds in most cases, RTO <= 20s). See the following diagram for more information:
+- Even if one DC is down, the other two DCs will automatically start leader election and automatically resume services within a reasonable amount of time (within 20 seconds in most cases). See the following diagram for more information:
 
 ![Disaster Recovery for 3-DC Deployment](/media/deploy-3dc-dr.png)
 
