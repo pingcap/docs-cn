@@ -83,6 +83,7 @@ tiup update cluster
 
 > **Note:**
 >
+> + Currently, TiUP only supports the `systemd` supervision method of a process. If you have previously selected the `supervise` method when deploying TiDB with TiDB Ansible, you need to modify the supervision method from `supervise` to `systemd` according to [Deploy TiDB Using TiDB Ansible](/online-deployment-using-ansible.md#how-to-modify-the-supervision-method-of-a-process-from-supervise-to-systemd).
 > + If the original cluster is deployed using TiUP, you can skip this step.
 > + Currently, the `inventory.ini` configuration file is identified by default. If your configuration file uses another name, specify this name.
 > + Ensure that the state of the current cluster is consistent with the topology in `inventory.ini`; that components of the cluster are operating normally. Otherwise, the cluster metadata becomes abnormal after the import.
