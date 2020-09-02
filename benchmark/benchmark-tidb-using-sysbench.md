@@ -1,7 +1,6 @@
 ---
 title: 如何用 Sysbench 测试 TiDB
-category: benchmark
-aliases: ['/docs-cn/dev/benchmark/how-to-run-sysbench/']
+aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/dev/benchmark/how-to-run-sysbench/']
 ---
 
 # 如何用 Sysbench 测试 TiDB
@@ -59,9 +58,7 @@ enabled = true
 
 升高 TiKV 的日志级别同样有利于提高性能表现。
 
-由于 TiKV 是以集群形式部署的，在 Raft 算法的作用下，能保证大多数节点已经写入数据。因此，除了对数据安全极端敏感的场景之外，raftstore 中的 `sync-log` 选项可以关闭。
-
-TiKV 集群存在两个 Column Family（Default CF 和 Write CF），主要用于存储不同类型的数据。对于 Sysbench 测试，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
+TiKV 集群存在多个 Column Family，包括 Default CF、Write CF 和 LockCF，主要用于存储不同类型的数据。对于 Sysbench 测试，需要关注 Default CF 和 Write CF，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
 
 Default CF : Write CF = 4 : 1
 
@@ -69,8 +66,6 @@ Default CF : Write CF = 4 : 1
 
 ```toml
 log-level = "error"
-[raftstore]
-sync-log = false
 [rocksdb.defaultcf]
 block-cache-size = "24GB"
 [rocksdb.writecf]
@@ -81,13 +76,11 @@ block-cache-size = "6GB"
 
 ```toml
 log-level = "error"
-[raftstore]
-sync-log = false
 [storage.block-cache]
 capacity = "30GB"
 ```
 
-更详细的 TiKV 参数调优请参考 [TiKV 性能参数调优](/tune-tikv-performance.md)。
+更详细的 TiKV 参数调优请参考 [TiKV 内存参数性能调优](/tune-tikv-memory-performance.md)。
 
 ## 测试过程
 

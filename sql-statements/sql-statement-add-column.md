@@ -1,8 +1,7 @@
 ---
 title: ADD COLUMN
 summary: TiDB 数据库中 ADD COLUMN 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/add-column/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-column/','/docs-cn/dev/reference/sql/statements/add-column/']
 ---
 
 # ADD COLUMN
@@ -18,10 +17,6 @@ aliases: ['/docs-cn/dev/reference/sql/statements/add-column/']
 **AlterTableSpec:**
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
-
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
 
 **ColumnDef:**
 
@@ -120,9 +115,10 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-* 不支持同时添加多列。
+* 不支持在一条语句中同时添加多列。
 * 不支持将新添加的列设为 `PRIMARY KEY`。
 * 不支持将新添加的列设为 `AUTO_INCREMENT`。
+* 对添加生成列有局限性，具体可参考：[生成列局限性](/generated-columns.md#生成列的局限性)。
 
 ## 另请参阅
 

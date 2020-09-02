@@ -1,45 +1,81 @@
 ---
 title: 用户自定义变量
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/language-structure/user-defined-variables/']
+summary: 本文介绍 TiDB 的用户自定义变量。
+aliases: ['/docs-cn/dev/user-defined-variables/','/docs-cn/dev/reference/sql/language-structure/user-defined-variables/']
 ---
 
 # 用户自定义变量
 
-用户自定义变量格式为 `@var_name`。`var_name` 目前只支持字母，数字，`_$`组成。用户自定义变量是大小写不敏感的。
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
 
-用户自定义变量是跟 session 绑定的，也就是说只有当前连接可以看见设置的用户变量，其他客户端连接无法查看到。
+本文介绍 TiDB 的用户自定义变量的概念，以及设置和读取用户自定义变量的方法。
 
-用 `SET` 语句可以设置用户自定义变量：
+用户自定义变量格式为 `@var_name`。组成 `var_name` 的字符可以是任何能够组成标识符 (identifier) 的字符，包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_`、美元符号 `$` 以及 UTF-8 字符。此外，还包括英文句号 `.`。用户自定义变量是大小写不敏感的。
 
-{{< copyable "sql" >}}
+用户自定义变量跟 session 绑定，当前设置的用户变量只在当前连接中可见，其他客户端连接无法查看。
 
-```sql
-SET @var_name = expr [, @var_name = expr] ...;
-```
+## 设置用户自定义变量
 
-或
-
-{{< copyable "sql" >}}
-
-```sql
-SET @var_name := expr;
-```
-
-对于 `SET` 语句，赋值操作符可以是 `=` 也可以是 `:=`
-
-例：
+用 `SET` 语句可以设置用户自定义变量，语法为 `SET @var_name = expr [, @var_name = expr] ...;`。例如：
 
 {{< copyable "sql" >}}
 
 ```sql
-SET @a1=1, @a2=2, @a3:=4;
+SET @favorite_db = 'TiDB';
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
+SET @a = 'a', @b = 'b', @c = 'c';
+```
+
+其中赋值符号还可以使用 `:=`。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SET @favorite_db := 'TiDB';
+```
+
+赋值符号右边的内容可以是任意合法的表达式。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SET @c = @a + @b;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+set @c = b'1000001' + b'1000001';
+```
+
+## 读取用户自定义变量
+
+要读取一个用户自定义变量，可以使用 `SELECT` 语句查询：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT @a1, @a2, @a3
+```
+
+```
++------+------+------+
+| @a1  | @a2  | @a3  |
++------+------+------+
+|    1 |    2 |    4 |
++------+------+------+
+```
+
+还可以在 `SELECT` 语句中赋值：
+
+```sql
+SELECT @a1, @a2, @a3, @a4 := @a1+@a2+@a3;
 ```
 
 ```
@@ -50,51 +86,16 @@ SELECT @a1, @a2, @t3, @a4 := @a1+@a2+@a3;
 +------+------+------+--------------------+
 ```
 
-如果设置用户变量用了 `HEX` 或者 `BIT` 值，TiDB会把它当成二进制字符串。如果你要将其设置成数字，那么需要手动加上 `CAST转换`: `CAST(.. AS UNSIGNED)`：
+其中变量 `@a4` 在被修改或关闭连接之前，值始终为 `7`。
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT @v1, @v2, @v3;
-```
-
-```
-+------+------+------+
-| @v1  | @v2  | @v3  |
-+------+------+------+
-| A    | 65   | 65   |
-+------+------+------+
-1 row in set (0.00 sec)
-```
+如果设置用户变量时用了十六进制字面量或者二进制字面量，TiDB 会把它当成二进制字符串。如果要将其设置成数字，那么可以手动加上 `CAST` 转换，或者在表达式中使用数字的运算符：
 
 {{< copyable "sql" >}}
 
 ```sql
 SET @v1 = b'1000001';
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
 SET @v2 = b'1000001'+0;
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
 SET @v3 = CAST(b'1000001' AS UNSIGNED);
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
 ```
 
 {{< copyable "sql" >}}
@@ -109,7 +110,6 @@ SELECT @v1, @v2, @v3;
 +------+------+------+
 | A    | 65   | 65   |
 +------+------+------+
-1 row in set (0.00 sec)
 ```
 
 如果获取一个没有设置过的变量，会返回一个 NULL：
@@ -117,7 +117,7 @@ SELECT @v1, @v2, @v3;
 {{< copyable "sql" >}}
 
 ```sql
-select @not_exist;
+SELECT @not_exist;
 ```
 
 ```
@@ -126,74 +126,48 @@ select @not_exist;
 +------------+
 | NULL       |
 +------------+
-1 row in set (0.00 sec)
 ```
 
-用户自定义变量不能直接在 SQL 语句中被当成 identifier，例：
+除了 `SELECT` 读取用户自定义变量以外，常见的用法还有 `PREPARE` 语句，例如：
 
 {{< copyable "sql" >}}
 
 ```sql
-select * from t;
+SET @s = 'SELECT SQRT(POW(?,2) + POW(?,2)) AS hypotenuse';
+PREPARE stmt FROM @s;
+SET @a = 6;
+SET @b = 8;
+EXECUTE stmt USING @a, @b;
 ```
 
 ```
-+------+
-| a    |
-+------+
-|    1 |
-+------+
-1 row in set (0.00 sec)
++------------+
+| hypotenuse |
++------------+
+|         10 |
++------------+
 ```
 
-{{< copyable "sql" >}}
-
-```sql
-SET @col = "a";
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
+用户自定义变量的内容不会在 SQL 语句中被当成标识符，例如：
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT @col FROM t;
+SELECT * from t;
 ```
 
 ```
-+------+
-| @col |
-+------+
-| a    |
-+------+
-1 row in set (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT `@col` FROM t;
-```
-
-```
-ERROR 1054 (42S22): Unknown column '@col' in 'field list'
++---+
+| a |
++---+
+| 1 |
++---+
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
 SET @col = "`a`";
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
 SELECT @col FROM t;
 ```
 
@@ -203,44 +177,6 @@ SELECT @col FROM t;
 +------+
 | `a`  |
 +------+
-1 row in set (0.01 sec)
 ```
 
-但是在以下情况中，你可以在 PREPARE 语句中使用用户自定义变量：
-
-{{< copyable "sql" >}}
-
-```sql
-PREPARE stmt FROM "SELECT @c FROM t";
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
-EXECUTE stmt;
-```
-
-```
-+------+
-| @c   |
-+------+
-| a    |
-+------+
-1 row in set (0.01 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
-DEALLOCATE PREPARE stmt;
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
-
-更多[细节](https://dev.mysql.com/doc/refman/5.7/en/user-variables.html)。
+更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/user-variables.html)。

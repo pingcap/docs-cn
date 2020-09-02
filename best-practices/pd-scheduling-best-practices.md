@@ -1,8 +1,7 @@
 ---
 title: PD 调度策略最佳实践
 summary: 了解 PD 调度策略的最佳实践和调优方式
-category: reference
-aliases: ['/docs-cn/dev/reference/best-practices/pd-scheduling/']
+aliases: ['/docs-cn/dev/best-practices/pd-scheduling-best-practices/','/docs-cn/dev/reference/best-practices/pd-scheduling/']
 ---
 
 # PD 调度策略最佳实践
@@ -167,7 +166,7 @@ pd-ctl 支持动态创建和删除 Scheduler，你可以通过这些操作来控
 
 - `scheduler show`：显示当前系统中的 Scheduler
 - `scheduler remove balance-leader-scheduler`：删除（停用）balance region 调度器
-- `scheduler add evict-leader-scheduler-1`：添加移除 Store 1 的所有 Leader 的调度器
+- `scheduler add evict-leader-scheduler 1`：添加移除 Store 1 的所有 Leader 的调度器
 
 ### 手动添加 Operator
 
@@ -258,10 +257,16 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 - 假如已经从相关 Metrics 得知系统中有大量的空 Region，这时可以通过把 `max-merge-region-size` 和 `max-merge-region-keys` 调整为较小值来加快 Merge 速度。这是因为 Merge 的过程涉及到副本迁移，所以 Merge 的 Region 越小，速度就越快。如果生成 Merge Operator 的速度很快，想进一步加快 Region Merge 过程，还可以把 `patrol-region-interval` 调整为 "10ms" ，这个能加快巡检 Region 的速度，但是会消耗更多的 CPU 资源。
 
-- 创建过大量 Table 后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
+- 创建过大量表后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
 
-    - TiKV: `split-region-on-table` 设为 `false`，该参数不支持动态修改
-    - PD: `key-type` 设为 `"txn"` 或者 `"raw"`，该参数支持动态修改
+    - TiKV: `split-region-on-table` 设为 `false`，该参数不支持动态修改。
+    - PD: 
+        + `key-type` 设为 `txn` 或者 `raw`，该参数支持动态修改。
+        + `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
+       
+        > **注意：**
+        >
+        > 在开启 `placement-rules`后，请合理切换 `txn`和 `raw`，避免无法正常解码 key。
 
 - 对于 3.0.4 和 2.1.16 以前的版本，Region 中 Key 的个数（`approximate_keys`）在特定情况下（大部分发生在删表之后）统计不准确，造成 keys 的统计值很大，无法满足 `max-merge-region-keys` 的约束。你可以通过调大 `max-merge-region-keys` 来避免这个问题。
 

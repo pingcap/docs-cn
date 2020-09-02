@@ -1,7 +1,6 @@
 ---
 title: TiDB 3.0.14 Release Notes
-category: Releases
-aliases: ['/docs-cn/dev/releases/3.0.14/']
+aliases: ['/docs-cn/dev/releases/release-3.0.14/','/docs-cn/dev/releases/3.0.14/']
 ---
 
 # TiDB 3.0.14 Release Notes
@@ -9,8 +8,6 @@ aliases: ['/docs-cn/dev/releases/3.0.14/']
 发版日期：2020 年 5 月 9 日
 
 TiDB 版本：3.0.14
-
-TiUP 版本：3.0.14
 
 ## 兼容性变化
 

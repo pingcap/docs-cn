@@ -1,8 +1,7 @@
 ---
 title: 下推到 TiKV 的表达式列表
 summary: TiDB 中下推到 TiKV 的表达式列表及相关设置。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/expressions-pushed-down/']
+aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs-cn/dev/reference/sql/functions-and-operators/expressions-pushed-down/']
 ---
 
 # 下推到 TiKV 的表达式列表
@@ -14,10 +13,10 @@ aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/expressions-pushed
 | 表达式分类 | 具体操作 |
 | :-------------- | :------------------------------------- |
 | [逻辑运算](/functions-and-operators/operators.md#逻辑操作符) | AND (&&), OR (&#124;&#124;), NOT (!) |
-| [比较运算](/functions-and-operators/operators.md#比较方法和操作符) | <, <=, =, != (<>), >, >=, [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to), [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in), IS NULL, LIKE, IS TRUE, IS FALSE, [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) |
+| [比较运算](/functions-and-operators/operators.md#比较方法和操作符) | <, <=, =, != (`<>`), >, >=, [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to), [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in), IS NULL, LIKE, IS TRUE, IS FALSE, [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) |
 | [数值运算](/functions-and-operators/numeric-functions-and-operators.md) | +, -, *, /, [`ABS()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_abs), [`CEIL()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceil), [`CEILING()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceiling), [`FLOOR()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_floor) |
 | [控制流运算](/functions-and-operators/control-flow-functions.md) | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case), [`IF()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_if), [`IFNULL()`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#function_ifnull) |
-| [JSON运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br> [JSON_UNQUOTE(json_val)][json_unquote],<br> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br> [JSON_ARRAY([val[, val] ...])][json_array],<br> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge],<br> [JSON_SET(json_doc, path, val[, path, val] ...)][json_set],<br> [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert],<br> [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace],<br> [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
+| [JSON运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br/> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br/> [JSON_UNQUOTE(json_val)][json_unquote],<br/> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br/> [JSON_ARRAY([val[, val] ...])][json_array],<br/> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge],<br/> [JSON_SET(json_doc, path, val[, path, val] ...)][json_set],<br/> [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert],<br/> [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace],<br/> [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
 | [日期运算](/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format)  |
 
 ## 禁止特定表达式下推
@@ -40,9 +39,16 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 以上结果字段解释如下：
 
-+ `name` 为禁止下推的函数名。
-+ `store_type` 指明希望禁止该函数下推到哪些存储引擎。目前 TiDB 支持三种存储引擎，分别为 `tikv`、`tidb` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间应以逗号隔开。
-+ `reason` 列可以记录该函数被加入黑名单的原因。
++ `name`：禁止下推的函数名。
++ `store_type`：用于指明希望禁止该函数下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
+    - `store_type` 为 `tidb` 时表示在读取 TiDB 内存表时，是否允许该函数在其他 TiDB Server 上执行。
+    - `store_type` 为 `tikv` 时表示是否允许该函数在 TiKV Server 的 Coprocessor 模块中执行。
+    - `store_type` 为 `tiflash` 时表示是否允许该函数在 TiFlash Server 的 Coprocessor 模块中执行。
++ `reason`：用于记录该函数被加入黑名单的原因。
+
+> **注意**：
+>
+> `tidb` 是一种特殊的 store_type，其含义是 TiDB 内存表，比如：`PERFORMANCE_SCHEMA.events_statements_summary_by_digest`，属于系统表的一种，非特殊情况不用考虑这种存储引擎。
 
 ### 加入黑名单
 
@@ -127,7 +133,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 | >= | ge |
 | = | eq |
 | != | ne |
-| <> | ne |
+| `<>` | ne |
 | <=> | nulleq |
 | &#124; | bitor |
 | && | bitand|

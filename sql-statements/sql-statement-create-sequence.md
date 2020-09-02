@@ -1,8 +1,7 @@
 ---
 title: CREATE SEQUENCE
 summary: CREATE SEQUENCE 在 TiDB 中的使用概况
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/create-sequence/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-sequence/','/docs-cn/dev/reference/sql/statements/create-sequence/']
 ---
 
 # CREATE SEQUENCE
@@ -14,10 +13,6 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-sequence/']
 **CreateSequenceStmt:**
 
 ![CreateSequenceStmt](/media/sqlgram/CreateSequenceStmt.png)
-
-**OptTemporary:**
-
-![OptTemporary](/media/sqlgram/OptTemporary.png)
 
 **IfNotExists:**
 
@@ -31,13 +26,13 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-sequence/']
 
 ![CreateSequenceOptionListOpt](/media/sqlgram/CreateSequenceOptionListOpt.png)
 
+**SequenceOptionList:**
+
+![SequenceOptionList](/media/sqlgram/SequenceOptionList.png)
+
 **SequenceOption:**
 
 ![SequenceOption](/media/sqlgram/SequenceOption.png)
-
-**CreateTableOptionListOpt:**
-
-![CreateTableOptionListOpt](/media/sqlgram/CreateTableOptionListOpt.png)
 
 ## 语法说明
 

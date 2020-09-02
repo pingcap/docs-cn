@@ -1,31 +1,28 @@
 ---
-title: 为 TiDB 组件间开启 TLS 和数据加密存储
-category: how-to
-aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
+title: 为 TiDB 组件间通信开启加密传输
+aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 ---
 
-# 为 TiDB 组件间开启 TLS 和数据加密存储
+# 为 TiDB 组件间通信开启加密传输
 
-本文档介绍 TiDB 集群如何开启 TLS 验证和数据加密存储。
+本部分介绍如何为 TiDB 集群内各部组件间开启加密传输，一旦开启以下组件间均将使用加密传输：
 
-## 开启 TLS 验证
+- TiDB 与 TiKV、PD
+- TiKV 与 PD
+- TiDB Control 与 TiDB，TiKV Control 与 TiKV，PD Control 与 PD
+- TiKV、PD、TiDB 各自集群内内部通讯
 
-本部分介绍 TiDB 集群如何开启 TLS 验证，TLS 验证支持：
+目前暂不支持只开启其中部分组件的加密传输。
 
-- TiDB 组件之间的双向验证，包括 TiDB、TiKV、PD 相互之间，TiDB Control 与 TiDB、 TiKV Control 与 TiKV、PD Control 与 PD 的双向认证，以及 TiKV peer 之间、PD peer 之间。一旦开启，所有组件之间均使用验证，不支持只开启某一部分的验证。
-- MySQL Client 与 TiDB 之间的客户端对服务器身份的单向验证以及双向验证。
-
-MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用另外一套证书。
-
-### TiDB 集群组件间开启 TLS（双向认证）
+## 配置开启加密传输
 
 1. 准备证书。
 
-    推荐为 TiDB、TiKV、PD 分别准备一个 server 证书，并保证可以相互验证，而它们的各种客户端共用 client 证书。
+    推荐为 TiDB、TiKV、PD 分别准备一个 Server 证书，并保证可以相互验证，而它们的 Control 工具则可选择共用 Client 证书。
 
     有多种工具可以生成自签名证书，如 `openssl`，`easy-rsa`，`cfssl`。
 
-    这里提供一个使用 `cfssl` 生成证书的示例：[生成自签名证书](/generate-self-signed-certificates.md)。
+    这里提供一个使用 `openssl` 生成证书的示例：[生成自签名证书](/generate-self-signed-certificates.md)。
 
 2. 配置证书。
 
@@ -69,18 +66,42 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
         key-path = "/path/to/pd-server-key.pem"
         ```
 
-    此时 TiDB 集群各个组件间已开启双向验证。
+    - TiFlash（从 v4.0.5 版本开始引入）
+
+        在 `config` 文件中设置，将 `http_port` 项改为 `https_port`:
+
+        ```toml
+        [security]
+        # Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
+        ca_path = "/path/to/ca.pem"
+        # Path of file that contains X509 certificate in PEM format.
+        cert_path = "/path/to/tiflash-server.pem"
+        # Path of file that contains X509 key in PEM format.
+        key_path = "/path/to/tiflash-server-key.pem"
+        ```
+
+    - TiCDC
+
+        在启动命令行中设置，并设置相应的 URL 为 `https`：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem
+        ```
+
+    此时 TiDB 集群各个组件间已开启加密传输。
 
     > **注意：**
     >
-    > 若 TiDB 集群各个组件间已开启 TLS，在使用 tidb-ctl、tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
+    > 若 TiDB 集群各个组件间开启加密传输后，在使用 tidb-ctl、tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     ./tidb-ctl -u https://127.0.0.1:10080 --ca /path/to/ca.pem --ssl-cert /path/to/client.pem --ssl-key /path/to/client-key.pem
     ```
-   
+
     {{< copyable "shell-regular" >}}
 
     ```bash
@@ -93,86 +114,67 @@ MySQL Client 与 TiDB 之间使用一套证书，TiDB 集群组件之间使用�
     ./tikv-ctl --host="127.0.0.1:20160" --ca-path="/path/to/ca.pem" --cert-path="/path/to/client.pem" --key-path="/path/to/clinet-key.pem"
     ```
 
-3. 配置校验调用者 Common Name。
+## 认证组件调用者身份
 
-    通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。推荐在生成证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
+通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份以防止拥有有效证书的非法访问者进行访问（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。
 
-    - TiDB
+如希望进行组件调用者身份认证，需要在生证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
 
-        在 `config` 文件或命令行参数中设置：
+- TiDB
 
-        ```toml
-        [security]
-        cluster-verify-cn = [
-          "TiDB-Server",
-          "TiKV-Control",          
-        ]
-        ```
+    在 `config` 文件或命令行参数中设置：
 
-    - TiKV
+    ```toml
+    [security]
+    cluster-verify-cn = [
+      "TiDB-Server",
+      "TiKV-Control",
+    ]
+    ```
 
-        在 `config` 文件或命令行参数中设置：
+- TiKV
 
-        ```toml
-        [security]
-        cert-allowed-cn = [
-            "TiDB-Server", "PD-Server", "TiKV-Control", "RawKvClient1",
-        ]
-        ```
+    在 `config` 文件或命令行参数中设置：
 
-    - PD
+    ```toml
+    [security]
+    cert-allowed-cn = [
+        "TiDB-Server", "PD-Server", "TiKV-Control", "RawKvClient1",
+    ]
+    ```
 
-        在 `config` 文件或命令行参数中设置：
+- PD
 
-        ```toml
-        [security]
-        cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
-        ```
+    在 `config` 文件或命令行参数中设置：
 
-4. 重加载证书。
+    ```toml
+    [security]
+    cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
+    ```
 
-    TiDB、PD 和 TiKV 会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。目前暂不支持 CA 的重加载。
+- TiCDC
 
-### MySQL 与 TiDB 间开启 TLS
-
-请参考 [使用加密连接](/encrypted-connections-with-tls-protocols.md)。
-
-## 开启数据加密存储
-
-在 TiDB 集群中，用户的数据都存储在 TiKV 中，配置了 TiKV 数据加密存储功能，就代表 TiDB 集群已经加密存储了用户的数据。本部分主要介绍如何配置 TiKV 的加密存储功能。
-
-### 操作流程
-
-1. 生成 token 文件。
-
-    token 文件存储的是密钥，用于对用户数据进行加密，以及对已加密的数据进行解密。
+    在启动命令行中设置：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ./tikv-ctl random-hex --len 256 > cipher-file-256
+    cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
     ```
 
-    > **注意：**
-    >
-    > TiKV 只接受 hex 格式的 token 文件，文件的长度必须是 2^n，并且小于等于 1024。
+- TiFlash（从 v4.0.5 版本开始引入）
 
-2. 配置 TiKV。
+    在 `config` 文件或命令行参数中设置：
 
     ```toml
     [security]
-    # Cipher file 的存储路径
-    cipher-file = "/path/to/cipher-file-256"
+    cert_allowed_cn = ["TiKV-Server", "TiDB-Server"]
     ```
 
-> **注意：**
->
-> 若使用 [Lightning](/tidb-lightning/tidb-lightning-overview.md) 向集群导入数据，如果目标集群开启了加密功能，Lightning 生成的 sst 文件也必须是加密的格式。
+## 证书重加载
 
-### 使用限制
+TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。目前暂不支持 CA 的重加载。
 
-目前 TiKV 数据加密存储存在以下限制：
+## 另请参阅
 
-- 对之前没有开启加密存储的集群，不支持开启该功能。
-- 已经开启加密功能的集群，不允许关闭加密存储功能。
-- 同一集群内部，不允许部分 TiKV 实例开启该功能，部分 TiKV 实例不开启该功能。对于加密存储功能，所有 TiKV 实例要么都开启该功能，要么都不开启该功能。这是由于 TiKV 实例之间会有数据迁移，如果开启了加密存储功能，迁移过程中数据也是加密的。
+- [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)

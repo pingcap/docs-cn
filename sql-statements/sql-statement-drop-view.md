@@ -1,8 +1,7 @@
 ---
 title: DROP VIEW
 summary: TiDB 数据库中 DROP VIEW 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/drop-view/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-view/','/docs-cn/dev/reference/sql/statements/drop-view/']
 ---
 
 # DROP VIEW
@@ -123,9 +122,9 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`DROP VIEW` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`DROP VIEW` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## See also
 
-* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
 * [CREATE VIEW](/sql-statements/sql-statement-create-view.md)
+* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)

@@ -1,13 +1,13 @@
 ---
 title: DROP USER
 summary: TiDB 数据库中 DROP USER 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/drop-user/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-user/','/docs-cn/dev/reference/sql/statements/drop-user/']
 ---
 
 # DROP USER
 
 `DROP USER` 语句用于从 TiDB 系统数据库中删除用户。如果用户不存在，使用关键词 `IF EXISTS` 可避免出现警告。
+执行 `DROP USER` 语句需要拥有 `CREATE USER` 权限。
 
 ## 语法图
 
@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-user/']
 {{< copyable "sql" >}}
 
 ```sql
-DROP USER idontexist;
+DROP USER 'idontexist';
 ```
 
 ```
@@ -34,7 +34,7 @@ ERROR 1396 (HY000): Operation DROP USER failed for idontexist@%
 {{< copyable "sql" >}}
 
 ```sql
-DROP USER IF EXISTS idontexist;
+DROP USER IF EXISTS 'idontexist';
 ```
 
 ```
@@ -44,7 +44,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-CREATE USER newuser IDENTIFIED BY 'mypassword';
+CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 ```
 
 ```
@@ -105,7 +105,7 @@ SHOW GRANTS FOR 'newuser';
 {{< copyable "sql" >}}
 
 ```sql
-DROP USER newuser;
+DROP USER 'newuser';
 ```
 
 ```
@@ -115,7 +115,7 @@ Query OK, 0 rows affected (0.14 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW GRANTS FOR newuser;
+SHOW GRANTS FOR 'newuser';
 ```
 
 ```

@@ -1,8 +1,7 @@
 ---
 title: ADD INDEX
 summary: TiDB 数据库中 ADD INDEX 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/add-index/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-index/','/docs-cn/dev/reference/sql/statements/add-index/']
 ---
 
 # ADD INDEX
@@ -19,17 +18,53 @@ aliases: ['/docs-cn/dev/reference/sql/statements/add-index/']
 
 ![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
 
-**ColumnKeywordOpt:**
+**Constraint:**
 
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
+![Constraint](/media/sqlgram/Constraint.png)
 
-**ColumnDef:**
+**ConstraintKeywordOpt:**
 
-![ColumnDef](/media/sqlgram/ColumnDef.png)
+![ConstraintKeywordOpt](/media/sqlgram/ConstraintKeywordOpt.png)
 
-**ColumnPosition:**
+**ConstraintElem:**
 
-![ColumnPosition](/media/sqlgram/ColumnPosition.png)
+![ConstraintElem](/media/sqlgram/ConstraintElem.png)
+
+**IndexNameAndTypeOpt:**
+
+![IndexNameAndTypeOpt](/media/sqlgram/IndexNameAndTypeOpt.png)
+
+**IndexPartSpecificationList:**
+
+![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
+
+**IndexPartSpecification:**
+
+![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
+
+**IndexOptionList:**
+
+![IndexOptionList](/media/sqlgram/IndexOptionList.png)
+
+**IndexOption:**
+
+![IndexOption](/media/sqlgram/IndexOption.png)
+
+**KeyOrIndex:**
+
+![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
+
+**IndexKeyTypeOpt:**
+
+![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
+
+**IndexInvisible:**
+
+![IndexInvisible](/media/sqlgram/IndexInvisible.png)
+
+**IndexTypeName:**
+
+![IndexTypeName](/media/sqlgram/IndexTypeName.png)
 
 ## 示例
 
@@ -100,12 +135,15 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ## MySQL 兼容性
 
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* 不支持 `VISIBLE/INVISIBLE` 索引（目前只有 master 分支上真正支持此功能）。
 * 不支持降序索引（类似于 MySQL 5.7）。
-* 目前尚不支持同时添加多个索引。
-* 默认无法向表中添加 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/tidb-configuration-file.md#alter-primary-key)。
+* 目前尚不支持在一条中同时添加多个索引。
+* 默认无法向表中添加 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情可参考：[alter-primary-key](/tidb-configuration-file.md#alter-primary-key)。
 
 ## 另请参阅
 
+* [索引的选择](/choose-index.md)
+* [错误索引的解决方案](/wrong-index-solution.md)
 * [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)

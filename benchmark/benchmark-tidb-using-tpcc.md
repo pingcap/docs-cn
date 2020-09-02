@@ -1,7 +1,6 @@
 ---
 title: 如何对 TiDB 进行 TPC-C 测试
-category: benchmark
-aliases: ['/docs-cn/dev/benchmark/how-to-run-tpcc/']
+aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-tpcc/','/docs-cn/dev/benchmark/how-to-run-tpcc/']
 ---
 
 # 如何对 TiDB 进行 TPC-C 测试
@@ -57,7 +56,7 @@ ant
 
 ## 部署 TiDB 集群
 
-对于 1000 WAREHOUSE 我们将在 3 台服务器上部署集群。
+对于 1000 WAREHOUSE，在 3 台服务器上部署集群。
 
 在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD 和 1 个 TiKV 实例。
 
@@ -70,23 +69,49 @@ ant
 | RAM | 128GB |
 | DISK | Optane 500GB SSD |
 
-因为该型号 CPU 是 NUMA 架构，建议先用 `taskset` 进行绑核，首先用 `lscpu` 查看 NUMA node，比如：
+因为该型号 CPU 是 NUMA 架构，建议用 `numactl` 进行绑核。
 
-```text
-NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
-NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
-```
+1. [安装 numactl 工具](/check-before-deployment.md#安装-numactl-工具) 。
 
-之后可以通过下面的命令来启动 TiDB：
+2. 用 `lscpu` 查看 NUMA node，比如：
 
-{{< copyable "shell-regular" >}}
+    ```text
+    NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
+    NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
+    ```
 
-```shell
-nohup taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38 bin/tidb-server && \
-nohup taskset -c 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39 bin/tidb-server
-```
+3. 通过修改 `{tidb_deploy_path}/scripts/run_tidb.sh` 启动脚本，加入 `numactl` 来启动 TiDB：
 
-最后，可以选择部署一个 HAproxy 来进行多个 TiDB node 的负载均衡，推荐配置 nbproc 为 CPU 核数。
+    ```text
+    #!/bin/bash
+    set -e
+
+    ulimit -n 1000000
+
+    # WARNING: This file was auto-generated. Do not edit!
+    #          All your edit might be overwritten!
+    DEPLOY_DIR=/home/damon/deploy/tidb1-1
+
+    cd "${DEPLOY_DIR}" || exit 1
+
+    export TZ=Asia/Shanghai
+
+    # 同一台机器不同的 TiDB 实例需要指定不同的 cpunodebind 以及 membind；来绑定不同的 Numa node
+    exec numactl --cpunodebind=0  --membind=0 bin/tidb-server \
+        -P 4111 \
+        --status="10191" \
+        --advertise-address="172.16.4.53" \
+        --path="172.16.4.10:2490" \
+        --config=conf/tidb.toml \
+        --log-slow-query="/home/damon/deploy/tidb1-1/log/tidb_slow_query.log" \
+        --log-file="/home/damon/deploy/tidb1-1/log/tidb.log" 2>> "/home/damon/deploy/tidb1-1/log/tidb_stderr.log"
+    ```
+
+    > **注意：**
+    >
+    > 直接修改 `run_tidb.sh` 可能会被覆盖，因此在生产环境中，如有绑核需求，建议使用 TiUP 绑核。
+
+4. 选择部署一个 HAproxy 来进行多个 TiDB node 的负载均衡，推荐配置 nbproc 为 CPU 核数。
 
 ## 配置调整
 
@@ -107,7 +132,7 @@ enabled = true
 
 ### TiKV 配置
 
-开始可以使用基本的配置，压测运行后可以通过观察 Grafana 并参考 [TiKV 调优说明](/tune-tikv-performance.md)进行调整。
+开始可以使用基本的配置，压测运行后可以通过观察 Grafana 并参考 [TiKV 线程池调优说明](/tune-tikv-thread-performance.md)进行调整。
 
 ### BenchmarkSQL 配置
 

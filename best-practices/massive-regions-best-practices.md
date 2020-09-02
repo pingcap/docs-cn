@@ -1,8 +1,7 @@
 ---
 title: 海量 Region 集群调优最佳实践
 summary: 了解海量 Region 导致性能问题的原因和优化方法。
-category: reference
-aliases: ['/docs-cn/dev/reference/best-practices/massive-regions/']
+aliases: ['/docs-cn/dev/best-practices/massive-regions-best-practices/','/docs-cn/dev/reference/best-practices/massive-regions/']
 ---
 
 # 海量 Region 集群调优最佳实践
@@ -40,7 +39,7 @@ aliases: ['/docs-cn/dev/reference/best-practices/massive-regions/']
 
 + Thread-CPU 下的 `Raft store CPU`
 
-    参考值：低于 `raftstore.store-pool-size * 85%`。在 v2.1 版本中无此配置项，因此在 v2.1 中可视为 `raftstore.store-pool-size = 1`。
+    参考值：低于 `raftstore.store-pool-size * 85%`。
 
     ![图 2 查看 Raftstore CPU](/media/best-practices/raft-store-cpu.png)
 
@@ -89,7 +88,7 @@ raft-heartbeat-interval = raft-base-tick-interval * raft-heartbeat-ticks
 
 ### 方法三：提高 Raftstore 并发数
 
-v3.0 版本中的 Raftstore 已经扩展为多线程，极大降低了 Raftstore 线程成为瓶颈的可能性。
+从 v3.0 版本起，Raftstore 已经扩展为多线程，极大降低了 Raftstore 线程成为瓶颈的可能性。
 
 TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出现瓶颈，可以根据实际情况适当调高该参数值，但不建议设置过高以免引入不必要的线程切换开销。
 
@@ -97,13 +96,13 @@ TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出�
 
 在实际情况中，读写请求并不会均匀分布到每个 Region 上，而是集中在少数的 Region 上。那么可以尽量减少暂时空闲的 Region 的消息数量，这也就是 Hibernate Region 的功能。无必要时可不进行 `raft-base-tick`，即不驱动空闲 Region 的 Raft 状态机，那么就不会触发这些 Region 的 Raft 产生心跳信息，极大地减小了 Raftstore 的工作负担。
 
-截至 TiDB v3.0.5，Hibernate Region 仍是一个实验功能，在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分支上已经默认开启。可根据实际情况和需求来开启该功能。Hibernate Region 的配置说明请参考[配置 Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。
+Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分支上默认开启。可根据实际情况和需求来开启该功能。Hibernate Region 的配置说明请参考[配置 Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。
 
 ### 方法五：开启 `Region Merge`
 
 > **注意：**
 >
-> `Region Merge` 已在 TiDB v3.0 中默认开启。
+> 从 TiDB v3.0 开始，`Region Merge` 默认开启。
 
 开启 `Region Merge` 也能减少 Region 的个数。与 `Region Split` 相反，`Region Merge` 是通过调度把相邻的小 Region 合并的过程。在集群中删除数据或者执行 `Drop Table`/`Truncate Table` 语句后，可以将小 Region 甚至空 Region 进行合并以减少资源的消耗。
 
@@ -127,7 +126,7 @@ TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出�
 
 PD 需要将 Region Meta 信息持久化在 etcd 上，以保证切换 PD Leader 节点后 PD 能快速继续提供 Region 路由服务。随着 Region 数量的增加，etcd 出现性能问题，使得 PD 在切换 Leader 时从 etcd 获取 Region Meta 信息的速度较慢。在百万 Region 量级时，从 etcd 获取信息的时间可能需要十几秒甚至几十秒。
 
-因此在 v3.0 版本中，PD 默认开启配置项 `use-region-storage`，将 Region Meta 信息存在本地的 LevelDB 中，并通过其他机制同步 PD 节点间的信息。
+因此从 v3.0 版本起，PD 默认开启配置项 `use-region-storage`，将 Region Meta 信息存在本地的 LevelDB 中，并通过其他机制同步 PD 节点间的信息。
 
 ### PD 路由信息更新不及时
 
@@ -137,8 +136,8 @@ PD 需要将 Region Meta 信息持久化在 etcd 上，以保证切换 PD Leader
 
 ![图 4 查看 pd-worker](/media/best-practices/pd-worker-metrics.png)
 
-目前已经在 [TiKV master](https://github.com/tikv/tikv/tree/master) 上对 pd-worker 进行了[效率优化](https://github.com/tikv/tikv/pull/5620)。[TiDB v3.0.5](https://pingcap.com/docs-cn/stable/releases/3.0.5/) 中已带上该优化。如果碰到类似问题，建议升级至 v3.0.5。
+老版本 TiDB (< v3.0.5) pd-worker 的效率有一些缺陷，如果碰到类似问题，建议升级至最新版本。
 
 ### Prometheus 查询 metrics 的速度慢
 
-在大规模集群中，随着 TiKV 实例数的增加，Prometheus 查询 metrics 时的计算压力较大，导致 Grafana 查看 metrics 的速度较慢。v3.0 版本中设置了一些 metrics 的预计算，让这个问题有所缓解。
+在大规模集群中，随着 TiKV 实例数的增加，Prometheus 查询 metrics 时的计算压力较大，导致 Grafana 查看 metrics 的速度较慢。从 v3.0 版本起设置了一些 metrics 的预计算，让这个问题有所缓解。

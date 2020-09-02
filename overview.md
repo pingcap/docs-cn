@@ -1,65 +1,48 @@
 ---
 title: TiDB 简介
-category: introduction
+aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 ---
 
 # TiDB 简介
 
-TiDB 是 PingCAP 公司设计的开源分布式 HTAP (Hybrid Transactional and Analytical Processing) 数据库，结合了传统的 RDBMS 和 NoSQL 的最佳特性。TiDB 兼容 MySQL，支持无限的水平扩展，具备强一致性和高可用性。TiDB 的目标是为 OLTP (Online Transactional Processing) 和 OLAP (Online Analytical Processing) 场景提供一站式的解决方案。
+TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP）的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 5.7 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。
 
-TiDB 具备如下特性：
+## 五大核心特性
 
-- 高度兼容 MySQL
+- 一键水平扩容或者缩容
 
-    [大多数情况下](/mysql-compatibility.md)，无需修改代码即可从 MySQL 轻松迁移至 TiDB，分库分表后的 MySQL 集群亦可通过 TiDB 工具进行实时迁移。
+    得益于 TiDB 存储计算分离的架构的设计，可按需对计算、存储分别进行在线扩容或者缩容，扩容或者缩容过程中对应用运维人员透明。
+  
+ - 金融级高可用
 
-- 水平弹性扩展
+    数据采用多副本存储，数据副本通过 Multi-Raft 协议同步事务日志，多数派写入成功事务才能提交，确保数据强一致性且少数副本发生故障时不影响数据的可用性。可按需配置副本地理位置、副本数量等策略满足不同容灾级别的要求。
+    
+- 实时 HTAP
 
-    通过简单地增加新节点即可实现 TiDB 的水平扩展，按需扩展吞吐或存储，轻松应对高并发、海量数据场景。
+    提供行存储引擎 TiKV、列存储引擎 TiFlash 两款存储引擎，TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保行存储引擎 TiKV 和列存储引擎 TiFlash 之间的数据强一致。TiKV、TiFlash 可按需部署在不同的机器，解决 HTAP 资源隔离的问题。  
 
-- 分布式事务
+- 云原生的分布式数据库
 
-    TiDB 100% 支持标准的 ACID 事务。
+    专为云而设计的分布式数据库，通过 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/tidb-operator-overview) 可在公有云、私有云、混合云中实现部署工具化、自动化。
 
-- 真正金融级高可用
+- 兼容 MySQL 5.7 协议和 MySQL 生态
 
-    相比于传统主从 (M-S) 复制方案，基于 Raft 的多数派选举协议可以提供金融级的 100% 数据强一致性保证，且在不丢失大多数副本的前提下，可以实现故障的自动恢复 (auto-failover)，无需人工介入。
+    兼容 MySQL 5.7 协议、MySQL 常用的功能、MySQL 生态，应用无需或者修改少量代码即可从 MySQL 迁移到 TiDB。提供丰富的数据迁移工具帮助应用便捷完成数据迁移。
 
-- 一站式 HTAP 解决方案
+## 四大核心应用场景
 
-    TiDB 作为典型的 OLTP 行存数据库，同时兼具强大的 OLAP 性能，配合 TiSpark，可提供一站式 HTAP 解决方案，一份存储同时处理 OLTP & OLAP，无需传统繁琐的 ETL 过程。
+- 对数据一致性及高可靠、系统高可用、可扩展性、容灾要求较高的金融行业属性的场景
 
-- 云原生 SQL 数据库
+    众所周知，金融行业对数据一致性及高可靠、系统高可用、可扩展性、容灾要求较高。传统的解决方案是同城两个机房提供服务、异地一个机房提供数据容灾能力但不提供服务，此解决方案存在以下缺点：资源利用率低、维护成本高、RTO (Recovery Time Objective) 及 RPO (Recovery Point Objective) 无法真实达到企业所期望的值。TiDB 采用多副本 + Multi-Raft 协议的方式将数据调度到不同的机房、机架、机器，当部分机器出现故障时系统可自动进行切换，确保系统的 RTO <= 30s 及 RPO = 0 。
 
-    TiDB 是为云而设计的数据库，支持公有云、私有云和混合云，配合 [TiDB Operator 项目](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/tidb-operator-overview/) 可实现自动化运维，使部署、配置和维护变得十分简单。
+- 对存储容量、可扩展性、并发要求较高的海量数据及高并发的 OLTP 场景
 
-TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](/tispark-overview.md)来完成。
+    随着业务的高速发展，数据呈现爆炸性的增长，传统的单机数据库无法满足因数据爆炸性的增长对数据库的容量要求，可行方案是采用分库分表的中间件产品或者 NewSQL 数据库替代、采用高端的存储设备等，其中性价比最大的是 NewSQL 数据库，例如：TiDB。TiDB 采用计算、存储分离的架构，可对计算、存储分别进行扩容和缩容，计算最大支持 512 节点，每个节点最大支持 1000 并发，集群容量最大支持 PB 级别。
 
-TiDB 对业务没有任何侵入性，能优雅地替换传统的数据库中间件、数据库分库分表等 Sharding 方案。同时它也让开发运维人员不用关注数据库 Scale 的细节问题，专注于业务开发，极大地提升研发的生产力。
+- Real-time HTAP 场景
 
-三篇文章了解 TiDB 技术内幕：
+    随着 5G、物联网、人工智能的高速发展，企业所生产的数据会越来越多，其规模可能达到数百 TB 甚至 PB 级别，传统的解决方案是通过 OLTP 型数据库处理在线联机交易业务，通过 ETL 工具将数据同步到 OLAP 型数据库进行数据分析，这种处理方案存在存储成本高、实时性差等多方面的问题。TiDB 在 4.0 版本中引入列存储引擎 TiFlash 结合行存储引擎 TiKV 构建真正的 HTAP 数据库，在增加少量存储成本的情况下，可以同一个系统中做联机交易处理、实时数据分析，极大地节省企业的成本。
 
-- [说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
-- [说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
-- [谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
+- 数据汇聚、二次加工处理的场景
 
-## 部署方式
-
-TiDB 可以部署在本地和云平台上，支持公有云、私有云和混合云。你可以根据实际场景或需求，选择相应的方式来部署 TiDB 集群：
-
-- [使用 TiUP 部署](/production-deployment-using-tiup.md)：如果用于生产环境，推荐使用 TiUP 部署 TiDB 集群。
-- [使用 Docker Compose 部署](/deploy-test-cluster-using-docker-compose.md)：如果你只是想测试 TiDB、体验 TiDB 的特性，或者用于开发环境，可以使用 Docker Compose 在本地快速部署 TiDB 集群。该部署方式不适用于生产环境。
-- [使用 Docker 部署](/test-deployment-using-docker.md)：你可以使用 Docker 部署 TiDB 集群，但该部署方式不适用于生产环境。
-- [使用 TiDB Operator 部署](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-operator/)：使用 TiDB Operator 在 Kubernetes 集群上部署生产就绪的 TiDB 集群，支持[部署到 AWS EKS](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-aws-eks/)、[部署到谷歌云 GKE (beta)](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)、[部署到阿里云 ACK](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud/) 等。
-- [使用 TiDB Operator 部署到 Minikube](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-minikube/)：你可以使用 TiDB Operator 将 TiDB 集群部署到本地 Minikube 启动的 Kubernetes 集群中。该部署方式不适用于生产环境。
-- [使用 TiDB Operator 部署到 kind](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/deploy-tidb-from-kubernetes-kind/)：你可以使用 TiDB Operator 将 TiDB 集群部署到以 kind 方式启动的 Kubernetes 本地集群中。该部署方式不适用于生产环境。
-
-## 项目源码
-
-TiDB 集群所有组件的源码均可从 GitHub 上直接访问：
-
-- [TiDB](https://github.com/pingcap/tidb)
-- [TiKV](https://github.com/tikv/tikv)
-- [PD](https://github.com/pingcap/pd)
-- [TiSpark](https://github.com/pingcap/tispark)
-- [TiDB Operator](https://github.com/pingcap/tidb-operator)
+    当前绝大部分企业的业务数据都分散在不同的系统中，没有一个统一的汇总，随着业务的发展，企业的决策层需要了解整个公司的业务状况以便及时做出决策，故需要将分散在各个系统的数据汇聚在同一个系统并进行二次加工处理生成 T+0 或 T+1 的报表。传统常见的解决方案是采用 ETL + Hadoop 来完成，但 Hadoop 体系太复杂，运维、存储成本太高无法满足用户的需求。与 Hadoop 相比，TiDB 就简单得多，业务通过 ETL 工具或者 TiDB 的同步工具将数据同步到 TiDB，在 TiDB 中可通过 SQL 直接生成报表。

@@ -1,8 +1,7 @@
 ---
 title: SHOW CREATE USER
 summary: TiDB 数据库中 SHOW CREATE USER 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-create-user/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-create-user/','/docs-cn/dev/reference/sql/statements/show-create-user/']
 ---
 
 # SHOW CREATE USER
@@ -11,9 +10,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-create-user/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowCreateUserStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowCreateUserStmt](/media/sqlgram/ShowCreateUserStmt.png)
 
 **Username:**
 

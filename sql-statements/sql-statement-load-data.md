@@ -1,8 +1,7 @@
 ---
 title: LOAD DATA
 summary: TiDB 数据库中 LOAD DATA 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/load-data/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/reference/sql/statements/load-data/']
 ---
 
 # LOAD DATA
@@ -17,7 +16,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/load-data/']
 
 ## 参数说明
 
-用户可以使用 `FIELDS` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。如果用户希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
+用户可以使用 `LocalOpt` 参数来指定导入的数据文件位于客户端或者服务端。目前 TiDB 只支持从客户端进行数据导入，因此在导入数据时 `LocalOpt` 应设置成 `Local`。
+
+用户可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。如果用户希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
 
 例如对于以下格式的数据：
 
@@ -41,6 +42,8 @@ LINES TERMINATED BY '\n'
 ```
 
 用户可以通过 `IGNORE number LINES` 参数来忽略文件开始的 `number` 行，例如可以使用 `IGNORE 1 LINES` 来忽略文件的首行。
+
+另外，TiDB 目前对参数 `DuplicateOpt`、`CharsetOpt`、`LoadDataSetSpecOpt` 仅支持语法解析。
 
 ## 示例
 
@@ -69,7 +72,7 @@ Query OK, 0 rows affected (0.14 sec)
 
 如果此时遇到 `ERROR 1148 (42000): the used command is not allowed with this TiDB version` 报错信息。可以参考以下文档解决：
 
-[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/faq/tidb-faq.md#923-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
+[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/faq/tidb-faq.md#323-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
 
 {{< copyable "sql" >}}
 
@@ -98,7 +101,7 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 > **注意：**
 >
-> 这种拆分事务提交的方式是以打破事务的原子性和隔离性为代价的，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议在生产环境中使用。
+> 这种拆分事务提交的方式是以打破事务的原子性和隔离性为代价的，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议对读写频繁的表使用 `LOAD DATA` 语句。
 
 ## 另请参阅
 

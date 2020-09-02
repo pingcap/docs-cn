@@ -1,7 +1,6 @@
 ---
 title: TiDB 用户账户管理
-category: reference
-aliases: ['/docs-cn/dev/reference/security/user-account-management/']
+aliases: ['/docs-cn/dev/user-account-management/','/docs-cn/dev/reference/security/user-account-management/']
 ---
 
 # TiDB 用户账户管理
@@ -28,6 +27,10 @@ mysql --port 4000 --user xxx --password
 mysql -P 4000 -u xxx -p
 ```
 
+> **Note:**
+>
+> 若要使用 MySQL 8.0 的连接器连接到 TiDB，你必须显式地指定 `default-auth=mysql_native_password`，因为 `mysql_native_password` 不再是[默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
+
 ## 添加用户
 
 添加用户有两种方式：
@@ -40,21 +43,10 @@ mysql -P 4000 -u xxx -p
 {{< copyable "sql" >}}
 
 ```sql
-CREATE USER [IF NOT EXISTS]
-    user [auth_spec] [, user [auth_spec]] ...
+CREATE USER [IF NOT EXISTS] user [IDENTIFIED BY 'auth_string'];
 ```
 
-{{< copyable "sql" >}}
-
-```sql
-auth_spec: {
-    IDENTIFIED BY 'auth_string'
-  | IDENTIFIED BY PASSWORD 'hash_string'
-}
-```
-
-* `IDENTIFIED BY 'auth_string'`：设置登录密码时，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
-* `IDENTIFIED BY PASSWORD 'hash_string'`：设置登录密码，`hash_string` 是一个类似于 `*EBE2869D7542FCE37D1C9BBC724B97BDE54428F1` 的 41 位字符串，会被 TiDB 直接存储在 `mysql.user` 表中，该字符串可以通过 `SELECT password('auth_string')` 加密得到。
+设置登录密码后，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
 
 {{< copyable "sql" >}}
 
@@ -93,7 +85,9 @@ CREATE USER 'test';
 CREATE USER 'test'@'%' IDENTIFIED BY '';
 ```
 
-下面的例子用 `CREATE USER` 和 `GRANT` 语句创建了四个账户：
+为一个不存在的用户授权时，是否会自动创建用户的行为受 `sql_mode` 影响。如果 `sql_mode` 中包含 `NO_AUTO_CREATE_USER`，则 `GRANT` 不会自动创建用户并报错。
+
+假设 `sql_mode` 不包含 `NO_AUTO_CREATE_USER`，下面的例子用 `CREATE USER` 和 `GRANT` 语句创建了四个账户：
 
 {{< copyable "sql" >}}
 
@@ -177,7 +171,7 @@ TiDB 在数据库初始化时会生成一个 `'root'@'%'` 的默认账户。
 
 TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE USER` 权限，或者拥有 `mysql` 数据库权限（`INSERT` 权限用于创建，`UPDATE` 权限用于更新）的用户才能够设置或修改密码。
 
-- 在 `CREATE USER` 创建用户时可以通过 `IDENTIFIED BY` 指定密码：
+- 在 `CREATE USER` 创建用户时通过 `IDENTIFIED BY` 指定密码：
 
     {{< copyable "sql" >}}
 
@@ -212,7 +206,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     skip-grant-table = true
     ```
 
-2. 然后使用 `root` 登录后修改密码：
+2. 使用修改之后的配置启动 TiDB，然后使用 `root` 登录后修改密码：
 
     {{< copyable "shell-regular" >}}
 
@@ -220,9 +214,13 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
 
+设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
+
 ## `FLUSH PRIVILEGES`
 
-如果授权表已被直接修改，运行如下命令可使改动立即生效：
+用户以及权限相关的信息都存储在 TiKV 服务器中，TiDB 在进程内部会缓存这些信息。一般通过 `CREATE USER`，`GRANT` 等语句来修改相关信息时，可在整个集群迅速生效。如果遇到网络或者其它因素影响，由于 TiDB 会周期性地更新缓存信息，正常情况下，最多 15 分钟左右生效。
+
+如果授权表已被直接修改，则不会通知 TiDB 节点更新缓存，运行如下命令可使改动立即生效：
 
 {{< copyable "sql" >}}
 

@@ -1,8 +1,7 @@
 ---
 title: DROP SEQUENCE
 summary: TiDB 数据库中 DROP SEQUENCE 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/drop-sequence/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-sequence/','/docs-cn/dev/reference/sql/statements/drop-sequence/']
 ---
 
 # DROP SEQUENCE
@@ -15,10 +14,6 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-sequence/']
 
 ![DropSequenceStmt](/media/sqlgram/DropSequenceStmt.png)
 
-**OptTemporary:**
-
-![OptTemporary](/media/sqlgram/OptTemporary.png)
-
 **IfExists:**
 
 ![IfExists](/media/sqlgram/IfExists.png)
@@ -26,6 +21,10 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-sequence/']
 **TableNameList:**
 
 ![TableNameList](/media/sqlgram/TableNameList.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
 
 ## 示例
 
@@ -51,7 +50,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 ## MySQL 兼容性
 
-MySQL 暂无序列选项。TiDB 序列借鉴自 MariaDB。`SETVAL` 函数的步调是 TiDB 特有的，其他函数的步调与 MariaDB 保持一致。
+MySQL 暂无序列功能。
 
 ## 另请参阅
 

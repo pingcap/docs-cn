@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 故障诊断
-category: reference
-aliases: ['/docs-cn/dev/how-to/troubleshoot/tidb-lightning/']
+aliases: ['/docs-cn/dev/troubleshoot-tidb-lightning/','/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/dev/tidb-lightning/tidb-lightning-misuse-handling/']
 ---
 
 # TiDB Lightning 故障诊断
@@ -24,7 +23,18 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 
 每条索引都会额外增加键值对。如果有 N 条索引，实际导入的大小就差不多是 Mydumper 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
 
-**原因 3**：Lightning 版本太旧。
+**原因 3**: 单个文件过大。
+
+把源数据分割为单个大小约为 256 MB 的多个文件时，TiDB Lightning 会并行处理数据，达到最佳效果。如果导入的单个文件过大，TiDB Lightning 可能无响应。
+
+如果源数据是 CSV 格式文件，并且所有的 CSV 文件内都不存在包含字符换行符的字段 (U+000A 及 U+000D)，则可以启用 `strict-format`，TiDB Lightning 会自动分割大文件。
+
+```toml
+[mydumper]
+strict-format = true
+```
+
+**原因 4**：TiDB Lightning 版本太旧。
 
 试试最新的版本吧！可能会有改善。
 
@@ -133,3 +143,20 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 3. 确保整个集群使用的是同一最新版本的 `tzdata` (2018i 或更高版本)。
 
     如果你使用的是 CentOS 机器，你可以运行 `yum info tzdata` 命令查看 `tzdata` 的版本及是否有更新。然后运行 `yum upgrade tzdata` 命令升级 `tzdata`。
+
+## `[Error 8025: entry too large, the max entry size is 6291456]`
+
+**原因**：TiDB Lightning 生成的单行 KV 超过了 TiDB 的限制。
+
+**解决办法**:
+
+目前无法绕过 TiDB 的限制，只能忽略这张表，确保其它表顺利导入。
+
+## switch-mode 时遇到 `rpc error: code = Unimplemented ...`
+
+**原因**：集群中有不支持 switch-mode 的节点。目前已知的组件中，4.0.0-rc.2 之前的 TiFlash [不支持 switch-mode 操作](https://github.com/pingcap/tidb-lightning/issues/273)。
+
+**解决办法**：
+
+- 如果集群中有 TiFlash 节点，可以将集群更新到 4.0.0-rc.2 或更新版本。
+- 如果不方便升级，可以临时禁用 TiFlash。

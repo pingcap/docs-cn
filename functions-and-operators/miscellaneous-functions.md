@@ -1,7 +1,6 @@
 ---
 title: 其他函数
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/miscellaneous-functions/']
+aliases: ['/docs-cn/dev/functions-and-operators/miscellaneous-functions/','/docs-cn/dev/reference/sql/functions-and-operators/miscellaneous-functions/']
 ---
 
 # 其他函数

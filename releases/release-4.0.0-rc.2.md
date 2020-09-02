@@ -1,6 +1,6 @@
 ---
 title: TiDB 4.0 RC.2 Release Notes
-category: Releases
+aliases: ['/docs-cn/dev/releases/release-4.0.0-rc.2/']
 ---
 
 # TiDB 4.0 RC.2 Release Notes
@@ -8,8 +8,6 @@ category: Releases
 发版日期：2020 年 5 月 15 日
 
 TiDB 版本：4.0.0-rc.2
-
-TiUP 版本：4.0.0-rc.2
 
 ## 兼容性变化
 

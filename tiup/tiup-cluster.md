@@ -1,7 +1,6 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
-category: tools
-aliases: ['/docs-cn/dev/reference/tools/tiup/cluster/']
+aliases: ['/docs-cn/dev/tiup/tiup-cluster/','/docs-cn/dev/reference/tools/tiup/cluster/']
 ---
 
 # 使用 TiUP 部署运维 TiDB 线上集群
@@ -18,8 +17,8 @@ tiup cluster
 
 ```
 The component `cluster` is not installed; downloading from repository.
-download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s                                                   
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster 
+download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s
+Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -33,6 +32,7 @@ Available Commands:
   restart     重启集群
   scale-in    集群缩容
   scale-out   集群扩容
+  clean       清理数据
   destroy     销毁集群
   upgrade     升级集群
   exec        在集群的一个或多个机器上执行命令
@@ -47,6 +47,8 @@ Available Commands:
 
 Flags:
   -h, --help              帮助信息
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -61,11 +63,15 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 该命令需要提供集群的名字、集群使用的 TiDB 版本，以及一个集群的拓扑文件。
 
-拓扑文件的编写可参考[示例](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
+拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
+
+> **注意：**
+>
+> TiUP Cluster 组件的部署和扩容拓扑是使用 [yaml](https://yaml.org/spec/1.2/spec.html) 语法编写，所以需要注意缩进。
 
 ```yaml
 ---
-  
+
 pd_servers:
   - host: 172.16.5.134
     name: pd-134
@@ -174,9 +180,9 @@ TiDB Version: v3.0.12
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
 --                  ----        ----          -----        ------     --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
-172.16.5.134:2379   pd          172.16.5.134  2379/2380    Healthy|L  data/pd-2379          deploy/pd-2379
-172.16.5.139:2379   pd          172.16.5.139  2379/2380    Healthy    data/pd-2379          deploy/pd-2379
-172.16.5.140:2379   pd          172.16.5.140  2379/2380    Healthy    data/pd-2379          deploy/pd-2379
+172.16.5.134:2379   pd          172.16.5.134  2379/2380    Up|L       data/pd-2379          deploy/pd-2379
+172.16.5.139:2379   pd          172.16.5.139  2379/2380    Up|UI      data/pd-2379          deploy/pd-2379
+172.16.5.140:2379   pd          172.16.5.140  2379/2380    Up         data/pd-2379          deploy/pd-2379
 172.16.5.134:9090   prometheus  172.16.5.134  9090         Up         data/prometheus-9090  deploy/prometheus-9090
 172.16.5.134:4000   tidb        172.16.5.134  4000/10080   Up         -                     deploy/tidb-4000
 172.16.5.139:4000   tidb        172.16.5.139  4000/10080   Up         -                     deploy/tidb-4000
@@ -186,7 +192,7 @@ ID                  Role        Host          Ports        Status     Data Dir  
 172.16.5.140:20160  tikv        172.16.5.140  20160/20180  Up         data/tikv-20160       deploy/tikv-20160
 ```
 
-对于普通的组件，Status 列会显示 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件，Status 会显示 `Healthy` 或者 `Down`，同时可能会带有 |L 表示该 PD 是 Leader。
+Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件，同时可能会带有 `|L` 表示该 PD 是 Leader，`|UI` 表示该 PD 运行着 [TiDB Dashboard](/dashboard/dashboard-intro.md)。
 
 ## 缩容节点
 
@@ -239,9 +245,9 @@ TiDB Version: v3.0.12
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
 --                  ----        ----          -----        ------     --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
-172.16.5.134:2379   pd          172.16.5.134  2379/2380    Healthy|L  data/pd-2379          deploy/pd-2379
-172.16.5.139:2379   pd          172.16.5.139  2379/2380    Healthy    data/pd-2379          deploy/pd-2379
-172.16.5.140:2379   pd          172.16.5.140  2379/2380    Healthy    data/pd-2379          deploy/pd-2379
+172.16.5.134:2379   pd          172.16.5.134  2379/2380    Up|L       data/pd-2379          deploy/pd-2379
+172.16.5.139:2379   pd          172.16.5.139  2379/2380    Up|UI      data/pd-2379          deploy/pd-2379
+172.16.5.140:2379   pd          172.16.5.140  2379/2380    Up         data/pd-2379          deploy/pd-2379
 172.16.5.134:9090   prometheus  172.16.5.134  9090         Up         data/prometheus-9090  deploy/prometheus-9090
 172.16.5.134:4000   tidb        172.16.5.134  4000/10080   Up         -                     deploy/tidb-4000
 172.16.5.139:4000   tidb        172.16.5.139  4000/10080   Up         -                     deploy/tidb-4000
@@ -273,10 +279,10 @@ ID                  Role        Host          Ports        Status     Data Dir  
     ---
 
     pd_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
 
     tikv_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
     ```
 
 2. 执行扩容操作。TiUP cluster 根据 scale.yaml 文件中声明的端口、目录等信息在集群中添加相应的节点：
@@ -326,6 +332,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -348,7 +356,7 @@ tiup cluster upgrade tidb-test v4.0.0-rc
 tiup cluster edit-config prod-cluster
 ```
 
-然后 TiUP cluster 组件会使用 vi 打开配置文件供编辑，编辑完之后保存即可。此时的配置并没有应用到集群，如果想要让它生效，还需要执行：
+然后 TiUP cluster 组件会使用 vi 打开配置文件供编辑（如果你想要使用其他编辑器，请使用 `EDITOR` 环境变量自定义编辑器，例如 `export EDITOR=nano`），编辑完之后保存即可。此时的配置并没有应用到集群，如果想要让它生效，还需要执行：
 
 {{< copyable "shell-regular" >}}
 
@@ -382,6 +390,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -404,8 +414,11 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 
 ## 导入 TiDB Ansible 集群
 
-在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。
-import 命令用法如下：
+> **注意：**
+>
+> TiUP cluster 组件对 TiSpark 的支持目前为实验性特性，暂不支持导入启用了 TiSpark 组件的集群。
+
+在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。import 命令用法如下：
 
 {{< copyable "shell-root" >}}
 
@@ -427,6 +440,8 @@ Flags:
   -r, --rename NAME        重命名被导入的集群
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -540,3 +555,89 @@ etcdctl [args] = tiup ctl etcd [args]
 ```bash
 tiup ctl pd -u http://127.0.0.1:2379 store
 ```
+
+## 部署机环境检查
+
+使用 `check` 子命令可以对部署机的环境进行一系列检查，并输出检查结果。通过执行 `check` 子命令，可以发现常见的不合理配置或不支持情况。命令参数列表如下：
+
+```bash
+Usage:
+  tiup cluster check <topology.yml | cluster-name> [flags]
+
+Flags:
+      --apply                  Try to fix failed checks
+      --cluster                Check existing cluster, the input is a cluster name.
+      --enable-cpu             Enable CPU thread count check
+      --enable-disk            Enable disk IO (fio) check
+      --enable-mem             Enable memory size check
+  -h, --help                   help for check
+  -i, --identity_file string   The path of the SSH identity file. If specified, public key authentication will be used.
+  -p, --password               Use password of target hosts. If specified, password authentication will be used.
+      --user string            The user name to login via SSH. The user must has root (or sudo) privilege.
+```
+
+默认情况下，此功能用于在部署前进行环境检查，通过指定 `--cluster` 参数切换模式，也可以用于对已部署集群的部署机进行检查，例如：
+
+```bash
+# check deploy servers before deploy
+tiup cluster check topology.yml --user tidb -p
+
+# check deploy servers of an existing cluster
+tiup cluster check <cluster-name> --cluster
+```
+
+其中，CPU 线程数检查、内存大小检查和磁盘性能检查三项默认关闭，对于生产环境，建议将此三项检测开启并确保通过，以获得最佳性能。
+
+- CPU：线程数大于等于 16 为通过检查
+- 内存：物理内存总大小大于等于 32 GB 为通过检查
+- 磁盘：对 `data_dir` 所在分区执行 `fio` 测试并记录结果
+
+在运行检测时，若指定了 `--apply` 参数，程序将尝试对其中未通过的项目自动修复。自动修复仅限于部分可通过修改配置或系统参数调整的项目，其它未修复的项目需要根据实际情况手工处理。
+
+环境检查不是部署集群的必需流程。对于生产环境建议在部署前执行环境检查并通过所有检测项。如果未通过全部检查项，也可能正常部署和运行集群，但可能无法获得最佳性能表现。
+
+## 使用中控机系统自带的 SSH 客户端连接集群
+
+在以上所有操作中，涉及到对集群机器的操作都是通过 TiUP 内置的 SSH 客户端连接集群执行命令，但是在某些场景下，需要使用系统自带的 SSH 客户端来对集群执行操作，比如：
+
+- 使用 SSH 插件来做认证
+- 使用定制的 SSH 客户端
+
+此时可以通过命令行参数 `--native-ssh` 启用系统自带命令行：
+
+- 部署集群: `tiup cluster deploy <cluster-name> <version> <topo> --native-ssh`
+- 启动集群: `tiup cluster start <cluster-name> --native-ssh`
+- 升级集群: `tiup cluster upgrade ... --native-ssh`
+
+所有涉及集群操作的步骤都可以加上 `--native-ssh` 来使用系统自带的客户端。
+
+也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--native-ssh` 参数：
+
+```sh
+export TIUP_NATIVE_SSH=true
+# 或者
+export TIUP_NATIVE_SSh=1
+# 或者
+export TIUP_NATIVE_SSH=enable
+```
+
+若环境变量和 `--native-ssh` 同时指定，则以 `--native-ssh` 为准。
+
+> **注意：**
+>
+> 在部署集群的步骤中，若需要使用密码的方式连接 (-p)，或者密钥文件设置了 passphrase，则需要保证中控机上安装了 sshpass，否则连接时会报错。
+
+## 迁移中控机与备份
+
+TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，若要迁移中控机只需要拷贝 `.tiup` 目录到对应目标机器即可。
+
+1. 在原机器 home 目录下执行 `tar czvf tiup.tar.gz .tiup`。
+2. 把 `tip.tar.gz` 拷贝到目标机器 home 目录。
+3. 在目标机器 home 目录下执行 `tar xzvf tiup.tar.gz`。
+4. 添加 `.tiup` 目录到 `PATH` 环境变量。
+
+    如使用 `bash` 并且是 `tidb` 用户，在 `~/.bashr` 中添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后执行 `source ~/.bashrc`，根据使用的 shell 与用户做相应调整。
+
+> **注意：**
+>
+> 为了避免中控机磁盘损坏等异常情况导致 TiUP 数据丢失，建议定时备份 `.tiup` 目录。

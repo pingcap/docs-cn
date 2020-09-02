@@ -1,163 +1,176 @@
 ---
 title: 生成自签名证书
-category: how-to
-aliases: ['/docs-cn/dev/how-to/secure/generate-self-signed-certificates/']
+aliases: ['/docs-cn/dev/generate-self-signed-certificates/','/docs-cn/dev/how-to/secure/generate-self-signed-certificates/']
 ---
 
 # 生成自签名证书
 
-## 概述
-
-本文档提供使用 `cfssl` 生成自签名证书的示例。
+本文档提供使用 `openssl` 生成自签名证书的一个示例，用户也可以根据自己的需求生成符合要求的证书和密钥。
 
 假设实例集群拓扑如下：
 
-| Name  | Host IP     | Services   |
-| ----- | ----------- | ---------- |
-| node1 | 172.16.10.1 | PD1, TiDB1 |
-| node2 | 172.16.10.2 | PD2, TiDB2 |
-| node3 | 172.16.10.3 | PD3        |
-| node4 | 172.16.10.4 | TiKV1      |
-| node5 | 172.16.10.5 | TiKV2      |
-| node6 | 172.16.10.6 | TiKV3      |
+| Name  | Host IP      | Services   |
+| ----- | -----------  | ---------- |
+| node1 | 172.16.10.11 | PD1, TiDB1 |
+| node2 | 172.16.10.12 | PD2        |
+| node3 | 172.16.10.13 | PD3        |
+| node4 | 172.16.10.14 | TiKV1      |
+| node5 | 172.16.10.15 | TiKV2      |
+| node6 | 172.16.10.16 | TiKV3      |
 
-## 下载 cfssl
+## 安装 OpenSSL
 
-假设使用 x86_64 Linux 主机：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-mkdir ~/bin &&
-curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 &&
-curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 &&
-chmod +x ~/bin/{cfssl,cfssljson} &&
-export PATH=$PATH:~/bin
-```
-
-## 初始化证书颁发机构
-
-生成 cfssl 的默认配置，以便于之后修改：
-
-```bash
-mkdir ~/cfssl &&
-cd ~/cfssl &&
-cfssl print-defaults config > ca-config.json &&
-cfssl print-defaults csr > ca-csr.json
-```
-
-## 生成证书
-
-### 证书介绍
-
-- tidb-server certificate 由 TiDB 使用，为其他组件和客户端验证 TiDB 身份。
-- tikv-server certificate 由 TiKV 使用，为其他组件和客户端验证 TiKV 身份。
-- pd-server certificate 由 PD 使用，为其他组件和客户端验证 PD 身份。
-- client certificate 用于通过 PD、TiKV、TiDB 验证客户端。例如 `pd-ctl`，`tikv-ctl`，`pd-recover`。
-
-### 配置 CA 选项
-
-根据实际需求修改 `ca-config.json`：
-
-```json
-{
-    "signing": {
-        "default": {
-            "expiry": "43800h"
-        },
-        "profiles": {
-            "server": {
-                "expiry": "43800h",
-                "usages": [
-                    "signing",
-                    "key encipherment",
-                    "server auth",
-                    "client auth"
-                ]
-            },
-            "client": {
-                "expiry": "43800h",
-                "usages": [
-                    "signing",
-                    "key encipherment",
-                    "client auth"
-                ]
-            }
-        }
-    }
-}
-```
-
-根据实际需求修改 `ca-csr.json` ：
-
-```json
-{
-    "CN": "My own CA",
-    "key": {
-        "algo": "rsa",
-        "size": 2048
-    },
-    "names": [
-        {
-            "C": "CN",
-            "L": "Beijing",
-            "O": "PingCAP",
-            "ST": "Beijing"
-        }
-    ]
-}
-```
-
-### 生成 CA 证书
+对于 Debian 或 Ubuntu 操作系统：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
+apt install openssl
 ```
 
-将会生成以下几个文件：
-
-```
-ca-key.pem
-ca.csr
-ca.pem
-```
-
-### 生成服务器端证书
-
-`hostname` 中为各组件的 IP 地址，以及 `127.0.0.1`
+对于 RedHat 或 CentOS 操作系统：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-echo '{"CN":"tidb-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.1,172.16.10.2,127.0.0.1" - | cfssljson -bare tidb-server &&
-
-echo '{"CN":"tikv-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.4,172.16.10.5,172.16.10.6,127.0.0.1" - | cfssljson -bare tikv-server &&
-
-echo '{"CN":"pd-server","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname="172.16.10.1,172.16.10.2,172.16.10.3,127.0.0.1" - | cfssljson -bare pd-server
+yum install openssl
 ```
 
-将会生成以下几个文件：
+也可以参考 OpenSSL 官方的[下载文档](https://www.openssl.org/source/) 进行安装。
 
-```
-tidb-server-key.pem     tikv-server-key.pem      pd-server-key.pem
-tidb-server.csr         tikv-server.csr          pd-server.csr
-tidb-server.pem         tikv-server.pem          pd-server.pem
-```
+## 生成 CA 证书
 
-### 生成客户端证书
+CA 的作用是签发证书。实际情况中，请联系你的管理员签发证书或者使用信任的 CA 机构。CA 会管理多个证书对，这里只需生成原始的一对证书，步骤如下：
 
-{{< copyable "shell-regular" >}}
+1. 生成 root 密钥：
 
-```bash
-echo '{"CN":"client","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client -hostname="" - | cfssljson -bare client
-```
+    {{< copyable "shell-regular" >}}
 
-将会生成以下几个文件：
+    ```bash
+    openssl genrsa -out root.key 4096
+    ```
 
-```
-client-key.pem
-client.csr
-client.pem
-```
+2. 生成 root 证书：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl req -new -x509 -days 1000 -key root.key -out root.crt
+    ```
+
+3. 验证 root 证书：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -text -in root.crt -noout
+    ```
+
+## 签发各个组件的证书
+
+### 集群中可能使用到的证书
+
+- tidb certificate 由 TiDB 使用，为其他组件和客户端验证 TiDB 身份。
+- tikv certificate 由 TiKV 使用，为其他组件和客户端验证 TiKV 身份。
+- pd certificate 由 PD 使用，为其他组件和客户端验证 PD 身份。
+- client certificate 用于 PD、TiKV、TiDB 验证客户端。例如 `pd-ctl`，`tikv-ctl` 等。
+
+### 给 TiKV 实例签发证书
+
+给 TiKV 实例签发证书的步骤如下：
+
+1. 生成该证书对应的私钥：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl genrsa -out tikv.key 2048
+    ```
+
+2. 拷贝一份 OpenSSL 的配置模板文件。
+
+    模板文件可能存在多个位置，请以实际位置为准：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cp /usr/lib/ssl/openssl.cnf .
+    ```
+
+    如果不知道实际位置，请在根目录下查找：
+
+    ```bash
+    find / -name openssl.cnf
+    ```
+
+3. 编辑 `openssl.cnf`，在 `[ req ]` 字段下加入 `req_extensions = v3_req`，然后在 `[ v3_req ]` 字段下加入 `subjectAltName = @alt_names`。最后新建一个字段，并编辑 SAN 的信息：
+
+    ```
+    [ alt_names ]
+    IP.1 = 127.0.0.1
+    IP.2 = 172.16.10.14
+    IP.3 = 172.16.10.15
+    IP.4 = 172.16.10.16
+    ```
+
+4. 保存 `openssl.cnf` 文件后，生成证书请求文件（在这一步也可以为该证书指定 Common Name，其作用是让服务端验证接入的客户端的身份，各个组件默认不会开启验证，需要在配置文件中启用该功能才生效）：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl req -new -key tikv.key -out tikv.csr -config openssl.cnf
+    ```
+
+5. 签发生成证书：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -req -days 365 -CA root.crt -CAkey root.key -CAcreateserial -in tikv.csr -out tikv.crt -extensions v3_req -extfile openssl.cnf
+    ```
+
+6. 验证证书携带 SAN 字段信息（可选）：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -text -in tikv.crt -noout
+    ```
+
+7. 确认在当前目录下得到如下文件：
+
+    ```
+    root.crt
+    tikv.crt
+    tikv.key
+    ```
+
+为其它 TiDB 组件签发证书的过程类似，此文档不再赘述。
+
+### 为客户端签发证书
+
+为客户端签发证书的步骤如下。
+
+1. 生成该证书对应的私钥：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl genrsa -out client.key 2048
+    ```
+
+2. 生成证书请求文件（在这一步也可以为该证书指定 Common Name，其作用是让服务端验证接入的客户端的身份，默认不会开启对各个组件的验证，需要在配置文件中启用该功能才生效）
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl req -new -key client.key -out client.csr
+    ```
+
+3. 签发生成证书：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    openssl x509 -req -days 365 -CA root.crt -CAkey root.key -CAcreateserial -in client.csr -out client.crt
+    ```

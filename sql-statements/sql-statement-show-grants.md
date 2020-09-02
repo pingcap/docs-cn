@@ -1,8 +1,7 @@
 ---
 title: SHOW GRANTS
 summary: TiDB 数据库中 SHOW GRANTS 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-grants/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-grants/','/docs-cn/dev/reference/sql/statements/show-grants/']
 ---
 
 # SHOW GRANTS
@@ -11,13 +10,25 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-grants/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowGrantsStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+![ShowGrantsStmt](/media/sqlgram/ShowGrantsStmt.png)
 
 **Username:**
 
 ![Username](/media/sqlgram/Username.png)
+
+**UsingRoles:**
+
+![UsingRoles](/media/sqlgram/UsingRoles.png)
+
+**RolenameList:**
+
+![RolenameList](/media/sqlgram/RolenameList.png)
+
+**Rolename:**
+
+![Rolename](/media/sqlgram/Rolename.png)
 
 ## 示例
 
@@ -84,7 +95,7 @@ SHOW GRANTS FOR u1;
 
 ## MySQL 兼容性
 
-`SHOW GRANTS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW GRANTS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

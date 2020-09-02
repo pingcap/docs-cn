@@ -1,7 +1,6 @@
 ---
 title: TiKV 配置文件描述
-category: reference
-aliases: ['/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
+aliases: ['/docs-cn/dev/tikv-configuration-file/','/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
 ---
 
 # TiKV 配置文件描述
@@ -91,6 +90,10 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 最小值：1KB
 
 ## readpool.unified
+
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
 
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
 
@@ -643,7 +646,7 @@ rocksdb 相关的配置项。
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发个数。
-+ 默认值：1
++ 默认值：3
 + 最小值：1
 
 ### `max-open-files`
@@ -819,7 +822,7 @@ rocksdb defaultcf 相关的配置项。
 ### `block-cache-size`
 
 + rocksdb block cache size。
-+ 默认值：机器总内存 / 4
++ 默认值：机器总内存 * 25%
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -991,7 +994,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `blob-file-compression`
 
-+ Blob 文件所使用的压缩算法，可选值：no, snappy, zlib, bzip2, lz4, lz4hc, zstd。
++ Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
 + 默认值：lz4
 
 ### `blob-cache-size`
@@ -1047,12 +1050,12 @@ rocksdb defaultcf titan 相关的配置项。
 ### `level-merge`
 
 + 是否通过开启 level-merge 来提升读性能，副作用是写放大会比不开启更大。
-+ 默认值：true
++ 默认值：false
 
 ### `gc-merge-rewrite`
 
 + 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
-+ 默认值：true
++ 默认值：false
 
 ## rocksdb.writecf
 
@@ -1107,7 +1110,7 @@ raftdb 相关配置项。
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发数。
-+ 默认值：1
++ 默认值：2
 + 最小值：1
 
 ### `wal-dir`
@@ -1136,7 +1139,7 @@ raftdb 相关配置项。
 
 ## import
 
-import 相关的配置项。
+用于 TiDB Lightning 导入及 BR 恢复相关的配置项。
 
 ### `num-threads`
 
@@ -1150,6 +1153,16 @@ import 相关的配置项。
 + 默认值：8
 + 最小值：1
 
+## backup
+
+用于 BR 备份相关的配置项。
+
+### `num-threads`
+
++ 处理备份的工作线程数。
++ 默认值：CPU * 0.75，但最大为 32
++ 最小值：1
+
 ## pessimistic-txn
 
 ### `enabled`
@@ -1159,11 +1172,16 @@ import 相关的配置项。
 
 ### `wait-for-lock-timeout`
 
-+ 悲观事务在 TiKV 中等待其他事务释放锁的最长时间，单位为毫秒。若超时则会返回错误给 TiDB 并由 TiDB 重试加锁，语句最长等锁时间由 `innodb_lock_wait_timeout` 控制。
-+ 默认值：1000
-+ 最小值：1
++ 悲观事务在 TiKV 中等待其他事务释放锁的最长时间。若超时则会返回错误给 TiDB 并由 TiDB 重试加锁，语句最长等锁时间由 `innodb_lock_wait_timeout` 控制。
++ 默认值：1s
++ 最小值：1ms
 
 ### `wait-up-delay-duration`
 
-+ 悲观事务释放锁时，只会唤醒等锁事务中 start ts 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 毫秒之后被唤醒。
-+ 默认值：20
++ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 之后被唤醒。
++ 默认值：20ms
+
+### `pipelined`
+
++ 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
++ 默认值：false

@@ -1,8 +1,7 @@
 ---
 title: DROP INDEX
 summary: TiDB 数据库中 DROP INDEX 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/drop-index/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-index/','/docs-cn/dev/reference/sql/statements/drop-index/']
 ---
 
 # DROP INDEX
@@ -11,21 +10,29 @@ aliases: ['/docs-cn/dev/reference/sql/statements/drop-index/']
 
 ## 语法图
 
-**AlterTableStmt:**
+**AlterTableDropIndexStmt:**
 
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
+![AlterTableDropIndexStmt](/media/sqlgram/AlterTableDropIndexStmt.png)
 
-**AlterTableSpec:**
+**IgnoreOptional:**
 
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
+![IgnoreOptional](/media/sqlgram/IgnoreOptional.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**AlterTableDropIndexSpec:**
+
+![AlterTableDropIndexSpec](/media/sqlgram/AlterTableDropIndexSpec.png)
 
 **KeyOrIndex:**
 
 ![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
 
-**Identifier:**
+**IfExists:**
 
-![Identifier](/media/sqlgram/Identifier.png)
+![IfExists](/media/sqlgram/IfExists.png)
 
 ## 示例
 

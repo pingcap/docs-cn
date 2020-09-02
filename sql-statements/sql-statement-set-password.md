@@ -1,8 +1,7 @@
 ---
 title: SET PASSWORD
 summary: TiDB 数据库中 SET PASSWORD 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/set-password/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-password/','/docs-cn/dev/reference/sql/statements/set-password/']
 ---
 
 # SET PASSWORD
@@ -40,7 +39,7 @@ Query OK, 1 row affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE USER newuser;
+SHOW CREATE USER 'newuser';
 ```
 
 ```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -54,7 +53,7 @@ SHOW CREATE USER newuser;
 {{< copyable "sql" >}}
 
 ```sql
-SET PASSWORD FOR newuser = 'test';
+SET PASSWORD FOR 'newuser' = 'test';
 ```
 
 ```
@@ -64,7 +63,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE USER newuser;
+SHOW CREATE USER 'newuser';
 ```
 
 ```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -78,7 +77,7 @@ SHOW CREATE USER newuser;
 {{< copyable "sql" >}}
 
 ```sql
-SET PASSWORD FOR newuser = PASSWORD('test');
+SET PASSWORD FOR 'newuser' = PASSWORD('test');
 ```
 
 上述语法是早期 MySQL 版本的过时语法。
@@ -90,7 +89,7 @@ Query OK, 0 rows affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE USER newuser;
+SHOW CREATE USER 'newuser';
 ```
 
 ```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -103,7 +102,7 @@ SHOW CREATE USER newuser;
 
 ## MySQL 兼容性
 
-`SET PASSWORD` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SET PASSWORD` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

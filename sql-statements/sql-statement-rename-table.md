@@ -1,8 +1,7 @@
 ---
 title: RENAME TABLE
 summary: TiDB 数据库中 RENAME TABLE 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/rename-table/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-rename-table/','/docs-cn/dev/reference/sql/statements/rename-table/']
 ---
 
 # RENAME TABLE
@@ -73,7 +72,7 @@ SHOW TABLES;
 
 ## MySQL 兼容性
 
-`RENAME TABLE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`RENAME TABLE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

@@ -1,7 +1,6 @@
 ---
 title: 权限管理
-category: reference
-aliases: ['/docs-cn/dev/reference/security/privilege-system/']
+aliases: ['/docs-cn/dev/privilege-management/','/docs-cn/dev/reference/security/privilege-system/']
 ---
 
 # 权限管理
@@ -94,44 +93,7 @@ SELECT user,host FROM mysql.user WHERE user='xxxx';
 
 上述示例中，`xxxx@%` 即自动添加的用户。
 
-`GRANT` 对于数据库或者表的授权，不检查数据库或表是否存在。
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM test.xxxx;
-```
-
-```
-ERROR 1146 (42S02): Table 'test.xxxx' doesn't exist
-```
-
-{{< copyable "sql" >}}
-
-```sql
-GRANT ALL PRIVILEGES ON test.xxxx TO xxxx;
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT user,host FROM mysql.tables_priv WHERE user='xxxx';
-```
-
-```
-+------|------+
-| user | host |
-+------|------+
-| xxxx | %    |
-+------|------+
-1 row in set (0.00 sec)
-```
-
-`GRANT` 可以模糊匹配地授予数据库和表：
+`GRANT` 还可以模糊匹配地授予用户数据库的权限：
 
 {{< copyable "sql" >}}
 
@@ -246,39 +208,56 @@ Query OK, 0 rows affected (0.27 sec)
 SHOW GRANTS;
 ```
 
+```
++-------------------------------------------------------------+
+| Grants for User                                             |
++-------------------------------------------------------------+
+| GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION |
++-------------------------------------------------------------+
+```
+
+或者：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR CURRENT_USER();
+```
+
 查看某个特定用户的权限：
 
 {{< copyable "sql" >}}
 
 ```sql
-SHOW GRANTS for 'root'@'%';
+SHOW GRANTS FOR 'user'@'host';
 ```
 
-更精确的方式，可以通过直接查看授权表的数据实现。比如想知道，名为 `test@%` 的用户是否拥有对 `db1.t` 的 `Insert` 权限：
+例如，创建一个用户 `rw_user@192.168.%` 并为其授予 `test.write_table` 表的写权限，和全局读权限。
 
-1. 先查看该用户是否拥有全局 `Insert` 权限：
+{{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
+```sql
+CREATE USER `rw_user`@`192.168.%`;
+GRANT SELECT ON *.* TO `rw_user`@`192.168.%`;
+GRANT INSERT, UPDATE ON `test`.`write_table` TO `rw_user`@`192.168.%`;
+```
 
-    ```sql
-    SELECT Insert_priv FROM mysql.user WHERE user='test' AND host='%';
-    ```
+查看用户 `rw_user@192.168.%` 的权限。
 
-2. 如果没有，再查看该用户是否拥有 `db1` 数据库级别的 `Insert` 权限：
+{{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
+```sql
+SHOW GRANTS FOR `rw_user`@`192.168.%`;
+```
 
-    ```sql
-    SELECT Insert_priv FROM mysql.db WHERE user='test' AND host='%';
-    ```
-
-3. 如果仍然没有，则继续判断是否拥有 `db1.t` 这张表的 `Insert` 权限：
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SELECT table_priv FROM mysql.tables_priv WHERE user='test' AND host='%' AND db='db1';
-    ```
+```
++------------------------------------------------------------------+
+| Grants for rw_user@192.168.%                                     |
++------------------------------------------------------------------+
+| GRANT Select ON *.* TO 'rw_user'@'192.168.%'                     |
+| GRANT Insert,Update ON test.write_table TO 'rw_user'@'192.168.%' |
++------------------------------------------------------------------+
+```
 
 ## TiDB 各操作需要的权限
 
@@ -297,6 +276,8 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 | Insert         | InsertPriv     | 插入数据到表             |
 | Update         | UpdatePriv     | 更新表中数据             |
 | Delete         | DeletePriv     | 删除表中数据             |
+| Reload         | ReloadPriv     | 执行 `FLUSH` 语句       |
+| Config         | ConfigPriv     | 动态加载配置             |
 | Trigger        | TriggerPriv    | 尚未使用                 |
 | Process        | ProcessPriv    | 显示正在运行的任务       |
 | Execute        | ExecutePriv    | 执行 execute 语句        |
@@ -321,7 +302,7 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 ### CREATE DATABASE
 
-需要对数据库拥有 `CREATE` 权限。
+需要拥有全局 `CREATE` 权限。
 
 ### CREATE INDEX
 
@@ -329,7 +310,7 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 ### CREATE TABLE
 
-需要对所操作的表拥有 `CREATE` 权限；若使用 `CREATE TABLE...LIKE...` 需要对相关的表拥有 `SELECT` 权限。
+需要对要创建的表所在的数据库拥有 `CREATE` 权限；若使用 `CREATE TABLE...LIKE...` 需要对相关的表拥有 `SELECT` 权限。
 
 ### CREATE VIEW
 
@@ -351,6 +332,10 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 需要对所操作的表拥有 `DROP` 权限。
 
+### LOAD DATA
+
+`LOAD DATA` 需要对所操作的表拥有 `INSERT` 权限。
+
 ### TRUNCATE TABLE
 
 需要对所操作的表拥有 `DROP` 权限。
@@ -369,6 +354,8 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 `SHOW CREATE VIEW` 需要 `SHOW VIEW` 权限。
 
+`SHOW GRANTS` 需要拥有对 `mysql` 数据库的 `SELECT` 权限。如果是使用 `SHOW GRANTS` 查看当前用户权限，则不需要任何权限。
+
 ### CREATE ROLE/USER
 
 `CREATE ROLE` 需要 `CREATE ROLE` 权限。
@@ -377,21 +364,43 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 ### DROP ROLE/USER
 
-`DROP ROLE` 需要 `DROPROLE` 权限。
+`DROP ROLE` 需要 `DROP ROLE` 权限。
 
-`DROP USER` 需要 `CREATEUSER` 权限
+`DROP USER` 需要 `CREATE USER` 权限
 
 ### ALTER USER
 
-`ALTER USER` 需要 `CREATEUSER` 权限。
+`ALTER USER` 需要 `CREATE USER` 权限。
 
 ### GRANT
 
 `GRANT` 需要 `GRANT` 权限并且拥有 `GRANT` 所赋予的权限。
 
+如果在 `GRANTS` 语句中创建用户，需要有 `CREATE USER` 权限。
+
+`GRANT ROLE` 操作需要拥有 `SUPER` 权限。
+
 ### REVOKE
 
-`REVOKE` 需要 `SUPER` 权限。
+`REVOKE` 需要 `GRANT` 权限并且拥有 `REVOKE` 所指定要撤销的权限。
+
+`REVOKE ROLE` 操作需要拥有 `SUPER` 权限。
+
+### SET GLOBAL
+
+使用 `SET GLOBAL` 设置全局变量需要拥有 `SUPER` 权限。
+
+### ADMIN
+
+需要拥有 `SUPER` 权限。
+
+### SET DEFAULT ROLE
+
+需要拥有 `SUPER` 权限。
+
+### KILL
+
+使用 `KILL` 终止其他用户的会话需要拥有 `SUPER` 权限。
 
 ## 权限系统的实现
 

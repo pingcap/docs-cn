@@ -1,10 +1,13 @@
 ---
 title: JSON 类型
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/data-types/json/']
+aliases: ['/docs-cn/dev/data-type-json/','/docs-cn/dev/reference/sql/data-types/json/']
 ---
 
 # JSON 类型
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
 
 JSON 类型可以存储 JSON 这种半结构化的数据，相比于直接将 JSON 存储为字符串，它的好处在于：
 

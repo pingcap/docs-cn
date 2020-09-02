@@ -1,8 +1,7 @@
 ---
 title: CREATE VIEW
 summary: TiDB 数据库中 CREATE VIEW 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/create-view/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-view/','/docs-cn/dev/reference/sql/statements/create-view/']
 ---
 
 # CREATE VIEW
@@ -152,10 +151,13 @@ ERROR 1105 (HY000): insert into view v1 is not supported now.
 
 ## MySQL 兼容性
 
-* 目前 TiDB 中的视图不可插入且不可更新。
+* 目前 TiDB 中的任何视图都不可被插入，也不可被更新（即不支持 INSERT VIEW，也不支持 UPDATE VIEW）。`WITH CHECK OPTION` 只做了语法兼容但不生效。
+* 目前 TiDB 中的视图不支持 `ALTER VIEW`，但可以使用 `CREATE OR REPLACE` 替代。
+* 目前 `ALGORITHM` 字段在 TiDB 中只做了语法兼容但不生效，TiDB 目前只支持 MERGE 算法。
 
 ## 另请参阅
 
+* [DROP VIEW](/sql-statements/sql-statement-drop-view.md)
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
 * [DROP TABLE](/sql-statements/sql-statement-drop-table.md)

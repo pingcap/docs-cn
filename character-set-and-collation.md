@@ -1,12 +1,51 @@
 ---
 title: 字符集和排序规则
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev/reference/sql/character-set/']
+aliases: ['/docs-cn/dev/character-set-and-collation/','/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev/reference/sql/character-set/']
 ---
 
 # 字符集和排序规则
 
-字符集 (character set) 是符号与编码的集合。排序规则 (collation) 是在字符集中比较字符的规则。
+本文介绍了 TiDB 中支持的字符集和排序规则。
+
+## 字符集和排序规则的概念
+
+字符集 (character set) 是符号与编码的集合。TiDB 中的默认字符集是 utf8mb4，与 MySQL 8.0 及更高版本中的默认字符集匹配。
+
+排序规则 (collation) 是在字符集中比较字符以及字符排序顺序的规则。例如，在二进制排序规则中，比较“A”和“a”的结果是不一样的：
+
+{{< copyable "sql" >}}
+
+```sql
+SET NAMES utf8mb4 COLLATE utf8mb4_bin;
+SELECT 'A' = 'a';
+SET NAMES utf8mb4 COLLATE utf8mb4_general_ci;
+SELECT 'A' = 'a';
+```
+
+```sql
+mysql> SELECT 'A' = 'a';
++-----------+
+| 'A' = 'a' |
++-----------+
+|         0 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SET NAMES utf8mb4 COLLATE utf8mb4_general_ci;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT 'A' = 'a';
++-----------+
+| 'A' = 'a' |
++-----------+
+|         1 |
++-----------+
+1 row in set (0.00 sec)
+```
+
+TiDB 默认使用二进制排序规则。这一点与 MySQL 不同，MySQL 默认使用不区分大小写的排序规则。
+
+## 支持的字符集和排序规则
 
 目前 TiDB 支持以下字符集：
 
@@ -29,9 +68,25 @@ SHOW CHARACTER SET;
 5 rows in set (0.00 sec)
 ```
 
+TiDB 支持以下排序规则：
+
+```sql
+mysql> show collation;
++-------------+---------+------+---------+----------+---------+
+| Collation   | Charset | Id   | Default | Compiled | Sortlen |
++-------------+---------+------+---------+----------+---------+
+| utf8mb4_bin | utf8mb4 |   46 | Yes     | Yes      |       1 |
+| latin1_bin  | latin1  |   47 | Yes     | Yes      |       1 |
+| binary      | binary  |   63 | Yes     | Yes      |       1 |
+| ascii_bin   | ascii   |   65 | Yes     | Yes      |       1 |
+| utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
++-------------+---------+------+---------+----------+---------+
+5 rows in set (0.01 sec)
+```
+
 > **注意：**
 >
-> 每个字符集可能对应多个排序规则，但与之对应的**默认排序规则**有且仅有一个。
+> TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci`。当用户指定了显式字符集，但依赖于待选的隐式默认排序规则时，这个差异可能导致兼容性问题。
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
 
@@ -51,11 +106,47 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 2 rows in set (0.00 sec)
 ```
 
-## 集群的字符集和排序规则
+## TiDB 中的 `utf8` 和 `ut8mb4`
 
-暂不支持
+MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (BMP) 中的字符，但不足以存储表情符号等字符。因此，建议改用字符集`utf8mb4`。
 
-## 数据库的字符集和排序规则
+默认情况下，TiDB 同样限制字符集 `utf8` 为最多 3 个字节，以确保 TiDB 中创建的数据可以在 MySQL 中顺利恢复。你可以禁用此功能，方法是在 TiDB 配置文件中将 `check-mb4-value-in-utf8` 的值更改为 `FALSE`。
+
+以下示例演示了在表中插入 4 字节的表情符号字符时的默认行为。`utf8` 字符集下 `INSERT` 语句不能执行，`ut8mb4` 字符集下可以执行 `INSERT` 语句：
+
+```sql
+mysql> CREATE TABLE utf8_test (
+    ->  c char(1) NOT NULL
+    -> ) CHARACTER SET utf8;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> CREATE TABLE utf8m4_test (
+    ->  c char(1) NOT NULL
+    -> ) CHARACTER SET utf8mb4;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> INSERT INTO utf8_test VALUES ('😉');
+ERROR 1366 (HY000): incorrect utf8 value f09f9889(😉) for column c
+mysql> INSERT INTO utf8m4_test VALUES ('😉');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT char_length(c), length(c), c FROM utf8_test;
+Empty set (0.01 sec)
+
+mysql> SELECT char_length(c), length(c), c FROM utf8m4_test;
++----------------+-----------+------+
+| char_length(c) | length(c) | c    |
++----------------+-----------+------+
+|              1 |         4 | 😉     |
++----------------+-----------+------+
+1 row in set (0.00 sec)
+```
+
+## 不同范围的字符集和排序规则
+
+字符集和排序规则可以在设置在不同的层次。
+
+### 数据库的字符集和排序规则
 
 每个数据库都有相应的字符集和排序规则。数据库的字符集和排序规则可以通过以下语句来设置：
 
@@ -154,7 +245,7 @@ SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME
 FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'db_name';
 ```
 
-## 表的字符集和排序规则
+### 表的字符集和排序规则
 
 表的字符集和排序规则可以通过以下语句来设置：
 
@@ -182,7 +273,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 如果表的字符集和排序规则没有设置，那么数据库的字符集和排序规则就作为其默认值。
 
-## 列的字符集和排序规则
+### 列的字符集和排序规则
 
 列的字符集和排序规则的语法如下：
 
@@ -198,7 +289,7 @@ col_name {ENUM | SET} (val_list)
 
 如果列的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。
 
-## 字符串的字符集和排序规则
+### 字符串的字符集和排序规则
 
 每一个字符串都对应一个字符集和一个排序规则，在使用字符串时指此选项可选，如下：
 
@@ -222,7 +313,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 * 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `charset_name` 字符集和 `charset_name` 对应的默认排序规则。
 * 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用 `character_set_connection` 和 `collation_connection` 系统变量给出的字符集和排序规则。
 
-## 客户端连接的字符集和排序规则
+### 客户端连接的字符集和排序规则
 
 * 服务器的字符集和排序规则可以通过系统变量 `character_set_server` 和 `collation_server` 获取。
 * 数据库的字符集和排序规则可以通过环境变量 `character_set_database` 和 `collation_database` 获取。
@@ -246,7 +337,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
     SET character_set_connection = charset_name;
     ```
 
-    `COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则。
+    `COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则设置 `collation_connection`。
 
 * `SET CHARACTER SET 'charset_name'`
 
@@ -257,14 +348,15 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
     ```sql
     SET character_set_client = charset_name;
     SET character_set_results = charset_name;
+    SET charset_connection = @@charset_database;
     SET collation_connection = @@collation_database;
     ```
 
-## 集群、服务器、数据库、表、列、字符串的字符集和排序规则的优先级
+## 服务器、数据库、表、列、字符串的字符集和排序规则的优先级
 
 优先级从高到低排列顺序为：
 
-字符串 > 列 > 表 > 数据库 > 服务器 > 集群
+字符串 > 列 > 表 > 数据库 > 服务器
 
 ## 字符集和排序规则的通用选择规则
 
@@ -298,9 +390,9 @@ Query OK, 0 rows affected
 insert into t values ('A');
 Query OK, 1 row affected
 insert into t values ('a');
-Query OK, 1 row affected # MySQL 中，由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'。
+Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'。
 insert into t1 values ('a ');
-Query OK, 1 row affected # MySQL 中，由于补齐空格比较，报错 Duplicate entry 'a '。
+Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于补齐空格比较，报错 Duplicate entry 'a '。
 ```
 
 ### 新框架下的排序规则支持
@@ -334,9 +426,9 @@ Query OK, 0 rows affected (0.00 sec)
 insert into t values ('A');
 Query OK, 1 row affected (0.00 sec)
 insert into t values ('a');
-ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY' # TiDB 兼容了 MySQL 的 case insensitive collation。
 insert into t values ('a ');
-ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PADDING` 行为，与 MySQL 兼容。
 ```
 
 > **注意：**
@@ -349,13 +441,13 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
 
 + 显式 `COLLATE` 子句的 coercibility 值为 `0`。
 + 如果两个字符串的排序规则不兼容，这两个字符串 `concat` 结果的 coercibility 值为 `1`。目前所实现的排序规则都是互相兼容的。
-+ 列的排序规则的 coercibility 值为 `2`。
++ 列或者 `CAST()`、`CONVERT()` 和 `BINARY()` 的排序规则的 coercibility 值为 `2`。
 + 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 `3`。
 + 常量的 coercibility 值为 `4`。
 + 数字或者中间变量的 coercibility 值为 `5`。
 + `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为 `6`。
 
-在推断排序规则时，TiDB 优先使用 coercibility 值较低的表达式的排序规则（与 MySQL 一致）。如果 coercibility 值相同，则按以下优先级确定排序规则：
+在推断排序规则时，TiDB 优先使用 coercibility 值较低的表达式的排序规则。如果 coercibility 值相同，则按以下优先级确定排序规则：
 
 binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
 
@@ -368,15 +460,15 @@ TiDB 支持使用 `COLLATE` 子句来指定一个表达式的排序规则，该�
 {{< copyable "sql" >}}
 
 ```sql
-select 'a' = 'A' collate utf8mb4_general_ci;
+select 'a' = _utf8mb4 'A' collate utf8mb4_general_ci;
 ```
 
 ```sql
-+--------------------------------------+
-| 'a' = 'A' collate utf8mb4_general_ci |
-+--------------------------------------+
-|                                    1 |
-+--------------------------------------+
++-----------------------------------------------+
+| 'a' = _utf8mb4 'A' collate utf8mb4_general_ci |
++-----------------------------------------------+
+|                                             1 |
++-----------------------------------------------+
 1 row in set (0.00 sec)
 ```
 

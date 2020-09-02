@@ -1,8 +1,7 @@
 ---
 title: COMMIT
 summary: TiDB 数据库中 COMMIT 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/commit/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-commit/','/docs-cn/dev/reference/sql/statements/commit/']
 ---
 
 # COMMIT
@@ -16,6 +15,10 @@ aliases: ['/docs-cn/dev/reference/sql/statements/commit/']
 **CommitStmt:**
 
 ![CommitStmt](/media/sqlgram/CommitStmt.png)
+
+**CompletionTypeWithinTransaction:**
+
+![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
 
 ## 示例
 
@@ -63,10 +66,11 @@ Query OK, 0 rows affected (0.01 sec)
 
 * 在 MySQL 中，除了有多个 primary 的群组复制以外，`COMMIT` 语句通常不会导致错误。相比之下，TiDB 使用乐观并发控制，冲突可能导致 `COMMIT` 返回错误。
 * 默认情况下，`UNIQUE` 和 `PRIMARY KEY` 约束检查将延迟直至语句提交。可通过设置 `tidb_constraint_check_in_place=TRUE` 来改变该行为。
+* TiDB 对于 `CompletionTypeWithinTransaction` 仅有语法上的支持。即不支持事务提交后，关闭连接或继续开启一个新事务的提交选项。
 
 ## 另请参阅
 
 * [START TRANSACTION](/sql-statements/sql-statement-start-transaction.md)
 * [ROLLBACK](/sql-statements/sql-statement-rollback.md)
 * [BEGIN](/sql-statements/sql-statement-begin.md)
-* [事务的惰性检查](/transaction-overview.md#事务的惰性检查)
+* [事务的惰性检查](/transaction-overview.md#惰性检查)

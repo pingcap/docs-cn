@@ -1,7 +1,6 @@
 ---
 title: CSV 支持
-category: reference
-aliases: ['/docs-cn/dev/reference/tools/tidb-lightning/csv/']
+aliases: ['/docs-cn/dev/tidb-lightning/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/csv/']
 ---
 
 # CSV 支持
@@ -13,6 +12,7 @@ TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他�
 包含整张表的 CSV 文件需命名为 `db_name.table_name.csv`，该文件会被解析为数据库 `db_name` 里名为 `table_name` 的表。
 
 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `db_name.table_name.003.csv`。
+数字部分不需要连续但必须递增，并用零填充。
 
 文件扩展名必须为 `*.csv`，即使文件的内容并非逗号分隔。
 
@@ -20,7 +20,7 @@ TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他�
 
 CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
-* 创建包含 DDL 语句 `CREATE TABLE` 的文件 `db_name.table_name-schema.sql`。
+* 创建包含 DDL 语句 `CREATE TABLE` 的文件 `db_name.table_name-schema.sql` 以及包含 `CREATE DATABASE` DDL 语句的文件 `db_name-schema-create.sql`。
 * 首先在 TiDB 中直接创建空表，然后在 `tidb-lightning.toml` 中设置 `[mydumper] no-schema = true`。
 
 ## 配置
@@ -109,7 +109,7 @@ trim-last-separator = false
     | `\t`     | 制表符 (U+0009)             |
     | `\Z`     | Windows EOF (U+001A)     |
 
-    其他情况下（如 `\"`）反斜线会被移除，仅在字段中保留其后面的字符（`"`）。
+    其他情况下（如 `\"`）反斜线会被移除，仅在字段中保留其后面的字符（`"`），这种情况下，保留的字符仅作为普通字符，特殊功能（如界定符）都会失效。
 
 - 引用不会影响反斜线转义符的解析与否。
 
@@ -136,6 +136,24 @@ TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例�
 * 不可使用行前缀 （`LINES STARTING BY`）。
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
 * 定界符和分隔符只能为单个 ASCII 字符。
+
+## 设置 `strict-format` 启用严格格式
+
+导入文件的大小统一约为 256 MB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
+
+要解决此问题，可先将 CSV 文件分割为多个文件。对于通用格式的 CSV 文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用 `strict-format` 设置。启用后，TiDB Lightning 会将单个 CSV 大文件分割为单个大小为 256 MB 的多个文件块进行并行处理。
+
+```toml
+[mydumper]
+strict-format = true
+```
+
+严格格式的 CSV 文件中，每个字段仅占一行，即必须满足以下条件之一：
+
+* 分隔符为空；
+* 每个字段不包含 CR (`\r`）或 LF（`\n`）。
+
+如果 CSV 文件不是严格格式但 `strict-format` 被误设为 `true`，跨多行的单个完整字段会被分割成两部分，导致解析失败，甚至不报错地导入已损坏的数据。
 
 ## 通用配置
 

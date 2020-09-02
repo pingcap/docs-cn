@@ -1,8 +1,7 @@
 ---
 title: ROLLBACK
 summary: TiDB 数据库中 ROLLBACK 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/rollback/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-rollback/','/docs-cn/dev/reference/sql/statements/rollback/']
 ---
 
 # ROLLBACK
@@ -11,16 +10,16 @@ aliases: ['/docs-cn/dev/reference/sql/statements/rollback/']
 
 ## 语法图
 
-**Statement:**
+**RollbackStmt:**
 
-![Statement](/media/sqlgram/Statement.png)
+![RollbackStmt](/media/sqlgram/RollbackStmt.png)
 
 ## 示例
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);
+CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
 ```
 
 ```
@@ -69,7 +68,7 @@ Empty set (0.01 sec)
 
 ## MySQL 兼容性
 
-`ROLLBACK` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`ROLLBACK` 语句与 MySQL 不完全兼容，TiDB 对任何 `CompletionTypeWithinTransaction` 仅有语法上的支持，即不支持事务回滚后，关闭连接或继续开启一个新事务的回滚选项。如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

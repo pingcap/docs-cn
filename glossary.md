@@ -1,7 +1,7 @@
 ---
 title: 术语表
 summary: 了解 TiDB 相关术语。
-category: glossary
+aliases: ['/docs-cn/dev/glossary/']
 ---
 
 # 术语表
@@ -10,7 +10,7 @@ category: glossary
 
 ### ACID
 
-ACID 是指数据库管理系统在写入或更新资料的过程中，为保证[事务](#事务)是正确可靠的，所必须具备的四个特性：原子性 (atomicity)、一致性 (consistency)、隔离性（isolation）以及持久性（durability）。
+ACID 是指数据库管理系统在写入或更新资料的过程中，为保证事务是正确可靠的，所必须具备的四个特性：原子性 (atomicity)、一致性 (consistency)、隔离性（isolation）以及持久性（durability）。
 
 * 原子性 (atomicity) 指一个事务中的所有操作，或者全部完成，或者全部不完成，不会结束在中间某个环节。TiDB 通过 Primary Key 所在 [Region](#regionpeerraft-group) 的原子性来保证分布式事务的原子性。
 * 一致性 (consistency) 指在事务开始之前和结束以后，数据库的完整性没有被破坏。TiDB 在写入数据之前，会校验数据的一致性，校验通过才会写入内存并返回成功。
@@ -61,6 +61,10 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写入逐渐分裂生成的，分裂的过程被称为 Region Split。
 
 其机制是集群初始化时构建一个初始 Region 覆盖整个 key space，随后在运行过程中每当 Region 数据达到一定量之后就通过 Split 产生新的 Region。
+
+### Restore
+
+备份操作的逆过程，即利用保存的备份数据还原出原始数据的过程。
 
 ## S
 

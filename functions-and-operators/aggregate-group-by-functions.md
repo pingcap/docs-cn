@@ -1,7 +1,6 @@
 ---
 title: GROUP BY 聚合函数
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/aggregate-group-by-functions/']
+aliases: ['/docs-cn/dev/functions-and-operators/aggregate-group-by-functions/','/docs-cn/dev/reference/sql/functions-and-operators/aggregate-group-by-functions/']
 ---
 
 # GROUP BY 聚合函数
@@ -21,6 +20,8 @@ TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
 | [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_max)                       | 返回最大值     |
 | [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_min)                       | 返回最小值     |
 | [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | 返回连接的字符串  |
+| [`VARIANCE()`, `VAR_POP()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_var-pop) | 返回表达式的总体标准方差 |
+| [`JSON_OBJECTAGG(key, value)`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_json-objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON object |
 
 > **注意：**
 >
@@ -80,7 +81,7 @@ select a, b, sum(c) from t group by a;
 ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'b' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-目前，TiDB 默认开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/mysql-compatibility.md#默认设置的区别)。
+目前，TiDB 默认开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/mysql-compatibility.md#sql-模式)。
 
 ### 与 MySQL 的区别
 
@@ -152,7 +153,5 @@ TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623
 
 - `STD`, `STDDEV`, `STDDEV_POP`
 - `STDDEV_SAMP`
-- `VARIANCE`, `VAR_POP`
 - `VAR_SAMP`
 - `JSON_ARRAYAGG`
-- `JSON_OBJECTAGG`

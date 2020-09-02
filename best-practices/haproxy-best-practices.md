@@ -1,7 +1,6 @@
 ---
 title: HAProxy 在 TiDB 中的最佳实践
-category: reference
-aliases: ['/docs-cn/dev/reference/best-practices/haproxy/']
+aliases: ['/docs-cn/dev/best-practices/haproxy-best-practices/','/docs-cn/dev/reference/best-practices/haproxy/']
 ---
 
 # HAProxy 在 TiDB 中的最佳实践
@@ -115,15 +114,15 @@ haproxy --help
 | `-dM [<byte>]` | 执行分配内存。|
 | `-V` | 启动过程显示配置和轮询信息。 |
 | `-D` | 开启守护进程模式。 |
-| `-C <dir>` | 在加载配置文件之前更改目录位置至 \<dir>。 |
+| `-C <dir>` | 在加载配置文件之前更改目录位置至 `<dir>`。 |
 | `-W` | 主从模式。 |
 | `-q` | 静默模式，不输出信息。 |
 | `-c` | 只检查配置文件并在尝试绑定之前退出。 |
-| `-n <limit>` | 设置每个进程的最大总连接数为 \<limit>。 |
-| `-m <limit>` | 设置所有进程的最大可用内存为 \<limit>（单位：MB）。 |
-| `-N <limit>` | 设置单点最大连接数为 \<limit>，默认为 2000。 |
-| `-L <name>` | 将本地实例对等名称改为 \<name>，默认为本地主机名。 |
-| `-p <file>` | 将 HAProxy 所有子进程的 PID 信息写入 \<file>。 |
+| `-n <limit>` | 设置每个进程的最大总连接数为 `<limit>`。 |
+| `-m <limit>` | 设置所有进程的最大可用内存为 `<limit>`（单位：MB）。 |
+| `-N <limit>` | 设置单点最大连接数为 `<limit>`，默认为 2000。 |
+| `-L <name>` | 将本地实例对等名称改为 `<name>`，默认为本地主机名。 |
+| `-p <file>` | 将 HAProxy 所有子进程的 PID 信息写入 `<file>`。 |
 | `-de` | 禁止使用 epoll(7)，epoll(7) 仅在 Linux 2.6 和某些定制的 Linux 2.4 系统上可用。 |
 | `-dp` | 禁止使用 epoll(2)，可改用 select(2)。 |
 | `-dS` | 禁止使用 splice(2)，splice(2) 在一些旧版 Linux 内核上不可用。 |

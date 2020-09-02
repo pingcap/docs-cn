@@ -1,8 +1,7 @@
 ---
 title: USE
 summary: TiDB 数据库中 USE 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/use/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-use/','/docs-cn/dev/reference/sql/statements/use/']
 ---
 
 # USE
@@ -41,27 +40,31 @@ SHOW TABLES;
 ```
 
 ```
-+----------------------+
-| Tables_in_mysql      |
-+----------------------+
-| GLOBAL_VARIABLES     |
-| bind_info            |
-| columns_priv         |
-| db                   |
-| default_roles        |
-| gc_delete_range      |
-| gc_delete_range_done |
-| help_topic           |
-| role_edges           |
-| stats_buckets        |
-| stats_feedback       |
-| stats_histograms     |
-| stats_meta           |
-| tables_priv          |
-| tidb                 |
-| user                 |
-+----------------------+
-16 rows in set (0.00 sec)
++-------------------------+
+| Tables_in_mysql         |
++-------------------------+
+| GLOBAL_VARIABLES        |
+| bind_info               |
+| columns_priv            |
+| db                      |
+| default_roles           |
+| expr_pushdown_blacklist |
+| gc_delete_range         |
+| gc_delete_range_done    |
+| global_priv             |
+| help_topic              |
+| opt_rule_blacklist      |
+| role_edges              |
+| stats_buckets           |
+| stats_feedback          |
+| stats_histograms        |
+| stats_meta              |
+| stats_top_n             |
+| tables_priv             |
+| tidb                    |
+| user                    |
++-------------------------+
+20 rows in set (0.01 sec)
 ```
 
 {{< copyable "sql" >}}
@@ -123,7 +126,7 @@ SHOW TABLES;
 
 在 2.0 版本中，用户可以使用 `USE` 访问任意数据库。在 3.0 及以后的版本中 `USE` 会检查用户是否拥有访问数据库的权限。
 
-目前 `USE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+目前 `USE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

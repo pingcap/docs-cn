@@ -1,8 +1,7 @@
 ---
 title: ALTER INSTANCE
 summary: TiDB 数据库中 ALTER INSTANCE 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/alter-instance/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-instance/','/docs-cn/dev/reference/sql/statements/alter-instance/']
 ---
 
 # ALTER INSTANCE
@@ -19,7 +18,13 @@ aliases: ['/docs-cn/dev/reference/sql/statements/alter-instance/']
 
 ## 语法图
 
+**AlterInstanceStmt:**
+
 ![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
+
+**InstanceOption:**
+
+![InstanceOption](/media/sqlgram/InstanceOption.png)
 
 ## 示例
 
@@ -35,4 +40,4 @@ ALTER INSTANCE RELOAD TLS;
 
 ## 另请参阅
 
-[MySQL 客户端开启 TLS](/encrypted-connections-with-tls-protocols.md)
+[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)

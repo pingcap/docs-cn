@@ -1,7 +1,6 @@
 ---
 title: 慢查询日志
-category: how-to
-aliases: ['/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries/','/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow-queries/']
+aliases: ['/docs-cn/dev/identify-slow-queries/','/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries/','/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow-queries/']
 ---
 
 # 慢查询日志
@@ -32,6 +31,9 @@ TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-
 # Cop_backoff_rpcPD_total_times: 200 Cop_backoff_rpcPD_total_time: 0.2 Cop_backoff_rpcPD_max_time: 0.2 Cop_backoff_rpcPD_max_addr: 127.0.0.1 Cop_backoff_rpcPD_avg_time: 0.2 Cop_backoff_rpcPD_p90_time: 0.2
 # Cop_backoff_rpcTiKV_total_times: 200 Cop_backoff_rpcTiKV_total_time: 0.2 Cop_backoff_rpcTiKV_max_time: 0.2 Cop_backoff_rpcTiKV_max_addr: 127.0.0.1 Cop_backoff_rpcTiKV_avg_time: 0.2 Cop_backoff_rpcTiKV_p90_time: 0.2
 # Mem_max: 525211
+# Disk_max: 65536
+# Prepared: false
+# Plan_from_cache: false
 # Succ: true
 # Plan: tidb_decode_plan('ZJAwCTMyXzcJMAkyMAlkYXRhOlRhYmxlU2Nhbl82CjEJMTBfNgkxAR0AdAEY1Dp0LCByYW5nZTpbLWluZiwraW5mXSwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCg==')
 insert into t select * from t;
@@ -57,6 +59,8 @@ Slow Query 基础信息：
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
+* `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
+* `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
 
 和事务执行相关的字段：
 
@@ -71,6 +75,10 @@ Slow Query 基础信息：
 和内存使用相关的字段：
 
 * `Mem_max`：表示执行期间 TiDB 使用的最大内存空间，单位为 byte。
+
+和硬盘使用相关的字段：
+
+* `Disk_max`: 表示执行期间 TiDB 使用的最大硬盘空间，单位为 byte。
 
 和 SQL 执行的用户相关的字段：
 
@@ -102,7 +110,7 @@ Slow Query 基础信息：
 
 ## 慢日志内存映射表
 
-用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [Information Schema](/system-tables/system-table-information-schema.md#information-schema) 中关于 `SLOW_QUERY` 表的介绍。
+用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md) 中的介绍。
 
 > **注意：**
 >
@@ -154,7 +162,7 @@ where time > '2020-03-10 00:00:00'
 >
 > 如果指定时间范围内的慢日志文件被删除，或者并没有慢查询，则查询结果会返回空。
 
-TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/system-tables/system-table-information-schema.md#cluster_slow_query-表) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/system-tables/system-table-information-schema.md#slow_query-表) 系统表一样。
+TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/information-schema/information-schema-slow-query.md#cluster_slow_query-table) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 系统表一样。
 
 关于查询 `CLUSTER_SLOW_QUERY` 表，TiDB 会把相关的计算和判断下推到其他节点执行，而不是把其他节点的慢查询数据都取回来在一台 TiDB 上执行。
 

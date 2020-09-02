@@ -1,7 +1,6 @@
 ---
 title: TiUP 常见运维操作
-category: how-to
-aliases: ['/docs-cn/dev/how-to/maintain/tiup-operations/']
+aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain/tiup-operations/']
 ---
 
 # TiUP 常见运维操作
@@ -98,7 +97,7 @@ tiup cluster display ${cluster-name}
                 log.slow-threshold: 300
         ```
 
-    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap-incubator/tiup-cluster/blob/master/examples/topology.example.yaml)。
+    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。
 
     **配置项层次结构使用 `.` 表示**。
 
@@ -122,7 +121,68 @@ server_configs:
     performance.txn-total-size-limit: 1073741824
 ```
 
-然后执行 `tiup cluster reload ${cluster-name} -N tidb` 命令滚动重启。
+然后执行 `tiup cluster reload ${cluster-name} -R tidb` 命令滚动重启。
+
+## Hotfix 版本替换
+
+常规的升级集群请参考[升级文档](/upgrade-tidb-using-tiup.md)，但是在某些场景下（例如 Debug），可能需要用一个临时的包替换正在运行的组件，此时可以用 `patch` 命令：
+
+{{< copyable "shell-root" >}}
+
+```bash
+tiup cluster patch --help
+```
+
+```
+Replace the remote package with a specified package and restart the service
+
+Usage:
+  tiup cluster patch <cluster-name> <package-path> [flags]
+
+Flags:
+  -h, --help                   帮助信息
+  -N, --node strings           指定被替换的节点
+      --overwrite              在未来的 scale-out 操作中使用当前指定的临时包
+  -R, --role strings           指定被替换的服务类型
+      --transfer-timeout int   transfer leader 的超时时间
+
+Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
+      --ssh-timeout int   SSH 连接的超时时间
+  -y, --yes               跳过所有的确认步骤
+```
+
+例如，有一个 TiDB 实例的 hotfix 包放在 `/tmp/tidb-hotfix.tar.gz` 目录下。如果此时想要替换集群上的所有 TiDB 实例，则可以执行以下命令：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -R tidb
+```
+
+或者只替换其中一个 TiDB 实例：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
+```
+
+## 重命名集群
+
+部署并启动集群后，可以通过 `tiup cluster rename` 命令来对集群重命名：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster rename ${cluster-name} ${new-name}
+```
+
+> **注意：**
+> 
+> + 重命名集群会重启监控（Prometheus 和 Grafana）。
+> + 重命名集群之后 Grafana 可能会残留一些旧集群名的面板，需要手动删除这些面板。
 
 ## 关闭集群
 
@@ -150,6 +210,56 @@ tiup cluster stop ${cluster-name} -R tidb
 
 ```bash
 tiup cluster stop ${cluster-name} -N 1.2.3.4:4000,1.2.3.5:4000
+```
+
+## 清除集群数据
+
+此操作会关闭所有服务，并清空其数据目录或/和日志目录，并且无法恢复，需要**谨慎操作**。
+
+清空集群所有服务的数据，但保留日志：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --data
+```
+
+清空集群所有服务的日志，但保留数据：
+
+```bash
+tiup cluster clean ${cluster-name} --log
+```
+
+清空集群所有服务的数据和日志：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all 
+```
+
+清空 Prometheus 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-role prometheus
+```
+
+清空节点 `172.16.13.11:9000` 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.11:9000
+```
+
+清空部署在 `172.16.13.12` 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12
 ```
 
 ## 销毁集群

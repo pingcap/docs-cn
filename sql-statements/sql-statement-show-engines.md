@@ -1,15 +1,18 @@
 ---
 title: SHOW ENGINES
 summary: TiDB 数据库中 SHOW ENGINES 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-engines/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-engines/','/docs-cn/dev/reference/sql/statements/show-engines/']
 ---
 
 # SHOW ENGINES
 
-`SHOW ENGINES` 语句仅提供 MySQL 兼容性。
+`SHOW ENGINES` 语句用于列出所有支持的存储引擎，该语法仅提供 MySQL 兼容性。
 
 ## 语法图
+
+**ShowEnginesStmt:**
+
+![ShowEnginesStmt](/media/sqlgram/ShowEnginesStmt.png)
 
 ```sql
 SHOW ENGINES;

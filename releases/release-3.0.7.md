@@ -1,7 +1,6 @@
 ---
 title: TiDB 3.0.7 Release Notes
-category: Releases
-aliases: ['/docs-cn/dev/releases/3.0.7/']
+aliases: ['/docs-cn/dev/releases/release-3.0.7/','/docs-cn/dev/releases/3.0.7/']
 ---
 
 # TiDB 3.0.7 Release Notes

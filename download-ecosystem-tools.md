@@ -1,7 +1,6 @@
 ---
 title: TiDB 工具下载
-category: reference
-aliases: ['/docs-cn/dev/reference/tools/download/']
+aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools/download/']
 ---
 
 # TiDB 工具下载
@@ -49,7 +48,7 @@ aliases: ['/docs-cn/dev/reference/tools/download/']
 
 ## TiDB DM (Data Migration)
 
-使用下表中的链接下载 [DM](https://pingcap.com/docs-cn/tidb-data-migration/stable/overview/)：
+使用下表中的链接下载 [DM](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/overview)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -58,6 +57,19 @@ aliases: ['/docs-cn/dev/reference/tools/download/']
 > **注意：**
 >
 > 下载链接中的 `{version}` 为 DM 的版本号。例如，`v1.0.1` 版本的下载链接为 `https://download.pingcap.org/dm-v1.0.1-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
+
+## Dumpling
+
+使用下表中的链接下载 [Dumpling](/dumpling-overview.md):
+
+| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
+|:---|:---|:---|:---|
+| `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+
+> **注意：**
+>
+> 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v4.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.2-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
+> Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
 
 ## Syncer，Loader 和 Mydumper
 

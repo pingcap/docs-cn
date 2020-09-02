@@ -1,7 +1,6 @@
 ---
 title: FLASHBACK TABLE
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/flashback-table/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-table/','/docs-cn/dev/reference/sql/statements/flashback-table/']
 ---
 
 # FLASHBACK TABLE
@@ -23,6 +22,20 @@ aliases: ['/docs-cn/dev/reference/sql/statements/flashback-table/']
 ```sql
 FLASHBACK TABLE table_name [TO other_table_name]
 ```
+
+### 语法图
+
+**FlashbackTableStmt:**
+
+![FlashbackTableStmt](/media/sqlgram/FlashbackTableStmt.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**FlashbackToNewName:**
+
+![FlashbackToNewName](/media/sqlgram/FlashbackToNewName.png)
 
 ## 注意事项
 

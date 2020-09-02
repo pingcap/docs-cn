@@ -1,8 +1,7 @@
 ---
 title: SHOW ERRORS
 summary: TiDB 数据库中 SHOW ERRORS 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-errors/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-errors/','/docs-cn/dev/reference/sql/statements/show-errors/']
 ---
 
 # SHOW ERRORS
@@ -13,13 +12,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-errors/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowErrorsStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowErrorsStmt](/media/sqlgram/ShowErrorsStmt.png)
 
 ## 示例
 
@@ -96,7 +91,7 @@ Empty set (0.00 sec)
 
 ## MySQL 兼容性
 
-`SHOW ERRORS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW ERRORS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

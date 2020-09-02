@@ -1,8 +1,7 @@
 ---
 title: CREATE INDEX
 summary: CREATE INDEX 在 TiDB 中的使用概况
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/create-index/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-index/','/docs-cn/dev/reference/sql/statements/create-index/']
 ---
 
 # CREATE INDEX
@@ -15,33 +14,61 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-index/']
 
 ![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
 
-**CreateIndexStmtUnique:**
+**IndexKeyTypeOpt:**
 
-![CreateIndexStmtUnique](/media/sqlgram/CreateIndexStmtUnique.png)
+![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
 
-**Identifier:**
+**IfNotExists:**
 
-![Identifier](/media/sqlgram/Identifier.png)
+![IfNotExists](/media/sqlgram/IfNotExists.png)
 
 **IndexTypeOpt:**
 
 ![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
 
-**TableName:**
+**IndexPartSpecificationList:**
 
-![TableName](/media/sqlgram/TableName.png)
-
-**IndexColNameList:**
-
-![IndexColNameList](/media/sqlgram/IndexColNameList.png)
+![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
 
 **IndexOptionList:**
 
 ![IndexOptionList](/media/sqlgram/IndexOptionList.png)
 
+**IndexLockAndAlgorithmOpt:**
+
+![IndexLockAndAlgorithmOpt](/media/sqlgram/IndexLockAndAlgorithmOpt.png)
+
+**IndexType:**
+
+![IndexType](/media/sqlgram/IndexType.png)
+
+**IndexPartSpecification:**
+
+![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
+
 **IndexOption:**
 
 ![IndexOption](/media/sqlgram/IndexOption.png)
+
+**IndexTypeName:**
+
+![IndexTypeName](/media/sqlgram/IndexTypeName.png)
+
+**ColumnName:**
+
+![ColumnName](/media/sqlgram/ColumnName.png)
+
+**OptFieldLen:**
+
+![OptFieldLen](/media/sqlgram/OptFieldLen.png)
+
+**IndexNameList:**
+
+![IndexNameList](/media/sqlgram/IndexNameList.png)
+
+**KeyOrIndex:**
+
+![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
 
 ## 示例
 
@@ -131,7 +158,11 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 表达式索引
 
-表达式索引目前是一个实验特性。如果需要使用这一特性，在配置文件中进行以下设置：
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+如果需要使用这一特性，在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
 
 {{< copyable "sql" >}}
 
@@ -159,7 +190,7 @@ CREATE INDEX idx ON t ((lower(name)));
 
 维护表达式索引的代价比一般的索引更高，因为在插入或者更新每一行时都需要计算出表达式的值。因为表达式的值已经存储在索引中，所以当优化器选择表达式索引时，表达式的值就不需要再计算。因此，当查询速度比插入速度和更新速度更重要时，可以考虑建立表达式索引。
 
-表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列 (generated virtual column) 上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/generated-columns.md#局限性)。目前，建立了索引的表达式只有在 `FIELD` 子句、`WHERE` 子句和 `ORDER BY` 子句中时，优化器才能使用表达式索引。后续将支持 `GROUP BY` 子句。
+表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列 (generated virtual column) 上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/generated-columns.md#生成列的局限性)。目前，建立了索引的表达式只有在 `FIELD` 子句、`WHERE` 子句和 `ORDER BY` 子句中时，优化器才能使用表达式索引。后续将支持 `GROUP BY` 子句。
 
 ## 不可见索引
 
@@ -174,7 +205,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## 相关 session 变量
 
-和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考 [TiDB 特定系统变量](/tidb-specific-system-variables.md#tidb_ddl_reorg_worker_cnt)。
+和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考[系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 
@@ -184,6 +215,8 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## 另请参阅
 
+* [索引的选择](/choose-index.md)
+* [错误索引的解决方案](/wrong-index-solution.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)

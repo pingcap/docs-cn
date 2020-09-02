@@ -1,14 +1,13 @@
 ---
 title: TiDB 配置文件描述
-category: reference
-aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
+aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
 <!-- markdownlint-disable MD001 -->
 
 # TiDB 配置文件描述
 
-TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](https://pingcap.com/docs-cn/dev/reference/configuration/tidb-server/configuration)中的参数。
+TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/command-line-flags-for-tidb-configuration.md)中的参数。
 
 ### `split-table`
 
@@ -16,12 +15,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果需要创建大量的表，我们建议把这个参数设置为 false。
 
+### `token-limit`
+
++ 可以同时执行请求的 session 个数
++ 默认值：1000
+
 ### `mem-quota-query`
 
-+ 单条 SQL 语句可以占用的最大内存阈值。
++ 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
 + 默认值：1073741824
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
-+ 该值作为系统变量 [`tidb_mem_quota_query`](/tidb-specific-system-variables.md#tidb_mem_quota_query) 的初始值。
++ 该值作为系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的初始值。
 
 ### `oom-use-tmp-storage`
 
@@ -31,7 +35,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tmp-storage-path`
 
 + 单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时，某些算子的临时磁盘存储位置。
-+ 默认值：`<操作系统临时文件夹>/tidb/tmp-storage`
++ 默认值：`<操作系统临时文件夹>/<操作系统用户ID>_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage`。其中 `MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=` 是对 `<host>:<port>/<statusHost>:<statusPort>` 进行 `Base64` 编码的输出结果。
 + 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
 
 ### `tmp-storage-quota`
@@ -44,8 +48,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-action`
 
+> **注意：**
+>
+> 目前 `oom-action` 为实验功能，会对写入过程中的内存进行统计。如果用户希望根据该特性取消写入操作，不建议在生产环境中将参数值配置为 `cancel`。
+
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
-+ 默认值："cancel"
++ 默认值："log"
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
 ### `enable-streaming`
@@ -55,7 +63,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `lower-case-table-names`
 
-+ 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
++ 这个选项可以设置 TiDB 的系统变量 `lower-case-table-names` 的值。
 + 默认值：2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
 
@@ -131,6 +139,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：byte。
 + 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
 
+### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
+
++ 是否开启 TiDB 遥测功能。
++ 默认值：true
++ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
+
 ## log
 
 日志相关的配置项。
@@ -167,6 +181,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 输出慢日志的耗时阈值。
 + 默认值：300ms
 + 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
+
+### `record-plan-in-slow-log`
+
++ 在慢日志中记录执行计划
++ 默认值：1
++ 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
 
 ### `expensive-threshold`
 
@@ -208,12 +228,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
 
-#### `log-rotate`
-
-+ 是否每日创建一个新的日志文件。
-+ 默认值：true
-+ 如果设置为 true，每天会新建新的日志文件，如果设置为 false，那么只会输出到一个日志文件。
-
 ## security
 
 安全相关配置。
@@ -253,10 +267,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + ssl 私钥文件路径，用于用 tls 连接 TiKV/PD
 + 默认值：""
 
-### `skip-grant-table`
+### `spilled-file-encryption-method`
 
-+ 是否跳过权限检查
-+ 默认值：false
++ 内存落盘文件的加密方式。
++ 默认值: `"plaintext"`，表示不进行加密
++ 可选值：`"plaintext"`、`"aes128-ctr"`
 
 ## performance
 
@@ -270,19 +285,19 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `max-memory`
 
-+ Prepare cache LRU 使用的最大内存限制，超过 performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio) 会剔除 LRU 中的元素。
++ Prepare cache LRU 使用的最大内存限制。当 Prepare cache LRU 的内存使用超过 `performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)` 时，会剔除 LRU 中的元素。
 + 默认值：0
-+ 这个配置只有在 prepared-plan-cache.enabled 为 true 的情况才会生效。在 LRU 的 size 大于 prepared-plan-cache.capacity 的情况下，也会剔除 LRU 中的元素。
++ 这个配置只有在 `prepared-plan-cache.enabled` 为 `true` 的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
 
 ### `txn-total-size-limit`
 
-+ TiDB 事务大小限制
++ TiDB 单个事务大小限制
 + 默认值：104857600 (Byte)
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `10737418240`（表示 10GB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
 
 ### `stmt-count-limit`
 
-+ TiDB 一个事务允许的最大语句条数限制。
++ TiDB 单个事务允许的最大语句条数限制。
 + 默认值：5000
 + 在一个事务中，超过 `stmt-count-limit` 条语句后还没有 rollback 或者 commit，TiDB 将会返回 `statement count 5001 exceeds the transaction limitation, autocommit = false` 错误。该限制只在可重试的乐观事务中生效，如果使用悲观事务或者关闭了[事务重试](/optimistic-transaction.md#事务的重试)，事务中的语句数将不受此限制。
 
@@ -343,11 +358,21 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置优化器是否执行将带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 + 默认值：false
-+ 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/tidb-specific-system-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
++ 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
+
+### `nested-loop-join-cache-capacity`
+
++ nested loop join cache LRU 使用的最大内存限制。可以占用的最大内存阈值，单位为字节。
++ 默认值：20971520
++ 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
 
 ## prepared-plan-cache
 
 prepare 语句的 Plan cache 设置。
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
 
 ### `enabled`
 
@@ -391,11 +416,12 @@ prepare 语句的 Plan cache 设置。
 + 默认值：41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
 
-### `max-txn-time-use`
+### `max-txn-ttl`
 
-+ 单个事务允许的最大执行时间。
-+ 默认值：590
-+ 单位：秒
++ 单个事务持锁的最长时间，超过该时间，该事务的锁可能会被其他事务清除，导致该事务无法成功提交。
++ 默认值：600000
++ 单位：毫秒
++ 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
 
 ### `max-batch-size`
 
@@ -431,13 +457,13 @@ prepare 语句的 Plan cache 设置。
 ### `capacity-mb`
 
 + 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
-+ 默认值：1000
++ 默认值：1000.0
 + 单位：MB
 
 ### `admission-max-result-mb`
 
 + 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
-+ 默认值：10
++ 默认值：10.0
 + 单位：MB
 
 ### `admission-min-process-ms`
@@ -528,7 +554,7 @@ TiDB 服务状态相关配置。
 
 ### max-retry-count
 
-+ 悲观事务中每个语句最大重试次数，超出该限制将会报错。
++ 悲观事务中单个语句最大重试次数，重试次数超过该限制，语句执行将会报错。
 + 默认值：256
 
 ## experimental

@@ -1,7 +1,6 @@
 ---
 title: 使用 TiDB Ansible 升级 TiDB
-category: how-to
-aliases: ['/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
+aliases: ['/docs-cn/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
 # 使用 TiDB Ansible 升级 TiDB
@@ -30,7 +29,7 @@ aliases: ['/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how
 >
 > 如果已经安装了 TiDB Ansible 及其依赖，可跳过该步骤。
 
-TiDB Ansible 最新开发版依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 TiDB Ansible 及其依赖，可参照[在中控机器上安装 TiDB Ansible 及其依赖](/online-deployment-using-ansible.md#在中控机器上安装-tidb-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 TiDB Ansible 及其依赖](/offline-deployment-using-ansible.md#在中控机器上离线安装-tidb-ansible-及其依赖)。
+TiDB Ansible 最新开发版依赖 2.4.2 及以上但不高于 2.7.11 的 Ansible 版本（`2.4.2 ≦ ansible ≦ 2.7.11`，建议 2.7.11 版本），另依赖 Python 模块：`jinja2 ≧ 2.9.6` 和 `jmespath ≧ 0.9.0`。为方便管理依赖，建议使用 `pip` 安装 TiDB Ansible 及其依赖，可参照[在中控机器上安装 TiDB Ansible 及其依赖](/online-deployment-using-ansible.md#第-4-步在中控机器上安装-tidb-ansible-及其依赖) 进行安装。离线环境参照[在中控机器上离线安装 TiDB Ansible 及其依赖](/offline-deployment-using-ansible.md#在中控机器上离线安装-tidb-ansible-及其依赖)。
 
 安装完成后，可通过以下命令查看版本：
 
@@ -80,7 +79,7 @@ Version: 0.9.0
 mv tidb-ansible tidb-ansible-bak
 ```
 
-下载 TiDB latest 版本对应的 tidb-ansible  [**下载 TiDB Ansible**](/online-deployment-using-ansible.md#在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
+下载 TiDB latest 版本对应的 tidb-ansible  [**下载 TiDB Ansible**](/online-deployment-using-ansible.md#第-3-步在中控机器上下载-tidb-ansible)，默认的文件夹名称为 `tidb-ansible`。
 
 {{< copyable "shell-regular" >}}
 
@@ -222,3 +221,7 @@ ansible-playbook local_prepare.yml
 ```bash
 ansible-playbook rolling_update_monitor.yml
 ```
+
+> **注意：**
+>
+> TiDB（v4.0.2 起）默认会定期收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。

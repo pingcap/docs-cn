@@ -1,7 +1,6 @@
 ---
 title: TiDB 2.1.17 Release Notes
-category: Releases
-aliases: ['/docs-cn/dev/releases/2.1.17/']
+aliases: ['/docs-cn/dev/releases/release-2.1.17/','/docs-cn/dev/releases/2.1.17/']
 ---
 
 # TiDB 2.1.17 Release Notes
@@ -53,7 +52,7 @@ TiDB Ansible 版本：2.1.17
 + DDL
     - 为 `tikvSnapshot` 添加逆序扫描接口用于高效地查询 DDL History Job，使用该接口后 `ADMIN SHOW DDL JOBS` 的执行时间有明显降低 [#11789](https://github.com/pingcap/tidb/pull/11789)
     - 改进 `CREATE TABLE ... PRE_SPLIT_REGION` 的语义：当指定 `PRE_SPLIT_REGION = N` 时，将预切分的 Region 个数由 2^(N-1) 改为 2^N [#11797](https://github.com/pingcap/tidb/pull/11797/files)
-    - 根据[线上负载与 Add Index 相互影响测试](https://pingcap.com/docs-cn/dev/benchmark/add-index-with-load)，调小 Add Index 后台工作线程的默认参数以避免对线上负载造成较大影响 [#11875](https://github.com/pingcap/tidb/pull/11875)
+    - 根据[线上负载与 Add Index 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)，调小 Add Index 后台工作线程的默认参数以避免对线上负载造成较大影响 [#11875](https://github.com/pingcap/tidb/pull/11875)
     - 改进 `SPLIT TABLE` 语法的行为：当使用 `SPLIT TABLE ... REGIONS N` 对 Region 切分时，会生成 N 个数据 Region 和 1 个索引 Region [#11929](https://github.com/pingcap/tidb/pull/11929)
     - 在配置文件中添加 `split-region-max-num` 参数，使得 `SPLIT TABLE` 语法允许的最大 Region 数量可调整，该参数默认值 `10000` [#12080](https://github.com/pingcap/tidb/pull/12080)
     - 修复写 binlog 时，`CREATE TABLE` 语句中 `PRE_SPLIT_REGIONS` 部分没有被注释，导致语句不能被下游 MySQL 解析的问题 [#12121](https://github.com/pingcap/tidb/pull/12121)

@@ -1,8 +1,7 @@
 ---
 title: INSERT
 summary: TiDB 数据库中 INSERT 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/insert/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-insert/','/docs-cn/dev/reference/sql/statements/insert/']
 ---
 
 # INSERT
@@ -14,6 +13,10 @@ aliases: ['/docs-cn/dev/reference/sql/statements/insert/']
 **InsertIntoStmt:**
 
 ![InsertIntoStmt](/media/sqlgram/InsertIntoStmt.png)
+
+**TableOptimizerHints**
+
+![TableOptimizerHints](/media/sqlgram/TableOptimizerHints.png)
 
 **PriorityOpt:**
 
@@ -31,16 +34,24 @@ aliases: ['/docs-cn/dev/reference/sql/statements/insert/']
 
 ![TableName](/media/sqlgram/TableName.png)
 
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
 **InsertValues:**
 
 ![InsertValues](/media/sqlgram/InsertValues.png)
+
+**OnDuplicateKeyUpdate:**
+
+![OnDuplicateKeyUpdate](/media/sqlgram/OnDuplicateKeyUpdate.png)
 
 ## 示例
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (a int);
+CREATE TABLE t1 (a INT);
 ```
 
 ```
@@ -152,7 +163,7 @@ SELECT * FROM t2;
 
 ## MySQL 兼容性
 
-`INSERT` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`INSERT` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

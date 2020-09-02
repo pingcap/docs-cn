@@ -1,13 +1,22 @@
 ---
 title: ALTER DATABASE
 summary: TiDB 数据库中 ALTER DATABASE 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/alter-database/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-database/','/docs-cn/dev/reference/sql/statements/alter-database/']
 ---
 
 # ALTER DATABASE
 
 `ALTER DATABASE` 用于修改指定或当前数据库的默认字符集和排序规则。`ALTER SCHEMA` 跟 `ALTER DATABASE` 操作效果一样。
+
+## 语法图
+
+**AlterDatabaseStmt:**
+
+![AlterDatabaseStmt](/media/sqlgram/AlterDatabaseStmt.png)
+
+**DatabaseOption:**
+
+![DatabaseOption](/media/sqlgram/DatabaseOption.png)
 
 ## 示例
 

@@ -1,8 +1,7 @@
 ---
 title: CREATE TABLE LIKE
 summary: TiDB 数据库中 CREATE TABLE LIKE 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/create-table-like/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-table-like/','/docs-cn/dev/reference/sql/statements/create-table-like/']
 ---
 
 # CREATE TABLE LIKE
@@ -11,17 +10,13 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-table-like/']
 
 ## 语法图
 
-**CreateTableStmt:**
+**CreateTableLikeStmt:**
 
-![CreateTableStmt](/media/sqlgram/CreateTableStmt.png)
+![CreateTableLikeStmt](/media/sqlgram/CreateTableLikeStmt.png)
 
 **LikeTableWithOrWithoutParen:**
 
 ![LikeTableWithOrWithoutParen](/media/sqlgram/LikeTableWithOrWithoutParen.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
 
 ## 示例
 
@@ -85,9 +80,13 @@ SELECT * FROM t2;
 Empty set (0.00 sec)
 ```
 
+## Region 的预切分
+
+如果被复制的表定义了 `PRE_SPLIT_REGIONS` 属性，则通过 `CREATE TABLE LIKE` 语句复制的表，会继承该属性并在建表时预切分 Region。关于 `PRE_SPLIT_REGIONS` 属性的说明，参见 [`CREATE TABLE` 语句](/sql-statements/sql-statement-create-table.md)。
+
 ## MySQL 兼容性
 
-`CREATE TABLE LIKE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`CREATE TABLE LIKE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

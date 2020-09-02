@@ -1,13 +1,26 @@
 ---
 title: ALTER INDEX
 summary: TiDB 数据库中 ALTER INDEX 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/alter-index/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-index/','/docs-cn/dev/reference/sql/statements/alter-index/']
 ---
 
 # ALTER INDEX
 
 `ALTER INDEX` 语句用于修改索引的可见性，可以将索引设置为 `Visible` 或者 `Invisible`。设置为 `Invisible` 的索引将无法被优化器使用。
+
+## 语法图
+
+**AlterTableStmt:**
+
+![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
+
+**AlterTableSpec:**
+
+![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
+
+**IndexInvisible:**
+
+![IndexInvisible](/media/sqlgram/IndexInvisible.png)
 
 ## 语法
 

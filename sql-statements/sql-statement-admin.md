@@ -1,12 +1,15 @@
 ---
 title: ADMIN
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/admin/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-admin/','/docs-cn/dev/reference/sql/statements/admin/']
 ---
 
 # ADMIN
 
-`ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。示例如下。
+`ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。
+
+## ADMIN 与 DDL 相关的扩展语句
+
+### `admin show DDL` 语句
 
 {{< copyable "sql" >}}
 
@@ -15,6 +18,8 @@ ADMIN SHOW DDL;
 ```
 
 `ADMIN SHOW DDL` 用于查看当前正在执行的 DDL 作业。
+
+### `admin show DDL jobs` 语句
 
 {{< copyable "sql" >}}
 
@@ -25,7 +30,9 @@ ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 * `NUM`：查看已经执行完成的 DDL 作业队列中最近 `NUM` 条结果，未指定时，默认值为 10。
 * `WHERE`：`WHERE` 子句，可以添加过滤条件。
 
-`ADMIN SHOW DDL JOBS` 用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
+以上语句用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
+
+### `admin show DDL queries` 语句
 
 {{< copyable "sql" >}}
 
@@ -33,7 +40,9 @@ ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ```
 
-`ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...` 用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在运行中的 DDL 作业以及 DDL 历史作业队列中最近的十条结果。
+以上语句用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在运行中的 DDL 作业以及 DDL 历史作业队列中最近的十条结果。
+
+### `admin cancel DDL jobs` 语句
 
 {{< copyable "sql" >}}
 
@@ -41,7 +50,7 @@ ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ```
 
-`ADMIN CANCEL DDL JOBS job_id [, job_id] ...` 用于取消当前正在运行的 `job_id` 的 DDL 作业，并返回对应作业是否取消成功。如果取消失败，会显示失败的具体原因。
+以上语句用于取消当前正在运行的 `job_id` 的 DDL 作业，并返回对应作业是否取消成功。如果取消失败，会显示失败的具体原因。
 
 > **注意：**
 >
@@ -51,13 +60,113 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 >
 > + 如果希望取消的作业已经完成，则取消操作将会失败。
 
+## `admin check` 语句
+
 {{< copyable "sql" >}}
 
 ```sql
 ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ```
 
-`ADMIN CHECK TABLE tbl_name [, tbl_name] ...` 用于对表 `tbl_name` 中的所有数据和对应索引进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
+以上语句用于对表 `tbl_name` 中的所有数据和对应索引进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CHECK INDEX tbl_name idx_name;
+```
+
+以上语句用于对 `tbl_name` 表中 `idx_name` 索引对应列数据和索引数据进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CHECK INDEX tbl_name idx_name (lower_val, upper_val) [, (lower_val, upper_val)] ...;
+```
+
+以上语句用于对 `tbl_name` 表中 `idx_name` 索引对应列数据和索引数据进行一致性校验，并且指定了需要检查的数据范围。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
+
+### `admin checksum` 语句
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CHECKSUM TABLE tbl_name [, tbl_name] ...;
+```
+
+以上语句会获取 `tbl_name` 的 64 位的 checksum 值，该值可通过计算了表中所有的键值对（包括行数据和索引数据）的 CRC64 获得。
+
+## `admin reload` 语句
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN RELOAD expr_pushdown_blacklist;
+```
+
+以上语句用于重新加载表达式下推的黑名单。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN RELOAD opt_rule_blacklist;
+```
+
+以上语句用于重新加载逻辑优化规则的黑名单。
+
+## `admin plugin` 语句
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
+```
+
+以上语句用于启用 `plugin_name` 插件。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
+```
+
+以上语句用于禁用 `plugin_name` 插件。
+
+## `admin ... bindings` 语句
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN FLUSH bindings;
+```
+
+以上语句用于持久化 SQL Plan 绑定的信息。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN CAPTURE bindings;
+```
+
+以上语句可以将出现超过一次的 `select`execution-plan 语句生成 SQL Plan 的绑定。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN EVOLVE bindings;
+```
+
+开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划管理](/sql-plan-management.md)。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN RELOAD bindings;
+```
+
+以上语句用于重新加载 SQL Plan 绑定的信息。
+
+## `admin repair table` 语句
 
 {{< copyable "sql" >}}
 
@@ -66,6 +175,22 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 ```
 
 `ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/tidb-configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/tidb-configuration-file.md#repair-table-list) 名单中。
+
+## `admin show slow` 语句
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW SLOW RECENT N;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
+```
+
+这两种语句的具体操作详情可参考：[admin show slow 语句](/identify-slow-queries.md#admin-show-slow-命令)。
 
 ## 语句概览
 
@@ -84,9 +209,9 @@ admin show ddl jobs;
 ```
 
 ```
-+--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
-| JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE            | SCHEMA_STATE   | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | END_TIME                          | STATE         |
-+--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
++--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
+| JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | END_TIME                          | STATE         |
++--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
 | 45     | test    | t1         | add index     | write reorganization | 32        | 37       | 0         | 2019-01-10 12:38:36.501 +0800 CST |                                   | running       |
 | 44     | test    | t1         | add index     | none                 | 32        | 37       | 0         | 2019-01-10 12:36:55.18 +0800 CST  | 2019-01-10 12:36:55.852 +0800 CST | rollback done |
 | 43     | test    | t1         | add index     | public               | 32        | 37       | 6         | 2019-01-10 12:35:13.66 +0800 CST  | 2019-01-10 12:35:14.925 +0800 CST | synced        |
@@ -110,9 +235,9 @@ admin show ddl jobs 5;
 ```
 
 ```
-+--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
-| JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE            | SCHEMA_STATE   | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | END_TIME                          | STATE         |
-+--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
++--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
+| JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | END_TIME                          | STATE         |
++--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
 | 45     | test    | t1         | add index     | write reorganization | 32        | 37       | 0         | 2019-01-10 12:38:36.501 +0800 CST |                                   | running       |
 | 44     | test    | t1         | add index     | none                 | 32        | 37       | 0         | 2019-01-10 12:36:55.18 +0800 CST  | 2019-01-10 12:36:55.852 +0800 CST | rollback done |
 | 43     | test    | t1         | add index     | public               | 32        | 37       | 6         | 2019-01-10 12:35:13.66 +0800 CST  | 2019-01-10 12:35:14.925 +0800 CST | synced        |
@@ -131,9 +256,9 @@ admin show ddl jobs 5 where state!='synced' and db_name='test';
 ```
 
 ```
-+--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
-| JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE            | SCHEMA_STATE   | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | END_TIME                          | STATE         |
-+--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
++--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
+| JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | START_TIME                        | END_TIME                          | STATE         |
++--------+---------+------------+---------------+----------------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
 | 45     | test    | t1         | add index     | write reorganization | 32        | 37       | 0         | 2019-01-10 12:38:36.501 +0800 CST |                                   | running       |
 | 44     | test    | t1         | add index     | none                 | 32        | 37       | 0         | 2019-01-10 12:36:55.18 +0800 CST  | 2019-01-10 12:36:55.852 +0800 CST | rollback done |
 +--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+

@@ -1,7 +1,6 @@
 ---
 title: 分区表
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/partitioning/']
+aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitioning/']
 ---
 
 # 分区表
@@ -14,7 +13,7 @@ aliases: ['/docs-cn/dev/reference/sql/partitioning/']
 
 ### Range 分区
 
-一个表按 range 分区是指，对于表的每个分区中包含的所有行，按分区表达式计算的值都落在给定的范围内。Range 必须是连续的，并且不能有重叠，通过使用 `VALUES LESS THAN` 操作进行定义。
+一个表按 Range 分区是指，对于表的每个分区中包含的所有行，按分区表达式计算的值都落在给定的范围内。Range 必须是连续的，并且不能有重叠，通过使用 `VALUES LESS THAN` 进行定义。
 
 下列场景中，假设你要创建一个人事记录的表：
 
@@ -32,7 +31,7 @@ CREATE TABLE employees (
 );
 ```
 
-你可以根据需求按各种方式进行 range 分区。其中一种方式是按 `store_id` 列进行分区。你可以这样做：
+你可以根据需求按各种方式进行 Range 分区。其中一种方式是按 `store_id` 列进行分区：
 
 {{< copyable "sql" >}}
 
@@ -55,7 +54,7 @@ PARTITION BY RANGE (store_id) (
 );
 ```
 
-在这个分区模式中，所有 `store_id` 为 1 到 5 的员工，都存储在分区 `p0` 里面，`store_id` 为 6 到 10 的员工则存储在分区 `p1` 里面。range 分区要求，分区的定义必须是有序的，按从小到大递增。
+在这个分区模式中，所有 `store_id` 为 1 到 5 的员工，都存储在分区 `p0` 里面，`store_id` 为 6 到 10 的员工则存储在分区 `p1` 里面。Range 分区要求，分区的定义必须是有序的，按从小到大递增。
 
 新插入一行数据 `(72, 'Mitchell', 'Wilson', '1998-06-25', NULL, 13)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
 
@@ -129,7 +128,7 @@ PARTITION BY RANGE ( YEAR(separated) ) (
 );
 ```
 
-在 range 分区中，可以基于 `timestamp` 列的值分区，并使用 `unix_timestamp()` 函数，例如：
+在 Range 分区中，可以基于 `timestamp` 列的值分区，并使用 `unix_timestamp()` 函数，例如：
 
 {{< copyable "sql" >}}
 
@@ -154,7 +153,7 @@ PARTITION BY RANGE ( UNIX_TIMESTAMP(report_updated) ) (
 );
 ```
 
-对于 timestamp 值，使用其它的分区表达式是不允许的。
+对于 timestamp 列，使用其它的分区表达式是不允许的。
 
 Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
@@ -164,11 +163,11 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### Hash 分区
 
-Hash 分区主要用于保证数据均匀地分散到一定数量的分区里面。在 range 分区中你必须为每个分区指定值的范围；在 hash 分区中，你只需要指定分区的数量。
+Hash 分区主要用于保证数据均匀地分散到一定数量的分区里面。在 Range 分区中你必须为每个分区指定值的范围；在 Hash 分区中，你只需要指定分区的数量。
 
-使用 hash 分区时，需要在 `CREATE TABLE` 后面添加 `PARTITION BY HASH (expr)`，其中 `expr` 是一个返回整数的表达式。当这一列的类型是整数类型时，它可以是一个列名。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少分区。
+使用 Hash 分区时，需要在 `CREATE TABLE` 后面添加 `PARTITION BY HASH (expr)`，其中 `expr` 是一个返回整数的表达式。当这一列的类型是整数类型时，它可以是一个列名。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少分区。
 
-下面的语句将创建一个 hash 分区表，按 `store_id` 分成 4 个分区：
+下面的语句将创建一个 Hash 分区表，按 `store_id` 分成 4 个分区：
 
 {{< copyable "sql" >}}
 
@@ -208,15 +207,15 @@ PARTITION BY HASH( YEAR(hired) )
 PARTITIONS 4;
 ```
 
-最高效的 hash 函数是作用在单列上，并且函数的单调性是跟列的值是一样递增或者递减的，因为这种情况可以像 range 分区一样裁剪。
+最高效的 Hash 函数是作用在单列上，并且函数的单调性是跟列的值是一样递增或者递减的。
 
-例如，`date_col` 是类型为 `DATE` 的列，表达式 `TO_DAYS(date_col)` 的值是直接随 `date_col` 的值变化的。`YEAR(date_col)` 跟 `TO_DAYS(date_col)` 就不太一样，因为不是每次 `date_col` 变化时 `YEAR(date_col)` 都会得到不同的值。即使如此，`YEAR(date_col)` 也仍然是一个比较好的 hash 函数，因为它的结果是随着 `date_col` 的值的比例变化的。
+例如，`date_col` 是类型为 `DATE` 的列，表达式 `TO_DAYS(date_col)` 的值是直接随 `date_col` 的值变化的。`YEAR(date_col)` 跟 `TO_DAYS(date_col)` 就不太一样，因为不是每次 `date_col` 变化时 `YEAR(date_col)` 都会得到不同的值。
 
-作为对比，假设我们有一个类型是 INT 的 `int_col` 的列。考虑一下表达式 `POW(5-int_col,3) + 6`，这并不是一个比较好的 hash 函数，因为随着 `int_col` 的值的变化，表达式的结果不会成比例地变化。改变 `int_col` 的值会使表达式的结果的值变化巨大。例如，`int_col` 从 5 变到 6 表达式的结果变化是 -1，但是从 6 变到 7 的时候表达式的值的变化是 -7。
+作为对比，假设我们有一个类型是 INT 的 `int_col` 的列。考虑一下表达式 `POW(5-int_col,3) + 6`，这并不是一个比较好的 Hash 函数，因为随着 `int_col` 的值的变化，表达式的结果不会成比例地变化。改变 `int_col` 的值会使表达式的结果的值变化巨大。例如，`int_col` 从 5 变到 6 表达式的结果变化是 -1，但是从 6 变到 7 的时候表达式的值的变化是 -7。
 
-总而言之，表达式越接近 `y = cx` 的形式，它越是适合作为 hash 函数。因为表达式越是非线性的，在各个分区上面的数据的分布越是倾向于不均匀。
+总而言之，表达式越接近 `y = cx` 的形式，它越是适合作为 Hash 函数。因为表达式越是非线性的，在各个分区上面的数据的分布越是倾向于不均匀。
 
-理论上，hash 分区也是可以做分区裁剪的。而实际上对于多列的情况，实现很难并且计算很耗时。因此，不推荐 hash 分区在表达式中涉及多列。
+理论上，Hash 分区也是可以做分区裁剪的。而实际上对于多列的情况，实现很难并且计算很耗时。因此，不推荐 Hash 分区在表达式中涉及多列。
 
 使用 `PARTITIION BY HASH` 的时候，TiDB 通过表达式的结果做“取余”运算，决定数据落在哪个分区。换句话说，如果分区表达式是 `expr`，分区数是 `num`，则由 `MOD(expr, num)` 决定存储的分区。假设 `t1` 定义如下：
 
@@ -242,7 +241,7 @@ TiDB 允许计算结果为 NULL 的分区表达式。注意，NULL 不是一个�
 
 #### Range 分区对 NULL 的处理
 
-如果插入一行到 range 分区表，它的分区列的计算结果是 NULL，那么这一行会被插入到最小的那个分区。
+如果插入一行到 Range 分区表，它的分区列的计算结果是 NULL，那么这一行会被插入到最小的那个分区。
 
 {{< copyable "sql" >}}
 
@@ -378,6 +377,12 @@ Empty set (0.00 sec)
 
 可以看到，插入的记录 `(NULL, 'mothra')` 跟 `(0, 'gigan')` 落在了同一个分区。
 
+> **注意：**
+>
+> 这里 Hash 分区对 NULL 的处理跟 [MySQL 的文档描述](https://dev.mysql.com/doc/refman/8.0/en/partitioning-handling-nulls.html)一致，但是跟 MySQL 的实际行为并不一致。也就是说，MySQL 的文档跟它的实现并不一致。
+>
+> TiDB 的最终行为以本文档描述为准。
+
 ## 分区管理
 
 通过 `ALTER TABLE` 语句可以执行一些添加、删除、合并、切分、重定义分区的操作。
@@ -458,11 +463,21 @@ ERROR 1463 (HY000): VALUES LESS THAN value must be strictly »
 
 跟 Range 分区不同，Hash 分区不能够 `DROP PARTITION`。
 
-目前 TiDB 的实现暂时不支持 `ALTER TABLE ... COALESCE PARTITION`。
+目前 TiDB 的实现暂时不支持 `ALTER TABLE ... COALESCE PARTITION`。对于暂不支持的分区管理语句，TiDB 会返回错误。
+
+{{< copyable "sql" >}}
+
+```sql
+alter table members optimize partition p0;
+```
+
+```sql
+ERROR 8200 (HY000): Unsupported optimize partition
+```
 
 ## 分区裁剪
 
-有一个优化叫做“分区裁剪”，它基于一个非常简单的概念：不需要扫描那些匹配不上的分区。
+有一个优化叫做[“分区裁剪”](/partition-pruning.md)，它基于一个非常简单的概念：不需要扫描那些匹配不上的分区。
 
 假设创建一个分区表 `t1`：
 
@@ -558,9 +573,9 @@ SELECT fname, lname, region_code, dob
 
     如果 TiKV 不支持 `fn`，则优化阶段不会把 `fn(col)` 推到叶子节点，而是在叶子上面连接一个 Selection 节点，分区裁剪的实现没有处理这种父节点的 Selection 中的条件，因此对不能下推到 TiKV 的表达式不支持分区裁剪。
 
-4. 对于 hash 分区类型，只有等值比较的查询条件能够支持分区裁剪。
+4. 对于 Hash 分区类型，只有等值比较的查询条件能够支持分区裁剪。
 
-5. 对于 range 分区类型，分区表达式必须是 `col` 或者 `fn(col)` 的简单形式，查询条件是 > < = >= <= 时才能支持分区裁剪。如果分区表达式是 `fn(col)` 形式，还要求 `fn` 必须是单调函数，才有可能分区裁剪。
+5. 对于 Range 分区类型，分区表达式必须是 `col` 或者 `fn(col)` 的简单形式，查询条件是 > < = >= <= 时才能支持分区裁剪。如果分区表达式是 `fn(col)` 形式，还要求 `fn` 必须是单调函数，才有可能分区裁剪。
 
     这里单调函数是指某个函数 `fn` 满足条件：对于任意 `x` `y`，如果 `x > y`，则 `fn(x) > fn(y)`。
 
@@ -720,7 +735,7 @@ SELECT store_id, COUNT(department_id) AS c
 2 rows in set (0.00 sec)
 ```
 
-分支选择支持所有类型的分区表，无论是 range 分区或是 hash 分区等。对于 hash 分区，如果没有指定分区名，会自动使用 `p0`、`p1`、`p2`、……、或 `pN-1` 作为分区名。
+分支选择支持所有类型的分区表，无论是 Range 分区或是 Hash 分区等。对于 Hash 分区，如果没有指定分区名，会自动使用 `p0`、`p1`、`p2`、……、或 `pN-1` 作为分区名。
 
 在 `INSERT ... SELECT` 的 `SELECT` 中也是可以使用分区选择的。
 
@@ -885,20 +900,37 @@ Query OK, 0 rows affected (0.12 sec)
 
 通过 `ALTER TABLE` 添加非唯一索引是可以的。但是添加唯一索引时，唯一索引里面必须包含 `c1` 列。
 
+使用分区表时，前缀索引是不能指定为唯一属性的：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t (a varchar(20), b blob,
+    UNIQUE INDEX (a(5)))
+    PARTITION by range columns (a) (
+    PARTITION p0 values less than ('aaaaa'),
+    PARTITION p1 values less than ('bbbbb'),
+    PARTITION p2 values less than ('ccccc'));
+```
+
+```sql
+ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's partitioning function
+```
+
 ### 关于函数的分区限制
 
 只有以下函数可以用于分区表达式：
 
 ```
 ABS()
-CEILING() (see CEILING() and FLOOR())
+CEILING()
 DATEDIFF()
 DAY()
 DAYOFMONTH()
 DAYOFWEEK()
 DAYOFYEAR()
 EXTRACT() (see EXTRACT() function with WEEK specifier)
-FLOOR() (see CEILING() and FLOOR())
+FLOOR()
 HOUR()
 MICROSECOND()
 MINUTE()
@@ -1018,3 +1050,7 @@ select * from t;
 +------|------+
 5 rows in set (0.00 sec)
 ```
+
+环境变量 `tidb_enable_table_partition` 可以控制是否启用分区表功能。如果该变量设置为 `off`，则建表时会忽略分区信息，以普通表的方式建表。
+
+该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_table_partition)。

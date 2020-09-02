@@ -1,8 +1,7 @@
 ---
 title: SHOW INDEXES [FROM|IN]
 summary: TiDB 数据库中 SHOW INDEXES [FROM|IN] 的使用概况。
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/show-indexes/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-indexes/','/docs-cn/dev/reference/sql/statements/show-indexes/']
 ---
 
 # SHOW INDEXES [FROM|IN]
@@ -11,13 +10,9 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-indexes/']
 
 ## 语法图
 
-**ShowStmt:**
+**ShowIndexStmt:**
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+![ShowIndexStmt](/media/sqlgram/ShowIndexStmt.png)
 
 **ShowIndexKwd:**
 
@@ -30,6 +25,10 @@ aliases: ['/docs-cn/dev/reference/sql/statements/show-indexes/']
 **TableName:**
 
 ![TableName](/media/sqlgram/TableName.png)
+
+**ShowLikeOrWhereOpt:**
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 ## 示例
 
@@ -99,7 +98,7 @@ SHOW KEYS FROM t1;
 
 ## MySQL 兼容性
 
-`SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

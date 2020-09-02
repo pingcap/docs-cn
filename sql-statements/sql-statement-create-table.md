@@ -1,8 +1,7 @@
 ---
 title: CREATE TABLE
 summary: TiDB 数据库中 CREATE TABLE 的使用概况
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/create-table/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-table/','/docs-cn/dev/reference/sql/statements/create-table/']
 ---
 
 # CREATE TABLE
@@ -27,33 +26,49 @@ aliases: ['/docs-cn/dev/reference/sql/statements/create-table/']
 
 ![TableElementListOpt](/media/sqlgram/TableElementListOpt.png)
 
+**TableElementList:**
+
+![TableElementList](/media/sqlgram/TableElementList.png)
+
 **TableElement:**
 
 ![TableElement](/media/sqlgram/TableElement.png)
-
-**PartitionOpt:**
-
-![PartitionOpt](/media/sqlgram/PartitionOpt.png)
 
 **ColumnDef:**
 
 ![ColumnDef](/media/sqlgram/ColumnDef.png)
 
-**ColumnName:**
-
-![ColumnName](/media/sqlgram/ColumnName.png)
-
-**Type:**
-
-![Type](/media/sqlgram/Type.png)
-
 **ColumnOptionListOpt:**
 
 ![ColumnOptionListOpt](/media/sqlgram/ColumnOptionListOpt.png)
 
-**TableOptionListOpt:**
+**ColumnOptionList:**
 
-![TableOptionListOpt](/media/sqlgram/TableOptionListOpt.png)
+![ColumnOptionList](/media/sqlgram/ColumnOptionList.png)
+
+**ColumnOption:**
+
+![ColumnOption](/media/sqlgram/ColumnOption.png)
+
+**CreateTableOptionListOpt:**
+
+![CreateTableOptionListOpt](/media/sqlgram/CreateTableOptionListOpt.png)
+
+**PartitionOpt:**
+
+![PartitionOpt](/media/sqlgram/PartitionOpt.png)
+
+**DuplicateOpt:**
+
+![DuplicateOpt](/media/sqlgram/DuplicateOpt.png)
+
+**TableOptionList:**
+
+![TableOptionList](/media/sqlgram/TableOptionList.png)
+
+**TableOption:**
+
+![TableOption](/media/sqlgram/TableOption.png)
 
 ## 语法说明
 
@@ -213,18 +228,22 @@ table_option:
   | STATS_PERSISTENT [=] {DEFAULT|0|1}
 ```
 
-`table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`（详情介绍请参考 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md#shard_row_id_bits)）、`PRE_SPLIT_REGIONS`、`CHARACTER SET`、`COLLATE` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
+`table_option` 目前支持的只有 `AUTO_INCREMENT`、`SHARD_ROW_ID_BITS`（详情介绍请参考 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)）、`PRE_SPLIT_REGIONS`、`CHARACTER SET`、`COLLATE` 和 `COMMENT`，其它只是语法上支持。具体内容参考下表，各个子句之间用逗号隔开。
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
 |`AUTO_INCREMENT`|自增字段初始值                        |`AUTO_INCREMENT` = 5|
 |`SHARD_ROW_ID_BITS`|用来设置隐式 _tidb_rowid 的分片数量的 bit 位数 |`SHARD_ROW_ID_BITS` = 4|
 |`PRE_SPLIT_REGIONS`|用来在建表时预先均匀切分 `2^(PRE_SPLIT_REGIONS)` 个 Region |`PRE_SPLIT_REGIONS` = 4|
+|`AUTO_ID_CACHE`|用来指定 Auto ID 在 TiDB 实例中 Cache 的大小，默认情况下 TiDB 会根据 Auto ID 分配速度自动调整 |`AUTO_ID_CACHE` = 200|
+|`AUTO_RANDOM_BASE`|用来指定 AutoRandom 自增部分的初始值，该参数可以被认为属于内部接口的一部分，对于用户而言请忽略 |`AUTO_RANDOM_BASE` = 0|
 |`CHARACTER SET` |指定该表所使用的字符集                | `CHARACTER SET` = 'utf8mb4'|
 |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
 |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info'|
 
-`split-table` 配置项默认情况下会开启，在此配置项开启时，建表操作会为每个表建立单独的 Region。
+> **注意：**
+>
+> 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md) 。
 
 ## 示例
 
@@ -290,14 +309,15 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-* TiDB 不支持 `CREATE TEMPORARY TABLE` 语法。
+* TiDB 不支持临时表，对于 `CREATE TEMPORARY TABLE` 语法，会忽略 `TEMPORARY` 关键字。
 * 支持除空间类型以外的所有数据类型。
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * `KEY_BLOCK_SIZE` 和 `ENGINE` 属性可被解析，但会被忽略。
-* `index_col_name` 属性支持 length 选项，最大长度限制为 3072 字节。此长度限制不会更改，具体取决于存储引擎和建表时使用的字符集。
+* `index_col_name` 属性支持 length 选项，最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md#max-index-length)。
 * `index_col_name` 属性支持 `ASC` 和 `DESC` 的索引排序选项。
 * `COMMENT` 属性最多支持 1024 个字符，不支持 `WITH PARSER` 选项。
 * TiDB 在单个表中最多支持 512 列。InnoDB 中相应的数量限制为 1017，MySQL 中的硬限制为 4096。
+* 当前仅支持 Range、Hash 和 Range Columns（单列）类型的分区表，详情参阅[分区表](/partitioned-table.md)。
 
 ## 另请参阅
 

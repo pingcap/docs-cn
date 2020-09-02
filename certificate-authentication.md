@@ -1,13 +1,12 @@
 ---
 title: TiDB 证书鉴权使用指南
 summary: 了解使用 TiDB 的证书鉴权功能。
-category: reference
-aliases: ['/docs-cn/dev/reference/security/cert-based-authentication/']
+aliases: ['/docs-cn/dev/certificate-authentication/','/docs-cn/dev/reference/security/cert-based-authentication/']
 ---
 
-# TiDB 证书鉴权使用指南 <span class="version-mark">从 v3.0.8 版本开始引入</span>
+# TiDB 证书鉴权使用指南
 
-从 TiDB 3.0.8 版本开始，TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不同用户签发证书，使用加密连接来传输数据，并在用户登录时验证证书。相比 MySQL 用户常用的用户名密码验证方式，与 MySQL 相兼容的证书鉴权方式更安全，因此越来越多的用户使用证书鉴权来代替用户名密码验证。
+TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不同用户签发证书，使用加密连接来传输数据，并在用户登录时验证证书。相比 MySQL 用户常用的用户名密码验证方式，与 MySQL 相兼容的证书鉴权方式更安全，因此越来越多的用户使用证书鉴权来代替用户名密码验证。
 
 在 TiDB 上使用证书鉴权的登录方法，可能需要进行以下操作：
 
@@ -20,15 +19,7 @@ aliases: ['/docs-cn/dev/reference/security/cert-based-authentication/']
 
 ## 创建安全密钥和证书
 
-### 安装 OpenSSL
-
-目前推荐使用 [OpenSSL](https://www.openssl.org/) 来生成密钥和证书。以 Debian 操作系统为例，先执行以下命令来安装 OpenSSL：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sudo apt-get install openssl
-```
+目前推荐使用 [OpenSSL](https://www.openssl.org/) 来生成密钥和证书，生成证书的过程和[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)过程类似，下面更多演示如何在证书中配置更多需校验的属性字段。
 
 ### 生成 CA 密钥和证书
 
@@ -267,7 +258,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 ### 获取用户证书信息
 
-用户证书信息可由 `require subject`、`require issuer` 和 `require cipher` 来指定，用于检查 X.509 certificate attributes。
+用户证书信息可由 `require subject`、`require issuer`、`require san` 和 `require cipher` 来指定，用于检查 X.509 certificate attributes。
 
 + `require subject`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书) 中的录入信息。
 
@@ -283,11 +274,39 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
     可以执行以下命令来获取该项的信息：
 
+    {{< copyable "shell-regular" >}}
+
     ```
     openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
     ```
 
-+ `require cipher`：配置该项检查客户端支持的 cipher method。可以使用以下语句来查看支持的列表：
++ `require san`：指定签发用户证书的 CA 证书的 `Subject Alternative Name` 内容。配置内容对应生成客户端证书使用的 [openssl.cnf 配置文件的 `alt_names` 信息](/generate-self-signed-certificates.md)。
+
+    + 可以执行以下命令来获取已生成证书中的 `require san` 项的信息：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        openssl x509 -noout -ext subjectAltName -in client.crt
+        ```
+
+    + `require san` 目前支持以下 `Subject Alternative Name` 检查项：
+
+        - URI
+        - IP
+        - DNS
+
+    + 多个检查项可通过逗号连接后进行配置。例如，对用户 `u1` 进行以下配置：
+
+        {{< copyable "sql" >}}
+
+        ```sql
+        create user 'u1'@'%' require san 'DNS:d1,URI:spiffe://example.org/myservice1,URI:spiffe://example.org/myservice2'
+        ```
+
+    以上配置只允许用户 `u1` 使用 URI 项为 `spiffe://example.org/myservice1` 或 `spiffe://example.org/myservice2`、DNS 项为 `d1` 的证书登录 TiDB。
+
++ `require cipher`：配置该项检查客户端支持的 `cipher method`。可以使用以下语句来查看支持的列表：
 
     {{< copyable "sql" >}}
 
@@ -297,14 +316,14 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 ### 配置用户证书信息
 
-获取用户证书信息（`require subject`, `require issuer` 和 `require cipher`）后，可在创建用户、赋予权限或更改用户时配置用户证书信息。将以下命令中的 `<replaceable>` 替换为对应的信息。可以选择配置其中一项或多项，使用空格或 `and` 分隔。
+获取用户证书信息（`require subject`, `require issuer`、`require san` 和 `require cipher`）后，可在创建用户、赋予权限或更改用户时配置用户证书信息。将以下命令中的 `<replaceable>` 替换为对应的信息。可以选择配置其中一项或多项，使用空格或 `and` 分隔。
 
 + 可以在创建用户 (`create user`) 时配置登陆时需要校验的证书信息：
 
     {{< copyable "sql" >}}
 
     ```sql
-    create user 'u1'@'%'  require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
+    create user 'u1'@'%'  require issuer '<replaceable>' subject '<replaceable>' san '<replaceable>' cipher '<replaceable>';
     ```
 
 + 可以在赋予权限 (`grant`) 时配置登陆时需要校验的证书信息：
@@ -312,7 +331,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     {{< copyable "sql" >}}
 
     ```sql
-    grant all on *.* to 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
+    grant all on *.* to 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' san '<replaceable>' cipher '<replaceable>';
     ```
 
 + 还可以在修改已有用户 (alter user) 时配置登陆时需要校验的证书信息：
@@ -320,7 +339,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     {{< copyable "sql" >}}
 
     ```sql
-    alter user 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' cipher '<replaceable>';
+    alter user 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' san '<replaceable>' cipher '<replaceable>';
     ```
 
 配置完成后，用户在登录时 TiDB 会验证以下内容：
@@ -328,6 +347,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 + 使用 SSL 登录，且证书为服务器配置的 CA 证书所签发
 + 证书的 `Issuer` 信息和权限配置里的信息相匹配
 + 证书的 `Subject` 信息和权限配置里的信息相匹配
++ 证书的 `Subject Alternative Name` 信息和权限配置里的信息相匹配
 
 全部验证通过后用户才能登录，否则会报 `ERROR 1045 (28000): Access denied` 错误。登录后，可以通过以下命令来查看当前链接是否使用证书登录、TLS 版本和 Cipher 算法。
 

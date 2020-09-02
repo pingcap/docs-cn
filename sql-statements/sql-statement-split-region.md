@@ -1,7 +1,6 @@
 ---
 title: Split Region 使用文档
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/statements/split-region/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-split-region/','/docs-cn/dev/reference/sql/statements/split-region/']
 ---
 
 # Split Region 使用文档
@@ -11,6 +10,36 @@ aliases: ['/docs-cn/dev/reference/sql/statements/split-region/']
 上述情况中，如果在新建的表上发生大批量写入，则会造成热点，因为开始只有一个 Region，所有的写请求都发生在该 Region 所在的那台 TiKV 上。
 
 为解决上述场景中的热点问题，TiDB 引入了预切分 Region 的功能，即可以根据指定的参数，预先为某个表切分出多个 Region，并打散到各个 TiKV 上去。
+
+## 语法图
+
+**SplitRegionStmt:**
+
+![SplitRegionStmt](/media/sqlgram/SplitRegionStmt.png)
+
+**SplitSyntaxOption:**
+
+![SplitSyntaxOption](/media/sqlgram/SplitSyntaxOption.png)
+
+**TableName:**
+
+![TableName](/media/sqlgram/TableName.png)
+
+**PartitionNameListOpt:**
+
+![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
+
+**SplitOption:**
+
+![SplitOption](/media/sqlgram/SplitOption.png)
+
+**RowValue:**
+
+![RowValue](/media/sqlgram/RowValue.png)
+
+**Int64Num:**
+
+![Int64Num](/media/sqlgram/Int64Num.png)
 
 ## Split Region 的使用
 
@@ -40,6 +69,13 @@ SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
 
 * `TOTAL_SPLIT_REGION`：表示新增预切分的 Region 数量。
 * `SCATTER_FINISH_RATIO`：表示新增预切分 Region 中，打散完成的比率。如 `1.0` 表示全部完成。`0.5`表示只有一半的 Region 已经打散完成，剩下的还在打散过程中。
+
+> **注意：**
+>
+> 以下会话变量会影响 `SPLIT` 语句的行为，需要特别注意：
+> 
+> * `tidb_wait_split_region_finish`：打散 Region 的时间可能较长，由 PD 调度以及 TiKV 的负载情况所决定。这个变量用来设置在执行 `SPLIT REGION` 语句时，是否同步等待所有 Region 都打散完成后再返回结果给客户端。默认 `1` 代表等待打散完成后再返回结果。`0` 代表不等待 Region 打散完成就返回结果。
+> * `tidb_wait_split_region_timeout`：这个变量用来设置 `SPLIT REGION` 语句的执行超时时间，单位是秒，默认值是 300 秒，如果超时还未完成 `Split` 操作，就返回一个超时错误。
 
 ### Split Table Region
 
@@ -139,7 +175,7 @@ SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("{") REGIONS 26;
 
 该语句会把表 t 中 idx1 索引数据的 Region 从 a~`{` 切成 26 个 Region，region1 的范围是 [minIndexValue, b)，region2 的范围是 [b, c)，……，region25 的范围是 [y,z)，region26 的范围是 [z, maxIndexValue)。
 
-如果索引 idx2 的列是 timestamp/datetime 等时间类型，希望根据时间区间来切分索引数据：
+如果索引 idx2 的列是 timestamp/datetime 等时间类型，希望根据时间区间，按年为间隔切分索引数据，示例如下：
 
 {{< copyable "sql" >}}
 
@@ -148,6 +184,16 @@ SPLIT TABLE t INDEX idx2 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:
 ```
 
 该语句会把表 t 中 idx2 的索引数据 Region 从 `2010-01-01 00:00:00` 到  `2020-01-01 00:00:00` 切成 10 个 Region。region1 的范围是从 `[minIndexValue,  2011-01-01 00:00:00)`，region2 的范围是 `[2011-01-01 00:00:00, 2012-01-01 00:00:00)`……
+
+如果希望按照天为间隔切分索引，示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+SPLIT TABLE t INDEX idx2 BETWEEN ("2020-06-01 00:00:00") AND ("2020-07-01 00:00:00") REGIONS 30;
+```
+
+该语句会将表 `t` 中 `idx2` 索引位于 2020 年 6 月份的数据按天为间隔切分成 30 个 Region。
 
 其他索引列类型的切分方法也是类似的。
 
@@ -341,11 +387,15 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-使用带有 `shard_row_id_bits` 的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `pre_split_regions` 一起使用，用来在建表成功后就开始预均匀切分 `2^(pre_split_regions)` 个 Region。
+使用带有 `SHARD_ROW_ID_BITS` 的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `PRE_SPLIT_REGIONS` 一起使用，用来在建表成功后就开始预均匀切分 `2^(PRE_SPLIT_REGIONS)` 个 Region。
 
 > **注意：**
 >
-> `pre_split_regions` 必须小于等于 `shard_row_id_bits`。
+> `PRE_SPLIT_REGIONS` 必须小于等于 `SHARD_ROW_ID_BITS`。
+
+以下全局变量会影响 `PRE_SPLIT_REGIONS` 的行为，需要特别注意：
+
+* `tidb_scatter_region`：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `1`，表示等待所有 Region 都切分和打散完成后再返回结果给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
 
 ### 示例
 
@@ -366,10 +416,8 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
-## 相关 session 变量
-
-和 `SPLIT REGION` 语句相关的 session 变量有 `tidb_scatter_region`，`tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout`，具体可参考 [TiDB 专用系统变量和语法](/tidb-specific-system-variables.md)。
-
 ## 另请参阅
 
 * [SHOW TABLE REGIONS](/sql-statements/sql-statement-show-table-regions.md)
+
+* Session 变量：[`tidb_scatter_region`](/system-variables.md#tidb_scatter_region)，[`tidb_wait_split_region_finish`](/system-variables.md#tidb_wait_split_region_finish) 和[`tidb_wait_split_region_timeout`](/system-variables.md#tidb_wait_split_region_timeout).

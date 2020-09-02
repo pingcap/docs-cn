@@ -1,14 +1,37 @@
 ---
 title: TiKV Control 使用说明
-category: reference
-aliases: ['/docs-cn/dev/reference/tools/tikv-control/']
+aliases: ['/docs-cn/dev/tikv-control/','/docs-cn/dev/reference/tools/tikv-control/']
 ---
 
 # TiKV Control 使用说明
 
-TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。
+TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装目录如下：
 
-编译 TiKV 的同时也会编译 tikv-ctl 命令。如果通过 Ansible 部署集群，则对应的 `tidb-ansible/resources/bin` 目录下会存在 `tikv-ctl` 二进制文件。如果使用二进制文件部署集群，bin 目录下会包含 `tikv-ctl` 文件及 `tidb-server`、`pd-server`、以及 `tikv-server` 等其他文件。
+* 如果是使用 TiDB Ansible 部署的集群，在 `ansible` 目录下的 `resources/bin` 子目录下。
+* 如果是使用 TiUP 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 目录下。
+
+[TiUP](https://github.com/pingcap/tiup) 是晚于 `tidb-ansible` 推出的部署工具，使用方式更加简化，`tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup ctl tikv
+```
+
+```
+Starting component `ctl`: ~/.tiup/components/ctl/v4.0.0-rc.2/ctl tikv
+TiKV Control (tikv-ctl)
+Release Version:   4.0.0-rc.2
+Edition:           Community
+Git Commit Hash:   2fdb2804bf8ffaab4b18c4996970e19906296497
+Git Commit Branch: heads/refs/tags/v4.0.0-rc.2
+UTC Build Time:    2020-05-15 11:58:49
+Rust Version:      rustc 1.42.0-nightly (0de96d37f 2019-12-19)
+Enable Features:   jemalloc portable sse protobuf-codec
+Profile:           dist_release
+```
+
+你可以在 `tiup ctl tikv` 后面再接上相应的参数与子命令。
 
 ## 通用参数
 
@@ -72,7 +95,7 @@ AAFF
 
 `raft` 子命令可以查看 Raft 状态机在某一时刻的状态。状态信息包括 **RegionLocalState**、**RaftLocalState** 和 **RegionApplyState** 三个结构体，及某一条 log 对应的 Entries。
 
-您可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。它们的用法及输出内容如下所示：
+你可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。其用法及输出内容如下所示：
 
 {{< copyable "shell-regular" >}}
 
@@ -92,7 +115,7 @@ apply state: Some(applied_index: 314617 truncated_state {index: 313474 term: 151
 
 ### 查看 Region 的大小
 
-`size` 命令可以查看 Region 的大小：
+使用 `size` 命令可以查看 Region 的大小：
 
 {{< copyable "shell-regular" >}}
 
@@ -127,7 +150,7 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 
 ### 查看给定 key 的 MVCC
 
-与上个命令类似，`mvcc` 命令可以查看给定 key 的 MVCC：
+与 `scan` 命令类似，`mvcc` 命令可以查看给定 key 的 MVCC：
 
 {{< copyable "shell-regular" >}}
 
@@ -176,7 +199,11 @@ middle_key_by_approximate_size:
 
 ### 手动 compact 单个 TiKV 的数据
 
-`compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。`--host` 参数可以指定要 compact 的 TiKV，`-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。`--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大， compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+`compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。
+
+- `--host` 参数可以指定要 compact 的 TiKV。
+- `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
+- `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
 
 {{< copyable "shell-regular" >}}
 
@@ -192,15 +219,19 @@ success!
 
 `compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样。
 
-### 设置一个 Region 为 tombstone
+### 设置一个 Region 副本为 tombstone 状态
 
-`tombstone` 命令常用于没有开启 sync-log，因为机器掉电导致 Raft 状态机丢失部分写入的情况。它可以在一个 TiKV 实例上将一些 Region 设置为 Tombstone 状态，从而在重启时跳过这些 Region。这些 Region 应该在其他 TiKV 上有足够多的健康的副本以便能够继续通过 Raft 机制进行读写。
+`tombstone` 命令常用于没有开启 sync-log，因为机器掉电导致 Raft 状态机丢失部分写入的情况。它可以在一个 TiKV 实例上将一些 Region 的副本设置为 Tombstone 状态，从而在重启时跳过这些 Region，避免因为这些 Region 的副本的 Raft 状态机损坏而无法启动服务。这些 Region 应该在其他 TiKV 上有足够多的健康的副本以便能够继续通过 Raft 机制进行读写。
+
+一般情况下，可以先在 PD 上将 Region 的副本通过 `remove-peer` 命令删除掉：
 
 {{< copyable "" >}}
 
 ```shell
 pd-ctl>> operator add remove-peer <region_id> <store_id>
 ```
+
+然后再用 tikv-ctl 在那个 TiKV 实例上将 Region 的副本标记为 tombstone 以便跳过启动时对他的健康检查：
 
 {{< copyable "shell-regular" >}}
 
@@ -212,10 +243,22 @@ tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>
 success!
 ```
 
+但是有些情况下，当不能方便地从 PD 上移除这个副本时，可以指定 tikv-ctl 的 `--force` 选项来强制设置它为 tombstone：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
+```
+
+```
+success!
+```
+
 > **注意：**
 >
 > - **该命令只支持本地模式**
-> - `-p` 选项的参数指定 PD 的 endpoints，无需 `http` 前缀。指定 PD 的 endpoints 是为了询问 PD 是否可以安全切换至 Tombstone 状态。因此，在将 PD 置为 Tombstone 之前往往还需要在 `pd-ctl` 中把该 Region 在机器上的对应 Peer 拿掉。
+> - `-p` 选项的参数指定 PD 的 endpoints，无需 `http` 前缀。指定 PD 的 endpoints 是为了询问 PD 是否可以安全切换至 Tombstone 状态。
 
 ### 向 TiKV 发出 consistency-check 请求
 
@@ -268,7 +311,7 @@ all regions are healthy
 
 ### 查看 Region 属性
 
-本地查看部署在 `/path/to/tikv` 的 tikv 上面 Region 2 的 properties 信息：
+本地查看部署在 `/path/to/tikv` 的 TiKV 上面 Region 2 的 properties 信息：
 
 {{< copyable "shell-regular" >}}
 
@@ -276,7 +319,7 @@ all regions are healthy
 tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
 ```
 
-在线查看运行在 `127.0.0.1:20160` 的 tikv 上面 Region 2 的 properties 信息：
+在线查看运行在 `127.0.0.1:20160` 的 TiKV 上面 Region 2 的 properties 信息：
 
 {{< copyable "shell-regular" >}}
 
@@ -284,12 +327,11 @@ tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
 tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 ```
 
-### 动态修改 TiKV 的 RocksDB 相关配置
+### 动态修改 TiKV 的配置
 
-使用 `modify-tikv-config` 命令可以动态修改配置参数，暂时仅支持对于 RocksDB 相关参数的动态更改。
+使用 `modify-tikv-config` 命令可以动态修改配置参数。目前可动态修改的 TiKV 配置与具体的修改行为与 SQL 动态修改配置功能相同，可参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)。
 
-- `-m` 用于指定要修改的模块，有 `storage`、`kvdb` 和 `raftdb` 三个值可以选择。
-- `-n` 用于指定配置名。配置名可以参考 [TiKV 配置模版](https://github.com/pingcap/tikv/blob/master/etc/config-template.toml#L213-L500)中 `[storage]`、`[rocksdb]` 和 `[raftdb]` 下的参数，分别对应 `storage`、`kvdb` 和 `raftdb`。同时，还可以通过 `default|write|lock + . + 参数名` 的形式来指定的不同 CF 的配置。对于 `kvdb` 有 `default`、`write` 和 `lock` 可以选择，对于 `raftdb` 仅有 `default` 可以选择。
+- `-n` 用于指定完整的配置名。支持动态修改的配置名可以参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)中支持的配置项列表。
 - `-v` 用于指定配置值。
 
 设置 `shared block cache` 的大小：
@@ -297,11 +339,11 @@ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl modify-tikv-config -m storage -n block_cache.capacity -v 10GB
+tikv-ctl --host ip:port modify-tikv-config -n storage.block-cache.capacity -v 10GB
 ```
 
 ```
-success!
+success
 ```
 
 当禁用 `shared block cache` 时，为 `write` CF 设置 `block cache size`：
@@ -309,31 +351,31 @@ success!
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl modify-tikv-config -m kvdb -n write.block_cache_size -v 256MB
+tikv-ctl --host ip:port modify-tikv-config -n rocksdb.writecf.block-cache-size -v 256MB
 ```
 
 ```
-success!
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tikv-ctl modify-tikv-config -m kvdb -n max_background_jobs -v 8
-```
-
-```
-success!
+success
 ```
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl modify-tikv-config -m raftdb -n default.disable_auto_compactions -v true
+tikv-ctl --host ip:port modify-tikv-config -n raftdb.defaultcf.disable-auto-compactions -v true
 ```
 
 ```
-success!
+success
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
+```
+
+```
+success
 ```
 
 ### 强制 Region 从多副本失败状态恢复服务
@@ -370,7 +412,8 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 
 `recover-mvcc` 命令用于 MVCC 数据损坏导致 TiKV 无法正常运行的情况。为了从不同种类的不一致情况中恢复，该命令会交叉检查 3 个 CF ("default", "write", "lock")。
 
-`-r` 选项可以通过 `region_id` 指定包含的 Region，`-p` 选项可以指定 PD 的 endpoints。
+- `-r` 选项可以通过 `region_id` 指定包含的 Region。
+- `-p` 选项可以指定 PD 的 endpoints。
 
 {{< copyable "shell-regular" >}}
 
@@ -390,11 +433,11 @@ success!
 
 ### Ldb 命令
 
-ldb 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
+`ldb` 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
 
-数据访问序列示例如下。
+数据访问序列的示例如下：
 
-用 HEX 格式 dump 现有 RocksDB 数据:
+用 HEX 格式 dump 现有 RocksDB 数据：
 
 {{< copyable "shell-regular" >}}
 
@@ -402,7 +445,7 @@ ldb 命令行工具提供多种数据访问以及数据库管理命令。下方�
 tikv-ctl ldb --hex --db=/tmp/db dump
 ```
 
-dump 现有 RocksDB 的声明：
+Dump 现有 RocksDB 的声明：
 
 {{< copyable "shell-regular" >}}
 
@@ -413,3 +456,60 @@ tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
 您可以通过 `--column_family=<string>` 指定查询的目标列族。
 
 通过 `--try_load_options` 命令加载数据库选项文件以打开数据库。在数据库运行时，建议您保持该命令为开启的状态。如果您使用默认配置打开数据库，LSM-tree 存储组织可能会出现混乱，且无法自动恢复。
+
+### 打印加密元数据
+
+`encryption-meta` 命令用于打印加密元数据。该子命令可以打印两种加密元数据：数据文件的加密信息，以及所有的数据加密密钥。
+
+使用 `encryption-meta dump-file` 子命令打印数据文件的加密信息。你需要创建一个 TiKV 配置文件用以指定 TiKV 的数据目录：
+
+```
+# conf.toml
+[storage]
+data-dir = "/path/to/tikv/data"
+```
+
+`--path` 选项可以指定数据文件的绝对或者相对路径。如果指定的文件是明文存储的，本命令有可能没有输出。如果不指定 `--path` 选项，本命令打印所有数据文件的加密信息。
+
+```bash
+$ tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/data/db/CURRENT
+/path/to/tikv/data/db/CURRENT: key_id: 9291156302549018620 iv: E3C2FDBF63FC03BFC28F265D7E78283F method: Aes128Ctr
+```
+
+使用 `encryption-meta dump-key` 打印数据加密密钥。使用本命令的时候，除了在 TiKV 配置文件中指定 TiKV 的数据目录以外，还需要指定当前的主加密密钥。请参阅[静态加密](https://docs.pingcap.com/tidb/v4.0/encryption-at-rest)文档关于配置 TiKV 主加密密钥的说明。使用本命令时 `security.encryption.previous-master-key` 配置项不生效，即使配置文件中使用了该配置，本命令也不会触发更换主加密密钥。
+
+```
+# conf.toml
+[storage]
+data-dir = "/path/to/tikv/data"
+
+[security.encryption.master-key]
+type = "kms"
+key-id = "0987dcba-09fe-87dc-65ba-ab0987654321"
+region = "us-west-2"
+```
+
+注意如果使用了 AWS KMS 作为主加密密钥，使用本命令时 `tikv-ctl` 需要该 KMS 密钥的访问权限。KMS 访问权限可以通过环境变量、AWS 默认配置文件或 IAM 的方式传递给 `tikv-ctl`。详情请参阅相关 AWS 文档。
+
+`--ids` 选项可以指定以逗号分隔的数据加密密钥 id 列表。如果不指定 `--ids` 选项，本命令打印所有的数据加密密钥，以及最新的数据加密密钥的 id。
+
+本命令会输出一个警告，提示本命令会泄漏敏感数据。根据提示输入 "I consent" 即可。
+
+```bash
+$ ./tikv-ctl --config=./conf.toml encryption-meta dump-key
+This action will expose encryption key(s) as plaintext. Do not output the result in file on disk.
+Type "I consent" to continue, anything else to exit: I consent
+current key id: 9291156302549018620
+9291156302549018620: key: 8B6B6B8F83D36BE2467ED55D72AE808B method: Aes128Ctr creation_time: 1592938357
+```
+
+```bash
+$ ./tikv-ctl --config=./conf.toml encryption-meta dump-key --ids=9291156302549018620
+This action will expose encryption key(s) as plaintext. Do not output the result in file on disk.
+Type "I consent" to continue, anything else to exit: I consent
+9291156302549018620: key: 8B6B6B8F83D36BE2467ED55D72AE808B method: Aes128Ctr creation_time: 1592938357
+```
+
+> **注意：**
+>
+> 本命令会以明文方式打印数据加密密钥。在生产环境中，请勿将本命令的输出重定向到磁盘文件中。即使使用以后删除该文件也不能保证文件内容从磁盘中干净清除。

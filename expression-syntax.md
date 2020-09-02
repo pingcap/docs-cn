@@ -1,68 +1,34 @@
 ---
 title: 表达式语法
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/language-structure/expression-syntax/']
+summary: 本文列出 TiDB 的表达式语法。
+aliases: ['/docs-cn/dev/expression-syntax/','/docs-cn/dev/reference/sql/language-structure/expression-syntax/']
 ---
 
 # 表达式语法 (Expression Syntax)
 
-在 TiDB 中，以下规则是表达式的语法，你可以在 `parser/parser.y` 中找到定义。TiDB 的语法解析是基于 yacc 的。
+表达式是一个或多个值、操作符或函数的组合。在 TiDB 中，表达式主要使用在 `SELECT` 语句的各个子句中，包括 Group by 子句、Where 子句、Having 子句、Join 条件以及窗口函数等。此外，部分 DDL 语句也会使用到表达式，例如建表时默认值的设置、生成列的设置，分区规则等。
 
-```
-Expression:
-      singleAtIdentifier assignmentEq Expression
-    | Expression logOr Expression
-    | Expression "XOR" Expression
-    | Expression logAnd Expression
-    | "NOT" Expression
-    | Factor IsOrNotOp trueKwd
-    | Factor IsOrNotOp falseKwd
-    | Factor IsOrNotOp "UNKNOWN"
-    | Factor
+表达式包含几种类型：
 
-Factor:
-      Factor IsOrNotOp "NULL"
-    | Factor CompareOp PredicateExpr
-    | Factor CompareOp singleAtIdentifier assignmentEq PredicateExpr
-    | Factor CompareOp AnyOrAll SubSelect
-    | PredicateExpr
++ 标识符，可参考[模式对象名](/schema-object-names.md)。
++ 谓词、数值、字符串、日期表达式等，这些类型的[字面值](/literal-values.md)也是表达式。
++ 函数调用，窗口函数等。可参考[函数和操作符概述](/functions-and-operators/functions-and-operators-overview.md) 和 [窗口函数](/functions-and-operators/window-functions.md)。
++ 其他，包括 paramMarker（即 `?`）、系统变量和用户变量、CASE 表达式等。
 
-PredicateExpr:
-      PrimaryFactor InOrNotOp '(' ExpressionList ')'
-    | PrimaryFactor InOrNotOp SubSelect
-    | PrimaryFactor BetweenOrNotOp PrimaryFactor "AND" PredicateExpr
-    | PrimaryFactor LikeOrNotOp PrimaryExpression LikeEscapeOpt
-    | PrimaryFactor RegexpOrNotOp PrimaryExpression
-    | PrimaryFactor
+以下规则是表达式的语法，该语法基于 TiDB parser 的 [parser.y](https://github.com/pingcap/parser/blob/master/parser.y) 文件中所定义的规则。此外，下列语法图的可导航版本请参考 [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/#Expression)。
 
-PrimaryFactor:
-      PrimaryFactor '|' PrimaryFactor
-    | PrimaryFactor '&' PrimaryFactor
-    | PrimaryFactor "<<" PrimaryFactor
-    | PrimaryFactor ">>" PrimaryFactor
-    | PrimaryFactor '+' PrimaryFactor
-    | PrimaryFactor '-' PrimaryFactor
-    | PrimaryFactor '*' PrimaryFactor
-    | PrimaryFactor '/' PrimaryFactor
-    | PrimaryFactor '%' PrimaryFactor
-    | PrimaryFactor "DIV" PrimaryFactor
-    | PrimaryFactor "MOD" PrimaryFactor
-    | PrimaryFactor '^' PrimaryFactor
-    | PrimaryExpression
+**Expression:**
 
-PrimaryExpression:
-      Operand
-    | FunctionCallKeyword
-    | FunctionCallNonKeyword
-    | FunctionCallAgg
-    | FunctionCallGeneric
-    | Identifier jss stringLit
-    | Identifier juss stringLit
-    | SubSelect
-    | '!' PrimaryExpression
-    | '~'  PrimaryExpression
-    | '-' PrimaryExpression
-    | '+' PrimaryExpression
-    | "BINARY" PrimaryExpression
-    | PrimaryExpression "COLLATE" StringName
-```
+![Expression](/media/sqlgram/Expression.png)
+
+**PredicateExpr:**
+
+![PredicateExpr](/media/sqlgram/PredicateExpr.png)
+
+**BitExpr:**
+
+![BitExpr](/media/sqlgram/BitExpr.png)
+
+**SimpleExpr:**
+
+![SimpleExpr](/media/sqlgram/SimpleExpr.png)

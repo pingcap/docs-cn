@@ -1,7 +1,6 @@
 ---
 title: TiDB 内存控制文档
-category: how-to
-aliases: ['/docs-cn/dev/how-to/configure/memory-control/']
+aliases: ['/docs-cn/dev/configure-memory-usage/','/docs-cn/dev/how-to/configure/memory-control/']
 ---
 
 # TiDB 内存控制文档

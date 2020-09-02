@@ -1,7 +1,6 @@
 ---
 title: BR 备份与恢复场景示例
-category: reference
-aliases: ['/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','/docs-cn/dev/reference/tools/br/br-best-practices/']
+aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','/docs-cn/dev/reference/tools/br/br-best-practices/']
 ---
 
 # BR 备份与恢复场景示例
@@ -27,13 +26,18 @@ aliases: ['/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/main
 
 ### 部署方式
 
-推荐使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
+推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
 
 ### 集群版本
 
-* TiKV: v3.1.0-beta.1
-* PD: v3.1.0-beta.1
-* br: v3.1.0-beta.1
+* TiDB: v4.0.2
+* TiKV: v4.0.2
+* PD: v4.0.2
+* BR: v4.0.2
+
+> **注意：**
+>
+> v4.0.2 为编写本文档时的最新版本。推荐读者使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
 
 ### TiKV 集群硬件信息
 
@@ -83,7 +87,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
     {{< copyable "sql" >}}
 
     ```sql
-    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+    UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
 ### 恢复前的准备工作
@@ -120,7 +124,12 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 {{< copyable "shell-regular" >}}
 
 ```shell
-bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 172.16.5.198:2379 --log-file backup-nfs.log
+bin/br backup table \
+    --db batchmark \
+    --table order_line \
+    -s local:///br_data \
+    --pd ${PD_ADDR}:2379 \
+    --log-file backup-nfs.log
 ```
 
 #### 备份过程中的运行指标
@@ -165,7 +174,17 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 使用 BR 前已设置日志的存放路径。从路径下存放的日志中可以获取此次备份的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
 
 ```
-["Table backup summary: total backup ranges: 4, total success: 4, total failed: 0, total take(s): 986.43, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 358.09"] ["backup total regions"=7196] ["backup checksum"=6m28.291772955s] ["backup fast checksum"=24.950298ms]
+["Table backup summary:
+    total backup ranges: 4,
+    total success: 4,
+    total failed: 0,
+    total take(s): 986.43,
+    total kv: 5659888624,
+    total size(MB): 353227.18,
+    avg speed(MB/s): 358.09"]
+    ["backup total regions"=7196]
+    ["backup checksum"=6m28.291772955s]
+    ["backup fast checksum"=24.950298ms]
 ```
 
 以上日志信息中包含以下内容：
@@ -186,7 +205,13 @@ bin/br backup table --db batchmark --table order_line -s local:///br_data --pd 1
 {{< copyable "shell-regular" >}}
 
 ```shell
-bin/br backup table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file backup-nfs.log --concurrency 16
+bin/br backup table \
+    --db batchmark \
+    --table order_line \
+    -s local:///br_data/ \
+    --pd ${PD_ADDR}:2379 \
+    --log-file backup-nfs.log \
+    --concurrency 16
 ```
 
 ![img](/media/br/backup-diff.png)
@@ -261,7 +286,18 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 使用 BR 前已设置日志的存放路径。从路径下存放的日志中可以获取此次恢复的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
 
 ```
-["Table Restore summary: total restore tables: 1, total success: 1, total failed: 0, total take(s): 961.37, total kv: 5659888624, total size(MB): 353227.18, avg speed(MB/s): 367.42"] ["restore files"=9263] ["restore ranges"=6888] ["split region"=49.049182743s] ["restore checksum"=6m34.879439498s]
+["Table Restore summary:
+    total restore tables: 1,
+    total success: 1,
+    total failed: 0,
+    total take(s): 961.37,
+    total kv: 5659888624,
+    total size(MB): 353227.18,
+    avg speed(MB/s): 367.42"]
+    ["restore files"=9263]
+    ["restore ranges"=6888]
+    ["split region"=49.049182743s]
+    ["restore checksum"=6m34.879439498s]
 ```
 
 以上日志信息中包含以下内容：
@@ -319,7 +355,12 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 {{< copyable "shell-regular" >}}
 
 ```shell
-bin/br backup table --db batchmark --table order_line -s local:///home/tidb/backup_local/ --pd 172.16.5.198:2379 --log-file backup_local.log
+bin/br backup table \
+    --db batchmark \
+    --table order_line \
+    -s local:///home/tidb/backup_local/ \
+    --pd ${PD_ADDR}:2379 \
+    --log-file backup_local.log
 ```
 
 运行备份时，参考[备份过程中的运行指标](#备份过程中的运行指标)对相关指标进行监控，以了解备份状态。

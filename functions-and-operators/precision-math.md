@@ -1,7 +1,6 @@
 ---
 title: 精度数学
-category: reference
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/precision-math/']
+aliases: ['/docs-cn/dev/functions-and-operators/precision-math/','/docs-cn/dev/reference/sql/functions-and-operators/precision-math/']
 ---
 
 # 精度数学
