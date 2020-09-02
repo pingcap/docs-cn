@@ -1,6 +1,6 @@
 ---
 title: Loader 使用文档
-aliases: ['/docs-cn/v3.0/loader-overview/','/docs-cn/v3.0/reference/tools/loader/','/docs-cn/v3.0/load-misuse-handling/','/docs-cn/v3.0/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/v3.0/load-misuse-handling']
+aliases: ['/docs-cn/v3.0/loader-overview/','/docs-cn/v3.0/reference/tools/loader/','/docs-cn/v3.0/load-misuse-handling/','/docs-cn/v3.0/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/v3.0/load-misuse-handling','/docs-cn/v3.0/reference/tools/error-case-handling/load-misuse-handling/']
 ---
 
 # Loader 使用文档
