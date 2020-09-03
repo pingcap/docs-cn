@@ -1,10 +1,6 @@
 ---
 title: 理解 TiDB 执行计划
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/query-execution-plan/','/docs-cn/v4.0/query-execution-plan/','/docs-cn/stable/reference/performance/understanding-the-query-execution-plan/','/docs-cn/stable/index-merge/','/docs-cn/stable/reference/performance/index-merge/']
-=======
-aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/','/docs-cn/dev/index-merge/','/docs-cn/dev/reference/performance/index-merge/','/zh/tidb/dev/query-execution-plan/']
->>>>>>> afcd6ee... Add 4 aliases to fix dead links (#4416)
+aliases: ['/docs-cn/stable/query-execution-plan/','/docs-cn/v4.0/query-execution-plan/','/docs-cn/stable/reference/performance/understanding-the-query-execution-plan/','/docs-cn/stable/index-merge/','/docs-cn/stable/reference/performance/index-merge/','/zh/tidb/v4.0/query-execution-plan/']
 ---
 
 # 理解 TiDB 执行计划
