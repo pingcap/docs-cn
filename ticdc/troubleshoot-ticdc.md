@@ -134,9 +134,9 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 
 For more information, refer to [Create a replication task](/ticdc/manage-ticdc.md#create-a-replication-task).
 
-## How do I view the latency of TiCDC replication tasks?
+## How do I view the status of TiCDC replication tasks?
 
-To view the latency of TiCDC replication tasks, use `cdc cli`. For example:
+To view the status of TiCDC replication tasks, use `cdc cli`. For example:
 
 {{< copyable "shell-regular" >}}
 
@@ -169,9 +169,9 @@ The expected output is as follows:
 >
 > This feature is introduced in TiCDC 4.0.3.
 
-## How do I know whether the replication task runs normally?
+## How do I know whether the replication task is stopped manually?
 
-You can view the state of the replication tasks by using `cdc cli`. For example:
+You can know whether the replication task is stopped manually by using `cdc cli`. For example:
 
 {{< copyable "shell-regular" >}}
 
@@ -181,14 +181,14 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 In the output of this command, `admin-job-type` shows the state of the replication task:
 
-* `0`: Normal.
+* `0`: In progress, which means that the task is not stopped manually.
 * `1`: Paused. When the task is paused, all replicated `processor`s exit. The configuration and the replication status of the task are retained, so you can resume the task from `checkpiont-ts`.
 * `2`: Resumed. The replication task resumes from `checkpoint-ts`.
 * `3`: Removed. When the task is removed, all replicated `processor`s are ended, and the configuration information of the replication task is cleared up. Only the replication status is retained for later queries.
 
 ## Why does the latency from TiCDC to Kafka become higher and higher?
 
-* Check [whether the status of the replication task is normal](#how-do-i-know-whether-the-replication-task-runs-normally).
+* Check [how do I view the status of TiCDC replication tasks](#how-do-i-view-the-status-of-ticdc-replication-tasks).
 * Adjust the following parameters of Kafka:
 
     * Increase the `message.max.bytes` value in `server.properties` to `1073741824` (1 GB).
