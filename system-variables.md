@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 
 # 系统变量
 
-TiDB 系统变量的行为与 MySQL 相似但有一些不同，变量的作用范围可以是全局范围有效（Global Scope）、实例级别有效（Instance Scope）、会话级别有效（Session Scope），或组合了上述多个范围。其中：
+TiDB 系统变量的行为与 MySQL 相似但有一些不同，变量的作用范围可以是全局范围有效 (Global Scope)、实例级别有效 (Instance Scope) 或会话级别有效 (Session Scope)，或组合了上述多个范围。其中：
 
 - 对 `GLOBAL` 作用域变量的更改，设置后**只对新 TiDB 连接会话生效**，当前活动连接会话不受影响。更改会被持久化，重启后仍然生效。
 
@@ -784,7 +784,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 set tidb_slow_log_threshold = 200;
 ```
 
-### tidb_enable_collect_execution_info
+### `tidb_enable_collect_execution_info`
 
 作用域：INSTANCE
 
@@ -792,7 +792,7 @@ set tidb_slow_log_threshold = 200;
 
 这个变量用于控制在记录 slow query log 时，是否同时记录各个执行算子的执行信息。
 
-### tidb_log_desensitization
+### `tidb_log_desensitization`
 
 作用域：GLOBAL
 
