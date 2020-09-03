@@ -63,7 +63,7 @@ TitanTableBuilder 是实现分离 key-value 的关键，它通过判断 value si
 
 ## Garbage Collection
 
-Garbage Collection (GC) 的目的是回收空间。由于在 LSM-tree compaction 进行回收 key 时，存在 blob 文件的 value 并不会一同被删除，因此需要 GC 定期来将已经作废的 value 删除掉。在 Titan 中有两种 GC 方式可供选择：
+Garbage Collection (GC) 的目的是回收空间。由于在 LSM-tree compaction 进行回收 key 时，储存在 blob 文件中的 value 并不会一同被删除，因此需要 GC 定期来将已经作废的 value 删除掉。在 Titan 中有两种 GC 方式可供选择：
 
 - 定期整合重写 Blob 文件将作废的 value 剔除（传统 GC）
 - 在 LSM-tree compaction 的时候同时进行 blob 文件的重写 （Level-Merge）
@@ -94,17 +94,19 @@ GC 的方式就是对于这些选中的 BlobFile 文件，依次通过查询其�
 
 ### Level Merge
 
-Level Merge 是 Titan 新加入的一种策略，它的核心思想是 LSM-Tree 在进行 Compaction 的同时，对 SST 文件对应的 BlobFile 进行归并重写产生新的 BlobFile。其流程大概如下图所示： 
+Level Merge 是 Titan 新加入的一种策略，它的核心思想是 LSM-tree 在进行 Compaction 的同时，对 SST 文件对应的 BlobFile 进行归并重写产生新的 BlobFile。其流程大概如下图所示： 
 
-![6-LevelMerge.png](/media/titan/titan-6.png) Level z-1 和 Level z 的 SST 进行 Compaction 时会对 KV 对有序读写一遍，这时就可以对这些 SST 中所涉及的 BlobFile 的 value 有序写到新的 BlobFile 中，并在生成新的 SST 时将 key 的 blob index 进行更新。对于 Compaction 中被删除的 key，相应的 value 也不会写到新的 BlobFile 中，相当于完成了 GC。
+![6-LevelMerge.png](/media/titan/titan-6.png)
 
-相比于传统 GC，Level Merge 这种方式在 LSM-Tree 进行 Compaction 的同时就完成了 Blob GC，不再需要查询 LSM-Tree 的 blob index 情况和写回新 blob index 到 LSM-Tree 中，减小了 GC 对前台操作影响。同时通过不断的重写 BlobFile，减小了 BlobFile 之间的相互重叠，提高系统整体有序性，也就是提高了 Scan 性能。当然将 BlobFile 以类似 tiering compaction 的方式分层会带来写放大，考虑到 LSM-Tree 中 99% 的数据都落在最后两层，因此 Titan 仅对 LSM-Tree 中 Compaction 到最后两层数据对应的 BlobFile 进行 Level Merge。
+Level z-1 和 Level z 的 SST 进行 Compaction 时会对 KV 对有序读写一遍，这时就可以对这些 SST 中所涉及的 BlobFile 的 value 有序写到新的 BlobFile 中，并在生成新的 SST 时将 key 的 blob index 进行更新。对于 Compaction 中被删除的 key，相应的 value 也不会写到新的 BlobFile 中，相当于完成了 GC。
+
+相比于传统 GC，Level Merge 这种方式在 LSM-tree 进行 Compaction 的同时就完成了 Blob GC，不再需要查询 LSM-tree 的 blob index 情况和写回新 blob index 到 LSM-tree 中，减小了 GC 对前台操作影响。同时通过不断的重写 BlobFile，减小了 BlobFile 之间的相互重叠，提高系统整体有序性，也就是提高了 Scan 性能。当然将 BlobFile 以类似 tiering compaction 的方式分层会带来写放大，考虑到 LSM-tree 中 99% 的数据都落在最后两层，因此 Titan 仅对 LSM-tree 中 Compaction 到最后两层数据对应的 BlobFile 进行 Level Merge。
 
 #### Range Merge
 
 Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，会导致最底层的有序性越来越差：
 
-- 开启 level_compaction_dynamic_level_bytes，此时 LSM-Tree 各层动态增长，随数据量增大最后一层的 sorted run 会越来越多。
+- 开启 level_compaction_dynamic_level_bytes，此时 LSM-tree 各层动态增长，随数据量增大最后一层的 sorted run 会越来越多。
 
 - 某个 range 被频繁 Compaction 导致该 range 的 sorted runs 较多 
 
