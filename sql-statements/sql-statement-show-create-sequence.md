@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-create-sequence/','/do
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE seq;
+CREATE SEQUENCE seq;
 ```
 
 ```

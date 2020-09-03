@@ -1,6 +1,6 @@
 ---
 title: TiDB 数据库快速上手指南
-aliases: ['/docs-cn/dev/quick-start-with-tidb/']
+aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started/local-cluster/install-from-docker-compose/']
 ---
 
 # TiDB 数据库快速上手指南

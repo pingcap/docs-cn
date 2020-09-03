@@ -30,6 +30,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：ON
 - 这个变量用来设置是否自动 Commit 事务。
 
+### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
+
+- 作用域：SESSION（v4.0.4 开始为 SESSION | GLOBAL）
+- 默认值：0
+- 是否允许在 `INSERT` 语句中显式指定含有 `AUTO_RANDOM` 属性的列的值，`1` 为允许，`0` 为不允许。
+
 ### `ddl_slow_threshold`
 
 - 作用域：SESSION
@@ -60,7 +66,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：0
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
-### last_plan_from_binding <span class="version-mark">从 v4.0 版本开始引入</span>
+### `last_plan_from_binding` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 作用域：SESSION
 
@@ -297,6 +303,22 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 作用域：SESSION | GLOBAL
 - 默认值: 0
 - 这个变量用于控制是否开启 cascades planner。
+
+### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：1
+- 这个变量用于控制是否开启 Clustered Index 特性。
+    - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
+    - 该特性只适用于主键为单列非 INT 类型的表和主键为多列的表。对于无主键的表和主键是单列 INT 类型的表不会有影响。
+    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了 Clustered Index 特性。
+- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 row_id 上并用额外创建的主键索引指向 row_id。
+
+    对性能的影响主要体现在以下几个方面:
+    - 插入的时候每行会减少一个索引 key 的写入。
+    - 使用主键作为等值条件查询的时候，会节省一次读取请求。
+    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。 
+    - 使用多列主键的前缀作为等值或范围条件查询的时候，可以节省多次读取请求。
 
 ### `tidb_enable_chunk_rpc` <span class="version-mark">从 v4.0 版本开始引入</span>
 
