@@ -87,7 +87,7 @@ for filename in sys.argv[1:]:
     result_findall = re.findall(r'<([^\n`>]*)>', content)
     if len(result_findall) == 0:
         # print("The edited markdown file " + filename + " has no tags!\n")
-        status_code = 0
+        continue
     else:
         result_finditer = re.finditer(r'<([^\n`>]*)>', content)
         stack = []
@@ -115,9 +115,6 @@ for filename in sys.argv[1:]:
             stack = ['<' + i + '>' for i in stack]
             print("ERROR: " + filename + ' has unclosed tags: ' + ', '.join(stack) + '.\n')
             status_code = 1
-        else:
-            # print("The edited markdown file has tags. But all tags are closed, congratulations!\n")
-            status_code = 0
 
 if status_code:
     print("HINT: Unclosed tags will cause website build failure. Please fix the reported unclosed tags. You can use backticks `` to wrap them or close them. Thanks.")
