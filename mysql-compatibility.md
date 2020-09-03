@@ -4,7 +4,7 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-compatibility/']
 ---
 
-# 与 MySQL 兼容性对比概览
+# 与 MySQL 兼容性对比
 
 - TiDB 100% 兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
 
@@ -30,14 +30,14 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
-* X Protocol
-* Savepoints
-* 列级权限
+* X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
+* Savepoints [#6840](https://github.com/pingcap/tidb/issues/6840)
+* 列级权限 [#9766](https://github.com/pingcap/tidb/issues/9766)
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
-* `CREATE TABLE tblName AS SELECT stmt` 语法
-* `CREATE TEMPORARY TABLE` 语法
-* `CHECK TABLE` 语法
-* `CHECKSUM TABLE` 语法
+* `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
+* `CREATE TEMPORARY TABLE` 语法 [#1248](https://github.com/pingcap/tidb/issues/1248)
+* `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
+* `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
 * `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
 
 ## 与 MySQL 有差异的特性详细说明
