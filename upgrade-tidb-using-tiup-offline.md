@@ -14,16 +14,7 @@ This document describes how to upgrade TiDB using TiUP offline mirror. The upgra
 
     After you execute `local_install.sh`, TiUP completes the overwrite and upgrade.
 
-2. Redeclare the global environment variables according to the result of `local_install.sh`. Set `TIUP_MIRRORS` to `/path/to/mirror`, the location of the offline mirror package printed by `local_install.sh`.
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    source .bash_profile
-    export TIUP_MIRRORS=/path/to/mirror
-    ```
-
-    The offline mirror is successfully updated. After the overwrite, if an error is reported when TiUP is running, it might be that `manifest` is not updated. To fix this, you can execute `rm -rf ~/.tiup/manifests` before using TiUP.
+2. The offline mirror is successfully updated. After the overwrite, if an error is reported when TiUP is running, it might be that `manifest` is not updated. To fix this, you can execute `rm -rf ~/.tiup/manifests` before using TiUP.
 
 ## Upgrade TiDB cluster
 
