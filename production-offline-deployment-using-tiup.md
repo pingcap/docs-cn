@@ -75,9 +75,9 @@ sh tidb-community-server-${version}-linux-amd64/local_install.sh
 source /home/tidb/.bash_profile
 ```
 
-在 local_install.sh 中，会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
+`local_install.sh` 脚本会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 命令将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
 
-> 若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 方式切换。
+若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。
 
 ## 3. TiKV 数据盘挂载
 
@@ -231,6 +231,7 @@ alertmanager_servers:
 
 ## 5. 部署 TiDB 集群
 
+执行以下命令来部署 TiDB 集群。
 {{< copyable "shell-regular" >}}
 
 ```bash
