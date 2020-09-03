@@ -373,7 +373,7 @@ To get the timestamp of the last backup, execute the `validate` command. For exa
 LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata`
 ```
 
-In the above example, the incremental backup data includes the newly written data and the DDLs between `(LAST_BACKUP_TS, current PD timestamp]`. When restoring data, BR restores DDLs first and then restores the written data.
+In the above example, for the incremental backup data, BR records the data changes and the DDL operations during `(LAST_BACKUP_TS, current PD timestamp]`. When restoring data, BR first restores DDL operations and then the data.
 
 ### Back up Raw KV (experimental feature)
 
