@@ -28,7 +28,7 @@ This document describes the operators precedence, comparison functions and opera
 | [DIV](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_div) | Integer division |
 | [/](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_divide) | Division operator |
 | [=](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal) | Equal operator |
-| [<=>](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to) | NULL-safe equal to operator |
+| [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to) | NULL-safe equal to operator |
 | [>](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_greater-than) | Greater than operator |
 | [>=](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_greater-than-or-equal) | Greater than or equal operator |
 | [IS](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_is) | Test a value against a boolean |
@@ -91,7 +91,7 @@ For details, see [Operator Precedence](https://dev.mysql.com/doc/refman/5.7/en/o
 | [BETWEEN ... AND ...](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_between) | Check whether a value is within a range of values |
 | [COALESCE()](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) | Return the first non-NULL argument |
 | [=](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal) | Equal operator |
-| [<=>](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to) | NULL-safe equal to operator |
+| [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to) | NULL-safe equal to operator |
 | [>](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_greater-than) | Greater than operator |
 | [>=](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_greater-than-or-equal) | Greater than or equal operator |
 | [GREATEST()](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_greatest) | Return the largest argument |

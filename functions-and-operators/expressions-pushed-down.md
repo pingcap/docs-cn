@@ -129,7 +129,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 | = | eq |
 | != | ne |
 | `<>` | ne |
-| <=> | nulleq |
+| `<=>` | nulleq |
 | &#124; | bitor |
 | && | bitand|
 | &#124;&#124; | or |
