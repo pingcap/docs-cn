@@ -34,7 +34,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL compatibility
 
-TiDB supports the syntax extension of `BEGIN PESSMISTIC` or `BEGIN OPTIMISTIC`. This enables you to override the default transactional model for your transaction.
+TiDB supports the syntax extension of `BEGIN PESSIMISTIC` or `BEGIN OPTIMISTIC`. This enables you to override the default transactional model for your transaction.
 
 ## See also
 
