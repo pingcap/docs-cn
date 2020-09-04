@@ -302,7 +302,7 @@ In addition to this hint, setting the `tidb_replica_read` environment variable t
 
 ### IGNORE_PLAN_CACHE()
 
-`IGNORE_PLAN_CACHE()` reminds the optimizer not to use the Plan Cache when handling the current `prepare` statement.
+The `IGNORE_PLAN_CACHE()` hint reminds the optimizer not to use the Plan Cache when handling the current `prepare` statement.
 
 This hint is used to temporarily disable the Plan Cache for a certain type of queries when [prepare-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) is enabled.
 
@@ -313,3 +313,23 @@ In the following example, the Plan Cache is forcibly disabled when executing the
 ```sql
 prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id = ?';
 ```
+
+### NTH_PLAN(N)
+
+The `NTH_PLAN(N)` hint reminds the optimizer to select the `N`th physical plan found during the physical optimization. `N` must be a positive integer.
+
+If the specified `N` is beyond the search range of the physical optimization, TiDB will return a warning and select the optimal physical plan based on the strategy that ignores this hint.
+
+This hint does not take effect when the cascades planner is enabled.
+
+In the following example, the optimizer is forced to select the third physical plan found during the physical optimization:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
+```
+
+> **Note:**
+>
+> `NTH_PLAN(N)` is mainly used for testing, and its compatibility is not guaranteed in later versions. Use this hint **with caution**.
