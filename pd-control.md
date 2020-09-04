@@ -315,9 +315,9 @@ Usage:
 
 - `store-limit-mode` is used to control the mode of limiting the store speed. The optional modes are `auto` and `manual`. In `auto` mode, the stores are automatically balanced according to the load (experimental).
 
-#### `config placement-rules [disable | enable | load | save | show]`
+#### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
-For the usage of `config placement-rules [disable | enable | load | save | show]`, see [Configure placement rules](/configure-placement-rules.md#configure-rules).
+For the usage of `config placement-rules [disable | enable | load | save | show | rule-group]`, see [Configure placement rules](/configure-placement-rules.md#configure-rules).
 
 ### `health`
 
