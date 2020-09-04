@@ -1,5 +1,6 @@
 import re
 import sys
+import os
 
 # 注意：本脚本只支持跳过检查 ``` ``` 格式的代码块，~~~ ~~~ 格式的代码块会被检查。
 
@@ -89,45 +90,46 @@ status_code = 0
 # print(sys.argv[1:])
 for filename in sys.argv[1:]:
     #print("Checking " + filename + "......\n")
-    file = open(filename, "r" )
-    content = file.read()
-    file.close()
+    if os.path.isfile(filename):
+        file = open(filename, "r" )
+        content = file.read()
+        file.close()
 
-    content = filter_content(content)
-    result_findall = re.findall(r'<([^\n`>]*)>', content)
-    if len(result_findall) == 0:
-        # print("The edited markdown file " + filename + " has no tags!\n")
-        continue
-    else:
-        result_finditer = re.finditer(r'<([^\n`>]*)>', content)
-        stack = []
-        for i in result_finditer: # i 本身也是可迭代对象，所以下面要使用 i.group()
-            # print(i.group(), i.span())
-            tag = i.group()
-            pos = i.span() # 输出类似于 (7429, 7433)
+        content = filter_content(content)
+        result_findall = re.findall(r'<([^\n`>]*)>', content)
+        if len(result_findall) == 0:
+            # print("The edited markdown file " + filename + " has no tags!\n")
+            continue
+        else:
+            result_finditer = re.finditer(r'<([^\n`>]*)>', content)
+            stack = []
+            for i in result_finditer: # i 本身也是可迭代对象，所以下面要使用 i.group()
+                # print(i.group(), i.span())
+                tag = i.group()
+                pos = i.span() # 输出类似于 (7429, 7433)
 
-            # 首先筛去特殊 tag，比如 <!-- xxx -->
-            if tag[:4] == '<!--' and tag[-3:] == '-->':
-                continue
-            elif content[pos[0]-2:pos[0]] == '{{' and content[pos[1]:pos[1]+2] == '}}':
-                # print(tag) # filter copyable shortcodes
-                continue
-            elif tag[:5] == '<http': # or tag[:4] == '<ftp'
-                # filter urls
-                continue
-            # 再筛去带 `` 的 tag
-            elif tag_is_wrapped(pos, content):
-                # print(content[int(pos[0])-1:int(pos[1]+1)])
-                # print(tag, 'is wrapped by backticks!')
-                continue
+                # 首先筛去特殊 tag，比如 <!-- xxx -->
+                if tag[:4] == '<!--' and tag[-3:] == '-->':
+                    continue
+                elif content[pos[0]-2:pos[0]] == '{{' and content[pos[1]:pos[1]+2] == '}}':
+                    # print(tag) # filter copyable shortcodes
+                    continue
+                elif tag[:5] == '<http': # or tag[:4] == '<ftp'
+                    # filter urls
+                    continue
+                # 再筛去带 `` 的 tag
+                elif tag_is_wrapped(pos, content):
+                    # print(content[int(pos[0])-1:int(pos[1]+1)])
+                    # print(tag, 'is wrapped by backticks!')
+                    continue
 
-            # 其余的 tag 都需要放入堆栈确认是否闭合
-            stack = stack_tag(tag, stack)
+                # 其余的 tag 都需要放入堆栈确认是否闭合
+                stack = stack_tag(tag, stack)
 
-        if len(stack):
-            stack = ['<' + i + '>' for i in stack]
-            print("ERROR: " + filename + ' has unclosed tags: ' + ', '.join(stack) + '.\n')
-            status_code = 1
+            if len(stack):
+                stack = ['<' + i + '>' for i in stack]
+                print("ERROR: " + filename + ' has unclosed tags: ' + ', '.join(stack) + '.\n')
+                status_code = 1
 
 if status_code:
     print("HINT: Unclosed tags will cause website build failure. Please fix the reported unclosed tags. You can use backticks `` to wrap them or close them. Thanks.")
