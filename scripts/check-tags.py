@@ -73,8 +73,11 @@ def filter_frontmatter(content):
             meta_pos = i.span()[1]
             collect.append(meta_pos)
 
-        filter_point = collect[1]
-        content = content[filter_point:]
+        # if the number of "---" >= 2
+        if len(collect) >= 2:
+            filter_point = collect[1]
+            content = content[filter_point:]
+            
     return content
 
 def filter_backticks(content, filename):
