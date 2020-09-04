@@ -298,7 +298,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 ## MySQL 兼容性
 
-该语句是 TiDB 的扩展，实现序列借鉴自 MariaDB。
+该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
 
 除了 `SETVAL` 函数外，其他函数的“步调 (progressions)” 与 MariaDB 一致。这里的步调是指，序列中的数在定义之后会产生一定的等差关系。`SETVAL` 虽然可以将序列的当前值进行移动设置，但是后续出现的值仍会遵循原有的等差关系。
 

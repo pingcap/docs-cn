@@ -47,7 +47,7 @@ SHOW CREATE SEQUENCE seq;
 
 ## MySQL 兼容性
 
-该语句是 TiDB 的扩展，实现序列借鉴自 MariaDB。
+该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
 
 ## 另请参阅
 

@@ -60,7 +60,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-TiDB 支持 `BEGIN PESSMISTIC` 或 `BEGIN OPTIMISTIC` 的语法扩展，用户可以为某一个事务覆盖默认的事务模型。
+TiDB 支持 `BEGIN PESSIMISTIC` 或 `BEGIN OPTIMISTIC` 的语法扩展，用户可以为某一个事务覆盖默认的事务模型。
 
 ## 另请参阅
 

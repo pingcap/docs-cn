@@ -204,6 +204,8 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
     - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
 
+        {{< copyable "sql" >}}
+
         ```sql
         create table t (i int key);
         insert into t values (1);
@@ -214,6 +216,8 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
         ```
         Query OK, 1 row affected
         ```
+
+        {{< copyable "sql" >}}
 
         ```sql
         tidb> commit; -- 事务提交时才检查
