@@ -1,5 +1,6 @@
 import re
 import sys
+import os
 
 # reference: https://stackoverflow.com/questions/35761133/python-how-to-check-for-open-and-close-tags
 def stack_tag(tag, stack):
@@ -79,8 +80,10 @@ status_code = 0
 # print(sys.argv[1:])
 for filename in sys.argv[1:]:
     #print("Checking " + filename + "......\n")
-    with open(filename, 'r') as file:
+    if os.path.isfile(filename):
+        file = open(filename, "r" )
         content = file.read()
+        file.close()
 
         content = filter_content(content)
         result_findall = re.findall(r'<([^\n`>]*)>', content)
