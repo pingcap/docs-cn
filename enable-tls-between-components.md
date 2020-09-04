@@ -84,7 +84,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
         ```toml
         [security]
-        # set the path for certificates. Empty string means disabling secure connectoins.
+        # Sets the path for certificates. The empty string means that secure connections are disabled.
         ca-path = "/path/to/ca.pem"
         cert-path = "/path/to/tiflash-server.pem"
         key-path = "/path/to/tiflash-server-key.pem"
@@ -181,9 +181,9 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     cert_allowed_cn = ["TiKV-Server", "TiDB-Server"]
     ```
 
-     在 `tiflash-learner.toml` 文件中设置，
+    在 `tiflash-learner.toml` 文件中设置，
 
-     ```toml
+    ```toml
     [security]
     cert-allowed-cn = ["PD-Server", "TiKV-Server", "TiFlash-Server"]
     ```
