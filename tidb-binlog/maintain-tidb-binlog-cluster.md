@@ -69,8 +69,6 @@ binlogctl 支持如下这些功能：
     +---------------+-------+
     ```
 
-    值为 `ON` 时表示 TiDB 开启了 binlog。
-
 - 查看 Pump/Drainer 状态
 
     {{< copyable "sql" >}}
