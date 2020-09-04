@@ -79,7 +79,7 @@ def filter_frontmatter(content):
             meta_pos = i.span()[1]
             collect.append(meta_pos)
 
-        # if the number of --- >= 2
+        # if the number of "---" >= 2
         if len(collect) >= 2:
             filter_point = collect[1]
             content = content[filter_point:]
