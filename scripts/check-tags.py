@@ -70,32 +70,56 @@ def tag_is_wrapped(pos, content):
         # print(content_later)
         return False
 
-def filter_content(content):
-    # 该函数将原 content 的代码块以及 frontmatter 过滤掉
-    # 由于代码块本身是三个 ``` 包裹，所以该格式内代码块的 tag 不会导致 ci 失败
-    # 因此暂时只过滤掉 frontmatter
-    content_findall = re.findall(r'\n---\n', content)
-    # 如果有 frontmatter
-    if len(content_findall):
-        content_finditer = re.finditer(r'\n---\n', content)
+def filter_frontmatter(content):
+    # if there is frontmatter, remove it
+    if content.startswith('---'):
+        collect = []
+        content_finditer = re.finditer(r'---\n', content)
         for i in content_finditer:
             meta_pos = i.span()[1]
-            # print(content[meta_pos:])
-            return content[meta_pos:]
-    else:
-        return content
+            collect.append(meta_pos)
+
+        filter_point = collect[1]
+        content = content[filter_point:]
+    return content
+
+def filter_backticks(content, filename):
+    # remove content wrapped by backticks
+    backticks = []
+    content_findall = re.findall(r'```', content)
+    if len(content_findall):
+        content_finditer = re.finditer(r'```', content)
+        for i in content_finditer:
+            pos = i.span()
+            backticks.append(pos)
+        # e.g. backticks = [[23, 26],[37, 40],[123, 126],[147, 150]]
+        if len(backticks) % 2 != 0:
+            print(len(content_findall))
+            print(backticks)
+            print(backticks[0][0], backticks[0][1])
+            # print(content[backticks[0][0]-10:backticks[0][1]+10])
+            print(filename, ": Your inline code ``` ```  is not closed. Please close it.")
+        elif len(backticks) != 0:
+            backticks_start = backticks[0][0]
+            backticks_end = backticks[1][1]
+            # print(backticks_start, backticks_end)
+            content = content.replace(content[backticks_start:backticks_end],'')
+            content = filter_backticks(content, filename)
+    return content
 
 status_code = 0
 
 # print(sys.argv[1:])
 for filename in sys.argv[1:]:
-    #print("Checking " + filename + "......\n")
+    # print("Checking " + filename + "......\n")
     if os.path.isfile(filename):
         file = open(filename, "r" )
         content = file.read()
         file.close()
 
-        content = filter_content(content)
+        content = filter_frontmatter(content)
+        content = filter_backticks(content, filename)
+        # print(content)
         result_findall = re.findall(r'<([^\n`>]*)>', content)
         if len(result_findall) == 0:
             # print("The edited markdown file " + filename + " has no tags!\n")
