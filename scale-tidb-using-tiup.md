@@ -374,7 +374,7 @@ tiup cluster display <cluster-name>
 
 2. 在 pd-ctl 中下线该 TiFlash 节点。
 
-    * 在 pd-ctl 中输入 `store delete <store_id>`，其中 <store_id> 为上一步查到的该 TiFlash 节点对应的 store id。
+    * 在 pd-ctl 中输入 `store delete <store_id>`，其中 `<store_id>` 为上一步查到的该 TiFlash 节点对应的 store id。
 
     * 若通过 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
