@@ -53,7 +53,7 @@ binlogctl 支持如下这些功能：
 
 要查看和管理 binlog 相关的状态，可在 TiDB 中执行相应的 SQL 语句。
 
-- 查看 TiDB 是否开启 binlog, 0 代表关闭，1 代表开启
+- 查看 TiDB 是否开启 binlog，0 代表关闭，1 代表开启
 
     {{< copyable "sql" >}}
 
