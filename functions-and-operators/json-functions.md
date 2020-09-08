@@ -1,6 +1,6 @@
 ---
 title: JSON 函数
-aliases: ['/docs-cn/stable/functions-and-operators/json-functions/','/docs-cn/v4.0/functions-and-operators/json-functions/','/docs-cn/stable/reference/sql/functions-and-operators/json-functions/']
+aliases: ['/docs-cn/stable/functions-and-operators/json-functions/','/docs-cn/v4.0/functions-and-operators/json-functions/','/docs-cn/stable/reference/sql/functions-and-operators/json-functions/','/docs-cn/v4.0/reference/sql/functions-and-operators/json-functions/']
 ---
 
 # JSON 函数
