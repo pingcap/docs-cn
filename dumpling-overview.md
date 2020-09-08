@@ -53,7 +53,7 @@ dumpling \
   --filetype sql \
   --threads 32 \
   -o /tmp/test \
-  -F 256
+  -F 256MiB
 ```
 
 上述命令中，`-h`、`-P`、`-u` 分别是地址，端口，用户。如果需要密码验证，可以用 `-p $YOUR_SECRET_PASSWORD` 传给 Dumpling。
