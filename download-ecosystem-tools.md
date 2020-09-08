@@ -12,12 +12,9 @@ This document collects the available downloads for most officially maintained ve
 
 If you want to download the latest version of [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md), directly download the TiDB package, because TiDB Binlog is included in the TiDB package.
 
-In addition, the Kafka version of TiDB Binlog is also provided.
-
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
 | `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (TiDB Binlog) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
-| `https://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz` (the Kafka version of TiDB Binlog) | Linux | amd64 | `https://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256` |
 
 > **Note:**
 >
