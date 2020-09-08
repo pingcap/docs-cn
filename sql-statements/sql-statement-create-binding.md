@@ -136,10 +136,6 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 
 `CREATE [GLOBAL|SESSION] BINDING` 语句是 TiDB 对 MySQL 语法的扩展。
 
-## MySQL 兼容性
-
-该语句是 TiDB 对 MySQL 语法的扩展。
-
 ## 另请参阅
 
 * [DROP [GLOBAL|SESSION] BINDING](/sql-statements/sql-statement-drop-binding.md)

@@ -135,10 +135,6 @@ Empty set (0.00 sec)
 
 `DROP [GLOBAL|SESSION] BINDING` 语句是 TiDB 对 MySQL 语法的扩展。
 
-## MySQL 兼容性
-
-该语句是 TiDB 对 MySQL 语法的扩展。
-
 ## 另请参阅
 
 * [CREATE [GLOBAL|SESSION] BINDING](/sql-statements/sql-statement-create-binding.md)
