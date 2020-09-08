@@ -130,7 +130,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 > **注意：**
 >
-> 在配置文件中如果将 `feedback-probability` 设置为 `0` 会导致设置失败报错。
+> 在配置文件中如果将 `feedback-probability` 设置为 `0` 会导致设置失败报错，需要设置成 `0.0`，才可以将 `feedback-probability` 关闭。
 
 ### 控制 ANALYZE 并发度
 
