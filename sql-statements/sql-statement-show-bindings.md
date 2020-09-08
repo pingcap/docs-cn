@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: SHOW BINDINGS
-summary: TiDB 数据库中 SHOW BINDINGS 的使用概况。
-aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-bindings/','/docs-cn/v4.0/sql-statements/sql-statement-show-bindings/']
-=======
 title: SHOW [GLOBAL|SESSION] BINDINGS
 summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] BINDINGS 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-bindings/']
->>>>>>> cc29b96... statement-reference: update docs (#4308)
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-bindings/','/docs-cn/v4.0/sql-statements/sql-statement-show-bindings/']
 ---
 
 # SHOW [GLOBAL|SESSION] BINDINGS
