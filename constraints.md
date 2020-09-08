@@ -59,7 +59,7 @@ Query OK, 1 row affected (0.03 sec)
 
 ## 唯一约束
 
-根据不同的事务模式和 `tidb_constraint_check_in_place` 的值，TiDB 可能对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。批量检查能够减少网络开销、提升性能。例如：
+在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
 
 {{< copyable "sql" >}}
 
