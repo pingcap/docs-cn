@@ -583,6 +583,9 @@ This section introduces the configuration of a replication task.
 # This configuration item affects configurations related to filter and sink.
 case-sensitive = true
 
+# Specifies whether to output the old value. New in v4.0.5.
+enable-old-value = false
+
 [filter]
 # Ignores the transaction of specified start_ts.
 ignore-txn-start-ts = [1, 2]

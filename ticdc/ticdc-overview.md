@@ -70,10 +70,12 @@ Currently, the TiCDC sink component supports replicating data to the following d
 
 ## Restrictions
 
-To replicate data to TiDB or MySQL, you must ensure that the following requirements are satisfied to guarantee data correctness:
+TiCDC only replicates the table that has at least one **valid index**. A **valid index** is defined as follows:
 
-- The table to be replicated has the primary key or a unique index.
-- If the table to be replicated only has unique indexes, each column of at least one unique index is explicitly defined in the table schema as `NOT NULL`.
+- The primary key (`PRIMARY KEY`) is a valid index.
+- The unique index (`UNIQUE INDEX`) that meets the following conditions at the same time is a valid index:
+    - Every column of the index is explicitly defined as non-nullable (`NOT NULL`).
+    - The index does not have the virtual generated column (`VIRTUAL GENERATED COLUMNS`).
 
 ### Unsupported scenarios
 
@@ -82,7 +84,6 @@ Currently, The following scenarios are not supported:
 - The TiKV cluster that uses RawKV alone.
 - The [DDL operation `CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md) and the [SEQUENCE function](/sql-statements/sql-statement-create-sequence.md#sequence-function) in TiDB v4.0. When the upstream TiDB uses `SEQUENCE`, TiCDC ignores `SEQUENCE` DDL operations/functions performed upstream. However, DML operations using `SEQUENCE` functions can be correctly replicated.
 - The [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region). TiCDC prevents the Region from entering the hibernated state.
-- The scheduling of existing replication tables to new TiCDC nodes, after the capacity of the TiCDC cluster is scaled out.
 
 ## Install and deploy TiCDC
 

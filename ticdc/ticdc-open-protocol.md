@@ -66,17 +66,77 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
 + **Value:**
 
+    `Insert` event. The newly added row data is output.
+
     ```
     {
-        <UpdateOrDelete>:{
+        "u":{
             <Column Name>:{
                 "t":<Column Type>,
                 "h":<Where Handle>,
+                "f":<Flag>,
                 "v":<Column Value>
             },
             <Column Name>:{
                 "t":<Column Type>,
                 "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        }
+    }
+    ```
+
+    `Update` event. The newly added row data ("u") and the row data before the update ("p") are output. The latter ("p") is output only when the old value feature is enabled.
+
+    ```
+    {
+        "u":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        },
+        "p":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        }
+    }
+    ```
+
+    `Delete` event. The deleted row data is output. When the old value feature is enabled, the `Delete` event includes all the columns of the deleted row data; when this feature is disabled, the `Delete` event only includes the [HandleKey](#bit-flags-of-columns) column.
+
+    ```
+    {
+        "d":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
                 "v":<Column Value>
             }
         }
@@ -85,10 +145,10 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
     | Parameter         | Type   | Description                    |
     | :---------- | :----- | :--------------------- |
-    | UpdateOrDelete | String |  Identifies whether the row is updated or deleted in the Event. The optional values are `u` or `d`. |
     | Column Name    | String |  The column name.  |
     | Column Type    | Number |  The column type. For details, see [Column Type Code](#column-type-code).  |
-    | Where Handle   | Bool   |  Determines whether this column can be the filter condition of the `Where` clause. When this column is unique on the table, `Where Handle` is `true`. |
+    | Where Handle  | Bool   |  Determines whether this column can be the filter condition of the `Where` clause. When this column is unique on the table, `Where Handle` is `true`. |
+    | Flag (**experimental**)       | Number   |  The bit flags of columns. For details, see [Bit flags of columns](#bit-flags-of-columns). |
     | Column Value   | Any    | The Column value.   |
 
 ### DDL Event
@@ -210,44 +270,41 @@ COMMIT;
 14. [partition=1] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
 ```
 
-## Column and DDL type codes
+## Column type code
 
-The column and DDL type codes are encodings defined by TiCDC Open Protocol. `Column Type Code` represents the column data type of the Row Changed Event, and `DDL Type Code` represents the DDL statement type of the DDL Event.
+`Column Type Code` represents the column data type of the Row Changed Event.
 
-### Column Type Code
+| Type                   | Code | Output Example | Description |
+| :-------------------- | :--- | :------ | :-- |
+| TINYINT/BOOL          | 1    | {"t":1,"v":1} | |
+| SMALLINT              | 2    | {"t":2,"v":1} | |
+| INT                   | 3    | {"t":3,"v":123} | |
+| FLOAT                 | 4    | {"t":4,"v":153.123} | |
+| DOUBLE                | 5    | {"t":5,"v":153.123} | |
+| NULL                  | 6    | {"t":6,"v":null} | |
+| TIMESTAMP             | 7    | {"t":7,"v":"1973-12-30 15:30:00"} | |
+| BIGINT                | 8    | {"t":8,"v":123} | |
+| MEDIUMINT             | 9    | {"t":9,"v":123} | |
+| DATE                  | 10/14   | {"t":10,"v":"2000-01-01"} | |
+| TIME                  | 11   | {"t":11,"v":"23:59:59"} | |
+| DATETIME              | 12   | {"t":12,"v":"2015-12-20 23:58:58"} | |
+| YEAR                  | 13   | {"t":13,"v":1970} | |
+| VARCHAR/VARBINARY     | 15/253   | {"t":15,"v":"test"} / {"t":15,"v":"\\x89PNG\\r\\n\\x1a\\n"} |  The value is encoded in UTF-8. When the upstream type is VARBINARY, invisible ASCII characters are escaped. |
+| BIT                   | 16   | {"t":16,"v":81} | |
+| JSON                  | 245  | {"t":245,"v":"{\\"key1\\": \\"value1\\"}"} | |
+| DECIMAL               | 246  | {"t":246,"v":"129012.1230000"} | |
+| ENUM                  | 247  | {"t":247,"v":1} | |
+| SET                   | 248  | {"t":248,"v":3} | |
+| TINTTEXT/TINTBLOB     | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
+| MEDIUMTEXT/MEDIUMBLOB | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
+| LONGTEXT/LONGBLOB     | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
+| TEXT/BLOB             | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
+| CHAR/BINARY           | 254  | {"t":254,"v":"test"} / {"t":254,"v":"\\x89PNG\\r\\n\\x1a\\n"} | The value is encoded in UTF-8. When the upstream type is BINARY, invisible ASCII characters are escaped. |
+| GEOMETRY              | 255  |  | Unsupported |
 
-| Type        | Code | Output Example | Note |
-| :---------- | :--- | :------ | :-- |
-| Decimal     | 0    | {"t":0,"v":"129012.1230000"} | |
-| Tiny/Bool   | 1    | {"t":1,"v":1} | |
-| Short       | 2    | {"t":2,"v":1} | |
-| Long        | 3    | {"t":3,"v":123} | |
-| Float       | 4    | {"t":4,"v":153.123} | |
-| Double      | 5    | {"t":5,"v":153.123} | |
-| Null        | 6    | {"t":6,"v":null} | |
-| Timestamp   | 7    | {"t":7,"v":"1973-12-30 15:30:00"} | |
-| Longlong    | 8    | {"t":8,"v":123} | |
-| Int24       | 9    | {"t":9,"v":123} | |
-| Date        | 10   | {"t":10,"v":"2000-01-01"} | |
-| Duration    | 11   | {"t":11,"v":"23:59:59"} | |
-| Datetime    | 12   | {"t":12,"v":"2015-12-20 23:58:58"} | |
-| Year        | 13   | {"t":13,"v":1970} | |
-| New Date    | 14   | {"t":14,"v":"2000-01-01"} | |
-| Varchar     | 15   | {"t":15,"v":"test"} | The value is encoded in UTF-8. |
-| Bit         | 16   | {"t":16,"v":81} | |
-| JSON        | 245  | {"t":245,"v":"{\\"key1\\": \\"value1\\"}"} | |
-| New Decimal | 246  | {"t":246,"v":"129012.1230000"} | |
-| Enum        | 247  | {"t":247,"v":1} | |
-| Set         | 248  | {"t":248,"v":3} | |
-| Tiny Blob   | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
-| Medium Blob | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
-| Long Blob   | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
-| Blob        | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
-| Var String  | 253  | {"t":253,"v":"test"} | The value is encoded in UTF-8. |
-| String      | 254  | {"t":254,"v":"test"} | The value is encoded in UTF-8. |
-| Geometry    | 255  |  | Unsupported type. |
+## DDL Type Code
 
-### DDL Type Code
+`DDL Type Code` represents the DDL statement type of the DDL Event.
 
 | Type                              | Code |
 | :-------------------------------- | :- |
@@ -287,3 +344,40 @@ The column and DDL type codes are encodings defined by TiCDC Open Protocol. `Col
 | Create Sequence                   | 34 |
 | Alter Sequence                    | 35 |
 | Drop Sequence                     | 36 |
+
+## Bit flags of columns
+
+The bit flags represent specific attributes of columns.
+
+| Bit | Value | Name | Description |
+| :-- | :- | :- | :- |
+| 1   | 0x01 | BinaryFlag          | Whether the column is a binary-encoded column. |
+| 2   | 0x02 | HandleKeyFlag       | Whether the column is a Handle index column. |
+| 3   | 0x04 | GeneratedColumnFlag | Whether the column is a generated column.     |
+| 4   | 0x08 | PrimaryKeyFlag      | Whether the column is a primary key column.      |
+| 5   | 0x10 | UniqueKeyFlag       | Whether the column is a unique index column.  |
+| 6   | 0x20 | MultipleKeyFlag     | Whether the column is a composite index column.   |
+| 7   | 0x40 | NullableFlag        | Whether the column is a nullable column.       |
+| 8   | 0x80 | UnsignedFlag        | Whether the column is an unsigned column.     |
+
+Example:
+
+If the value of a column flag is `85`, the column is a nullable column, a unique index column, a generated column, and a binary-encoded column.
+
+```
+85 == 0b_101_0101
+   == NullableFlag | UniqueKeyFlag | GeneratedColumnFlag | BinaryFlag
+```
+
+If the value of a column is `46`, the column is a composite index column, a primary key column, a generated column, and a Handle key column.
+
+```
+46 == 0b_010_1110
+   == MultipleKeyFlag | PrimaryKeyFlag | GeneratedColumnFlag | HandleKeyFlag
+```
+
+> **Note:**
+>
+> + This feature is still experimental. Do **NOT** use it in the production environment.
+> + `BinaryFlag` is meaningful only when the column type is Blob/Text (including Tiny Blob/Tiny Text and Long Blob/Long Text). When the upstream column is the Blob type, the `BinaryFlag` value is set to `1`. When the upstream column is the Text type, the `BinaryFlag` value is set to `0`.
+> + To replicate a table from the upstream, TiCDC selects a [valid index](/ticdc/ticdc-overview.md#restrictions) as the Handle index. The `HandleKeyFlag` value of the Handle index column is set to `1`.
