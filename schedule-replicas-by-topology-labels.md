@@ -38,7 +38,7 @@ labels = "zone=<zone>,rack=<rack>,host=<host>"
 
 根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，但 PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
 
-PD 上的配置叫做 `location-labels`，可以通过 PD 的配置文件进行配置。
+PD 上的配置叫做 `location-labels`，在集群初始化之前，可以通过 PD 的配置文件进行配置。
 
 {{< copyable "" >}}
 
@@ -47,7 +47,7 @@ PD 上的配置叫做 `location-labels`，可以通过 PD 的配置文件进行�
 location-labels = ["zone", "rack", "host"]
 ```
 
-当 PD 集群初始化完成后，需要使用 pd-ctl 工具进行在线更改：
+如果需要在 PD 集群初始化完成后进行配置，则需要使用 pd-ctl 工具进行在线更改：
 
 {{< copyable "shell-regular" >}}
 
