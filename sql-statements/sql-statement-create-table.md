@@ -70,7 +70,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-table/','/docs-cn/de
 
 ![TableOption](/media/sqlgram/TableOption.png)
 
-TiDB 支持以下 `table_option`：
+TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 参数，例如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT`。
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
@@ -86,7 +86,6 @@ TiDB 支持以下 `table_option`：
 > **注意：**
 >
 > + 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md)。
-> + TiDB 会解析并忽略其他 `table_option` 参数，例如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT`。
 
 ## 示例
 
@@ -173,8 +172,8 @@ mysql> DESC t1;
 * TiDB 不支持临时表，对于 `CREATE TEMPORARY TABLE` 语法，会忽略 `TEMPORARY` 关键字。
 * 支持除空间类型以外的所有数据类型。
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
-* `index_col_name` 属性支持 length 选项，以与 MySQL 兼容。最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md#max-index-length)。
-* `index_col_name` 属性支持 `ASC` 和 `DESC` 的索引排序选项。TiDB 会解析但忽略这两个选项。
+* 为了与 MySQL 兼容，`index_col_name` 属性支持 length 选项，最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md#max-index-length)。
+* 为了与 MySQL 兼容，TiDB 会解析但忽略 `index_col_name` 属性的 `[ASC | DESC]` 索引排序选项。
 * `COMMENT` 属性最多支持 1024 个字符，不支持 `WITH PARSER` 选项。
 * TiDB 在单个表中最多支持 512 列。InnoDB 中相应的数量限制为 1017，MySQL 中的硬限制为 4096。详情参阅 [TiDB 使用限制](/tidb-limitations.md)。
 * 当前仅支持 Range、Hash 和 Range Columns（单列）类型的分区表，详情参阅[分区表](/partitioned-table.md)。
