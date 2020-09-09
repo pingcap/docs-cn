@@ -72,7 +72,6 @@ Empty set (0.01 sec)
 
 ## MySQL 兼容性
 
-
 * TiDB 不支持 savepoint 或 `ROLLBACK TO SAVEPOINT` 语法。
 * TiDB 解析但忽略 `ROLLBACK AND [NO] RELEASE` 语法。在 MySQL 中，使用该语法可在回滚事务后立即断开客户端会话。在 TiDB 中，建议使用客户端程序的 `mysql_close()` 来实现该功能。
 * TiDB 解析但忽略 `ROLLBACK AND [NO] CHAIN` 语法。在 MySQL 中，使用该语法可在回滚当前事务时立即以相同的隔离级别开启新事务。在 TiDB 中，推荐直接开启新事务。
