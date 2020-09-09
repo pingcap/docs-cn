@@ -72,11 +72,15 @@ After sending the package to the control machine of the target cluster, install 
 
 {{< copyable "shell-regular" >}}
 
-```shell
+```bash
 tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
 sh tidb-community-server-${version}-linux-amd64/local_install.sh
 source /home/tidb/.bash_profile
 ```
+
+The `local_install.sh` script automatically executes the `tiup mirror set tidb-community-server-${version}-linux-amd64` command to set the current mirror address to `tidb-community-server-${version}-linux-amd64`.
+
+To switch the mirror to another directory, you can manually execute the `tiup mirror set <mirror-dir>` command.
 
 ## Step 3: Mount the TiKV data disk
 
@@ -236,13 +240,12 @@ alertmanager_servers:
 
 ## Step 5: Deploy the TiDB cluster
 
-`/path/to/mirror` is the location of the offline mirror package that is output by the `local_install.sh` command:
+Execute the following command to deploy the TiDB cluster:
 
 {{< copyable "shell-regular" >}}
 
-```shell
-export TIUP_MIRRORS=/path/to/mirror &&
-tiup cluster deploy tidb-test v4.0.0 topology.yaml --user tidb [-p] [-i /home/root/.ssh/gcp_rsa] &&
+```bash
+tiup cluster deploy tidb-test v4.0.0 topology.yaml --user tidb [-p] [-i /home/root/.ssh/gcp_rsa]
 tiup cluster start tidb-test
 ```
 
