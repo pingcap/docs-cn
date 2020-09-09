@@ -104,13 +104,16 @@ In the above example, `x'2c'` is the hexadecimal representation of the `,` chara
 
 ## MySQL compatibility
 
-* TiDB will by default commit every 20 000 rows. This behavior is similar to MySQL NDB Cluster, but not the default configuration with the InnoDB storage engine.
+This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
 
 > **Note:**
 >
-> Committing through splitting a transaction is at the expense of breaking the atomicity and isolation of the transaction. When performing this operation, you must ensure that there are **no other** ongoing operations on the table. When an error occurs, **manual intervention is required to check the consistency and integrity of the data**. Therefore, it is not recommended to use `LOAD DATA` on any tables which are actively being read from or written to.
+> In earlier releases of TiDB, `LOAD DATA` committed every 20000 rows. By default, TiDB now commits all rows in one transaction. This can result in the error `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` after upgrading from TiDB 4.0 or earlier versions.
+>
+> The recommended way to resolve this error is to increase the `txn-total-size-limit` value in your `tidb.toml` file. If you are unable to increase this limit, you can also restore the previous behavior by setting [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) to `20000`.
 
 ## See also
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [Import Example Database](/import-example-data.md)
+* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)

@@ -271,6 +271,14 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
 - For OLAP scenarios, the maximum value cannot exceed the number of CPU cores of all the TiKV nodes.
 
+### tidb_dml_batch_size
+
+- Scope: SESSION
+- Default value: 0
+- Example value: 20000
+- When this value is greater than `0`, TiDB will batch commit statements such as `INSERT` or `LOAD DATA` into smaller transactions. This reduces memory usage and helps ensure that the `txn-total-size-limit` is not reached by bulk modifications.
+- Only the value `0` provides ACID compliance. Setting this to any other value will break the atomicity and isolation guarantees of TiDB.
+
 ### tidb_enable_cascades_planner
 
 - Scope: SESSION | GLOBAL
@@ -819,7 +827,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Default value: SYSTEM
-- This variable sets the sytem time zone. Values can be specified as either an offset such as '-8:00' or a named zone 'America/Los_Angeles'.
+- This variable sets the system time zone. Values can be specified as either an offset such as '-8:00' or a named zone 'America/Los_Angeles'.
 
 ### transaction_isolation
 
