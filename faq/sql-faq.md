@@ -11,6 +11,66 @@ This document summarizes the FAQs related to SQL operations in TiDB.
 
 See [System Variables](/system-variables.md).
 
+## The order of results is different from MySQL when `ORDER BY` is omitted
+
+It is not a bug. The default order of records depends on various situations without any guarantee of consistency.
+
+The order of results in MySQL might appear stable because queries are executed in a single thread. However, it is common that query plans can change when upgrading to new versions. It is recommended to use `ORDER BY` whenever an order of results is desired.
+
+The reference can be found in [ISO/IEC 9075:1992, Database Language SQL- July 30, 1992](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt), which states as follows:
+
+> If an `<order by clause>` is not specified, then the table specified by the `<cursor specification>` is T and the ordering of rows in T is implementation-dependent.
+
+In the following two queries, both results are considered legal:
+
+```sql
+> select * from t;
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    2 |
++------+------+
+2 rows in set (0.00 sec)
+```
+
+```sql
+> select * from t; -- the order of results is not guaranteed
++------+------+
+| a    | b    |
++------+------+
+|    2 |    2 |
+|    1 |    1 |
++------+------+
+2 rows in set (0.00 sec)
+```
+
+A statement is also considered non-deterministic if the list of columns used in the `ORDER BY` is non-unique. In the following example, the column `a` has duplicate values. Thus, only `ORDER BY a, b` would be guaranteed deterministic:
+
+```sql
+> select * from t order by a;
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    1 |
+|    2 |    2 |
++------+------+
+3 rows in set (0.00 sec)
+```
+
+```sql
+> select * from t order by a; -- the order of column a is guaranteed, but b is not
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    2 |
+|    2 |    1 |
++------+------+
+3 rows in set (0.00 sec)
+```
+
 ## Does TiDB support `SELECT FOR UPDATE`?
 
 Yes. When using pessimistic locking (the default since TiDB v3.0) the `SELECT FOR UPDATE` execution behaves similar to MySQL.
