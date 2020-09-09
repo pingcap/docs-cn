@@ -82,7 +82,7 @@ BEGIN /*!90000 PESSIMISTIC */;
 
 6. 对语句中 `EMBEDDED SELECT` 读到的相关数据不会加锁。
 
-7. 在 v4.0 中，垃圾回收 (GC) 不会影响到正在执行的事务，但悲观事务的执行时间仍有上限，默认为 10 分钟，可通过 TiDB 配置文件 `[performance]` 类别下的 `max-txn-ttl` 修改。
+7. 垃圾回收 (GC) 不会影响到正在执行的事务，但悲观事务的执行时间仍有上限，默认为 10 分钟，可通过 TiDB 配置文件 `[performance]` 类别下的 `max-txn-ttl` 修改。
 
 ## 隔离级别
 
