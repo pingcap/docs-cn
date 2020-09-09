@@ -69,9 +69,9 @@ Currently, it is not supported to only enable encrypted transmission of some spe
         key-path = "/path/to/pd-server-key.pem"
         ```
 
-    - TiFlash
+    - TiFlash (New in v4.0.5)
 
-        Configure in the configuration file, and change the `http_port` item to `https_port`:
+        Configure in the `tiflash.toml` file, and change the `http_port` item to `https_port`:
 
          ```toml
         [security]
@@ -81,6 +81,16 @@ Currently, it is not supported to only enable encrypted transmission of some spe
         cert_path = "/path/to/tiflash-server.pem"
         # Path of file that contains X509 key in PEM format.
         key_path = "/path/to/tiflash-server-key.pem"
+        ```
+
+        Configure in the `tiflash-learner.toml` file:
+
+        ```toml
+        [security]
+        # Sets the path for certificates. The empty string means that secure connections are disabled.
+        ca-path = "/path/to/ca.pem"
+        cert-path = "/path/to/tiflash-server.pem"
+        key-path = "/path/to/tiflash-server-key.pem"
         ```
 
     - TiCDC
@@ -165,15 +175,22 @@ To verify component caller's identity, you need to mark the certificate user ide
     cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
     ```
 
-- TiFlash
+- TiFlash (New in v4.0.5)
 
-    Configure in the configuration file or command-line arguments:
+    Configure in the `tiflash.toml` file or command-line arguments:
 
     ```toml
     [security]
     cert_allowed_cn = ["TiKV-Server", "TiDB-Server"]
     ```
 
+    Configure in the `tiflash-learner.toml` file:
+
+    ```toml
+    [security]
+    cert-allowed-cn = ["PD-Server", "TiKV-Server", "TiFlash-Server"]
+    ```
+    
 ### Reload certificates
 
 To reload the certificates and the keys, TiDB, PD, TiKV, and all kinds of clients reread the current certificates and the key files each time a new connection is created. Currently, you cannot reload the CA certificate.
