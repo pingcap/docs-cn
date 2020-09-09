@@ -61,7 +61,7 @@ Query OK, 0 rows affected (0.01 sec)
 ## MySQL 兼容性
 
 * 执行 `START TRANSACTION` 立即在 TiDB 中开启事务。而在 MySQL 中，执行 `START TRANSACTION` 会延迟创建事务。TiDB 中的 `START TRANSACTION` 等同于 MySQL 中的 `START TRANSACTION WITH CONSISTENT SNAPSHOT`。
-* 为与 MySQL 兼容，TiDB 会解析 `START TRANSACTION READ ONLY` 语句但仍允许写入操作。
+* 为与 MySQL 兼容，TiDB 会解析 `START TRANSACTION READ ONLY` 语句，但解析后 TiDB 仍允许写入操作。
 
 ## 另请参阅
 
