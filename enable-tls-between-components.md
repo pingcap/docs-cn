@@ -181,7 +181,7 @@ aliases: ['/docs-cn/stable/enable-tls-between-components/','/docs-cn/v4.0/enable
     cert_allowed_cn = ["TiKV-Server", "TiDB-Server"]
     ```
 
-    在 `tiflash-learner.toml` 文件中设置，
+    在 `tiflash-learner.toml` 文件中设置：
 
     ```toml
     [security]
