@@ -15,6 +15,7 @@ jobs:
       #  - we hardcode `--document-root` to `/github/workspace` in the container now.
       #  - we use `http://172.*` as sample addresses in some docs, so we need to exclude them.
       - name: Check external links
+        id: lc
         uses: peter-evans/link-checker@v1
         with:
           args: -c 32 -d /github/workspace -r -x "http://172.*|https://github.com/pingcap/docs-cn/pull/.*|.*.md" .
