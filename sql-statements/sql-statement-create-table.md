@@ -85,7 +85,7 @@ TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 
 
 > **注意：**
 >
-> + 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md)。
+> 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md)。
 
 ## 示例
 
