@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/ticdc-deployment-topology/','/docs-cn/dev/reference/tool
 
 > **注意：**
 >
-> TiCDC 已于 v4.0.6 成为正式功能，可用于生产环境。
+> TiCDC 从 v4.0.6 成为正式功能，可用于生产环境。
 
 # TiCDC 部署拓扑
 
