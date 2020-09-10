@@ -49,6 +49,7 @@ This is a list of TiDB adopters in various industries.
 |[Hoodinn](https://www.crunchbase.com/organization/hoodinn)|Gaming||
 |[SEA group](https://sea-group.org/?lang=en)|Gaming||
 |[Zhaopin.com](https://www.crunchbase.com/organization/zhaopin)|Recruiting||
+|[BIGO](https://www.crunchbase.com/organization/bigo-technology)|Live Streaming|[English](https://pingcap.com/case-studies/why-we-chose-an-htap-database-over-mysql-for-horizontal-scaling-and-complex-queries/); [Chinese](https://pingcap.com/cases-cn/user-case-bigo/)|
 |[Panda.tv](https://www.crunchbase.com/organization/panda-tv)|Live Streaming||
 |[Phoenix New Media](https://www.crunchbase.com/organization/phoenix-new-media)|Media|[Chinese](https://pingcap.com/cases-cn/user-case-ifeng/)|
 |[Tencent OMG](https://en.wikipedia.org/wiki/Tencent)|Media||
