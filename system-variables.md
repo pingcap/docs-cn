@@ -802,11 +802,11 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_enable_collect_execution_info`
 
-作用域：INSTANCE
+- 作用域：INSTANCE
 
-默认值：1
+- 默认值：1
 
-这个变量用于控制在记录 slow query log 时，是否同时记录各个执行算子的执行信息。
+- 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
 ### `tidb_log_desensitization`
 
