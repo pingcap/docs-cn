@@ -45,7 +45,39 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 8 rows in set (0.00 sec)
 ```
 
+<<<<<<< HEAD
 `latin1` Collation（排序规则）分别有以下含义：
+=======
+> **警告：**
+>
+> TiDB 会错误地将 `latin1` 视为 `utf8` 的子集。当用户存储不同于 `latin1` 和 `utf8` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
+
+> **注意：**
+>
+> TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci`。当用户指定了显式字符集，但依赖于待选的隐式默认排序规则时，这个差异可能导致兼容性问题。
+
+利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW COLLATION WHERE Charset = 'utf8mb4';
+```
+
+```sql
++--------------------+---------+------+---------+----------+---------+
+| Collation          | Charset | Id   | Default | Compiled | Sortlen |
++--------------------+---------+------+---------+----------+---------+
+| utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
+| utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
++--------------------+---------+------+---------+----------+---------+
+2 rows in set (0.00 sec)
+```
+
+## TiDB 中的 `utf8` 和 `ut8mb4`
+
+MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (BMP) 中的字符，但不足以存储表情符号等字符。因此，建议改用字符集`utf8mb4`。
+>>>>>>> 5482c18... character set: include useful warning (#4450)
 
 | Collation         | 含义                              |
 |:------------------|:----------------------------------|
