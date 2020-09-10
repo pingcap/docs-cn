@@ -121,7 +121,7 @@ level = "error"
 # Sets the maximum number of CPU cores to use for a single TiDB instance according to NUMA configuration.
 max-procs = 20
 
-[prepared_plan_cache]
+[prepared-plan-cache]
 # Enables the prepared plan cache in TiDB configuration to reduce the overhead of optimizing your execution plan.
 enabled = true
 ```
