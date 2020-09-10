@@ -60,6 +60,10 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 
 每一个字符集，都有一个默认的 Collation，例如 `utf8` 的默认 Collation 就为 `utf8_bin`。
 
+> **警告：**
+>
+> TiDB 会错误地将 `latin1` 视为 `utf8` 的子集。当用户存储不同于 `latin1` 和 `utf8` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
+
 > **注意：**
 >
 > `TiDB` 目前的 Collation 都是区分大小写的。
