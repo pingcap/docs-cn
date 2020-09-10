@@ -31,29 +31,6 @@ SHOW CHARACTER SET;
 5 rows in set (0.00 sec)
 ```
 
-<<<<<<< HEAD
-=======
-TiDB 支持以下排序规则：
-
-```sql
-mysql> show collation;
-+-------------+---------+------+---------+----------+---------+
-| Collation   | Charset | Id   | Default | Compiled | Sortlen |
-+-------------+---------+------+---------+----------+---------+
-| utf8mb4_bin | utf8mb4 |   46 | Yes     | Yes      |       1 |
-| latin1_bin  | latin1  |   47 | Yes     | Yes      |       1 |
-| binary      | binary  |   63 | Yes     | Yes      |       1 |
-| ascii_bin   | ascii   |   65 | Yes     | Yes      |       1 |
-| utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
-+-------------+---------+------+---------+----------+---------+
-5 rows in set (0.01 sec)
-```
-
-> **警告：**
->
-> TiDB 会错误地将 `latin1` 视为 `utf8` 的子集。当用户存储不同于 `latin1` 和 `utf8` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
-
->>>>>>> 5482c18... character set: include useful warning (#4450)
 > **注意：**
 >
 > - 在 `TiDB` 中 `utf8` 被当做成了 `utf8mb4` 来处理。
@@ -97,6 +74,10 @@ SHOW COLLATION WHERE Charset = 'latin1';
 | latin1_swedish_ci | 瑞典语/芬兰语，不区分大小写       |
 
 每一个字符集，都有一个默认的 Collation，例如 `utf8` 的默认 Collation 就为 `utf8_bin`。
+
+> **警告：**
+>
+> TiDB 会错误地将 `latin1` 视为 `utf8` 的子集。当用户存储不同于 `latin1` 和 `utf8` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
 > **注意：**
 >
