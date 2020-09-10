@@ -810,13 +810,13 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_log_desensitization`
 
-作用域：GLOBAL
+- 作用域：GLOBAL
 
-默认值：0
+- 默认值：0
 
-这个变量用于控制是否在记录 TiDB 日志和慢日志时，将 SQL 中的用户信息遮蔽。
+- 这个变量用于控制是否在记录 TiDB 日志和慢日志时，将 SQL 中的用户信息遮蔽。
 
-将该变量设置为 `1` 后，假设执行 SQL 是 `insert into t values (1,2)` ，在日志中记录的 SQL 会是 `insert into t values (?,?)`。
+- 将该变量设置为 `1` 即开启后，假设执行的 SQL 为 `insert into t values (1,2)`，在日志中记录的 SQL 会是 `insert into t values (?,?)`。
 
 ### `tidb_slow_query_file`
 
