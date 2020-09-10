@@ -108,6 +108,38 @@ Slow Query 基础信息：
 * `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
 * `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
 
+## 相关系统变量
+
+* [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
+* [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句的最大长度。默认值是 4096 byte。
+* [tidb_log_desensitization](/system-variables.md#tidb_log_desensitization)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 0 ，即关闭该功能。
+* [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的执行信息，默认值是 1。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
+
+```sql
+> select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
+|     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
+|     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
+|       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
+|         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+在性能测试中可以关闭自动收集算子的执行信息：
+
+{{< copyable "sql" >}}
+
+```sql
+set @@tidb_enable_collect_execution_info=0;
+```
+
+`Plan` 字段显示的格式和 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或者 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 大致一致。可以查看 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或者 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 文档了解更多关于执行计划的信息。
+
+更多详细信息，可以参见 [TiDB 专用系统变量和语法](/system-variables.md)。
+
 ## 慢日志内存映射表
 
 用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md) 中的介绍。
