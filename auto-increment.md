@@ -101,52 +101,136 @@ In the example above, perform the following operations in order:
 
 2. The client sends a statement `insert into t (c) (1)` to instance `A`. This statement does not specify the value of `id`, so the ID is assigned by `A`. At present, because `A` caches the IDs of `[1, 30000]`, it might assign `2` as the value of the auto-increment ID, and increases the local counter by `1`. At this time, the data whose ID is `2` already exists in the database, so the `Duplicated Error` error is returned.
 
-### Increment
-
-TiDB guarantees that implicitly assigned values of the `AUTO_INCREMENT` column are incremental only in the cluster with a single TiDB instance. That is, for the same auto-increment column, the value assigned earlier is smaller than the value assigned later. However, in a cluster with multiple instances, TiDB cannot guarantee that the auto-increment column is incremental.
-
-In the example above, if you first execute an `INSERT` statement on instance `B`, and then execute an `INSERT` statement on instance `A`. Because of the behavior of caching auto-increment ID, the auto-increment column might be implicitly assigned `30002` and `2` respectively. The assigned values are not incremental in the time order.
-
 ### Monotonic
 
-In a cluster with multiple TiDB instances, the `AUTO_INCREMENT` assigned values are **only** monotonic on a per-server basis.
+TiDB guarantees that `AUTO_INCREMENT` values are monotonic (always increasing) on a per-server basis. Consider the following example where consecutive `AUTO_INCREMENT` values of 1-3 are generated:
 
-Take the following table as an example:
+{{< copyable "sql" >}}
 
 ```sql
-create table t (a int primary key AUTO_INCREMENT)
+CREATE TABLE t (a int primary key AUTO_INCREMENT, b timestamp NOT NULL DEFAULT NOW());
+INSERT INTO t (a) VALUES (NULL), (NULL), (NULL);
+SELECT * FROM t;
 ```
 
-Execute the following statement on the table:
-
 ```sql
-insert into t values (), (), (), ()
-```
+Query OK, 0 rows affected (0.11 sec)
 
-Even if other TiDB instances are performing concurrent write operations, or if the current instance does not have enough cached IDs left, the assigned values are still monotonic.
-
-### Relation with `_tidb_rowid`
-
-If the primary key of integer type does not exist, TiDB uses `_tidb_rowid` to identify rows. `_tidb_rowid` and the auto-increment column (if any) share an allocator. In such cases, the cache size might be consumed by both `_tidb_rowid` and the auto-increment column. Therefore, you might encounter the following situation:
-
-```sql
-mysql> create table t(id int unique key AUTO_INCREMENT);
-Query OK, 0 rows affected (0.05 sec)
-
-mysql> insert into t values (),(),();
-Query OK, 3 rows affected (0.00 sec)
+Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
-mysql> select _tidb_rowid, id from t;
-+-------------+------+
-| _tidb_rowid | id   |
-+-------------+------+
-|           4 |    1 |
-|           5 |    2 |
-|           6 |    3 |
-+-------------+------+
-3 rows in set (0.01 sec)
++---+---------------------+
+| a | b                   |
++---+---------------------+
+| 1 | 2020-09-09 20:38:22 |
+| 2 | 2020-09-09 20:38:22 |
+| 3 | 2020-09-09 20:38:22 |
++---+---------------------+
+3 rows in set (0.00 sec)
 ```
+
+The `AUTO_INCREMENT` sequence might appear to _jump_ dramatically if an `INSERT` operation is performed against a different TiDB server. This is caused by the fact that each server has its own cache of `AUTO_INCREMENT` values:
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t (a) VALUES (NULL);
+SELECT * FROM t;
+```
+
+```sql
+Query OK, 1 row affected (0.03 sec)
+
++---------+---------------------+
+| a       | b                   |
++---------+---------------------+
+|       1 | 2020-09-09 20:38:22 |
+|       2 | 2020-09-09 20:38:22 |
+|       3 | 2020-09-09 20:38:22 |
+| 2000001 | 2020-09-09 20:43:43 |
++---------+---------------------+
+4 rows in set (0.00 sec)
+```
+
+A new `INSERT` operation against the initial TiDB server generates the `AUTO_INCREMENT` value of `4`. This is because the initial TiDB server still has space left in the `AUTO_INCREMENT` cache for allocation. In this case, the sequence of values cannot be considered globally monotonic, because the value of `4` is inserted after the value of `2000001`:
+
+```sql
+mysql> INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM t ORDER BY b;
++---------+---------------------+
+| a       | b                   |
++---------+---------------------+
+|       1 | 2020-09-09 20:38:22 |
+|       2 | 2020-09-09 20:38:22 |
+|       3 | 2020-09-09 20:38:22 |
+| 2000001 | 2020-09-09 20:43:43 |
+|       4 | 2020-09-09 20:44:43 |
++---------+---------------------+
+5 rows in set (0.00 sec)
+```
+
+The `AUTO_INCREMENT` cache does not persist across TiDB server restarts. The following `INSERT` statement is performed after the initial TiDB server is restarted:
+
+```sql
+mysql> INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM t ORDER BY b;
++---------+---------------------+
+| a       | b                   |
++---------+---------------------+
+|       1 | 2020-09-09 20:38:22 |
+|       2 | 2020-09-09 20:38:22 |
+|       3 | 2020-09-09 20:38:22 |
+| 2000001 | 2020-09-09 20:43:43 |
+|       4 | 2020-09-09 20:44:43 |
+| 2030001 | 2020-09-09 20:54:11 |
++---------+---------------------+
+6 rows in set (0.00 sec)
+```
+
+A high rate of TiDB server restarts might contribute to the exhaustion of `AUTO_INCREMENT` values. In the above example, the initial TiDB server still has values `[5-30000]` free in its cache. These values are lost, and will not be reallocated.
+
+It is not recommended to rely on`AUTO_INCREMENT` values being continuous. Consider the following example, where a TiDB server has a cache of values `[2000001-2030000]`. By manually inserting the value `2029998`, you can see the behavior as a new cache range is retrieved:
+
+```sql
+mysql> INSERT INTO t (a) VALUES (2029998);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM t ORDER BY b;
++---------+---------------------+
+| a       | b                   |
++---------+---------------------+
+|       1 | 2020-09-09 20:38:22 |
+|       2 | 2020-09-09 20:38:22 |
+|       3 | 2020-09-09 20:38:22 |
+| 2000001 | 2020-09-09 20:43:43 |
+|       4 | 2020-09-09 20:44:43 |
+| 2030001 | 2020-09-09 20:54:11 |
+| 2029998 | 2020-09-09 21:08:11 |
+| 2029999 | 2020-09-09 21:08:11 |
+| 2030000 | 2020-09-09 21:08:11 |
+| 2060001 | 2020-09-09 21:08:11 |
+| 2060002 | 2020-09-09 21:08:11 |
++---------+---------------------+
+11 rows in set (0.00 sec)
+```
+
+After the value `2030000` is inserted, the next value is `2060001`. This jump in sequence is due to another TiDB server obtaining the intermediate cache range of `[2030001-2060000]`. When multiple TiDB servers are deployed, there will be gaps in the `AUTO_INCREMENT` sequence because cache requests are interleaved.
 
 ### Cache size control
 
