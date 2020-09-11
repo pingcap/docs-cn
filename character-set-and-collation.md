@@ -457,6 +457,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PAD
 binary > utf8mb4_bin > (utf8mb4_general_ci, utf8mb4_unicode_ci) > utf8_bin > (utf8_general_ci, utf8_unicode_ci) > latin1_bin > ascii_bin
 
 以下情况TiDB无法推断排序规则并报错
+
 - 如果两个子表达式的排序规则不相同，而且表达式的 coercibility 值都为 `0`。
 - 如果两个子表达式的排序规则不兼容，而且表达式的返回类型为`String`类。
 
