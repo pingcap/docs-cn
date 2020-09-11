@@ -23,7 +23,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-* 临时表
+* 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * `BINARY` 之外的排序规则
@@ -38,9 +38,16 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * `CREATE TABLE tblName AS SELECT stmt` 语法
 * `CREATE TEMPORARY TABLE` 语法
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
+<<<<<<< HEAD
 * `LOCK TABLE` 语法（TiDB 使用 `tidb_snapshot` 来[生成备份](/mydumper-overview.md)
 * `CHECK TABLE` 语法
 * `CHECKSUM TABLE` 语法
+=======
+* `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
+* `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
+* `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
+* `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
+>>>>>>> 4470317... Update mysql-compatibility.md (#4486)
 
 ## 与 MySQL 有差异的特性
 
