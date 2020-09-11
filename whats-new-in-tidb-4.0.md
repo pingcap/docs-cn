@@ -86,3 +86,7 @@ Support the Backup & Restore (BR) feature to quickly back up and restore data of
 + Support caching the execution plan of `Prepare` or `Execute` to improve the SQL execution efficiency.
 + Support self-adapting to the thread pool and streamlining the number of thread pools. Optimize the processing and scheduling of requests to improve product usability and performance.
 + The Follower Read feature refers to using any follower replica of a Region to serve a read request under the premise of strongly consistent reads. This feature improves the throughput of the TiDB cluster and reduces the load of the leader. It contains a series of load balancing mechanisms that offload TiKV read loads from the leader replica to the follower replica in a Region. TiKV's Follower Read implementation guarantees the consistency of data reading; combined with Snapshot Isolation in TiDB, this implementation provides users with strongly consistent reads. See [Follower Read](/follower-read.md) for details.
+
+## TiCDC
+
+TiCDC is a tool for replicating the incremental data of TiDB. This tool is implemented by pulling TiKV change logs, which ensures high reliability and availability of data. You can subscribe to the change information of data, and the system automatically sends data to the downstream. Currently, the downstream database must be MySQL compatible (such as MySQL and TiDB) or Kafka and Pulsar. You can also extend the supported downstream systems based on the [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md). See [TiCDC](/ticdc/ticdc-overview.md) for details.
