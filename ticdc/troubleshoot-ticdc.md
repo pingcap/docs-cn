@@ -61,7 +61,8 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235
 
 > **Note:**
 >
-> TiCDC (the 4.0 version) does not support dynamically modifying the file sorting and memory sorting yet.
+> + TiCDC (the 4.0 version) does not support dynamically modifying the file sorting and memory sorting yet.
+> + Currently, the file sorting feature only has limited processing capacity. If the data size of a single table is too large and causes the file sorting to fail, you can modify the task configuration of TiCDC to filter out this table and use other backup and restore tools (such as [BR](/br/backup-and-restore-tool.md)) to restore the table before you resume replicating the table.
 
 ## How do I handle the `Error 1298: Unknown or incorrect time zone: 'UTC'` error when creating the replication task or replicating data to MySQL?
 

@@ -91,16 +91,22 @@ This section introduces how to use `cdc cli` to manage a TiCDC cluster and data 
 
     ```
     [
-            {
-                    "id": "6d92386a-73fc-43f3-89de-4e337a42b766",
-                    "is-owner": true
-            },
-            {
-                    "id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                    "is-owner": false
-            }
+      {
+        "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
+        "is-owner": true,
+        "address": "127.0.0.1:8300"
+      },
+      {
+        "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
+        "is-owner": false,
+        "address": "127.0.0.1:8301"
+      }
     ]
     ```
+
+    - `id`: The ID of the service process.
+    - `is-owner`: Indicates whether the service process is the owner node.
+    - `address`: The address via which the service process provides interface to the outside.
 
 ### Manage replication tasks (`changefeed`)
 
@@ -600,7 +606,12 @@ worker-num = 16
 
 [sink]
 # For the sink of MQ type, you can use dispatchers to configure the event dispatcher.
-# Supports four dispatchers: default, ts, rowid, and table
+# Supports four dispatchers: default, ts, rowid, and table.
+# The dispatcher rules are as follows:
+# - default: When multiple unique indexes (including the primary key) exist or the Old Value feature is enabled, events are dispatched in the table mode. When only one unique index (or the primary key) exists, events are dispatched in the rowid mode.
+# - ts: Use the commitTs of the row change to create Hash and dispatch events.
+# - rowid: Use the name and value of the selected HandleKey column to create Hash and dispatch events.
+# - table: Use the schema name of the table and the table name to create Hash and dispatch events.
 # The matching syntax of matcher is the same as the filter rule syntax.
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
