@@ -28,11 +28,13 @@ TiDB 版本：4.0.6
 
 
 + TiDB Dashboard
+
   - 添加 Query 编辑和执行页面 (实验性功能) [#713](https://github.com/pingcap-incubator/tidb-dashboard/pull/713)
   - 添加 Store 地理拓扑显示页面 [#719](https://github.com/pingcap-incubator/tidb-dashboard/pull/719)
   - 添加集群配置调整页面 (实验性功能) [#733](https://github.com/pingcap-incubator/tidb-dashboard/pull/733)
   - 支持共享当前 session [#741](https://github.com/pingcap-incubator/tidb-dashboard/pull/741)
   - 支持显示 SQL 语句分析中执行计划的数量 [#746](https://github.com/pingcap-incubator/tidb-dashboard/pull/746)
+
 ## 优化提升
 
 + TiDB
