@@ -20,14 +20,18 @@ TiDB 版本：4.0.6
 
     - 
 
-
 + TiDB Dashboard
 
-  - 添加 Query 编辑和执行页面 (实验性功能) [#713](https://github.com/pingcap-incubator/tidb-dashboard/pull/713)
-  - 添加 Store 地理拓扑显示页面 [#719](https://github.com/pingcap-incubator/tidb-dashboard/pull/719)
-  - 添加集群配置调整页面 (实验性功能) [#733](https://github.com/pingcap-incubator/tidb-dashboard/pull/733)
-  - 支持共享当前 session [#741](https://github.com/pingcap-incubator/tidb-dashboard/pull/741)
-  - 支持显示 SQL 语句分析中执行计划的数量 [#746](https://github.com/pingcap-incubator/tidb-dashboard/pull/746)
+    - 添加 Query 编辑和执行页面 (实验性功能) [#713](https://github.com/pingcap-incubator/tidb-dashboard/pull/713)
+    - 添加 Store 地理拓扑显示页面 [#719](https://github.com/pingcap-incubator/tidb-dashboard/pull/719)
+    - 添加集群配置调整页面 (实验性功能) [#733](https://github.com/pingcap-incubator/tidb-dashboard/pull/733)
+    - 支持共享当前 session [#741](https://github.com/pingcap-incubator/tidb-dashboard/pull/741)
+    - 支持显示 SQL 语句分析中执行计划的数量 [#746](https://github.com/pingcap-incubator/tidb-dashboard/pull/746)
+
++ Tools
+
+    + TiCDC
+        - 支持输出 maxwell 格式的数据 [#869](https://github.com/pingcap/ticdc/pull/869)
 
 ## 优化提升
 
@@ -54,20 +58,22 @@ TiDB 版本：4.0.6
 + Tools
 
     + TiCDC
-
-        - 
+        - 在初始化阶段跳过 resolved lock [#910](https://github.com/pingcap/ticdc/pull/910)
+        - 减少写 PD 的频率 [#937](https://github.com/pingcap/ticdc/pull/937)
 
     + Backup & Restore (BR)
-
-        - 
+        - 在 Summary 中添加真实消耗的时间 [#486](https://github.com/pingcap/br/issues/486)
 
     + Dumpling
-
-        - 
+        - 支持输出带有列明的 `INSERT` 语句 [#135](https://github.com/pingcap/dumpling/pull/135)
+        - 将 `--filesize` 和 `--statement-size` 参数与 mydumper 保持统一 [#142](https://github.com/pingcap/dumpling/pull/142)
 
     + TiDB Lightning
 
-        - 
+        - Split 的 Region 大小更加精确 [#369](https://github.com/pingcap/tidb-lightning/pull/369)
+
+    + TiDB-Binlog
+        - 支持以 go time 的格式设置 GC 时间 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
 
 ## Bug 修复
 
@@ -95,18 +101,13 @@ TiDB 版本：4.0.6
 
 + Tools
 
-    + Backup & Restore (BR)
-
-        - 
+    + BR
+        - 解决数据校验期间可能出现的异常退出的问题 [#479](https://github.com/pingcap/br/pull/479)
+        - 解决 PD leader 切换后可能出现的异常退出的问题 [#496](https://github.com/pingcap/br/pull/496)
 
     + Dumpling
-
-        - 
-
-    + TiCDC
-
-        - 
+        - 解决 binary 类型的 NULL 值没有被正确处理的问题 [#137](https://github.com/pingcap/dumpling/pull/137)
 
     + TiDB Lightning
-
-        - 
+        - 解决 write 和 ingest 失败后依旧显示成功的问题 [#381](https://github.com/pingcap/tidb-lightning/pull/381)
+        - 解决写 checkpoint 不及时的问题 [#386](https://github.com/pingcap/tidb-lightning/pull/386)
