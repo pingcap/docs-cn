@@ -43,7 +43,7 @@ TiDB 版本：4.0.6
 
 + TiKV
 
-    - 
+    - 优化 DropTable/TruncateTable 时导致的性能下降 [#8627](https://github.com/tikv/tikv/pull/8627)
 
 + TiFlash
 
