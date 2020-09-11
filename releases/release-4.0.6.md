@@ -26,11 +26,6 @@ TiDB 版本：4.0.6
     - scan detail 中增加 tombstone 个数的 metrics [#8618](https://github.com/tikv/tikv/pull/8618)
     - 添加 rocksdb perf context metrics 面版 [#8467](https://github.com/tikv/tikv/pull/8467)
 
-+ PD
-    - 添加更多关于 store 和 region 心跳的 metrics [#2891](https://github.com/tikv/pd/pull/2891)
-    - 升级 Dashboard 到 v2020.09.08.1 [#2928](https://github.com/pingcap/pd/pull/2928)
-    - 回滚低空间报警的阈值策略 [#2875](https://github.com/pingcap/pd/pull/2875)
-    - 支持标准错误码 [#2918](https://github.com/tikv/pd/pull/2918) [#2911](https://github.com/tikv/pd/pull/2911) [#2913](https://github.com/tikv/pd/pull/2913) [#2915](https://github.com/tikv/pd/pull/2915) [#2912](https://github.com/tikv/pd/pull/2912) [#2907](https://github.com/tikv/pd/pull/2907) [#2906](https://github.com/tikv/pd/pull/2906) [#2903](https://github.com/tikv/pd/pull/2903) [#2806](https://github.com/tikv/pd/pull/2806) [#2900](https://github.com/tikv/pd/pull/2900) [#2902](https://github.com/tikv/pd/pull/2902)
 
 ## 优化提升
 
