@@ -109,6 +109,10 @@ If you want to add a TiDB node to the `10.0.1.5` host, take the following steps.
     tiup cluster scale-out <cluster-name> scale-out.yaml
     ```
 
+    > **Note:**
+    >
+    > The command above is based on the assumption that the mutual trust has been configured for the user to execute the command and the new machine. If the mutual trust cannot be configured, use the `-p` option to enter the password of the new machine, or use the `-i` option to specify the private key file.
+
     If you see the `Scaled cluster <cluster-name> out successfully`, the scale-out operation is successfully completed.
 
 3. Check the cluster status:
@@ -163,6 +167,10 @@ If you want to add a TiFlash node to the `10.0.1.4` host, take the following ste
     tiup cluster scale-out <cluster-name> scale-out.yaml
     ```
 
+    > **Note:**
+    >
+    > The command above is based on the assumption that the mutual trust has been configured for the user to execute the command and the new machine. If the mutual trust cannot be configured, use the `-p` option to enter the password of the new machine, or use the `-i` option to specify the private key file.
+
 3. View the cluster status:
 
     {{< copyable "shell-regular" >}}
@@ -206,6 +214,10 @@ If you want to add two TiCDC nodes to the `10.0.1.3` and `10.0.1.4` hosts, take 
     ```shell
     tiup cluster scale-out <cluster-name> scale-out.yaml
     ```
+
+    > **Note:**
+    >
+    > The command above is based on the assumption that the mutual trust has been configured for the user to execute the command and the new machine. If the mutual trust cannot be configured, use the `-p` option to enter the password of the new machine, or use the `-i` option to specify the private key file.
 
 3. View the cluster status:
 
