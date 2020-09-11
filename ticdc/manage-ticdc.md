@@ -592,7 +592,7 @@ worker-num = 16
 # 支持 default、ts、rowid、table 四种分发器，分发规则如下：
 # - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
 # - ts：以行变更的 commitTs 做 hash 进行分发
-# - rowid：以选取的作为 HandleKey 的列名和列值做 hash 进行分发
+# - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行分发
 # - table：以表的 schema 名和 table 名做 hash 进行分发
 # matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [
