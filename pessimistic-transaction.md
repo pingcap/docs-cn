@@ -109,7 +109,7 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 pipelined = true
 ```
 
-## 常见问题	
+## 常见问题
 
 1. TiDB 日志出现 `pessimistic write conflict, retry statement`。
 
