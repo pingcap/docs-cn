@@ -61,13 +61,28 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
 - `key`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 
+## 使用 TiUP 升级 TiCDC
+
+本部分介绍如何使用 TiUP 来升级开启 TiCDC 的集群。在以下例子中，假设需要将 TiCDC 和集群升级到 v4.0.6。
+
+```shell
+tiup update --self && \
+tiup update --all && \
+tiup cluster upgrade <cluster-name> v4.0.6
+```
+
+### 使用 TiUP 升级 TiCDC 的注意事项
+
+* TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
+* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#5-升级-faq)。
+
 ## 使用加密传输 (TLS) 功能
 
 请参阅[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
-以下内容介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
+本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
@@ -565,7 +580,7 @@ curl -X POST http://127.0.0.1:8300/capture/owner/move_table -d 'cf-id=cf060953-0
 
 ## 同步任务配置文件描述
 
-以下内容详细介绍了同步任务的配置。
+本部分详细介绍了同步任务的配置。
 
 ```toml
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
