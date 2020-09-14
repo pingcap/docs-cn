@@ -43,7 +43,7 @@ aliases: ['/docs-cn/stable/post-installation-check/','/docs-cn/v4.0/post-install
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -u root -h 10.0.1.4 -P 4000
+mysql -uroot -h 10.0.1.4 -P 4000
 ```
 
 输出下列信息表示登录成功：
