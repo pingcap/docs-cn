@@ -63,7 +63,9 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级开启 TiCDC 的集群。在以下例子中，假设需要将 TiCDC 和集群升级到 v4.0.6。
+本部分介绍如何使用 TiUP 来升级并开启 TiCDC 的集群。在以下例子中，假设需要将 TiCDC 和集群升级到 v4.0.6。
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
@@ -71,7 +73,7 @@ tiup update --all && \
 tiup cluster upgrade <cluster-name> v4.0.6
 ```
 
-### 使用 TiUP 升级 TiCDC 的注意事项
+### 升级的注意事项
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
 * 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#5-升级-faq)。
