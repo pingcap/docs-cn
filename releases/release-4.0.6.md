@@ -25,7 +25,6 @@ TiDB 版本：4.0.6
 + Tools
 
     + TiCDC
-
         - 支持输出 maxwell 格式的数据 [#869](https://github.com/pingcap/ticdc/pull/869)
 
 ## 优化提升
@@ -72,78 +71,83 @@ TiDB 版本：4.0.6
 + Tools
 
     + TiCDC
-
         - 在初始化阶段跳过 resolved lock [#910](https://github.com/pingcap/ticdc/pull/910)
         - 减少写 PD 的频率 [#937](https://github.com/pingcap/ticdc/pull/937)
 
     + Backup & Restore (BR)
-
         - 在 Summary 中添加真实消耗的时间 [#486](https://github.com/pingcap/br/issues/486)
 
     + Dumpling
-
         - 支持输出带有列名的 `INSERT` 语句 [#135](https://github.com/pingcap/dumpling/pull/135)
         - 将 `--filesize` 和 `--statement-size` 参数与 mydumper 保持统一 [#142](https://github.com/pingcap/dumpling/pull/142)
 
     + TiDB Lightning
-
         - Split 的 Region 大小更加精确 [#369](https://github.com/pingcap/tidb-lightning/pull/369)
 
     + TiDB Binlog
-
         - 支持以 go time 的格式设置 GC 时间 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
 
 ## Bug 修复
 
 + TiDB
 
-    - 修复了在 Metric Profile 中 tikv_cop_wait time 的一个问题 [#19881](https://github.com/pingcap/tidb/pull/19881)
+    - 修复了在 Metric Profile 中 `tikv_cop_wait` time 的一个问题 [#19881](https://github.com/pingcap/tidb/pull/19881)
     - 修复了 `SHOW GRANTS` 显示错误结果的问题 [#19834](https://github.com/pingcap/tidb/pull/19834)
     - 修复了使用 `!= ALL (subq)` 查询结果不正确的问题 [#19831](https://github.com/pingcap/tidb/pull/19831)
     - 修复了转换 enum 和 set 类型的一个问题 [#19778](https://github.com/pingcap/tidb/pull/19778)
-    - 增加了 `SHOW STATS_META`, `SHOW STATS_BUCKET` 的一个权限检查 [#19760](https://github.com/pingcap/tidb/pull/19760)
+    - 增加了 `SHOW STATS_META`、`SHOW STATS_BUCKET` 的一个权限检查 [#19760](https://github.com/pingcap/tidb/pull/19760)
     - 修复了由 `builtinGreatestStringSig` 和 `builtinLeastStringSig` 引起的列长度不匹配问题 [#19758](https://github.com/pingcap/tidb/pull/19758)
     - 退回到向量化控制的表达式 [#19749](https://github.com/pingcap/tidb/pull/19749)
     - 修复了在相关列类型是 `Bit` 时 `Apply` 算子出现错误的问题 [#19692](https://github.com/pingcap/tidb/pull/19692)
-    - 修复了在 MySQL8 客户端中查询 processlist 和 cluster_log 时出现的问题 [#19690](https://github.com/pingcap/tidb/pull/19690)
+    - 修复了在 MySQL 8.0 客户端中查询 processlist 和 cluster_log 时出现的问题 [#19690](https://github.com/pingcap/tidb/pull/19690)
     - 修复了相同类型的 plan 具有不同类型的 plan digest [#19684](https://github.com/pingcap/tidb/pull/19684)
     - 禁止从 `Decimal` to `Int` 变更列类型 [#19682](https://github.com/pingcap/tidb/pull/19682)
     - 修复了 `SELECT ... INTO OUTFILE` 返回运行时错误的问题 [#19672](https://github.com/pingcap/tidb/pull/19672)
     - 修复了 `builtinRealIsFalseSig` 的不正确的实现 [#19670](https://github.com/pingcap/tidb/pull/19670)
-    - 修复了分区表达式检查缺少了括号表达式 [#19614](https://github.com/pingcap/tidb/pull/19614)
+    - 修复了分区表达式检查缺少括号表达式的问题 [#19614](https://github.com/pingcap/tidb/pull/19614)
     - 修复了当在 `HashJoin` 上具有 `Apply` 算子时的查询错误 [#19611](https://github.com/pingcap/tidb/pull/19611)
     - 修复了向量化将 `Real` cast 成 `Time` 类型时的错误的结果 [#19594](https://github.com/pingcap/tidb/pull/19594)
-    - 修复了 `SHOW GRANTS` 可以显示不存在用户的 grants 信息 [#19588](https://github.com/pingcap/tidb/pull/19588)
+    - 修复了 `SHOW GRANTS` 可以显示不存在用户的 grants 信息的错误 [#19588](https://github.com/pingcap/tidb/pull/19588)
     - 修复了当在 `IndexLookupJoin` 上具有 `Apply` 算子时的查询错误 [#19566](https://github.com/pingcap/tidb/pull/19566)
     - 修复了当在分区表上将 `Apply` 转化成 `HashJoin` 时的错误结果 [#19546](https://github.com/pingcap/tidb/pull/19546)
     - 修复了当在 `Apply` 的 inner 端具有 `IndexLookUp` 算子时的错误结果 [#19508](https://github.com/pingcap/tidb/pull/19508)
     - 修复了使用视图时非预期的 panic [#19491](https://github.com/pingcap/tidb/pull/19491)
     - 修复了 `anti-semi-join` 查询时的不正确结果 [#19477](https://github.com/pingcap/tidb/pull/19477)
-    - 修复了删除统计信息时候应该删除 topN 的统计信息 [#19465](https://github.com/pingcap/tidb/pull/19465)
+    - 修复了删除统计信息时应该删除 topN 的统计信息 [#19465](https://github.com/pingcap/tidb/pull/19465)
     - 修复了因错误使用 batch point get 时产生的错误结果 [#19460](https://github.com/pingcap/tidb/pull/19460)
     - 修复了在带有虚拟生成列的 `IndexLookupJoin` 上无法找到列的错误 [#19439](https://github.com/pingcap/tidb/pull/19439)
     - 修复了在 select 和 update 查询上的不同计划比较 datum 的错误 [#19403](https://github.com/pingcap/tidb/pull/19403)
-    - 修复了 tiflash 在 region cache 上产生的 work index 数据争用 [#19362](https://github.com/pingcap/tidb/pull/19362)
-    - 修复了 logarithm 函数 [#19291](https://github.com/pingcap/tidb/pull/19291)
+    - 修复了 TiFlash 在 region cache 上产生的 work index 数据争用 [#19362](https://github.com/pingcap/tidb/pull/19362)
+    - 修复了 `logarithm` 函数不返回 warning 的错误 [#19291](https://github.com/pingcap/tidb/pull/19291)
     - 修复了当使用 TiDB 落盘时产生的非预期错误 [#19272](https://github.com/pingcap/tidb/pull/19272)
     - 支持在 index join 的 inner 端使用单个分区表 [#19197](https://github.com/pingcap/tidb/pull/19197)
     - 修复了对 decimal 产生的错误的 hash 键值 [#19188](https://github.com/pingcap/tidb/pull/19188)
-    - 修复了当了 table endKey 和 region endKey 相同时 TiDB 会产生 no regions 的错误 [#19895](https://github.com/pingcap/tidb/pull/19895)
+    - 修复了当 table endKey 和 region endKey 相同时 TiDB 会产生 no regions 的错误 [#19895](https://github.com/pingcap/tidb/pull/19895)
     - 修复了 alter partition 的非预期成功 [#19891](https://github.com/pingcap/tidb/pull/19891)
     - 修复了在下推表达式上，默认最大允许的包长的错误 [#19876](https://github.com/pingcap/tidb/pull/19876)
-    - 修复了在 `ENUM/SET` 列上 `Max/Min` 函数的错误行为 [#19869](https://github.com/pingcap/tidb/pull/19869)
-    - 修复了当 tiflash 节点下线之后，`tiflash_segments` 和 `tiflash_tables` 系统表的读取失败 [#19748](https://github.com/pingcap/tidb/pull/19748)
+    - 修复了在 `ENUM`/`SET` 列上 `Max`/`Min` 函数的错误行为 [#19869](https://github.com/pingcap/tidb/pull/19869)
+    - 修复了当部分 TiFlash 节点下线之后，`tiflash_segments` 和 `tiflash_tables` 系统表读取失败的问题 [#19748](https://github.com/pingcap/tidb/pull/19748)
     - 修复了 `Count()` 聚集函数的错误结果 [#19628](https://github.com/pingcap/tidb/pull/19628)
     - 修复了 `TRUNCATE` 操作的运行时错误 [#19445](https://github.com/pingcap/tidb/pull/19445)
-    - 修复了 `PREPARE` statement FROM `@Var` 语句在 `Var` 包含大写字符时候会失败的错误 [#19378](https://github.com/pingcap/tidb/pull/19378)
+    - 修复了 `PREPARE statement FROM @Var` 语句在 `Var` 包含大写字符时候会失败的错误 [#19378](https://github.com/pingcap/tidb/pull/19378)
     - 修复了在具有大写表名的表上修改 charset 会产生 panic 的错误 [#19302](https://github.com/pingcap/tidb/pull/19302)
-    - 修复了当在包含 `tikv/fiflash` 信息时，`information_schema.statements_summary` 和 `explain` 计划的不一致性 [#19159](https://github.com/pingcap/tidb/pull/19159)
+    - 修复了当在包含 `tikv/tiflash` 信息时，`information_schema.statements_summary` 和 `explain` 计划的不一致性 [#19159](https://github.com/pingcap/tidb/pull/19159)
     - 修复了在测试中 `select into outfile` 出现文件不存在的错误 [#19725](https://github.com/pingcap/tidb/pull/19725)
-    - 修复了 `INFORMATION_SCHEMA.CLUSTER_HARDWARE` 不含有 raid 设备信息 [#19457](https://github.com/pingcap/tidb/pull/19457)
-    - 修复使具有 `case-when` 表达式生成列的索引添加操作在遇到 parse 错误时候能够正常退出 [#19395](https://github.com/pingcap/tidb/pull/19395)
-    - 修复使 DDL 避免长时间重试 [#19488](https://github.com/pingcap/tidb/pull/19488)
-    - 修复使 `alter table db.t1 add constraint fk foreign key (c2) references t2(c1)` 语句执行不需要先执行 `use db` [#19471](https://github.com/pingcap/tidb/pull/19471)
+    - 修复了 `INFORMATION_SCHEMA.CLUSTER_HARDWARE` 不含有 raid 设备信息的问题 [#19457](https://github.com/pingcap/tidb/pull/19457)
+    - 修复使具有 `case-when` 表达式生成列的索引添加操作在遇到 parse 错误时能够正常退出 [#19395](https://github.com/pingcap/tidb/pull/19395)
+    - 修复 DDL 长时间重试的错误 [#19488](https://github.com/pingcap/tidb/pull/19488)
+    - 修复错误，使 `alter table db.t1 add constraint fk foreign key (c2) references t2(c1)` 语句执行不需要先执行 `use db` [#19471](https://github.com/pingcap/tidb/pull/19471)
     - 修复使日志文件中 dispatch errors 从 Error 形式转变为 Info 信息 [#19454](https://github.com/pingcap/tidb/pull/19454)
+
++ TiKV
+
+    - 修复开启 collation 时对于非 index 列统计信息估算错误的问题 [#8620](https://github.com/tikv/tikv/pull/8620)
+    - 修复当迁移 region 时 green GC 可能错过 lock 的问题 [#8460](https://github.com/tikv/tikv/pull/8460)
+    - 修复 CDC 不合理的 resolved TS 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
+    - 修复 TiKV 在极端繁忙下 conf change 可能 panic 的问题 [#8497](https://github.com/tikv/tikv/pull/8497)
+    - 修复 PD client 和其他线程发起 PD sync requests 可能导致死锁的问题 [#8612](https://github.com/tikv/tikv/pull/8612)
+    - 升级 jemalloc 到 5.2.1 以解决 huge page 的内存分配问题 [#8463](https://github.com/tikv/tikv/pull/8463)
+    - 修复 unified thread pool 可能停止工作的问题 [#8427](https://github.com/tikv/tikv/pull/8427)
 
 + PD
 
@@ -151,16 +155,6 @@ TiDB 版本：4.0.6
     - 修正自动模式下 store limit 的单位 [#2826](https://github.com/pingcap/pd/pull/2826)
     - 添加对于 scheduler 持久化时引发的错误的处理 [#2818](https://github.com/tikv/pd/pull/2818)
     - 修复 scheduler 的 http 接口的返回结果可能为空的问题 [#2871](https://github.com/tikv/pd/pull/2871) [#2874](https://github.com/tikv/pd/pull/2874)
-
-+ TiKV
-
-    - 修复开启 collation 时对于非 index 列统计信息估算错误的问题 [#8620](https://github.com/tikv/tikv/pull/8620)
-    - 修复当迁移 region 时 green GC 可能错过 lock 的问题 [#8460](https://github.com/tikv/tikv/pull/8460)
-    - 修复 CDC 不合理的 resloved TS 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
-    - 修复 TiKV 在极端繁忙下 conf change 可能 panic 的问题 [#8497](https://github.com/tikv/tikv/pull/8497)
-    - 修复 PD client 和其他线程发起 PD sync requests 可能导致死锁的问题 [#8612](https://github.com/tikv/tikv/pull/8612)
-    - 升级 jemalloc 到 5.2.1 以解决 huge page 的内存分配问题 [#8463](https://github.com/tikv/tikv/pull/8463)
-    - 修复 unified thread pool 可能停止工作的问题 [#8427](https://github.com/tikv/tikv/pull/8427)
 
 + TiFlash
 
@@ -175,22 +169,18 @@ TiDB 版本：4.0.6
 + Tools
 
     + TiCDC
-
         - 解决某些场景下内存泄露的问题 [#942](https://github.com/pingcap/ticdc/pull/942)
         - 解决 Kafka sink 可能会出现的异常退出的问题 [#912](https://github.com/pingcap/ticdc/pull/912)
         - 解决 CRTs 小于 resolved ts 而异常退出的问题 [#927](https://github.com/pingcap/ticdc/pull/927)
         - 解决同步任务可能卡在 MySQL 上的问题 [#936](https://github.com/pingcap/ticdc/pull/936)
 
     + BR
-
         - 解决数据校验期间可能出现的异常退出的问题 [#479](https://github.com/pingcap/br/pull/479)
         - 解决 PD leader 切换后可能出现的异常退出的问题 [#496](https://github.com/pingcap/br/pull/496)
 
     + Dumpling
-
         - 解决 binary 类型的 NULL 值没有被正确处理的问题 [#137](https://github.com/pingcap/dumpling/pull/137)
 
     + TiDB Lightning
-
         - 解决 write 和 ingest 失败后依旧显示成功的问题 [#381](https://github.com/pingcap/tidb-lightning/pull/381)
         - 解决写 checkpoint 不及时的问题 [#386](https://github.com/pingcap/tidb-lightning/pull/386)
