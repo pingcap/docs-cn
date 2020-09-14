@@ -143,6 +143,8 @@ TiDB 版本：4.0.6
     - 修复 CDC 不合理的 resloved TS 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
     - 修复 TiKV 在极端繁忙下 conf change 可能 panic 的问题 [#8497](https://github.com/tikv/tikv/pull/8497)
     - 修复 PD client 和其他线程发起 PD sync requests 可能导致死锁的问题 [#8612](https://github.com/tikv/tikv/pull/8612)
+    - 升级 jemalloc 到 5.2.1 以解决 huge page 的内存分配问题 [#8463](https://github.com/tikv/tikv/pull/8463)
+    - 修复 unified thread pool 可能停止工作的问题 [#8427](https://github.com/tikv/tikv/pull/8427)
 
 + TiFlash
 
