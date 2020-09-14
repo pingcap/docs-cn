@@ -454,7 +454,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PAD
 
 在推断排序规则时，TiDB 优先使用 coercibility 值较低的表达式的排序规则。如果 coercibility 值相同，则按以下优先级确定排序规则：
 
-binary > utf8mb4_bin > (utf8mb4_general_ci, utf8mb4_unicode_ci) > utf8_bin > (utf8_general_ci, utf8_unicode_ci) > latin1_bin > ascii_bin
+binary > utf8mb4_bin > (utf8mb4_general_ci = utf8mb4_unicode_ci) > utf8_bin > (utf8_general_ci = utf8_unicode_ci) > latin1_bin > ascii_bin
 
 以下情况 TiDB 无法推断排序规则并报错：
 
