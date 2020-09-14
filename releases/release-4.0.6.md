@@ -8,17 +8,7 @@ title: TiDB 4.0.6 Release Notes
 
 TiDB 版本：4.0.6
 
-## 兼容性变化
-
-+ TiDB
-
-    - 
-
 ## 新功能
-
-+ TiDB
-
-    - 
 
 + TiDB Dashboard
 
@@ -51,13 +41,13 @@ TiDB 版本：4.0.6
     - 添加 `TiDB-Runtime` dashboard [#19396](https://github.com/pingcap/tidb/pull/19396)
     - 提升 ALTER TABLE ALGORITHMS 的兼容性 [#19364](https://github.com/pingcap/tidb/pull/19364)
     - 在慢日志的计划字段中加入编码好的 insert/delete/update 计划 [#19269](https://github.com/pingcap/tidb/pull/19269)
+
 + PD
+
     - 添加更多关于 store 和 region 心跳的 metrics [#2891](https://github.com/tikv/pd/pull/2891)
     - 升级 Dashboard 到 v2020.09.08.1 [#2928](https://github.com/pingcap/pd/pull/2928)
     - 回滚空间不足的阈值策略 [#2875](https://github.com/pingcap/pd/pull/2875)
     - 支持标准错误码 [#2918](https://github.com/tikv/pd/pull/2918) [#2911](https://github.com/tikv/pd/pull/2911) [#2913](https://github.com/tikv/pd/pull/2913) [#2915](https://github.com/tikv/pd/pull/2915) [#2912](https://github.com/tikv/pd/pull/2912) [#2907](https://github.com/tikv/pd/pull/2907) [#2906](https://github.com/tikv/pd/pull/2906) [#2903](https://github.com/tikv/pd/pull/2903) [#2806](https://github.com/tikv/pd/pull/2806) [#2900](https://github.com/tikv/pd/pull/2900) [#2902](https://github.com/tikv/pd/pull/2902)
-
-    - 
 
 + TiKV
 
@@ -73,13 +63,16 @@ TiDB 版本：4.0.6
 + Tools
 
     + TiCDC
+
         - 在初始化阶段跳过 resolved lock [#910](https://github.com/pingcap/ticdc/pull/910)
         - 减少写 PD 的频率 [#937](https://github.com/pingcap/ticdc/pull/937)
 
     + Backup & Restore (BR)
+
         - 在 Summary 中添加真实消耗的时间 [#486](https://github.com/pingcap/br/issues/486)
 
     + Dumpling
+
         - 支持输出带有列明的 `INSERT` 语句 [#135](https://github.com/pingcap/dumpling/pull/135)
         - 将 `--filesize` 和 `--statement-size` 参数与 mydumper 保持统一 [#142](https://github.com/pingcap/dumpling/pull/142)
 
@@ -88,6 +81,7 @@ TiDB 版本：4.0.6
         - Split 的 Region 大小更加精确 [#369](https://github.com/pingcap/tidb-lightning/pull/369)
 
     + TiDB-Binlog
+
         - 支持以 go time 的格式设置 GC 时间 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
 
 ## Bug 修复
@@ -141,7 +135,9 @@ TiDB 版本：4.0.6
     - 修复使 DDL 避免长时间重试 [#19488](https://github.com/pingcap/tidb/pull/19488)
     - 修复使 `alter table db.t1 add constraint fk foreign key (c2) references t2(c1)` 语句执行不需要先执行 `use db` [#19471](https://github.com/pingcap/tidb/pull/19471)
     - 修复使日志文件中 dispatch errors 从 Error 形式转变为 Info 信息 [#19454](https://github.com/pingcap/tidb/pull/19454)
+
 + PD
+
     - 添加 `initial-cluster-token` 配置避免启动时 cluster 之间的通信 [#2922](https://github.com/pingcap/pd/pull/2922)
     - 修正自动模式下 store limit 的单位 [#2826](https://github.com/pingcap/pd/pull/2826)
     - 添加对于 scheduler 持久化时引发的错误的处理 [#2818](https://github.com/tikv/pd/pull/2818)
@@ -163,13 +159,20 @@ TiDB 版本：4.0.6
 
 + Tools
 
+    + TiCDC
+
+        -
+
     + BR
+
         - 解决数据校验期间可能出现的异常退出的问题 [#479](https://github.com/pingcap/br/pull/479)
         - 解决 PD leader 切换后可能出现的异常退出的问题 [#496](https://github.com/pingcap/br/pull/496)
 
     + Dumpling
+
         - 解决 binary 类型的 NULL 值没有被正确处理的问题 [#137](https://github.com/pingcap/dumpling/pull/137)
 
     + TiDB Lightning
+
         - 解决 write 和 ingest 失败后依旧显示成功的问题 [#381](https://github.com/pingcap/tidb-lightning/pull/381)
         - 解决写 checkpoint 不及时的问题 [#386](https://github.com/pingcap/tidb-lightning/pull/386)
