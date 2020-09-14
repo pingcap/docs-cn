@@ -81,16 +81,22 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
     ```
     [
-            {
-                    "id": "6d92386a-73fc-43f3-89de-4e337a42b766",
-                    "is-owner": true
-            },
-            {
-                    "id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                    "is-owner": false
-            }
+      {
+        "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
+        "is-owner": true,
+        "address": "127.0.0.1:8300"
+      },
+      {
+        "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
+        "is-owner": false,
+        "address": "127.0.0.1:8301"
+      }
     ]
     ```
+
+    - `id`：服务进程的 ID。
+    - `is-owner`：表示该服务进程是否为 owner 节点。
+    - `address`：该服务进程对外提供接口的地址。
 
 ### 管理同步任务 (`changefeed`)
 
@@ -160,7 +166,7 @@ URI 中可配置的的参数如下：
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
 | `9092`               | 下游 Kafka 的连接端口                                          |
 | `cdc-test`           | 使用的 Kafka topic 名字                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.6.0`） |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
@@ -583,7 +589,11 @@ worker-num = 16
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
-# 支持 default、ts、rowid、table 四种分发器
+# 支持 default、ts、rowid、table 四种分发器，分发规则如下：
+# - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
+# - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
+# - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发
+# - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 # matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
