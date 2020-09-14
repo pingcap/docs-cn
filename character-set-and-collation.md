@@ -107,6 +107,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 +--------------------+---------+------+---------+----------+---------+
 | utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
 | utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
+| utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
 2 rows in set (0.00 sec)
 ```
@@ -415,9 +416,9 @@ select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled
 1 row in set (0.00 sec)
 ```
 
-Under the new framework, TiDB support the `utf8_general_ci` and `utf8mb4_general_ci` collations which are compatible with MySQL.
+Under the new framework, TiDB support the `utf8_general_ci`, `utf8mb4_general_ci`, `utf8_unicode_ci`, and `utf8mb4_unicode_ci` collations which are compatible with MySQL.
 
-When `utf8_general_ci` or `utf8mb4_general_ci` is used, the string comparison is case-insensitive and accent-insensitive. At the same time, TiDB also corrects the collation's `PADDING` behavior:
+When one of `utf8_general_ci`, `utf8mb4_general_ci`, `utf8_unicode_ci`, and `utf8mb4_unicode_ci` is used, the string comparison is case-insensitive and accent-insensitive. At the same time, TiDB also corrects the collation's `PADDING` behavior:
 
 {{< copyable "sql" >}}
 
@@ -441,7 +442,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB modifies the `
 If an expression involves multiple clauses of different collations, you need to infer the collation used in the calculation. The rules are as follows:
 
 + The coercibility value of the explicit `COLLATE` clause is `0`.
-+ If the collations of two strings are incompatible, the coercibility value of the concatenation of two strings with different collations is `1`. Currently, all implemented collations are compatible with each other.
++ If the collations of two strings are incompatible, the coercibility value of the concatenation of two strings with different collations is `1`.
 + The collation of the column, `CAST()`, `CONVERT()`, or `BINARY()` has a coercibility value of `2`.
 + The system constant (the string returned by `USER ()` or `VERSION ()`) has a coercibility value of `3`.
 + The coercibility value of constants is `4`.
@@ -450,9 +451,12 @@ If an expression involves multiple clauses of different collations, you need to 
 
 When inferring collations, TiDB prefers using the collation of expressions with lower coercibility values. If the coercibility values of two clauses are the same, the collation is determined according to the following priority:
 
-binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
+binary > utf8mb4_bin > (utf8mb4_general_ci = utf8mb4_unicode_ci) > utf8_bin > (utf8_general_ci = utf8_unicode_ci) > latin1_bin > ascii_bin
 
-If the collations of two clauses are different and the coercibility value of both clauses is `0`, TiDB cannot infer the collation and reports an error.
+TiDB cannot infer the collation and reports an error in the following situations:
+
+- If the collations of two clauses are different and the coercibility value of both clauses is `0`.
+- If the collations of two clauses are incompatible and the returned type of expression is `String`.
 
 ## `COLLATE` clause
 

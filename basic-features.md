@@ -26,7 +26,7 @@ This document introduces the basic features of TiDB.
 
 - Character sets: `UTF8`, `UTF8MB4`, `BINARY`, `ASCII`, `LATIN1`.
 
-- Collations: `UTF8MB4_GENERAL_CI`, `UTF8MB4_GENERAL_BIN`, `UTF8_GENERAL_CI`, `UTF8_GENERAL_BIN`, `BINARY`.
+- Collations: `UTF8MB4_GENERAL_CI`, `UTF8MB4_UNICODE_CI`, `UTF8MB4_GENERAL_BIN`, `UTF8_GENERAL_CI`, `UTF8_UNICODE_CI`, `UTF8_GENERAL_BIN`, `BINARY`.
 
 ## Functions
 
