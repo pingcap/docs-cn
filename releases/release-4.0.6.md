@@ -162,7 +162,10 @@ TiDB 版本：4.0.6
 
     + TiCDC
 
-        -
+        - 解决某些场景下内存泄露的问题 [#942](https://github.com/pingcap/ticdc/pull/942)
+        - 解决 Kafka sink 可能会出现的异常退出的问题 [#912](https://github.com/pingcap/ticdc/pull/912)
+        - 解决 CRTs 小于 resolved ts 而异常退出的问题 [#927](https://github.com/pingcap/ticdc/pull/927)
+        - 解决同步任务可能卡在 MySQL 上的问题 [#936](https://github.com/pingcap/ticdc/pull/936)
 
     + BR
 
