@@ -5,7 +5,13 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 
 # 系统变量
 
-TiDB 系统变量的行为与 MySQL 相似，变量的作用范围可以是全局范围有效（Global Scope）或会话级别有效（Session Scope），也可以是全局及会话级别均有效。对 `GLOBAL` 作用域变量的更改，**只适用于**新增的 TiDB 连接。使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局或会话级别。
+TiDB 系统变量的行为与 MySQL 相似但有一些不同，变量的作用范围可以是全局范围有效 (Global Scope)、实例级别有效 (Instance Scope) 或会话级别有效 (Session Scope)，或组合了上述多个范围。其中：
+
+- 对 `GLOBAL` 作用域变量的更改，设置后**只对新 TiDB 连接会话生效**，当前活动连接会话不受影响。更改会被持久化，重启后仍然生效。
+
+- 对 `INSTANCE` 作用域变量的更改，设置后会立即对当前 TiDB 实例所有活动连接会话或新连接会话生效，其他 TiDB 实例不生效。更改**不会**被持久化，重启 TiDB 后会**失效**。
+
+使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局级别、实例级别或会话级别。
 
 ```sql
 # 以下两个语句等价地改变一个 Session 变量
@@ -32,13 +38,13 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
 
-- 作用域：SESSION（v4.0.4 开始为 SESSION | GLOBAL）
+- 作用域：SESSION（v4.0.5 开始为 SESSION | GLOBAL）
 - 默认值：0
 - 是否允许在 `INSERT` 语句中显式指定含有 `AUTO_RANDOM` 属性的列的值，`1` 为允许，`0` 为不允许。
 
 ### `ddl_slow_threshold`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：300
 - 耗时超过该阈值的 DDL 操作会被输出到日志，单位为毫秒。
 
@@ -178,7 +184,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_check_mb4_value_in_utf8`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
 - 如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade-faq.md)。
@@ -347,7 +353,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_enable_slow_log`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用于控制是否开启 slow log 功能，默认开启。
 
@@ -424,20 +430,20 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_expensive_query_time_threshold`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：60
 - 这个变量用来控制打印 expensive query 日志的阈值时间，单位是秒，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
 
 ### `tidb_force_priority`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：`NO_PRIORITY`
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
 ### `tidb_general_log`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：0
 - 这个变量用来设置是否在日志里记录所有的 SQL 语句。
 
@@ -733,7 +739,7 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_query_log_max_len`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：4096 (bytes)
 - 最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
 
@@ -747,13 +753,13 @@ set tidb_query_log_max_len = 20;
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：0
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
 
 ### `tidb_record_plan_in_slow_log`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用于控制是否在 slow log 里包含慢查询的执行计划。
 
@@ -825,11 +831,11 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_slow_log_threshold`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 
 - 默认值：300
 
-- 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300ms。
+- 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300 ms。
 
 示例：
 
@@ -838,6 +844,24 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ```sql
 set tidb_slow_log_threshold = 200;
 ```
+
+### `tidb_enable_collect_execution_info`
+
+- 作用域：INSTANCE
+
+- 默认值：1
+
+- 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
+
+### `tidb_log_desensitization`
+
+- 作用域：GLOBAL
+
+- 默认值：0
+
+- 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
+
+- 将该变量设置为 `1` 即开启后，假设执行的 SQL 为 `insert into t values (1,2)`，在日志中记录的 SQL 会是 `insert into t values (?,?)`，即用户输入的信息被遮蔽。
 
 ### `tidb_slow_query_file`
 
@@ -897,7 +921,7 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：INSTANCE | GLOBAL
 
 - 默认值: 0
 
