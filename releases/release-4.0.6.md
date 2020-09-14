@@ -9,6 +9,7 @@ title: TiDB 4.0.6 Release Notes
 TiDB 版本：4.0.6
 
 ## 新功能
+
 + TiFlash
 
     - 在 TiFlash 中支持在广播 Join 中使用外连接
@@ -34,7 +35,7 @@ TiDB 版本：4.0.6
     - 使用标准错误替换 TiDB 中的错误码和错误信息 [#19888](https://github.com/pingcap/tidb/pull/19888)
     - 提升分区表的写性能 [#19649](https://github.com/pingcap/tidb/pull/19649)
     - 在 Cop Runtime 统计信息中记录更多的 RPC Runtime 信息 [#19264](https://github.com/pingcap/tidb/pull/19264)
-    - 禁止在 metrics_schema 和 performance_schema 中创建表 [#19792](https://github.com/pingcap/tidb/pull/19792)
+    - 禁止在 `metrics_schema` 和 `performance_schema` 中创建表 [#19792](https://github.com/pingcap/tidb/pull/19792)
     - 支持调整 Union 执行算子的并发度 [#19886](https://github.com/pingcap/tidb/pull/19886)
     - 支持在广播 Join 中使用外连接 [#19664](https://github.com/pingcap/tidb/pull/19664)
     - 添加对 process list 的 digest [#19829](https://github.com/pingcap/tidb/pull/19829)
@@ -46,13 +47,6 @@ TiDB 版本：4.0.6
     - 提升 ALTER TABLE ALGORITHMS 的兼容性 [#19364](https://github.com/pingcap/tidb/pull/19364)
     - 在慢日志的计划字段中加入编码好的 insert/delete/update 计划 [#19269](https://github.com/pingcap/tidb/pull/19269)
 
-+ PD
-
-    - 添加更多关于 store 和 region 心跳的 metrics [#2891](https://github.com/tikv/pd/pull/2891)
-    - 升级 Dashboard 到 v2020.09.08.1 [#2928](https://github.com/pingcap/pd/pull/2928)
-    - 回滚空间不足的阈值策略 [#2875](https://github.com/pingcap/pd/pull/2875)
-    - 支持标准错误码 [#2918](https://github.com/tikv/pd/pull/2918) [#2911](https://github.com/tikv/pd/pull/2911) [#2913](https://github.com/tikv/pd/pull/2913) [#2915](https://github.com/tikv/pd/pull/2915) [#2912](https://github.com/tikv/pd/pull/2912) [#2907](https://github.com/tikv/pd/pull/2907) [#2906](https://github.com/tikv/pd/pull/2906) [#2903](https://github.com/tikv/pd/pull/2903) [#2806](https://github.com/tikv/pd/pull/2806) [#2900](https://github.com/tikv/pd/pull/2900) [#2902](https://github.com/tikv/pd/pull/2902)
-
 + TiKV
 
     - 优化 DropTable/TruncateTable 时导致的性能下降 [#8627](https://github.com/tikv/tikv/pull/8627)
@@ -60,9 +54,16 @@ TiDB 版本：4.0.6
     - scan detail 中增加 tombstone 个数的 metrics [#8618](https://github.com/tikv/tikv/pull/8618)
     - 添加 rocksdb perf context metrics 面版 [#8467](https://github.com/tikv/tikv/pull/8467)
 
++ PD
+
+    - 升级 Dashboard 到 v2020.09.08.1 [#2928](https://github.com/pingcap/pd/pull/2928)
+    - 添加更多关于 store 和 region 心跳的 metrics [#2891](https://github.com/tikv/pd/pull/2891)
+    - 回滚空间不足的阈值策略 [#2875](https://github.com/pingcap/pd/pull/2875)
+    - 支持标准错误码 [#2918](https://github.com/tikv/pd/pull/2918) [#2911](https://github.com/tikv/pd/pull/2911) [#2913](https://github.com/tikv/pd/pull/2913) [#2915](https://github.com/tikv/pd/pull/2915) [#2912](https://github.com/tikv/pd/pull/2912) [#2907](https://github.com/tikv/pd/pull/2907) [#2906](https://github.com/tikv/pd/pull/2906) [#2903](https://github.com/tikv/pd/pull/2903) [#2806](https://github.com/tikv/pd/pull/2806) [#2900](https://github.com/tikv/pd/pull/2900) [#2902](https://github.com/tikv/pd/pull/2902)
+
 + TiFlash
 
-    - 在 Grafana 中添加关于数据同步(apply Region snapshots, ingest SST files)的监控面板
+    - 在 Grafana 中添加关于数据同步 (apply Region snapshots, ingest SST files) 的监控面板
     - 在 Grafana 中添加关于 `write stall` 的监控面板
     - 添加 `dt_segment_force_merge_delta_rows` 及 `dt_segment_force_merge_delta_deletes` 用于调整阈值以避免 `write stall` 发生
     - 支持在 TiFlash-Proxy 中把 `raftstore.snap-handle-pool-size` 设为 `0` 以禁用多线程同步 Region snapshot，可降低同步数据时内存消耗
@@ -81,14 +82,14 @@ TiDB 版本：4.0.6
 
     + Dumpling
 
-        - 支持输出带有列明的 `INSERT` 语句 [#135](https://github.com/pingcap/dumpling/pull/135)
+        - 支持输出带有列名的 `INSERT` 语句 [#135](https://github.com/pingcap/dumpling/pull/135)
         - 将 `--filesize` 和 `--statement-size` 参数与 mydumper 保持统一 [#142](https://github.com/pingcap/dumpling/pull/142)
 
     + TiDB Lightning
 
         - Split 的 Region 大小更加精确 [#369](https://github.com/pingcap/tidb-lightning/pull/369)
 
-    + TiDB-Binlog
+    + TiDB Binlog
 
         - 支持以 go time 的格式设置 GC 时间 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
 
