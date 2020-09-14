@@ -106,6 +106,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 +--------------------+---------+------+---------+----------+---------+
 | utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
 | utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
+| utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
 2 rows in set (0.00 sec)
 ```
@@ -444,7 +445,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PAD
 如果一个表达式涉及多个不同排序规则的子表达式时，需要对计算时用的排序规则进行推断，规则如下：
 
 + 显式 `COLLATE` 子句的 coercibility 值为 `0`。
-+ 如果两个字符串的排序规则不兼容，这两个字符串 `concat` 结果的 coercibility 值为 `1`。目前所实现的排序规则都是互相兼容的。
++ 如果两个字符串的排序规则不兼容，这两个字符串 `concat` 结果的 coercibility 值为 `1`。
 + 列或者 `CAST()`、`CONVERT()` 和 `BINARY()` 的排序规则的 coercibility 值为 `2`。
 + 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 `3`。
 + 常量的 coercibility 值为 `4`。
@@ -453,9 +454,12 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PAD
 
 在推断排序规则时，TiDB 优先使用 coercibility 值较低的表达式的排序规则。如果 coercibility 值相同，则按以下优先级确定排序规则：
 
-binary > utf8mb4_bin > utf8mb4_general_ci > utf8_bin > utf8_general_ci > latin1_bin > ascii_bin
+binary > utf8mb4_bin > (utf8mb4_general_ci = utf8mb4_unicode_ci) > utf8_bin > (utf8_general_ci = utf8_unicode_ci) > latin1_bin > ascii_bin
 
-如果两个子表达式的排序规则不相同，而且表达式的 coercibility 值都为 `0` 时，TiDB 无法推断排序规则并报错。
+以下情况 TiDB 无法推断排序规则并报错：
+
+- 如果两个子表达式的排序规则不相同，而且表达式的 coercibility 值都为 `0`。
+- 如果两个子表达式的排序规则不兼容，而且表达式的返回类型为 `String` 类。
 
 ## `COLLATE` 子句
 
