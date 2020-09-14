@@ -10,11 +10,7 @@ aliases: ['/docs-cn/dev/mydumper-overview/','/docs-cn/dev/reference/tools/mydump
 
 > **警告：**
 >
-> Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
-
-[Mydumper](https://github.com/pingcap/mydumper) 是一个 fork 项目，可以用于对 **MySQL** 或者 **TiDB** 进行逻辑备份，并针对 TiDB 的特性进行了优化。
-
-Mydumper 包含在 tidb-enterprise-tools 安装包中，可[在此下载](/download-ecosystem-tools.md)。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代。Dumpling 工具使用 Go 语言编写，支持更多针对 TiDB 特性的优化。强烈建议切换到 Dumpling。
 
 ### 相比于普通的 Mydumper，此工具有哪些改进之处？
 
