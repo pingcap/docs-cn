@@ -273,7 +273,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_dml_batch_size
 
-- Scope: SESSION
+- Scope: SESSION | GLOBAL
 - Default value: 0
 - Example value: 20000
 - When this value is greater than `0`, TiDB will batch commit statements such as `INSERT` or `LOAD DATA` into smaller transactions. This reduces memory usage and helps ensure that the `txn-total-size-limit` is not reached by bulk modifications.
