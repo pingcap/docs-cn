@@ -129,7 +129,11 @@ TiDB 版本：4.0.6
     - 修复了在具有大写表名的表上修改 charset 会产生 panic 的错误 [#19302](https://github.com/pingcap/tidb/pull/19302)
     - 修复了当在包含 `tikv/fiflash` 信息时，`information_schema.statements_summary` 和 `explain` 计划的不一致性 [#19159](https://github.com/pingcap/tidb/pull/19159)
     - 修复了在测试中 `select into outfile` 出现文件不存在的错误 [#19725](https://github.com/pingcap/tidb/pull/19725)
-
+    - 修复了 `INFORMATION_SCHEMA.CLUSTER_HARDWARE` 不含有 raid 设备信息 [#19457](https://github.com/pingcap/tidb/pull/19457)
+    - 修复使具有 `case-when` 表达式生成列的索引添加操作在遇到 parse 错误时候能够正常退出 [#19395](https://github.com/pingcap/tidb/pull/19395)
+    - 修复使 DDL 避免长时间重试 [#19488](https://github.com/pingcap/tidb/pull/19488)
+    - 修复使 `alter table db.t1 add constraint fk foreign key (c2) references t2(c1)` 语句执行不需要先执行 `use db` [#19471](https://github.com/pingcap/tidb/pull/19471)
+    - 修复使日志文件中 dispatch errors 从 Error 形式转变为 Info 信息 [#19454](https://github.com/pingcap/tidb/pull/19454)
 + PD
     - 添加 `initial-cluster-token` 配置避免启动时 cluster 之间的通信 [#2922](https://github.com/pingcap/pd/pull/2922)
     - 修正自动模式下 store limit 的单位 [#2826](https://github.com/pingcap/pd/pull/2826)
