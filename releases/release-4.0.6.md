@@ -9,6 +9,9 @@ title: TiDB 4.0.6 Release Notes
 TiDB 版本：4.0.6
 
 ## 新功能
++ TiFlash
+
+    - 在 TiFlash 中支持在广播 Join 中使用外连接
 
 + TiDB Dashboard
 
