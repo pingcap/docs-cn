@@ -43,7 +43,14 @@ TiDB 版本：4.0.6
     - 禁止在 metrics_schema 和 performance_schema 中创建表 [#19792](https://github.com/pingcap/tidb/pull/19792)
     - 支持调整 Union 执行算子的并发度 [#19886](https://github.com/pingcap/tidb/pull/19886)
     - 支持在广播 Join 中使用外连接 [#19664](https://github.com/pingcap/tidb/pull/19664)
-
+    - 添加对 process list 的 digest [#19829](https://github.com/pingcap/tidb/pull/19829)
+    - 对于自动提交语句的重试转换到悲观锁模式 [#19796](https://github.com/pingcap/tidb/pull/19796)
+    - 在 `Str_to_date` 函数中支持 `%r`, `%T` 的数据格式 [#19693](https://github.com/pingcap/tidb/pull/19693)
+    - 使 `SELECT INTO OUTFILE` 需要文件权限 [#19577](https://github.com/pingcap/tidb/pull/19577)
+    - 支持 stddev_pop 函数 [#19541](https://github.com/pingcap/tidb/pull/19541)
+    - 添加 `TiDB-Runtime` dashboard [#19396](https://github.com/pingcap/tidb/pull/19396)
+    - 提升 ALTER TABLE ALGORITHMS 的兼容性 [#19364](https://github.com/pingcap/tidb/pull/19364)
+    - 在慢日志的计划字段中加入编码好的 insert/delete/update 计划 [#19269](https://github.com/pingcap/tidb/pull/19269)
 + PD
     - 添加更多关于 store 和 region 心跳的 metrics [#2891](https://github.com/tikv/pd/pull/2891)
     - 升级 Dashboard 到 v2020.09.08.1 [#2928](https://github.com/pingcap/pd/pull/2928)
