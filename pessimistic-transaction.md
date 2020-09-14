@@ -36,23 +36,31 @@ aliases: ['/docs-cn/v3.1/pessimistic-transaction/','/docs-cn/v3.1/reference/tran
 
 悲观事务的行为和 MySQL 基本一致（不一致之处详见[和 MySQL InnoDB 的差异](#和-mysql-innodb-的差异)）：
 
+<<<<<<< HEAD
 - `SELECT FOR UPDATE` 会读取已提交的最新数据，并对读取到的数据加悲观锁。
 
 - `UPDATE`、`DELETE` 和 `INSERT` 语句都会读取已提交的最新的数据来执行，并对修改的数据加悲观锁。
+=======
+- `UPDATE`、`DELETE` 或 `INSERT` 语句都会读取已提交的**最新**数据来执行，并对所修改的行加悲观锁。
 
-- 当一行数据被加了悲观锁以后，其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。
+- `SELECT FOR UPDATE` 语句会对已提交的**最新**的数据而非所修改的行加上悲观锁。
+>>>>>>> 6ee9cd5... pessimistic trx: cleanup wording (#4446)
 
-- 当一行数据被加了悲观锁以后，其他尝试读取这一行的事务不会被阻塞，可以读到已提交的数据。
+- 悲观锁会在事务提交或回滚时释放。其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。其他尝试*读取*这一行的事务不会被阻塞，因为 TiDB 采用多版本并发控制机制 (MVCC)。
 
-- 事务提交或回滚的时候，会释放所有的锁。
+- 如果多个事务尝试获取各自的锁，会出现死锁，并被检测器自动检测到。其中一个事务会被随机终止掉并返回兼容 MySQL 的错误码 `1213`。
 
-- 当有多个事务同时等待同一个锁释放时，会尽可能按照事务 start ts 顺序获取锁，但不能严格保证。
-
-- 如果并发事务出现死锁，会被死锁检测器检测到，随机终止掉其中一个事务并返回兼容 MySQL 的错误码 `1213`。
+- 通过 `innodb_lock_wait_timeout` 变量，设置事务等锁的超时时间（默认值为 `50`，单位为秒）。等锁超时后返回兼容 MySQL 的错误码 `1205`。如果多个事务同时等待同一个锁释放，会大致按照事务 `start ts` 顺序获取锁。
 
 - 乐观事务和悲观事务可以共存，事务可以任意指定使用乐观模式或悲观模式来执行。
 
+<<<<<<< HEAD
 - 通过设置 `innodb_lock_wait_timeout` 变量，设置等锁超时时间，等锁超时后返回兼容 MySQL 的错误码 `1205`。
+=======
+- 支持 `FOR UPDATE NOWAIT` 语法，遇到锁时不会阻塞等锁，而是返回兼容 MySQL 的错误码 `3572`。
+
+- 如果 `Point Get` 和 `Batch Point Get` 算子没有读到数据，依然会对给定的主键或者唯一键加锁，阻塞其他事务对相同主键唯一键加锁或者进行写入操作。
+>>>>>>> 6ee9cd5... pessimistic trx: cleanup wording (#4446)
 
 ## 和 MySQL InnoDB 的差异
 
@@ -76,6 +84,7 @@ aliases: ['/docs-cn/v3.1/pessimistic-transaction/','/docs-cn/v3.1/reference/tran
 
     自动提交的 select for update 语句也不会等锁。
 
+<<<<<<< HEAD
 ## 常见问题
 
 1. TiDB 日志出现 `pessimistic write conflict, retry statement`。
@@ -89,3 +98,33 @@ aliases: ['/docs-cn/v3.1/pessimistic-transaction/','/docs-cn/v3.1/reference/tran
 3. 悲观事务执行时间限制。
 
     除了有事务执行时间不能超出 `tikv_gc_life_time` 的限制外，悲观事务的 TTL 有 10 分钟上限，所以执行时间超过 10 分钟的悲观事务有可能提交失败。
+=======
+6. 对语句中 `EMBEDDED SELECT` 读到的相关数据不会加锁。
+
+7. 垃圾回收 (GC) 不会影响到正在执行的事务，但悲观事务的执行时间仍有上限，默认为 10 分钟，可通过 TiDB 配置文件 `[performance]` 类别下的 `max-txn-ttl` 修改。
+
+## 隔离级别
+
+TiDB 在悲观事务模式下支持了 2 种隔离级别：
+
+1. 默认使用与 MySQL 行为相同的[可重复读隔离级别 (Repeatable Read)](/transaction-isolation-levels.md#可重复读隔离级别-repeatable-read)。
+
+    > **注意：**
+    >
+    > 在这种隔离级别下，DML 操作会基于已提交的最新数据来执行，行为与 MySQL 相同，但与 TiDB 乐观事务不同，请参考[与 MySQL 可重复读隔离级别的区别](/transaction-isolation-levels.md#与-mysql-可重复读隔离级别的区别)。
+
+2. 使用 [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md) 语句可将隔离级别设置为[读已提交隔离级别 (Read Committed)](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
+
+## Pipelined 加锁流程
+
+加悲观锁需要向 TiKV 写入数据，要经过 Raft 提交并 apply 后才能返回，相比于乐观事务，不可避免的会增加部分延迟。为了降低加锁的开销，TiKV 实现了 pipelined 加锁流程：当数据满足加锁要求时，TiKV 立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率悲观锁异步写入失败，可能会导致悲观事务提交失败。
+
+![Pipelined pessimistic lock](/media/pessimistic-transaction-pipelining.png)
+
+该功能默认关闭，可修改 TiKV 配置启用：
+
+```toml
+[pessimistic-txn]
+pipelined = true
+```
+>>>>>>> 6ee9cd5... pessimistic trx: cleanup wording (#4446)
