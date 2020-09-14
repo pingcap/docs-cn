@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-* 临时表
+* 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * SYS schema
@@ -35,7 +35,6 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 列级权限 [#9766](https://github.com/pingcap/tidb/issues/9766)
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
 * `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
-* `CREATE TEMPORARY TABLE` 语法 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
 * `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
 * `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
