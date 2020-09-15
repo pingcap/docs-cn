@@ -150,7 +150,7 @@ TiDB 版本：4.0.6
 + TiKV
 
     - 修复开启 collation 时对于非 index 列统计信息估算错误的问题 [#8620](https://github.com/tikv/tikv/pull/8620)
-    - 修复当迁移 Region 时 green GC 可能错过 lock 的问题 [#8460](https://github.com/tikv/tikv/pull/8460)
+    - 修复当迁移 Region 时 Green GC 可能错过 lock 的问题 [#8460](https://github.com/tikv/tikv/pull/8460)
     - 修复 TiCDC 不合理的 Resolved Ts 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
     - 修复 TiKV 在极端繁忙下 conf change 可能 panic 的问题 [#8497](https://github.com/tikv/tikv/pull/8497)
     - 修复 PD client 和其他线程发起 PD sync requests 可能导致死锁的问题 [#8612](https://github.com/tikv/tikv/pull/8612)
