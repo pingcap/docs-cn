@@ -151,7 +151,6 @@ group by id, val;
 
 TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623](https://github.com/pingcap/tidb/issues/7623)。
 
-- `STD`, `STDDEV`, `STDDEV_POP`
 - `STDDEV_SAMP`
 - `VAR_SAMP`
 - `JSON_ARRAYAGG`
