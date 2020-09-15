@@ -12,6 +12,65 @@ aliases: ['/docs-cn/stable/faq/sql-faq/','/docs-cn/v4.0/faq/sql-faq/']
 
 详细可参考[系统变量](/system-variables.md)。
 
+## 省略 `ORDER BY` 条件时 TiDB 中返回结果的顺序与 MySQL 中的不一致
+
+这不是 bug。返回结果的顺序视不同情况而定，不保证顺序统一。
+
+MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单线程执行的。但升级到新版本后，查询计划也可能变化。无论是否期待返回结果有序，都推荐使用 `ORDER BY` 条件。
+
+[ISO/IEC 9075:1992, Database Language SQL- July 30, 1992](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt) 对此有如下表述：
+
+> If an `<order by clause>` is not specified, then the table specified by the `<cursor specification>` is T and the ordering of rows in T is implementation-dependent.（如果未指定 `<order by 条件>`，通过 `<cursor specification>` 指定的表为 T，那么 T 表中的行顺序视执行情况而定。）
+以下两条查询的结果都是合法的：
+
+```sql
+> select * from t;
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    2 |
++------+------+
+2 rows in set (0.00 sec)
+```
+
+```sql
+> select * from t; -- 不确定返回结果的顺序
++------+------+
+| a    | b    |
++------+------+
+|    2 |    2 |
+|    1 |    1 |
++------+------+
+2 rows in set (0.00 sec)
+```
+
+如果 `ORDER BY` 中使用的列不是唯一列，该语句就不确定返回结果的顺序。以下示例中，`a` 列有重复值，因此只有 `ORDER BY a, b` 能确定返回结果的顺序。
+
+```sql
+> select * from t order by a;
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    1 |
+|    2 |    2 |
++------+------+
+3 rows in set (0.00 sec)
+```
+
+```sql
+> select * from t order by a; -- 能确定 a 列的顺序，不确定 b 列的顺序
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    2 |
+|    2 |    1 |
++------+------+
+3 rows in set (0.00 sec)
+```
+
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
 支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
