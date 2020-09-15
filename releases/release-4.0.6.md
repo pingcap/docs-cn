@@ -25,6 +25,7 @@ TiDB 版本：4.0.6
 + Tools
 
     + TiCDC
+
         - 支持输出 maxwell 格式的数据 [#869](https://github.com/pingcap/ticdc/pull/869)
 
 ## 优化提升
@@ -58,7 +59,9 @@ TiDB 版本：4.0.6
     - 升级 Dashboard 到 v2020.09.08.1 [#2928](https://github.com/pingcap/pd/pull/2928)
     - 添加更多关于 store 和 region 心跳的 metrics [#2891](https://github.com/tikv/pd/pull/2891)
     - 回滚空间不足的阈值策略 [#2875](https://github.com/pingcap/pd/pull/2875)
-    - 支持标准错误码 [#2918](https://github.com/tikv/pd/pull/2918) [#2911](https://github.com/tikv/pd/pull/2911) [#2913](https://github.com/tikv/pd/pull/2913) [#2915](https://github.com/tikv/pd/pull/2915) [#2912](https://github.com/tikv/pd/pull/2912) [#2907](https://github.com/tikv/pd/pull/2907) [#2906](https://github.com/tikv/pd/pull/2906) [#2903](https://github.com/tikv/pd/pull/2903) [#2806](https://github.com/tikv/pd/pull/2806) [#2900](https://github.com/tikv/pd/pull/2900) [#2902](https://github.com/tikv/pd/pull/2902)
+    - 支持标准错误码
+        - [#2918](https://github.com/tikv/pd/pull/2918) [#2911](https://github.com/tikv/pd/pull/2911) [#2913](https://github.com/tikv/pd/pull/2913) [#2915](https://github.com/tikv/pd/pull/2915) [#2912](https://github.com/tikv/pd/pull/2912)
+        - [#2907](https://github.com/tikv/pd/pull/2907) [#2906](https://github.com/tikv/pd/pull/2906) [#2903](https://github.com/tikv/pd/pull/2903) [#2806](https://github.com/tikv/pd/pull/2806) [#2900](https://github.com/tikv/pd/pull/2900) [#2902](https://github.com/tikv/pd/pull/2902)
 
 + TiFlash
 
@@ -71,20 +74,25 @@ TiDB 版本：4.0.6
 + Tools
 
     + TiCDC
+
         - 在初始化阶段跳过 resolved lock [#910](https://github.com/pingcap/ticdc/pull/910)
         - 减少写 PD 的频率 [#937](https://github.com/pingcap/ticdc/pull/937)
 
     + Backup & Restore (BR)
+
         - 在 Summary 中添加真实消耗的时间 [#486](https://github.com/pingcap/br/issues/486)
 
     + Dumpling
+
         - 支持输出带有列名的 `INSERT` 语句 [#135](https://github.com/pingcap/dumpling/pull/135)
         - 将 `--filesize` 和 `--statement-size` 参数与 mydumper 保持统一 [#142](https://github.com/pingcap/dumpling/pull/142)
 
     + TiDB Lightning
+
         - Split 的 Region 大小更加精确 [#369](https://github.com/pingcap/tidb-lightning/pull/369)
 
     + TiDB Binlog
+
         - 支持以 go time 的格式设置 GC 时间 [#996](https://github.com/pingcap/tidb-binlog/pull/996)
 
 ## Bug 修复
@@ -142,7 +150,7 @@ TiDB 版本：4.0.6
 + TiKV
 
     - 修复开启 collation 时对于非 index 列统计信息估算错误的问题 [#8620](https://github.com/tikv/tikv/pull/8620)
-    - 修复当迁移 region 时 green GC 可能错过 lock 的问题 [#8460](https://github.com/tikv/tikv/pull/8460)
+    - 修复当迁移 Region 时 green GC 可能错过 lock 的问题 [#8460](https://github.com/tikv/tikv/pull/8460)
     - 修复 CDC 不合理的 resolved TS 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
     - 修复 TiKV 在极端繁忙下 conf change 可能 panic 的问题 [#8497](https://github.com/tikv/tikv/pull/8497)
     - 修复 PD client 和其他线程发起 PD sync requests 可能导致死锁的问题 [#8612](https://github.com/tikv/tikv/pull/8612)
@@ -169,18 +177,22 @@ TiDB 版本：4.0.6
 + Tools
 
     + TiCDC
+
         - 解决某些场景下内存泄露的问题 [#942](https://github.com/pingcap/ticdc/pull/942)
         - 解决 Kafka sink 可能会出现的异常退出的问题 [#912](https://github.com/pingcap/ticdc/pull/912)
         - 解决 CRTs 小于 resolved ts 而异常退出的问题 [#927](https://github.com/pingcap/ticdc/pull/927)
         - 解决同步任务可能卡在 MySQL 上的问题 [#936](https://github.com/pingcap/ticdc/pull/936)
 
-    + BR
+    + Backup & Restore (BR)
+
         - 解决数据校验期间可能出现的异常退出的问题 [#479](https://github.com/pingcap/br/pull/479)
         - 解决 PD leader 切换后可能出现的异常退出的问题 [#496](https://github.com/pingcap/br/pull/496)
 
     + Dumpling
+
         - 解决 binary 类型的 NULL 值没有被正确处理的问题 [#137](https://github.com/pingcap/dumpling/pull/137)
 
     + TiDB Lightning
+
         - 解决 write 和 ingest 失败后依旧显示成功的问题 [#381](https://github.com/pingcap/tidb-lightning/pull/381)
         - 解决写 checkpoint 不及时的问题 [#386](https://github.com/pingcap/tidb-lightning/pull/386)
