@@ -50,7 +50,7 @@ TiDB 版本：4.0.6
 + TiKV
 
     - 优化 DropTable/TruncateTable 时导致的性能下降 [#8627](https://github.com/tikv/tikv/pull/8627)
-    - 标准错误码支持生成 meta 文件 [#8619](https://github.com/tikv/tikv/pull/8619)
+    - 支持生成标准错误码的 meta 文件 [#8619](https://github.com/tikv/tikv/pull/8619)
     - scan detail 中增加 tombstone 个数的 metrics [#8618](https://github.com/tikv/tikv/pull/8618)
     - 添加 rocksdb perf context metrics 面版 [#8467](https://github.com/tikv/tikv/pull/8467)
 
@@ -151,7 +151,6 @@ TiDB 版本：4.0.6
 
     - 修复开启 collation 时对于非 index 列统计信息估算错误的问题 [#8620](https://github.com/tikv/tikv/pull/8620)
     - 修复当迁移 Region 时 Green GC 可能错过 lock 的问题 [#8460](https://github.com/tikv/tikv/pull/8460)
-    - 修复 TiCDC 不合理的 Resolved Ts 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
     - 修复 TiKV 在极端繁忙下 conf change 可能 panic 的问题 [#8497](https://github.com/tikv/tikv/pull/8497)
     - 修复 PD client 和其他线程发起 PD sync requests 可能导致死锁的问题 [#8612](https://github.com/tikv/tikv/pull/8612)
     - 升级 jemalloc 到 5.2.1 以解决 huge page 的内存分配问题 [#8463](https://github.com/tikv/tikv/pull/8463)
@@ -182,6 +181,7 @@ TiDB 版本：4.0.6
         - 解决 Kafka sink 可能会出现的异常退出的问题 [#912](https://github.com/pingcap/ticdc/pull/912)
         - 解决 CRTs 小于 Resolved Ts 而异常退出的问题 [#927](https://github.com/pingcap/ticdc/pull/927)
         - 解决同步任务可能卡在 MySQL 上的问题 [#936](https://github.com/pingcap/ticdc/pull/936)
+        - 修复 TiCDC 不合理的 Resolved Ts 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
 
     + Backup & Restore (BR)
 
