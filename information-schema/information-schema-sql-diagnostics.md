@@ -1,11 +1,7 @@
 ---
 title: SQL 诊断
 summary: 了解 SQL 诊断功能。
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/system-tables/system-table-sql-diagnostics/','/docs-cn/v4.0/system-tables/system-table-sql-diagnostics/','/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/','/zh/tidb/stable/check-cluster-status-using-sql-statements','/docs-cn/stable/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/stable/system-table-sql-diagnostics/']
-=======
-aliases: ['/docs-cn/dev/system-tables/system-table-sql-diagnostics/','/docs-cn/dev/reference/system-databases/sql-diagnosis/','/docs-cn/dev/system-tables/system-table-sql-diagnosis/','/zh/tidb/dev/check-cluster-status-using-sql-statements','/docs-cn/dev/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/dev/system-table-sql-diagnostics/','/docs-cn/dev/check-cluster-status-using-sql-statements/']
->>>>>>> 1b01e86... Add one alias to fix dead link (#4512)
+aliases: ['/docs-cn/stable/system-tables/system-table-sql-diagnostics/','/docs-cn/v4.0/system-tables/system-table-sql-diagnostics/','/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/','/zh/tidb/stable/check-cluster-status-using-sql-statements','/docs-cn/stable/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/stable/system-table-sql-diagnostics/','/docs-cn/stable/check-cluster-status-using-sql-statements/']
 ---
 
 # SQL 诊断
