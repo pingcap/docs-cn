@@ -105,7 +105,7 @@ TiDB 版本：4.0.6
     - 修复了转换 enum 和 set 类型的一个问题 [#19778](https://github.com/pingcap/tidb/pull/19778)
     - 增加了 `SHOW STATS_META`、`SHOW STATS_BUCKET` 的一个权限检查 [#19760](https://github.com/pingcap/tidb/pull/19760)
     - 修复了由 `builtinGreatestStringSig` 和 `builtinLeastStringSig` 引起的列长度不匹配问题 [#19758](https://github.com/pingcap/tidb/pull/19758)
-    - 退回到向量化控制的表达式 [#19749](https://github.com/pingcap/tidb/pull/19749)
+    - 如果向量化计算抛出多余的 errors 或者 warnings，回退向量化执行到标量执行 [#19749](https://github.com/pingcap/tidb/pull/19749)
     - 修复了在相关列类型是 `Bit` 时 `Apply` 算子出现错误的问题 [#19692](https://github.com/pingcap/tidb/pull/19692)
     - 修复了在 MySQL 8.0 客户端中查询 processlist 和 cluster_log 时出现的问题 [#19690](https://github.com/pingcap/tidb/pull/19690)
     - 修复了相同类型的 plan 具有不同类型的 plan digest 的错误 [#19684](https://github.com/pingcap/tidb/pull/19684)
@@ -151,7 +151,7 @@ TiDB 版本：4.0.6
 
     - 修复开启 collation 时对于非 index 列统计信息估算错误的问题 [#8620](https://github.com/tikv/tikv/pull/8620)
     - 修复当迁移 Region 时 Green GC 可能错过 lock 的问题 [#8460](https://github.com/tikv/tikv/pull/8460)
-    - 修复 TiKV 在极端繁忙下 conf change 可能 panic 的问题 [#8497](https://github.com/tikv/tikv/pull/8497)
+    - 修复 TiKV 在极端繁忙下 Raft 成员变更可能出现 panic 的问题 [#8497](https://github.com/tikv/tikv/pull/8497)
     - 修复 PD client 和其他线程发起 PD sync requests 可能导致死锁的问题 [#8612](https://github.com/tikv/tikv/pull/8612)
     - 升级 jemalloc 到 5.2.1 以解决 huge page 的内存分配问题 [#8463](https://github.com/tikv/tikv/pull/8463)
     - 修复 unified thread pool 可能停止工作的问题 [#8427](https://github.com/tikv/tikv/pull/8427)
