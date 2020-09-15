@@ -52,7 +52,7 @@ TiDB 版本：4.0.6
     - 优化 `DropTable`/`TruncateTable` 时导致的性能下降 [#8627](https://github.com/tikv/tikv/pull/8627)
     - 支持生成标准错误码的 meta 文件 [#8619](https://github.com/tikv/tikv/pull/8619)
     - **scan detail** 中增加 tombstone 个数的 metrics [#8618](https://github.com/tikv/tikv/pull/8618)
-    - 添加 **rocksdb perf context metrics** 面版 [#8467](https://github.com/tikv/tikv/pull/8467)
+    - 添加 **rocksdb perf context** 到 Grafana 默认面板 [#8467](https://github.com/tikv/tikv/pull/8467)
 
 + PD
 
