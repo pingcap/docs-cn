@@ -26,7 +26,7 @@ TiDB 版本：4.0.6
 
     + TiCDC
 
-        - 支持输出 maxwell 格式的数据 [#869](https://github.com/pingcap/ticdc/pull/869)
+        - 支持输出 `maxwell` 格式的数据 [#869](https://github.com/pingcap/ticdc/pull/869)
 
 ## 优化提升
 
@@ -40,24 +40,24 @@ TiDB 版本：4.0.6
     - 支持在广播 Join 中使用外连接 [#19664](https://github.com/pingcap/tidb/pull/19664)
     - 添加对 process list 的 digest [#19829](https://github.com/pingcap/tidb/pull/19829)
     - 对于自动提交语句的重试转换到悲观锁模式 [#19796](https://github.com/pingcap/tidb/pull/19796)
-    - 在 `Str_to_date` 函数中支持 `%r`, `%T` 的数据格式 [#19693](https://github.com/pingcap/tidb/pull/19693)
+    - 在 `Str_to_date` 函数中支持 `%r` 和 `%T` 的数据格式 [#19693](https://github.com/pingcap/tidb/pull/19693)
     - 使 `SELECT INTO OUTFILE` 需要文件权限 [#19577](https://github.com/pingcap/tidb/pull/19577)
-    - 支持 stddev_pop 函数 [#19541](https://github.com/pingcap/tidb/pull/19541)
-    - 添加 `TiDB-Runtime` dashboard [#19396](https://github.com/pingcap/tidb/pull/19396)
-    - 提升 ALTER TABLE ALGORITHMS 的兼容性 [#19364](https://github.com/pingcap/tidb/pull/19364)
-    - 在慢日志的计划字段中加入编码好的 insert/delete/update 计划 [#19269](https://github.com/pingcap/tidb/pull/19269)
+    - 支持 `stddev_pop` 函数 [#19541](https://github.com/pingcap/tidb/pull/19541)
+    - 添加 `TiDB-Runtime` 面板 [#19396](https://github.com/pingcap/tidb/pull/19396)
+    - 提升 `ALTER TABLE ALGORITHMS` 的兼容性 [#19364](https://github.com/pingcap/tidb/pull/19364)
+    - 在慢日志的计划字段中加入编码好的 `INSERT`/`DELETED`/`UPDATE` 计划 [#19269](https://github.com/pingcap/tidb/pull/19269)
 
 + TiKV
 
-    - 优化 DropTable/TruncateTable 时导致的性能下降 [#8627](https://github.com/tikv/tikv/pull/8627)
+    - 优化 `DropTable`/`TruncateTable` 时导致的性能下降 [#8627](https://github.com/tikv/tikv/pull/8627)
     - 支持生成标准错误码的 meta 文件 [#8619](https://github.com/tikv/tikv/pull/8619)
-    - scan detail 中增加 tombstone 个数的 metrics [#8618](https://github.com/tikv/tikv/pull/8618)
-    - 添加 rocksdb perf context metrics 面版 [#8467](https://github.com/tikv/tikv/pull/8467)
+    - **scan detail** 中增加 tombstone 个数的 metrics [#8618](https://github.com/tikv/tikv/pull/8618)
+    - 添加 **rocksdb perf context metrics** 面版 [#8467](https://github.com/tikv/tikv/pull/8467)
 
 + PD
 
     - 升级 Dashboard 到 v2020.09.08.1 [#2928](https://github.com/pingcap/pd/pull/2928)
-    - 添加更多关于 store 和 region 心跳的 metrics [#2891](https://github.com/tikv/pd/pull/2891)
+    - 添加更多关于 store 和 Region 心跳的 metrics [#2891](https://github.com/tikv/pd/pull/2891)
     - 回滚空间不足的阈值策略 [#2875](https://github.com/pingcap/pd/pull/2875)
     - 支持标准错误码
         - [#2918](https://github.com/tikv/pd/pull/2918) [#2911](https://github.com/tikv/pd/pull/2911) [#2913](https://github.com/tikv/pd/pull/2913) [#2915](https://github.com/tikv/pd/pull/2915) [#2912](https://github.com/tikv/pd/pull/2912)
@@ -65,11 +65,11 @@ TiDB 版本：4.0.6
 
 + TiFlash
 
-    - 在 Grafana 中添加关于数据同步 (apply Region snapshots, ingest SST files) 的监控面板
+    - 在 Grafana 中添加关于数据同步 (`apply Region snapshots` 和 `ingest SST files`) 的监控面板
     - 在 Grafana 中添加关于 `write stall` 的监控面板
     - 添加 `dt_segment_force_merge_delta_rows` 及 `dt_segment_force_merge_delta_deletes` 用于调整阈值以避免 `write stall` 发生
     - 支持在 TiFlash-Proxy 中把 `raftstore.snap-handle-pool-size` 设为 `0` 以禁用多线程同步 Region snapshot，可降低同步数据时内存消耗
-    - 在 https_port 及 metrics_port 上支持 CN 检查
+    - 在 `https_port` 及 `metrics_port` 上支持 CN 检查
 
 + Tools
 
@@ -102,7 +102,7 @@ TiDB 版本：4.0.6
     - 修复了在 Metric Profile 中 `tikv_cop_wait` time 的一个问题 [#19881](https://github.com/pingcap/tidb/pull/19881)
     - 修复了 `SHOW GRANTS` 显示错误结果的问题 [#19834](https://github.com/pingcap/tidb/pull/19834)
     - 修复了使用 `!= ALL (subq)` 查询结果不正确的问题 [#19831](https://github.com/pingcap/tidb/pull/19831)
-    - 修复了转换 enum 和 set 类型的一个问题 [#19778](https://github.com/pingcap/tidb/pull/19778)
+    - 修复了转换 `ENUM` 和 `SET` 类型的一个问题 [#19778](https://github.com/pingcap/tidb/pull/19778)
     - 增加了 `SHOW STATS_META`、`SHOW STATS_BUCKET` 的一个权限检查 [#19760](https://github.com/pingcap/tidb/pull/19760)
     - 修复了由 `builtinGreatestStringSig` 和 `builtinLeastStringSig` 引起的列长度不匹配问题 [#19758](https://github.com/pingcap/tidb/pull/19758)
     - 如果向量化计算抛出多余的 errors 或者 warnings，回退向量化执行到标量执行 [#19749](https://github.com/pingcap/tidb/pull/19749)
@@ -124,14 +124,14 @@ TiDB 版本：4.0.6
     - 修复了删除统计信息时未删除 topN 的统计信息的错误 [#19465](https://github.com/pingcap/tidb/pull/19465)
     - 修复了因错误使用 batch point get 时产生的错误结果 [#19460](https://github.com/pingcap/tidb/pull/19460)
     - 修复了在带有虚拟生成列的 `IndexLookupJoin` 上无法找到列的错误 [#19439](https://github.com/pingcap/tidb/pull/19439)
-    - 修复了在 select 和 update 查询上的不同计划比较 datum 的错误 [#19403](https://github.com/pingcap/tidb/pull/19403)
-    - 修复了 TiFlash 在 region cache 上产生的 work index 数据争用 [#19362](https://github.com/pingcap/tidb/pull/19362)
+    - 修复了在 `SELECT` 和 `UPDATE` 查询上的不同计划比较 datum 的错误 [#19403](https://github.com/pingcap/tidb/pull/19403)
+    - 修复了 TiFlash 在 Region cache 上产生的 work index 数据争用 [#19362](https://github.com/pingcap/tidb/pull/19362)
     - 修复了 `logarithm` 函数不返回 warning 的错误 [#19291](https://github.com/pingcap/tidb/pull/19291)
     - 修复了当使用 TiDB 落盘时产生的非预期错误 [#19272](https://github.com/pingcap/tidb/pull/19272)
-    - 支持在 index join 的 inner 端使用单个分区表 [#19197](https://github.com/pingcap/tidb/pull/19197)
+    - 支持在 Index Join 的 inner 端使用单个分区表 [#19197](https://github.com/pingcap/tidb/pull/19197)
     - 修复了对 decimal 产生的错误的 hash 键值 [#19188](https://github.com/pingcap/tidb/pull/19188)
-    - 修复了当 table endKey 和 region endKey 相同时 TiDB 会产生 no regions 的错误 [#19895](https://github.com/pingcap/tidb/pull/19895)
-    - 修复了 alter partition 的非预期成功 [#19891](https://github.com/pingcap/tidb/pull/19891)
+    - 修复了当 table EndKey 和 Region EndKey 相同时 TiDB 会产生 no regions 的错误 [#19895](https://github.com/pingcap/tidb/pull/19895)
+    - 修复了 `alter partition` 的非预期成功 [#19891](https://github.com/pingcap/tidb/pull/19891)
     - 修复了在下推表达式上，默认最大允许的包长的错误 [#19876](https://github.com/pingcap/tidb/pull/19876)
     - 修复了在 `ENUM`/`SET` 列上 `Max`/`Min` 函数的错误行为 [#19869](https://github.com/pingcap/tidb/pull/19869)
     - 修复了当部分 TiFlash 节点下线之后，`tiflash_segments` 和 `tiflash_tables` 系统表读取失败的问题 [#19748](https://github.com/pingcap/tidb/pull/19748)
