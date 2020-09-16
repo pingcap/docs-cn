@@ -86,7 +86,7 @@ pd-ctl config set isolation-level zone
 >
 > `isolation-level` 默认情况下为空，即不进行强制隔离级别限制，若要对其进行设置，必须先配置 PD 的 `location-labels` 参数，同时保证 `isolation-level` 的值一定为 `location-labels` 中的一个。
 
-### 使用 TiUP 进行配置
+### 使用 TiUP 进行配置（推荐）
 
 如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
 
@@ -145,7 +145,8 @@ tikv_servers:
 
 详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。
 
-### 使用 TiDB Ansible 进行配置
+<details>
+<summary> <strong>使用 TiDB Ansible 进行配置</strong> </summary>
 
 如果使用 TiDB Ansible 部署集群，可以直接在 `inventory.ini` 文件中统一进行 location 相关配置。`tidb-ansible` 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
 
@@ -168,6 +169,8 @@ tikv-8 labels="zone=z3,host=h2"
 [pd_servers:vars]
 location_labels = ["zone", "host"]
 ```
+
+</details>
 
 ## 基于拓扑 label 的 PD 调度策略
 
