@@ -1165,10 +1165,7 @@ raftdb 相关配置项。
 
 ## pessimistic-txn
 
-### `enabled`
-
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
-+ 默认值：true
+悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
 
 ### `wait-for-lock-timeout`
 
