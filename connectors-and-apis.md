@@ -28,10 +28,6 @@ TiDB is compatible with all Connectors and APIs of MySQL (5.6, 5.7), including:
 
 Oracle develops the following APIs and TiDB is compatible with all of them:
 
-> **Note:**
->
-> + To connect to TiDB using a MySQL Connector from MySQL 8.0, you must explicitly specify `default-auth=mysql_native_password`, because `mysql_native_password` is [no longer the default plugin](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password).
-
 - [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：to enable C++ applications to connect to MySQL
 - [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)：to enable Java applications to connect to MySQL using the standard JDBC API
 - [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)：to enable .Net applications to connect to MySQL; [MySQL for Visual Studio](https://dev.mysql.com/doc/visual-studio/en/) uses this; support Microsoft Visual Studio 2012, 2013, 2015 and 2017 versions
