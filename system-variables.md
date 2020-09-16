@@ -310,7 +310,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值: 0
 - 这个变量用于控制是否开启 cascades planner。
 
-### `tidb_enable_clustered_index` <span class="version-mark">将从 v5.0 版本开始引入</span>
+### `tidb_enable_clustered_index` <!-- 从 v5.0 版本开始引入 -->
 
 - 作用域：SESSION | GLOBAL
 - 默认值：1
