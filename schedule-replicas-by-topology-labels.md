@@ -88,7 +88,7 @@ pd-ctl config set isolation-level zone
 
 ### 使用 TiUP 进行配置
 
-如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)中统一进行 location 相关配置。TiUP 会负责在 deploy 时生成对应的 TiKV 和 PD 配置文件。
+如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
 
 下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址。
 
@@ -147,7 +147,7 @@ tikv_servers:
 
 ### 使用 TiDB Ansible 进行配置
 
-如果使用 TiDB Ansible 部署集群，可以直接在 inventory.ini 文件中统一进行 location 相关配置。tidb-ansible 会负责在 deploy 时生成对应的 TiKV 和 PD 配置文件。
+如果使用 TiDB Ansible 部署集群，可以直接在 `inventory.ini` 文件中统一进行 location 相关配置。`tidb-ansible` 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
 
 下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。
 
