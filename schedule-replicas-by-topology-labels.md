@@ -61,9 +61,98 @@ pd-ctl config set location-labels zone,rack,host
 >
 > 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
 
+<<<<<<< HEAD
 ### 使用 TiDB Ansible 进行配置
+=======
+### 设置 PD 的 `isolation-level` 配置
 
-如果使用 TiDB Ansible 部署集群，可以直接在 inventory.ini 文件中统一进行 location 相关配置。tidb-ansible 会负责在 deploy 时生成对应的 TiKV 和 PD 配置文件。
+在配置了 `location-labels` 的前提下，用户可以还通过 `isolation-level` 配置来进一步加强对 TiKV 集群的拓扑隔离要求。假设按照上面的说明通过 `location-labels` 将集群的拓扑结构分成三层：机房（zone) -> 机架（rack）-> 主机（host），并对 `isolation-level` 作如下配置：
+
+{{< copyable "" >}}
+
+```toml
+[replication]
+isolation-level = "zone"
+```
+
+当 PD 集群初始化完成后，需要使用 pd-ctl 工具进行在线更改：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config set isolation-level zone
+```
+
+其中，`isolation-level` 配置是一个字符串，需要与 `location-labels` 的其中一个 key 对应。该参数限制 TiKV 拓扑集群的最小且强制隔离级别要求。
+
+> **注意：**
+>
+> `isolation-level` 默认情况下为空，即不进行强制隔离级别限制，若要对其进行设置，必须先配置 PD 的 `location-labels` 参数，同时保证 `isolation-level` 的值一定为 `location-labels` 中的一个。
+
+### 使用 TiUP 进行配置（推荐）
+>>>>>>> 10f4e34... Update schedule-replicas-by-topology-labels.md (#4502)
+
+如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
+
+下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址。
+
+```
+server_configs:
+  pd:
+    replication.location-labels: ["zone", "host"]
+
+tikv_servers:
+# z1
+  - host: tikv-1
+    config:
+      server.labels:
+        zone: z1
+        host: h1
+   - host: tikv-2
+    config:
+      server.labels:
+        zone: z1
+        host: h1
+  - host: tikv-3
+    config:
+      server.labels:
+        zone: z1
+        host: h2
+  - host: tikv-4
+    config:
+      server.labels:
+        zone: z1
+        host: h2
+# z2
+  - host: tikv-5
+    config:
+      server.labels:
+        zone: z2
+        host: h1
+   - host: tikv-6
+    config:
+      server.labels:
+        zone: z2
+        host: h2
+# z3
+  - host: tikv-7
+    config:
+      server.labels:
+        zone: z3
+        host: h1
+  - host: tikv-8
+    config:
+      server.labels:
+        zone: z3
+        host: h2
+```
+
+详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。
+
+<details>
+<summary> <strong>使用 TiDB Ansible 进行配置</strong> </summary>
+
+如果使用 TiDB Ansible 部署集群，可以直接在 `inventory.ini` 文件中统一进行 location 相关配置。`tidb-ansible` 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
 
 下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。
 
@@ -84,6 +173,8 @@ tikv-8 labels="zone=z3,host=h2"
 [pd_servers:vars]
 location_labels = ["zone", "host"]
 ```
+
+</details>
 
 ## 基于拓扑 label 的 PD 调度策略
 
