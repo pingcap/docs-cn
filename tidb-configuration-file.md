@@ -445,6 +445,11 @@ prepare 语句的 Plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
+### `enable-async-commit` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 是否启用 async commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性后能降低事务提交的延迟。**本特性暂时与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)、[Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容。**
++ 默认值：false
+
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 Coprocessor Cache 相关的配置项。
