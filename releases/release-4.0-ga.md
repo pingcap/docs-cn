@@ -108,7 +108,7 @@ TiDB version: 4.0.0
 
 * Tools
 
-    + BR
+    + Backup & Restore (BR)
         - Fix the issue that the data restoration fails due to network issues when BR restores data from cloud storage [#298](https://github.com/pingcap/br/pull/298)
     + TiCDC
         - Fix system panics caused by data race [#565](https://github.com/pingcap/ticdc/pull/565) [#566](https://github.com/pingcap/ticdc/pull/566)

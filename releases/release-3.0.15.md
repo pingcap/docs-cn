@@ -12,7 +12,7 @@ TiDB version: 3.0.15
 ## New Features
 
 + TiDB
- 
+
     - Forbid the query in partitioned tables to use the plan cache feature [#16759](https://github.com/pingcap/tidb/pull/16759)
     - Support the `admin recover index` and  `admin check index` statements on partitioned tables [#17315](https://github.com/pingcap/tidb/pull/17315) [#17390](https://github.com/pingcap/tidb/pull/17390)
     - Support partition pruning of the `in` condition for Range partitioned tables [#17318](https://github.com/pingcap/tidb/pull/17318)
@@ -21,13 +21,13 @@ TiDB version: 3.0.15
     - Optimize the memory allocation mechanism of `CMSketch` statistics to reduce the impact of garbage collection (GC) on performance [#17543](https://github.com/pingcap/tidb/pull/17543)
 
 + PD
- 
+
     - Add a policy in which PD performs scheduling in terms of the number of Leaders [#2479](https://github.com/pingcap/pd/pull/2479)
 
 ## Bug Fixes
 
 + TiDB
- 
+
     - Use deep copy to copy the `enum` and `set` type data in the `Hash` aggregate function; fix an issue of correctness [#16890](https://github.com/pingcap/tidb/pull/16890)
     - Fix the issue that `PointGet` returns incorrect results because of the wrong processing logic of integer overflow [#16753](https://github.com/pingcap/tidb/pull/16753)
     - Fix the issue of incorrect results caused by incorrect processing logic when the `CHAR()` function is used in the query predicate [#16557](https://github.com/pingcap/tidb/pull/16557)

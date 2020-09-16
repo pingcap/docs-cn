@@ -56,7 +56,7 @@ TiDB Ansible version: 3.1.0-rc
         * Optimize the performance of TiDB Lightning [#281](https://github.com/pingcap/tidb-lightning/pull/281) [#275](https://github.com/pingcap/tidb-lightning/pull/275)
         * Support TLS authentication for TiDB Lightning [#270](https://github.com/pingcap/tidb-lightning/pull/270)
 
-    - BR
+    - Backup & Restore (BR)
 
         * Optimize the log output [#189](https://github.com/pingcap/br/pull/189)
 
@@ -108,6 +108,6 @@ TiDB Ansible version: 3.1.0-rc
 
         * Fix the bug that the `&` character is replaced by the `EOF` character in TiDB backend [#283](https://github.com/pingcap/tidb-lightning/pull/283)
 
-    - BR
+    - Backup & Restore (BR)
 
         * Fix the issue that BR cannot restore the TiFlash cluster data [#194](https://github.com/pingcap/br/pull/194)

@@ -8,6 +8,26 @@ Release date: Aug 3, 2020
 
 TiDB version: 3.0.17
 
+## Improvements
+
++ TiDB
+
+    - Decrease the default value of the `query-feedback-limit` configuration item from 1024 to 512, and improve the statistics feedback mechanism to ease its impact on the cluster [#18770](https://github.com/pingcap/tidb/pull/18770)
+    - Limit batch split count for one request [#18694](https://github.com/pingcap/tidb/pull/18694)
+    - Accelerate `/tiflash/replica` HTTP API when there are many history DDL jobs in the TiDB cluster [#18386](https://github.com/pingcap/tidb/pull/18386)
+    - Improve row count estimation for index equal condition [#17609](https://github.com/pingcap/tidb/pull/17609)
+    - Speed up the execution of `kill tidb conn_id` [#18506](https://github.com/pingcap/tidb/pull/18506)
+
++ TiKV
+
+    - Add the `hibernate-timeout` configuration that delays region hibernation to improve rolling update performance [#8207](https://github.com/tikv/tikv/pull/8207)
+
++ Tools
+
+    + TiDB Lightning
+
+        - `[black-white-list]` has been deprecated with a newer, easier-to-understand filter format [#332](https://github.com/pingcap/tidb-lightning/pull/332)
+
 ## Bug Fixes
 
 + TiDB
@@ -23,24 +43,8 @@ TiDB version: 3.0.17
     - Fix a bug that might read stale data during region merging [#8111](https://github.com/tikv/tikv/pull/8111)
     - Fix the issue of memory leak during the scheduling process [#8355](https://github.com/tikv/tikv/pull/8355)
 
-+ TiDB Lightning
++ Tools
 
-    - Fix the issue that the `log-file` flag is ignored [#345](https://github.com/pingcap/tidb-lightning/pull/345)
+    + TiDB Lightning
 
-## Improvements
-
-+ TiDB
-
-    - Decrease the default value of the `query-feedback-limit` configuration item from 1024 to 512, and improve the statistics feedback mechanism to ease its impact on the cluster [#18770](https://github.com/pingcap/tidb/pull/18770)
-    - Limit batch split count for one request [#18694](https://github.com/pingcap/tidb/pull/18694)
-    - Accelerate `/tiflash/replica` HTTP API when there are many history DDL jobs in the TiDB cluster [#18386](https://github.com/pingcap/tidb/pull/18386)
-    - Improve row count estimation for index equal condition [#17609](https://github.com/pingcap/tidb/pull/17609)
-    - Speed up the execution of `kill tidb conn_id` [#18506](https://github.com/pingcap/tidb/pull/18506)
-
-+ TiKV
-
-    - Add the `hibernate-timeout` configuration that delays region hibernation to improve rolling update performance [#8207](https://github.com/tikv/tikv/pull/8207)
-
-+ TiDB Lightning
-
-    - `[black-white-list]` has been deprecated with a newer, easier-to-understand filter format [#332](https://github.com/pingcap/tidb-lightning/pull/332)
+        - Fix the issue that the `log-file` flag is ignored [#345](https://github.com/pingcap/tidb-lightning/pull/345)

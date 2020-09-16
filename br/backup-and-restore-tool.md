@@ -123,7 +123,7 @@ After the restoration operation is completed, BR performs a checksum calculation
 
 Currently, you can use SQL statements or the command-line tool to back up and restore data.
 
-### Use SQL statements 
+### Use SQL statements
 
 TiDB v4.0.2 and later versions support backup and restore operations using SQL statements. For details, see the [Backup syntax](/sql-statements/sql-statement-backup.md#backup) and the [Restore syntax](/sql-statements/sql-statement-restore.md#restore).
 
