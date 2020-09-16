@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/storage-engine/titan-configuration/','/docs-cn/dev/refer
 
 # Titan 配置
 
-本文档介绍如何如何通过 [Titan](/storage-engine/titan-overview.md) 配置项来开启、关闭 Titan，相关参数介绍，以及 [Level Merge](/storage-engine/titan-overview.md#level-merge) 功能。
+本文档介绍如何如何通过 [Titan](/storage-engine/titan-overview.md) 配置项来开启、关闭 Titan，相关参数介绍，以及 Level Merge](/storage-engine/titan-overview.md#level-merge) 功能。
 
 ## 开启 Titan
 
@@ -126,7 +126,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ## Level Merge（实验功能）
 
-TiKV 4.0 中 Titan 提供新的算法提升范围查询性能并降低 Titan GC 对前台写入性能的影响。这个新的算法称为 level merge。Level merge 可以通过以下选项开启：
+TiKV 4.0 中 Titan 提供新的算法提升范围查询性能并降低 Titan GC 对前台写入性能的影响。这个新的算法称为 [Level Merge](/storage-engine/titan-overview.md#level-merge)。Level merge 可以通过以下选项开启：
 
 ```toml
 [rocksdb.defaultcf.titan]
