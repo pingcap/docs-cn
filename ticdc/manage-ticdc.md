@@ -63,7 +63,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级开启了 TiCDC 的集群。在以下例子中，假设需要将 TiCDC 和集群升级到 v4.0.6。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.6。
 
 {{< copyable "shell-regular" >}}
 
