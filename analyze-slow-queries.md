@@ -36,7 +36,7 @@ summary: 学习如何定位和分析慢查询。
 - [慢日志](/identify-slow-queries.md)（推荐直接在 [TiDB Dashboard](/dashboard/dashboard-overview.md) 中查看）
 - [`explain analyze` 语句](/sql-statements/sql-statement-explain-analyze.md)
 
-他们的侧重不同：
+这几种方式的侧重不同：
 
 - 慢日志记录了 SQL 从解析到返回，几乎所有阶段的耗时，较为全面（在 TiDB Dashboard 中可以直观地查询和分析慢日志）；
 - `explain analyze` 可以拿到 SQL 实际执行中每个执行算子的耗时，对执行耗时有更细分的统计；
