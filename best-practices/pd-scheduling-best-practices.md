@@ -42,7 +42,7 @@ aliases: ['/docs-cn/dev/best-practices/pd-scheduling-best-practices/','/docs-cn/
 
     不同的调度器从自身的逻辑和需求出发，考虑各种限制和约束后生成待执行的 Operator。这里所说的限制和约束包括但不限于：
 
-     - 不往断连中、下线中、繁忙、空间不足、在大量收发 snapshot 等各种异常状态的 Store 添加副本
+     - 不往处于异常状态中（如断连、下线、繁忙、空间不足或在大量收发 snapshot 等）的 Store 添加副本
      - Balance 时不选择状态异常的 Region
      - 不尝试把 Leader 转移给 Pending Peer
      - 不尝试直接移除 Leader
