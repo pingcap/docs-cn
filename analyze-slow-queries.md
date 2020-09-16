@@ -33,7 +33,7 @@ summary: 学习如何定位和分析慢查询。
 
 查询的耗时信息可以从下面几种方式获得：
 
-- [慢日志](/identify-slow-queries.md) 或 [dashboard](/dashboard/dashboard-overview.md)
+- [慢日志](/identify-slow-queries.md)（推荐直接在 [TiDB Dashboard](/dashboard/dashboard-overview.md) 中查看）
 - [`explain analyze` 语句](/sql-statements/sql-statement-explain-analyze.md)
 
 他们的侧重不同：
