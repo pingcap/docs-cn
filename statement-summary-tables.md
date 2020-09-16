@@ -1,6 +1,6 @@
 ---
 title: Statement Summary Tables
-aliases: ['/docs-cn/dev/reference/performance/statement-summary/']
+aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/performance/statement-summary/']
 ---
 
 # Statement Summary Tables
@@ -128,7 +128,7 @@ set global tidb_stmt_summary_history_size = 24;
 
 Statement summary tables 现在还存在以下限制：
 
-- TiDB server 重启后 statement summary 会丢失。因为 statement summary tables 是内存表，不会持久化数据，所以一旦 server 被重启，statement summary 随之丢失。
+- TiDB server 重启后以上 4 张表的 statement summary 会全部丢失。因为 statement summary tables 全部都是内存表，不会持久化数据，所以一旦 server 被重启，statement summary 随之丢失。
 
 ## 排查示例
 

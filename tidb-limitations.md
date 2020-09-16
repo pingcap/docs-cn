@@ -1,5 +1,6 @@
 ---
 title: TiDB 使用限制
+aliases: ['/docs-cn/dev/tidb-limitations/']
 ---
 
 # 使用限制
@@ -12,7 +13,7 @@ title: TiDB 使用限制
 |:---------|:--------------|
 | Database | 64 |
 | Table    | 64 |
-| Cloumn   | 64 |
+| Column   | 64 |
 | Index    | 64 |
 | View     | 64 |
 | Sequence | 64 |
@@ -36,7 +37,7 @@ title: TiDB 使用限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Cloumns   | 512       |
+| Columns   | 512       |
 | Indexs    | 64        |
 | Rows      | unlimited |
 | Size      | unlimited |

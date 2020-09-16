@@ -1,7 +1,7 @@
 ---
 title: CREATE INDEX
 summary: CREATE INDEX 在 TiDB 中的使用概况
-aliases: ['/docs-cn/dev/reference/sql/statements/create-index/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-index/','/docs-cn/dev/reference/sql/statements/create-index/']
 ---
 
 # CREATE INDEX
@@ -162,7 +162,7 @@ Query OK, 0 rows affected (0.31 sec)
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
-如果需要使用这一特性，在配置文件中进行以下设置：
+如果需要使用这一特性，在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
 
 {{< copyable "sql" >}}
 
@@ -194,14 +194,14 @@ CREATE INDEX idx ON t ((lower(name)));
 
 ## 不可见索引
 
-不可见索引（Invisible Indexes）是 MySQL 8.0 引入的新功能，将一个索引设置为不可见，使优化器不会再使用这条索引。
+不可见索引（Invisible Indexes）不会被查询优化器使用：
 
 ```sql
 CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
 CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 ```
 
-具体可以参考 [不可见索引的介绍](/sql-statements/sql-statement-alter-index.md#不可见索引)。
+具体可以参考 [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)。
 
 ## 相关 session 变量
 

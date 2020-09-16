@@ -1,7 +1,7 @@
 ---
 title: UPDATE
 summary: TiDB 数据库中 UPDATE 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/update/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-update/','/docs-cn/dev/reference/sql/statements/update/']
 ---
 
 # UPDATE
@@ -104,7 +104,7 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`UPDATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`UPDATE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

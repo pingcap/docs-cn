@@ -1,6 +1,6 @@
 ---
 title: TiDB 配置文件描述
-aliases: ['/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
+aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
 <!-- markdownlint-disable MD001 -->
@@ -267,6 +267,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + ssl 私钥文件路径，用于用 tls 连接 TiKV/PD
 + 默认值：""
 
+### `spilled-file-encryption-method`
+
++ 内存落盘文件的加密方式。
++ 默认值: `"plaintext"`，表示不进行加密
++ 可选值：`"plaintext"`、`"aes128-ctr"`
+
 ## performance
 
 性能相关配置。
@@ -451,13 +457,13 @@ prepare 语句的 Plan cache 设置。
 ### `capacity-mb`
 
 + 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
-+ 默认值：1000
++ 默认值：1000.0
 + 单位：MB
 
 ### `admission-max-result-mb`
 
 + 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
-+ 默认值：10
++ 默认值：10.0
 + 单位：MB
 
 ### `admission-min-process-ms`
@@ -541,10 +547,7 @@ TiDB 服务状态相关配置。
 
 ## pessimistic-txn
 
-### enable
-
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
-+ 默认值：true
+悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
 
 ### max-retry-count
 

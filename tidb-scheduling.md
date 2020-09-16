@@ -1,5 +1,6 @@
 ---
 title: 调度概述
+aliases: ['/docs-cn/dev/tidb-scheduling/']
 ---
 
 # 调度概述
@@ -100,7 +101,7 @@ PD 收集了这些信息后，还需要一些策略来制定具体的调度计�
 当 PD 通过某个 Region Leader 的心跳包发现这个 Region 的 Replica 数量不满足要求时，需要通过 Add/Remove Replica 操作调整 Replica 数量。出现这种情况的可能原因是：
 
 * 某个节点掉线，上面的数据全部丢失，导致一些 Region 的 Replica 数量不足
-* 某个掉线节点又恢复服务，自动接入集群，这样之前已经补足了 Replica 的 Region 的 Replica 数量多过，需要删除某个 Replica
+* 某个掉线节点又恢复服务，自动接入集群，这样之前已经补足了 Replica 的 Region 的 Replica 数量过多，需要删除某个 Replica
 * 管理员调整了副本策略，修改了 [max-replicas](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L95) 的配置
 
 **一个 Raft Group 中的多个 Replica 不在同一个位置**

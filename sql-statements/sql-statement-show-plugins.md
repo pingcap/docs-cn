@@ -1,6 +1,7 @@
 ---
 title: SHOW PLUGINS
 summary: TiDB 数据库中 SHOW PLUGINS 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-plugins/']
 ---
 
 # SHOW PLUGINS
@@ -53,4 +54,4 @@ SHOW PLUGINS LIKE 'a%';
 
 ## MySQL 兼容性
 
-`SHOW PLUGINS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW PLUGINS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。

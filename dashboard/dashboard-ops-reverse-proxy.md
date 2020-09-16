@@ -1,5 +1,6 @@
 ---
 title: 通过反向代理使用 TiDB Dashboard
+aliases: ['/docs-cn/dev/dashboard/dashboard-ops-reverse-proxy/']
 ---
 
 # 通过反向代理使用 TiDB Dashboard
@@ -266,3 +267,7 @@ sudo nginx -s reload
 ```
 
 </details>
+
+## 下一步
+
+参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)文档了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。

@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
-aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
+aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
@@ -93,6 +93,10 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/
 
     包含最小拓扑的基础上，同时部署 TiDB Binlog。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
 
+- [增加 TiSpark 拓扑架构](/tispark-deployment-topology.md)
+
+    包含最小拓扑的基础上，同时部署 TiSpark 组件。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。TiUP cluster 组件对 TiSpark 的支持目前为实验性特性。
+
 - [混合部署拓扑架构](/hybrid-deployment-topology.md)
 
     适用于单台机器，混合部署多个实例的情况，也包括单机多实例，需要额外增加目录、端口、资源配比、label 等配置。
@@ -120,6 +124,11 @@ aliases: ['/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/
 > - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
 > - 如果是密码方式，可以通过 `-p` 进入密码交互窗口；
 > - 如果已经配置免密登陆目标机，则不需填写认证。
+>
+> 一般情况下 TiUP 会在目标机器上创建 `topology.yaml` 中约定的用户和组，以下情况例外：
+>
+> - `topology.yaml` 中设置的用户名在目标机器上已存在。
+> - 在命令行上使用了参数 `--skip-create-user` 明确指定跳过创建用户的步骤。
 
 {{< copyable "shell-regular" >}}
 
@@ -134,6 +143,7 @@ tiup cluster deploy tidb-test v4.0.0 ./topology.yaml --user root [-p] [-i /home/
 - 初始化配置文件为 `topology.yaml`
 - --user root：通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 - [-i] 及 [-p]：非必选项，如果已经配置免密登陆目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
+- 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml#L7)。
 
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 

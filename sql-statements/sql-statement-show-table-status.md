@@ -1,7 +1,7 @@
 ---
 title: SHOW TABLE STATUS
 summary: TiDB 数据库中 SHOW TABLE STATUS 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/show-table-status/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-table-status/','/docs-cn/dev/reference/sql/statements/show-table-status/']
 ---
 
 # SHOW TABLE STATUS
@@ -115,7 +115,7 @@ Max_data_length: 0
 
 ## MySQL 兼容性
 
-`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

@@ -1,6 +1,6 @@
 ---
 title: 为 TiDB 组件间通信开启加密传输
-aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
+aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 ---
 
 # 为 TiDB 组件间通信开启加密传输
@@ -64,6 +64,30 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
         cert-path = "/path/to/pd-server.pem"
         # Path of file that contains X509 key in PEM format.
         key-path = "/path/to/pd-server-key.pem"
+        ```
+
+    - TiFlash（从 v4.0.5 版本开始引入）
+
+        在 `tiflash.toml` 文件中设置，将 `http_port` 项改为 `https_port`:
+
+        ```toml
+        [security]
+        # Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
+        ca_path = "/path/to/ca.pem"
+        # Path of file that contains X509 certificate in PEM format.
+        cert_path = "/path/to/tiflash-server.pem"
+        # Path of file that contains X509 key in PEM format.
+        key_path = "/path/to/tiflash-server-key.pem"
+        ```
+
+        在 `tiflash-learner.toml` 文件中设置，
+
+        ```toml
+        [security]
+        # Sets the path for certificates. The empty string means that secure connections are disabled.
+        ca-path = "/path/to/ca.pem"
+        cert-path = "/path/to/tiflash-server.pem"
+        key-path = "/path/to/tiflash-server-key.pem"
         ```
 
     - TiCDC
@@ -146,6 +170,22 @@ aliases: ['/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 
     ```bash
     cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
+    ```
+
+- TiFlash（从 v4.0.5 版本开始引入）
+
+    在 `tiflash.toml` 文件中设置：
+
+    ```toml
+    [security]
+    cert_allowed_cn = ["TiKV-Server", "TiDB-Server"]
+    ```
+
+    在 `tiflash-learner.toml` 文件中设置：
+
+    ```toml
+    [security]
+    cert-allowed-cn = ["PD-Server", "TiKV-Server", "TiFlash-Server"]
     ```
 
 ## 证书重加载

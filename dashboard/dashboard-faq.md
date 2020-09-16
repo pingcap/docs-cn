@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 常见问题
+aliases: ['/docs-cn/dev/dashboard/dashboard-faq/']
 ---
 
 # TiDB Dashboard 常见问题
@@ -28,7 +29,7 @@ PD 中的 TiDB Dashboard 出于安全考虑仅监听部署时所指定的 IP 地
 
 QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例，没有部署的情况下就会显示为错误。向集群中新部署 Prometheus 实例即可解决该问题。
 
-若已经部署 Prometheus 监控实例但仍然显示为错误，可能的原因是您使用的部署工具（TiUP、tidb-operator 或 TiDB Ansible）版本比较旧，没有自动汇报监控地址，导致 TiDB Dashboard 无法感知并查询监控数据。可以升级到最新的部署工具并重试。
+若已经部署 Prometheus 监控实例但仍然显示为错误，可能的原因是您使用的部署工具（TiUP、TiDB Operator 或 TiDB Ansible）版本比较旧，没有自动汇报监控地址，导致 TiDB Dashboard 无法感知并查询监控数据。可以升级到最新的部署工具并重试。
 
 以下给出 TiUP 部署工具的操作方法，对于其他部署工具，请参阅工具对应文档。
 

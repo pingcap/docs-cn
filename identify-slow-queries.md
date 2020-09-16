@@ -1,6 +1,6 @@
 ---
 title: 慢查询日志
-aliases: ['/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries/','/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow-queries/']
+aliases: ['/docs-cn/dev/identify-slow-queries/','/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries/','/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow-queries/']
 ---
 
 # 慢查询日志
@@ -108,9 +108,41 @@ Slow Query 基础信息：
 * `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
 * `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
 
+## 相关系统变量
+
+* [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
+* [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句的最大长度。默认值是 4096 byte。
+* [tidb_log_desensitization](/system-variables.md#tidb_log_desensitization)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 0 ，即关闭该功能。
+* [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的执行信息，默认值是 1。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
+
+```sql
+> select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
+|     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
+|     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
+|       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
+|         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+在性能测试中可以关闭自动收集算子的执行信息：
+
+{{< copyable "sql" >}}
+
+```sql
+set @@tidb_enable_collect_execution_info=0;
+```
+
+`Plan` 字段显示的格式和 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或者 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 大致一致。可以查看 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或者 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 文档了解更多关于执行计划的信息。
+
+更多详细信息，可以参见 [TiDB 专用系统变量和语法](/system-variables.md)。
+
 ## 慢日志内存映射表
 
-用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [Information Schema](/system-tables/system-table-information-schema.md#information-schema) 中关于 `SLOW_QUERY` 表的介绍。
+用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md) 中的介绍。
 
 > **注意：**
 >
@@ -162,7 +194,7 @@ where time > '2020-03-10 00:00:00'
 >
 > 如果指定时间范围内的慢日志文件被删除，或者并没有慢查询，则查询结果会返回空。
 
-TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/system-tables/system-table-information-schema.md#cluster_slow_query-表) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/system-tables/system-table-information-schema.md#slow_query-表) 系统表一样。
+TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/information-schema/information-schema-slow-query.md#cluster_slow_query-table) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 系统表一样。
 
 关于查询 `CLUSTER_SLOW_QUERY` 表，TiDB 会把相关的计算和判断下推到其他节点执行，而不是把其他节点的慢查询数据都取回来在一台 TiDB 上执行。
 

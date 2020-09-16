@@ -1,6 +1,6 @@
 ---
 title: TiCDC Open Protocol
-aliases: ['/docs-cn/dev/reference/tools/ticdc/open-protocol/','/docs-cn/dev/ticdc/column-ddl-type-codes/','/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
+aliases: ['/docs-cn/dev/ticdc/ticdc-open-protocol/','/docs-cn/dev/reference/tools/ticdc/open-protocol/','/docs-cn/dev/ticdc/column-ddl-type-codes/','/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
 ---
 
 # TiCDC Open Protocol
@@ -12,8 +12,8 @@ TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、
 TiCDC Open Protocol 以 Event 为基本单位向下游复制数据变更事件，Event 分为三类：
 
 * Row Changed Event：代表一行的数据变化，在行发生变更时该 Event 被发出，包含变更后该行的相关信息。
-* DDL Event：代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中
-* Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的
+* DDL Event：代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中。
+* Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。
 
 ## 协议约束
 
@@ -68,30 +68,90 @@ Value:
 
 + **Value:**
 
+    `Insert` 事件，输出新增的行数据。
+
     ```
     {
-        <UpdateOrDelete>:{
+        "u":{
             <Column Name>:{
                 "t":<Column Type>,
                 "h":<Where Handle>,
+                "f":<Flag>,
                 "v":<Column Value>
             },
             <Column Name>:{
                 "t":<Column Type>,
                 "h":<Where Handle>,
+                "f":<Flag>,
                 "v":<Column Value>
             }
         }
     }
     ```
 
-    | 参数         | 类型   | 说明                    |
-    | :---------- | :----- | :--------------------- |
-    | UpdateOrDelete | String | 标识该 Event 是增加 Row 还是删除 Row，取值只可能是 "u"/"d" |
-    | Column Name    | String | 列名   |
-    | Column Type    | Number | 列类型，详见：[Column 和 DDL 的类型码](#column-和-ddl-的类型码) |
-    | Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true |
-    | Column Value   | Any    | 列值   |
+    `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")，仅当 Old Value 特性开启时，才会输出修改前的行数据。
+
+    ```
+    {
+        "u":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        },
+        "p":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        }
+    }
+    ```
+
+    `Delete` 事件，输出被删除的行数据。当 Old Value 特性开启时，`Delete` 事件中包含被删除的行数据中的所有列；当 Old Value 特性关闭时，`Delete` 事件中仅包含 [HandleKey](#列标志位) 列。
+
+    ```
+    {
+        "d":{
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            },
+            <Column Name>:{
+                "t":<Column Type>,
+                "h":<Where Handle>,
+                "f":<Flag>,
+                "v":<Column Value>
+            }
+        }
+    }
+    ```
+
+| 参数         | 类型   | 说明                    |
+| :---------- | :----- | :--------------------- |
+| Column Name    | String | 列名   |
+| Column Type    | Number | 列类型，详见：[Column 的类型码](#column-的类型码) |
+| Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true。 |
+| Flag（**实验性**）          | Number | 列标志位，详见：[列标志位](#列标志位) |
+| Column Value   | Any    | 列值   |
 
 ### DDL Event
 
@@ -124,7 +184,7 @@ Value:
     | 参数       | 类型   | 说明           |
     | :-------- | :----- | :------------ |
     | DDL Query | String | DDL Query SQL |
-    | DDL Type  | String | DDL 类型，详见：[Column 和 DDL 的类型码](#column-和-ddl-的类型码)  |
+    | DDL Type  | String | DDL 类型，详见：[DDL 的类型码](#ddl-的类型码)  |
 
 ### Resolved Event
 
@@ -212,44 +272,48 @@ COMMIT;
 14. [partition=1] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
 ```
 
-## Column 和 DDL 的类型码
+## 消费端协议解析
 
-Column 和 DDL 的类型码是由 TiCDC Open Protocol 定义的 Column 和 DDL 类型编码，Column Type Code 标识 Row Changed Event 中的列数据类型，DDL Type Code 标识 DDL Event 中的 DDL 语句类型。
+目前 TiCDC 没有提供 Open Protocol 协议解析的标准实现，但是提供了 Golang 版本和 Java 版本的解析 demo。用户可以参考本文档提供的数据格式和以下 demo 实现消费端协议解析。
 
-### Column Type Code
+- [Golang demo](https://github.com/pingcap/ticdc/tree/master/kafka_consumer)
+- [Java demo](https://github.com/pingcap/ticdc/tree/master/demo/java)
 
-| 类型         | Code | 输出示例 | 说明 |
-| :---------- | :--- | :------ | :-- |
-| Decimal     | 0    | {"t":0,"v":"129012.1230000"} | |
-| Tiny/Bool   | 1    | {"t":1,"v":1} | |
-| Short       | 2    | {"t":2,"v":1} | |
-| Long        | 3    | {"t":3,"v":123} | |
-| Float       | 4    | {"t":4,"v":153.123} | |
-| Double      | 5    | {"t":5,"v":153.123} | |
-| Null        | 6    | {"t":6,"v":null} | |
-| Timestamp   | 7    | {"t":7,"v":"1973-12-30 15:30:00"} | |
-| Longlong    | 8    | {"t":8,"v":123} | |
-| Int24       | 9    | {"t":9,"v":123} | |
-| Date        | 10   | {"t":10,"v":"2000-01-01"} | |
-| Duration    | 11   | {"t":11,"v":"23:59:59"} | |
-| Datetime    | 12   | {"t":12,"v":"2015-12-20 23:58:58"} | |
-| Year        | 13   | {"t":13,"v":1970} | |
-| New Date    | 14   | {"t":14,"v":"2000-01-01"} | |
-| Varchar     | 15   | {"t":15,"v":"测试"} | value 编码为 UTF-8 |
-| Bit         | 16   | {"t":16,"v":81} | |
-| JSON        | 245  | {"t":245,"v":"{\\"key1\\": \\"value1\\"}"} | |
-| New Decimal | 246  | {"t":246,"v":"129012.1230000"} | |
-| Enum        | 247  | {"t":247,"v":1} | |
-| Set         | 248  | {"t":248,"v":3} | |
-| Tiny Blob   | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| Medium Blob | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| Long Blob   | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| Blob        | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| Var String  | 253  | {"t":253,"v":"测试"} | value 编码为 UTF-8 |
-| String      | 254  | {"t":254,"v":"测试"} | value 编码为 UTF-8 |
-| Geometry    | 255  |  | 尚不支持 |
+## Column 的类型码
 
-### DDL Type Code
+Column 的类型码用于标识 Row Changed Event 中列的数据类型。
+
+| 类型                   | Code | 输出示例 | 说明 |
+| :-------------------- | :--- | :------ | :-- |
+| TINYINT/BOOL          | 1    | {"t":1,"v":1} | |
+| SMALLINT              | 2    | {"t":2,"v":1} | |
+| INT                   | 3    | {"t":3,"v":123} | |
+| FLOAT                 | 4    | {"t":4,"v":153.123} | |
+| DOUBLE                | 5    | {"t":5,"v":153.123} | |
+| NULL                  | 6    | {"t":6,"v":null} | |
+| TIMESTAMP             | 7    | {"t":7,"v":"1973-12-30 15:30:00"} | |
+| BIGINT                | 8    | {"t":8,"v":123} | |
+| MEDIUMINT             | 9    | {"t":9,"v":123} | |
+| DATE                  | 10/14   | {"t":10,"v":"2000-01-01"} | |
+| TIME                  | 11   | {"t":11,"v":"23:59:59"} | |
+| DATETIME              | 12   | {"t":12,"v":"2015-12-20 23:58:58"} | |
+| YEAR                  | 13   | {"t":13,"v":1970} | |
+| VARCHAR/VARBINARY     | 15/253   | {"t":15,"v":"测试"} / {"t":15,"v":"\\x89PNG\\r\\n\\x1a\\n"} | value 编码为 UTF-8；当上游类型为 VARBINARY 时，将对不可见的 ASCII 字符转义 |
+| BIT                   | 16   | {"t":16,"v":81} | |
+| JSON                  | 245  | {"t":245,"v":"{\\"key1\\": \\"value1\\"}"} | |
+| DECIMAL               | 246  | {"t":246,"v":"129012.1230000"} | |
+| ENUM                  | 247  | {"t":247,"v":1} | |
+| SET                   | 248  | {"t":248,"v":3} | |
+| TINTTEXT/TINTBLOB     | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| MEDIUMTEXT/MEDIUMBLOB | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| LONGTEXT/LONGBLOB     | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| TEXT/BLOB             | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| CHAR/BINARY           | 254  | {"t":254,"v":"测试"} / {"t":254,"v":"\\x89PNG\\r\\n\\x1a\\n"} | value 编码为 UTF-8；当上游类型为 BINARY 时，将对不可见的 ASCII 字符转义 |
+| GEOMETRY              | 255  |  | 尚不支持 |
+
+## DDL 的类型码
+
+DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 
 | 类型                               | Code |
 | :-------------------------------- | :- |
@@ -289,3 +353,40 @@ Column 和 DDL 的类型码是由 TiCDC Open Protocol 定义的 Column 和 DDL �
 | Create Sequence                   | 34 |
 | Alter Sequence                    | 35 |
 | Drop Sequence                     | 36 |
+
+## 列标志位
+
+列标志位以 Bit flags 形式标记列的相关属性。
+
+| 位移 | 值 | 名称 | 说明 |
+| :-- | :- | :- | :- |
+| 1   | 0x01 | BinaryFlag          | 该列是否为二进制编码列  |
+| 2   | 0x02 | HandleKeyFlag       | 该列是否为 Handle 列 |
+| 3   | 0x04 | GeneratedColumnFlag | 该列是否为生成列      |
+| 4   | 0x08 | PrimaryKeyFlag      | 该列是否为主键列      |
+| 5   | 0x10 | UniqueKeyFlag       | 该列是否为唯一索引列   |
+| 6   | 0x20 | MultipleKeyFlag     | 该列是否为组合索引列   |
+| 7   | 0x40 | NullableFlag        | 该列是否为可空列       |
+| 8   | 0x80 | UnsignedFlag        | 该列是否为无符号列     |
+
+示例：
+
+若某列 Flag 值为 85，则代表这一列为可空列、唯一索引列、生成列、二进制编码列。
+
+```
+85 == 0b_101_0101
+   == NullableFlag | UniqueKeyFlag | GeneratedColumnFlag | BinaryFlag
+```
+
+若某列 Flag 值为 46，则代表这一列为组合索引列、主键列、生成列、Handle 列。
+
+```
+46 == 0b_010_1110
+   == MultipleKeyFlag | PrimaryKeyFlag | GeneratedColumnFlag | HandleKeyFlag
+```
+
+> **注意：**
+>
+> + 该功能为实验性功能，请勿在生产环境使用。
+> + BinaryFlag 仅在列为 Blob/Text（包括 Tiny Blob/Tiny Text、Long Blob/Long Text 等）类型时才有意义。当上游列为 Blob 类型时，BinaryFlag 置 `1`；当上游列为 Text 类型时，BinaryFlag 置 `0`。
+> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。

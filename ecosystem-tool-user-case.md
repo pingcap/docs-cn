@@ -1,6 +1,7 @@
 ---
 title: TiDB 生态工具适用场景
 summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择。
+aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 ---
 
 # TiDB 生态工具适用场景
@@ -17,7 +18,7 @@ summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择�
 
 ## 从 MySQL/Aurora 迁移数据
 
-当既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/overview) 完成全量数据和增量数据的迁移。
+当既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 完成[全量数据和增量数据的迁移](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)。
 
 如果全量数据量较大（TB 级别），则可先使用 [Dumpling](/dumpling-overview.md) 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 完成全量数据的迁移，再使用 DM 完成增量数据的迁移。
 
@@ -35,4 +36,4 @@ summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择�
 
 ## TiDB 增量数据订阅
 
-当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/binlog-slave-client.md)。
+当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/binlog-consumer-client.md)。

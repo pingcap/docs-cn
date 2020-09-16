@@ -1,7 +1,7 @@
 ---
 title: TiDB 集群问题导图
 summary: 了解如何处理 TiDB 集群常见问题。
-aliases: ['/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
+aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
 ---
 
 # TiDB 集群问题导图
@@ -413,9 +413,9 @@ aliases: ['/docs-cn/dev/how-to/troubleshoot/diagnose-map/']
 
 - 6.2.2 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`。
 
-    - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。
+    - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。在 v1.0.6 及以后的版本可使用明文密码。
 
-    - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/precheck)。
+    - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/precheck)。
 
     - 同一套 DM 集群，混合部署不同版本的 DM-worker/DM-master/dmctl，见案例 [AskTUG-1049](https://asktug.com/t/dm1-0-0-ga-access-denied-for-user/1049/5)。
 

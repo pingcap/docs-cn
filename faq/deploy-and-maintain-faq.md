@@ -1,6 +1,7 @@
 ---
 title: 部署运维 FAQ
 summary: 介绍 TiDB 集群运维部署的常见问题、原因及解决方法。
+aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 ---
 
 # 部署运维 FAQ
@@ -194,7 +195,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### TiDB 有哪些系统表？
 
-和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统数据库](/system-tables/system-table-overview.md)文档。
+和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统表](/mysql-schema.md)文档。
 
 #### TiDB 各节点服务器下是否有日志文件，如何管理？
 
@@ -328,7 +329,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### Information_schema 能否支持更多真实信息？
 
-Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的 Information\_schema 请参考 [TiDB 系统数据库说明文档](/system-tables/system-table-information-schema.md)。
+Information_schema 库里面的表主要是为了兼容 MySQL 而存在，有些第三方软件会查询里面的信息。在目前 TiDB 的实现中，里面大部分只是一些空表。后续随着 TiDB 的升级，会提供更多的参数信息。当前 TiDB 支持的 Information\_schema 请参考 [TiDB 系统数据库说明文档](/information-schema/information-schema.md)。
 
 #### TiDB Backoff type 主要原因?
 
@@ -340,7 +341,7 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 #### TiDB 同时支持的最大并发连接数？
 
-当前版本 TiDB 没有最大连接数的限制，如果并发过大导致响应时间增加，可以通过增加 TiDB 节点进行扩容。
+默认情况下，每个 TiDB 服务器的最大连接数没有限制。如有需要，可以在 `config.toml` 文件中设置 `max-server-connections` 来限制最大连接数。如果并发量过大导致响应时间增加，建议通过添加 TiDB 节点进行扩容。
 
 #### 如何查看某张表创建的时间？
 
@@ -478,11 +479,9 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 #### TiDB 主要备份方式？
 
-目前，推荐的备份方式是使用 [PingCAP fork 的 Mydumper](/mydumper-overview.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](/mydumper-overview.md)/[`loader`](/loader-overview.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
+目前，数据量大时推荐使用 [BR](/br/backup-and-restore-tool.md) 进行备份。其他场景推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
 
-使用 Mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
-
-loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
+尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份和恢复，但其性能低于 [Dumpling](/dumpling-overview.md)，并且 `mysqldump` 备份和恢复大量数据的耗费更长。
 
 ## 监控 FAQ
 

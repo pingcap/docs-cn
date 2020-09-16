@@ -1,7 +1,7 @@
 ---
 title: EXECUTE
 summary: TiDB 数据库中 EXECUTE 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/execute/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-execute/','/docs-cn/dev/reference/sql/statements/execute/']
 ---
 
 # EXECUTE
@@ -63,7 +63,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-`EXECUTE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`EXECUTE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

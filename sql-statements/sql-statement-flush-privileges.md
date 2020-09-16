@@ -1,7 +1,7 @@
 ---
 title: FLUSH PRIVILEGES
 summary: TiDB 数据库中 FLUSH PRIVILEGES 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/flush-privileges/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-flush-privileges/','/docs-cn/dev/reference/sql/statements/flush-privileges/']
 ---
 
 # FLUSH PRIVILEGES
@@ -36,7 +36,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-`FLUSH PRIVILEGES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`FLUSH PRIVILEGES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

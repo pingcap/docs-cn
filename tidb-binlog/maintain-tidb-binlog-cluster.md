@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 集群运维
-aliases: ['/docs-cn/dev/reference/tidb-binlog/maintain/','/docs-cn/dev/how-to/maintain/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/maintain/']
+aliases: ['/docs-cn/dev/tidb-binlog/maintain-tidb-binlog-cluster/','/docs-cn/dev/reference/tidb-binlog/maintain/','/docs-cn/dev/how-to/maintain/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/maintain/']
 ---
 
 # TiDB Binlog 集群运维
@@ -53,7 +53,7 @@ binlogctl 支持如下这些功能：
 
 要查看和管理 binlog 相关的状态，可在 TiDB 中执行相应的 SQL 语句。
 
-- 查看 TiDB 是否开启 binlog
+- 查看 TiDB 是否开启 binlog，0 代表关闭，1 代表开启
 
     {{< copyable "sql" >}}
 
@@ -65,11 +65,9 @@ binlogctl 支持如下这些功能：
     +---------------+-------+
     | Variable_name | Value |
     +---------------+-------+
-    | log_bin       |  ON   |
+    | log_bin       |  0   |
     +---------------+-------+
     ```
-
-    值为 `ON` 时表示 TiDB 开启了 binlog。
 
 - 查看 Pump/Drainer 状态
 

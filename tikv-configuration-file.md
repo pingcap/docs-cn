@@ -1,6 +1,6 @@
 ---
 title: TiKV 配置文件描述
-aliases: ['/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
+aliases: ['/docs-cn/dev/tikv-configuration-file/','/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
 ---
 
 # TiKV 配置文件描述
@@ -646,7 +646,7 @@ rocksdb 相关的配置项。
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发个数。
-+ 默认值：1
++ 默认值：3
 + 最小值：1
 
 ### `max-open-files`
@@ -822,7 +822,7 @@ rocksdb defaultcf 相关的配置项。
 ### `block-cache-size`
 
 + rocksdb block cache size。
-+ 默认值：机器总内存 / 4
++ 默认值：机器总内存 * 25%
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -1050,12 +1050,12 @@ rocksdb defaultcf titan 相关的配置项。
 ### `level-merge`
 
 + 是否通过开启 level-merge 来提升读性能，副作用是写放大会比不开启更大。
-+ 默认值：true
++ 默认值：false
 
 ### `gc-merge-rewrite`
 
 + 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
-+ 默认值：true
++ 默认值：false
 
 ## rocksdb.writecf
 
@@ -1110,7 +1110,7 @@ raftdb 相关配置项。
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发数。
-+ 默认值：1
++ 默认值：2
 + 最小值：1
 
 ### `wal-dir`
@@ -1139,7 +1139,7 @@ raftdb 相关配置项。
 
 ## import
 
-用于 import 相关的配置项。
+用于 TiDB Lightning 导入及 BR 恢复相关的配置项。
 
 ### `num-threads`
 
@@ -1153,12 +1153,19 @@ raftdb 相关配置项。
 + 默认值：8
 + 最小值：1
 
+## backup
+
+用于 BR 备份相关的配置项。
+
+### `num-threads`
+
++ 处理备份的工作线程数。
++ 默认值：CPU * 0.75，但最大为 32
++ 最小值：1
+
 ## pessimistic-txn
 
-### `enabled`
-
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
-+ 默认值：true
+悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
 
 ### `wait-for-lock-timeout`
 

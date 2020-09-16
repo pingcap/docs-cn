@@ -1,7 +1,7 @@
 ---
 title: 下推到 TiKV 的表达式列表
 summary: TiDB 中下推到 TiKV 的表达式列表及相关设置。
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/expressions-pushed-down/']
+aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs-cn/dev/reference/sql/functions-and-operators/expressions-pushed-down/']
 ---
 
 # 下推到 TiKV 的表达式列表
@@ -134,7 +134,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 | = | eq |
 | != | ne |
 | `<>` | ne |
-| <=> | nulleq |
+| `<=>` | nulleq |
 | &#124; | bitor |
 | && | bitand|
 | &#124;&#124; | or |

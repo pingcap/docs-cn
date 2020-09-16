@@ -1,7 +1,7 @@
 ---
 title: START TRANSACTION
 summary: TiDB 数据库中 START TRANSACTION 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/start-transaction/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-start-transaction/','/docs-cn/dev/reference/sql/statements/start-transaction/']
 ---
 
 # START TRANSACTION
@@ -65,7 +65,7 @@ Query OK, 0 rows affected (0.01 sec)
 * `START TRANSACTION` 相当于 MySQL 的 `START TRANSACTION WITH CONSISTENT SNAPSHOT`，即 `START TRANSACTION` 后执行了一个从 InnoDB 任意表读数据的 `SELECT` 语句（非 `SELECT FOR UPDATE`）。
 * `READ ONLY` 及其扩展选项都都只是语法兼容，其效果等同于 `START TRANSACTION`。
 
-如有任何其他兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 
