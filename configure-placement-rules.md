@@ -249,7 +249,7 @@ pd-ctl config placement save --in=rules.json
 
 使用 `rule-bundle` 子命令，可以方便地同时查看和修改规则分组及组内的所有规则。
 
-其中 `get {group_id}` 用来查询一个分组，输出为嵌套形式的规则分组和组内规则：
+该子命令中 `get {group_id}` 用来查询一个分组，输出结果为嵌套形式的规则分组和组内规则：
 
 {{< copyable "shell-regular" >}}
 
