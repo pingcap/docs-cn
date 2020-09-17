@@ -1,6 +1,6 @@
 ---
 title: 通过拓扑 label 进行副本调度
-aliases: ['/docs-cn/v3.1/location-awareness/','/docs-cn/v3.1/how-to/deploy/geographic-redundancy/location-awareness/','/zh/tidb/v3.1/location-awareness']
+aliases: ['/docs-cn/v2.1/location-awareness/','/docs-cn/v2.1/how-to/deploy/geographic-redundancy/location-awareness/','/zh/tidb/v2.1/location-awareness']
 ---
 
 # 通过拓扑 label 进行副本调度
