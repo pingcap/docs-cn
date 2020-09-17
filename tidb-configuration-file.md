@@ -456,7 +456,7 @@ prepare 语句的 Plan cache 设置。
 >
 > + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
 > + 无法保证外部一致性。
-> + 如果在 DDL 的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
+> + 如果在执行 DDL 操作的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
