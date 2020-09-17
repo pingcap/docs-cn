@@ -447,8 +447,15 @@ prepare 语句的 Plan cache 设置。
 
 ### `enable-async-commit` <!-- 从 v5.0 版本开始引入 -->
 
-+ 指定是否启用 async commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性暂时与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)、[Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) **不兼容**。
++ 指定是否启用 async commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不兼容，开启 binlog 时本配置将没有效果。
 + 默认值：false
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
+> + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
+> + 无法保证外部一致性。
+> + 如果在 DDL 的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
