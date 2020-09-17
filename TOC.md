@@ -479,6 +479,8 @@
     + TiKV
       + [TiKV Overview](/tikv-overview.md)
       + [RocksDB Overview](/storage-engine/rocksdb-overview.md)
+      + [Titan Overview](/storage-engine/titan-overview.md)
+      + [Titan Configuration](/storage-engine/titan-configuration.md)
     + TiFlash
       + [Overview](/tiflash/tiflash-overview.md)
       + [Use TiFlash](/tiflash/use-tiflash.md)
