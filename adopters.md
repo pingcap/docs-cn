@@ -11,7 +11,7 @@ This is a list of TiDB adopters in various industries.
 
 | Company | Industry | Case studies |
 | :--- | :--- | :--- |
-|[VNG](https://en.wikipedia.org/wiki/VNG_Corporation)|Mobile Payment|[English](https://pingcap.com/case-studies/tidb-at-zalopay-infrastructure-lesson-learned/)|
+|[VNG](https://en.wikipedia.org/wiki/VNG_Corporation)|Mobile Payment|English [#1](https://pingcap.com/case-studies/tidb-at-zalopay-infrastructure-lesson-learned/), [#2](https://pingcap.com/case-studies/zalopay-using-a-scale-out-mysql-alternative-to-serve-millions-of-users)|
 |[PayPay](https://www.crunchbase.com/organization/paypay#section-overviewy)|Mobile Payment|[English](https://pingcap.com/case-studies/japan-largest-mobile-payment-company-migrates-from-aurora-to-a-scale-out-database); [Chinese](https://pingcap.com/cases-cn/user-case-paypay/)|
 |[Ping++](https://www.crunchbase.com/organization/ping-5)|Mobile Payment|[Chinese](https://pingcap.com/cases-cn/user-case-ping++/)|
 |[LianLian Tech](https://www.crunchbase.com/organization/lianlian-pay)|Mobile Payment||
