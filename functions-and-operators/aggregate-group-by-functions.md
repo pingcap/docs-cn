@@ -24,6 +24,7 @@ TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
 | [`STD()`，`STDDEV()`，`STDDEV_POP`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_std) | 返回总体标准差 |
 | [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_var-samp) | 返回采样标准方差 |
 | [`STDDEV_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_stddev-samp) | 返回采样标准差 |
+
 > **注意：**
 >
 > - 除非另有说明，否则聚合函数默认忽略 `NULL` 值。
