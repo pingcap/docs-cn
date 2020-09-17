@@ -295,7 +295,7 @@ pd-ctl config placement-rules rule-bundle set pd -in="group.json"
 
 ### 使用 pd-ctl 查看和修改所有配置
 
-最后一种直观的修改配置的方式是把全部配置保存至文件，修改后再覆盖保存。我们同样使用 `rule-bundle` 子命令。
+用户还可以使用 pd-ctl 查看和修改所有配置，即把全部配置保存至文件，修改后再覆盖保存。该操作同样使用 `rule-bundle` 子命令。
 
 下面的命令将所有配置保存至 `rules.json` 文件：
 
