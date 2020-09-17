@@ -277,7 +277,7 @@ pd-ctl config placement-rules rule-bundle get pd
 }
 ```
 
-`rule-bundle get` 命令可以使用 `-out` 参数来将输出写入文件，方便后续修改保存。
+`rule-bundle get` 子命令中可以添加 `-out` 参数来将输出写入文件，方便后续修改保存。
 
 {{< copyable "shell-regular" >}}
 
