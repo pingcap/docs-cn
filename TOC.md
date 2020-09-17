@@ -33,7 +33,7 @@
       - [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
     + 跨地域冗余
       - [跨数据中心部署方案](/geo-redundancy-deployment.md)
-      - [配置集群拓扑](/location-awareness.md)
+      - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
     - [使用 Ansible 部署 DM 集群](https://pingcap.com/docs-cn/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/)
   + 配置
     - [时区](/configure-time-zone.md)
