@@ -552,10 +552,7 @@ TiDB 服务状态相关配置。
 
 ## pessimistic-txn
 
-### enable
-
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
-+ 默认值：true
+悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
 
 ### max-retry-count
 
