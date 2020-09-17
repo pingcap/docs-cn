@@ -12,5 +12,4 @@ aliases: ['/docs-cn/dev/security-compatibility-with-mysql/','/docs-cn/dev/refere
 - 不支持列级别权限设置。
 - 不支持密码过期，最后一次密码变更记录以及密码生存期。[#9709](https://github.com/pingcap/tidb/issues/9709)
 - 不支持权限属性 `max_questions`，`max_updated`，`max_connections` 以及 `max_user_connections`。
-
 - 不支持密码验证。[#9741](https://github.com/pingcap/tidb/issues/9741)
