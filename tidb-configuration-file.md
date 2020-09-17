@@ -549,10 +549,7 @@ Configurations related to the `events_statement_summary_by_digest` table.
 
 ## pessimistic-txn
 
-### enable
-
-- Enables the pessimistic transaction mode. For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](/pessimistic-transaction.md).
-- Default value: `true`
+For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](/pessimistic-transaction.md).
 
 ### max-retry-count
 

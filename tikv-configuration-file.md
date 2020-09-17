@@ -1163,7 +1163,7 @@ Configuration items related to TiDB Lightning import and BR restore.
 + The number of jobs imported concurrently
 + Default value: `8`
 + Minimum value: `1`
-  
+
 ## backup
 
 Configuration items related to BR backup.
@@ -1172,14 +1172,11 @@ Configuration items related to BR backup.
 
 + The number of worker threads to process backup
 + Default value: `MIN(CPU * 0.75, 32)`.
-+ Minimum value: `1` 
++ Minimum value: `1`
 
 ## pessimistic-txn
 
-### `enabled`
-
-- Enables the pessimistic transaction mode. For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](/pessimistic-transaction.md).
-- Default value: `true`
+For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](/pessimistic-transaction.md).
 
 ### `wait-for-lock-timeout`
 
