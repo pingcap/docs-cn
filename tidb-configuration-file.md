@@ -453,6 +453,7 @@ prepare 语句的 Plan cache 设置。
 > **警告：**
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
+>
 > + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
 > + 无法保证外部一致性。
 > + 如果在 DDL 的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
