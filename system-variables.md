@@ -324,7 +324,15 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Default value: 0
-- This variable is used to control whether to enable `get_lock` and `release_lock` functions. These two functions are not implemented, and always return 1 in the current version of TiDB.
+- By default, TiDB returns an error when you attempt to use the syntax for functionality that is not yet implemented. When the variable value is set to `1`, TiDB silently ignores such cases of unavailable functionality, which is helpful if you cannot make changes to the SQL code.
+- Enabling `noop` functions controls the following behaviors:
+    * `get_lock` and `release_lock` functions
+    * `LOCK IN SHARE MODE` syntax
+    * `SQL_CALC_FOUND_ROWS` syntax
+
+> **Note:**
+>
+> Only the default value of `0` can be considered safe. Setting `tidb_enable_noop_functions=1` might lead to unexpected behaviors in your application, because it permits TiDB to ignore certain syntax without providing an error.
 
 ### tidb_enable_slow_log
 
@@ -606,7 +614,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - This variable is used to set whether the optimizer executes the optimization operation of pushing down the aggregate function with `distinct` (such as `select count(distinct a) from t`) to Coprocessor.
 - When the aggregate function with the `distinct` operation is slow in the query, you can set the variable value to `1`.
 
-In the following example, before `tidb_opt_distinct_agg_push_down` is enabled, TiDB needs to read all data from TiKV and execute `disctinct` on the TiDB side. After `tidb_opt_distinct_agg_push_down` is enabled, `distinct a` is pushed down to Coprocessor, and a `group by` column `test.t.a` is added to `HashAgg_5`.
+In the following example, before `tidb_opt_distinct_agg_push_down` is enabled, TiDB needs to read all data from TiKV and execute `distinct` on the TiDB side. After `tidb_opt_distinct_agg_push_down` is enabled, `distinct a` is pushed down to Coprocessor, and a `group by` column `test.t.a` is added to `HashAgg_5`.
 
 ```sql
 mysql> desc select count(distinct a) from test.t;
