@@ -122,16 +122,17 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 使用 `br backup` 命令来备份集群数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据或单张表的数据。
 
-如果备份时间可能超过设定的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time)（默认 `10m0s`，即表示 10 分钟），则需要将该参数调大。
-
-例如，将 `tikv_gc_life_time` 调整为 `720h`：
-
-{{< copyable "sql" >}}
-
-```sql
-mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
-    "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
-```
+> **注意：**
+> 如果 br 版本小于 v4.0.3, 同时存在备份时间可能超过设定的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time)（默认 `10m0s`，即表示 10 分钟）的情况下，需要手动将该参数调大。
+>
+> 例如，将 `tikv_gc_life_time` 调整为 `720h`：
+>
+> {{< copyable "sql" >}}
+>
+> ```sql
+> mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
+>     "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
+> ```
 
 ### 备份全部集群数据
 
