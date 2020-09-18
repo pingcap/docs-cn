@@ -1,6 +1,6 @@
 ---
 title: 错误码与故障诊断
-aliases: ['/docs-cn/stable/error-codes/','/docs-cn/v4.0/error-codes/','/docs-cn/stable/reference/error-codes/']
+aliases: ['/docs-cn/stable/error-codes/','/docs-cn/v4.0/error-codes/','/docs-cn/stable/reference/error-codes/','/docs-cn/v4.0/reference/error-codes/']
 ---
 
 # 错误码与故障诊断
