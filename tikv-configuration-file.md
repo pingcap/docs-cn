@@ -217,11 +217,6 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 
 raftstore 相关的配置项。
 
-### `sync-log`
-
-+ 数据、log 落盘是否 sync，注意：设置成 false 可能会丢数据。
-+ 默认值：true
-
 ### `prevote`
 
 + 开启 Prevote 的开关，开启有助于减少隔离恢复后对系统造成的抖动。
