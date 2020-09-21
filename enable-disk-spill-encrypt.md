@@ -1,0 +1,21 @@
+---
+title: 为 TiDB 落盘文件开启加密
+aliases: ['/docs-cn/dev/enable-tls-between-clients-and-servers/','/docs-cn/dev/how-to/secure/enable-tls-clients/','/docs-cn/dev/encrypted-connections-with-tls-protocols/','/docs-cn/dev/enable-tls-between-clients/']
+---
+
+# 为 TiDB 落盘文件开启加密
+
+当配置项 `oom-use-tmp-storage` 为 `ture` 时，如果单条 SQL 语句的内存使用超出 `mem-quota-query` 的限制，某些算子可以将执行时的中间结果作为临时文件落盘保存，直到算子执行完成之后将它们删除。可以开启落盘文件加密功能，防止攻击者通过读取临时文件来访问数据。
+
+## 配置加密
+
+要启用落盘文件加密功能，可以在 TiDB 的配置文件中添加安全相关配置
+
+```
+[security]
+spilled-file-encryption-method = aes128-ctr
+```
+
+`spilled-file-encryption-method` 的可选值为 `aes128-ctr`、`plaintext`。默认值为 `plaintext`，表示不启用加密。
+
+
