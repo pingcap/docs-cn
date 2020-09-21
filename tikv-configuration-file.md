@@ -278,11 +278,6 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 raftstore 相关的配置项。
 
-### `sync-log`
-
-+ 数据、log 落盘是否 sync，注意：设置成 false 可能会丢数据。
-+ 默认值：true
-
 ### `prevote`
 
 + 开启 Prevote 的开关，开启有助于减少隔离恢复后对系统造成的抖动。
