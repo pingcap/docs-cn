@@ -20,7 +20,10 @@ TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
 | [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_max)                       | 返回最大值     |
 | [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_min)                       | 返回最小值     |
 | [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | 返回连接的字符串  |
-| [`VARIANCE()`, `VAR_POP()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_var-pop) | 返回表达式的总体标准方差 |
+| [`VARIANCE()`，`VAR_POP()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_var-pop) | 返回总体标准方差 |
+| [`STD()`，`STDDEV()`，`STDDEV_POP`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_std) | 返回总体标准差 |
+| [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_var-samp) | 返回采样方差 |
+| [`STDDEV_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_stddev-samp) | 返回采样标准方差 |
 | [`JSON_OBJECTAGG(key, value)`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_json-objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON object |
 
 > **注意：**
@@ -151,6 +154,4 @@ group by id, val;
 
 TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623](https://github.com/pingcap/tidb/issues/7623)。
 
-- `STDDEV_SAMP`
-- `VAR_SAMP`
 - `JSON_ARRAYAGG`
