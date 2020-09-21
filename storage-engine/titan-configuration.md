@@ -114,11 +114,11 @@ To adjust Titan-related parameters using TiUP, refer to [Modify the configuratio
 
 To disable Titan, you can configure the `rocksdb.defaultcf.titan.blob-run-mode` option. The optional values for `blob-run-mode` are as follows:
 
-- When the option is set to `kNormal`, Titan performs read and write operations normally.
-- When the option is set to `kReadnly`, all newly written values are written into RocksDB, regardless of the value size.
-- When the option is set to `KFallback`, all newly written values are written into RocksDB, regardless of the value size. Also, all compacted values stored in the Titan blob file are automatically moved back to RocksDB.
+- When the option is set to `normal`, Titan performs read and write operations normally.
+- When the option is set to `read-only`, all newly written values are written into RocksDB, regardless of the value size.
+- When the option is set to `fallback`, all newly written values are written into RocksDB, regardless of the value size. Also, all compacted values stored in the Titan blob file are automatically moved back to RocksDB.
 
-To disable Titan, set `blob-run-mode = "kFallback"` and perform a full compaction using tikv-ctl. After that, check the monitoring metrics, confirm that the blob file size decreases to `0`. Then you can set `rocksdb.titan.enabled` to `false` and restart TiKV.
+To disable Titan, set `blob-run-mode = "fallback"` and perform a full compaction using tikv-ctl. After that, check the monitoring metrics, confirm that the blob file size decreases to `0`. Then you can set `rocksdb.titan.enabled` to `false` and restart TiKV.
 
 > **Note:**
 >
