@@ -368,7 +368,7 @@ tiup cluster reload prod-cluster
 
 > **注意：**
 >
-> 对于监控组件，可以通过 `tiup cluster edit-config` 在对应实例上添加自定义配置路径来进行配置自定义，例如：
+> 对于监控组件，可以通过执行 `tiup cluster edit-config` 命令在对应实例上添加自定义配置路径来进行配置自定义，例如：
 
 ```yaml
 ---
@@ -392,13 +392,13 @@ alertmanager_servers:
 - `monitoring_servers` 的 `rule_dir` 字段定义的文件夹中应当含有完整的 `*.rules.yml`
 - `alertmanager_servers` 的 `config_file` 格式请参考[此处](https://github.com/pingcap/tiup/blob/master/templates/config/alertmanager.yml)
 
-在执行 `tiup reload` 时，TiUP 会将中控机上对应的配置上传到目标机器的对应配置目录中，上传之前会删除目标机器中的老的配置文件，如果想要修改某一个配置文件，请确保将所有的（包含未修改的）配置文件都放在同一个目录中，例如，要修改 grafana 的 tidb.json，可以先将 grafana 的 dashboards 目录中所有的 *.json 文件拷贝到本地目录中，再修改 tidb.json，否则最终的目标机器上将缺失其他的 json 文件。
+在执行 `tiup reload` 时，TiUP 会将中控机上对应的配置上传到目标机器对应的配置目录中，上传之前会删除目标机器中已有的旧配置文件。如果想要修改某一个配置文件，请确保将所有的（包含未修改的）配置文件都放在同一个目录中。例如，要修改 Grafana 的 `tidb.json` 文件，可以先将 Grafana 的 `dashboards` 目录中所有的 `*.json` 文件拷贝到本地目录中，再修改 `tidb.json` 文件。否则最终的目标机器上将缺失其他的 JSON 文件。
 
 > **注意：**
 >
-> 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在使用 `tiup cluster rename` 功能时需要注意：
+> 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在执行 `tiup cluster rename` 命令进行集群重命名时需要注意以下几点：
 >
-> 1. 本地目录中的 dashboards 包含了集群名信息，需要修改本地 dashboards 中的集群名为新的集群名
+> 1. 本地目录中的 `dashboards` 包含了集群名信息，需要修改本地 `dashboards` 中的集群名为新的集群名。
 > 2. 本地目录中 `dashboards` 中的 `datasource` 也要更新为新的集群名（`datasource` 是以集群名命名的）。
 > 3. 执行 `tiup cluster reload -R grafana` 命令。
 
