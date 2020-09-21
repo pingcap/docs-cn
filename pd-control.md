@@ -133,7 +133,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 用于显示或调整配置信息。示例如下。
 
-显示 scheduler 的相关 config 信息：
+显示 scheduling 的相关 config 信息：
 
 {{< copyable "" >}}
 
@@ -152,14 +152,14 @@ export PD_ADDR=http://127.0.0.1:2379 &&
   },
   "schedule": {
     "enable-cross-table-merge": "false",
-    "enable-debug-metrics": "true",
+    "enable-debug-metrics": "false",
     "enable-location-replacement": "true",
     "enable-make-up-replica": "true",
     "enable-one-way-merge": "false",
     "enable-remove-down-replica": "true",
     "enable-remove-extra-replica": "true",
     "enable-replace-offline-replica": "true",
-    "high-space-ratio": 0.6,
+    "high-space-ratio": 0.7,
     "hot-region-cache-hits-threshold": 3,
     "hot-region-schedule-limit": 4,
     "leader-schedule-limit": 4,
@@ -176,7 +176,6 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     "replica-schedule-limit": 64,
     "scheduler-max-waiting-operator": 5,
     "split-merge-interval": "1h0m0s",
-    "store-balance-rate": 15,
     "store-limit-mode": "manual",
     "tolerant-size-ratio": 0
   }
@@ -218,231 +217,230 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 
 ```
-"2.0.0"
+"4.0.0"
 ```
 
-`max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
+- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
 当需要加快补副本或 balance 速度时可以调大这个值。
 
-设置最大 snapshot 为 16：
+    设置最大 snapshot 为 16：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set max-snapshot-count 16
-```
+    ```bash
+    >> config set max-snapshot-count 16
+    ```
 
-`max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
+- `max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
 
-设置最大 pending peer 数量为 64：
+    设置最大 pending peer 数量为 64：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set max-pending-peer-count 64
-```
+    ```bash
+    >> config set max-pending-peer-count 64
+    ```
 
-`max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
+- `max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
 
-设置 Region Merge 的 size 上限为 16 M：
+    设置 Region Merge 的 size 上限为 16 M：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set max-merge-region-size 16
-```
+    ```bash
+    >> config set max-merge-region-size 16
+    ```
 
-`max-merge-region-keys` 控制 Region Merge 的 keyCount 上限。当 Region KeyCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
+- `max-merge-region-keys` 控制 Region Merge 的 keyCount 上限。当 Region KeyCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
 
-设置 Region Merge 的 keyCount 上限为 50000：
+    设置 Region Merge 的 keyCount 上限为 50000：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set max-merge-region-keys 50000
-```
+    ```bash
+    >> config set max-merge-region-keys 50000
+    ```
 
-`split-merge-interval` 控制对同一个 Region 做 `split` 和 `merge` 操作的间隔，即对于新 `split` 的 Region 一段时间内不会被 `merge`。
+- `split-merge-interval` 控制对同一个 Region 做 `split` 和 `merge` 操作的间隔，即对于新 `split` 的 Region 一段时间内不会被 `merge`。
 
-设置 `split` 和 `merge` 的间隔为 1 天：
+    设置 `split` 和 `merge` 的间隔为 1 天：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set split-merge-interval 24h
-```
+    ```bash
+    >> config set split-merge-interval 24h
+    ```
 
-`patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
+- `enable-one-way-merge` 用于控制是否只允许和相邻的后一个 Region 进行合并。当设置为 `false` 时，PD 允许与相邻的前后 Region 进行合并。
 
-设置 replicaChecker 的运行频率为 10 毫秒：
+    设置只允许和相邻的后一个 Region 合并：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set patrol-region-interval 10ms
-```
+    ```bash
+    >> config set enable-one-way-merge true
+    ```
 
-`max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
+- `enable-cross-table-merge` 用于开启跨表 Region 的合并。当设置为 `false` 时，PD 不会合并不同表的 Region。该选项只在键类型为 "table" 时生效。
 
-设置 store 心跳丢失 30 分钟开始补副本：
+    设置允许跨表合并：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set max-store-down-time 30m
-```
+    ```bash
+    >> config set enable-cross-table-merge true
+    ```
 
-通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
+- `key-type` 用于指定集群的键编码类型。支持的类型有 `["table", "raw", "txn"]`，默认值为 "table"。
+
+    - 如果集群中不存在 TiDB 实例，`key-type` 的值为 "raw" 或 "txn"。此时，无论 `enable-cross-table-merge` 设置为何，PD 均可以跨表合并 Region。
+    - 如果集群中存在 TiDB 实例，`key-type` 的值应当为 "table"。此时，`enable-cross-table-merge` 的设置决定了 PD 是否能跨表合并 Region。如果 `key-type` 的值为 "raw"，placement rules 不生效。
+
+    启用跨表合并：
+
+    {{< copyable "" >}}
+
+    ```bash
+    >> config set key-type raw
+    ```
+
+- `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
+
+    设置 replicaChecker 的运行频率为 10 毫秒：
+
+    {{< copyable "" >}}
+
+    ```bash
+    >> config set patrol-region-interval 10ms
+    ```
+
+- `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
+
+    设置 store 心跳丢失 30 分钟开始补副本：
+
+    {{< copyable "" >}}
+
+    ```bash
+    >> config set max-store-down-time 30m
+    ```
+
+- 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
 这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
 Leader 调度的开销较小，需要的时候可以适当调大。
 
-最多同时进行 4 个 leader 调度：
+    最多同时进行 4 个 leader 调度：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set leader-schedule-limit 4
-```
+    ```bash
+    >> config set leader-schedule-limit 4
+    ```
 
-通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。
-这个值主要影响 *Region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Region 调度的开销较大，所以这个值不宜调得太大。
+- 通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。这个值可以避免创建过多的 Region balance operator。默认值为 `2048`，对所有大小的集群都足够。设置为 `0` 则关闭调度。Region 调度的速度通常受到 `store-limit` 的限制，但除非你熟悉该设置，否则不推荐自定义该参数。
 
-最多同时进行 2 个 Region 调度：
+    最多同时进行 2 个 Region 调度：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set region-schedule-limit 2
-```
+    ```bash
+    >> config set region-schedule-limit 2
+    ```
 
-通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。
-这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。
-Replica 调度的开销较大，所以这个值不宜调得太大。
+- 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。
 
-最多同时进行 4 个 replica 调度：
+    最多同时进行 4 个 replica 调度：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set replica-schedule-limit 4
-```
+    ```bash
+    >> config set replica-schedule-limit 4
+    ```
 
-`merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
-Merge 调度的开销较大，所以这个值不宜调得过大。
+- `merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。Merge 调度的开销较大，所以这个值不宜调得过大。
 
-最多同时进行 16 个 merge 调度：
+    最多同时进行 16 个 merge 调度：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set merge-schedule-limit 16
-```
+    ```bash
+    >> config set merge-schedule-limit 16
+    ```
 
-`hot-region-schedule-limit` 控制同时进行的 Hot Region 调度的任务，设置为 0 则关闭调度。这个值不宜调得过大，否则可能对系统性能造成影响。
+- `hot-region-schedule-limit` 控制同时进行的 Hot Region 调度的任务，设置为 0 则关闭调度。这个值不宜调得过大，否则可能对系统性能造成影响。
 
-最多同时进行 4 个 Hot Region 调度：
+    最多同时进行 4 个 Hot Region 调度：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set hot-region-schedule-limit 4
-```
+    ```bash
+    >> config set hot-region-schedule-limit 4
+    ```
 
-`hot-region-cache-hits-threshold` 用于设置热点 Region 的阈值，只有命中 cache 的次数超过这个阈值才会被当作热点。
+- `hot-region-cache-hits-threshold` 用于设置热点 Region 的阈值，只有命中 cache 的次数超过这个阈值才会被当作热点。
 
-`tolerant-size-ratio` 控制 balance 缓冲区大小。
-当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
+- `tolerant-size-ratio` 控制 balance 缓冲区大小。当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
 
-设置缓冲区为约 20 倍平均 RegionSize：
+    设置缓冲区为约 20 倍平均 RegionSize：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
->> config set tolerant-size-ratio 20
-```
+    ```bash
+    >> config set tolerant-size-ratio 20
+    ```
 
-`low-space-ratio` 用于设置 store 空间不足的阈值。
-当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
+- `low-space-ratio` 用于设置 store 空间不足的阈值。当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
 
-设置空间不足阈值为 0.9：
+    设置空间不足阈值为 0.9：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
-config set low-space-ratio 0.9
-```
+    ```bash
+    config set low-space-ratio 0.9
+    ```
 
-`high-space-ratio` 用于设置 store 空间充裕的阈值。
-当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
+- `high-space-ratio` 用于设置 store 空间充裕的阈值。当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
 
-设置空间充裕阈值为 0.5：
+    设置空间充裕阈值为 0.5：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```bash
-config set high-space-ratio 0.5
-```
+    ```bash
+    config set high-space-ratio 0.5
+    ```
 
-`leader-schedule-policy` 用于选择 Leader 的调度策略，可以选择按照 `size` 或者 `count` 来进行调度。
+- `cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
 
-`store-balance-rate` 用于控制 store 添加/删除 peer 速度的上限。
+    设置 cluster version 为 1.0.8：
 
-`scheduler-max-waiting-operator` 用于控制每个调度器同时存在的 operator 的个数。
+    {{< copyable "" >}}
 
-`store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行调整。
+    ```bash
+    config set cluster-version 1.0.8
+    ```
 
-`disable-raft-learner` 用于关闭 raft learner 功能。
-默认配置下 PD 在添加副本时会使用 raft learner 来降低宕机或网络故障带来的不可用风险。
+- `leader-schedule-policy` 用于选择 Leader 的调度策略，可以选择按照 `size` 或者 `count` 来进行调度。
 
-关闭 raft learner 功能：
+- `scheduler-max-waiting-operator` 用于控制每个调度器同时存在的 operator 的个数。
 
-{{< copyable "" >}}
+- `enable-remove-down-replica` 用于开启自动删除 DownReplica 的特性。当设置为 false 时，PD 不会自动清理宕机状态的副本。
 
-```bash
-config set disable-raft-learner true
-```
+- `enable-replace-offline-replica` 用于开启迁移 OfflineReplica 的特性。当设置为 false 时，PD 不会迁移下线状态的副本。
 
-`cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。
-通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
+- `enable-make-up-replica` 用于开启补充副本的特性。当设置为 false 时，PD 不会为副本数不足的 Region 补充副本。
 
-设置 cluster version 为 1.0.8：
+- `enable-remove-extra-replica` 用于开启删除多余副本的特性。当设置为 false 时，PD 不会为副本数过多的 Region 删除多余副本。
 
-{{< copyable "" >}}
+- `enable-location-replacement` 用于开启隔离级别检查。当设置为 false 时，PD 不会通过调度来提升 Region 副本的隔离级别。
 
-```bash
-config set cluster-version 1.0.8
-```
+- `enable-debug-metrics` 用于开启 debug 的 metrics。当设置为 true 时，PD 会开启一些 metrics，比如 `balance-tolerant-size` 等。
 
-`enable-cross-table-merge` 用于开启跨表 Region 的合并。
-当设置为 false 时，PD 不会合并不同表的 Region。
+- `enable-placement-rules` 用于开启 placement rules。
 
-`enable-one-way-merge` 用于开启是否只允许和相邻的后一个 Region 进行合并。
-当设置为 false 时，PD 允许与相邻的前后 Region 进行合并。
-
-`enable-remove-down-replica` 用于开启自动删除 DownReplica 的特性。
-当设置为 false 时，PD 不会自动清理宕机状态的副本。
-
-`enable-replace-offline-replica` 用于开启迁移 OfflineReplica 的特性。
-当设置为 false 时，PD 不会迁移下线状态的副本。
-
-`enable-make-up-replica` 用于开启补充副本的特性。
-当设置为 false 时，PD 不会为副本数不足的 Region 补充副本。
-
-`enable-remove-extra-replica` 用于开启删除多余副本的特性。
-当设置为 false 时，PD 不会为副本数过多的 Region 删除多余副本。
-
-`enable-location-replacement` 用于开启隔离级别检查。
-当设置为 false 时，PD 不会通过调度来提升 Region 副本的隔离级别。
-
-`enable-debug-metrics` 用于开启 debug 的 metrics。
-当设置为 true 时，PD 会开启一些 metrics，比如 `balance-tolerant-size` 等。
-
-`enable-placement-rules` 用于开启 placement rules。
+- `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
 
 ### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
-用于配置 Placement Rules。 具体使用说明可参考[Placement Rules 使用文档](/configure-placement-rules.md)。
+关于 `config placement-rules` 的具体用法，参考 [Placement Rules 使用文档](/configure-placement-rules.md#配置规则操作步骤)。
 
 ### health
 
@@ -607,7 +605,7 @@ Success!
 
 ### `operator [check | show | add | remove]`
 
-用于显示和控制调度操作，或者对 Region 进行分裂或合并。
+用于显示和控制调度操作。
 
 示例：
 
@@ -619,6 +617,7 @@ Success!
 >> operator show leader                                 // 显示所有的 leader operators
 >> operator show region                                 // 显示所有的 Region operators
 >> operator add add-peer 1 2                            // 在 store 2 上新增 Region 1 的一个副本
+>> operator add add-learner 1 2                         // 在 store 2 上新增 Region 1 的一个 learner 副本
 >> operator add remove-peer 1 2                         // 移除 store 2 上的 Region 1 的一个副本
 >> operator add transfer-leader 1 2                     // 把 Region 1 的 leader 调度到 store 2
 >> operator add transfer-region 1 2 3 4                 // 把 Region 1 调度到 store 2,3,4
@@ -703,11 +702,25 @@ time: 43.12698ms
 }
 ```
 
-### `region key [--format=raw|encode] <key>`
+### `region key [--format=raw|encode|hex] <key>`
 
-用于查询某个 key 在哪个 Region 上，支持 raw 和 encoding 格式。使用 encoding 格式时，key 需要使用单引号。
+用于查询某个 key 位于哪一个 Region 上，支持 raw、encoding 和 hex 格式。使用 encoding 格式时，key 需要使用单引号。
 
-Raw 格式（默认）示例：
+Hex 格式（默认）示例：
+
+{{< copyable "" >}}
+
+```bash
+>> region key 7480000000000000FF1300000000000000F8
+{
+  "region": {
+    "id": 2,
+    ......
+  }
+}
+```
+
+Raw 格式示例：
 
 {{< copyable "" >}}
 
@@ -912,7 +925,7 @@ Encoding 格式示例：
 }
 ```
 
-### `region check [miss-peer | extra-peer | down-peer | pending-peer]`
+### `region check [miss-peer | extra-peer | down-peer | pending-peer | offline-peer | empty-region | hist-size | hist-keys]`
 
 用于查询处于异常状态的 Region，各类型的意义如下
 
@@ -957,6 +970,65 @@ Encoding 格式示例：
 >> scheduler resume all                           // 继续运行所有的调度器 
 >> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
 ```
+
+### `scheduler config balance-hot-region-scheduler`
+
+用于查看和控制 `balance-hot-region-scheduler` 策略。
+
+示例：
+
+```bash
+>> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的所有配置
+{
+  "min-hot-byte-rate": 100,
+  "min-hot-key-rate": 10,
+  "max-zombie-rounds": 3,
+  "max-peer-number": 1000,
+  "byte-rate-rank-step-ratio": 0.05,
+  "key-rate-rank-step-ratio": 0.05,
+  "count-rank-step-ratio": 0.01,
+  "great-dec-ratio": 0.95,
+  "minor-dec-ratio": 0.99,
+  "src-tolerance-ratio": 1.02,
+  "dst-tolerance-ratio": 1.02
+}
+```
+
+- `min-hot-byte-rate` 指计数的最小字节，通常为 100。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set min-hot-byte-rate 100
+    ```
+
+- `min-hot-key-rate` 指计数的最小 key，通常为 10。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set min-hot-key-rate 10
+    ```
+
+- `max-zombie-rounds` 指一个 operator 可被纳入 pending influence 所允许的最大心跳次数。如果将它设置为更大的值，更多的 operator 可能会被纳入 pending influence。通常用户不需要修改这个值。pending influence 指的是在调度中产生的、但仍生效的影响。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set max-zombie-rounds 3
+    ```
+
+- `max-peer-number` 指最多要被解决的 peer 数量。这个配置可避免调度器处理速度过慢。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set max-peer-number 1000
+    ```
+
+- `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、count 的 step ranks。rank step ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set byte-rate-rank-step-ratio 0.05
+    ```
+
+- `src-tolerance-ratio` 和 `dst-tolerance-ratio` 是期望调度器的配置项。`tolerance-ratio` 的值越小，调度就越容易。当出现冗余调度时，你可以适当调大这个值。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.05
+    ```
 
 ### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
 
@@ -1021,16 +1093,16 @@ Encoding 格式示例：
 
 ```bash
 >> store remove-tombstone              // 删除所有 tombstone 状态的 store
->> store limit                         // 显示所有 store 添加 peer 的速度上限
->> store limit region-add              // 显示所有 store 添加 peer 的速度上限
->> store limit region-remove           // 显示所有 store 删除 peer 的速度上限
->> store limit all 5                   // 设置所有 store 添加 peer 的速度上限为每分钟 5 个（如不设置具体类型，则默认设置的是添加 peer 的速度） 
->> store limit 1 5                     // 设置 store 1 添加 peer 的速度上限为每分钟 5 个（如不设置具体类型，则默认设置的是添加 peer 的速度） 
->> store limit all 5 region-add        // 设置所有 store 添加 peer 的速度上限为每分钟 5 个
->> store limit 1 5 region-add          // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
->> store limit 1 5 region-remove       // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
->> store limit all 5 region-remove     // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
->> store limit-scene                   // 显示不同 load 场景下，添加/删除 peer 的速度上限，仅在 `store-limit-mode` 为 `auto` 时有效
+>> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
+>> store limit add-peer                // 显示所有 store 添加 peer 的速度上限
+>> store limit remove-peer             // 显示所有 store 删除 peer 的速度上限
+>> store limit all 5                   // 设置所有 store 添加和删除 peer 的速度上限为每分钟 5 个
+>> store limit 1 5                     // 设置 store 1 添加和删除 peer 的速度上限为每分钟 5 个
+>> store limit all 5 add-peer          // 设置所有 store 添加 peer 的速度上限为每分钟 5 个
+>> store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
+>> store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
+>> store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
+>> store limit-scene                   // 显示所有的限速场景（实验性功能）
 {
   "Idle": 100,
   "Low": 50,
@@ -1042,7 +1114,7 @@ Encoding 格式示例：
 
 > **注意：**
 >
-> store limit 的生效情况和执行命令的先后顺序有关。如先执行 `store limit 1 5 region-add` 会将 store 1 添加 peer 的速度上限设置为每分钟 5 个，然后执行 `store limit 1 10 region-add`。此时 store 1 添加 peer 的速度上限会被修改为每分钟 10 个；反之，如先执行 `store limit 1 10 region-add`，会将全部 store 添加 peer 的速度上限设置为为每分钟 10 个，然后执行 `store limit 1 5 region-add`。此时只有 store 1 添加 peer 的速度上限被修改为每分钟 5 个。
+> 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
 
 ### `log [fatal | error | warn | info | debug]`
 
