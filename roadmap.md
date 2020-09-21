@@ -64,5 +64,5 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 - [ ] [支持 `EXCEPT`/`INTERSECT`  操作](https://github.com/pingcap/tidb/issues/18031)。
 - [ ] [支持通过 TiUP/Operator 部署和运维 DM 2.0](https://github.com/pingcap/tidb-operator/issues/2868)。
 - [ ] [TiDB Operator 支持异构设计](https://github.com/pingcap/tidb-operator/issues/2240)。
-- [ ] 支持将云上的 RDS 迁移到 TiDB，例如：云上的 MySQL 或者 Aurora](https://github.com/pingcap/tidb/issues/18629)。
+- [ ] [支持将云上的 RDS 迁移到 TiDB，例如：云上的 MySQL 或者 Aurora](https://github.com/pingcap/tidb/issues/18629)。
 
