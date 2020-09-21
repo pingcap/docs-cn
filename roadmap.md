@@ -45,13 +45,13 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 
 - [ ] [优化在 AWS i3.xlarge/i3.2xlarge 配置上跑 TiDB 的性能和稳定性](https://github.com/pingcap/tidb/issues/18025)。
 - [ ] [优化 TiDB 的存储使用云盘性能和稳定性，例如：AWS EBS gp2](https://github.com/pingcap/tidb/issues/18024)。
-- [ ] [提升发现及诊断性能问题的效率，降低用户的使用成本](https://github.com/pingcap/tidb/issues/18867)。
 
 ## 新功能
 
 - [ ] [恢复到任意时间点（PITR)](https://github.com/pingcap/br/issues/325)。
 - [ ] [支持修改列的类型](https://github.com/pingcap/tidb/issues/17526)。
 - [ ] [字符集的排序规则支持 `utf8mb4_unicode_ci` 和 `utf8_unicode_ci`](https://github.com/pingcap/tidb/issues/17596)。
+- [ ] [提升发现及诊断性能问题的效率，降低用户的使用成本](https://github.com/pingcap/tidb/issues/18867)。
 - [ ] [TiCDC 兼容 TiDB-Binlog 相关的特性，降低用户使用 TiCDC 的成本](https://github.com/pingcap/ticdc/issues/690)
     - [ ] 支持分类更新和插入一行数据事件。
     - [ ] 通过删除或者更新语句修改一行数据时，系统自动记录原始值。
