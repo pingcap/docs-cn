@@ -71,6 +71,23 @@ The following are descriptions of options available in the `cdc server` command:
 - `cert`: The path of the certificate file used by TiCDC, in the PEM format (optional).
 - `key`: The path of the certificate key file used by TiCDC, in the PEM format (optional).
 
+## Upgrade TiCDC using TiUP
+
+This section introduces how to upgrade the TiCDC cluster using TiUP. In the following example, assume that you need to upgrade TiCDC and the entire TiDB cluster to v4.0.6.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup update --self && \
+tiup update --all && \
+tiup cluster upgrade <cluster-name> v4.0.6
+```
+
+### Notes for upgrade
+
+* The `changefeed` configuration has changed in TiCDC v4.0.2. See [Compatibility notes for the configuration file](/production-deployment-using-tiup.md#step-3-edit-the-initialization-configuration-file) for details.
+* If you encounter any issues, see [Upgrade TiDB using TiUP - FAQ](/upgrade-tidb-using-tiup.md#faq).
+
 ## Use TLS
 
 For details about using encrypted data transmission (TLS), see [Enable TLS Between TiDB Components](/enable-tls-between-components.md).
