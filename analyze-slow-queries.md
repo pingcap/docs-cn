@@ -159,7 +159,7 @@ mysql> explain analyze select count(*) from t where a=(select max(t1.a) from t t
 
 ### TiDB 执行慢
 
-这里我们假设 TiDB 的执行计划很优（不优的情况在[分析优化器问题](/analyze-slow-queries.md#分析优化器问题)这一节说明），但是执行上很慢；
+这里我们假设 TiDB 的执行计划正确，但是执行上很慢；
 
 解决这类问题主要靠调整参数或利用 hint，并结合 `explain analyze` 对 SQL 进行调整。
 
