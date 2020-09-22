@@ -72,7 +72,7 @@ summary: 学习如何定位和分析慢查询。
 
 另外在慢日志中，`Cop_process` 和 `Cop_wait` 字段也可以帮助判断，如下面这个例子，查询整个耗时是 180.85ms 左右，而最大的那个 `coptask` 就消耗了 `171ms`，可以说明对这个查询而言，瓶颈在 TiKV 侧。
 
-慢日志中的各个字段的说明可以参考慢查询日志中的[字段含义说明](/identify-slow-queries.md#%E5%AD%97%E6%AE%B5%E5%90%AB%E4%B9%89%E8%AF%B4%E6%98%8E)
+慢日志中的各个字段的说明可以参考慢查询日志中的[字段含义说明](/identify-slow-queries.md#字段含义说明)
 
 ```log
 # Query_time: 0.18085
@@ -159,7 +159,7 @@ mysql> explain analyze select count(*) from t where a=(select max(t1.a) from t t
 
 ### TiDB 执行慢
 
-这里我们假设 TiDB 的执行计划正确，但是执行上很慢；
+这里我们假设 TiDB 的执行计划正确（不正确的情况在[分析优化器问题](#分析优化器问题)这一节中说明），但是执行上很慢；
 
 解决这类问题主要靠调整参数或利用 hint，并结合 `explain analyze` 对 SQL 进行调整。
 
