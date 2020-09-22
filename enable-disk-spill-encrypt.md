@@ -15,4 +15,4 @@ title: 为 TiDB 落盘文件开启加密
 spilled-file-encryption-method = "aes128-ctr"
 ```
 
-`spilled-file-encryption-method` 的可选值为 `"aes128-ctr"`、`"plaintext"`。默认值为 `"plaintext"`，表示不启用加密。
+`spilled-file-encryption-method` 的可选值为 `aes128-ctr`、`plaintext`。默认值为 `plaintext`，表示不启用加密。
