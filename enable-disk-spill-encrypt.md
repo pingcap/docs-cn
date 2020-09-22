@@ -8,7 +8,7 @@ title: 为 TiDB 落盘文件开启加密
 
 ## 配置加密
 
-要启用落盘文件加密功能，可以在 TiDB 的配置文件中添加安全相关配置
+要启用落盘文件加密功能，可以在 TiDB 配置文件中的 `[security]` 部分，配置 [spilled-file-encryption-method](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file#spilled-file-encryption-method) 选项：
 
 ```
 [security]
