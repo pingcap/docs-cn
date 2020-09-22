@@ -1,6 +1,5 @@
 ---
 title: 为 TiDB 落盘文件开启加密
-aliases: ['/docs-cn/dev/enable-tls-between-clients-and-servers/','/docs-cn/dev/how-to/secure/enable-tls-clients/','/docs-cn/dev/encrypted-connections-with-tls-protocols/','/docs-cn/dev/enable-tls-between-clients/']
 ---
 
 # 为 TiDB 落盘文件开启加密
