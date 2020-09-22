@@ -580,6 +580,16 @@ curl -X POST http://127.0.0.1:8300/capture/owner/move_table -d 'cf-id=cf060953-0
 }
 ```
 
+### 动态调整 cdc server 日志级别
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X POST -d '"debug"' http://127.0.0.1:8301/admin/log
+```
+
+POST 参数表示新的日志级别，支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug", "info", "warn", "error", "dpanic", "panic", "fatal"。该接口参数为 json 编码，需要注意引号的使用：`'"debug"'`。
+
 ## 同步任务配置文件描述
 
 本部分详细介绍了同步任务的配置。
