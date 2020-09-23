@@ -67,7 +67,6 @@ Slow Query 基础信息：
 * `Preproc_subqueries`：表示这个语句被提前执行的子查询格式，如 `where id in (select if from t)` 这个子查询就可能被提前执行。
 * `Preproc_subqueries_time`：表示这个语句被提前执行的子查询耗时。
 
-
 和事务执行相关的字段：
 
 * `Prewrite_time`：表示事务两阶段提交中第一阶段（prewrite 阶段）的耗时。
