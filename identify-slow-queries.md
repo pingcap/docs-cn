@@ -14,11 +14,12 @@ TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-
 ```sql
 # Time: 2019-08-14T09:26:59.487776265+08:00
 # Txn_start_ts: 410450924122144769
-# User: root@127.0.0.1
+# User@Host: root[root] @ localhost [127.0.0.1]
 # Conn_ID: 3086
 # Query_time: 1.527627037
 # Parse_time: 0.000054933
 # Compile_time: 0.000129729
+# Rewrite_time: 0.000000003 Preproc_subqueries: 2 Preproc_subqueries_time: 0.000000002
 # Process_time: 0.07 Request_count: 1 Total_keys: 131073 Process_keys: 131072 Prewrite_time: 0.335415029 Commit_time: 0.032175429 Get_commit_ts_time: 0.000177098 Local_latch_wait_time: 0.106869448 Write_keys: 131072 Write_size: 3538944 Prewrite_region: 1
 # DB: test
 # Is_internal: false
@@ -36,6 +37,7 @@ TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-
 # Plan_from_cache: false
 # Succ: true
 # Plan: tidb_decode_plan('ZJAwCTMyXzcJMAkyMAlkYXRhOlRhYmxlU2Nhbl82CjEJMTBfNgkxAR0AdAEY1Dp0LCByYW5nZTpbLWluZiwraW5mXSwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCg==')
+use test;
 insert into t select * from t;
 ```
 
@@ -61,6 +63,10 @@ Slow Query 基础信息：
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
+* `Rewrite_time`：表示这个语句在查询改写阶段花费的时间。
+* `Preproc_subqueries`：表示这个语句被提前执行的子查询格式，如 `where id in (select if from t)` 这个子查询就可能被提前执行。
+* `Preproc_subqueries_time`：表示这个语句被提前执行的子查询耗时。
+
 
 和事务执行相关的字段：
 
@@ -113,18 +119,18 @@ Slow Query 基础信息：
 * [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
 * [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句的最大长度。默认值是 4096 byte。
 * [tidb_log_desensitization](/system-variables.md#tidb_log_desensitization)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 0 ，即关闭该功能。
-* [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的执行信息，默认值是 1。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
+* [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 1。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
 
 ```sql
-> select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
+test> select  tidb_decode_plan('2wLwlTAJNl84CTAJMQlmdW5jczpjb3VudCgxKS0+Q29sdW1uIzUwCTEJdGltZTo3NjYuMDk5NzZtcywgbG9vcHM6MiwgUGFydGlhbENvbmN1cnJlbmN5OjQsIEZpbmFsQ29uY3VycmVuY3k6NAkxMC43NDAwMDU0OTMxNjQwNjIgTUIJTi9BCjEJMV8xMQkwCTgwMDAJZXEoQwl7LDMxLCAwKQk3NjE0MBGDIDUuMzU5NjQ4bRWEODc2CTEuOTA5NjAzMTE4OAEdDDQ0IE0JWxgyCTExXzEyAeHwWzAwMDAJdGFibGU6U0xPV19RVUVSWSwgb25seSBzZWFyY2ggaW4gdGhlIGN1cnJlbnQgJ3RpZGItc2xvdy5sb2cnIGZpbGUJNzY0NjkJdGltZ
+   -> To2NTEuODk5NDAzHY4kNwlOL0EJTi9BCg==');
 +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
+| tidb_decode_plan('2wLwlTAJNl84CTAJMQlmdW5jczpjb3VudCgxKS0+Q29sdW1uIzUwCTEJdGltZTo3NjYuMDk5NzZtcywgbG9vcHM6MiwgUGFydGlhbENvbmN1cnJlbmN5OjQsIEZpbmFsQ29uY3VycmVuY3k6NAkxMC43NDAwMDU0OTMxNjQwNjIgTUIJTi9BCjEJMV8xMQkwCTgwMDAJZXEoQwl7LDMxLCAwKQk3NjE0MBGDIDUuMzU5Nj |
 +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
-|     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
-|     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
-|       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
-|         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
+|       id                      task    estRows operator info                                                           actRows execution info                                                          memory                  disk                                                       |
+|       HashAgg_8               root    1       funcs:count(1)->Column#50                                               1       time:766.09976ms, loops:2, PartialConcurrency:4, FinalConcurrency:4     10.740005493164062 MB   N/A                                                        |
+|       └─Selection_11          root    8000    eq(Column#31, 0)                                                        76140   time:765.359648ms, loops:76                                             1.9096031188964844 MB   N/A                                                        |
+|         └─MemTableScan_12     root    10000   table:SLOW_QUERY, only search in the current 'tidb-slow.log' file       76469   time:651.899403ms, loops:77                                             N/A                     N/A                                                        |
 +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
