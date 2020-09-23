@@ -126,7 +126,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
     
     [tidb]
-    # pd-server 的地址，填一个即可。
+    # pd-server 的地址，填一个即可
     pd-addr = "172.16.31.4:2379"
     
     ```
