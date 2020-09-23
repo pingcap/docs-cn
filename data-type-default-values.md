@@ -1,6 +1,10 @@
 ---
 title: 数据类型的默认值
+<<<<<<< HEAD
 aliases: ['/docs-cn/v3.0/data-type-default-values/','/docs-cn/v3.0/reference/sql/data-types/default-values/']
+=======
+aliases: ['/docs-cn/stable/data-type-default-values/','/docs-cn/v4.0/data-type-default-values/','/docs-cn/stable/reference/sql/data-types/default-values/','/docs-cn/v4.0/reference/sql/data-types/default-values/']
+>>>>>>> bc67668... Add 1 alias to fix dead link (#4568) (#4569)
 ---
 
 # 数据类型的默认值

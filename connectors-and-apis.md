@@ -1,6 +1,10 @@
 ---
 title: 连接器和 API
+<<<<<<< HEAD
 aliases: ['/docs-cn/v3.0/connectors-and-apis/','/docs-cn/v3.0/reference/supported-clients/','/docs-cn/sql/connection-and-APIs/']
+=======
+aliases: ['/docs-cn/stable/connectors-and-apis/','/docs-cn/v4.0/connectors-and-apis/','/docs-cn/stable/reference/supported-clients/','/docs-cn/v4.0/reference/supported-clients/']
+>>>>>>> bc67668... Add 1 alias to fix dead link (#4568) (#4569)
 ---
 
 # 连接器和 API

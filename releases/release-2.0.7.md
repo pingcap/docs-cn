@@ -1,6 +1,10 @@
 ---
 title: TiDB 2.0.7 release notes
+<<<<<<< HEAD
 aliases: ['/docs-cn/v3.0/releases/release-2.0.7/','/docs-cn/v3.0/releases/207/','/docs-cn/releases/207/']
+=======
+aliases: ['/docs-cn/stable/releases/release-2.0.7/','/docs-cn/v4.0/releases/release-2.0.7/','/docs-cn/stable/releases/207/','/docs-cn/v4.0/releases/207/']
+>>>>>>> bc67668... Add 1 alias to fix dead link (#4568) (#4569)
 ---
 
 # TiDB 2.0.7 Release Notes

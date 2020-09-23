@@ -14,9 +14,15 @@ aliases: ['/docs-cn/v3.0/migrate-from-mysql-mydumper-files/']
 
 > **注意：**
 >
+<<<<<<< HEAD
 > - 如果选用 Importer Backend 来导入数据，除需要部署 TiDB Lightning 组件外，也需要部署 TiKV Importer 组件。导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
 > - 如果选用 TiDB Backend 来导入数据，只需要部署 TiDB Lightning 组件。导入期间集群可以正常提供服务。
 > - 二者的具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-tidb-backend.md)。
+=======
+> - 如果选用 Local Backend 来导入数据，导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
+> - 如果选用 TiDB Backend 来导入数据，导入期间集群可以正常提供服务, 但相对导入速度较慢。
+> - 二者的具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-backends.md)。
+>>>>>>> bc67668... Add 1 alias to fix dead link (#4568) (#4569)
 
 ## 第 2 步：配置 TiDB Lightning 的数据源
 
