@@ -72,9 +72,111 @@ PD 可以通过命令行参数或环境变量配置。
 
 ## `--log-rotate`
 
+<<<<<<< HEAD
 + 是否开启日志切割。
 + 默认：true
 + 当值为 true 时,按照 PD 配置文件中 `[log.file]` 信息执行。
+=======
++ PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
++ 默认：30m
+
+### `leader-schedule-limit`
+
++ 同时进行 leader 调度的任务个数。
++ 默认：4
+
+### `region-schedule-limit`
+
++ 同时进行 Region 调度的任务个数
++ 默认：2048
+
+### `replica-schedule-limit`
+
++ 同时进行 replica 调度的任务个数。
++ 默认：64
+
+### `merge-schedule-limit`
+
++ 同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
++ 默认：8
+
+### `high-space-ratio`
+
++ 设置 store 空间充裕的阈值。
++ 默认：0.7
++ 最小值：大于 0
++ 最大值：小于 1
+
+### `low-space-ratio`
+
++ 设置 store 空间不足的阈值。
++ 默认：0.8
++ 最小值：大于 0
++ 最大值：小于 1
+
+### `tolerant-size-ratio`
+
++ 控制 balance 缓冲区大小。
++ 默认：0 (为 0 为自动调整缓冲区大小)
++ 最小值：0
+
+### `disable-remove-down-replica`
+
++ 关闭自动删除 DownReplica 的特性的开关，当设置为 true 时，PD 不会自动清理宕机状态的副本。
++ 默认：false
+
+### `disable-replace-offline-replica`
+
++ 关闭迁移 OfflineReplica 的特性的开关，当设置为 true 时，PD 不会迁移下线状态的副本。
++ 默认：false
+
+### `disable-make-up-replica`
+
++ 关闭补充副本的特性的开关，当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
++ 默认：false
+
+### `disable-remove-extra-replica`
+
++ 关闭删除多余副本的特性开关，当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
++ 默认：false
+
+### `disable-location-replacement`
+
++ 关闭隔离级别检查的开关，当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
++ 默认：false
+
+### `store-balance-rate`
+
++ 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
++ 默认：15
+
+## replication
+
+副本相关的配置项。
+
+### `max-replicas`
+
++ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。
++ 默认：3
+
+### `location-labels`
+
++ TiKV 集群的拓扑信息。
++ 默认：[]
++ [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
+
+### `strictly-match-label`
+
++ 打开强制 TiKV Label 和 PD 的 localtion-labels 是否匹配的检查
++ 默认：false
+
+### `enable-placement-rules`
+
++ 打开 `placement-rules`
++ 默认：false
++ 参考[Placement Rules 使用文档](/configure-placement-rules.md)
++ 4.0 实验性特性
+>>>>>>> 5e0f530... Update pd-configuration-file.md (#4566)
 
 ## `--name`
 
