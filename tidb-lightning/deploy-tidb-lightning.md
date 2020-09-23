@@ -128,7 +128,6 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     [tidb]
     # pd-server 的地址，填一个即可
     pd-addr = "172.16.31.4:2379"
-    
     ```
 6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
 
