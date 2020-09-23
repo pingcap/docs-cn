@@ -491,7 +491,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：4
 - 这个变量用于设置 window 算子的并行度。
 
-
 ### `tidb_union_concurrency`
 
 - 作用域：SESSION | GLOBAL
