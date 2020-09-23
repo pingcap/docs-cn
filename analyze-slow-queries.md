@@ -29,7 +29,7 @@ summary: 学习如何定位和分析慢查询。
 
 ## 定位查询瓶颈
 
-定位查询瓶颈需要对查询过程有一个大致理解，TiDB 处理查询过程的关键阶段都在 [performance-map](https://raw.githubusercontent.com/pingcap/tidb-map/master/maps/performance-map.png) 图中了。
+定位查询瓶颈需要对查询过程有一个大致理解，TiDB 处理查询过程的关键阶段都在 [performance-map](/media/performance-map.png) 图中了。
 
 查询的耗时信息可以从下面几种方式获得：
 
