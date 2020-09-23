@@ -168,13 +168,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
-### `tidb_build_stats_concurrency`
-
-- 作用域：SESSION
-- 默认值：4
-- 这个变量用来设置 ANALYZE 语句执行时并发度。
-- 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
-
 ### `tidb_capture_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -188,13 +181,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：1
 - 这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
 - 如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade-faq.md)。
-
-### `tidb_checksum_table_concurrency`
-
-- 作用域：SESSION
-- 默认值：4
-- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。
-当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_config`
 
@@ -296,13 +282,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
     这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
     关于是否需要禁用自动重试，请参考[重试的局限性](/optimistic-transaction.md#重试的局限性)。
-
-### `tidb_distsql_scan_concurrency`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：15
-- 这个变量用来设置 scan 操作的并发度。
-- AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
 ### `tidb_enable_cascades_planner`
 
@@ -431,6 +410,27 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：0
 - 这个变量用来设置是否在日志里记录所有的 SQL 语句。
 
+### `tidb_build_stats_concurrency`
+
+- 作用域：SESSION
+- 默认值：4
+- 这个变量用来设置 `ANALYZE` 语句执行时并发度。
+- 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+
+### `tidb_checksum_table_concurrency`
+
+- 作用域：SESSION
+- 默认值：4
+- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。
+当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+
+### `tidb_distsql_scan_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：15
+- 这个变量用来设置 scan 操作的并发度。
+- AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
+
 ### `tidb_hash_join_concurrency`
 
 - 作用域：SESSION | GLOBAL
@@ -478,6 +478,24 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 作用域：SESSION | GLOBAL
 - 默认值：1
 - 这个变量用来设置顺序 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
+
+### `tidb_projection_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：4
+- 这个变量用来设置 `Projection` 算子的并发度。
+
+### `tidb_window_concurrency` <span class="version-mark">从 v4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：4
+- 这个变量用于设置 `window` 算子的并发度。
+
+### `tidb_union_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：4
+- 这个变量用于设置 `union` 算子的并发度。
 
 ### `tidb_init_chunk_size`
 
@@ -669,12 +687,6 @@ mysql> desc select count(distinct a) from test.t;
 - 作用域：SESSION
 - 默认值：0
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
-
-### `tidb_projection_concurrency`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：4
-- 这个变量用来设置 `Projection` 算子的并发度。
 
 ### `tidb_query_log_max_len`
 
@@ -903,14 +915,6 @@ set tidb_slow_log_threshold = 200;
 - 默认值：300
 
 - 这个变量用来设置 `SPLIT REGION` 语句的执行超时时间，单位是秒，默认值是 300 秒，如果超时还未完成，就返回一个超时错误。
-
-### `tidb_window_concurrency` <span class="version-mark">从 v4.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-
-- 默认值：4
-
-- 这个变量用于设置 window 算子的并行度。
 
 ### `time_zone`
 
