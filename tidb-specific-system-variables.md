@@ -83,8 +83,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：4
 
-这个变量用来设置 ANALYZE 语句执行时并发度。
-当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+这个变量用来设置 `ANALYZE` 语句执行时并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### tidb_checksum_table_concurrency
 
@@ -92,8 +91,15 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：4
 
-这个变量用来设置 ADMIN CHECKSUM TABLE 语句执行时扫描索引的并发度。
-当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+
+### tidb_distsql_scan_concurrency
+
+作用域：SESSION | GLOBAL
+
+默认值：15
+
+这个变量用来设置 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
 ### tidb_current_ts
 
@@ -110,15 +116,6 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 默认值：空字符串
 
 这个变量是一个只读变量，用来获取当前 TiDB Server 的配置信息。
-
-### tidb_distsql_scan_concurrency
-
-作用域：SESSION | GLOBAL
-
-默认值：15
-
-这个变量用来设置 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
-对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
 ### tidb_index_lookup_size
 
@@ -166,7 +163,13 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：4
 
-这个变量用来设置 Projection 算子的并发度。
+这个变量用来设置 `Projection` 算子的并发度。
+
+### tidb_union_concurrency
+
+- 作用域：SESSION | GLOBAL
+- 默认值：4
+- 这个变量用于设置 `union` 算子的并发度。
 
 ### tidb_hashagg_partial_concurrency
 
