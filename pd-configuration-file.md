@@ -247,7 +247,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `max-replicas`
 
-+ 副本数量。
++ 所有副本数量，leader与follower数量之和。默认为3，则为1 leader，2 follower。
 + 默认：3
 
 ### `location-labels`
