@@ -1,9 +1,9 @@
 ---
-title: 使用 `Explain` 的 `IndexMerge` 特性
+title: 使用 `Explain` 语句的 `IndexMerge` 特性
 summary: 了解 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 ---
 
-# 使用 `Explain` 的 `IndexMerge` 特性
+# 使用 `Explain` 语句的 `IndexMerge` 特性
 
 `IndexMerge` 是 TiDB v4.0 中引入的一种对表的新访问方式。在这种访问方式下，优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行合并。在某些场景下，这种访问方式能够减少大量不必要的数据扫描，提升查询的执行效率。
 
