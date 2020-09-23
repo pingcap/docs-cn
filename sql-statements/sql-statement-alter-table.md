@@ -27,15 +27,31 @@ This statement modifies an existing table to conform to a new table structure. T
 
 ## Examples
 
+Create a table with some initial data:
+
+{{< copyable "sql" >}}
+
 ```sql
-mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
+INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
+```
+
+```sql
 Query OK, 0 rows affected (0.11 sec)
 
-mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
 Query OK, 5 rows affected (0.03 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+The following query requires a full table scan because the column c1 is not indexed:
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+```
+
+```sql
 +-------------------------+----------+-----------+---------------+--------------------------------+
 | id                      | estRows  | task      | access object | operator info                  |
 +-------------------------+----------+-----------+---------------+--------------------------------+
@@ -44,11 +60,20 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 |   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo |
 +-------------------------+----------+-----------+---------------+--------------------------------+
 3 rows in set (0.00 sec)
+```
 
-mysql> ALTER TABLE t1 ADD INDEX (c1);
+The statement [`ALTER TABLE .. ADD INDEX`](/sql-statements/sql-statement-add-index.md) can be used to add an index on the table t1. `EXPLAIN` confirms that the original query now uses an index range scan, which is more efficient:
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD INDEX (c1);
+EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
+```
+
+```sql
 Query OK, 0 rows affected (0.30 sec)
 
-mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 +------------------------+---------+-----------+------------------------+---------------------------------------------+
 | id                     | estRows | task      | access object          | operator info                               |
 +------------------------+---------+-----------+------------------------+---------------------------------------------+
@@ -58,12 +83,65 @@ mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
+TiDB supports the ability to assert that DDL changes will use a particular `ALTER` algorithm. This is only an assertion, and does not change the actual algorithm which will be used to modify the table. It can be useful if you only want to permit instant DDL changes during the peak hours of your cluster:
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 DROP INDEX c1, ALGORITHM=INSTANT;
+```
+
+```sql
+Query OK, 0 rows affected (0.24 sec)
+```
+
+Using the `ALGORITHM=INSTANT` assertion on an operation that requires the `INPLACE` algorithm results in a statement error:
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD INDEX (c1), ALGORITHM=INSTANT;
+```
+
+```sql
+ERROR 1846 (0A000): ALGORITHM=INSTANT is not supported. Reason: Cannot alter table by INSTANT. Try ALGORITHM=INPLACE.
+```
+
+However, using the `ALGORITHM=COPY` assertion for an `INPLACE` operation generates a warning instead of an error. This is because TiDB interprets the assertion as _this algorithm or better_. This behavior difference is useful for MySQL compatibility because the algorithm TiDB uses might differ from MySQL:
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD INDEX (c1), ALGORITHM=COPY;
+SHOW WARNINGS;
+```
+
+```sql
+Query OK, 0 rows affected, 1 warning (0.25 sec)
+
++-------+------+---------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                     |
++-------+------+---------------------------------------------------------------------------------------------+
+| Error | 1846 | ALGORITHM=COPY is not supported. Reason: Cannot alter table by COPY. Try ALGORITHM=INPLACE. |
++-------+------+---------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## MySQL compatibility
 
-* All of the data types except spatial types are supported. For other unsupported cases, refer to: [compatibility of DDL statements with MySQL](/mysql-compatibility.md#ddl).
+The following major restrictions apply to `ALTER TABLE` in TiDB:
+
+* Multiple operations cannot be completed in a single `ALTER TABLE` statement.
+
+* Lossy changes such as changing from `BIGINT` to `INT` are currently not supported.
+
+* Spatial data types are not supported.
+
+For further restrictions, see [MySQL Compatibility](/mysql-compatibility.md#ddl).
 
 ## See also
 
+* [MySQL Compatibility](/mysql-compatibility.md#ddl)
 * [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
 * [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
