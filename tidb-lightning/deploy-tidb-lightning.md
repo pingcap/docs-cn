@@ -124,6 +124,10 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
+    
+    [tidb]
+    # pd-server 的地址，填一个即可
+    pd-addr = "172.16.31.4:2379"
     ```
 
 6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
@@ -181,6 +185,8 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     password = ""
     # 表架构信息在从 TiDB 的“状态端口”获取。
     status-port = 10080
+    # pd-server 的地址，填一个即可
+    pd-addr = "172.16.31.4:2379"
     ```
 
     上面仅列出了 `tidb-lightning` 的基本配置信息。完整配置信息请参考[`tidb-lightning` 配置说明](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)。
