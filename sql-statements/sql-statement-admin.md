@@ -10,96 +10,12 @@ This statement is a TiDB extension syntax, used to view the status of TiDB and c
 
 ## DDL related statement
 
-### `admin show DDL`
-
-To view the currently running DDL jobs, use `ADMIN SHOW DDL`:
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN SHOW DDL;
-```
-
-### `admin show DDL jobs`
-
-To view all the results in the current DDL job queue (including tasks that are running and waiting to be run) and the last ten results in the completed DDL job queue, use `ADMIN SHOW DDL JOBS`:
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
-```
-
-* `NUM`: to view the last `NUM` results in the completed DDL job queue. If not specified, `NUM` is by default 10.
-* `WHERE`: to add filter conditions.
-
-### `admin show DDL queries`
-
-To view the original SQL statements of the DDL job corresponding to `job_id`, use `ADMIN SHOW DDL JOB QUERIES`:
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
-```
-
-You can only searches the running DDL job corresponding to `job_id` and the last ten results in the DDL history job queue.
-
-### `admin cancel DDL jobs`
-
-To cancel the currently running DDL jobs and return whether the corresponding jobs are successfully cancelled, use `ADMIN CANCEL DDL JOBS`:
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
-```
-
-If the operation fails to cancel the jobs, specific reasons are displayed.
-
-> **Note:**
->
-> - Only this operation can cancel DDL jobs. All other operations and environment changes (such as machine restart and cluster restart) cannot cancel these jobs.
-> - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the `ADMIN SHOW DDL JOBS` statement.
-> - If the jobs you want to cancel are finished, the cancellation operation fails.
-
-## `ADMIN CHECK` related statement
-
-To check the consistency of all the data and corresponding indexes in the `tbl_name` table, use `ADMIN CHECK TABLE`:
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
-```
-
-If the consistency check is passed, an empty result is returned. Otherwise, an error message is returned indicating that the data is inconsistent.
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CHECK INDEX tbl_name idx_name;
-```
-
-The above statement is used to check the consistency of the column data and index data corresponding to the `idx_name` index in the `tbl_name` table. If the consistency check is passed, an empty result is returned; otherwise, an error message is returned indicating that the data is inconsistent.
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CHECK INDEX tbl_name idx_name (lower_val, upper_val) [, (lower_val, upper_val)] ...;
-```
-
-The above statement is used to check the consistency of the column data and index data corresponding to the `idx_name` index in the `tbl_name` table, with the data range (to be checked) specified. If the consistency check is passed, an empty result is returned. Otherwise, an error message is returned indicating that the data is inconsistent.
-
-### `admin checksum`
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CHECKSUM TABLE tbl_name [, tbl_name] ...;
-```
-
-The above statement is used to get the 64-bit checksum value of `tbl_name`. This value is obtained by calculating CRC64 of all key-value pairs (including row data and index data) in the table.
+| Statement                                                                                | Description                 |
+|------------------------------------------------------------------------------------------|-----------------------------|
+| [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | Cancels a currently running DDL jobs. |
+| [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)          | Calculates the CRC64 of all rows + indexes of a table. |
+| [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | Checks for consistency of a table or index. |
+| [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)      | Shows details about currently running or recently completed DDL jobs. |
 
 ## `ADMIN RELOAD` statement
 
