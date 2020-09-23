@@ -88,7 +88,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > Unlike in MySQL, the `max_execution_time` system variable currently works on all kinds of statements in TiDB, not only restricted to the `SELECT` statement. The precision of the timeout value is roughly 100ms. This means the statement might not be terminated in accurate milliseconds as you specify.
 
-### `interactive_timeout`
+### interactive_timeout
 
 - Scope: SESSION | GLOBAL
 - Default value: 28800

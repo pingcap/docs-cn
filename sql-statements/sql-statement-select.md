@@ -81,7 +81,7 @@ The `SELECT` statement is used to read data from TiDB.
 |`TableOptimizerHints`| This is the hint to control the behavior of TiDB's optimizer. For more information, refer to [Optimizer Hints](/optimizer-hints.md). |
 |`ALL`, `DISTINCT`, `DISTINCTROW` | The `ALL`, `DISTINCT`/`DISTINCTROW` modifiers specify whether duplicate rows should be returned. ALL (the default) specifies that all matching rows should be returned.|
 |`HIGH_PRIORITY` | `HIGH_PRIORITY` gives the current statement higher priority than other statements. |
-|`SQL_CALC_FOUND_ROWS`| To guarantee compatibility with MySQL, TiDB parses this syntax, but will ignore it. |
+|`SQL_CALC_FOUND_ROWS`| TiDB does not support this feature, and will return an error unless [`tidb_enable_noop_functions=1`](/system-variables.md#tidb_enable_noop_functions-new-in-v40) is set. |
 |`SQL_CACHE`, `SQL_NO_CACHE` | `SQL_CACHE` and `SQL_NO_CACHE` are used to control whether to cache the request results to the `BlockCache` of TiKV (RocksDB). For a one-time query on a large amount of data, such as the `count(*)` query, it is recommended to fill in `SQL_NO_CACHE` to avoid flushing the hot user data in `BlockCache`. |
 |`STRAIGHT_JOIN`| `STRAIGHT_JOIN` forces the optimizer to do a union query in the order of the tables used in the `FROM` clause. When the optimizer chooses a join order that is not good, you can use this syntax to speed up the execution of the query. |
 |`select_expr` | Each `select_expr` indicates a column to retrieve. including the column names and expressions. `\*` represents all the columns.|
