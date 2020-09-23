@@ -83,7 +83,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：4
 
-这个变量用来设置 ANALYZE 语句执行时并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+这个变量用来设置 `ANALYZE` 语句执行时并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### tidb_checksum_table_concurrency
 
