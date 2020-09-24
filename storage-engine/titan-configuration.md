@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/storage-engine/titan-configuration/','/docs-cn/dev/refer
 
 # Titan 配置
 
-本文档介绍如何如何通过 [Titan](/storage-engine/titan-overview.md) 配置项来开启、关闭 Titan、相关参数以及 Level Merge 功能。
+本文档介绍如何通过 [Titan](/storage-engine/titan-overview.md) 配置项来开启、关闭 Titan、相关参数以及 Level Merge 功能。
 
 ## 开启 Titan
 
