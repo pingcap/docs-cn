@@ -24,7 +24,9 @@ TiDB 版本：3.0.19
 + PD
 
     -
++ TiKV
 
+    - 永久开启 `sync_log` [#8636](https://github.com/tikv/tikv/pull/8636)
 ## Bug 修复
 
 + TiDB
