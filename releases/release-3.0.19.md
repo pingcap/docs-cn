@@ -19,14 +19,12 @@ TiDB 版本：3.0.19
     
 + TiKV
 
-    -
+    - 永久开启 `sync_log` [#8636](https://github.com/tikv/tikv/pull/8636)
 
 + PD
 
     -
-+ TiKV
 
-    - 永久开启 `sync_log` [#8636](https://github.com/tikv/tikv/pull/8636)
 ## Bug 修复
 
 + TiDB
@@ -41,4 +39,4 @@ TiDB 版本：3.0.19
 
     + TiDB Lightning
 
-        - 
+        - 修复了严格模式下 CSV 中遇到不合法 UTF 字符集没有及时退出的问题 [#378](https://github.com/pingcap/tidb-lightning/pull/378)
