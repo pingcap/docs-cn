@@ -349,15 +349,15 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值: 0
-- 默认情况下，当尝试将语法用于尚未实现的功能时，TiDB 会报错。设置变量值为 `1` 时，TiDB 会自动忽略此类功能不可用的情况，这在无法更改 SQL 代码时很有用。
-- 启用 `noop` 功能可控制以下行为：
+- 默认情况下，当你尝试将语法用于尚未实现的功能时，TiDB 会报错。设置变量值为 `1`，TiDB 则自动忽略此类功能不可用的情况，这在无法更改 SQL 代码时很有效。
+- 启用 `noop` 功能可以控制以下行为：
     * `get_lock` 和 `release_lock` 函数
     * `LOCK IN SHARE MODE` 语法
     * `SQL_CALC_FOUND_ROWS` 语法
 
 > **注意：**
 >
-> 只有默认值为 `0` 时，可以认为是安全操作。设置 `tidb_enable_noop_functions=1` 时，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序的突发行为。
+> 只有默认值为 `0`时，可以认为是安全的操作。设置 `tidb_enable_noop_functions=1`，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序的突发行为。
 
 ### `tidb_enable_slow_log`
 
