@@ -521,61 +521,12 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: 1024
 - This variable is used to set the maximum number of schema versions (the table IDs modified for corresponding versions) allowed to be cached. The value range is 100 ~ 16384.
 
-### tidb_mem_quota_hashjoin
-
-- Scope: SESSION
-- Default value: 32 GB
-- This variable is used to set the threshold value of memory quota for the `HashJoin` operator.
-- If the memory quota of the `HashJoin` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
-
-### tidb_mem_quota_indexlookupjoin
-
-- Scope: SESSION
-- Default value: 32 GB
-- This variable is used to set the threshold value of memory quota for the `IndexLookupJoin` operator.
-- If the memory quota of the `IndexLookupJoin` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
-
-### tidb_mem_quota_indexlookupreader
-
-- Scope: SESSION
-- Default value: 32 GB
-- This variable is used to set the threshold value of memory quota for the `IndexLookupReader` operator.
-- If the memory quota of the `IndexLookupReader` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
-
-### tidb_mem_quota_mergejoin
-
-- Scope: SESSION
-- Default value: 32 GB
-- This variable is used to set the threshold value of memory quota for the `MergeJoin` operator.
-- If the memory quota of the `MergeJoin` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
-
-### tidb_mem_quota_nestedloopapply
-
-- Scope: SESSION
-- Default value: 32 GB
-- This variable is used to set the threshold value of memory quota for the `NestedLoopApply` operator.
-- If the memory quota of the `NestedLoopApply` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
-
 ### tidb_mem_quota_query
 
 - Scope: SESSION
 - Default value: 1 GB
 - This variable is used to set the threshold value of memory quota for a query.
 - If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. The initial value of this variable is configured by [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query).
-
-### tidb_mem_quota_sort
-
-- Scope: SESSION
-- Default value: 32 GB
-- This variable is used to set the threshold value of memory quota for the `Sort` operator.
-- If the memory quota of the `Sort` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
-
-### tidb_mem_quota_topn
-
-- Scope: SESSION
-- Default value: 32 GB
-- This variable is used to set the threshold value of memory quota for the `TopN` operator.
-- If the memory quota of the `TopN` operator during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file.
 
 ### tidb_metric_query_range_duration <span class="version-mark">New in v4.0</span>
 
