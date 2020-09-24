@@ -35,7 +35,7 @@ TiDB 版本：3.0.19
 
 + TiKV
 
-    - 
+    - 修复 TiKV 的 status server 解析响应出错导致 panic 的问题 [#8540](https://github.com/tikv/tikv/pull/8540)
 
 + Tools
 
