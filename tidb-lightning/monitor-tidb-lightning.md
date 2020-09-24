@@ -24,7 +24,7 @@ pprof-port = 8289
 ...
 ```
 
-监控的端口也可在 `tikv-importer.toml` 配置:
+监控的端口也可在 `tikv-importer.toml` 配置：
 
 ```toml
 # 状态服务器的监听地址
