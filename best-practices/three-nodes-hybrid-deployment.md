@@ -85,11 +85,9 @@ tikv:
 
 #### `rocksdb.max-background-jobs` 和 `rocksdb.max-sub-compactions`
 
-RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小为 8。这明显超出了我们实际可以使用的资源，需要限制。
-`rocksdb.max-sub-compactions` 是单个 compaction 任务的子任务并发数，默认值为 3，在写入流量不大的情况下可以进行限制。
+RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小为 8。这明显超出了我们实际可以使用的资源，需要限制。`rocksdb.max-sub-compactions` 是单个 compaction 任务的子任务并发数，默认值为 `3`，在写入流量不大的情况下可以进行限制。
 
-这次测试最终将 `rocksdb.max-background-jobs` 设置为 3，将 `rocksdb.max-sub-compactions` 设置为 1。
-在 12 小时的 TPC-C 负载下没有发生 write stall，根据实际负载进行这两项参数的优化时，可以逐步调低这两个配置，并通过监控观察
+这次测试最终将 `rocksdb.max-background-jobs` 设置为 3，将 `rocksdb.max-sub-compactions` 设置为 1。在 12 小时的 TPC-C 负载下没有发生 Write Stall，根据实际负载进行这两项参数的优化时，可以逐步调低这两个配置，并通过监控观察
 
 * 如果遇到了 Write Stall，可以先调大 `rocksdb.max-background-jobs` 的取值
 * 如果还是存在问题可将 `rocksdb.max-sub-compactions` 设置为 2 或者 3
@@ -117,7 +115,6 @@ tiup ctl tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec
 > **注意：**
 >
 > 对于更新频繁的业务场景，限制 GC 流量可能会导致 MVCC 版本堆积，进而影响读取性能。所以这个参数的取值需要进行多次尝试，在性能抖动和性能衰退之间找一个比较平衡的取值。
-TiKV 后续也会提供新的优化方案改进这一问题。
 
 ### TiDB 参数调整
 
@@ -129,4 +126,4 @@ TiKV 后续也会提供新的优化方案改进这一问题。
 
 该参数控制着整个 Go 进程能使用的 CPU 核心数量，默认情况下为当前机器或者 cgroups 的 CPU 数量。
 
-Go 运行时会定期使用一定比例的线程进行 GC 等后台工作，在混部模式下如果不对这一参数进行限制，GC 等后台操作就会使用过多 CPU 数量。
+Go 运行时会定期使用一定比例的线程进行 GC 等后台工作，在混部模式下如果不对这一参数进行限制，GC 等后台操作就会使用过多 CPU 资源。
