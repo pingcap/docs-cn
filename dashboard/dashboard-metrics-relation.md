@@ -77,7 +77,7 @@ tidb_execute 包含 tidb_cop 监控的耗时，但是由于 cop 有可能并发�
 
 另一个关于虚线箭头的示例是：
 
-![监控关系图 tidb_execute 节点注释](/media/dashboard/dashboard-metrics-relation-relation-example2.png)
+![监控关系图虚线节点关系](/media/dashboard/dashboard-metrics-relation-relation-example2.png)
 
 tidb_cop 和 tidb_txn_cmd.get 都用虚拟箭头指向 tidb_kv_request ，这里表示：
 
