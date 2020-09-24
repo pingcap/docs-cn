@@ -57,6 +57,26 @@ Query OK, 1 row affected (0.03 sec)
 
 * 第三条 `INSERT` 语句成功，因为 `last_login` 列没有被明确地指定为 `NOT NULL`。默认允许 `NULL` 值。
 
+## `CHECK` 约束
+
+TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 的相兼容。
+
+示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ username VARCHAR(60) NOT NULL,
+ UNIQUE KEY (username),
+ CONSTRAINT min_username_length CHECK (CHARACTER_LENGTH(username) >=4)
+);
+INSERT INTO users (username) VALUES ('a');
+SELECT * FROM users;
+```
+
 ## 唯一约束
 
 在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
@@ -273,5 +293,3 @@ ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
     INSERT INTO orders (user_id, doc) VALUES (123, NULL);
     COMMIT;
     ```
-
-* TiDB 在执行 `SHOW CREATE TABLE` 语句的结果中不显示外键信息。
