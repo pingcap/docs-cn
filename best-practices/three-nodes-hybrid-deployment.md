@@ -85,7 +85,7 @@ tikv:
 
 #### `rocksdb.max-background-jobs` 和 `rocksdb.max-sub-compactions`
 
-RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小为 8。这明显超出了我们实际可以使用的资源，需要限制。`rocksdb.max-sub-compactions` 是单个 compaction 任务的子任务并发数，默认值为 `3`，在写入流量不大的情况下可以进行限制。
+RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小为 8。这明显超出了实际可以使用的资源，需要限制。`rocksdb.max-sub-compactions` 是单个 compaction 任务的子任务并发数，默认值为 `3`，在写入流量不大的情况下可以进行限制。
 
 这次测试最终将 `rocksdb.max-background-jobs` 设置为 3，将 `rocksdb.max-sub-compactions` 设置为 1。在 12 小时的 TPC-C 负载下没有发生 Write Stall，根据实际负载进行这两项参数的优化时，可以逐步调低这两个配置，并通过监控观察
 
