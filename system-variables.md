@@ -323,7 +323,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
     开启该特性对性能的影响主要体现在以下几个方面:
     - 插入的时候每行会减少一个索引 key 的写入。
     - 使用主键作为等值条件查询的时候，会节省一次读取请求。
-    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。 
+    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。
     - 使用多列主键的前缀作为等值或范围条件查询的时候，可以节省多次读取请求。
 
 ### `tidb_enable_chunk_rpc` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -349,7 +349,15 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值: 0
-- 这个变量用于控制是否开启 `get_lock` 和 `release_lock` 这两个没有实现的函数。需要注意的是，当前版本的 TiDB 这两个函数永远返回 1。
+- 默认情况下，当尝试将语法用于尚未实现的功能时，TiDB 会报错。设置变量值为 `1` 时，TiDB 会自动忽略此类功能不可用的情况，这在无法更改 SQL 代码时很有用。
+- 启用 `noop` 功能可控制以下行为：
+    * `get_lock` 和 `release_lock` 函数
+    * `LOCK IN SHARE MODE` 语法
+    * `SQL_CALC_FOUND_ROWS` 语法
+
+> **注意：**
+>
+> 只有默认值为 `0` 时可以认为是安全的。设置 `tidb_enable_noop_functions=1` 时，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序的突发行为。
 
 ### `tidb_enable_slow_log`
 
@@ -405,7 +413,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 作用域：SESSION | GLOBAL
 - 默认值: off
 - 这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)。
-- 为了减少自动演进对集群的影响，可以进行以下配置： 
+- 为了减少自动演进对集群的影响，可以进行以下配置：
 
     - 设置 `tidb_evolve_plan_task_max_time`，限制每个执行计划运行的最长时间，其默认值为 600s；
     - 设置`tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time`，限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
@@ -622,7 +630,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
-在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
+在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
 
 ```sql
 mysql> desc select count(distinct a) from test.t;
