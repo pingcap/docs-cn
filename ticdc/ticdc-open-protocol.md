@@ -272,6 +272,13 @@ COMMIT;
 14. [partition=1] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
 ```
 
+## 消费端协议解析
+
+目前 TiCDC 没有提供 Open Protocol 协议解析的标准实现，但是提供了 Golang 版本和 Java 版本的解析 demo。用户可以参考本文档提供的数据格式和以下 demo 实现消费端协议解析。
+
+- [Golang demo](https://github.com/pingcap/ticdc/tree/master/kafka_consumer)
+- [Java demo](https://github.com/pingcap/ticdc/tree/master/demo/java)
+
 ## Column 的类型码
 
 Column 的类型码用于标识 Row Changed Event 中列的数据类型。
@@ -381,6 +388,5 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 > **注意：**
 >
 > + 该功能为实验性功能，请勿在生产环境使用。
-> + 目前已知当某一列为组合索引时，这一列的 UniqueKeyFlag 输出不正常。
 > + BinaryFlag 仅在列为 Blob/Text（包括 Tiny Blob/Tiny Text、Long Blob/Long Text 等）类型时才有意义。当上游列为 Blob 类型时，BinaryFlag 置 `1`；当上游列为 Text 类型时，BinaryFlag 置 `0`。
 > + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。

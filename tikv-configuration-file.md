@@ -278,11 +278,6 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 raftstore 相关的配置项。
 
-### `sync-log`
-
-+ 数据、log 落盘是否 sync，注意：设置成 false 可能会丢数据。
-+ 默认值：true
-
 ### `prevote`
 
 + 开启 Prevote 的开关，开启有助于减少隔离恢复后对系统造成的抖动。
@@ -1165,10 +1160,7 @@ raftdb 相关配置项。
 
 ## pessimistic-txn
 
-### `enabled`
-
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
-+ 默认值：true
+悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
 
 ### `wait-for-lock-timeout`
 
