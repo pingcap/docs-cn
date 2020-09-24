@@ -135,9 +135,9 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 - `--changefeed-id`: 同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
 - `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
-- `--start-ts`: 指定 changefeed 的 start tso，TiCDC 集群将从这个 tso 开始拉取数据，默认为当前时间。
-- `--target-ts`: 指定 changefeed 的 target tso，TiCDC 集群将数据拉取到这个 tso 后自动停止，默认为空，则 TiCDC 不会自动停止。
-- `--config`: 指定 changefeed 配置文件。
+- `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
+- `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
+- `--config`：指定 changefeed 配置文件。
 
 {{< copyable "" >}}
 
