@@ -1,5 +1,5 @@
 ---
-title: 启用 `Explain` 语句的 `IndexMerge` 特性
+title: 启用 Explain 语句的 IndexMerge 特性
 summary: 了解 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 ---
 
