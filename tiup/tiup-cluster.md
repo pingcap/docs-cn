@@ -388,18 +388,18 @@ alertmanager_servers:
 
 路径内容格式如下：
 
-- `grafana_servers` 的 `dashboard_dir` 字段指定的文件夹中应当含有完整的 `*.json`
-- `monitoring_servers` 的 `rule_dir` 字段定义的文件夹中应当含有完整的 `*.rules.yml`
-- `alertmanager_servers` 的 `config_file` 格式请参考[此处](https://github.com/pingcap/tiup/blob/master/templates/config/alertmanager.yml)
+- `grafana_servers` 的 `dashboard_dir` 字段指定的文件夹中应当含有完整的 `*.json` 文件。
+- `monitoring_servers` 的 `rule_dir` 字段定义的文件夹中应当含有完整的 `*.rules.yml` 文件。
+- `alertmanager_servers` 的 `config_file` 格式请参考 [Alertmanager 配置模板](https://github.com/pingcap/tiup/blob/master/templates/config/alertmanager.yml)。
 
 在执行 `tiup reload` 时，TiUP 会将中控机上对应的配置上传到目标机器对应的配置目录中，上传之前会删除目标机器中已有的旧配置文件。如果想要修改某一个配置文件，请确保将所有的（包含未修改的）配置文件都放在同一个目录中。例如，要修改 Grafana 的 `tidb.json` 文件，可以先将 Grafana 的 `dashboards` 目录中所有的 `*.json` 文件拷贝到本地目录中，再修改 `tidb.json` 文件。否则最终的目标机器上将缺失其他的 JSON 文件。
 
 > **注意：**
 >
-> 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在执行 `tiup cluster rename` 命令进行集群重命名时需要完成以下操作：
+> 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在执行 `tiup cluster rename` 命令进行集群重命名后，需要完成以下操作：
 >
-> 1. 本地目录中的 `dashboards` 包含了集群名信息，需要修改本地 `dashboards` 中的集群名为新的集群名。
-> 2. 本地目录中 `dashboards` 中的 `datasource` 也要更新为新的集群名（`datasource` 是以集群名命名的）。
+> 1. 在本地的 `dashboards` 目录中，将集群名修改为新的集群名。
+> 2. 在本地的 `dashboards` 目录中，将 `datasource` 字段的值更新为新的集群名（`datasource` 是以集群名命名的）。
 > 3. 执行 `tiup cluster reload -R grafana` 命令。
 
 ## 更新组件
