@@ -223,7 +223,7 @@ mysql> SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 1 row in set (0.01 sec)
 ```
 
-惰性检查优化通过批处理约束检查并减少网络通信来提升性能。可以通过设置 [`tidb_constraint_check_in_place = TRUE`](/system-variables.md＃tidb_constraint_check_in_place) 禁用该行为。
+惰性检查优化通过批处理约束检查并减少网络通信来提升性能。可以通过设置 [`tidb_constraint_check_in_place = TRUE`](/system-variables.md#tidb_constraint_check_in_place) 禁用该行为。
 
 > **注意：**
 > 
