@@ -134,7 +134,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 >     "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
 > ```
 
-自 v4.0.3 起 br 已经支持自适应 gc，无需手动调整 tikv_gc_life_time.
+自 v4.0.3 起 BR 已经支持自适应 GC，无需手动调整 `tikv_gc_life_time`.
 
 ### 备份全部集群数据
 
