@@ -167,6 +167,26 @@ Query OK, 0 rows affected (0.10 sec)
 
 除上述规则外，TiDB 还强加了另一个限制，即一旦一张表创建成功，其主键就不能再改变。
 
+## `CHECK` 约束
+
+TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 的相兼容。
+
+示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ username VARCHAR(60) NOT NULL,
+ UNIQUE KEY (username),
+ CONSTRAINT min_username_length CHECK (CHARACTER_LENGTH(username) >=4)
+);
+INSERT INTO users (username) VALUES ('a');
+SELECT * FROM users;
+```
+
 ## 唯一约束
 
 在 TiDB 中，默认会对唯一约束进行惰性检查。通过直到事务提交时才进行批量检查，TiDB 能够减少网络通信开销。例如：
