@@ -30,7 +30,7 @@ explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 
 比如，在上述示例中，过滤条件是使用 `OR` 条件连接的 `WHERE` 子句。在启用 `IndexMerge` 前，每个表只能使用一个索引，不能将 `a = 1` 下推到索引 `a`，也不能将 `b = 1` 下推到索引 `b`。当 `t` 中存在大量数据时，全表扫描的效率会很低。针对这类场景，TiDB 引入了对表的新访问方式 `IndexMerge`。
 
-在 `IndexMerge` 访问方式下，优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行合并，生成上表中后一个 IndexMerge 的执行计划。此时的 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 `RowID`，再由 `TableRowIDScan_15` 算子根据这些 `RowID` 精确地读取所有满足条件的数据。
+在 `IndexMerge` 访问方式下，优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行合并，生成以上示例中后一个 `IndexMerge` 的执行计划。此时的 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 `RowID`，再由 `TableRowIDScan_15` 算子根据这些 `RowID` 精确地读取所有满足条件的数据。
 
 其中对于 `IndexRangeScan`/`TableRangeScan` 一类按范围进行的扫表操作，`EXPLAIN` 表中 `operator info` 列相比于其他扫表操作，多了被扫描数据的范围这一信息。比如上面的例子中，`IndexRangeScan_13` 算子中的 `range:(1,+inf]` 这一信息表示该算子扫描了从 1 到正无穷这个范围的数据。
 
