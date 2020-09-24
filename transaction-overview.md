@@ -76,7 +76,7 @@ ROLLBACK;
 
 ## 自动提交
 
-为满足 MySQL 兼容性的要求，在默认情况下，TiDB 将在执行语句后立即进行 _autocommit_。
+为满足 MySQL 兼容性的要求，在默认情况下，TiDB 将在执行语句后立即进行 _autocommit_ （自动提交）。
 
 举例：
 
@@ -109,8 +109,6 @@ mysql> SELECT * FROM t1;
 +----+------+
 1 row in set (0.00 sec)
 ```
-
-当 `autocommit = 1` 时（默认），当前的 Session 为自动提交状态，即每条语句运行后，TiDB 会自动将修改提交到数据库中。设置 `autocommit = 0` 时更改当前 Session 更改为非自动提交状态，通过执行 `COMMIT` 语句来手动提交事务。
 
 以上示例中，`ROLLBACK` 语句执行失败。 由于 `INSERT` 语句是在自动提交的情况下执行的，等同于以下单语句事务：
 
@@ -180,20 +178,20 @@ TiDB 可以显式地使用事务（通过 `[BEGIN|START TRANSACTION]`/`COMMIT` �
 
 ## 惰性检查
 
-执行 DML 语句时，乐观事务默认不会检查[主键约束](/constraints.md#primary-key)或[唯一约束](/constraints.md#unique-key)，而是在 `COMMIT` 事务中进行这些检查。
+执行 DML 语句时，乐观事务默认不会检查[主键约束](/constraints.md#主键约束)或[唯一约束](/constraints.md#唯一约束)，而是在 `COMMIT` 事务中进行这些检查。
 
 举例：
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE T (I INT KEY);
-INSERT INTO T VALUES (1);
+CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY);
+INSERT INTO t1 VALUES (1);
 BEGIN OPTIMISTIC;
-INSERT INTO T VALUES (1); -- MySQL 返回错误；TiDB 返回成功。
-INSERT INTO T VALUES (2);
+INSERT INTO t1 VALUES (1); -- MySQL 返回错误；TiDB 返回成功。
+INSERT INTO t1 VALUES (2);
 COMMIT; -- MySQL 提交成功；TiDB 返回错误，事务回滚。
-SELECT * FROM T; -- MySQL 返回 1 2；TiDB 返回 1。
+SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 ```
 
 ```sql
@@ -285,7 +283,9 @@ mysql> SELECT * FROM test;
 
 TiDB 同时支持乐观事务与悲观事务，其中乐观事务是悲观事务的基础。由于乐观事务是先将修改缓存在私有内存中，因此，TiDB 对于单个事务的容量做了限制。
 
-TiDB 默认设置了单个事务的容量的总大小不超过 100 MB，这个默认值可以通过配置文件中的配置项 `txn-total-size-limit` 进行修改，最大支持到 10 GB。实际的单个事务大小限制还取决于服务器剩余可用内存大小，执行事务时 TiDB 进程的内存消耗大约是事务大小 6 倍以上。
+TiDB 默认设置了单个事务的容量的总大小不超过 100 MB，这个默认值可以通过配置文件中的配置项 `txn-total-size-limit` 进行修改，最大支持到 10 GB。
+
+实际的单个事务大小限制还取决于服务器剩余可用内存大小，执行事务时 TiDB 进程的内存消耗大约是事务大小 6 倍以上。
 
 在 4.0 以前的版本，TiDB 限制了单个事务的键值对的总数量不超过 30 万条，从 4.0 版本起 TiDB 取消了这项限制。
 
