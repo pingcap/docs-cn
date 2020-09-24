@@ -127,6 +127,10 @@ You can deploy TiDB Lightning using TiDB Ansible together with the [deployment o
     # Sets the directory for temporarily storing the sorted key-value pairs.
     # The target directory must be empty.
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
+
+    [tidb]
+    # An address of pd-server.
+    pd-addr = "172.16.31.4:2379
     ```
 
 6. Log in to the `tidb-lightning` server, and manually run the following command to start Lightning and import the data into the TiDB cluster.
@@ -184,6 +188,8 @@ Refer to the [TiDB enterprise tools download page](/download-ecosystem-tools.md#
     password = ""
     # Table schema information is fetched from TiDB via this status-port.
     status-port = 10080
+    # An address of pd-server.
+    pd-addr = "172.16.31.4:2379"
     ```
 
     The above only shows the essential settings.
