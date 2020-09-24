@@ -117,7 +117,35 @@ Query OK, 1 row affected (0.03 sec)
 
 * 第三条 `INSERT` 语句成功，因为 `last_login` 列没有被明确地指定为 `NOT NULL`。默认允许 `NULL` 值。
 
+<<<<<<< HEAD
 ## 主键约束
+=======
+## `CHECK` 约束
+
+TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 的相兼容。
+
+示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ username VARCHAR(60) NOT NULL,
+ UNIQUE KEY (username),
+ CONSTRAINT min_username_length CHECK (CHARACTER_LENGTH(username) >=4)
+);
+INSERT INTO users (username) VALUES ('a');
+SELECT * FROM users;
+```
+
+## 唯一约束
+
+在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
+
+{{< copyable "sql" >}}
+>>>>>>> a68b66c... constraints, create table: improve clarity and update out of date info (#4447)
 
 TiDB 支持的主键约束规则与 MySQL 支持的相似。例如：
 
@@ -265,9 +293,21 @@ Query OK, 0 rows affected (0.00 sec)
 INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
+<<<<<<< HEAD
 ```
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ..
 ```
 
 * 第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
+=======
+### 注意
+
+* TiDB 支持外键是为了在将其他数据库迁移到 TiDB 时，不会因为此语法报错。但是，TiDB 不会在 DML 语句中对外键进行约束检查。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+
+    ```
+    START TRANSACTION;
+    INSERT INTO orders (user_id, doc) VALUES (123, NULL);
+    COMMIT;
+    ```
+>>>>>>> a68b66c... constraints, create table: improve clarity and update out of date info (#4447)
