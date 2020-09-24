@@ -24,7 +24,7 @@ TiDB 版本：4.0.6
 
 + Tools
 
-    + TiCDC
+    + TiCDC（自 v4.0.6 起，TiCDC 成为**正式功能**，可用于生产环境）
 
         - 支持输出 `maxwell` 格式的数据 [#869](https://github.com/pingcap/ticdc/pull/869)
 
