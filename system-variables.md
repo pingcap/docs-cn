@@ -304,6 +304,14 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
+### tidb_dml_batch_size
+
+- 作用域：SESSION
+- 默认值：0
+- 样本值：20000
+- 这个变量的值大于 `0` 时，TiDB 会分批提交 `INSERT` 或 `LOAD DATA` 等语句为更小的事务。这样减少了内存的使用，有助于确保批量修改不会涉及到 `txn-total-size-limit`。
+- 只有变量值为 `0` 时才符合 ACID 特性。变量值不为 `0` 时，无法保证 TiDB 的原子性和隔离性。
+
 ### `tidb_enable_cascades_planner`
 
 - 作用域：SESSION | GLOBAL

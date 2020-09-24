@@ -99,11 +99,16 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 * 默认情况下，TiDB 每 20,000 行会进行一次提交。这类似于 MySQL NDB Cluster，但并非 InnoDB 存储引擎的默认配置。
 
+`LOAD DATA` 语句应该完全兼容 MySQL。所有兼容性差异都会汇总于 GitHub 的 [issue](https://github.com/pingcap/tidb/issues/new/choose) 中。
+
 > **注意：**
 >
-> 这种拆分事务提交的方式是以打破事务的原子性和隔离性为代价的，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议对读写频繁的表使用 `LOAD DATA` 语句。
+> 在 TiDB 的早期版本中，`LOAD DATA` 语句每 20000 行提交一次。新版本的 TiDB 默认在一个事务中提交所有行。从 TiDB 4.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。
+>
+> 建议增加 `tidb.toml` 文件中的 `txn-total-size-limit` 值来解决这一问题。如果无法增加此限制，还可以将 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的值设置为 20000 来恢复以前的行为。
 
 ## 另请参阅
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [乐观事务模型](/optimistic-transaction.md)
+* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
