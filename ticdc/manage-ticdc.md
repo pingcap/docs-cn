@@ -61,13 +61,30 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
 - `key`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 
+## 使用 TiUP 升级 TiCDC
+
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.6。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup update --self && \
+tiup update --all && \
+tiup cluster upgrade <cluster-name> v4.0.6
+```
+
+### 升级的注意事项
+
+* TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
+* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#5-升级-faq)。
+
 ## 使用加密传输 (TLS) 功能
 
 请参阅[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
-以下内容介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
+本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
@@ -116,8 +133,11 @@ ID: simple-replication-task
 Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
-- `--changefeed-id`: 同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+- `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
+- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+- `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
+- `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
+- `--config`：指定 changefeed 配置文件。
 
 {{< copyable "" >}}
 
@@ -565,7 +585,7 @@ curl -X POST http://127.0.0.1:8300/capture/owner/move_table -d 'cf-id=cf060953-0
 
 ## 同步任务配置文件描述
 
-以下内容详细介绍了同步任务的配置。
+本部分详细介绍了同步任务的配置。
 
 ```toml
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
