@@ -59,7 +59,7 @@ TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
 |`AUTO_INCREMENT`|自增字段初始值                        |`AUTO_INCREMENT` = 5|
-| [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) |用来设置隐式 _tidb_rowid 的分片数量的 bit 位数 |`SHARD_ROW_ID_BITS` = 4|
+| `SHARD_ROW_ID_BITS` |用来设置隐式 _tidb_rowid 的分片数量的 bit 位数 |`SHARD_ROW_ID_BITS` = 4|
 |`PRE_SPLIT_REGIONS`|用来在建表时预先均匀切分 `2^(PRE_SPLIT_REGIONS)` 个 Region |`PRE_SPLIT_REGIONS` = 4|
 |`CHARACTER SET` |指定该表的字符串编码。目前支持 UTF8MB4| `CHARACTER SET` =  'utf8mb4'|
 |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
