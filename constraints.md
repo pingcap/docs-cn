@@ -81,6 +81,26 @@ Query OK, 1 row affected (0.03 sec)
 
 * 第三条 `INSERT` 语句成功，因为 `last_login` 列没有被明确地指定为 `NOT NULL`。默认允许 `NULL` 值。
 
+## `CHECK` 约束
+
+TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 的相兼容。
+
+示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ username VARCHAR(60) NOT NULL,
+ UNIQUE KEY (username),
+ CONSTRAINT min_username_length CHECK (CHARACTER_LENGTH(username) >=4)
+);
+INSERT INTO users (username) VALUES ('a');
+SELECT * FROM users;
+```
+
 ## 主键约束
 
 TiDB 支持的主键约束规则与 MySQL 支持的相似。例如：
