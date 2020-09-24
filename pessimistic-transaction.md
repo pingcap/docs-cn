@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/pessimistic-transaction/','/docs-cn/dev/reference/transa
 {{< copyable "sql" >}}
 
 ```sql
-set @@global.tidb_txn_mode = 'pessimistic';
+SET GLOBAL tidb_txn_mode = 'pessimistic';
 ```
 
 除此之外，还可以执行以下 SQL 语句显式地开启悲观事务：
@@ -33,7 +33,7 @@ BEGIN PESSIMISTIC;
 {{< copyable "sql" >}}
 
 ```
-BEGIN /*!90000 PESSIMISTIC */;
+BEGIN /*T! PESSIMISTIC */;
 ```
 
 `BEGIN PESSIMISTIC;` 和 `BEGIN OPTIMISTIC;` 等语句的优先级高于 `tidb_txn_mode` 系统变量。使用这两个语句开启的事务，会忽略系统变量，从而支持悲观、乐观事务混合使用。
@@ -60,9 +60,30 @@ BEGIN /*!90000 PESSIMISTIC */;
 
 ## 和 MySQL InnoDB 的差异
 
-1. TiDB 使用 range 作为 WHERE 条件，执行 DML 和 `SELECT FOR UPDATE` 语句时不会阻塞范围内并发的 `INSERT` 语句的执行。
+1. TiDB 使用 range 作为 WHERE 条件，执行 DML 和 `SELECT FOR UPDATE` 语句时不会阻塞范围内并发的 DML 语句的执行。
 
-    InnoDB 通过实现 gap lock，支持阻塞 range 内并发的 `INSERT` 语句的执行，其主要目的是为了支持 statement based binlog，因此有些业务会通过将隔离级别降低至 Read Committed 来避免 gap lock 导致的并发性能问题。TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
+    举例:
+
+    ```sql
+    CREATE TABLE t1 (
+     id INT NOT NULL PRIMARY KEY,
+     pad1 VARCHAR(100)
+    );
+    INSERT INTO t1 (id) VALUES (1),(5),(10);
+    ```
+
+    ```sql
+    BEGIN /*T! PESSIMISTIC */;
+    SELECT * FROM t1 WHERE id BETWEEN 1 AND 10 FOR UPDATE;
+    ```
+
+    ```sql
+    BEGIN /*T! PESSIMISTIC */;
+    INSERT INTO t1 (id) VALUES (6); -- 仅 MySQL 中出现阻塞。
+    UPDATE t1 SET pad1='new value' WHERE id = 5; -- MySQL 和 TiDB 处于等待阻塞状态。
+    ```
+
+    产生这一行为是因为 TiDB 当前不支持 _gap locking_。
 
 2. TiDB 不支持 `SELECT LOCK IN SHARE MODE`。
 
@@ -70,7 +91,7 @@ BEGIN /*!90000 PESSIMISTIC */;
 
 3. DDL 可能会导致悲观事务提交失败。
 
-    MySQL 在执行 DDL 时会被正在执行的事务阻塞住，而在 TiDB 中 DDL 操作会成功，造成悲观事务提交失败：`ERROR 1105 (HY000): Information schema is changed. [try again later]`。TiDB 事务执行过程中并发执行 `TRUNCATE TABLE` 语句，可能会导致事务报错 `table dosen't exist`。
+    MySQL 在执行 DDL 时会被正在执行的事务阻塞住，而在 TiDB 中 DDL 操作会成功，造成悲观事务提交失败：`ERROR 1105 (HY000): Information schema is changed. [try again later]`。TiDB 事务执行过程中并发执行 `TRUNCATE TABLE` 语句，可能会导致事务报错 `table doesn't exist`。
 
 4. `START TRANSACTION WITH CONSISTENT SNAPSHOT` 之后，MySQL 仍然可以读取到之后在其他事务创建的表，而 TiDB 不能。
 
@@ -108,3 +129,17 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 [pessimistic-txn]
 pipelined = true
 ```
+
+## 常见问题
+
+1. TiDB 日志出现 `pessimistic write conflict, retry statement`。
+
+    当发生 write conflict 时，乐观事务会直接终止，而悲观事务会尝试用最新数据重试该语句直到没有 write conflict，每次重试都会打印该 log，不用特别关注。
+
+2. 执行 DML 时报错 `pessimistic lock retry limit reached`。
+
+    悲观事务每个语句有重试次数限制，当因 write conflict 重试超过该限制时会报该错误，默认为 256 次，可通过 TiDB 配置文件 `[pessimistic-txn]` 类别下的 `max-retry-limit` 修改。
+
+3. 悲观事务执行时间限制。
+
+    在 v4.0 中，GC 已不会影响到正在运行的事务，但悲观事务的执行时间仍有上限，默认为 10 分钟，可通过 TiDB 配置文件 `[performance]` 类别下的 `max-txn-ttl` 修改。
