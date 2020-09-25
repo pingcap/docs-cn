@@ -9,7 +9,7 @@ aliases: ['/docs-cn/stable/tiflash/tiflash-configuration/','/docs-cn/v4.0/tiflas
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 tiup 部署，可以用 `tiup ctl pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
@@ -83,7 +83,7 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 
 ### 配置文件 tiflash-learner.toml
 
-```
+```toml
 [server]
     engine-addr = tiflash coprocessor 服务监听地址
     status-addr = Prometheus 拉取 proxy metrics 信息的 ip + 端口
