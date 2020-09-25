@@ -36,7 +36,7 @@ explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 
 > **注意：**
 >
-> 目前，TiDB 的 `IndexMerge` 特性在 TiDB 4.0.0-rc.1 版本中默认关闭。同时 4.0 版本中的 `IndexMerge` 目前支持的场景仅限于析取范式（`or` 连接的表达式）。开启 `IndexMerge` 特性有以下方法：
+> 目前，TiDB 的 `IndexMerge` 特性在 TiDB 4.0.0-rc.1 版本中默认关闭。同时 4.0 版本中的 `IndexMerge` 目前支持的场景仅限于析取范式（`or` 连接的表达式），暂不支持合取范式（`and` 连接的表达式）。开启 `IndexMerge` 特性有以下方法：
 >
 > - 设置系统变量 `tidb_enable_index_merge=1`；
 >
