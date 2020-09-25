@@ -30,7 +30,7 @@ TiDB 版本：4.0.7
 
 + TiFlash
 
-    - 
+    - 完善数据读取过程中遇到 Region meta 变更的错误处理
 
 + Tools
 
@@ -70,7 +70,7 @@ TiDB 版本：4.0.7
 
 + TiFlash
 
-    - 
+    - 修正 right outer join 结果错误的问题
 
 + Tools
 
