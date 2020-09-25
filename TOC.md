@@ -352,6 +352,7 @@
 + 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   + v3.0
+    - [3.0.19](/releases/release-3.0.19.md)
     - [3.0.18](/releases/release-3.0.18.md)
     - [3.0.17](/releases/release-3.0.17.md)
     - [3.0.16](/releases/release-3.0.16.md)
