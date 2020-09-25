@@ -1,5 +1,6 @@
 ---
 title: 为 TiDB 落盘文件开启加密
+summary: 了解如何为 TiDB 落盘文件开启加密。
 ---
 
 # 为 TiDB 落盘文件开启加密
