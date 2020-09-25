@@ -357,7 +357,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 > **注意：**
 >
-> 只有默认值为 `0`时，可以认为是安全的操作。设置 `tidb_enable_noop_functions=1`，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序的异常行为。
+> 该变量只有在默认值 `0` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
 
 ### `tidb_enable_slow_log`
 
