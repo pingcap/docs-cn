@@ -223,6 +223,7 @@
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
     + [生成自签名证书](/generate-self-signed-certificates.md)
     + [静态加密](/encryption-at-rest.md)
+    + [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     + [权限管理](/privilege-management.md)
