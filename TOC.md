@@ -147,6 +147,7 @@
     + [Grafana Monitoring](/best-practices/grafana-monitor-best-practices.md)
     + [PD Scheduling](/best-practices/pd-scheduling-best-practices.md)
     + [TiKV Performance Tuning with Massive Regions](/best-practices/massive-regions-best-practices.md)
+    + [Three-node Hybrid Deployment](/best-practices/three-nodes-hybrid-deployment.md)
   + [Use Placement Rules](/configure-placement-rules.md)
   + [Use Load Base Split](/configure-load-base-split.md)
   + [Use Store Limit](/configure-store-limit.md)
