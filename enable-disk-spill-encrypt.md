@@ -13,7 +13,7 @@ summary: 了解如何为 TiDB 落盘文件开启加密。
 
 要启用落盘文件加密功能，可以在 TiDB 配置文件中的 `[security]` 部分，配置 [`spilled-file-encryption-method`](/tidb-configuration-file.md#spilled-file-encryption-method) 选项：
 
-```
+```toml
 [security]
 spilled-file-encryption-method = "aes128-ctr"
 ```
