@@ -199,7 +199,7 @@ SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHER
 
 > **注意：**
 >
-> 如果需要提示优化器使用的表不在同一个数据库内，需要显示声明 `SCHEMA_NAME`。例如 `SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;`。
+> 如果提示优化器需要读取的表不在同一个数据库内，需要声明数据库名。例如 `SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;`。
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
