@@ -527,61 +527,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：1024
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
-### `tidb_mem_quota_hashjoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `HashJoin` 算子的内存使用阈值。
-- 如果 `HashJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_indexlookupjoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `IndexLookupJoin` 算子的内存使用阈值。
-- 如果 `IndexLookupJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_indexlookupreader`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `IndexLookupReader` 算子的内存使用阈值。
-- 如果 `IndexLookupReader` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_mergejoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `MergeJoin` 算子的内存使用阈值。
-- 如果 `MergeJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_nestedloopapply`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `NestedLoopApply` 算子的内存使用阈值。
-如果 `NestedLoopApply` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
 ### `tidb_mem_quota_query`
 
 - 作用域：SESSION
 - 默认值：1 GB
 - 这个变量用来设置一条查询语句的内存使用阈值。
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
-
-### `tidb_mem_quota_sort`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `Sort` 算子的内存使用阈值。
-- 如果 `Sort` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_topn`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `TopN` 算子的内存使用阈值。
-- 如果 `TopN` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
