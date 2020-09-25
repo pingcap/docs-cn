@@ -35,7 +35,7 @@ TiDB 版本：3.0.19
     - 禁止将 integer 的类型改成 decimal 的类型 [#19681](https://github.com/pingcap/tidb/pull/19681)
     - 修复 alter enum/set 没有检查一些限制的问题 [#20045](https://github.com/pingcap/tidb/pull/20045)
     - 修复 tidb-server 在 panic 后没有释放 table lock 的问题 [#20021](https://github.com/pingcap/tidb/pull/20021)
-    - 修复 `OR` 运算符在 `WHERE` 子句中没有正常处理的问题 [#19901](https://github.com/pingcap/tidb/pull/19901)
+    - 修复 `OR` 运算符在 `WHERE` 子句中没有正确处理的问题 [#19901](https://github.com/pingcap/tidb/pull/19901)
 
 + TiKV
 
