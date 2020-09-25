@@ -10,6 +10,10 @@ TiDB 版本：3.0.19
 
 ## 兼容性变化
 
++ PD
+
+    - 更改 PD 的导入路径 `pingcap/pd` 为 `tikv/pd` [#2779](https://github.com/pingcap/pd/pull/2779)
+    - 更改 PD 的 copyright 信息 `PingCAP, Inc` 为 `TiKV Project Authors` [#2777](https://github.com/pingcap/pd/pull/2777)
 
 ## 提升改进
 
@@ -24,7 +28,7 @@ TiDB 版本：3.0.19
 
 + PD
 
-    -
+    - 添加关于 PD 重启的告警规则 [#2789](https://github.com/pingcap/pd/pull/2789)
 
 ## Bug 修复
 
