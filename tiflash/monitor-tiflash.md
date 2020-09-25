@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tiflash/monitor-tiflash/','/docs-cn/dev/reference/tiflas
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
 
-TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details**。通过面板上的指标，可以了解 TiFlash 当前的状态。其中 **TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details** 主要为 TiFlash 的 Raft 层信息，其监控指标信息可参考 [TiKV 监控指标详解](/grafana-tikv-dashboard.md)
+TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details**。通过面板上的指标，可以了解 TiFlash 当前的状态。其中 **TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details** 主要为 TiFlash 的 Raft 层信息，其监控指标信息可参考 [TiKV 监控指标详解](/grafana-tikv-dashboard.md)。
 
 > **注意：**
 >
