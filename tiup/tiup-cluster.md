@@ -399,7 +399,7 @@ alertmanager_servers:
 > 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在执行 `tiup cluster rename` 命令进行集群重命名后，需要完成以下操作：
 >
 > 1. 在本地的 `dashboards` 目录中，将集群名修改为新的集群名。
-> 2. 在本地的 `dashboards` 目录中，将 `datasource` 字段的值更新为新的集群名（`datasource` 是以集群名命名的）。
+> 2. 在本地的 `dashboards` 目录中，将 `datasource` 更新为新的集群名（`datasource` 是以集群名命名的）。
 > 3. 执行 `tiup cluster reload -R grafana` 命令。
 
 ## 更新组件
