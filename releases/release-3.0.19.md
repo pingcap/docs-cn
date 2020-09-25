@@ -37,7 +37,7 @@ TiDB 版本：3.0.19
     - 修复 `slow-log` 文件不存在导致查询出错的问题 [#20050](https://github.com/pingcap/tidb/pull/20050)
     - 添加对 `SHOW STATS_META` 和 `SHOW STATS_BUCKET` 这两个命令的权限检查 [#19759](https://github.com/pingcap/tidb/pull/19759)
     - 禁止将 Integer 类型改成 Decimal 类型 [#19681](https://github.com/pingcap/tidb/pull/19681)
-    - 修复 alter enum/set 没有检查一些限制的问题 [#20045](https://github.com/pingcap/tidb/pull/20045)
+    - 修复更改 `ENUM`/`SET` 类型的列时没有检查限制的问题 [#20045](https://github.com/pingcap/tidb/pull/20045)
     - 修复 tidb-server 在 panic 后没有释放 table lock 的问题 [#20021](https://github.com/pingcap/tidb/pull/20021)
     - 修复 `OR` 运算符在 `WHERE` 子句中没有正确处理的问题 [#19901](https://github.com/pingcap/tidb/pull/19901)
 
