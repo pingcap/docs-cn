@@ -97,13 +97,13 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-`LOAD DATA` 语句应该完全兼容 MySQL。所有兼容性差异都会汇总于 GitHub 的 [issue](https://github.com/pingcap/tidb/issues/new/choose) 中。
+`LOAD DATA` 语句应该完全兼容 MySQL。若发现任何兼容性差异，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 > **注意：**
 >
 > 在 TiDB 的早期版本中，`LOAD DATA` 语句每 20000 行提交一次。新版本的 TiDB 默认在一个事务中提交所有行。从 TiDB 4.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。
 >
-> 建议增加 `tidb.toml` 文件中的 `txn-total-size-limit` 值来解决这一问题。如果无法增加此限制，还可以将 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的值设置为 20000 来恢复以前的行为。
+> 要解决该问题，建议调大 `tidb.toml` 文件中的 `txn-total-size-limit` 值。如果无法增加此限制，还可以将 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的值设置为 `20000` 来恢复升级前的行为。
 
 ## 另请参阅
 
