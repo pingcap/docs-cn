@@ -97,8 +97,6 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-* 默认情况下，TiDB 每 20,000 行会进行一次提交。这类似于 MySQL NDB Cluster，但并非 InnoDB 存储引擎的默认配置。
-
 `LOAD DATA` 语句应该完全兼容 MySQL。所有兼容性差异都会汇总于 GitHub 的 [issue](https://github.com/pingcap/tidb/issues/new/choose) 中。
 
 > **注意：**
