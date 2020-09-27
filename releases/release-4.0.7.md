@@ -34,7 +34,8 @@ TiDB 版本：4.0.7
 
 + PD
 
-    - 
+    - operator 统计计数器增加的时间点，从创建时改为执行完毕时 [#2983](https://github.com/pingcap/pd/pull/2983)
+    - 将 `make-up-replica` operator 调整为高优先级 [#2977](https://github.com/pingcap/pd/pull/2977)
 
 + TiFlash
 
