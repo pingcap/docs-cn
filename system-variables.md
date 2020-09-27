@@ -5,7 +5,13 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 
 # 系统变量
 
-TiDB 系统变量的行为与 MySQL 相似，变量的作用范围可以是全局范围有效（Global Scope）或会话级别有效（Session Scope），也可以是全局及会话级别均有效。对 `GLOBAL` 作用域变量的更改，**只适用于**新增的 TiDB 连接。使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局或会话级别。
+TiDB 系统变量的行为与 MySQL 相似但有一些不同，变量的作用范围可以是全局范围有效 (Global Scope)、实例级别有效 (Instance Scope) 或会话级别有效 (Session Scope)，或组合了上述多个范围。其中：
+
+- 对 `GLOBAL` 作用域变量的更改，设置后**只对新 TiDB 连接会话生效**，当前活动连接会话不受影响。更改会被持久化，重启后仍然生效。
+
+- 对 `INSTANCE` 作用域变量的更改，设置后会立即对当前 TiDB 实例所有活动连接会话或新连接会话生效，其他 TiDB 实例不生效。更改**不会**被持久化，重启 TiDB 后会**失效**。
+
+使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局级别、实例级别或会话级别。
 
 ```sql
 # 以下两个语句等价地改变一个 Session 变量
@@ -38,7 +44,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `ddl_slow_threshold`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：300
 - 耗时超过该阈值的 DDL 操作会被输出到日志，单位为毫秒。
 
@@ -178,7 +184,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_check_mb4_value_in_utf8`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
 - 如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade-faq.md)。
@@ -295,26 +301,34 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
+### `tidb_dml_batch_size`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：0
+- 样本值：20000
+- 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
+- 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
+
 ### `tidb_enable_cascades_planner`
 
 - 作用域：SESSION | GLOBAL
 - 默认值: 0
 - 这个变量用于控制是否开启 cascades planner。
 
-### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `tidb_enable_clustered_index` <!-- 从 v5.0 版本开始引入 -->
 
 - 作用域：SESSION | GLOBAL
 - 默认值：1
-- 这个变量用于控制是否开启 Clustered Index 特性。
+- 这个变量用于控制是否开启聚簇索引特性。
     - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
-    - 该特性只适用于主键为单列非 INT 类型的表和主键为多列的表。对于无主键的表和主键是单列 INT 类型的表不会有影响。
-    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了 Clustered Index 特性。
-- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 row_id 上并用额外创建的主键索引指向 row_id。
+    - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
+    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了聚簇索引特性。
+- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 `row_id` 上并用额外创建的主键索引指向 `row_id`。
 
-    对性能的影响主要体现在以下几个方面:
+    开启该特性对性能的影响主要体现在以下几个方面:
     - 插入的时候每行会减少一个索引 key 的写入。
     - 使用主键作为等值条件查询的时候，会节省一次读取请求。
-    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。 
+    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。
     - 使用多列主键的前缀作为等值或范围条件查询的时候，可以节省多次读取请求。
 
 ### `tidb_enable_chunk_rpc` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -340,11 +354,19 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值: 0
-- 这个变量用于控制是否开启 `get_lock` 和 `release_lock` 这两个没有实现的函数。需要注意的是，当前版本的 TiDB 这两个函数永远返回 1。
+- 默认情况下，用户尝试将某些语法用于尚未实现的功能时，TiDB 会报错。若将该变量值设为 `1`，TiDB 则自动忽略此类功能不可用的情况，即不会报错。若用户无法更改 SQL 代码，可考虑将变量值设为 `1`。
+- 启用 `noop` 函数可以控制以下行为：
+    * `get_lock` 和 `release_lock` 函数
+    * `LOCK IN SHARE MODE` 语法
+    * `SQL_CALC_FOUND_ROWS` 语法
+
+> **注意：**
+>
+> 该变量只有在默认值 `0` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
 
 ### `tidb_enable_slow_log`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用于控制是否开启 slow log 功能，默认开启。
 
@@ -396,7 +418,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 作用域：SESSION | GLOBAL
 - 默认值: off
 - 这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)。
-- 为了减少自动演进对集群的影响，可以进行以下配置： 
+- 为了减少自动演进对集群的影响，可以进行以下配置：
 
     - 设置 `tidb_evolve_plan_task_max_time`，限制每个执行计划运行的最长时间，其默认值为 600s；
     - 设置`tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time`，限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
@@ -421,20 +443,20 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_expensive_query_time_threshold`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：60
 - 这个变量用来控制打印 expensive query 日志的阈值时间，单位是秒，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
 
 ### `tidb_force_priority`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：`NO_PRIORITY`
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
 ### `tidb_general_log`
 
-- 作用域：SERVER
+- 作用域：INSTANCE
 - 默认值：0
 - 这个变量用来设置是否在日志里记录所有的 SQL 语句。
 
@@ -518,61 +540,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：1024
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
-### `tidb_mem_quota_hashjoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `HashJoin` 算子的内存使用阈值。
-- 如果 `HashJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_indexlookupjoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `IndexLookupJoin` 算子的内存使用阈值。
-- 如果 `IndexLookupJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_indexlookupreader`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `IndexLookupReader` 算子的内存使用阈值。
-- 如果 `IndexLookupReader` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_mergejoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `MergeJoin` 算子的内存使用阈值。
-- 如果 `MergeJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_nestedloopapply`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `NestedLoopApply` 算子的内存使用阈值。
-如果 `NestedLoopApply` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
 ### `tidb_mem_quota_query`
 
 - 作用域：SESSION
 - 默认值：1 GB
 - 这个变量用来设置一条查询语句的内存使用阈值。
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
-
-### `tidb_mem_quota_sort`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `Sort` 算子的内存使用阈值。
-- 如果 `Sort` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_topn`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `TopN` 算子的内存使用阈值。
-- 如果 `TopN` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -613,7 +586,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
-在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
+在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
 
 ```sql
 mysql> desc select count(distinct a) from test.t;
@@ -685,7 +658,7 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_query_log_max_len`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：4096 (bytes)
 - 最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
 
@@ -699,13 +672,13 @@ set tidb_query_log_max_len = 20;
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：0
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
 
 ### `tidb_record_plan_in_slow_log`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 - 默认值：1
 - 这个变量用于控制是否在 slow log 里包含慢查询的执行计划。
 
@@ -777,11 +750,11 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_slow_log_threshold`
 
-- 作用域：SESSION
+- 作用域：INSTANCE
 
 - 默认值：300
 
-- 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300ms。
+- 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300 ms。
 
 示例：
 
@@ -790,6 +763,24 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ```sql
 set tidb_slow_log_threshold = 200;
 ```
+
+### `tidb_enable_collect_execution_info`
+
+- 作用域：INSTANCE
+
+- 默认值：1
+
+- 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
+
+### `tidb_log_desensitization`
+
+- 作用域：GLOBAL
+
+- 默认值：0
+
+- 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
+
+- 将该变量设置为 `1` 即开启后，假设执行的 SQL 为 `insert into t values (1,2)`，在日志中记录的 SQL 会是 `insert into t values (?,?)`，即用户输入的信息被遮蔽。
 
 ### `tidb_slow_query_file`
 
@@ -849,7 +840,7 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：INSTANCE | GLOBAL
 
 - 默认值: 0
 
