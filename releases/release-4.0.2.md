@@ -134,7 +134,7 @@ TiDB 版本：4.0.2
     - 修复当多个 Region 的请求同时超时时整个 SQL 语句超时的问题 [#17585](https://github.com/pingcap/tidb/pull/17585)
     - 修复解析日期类型的分隔符时和 MySQL 不兼容的问题 [#17501](https://github.com/pingcap/tidb/pull/17501)
     - 修复少数情况下发给 TiKV 的请求错发给 TiFlash 的问题 [#18105](https://github.com/pingcap/tidb/pull/18105)
-    - 修复当锁住的 primary key 在当前事务被插入/删除时可能造成的结果不一致问题 [#18250](https://github.com/pingcap/tidb/pull/18250)
+    - 修复当前事务中主键被插入/删除但主键的锁却被另一事务清除可能造成结果不一致的问题 [#18250](https://github.com/pingcap/tidb/pull/18250)
 
 + TiKV
 
