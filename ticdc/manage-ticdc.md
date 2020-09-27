@@ -580,7 +580,7 @@ curl -X POST http://127.0.0.1:8300/capture/owner/move_table -d 'cf-id=cf060953-0
 }
 ```
 
-### 动态调整 cdc server 日志级别
+### 动态调整 TiCDC server 日志级别
 
 {{< copyable "shell-regular" >}}
 
