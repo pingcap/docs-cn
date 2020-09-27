@@ -36,11 +36,11 @@ TiDB 版本：4.0.7
 
     + TiCDC
 
-        - 
+        - 提升开启 Old Value 后 MySQL Sink 的同步效率 [#955](https://github.com/pingcap/ticdc/pull/955)
 
     + Backup & Restore (BR)
-
-        - 
+s
+        - 增加备份时链接中断重试 [#508](https://github.com/pingcap/br/pull/508)
 
     + Dumpling
 
@@ -48,7 +48,7 @@ TiDB 版本：4.0.7
 
     + TiDB Lightning
 
-        - 
+        - 增加动态设置 log 级别的 HTTP 接口 [#393](https://github.com/pingcap/tidb-lightning/pull/393)
 
     + TiDB Binlog
 
@@ -80,11 +80,11 @@ TiDB 版本：4.0.7
 
     + Backup & Restore (BR)
 
-        - 
+        - 修复 SQL restore 中设置全局变量的问题 [#509](https://github.com/pingcap/br/pull/509)
 
     + Dumpling
 
-        - 
+        - 修复了在某些变量为空的情况下，metadata 解析失败的问题 [#150](https://github.com/pingcap/dumpling/pull/150)
 
     + TiDB Lightning
 
