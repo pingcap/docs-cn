@@ -416,6 +416,10 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
+
 ## 另请参阅
 
 * [SHOW TABLE REGIONS](/sql-statements/sql-statement-show-table-regions.md)
