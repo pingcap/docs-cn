@@ -75,7 +75,10 @@ s
 
 + PD
 
-    - 
+    - 修复当 `balance-region` 开启时，如果存在 region 没有 leader，可能会导致 PD panic 的问题 [#2994](https://github.com/pingcap/pd/pull/2994)
+    - 修复区域合并后 region 大小和 region key 数量的统计偏差 [#2985](https://github.com/pingcap/pd/pull/2985)
+    - 修复热点统计不正确的问题 [#2991](https://github.com/pingcap/pd/pull/2991)
+    - 修复 `redirectSchedulerDelete` 中未进行 `nil` 判断的问题  [#2974](https://github.com/pingcap/pd/pull/2974)
 
 + TiFlash
 
