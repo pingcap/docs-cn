@@ -14,6 +14,14 @@ TiDB 版本：4.0.7
 
     - 
 
++ PD
+
+    - PD 客户端中添加 `GetAllMembers` 函数，用于获取 PD 成员信息 [#2980](https://github.com/pingcap/pd/pull/2980)
+
++ TiDB Dashboard
+
+    - 支持生成统计指标关系图 [#760](https://github.com/pingcap-incubator/tidb-dashboard/pull/760)
+
 ## 优化提升
 
 + TiDB
