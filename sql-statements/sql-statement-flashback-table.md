@@ -95,3 +95,7 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 > 不能用 `FLASHBACK` 多次恢复同一个被删除的表，因为 `FLASHBACK` 所恢复表的 table ID 还是被删除表的 table ID，而 TiDB 要求所有还存在的表 table ID 必须全局唯一。
 
  `FLASHBACK TABLE` 是通过快照读获取表的元信息后，再走一次类似于 `CREATE TABLE` 的建表流程，所以 `FLASHBACK TABLE` 实际上也是一种 DDL 操作。
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
