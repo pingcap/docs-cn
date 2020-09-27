@@ -93,23 +93,30 @@ CREATE TABLE users (
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 ```
 
-{{< copyable "sql" >}}
-
-```sql
-START TRANSACTION;
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
+默认的悲观事务模式下：
 
 {{< copyable "sql" >}}
 
 ```sql
+BEGIN;
 INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+```
+
+乐观事务模式下且 `tidb_constraint_check_in_place=0`：
+
+{{< copyable "sql" >}}
+
+```sql
+BEGIN OPTIMISTIC;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
 Query OK, 3 rows affected (0.00 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
@@ -135,9 +142,9 @@ COMMIT;
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-第一条 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
+在乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
 
-你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。如果停用此行为，则会在执行语句时就对唯一约束进行检查。例如：
+你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。当 `tidb_constraint_check_in_place` 设置为 `1` 时，则会在执行语句时就对唯一约束进行检查。例如：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -162,7 +169,7 @@ Query OK, 0 rows affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-START TRANSACTION;
+BEGIN OPTIMISTIC;
 ```
 
 ```
