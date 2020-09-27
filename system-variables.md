@@ -306,7 +306,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_dml_batch_size`
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 默认值：0
 - 样本值：20000
 - 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
