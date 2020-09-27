@@ -1141,6 +1141,11 @@ raftdb 相关配置项。
 + 包含 X509 key 的 PEM 文件路径
 + 默认值：""
 
+### `redact-info-log`
+
++ 若开启该选项，日志中的用户数据会以 `?` 代替。
++ 默认值：`false`
+
 ## import
 
 用于 TiDB Lightning 导入及 BR 恢复相关的配置项。
