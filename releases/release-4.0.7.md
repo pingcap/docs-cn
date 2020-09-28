@@ -22,11 +22,15 @@ TiDB 版本：4.0.7
 
 + TiDB
 
-    - 
+    - 为 join 算子添加更多执行信息 [#20093](https://github.com/pingcap/tidb/pull/20093)
+    - 为 `explain analyze` 语句添加协处理器缓存命中率 [#19972](https://github.com/pingcap/tidb/pull/19972)
+    - 支持将 `ROUND` 函数下推至 TiFlash [#19967](https://github.com/pingcap/tidb/pull/19967)
+    - 在 `ANALYZE` 过程中为 CMSketch 添加默认值 [#19927](https://github.com/pingcap/tidb/pull/19927)
+
 
 + TiKV
 
-    - 
+    - 支持日志输出为 JSON 格式 [#8382](https://github.com/tikv/tikv/pull/8382)
 
 + PD
 
@@ -55,11 +59,26 @@ TiDB 版本：4.0.7
 
 + TiDB
 
-    - 
+    - 修复向量化函数 `and`/`or`/`COALESCE` 因为提前计算导致的问题 [#20092](https://github.com/pingcap/tidb/pull/20092)
+    - 修复不同存储类型导致相同的执行计划摘要的问题 [#20076](https://github.com/pingcap/tidb/pull/20076)
+    - 修复错误函数 `!= any()` 的错误表现 [#20062](https://github.com/pingcap/tidb/pull/20062)
+    - 修复当慢日志文件不存在时输出慢日志报错的问题 [#20051](https://github.com/pingcap/tidb/pull/20051)
+    - 修复当上下文取消后 region 请求不断重试的问题 [#20031](https://github.com/pingcap/tidb/pull/20031)
+    - 修复查询 cluster_slow_query 表的时间类型在 steaming 的请求下报错的问题 [#19943](https://github.com/pingcap/tidb/pull/19943)
+    - 修复 DML 语句使用 `case when` 函数时可能导致 schema 改变的问题 [#20095](https://github.com/pingcap/tidb/pull/20095)
+    - 修复 slow log 中 `prev_stmt` 的信息未脱敏的问题 [#20048](https://github.com/pingcap/tidb/pull/20048)
+    - 修复当 tidb-server 不正常退出时没有释放表锁的问题 [#20020](https://github.com/pingcap/tidb/pull/20020)
+    - 修复当插入 enum 和 set 类型的字段产生不正确的错误信息的问题 [#19950](https://github.com/pingcap/tidb/pull/19950)
+    - 修复 `IsTrue` 函数在某些情况下的错误表现 [#19903](https://github.com/pingcap/tidb/pull/19903)
+    - 修复在 PD 扩容或缩容情况下 `CLUSTER_INFO` 系统表可能不正常运行的问题 [#20026](https://github.com/pingcap/tidb/pull/20026)
+    - 修复在控制表达式中某些情况下产生不必要的错误或报警信息 [#19910](https://github.com/pingcap/tidb/pull/19910)
+
 
 + TiKV
 
-    - 
+    - 修复 TLS 握手失败后会导致 Status API 不可用的问题 [#8649](https://github.com/tikv/tikv/pull/8649)
+    - 修复一些平台上可能存在潜在未定义行为的问题 [#7782](https://github.com/tikv/tikv/pull/7782)
+    - 修复执行 UnsafeDestroyRange 操作时生成快照可能导致 Panic 的问题 [#8681](https://github.com/tikv/tikv/pull/8681)
 
 + PD
 
@@ -81,3 +100,11 @@ TiDB 版本：4.0.7
     + Dumpling
 
         - 修复了在某些变量为空的情况下，metadata 解析失败的问题 [#150](https://github.com/pingcap/dumpling/pull/150)
+
+## 其他
+
++ TiDB
+
+    - 改变更新统计信息的方式以避免造成 OOM 的情况 [#20013](https://github.com/pingcap/tidb/pull/20013)
+    - 重新更改某些日志错误信息以使其脱敏 [#20004](https://github.com/pingcap/tidb/pull/20004)
+    - 支持接受来自 MySQL 8.0 客户端的连接 [#19959](https://github.com/pingcap/tidb/pull/19959)
