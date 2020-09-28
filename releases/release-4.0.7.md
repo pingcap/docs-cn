@@ -64,8 +64,8 @@ TiDB 版本：4.0.7
     - 修复不同存储类型导致相同的执行计划摘要的问题 [#20076](https://github.com/pingcap/tidb/pull/20076)
     - 修复错误函数 `!= any()` 的错误表现 [#20062](https://github.com/pingcap/tidb/pull/20062)
     - 修复当慢日志文件不存在时输出慢日志报错的问题 [#20051](https://github.com/pingcap/tidb/pull/20051)
-    - 修复当上下文取消后 region 请求不断重试的问题 [#20031](https://github.com/pingcap/tidb/pull/20031)
-    - 修复查询 cluster_slow_query 表的时间类型在 steaming 的请求下报错的问题 [#19943](https://github.com/pingcap/tidb/pull/19943)
+    - 修复当上下文取消后 Region 请求不断重试的问题 [#20031](https://github.com/pingcap/tidb/pull/20031)
+    - 修复查询 `cluster_slow_query` 表的时间类型在 steaming 的请求下报错的问题 [#19943](https://github.com/pingcap/tidb/pull/19943)
     - 修复 DML 语句使用 `case when` 函数时可能导致 schema 改变的问题 [#20095](https://github.com/pingcap/tidb/pull/20095)
     - 修复 slow log 中 `prev_stmt` 的信息未脱敏的问题 [#20048](https://github.com/pingcap/tidb/pull/20048)
     - 修复当 tidb-server 不正常退出时没有释放表锁的问题 [#20020](https://github.com/pingcap/tidb/pull/20020)
@@ -79,12 +79,12 @@ TiDB 版本：4.0.7
 
     - 修复 TLS 握手失败后会导致 Status API 不可用的问题 [#8649](https://github.com/tikv/tikv/pull/8649)
     - 修复一些平台上可能存在潜在未定义行为的问题 [#7782](https://github.com/tikv/tikv/pull/7782)
-    - 修复执行 UnsafeDestroyRange 操作时生成快照可能导致 Panic 的问题 [#8681](https://github.com/tikv/tikv/pull/8681)
+    - 修复执行 `UnsafeDestroyRange` 操作时生成快照可能导致 Panic 的问题 [#8681](https://github.com/tikv/tikv/pull/8681)
 
 + PD
 
-    - 修复当 `balance-region` 开启时，如果存在 region 没有 leader，可能会导致 PD panic 的问题 [#2994](https://github.com/pingcap/pd/pull/2994)
-    - 修复区域合并后 region 大小和 region key 数量的统计偏差 [#2985](https://github.com/pingcap/pd/pull/2985)
+    - 修复当 `balance-region` 开启时，如果存在 Region 没有 Leader，可能会导致 PD panic 的问题 [#2994](https://github.com/pingcap/pd/pull/2994)
+    - 修复区域合并后 Region 大小和 Region key 数量的统计偏差 [#2985](https://github.com/pingcap/pd/pull/2985)
     - 修复热点统计不正确的问题 [#2991](https://github.com/pingcap/pd/pull/2991)
     - 修复 `redirectSchedulerDelete` 中未进行 `nil` 判断的问题  [#2974](https://github.com/pingcap/pd/pull/2974)
 
@@ -96,7 +96,7 @@ TiDB 版本：4.0.7
 
     + Backup & Restore (BR)
 
-        - 修复 SQL restore 中设置全局变量的问题 [#509](https://github.com/pingcap/br/pull/509)
+        - 修复了在恢复数据后导致 TiDB 配置变更的错误 [#509](https://github.com/pingcap/br/pull/509)
 
     + Dumpling
 
