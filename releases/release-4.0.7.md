@@ -26,7 +26,8 @@ TiDB 版本：4.0.7
     - 为 `explain analyze` 语句添加协处理器缓存命中率 [#19972](https://github.com/pingcap/tidb/pull/19972)
     - 支持将 `ROUND` 函数下推至 TiFlash [#19967](https://github.com/pingcap/tidb/pull/19967)
     - 在 `ANALYZE` 过程中为 CMSketch 添加默认值 [#19927](https://github.com/pingcap/tidb/pull/19927)
-
+    - 重新更改某些日志错误信息以使其脱敏 [#20004](https://github.com/pingcap/tidb/pull/20004)
+    - 支持接受来自 MySQL 8.0 客户端的连接 [#19959](https://github.com/pingcap/tidb/pull/19959)
 
 + TiKV
 
@@ -72,7 +73,7 @@ TiDB 版本：4.0.7
     - 修复 `IsTrue` 函数在某些情况下的错误表现 [#19903](https://github.com/pingcap/tidb/pull/19903)
     - 修复在 PD 扩容或缩容情况下 `CLUSTER_INFO` 系统表可能不正常运行的问题 [#20026](https://github.com/pingcap/tidb/pull/20026)
     - 修复在控制表达式中某些情况下产生不必要的错误或报警信息 [#19910](https://github.com/pingcap/tidb/pull/19910)
-
+    - 改变更新统计信息的方式以避免造成 OOM 的情况 [#20013](https://github.com/pingcap/tidb/pull/20013)
 
 + TiKV
 
@@ -100,11 +101,3 @@ TiDB 版本：4.0.7
     + Dumpling
 
         - 修复了在某些变量为空的情况下，metadata 解析失败的问题 [#150](https://github.com/pingcap/dumpling/pull/150)
-
-## 其他
-
-+ TiDB
-
-    - 改变更新统计信息的方式以避免造成 OOM 的情况 [#20013](https://github.com/pingcap/tidb/pull/20013)
-    - 重新更改某些日志错误信息以使其脱敏 [#20004](https://github.com/pingcap/tidb/pull/20004)
-    - 支持接受来自 MySQL 8.0 客户端的连接 [#19959](https://github.com/pingcap/tidb/pull/19959)
