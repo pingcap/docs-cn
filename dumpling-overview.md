@@ -14,7 +14,8 @@ aliases: ['/docs-cn/dev/dumpling-overview/']
 
 1. 支持导出多种数据形式，包括 SQL/CSV
 2. 支持全新的 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)，筛选数据更加方便
-3. 针对 TiDB 进行了更多优化：
+3. 支持导出到 Amazon S3 云盘
+4. 针对 TiDB 进行了更多优化：
     - 支持配置 TiDB 单条 SQL 内存限制
     - 针对 TiDB v4.0.0 以上版本支持自动调整 TiDB GC 时间
     - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能
@@ -79,6 +80,34 @@ dumpling \
 > 1. `--sql` 选项暂时仅仅可用于导出 csv 的场景。
 >
 > 2. 这里需要在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+
+### 导出到 Amazon S3 云盘
+
+Dumpling 在 v4.0.8 版本及更新版本中支持导出到云盘。如果需要将数据备份到 Amazon 的 S3 后端存储，那么需要在 `-o` 参数中指定 S3 的存储路径。
+
+这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
+
+将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 Dumpling 节点。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export AWS_ACCESS_KEY_ID=${AccessKey}
+export AWS_SECRET_ACCESS_KEY=${SecretKey}
+```
+
+在进行 Dumpling 备份时，显示指定参数 `--s3.region`，表示 S3 存储所在的区域。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+./dumpling \
+  -u root \
+  -P 4000 \
+  -h 127.0.0.1 \
+  -o "s3://${Bucket}/${Folder}" \
+  --s3.region "${region}"
+```
 
 ### 筛选导出的数据
 
