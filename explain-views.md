@@ -7,7 +7,7 @@ summary: 了解 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 
 `EXPLAIN` 语句显示[视图](/views.md)引用的表和索引，而不是视图本身的名称。这是因为视图是一张虚拟表，本身并不存储任何数据。视图的定义会和语句的其余部分在 SQL 优化过程中进行合并。
 
-参考 [bikeshare 数据库示例](/import-example-data.md)可知以下两个查询执行方式类似：
+以下两个示例查询的执行方式类似：
 
 {{< copyable "sql" >}}
 
