@@ -481,9 +481,9 @@ set tidb_query_log_max_len = 20;
 
 默认值：0
 
-该变量仅适用于乐观事务模型。当这个变量设置为 0 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
+该变量仅适用于乐观事务模型。当这个变量值设置为 `0` 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
 
-- 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
+- 乐观事务模型下将 `tidb_constraint_check_in_place` 的值设置为 `0`：
 
     {{< copyable "sql" >}}
 
@@ -508,7 +508,7 @@ set tidb_query_log_max_len = 20;
     ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
     ```
 
-- 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 1：
+- 乐观事务模型下将 `tidb_constraint_check_in_place` 的值设置为 `1`：
 
     {{< copyable "sql" >}}
 

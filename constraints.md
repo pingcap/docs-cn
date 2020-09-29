@@ -144,7 +144,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 在乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
 
-你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。当 `tidb_constraint_check_in_place` 设置为 `1` 时，则会在执行语句时就对唯一约束进行检查。例如：
+你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。当 `tidb_constraint_check_in_place` 的值设置为 `1` 时，则会在执行语句时就对唯一约束进行检查。例如：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -241,7 +241,7 @@ Query OK, 0 rows affected (0.10 sec)
 
 除上述规则外，默认情况下，TiDB 还有一个额外限制，即一旦一张表创建成功，其主键就不能再改变。如果需要添加/删除主键，需要在 TiDB 配置文件中将 `alter-primary-key` 设置为 `true`，并重启 TiDB 实例使之生效。
 
-当开启添加/删除主键功能以后，TiDB 允许对表添加/删除主键。但需要注意的是，对于在未开启该功能时创建的整数类型的主键的表，即使开启添加/删除主键功能，也不能删除其主键约束。
+当开启添加/删除主键功能以后，TiDB 允许对表添加/删除主键。但需要注意的是，如果开启该功能**前**所创建表带有整数类型的主键，即使开启添加/删除主键功能，也不能删除其主键约束。
 
 ## 外键约束
 
@@ -293,7 +293,7 @@ ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 
 ### 注意
 
-* TiDB 支持外键是为了在将其他数据库迁移到 TiDB 时，不会因为此语法报错。但是，TiDB 不会在 DML 语句中对外键进行约束检查。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+* TiDB 支持外键是为了在将其他数据库的数据迁移到 TiDB 时，避免该语法导致的报错。但是，TiDB 不会在 DML 语句中对外键进行约束检查。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
 
     ```
     START TRANSACTION;

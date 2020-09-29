@@ -257,7 +257,7 @@ SHOW COLLATION;
 
 ## MySQL 兼容性
 
-`SHOW COLLATION` 语句与 MySQL 完全兼容。但是 TiDB 中字符集可能有与 MySQL 不同的排序规则，详情见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
+`SHOW COLLATION` 语句与 MySQL 完全兼容。但是 TiDB 中字符集可能有与 MySQL 不同的默认排序规则，详情见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
