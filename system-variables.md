@@ -206,51 +206,48 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：0
-- TiDB 支持乐观事务模型，即在执行写入时，假设不存在冲突。冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
-- 这个变量用来控制是否每次写入一行时就执行一次唯一性检查。注意，开启该变量后，在大批量写入场景下，对性能会有影响。
+- 该变量仅适用于乐观事务模型。当这个变量设置为 0 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
 
-示例：
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
 
-- 默认关闭 `tidb_constraint_check_in_place` 时的行为：
+        {{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
+        ```sql
+        create table t (i int key);
+        insert into t values (1);
+        begin optimistic;
+        insert into t values (1);
+        ```
 
-    ```sql
-    create table t (i int key);
-    insert into t values (1);
-    begin;
-    insert into t values (1);
-    ```
+        ```
+        Query OK, 1 row affected
+        ```
 
-    ```
-    Query OK, 1 row affected
-    ```
+        {{< copyable "sql" >}}
 
-    commit 时才去做检查：
+        ```sql
+        tidb> commit; -- 事务提交时才检查
+        ```
 
-    {{< copyable "sql" >}}
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
-    ```sql
-    commit;
-    ```
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 1：
 
-    ```
-    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
-    ```
+        {{< copyable "sql" >}}
 
-- 打开 `tidb_constraint_check_in_place` 后：
+        ```sql
+        set @@tidb_constraint_check_in_place=1;
+        begin optimistic;
+        insert into t values (1);
+        ```
 
-    {{< copyable "sql" >}}
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
-    ```sql
-    set @@tidb_constraint_check_in_place=1;
-    begin;
-    insert into t values (1);
-    ```
-
-    ```
-    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
-    ```
+悲观事务模型中，始终默认执行约束检查。
 
 ### `tidb_current_ts`
 
@@ -303,6 +300,14 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：15
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
+
+### `tidb_dml_batch_size`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：0
+- 样本值：20000
+- 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
+- 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
 
 ### `tidb_enable_cascades_planner`
 

@@ -85,6 +85,7 @@
   + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 + 故障诊断
   + [定位慢查询](/identify-slow-queries.md)
+  + [分析慢查询](/analyze-slow-queries.md)
   + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
   + [SQL 语句统计](/statement-summary-tables.md)
