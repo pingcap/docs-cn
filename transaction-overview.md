@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/transaction-overview/','/docs-cn/dev/reference/transacti
 
 TiDB 支持分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模型。TiDB 3.0.8 及以后版本，TiDB 默认采用悲观事务模型。
 
-本文主要介绍涉及到常用事务的语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
+本文主要介绍涉及事务的常用语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
 
 常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)、[`tidb_retry_limit`](/system-variables.md#tidb_retry_limit) 以及 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode)。
 
@@ -16,7 +16,7 @@ TiDB 支持分布式事务，提供[乐观事务](/optimistic-transaction.md)与
 
 ### 开启事务
 
-使用 [`BEGIN`](/sql-statements/sql-statement-begin.md) 和 [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md) 语句显式地开启一个新事务的效果相同。
+要显式地开启一个新事务，既可以使用 [`BEGIN`](/sql-statements/sql-statement-begin.md) 语句，也可以使用 [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md) 语句，两者效果相同。
 
 语法：
 
@@ -56,9 +56,9 @@ START TRANSACTION WITH CONSISTENT SNAPSHOT;
 COMMIT;
 ```
 
-> **Tip:**
+> **建议：**
 >
-> 启用[乐观事务](/optimistic-transaction.md)前，请确保应用程序已正确处理 `COMMIT` 语句可能返回的错误。如果不确定应用程序将会如何处理，建议改为使用[悲观事务](/pessimistic-transaction.md)。
+> 启用[乐观事务](/optimistic-transaction.md)前，请确保应用程序可正确处理 `COMMIT` 语句可能返回的错误。如果不确定应用程序将会如何处理，建议改为使用[悲观事务](/pessimistic-transaction.md)。
 
 ### 回滚事务
 
@@ -76,7 +76,7 @@ ROLLBACK;
 
 ## 自动提交
 
-为满足 MySQL 兼容性的要求，在默认情况下，TiDB 将在执行语句后立即进行 _autocommit_ （自动提交）。
+为满足 MySQL 兼容性的要求，在默认情况下，TiDB 将在执行语句后立即进行 _autocommit_（自动提交）。
 
 举例：
 
@@ -110,7 +110,7 @@ mysql> SELECT * FROM t1;
 1 row in set (0.00 sec)
 ```
 
-以上示例中，`ROLLBACK` 语句执行失败。 由于 `INSERT` 语句是在自动提交的情况下执行的，等同于以下单语句事务：
+以上示例中，`ROLLBACK` 语句没产生任何效果。由于 `INSERT` 语句是在自动提交的情况下执行的，等同于以下单语句事务：
 
 ```sql
 START TRANSACTION;
@@ -118,7 +118,7 @@ INSERT INTO t1 VALUES (1, 'test');
 COMMIT;
 ```
 
-如果已显式地启动事务，则不适用自动提交。以下示例，`ROLLBACK` 语句成功还原了 `INSERT` 语句：
+如果已显式地启动事务，则不适用自动提交。以下示例，`ROLLBACK` 语句成功撤回了 `INSERT` 语句：
 
 ```sql
 mysql> CREATE TABLE t2 (
@@ -168,7 +168,7 @@ SET GLOBAL autocommit = 0;
 
 > **注意：**
 >
-> 某些语句执行后会导致隐式提交。例如，执行 `[BEGIN|START TRANCATION]` 语句时，TiDB 会隐式提交上一个事务，并开启一个新的事务以满足 MySQL 兼容性的需求。详情参见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。
+> 有些语句是隐式提交的。例如，执行 `[BEGIN|START TRANCATION]` 语句时，TiDB 会隐式提交上一个事务，并开启一个新的事务以满足 MySQL 兼容性的需求。详情参见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。
 
 TiDB 可以显式地使用事务（通过 `[BEGIN|START TRANSACTION]`/`COMMIT` 语句定义事务的开始和结束) 或者隐式地使用事务 (`SET autocommit = 1`)。
 
@@ -178,7 +178,7 @@ TiDB 可以显式地使用事务（通过 `[BEGIN|START TRANSACTION]`/`COMMIT` �
 
 ## 惰性检查
 
-执行 DML 语句时，乐观事务默认不会检查[主键约束](/constraints.md#主键约束)或[唯一约束](/constraints.md#唯一约束)，而是在 `COMMIT` 事务中进行这些检查。
+执行 DML 语句时，乐观事务默认不会检查[主键约束](/constraints.md#主键约束)或[唯一约束](/constraints.md#唯一约束)，而是在 `COMMIT` 事务时进行这些检查。
 
 举例：
 
@@ -283,9 +283,7 @@ mysql> SELECT * FROM test;
 
 TiDB 同时支持乐观事务与悲观事务，其中乐观事务是悲观事务的基础。由于乐观事务是先将修改缓存在私有内存中，因此，TiDB 对于单个事务的容量做了限制。
 
-TiDB 默认设置了单个事务的容量的总大小不超过 100 MB，这个默认值可以通过配置文件中的配置项 `txn-total-size-limit` 进行修改，最大支持到 10 GB。
-
-实际的单个事务大小限制还取决于服务器剩余可用内存大小，执行事务时 TiDB 进程的内存消耗大约是事务大小 6 倍以上。
+TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可以通过配置文件中的配置项 `txn-total-size-limit` 进行修改，最大支持 10 GB。实际的单个事务大小限制还取决于服务器剩余可用内存的大小，执行事务时 TiDB 进程的内存消耗大约是事务大小的 6 倍以上。
 
 在 4.0 以前的版本，TiDB 限制了单个事务的键值对的总数量不超过 30 万条，从 4.0 版本起 TiDB 取消了这项限制。
 

@@ -60,9 +60,9 @@ BEGIN /*T! PESSIMISTIC */;
 
 ## 和 MySQL InnoDB 的差异
 
-1. TiDB 使用 range 作为 WHERE 条件，执行 DML 和 `SELECT FOR UPDATE` 语句时不会阻塞范围内并发的 DML 语句的执行。
+1. 有些 `WHERE` 子句中使用了 range，TiDB 在执行这类 DML 语句和 `SELECT FOR UPDATE` 语句时，不会阻塞 range 内并发的 DML 语句的执行。
 
-    举例:
+    举例：
 
     ```sql
     CREATE TABLE t1 (
@@ -83,7 +83,7 @@ BEGIN /*T! PESSIMISTIC */;
     UPDATE t1 SET pad1='new value' WHERE id = 5; -- MySQL 和 TiDB 处于等待阻塞状态。
     ```
 
-    产生这一行为是因为 TiDB 当前不支持 _gap locking_ (间隙锁)。
+    产生这一行为是因为 TiDB 当前不支持 _gap locking_（间隙锁）。
 
 2. TiDB 不支持 `SELECT LOCK IN SHARE MODE`。
 
@@ -91,7 +91,7 @@ BEGIN /*T! PESSIMISTIC */;
 
 3. DDL 可能会导致悲观事务提交失败。
 
-    MySQL 在执行 DDL 时会被正在执行的事务阻塞住，而在 TiDB 中 DDL 操作会成功，造成悲观事务提交失败：`ERROR 1105 (HY000): Information schema is changed. [try again later]`。TiDB 事务执行过程中并发执行 `TRUNCATE TABLE` 语句，可能会导致事务报错 `table doesn't exist`。
+    MySQL 在执行 DDL 语句时，会被正在执行的事务阻塞住，而在 TiDB 中 DDL 操作会成功，造成悲观事务提交失败：`ERROR 1105 (HY000): Information schema is changed. [try again later]`。TiDB 事务执行过程中并发执行 `TRUNCATE TABLE` 语句，可能会导致事务报错 `table doesn't exist`。
 
 4. `START TRANSACTION WITH CONSISTENT SNAPSHOT` 之后，MySQL 仍然可以读取到之后在其他事务创建的表，而 TiDB 不能。
 
