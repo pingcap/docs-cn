@@ -96,6 +96,8 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
+Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考与之一致的 [BR 存储](br/backup-and-restore-storages.md)。
+
 在进行 Dumpling 备份时，显示指定参数 `--s3.region`，表示 S3 存储所在的区域。
 
 {{< copyable "shell-regular" >}}
