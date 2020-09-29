@@ -44,6 +44,10 @@ show analyze status;
 8 rows in set (0.00 sec)
 ```
 
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
+
 ## 另请参阅
 
 * [ANALYZE_STATUS 表](/information-schema/information-schema-analyze-status.md)
