@@ -72,9 +72,9 @@ EXPLAIN SELECT * FROM trips WHERE bike_number = 'W00950';
 3 rows in set (0.00 sec)
 ```
 
-在以上第一条语句中，索引用于满足视图定义，然后在 TiDB 读取表行时应用 `bike_number = 'W00950'`。在第二条语句中，没有满足该语句的索引，并且使用了 `TableFullScan`。
+在上述第一条语句中，索引用于满足视图定义，接着在 TiDB 读取表行时应用了 `bike_number = 'W00950'`。在第二条语句中，没有满足该语句的索引，并且使用了 `TableFullScan`。
 
-TiDB使用的索引可以同时满足视图定义和语句本身，参考以下组合索引：
+TiDB 使用的索引可以同时满足视图定义和语句本身，如以下组合索引所示：
 
 {{< copyable "sql" >}}
 
@@ -106,4 +106,4 @@ Query OK, 0 rows affected (2 min 31.20 sec)
 3 rows in set (0.00 sec)
 ```
 
-在第一条语句中，组合索引的两个部分 `(bike_number, duration)` TiDB 都能够使用。在第二条语句，TiDB 仅使用了第一部分 `bike_number` 索引 `(bike_number, duration)`。
+在第一条语句中，TiDB 能够使用组合索引的两个部分 `(bike_number, duration)`。在第二条语句，TiDB 仅使用了索引 `(bike_number, duration)` 的第一部分 `bike_number`。
