@@ -100,4 +100,4 @@ TiDB 版本：4.0.7
 
     + Dumpling
 
-        - 修复了在某些变量为空的情况下，metadata 解析失败的问题 [#150](https://github.com/pingcap/dumpling/pull/150)
+        - 修复了在某些变量为空的情况下 metadata 解析失败的问题 [#150](https://github.com/pingcap/dumpling/pull/150)
