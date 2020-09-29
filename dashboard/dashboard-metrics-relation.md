@@ -4,6 +4,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-metrics-relation/']
 ---
 
 # TiDB Dashboard 监控关系图
+
 监控关系图是 TiDB v4.0.7 起提供的新功能，可以将集群中各个内部流程的耗时监控数据绘制为关系图，帮助用户快速了解集群中各个环节的耗时及关系。
 
 ## 访问关系图
