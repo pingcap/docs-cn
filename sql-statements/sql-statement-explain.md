@@ -173,7 +173,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 4 rows in set (0.01 sec)
 ```
 
-If you do not specify the `FORMAT`, or specify `FORMAT = "row"`, `EXPLAIN` statement will output the results in a tabular format. See [Understand the Query Execution Plan](/query-execution-plan.md) for more information.
+If you do not specify the `FORMAT`, or specify `FORMAT = "row"`, `EXPLAIN` statement will output the results in a tabular format. See [Understand the Query Execution Plan](/explain-overview.md) for more information.
 
 In addition to the MySQL standard result format, TiDB also supports DotGraph and you need to specify `FORMAT = "dot"` as in the following example:
 
@@ -246,7 +246,7 @@ If the `dot` program is not installed on your computer, copy the result to [this
 
 ## See also
 
-* [Understanding the Query Execution Plan](/query-execution-plan.md)
+* [Understanding the Query Execution Plan](/explain-overview.md)
 * [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md)
 * [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
 * [TRACE](/sql-statements/sql-statement-trace.md)

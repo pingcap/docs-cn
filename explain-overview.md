@@ -1,14 +1,14 @@
 ---
-title: Understand the Query Execution Plan
+title: EXPLAIN Overview
 summary: Learn about the execution plan information returned by the `EXPLAIN` statement in TiDB.
-aliases: ['/docs/dev/query-execution-plan/','/docs/dev/reference/performance/understanding-the-query-execution-plan/','/docs/dev/index-merge/','/docs/dev/reference/performance/index-merge/','/tidb/dev/index-merge']
+aliases: ['/docs/dev/query-execution-plan/','/docs/dev/reference/performance/understanding-the-query-execution-plan/','/docs/dev/index-merge/','/docs/dev/reference/performance/index-merge/','/tidb/dev/index-merge','/tidb/dev/query-execution-plan']
 ---
 
-# Understand the Query Execution Plan
+# `EXPLAIN` Overview
 
 Based on the latest statistics of your tables, the TiDB optimizer chooses the most efficient query execution plan, which consists of a series of operators. This document details the execution plan in TiDB.
 
-## `EXPLAIN` overview
+## Introduction
 
 You can use the `EXPLAIN` command in TiDB to view the execution plan. The result of the `EXPLAIN` statement provides information about how TiDB executes SQL queries:
 

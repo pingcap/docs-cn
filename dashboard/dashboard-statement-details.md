@@ -19,7 +19,7 @@ Click any item in the list to enter the detail page of the SQL statement to view
 The execution detail of plans includes the following information:
 
 - SQL sample: The text of a certain SQL statement that is actually executed corresponding to the plan. Any SQL statement that has been executed within the time range might be used as a SQL sample.
-- Execution plan: For details of the execution plan, see [Understand the Query Execution Plan](/query-execution-plan.md). If multiple execution plans are selected, only (any) one of them is displayed.
+- Execution plan: For details of the execution plan, see [Understand the Query Execution Plan](/explain-overview.md). If multiple execution plans are selected, only (any) one of them is displayed.
 - For basic information, execution time, Coprocessor read, transaction, and slow query of the SQL statement, you can click the corresponding tab titles to switch among different information.
 
 ![Execution details of plans](/media/dashboard/dashboard-statement-plans-detail.png)

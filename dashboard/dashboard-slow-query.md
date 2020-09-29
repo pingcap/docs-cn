@@ -49,7 +49,7 @@ By default, the list is sorted by **Finish Time** in the descending order. Click
 Click any item in the list to display detailed execution information of the slow query, including:
 
 - Query: The text of the SQL statement (see area 1 in the image below);
-- Plan: The execution plan of the slow query. See [Understand the Query Execution Plan](/query-execution-plan.md) to learn how to read the execution plan (see area 2 in the image below);
+- Plan: The execution plan of the slow query. See [Understand the Query Execution Plan](/explain-overview.md) to learn how to read the execution plan (see area 2 in the image below);
 - Other sorted SQL execution information (see area 3 in the image below).
 
 ![View execution details](/media/dashboard/dashboard-slow-queries-detail1.png)

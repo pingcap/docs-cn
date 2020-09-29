@@ -63,7 +63,7 @@ To remove one or more functions or operators from the blocklist, perform the fol
 
 The following example demonstrates how to add the `<` and `>` operators to the blocklist, then remove `>` from the blocklist.
 
-You can see whether the blocklist takes effect by checking the results returned by `EXPLAIN` statement (See [Understanding `EXPLAIN` results](/query-execution-plan.md)).
+You can see whether the blocklist takes effect by checking the results returned by `EXPLAIN` statement (See [Understanding `EXPLAIN` results](/explain-overview.md)).
 
 ```sql
 tidb> create table t(a int);

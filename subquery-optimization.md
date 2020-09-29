@@ -17,7 +17,7 @@ Subqueries usually appear in the following situations:
 
 Sometimes a subquery contains non-subquery columns, such as `select * from t where t.a in (select * from t2 where t.b=t2.b)`. The `t.b` column in the subquery does not belong to the subquery, it is introduced from the outside of the subquery. This kind of subquery is usually called a "correlated subquery", and the externally introduced column is called a "correlated column". For optimizations about correlated subquery, see [Decorrelation of correlated subquery](/correlated-subquery-optimization.md). This article focuses on subqueries that do not involve correlated columns.
 
-By default, subqueries use `semi join` mentioned in [Understanding TiDB Execution Plan](/query-execution-plan.md) as the execution method. For some special subqueries, TiDB do some logical rewrite to get better performance.
+By default, subqueries use `semi join` mentioned in [Understanding TiDB Execution Plan](/explain-overview.md) as the execution method. For some special subqueries, TiDB do some logical rewrite to get better performance.
 
 ## `... < ALL (SELECT ... FROM ...)` or `... > ANY (SELECT ... FROM ...)`
 

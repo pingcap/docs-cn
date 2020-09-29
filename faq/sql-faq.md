@@ -222,7 +222,7 @@ It is recommended to keep the number of concurrent DDL statements under 20. Othe
 
 ### TiDB execution plan description
 
-See [Understand the Query Execution Plan](/query-execution-plan.md).
+See [Understand the Query Execution Plan](/explain-overview.md).
 
 ### Statistics collection
 
@@ -276,7 +276,7 @@ View the `Healthy` field using `show stats_healthy` and generally you need to ex
 
 ### What is the ID rule when a query plan is presented as a tree? What is the execution order for this tree?
 
-No rule exists for these IDs but the IDs are unique. When IDs are generated, a counter works and adds one when one plan is generated. The execution order has nothing to do with the ID. The whole query plan is a tree and the execution process starts from the root node and the data is returned to the upper level continuously. For details about the query plan, see [Understanding the TiDB Query Execution Plan](/query-execution-plan.md).
+No rule exists for these IDs but the IDs are unique. When IDs are generated, a counter works and adds one when one plan is generated. The execution order has nothing to do with the ID. The whole query plan is a tree and the execution process starts from the root node and the data is returned to the upper level continuously. For details about the query plan, see [Understanding the TiDB Query Execution Plan](/explain-overview.md).
 
 ### In the TiDB query plan, `cop` tasks are in the same root. Are they executed concurrently?
 
@@ -284,7 +284,7 @@ Currently the computing tasks of TiDB belong to two different types of tasks: `c
 
 `cop task` is the computing task which is pushed down to the KV end for distributed execution; `root task` is the computing task for single point execution on the TiDB end.
 
-Generally the input data of `root task` comes from `cop task`; when `root task` processes data, `cop task` of TiKV can processes data at the same time and waits for the pull of `root task` of TiDB. Therefore, `cop` tasks can be considered as executed concurrently; but their data has an upstream and downstream relationship. During the execution process, they are executed concurrently during some time. For example, the first `cop task` is processing the data in [100, 200] and the second `cop task` is processing the data in [1, 100]. For details, see [Understanding the TiDB Query Plan](/query-execution-plan.md).
+Generally the input data of `root task` comes from `cop task`; when `root task` processes data, `cop task` of TiKV can processes data at the same time and waits for the pull of `root task` of TiDB. Therefore, `cop` tasks can be considered as executed concurrently; but their data has an upstream and downstream relationship. During the execution process, they are executed concurrently during some time. For example, the first `cop task` is processing the data in [100, 200] and the second `cop task` is processing the data in [1, 100]. For details, see [Understanding the TiDB Query Plan](/explain-overview.md).
 
 ## Database optimization
 
