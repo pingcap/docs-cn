@@ -73,7 +73,7 @@ If a write-write conflict occurs during the transaction commit, TiDB automatical
 
 ```toml
 # Whether to disable automatic retry. ("on" by default)
-tidb_disable_txn_auto_retry = off
+tidb_disable_txn_auto_retry = OFF
 # Set the maximum number of the retires. ("10" by default)
 # When “tidb_retry_limit = 0”, automatic retry is completely disabled.
 tidb_retry_limit = 10
@@ -125,7 +125,7 @@ The reason can be observed from the procedures of retry:
 
 In Step 2, TiDB only retries SQL statements that contain write operations. However, during retrying, TiDB receives a new version number to mark the beginning of the transaction. This means that TiDB retries SQL statements with the data in the new `start_ts` version. In this case, if the transaction updates data using other query results, the results might be inconsistent because the `REPEATABLE READ` isolation is violated.
 
-If your application can tolerate lost updates, and does not require `REPEATABLE READ` isolation consistency, you can enable this feature by setting `tidb_disable_txn_auto_retry = off`.
+If your application can tolerate lost updates, and does not require `REPEATABLE READ` isolation consistency, you can enable this feature by setting `tidb_disable_txn_auto_retry = OFF`.
 
 ## Conflict detection
 
