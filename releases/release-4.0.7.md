@@ -22,7 +22,7 @@ TiDB 版本：4.0.7
 
 + TiDB
 
-    - 为 join 算子添加更多执行信息 [#20093](https://github.com/pingcap/tidb/pull/20093)
+    - 为 `join` 算子添加更多执行信息 [#20093](https://github.com/pingcap/tidb/pull/20093)
     - 为 `EXPLAIN ANALYZE` 语句添加协处理器缓存命中率信息 [#19972](https://github.com/pingcap/tidb/pull/19972)
     - 支持将 `ROUND` 函数下推至 TiFlash [#19967](https://github.com/pingcap/tidb/pull/19967)
     - 在 `ANALYZE` 过程中为 `CMSketch` 添加默认值 [#19927](https://github.com/pingcap/tidb/pull/19927)
