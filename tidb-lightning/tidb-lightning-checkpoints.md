@@ -31,7 +31,7 @@ driver = "file"
 # 断点的存放位置
 #
 # 若 driver = "file"，此参数为断点信息存放的文件路径。
-# 如果不设置改参数则默认为 `/tmp/CHECKPOINT_SCHEMA.pb`
+# 如果不设置该参数则默认为 `/tmp/CHECKPOINT_SCHEMA.pb`
 #
 # 若 driver = "mysql"，此参数为数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)/”。
 # 默认会重用 [tidb] 设置目标数据库来存储断点。

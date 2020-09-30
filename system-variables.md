@@ -34,7 +34,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
-- 这个变量用来设置是否自动 Commit 事务。
+- 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
 ### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
 
@@ -206,51 +206,48 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：0
-- TiDB 支持乐观事务模型，即在执行写入时，假设不存在冲突。冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
-- 这个变量用来控制是否每次写入一行时就执行一次唯一性检查。注意，开启该变量后，在大批量写入场景下，对性能会有影响。
+- 该变量仅适用于乐观事务模型。当这个变量设置为 0 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
 
-示例：
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
 
-- 默认关闭 `tidb_constraint_check_in_place` 时的行为：
+        {{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
+        ```sql
+        create table t (i int key);
+        insert into t values (1);
+        begin optimistic;
+        insert into t values (1);
+        ```
 
-    ```sql
-    create table t (i int key);
-    insert into t values (1);
-    begin;
-    insert into t values (1);
-    ```
+        ```
+        Query OK, 1 row affected
+        ```
 
-    ```
-    Query OK, 1 row affected
-    ```
+        {{< copyable "sql" >}}
 
-    commit 时才去做检查：
+        ```sql
+        tidb> commit; -- 事务提交时才检查
+        ```
 
-    {{< copyable "sql" >}}
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
-    ```sql
-    commit;
-    ```
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 1：
 
-    ```
-    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
-    ```
+        {{< copyable "sql" >}}
 
-- 打开 `tidb_constraint_check_in_place` 后：
+        ```sql
+        set @@tidb_constraint_check_in_place=1;
+        begin optimistic;
+        insert into t values (1);
+        ```
 
-    {{< copyable "sql" >}}
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
-    ```sql
-    set @@tidb_constraint_check_in_place=1;
-    begin;
-    insert into t values (1);
-    ```
-
-    ```
-    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
-    ```
+悲观事务模型中，始终默认执行约束检查。
 
 ### `tidb_current_ts`
 
@@ -304,26 +301,34 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
+### `tidb_dml_batch_size`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：0
+- 样本值：20000
+- 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
+- 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
+
 ### `tidb_enable_cascades_planner`
 
 - 作用域：SESSION | GLOBAL
 - 默认值: 0
 - 这个变量用于控制是否开启 cascades planner。
 
-### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `tidb_enable_clustered_index` <!-- 从 v5.0 版本开始引入 -->
 
 - 作用域：SESSION | GLOBAL
 - 默认值：1
-- 这个变量用于控制是否开启 Clustered Index 特性。
+- 这个变量用于控制是否开启聚簇索引特性。
     - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
-    - 该特性只适用于主键为单列非 INT 类型的表和主键为多列的表。对于无主键的表和主键是单列 INT 类型的表不会有影响。
-    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了 Clustered Index 特性。
-- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 row_id 上并用额外创建的主键索引指向 row_id。
+    - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
+    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了聚簇索引特性。
+- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 `row_id` 上并用额外创建的主键索引指向 `row_id`。
 
-    对性能的影响主要体现在以下几个方面:
+    开启该特性对性能的影响主要体现在以下几个方面:
     - 插入的时候每行会减少一个索引 key 的写入。
     - 使用主键作为等值条件查询的时候，会节省一次读取请求。
-    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。 
+    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。
     - 使用多列主键的前缀作为等值或范围条件查询的时候，可以节省多次读取请求。
 
 ### `tidb_enable_chunk_rpc` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -349,7 +354,15 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值: 0
-- 这个变量用于控制是否开启 `get_lock` 和 `release_lock` 这两个没有实现的函数。需要注意的是，当前版本的 TiDB 这两个函数永远返回 1。
+- 默认情况下，用户尝试将某些语法用于尚未实现的功能时，TiDB 会报错。若将该变量值设为 `1`，TiDB 则自动忽略此类功能不可用的情况，即不会报错。若用户无法更改 SQL 代码，可考虑将变量值设为 `1`。
+- 启用 `noop` 函数可以控制以下行为：
+    * `get_lock` 和 `release_lock` 函数
+    * `LOCK IN SHARE MODE` 语法
+    * `SQL_CALC_FOUND_ROWS` 语法
+
+> **注意：**
+>
+> 该变量只有在默认值 `0` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
 
 ### `tidb_enable_slow_log`
 
@@ -405,7 +418,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 作用域：SESSION | GLOBAL
 - 默认值: off
 - 这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)。
-- 为了减少自动演进对集群的影响，可以进行以下配置： 
+- 为了减少自动演进对集群的影响，可以进行以下配置：
 
     - 设置 `tidb_evolve_plan_task_max_time`，限制每个执行计划运行的最长时间，其默认值为 600s；
     - 设置`tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time`，限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
@@ -568,61 +581,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：1024
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
-### `tidb_mem_quota_hashjoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `HashJoin` 算子的内存使用阈值。
-- 如果 `HashJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_indexlookupjoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `IndexLookupJoin` 算子的内存使用阈值。
-- 如果 `IndexLookupJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_indexlookupreader`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `IndexLookupReader` 算子的内存使用阈值。
-- 如果 `IndexLookupReader` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_mergejoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `MergeJoin` 算子的内存使用阈值。
-- 如果 `MergeJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_nestedloopapply`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `NestedLoopApply` 算子的内存使用阈值。
-如果 `NestedLoopApply` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
 ### `tidb_mem_quota_query`
 
 - 作用域：SESSION
 - 默认值：1 GB
 - 这个变量用来设置一条查询语句的内存使用阈值。
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
-
-### `tidb_mem_quota_sort`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `Sort` 算子的内存使用阈值。
-- 如果 `Sort` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_topn`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `TopN` 算子的内存使用阈值。
-- 如果 `TopN` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -663,7 +627,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
-在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
+在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
 
 ```sql
 mysql> desc select count(distinct a) from test.t;
