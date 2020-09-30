@@ -1,7 +1,7 @@
 ---
 title: Binlog Consumer Client User Guide
 summary: Use Binlog Consumer Client to consume TiDB secondary binlog data from Kafka and output the data in a specific format.
-aliases: ['/tidb/dev/binlog-slave-client','/docs/dev/tidb-binlog/binlog-slave-client/','/docs/dev/reference/tidb-binlog/binlog-slave-client/']
+aliases: ['/tidb/dev/binlog-slave-client','/docs/dev/tidb-binlog/binlog-slave-client/','/docs/dev/reference/tidb-binlog/binlog-slave-client/','/docs/dev/reference/tools/tidb-binlog/binlog-slave-client/']
 ---
 
 # Binlog Consumer Client User Guide
