@@ -5,6 +5,7 @@ aliases: ['/docs-cn/v2.1/constraints/','/docs-cn/v2.1/reference/sql/constraints/
 
 # 约束
 
+<<<<<<< HEAD
 TiDB 支持的基本约束与 MySQL 的基本相同，但有以下区别：
 
 - 默认对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。您可通过设置 `tidb_constraint_check_in_place` 为 `TRUE` 改变此行为。
@@ -56,6 +57,9 @@ ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
     ```
 
 * TiDB 在执行 `SHOW CREATE TABLE` 语句的结果中不显示外键信息。
+=======
+TiDB 支持的约束与 MySQL 的基本相同。
+>>>>>>> 07ebf576... sql-stmt: improve consistency, fix small errors (#4621)
 
 ## 非空约束
 
@@ -101,6 +105,7 @@ INSERT INTO users (username) VALUES ('a');
 SELECT * FROM users;
 ```
 
+<<<<<<< HEAD
 ## 主键约束
 
 TiDB 支持的主键约束规则与 MySQL 支持的相似。例如：
@@ -122,9 +127,11 @@ Query OK, 0 rows affected (0.10 sec)
 
 除上述规则外，TiDB 还强加了另一个限制，即一旦一张表创建成功，其主键就不能再改变。
 
+=======
+>>>>>>> 07ebf576... sql-stmt: improve consistency, fix small errors (#4621)
 ## 唯一约束
 
-在 TiDB 中，默认会对唯一约束进行惰性检查。通过直到事务提交时才进行批量检查，TiDB 能够减少网络通信开销。例如：
+在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
 
 ```
 DROP TABLE IF EXISTS users;
@@ -134,9 +141,38 @@ CREATE TABLE users (
  UNIQUE KEY (username)
 );
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
+<<<<<<< HEAD
 mysql> START TRANSACTION;
 Query OK, 0 rows affected (0.00 sec)
 mysql> INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
+=======
+```
+
+默认的悲观事务模式下：
+
+{{< copyable "sql" >}}
+
+```sql
+BEGIN;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
+```
+
+```
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+```
+
+乐观事务模式下且 `tidb_constraint_check_in_place=0`：
+
+{{< copyable "sql" >}}
+
+```sql
+BEGIN OPTIMISTIC;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+>>>>>>> 07ebf576... sql-stmt: improve consistency, fix small errors (#4621)
 Query OK, 3 rows affected (0.00 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 mysql> INSERT INTO users (username) VALUES ('steve'),('elizabeth');
@@ -146,9 +182,9 @@ mysql> COMMIT;
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-* 第一条 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
+在乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
 
-如果将 `tidb_constraint_check_in_place` 更改为 `TRUE`，则会在执行语句时就对唯一约束进行检查。例如：
+你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。当 `tidb_constraint_check_in_place` 的值设置为 `1` 时，则会在执行语句时就对唯一约束进行检查。例如：
 
 ```
 DROP TABLE IF EXISTS users;
@@ -158,13 +194,147 @@ CREATE TABLE users (
  UNIQUE KEY (username)
 );
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
+<<<<<<< HEAD
 mysql> SET tidb_constraint_check_in_place = TRUE;
 Query OK, 0 rows affected (0.00 sec)
 mysql> START TRANSACTION;
+=======
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SET tidb_constraint_check_in_place = 1;
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+BEGIN OPTIMISTIC;
+```
+
+```
+>>>>>>> 07ebf576... sql-stmt: improve consistency, fix small errors (#4621)
 Query OK, 0 rows affected (0.00 sec)
 mysql> INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ..
 ```
 
-* 第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
+第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
+
+## 主键约束
+
+与 MySQL 行为一样，主键约束包含了唯一约束，即创建了主键约束相当于拥有了唯一约束。此外，TiDB 其他的主键约束规则也与 MySQL 相似。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
+```
+
+```
+Query OK, 0 rows affected (0.12 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t2 (a INT NULL PRIMARY KEY);
+```
+
+```
+ERROR 1171 (42000): All parts of a PRIMARY KEY must be NOT NULL; if you need NULL in a key, use UNIQUE instead
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t3 (a INT NOT NULL PRIMARY KEY, b INT NOT NULL PRIMARY KEY);
+```
+
+```
+ERROR 1068 (42000): Multiple primary key defined
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t4 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b));
+```
+
+```
+Query OK, 0 rows affected (0.10 sec)
+```
+
+分析：
+
+* 表 `t2` 创建失败，因为定义为主键的列 `a` 不能允许 `NULL` 值。
+* 表 `t3` 创建失败，因为一张表只能有一个主键。
+* 表 `t4` 创建成功，因为虽然只能有一个主键，但 TiDB 支持定义一个多列组合作为复合主键。
+
+除上述规则外，默认情况下，TiDB 还有一个额外限制，即一旦一张表创建成功，其主键就不能再改变。如果需要添加/删除主键，需要在 TiDB 配置文件中将 `alter-primary-key` 设置为 `true`，并重启 TiDB 实例使之生效。
+
+当开启添加/删除主键功能以后，TiDB 允许对表添加/删除主键。但需要注意的是，如果开启该功能**前**所创建表带有整数类型的主键，即使开启添加/删除主键功能，也不能删除其主键约束。
+
+## 外键约束
+
+> **注意：**
+>
+> TiDB 仅部分支持外键约束功能。
+
+TiDB 支持创建外键约束。例如：
+
+```sql
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ doc JSON
+);
+CREATE TABLE orders (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ user_id INT NOT NULL,
+ doc JSON,
+ FOREIGN KEY fk_user_id (user_id) REFERENCES users(id)
+);
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT table_name, column_name, constraint_name, referenced_table_name, referenced_column_name
+FROM information_schema.key_column_usage WHERE table_name IN ('users', 'orders');
+```
+
+```sql
++------------+-------------+-----------------+-----------------------+------------------------+
+| table_name | column_name | constraint_name | referenced_table_name | referenced_column_name |
++------------+-------------+-----------------+-----------------------+------------------------+
+| users      | id          | PRIMARY         | NULL                  | NULL                   |
+| orders     | id          | PRIMARY         | NULL                  | NULL                   |
+| orders     | user_id     | fk_user_id      | users                 | id                     |
++------------+-------------+-----------------+-----------------------+------------------------+
+3 rows in set (0.00 sec)
+```
+
+TiDB 也支持使用 `ALTER TABLE` 命令来删除外键（`DROP FOREIGN KEY`）和添加外键（`ADD FOREIGN KEY`）：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
+ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
+```
+
+### 注意
+
+* TiDB 支持外键是为了在将其他数据库的数据迁移到 TiDB 时，避免该语法导致的报错。但是，TiDB 不会在 DML 语句中对外键进行约束检查。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+
+    ```
+    START TRANSACTION;
+    INSERT INTO orders (user_id, doc) VALUES (123, NULL);
+    COMMIT;
+    ```

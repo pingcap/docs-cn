@@ -410,6 +410,108 @@ set tidb_slow_log_threshold = 200
 
 示例：
 
+<<<<<<< HEAD
+=======
+{{< copyable "sql" >}}
+
+```sql
+set tidb_query_log_max_len = 20;
+```
+
+### tidb_txn_mode
+
+作用域：SESSION | GLOBAL
+
+默认值："pessimistic"
+
+这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/pessimistic-transaction.md)。
+
+但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
+
+将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/optimistic-transaction.md)。
+
+### tidb_constraint_check_in_place
+
+作用域：SESSION | GLOBAL
+
+默认值：0
+
+该变量仅适用于乐观事务模型。当这个变量值设置为 `0` 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
+
+- 乐观事务模型下将 `tidb_constraint_check_in_place` 的值设置为 `0`：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table t (i int key);
+    insert into t values (1);
+    begin optimistic;
+    insert into t values (1);
+    ```
+
+    ```
+    Query OK, 1 row affected
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    commit; -- 事务提交时才检查
+    ```
+
+    ```
+    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+    ```
+
+- 乐观事务模型下将 `tidb_constraint_check_in_place` 的值设置为 `1`：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    set @@tidb_constraint_check_in_place=1;
+    begin optimistic;
+    insert into t values (1);
+    ```
+
+    ```
+    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+    ```
+
+悲观事务模型中，始终默认执行约束检查。
+
+### tidb_check_mb4_value_in_utf8
+
+作用域：SERVER
+
+默认值：1
+
+这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
+
+注意，如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 以及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade-faq.md)。
+
+### tidb_opt_insubq_to_join_and_agg
+
+作用域：SESSION | GLOBAL
+
+默认值：1
+
+这个用来设置是否开启优化规则：将子查询转成 join 和 aggregation。
+
+示例：
+
+打开这个优化规则后，会将下面子查询做如下变化：
+
+{{< copyable "sql" >}}
+
+```sql
+select * from t where t.a in (select aa from t1);
+```
+
+将子查询转成 join 如下：
+
+{{< copyable "sql" >}}
+
+>>>>>>> 07ebf576... sql-stmt: improve consistency, fix small errors (#4621)
 ```sql
 set tidb_query_log_max_len = 20
 ```
