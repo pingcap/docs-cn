@@ -33,7 +33,7 @@ TiDB Dashboard 监控关系图是 TiDB v4.0.7 起提供的新功能，可以将�
 * 监控项的总耗时
 * 监控项总耗时和查询总耗时的比例
 
-`节点监控的总耗时 = 节点自身的耗时 + 孩子节点的耗时`，所以某些节点监控图会显示节点的耗时和总耗时的比例。例如 `tidb_execute` 监控：
+`节点监控的总耗时 = 节点自身的耗时 + 孩子节点的耗时`，所以某些节点监控图会显示节点自身的耗时和总耗时的比例。例如 `tidb_execute` 监控：
 
 ![监控关系图 tidb_execute 节点示例](/media/dashboard/dashboard-metrics-relation-node-example1.png)
 
