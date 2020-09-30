@@ -92,6 +92,10 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
     tiup clean --all
     ```
 
+> **注意：**
+>
+> TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问；若需要使服务可被外部访问，你可以通过 `--host` 参数指定监听 `0.0.0.0` 或网卡绑定外部可访问的 IP。
+
 ## 第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
 - 适用场景：希望用单台 Linux 服务器，体验 TiDB 最小的完整拓扑的集群，并模拟生产的部署步骤。
