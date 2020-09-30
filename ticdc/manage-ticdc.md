@@ -133,8 +133,11 @@ ID: simple-replication-task
 Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
-- `--changefeed-id`: 同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+- `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
+- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+- `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
+- `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
+- `--config`：指定 changefeed 配置文件。
 
 {{< copyable "" >}}
 
@@ -579,6 +582,16 @@ curl -X POST http://127.0.0.1:8300/capture/owner/move_table -d 'cf-id=cf060953-0
  "message": ""
 }
 ```
+
+### 动态调整 TiCDC server 日志级别
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X POST -d '"debug"' http://127.0.0.1:8301/admin/log
+```
+
+`POST` 参数表示新的日志级别，支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"dpanic"、"panic"、"fatal"。该接口参数为 JSON 编码，需要注意引号的使用：`'"debug"'`。
 
 ## 同步任务配置文件描述
 
