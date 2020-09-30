@@ -450,6 +450,7 @@
       + [概况页面](/dashboard/dashboard-overview.md)
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
+      + [监控关系图](/dashboard/dashboard-metrics-relation.md)
       + SQL 语句分析
         + [列表页面](/dashboard/dashboard-statement-list.md)
         + [执行详情页面](/dashboard/dashboard-statement-details.md)
