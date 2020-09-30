@@ -21,7 +21,7 @@ TiDB Dashboard 监控关系图是 TiDB v4.0.7 起提供的新功能，可以将�
 
 ![监控关系图示例](/media/dashboard/dashboard-metrics-relation-example.png)
 
-例如以下 `tidb_execute` 节点监控图表示：`tidb_execute` 监控项的总耗时为 19306.46 秒，占总查询耗时的 89.4%，其中 `tidb_execute` 节点自身的耗时是 9070.18 秒，占总查询耗时的 42%。将鼠标悬停在该方框上，可以看到监控项的注释说明，包括总耗时、平均耗时、平均 P99 耗时等详细信息。
+例如以下 `tidb_execute` 节点监控图表示：`tidb_execute` 监控项的总耗时为 19306.46 秒，占总查询耗时的 89.4%，其中 `tidb_execute` 节点自身的耗时是 9070.18 秒，占总查询耗时的 42%。将鼠标悬停在该方框上，可以看到监控项的注释说明，总耗时、平均耗时、平均 P99 耗时等详细信息。
 
 ![监控关系图 tidb_execute 节点示例](/media/dashboard/dashboard-metrics-relation-node-example.png)
 
