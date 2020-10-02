@@ -219,7 +219,13 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 >
 > TiDB 4.0.2 版本之前，TiFlash 不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
 
-TiFlash 主要支持谓词、聚合下推计算，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型主要是表连接和 DISTINCT COUNT，会在后续版本逐步优化。
+TiFlash 主要支持谓词、聚合下推计算以及表连接，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型主要是 Full Outer Join 和 DISTINCT COUNT，会在后续版本逐步优化。
+
+目前连接（Join）下推需要通过 Session Variables 打开功能。暂不支持 Full Outer Join。
+
+```
+set @@session.tidb_opt_broadcast_join=1
+```
 
 目前 TiFlash 支持了有限的常用表达式下推，支持下推的表达式包括：
 
