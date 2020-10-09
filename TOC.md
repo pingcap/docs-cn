@@ -85,6 +85,7 @@
   + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 + 故障诊断
   + [定位慢查询](/identify-slow-queries.md)
+  + [分析慢查询](/analyze-slow-queries.md)
   + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
   + [SQL 语句统计](/statement-summary-tables.md)
@@ -447,6 +448,7 @@
       + [概况页面](/dashboard/dashboard-overview.md)
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
+      + [监控关系图](/dashboard/dashboard-metrics-relation.md)
       + SQL 语句分析
         + [列表页面](/dashboard/dashboard-statement-list.md)
         + [执行详情页面](/dashboard/dashboard-statement-details.md)
@@ -513,6 +515,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.7](/releases/release-4.0.7.md)
     - [4.0.6](/releases/release-4.0.6.md)
     - [4.0.5](/releases/release-4.0.5.md)
     - [4.0.4](/releases/release-4.0.4.md)

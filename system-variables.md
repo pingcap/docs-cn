@@ -34,7 +34,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
-- 这个变量用来设置是否自动 Commit 事务。
+- 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
 ### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
 
@@ -192,51 +192,48 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：0
-- TiDB 支持乐观事务模型，即在执行写入时，假设不存在冲突。冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
-- 这个变量用来控制是否每次写入一行时就执行一次唯一性检查。注意，开启该变量后，在大批量写入场景下，对性能会有影响。
+- 该变量仅适用于乐观事务模型。当这个变量设置为 0 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
 
-示例：
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
 
-- 默认关闭 `tidb_constraint_check_in_place` 时的行为：
+        {{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
+        ```sql
+        create table t (i int key);
+        insert into t values (1);
+        begin optimistic;
+        insert into t values (1);
+        ```
 
-    ```sql
-    create table t (i int key);
-    insert into t values (1);
-    begin;
-    insert into t values (1);
-    ```
+        ```
+        Query OK, 1 row affected
+        ```
 
-    ```
-    Query OK, 1 row affected
-    ```
+        {{< copyable "sql" >}}
 
-    commit 时才去做检查：
+        ```sql
+        tidb> commit; -- 事务提交时才检查
+        ```
 
-    {{< copyable "sql" >}}
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
-    ```sql
-    commit;
-    ```
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 1：
 
-    ```
-    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
-    ```
+        {{< copyable "sql" >}}
 
-- 打开 `tidb_constraint_check_in_place` 后：
+        ```sql
+        set @@tidb_constraint_check_in_place=1;
+        begin optimistic;
+        insert into t values (1);
+        ```
 
-    {{< copyable "sql" >}}
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
-    ```sql
-    set @@tidb_constraint_check_in_place=1;
-    begin;
-    insert into t values (1);
-    ```
-
-    ```
-    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
-    ```
+悲观事务模型中，始终默认执行约束检查。
 
 ### `tidb_current_ts`
 
