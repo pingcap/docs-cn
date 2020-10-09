@@ -451,6 +451,7 @@
       + [概况页面](/dashboard/dashboard-overview.md)
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
+      + [监控关系图](/dashboard/dashboard-metrics-relation.md)
       + SQL 语句分析
         + [列表页面](/dashboard/dashboard-statement-list.md)
         + [执行详情页面](/dashboard/dashboard-statement-details.md)
@@ -518,6 +519,7 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v4.0
+    - [4.0.7](/releases/release-4.0.7.md)
     - [4.0.6](/releases/release-4.0.6.md)
     - [4.0.5](/releases/release-4.0.5.md)
     - [4.0.4](/releases/release-4.0.4.md)
