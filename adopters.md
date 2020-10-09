@@ -20,6 +20,8 @@ This is a list of TiDB adopters in various industries.
 |[BookMyShow](https://www.crunchbase.com/organization/bookmyshow)|Media and Entertainment|[English](https://pingcap.com/case-studies/tidb-in-bookmyshow/)|
 |[Yiguo.com](https://www.crunchbase.com/organization/shanghai-yiguo-electron-business)|E-commerce|[English](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/); [Chinese](https://pingcap.com/cases-cn/user-case-yiguo)|
 |[Shopee](https://en.wikipedia.org/wiki/Shopee)|E-commerce|[English](https://pingcap.com/case-studies/tidb-in-shopee/); [Chinese](https://pingcap.com/cases-cn/user-case-shopee/)|
+|[Zhuan Zhuan](https://www.crunchbase.com/organization/zhuan-zhuan)|E-commerce|English [#1](https://pingcap.com/case-studies/tidb-in-zhuanzhuan/), [#2](https://pingcap.com/case-studies/scale-out-database-powers-china-letgo-with-reduced-maintenance-costs); Chinese [#1](https://pingcap.com/cases-cn/user-case-zhuanzhuan/), [#2](https://pingcap.com/cases-cn/user-case-zhuanzhuan-2/), [#3](https://pingcap.com/cases-cn/user-case-zhuanzhuan-3/)|
+|[Xiaohongshu](https://en.wikipedia.org/wiki/Xiaohongshu)|E-commerce|[English](https://pingcap.com/case-studies/how-we-use-a-scale-out-htap-database-for-real-time-analytics-and-complex-queries); Chinese [#1](https://pingcap.com/cases-cn/user-case-xiaohongshu/), [#2](https://pingcap.com/cases-cn/user-case-xiaohongshu-2/)|
 |[Happigo.com](https://www.crunchbase.com/organization/happigo-com)|E-commerce||
 |[Yimutian](http://www.ymt.com/)|E-commerce||
 |[Youju Tech](https://www.ujuz.cn/)|E-Commerce||
@@ -27,14 +29,14 @@ This is a list of TiDB adopters in various industries.
 |[Mogujie](https://www.crunchbase.com/organization/mogujie)|E-Commerce||
 |[Zhihu](https://en.wikipedia.org/wiki/Zhihu)|Knowledge Sharing|[English](https://pingcap.com/case-studies/lesson-learned-from-queries-over-1.3-trillion-rows-of-data-within-milliseconds-of-response-time-at-zhihu/); [Chinese](https://pingcap.com/cases-cn/user-case-zhihu/)|
 |[JD Cloud & AI](https://www.crunchbase.com/organization/jd-cloud)|Cloud Computing|[English](https://pingcap.com/case-studies/lesson-learned-from-40-k-qps-and-20-billion-rows-of-data-in-a-single-scale-out-cluster/); [Chinese](https://pingcap.com/cases-cn/user-case-jingdongyun/)|
-|[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://pingcap.com/case-studies/tidb-in-mobike); [Chinese](https://pingcap.com/cases-cn/user-case-mobike/)|
+|[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://pingcap.com/case-studies/tidb-in-mobike); Chinese [#1](https://pingcap.com/cases-cn/user-case-mobike/), [#2](https://pingcap.com/cases-cn/user-case-mobike-2/)|
 |[Xiaomi](https://en.wikipedia.org/wiki/Xiaomi)|Consumer Electronics|[Chinese](https://pingcap.com/cases-cn/user-case-xiaomi/)|
 |[LY.com](https://www.crunchbase.com/organization/ly-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-tongcheng/)|
 |[Qunar.com](https://www.crunchbase.com/organization/qunar-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-qunar/)|
 |[Hulu](https://www.hulu.com)|Entertainment||
 |[VIPKid](https://www.crunchbase.com/organization/vipkid)|EdTech|[English](https://pingcap.com/case-studies/why-we-chose-a-distributed-sql-database-to-complement-mysql); [Chinese](https://pingcap.com/cases-cn/user-case-vipkid/)|
 |[Yuanfudao.com](https://www.crunchbase.com/organization/yuanfudao)|EdTech|[English](https://pingcap.com/blog/2017-08-08-tidbforyuanfudao/); [Chinese](https://pingcap.com/cases-cn/user-case-yuanfudao/)|
-|[Bank of Beijing](https://en.wikipedia.org/wiki/Bank_of_Beijing)|Banking|[Chinese](https://pingcap.com/cases-cn/user-case-beijing-bank/)|
+|[Bank of Beijing](https://en.wikipedia.org/wiki/Bank_of_Beijing)|Banking|[English](https://pingcap.com/case-studies/how-we-use-a-distributed-database-to-achieve-horizontal-scaling-without-downtime); Chinese [#1](https://pingcap.com/cases-cn/user-case-beijing-bank/), [#2](https://pingcap.com/cases-cn/user-case-beijing-bank-2/)|
 |[Industrial and Commercial Bank of China](https://en.wikipedia.org/wiki/Industrial_and_Commercial_Bank_of_China)|Banking||
 |[Yimian Data](https://www.crunchbase.com/organization/yimian-data)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-yimian)|
 |[CAASDATA](https://www.caasdata.com/)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-kasi/)|
@@ -60,7 +62,6 @@ This is a list of TiDB adopters in various industries.
 |[Sogou](https://en.wikipedia.org/wiki/Sogou)|MediaTech||
 |[Gengmei](https://www.crunchbase.com/organization/gengmei)|Plastic Surgery||
 |[Keruyun](https://www.crunchbase.com/organization/keruyun-technology-beijing-co-ltd)|SaaS|[Chinese](https://pingcap.com/cases-cn/user-case-keruyun/)|
-|[Zhuan Zhuan](https://www.crunchbase.com/organization/zhuan-zhuan)|Online Marketplace|[English](https://pingcap.com/case-studies/tidb-in-zhuanzhuan/); [Chinese](https://pingcap.com/cases-cn/user-case-zhuanzhuan/)|
 |[LinkDoc Technology](https://www.crunchbase.com/organization/linkdoc-technology)|HealthTech|[Chinese](https://pingcap.com/cases-cn/user-case-linkdoc/)|
 |[Chunyu Yisheng](https://www.crunchbase.com/organization/chunyu)|HealthTech||
 |[Meituan-Dianping](https://en.wikipedia.org/wiki/Meituan-Dianping)|Food Delivery|[English](https://pingcap.com/case-studies/tidb-in-meituan-dianping/); [Chinese](https://pingcap.com/cases-cn/user-case-meituan/)|
