@@ -93,7 +93,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-该语句是 TiDB 对 MySQL 语法的扩展。
+`EXPLAIN ANALYZE` 是 MySQL 8.0 的功能，但该语句在 MySQL 中的输出格式和可能的执行计划都与 TiDB 有较大差异。
 
 ## 另请参阅
 

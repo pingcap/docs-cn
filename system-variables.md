@@ -34,7 +34,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
-- 这个变量用来设置是否自动 Commit 事务。
+- 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
 ### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
 
@@ -168,13 +168,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
-### `tidb_build_stats_concurrency`
-
-- 作用域：SESSION
-- 默认值：4
-- 这个变量用来设置 ANALYZE 语句执行时并发度。
-- 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
-
 ### `tidb_capture_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -189,13 +182,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
 - 如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade-faq.md)。
 
-### `tidb_checksum_table_concurrency`
-
-- 作用域：SESSION
-- 默认值：4
-- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。
-当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
-
 ### `tidb_config`
 
 - 作用域：SESSION
@@ -206,51 +192,48 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：0
-- TiDB 支持乐观事务模型，即在执行写入时，假设不存在冲突。冲突检查是在最后 commit 提交时才去检查。这里的检查指 unique key 检查。
-- 这个变量用来控制是否每次写入一行时就执行一次唯一性检查。注意，开启该变量后，在大批量写入场景下，对性能会有影响。
+- 该变量仅适用于乐观事务模型。当这个变量设置为 0 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
 
-示例：
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
 
-- 默认关闭 `tidb_constraint_check_in_place` 时的行为：
+        {{< copyable "sql" >}}
 
-    {{< copyable "sql" >}}
+        ```sql
+        create table t (i int key);
+        insert into t values (1);
+        begin optimistic;
+        insert into t values (1);
+        ```
 
-    ```sql
-    create table t (i int key);
-    insert into t values (1);
-    begin;
-    insert into t values (1);
-    ```
+        ```
+        Query OK, 1 row affected
+        ```
 
-    ```
-    Query OK, 1 row affected
-    ```
+        {{< copyable "sql" >}}
 
-    commit 时才去做检查：
+        ```sql
+        tidb> commit; -- 事务提交时才检查
+        ```
 
-    {{< copyable "sql" >}}
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
-    ```sql
-    commit;
-    ```
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 1：
 
-    ```
-    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
-    ```
+        {{< copyable "sql" >}}
 
-- 打开 `tidb_constraint_check_in_place` 后：
+        ```sql
+        set @@tidb_constraint_check_in_place=1;
+        begin optimistic;
+        insert into t values (1);
+        ```
 
-    {{< copyable "sql" >}}
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
-    ```sql
-    set @@tidb_constraint_check_in_place=1;
-    begin;
-    insert into t values (1);
-    ```
-
-    ```
-    ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
-    ```
+悲观事务模型中，始终默认执行约束检查。
 
 ### `tidb_current_ts`
 
@@ -296,13 +279,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
     这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
     关于是否需要禁用自动重试，请参考[重试的局限性](/optimistic-transaction.md#重试的局限性)。
-
-### `tidb_distsql_scan_concurrency`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：15
-- 这个变量用来设置 scan 操作的并发度。
-- AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
 ### `tidb_enable_cascades_planner`
 
@@ -431,6 +407,27 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：0
 - 这个变量用来设置是否在日志里记录所有的 SQL 语句。
 
+### `tidb_build_stats_concurrency`
+
+- 作用域：SESSION
+- 默认值：4
+- 这个变量用来设置 `ANALYZE` 语句执行时并发度。
+- 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+
+### `tidb_checksum_table_concurrency`
+
+- 作用域：SESSION
+- 默认值：4
+- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。
+当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+
+### `tidb_distsql_scan_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：15
+- 这个变量用来设置 scan 操作的并发度。
+- AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
+
 ### `tidb_hash_join_concurrency`
 
 - 作用域：SESSION | GLOBAL
@@ -479,6 +476,24 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：1
 - 这个变量用来设置顺序 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
+### `tidb_projection_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：4
+- 这个变量用来设置 `Projection` 算子的并发度。
+
+### `tidb_window_concurrency` <span class="version-mark">从 v4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：4
+- 这个变量用于设置 `window` 算子的并发度。
+
+### `tidb_union_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：4
+- 这个变量用于设置 `union` 算子的并发度。
+
 ### `tidb_init_chunk_size`
 
 - 作用域：SESSION | GLOBAL
@@ -511,61 +526,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：1024
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
-### `tidb_mem_quota_hashjoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `HashJoin` 算子的内存使用阈值。
-- 如果 `HashJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_indexlookupjoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `IndexLookupJoin` 算子的内存使用阈值。
-- 如果 `IndexLookupJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_indexlookupreader`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `IndexLookupReader` 算子的内存使用阈值。
-- 如果 `IndexLookupReader` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_mergejoin`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `MergeJoin` 算子的内存使用阈值。
-- 如果 `MergeJoin` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_nestedloopapply`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `NestedLoopApply` 算子的内存使用阈值。
-如果 `NestedLoopApply` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
 ### `tidb_mem_quota_query`
 
 - 作用域：SESSION
 - 默认值：1 GB
 - 这个变量用来设置一条查询语句的内存使用阈值。
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
-
-### `tidb_mem_quota_sort`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `Sort` 算子的内存使用阈值。
-- 如果 `Sort` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
-
-### `tidb_mem_quota_topn`
-
-- 作用域：SESSION
-- 默认值：32 GB
-- 这个变量用来设置 `TopN` 算子的内存使用阈值。
-- 如果 `TopN` 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -669,12 +635,6 @@ mysql> desc select count(distinct a) from test.t;
 - 作用域：SESSION
 - 默认值：0
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
-
-### `tidb_projection_concurrency`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：4
-- 这个变量用来设置 `Projection` 算子的并发度。
 
 ### `tidb_query_log_max_len`
 
@@ -903,14 +863,6 @@ set tidb_slow_log_threshold = 200;
 - 默认值：300
 
 - 这个变量用来设置 `SPLIT REGION` 语句的执行超时时间，单位是秒，默认值是 300 秒，如果超时还未完成，就返回一个超时错误。
-
-### `tidb_window_concurrency` <span class="version-mark">从 v4.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-
-- 默认值：4
-
-- 这个变量用于设置 window 算子的并行度。
 
 ### `time_zone`
 

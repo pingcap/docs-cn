@@ -6,13 +6,13 @@ aliases: ['/docs-cn/stable/optimistic-transaction/','/docs-cn/v4.0/optimistic-tr
 
 # TiDB 乐观事务模型
 
-本文介绍 TiDB 乐观事务的原理，以及相关特性。
+乐观事务模型下，将修改冲突视为事务提交的一部分。因此并发事务不常修改同一行时，可以跳过获取行锁的过程进而提升性能。但是并发事务频繁修改同一行（冲突）时，乐观事务的性能可能低于[悲观事务](/pessimistic-transaction.md)。
 
-TiDB 的乐观事务模型只有在两阶段事务提交时才会检测是否存在写写冲突。
+启用乐观事务前，请确保应用程序可正确处理 `COMMIT` 语句可能返回的错误。如果不确定应用程序将会如何处理，建议改为使用悲观事务。
 
 > **注意：**
 >
-> 自 v3.0.8 开始，新创建的 TiDB 集群默认使用[悲观事务模型](/pessimistic-transaction.md)。但如果从 3.0.7 及之前版本创建的集群升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
+> 自 v3.0.8 开始，TiDB 集群默认使用[悲观事务模型](/pessimistic-transaction.md)。但如果从 3.0.7 及之前版本创建的集群升级到 3.0.8 及之后的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
 
 ## 乐观事务原理
 
@@ -69,11 +69,11 @@ TiDB 的乐观事务模型只有在两阶段事务提交时才会检测是否存
 
 ### 重试机制
 
-当事务提交时，如果发现写写冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = off` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
+当事务提交时，如果发现写写冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = OFF` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
 
 ```toml
 # 设置是否禁用自动重试，默认为 “on”，即不重试。
-tidb_disable_txn_auto_retry = off
+tidb_disable_txn_auto_retry = OFF
 # 控制重试次数，默认为 “10”。只有自动重试启用时该参数才会生效。
 # 当 “tidb_retry_limit= 0” 时，也会禁用自动重试。
 tidb_retry_limit = 10
@@ -86,13 +86,13 @@ tidb_retry_limit = 10
     {{< copyable "sql" >}}
 
     ```sql
-    set @@tidb_disable_txn_auto_retry = off;
+    SET tidb_disable_txn_auto_retry = OFF;
     ```
 
     {{< copyable "sql" >}}
 
     ```sql
-    set @@tidb_retry_limit = 10;
+    SET tidb_retry_limit = 10;
     ```
 
 - Global 级别设置：
@@ -100,13 +100,13 @@ tidb_retry_limit = 10
     {{< copyable "sql" >}}
 
     ```sql
-    set @@global.tidb_disable_txn_auto_retry = off;
+    SET GLOBAL tidb_disable_txn_auto_retry = OFF;
     ```
 
     {{< copyable "sql" >}}
 
     ```sql
-    set @@global.tidb_retry_limit = 10;
+    SET GLOBAL tidb_retry_limit = 10;
     ```
 
 > **注意：**
