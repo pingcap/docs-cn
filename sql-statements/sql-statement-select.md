@@ -81,7 +81,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-select/','/docs-cn/dev/refe
 |`TableOptimizerHints`| 用于控制优化器行为的 Hint，具体可参见 [Optimizer Hints](/optimizer-hints.md)|
 |`ALL`、`DISTINCT`、`DISTINCTROW` | 查询结果集中可能会包含重复值。指定 DISTINCT/DISTINCTROW 则在查询结果中过滤掉重复的行；指定 ALL 则列出所有的行。默认为 ALL。|
 |`HIGH_PRIORITY` | 该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句|
-|`SQL_CALC_FOUND_ROWS` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
+|`SQL_CALC_FOUND_ROWS` | TiDB 不支持该语法，并报错（若 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 值设为 `1`） |
 |`SQL_CACHE`、`SQL_NO_CACHE` | 是否把请求结果缓存到 TiKV (RocksDB) 的 `BlockCache` 中。对于一次性的大数据量的查询，比如 `count(*)` 查询，为了避免冲掉 `BlockCache` 中用户的热点数据，建议填上 `SQL_NO_CACHE` |
 |`STRAIGHT_JOIN`|`STRAIGHT_JOIN` 会强制优化器按照 `FROM` 子句中所使用的表的顺序做联合查询。当优化器选择的 Join 顺序并不优秀时，你可以使用这个语法来加速查询的执行|
 |`select_expr` | 投影操作列表，一般包括列名、表达式，或者是用 '\*' 表示全部列|
