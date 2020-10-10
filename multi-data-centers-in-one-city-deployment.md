@@ -98,28 +98,50 @@ Because of the limitation described above, `label` is used to describe the locat
 
 #### TiKV labels planning example
 
-To improve the availability and disaster recovery of the system, you need to design and plan TiKV labels according to your existing physical resources and the disaster recovery capability. You also need to configure the relevant `tidb-ansible inventory.ini` file according to the planned topology:
+To improve the availability and disaster recovery of the system, you need to design and plan TiKV labels according to your existing physical resources and the disaster recovery capability. You also need to configure in the cluster initialization configuration file according to the planned topology:
 
 ```ini
-[tikv_servers]
-TiKV-30   ansible_host=10.63.10.30     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170 tikv_status_port=20180 labels="zone=z1,dc=d1,rack=r1,host=30"
-TiKV-31   ansible_host=10.63.10.31     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z1,dc=d1,rack=r1,host=31"
-TiKV-32   ansible_host=10.63.10.32     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z1,dc=d1,rack=r2,host=30"
-TiKV-33   ansible_host=10.63.10.33     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z1,dc=d1,rack=r2,host=30"
+server_configs:
+  pd:
+    replication.location-labels: ["zone","dc","rack","host"]
 
-TiKV-34   ansible_host=10.63.10.34     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z2,dc=d1,rack=r1,host=34"
-TiKV-35   ansible_host=10.63.10.35     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z2,dc=d1,rack=r1,host=35"
-TiKV-36   ansible_host=10.63.10.36     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z2,dc=d1,rack=r2,host=36"
-TiKV-37   ansible_host=10.63.10.36     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z2,dc=d1,rack=r2,host=37"
-
-TiKV-38   ansible_host=10.63.10.38     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z3,dc=d1,rack=r1,host=38"
-TiKV-39   ansible_host=10.63.10.39     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z3,dc=d1,rack=r1,host=39"
-TiKV-40   ansible_host=10.63.10.40     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z3,dc=d1,rack=r2,host=40"
-TiKV-41   ansible_host=10.63.10.41     deploy_dir=/data/tidb_cluster/tikv  tikv_port=20170   tikv_status_port=20180 labels="zone=z3,dc=d1,rack=r2,host=41"
-
-## Group variables
-[pd_servers:vars]
-location_labels = ["zone","dc","rack","host"]
+tikv_servers:
+  - host: 10.63.10.30
+    config:
+      server.labels: { zone: "z1", dc: "d1", rack: "r1", host: "30" }
+  - host: 10.63.10.31
+    config:
+      server.labels: { zone: "z1", dc: "d1", rack: "r1", host: "31" }
+  - host: 10.63.10.32
+    config:
+      server.labels: { zone: "z1", dc: "d1", rack: "r2", host: "32" }
+  - host: 10.63.10.33
+    config:
+      server.labels: { zone: "z1", dc: "d1", rack: "r2", host: "33" }
+  - host: 10.63.10.34
+    config:
+      server.labels: { zone: "z2", dc: "d1", rack: "r1", host: "34" }
+  - host: 10.63.10.35
+    config:
+      server.labels: { zone: "z2", dc: "d1", rack: "r1", host: "35" }
+  - host: 10.63.10.36
+    config:
+      server.labels: { zone: "z2", dc: "d1", rack: "r2", host: "36" }
+  - host: 10.63.10.37
+    config:
+      server.labels: { zone: "z2", dc: "d1", rack: "r2", host: "37" }
+  - host: 10.63.10.38
+    config:
+      server.labels: { zone: "z3", dc: "d1", rack: "r1", host: "38" }
+  - host: 10.63.10.39
+    config:
+      server.labels: { zone: "z3", dc: "d1", rack: "r1", host: "39" }
+  - host: 10.63.10.40
+    config:
+      server.labels: { zone: "z3", dc: "d1", rack: "r2", host: "40" }
+  - host: 10.63.10.41
+    config:
+      server.labels: { zone: "z3", dc: "d1", rack: "r2", host: "41" }
 ```
 
 In the example above, `zone` is the logical availability zone layer that controls the isolation of replicas (three replicas in the example cluster).
