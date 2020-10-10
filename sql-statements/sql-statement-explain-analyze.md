@@ -1,7 +1,7 @@
 ---
 title: EXPLAIN ANALYZE
 summary: TiDB 数据库中 EXPLAIN ANALYZE 的使用概况。
-aliases:["/docs-cn/dev/sql-statements/sql-statement-explain-analyze/", "/docs-cn/dev/reference/sql/statements/explain-analyze/"]
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-explain-analyze/','/docs-cn/dev/reference/sql/statements/explain-analyze/']
 ---
 
 # EXPLAIN ANALYZE
@@ -30,12 +30,12 @@ aliases:["/docs-cn/dev/sql-statements/sql-statement-explain-analyze/", "/docs-cn
 
 和 `EXPLAIN` 不同，`EXPLAIN ANALYZE` 会执行对应的 SQL 语句，记录其运行时信息，和执行计划一并返回出来。因此，可以将 `EXPLAIN ANALYZE` 视为 `EXPLAIN` 语句的扩展。`EXPLAIN ANALYZE` 语句的返回结果相比 `EXPLAIN`，增加了 `actRows`，`execution info`，`memory`，`disk` 这几列信息：
 
-| 属性名         | 含义                                                                                                                                                                                                  |
-| :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| actRows        | 算子实际输出的数据条数。                                                                                                                                                                              |
-| execution info | 算子的实际执行信息。time 表示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (loops)，这个时间就是累积的时间。loops 是当前算子被父算子调用的次数。 |
-| memory         | 算子占用内存空间的大小。                                                                                                                                                                              |
-| disk           | 算子占用磁盘空间的大小。                                                                                                                                                                              |
+| 属性名          | 含义 |
+|:----------------|:---------------------------------|
+| actRows       | 算子实际输出的数据条数。 |
+| execution info  | 算子的实际执行信息。time 表示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (loops)，这个时间就是累积的时间。loops 是当前算子被父算子调用的次数。 |
+| memory  | 算子占用内存空间的大小。 |
+| disk  | 算子占用磁盘空间的大小。 |
 
 ## 示例
 
@@ -178,7 +178,7 @@ commit_txn: {prewrite:48.564544ms, wait_prewrite_binlog:47.821579, get_commit_ts
 
 ## 另请参阅
 
-- [Understanding the Query Execution Plan](/query-execution-plan.md)
-- [EXPLAIN](/sql-statements/sql-statement-explain.md)
-- [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
-- [TRACE](/sql-statements/sql-statement-trace.md)
+* [Understanding the Query Execution Plan](/query-execution-plan.md)
+* [EXPLAIN](/sql-statements/sql-statement-explain.md)
+* [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
+* [TRACE](/sql-statements/sql-statement-trace.md)
