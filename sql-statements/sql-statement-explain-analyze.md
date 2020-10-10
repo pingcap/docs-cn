@@ -118,11 +118,11 @@ cop_task: {num: 6, max: 1.07587ms, min: 844.312µs, avg: 919.601µs, p95: 1.0758
 ```
 
 - `cop_task`：包含 cop task 的相关信息，如：
-  - `num`：cop task 的数量
-  - `max`,`min`,`avg`,`p95`：所有 cop task 中执行时间的最大值，最小值，平均值和 P95 值。
-  - `max_proc_keys`, `p95_proc_keys`：所有 cop task 中 tikv 扫描 kv 数据的最大值，P95 值，如果 max 和 p95 的值差距很大，说明数据分布不太均匀。
-  - `rpc_num`, `rpc_time`：向 TiKV 发送 `Cop` 类型的 RPC 请求总数量和总时间。
-  - `copr_cache_hit_ratio`：cop task 请求的 Coprocessor Cache 缓存命中率。[Coprocessor Cache 配置](/tidb-configuration-file.md)。
+    - `num`：cop task 的数量
+    - `max`,`min`,`avg`,`p95`：所有 cop task 中执行时间的最大值，最小值，平均值和 P95 值。
+    - `max_proc_keys`, `p95_proc_keys`：所有 cop task 中 tikv 扫描 kv 数据的最大值，P95 值，如果 max 和 p95 的值差距很大，说明数据分布不太均匀。
+    - `rpc_num`, `rpc_time`：向 TiKV 发送 `Cop` 类型的 RPC 请求总数量和总时间。
+    - `copr_cache_hit_ratio`：cop task 请求的 Coprocessor Cache 缓存命中率。[Coprocessor Cache 配置](/tidb-configuration-file.md)。
 - `backoff`：包含不同类型的 backoff 以及等待总耗时。
 
 ### Insert
@@ -135,12 +135,12 @@ prepare:109.616µs, check_insert:{total_time:1.431678ms, mem_insert_time:667.878
 
 - `prepare`：准备写入前的耗时，包括表达式，默认值相关的计算等。
 - `check_insert`：这个信息一般出现在 `insert ignore` 和 `insert on duplicate` 语句中，包含冲突检查和写入 TiDB 内存的耗时。注意，这个耗时不包含事务提交的耗时。具体包含以下信息：
-  - `total_time`：`check_insert` 步骤的总耗时。
-  - `mem_insert_time`：将数据写入 TiDB 事务缓存的耗时。
-  - `prefetch`：从 TiKV 中获取需要检查冲突的数据的耗时，该步骤主要是向 TiKV 发送 `BatchGet` 类型的 RPC 请求的获取数据。
-  - `rpc`：向 TiKV 发送 RPC 请求的总耗时，一般包含 `BatchGet` 和 `Get` 两种类型的 RPC 耗时，其中：
-    - `BatchGet` 请求是 `prefetch` 步骤发送的 RPC 请求。
-    - `Get` 请求是 `insert on duplicate` 语句在执行 `duplicate update` 时发送的 RPC 请求。
+    - `total_time`：`check_insert` 步骤的总耗时。
+    - `mem_insert_time`：将数据写入 TiDB 事务缓存的耗时。
+    - `prefetch`：从 TiKV 中获取需要检查冲突的数据的耗时，该步骤主要是向 TiKV 发送 `BatchGet` 类型的 RPC 请求的获取数据。
+    - `rpc`：向 TiKV 发送 RPC 请求的总耗时，一般包含 `BatchGet` 和 `Get` 两种类型的 RPC 耗时，其中：
+        - `BatchGet` 请求是 `prefetch` 步骤发送的 RPC 请求。
+        - `Get` 请求是 `insert on duplicate` 语句在执行 `duplicate update` 时发送的 RPC 请求。
 - `backoff`：包含不同类型的 backoff 以及等待总耗时。
 
 ### lock_keys 执行信息
