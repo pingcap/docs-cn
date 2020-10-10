@@ -631,9 +631,4 @@ TiDB 服务状态相关配置。
 
 ## experimental
 
-experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
-
-### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
-
-+ 用于控制是否能创建表达式索引。
-+ 默认值：false
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。目前暂无相关配置项。

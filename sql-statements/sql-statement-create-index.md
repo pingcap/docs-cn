@@ -151,18 +151,6 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 表达式索引
 
-> **注意：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
-如果需要使用这一特性，在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
-
-{{< copyable "sql" >}}
-
-```sql
-allow-expression-index = true
-```
-
 TiDB 不仅能将索引建立在表中的一个或多个列上，还可以将索引建立在一个表达式上。当查询涉及表达式时，表达式索引能够加速这些查询。
 
 考虑以下查询：
