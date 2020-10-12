@@ -12,7 +12,7 @@ TiDB 支持三种集合运算：并集 (UNION)，差集 (EXCEPT) 和交集 (INTE
 数学上，两个集合 A 和 B 的交集是含有所有既属于 A 又属于 B 的元素，而没有其他元素的集合。下面是一个 UNION 的例子：
 
 ```sql
-tidb(localhost:4000) > select 1 union select 2;
+select 1 union select 2;
 +---+
 | 1 |
 +---+
