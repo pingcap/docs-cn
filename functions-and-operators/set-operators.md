@@ -1,9 +1,9 @@
 ---
-title: 集合运算 UNION/EXCEPT/INTERSECT
+title: 集合运算
 summary: 了解 TiDB 支持的集合运算。
 ---
 
-# 集合运算 UNION/EXCEPT/INTERSECT
+# 集合运算
 
 TiDB 支持三种集合运算：并集 (UNION)，差集 (EXCEPT) 和交集 (INTERSECT)。最小的集合单位是一个 [`SELECT` 语句](/sql-statements/sql-statement-select.md)。
 
@@ -76,7 +76,7 @@ select * from t1 except select * from t2;
 
 ## 交集（INTERSECT）
 
-数学上，两个集合 A 和 B 的交集是含有所有既属于 A 又属于 B 的元素，而没有其他元素的集合。
+数学上，两个集合 A 和 B 的交集是含有所有既属于 A 又属于 B 的元素，且没有其他元素的集合。
 
 ```sql
 select * from t1 intersect select * from t2;
