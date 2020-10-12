@@ -111,18 +111,6 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## Expression index
 
-> **Warning:**
->
-> Expression index is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
-
-To use this feature, make the following setting in [TiDB Configuration File](/tidb-configuration-file.md#allow-expression-index-new-in-v400):
-
-{{< copyable "sql" >}}
-
-```sql
-allow-expression-index = true
-```
-
 TiDB can build indexes not only on one or more columns in a table, but also on an expression. When queries involve expressions, expression indexes can speed up those queries.
 
 Take the following query as an example:

@@ -558,15 +558,4 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 
 ## experimental
 
-The `experimental` section describes configurations related to the experimental features of TiDB. This section is introduced since v3.1.0.
-
-### `allow-auto-random` <span class="version-mark">New in v3.1.0</span>
-
-- Determines whether to allow using `AUTO_RANDOM`.
-- Default value: `false`
-- By default, TiDB does not support using `AUTO_RANDOM`. When the value is `true`, you cannot set `alter-primary-key` to `true` at the same time.
-
-### `allow-expression-index` <span class="version-mark">New in v4.0.0</span>
-
-- Determines whether to create the expression index.
-- Default value: `false`
+The `experimental` section, introduced in v3.1.0, describes configurations related to the experimental features of TiDB. Currently, this section has no configuration item.
