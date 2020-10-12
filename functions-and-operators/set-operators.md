@@ -5,7 +5,7 @@ summary: 了解 TiDB 支持的集合运算。
 
 # 集合运算 UNION/EXCEPT/INTERSECT
 
-TiDB 支持三种集合运算，并集（UNION），差集（EXCEPT）和交集（INTERSECT）。最小的集合单位是一个 [SELECT 语句](/sql-statements/sql-statement-select.md) 。
+TiDB 支持三种集合运算：并集 (UNION)，差集 (EXCEPT) 和交集 (INTERSECT)。最小的集合单位是一个 [`SELECT` 语句](/sql-statements/sql-statement-select.md)。
 
 ## 并集（UNION）
 
