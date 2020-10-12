@@ -55,4 +55,4 @@ explain analyze select * from t use index(a);
 
 ### Grafana 监控缓存
 
-在 Grafana 监控中，tidb 命名空间下 distsql 子系统中，有 copr-cache 的面板，可以监控下推计算结果缓存的命中次数、未命中次数和缓存丢弃次数。
+在 Grafana 监控中，tidb 命名空间下 distsql 子系统中，有 copr-cache 的面板，可以监控整个集群中下推计算结果缓存的命中次数、未命中次数和缓存丢弃次数。
