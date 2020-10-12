@@ -1,6 +1,6 @@
 ---
 title: 集合运算 UNION/EXCEPT/INTERSECT
-aliases: ['/docs-cn/dev/functions-and-operators/set-operators/','/docs-cn/dev/reference/sql/functions-and-operators/set-operators/']
+summary: 了解 TiDB 支持的集合运算。
 ---
 
 # 集合运算
