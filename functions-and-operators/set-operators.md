@@ -22,7 +22,7 @@ select 1 union select 2;
 2 rows in set (0.00 sec)
 ```
 
-并集支持 UNION [ALL/DISTINCT]，区别在于 UNION DISTINCT 会对并集结果去重复，而 UNION ALL 不会，默认是 UNION DISTINCT。
+TiDB 支持 `UNION ALL` 和 `UNION DISTINCT` 并集，两者区别在于 `UNION DISTINCT` 会对并集结果去重复，而 `UNION ALL` 不会。TiDB 中默认使用 `UNION DISTINCT`。
 
 {{< copyable "sql" >}}
 
