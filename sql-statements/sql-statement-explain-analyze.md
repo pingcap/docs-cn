@@ -97,7 +97,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 ### Point_Get
 
-Pint_get 算子可能包含以下执行信息：
+`Pint_get` 算子可能包含以下执行信息：
 
 - `Get:{num_rpc:1, total_time:697.051µs}`：向 TiKV 发送 `Get` 类型的 RPC 请求的数量（num_rpc）和所有 RPC 请求的总耗时（total_time）。
 - `ResolveLock:{num_rpc:22076, total_time:124.644857ms}`：读数据遇到锁后，进行 resolve lock 的时间。一般在读写冲突的场景下会出现。
@@ -105,13 +105,13 @@ Pint_get 算子可能包含以下执行信息：
 
 ### Batch_Point_Get
 
-Batch_Pint_get 算子的执行信息和 Pint_get 算子类似，不过 Batch_Pint_get 一般向 TiKV 发送 `BatchGet` 类型的 RPC 请求来读取数据。
+`Batch_Pint_get` 算子的执行信息和 `Pint_get` 算子类似，不过 Batch_Pint_get 一般向 TiKV 发送 `BatchGet` 类型的 RPC 请求来读取数据。
 
 - `BatchGet:{num_rpc:2, total_time:83.13µs}`：向 TiKV 发送 `BatchGet` 类型的 RPC 请求的数量（num_rpc）和所有 RPC 请求的总耗时（total_time）。
 
 ### TableReader
 
-TableReader 算子可能包含以下执行信息：
+`TableReader` 算子可能包含以下执行信息：
 
 ```
 cop_task: {num: 6, max: 1.07587ms, min: 844.312µs, avg: 919.601µs, p95: 1.07587ms, max_proc_keys: 16, p95_proc_keys: 16, tot_proc: 1ms, tot_wait: 1ms, rpc_num: 6, rpc_time: 5.313996ms, copr_cache_hit_ratio: 0.00}
@@ -127,7 +127,7 @@ cop_task: {num: 6, max: 1.07587ms, min: 844.312µs, avg: 919.601µs, p95: 1.0758
 
 ### Insert
 
-Insert 算子可能包含以下执行信息：
+`Insert` 算子可能包含以下执行信息：
 
 ```
 prepare:109.616µs, check_insert:{total_time:1.431678ms, mem_insert_time:667.878µs, prefetch:763.8µs, rpc:{BatchGet:{num_rpc:1, total_time:699.166µs},Get:{num_rpc:1, total_time:378.276µs}}}
@@ -142,6 +142,83 @@ prepare:109.616µs, check_insert:{total_time:1.431678ms, mem_insert_time:667.878
         - `BatchGet` 请求是 `prefetch` 步骤发送的 RPC 请求。
         - `Get` 请求是 `insert on duplicate` 语句在执行 `duplicate update` 时发送的 RPC 请求。
 - `backoff`：包含不同类型的 backoff 以及等待总耗时。
+
+### IndexJoin
+
+`IndexJoin` 算子有 1 个 outer worker 和 N 个 inner worker 并行执行，其 join 结果的顺序和 outer table 的顺序一致，具体执行流程如下：
+
+1. Outer worker 读取 N 行 out table 的数据，然后包装成一个 task 发送给 result channel 和 inner worker channel。
+2. Inner worker 从 inner worker channel 里面接收 task，然后根据 task 读取 inner table 相应范围的行数据，并生成一个 inner table row 的 hash map。
+3. `IndexJoin` 的主线程从 result channel 中接收 task，然后等待 inner worker 执行完这个 task。
+4. `IndexJoin` 的主线程用 outer table rows 和 inner table rows 的 hash map 做 join 。
+
+`IndexJoin` 算子包含以下执行信息：
+
+```
+inner:{total:4.297515932s, concurrency:5, task:17, construct:97.96291ms, fetch:4.164310088s, build:35.219574ms}, probe:53.574945ms
+```
+
+- `inner`：inner worker 的执行信息，具体如下：
+    - total：inner worker 的总耗时。
+    - concurrency：inner worker 的数量。
+    - task：inner worker 处理 task 的总数量。
+    - construct：inner worker 读取 task 对应的 inner table rows 之前的准备时间。
+    - fetch：inner worker 读取 inner table rows 的总耗时。
+    - build: inner worker 构造 inner table rows 对应的 hash map 的总耗时。
+- probe：`IndexJoin` 主线程用 outer table rows 和 inner table rows 的 hash map 做 join 的总耗时。
+
+### IndexHashJoin
+
+`IndexHashJoin` 算子和 `IndexJoin` 算子执行流程类似，也有 1 个 outer worker 和 N 个 inner worker 并行执行，但是其 join 结果的顺序是不和 outer table 一致。具体执行流程如下：
+
+1. Outer worker 读取 N 行 out table 的数据，然后包装成一个 task 发送给 inner worker channel。
+2. Inner worker 从 inner worker channel 里面接收 task，然后做以下三件事情，其中步骤 a 和 b 是并行执行。
+    a. 用 outer table rows 生成一个 hash map。
+    b. 根据 task 读取 inner table 相应范围的行数据。
+    c. 用 inner table rows 和 outer table rows 的 hash map 做 join，然后把 join 结果发送给 result channel。
+3. `IndexHashJoin` 的主线程从 result channel 中接收 join 结果。
+
+`IndexHashJoin` 算子包含以下执行信息：
+
+```sql
+inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:4.239324006s, build:24.567801ms, join:93.607362ms} 
+```
+
+- `inner`：inner worker 的执行信息，具体如下：
+    - total：inner worker 的总耗时。
+    - concurrency：inner worker 的数量。
+    - task：inner worker 处理 task 的总数量。
+    - construct：inner worker 读取 task 对应的 inner table rows 之前的准备时间。
+    - fetch：inner worker 读取 inner table rows 的总耗时。
+    - build: inner worker 构造 outer table rows 对应的 hash map 的总耗时。
+    - join: inner worker 用 inner table rows 和 outer table rows 的 hash map 做 join 的总耗时。
+
+### HashJoin
+
+`HashJoin` 算子有一个 inner worker，一个 outer worker 和 N 个 join worker，其具体执行逻辑如下：
+
+1. inner worker 读取 inner table rows 并构造 hash map。
+2. outer worker 读取 outer table rows, 然后包装成 task 发送给 join worker。
+3. 等待第 1 步的 hash map 构造完成。
+4. join worker 用 task 里面的 outer table rows 和 hash map 做 join，然后把 join 结果发送给 result channel。
+5. `HashJoin` 的主线程从 result channel 中接收 join 结果。
+
+`HashJoin` 算子包含以下执行信息：
+
+```
+build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, probe:{concurrency:5, total:857.162518ms, max:171.48271ms, probe:125.341665ms, fetch:731.820853ms}
+```
+
+- `build_hash_table`: 读取 inner table 的数据并构造 hash map 的执行信息：
+    - total：总耗时。
+    - fetch：读取 inner table 数据的总耗时。
+    - build：构造 hash map 的总耗时。
+- probe: join worker 的执行信息：
+    - concurrency：join worker 的数量。
+    - total：所有 join worker 执行的总耗时。
+    - max：单个 join worker 执行的最大耗时。
+    - probe: 用 outer table rows 和 hash map 做 join 的总耗时。
+    - fetch：join worker 等待读取 outer table rows 数据的总耗时。
 
 ### lock_keys 执行信息
 
