@@ -63,7 +63,7 @@ select * from t1 union all select * from t2;
 若 A 和 B 是集合，则 A 与 B 的差集是由所有属于 A 但不属于 B 的元素组成的集合。
 
 ```sql
-tidb(localhost:4000) > select * from t1 except select * from t2;
+select * from t1 except select * from t2;
 +---+
 | a |
 +---+
