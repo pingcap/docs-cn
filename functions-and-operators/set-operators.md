@@ -7,7 +7,7 @@ summary: 了解 TiDB 支持的集合运算。
 
 TiDB 支持三种集合运算：并集 (UNION)，差集 (EXCEPT) 和交集 (INTERSECT)。最小的集合单位是一个 [`SELECT` 语句](/sql-statements/sql-statement-select.md)。
 
-## 并集（UNION）
+## 并集 (UNION)
 
 数学上，两个集合 A 和 B 的并集是含有所有属于 A 或属于 B 的元素。下面是一个 UNION 的例子：
 
@@ -33,7 +33,7 @@ insert into t1 values (1),(2);
 insert into t2 values (1),(3);
 ```
 
-`UNION ALL` 与 `UNION DISTINCT` 的结果分别如下：
+`UNION DISTINCT`与 `UNION ALL` 的结果分别如下：
 
 ```sql
 select * from t1 union distinct select * from t2;
@@ -58,7 +58,7 @@ select * from t1 union all select * from t2;
 4 rows in set (0.00 sec)
 ```
 
-## 差集（EXCEPT）
+## 差集 (EXCEPT)
 
 若 A 和 B 是集合，则 A 与 B 的差集是由所有属于 A 但不属于 B 的元素组成的集合。
 
@@ -72,11 +72,11 @@ select * from t1 except select * from t2;
 1 rows in set (0.00 sec)
 ```
 
-差集（EXCEPT）暂时不支持 EXCEPT ALL。
+差集 (EXCEPT) 暂时不支持 `EXCEPT ALL`。
 
 ## 交集（INTERSECT）
 
-数学上，两个集合 A 和 B 的交集是含有所有既属于 A 又属于 B 的元素，且没有其他元素的集合。
+数学上，两个集合 A 和 B 的交集是含有所有既属于 A 又属于 B 的元素，而且没有其他元素的集合。
 
 ```sql
 select * from t1 intersect select * from t2;
@@ -88,7 +88,7 @@ select * from t1 intersect select * from t2;
 1 rows in set (0.00 sec)
 ```
 
-交集（INTERSECT）暂时不支持 INTERSECT ALL。交集（INTERSECT）的计算优先级大于差集（EXCEPT）和并集（UNION）。
+交集 (INTERSECT) 暂时不支持 `INTERSECT ALL`。交集 (INTERSECT) 的计算优先级大于差集 (EXCEPT) 和并集 (UNION)。
 
 ```sql
 select * from t1 union all select * from t1 intersect select * from t2;

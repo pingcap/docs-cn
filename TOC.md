@@ -381,7 +381,7 @@
       + [窗口函数](/functions-and-operators/window-functions.md)
       + [其它函数](/functions-and-operators/miscellaneous-functions.md)
       + [精度数学](/functions-and-operators/precision-math.md)
-      + [集合运算 UNION/EXCEPT/INTERSECT](/functions-and-operators/set-operators.md)
+      + [集合运算](/functions-and-operators/set-operators.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
