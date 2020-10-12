@@ -104,7 +104,7 @@ tidb(localhost:4000) > select * from t1 union all select * from t1 intersect sel
 
 ## 括号优先
 
-TiDB 支持使用括号修改集合运算的优先，如同[四则运算](https://zh.wikipedia.org/zh-hans/%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97)中先计算括号部分，集合运算也先计算括号内的部分。
+TiDB 支持使用括号修改集合运算的优先级，如同[四则运算](https://zh.wikipedia.org/zh-hans/%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97)中先计算括号部分，集合运算也先计算括号内的部分。
 
 ```sql
 tidb(localhost:4000) > (select * from t1 union all select * from t1) intersect select * from t2;
