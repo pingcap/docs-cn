@@ -130,7 +130,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 ```sql
 mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
-  "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
+    "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
 ```
 
 自 v4.0.3 起 BR 已经支持自适应 GC，无需手动调整 `tikv_gc_life_time`.
