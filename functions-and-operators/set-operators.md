@@ -46,7 +46,7 @@ select * from t1 union distinct select * from t2;
 +---+
 3 rows in set (0.00 sec)
 
-tidb(localhost:4000) > select * from t1 union all select * from t2;
+select * from t1 union all select * from t2;
 +---+
 | a |
 +---+
