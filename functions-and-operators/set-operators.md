@@ -121,7 +121,7 @@ TiDB 支持使用括号修改集合运算的优先级，如同[四则运算](htt
 TiDB 支持单独为整个集合运算进行 [Order by](/media/sqlgram/OrderByOptional.png) 或者 [Limit](/media/sqlgram/OrderByOptional.png)
 
 ```sql
-tidb(localhost:4000) > (select * from t1 union all select * from t1 intersect select * from t2) order by a limit 2;
+(select * from t1 union all select * from t1 intersect select * from t2) order by a limit 2;
 +---+
 | a |
 +---+
