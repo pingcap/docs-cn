@@ -79,7 +79,7 @@ select * from t1 except select * from t2;
 数学上，两个集合 A 和 B 的交集是含有所有既属于 A 又属于 B 的元素，而没有其他元素的集合。
 
 ```sql
-tidb(localhost:4000) > select * from t1 intersect select * from t2;
+select * from t1 intersect select * from t2;
 +---+
 | a |
 +---+
