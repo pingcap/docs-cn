@@ -36,7 +36,7 @@ insert into t2 values (1),(3);
 `UNION ALL` 与 `UNION DISTINCT` 的结果分别如下：
 
 ```sql
-tidb(localhost:4000) > select * from t1 union distinct select * from t2;
+select * from t1 union distinct select * from t2;
 +---+
 | a |
 +---+
