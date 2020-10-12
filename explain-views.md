@@ -1,5 +1,5 @@
 ---
-title: `EXPLAIN` 视图
+title: EXPLAIN 视图
 summary: 了解 TiDB 中视图相关语句的执行计划。
 ---
 
