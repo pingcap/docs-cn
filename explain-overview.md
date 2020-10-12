@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performan
 
 TiDB 优化器会根据当前数据表的最新的统计信息来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中的执行计划。
 
-## 简介
+## `EXPLAIN` 简介
 
 TiDB 中可以使用 `EXPLAIN` 命令来查看执行计划，`EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
