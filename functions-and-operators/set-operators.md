@@ -91,7 +91,7 @@ select * from t1 intersect select * from t2;
 交集（INTERSECT）暂时不支持 INTERSECT ALL。交集（INTERSECT）的计算优先级大于差集（EXCEPT）和并集（UNION）。
 
 ```sql
-tidb(localhost:4000) > select * from t1 union all select * from t1 intersect select * from t2;
+select * from t1 union all select * from t1 intersect select * from t2;
 +---+
 | a |
 +---+
