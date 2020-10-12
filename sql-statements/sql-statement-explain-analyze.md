@@ -93,7 +93,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 ## 算子执行信息介绍
 
-`execution info` 信息还包含算子特有的执行信息，主要包含了该算子发送 RPC 的耗时信息以及其他步骤的耗时。下面根据不同的算子分别介绍。
+`execution info` 信息除了基本的 `time` 和 `loop` 信息外，还包含算子特有的执行信息，主要包含了该算子发送 RPC 的耗时信息以及其他步骤的耗时。
 
 ### Point_Get
 
