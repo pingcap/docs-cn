@@ -16,19 +16,19 @@ The distributed database TiDB natively supports the three-DC-in-two-city archite
 
 ## Architecture
 
-This section takes the example of Beijing and Xi'an to explain the deployment mode of three DCs in two cities for the distributed database of TiDB.
+This section takes the example of Seattle and San Francisco to explain the deployment mode of three DCs in two cities for the distributed database of TiDB.
 
-In this example, two DCs (IDC1 and IDC2) are located in Beijing and another DC (IDC3) is located in Xi'an. The network latency between IDC1 and IDC2 is lower than 3 milliseconds. The network latency between IDC3 and IDC1/IDC2 in Beijing is about 20 milliseconds (ISP dedicated network is used).
+In this example, two DCs (IDC1 and IDC2) are located in Seattle and another DC (IDC3) is located in San Francisco. The network latency between IDC1 and IDC2 is lower than 3 milliseconds. The network latency between IDC3 and IDC1/IDC2 in Seattle is about 20 milliseconds (ISP dedicated network is used).
 
 The architecture of the cluster deployment is as follows:
 
-- The TiDB cluster is deployed to three DCs in two cities: IDC1 in Beijing, IDC2 in Beijing, and IDC3 in Xi'an.
+- The TiDB cluster is deployed to three DCs in two cities: IDC1 in Seattle, IDC2 in Seattle, and IDC3 in San Francisco.
 - The cluster has five replicas, two in IDC1, two in IDC2, and one in IDC3. For the TiKV component, each rack has a label, which means that each rack has a replica.
 - The Raft protocol is adopted to ensure consistency and high availability of data, which is transparent to users.
 
 ![3-DC-in-2-city architecture](/media/three-data-centers-in-two-cities-deployment-01.png)
 
-This architecture is highly available. The distribution of Region leaders is restricted to the two DCs (IDC1 and IDC2) that are in the same city (Beijing). Compared with the three-DC solution in which the distribution of Region leaders is not restricted, this architecture has the following advantages and disadvantages:
+This architecture is highly available. The distribution of Region leaders is restricted to the two DCs (IDC1 and IDC2) that are in the same city (Seattle). Compared with the three-DC solution in which the distribution of Region leaders is not restricted, this architecture has the following advantages and disadvantages:
 
 - **Advantages**
 
@@ -38,17 +38,17 @@ This architecture is highly available. The distribution of Region leaders is res
 
 - **Disadvantages**
 
-    - Because the data consistency is achieved by the Raft algorithm, when two DCs in the same city fail at the same time, only one surviving replica remains in the disaster recovery DC in another city (Xi'an). This cannot meet the requirement of the Raft algorithm that most replicas survive. As a result, the cluster can be temporarily unavailable. Maintenance staff needs to recover the cluster from the one surviving replica and a small amount of hot data that has not been replicated will be lost. But this case is a rare occurrence.
+    - Because the data consistency is achieved by the Raft algorithm, when two DCs in the same city fail at the same time, only one surviving replica remains in the disaster recovery DC in another city (San Francisco). This cannot meet the requirement of the Raft algorithm that most replicas survive. As a result, the cluster can be temporarily unavailable. Maintenance staff needs to recover the cluster from the one surviving replica and a small amount of hot data that has not been replicated will be lost. But this case is a rare occurrence.
     - Because the ISP dedicated network is used, the network infrastructure of this architecture has a high cost.
     - Five replicas are configured in three DCs in two cities, data redundancy increases, which brings a higher storage cost.
 
 ### Deployment details
 
-The configuration of the three DCs in two cities (Beijing and Xi'an) deployment plan is illustrated as follows:
+The configuration of the three DCs in two cities (Seattle and San Francisco) deployment plan is illustrated as follows:
 
 ![3-DC-2-city](/media/three-data-centers-in-two-cities-deployment-02.png)
 
-- From the illustration above, you can see that Beijing has two DCs: IDC1 and IDC2. IDC1 has three sets of racks: RAC1, RAC2, and RAC3. IDC2 has two racks: RAC4 and RAC5. The IDC3 DC in Xi'an has the RAC6 rack.
+- From the illustration above, you can see that Seattle has two DCs: IDC1 and IDC2. IDC1 has three sets of racks: RAC1, RAC2, and RAC3. IDC2 has two racks: RAC4 and RAC5. The IDC3 DC in San Francisco has the RAC6 rack.
 - From the RAC1 rack illustrated above, TiDB and PD services are deployed on the same server. Each of the two TiKV servers are deployed with two TiKV instances (tikv-server). This is similar to RAC2, RAC4, RAC5, and RAC6.
 - The TiDB server, the control machine, and the monitoring server are on RAC3. The TiDB server is deployed for regular maintenance and backup. TiDB Ansible, Prometheus, Grafana, and the restore tools are deployed on the control machine and monitoring machine.
 - Another backup server can be added to deploy Mydumper and Drainer. Drainer saves binlog data to a specified location by outputting files, to achieve incremental backup.
@@ -174,7 +174,7 @@ In the deployment of three DCs in two cities, to optimize performance, you need 
     schedule.tolerant-size-ratio: 20.0
     ```
 
-- Optimize the network configuration of the TiKV node in another city (Xi'an). Modify the following TiKV parameters for IDC3 (alone) in Xi'an and try to prevent the replica in this TiKV node from participating in the Raft election.
+- Optimize the network configuration of the TiKV node in another city (San Francisco). Modify the following TiKV parameters for IDC3 (alone) in San Francisco and try to prevent the replica in this TiKV node from participating in the Raft election.
 
     ```yaml
     raftstore.raft-min-election-timeout-ticks: 1000
@@ -187,13 +187,13 @@ In the deployment of three DCs in two cities, to optimize performance, you need 
     config set max-replicas 5
     ```
 
-- Forbid scheduling the Raft leader to IDC3. Scheduling the Raft leader to in another city (IDC3) causes unnecessary network overhead between IDC1/IDC2 in Beijing and IDC3 in Xi'an. The network bandwidth and latency also affect performance of the TiDB cluster.
+- Forbid scheduling the Raft leader to IDC3. Scheduling the Raft leader to in another city (IDC3) causes unnecessary network overhead between IDC1/IDC2 in Seattle and IDC3 in San Francisco. The network bandwidth and latency also affect performance of the TiDB cluster.
 
     ```yaml
     config set label-property reject-leader dc 3
     ```
 
-- Configure the priority of PD. To avoid the situation where the PD leader is in another city (IDC3), you can increase the priority of local PD (in Beijing) and decrease the priority of PD in another city (Xi'an). The larger the number, the higher the priority.
+- Configure the priority of PD. To avoid the situation where the PD leader is in another city (IDC3), you can increase the priority of local PD (in Seattle) and decrease the priority of PD in another city (San Francisco). The larger the number, the higher the priority.
 
     ```yaml
     member leader_priority PD-10 5
