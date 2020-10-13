@@ -1,7 +1,6 @@
 ---
 title: TiDB Adopters
 summary: Learn about the list of TiDB adopters in various industries.
-i18n_link: "https://pingcap.com/cases-cn/"
 aliases: ['/docs/dev/adopters/']
 ---
 
@@ -37,6 +36,7 @@ This is a list of TiDB adopters in various industries.
 |[VIPKid](https://www.crunchbase.com/organization/vipkid)|EdTech|[English](https://pingcap.com/case-studies/why-we-chose-a-distributed-sql-database-to-complement-mysql); [Chinese](https://pingcap.com/cases-cn/user-case-vipkid/)|
 |[Yuanfudao.com](https://www.crunchbase.com/organization/yuanfudao)|EdTech|[English](https://pingcap.com/blog/2017-08-08-tidbforyuanfudao/); [Chinese](https://pingcap.com/cases-cn/user-case-yuanfudao/)|
 |[Bank of Beijing](https://en.wikipedia.org/wiki/Bank_of_Beijing)|Banking|[English](https://pingcap.com/case-studies/how-we-use-a-distributed-database-to-achieve-horizontal-scaling-without-downtime); Chinese [#1](https://pingcap.com/cases-cn/user-case-beijing-bank/), [#2](https://pingcap.com/cases-cn/user-case-beijing-bank-2/)|
+| [Bank of China](https://en.wikipedia.org/wiki/Bank_of_China) | Banking | [English](https://pingcap.com/case-studies/how-bank-of-china-uses-a-scale-out-database-to-support-zabbix-monitoring-at-scale); [Chinese](https://pingcap.com/cases-cn/user-case-bank-of-china/) |
 |[Industrial and Commercial Bank of China](https://en.wikipedia.org/wiki/Industrial_and_Commercial_Bank_of_China)|Banking||
 |[Yimian Data](https://www.crunchbase.com/organization/yimian-data)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-yimian)|
 |[CAASDATA](https://www.caasdata.com/)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-kasi/)|
