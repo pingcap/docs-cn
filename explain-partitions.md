@@ -1,6 +1,6 @@
 ---
 title: Explain Statements Using Partitions
-summary: Learn about the execution plan information returned by the `EXPLAIN` statement in TiDB.
+summary: Learn about the execution plan information returned by the EXPLAIN statement in TiDB.
 ---
 
 # Explain Statements Using Partitions
