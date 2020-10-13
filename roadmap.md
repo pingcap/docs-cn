@@ -1,6 +1,6 @@
 ---
 title: TiDB Roadmap
-aliases: ['/docs/ROADMAP/','/docs/roadmap/']
+aliases: ['/docs/ROADMAP/','/docs/roadmap/','/docs/stable/roadmap/','/docs/v4.0/roadmap/','/tidb/stable/roadmap','/docs/v3.1/roadmap/','/tidb/v3.1/roadmap','/docs/v3.0/roadmap/','/tidb/v3.0/roadmap','/docs/v2.1/roadmap/','/tidb/v2.1/roadmap']
 ---
 
 <!-- markdownlint-disable MD001 -->
