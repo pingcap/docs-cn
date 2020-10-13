@@ -1,6 +1,7 @@
 ---
 title: ENGINES
 summary: 了解 information_schema 表 `ENGINES`。
+aliases: ['/docs-cn/stable/information-schema/information-schema-engines/','/docs-cn/v4.0/information-schema/information-schema-engines/']
 ---
 
 # ENGINES

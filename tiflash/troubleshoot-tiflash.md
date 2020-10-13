@@ -1,7 +1,7 @@
 ---
 title: TiFlash 常见问题
 summary: 介绍 TiFlash 的常见问题、原因及解决办法。
-aliases: ['/docs-cn/stable/tiflash/troubleshoot-tiflash/','/docs-cn/v4.0/tiflash/troubleshoot-tiflash/']
+aliases: ['/docs-cn/stable/tiflash/troubleshoot-tiflash/','/docs-cn/v4.0/tiflash/troubleshoot-tiflash/','/docs-cn/stable/tiflash/tiflash-faq/','/docs-cn/v4.0/tiflash/tiflash-faq/']
 ---
 
 # TiFlash 常见问题
