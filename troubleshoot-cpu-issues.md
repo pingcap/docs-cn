@@ -1,12 +1,12 @@
 ---
-title: CPU 占用过多导致读写延迟增加
+title: 读写延迟增加
 summary: 介绍读写延时增加、抖动时的排查思路，可能的原因和解决方法。
 aliases: ['/docs-cn/dev/troubleshoot-cpu-issues/']
 ---
 
-# CPU 占用率过高导致读写延迟增加
+# 读写延迟增加
 
-本文档介绍 CPU 占用率过高导致读写延迟增加、抖动时的排查思路，可能的原因和解决方法。
+本文档介绍读写延迟增加、抖动时的排查思路，可能的原因和解决方法。
 
 ## 常见原因
 
@@ -35,7 +35,6 @@ aliases: ['/docs-cn/dev/troubleshoot-cpu-issues/']
 * 绑定执行计划
     * 修改业务 SQL，使用 `use index` 固定使用列上的索引。
     * 3.0 版本下，业务可以不用修改 SQL，使用 `create global binding` 创建 `force index` 的绑定 SQL。
-
     * 4.0 版本支持 SQL Plan Management，可以避免因执行计划不稳定导致的性能下降。
 
 ### PD 异常
@@ -64,9 +63,9 @@ aliases: ['/docs-cn/dev/troubleshoot-cpu-issues/']
 
 * 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，已于 v3.0.6 版本修复，见 [https://github.com/pingcap/pd/pull/1952](https://github.com/pingcap/pd/pull/1952)。
 
-* PD panic，报 bug。
+* PD panic。请[提交 bug](https://github.com/tikv/pd/issues/new?labels=kind/bug&template=bug-report.md)。
 
-* 其他原因，通过 `curl http://127.0.0.1:2379/debug/pprof/goroutine?debug=2` 抓取 goroutine，报 bug。
+* 其他原因，通过 `curl http://127.0.0.1:2379/debug/pprof/goroutine?debug=2` 抓取 goroutine，并[提交 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
 ### TiKV 异常
 
@@ -88,16 +87,16 @@ aliases: ['/docs-cn/dev/troubleshoot-cpu-issues/']
 
 * TiKV 发生网络隔离导致重新选举。
 
-* `block-cache` 配置太大导致 OOM，在监控 Grafana -> **TiKV-details** 选中对应的 instance 之后查看 RocksDB 的 `block cache size` 监控来确认是否是该问题。同时请检查 `[storage.block-cache] capacity = # "1GB"` 参数是否设置合理，默认情况下 TiKV 的 `block-cache` 设置为机器总内存的 `45%`;在容器化部署时需要显式指定该参数，因为 TiKV 获取的是物理机的内存，可能会超出单个 container 的内存限制。
+* `block-cache` 配置太大导致 OOM，在监控 Grafana -> **TiKV-details** 选中对应的 instance 之后查看 RocksDB 的 `block cache size` 监控来确认是否是该问题。同时请检查 `[storage.block-cache] capacity = # "1GB"` 参数是否设置合理，默认情况下 TiKV 的 `block-cache` 设置为机器总内存的 `45%`。在容器化部署时需要显式指定该参数，因为 TiKV 获取的是物理机的内存，可能会超出单个 container 的内存限制。
 
-* Coprocessor 收到大量大查询，返回的数据量太大，gRPC 发送速度跟不上 Coprocessor 向客户端输出数据的速度导致 OOM。可以通过检查监控： Grafana -> **TiKV-details** -> **coprocessor overview** 的 `response size` 是否超过 `network outbound` 流量来确认是否属于这种情况。
+* Coprocessor 收到大量大查询，返回的数据量太大，gRPC 发送速度跟不上 Coprocessor 向客户端输出数据的速度导致 OOM。可以通过检查监控：Grafana -> **TiKV-details** -> **coprocessor overview** 的 `response size` 是否超过 `network outbound` 流量来确认是否属于这种情况。
 
 ### TiKV 单线程瓶颈
 
 TiKV 中存在一些单线程线程，可能会成为瓶颈。
 
-* 单个 TiKV region 过多导致单个 gRPC 线程成为瓶颈（查看 grafana -> TiKV-details -> `Thread CPU/gRPC CPU Per Thread` 监控），v3.x 以上版本可以开启 `hibernate region` 特性来解决，见案例 [case-612](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case612.md)。
-* v3.0 之前版本 raftstore 单线程或者 apply 单线程到达瓶颈（grafana -> TiKV-details -> `Thread CPU/raft store CPU 和 Async apply CPU` 超过 `80%`），可以选择扩容 TiKV（v2.x 版本）实例或者升级到多线程模型的 v3.x 版本。
+* 单个 TiKV Region 过多导致单个 gRPC 线程成为瓶颈（查看 Grafana -> TiKV-details -> `Thread CPU/gRPC CPU Per Thread` 监控），v3.x 以上版本可以开启 Hibernate Region 特性来解决，见案例 [case-612](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case612.md)。
+* v3.0 之前版本 Raftstore 单线程或者 Apply 单线程到达瓶颈（Grafana -> TiKV-details -> `Thread CPU/raft store CPU 和 Async apply CPU` 超过 `80%`），可以选择扩容 TiKV（v2.x 版本）实例或者升级到多线程模型的 v3.x 版本。
 
 ### CPU Load 升高
 
@@ -108,13 +107,13 @@ CPU 资源使用到达瓶颈
 **可能的原因：**
 
 * 热点问题。
-* 整体负载高，排查 TiDB 的 slow query 和 expensive query。对运行的 query 进行优化，缺索引的加索引，可以做 batch 的做 batch 改造。另一个方案是对集群进行扩容。
+* 整体负载高，排查 TiDB 的 slow query 和 expensive query。对运行的 query 进行优化，如果缺索引就加索引，如果可以批量执行就批量执行。另一个方案是对集群进行扩容。
 
 ## 其它原因
 
 ### 集群维护
 
-通常大多数的线上集群有 3 或 5 个 PD 节点，如果维护的主机上有 PD 组件，需要具体考虑节点是 leader 还是 follower，关闭 follower 对集群运行没有任何影响，关闭 leader 需要先切换，并在切换时有 3 s 左右的性能抖动。
+通常大多数的线上集群有 3 或 5 个 PD 节点，如果维护的主机上有 PD 组件，需要具体考虑节点是 leader 还是 follower，关闭 follower 对集群运行没有任何影响，关闭 leader 需要先切换，并在切换时有 3 秒左右的性能抖动。
 
 ### 少数派副本离线
 
@@ -136,6 +135,6 @@ TiDB 集群默认配置为 3 副本，每一个 Region 都会在集群中保存 
 
 TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新写入的数据覆盖旧的数据时，旧的数据不会被替换掉，而是与新写入的数据同时保留，并以时间戳来区分版本。GC 的任务便是清理不再需要的旧数据。
 
-* Resolve Locks 阶段在 TiKV 一侧会产生大量的 scan_lock 请求，可以在 gRPC 相关的 metrics 中观察到。scan_lock 请求会对全部的 Region 调用。
-* Delete Ranges 阶段会往 TiKV 发送少量的 unsafe_destroy_range 请求，也可能没有。可以在 gRPC 相关的 metrics 中和 GC 分类下的 GC tasks 中观察到。
+* Resolve Locks 阶段在 TiKV 一侧会产生大量的 scan_lock 请求，可以在 gRPC 相关的 metrics 中观察到。`scan_lock` 请求会对全部的 Region 调用。
+* Delete Ranges 阶段会往 TiKV 发送少量的 `unsafe_destroy_range` 请求，也可能没有。可以在 gRPC 相关的 metrics 中和 GC 分类下的 GC tasks 中观察到。
 * Do GC 阶段，默认每台 TiKV 会自动扫描本机上的 leader Region 并对每一个 leader 进行 GC，这一活动可以在 GC 分类下的 GC tasks 中观察到。
