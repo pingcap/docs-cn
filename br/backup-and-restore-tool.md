@@ -195,7 +195,7 @@ Each of the above three sub-commands might still include the following three sub
 
 To back up the cluster data, use the `br backup` command. You can add the `full` or `table` sub-command to specify the scope of your backup operation: the whole cluster or a single table.
 
-If the backup time might exceed the [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) configuration which is `10m0s` by default (`10m0s` means 10 minutes), increase the value of this configuration.
+If the BR version is earlier than v4.0.3, and the backup duration might exceed the [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) configuration which is `10m0s` by default (`10m0s` means 10 minutes), increase the value of this configuration item.
 
 For example, set `tikv_gc_life_time` to `720h`:
 
@@ -205,6 +205,8 @@ For example, set `tikv_gc_life_time` to `720h`:
 mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
     "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
 ```
+
+Since v4.0.3, BR automatically adapts to GC and you do not need to manually adjust the `tikv_gc_life_time` value.
 
 ### Back up all the cluster data
 
@@ -265,7 +267,7 @@ br backup db \
     --log-file backuptable.log
 ```
 
-In the above command, `--db` specifies the name of the database to be backed up. For descriptions of other options, see [Back up all the cluster data](/br/backup-and-restore-tool.md#back-up-all-the-cluster-data).
+In the above command, `--db` specifies the name of the database to be backed up. For descriptions of other options, see [Back up all the cluster data](/br/backup-and-restore-tool.md#back-up-cluster-data).
 
 A progress bar is displayed in the terminal during the backup. When the progress bar advances to 100%, the backup is complete. Then the BR also checks the backup data to ensure data safety.
 
@@ -294,7 +296,7 @@ The `table` sub-command has two options:
 * `--db`: specifies the database name
 * `--table`: specifies the table name.
 
-For descriptions of other options, see [Back up all cluster data](#back-up-all-the-cluster-data).
+For descriptions of other options, see [Back up all cluster data](#back-up-cluster-data).
 
 A progress bar is displayed in the terminal during the backup operation. When the progress bar advances to 100%, the backup is complete. Then the BR also checks the backup data to ensure data safety.
 
