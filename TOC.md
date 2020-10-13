@@ -119,6 +119,7 @@
         + [物理优化概览](/sql-physical-optimization.md)
         + [索引的选择](/choose-index.md)
         + [统计信息简介](/statistics.md)
+        + [扩展统计信息简介](/extended-statistics.md)
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
       + [执行计划缓存](/sql-prepare-plan-cache.md)
@@ -240,6 +241,7 @@
     + SQL 语句
       - [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
       - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+      - [`ADD TIDB_STATS`](/sql-statements/sql-statement-add-statistics.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
       - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
@@ -279,6 +281,7 @@
       - [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
       - [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md)
       - [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)
+      - [`DROP TIDB_STATS`](/sql-statements/sql-statement-drop-statistics.md)
       - [`DROP USER`](/sql-statements/sql-statement-drop-user.md)
       - [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)
       - [`EXECUTE`](/sql-statements/sql-statement-execute.md)

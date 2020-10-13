@@ -112,6 +112,16 @@ ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 
 这两种语句的具体操作详情可参考：[admin show slow 语句](/identify-slow-queries.md#admin-show-slow-命令)。
 
+## `admin reload statistics` 语句
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN RELOAD TIDB_STATS;
+```
+
+该语句用于丢弃当前 TiDB 实例的扩展统计信息缓存，并重新全量加载 `mysql.stats_extended` 内容到缓存，详情可参考：[扩展统计信息简介](/extended-statistics.md)。
+
 ## 语句概览
 
 **AdminStmt**：
