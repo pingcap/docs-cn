@@ -1,6 +1,10 @@
 ---
 title: 使用 TiUP 扩容缩容 TiDB 集群
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/scale-tidb-using-tiup/','/docs-cn/v4.0/scale-tidb-using-tiup/','/docs-cn/stable/how-to/scale/with-tiup/']
+=======
+aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-tiup/','/docs-cn/dev/reference/tiflash/scale/']
+>>>>>>> 0b101bfc... Add 5 aliases to fix dead links (#4667)
 ---
 
 # 使用 TiUP 扩容缩容 TiDB 集群

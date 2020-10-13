@@ -1,6 +1,10 @@
 ---
 title: RocksDB 简介
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/storage-engine/rocksdb-overview/','/docs-cn/v4.0/storage-engine/rocksdb-overview/']
+=======
+aliases: ['/docs-cn/dev/storage-engine/rocksdb-overview/','/docs-cn/dev/rocksdb/rocksdb-overview/']
+>>>>>>> 0b101bfc... Add 5 aliases to fix dead links (#4667)
 ---
 
 # RocksDB 简介
