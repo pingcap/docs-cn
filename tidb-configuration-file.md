@@ -289,7 +289,7 @@ Configuration items related to performance.
 
 - The maximum memory limit for the Prepared Least Recently Used (LRU) caching. If this value exceeds `performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)`, the elements in the LRU are removed.
 - Default value: `0`
-- This configuration only takes effect when `prepared-plan-cache.enabled` is `true`. When the size of the LRU is greater than `prepared-plan-cache.capacity`, the elements in the LRU are also removed.
+- This configuration takes effect when `prepared-plan-cache.enabled` is `true` (default). When the size of the LRU is greater than `prepared-plan-cache.capacity`, the elements in the LRU are also removed.
 
 ### `stmt-count-limit`
 
@@ -372,14 +372,10 @@ Configuration items related to performance.
 
 The Plan Cache configuration of the `PREPARE` statement.
 
-> **Warning:**
->
-> This is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
-
 ### `enabled`
 
 - Determines whether to enable Plan Cache of the `PREPARE` statement.
-- Default value: `false`
+- Default value: `true`
 
 ### `capacity`
 
