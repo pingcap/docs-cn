@@ -1,6 +1,6 @@
 ---
 title: ADMIN
-aliases: ['/docs-cn/stable/sql-statements/sql-statement-admin/','/docs-cn/v4.0/sql-statements/sql-statement-admin/','/docs-cn/stable/reference/sql/statements/admin/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-admin/','/docs-cn/v4.0/sql-statements/sql-statement-admin/','/docs-cn/stable/reference/sql/statements/admin/','/docs/v4.0/reference/sql/statements/admin/']
 ---
 
 # ADMIN

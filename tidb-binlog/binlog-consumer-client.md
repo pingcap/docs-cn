@@ -1,6 +1,6 @@
 ---
 title: Binlog Consumer Client 用户文档
-aliases: ['/zh/tidb/stable/binlog-slave-client','/docs-cn/stable/tidb-binlog/binlog-slave-client/','/docs-cn/v4.0/tidb-binlog/binlog-slave-client/','/docs-cn/stable/reference/tidb-binlog/binlog-slave-client/']
+aliases: ['/zh/tidb/stable/binlog-slave-client','/docs-cn/stable/tidb-binlog/binlog-slave-client/','/docs-cn/v4.0/tidb-binlog/binlog-slave-client/','/docs-cn/stable/reference/tidb-binlog/binlog-slave-client/','/docs-cn/v4.0/reference/tidb-binlog/binlog-slave-client/']
 ---
 
 # Binlog Consumer Client 用户文档

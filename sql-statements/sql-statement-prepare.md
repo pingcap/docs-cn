@@ -1,7 +1,7 @@
 ---
 title: PREPARE
 summary: TiDB 数据库中 PREPARE 的使用概况。
-aliases: ['/docs-cn/stable/sql-statements/sql-statement-prepare/','/docs-cn/v4.0/sql-statements/sql-statement-prepare/','/docs-cn/stable/reference/sql/statements/prepare/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-prepare/','/docs-cn/v4.0/sql-statements/sql-statement-prepare/','/docs-cn/stable/reference/sql/statements/prepare/','/zh/stable/reference/sql/statements/prepare/']
 ---
 
 # PREPARE
