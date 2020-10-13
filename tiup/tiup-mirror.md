@@ -1,10 +1,6 @@
 ---
 title: 搭建私有镜像
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/tiup/tiup-mirror/','/docs-cn/v4.0/tiup/tiup-mirror/','/docs-cn/stable/tiup/tiup-mirrors/','/docs-cn/stable/reference/tools/tiup/mirror/']
-=======
-aliases: ['/docs-cn/dev/tiup/tiup-mirror/','/docs-cn/dev/tiup/tiup-mirrors/','/docs-cn/dev/reference/tools/tiup/mirror/','/docs-cn/dev/reference/tools/tiup/mirrors/']
->>>>>>> 0b101bfc... Add 5 aliases to fix dead links (#4667)
+aliases: ['/docs-cn/stable/tiup/tiup-mirror/','/docs-cn/v4.0/tiup/tiup-mirror/','/docs-cn/stable/tiup/tiup-mirrors/','/docs-cn/stable/reference/tools/tiup/mirror/','/docs-cn/stable/reference/tools/tiup/mirrors/','/docs-cn/v4.0/reference/tools/tiup/mirrors/']
 ---
 
 # 搭建私有镜像

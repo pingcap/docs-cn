@@ -1,11 +1,7 @@
 ---
 title: TiFlash 常见问题
 summary: 介绍 TiFlash 的常见问题、原因及解决办法。
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/tiflash/troubleshoot-tiflash/','/docs-cn/v4.0/tiflash/troubleshoot-tiflash/']
-=======
-aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tiflash-faq/']
->>>>>>> 0b101bfc... Add 5 aliases to fix dead links (#4667)
+aliases: ['/docs-cn/stable/tiflash/troubleshoot-tiflash/','/docs-cn/v4.0/tiflash/troubleshoot-tiflash/','/docs-cn/stable/tiflash/tiflash-faq/','/docs-cn/v4.0/tiflash/tiflash-faq/']
 ---
 
 # TiFlash 常见问题
