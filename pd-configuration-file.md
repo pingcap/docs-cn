@@ -85,7 +85,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `quota-backend-bytes`
 
-+ 元信息数据库存储空间的大小，默认 8GiB
++ 元信息数据库存储空间的大小，默认 8GiB。
 + 默认：8589934592
 
 ### `auto-compaction-mod`
