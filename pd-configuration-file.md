@@ -90,8 +90,8 @@ This document only describes parameters that are not included in command-line pa
 
 ### `quota-backend-bytes`
 
-+ The storage size of the meta-information database, which is 2GB by default
-+ Default value: `2147483648`
++ The storage size of the meta-information database, which is 8GiB by default
++ Default value: `8589934592`
 
 ### `auto-compaction-mod`
 
