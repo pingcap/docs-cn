@@ -135,7 +135,7 @@ TiDB 中的 `ALTER TABLE` 语法主要存在以下限制：
 
 ## 另请参阅
 
-* [MySQL Compatibility](/mysql-compatibility.md#ddl-的限制)
+* [与 MySQL 兼容性对比](/mysql-compatibility.md#ddl-的限制)
 * [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
 * [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
