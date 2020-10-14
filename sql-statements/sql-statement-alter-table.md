@@ -27,26 +27,22 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-table/','/docs-cn/dev
 
 ## 示例
 
+创建一张表，并插入初始数据：
+
 {{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
-```
-
-```
-Query OK, 0 rows affected (0.11 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
 INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
 ```
 
-```
+```sql
+Query OK, 0 rows affected (0.11 sec)
 Query OK, 5 rows affected (0.03 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
+
+执行以下查询需要扫描全表，因为 `c1` 列未被索引：
 
 {{< copyable "sql" >}}
 
@@ -54,7 +50,7 @@ Records: 5  Duplicates: 0  Warnings: 0
 EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ```
 
-```
+```sql
 +-------------------------+----------+-----------+---------------+--------------------------------+
 | id                      | estRows  | task      | access object | operator info                  |
 +-------------------------+----------+-----------+---------------+--------------------------------+
@@ -65,23 +61,16 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 3 rows in set (0.00 sec)
 ```
 
+用户可使用 [`ALTER TABLE .. ADD INDEX`](/sql-statements/sql-statement-add-index.md) 语句在 `t1` 表上添加索引。添加后，`EXPLAIN` 的分析结果显示 `SELECT * FROM t1 WHERE c1 = 3;` 查询已使用效率更高的索引范围扫描：
+
 {{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE t1 ADD INDEX (c1);
-```
-
-```
-Query OK, 0 rows affected (0.30 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
 EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ```
 
-```
+```sql
 +------------------------+---------+-----------+------------------------+---------------------------------------------+
 | id                     | estRows | task      | access object          | operator info                               |
 +------------------------+---------+-----------+------------------------+---------------------------------------------+
@@ -91,12 +80,62 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
+TiDB 允许用户为 DDL 操作指定使用某一种 `ALTER` 算法。这仅为一种指定，并不改变实际的用于更改表的算法。如果在集群高峰时段，用户仅允许即时的 DDL 更改，可进行如下指定：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 DROP INDEX c1, ALGORITHM=INSTANT;
+```
+
+```sql
+Query OK, 0 rows affected (0.24 sec)
+```
+
+如果某一 DDL 操作要求使用 `INPLACE` 算法，而用户指定 `ALGORITHM=INSTANT`，会导致报错：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD INDEX (c1), ALGORITHM=INSTANT;
+```
+
+```sql
+ERROR 1846 (0A000): ALGORITHM=INSTANT is not supported. Reason: Cannot alter table by INSTANT. Try ALGORITHM=INPLACE.
+```
+
+但如果为 `INPLACE` 操作指定 `ALGORITHM=COPY`，会产生警告而非错误，这是因为 TiDB 将该指定解读为*该算法或更好的算法*。这一行为可用于 MySQL 兼容性，因为 TiDB 使用的算法可能不同于 MySQL。
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD INDEX (c1), ALGORITHM=COPY;
+SHOW WARNINGS;
+```
+
+```sql
+Query OK, 0 rows affected, 1 warning (0.25 sec)
++-------+------+---------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                     |
++-------+------+---------------------------------------------------------------------------------------------+
+| Error | 1846 | ALGORITHM=COPY is not supported. Reason: Cannot alter table by COPY. Try ALGORITHM=INPLACE. |
++-------+------+---------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## MySQL 兼容性
 
-* 支持除空间类型外的所有数据类型。其它不支持的情况可参考：[DDL 语句与 MySQL 的兼容性情况](/mysql-compatibility.md#ddl-的限制)。
+TiDB 中的 `ALTER TABLE` 语法主要存在以下限制：
+
+* 单条 `ALTER TABLE` 语句不能完成多项操作。
+* 当前不支持有损更改，例如从 `BIGINT` 类型更改为 `INT` 类型。
+* 不支持空间数据类型。
+
+其它限制可参考：[TiDB 中 DDL 语句与 MySQL 的兼容性情况](/mysql-compatibility.md#ddl-的限制)。
 
 ## 另请参阅
 
+* [MySQL Compatibility](/mysql-compatibility.md#ddl-的限制)
 * [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
 * [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)

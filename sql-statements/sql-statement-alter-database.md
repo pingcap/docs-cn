@@ -20,17 +20,19 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-database/','/docs-cn/
 
 ## 示例
 
+更改数据库 `test`，使用 `utf8mb4` 字符集：
+
 {{< copyable "sql" >}}
 
 ```sql
-ALTER {DATABASE | SCHEMA} [db_name]
-    alter_specification ...
-alter_specification:
-    [DEFAULT] CHARACTER SET [=] charset_name
-  | [DEFAULT] COLLATE [=] collation_name
+ALTER DATABASE test DEFAULT CHARACTER SET = utf8mb4;
 ```
 
-`alter_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/character-set-and-collation.md)。
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/character-set-and-collation.md)。
 
 ## MySQL 兼容性
 
