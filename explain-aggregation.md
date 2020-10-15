@@ -10,7 +10,7 @@ SQL 优化器会选择以下任一算子实现数据聚合。
 - Hash Aggregate
 - Stream Aggregate
 
-为了提高查询效率，在协处理器和 TiDB 层均执行聚合。示例如下：
+为了提高查询效率，在协处理器和 TiDB 层均可执行数据聚合。示例如下：
 
 {{< copyable "sql" >}}
 
@@ -36,7 +36,7 @@ SELECT SLEEP(1);
 ANALYZE TABLE t1;
 ```
 
-由[`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 的输出结果可知，此表分为多个 Regions：
+由[`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 的输出结果可知，表可以切分为多个 Regions：
 
 {{< copyable "sql" >}}
 
@@ -56,7 +56,7 @@ SHOW TABLE t1 REGIONS;
 4 rows in set (0.00 sec)
 ```
 
-`EXPLAIN` 语句与以下聚合语句一起使用，可以看到在 TiKV 内的每个 Region 上先执行 `└─StreamAgg_8`。然后，每个 TiKV Region 会发送一行返回 TiDB，该行将聚合来自 `StreamAgg_16` 中每个 Region 的数据：
+`EXPLAIN` 语句与以下的聚合语句一起使用，可以看到在 TiKV 内的每个 Region 上先执行 `└─StreamAgg_8`；然后，每个 TiKV Region 会发送一行返回 TiDB，该行将聚合来自 `StreamAgg_16` 中每个 Region 的数据：
 
 {{< copyable "sql" >}}
 
@@ -76,7 +76,7 @@ EXPLAIN SELECT COUNT(*) FROM t1;
 4 rows in set (0.00 sec)
 ```
 
-执行 `EXPLAIN ANALYZE` 语句后也容易得知，因为正在使用 `TableFullScan` 并且没有二级索引，`actRows` 与 `SHOW TABLE REGIONS` 中的 Region 数匹配：
+同样，执行 `EXPLAIN ANALYZE` 语句后可知，因为正在使用 `TableFullScan` 并且没有二级索引，`actRows` 与 `SHOW TABLE REGIONS` 中的 Region 数匹配：
 
 ```sql
 EXPLAIN ANALYZE SELECT COUNT(*) FROM t1;
@@ -96,7 +96,7 @@ EXPLAIN ANALYZE SELECT COUNT(*) FROM t1;
 
 ## Hash Aggregation
 
-Hash Aggregation 算法在执行聚合时使用 Hash 表存储中间结果。它采用多线程并发优化，执行速度快，但与 Stream Aggregation 算法相比会消耗较多内存。
+Hash Aggregation 算法在执行聚合时使用 Hash 表存储中间结果。此算法采用多线程并发优化，执行速度快，但与 Stream Aggregation 算法相比会消耗较多内存。
 
 下面是一个使用 Hash Aggregation 的例子：
 
@@ -118,11 +118,11 @@ EXPLAIN SELECT /*+ HASH_AGG() */ count(*) FROM t1;
 4 rows in set (0.00 sec)
 ```
 
-`operator info` 列显示用于聚合数据的 Hash 函数为 `funcs:count(1)->Column#6`。
+`operator info` 列显示了用于聚合数据的 Hash 函数为 `funcs:count(1)->Column#6`。
 
 ## Stream Aggregation
 
-Stream Aggregation 算法通常会比 Hash Aggregation 算法占用更少的内存。但是该算法要求按顺序发送数据，以便对到达值实现流式聚合。
+Stream Aggregation 算法通常会比 Hash Aggregation 算法占用更少的内存。但是此算法要求按顺序发送数据，以便对依次到达的值实现流式数据聚合。
 
 下面是一个使用 Stream Aggregation 的例子：
 
@@ -150,7 +150,7 @@ Records: 5  Duplicates: 0  Warnings: 0
 5 rows in set (0.00 sec)
 ```
 
-在上述示例中, 可以通过在 `col1` 上添加一个索引来消除 `└─Sort_13` 算子。 一旦添加了索引，就可以按顺序读取数据，并且可以消除 `└─Sort_13` 算子。
+在上述示例中, 可以通过在 `col1` 上添加索引来消除 `└─Sort_13` 算子。 一旦添加了索引，就可以按顺序读取数据，并且可以消除 `└─Sort_13` 算子。
 
 {{< copyable "sql" >}}
 
