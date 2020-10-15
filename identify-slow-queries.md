@@ -16,6 +16,7 @@ TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-
 # Txn_start_ts: 410450924122144769
 # User@Host: root[root] @ localhost [127.0.0.1]
 # Conn_ID: 3086
+# Exec_retry_time: 5.1 Exec_retry_count: 3
 # Query_time: 1.527627037
 # Parse_time: 0.000054933
 # Compile_time: 0.000129729
@@ -66,6 +67,8 @@ Slow Query 基础信息：
 * `Rewrite_time`：表示这个语句在查询改写阶段花费的时间。
 * `Preproc_subqueries`：表示这个语句被提前执行的子查询格式，如 `where id in (select if from t)` 这个子查询就可能被提前执行。
 * `Preproc_subqueries_time`：表示这个语句被提前执行的子查询耗时。
+* `Exec_retry_count`：表示这个语句执行的重试次数。一般出现在悲观事务中，语句上锁失败时会重试执行。
+* `Exec_retry_time`：表示这个语句重试执行的时间。Query_time - Exec_retry_time 的耗时才是该语句最后一次执行成果的执行耗时。
 
 和事务执行相关的字段：
 
