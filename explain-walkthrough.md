@@ -1,9 +1,9 @@
 ---
-title: 使用 EXPLAIN 分析执行计划
+title: 使用 EXPLAIN 解读执行计划
 summary: 通过示例了解如何使用 EXPLAIN 分析执行计划。
 ---
 
-# 使用 `EXPLAIN` 分析执行计划
+# 使用 `EXPLAIN` 解读执行计划
 
 SQL 是一种声明性语言，因此用户无法根据 SQL 语句直接判断一条查询的执行是否有效率。用户首先要使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 语句查看当前的执行计划。
 
