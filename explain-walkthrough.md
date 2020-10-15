@@ -205,7 +205,7 @@ EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 
 4 rows in set (0.00 sec)
 ```
 
-从以上结果可看出，查询时间已 1.03 秒减少到 0.0 秒。
+从以上结果可看出，查询时间已从 1.03 秒减少到 0.0 秒。
 
 > **注意：**
 >
