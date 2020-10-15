@@ -49,7 +49,6 @@ aliases: ['/docs-cn/dev/tiflash/maintain-tiflash/','/docs-cn/dev/reference/tifla
 | [DEBUG] [`<unknown>`] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handling DAG request"] [thread_id=30] | 该日志代表 TiFlash 开始处理一个 Coprocessor 请求 |
 | [DEBUG] [`<unknown>`] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handle DAG request done"] [thread_id=30] | 该日志代表 TiFlash 完成 Coprocessor 请求的处理 |
 
-
 你可以找到一个 Coprocessor 请求的开始或结束，然后通过日志前面打印的线程号找到该 Coprocessor 请求的其他相关日志。
 
 ## TiFlash 系统表
