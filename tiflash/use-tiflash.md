@@ -219,12 +219,18 @@ You can configure this parameter in either of the following ways:
 >
 > Before v4.0.2, TiDB does not support the new framework for collations, so in those previous versions, if you enable the [new framework for collations](/character-set-and-collation.md#new-framework-for-collations), none of the expressions can be pushed down. This restriction is removed in v4.0.2 and later versions.
 
-TiFlash mainly supports predicate and aggregate push-down calculations. Push-down calculations can help TiDB perform distributed acceleration. Currently, table joins and `DISTINCT COUNT` are not the supported calculation types, which will be optimized in later versions.
+TiFlash supports predicate, aggregate push-down calculations, and table joins. Push-down calculations can help TiDB perform distributed acceleration. Currently, `Full Outer Join` and `DISTINCT COUNT` are not the supported calculation types, which will be optimized in later versions.
+
+You can enable the push-down of `join` using the following session variable (`Full Outer Join` is currently not supported):
+
+```
+set @@session.tidb_opt_broadcast_join=1
+```
 
 Currently, TiFlash supports pushing down a limited number of expressions, including:
 
 ```
-+, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, mod, bitand, or, and, like, not, 
++, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, mod, bitand, or, and, like, not,
 case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor, cast(int as decimal), date_add(datetime, int), date_add(datetime, string)
 ```
 
