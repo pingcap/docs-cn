@@ -67,7 +67,7 @@ mysql> SELECT @v1, @v2, @v3;
 如果获取一个没有设置过的变量，会返回一个 NULL：
 
 ```sql
-mysql> select @not_exist;
+mysql> SELECT @not_exist;
 +------------+
 | @not_exist |
 +------------+
@@ -79,7 +79,7 @@ mysql> select @not_exist;
 用户自定义变量不能直接在 SQL 语句中被当成 identifier，例：
 
 ```sql
-mysql> select * from t;
+mysql> SELECT * FROM t;
 +------+
 | a    |
 +------+
