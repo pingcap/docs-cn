@@ -88,6 +88,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 | TableReader_5         | 10000.00 | 3       | root      |               | time:454.744µs, loops:2, rpc num: 1, rpc time:328.334µs, proc keys:0   | data:TableFullScan_4           | 199 Bytes | N/A  |
 | └─TableFullScan_4     | 10000.00 | 3       | cop[tikv] | table:t1      | time:148.227µs, loops:4                                                | keep order:false, stats:pseudo | N/A       | N/A  |
 +-----------------------+----------+---------+-----------+---------------+------------------------------------------------------------------------+--------------------------------+-----------+------+
+2 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
