@@ -10,7 +10,7 @@ SQL 优化器会选择以下任一算子实现数据聚合。
 - Hash Aggregate
 - Stream Aggregate
 
-为了提高查询效率，在协处理器和 TiDB 层均可执行数据聚合。示例如下：
+为了提高查询效率，在 Coprocessor 和 TiDB 层均可执行数据聚合。示例如下：
 
 {{< copyable "sql" >}}
 
