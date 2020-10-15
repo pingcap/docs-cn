@@ -221,7 +221,7 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 TiFlash 支持谓词、聚合下推计算以及表连接，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型是 `Full Outer Join` 和 `DISTINCT COUNT`，会在后续版本逐步优化。
 
-目前下推连接 (`Join`) 的功能需要通过以下会话变量开启（暂不支持 `Full Outer Join`）。
+目前下推连接 (`Join`) 的功能需要通过以下会话变量开启（暂不支持 `Full Outer Join`）：
 
 ```
 set @@session.tidb_opt_broadcast_join=1
