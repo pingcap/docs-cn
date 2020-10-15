@@ -32,7 +32,7 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 
 1. Coprocessor (TiKV) 读取整张 `trips` 表的数据，作为一次 `TableFullScan` 操作，再将读取到的行数据传递给 `Selection_19` 算子。`Selection_19` 算子仍在 TiKV 内。
 
-2. `Selection_19` 算子根据谓词 `WHERE start_date BETWEEN ..` 进行数据过滤。预计大约有 250 行数据满足该过滤条件（该数字是基于统计信息以及算子的执行逻辑估算而来）。`└─TableFullScan_18` 算子显示 `stats:pseudo`。执行 `ANALYZE TABLE trips` 后，预计的数字应该会更加准确。
+2. `Selection_19` 算子根据谓词 `WHERE start_date BETWEEN ..` 进行数据过滤。预计大约有 250 行数据满足该过滤条件（基于统计信息以及算子的执行逻辑估算而来）。`└─TableFullScan_18` 算子显示 `stats:pseudo`。执行 `ANALYZE TABLE trips` 后，预计的数字会更加准确。
 
 3. `COUNT` 函数随后应用于满足过滤条件的行，这一过程也是在 TiKV (`cop[tikv]`) 中的 `StreamAgg_9` 算子内完成的。TiKV coprocessor 能理解一些 MySQL 内置函数，`COUNT` 是其中之一。TiKV coprocessor 还理解 `COUNT` 函数可安全应用于 Stream Aggregation 运算，尽管得到的结果并不有序。
 
