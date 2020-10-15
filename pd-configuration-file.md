@@ -85,8 +85,8 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `quota-backend-bytes`
 
-+ 元信息数据库存储空间的大小，默认 2GB。
-+ 默认：2147483648
++ 元信息数据库存储空间的大小，默认 8GiB。
++ 默认：8589934592
 
 ### `auto-compaction-mod`
 
@@ -298,7 +298,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `max-replicas`
 
-+ 副本数量。
++ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。
 + 默认：3
 
 ### `location-labels`
