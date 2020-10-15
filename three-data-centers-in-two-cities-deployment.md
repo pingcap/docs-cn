@@ -129,6 +129,8 @@ alertmanager_servers:
 
 ![label 逻辑定义图](/media/three-data-centers-in-two-cities-deployment-03.png)
 
+<img src="./media/three-data-centers-in-two-cities-deployment-03.png" width="90%" alt="label 逻辑定义图" />
+
 PD 设置中添加 TiKV label 的等级配置。
 
 ```
