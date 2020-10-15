@@ -1,7 +1,11 @@
 ---
 title: CLUSTER_CONFIG
 summary: 了解 information_schema 表 `CLUSTER_CONFIG`。
+<<<<<<< HEAD
 aliases: ['/docs-cn/stable/system-tables/system-table-cluster-config/','/docs-cn/v4.0/system-tables/system-table-cluster-config/','/docs-cn/stable/reference/system-databases/cluster-config/','/zh/tidb/stable/system-table-cluster-config/']
+=======
+aliases: ['/docs-cn/dev/system-tables/system-table-cluster-config/','/docs-cn/dev/reference/system-databases/cluster-config/','/zh/tidb/dev/system-table-cluster-config/','/docs-cn/dev/information-schema/information-schema-cluster-config/']
+>>>>>>> 94588838... Add 2 aliases to fix dead links (#4686)
 ---
 
 # CLUSTER_CONFIG
