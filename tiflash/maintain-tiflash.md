@@ -31,11 +31,23 @@ aliases: ['/docs-cn/stable/tiflash/maintain-tiflash/','/docs-cn/v4.0/tiflash/mai
 
 ## TiFlash 重要日志介绍
 
+为了更好地兼容 TiDB 的日志格式，TiFlash 在 v4.0.5 中修改了原有的日志格式，因此会有两个不同版本的日志。
+
+如果你的 TiDB 集群版本 < 4.0.5：
+
 | 日志信息          | 日志含义                |
 |---------------|---------------------|
 | [ 23 ] `<Information>` KVStore: Start to persist [region 47, applied: term 6 index 10] | 在 TiFlash 中看到类似日志代表数据开始同步（该日志开头方括号内的数字代表线程号，下同） |
 | [ 30 ] `<Debug>` CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute() | Handling DAG request，该日志代表 TiFlash 开始处理一个 Coprocessor 请求 |
 | [ 30 ] `<Debug>` CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute() | Handle DAG request done，该日志代表 TiFlash 完成 Coprocessor 请求的处理 |
+
+如果你的 TiDB 集群版本 >= 4.0.5：
+
+| 日志信息 | 日志含义 |
+|---------------|-------------------|
+| [INFO] [`<unknown>`] ["KVStore: Start to persist [region 47, applied: term 6 index 10]"] [thread_id=23] | 在 TiFlash 中看到类似日志代表数据开始同步 |
+| [DEBUG] [`<unknown>`] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handling DAG request"] [thread_id=30] | 该日志代表 TiFlash 开始处理一个 Coprocessor 请求 |
+| [DEBUG] [`<unknown>`] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handle DAG request done"] [thread_id=30] | 该日志代表 TiFlash 完成 Coprocessor 请求的处理 |
 
 你可以找到一个 Coprocessor 请求的开始或结束，然后通过日志前面打印的线程号找到该 Coprocessor 请求的其他相关日志。
 
