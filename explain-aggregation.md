@@ -36,7 +36,7 @@ SELECT SLEEP(1);
 ANALYZE TABLE t1;
 ```
 
-由[`SHOW TABLE REGIONS`]（/sql-statements/sql-statement-show-table-regions.md）的输出结果可知，此表分为多个 Regions：
+由[`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 的输出结果可知，此表分为多个 Regions：
 
 {{< copyable "sql" >}}
 
