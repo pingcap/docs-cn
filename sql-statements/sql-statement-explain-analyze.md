@@ -97,7 +97,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 ### Point_Get
 
-`Pint_get` 算子可能包含以下执行信息：
+`Point_get` 算子可能包含以下执行信息：
 
 - `Get:{num_rpc:1, total_time:697.051µs}`：向 TiKV 发送 `Get` 类型的 RPC 请求的数量（num_rpc）和所有 RPC 请求的总耗时（total_time）。
 - `ResolveLock:{num_rpc:22076, total_time:124.644857ms}`：读数据遇到锁后，进行 resolve lock 的时间。一般在读写冲突的场景下会出现。
