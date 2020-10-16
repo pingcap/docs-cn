@@ -113,8 +113,8 @@
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + 理解 TiDB 执行计划
       + [TiDB 执行计划概览](/explain-overview.md)
-    + SQL 优化
-      + [SQL 优化流程简介](/sql-optimization-concepts.md)
+    + SQL 优化流程
+      + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
         + [逻辑优化概览](/sql-logical-optimization.md)
         + [子查询相关的优化](/subquery-optimization.md)
