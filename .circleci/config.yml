@@ -57,7 +57,7 @@ jobs:
       - checkout
 
       - run:
-          name: "Special Check for Golang User - YOUR TAB SUCK"
+          name: "Special Check for Golang User"
           command: grep -RP '\t' *  | tee | grep '.md' && exit 1; echo ok
 
       - run:
