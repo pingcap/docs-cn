@@ -97,17 +97,17 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 ### Point_Get
 
-`Point_get` 算子可能包含以下执行信息：
+`Point_Get` 算子可能包含以下执行信息：
 
-- `Get:{num_rpc:1, total_time:697.051µs}`：向 TiKV 发送 `Get` 类型的 RPC 请求的数量（num_rpc）和所有 RPC 请求的总耗时（total_time）。
+- `Get:{num_rpc:1, total_time:697.051µs}`：向 TiKV 发送 `Get` 类型的 RPC 请求的数量（`num_rpc`）和所有 RPC 请求的总耗时（`total_time`）。
 - `ResolveLock:{num_rpc:1, total_time:12.117495ms}`：读数据遇到锁后，进行 resolve lock 的时间。一般在读写冲突的场景下会出现。
 - `regionMiss_backoff:{num:11, total_time:2010 ms},tikvRPC_backoff:{num:11, total_time:10691 ms}`：发送 RPC 请求失败后会等待 backoff 的时间后重试，包括了 backoff 的类型（如 regionMiss，tikvRPC），backoff 等待的总时间(total_time) 和 backoff 的总次数(num)。
 
 ### Batch_Point_Get
 
-`Batch_Pint_get` 算子的执行信息和 `Pint_get` 算子类似，不过 Batch_Pint_get 一般向 TiKV 发送 `BatchGet` 类型的 RPC 请求来读取数据。
+`Batch_Point_get` 算子的执行信息和 `Point_Get` 算子类似，不过 `Batch_Point_Get` 一般向 TiKV 发送 `BatchGet` 类型的 RPC 请求来读取数据。
 
-- `BatchGet:{num_rpc:2, total_time:83.13µs}`：向 TiKV 发送 `BatchGet` 类型的 RPC 请求的数量（num_rpc）和所有 RPC 请求的总耗时（total_time）。
+- `BatchGet:{num_rpc:2, total_time:83.13µs}`：向 TiKV 发送 `BatchGet` 类型的 RPC 请求的数量（`num_rpc`）和所有 RPC 请求的总耗时（`total_time`）。
 
 ### TableReader
 
@@ -159,13 +159,13 @@ inner:{total:4.297515932s, concurrency:5, task:17, construct:97.96291ms, fetch:4
 ```
 
 - `inner`：inner worker 的执行信息，具体如下：
-    - total：inner worker 的总耗时。
-    - concurrency：inner worker 的数量。
-    - task：inner worker 处理 task 的总数量。
-    - construct：inner worker 读取 task 对应的 inner table rows 之前的准备时间。
-    - fetch：inner worker 读取 inner table rows 的总耗时。
-    - build: inner worker 构造 inner table rows 对应的 hash map 的总耗时。
-- probe：`IndexJoin` 主线程用 outer table rows 和 inner table rows 的 hash map 做 join 的总耗时。
+    - `total`：inner worker 的总耗时。
+    - `concurrency`：inner worker 的数量。
+    - `task`：inner worker 处理 task 的总数量。
+    - `construct`：inner worker 读取 task 对应的 inner table rows 之前的准备时间。
+    - `fetch`：inner worker 读取 inner table rows 的总耗时。
+    - `build`: inner worker 构造 inner table rows 对应的 hash map 的总耗时。
+- `probe`：`IndexJoin` 主线程用 outer table rows 和 inner table rows 的 hash map 做 join 的总耗时。
 
 ### IndexHashJoin
 
@@ -185,13 +185,13 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
 ```
 
 - `inner`：inner worker 的执行信息，具体如下：
-    - total：inner worker 的总耗时。
-    - concurrency：inner worker 的数量。
-    - task：inner worker 处理 task 的总数量。
-    - construct：inner worker 读取 task 对应的 inner table rows 之前的准备时间。
-    - fetch：inner worker 读取 inner table rows 的总耗时。
-    - build: inner worker 构造 outer table rows 对应的 hash map 的总耗时。
-    - join: inner worker 用 inner table rows 和 outer table rows 的 hash map 做 join 的总耗时。
+    - `total`：inner worker 的总耗时。
+    - `concurrency`：inner worker 的数量。
+    - `task`：inner worker 处理 task 的总数量。
+    - `construct`：inner worker 读取 task 对应的 inner table rows 之前的准备时间。
+    - `fetch`：inner worker 读取 inner table rows 的总耗时。
+    - `build`: inner worker 构造 outer table rows 对应的 hash map 的总耗时。
+    - `join`: inner worker 用 inner table rows 和 outer table rows 的 hash map 做 join 的总耗时。
 
 ### HashJoin
 
@@ -210,15 +210,15 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
 ```
 
 - `build_hash_table`: 读取 inner table 的数据并构造 hash map 的执行信息：
-    - total：总耗时。
-    - fetch：读取 inner table 数据的总耗时。
-    - build：构造 hash map 的总耗时。
-- probe: join worker 的执行信息：
-    - concurrency：join worker 的数量。
-    - total：所有 join worker 执行的总耗时。
-    - max：单个 join worker 执行的最大耗时。
-    - probe: 用 outer table rows 和 hash map 做 join 的总耗时。
-    - fetch：join worker 等待读取 outer table rows 数据的总耗时。
+    - `total`：总耗时。
+    - `fetch`：读取 inner table 数据的总耗时。
+    - `build`：构造 hash map 的总耗时。
+- `probe`: join worker 的执行信息：
+    - `concurrency`：join worker 的数量。
+    - `total`：所有 join worker 执行的总耗时。
+    - `max`：单个 join worker 执行的最大耗时。
+    - `probe`: 用 outer table rows 和 hash map 做 join 的总耗时。
+    - `fetch`：join worker 等待读取 outer table rows 数据的总耗时。
 
 ### lock_keys 执行信息
 
