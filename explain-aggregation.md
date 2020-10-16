@@ -150,7 +150,7 @@ Records: 5  Duplicates: 0  Warnings: 0
 5 rows in set (0.00 sec)
 ```
 
-以上示例中, 可以在 `col1` 上添加索引来消除 `└─Sort_13` 算子。添加索引后，TiDB 就可以按顺序读取数据并消除 `└─Sort_13` 算子。
+以上示例中，可以在 `col1` 上添加索引来消除 `└─Sort_13` 算子。添加索引后，TiDB 就可以按顺序读取数据并消除 `└─Sort_13` 算子。
 
 {{< copyable "sql" >}}
 
