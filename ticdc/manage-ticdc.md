@@ -685,7 +685,7 @@ To use the cyclic replication feature, you need to configure the following param
 
 + `--cyclic-replica-id`: Specifies the data source (to be written) ID of the upstream cluster. Each cluster ID must be unique.
 + `--cyclic-filter-replica-ids`: Specifies the data source ID to be filtered, which is usually the downstream cluster ID.
-+ `--cyclic-sync-ddl`: Determines whether to replicate DDL statements to the downstream. DDL replication can only be enabled in the TiCDC component of one cluster.
++ `--cyclic-sync-ddl`: Determines whether to replicate DDL statements to the downstream.
 
 To create a cyclic replication task, take the following steps:
 
