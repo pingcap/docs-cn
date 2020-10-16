@@ -36,7 +36,7 @@ SELECT SLEEP(1);
 ANALYZE TABLE t1;
 ```
 
-以上示例创建表格 `t1` 并插入数据后，再执行 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 语句。从以下输出结果可知，表 `t1` 已被切分为多个 Region：
+以上示例创建表格 `t1` 并插入数据后，再执行 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 语句。从以下 `SHOW TABLE REGIONS` 的执行结果可知，表 `t1` 被切分为多个 Region：
 
 {{< copyable "sql" >}}
 
