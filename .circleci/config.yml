@@ -4,7 +4,7 @@ jobs:
   lint:
     docker:
       - image: circleci/node:lts
-    working_directory: ~/pingcap/docs
+    working_directory: ~/pingcap/docs-cn
     steps:
       - checkout
 
@@ -19,7 +19,7 @@ jobs:
       - run:
           name: "Check git conflicts"
           command: |
-            git remote add upstream https://github.com/pingcap/docs.git
+            git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
             python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
 
@@ -51,7 +51,7 @@ jobs:
   build:
     docker:
       - image: andelf/doc-build:0.1.9
-    working_directory: ~/pingcap/docs
+    working_directory: ~/pingcap/docs-cn
 
     steps:
       - checkout
@@ -74,7 +74,7 @@ jobs:
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              python3 scripts/upload.py output.pdf tidb-dev-en-manual.pdf;
+              python3 scripts/upload.py output.pdf tidb-dev-zh-manual.pdf;
             fi
 
       - run:
