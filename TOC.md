@@ -387,6 +387,7 @@
       + [Window Functions](/functions-and-operators/window-functions.md)
       + [Miscellaneous Functions](/functions-and-operators/miscellaneous-functions.md)
       + [Precision Math](/functions-and-operators/precision-math.md)
+      + [Set Operations](/functions-and-operators/set-operators.md)
       + [List of Expressions for Pushdown](/functions-and-operators/expressions-pushed-down.md)
     + [Constraints](/constraints.md)
     + [Generated Columns](/generated-columns.md)
