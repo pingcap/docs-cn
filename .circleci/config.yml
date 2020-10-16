@@ -4,7 +4,7 @@ jobs:
   lint:
     docker:
       - image: circleci/node:lts
-    working_directory: ~/pingcap/docs-cn
+    working_directory: ~/pingcap/docs
     steps:
       - checkout
 
@@ -19,10 +19,10 @@ jobs:
       - run:
           name: "Check git conflicts"
           command: |
-            git remote add upstream https://github.com/pingcap/docs-cn.git
+            git remote add upstream https://github.com/pingcap/docs.git
             git fetch upstream
             python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
-      
+
       - run:
           name: "Install markdownlint"
           command: |
@@ -31,33 +31,33 @@ jobs:
       - run:
           name: "Lint edited files"
           command: |
-            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*' ':(exclude)v1.0/*' ':(exclude)v2.0/*' ':(exclude)v2.1-legacy/*')
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
-         name: "Check links"
-         command: |
-           scripts/verify-links.sh
+          name: "Check links"
+          command: |
+            scripts/verify-links.sh
 
       - run:
-         name: "Check link anchors"
-         command: |
-           scripts/verify-link-anchors.sh
+          name: "Check link anchors"
+          command: |
+            scripts/verify-link-anchors.sh
 
       - run:
-         name: "Check unclosed tags"
-         command:
-          python3 scripts/check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*' ':(exclude)v1.0/*' ':(exclude)v2.0/*' ':(exclude)v2.1-legacy/*')
+          name: "Check unclosed tags"
+          command: |
+            python3 scripts/check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
 
   build:
     docker:
       - image: andelf/doc-build:0.1.9
-    working_directory: ~/pingcap/docs-cn
+    working_directory: ~/pingcap/docs
 
     steps:
       - checkout
 
       - run:
-          name: "Special Check for Golang User"
+          name: "Special Check for Golang User - YOUR TAB SUCK"
           command: grep -RP '\t' *  | tee | grep '.md' && exit 1; echo ok
 
       - run:
@@ -74,7 +74,7 @@ jobs:
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              python3 scripts/upload.py output.pdf tidb-dev-zh-manual.pdf;
+              python3 scripts/upload.py output.pdf tidb-dev-en-manual.pdf;
             fi
 
       - run:
