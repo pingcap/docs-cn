@@ -143,9 +143,9 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 
 #### 3.1.9 ERROR 1105 (HY000): client has multi-statement capability disabled
 
-早期版本的 TiDB 升级后，可能会发生此错误。为了防止 SQL 注入攻击，TiDB 目前默认会阻止在同一 `COM_QUERY` 调用中执行多个查询。
+这个问题一般在早期版本的 TiDB 升级后会发生。为了防止 SQL 注入攻击，TiDB 目前默认阻止在同一 `COM_QUERY` 调用中执行多个查询。
 
-关于如何启用多个语句的说明，可以查看客户端驱动程序的文档。详情参见：
+关于如何启用多条语句的说明，可以查阅客户端驱动程序的文档。详情参见：
 
 * [go-sql-driver](https://github.com/go-sql-driver/mysql#multistatements) (`multiStatements`)
 * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
