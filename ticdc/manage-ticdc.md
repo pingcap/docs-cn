@@ -201,7 +201,7 @@ The following are descriptions of parameters and parameter values that can be co
 | `partition-num`      | The number of the downstream Kafka partitions (Optional. The value must be **no greater than** the actual number of partitions. If you do not configure this parameter, the partition number is obtained automatically.) |
 | `max-message-bytes`  | The maximum size of data that is sent to Kafka broker each time (optional, `64MB` by default) |
 | `replication-factor` | The number of Kafka message replicas that can be saved (optional, `1` by default)                       |
-| `protocol` | The protocol with which messages are output to Kafka. The optional values are `default` and `canal` (`default` by default.)    |
+| `protocol` | The protocol with which messages are output to Kafka. The value options are `default`, `canal`, `avro`, and `maxwell` (`default` by default)    |
 | `ca` | The path of the CA certificate file needed to connect to the downstream Kafka instance (optional)  |
 | `cert` | The path of the certificate file needed to connect to the downstream Kafka instance (optional) |
 | `key` | The path of the certificate key file needed to connect to the downstream Kafka instance (optional) |
@@ -648,7 +648,7 @@ dispatchers = [
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
 ]
 # For the sink of MQ type, you can specify the protocol format of the message.
-# Currently two protocols are supported: default and canal. The default protocol is TiCDC Open Protocol.
+# Currently four protocols are supported: default, canal, avro, and maxwell. The default protocol is TiCDC Open Protocol.
 protocol = "default"
 
 [cyclic-replication]
