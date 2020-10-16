@@ -7,8 +7,8 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 SQL 优化器会选择以下任一算子实现数据聚合：
 
-- Hash Aggregate
-- Stream Aggregate
+- Hash Aggregation
+- Stream Aggregation
 
 为了提高查询效率，Coprocessor 和 TiDB 层均可执行数据聚合。现有示例如下：
 
@@ -76,7 +76,7 @@ EXPLAIN SELECT COUNT(*) FROM t1;
 4 rows in set (0.00 sec)
 ```
 
-同样，执行 `EXPLAIN ANALYZE` 语句后可知，因为正在使用 `TableFullScan` 并且没有二级索引，`actRows` 与 `SHOW TABLE REGIONS` 中的 Region 数匹配：
+同样，通过执行 `EXPLAIN ANALYZE` 语句可知，`actRows` 与 `SHOW TABLE REGIONS` 返回结果中的 Region 数匹配，这是因为执行使用了 `TableFullScan` 全表扫并且没有二级索引：
 
 ```sql
 EXPLAIN ANALYZE SELECT COUNT(*) FROM t1;
