@@ -17,6 +17,13 @@ jobs:
             echo 'export NODE_PATH=~/.npm-global/lib/node_modules:$NODE_PATH' >> $BASH_ENV
 
       - run:
+          name: "Check git conflicts"
+          command: |
+            git remote add upstream https://github.com/pingcap/docs.git
+            git fetch upstream
+            python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+      
+      - run:
           name: "Install markdownlint"
           command: |
             npm install -g markdownlint-cli@0.17.0
