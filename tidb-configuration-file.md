@@ -283,11 +283,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示使用机器上所有的 CPU；如果设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
 
-### `max-memory`
+### `server-memory-quota`
 
-+ Prepare cache LRU 使用的最大内存限制。当 Prepare cache LRU 的内存使用超过 `performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)` 时，会剔除 LRU 中的元素。
-+ 默认值：0
-+ 这个配置只有在 `prepared-plan-cache.enabled` 为 `true` 的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
++ TiDB 内存使用限制。
++ 默认值：0 （Byte）
++ 默认值为 0 表示无内存限制。
+
+### `memory-usage-alarm-ratio`
+
++ TiDB 内存使用报警阈值。
++ 默认值：0.8
++ 该配置项的有效范围为 0 到 1。 如果配置该选项为 0 或 1，则表示关闭内存阈值报警功能。否则，当 TiDB 检测到内存使用超过了阈值，则会将相关信息记录到目录 `tmp-storage-path/record` 中。
++ 注意：如果配置项 `server-memory-quota` 被设置且大于 0，则内存报警阈值将为 `memory-usage-alarm-ratio * server-memory-quota`；否则，内存报警阈值将为 `memory-usage-alarm-ratio * system memory size`。
 
 ### `txn-total-size-limit`
 
