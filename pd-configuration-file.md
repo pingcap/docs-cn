@@ -315,7 +315,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `strictly-match-label`
 
-+ 打开强制 TiKV Label 和 PD 的 localtion-labels 是否匹配的检查
++ 打开强制 TiKV Label 和 PD 的 location-labels 是否匹配的检查
 + 默认：false
 
 ### `enable-placement-rules`
