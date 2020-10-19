@@ -126,7 +126,7 @@ EXPLAIN SELECT COUNT(*) FROM t1 WHERE YEAR(d) = 2017;
 
 由上述查询结果可知：
 
-* TiDB 认为需要访问所有分区 `(p2016..pMax)`。 这是因为 TiDB 将谓词 `YEAR（d）= 2017` 视为 [non-sargable](https://en.wikipedia.org/wiki/Sargable)。这个问题并非是 TiDB 特有的。
+* TiDB 认为需要访问所有分区 `(p2016..pMax)`。这是因为 TiDB 将谓词 `YEAR（d）= 2017` 视为 [non-sargable](https://en.wikipedia.org/wiki/Sargable)。这个问题并非是 TiDB 特有的。
 * `Selection` 算子在扫描每个分区时，将筛选出与 2017 年不匹配的行。
 * 在每个分区上执行流式聚合以计算匹配的行数。
 * `└─PartitionUnion_21` 算子会合并访问每个分区后的结果。
