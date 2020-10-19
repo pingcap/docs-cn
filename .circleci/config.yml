@@ -21,7 +21,7 @@ jobs:
           command: |
             git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
-            python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-4.0..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Install markdownlint"
@@ -31,7 +31,7 @@ jobs:
       - run:
           name: "Lint edited files"
           command: |
-            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/release-4.0..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Check links"
@@ -46,7 +46,7 @@ jobs:
       - run:
           name: "Check unclosed tags"
           command: |
-            python3 scripts/check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 scripts/check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/release-4.0..HEAD -- '*.md' ':(exclude).github/*')
 
   build:
     docker:
