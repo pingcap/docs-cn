@@ -133,14 +133,14 @@ desc mysql.expr_pushdown_blacklist;
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
 > **注意：**
-> 
+>
 > `admin reload expr_pushdown_blacklist` 只对执行该 SQL 语句的 TiDB server 生效。若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
 
 ### 表达式黑名单用法示例
 
 以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
 
-黑名单是否生效可以从 `explain` 结果中进行观察（参见[`EXPLAIN` 简介](/query-execution-plan.md#explain-简介)）。
+黑名单是否生效可以从 `explain` 结果中进行观察（参见 [`EXPLAIN` 简介](/explain-overview.md#explain-简介)）。
 
 1. 对于以下 SQL 语句，`where` 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
 

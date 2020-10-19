@@ -97,7 +97,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 ## 另请参阅
 
-* [Understanding the Query Execution Plan](/query-execution-plan.md)
+* [Understanding the Query Execution Plan](/explain-overview.md)
 * [EXPLAIN](/sql-statements/sql-statement-explain.md)
 * [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
 * [TRACE](/sql-statements/sql-statement-trace.md)
