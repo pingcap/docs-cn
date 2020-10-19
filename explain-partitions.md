@@ -5,9 +5,9 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 # 用 EXPLAIN 查看分区的 SQL 执行计划
 
-使用 `EXPLAIN` 语句可以查看 TiDB 为了执行查询而需要访问的分区。由于存在[分区裁剪](/ partition-pruning.md)，显示的分区通常只是整个分区的一个子集。本文档介绍了常见分区表的一些优化，以及如何解读 `EXPLAIN` 的输出结果。
+使用 `EXPLAIN` 语句可以查看 TiDB 在执行查询时需要访问的分区。由于存在[分区裁剪](/ partition-pruning.md)，所显示的分区通常只是整个分区的一个子集。本文档介绍了常见分区表的一些优化方式，以及如何解读 `EXPLAIN` 语句返回的执行计划信息。
 
-示例数据如下:
+本文档所使用的示例数据如下:
 
 {{< copyable "sql" >}}
 
@@ -26,6 +26,7 @@ CREATE TABLE t1 (
  PARTITION p2019 VALUES LESS THAN (2020),
  PARTITION pmax VALUES LESS THAN MAXVALUE
 );
+
 INSERT INTO t1 (d, pad1, pad2, pad3) VALUES
  ('2016-01-01', RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024)),
  ('2016-06-01', RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024)),
@@ -40,17 +41,19 @@ INSERT INTO t1 (d, pad1, pad2, pad3) VALUES
  ('2019-06-01', RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024)),
  ('2019-09-01', RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024)),
  ('2020-01-01', RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024)),
- ('2020-06-01', RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024)),
+ ('2020-06-01', RANDOM_BYTES(102), RANDOM_BYTES(1024), RANDOM_BYTES(1024)),
  ('2020-09-01', RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024));
+
 INSERT INTO t1 SELECT NULL, a.d, RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
 INSERT INTO t1 SELECT NULL, a.d, RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
 INSERT INTO t1 SELECT NULL, a.d, RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
 INSERT INTO t1 SELECT NULL, a.d, RANDOM_BYTES(1024), RANDOM_BYTES(1024), RANDOM_BYTES(1024) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 10000;
+
 SELECT SLEEP(1);
 ANALYZE TABLE t1;
 ```
 
-以下示例显示了新创建的分区表的语句：
+以下示例显示了新创建的分区表 `t1` 中的语句：
 
 {{< copyable "sql" >}}
 
@@ -71,12 +74,12 @@ EXPLAIN SELECT COUNT(*) FROM t1 WHERE d = '2017-06-01';
 5 rows in set (0.01 sec)
 ```
 
-由上述查询可知，从最内部的 `—TableFullScan_19` 算子开始，再返回到根算子 `StreamAgg_21` 的过程中：
+由上述查询可知，从最末尾的 `—TableFullScan_19` 孩子节点开始，再返回到父节点 `StreamAgg_21` 的过程中：
 
 * TiDB 成功地识别出只需要访问一个分区（`p2017`），并将其在 `access object` 列中注明。
-* 分区本身在 `└─TableFullScan_19` 算子中进行扫描，然后执行 `└─Selection_20` 算子对起始日期为 `2017-06-01 00：00：00.000000` 的行进行筛选。
-* 与 `└─Selection_20` 算子匹配的行在 Coprocessor 中进行流聚合且 Coprocessor 本身就可以理解 `count` 聚合函数。
-* 每个 Coprocessor 请求将一行数据返回给 TiDB 中的 `└─TableReader_22` 算子，然后将数据在`StreamAgg_21` 下进行流聚合，并将一行数据返回给客户端。
+* `└─TableFullScan_19` 算子先对整个分区进行扫描，然后执行 `└─Selection_20` 算子筛选起始日期为 `2017-06-01 00：00：00.000000` 的行。
+* 之后，匹配 `└─Selection_20` 算子的行在 Coprocessor 中进行流式聚合，并且 Coprocessor 可以理解聚合函数 `count`。
+* 每个 Coprocessor 请求将返回一行数据到 TiDB 中的 `└─TableReader_22` 算子，然后将数据在`StreamAgg_21` 下进行流式聚合，再将这行数据返回给客户端。
 
 以下示例中，分区裁剪不会消除任何分区：
 
@@ -121,9 +124,9 @@ EXPLAIN SELECT COUNT(*) FROM t1 WHERE YEAR(d) = 2017;
 27 rows in set (0.00 sec)
 ```
 
-上述查询结果显示：
+由上述查询结果可知：
 
 * TiDB 认为需要访问所有分区 `(p2016..pMax)`。 这是因为 TiDB 将谓词 `YEAR（d）= 2017` 视为 [non-sargable](https://en.wikipedia.org/wiki/Sargable)。这个问题并非是 TiDB 特有的。
-* 扫描每个分区时，`Selection` 算子将筛选出与 2017 年不匹配的行。
-* 在每个分区上执行流聚合以计算匹配的行数。
-* `└─PartitionUnion_21` 算子会将访问每个分区的结果合并。
+* `Selection` 算子在扫描每个分区时，将筛选出与 2017 年不匹配的行。
+* 在每个分区上执行流式聚合以计算匹配的行数。
+* `└─PartitionUnion_21` 算子会合并访问每个分区后的结果。
