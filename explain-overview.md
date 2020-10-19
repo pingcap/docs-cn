@@ -1,13 +1,19 @@
 ---
+<<<<<<< HEAD:query-execution-plan.md
 title: 理解 TiDB 执行计划
 aliases: ['/docs-cn/stable/query-execution-plan/','/docs-cn/v4.0/query-execution-plan/','/docs-cn/stable/reference/performance/understanding-the-query-execution-plan/','/docs-cn/stable/index-merge/','/docs-cn/stable/reference/performance/index-merge/','/zh/tidb/v4.0/query-execution-plan/']
+=======
+title: EXPLAIN 概览
+summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划。
+aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/','/docs-cn/dev/index-merge/','/docs-cn/dev/reference/performance/index-merge/','/zh/tidb/dev/query-execution-plan/']
+>>>>>>> e0cb64ca... performance tuning: change SQL tuning TOC (#4662):explain-overview.md
 ---
 
-# 理解 TiDB 执行计划
+# `EXPLAIN` 概览
 
 TiDB 优化器会根据当前数据表的最新的统计信息来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中的执行计划。
 
-## EXPLAIN 简介
+## `EXPLAIN` 简介
 
 TiDB 中可以使用 `EXPLAIN` 命令来查看执行计划，`EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
