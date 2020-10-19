@@ -43,14 +43,11 @@ jobs:
           command: |
             scripts/verify-link-anchors.sh
 
-<<<<<<< HEAD
-=======
       - run:
           name: "Check unclosed tags"
           command: |
             python3 scripts/check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
 
->>>>>>> 90e6a80e... Add conflicts check script and test files (#4696)
   build:
     docker:
       - image: andelf/doc-build:0.1.9
