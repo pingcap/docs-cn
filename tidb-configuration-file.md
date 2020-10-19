@@ -285,8 +285,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `server-memory-quota`
 
-+ TiDB 内存使用限制。
-+ 默认值：0 （Byte）
++ TiDB 内存使用限制，单位为字节。
++ 默认值：0 
 + 默认值为 0 表示无内存限制。
 
 ### `memory-usage-alarm-ratio`
