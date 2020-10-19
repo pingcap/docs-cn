@@ -43,11 +43,6 @@ jobs:
           command: |
             scripts/verify-link-anchors.sh
 
-      - run:
-          name: "Check unclosed tags"
-          command: |
-            python3 scripts/check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
-
   build:
     docker:
       - image: andelf/doc-build:0.1.9
