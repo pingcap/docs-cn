@@ -1,9 +1,9 @@
 ---
-title: EXPLAIN Walkthrough 
-summary: Learn how to use `EXPLAIN` by walking through an example statement
+title: EXPLAIN Walkthrough
+summary: Learn how to use EXPLAIN by walking through an example statement
 ---
 
-# EXPLAIN Walkthrough
+# `EXPLAIN` Walkthrough
 
 Because SQL is a declarative language, you cannot automatically tell whether a query is executed efficiently. You must first use the [`EXPLAIN`](/sql-statements/sql-statement-explain.md) statement to learn the current execution plan.
 
@@ -31,18 +31,18 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 From the child operator `└─TableFullScan_18` back, you can see its execution process as follows, which is currently suboptimal:
 
 1. The coprocessor (TiKV) reads the entire `trips` table as a `TableFullScan` operation. It then passes the rows that it reads to the `Selection_19` operator, which is still within TiKV.
-2. The `WHERE start_date BETWEEN ..` predicate is then filtered in the `Selection_19` operator. Approximately `250` rows are estimated to meet this selection. Note that this number was produced from a heuristic; the `└─TableFullScan_18` operator shows `stats:pseudo`. After running `ANALYZE TABLE trips`, the statistics should be more accurate.
-3. The rows that meet the selection criteria then have a `count` function applied to them. This is also completed inside the `StreamAgg_9` operator, which is still inside TiKV (`cop[tikv]`). The TiKV coprocessor understands a number of MySQL built-in functions, `count` being one of them. It also understands that `count` is safe to apply Stream Aggregation to, even though the results are not in order.
+2. The `WHERE start_date BETWEEN ..` predicate is then filtered in the `Selection_19` operator. Approximately `250` rows are estimated to meet this selection. Note that this number was estimated according to the statistics and the operator's logic; the `└─TableFullScan_18` operator shows `stats:pseudo`. After running `ANALYZE TABLE trips`, the statistics should be more accurate.
+3. The rows that meet the selection criteria then have a `count` function applied to them. This is also completed inside the `StreamAgg_9` operator, which is still inside TiKV (`cop[tikv]`). The TiKV coprocessor understands a number of MySQL built-in functions, `count` being one of them. The TiKV coprocessor also understands that `count` is safe to be applied to Stream Aggregation, even though the results are not in order.
 4. The results from `StreamAgg_9` are then sent to the `TableReader_21` operator which is now inside the TiDB server (the task of `root`). The `estRows` column value for this operator is `1`, which means that the operator will receive one row from each of the TiKV Regions to be accessed. For more information about these requests, see [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md).
-5. The `StreamAgg_20` operator then applies a `count` function to each of the rows from the `└─TableReader_21` operator, which you can see from [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) and will be about 56 rows. Because this is the root operator, it can then return results to the client.
+5. The `StreamAgg_20` operator then applies a `count` function to each of the rows from the `└─TableReader_21` operator, which you can see from [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) and will be about 56 rows. Because this is the root operator, it then returns results to the client.
 
 > **Note:**
-> 
-> For a general view of the Regions that a table contains, execute [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md). 
+>
+> For a general view of the Regions that a table contains, execute [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md).
 
 ## Assess the current performance
 
-[`EXPLAIN`](/sql-statements/sql-statement-explain.md) only returns the query execution plan but does not execute the query. To get the actual execution time, you can either execute the query or use [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md):
+`EXPLAIN` only returns the query execution plan but does not execute the query. To get the actual execution time, you can either execute the query or use `EXPLAIN ANALYZE`:
 
 {{< copyable "sql" >}}
 
@@ -65,7 +65,7 @@ EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 
 
 The example query above takes `1.03` seconds to execute, which is an ideal performance.
 
-From the result of `EXPLAIN ANALYZE` above, you can see a few more useful columns. `actRows` indicates that some of the estimates (`estRows`) are inaccurate, which is already indicated in the `operator info` (`stats:pseudo`) of `└─TableFullScan_18`. Expecting 10 thousand rows but finding 19 million rows show that the estimate is inaccurate. If you run [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) first and then [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) again, you can see that the estimates are much closer:
+From the result of `EXPLAIN ANALYZE` above, `actRows` indicates that some of the estimates (`estRows`) are inaccurate (expecting 10 thousand rows but finding 19 million rows), which is already indicated in the `operator info` (`stats:pseudo`) of `└─TableFullScan_18`. If you run [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) first and then `EXPLAIN ANALYZE` again, you can see that the estimates are much closer:
 
 {{< copyable "sql" >}}
 
@@ -89,9 +89,9 @@ Query OK, 0 rows affected (10.22 sec)
 5 rows in set (0.93 sec)
 ```
 
-After [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) is executed, you can see that the estimated rows for the `└─TableFullScan_18` operator is accurate and the estimate for `└─Selection_19` is now also much closer. In the two cases above, although the execution plan (the set of operators TiDB uses to execute this query) has not changed, quite frequently sub-optimal plans are caused by out of date statistics.
+After `ANALYZE TABLE` is executed, you can see that the estimated rows for the `└─TableFullScan_18` operator is accurate and the estimate for `└─Selection_19` is now also much closer. In the two cases above, although the execution plan (the set of operators TiDB uses to execute this query) has not changed, quite frequently sub-optimal plans are caused by outdated statistics.
 
-In addition to [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md), TiDB automatically regenerates statistics as a background operation after a [threshold is reached](/system-variables.md#tidb_auto_analyze_ratio). You can see how close TiDB is to this threshold (how healthy TiDB considers the statistics to be) by executing the [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md) statement:
+In addition to `ANALYZE TABLE`, TiDB automatically regenerates statistics as a background operation after the threshold of [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) is reached. You can see how close TiDB is to this threshold (how healthy TiDB considers the statistics to be) by executing the [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md) statement:
 
 {{< copyable "sql" >}}
 
@@ -156,8 +156,8 @@ Query OK, 0 rows affected (2 min 10.23 sec)
 ```
 
 > **Note:**
-> 
-> You can monitor the progress of DDL jobs using the [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin.md) command. The defaults in TiDB are carefully chosen so that adding an index does not impact production workloads too much. For testing environments, consider increasing the [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) and [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) values. On a reference system, a batch size of 10240 and worker count of 32 can achieve a 10x performance improvement over the defaults.
+>
+> You can monitor the progress of DDL jobs using the [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin.md) command. The defaults in TiDB are carefully chosen so that adding an index does not impact production workloads too much. For testing environments, consider increasing the [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) and [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) values. On a reference system, a batch size of `10240` and worker count of `32` can achieve a 10x performance improvement over the defaults.
 
 After adding an index, you can then repeat the query in `EXPLAIN`. In the following output, you can see that a new execution plan is chosen, and the `TableFullScan` and `Selection` operators have been eliminated:
 
