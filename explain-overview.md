@@ -1,12 +1,7 @@
 ---
-<<<<<<< HEAD:query-execution-plan.md
-title: 理解 TiDB 执行计划
-aliases: ['/docs-cn/stable/query-execution-plan/','/docs-cn/v4.0/query-execution-plan/','/docs-cn/stable/reference/performance/understanding-the-query-execution-plan/','/docs-cn/stable/index-merge/','/docs-cn/stable/reference/performance/index-merge/','/zh/tidb/v4.0/query-execution-plan/']
-=======
 title: EXPLAIN 概览
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划。
-aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/','/docs-cn/dev/index-merge/','/docs-cn/dev/reference/performance/index-merge/','/zh/tidb/dev/query-execution-plan/']
->>>>>>> e0cb64ca... performance tuning: change SQL tuning TOC (#4662):explain-overview.md
+aliases: ['/docs-cn/stable/query-execution-plan/','/docs-cn/v4.0/query-execution-plan/','/docs-cn/stable/reference/performance/understanding-the-query-execution-plan/','/docs-cn/stable/index-merge/','/docs-cn/stable/reference/performance/index-merge/','/zh/tidb/v4.0/query-execution-plan/']
 ---
 
 # `EXPLAIN` 概览
