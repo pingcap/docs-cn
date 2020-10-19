@@ -248,7 +248,7 @@ The `xx.dot` is the result returned by the above statement.
 
 ## 另请参阅
 
-* [Understanding the Query Execution Plan](/query-execution-plan.md)
+* [理解 TiDB 执行计划](/explain-overview.md)
 * [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md)
 * [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
 * [TRACE](/sql-statements/sql-statement-trace.md)

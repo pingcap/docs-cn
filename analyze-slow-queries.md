@@ -242,7 +242,7 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 4. `select b from t where c=3`：多列索引没有前缀条件就用不上，所以会用 `IndexFullScan`；
 5. ...
 
-上面举例了数据读入相关的算子，在 [理解 TiDB 执行计划](/query-execution-plan.md) 中描述了更多算子的情况；
+上面举例了数据读入相关的算子，在 [理解 TiDB 执行计划](/explain-overview.md) 中描述了更多算子的情况；
 
 另外阅读 [SQL 性能调优](/sql-tuning-overview.md) 整个小节能增加你对 TiDB 优化器的了解，帮助判断执行计划是否合理。
 
