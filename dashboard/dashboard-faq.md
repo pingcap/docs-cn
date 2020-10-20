@@ -52,4 +52,4 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 ### 概况页面中 Top SQL 语句、最近慢查询显示 `invalid connection` 错误
 
-此错误可能与 TiDB 的 `prepared-plan-cache` 功能有关。可以通过更新 [TiDB 配置文件](/tidb-configuration-file.md#prepared-plan-cache)来关闭 `prepared-plan-cache` 功能。
+此错误发生的原因可能是你开启了 TiDB 的 `prepared-plan-cache` 功能。可以通过修改 [TiDB 配置文件](/tidb-configuration-file.md#prepared-plan-cache)来关闭 `prepared-plan-cache` 功能。
