@@ -39,7 +39,7 @@ Coprocessor Cache 的配置均位于 TiDB 的 `tikv-client.copr-cache` 配置项
 
 ### 使用 `EXPLAIN ANALYZE`
 
-用户可以通过 [`EXPLAIN ANALYZE 语句`](/sql-statements/sql-statement-explain-analyze.md) 检查[读表算子](/choose-index.md#读表算子)中的缓存命中率，下面是一个简单的例子。
+用户可以通过 [`EXPLAIN ANALYZE` 语句](/sql-statements/sql-statement-explain-analyze.md) 查看[读表算子](/choose-index.md#读表算子)中的缓存命中率，示例如下：
 
 ```sql
 explain analyze select * from t use index(a);
