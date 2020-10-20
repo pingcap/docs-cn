@@ -55,6 +55,6 @@ explain analyze select * from t use index(a);
 
 执行结果的 `execution info` 列有 `copr_cache_hit_ratio` 信息，表示下推计算结果缓存的命中率。以上示例的 `0.75` 表示命中率大约是 75%。
 
-### Grafana 监控缓存
+### 查看 Grafana 监控面板
 
 在 Grafana 监控中，`tidb` 命名空间下 `distsql` 子系统中可见 **copr-cache** 面板，该面板监控整个集群中下推计算结果缓存的命中次数、未命中次数和缓存丢弃次数。
