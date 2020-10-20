@@ -53,7 +53,7 @@ explain analyze select * from t use index(a);
 3 rows in set (0.62 sec)
 ```
 
-在 `execution info` 中有 `copr_cache_hit_ratio`，表示下推计算结果缓存的命中率，这里的 0.75 表示命中率大概是 75%.
+执行结果的 `execution info` 列有 `copr_cache_hit_ratio` 信息，表示下推计算结果缓存的命中率。以上示例的 `0.75` 表示命中率大约是 75%。
 
 ### Grafana 监控缓存
 
