@@ -35,6 +35,8 @@ Coprocessor Cache 的配置均位于 TiDB 的 `tikv-client.copr-cache` 配置项
 
 ## 检验缓存效果
 
+可以通过执行 `EXPLAIN ANALYZE` 或查看 Grafana 监控面板来检查 coprocessor 的缓存效果。
+
 ### EXPLAIN ANALYZE
 
 用户可以通过 [`EXPLAIN ANALYZE 语句`](/sql-statements/sql-statement-explain-analyze.md) 检查[读表算子](/choose-index.md#读表算子)中的缓存命中率，下面是一个简单的例子。
