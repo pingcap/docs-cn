@@ -287,7 +287,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + Prepare cache LRU 使用的最大内存限制。当 Prepare cache LRU 的内存使用超过 `performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)` 时，会剔除 LRU 中的元素。
 + 默认值：0
-+ 这个配置默认只有在 `prepared-plan-cache.enabled` 为 `true` 的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
++ 这个配置默认在 `prepared-plan-cache.enabled` 为 `true` 的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
 
 ### `txn-total-size-limit`
 
@@ -368,7 +368,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ## prepared-plan-cache
 
-prepare 语句的 Plan cache 设置。
+prepare 语句的 plan cache 设置。
 
 ### `enabled`
 
