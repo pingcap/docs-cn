@@ -35,7 +35,7 @@ Coprocessor Cache 的配置均位于 TiDB 的 `tikv-client.copr-cache` 配置项
 
 ## 检验缓存效果
 
-可以通过执行 `EXPLAIN ANALYZE` 或查看 Grafana 监控面板来检查 coprocessor 的缓存效果。
+可以通过执行 `EXPLAIN ANALYZE` 或查看 Grafana 监控面板来检查 Coprocessor 的缓存效果。
 
 ### 使用 `EXPLAIN ANALYZE`
 
