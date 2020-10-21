@@ -25,24 +25,32 @@
 
 ### 翻译中文文档
 
-TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/v4.0) 也需要进行频繁的更新。这一过程会涉及很多的**中译英**，即将 [pingcap/docs-cn](https://github.com/pingcap/docs) 里已 [merge](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs](https://github.com/pingcap/docs) 中。**具体的认领方式**如下。
+TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/v4.0) 也需要频繁更新。这一过程会涉及很多的**中译英**，即将 [pingcap/docs-cn](https://github.com/pingcap/docs) 里已 [merge](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs](https://github.com/pingcap/docs) 中。**具体的认领方式**如下。
 
 > **注意：**
 >
-> - 由于受众不同，TiDB 的中文文档与英文文档并非完全相同。但绝大数情况下，中英版本会保持一致。
+> - 由于受众不同，TiDB 的中文文档与英文文档并非完全相同。但绝大多数情况下，中英版本会保持一致。
 > - 通常，TiDB 文档是先有中文版，后有英文版。但也有一小部分文档，是先有英文版，后有中文版。
 
 #### 中文翻译任务的认领方式
 
-目前，中文文档翻译任务以 [docs-cn 仓库的 Pull Request](https://github.com/pingcap/docs-cn/pulls) (PR) 为形式，通过仓库管理员为 PR 加上的 labels 来认领翻译任务、追踪翻译任务状态。
+目前，中文文档翻译任务以 [docs-cn 仓库的 Pull Request](https://github.com/pingcap/docs-cn/pulls) (PR) 为形式，通过仓库管理员为 PR 加上的 labels 来认领翻译任务及追踪翻译任务状态。
 
-你可以通过以下简单几步来认领一个 PR 翻译任务：
+你可以通过以下简单几步来认领并提交一个 PR 翻译任务：
 
-1. 打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+)，可以看到所有打上了 `translation/welcome` label 的 PR（这类 PR 无论是 open 还是 closed 状态，均在认领的范畴）。
-2. 打开你想认领的 PR，拉到底部留下这条 comment：`@yikeke: I'd like to translate this PR.`。
-3. 仓库管理员 @yikeke 会及时联系你，并将 `translation/welcome` 改为 `translation/doing`，之后你便可以开始翻译了。
+1. 查看待认领 PR
+    打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+)，即可看到所有打上了 `translation/welcome` label 的 PR。这类 PR 无论是处于 open 还是 closed 状态，均可认领。
+2. 认领 PR
+    打开你想认领的 PR，拉到底部留下这条 comment：`/assign @Your-Github-ID`（将 Your-Github-ID 替换为你的 Github ID），使用`/assign`命令将此 PR 分配给自己。
+3. 修改 PR 标签
+    PR 认领成功后，继续在底部 comment 区域依次发送：`/unlabel translation/welcome`及`/label translation/doing`，使用`/unlabel`和`/label` 命令将 `translaion/welcome` 改为 `translation/doing`，之后你便可以开始翻译了。
+4. 翻译 PR 并提交
+    由于TiDB 的中英文文档分别存放于 [pingcap/docs-cn](https://github.com/pingcap/docs) 和 [pingcap/docs](https://github.com/pingcap/docs) 中，并且两个仓库的文件结构完全对应，如果你是首次认领翻译任务，需先将 docs 仓库克隆到本地，然后找到源 PR 中对应的改动文件再开始翻译。翻译完毕后，创建新 PR 将翻译好的文件提交至 docs 仓库。具体操作步骤及更多参考资料可参见下文[快速上手资源](#快速上手资源)一节。
+5. 填写 PR 描述并修改标签
+    新建 PR 成功后，先按照模板说明完整填写 PR 描述，接着在底部发送：`/label translation/from-docs-cn`，为 PR 添加`translation/from-docs-cn`标签，表明此 PR 是从中文翻译过来的。然后回到源 PR 依次发送：`/unlabel translation/doing` 及`/label translation/done`，将源 PR 标签修改为`translation/done`，表明翻译已完成。
+6. 分配 Reviewer（推荐，非必需）
+    每个 PR 都需要经过 Review 后才能合并，分配 Reviewer 一般由文档仓库管理员负责，但我们也十分欢迎你来主动承担这个任务。具体操作为：在新建的 PR 下发送： `/cc @TomShawn, @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 Github ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
 
-下文提供了往 docs 或者 docs-cn 仓库提交 PR 的快速上手指南。
 
 ## 快速上手资源
 
@@ -56,6 +64,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 - [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
 - [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
+- [Github 常用命令行](https://docs.google.com/document/d/1slyV7ODvMs3QjfLkFpNCCO0e0BBlDF4MZdPc3yQO_RU)
 - 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
 
     为确保文档图片风格统一，建议使用 Figma 绘制图片。绘制图片时，请参考模板提供的图形元素和配色方案。
