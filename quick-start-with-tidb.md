@@ -205,6 +205,7 @@ Other requirements for the target machine:
        readpool.coprocessor.use-unified-pool: true
      pd:
        replication.enable-placement-rules: true
+       replication.location-labels: ["host"]
      tiflash:
        logger.level: "info"
 
@@ -218,14 +219,20 @@ Other requirements for the target machine:
      - host: 10.0.1.1
        port: 20160
        status_port: 20180
+       config:
+         server.labels: { host: "logic-host-1" }
 
      - host: 10.0.1.1
        port: 20161
        status_port: 20181
+       config:
+         server.labels: { host: "logic-host-2" }
 
      - host: 10.0.1.1
        port: 20162
        status_port: 20182
+       config:
+         server.labels: { host: "logic-host-3" }
 
     tiflash_servers:
      - host: 10.0.1.1
