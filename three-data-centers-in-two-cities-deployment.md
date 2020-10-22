@@ -127,7 +127,7 @@ alertmanager_servers:
 
 在两地三中心部署方式下，对于 Labels 的设计需要充分考虑到系统的可用性和容灾能力，建议根据部署的物理结构来定义 DC、ZONE、RACK、HOST 四个等级。
 
-![label 逻辑定义图](/media/three-data-centers-in-two-cities-deployment-03.png)
+![Label 逻辑定义图](/media/three-data-centers-in-two-cities-deployment-03.png)
 
 PD 设置中添加 TiKV label 的等级配置。
 
