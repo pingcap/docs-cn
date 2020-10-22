@@ -293,7 +293,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 内存使用报警阈值。
 + 默认值：0.8
-+ 该配置项的有效范围为 0 到 1。 如果配置该选项为 0 或 1，则表示关闭内存阈值报警功能。否则，当 TiDB 检测到内存使用超过了阈值，我们认为 TiDB 目前存在 OOM 的风险，会将当前正在执行的所有 SQLs 中内存使用最高的 10 条 SQL 和运行时间最长的 10 条 SQL 以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中,并输出一条包含关键子 `the TiDB instance now takes a lot of memory, has the risk of OOM` 的日志。
++ 该配置项的有效范围为 0 到 1。 如果配置该选项为 0 或 1，则表示关闭内存阈值报警功能。否则，当 TiDB 检测到内存使用超过了阈值，我们认为 TiDB 目前存在 OOM 的风险，会将当前正在执行的所有 SQLs 中内存使用最高的 10 条 SQL 和运行时间最长的 10 条 SQL 以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中,并输出一条包含关键子 `the Tidb instance has the risk of OOM` 的日志。
 + 注意：如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota) 被设置且大于 0，则内存报警阈值将为 `memory-usage-alarm-ratio * server-memory-quota`；否则，内存报警阈值将为 `memory-usage-alarm-ratio * 系统内存大小`。
 
 ### `txn-total-size-limit`
