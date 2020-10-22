@@ -48,8 +48,8 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
    tiup cluster start CLUSTER_NAME
    ```
 
-   即使集群已经启动，请仍然执行该命令。该命令不会影响集群上正常的业务，但会刷新并上报监控地址，从而能让监控在 TiDB Dashbaord 中正常显示。
+   即使集群已经启动，请仍然执行该命令。该命令不会影响集群上正常的业务，但会刷新并上报监控地址，从而能让监控在 TiDB Dashboard 中正常显示。
 
 ### 概况页面中 Top SQL 语句、最近慢查询显示 `invalid connection` 错误
 
-可能的原因是你开启了 TiDB 的 `prepared-plan-cache` 功能。作为实验性功能，`prepared-plan-cache` 在某些版本的 TiDB 中存在一些缺陷，开启后可能会导致 TiDB Dashboard（及其他应用）出现该问题。请依据[文档](/tidb-configuration-file.md#prepared-plan-cache)关闭 `prepared-plan-cache` 功能。
+此错误可能与 TiDB 的 `prepared-plan-cache` 功能有关。可以通过修改 [TiDB 配置文件](/tidb-configuration-file.md#prepared-plan-cache)来关闭 `prepared-plan-cache` 功能。
