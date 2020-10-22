@@ -48,7 +48,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 2. 认领 PR
 
-    打开你想认领的 PR，拉到底部留下这条 comment：`/assign @Your-Github-ID`（将 Your-Github-ID 替换为你的 Github ID），即可将此 PR 的翻译任务分配给自己。
+    打开你想认领的 PR，拉到底部留下这条 comment：`/assign @Your-GitHub-ID`（将 Your-GitHub-ID 替换为你的 GitHub ID），即可将此 PR 的翻译任务分配给自己。
 
 3. 修改 PR 标签
 
@@ -56,7 +56,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 4. 翻译 PR 并提交
 
-    由于 TiDB 的中英文文档分别存放于 [pingcap/docs-cn](https://github.com/pingcap/docs-cn) 和 [pingcap/docs](https://github.com/pingcap/docs) 中，并且两个仓库的文件结构完全对应。如果你是首次认领翻译任务，需先将 docs 仓库克隆到本地，然后找到源 PR 中对应的改动文件再开始翻译。翻译完毕后，创建新 PR，将翻译好的文件提交至 docs 仓库。具体操作步骤及更多参考资料可参见下文[快速上手资源](#快速上手资源)一节。
+    由于 TiDB 的中英文文档分别存放于 [pingcap/docs-cn](https://github.com/pingcap/docs-cn) 和 [pingcap/docs](https://github.com/pingcap/docs) 中，并且两个仓库的文件结构完全对应。如果你是首次认领翻译任务，需先 fork docs 仓库，并将 fork 的 docs 仓库克隆到本地，然后找到源 PR 中对应的改动文件再开始翻译。翻译完毕后，创建新 PR，将翻译好的文件提交至 docs 仓库。具体操作步骤及更多参考资料可参见下文[快速上手资源](#快速上手资源)一节。
 
 5. 填写 PR 描述并修改标签
 
@@ -64,7 +64,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 6. 分配 Reviewer（推荐，非必需）
 
-    每个 PR 都需要经过 Review 后才能合并，分配 Reviewer 一般由文档仓库管理员负责，但我们也十分欢迎你来主动承担这个任务。具体操作为：在新建的 PR 下发送 `/cc @TomShawn, @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 Github ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
+    每个 PR 都需要经过 Review 后才能合并，分配 Reviewer 一般由文档仓库管理员负责，但我们也十分欢迎你来主动承担这个任务。具体操作为：在新建的 PR 下发送 `/cc @TomShawn, @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 GitHub ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
 
 ## 快速上手资源
 
@@ -181,12 +181,12 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 | 命令 | 含义 | 示例 |
 | ------ | ------ | ------ |
-| /label | 给 PR 添加 label，多个 label 间需要用逗号分隔。 | `/label translation/doing` |
-| /unlabel | 删除 PR label。 | `/unlabel translation/welcome` |
-| /assign | 将 PR 分配给指定的人，需@指定用户的 Github ID，多个 Github ID 间用逗号分隔。 | `/assign @CharLotteiu` |
-| /unassign | 移除 PR 之前指定的 assignee。 | `/unassign @CharLotteiu` |
-| /cc | 将 PR 分配给指定的 reviewer，需@指定用户的 Github ID，多个 Github ID 间用逗号分隔。 | `/cc @TomShawn, @yikeke` |
-| /uncc| 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
+| `/label` | 给 PR 添加 label，多个 label 间需要用逗号分隔。 | `/label translation/doing` |
+| `/unlabel` | 删除 PR label。 | `/unlabel translation/welcome` |
+| `/assign` | 将 PR 分配给指定的人，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/assign @CharLotteiu` |
+| `/unassign` | 移除 PR 之前指定的 assignee。 | `/unassign @CharLotteiu` |
+| `/cc` | 将 PR 分配给指定的 reviewer，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/cc @TomShawn, @yikeke` |
+| `/uncc` | 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
 
 ## 联系我们
 
