@@ -70,11 +70,11 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     - [Pull Request 提交流程](#pull-request-提交流程)
     - [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
     - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
+    - [常用命令](#常用命令)
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
 - [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
-- [Github 常用命令行](https://docs.google.com/document/d/1slyV7ODvMs3QjfLkFpNCCO0e0BBlDF4MZdPc3yQO_RU)
 - 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
 
     为确保文档图片风格统一，建议使用 Figma 绘制图片。绘制图片时，请参考模板提供的图形元素和配色方案。
@@ -170,6 +170,19 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 ```bash
 ./scripts/markdownlint [FILE...]
 ```
+
+## 常用命令
+
+我们为 docs 和 docs-cn 仓库提前设置了一些命令语句，只要按照一定的格式在 PR 中留言输入就能触发相应操作。下表列出了现阶段较为常用的命令、含义及示例。
+
+| 命令 | 含义 | 示例 |
+| ------ | ------ | ------ |
+| /label | 给 PR 添加 label，多个 label 间需要用逗号分隔。 | `/label translation/doing` |
+| /unlabel | 删除 PR label。 | `/unlabel translation/welcome` |
+| /assign | 将 PR 分配给指定的人，需@指定用户的 Github ID，多个 Github ID 间用逗号分隔。 | `/assign @CharLotteiu` |
+| /unassign | 移除 PR 之前指定的 asignee。 | `/unassign @CharLotteiu` |
+| /cc | 将 PR 分配给指定的 reviewer。 | `/cc @TomShawn, @technical-reviewer` |
+| /uncc| 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
 
 ## 联系我们
 
