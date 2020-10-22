@@ -173,7 +173,7 @@ aliases: ['/docs-cn/v2.1/tidb-binlog/tidb-binlog-configuration-file/','/docs-cn/
 ### initial-commit-ts
 
 * 指定从哪个 commit timestamp 之后开始同步。这个配置仅适用于初次开始同步的 Drainer 节点。如果下游已经有 checkpoint 存在，则会根据 checkpoint 里记录的时间进行同步。
-* 默认：`-1`。Drainer 会从 PD 得到一个最新的 timestamp 作为初始时间。
+* 默认：`0`。Drainer 会从每个 pump 最老的时间点开始拉取数据。
 
 ### synced-check-time
 
