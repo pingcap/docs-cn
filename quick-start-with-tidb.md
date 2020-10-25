@@ -92,6 +92,10 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
     tiup clean --all
     ```
 
+> **注意：**
+>
+> TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问；若需要使服务可被外部访问，你可以通过 `--host` 参数指定监听 `0.0.0.0` 或网卡绑定外部可访问的 IP。
+
 ## 第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
 - 适用场景：希望用单台 Linux 服务器，体验 TiDB 最小的完整拓扑的集群，并模拟生产的部署步骤。
@@ -199,6 +203,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
        readpool.coprocessor.use-unified-pool: true
      pd:
        replication.enable-placement-rules: true
+       replication.location-labels: ["host"]
      tiflash:
        logger.level: "info"
 
@@ -212,14 +217,20 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
      - host: 10.0.1.1
        port: 20160
        status_port: 20180
+       config:
+         server.labels: { host: "logic-host-1" }
 
      - host: 10.0.1.1
        port: 20161
        status_port: 20181
+       config:
+         server.labels: { host: "logic-host-2" }
 
      - host: 10.0.1.1
        port: 20162
        status_port: 20182
+       config:
+         server.labels: { host: "logic-host-3" }
 
     tiflash_servers:
      - host: 10.0.1.1

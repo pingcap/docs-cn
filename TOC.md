@@ -111,9 +111,10 @@
     + [下推计算结果缓存](/coprocessor-cache.md)
   + SQL 性能调优
     + [SQL 性能调优概览](/sql-tuning-overview.md)
-    + [理解 TiDB 执行计划](/query-execution-plan.md)
-    + SQL 优化
-      + [SQL 优化流程简介](/sql-optimization-concepts.md)
+    + 理解 TiDB 执行计划
+      + [TiDB 执行计划概览](/explain-overview.md)
+    + SQL 优化流程
+      + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
         + [逻辑优化概览](/sql-logical-optimization.md)
         + [子查询相关的优化](/subquery-optimization.md)
@@ -131,11 +132,11 @@
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
       + [执行计划缓存](/sql-prepare-plan-cache.md)
-      + 控制执行计划
-        + [控制执行计划概览](/control-execution-plan.md)
-        + [Optimizer Hints](/optimizer-hints.md)
-        + [执行计划管理](/sql-plan-management.md)
-        + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
+    + 控制执行计划
+      + [控制执行计划概览](/control-execution-plan.md)
+      + [Optimizer Hints](/optimizer-hints.md)
+      + [执行计划管理](/sql-plan-management.md)
+      + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
@@ -381,6 +382,7 @@
       + [窗口函数](/functions-and-operators/window-functions.md)
       + [其它函数](/functions-and-operators/miscellaneous-functions.md)
       + [精度数学](/functions-and-operators/precision-math.md)
+      + [集合运算](/functions-and-operators/set-operators.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
@@ -450,6 +452,7 @@
       + [概况页面](/dashboard/dashboard-overview.md)
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
+      + [监控关系图](/dashboard/dashboard-metrics-relation.md)
       + SQL 语句分析
         + [列表页面](/dashboard/dashboard-statement-list.md)
         + [执行详情页面](/dashboard/dashboard-statement-details.md)
@@ -517,6 +520,7 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v4.0
+    - [4.0.7](/releases/release-4.0.7.md)
     - [4.0.6](/releases/release-4.0.6.md)
     - [4.0.5](/releases/release-4.0.5.md)
     - [4.0.4](/releases/release-4.0.4.md)
