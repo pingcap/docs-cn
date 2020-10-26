@@ -107,7 +107,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 `Batch_Point_get` 算子的执行信息和 `Point_Get` 算子类似，不过 `Batch_Point_Get` 一般向 TiKV 发送 `BatchGet` 类型的 RPC 请求来读取数据。
 
-- `BatchGet:{num_rpc:2, total_time:83.13µs}`：向 TiKV 发送 `BatchGet` 类型的 RPC 请求的数量（`num_rpc`）和所有 RPC 请求的总耗时（`total_time`）。
+`BatchGet:{num_rpc:2, total_time:83.13µs}`：向 TiKV 发送 `BatchGet` 类型的 RPC 请求的数量（`num_rpc`）和所有 RPC 请求的总耗时（`total_time`）。
 
 ### TableReader
 
