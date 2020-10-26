@@ -316,7 +316,7 @@ systemd 控制进程资源的相关配置。
     > **注意：**
     >
     > `path_realtime_mode` 只有 `tiflash_servers.data_dir` 配置了多个路径时才有做用。
-	>
+    >
     > path_realtime_mode:
     >   - "true" 除了第一个路径，其它的路径都可以用来保存老数据。
     >   - "false" 全部路径都可以用来保存老数据。
@@ -325,20 +325,20 @@ systemd 控制进程资源的相关配置。
     >
     > E.g, 如果你希望使用一个快速且容量较小的 NVMe SSD (256GB) 来加速 TiFlash 的 data ingestion， 
     > 另外使用 4 个一般的 SSDs (512GB) 做为存储。那么你的配置可以如下：
-	>
-	> ```
+    >
+    > ```
     > data_dir: /nvme_ssd_256/data,/ssd1_512/data,/ssd2_512/data,/ssd3_512/data,/ssd4_512/data
     > config:
     >   path_realtime_mode: true
-	> ```
+    > ```
     >
     > 如果你的第一个硬盘容量足够大，你可以如下配置来充分使用它：
-	>
+    >
     > ```
     > data_dir: /nvme_ssd_256/data,/ssd1_512/data,/ssd2_512/data,/ssd3_512/data,/ssd4_512/data
     > config:
     >   path_realtime_mode: false
-	> ```
+    > ```
 
 ### learner_config
 
