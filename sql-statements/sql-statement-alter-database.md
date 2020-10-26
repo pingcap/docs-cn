@@ -32,7 +32,7 @@ ALTER DATABASE test DEFAULT CHARACTER SET = utf8mb4;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/character-set-and-collation.md)。
+目前 TiDB 只支持部分的字符集和排序规则，详情参阅[字符集支持](/character-set-and-collation.md)。
 
 ## MySQL 兼容性
 
