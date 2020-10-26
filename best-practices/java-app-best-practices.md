@@ -255,8 +255,9 @@ MyBatis 的 Mapper 中支持两种参数：
 
 #### Streaming 结果
 
-前面介绍了在 JDBC 中如何使用流式读取结果，除了 JDBC 相应的配置外，在 MyBatis 中如果希望读取超大结果集合也需要注意：
+前面介绍了在 JDBC 中如何使用流式读取结果，在 MyBatis 中如果希望读取超大结果集合也需要注意：
 
+- 只在 JDBC 的 url 配置 defualtFetchSize ，对于 MyBatis 框架下使用的流式查询是无效的
 - 可以通过在 mapper 配置中对单独一条 SQL 设置 `fetchSize`（见上一段代码段），效果等同于调用 JDBC `setFetchSize`
 - 可以使用带 `ResultHandler` 的查询接口来避免一次获取整个结果集
 - 可以使用 `Cursor` 类来进行流式读取
