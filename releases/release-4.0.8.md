@@ -36,7 +36,12 @@ TiDB 版本：4.0.8
 
 + TiFlash
 
-    - 
+    - 添加关于 Raft log 的监控
+    - 添加关于 cop 任务内存使用的监控
+    - 在存在删除数据的情况下使 min-max 索引更加准确
+    - 提高小批量数据下的查询性能
+    - 支持 CAST 函数下推
+    - 添加 error.toml 以支持标准错误码
 
 + Tools
 
@@ -78,7 +83,12 @@ TiDB 版本：4.0.8
 
 + TiFlash
 
-    - 
+    - 修复了日志信息中时间戳错误的问题
+    - 修复了使用多路径部署时错误的容量导致创建 TiFlash 副本失败的问题
+    - 修复了 TiFlash 重启后可能提示数据文件损坏的问题
+    - 修复了 TiFlash 崩溃后磁盘上可能残留损坏文件的问题
+    - 修复了一个 bug，曾导致：如果 proxy 不能赶上最新的 raft lease，那么在 wait index 期间 learner read 会占用大量时间
+    - 修复了一个 bug，曾导致：在重放过期 raft log 时，proxy 会向 kv 引擎写入大量的 region state 信息
 
 + Tools
 
