@@ -73,7 +73,7 @@ aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/
 
 ## 第 3 步：编辑初始化配置文件
 
-请根据不同的集群拓扑，编辑 TiUP 所需的集群初始化配置文件。
+请根据不同的集群拓扑，编辑 TiUP 所需的集群初始化配置文件，参考[拓扑文件描述](/tiup/tiup-cluster-topology.md)。
 
 这里举出常见的 6 种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，新建一个配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
 

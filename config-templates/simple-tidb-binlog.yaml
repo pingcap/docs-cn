@@ -30,6 +30,7 @@ pump_servers:
   - host: 10.0.1.3
 drainer_servers:
   - host: 10.0.1.12
+    commit_ts: -1
     config:
       syncer.db-type: "tidb"
       syncer.to.host: "10.0.1.12"

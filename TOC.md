@@ -25,6 +25,7 @@
   + [软硬件环境需求](/hardware-and-software-requirements.md)
   + [环境与系统配置检查](/check-before-deployment.md)
   + 配置拓扑结构
+    + [拓扑文件描述](/tiup/tiup-cluster-topology.md)
     + [最小部署拓扑结构](/minimal-deployment-topology.md)
     + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
