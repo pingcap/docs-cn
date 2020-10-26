@@ -12,60 +12,60 @@ TiDB 版本：4.0.8
 
 + TiDB
 
-    -
+    - 
 
 ## 优化提升
 
 + TiDB
 
-    -
+    - 
 
 + TiKV
 
-    -
+    - 
 
 + PD
 
-    -
+    - 
 
 + TiFlash
 
-    -
+    - 
 
 + Tools
 
     + Backup & Restore (BR)
 
-        -
+        - 
 
     + TiCDC
 
-        -
+        - 
 
 ## Bug 修复
 
 + TiDB
 
-    -
+    - 
 
 + TiKV
 
-    -
+    - 
 
 + PD
 
-    -
+    - 
 
 + TiFlash
 
-    -
+    - 
 
 + Tools
 
     + Backup & Restore (BR)
 
-        -
+        - 
 
     + TiCDC
 
-        -
+        - 
