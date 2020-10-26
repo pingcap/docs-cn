@@ -318,8 +318,9 @@ systemd 控制进程资源的相关配置。
     > `path_realtime_mode` 只有 `tiflash_servers.data_dir` 配置了多个路径时才有做用。
     >
     > path_realtime_mode:
-    >     - "true" 除了第一个路径，其它的路径都可以用来保存老数据。
-    >     - "false" 全部路径都可以用来保存老数据。
+	>
+    > - "true" 除了第一个路径，其它的路径都可以用来保存老数据。
+    > - "false" 全部路径都可以用来保存老数据。
     >
     > TiFlash 只使用第一个路径来存放新数据 (i.e. "delta")。 其它路径存放老数据。 (i.e. "stable". 此部分数据占大部分整体数据),
     >
