@@ -7,7 +7,7 @@ summary: 通过示例了解如何使用 EXPLAIN 分析执行计划。
 
 SQL 是一种声明性语言，因此用户无法根据 SQL 语句直接判断一条查询的执行是否有效率。用户首先要使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 语句查看当前的执行计划。
 
-以 [bikeshare 数据库示例（英文）](https://docs.pingcap.com/tidb/stable/import-example-data) 中的一个 SQL 语句为例，该语句统计 2017 年 7 月 1 日进行的旅行次数：
+以 [bikeshare 数据库示例（英文）](https://docs.pingcap.com/tidb/stable/import-example-data) 中的一个 SQL 语句为例，该语句统计了 2017 年 7 月 1 日的行程次数：
 
 {{< copyable "sql" >}}
 
@@ -32,9 +32,9 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 
 1. Coprocessor (TiKV) 读取整张 `trips` 表的数据，作为一次 `TableFullScan` 操作，再将读取到的行数据传递给 `Selection_19` 算子。`Selection_19` 算子仍在 TiKV 内。
 
-2. `Selection_19` 算子根据谓词 `WHERE start_date BETWEEN ..` 进行数据过滤。预计大约有 250 行数据满足该过滤条件（基于统计信息以及算子的执行逻辑估算而来）。`└─TableFullScan_18` 算子显示 `stats:pseudo`。执行 `ANALYZE TABLE trips` 后，预计的数字会更加准确。
+2. `Selection_19` 算子根据谓词 `WHERE start_date BETWEEN ..` 进行数据过滤。预计大约有 250 行数据满足该过滤条件（基于统计信息以及算子的执行逻辑估算而来）。`└─TableFullScan_18` 算子显示 `stats:pseudo`，表示该表没有实际统计信息，。执行 `ANALYZE TABLE trips` 收集统计信息后，预计的估算的数字会更加准确。
 
-3. `COUNT` 函数随后应用于满足过滤条件的行，这一过程也是在 TiKV (`cop[tikv]`) 中的 `StreamAgg_9` 算子内完成的。TiKV coprocessor 能理解一些 MySQL 内置函数，`COUNT` 是其中之一。TiKV coprocessor 还理解 `COUNT` 函数可安全应用于 Stream Aggregation 运算，尽管得到的结果并不有序。
+3. `COUNT` 函数随后应用于满足过滤条件的行，这一过程也是在 TiKV (`cop[tikv]`) 中的 `StreamAgg_9` 算子内完成的。TiKV coprocessor 能执行一些 MySQL 内置函数，`COUNT` 是其中之一：
 
 4. `StreamAgg_9` 算子执行的结果会被传递给 `TableReader_21` 算子（位于 TiDB 服务器内，即 `root` 任务）。执行计划结果表中 `estRows` 列上 `TableReader_21` 算子的值为 `1`，表示该算子将从每个访问的 TiKV Region 接收一行数据。这一请求过程的详情，可参阅 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)。
 
@@ -163,7 +163,7 @@ Query OK, 0 rows affected (2 min 10.23 sec)
 
 > **注意：**
 >
-> 你可通过执行 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin.md) 语句来查看 DDL 任务的进度。TiDB 中的默认值的设置较为保守，因此添加索引不会对生产环境下的负载造成太大影响。测试环境下，可以考虑调大 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 和 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) 的值。在参考系统上，将批处理大小设为 `10240`，将 worker count 并发度设置为 `32`，该系统可获得 10 倍的性能提升（较之使用默认值）。
+> 你可通过执行 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin.md) 语句来查看 DDL 任务的进度。TiDB 中的默认值的设置较为保守，因此添加索引不会对生产环境下的负载造成太大影响。测试环境下，可以考虑调大 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 和 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) 的值。在参照系统上，将批处理大小设为 `10240`，将 worker count 并发度设置为 `32`，该系统可获得 10 倍的性能提升（较之使用默认值）。
 
 添加索引后，可以使用 `EXPLAIN` 重复该查询。在以下返回结果中，可见 TiDB 选择了新的执行计划，而且不再使用 `TableFullScan` 和 `Selection` 算子。
 
