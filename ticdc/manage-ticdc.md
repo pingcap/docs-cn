@@ -667,7 +667,7 @@ sync-ddl = true
 
 + `--cyclic-replica-id`：用于指定为上游集群的写入指定来源 ID，需要确保每个集群 ID 的唯一性。
 + `--cyclic-filter-replica-ids`：用于指定需要过滤的写入来源 ID，通常为下游集群的 ID。
-+ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游，只能在一个集群的 CDC 上开启 DDL 同步。
++ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游。
 
 环形同步任务创建步骤如下：
 
