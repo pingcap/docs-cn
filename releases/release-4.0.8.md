@@ -14,6 +14,10 @@ TiDB 版本：4.0.8
 
     - 
 
++ TiFlash
+
+    - 支持 CAST 函数下推
+
 + Tools
 
     + TiCDC
@@ -28,7 +32,8 @@ TiDB 版本：4.0.8
 
 + TiKV
 
-    - 
+    - 添加 Fast-Tune 监控页辅助性能诊断 [#8804](https://github.com/tikv/tikv/pull/8804)
+    - 添加 `security.redact-info-log` 配置，用于从日志中删除用户数据 [#8746](https://github.com/tikv/tikv/pull/8746)
 
 + PD
 
@@ -40,7 +45,6 @@ TiDB 版本：4.0.8
     - 添加关于 cop 任务内存使用的监控
     - 在存在删除数据的情况下使 min-max 索引更加准确
     - 提高小批量数据下的查询性能
-    - 支持 CAST 函数下推
     - 添加 error.toml 以支持标准错误码
 
 + Tools
@@ -75,7 +79,9 @@ TiDB 版本：4.0.8
 
 + TiKV
 
-    - 
+    - 修复加密功能中锁冲突导致 pd-worker 处理心跳慢的问题 [#8869](https://github.com/tikv/tikv/pull/8869)
+    - 修复生成 memory profile 的问题 [#8790](https://github.com/tikv/tikv/pull/8790)
+    - 修正备份时指定 GCS 储存类别 (storage class) 报错的问题 [#8763](https://github.com/tikv/tikv/pull/8763)
 
 + PD
 
@@ -87,8 +93,8 @@ TiDB 版本：4.0.8
     - 修复了使用多路径部署时错误的容量导致创建 TiFlash 副本失败的问题
     - 修复了 TiFlash 重启后可能提示数据文件损坏的问题
     - 修复了 TiFlash 崩溃后磁盘上可能残留损坏文件的问题
-    - 修复了一个 bug，曾导致：如果 proxy 不能赶上最新的 raft lease，那么在 wait index 期间 learner read 会占用大量时间
-    - 修复了一个 bug，曾导致：在重放过期 raft log 时，proxy 会向 kv 引擎写入大量的 region state 信息
+    - 修复了在写流量较小情况下，由于 raft learner 协议中的状态不能及时更新而导致 wait index duration 变长，造成查询慢的问题
+    - 修复了在重放过期 raft log 时，proxy 会向 kv 引擎写入大量 region state 信息的问题
 
 + Tools
 
