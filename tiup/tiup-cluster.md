@@ -97,6 +97,22 @@ monitoring_servers:
   - host: 172.16.5.134
 ```
 
+TiUP 默认部署在 amd64 架构上运行的 binary，若目标机器为 arm64 架构，可以在拓扑文件中进行配置：
+
+```yaml
+global:
+  arch: "arm64"           # 让所有机器默认使用 arm64 的 binary
+ 
+tidb_servers:
+  - host: 172.16.5.134
+    arch: "amd64"         # 这台机器会使用 amd64 的 binary
+  - host: 172.16.5.139
+    arch: "arm64"         # 这台机器会使用 arm64 的 binary
+  - host: 172.16.5.140    # 没有配置 arch 字段的机器，会使用 global 中的默认值，这个例子中是 arm64
+  
+...
+```
+
 假如我们想要使用 TiDB 的 v3.0.12 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
