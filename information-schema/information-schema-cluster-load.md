@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_LOAD
 summary: 了解 information_schema 表 `CLUSTER_LOAD`。
-aliases: ['/docs-cn/stable/system-tables/system-table-cluster-load/','/docs-cn/v4.0/system-tables/system-table-cluster-load/','/docs-cn/stable/reference/system-databases/cluster-load/','/zh/tidb/stable/system-table-cluster-load/']
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-load/','/docs-cn/v4.0/system-tables/system-table-cluster-load/','/docs-cn/stable/reference/system-databases/cluster-load/','/zh/tidb/stable/system-table-cluster-load/','/docs-cn/v4.0/reference/system-databases/cluster-load/']
 ---
 
 # CLUSTER_LOAD
