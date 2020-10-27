@@ -1,13 +1,14 @@
 ---
-title: 理解 TiDB 执行计划
+title: EXPLAIN 概览
+summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划。
 aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/','/docs-cn/dev/index-merge/','/docs-cn/dev/reference/performance/index-merge/','/zh/tidb/dev/query-execution-plan/']
 ---
 
-# 理解 TiDB 执行计划
+# `EXPLAIN` 概览
 
 TiDB 优化器会根据当前数据表的最新的统计信息来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中的执行计划。
 
-## EXPLAIN 简介
+## `EXPLAIN` 简介
 
 TiDB 中可以使用 `EXPLAIN` 命令来查看执行计划，`EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
 
@@ -148,7 +149,7 @@ mysql> explain select * from t where a > 1 or b >100;
 
 #### IndexMerge 示例
 
-IndexMerge 是在 TiDB 4.0 引入的一种对表的新访问方式。在 IndexMerge 访问方式下，优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行合并。在某些场景下，这种访问方式能够减少大量不必要的数据扫描，提升查询的执行效率。
+`IndexMerge` 是 TiDB v4.0 中引入的一种对表的新访问方式。在这种访问方式下，TiDB 优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行合并。在某些场景下，这种访问方式能够减少大量不必要的数据扫描，提升查询的执行效率。
 
 ```
 mysql> explain select * from t where a = 1 or b = 1;
@@ -171,19 +172,20 @@ mysql> explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 +--------------------------------+---------+-----------+-------------------------+------------------------------------------------+
 ```
 
-比如在上面给出的样例中，在未使用 IndexMerge 前，由于查询的过滤条件是一个通过 `OR` 连接的表达式，我们在只能对每张表使用一个索引的限制下，无法将 `a = 1` 下推到索引 `a` 上，或将 `b = 1` 下推到索引 `b` 上，这样当 `t` 的数据量很大时，全表扫描的效率会很低，但这条查询最多却只会返回两行记录。针对这类场景，TiDB 引入了对表的新访问方式 IndexMerge。
+例如，在上述示例中，过滤条件是使用 `OR` 条件连接的 `WHERE` 子句。在启用 `IndexMerge` 前，每个表只能使用一个索引，不能将 `a = 1` 下推到索引 `a`，也不能将 `b = 1` 下推到索引 `b`。当 `t` 中存在大量数据时，全表扫描的效率会很低。针对这类场景，TiDB 引入了对表的新访问方式 `IndexMerge`。
 
-在 IndexMerge 访问方式下，优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行集合并操作，生成上图中后一个 IndexMerge 的执行计划。这里 `IndexMerge_16` 算子有三个孩子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 RowID，再由 `TableRowIDScan_15` 算子根据这些 RowID 精确地读取所有满足条件的数据。
+在 `IndexMerge` 访问方式下，优化器可以选择对一张表使用多个索引，并将每个索引的返回结果进行合并，生成以上示例中后一个 `IndexMerge` 的执行计划。此时的 `IndexMerge_16` 算子有三个子节点，其中 `IndexRangeScan_13` 和 `IndexRangeScan_14` 根据范围扫描得到符合条件的所有 `RowID`，再由 `TableRowIDScan_15` 算子根据这些 `RowID` 精确地读取所有满足条件的数据。
 
-其中对于 IndexRangeScan/TableRangeScan 一类按范围进行的扫表操作来说，explain 表中 operator info 列相比于其他扫表操作，多了被扫描数据的范围这一信息。如在上面的例子中，IndexRangeScan 算子中的 `range:(1,+inf]` 这一信息表示该算子扫描了从 1 到正无穷这个范围的数据。
+其中对于 `IndexRangeScan`/`TableRangeScan` 一类按范围进行的扫表操作，`EXPLAIN` 表中 `operator info` 列相比于其他扫表操作，多了被扫描数据的范围这一信息。比如上面的例子中，`IndexRangeScan_13` 算子中的 `range:(1,+inf]` 这一信息表示该算子扫描了从 `1` 到正无穷这个范围的数据。
 
 > **注意：**
 >
-> 目前 TiDB 的 IndexMerge 特性在 4.0 RC 版本中默认关闭，同时 4.0 中的 IndexMerge 目前支持的场景仅限于析取范式（or 连接的表达式），对合取范式（and 连接的表达式）将在之后的版本中支持。
-> 开启 IndexMerge 特性的方法有两种：
+> 目前，TiDB 的 `IndexMerge` 特性在 TiDB 4.0.0-rc.1 版本中默认关闭。同时 4.0 版本中的 `IndexMerge` 目前支持的场景仅限于析取范式（`or` 连接的表达式），暂不支持合取范式（`and` 连接的表达式）。开启 `IndexMerge` 特性有以下方法：
 >
-> - 设置系统变量 `tidb_enable_index_merge` 为 1；
-> - 在查询中使用 SQL Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-)；注意：SQL Hint 的优先级高于系统变量。
+> - 设置系统变量 `tidb_enable_index_merge` 为 1
+> - 在查询中使用 SQL Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-)
+>
+> SQL Hint 的优先级高于系统变量。
 
 ### 如何阅读聚合的执行计划
 

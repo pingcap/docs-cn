@@ -191,7 +191,7 @@ URI 中可配置的的参数如下：
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
-| `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
+| `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
@@ -630,7 +630,7 @@ dispatchers = [
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
 ]
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 default 和 canal 两种协议。default 为 TiCDC Open Protocol
+# 目前支持 default、canal、avro 和 maxwell 四种协议。default 为 TiCDC Open Protocol
 protocol = "default"
 
 [cyclic-replication]
@@ -667,7 +667,7 @@ sync-ddl = true
 
 + `--cyclic-replica-id`：用于指定为上游集群的写入指定来源 ID，需要确保每个集群 ID 的唯一性。
 + `--cyclic-filter-replica-ids`：用于指定需要过滤的写入来源 ID，通常为下游集群的 ID。
-+ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游，只能在一个集群的 CDC 上开启 DDL 同步。
++ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游。
 
 环形同步任务创建步骤如下：
 
