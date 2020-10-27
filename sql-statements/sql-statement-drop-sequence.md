@@ -1,7 +1,7 @@
 ---
 title: DROP SEQUENCE
 summary: TiDB 数据库中 DROP SEQUENCE 的使用概况。
-aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-sequence/','/docs-cn/v4.0/sql-statements/sql-statement-drop-sequence/','/docs-cn/stable/reference/sql/statements/drop-sequence/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-sequence/','/docs-cn/v4.0/sql-statements/sql-statement-drop-sequence/','/docs-cn/stable/reference/sql/statements/drop-sequence/','/docs-cn/v4.0/reference/sql/statements/drop-sequence/']
 ---
 
 # DROP SEQUENCE
