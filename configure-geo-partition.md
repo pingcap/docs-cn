@@ -52,8 +52,8 @@ ALTER TABLE table_name ALTER PARTITION partition_name
 
 ```sql
 ALTER TABLE user ALTER PARTITION p0
-	ADD PLACEMENT POLICY CONSTRAINTS="[+zone=sh]" ROLE=follower REPLICAS=1
-	ADD PLACEMENT POLICY CONSTRAINTS="[+zone=gz]" ROLE=follower REPLICAS=1;
+	ADD PLACEMENT POLICY CONSTRAINTS='["+zone=sh"]' ROLE=follower REPLICAS=1,
+	ADD PLACEMENT POLICY CONSTRAINTS='["+zone=gz"]' ROLE=follower REPLICAS=1;
 ```
 
 该语句使 `sh` 和 `gz` 各新增一个 follower 副本。
@@ -72,8 +72,8 @@ ALTER TABLE table_name ALTER PARTITION partition_name
 
 ```sql
 ALTER TABLE user ALTER PARTITION p0
-	ADD PLACEMENT POLICY CONSTRAINTS="[+zone=sh]" ROLE=voter REPLICAS=2,
-	ALTER PLACEMENT POLICY CONSTRAINTS="[+zone=bj]" ROLE=voter REPLICAS=3;
+	ADD PLACEMENT POLICY CONSTRAINTS='["+zone=sh"]' ROLE=voter REPLICAS=2,
+	ALTER PLACEMENT POLICY CONSTRAINTS='["+zone=bj"]' ROLE=voter REPLICAS=3;
 ```
 
 假设 `p0` 原先有 3 个副本。第一条子句给 `p0` 再增加 2 个 `voter` 副本，随后第二条子句将 `voter` 副本的数量覆盖为 3，并且更改了 `CONSTRAINTS`。最终，分区 `p0` 有 3 个副本，并且全部在 `bj`。
@@ -108,9 +108,9 @@ labels = "zone=bj,rack=rack0,disk=hdd"
 
 那么 `CONSTRAINTS` 中就可以使用 `zone`、`rack`、`disk` 这 3 种 label。例如 `+zone=bj` 匹配该 store，而 `+disk=ssd` 不匹配该 store。
 
-`count` 是受限制的副本数量，无论前缀是 `+` 还是 `-` 都有意义。例如 `{"+zone=sh":1,"-zone=bj":2}"` 指把 1 个副本调度到 `sh` 上，2 个副本调度到除了 `bj` 以外的 store 上。
+`count` 是受限制的副本数量，无论前缀是 `+` 还是 `-` 都有意义。例如 `{"+zone=sh":1,"-zone=bj":2}` 指把 1 个副本调度到 `sh` 上，2 个副本调度到除了 `bj` 以外的 store 上。
 
-只有字典格式有 `count`，数组格式没有 `count`，副本的总数受 `REPLICAS` 限制。例如 `CONSTRAINTS="['+zone=sh','+zone=bj']" REPLICAS=3` 指把 3 个副本放在 `sh` 或 `bj`。
+只有字典格式有 `count`，数组格式没有 `count`，副本的总数受 `REPLICAS` 限制。例如 `CONSTRAINTS='["+zone=sh","+zone=bj"]' REPLICAS=3` 指把 3 个副本放在 `sh` 或 `bj`。
 
 ### ROLE 配置
 
@@ -125,8 +125,8 @@ labels = "zone=bj,rack=rack0,disk=hdd"
 
 ```sql
 ALTER TABLE user ALTER PARTITION p0
-	ADD PLACEMENT POLICY CONSTRAINTS="['+zone=bj']" ROLE=follower REPLICAS=2,
-	ALTER PLACEMENT POLICY CONSTRAINTS="['+zone=sh']" ROLE=voter REPLICAS=3;
+	ADD PLACEMENT POLICY CONSTRAINTS='["+zone=bj"]' ROLE=follower REPLICAS=2,
+	ALTER PLACEMENT POLICY CONSTRAINTS='["+zone=sh"]' ROLE=voter REPLICAS=3;
 ```
 
 在这条 SQL 中，分区 `p0` 有 5 个副本，其中 2 个在 `bj`，3 个在 `sh`。Leader 只能在 `sh`。
@@ -135,9 +135,9 @@ ALTER TABLE user ALTER PARTITION p0
 
 `REPLICAS` 选项定义特定副本角色的个数。
 
-Leader 可以省略 `REPLICAS` 选项，因为 leader 的个数永远是 1。当 `CONSTRAINTS` 中定义了副本角色的个数，`REPLICAS` 选项也可以省略，因为总的副本数可以计算出来。例如，从 `CONSTRAINTS="{'+zone=bj':2,'+zone=sh':1}", ROLE=voter` 可以推断出 `REPLICAS` 是 3。
+Leader 可以省略 `REPLICAS` 选项，因为 leader 的个数永远是 1。当 `CONSTRAINTS` 中定义了副本角色的个数，`REPLICAS` 选项也可以省略，因为总的副本数可以计算出来。例如，从 `CONSTRAINTS='{"+zone=bj":2,"+zone=sh":1}', ROLE=voter` 可以推断出 `REPLICAS` 是 3。
 
-当 `REPLICAS` 和 `CONSTRAINTS` 中的 `count` 都出现的时候，`REPLICAS` 必须大于等于 `count` 之和，`REPLICAS` 多出来的副本可以放置在任意位置。例如，`CONSTRAINTS="{'+zone=bj':2,'+zone=sh':1}", ROLE=voter, REPLICAS=4`，该例子中，2 个副本在 `sh`，1 个副本在 `bj`，还剩余 1 个副本，它可以放置在任意位置，包括 `bj` 和 `sh`。
+当 `REPLICAS` 和 `CONSTRAINTS` 中的 `count` 都出现的时候，`REPLICAS` 必须大于等于 `count` 之和，`REPLICAS` 多出来的副本可以放置在任意位置。例如，`CONSTRAINTS='{"+zone=bj":2,"+zone=sh":1}', ROLE=voter, REPLICAS=4`，该例子中，2 个副本在 `sh`，1 个副本在 `bj`，还剩余 1 个副本，它可以放置在任意位置，包括 `bj` 和 `sh`。
 
 ### 注意事项
 
@@ -184,11 +184,11 @@ PARTITION BY RANGE(country_id) (
 
 ```sql
 ALTER TABLE user ALTER PARTITION chn
-	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS="['+zone=chn']";
+	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS='["+zone=chn"]';
 ALTER TABLE user ALTER PARTITION jpn
-	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS="['+zone=chn']";
+	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS='["+zone=chn"]';
 ALTER TABLE user ALTER PARTITION usa
-	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS="['+zone=usa']";
+	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS='["+zone=usa"]';
 ALTER TABLE user ALTER PARTITION can
-	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS="['+zone=usa']";
+	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS='["+zone=usa"]';
 ```
