@@ -34,6 +34,9 @@ TiDB 版本：4.0.8
 
     - 添加 Fast-Tune 监控页辅助性能诊断 [#8804](https://github.com/tikv/tikv/pull/8804)
     - 添加 `security.redact-info-log` 配置，用于从日志中删除用户数据 [#8746](https://github.com/tikv/tikv/pull/8746)
+    - 修改 error code meta file 的格式 [#8877](https://github.com/tikv/tikv/pull/8877)
+    - 开启动态修改 `pessimistic-txn.pipelined` [#8853](https://github.com/tikv/tikv/pull/8853)
+    - 默认开启 memory profile 功能 [#8801](https://github.com/tikv/tikv/pull/8801)
 
 + PD
 
@@ -82,6 +85,7 @@ TiDB 版本：4.0.8
     - 修复加密功能中锁冲突导致 pd-worker 处理心跳慢的问题 [#8869](https://github.com/tikv/tikv/pull/8869)
     - 修复生成 memory profile 的问题 [#8790](https://github.com/tikv/tikv/pull/8790)
     - 修正备份时指定 GCS 储存类别 (storage class) 报错的问题 [#8763](https://github.com/tikv/tikv/pull/8763)
+    - 修复了重启或者新 split 的 learner 节点找不到 leader 的问题 [#8864](https://github.com/tikv/tikv/pull/8864)
 
 + PD
 
