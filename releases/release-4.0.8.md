@@ -32,24 +32,24 @@ TiDB 版本：4.0.8
 
 + TiKV
 
-    - 添加 Fast-Tune 监控页辅助性能诊断 [#8804](https://github.com/tikv/tikv/pull/8804)
+    - 添加 **Fast-Tune** 监控页辅助性能诊断 [#8804](https://github.com/tikv/tikv/pull/8804)
     - 添加 `security.redact-info-log` 配置，用于从日志中删除用户数据 [#8746](https://github.com/tikv/tikv/pull/8746)
-    - 修改 error code meta file 的格式 [#8877](https://github.com/tikv/tikv/pull/8877)
-    - 开启动态修改 `pessimistic-txn.pipelined` [#8853](https://github.com/tikv/tikv/pull/8853)
+    - 修改 error code 的 metafile 格式 [#8877](https://github.com/tikv/tikv/pull/8877)
+    - 开启动态修改 `pessimistic-txn.pipelined` 配置 [#8853](https://github.com/tikv/tikv/pull/8853)
     - 默认开启 memory profile 功能 [#8801](https://github.com/tikv/tikv/pull/8801)
 
 + PD
 
     - 修改 error code meta file 的格式 [#3090](https://github.com/pingcap/pd/pull/3090)
-    - 针对 operator 日志，添加了更多有用信息 [#3009](https://github.com/pingcap/pd/pull/3009)
+    - 为 operator 日志添加更多有用信息 [#3009](https://github.com/pingcap/pd/pull/3009)
 
 + TiFlash
 
     - 添加关于 Raft log 的监控
-    - 添加关于 cop 任务内存使用的监控
+    - 添加关于 `cop` 任务内存使用的监控
     - 在存在删除数据的情况下使 min-max 索引更加准确
     - 提高小批量数据下的查询性能
-    - 添加 error.toml 以支持标准错误码
+    - 添加 `error.toml` 文件以支持标准错误码
 
 + Tools
 
@@ -61,19 +61,19 @@ TiDB 版本：4.0.8
 
     + TiCDC
 
-        - 在 MySQL 中定期输出统计信息 [#1023](https://github.com/pingcap/ticdc/pull/1023)
+        - 在 MySQL sink 中定期输出统计信息 [#1023](https://github.com/pingcap/ticdc/pull/1023)
 
     + Dumpling
 
         - 支持导出 S3 [#155](https://github.com/pingcap/dumpling/pull/155)
-        - 支持导出 View [#158](https://github.com/pingcap/dumpling/pull/158)
+        - 支持导出 View 视图 [#158](https://github.com/pingcap/dumpling/pull/158)
         - 支持导出全是生成列的数据表 [#166](https://github.com/pingcap/dumpling/pull/166)
 
     + TiDB Lightning
 
-        - 支持多字节的 csv delimiter 和 separator [#406](https://github.com/pingcap/tidb-lightning/pull/406)
+        - 支持多字节的 CSV delimiter 和 separator [#406](https://github.com/pingcap/tidb-lightning/pull/406)
         - 通过禁止一些 PD 调度器加速导入 [#408](https://github.com/pingcap/tidb-lightning/pull/408)
-        - 在 v4.0 集群上使用 GC TTL 接口来防止 checksum 阶段的 GC 报错 [#396](https://github.com/pingcap/tidb-lightning/pull/396)
+        - 在 v4.0 集群上使用 GC-TTL 接口来防止 checksum 阶段的 GC 报错 [#396](https://github.com/pingcap/tidb-lightning/pull/396)
 
 ## Bug 修复
 
@@ -85,8 +85,8 @@ TiDB 版本：4.0.8
 
     - 修复加密功能中锁冲突导致 pd-worker 处理心跳慢的问题 [#8869](https://github.com/tikv/tikv/pull/8869)
     - 修复生成 memory profile 的问题 [#8790](https://github.com/tikv/tikv/pull/8790)
-    - 修正备份时指定 GCS 储存类别 (storage class) 报错的问题 [#8763](https://github.com/tikv/tikv/pull/8763)
-    - 修复了重启或者新 split 的 learner 节点找不到 leader 的问题 [#8864](https://github.com/tikv/tikv/pull/8864)
+    - 修复备份时指定 GCS 储存类别 (storage class) 报错的问题 [#8763](https://github.com/tikv/tikv/pull/8763)
+    - 修复了重启或者新切分的 Learner 节点找不到 Leader 的问题 [#8864](https://github.com/tikv/tikv/pull/8864)
 
 + PD
 
@@ -99,8 +99,8 @@ TiDB 版本：4.0.8
     - 修复了使用多路径部署时错误的容量导致创建 TiFlash 副本失败的问题
     - 修复了 TiFlash 重启后可能提示数据文件损坏的问题
     - 修复了 TiFlash 崩溃后磁盘上可能残留损坏文件的问题
-    - 修复了在写流量较小情况下，由于 raft learner 协议中的状态不能及时更新而导致 wait index duration 变长，造成查询慢的问题
-    - 修复了在重放过期 raft log 时，proxy 会向 kv 引擎写入大量 Region state 信息的问题
+    - 修复了在写流量较小情况下，由于 Raft Learner 协议中的状态不能及时更新而导致 `wait index duration` 变长，造成查询慢的问题
+    - 修复了在重放过期 Raft 日志时，proxy 会向 key-value 引擎写入大量 Region state 信息的问题
 
 + Tools
 
@@ -110,11 +110,11 @@ TiDB 版本：4.0.8
 
     + TiCDC
 
-        - 解决 owner 因更新 GC safe point 失败而非预期退出 [#979](https://github.com/pingcap/ticdc/pull/979)
-        - 解决非预期的任务信息更新 [#1017](https://github.com/pingcap/ticdc/pull/1017)
-        - 解决非预期的空 Maxwell 消息 [#978](https://github.com/pingcap/ticdc/pull/978)
+        - 修复 owner 因更新 GC safepoint 失败而非预期退出的问题 [#979](https://github.com/pingcap/ticdc/pull/979)
+        - 修复非预期的任务信息更新 [#1017](https://github.com/pingcap/ticdc/pull/1017)
+        - 修复非预期的空 Maxwell 消息 [#978](https://github.com/pingcap/ticdc/pull/978)
 
     + TiDB Lightning
 
-        - 解决 column 信息错误的问题 [#420](https://github.com/pingcap/tidb-lightning/pull/420)
-        - 解决 local 模式下获取 Region 信息的死循环 [#418](https://github.com/pingcap/tidb-lightning/pull/418)
+        - 修复列信息错误的问题 [#420](https://github.com/pingcap/tidb-lightning/pull/420)
+        - 修复 Local 模式下获取 Region 信息出现死循环的问题 [#418](https://github.com/pingcap/tidb-lightning/pull/418)
