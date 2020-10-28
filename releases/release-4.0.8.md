@@ -12,7 +12,7 @@ TiDB 版本：4.0.8
 
 + TiDB
 
-    - 
+    - 新增聚合函数 `APPROX_PERCENTILE` [#20197](https://github.com/pingcap/tidb/pull/20197)
 
 + TiFlash
 
@@ -28,7 +28,22 @@ TiDB 版本：4.0.8
 
 + TiDB
 
-    - 
+    - 在挑选索引组合计算表达式选择率的贪心算法里优先使用选择率低的索引 [#20154](https://github.com/pingcap/tidb/pull/20154)
+    - 在 Coprocessor 运行状态中记录更多的 RPC 信息 [#19264](https://github.com/pingcap/tidb/pull/19264)
+    - 优化读取慢日志的效率，以提升慢查询性能 [#20556](https://github.com/pingcap/tidb/pull/20556)
+    - 在挑选执行计划时，优化器会在 Plan Binding 阶段等待超时的执行计划以记录更多的 Debug 信息 [#20530](https://github.com/pingcap/tidb/pull/20530)
+    - 在慢查询和慢日志中增加语句的重试时间 [#20495](https://github.com/pingcap/tidb/pull/20495)
+    - 在慢查询和慢日志中增加语句的重试时间 [#20494](https://github.com/pingcap/tidb/pull/20494)
+    - 增加系统表 `table_storage_stats` [#20431](https://github.com/pingcap/tidb/pull/20431)
+    - 为 `INSERT`/`UPDATE`/`REPLACE` 语句记录 RPC 相关的运行时信息 [#20430](https://github.com/pingcap/tidb/pull/20430)
+    - 在 `EXPLAIN FOR CONNECTION` 语句的结果中新增 Executor 信息 [#20384](https://github.com/pingcap/tidb/pull/20384)
+    - 在 TiDB 日志中将客户端的连接建立/断开日志级别调整为 DEBUG [#20321](https://github.com/pingcap/tidb/pull/20321)
+    - 增加 Coprocessor Cache 的监控信息 [#20293](https://github.com/pingcap/tidb/pull/20293)
+    - 为运行时信息中记录更多的悲观锁相关参数 [#20199](https://github.com/pingcap/tidb/pull/20199)
+    - 为运行时信息和 Trace 功能中增加两个新的耗时信息 [#20187](https://github.com/pingcap/tidb/pull/20187)
+    - 在慢日志中添加事务提交的运行时信息 [#20185](https://github.com/pingcap/tidb/pull/20185)
+    - 关闭 Index Merge Join [#20599](https://github.com/pingcap/tidb/pull/20599)
+    - 为临时字符串常量增加 ISO 8601 和时区支持 [#20670](https://github.com/pingcap/tidb/pull/20670)
 
 + TiKV
 
@@ -79,7 +94,29 @@ TiDB 版本：4.0.8
 
 + TiDB
 
-    - 
+    - 修复使用分区表时，可能遇到非预期 Panic 的问题 [#20565](https://github.com/pingcap/tidb/pull/20565)
+    - 修复外连接时，若外表有过滤条件，Index Merge Join 结果有时不正确的问题 [#20427](https://github.com/pingcap/tidb/pull/20427)
+    - 修复 BIT 类型进行转换时，由于类型长度溢出而错误地返回 NULL 的问题 [#20363](https://github.com/pingcap/tidb/pull/20363)
+    - 修复 ALTER TABLE ... 语法改变 BIT 类型的默认值，可能导致默认值错误的问题 [#20340](https://github.com/pingcap/tidb/pull/20340)
+    - 修复 BIT 类型转换为 INT64 时可能导致长度溢出错误的问题 [#20312](https://github.com/pingcap/tidb/pull/20312)
+    - 修复列的条件传播优化遇到混合类型条件时，可能出错的问题 [#20297](https://github.com/pingcap/tidb/pull/20297)
+    - 修复 Plan Cache 在存储过期执行计划时，可能 Panic 的问题 [#20246](https://github.com/pingcap/tidb/pull/20246)
+    - 修复 `FROM_UNIXTIME` 和 `UNION ALL` 一起使用时，返回结果会被错误地截断的问题 [#20240](https://github.com/pingcap/tidb/pull/20240)
+    - 修复 Enum 类型在转换为 Float 类型时可能导致错误结果的问题 [#20235](https://github.com/pingcap/tidb/pull/20235)
+    - 修复 RegionStore 在某些条件下会 Panic 的问题 [#20210](https://github.com/pingcap/tidb/pull/20210)
+    - 修复 BatchPointGet 请求对无符号整数的最大值进行排序时，结果错误的问题 [#20205](https://github.com/pingcap/tidb/pull/20205)
+    - 修复 ENUM/SET 类型在混合 Collation 的类型判定时，结果 Collation 可能与 MySQL 不兼容的问题 [#20364](https://github.com/pingcap/tidb/pull/20364)
+    - 修复将其他类型的 `0` 转换为 YEAR 类型时，结果与 MySQL 不兼容的问题 [#20292](https://github.com/pingcap/tidb/pull/20292)
+    - 修复 'KV Duration' 监控指标中包含 'store0' 时，上报结果不正确的问题 [#20260](https://github.com/pingcap/tidb/pull/20260)
+    - 修复写入 FLOAT 类型数据时，由于长度溢出提示 'out of range' 错误后仍然被错误地写入问题 [#20252](https://github.com/pingcap/tidb/pull/20252)
+    - 修复 'NOT NULL' 属性生成列允许在某些情况下写入 NULL 值的问题 [#20216](https://github.com/pingcap/tidb/pull/20216)
+    - 修复 YEAR 类型数据写入超过允许范围时，错误提示不准确的问题 [#20170](https://github.com/pingcap/tidb/pull/20170)
+    - 修复某些情况下悲观事务重试时，会报错 'invalid auto-id' 的问题 [#20134](https://github.com/pingcap/tidb/pull/20134)
+    - 修复 `ALTER TALBE` 更改 ENUM/SET 类型时，未进行重复性约束检查的问题 [#20046](https://github.com/pingcap/tidb/pull/20046)
+    - 修复一些算子在并发执行时，记录的 Coprocessor Task 运行时信息错误的问题 [#19947](https://github.com/pingcap/tidb/pull/19947)
+    - 修复只读系统变量无法被作为 Session 级变量显式 SELECT 的问题 [#19944](https://github.com/pingcap/tidb/pull/19944)
+    - 修复重复 Order By 条件有时会导致执行计划选择不是最优的问题 [#20333](https://github.com/pingcap/tidb/pull/20333)
+    - 修复生成 Metric Profile 时，由于字体超过允许的最大值导致失败的问题 [#20637](https://github.com/pingcap/tidb/pull/20637)
 
 + TiKV
 
