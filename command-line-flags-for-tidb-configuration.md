@@ -26,6 +26,16 @@ When you start the TiDB cluster, you can use command-line options or environment
 - Default: ""
 - If you have specified the configuration file, TiDB reads the configuration file. If the corresponding configuration also exists in the command line options, TiDB uses the configuration in the command line options to overwrite that in the configuration file. For detailed configuration information, see [TiDB Configuration File Description](/tidb-configuration-file.md).
 
+## `--config-check`
+
+- Checks the validity of the configuration file and exits
+- Default: false
+
+## `--config-strict`
+
+- Enforces the validity of the configuration file
+- Default: false
+
 ## `--cors`
 
 - Specifies the `Access-Control-Allow-Origin` value for Cross-Origin Request Sharing (CORS) request of the TiDB HTTP status service
@@ -48,6 +58,11 @@ When you start the TiDB cluster, you can use command-line options or environment
 - The log level
 - Default: "info"
 - You can choose from "debug", "info", "warn", "error", or "fatal".
+
+## `--lease`
+
+- The duration of the schema lease. It is **dangerous** to change the value unless you know what you do.
+- Default: 45s
 
 ## `--log-file`
 
