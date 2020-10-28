@@ -936,12 +936,11 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION
 - 默认值：0
-- 这个变量用来设置优化器总是偏好索引扫描而不是全表扫描。
-
-- 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后， 优化器选择了索引扫描。
+- 将该变量值设为 `1` 后，优化器总是偏好索引扫描而不是全表扫描。 
+- 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引扫描。
 
 ```sql
-tidb> explain select * from t where age=5;
+explain select * from t where age=5;
 +-------------------------+------------+-----------+---------------+-------------------+
 | id                      | estRows    | task      | access object | operator info     |
 +-------------------------+------------+-----------+---------------+-------------------+
@@ -951,9 +950,9 @@ tidb> explain select * from t where age=5;
 +-------------------------+------------+-----------+---------------+-------------------+
 3 rows in set (0.00 sec)
 
-tidb> set session tidb_opt_prefer_range_scan = 1;
+set session tidb_opt_prefer_range_scan = 1;
 
-tidb> explain select * from t where age=5;
+explain select * from t where age=5;
 +-------------------------------+------------+-----------+-----------------------------+-------------------------------+
 | id                            | estRows    | task      | access object               | operator info                 |
 +-------------------------------+------------+-----------+-----------------------------+-------------------------------+
