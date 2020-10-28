@@ -12,11 +12,11 @@ TiDB 版本：4.0.8
 
 + TiDB
 
-    - 新增聚合函数 `APPROX_PERCENTILE` [#20197](https://github.com/pingcap/tidb/pull/20197)
+    - 支持聚合函数 `APPROX_PERCENTILE` [#20197](https://github.com/pingcap/tidb/pull/20197)
 
 + TiFlash
 
-    - 支持 CAST 函数下推
+    - 支持 `CAST` 函数下推
 
 + Tools
 
@@ -35,11 +35,11 @@ TiDB 版本：4.0.8
     - 在慢查询和慢日志中增加语句的重试时间 [#20495](https://github.com/pingcap/tidb/pull/20495) [#20494](https://github.com/pingcap/tidb/pull/20494)
     - 增加系统表 `table_storage_stats` [#20431](https://github.com/pingcap/tidb/pull/20431)
     - 为 `INSERT`/`UPDATE`/`REPLACE` 语句记录 RPC 相关的运行时信息 [#20430](https://github.com/pingcap/tidb/pull/20430)
-    - 在 `EXPLAIN FOR CONNECTION` 语句的结果中新增 Executor 信息 [#20384](https://github.com/pingcap/tidb/pull/20384)
-    - 在 TiDB 日志中将客户端的连接建立/断开日志级别调整为 DEBUG [#20321](https://github.com/pingcap/tidb/pull/20321)
+    - 在 `EXPLAIN FOR CONNECTION` 语句的结果中新增算子信息 [#20384](https://github.com/pingcap/tidb/pull/20384)
+    - 在 TiDB 日志中将客户端的连接建立/断开日志级别调整为 `DEBUG` [#20321](https://github.com/pingcap/tidb/pull/20321)
     - 增加 Coprocessor Cache 的监控信息 [#20293](https://github.com/pingcap/tidb/pull/20293)
-    - 为运行时信息中记录更多的悲观锁相关参数 [#20199](https://github.com/pingcap/tidb/pull/20199)
-    - 为运行时信息和 Trace 功能中增加两个新的耗时信息 [#20187](https://github.com/pingcap/tidb/pull/20187)
+    - 在运行时信息中记录更多的悲观锁相关参数 [#20199](https://github.com/pingcap/tidb/pull/20199)
+    - 在运行时信息和 Trace 功能中增加两个新的耗时信息 [#20187](https://github.com/pingcap/tidb/pull/20187)
     - 在慢日志中添加事务提交的运行时信息 [#20185](https://github.com/pingcap/tidb/pull/20185)
     - 关闭 Index Merge Join [#20599](https://github.com/pingcap/tidb/pull/20599)
     - 为临时字符串常量增加 ISO 8601 和时区支持 [#20670](https://github.com/pingcap/tidb/pull/20670)
