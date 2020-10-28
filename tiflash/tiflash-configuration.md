@@ -58,10 +58,12 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 
 [flash.proxy]
     addr = proxy 监听地址
-    advertise-addr = proxy 对外访问地址
+    advertise-addr = 外部访问 addr 的地址，不填则默认是 addr
     data-dir = proxy 数据存储路径
     config = proxy 配置文件路径
     log-file = proxy log 路径
+    status-addr = 拉取 proxy metrics｜status 信息的监听地址
+    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
 
 [logger]
     level = log 级别（支持 trace、debug、information、warning、error）
@@ -85,9 +87,12 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 
 ```toml
 [server]
-    engine-addr = tiflash coprocessor 服务监听地址
-    status-addr = Prometheus 拉取 proxy metrics 信息的 ip + 端口
+    engine-addr = 外部访问 tiflash coprocessor 服务的地址
+[raftstore]
+    snap-handle-pool-size = 控制处理 snapshot 的线程数，默认为 2，设为 0 则关闭多线程优化
+    store-batch-retry-recv-timeout = 控制 raft store 持久化 WAL 的最小间隔，通过适当增大延迟以减少 iops 占用，默认为 4ms，设为 0ms 则关闭该优化
 ```
+除以上几项外，其余功能参数和 tikv 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的项会覆盖 `tiflash-learner.toml` 中的重合参数；key 为 engine 的 label 是保留项，不可手动配置。
 
 ### 多盘部署
 
