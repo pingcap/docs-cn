@@ -931,3 +931,34 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_opt_prefer_range_scan`
+
+- 作用域：SESSION
+- 默认值：0
+- 将该变量值设为 `1` 后，优化器总是偏好索引扫描而不是全表扫描。 
+- 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引扫描。
+
+```sql
+explain select * from t where age=5;
++-------------------------+------------+-----------+---------------+-------------------+
+| id                      | estRows    | task      | access object | operator info     |
++-------------------------+------------+-----------+---------------+-------------------+
+| TableReader_7           | 1048576.00 | root      |               | data:Selection_6  |
+| └─Selection_6           | 1048576.00 | cop[tikv] |               | eq(test.t.age, 5) |
+|   └─TableFullScan_5     | 1048576.00 | cop[tikv] | table:t       | keep order:false  |
++-------------------------+------------+-----------+---------------+-------------------+
+3 rows in set (0.00 sec)
+
+set session tidb_opt_prefer_range_scan = 1;
+
+explain select * from t where age=5;
++-------------------------------+------------+-----------+-----------------------------+-------------------------------+
+| id                            | estRows    | task      | access object               | operator info                 |
++-------------------------------+------------+-----------+-----------------------------+-------------------------------+
+| IndexLookUp_7                 | 1048576.00 | root      |                             |                               |
+| ├─IndexRangeScan_5(Build)     | 1048576.00 | cop[tikv] | table:t, index:idx_age(age) | range:[5,5], keep order:false |
+| └─TableRowIDScan_6(Probe)     | 1048576.00 | cop[tikv] | table:t                     | keep order:false              |
++-------------------------------+------------+-----------+-----------------------------+-------------------------------+
+3 rows in set (0.00 sec)
+```
