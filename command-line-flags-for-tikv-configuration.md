@@ -36,7 +36,7 @@ TiKV supports some readable unit conversions for command line parameters.
 - The address through which TiKV accesses service status from outside.
 - Default: The value of `--status-addr` is used.
 - If the client cannot connect to TiKV through the `--status-addr` address because of Docker or NAT network, you must manually set the `--advertise-status-addr` address.
-- For example, the internal IP address of Docker is `172.17.0.1`, while the IP address of the host is `192.168.100.113` and the port mapping is set to `-p 20180:20180`. In this case, set `\-\-advertise-status-addr="192.168.100.113:20180"`. The client can find this service through `192.168.100.113:20180`.
+- For example, the internal IP address of Docker is `172.17.0.1`, while the IP address of the host is `192.168.100.113` and the port mapping is set to `-p 20180:20180`. In this case, set `--advertise-status-addr="192.168.100.113:20180"`. The client can find this service through `192.168.100.113:20180`.
 
 ## `-C, --config`
 
