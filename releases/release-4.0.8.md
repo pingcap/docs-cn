@@ -40,7 +40,8 @@ TiDB 版本：4.0.8
 
 + PD
 
-    - 
+    - 修改 error code meta file 的格式 [#3090](https://github.com/pingcap/pd/pull/3090)
+    - 针对 operator 日志，添加了更多有用信息 [#3009](https://github.com/pingcap/pd/pull/3009)
 
 + TiFlash
 
@@ -89,7 +90,8 @@ TiDB 版本：4.0.8
 
 + PD
 
-    - 
+    - 修复了 TiDB Dashboard 在某些场景下引起 PD panic 的错误 [#3096](https://github.com/pingcap/pd/pull/3096)
+    - 修复了当 TiKV down 超过 10 十分钟后可能引起 PD panic 的错误 [#3069](https://github.com/pingcap/pd/pull/3069)
 
 + TiFlash
 
@@ -98,7 +100,7 @@ TiDB 版本：4.0.8
     - 修复了 TiFlash 重启后可能提示数据文件损坏的问题
     - 修复了 TiFlash 崩溃后磁盘上可能残留损坏文件的问题
     - 修复了在写流量较小情况下，由于 raft learner 协议中的状态不能及时更新而导致 wait index duration 变长，造成查询慢的问题
-    - 修复了在重放过期 raft log 时，proxy 会向 kv 引擎写入大量 region state 信息的问题
+    - 修复了在重放过期 raft log 时，proxy 会向 kv 引擎写入大量 Region state 信息的问题
 
 + Tools
 
