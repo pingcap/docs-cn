@@ -40,7 +40,7 @@ TiDB 版本：4.0.8
 
 + PD
 
-    - 修改 error code meta file 的格式 [#3090](https://github.com/pingcap/pd/pull/3090)
+    - 生成 error 的 metafile [#3090](https://github.com/pingcap/pd/pull/3090)
     - 为 operator 日志添加更多有用信息 [#3009](https://github.com/pingcap/pd/pull/3009)
 
 + TiFlash
