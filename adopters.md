@@ -14,6 +14,7 @@ This is a list of TiDB adopters in various industries.
 |[PayPay](https://www.crunchbase.com/organization/paypay#section-overviewy)|Mobile Payment|[English](https://pingcap.com/case-studies/japan-largest-mobile-payment-company-migrates-from-aurora-to-a-scale-out-database); [Chinese](https://pingcap.com/cases-cn/user-case-paypay/)|
 |[Ping++](https://www.crunchbase.com/organization/ping-5)|Mobile Payment|[Chinese](https://pingcap.com/cases-cn/user-case-ping++/)|
 |[LianLian Tech](https://www.crunchbase.com/organization/lianlian-pay)|Mobile Payment||
+|[U-Next](https://www.crunchbase.com/organization/u-next)|Media and Entertainment|[English](https://pingcap.com/case-studies/running-a-scale-out-database-on-arm-as-mysql-alternative/); [Chinese](https://pingcap.com/cases-cn/user-case-unext/)|
 |[Dailymotion](https://en.wikipedia.org/wiki/Dailymotion)|Media and Entertainment||
 |[iQiyi](https://en.wikipedia.org/wiki/IQiyi)|Media and Entertainment|[English](https://pingcap.com/case-studies/tidb-in-iqiyi/); [Chinese](https://pingcap.com/cases-cn/user-case-iqiyi/)|
 |[BookMyShow](https://www.crunchbase.com/organization/bookmyshow)|Media and Entertainment|[English](https://pingcap.com/case-studies/tidb-in-bookmyshow/)|
