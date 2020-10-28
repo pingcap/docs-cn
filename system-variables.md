@@ -951,7 +951,7 @@ tidb> explain select * from t where age=5;
 +-------------------------+------------+-----------+---------------+-------------------+
 3 rows in set (0.00 sec)
 
-tidb> set session tidb_opt_prefer_range_scan=ON;
+tidb> set session tidb_opt_prefer_range_scan = 1;
 
 tidb> explain select * from t where age=5;
 +-------------------------------+------------+-----------+-----------------------------+-------------------------------+
