@@ -10,19 +10,19 @@ aliases: ['/docs-cn/dev/configure-geo-partition/']
 
 在跨地域部署的 TiDB 集群中，由于 TiDB 实例与 TiKV 实例分布在不同的地区，TiDB 常常需要跨地区访问数据，导致较高的延时。
 
-为了减少跨地区数据访问，可以人为地控制数据的位置，使得业务端离数据更近。为此，TiDB 5.0 提供了 Geo-Partition。用户把表进行分区，然后把分区和 TiKV 实例关联起来，以指导 PD 把该分区的数据调度到对应的 TiKV 实例上。
+为了减少跨地区数据访问，可以人为地控制数据的位置，使得数据离业务端更近。为此，TiDB 5.0 提供了 Geo-Partition。用户把表进行分区，然后把分区和 TiKV 实例关联起来，以指导 PD 把该分区的数据调度到对应的 TiKV 实例上。
 
 当场景同时满足以下条件时，推荐使用 Geo-Partition：
 
 - 对读或写延时要求高
 - 表内的数据与地域强关联
-- 表中有与地区相关的字段，通过该字段的值能计算出数据的放置位置
+- 表中有与地区相关的字段，通过该字段的值能指导数据放置的地理位置
 
-## 运作原理
+## 原理介绍
 
-TiDB 4.0 提供了 Placement Rules 功能，用户可以通过 Placement Rules 配置数据的副本数量、存放位置、主机类型等放置策略。
+TiDB 4.0 中，PD 组件内部提供了 [Placement Rules](/configure-placement-rules.md) 的功能，使得用户可以通过 Placement Rules 配置数据的副本数量、存放位置、主机类型等放置策略。
 
-TiDB 5.0 的 Geo-Partition 是在 Placement Rules 的基础上，提供了 SQL 接口，方便用户新增、更改、删除、查看分区的放置策略。用户在定义、更改分区的放置策略，或是执行分区相关的 DDL 语句时，TiDB 实例生成对应的 Placement Rules，并向 PD 发送更新请求。
+TiDB 5.0 的 Geo-Partition 是在 Placement Rules 的基础上，提供了 SQL 语法，方便用户新增、更改、删除、查看分区的放置策略。用户在定义、更改分区的放置策略，或是执行分区相关的 DDL 语句时，TiDB 实例生成对应的 Placement Rules，并向 PD 发送更新 Placement Rules 的请求。PD 根据用户在 SQL 语句配置的 Placement Rules 执行相应的数据放置策略。
 
 ## 使用方法
 
@@ -164,31 +164,25 @@ ALTER TABLE user ALTER PARTITION p0
 
 在使用 Geo-Partition 之前，需要先给 TiKV 实例打上代表数据中心的 label，例如 `zone=chn` 和 `zone=usa`。
 
-接下来把 `user` 表进行分区，使得单个分区内的所有用户都靠近同一个数据中心。例如按 `country_id` 字段进行分区。
+接下来把 `user` 表进行分区，使得单个分区内的所有用户都靠近同一个数据中心。例如按 `country` 字段进行分区：
 
 ```sql
 CREATE TABLE user (
 	id INT,
 	name varchar(100),
-	country_id INT
+	country varchar(100)
 )
-PARTITION BY RANGE(country_id) (
-	PARTITION chn VALUES LESS THAN(2),
-	PARTITION usa VALUES LESS THAN(3),
-	PARTITION jpn VALUES LESS THAN(4),
-	PARTITION can VALUES LESS THAN(5)
+PARTITION BY LIST COLUMNS(country) (
+	PARTITION east VALUES IN('china', 'japan', 'singapore'),
+	PARTITION west VALUES IN('usa', 'canada', 'england', 'france')
 );
 ```
 
-最后把分区 `chn` 和 `jpn` 的 leader 副本放置在中国数据中心，把 `usa` 和 `can` 的 leader 放置在美国数据中心：
+最后把分区 `east` 的 leader 副本放置在中国数据中心，把 `west` 的 leader 放置在美国数据中心：
 
 ```sql
-ALTER TABLE user ALTER PARTITION chn
+ALTER TABLE user ALTER PARTITION east
 	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS='["+zone=chn"]';
-ALTER TABLE user ALTER PARTITION jpn
-	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS='["+zone=chn"]';
-ALTER TABLE user ALTER PARTITION usa
-	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS='["+zone=usa"]';
-ALTER TABLE user ALTER PARTITION can
+ALTER TABLE user ALTER PARTITION west
 	ALTER PLACEMENT POLICY ROLE=leader CONSTRAINTS='["+zone=usa"]';
 ```
