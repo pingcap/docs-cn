@@ -91,7 +91,7 @@ TiDB 版本：4.0.8
 + PD
 
     - 修复了 TiDB Dashboard 在某些场景下引起 PD panic 的错误 [#3096](https://github.com/pingcap/pd/pull/3096)
-    - 修复了当 TiKV down 超过 10 十分钟后可能引起 PD panic 的错误 [#3069](https://github.com/pingcap/pd/pull/3069)
+    - 修复了某个 PD store 下线超过十分钟后可能引起 PD panic 的错误 [#3069](https://github.com/pingcap/pd/pull/3069)
 
 + TiFlash
 
