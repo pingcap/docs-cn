@@ -81,7 +81,7 @@ TiDB 版本：4.0.8
 
         - 支持直接导出数据到 S3 存储上 [#155](https://github.com/pingcap/dumpling/pull/155)
         - 支持导出 View 视图 [#158](https://github.com/pingcap/dumpling/pull/158)
-        - 支持导出全是生成列的数据表 [#166](https://github.com/pingcap/dumpling/pull/166)
+        - 支持导出只包含生成列的数据表 [#166](https://github.com/pingcap/dumpling/pull/166)
 
     + TiDB Lightning
 
