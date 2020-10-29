@@ -31,6 +31,38 @@ TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
 > - 除非另有说明，否则聚合函数默认忽略 `NULL` 值。
 > - 如果在不包含 `GROUP BY` 子句的语句中使用聚合函数，则相当于对所有行进行分组。
 
+除此之外，TiDB 还支持了一些额外的聚合函数：
+
+* APPROX_PERCENTILE(*expr*, *constant_integer_expr*)
+  
+  用于计算 *expr* 的值的百分位数，第二个参数是一个取值为区间 `[1,100]` 内整数的常量表达式，表示百分数。一个百分位数 Pk （k为百分数）表示数据集中至少有 k% 的数据小于等于 Pk。目前该函数仅支持计算返回类型为[数值类型](/data-type-numeric.md)和[日期与时间类型](/data-type-date-and-time.md)的表达式的百分位数，在计算其他类型时将直接返回 NULL。
+
+  以下是一个计算第50百分位数的例子：
+
+{{< copyable "sql" >}}
+
+  ```sql
+  drop table if exists t;
+  create table t(a int);
+  insert into t values(1), (2), (3);
+  ```
+
+{{< copyable "sql" >}}
+  
+  ```sql
+  select approx_percentile(a, 50) from t;
+  ```
+
+  ```
+  +--------------------------+
+  | approx_percentile(a, 50) |
+  +--------------------------+
+  |                        2 |
+  +--------------------------+
+  1 row in set (0.00 sec)
+  ```
+
+
 ## GROUP BY 修饰符
 
 TiDB 目前不支持 `GROUP BY` 修饰符，例如 `WITH ROLLUP`，将来会提供支持。详情参阅 [#4250](https://github.com/pingcap/tidb/issues/4250)。
