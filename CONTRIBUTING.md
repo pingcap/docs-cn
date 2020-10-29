@@ -76,6 +76,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
     - [常用 bot 命令](#常用-bot-命令)
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
+- [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
 - [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
 - [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
