@@ -6,6 +6,10 @@ aliases: ['/docs/dev/dashboard/dashboard-diagnostics-access/']
 
 # TiDB Dashboard Cluster Diagnostics Page
 
+> **Note:**
+>
+> Diagnostics in TiDB Dashboard is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+
 The cluster diagnostics feature in TiDB Dashboard diagnoses the problems that might exist in a cluster within a specified time range, and summarizes the diagnostic results and the cluster-related load monitoring information into a diagnostic report. This diagnostic report is in the form of a web page. You can browse the page offline and circulate this page link after saving the page from a browser.
 
 > **Note:**
@@ -16,11 +20,11 @@ The cluster diagnostics feature in TiDB Dashboard diagnoses the problems that mi
 
 You can use one of the following methods to access the cluster diagnostics page:
 
-* After logging into TiDB Dashboard, click **Cluster Diagnostics** on the left navigation menu:
+- After logging into TiDB Dashboard, click **Cluster Diagnostics** on the left navigation menu:
 
-    ![Access Cluster Diagnostics page](/media/dashboard/dashboard-diagnostics-access.png)
+  ![Access Cluster Diagnostics page](/media/dashboard/dashboard-diagnostics-access.png)
 
-* Visit `http://127.0.0.1:2379/dashboard/#/diagnose` in your browser. Replace `127.0.0.1:2379` with the actual PD address and port number.
+- Visit `http://127.0.0.1:2379/dashboard/#/diagnose` in your browser. Replace `127.0.0.1:2379` with the actual PD address and port number.
 
 ## Generate diagnostic report
 
@@ -44,8 +48,8 @@ The steps above generate a diagnostic report for the time range from `2020-05-21
 
 If a system exception occurs at a certain point, for example, QPS jitter or higher latency, a diagnostic report can be generated. Particularly, this report compares the system in the abnormal time range with the system in the normal time range. For example:
 
-* Abnormal time range: `2020-05-21 14:40:00`-`2020-05-21 14:45:00`. Within this time range, the system is abnormal.
-* Normal time range: `2020-05-21 14:30:00` - `2020-05-21 14:35:00`. Within this time range, the system is normal.
+- Abnormal time range: `2020-05-21 14:40:00`-`2020-05-21 14:45:00`. Within this time range, the system is abnormal.
+- Normal time range: `2020-05-21 14:30:00` - `2020-05-21 14:35:00`. Within this time range, the system is normal.
 
 You can take the following steps to generate a comparison report for the two time ranges above:
 
