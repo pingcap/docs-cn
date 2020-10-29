@@ -1,5 +1,5 @@
 ---
-title: 用 EXPLAIN 查看分区的 SQL 执行计划
+title: 用 EXPLAIN 查看 SQL 语句需要访问的分区
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
