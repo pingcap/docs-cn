@@ -111,7 +111,7 @@ TiDB 版本：4.0.8
     - 修复 'NOT NULL' 属性生成列允许在某些情况下写入 NULL 值的问题 [#20216](https://github.com/pingcap/tidb/pull/20216)
     - 修复 YEAR 类型数据写入超过允许范围时，错误提示不准确的问题 [#20170](https://github.com/pingcap/tidb/pull/20170)
     - 修复某些情况下悲观事务重试时，会报错 'invalid auto-id' 的问题 [#20134](https://github.com/pingcap/tidb/pull/20134)
-    - 修复 `ALTER TALBE` 更改 ENUM/SET 类型时，未进行重复性约束检查的问题 [#20046](https://github.com/pingcap/tidb/pull/20046)
+    - 修复 `ALTER TABLE` 更改 ENUM/SET 类型时，未进行重复性约束检查的问题 [#20046](https://github.com/pingcap/tidb/pull/20046)
     - 修复一些算子在并发执行时，记录的 Coprocessor Task 运行时信息错误的问题 [#19947](https://github.com/pingcap/tidb/pull/19947)
     - 修复只读系统变量无法被作为 Session 级变量显式 SELECT 的问题 [#19944](https://github.com/pingcap/tidb/pull/19944)
     - 修复重复 Order By 条件有时会导致执行计划选择不是最优的问题 [#20333](https://github.com/pingcap/tidb/pull/20333)
