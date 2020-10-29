@@ -5,6 +5,10 @@ aliases: ['/docs-cn/stable/dashboard/dashboard-diagnostics-access/','/docs-cn/v4
 
 # TiDB Dashboard 集群诊断页面
 
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
 集群诊断是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个诊断报告。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
 
 > **注意：**
