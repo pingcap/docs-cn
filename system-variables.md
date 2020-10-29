@@ -854,3 +854,34 @@ This variable is an alias for _transaction_isolation_.
 - Scope: SESSION | GLOBAL
 - Default value: ON
 - This variable controls whether to use the high precision mode when computing the window functions.
+
+### tidb_opt_prefer_range_scan
+
+- Scope: SESSION
+- Default value: 0
+- After you set the value of this variable to `1`, the optimizer always prefers index scans over full table scans.
+- In the following example, before you enable `tidb_opt_prefer_range_scan`, the TiDB optimizer performs a full table scan . After you enable `tidb_opt_prefer_range_scan`, the optimizer selects an index scan.
+
+```sql
+explain select * from t where age=5;
++-------------------------+------------+-----------+---------------+-------------------+
+| id                      | estRows    | task      | access object | operator info     |
++-------------------------+------------+-----------+---------------+-------------------+
+| TableReader_7           | 1048576.00 | root      |               | data:Selection_6  |
+| └─Selection_6           | 1048576.00 | cop[tikv] |               | eq(test.t.age, 5) |
+|   └─TableFullScan_5     | 1048576.00 | cop[tikv] | table:t       | keep order:false  |
++-------------------------+------------+-----------+---------------+-------------------+
+3 rows in set (0.00 sec)
+
+set session tidb_opt_prefer_range_scan = 1;
+
+explain select * from t where age=5;
++-------------------------------+------------+-----------+-----------------------------+-------------------------------+
+| id                            | estRows    | task      | access object               | operator info                 |
++-------------------------------+------------+-----------+-----------------------------+-------------------------------+
+| IndexLookUp_7                 | 1048576.00 | root      |                             |                               |
+| ├─IndexRangeScan_5(Build)     | 1048576.00 | cop[tikv] | table:t, index:idx_age(age) | range:[5,5], keep order:false |
+| └─TableRowIDScan_6(Probe)     | 1048576.00 | cop[tikv] | table:t                     | keep order:false              |
++-------------------------------+------------+-----------+-----------------------------+-------------------------------+
+3 rows in set (0.00 sec)
+```
