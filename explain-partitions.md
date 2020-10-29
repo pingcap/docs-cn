@@ -3,7 +3,7 @@ title: 用 EXPLAIN 查看 SQL 语句需要访问的分区
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看分区的 SQL 执行计划
+# 用 EXPLAIN 查看 SQL 语句需要访问的分区
 
 使用 `EXPLAIN` 语句可以查看 TiDB 在执行查询时需要访问的分区。由于存在[分区裁剪](/partition-pruning.md)，所显示的分区通常只是所有分区的一个子集。本文档介绍了常见分区表的一些优化方式，以及如何解读 `EXPLAIN` 语句返回的执行计划信息。
 
