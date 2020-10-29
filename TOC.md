@@ -457,6 +457,7 @@
       + [Overview Page](/dashboard/dashboard-overview.md)
       + [Cluster Info Page](/dashboard/dashboard-cluster-info.md)
       + [Key Visualizer Page](/dashboard/dashboard-key-visualizer.md)
+      + [Metrics Relation Graph](/dashboard/dashboard-metrics-relation.md)
       + SQL Statements Analysis
         + [SQL Statements Page](/dashboard/dashboard-statement-list.md)
         + [SQL Details Page](/dashboard/dashboard-statement-details.md)
