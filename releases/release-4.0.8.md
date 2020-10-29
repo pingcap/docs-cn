@@ -69,7 +69,7 @@ TiDB 版本：4.0.8
 
     + Backup & Restore (BR)
 
-        - 通过将 `split` 和 `restore` 流水线来加速恢复 [#427](https://github.com/pingcap/br/pull/427)
+        - 通过将 `split` 和 `ingest` 流水线来加速恢复 [#427](https://github.com/pingcap/br/pull/427)
         - 支持手动恢复 PD 的调度器 [#530](https://github.com/pingcap/br/pull/530)
         - 将移除 PD 调度器接口改为暂停调度器 [#551](https://github.com/pingcap/br/pull/551)
 
