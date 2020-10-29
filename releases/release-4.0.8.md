@@ -4,7 +4,7 @@ title: TiDB 4.0.8 Release Notes
 
 # TiDB 4.0.8 Release Notes
 
-发版日期：2020 年 10 月 29 日
+发版日期：2020 年 10 月 30 日
 
 TiDB 版本：4.0.8
 
@@ -69,7 +69,7 @@ TiDB 版本：4.0.8
 
     + Backup & Restore (BR)
 
-        - 通过将 split 和 restore 流水线来加速恢复 [#428](https://github.com/pingcap/br/pull/428)
+        - 通过将 `split` 和 `restore` 流水线来加速恢复 [#428](https://github.com/pingcap/br/pull/428)
         - 支持手动恢复 PD 的调度器 [#530](https://github.com/pingcap/br/pull/530)
         - 将移除 PD 调度器接口改为暂停调度器 [#551](https://github.com/pingcap/br/pull/551)
 
@@ -101,20 +101,20 @@ TiDB 版本：4.0.8
     - 修复列的条件传播优化遇到混合类型条件时，可能出错的问题 [#20297](https://github.com/pingcap/tidb/pull/20297)
     - 修复 Plan Cache 在存储过期执行计划时，可能 Panic 的问题 [#20246](https://github.com/pingcap/tidb/pull/20246)
     - 修复 `FROM_UNIXTIME` 和 `UNION ALL` 一起使用时，返回结果会被错误地截断的问题 [#20240](https://github.com/pingcap/tidb/pull/20240)
-    - 修复 Enum 类型在转换为 Float 类型时可能导致错误结果的问题 [#20235](https://github.com/pingcap/tidb/pull/20235)
-    - 修复 RegionStore 在某些条件下会 Panic 的问题 [#20210](https://github.com/pingcap/tidb/pull/20210)
-    - 修复 BatchPointGet 请求对无符号整数的最大值进行排序时，结果错误的问题 [#20205](https://github.com/pingcap/tidb/pull/20205)
-    - 修复 ENUM/SET 类型在混合 Collation 的类型判定时，结果 Collation 可能与 MySQL 不兼容的问题 [#20364](https://github.com/pingcap/tidb/pull/20364)
-    - 修复将其他类型的 `0` 转换为 YEAR 类型时，结果与 MySQL 不兼容的问题 [#20292](https://github.com/pingcap/tidb/pull/20292)
-    - 修复 'KV Duration' 监控指标中包含 'store0' 时，上报结果不正确的问题 [#20260](https://github.com/pingcap/tidb/pull/20260)
-    - 修复写入 FLOAT 类型数据时，由于长度溢出提示 'out of range' 错误后仍然被错误地写入问题 [#20252](https://github.com/pingcap/tidb/pull/20252)
-    - 修复 'NOT NULL' 属性生成列允许在某些情况下写入 NULL 值的问题 [#20216](https://github.com/pingcap/tidb/pull/20216)
-    - 修复 YEAR 类型数据写入超过允许范围时，错误提示不准确的问题 [#20170](https://github.com/pingcap/tidb/pull/20170)
-    - 修复某些情况下悲观事务重试时，会报错 'invalid auto-id' 的问题 [#20134](https://github.com/pingcap/tidb/pull/20134)
-    - 修复 `ALTER TABLE` 更改 ENUM/SET 类型时，未进行重复性约束检查的问题 [#20046](https://github.com/pingcap/tidb/pull/20046)
+    - 修复 `Enum` 类型在转换为 `Float` 类型时可能导致错误结果的问题 [#20235](https://github.com/pingcap/tidb/pull/20235)
+    - 修复 `RegionStore` 在某些条件下会 Panic 的问题 [#20210](https://github.com/pingcap/tidb/pull/20210)
+    - 修复 `BatchPointGet` 请求对无符号整数的最大值进行排序时，结果错误的问题 [#20205](https://github.com/pingcap/tidb/pull/20205)
+    - 修复 `Enum`/`Set` 类型在混合 Collation 的类型判定时，结果 Collation 可能与 MySQL 不兼容的问题 [#20364](https://github.com/pingcap/tidb/pull/20364)
+    - 修复将其他类型的 `0` 转换为 `YEAR` 类型时，结果与 MySQL 不兼容的问题 [#20292](https://github.com/pingcap/tidb/pull/20292)
+    - 修复 `KV Duration` 监控指标中包含 `store0` 时，上报结果不正确的问题 [#20260](https://github.com/pingcap/tidb/pull/20260)
+    - 修复写入 `Float` 类型数据时，由于长度溢出提示 `out of range` 错误后仍然被错误地写入问题 [#20252](https://github.com/pingcap/tidb/pull/20252)
+    - 修复 `NOT NULL` 属性生成列允许在某些情况下写入 `NULL` 值的问题 [#20216](https://github.com/pingcap/tidb/pull/20216)
+    - 修复 `YEAR` 类型数据写入超过允许范围时，错误提示不准确的问题 [#20170](https://github.com/pingcap/tidb/pull/20170)
+    - 修复某些情况下悲观事务重试时，会报错 `invalid auto-id` 的问题 [#20134](https://github.com/pingcap/tidb/pull/20134)
+    - 修复 `ALTER TABLE` 更改 `Enum`/`Set` 类型时，未进行重复性约束检查的问题 [#20046](https://github.com/pingcap/tidb/pull/20046)
     - 修复一些算子在并发执行时，记录的 Coprocessor Task 运行时信息错误的问题 [#19947](https://github.com/pingcap/tidb/pull/19947)
-    - 修复只读系统变量无法被作为 Session 级变量显式 SELECT 的问题 [#19944](https://github.com/pingcap/tidb/pull/19944)
-    - 修复重复 Order By 条件有时会导致执行计划选择不是最优的问题 [#20333](https://github.com/pingcap/tidb/pull/20333)
+    - 修复只读系统变量无法被作为 Session 级变量显式 `SELECT` 的问题 [#19944](https://github.com/pingcap/tidb/pull/19944)
+    - 修复重复 `ORDER BY` 条件有时会导致执行计划选择不是最优的问题 [#20333](https://github.com/pingcap/tidb/pull/20333)
     - 修复生成 Metric Profile 时，由于字体超过允许的最大值导致失败的问题 [#20637](https://github.com/pingcap/tidb/pull/20637)
 
 + TiKV
