@@ -142,7 +142,7 @@ TiDB 版本：4.0.8
 
     + Backup & Restore (BR)
 
-        - 修复 restore 期间可能发生的 `send on closed channel panic` 问题 [#559](https://github.com/pingcap/br/pull/559)
+        - 修复 Restore 期间可能发生的 `send on closed channel` panic 问题 [#559](https://github.com/pingcap/br/pull/559)
 
     + TiCDC
 
