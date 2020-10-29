@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 tmp_path = tiflash 临时文件存放路径
 path = tiflash 数据存储路径     # 如果有多个目录，以英文逗号分隔
 path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
-listen_host = tiflash 服务监听 host # 一般配置成 0.0.0.0
+listen_host = tiflash tcp/http 等辅助服务的监听 host，建议配置成 0.0.0.0
 tcp_port = tiflash tcp 服务端口
 http_port = tiflash http 服务端口
 mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，通常不需要修改
