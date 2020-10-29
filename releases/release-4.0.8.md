@@ -98,7 +98,7 @@ TiDB 版本：4.0.8
     - 修复 `BIT` 类型进行转换时，由于类型长度溢出而错误地返回 `NULL` 的问题 [#20363](https://github.com/pingcap/tidb/pull/20363)
     - 修复 `ALTER TABLE ...` 语法改变 `BIT` 类型的默认值，可能导致默认值错误的问题 [#20340](https://github.com/pingcap/tidb/pull/20340)
     - 修复 `BIT` 类型转换为 `INT64` 时可能导致长度溢出错误的问题 [#20312](https://github.com/pingcap/tidb/pull/20312)
-    - 修复列的条件传播优化遇到混合类型条件时，可能出错的问题 [#20297](https://github.com/pingcap/tidb/pull/20297)
+    - 修复混合类型的列在进行条件传播优化时，可能导致结果错误的问题 [#20297](https://github.com/pingcap/tidb/pull/20297)
     - 修复 Plan Cache 在存储过期执行计划时，可能 Panic 的问题 [#20246](https://github.com/pingcap/tidb/pull/20246)
     - 修复 `FROM_UNIXTIME` 和 `UNION ALL` 一起使用时，返回结果会被错误地截断的问题 [#20240](https://github.com/pingcap/tidb/pull/20240)
     - 修复 `Enum` 类型在转换为 `Float` 类型时可能导致错误结果的问题 [#20235](https://github.com/pingcap/tidb/pull/20235)
