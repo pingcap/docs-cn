@@ -35,7 +35,7 @@ TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
 
 + `APPROX_PERCENTILE(expr, constant_integer_expr)`
 
-    该函数用于计算 `expr` 值的百分位数。参数 `constant_integer_expr` 是一个取值为区间 `[1,100]` 内整数的常量表达式，表示百分数。一个百分位数 `Pk`（`k`为百分数）表示数据集中至少有 `k%` 的数据小于等于 `Pk`。
+    该函数用于计算 `expr` 值的百分位数。参数 `constant_integer_expr` 是一个取值为区间 `[1,100]` 内整数的常量表达式，表示百分数。一个百分位数 P<sub>k</sub>（`k`为百分数）表示数据集中至少有 `k%` 的数据小于等于 P<sub>k</sub>。
 
     该函数中，表达式的返回结果必须为[数值类型](/data-type-numeric.md)或[日期与时间类型](/data-type-date-and-time.md)。函数不支持计算其他类型的返回结果，并直接返回 `NULL`。
 
