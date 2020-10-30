@@ -525,6 +525,7 @@
   + [All Releases](/releases/release-notes.md)
   + [TiDB Roadmap](/roadmap.md)
   + v4.0
+    + [4.0.8](/releases/release-4.0.8.md)
     + [4.0.7](/releases/release-4.0.7.md)
     + [4.0.6](/releases/release-4.0.6.md)
     + [4.0.5](/releases/release-4.0.5.md)
