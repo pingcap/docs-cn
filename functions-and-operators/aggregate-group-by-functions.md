@@ -62,7 +62,6 @@ TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
   1 row in set (0.00 sec)
   ```
 
-
 ## GROUP BY 修饰符
 
 TiDB 目前不支持 `GROUP BY` 修饰符，例如 `WITH ROLLUP`，将来会提供支持。详情参阅 [#4250](https://github.com/pingcap/tidb/issues/4250)。
