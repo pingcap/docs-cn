@@ -120,7 +120,7 @@ TiDB 版本：4.0.8
 + TiKV
 
     - 修复加密功能中锁冲突导致 pd-worker 处理心跳慢的问题 [#8869](https://github.com/tikv/tikv/pull/8869)
-    - 修复生成 memory profile 的问题 [#8790](https://github.com/tikv/tikv/pull/8790)
+    - 修复错误生成 memory profile 的问题 [#8790](https://github.com/tikv/tikv/pull/8790)
     - 修复备份时指定 GCS 储存类别 (storage class) 报错的问题 [#8763](https://github.com/tikv/tikv/pull/8763)
     - 修复了重启或者新切分的 Learner 节点找不到 Leader 的问题 [#8864](https://github.com/tikv/tikv/pull/8864)
 
