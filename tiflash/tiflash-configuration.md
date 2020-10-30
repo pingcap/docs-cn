@@ -89,7 +89,7 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 [server]
     engine-addr = 外部访问 tiflash coprocessor 服务的地址
 [raftstore]
-    snap-handle-pool-size = 控制处理 snapshot 的线程数，默认为 2，设为 0 则关闭多线程优化
+    snap-handle-pool-size = 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     store-batch-retry-recv-timeout = 控制 raft store 持久化 WAL 的最小间隔，通过适当增大延迟以减少 iops 占用，默认为 4ms，设为 0ms 则关闭该优化
 ```
 
