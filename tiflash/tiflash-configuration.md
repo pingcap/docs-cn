@@ -93,7 +93,7 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
     store-batch-retry-recv-timeout = 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
 ```
 
-除以上几项外，其余功能参数和 tikv 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的项会覆盖 `tiflash-learner.toml` 中的重合参数；key 为 engine 的 label 是保留项，不可手动配置。
+除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的配置项会覆盖 `tiflash-learner.toml` 中的重合参数；`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 ### 多盘部署
 
