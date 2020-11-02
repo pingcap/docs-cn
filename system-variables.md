@@ -688,7 +688,7 @@ set tidb_query_log_max_len = 20
 
 ### tidb_skip_isolation_level_check
 
-- Scope: SESSION
+- Scope: SESSION | GLOBAL
 - Default value: 0
 - After this switch is enabled, if an isolation level unsupported by TiDB is assigned to `tx_isolation`, no error is reported. This helps improve compatibility with applications that set (but do not depend on) a different isolation level.
 
