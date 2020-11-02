@@ -66,7 +66,7 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 之后便可在这个 Frame 中开始绘图。
 
-### 第 4 步骤：绘制图片
+### 第 4 步：绘制图片
 
 建议将其他 Frame 中已有的图形复制、粘贴到新的 Frame 中，以便快速绘制图片。
 
@@ -110,10 +110,6 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 ![Corner Radius](/media/figma-guide/corner-radius.png)
 
-#### 其他操作
-
-参见 [Figma 帮助文档](https://help.figma.com/)。
-
 ### 第 5 步：导出图片
 
 1. 选中待导出的 Frame，点击 **Export** 一栏的 **+**。
@@ -133,3 +129,5 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
     ![Export Frame X](/media/figma-guide/export-frame-x.png)
 
 4. 设置图片名称时，使用**描述性**名称。名称中可包含小写字母、数字及短连线 `-`。**请勿使用大写字母、空格、下划线**。
+
+更多步骤见 Figma 官方文档。
