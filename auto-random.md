@@ -19,7 +19,7 @@ Take the following created table as an example:
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint primary key auto_increment, b varchar(255))
+CREATE TABLE t (a bigint PRIMARY KEY AUTO_INCREMENT, b varchar(255))
 ```
 
 On this `t` table, you execute a large number of `INSERT` statements that do not specify the values of the primary key as below:
@@ -27,7 +27,7 @@ On this `t` table, you execute a large number of `INSERT` statements that do not
 {{< copyable "sql" >}}
 
 ```sql
-insert into t(b) values ('a'), ('b'), ('c')
+INSERT INTO t(b) VALUES ('a'), ('b'), ('c')
 ```
 
 In the above statement, values of the primary key (column `a`) are not specified, so TiDB uses the continuous auto-increment row values as the row IDs, which might cause write hotspot in a single TiKV node and affect the performance. To avoid such write hotspot, you can specify the `AUTO_RANDOM` attribute rather than the `AUTO_INCREMENT` attribute for the column `a` when you create the table. See the follow examples:
@@ -35,7 +35,7 @@ In the above statement, values of the primary key (column `a`) are not specified
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint primary key auto_random, b varchar(255))
+CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM, b varchar(255))
 ```
 
 or
@@ -43,10 +43,10 @@ or
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint auto_random, b varchar(255), primary key (a))
+CREATE TABLE t (a bigint AUTO_RANDOM, b varchar(255), PRIMARY KEY (a))
 ```
 
-Then execute the `INSERT` statement such as `INSERT INTO t(b) values...`. Now the results will be as follows:
+Then execute the `INSERT` statement such as `INSERT INTO t(b) VALUES...`. Now the results will be as follows:
 
 + Implicitly allocating values: If the `INSERT` statement does not specify the values of the integer primary key column (column `a`) or specify the value as `NULL`, TiDB automatically allocates values to this column. These values are not necessarily auto-increment or continuous but are unique, which avoids the hotspot problem caused by continuous row IDs.
 + Explicitly inserting values: If the `INSERT` statement explicitly specifies the values of the integer primary key column, TiDB saves these values, which works similarly to the `AUTO_INCREMENT` attribute. Note that if you do not set `NO_AUTO_VALUE_ON_ZERO` in the `@@sql_mode` system variable, TiDB will automatically allocate values to this column even if you explicitly specify the value of the integer primary key column as `0`.
@@ -64,7 +64,7 @@ To use different number of shard bits, append a pair of parentheses to `AUTO_RAN
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint primary key auto_random(3), b varchar(255))
+CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM(3), b varchar(255))
 ```
 
 In the above `CREATE TABLE` statement, `3` shard bits are specified. The range of the number of shard bits is `[1, field_max_bits)`. `field_max_bits` is the length of bits occupied by the primary key column.
@@ -74,7 +74,7 @@ After creating the table, use the `SHOW WARNINGS` statement to see the maximum n
 {{< copyable "sql" >}}
 
 ```sql
-show warnings
+SHOW WARNINGS
 ```
 
 ```sql
@@ -91,14 +91,14 @@ show warnings
 
 In addition, to view the shard bit number of the table with the `AUTO_RANDOM` attribute, you can see the value of the `PK_AUTO_RANDOM_BITS=x` mode in the `TIDB_ROW_ID_SHARDING_INFO` column in the `information_schema.tables` system table. `x` is the number of shard bits.
 
-Values allocated to the `AUTO_RANDOM` column affect `last_insert_id()`. You can use `select last_insert_id ()` to get the ID that TiDB last implicitly allocates. For example:
+Values allocated to the `AUTO_RANDOM` column affect `last_insert_id()`. You can use `SELECT last_insert_id ()` to get the ID that TiDB last implicitly allocates. For example:
 
 {{< copyable "sql" >}}
 
 ```sql
-insert into t (b) values ("b")
-select * from t;
-select last_insert_id()
+INSERT INTO t (b) VALUES ("b")
+SELECT * FROM t;
+SELECT last_insert_id()
 ```
 
 You might see the following result:
@@ -123,18 +123,18 @@ TiDB supports parsing the version comment syntax. See the following example:
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint primary key /*T![auto_rand] auto_random */)
+CREATE TABLE t (a bigint PRIMARY KEY /*T![auto_rand] auto_random */)
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint primary key auto_random)
+CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM)
 ```
 
 The above two statements have the same meaning.
 
-In the result of `show create table`, the `AUTO_RANDOM` attribute is commented out. This comment includes an attribute identifier (for example, `/*T![auto_rand] auto_random */`). Here `auto_rand` represents the `AUTO_RANDOM` attribute. Only the version of TiDB that implements the feature corresponding to this identifier can parse the SQL statement fragment properly.
+In the result of `SHOW CREATE TABLE`, the `AUTO_RANDOM` attribute is commented out. This comment includes an attribute identifier (for example, `/*T![auto_rand] auto_random */`). Here `auto_rand` represents the `AUTO_RANDOM` attribute. Only the version of TiDB that implements the feature corresponding to this identifier can parse the SQL statement fragment properly.
 
 This attribute supports forward compatibility, namely, downgrade compatibility. TiDB of earlier versions that do not implement this feature ignore the `AUTO_RANDOM` attribute of a table (with the above comment) and can also use the table with the attribute.
 

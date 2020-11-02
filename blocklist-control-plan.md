@@ -42,7 +42,7 @@ You can use the blocklist of optimization rules to disable some of them if some 
     {{< copyable "sql" >}}
 
     ```sql
-    insert into mysql.opt_rule_blacklist values("join_reorder"), ("topn_push_down");
+    INSERT INTO mysql.opt_rule_blacklist VALUES("join_reorder"), ("topn_push_down");
     ```
 
     Executing the following SQL statement can make the above operation take effect immediately. The effective range includes all old connections of the corresponding TiDB server:
@@ -62,7 +62,7 @@ You can use the blocklist of optimization rules to disable some of them if some 
     {{< copyable "sql" >}}
 
     ```sql
-    delete from mysql.opt_rule_blacklist where name in ("join_reorder", "topn_push_down");
+    DELETE FROM mysql.opt_rule_blacklist WHERE name IN ("join_reorder", "topn_push_down");
     ```
 
     {{< copyable "sql" >}}
@@ -95,7 +95,7 @@ The schema of `mysql.expr_pushdown_blacklist` is shown as follows:
 {{< copyable "sql" >}}
 
 ```sql
-desc mysql.expr_pushdown_blacklist;
+DESC mysql.expr_pushdown_blacklist;
 ```
 
 ```sql
@@ -153,7 +153,7 @@ To judge whether the blocklist takes effect, observe the results of `EXPLAIN` (S
     {{< copyable "sql" >}}
 
     ```sql
-    explain select * from t where a < 2 and a > 2;
+    EXPLAIN SELECT * FROM t WHERE a < 2 AND a > 2;
     ```
 
     ```sql
@@ -172,7 +172,7 @@ To judge whether the blocklist takes effect, observe the results of `EXPLAIN` (S
     {{< copyable "sql" >}}
 
     ```sql
-    insert into mysql.expr_pushdown_blacklist values('<','tikv',''), ('>','tikv','');
+    INSERT INTO mysql.expr_pushdown_blacklist VALUES('<','tikv',''), ('>','tikv','');
     ```
 
     ```sql
@@ -195,7 +195,7 @@ To judge whether the blocklist takes effect, observe the results of `EXPLAIN` (S
     {{< copyable "sql" >}}
 
     ```sql
-    explain select * from t where a < 2 and a > 2;
+    EXPLAIN SELECT * FROM t WHERE a < 2 and a > 2;
     ```
 
     ```sql
@@ -214,7 +214,7 @@ To judge whether the blocklist takes effect, observe the results of `EXPLAIN` (S
     {{< copyable "sql" >}}
 
     ```sql
-    delete from mysql.expr_pushdown_blacklist where name = '>';
+    DELETE FROM mysql.expr_pushdown_blacklist WHERE name = '>';
     ```
 
     ```sql
@@ -236,7 +236,7 @@ To judge whether the blocklist takes effect, observe the results of `EXPLAIN` (S
     {{< copyable "sql" >}}
 
     ```sql
-    explain select * from t where a < 2 and a > 2;
+    EXPLAIN SELECT * FROM t WHERE a < 2 AND a > 2;
     ```
 
     ```sql

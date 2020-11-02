@@ -43,7 +43,7 @@ To use the database named `mysql`, use the following statement:
 {{< copyable "sql" >}}
 
 ```sql
-use mysql;
+USE mysql;
 ```
 
 To show all the tables in a database, use the `SHOW TABLES` statement:
@@ -157,7 +157,7 @@ To show all the indexes in a table, use the `SHOW INDEX` statement:
 {{< copyable "sql" >}}
 
 ```sql
-SHOW INDEX from person;
+SHOW INDEX FROM person;
 ```
 
 To delete an index, use the `DROP INDEX` or `ALTER TABLE` statement. `DROP INDEX` can be nested in `ALTER TABLE`:
