@@ -65,7 +65,7 @@ Slow Query 基础信息：
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
 * `Rewrite_time`：表示这个语句在查询改写阶段花费的时间。
-* `Preproc_subqueries`：表示这个语句被提前执行的子查询个数，如 `where id in (select if from t)` 这个子查询就可能被提前执行。
+* `Preproc_subqueries`：表示这个语句中被提前执行的子查询个数，如 `where id in (select if from t)` 这个子查询就可能被提前执行。
 * `Preproc_subqueries_time`：表示这个语句被提前执行的子查询耗时。
 * `Exec_retry_count`：表示这个语句执行的重试次数。一般出现在悲观事务中，语句上锁失败时会重试执行。
 * `Exec_retry_time`：表示这个语句的重试执行时间。例如某个查询一共执行了三次（前两次失败），则 `Exec_retry_time` 表示前两次的执行时间之和，`Query_time` 减去 `Exec_retry_time` 则为最后一次执行时间。
