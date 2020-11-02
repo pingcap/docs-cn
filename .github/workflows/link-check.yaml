@@ -18,7 +18,7 @@ jobs:
         id: lc
         uses: peter-evans/link-checker@v1
         with:
-          args: -c 32 -d /github/workspace -r -x "http://172.*|https://github.com/pingcap/tidb/pull/.*|.*.md" .
+          args: -c 32 -d /github/workspace -r -x "http://172.*|https://github.com/.*/pull/.*|.*.md" .
 
       - name: Fail if there were external link errors
         if: ${{ steps.lc.outputs.exit_code }}
