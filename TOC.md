@@ -153,6 +153,7 @@
   + [Use Placement Rules](/configure-placement-rules.md)
   + [Use Load Base Split](/configure-load-base-split.md)
   + [Use Store Limit](/configure-store-limit.md)
+  + [Integrate with Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
 + TiDB Ecosystem Tools
   + [Overview](/ecosystem-tool-user-guide.md)
   + [Use Cases](/ecosystem-tool-user-case.md)
