@@ -722,7 +722,7 @@ set tidb_query_log_max_len = 20;
 
 ### `tidb_skip_isolation_level_check`
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 
 - 默认值：0
 
