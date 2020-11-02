@@ -119,7 +119,7 @@ aliases: ['/docs-cn/v2.1/tidb-troubleshooting-map/','/docs-cn/v2.1/how-to/troubl
 
     - `> = v3.0.0` 的版本, 可以在 tidb.log 中 `grep "expensive_query"`，该 log 会记录运行超时、或使用内存超过阈值的 SQL。
     - `< v3.0.0` 的版本, 通过 `grep "memory exceeds quota"` 定位运行时内存超限的 SQL。
-  
+
     > **注意：**
     >
     > 单条 SQL 内存阈值的默认值为 `32GB`，可通过 `tidb_mem_quota_query` 系统变量进行设置，作用域为 `SESSION`，单位为 `Byte`。也可以通过配置项热加载的方式，对配置文件中的 `mem-quota-query` 项进行修改，单位为 `Byte`。
