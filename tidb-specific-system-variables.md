@@ -237,14 +237,6 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 这个变量用来设置是否在日志里记录所有的 SQL 语句。
 
-### tidb_enable_streaming
-
-作用域：SESSION
-
-默认值：0
-
-这个变量用来设置是否启用 Streaming。
-
 ### tidb_retry_limit
 
 作用域：SESSION | GLOBAL

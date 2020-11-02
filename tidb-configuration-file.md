@@ -27,11 +27,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：34359738368
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
 
-### `enable-streaming`
-
-+ 开启 coprocessor 的 streaming 获取数据模式。
-+ 默认值：false
-
 ### `lower-case-table-names`
 
 + 这个选项可以设置 TiDB 的系统变量 `lower-case-table-names` 的值。

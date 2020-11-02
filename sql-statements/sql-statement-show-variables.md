@@ -35,7 +35,6 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | Variable_name                       | Value         |
 +-------------------------------------+---------------+
 | tidb_retry_limit                    | 10            |
-| tidb_enable_streaming               | 0             |
 | tidb_hashagg_final_concurrency      | 4             |
 | tidb_disable_txn_auto_retry         | 1             |
 | tidb_mem_quota_query                | 34359738368   |
