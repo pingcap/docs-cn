@@ -19,19 +19,19 @@ The following is a basic example of `AUTO_INCREMENT`:
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id int primary key AUTO_INCREMENT, c int);
+CREATE TABLE t(id int PRIMARY KEY AUTO_INCREMENT, c int);
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-insert into t(c) values (1);
-insert into t(c) values (2);
-insert into t(c) values (3), (4), (5);
+INSERT INTO t(c) VALUES (1);
+INSERT INTO t(c) VALUES (2);
+INSERT INTO t(c) VALUES (3), (4), (5);
 ```
 
 ```sql
-mysql> select * from t;
+mysql> SELECT * FROM t;
 +----+---+
 | id | c |
 +----+---+
@@ -49,11 +49,11 @@ In addition, `AUTO_INCREMENT` also supports the `INSERT` statements that explici
 {{< copyable "sql" >}}
 
 ```sql
-insert into t(id, c) values (6, 6);
+INSERT INTO t(id, c) VALUES (6, 6);
 ```
 
 ```sql
-mysql> select * from t;
+mysql> SELECT * FROM t;
 +----+---+
 | id | c |
 +----+---+
@@ -76,13 +76,13 @@ TiDB implements the `AUTO_INCREMENT` implicit assignment in the following way:
 For each auto-increment column, a globally visible key-value pair is used to record the maximum ID that has been assigned. In a distributed environment, communication between nodes has some overhead. Therefore, to avoid the issue of write amplification, each TiDB node applies for a batch of consecutive IDs as caches when assigning IDs, and then applies for the next batch of IDs after the first batch is assigned. Therefore, TiDB nodes do not apply to the storage node for IDs when assigning IDs each time. For example:
 
 ```sql
-create table t(id int unique key AUTO_INCREMENT, c int);
+CREATE TABLE t(id int UNIQUE KEY AUTO_INCREMENT, c int);
 ```
 
 Assume two TiDB instances, `A` and `B`, in the cluster. If you execute an `INSERT` statement on the `t` table on `A` and `B` respectively:
 
 ```sql
-insert into t (c) values (1)
+INSERT INTO t (c) VALUES (1)
 ```
 
 Instance `A` might cache the auto-increment IDs of `[1,30000]`, and instance `B` might cache the auto-increment IDs of `[30001,60000]`. In `INSERT` statements to be executed, these cached IDs of each instance will be assigned to the `AUTO_INCREMENT` column as the default values.
@@ -97,9 +97,9 @@ Instance `A` might cache the auto-increment IDs of `[1,30000]`, and instance `B`
 
 In the example above, perform the following operations in order:
 
-1. The client inserts a statement `insert into t values (2, 1)` to instance `B`, which sets `id` to `2`. The statement is successfully executed.
+1. The client inserts a statement `INSERT INTO t VALUES (2, 1)` to instance `B`, which sets `id` to `2`. The statement is successfully executed.
 
-2. The client sends a statement `insert into t (c) (1)` to instance `A`. This statement does not specify the value of `id`, so the ID is assigned by `A`. At present, because `A` caches the IDs of `[1, 30000]`, it might assign `2` as the value of the auto-increment ID, and increases the local counter by `1`. At this time, the data whose ID is `2` already exists in the database, so the `Duplicated Error` error is returned.
+2. The client sends a statement `INSERT INTO t (c) (1)` to instance `A`. This statement does not specify the value of `id`, so the ID is assigned by `A`. At present, because `A` caches the IDs of `[1, 30000]`, it might assign `2` as the value of the auto-increment ID, and increases the local counter by `1`. At this time, the data whose ID is `2` already exists in the database, so the `Duplicated Error` error is returned.
 
 ### Monotonicity
 
@@ -108,7 +108,7 @@ TiDB guarantees that `AUTO_INCREMENT` values are monotonic (always increasing) o
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t (a int primary key AUTO_INCREMENT, b timestamp NOT NULL DEFAULT NOW());
+CREATE TABLE t (a int PRIMARY KEY AUTO_INCREMENT, b timestamp NOT NULL DEFAULT NOW());
 INSERT INTO t (a) VALUES (NULL), (NULL), (NULL);
 SELECT * FROM t;
 ```
@@ -237,14 +237,14 @@ After the value `2030000` is inserted, the next value is `2060001`. This jump in
 In earlier versions of TiDB, the cache size of the auto-increment ID was transparent to users. Starting from v3.0.14, v3.1.2, and v4.0.rc-2, TiDB has introduced the `AUTO_ID_CACHE` table option to allow users to set the cache size for allocating the auto-increment ID.
 
 ```sql
-mysql> create table t(a int auto_increment key) AUTO_ID_CACHE 100;
+mysql> CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 100;
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> insert into t values();
+mysql> INSERT INTO t values();
 Query OK, 1 row affected (0.00 sec)
 Records: 1  Duplicates: 0  Warnings: 0
 
-mysql> select * from t;
+mysql> SELECT * FROM t;
 +---+
 | a |
 +---+
@@ -256,16 +256,16 @@ mysql> select * from t;
 At this time, if you invalidate the auto-increment cache of this column and redo the implicit insertion, the result is as follows:
 
 ```sql
-mysql> delete from t;
+mysql> DELETE FROM t;
 Query OK, 1 row affected (0.01 sec)
 
-mysql> rename table t to t1;
+mysql> RENAME TABLE t to t1;
 Query OK, 0 rows affected (0.01 sec)
 
-mysql> insert into t1 values()
+mysql> INSERT INTO t1 values()
 Query OK, 1 row affected (0.00 sec)
 
-mysql> select * from t;
+mysql> SELECT * FROM t;
 +-----+
 | a   |
 +-----+
@@ -276,7 +276,7 @@ mysql> select * from t;
 
 The re-assigned value is `101`. This shows that the size of cache for allocating the auto-increment ID is `100`.
 
-In addition, when the length of consecutive IDs in a batch `insert` statement exceeds the length of `AUTO_ID_CACHE`, TiDB increases the cache size accordingly to ensure that the statement can be inserted properly.
+In addition, when the length of consecutive IDs in a batch `INSERT` statement exceeds the length of `AUTO_ID_CACHE`, TiDB increases the cache size accordingly to ensure that the statement can be inserted properly.
 
 ### Auto-increment step size and offset
 
