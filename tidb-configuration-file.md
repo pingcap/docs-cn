@@ -287,7 +287,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + Prepare cache LRU 使用的最大内存限制。当 Prepare cache LRU 的内存使用超过 `performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)` 时，会剔除 LRU 中的元素。
 + 默认值：0
-+ 这个配置只有在 `prepared-plan-cache.enabled` 为 `true` 的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
++ 这个配置在 `prepared-plan-cache.enabled` 为 `true`（默认值）的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
 
 ### `txn-total-size-limit`
 
@@ -368,16 +368,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ## prepared-plan-cache
 
-prepare 语句的 Plan cache 设置。
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
+prepare 语句的 plan cache 设置。
 
 ### `enabled`
 
 + 开启 prepare 语句的 plan cache。
-+ 默认值：false
++ 默认值：true
 
 ### `capacity`
 
@@ -444,6 +440,19 @@ prepare 语句的 Plan cache 设置。
 
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
+
+### `enable-async-commit` <!-- 从 v5.0 版本开始引入 -->
+
++ 指定是否启用 async commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不兼容，开启 binlog 时本配置将没有效果。
++ 默认值：false
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
+>
+> + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
+> + 无法保证外部一致性。
+> + 如果在执行 DDL 操作的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
@@ -547,10 +556,7 @@ TiDB 服务状态相关配置。
 
 ## pessimistic-txn
 
-### enable
-
-+ 开启悲观事务支持，悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
-+ 默认值：true
+悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
 
 ### max-retry-count
 
@@ -559,15 +565,4 @@ TiDB 服务状态相关配置。
 
 ## experimental
 
-experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
-
-### `allow-auto-random` <span class="version-mark">从 v3.1.0 版本开始引入</span>
-
-+ 用于控制是否允许使用 `AUTO_RANDOM`。
-+ 默认值：false
-+ 默认情况下，不支持使用 `AUTO_RANDOM`。当该值为 true 时，不允许同时设置 alter-primary-key 为 true。
-
-### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
-
-+ 用于控制是否能创建表达式索引。
-+ 默认值：false
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。目前暂无相关配置项。

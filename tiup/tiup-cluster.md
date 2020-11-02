@@ -97,6 +97,22 @@ monitoring_servers:
   - host: 172.16.5.134
 ```
 
+TiUP 默认部署在 amd64 架构上运行的 binary，若目标机器为 arm64 架构，可以在拓扑文件中进行配置：
+
+```yaml
+global:
+  arch: "arm64"           # 让所有机器默认使用 arm64 的 binary
+ 
+tidb_servers:
+  - host: 172.16.5.134
+    arch: "amd64"         # 这台机器会使用 amd64 的 binary
+  - host: 172.16.5.139
+    arch: "arm64"         # 这台机器会使用 arm64 的 binary
+  - host: 172.16.5.140    # 没有配置 arch 字段的机器，会使用 global 中的默认值，这个例子中是 arm64
+  
+...
+```
+
 假如我们想要使用 TiDB 的 v3.0.12 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
@@ -365,6 +381,42 @@ tiup cluster reload prod-cluster
 ```
 
 该操作会将配置发送到目标机器，重启集群，使配置生效。
+
+> **注意：**
+>
+> 对于监控组件，可以通过执行 `tiup cluster edit-config` 命令在对应实例上添加自定义配置路径来进行配置自定义，例如：
+
+```yaml
+---
+
+grafana_servers:
+  - host: 172.16.5.134
+    dashboard_dir: /path/to/local/dashboards/dir
+
+monitoring_servers:
+  - host: 172.16.5.134
+    rule_dir: /path/to/local/rules/dir
+
+alertmanager_servers:
+  - host: 172.16.5.134
+    config_file: /path/to/local/alertmanager.yml
+```
+
+路径内容格式如下：
+
+- `grafana_servers` 的 `dashboard_dir` 字段指定的文件夹中应当含有完整的 `*.json` 文件。
+- `monitoring_servers` 的 `rule_dir` 字段定义的文件夹中应当含有完整的 `*.rules.yml` 文件。
+- `alertmanager_servers` 的 `config_file` 格式请参考 [Alertmanager 配置模板](https://github.com/pingcap/tiup/blob/master/templates/config/alertmanager.yml)。
+
+在执行 `tiup reload` 时，TiUP 会将中控机上对应的配置上传到目标机器对应的配置目录中，上传之前会删除目标机器中已有的旧配置文件。如果想要修改某一个配置文件，请确保将所有的（包含未修改的）配置文件都放在同一个目录中。例如，要修改 Grafana 的 `tidb.json` 文件，可以先将 Grafana 的 `dashboards` 目录中所有的 `*.json` 文件拷贝到本地目录中，再修改 `tidb.json` 文件。否则最终的目标机器上将缺失其他的 JSON 文件。
+
+> **注意：**
+>
+> 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在执行 `tiup cluster rename` 命令进行集群重命名后，需要完成以下操作：
+>
+> 1. 在本地的 `dashboards` 目录中，将集群名修改为新的集群名。
+> 2. 在本地的 `dashboards` 目录中，将 `datasource` 更新为新的集群名（`datasource` 是以集群名命名的）。
+> 3. 执行 `tiup cluster reload -R grafana` 命令。
 
 ## 更新组件
 

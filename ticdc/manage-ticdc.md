@@ -61,13 +61,30 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
 - `key`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 
+## 使用 TiUP 升级 TiCDC
+
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.6。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup update --self && \
+tiup update --all && \
+tiup cluster upgrade <cluster-name> v4.0.6
+```
+
+### 升级的注意事项
+
+* TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
+* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#5-升级-faq)。
+
 ## 使用加密传输 (TLS) 功能
 
 请参阅[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
-以下内容介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
+本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
@@ -81,16 +98,22 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
     ```
     [
-            {
-                    "id": "6d92386a-73fc-43f3-89de-4e337a42b766",
-                    "is-owner": true
-            },
-            {
-                    "id": "b293999a-4168-4988-a4f4-35d9589b226b",
-                    "is-owner": false
-            }
+      {
+        "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
+        "is-owner": true,
+        "address": "127.0.0.1:8300"
+      },
+      {
+        "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
+        "is-owner": false,
+        "address": "127.0.0.1:8301"
+      }
     ]
     ```
+
+    - `id`：服务进程的 ID。
+    - `is-owner`：表示该服务进程是否为 owner 节点。
+    - `address`：该服务进程对外提供接口的地址。
 
 ### 管理同步任务 (`changefeed`)
 
@@ -110,8 +133,11 @@ ID: simple-replication-task
 Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
-- `--changefeed-id`: 同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`: 同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+- `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
+- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+- `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
+- `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
+- `--config`：指定 changefeed 配置文件。
 
 {{< copyable "" >}}
 
@@ -160,12 +186,12 @@ URI 中可配置的的参数如下：
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
 | `9092`               | 下游 Kafka 的连接端口                                          |
 | `cdc-test`           | 使用的 Kafka topic 名字                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`）                      |
+| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.6.0`） |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
-| `protocol` | 输出到 kafka 消息协议，可选值有 `default`, `canal`（默认值为 `default`）    |
+| `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
@@ -557,9 +583,19 @@ curl -X POST http://127.0.0.1:8300/capture/owner/move_table -d 'cf-id=cf060953-0
 }
 ```
 
+### 动态调整 TiCDC server 日志级别
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X POST -d '"debug"' http://127.0.0.1:8301/admin/log
+```
+
+`POST` 参数表示新的日志级别，支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"dpanic"、"panic"、"fatal"。该接口参数为 JSON 编码，需要注意引号的使用：`'"debug"'`。
+
 ## 同步任务配置文件描述
 
-以下内容详细介绍了同步任务的配置。
+本部分详细介绍了同步任务的配置。
 
 ```toml
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
@@ -583,14 +619,18 @@ worker-num = 16
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
-# 支持 default、ts、rowid、table 四种分发器
+# 支持 default、ts、rowid、table 四种分发器，分发规则如下：
+# - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
+# - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
+# - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发
+# - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 # matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
 ]
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 default 和 canal 两种协议。default 为 TiCDC Open Protocol
+# 目前支持 default、canal、avro 和 maxwell 四种协议。default 为 TiCDC Open Protocol
 protocol = "default"
 
 [cyclic-replication]
@@ -627,7 +667,7 @@ sync-ddl = true
 
 + `--cyclic-replica-id`：用于指定为上游集群的写入指定来源 ID，需要确保每个集群 ID 的唯一性。
 + `--cyclic-filter-replica-ids`：用于指定需要过滤的写入来源 ID，通常为下游集群的 ID。
-+ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游，只能在一个集群的 CDC 上开启 DDL 同步。
++ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游。
 
 环形同步任务创建步骤如下：
 

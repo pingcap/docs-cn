@@ -25,3 +25,7 @@ SHOW PROFILES
 ```
 Empty set (0.00 sec)
 ```
+
+## MySQL 兼容性
+
+该语句仅与 MySQL 兼容，无其他作用。执行 `SHOW PROFILES` 始终返回空结果。
