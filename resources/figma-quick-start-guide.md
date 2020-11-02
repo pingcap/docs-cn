@@ -7,10 +7,6 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 [Figma](https://www.figma.com/) 是一款免费的在线绘图工具，支持多人实时协作，简单实用、易于上手，Windows 和 macOS 等平台均可使用。本文档介绍如何使用 Figma 绘制图片。
 
-## Figma 界面
-
-详情参见 [Figma 教程](https://help.figma.com/hc/sections/360006537574-Take-a-Tour)。
-
 ## Figma 快速上手
 
 执行以下步骤可使用 Figma 快速绘制图片。
@@ -116,7 +112,7 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 #### 其他操作
 
-参见 [Figma 用户指南](https://help.figma.com/hc/categories/360002051613-Get-started)。
+参见 [Figma 帮助文档](https://help.figma.com/)。
 
 ### 第 5 步：导出图片
 
