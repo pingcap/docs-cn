@@ -639,6 +639,12 @@ Configuration items related to RocksDB
 + Default value: `8`
 + Minimum value: `1`
 
+### `max-background-flushes`
+
++ The maximum number of concurrent background memtable flush jobs
++ Default value: `2`
++ Minimum value: `1`
+
 ### `max-sub-compactions`
 
 + The number of sub-compaction operations performed concurrently in RocksDB
