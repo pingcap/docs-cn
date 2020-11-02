@@ -296,17 +296,17 @@ Currently, TiCDC does not provide the standard parsing library for TiCDC Open Pr
 | TIME                  | 11   | {"t":11,"v":"23:59:59"} | |
 | DATETIME              | 12   | {"t":12,"v":"2015-12-20 23:58:58"} | |
 | YEAR                  | 13   | {"t":13,"v":1970} | |
-| VARCHAR/VARBINARY     | 15/253   | {"t":15,"v":"test"} / {"t":15,"v":"\\x89PNG\\r\\n\\x1a\\n"} |  The value is encoded in UTF-8. When the upstream type is VARBINARY, invisible ASCII characters are escaped. |
+| VARCHAR/VARBINARY     | 15/253   | {"t":15,"v":"test"} / {"t":15,"v":"\\\\x89PNG\\\\r\\\\n\\\\x1a\\\\n"} |  The value is encoded in UTF-8. When the upstream type is VARBINARY, invisible characters are escaped. |
 | BIT                   | 16   | {"t":16,"v":81} | |
 | JSON                  | 245  | {"t":245,"v":"{\\"key1\\": \\"value1\\"}"} | |
 | DECIMAL               | 246  | {"t":246,"v":"129012.1230000"} | |
 | ENUM                  | 247  | {"t":247,"v":1} | |
 | SET                   | 248  | {"t":248,"v":3} | |
-| TINTTEXT/TINTBLOB     | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
+| TINYTEXT/TINYBLOB     | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
 | MEDIUMTEXT/MEDIUMBLOB | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
 | LONGTEXT/LONGBLOB     | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
 | TEXT/BLOB             | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | The value is encoded in Base64. |
-| CHAR/BINARY           | 254  | {"t":254,"v":"test"} / {"t":254,"v":"\\x89PNG\\r\\n\\x1a\\n"} | The value is encoded in UTF-8. When the upstream type is BINARY, invisible ASCII characters are escaped. |
+| CHAR/BINARY           | 254  | {"t":254,"v":"test"} / {"t":254,"v":"\\\\x89PNG\\\\r\\\\n\\\\x1a\\\\n"} | The value is encoded in UTF-8. When the upstream type is BINARY, invisible characters are escaped. |
 | GEOMETRY              | 255  |  | Unsupported |
 
 ## DDL Type Code
@@ -386,5 +386,5 @@ If the value of a column is `46`, the column is a composite index column, a prim
 > **Note:**
 >
 > + This feature is still experimental. Do **NOT** use it in the production environment.
-> + `BinaryFlag` is meaningful only when the column type is Blob/Text (including Tiny Blob/Tiny Text and Long Blob/Long Text). When the upstream column is the Blob type, the `BinaryFlag` value is set to `1`. When the upstream column is the Text type, the `BinaryFlag` value is set to `0`.
+> + `BinaryFlag` is meaningful only when the column type is BLOB/TEXT (including TINYBLOB/TINYTEXT and BINARY/CHAR). When the upstream column is the BLOB type, the `BinaryFlag` value is set to `1`. When the upstream column is the TEXT type, the `BinaryFlag` value is set to `0`.
 > + To replicate a table from the upstream, TiCDC selects a [valid index](/ticdc/ticdc-overview.md#restrictions) as the Handle index. The `HandleKeyFlag` value of the Handle index column is set to `1`.
