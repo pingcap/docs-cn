@@ -9,7 +9,7 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 ## Figma 界面
 
-详情参见 [Figma 教程](https://help.figma.com/hc/en-us/sections/360006537574-Take-a-Tour)。
+详情参见 [Figma 教程](https://help.figma.com/hc/sections/360006537574-Take-a-Tour)。
 
 ## Figma 快速上手
 
@@ -116,7 +116,7 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 #### 其他操作
 
-参见 [Figma 用户指南](https://help.figma.com/hc/en-us/categories/360002051613-Get-started)。
+参见 [Figma 用户指南](https://help.figma.com/hc/categories/360002051613-Get-started)。
 
 ### 第 5 步：导出图片
 
