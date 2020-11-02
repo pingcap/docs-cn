@@ -135,6 +135,7 @@ separator = ','
 delimiter = '"'
 # CSV 文件是否包含表头。
 # 如果 header = true，将跳过首行。
+header = true
 # CSV 文件是否包含 NULL。
 # 如果 not-null = true，CSV 所有列都不能解析为 NULL。
 not-null = false
