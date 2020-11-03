@@ -56,11 +56,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值："log"
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
-### `enable-streaming`
-
-+ 开启 coprocessor 的 streaming 获取数据模式。
-+ 默认值：false
-
 ### `lower-case-table-names`
 
 + 这个选项可以设置 TiDB 的系统变量 `lower-case-table-names` 的值。
@@ -441,10 +436,37 @@ prepare 语句的 plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
-### `enable-async-commit` <!-- 从 v5.0 版本开始引入 -->
+### `enable-one-pc` <!-- 从 v5.0 版本开始引入 -->
 
-+ 指定是否启用 async commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不兼容，开启 binlog 时本配置将没有效果。
++ 指定是否在只涉及一个 Region 的事务上使用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
 + 默认值：false
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
+>
+> + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
+> + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
+> + 无法保证外部一致性。
+> + 如果在执行 DDL 操作的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
+
+## tikv-client.async-commit <!-- 从 v5.0 版本开始引入 -->
+
+### `enable`
+
++ 指定是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不兼容，开启 binlog 时本配置将没有效果。
++ 默认值：false
+
+### `keys-limit`
+
++ 指定一个 Async Commit 事务中键的数量上限。过大的事务不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
++ 默认值：256
+
+### `total-key-size-limit`
+
++ 指定一个 Async Commit 事务中键的大小总和的上限。如果事务涉及的键过长，则不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
++ 默认值：4096
++ 单位：字节
 
 > **警告：**
 >
