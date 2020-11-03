@@ -459,12 +459,12 @@ prepare 语句的 plan cache 设置。
 
 ### `keys-limit`
 
-+ 指定一个 async commit 事务中键的数量上限。过大的事务不适合使用 async commit，超出该限制的事务会使用传统两阶段提交方式。
++ 指定一个 Async Commit 事务中键的数量上限。过大的事务不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
 + 默认值：256
 
 ### `total-key-size-limit`
 
-+ 指定一个 async commit 事务中键的大小总和的上限。如果事务涉及的键过长，则不适合使用 async commit，超出该限制的事务会使用传统两阶段提交方式。
++ 指定一个 Async Commit 事务中键的大小总和的上限。如果事务涉及的键过长，则不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
 + 默认值：4096
 + 单位：字节
 
