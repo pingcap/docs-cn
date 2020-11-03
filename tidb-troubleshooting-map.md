@@ -187,7 +187,7 @@ aliases: ['/docs-cn/v3.1/tidb-troubleshooting-map/','/docs-cn/v3.1/how-to/troubl
 - 4.2.1 `block-cache` 配置太大导致 OOM：
 
     - 在监控 **Grafana** -> **TiKV-details** 选中对应的 instance 后，查看 RocksDB 的 `block cache size` 监控来确认是否是该问题。
-    
+
     - 同时，请检查 `[storage.block-cache] capacity = # "1GB"` 参数是否设置合理，默认情况下 TiKV 的 `block-cache` 设置为机器总内存的 `45%`；在 container 部署时，需要显式指定该参数，因为 TiKV 获取的是物理机的内存，可能会超出 container 的内存限制。
 
 - 4.2.2 Coprocessor 收到大量大查询，返回的数据量太大，gRPC 的发送速度跟不上 Coprocessor 往外输出数据的速度，导致 OOM：
@@ -205,13 +205,13 @@ aliases: ['/docs-cn/v3.1/tidb-troubleshooting-map/','/docs-cn/v3.1/how-to/troubl
     - `level0 sst` 太多导致 stall，可以添加参数 `[rocksdb] max-sub-compactions = 2`（或者 `3`），加快 level0 sst 往下 compact 的速度。该参数的意思是将从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行，见案例 [case-815](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case815.md)。
 
     - `pending compaction bytes` 太多导致 stall，磁盘 I/O 能力在业务高峰跟不上写入，可以通过调大对应 Column Family (CF) 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
-    
+
         - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会放慢写入速度。默认值 64GB，`[rocksdb.defaultcf] soft-pending-compaction-bytes-limit = "128GB"`。
-        
+
         - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会 stop 写入，通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->。
-        
+
         - 如果磁盘 IO 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
-        
+
         - 比如 default cf compaction 压力比较大，调整参数 `[rocksdb.defaultcf] compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]` 改成 `compression-per-level = ["no", "no", "zstd", "zstd", "zstd", "zstd", "zstd"]`。
 
     - memtable 太多导致 stall。该问题一般发生在瞬间写入量比较大，并且 memtable flush 到磁盘的速度比较慢的情况下。如果磁盘写入速度不能改善，并且只有业务峰值会出现这种情况，可以通过调大对应 CF 的 `max-write-buffer-number` 来缓解：
@@ -252,7 +252,7 @@ aliases: ['/docs-cn/v3.1/tidb-troubleshooting-map/','/docs-cn/v3.1/how-to/troubl
 
 - 4.5.3 Append log 慢。TiKV Grafana 的 **Raft IO**/`append log duration` 比较高，通常情况下是由于写盘慢了，可以检查 RocksDB - Raft 的 `WAL Sync Duration max` 值来确认，否则可能[需要报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
 
-- 4.5.4 Raftstore 线程繁忙。TiKV Grafana 的 **Raft Propose**/`propose wait duration` 明显高于 `append log duration`。请查看以下情况： 
+- 4.5.4 Raftstore 线程繁忙。TiKV Grafana 的 **Raft Propose**/`propose wait duration` 明显高于 `append log duration`。请查看以下情况：
 
     - `[raftstore] store-pool-size` 配置是否过小（该值建议在 [1,5] 之间，不建议太大）。
     - 机器的 CPU 是不是不够。
@@ -392,7 +392,7 @@ aliases: ['/docs-cn/v3.1/tidb-troubleshooting-map/','/docs-cn/v3.1/how-to/troubl
 - 6.1.8 Pump 启动时报错 `fail to notify all living drainer`。
 
     - Pump 启动时需要通知所有 Online 状态的 Drainer，如果通知失败则会打印该错误日志。
-    
+
     - 可以使用 binlogctl 工具查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。见案例 [fail-to-notify-all-living-drainer](/tidb-binlog/handle-tidb-binlog-errors.md#pump-启动时报错-fail-to-notify-all-living-drainer)。
 
 - 6.1.9 Drainer 报错 `gen update sqls failed: table xxx: row data is corruption []`。
@@ -480,7 +480,7 @@ aliases: ['/docs-cn/v3.1/tidb-troubleshooting-map/','/docs-cn/v3.1/how-to/troubl
     - 原因 2：如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
 
     - 原因 3：如果数据源是由机器生成而不是从 Mydumper 备份的，需确保数据符合表的限制，例如：
-    
+
         - 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
         - 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
 
@@ -527,7 +527,7 @@ aliases: ['/docs-cn/v3.1/tidb-troubleshooting-map/','/docs-cn/v3.1/how-to/troubl
     - `wait response is cancelled`。请求发送到 TiKV 后超时未收到 TiKV 响应。需要排查对应地址 TiKV 的响应时间和对应 Region 在当时的 PD 和 KV 日志，确定为什么 KV 未及时响应。
 
 - 7.1.5 distsql.go 报 `inconsistent index`。数据索引疑似发生不一致，首先对报错的信息中 index 所在表执行 `admin check table <TableName>` 命令，如果检查失败，则先通过命令关闭 GC，然后[报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
-   
+
     ```sql
     begin;
     update mysql.tidb set variable_value='72h' where variable_name='tikv_gc_life_time';
