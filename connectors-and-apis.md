@@ -15,7 +15,7 @@ TiDB is compatible with all Connectors and APIs of MySQL (5.6, 5.7), including:
 - [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)
 - [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)
 - [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)
-- [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)
+- [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html)
 - [MySQL PHP API](https://dev.mysql.com/doc/refman/5.7/en/apis-php-info.html)
 - [MySQL Perl API](https://dev.mysql.com/doc/refman/5.7/en/apis-perl.html)
 - [MySQL Python API](https://dev.mysql.com/doc/refman/5.7/en/apis-python.html)
@@ -36,7 +36,7 @@ Oracle develops the following APIs and TiDB is compatible with all of them:
 
 ## Connect to TiDB using MySQL C API
 
-If you use C language programs to connect to TiDB, you can connect to `libmysqlclient` directly and use the MySQL [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html). This is one of the major connection methods using C language, widely used by various clients and APIs, including Connector/C.
+If you use C language programs to connect to TiDB, you can connect to `libmysqlclient` directly and use the MySQL [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html). This is one of the major connection methods using C language, widely used by various clients and APIs, including Connector/C.
 
 ## Connect to TiDB using third-party MySQL APIs
 
@@ -45,7 +45,7 @@ The third-party APIs are not developed by Oracle. The following table lists the 
 | Environment    | API                                      | Type                             | Notes                                    |
 | -------------- | ---------------------------------------- | -------------------------------- | ---------------------------------------- |
 | Ada            | GNU Ada MySQL Bindings                   | `libmysqlclient`                 | See [MySQL Bindings for GNU Ada](http://gnade.sourceforge.net/) |
-| C              | C API                                    | `libmysqlclient`                 | See [Section 27.8, “MySQL C API”](https://dev.mysql.com/doc/refman/5.7/en/c-api.html) |
+| C              | C API                                    | `libmysqlclient`                 | See [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html) |
 | C++            | Connector/C++                            | `libmysqlclient`                 | See [MySQL Connector/C++ Developer Guide](https://dev.mysql.com/doc/connector-cpp/en/) |
 |                | MySQL++                                  | `libmysqlclient`                 | See [MySQL++ Web site](http://tangentsoft.net/mysql++/doc/) |
 |                | MySQL wrapped                            | `libmysqlclient`                 | See [MySQL wrapped](http://www.alhem.net/project/mysql/) |
