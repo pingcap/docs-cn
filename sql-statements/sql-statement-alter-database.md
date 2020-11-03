@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-database/','/docs-cn/
 
 ## 示例
 
-更改数据库 `test`，使用 `utf8mb4` 字符集：
+修改数据库 `test` 的字符集为 `utf8mb4`：
 
 {{< copyable "sql" >}}
 
