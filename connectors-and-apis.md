@@ -14,7 +14,7 @@ TiDB 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
 + [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)
 + [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)
 + [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)
-+ [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)
++ [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html)
 + [MySQL PHP API](https://dev.mysql.com/doc/refman/5.7/en/apis-php-info.html)
 + [MySQL Perl API](https://dev.mysql.com/doc/refman/5.7/en/apis-perl.html)
 + [MySQL Python API](https://dev.mysql.com/doc/refman/5.7/en/apis-python.html)
@@ -39,7 +39,7 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 
 ## 使用 MySQL C API 连接 TiDB
 
-如果使用 C 语言程序直接连接 TiDB，可以直接链接 libmysqlclient 库，使用 MySQL 的 [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)，这是最主要的一种 C 语言连接方式，被各种客户端和 API 广泛使用，包括 Connector/C。
+如果使用 C 语言程序直接连接 TiDB，可以直接链接 libmysqlclient 库，使用 MySQL 的 [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html)，这是最主要的一种 C 语言连接方式，被各种客户端和 API 广泛使用，包括 Connector/C。
 
 ## 使用 MySQL 第三方 API 连接 TiDB
 
@@ -48,7 +48,7 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 | Environment    | API                                      | Type                             | Notes                                    |
 | -------------- | ---------------------------------------- | -------------------------------- | ---------------------------------------- |
 | Ada            | GNU Ada MySQL Bindings                   | `libmysqlclient`                 | See [MySQL Bindings for GNU Ada](http://gnade.sourceforge.net/) |
-| C              | C API                                    | `libmysqlclient`                 | See [Section 27.8, “MySQL C API”](https://dev.mysql.com/doc/refman/5.7/en/c-api.html). |
+| C              | C API                                    | `libmysqlclient`                 | See [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html). |
 | C++            | Connector/C++                            | `libmysqlclient`                 | See [MySQL Connector/C++ Developer Guide](https://dev.mysql.com/doc/connector-cpp/en/). |
 |                | MySQL++                                  | `libmysqlclient`                 | See [MySQL++ Web site](http://tangentsoft.net/mysql++/doc/). |
 |                | MySQL wrapped                            | `libmysqlclient`                 | See [MySQL wrapped](http://www.alhem.net/project/mysql/). |
