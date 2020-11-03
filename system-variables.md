@@ -323,12 +323,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：1（受配置文件影响，这里给出的是默认配置文件取值）
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
 
-### `tidb_enable_streaming`
-
-- 作用域：SESSION
-- 默认值：0
-- 这个变量用来设置是否启用 Streaming。
-
 ### `tidb_enable_table_partition`
 
 - 作用域：SESSION | GLOBAL
@@ -702,7 +696,7 @@ set tidb_query_log_max_len = 20;
 
 ### `tidb_skip_isolation_level_check`
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 
 - 默认值：0
 
