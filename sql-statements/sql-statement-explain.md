@@ -28,7 +28,7 @@ TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 
 
 ## EXPLAIN 输出格式
 
-目前 TiDB 的 `EXPLAIN` 会输出 5 列，分别是：`id`，`estRows`，`task`，`access object`， `operator info`。执行计划中每个算子都由这 5 列属性来描述，`EXPLAIN`结果中每一行描述一个算子。每个属性的具体含义如下：
+目前 TiDB 的 `EXPLAIN` 会输出 5 列，分别是：`id`，`estRows`，`task`，`access object`， `operator info`。执行计划中每个算子都由这 5 列属性来描述，`EXPLAIN` 结果中每一行描述一个算子。每个属性的具体含义如下：
 
 | 属性名          | 含义 |
 |:----------------|:----------------------------------------------------------------------------------------------------------|
@@ -248,7 +248,7 @@ The `xx.dot` is the result returned by the above statement.
 
 ## 另请参阅
 
-* [Understanding the Query Execution Plan](/query-execution-plan.md)
+* [理解 TiDB 执行计划](/explain-overview.md)
 * [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md)
 * [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
 * [TRACE](/sql-statements/sql-statement-trace.md)

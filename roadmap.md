@@ -1,6 +1,6 @@
 ---
 title: TiDB Roadmap
-aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
+aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/','/docs-cn/stable/roadmap/','/docs-cn/v4.0/roadmap/','/zh/tidb/stable/roadmap','/docs-cn/v3.1/roadmap/','/zh/tidb/v3.1/roadmap','/docs-cn/v3.0/roadmap/','/zh/tidb/v3.0/roadmap','/docs-cn/v2.1/roadmap/','/zh/tidb/v2.1/roadmap']
 ---
 
 <!-- markdownlint-disable MD001 -->
@@ -61,6 +61,8 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/']
 - [ ] 支持 Avro 接收器，使 TiCDC 与 Kafka connect 兼容 [#660](https://github.com/pingcap/ticdc/issues/660)
 - [ ] 支持 Spark 3.0 [#1173](https://github.com/pingcap/tispark/issues/1173)
 - [ ] 支持 `EXCEPT`/`INTERSECT` 操作 [#18031](https://github.com/pingcap/tidb/issues/18031)
-- [ ] 支持通过 TiUP/TiDB Operator 部署和运维 DM 2.0 [#2868](https://github.com/pingcap/tidb-operator/issues/2868)
-- [ ] TiDB Operator 支持异构设计 [#2240](https://github.com/pingcap/tidb-operator/issues/2240)
 - [ ] 支持将云上的 RDS 迁移到 TiDB，例如：云上的 MySQL 或者 Aurora [#18629](https://github.com/pingcap/tidb/issues/18629)
+
+## TiDB Operator
+
+参见 [TiDB Operator Roadmap](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/roadmap)。
