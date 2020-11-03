@@ -19,7 +19,7 @@ summary: TiDB 数据库中 ADMIN CHECKSUM TABLE 的使用概况。
 
 ## 示例
 
-计算表 t1 的校验和:
+计算表 `t1` 的校验和:
 
 {{< copyable "sql" >}}
 
