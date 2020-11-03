@@ -40,10 +40,8 @@ ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ```
 
-以上语句用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在运行中的 DDL 作业以及 DDL 历史作业队列中最近的十条结果。
 
 ### `admin cancel DDL jobs` 语句
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -287,4 +285,4 @@ admin show ddl jobs 5 where state!='synced' and db_name='test';
 
 ## MySQL 兼容性
 
-ADMIN 语句是 TiDB 对于 MySQL 语法的扩展。
+`ADMIN` 语句是 TiDB 对于 MySQL 语法的扩展。
