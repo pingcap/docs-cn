@@ -54,7 +54,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `pd`: PD client 的 URL。
 - `addr`: TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。
 - `advertise-addr`: TiCDC 对外访问地址。
-- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
+- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
 - `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
 - `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
 - `ca`: TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
@@ -168,6 +168,7 @@ URI 中可配置的的参数如下：
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
+| `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，则表示连接 MySQL 时不指定时区，使用下游默认时区） |
 
 #### Sink URI 配置 `kafka`
 
