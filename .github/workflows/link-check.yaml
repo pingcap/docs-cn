@@ -18,7 +18,7 @@ jobs:
         id: lc
         uses: peter-evans/link-checker@v1
         with:
-          args: -c 32 -d /github/workspace -r -t 20 -x "http://172.*|https://github.com/.*/pull/.*|https://github.com/.*/issues/.*|https://github.com/[^.\n]*$|http://127.0.0.1.*|http://localhost.*|http://.*:.*|https://static.googleusercontent.com/media/research.google.com/.*|https://www.crunchbase.com/organization/.*|.*.md" .
+          args: -c 32 -d /github/workspace -r -x "http://172.*|https://github.com/.*/pull/.*|https://github.com/.*/issues/.*|https://github.com/[^.\n]*$|http://127.0.0.1.*|http://localhost.*|http://.*:.*|https://static.googleusercontent.com/media/research.google.com/.*|https://www.crunchbase.com/organization/.*|http://www.brendangregg.com/perf.html.*|.*.md" .
 
       - name: Fail if there were external link errors
         if: ${{ steps.lc.outputs.exit_code }}
