@@ -61,6 +61,8 @@ aliases: ['/docs/ROADMAP/','/docs/roadmap/','/docs/stable/roadmap/','/docs/v4.0/
 - [ ] Support Avro sink and make TiCDC compatible with Kafka connect [#660](https://github.com/pingcap/ticdc/issues/660)
 - [ ] Support Spark 3.0 [#1173](https://github.com/pingcap/tispark/issues/1173)
 - [ ] Support `EXCEPT`/`INTERSECT` operators [#18031](https://github.com/pingcap/tidb/issues/18031)
-- [ ] Deploy and manage DM 2.0 using TiUP/TiDB Operator [#2868](https://github.com/pingcap/tidb-operator/issues/2868)
-- [ ] TiDB Operator supports heterogeneous design [#2240](https://github.com/pingcap/tidb-operator/issues/2240)
 - [ ] Support migrating the RDS (such as MySQL/Aurora) on cloud to TiDB [#18629](https://github.com/pingcap/tidb/issues/18629)
+
+## TiDB Operator
+
+See [TiDB Operator Roadmap](https://docs.pingcap.com/tidb-in-kubernetes/dev/roadmap).
