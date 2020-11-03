@@ -454,17 +454,17 @@ prepare 语句的 plan cache 设置。
 
 ### `enable`
 
-+ 指定是否启用 async commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不兼容，开启 binlog 时本配置将没有效果。
++ 指定是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不兼容，开启 binlog 时本配置将没有效果。
 + 默认值：false
 
 ### `keys-limit`
 
-+ 指定一个 async commit 事务中键的数量上限。过大的事务不适合使用 async commit，超出该限制的事务会使用传统两阶段提交方式。
++ 指定一个 Async Commit 事务中键的数量上限。过大的事务不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
 + 默认值：256
 
 ### `total-key-size-limit`
 
-+ 指定一个 async commit 事务中键的大小总和的上限。如果事务涉及的键过长，则不适合使用 async commit，超出该限制的事务会使用传统两阶段提交方式。
++ 指定一个 Async Commit 事务中键的大小总和的上限。如果事务涉及的键过长，则不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
 + 默认值：4096
 + 单位：字节
 
