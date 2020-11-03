@@ -41,8 +41,8 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Error QPS：所有 TiFlash 实例处理 coprocessor 请求的错误数量。其中 meet_lock 为读取的数据有锁，region_not_found 为 Region 不存在，epoch_not_match 为读取的 Region epoch 与本地不一致，kv_client_error 为与 TiKV 通信产生的错误，internal_error 为 TiFlash 内部系统错误，other 为其他错误。
 - Request Handle Duration：所有 TiFlash 实例处理 coprocessor 请求处理时间，处理时间为该 coprocessor 请求开始执行到执行结束的时间。
 - Response Bytes/Seconds：所有 TiFlash 实例应答总字节数。
-- Cop task memory usage: 所有 TiFlash 实例处理 coprocessor 请求占用的内存总数。
-- Handling Request Number: 所有 TiFlash 实例正在处理的 coprocessor 请求数量之和。请求的分类与 Request QPS 中的相同.
+- Cop task memory usage：所有 TiFlash 实例处理 coprocessor 请求占用的总内存。
+- Handling Request Number：所有 TiFlash 实例正在处理的 coprocessor 请求数量之和。请求的分类与 Request QPS 中的相同.
 
 ## DDL
 
