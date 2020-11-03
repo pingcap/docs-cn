@@ -56,11 +56,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值："log"
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
 
-### `enable-streaming`
-
-+ 开启 coprocessor 的 streaming 获取数据模式。
-+ 默认值：false
-
 ### `lower-case-table-names`
 
 + 这个选项可以设置 TiDB 的系统变量 `lower-case-table-names` 的值。
