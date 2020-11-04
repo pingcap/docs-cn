@@ -350,12 +350,6 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: 1 (the value of the default configuration file)
 - This variable is used to control whether to enable the statement summary feature. If enabled, SQL execution information like time consumption is recorded to the `information_schema.STATEMENTS_SUMMARY` system table to identify and troubleshoot SQL performance issues.
 
-### tidb_enable_streaming
-
-- Scope: SERVER
-- Default value: 0
-- This variable is used to set whether to enable streaming.
-
 ### tidb_enable_table_partition
 
 - Scope: SESSION | GLOBAL

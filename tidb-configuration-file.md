@@ -54,11 +54,6 @@ The TiDB configuration file supports more options than command-line parameters. 
 - Default value: `"cancel"` (In TiDB v4.0.2 and earlier versions, the default value is `"log"`)
 - The valid options are `"log"` and `"cancel"`. When `oom-action="log"`, it prints the log only. When `oom-action="cancel"`, it cancels the operation and outputs the log.
 
-### `enable-streaming`
-
-- Determines whether to enable the data fetch mode of streaming in Coprocessor.
-- Default value: `false`
-
 ### `lower-case-table-names`
 
 - Configures the value of the `lower-case-table-names` system variable.

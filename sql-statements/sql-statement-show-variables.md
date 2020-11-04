@@ -64,7 +64,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_enable_radix_join              | 0                   |
 | tidb_enable_slow_log                | 1                   |
 | tidb_enable_stmt_summary            | 1                   |
-| tidb_enable_streaming               | 0                   |
 | tidb_enable_table_partition         | on                  |
 | tidb_enable_vectorized_expression   | 1                   |
 | tidb_enable_window_function         | 1                   |
