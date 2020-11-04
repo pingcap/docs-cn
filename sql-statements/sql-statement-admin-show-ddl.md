@@ -3,9 +3,9 @@ title: ADMIN SHOW DDL [JOBS|QUERIES]
 summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|QUERIES] 的使用概况。
 ---
 
-# ADMIN SHOW DDL [JOBS,QUERIES]
+# ADMIN SHOW DDL [JOBS|QUERIES]
 
-`ADMIN SHOW DDL [JOBS,QUERIES]` 语句显示了正在运行和最近完成的 DDL 作业的信息。
+`ADMIN SHOW DDL [JOBS|QUERIES]` 语句显示了正在运行和最近完成的 DDL 作业的信息。
 
 ## 语法图
 
