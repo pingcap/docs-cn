@@ -31,7 +31,7 @@ CREATE ROLE 'app_developer', 'app_read', 'app_write';
 
 For the role naming format and rule, see [TiDB User Account Management](/user-account-management.md).
 
-Roles are stored in the `mysql.user` table. The name of the role you are trying to create must be unique; otherwise, an error is reported.
+Roles are stored in the `mysql.user` table and the host name part of the role name (if omitted) defaults to `'%'`. The name of the role you are trying to create must be unique; otherwise, an error is reported.
 
 To create a role, you need the `CREATE ROLE` or `CREATE USER` privilege.
 
@@ -65,7 +65,7 @@ GRANT ALL ON app_db.* TO 'app_developer';
 
 ### Grant a role to a user
 
-Assume that a user `dev1` has the developer role with all the privileges on `app_db`; two users `read_user1` and `read_user2` have the read-only privilege on `app_db`; and a user `rw_user1` has read and write privileges on `app_db`. 
+Assume that a user `dev1` has the developer role with all the privileges on `app_db`; two users `read_user1` and `read_user2` have the read-only privilege on `app_db`; and a user `rw_user1` has read and write privileges on `app_db`.
 
 Use `CREATE USER` to create the users:
 
@@ -283,7 +283,7 @@ SET ROLE ALL EXCEPT 'app_read'
 
 ### Check the current enabled role
 
-The current user can use the `CURRENT_ROLE()` function to check which role has been enabled by the current user. 
+The current user can use the `CURRENT_ROLE()` function to check which role has been enabled by the current user.
 
 For example, you can grant default roles to `rw_user1'@'localhost`:
 
@@ -291,6 +291,7 @@ For example, you can grant default roles to `rw_user1'@'localhost`:
 
 ```sql
 SET DEFAULT ROLE ALL TO 'rw_user1'@'localhost';
+```
 
 After `rw_user1@localhost` logs in, you can execute the following statement:
 
@@ -382,7 +383,7 @@ In addition to four system [privilege tables](/privilege-management.md#privilege
 {{< copyable "sql" >}}
 
 ```sql
-select * from mysql.role_edges;
+SELECT * FROM mysql.role_edges;
 ```
 
 ```
@@ -404,7 +405,7 @@ select * from mysql.role_edges;
 {{< copyable "sql" >}}
 
 ```sql
-select * from mysql.default_roles;
+SELECT * FROM mysql.default_roles;
 ```
 
 ```
