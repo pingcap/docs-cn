@@ -76,11 +76,11 @@ ADMIN SHOW DDL JOBS;
 
 由上述 `ADMIN` 查询结果可知：
 
-- `job_id` 为 59 的 DDL 作业当前正在进行中（`STATE` 列显示为 `running`）。`SCHEMA_STATE` 列显示了表当前处于 `write reorganization` 状态，一旦任务完成，将更改为 `public` 状态，以便用户会话可以公开观察到状态变更。`end_time` 列显示为 `NULL`，表明当前作业的完成时间未知。
+- `job_id` 为 59 的 DDL 作业当前正在进行中（`STATE` 列显示为 `running`）。`SCHEMA_STATE` 列显示了表当前处于 `write reorganization` 状态，一旦任务完成，将更改为 `public`，以便用户会话可以公开观察到状态变更。`end_time` 列显示为 `NULL`，表明当前作业的完成时间未知。
 
 - `job_id` 为 60 的 `JOB_TYPE` 显示为 `add index`，表明正在排队等待 `job_id` 为 59 的作业完成。当作业 59 完成时，作业 60 的 `STATE` 将更改为 `running`。
 
-- 对于破坏性的更改（例如删除索引或删除表），当作业完成时，`SCHEMA_STATE` 将更改为 `none`。对于附加更改，`SCHEMA_STATE` 将更改为 `public` 状态。
+- 对于破坏性的更改（例如删除索引或删除表），当作业完成时，`SCHEMA_STATE` 将变为 `none`。对于附加更改，`SCHEMA_STATE` 将变为 `public`。
 
 若要限制表中显示的行数，可以指定 `NUM` 和 `WHERE` 条件：
 
