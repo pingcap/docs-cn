@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADMIN CHECK [TABLE|INDEX] 的使用概况。
 
 # ADMIN CHECK [TABLE|INDEX]
 
-`ADMIN CHECK [TABLE|INDEX]` 语句用于检查表中数据和对应索引的一致性。
+`ADMIN CHECK [TABLE|INDEX]` 语句用于校验表中数据和对应索引的一致性。
 
 ## 语法图
 

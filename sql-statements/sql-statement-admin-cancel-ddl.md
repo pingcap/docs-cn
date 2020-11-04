@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADMIN CANCEL DDL 的使用概况。
 
 # ADMIN CANCEL DDL
 
-`ADMIN CANCEL DDL` 语句用于取消当前正在执行的 DDL 作业。可以通过运行 `ADMIN SHOW DDL JOBS` 语句获取 DDL 作业的 `job_id`。
+`ADMIN CANCEL DDL` 语句用于取消当前正在运行的 DDL 作业。可以通过 `ADMIN SHOW DDL JOBS` 语句获取 DDL 作业的 `job_id`。
 
 ## 语法图
 
@@ -19,7 +19,7 @@ summary: TiDB 数据库中 ADMIN CANCEL DDL 的使用概况。
 
 ## 示例
 
-可以通过 `ADMIN CANCEL DDL JOBS` 语句取消当前正在运行的 DDL 作业，并返回对应作业是否成功取消：
+可以通过 `ADMIN CANCEL DDL JOBS` 语句取消当前正在运行的 DDL 作业，并返回对应作业是否取消成功：
 
 {{< copyable "sql" >}}
 
@@ -33,9 +33,9 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 >
 > + 只有该操作可以取消 DDL 作业，其他所有的操作和环境变更（例如机器重启、集群重启）都不会取消 DDL 作业。
 >
-> + 该操作可以同时取消多个 DDL 作业。可以通过 `ADMIN SHOW DDL JOBS` 语句来获取 DDL 作业的 `job_id`。
+> + 该操作可以同时取消多个 DDL 作业，可以通过 `ADMIN SHOW DDL JOBS` 语句来获取 DDL 作业的 `job_id`。
 >
-> + 如果希望取消的作业已经完成，则取消操作将会失败。
+> + 如果希望取消的作业已经完成，取消操作将失败。
 
 ## MySQL 兼容性
 

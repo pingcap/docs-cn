@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADMIN CHECKSUM TABLE 的使用概况。
 
 # ADMIN CHECKSUM TABLE
 
-`ADMIN CHECKSUM TABLE` 语句用于计算表中所有行和索引的 CRC64C 校验和。在 TiDB Lightning 等程序中，可通过使用此语句来确保成功完成导入。
+`ADMIN CHECKSUM TABLE` 语句用于计算表中所有行和索引的 CRC64C 校验和。在 TiDB Lightning 等程序中，可通过此语句来确保导入操作成功。
 
 ## 语法图
 
