@@ -34,6 +34,10 @@ aliases: ['/docs-cn/v3.1/grafana-overview-dashboard/','/docs-cn/v3.1/reference/k
     - Tombstone Stores：下线成功的 TiKV 节点数量
 - 99% completed\_cmds\_duration\_seconds：单位时间内，99% 的 pd-server 请求执行时间小于监控曲线的值，一般 <= 5ms
 - handle\_requests\_duration\_seconds：PD 发送请求的网络耗时
+- Region health：每个 Region 的状态，通常情况下，pending 的 peer 应该少于 100，miss 的 peer 不能一直大于 `0`
+- Hot write Region's leader distribution：每个 TiKV 实例上是写入热点的 leader 的数量
+- Hot read Region's leader distribution：每个 TiKV 实例上是读取热点的 leader 的数量
+- 99% Region heartbeat latency：99% 的情况下，心跳的延迟
 
 ## TiDB
 
@@ -84,4 +88,4 @@ aliases: ['/docs-cn/v3.1/grafana-overview-dashboard/','/docs-cn/v3.1/reference/k
 
 ## 图例
 
-![overview](/media/overview.png)
+![overview](/media/grafana-monitor-overview.png)
