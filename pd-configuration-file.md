@@ -186,7 +186,7 @@ Configuration items related to monitoring
 
 ### `interval`
 
-+ The interval at which monitoring metric data is pushed to Promethus
++ The interval at which monitoring metric data is pushed to Prometheus
 + Default value: `15s`
 
 ## `schedule`
