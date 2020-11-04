@@ -270,6 +270,7 @@ sudo systemctl enable ntpd.service
     ```bash
     grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
     ```
+    
     > **注意：**
     >
     > --update-kernel 后需要使用实际的默认内核版本。
@@ -281,6 +282,7 @@ sudo systemctl enable ntpd.service
     ```bash
     grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
     ```
+    
     > **注意：**
     >
     > --info 后需要使用实际的默认内核版本。
