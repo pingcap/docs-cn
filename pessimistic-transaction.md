@@ -97,9 +97,9 @@ BEGIN /*T! PESSIMISTIC */;
 
 5. autocommit 事务优先采用乐观事务提交。
     
-    使用悲观事务模型时，autocommit 事务首先尝试使用开销更小的乐观事务模式提交，如果发生了写冲突，重试时才会使用悲观事务提交。所以 `tidb_retry_limit = 0` 时，autocommit 事务遇到写冲突仍会报 `Write Conflict` 错误。
+    使用悲观事务模型时，autocommit 事务首先尝试使用开销更小的乐观事务模式提交。如果发生了写冲突，重试时才会使用悲观事务提交。所以 `tidb_retry_limit = 0` 时，autocommit 事务遇到写冲突仍会报 `Write Conflict` 错误。
 
-    自动提交的 select for update 语句不会等锁。
+    自动提交的 `SELECT FOR UPDATE` 语句不会等锁。
 
 6. 对语句中 `EMBEDDED SELECT` 读到的相关数据不会加锁。
 
