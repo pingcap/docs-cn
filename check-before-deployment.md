@@ -229,6 +229,101 @@ sudo systemctl start ntpd.service && \
 sudo systemctl enable ntpd.service
 ```
 
+## 检测及关闭透明大页
+
+对于数据库应用，不推荐使用 THP（transparent hugepage，透明大页），因为数据库往往具有稀疏而不是连续的内存访问模式，且当高阶内存碎片化比较严重时，分配 THP 页面会出现较大的延迟。若开启针对 THP 的直接内存规整功能，也会出现系统 CPU 使用率激增的现象，因此建议关闭 THP。
+
+采用如下步骤检查是否已经关闭透明大页：
+
+1. 执行以下命令，如果输出 `[always] madvise never` 表示透明大页处于启用状态：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat /sys/kernel/mm/transparent_hugepage/enabled
+    ```
+
+    ```
+    [always] madvise never
+    ```
+
+2. 执行 `grubby` 命令查看默认内核版本：
+
+    > **注意：**
+    >
+    > 需安装 `grubby` 软件包。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    grubby --default-kernel
+    ```
+
+    ```
+    /boot/vmlinuz-3.10.0-957.el7.x86_64
+    ```
+
+3. 执行 `grubby --update-kernel` 命令修改内核配置：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
+    ```
+    > **注意：**
+    >
+    > --update-kernel 后需要使用实际的默认内核版本。
+
+4. 执行 `grubby --info` 命令查看修改后的默认内核配置：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
+    ```
+    > **注意：**
+    >
+    > --info 后需要使用实际的默认内核版本。
+
+    ```
+    index=0
+    kernel=/boot/vmlinuz-3.10.0-957.el7.x86_64
+    args="ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet LANG=en_US.UTF-8 transparent_hugepage=never"
+    root=/dev/mapper/centos-root
+    initrd=/boot/initramfs-3.10.0-957.el7.x86_64.img
+    title=CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
+    ```
+	
+5. 执行 `reboot` 命令进行重启或者修改当前的内核配置：
+
+    - 如果需要重启验证，执行 `reboot` 命令：
+       {{< copyable "shell-regular" >}}
+
+        ```bash
+        reboot
+        ```
+
+    - 如果需要修改当前的内核配置：
+
+       {{< copyable "shell-regular" >}}
+
+        ```bash
+        echo never > /sys/kernel/mm/transparent_hugepage/enabled
+        echo never > /sys/kernel/mm/transparent_hugepage/defrag
+        ```
+
+6. 查看重启或者修改后的默认内核生效配置，如果输出 `always madvise [never]` 表示透明大页处于禁用状态
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat /sys/kernel/mm/transparent_hugepage/enabled
+    ```
+
+    ```
+    always madvise [never]
+    ```
+
 ## 手动配置 SSH 互信及 sudo 免密码
 
 对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登陆，可忽略本段内容。
