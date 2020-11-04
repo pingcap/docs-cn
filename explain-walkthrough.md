@@ -30,15 +30,15 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 
 以上是该查询的执行计划结果。从 `└─TableFullScan_18` 算子开始向上看，查询的执行过程如下（非最佳执行计划）：
 
-1. Coprocessor (TiKV) 读取整张 `trips` 表的数据，作为一次 `TableFullScan` 操作，再将读取到的行数据传递给 `Selection_19` 算子。`Selection_19` 算子仍在 TiKV 内。
+1. Coprocessor (TiKV) 读取整张 `trips` 表的数据，作为一次 `TableFullScan` 操作，再将读取到的数据传递给 `Selection_19` 算子。`Selection_19` 算子仍在 TiKV 内。
 
-2. `Selection_19` 算子根据谓词 `WHERE start_date BETWEEN ..` 进行数据过滤。预计大约有 250 行数据满足该过滤条件（基于统计信息以及算子的执行逻辑估算而来）。`└─TableFullScan_18` 算子显示 `stats:pseudo`，表示该表没有实际统计信息，。执行 `ANALYZE TABLE trips` 收集统计信息后，预计的估算的数字会更加准确。
+2. `Selection_19` 算子根据谓词 `WHERE start_date BETWEEN ..` 进行数据过滤。预计大约有 250 行数据满足该过滤条件（基于统计信息以及算子的执行逻辑估算而来）。`└─TableFullScan_18` 算子显示 `stats:pseudo`，表示该表没有实际统计信息，执行 `ANALYZE TABLE trips` 收集统计信息后，预计的估算的数字会更加准确。
 
-3. `COUNT` 函数随后应用于满足过滤条件的行，这一过程也是在 TiKV (`cop[tikv]`) 中的 `StreamAgg_9` 算子内完成的。TiKV coprocessor 能执行一些 MySQL 内置函数，`COUNT` 是其中之一：
+3. `COUNT` 函数随后应用于满足过滤条件的行，这一过程也是在 TiKV (`cop[tikv]`) 中的 `StreamAgg_9` 算子内完成的。TiKV coprocessor 能执行一些 MySQL 内置函数，`COUNT` 是其中之一。
 
-4. `StreamAgg_9` 算子执行的结果会被传递给 `TableReader_21` 算子（位于 TiDB 服务器内，即 `root` 任务）。执行计划结果表中 `estRows` 列上 `TableReader_21` 算子的值为 `1`，表示该算子将从每个访问的 TiKV Region 接收一行数据。这一请求过程的详情，可参阅 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)。
+4. `StreamAgg_9` 算子执行的结果会被传递给 `TableReader_21` 算子（位于 TiDB 进程中，即 `root` 任务）。执行计划中，`TableReader_21` 算子的 `estRows` 为 `1`，表示该算子将从每个访问的 TiKV Region 接收一行数据。这一请求过程的详情，可参阅 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)。
 
-5. `StreamAgg_20` 算子随后将 `COUNT` 函数应用在从 `└─TableReader_21` 算子传来的每行数据上，可通过执行 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 查看结果，会有 56 行数据。`StreamAgg_20` 是根算子，会将结果返回给客户端。
+5. `StreamAgg_20` 算子随后对 `└─TableReader_21` 算子传来的每行数据计算 `COUNT` 函数的结果。`StreamAgg_20` 是根算子，会将结果返回给客户端。
 
 > **注意：**
 >
