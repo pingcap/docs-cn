@@ -95,11 +95,11 @@ BEGIN /*T! PESSIMISTIC */;
 
 4. `START TRANSACTION WITH CONSISTENT SNAPSHOT` 之后，MySQL 仍然可以读取到之后在其他事务创建的表，而 TiDB 不能。
 
-5. autocommit 事务不支持悲观锁。
+5. autocommit 事务优先采用乐观事务提交。
+    
+    使用悲观事务模型时，autocommit 事务首先尝试使用开销更小的乐观事务模式提交，如果发生了写冲突，重试时才会使用悲观事务提交。所以 `tidb_retry_limit = 0` 时，autocommit 事务遇到写冲突仍会报 `Write Conflict` 错误。
 
-    所有自动提交的语句都不会加悲观锁，该类语句在用户侧感知不到区别，因为悲观事务的本质是把整个事务的重试变成了单个 DML 的重试，autocommit 事务即使在 TiDB 关闭重试时也会自动重试，效果和悲观事务相同。
-
-    自动提交的 select for update 语句也不会等锁。
+    自动提交的 select for update 语句不会等锁。
 
 6. 对语句中 `EMBEDDED SELECT` 读到的相关数据不会加锁。
 
