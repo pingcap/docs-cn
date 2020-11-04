@@ -295,7 +295,7 @@ sudo systemctl enable ntpd.service
     initrd=/boot/initramfs-3.10.0-957.el7.x86_64.img
     title=CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
     ```
-	
+
 5. 执行 `reboot` 命令进行重启或者修改当前的内核配置：
 
     - 如果需要重启验证，执行 `reboot` 命令：
