@@ -312,7 +312,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_enable_cascades_planner`
 
 - 作用域：SESSION | GLOBAL
-- 默认值: 0
+- 默认值：0
 - 这个变量用于控制是否开启 cascades planner。
 
 ### `tidb_enable_clustered_index` <!-- 从 v5.0 版本开始引入 -->
@@ -956,3 +956,9 @@ explain select * from t where age=5;
 +-------------------------------+------------+-----------+-----------------------------+-------------------------------+
 3 rows in set (0.00 sec)
 ```
+
+### `tidb_enable_parallel_apply`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：1
+- 这个变量用于控制是否开启并行 Apply 执行，并发数由 tidb_executor_concurrency 控制。
