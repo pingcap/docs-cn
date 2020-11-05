@@ -219,8 +219,12 @@ raftstore 相关的配置项。
 
 ### `sync-log`
 
-+ 数据、log 落盘是否 sync，注意：设置成 false 可能会丢数据。
++ 数据、log 落盘是否 sync。
 + 默认值：true
+
+> **警告：**
+>
+> 将该值设置为 false 可能会导致**数据丢失**。因此**强烈建议**不要修改此配置。
 
 ### `prevote`
 
@@ -1039,7 +1043,7 @@ raftdb 相关配置项。
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发数。
-+ 默认值：1
++ 默认值：2
 + 最小值：1
 
 ### `wal-dir`

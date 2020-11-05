@@ -26,7 +26,7 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-* 临时表
+* 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * `BINARY` 之外的排序规则
@@ -34,15 +34,14 @@ TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现�
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
-* X Protocol
-* Savepoints
-* 列级权限
+* X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
+* Savepoints [#6840](https://github.com/pingcap/tidb/issues/6840)
+* 列级权限 [#9766](https://github.com/pingcap/tidb/issues/9766)
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
-* `CREATE TABLE tblName AS SELECT stmt` 语法
-* `CREATE TEMPORARY TABLE` 语法
-* `CHECK TABLE` 语法
-* `CHECKSUM TABLE` 语法
-* `SELECT INTO FILE` 语法
+* `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
+* `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
+* `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
+* `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
 
 ## 与 MySQL 有差异的特性
 

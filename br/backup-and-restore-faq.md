@@ -62,6 +62,6 @@ aliases: ['/docs-cn/v3.1/br/backup-and-restore-faq/']
 
 + **BR 恢复的数据无法被同步到下游**，因为 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
 
-+ 无法被同步到下游的恢复数据可能导致 Drainer 在执行 DDL 的时候发生异常。所以，如果一定要在 Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 Drainer 的阻止名单。
++ BR 恢复时产生的 DDL jobs 还可能会让 Drainer 执行异常的 DDL。所以，如果一定要在 Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 Drainer 的阻止名单。
 
 可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 加入阻止名单。
