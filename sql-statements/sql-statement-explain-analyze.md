@@ -247,7 +247,7 @@ commit_txn: {prewrite:48.564544ms, wait_prewrite_binlog:47.821579, get_commit_ts
 - `get_commit_ts`：获取事务提交时间戳的耗时。
 - `commit`：事务 2PC 提交阶段中，`commit` 阶段的耗时。
 - `write_keys`：事务中写入 `key` 的数量。
-- `write_byte`：事务中写入 `key/value` 的总字节数量，单位是 byte。
+- `write_byte`：事务中写入 `key-value` 的总字节数量，单位是 byte。
 
 ## MySQL 兼容性
 
