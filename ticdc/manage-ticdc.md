@@ -199,6 +199,25 @@ URI 中可配置的的参数如下：
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
 
+#### TiCDC 集成 Kafka Connect (Confluent Platform)
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
+配置样例如下所示：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--opts registry="http://127.0.0.1:8081"
+```
+
+如果使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 来向关系型或非关系型数据库传输数据，需要选择 `avro` 协议，并在 `opts` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。请注意，`avro` 协议和集成 Confluent 目前均为**实验特性**。
+
+集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
+
 #### Sink URI 配置 `pulsar`
 
 配置样例如下所示：
