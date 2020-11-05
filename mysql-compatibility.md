@@ -97,7 +97,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * 不支持添加/删除主键，除非开启了 [`alter-primary-key`](/tidb-configuration-file.md#alter-primary-key) 配置项。
 * 不支持将字段类型修改为其超集，例如不支持从 `INTEGER` 修改为 `VARCHAR`，或者从 `TIMESTAMP` 修改为 `DATETIME`，否则可能输出的错误信息 `Unsupported modify column: type %d not match origin %d`。
 * 更改/修改数据类型时，尚未支持“有损更改”，例如不支持从 BIGINT 更改为 INT。
-* 更改/修改十进制列时，不支持更改精度。
+* 更改/修改 DECIMAL 类型时，不支持更改精度。
 * 更改/修改整数列时，不允许更改 `UNSIGNED` 属性。
 * TiDB 中，`ALGORITHM={INSTANT,INPLACE,COPY}` 语法只作为一种指定，并不更改 `ALTER` 算法，详情参阅 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)。
 * 分区表支持 Hash、Range 和 `Add`/`Drop`/`Truncate`/`Coalesce`。其他分区操作将被忽略，可能会报 `Warning: Unsupported partition type, treat as normal table` 错误。不支持以下分区表语法：
