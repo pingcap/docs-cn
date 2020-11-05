@@ -484,6 +484,8 @@ systemd 控制进程资源的相关配置。
 
 ### `listen_host`
 
++ `SPARK_LOCAL_IP` 的值，默认为空。
+
 ### `port`
 
 + 默认值：7078
@@ -494,11 +496,22 @@ systemd 控制进程资源的相关配置。
 
 ### spark_config
 
++ 加入到 `spark-defaults.conf` 中的自定义配置项。
+
 ### spark_env
+
++ 添加到 `spark-env.sh` 中的自定义环境变量。
+
+### java_home
+
++ 自定义 JAVA_HOME 位置，可用于使用自定义的 JRE。
++ 默认值：空（使用系统默认 JRE）
 
 ## tispark_workers
 
 部署 tispark worker 的实例, 不支持同一 `host` 部署多个实例。
+
+worker 实例使用和 master 相同的自定义配置项与自定义环境变量，不能单独设置。
 
 ### host
 
@@ -513,6 +526,11 @@ systemd 控制进程资源的相关配置。
 
 + 部署目录
 + 默认值："{global.deploy_dir}/tispark-worker-{port}"
+
+### java_home
+
++ 自定义 JAVA_HOME 位置，可用于使用自定义的 JRE。
++ 默认值：空（使用系统默认 JRE）
 
 ## monitoring_servers
 
