@@ -174,7 +174,7 @@ inner:{total:4.297515932s, concurrency:5, task:17, construct:97.96291ms, fetch:4
 1. Outer worker 读取 N 行 out table 的数据，然后包装成一个 task 发送给 inner worker channel。
 2. Inner worker 从 inner worker channel 里面接收 task，然后做以下三件事情，其中步骤 a 和 b 是并行执行。
     a. 用 outer table rows 生成一个 hash table。
-    b. 根据 task 读取 inner table 相应范围的行数据。
+    b. 根据 task 生成 key 的范围后，读取 inner table 相应范围的行数据。
     c. 用 inner table rows 和 outer table rows 的 hash table 做 join，然后把 join 结果发送给 result channel。
 3. `IndexHashJoin` 的主线程从 result channel 中接收 join 结果。
 
