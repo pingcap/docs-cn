@@ -638,6 +638,12 @@ rocksdb 相关的配置项。
 + 默认值：8
 + 最小值：1
 
+### `max-background-flushes`
+
++ memtable 后台 flush 任务的最大并发数。
++ 默认值：2
++ 最小值：1
+
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发个数。
