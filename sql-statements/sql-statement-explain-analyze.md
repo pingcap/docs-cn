@@ -147,7 +147,7 @@ prepare:109.616µs, check_insert:{total_time:1.431678ms, mem_insert_time:667.878
 
 `IndexJoin` 算子有 1 个 outer worker 和 N 个 inner worker 并行执行，其 join 结果的顺序和 outer table 的顺序一致，具体执行流程如下：
 
-1. Outer worker 读取 N 行 out table 的数据，然后包装成一个 task 发送给 result channel 和 inner worker channel。
+1. Outer worker 读取 N 行 outer table 的数据，然后包装成一个 task 发送给 result channel 和 inner worker channel。
 2. Inner worker 从 inner worker channel 里面接收 task，然后根据 task 读取 inner table 相应范围的行数据，并生成一个 inner table row 的 hash table。
 3. `IndexJoin` 的主线程从 result channel 中接收 task，然后等待 inner worker 执行完这个 task。
 4. `IndexJoin` 的主线程用 outer table rows 和 inner table rows 的 hash table 做 join 。
