@@ -229,7 +229,7 @@ lock_keys: {time:94.096168ms, region:6, keys:8, lock_rpc:274.503214ms, rpc_count
 ```
 
 - `time`：执行 `lock_keys` 操作的总耗时。
-- `region`：执行 `lock_keys` 操作涉及的 region 数量。
+- `region`：执行 `lock_keys` 操作涉及的 Region 数量。
 - `keys`：需要 `Lock` 的 `Key` 的数量。
 - `lock_rpc`：向 TiKV 发送 `Lock` 类型的 RPC 总耗时。因为可以并行发送多个 RPC 请求，所以总 RPC 耗时可能比 `lock_keys` 操作总耗时大。
 - `rpc_count`：向 TiKV 发送 `Lock` 类型的 RPC 总数量。
