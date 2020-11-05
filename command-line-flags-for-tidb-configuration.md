@@ -25,6 +25,16 @@ aliases: ['/docs-cn/stable/command-line-flags-for-tidb-configuration/','/docs-cn
 + 默认：""
 + 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件中的配置。详细的配置项请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md)。
 
+## `--config-check`
+
+- 检查配置文件的有效性并退出
+- 默认：false
+
+## `--config-strict`
+
+- 增强配置文件的有效性
+- 默认：false
+
 ## `--cors`
 
 + 用于设置 TiDB HTTP 状态服务的 Access-Control-Allow-Origin
@@ -46,6 +56,11 @@ aliases: ['/docs-cn/stable/command-line-flags-for-tidb-configuration/','/docs-cn
 + Log 级别
 + 默认："info"
 + 可选项为：debug、info、warn、error、fatal
+
+## `--lease`
+
+- Schema lease 的持续时间。除非你知道更改该值带来的后果，否则你的更改操作是**危险的**。
+- 默认：45s
 
 ## `--log-file`
 
