@@ -298,17 +298,17 @@ Column 的类型码用于标识 Row Changed Event 中列的数据类型。
 | TIME                  | 11   | {"t":11,"v":"23:59:59"} | |
 | DATETIME              | 12   | {"t":12,"v":"2015-12-20 23:58:58"} | |
 | YEAR                  | 13   | {"t":13,"v":1970} | |
-| VARCHAR/VARBINARY     | 15/253   | {"t":15,"v":"测试"} / {"t":15,"v":"\\x89PNG\\r\\n\\x1a\\n"} | value 编码为 UTF-8；当上游类型为 VARBINARY 时，将对不可见的 ASCII 字符转义 |
+| VARCHAR/VARBINARY     | 15/253   | {"t":15,"v":"测试"} / {"t":15,"v":"\\\\x89PNG\\\\r\\\\n\\\\x1a\\\\n"} | value 编码为 UTF-8；当上游类型为 VARBINARY 时，将对不可见的字符转义 |
 | BIT                   | 16   | {"t":16,"v":81} | |
 | JSON                  | 245  | {"t":245,"v":"{\\"key1\\": \\"value1\\"}"} | |
 | DECIMAL               | 246  | {"t":246,"v":"129012.1230000"} | |
 | ENUM                  | 247  | {"t":247,"v":1} | |
 | SET                   | 248  | {"t":248,"v":3} | |
-| TINTTEXT/TINTBLOB     | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
+| TINYTEXT/TINYBLOB     | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
 | MEDIUMTEXT/MEDIUMBLOB | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
 | LONGTEXT/LONGBLOB     | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
 | TEXT/BLOB             | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| CHAR/BINARY           | 254  | {"t":254,"v":"测试"} / {"t":254,"v":"\\x89PNG\\r\\n\\x1a\\n"} | value 编码为 UTF-8；当上游类型为 BINARY 时，将对不可见的 ASCII 字符转义 |
+| CHAR/BINARY           | 254  | {"t":254,"v":"测试"} / {"t":254,"v":"\\\\x89PNG\\\\r\\\\n\\\\x1a\\\\n"} | value 编码为 UTF-8；当上游类型为 BINARY 时，将对不可见的字符转义 |
 | GEOMETRY              | 255  |  | 尚不支持 |
 
 ## DDL 的类型码
@@ -388,5 +388,5 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 > **注意：**
 >
 > + 该功能为实验性功能，请勿在生产环境使用。
-> + BinaryFlag 仅在列为 Blob/Text（包括 Tiny Blob/Tiny Text、Long Blob/Long Text 等）类型时才有意义。当上游列为 Blob 类型时，BinaryFlag 置 `1`；当上游列为 Text 类型时，BinaryFlag 置 `0`。
+> + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 置 `1`；当上游列为 TEXT 类型时，BinaryFlag 置 `0`。
 > + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
