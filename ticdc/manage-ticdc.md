@@ -214,7 +214,7 @@ URI 中可配置的的参数如下：
 --opts registry="http://127.0.0.1:8081"
 ```
 
-如果使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 来向关系型或非关系型数据库传输数据，需要选择 `avro` 协议，并在 `opts` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。请注意，`avro` 协议和集成 Confluent 目前均为**实验特性**。
+如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，应当选择 `avro` 协议，并在 `opts` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。请注意，`avro` 协议和 Confluent 集成目前均为**实验特性**。
 
 集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
 
