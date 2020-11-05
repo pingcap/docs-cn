@@ -148,9 +148,9 @@ prepare:109.616µs, check_insert:{total_time:1.431678ms, mem_insert_time:667.878
 `IndexJoin` 算子有 1 个 outer worker 和 N 个 inner worker 并行执行，其 join 结果的顺序和 outer table 的顺序一致，具体执行流程如下：
 
 1. Outer worker 读取 N 行 out table 的数据，然后包装成一个 task 发送给 result channel 和 inner worker channel。
-2. Inner worker 从 inner worker channel 里面接收 task，然后根据 task 读取 inner table 相应范围的行数据，并生成一个 inner table row 的 hash map。
+2. Inner worker 从 inner worker channel 里面接收 task，然后根据 task 读取 inner table 相应范围的行数据，并生成一个 inner table row 的 hash table。
 3. `IndexJoin` 的主线程从 result channel 中接收 task，然后等待 inner worker 执行完这个 task。
-4. `IndexJoin` 的主线程用 outer table rows 和 inner table rows 的 hash map 做 join 。
+4. `IndexJoin` 的主线程用 outer table rows 和 inner table rows 的 hash table 做 join 。
 
 `IndexJoin` 算子包含以下执行信息：
 
@@ -164,8 +164,8 @@ inner:{total:4.297515932s, concurrency:5, task:17, construct:97.96291ms, fetch:4
     - `task`：inner worker 处理 task 的总数量。
     - `construct`：inner worker 读取 task 对应的 inner table rows 之前的准备时间。
     - `fetch`：inner worker 读取 inner table rows 的总耗时。
-    - `build`: inner worker 构造 inner table rows 对应的 hash map 的总耗时。
-- `probe`：`IndexJoin` 主线程用 outer table rows 和 inner table rows 的 hash map 做 join 的总耗时。
+    - `build`: inner worker 构造 inner table rows 对应的 hash table 的总耗时。
+- `probe`：`IndexJoin` 主线程用 outer table rows 和 inner table rows 的 hash table 做 join 的总耗时。
 
 ### IndexHashJoin
 
@@ -173,9 +173,9 @@ inner:{total:4.297515932s, concurrency:5, task:17, construct:97.96291ms, fetch:4
 
 1. Outer worker 读取 N 行 out table 的数据，然后包装成一个 task 发送给 inner worker channel。
 2. Inner worker 从 inner worker channel 里面接收 task，然后做以下三件事情，其中步骤 a 和 b 是并行执行。
-    a. 用 outer table rows 生成一个 hash map。
+    a. 用 outer table rows 生成一个 hash table。
     b. 根据 task 读取 inner table 相应范围的行数据。
-    c. 用 inner table rows 和 outer table rows 的 hash map 做 join，然后把 join 结果发送给 result channel。
+    c. 用 inner table rows 和 outer table rows 的 hash table 做 join，然后把 join 结果发送给 result channel。
 3. `IndexHashJoin` 的主线程从 result channel 中接收 join 结果。
 
 `IndexHashJoin` 算子包含以下执行信息：
@@ -190,17 +190,17 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
     - `task`：inner worker 处理 task 的总数量。
     - `construct`：inner worker 读取 task 对应的 inner table rows 之前的准备时间。
     - `fetch`：inner worker 读取 inner table rows 的总耗时。
-    - `build`: inner worker 构造 outer table rows 对应的 hash map 的总耗时。
-    - `join`: inner worker 用 inner table rows 和 outer table rows 的 hash map 做 join 的总耗时。
+    - `build`: inner worker 构造 outer table rows 对应的 hash table 的总耗时。
+    - `join`: inner worker 用 inner table rows 和 outer table rows 的 hash table 做 join 的总耗时。
 
 ### HashJoin
 
 `HashJoin` 算子有一个 inner worker，一个 outer worker 和 N 个 join worker，其具体执行逻辑如下：
 
-1. inner worker 读取 inner table rows 并构造 hash map。
+1. inner worker 读取 inner table rows 并构造 hash table。
 2. outer worker 读取 outer table rows, 然后包装成 task 发送给 join worker。
-3. 等待第 1 步的 hash map 构造完成。
-4. join worker 用 task 里面的 outer table rows 和 hash map 做 join，然后把 join 结果发送给 result channel。
+3. 等待第 1 步的 hash table 构造完成。
+4. join worker 用 task 里面的 outer table rows 和 hash table 做 join，然后把 join 结果发送给 result channel。
 5. `HashJoin` 的主线程从 result channel 中接收 join 结果。
 
 `HashJoin` 算子包含以下执行信息：
@@ -209,15 +209,15 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
 build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, probe:{concurrency:5, total:857.162518ms, max:171.48271ms, probe:125.341665ms, fetch:731.820853ms}
 ```
 
-- `build_hash_table`: 读取 inner table 的数据并构造 hash map 的执行信息：
+- `build_hash_table`: 读取 inner table 的数据并构造 hash table 的执行信息：
     - `total`：总耗时。
     - `fetch`：读取 inner table 数据的总耗时。
-    - `build`：构造 hash map 的总耗时。
+    - `build`：构造 hash table 的总耗时。
 - `probe`: join worker 的执行信息：
     - `concurrency`：join worker 的数量。
     - `total`：所有 join worker 执行的总耗时。
     - `max`：单个 join worker 执行的最大耗时。
-    - `probe`: 用 outer table rows 和 hash map 做 join 的总耗时。
+    - `probe`: 用 outer table rows 和 hash table 做 join 的总耗时。
     - `fetch`：join worker 等待读取 outer table rows 数据的总耗时。
 
 ### lock_keys 执行信息
