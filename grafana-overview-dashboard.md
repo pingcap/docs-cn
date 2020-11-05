@@ -37,6 +37,7 @@ aliases: ['/docs-cn/v3.1/grafana-overview-dashboard/','/docs-cn/v3.1/reference/k
 - Region health：每个 Region 的状态，通常情况下，pending 的 peer 应该少于 100，miss 的 peer 不能一直大于 `0`
 - Hot write Region's leader distribution：每个 TiKV 实例上是写入热点的 leader 的数量
 - Hot read Region's leader distribution：每个 TiKV 实例上是读取热点的 leader 的数量
+- Region heartbeat report：TiKV 向 PD 发送的心跳个数
 - 99% Region heartbeat latency：99% 的情况下，心跳的延迟
 
 ## TiDB
