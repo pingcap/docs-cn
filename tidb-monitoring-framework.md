@@ -1,6 +1,6 @@
 ---
 title: TiDB 监控框架概述
-aliases: ['/docs-cn/stable/tidb-monitoring-framework/','/docs-cn/v4.0/tidb-monitoring-framework/','/docs-cn/stable/how-to/monitor/overview/']
+aliases: ['/docs-cn/stable/tidb-monitoring-framework/','/docs-cn/v4.0/tidb-monitoring-framework/','/docs-cn/stable/how-to/monitor/overview/','/docs-cn/v4.0/how-to/monitor/overview/']
 ---
 
 # TiDB 监控框架概述
