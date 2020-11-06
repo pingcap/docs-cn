@@ -111,9 +111,10 @@
     + [下推计算结果缓存](/coprocessor-cache.md)
   + SQL 性能调优
     + [SQL 性能调优概览](/sql-tuning-overview.md)
-    + [理解 TiDB 执行计划](/query-execution-plan.md)
-    + SQL 优化
-      + [SQL 优化流程简介](/sql-optimization-concepts.md)
+    + 理解 TiDB 执行计划
+      + [TiDB 执行计划概览](/explain-overview.md)
+    + SQL 优化流程
+      + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
         + [逻辑优化概览](/sql-logical-optimization.md)
         + [子查询相关的优化](/subquery-optimization.md)
@@ -131,11 +132,11 @@
         + [错误索引的解决方案](/wrong-index-solution.md)
         + [Distinct 优化](/agg-distinct-optimization.md)
       + [执行计划缓存](/sql-prepare-plan-cache.md)
-      + 控制执行计划
-        + [控制执行计划概览](/control-execution-plan.md)
-        + [Optimizer Hints](/optimizer-hints.md)
-        + [执行计划管理](/sql-plan-management.md)
-        + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
+    + 控制执行计划
+      + [控制执行计划概览](/control-execution-plan.md)
+      + [Optimizer Hints](/optimizer-hints.md)
+      + [执行计划管理](/sql-plan-management.md)
+      + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
@@ -151,6 +152,7 @@
   + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
+  + [集成 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
 + TiDB 生态工具
   + [功能概览](/ecosystem-tool-user-guide.md)
   + [适用场景](/ecosystem-tool-user-case.md)
@@ -519,6 +521,7 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v4.0
+    - [4.0.8](/releases/release-4.0.8.md)
     - [4.0.7](/releases/release-4.0.7.md)
     - [4.0.6](/releases/release-4.0.6.md)
     - [4.0.5](/releases/release-4.0.5.md)
