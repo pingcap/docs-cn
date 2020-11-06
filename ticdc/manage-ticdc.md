@@ -54,7 +54,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `pd`: PD client 的 URL。
 - `addr`: TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。
 - `advertise-addr`: TiCDC 对外访问地址。
-- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
+- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
 - `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
 - `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
 - `ca`: TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
@@ -84,7 +84,9 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
-本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。在以下接口描述中，假设 PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
+本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。`cdc cli` 是指通过 `cdc` binary 执行 `cli` 子命令。在以下接口描述中，通过 `cdc` binary 直接执行 `cli` 命令，PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
+
+如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl cdc`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
@@ -168,6 +170,7 @@ URI 中可配置的的参数如下：
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
+| `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，则表示连接 MySQL 时不指定时区，使用下游默认时区） |
 
 #### Sink URI 配置 `kafka`
 
@@ -195,6 +198,25 @@ URI 中可配置的的参数如下：
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+
+#### TiCDC 集成 Kafka Connect (Confluent Platform)
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
+配置样例如下所示：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--opts registry="http://127.0.0.1:8081"
+```
+
+如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，应当选择 `avro` 协议，并在 `opts` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。请注意，`avro` 协议和 Confluent 集成目前均为**实验特性**。
+
+集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
 
 #### Sink URI 配置 `pulsar`
 
@@ -776,3 +798,18 @@ enable-old-value = true
 ```
 
 开启该特性后，TiCDC Open Protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)，使用 MySQL sink 时也会自动支持的 TiDB 4.0 新 Collation 特性。
+
+## 同步没有有效索引的表
+
+从 v4.0.8 开始，TiCDC 支持通过修改任务配置来同步没有有效索引的表。若要开启该特性，需要在 `changefeed` 配置文件的根级别进行如下指定：
+
+{{< copyable "" >}}
+
+```toml
+enable-old-value = true
+force-replicate = true
+```
+
+> **警告：**
+>
+> 对于没有有效索引的表，`INSERT` 和 `REPLACE` 等操作不具备可重入性，因此会有数据冗余的风险。TiCDC 在同步过程中只保证数据至少分发一次，因此开启该特性同步没有有效索引的表，一定会导致数据冗余出现。如果不能接受数据冗余，建议增加有效索引，譬如增加具有 `AUTO RANDOM` 属性的主键列。
