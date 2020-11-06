@@ -1,10 +1,6 @@
 ---
 title: TiDB 2.1.2 Release Notes
-<<<<<<< HEAD
 aliases: ['/docs-cn/v3.0/releases/release-2.1.2/','/docs-cn/v3.0/releases/2.1.2/','/docs-cn/releases/2.1.2/']
-=======
-aliases: ['/docs-cn/stable/releases/release-2.1.2/','/docs-cn/v4.0/releases/release-2.1.2/','/docs-cn/stable/releases/2.1.2/','/docs-cn/v4.0/releases/2.1.2/']
->>>>>>> accc7748... Fix 8 broken links (#4837)
 ---
 
 # TiDB 2.1.2 Release Notes

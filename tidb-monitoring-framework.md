@@ -1,10 +1,6 @@
 ---
 title: TiDB 监控框架概述
-<<<<<<< HEAD
 aliases: ['/docs-cn/v3.0/tidb-monitoring-framework/','/docs-cn/v3.0/how-to/monitor/overview/','/docs-cn/op-guide/monitor-overview/']
-=======
-aliases: ['/docs-cn/stable/tidb-monitoring-framework/','/docs-cn/v4.0/tidb-monitoring-framework/','/docs-cn/stable/how-to/monitor/overview/','/docs-cn/v4.0/how-to/monitor/overview/']
->>>>>>> accc7748... Fix 8 broken links (#4837)
 ---
 
 # TiDB 监控框架概述
