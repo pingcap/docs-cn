@@ -23,7 +23,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
 
 + 确保 Zookeeper、Kafka 和 Schema Registry 已正确安装。推荐参照 [Confluent Platform 快速入门指南](https://docs.confluent.io/current/quickstart/ce-quickstart.html#ce-quickstart)部署本地测试环境。
 
-+ 确保通过以下命令安装 JDBC sink connector。返回结果中预期包含 `jdbc-sink`。
++ 通过以下命令确保 JDBC sink connector 已安装。返回结果中预期包含 `jdbc-sink`。
 
     {{< copyable "shell-regular" >}}
 
@@ -53,7 +53,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
     }
     ```
 
-2. 运行下方命令新建一个 JDBC sink connector 实例（假设 Kafka 监听的 IP 地址是 `127.0.0.1:8083`）：
+2. 运行下方命令新建一个 JDBC sink connector 实例（假设 Kafka 监听的 IP 地址与端口是 `127.0.0.1:8083`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -66,7 +66,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
     - [使用 TiUP 部署安装 TiCDC](/ticdc/manage-ticdc.md#使用-tiup-部署安装-ticdc)
     - [在原有 TiDB 集群上使用 binary 部署 TiCDC 组件](/ticdc/manage-ticdc.md#在原有-tidb-集群上使用-binary-部署-ticdc-组件)
 
-    在继续接下来的操作之前，请先确保 TiDB 和 TiCDC 集群可以正常运行。
+    在继续接下来的操作之前，请先确保 TiDB 和 TiCDC 集群处于健康状态。
 
 4. 运行下面的 `cdc cli` 命令，新建一个同步任务 `changefeed`：
 
