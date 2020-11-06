@@ -1,10 +1,6 @@
 ---
 title: TiDB Binlog 集群部署
-<<<<<<< HEAD
 aliases: ['/docs-cn/v2.1/tidb-binlog/deploy-tidb-binlog/','/docs-cn/v2.1/reference/tidb-binlog/deploy/','/docs-cn/v2.1/how-to/deploy/tidb-binlog/','/docs-cn/v2.1/reference/tools/tidb-binlog/deploy/']
-=======
-aliases: ['/docs-cn/stable/tidb-binlog/deploy-tidb-binlog/','/docs-cn/v4.0/tidb-binlog/deploy-tidb-binlog/','/docs-cn/stable/reference/tidb-binlog/deploy/','/docs-cn/stable/reference/tools/tidb-binlog/deploy/','/docs-cn/stable/how-to/deploy/tidb-binlog/']
->>>>>>> accc7748... Fix 8 broken links (#4837)
 ---
 
 # TiDB Binlog 集群部署
