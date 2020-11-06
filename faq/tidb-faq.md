@@ -87,7 +87,7 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 [三篇文章了解 TiDB 技术内幕 - 谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
 
-## 二、云上部署 
+## 二、云上部署
 
 ### 2.1 公有云
 
