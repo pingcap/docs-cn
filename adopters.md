@@ -41,7 +41,7 @@ This is a list of TiDB adopters in various industries.
 |[Industrial and Commercial Bank of China](https://en.wikipedia.org/wiki/Industrial_and_Commercial_Bank_of_China)|Banking||
 |[Yimian Data](https://www.crunchbase.com/organization/yimian-data)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-yimian)|
 |[CAASDATA](https://www.caasdata.com/)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-kasi/)|
-|[Mobikok](http://www.mobikok.com/en/)|AdTech|[Chinese](https://pingcap.com/cases-cn/user-case-mobikok/)|
+|[Mobikok](https://www.linkedin.com/company/shenzhen-keke-network-technology-co.-ltd./)|AdTech|[Chinese](https://pingcap.com/cases-cn/user-case-mobikok/)|
 |[ZTO Express](https://www.crunchbase.com/organization/zto-express)| Logistics|[English](https://pingcap.com/case-studies/why-we-migrated-from-exadata-to-a-scale-out-htap-database-for-near-real-time-analytics); [Chinese](https://pingcap.com/cases-cn/user-case-zto-express/)|
 |[G7 Networks](https://www.crunchbase.com/organization/g7)| Logistics|[Chinese](https://pingcap.com/cases-cn/user-case-g7/)|
 |[Hive-Box](http://www.fcbox.com/en/pc/index.html#/)|Logistics|[Chinese](https://pingcap.com/cases-cn/user-case-fengchao/)|
@@ -57,7 +57,7 @@ This is a list of TiDB adopters in various industries.
 |[Panda.tv](https://www.crunchbase.com/organization/panda-tv)|Live Streaming||
 |[Phoenix New Media](https://www.crunchbase.com/organization/phoenix-new-media)|Media|[Chinese](https://pingcap.com/cases-cn/user-case-ifeng/)|
 |[Tencent OMG](https://en.wikipedia.org/wiki/Tencent)|Media||
-|[Terren](http://webterren.com.zigstat.com/)|Media||
+|[Terren](https://www.crunchbase.com/organization/terren)|Media||
 |[LeCloud](https://www.crunchbase.com/organization/letv-2)|Media||
 |[Miaopai](https://en.wikipedia.org/wiki/Miaopai)|Media||
 |[Meizu](https://en.wikipedia.org/wiki/Meizu)|Media||
@@ -72,7 +72,7 @@ This is a list of TiDB adopters in various industries.
 |[360 Finance](https://www.crunchbase.com/organization/360-finance)|FinTech|[Chinese](https://pingcap.com/cases-cn/user-case-360/)|
 |[Tongdun Technology](https://www.crunchbase.com/organization/tongdun-technology)|FinTech||
 |[Wacai](https://www.crunchbase.com/organization/wacai)|FinTech||
-|[Tree Finance](http://treefinancegroup.com.au/)|FinTech||
+|[Tree Finance](https://www.facebook.com/treefinancegroup/)|FinTech||
 |[Mashang Consumer Finance](https://www.crunchbase.com/organization/ms-finance)|FinTech||
 |[Snowball Finance](https://www.crunchbase.com/organization/snowball-finance)|FinTech||
 |[QuantGroup](https://www.crunchbase.com/organization/quantgroup)|FinTech||
