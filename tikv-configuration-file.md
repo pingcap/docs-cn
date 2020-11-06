@@ -716,8 +716,8 @@ rocksdb 相关的配置项。
 
 ### `info-log-roll-time`
 
-+ 日志截断间隔时间，如果为0则不截断。
-+ 默认值：0
++ 日志截断间隔时间，如果为 0s 则不截断。
++ 默认值：0s
 
 ### `info-log-keep-log-file-num`
 
