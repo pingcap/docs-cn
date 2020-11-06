@@ -153,6 +153,7 @@
   + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
+  + [集成 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
 + TiDB 生态工具
   + [功能概览](/ecosystem-tool-user-guide.md)
   + [适用场景](/ecosystem-tool-user-case.md)
