@@ -213,20 +213,21 @@ TiDB 在 v3.0.8 后支持修改 server 版本号，可以通过配置文件中�
 
 ##### 1.2.1.1 TiKV 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说存储](http://t.cn/RTKRRWv)
+[三篇文章了解 TiDB 技术内幕 - 说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
 
 #### 1.2.2 计算 TiDB
 
 ##### 1.2.2.1 TiDB 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说计算](http://t.cn/RTKRkBh)
+[三篇文章了解 TiDB 技术内幕 - 说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
 
 #### 1.2.3 调度 PD
 
 ##### 1.2.3.1 PD 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 谈调度](http://t.cn/RTKEZ0U)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
 
+<<<<<<< HEAD
 ## 二、安装部署升级
 
 ### 2.1 环境准备
@@ -608,6 +609,9 @@ TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_pr
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+=======
+## 二、云上部署 
+>>>>>>> accc7748... Fix 8 broken links (#4837)
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
