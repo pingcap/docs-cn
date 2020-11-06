@@ -1,6 +1,11 @@
 ---
+<<<<<<< HEAD
 title: TiDB 3.1 升级操作指南
 aliases: ['/docs-cn/v3.1/upgrade-tidb-using-ansible/','/docs-cn/v3.1/how-to/upgrade/from-previous-version/']
+=======
+title: 使用 TiDB Ansible 升级 TiDB
+aliases: ['/docs-cn/stable/upgrade-tidb-using-ansible/','/docs-cn/v4.0/upgrade-tidb-using-ansible/','/docs-cn/stable/how-to/upgrade/from-previous-version/','/docs-cn/v4.0/how-to/upgrade/from-previous-version/','/docs-cn/stable/how-to/upgrade/rolling-updates-with-ansible/']
+>>>>>>> accc7748... Fix 8 broken links (#4837)
 ---
 
 # TiDB 3.1 升级操作指南
