@@ -22,7 +22,7 @@ jobs:
             git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
             echo $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD)
-            python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- ':(exclude)media/*')
+            python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD)
 
       - run:
           name: "Install markdownlint"
