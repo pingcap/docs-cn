@@ -444,7 +444,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_force_priority`
 
 - 作用域：INSTANCE
-- 默认值：`NO_PRIORITY`
+- 默认值：NO_PRIORITY
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
@@ -452,17 +452,17 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：INSTANCE
 - 默认值：0
-- 这个变量用来设置是否在[日志](tidb-configuration-file.md#logfile)里记录所有的 SQL 语句, 该功能默认关闭。该功能常在系统运维人员定位问题过程中需要追踪所有 SQL 记录的情况下被打开。
-- 通过查询 "GENERAL_LOG" 字符串可以定位到该功能记录的所有日志。日志会记录以下内容：
-	- conn: 当前会话对应的 ID
-	- user: 当前会话用户
-	- schemaVersion: 当前 schema 版本
-	- txnStartTS: 当前事务的开始时间戳
-	- forUpdateTS: 事务模型为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [max-retry-count](/tidb-configuration-file#max-retry-count) 配置。事务模型为乐观事务时，该条目与 txnStartTS 等价。 
-	- isReadConsistency: 当前事务隔离级别是否至少确保读已提交
-	- current_db: 当前数据库名
-	- txn_mode: 事务模型（可选值: OPTIMISTIC（乐观事务模型），或 PESSIMISTIC（悲观事务模型）
-	- sql: 当前查询对应的 SQL 语句
+- 这个变量用来设置是否在[日志](/tidb-configuration-file.md#logfile)里记录所有的 SQL 语句。该功能默认关闭。如果系统运维人员在定位问题过程中需要追踪所有 SQL 记录，可考虑开启该功能。
+- 通过查询 `"GENERAL_LOG"` 字符串可以定位到该功能在日志中的所有记录。日志会记录以下内容：
+    - `conn`：当前会话对应的 ID
+    - `user`：当前会话用户
+    - `schemaVersion`：当前 schema 版本
+    - `txnStartTS`：当前事务的开始时间戳
+    - `forUpdateTS`：事务模型为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file#max-retry-count) 配置。事务模型为乐观事务时，该条目与 `txnStartTS` 等价。
+    - `isReadConsistency`：当前事务隔离级别是否至少确保读已提交
+    - `current_db`：当前数据库名
+    - `txn_mode`：事务模型。可选值: `OPTIMISTIC`（乐观事务模型），或 `PESSIMISTIC`（悲观事务模型）
+    - `sql`：当前查询对应的 SQL 语句
 
 ### `tidb_hash_join_concurrency`
 
