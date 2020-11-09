@@ -64,7 +64,7 @@ The following are descriptions of options available in the `cdc server` command:
 - `pd`: The URL of the PD client.
 - `addr`: The listening address of TiCDC, the HTTP API address, and the Prometheus address of the service.
 - `advertise-addr`: The access address of TiCDC to the outside world.
-- `tz`: Time zone used by the TiCDC service. TiCDC uses this time zone when time data types such as `TIMESTAMP` are converted internally or when data are replicated to the downstream. The default is the local time zone in which the process runs.
+- `tz`: Time zone used by the TiCDC service. TiCDC uses this time zone when it internally converts time data types such as `TIMESTAMP` or when it replicates data to the downstream. The default is the local time zone in which the process runs. If you specify `time-zone` (in `sink-uri`) and `tz` at the time, the internal TiCDC processes use the time zone specified by `tz`, and the sink uses the time zone specified by `time-zone` for replicating data to the downstream.
 - `log-file`: The address of the running log of the TiCDC process. The default is `cdc.log`.
 - `log-level`: The log level when the TiCDC process is running. The default is `info`.
 - `ca`: The path of the CA certificate file used by TiCDC, in the PEM format (optional).
@@ -94,7 +94,12 @@ For details about using encrypted data transmission (TLS), see [Enable TLS Betwe
 
 ## Use `cdc cli` to manage cluster status and data replication task
 
-This section introduces how to use `cdc cli` to manage a TiCDC cluster and data replication tasks. The following interface description assumes that PD listens on `10.0.10.25` and the port is `2379`.
+This section introduces how to use `cdc cli` to manage a TiCDC cluster and data replication tasks. `cdc cli` is the `cli` sub-command executed using the `cdc` binary. The following interface description assumes that:
+
+- `cli` commands are executed directly using the `cdc` binary;
+- PD listens on `10.0.10.25` and the port is `2379`.
+
+If you deploy TiCDC using TiUP, replace `cdc cli` in the following commands with `tiup ctl cdc`.
 
 ### Manage TiCDC service progress (`capture`)
 
@@ -178,6 +183,7 @@ The following are descriptions of parameters and parameter values that can be co
 | `ssl-ca` | The path of the CA certificate file needed to connect to the downstream MySQL instance (optional)  |
 | `ssl-cert` | The path of the certificate file needed to connect to the downstream MySQL instance (optional) |
 | `ssl-key` | The path of the certificate key file needed to connect to the downstream MySQL instance (optional) |
+| `time-zone` | The time zone used when connecting to the downstream MySQL instance, which is effective since v4.0.8. This is an optional parameter. If this parameter is not specified, the time zone of TiCDC service processes is used. If this parameter is set to an empty value, no time zone is specified when TiCDC connects to the downstream MySQL instance and the default time zone of the downstream is used. |
 
 #### Configure sink URI with `kafka`
 
@@ -807,3 +813,18 @@ enable-old-value = true
 ```
 
 After this feature is enabled, you can see [TiCDC Open Protocol - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event) for the detailed output format. The new TiDB v4.0 collation framework will also be supported when you use the MySQL sink.
+
+## Replicate tables without a valid index
+
+Since v4.0.8, TiCDC supports replicating tables that have no valid index by modifying the task configuration. To enable this feature, configure in the `changefeed` configuration file as follows:
+
+{{< copyable "" >}}
+
+```toml
+enable-old-value = true
+force-replicate = true
+```
+
+> **Warning:**
+>
+> For tables without a valid index, operations such as `INSERT` and `REPLACE` are not reentrant, so there is a risk of data redundancy. TiCDC guarantees that data is distributed only at least once during the replication process. Therefore, enabling this feature to replicate tables without a valid index will definitely cause data redundancy. If you do not accept data redundancy, it is recommended to add an effective index, such as adding a primary key column with the `AUTO RANDOM` attribute.
