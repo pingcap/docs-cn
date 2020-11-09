@@ -21,7 +21,11 @@ jobs:
           command: |
             git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
+<<<<<<< HEAD
             python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-2.1..HEAD -- '*.md' ':(exclude).github/*')
+=======
+            python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD)
+>>>>>>> 168d2462... CI: update conflicts check to support all file formats (#4838)
 
       - run:
           name: "Install markdownlint"
