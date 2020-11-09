@@ -647,6 +647,12 @@ rocksdb 相关的配置项。
 + 默认值：8
 + 最小值：1
 
+### `max-background-flushes`
+
++ RocksDB 用于刷写 memtable 的最大后台线程数。
++ 默认值：2
++ 最小值：1
+
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发个数。
