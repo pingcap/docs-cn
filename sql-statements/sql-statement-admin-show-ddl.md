@@ -3,9 +3,9 @@ title: ADMIN SHOW DDL [JOBS|QUERIES] | TiDB SQL Statement Reference
 summary: An overview of the usage of ADMIN for the TiDB database.
 ---
 
-# ADMIN SHOW DDL [JOBS,QUERIES]
+# ADMIN SHOW DDL [JOBS|QUERIES]
 
-The `ADMIN SHOW DDL [JOBS,QUERIES]` statement shows information about running and recently completed DDL jobs.
+The `ADMIN SHOW DDL [JOBS|QUERIES]` statement shows information about running and recently completed DDL jobs.
 
 ## Synopsis
 

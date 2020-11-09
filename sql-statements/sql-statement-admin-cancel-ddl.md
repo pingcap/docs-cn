@@ -42,4 +42,4 @@ This statement is a TiDB extension to MySQL syntax.
 
 ## See also
 
-* [`ADMIN SHOW DDL [JOBS,QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
+* [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
