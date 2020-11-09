@@ -458,7 +458,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
     - `user`：当前会话用户
     - `schemaVersion`：当前 schema 版本
     - `txnStartTS`：当前事务的开始时间戳
-    - `forUpdateTS`：事务模型为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file#max-retry-count) 配置。事务模型为乐观事务时，该条目与 `txnStartTS` 等价。
+    - `forUpdateTS`：事务模型为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file.md#max-retry-count) 配置。事务模型为乐观事务时，该条目与 `txnStartTS` 等价。
     - `isReadConsistency`：当前事务隔离级别是否至少确保读已提交
     - `current_db`：当前数据库名
     - `txn_mode`：事务模型。可选值: `OPTIMISTIC`（乐观事务模型），或 `PESSIMISTIC`（悲观事务模型）
