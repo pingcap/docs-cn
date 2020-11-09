@@ -638,6 +638,12 @@ rocksdb 相关的配置项。
 + 默认值：8
 + 最小值：1
 
+### `max-background-flushes`
+
++ RocksDB 用于刷写 memtable 的最大后台线程数。
++ 默认值：2
++ 最小值：1
+
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发个数。
@@ -764,8 +770,8 @@ rocksdb 相关的配置项。
 
 ### `info-log-roll-time`
 
-+ 日志截断间隔时间，如果为0则不截断。
-+ 默认值：0
++ 日志截断间隔时间，如果为 0s 则不截断。
++ 默认值：0s
 
 ### `info-log-keep-log-file-num`
 
