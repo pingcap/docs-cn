@@ -640,7 +640,7 @@ rocksdb 相关的配置项。
 
 ### `max-background-flushes`
 
-+ memtable 后台 flush 任务的最大并发数。
++ RocksDB 用于刷写 memtable 的最大后台线程数。
 + 默认值：2
 + 最小值：1
 
