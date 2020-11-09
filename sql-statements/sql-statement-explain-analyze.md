@@ -134,7 +134,7 @@ prepare:109.616µs, check_insert:{total_time:1.431678ms, mem_insert_time:667.878
 ```
 
 - `prepare`：准备写入前的耗时，包括表达式，默认值相关的计算等。
-- `check_insert`：这个信息一般出现在 `insert ignore` 和 `insert on duplicate` 语句中，包含冲突检查和写入 TiDB 内存的耗时。注意，这个耗时不包含事务提交的耗时。具体包含以下信息：
+- `check_insert`：这个信息一般出现在 `insert ignore` 和 `insert on duplicate` 语句中，包含冲突检查和写入 TiDB 事务缓存的耗时。注意，这个耗时不包含事务提交的耗时。具体包含以下信息：
     - `total_time`：`check_insert` 步骤的总耗时。
     - `mem_insert_time`：将数据写入 TiDB 事务缓存的耗时。
     - `prefetch`：从 TiKV 中获取需要检查冲突的数据的耗时，该步骤主要是向 TiKV 发送 `BatchGet` 类型的 RPC 请求的获取数据。
