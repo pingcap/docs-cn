@@ -489,7 +489,7 @@
       + [TiFlash 简介](/tiflash/tiflash-overview.md)
       + [使用 TiFlash](/tiflash/use-tiflash.md)
   + TiUP
-    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [文档地图](/tiup/tiup-documentation-guide.md)
     + [概览](/tiup/tiup-overview.md)
     + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
     + [TiUP 组件管理](/tiup/tiup-component-management.md)
