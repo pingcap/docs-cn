@@ -70,7 +70,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
 
     [mydumper]
-    # Mydumper 源数据目录。
+    # Dumpling 源数据目录。
     data-source-dir = "/data/my_datasource/"
 
     [tidb]
