@@ -438,6 +438,51 @@ The Plan Cache configuration of the `PREPARE` statement.
 - The threshold of the TiKV load. If the TiKV load exceeds this threshold, more `batch` packets are collected to relieve the pressure of TiKV. It is valid only when the value of `tikv-client.max-batch-size` is greater than `0`. It is recommended not to modify this value.
 - Default value: `200`
 
+### `enable-one-pc` <!-- New in v5.0 -->
+
+- Specifies whether to use the one-phase commit feature for transactions that involve only one Region. Compared with the two-phase commit, the one-phase commit feature can greatly reduce the commit latency and increase throughput.
+- Default value: `false`
+
+> **Warning:**
+>
+> This is still an experimental feature. It is **NOT** recommended that you use it in a production environment. Currently, the following issues are found, and be aware of them if you need to use this feature:
+>
+> - This feature is incompatible with [TiCDC](/ticdc/ticdc-overview.md) and might cause TiCDC to run abnormally.
+>
+> - This feature is incompatible with [Follower Read](/follower-read.md) and [TiFlash](/tiflash/tiflash-overview.md), and snapshot isolation cannot be guaranteed.
+>
+> - External consistency cannot be guaranteed.
+>
+> - If the transaction commit is interrupted abnormally by the machine crash when the DDL operation is executed, the data format might be incorrect.
+
+## tikv-client.async-commit <!-- New in v5.0 -->
+
+### `enable`
+
+- Enables or disables the async commit feature for the second phase of the two-phase transaction commit to perform asynchronously in the background. Enabling this feature can reduce the latency of transaction commit. This feature is not compatible with [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) and does not take effect when Binlog is enabled.
+- Default value: `false`
+
+### `keys-limit`
+
+- Specifies the upper limit of the number of keys in an async commit transaction. The async commit feature is **NOT** suitable for transactions that are too large. Transactions that exceed this limit will use the two-phase commit.
+- Default value: `256`
+
+### `total-key-size-limit`
+
+- Specifies the upper limit of the total size of keys in an async commit transaction. The async commit feature is **NOT** suitable for transactions in which the involved key ranges are too long. Transactions that exceed this limit will use the two-phase commit.
+- Default value: `4096`
+- Unit: byte
+
+> **Warning:**
+>
+> This is still an experimental feature. It is **NOT** recommended that you use it in a production environment. Currently, the following issues are found, and be aware of them if you need to use this feature:
+>
+> - This feature is incompatible with [Follower Read](/follower-read.md) and [TiFlash](/tiflash/tiflash-overview.md), and snapshot isolation cannot be guaranteed.
+>
+> - External consistency cannot be guaranteed.
+>
+> - If the transaction commit is interrupted abnormally by the machine crash when the DDL operation is executed, the data format might be incorrect.
+
 ## tikv-client.copr-cache <span class="version-mark">New in v4.0.0</span>
 
 This section introduces configuration items related to the Coprocessor Cache feature.
