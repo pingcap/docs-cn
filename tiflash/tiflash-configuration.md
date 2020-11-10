@@ -38,7 +38,7 @@ This section introduces the configuration parameters of TiFlash.
 tmp_path = The path in which the TiFlash temporary files are stored.
 path = The TiFlash data storage path.     # If there are multiple directories, separate each directory with a comma.
 path_realtime_mode = false # The default value is `false`. If you set it to `true` and multiple directories are deployed in the path, the latest data is stored in the first directory and older data is stored in the rest directories.
-listen_host = The TiFlash service listening host. # Generally, it is configured as `0.0.0.0`.
+listen_host = The listening host for supporting services such as TPC/HTTP. It is recommended to configure it as `0.0.0.0`.
 tcp_port = The TiFlash TCP service port.
 http_port = The TiFlash HTTP service port.
 mark_cache_size = 5368709120 # The cache size limit of the metadata of a data block. Generally, you do not need to change this value.
@@ -63,10 +63,12 @@ Multiple TiFlash nodes elect a master to add or delete placement rules to PD, an
 
 [flash.proxy]
     addr = The listening address of proxy.
-    advertise-addr = The external access address of proxy.
+    advertise-addr = The external access address of addr. If it is left empty, addr is used by default.
     data-dir = The data storage path of proxy.
     config = The proxy configuration file path.
     log-file = The proxy log path.
+    status-addr = The listening address from which the proxy metrics | status information is pulled.
+    advertise-status-addr = The external access address of status-addr. If it is left empty, status-addr is used by default.
 
 [logger]
     level = log level (available options: trace, debug, information, warning, error).
@@ -88,11 +90,15 @@ Multiple TiFlash nodes elect a master to add or delete placement rules to PD, an
 
 ### Configure the `tiflash-learner.toml` file
 
-```
+```toml
 [server]
-    engine-addr = The listening address of the TiFlash coprocessor service.
-    status-addr = The port and IP through which Prometheus pulls proxy metrics information.
+    engine-addr = The external access address of the TiFlash coprocessor service.
+[raftstore]
+    snap-handle-pool-size = Specifies the number of threads that handle snapshot. The default number is 2. If you set it to 0, the multi-thread optimization is disabled.
+    store-batch-retry-recv-timeout = Specifies the shortest interval at which Raft store persists WAL. You can properly increase the latency to reduce IOPS usage. The default value is 4ms. If you set it to 0ms, the optimization is disabled.
 ```
+
+In addition to the items above, other parameters are the same with those of TiKV. Note that the configuration items in `tiflash.toml [flash.proxy]` will override the overlapping parameters in `tiflash-learner.toml`; The `label` whose key is `engine` is reserved and cannot be configured manually.
 
 ### Multi-disk deployment
 
