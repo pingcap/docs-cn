@@ -273,7 +273,7 @@ sudo systemctl enable ntpd.service
     
     > **注意：**
     >
-    > --update-kernel 后需要使用实际的默认内核版本。
+    > `--update-kernel` 后需要使用实际的默认内核版本。
 
 4. 执行 `grubby --info` 命令查看修改后的默认内核配置：
 
@@ -285,7 +285,7 @@ sudo systemctl enable ntpd.service
     
     > **注意：**
     >
-    > --info 后需要使用实际的默认内核版本。
+    > `--info` 后需要使用实际的默认内核版本。
 
     ```
     index=0
@@ -299,7 +299,8 @@ sudo systemctl enable ntpd.service
 5. 执行 `reboot` 命令进行重启或者修改当前的内核配置：
 
     - 如果需要重启验证，执行 `reboot` 命令：
-       {{< copyable "shell-regular" >}}
+
+        {{< copyable "shell-regular" >}}
 
         ```bash
         reboot
@@ -307,14 +308,14 @@ sudo systemctl enable ntpd.service
 
     - 如果不希望重启机器，也可以修改当前的内核配置来立即生效：
 
-       {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
         ```bash
         echo never > /sys/kernel/mm/transparent_hugepage/enabled
         echo never > /sys/kernel/mm/transparent_hugepage/defrag
         ```
 
-6. 查看重启或者修改后的默认内核生效配置，如果输出 `always madvise [never]` 表示透明大页处于禁用状态
+6. 查看重启或者修改后的默认内核生效配置。如果输出 `always madvise [never]` 表示透明大页处于禁用状态。
 
     {{< copyable "shell-regular" >}}
 
