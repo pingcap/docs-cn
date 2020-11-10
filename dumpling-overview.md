@@ -219,7 +219,7 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 
 ### 控制导出 TiDB 大表时的内存使用
 
-Dumpling 导出 TiDB 较大单表时可能会因为导出数据过大导致 TiDB OOM 从而连接中断导出失败。我们可以通过下述参数减少 TiDB 内存使用。
+Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 TiDB 内存溢出 (OOM)，从而使连接中断导出失败。可以通过以下参数减少 TiDB 的内存使用。
 
 1. 设置 `--rows` 参数，可以划分 chunk 减少 TiDB scan 内存开销，同时也可开启表内并发提高导出效率。
 2. 调小 `--tidb-mem-quota-query` 参数到 8589934592(8GB) 或更小。该参数默认为 32GB，可控制 TiDB 单条 query 语句的内存使用。
