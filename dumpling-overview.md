@@ -13,7 +13,8 @@ For backups of SST files (key-value pairs) or backups of incremental data that a
 
 1. Support exporting data in multiple formats, including SQL and CSV
 2. Support the [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md) feature, which makes it easier to filter data
-3. More optimizations are made for TiDB:
+3. Support exporting data to Amazon S3 cloud storage.
+4. More optimizations are made for TiDB:
     - Support configuring the memory limit of a single TiDB SQL statement
     - Support automatic adjustment of TiDB GC time for TiDB v4.0.0 and above
     - Use TiDB's hidden column `_tidb_rowid` to optimize the performance of concurrent data export from a single table
@@ -80,6 +81,36 @@ For example, you can export all records that match `id < 100` in `test.sbtest1` 
 > - Currently, the `--sql` option can be used only for exporting to CSV files.
 >
 > - Here you need to execute the `select * from <table-name> where id <100` statement on all tables to be exported. If some tables do not have specified fields, the export fails.
+
+### Export data to Amazon S3 cloud storage
+
+Since v4.0.8, Dumpling supports exporting data to cloud storages. If you need to back up data to Amazon's S3 backend storage, you need to specify the S3 storage path in the `-o` parameter.
+
+You need to create an S3 bucket in the specified region (see the [Amazon documentation - How do I create an S3 Bucket](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html)). If you also need to create a folder in the bucket, see the [Amazon documentation - Creating a folder](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-folder.html).
+
+Pass `SecretKey` and `AccessKey` of the account with the permission to access the S3 backend storage to the Dumpling node as environment variables.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+export AWS_ACCESS_KEY_ID=${AccessKey}
+export AWS_SECRET_ACCESS_KEY=${SecretKey}
+```
+
+Dumpling also supports reading credential files from `~/.aws/credentials`. For more Dumpling configuration, see the configuration of [BR storages](/br/backup-and-restore-storages.md), which is consistent with the Dumpling configuration.
+
+When you back up data using Dumpling, explicitly specify the `--s3.region` parameter, which means the region of the S3 storage:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+./dumpling \
+  -u root \
+  -P 4000 \
+  -h 127.0.0.1 \
+  -o "s3://${Bucket}/${Folder}" \
+  --s3.region "${region}"
+```
 
 ### Filter the exported data
 
