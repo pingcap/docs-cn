@@ -217,6 +217,14 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 
 即可导出 TSO 为 `417773951312461825` 或 `2020-07-02 17:12:45` 时的 TiDB 历史数据快照。
 
+### 控制导出 TiDB 大表时的内存使用
+
+Dumpling 导出 TiDB 较大单表时可能会因为导出数据过大导致 TiDB OOM 从而连接中断导出失败。我们可以通过下述参数减少 TiDB 内存使用。
+
+1. 设置 `--rows` 参数，可以划分 chunk 减少 TiDB scan 内存开销，同时也可开启表内并发提高导出效率。
+2. 调小 `--tidb-mem-quota-query` 参数到 8589934592(8GB) 或更小。该参数默认为 32GB，可控制 TiDB 单条 query 语句的内存使用。
+3. 设置 `--params "tidb_distsql_scan_concurrency=5"` 参数设置导出时的 session 变量 [tidb_distsql_scan_concurrency](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_distsql_scan_concurrency) 减少 TiDB scan 操作并发度。
+
 ### 导出大规模数据时的 TiDB GC 设置
 
 如果导出的 TiDB 版本大于 v4.0.0，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。v4.0.0 之前的版本依然需要手动修改 GC。
@@ -280,3 +288,4 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |
 | --tidb-mem-quota-query | 单条 dumpling 命令导出 SQL 语句的内存限制，单位为 byte，默认为 32 GB | 34359738368 |
+| --params | 导出数据库连接的 session 变量，接受的格式: "character_set_client=latin1,character_set_connection=latin1" |
