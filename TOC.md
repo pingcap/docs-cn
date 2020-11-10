@@ -51,7 +51,7 @@
   + 从 CSV 文件迁移至 TiDB
     + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
-  + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
+  + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-dumpling-files.md)
 + 运维操作
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)

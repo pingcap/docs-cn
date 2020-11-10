@@ -54,12 +54,12 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 ## 导出数据
 
-使用 [`mydumper`](/mydumper-overview.md) 从 MySQL 导出数据，如下：
+使用 [`dumpling`](/dumpling-overview.md) 从 MySQL 导出数据，如下：
 
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
+./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -T test.t1,test.t2 -o /data/my_database/
 ```
 
 其中：
@@ -101,7 +101,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
         # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
         tidb_lightning_pprof_port: 8289
 
-        # 获取数据源（Mydumper SQL dump 或 CSV）的路径。
+        # 获取数据源（Dumpling SQL dump 或 CSV）的路径。
         data_source_dir: "{{ deploy_dir }}/mydumper"
         ```
 

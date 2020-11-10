@@ -46,10 +46,10 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 <ColumnTitle>数据迁移</ColumnTitle>
 
 - [概述](/migration-overview.md)
-- [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
+- [从 Dumpling 文件迁移](/migrate-from-mysql-dumpling-files.md)
 - [从 Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
 - [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-- [从 SQL 文件迁移](/migrate-from-mysql-mydumper-files.md)
+- [从 SQL 文件迁移](/migrate-from-mysql-dumpling-files.md)
 
 </NavColumn>
 
