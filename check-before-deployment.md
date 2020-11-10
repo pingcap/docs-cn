@@ -305,7 +305,7 @@ sudo systemctl enable ntpd.service
         reboot
         ```
 
-    - 如果需要修改当前的内核配置：
+    - 如果不希望重启机器，也可以修改当前的内核配置来立即生效：
 
        {{< copyable "shell-regular" >}}
 
