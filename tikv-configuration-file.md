@@ -231,12 +231,6 @@ Configuration items related to the Coprocessor thread pool.
 
 Configuration items related to storage
 
-### `scheduler-notify-capacity`
-
-+ The maximum number of messages that `scheduler` gets each time
-+ Default value: `10240`
-+ Minimum value: `1`
-
 ### `scheduler-concurrency`
 
 + A built-in memory lock mechanism to prevent simultaneous operations on a key. Each key has a hash in a different slot.
