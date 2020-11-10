@@ -40,7 +40,11 @@ SHOW DATABASES;
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 DROP DATABASE samp_db;
+=======
+USE mysql;
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 ## 创建、查看和删除表
@@ -106,7 +110,11 @@ DROP TABLE person;
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 DROP TABLE IF EXISTS person;
+=======
+SHOW CREATE TABLE person;
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 使用 `SHOW TABLES` 语句查看数据库中的所有表。例如：
@@ -156,7 +164,7 @@ ALTER TABLE person ADD UNIQUE person_num (number);
 {{< copyable "sql" >}}
 
 ```sql
-SHOW INDEX from person;
+SHOW INDEX FROM person;
 ```
 
 使用 `ALTER TABLE` 或 `DROP INDEX` 语句来删除索引。与 `CREATE INDEX` 语句类似，`DROP INDEX` 也可以嵌入 `ALTER TABLE` 语句。例如：
@@ -232,7 +240,11 @@ DELETE FROM person WHERE number=1;
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 SELECT * FROM person;
+=======
+SELECT * FROM person WHERE id<5;
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 ```

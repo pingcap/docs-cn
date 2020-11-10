@@ -18,13 +18,17 @@ aliases: ['/docs-cn/v3.1/auto-random/','/docs-cn/v3.1/reference/sql/attributes/a
 以下面语句建立的表为例：
 
 ```sql
+<<<<<<< HEAD
 create table t (a int primary key auto_increment, b varchar(255))
+=======
+CREATE TABLE t (a bigint PRIMARY KEY AUTO_INCREMENT, b varchar(255))
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 在以上语句所建的表上执行大量未指定主键值的 `INSERT` 语句，示例如下：
 
 ```sql
-insert into t(b) values ('a'), ('b'), ('c')
+INSERT INTO t(b) VALUES ('a'), ('b'), ('c')
 ```
 
 如以上语句，由于未指定主键列的值（`a` 列），TiDB 会使用连续自增的行值作为行 ID，可能导致单个 TiKV 节点上产生写入热点，进而影响对外提供服务的性能。要避免这种性能下降，可以在执行建表语句时为 `a` 列指定 `AUTO_RANDOM` 属性而不是 `AUTO_INCREMENT` 属性。示例如下：
@@ -32,7 +36,11 @@ insert into t(b) values ('a'), ('b'), ('c')
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 create table t (a int primary key auto_random, b varchar(255))
+=======
+CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM, b varchar(255))
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 或者
@@ -40,7 +48,11 @@ create table t (a int primary key auto_random, b varchar(255))
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 create table t (a int auto_random, b varchar(255), primary key (a))
+=======
+CREATE TABLE t (a bigint AUTO_RANDOM, b varchar(255), PRIMARY KEY (a))
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 此时再执行形如 `INSERT INTO t(b) values...` 的 `INSERT` 语句。
@@ -57,7 +69,11 @@ create table t (a int auto_random, b varchar(255), primary key (a))
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 create table t (a int primary key auto_random(3), b varchar(255))
+=======
+CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM(3), b varchar(255))
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 以上建表语句中，shard bits 的数量为 `3`。shard bits 的数量的取值范围是 `[1, field_max_bits)`，其中 `field_max_bits` 为整型主键列类型占用的位长度。
@@ -67,32 +83,45 @@ create table t (a int primary key auto_random(3), b varchar(255))
 {{< copyable "sql" >}}
 
 ```sql
-show warnings
+SHOW WARNINGS
 ```
 
+<<<<<<< HEAD
 ```
 +-------+------+------------------------------------------------+
 | Level | Code | Message                                        |
 +-------+------+------------------------------------------------+
 | Note  | 1105 | Available implicit allocation times: 268435455 |
 +-------+------+------------------------------------------------+
+=======
+```sql
++-------+------+----------------------------------------------------------+
+| Level | Code | Message                                                  |
++-------+------+----------------------------------------------------------+
+| Note  | 1105 | Available implicit allocation times: 1152921504606846976 |
++-------+------+----------------------------------------------------------+
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 另外，含有 `AUTO_RANDOM` 属性的表在系统表 `information_schema.tables` 中 `TIDB_ROW_ID_SHARDING_INFO` 一列的值为 `PK_AUTO_RANDOM_BITS=x`，其中 `x` 为 shard bits 的数量。
 
+<<<<<<< HEAD
 要获取上一次 TiDB 隐式分配的 ID，可以使用 `select last_insert_id()` 查看，例如：
+=======
+`AUTO RANDOM` 列隐式分配的值会影响 `last_insert_id()`。可以使用 `SELECT last_insert_id()` 获取上一次 TiDB 隐式分配的 ID，例如：
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 
 {{< copyable "sql" >}}
 
 ```sql
-insert into t (b) values ("b")
-select * from t;
-select last_insert_id()
+INSERT INTO t (b) VALUES ("b")
+SELECT * FROM t;
+SELECT last_insert_id()
 ```
 
 可能得到的结果如下：
 
-```
+```sql
 +------------+---+
 | a          | b |
 +------------+---+
@@ -113,18 +142,22 @@ TiDB 支持解析版本注释语法。示例如下：
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a bigint primary key /*T![auto_rand] auto_random */)
+CREATE TABLE t (a bigint PRIMARY KEY /*T![auto_rand] auto_random */)
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 create table t (a int primary key auto_random)
+=======
+CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM)
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 以上两个语句含义相同。
 
-在 `show create table` 的结果中，`AUTO_RANDOM` 属性会被注释掉。注释会附带一个特性标识符，例如 `/*T![auto_rand] auto_random */`。其中 `auto_rand` 表示 `AUTO_RANDOM` 的特性标识符，只有实现了该标识符对应特性的 TiDB 版本才能够正常解析 SQL 语句片段。
+在 `SHOW CREATE TABLE` 的结果中，`AUTO_RANDOM` 属性会被注释掉。注释会附带一个特性标识符，例如 `/*T![auto_rand] auto_random */`。其中 `auto_rand` 表示 `AUTO_RANDOM` 的特性标识符，只有实现了该标识符对应特性的 TiDB 版本才能够正常解析 SQL 语句片段。
 
 该功能支持向前兼容，即降级兼容。没有实现对应特性的 TiDB 版本则会忽略表（带有上述注释）的 `AUTO_RANDOM` 属性，因此能够使用含有该属性的表。
 
