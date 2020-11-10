@@ -18,11 +18,7 @@ aliases: ['/docs-cn/v3.1/auto-random/','/docs-cn/v3.1/reference/sql/attributes/a
 以下面语句建立的表为例：
 
 ```sql
-<<<<<<< HEAD
-create table t (a int primary key auto_increment, b varchar(255))
-=======
-CREATE TABLE t (a bigint PRIMARY KEY AUTO_INCREMENT, b varchar(255))
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
+CREATE TABLE t (a int PRIMARY KEY AUTO_INCREMENT, b varchar(255))
 ```
 
 在以上语句所建的表上执行大量未指定主键值的 `INSERT` 语句，示例如下：
@@ -36,11 +32,7 @@ INSERT INTO t(b) VALUES ('a'), ('b'), ('c')
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
-create table t (a int primary key auto_random, b varchar(255))
-=======
-CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM, b varchar(255))
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
+CREATE TABLE t (a int PRIMARY KEY AUTO_RANDOM, b varchar(255))
 ```
 
 或者
@@ -48,11 +40,7 @@ CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM, b varchar(255))
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
-create table t (a int auto_random, b varchar(255), primary key (a))
-=======
-CREATE TABLE t (a bigint AUTO_RANDOM, b varchar(255), PRIMARY KEY (a))
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
+CREATE TABLE t (a int AUTO_RANDOM, b varchar(255), PRIMARY KEY (a))
 ```
 
 此时再执行形如 `INSERT INTO t(b) values...` 的 `INSERT` 语句。
@@ -69,11 +57,7 @@ CREATE TABLE t (a bigint AUTO_RANDOM, b varchar(255), PRIMARY KEY (a))
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
-create table t (a int primary key auto_random(3), b varchar(255))
-=======
-CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM(3), b varchar(255))
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
+CREATE TABLE t (a int PRIMARY KEY AUTO_RANDOM(3), b varchar(255))
 ```
 
 以上建表语句中，shard bits 的数量为 `3`。shard bits 的数量的取值范围是 `[1, field_max_bits)`，其中 `field_max_bits` 为整型主键列类型占用的位长度。
@@ -86,30 +70,17 @@ CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM(3), b varchar(255))
 SHOW WARNINGS
 ```
 
-<<<<<<< HEAD
-```
+```sql
 +-------+------+------------------------------------------------+
 | Level | Code | Message                                        |
 +-------+------+------------------------------------------------+
 | Note  | 1105 | Available implicit allocation times: 268435455 |
 +-------+------+------------------------------------------------+
-=======
-```sql
-+-------+------+----------------------------------------------------------+
-| Level | Code | Message                                                  |
-+-------+------+----------------------------------------------------------+
-| Note  | 1105 | Available implicit allocation times: 1152921504606846976 |
-+-------+------+----------------------------------------------------------+
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 另外，含有 `AUTO_RANDOM` 属性的表在系统表 `information_schema.tables` 中 `TIDB_ROW_ID_SHARDING_INFO` 一列的值为 `PK_AUTO_RANDOM_BITS=x`，其中 `x` 为 shard bits 的数量。
 
-<<<<<<< HEAD
-要获取上一次 TiDB 隐式分配的 ID，可以使用 `select last_insert_id()` 查看，例如：
-=======
-`AUTO RANDOM` 列隐式分配的值会影响 `last_insert_id()`。可以使用 `SELECT last_insert_id()` 获取上一次 TiDB 隐式分配的 ID，例如：
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
+要获取上一次 TiDB 隐式分配的 ID，可以使用 `SELECT last_insert_id()` 查看，例如：
 
 {{< copyable "sql" >}}
 
@@ -148,11 +119,7 @@ CREATE TABLE t (a bigint PRIMARY KEY /*T![auto_rand] auto_random */)
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
-create table t (a int primary key auto_random)
-=======
-CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM)
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
+CREATE TABLE t (a int PRIMARY KEY AUTO_RANDOM)
 ```
 
 以上两个语句含义相同。

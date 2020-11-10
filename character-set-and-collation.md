@@ -130,11 +130,7 @@ ALTER DATABASE db_name
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
-create schema test1 character set utf8 COLLATE uft8_general_ci;
-=======
-CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE uft8mb4_general_ci;
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
+CREATE SCHEMA test1 CHARACTER SET utf8 COLLATE uft8_general_ci;
 ```
 
 ```
@@ -169,11 +165,7 @@ SELECT @@character_set_database, @@collation_database;
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
-create schema test2 character set latin1 COLLATE latin1_general_ci;
-=======
-CREATE SCHEMA test2 CHARACTER SET latin1 COLLATE latin1_bin;
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
+CREATE SCHEMA test2 CHARACTER SET latin1 COLLATE latin1_general_ci;
 ```
 
 ```
@@ -295,94 +287,15 @@ SELECT _latin1'string' COLLATE latin1_danish_ci;
 
 * `SET NAMES 'charset_name' [COLLATE 'collation_name']`
 
-<<<<<<< HEAD
 `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8` 表示客户端会在接下来的请求中，都使用 utf8 字符集。服务端也会在之后返回结果的时候使用 utf8 字符集。
 `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
-=======
-    `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。
-    `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SET character_set_client = charset_name;
-    SET character_set_results = charset_name;
-    SET character_set_connection = charset_name;
-    ```
-
-    `COLLATE` 是可选的，如果没有提供，将会用 `charset_name` 对应的默认排序规则设置 `collation_connection`。
-
-* `SET CHARACTER SET 'charset_name'`
-
-    跟 `SET NAMES` 类似，等价于下面语句的组合：
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SET character_set_client = charset_name;
-    SET character_set_results = charset_name;
-    SET charset_connection = @@charset_database;
-    SET collation_connection = @@collation_database;
-    ```
-
-## 服务器、数据库、表、列、字符串的字符集和排序规则的优先级
-
-优先级从高到低排列顺序为：
-
-字符串 > 列 > 表 > 数据库 > 服务器
-
-## 字符集和排序规则的通用选择规则
-
-* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `charset_name` 字符集和 `collation_name` 排序规则。
-* 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `charset_name` 字符集和 `charset_name` 对应的默认排序规则。
-* 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用更高优先级的字符集和排序规则。
-
-## 字符合法性检查
-
-当指定的字符集为 utf8 或 utf8mb4 时，TiDB 仅支持合法的 utf8 字符。对于不合法的字符，会报错：`incorrect utf8 value`。该字符合法性检查与 MySQL 8.0 兼容，与 MySQL 5.7 及以下版本不兼容。
-
-如果不希望报错，可以通过 `set @@tidb_skip_utf8_check=1;` 跳过字符检查。
-
-## 排序规则支持
-
-排序规则的语法支持和语义支持受到配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。
-
-在 4.0 版本之前，TiDB 只提供了旧的排序规则框架，能够在语法上支持的绝大部分 MySQL 排序规则，但语义上所有的排序规则都当成二进制排序规则。
-
-4.0 版本中，TiDB 增加了新的排序规则框架用于在语义上支持不同的排序规则，保证字符串比较时严格遵循对应的排序规则，详情请见下文。
-
-### 旧框架下的排序规则支持
-
-在 4.0 版本之前，TiDB 中可以指定大部分 MySQL 中的排序规则，并把这些排序规则按照默认排序规则处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 在比较字符前按照排序规则的 PADDING 属性将字符末尾的空格删除，因此会造成以下的行为区别：
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
-Query OK, 0 rows affected
-INSERT INTO t VALUES ('A');
-Query OK, 1 row affected
-INSERT INTO t VALUES ('a');
-Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'。
-INSERT INTO t VALUES ('a ');
-Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于补齐空格比较，报错 Duplicate entry 'a '。
-```
-
-### 新框架下的排序规则支持
-
-TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用新排序规则框架：
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
-
-{{< copyable "sql" >}}
-
-```sql
-<<<<<<< HEAD
 SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET character_set_connection = charset_name;
-=======
-SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 `COLLATE` 是可选的，如果没有提供，将会用 charset_name 默认的 Collation。
@@ -394,20 +307,9 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 {{< copyable "sql" >}}
 
 ```sql
-<<<<<<< HEAD
 SET character_set_client = charset_name;
 SET character_set_results = charset_name;
 SET collation_connection = @@collation_database;
-=======
-CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
-Query OK, 0 rows affected (0.00 sec)
-INSERT INTO t VALUES ('A');
-Query OK, 1 row affected (0.00 sec)
-INSERT INTO t VALUES ('a');
-ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY' # TiDB 兼容了 MySQL 的 case insensitive collation。
-INSERT INTO t VALUES ('a ');
-ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PADDING` 行为，与 MySQL 兼容。
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 ## 集群，服务器，数据库，表，列，字符串 Character Sets 和 Collation 优化级
@@ -422,13 +324,7 @@ ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PAD
 
 ## 字符合法性检查
 
-<<<<<<< HEAD
 当指定的字符集为 utf8 或 utf8mb4 时，TiDB 仅支持合法的 utf8 字符。对于不合法的字符，会报错：`incorrect utf8 value`。该字符合法性检查与 MySQL 8.0 兼容，与 MySQL 5.7 及以下版本不兼容。
-=======
-```sql
-SELECT 'a' = _utf8mb4 'A' collate utf8mb4_general_ci;
-```
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 
 如果不希望报错，可以通过 `set @@tidb_skip_utf8_check=1;` 跳过字符检查。
 
