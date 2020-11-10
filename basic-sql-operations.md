@@ -9,51 +9,7 @@ aliases: ['/docs-cn/v2.1/basic-sql-operations/','/docs-cn/v2.1/how-to/get-starte
 
 本文介绍 CRUD 操作等基本的 SQL 语句。完整的 SQL 语句列表，参见 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)。
 
-<<<<<<< HEAD
 ## 创建、查看和删除数据库
-=======
-## 分类
-
-SQL 语言通常按照功能划分成以下的 4 个部分：
-
-- DDL (Data Definition Language)：数据定义语言，用来定义数据库对象，包括库、表、视图和索引等。
-
-- DML (Data Manipulation Language)：数据操作语言，用来操作和业务相关的记录。
-
-- DQL (Data Query Language)：数据查询语言，用来查询经过条件筛选的记录。
-
-- DCL (Data Control Language)：数据控制语言，用来定义访问权限和安全级别。
-
-常用的 DDL 功能是对象（如表、索引等）的创建、属性修改和删除，对应的命令分别是 CREATE、ALTER 和 DROP。
-
-## 查看、创建和删除数据库
-
-TiDB 语境中的 Database 或者说数据库，可以认为是表和索引等对象的集合。
-
-使用 `SHOW DATABASES` 语句查看系统中数据库列表：
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW DATABASES;
-```
-
-使用名为 `mysql` 的数据库：
-
-{{< copyable "sql" >}}
-
-```sql
-USE mysql;
-```
-
-使用 `SHOW TABLES` 语句查看数据库中的所有表。例如：
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW TABLES FROM mysql;
-```
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 
 使用 `CREATE DATABASE` 语句创建数据库。语法如下：
 
@@ -100,15 +56,11 @@ CREATE TABLE person (
 如果表已存在，添加 `IF NOT EXISTS` 可防止发生错误：
 
 ```sql
-<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS person (
       number INT(11),
       name VARCHAR(255),
       birthday DATE
 );
-=======
-SHOW CREATE TABLE person;
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 使用 `SHOW CREATE` 语句查看建表语句。例如：
@@ -146,11 +98,7 @@ SHOW TABLES FROM samp_db;
 对于值不唯一的列，可使用 `CREATE INDEX` 或 `ALTER TABLE` 语句。例如：
 
 ```sql
-<<<<<<< HEAD
 CREATE INDEX person_num ON person (number);
-=======
-SHOW INDEX FROM person;
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 或者
@@ -219,13 +167,9 @@ SELECT * FROM person;
 使用 `DELETE` 语句删除表内数据：
 
 ```sql
-<<<<<<< HEAD
 DELETE FROM person WHERE number=1;
 SELECT * FROM person;
 Empty set (0.00 sec)
-=======
-SELECT * FROM person WHERE id<5;
->>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```
 
 ## 创建、授权和删除用户
