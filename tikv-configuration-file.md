@@ -229,12 +229,6 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 
 存储相关的配置项。
 
-### `scheduler-notify-capacity`
-
-+ scheduler 一次获取最大消息个数
-+ 默认值：10240
-+ 最小值：1
-
 ### `scheduler-concurrency`
 
 + scheduler 内置一个内存锁机制，防止同时对一个 key 进行操作。每个 key hash 到不同的槽。
@@ -638,6 +632,12 @@ rocksdb 相关的配置项。
 + 默认值：8
 + 最小值：1
 
+### `max-background-flushes`
+
++ RocksDB 用于刷写 memtable 的最大后台线程数。
++ 默认值：2
++ 最小值：1
+
 ### `max-sub-compactions`
 
 + RocksDB 进行 subcompaction 的并发个数。
@@ -764,8 +764,8 @@ rocksdb 相关的配置项。
 
 ### `info-log-roll-time`
 
-+ 日志截断间隔时间，如果为0则不截断。
-+ 默认值：0
++ 日志截断间隔时间，如果为 0s 则不截断。
++ 默认值：0s
 
 ### `info-log-keep-log-file-num`
 
