@@ -156,7 +156,7 @@ ALTER TABLE person ADD UNIQUE person_num (number);
 {{< copyable "sql" >}}
 
 ```sql
-SHOW INDEX from person;
+SHOW INDEX FROM person;
 ```
 
 使用 `ALTER TABLE` 或 `DROP INDEX` 语句来删除索引。与 `CREATE INDEX` 语句类似，`DROP INDEX` 也可以嵌入 `ALTER TABLE` 语句。例如：
