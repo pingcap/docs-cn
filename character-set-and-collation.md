@@ -108,11 +108,30 @@ ALTER DATABASE db_name
 
 通过系统变量 `character_set_database` 和 `collation_database` 可以查看到当前数据库的字符集以及排序规则：
 
+<<<<<<< HEAD
+=======
+{{< copyable "sql" >}}
+
+```sql
+CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE uft8mb4_general_ci;
+```
+
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 ```sql
 mysql> create schema test1 character set utf8 COLLATE uft8_general_ci;
 Query OK, 0 rows affected (0.09 sec)
 
+<<<<<<< HEAD
 mysql> use test1;
+=======
+{{< copyable "sql" >}}
+
+```sql
+USE test1;
+```
+
+```sql
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 Database changed
 mysql> SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
@@ -122,10 +141,28 @@ mysql> SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 
+<<<<<<< HEAD
 mysql> create schema test2 character set latin1 COLLATE latin1_general_ci;
+=======
+```sql
+CREATE SCHEMA test2 CHARACTER SET latin1 COLLATE latin1_bin;
+```
+
+```sql
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 Query OK, 0 rows affected (0.09 sec)
 
+<<<<<<< HEAD
 mysql> use test2;
+=======
+{{< copyable "sql" >}}
+
+```sql
+USE test2;
+```
+
+```sql
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 Database changed
 mysql> SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
@@ -224,4 +261,112 @@ SET collation_connection = @@collation_database;
 
 如果不希望报错，可以通过 `set @@tidb_skip_utf8_check=1;` 跳过字符检查。
 
+<<<<<<< HEAD
+=======
+## 排序规则支持
+
+排序规则的语法支持和语义支持受到配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。
+
+在 4.0 版本之前，TiDB 只提供了旧的排序规则框架，能够在语法上支持的绝大部分 MySQL 排序规则，但语义上所有的排序规则都当成二进制排序规则。
+
+4.0 版本中，TiDB 增加了新的排序规则框架用于在语义上支持不同的排序规则，保证字符串比较时严格遵循对应的排序规则，详情请见下文。
+
+### 旧框架下的排序规则支持
+
+在 4.0 版本之前，TiDB 中可以指定大部分 MySQL 中的排序规则，并把这些排序规则按照默认排序规则处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 在比较字符前按照排序规则的 PADDING 属性将字符末尾的空格删除，因此会造成以下的行为区别：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
+Query OK, 0 rows affected
+INSERT INTO t VALUES ('A');
+Query OK, 1 row affected
+INSERT INTO t VALUES ('a');
+Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'。
+INSERT INTO t VALUES ('a ');
+Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于补齐空格比较，报错 Duplicate entry 'a '。
+```
+
+### 新框架下的排序规则支持
+
+TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用新排序规则框架：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';
+```
+
+```sql
++----------------+
+| VARIABLE_VALUE |
++----------------+
+| True           |
++----------------+
+1 row in set (0.00 sec)
+```
+
+在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 和 `utf8mb4_unicode_ci` 这几种排序规则，与 MySQL 兼容。
+
+使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 和 `utf8mb4_unicode_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
+Query OK, 0 rows affected (0.00 sec)
+INSERT INTO t VALUES ('A');
+Query OK, 1 row affected (0.00 sec)
+INSERT INTO t VALUES ('a');
+ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY' # TiDB 兼容了 MySQL 的 case insensitive collation。
+INSERT INTO t VALUES ('a ');
+ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PADDING` 行为，与 MySQL 兼容。
+```
+
+> **注意：**
+>
+> TiDB 中 padding 的实现方式与 MySQL 的不同。在 MySQL 中，padding 是通过补齐空格实现的。而在 TiDB 中 padding 是通过裁剪掉末尾的空格来实现的。两种做法在绝大多数情况下是一致的，唯一的例外是字符串尾部包含小于空格 (0x20) 的字符时，例如 `'a' < 'a\t'` 在 TiDB 中的结果为 `1`，而在 MySQL 中，其等价于 `'a ' < 'a\t'`，结果为 `0`。
+
+## 表达式中排序规则的 Coercibility 值
+
+如果一个表达式涉及多个不同排序规则的子表达式时，需要对计算时用的排序规则进行推断，规则如下：
+
++ 显式 `COLLATE` 子句的 coercibility 值为 `0`。
++ 如果两个字符串的排序规则不兼容，这两个字符串 `concat` 结果的 coercibility 值为 `1`。
++ 列或者 `CAST()`、`CONVERT()` 和 `BINARY()` 的排序规则的 coercibility 值为 `2`。
++ 系统常量（`USER()` 或者 `VERSION()` 返回的字符串）的 coercibility 值为 `3`。
++ 常量的 coercibility 值为 `4`。
++ 数字或者中间变量的 coercibility 值为 `5`。
++ `NULL` 或者由 `NULL` 派生出的表达式的 coercibility 值为 `6`。
+
+在推断排序规则时，TiDB 优先使用 coercibility 值较低的表达式的排序规则。如果 coercibility 值相同，则按以下优先级确定排序规则：
+
+binary > utf8mb4_bin > (utf8mb4_general_ci = utf8mb4_unicode_ci) > utf8_bin > (utf8_general_ci = utf8_unicode_ci) > latin1_bin > ascii_bin
+
+以下情况 TiDB 无法推断排序规则并报错：
+
+- 如果两个子表达式的排序规则不相同，而且表达式的 coercibility 值都为 `0`。
+- 如果两个子表达式的排序规则不兼容，而且表达式的返回类型为 `String` 类。
+
+## `COLLATE` 子句
+
+TiDB 支持使用 `COLLATE` 子句来指定一个表达式的排序规则，该表达式的 coercibility 值为 `0`，具有最高的优先级。示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT 'a' = _utf8mb4 'A' collate utf8mb4_general_ci;
+```
+
+```sql
++-----------------------------------------------+
+| 'a' = _utf8mb4 'A' collate utf8mb4_general_ci |
++-----------------------------------------------+
+|                                             1 |
++-----------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+>>>>>>> 43758a91... Capitalize sql keywords in several files (#4862)
 更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
