@@ -109,10 +109,10 @@ ALTER DATABASE db_name
 通过系统变量 `character_set_database` 和 `collation_database` 可以查看到当前数据库的字符集以及排序规则：
 
 ```sql
-mysql> create schema test1 character set utf8 COLLATE uft8_general_ci;
+mysql> CREATE SCHEMA test1 CHARACTER SET utf8 COLLATE uft8_general_ci;
 Query OK, 0 rows affected (0.09 sec)
 
-mysql> use test1;
+mysql> USE test1;
 Database changed
 mysql> SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
@@ -122,7 +122,7 @@ mysql> SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 
-mysql> create schema test2 character set latin1 COLLATE latin1_general_ci;
+mysql> CREATE SCHEMA test2 CHARACTER SET latin1 COLLATE latin1_general_ci;
 Query OK, 0 rows affected (0.09 sec)
 
 mysql> use test2;
