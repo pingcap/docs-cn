@@ -38,7 +38,7 @@ Drainer 开启 relay log 后会先将 binlog event 写到磁盘上，然后再�
 
 ### Relay log 的清理（GC）机制
 
-Drainer 在运行时，如果确认已经将一个 relay log 文件的全部数据都成功同步到下游了，就会马上删除这个文件，所以 relay log 不会占用过多空间。一个 relay log 文件大小达到 10MB（默认）时就会做切分，数据开始写入新的 relay log 文件。
+Drainer 在将数据同步到下游之前，会先将数据写入到 relay log 文件中。当一个 relay log 文件大小达到 10MB（默认）并且当前事务的 binlog 数据被写入完成后，Drainer 就会开始将数据写入到下一个 relay log 文件中。当 Drainer 将数据成功同步到下游后，就会自动清除当前正在写入的 relay log 文件以外其他已完成同步的 relay log 文件。
 
 ## 配置
 
@@ -51,4 +51,7 @@ Drainer 在运行时，如果确认已经将一个 relay log 文件的全部数�
 # 保存 relay log 的目录，空值表示不开启。
 # 只有下游是 TiDB 或 MySQL 时该配置才有生效。
 log-dir = "/dir/to/save/log"
+# 单个 relay log 文件大小限制（单位：字节）。
+# 超出该值后会将 binlog 数据写入到下一个 relay log 文件。
+max-file-size = 10485760
 ```
