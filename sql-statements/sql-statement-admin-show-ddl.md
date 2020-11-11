@@ -88,8 +88,8 @@ ADMIN SHOW DDL JOBS;
 ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 ```
 
-* `NUM`：查看已经执行完成的 DDL 作业队列中最近 `NUM` 条结果，未指定时，默认值为 10。
-* `WHERE`：`WHERE` 子句，可以添加过滤条件。
+* `NUM`：用于查看已经执行完成的 DDL 作业队列中最近 `NUM` 条结果；未指定时，默认值为 10。
+* `WHERE`：`WHERE` 子句，用于添加过滤条件。
 
 ### `ADMIN SHOW DDL JOB QUERIES`
 
