@@ -40,7 +40,7 @@ SHOW DATABASES;
 {{< copyable "sql" >}}
 
 ```sql
-use mysql;
+USE mysql;
 ```
 
 使用 `SHOW TABLES` 语句查看数据库中的所有表。例如：
@@ -104,7 +104,7 @@ CREATE TABLE person (
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE table person;
+SHOW CREATE TABLE person;
 ```
 
 使用 `DROP TABLE` 语句删除表。例如：
@@ -154,7 +154,7 @@ ALTER TABLE person ADD UNIQUE person_unique_id (id);
 {{< copyable "sql" >}}
 
 ```sql
-SHOW INDEX from person;
+SHOW INDEX FROM person;
 ```
 
 使用 `ALTER TABLE` 或 `DROP INDEX` 语句来删除索引。与 `CREATE INDEX` 语句类似，`DROP INDEX` 也可以嵌入 `ALTER TABLE` 语句。例如：
@@ -241,7 +241,7 @@ SELECT name FROM person;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM person where id<5;
+SELECT * FROM person WHERE id<5;
 ```
 
 常用的 DCL 功能是创建或删除用户，和对用户权限的管理。
