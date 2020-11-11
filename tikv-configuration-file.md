@@ -16,48 +16,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1
 + 最小值：1
 
-### `grpc-compression-type`
-
-+ gRPC 消息的压缩算法，取值：none， deflate， gzip。
-+ 默认值：none
-
-### `grpc-concurrency`
-
-+ gRPC 工作线程的数量。
-+ 默认值：4
-+ 最小值：1
-
-### `grpc-concurrent-stream`
-
-+ 一个 gRPC 链接中最多允许的并发请求数量。
-+ 默认值：1024
-+ 最小值：1
-
-### `server.grpc-raft-conn-num`
-
-+ tikv 节点之间用于 raft 通讯的链接最大数量。
-+ 默认值：10
-+ 最小值：1
-
-### `server.grpc-stream-initial-window-size`
-
-+ gRPC stream 的 window 大小。
-+ 默认值：2MB
-+ 单位：KB|MB|GB
-+ 最小值：1KB
-
-### `server.grpc-keepalive-time`
-
-+ gRPC 发送 keep alive ping 消息的间隔时长。
-+ 默认值：10s
-+ 最小值：1s
-
-### `server.grpc-keepalive-timeout`
-
-+ 关闭 gRPC 链接的超时时长。
-+ 默认值：3s
-+ 最小值：1s
-
 ### `server.concurrent-send-snap-limit`
 
 + 同时发送 snapshot 的最大个数，默认值：32
@@ -88,6 +46,56 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1000MB
 + 单位：KB|MB|GB
 + 最小值：1KB
+
+## gRPC
+
+### `grpc-compression-type`
+
++ gRPC 消息的压缩算法，取值：none， deflate， gzip。
++ 默认值：none
+
+### `grpc-concurrency`
+
++ gRPC 工作线程的数量。
++ 默认值：4
++ 最小值：1
+
+### `grpc-concurrent-stream`
+
++ 一个 gRPC 链接中最多允许的并发请求数量。
++ 默认值：1024
++ 最小值：1
+
+### `grpc-memory-pool-quota`
+
++ gRPC 可使用内存大小限制。
++ 默认值: 32G
++ 建议仅在出现内存不足（OOM）的情况下限制内存使用。需要注意，限制内存使用可能会导致卡顿。
+
+### `server.grpc-raft-conn-num`
+
++ tikv 节点之间用于 raft 通讯的链接最大数量。
++ 默认值：10
++ 最小值：1
+
+### `server.grpc-stream-initial-window-size`
+
++ gRPC stream 的 window 大小。
++ 默认值：2MB
++ 单位：KB|MB|GB
++ 最小值：1KB
+
+### `server.grpc-keepalive-time`
+
++ gRPC 发送 keep alive ping 消息的间隔时长。
++ 默认值：10s
++ 最小值：1s
+
+### `server.grpc-keepalive-timeout`
+
++ 关闭 gRPC 链接的超时时长。
++ 默认值：3s
++ 最小值：1s
 
 ## readpool.unified
 
