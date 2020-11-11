@@ -85,9 +85,9 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 
 ## TiCDC 安装和部署
 
-在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件，只需在 TiUP 启动 TiDB 集群时的配置文件中 [加入 TiCDC 部分](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件) 即可。
+在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件，只需在 TiUP 启动 TiDB 集群时的配置文件中[加入 TiCDC 部分](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件) 即可。
 
-目前也支持使用 TiUP 或 binary 方式在原有 TiDB 集群上新增 TiCDC 组件，详细部署方案请参考 [部署安装 TiCDC](/ticdc/manage-ticdc.md#部署安装-ticdc)。
+目前也支持使用 TiUP 或 binary 方式在原有 TiDB 集群上新增 TiCDC 组件，详细部署方案请参考 [TiCDC 安装部署](/ticdc/deploy-ticdc.md)。
 
 ## TiCDC 集群管理和同步任务管理
 
