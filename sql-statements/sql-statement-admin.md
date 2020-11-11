@@ -5,35 +5,84 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-admin/','/docs-cn/v3.0/ref
 
 # ADMIN
 
+<<<<<<< HEAD
 `ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。示例如下。
+=======
+`ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。
+
+## ADMIN 与 DDL 相关的扩展语句
+
+| 语句                                                                                | 功能描述                 |
+|------------------------------------------------------------------------------------------|-----------------------------|
+| [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | 取消当前正在运行的 DDL 作业 |
+| [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)          | 计算表中所有行和索引的 CRC64 校验和 |
+| [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | 校验表中数据和对应索引的一致性 |
+| [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)      | 显示有关当前正在运行或最近完成的 DDL 作业的详细信息|
+
+## `admin reload` 语句
+>>>>>>> fbb5990b... sql-statement: add ADMIN ddl statements (#4801)
 
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 ADMIN SHOW DDL;
 ```
 
 `ADMIN SHOW DDL` 用于查看当前正在执行的 DDL 作业。
+=======
+ADMIN RELOAD expr_pushdown_blacklist;
+```
+
+以上语句用于重新加载表达式下推的黑名单。
+>>>>>>> fbb5990b... sql-statement: add ADMIN ddl statements (#4801)
 
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 ADMIN SHOW DDL JOBS;
 ```
 
 `ADMIN SHOW DDL JOBS` 用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
+=======
+ADMIN RELOAD opt_rule_blacklist;
+```
+
+以上语句用于重新加载逻辑优化规则的黑名单。
+
+## `admin plugin` 语句
+>>>>>>> fbb5990b... sql-statement: add ADMIN ddl statements (#4801)
 
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
 ```
 
 `ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...` 用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在运行中的 DDL 作业以及 DDL 历史作业队列中最近的十条结果。
+=======
+ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
+```
+
+以上语句用于启用 `plugin_name` 插件。
 
 {{< copyable "sql" >}}
 
 ```sql
+ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
+```
+
+以上语句用于禁用 `plugin_name` 插件。
+
+## `admin ... bindings` 语句
+>>>>>>> fbb5990b... sql-statement: add ADMIN ddl statements (#4801)
+
+{{< copyable "sql" >}}
+
+```sql
+<<<<<<< HEAD
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 ```
 
@@ -44,14 +93,69 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 > - 只有该操作可以取消 DDL 作业，其他所有的操作和环境变更（例如机器重启、集群重启）都不会取消 DDL 作业。
 > - 该操作可以同时取消多个 DDL 作业。可以通过 `ADMIN SHOW DDL JOBS` 语句来获取 DDL 作业的 ID。
 > - 如果希望取消的作业已经完成，则取消操作将会失败。
+=======
+ADMIN FLUSH bindings;
+```
+
+以上语句用于持久化 SQL Plan 绑定的信息。
 
 {{< copyable "sql" >}}
 
 ```sql
+ADMIN CAPTURE bindings;
+```
+
+以上语句可以将出现超过一次的 `select`execution-plan 语句生成 SQL Plan 的绑定。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN EVOLVE bindings;
+```
+
+开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划管理](/sql-plan-management.md)。
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN RELOAD bindings;
+```
+
+以上语句用于重新加载 SQL Plan 绑定的信息。
+
+## `admin repair table` 语句
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
+```
+
+`ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/tidb-configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/tidb-configuration-file.md#repair-table-list) 名单中。
+
+## `admin show slow` 语句
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW SLOW RECENT N;
+```
+>>>>>>> fbb5990b... sql-statement: add ADMIN ddl statements (#4801)
+
+{{< copyable "sql" >}}
+
+```sql
+<<<<<<< HEAD
 ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
 ```
 
 `ADMIN CHECK TABLE tbl_name [, tbl_name] ...` 用于对表 `tbl_name` 中的所有数据和对应索引进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
+=======
+ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
+```
+
+这两种语句的具体操作详情可参考：[admin show slow 语句](/identify-slow-queries.md#admin-show-slow-命令)。
+>>>>>>> fbb5990b... sql-statement: add ADMIN ddl statements (#4801)
 
 ## 语句概览
 
@@ -107,4 +211,4 @@ admin show ddl jobs;
 
 ## MySQL 兼容性
 
-ADMIN 语句是 TiDB 对于 MySQL 语法的扩展。
+`ADMIN` 语句是 TiDB 对于 MySQL 语法的扩展。
