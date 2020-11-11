@@ -198,7 +198,7 @@
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + TiCDC
     + [概述](/ticdc/ticdc-overview.md)
-    + [部署拓扑](/ticdc-deployment-topology.md)
+    + [安装部署](/ticdc/manage-ticdc.md#部署安装-ticdc)
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
