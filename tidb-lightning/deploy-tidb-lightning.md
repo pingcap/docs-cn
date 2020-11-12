@@ -59,16 +59,15 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -T test.t1,test.t2 -o /data/my_database/
+./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 其中：
 
 - `-B test`：从 `test` 数据库导出。
-- `-T t1,t2`：只导出 `t1` 和 `t2` 这两个表。
+- `-f test.t[12]`：只导出 `test.t1` 和 `test.t2` 这两个表。
 - `-t 16`：使用 16 个线程导出数据。
-- `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
-- `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
+- `-F 256MB`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 
 如果数据源是 CSV 文件，请参考 [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)获取配置信息。
 

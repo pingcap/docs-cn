@@ -25,13 +25,13 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -T test.t1,test.t2 -o /data/my_database/
+./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 其中：
 
 - `-B test`：从 `test` 数据库导出。
-- `-T test.t1,test.t2`：只导出 `test.t1` 和 `test.t2` 这两个表。
+- `-f test.t[12]`：只导出 `test.t1` 和 `test.t2` 这两个表。
 - `-t 16`：使用 16 个线程导出数据。
 - `-F 256MB`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 

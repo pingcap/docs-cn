@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 
 #### 迁移方法
 
-使用 Dumpling 导出 MySQL 的全量数据，再使用 TiDB Lightning 将全量数据导入到 TiDB，详细信息可参考[从 Dumpling 文件迁移](/migrate-from-mysql-dumpling-files.md)
+使用 Dumpling 导出 MySQL 的全量数据，再使用 TiDB Lightning 将全量数据导入到 TiDB，详细信息可参考[使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
 
 ### 使用 DM 迁移数据
 
