@@ -64,8 +64,8 @@
     + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   + 备份与恢复
     + 使用 BR 工具（推荐）
-      + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+      + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
       + [BR 存储](/br/backup-and-restore-storages.md)
     + [使用 Dumpling 和 TiDB Lightning 进行备份与恢复（推荐）](/backup-and-restore-using-dumpling-lightning.md)
     + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
