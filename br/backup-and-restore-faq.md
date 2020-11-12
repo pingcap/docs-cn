@@ -31,7 +31,9 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 ## BR 遇到 Permission denied 错误，即使用 root 运行 BR 也无法解决，该如何处理？
  
 需要确认 TiKV 是否有访问备份目录的权限。如果是备份，确认是否有写权限；如果是恢复，确认是否有读权限。
- 
+
+值得注意的是 BR 执行服务器用户 ids (UIDs) 要与 TiKV 用户保持一致，否则备份可能会出现该问题。
+
 使用 root 运行 BR 仍旧有可能会因为磁盘权限而失败，因为备份文件 (SST) 的保存是由 TiKV 执行的。
  
 > **注意：**
@@ -40,7 +42,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 > 
 > 使用 BR 进行数据的恢复时，检验读权限的时机是在第一次读取 SST 文件时，考虑到执行 DDL 的耗时，这个时刻可能会离开始运行 BR 的时间很远。这样可能会出现等了很长时间之后遇到 Permission denied 错误失败的情况。
 > 
-> 因此，最好在恢复前提前检查权限；值得注意的是 BR 执行服务器用户 ids (UIDs) 与 TiKV 用户保持一致。
+> 因此，最好在恢复前提前检查权限。
  
 ## BR 遇到错误信息 `Io(Os...)`，该如何处理？
  
