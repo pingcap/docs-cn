@@ -8,14 +8,6 @@ aliases: ['/docs-cn/stable/faq/migration-tidb-faq/','/docs-cn/v4.0/faq/migration
 
 ## 全量数据导出导入
 
-### TiDB 是否支持 Mydumper
-
-支持，参见 [Mydumper 使用文档](/mydumper-overview.md)。
-
-### TiDB 是否支持 Loader
-
-支持，参见 [Loader 使用文档](/loader-overview.md)。
-
 ### 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
