@@ -54,21 +54,20 @@ aliases: ['/docs-cn/stable/tidb-lightning/deploy-tidb-lightning/','/docs-cn/v4.0
 
 ## 导出数据
 
-使用 [`mydumper`](/mydumper-overview.md) 从 MySQL 导出数据，如下：
+使用 [`dumpling`](/dumpling-overview.md) 从 MySQL 导出数据，如下：
 
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
+./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 其中：
 
 - `-B test`：从 `test` 数据库导出。
-- `-T t1,t2`：只导出 `t1` 和 `t2` 这两个表。
+- `-f test.t[12]`：只导出 `test.t1` 和 `test.t2` 这两个表。
 - `-t 16`：使用 16 个线程导出数据。
-- `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
-- `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
+- `-F 256MB`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 
 如果数据源是 CSV 文件，请参考 [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)获取配置信息。
 
@@ -101,7 +100,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
         # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
         tidb_lightning_pprof_port: 8289
 
-        # 获取数据源（Mydumper SQL dump 或 CSV）的路径。
+        # 获取数据源（Dumpling SQL dump 或 CSV）的路径。
         data_source_dir: "{{ deploy_dir }}/mydumper"
         ```
 
