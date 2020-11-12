@@ -21,7 +21,11 @@ jobs:
           command: |
             git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
+<<<<<<< HEAD
             python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-3.0..HEAD)
+=======
+            python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' '*.yml' '*.yaml')
+>>>>>>> e9604576... Media: Update syncer-sharding.png (#4874)
 
       - run:
           name: "Install markdownlint"
