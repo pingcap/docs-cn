@@ -306,7 +306,7 @@ You can use Syncer to import data from sharded tables into one table within one 
 
 Currently, the support for DDL is still in progress.
 
-![syncer sharding](/media/syncer_sharding.png)
+![syncer sharding](/media/syncer-sharding.png)
 
 #### Usage of replicating data from sharded tables
 
