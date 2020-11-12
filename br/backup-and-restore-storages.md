@@ -1,10 +1,10 @@
 ---
-title: BR storages
+title: BR Storages
 summary: Describes the storage URL format used in BR.
 aliases: ['/docs/dev/br/backup-and-restore-storages/']
 ---
 
-# BR storages
+# BR Storages
 
 BR supports reading and writing data on the local filesystem, as well as on Amazon S3 and Google Cloud Storage. These are distinguished by the URL scheme in the `--storage` parameter passed into BR.
 
