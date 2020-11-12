@@ -1,11 +1,7 @@
 ---
 title: 从 MySQL SQL 文件迁移数据
 summary: 使用 TiDB Lightning 从 MySQL 迁移数据。
-<<<<<<< HEAD:migrate-from-mysql-mydumper-files.md
-aliases: ['/docs-cn/stable/migrate-from-mysql-mydumper-files/','/docs-cn/v4.0/migrate-from-mysql-mydumper-files/']
-=======
-aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrate-from-mysql-mydumper-files/']
->>>>>>> d7d4c134... dumpling: update and refine dumpling doc (#4857):migrate-from-mysql-dumpling-files.md
+aliases: ['/docs-cn/stable/migrate-from-mysql-mydumper-files/','/docs-cn/v4.0/migrate-from-mysql-mydumper-files/','/zh/tidb/stable/migrate-from-mysql-mydumper-files/','/zh/tidb/v4.0/migrate-from-mysql-mydumper-files/']
 ---
 
 # 从 MySQL SQL 文件迁移数据
