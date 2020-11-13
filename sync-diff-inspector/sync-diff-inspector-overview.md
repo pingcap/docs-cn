@@ -5,7 +5,7 @@ aliases: ['/docs-cn/v2.1/sync-diff-inspector/sync-diff-inspector-overview/','/do
 
 # sync-diff-inspector 用户文档
 
-sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具。该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
+[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector) 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具。该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
 
 主要功能：
 
@@ -15,9 +15,16 @@ sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一�
 * 支持[分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
 * 支持 [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
 
-GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
+可通过以下方式下载 sync-diff-inspector：
 
-下载地址：[tidb-enterprise-tools-nightly-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz)
++ Binary 包。点击 [tidb-enterprise-tools-nightly-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz) 进行下载。
++ Docker 镜像。执行以下命令进行下载：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    docker pull pingcap/tidb-enterprise-tools
+    ```
 
 ## sync-diff-inspector 的使用
 
