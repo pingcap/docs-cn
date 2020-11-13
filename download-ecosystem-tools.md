@@ -70,7 +70,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 ## Syncer，Loader 和 Mydumper
 
-如需下载最新版本的 [Syncer](/syncer-overview.md)，[Loader](/loader-overview.md) 或 [Mydumper](/mydumper-overview.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
+如需下载最新版本的 [Syncer](/syncer-overview.md)，[Loader](/loader-overview.md) 或 Mydumper，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
