@@ -9,6 +9,7 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-admin/','/docs-cn/v4.0/s
 
 ## ADMIN 与 DDL 相关的扩展语句
 
+<<<<<<< HEAD
 ### `admin show DDL` 语句
 
 {{< copyable "sql" >}}
@@ -95,6 +96,14 @@ ADMIN CHECKSUM TABLE tbl_name [, tbl_name] ...;
 ```
 
 以上语句会获取 `tbl_name` 的 64 位的 checksum 值，该值可通过计算了表中所有的键值对（包括行数据和索引数据）的 CRC64 获得。
+=======
+| 语句                                                                                | 功能描述                 |
+|------------------------------------------------------------------------------------------|-----------------------------|
+| [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | 取消当前正在运行的 DDL 作业 |
+| [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)          | 计算表中所有行和索引的 CRC64 校验和 |
+| [`ADMIN CHECK [TABLE\|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | 校验表中数据和对应索引的一致性 |
+| [`ADMIN SHOW DDL [JOBS\|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)      | 显示有关当前正在运行或最近完成的 DDL 作业的详细信息|
+>>>>>>> 8f7ac762... Update sql-statement-admin.md (#4890)
 
 ## `admin reload` 语句
 
