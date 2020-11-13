@@ -196,7 +196,13 @@
     + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  + [TiCDC](/ticdc/ticdc-overview.md)
+  + TiCDC
+    + [概述](/ticdc/ticdc-overview.md)
+    + [安装部署](/ticdc/deploy-ticdc.md)
+    + [运维管理](/ticdc/manage-ticdc.md)
+    + [故障诊断](/ticdc/troubleshoot-ticdc.md)
+    + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+    + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
   + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
@@ -502,8 +508,6 @@
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [遥测](/telemetry.md)
   + [错误码](/error-codes.md)
-  + [TiCDC 简介](/ticdc/ticdc-overview.md)
-  + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
   + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md)
