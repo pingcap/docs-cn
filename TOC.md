@@ -46,12 +46,12 @@
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
-    + [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
+    + [使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
   + 从 CSV 文件迁移至 TiDB
     + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
-  + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-mydumper-files.md)
+  + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-dumpling-files.md)
 + 运维操作
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
@@ -158,8 +158,8 @@
   + [适用场景](/ecosystem-tool-user-case.md)
   + [工具下载](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
-    + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md)
+    + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     + [BR 常见问题](/br/backup-and-restore-faq.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -196,7 +196,13 @@
     + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  + [TiCDC](/ticdc/ticdc-overview.md)
+  + TiCDC
+    + [概述](/ticdc/ticdc-overview.md)
+    + [安装部署](/ticdc/deploy-ticdc.md)
+    + [运维管理](/ticdc/manage-ticdc.md)
+    + [故障诊断](/ticdc/troubleshoot-ticdc.md)
+    + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+    + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
   + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
@@ -509,8 +515,6 @@
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [遥测](/telemetry.md)
   + [错误码](/error-codes.md)
-  + [TiCDC 简介](/ticdc/ticdc-overview.md)
-  + [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)
   + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md)
