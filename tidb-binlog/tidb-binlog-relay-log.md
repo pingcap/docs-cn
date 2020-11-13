@@ -48,9 +48,7 @@ When Drainer is started, if it fails to connect to the Placement Driver (PD) of 
 
 ### GC mechanism of relay log
 
-While Drainer is running, if it confirms that the whole data of a relay log file has been successfully replicated to the downstream, the file is deleted immediately. Therefore, the relay log does not occupy too much space.
-
-If the size of a relay log file reaches 10MB (by default), the file is split, and data is written into a new relay log file.
+Before data is replicated to the downstream, Drainer writes data to the relay log file. If the size of a relay log file reaches 10 MB (by default) and the binlog data of the current transaction is completely written, Drainer starts to write data to the next relay log file. After Drainer successfully replicates data to the downstream, it automatically cleans up the relay log files whose data has been replicated. The relay log into which data is currently being written will not be cleaned up.
 
 ## Configuration
 
@@ -63,4 +61,7 @@ To enable the relay log, add the following configuration in Drainer:
 # It saves the directory of the relay log. The relay log is not enabled if the value is empty.
 # The configuration only comes to effect if the downstream is TiDB or MySQL.
 log-dir = "/dir/to/save/log"
+# The size limit of a single relay log file (unit: byte).
+# When the size of a relay log file reaches this limit, data is written to the next relay log file.
+max-file-size = 10485760
 ```
