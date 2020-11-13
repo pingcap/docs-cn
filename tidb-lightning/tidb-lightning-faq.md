@@ -89,7 +89,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 TiDB Lightning 只支持两种格式的数据源：
 
-1. [Mydumper](/mydumper-overview.md) 生成的 SQL dump
+1. [Dumpling](/dumpling-overview.md) 生成的 SQL dump
 2. 储存在本地文件系统的 [CSV](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) 文件
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
