@@ -44,7 +44,7 @@ sync-diff-inspector 需要获取表结构信息、查询数据、建 checkpoint 
     - RELOAD (查看表结构)
 
 - 下游数据库
-  
+
     - SELECT （查数据进行对比）
 
     - CREATE （创建 checkpoint 库和表）
@@ -222,35 +222,35 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到�
 [2020/11/12 17:47:00.170 +08:00] [INFO] [checkpoint.go:276] ["summary info"] [instance_id=target] [schema=test] [table=test_table] ["chunk num"=1000] ["success num"=80] ["failed num"=1] ["ignore num"=0]
 ```
 
-- chunk num：总共需要校验 chunk 的数量。
-- success num：已经校验数据一致的 chunk 的数量。
-- failed num：校验失败的 chunk 的数量。校验时遇到错误和数据不一致两种情况都属于校验失败。
-- ignore num：忽略校验的 chunk 的数量。当配置项 `sample-percent` 的值小于 100 时，sync-diff-inspector 会采用抽样的方式校验数据，这样就会有部分 chunk 被忽略校验。
+- chunk num：总共需要校验的 chunk 数量。
+- success num：已经校验数据一致的 chunk 数量。
+- failed num：校验失败的 chunk 数量。校验时遇到错误和数据不一致两种情况都属于校验失败。
+- ignore num：被忽略校验的 chunk 数量。当配置项 `sample-percent` 的值小于 `100` 时，sync-diff-inspector 会采用抽样的方式校验数据，这样就会有部分 chunk 被忽略校验。
 
 #### 校验结果
 
-当校验结束时，sync-diff-inspector 最后会输出一份校验报告。
+当校验结束时，sync-diff-inspector 会输出一份校验报告。
 
-例如数据校验一致的日志如下：
++ 数据校验一致的日志示例如下：
 
-```log
-[2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=1] ["check failed num"=0]
-[2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=true]
-[2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=353.462744ms]
-[2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:69] ["check pass!!!"]
-```
+    ```log
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=1] ["check failed num"=0]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=true]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=353.462744ms]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:69] ["check pass!!!"]
+    ```
 
-当数据校验不一致或者遇到错误时的日志如下：
++ 数据校验不一致或者遇到错误时的日志示例如下：
 
-```log
-[2020/11/12 18:16:17.068 +08:00] [INFO] [checkpoint.go:276] ["summary info"] [instance_id=target] [schema=test] [table=test1] ["chunk num"=1] ["success num"=0] ["failed num"=1] ["ignore num"=0]
-[2020/11/12 18:16:17.071 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=0] ["check failed num"=1]
-[2020/11/12 18:16:17.071 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=false]
-[2020/11/12 18:16:17.071 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=319.849706ms]
-[2020/11/12 18:16:17.071 +08:00] [WARN] [main.go:66] ["check failed!!!"]
-```
+    ```log
+    [2020/11/12 18:16:17.068 +08:00] [INFO] [checkpoint.go:276] ["summary info"] [instance_id=target] [schema=test] [table=test1] ["chunk num"=1] ["success num"=0] ["failed num"=1] ["ignore num"=0]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=0] ["check failed num"=1]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=false]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=319.849706ms]
+    [2020/11/12 18:16:17.071 +08:00] [WARN] [main.go:66] ["check failed!!!"]
+    ```
 
-`check result summary` 中打印校验通过和未通过的表的个数，`table check result` 中会打印所有表的校验结果。
+校验通过和未通过的表的个数打印在 `check result summary` 中。所有表的校验结果的打印在 `table check result` 中。
 
 ### 注意事项
 
