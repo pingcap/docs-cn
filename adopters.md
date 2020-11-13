@@ -34,6 +34,7 @@ This is a list of TiDB adopters in various industries.
 |[LY.com](https://www.crunchbase.com/organization/ly-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-tongcheng/)|
 |[Qunar.com](https://www.crunchbase.com/organization/qunar-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-qunar/)|
 |[Hulu](https://www.hulu.com)|Entertainment||
+|[PalFish](https://www.crunchbase.com/organization/palfish)|EdTech|[English](https://pingcap.com/case-studies/embracing-newsql-why-we-chose-tidb-over-mongodb-and-mysql); Chinese [#1](https://pingcap.com/cases-cn/user-case-banyu-2/), [#2](https://pingcap.com/cases-cn/user-case-banyu/)|
 |[VIPKid](https://www.crunchbase.com/organization/vipkid)|EdTech|[English](https://pingcap.com/case-studies/why-we-chose-a-distributed-sql-database-to-complement-mysql); [Chinese](https://pingcap.com/cases-cn/user-case-vipkid/)|
 |[Yuanfudao.com](https://www.crunchbase.com/organization/yuanfudao)|EdTech|[English](https://pingcap.com/blog/2017-08-08-tidbforyuanfudao/); [Chinese](https://pingcap.com/cases-cn/user-case-yuanfudao/)|
 |[Bank of Beijing](https://en.wikipedia.org/wiki/Bank_of_Beijing)|Banking|[English](https://pingcap.com/case-studies/how-we-use-a-distributed-database-to-achieve-horizontal-scaling-without-downtime); Chinese [#1](https://pingcap.com/cases-cn/user-case-beijing-bank/), [#2](https://pingcap.com/cases-cn/user-case-beijing-bank-2/)|
