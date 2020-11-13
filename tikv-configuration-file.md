@@ -18,13 +18,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `server.concurrent-send-snap-limit`
 
-+ 同时发送 snapshot 的最大个数，默认值：32
++ 同时发送 snapshot 的最大个数。
 + 默认值：32
 + 最小值：1
 
 ### `server.concurrent-recv-snap-limit`
 
-+ 同时接受 snapshot 的最大个数，默认值：32
++ 同时接受 snapshot 的最大个数。
 + 默认值：32
 + 最小值：1
 
@@ -42,7 +42,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `server.snap-max-write-bytes-per-sec`
 
-+ 处理 snapshot 时最大允许使用的磁盘带宽
++ 处理 snapshot 时最大允许使用的磁盘带宽。
 + 默认值：1000MB
 + 单位：KB|MB|GB
 + 最小值：1KB
@@ -68,9 +68,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-memory-pool-quota`
 
-+ gRPC 可使用内存大小限制。
++ gRPC 可使用的内存大小限制。
 + 默认值: 32G
-+ 建议仅在出现内存不足（OOM）的情况下限制内存使用。需要注意，限制内存使用可能会导致卡顿。
++ 建议仅在出现内存不足 (OOM) 的情况下限制内存使用。需要注意，限制内存使用可能会导致卡顿。
 
 ### `server.grpc-raft-conn-num`
 
