@@ -46,7 +46,7 @@ It is recommended that you deploy the TiDB cluster using [TiUP](/tiup/tiup-clust
 * CPU: 16-Core Common KVM processor
 * RAM: 32GB
 * Disk: 500G SSD * 2
-* NIC: 10000MB/s
+* NIC: 10 Gigabit network card
 
 ### Cluster configuration
 
