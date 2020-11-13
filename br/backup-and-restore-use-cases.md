@@ -45,7 +45,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 * CPU：16-Core Common KVM processor
 * RAM：32GB
 * 硬盘：500G SSD * 2
-* 网卡：10000MB/s
+* 网卡：万兆网卡
 
 ### 配置
 
