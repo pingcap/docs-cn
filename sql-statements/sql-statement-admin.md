@@ -9,92 +9,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-admin/','/docs-cn/dev/refer
 
 ## ADMIN 与 DDL 相关的扩展语句
 
-### `admin show DDL` 语句
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN SHOW DDL;
-```
-
-`ADMIN SHOW DDL` 用于查看当前正在执行的 DDL 作业。
-
-### `admin show DDL jobs` 语句
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
-```
-
-* `NUM`：查看已经执行完成的 DDL 作业队列中最近 `NUM` 条结果，未指定时，默认值为 10。
-* `WHERE`：`WHERE` 子句，可以添加过滤条件。
-
-以上语句用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
-
-### `admin show DDL queries` 语句
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN SHOW DDL JOB QUERIES job_id [, job_id] ...;
-```
-
-以上语句用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句。这个 `job_id` 只会搜索正在运行中的 DDL 作业以及 DDL 历史作业队列中最近的十条结果。
-
-### `admin cancel DDL jobs` 语句
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
-```
-
-以上语句用于取消当前正在运行的 `job_id` 的 DDL 作业，并返回对应作业是否取消成功。如果取消失败，会显示失败的具体原因。
-
-> **注意：**
->
-> + 只有该操作可以取消 DDL 作业，其他所有的操作和环境变更（例如机器重启、集群重启）都不会取消 DDL 作业。
->
-> + 该操作可以同时取消多个 DDL 作业。可以通过 `ADMIN SHOW DDL JOBS` 语句来获取 DDL 作业的 ID。
->
-> + 如果希望取消的作业已经完成，则取消操作将会失败。
-
-## `admin check` 语句
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CHECK TABLE tbl_name [, tbl_name] ...;
-```
-
-以上语句用于对表 `tbl_name` 中的所有数据和对应索引进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CHECK INDEX tbl_name idx_name;
-```
-
-以上语句用于对 `tbl_name` 表中 `idx_name` 索引对应列数据和索引数据进行一致性校验。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CHECK INDEX tbl_name idx_name (lower_val, upper_val) [, (lower_val, upper_val)] ...;
-```
-
-以上语句用于对 `tbl_name` 表中 `idx_name` 索引对应列数据和索引数据进行一致性校验，并且指定了需要检查的数据范围。若通过校验，则返回空的查询结果；否则返回数据不一致的错误信息。
-
-### `admin checksum` 语句
-
-{{< copyable "sql" >}}
-
-```sql
-ADMIN CHECKSUM TABLE tbl_name [, tbl_name] ...;
-```
-
-以上语句会获取 `tbl_name` 的 64 位的 checksum 值，该值可通过计算了表中所有的键值对（包括行数据和索引数据）的 CRC64 获得。
+| 语句                                                                                | 功能描述                 |
+|------------------------------------------------------------------------------------------|-----------------------------|
+| [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | 取消当前正在运行的 DDL 作业 |
+| [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)          | 计算表中所有行和索引的 CRC64 校验和 |
+| [`ADMIN CHECK [TABLE\|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | 校验表中数据和对应索引的一致性 |
+| [`ADMIN SHOW DDL [JOBS\|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)      | 显示有关当前正在运行或最近完成的 DDL 作业的详细信息|
 
 ## `admin reload` 语句
 
@@ -287,4 +207,4 @@ admin show ddl jobs 5 where state!='synced' and db_name='test';
 
 ## MySQL 兼容性
 
-ADMIN 语句是 TiDB 对于 MySQL 语法的扩展。
+`ADMIN` 语句是 TiDB 对于 MySQL 语法的扩展。
