@@ -231,7 +231,7 @@ Currently, TiFlash supports pushing down a limited number of expressions, includ
 
 ```
 +, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, mod, bitand, or, and, like, not,
-case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor, cast(int as decimal), date_add(datetime, int), date_add(datetime, string)
+case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor, round without fraction, cast(int as decimal), date_add(datetime, int), date_add(datetime, string)
 ```
 
 Among them, the push-down of `cast` and `date_add` is not enabled by default. To enable it, refer to [Blocklist of Optimization Rules and Expression Pushdown](/blocklist-control-plan.md).
