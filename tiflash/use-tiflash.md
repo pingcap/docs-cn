@@ -231,7 +231,7 @@ set @@session.tidb_opt_broadcast_join=1
 
 ```
 +, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, mod, bitand, or, and, like, not,
-case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor, cast(int as decimal), date_add(datetime, int), date_add(datetime, string)
+case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor, round without fraction, cast(int as decimal), date_add(datetime, int), date_add(datetime, string)
 ```
 
 其中，`cast` 和 `date_add` 的下推默认不开启，若需要手动开启，请参考[优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
