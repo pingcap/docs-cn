@@ -5,61 +5,7 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 # TiCDC 运维操作及任务管理
 
-本文档介绍如何部署 TiCDC 集群，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
-
-## 部署安装 TiCDC
-
-### 软件和硬件环境推荐配置
-
-在生产环境中，TiCDC 的软件和硬件配置推荐如下：
-
-| Linux 操作系统平台       | 版本         |
-| :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上   |
-| CentOS                   | 7.3 及以上   |
-
-| **CPU** | **内存** | **硬盘类型** | **网络** | **TiCDC 集群实例数量（生产环境最低要求）** |
-| --- | --- | --- | --- | --- |
-| 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
-
-更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
-
-### 使用 TiUP 部署安装 TiCDC
-
-#### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
-
-详细操作参考[使用 TiUP 部署 TiCDC](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)。
-
-#### 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
-
-1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
-
-2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点) 章节对 TiCDC 进行部署。
-
-### 在原有 TiDB 集群上使用 binary 部署 TiCDC 组件
-
-假设 PD 集群有一个可以提供服务的 PD 节点（client URL 为 `10.0.10.25:2379`）。若要部署三个 TiCDC 节点，可以按照以下命令启动集群。只需要指定相同的 PD 地址，新启动的节点就可以自动加入 TiCDC 集群。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_1.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --addr=0.0.0.0:8302 --advertise-addr=127.0.0.1:8302
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:8303 --advertise-addr=127.0.0.1:8303
-```
-
-对于 `cdc server` 命令中可用选项解释如下：
-
-- `gc-ttl`: TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，单位为秒，默认值为 `86400`，即 24 小时。
-- `pd`: PD client 的 URL。
-- `addr`: TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。
-- `advertise-addr`: TiCDC 对外访问地址。
-- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
-- `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
-- `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
-- `ca`: TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
-- `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
-- `key`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
+本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
 
 ## 使用 TiUP 升级 TiCDC
 
@@ -693,7 +639,7 @@ sync-ddl = true
 
 环形同步任务创建步骤如下：
 
-1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#部署安装-ticdc)。
+1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](/ticdc/deploy-ticdc.md)。
 
     {{< copyable "shell-regular" >}}
 
