@@ -37,7 +37,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 
 ## MySQL 兼容性
 
-`ADMIN CANCEL DDL` 语句是 TiDB 对 MySQL 语法的扩展。 
+`ADMIN CANCEL DDL` 语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 
