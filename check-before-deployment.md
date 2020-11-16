@@ -235,7 +235,7 @@ sudo systemctl enable ntpd.service
 
 采用如下步骤检查是否已经关闭透明大页，并进行关闭：
 
-1. 执行以下命令，如果输出 `[always] madvise never` 表示透明大页处于启用状态：
+1. 执行以下命令查看透明大页的开启状态。如果返回 `[always] madvise never` 则表示处于启用状态：
 
     {{< copyable "shell-regular" >}}
 
