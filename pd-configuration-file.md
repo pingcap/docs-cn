@@ -180,7 +180,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `interval`
 
-+ 向 promethus 推送监控指标数据的间隔时间。
++ 向 Prometheus 推送监控指标数据的间隔时间。
 + 默认: 15s
 
 ## schedule
