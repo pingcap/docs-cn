@@ -71,7 +71,6 @@
   + [读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
-  + [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
   + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
@@ -95,7 +94,6 @@
   + [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
   + [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
   + [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
-  + [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
   + [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 + 性能调优
   + 系统调优
@@ -151,7 +149,6 @@
   + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
-  + [集成 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
 + TiDB 生态工具
   + [功能概览](/ecosystem-tool-user-guide.md)
   + [适用场景](/ecosystem-tool-user-case.md)
