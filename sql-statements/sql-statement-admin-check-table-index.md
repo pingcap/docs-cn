@@ -51,4 +51,4 @@ ADMIN CHECK INDEX tbl_name idx_name (lower_val, upper_val) [, (lower_val, upper_
 
 ## 另请参阅
 
-* [`ADMIN REPAIR`](/sql-statements/sql-statement-admin.md)
+* [`ADMIN`](/sql-statements/sql-statement-admin.md)
