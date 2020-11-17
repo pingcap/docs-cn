@@ -68,7 +68,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2);
 7 rows in set (0.00 sec)
 ```
 
-由上述查询结果可知，TiDB 首先执行 `Index Join`（`Merge Join` 的变体）操作，开始读取 `t2.t1_id` 列的索引。`t1_id` 的值会作为 `└─HashAgg_31` 算子任务的一部分，先是在 TiKV 内进行重复数据删除；然后作为 `├─HashAgg_38(Build)` 算子任务的一部分，在 TiDB 中再次进行重复数据删除。这项重复数据删除操作由聚合函数 `firstrow(test.t2.t1_id)` 执行，之后将结果与 `t1` 表的 `PRIMARY KEY` 连接在一起。
+由上述查询结果可知，TiDB 首先执行 `Index Join`（`Merge Join` 的变体）操作，开始读取 `t2.t1_id` 列的索引。`t1_id` 的值是 `└─HashAgg_31` 算子任务的一部分，先是在 TiKV 内对其进行重复数据删除；同时该值也是 `├─HashAgg_38(Build)` 算子任务的一部分，在 TiDB 中会再次对其进行重复数据删除。这项重复数据删除操作由聚合函数 `firstrow(test.t2.t1_id)` 执行，之后会将结果与 `t1` 表的 `PRIMARY KEY` 连接在一起。
 
 ## Inner join（有 `UNIQUE` 约束的子查询）
 
@@ -117,7 +117,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2 WHERE t1_id != t1.int
 6 rows in set (0.00 sec)
 ```
 
-由上述查询结果可知，TiDB 执行了 `Semi Join`。不同于 `Inner Join`，`Semi Join` 仅认可右键（`t2.t1_id`）上的第一个值，也就是该操作将删除作为 `Join` 算子任务中部分的重复项。`Join` 算法也包含 `Merge Join`，所以会按照排序顺序同时从左侧和右侧读取数据，这是一种高效的 `Zipper Merge`。
+由上述查询结果可知，TiDB 执行了 `Semi Join`。不同于 `Inner Join`，`Semi Join` 仅认可右键（`t2.t1_id`）上的第一个值，也就是该操作将删除 `Join` 算子任务中的重复数据。`Join` 算法也包含 `Merge Join`，会按照排序顺序同时从左侧和右侧读取数据，这是一种高效的 `Zipper Merge`。
 
 可以认为原语句为*关联子查询*，因为它引入了子查询外的 `t1.int_col` 列。然而，`EXPLAIN` 语句的返回结果显示了应用[关联子查询去关联](/correlated-subquery-optimization.md)后的执行计划。条件 `t1_id != t1.int_col` 会重写为 `t1.id != t1.int_col`。TiDB 可以从表 `t1` 中读取数据并且在 `└─Selection_21` 中执行此操作，因此这种去关联和重写操作会极大提高执行效率。
 
