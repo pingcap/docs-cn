@@ -1,6 +1,6 @@
 ---
 title: TiFlash 简介
-aliases: ['/docs-cn/stable/tiflash/tiflash-overview/','/docs-cn/v4.0/tiflash/tiflash-overview/','/docs-cn/stable/reference/tiflash/overview/']
+aliases: ['/docs-cn/stable/tiflash/tiflash-overview/','/docs-cn/v4.0/tiflash/tiflash-overview/','/docs-cn/stable/reference/tiflash/overview/','/docs-cn/v4.0/reference/tiflash/overview/']
 ---
 
 # TiFlash 简介
