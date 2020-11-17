@@ -106,7 +106,7 @@ EXPLAIN SELECT * FROM t1 WHERE intkey >= 99 AND intkey <= 103;
 * `├─IndexRangeScan_8(Build)` 算子节点对 `intkey` 列的索引执行范围扫描，并检索内部的 `RowID` 值（对此表而言，即为主键）。
 * `└─TableRowIDScan_9(Probe)` 算子节点随后从表数据中检索整行。
 
-`IndexLookup` 任务分两步执行。如果满足条件的行较多，SQL 优化器可能会根据[统计信息](/statistics.md)选择使用 `TableFullScan` 算子。在以下示例中，很多行都满足 `intkey > 100` 这一条件，因此优化器选择了 `TableFullScan`：
+`IndexLookup` 任务分以上两步执行。如果满足条件的行较多，SQL 优化器可能会根据[统计信息](/statistics.md)选择使用 `TableFullScan` 算子。在以下示例中，很多行都满足 `intkey > 100` 这一条件，因此优化器选择了 `TableFullScan`：
 
 {{< copyable "sql" >}}
 
@@ -125,7 +125,7 @@ EXPLAIN SELECT * FROM t1 WHERE intkey > 100;
 3 rows in set (0.00 sec)
 ```
 
-`IndexLookup` 算子在带索引的列上有效优化 `LIMIT`：
+`IndexLookup` 算子能在带索引的列上有效优化 `LIMIT`：
 
 {{< copyable "sql" >}}
 
@@ -143,14 +143,13 @@ EXPLAIN SELECT * FROM t1 ORDER BY intkey DESC LIMIT 10;
 | └─TableRowIDScan_19(Probe)     | 10.00   | cop[tikv] | table:t1                       | keep order:false, stats:pseudo     |
 +--------------------------------+---------+-----------+--------------------------------+------------------------------------+
 4 rows in set (0.00 sec)
-
 ```
 
-以上示例中，TiDB 从 `intkey` 索引读取最后 20 行，然后从表数据检索这些 `RowID` 值。
+以上示例中，TiDB 从 `intkey` 索引读取最后 20 行，然后从表数据中检索这些行的 `RowID` 值。
 
 ## IndexReader
 
-TiDB 支持覆盖索引优化 (covering index optimization)。如果可以从索引中检索出所有行，则 TiDB 会跳过 `IndexLookup` 任务中通常所需的第二步（即从表数据中检索整行）：
+TiDB 支持覆盖索引优化 (covering index optimization)。如果 TiDB 能从索引中检索出所有行，就会跳过 `IndexLookup` 任务中通常所需的第二步（即从表数据中检索整行）：
 
 {{< copyable "sql" >}}
 
@@ -179,7 +178,7 @@ EXPLAIN SELECT id FROM t1 WHERE intkey = 123;
 3 rows in set (0.00 sec)
 ```
 
-以上结果中，`id` 也是内部的 `RowID`，因此这些值也存储在 `intkey` 索引中。`└─IndexRangeScan_5` 一部分任务使用 `intkey` 索引后，可直接返回 `RowID` 值。
+以上结果中，`id` 也是内部的 `RowID` 值，因此 `id` 也存储在 `intkey` 索引中。部分 `└─IndexRangeScan_5` 任务使用 `intkey` 索引后，可直接返回 `RowID` 值。
 
 ## Point_Get 和 Batch_Point_Get
 
@@ -271,7 +270,7 @@ EXPLAIN SELECT MAX(intkey) FROM t1;
 5 rows in set (0.00 sec)
 ```
 
-以上语句的执行过程中，TiDB 在每一个 TiKV Region 上执行 `IndexFullScan` 操作。虽然算子名为 `FullScan` 即全扫描，TiDB 只需读取第一行 (`└─Limit_28`)。每个 TiKV Region 返回各自的最大或最小值给 TiDB，TiDB 再执行流聚合运算来过滤出一行数据。即使表为空，带 `MAX` 或 `MIN` 函数的流聚合运算保证 `NULL` 值也能被返回。
+以上语句的执行过程中，TiDB 在每一个 TiKV Region 上执行 `IndexFullScan` 操作。虽然算子名为 `FullScan` 即全扫描，TiDB 只读取第一行 (`└─Limit_28`)。每个 TiKV Region 返回各自的最大或最小值给 TiDB，TiDB 再执行流聚合运算来过滤出一行数据。即使表为空，带 `MAX` 或 `MIN` 函数的流聚合运算保证 `NULL` 值也能被返回。
 
 相反，在没有索引的值上执行 `MIN` 函数会导致 `TableFullScan`。该查询会要求在 TiKV 中扫描所有行，但 `TopN` 计算可保证每个 TiKV Region 只返回一行给 TiDB。尽管 `TopN` 能减少 TiDB 和 TiKV 之间的行数据传输，但该查询的效率仍远不及以上示例（`MIN` 能够使用索引）。
 
