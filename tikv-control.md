@@ -277,7 +277,7 @@ success!
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --host 127.0.0.1:21061 consistency-check -r 2
+tikv-ctl --host 127.0.0.1:20161 consistency-check -r 2
 ```
 
 ```
