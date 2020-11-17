@@ -222,6 +222,44 @@ Run the following command:
 
 This command outputs a check report to the log and describes the check result of each table. sync-diff-inspector generates the SQL statements to fix inconsistent data and stores these statements in a `fix.sql` file.
 
+#### Log
+
+The running sync-diff-inspector periodically (every 10 seconds) prints the progress in log in the following format:
+
+```log
+[2020/11/12 17:47:00.170 +08:00] [INFO] [checkpoint.go:276] ["summary info"] [instance_id=target] [schema=test] [table=test_table] ["chunk num"=1000] ["success num"=80] ["failed num"=1] ["ignore num"=0]
+```
+
+- `chunk num`: The total number of chunks to be checked.
+- `success num`: The number of chunks that have been checked as consistent.
+- `failed num`: The number of chunks that fail the check. Check failure might be caused by errors or data inconsistency.
+- `ignore num`: The number of chunks that are ignored for the check. If the value of `sample-percent` is smaller than `100`, sync-diff-inspector checks data by sampling, where some chunks are ignored.
+
+#### Result
+
+After the check is finished, sync-diff-inspector outputs a report.
+
++ If the data is consistent, a log example is as follows:
+
+    ```log
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=1] ["check failed num"=0]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=true]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=353.462744ms]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:69] ["check pass!!!"]
+    ```
+
++ If the data is inconsistent or some errors occur, a log example is as follows:
+
+    ```log
+    [2020/11/12 18:16:17.068 +08:00] [INFO] [checkpoint.go:276] ["summary info"] [instance_id=target] [schema=test] [table=test1] ["chunk num"=1] ["success num"=0] ["failed num"=1] ["ignore num"=0]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=0] ["check failed num"=1]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=false]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=319.849706ms]
+    [2020/11/12 18:16:17.071 +08:00] [WARN] [main.go:66] ["check failed!!!"]
+    ```
+
+The number of tables that have passed and failed the check is printed in `check result summary`. The results of all tables are printed in `table check result`.
+
 ### Note
 
 - sync-diff-inspector consumes a certain amount of server resources when checking data. Avoid using sync-diff-inspector to check data during peak business hours.
