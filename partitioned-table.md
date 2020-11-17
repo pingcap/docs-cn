@@ -957,8 +957,6 @@ YEARWEEK()
 
 对于暂不支持的分区类型，在 TiDB 中建表时会忽略分区信息，以普通表的形式创建，并且会报 Warning。
 
-INFORMATION_SCHEMA.PARTITION 表暂不支持。
-
 Load Data 暂时不支持分区选择。
 
 {{< copyable "sql" >}}
