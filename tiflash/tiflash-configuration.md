@@ -29,7 +29,7 @@ aliases: ['/docs-cn/stable/tiflash/tiflash-configuration/','/docs-cn/v4.0/tiflas
 
 ### 配置文件 tiflash.toml
 
-```
+```toml
 tmp_path = tiflash 临时文件存放路径
 path = tiflash 数据存储路径     # 如果有多个目录，以英文逗号分隔
 path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
@@ -40,7 +40,7 @@ mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，
 minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 ```
 
-```
+```toml
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  tiflash raft 服务 和 coprocessor 服务监听地址
@@ -48,7 +48,7 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 
 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，需要 3 个参数控制。
 
-```
+```toml
 [flash.flash_cluster]
     refresh_interval = master 定时刷新有效期
     update_rule_interval = master 定时向 tidb 获取 tiflash 副本状态并与 pd 交互
@@ -79,7 +79,7 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 [profiles]
 [profiles.default]
     dt_enable_logical_split = true # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定的空间浪费。默认为 true
-    max_memory_usage = 10000000000 # 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 10000000000。如果设置为 0 表示不限制
+    max_memory_usage = 0 # 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0 # 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
 ```
 
