@@ -163,7 +163,7 @@ success!
 ```bash
 $ tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
 success!
-$ tikv-ctl --host 127.0.0.1:21061 consistency-check -r 2
+$ tikv-ctl --host 127.0.0.1:20161 consistency-check -r 2
 DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, details: Some("StringError(\"Leader is on store 1\")") })
 ```
 
