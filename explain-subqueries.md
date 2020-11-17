@@ -47,7 +47,7 @@ ANALYZE TABLE t1, t2, t3;
 
 ## Inner Join（无 `UNIQUE` 约束的子查询）
 
-如下示例中，`IN` 子查询会从表 `t2` 中搜索 id 列。考虑到语义正确性，TiDB 需要保证 `t1_id` 列是唯一的。可以使用 `EXPLAIN` 语句查看用于删除重复项并执行 `Inner Join` 操作的执行计划：
+以下示例中，`IN` 子查询会从表 `t2` 中搜索 id 列。考虑到语义正确性，TiDB 需要保证 `t1_id` 列是唯一的。可以使用 `EXPLAIN` 语句查看用于删除重复项并执行 `Inner Join` 操作的执行计划：
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2);
@@ -95,9 +95,9 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t3);
 
 ## Semi Join（关联查询）
 
-在前两个示例中，通过 `HashAgg` 聚合操作来保证子查询中的数据唯一性或有 `UNIQUE` 约束之后，TiDB 能够执行 `Inner Join` 操作。两种连接均使用了 `Index Join`（`Merge Join` 的变体）。
+在前两个示例中，通过 `HashAgg` 聚合操作来保证子查询中的数据唯一性或有 `UNIQUE` 约束之后，TiDB 能够执行 `Inner Join` 操作。两种连接均执行了 `Index Join`（`Merge Join` 的变体）。
 
-下面的例子中，TiDB 选择了一种不同的执行计划：
+下面的例子中，TiDB 则选择了一种不同的执行计划：
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2 WHERE t1_id != t1.int_col);
@@ -123,7 +123,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2 WHERE t1_id != t1.int
 
 ## Anti Semi Join （`NOT IN` 子查询）
 
-在下面的示例中，*除非*子查询中存在 `t3.t1_id`，否则查询时将从语义上返回表 `t3` 中的所有行：
+在以下示例中，*除非*子查询中存在 `t3.t1_id`，否则查询时将从语义上返回表 `t3` 中的所有行：
 
 ```sql
 EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 100);
