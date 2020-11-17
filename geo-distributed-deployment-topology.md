@@ -28,7 +28,7 @@ aliases: ['/docs-cn/stable/geo-distributed-deployment-topology/','/docs-cn/v4.0/
 #### TiKV 参数
 
 - 设置 gRPC 的压缩格式，默认为 `none`。为提高跨机房部署场景的目标节点间 gRPC 包的传输速度，建议设置为 gzip 格式。
-    
+
     ```yaml
     server.grpc-compression-type: gzip
     ```
