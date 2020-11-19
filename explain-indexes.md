@@ -3,7 +3,7 @@ title: 用 EXPLAIN 查看使用索引的 SQL 执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看带索引的 SQL 执行计划
+# 用 EXPLAIN 查看使用索引的 SQL 执行计划
 
 TiDB 支持以下使用索引的算子来提升查询速度：
 
@@ -149,7 +149,7 @@ EXPLAIN SELECT * FROM t1 ORDER BY intkey DESC LIMIT 10;
 
 ## IndexReader
 
-TiDB 支持覆盖索引优化 (covering index optimization)。如果 TiDB 能从索引中检索出所有行，就会跳过 `IndexLookup` 任务中通常所需的第二步（即从表数据中检索整行）：
+TiDB 支持覆盖索引优化 (covering index optimization)。如果 TiDB 能从索引中检索出所有行，就会跳过 `IndexLookup` 任务中通常所需的第二步（即从表数据中检索整行）。示例如下：
 
 {{< copyable "sql" >}}
 
@@ -270,9 +270,9 @@ EXPLAIN SELECT MAX(intkey) FROM t1;
 5 rows in set (0.00 sec)
 ```
 
-以上语句的执行过程中，TiDB 在每一个 TiKV Region 上执行 `IndexFullScan` 操作。虽然算子名为 `FullScan` 即全扫描，TiDB 只读取第一行 (`└─Limit_28`)。每个 TiKV Region 返回各自的最大或最小值给 TiDB，TiDB 再执行流聚合运算来过滤出一行数据。即使表为空，带 `MAX` 或 `MIN` 函数的流聚合运算保证 `NULL` 值也能被返回。
+以上语句的执行过程中，TiDB 在每一个 TiKV Region 上执行 `IndexFullScan` 操作。虽然算子名为 `FullScan` 即全扫描，TiDB 只读取第一行 (`└─Limit_28`)。每个 TiKV Region 返回各自的 `MIN` 或 `MAX` 值给 TiDB，TiDB 再执行流聚合运算来过滤出一行数据。即使表为空，带 `MAX` 或 `MIN` 函数的流聚合运算也能保证返回 `NULL` 值。
 
-相反，在没有索引的值上执行 `MIN` 函数会导致 `TableFullScan`。该查询会要求在 TiKV 中扫描所有行，但 `TopN` 计算可保证每个 TiKV Region 只返回一行给 TiDB。尽管 `TopN` 能减少 TiDB 和 TiKV 之间的行数据传输，但该查询的效率仍远不及以上示例（`MIN` 能够使用索引）。
+相反，在没有索引的值上执行 `MIN` 函数会在每一个 TiKV Region 上执行 `TableFullScan` 操作。该查询会要求在 TiKV 中扫描所有行，但 `TopN` 计算可保证每个 TiKV Region 只返回一行数据给 TiDB。尽管 `TopN` 能减少 TiDB 和 TiKV 之间的多余数据传输，但该查询的效率仍远不及以上示例（`MIN` 能够使用索引）。
 
 {{< copyable "sql" >}}
 
@@ -325,7 +325,7 @@ EXPLAIN SELECT AVG(intkey) FROM t1;
 4 rows in set (0.00 sec)
 ```
 
-以上示例中，`IndexFullScan` 比 `TableFullScan` 更有效率，因为 `(intkey + RowID)` 索引中值的长度小于整个行的长度。
+以上示例中，`IndexFullScan` 比 `TableFullScan` 更有效率，因为 `(intkey + RowID)` 索引中值的长度小于整行的长度。
 
 以下语句不支持使用 `IndexFullScan` 算子，因为涉及该表中的其他列：
 
