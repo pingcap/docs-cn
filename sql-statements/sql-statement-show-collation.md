@@ -10,7 +10,7 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-collation/','/docs-
 
 > **注意：**
 >
-> `SHOW COLLATION` 所展示的排序规则列表与 TiDB 集群是否开启新排序规则框架有关，详情请见 [TiDB 字符集和排序规则](/character-set-and-collation.md))
+> `SHOW COLLATION` 所展示的排序规则列表与 TiDB 集群是否开启[新排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)有关，详情请见 [TiDB 字符集和排序规则](/character-set-and-collation.md)。
 
 ## 语法图
 
