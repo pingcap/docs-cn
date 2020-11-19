@@ -63,8 +63,9 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
 
 3. 通过以下任一方式部署 TiCDC。如果已经部署了 TiCDC，可以跳过这一步。
 
-    - [使用 TiUP 部署安装 TiCDC](/ticdc/manage-ticdc.md#使用-tiup-部署安装-ticdc)
-    - [在原有 TiDB 集群上使用 binary 部署 TiCDC 组件](/ticdc/manage-ticdc.md#在原有-tidb-集群上使用-binary-部署-ticdc-组件)
+    - [使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群](/ticdc/deploy-ticdc.md#使用-tiup-部署包含-ticdc-组件的全新-tidb-集群)
+    - [使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件](/ticdc/deploy-ticdc.md#使用-tiup-在原有-tidb-集群上新增-ticdc-组件)
+    - [使用 binary 在原有 TiDB 集群上新增 TiCDC 组件（不推荐）](/ticdc/deploy-ticdc.md#使用-binary-在原有-tidb-集群上新增-ticdc-组件不推荐)
 
     在继续接下来的操作之前，请先确保 TiDB 和 TiCDC 集群处于健康状态。
 
