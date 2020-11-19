@@ -229,9 +229,9 @@ sudo systemctl start ntpd.service && \
 sudo systemctl enable ntpd.service
 ```
 
-## 检测及关闭透明大页
+## 检测和关闭透明大页
 
-对于数据库应用，不推荐使用透明大页（即 Transparent Huge Pages，缩写为 THP），因为数据库的内存访问模式往往是稀疏的而非连续的，且当高阶内存碎片化比较严重时，分配 THP 页面会出现较大的延迟。若开启针对 THP 的直接内存规整功能，也会出现系统 CPU 使用率激增的现象，因此建议关闭透明大页。
+对于数据库应用，不推荐使用透明大页（即 Transparent Huge Pages，缩写为 THP），因为数据库的内存访问模式往往是稀疏的而非连续的。而且当高阶内存碎片化比较严重时，分配 THP 页面会出现较大的延迟。若开启针对 THP 的直接内存规整功能，也会出现系统 CPU 使用率激增的现象，因此建议关闭透明大页。
 
 采用如下步骤检查是否已经关闭透明大页，并进行关闭：
 
@@ -259,7 +259,7 @@ sudo systemctl enable ntpd.service
     grubby --default-kernel
     ```
 
-    ```
+    ```bash
     /boot/vmlinuz-3.10.0-957.el7.x86_64
     ```
 
@@ -270,7 +270,7 @@ sudo systemctl enable ntpd.service
     ```bash
     grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
     ```
-    
+
     > **注意：**
     >
     > `--update-kernel` 后需要使用实际的默认内核版本。
@@ -282,12 +282,12 @@ sudo systemctl enable ntpd.service
     ```bash
     grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
     ```
-    
+
     > **注意：**
     >
     > `--info` 后需要使用实际的默认内核版本。
 
-    ```
+    ```bash
     index=0
     kernel=/boot/vmlinuz-3.10.0-957.el7.x86_64
     args="ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet LANG=en_US.UTF-8 transparent_hugepage=never"
@@ -323,46 +323,48 @@ sudo systemctl enable ntpd.service
     cat /sys/kernel/mm/transparent_hugepage/enabled
     ```
 
-    ```
+    ```bash
     always madvise [never]
     ```
 
-7. 如果透明大页禁用未生效，需要使用 tuned / ktune 动态内核调试工具修改透明大页内容配置。操作步骤如下：
+7. 如果透明大页禁用未生效，需要使用 tuned 或 ktune 动态内核调试工具修改透明大页的配置。操作步骤如下：
 
-    {{< copyable "shell-regular" >}}
+    1. 启用 tuned 工具：
 
-    ```bash
-    tuned-adm active
-    ```
+        {{< copyable "shell-regular" >}}
 
-    ```
-    Current active profile: virtual-guest
-    ```
-    
-    创建一个新的定制 profile。
+        ```bash
+        tuned-adm active
+        ```
 
-    {{< copyable "shell-regular" >}}
+        ```bash
+        Current active profile: virtual-guest
+        ```
 
-    ```bash
-    mkdir /etc/tuned/virtual-guest-no-thp
-    vi /etc/tuned/virtual-guest-no-thp/tuned.conf
-    ```
-    
-    ```
-    [main]
-    include=virtual-guest
+    2. 创建一个新的定制 profile：
 
-    [vm]
-    transparent_hugepages=never
-    ```
+        {{< copyable "shell-regular" >}}
 
-    应用新的定制 profile。
+        ```bash
+        mkdir /etc/tuned/virtual-guest-no-thp
+        vi /etc/tuned/virtual-guest-no-thp/tuned.conf
+        ```
 
-    {{< copyable "shell-regular" >}}
+        ```bash
+        [main]
+        include=virtual-guest
 
-    ```bash
-    tuned-adm profile virtual-guest-no-thp
-    ```
+        [vm]
+        transparent_hugepages=never
+        ```
+
+    3. 应用新的定制 profile：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tuned-adm profile virtual-guest-no-thp
+        ```
 
     应用后再重新检查透明大页的状态。
 
