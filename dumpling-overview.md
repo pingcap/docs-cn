@@ -85,40 +85,64 @@ dumpling \
 
 ### 输出文件
 
-metadata：此文件包含 dump 的起始时间，以及 master binary log 位置
-```
-$ cat metadata
-Started dump at: 2020-11-10 10:40:19
-SHOW MASTER STATUS:
-        Log: tidb-binlog
-        Pos: 420747102018863124
++ metadata：此文件包含 dump 的起始时间，以及 master binary log 的位置。
 
-Finished dump at: 2020-11-10 10:40:20
-```
+    {{< copyable "shell-regular" >}}
 
-{schema}-schema-create.sql：schema 创建 sql 文件
-```
-$ cat test-schema-create.sql
-CREATE DATABASE `test` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-```
+    ```shell
+    cat metadata
+    ```
 
-{schema}.{table}-schema.sql：table 创建 sql 文件
-```
-$ cat test.t1-schema.sql
-CREATE TABLE `t1` (
-  `id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-```
+    ```shell
+    Started dump at: 2020-11-10 10:40:19
+    SHOW MASTER STATUS:
+            Log: tidb-binlog
+            Pos: 420747102018863124
 
-{schema}.{table}.{0001}.{sql|csv|parquet}：数据源文件
-```
-$ cat test.t1.0.sql
-/*!40101 SET NAMES binary*/;
-INSERT INTO `t1` VALUES
-(1);
-```
+    Finished dump at: 2020-11-10 10:40:20
+    ```
 
-*-schema-view.sql, *-schema-trigger.sql, *-schema-post.sql： 其他导出文件
++ {schema}-schema-create.sql：schema 创建 sql 文件
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test-schema-create.sql
+    ```
+
+    ```shell
+    CREATE DATABASE `test` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+    ```
+
++ {schema}.{table}-schema.sql：table 创建 sql 文件
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test.t1-schema.sql
+    ```
+
+    ```shell
+    CREATE TABLE `t1` (
+      `id` int(11) DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+    ```
+
++ {schema}.{table}.{0001}.{sql|csv|parquet}：数据源文件
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test.t1.0.sql
+    ```
+
+    ```shell
+    /*!40101 SET NAMES binary*/;
+    INSERT INTO `t1` VALUES
+    (1);
+    ```
+
++ `*-schema-view.sql`、`*-schema-trigger.sql`、`*-schema-post.sql`：其他导出文件
 
 ### 导出到 Amazon S3 云盘
 
