@@ -231,7 +231,7 @@ sudo systemctl enable ntpd.service
 
 ## 检测及关闭透明大页
 
-对于数据库应用，不推荐使用 THP（transparent hugepage，透明大页），因为数据库往往具有稀疏而不是连续的内存访问模式，且当高阶内存碎片化比较严重时，分配 THP 页面会出现较大的延迟。若开启针对 THP 的直接内存规整功能，也会出现系统 CPU 使用率激增的现象，因此建议关闭 THP。
+对于数据库应用，不推荐使用透明大页（即 Transparent Huge Pages，缩写为 THP），因为数据库的内存访问模式往往是稀疏的而非连续的，且当高阶内存碎片化比较严重时，分配 THP 页面会出现较大的延迟。若开启针对 THP 的直接内存规整功能，也会出现系统 CPU 使用率激增的现象，因此建议关闭透明大页。
 
 采用如下步骤检查是否已经关闭透明大页，并进行关闭：
 
@@ -315,7 +315,7 @@ sudo systemctl enable ntpd.service
         echo never > /sys/kernel/mm/transparent_hugepage/defrag
         ```
 
-6. 查看重启或者修改后的默认内核生效配置。如果输出 `always madvise [never]` 表示透明大页处于禁用状态。
+6. 查看重启或者修改后已生效的默认内核配置。如果输出 `always madvise [never]` 表示透明大页处于禁用状态。
 
     {{< copyable "shell-regular" >}}
 
@@ -327,7 +327,7 @@ sudo systemctl enable ntpd.service
     always madvise [never]
     ```
 
-7. 如果透明大页禁用未生效，需要使用 tuned / ktune 动态内核调试工具修改透明大页内容配置。
+7. 如果透明大页禁用未生效，需要使用 tuned / ktune 动态内核调试工具修改透明大页内容配置。操作步骤如下：
 
     {{< copyable "shell-regular" >}}
 
