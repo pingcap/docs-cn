@@ -955,7 +955,7 @@ For a table partitioned by `RANGE COLUMNS`, currently TiDB only supports using a
 
 With regard to partition management, any operation that requires moving data in the bottom implementation is not supported currently, including but not limited to: adjust the number of partitions in a Hash partitioned table, modify the Range of a Range partitioned table, merge partitions and exchange partitions.
 
-For the unsupported partitioning types, when you create a table in TiDB, the partitioning information is ignored and the table is created in the regular form with a warning reported. `INFORMATION_SCHEMA.PARTITION` tables are not supported currently in TiDB.
+For the unsupported partitioning types, when you create a table in TiDB, the partitioning information is ignored and the table is created in the regular form with a warning reported.
 
 The `LOAD DATA` syntax does not support partition selection currently in TiDB.
 

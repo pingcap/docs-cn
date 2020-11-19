@@ -25,7 +25,7 @@ You can adjust the PD scheduling parameters using [pd-ctl](/pd-control.md). Note
     > Since v4.0.2, the `store-balance-rate` parameter has been deprecated and changes have been made to the `store limit` command. See [store-limit](/configure-store-limit.md) for details.
 
     - Execute the `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` command to set the scheduling rate of a specified store. (To get `store_id`, you can execute the `pd-ctl -u <pd_ip:pd_port> store` command. 
-    - If you do not set the scheduling rate for Regions of a specified store, this store inherits the setting of `store-balance-rate`. 
+    - If you do not set the scheduling rate for Regions of a specified store, this store inherits the setting of `store-balance-rate`.
     - You can execute the `pd-ctl -u <pd_ip:pd_port> store limit` command to view the current setting value of `store-balance-rate`.
 
 ## TiFlash configuration parameters
@@ -34,7 +34,7 @@ This section introduces the configuration parameters of TiFlash.
 
 ### Configure the `tiflash.toml` file
 
-```
+```toml
 tmp_path = The path in which the TiFlash temporary files are stored.
 path = The TiFlash data storage path.     # If there are multiple directories, separate each directory with a comma.
 path_realtime_mode = false # The default value is `false`. If you set it to `true` and multiple directories are deployed in the path, the latest data is stored in the first directory and older data is stored in the rest directories.
@@ -45,7 +45,7 @@ mark_cache_size = 5368709120 # The cache size limit of the metadata of a data bl
 minmax_index_cache_size = 5368709120 # The cache size limit of the min-max index of a data block. Generally, you do not need to change this value.
 ```
 
-```
+```toml
 [flash]
     tidb_status_addr = TiDB status port and address. # Multiple addresses are separated with commas.
     service_addr = The listening address of TiFlash Raft services and coprocessor services.
@@ -53,7 +53,7 @@ minmax_index_cache_size = 5368709120 # The cache size limit of the min-max index
 
 Multiple TiFlash nodes elect a master to add or delete placement rules to PD, and you need three parameters to control this process.
 
-```
+```toml
 [flash.flash_cluster]
     refresh_interval = Master regularly refreshes the valid period.
     update_rule_interval = Master regularly gets the status of TiFlash replicas and interacts with PD.
@@ -84,7 +84,7 @@ Multiple TiFlash nodes elect a master to add or delete placement rules to PD, an
 [profiles]
 [profiles.default]
     dt_enable_logical_split = true # The default value is `true`. This parameter determines whether the segment of DeltaTree Storage Engine uses logical split. Using the logical split can reduce the write amplification, and improve the write speed. However, these are at the cost of disk space waste.
-    max_memory_usage = 10000000000 # The memory usage limit for the generated intermediate data when a single coprocessor query is executed. The default value is 10,000,000,000 (in bytes). If set to 0, it means no limit.
+    max_memory_usage = 0 # The memory usage limit for the generated intermediate data when a single coprocessor query is executed. The default value is 0, which means no limit.
     max_memory_usage_for_all_queries = 0 # The memory usage limit for the generated intermediate data when all queries are executed. The default value is 0 (in bytes), which means no limit.
 ```
 
