@@ -80,6 +80,45 @@ dumpling \
 > 1. `--sql` 选项暂时仅仅可用于导出 csv 的场景。
 >
 > 2. 这里需要在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+>
+> 3. csv文件不区分`字符串`与`关键字`，如果导入 boolean 类型的 `true` 和 `false`，需要转换为`1`和`0`。
+
+### 输出文件
+
+metadata：此文件包含 dump 的起始时间，以及 master binary log 位置
+```
+$ cat metadata
+Started dump at: 2020-11-10 10:40:19
+SHOW MASTER STATUS:
+        Log: tidb-binlog
+        Pos: 420747102018863124
+
+Finished dump at: 2020-11-10 10:40:20
+```
+
+{schema}-schema-create.sql：schema 创建 sql 文件
+```
+$ cat test-schema-create.sql
+CREATE DATABASE `test` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+```
+
+{schema}.{table}-schema.sql：table 创建 sql 文件
+```
+$ cat test.t1-schema.sql
+CREATE TABLE `t1` (
+  `id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+```
+
+{schema}.{table}.{0001}.{sql|csv|parquet}：数据源文件
+```
+$ cat test.t1.0.sql
+/*!40101 SET NAMES binary*/;
+INSERT INTO `t1` VALUES
+(1);
+```
+
+*-schema-view.sql, *-schema-trigger.sql, *-schema-post.sql： 其他导出文件
 
 ### 导出到 Amazon S3 云盘
 
