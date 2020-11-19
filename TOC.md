@@ -74,7 +74,6 @@
   + [Read Historical Data](/read-historical-data.md)
   + [Configure Time Zone](/configure-time-zone.md)
   + [Daily Checklist](/daily-check.md)
-  + [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md)
   + [Maintain TiFlash](/tiflash/maintain-tiflash.md)
   + [Maintain TiDB Using TiUP](/maintain-tidb-using-tiup.md)
   + [Maintain TiDB Using Ansible](/maintain-tidb-using-ansible.md)
@@ -96,7 +95,6 @@
   + [Troubleshoot Cluster Setup](/troubleshoot-tidb-cluster.md)
   + [Troubleshoot High Disk I/O Usage](/troubleshoot-high-disk-io.md)
   + [Troubleshoot Lock Conflicts](/troubleshoot-lock-conflicts.md)
-  + [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
   + [Troubleshoot TiFlash](/tiflash/troubleshoot-tiflash.md)
   + [Troubleshoot Write Conflicts in Optimistic Transactions](/troubleshoot-write-conflicts.md)
 + Performance Tuning
@@ -153,7 +151,6 @@
   + [Use Placement Rules](/configure-placement-rules.md)
   + [Use Load Base Split](/configure-load-base-split.md)
   + [Use Store Limit](/configure-store-limit.md)
-  + [Integrate with Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
 + TiDB Ecosystem Tools
   + [Overview](/ecosystem-tool-user-guide.md)
   + [Use Cases](/ecosystem-tool-user-case.md)
@@ -197,7 +194,13 @@
     + [Troubleshoot](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [Glossary](/tidb-lightning/tidb-lightning-glossary.md)
-  + [TiCDC](/ticdc/ticdc-overview.md)
+  + TiCDC
+    + [Overview](/ticdc/ticdc-overview.md)
+    + [Deploy](/ticdc/deploy-ticdc.md)
+    + [Maintain](/ticdc/manage-ticdc.md)
+    + [Troubleshoot](/ticdc/troubleshoot-ticdc.md)
+    + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+    + [Integrate TiDB with Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
   + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [Overview](/sync-diff-inspector/sync-diff-inspector-overview.md)
@@ -509,8 +512,6 @@
       + [tiup-bench](/tiup/tiup-bench.md)
   + [Telemetry](/telemetry.md)
   + [Errors Codes](/error-codes.md)
-  + [TiCDC Overview](/ticdc/ticdc-overview.md)
-  + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
   + [Table Filter](/table-filter.md)
   + [Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md)
 + FAQs

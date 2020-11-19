@@ -6,70 +6,7 @@ aliases: ['/docs/dev/ticdc/manage-ticdc/','/docs/dev/reference/tools/ticdc/manag
 
 # Manage TiCDC Cluster and Replication Tasks
 
-This document describes how to deploy a TiCDC cluster and how to manage the TiCDC cluster and replication tasks through the command line tool `cdc cli` and the HTTP interface.
-
-## Deploy and install TiCDC
-
-You can deploy TiCDC using either TiUP or Binary.
-
-### Software and hardware recommendations
-
-In production environments, the recommendations of software and hardware for TiCDC are as follows:
-
-| Linux OS       | Version        |
-| :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 or later versions   |
-| CentOS                   | 7.3 or later versions   |
-
-| **CPU** | **Memory** | **Disk type** | **Network** | **Number of TiCDC cluster instances (minimum requirements for production environment)** |
-| --- | --- | --- | --- | --- |
-| 16 core+ | 64 GB+ | SSD | 10 Gigabit network card (2 preferred） | 2 |
-
-For more information, see [Software and Hardware Recommendations](/hardware-and-software-requirements.md)
-
-### Deploy and install TiCDC using TiUP
-
-If you use TiUP to deploy TiCDC, you can choose one of the following ways:
-
-- Deploy TiCDC when deploying a TiDB cluster
-- Deploy a TiCDC component on an existing TiDB cluster
-
-#### Deploy TiCDC when deploying a TiDB cluster
-
-For details, refer to [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md#step-3-edit-the-initialization-configuration-file).
-
-#### Deploy a TiCDC component on an existing TiDB cluster
-
-1. First, make sure that the current TiDB version supports TiCDC; otherwise, you need to upgrade the TiDB cluster to `v4.0.0 rc.1` or later versions.
-
-2. To deploy TiCDC, refer to [Scale out a TiCDC cluster](/scale-tidb-using-tiup.md#scale-out-a-ticdc-cluster).
-
-### Use Binary
-
-Binary only supports deploying the TiCDC component on an existing TiDB cluster.
-
-Suppose that the PD cluster has a PD node (the client URL is `10.0.10.25:2379`) that can provide services. If you want to deploy three TiCDC nodes, start the TiCDC cluster by executing the following commands. Note that you only need to specify the same PD address, the newly started nodes automatically join the TiCDC cluster.
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_1.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --addr=0.0.0.0:8302 --advertise-addr=127.0.0.1:8302
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:8303 --advertise-addr=127.0.0.1:8303
-```
-
-The following are descriptions of options available in the `cdc server` command:
-
-- `gc-ttl`: The TTL (Time To Live) of the service level `GC safepoint` in PD set by TiCDC, in seconds. The default value is `86400`, which means 24 hours.
-- `pd`: The URL of the PD client.
-- `addr`: The listening address of TiCDC, the HTTP API address, and the Prometheus address of the service.
-- `advertise-addr`: The access address of TiCDC to the outside world.
-- `tz`: Time zone used by the TiCDC service. TiCDC uses this time zone when it internally converts time data types such as `TIMESTAMP` or when it replicates data to the downstream. The default is the local time zone in which the process runs. If you specify `time-zone` (in `sink-uri`) and `tz` at the time, the internal TiCDC processes use the time zone specified by `tz`, and the sink uses the time zone specified by `time-zone` for replicating data to the downstream.
-- `log-file`: The address of the running log of the TiCDC process. The default is `cdc.log`.
-- `log-level`: The log level when the TiCDC process is running. The default is `info`.
-- `ca`: The path of the CA certificate file used by TiCDC, in the PEM format (optional).
-- `cert`: The path of the certificate file used by TiCDC, in the PEM format (optional).
-- `key`: The path of the certificate key file used by TiCDC, in the PEM format (optional).
+This document describes how to manage the TiCDC cluster and replication tasks using the command line tool `cdc cli` and the HTTP interface.
 
 ## Upgrade TiCDC using TiUP
 
@@ -714,7 +651,7 @@ To use the cyclic replication feature, you need to configure the following param
 
 To create a cyclic replication task, take the following steps:
 
-1. [Enable the TiCDC component](#deploy-and-install-ticdc) in TiDB cluster A, cluster B, and cluster C.
+1. [Enable the TiCDC component](/ticdc/deploy-ticdc.md) in TiDB cluster A, cluster B, and cluster C.
 
     {{< copyable "shell-regular" >}}
 

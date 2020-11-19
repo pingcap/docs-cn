@@ -63,8 +63,9 @@ To integrate TiDB with Confluent Platform, you can use the TiCDC component with 
 
 3. Deploy TiCDC in one of the following ways. If TiCDC is already deployed, you can skip this step.
 
-    - [Deploy and install TiCDC using TiUP](/ticdc/manage-ticdc.md#deploy-and-install-ticdc-using-tiup)
-    - [Use Binary](/ticdc/manage-ticdc.md#use-binary)
+    - [Deploy a new TiDB cluster that includes TiCDC using TiUP](/ticdc/deploy-ticdc.md#deploy-a-new-tidb-cluster-that-includes-ticdc-using-tiup)
+    - [Add TiCDC to an existing TiDB cluster using TiUP](/ticdc/deploy-ticdc.md#add-ticdc-to-an-existing-tidb-cluster-using-tiup)
+    - [Add TiCDC to an existing TiDB cluster using binary (not recommended)](/ticdc/deploy-ticdc.md#add-ticdc-to-an-existing-tidb-cluster-using-binary-not-recommended)
 
     Make sure that your TiDB and TiCDC clusters are healthy before proceeding.
 

@@ -89,9 +89,7 @@ Currently, The following scenarios are not supported:
 
 ## Install and deploy TiCDC
 
-You can deploy TiCDC components in the process of deploying a new TiDB cluster using TiUP. You only need to [add TiCDC](/production-deployment-using-tiup.md#step-3-edit-the-initialization-configuration-file) to the configuration file when TiUP starts the TiDB cluster.
-
-Currently, you can also add TiCDC components to an existing TiDB cluster using either TiUP or binary. For details, see [Deploy and install TiCDC](/ticdc/manage-ticdc.md#deploy-and-install-ticdc).
+You can either deploy TiCDC along with a new TiDB cluster or add the TiCDC component to an existing TiDB cluster. For details, see [Deploy TiCDC](/ticdc/deploy-ticdc.md).
 
 ## Manage TiCDC Cluster and Replication Tasks
 
