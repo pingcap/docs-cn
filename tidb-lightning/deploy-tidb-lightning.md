@@ -173,7 +173,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
     [mydumper]
-    # Mydumper 源数据目录。
+    # 源数据目录。
     data-source-dir = "/data/my_database"
 
     [tidb]

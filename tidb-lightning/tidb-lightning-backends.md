@@ -325,7 +325,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
         # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
         tidb_lightning_pprof_port: 8289
 
-        # 获取数据源（Mydumper SQL dump 或 CSV）的路径。
+        # 获取数据源（Dumpling SQL dump 或 CSV）的路径。
         data_source_dir: "{{ deploy_dir }}/mydumper"
         ```
 
@@ -446,7 +446,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     addr = "172.16.31.10:8287"
 
     [mydumper]
-    # Mydumper 源数据目录。
+    # 源数据目录。
     data-source-dir = "/data/my_database"
 
     [tidb]

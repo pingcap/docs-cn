@@ -153,7 +153,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
     - 如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复。此时 initial_commit_ts 的值必须是全量备份的时间戳。
 
-        如果使用 mydumper 进行全量备份，可以在导出目录中找到 metadata 文件，其中的 `Pos` 字段值即全量备份的时间戳。metadata 文件示例如下：
+        如果使用 mydumper/Dumpling 进行全量备份，可以在导出目录中找到 metadata 文件，其中的 `Pos` 字段值即全量备份的时间戳。metadata 文件示例如下：
 
         ```
         Started dump at: 2019-12-30 13:25:41
