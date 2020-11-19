@@ -143,7 +143,7 @@ read-block-size = 65536 # Byte (default = 64 KB)
 # This value should be in the range (0 <= batch-import-ratio < 1).
 batch-import-ratio = 0.75
 
-# mydumper local source data directory.
+# Local source data directory.
 data-source-dir = "/data/my_database"
 # If no-schema is set to true, tidb-lightning assumes that the table skeletons
 # already exist on the target TiDB cluster, and will not execute the `CREATE

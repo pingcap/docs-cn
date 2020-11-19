@@ -48,12 +48,12 @@
 + Migrate
   + [Overview](/migration-overview.md)
   + Migrate from MySQL
-    + [Migrate from Mydumper Files](/migrate-from-mysql-mydumper-files.md)
+    + [Migrate Using Dumpling and TiDB Lightning](/migrate-from-mysql-dumpling-files.md)
     + [Migrate from Amazon Aurora MySQL Using DM](/migrate-from-aurora-mysql-database.md)
   + Migrate from CSV Files
     + [Use TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     + [Use `LOAD DATA` Statement](/sql-statements/sql-statement-load-data.md)
-  + [Migrate from SQL Files](/migrate-from-mysql-mydumper-files.md)
+  + [Migrate from SQL Files](/migrate-from-mysql-dumpling-files.md)
 + Maintain
   + Upgrade
     + [Use TiUP (Recommended)](/upgrade-tidb-using-tiup.md)

@@ -6,7 +6,7 @@ aliases: ['/docs/dev/get-started-with-tidb-lightning/','/docs/dev/how-to/get-sta
 
 # TiDB Lightning Tutorial
 
-[TiDB Lightning](https://github.com/pingcap/tidb-lightning) is a tool used for fast full import of large amounts of data into a TiDB cluster. Currently, TiDB Lightning supports reading SQL dump exported via Mydumper or CSV data source. You can use it in the following two scenarios:
+[TiDB Lightning](https://github.com/pingcap/tidb-lightning) is a tool used for fast full import of large amounts of data into a TiDB cluster. Currently, TiDB Lightning supports reading SQL dump exported via SQL or CSV data source. You can use it in the following two scenarios:
 
 + Import **large amounts** of **new** data **quickly**
 + Back up and restore all the data
@@ -23,21 +23,20 @@ This tutorial assumes you use several new and clean CentOS 7 instances. You can 
 
 ## Prepare full backup data
 
-First, use [`mydumper`](/mydumper-overview.md) to export data from MySQL:
+First, use [`dumpling`](/dumpling-overview.md) to export data from MySQL:
 
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
+./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 In the above command:
 
 - `-B test`: means the data is exported from the `test` database.
-- `-T t1,t2`: means only the `t1` and `t2` tables are exported.
+- `-f test.t[12]`: means only the `test.t1` and `test.t2` tables are exported.
 - `-t 16`: means 16 threads are used to export the data.
-- `-F 256`: means a table is partitioned into chunks and one chunk is 256 MB.
-- `--skip-tz-utc`: the purpose of adding this parameter is to ignore the inconsistency of time zone setting between MySQL and the data exporting machine and to disable automatic conversion.
+- `-F 256MB`: means a table is partitioned into chunks and one chunk is 256 MB.
 
 After executing this command, the full backup data is exported to the `/data/my_database` directory.
 
@@ -77,7 +76,7 @@ Download the TiDB Lightning installation package from the following link:
     "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
 
     [mydumper]
-    # Mydumper local source data directory
+    # Local source data directory
     data-source-dir = "/data/my_datasource/"
 
     [tidb]

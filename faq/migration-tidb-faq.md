@@ -9,14 +9,6 @@ This document summarizes the FAQs related to TiDB data migration.
 
 ## Full data export and import
 
-### Does TiDB support Mydumper?
-
-Yes. See [Mydumper Instructions](/mydumper-overview.md).
-
-### Does TiDB support Loader?
-
-Yes. See [Loader Instructions](/loader-overview.md).
-
 ### How to migrate an application running on MySQL to TiDB?
 
 Because TiDB supports most MySQL syntax, generally you can migrate your applications to TiDB without changing a single line of code in most cases.

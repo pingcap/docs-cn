@@ -12,25 +12,25 @@ This document describes how to migrate data to TiDB, including migrating data fr
 
 To migrate data from MySQL to TiDB, it is recommended to use one of the following methods:
 
-- [Use Mydumper and TiDB Lightning](#use-mydumper-and-tidb-lightning-full-data) to migrate full data.
+- [Use Dumpling and TiDB Lightning](#use-dumpling-and-tidb-lightning-full-data) to migrate full data.
 - [Use TiDB Data Migration (DM)](#use-dm) to migrate full and incremental data.
 
-### Use Mydumper and TiDB Lightning (full data)
+### Use Dumpling and TiDB Lightning (full data)
 
 #### Scenarios
 
-You can use Mydumper and TiDB Lightning to migrate full data when the data size is greater than 1 TB. If you need to replicate incremental data, it is recommended to [use DM](#use-dm) to create an incremental replication task.
+You can use Dumpling and TiDB Lightning to migrate full data when the data size is greater than 1 TB. If you need to replicate incremental data, it is recommended to [use DM](#use-dm) to create an incremental replication task.
 
 #### Migration method
 
-1. Use Mydumper to export the full MySQL data.
-2. Use TiDB Lightning to import the full data to TiDB. For details, refer to [Migrate from Mydumper Files](/migrate-from-mysql-mydumper-files.md).
+1. Use Dumpling to export the full MySQL data.
+2. Use TiDB Lightning to import the full data to TiDB. For details, refer to [Migrate data using Dumpling and TiDB Lightning](/migrate-from-mysql-dumpling-files.md).
 
 ### Use DM
 
 #### Scenarios
 
-You can use DM to migrate full MySQL data and to replicate incremental data. It is suggested that the size of the full data is less than 1 TB. Otherwise, it is recommended to use Mydumper and TiDB Lightning to import the full data, and then use DM to replicate the incremental data.
+You can use DM to migrate full MySQL data and to replicate incremental data. It is suggested that the size of the full data is less than 1 TB. Otherwise, it is recommended to use Dumpling and TiDB Lightning to import the full data, and then use DM to replicate the incremental data.
 
 #### Migration method
 
@@ -61,4 +61,4 @@ You can migrate data from heterogeneous databases that are not compatible with t
 
 ### Migrate data from SQL files to TiDB
 
-Use Mydumper and TiDB Lightning to migrate data from SQL files to TiDB. For details, refer to [Use Mydumper and TiDB Lightning](#use-mydumper-and-tidb-lightning-full-data).
+Use Mydumper and TiDB Lightning to migrate data from SQL files to TiDB. For details, refer to [Use Dumpling and TiDB Lightning](#use-dumpling-and-tidb-lightning-full-data).

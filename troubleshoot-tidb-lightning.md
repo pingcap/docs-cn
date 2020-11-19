@@ -24,7 +24,7 @@ There are several reasons why TiDB Lightning becomes slow:
 
 **Cause 2**: The table is too complex.
 
-Every additional index will introduce a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the Mydumper output. If the indices are negligible, you may first remove them from the schema, and add them back via `CREATE INDEX` after import is complete.
+Every additional index will introduce a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the Dumpling output. If the indices are negligible, you may first remove them from the schema, and add them back via `CREATE INDEX` after import is complete.
 
 **Cause 3**: Each file is too large.
 
