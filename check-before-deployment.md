@@ -327,6 +327,45 @@ sudo systemctl enable ntpd.service
     always madvise [never]
     ```
 
+7. 如果透明大页禁用未生效，需要使用 tuned / ktune 动态内核调试工具修改透明大页内容配置。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tuned-adm active
+    ```
+
+    ```
+    Current active profile: virtual-guest
+    ```
+    
+    创建一个新的定制 profile。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    mkdir /etc/tuned/virtual-guest-no-thp
+    vi /etc/tuned/virtual-guest-no-thp/tuned.conf
+    ```
+    
+    ```
+    [main]
+    include=virtual-guest
+
+    [vm]
+    transparent_hugepages=never
+    ```
+
+    应用新的定制 profile。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tuned-adm profile virtual-guest-no-thp
+    ```
+
+    应用后再重新检查透明大页的状态。
+
 ## 手动配置 SSH 互信及 sudo 免密码
 
 对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登陆，可忽略本段内容。
