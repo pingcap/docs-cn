@@ -8,9 +8,9 @@ aliases: ['/docs/dev/sql-statements/sql-statement-show-collation/','/docs/dev/re
 
 This statement provides a static list of collations, and is included to provide compatibility with MySQL client libraries.
 
-> **Note:** 
+> **Note:**
 >
-> Results of `SHOW COLLATION` vary when the "new collation framework" is enabled. For new collation framework details, refer to [Character Set and Collation](/character-set-and-collation.md).
+> Results of `SHOW COLLATION` vary when the ["new collation framework"](/character-set-and-collation.md#new-framework-for-collations) is enabled. For new collation framework details, refer to [Character Set and Collation](/character-set-and-collation.md).
 
 ## Synopsis
 
