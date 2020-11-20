@@ -81,6 +81,7 @@ Designed for the cloud, TiDB provides flexible scalability, reliability and secu
 
 - [TiDB Troubleshooting Map](/tidb-troubleshooting-map.md)
 - [Identify Slow Queries](/identify-slow-queries.md)
+- [Analyze Slow Queries](/analyze-slow-queries.md)
 - [SQL Diagnostics](/information-schema/information-schema-sql-diagnostics.md)
 - [Troubleshoot Hotspot Issues](/troubleshoot-hot-spot-issues.md)
 - [Troubleshoot the TiDB Cluster](/troubleshoot-tidb-cluster.md)
