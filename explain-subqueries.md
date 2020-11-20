@@ -1,11 +1,11 @@
 ---
-title: 用 Explain 查看使用子查询的执行计划
+title: 用 EXPLAIN 查看使用子查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 Explain 查看使用子查询的执行计划
+# 用 EXPLAIN 查看使用子查询的执行计划
 
-TiDB 会执行多种[子查询相关的优化](/subquery-optimization.md)，以提升子查询的执行性能。本文档介绍了一些常见的子查询优化方式，以及如何解读 `EXPLAIN` 语句返回的执行计划信息。
+TiDB 会执行多种[子查询相关的优化](/subquery-optimization.md)，以提升子查询的执行性能。本文档介绍一些常见子查询的优化方式，以及如何解读 `EXPLAIN` 语句返回的执行计划信息。
 
 本文档所使用的示例数据如下:
 
@@ -47,7 +47,7 @@ ANALYZE TABLE t1, t2, t3;
 
 ## Inner Join（无 `UNIQUE` 约束的子查询）
 
-以下示例中，`IN` 子查询会从表 `t2` 中搜索 id 列。考虑到语义正确性，TiDB 需要保证 `t1_id` 列是唯一的。可以使用 `EXPLAIN` 语句查看用于删除重复项并执行 `Inner Join` 操作的执行计划：
+以下示例中，`IN` 子查询会从表 `t2` 中搜索一列 ID。为保证语义正确性，TiDB 需要保证 `t1_id` 列的值具有唯一性。使用 `EXPLAIN` 可查看到该查询的执行计划删除重复项并执行 `Inner Join` 内连接操作：
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2);
@@ -68,11 +68,11 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2);
 7 rows in set (0.00 sec)
 ```
 
-由上述查询结果可知，TiDB 首先执行 `Index Join`（`Merge Join` 的变体）操作，开始读取 `t2.t1_id` 列的索引。`t1_id` 的值是 `└─HashAgg_31` 算子任务的一部分，先是在 TiKV 内对其进行重复数据删除；同时该值也是 `├─HashAgg_38(Build)` 算子任务的一部分，在 TiDB 中会再次对其进行重复数据删除。这项重复数据删除操作由聚合函数 `firstrow(test.t2.t1_id)` 执行，之后会将结果与 `t1` 表的 `PRIMARY KEY` 连接在一起。
+由上述查询结果可知，TiDB 首先执行 `Index Join` 索引连接（即 `Merge Join` 合并连接的变体）操作，开始读取 `t2.t1_id` 列的索引。先是 `└─HashAgg_31` 算子的部分任务在 TiKV 中对 `t1_id` 值进行去重，然后`├─HashAgg_38(Build)` 算子的部分任务在 TiDB 中对 `t1_id` 值再次进行去重。去重操作由聚合函数 `firstrow(test.t2.t1_id)` 执行，之后会将操作结果与 `t1` 表的主键相连接。
 
 ## Inner join（有 `UNIQUE` 约束的子查询）
 
-在上述示例中，为了确保在与表 `t1` 连接之前的 `t1_id` 值唯一，需要执行聚合操作。但是在以下示例中，由于有 `UNIQUE` 约束，已经能确保 `t3.t1_id` 列唯一：
+在上述示例中，为了确保 `t1_id` 值在与表 `t1` 连接前具有唯一性，需要执行聚合运算。在以下示例中，由于 `UNIQUE` 约束已能确保 `t3.t1_id` 列值的唯一：
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t3);
@@ -91,11 +91,11 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t3);
 5 rows in set (0.00 sec)
 ```
 
-从语义上看，因为保证了 `t3.t1_id` 的唯一性，TiDB 可以直接执行 `INNER JOIN` 查询。
+从语义上看，因为约束保证了 `t3.t1_id` 列值的唯一性，TiDB 可以直接执行 `INNER JOIN` 查询。
 
 ## Semi Join（关联查询）
 
-在前两个示例中，通过 `HashAgg` 聚合操作来保证子查询中的数据唯一性或有 `UNIQUE` 约束之后，TiDB 能够执行 `Inner Join` 操作。两种连接均执行了 `Index Join`（`Merge Join` 的变体）。
+在前两个示例中，子查询数据的唯一性通过 `HashAgg` 聚合操作或通过 `UNIQUE` 约束保证之后，TiDB 才能够执行 `Inner Join` 操作。这两种连接均使用了 `Index Join`（`Merge Join` 的变体）。
 
 下面的例子中，TiDB 则选择了一种不同的执行计划：
 
@@ -123,7 +123,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2 WHERE t1_id != t1.int
 
 ## Anti Semi Join （`NOT IN` 子查询）
 
-在以下示例中，*除非*子查询中存在 `t3.t1_id`，否则查询时将从语义上返回表 `t3` 中的所有行：
+在以下示例中，*除非*子查询中存在 `t3.t1_id`，否则该查询将（从语义上）返回表 `t3` 中的所有行：
 
 ```sql
 EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 100);
@@ -143,4 +143,4 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 6 rows in set (0.00 sec)
 ```
 
-上述查询首先读取了表 `t3`，然后根据主键开始查询表 `t1`。`Join` 类型是 _anti semi join_：之所以使用 _anti_，是因为上述示例有不存在匹配值（即 `NOT IN`）的情况；`Semi Join` 则是因为仅需要匹配第一行后就可以停止查询。
+上述查询首先读取了表 `t3`，然后根据主键开始探测 (probe) 表 `t1`。连接类型是 _anti semi join_，即反半连接：之所以使用 _anti_，是因为上述示例有不存在匹配值（即 `NOT IN`）的情况；使用 `Semi Join` 则是因为仅需要匹配第一行后就可以停止查询。
