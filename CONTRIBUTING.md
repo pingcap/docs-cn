@@ -4,7 +4,7 @@ Welcome to [TiDB](https://github.com/pingcap/tidb) documentation! We are excited
 
 ## What you can contribute
 
-You can start from any one of the following items to help improve [TiDB Docs at the PingCAP website](https://docs.pingcap.com/tidb/v4.0):
+You can start from any one of the following items to help improve [TiDB Docs at the PingCAP website](https://docs.pingcap.com/tidb/stable):
 
 - Fix typos or format (punctuation, space, indentation, code block, etc.)
 - Fix or update inappropriate or outdated descriptions
@@ -55,6 +55,7 @@ Currently, we maintain four versions of TiDB documentation, each with a separate
     - `needs-cherry-pick-3.1` label: sre-bot will submit a PR to the `release-3.1` branch.
     - `needs-cherry-pick-3.0` label: sre-bot will submit a PR to the `release-3.0` branch.
     - `needs-cherry-pick-2.1` label: sre-bot will submit a PR to the `release-2.1` branch.
+    - `needs-cherry-pick-master` label: sre-bot will submit a PR to the `master` branch.
 
 - If most of your changes apply to multiple docs versions but some differences exist among versions, you still can use cherry-pick labels to let sre-bot create PRs to other versions. After the PR to another version is successfully submitted by sre-bot, you can make changes to that PR.
 
@@ -65,6 +66,10 @@ Please perform the following steps to create your Pull Request to this repositor
 > **Note:**
 >
 > This section takes creating a PR to the `master` branch as an example. Steps of creating PRs to other branches are similar.
+
+### Step 0: Sign the CLA
+
+Your Pull Requests can only be merged after you sign the [Contributor License Agreement](https://cla-assistant.io/pingcap/docs) (CLA). Please make sure you sign the CLA before continuing.
 
 ### Step 1: Fork the repository
 
