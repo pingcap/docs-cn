@@ -279,7 +279,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 8. 访问集群：
 
-    - 安装 MySQL 客户端。安装过 MySQL 客户端的则可跳过这一步骤。
+    - 安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
 
         {{< copyable "shell-regular" >}}
 
