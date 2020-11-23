@@ -90,6 +90,10 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
     UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
+> **注意：**
+>
+> 自 v4.0.8 起，BR 已支持自适应 GC。将 `backupTS` 注册到 PD 的 `safePoint`，保证 `safePoint` 在备份期间不会向前移动，由此可避免手动设置 GC。
+
 ### 恢复前的准备工作
 
 `br restore` 命令的详细使用方法请参考 [BR 命令行描述](/br/backup-and-restore-tool.md#br-命令行描述)。
