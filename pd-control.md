@@ -418,6 +418,8 @@ Leader 调度的开销较小，需要的时候可以适当调大。
     config set cluster-version 1.0.8
     ```
 
+- `replication-mode` 用于控制双数据中心场景下 Region 的复制模式，详见[手动更改复制模式](/synchronous-replication.md#手动更改复制模式)
+
 - `leader-schedule-policy` 用于选择 Leader 的调度策略，可以选择按照 `size` 或者 `count` 来进行调度。
 
 - `scheduler-max-waiting-operator` 用于控制每个调度器同时存在的 operator 的个数。
@@ -966,8 +968,8 @@ Encoding 格式示例：
 >> scheduler remove grant-leader-scheduler-1      // 把对应的 scheduler 删掉
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
->> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器 
->> scheduler resume all                           // 继续运行所有的调度器 
+>> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器
+>> scheduler resume all                           // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
 ```
 

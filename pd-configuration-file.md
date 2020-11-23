@@ -369,3 +369,7 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 + 是否启用 TiDB Dashboard 遥测功能。
 + 默认：true
 + 参阅[遥测](/telemetry.md)了解该功能详情。
+
+## `replication-mode`
+
+Region 复制模式相关配置项，详见[在 PD 配置文件中开启同步复制](/synchronous-replication.md#在-PD-配置文件中开启同步复制)

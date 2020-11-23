@@ -138,6 +138,7 @@
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
+  + [双中心数据同步](/synchronous-replication.md)
   + 最佳实践
     + [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
     + [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
