@@ -83,7 +83,7 @@ dumpling \
 >
 > 3. csv文件不区分`字符串`与`关键字`，如果导入 boolean 类型的 `true` 和 `false`，需要转换为`1`和`0`。
 
-### 输出文件
+### 输出文件格式
 
 + metadata：此文件包含 dump 的起始时间，以及 master binary log 的位置。
 
