@@ -131,7 +131,7 @@ TiDB 侧 Region 信息可能过期，此时 TiKV 可能返回 `regionMiss` 的�
 
 #### 子查询被提前执行
 
-对于带有非关联子查询的语句，子查询部分可能被提前执行，如：`select * from t1 there a = (select max(a) from t2)` ，`select max(a) from t2` 部分可能在优化阶段被提前执行，这种查询用 `explain analyze` 看不到对应的耗时，如下：
+对于带有非关联子查询的语句，子查询部分可能被提前执行，如：`select * from t1 where a = (select max(a) from t2)` ，`select max(a) from t2` 部分可能在优化阶段被提前执行，这种查询用 `explain analyze` 看不到对应的耗时，如下：
 
 ```sql
 mysql> explain analyze select count(*) from t where a=(select max(t1.a) from t t1, t t2 where t1.a=t2.a);
