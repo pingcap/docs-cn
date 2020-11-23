@@ -76,16 +76,16 @@ dumpling \
 ```
 
 > **注意：**
-> 
+>
 > 1. `--sql` 选项暂时仅仅可用于导出 csv 的场景。
 >
 > 2. 这里需要在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
 >
-> 3. csv文件不区分`字符串`与`关键字`，如果导入 boolean 类型的 `true` 和 `false`，需要转换为`1`和`0`。
+> 3. csv 文件不区分`字符串`与`关键字`。如果导入的数据是 Boolean 类型的 `true` 和 `false`，需要转换为 `1` 和 `0` 。
 
 ### 输出文件格式
 
-+ metadata：此文件包含 dump 的起始时间，以及 master binary log 的位置。
++ `metadata`：此文件包含导出的起始时间，以及 master binary log 的位置。
 
     {{< copyable "shell-regular" >}}
 
@@ -102,7 +102,7 @@ dumpling \
     Finished dump at: 2020-11-10 10:40:20
     ```
 
-+ {schema}-schema-create.sql：schema 创建 sql 文件
++ `{schema}-schema-create.sql`：创建 schema 的 SQL 文件。
 
     {{< copyable "shell-regular" >}}
 
@@ -114,7 +114,7 @@ dumpling \
     CREATE DATABASE `test` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
     ```
 
-+ {schema}.{table}-schema.sql：table 创建 sql 文件
++ `{schema}.{table}-schema.sql`：创建 table 的 SQL 文件
 
     {{< copyable "shell-regular" >}}
 
@@ -128,7 +128,7 @@ dumpling \
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
     ```
 
-+ {schema}.{table}.{0001}.{sql|csv}：数据源文件
++ `{schema}.{table}.{0001}.{sql|csv`}：数据源文件
 
     {{< copyable "shell-regular" >}}
 
