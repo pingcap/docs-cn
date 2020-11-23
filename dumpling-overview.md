@@ -128,7 +128,7 @@ dumpling \
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
     ```
 
-+ {schema}.{table}.{0001}.{sql|csv|parquet}：数据源文件
++ {schema}.{table}.{0001}.{sql|csv}：数据源文件
 
     {{< copyable "shell-regular" >}}
 
