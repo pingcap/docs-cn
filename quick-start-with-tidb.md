@@ -73,7 +73,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 4. 新开启一个 session 以访问 TiDB 数据库。
 
-    1. 首先安装 MySQL 客户端。如果安装过 MySQL 客户端则可跳过这一步骤。
+    1. 首先安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
 
         {{< copyable "shell-regular" >}}
 
