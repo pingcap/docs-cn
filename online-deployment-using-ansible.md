@@ -8,11 +8,11 @@ aliases: ['/docs/dev/online-deployment-using-ansible/','/docs/dev/how-to/deploy/
 
 > **Warning:**
 >
-> For production environments, it is recommended that you [deploy TiDB using TiUP](/production-deployment-using-tiup.md). Since v4.0, it is not recommended to deploy TiDB using TiDB Ansible. You can [import the TiDB cluster deployed by TiDB Ansible to TiUP](/upgrade-tidb-using-tiup.md#import-the-tidb-ansible-cluster-to-tiup).
+> For production environments, it is recommended that you [deploy TiDB using TiUP](/production-deployment-using-tiup.md). Since v4.0, PingCAP no longer provides support for deploying TiDB using TiDB Ansible (deprecated). If you really need to use it for deployment, be aware of any risk. You can [import the TiDB cluster deployed by TiDB Ansible to TiUP](/upgrade-tidb-using-tiup.md#import-the-tidb-ansible-cluster-to-tiup).
 >
-> If you only want to try out TiDB and explore new features, refer to [Quick Start Guide](/quick-start-with-tidb.md) or [deploy TiDB using Docker Compose](/deploy-test-cluster-using-docker-compose.md) on a single machine.
+> If you only want to try out TiDB and explore new features, refer to [Quick Start Guide for the TiDB Database Platform](/quick-start-with-tidb.md).
 
-This guide describes how to deploy a TiDB cluster using TiDB Ansible. For the production environment, it is recommended to deploy TiDB using TiDB Ansible.
+This guide describes how to deploy a TiDB cluster using TiDB Ansible. For the production environment, it is recommended to deploy TiDB using TiUP.
 
 ## Overview
 
