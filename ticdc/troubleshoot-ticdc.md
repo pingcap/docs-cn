@@ -45,25 +45,27 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 - 通过 `cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
 - 部分极端异常情况下 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
 
-## TiCDC 的 `gc-ttl` 和文件排序是什么？
+## TiCDC 的 `gc-ttl` 是什么？
 
 从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何小于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
 
 启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间，该值默认为 86400 秒。
 
-如果同步任务长时间中断，累积未消费的数据比较多，初始启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的文件排序功能，该功能会使用文件系统文件进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=file` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
+## 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？
+
+如果同步任务长时间中断，累积未消费的数据比较多，初始启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的实验特性 Unified Sorter 排序引擎，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235200 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --sort-engine="file" --sort-dir="/data/cdc/sort"
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235200 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --sort-engine="unified" --sort-dir="/data/cdc/sort"
 ```
 
 > **注意：**
 >
-> + TiCDC（4.0 发布版本）还不支持动态修改文件排序和内存排序。
-> + 目前文件排序功能的处理能力有限。如果单表数据量过多导致文件排序失败，可以修改 TiCDC 任务配置过滤掉这张表，通过其他备份恢复工具例如 BR 恢复这张表之后再继续同步该表。
-
+> + TiCDC 从 4.0.9 版本起支持 Unified Sorter 排序引擎。
+> + TiCDC（4.0 发布版本）还不支持动态修改排序引擎。
+> + 目前 Unified Sorter 排序引擎为实验特性，在数据表较多 (>= 100) 时可能出现性能问题，影响同步速度，故不建议在生产环境中长期使用。开启 Unified Sorter 前请保证各 TiCDC 节点机器上有足够硬盘空间。 如果积攒的数据总量有可能超过 1TB，不建议使用 TiCDC 进行同步。
 ## 如何处理 TiCDC 创建同步任务或同步到 MySQL 时遇到 `Error 1298: Unknown or incorrect time zone: 'UTC'` 错误？
 
 这是因为下游 MySQL 没有加载时区，可以通过 [mysql_tzinfo_to_sql](https://dev.mysql.com/doc/refman/8.0/en/mysql-tzinfo-to-sql.html) 命令加载时区，加载后就可以正常创建任务或同步任务。
