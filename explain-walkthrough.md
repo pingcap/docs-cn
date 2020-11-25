@@ -95,7 +95,7 @@ Query OK, 0 rows affected (10.22 sec)
 5 rows in set (0.93 sec)
 ```
 
-执行 `ANALYZE TABLE` 后，可以看到 `└─TableFullScan_18` 算子的预估行数是准确的，`└─Selection_19` 算子的预估行数也更接近实际行数。以上两个示例中，尽管执行计划（即 TiDB 执行查询所使用的一组算子）未变，过时的统计信息常常导致执行计划非最优。
+执行 `ANALYZE TABLE` 后，可以看到 `└─TableFullScan_18` 算子的预估行数是准确的，`└─Selection_19` 算子的预估行数也更接近实际行数。以上两个示例中的执行计划（即 TiDB 执行查询所使用的一组算子）未改变，但过时的统计信息常常导致 TiDB 选择到非最优的执行计划。
 
 除 `ANALYZE TABLE` 外，达到 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 阈值后，TiDB 会自动在后台重新生成统计数据。若要查看 TiDB 有多接近该阈值（即 TiDB 判断统计数据有多健康），可执行 [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md) 语句。
 
