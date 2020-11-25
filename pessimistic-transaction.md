@@ -125,7 +125,7 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 
 * 有较低概率导致事务提交失败，但不会影响事务正确性。
 
-如果业务逻辑依赖加锁/等锁机制或者即使在集群异常情况下也要尽可能保证事务提交的成功率，应关闭该功能。
+如果业务逻辑依赖加锁或等锁机制，或者即使在集群异常情况下也要尽可能保证事务提交的成功率，应关闭 pipelined 加锁功能。
 
 ![Pipelined pessimistic lock](/media/pessimistic-transaction-pipelining.png)
 
