@@ -29,5 +29,5 @@
 
 - [ ] Delete files
 - [ ] Change aliases
-- [ ] Have version specific changes <!-- If yes, please comment "/label version-specific-changes-required" below to trigger the bot to add the label.-->
-- [ ] Might cause conflicts
+- [ ] Need modification after applied to another branch <!-- If yes, please comment "/label version-specific-changes-required" below to trigger the bot to add the label.-->
+- [ ] Might cause conflicts after applied to another branch
