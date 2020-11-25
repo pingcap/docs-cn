@@ -136,7 +136,7 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 pipelined = true
 ```
 
-若集群是 v4.0.9 及以上版本，也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置) 功能动态开启：
+若集群是 v4.0.9 及以上版本，也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态开启该功能：
 
 {{< copyable "sql" >}}
 
