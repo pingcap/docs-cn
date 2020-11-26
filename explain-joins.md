@@ -1,9 +1,9 @@
 ---
-title: 用 EXPLAIN 查看带 JOIN 的 SQL 执行计划
+title: 用 EXPLAIN 查看使用 JOIN 的 SQL 执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看带 JOIN 的 SQL 执行计划
+# 用 EXPLAIN 查看使用 JOIN 的 SQL 执行计划
 
 在 TiDB 中，SQL 优化器需要确定数据表的连接顺序，且要判断对于某条特定的 SQL 语句，哪一种 Join 算法最为高效。
 
@@ -41,7 +41,7 @@ ANALYZE TABLE t1, t2;
 
 ## Index Join
 
-如果预计需要连接的行数较少（一般小于 1 万行），推荐使用 Index Join 算法。这个算法与 MySQL 中基础的 Join 算法类似。在下表的示例中，`TableReader_28(Build)` 算子首先读取表 `t1`，然后根据在 `t1` 中匹配到的每行数据，依次探查表 `t2` 中的数据：
+如果预计需要连接的行数较少（一般小于 1 万行），推荐使用 Index Join 算法。这个算法与 MySQL 主要使用的 Join 算法类似。在下表的示例中，`TableReader_28(Build)` 算子首先读取表 `t1`，然后根据在 `t1` 中匹配到的每行数据，依次探查表 `t2` 中的数据：
 
 {{< copyable "sql" >}}
 
@@ -69,7 +69,7 @@ Index Join 算法对内存消耗较小，但如果需要执行大量探查操作
 SELECT * FROM t1 INNER JOIN t2 ON t1.id=t2.t1_id WHERE t1.pad1 = 'value' and t2.pad1='value';
 ```
 
-在 Inner Join 操作中，TiDB 会先执行 Join Reorder 算法，所以不能确定会先读取 `t1` 还是 `t2` 。假设 TiDB 先读取了 `t1` 来构建 Build 端，那么 TiDB 会在探查 `t2` 前先根据谓词 `t1.col = 'value'` 筛选数据，但接下来每次探查 `t2` 时都要应用谓词 `t2.col='value'`。所以对于这条语句，Index Join 算法可能不如其他 Join 算法高效。
+在 Inner Join 操作中，TiDB 会先执行 Join Reorder 算法，所以不能确定会先读取 `t1` 还是 `t2`。假设 TiDB 先读取了 `t1` 来构建 Build 端，那么 TiDB 会在探查 `t2` 前先根据谓词 `t1.col = 'value'` 筛选数据，但接下来每次探查 `t2` 时都要应用谓词 `t2.col='value'`。所以对于这条语句，Index Join 算法可能不如其他 Join 算法高效。
 
 但如果 Build 端的数据量比 Probe 端小，且 Probe 端的数据已预先建立了索引，那么这种情况下 Index Join 算法效率更高。在下面这段查询语句中，因为 Index Join 比 Hash Join 效率低，所以 SQL 优化器选择了 Hash Join 算法：
 
@@ -182,14 +182,14 @@ Query OK, 0 rows affected (3.65 sec)
 
 ### Index Join 相关算法
 
-如果使用 Hint [`INL_JOIN`](/optimizer-hints.md#inl_joint1_name--tl_name-) 进行 Index Join 操作，TiDB 会在连接外表之前创建一个中间结果的 Hash Table。TiDB 同样也支持使用 Hint [`INL_HASH_JOIN`](/optimizer-hints.md#inl_hash_join) 在外表上建 Hash Table。而如果内表列集合与外表的相匹配，则可以应用 Hint [`INL_MERGE_JOIN`](/optimizer-hints.md#inl_merge_join)。以上所列 Index Join 相关算法都由 SQL 优化器自动选择。
+如果使用 Hint [`INL_JOIN`](/optimizer-hints.md#inl_joint1_name--tl_name-) 进行 Index Join 操作，TiDB 会在连接外表之前创建一个中间结果的 Hash Table。TiDB 同样也支持使用 Hint [`INL_HASH_JOIN`](/optimizer-hints.md#inl_hash_join) 在外表上建 Hash Table。而如果内表列集合与外表的相匹配，则可以应用 Hint [`INL_MERGE_JOIN`](/optimizer-hints.md#inl_merge_join)。以上所述的 Index Join 相关算法都由 SQL 优化器自动选择。
 
 ### 配置
 
 Index Join 算法的性能受以下系统变量影响：
 
-* [`tidb_index_join_batch_size`](/system-variables.md#tidb_index_join_batch_size) (默认值：`25000`) - `index lookup join` 操作的 batch 大小。
-* [`tidb_index_lookup_join_concurrency`](/system-variables.md#tidb_index_lookup_join_concurrency) (默认值：`4`) - 可以并发执行的 index lookup 任务数。
+* [`tidb_index_join_batch_size`](/system-variables.md#tidb_index_join_batch_size)（默认值：`25000`）- `index lookup join` 操作的 batch 大小。
+* [`tidb_index_lookup_join_concurrency`](/system-variables.md#tidb_index_lookup_join_concurrency)（默认值：`4`）- 可以并发执行的 index lookup 任务数。
 
 ## Hash Join
 
@@ -216,7 +216,7 @@ EXPLAIN SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 5 rows in set (0.00 sec)
 ```
 
-TiDB 会按照以下操作步骤执行 `HashJoin_27` 算子：
+TiDB 会按照以下顺序执行 `HashJoin_27` 算子：
 
 1. 将 Build 端数据缓存在内存中。
 2. 根据缓存数据在 Build 端构造一个 Hash Table。
@@ -228,7 +228,7 @@ TiDB 会按照以下操作步骤执行 `HashJoin_27` 算子：
 
 ### 运行数据
 
-如果在执行操作时，内存使用超过了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 规定的值（默认为 1GB），且 `oom-use-tmp-storage` 的值为 `true` （默认为真），那么 TiDB 会尝试使用临时存储，在磁盘上创建 Hash Join 的 Build 端。`EXPLAIN ANALYZE` 返回结果中的 `execution info` 一栏记录了有关内存使用情况等运行数据。下面的例子展示了 `tidb_mem_quota_query` 的值分别设为 1GB（默认）及 500MB 时，`EXPLAIN ANALYZE` 的返回结果（当内存配额设为 500MB 时，磁盘用作临时存储区）：
+如果在执行操作时，内存使用超过了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 规定的值（默认为 1GB），且 `oom-use-tmp-storage` 的值为 `true` （默认为 `true`），那么 TiDB 会尝试使用临时存储，在磁盘上创建 Hash Join 的 Build 端。`EXPLAIN ANALYZE` 返回结果中的 `execution info` 一栏记录了有关内存使用情况等运行数据。下面的例子展示了 `tidb_mem_quota_query` 的值分别设为 1GB（默认）及 500MB 时，`EXPLAIN ANALYZE` 的返回结果（当内存配额设为 500MB 时，磁盘用作临时存储区）：
 
 ```sql
 EXPLAIN ANALYZE SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
@@ -266,14 +266,14 @@ Query OK, 0 rows affected (0.00 sec)
 
 Hash Join 算法的性能受以下系统变量影响：
 
-* [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) (默认值：1GB) - 如果某条查询的内存消耗超出了配额，TiDB 会尝试将 Hash Join 的 Build 端移到磁盘上以节省内存。
-* [`tidb_hash_join_concurrency`](/system-variables.md#tidb_hash_join_concurrency) (默认值：`5`) - 可以并发执行的 Hash Join 任务数量。
+* [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)（默认值：1GB）- 如果某条查询的内存消耗超出了配额，TiDB 会尝试将 Hash Join 的 Build 端移到磁盘上以节省内存。
+* [`tidb_hash_join_concurrency`](/system-variables.md#tidb_hash_join_concurrency)（默认值：`5`）- 可以并发执行的 Hash Join 任务数量。
 
 ## Merge Join
 
 Merge Join 是一种特殊的 Join 算法。当两个关联表要 Join 的字段需要按排好的顺序读取时，适用 Merge Join 算法。由于 Build 端和 Probe 端的数据都会读取，这种算法的 Join 操作是流式的，类似“拉链式合并”的高效版。Merge Join 占用的内存要远低于 Hash Join，但 Merge Join 不能并发执行。
 
-下面给出了一个例子：
+下面是一个使用 Merge Join 的例子：
 
 {{< copyable "sql" >}}
 
@@ -294,8 +294,8 @@ EXPLAIN SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 5 rows in set (0.00 sec)
 ```
 
-TiDB 会按照以下操作步骤执行 Merge Join 算子：
+TiDB 会按照以下顺序执行 Merge Join 算子：
 
 1. 从 Build 端把一个 Join Group 的数据全部读取到内存中。
 2. 读取 Probe 端的数据。
-3. 将 Probe 端的每行数据与 Build 端的一个完整 Join Group 比较，依次查看是否匹配（除了满足等值条件以外，还有其他非等值条件，这里的 “匹配” 主要是指查看是否满足非等值条件）。Join Group 指的是所有 Join Key 上值相同的数据。
+3. 将 Probe 端的每行数据与 Build 端的一个完整 Join Group 比较，依次查看是否匹配（除了满足等值条件以外，还有其他非等值条件，这里的“匹配”主要是指查看是否满足非等值条件）。Join Group 指的是所有 Join Key 上值相同的数据。
