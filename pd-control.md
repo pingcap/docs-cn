@@ -418,7 +418,7 @@ Leader 调度的开销较小，需要的时候可以适当调大。
     config set cluster-version 1.0.8
     ```
 
-- `replication-mode` 用于控制双数据中心场景下 Region 的复制模式，详见[手动更改复制模式](/synchronous-replication.md#手动更改复制模式)
+- `replication-mode` 用于控制双数据中心场景下 Region 的复制模式，详见[手动更改复制模式](/synchronous-replication.md#手动更改复制模式)。
 
 - `leader-schedule-policy` 用于选择 Leader 的调度策略，可以选择按照 `size` 或者 `count` 来进行调度。
 
