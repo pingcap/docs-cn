@@ -3,7 +3,7 @@ title: tiup install
 aliases: ['/docs-cn/dev/tiup/tiup-command-install/']
 ---
 
-# install
+# tiup install
 
 ## 介绍
 

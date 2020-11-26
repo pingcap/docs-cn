@@ -41,9 +41,9 @@ TiUP 集成了一系列的子命令用于组件管理和镜像管理。
 ## 语法
 
 ```sh
-tiup [flags] <command> [args...]
+tiup [flags] <command> [args...]        # 执行命令
 # or
-tiup [flags] <component> [args...]
+tiup [flags] <component> [args...]      # 运行组件
 ```
 
 使用 `help` 命令可以获取特定命令的信息，每个命令的摘要都显示了其参数及其用法。必须参数显示在尖括号中，可选参数显示在方括号中。
@@ -92,8 +92,8 @@ tiup [flags] <component> [args...]
 - [install](/tiup/tiup-command-install.md)：安装组件
 - [list](/tiup/tiup-command-list.md)：查看组件列表
 - [uniinstall](/tiup/tiup-command-uninstall.md)：卸载组件
-- update：升级已安装的组件
-- status：查看组件运行状态
+- [update](/tiup/tiup-command-update.md)：升级已安装的组件
+- [status](/tiup/tiup-command-status.md)：查看组件运行状态
 - clean：清理组件数据目录
 - mirror：镜像管理
 - telemetry：遥测开关
