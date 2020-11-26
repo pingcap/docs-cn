@@ -149,9 +149,9 @@ TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘
 
 如果节点上有多块 IO 性能相差较大的硬盘（如一块 SSD 硬盘加上多块 HDD 硬盘），把 SSD 硬盘的数据存储目录配置在 `storage.latest.dir` 中，把 HDD 硬盘的数据存储目录配置在 `storage.main.dir` 中，可以更好地利用节点性能。
 
-    > **注意：**
-    >
-    > [storage] 参数在 TiUP v1.2.5 版本开始支持。请确保你的 TiUP 版本不低于 v1.2.5，否则 [storage] 中定义数据目录不会被纳入 TiUP 管理。
+> **注意：**
+>
+> [storage] 参数在 TiUP v1.2.5 版本开始支持。请确保你的 TiUP 版本不低于 v1.2.5，否则 [storage] 中定义数据目录不会被纳入 TiUP 管理。
 
 如果你部署的 TiDB 集群版本 < v4.0.9：
 
@@ -169,9 +169,9 @@ TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘
 
 如果节点上是多个 SSD 硬盘存储路径，适当使用新的配置项可以提高硬盘的 IO 资源利用效率。如果你的 TiFlash 节点遇到硬盘 IO 瓶颈，可参考以下指引，利用 TiUP 升级配置项：
 
-    > **注意：**
-    >
-    > 升级后并且把 TiFlash 节点修改为使用 [storage] 配置后，如果将进群版本降级到低于 v4.0.9 的版本操作，可能导致 TiFlash 部分数据丢失。
+> **注意：**
+>
+> 升级后并且把 TiFlash 节点修改为使用 [storage] 配置后，如果将进群版本降级到低于 v4.0.9 的版本操作，可能导致 TiFlash 部分数据丢失。
 
 1. 保证 TiUP 版本不低于 v1.2.5，否则新的 TiFlash 配置项中的数据存储目录不会被纳入 TiUP 管理
 
@@ -190,7 +190,9 @@ tiflash_servers:
     config:
       # path_realtime_mode: false # 默认值
 ```
+
 等价于以下配置。可以参考里面的注释，调整 `storage.latest.dir` 的值，以获得更好的性能。
+
 ```
 tiflash_servers:
   - host: 10.0.1.14
@@ -226,6 +228,6 @@ tiflash_servers:
       storage.latest.dir: [ "/nvme_ssd0/tiflash" ]
 ```
 
-    > **注意：**
-    >
-    > 对于非 TiUP 管理的集群，可以参考上述说明，修改 tiflash.toml 中对应的配置项。
+> **注意：**
+>
+> 对于非 TiUP 管理的集群，可以参考上述说明，修改 tiflash.toml 中对应的配置项。
