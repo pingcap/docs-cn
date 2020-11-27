@@ -30,9 +30,10 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 ### 配置文件 tiflash.toml
 
 ```toml
-listen_host = tiflash # TCP/HTTP 等辅助服务的监听 host，建议配置成 0.0.0.0
-tcp_port = tiflash tcp 服务端口
-http_port = tiflash http 服务端口
+# tiflash TCP/HTTP 等辅助服务的监听 host，建议配置成 0.0.0.0
+listen_host = "0.0.0.0"
+tcp_port = 9000 # tiflash tcp 服务端口
+http_port = 8123 # tiflash http 服务端口
 mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，通常不需要修改
 minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 
@@ -108,14 +109,18 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
     errorlog = tiflash error log 路径
     size = 单个日志文件的大小
     count = 最多保留日志文件个数
+
 [raft]
     pd_addr = pd 服务地址 # 多个地址以逗号隔开
     ## 用于存储 Raft 数据的目录，默认为 "{path 的第一个目录}/kvstore"
-    ## 从 v4.0.9 版本开始 raft.kvstore_path 参数不再推荐使用，推荐使用 [storage.raft.dir] 配置项代替，在多盘部署的情况下能更好地利用节点性能。
+    ## 从 v4.0.9 版本开始 raft.kvstore_path 参数不再推荐使用，推荐使用 "storage.raft.dir" 配置项代替，在多盘部署的情况下能更好地利用节点性能。
     # kvstore_path = "/tidb-data/tiflash-9000/kvstore"
+
 [status]
     metrics_port = Prometheus 拉取 metrics 信息的端口
+
 [profiles]
+
 [profiles.default]
     # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 true
     dt_enable_logical_split = true
@@ -129,8 +134,10 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 [server]
     engine-addr = 外部访问 tiflash coprocessor 服务的地址
 [raftstore]
-    snap-handle-pool-size = 2 # 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
-    store-batch-retry-recv-timeout = "4ms" # 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
+    # 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
+    snap-handle-pool-size = 2
+    # 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
+    store-batch-retry-recv-timeout = "4ms"
 ```
 
 除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的配置项会覆盖 `tiflash-learner.toml` 中的重合参数；`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
@@ -147,7 +154,7 @@ TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘
 
 如果节点上有多块 SSD 硬盘，推荐一个数据存储目录对应一块硬盘，并把数据目录填到列表 `storage.main.dir` 中，以更好地利用节点性能。
 
-如果节点上有多块 IO 性能相差较大的硬盘（如一块 SSD 硬盘加上多块 HDD 硬盘），把 SSD 硬盘的数据存储目录配置在 `storage.latest.dir` 中，把 HDD 硬盘的数据存储目录配置在 `storage.main.dir` 中，可以更好地利用节点性能。
+如果节点上有多块 IO 性能相差较大的硬盘，把 SSD 硬盘的数据存储目录配置在 `storage.latest.dir` 中，把 HDD 硬盘的数据存储目录配置在 `storage.main.dir` 中，可以更好地利用节点性能。例如 TiFlash 节点上有一块 SSD 硬盘加上两块 HDD 硬盘，你可以把 `storage.latest.dir` 设为 `["/ssd_a/data/tiflash"]` 以及把 `storage.main.dir` 设为 `["/hdd_b/data/tiflash", "/hdd_c/data/tiflash"]`。
 
 > **注意：**
 >
@@ -157,13 +164,15 @@ TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘
 
 通过配置文件 [`tiflash.toml`](#配置文件-tiflashtoml) 中的 `path` 和 `path_realtime_mode` 这两个参数控制。
 
-多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果你的环境有多块硬盘，推荐一个数据存储目录对应一块硬盘，并且把性能最好的硬盘放在最前面，以更好地利用节点性能。
+多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果你的节点上有多块硬盘，推荐一个数据存储目录对应一块硬盘，并且把性能最好的硬盘放在最前面，以更好地利用节点性能。
 
 `path_realtime_mode` 参数默认值为 false，表示数据会在所有的存储目录之间进行均衡，适用于单节点多块 SSD 硬盘的部署。
 
 `path_relatime_mode` 如果设为 true，且 `path` 配置了多个目录，表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。适用于单个节点上一块 SSD 硬盘加上多块 HDD 硬盘的部署。
 
-#### 从旧版本升级到不低于 v4.0.9
+#### 升级节点版本至不低于 v4.0.9
+
+v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据分布在多盘上。v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据、新数据，以及 Raft 数据分布在多盘上。
 
 如果你的节点上只有单个存储路径，或者是一块 SSD 硬盘加上多块 HDD 硬盘的部署方式，新的配置项对此没有性能提升的效果，因此升级后可直接保留旧的配置项。
 
@@ -177,13 +186,15 @@ TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘
 
 2. 使用 TiUP 正常[升级集群](/upgrade-tidb-using-tiup.md#使用-tiup-升级-tidb)至你所需要的版本
 
-3. 按照下述的说明，在你的 TiFlash 节点配置的 `config` 一项中，添加上述的 `storage.main.dir`, `storage.latest.dir` 等配置项，格式可参照 [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)
+3. 阅读下述新旧配置参数说明，理解 TiFlash 的行为并决定你所需要设置的配置项的值
 
-TiUP 配置参数升级前后对比说明：
+4. 使用 TiUP [修改节点的配置项](/maintain-tidb-using-tiup.md#修改配置参数)。在你的 TiFlash 节点配置的 `config` 一项中，添加 `storage.main.dir`, `storage.latest.dir` 等配置项，格式可参照 [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)
+
+TiUP 配置参数新旧对比说明：
 
 对于未配置 `path_realtime_mode` 或者其值为 false 的情况：
 
-```
+```yaml
 tiflash_servers:
   - host: 10.0.1.14
     data_dir: "/nvme_ssd0/tiflash,/nvme_ssd1/tiflash"
@@ -193,7 +204,7 @@ tiflash_servers:
 
 等价于以下配置。可以参考里面的注释，调整 `storage.latest.dir` 的值，以获得更好的性能。
 
-```
+```yaml
 tiflash_servers:
   - host: 10.0.1.14
     data_dir: "/nvme_ssd0/tiflash,/nvme_ssd1/tiflash"
@@ -207,7 +218,7 @@ tiflash_servers:
 
 对于配置了 `path_realtime_mode` 为 true 的情况：
 
-```
+```yaml
 tiflash_servers:
   - host: 10.0.1.14
     data_dir: "/nvme_ssd0/tiflash,/hdd1/tiflash,/hdd2/tiflash"
@@ -217,7 +228,7 @@ tiflash_servers:
 
 等价于以下配置。此情况下建议保留此行为以获得更好的性能。
 
-```
+```yaml
 tiflash_servers:
   - host: 10.0.1.14
     data_dir: "/nvme_ssd0/tiflash,/hdd1/tiflash,/hdd2/tiflash"
