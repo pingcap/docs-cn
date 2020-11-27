@@ -135,7 +135,7 @@ minmax_index_cache_size = 5368709120
 
 ### 多盘部署
 
-TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘IO利用率。TiUP 中参数配置格式参照 [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)
+TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照 [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)
 
 #### 部署的 TiDB 集群版本 v4.0.9 及以上
 
@@ -147,7 +147,7 @@ v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据�
 
 > **注意：**
 >
-> * [storage] 参数在 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 [storage] 中定义的数据目录不会被纳入 TiUP 管理。
+> * [storage] 参数在 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 [storage] 中定义的数据目录不会被 TiUP 纳入管理。
 > * 在 TiFlash 节点改为使用 [storage] 配置后，如果将集群版本降级到低于 v4.0.9，可能导致 TiFlash 部分数据丢失。
 
 #### 部署的 TiDB 集群版本低于 v4.0.9
