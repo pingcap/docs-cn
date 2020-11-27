@@ -1,6 +1,6 @@
 ---
 title: 成为贡献者
-category: contribute
+aliases: ['/docs-cn/dev/contribute/']
 ---
 
 # 成为贡献者

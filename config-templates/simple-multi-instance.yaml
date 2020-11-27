@@ -1,0 +1,95 @@
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+server_configs:
+  tikv:
+    readpool.unified.max-thread-count: <The value refers to the calculation formula result of the multi-instance topology document.>
+    readpool.storage.use-unified-pool: false
+    readpool.coprocessor.use-unified-pool: true
+    storage.block-cache.capacity: "<The value refers to the calculation formula result of the multi-instance topology document.>"
+    raftstore.capacity: "<The value refers to the calculation formula result of the multi-instance topology document.>"
+  pd:
+    replication.location-labels: ["host"]
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+
+tidb_servers:
+  - host: 10.0.1.1
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.1
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+  - host: 10.0.1.2
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.2
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+  - host: 10.0.1.3
+    port: 4000
+    status_port: 10080
+    numa_node: "0"
+  - host: 10.0.1.3
+    port: 4001
+    status_port: 10081
+    numa_node: "1"
+
+tikv_servers:
+  - host: 10.0.1.7
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv1" }
+  - host: 10.0.1.7
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv1" }
+  - host: 10.0.1.8
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv2" }
+  - host: 10.0.1.8
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv2" }
+  - host: 10.0.1.9
+    port: 20160
+    status_port: 20180
+    numa_node: "0"
+    config:
+      server.labels: { host: "tikv3" }
+  - host: 10.0.1.9
+    port: 20161
+    status_port: 20181
+    numa_node: "1"
+    config:
+      server.labels: { host: "tikv3" }
+
+monitoring_servers:
+  - host: 10.0.1.10
+
+grafana_servers:
+  - host: 10.0.1.10
+
+alertmanager_servers:
+  - host: 10.0.1.10
