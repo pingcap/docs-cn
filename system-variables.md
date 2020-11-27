@@ -966,3 +966,9 @@ explain select * from t where age=5;
 +-------------------------------+------------+-----------+-----------------------------+-------------------------------+
 3 rows in set (0.00 sec)
 ```
+
+### `tidb_enable_rate_limit_action`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：ON
+- 这个变量用于控制读数据算子是否开启动态内存控制功能，当启动时，单条查询语句将会在内存使用量超过 `@@tidb_mem_quota_query` 时启动 Ratelimit OOMAction 以读数据算子防止内存使用量继续上升。
