@@ -32,15 +32,19 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 ```toml
 # tiflash TCP/HTTP 等辅助服务的监听 host，建议配置成 0.0.0.0
 listen_host = "0.0.0.0"
-tcp_port = 9000 # tiflash tcp 服务端口
-http_port = 8123 # tiflash http 服务端口
-mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，通常不需要修改
-minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
+## tiflash tcp 服务端口
+tcp_port = 9000
+## tiflash http 服务端口
+http_port = 8123
+## 数据块元信息的内存 cache 大小限制，通常不需要修改
+mark_cache_size = 5368709120
+## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
+minmax_index_cache_size = 5368709120
 
 ## tiflash 数据存储路径，如果有多个目录，以英文逗号分隔。
 ## 从 v4.0.9 版本开始 path 及 path_realtime_mode 参数不再推荐使用，推荐使用 [storage] 下的配置项代替，在多盘部署的情况下能更好地利用节点性能。
 # path = "/tidb-data/tiflash-9000"
-# 或
+## 或
 # path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
 ## 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
 # path_realtime_mode = false
@@ -60,14 +64,14 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
     [storage.main]
     ## 用于存储主要数据的目录列表
     dir = [ "/tidb-data/tiflash-9000" ] 
-    # 或
+    ## 或
     # dir = [ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]
 
     ## storage.main.dir 存储目录列表中，每个目录的最大可用容量。
     ## * 在未定义配置项，或者列表中全填 0时，会使用目录所在的硬盘容量
     ## * 以 byte 为单位，目前不支持如 "10GB" 类似的设置
     ## * capacity 列表的长度应当与 dir 长度保持一致
-    # 例如：
+    ## 例如：
     # capacity = [ 10737418240, 10737418240 ]
 
     [storage.latest]
@@ -122,10 +126,12 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 [profiles]
 
 [profiles.default]
-    # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 true
+    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 true
     dt_enable_logical_split = true
-    max_memory_usage = 0 # 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
-    max_memory_usage_for_all_queries = 0 # 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    max_memory_usage = 0 
+    ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    max_memory_usage_for_all_queries = 0 
 ```
 
 ### 配置文件 tiflash-learner.toml
@@ -134,9 +140,9 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 [server]
     engine-addr = 外部访问 tiflash coprocessor 服务的地址
 [raftstore]
-    # 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
+    ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     snap-handle-pool-size = 2
-    # 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
+    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
     store-batch-retry-recv-timeout = "4ms"
 ```
 
