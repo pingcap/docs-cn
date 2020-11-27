@@ -73,11 +73,21 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 4. 新开启一个 session 以访问 TiDB 数据库。
 
-    {{< copyable "shell-regular" >}}
+    1. 首先安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
 
-    ```shell
-    mysql --host 127.0.0.1 --port 4000 -u root
-    ```
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        yum -y install mysql
+        ```
+
+    2. 使用 MySQL 客户端连接 TiDB：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        mysql --host 127.0.0.1 --port 4000 -u root
+        ```
 
 5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
@@ -268,6 +278,14 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
     ```
 
 8. 访问集群：
+
+    - 安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        yum -y install mysql
+        ```
 
     - 访问 TiDB 数据库，密码为空：
 
