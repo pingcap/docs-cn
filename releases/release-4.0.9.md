@@ -8,11 +8,26 @@ title: TiDB 4.0.9 Release Notes
 
 TiDB 版本：4.0.9
 
+## 兼容性更改
+
++ TiDB
+
+- 添加了对于连接的空闲时间的监控项 [#21301](https://github.com/pingcap/tidb/pull/21301)
+
 ## 新功能
 
 + TiDB
 
-    -
+    - 在转换等值条件为其它条件时，通过使用启发式规则，避免生成 (index) merge join 以得到更好的执行计划 [#21146](https://github.com/pingcap/tidb/pull/21146)
+    - 区分用户变量的类型 [#21107](https://github.com/pingcap/tidb/pull/21107)
+    - 配置文件中添加了 performance.gogc 配置项，用于设置 GOGC [#20922](https://github.com/pingcap/tidb/pull/20922)
+    - 提升了 `Timestamp` 和 `Datetime` 类型的二进制输出结果的 MySQL 兼容性 [#21135](https://github.com/pingcap/tidb/pull/21135)
+    - 对于可剪切的表达式进行常量折叠时，避免输出不必要的警告或错误 [#21040](https://github.com/pingcap/tidb/pull/21040)
+    - 优化了 `load data` 语句执行 prepare 操作的报错信息 [#21199](https://github.com/pingcap/tidb/pull/21199)
+    - 修改列类型的时候，忽略掉整型字段的零值填充大小属性 [#20986](https://github.com/pingcap/tidb/pull/20986)
+    - `explain analyze` 对于 DML 语句正确的显示执行器相关的运行时信息 [#21066](https://github.com/pingcap/tidb/pull/21066)
+    - 禁止一条语句中，对主键做出多次不同的修改 [#21113](https://github.com/pingcap/tidb/pull/21113)
+    - 添加了对于连接的空闲时间的监控项 [#21301](https://github.com/pingcap/tidb/pull/21301)
 
 + TiFlash
 
@@ -44,7 +59,32 @@ TiDB 版本：4.0.9
 
 + TiDB
 
-    -
+    - 修复了前缀索引和 `OR` 条件一起使用时结果不正确的问题 [#21287](https://github.com/pingcap/tidb/pull/21287)
+    - 修复了开启自动重试后可能出现的一处 panic。在事务重试时，执行到 `SET SQL_SELECT_LIMIT=DEFAULT` 这类语句时会触发该 panic [#21285](https://github.com/pingcap/tidb/pull/21285)
+    - 修复了分区表对于列的类型检查的一处问题。对于时间和日期类型，错误地使用了字符串方式比较大小 [#21273](https://github.com/pingcap/tidb/pull/21273)
+    - 修复了分区表对于列的类型检查的一处问题。分区表达式的值的类型和分区列的类型必须一致 [#21136](https://github.com/pingcap/tidb/pull/21136)
+    - 修复了哈希分区表对于分区名唯一性检查的问题 [#21257](https://github.com/pingcap/tidb/pull/21257)
+    - 修复非 int 类型的值，插入到哈希分区表后结果不正确的问题 [#21238](https://github.com/pingcap/tidb/pull/21238)
+    - 修复了在部分写入类的场景中，使用了 index join 会遇到非预期报错的问题 [#21249](https://github.com/pingcap/tidb/pull/21249)
+    - 修复了在 CASE WHEN 中 bigint 无符列的值，被错误地转换成有符类型的问题 [#21236](https://github.com/pingcap/tidb/pull/21236)
+    - 修复了 index hash join 和 index merge join 没有考虑 collation 的问题 [#21219](https://github.com/pingcap/tidb/pull/21219)
+    - 修复了分区表在建表和查询时，没有考虑 collation 的问题 [#21181](https://github.com/pingcap/tidb/pull/21181)
+    - 修复了慢日志记录的查询结果可能不全的问题 [#21211](https://github.com/pingcap/tidb/pull/21211)
+    - 修复了一处数据库名大小写处理不当，导致的 `DELETE` 未正确删除数据的问题 [#21206](https://github.com/pingcap/tidb/pull/21206)
+    - 修复了一处执行 DML 语句导致 schema 的内存被覆盖的问题 [#21050](https://github.com/pingcap/tidb/pull/21050)
+    - 修复了使用 join 时，无法查询到合并后的列的问题 [#21021](https://github.com/pingcap/tidb/pull/21021)
+    - 修复了一些 semi join 的查询结果不正确的问题 [#21019](https://github.com/pingcap/tidb/pull/21019)
+    - 修复了表锁对于 update 语句不生效的问题 [#21002](https://github.com/pingcap/tidb/pull/21002)
+    - 修复创建递归的视图，出现栈溢出的问题 [#21001](https://github.com/pingcap/tidb/pull/21001)
+    - 修复了 index merge join 在执行外连接的时候，结果不符合预期的问题 [#20954](https://github.com/pingcap/tidb/pull/20954)
+    - 修复了一处事务问题，该场景下应该返回结果未知，但是却返回了执行失败 [#20925](https://github.com/pingcap/tidb/pull/20925)
+    - 修复 `explain for connection` 无法显示最后一次执行计划的问题 [#21315](https://github.com/pingcap/tidb/pull/21315)
+    - 修复在 RC 隔离级别下，index merge 结果不正确的问题 [#21253](https://github.com/pingcap/tidb/pull/21253)
+    - 修复了由于事务写冲突重试导致的 auto-id 分配失败 [#21079](https://github.com/pingcap/tidb/pull/21079)
+    - 修复了 JSON 数据无法通过 `load data` 无法正确导入到 TiDB 的问题 [#21074](https://github.com/pingcap/tidb/pull/21074)
+    - 修复新增加 enum 类型的列的默认值问题 [#20998](https://github.com/pingcap/tidb/pull/20998)
+    - 对于日期类型的数学计算，保留原始的数据类型信息，修复 `adddata` 函数插入非法值的问题 [#21176](https://github.com/pingcap/tidb/pull/21176)
+    - 修复了部分场景错误地生成了 PointGet 的执行计划，导致执行结果不正确 [#21244](https://github.com/pingcap/tidb/pull/21244)
 
 + TiKV
 
