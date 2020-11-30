@@ -89,13 +89,15 @@ server-memory-quota = 34359738368
 TiDB 内存使用占总内存的比例超过一定阈值时会报警。可以在配置文件中设置 tidb 内存使用占总内存的报警比例。相关配置项为 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio) 。
 
 触发报警的条件分两种：
+
 1. 如果 `server-memory-quota` 被设置，则会以 `server-memory-quota` 为总内存限制。当 tidb-server 内存使用超过 `server-memory-quota × memory-usage-alarm-ratio` 时，触发报警。
 2. 如果 `server-memory-quota` 未被设置，则会以系统内存为总内存限制。当系统内存使用量超过`系统总内存 × memory-usage-alarm-ratio`，则会认为存在 OOM 的风险，触发报警。
 
 当触发报警时，TiDB 会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。触发报警的间隔时间为 10s，只有在内存使用低于阈值超过 10s 后再次超过阈值，报警功能才会再次触发。另外，为了防止输出文件过多，TiDB 只会保留记录的最后 5 组信息。
 
 使用例子：
-1. 配置报警比例为 0.8：
+
+1.配置报警比例为 0.8：
 
 {{< copyable "sql" >}}
 
@@ -104,13 +106,17 @@ mem-quota-query = 34359738368  // 将单条 SQL 内存限制调高，以便于�
 [performance]
 memory-usage-alarm-ratio = 0.8
 ```
-2. 创建单表 `create table t(a int);` 并插入 1000 条数据。
-3. 执行 `explain analyze select * from t t1 join t t1 join t t3 order by t1.a`。该 SQL 会输出 1000000000 条记录，占用巨大的内存，导致 tidb OOM。
-4. 检查 tidb.log 文件，其中会记录系统总内存，系统当前内存使用量，tidb-server 实例内存使用量以及信息记录的目录。
+
+2.创建单表 `create table t(a int);` 并插入 1000 条数据。
+
+3.执行 `explain analyze select * from t t1 join t t1 join t t3 order by t1.a`。该 SQL 会输出 1000000000 条记录，占用巨大的内存，导致 tidb OOM。
+
+4.检查 tidb.log 文件，其中会记录系统总内存，系统当前内存使用量，tidb-server 实例内存使用量以及信息记录的目录。
 
 {{< copyable "sql" >}}
 
 ```sql
 [2020/11/30 15:25:17.252 +08:00] [WARN] [memory_usage_alarm.go:141] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=27142864896] ["tidb-server memory usage"=22417922896] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
 ```
-5. 检查目录，可以得到一组文件,其中包括 `goroutinue+time`、`heap+time`、`running_sql+time` 三个文件。其中 running_sql 文件会以 [`expensive-queries`](/identify-expensive-queries.md) 的形式来记录。
+
+5.检查目录，可以得到一组文件,其中包括 `goroutinue+time`、`heap+time`、`running_sql+time` 三个文件。其中 running_sql 文件会以 [`expensive-queries`](/identify-expensive-queries.md) 的形式来记录。
