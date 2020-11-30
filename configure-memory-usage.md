@@ -90,8 +90,8 @@ TiDB 内存使用占总内存的比例超过一定阈值时会报警。可以在
 
 触发报警的条件分两种：
 
-1. 如果 `server-memory-quota` 被设置，则会以 `server-memory-quota` 为总内存限制。当 tidb-server 内存使用超过 `server-memory-quota × memory-usage-alarm-ratio` 时，触发报警。
-2. 如果 `server-memory-quota` 未被设置，则会以系统内存为总内存限制。当系统内存使用量超过`系统总内存 × memory-usage-alarm-ratio`，则会认为存在 OOM 的风险，触发报警。
+1. 如果 `server-memory-quota` 被设置，则会以 `server-memory-quota` 为总内存限制。当 tidb-server 内存使用超过 `server-memory-quota * memory-usage-alarm-ratio` 时，触发报警。
+2. 如果 `server-memory-quota` 未被设置，则会以系统内存为总内存限制。当系统内存使用量超过`系统总内存 * memory-usage-alarm-ratio`，则会认为存在 OOM 的风险，触发报警。
 
 当触发报警时，TiDB 会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。触发报警的间隔时间为 10s，只有在内存使用低于阈值超过 10s 后再次超过阈值，报警功能才会再次触发。另外，为了防止输出文件过多，TiDB 只会保留记录的最后 5 组信息。
 
