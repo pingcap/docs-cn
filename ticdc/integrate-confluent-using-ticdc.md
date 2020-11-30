@@ -11,7 +11,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
 >
 > 当前该功能为实验特性，请勿在生产环境中使用。
 
-[Confluent Platform](https://docs.confluent.io/current/platform.html) 是一个以 Kafka 为核心的流数据处理平台，可以借助官方或第三方的 sink connector 将数据源连接到关系型或非关系型数据库。
+[Confluent Platform](https://docs.confluent.io/current/platform.html) 是一个以 Apache Kafka 为核心的流数据处理平台，可以借助官方或第三方的 sink connector 将数据源连接到关系型或非关系型数据库。
 
 你可以使用 TiCDC 组件和 Avro 协议来集成 TiDB 和 Confluent Platform。TiCDC 能将数据更改以 Confluent Platform 能识别的格式流式传输到 Kafka。下文详细介绍了集成的操作步骤。
 
