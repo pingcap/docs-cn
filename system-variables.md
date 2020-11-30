@@ -394,6 +394,18 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值: 1
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `0` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
 
+### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值: 0
+- 这个变量用于控制是否开启 `AMEND TRANSACTION` 特性。开启该特性之后，在[悲观事务模式](/pessimistic-transaction.md)下，事务两阶段提交之前，如果该事务相关的表存在并发 DDL 操作和 SCHEMA VERSION 变更，TiDB 会尝试对于该事务进行 amend 操作修正该事务提交内容，使其和最新有效的 SCHEMA VERSION 保持一致，进而提交该事务而不返回 `Information schema is changed` 报错。该特性对于如下并发 DDL 变更生效：
+
+    - add/drop column 类型的 DDL 操作。
+    - modify/change column 类型的 DDL 操作。
+    - add/drop index 类型的 DDL 操作，且操作的索引列不是在事务开启之后新创建。
+    
+目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
+
 ### `tidb_enable_vectorized_expression` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
