@@ -119,4 +119,4 @@ memory-usage-alarm-ratio = 0.8
 [2020/11/30 15:25:17.252 +08:00] [WARN] [memory_usage_alarm.go:141] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=27142864896] ["tidb-server memory usage"=22417922896] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
 ```
 
-5.检查目录，可以得到一组文件,其中包括 `goroutinue+time`、`heap+time`、`running_sql+time` 三个文件。其中 running_sql 文件会以 [`expensive-queries`](/identify-expensive-queries.md) 的形式来记录。
+5.检查信息记录的目录，可以得到一组文件,其中包括 `goroutinue+time`、`heap+time`、`running_sql+time` 三个文件。其中 running_sql 文件会以 [`expensive-queries`](/identify-expensive-queries.md) 的形式来记录。
