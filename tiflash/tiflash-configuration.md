@@ -143,7 +143,7 @@ v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据�
 
 如果节点上有多块相同规格的硬盘，推荐把硬盘目录填到列表 `storage.main.dir` 中，`storage.latest.dir` 列表留空。TiFlash 会在所有存储目录之间分摊 I/O 压力以及进行数据均衡。
 
-如果节点上有多块规格不一致的硬盘，推荐把 I/O 性能较好的硬盘目录配置在 `storage.latest.dir` 中，把 I/O 性能较一般的硬盘目录配置在 `storage.main.dir` 中。例如节点上有一块 NVME-SSD 硬盘加上两块 SATA-SSD 硬盘，你可以把 `storage.latest.dir` 设为 `["/nvme_ssd_a/data/tiflash"]` 以及把 `storage.main.dir` 设为 `["/sata_ssd_b/data/tiflash", "/sata_ssd_c/data/tiflash"]`。TiFlash 会根据两个目录列表分别进行 I/O 压力分摊及数据均衡。注意此情况下，`storage.latest.dir` 中规划的容量大小需要占总容量的约 10%。
+如果节点上有多块规格不一致的硬盘，推荐把 I/O 性能较好的硬盘目录配置在 `storage.latest.dir` 中，把 I/O 性能较一般的硬盘目录配置在 `storage.main.dir` 中。例如节点上有一块 NVME-SSD 硬盘加上两块 SATA-SSD 硬盘，你可以把 `storage.latest.dir` 设为 `["/nvme_ssd_a/data/tiflash"]` 以及把 `storage.main.dir` 设为 `["/sata_ssd_b/data/tiflash", "/sata_ssd_c/data/tiflash"]`。TiFlash 会根据两个目录列表分别进行 I/O 压力分摊及数据均衡。注意此情况下，`storage.latest.dir` 中规划的容量大小需要占总规划容量的约 10%。
 
 > **注意：**
 >
@@ -156,6 +156,6 @@ v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据�
 
 多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/nvme_ssd_a/data/tiflash,/sata_ssd_b/data/tiflash,/sata_ssd_c/data/tiflash`。如果你的节点上有多块硬盘，推荐把性能最好的硬盘目录放在最前面，以更好地利用节点性能。
 
-`path_realtime_mode` 参数默认值为 false，表示数据会在所有的存储目录之间进行均衡，适用于单节点多块相同规格硬盘的部署。
+如果节点上有多块相同规格的硬盘，可以把 `path_realtime_mode` 参数留空（或者把该值明确地设为 `false`）。这表示数据会在所有的存储目录之间进行均衡。但由于最新的数据只会被写入到第一个目录，因此第一个目录所在的硬盘会较其他硬盘繁忙。
 
-`path_relatime_mode` 如果设为 true，且 `path` 配置了多个目录，表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。适用于单个节点上多块 I/O 性能相差较大的硬盘的部署。注意此情况下，第一个目录规划的容量大小需要占总容量的约 10%。
+如果节点上有多块规格不一致的硬盘，推荐把 `path_relatime_mode` 参数设置为 `true`。这表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。注意此情况下，第一个目录规划的容量大小需要占总容量的约 10%。
