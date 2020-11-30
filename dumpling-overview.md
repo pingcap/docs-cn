@@ -81,6 +81,68 @@ For example, you can export all records that match `id < 100` in `test.sbtest1` 
 > - Currently, the `--sql` option can be used only for exporting to CSV files.
 >
 > - Here you need to execute the `select * from <table-name> where id <100` statement on all tables to be exported. If some tables do not have specified fields, the export fails.
+>
+> - Strings and keywords are not distinguished in CSV files. If the imported data is the Boolean type, you need to convert `true` and `false` to `1` and `0`.
+
+### Format of exported files
+
+- `metadata`: The start time of the exported files and the position of the master binary log.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat metadata
+    ```
+
+    ```shell
+    Started dump at: 2020-11-10 10:40:19
+    SHOW MASTER STATUS:
+            Log: tidb-binlog
+            Pos: 420747102018863124
+    Finished dump at: 2020-11-10 10:40:20
+    ```
+
+- `{schema}-schema-create.sql`: The SQL file used to create the schema
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test-schema-create.sql
+    ```
+
+    ```shell
+    CREATE DATABASE `test` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+    ```
+
+- `{schema}.{table}-schema.sql`: The SQL file used to create the table
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test.t1-schema.sql
+    ```
+
+    ```shell
+    CREATE TABLE `t1` (
+      `id` int(11) DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+    ```
+
+- `{schema}.{table}.{0001}.{sql|csv`}: The date source file
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test.t1.0.sql
+    ```
+
+    ```shell
+    /*!40101 SET NAMES binary*/;
+    INSERT INTO `t1` VALUES
+    (1);
+    ```
+
+- `*-schema-view.sql`、`*-schema-trigger.sql`、`*-schema-post.sql`: Other exported files
 
 ### Export data to Amazon S3 cloud storage
 
