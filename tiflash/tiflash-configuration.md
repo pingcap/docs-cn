@@ -32,27 +32,27 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 ```toml
 ## TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
 listen_host = "0.0.0.0"
-## TiFlash tcp 服务端口
+## TiFlash TCP 服务的端口
 tcp_port = 9000
-## TiFlash http 服务端口
+## TiFlash HTTP 服务的端口
 http_port = 8123
 ## 数据块元信息的内存 cache 大小限制，通常不需要修改
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 minmax_index_cache_size = 5368709120
 
-## TiFlash 数据存储路径，如果有多个目录，以英文逗号分隔。
+## TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
 ## 从 v4.0.9 版本开始 path 及 path_realtime_mode 参数不再推荐使用，推荐使用 [storage] 下的配置项代替，在多盘部署的情况下能更好地利用节点性能。
 # path = "/tidb-data/tiflash-9000"
 ## 或
 # path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
-## 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
+## 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，在其他目录存放较旧的数据。
 # path_realtime_mode = false
 
-## TiFlash 临时文件存放路径。默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
+## TiFlash 临时文件的存放路径。默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
 # tmp_path = "/tidb-data/tiflash-9000/tmp"
 
-## 存储路径相关配置， 从 v4.0.9 开始生效
+## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -60,16 +60,16 @@ minmax_index_cache_size = 5368709120
     ## 或
     # dir = [ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]
 
-    ## storage.main.dir 存储目录列表中，每个目录的最大可用容量。
+    ## storage.main.dir 存储目录列表中每个目录的最大可用容量。
     ## * 在未定义配置项，或者列表中全填 0 时，会使用目录所在的硬盘容量
-    ## * 以 byte 为单位，目前不支持如 "10GB" 类似的设置
+    ## * 以 byte 为单位。目前不支持如 "10GB" 的设置
     ## * capacity 列表的长度应当与 dir 长度保持一致
     ## 例如：
     # capacity = [ 10737418240, 10737418240 ]
 
     [storage.latest]
     ## 用于存储最新的数据，大约占总数据量的 10% 以内，需要较高的 IOPS。
-    ## 默认情况可留空。在未配置或者为空列表的情况下，会使用 `storage.main.dir` 的值。
+    ## 默认情况该项可留空。在未配置或者为空列表的情况下，会使用 storage.main.dir 的值。
     # dir = [ ]
     ## storage.latest.dir 存储目录列表中，每个目录的最大可用容量。
     # capacity = [ 10737418240, 10737418240 ]
@@ -135,20 +135,20 @@ minmax_index_cache_size = 5368709120
 
 ### 多盘部署
 
-TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照 [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)
+TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)。
 
 #### 部署的 TiDB 集群版本 v4.0.9 及以上
 
 v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据分布在多盘上。v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据、新数据都分布在多盘上。多盘部署时，推荐使用 `[storage]` 中的参数，以更好地利用节点的 I/O 性能。但下方所述 v4.0.9 版本之前的参数仍然支持。
 
-如果节点上有多块相同规格的硬盘，推荐把硬盘目录填到列表 `storage.main.dir` 中，`storage.latest.dir` 列表留空。TiFlash 会在所有存储目录之间分摊 I/O 压力以及进行数据均衡。
+如果节点上有多块相同规格的硬盘，推荐把硬盘目录填到 `storage.main.dir` 列表中，`storage.latest.dir` 列表留空。TiFlash 会在所有存储目录之间分摊 I/O 压力以及进行数据均衡。
 
-如果节点上有多块规格不一致的硬盘，推荐把 I/O 性能较好的硬盘目录配置在 `storage.latest.dir` 中，把 I/O 性能较一般的硬盘目录配置在 `storage.main.dir` 中。例如节点上有一块 NVME-SSD 硬盘加上两块 SATA-SSD 硬盘，你可以把 `storage.latest.dir` 设为 `["/nvme_ssd_a/data/tiflash"]` 以及把 `storage.main.dir` 设为 `["/sata_ssd_b/data/tiflash", "/sata_ssd_c/data/tiflash"]`。TiFlash 会根据两个目录列表分别进行 I/O 压力分摊及数据均衡。注意此情况下，`storage.latest.dir` 中规划的容量大小需要占总规划容量的约 10%。
+如果节点上有多块规格不同的硬盘，推荐把 I/O 性能较好的硬盘目录配置在 `storage.latest.dir` 中，把 I/O 性能较一般的硬盘目录配置在 `storage.main.dir` 中。例如节点上有一块 NVMe-SSD 硬盘加上两块 SATA-SSD 硬盘，你可以把 `storage.latest.dir` 设为 `["/nvme_ssd_a/data/tiflash"]` 以及把 `storage.main.dir` 设为 `["/sata_ssd_b/data/tiflash", "/sata_ssd_c/data/tiflash"]`。TiFlash 会根据两个目录列表分别进行 I/O 压力分摊及数据均衡。需要注意此情况下，`storage.latest.dir` 中规划的容量大小需要占总规划容量的约 10%。
 
 > **注意：**
 >
-> * [storage] 参数在 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 [storage] 中定义的数据目录不会被 TiUP 纳入管理。
-> * 在 TiFlash 节点改为使用 [storage] 配置后，如果将集群版本降级到低于 v4.0.9，可能导致 TiFlash 部分数据丢失。
+> * `[storage]` 参数从 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 `[storage]` 中定义的数据目录不会被 TiUP 纳入管理。
+> * 在 TiFlash 节点改为使用 `[storage]` 配置后，如果将集群版本降级到低于 v4.0.9，可能导致 TiFlash 部分数据丢失。
 
 #### 部署的 TiDB 集群版本低于 v4.0.9
 
@@ -156,6 +156,6 @@ v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据�
 
 多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/nvme_ssd_a/data/tiflash,/sata_ssd_b/data/tiflash,/sata_ssd_c/data/tiflash`。如果你的节点上有多块硬盘，推荐把性能最好的硬盘目录放在最前面，以更好地利用节点性能。
 
-如果节点上有多块相同规格的硬盘，可以把 `path_realtime_mode` 参数留空（或者把该值明确地设为 `false`）。这表示数据会在所有的存储目录之间进行均衡。但由于最新的数据仍然只会被写入到第一个目录，因此其对应的硬盘会较其他硬盘繁忙。
+如果节点上有多块相同规格的硬盘，可以把 `path_realtime_mode` 参数留空（或者把该值明确地设为 `false`）。这表示数据会在所有的存储目录之间进行均衡。但由于最新的数据仍然只会被写入到第一个目录，因此该目录所在的硬盘会较其他硬盘繁忙。
 
 如果节点上有多块规格不一致的硬盘，推荐把 `path_relatime_mode` 参数设置为 `true`，并且把性能最好的硬盘目录放在 `path` 参数内的最前面。这表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。注意此情况下，第一个目录规划的容量大小需要占总容量的约 10%。
