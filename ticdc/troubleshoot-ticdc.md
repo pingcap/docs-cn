@@ -65,7 +65,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235
 >
 > + TiCDC 从 4.0.9 版本起支持 Unified Sorter 排序引擎。
 > + TiCDC（4.0 发布版本）还不支持动态修改排序引擎。
-> + 目前 Unified Sorter 排序引擎为实验特性，在数据表较多 (>= 100) 时可能出现性能问题，影响同步速度，故不建议在生产环境中长期使用。开启 Unified Sorter 前请保证各 TiCDC 节点机器上有足够硬盘空间。 如果积攒的数据总量有可能超过 1TB，不建议使用 TiCDC 进行同步。
+> + 目前 Unified Sorter 排序引擎为实验特性，在数据表较多 (>= 100) 时可能出现性能问题，影响同步速度，故不建议在生产环境中长期使用。开启 Unified Sorter 前请保证各 TiCDC 节点机器上有足够硬盘空间。如果积攒的数据总量有可能超过 1 TB，则不建议使用 TiCDC 进行同步。
 
 ## 如何处理 TiCDC 创建同步任务或同步到 MySQL 时遇到 `Error 1298: Unknown or incorrect time zone: 'UTC'` 错误？
 

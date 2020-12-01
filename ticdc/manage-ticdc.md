@@ -85,11 +85,11 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 - `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
-- `--sort-engine`: 指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。支持 `memory`/`unified`/`file`，区别如下：
+- `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `memory`/`unified`/`file`：
 
-    - `memory`: 在内存中进行排序，在生产环境中建议优先选择。
-    - `unified`: v4.0.9 开始的实验特性，优先使用内存排序，内存不足则自动使用硬盘暂存数据。不建议用于生产环境，除非因内存不足 `memory` 无法正常工作。
-    - `file`: 完全使用磁盘暂存数据。**已经停止维护，不建议使用。**
+    - `memory`：在内存中进行排序。生产环境中建议优先选择 `memory`。
+    - `unified`：自 v4.0.9 引入的实验特性，优先使用内存排序。内存不足时则自动使用硬盘暂存数据。**不建议用于生产环境**，除非因内存不足 `memory` 无法正常使用。
+    - `file`：完全使用磁盘暂存数据。**已经停止维护，不建议使用。**
     
 - `--config`：指定 changefeed 配置文件。
 
