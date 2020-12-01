@@ -39,15 +39,6 @@ wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
 sha256sum -c tidb-{version}-linux-amd64.sha256
 ```
 
-对于 v2.1.0 GA 及以上版本，binlogctl 已经包含在 TiDB 的下载包中，其他版本需要单独下载 binlogctl:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-```
-
 检查文件完整性，返回 ok 则正确：
 
 {{< copyable "shell-regular" >}}
