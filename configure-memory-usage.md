@@ -124,4 +124,4 @@ memory-usage-alarm-ratio = 0.8
 * `memory-usage-alarm-ratio`：表示配置项 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio) 的值
 * `record path`：表示状态文件存放的目录
 
-5.通过访问状态文件所在目录（该示例对应为`/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。 这 3 个文件分别用来记录当时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 running_sql 文件内日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md) 。
+5.通过访问状态文件所在目录（该示例对应为 `/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录当时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 running_sql 文件内日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md) 。
