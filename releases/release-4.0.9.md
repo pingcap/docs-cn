@@ -52,7 +52,35 @@ TiDB 版本：4.0.9
 
 + Tools
 
-    -
+    + Backup & Restore (BR)
+
+        - BR 不再接受存在歧义的 `--checksum false` 命令行参数，正确用法为 `--checksum=false` [#588](https://github.com/pingcap/br/pull/588)
+        - 支持暂时性地调整 PD 的参数 [#596](https://github.com/pingcap/br/pull/596)
+        - 支持恢复数据表的统计信息 [#622](https://github.com/pingcap/br/pull/622)
+        - 对于可恢复错误 `read index not ready` 和 `proposal in merging mode` 进行重试 [#626](https://github.com/pingcap/br/pull/626)
+
+    + TiCDC
+
+        - 添加对 TiKV 开启 hibernate region 的告警规则 [#1120](https://github.com/pingcap/ticdc/pull/1120)
+        - 优化 schema storage 的内存使用 [#1127](https://github.com/pingcap/ticdc/pull/1127)
+
+    + Dumpling
+
+        - 对导出失败部分的数据进行重试 [#182](https://github.com/pingcap/dumpling/pull/182)
+        - 支持同时设置 `-F` 和 `-r` 两个参数 [#177](https://github.com/pingcap/dumpling/pull/177)
+        - 默认不导出系统表 [#194](https://github.com/pingcap/dumpling/pull/194)
+        - 在设置 `--transactional-consistency` 参数时支持重建 MySQL 链接 [#199](https://github.com/pingcap/dumpling/pull/199)
+
+    + TiDB Lightning
+
+        - 默认不恢复系统表 [#459](https://github.com/pingcap/tidb-lightning/pull/459)
+        - 支持为 auto random 的主键设置默认值 [#457](https://github.com/pingcap/tidb-lightning/pull/457)
+        - 完善 local 模式下分裂 region 的精度 [#422](https://github.com/pingcap/tidb-lightning/pull/422)
+        - 支持给 `tikv-importer.region-split-size`, `mydumper.read-block-size`, `mydumper.batch-size` and `mydumper.max-region-size` 设置可读的参数，比如 "2.5 GiB" [#471](https://github.com/pingcap/tidb-lightning/pull/471)
+
+    + TiDB Binlog
+
+        - 在写下游出错时给 drainer 设置非零退出码 [#1012](https://github.com/pingcap/tidb-binlog/pull/1012)
 
 ## Bug 修复
 
@@ -100,4 +128,20 @@ TiDB 版本：4.0.9
 
 + Tools
 
-    -
+    + Backup & Restore (BR)
+
+        - 修复因 S3 secret access keys 中存在特殊字符而导致失败的问题 [#617](https://github.com/pingcap/br/pull/617)
+
+    + TiCDC
+
+        - 修复某些异常情况下存在多个 Owner 的问题 [#1104](https://github.com/pingcap/ticdc/pull/1104)
+
+    + Dumpling
+
+        - 修复在某些情况下 MySQL 链接关闭导致 Dumpling 卡住的问题 [#190](https://github.com/pingcap/dumpling/pull/190)
+
+    + TiDB Lightning
+
+        - 修复使用错误信息编码 key 的问题 [#437](https://github.com/pingcap/tidb-lightning/pull/437)
+        - 修复 GC life time ttl 不生效的问题 [#448](https://github.com/pingcap/tidb-lightning/pull/448)
+        - 修复手动关闭时可能出现的 panic 问题 [#484](https://github.com/pingcap/tidb-lightning/pull/484)
