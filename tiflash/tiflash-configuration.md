@@ -30,18 +30,18 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 ### 配置文件 tiflash.toml
 
 ```toml
-# tiflash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
+## TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
 listen_host = "0.0.0.0"
-## tiflash tcp 服务端口
+## TiFlash tcp 服务端口
 tcp_port = 9000
-## tiflash http 服务端口
+## TiFlash http 服务端口
 http_port = 8123
 ## 数据块元信息的内存 cache 大小限制，通常不需要修改
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 minmax_index_cache_size = 5368709120
 
-## tiflash 数据存储路径，如果有多个目录，以英文逗号分隔。
+## TiFlash 数据存储路径，如果有多个目录，以英文逗号分隔。
 ## 从 v4.0.9 版本开始 path 及 path_realtime_mode 参数不再推荐使用，推荐使用 [storage] 下的配置项代替，在多盘部署的情况下能更好地利用节点性能。
 # path = "/tidb-data/tiflash-9000"
 ## 或
@@ -49,7 +49,7 @@ minmax_index_cache_size = 5368709120
 ## 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
 # path_realtime_mode = false
 
-## tiflash 临时文件存放路径。默认使用 [path 或者 storage.latest 的第一个目录] + "/tmp"
+## TiFlash 临时文件存放路径。默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
 # tmp_path = "/tidb-data/tiflash-9000/tmp"
 
 ## 存储路径相关配置， 从 v4.0.9 开始生效
@@ -76,12 +76,12 @@ minmax_index_cache_size = 5368709120
 
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
-    service_addr =  tiflash raft 服务 和 coprocessor 服务监听地址
+    service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
 
 # 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
 [flash.flash_cluster]
     refresh_interval = master 定时刷新有效期
-    update_rule_interval = master 定时向 tidb 获取 tiflash 副本状态并与 pd 交互
+    update_rule_interval = master 定时向 tidb 获取 TiFlash 副本状态并与 pd 交互
     master_ttl = master 选出后的有效期
     cluster_manager_path = pd buddy 所在目录的绝对路径
     log = pd buddy log 路径
@@ -97,8 +97,8 @@ minmax_index_cache_size = 5368709120
 
 [logger]
     level = log 级别（支持 trace、debug、information、warning、error）
-    log = tiflash log 路径
-    errorlog = tiflash error log 路径
+    log = TiFlash log 路径
+    errorlog = TiFlash error log 路径
     size = 单个日志文件的大小
     count = 最多保留日志文件个数
 
@@ -123,7 +123,7 @@ minmax_index_cache_size = 5368709120
 
 ```toml
 [server]
-    engine-addr = 外部访问 tiflash coprocessor 服务的地址
+    engine-addr = 外部访问 TiFlash coprocessor 服务的地址
 [raftstore]
     ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     snap-handle-pool-size = 2
