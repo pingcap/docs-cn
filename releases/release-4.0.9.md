@@ -31,7 +31,7 @@ TiDB 版本：4.0.9
 
 + TiFlash
 
-    -
+    - 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力
 
 ## 优化提升
 
@@ -49,7 +49,10 @@ TiDB 版本：4.0.9
 
 + TiFlash
 
-    -
+    - 降低 Replica read 时的延迟
+    - 优化 TiFlash 的错误信息
+    - 优化在大数据量下，对缓存数据大小的限制
+    - 添加正在处理的 coprocessor 请求数量的 metrics
 
 + Tools
 
@@ -96,7 +99,8 @@ TiDB 版本：4.0.9
 
 + TiFlash
 
-    -
+    - 修复 `INFORMATION_SCHEMA.CLUSTER_HARDWARE` 中可能包含未被使用的硬盘信息的问题
+    - 修复 Delta cache 内存占用量估算偏少的问题
 
 + Tools
 
