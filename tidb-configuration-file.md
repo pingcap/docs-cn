@@ -287,7 +287,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **注意：**
 >
-> `server-memory-quota` 目前为实验性特性，不建议生产环境使用。
+> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
 
 ### `memory-usage-alarm-ratio`
 
