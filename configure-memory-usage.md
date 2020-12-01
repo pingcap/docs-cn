@@ -68,7 +68,7 @@ set @@tidb_mem_quota_query = 8 << 10;
 
 ## 如何配置 tidb-server 实例使用内存的阈值
 
-可以在配置文件中设置 tidb-server 实例的 memory-quota。相关配置项为 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota) 。
+可以在配置文件中设置 tidb-server 实例的内存使用阈值。相关配置项为 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota) 。
 
 例如，配置 tidb-server 实例内存使用总量，将其设置成为 32GB:
 
@@ -79,23 +79,18 @@ set @@tidb_mem_quota_query = 8 << 10;
 server-memory-quota = 34359738368
 ```
 
-当 tidb 内存使用到达 32GB 时，其需要继续申请内存的 sql 会被 cancel。
+在该配置先，当 tidb-server 实例内存使用到达 32GB 时，正在执行的 SQL 会被随机强制 kill，直至 tidb-server 实例内存使用下降到 32GB 以下。被强制 kill 的 SQL 会向客户端返回 `Out Of Global Memory Limit!` 错误信息。
 > **注意：**
 >
 > `server-memory-quota` 默认值为 0，表示无内存限制。
 
-## 如何配置 tidb-server 实例使用内存的报警功能
+## tidb-server 内存占用过高时的报警
 
-TiDB 内存使用占总内存的比例超过一定阈值时会报警。可以在配置文件中设置 tidb 内存使用占总内存的报警比例。相关配置项为 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio) 。
+默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 80% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过配置项 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio) 进行设置。具体报警规则请参考该配置项的说明部分。
 
-触发报警的条件分两种：
+注意，当触发一次报警后，只有在内存使用率连续低于阈值超过 10 秒并再次达到阈值时，才会再次触发报警。此外，为避免报警时产生的状态文件积累过多，目前只会保留最近 5 次报警时所生成的状态文件。
 
-1. 如果 `server-memory-quota` 被设置，则会以 `server-memory-quota` 为总内存限制。当 tidb-server 内存使用超过 `server-memory-quota * memory-usage-alarm-ratio` 时，触发报警。
-2. 如果 `server-memory-quota` 未被设置，则会以系统内存为总内存限制。当系统内存使用量超过`系统总内存 * memory-usage-alarm-ratio`，触发报警。
-
-当触发报警时，TiDB 会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。触发报警的间隔时间为 10s，只有在内存使用低于阈值超过 10s 后再次超过阈值，报警功能才会再次触发。另外，为了防止输出文件过多，TiDB 只会保留记录的最后 5 组信息。
-
-使用例子：
+下例通过构造一个占用大量内存的 SQL 触发报警，以对该功能进行示例：
 
 1.配置报警比例为 0.8：
 
@@ -119,4 +114,13 @@ memory-usage-alarm-ratio = 0.8
 [2020/11/30 15:25:17.252 +08:00] [WARN] [memory_usage_alarm.go:141] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=27142864896] ["tidb-server memory usage"=22417922896] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
 ```
 
-5.检查信息记录的目录，可以得到一组文件,其中包括 `goroutinue+time`、`heap+time`、`running_sql+time` 三个文件。其中 running_sql 文件会以 [`expensive-queries`](/identify-expensive-queries.md) 的形式来记录。
+字段含义：
+
+* `is server-memory-quota set`：表示配置项 server-memory-quota 是否被设置。
+* `system memory total`：表示当前系统的总内存。
+* `system memory usage`：表示当前系统的内存使用情况。
+* `tidb-server memory usage`：表示 tidb-server 的内存使用情况。
+* `memory-usage-alarm-ratio`：表示 memory-usage-alarm-ratio 配置项的值。
+* `record path`：表示状态文件存放的目录。
+
+5.通过访问状态文件所在目录（该示例对应为/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record），可以得到一组文件，其中包括 `goroutinue+time`、`heap+time`、`running_sql+time` 3 个文件。 这 3 个文件分别用来记录当时的 gouroutine、heap、running_sql 信息。其中 running_sql 文件内日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md) 。
