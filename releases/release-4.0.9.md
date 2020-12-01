@@ -37,7 +37,16 @@ TiDB 版本：4.0.9
 
 + TiKV
 
-    -
+    - 添加标记以跟踪 split 命令的来源 [#8936](https://github.com/tikv/tikv/pull/8936)
+    - 支持动态更改配置 `pessimistic-txn.pipelined` [#9100](https://github.com/tikv/tikv/pull/9100)
+    - 减少运行 BR 和 Lightning 时对系统的性能影响 [#9098](https://github.com/tikv/tikv/pull/9098)
+    - 添加关于 ingesting sst 报错的 metrics [#9096](https://github.com/tikv/tikv/pull/9096)
+    - 如果还有副本在追日志，则停止进入休眠状态 [#9093](https://github.com/tikv/tikv/pull/9093)
+    - 提高悲观锁流水线的成功率 [#9086](https://github.com/tikv/tikv/pull/9086)
+    - 调整配置 `apply-max-batch-size` 和 `store-max-batch-size` 的值为 1024 [#9020](https://github.com/tikv/tikv/pull/9020)
+    - 添加 `max-background-flushes` 配置 [#8947](https://github.com/tikv/tikv/pull/8947)
+    - 对 storage 模块默认开启统一线程池 [#8887](https://github.com/tikv/tikv/pull/8887)
+    - 默认关闭 Rocksdb consistency check 以提高性能 [#9029](https://github.com/tikv/tikv/pull/9029)
 
 + PD
 
@@ -115,7 +124,14 @@ TiDB 版本：4.0.9
 
 + TiKV
 
-    -
+    - 修复当列个数大于 255 时，下推返回错误结果集的问题 [#9131](https://github.com/tikv/tikv/pull/9131)
+    - 修复网络隔离时 merge 可能会导致数据丢失的问题 [#9108](https://github.com/tikv/tikv/pull/9108)
+    - 修复使用 latin1 字符集时，analyze 语句会导致 panic 的问题 [#9082](https://github.com/tikv/tikv/pull/9082)
+    - 修复类型转换中将数字转成时间会得到错误结果的问题 [#9031](https://github.com/tikv/tikv/pull/9031)
+    - 修复当开启加密时无法使用 lightning 导入数据的问题 [#8995](https://github.com/tikv/tikv/pull/8995)
+    - 修复使用 0.0.0.0 时 `advertise-status-addr` 异常的问题 [#9036](https://github.com/tikv/tikv/pull/9036)
+    - 修复当事务删除 key 时却报 key 已存在的问题 [#8930](https://github.com/tikv/tikv/pull/8930)
+    - 修复 Rocksdb cache 映射错误导致的数据错误问题 [#9029](https://github.com/tikv/tikv/pull/9029)
 
 + PD
 
