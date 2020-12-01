@@ -971,5 +971,5 @@ explain select * from t where age=5;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
-- 这个变量用于控制读数据算子是否开启动态内存控制功能。读数据算子默认情况下会最大启动 [15](/system-variables.md#tidb_distsql_scan_concurrency) 个线程读取数据，当单条 sql 的内存使用每超过阈值一次，我们会停下一个线程。
-- 当读取线程只剩 1 个的时候且单条 sql 内存使用继续超过内存阈值时候，我们会触发其它的内存控制行为，如[落盘](/tidb-configuration-file.md#spilled-file-encryption-method)。
+- 这个变量用于控制读数据算子是否开启动态内存控制功能。读数据算子默认情况下会最大启动 [tidb_disql_scan_concurrency](/system-variables.md#tidb_distsql_scan_concurrency) 个线程读取数据，当单条 sql 的内存使用每超过 [tidb_mem_quota_query](/system-variables.md#tidb_mem_quota_query) 一次，读数据算子会停下一个线程。
+- 当读数据算子的线程只剩 1 个的时候且单条 sql 内存使用继续超过 [tidb_mem_quota_query](/system-variables.md#tidb_mem_quota_query) 时候，该 sql 会触发其它的内存控制行为，如[落盘](/tidb-configuration-file.md#spilled-file-encryption-method)。
