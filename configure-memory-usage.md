@@ -79,7 +79,7 @@ set @@tidb_mem_quota_query = 8 << 10;
 server-memory-quota = 34359738368
 ```
 
-在该配置先，当 tidb-server 实例内存使用到达 32GB 时，正在执行的 SQL 会被随机强制 kill，直至 tidb-server 实例内存使用下降到 32GB 以下。被强制 kill 的 SQL 会向客户端返回 `Out Of Global Memory Limit!` 错误信息。
+在该配置下，当 tidb-server 实例内存使用到达 32GB 时，正在执行的 SQL 会被随机强制 kill，直至 tidb-server 实例内存使用下降到 32GB 以下。被强制 kill 的 SQL 会向客户端返回 `Out Of Global Memory Limit!` 错误信息。
 > **注意：**
 >
 > `server-memory-quota` 默认值为 0，表示无内存限制。
