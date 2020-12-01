@@ -104,9 +104,9 @@ memory-usage-alarm-ratio = 0.8
 
 2.创建单表 `create table t(a int);` 并插入 1000 条数据。
 
-3.执行 `explain analyze select * from t t1 join t t1 join t t3 order by t1.a`。该 SQL 会输出 1000000000 条记录，占用巨大的内存，导致 tidb OOM。
+3.执行 `select * from t t1 join t t1 join t t3 order by t1.a`。该 SQL 会输出 1000000000 条记录，占用巨大的内存，进而触发报警。
 
-4.检查 tidb.log 文件，其中会记录系统总内存，系统当前内存使用量，tidb-server 实例内存使用量以及信息记录的目录。
+4.检查 tidb.log 文件，其中会记录系统总内存，系统当前内存使用量，tidb-server 实例内存使用量以及状态文件所在目录。
 
 {{< copyable "sql" >}}
 
@@ -116,11 +116,11 @@ memory-usage-alarm-ratio = 0.8
 
 字段含义：
 
-* `is server-memory-quota set`：表示配置项 server-memory-quota 是否被设置。
-* `system memory total`：表示当前系统的总内存。
-* `system memory usage`：表示当前系统的内存使用情况。
-* `tidb-server memory usage`：表示 tidb-server 的内存使用情况。
-* `memory-usage-alarm-ratio`：表示 memory-usage-alarm-ratio 配置项的值。
-* `record path`：表示状态文件存放的目录。
+* `is server-memory-quota set`：表示配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota) 是否被设置
+* `system memory total`：表示当前系统的总内存
+* `system memory usage`：表示当前系统的内存使用量
+* `tidb-server memory usage`：表示 tidb-server 的内存使用量
+* `memory-usage-alarm-ratio`：表示 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio) 配置项的值
+* `record path`：表示状态文件存放的目录
 
-5.通过访问状态文件所在目录（该示例对应为/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record），可以得到一组文件，其中包括 `goroutinue+time`、`heap+time`、`running_sql+time` 3 个文件。 这 3 个文件分别用来记录当时的 gouroutine、heap、running_sql 信息。其中 running_sql 文件内日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md) 。
+5.通过访问状态文件所在目录（该示例对应为`/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。 这个 3 个文件分别用来记录当时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 running_sql 文件内日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md) 。
