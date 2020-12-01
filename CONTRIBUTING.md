@@ -93,6 +93,10 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 >
 > 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版）、v4.0、v3.1、v3.0 以及 v2.1。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
 
+### 第 0 步：签署 Contributor License Agreement
+
+首次在本仓库提 PR 时，请务必签署 [Contributor License Agreement](https://cla-assistant.io/pingcap/docs-cn) (CLA)，否则我们将无法合并你的 PR。成功签署 CLA 后，可继续进行后续操作。
+
 ### 第 1 步：Fork pingcap/docs-cn 仓库
 
 1. 打开 pingcap/docs-cn 项目[仓库](https://help.github.com/articles/github-glossary/#repository)：<https://github.com/pingcap/docs-cn>
