@@ -49,7 +49,7 @@ minmax_index_cache_size = 5368709120
 ## 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
 # path_realtime_mode = false
 
-## tiflash 临时文件存放路径
+## tiflash 临时文件存放路径。默认使用 [path 或者 storage.latest 的第一个目录] + "/tmp"
 # tmp_path = "/tidb-data/tiflash-9000/tmp"
 
 ## 存储路径相关配置， 从 v4.0.9 开始生效
