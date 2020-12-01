@@ -37,15 +37,6 @@ To check the file integrity, execute the following command. If the result is OK,
 sha256sum -c tidb-{version}-linux-amd64.sha256
 ```
 
-For TiDB v2.1.0 GA or later versions, `binlogctl` is integrated into the TiDB download package. For earlier versions, you need to download binlogctl separately:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
-```
-
 To check the file integrity, execute the following command. If the result is OK, the file is correct.
 
 {{< copyable "shell-regular" >}}
