@@ -967,8 +967,6 @@ explain select * from t where age=5;
 3 rows in set (0.00 sec)
 ```
 
-tidb_distsql_scan_concurrency
-
 ### `tidb_enable_rate_limit_action`
 
 - 作用域：SESSION | GLOBAL
