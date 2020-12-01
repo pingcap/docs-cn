@@ -967,8 +967,12 @@ explain select * from t where age=5;
 3 rows in set (0.00 sec)
 ```
 
+tidb_distsql_scan_concurrency
+
 ### `tidb_enable_rate_limit_action`
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
-- 这个变量用于控制读数据算子是否开启动态内存控制功能，当启动时，单条查询语句将会在内存使用量超过 `@@tidb_mem_quota_query` 时启动 Ratelimit OOMAction 以读数据算子防止内存使用量继续上升。
+- 这个变量用于控制读数据算子是否开启动态内存控制功能。读数据算子默认情况下会最大启动 15 个[线程](/system-variables.md#tidb_distsql_scan_concurrency) 读取数据，当单条 sql 的内存使用每超过阈值一次，我们会停下一个线程。
+- 当读取线程只剩 1 个的时候且单条 sql 内存使用继续超过内存阈值时候，我们会触发其它的内存控制行为，如[落盘](/tidb-configuration-file.md#spilled-file-encryption-method)。
+
