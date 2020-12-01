@@ -83,7 +83,7 @@ server-memory-quota = 34359738368
 > **注意：**
 >
 > `server-memory-quota` 默认值为 0，表示无内存限制。
-> `server-memory-quota` 目前为实验性特性，不建议生产环境使用。
+> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
 
 ## tidb-server 内存占用过高时的报警
 
