@@ -178,7 +178,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
 
 #### 使用 `--where` 选项筛选数据
 
-默认情况下，除了系统数据库中的表之外，Dumpling 会导出整个数据库的表。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。
+默认情况下，Dumpling 会导出排除系统数据库（包括 `mysql` 、`sys` 、`INFORMATION_SCHEMA` 、`PERFORMANCE_SCHEMA`、`METRICS_SCHEMA` 和 `INSPECTION_SCHEMA`）外所有其他数据库。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。
 
 {{< copyable "shell-regular" >}}
 
