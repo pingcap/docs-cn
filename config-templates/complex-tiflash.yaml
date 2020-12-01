@@ -102,13 +102,13 @@ tiflash_servers:
     # flash_proxy_status_port: 20292
     # metrics_port: 8234
     # deploy_dir: /tidb-deploy/tiflash-9000
-    ## The `data_dir` will be overwrite if you defined storage.main.dir configurations in `config` section.
+    ## The `data_dir` will be overwritten if you define `storage.main.dir` configurations in the `config` section.
     # data_dir: /tidb-data/tiflash-9000
     # numa_node: "0,1"
     # # The following configs are used to overwrite the `server_configs.tiflash` values.
     # config:
     #   logger.level: "info"
-    #   ## Multi-disk deployment examples since v4.0.9
+    #   ## Multi-disk deployment introduced in v4.0.9
     #   ## Check https://docs.pingcap.com/tidb/stable/tiflash-configuration#multi-disk-deployment for more details.
     #   ## Example1:
     #   # storage.main.dir: [ "/nvme_ssd0_512/tiflash", "/nvme_ssd1_512/tiflash" ]

@@ -42,7 +42,7 @@ mark_cache_size = 5368709120
 minmax_index_cache_size = 5368709120
 
 ## TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
-## 从 v4.0.9 版本开始 path 及 path_realtime_mode 参数不再推荐使用，推荐使用 [storage] 下的配置项代替，在多盘部署的情况下能更好地利用节点性能。
+## 从 v4.0.9 版本开始，不推荐使用 path 及 path_realtime_mode 参数。推荐使用 [storage] 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
 # path = "/tidb-data/tiflash-9000"
 ## 或
 # path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
@@ -63,7 +63,7 @@ minmax_index_cache_size = 5368709120
     ## storage.main.dir 存储目录列表中每个目录的最大可用容量。
     ## * 在未定义配置项，或者列表中全填 0 时，会使用目录所在的硬盘容量
     ## * 以 byte 为单位。目前不支持如 "10GB" 的设置
-    ## * capacity 列表的长度应当与 dir 长度保持一致
+    ## * capacity 列表的长度应当与 dir 列表长度保持一致
     ## 例如：
     # capacity = [ 10737418240, 10737418240 ]
 
@@ -137,22 +137,22 @@ minmax_index_cache_size = 5368709120
 
 TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)。
 
-#### 部署的 TiDB 集群版本 v4.0.9 及以上
+#### TiDB 集群版本为 v4.0.9 及以上
 
-v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据分布在多盘上。v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据、新数据都分布在多盘上。多盘部署时，推荐使用 `[storage]` 中的参数，以更好地利用节点的 I/O 性能。但下方所述 v4.0.9 版本之前的参数仍然支持。
+TiDB v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据和新数据都分布在多盘上。多盘部署时，推荐使用 `[storage]` 中的参数，以更好地利用节点的 I/O 性能。但 TiFlash 仍然支持 [TiDB 集群版本低于 v4.0.9](#tidb-集群版本低于-v409) 中的参数。
 
 如果节点上有多块相同规格的硬盘，推荐把硬盘目录填到 `storage.main.dir` 列表中，`storage.latest.dir` 列表留空。TiFlash 会在所有存储目录之间分摊 I/O 压力以及进行数据均衡。
 
 如果节点上有多块规格不同的硬盘，推荐把 I/O 性能较好的硬盘目录配置在 `storage.latest.dir` 中，把 I/O 性能较一般的硬盘目录配置在 `storage.main.dir` 中。例如节点上有一块 NVMe-SSD 硬盘加上两块 SATA-SSD 硬盘，你可以把 `storage.latest.dir` 设为 `["/nvme_ssd_a/data/tiflash"]` 以及把 `storage.main.dir` 设为 `["/sata_ssd_b/data/tiflash", "/sata_ssd_c/data/tiflash"]`。TiFlash 会根据两个目录列表分别进行 I/O 压力分摊及数据均衡。需要注意此情况下，`storage.latest.dir` 中规划的容量大小需要占总规划容量的约 10%。
 
-> **注意：**
+> **警告：**
 >
 > * `[storage]` 参数从 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 `[storage]` 中定义的数据目录不会被 TiUP 纳入管理。
 > * 在 TiFlash 节点改为使用 `[storage]` 配置后，如果将集群版本降级到低于 v4.0.9，可能导致 TiFlash 部分数据丢失。
 
-#### 部署的 TiDB 集群版本低于 v4.0.9
+#### TiDB 集群版本低于 v4.0.9
 
-通过 `path` (TiUP 中为 `data_dir`) 和 `path_realtime_mode` 这两个参数配置多盘部署。
+TiDB v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据分布在多盘上。通过 `path`（TiUP 中为 `data_dir`）和 `path_realtime_mode` 这两个参数配置多盘部署。
 
 多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/nvme_ssd_a/data/tiflash,/sata_ssd_b/data/tiflash,/sata_ssd_c/data/tiflash`。如果你的节点上有多块硬盘，推荐把性能最好的硬盘目录放在最前面，以更好地利用节点性能。
 
