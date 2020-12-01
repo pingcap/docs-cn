@@ -12,9 +12,15 @@ TiDB 版本：4.0.9
 
 + TiDB
 
-- 添加了对于连接的空闲时间的监控项 [#21301](https://github.com/pingcap/tidb/pull/21301)
+- 废弃配置文件中 `enable-streaming` 配置项 [#21055](https://github.com/pingcap/tidb/pull/21055)
 
 ## 新功能
+
++ TiFlash
+
+    - 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力
+
+## 优化提升
 
 + TiDB
 
@@ -28,16 +34,6 @@ TiDB 版本：4.0.9
     - `explain analyze` 对于 DML 语句正确的显示执行器相关的运行时信息 [#21066](https://github.com/pingcap/tidb/pull/21066)
     - 禁止一条语句中，对主键做出多次不同的修改 [#21113](https://github.com/pingcap/tidb/pull/21113)
     - 添加了对于连接的空闲时间的监控项 [#21301](https://github.com/pingcap/tidb/pull/21301)
-
-+ TiFlash
-
-    - 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力
-
-## 优化提升
-
-+ TiDB
-
-    -
 
 + TiKV
 
