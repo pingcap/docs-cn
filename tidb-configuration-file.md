@@ -146,7 +146,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `level`
 
-+ 指定日志输出的级别, 可选项为 `debug`、`info`、`warn`、`error` 和 `fatal`
++ 指定日志的输出级别, 可选项为 [debug, info, warn, error, fatal]
 + 默认值："info"
 
 ### `format`
