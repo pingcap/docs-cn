@@ -72,7 +72,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：0
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
-### `last_plan_from_binding` <span class="version-mark">从 v4.0 版本开始引入</span>
+### `last_plan_from_binding` <!-- 从 v5.0 版本开始引入 -->
 
 作用域：SESSION
 
