@@ -157,7 +157,7 @@ tiup update cluster
 >        ```yaml
 >          tiflash_servers:
 >            - host: 10.0.1.14
->              data_dir: data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
+>              data_dir: /data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
 >        ```
 
 ## 4. 滚动升级 TiDB 集群
