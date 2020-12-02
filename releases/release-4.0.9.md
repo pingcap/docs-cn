@@ -4,7 +4,7 @@ title: TiDB 4.0.9 Release Notes
 
 # TiDB 4.0.9 Release Notes
 
-发版日期：2020 年 12 月 3 日
+发版日期：2020 年 12 月 10 日
 
 TiDB 版本：4.0.9
 
@@ -52,7 +52,7 @@ TiDB 版本：4.0.9
 
     - TiKV 转变为 Tombstone 状态时检查 TiKV 集群的 Cluster Version [#3213](https://github.com/pingcap/pd/pull/3213)
     - 低版本的 TiKV 不允许强制从 `Tombstone` 状态转为 `Up`[#3206](https://github.com/pingcap/pd/pull/3206)
-    -  升级 Dashboard 版本到 v2020.11.26.1 [#3219](https://github.com/pingcap/pd/pull/3219)
+    - 升级 Dashboard 版本到 v2020.11.26.1 [#3219](https://github.com/pingcap/pd/pull/3219)
 
 + TiFlash
 
