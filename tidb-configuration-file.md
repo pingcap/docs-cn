@@ -284,7 +284,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 >
 > `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
 
-+ tidb-server 实例内存的使用限制，单位为字节。(原配置项 `max-memory` 已被该配置项代替)
++ tidb-server 实例内存的使用限制，单位为字节。<!-- 从 TiDB v5.0 起 -->该配置项完全取代原有的 [`max-memory`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#max-memory)。
 
 + 默认值：0
 + 默认值为 0 表示无内存限制。
