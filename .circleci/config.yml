@@ -57,6 +57,14 @@ jobs:
       - checkout
 
       - run:
+          name: install sdk and awscli
+          command: |
+            sudo pip3 install boto3
+            sudo pip3 install awscli
+            printf "%s\n" ${AWS_ACCESS_KEY} ${AWS_SECRET_KEY} ${AWS_REGION} "json" | aws configure
+
+
+      - run:
           name: "Special Check for Golang User - YOUR TAB SUCK"
           command: grep -RP '\t' *  | tee | grep '.md' && exit 1; echo ok
 
@@ -70,7 +78,7 @@ jobs:
 
       # echo "222.222.95.49 uc.qbox.me": adds a new host
       - deploy:
-          name: "Publish PDF"
+          name: "Publish PDF to Qiniu and S3"
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
