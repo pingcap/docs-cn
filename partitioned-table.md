@@ -163,7 +163,56 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### List 分区
 
-List 分区和 Range 分区有很多相似的地方，主要的不同在于，List 分区中，每个
+List 分区和 Range 分区有很多相似的地方，主要的不同在于，List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合内。每个分区定义的数据集合是任意个值，但不能有重叠，通过使用 `VALUES IN` 进行定义。
+
+下列场景中，假设你要创建一个人事记录的表：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE NOT NULL DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+);
+```
+
+假如一共有 20 个商店分别属于 4 个地区中，如下表所示：
+
+| Region  | Store ID Numbers     |
+| ------- | -------------------- |
+| North   | 3, 5, 6, 9, 17       |
+| East    | 1, 2, 10, 11, 19, 20 |
+| West    | 4, 12, 13, 14, 18    |
+| Central | 7, 8, 15, 16         |
+
+如果想把同一个地区的商店数据都存储在同一个分区里面，你可以根据 `store_id` 来创建 List 分区：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE NOT NULL DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+PARTITION BY LIST(store_id) (
+    PARTITION pNorth VALUES IN (3,5,6,9,17),
+    PARTITION pEast VALUES IN (1,2,10,11,19,20),
+    PARTITION pWest VALUES IN (4,12,13,14,18),
+    PARTITION pCentral VALUES IN (7,8,15,16)
+);
+```
+
+
 
 ### Hash 分区
 
