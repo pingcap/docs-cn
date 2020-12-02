@@ -78,6 +78,7 @@ server-memory-quota = 34359738368
 ```
 
 在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，正在执行的 SQL 语句会被随机强制终止，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Global Memory Limit!` 错误信息。
+
 > **警告：**
 >
 > `server-memory-quota` 默认值为 0，表示无内存限制。
