@@ -72,6 +72,8 @@ set @@tidb_mem_quota_query = 8 << 10;
 
 例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
 
+{{< copyable "" >}}
+
 ```toml
 [performance]
 server-memory-quota = 34359738368
@@ -81,8 +83,8 @@ server-memory-quota = 34359738368
 
 > **警告：**
 >
-> `server-memory-quota` 默认值为 0，表示无内存限制。
-> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+> + `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+> + `server-memory-quota` 默认值为 0，表示无内存限制。
 
 ## tidb-server 内存占用过高时的报警
 
@@ -94,11 +96,13 @@ server-memory-quota = 34359738368
 
 1. 配置报警比例为 `0.8`：
 
-```toml
-mem-quota-query = 34359738368  // 将单条 SQL 内存限制调高，以便于构造占用内存较大的 SQL
-[performance]
-memory-usage-alarm-ratio = 0.8
-```
+    {{< copyable "" >}}
+
+    ```toml
+    mem-quota-query = 34359738368  // 将单条 SQL 内存限制调高，以便于构造占用内存较大的 SQL
+    [performance]
+    memory-usage-alarm-ratio = 0.8
+    ```
 
 2. 创建单表 `CREATE TABLE t(a int);` 并插入 1000 行数据。
 
@@ -106,17 +110,17 @@ memory-usage-alarm-ratio = 0.8
 
 4. 检查 `tidb.log` 文件，其中会记录系统总内存、系统当前内存使用量、tidb-server 实例的内存使用量以及状态文件所在目录。
 
-```
-[2020/11/30 15:25:17.252 +08:00] [WARN] [memory_usage_alarm.go:141] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=27142864896] ["tidb-server memory usage"=22417922896] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
-```
+    ```
+    [2020/11/30 15:25:17.252 +08:00] [WARN] [memory_usage_alarm.go:141] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=27142864896] ["tidb-server memory usage"=22417922896] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
+    ```
 
-以上 Log 字段的含义如下：
+    以上 Log 字段的含义如下：
 
-* `is server-memory-quota set`：表示配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota) 是否被设置
-* `system memory total`：表示当前系统的总内存
-* `system memory usage`：表示当前系统的内存使用量
-* `tidb-server memory usage`：表示 tidb-server 实例的内存使用量
-* `memory-usage-alarm-ratio`：表示配置项 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio) 的值
-* `record path`：表示状态文件存放的目录
+    * `is server-memory-quota set`：表示配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota) 是否被设置
+    * `system memory total`：表示当前系统的总内存
+    * `system memory usage`：表示当前系统的内存使用量
+    * `tidb-server memory usage`：表示 tidb-server 实例的内存使用量
+    * `memory-usage-alarm-ratio`：表示配置项 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio) 的值
+    * `record path`：表示状态文件存放的目录
 
-5. 通过访问状态文件所在目录（该示例中的目录为 `/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录报警时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 `running_sql` 文件内的日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md) 。
+5. 通过访问状态文件所在目录（该示例中的目录为 `/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录报警时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 `running_sql` 文件内的日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md)。
