@@ -50,7 +50,9 @@ TiDB 版本：4.0.9
 
 + PD
 
-    -
+    - TiKV 转变为 Tombstone 状态时检查 TiKV 集群的 Cluster Version [#3213](https://github.com/pingcap/pd/pull/3213)
+    - 低版本的 TiKV 不允许强制从 `Tombstone` 状态转为 `Up`[#3206](https://github.com/pingcap/pd/pull/3206)
+    -  升级 Dashboard 版本到 v2020.11.26.1 [#3219](https://github.com/pingcap/pd/pull/3219)
 
 + TiFlash
 
@@ -135,7 +137,9 @@ TiDB 版本：4.0.9
 
 + PD
 
-    -
+    - 修复在特殊情况下 Placement rule 指定的 leader 绑定不生效的问题 [#3208](https://github.com/pingcap/pd/pull/3208)
+    - 修复 `trace-region-flow` 在配置更新时被置为 `false`的问题 [#3120](https://github.com/pingcap/pd/pull/3120)
+    - 修复特殊情况下 safepoint 有无限时 TTL 的问题. [#3143](https://github.com/pingcap/pd/pull/3143)
 
 + TiFlash
 
