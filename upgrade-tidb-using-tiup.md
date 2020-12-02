@@ -159,7 +159,7 @@ After the import is complete, you can check the current cluster status by execut
 >    ```yaml
 >      tiflash_servers:
 >            - host: 10.0.1.14
->              data_dir: data/tiflash-11315 # Modify it to the `path` value of the TiFlash configuration file
+>              data_dir: /data/tiflash-11315 # Modify it to the `path` value of the TiFlash configuration file
 >    ```
 
 ## Perform a rolling upgrade to the TiDB cluster
