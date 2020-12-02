@@ -123,7 +123,7 @@ To disable the system swap, execute the following command:
 {{< copyable "shell-regular" >}}
 
 ```bash
-echo "vm.swappiness = 0">> /etc/sysctl.conf 
+echo "vm.swappiness = 0">> /etc/sysctl.conf
 swapoff -a && swapon -a
 sysctl -p
 ```
@@ -189,7 +189,7 @@ To check whether the NTP service is installed and whether it synchronizes with t
     Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
     ```
 
-2. Run the `ntpstat` command to check whether the NTP service synchronizes with the NTP server. 
+2. Run the `ntpstat` command to check whether the NTP service synchronizes with the NTP server.
 
     > **Note:**
     >
@@ -240,6 +240,145 @@ sudo yum install ntp ntpdate && \
 sudo systemctl start ntpd.service && \
 sudo systemctl enable ntpd.service
 ```
+
+## Check and disable THP
+
+It is **NOT** recommended to use Transparent Huge Pages (THP) for database applications, because databases often have sparse rather than continuous memory access patterns. If high-level memory fragmentation is serious, a higher latency will occur when THP pages are allocated. If the direct compaction is enabled for THP, the CPU usage will surge. Therefore, it is recommended to disable THP.
+
+Take the following steps to check whether THP is disabled. If not, follow the steps to disable it:
+
+1. Execute the following command to see whether THP is enabled or disabled. If `[always] madvise never` is output, THP is enabled.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat /sys/kernel/mm/transparent_hugepage/enabled
+    ```
+
+    ```
+    [always] madvise never
+    ```
+
+2. Execute the `grubby` command to see the default kernel version:
+
+    > **Note:**
+    >
+    > Before you execute `grubby`, you should first install the `grubby` package.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    grubby --default-kernel
+    ```
+
+    ```bash
+    /boot/vmlinuz-3.10.0-957.el7.x86_64
+    ```
+
+3. Execute `grubby --update-kernel` to modify the kernel configuration:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
+    ```
+
+    > **Note:**
+    >
+    > `--update-kernel` is followed by the actual default kernel version.
+
+4. Execute `grubby --info` to see the modified default kernel configuration:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
+    ```
+
+    > **Note:**
+    >
+    > `--info` is followed by the actual default kernel version.
+
+    ```bash
+    index=0
+    kernel=/boot/vmlinuz-3.10.0-957.el7.x86_64
+    args="ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet LANG=en_US.UTF-8 transparent_hugepage=never"
+    root=/dev/mapper/centos-root
+    initrd=/boot/initramfs-3.10.0-957.el7.x86_64.img
+    title=CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
+    ```
+
+5. Execute `reboot` to reboot the machine or modify the current kernel configuration:
+
+    - To reboot the machine for the configuration change above to take effect, execute `reboot`:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        reboot
+        ```
+
+    - If you do not want to reboot the machine, modify the current kernel configuration to take effect immediately:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        echo never > /sys/kernel/mm/transparent_hugepage/enabled
+        echo never > /sys/kernel/mm/transparent_hugepage/defrag
+        ```
+
+6. Check the default kernel configuration that has taken effect after reboot or modification. If `always madvise [never]` is output, THP is disabled.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat /sys/kernel/mm/transparent_hugepage/enabled
+    ```
+
+    ```bash
+    always madvise [never]
+    ```
+
+7. If THP is still enabled, use tuned or ktune (two tools used for dynamic kernel debugging) to modify the THP configuration. Take the following steps:
+
+    1. Activate tuned:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tuned-adm active
+        ```
+
+        ```bash
+        Current active profile: virtual-guest
+        ```
+
+    2. Create a new custom profile:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        mkdir /etc/tuned/virtual-guest-no-thp
+        vi /etc/tuned/virtual-guest-no-thp/tuned.conf
+        ```
+
+        ```bash
+        [main]
+        include=virtual-guest
+
+        [vm]
+        transparent_hugepages=never
+        ```
+
+    3. Apply the new custom profile:
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tuned-adm profile virtual-guest-no-thp
+        ```
+
+    4. Check again whether THP is disabled.
 
 ## Manually configure the SSH mutual trust and sudo without password
 
