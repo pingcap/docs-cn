@@ -42,7 +42,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `server.end-point-slow-log-threshold`
 
-+ endpoint请求处理慢日志时长阈值。
++ endpoint 请求处理慢日志时长阈值。
 + 默认值：1s
 + 最小值：1ms
 
