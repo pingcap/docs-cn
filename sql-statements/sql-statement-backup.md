@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-backup/']
 
 `BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
 
-执行 `BACKUP` 需要 `SUPER` 权限。此外，执行备份的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读或写权限。
+执行 `BACKUP` 需要 `SUPER` 权限。此外，执行备份的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读和写权限。
 
 `BACKUP` 语句开始执行后将会加锁，直到整个备份任务完成、失败或取消。因此，执行 `BACKUP` 时需要准备一个持久的连接。如需取消任务，可执行 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句。
 
@@ -57,7 +57,7 @@ BACKUP DATABASE `test` TO 'local:///mnt/backup/2020/04/';
 1 row in set (58.453 sec)
 ```
 
-上述示例中，`test` 数据库被备份到本地，数据以 SST 文件的形式存储在分布于所有 TiDB 和 TiKV 节点的 `/mnt/backup/2020/04/` 目录中。
+上述示例中，`test` 数据库被备份到本地，数据以 SST 文件的形式存储在分布于所有 TiKV 节点的 `/mnt/backup/2020/04/` 目录中。
 
 输出结果的第一行描述如下：
 
