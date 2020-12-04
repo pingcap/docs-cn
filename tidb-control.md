@@ -68,7 +68,7 @@ Use `tidb-ctl schema -h` to get usage details. The `schema` command itself has t
 `tidb-ctl` has the following connection-related global options:
 
 - `--host`: TiDB Service address (default 127.0.0.1)
-- `--port`: TiDB Service port (default 10080)
+- `--port`: TiDB status port (default 10080)
 - `--pdhost`: PD Service address (default 127.0.0.1)
 - `--pdport`: PD Service port (default 2379)
 - `--ca`: The CA file path used for the TLS connection
@@ -148,9 +148,9 @@ For example, the table ID of `mysql.stat_meta` is `21`. You can use `tidb-ctl sc
  "collate": "utf8mb4_bin",
   ...
 }
-``` 
+```
 
-Like the `in` subcommand, if you do not want to use the default TiDB service address and port, use the `--host` and `--port` options to specify the host and port.
+Like the `in` subcommand, if you do not want to use the default TiDB service address and status port, use the `--host` and `--port` options to specify the host and port.
 
 #### The `base64decode` command
 
