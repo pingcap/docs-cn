@@ -178,7 +178,7 @@ When you back up data using Dumpling, explicitly specify the `--s3.region` param
 
 #### Use the `--where` option to filter data
 
-By default, Dumpling exports the tables of the entire database except the tables in the system databases. You can use `--where <SQL where expression>` to select the records to be exported.
+By default, Dumpling exports all databases except system databases (including `mysql`, `sys`, `INFORMATION_SCHEMA`, `PERFORMANCE_SCHEMA`, `METRICS_SCHEMA`, and `INSPECTION_SCHEMA`). You can use `--where <SQL where expression>` to select the records to be exported.
 
 {{< copyable "shell-regular" >}}
 
