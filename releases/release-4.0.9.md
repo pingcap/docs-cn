@@ -145,6 +145,7 @@ TiDB 版本：4.0.9
 
     - 修复 `INFORMATION_SCHEMA.CLUSTER_HARDWARE` 中可能包含未被使用的硬盘信息的问题
     - 修复 Delta cache 内存占用量估算偏少的问题
+    - 修复由线程统计信息引起的内存泄露问题
 
 + Tools
 
