@@ -196,3 +196,8 @@ upload-speed-limit = "100MB"
 2. 删除 `tikv-importer` 所在机器上的整个 “import” 文件目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
+
+## TiDB Lightning 报错 could not find first pair, this shouldn't happen
+
+检查日志中是否存在其他错误，根据相应错误做出调整。比如 too many open files，就需要调大系统文件 fd 个数（建议 1,000,000）。
+
