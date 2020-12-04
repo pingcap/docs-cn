@@ -200,4 +200,3 @@ upload-speed-limit = "100MB"
 ## TiDB Lightning 报错 could not find first pair, this shouldn't happen
 
 检查日志中是否存在其他错误，根据相应错误做出调整。比如 too many open files，就需要调大系统文件 fd 个数（建议 1,000,000）。
-
