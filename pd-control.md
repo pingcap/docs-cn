@@ -964,7 +964,7 @@ Encoding 格式示例：
 >> scheduler config evict-leader-scheduler        // v4.0.0 起, 展示该调度具体在哪些 store 上
 >> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
->> scheduler remove grant-leader-scheduler-1      // 把对应的 scheduler 删掉
+>> scheduler remove grant-leader-scheduler-1      // 把对应的 scheduler 删掉，`-1` 对应 store-id
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
 >> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器 
