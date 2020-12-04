@@ -42,9 +42,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `server.end-point-slow-log-threshold`
 
-+ endpoint 请求慢日志时长阈值。
++ endpoint 下推查询请求输出慢日志的阈值，处理时间超过阈值后会输出慢日志。
 + 默认值：1s
-+ 最小值：1ms
++ 最小值：0
 
 ### `server.snap-max-write-bytes-per-sec`
 
