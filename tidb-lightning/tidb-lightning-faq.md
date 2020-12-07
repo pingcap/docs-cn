@@ -199,4 +199,4 @@ upload-speed-limit = "100MB"
 
 ## TiDB Lightning 报错 could not find first pair, this shouldn't happen
 
-检查日志中是否存在其他错误，根据相应错误做出调整。比如 too many open files，就需要调大系统文件 fd 个数（建议 1,000,000）。
+检查日志中是否存在其他错误，并根据错误作出相应调整。比如对 `too many open files` 错误，就需要调大系统文件的描述符个数（建议 1000000 个）。
