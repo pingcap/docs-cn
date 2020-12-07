@@ -33,4 +33,4 @@ fetch.message.max.bytes=1073741824
 
 ## TiDB Binlog 同步中发现数据丢失
 
-需要确认所有 TiDB 实例均开启 Binlog，并且运行状态正常，如果是 > 3.0 集群，可以使用 curl {TiDB_IP}:{STATUS_PORT}/info/all 确认所有 TiDB 实例的 Binlog 状态。
+需要确认所有 TiDB 实例均开启了 TiDB Binlog，并且运行状态正常。如果集群版本大于 v3.0，可以使用 `curl {TiDB_IP}:{STATUS_PORT}/info/all` 命令确认所有 TiDB 实例上的 TiDB Binlog 状态。
