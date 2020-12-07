@@ -154,7 +154,7 @@ The following are descriptions of parameters and parameter values that can be co
 
 #### Integrate TiCDC with Kafka Connect (Confluent Platform)
 
-> **Note:**
+> **Warning:**
 >
 > This is still an experimental feature. Do **NOT** use it in a production environment.
 

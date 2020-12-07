@@ -92,7 +92,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 ## `tikv_gc_scan_lock_mode` (**experimental feature**)
 
-> **Note:**
+> **Warning:**
 >
 > Green GC is still an experimental feature. It is recommended **NOT** to use it in the production environment.
 

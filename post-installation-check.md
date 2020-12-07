@@ -14,7 +14,7 @@ This section describes how to check the TiDB cluster status using [TiDB Dashboar
 
 ### Use TiDB Dashboard
 
-> **Note:**
+> **Warning:**
 >
 > TiDB Dashboard is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
 

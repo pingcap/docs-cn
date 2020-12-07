@@ -120,7 +120,7 @@ To disable Titan, you can configure the `rocksdb.defaultcf.titan.blob-run-mode` 
 
 To disable Titan, set `blob-run-mode = "fallback"` and perform a full compaction using tikv-ctl. After that, check the monitoring metrics, confirm that the blob file size decreases to `0`. Then you can set `rocksdb.titan.enabled` to `false` and restart TiKV.
 
-> **Note:**
+> **Warning:**
 >
 > Disabling Titan is an experimental feature. It is **NOT** recommended to use it if not necessary.
 
