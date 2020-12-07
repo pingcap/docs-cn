@@ -12,13 +12,14 @@ Use `SHOW BACKUPS` to query `BACKUP` tasks and use `SHOW RESTORES` to query `RES
 
 ## Synopsis
 
-**ShowBRIEStmt:**
+```ebnf+diagram
+ShowBRIEStmt ::=
+    "SHOW" ("BACKUPS" | "RESTORES") ShowLikeOrWhere?
 
-![ShowBRIEStmt](/media/sqlgram/ShowBRIEStmt.png)
-
-**ShowLikeOrWhereOpt:**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## Examples
 

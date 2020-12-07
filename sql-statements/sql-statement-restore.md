@@ -14,9 +14,9 @@ The `RESTORE` statement uses the same engine as the [BR tool](/br/backup-and-res
 * When a full restore is being performed, the tables being restored should not already exist, because existing data might be overridden and causes inconsistency between the data and indices.
 * When an incremental restore is being performed, the tables should be at the exact same state as the `LAST_BACKUP` timestamp when the backup is created.
 
-Running `RESTORE` requires `SUPER` privilege. Additionally, both the TiDB node executing the backup and all TiKV nodes in the cluster must have read permission from the destination.
+Running `RESTORE` requires `SUPER` privilege. Additionally, both the TiDB node executing the restore and all TiKV nodes in the cluster must have read permission from the destination.
 
-The `RESTORE` statement is blocking, and will finish only after the entire backup task is finished, failed, or canceled. A long-lasting connection should be prepared for running `RESTORE`. The task can be canceled using the [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) statement.
+The `RESTORE` statement is blocking, and will finish only after the entire restore task is finished, failed, or canceled. A long-lasting connection should be prepared for running `RESTORE`. The task can be canceled using the [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) statement.
 
 Only one `BACKUP` and `RESTORE` task can be executed at a time. If a `BACKUP` or `RESTORE` task is already running on the same TiDB server, the new `RESTORE` execution will wait until all previous tasks are done.
 
@@ -24,21 +24,23 @@ Only one `BACKUP` and `RESTORE` task can be executed at a time. If a `BACKUP` or
 
 ## Synopsis
 
-**RestoreStmt:**
+```ebnf+diagram
+RestoreStmt ::=
+    "RESTORE" BRIETables "FROM" stringLit RestoreOption*
 
-![RestoreStmt](/media/sqlgram/RestoreStmt.png)
+BRIETables ::=
+    "DATABASE" ( '*' | DBName (',' DBName)* )
+|   "TABLE" TableNameList
 
-**BRIETables:**
+RestoreOption ::=
+    "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+|   "CONCURRENCY" '='? LengthNum
+|   "CHECKSUM" '='? Boolean
+|   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
 
-![BRIETables](/media/sqlgram/BRIETables.png)
-
-**RestoreOption:**
-
-![RestoreOption](/media/sqlgram/RestoreOption.png)
-
-**Boolean:**
-
-![Boolean](/media/sqlgram/Boolean.png)
+Boolean ::=
+    NUM | "TRUE" | "FALSE"
+```
 
 ## Examples
 
