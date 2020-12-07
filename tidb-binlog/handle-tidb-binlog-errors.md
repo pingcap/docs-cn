@@ -31,6 +31,6 @@ fetch.message.max.bytes=1073741824
 
 解决方法：可以使用 [binlogctl 工具](/tidb-binlog/binlog-control.md)查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。
 
-## Binlog 同步中发现数据丢失
+## TiDB Binlog 同步中发现数据丢失
 
 需要确认所有 TiDB 实例均开启 Binlog，并且运行状态正常，如果是 > 3.0 集群，可以使用 curl {TiDB_IP}:{STATUS_PORT}/info/all 确认所有 TiDB 实例的 Binlog 状态。
