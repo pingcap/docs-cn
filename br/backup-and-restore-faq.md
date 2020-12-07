@@ -76,7 +76,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 ## 使用 BR 恢复备份数据后，SQL 查询报错 `region is unavailable`
 
-如果 BR 备份时集群有 TiFlash，恢复时会将 TiFlash 信息存进 TableInfo。此时如果恢复集群没有 TiFlash，则会报相关错误。TiDB 将在 [#21254](https://github.com/pingcap/tidb/issues/21254) 修复。
+如果 BR 备份的集群有 TiFlash，恢复时会将 TiFlash 信息存进 `TableInfo`。此时如果恢复的集群没有 TiFlash，则会报该错误。计划在未来版本中修复该错误。
 
 ## BR 是否支持原地全量恢复到历史的某个备份？
 
