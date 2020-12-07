@@ -78,6 +78,6 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 如果 BR 备份的集群有 TiFlash，恢复时会将 TiFlash 信息存进 `TableInfo`。此时如果恢复的集群没有 TiFlash，则会报该错误。计划在未来版本中修复该错误。
 
-## BR 是否支持原地全量恢复到历史的某个备份？
+## BR 是否支持就地 (in-place) 全量恢复某个历史备份？
 
 不支持。
