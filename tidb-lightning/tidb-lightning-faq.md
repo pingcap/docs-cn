@@ -197,6 +197,6 @@ upload-speed-limit = "100MB"
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
 
-## TiDB Lightning 报错 could not find first pair, this shouldn't happen
+## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
 
 检查日志中是否存在其他错误，并根据错误作出相应调整。比如对 `too many open files` 错误，就需要调大系统文件的描述符个数（建议 1000000 个）。
