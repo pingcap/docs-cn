@@ -20,9 +20,9 @@ aliases: ['/docs-cn/dev/tidb-binlog-deployment-topology/']
 
 ### 拓扑模版
 
-[简单 TiDB Binlog 配置模板（MySQL 下游）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tidb-binlog.yaml)
+[简单 TiDB Binlog 配置模板（下游为 MySQL）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tidb-binlog.yaml)
 
-[简单 TiDB Binlog 配置模板（file 下游）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-file-binlog.yaml)
+[简单 TiDB Binlog 配置模板（下游为 file）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-file-binlog.yaml)
 
 [详细 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tidb-binlog.yaml)
 
@@ -40,11 +40,11 @@ aliases: ['/docs-cn/dev/tidb-binlog-deployment-topology/']
 
 - `drainer_servers.config.syncer.db-type`
 
-    binlog 的下游类型，目前支持 `mysql`，`tidb`，`kafka`，`file`。
+    binlog 的下游类型，目前支持 `mysql`、`tidb`、`kafka` 和 `file`。
 
 - `drainer_servers.config.syncer.to`
 
-    binlog 的下游配置，根据 `db-type` 的不同，该选项可配置下游数据库连接参数、Kafka 连接参数、文件保存路径。参见 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#syncerto)
+    binlog 的下游配置。根据 `db-type` 的不同，该选项可配置下游数据库的连接参数、Kafka 的连接参数、文件保存路径。详细说明可参见 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#syncerto)。
 
 > **注意：**
 >
