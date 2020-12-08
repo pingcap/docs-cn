@@ -77,6 +77,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1000
 + 最小值：1
 
+### `server.end-point-slow-log-threshold`
+
++ endpoint 下推查询请求输出慢日志的阈值，处理时间超过阈值后会输出慢日志。
++ 默认值：1s
++ 最小值：0
+
 ### `server.end-point-request-max-handle-duration`
 
 + endpoint 下推查询请求处理任务最长允许的时长。
