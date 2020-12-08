@@ -42,7 +42,7 @@ aliases: ['/docs-cn/dev/tidb-binlog-deployment-topology/']
 
 - `drainer_servers.config.syncer.to`
 
-    binlog 的下游配置，根据 `db-type` 的不同，该选项可配置下游数据库连接参数、Kafka 连接参数、文件保存路径。参见 [TiDB Binlog 配置说明](/tidb-binlog-configuration-file.md#syncerto)
+    binlog 的下游配置，根据 `db-type` 的不同，该选项可配置下游数据库连接参数、Kafka 连接参数、文件保存路径。参见 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#syncerto)
 
 > **注意：**
 >
