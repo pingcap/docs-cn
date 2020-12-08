@@ -117,7 +117,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 > - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区。
 > - 如果还没有 `TZ` 环境变量，会从 TiCDC server 运行机器的默认时区。
 
-## 创建同步任务时，不指定 `--config` 配置文件，默认的行为是什么
+## 创建同步任务时，不指定 `--config` 配置文件，默认的行为是什么?
 
 在使用 `cdc cli changefeed create` 指令时不指定 `--config` 参数，TiCDC 会按照以下默认行为创建同步任务：
 
