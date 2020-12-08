@@ -43,7 +43,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction，具体参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。
 
-> **注意：**
+> **警告：**
 >
 > 在不开启 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan（误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。如需要关闭 Titan，参考[关闭 Titan](#关闭-titan实验功能) 一节。
 
@@ -120,7 +120,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 当需要关闭 Titan 时，可以设置 `blob-run-mode = "fallback"`，并通过 tikv-ctl 执行全量 compaction。此后通过监控确认 blob file size 降到 `0` 以后，可以更改 `rocksdb.titan.enabled = false` 并重启 TiKV。
 
-> **注意：**
+> **警告：**
 >
 > 关闭 Titan 是实验性功能，非必要不建议使用。
 
