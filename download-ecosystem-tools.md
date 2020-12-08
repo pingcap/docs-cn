@@ -18,7 +18,7 @@ If you want to download the latest version of [TiDB Binlog](/tidb-binlog/tidb-bi
 
 > **Note:**
 >
-> `{version}` in the above download link indicates the version number of TiDB. For example, the download link for `v3.0.5` is `https://download.pingcap.org/tidb-v3.0.5-linux-amd64.tar.gz`.
+> `{version}` in the above download link indicates the version number of TiDB. For example, the download link for `v4.0.8` is `https://download.pingcap.org/tidb-v4.0.8-linux-amd64.tar.gz`.
 
 ## TiDB Lightning
 
@@ -30,7 +30,7 @@ Download [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) by using t
 
 > **Note:**
 >
-> `{version}` in the above download link indicates the version number of TiDB Lightning. For example, the download link for `v3.0.5` is `https://download.pingcap.org/tidb-toolkit-v3.0.5-linux-amd64.tar.gz`.
+> `{version}` in the above download link indicates the version number of TiDB Lightning. For example, the download link for `v4.0.8` is `https://download.pingcap.org/tidb-toolkit-v4.0.8-linux-amd64.tar.gz`.
 
 ## BR (backup and restore)
 
@@ -42,7 +42,7 @@ Download [BR](/br/backup-and-restore-tool.md) by using the download link in the 
 
 > **Note:**
 >
-> `{version}` in the above download link indicates the version number of BR. For example, the download link for `v3.1.0-beta` is `http://download.pingcap.org/tidb-toolkit-v3.1.0-beta-linux-amd64.tar.gz`.
+> `{version}` in the above download link indicates the version number of BR. For example, the download link for `v4.0.8-beta` is `http://download.pingcap.org/tidb-toolkit-v4.0.8-beta-linux-amd64.tar.gz`.
 
 ## TiDB DM (Data Migration)
 
@@ -54,7 +54,7 @@ Download [DM](https://docs.pingcap.com/tidb-data-migration/v1.0/overview) by usi
 
 > **Note:**
 >
-> `{version}` in the above download link indicates the version number of DM. For example, the download link for `v1.0.1` is `https://download.pingcap.org/dm-v1.0.1-linux-amd64.tar.gz`. You can check the published DM versions in the [DM Release](https://github.com/pingcap/dm/releases) page.
+> `{version}` in the above download link indicates the version number of DM. For example, the download link for `v1.0.6` is `https://download.pingcap.org/dm-v1.0.6-linux-amd64.tar.gz`. You can check the published DM versions in the [DM Release](https://github.com/pingcap/dm/releases) page.
 
 ## Dumpling
 
