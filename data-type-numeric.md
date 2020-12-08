@@ -145,7 +145,8 @@ FLOAT(p) [UNSIGNED] [ZEROFILL]
 
 > **警告：**
 >
-> 与在 MySQL 中一样，`FLOAT` 数据类型存储近似值。对于货币之类的精确值，建议使用 `DECIMAL` 类型。
+> 1. 与在 MySQL 中一样，`FLOAT` 数据类型存储近似值。对于货币之类的精确值，建议使用 `DECIMAL` 类型。
+> 2. 在 TiDB 中，`FLOAT` 数据类型默认的精度是 8 位，与 MySQL 不同。在 MySQL 中，`FLOAT` 数据类型默认的精度是 6 位。
 
 #### `DOUBLE` 类型
 
