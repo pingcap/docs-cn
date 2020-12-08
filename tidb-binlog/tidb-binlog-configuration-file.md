@@ -227,7 +227,7 @@ Default value: `mysql`
 
 #### ignore-txn-commit-ts
 
-* Specifies the commit timestamp at which the binlog is ignored.
+* Specifies the commit timestamp at which the binlog is ignored, such as `[416815754209656834, 421349811963822081]`.
 * Default value: `[]`
 
 #### ignore-schemas
