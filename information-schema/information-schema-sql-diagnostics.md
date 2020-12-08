@@ -6,7 +6,7 @@ aliases: ['/docs-cn/stable/system-tables/system-table-sql-diagnostics/','/docs-c
 
 # SQL 诊断
 
-> **注意：**
+> **警告：**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 

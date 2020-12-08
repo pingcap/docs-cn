@@ -6,7 +6,7 @@ aliases: ['/docs-cn/stable/dynamic-config/','/docs-cn/v4.0/dynamic-config/']
 
 # 在线修改集群配置
 
-> **注意：**
+> **警告：**
 >
 > 该功能目前是实验性阶段，不建议在生产环境中使用。
 

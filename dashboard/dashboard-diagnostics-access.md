@@ -5,7 +5,7 @@ aliases: ['/docs-cn/stable/dashboard/dashboard-diagnostics-access/','/docs-cn/v4
 
 # TiDB Dashboard 集群诊断页面
 
-> **注意：**
+> **警告：**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
