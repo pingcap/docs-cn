@@ -40,6 +40,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：60s
 + 最小值：1s
 
+### `server.end-point-slow-log-threshold`
+
++ endpoint 下推查询请求输出慢日志的阈值，处理时间超过阈值后会输出慢日志。
++ 默认值：1s
++ 最小值：0
+
 ### `server.snap-max-write-bytes-per-sec`
 
 + 处理 snapshot 时最大允许使用的磁盘带宽。
