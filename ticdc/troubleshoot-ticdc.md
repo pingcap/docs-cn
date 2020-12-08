@@ -255,4 +255,4 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 * 只存在 `"u"` 字段则为 INSERT 事件。
 * 只存在 `"d"` 字段则为 DELETE 事件。
 
-更多信息请参考 [Open protocol Row Changed Event 格式定义](/ticdc/ticdc-open-protocol.md#Row-Changed-Event)。
+更多信息请参考 [Open protocol Row Changed Event 格式定义](/ticdc/ticdc-open-protocol.md#row-changed-event)。
