@@ -961,7 +961,7 @@ Encoding 格式示例：
 >> scheduler show                                 // 显示所有的 schedulers
 >> scheduler add grant-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 调度到 store 1
 >> scheduler add evict-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
->> scheduler config evict-leader-scheduler        // v4.0.0 起, 展示该调度具体在哪些 store 上
+>> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度具体在哪些 store 上
 >> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
 >> scheduler remove grant-leader-scheduler-1      // 把对应的 scheduler 删掉，`-1` 对应 store-id
