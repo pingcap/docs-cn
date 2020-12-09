@@ -248,8 +248,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 ## TiCDC Open protocol 如何区分 `INSERT` 和 `UPDATE` 事件？
 
-如果没有开启 old value，则无法区分 INSERT 和 UPDATE 事件。
-如果开启了 old value，可以通过 `"p"` 字段判断事件类型：
+如果没有开启 old value，TiCDC open protocol 无法区分 `INSERT` 和 `UPDATE` 事件。如果开启了 old value，则可以通过 `"p"` 字段判断事件类型：
 
 * 同时存在 `"p"`、`"u"` 字段则为 UPDATE 事件。
 * 只存在 `"u"` 字段则为 INSERT 事件。
