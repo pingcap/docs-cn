@@ -19,14 +19,14 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
 
 在创建镜像之后，可以通过 `tiup mirror` 相关命令来给镜像添加组件或删除组件，无论是通过何种方式更新镜像，TiUP 都不会从镜像中删除任何文件，而是通过增加文件并分配新版本号的方式更新。
 
-## 本地镜像
+## 镜像结构
 
 一个典型的镜像目录结构如下：
 
 ```
 + <mirror-dir>                                  # 镜像根目录
 |-- root.json                                   # 镜像根证书
-|-- {1..N}.root.json                            # 镜像根证书
+|-- {2..N}.root.json                            # 镜像根证书
 |-- {1..N}.index.json                           # 组件/用户索引
 |-- {1..N}.{component}.json                     # 组件元信息
 |-- {component}-{version}-{os}-{arch}.tar.gz    # 组件二进制包
@@ -34,6 +34,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
 |-- timestamp.json                              # 镜像最新时间戳
 |--+ commits                                    # 镜像更新日志（可删除）
    |--+ commit-{ts1..tsN}
+      |-- {N}.root.json
       |-- {N}.{component}.json
       |-- {N}.index.json
       |-- {component}-{version}-{os}-{arch}.tar.gz 
@@ -46,7 +47,12 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
    |-- {hash}-timestamp.json                    # 时间戳私钥
 ```
 
-### 镜像根证书
+> **注意: ***
+>
+> 1. commits 目录是在更新镜像过程中产生的日志，用于回滚镜像，磁盘空间不足时可以定期删除旧的文件夹
+> 2. keys 文件夹中存放的私钥较敏感，建议单独妥善保管
+
+### 根证书
 
 在 TiUP 镜像中，根证书用于存放其他元信息文件的公钥，每次获取到任何元信息文件（*.json）都需要根据其文件类型（root，index，snapshot，timestamp）在当前已安装的 root.json 中找到对应的公钥，然后用公钥验证其签名是否合法。
 
@@ -96,7 +102,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
 }
 ```
 
-## 索引
+### 索引
 
 索引文件记录了镜像中所有的组件已经组件的所有者信息。
 
@@ -160,3 +166,147 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
     }
 }
 ```
+
+### 组件
+
+组件元信息文件记录了特定组件的平台以及版本信息。
+
+其格式如下：
+
+```
+{
+    "signatures": [                                             # 该文件的签名
+        {
+            "keyid": "{id-of-index-key-1}",                     # 第一个参与签名的 key 的 ID
+            "sig": "{signature-by-index-key-1}",                # 该私钥对此文件 signed 部分签名的结果
+        },
+        ...
+        {
+            "keyid": "{id-of-root-key-N}",                      # 第 N 个参与签名私钥的 ID
+            "sig": "{signature-by-root-key-N}"                  # 该私钥对此文件 signed 部分签名的结果
+        }
+    ],
+    "signed": {
+        "_type": "component",                                   # 指示该文件类型
+        "description": "{description-of-the-component}",        # 该组件的描述信息
+        "expires": "{expiration-date-of-this-file}",            # 该文件的过期时间，过期后客户端会拒绝此文件
+        "id": "{component-id}",                                 # 该组件的 id，具有全局唯一性
+        "nightly": "{nightly-cursor}",                          # nightly 游标，值为最新的 nightly 的版本号（如 v5.0.0-nightly-20201209）
+        "platforms": {                                          # 该组件支持的平台（如 darwin/amd64，linux/arm64 等）
+            "{platform-pair-1}": {
+                "{version-1}": {                                # Semantic Version 版本号（如 v1.0.0 等）
+                    "dependencies": null,                       # 用于约定组件之间的依赖关系，该字段尚未使用，固定为 null
+                    "entry": "{entry}",                         # 入口二进制文件位于 tar 包的相对路径
+                    "hashs": {                                  # tar 包的 checksum，我们使用 sha256 和 sha512
+                        "sha256": "{sum-of-sha256}",
+                        "sha512": "{sum-of-sha512}",
+                    },
+                    "length": {length-of-tar},                  # tar 包的长度
+                    "released": "{release-time}",               # 该版本的 release 时间
+                    "url": "{url-of-tar}",                      # tar 包的下载地址
+                    "yanked": {bool}                            # 该版本是否已被禁用
+                }
+            },
+            ...
+            "{platform-pair-N}": {
+                ...
+            }
+        },
+        "spec_version": "0.1.0",                                # 本文件遵循的规范版本，未来变更文件结构需要升级版本号，目前为 0.1.0
+        "version": {N}                                          # 本文件的版本号，每次更新文件需要创建一个新的 {N+1}.{component}.json，并将其 version 设置为 N + 1
+}
+```
+
+### 快照
+
+快照文件记录了各个元文件当前的版本号。
+
+其格式如下：
+
+```
+{
+    "signatures": [                                             # 该文件的签名
+        {
+            "keyid": "{id-of-index-key-1}",                     # 第一个参与签名的 key 的 ID
+            "sig": "{signature-by-index-key-1}",                # 该私钥对此文件 signed 部分签名的结果
+        },
+        ...
+        {
+            "keyid": "{id-of-root-key-N}",                      # 第 N 个参与签名私钥的 ID
+            "sig": "{signature-by-root-key-N}"                  # 该私钥对此文件 signed 部分签名的结果
+        }
+    ],
+    "signed": {
+        "_type": "snapshot",                                    # 指示该文件类型
+        "expires": "{expiration-date-of-this-file}",            # 该文件的过期时间，过期后客户端会拒绝此文件
+        "meta": {                                               # 其他元文件的信息
+            "/root.json": {
+                "length": {length-of-json-file},                # root.json 的长度
+                "version": {version-of-json-file}               # root.json 的 version
+            },
+            "/index.json": {
+                "length": {length-of-json-file},
+                "version": {version-of-json-file}
+            },
+            "/{component-1}.json": {
+                "length": {length-of-json-file},
+                "version": {version-of-json-file}
+            },
+            ...
+            "/{component-N}.json": {
+                ...
+            }
+        },
+        "spec_version": "0.1.0",                                # 本文件遵循的规范版本，未来变更文件结构需要升级版本号，目前为 0.1.0
+        "version": 0                                            # 本文件的版本号，固定为 0
+    }
+```
+
+### 时间戳
+
+时间戳文件记录了当前快照 checksum。
+
+其文件格式如下：
+
+```
+{
+    "signatures": [                                             # 该文件的签名
+        {
+            "keyid": "{id-of-index-key-1}",                     # 第一个参与签名的 key 的 ID
+            "sig": "{signature-by-index-key-1}",                # 该私钥对此文件 signed 部分签名的结果
+        },
+        ...
+        {
+            "keyid": "{id-of-root-key-N}",                      # 第 N 个参与签名私钥的 ID
+            "sig": "{signature-by-root-key-N}"                  # 该私钥对此文件 signed 部分签名的结果
+        }
+    ],
+    "signed": {
+        "_type": "timestamp",                                   # 指示该文件类型
+        "expires": "{expiration-date-of-this-file}",            # 该文件的过期时间，过期后客户端会拒绝此文件
+        "meta": {                                               # snapshot.json 的信息
+            "/snapshot.json": {
+                "hashes": {
+                    "sha256": "{sum-of-sha256}"                 # snapshot.json 的 sha256
+                },
+                "length": {length-of-json-file}                 # snapshot.json 的长度
+            }
+        },
+        "spec_version": "0.1.0",                                # 本文件遵循的规范版本，未来变更文件结构需要升级版本号，目前为 0.1.0
+        "version": {N}                                          # 本文件的版本号，每次更新文件需要覆盖 timestamp.json，并将其 version 设置为 N + 1
+```
+
+## 客户端工作流程
+
+客户端通过以下逻辑保证从镜像下载到的文件是安全的：
+
+- 客户端安装时随 binary 附带了一个 root.json
+- 客户端运行时以已有的 root.json 为基础，做如下操作：
+  1. 获取 root.json 中的 version，记为 N
+  2. 向镜像请求 {N+1}.root.json，若成功，使用 root.json 中记录的公钥验证该文件是否合法
+- 向镜像请求 timestamp.json，并使用 root.json 中记录的公钥验证该文件是否合法
+- 检查 timestamp.json 中记录的 snapshot.json 的 checksum 和本地的 snapshot.json 的 checksum 是否吻合
+  - 若不吻合，则向镜像请求最新的 snapshot.json 并使用 root.json 中记录的公钥验证该文件是否合法
+- 对于 index.json 文件，从 snapshot.json 中获取其版本号 N，并请求 {N}.index.json，然后使用 root.json 中记录的公钥验证该文件是否合法
+- 对于组件（如 tidb.json，tikv.json），从 snapshot.json 中获取其版本号 N，并请求 {N}.{component}.json，然后使用 index.json 中记录的公钥验证该文件是否合法
+- 对于组件 tar 文件，从 {component}.json 中获取其 url 及 checksum，请求 url 得到 tar 包，并验证 checksum 是否正确
