@@ -76,10 +76,73 @@ dumpling \
 ```
 
 > **注意：**
-> 
+>
 > 1. `--sql` 选项暂时仅仅可用于导出 csv 的场景。
 >
 > 2. 这里需要在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+>
+> 3. csv 文件不区分`字符串`与`关键字`。如果导入的数据是 Boolean 类型的 `true` 和 `false`，需要转换为 `1` 和 `0` 。
+
+### 输出文件格式
+
++ `metadata`：此文件包含导出的起始时间，以及 master binary log 的位置。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat metadata
+    ```
+
+    ```shell
+    Started dump at: 2020-11-10 10:40:19
+    SHOW MASTER STATUS:
+            Log: tidb-binlog
+            Pos: 420747102018863124
+
+    Finished dump at: 2020-11-10 10:40:20
+    ```
+
++ `{schema}-schema-create.sql`：创建 schema 的 SQL 文件。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test-schema-create.sql
+    ```
+
+    ```shell
+    CREATE DATABASE `test` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+    ```
+
++ `{schema}.{table}-schema.sql`：创建 table 的 SQL 文件
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test.t1-schema.sql
+    ```
+
+    ```shell
+    CREATE TABLE `t1` (
+      `id` int(11) DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+    ```
+
++ `{schema}.{table}.{0001}.{sql|csv`}：数据源文件
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cat test.t1.0.sql
+    ```
+
+    ```shell
+    /*!40101 SET NAMES binary*/;
+    INSERT INTO `t1` VALUES
+    (1);
+    ```
+
++ `*-schema-view.sql`、`*-schema-trigger.sql`、`*-schema-post.sql`：其他导出文件
 
 ### 导出到 Amazon S3 云盘
 
@@ -115,7 +178,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
 
 #### 使用 `--where` 选项筛选数据
 
-默认情况下，除了系统数据库中的表之外，Dumpling 会导出整个数据库的表。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。
+默认情况下，Dumpling 会导出排除系统数据库（包括 `mysql` 、`sys` 、`INFORMATION_SCHEMA` 、`PERFORMANCE_SCHEMA`、`METRICS_SCHEMA` 和 `INSPECTION_SCHEMA`）外所有其他数据库。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。
 
 {{< copyable "shell-regular" >}}
 
@@ -217,6 +280,14 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 
 即可导出 TSO 为 `417773951312461825` 或 `2020-07-02 17:12:45` 时的 TiDB 历史数据快照。
 
+### 控制导出 TiDB 大表时的内存使用
+
+Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 TiDB 内存溢出 (OOM)，从而使连接中断导出失败。可以通过以下参数减少 TiDB 的内存使用。
+
++ 设置 `--rows` 参数，可以划分导出数据区块减少 TiDB 扫描数据的内存开销，同时也可开启表内并发提高导出效率。
++ 调小 `--tidb-mem-quota-query` 参数到 `8589934592` (8GB) 或更小。该参数默认为 32GB，可控制 TiDB 单条查询语句的内存使用。
++ 调整 `--params "tidb_distsql_scan_concurrency=5"` 参数，即设置导出时的 session 变量 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 从而减少 TiDB scan 操作的并发度。
+
 ### 导出大规模数据时的 TiDB GC 设置
 
 如果导出的 TiDB 版本大于 v4.0.0，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。v4.0.0 之前的版本依然需要手动修改 GC。
@@ -280,3 +351,4 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |
 | --tidb-mem-quota-query | 单条 dumpling 命令导出 SQL 语句的内存限制，单位为 byte，默认为 32 GB | 34359738368 |
+| --params | 为需导出的数据库连接指定 session 变量，可接受的格式: "character_set_client=latin1,character_set_connection=latin1" |

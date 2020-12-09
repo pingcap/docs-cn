@@ -16,6 +16,45 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1
 + 最小值：1
 
+### `server.concurrent-send-snap-limit`
+
++ 同时发送 snapshot 的最大个数。
++ 默认值：32
++ 最小值：1
+
+### `server.concurrent-recv-snap-limit`
+
++ 同时接受 snapshot 的最大个数。
++ 默认值：32
++ 最小值：1
+
+### `server.end-point-recursion-limit`
+
++ endpoint 下推查询请求解码消息时，最多允许的递归层数。
++ 默认值：1000
++ 最小值：1
+
+### `server.end-point-request-max-handle-duration`
+
++ endpoint 下推查询请求处理任务最长允许的时长。
++ 默认值：60s
++ 最小值：1s
+
+### `server.end-point-slow-log-threshold`
+
++ endpoint 下推查询请求输出慢日志的阈值，处理时间超过阈值后会输出慢日志。
++ 默认值：1s
++ 最小值：0
+
+### `server.snap-max-write-bytes-per-sec`
+
++ 处理 snapshot 时最大允许使用的磁盘带宽。
++ 默认值：1000MB
++ 单位：KB|MB|GB
++ 最小值：1KB
+
+## gRPC
+
 ### `grpc-compression-type`
 
 + gRPC 消息的压缩算法，取值：none， deflate， gzip。
@@ -32,6 +71,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 一个 gRPC 链接中最多允许的并发请求数量。
 + 默认值：1024
 + 最小值：1
+
+### `grpc-memory-pool-quota`
+
++ gRPC 可使用的内存大小限制。
++ 默认值: 32G
++ 建议仅在出现内存不足 (OOM) 的情况下限制内存使用。需要注意，限制内存使用可能会导致卡顿。
 
 ### `server.grpc-raft-conn-num`
 
@@ -58,40 +103,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：3s
 + 最小值：1s
 
-### `server.concurrent-send-snap-limit`
-
-+ 同时发送 snapshot 的最大个数，默认值：32
-+ 默认值：32
-+ 最小值：1
-
-### `server.concurrent-recv-snap-limit`
-
-+ 同时接受 snapshot 的最大个数，默认值：32
-+ 默认值：32
-+ 最小值：1
-
-### `server.end-point-recursion-limit`
-
-+ endpoint 下推查询请求解码消息时，最多允许的递归层数。
-+ 默认值：1000
-+ 最小值：1
-
-### `server.end-point-request-max-handle-duration`
-
-+ endpoint 下推查询请求处理任务最长允许的时长。
-+ 默认值：60s
-+ 最小值：1s
-
-### `server.snap-max-write-bytes-per-sec`
-
-+ 处理 snapshot 时最大允许使用的磁盘带宽
-+ 默认值：1000MB
-+ 单位：KB|MB|GB
-+ 最小值：1KB
-
 ## readpool.unified
 
-> **注意：**
+> **警告：**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
@@ -228,12 +242,6 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 ## storage
 
 存储相关的配置项。
-
-### `scheduler-notify-capacity`
-
-+ scheduler 一次获取最大消息个数
-+ 默认值：10240
-+ 最小值：1
 
 ### `scheduler-concurrency`
 
@@ -1181,7 +1189,7 @@ raftdb 相关配置项。
 
 ### `wait-up-delay-duration`
 
-+ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 之后被唤醒。
++ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wait-up-delay-duration` 之后被唤醒。
 + 默认值：20ms
 
 ### `pipelined`
