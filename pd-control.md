@@ -274,7 +274,7 @@ Usage:
 - `tolerant-size-ratio` controls the size of the balance buffer area. When the score difference between the leader or Region of the two stores is less than specified multiple times of the Region size, it is considered in balance by PD.
 
     ```bash
-    >> config set tolerant-size-ratio 20        // Set the size of the buffer area to about 20 times of the average regionSize
+    >> config set tolerant-size-ratio 20        // Set the size of the buffer area to about 20 times of the average Region Size
     ```
 
 - `low-space-ratio` controls the threshold value that is considered as insufficient store space. When the ratio of the space occupied by the node exceeds the specified value, PD tries to avoid migrating data to the corresponding node as much as possible. At the same time, PD mainly schedules the remaining space to avoid using up the disk space of the corresponding node.
@@ -436,18 +436,18 @@ time: 43.12698ms
 
 ### `region <region_id> [--jq="<query string>"]`
 
-Use this command to view the region information. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
+Use this command to view the Region information. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
 
 Usage:
 
 ```bash
->> region                               //　Display the information of all regions
+>> region                               //　Display the information of all Regions
 {
   "count": 1,
   "regions": [......]
 }
 
->> region 2                             // Display the information of the region with the id of 2
+>> region 2                             // Display the information of the Region with the ID of 2
 {
   "id": 2,
   "start_key": "7480000000000000FF1D00000000000000F8",
@@ -673,11 +673,12 @@ Usage:
 
 ```bash
 >> scheduler show                                 // Display all schedulers
->> scheduler add grant-leader-scheduler 1         // Schedule all the leaders of the regions on store 1 to store 1
->> scheduler add evict-leader-scheduler 1         // Move all the region leaders on store 1 out
+>> scheduler add grant-leader-scheduler 1         // Schedule all the leaders of the Regions on store 1 to store 1
+>> scheduler add evict-leader-scheduler 1         // Move all the Region leaders on store 1 out
+>> scheduler config evict-leader-scheduler        // Display the stores in which the scheduler is located since v4.0.0
 >> scheduler add shuffle-leader-scheduler         // Randomly exchange the leader on different stores
 >> scheduler add shuffle-region-scheduler         // Randomly scheduling the regions on different stores
->> scheduler remove grant-leader-scheduler-1      // Remove the corresponding scheduler
+>> scheduler remove grant-leader-scheduler-1      // Remove the corresponding scheduler, and `-1` corresponds to the store ID
 >> scheduler pause balance-region-scheduler 10    // Pause the balance-region scheduler for 10 seconds
 >> scheduler pause all 10                         // Pause all schedulers for 10 seconds
 >> scheduler resume balance-region-scheduler      // Continue to run the balance-region scheduler
@@ -761,7 +762,7 @@ Usage:
 >> store delete 1                      // Delete the store with the store id of 1
   ......
 >> store label 1 zone cn               // Set the value of the label with the "zone" key to "cn" for the store with the store id of 1
->> store weight 1 5 10                 // Set the leader weight to 5 and region weight to 10 for the store with the store id of 1
+>> store weight 1 5 10                 // Set the leader weight to 5 and Region weight to 10 for the store with the store id of 1
 >> store remove-tombstone              // Remove stores that are in tombstone state
 >> store limit                         // Show the speed limit of adding-peer operations and the limit of removing-peer operations per minute in all stores
 >> store limit add-peer                // Show the speed limit of adding-peer operations per minute in all stores
