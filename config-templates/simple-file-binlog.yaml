@@ -32,6 +32,7 @@ drainer_servers:
   - host: 10.0.1.12
     config:
       syncer.db-type: "file"
+      # directory to save binlog file, default same as data-dir(save checkpoint file) if this is not configured.
       syncer.to.dir: "/path/to/save/binlog"
 
 monitoring_servers:
