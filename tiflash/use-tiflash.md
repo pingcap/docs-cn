@@ -193,7 +193,7 @@ select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 
 
 ## 使用 TiSpark 读取 TiFlash
 
-TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方式是通过配置参数 `spark.tispark.isolation_read_engines`， 默认 `tikv,tiflash` 表示根据 CBO 自动选择，如果设置成 `tiflash` 会强制从 TiFlash 读取。
+TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方式是通过配置参数 `spark.tispark.isolation_read_engines`。参数值默认为 `tikv,tiflash`，表示根据 CBO 自动选择从 TiFlash 或从 TiKV 读取数据。如果将该参数值设置成 `tiflash`，表示强制从 TiFlash 读取数据。
 
 > **注意：**
 >
