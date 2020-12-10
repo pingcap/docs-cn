@@ -38,9 +38,15 @@ This document only describes the parameters that are not included in command-lin
 
 ### `server.end-point-request-max-handle-duration`
 
-+ The longest duration allowed for a TiDB request to TiKV for processing tasks
++ The longest duration allowed for a TiDB's push down request to TiKV for processing tasks
 + Default value: `"60s"`
 + Minimum value: `"1s"`
+
+### `server.end-point-slow-log-threshold`
+
++ The time threshold for a TiDB's push down request to print slow log
++ Default value: `"1s"`
++ Minimum value: `0`
 
 ### `server.snap-max-write-bytes-per-sec`
 
