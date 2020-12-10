@@ -117,6 +117,14 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 > - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区。
 > - 如果还没有 `TZ` 环境变量，会从 TiCDC server 运行机器的默认时区。
 
+## 创建同步任务时，如果不指定 `--config` 配置文件，TiCDC 的默认的行为是什么？
+
+在使用 `cdc cli changefeed create` 命令时如果不指定 `--config` 参数，TiCDC 会按照以下默认行为创建同步任务：
+
+* 同步所有的非系统表
+* 不开启 old value 功能
+* 不同步不包含[有效索引](/ticdc/ticdc-overview.md#同步限制)的表
+
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
 
 请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
@@ -241,3 +249,13 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 ## TiCDC 启动任务的 start-ts 时间戳与当前时间差距较大，任务执行过程中同步中断，出现错误 `[CDC:ErrBufferReachLimit]`
 
 在 v4.0.9 之后可以尝试开启 unified sorter 特性进行同步；或者使用 BR 工具进行一次增量备份和恢复，然后从新的时间点开启 TiCDC 同步任务。TiCDC 将会在后续版本中对该问题进行优化。
+
+## 如何区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件？
+
+如果没有开启 old value，TiCDC Open Protocol 无法区分 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件。如果开启了 old value，则可以通过 `"p"` 字段判断事件类型：
+
+* 同时存在 `"p"`、`"u"` 字段为 `UPDATE` 事件
+* 如果只存在 `"u"` 字段则为 `INSERT` 事件
+* 如果只存在 `"d"` 字段则为 `DELETE` 事件
+
+更多信息请参考 [Open protocol Row Changed Event 格式定义](/ticdc/ticdc-open-protocol.md#row-changed-event)。
