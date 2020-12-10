@@ -12,13 +12,14 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-backups/','/docs-cn
 
 ## 语法图
 
-**ShowBRIEStmt:**
+```ebnf+diagram
+ShowBRIEStmt ::=
+    "SHOW" ("BACKUPS" | "RESTORES") ShowLikeOrWhere?
 
-![ShowBRIEStmt](/media/sqlgram/ShowBRIEStmt.png)
-
-**ShowLikeOrWhereOpt:**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
