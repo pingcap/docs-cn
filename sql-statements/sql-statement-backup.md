@@ -21,9 +21,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-backup/']
 ```ebnf+diagram
 BackupStmt ::=
     "BACKUP" BRIETables "TO" stringLit BackupOption*
+
 BRIETables ::=
     "DATABASE" ( '*' | DBName (',' DBName)* )
 |   "TABLE" TableNameList
+
 BackupOption ::=
     "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
 |   "CONCURRENCY" '='? LengthNum
@@ -31,8 +33,10 @@ BackupOption ::=
 |   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
 |   "LAST_BACKUP" '='? BackupTSO
 |   "SNAPSHOT" '='? ( BackupTSO | LengthNum TimestampUnit "AGO" )
+
 Boolean ::=
     NUM | "TRUE" | "FALSE"
+
 BackupTSO ::=
     LengthNum | stringLit
 ```
