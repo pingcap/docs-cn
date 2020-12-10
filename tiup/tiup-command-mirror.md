@@ -1,0 +1,40 @@
+---
+title: tiup mirror
+aliases: ['/docs-cn/dev/tiup/tiup-command-mirror/']
+---
+
+# tiup mirror
+
+## 介绍
+
+在 TiUP 中，[镜像](/tiup/tiup-mirror-reference.md)是一个非常重要的概念，目前 TiUP 支持两种形式的镜像：
+
+- 本地镜像：即 TiUP 客户端和镜像在同一台机器上，客户端通过文件系统访问镜像
+- 远程镜像：即 TiUP 客户端和镜像不在同一台机器上，客户端通过网络访问镜像
+
+命令 `tiup mirror` 用于管理镜像，提供了创建镜像，组件发布，密钥管理等多种功能。
+
+## 语法
+
+```sh
+tiup mirror <command> [flags]
+```
+
+`<command>` 代表子命令，支持的子命令列表请参考下方命令清单。
+
+## 选项
+
+无
+
+## 命令清单
+
+- genkey: 生成私钥文件
+- sign: 使用私钥文件对特定文件进行签名
+- init: 创建一个空的镜像
+- set: 设置当前镜像
+- grant: 为当前镜像引入新的组件作者
+- publish: 向当前镜像推送新的组件
+- modify: 修改当前镜像中的组件属性
+- rotate: 更新当前镜像中的根证书
+- clone: 从已有镜像克隆一个新的镜像
+- merge: 合并两个或多个镜像

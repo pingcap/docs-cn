@@ -94,7 +94,7 @@ tiup [flags] <component> [args...]      # 运行组件
 - [uniinstall](/tiup/tiup-command-uninstall.md)：卸载组件
 - [update](/tiup/tiup-command-update.md)：升级已安装的组件
 - [status](/tiup/tiup-command-status.md)：查看组件运行状态
-- clean：清理组件数据目录
+- [clean](/tiup/tiup-command-clean.md)：清理组件数据目录
 - mirror：镜像管理
 - telemetry：遥测开关
 - completion：TiUP 命令补全
