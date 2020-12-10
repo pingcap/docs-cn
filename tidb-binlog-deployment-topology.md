@@ -20,13 +20,9 @@ aliases: ['/docs-cn/stable/tidb-binlog-deployment-topology/','/docs-cn/v4.0/tidb
 
 ### 拓扑模版
 
-<<<<<<< HEAD
-[简单 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-tidb-binlog.yaml)
-=======
-[简单 TiDB Binlog 配置模板（下游为 MySQL）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tidb-binlog.yaml)
+[简单 TiDB Binlog 配置模板（下游为 MySQL）](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-tidb-binlog.yaml)
 
-[简单 TiDB Binlog 配置模板（下游为 file）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-file-binlog.yaml)
->>>>>>> 0c180cd7... tidb binlog: add more description in tidb-binlog-deployment-topology.md (#5049)
+[简单 TiDB Binlog 配置模板（下游为 file）](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-file-binlog.yaml)
 
 [详细 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-tidb-binlog.yaml)
 
