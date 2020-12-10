@@ -26,21 +26,23 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-restore/']
 
 ## 语法图
 
-**RestoreStmt:**
+```ebnf+diagram
+RestoreStmt ::=
+    "RESTORE" BRIETables "FROM" stringLit RestoreOption*
 
-![RestoreStmt](/media/sqlgram/RestoreStmt.png)
+BRIETables ::=
+    "DATABASE" ( '*' | DBName (',' DBName)* )
+|   "TABLE" TableNameList
 
-**BRIETables:**
+RestoreOption ::=
+    "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+|   "CONCURRENCY" '='? LengthNum
+|   "CHECKSUM" '='? Boolean
+|   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
 
-![BRIETables](/media/sqlgram/BRIETables.png)
-
-**RestoreOption:**
-
-![RestoreOption](/media/sqlgram/RestoreOption.png)
-
-**Boolean:**
-
-![Boolean](/media/sqlgram/Boolean.png)
+Boolean ::=
+    NUM | "TRUE" | "FALSE"
+```
 
 ## 示例
 
