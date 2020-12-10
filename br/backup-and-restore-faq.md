@@ -30,6 +30,8 @@ Because these system libraries do not exist in the backup files, no conflict occ
 
 You need to confirm whether TiKV has access to the backup directory. To back up data, confirm whether TiKV has the write permission. To restore data, confirm whether it has the read permission.
 
+During the backup operation, if the storage medium is the local disk or a network file system (NFS), make sure that the user to start BR and the user to start TiKV are consistent (if BR and TiKV are on different machines, the users' UIDs must be consistent). Otherwise, the `Permission denied` issue might occur.
+
 Running BR with the root access might fail due to the disk permission, because the backup files (SST files) are saved by TiKV.
 
 > **Note:**
