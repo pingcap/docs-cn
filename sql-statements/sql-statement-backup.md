@@ -18,25 +18,24 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-backup/']
 
 ## 语法图
 
-**BackupStmt:**
-
-![BackupStmt](/media/sqlgram/BackupStmt.png)
-
-**BRIETables:**
-
-![BRIETables](/media/sqlgram/BRIETables.png)
-
-**BackupOption:**
-
-![BackupOption](/media/sqlgram/BackupOption.png)
-
-**Boolean:**
-
-![Boolean](/media/sqlgram/Boolean.png)
-
-**BackupTSO:**
-
-![BackupTSO](/media/sqlgram/BackupTSO.png)
+```ebnf+diagram
+BackupStmt ::=
+    "BACKUP" BRIETables "TO" stringLit BackupOption*
+BRIETables ::=
+    "DATABASE" ( '*' | DBName (',' DBName)* )
+|   "TABLE" TableNameList
+BackupOption ::=
+    "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+|   "CONCURRENCY" '='? LengthNum
+|   "CHECKSUM" '='? Boolean
+|   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
+|   "LAST_BACKUP" '='? BackupTSO
+|   "SNAPSHOT" '='? ( BackupTSO | LengthNum TimestampUnit "AGO" )
+Boolean ::=
+    NUM | "TRUE" | "FALSE"
+BackupTSO ::=
+    LengthNum | stringLit
+```
 
 ## 示例
 
