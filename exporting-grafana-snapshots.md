@@ -35,7 +35,7 @@ MetricsTool 导出的快照文件包含快照生成时的监控指标实际数�
 
 不会。快照文件解析全部在浏览器中完成，Visualizer 不会将任何信息发送给 PingCAP。你可以放心地使用 Visualizer 查看带有敏感信息的快照文件，不用担心信息会泄露给第三方。
 
-### MetricsTool 可以导出除 Grafana 外其他监控工具的 metrics 数据吗？
+### MetricsTool 可以导出除 Grafana 外其他监控工具的数据吗？
 
 不能。目前该工具仅支持在 Grafana v6.x.x 上使用。
 
