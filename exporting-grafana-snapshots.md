@@ -1,17 +1,17 @@
 ---
-title: 导出 Grafana 监控数据为快照
-summary: 了解如何将 Grafana 监控数据导出为快照以及如何可视化快照文件。
+title: 将 Grafana 监控数据导出成快照
+summary: 了解如何将 Grafana 监控数据导出为快照以及如何将快照文件可视化。
 ---
 
-# 导出 Grafana 监控数据为快照
+# 将 Grafana 监控数据导出成快照
 
-在故障诊断中，监控数据十分重要。当你请求远程协助时，技术支持人员有时需要查看 Grafana Dashboard以确认问题所在。[MetricsTool](https://metricstool.pingcap.com/) 可以帮助将 Grafana Dashboard 的快照导出为本地文件，并将快照可视化。因此，你可以在不泄露 Grafana 服务器上其他敏感信息的前提下，将监控数据以快照形式分享给外部人员，同时也方便外部人员准确识读数据图表。
+在故障诊断中，监控数据十分重要。当你请求远程协助时，技术支持人员有时需要查看 Grafana Dashboard 以确认问题所在。[MetricsTool](https://metricstool.pingcap.com/) 用于将 Grafana Dashboard 的快照导出为本地文件，并将快照可视化。因此，你可以在不泄露 Grafana 服务器上其他敏感信息的前提下，将监控数据以快照形式分享给外部人员，同时也方便外部人员准确识读数据图表。
 
 ## 使用方法
 
 可以通过访问 <https://metricstool.pingcap.com/> 来使用 MetricsTool。它主要提供以下三种功能：
 
-* **导出快照**：提供一段在浏览器开发者工具上运行的用户脚本。可以使用这个脚本在任意 Grafana v6.x.x 服务器上下载当前 Dashboard 中所有可见面板的快照。
+* **导出快照**：提供一段在浏览器开发者工具上运行的用户脚本。你可以使用这个脚本在任意 Grafana v6.x.x 服务器上下载当前 Dashboard 中所有可见面板的快照。
 
     ![运行用户脚本后的 MetricsTool Exporter 截图](/media/metricstool-export.png)
 
@@ -41,7 +41,7 @@ MetricsTool 导出的快照文件包含快照生成时的监控指标实际数�
 
 ### 可以在所有监控指标数据都加载完毕前就运行脚本吗？
 
-可以。虽然脚本会弹出提示，让你等所有监控数据加载完毕后再运行，但可以手动跳过等待并导出快照，以免有些监控数据加载需要的等待时间过长。
+可以。虽然脚本会弹出提示，让你等所有监控数据加载完毕后再运行，但可以手动跳过等待并导出快照，以免有些监控数据加载的时间过长。
 
 ### 快照文件可视化后，可以通过网页链接分享吗？
 
