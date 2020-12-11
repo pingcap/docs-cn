@@ -40,7 +40,7 @@ mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，
 minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 
 [storage]
-    bg_task_io_rate_limit = 0 # 控制后台任务每秒写入速率，0 代表没有限制
+    bg_task_io_rate_limit = 0 # 控制后台任务每秒写入字节数，0 代表没有限制
 ```
 
 ```toml
