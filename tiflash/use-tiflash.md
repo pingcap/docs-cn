@@ -193,7 +193,7 @@ select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 
 
 ## 使用 TiSpark 读取 TiFlash
 
-TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方式是通过配置参数 `spark.tispark.use.tiflash` 为 `true`（或 `false`）。
+TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方式是通过配置参数 `spark.tispark.isolation_read_engines`。参数值默认为 `tikv,tiflash`，表示根据 CBO 自动选择从 TiFlash 或从 TiKV 读取数据。如果将该参数值设置成 `tiflash`，表示强制从 TiFlash 读取数据。
 
 > **注意：**
 >
@@ -204,14 +204,14 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 1. 在 `spark-defaults.conf` 文件中添加：
 
     ```
-    spark.tispark.use.tiflash true
+    spark.tispark.isolation_read_engines tiflash
     ```
 
-2. 在启动 Spark shell 或 Thrift server 时，启动命令中添加 `--conf spark.tispark.use.tiflash=true`
+2. 在启动 Spark shell 或 Thrift server 时，启动命令中添加 `--conf spark.tispark.isolation_read_engines=tiflash`
 
-3. Spark shell 中实时设置：`spark.conf.set("spark.tispark.use.tiflash", true)`
+3. Spark shell 中实时设置：`spark.conf.set("spark.tispark.isolation_read_engines", "tiflash")`
 
-4. Thrift server 通过 beeline 连接后实时设置：`set spark.tispark.use.tiflash=true`
+4. Thrift server 通过 beeline 连接后实时设置：`set spark.tispark.isolation_read_engines=tiflash`
 
 ## TiFlash 支持的计算下推
 
