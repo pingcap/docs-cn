@@ -158,6 +158,13 @@ TiDB 版本：4.0.9
     + TiCDC
 
         - 修复某些异常情况下存在多个 Owner 的问题 [#1104](https://github.com/pingcap/ticdc/pull/1104)
+         - 修复在 TiKV 节点意外退出或重启恢复情况下 TiCDC 不能正常同步的问题，该 bug 在 v4.0.8 引入 [#1198](https://github.com/pingcap/ticdc/pull/1198)
+         - 修复在表初始化过程中会向 etcd 中重复写入元数据的问题 [#1191](https://github.com/pingcap/ticdc/pull/1191)
+         - 修复 schema storage 缓存 TiDB 表信息的过程中因更新表信息延迟或过早 GC 导致同步中断的问题 [#1114](https://github.com/pingcap/ticdc/pull/1114)
+         - 修复 schema storage 在 DDL 频繁的情况下会消耗过多内存的问题 [#1127](https://github.com/pingcap/ticdc/pull/1127)
+         - 修复在同步任务暂停或取消之后会产生 goroutine 泄露的问题 [#1075](https://github.com/pingcap/ticdc/pull/1075)
+         - 增加 Kafka producer 最大重试时间到 60s，避免在下游 Kafka 服务或网络抖动情况下同步中断 [#1118](https://github.com/pingcap/ticdc/pull/1118)
+         - 修复 Kafka 消息所包含行变更数量不能正常生效的问题 [#1112](https://github.com/pingcap/ticdc/pull/1112)
 
     + Dumpling
 
