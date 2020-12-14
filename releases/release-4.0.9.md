@@ -135,6 +135,7 @@ TiDB 版本：4.0.9
     - 修复使用 `0.0.0.0` 时 `advertise-status-addr` 异常的问题 [#9036](https://github.com/tikv/tikv/pull/9036)
     - 修复当事务删除 key 时却报 key 已存在的问题 [#8930](https://github.com/tikv/tikv/pull/8930)
     - 修复 RocksDB cache 映射错误导致的数据错误问题 [#9029](https://github.com/tikv/tikv/pull/9029)
+- 修复当 Leader 切换时 Follower Read 可能返回旧数据的问题 [#9240](https://github.com/tikv/tikv/pull/9240)
 
 + PD
 
