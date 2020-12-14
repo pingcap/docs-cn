@@ -123,7 +123,7 @@ TiDB 版本：4.0.9
     - 修复了由于事务写冲突重试导致的 auto-ID 分配失败 [#21079](https://github.com/pingcap/tidb/pull/21079)
     - 修复了 JSON 数据无法通过 `load data` 无法正确导入到 TiDB 的问题 [#21074](https://github.com/pingcap/tidb/pull/21074)
     - 修复新增加 `Enum` 类型列的默认值问题 [#20998](https://github.com/pingcap/tidb/pull/20998)
-    - 对于日期类型的数学计算，保留原始的数据类型信息，修复 `adddata` 函数插入非法值的问题 [#21176](https://github.com/pingcap/tidb/pull/21176)
+    - 对于日期类型的数学计算，保留原始的数据类型信息，修复 `adddate` 函数插入非法值的问题 [#21176](https://github.com/pingcap/tidb/pull/21176)
     - 修复了部分场景错误地生成了 `PointGet` 的执行计划，导致执行结果不正确 [#21244](https://github.com/pingcap/tidb/pull/21244)
 
 + TiKV
