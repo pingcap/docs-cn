@@ -49,6 +49,7 @@
   + 监控
     - [概述](/tidb-monitoring-framework.md)
     - [监控 TiDB 集群](/monitor-a-tidb-cluster.md)
+    - [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
   + 迁移
     - [迁移工具使用指南](/ecosystem-tool-user-guide.md)
     + 从 MySQL 迁移
