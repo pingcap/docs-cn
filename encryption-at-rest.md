@@ -39,7 +39,7 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR 和 AES256-CTR。
 
 ## 配置加密
 
-想要启用加密功能，可以在 TiKV 的配置文件中添加加密部分：
+要启用加密功能，你可以在 TiKV 的配置文件中添加加密部分：
 
 ```
 [security.encryption]
