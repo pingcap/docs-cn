@@ -29,7 +29,7 @@ TiDB 版本：4.0.9
     - 在配置文件中添加了 `performance.gogc` 配置项，用于设置 `GOGC` [#20922](https://github.com/pingcap/tidb/pull/20922)
     - 提升了 `Timestamp` 和 `Datetime` 类型的二进制输出结果的 MySQL 兼容性 [#21135](https://github.com/pingcap/tidb/pull/21135)
     - 为使用 `LOCK IN SHARE MODE` 语法的 SQL 语句提供报错信息 [#21005](https://github.com/pingcap/tidb/pull/21005)
-    - 对于可剪切的表达式进行常量折叠时，避免输出不必要的警告或错误 [#21040](https://github.com/pingcap/tidb/pull/21040)
+    - 对可剪切的表达式进行常量折叠时，避免输出不必要的警告或错误 [#21040](https://github.com/pingcap/tidb/pull/21040)
     - 优化了 `LOAD DATA` 语句执行 `PREPARE` 操作的报错信息 [#21199](https://github.com/pingcap/tidb/pull/21199)
     - 修改列类型的时候，忽略掉整型字段的零值填充大小属性 [#20986](https://github.com/pingcap/tidb/pull/20986)
     - 在 `EXPLAIN ANALYZE` 结果中正确显示 DML 语句执行器相关的运行时信息 [#21066](https://github.com/pingcap/tidb/pull/21066)
@@ -47,20 +47,20 @@ TiDB 版本：4.0.9
     - 调整配置项 `apply-max-batch-size` 和 `store-max-batch-size` 的默认值为 `1024` [#9020](https://github.com/tikv/tikv/pull/9020)
     - 添加 `max-background-flushes` 配置 [#8947](https://github.com/tikv/tikv/pull/8947)
     - 对 storage 模块默认开启统一线程池 [#8887](https://github.com/tikv/tikv/pull/8887)
-    - 默认关闭 Rocksdb consistency check 以提高性能 [#9029](https://github.com/tikv/tikv/pull/9029)
+    - 默认关闭 RocksDB consistency check 以提高性能 [#9029](https://github.com/tikv/tikv/pull/9029)
 
 + PD
 
     - TiKV store 转变为 `Tombstone` 状态时检查 TiKV 集群的版本 [#3213](https://github.com/pingcap/pd/pull/3213)
     - 不允许低版本的 TiKV 强制从 `Tombstone` 状态转为 `Up` [#3206](https://github.com/pingcap/pd/pull/3206)
-    - 升级 Dashboard 版本到 v2020.11.26.1 [#3219](https://github.com/pingcap/pd/pull/3219)
+    - 升级 Dashboard 版本到 `v2020.11.26.1` [#3219](https://github.com/pingcap/pd/pull/3219)
 
 + TiFlash
 
     - 降低 Replica read 时的延迟
     - 优化 TiFlash 的错误信息
     - 优化在大数据量下，对缓存数据大小的限制
-    - 添加正在处理的 coprocessor 请求数量的 metric
+    - 添加正在处理的 Coprocessor 请求数量的 metric
 
 + Tools
 
@@ -88,7 +88,7 @@ TiDB 版本：4.0.9
 
         - 默认不恢复系统表 [#459](https://github.com/pingcap/tidb-lightning/pull/459)
         - 支持为 auto-random 的主键设置默认值 [#457](https://github.com/pingcap/tidb-lightning/pull/457)
-        - 完善 local 模式下分裂 Region 的精度 [#422](https://github.com/pingcap/tidb-lightning/pull/422)
+        - 完善 Local 模式下分裂 Region 的精度 [#422](https://github.com/pingcap/tidb-lightning/pull/422)
         - 支持给 `tikv-importer.region-split-size`、`mydumper.read-block-size`、`mydumper.batch-size` 和 `mydumper.max-region-size` 设置可读的参数（比如 "2.5 GiB"）[#471](https://github.com/pingcap/tidb-lightning/pull/471)
 
     + TiDB Binlog
@@ -119,12 +119,12 @@ TiDB 版本：4.0.9
     - 修复了 index merge join 在执行外连接的时候，结果不符合预期的问题 [#20954](https://github.com/pingcap/tidb/pull/20954)
     - 修复了一处事务问题，该场景下应该返回结果未知，但是却返回了执行失败 [#20925](https://github.com/pingcap/tidb/pull/20925)
     - 修复 `explain for connection` 无法显示最后一次执行计划的问题 [#21315](https://github.com/pingcap/tidb/pull/21315)
-    - 修复在 Read Committed 隔离级别下，index merge 结果不正确的问题 [#21253](https://github.com/pingcap/tidb/pull/21253)
+    - 修复在 Read Committed 隔离级别下，Index Merge 结果不正确的问题 [#21253](https://github.com/pingcap/tidb/pull/21253)
     - 修复了由于事务写冲突重试导致的 auto-ID 分配失败 [#21079](https://github.com/pingcap/tidb/pull/21079)
     - 修复了 JSON 数据无法通过 `load data` 无法正确导入到 TiDB 的问题 [#21074](https://github.com/pingcap/tidb/pull/21074)
     - 修复新增加 `Enum` 类型列的默认值问题 [#20998](https://github.com/pingcap/tidb/pull/20998)
     - 对于日期类型的数学计算，保留原始的数据类型信息，修复 `adddata` 函数插入非法值的问题 [#21176](https://github.com/pingcap/tidb/pull/21176)
-    - 修复了部分场景错误地生成了 PointGet 的执行计划，导致执行结果不正确 [#21244](https://github.com/pingcap/tidb/pull/21244)
+    - 修复了部分场景错误地生成了 `PointGet` 的执行计划，导致执行结果不正确 [#21244](https://github.com/pingcap/tidb/pull/21244)
 
 + TiKV
 
@@ -140,7 +140,7 @@ TiDB 版本：4.0.9
 
 + PD
 
-    - 修复在特殊情况下 Placement rule 指定的 leader 绑定不生效的问题 [#3208](https://github.com/pingcap/pd/pull/3208)
+    - 修复在特殊情况下 Placement Rule 指定的 leader 绑定不生效的问题 [#3208](https://github.com/pingcap/pd/pull/3208)
     - 修复 `trace-region-flow` 在配置更新时被置为 `false` 的问题 [#3120](https://github.com/pingcap/pd/pull/3120)
     - 修复特殊情况下 safepoint 有无限 TTL 的问题 [#3143](https://github.com/pingcap/pd/pull/3143)
 
@@ -159,13 +159,13 @@ TiDB 版本：4.0.9
     + TiCDC
 
         - 修复某些异常情况下存在多个 Owner 的问题 [#1104](https://github.com/pingcap/ticdc/pull/1104)
-         - 修复在 TiKV 节点意外退出或重启恢复情况下 TiCDC 不能正常同步的问题，该 bug 在 v4.0.8 引入 [#1198](https://github.com/pingcap/ticdc/pull/1198)
-         - 修复在表初始化过程中会向 etcd 中重复写入元数据的问题 [#1191](https://github.com/pingcap/ticdc/pull/1191)
-         - 修复 schema storage 缓存 TiDB 表信息的过程中因更新表信息延迟或过早 GC 导致同步中断的问题 [#1114](https://github.com/pingcap/ticdc/pull/1114)
-         - 修复 schema storage 在 DDL 频繁的情况下会消耗过多内存的问题 [#1127](https://github.com/pingcap/ticdc/pull/1127)
-         - 修复在同步任务暂停或取消之后会产生 goroutine 泄露的问题 [#1075](https://github.com/pingcap/ticdc/pull/1075)
-         - 增加 Kafka producer 最大重试时间到 60s，避免在下游 Kafka 服务或网络抖动情况下同步中断 [#1118](https://github.com/pingcap/ticdc/pull/1118)
-         - 修复 Kafka 消息所包含行变更数量不能正常生效的问题 [#1112](https://github.com/pingcap/ticdc/pull/1112)
+        - 修复在 TiKV 节点意外退出或重启恢复情况下 TiCDC 不能正常同步的问题，该 bug 在 v4.0.8 引入 [#1198](https://github.com/pingcap/ticdc/pull/1198)
+        - 修复在表初始化过程中会向 etcd 中重复写入元数据的问题 [#1191](https://github.com/pingcap/ticdc/pull/1191)
+        - 修复 schema storage 缓存 TiDB 表信息的过程中因更新表信息延迟或过早 GC 导致同步中断的问题 [#1114](https://github.com/pingcap/ticdc/pull/1114)
+        - 修复 schema storage 在 DDL 频繁的情况下会消耗过多内存的问题 [#1127](https://github.com/pingcap/ticdc/pull/1127)
+        - 修复在同步任务暂停或取消之后会产生 goroutine 泄露的问题 [#1075](https://github.com/pingcap/ticdc/pull/1075)
+        - 增加 Kafka producer 最大重试时间到 60s，避免在下游 Kafka 服务或网络抖动情况下同步中断 [#1118](https://github.com/pingcap/ticdc/pull/1118)
+        - 修复 Kafka 消息所包含行变更数量不能正常生效的问题 [#1112](https://github.com/pingcap/ticdc/pull/1112)
 
     + Dumpling
 
