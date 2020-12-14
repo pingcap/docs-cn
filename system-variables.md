@@ -443,6 +443,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：15
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
+- 若表的分区较多可以适当调小该参数，避免 TiKV 内存溢出 (OOM)。
 
 ### `tidb_hash_join_concurrency`
 
