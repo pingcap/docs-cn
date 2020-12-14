@@ -121,6 +121,14 @@ The TiCDC server chooses its time zone in the following priority:
 2. When `--tz` is not available, TiCDC tries to read the time zone set by the `TZ` environment variable.
 3. When the `TZ` environment variable is not available, TiCDC uses the default time zone of the machine.
 
+## What is the default behavior of TiCDC if I create a replication task without specifying the configuration file in `--config`?
+
+If you use the `cdc cli changefeed create` command without specifying the `-config` parameter, TiCDC creates the replication task in the following default behaviors:
+
+* Replicates all tables except system tables
+* Disables the Old Value feature
+* Skips replicating tables that do not contain [valid indexes](/ticdc/ticdc-overview.md#restrictions)
+
 ## How do I handle the incompatibility issue of configuration files caused by TiCDC upgrade?
 
 Refer to [Notes for compatibility](/ticdc/manage-ticdc.md#notes-for-compatibility).
@@ -245,3 +253,13 @@ In TiCDC Open Protocol, the type code `6` represents `null`.
 | Null | 6 | `{"t":6,"v":null}` | |
 
 For more information, refer to [TiCDC Open Protocol column type code](/ticdc/ticdc-open-protocol.md#column-type-code).
+
+## How can I tell if a Row Changed Event of TiCDC Open Protocol is an `INSERT` event or an `UPDATE` event?
+
+If the Old Value feature is not enabled, you cannot tell whether a Row Changed Event of TiCDC Open Protocol is an `INSERT` event or an `UPDATE` event. If the feature is enabled, you can determine the event type by the fields it contains:
+
+* `UPDATE` event contains both `"p"` and `"u"` fields
+* `INSERT` event only contains the `"u"` field
+* `DELETE` event only contains the `"d"` field
+
+For more information, refer to [Open protocol Row Changed Event format](/ticdc/ticdc-open-protocol.md#row-changed-event).
