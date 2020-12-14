@@ -54,6 +54,10 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
+### Dumpling 导出大表时引发上游数据库报错“磁盘空间不足”
+
+该问题是由于数据库主键分布不均匀，dumpling 划分导出子范围时出现过大的子范围引起。请尝试分配更大的磁盘空间，或者联系社区专家获取实验版本 dumpling。
+
 ### TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
 有，也支持 DDL。详细参考 [TiDB 历史数据回溯](/read-historical-data.md)。
