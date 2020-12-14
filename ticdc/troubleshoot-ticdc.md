@@ -248,7 +248,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 ## 如何区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件？
 
-如果没有开启 Old Value 功能，TiCDC Open Protocol 无法区分 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件。如果开启了 Old Value 功能，则可以通过事件中的字段判断事件类型：
+如果没有开启 Old Value 功能，用户无法区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件。如果开启了 Old Value 功能，则可以通过事件中的字段判断事件类型：
 
 * 如果同时存在 `"p"` 和 `"u"` 字段为 `UPDATE` 事件
 * 如果只存在 `"u"` 字段则为 `INSERT` 事件
