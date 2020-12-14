@@ -12,7 +12,7 @@ TiDB 版本：4.0.9
 
 + TiDB
 
-- 废弃配置文件中 `enable-streaming` 配置项 [#21055](https://github.com/pingcap/tidb/pull/21055)
+    - 废弃配置文件中 `enable-streaming` 配置项 [#21055](https://github.com/pingcap/tidb/pull/21055)
 
 ## 新功能
 
