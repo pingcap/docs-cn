@@ -39,7 +39,7 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR 和 AES256-CTR。
 
 ## 配置加密
 
-要启用加密功能，你可以在 TiKV 的配置文件中添加加密部分：
+要启用加密，你可以在 TiKV 的配置文件中添加加密部分：
 
 ```
 [security.encryption]
@@ -109,7 +109,7 @@ region = "us-west-2"
 
 ### 与早期 TiKV 版本的兼容性
 
-为了减少 TiKV 在管理加密元数据时由 I/O 操作和互斥体争用引发的开销，TiKV v4.0.9 对此进行了优化，并由 TiKV 配置文件中的 `security.encryption.enable-file-dictionary-log` 参数来控制优化行为。此配置参数仅在 TiKV v4.0.9 或更高版本中才生效。
+为了减少 TiKV 在管理加密元数据时由 I/O 操作和互斥体争用引发的开销，TiKV v4.0.9 对此进行了优化，并由 TiKV 配置文件中的 `security.encryption.enable-file-dictionary-log` 参数来控制优化操作。此配置参数仅在 TiKV v4.0.9 或更高版本中才生效。
 
 默认情况下启用加密功能时，TiKV v4.0.8 或更早期的版本无法识别加密元数据的数据格式。例如，假设你正在使用具有静态加密和默认的 `enable-file-dictionary-log` 配置的 TiKV v4.0.9 或更高版本时，如果将集群降级到 TiKV v4.0.8 或更早版本，则 TiKV 将无法启动，并且信息日志中会出现类似报错，如下所示：
 

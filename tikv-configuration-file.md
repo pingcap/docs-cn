@@ -1159,7 +1159,7 @@ raftdb 相关配置项。
 
 + 数据文件的加密方法。
 + 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`
-+ 选择 `"plaintext"` 以外的值表示启用加密功能。此时必须指定主密钥。
++ 选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
 + 默认值：`"plaintext"`
 
 ### `data-key-rotation-period`
@@ -1169,7 +1169,7 @@ raftdb 相关配置项。
 
 ### enable-file-dictionary-log
 
-+ 启用优化行为，以减少 TiKV 管理加密元数据时的 I/O 操作和互斥体争用。
++ 启用优化，以减少 TiKV 管理加密元数据时的 I/O 操作和互斥体争用。
 + 避免默认情况下启用此配置参数时可能出现的兼容性问题。具体可以参考[静态加密](/encryption-at-rest.md#与早期-tikv-版本的兼容性)。
 + 默认值：`true`
 
