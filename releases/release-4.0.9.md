@@ -75,7 +75,8 @@ TiDB 版本：4.0.9
 
         - 添加对 TiKV 开启 Hibernate Region 的告警规则 [#1120](https://github.com/pingcap/ticdc/pull/1120)
         - 优化 schema storage 的内存使用 [#1127](https://github.com/pingcap/ticdc/pull/1127)
-
+        - 增加 Unified Sorter 功能，可以在数据量较大的情况下提升增量扫阶段的同步速度（实验特性）[#1122](https://github.com/pingcap/ticdc/pull/1122)
+        - 支持在 TiCDC Open Protocol 中配置单条 Kafka 消息的最大大小和包含的最大行变更数量（仅在 Kafka sink 生效）[#1079](https://github.com/pingcap/ticdc/pull/1079)
     + Dumpling
 
         - 对导出失败部分的数据进行重试 [#182](https://github.com/pingcap/dumpling/pull/182)
