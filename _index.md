@@ -31,7 +31,16 @@ TiDB 具备如下特性：
 
 - 云原生 SQL 数据库
 
+<<<<<<< HEAD
     TiDB 是为云而设计的数据库，支持公有云、私有云和混合云，使部署、配置和维护变得十分简单。
+=======
+- [监控框架概述](/tidb-monitoring-framework.md)
+- [监控 API](/tidb-monitoring-api.md)
+- [部署监控](/deploy-monitoring-services.md)
+- [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
+- [TiDB 集群报警规则与处理方法](/alert-rules.md)
+- [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
+>>>>>>> 0de71a0f... monitoring: document MetricsTool (Export Grafana Snapshots) (#5073)
 
 TiDB 的设计目标是 100% 的 OLTP 场景和 80% 的 OLAP 场景，更复杂的 OLAP 分析可以通过 [TiSpark 项目](/tispark-overview.md)来完成。
 
