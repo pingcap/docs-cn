@@ -53,7 +53,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 ## 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？
 
-如果同步任务长时间中断，累积未消费的数据比较多，初始启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的实验特性 Unified Sorter 排序引擎，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
+如果同步任务长时间中断，累积未消费的数据比较多，再次启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的实验特性 Unified Sorter 排序引擎，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
 
 {{< copyable "shell-regular" >}}
 
