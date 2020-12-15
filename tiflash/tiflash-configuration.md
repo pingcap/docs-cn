@@ -54,6 +54,9 @@ minmax_index_cache_size = 5368709120
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
+    ## 限制后台任务每秒写入的字节数，0 代表没有限制
+    bg_task_io_rate_limit = 0
+
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
     dir = [ "/tidb-data/tiflash-9000" ] 
