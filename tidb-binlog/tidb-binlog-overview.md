@@ -19,7 +19,7 @@ TiDB Binlog has the following features:
 
 The TiDB Binlog architecture is as follows:
 
-![TiDB Binlog architecture](/media/tidb_binlog_cluster_architecture.png)
+![TiDB Binlog architecture](/media/tidb-binlog-cluster-architecture.png)
 
 The TiDB Binlog cluster is composed of Pump and Drainer.
 

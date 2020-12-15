@@ -482,7 +482,7 @@ The `syncer` monitoring solution contains the following components:
 
 See the following diagram:
 
-![syncer_monitor_scheme](/media/syncer_monitor_scheme.png)
+![syncer_monitor_scheme](/media/syncer-monitor-scheme.png)
 
 ### Configure Syncer monitor and alert
 
