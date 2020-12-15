@@ -109,7 +109,7 @@ region = "us-west-2"
 
 ### TiKV 版本间兼容性
 
-为了减少 TiKV 在管理加密元数据时因 I/O 操作和互斥锁争用导致的开销，TiKV v4.0.9 对此进行了优化，由 TiKV 配置文件中的 `security.encryption.enable-file-dictionary-log` 参数来控制优化操作。此配置参数仅在 TiKV v4.0.9 或更高版本中生效。
+为了减少 TiKV 管理加密元数据造成的 I/O 操作和互斥锁竞争引发的开销，TiKV v4.0.9 对此进行了优化。此优化可以通过 TiKV 配置文件中的 `security.encryption.enable-file-dictionary-log` 参数启用或关闭。此配置参数仅在 TiKV v4.0.9 或更高版本中生效。
 
 该配置项默认开启，此时 TiKV v4.0.8 或更早期的版本无法识别加密元数据的数据格式。例如，假设你正在使用的 TiKV v4.0.9 或更高版本开启了静态加密和默认开启了 `enable-file-dictionary-log` 配置，如果将集群降级到 TiKV v4.0.8 或更早版本，TiKV 将无法启动，并且信息日志中会有类似如下的报错：
 

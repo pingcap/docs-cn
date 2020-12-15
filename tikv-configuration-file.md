@@ -1169,7 +1169,7 @@ raftdb 相关配置项。
 
 ### enable-file-dictionary-log
 
-+ 启用优化，以减少 TiKV 管理加密元数据时的 I/O 操作和互斥锁争用。
++ 启用优化，以减少 TiKV 管理加密元数据时的 I/O 操作和互斥锁竞争。
 + 此配置参数默认启用，为避免可能出现的兼容性问题，请参考[静态加密 - TiKV 版本间兼容性](/encryption-at-rest.md#tikv-版本间兼容性)。
 + 默认值：`true`
 
