@@ -86,7 +86,7 @@ delta_index_cache_size = 0 # DeltaIndex 内存 cache 大小限制，默认为 0�
     max_memory_usage = 0 # 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0 # 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
 
-## Security settings effective since v4.0.5
+## 安全相关配置，从 v4.0.5 开始生效
 [security]
     ## 若开启该选项，日志中的用户数据会以 `?` 代替。如果你需要开启此选项，你需要在 tiflash-learner.toml 中
     ## 开启 `security.redact-info-log` 以替换 tiflash-learner 日志中的用户数据。
