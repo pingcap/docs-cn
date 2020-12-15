@@ -24,6 +24,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
 + 默认值：1073741824
++ 注意：当集群从 v2.0.x 或 v3.0.x 版本直接升级至 v4.0.9 及以上版本时，该配置默认值为 34359738368。
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
 + 该值作为系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的初始值。
 
@@ -48,7 +49,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-action`
 
-> **注意：**
+> **警告：**
 >
 > 目前 `oom-action` 为实验功能，会对写入过程中的内存进行统计。如果用户希望根据该特性取消写入操作，不建议在生产环境中将参数值配置为 `cancel`。
 
@@ -605,4 +606,9 @@ TiDB 服务状态相关配置。
 
 ## experimental
 
-experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。目前暂无相关配置项。
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
+
+### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
++ 用于控制是否能创建表达式索引。
++ 默认值：false
