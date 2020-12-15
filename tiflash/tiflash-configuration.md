@@ -40,6 +40,8 @@ http_port = 8123
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 minmax_index_cache_size = 5368709120
+## DeltaIndex 内存 cache 大小限制，默认为 0，代表没有限制
+delta_index_cache_size = 0
 
 ## TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
 ## 从 v4.0.9 版本开始，不推荐使用 path 及 path_realtime_mode 参数。推荐使用 [storage] 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
