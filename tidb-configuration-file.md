@@ -26,6 +26,7 @@ The TiDB configuration file supports more options than command-line parameters. 
 
 - The maximum memory available for a single SQL statement.
 - Default value: `1073741824` (in bytes)
+- Note: When you upgrade the cluster from v2.0.x or v3.0.x to v4.0.9 or later versions, the default value of this configuration is `34359738368`.
 - Requests that require more memory than this value are handled based on the behavior defined by `oom-action`.
 - This value is the initial value of the system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query).
 
