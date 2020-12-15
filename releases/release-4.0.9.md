@@ -125,6 +125,12 @@ TiDB 版本：4.0.9
     - 修复新增加 `Enum` 类型列的默认值问题 [#20998](https://github.com/pingcap/tidb/pull/20998)
     - 对于日期类型的数学计算，保留原始的数据类型信息，修复 `adddate` 函数插入非法值的问题 [#21176](https://github.com/pingcap/tidb/pull/21176)
     - 修复了部分场景错误地生成了 `PointGet` 的执行计划，导致执行结果不正确 [#21244](https://github.com/pingcap/tidb/pull/21244)
+    - 在 `ADD_DATE` 函数中忽略夏令时的转换，以和 MySQL 兼容 [#20888](https://github.com/pingcap/tidb/pull/20888)
+    - 修复了插入尾部带有超出 `varchar` 和 `char` 长度限制的空白字符的字符串时报错的 bug [#21282](https://github.com/pingcap/tidb/pull/21282)
+    - 修复了对比 `int` 和 `year` 类型时没有将 `[1, 69]` 的整数转换为 `[2001, 2060]` 以及没有将 `[70, 99]` 的整数转换为 `[1970, 1999]` 的兼容性 bug [#21283](https://github.com/pingcap/tidb/pull/21283)
+    - 修复了 `sum()` 函数计算 `Double` 类型字段的结果溢出导致 panic 的问题 [#21272](https://github.com/pingcap/tidb/pull/21272)
+    - 修复了 `DELETE` 语句未能给 unique key 加悲观锁的问题 [#20705](https://github.com/pingcap/tidb/pull/20705)
+    - 修复了快照读能够命中 lock cache，返回错误结果的问题 [#21539](https://github.com/pingcap/tidb/pull/21539)
 
 + TiKV
 
