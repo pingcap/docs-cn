@@ -1153,7 +1153,7 @@ raftdb 相关配置项。
 
 ## security.encryption
 
-与[静态加密](/encryption-at-rest.md)(TDE)有关的配置项。
+[静态加密](/encryption-at-rest.md) (TDE) 有关的配置项。
 
 ### `data-encryption-method`
 
@@ -1169,17 +1169,17 @@ raftdb 相关配置项。
 
 ### enable-file-dictionary-log
 
-+ 启用优化，以减少 TiKV 管理加密元数据时的 I/O 操作和互斥体争用。
-+ 避免默认情况下启用此配置参数时可能出现的兼容性问题。具体可以参考[静态加密](/encryption-at-rest.md#与早期-tikv-版本的兼容性)。
++ 启用优化，以减少 TiKV 管理加密元数据时的 I/O 操作和互斥锁争用。
++ 此配置参数默认启用，为避免可能出现的兼容性问题，请参考[静态加密 - 与早期 TiKV 版本的兼容性](/encryption-at-rest.md#与早期-tikv-版本的兼容性)。
 + 默认值：`true`
 
 ### master-key
 
-+ 指定启用加密时的主密钥。想要了解如何配置主密钥，可以参考[静态加密](/encryption-at-rest.md#配置加密)。
++ 指定启用加密时的主密钥。若要了解如何配置主密钥，可以参考[静态加密 - 配置加密](/encryption-at-rest.md#配置加密)。
 
 ### previous-master-key
 
-+ 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。想要了解如何配置主密钥，可以参考[静态加密](/encryption-at-rest.md#配置加密)。
++ 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考[静态加密 - 配置加密](/encryption-at-rest.md#配置加密)。
 
 ## import
 

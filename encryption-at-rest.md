@@ -107,18 +107,18 @@ region = "us-west-2"
 
 在调试方面，可使用 `tikv-ctl` 命令查看加密元数据（例如使用的加密方法和数据密钥列表）。该操作可能会暴露密钥，因此不推荐在生产环境中使用。详情参阅 [TiKV Control](/tikv-control.md#打印加密元数据)。
 
-### 与早期 TiKV 版本的兼容性
+### TiKV 版本间兼容性
 
-为了减少 TiKV 在管理加密元数据时由 I/O 操作和互斥体争用引发的开销，TiKV v4.0.9 对此进行了优化，并由 TiKV 配置文件中的 `security.encryption.enable-file-dictionary-log` 参数来控制优化操作。此配置参数仅在 TiKV v4.0.9 或更高版本中才生效。
+为了减少 TiKV 在管理加密元数据时因 I/O 操作和互斥锁争用导致的开销，TiKV v4.0.9 对此进行了优化，由 TiKV 配置文件中的 `security.encryption.enable-file-dictionary-log` 参数来控制优化操作。此配置参数仅在 TiKV v4.0.9 或更高版本中生效。
 
-默认情况下启用加密功能时，TiKV v4.0.8 或更早期的版本无法识别加密元数据的数据格式。例如，假设你正在使用具有静态加密和默认的 `enable-file-dictionary-log` 配置的 TiKV v4.0.9 或更高版本时，如果将集群降级到 TiKV v4.0.8 或更早版本，则 TiKV 将无法启动，并且信息日志中会出现类似报错，如下所示：
+该配置项默认开启，此时 TiKV v4.0.8 或更早期的版本无法识别加密元数据的数据格式。例如，假设你正在使用的 TiKV v4.0.9 或更高版本开启了静态加密和默认开启了 `enable-file-dictionary-log` 配置，如果将集群降级到 TiKV v4.0.8 或更早版本，TiKV 将无法启动，并且信息日志中会类似如下的报错：
 
 ```
 [2020/12/07 07:26:31.106 +08:00] [ERROR] [mod.rs:110] ["encryption: failed to load file dictionary."]
 [2020/12/07 07:26:33.598 +08:00] [FATAL] [lib.rs:483] ["called `Result::unwrap()` on an `Err` value: Other(\"[components/encryption/src/encrypted_file/header.rs:18]: unknown version 2\")"]
 ```
 
-为了避免上述错误，你可以首先将 `security.encryption.enable-file-dictionary-log` 设置为 `false`，然后启动 TiKV v4.0.9 或更高版本。TiKV 成功启动后，加密元数据的数据格式将降级为 TiKV 早期版本可以识别的格式。此时，你可以将 TiKV 集群降级到较早的版本。
+为了避免上面所示错误，你可以首先将 `security.encryption.enable-file-dictionary-log` 设置为 `false`，然后启动 TiKV v4.0.9 或更高版本。TiKV 成功启动后，加密元数据的数据格式将降级为 TiKV 早期版本可以识别的格式。此时，你可再将 TiKV 集群降级到较早的版本。
 
 ## BR S3 服务端加密
 
