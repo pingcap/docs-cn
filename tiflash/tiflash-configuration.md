@@ -85,6 +85,19 @@ delta_index_cache_size = 0 # DeltaIndex 内存 cache 大小限制，默认为 0�
     dt_enable_logical_split = true # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定的空间浪费。默认为 true
     max_memory_usage = 0 # 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0 # 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+
+## Security settings effective since v4.0.5
+[security]
+    ## 若开启该选项，日志中的用户数据会以 `?` 代替。如果你需要开启此选项，你需要在 tiflash-learner.toml 中
+    ## 开启 `security.redact-info-log` 以替换 tiflash-learner 日志中的用户数据。
+    # redact_info_log = false
+
+    ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path`, `key_path`中的路径也需要填写。
+    # ca_path = "/path/to/ca.pem"
+    ## 包含 PEM 格式的 X509 certificate 文件路径。
+    # cert_path = "/path/to/tiflash-server.pem"
+    ## 包含 PEM 格式的 X509 key 文件路径。
+    # key_path = "/path/to/tiflash-server-key.pem"
 ```
 
 ### 配置文件 tiflash-learner.toml
