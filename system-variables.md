@@ -283,6 +283,20 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - When this value is greater than `0`, TiDB will batch commit statements such as `INSERT` or `LOAD DATA` into smaller transactions. This reduces memory usage and helps ensure that the `txn-total-size-limit` is not reached by bulk modifications.
 - Only the value `0` provides ACID compliance. Setting this to any other value will break the atomicity and isolation guarantees of TiDB.
 
+### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">New in v4.0.7</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 0
+- This variable is used to control whether to enable the `AMEND TRANSACTION` feature. If you enable the `AMEND TRANSACTION` feature in a pessimistic transaction, when concurrent DDL operations and SCHEMA VERSION changes exist on tables associated with this transaction, TiDB attempts to amend the transaction. TiDB corrects the transaction commit to make the commit consistent with the latest valid SCHEMA VERSION so that the transaction can be successfully committed without getting the `Information schema is changed` error. This feature is effective on the following concurrent DDL operations:
+
+    - `ADD COLUMN` or `DROP COLUMN` operations.
+    - `MODIFY COLUMN` or `CHANGE COLUMN` operations which increase the length of a field.
+    - `ADD INDEX` or `DROP INDEX` operations in which the index column is created before the transaction is opened.
+
+> **Note:**
+>
+> Currently, this feature is incompatible with TiDB Binlog in some scenarios and might cause semantic changes on a transaction. For more usage precautions of this feature, refer to [Incompatibility issues about transaction semantic](https://github.com/pingcap/tidb/issues/21069) and [Incompatibility issues about TiDB Binlog](https://github.com/pingcap/tidb/issues/20996).
+
 ### tidb_enable_cascades_planner
 
 - Scope: SESSION | GLOBAL
