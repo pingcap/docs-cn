@@ -319,7 +319,7 @@ Configuration items related to performance.
 ### `tcp-keep-alive`
 
 - Determines whether to enable `keepalive` in the TCP layer.
-- Default value: `false`
+- Default value: `true`
 
 ### `cross-join`
 
