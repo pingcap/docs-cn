@@ -76,4 +76,4 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 ## BR 会备份表的 `SHARD_ROW_ID_BITS` 和 ` PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
 
-BR 会备份这些信息，并恢复成多个 region。
+会的，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
