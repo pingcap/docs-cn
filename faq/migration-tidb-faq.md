@@ -56,7 +56,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 ### Dumpling 导出大表时引发上游数据库报错“磁盘空间不足”
 
-该问题是由于数据库主键分布不均匀，dumpling 划分导出子范围时出现过大的子范围引起。请尝试分配更大的磁盘空间，或者联系 [AskTUG 社区专家](https://asktug.com/)获取实验版本 dumpling。
+该问题是由于数据库主键分布不均匀，Dumpling 划分导出子范围时出现过大的子范围引起的。请尝试分配更大的磁盘空间，或者联系 [AskTUG 社区专家](https://asktug.com/) 获取实验版本的 Dumpling。
 
 ### TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
