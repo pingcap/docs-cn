@@ -322,21 +322,8 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-<<<<<<< HEAD
-- 默认值: 0
-- 这个变量用于控制是否开启 `get_lock` 和 `release_lock` 这两个没有实现的函数。需要注意的是，当前版本的 TiDB 这两个函数永远返回 1。
-=======
 - 默认值：0
-- 默认情况下，用户尝试将某些语法用于尚未实现的功能时，TiDB 会报错。若将该变量值设为 `1`，TiDB 则自动忽略此类功能不可用的情况，即不会报错。若用户无法更改 SQL 代码，可考虑将变量值设为 `1`。
-- 启用 `noop` 函数可以控制以下行为：
-    * `get_lock` 和 `release_lock` 函数
-    * `LOCK IN SHARE MODE` 语法
-    * `SQL_CALC_FOUND_ROWS` 语法
-
-> **注意：**
->
-> 该变量只有在默认值 `0` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
->>>>>>> 98298bcd... update format and refine punctuation (#5104)
+- 这个变量用于控制是否开启 `get_lock` 和 `release_lock` 这两个没有实现的函数。需要注意的是，当前版本的 TiDB 这两个函数永远返回 1。
 
 ### `tidb_enable_slow_log`
 
@@ -386,7 +373,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 作用域：SESSION | GLOBAL
 - 默认值：off
 - 这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)。
-- 为了减少自动演进对集群的影响，可以进行以下配置： 
+- 为了减少自动演进对集群的影响，可以进行以下配置：
 
     - 设置 `tidb_evolve_plan_task_max_time`，限制每个执行计划运行的最长时间，其默认值为 600s；
     - 设置`tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time`，限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
@@ -936,40 +923,6 @@ set tidb_slow_log_threshold = 200;
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-<<<<<<< HEAD
-=======
-### `tidb_opt_prefer_range_scan`
-
-- 作用域：SESSION
-- 默认值：0
-- 将该变量值设为 `1` 后，优化器总是偏好索引扫描而不是全表扫描。
-- 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引扫描。
-
-```sql
-explain select * from t where age=5;
-+-------------------------+------------+-----------+---------------+-------------------+
-| id                      | estRows    | task      | access object | operator info     |
-+-------------------------+------------+-----------+---------------+-------------------+
-| TableReader_7           | 1048576.00 | root      |               | data:Selection_6  |
-| └─Selection_6           | 1048576.00 | cop[tikv] |               | eq(test.t.age, 5) |
-|   └─TableFullScan_5     | 1048576.00 | cop[tikv] | table:t       | keep order:false  |
-+-------------------------+------------+-----------+---------------+-------------------+
-3 rows in set (0.00 sec)
-
-set session tidb_opt_prefer_range_scan = 1;
-
-explain select * from t where age=5;
-+-------------------------------+------------+-----------+-----------------------------+-------------------------------+
-| id                            | estRows    | task      | access object               | operator info                 |
-+-------------------------------+------------+-----------+-----------------------------+-------------------------------+
-| IndexLookUp_7                 | 1048576.00 | root      |                             |                               |
-| ├─IndexRangeScan_5(Build)     | 1048576.00 | cop[tikv] | table:t, index:idx_age(age) | range:[5,5], keep order:false |
-| └─TableRowIDScan_6(Probe)     | 1048576.00 | cop[tikv] | table:t                     | keep order:false              |
-+-------------------------------+------------+-----------+-----------------------------+-------------------------------+
-3 rows in set (0.00 sec)
-```
-
->>>>>>> 98298bcd... update format and refine punctuation (#5104)
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：SESSION
