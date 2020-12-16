@@ -111,7 +111,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值: 0
+- 默认值：0
 - 这个变量用于控制 TiDB 向 TiFlash 发送 coprocessor 请求的方式，有以下几种取值：
 
     * 0：从不批量发送请求
@@ -171,7 +171,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_capture_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值: off
+- 默认值：off
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 
@@ -283,19 +283,21 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值: 0
+- 默认值：0
 - 这个变量用于控制是否开启 `AMEND TRANSACTION` 特性。在[悲观事务模式](/pessimistic-transaction.md)下开启该特性后，如果该事务相关的表存在并发 DDL 操作和 SCHEMA VERSION 变更，TiDB 会尝试对该事务进行 amend 操作，修正该事务的提交内容，使其和最新的有效 SCHEMA VERSION 保持一致，从而成功提交该事务而不返回 `Information schema is changed` 报错。该特性对以下并发 DDL 变更生效：
 
     - `ADD COLUMN` 或 `DROP COLUMN` 类型的 DDL 操作。
     - `MODIFY COLUMN` 或 `CHANGE COLUMN` 类型的 DDL 操作，且只对增大字段长度的操作生效。
     - `ADD INDEX` 或 `DROP INDEX` 类型的 DDL 操作，且操作的索引列须在事务开启之前创建。
-    
-目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分不兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 TiDB Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
+
+> **注意：**
+>
+> 目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分不兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 TiDB Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
 
 ### `tidb_enable_cascades_planner`
 
 - 作用域：SESSION | GLOBAL
-- 默认值: 0
+- 默认值：0
 - 这个变量用于控制是否开启 cascades planner。
 
 ### `tidb_enable_chunk_rpc` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -314,13 +316,13 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值: 0
+- 默认值：0
 - 这个变量用于控制是否开启 index merge 功能。
 
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值: 0
+- 默认值：0
 - 这个变量用于控制是否开启 `get_lock` 和 `release_lock` 这两个没有实现的函数。需要注意的是，当前版本的 TiDB 这两个函数永远返回 1。
 
 ### `tidb_enable_slow_log`
@@ -350,13 +352,13 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 默认值: 1
+- 默认值：1
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `0` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
 
 ### `tidb_enable_vectorized_expression` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值: 1
+- 默认值：1
 - 这个变量用于控制是否开启向量化执行。
 
 ### `tidb_enable_window_function`
@@ -369,9 +371,9 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_evolve_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值: off
+- 默认值：off
 - 这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)。
-- 为了减少自动演进对集群的影响，可以进行以下配置： 
+- 为了减少自动演进对集群的影响，可以进行以下配置：
 
     - 设置 `tidb_evolve_plan_task_max_time`，限制每个执行计划运行的最长时间，其默认值为 600s；
     - 设置`tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time`，限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
@@ -420,7 +422,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
     - `forUpdateTS`：事务模型为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file.md#max-retry-count) 配置。事务模型为乐观事务时，该条目与 `txnStartTS` 等价。
     - `isReadConsistency`：当前事务隔离级别是否是读已提交 (RC)
     - `current_db`：当前数据库名
-    - `txn_mode`：事务模型。可选值: `OPTIMISTIC`（乐观事务模型），或 `PESSIMISTIC`（悲观事务模型）
+    - `txn_mode`：事务模型。可选值：`OPTIMISTIC`（乐观事务模型），或 `PESSIMISTIC`（悲观事务模型）
     - `sql`：当前查询对应的 SQL 语句
 
 ### `tidb_build_stats_concurrency`
@@ -520,7 +522,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 默认值: tikv, tiflash, tidb
+- 默认值：tikv, tiflash, tidb
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
 
 ### `tidb_low_resolution_tso`
@@ -553,13 +555,13 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 默认值: 60
+- 默认值：60
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 range duration，单位为秒。
 
 ### `tidb_metric_query_step` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 默认值: 60
+- 默认值：60
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 step，单位为秒。
 
 ### `tidb_opt_agg_push_down`
@@ -682,7 +684,7 @@ set tidb_query_log_max_len = 20;
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 默认值: leader
+- 默认值：leader
 - 这个变量用于控制 TiDB 读取数据的位置，有以下三个选择：
 
     * leader：只从 leader 节点读取
@@ -799,7 +801,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 
-- 默认值: 24（受配置文件影响，这里给出的是默认配置文件取值）
+- 默认值：24（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量设置了 statement summary 的历史记录容量。
 
@@ -807,7 +809,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 
-- 默认值: 0（受配置文件影响，这里给出的是默认配置文件取值）
+- 默认值：0（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量用来控制是否在 statement summary 中包含 TiDB 内部 SQL 的信息。
 
@@ -823,7 +825,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 
-- 默认值: 200（受配置文件影响，这里给出的是默认配置文件取值）
+- 默认值：200（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
 
@@ -831,7 +833,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 
-- 默认值: 1800（受配置文件影响，这里给出的是默认配置文件取值）
+- 默认值：1800（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量设置了 statement summary 的刷新时间，单位为秒。
 
@@ -839,7 +841,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：INSTANCE | GLOBAL
 
-- 默认值: 0
+- 默认值：0
 
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
 
@@ -859,7 +861,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 
-- 默认值: on
+- 默认值：on
 
 - 这个变量用于控制是否开启执行计划绑定功能，默认打开，可通过赋值 off 来关闭。关于执行计划绑定功能的使用可以参考[执行计划绑定文档](/sql-plan-management.md#创建绑定)。
 
