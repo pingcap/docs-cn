@@ -28,9 +28,9 @@ tiup mirror <command> [flags]
 
 ## 命令清单
 
-- genkey: 生成私钥文件
-- sign: 使用私钥文件对特定文件进行签名
-- init: 创建一个空的镜像
+- [genkey](/tiup/tiup-command-mirror-genkey.md): 生成私钥文件
+- [sign](/tiup/tiup-command-mirror-sign.md): 使用私钥文件对特定文件进行签名
+- [init](/tiup/tiup-command-mirror-init.md): 创建一个空的镜像
 - set: 设置当前镜像
 - grant: 为当前镜像引入新的组件作者
 - publish: 向当前镜像推送新的组件

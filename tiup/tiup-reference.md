@@ -73,7 +73,9 @@ tiup [flags] <component> [args...]      # 运行组件
 
 ### --skip-version-check (boolean，默认 false)
 
-已废弃
+跳过版本号合法性检查，默认指定的版本号只能是 Semantic Version。
+
+***deprecated***
 
 ### -T, --tag (string)
 
@@ -95,7 +97,7 @@ tiup [flags] <component> [args...]      # 运行组件
 - [update](/tiup/tiup-command-update.md)：升级已安装的组件
 - [status](/tiup/tiup-command-status.md)：查看组件运行状态
 - [clean](/tiup/tiup-command-clean.md)：清理组件数据目录
-- mirror：镜像管理
+- [mirror](/tiup/tiup-command-mirror.md)：镜像管理
 - telemetry：遥测开关
 - completion：TiUP 命令补全
 - env：查看 TiUP 相关环境变量
