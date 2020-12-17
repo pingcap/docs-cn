@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-genkey/']
 
 由于修改文件需要相关的管理员进行签名，因此管理员必须拥有自己的私钥。命令 `tiup mirror genkey` 就是用于生成私钥的。
 
-> **最佳实践: ***
+> **最佳实践：**
 >
 > 永远不要通过网络传输私钥。
 

@@ -47,7 +47,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
    |-- {hash}-timestamp.json                    # 时间戳私钥
 ```
 
-> **注意: ***
+> **注意：**
 >
 > 1. commits 目录是在更新镜像过程中产生的日志，用于回滚镜像，磁盘空间不足时可以定期删除旧的文件夹
 > 2. keys 文件夹中存放的私钥较敏感，建议单独妥善保管
@@ -126,7 +126,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
         "components": {                                         # 组件列表
             "{component1}": {                                   # 第一个组件的名称
                 "hidden": {bool},                               # 是否是隐藏组件
-                "owner": "{owner-id}",                          # 组件所有者 ID
+                "owner": "{owner-id}",                          # 组件管理员 ID
                 "standalone": {bool},                           # 该组件是否可独立运行
                 "url": "/{component}.json",                     # 获取组件的地址，需要加上版本号：/{N}.{component}.json
                 "yanked": {bool}                                # 该组件是否已被标记为删除 

@@ -34,8 +34,8 @@ tiup list [component] [flags]
 ## 输出
 
 - 若未指定 `[component]`
-  - 若指定 --verbose：输出 `组件名(Name)`，`已安装版本(Installed)`, `组件所有者(Owner)`，`组件描述(Owner)` 构成的组件信息列表
-  - 若不指定 --verbose：输出 `组件名(Name)`，`组件所有者(Owner)`，`组件描述(Owner)` 构成的组件信息列表
+  - 若指定 --verbose：输出 `组件名(Name)`，`已安装版本(Installed)`, `组件管理员(Owner)`，`组件描述(Owner)` 构成的组件信息列表
+  - 若不指定 --verbose：输出 `组件名(Name)`，`组件管理员(Owner)`，`组件描述(Owner)` 构成的组件信息列表
 - 若指定 `[component]`
   - 若 `[component]` 存在：输出 `版本(Version)`，`是否已安装(Installed)`，`发布时间(Release)`，`支持的平台(Platforms)` 构成的版本信息列表
   - 若 `[component]` 不存在：报错 `failed to fetch component: unknown component`
