@@ -145,7 +145,7 @@ tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_s
 
 ## 5.0 中新的 GC 机制
 
-TiKV 在 5.0 版本中引入了新的 GC 机制，在 distribution GC 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再是使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及清理掉的旧版本残留大量 tombstone 影响 scan 性能。新机制默认打开，同时支持滚动升级完成之后静默开启。可以由 TiKV 配置文件中的这个开关控制：
+TiKV 在 5.0 版本中引入了新的 GC 机制，在分布式 GC 模式（distribution GC）的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再是使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及清理掉的旧版本残留大量删除标记影响顺序扫描性能。新机制默认打开，同时支持滚动升级完成之后静默开启。可以由 TiKV 配置文件中的这个开关控制：
 
 ```toml
 [gc]
