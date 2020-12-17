@@ -35,6 +35,7 @@ TiDB 版本：4.0.9
     - 在 `EXPLAIN ANALYZE` 结果中正确显示 DML 语句执行器相关的运行时信息 [#21066](https://github.com/pingcap/tidb/pull/21066)
     - 禁止在一条语句中对主键做出多次不同的修改 [#21113](https://github.com/pingcap/tidb/pull/21113)
     - 添加了对于连接的空闲时间的监控项 [#21301](https://github.com/pingcap/tidb/pull/21301)
+    - 在运行 `runtime/trace` 分析工具期间临时开启慢日志 [#20578](https://github.com/pingcap/tidb/pull/20578)
 
 + TiKV
 
@@ -131,6 +132,7 @@ TiDB 版本：4.0.9
     - 修复了 `sum()` 函数计算 `Double` 类型字段的结果溢出导致 panic 的问题 [#21272](https://github.com/pingcap/tidb/pull/21272)
     - 修复了 `DELETE` 语句未能给 unique key 加悲观锁的问题 [#20705](https://github.com/pingcap/tidb/pull/20705)
     - 修复了快照读能够命中 lock cache，返回错误结果的问题 [#21539](https://github.com/pingcap/tidb/pull/21539)
+    - 修复了在同一个事务中读取大量数据时可能发生的内存泄漏问题 [#21129](https://github.com/pingcap/tidb/pull/21129)
 
 + TiKV
 
@@ -172,6 +174,9 @@ TiDB 版本：4.0.9
         - 修复在同步任务暂停或取消之后会产生 goroutine 泄露的问题 [#1075](https://github.com/pingcap/ticdc/pull/1075)
         - 增加 Kafka producer 最大重试时间到 60s，避免在下游 Kafka 服务或网络抖动情况下同步中断 [#1118](https://github.com/pingcap/ticdc/pull/1118)
         - 修复 Kafka 消息所包含行变更数量不能正常生效的问题 [#1112](https://github.com/pingcap/ticdc/pull/1112)
+        - 修复当 TiCDC 与 PD 间网络出现抖动，并且同时操作 TiCDC changefeed 暂停和恢复，可能会出现部分表数据没有被同步的问题 [#1213](https://github.com/pingcap/ticdc/pull/1213)
+        - 修复 TiCDC 与 PD 网络不稳定情况下 TiCDC 可能出现进程非预期退出的问题 [#1218](https://github.com/pingcap/ticdc/pull/1218)
+        - 在 TiCDC 内部使用全局 PD client，以及修复 PD client 被错误关闭导致同步阻塞的问题 [#1217](https://github.com/pingcap/ticdc/pull/1217)
 
     + Dumpling
 
