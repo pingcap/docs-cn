@@ -708,8 +708,8 @@ Configuration items related to RocksDB
 
 ### `enable-statistics`
 
-+ Determines whether to automatically optimize the configuration of Rate LImiter
-+ Default value: `false`
++ Determines whether to enable the statistics of RocksDB
++ Default value: `true`
 
 ### `stats-dump-period`
 
