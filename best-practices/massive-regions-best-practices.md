@@ -108,7 +108,13 @@ raft-election-timeout = raft-base-tick-interval * raft-election-timeout-ticks
 raft-heartbeat-interval = raft-base-tick-interval * raft-heartbeat-ticks
 ```
 
+<<<<<<< HEAD
 如果 Region Follower 在 `raft-election-timeout` 间隔内未收到来自 Leader 的心跳，就会判断 Leader 出现故障而发起新的选举。`raft-heartbeat-interval` 是 Leader 向 Follower 发送心跳的间隔，因此调大 `raft-base-tick-interval` 可以减少单位时间内 Raft 发送的网络消息，但也会让 Raft 检测到 Leader 故障的时间更长。
+=======
+详情请参考[如何配置 Region Merge（英文）](https://tikv.org/docs/4.0/tasks/configure/region-merge/) 和 [PD 配置文件描述](/pd-configuration-file.md#schedule)。
+
+同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
+>>>>>>> 63e62d60... fix a broken link (#5111)
 
 ## 其他问题和解决方案
 
