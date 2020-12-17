@@ -27,22 +27,22 @@ TiDB 版本：4.0.9
     - 在转换等值条件为其它条件时，通过使用启发式规则，避免生成 (index) merge join 以得到更好的执行计划 [#21146](https://github.com/pingcap/tidb/pull/21146)
     - 区分用户变量的类型 [#21107](https://github.com/pingcap/tidb/pull/21107)
     - 在配置文件中添加了 `performance.gogc` 配置项，用于设置 `GOGC` [#20922](https://github.com/pingcap/tidb/pull/20922)
-    - 提升了 `Timestamp` 和 `Datetime` 类型的二进制输出结果的 MySQL 兼容性 [#21135](https://github.com/pingcap/tidb/pull/21135)
-    - 为使用 `LOCK IN SHARE MODE` 语法的 SQL 语句提供报错信息 [#21005](https://github.com/pingcap/tidb/pull/21005)
-    - 对可剪切的表达式进行常量折叠时，避免输出不必要的警告或错误 [#21040](https://github.com/pingcap/tidb/pull/21040)
-    - 优化了 `LOAD DATA` 语句执行 `PREPARE` 操作的报错信息 [#21199](https://github.com/pingcap/tidb/pull/21199)
+    - 提升 `Timestamp` 和 `Datetime` 类型的二进制输出结果与 MySQL 的兼容性 [#21135](https://github.com/pingcap/tidb/pull/21135)
+    - 优化用户使用 `LOCK IN SHARE MODE`  SQL 语句时输出的报错信息 [#21005](https://github.com/pingcap/tidb/pull/21005)
+    - 优化在可剪切的表达式进行常量折叠时输出的错误信息，避免输出不必要的警告或错误信息 [#21040](https://github.com/pingcap/tidb/pull/21040)
+    - 优化 `LOAD DATA` 语句执行 `PREPARE` 时的报错信息 [#21199](https://github.com/pingcap/tidb/pull/21199)
     - 修改列类型的时候，忽略掉整型字段的零值填充大小属性 [#20986](https://github.com/pingcap/tidb/pull/20986)
-    - 在 `EXPLAIN ANALYZE` 结果中正确显示 DML 语句执行器相关的运行时信息 [#21066](https://github.com/pingcap/tidb/pull/21066)
+    - 在 `EXPLAIN ANALYZE` 结果中输出 DML 语句执行器相关运行时的信息 [#21066](https://github.com/pingcap/tidb/pull/21066)
     - 禁止在一条语句中对主键做出多次不同的修改 [#21113](https://github.com/pingcap/tidb/pull/21113)
-    - 添加了对于连接的空闲时间的监控项 [#21301](https://github.com/pingcap/tidb/pull/21301)
-    - 在运行 `runtime/trace` 分析工具期间临时开启慢日志 [#20578](https://github.com/pingcap/tidb/pull/20578)
+    - 添加连接空闲时间的监控项 [#21301](https://github.com/pingcap/tidb/pull/21301)
+    - 新增运行 `runtime/trace` 分析工具时系统自动临时开启慢日志的功能 [#20578](https://github.com/pingcap/tidb/pull/20578)
 
 + TiKV
 
     - 添加标记以跟踪 `split` 命令的来源 [#8936](https://github.com/tikv/tikv/pull/8936)
-    - 支持动态更改配置 `pessimistic-txn.pipelined` [#9100](https://github.com/tikv/tikv/pull/9100)
+    - 支持动态修改 `pessimistic-txn.pipelined` 配置项 [#9100](https://github.com/tikv/tikv/pull/9100)
     - 减少运行 Backup & Restore 和 TiDB Lightning 时对系统的性能影响 [#9098](https://github.com/tikv/tikv/pull/9098)
-    - 添加关于 Ingesting SST 报错的监控项 [#9096](https://github.com/tikv/tikv/pull/9096)
+    - 添加 Ingesting SST 报错的监控项 [#9096](https://github.com/tikv/tikv/pull/9096)
     - 如果还有副本在追日志，则停止进入休眠状态 [#9093](https://github.com/tikv/tikv/pull/9093)
     - 提高悲观锁流水线的成功率 [#9086](https://github.com/tikv/tikv/pull/9086)
     - 调整配置项 `apply-max-batch-size` 和 `store-max-batch-size` 的默认值为 `1024` [#9020](https://github.com/tikv/tikv/pull/9020)
@@ -53,7 +53,7 @@ TiDB 版本：4.0.9
 + PD
 
     - TiKV store 转变为 `Tombstone` 状态时检查 TiKV 集群的版本 [#3213](https://github.com/pingcap/pd/pull/3213)
-    - 不允许低版本的 TiKV 强制从 `Tombstone` 状态转为 `Up` [#3206](https://github.com/pingcap/pd/pull/3206)
+    - 禁止低版本的 TiKV 强制从 `Tombstone` 状态转为 `Up` [#3206](https://github.com/pingcap/pd/pull/3206)
     - 升级 Dashboard 版本到 `v2020.11.26.1` [#3219](https://github.com/pingcap/pd/pull/3219)
 
 + TiFlash
@@ -70,7 +70,7 @@ TiDB 版本：4.0.9
         - BR 不再接受存在歧义的 `--checksum false` 命令行参数，正确用法为 `--checksum=false` [#588](https://github.com/pingcap/br/pull/588)
         - 支持暂时性地调整 PD 的参数 [#596](https://github.com/pingcap/br/pull/596)
         - 支持恢复数据表的统计信息 [#622](https://github.com/pingcap/br/pull/622)
-        - 对于可恢复错误 `read index not ready` 和 `proposal in merging mode` 进行重试 [#626](https://github.com/pingcap/br/pull/626)
+        - 系统自动重试 `read index not ready` 和 `proposal in merging mode` 两种错误 [#626](https://github.com/pingcap/br/pull/626)
 
     + TiCDC
 
