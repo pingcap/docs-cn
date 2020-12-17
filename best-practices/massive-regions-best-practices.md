@@ -82,7 +82,7 @@ v2.1 版本中的 Raftstore 为单线程。因此 Region 数超过 10 万后，R
 >
 > `Region Merge` 已在 TiDB v3.0 中默认开启。
 
-详情请参考[如何配置 Region Merge](https://github.com/tikv/tikv/blob/master/docs/how-to/configure/region-merge.md)。
+详情请参考[如何配置 Region Merge（英文）](https://tikv.org/docs/4.0/tasks/configure/region-merge/)。
 
 同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
 
