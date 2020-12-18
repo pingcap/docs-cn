@@ -172,7 +172,7 @@ TiDB 版本：4.0.9
         - 修复 schema storage 缓存 TiDB 表信息的过程中因更新表信息延迟或过早 GC 导致同步中断的问题 [#1114](https://github.com/pingcap/ticdc/pull/1114)
         - 修复 schema storage 在 DDL 频繁的情况下会消耗过多内存的问题 [#1127](https://github.com/pingcap/ticdc/pull/1127)
         - 修复在同步任务暂停或取消之后会产生 goroutine 泄露的问题 [#1075](https://github.com/pingcap/ticdc/pull/1075)
-        - 增加 Kafka producer 最大重试时间到 60s，避免在下游 Kafka 服务或网络抖动情况下同步中断 [#1118](https://github.com/pingcap/ticdc/pull/1118)
+        - 增加 Kafka producer 最大重试时间到 600s，避免在下游 Kafka 服务或网络抖动情况下同步中断 [#1118](https://github.com/pingcap/ticdc/pull/1118)
         - 修复 Kafka 消息所包含行变更数量不能正常生效的问题 [#1112](https://github.com/pingcap/ticdc/pull/1112)
         - 修复当 TiCDC 与 PD 间网络出现抖动，并且同时操作 TiCDC changefeed 暂停和恢复，可能会出现部分表数据没有被同步的问题 [#1213](https://github.com/pingcap/ticdc/pull/1213)
         - 修复 TiCDC 与 PD 网络不稳定情况下 TiCDC 可能出现进程非预期退出的问题 [#1218](https://github.com/pingcap/ticdc/pull/1218)
