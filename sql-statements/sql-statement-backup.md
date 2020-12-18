@@ -18,25 +18,28 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-backup/']
 
 ## 语法图
 
-**BackupStmt:**
+```ebnf+diagram
+BackupStmt ::=
+    "BACKUP" BRIETables "TO" stringLit BackupOption*
 
-![BackupStmt](/media/sqlgram/BackupStmt.png)
+BRIETables ::=
+    "DATABASE" ( '*' | DBName (',' DBName)* )
+|   "TABLE" TableNameList
 
-**BRIETables:**
+BackupOption ::=
+    "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+|   "CONCURRENCY" '='? LengthNum
+|   "CHECKSUM" '='? Boolean
+|   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
+|   "LAST_BACKUP" '='? BackupTSO
+|   "SNAPSHOT" '='? ( BackupTSO | LengthNum TimestampUnit "AGO" )
 
-![BRIETables](/media/sqlgram/BRIETables.png)
+Boolean ::=
+    NUM | "TRUE" | "FALSE"
 
-**BackupOption:**
-
-![BackupOption](/media/sqlgram/BackupOption.png)
-
-**Boolean:**
-
-![Boolean](/media/sqlgram/Boolean.png)
-
-**BackupTSO:**
-
-![BackupTSO](/media/sqlgram/BackupTSO.png)
+BackupTSO ::=
+    LengthNum | stringLit
+```
 
 ## 示例
 
@@ -100,7 +103,7 @@ BR 支持备份数据到 Amazon S3 或 Google Cloud Storage (GCS)：
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2';
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2&access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
 ```
 
 有关详细的 URL 语法，见 [BR 存储](/br/backup-and-restore-storages.md)。
