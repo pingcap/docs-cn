@@ -648,8 +648,8 @@ rocksdb 相关的配置项。
 
 ### `enable-statistics`
 
-+ 开启自动优化 Rate LImiter 的配置的开关。
-+ 默认值：false
++ 开启 RocksDB 的统计信息。
++ 默认值：true
 
 ### `stats-dump-period`
 
@@ -790,7 +790,11 @@ rocksdb defaultcf 相关的配置项。
 
 ### `cache-index-and-filter-blocks`
 
+<<<<<<< HEAD
 + 开启或关闭缓存 index 和 filter。
+=======
++ 开启缓存 index 和 filter 的开关。
+>>>>>>> 95190384... tikv: fix wrong description and default value for enable-statistics (#5122)
 + 默认值：true
 
 ### `pin-l0-filter-and-index-blocks`
