@@ -84,10 +84,6 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
-    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
-    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
-    # redact_info_log = false
-
     ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写
     # ca_path = "/path/to/ca.pem"
     ## 包含 PEM 格式的 X509 certificate 文件路径
