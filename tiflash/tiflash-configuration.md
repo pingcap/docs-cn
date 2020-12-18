@@ -81,6 +81,15 @@ minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache �
     dt_enable_logical_split = true # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定的空间浪费。默认为 true
     max_memory_usage = 0 # 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0 # 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+
+## 安全相关配置，从 v4.0.5 开始生效
+[security]
+    ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写
+    # ca_path = "/path/to/ca.pem"
+    ## 包含 PEM 格式的 X509 certificate 文件路径
+    # cert_path = "/path/to/tiflash-server.pem"
+    ## 包含 PEM 格式的 X509 key 文件路径
+    # key_path = "/path/to/tiflash-server-key.pem"
 ```
 
 ### 配置文件 tiflash-learner.toml
