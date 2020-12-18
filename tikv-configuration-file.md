@@ -888,6 +888,13 @@ bloom filter 为每个 key 预留的长度。
 + 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
 + 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
 
+### `bottommost-level-compression`
+
++ 设置最后一层的压缩算法，默认：zstd
++ 会覆盖compression-per-level的设置
++ 如果不想设置最后一层的压缩算法，使用"disable"
++ 默认值："zstd"
+
 ### `write-buffer-size`
 
 + memtable 大小。
