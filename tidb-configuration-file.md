@@ -612,4 +612,9 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 
 ## experimental
 
-The `experimental` section, introduced in v3.1.0, describes configurations related to the experimental features of TiDB. Currently, this section has no configuration item.
+The `experimental` section, introduced in v3.1.0, describes configurations related to the experimental features of TiDB.
+
+### `allow-expression-index` <span class="version-mark">New in v4.0.0</span>
+
+- Determines whether to create the expression index.
+- Default value: false
