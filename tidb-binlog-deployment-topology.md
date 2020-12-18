@@ -6,7 +6,7 @@ aliases: ['/docs/dev/tidb-binlog-deployment-topology/']
 
 # TiDB Binlog Deployment Topology
 
-This document describes the deployment topology of TiDB Binlog based on the minimal TiDB topology. 
+This document describes the deployment topology of TiDB Binlog based on the minimal TiDB topology.
 
 TiDB Binlog is the widely used component for replicating incremental data. It provides near real-time backup and replication.
 
@@ -22,23 +22,32 @@ TiDB Binlog is the widely used component for replicating incremental data. It pr
 
 ### Topology templates
 
-- [The simple template for the TiDB Binlog topology](https://github.com/pingcap/docs/blob/master/config-templates/simple-tidb-binlog.yaml)
+- [The simple template for the TiDB Binlog topology (with `mysql` as the downstream type)](https://github.com/pingcap/docs/blob/master/config-templates/simple-tidb-binlog.yaml)
+- [The simple template for the TiDB Binlog topology (with `file` as the downstream type)](https://github.com/pingcap/docs/blob/master/config-templates/simple-file-binlog.yaml)
 - [The complex template for the TiDB Binlog topology](https://github.com/pingcap/docs/blob/master/config-templates/complex-tidb-binlog.yaml)
 
 ### Key parameters
 
 The key parameters in the topology configuration templates are as follows:
 
-- `binlog.enable: true`
+- `server_configs.tidb.binlog.enable: true`
 
     - Enables the binlog service.
     - Default value: `false`.
 
-- `binlog.ignore-error: true`
+- `server_configs.tidb.binlog.ignore-error: true`
 
     - It is recommended to enable this configuration in high availability scenarios.
     - If set to `true`, when an error occurs, TiDB stops writing data into binlog, and adds `1` to the value of the `tidb_server_critical_error_total` monitoring metric.
     - If set to `false`, when TiDB fails to write data into binlog, the whole TiDB service is stopped.
+
+- `drainer_servers.config.syncer.db-type`
+
+    The downstream type of TiDB Binlog. Currently, `mysql`, `tidb`, `kafka`, and `file` are supported.
+
+- `drainer_servers.config.syncer.to`
+
+    The downstream configuration of TiDB Binlog. Depending on different `db-type`s, you can use this configuration item to configure the connection parameters of the downstream database, the connection parameters of Kafka, and the file save path. For details, refer to [TiDB Binlog Configuration File](/tidb-binlog/tidb-binlog-configuration-file.md#syncerto).
 
 > **Note:**
 >
