@@ -704,7 +704,7 @@ rocksdb 相关的配置项。
 
 ### `enable-statistics`
 
-+ 开启 RocksDB 统计信息。
++ 开启 RocksDB 的统计信息。
 + 默认值：true
 
 ### `stats-dump-period`
