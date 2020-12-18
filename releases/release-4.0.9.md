@@ -14,6 +14,10 @@ TiDB 版本：4.0.9
 
     - 废弃配置文件中 `enable-streaming` 配置项 [#21055](https://github.com/pingcap/tidb/pull/21055)
 
++ TiKV
+
+    - 减少开启加密时的 I/O 开销和锁冲突。该修改向下不兼容。如果需要降级至 v4.0.9 以下，需要将 `security.encryption.enable-file-dictionary-log` 配置为 `false`，并在降级前重启 [#9195](https://github.com/tikv/tikv/pull/9195)
+
 ## 新功能
 
 + TiFlash
@@ -48,6 +52,7 @@ TiDB 版本：4.0.9
     - 调整配置项 `apply-max-batch-size` 和 `store-max-batch-size` 的默认值为 `1024` [#9020](https://github.com/tikv/tikv/pull/9020)
     - 添加 `max-background-flushes` 配置 [#8947](https://github.com/tikv/tikv/pull/8947)
     - 默认关闭 RocksDB consistency check 以提高性能 [#9029](https://github.com/tikv/tikv/pull/9029)
+    - 将 Region 大小的查询操作移出 `pd heartbeat worker` 以减轻其压力 [#9185](https://github.com/tikv/tikv/pull/9185)
 
 + PD
 
@@ -145,6 +150,9 @@ TiDB 版本：4.0.9
     - 修复当事务删除 key 时却报 key 已存在的问题 [#8930](https://github.com/tikv/tikv/pull/8930)
     - 修复 RocksDB cache 映射错误导致的数据错误问题 [#9029](https://github.com/tikv/tikv/pull/9029)
     - 修复当 Leader 切换时 Follower Read 可能返回旧数据的问题 [#9240](https://github.com/tikv/tikv/pull/9240)
+    - 修复悲观锁下可能读到旧值的问题 [#9282](https://github.com/tikv/tikv/pull/9282)
+    - 修复 transfer leader 后 replica read 可能会读到旧值的问题 [#9240](https://github.com/tikv/tikv/pull/9240)
+    - 修复 TiKV 在 profiling 结束后再收到 `SIGPROF` 会 panic 的问题 [#9229](https://github.com/tikv/tikv/pull/9229)
 
 + PD
 
