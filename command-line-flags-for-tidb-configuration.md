@@ -48,7 +48,7 @@ aliases: ['/docs-cn/stable/command-line-flags-for-tidb-configuration/','/docs-cn
 
 ## `--enable-binlog`
 
-+ 是否产生 TiDB binlog
++ 是否产生 TiDB Binlog
 + 默认：false
 
 ## `-L`
