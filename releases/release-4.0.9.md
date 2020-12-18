@@ -24,6 +24,16 @@ TiDB 版本：4.0.9
 
     - 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力（实验特性）
 
++ TiDB Dashboard
+
+    - SQL 语句分析功能的列表界面支持显示所有字段并排序 [#749](https://github.com/pingcap/tidb-dashboard/pull/749)
+    - 集群拓扑页面支持缩放 [#772](https://github.com/pingcap/tidb-dashboard/pull/772)
+    - SQL 语句分析及慢日志页面支持显示 SQL 语句的临时存储占用大小 [#777](https://github.com/pingcap/tidb-dashboard/pull/777)
+    - SQL 语句分析及慢日志列表界面支持导出列表数据 [#778](https://github.com/pingcap/tidb-dashboard/pull/778)
+    - 支持配置自定义 Prometheus 地址 [#808](https://github.com/pingcap/tidb-dashboard/pull/808)
+    - 新增集群实例统计摘要页面 [#815](https://github.com/pingcap/tidb-dashboard/pull/815)
+    - 慢日志详情页面新增更多时间字段 [#810](https://github.com/pingcap/tidb-dashboard/pull/810)
+
 ## 优化提升
 
 + TiDB
@@ -58,7 +68,13 @@ TiDB 版本：4.0.9
 
     - TiKV store 转变为 `Tombstone` 状态时检查 TiKV 集群的版本号，防止用户降级和升级过程中的开启不兼容特性[#3213](https://github.com/pingcap/pd/pull/3213)
     - 禁止低版本的 TiKV 强制从 `Tombstone` 状态转为 `Up` [#3206](https://github.com/pingcap/pd/pull/3206)
-    - 升级 Dashboard 版本到 `v2020.11.26.1` [#3219](https://github.com/pingcap/pd/pull/3219)
+
++ TiDB Dashboard
+
+    - 对于 SQL 语句文本点击 “展开” 后支持保持展开状态 [#775](https://github.com/pingcap/tidb-dashboard/pull/775)
+    - 默认在新窗口打开 SQL 语句分析和慢日志详情 [#816](https://github.com/pingcap/tidb-dashboard/pull/816)
+    - 改进慢日志页面部分时间字段描述 [#817](https://github.com/pingcap/tidb-dashboard/pull/817)
+    - 改进错误信息提示，显示更完整的错误内容 [#794](https://github.com/pingcap/tidb-dashboard/pull/794)
 
 + TiFlash
 
@@ -159,6 +175,13 @@ TiDB 版本：4.0.9
     - 修复在特殊情况下 Placement Rule 指定的 leader 绑定不生效的问题 [#3208](https://github.com/pingcap/pd/pull/3208)
     - 修复 `trace-region-flow` 在配置更新时被置为 `false` 的问题 [#3120](https://github.com/pingcap/pd/pull/3120)
     - 修复特殊情况下 safepoint 有无限 TTL 的问题 [#3143](https://github.com/pingcap/pd/pull/3143)
+
++ TiDB Dashboard
+
+    - 修复部分时间显示混杂中英文的问题 [#755](https://github.com/pingcap/tidb-dashboard/pull/755)
+    - 修复部分不兼容的浏览器中没有提示不兼容的问题 [#776](https://github.com/pingcap/tidb-dashboard/pull/776)
+    - 修复部分情况下事务时间戳显示不正确的问题 [#793](https://github.com/pingcap/tidb-dashboard/pull/793)
+    - 修复部分 SQL 文本格式化后成为无效 SQL 语句的问题 [#805](https://github.com/pingcap/tidb-dashboard/pull/805)
 
 + TiFlash
 
