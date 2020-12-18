@@ -733,7 +733,7 @@ rocksdb 相关的配置项。
 
 ### `rate-bytes-per-sec`
 
-+ Rate Limiter 限制速率。
++ Rate LImiter 限制速率。
 + 默认值：0
 + 最小值：0
 + 单位：Bytes
