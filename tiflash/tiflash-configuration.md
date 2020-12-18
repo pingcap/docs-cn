@@ -88,15 +88,15 @@ delta_index_cache_size = 0 # DeltaIndex 内存 cache 大小限制，默认为 0�
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
-    ## 若开启该选项，日志中的用户数据会以 `?` 代替。
-    ## 注意，tiflash-learner 的对应选项为`security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启。
+    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
+    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
     # redact_info_log = false
 
-    ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path`, `key_path`中的路径也需要填写。
+    ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写
     # ca_path = "/path/to/ca.pem"
-    ## 包含 PEM 格式的 X509 certificate 文件路径。
+    ## 包含 PEM 格式的 X509 certificate 文件路径
     # cert_path = "/path/to/tiflash-server.pem"
-    ## 包含 PEM 格式的 X509 key 文件路径。
+    ## 包含 PEM 格式的 X509 key 文件路径
     # key_path = "/path/to/tiflash-server-key.pem"
 ```
 
