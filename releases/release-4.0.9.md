@@ -31,7 +31,7 @@ TiDB 版本：4.0.9
     - 优化用户使用 `LOCK IN SHARE MODE`  SQL 语句时输出的报错信息 [#21005](https://github.com/pingcap/tidb/pull/21005)
     - 优化在可剪切的表达式进行常量折叠时输出的错误信息，避免输出不必要的警告或错误信息 [#21040](https://github.com/pingcap/tidb/pull/21040)
     - 优化 `LOAD DATA` 语句执行 `PREPARE` 时的报错信息 [#21199](https://github.com/pingcap/tidb/pull/21199)
-    - 修改列类型的时候，忽略掉整型字段的零值填充大小属性 [#20986](https://github.com/pingcap/tidb/pull/20986)
+    - 修改整型列的类型时，忽略掉整型字段的零值填充的属性 [#20986](https://github.com/pingcap/tidb/pull/20986)
     - 在 `EXPLAIN ANALYZE` 结果中输出 DML 语句执行器相关运行时的信息 [#21066](https://github.com/pingcap/tidb/pull/21066)
     - 禁止在一条语句中对主键做出多次不同的修改 [#21113](https://github.com/pingcap/tidb/pull/21113)
     - 添加连接空闲时间的监控项 [#21301](https://github.com/pingcap/tidb/pull/21301)
@@ -43,16 +43,15 @@ TiDB 版本：4.0.9
     - 支持动态修改 `pessimistic-txn.pipelined` 配置项 [#9100](https://github.com/tikv/tikv/pull/9100)
     - 减少运行 Backup & Restore 和 TiDB Lightning 时对系统的性能影响 [#9098](https://github.com/tikv/tikv/pull/9098)
     - 添加 Ingesting SST 报错的监控项 [#9096](https://github.com/tikv/tikv/pull/9096)
-    - 如果还有副本在追日志，则停止进入休眠状态 [#9093](https://github.com/tikv/tikv/pull/9093)
-    - 提高悲观锁流水线的成功率 [#9086](https://github.com/tikv/tikv/pull/9086)
+    - 阻止 Leader 在任意副本需要复制日志时进入休眠状态 [#9093](https://github.com/tikv/tikv/pull/9093)
+    - 提高 Pipelined locking 的成功率 [#9086](https://github.com/tikv/tikv/pull/9086)
     - 调整配置项 `apply-max-batch-size` 和 `store-max-batch-size` 的默认值为 `1024` [#9020](https://github.com/tikv/tikv/pull/9020)
     - 添加 `max-background-flushes` 配置 [#8947](https://github.com/tikv/tikv/pull/8947)
-    - 对 storage 模块默认开启统一线程池 [#8887](https://github.com/tikv/tikv/pull/8887)
     - 默认关闭 RocksDB consistency check 以提高性能 [#9029](https://github.com/tikv/tikv/pull/9029)
 
 + PD
 
-    - TiKV store 转变为 `Tombstone` 状态时检查 TiKV 集群的版本 [#3213](https://github.com/pingcap/pd/pull/3213)
+    - TiKV store 转变为 `Tombstone` 状态时检查 TiKV 集群的版本号，防止用户降级和升级过程中的开启不兼容特性[#3213](https://github.com/pingcap/pd/pull/3213)
     - 禁止低版本的 TiKV 强制从 `Tombstone` 状态转为 `Up` [#3206](https://github.com/pingcap/pd/pull/3206)
     - 升级 Dashboard 版本到 `v2020.11.26.1` [#3219](https://github.com/pingcap/pd/pull/3219)
 
@@ -67,7 +66,7 @@ TiDB 版本：4.0.9
 
     + Backup & Restore (BR)
 
-        - BR 不再接受存在歧义的 `--checksum false` 命令行参数，正确用法为 `--checksum=false` [#588](https://github.com/pingcap/br/pull/588)
+        - BR 不再接受存在歧义的 `--checksum false`（不会正确关闭 checksum） 命令行参数，正确用法为 `--checksum=false` [#588](https://github.com/pingcap/br/pull/588)
         - 支持暂时性地调整 PD 的参数 [#596](https://github.com/pingcap/br/pull/596)
         - 支持恢复数据表的统计信息 [#622](https://github.com/pingcap/br/pull/622)
         - 系统自动重试 `read index not ready` 和 `proposal in merging mode` 两种错误 [#626](https://github.com/pingcap/br/pull/626)
