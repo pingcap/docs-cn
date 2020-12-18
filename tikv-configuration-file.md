@@ -648,8 +648,8 @@ rocksdb 相关的配置项。
 
 ### `enable-statistics`
 
-+ 开启自动优化 Rate LImiter 的配置的开关。
-+ 默认值：false
++ 开启 RocksDB 的统计信息。
++ 默认值：true
 
 ### `stats-dump-period`
 
