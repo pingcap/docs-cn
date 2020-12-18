@@ -67,7 +67,7 @@ TiDB 版本：4.0.9
     + Backup & Restore (BR)
 
         - BR 不再接受存在歧义的 `--checksum false`（不会正确关闭 checksum） 命令行参数，正确用法为 `--checksum=false` [#588](https://github.com/pingcap/br/pull/588)
-        - 支持暂时性地调整 PD 的参数 [#596](https://github.com/pingcap/br/pull/596)
+        - 支持暂时性地调整 PD 的参数，在 BR 意外退出后，PD 能自动恢复回正常参数 [#596](https://github.com/pingcap/br/pull/596)
         - 支持恢复数据表的统计信息 [#622](https://github.com/pingcap/br/pull/622)
         - 系统自动重试 `read index not ready` 和 `proposal in merging mode` 两种错误 [#626](https://github.com/pingcap/br/pull/626)
 
