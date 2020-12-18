@@ -331,6 +331,10 @@ In addition, TiDB has the following unique error codes:
     
     Modify the SQL statement or disable the `only_full_group_by` mode.
 
+* Error Number: 8129
+
+    TiDB does not yet support JSON objects with the key length >= 65536.
+
 * Error Number: 8200
 
     The DDL syntax is not yet supported.
