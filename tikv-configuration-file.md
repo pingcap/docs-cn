@@ -892,7 +892,7 @@ bloom filter 为每个 key 预留的长度。
 
 + 设置最后一层的压缩算法，会覆盖 compression-per-level 的设置
 + 考虑到使用 compression-per-level 时效果不理想：
-+ 当 level-compression-dynamic-level-bytes 为 true 时，L0层首先会刷到 L6 层，
++ 当 level-compression-dynamic-level-bytes 为 true 时，L0 层首先会刷到 L6 层，
 + L6 层满了之后再到 L5，但是从 L0 层刷到 L6 层时会先使用
 + compression-per-level[1]，L6 层满了之后，L5 层会使用 compression-per-level[1]，
 + L6 层变成使用 compression-per-level[2]，依次类推，只有在所有层数都有文件时 L6
