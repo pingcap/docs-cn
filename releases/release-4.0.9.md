@@ -177,7 +177,7 @@ TiDB 版本：4.0.9
         - 修复当 TiCDC 与 PD 间网络出现抖动，并且同时操作 TiCDC changefeed 暂停和恢复，可能会出现部分表数据没有被同步的问题 [#1213](https://github.com/pingcap/ticdc/pull/1213)
         - 修复 TiCDC 与 PD 网络不稳定情况下 TiCDC 可能出现进程非预期退出的问题 [#1218](https://github.com/pingcap/ticdc/pull/1218)
         - 在 TiCDC 内部使用全局 PD client，以及修复 PD client 被错误关闭导致同步阻塞的问题 [#1217](https://github.com/pingcap/ticdc/pull/1217)
-        - 修复 cdc owner 节点可能在 etcd watch client 里消耗过多内存的问题
+        - 修复 TiCDC owner 节点可能在 etcd watch client 里消耗过多内存的问题 [#1224](https://github.com/pingcap/ticdc/pull/1224)
 
     + Dumpling
 
