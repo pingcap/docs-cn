@@ -284,7 +284,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示使用机器上所有的 CPU；如果设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
 
-### `server-memory-quota`
+### `server-memory-quota` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 > **警告：**
 >
@@ -295,7 +295,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示无内存限制。
 
-### `memory-usage-alarm-ratio`
+### `memory-usage-alarm-ratio` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 + tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
 + 默认值：0.8
