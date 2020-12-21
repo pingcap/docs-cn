@@ -113,8 +113,9 @@ These differences are documented further in [`ANALYZE TABLE`](/sql-statements/sq
 
 ### Limitations of `SELECT` syntax
 
-- The `SELECT ... INTO @variable` syntax is not supported.
-- The `SELECT ... GROUP BY ... WITH ROLLUP` syntax is not supported.
+- The syntax `SELECT ... INTO @variable` is not supported.
+- The syntax `SELECT ... GROUP BY ... WITH ROLLUP` is not supported.
+- The syntax `SELECT .. GROUP BY expr` does not imply `GROUP BY expr ORDER BY expr` as it does in MySQL 5.7. TiDB instead matches the behavior of MySQL 8.0 and does not imply a default order.
 
 ### Views
 
