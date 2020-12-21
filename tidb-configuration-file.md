@@ -24,6 +24,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
 + 默认值：1073741824
++ 注意：当集群从 v2.0.x 或 v3.0.x 版本直接升级至 v4.0.9 及以上版本时，该配置默认值为 34359738368。
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
 + 该值作为系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的初始值。
 
@@ -48,7 +49,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-action`
 
-> **注意：**
+> **警告：**
 >
 > 目前 `oom-action` 为实验功能，会对写入过程中的内存进行统计。如果用户希望根据该特性取消写入操作，不建议在生产环境中将参数值配置为 `cancel`。
 
@@ -283,11 +284,24 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示使用机器上所有的 CPU；如果设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
 
-### `max-memory`
+### `server-memory-quota`
 
-+ Prepare cache LRU 使用的最大内存限制。当 Prepare cache LRU 的内存使用超过 `performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)` 时，会剔除 LRU 中的元素。
+> **警告：**
+>
+> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+
++ tidb-server 实例内存的使用限制，单位为字节。<!-- 从 TiDB v5.0 起 -->该配置项完全取代原有的 [`max-memory`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#max-memory)。
+
 + 默认值：0
-+ 这个配置在 `prepared-plan-cache.enabled` 为 `true`（默认值）的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
++ 默认值为 0 表示无内存限制。
+
+### `memory-usage-alarm-ratio`
+
++ tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
++ 默认值：0.8
++ 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota) 未设置，则内存报警阈值为 `memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `memory-usage-alarm-ratio * server-memory-quota`。
++ 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
++ 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
 
 ### `txn-total-size-limit`
 
@@ -592,4 +606,9 @@ TiDB 服务状态相关配置。
 
 ## experimental
 
-experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。目前暂无相关配置项。
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
+
+### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
++ 用于控制是否能创建表达式索引。
++ 默认值：false

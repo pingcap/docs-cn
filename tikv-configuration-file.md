@@ -40,6 +40,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：60s
 + 最小值：1s
 
+### `server.end-point-slow-log-threshold`
+
++ endpoint 下推查询请求输出慢日志的阈值，处理时间超过阈值后会输出慢日志。
++ 默认值：1s
++ 最小值：0
+
 ### `server.snap-max-write-bytes-per-sec`
 
 + 处理 snapshot 时最大允许使用的磁盘带宽。
@@ -99,7 +105,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## readpool.unified
 
-> **注意：**
+> **警告：**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
@@ -698,8 +704,8 @@ rocksdb 相关的配置项。
 
 ### `enable-statistics`
 
-+ 开启自动优化 Rate LImiter 的配置的开关。
-+ 默认值：false
++ 开启 RocksDB 的统计信息。
++ 默认值：true
 
 ### `stats-dump-period`
 
@@ -836,7 +842,7 @@ rocksdb defaultcf 相关的配置项。
 
 ### `cache-index-and-filter-blocks`
 
-+ 开启 缓存 index 和 filter 的开关。
++ 开启缓存 index 和 filter 的开关。
 + 默认值：true
 
 ### `pin-l0-filter-and-index-blocks`
