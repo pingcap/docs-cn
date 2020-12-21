@@ -150,9 +150,14 @@ URI 中可配置的的参数如下：
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
+| `max-batch-size` |  从 v4.0.9 引入。如果消息协议支持将多条变更记录输出到一条 kafka 消息，该参数指定一条 kafka 消息中变更记录的最多数量，目前仅对 Kafka 的 `protocol` 为 `default` 时有效（可选，默认值为 `4096`）|
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+
+> **注意：**
+>
+> 当 `protocol` 为 `default` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
 
 #### TiCDC 集成 Kafka Connect (Confluent Platform)
 
