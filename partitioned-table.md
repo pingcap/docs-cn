@@ -214,7 +214,7 @@ PARTITION BY LIST(store_id) (
 
 这样在表中添加或删除于特定区域相关的记录将变得非常容易。例如，假设西部地区所有的商店都卖给了另一家公司，所有与该地区商店的员工相关的行数据都可以通过 `ALTER TABLE employees TRUNCATE PARTITION pWest` 被删除，这比等效的 DELETE 语句 `DELETE FROM employees WHERE store_id IN (4,12,13,14,18)` 执行更加高效。（使用 `ALTER TABLE员工DROP PARTITION pWest` 也会删除所有这些行，但也会从表的定义中删除分区 `pWest`；您将需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。）
 
-与RANGE分区的情况不同，它没有诸如MAXVALUE之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在PARTITION ... VALUES IN（...）子句中。包含不匹配分区列值的 `INSERT` 语句将执行失败，并显示错误，如下例所示：
+与RANGE分区的情况不同，它没有诸如 `MAXVALUE` 之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)`子句中。包含不匹配分区列值的 `INSERT` 语句将执行失败，并显示错误，如下例所示：
 
 ```sql
 mysql> CREATE TABLE h2 (
@@ -231,7 +231,7 @@ mysql> INSERT INTO h2 VALUES (3, 5);
 ERROR 1525 (HY000): Table has no partition for value 3
 ```
 
-可以通过使用IGNORE关键字来忽略这种类型的错误。如果这样做，则不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报告错误:
+可以通过使用 `IGNORE` 关键字来忽略这种类型的错误。如果这样做，则不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报告错误:
 
 ```sql
 mysql> TRUNCATE h2;
@@ -257,7 +257,7 @@ mysql> SELECT * FROM h2;
 
 ### List COLUMNS 分区
 
-LIST COLUMNS 分区是 LIST 分区的一种变体，它可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列；您可以使用字符串类型，DATE 和 DATETIME 列。
+LIST COLUMNS 分区是 LIST 分区的一种变体，它可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列；您可以使用字符串类型，DATE 和 DATETIME 类型的列。
 
 假设您有一家在12个城市拥有客户的企业，出于销售和营销目的，您将组织成3个城市的4个区域，如下表所示：
 
@@ -289,9 +289,9 @@ PARTITION BY LIST COLUMNS(city) (
 );
 ```
 
-您不需要在 COLUMNS() 子句中使用表达式来将列值转换为整数。
+与 List 分区不同的是，您不需要在 `COLUMNS()` 子句中使用表达式来将列值转换为整数。
 
-也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前显示的 `customer_1` 表相同的名称和列，但根据 `renewal` 列采用LIST COLUMNS 分区将行存储在4个分区之一中：
+LIST COLUMNS 分区也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前显示的 `customer_1` 表相同的名称和列，但根据 `renewal` 列采用 LIST COLUMNS 分区将行存储在4个分区之一中：
 
 {{< copyable "sql" >}}
 
@@ -316,7 +316,7 @@ PARTITION BY LIST COLUMNS(renewal) (
 );
 ```
 
-另外，您可以在COLUMNS（）子句中使用多个列，例如：
+另外，您也可以在 `COLUMNS()` 子句中使用多个列，例如：
 
 {{< copyable "sql" >}}
 
@@ -331,7 +331,6 @@ partition by list columns (id,name) (
      partition p3 values IN ((5,'e'),(null,null))
 );
 ```
-
 
 ### Hash 分区
 
