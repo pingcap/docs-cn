@@ -80,6 +80,7 @@
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
   + [手动部署监控](/deploy-monitoring-services.md)
+  + [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
   + [TiDB 集群报警规则与处理方法](/alert-rules.md)
   + [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 + 故障诊断
@@ -526,6 +527,7 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v4.0
+    - [4.0.9](/releases/release-4.0.9.md)
     - [4.0.8](/releases/release-4.0.8.md)
     - [4.0.7](/releases/release-4.0.7.md)
     - [4.0.6](/releases/release-4.0.6.md)
