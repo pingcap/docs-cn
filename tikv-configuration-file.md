@@ -922,7 +922,7 @@ Configuration items related to `rocksdb.defaultcf`
 
 ### `target-file-size-base`
 
-+ The size of the target file at base level
++ The size of the target file at base level. This value is overridden by `compaction-guard-max-output-file-size` when the `enable-compaction-guard` value is `true`.
 + Default: `"8MB"`
 + Minimum value: `0`
 + Unit: KB|MB|GB
@@ -994,6 +994,23 @@ Configuration items related to `rocksdb.defaultcf`
 
 + The hard limit on the pending compaction bytes
 + Default value: `"256GB"`
++ Unit: KB|MB|GB
+
+### `enable-compaction-guard`
+
++ Enables or disables the compaction guard, which is an optimization to split SST files at TiKV Region boundaries. This optimization can help reduce compaction I/O and allows TiKV to use larger SST file size (thus less SST files overall) and at the time efficiently clean up stale data when migrating Regions.
++ Default value: `true`
+
+### `compaction-guard-min-output-file-size`
+
++ The minimum SST file size when the compaction guard is enabled. This configuration prevents SST files from being too small when the compaction guard is enabled.
++ Default value: `"8MB"`
++ Unit: KB|MB|GB
+
+### `compaction-guard-max-output-file-size`
+
++ The maximum SST file size when the compaction guard is enabled. The configuration prevents SST files from being too large when the compaction guard is enabled. This configuration overrides `target-file-size-base` for the same column family.
++ Default value: `"128MB"`
 + Unit: KB|MB|GB
 
 ## `rocksdb.defaultcf.titan`
@@ -1093,6 +1110,23 @@ Configuration items related to `rocksdb.writecf`
 
 + Determines whether to put the entire key to bloom filter
 + Default value: `false`
+
+### `enable-compaction-guard`
+
++ Enables or disables the compaction guard, which is an optimization to split SST files at TiKV Region boundaries. This optimization can help reduce compaction I/O and allows TiKV to use larger SST file size (thus less SST files overall) and at the time efficiently clean up stale data when migrating Regions.
++ Default value: `true`
+
+### `compaction-guard-min-output-file-size`
+
++ The minimum SST file size when the compaction guard is enabled. This configuration prevents SST files from being too small when the compaction guard is enabled.
++ Default value: `"8MB"`
++ Unit: KB|MB|GB
+
+### `compaction-guard-max-output-file-size`
+
++ The maximum SST file size when the compaction guard is enabled. The configuration prevents SST files from being too large when the compaction guard is enabled. This configuration overrides `target-file-size-base` for the same column family.
++ Default value: `"128MB"`
++ Unit: KB|MB|GB
 
 ## rocksdb.lockcf
 
