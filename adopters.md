@@ -40,7 +40,7 @@ This is a list of TiDB adopters in various industries.
 |[Yuanfudao.com](https://www.crunchbase.com/organization/yuanfudao)|EdTech|[English](https://pingcap.com/blog/2017-08-08-tidbforyuanfudao/); [Chinese](https://pingcap.com/cases-cn/user-case-yuanfudao/)|
 |[Bank of Beijing](https://en.wikipedia.org/wiki/Bank_of_Beijing)|Banking|[English](https://pingcap.com/case-studies/how-we-use-a-distributed-database-to-achieve-horizontal-scaling-without-downtime); Chinese [#1](https://pingcap.com/cases-cn/user-case-beijing-bank/), [#2](https://pingcap.com/cases-cn/user-case-beijing-bank-2/)|
 |[WeBank](https://en.wikipedia.org/wiki/WeBank_(China))|Banking|[English](https://pingcap.com/case-studies/how-we-reduced-batch-processing-time-by-58-percent-with-a-scale-out-mysql-alternative/); Chinese [#1](https://pingcap.com/cases-cn/user-case-webank/), [#2](https://pingcap.com/cases-cn/user-case-webank-2/)|
-| [Bank of China](https://en.wikipedia.org/wiki/Bank_of_China) | Banking | [English](https://pingcap.com/case-studies/how-bank-of-china-uses-a-scale-out-database-to-support-zabbix-monitoring-at-scale); [Chinese](https://pingcap.com/cases-cn/user-case-bank-of-china/) |
+|[Bank of China](https://en.wikipedia.org/wiki/Bank_of_China) | Banking | [English](https://pingcap.com/case-studies/how-bank-of-china-uses-a-scale-out-database-to-support-zabbix-monitoring-at-scale); [Chinese](https://pingcap.com/cases-cn/user-case-bank-of-china/) |
 |[Industrial and Commercial Bank of China](https://en.wikipedia.org/wiki/Industrial_and_Commercial_Bank_of_China)|Banking||
 |[Ping An Life Insurance](https://www.bloomberg.com/profile/company/OPAHWZ:CH)|Insurance|[English](https://pingcap.com/case-studies/how-chinas-insurance-giant-improved-agile-application-performance-with-a-newsql-database); [Chinese](https://pingcap.com/cases-cn/user-case-pingan/)|
 |[Yimian Data](https://www.crunchbase.com/organization/yimian-data)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-yimian)|
@@ -49,10 +49,10 @@ This is a list of TiDB adopters in various industries.
 |[ZTO Express](https://www.crunchbase.com/organization/zto-express)| Logistics|[English](https://pingcap.com/case-studies/why-we-migrated-from-exadata-to-a-scale-out-htap-database-for-near-real-time-analytics); [Chinese](https://pingcap.com/cases-cn/user-case-zto-express/)|
 |[G7 Networks](https://www.crunchbase.com/organization/g7)| Logistics|[Chinese](https://pingcap.com/cases-cn/user-case-g7/)|
 |[Hive-Box](http://www.fcbox.com/en/pc/index.html#/)|Logistics|[Chinese](https://pingcap.com/cases-cn/user-case-fengchao/)|
+|[NetEase Games](https://www.linkedin.com/company/netease-games)|Gaming|[English](https://pingcap.com/case-studies/why-we-chose-tidb-over-other-mysql-based-and-newsql-storage-solutions); [Chinese](https://pingcap.com/cases-cn/user-case-wangyihuyu/)|
 |[GAEA](http://www.gaea.com/en/)|Gaming|[English](https://pingcap.com/case-studies/2017-05-22-Comparison-between-MySQL-and-TiDB-with-tens-of-millions-of-data-per-day); [Chinese](https://pingcap.com/cases-cn/user-case-gaea-ad/)|
 |[YOOZOO Games](https://www.crunchbase.com/organization/yoozoo-games)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-youzu/)|
 |[Seasun Games](https://www.crunchbase.com/organization/seasun)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-xishanju/)|
-|[NetEase Games](https://game.163.com/en/)|Gaming||
 |[FUNYOURS JAPAN](http://company.funyours.co.jp/)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-funyours-japan/)|
 |[Hoodinn](https://www.crunchbase.com/organization/hoodinn)|Gaming||
 |[SEA group](https://sea-group.org/?lang=en)|Gaming||

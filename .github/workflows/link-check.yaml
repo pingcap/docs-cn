@@ -18,7 +18,7 @@ jobs:
         id: lc
         uses: peter-evans/link-checker@v1
         with:
-          args: -c 32 -d /github/workspace -r -x "http://172.*|https://github.com/.*/pull/.*|https://github.com/.*/issues/.*|https://github.com/[^.\n]*$|http://127.0.0.1.*|http://localhost.*|http://.*:.*|https://static.googleusercontent.com/media/research.google.com/.*|https://www.crunchbase.com/organization/.*|http://www.brendangregg.com.*|https://blog.csdn.net.*|http://mysql-cocoa.sourceforge.net.*|https://tools.ietf.org.*|http://code.google.com.*|https://spark.apache.org.*|https://www.caasdata.com/|https://www.linkedin.com/company/.*|https://sea-group.org/.*|https://octave.sourceforge.io/database/index.html|https://www.teld.cn/|http://gnade.sourceforge.net/|https://en.wikipedia.org/wiki/WeBank_\(China|.*.md" .
+          args: -c 32 -d /github/workspace -r -x "http://172.*|https://github.com/.*/pull/.*|https://github.com/.*/issues/.*|https://github.com/[^.\n]*$|http://127.0.0.1.*|http://localhost.*|http://.*:.*|https://static.googleusercontent.com/media/research.google.com/.*|https://www.crunchbase.com/organization/.*|http://www.brendangregg.com.*|https://blog.csdn.net.*|http://mysql-cocoa.sourceforge.net.*|https://tools.ietf.org.*|http://code.google.com.*|https://spark.apache.org.*|https://www.caasdata.com/|https://www.linkedin.com/company/.*|https://sea-group.org/.*|https://octave.sourceforge.io/database/index.html|https://www.teld.cn/|http://gnade.sourceforge.net/|https://en.wikipedia.org/wiki/WeBank_\(China|https://twitter.com/PingCAP|.*.md" .
 
       - name: Fail if there were external link errors
         if: ${{ steps.lc.outputs.exit_code }}
