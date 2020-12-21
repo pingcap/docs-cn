@@ -136,7 +136,14 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 pipelined = true
 ```
 
-<<<<<<< HEAD
+若集群是 v4.0.9 及以上版本，也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态开启该功能：
+
+{{< copyable "sql" >}}
+
+```sql
+set config tikv pessimistic-txn.pipelined='true';
+```
+
 ## 常见问题
 
 1. TiDB 日志出现 `pessimistic write conflict, retry statement`。
@@ -150,12 +157,3 @@ pipelined = true
 3. 悲观事务执行时间限制。
 
     在 v4.0 中，GC 已不会影响到正在运行的事务，但悲观事务的执行时间仍有上限，默认为 10 分钟，可通过 TiDB 配置文件 `[performance]` 类别下的 `max-txn-ttl` 修改。
-=======
-若集群是 v4.0.9 及以上版本，也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态开启该功能：
-
-{{< copyable "sql" >}}
-
-```sql
-set config tikv pessimistic-txn.pipelined='true';
-```
->>>>>>> 7eb55f62... add more details to pipelined lock (#4958)
