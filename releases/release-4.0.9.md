@@ -4,7 +4,7 @@ title: TiDB 4.0.9 Release Notes
 
 # TiDB 4.0.9 Release Notes
 
-发版日期：2020 年 12 月 18 日
+发版日期：2020 年 12 月 21 日
 
 TiDB 版本：4.0.9
 
