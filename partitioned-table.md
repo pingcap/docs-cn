@@ -212,6 +212,125 @@ PARTITION BY LIST(store_id) (
 );
 ```
 
+这样在表中添加或删除于特定区域相关的记录将变得非常容易。例如，假设西部地区所有的商店都卖给了另一家公司，所有与该地区商店的员工相关的行数据都可以通过 `ALTER TABLE employees TRUNCATE PARTITION pWest` 被删除，这比等效的 DELETE 语句 `DELETE FROM employees WHERE store_id IN (4,12,13,14,18)` 执行更加高效。（使用 `ALTER TABLE员工DROP PARTITION pWest` 也会删除所有这些行，但也会从表的定义中删除分区 `pWest`；您将需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。）
+
+与RANGE分区的情况不同，它没有诸如MAXVALUE之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在PARTITION ... VALUES IN（...）子句中。包含不匹配分区列值的 `INSERT` 语句将执行失败，并显示错误，如下例所示：
+
+```sql
+mysql> CREATE TABLE h2 (
+    ->   c1 INT,
+    ->   c2 INT
+    -> )
+    -> PARTITION BY LIST(c1) (
+    ->   PARTITION p0 VALUES IN (1, 4, 7),
+    ->   PARTITION p1 VALUES IN (2, 5, 8)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> INSERT INTO h2 VALUES (3, 5);
+ERROR 1525 (HY000): Table has no partition for value 3
+```
+
+可以通过使用IGNORE关键字来忽略这种类型的错误。如果这样做，则不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报告错误:
+
+```sql
+mysql> TRUNCATE h2;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM h2;
+Empty set (0.00 sec)
+
+mysql> INSERT IGNORE INTO h2 VALUES (2, 5), (6, 10), (7, 5), (3, 1), (1, 9);
+Query OK, 3 rows affected (0.00 sec)
+Records: 5  Duplicates: 2  Warnings: 0
+
+mysql> SELECT * FROM h2;
++------+------+
+| c1   | c2   |
++------+------+
+|    7 |    5 |
+|    1 |    9 |
+|    2 |    5 |
++------+------+
+3 rows in set (0.00 sec)
+```
+
+### List COLUMNS 分区
+
+LIST COLUMNS 分区是 LIST 分区的一种变体，它可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列；您可以使用字符串类型，DATE 和 DATETIME 列。
+
+假设您有一家在12个城市拥有客户的企业，出于销售和营销目的，您将组织成3个城市的4个区域，如下表所示：
+
+| Region | Cities                         |
+| :----- | ------------------------------ |
+| 1      | Oskarshamn, Högsby, Mönsterås  |
+| 2      | Vimmerby, Hultsfred, Västervik |
+| 3      | Nässjö, Eksjö, Vetlanda        |
+| 4      | Uppvidinge, Alvesta, Växjo     |
+
+使用列表列分区，您可以为客户数据创建一个表，每行数据将根据客户所在城市的名称分配给与这些区域对应的4个分区中的任意一个，如下所示：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN('Oskarshamn', 'Högsby', 'Mönsterås'),
+    PARTITION pRegion_2 VALUES IN('Vimmerby', 'Hultsfred', 'Västervik'),
+    PARTITION pRegion_3 VALUES IN('Nässjö', 'Eksjö', 'Vetlanda'),
+    PARTITION pRegion_4 VALUES IN('Uppvidinge', 'Alvesta', 'Växjo')
+);
+```
+
+您不需要在 COLUMNS() 子句中使用表达式来将列值转换为整数。
+
+也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前显示的 `customer_1` 表相同的名称和列，但根据 `renewal` 列采用LIST COLUMNS 分区将行存储在4个分区之一中：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE customers_2 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(renewal) (
+    PARTITION pWeek_1 VALUES IN('2010-02-01', '2010-02-02', '2010-02-03',
+        '2010-02-04', '2010-02-05', '2010-02-06', '2010-02-07'),
+    PARTITION pWeek_2 VALUES IN('2010-02-08', '2010-02-09', '2010-02-10',
+        '2010-02-11', '2010-02-12', '2010-02-13', '2010-02-14'),
+    PARTITION pWeek_3 VALUES IN('2010-02-15', '2010-02-16', '2010-02-17',
+        '2010-02-18', '2010-02-19', '2010-02-20', '2010-02-21'),
+    PARTITION pWeek_4 VALUES IN('2010-02-22', '2010-02-23', '2010-02-24',
+        '2010-02-25', '2010-02-26', '2010-02-27', '2010-02-28')
+);
+```
+
+另外，您可以在COLUMNS（）子句中使用多个列，例如：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t (
+    id int,
+    name varchar(10)
+)
+partition by list columns (id,name) (
+     partition p0 values IN ((1,'a'),(2,'b')),
+     partition p1 values IN ((3,'c'),(4,'d')),
+     partition p3 values IN ((5,'e'),(null,null))
+);
+```
 
 
 ### Hash 分区
@@ -1002,7 +1121,7 @@ YEARWEEK()
 
 ### 兼容性
 
-目前 TiDB 里面只实现了 Range 分区和 Hash 分区，其它的 MySQL 分区类型比如 List 分区和 Key 分区尚不支持。
+目前 TiDB 里面只实现了 Range 分区，List 分区和 Hash 分区，其它的 MySQL 分区类型比如 Key 分区尚不支持。
 
 对于 Range Columns 类型的分区表，目前只支持单列的场景。
 
