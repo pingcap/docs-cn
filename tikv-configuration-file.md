@@ -1193,6 +1193,36 @@ Configuration items related to security
 + This configuration item enables or disables log redaction. If the configuration value is set to `true`, all user data in the log will be replaced by `?`.
 + Default value: `false`
 
+## security.encryption
+
+Configuration items related to [encryption at rest](/encryption-at-rest.md) (TDE).
+
+### `data-encryption-method`
+
++ The encryption method for data files
++ Value options: "plaintext", "aes128-ctr", "aes192-ctr", and "aes256-ctr"
++ A value other than "plaintext" means that encryption is enabled, in which case the master key must be specified.
++ Default value: `"plaintext"`
+
+### `data-key-rotation-period`
+
++ Specifies how often TiKV rotates the data encryption key.
++ Default value: `7d`
+
+### enable-file-dictionary-log
+
++ Enables the optimization to reduce I/O and mutex contention when TiKV manages the encryption metadata.
++ To avoid possible compatibility issues when this configuration parameter is enabled (by default), see [Encryption at Rest - Compatibility between TiKV versions](/encryption-at-rest.md#compatibility-between-tikv-versions) for details.
++ Default value: `true`
+
+### master-key
+
++ Specifies the master key if encryption is enabled. To learn how to configure a master key, see [Encryption at Rest - Configure encryption](/encryption-at-rest.md#configure-encryption).
+
+### previous-master-key
+
++ Specifies the old master key when rotating the new master key. The configuration format is the same as that of `master-key`. To learn how to configure a master key, see [Encryption at Rest - Configure encryption](/encryption-at-rest.md#configure-encryption).
+
 ## `import`
 
 Configuration items related to TiDB Lightning import and BR restore.
