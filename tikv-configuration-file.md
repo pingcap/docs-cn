@@ -891,19 +891,19 @@ bloom filter 为每个 key 预留的长度。
 ### `bottommost-level-compression`
 
 + 设置最后一层的压缩算法，会覆盖 compression-per-level 的设置
-+ 考虑到使用 compression-per-level（压缩算法数组）时效果不理想：
-+ 当 level-compression-dynamic-level-bytes 为 true 时，L0 层首先会刷到 L6 层，
-+ L6 层满了之后再到 L5 层，L5 层满了之后再到 L4 层，以此类推。从 L0 层刷到 L6
-+ 层时，L0 层会使用压缩算法数组里第一个压缩算法，L6 层使用压缩算法数组里第二
-+ 个压缩算法，此时只有两层，只使用了压缩算法数组的前两个压缩算法；待 L6 层满
-+ 了之后，L0 层会使用压缩算法数组第一个压缩算法，L5 层会使用压缩算法数组里第
-+ 二个压缩算法， L6 层变成使用压缩算法数组里第三个压缩算法，此时有3层，会使用
-+ 压缩算法数组的前三个压缩算法，依次类推，只有在所有层数都有文件时 L6 层才会
-+ 使用压缩算法数组里最后一个压缩算法，此时每层的压缩算法才和压缩算法数组中所
-+ 有的压缩算法一一对应。 相当于 L6 层并不是一开始就直接采用压缩算法数组最后那
-+ 个压缩效果最好的压缩算法，但是使用 bottommost-level-compression 可以让 L6
-+ 层从一开始就使用压缩效果最好的压缩算法。如果不想设置最后一层的压缩算法，可
-+ 以使用 "disable"
++ 考虑到使用 compression-per-level 时效果并不理想：
++ 当 level-compression-dynamic-level-bytes 为 true 时，L0 层首先会刷
++ 到 L6 层，L6 层满了之后再到 L5 层，L5 层满了之后再到 L4 层，以此类推。从
++ L0 层刷到 L6 层时，L0 层会使用 compression-per-level[0]，L6 层会使用
++ compression-per-level[1]，此时只有两层，只使用了数组里的前两个压缩算法；
++ 待 L6 层满了之后，L0 层会使用 compression-per-level[0]，L5 层会使用
++ compression-per-level[1]，L6 层变成使用 compression-per-level[2]，
++ 此时有3层，会使用数组里的前三个压缩算法，依次类推，只有在所有层数都有文件时
++ L6 层才会使用 copression-per-level[5]，此时每层的压缩算法才和数组中所
++ 有的压缩算法一一对应。相当于 L6 层并不是一开始就直接采用数组最后那个压缩效
++ 果最好的压缩算法。但是使用 bottommost-level-compression 可以让 L6 层
++ 从一开始就使用压缩效果最好的压缩算法。如果不想设置最后一层的压缩算法，可以使
++ 用 "disable"
 + 默认值："zstd"
 
 ### `write-buffer-size`
