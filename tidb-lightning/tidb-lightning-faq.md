@@ -196,3 +196,7 @@ upload-speed-limit = "100MB"
 2. 删除 `tikv-importer` 所在机器上的整个 “import” 文件目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
+
+## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
+
+报错原因是遍历本地排序的文件时出现异常，可能在 lightning 打开的文件数量超过系统的上限时发生。在 linux 系统中，可以使用 `ulimit -n` 命令确认此值是否过小。建议在 lightning 导入期间将此设置调整为 1000000（`ulimit -n 1000000`）。

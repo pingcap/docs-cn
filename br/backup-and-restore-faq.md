@@ -73,3 +73,11 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 + 在 4.0.3 版本之前，BR 恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
 
 TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ticdc/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
+
+## 使用 BR 恢复备份数据后，SQL 查询报错 `region is unavailable`
+
+如果 BR 备份的集群有 TiFlash，恢复时会将 TiFlash 信息存进 `TableInfo`。此时如果恢复的集群没有 TiFlash，则会报该错误。计划在未来版本中修复该错误。
+
+## BR 是否支持就地 (in-place) 全量恢复某个历史备份？
+
+不支持。
