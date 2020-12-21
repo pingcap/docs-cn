@@ -231,7 +231,7 @@ For example, there is `idx4 (a,b)`, with column `a` of the varchar type and colu
 {{< copyable "sql" >}}
 
 ```sql
-SPLIT TABLE t1 INDEX idx4 ("a", "2000-01-01 00:00:01"), ("b", "2019-04-17 14:26:19"), ("c", "");
+SPLIT TABLE t1 INDEX idx4 BY ("a", "2000-01-01 00:00:01"), ("b", "2019-04-17 14:26:19"), ("c", "");
 ```
 
 This statement specifies 3 values to split 4 Regions. The range of each Region is as follows:
