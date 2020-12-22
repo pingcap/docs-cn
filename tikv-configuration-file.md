@@ -747,7 +747,7 @@ rocksdb 相关的配置项。
 
 ### `rate-limiter-auto-tuned`
 
-+ 开启自动优化 RocksDB 的 compaction rate limiter 配置的开关。
++ 开启自动优化 RocksDB 的 compaction rate limiter。
 + 默认值：true
 
 ### `enable-pipelined-write`
