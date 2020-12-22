@@ -33,8 +33,8 @@ tiup mirror <command> [flags]
 - [init](/tiup/tiup-command-mirror-init.md): 创建一个空的镜像
 - [set](/tiup/tiup-command-mirror-set.md): 设置当前镜像
 - [grant](/tiup/tiup-command-mirror-grant.md): 为当前镜像引入新的组件作者
-- publish: 向当前镜像推送新的组件
-- modify: 修改当前镜像中的组件属性
-- rotate: 更新当前镜像中的根证书
-- clone: 从已有镜像克隆一个新的镜像
+- [publish](/tiup/tiup-command-mirror-publish.md): 向当前镜像推送新的组件
+- [modify](/tiup/tiup-command-mirror-modify.md): 修改当前镜像中的组件属性
+- [rotate](/tiup/tiup-command-mirror-rotate.md): 更新当前镜像中的根证书
+- [clone](/tiup/tiup-command-mirror-rotate.md): 从已有镜像克隆一个新的镜像
 - merge: 合并两个或多个镜像

@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-publish/']
 
 ## 介绍
 
-命令 `tiup mirror publish` 用于发布新组件，或已有组件的新版本。只有合法的组件管理员才可以发布组件，组件管理员的引入方式参考[grant命令](/tiup/tiup-command-mirror-grant.md)。
+命令 `tiup mirror publish` 用于发布新组件，或已有组件的新版本。只有合法的组件管理员才可以发布组件，组件管理员的引入方式参考[grant 命令](/tiup/tiup-command-mirror-grant.md)。
 
 ## 语法
 
@@ -59,3 +59,14 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 ### --hide（boolean，默认 false）
 
 是否为隐藏组件，若为隐藏组件，则不在 `tiup list` 的列表中显示，但是 `tiup list --all` 可看到。
+
+### --standalone（boolean，默认 false）
+
+该组件是否独立可运行的组件，该参数尚未使用，将在未来启用。
+
+## 输出
+
+- 若成功：无输出
+- 若该组件管理员无权修改目标组件：
+  - 若使用远程镜像：`Error: The server refused, make sure you have access to this component`
+  - 若使用本地镜像：`Error: the signature is not correct`
