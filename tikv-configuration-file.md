@@ -740,7 +740,7 @@ rocksdb 相关的配置项。
 
 ### `rate-limiter-mode`
 
-+ RocksDB 的 compaction rate limiter 模式
++ RocksDB 的 compaction rate limiter 模式。
 + 可选值：1 (ReadOnly)，2 (WriteOnly)，3 (AllIo)
 + 默认值：2
 + 最小值：1
