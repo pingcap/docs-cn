@@ -30,17 +30,6 @@ aliases: ['/docs-cn/stable/tiflash/tiflash-configuration/','/docs-cn/v4.0/tiflas
 ### 配置文件 tiflash.toml
 
 ```toml
-<<<<<<< HEAD
-tmp_path = tiflash 临时文件存放路径
-path = tiflash 数据存储路径     # 如果有多个目录，以英文逗号分隔
-path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
-listen_host = tiflash # TCP/HTTP 等辅助服务的监听 host，建议配置成 0.0.0.0
-tcp_port = tiflash tcp 服务端口
-http_port = tiflash http 服务端口
-mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，通常不需要修改
-minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
-```
-=======
 ## TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
 listen_host = "0.0.0.0"
 ## TiFlash TCP 服务的端口
@@ -84,7 +73,6 @@ minmax_index_cache_size = 5368709120
     # dir = [ ]
     ## storage.latest.dir 存储目录列表中，每个目录的最大可用容量。
     # capacity = [ 10737418240, 10737418240 ]
->>>>>>> 43babdc9... Add desc of new TiFlash storage settings and guidelines for upgrading in v4.0.9 (#4965)
 
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
