@@ -56,7 +56,7 @@ minmax_index_cache_size = 5368709120
 [storage]
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
-    dir = [ "/tidb-data/tiflash-9000" ] 
+    dir = [ "/tidb-data/tiflash-9000" ]
     ## 或
     # dir = [ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]
 
@@ -114,7 +114,7 @@ minmax_index_cache_size = 5368709120
     ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 true
     dt_enable_logical_split = true
     ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
-    max_memory_usage = 0 
+    max_memory_usage = 0
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0
 
