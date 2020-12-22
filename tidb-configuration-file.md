@@ -228,7 +228,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tcp-keep-alive`
 
 + TiDB 在 TCP 层开启 keepalive。
-+ 默认值：false
++ 默认值：true
 
 ### `cross-join`
 
