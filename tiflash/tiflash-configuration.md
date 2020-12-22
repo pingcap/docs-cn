@@ -51,8 +51,6 @@ http_port = 8123
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 minmax_index_cache_size = 5368709120
-## DeltaIndex 内存 cache 大小限制，默认为 0，代表没有限制
-delta_index_cache_size = 0
 
 ## TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
 ## 从 v4.0.9 版本开始，不推荐使用 path 及 path_realtime_mode 参数。推荐使用 [storage] 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
@@ -67,9 +65,6 @@ delta_index_cache_size = 0
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-    ## 限制后台任务每秒写入的字节数，0 代表没有限制
-    bg_task_io_rate_limit = 0
-
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
     dir = [ "/tidb-data/tiflash-9000" ] 
