@@ -77,3 +77,11 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 ## BR 会备份表的 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
 
 会的，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
+
+## 使用 BR 恢复备份数据后，SQL 查询报错 `region is unavailable`
+
+如果 BR 备份的集群有 TiFlash，恢复时会将 TiFlash 信息存进 `TableInfo`。此时如果恢复的集群没有 TiFlash，则会报该错误。计划在未来版本中修复该错误。
+
+## BR 是否支持就地 (in-place) 全量恢复某个历史备份？
+
+不支持。
