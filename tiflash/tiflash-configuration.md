@@ -121,7 +121,20 @@ delta_index_cache_size = 0
     ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage = 0 
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
-    max_memory_usage_for_all_queries = 0 
+    max_memory_usage_for_all_queries = 0
+
+## 安全相关配置，从 v4.0.5 开始生效
+[security]
+    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
+    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
+    # redact_info_log = false
+
+    ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写
+    # ca_path = "/path/to/ca.pem"
+    ## 包含 PEM 格式的 X509 certificate 文件路径
+    # cert_path = "/path/to/tiflash-server.pem"
+    ## 包含 PEM 格式的 X509 key 文件路径
+    # key_path = "/path/to/tiflash-server-key.pem"
 ```
 
 ### 配置文件 tiflash-learner.toml
