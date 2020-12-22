@@ -891,7 +891,7 @@ bloom filter 为每个 key 预留的长度。
 ### `bottommost-level-compression`
 
 + 设置最下一层的压缩算法，会覆盖 compression-per-level 的设置
-+ 考虑到 level-compression-dynamic-level-bytes 为 true 时，最下层
++ 考虑到当 level-compaction-dynamic-level-bytes 为 true 时，最下层
 + 并不是一开始就直接采用 compression-per-level[6] 的压缩算法，所以提供
 + 该选项。使用 bottommost-level-compression 可以让最下层从一开始就使用
 + 压缩效果最好的压缩算法。如果不想设置最后一层的压缩算法，可以使用 "disable"
