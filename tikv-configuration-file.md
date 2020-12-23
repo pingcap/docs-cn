@@ -890,11 +890,9 @@ bloom filter 为每个 key 预留的长度。
 
 ### `bottommost-level-compression`
 
-+ 设置最下层的压缩算法，覆盖 compression-per-level 的设置，考虑到
-+ 最下层并不是一开始就直接采用 compression-per-level 数组中最后一
-+ 个压缩算法，所以提供该选项。使用 bottommost-level-compression
-+ 可以让最下层从一开始就使用压缩效果最好的压缩算法。如果不想设置最下层
-+ 的压缩算法，可以使用 "disable"
++ 设置最底层的压缩算法。该设置将覆盖 `compression-per-level` 的设置。
++ 因为最底层并非从数据开始写入 LSM-tree 起就直接采用 `compression-per-level` 数组中的最后一个压缩算法，使用 `bottommost-level-compression` 可以让最底层从一开始就使用压缩效果最好的压缩算法。
++ 如果不想设置最底层的压缩算法，可以将该配置项的值设为 `disable`。
 + 默认值："zstd"
 
 ### `write-buffer-size`
