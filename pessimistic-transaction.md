@@ -119,7 +119,13 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 
 ## Pipelined 加锁流程
 
-加悲观锁需要向 TiKV 写入数据，要经过 Raft 提交并 apply 后才能返回，相比于乐观事务，不可避免的会增加部分延迟。为了降低加锁的开销，TiKV 实现了 pipelined 加锁流程：当数据满足加锁要求时，TiKV 立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率悲观锁异步写入失败，可能会导致悲观事务提交失败。
+加悲观锁需要向 TiKV 写入数据，要经过 Raft 提交并 apply 后才能返回，相比于乐观事务，不可避免的会增加部分延迟。为了降低加锁的开销，TiKV 实现了 pipelined 加锁流程：当数据满足加锁要求时，TiKV 立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但当 TiKV 出现网络隔离或者节点宕机时，悲观锁异步写入有可能失败，从而产生以下影响：
+
+* 无法阻塞修改相同数据的其他事务。如果业务逻辑依赖加锁或等锁机制，业务逻辑的正确性将受到影响。
+
+* 有较低概率导致事务提交失败，但不会影响事务正确性。
+
+如果业务逻辑依赖加锁或等锁机制，或者即使在集群异常情况下也要尽可能保证事务提交的成功率，应关闭 pipelined 加锁功能。
 
 ![Pipelined pessimistic lock](/media/pessimistic-transaction-pipelining.png)
 
@@ -128,4 +134,12 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 ```toml
 [pessimistic-txn]
 pipelined = true
+```
+
+若集群是 v4.0.9 及以上版本，也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态开启该功能：
+
+{{< copyable "sql" >}}
+
+```sql
+set config tikv pessimistic-txn.pipelined='true';
 ```
