@@ -36,8 +36,6 @@
     + Linux 环境
       + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
       + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
-      + [使用 Ansible 部署](/online-deployment-using-ansible.md)
-      + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
   + 性能测试方法
@@ -57,10 +55,8 @@
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
     + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
-    + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
-    + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
     + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   + 备份与恢复
     + 使用 BR 工具（推荐）
@@ -74,7 +70,6 @@
   + [日常巡检](/daily-check.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
-  + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
   + [在线修改集群配置](/dynamic-config.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
