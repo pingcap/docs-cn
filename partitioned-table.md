@@ -322,7 +322,7 @@ PARTITION BY LIST COLUMNS(hired) (
 );
 ```
 
-另外，您也可以在 `COLUMNS()` 子句中使用多个列，例如：
+另外，你也可以在 `COLUMNS()` 子句中添加多个列，例如：
 
 {{< copyable "sql" >}}
 
