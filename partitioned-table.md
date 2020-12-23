@@ -263,10 +263,10 @@ LIST COLUMNS 分区是 LIST 分区的一种变体，它可以将多个列用作�
 
 | Region | Cities                         |
 | :----- | ------------------------------ |
-| 1      | Oskarshamn, Högsby, Mönsterås  |
-| 2      | Vimmerby, Hultsfred, Västervik |
-| 3      | Nässjö, Eksjö, Vetlanda        |
-| 4      | Uppvidinge, Alvesta, Växjo     |
+| 1      | LosAngeles,Seattle, Houston    |
+| 2      | Chicago, Columbus, Boston      |
+| 3      | NewYork, LongIsland, Baltimore |
+| 4      | Atlanta, Raleigh, Cincinnati   |
 
 使用列表列分区，您可以为客户数据创建一个表，每行数据将根据客户所在城市的名称分配给与这些区域对应的4个分区中的任意一个，如下所示：
 
@@ -282,10 +282,10 @@ CREATE TABLE customers_1 (
     renewal DATE
 )
 PARTITION BY LIST COLUMNS(city) (
-    PARTITION pRegion_1 VALUES IN('Oskarshamn', 'Högsby', 'Mönsterås'),
-    PARTITION pRegion_2 VALUES IN('Vimmerby', 'Hultsfred', 'Västervik'),
-    PARTITION pRegion_3 VALUES IN('Nässjö', 'Eksjö', 'Vetlanda'),
-    PARTITION pRegion_4 VALUES IN('Uppvidinge', 'Alvesta', 'Växjo')
+    PARTITION pRegion_1 VALUES IN('LosAngeles', 'Seattle', 'Houston'),
+    PARTITION pRegion_2 VALUES IN('Chicago', 'Columbus', 'Boston'),
+    PARTITION pRegion_3 VALUES IN('NewYork', 'LongIsland', 'Baltimore'),
+    PARTITION pRegion_4 VALUES IN('Atlanta', 'Raleigh', 'Cincinnati')
 );
 ```
 
