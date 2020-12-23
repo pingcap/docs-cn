@@ -233,7 +233,7 @@ mysql> INSERT INTO h2 VALUES (3, 5);
 ERROR 1525 (HY000): Table has no partition for value 3
 ```
 
-可以通过使用 `IGNORE` 关键字来忽略这种类型的错误。如果这样做，则不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报告错误:
+要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错:
 
 ```sql
 mysql> TRUNCATE h2;
