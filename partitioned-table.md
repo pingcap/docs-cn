@@ -163,9 +163,9 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### List 分区
 
-List 分区和 Range 分区有很多相似的地方，主要的不同在于，List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合内。每个分区定义的数据集合是任意个值，但不能有重叠，通过使用 `PARTITION ... VALUES IN (...)` 子句进行定义。
+List 分区和 Range 分区有很多相似的地方，主要的不同在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但值不能有重叠，可通过 `PARTITION ... VALUES IN (...)` 子句进行定义值。
 
-下列场景中，假设你要为商店工作人员创建一个人事记录的表：
+假设你要创建一张人事记录表，示例如下：
 
 {{< copyable "sql" >}}
 
@@ -181,9 +181,9 @@ CREATE TABLE employees (
 );
 ```
 
-假如一共有 20 个商店分别属于以下 4 个地区中：
+假如一共有 20 个商店分布在 4 个地区，如下表所示：
 
-| Region  | Store IDs     |
+| Region  | Store ID Numbers     |
 | ------- | -------------------- |
 | North   | 3, 5, 6, 9, 17       |
 | East    | 1, 2, 10, 11, 19, 20 |
@@ -216,10 +216,10 @@ PARTITION BY LIST(store_id) (
 
 使用 `ALTER TABLE employees DROP PARTITION pWest` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pWest`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
 
-与RANGE分区的情况不同，它没有诸如 `MAXVALUE` 之类的“包罗万象”的属性。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)`子句中。包含不匹配分区列值的 `INSERT` 或 `UPDATE` 语句将执行失败，并显示错误，如下例所示：
+与 Range 分区的情况不同，List 分区没有诸如 `MAXVALUE` 之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句包含不匹配分区列值，该语句将执行失败并报错，如下例所示：
 
 ```sql
-mysql> CREATE TABLE h2 (
+test> CREATE TABLE h2 (
     ->   c1 INT,
     ->   c2 INT
     -> )
@@ -229,24 +229,24 @@ mysql> CREATE TABLE h2 (
     -> );
 Query OK, 0 rows affected (0.11 sec)
 
-mysql> INSERT INTO h2 VALUES (3, 5);
+test> INSERT INTO h2 VALUES (3, 5);
 ERROR 1525 (HY000): Table has no partition for value 3
 ```
 
 要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错:
 
 ```sql
-mysql> TRUNCATE h2;
+test> TRUNCATE h2;
 Query OK, 1 row affected (0.00 sec)
 
-mysql> SELECT * FROM h2;
+test> SELECT * FROM h2;
 Empty set (0.00 sec)
 
-mysql> INSERT IGNORE INTO h2 VALUES (2, 5), (6, 10), (7, 5), (3, 1), (1, 9);
+test> INSERT IGNORE INTO h2 VALUES (2, 5), (6, 10), (7, 5), (3, 1), (1, 9);
 Query OK, 3 rows affected (0.00 sec)
 Records: 5  Duplicates: 2  Warnings: 0
 
-mysql> SELECT * FROM h2;
+test> SELECT * FROM h2;
 +------+------+
 | c1   | c2   |
 +------+------+
