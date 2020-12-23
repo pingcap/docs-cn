@@ -212,7 +212,9 @@ PARTITION BY LIST(store_id) (
 );
 ```
 
-这样在表中添加或删除于特定区域相关的记录将变得非常容易。例如，假设西部地区所有的商店都卖给了另一家公司，所有与该地区商店的员工相关的行数据都可以通过 `ALTER TABLE employees TRUNCATE PARTITION pWest` 被删除，这比等效的 DELETE 语句 `DELETE FROM employees WHERE store_id IN (4,12,13,14,18)` 执行更加高效。（使用 `ALTER TABLE员工DROP PARTITION pWest` 也会删除所有这些行，但也会从表的定义中删除分区 `pWest`；您将需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。）
+这样就能方便地在表中添加或删除与特定区域相关的记录。例如，假设西部地区 (West) 所有的商店都卖给了另一家公司，所有该地区商店的员工相关的行数据都可以通过 `ALTER TABLE employees TRUNCATE PARTITION pWest` 删除，这比等效的 `DELETE` 语句 `DELETE FROM employees WHERE store_id IN (4,12,13,14,18)` 执行起来更加高效。
+
+使用 `ALTER TABLE employees DROP PARTITION pWest` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pWest`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
 
 与RANGE分区的情况不同，它没有诸如 `MAXVALUE` 之类的“包罗万象”的属性。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)`子句中。包含不匹配分区列值的 `INSERT` 或 `UPDATE` 语句将执行失败，并显示错误，如下例所示：
 
