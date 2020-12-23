@@ -733,22 +733,23 @@ rocksdb 相关的配置项。
 
 ### `rate-bytes-per-sec`
 
-+ Rate Limiter 限制速率。
-+ 默认值：0
++ RocksDB compaction rate limiter 的限制速率。
++ 默认值：10GB
 + 最小值：0
-+ 单位：Bytes
++ 单位：B|KB|MB|GB
 
 ### `rate-limiter-mode`
 
-+ Rate LImiter 模式，取值：1（ReadOnly），2（WriteOnly），3（AllIo）。
++ RocksDB 的 compaction rate limiter 模式。
++ 可选值：1 (ReadOnly)，2 (WriteOnly)，3 (AllIo)
 + 默认值：2
 + 最小值：1
 + 最大值：3
 
-### `auto-tuned`
+### `rate-limiter-auto-tuned`
 
-+ 开启自动优化 Rate LImiter 的配置的开关。
-+ 默认值：false
++ 控制是否自动优化 RocksDB 的 compaction rate limiter 配置。
++ 默认值：true
 
 ### `enable-pipelined-write`
 
