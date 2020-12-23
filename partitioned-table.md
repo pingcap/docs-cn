@@ -165,7 +165,7 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 List 分区和 Range 分区有很多相似的地方，主要的不同在于，List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合内。每个分区定义的数据集合是任意个值，但不能有重叠，通过使用 `VALUES IN` 进行定义。
 
-下列场景中，假设你要创建一个人事记录的表：
+下列场景中，假设你要为商店工作人员创建一个人事记录的表：
 
 {{< copyable "sql" >}}
 
@@ -181,7 +181,7 @@ CREATE TABLE employees (
 );
 ```
 
-假如一共有 20 个商店分别属于 4 个地区中，如下表所示：
+假如一共有 20 个商店分别属于以下 4 个地区中：
 
 | Region  | Store ID Numbers     |
 | ------- | -------------------- |
@@ -190,7 +190,7 @@ CREATE TABLE employees (
 | West    | 4, 12, 13, 14, 18    |
 | Central | 7, 8, 15, 16         |
 
-如果想把同一个地区的商店数据都存储在同一个分区里面，你可以根据 `store_id` 来创建 List 分区：
+如果想把同一个地区的商店的员工人事数据都存储在同一个分区里面，你可以根据 `store_id` 来创建 List 分区：
 
 {{< copyable "sql" >}}
 
@@ -214,7 +214,7 @@ PARTITION BY LIST(store_id) (
 
 这样在表中添加或删除于特定区域相关的记录将变得非常容易。例如，假设西部地区所有的商店都卖给了另一家公司，所有与该地区商店的员工相关的行数据都可以通过 `ALTER TABLE employees TRUNCATE PARTITION pWest` 被删除，这比等效的 DELETE 语句 `DELETE FROM employees WHERE store_id IN (4,12,13,14,18)` 执行更加高效。（使用 `ALTER TABLE员工DROP PARTITION pWest` 也会删除所有这些行，但也会从表的定义中删除分区 `pWest`；您将需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。）
 
-与RANGE分区的情况不同，它没有诸如 `MAXVALUE` 之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)`子句中。包含不匹配分区列值的 `INSERT` 语句将执行失败，并显示错误，如下例所示：
+与RANGE分区的情况不同，它没有诸如 `MAXVALUE` 之类的“包罗万象”的属性。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)`子句中。包含不匹配分区列值的 `INSERT` 或 `UPDATE` 语句将执行失败，并显示错误，如下例所示：
 
 ```sql
 mysql> CREATE TABLE h2 (
@@ -259,7 +259,7 @@ mysql> SELECT * FROM h2;
 
 LIST COLUMNS 分区是 LIST 分区的一种变体，它可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列；您可以使用字符串类型，DATE 和 DATETIME 类型的列。
 
-假设您有一家在12个城市拥有客户的企业，出于销售和营销目的，您将组织成3个城市的4个区域，如下表所示：
+假设您的员工分别来自以下 12 个城市，想要更具相关规定分成 4 个区域，如下表所示：
 
 | Region | Cities                         |
 | :----- | ------------------------------ |
@@ -268,18 +268,20 @@ LIST COLUMNS 分区是 LIST 分区的一种变体，它可以将多个列用作�
 | 3      | NewYork, LongIsland, Baltimore |
 | 4      | Atlanta, Raleigh, Cincinnati   |
 
-使用列表列分区，您可以为客户数据创建一个表，每行数据将根据客户所在城市的名称分配给与这些区域对应的4个分区中的任意一个，如下所示：
+使用列表列分区，您可以为员工数据创建一个表，每行数据将根据员工所在城市名称与这些区域对应的4个分区中的任意一个，如下所示：
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE customers_1 (
-    first_name VARCHAR(25),
-    last_name VARCHAR(25),
-    street_1 VARCHAR(30),
-    street_2 VARCHAR(30),
-    city VARCHAR(15),
-    renewal DATE
+CREATE TABLE employees_1 (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE NOT NULL DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT,
+    city VARCHAR(15)
 )
 PARTITION BY LIST COLUMNS(city) (
     PARTITION pRegion_1 VALUES IN('LosAngeles', 'Seattle', 'Houston'),
@@ -291,20 +293,22 @@ PARTITION BY LIST COLUMNS(city) (
 
 与 List 分区不同的是，您不需要在 `COLUMNS()` 子句中使用表达式来将列值转换为整数。
 
-LIST COLUMNS 分区也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前显示的 `customer_1` 表相同的名称和列，但根据 `renewal` 列采用 LIST COLUMNS 分区将行存储在4个分区之一中：
+LIST COLUMNS 分区也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前显示的 `employees_1` 表相同的名称和列，但根据 `hired` 列采用 LIST COLUMNS 分区将行存储在4个分区之一中：
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE customers_2 (
-    first_name VARCHAR(25),
-    last_name VARCHAR(25),
-    street_1 VARCHAR(30),
-    street_2 VARCHAR(30),
-    city VARCHAR(15),
-    renewal DATE
+CREATE TABLE employees_2 (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE NOT NULL DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT,
+    city VARCHAR(15)
 )
-PARTITION BY LIST COLUMNS(renewal) (
+PARTITION BY LIST COLUMNS(hired) (
     PARTITION pWeek_1 VALUES IN('2010-02-01', '2010-02-02', '2010-02-03',
         '2010-02-04', '2010-02-05', '2010-02-06', '2010-02-07'),
     PARTITION pWeek_2 VALUES IN('2010-02-08', '2010-02-09', '2010-02-10',
