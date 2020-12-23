@@ -305,7 +305,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set key-type raw
     ```
 
-- `region-score-formula-version` 用于设置 Region 算分公式的版本，支持的值有 `["v1", "v2"]`。v2 版本公式有助于减少上下线等场景下冗余的 balance region 调度。
+- `region-score-formula-version` 用于设置 Region 算分公式的版本，支持的值有 `["v1", "v2"]`。v2 版本公式有助于减少上下线等场景下冗余的 balance Region 调度。
 
     开启 v2 版本 Region 算分公式：
 
