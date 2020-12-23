@@ -409,7 +409,7 @@ Leader 调度的开销较小，需要的时候可以适当调大。
     config set low-space-ratio 0.9
     ```
 
-- `high-space-ratio` 用于设置 store 空间充裕的阈值，此配置仅的 `region-score-formula-version = v1` 时生效。当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
+- `high-space-ratio` 用于设置 store 空间充裕的阈值，此配置仅的在 `region-score-formula-version = v1` 时生效。当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
 
     设置空间充裕阈值为 0.5：
 
