@@ -183,7 +183,7 @@ CREATE TABLE employees (
 
 假如一共有 20 个商店分别属于以下 4 个地区中：
 
-| Region  | Store ID Numbers     |
+| Region  | Store IDs     |
 | ------- | -------------------- |
 | North   | 3, 5, 6, 9, 17       |
 | East    | 1, 2, 10, 11, 19, 20 |
