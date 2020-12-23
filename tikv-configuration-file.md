@@ -733,22 +733,23 @@ rocksdb 相关的配置项。
 
 ### `rate-bytes-per-sec`
 
-+ Rate Limiter 限制速率。
-+ 默认值：0
++ RocksDB compaction rate limiter 的限制速率。
++ 默认值：10GB
 + 最小值：0
-+ 单位：Bytes
++ 单位：B|KB|MB|GB
 
 ### `rate-limiter-mode`
 
-+ Rate LImiter 模式，取值：1（ReadOnly），2（WriteOnly），3（AllIo）。
++ RocksDB 的 compaction rate limiter 模式。
++ 可选值：1 (ReadOnly)，2 (WriteOnly)，3 (AllIo)
 + 默认值：2
 + 最小值：1
 + 最大值：3
 
-### `auto-tuned`
+### `rate-limiter-auto-tuned`
 
-+ 开启自动优化 Rate LImiter 的配置的开关。
-+ 默认值：false
++ 控制是否自动优化 RocksDB 的 compaction rate limiter 配置。
++ 默认值：true
 
 ### `enable-pipelined-write`
 
@@ -1150,6 +1151,36 @@ raftdb 相关配置项。
 
 + 若开启该选项，日志中的用户数据会以 `?` 代替。
 + 默认值：`false`
+
+## security.encryption
+
+[静态加密](/encryption-at-rest.md) (TDE) 有关的配置项。
+
+### `data-encryption-method`
+
++ 数据文件的加密方法。
++ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`
++ 选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
++ 默认值：`"plaintext"`
+
+### `data-key-rotation-period`
+
++ 指定 TiKV 轮换数据密钥的频率。
++ 默认值：`7d`
+
+### enable-file-dictionary-log
+
++ 启用优化，以减少 TiKV 管理加密元数据时的 I/O 操作和互斥锁竞争。
++ 此配置参数默认启用，为避免可能出现的兼容性问题，请参考[静态加密 - TiKV 版本间兼容性](/encryption-at-rest.md#tikv-版本间兼容性)。
++ 默认值：`true`
+
+### master-key
+
++ 指定启用加密时的主密钥。若要了解如何配置主密钥，可以参考[静态加密 - 配置加密](/encryption-at-rest.md#配置加密)。
+
+### previous-master-key
+
++ 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考[静态加密 - 配置加密](/encryption-at-rest.md#配置加密)。
 
 ## import
 
