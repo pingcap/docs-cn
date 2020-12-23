@@ -117,6 +117,7 @@ TiDB 中的[信息统计](/statistics.md#手动收集) 与 MySQL 中的有所不
 
 - 不支持 `SELECT ... INTO @变量` 语法。
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
+- TiDB 中的 `SELECT .. GROUP BY expr` 语法并不与 MySQL 5.7 的 `GROUP BY expr ORDER BY expr` 一致。TiDB 中的该语法并不代表默认顺序，反而更符合 MySQL 8.0 的行为。
 
 ### 视图
 
