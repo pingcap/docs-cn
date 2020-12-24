@@ -75,7 +75,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 - `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
 
-- `"central"`：集中 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式，在 TiKV 5.0 及以上版本中已不再支持，设置成这个选项的集群将切换到 distributed 模式。
+- `"central"`：集中 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。从 TiKV 5.0 起不再支持该模式，设置成这个选项的集群将切换到 `distributed` 模式。
 
 ## `tikv_gc_auto_concurrency`
 
@@ -143,22 +143,22 @@ TiKV 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-byte
 tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
 ```
 
-## 5.0 中新的 GC 机制
+## v5.0 中的 GC 机制
 
-TiKV 在 5.0 版本中引入了新的 GC 机制，在分布式 GC 模式（distribution GC）的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再是使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及清理掉的旧版本残留大量删除标记影响顺序扫描性能。新机制默认打开，同时支持滚动升级完成之后静默开启。可以由 TiKV 配置文件中的这个开关控制：
+TiKV 在 5.0 版本中引入了新的 GC 机制。在分布式 GC 模式（distributed GC）的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再是使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及清理掉的旧版本残留大量删除标记影响顺序扫描性能。新 GC 机制默认打开，同时支持滚动升级完成之后静默开启。可以由 TiKV 配置文件中的这个开关控制：
 
 ```toml
 [gc]
 enable-compaction-filter = true
 ```
 
-同时支持在线配置变更。例如：
+该 GC 支持通过在线配置变更开启：
 
 ```sql
 show config where type = 'tikv' and name like '%enable-compaction-filter%';
 ```
 
-```
+```sql
 +------+-------------------+-----------------------------+-------+
 | Type | Instance          | Name                        | Value |
 +------+-------------------+-----------------------------+-------+
@@ -168,12 +168,12 @@ show config where type = 'tikv' and name like '%enable-compaction-filter%';
 +------+-------------------+-----------------------------+-------+
 ```
 
-```
+```sql
 set config tikv gc.enable-compaction-filter = true;
 show config where type = 'tikv' and name like '%enable-compaction-filter%';
 ```
 
-```
+```sql
 +------+-------------------+-----------------------------+-------+
 | Type | Instance          | Name                        | Value |
 +------+-------------------+-----------------------------+-------+

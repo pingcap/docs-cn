@@ -1167,6 +1167,13 @@ raftdb 相关配置项。
 + 默认值：8
 + 最小值：1
 
+## gc
+
+### `enable-compaction-filter`
+
++ 是否开启 GC in Compaction Filter 特性
++ 默认值：true
+
 ## backup
 
 用于 BR 备份相关的配置项。
