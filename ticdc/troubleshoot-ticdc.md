@@ -306,6 +306,6 @@ TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd �
 1. 修改 Changefeed 配置，将上述 StartTs 添加到 `ignore-txn-start-ts` 配置项中。
 1. 恢复被暂停的 Changefeed。
 
-## TiCDC 集群升级到 v4.0.9 之后，Changefeed 报错 [CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled
+## TiCDC 集群升级到 v4.0.8 之后，Changefeed 报错 [CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled
 
-在 v4.0.9 后，如果 Changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 old-value，没开启则会报错。Changefeed 配置文件中 `enable-old-value` 设为 `true` 即可。
+在 v4.0.8 后，如果 Changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 old-value，没开启则会报错。Changefeed 配置文件中 `enable-old-value` 设为 `true` 即可。
