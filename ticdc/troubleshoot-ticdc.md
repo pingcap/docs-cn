@@ -81,6 +81,8 @@ TiCDC 服务启动后，如果有任务开始同步，TiCDC owner 会根据所�
 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql -p
 ```
 
+显示类似下面的输出则意味着导入已经成功：
+
 ```
 Enter password:
 Warning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.
@@ -89,7 +91,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it
 Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
 ```
 
-如果是在特殊的公有云环境使用 MySQL，譬如阿里云 RDS 并且没有修改 MySQL 的权限，就需要通过 `--tz` 参数指定时区。可以首先在 MySQL 查询其使用的时区，然后在创建同步任务和创建 TiCDC 服务时使用该时区，这里选择的时区需要被 TiCDC 所在的操作系统和下游的 MySQL 同时支持。
+如果下游是特殊的 MySQL 环境（某种公有云 RDS、某些 MySQL 衍生版本等），使用上述方式导入时区失败，就需要通过 sink-uri 中的 `time-zone` 参数指定下游 MySQL 时区。可以首先在 MySQL 查询其使用的时区：
 
 {{< copyable "shell-regular" >}}
 
@@ -106,46 +108,34 @@ show variables like '%time_zone%';
 +------------------+--------+
 ```
 
+然后在创建同步任务和创建 TiCDC 服务时使用该时区：
+
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Shanghai
+cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST"
 ```
 
 > **注意：**
 >
-> 在 MySQL 中 CST 时区通常实际代表的是 China Standard Time (UTC+08:00)，通常系统中不能直接使用 `CST`，而是用 `Asia/Shanghai` 来替换。
+> CST 可以是以下 4 个不同的时区的缩写：
+> 美国中部时间：Central Standard Time (USA) UT-6:00
+> 澳大利亚中部时间：Central Standard Time (Australia) UT+9:30
+> 中国标准时间：China Standard Time UT+8:00
+> 古巴标准时间：Cuba Standard Time UT-4:00
+> 
+> 在中国，CST 通常表示中国标准时间，使用时请注意甄别。
 
-如果不存在一个时区同时被 TiCDC 节点所在的操作系统和下游 MySQL 支持，则可以在 `sink-uri` 中指定 `time-zone` 参数来单独为下游 MySQL 指定时区，例如：
+## 如何理解 TiCDC 时区和上下游数据库系统的时区的关系？
 
-下游 MySQL 只支持 CST 时区：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-show variables like '%time_zone%';
-```
-
-```
-+------------------+--------+
-| Variable_name    | Value  |
-+------------------+--------+
-| system_time_zone | CST    |
-| time_zone        | SYSTEM |
-+------------------+--------+
-```
-
-而 TiCDC 节点所在的操作系统需要不支持 CST 时区，则可以在创建 changefeed 的时候通过 `--tz` 命令行参数和 `time-zone` URI 参数分别指定系统时区和 MySQL 下游时区。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --tz=Asia/Shanghai
-```
+||上游时区| TiCDC 时区| 下游时区 |
+| :-: | :-: | :-: | :-: |
+| 配置方式 | [时区支持](/configure-time-zone.md) | 启动 ticdc server 时的 --tz 参数 | sink-uri 中的 time-zone 参数 |
+| 说明 | 上游 TiDB 的时区，影响 timestamp 类型的 DML 和与 timestamp 类型列相关的 DDL。 | TiCDC 会将假设上游 TiDB 的时区和 TiCDC 时区配置相同，对 timestamp 类型的列进行相关处理。 | 下游 MySQL 将按照下游的时区设置对 DML 和 DDL 中包含的 timestamp 进行处理。|
 
 > **注意：**
 >
-> 请谨慎设置 TiCDC server 的时区，因为该时区会用于时间类型的转换。推荐上下游数据库使用相同的时区，并且启动 TiCDC server 时通过 `--tz` 参数指定该时区。TiCDC server 时区使用的优先级如下：
+> 请谨慎设置 TiCDC server 的时区，因为该时区会用于时间类型的转换。上游时区、TiCDC 时区和下游时区应该保持一致。TiCDC server 时区使用的优先级如下：
 >
 > - 最优先使用 `--tz` 传入的时区。
 > - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区。
@@ -308,4 +298,14 @@ TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd �
 
 ## TiCDC 集群升级到 v4.0.8 之后，Changefeed 报错 [CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled
 
-在 v4.0.8 后，如果 Changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 old-value，没开启则会报错。Changefeed 配置文件中 `enable-old-value` 设为 `true` 即可。
+在 v4.0.8 后，如果 Changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 old-value，没开启则会报错。可以按照下面的操作解决问题：
+
+1. 将 Changefeed 配置文件中 `enable-old-value` 设为 `true`。
+2. 使用 `cdc cli changefeed update` 更新原有 Changefeed 的配置。
+3. 使用 `cdc cli changfeed resume` 恢复同步任务。
+
+```
+cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+
+cdc cli changefeed resume -c test-cf
+```
