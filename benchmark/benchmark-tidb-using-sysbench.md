@@ -141,10 +141,10 @@ Restart MySQL client and execute the following SQL statement to create a databas
 create database sbtest;
 ```
 
-Adjust the order in which Sysbench scripts create indexes. Sysbench imports data in the order of "Build Table -> Insert Data -> Create Index", which takes more time for TiDB to import data. Users can adjust the order to speed up the import of data. Suppose that you use Sysbench version <https://github.com/akopytov/sysbench/tree/1.0.14>. You can adjust the order in the following two ways.
+Adjust the order in which Sysbench scripts create indexes. Sysbench imports data in the order of "Build Table -> Insert Data -> Create Index", which takes more time for TiDB to import data. Users can adjust the order to speed up the import of data. Suppose that you use the Sysbench version [1.0.14](https://github.com/akopytov/sysbench/tree/1.0.14). You can adjust the order in either of the following two ways:
 
-1. Download the TiDB-modified [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) file and overwrite the `/usr/share/sysbench/oltp_common.lua` file with it.
-2. Move the [235th](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) to [240th](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) lines of `/usr/share/sysbench/oltp_common.lua` to be right behind 198th lines.
+- Download the modified [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) file for TiDB and overwrite the `/usr/share/sysbench/oltp_common.lua` file with it.
+- In `/usr/share/sysbench/oltp_common.lua`, move the lines [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235)-[240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) to be right behind the line 198.
 
 > **Note:**
 >

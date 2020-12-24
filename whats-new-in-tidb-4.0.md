@@ -6,7 +6,7 @@ aliases: ['/docs/dev/whats-new-in-tidb-4.0/']
 
 # What’s New in TiDB 4.0
 
-TiDB v4.0 was officially released on May 28th, 2020. In this release, we have made great improvements in stability, usability, performance, security, and features. This document briefly introduces the most notable improvements for you. You can decide whether to upgrade to v4.0 based on your needs. For the complete list of new features and bug fixes, you can check our [earlier v4.0 release notes](/releases/release-notes.md#40).
+TiDB v4.0 was officially released on May 28, 2020. In this release, we have made great improvements in stability, usability, performance, security, and features. This document briefly introduces the most notable improvements for you. You can decide whether to upgrade to v4.0 based on your needs. For the complete list of new features and bug fixes, you can check our [earlier v4.0 release notes](/releases/release-notes.md#40).
 
 ## Scheduling
 

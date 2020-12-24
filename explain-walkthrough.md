@@ -7,7 +7,7 @@ summary: Learn how to use EXPLAIN by walking through an example statement
 
 Because SQL is a declarative language, you cannot automatically tell whether a query is executed efficiently. You must first use the [`EXPLAIN`](/sql-statements/sql-statement-explain.md) statement to learn the current execution plan.
 
-The following statement from the [bikeshare example database](/import-example-data.md) counts how many trips were taken on the 1st July 2017:
+The following statement from the [bikeshare example database](/import-example-data.md) counts how many trips were taken on the July 1, 2017:
 
 {{< copyable "sql" >}}
 

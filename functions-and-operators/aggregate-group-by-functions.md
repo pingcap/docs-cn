@@ -38,7 +38,7 @@ In addition, TiDB also provides the following aggregate functions:
 
     This function only supports the [numeric type](/data-type-numeric.md) and the [date and time type](/data-type-date-and-time.md) as the returned type of `expr`. For other returned types, `APPROX_PERCENTILE` only returns `NULL`.
 
-    The following example shows how to calculate the 50th percentile of a `INT` column:
+    The following example shows how to calculate the fiftieth percentile of a `INT` column:
 
     {{< copyable "sql" >}}
 
