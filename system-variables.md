@@ -333,7 +333,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_enable_clustered_index` <!-- 从 v5.0 版本开始引入 -->
 
 - 作用域：SESSION | GLOBAL
-- 默认值：1
+- 默认值：0
 - 这个变量用于控制是否开启聚簇索引特性。
     - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
     - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
@@ -982,9 +982,16 @@ explain select * from t where age=5;
 3 rows in set (0.00 sec)
 ```
 
+### `tidb_enable_rate_limit_action`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：ON
+- 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_disql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
+- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/tidb-configuration-file.md#spilled-file-encryption-method)。
+
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：SESSION
 - 默认值：0.8
-- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio)。
-- 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio) 进行配置。
+- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
+- 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
