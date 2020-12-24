@@ -134,7 +134,7 @@ Usage:
     "strictly-match-label": "false"
   },
   "schedule": {
-    "enable-cross-table-merge": "false",
+    "enable-cross-table-merge": "true",
     "enable-debug-metrics": "false",
     "enable-location-replacement": "true",
     "enable-make-up-replica": "true",
@@ -156,6 +156,7 @@ Usage:
     "merge-schedule-limit": 8,
     "patrol-region-interval": "100ms",
     "region-schedule-limit": 2048,
+    "region-score-formula-version": "v2",
     "replica-schedule-limit": 64,
     "scheduler-max-waiting-operator": 5,
     "split-merge-interval": "1h0m0s",
@@ -227,6 +228,14 @@ Usage:
     >> config set key-type raw  // Enable cross table merge.
     ```
 
+- `region-score-formula-version` controls the version of the Region score formula. The value options are `v1` and `v2`. The version 2 of the formula helps to reduce redundant balance Region scheduling in some scenarios, such as taking TiKV nodes online or offline.
+
+    {{< copyable "" >}}
+
+    ```bash
+    >> config set region-score-formula-version v2
+    ```
+
 - `patrol-region-interval` controls the execution frequency that `replicaChecker` checks the health status of Regions. A shorter interval indicates a higher execution frequency. Generally, you do not need to adjust it.
 
     ```bash
@@ -283,7 +292,7 @@ Usage:
     config set low-space-ratio 0.9              // Set the threshold value of insufficient space to 0.9
     ```
 
-- `high-space-ratio` controls the threshold value that is considered as sufficient store space. When the ratio of the space occupied by the node is less than the specified value, PD ignores the remaining space and mainly schedules the actual data volume.
+- `high-space-ratio` controls the threshold value that is considered as sufficient store space. This configuration takes effect only when `region-score-formula-version` is set to `v1`. When the ratio of the space occupied by the node is less than the specified value, PD ignores the remaining space and mainly schedules the actual data volume.
 
     ```bash
     config set high-space-ratio 0.5             // Set the threshold value of sufficient space to 0.5

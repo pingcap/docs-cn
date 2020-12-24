@@ -250,7 +250,7 @@ Configuration items related to scheduling
 
 ### `high-space-ratio`
 
-+ The threshold ratio below which the capacity of the store is sufficient
++ The threshold ratio below which the capacity of the store is sufficient. This configuration takes effect only when `region-score-formula-version` is set to `v1`.
 + Default value: `0.7`
 + Minimum value: greater than `0`
 + Maximum value: less than `1`
@@ -267,6 +267,17 @@ Configuration items related to scheduling
 + Controls the `balance` buffer size
 + Default value: `0` (automatically adjusts the buffer size)
 + Minimum value: `0`
+
+### `enable-cross-table-merge`
+
++ Determines whether to enable the merging of cross-table Regions
++ Default value: `true`
+
+### `region-score-formula-version`
+
++ Controls the version of the Region score formula
++ Default value: `v2`
++ Optional values: `v1` and `v2`
 
 ### `disable-remove-down-replica`
 
