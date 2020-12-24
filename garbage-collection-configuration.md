@@ -143,7 +143,7 @@ TiKV 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-byte
 tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
 ```
 
-## v5.0 中的 GC 机制
+## GC in Compaction Filter 机制
 
 TiKV 在 5.0 版本中引入了 GC in Compaction Filter 机制。在分布式 GC 模式 (distributed GC) 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及避免清理掉的旧版本残留大量删除标记影响顺序扫描性能。该 GC 机制默认开启，同时支持滚动升级完成之后静默开启。可以由 TiKV 配置文件中的以下开关控制：
 
