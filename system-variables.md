@@ -998,6 +998,10 @@ explain select * from t where age=5;
 
 ### `tidb_track_aggregate_memory_usage` <span class="version-mark">从 v5.0-rc 版本开始引入</span>
 
+> **警告：**
+>
+> `tidb_track_aggregate_memory_usage` 目前为实验特性，不建议在生产环境中使用。
+
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
 - 这个变量表示是否追踪聚合函数的内存使用情况。当开启该功能时，聚合函数的内存使用情况会被统计，进而可能会造成整个 SQL 内存统计值超阈值 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)，然后被 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的行为影响。
