@@ -244,7 +244,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `high-space-ratio`
 
-+ 设置 store 空间充裕的阈值。
++ 设置 store 空间充裕的阈值。此配置仅在 `region-score-formula-version = v1` 时生效。
 + 默认：0.7
 + 最小值：大于 0
 + 最大值：小于 1
@@ -261,6 +261,17 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 控制 balance 缓冲区大小。
 + 默认：0 (为 0 为自动调整缓冲区大小)
 + 最小值：0
+
+### `enable-cross-table-merge`
+
++ 设置是否开启跨表 merge。
++ 默认：true
+
+### `region-score-formula-version`
+
++ 设置 Region 算分公式版本。
++ 默认：v2
++ 可选值：v1，v2
 
 ### `disable-remove-down-replica`
 
