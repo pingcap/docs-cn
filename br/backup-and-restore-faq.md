@@ -85,3 +85,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 ## BR 是否支持就地 (in-place) 全量恢复某个历史备份？
 
 不支持。
+
+## 在 k8s 环境中如何获取 `--lastbackupts` 让 BR 进行增量备份？
+
+可以通过 kubectl 查询 `kubectl -n ${namespace} get bk ${name}` 获得上次 BR 备份 `commitTs` 字段，该字段的内容可作为 `--lastbackupts` 使用。

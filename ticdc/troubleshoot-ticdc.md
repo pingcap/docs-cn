@@ -89,7 +89,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it
 Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
 ```
 
-如果是在特殊的公有云环境使用 MySQL，譬如阿里云 RDS 并且没有修改 MySQL 的权限，就需要通过 `--tz` 参数指定时区。可以首先在 MySQL 查询其使用的时区，然后在创建同步任务和创建 TiCDC 服务时使用该时区。
+如果是在特殊的公有云环境使用 MySQL，譬如阿里云 RDS 并且没有修改 MySQL 的权限，就需要通过 `--tz` 参数指定时区。可以首先在 MySQL 查询其使用的时区，然后在创建同步任务和创建 TiCDC 服务时使用该时区，这里选择的时区需要被 TiCDC 所在的操作系统和下游的 MySQL 同时支持。
 
 {{< copyable "shell-regular" >}}
 
@@ -115,6 +115,33 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Sh
 > **注意：**
 >
 > 在 MySQL 中 CST 时区通常实际代表的是 China Standard Time (UTC+08:00)，通常系统中不能直接使用 `CST`，而是用 `Asia/Shanghai` 来替换。
+
+如果不存在一个时区同时被 TiCDC 节点所在的操作系统和下游 MySQL 支持，则可以在 `sink-uri` 中指定 `time-zone` 参数来单独为下游 MySQL 指定时区，例如：
+
+下游 MySQL 只支持 CST 时区：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+show variables like '%time_zone%';
+```
+
+```
++------------------+--------+
+| Variable_name    | Value  |
++------------------+--------+
+| system_time_zone | CST    |
+| time_zone        | SYSTEM |
++------------------+--------+
+```
+
+而 TiCDC 节点所在的操作系统需要不支持 CST 时区，则可以在创建 changefeed 的时候通过 `--tz` 命令行参数和 `time-zone` URI 参数分别指定系统时区和 MySQL 下游时区。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --tz=Asia/Shanghai
+```
 
 > **注意：**
 >
@@ -270,3 +297,15 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 ## TiCDC 占用多少 PD 的存储空间
 
 TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间正比与 1 小时的元数据版本数量。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintaince space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。推荐使用这三个版本的用户升级到 v4.0.9 及以后版本。
+
+## 当 Changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL，阻塞了所有 Changefeed，应该怎样处理？
+
+ - 首先暂停正在执行耗时较长的 DDL 的 Changefeed。此时可以观察到，这个 Changefeed 暂停后，其他的 Changefeed 不再阻塞了。
+ - 在 TiCDC log 中搜寻 `apply job` 字样，确认耗时较长的 DDL 的 StartTs。
+ - 手动在下游执行 DDL，执行完毕后进行下面的操作。
+ - 修改 Changefeed 配置，将上述 StartTs 添加到 `ignore-txn-start-ts` 配置项中。
+ - 恢复被暂停的 Changefeed。
+
+## TiCDC 集群升级到 v4.0.9 之后，Changefeed 报错 [CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled
+
+在 v4.0.9 后，如果 Changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 old-value，没开启则会报错。Changefeed 配置文件中 `enable-old-value` 设为 `true` 即可。
