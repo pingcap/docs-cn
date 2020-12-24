@@ -37,9 +37,9 @@ fetch.message.max.bytes=1073741824
 
 ## 当上游事务较大时，Pump 报错 rpc error: code = ResourceExhausted desc = trying to send message larger than max (2191430008 vs. 2147483647)
 
-这个错误的原因是 TiDB 发送给 Pump 的 grpc massage 超过限值，可以在启动 pump 时通过指定 `-max-message-size` 来调整 pump 可接受了 grpc massage 的最大尺寸。
+这个错误的原因是 TiDB 发送给 Pump 的 gRPC massage 超过限值，可以在启动 pump 时通过指定 `-max-message-size` 来调整 pump 可接受了 gRPC massage 的最大尺寸。
 
 ## Drainer 输出 file 格式的增量数据，数据有什么清理机制吗？会被删除吗？
 
-在 v3.0.x 版本的 Drainer 中，file 格式的增量数据没有任何清理机制
-在 v4.0.x 有基于时间的数据清理机制，详见 [Drainer 的 retention-time 配置项](https://github.com/pingcap/tidb-binlog/blob/v4.0.9/cmd/drainer/drainer.toml#L153)
+在 v3.0.x 版本的 Drainer 中，file 格式的增量数据没有任何清理机制。
+在 v4.0.x 有基于时间的数据清理机制，详见 [Drainer 的 retention-time 配置项](https://github.com/pingcap/tidb-binlog/blob/v4.0.9/cmd/drainer/drainer.toml#L153)。
