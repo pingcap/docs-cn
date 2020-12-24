@@ -300,11 +300,11 @@ TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd �
 
 ## 当 Changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL，阻塞了所有 Changefeed，应该怎样处理？
 
- - 首先暂停正在执行耗时较长的 DDL 的 Changefeed。此时可以观察到，这个 Changefeed 暂停后，其他的 Changefeed 不再阻塞了。
- - 在 TiCDC log 中搜寻 `apply job` 字样，确认耗时较长的 DDL 的 StartTs。
- - 手动在下游执行 DDL，执行完毕后进行下面的操作。
- - 修改 Changefeed 配置，将上述 StartTs 添加到 `ignore-txn-start-ts` 配置项中。
- - 恢复被暂停的 Changefeed。
+1. 首先暂停正在执行耗时较长的 DDL 的 Changefeed。此时可以观察到，这个 Changefeed 暂停后，其他的 Changefeed 不再阻塞了。
+1. 在 TiCDC log 中搜寻 `apply job` 字样，确认耗时较长的 DDL 的 StartTs。
+1. 手动在下游执行 DDL，执行完毕后进行下面的操作。
+1. 修改 Changefeed 配置，将上述 StartTs 添加到 `ignore-txn-start-ts` 配置项中。
+1. 恢复被暂停的 Changefeed。
 
 ## TiCDC 集群升级到 v4.0.9 之后，Changefeed 报错 [CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled
 
