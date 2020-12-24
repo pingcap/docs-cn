@@ -37,4 +37,4 @@ tiup mirror <command> [flags]
 - [modify](/tiup/tiup-command-mirror-modify.md): 修改当前镜像中的组件属性
 - [rotate](/tiup/tiup-command-mirror-rotate.md): 更新当前镜像中的根证书
 - [clone](/tiup/tiup-command-mirror-rotate.md): 从已有镜像克隆一个新的镜像
-- merge: 合并两个或多个镜像
+- [merge](/tiup/tiup-command-mirror-merge.md): 合并镜像

@@ -98,10 +98,10 @@ tiup [flags] <component> [args...]      # 运行组件
 - [status](/tiup/tiup-command-status.md)：查看组件运行状态
 - [clean](/tiup/tiup-command-clean.md)：清理组件数据目录
 - [mirror](/tiup/tiup-command-mirror.md)：镜像管理
-- telemetry：遥测开关
-- completion：TiUP 命令补全
-- env：查看 TiUP 相关环境变量
-- help：查看特定命令或组件的帮助文档
+- [telemetry](/tiup/tiup-command-telemetry.md)：遥测开关
+- [completion](/tiup/tiup-command-completion.md)：TiUP 命令补全
+- [env](/tiup/tiup-command-env.md)：查看 TiUP 相关环境变量
+- [help](/tiup/tiup-command-help.md)：查看特定命令或组件的帮助文档
 
 ## 组件清单
 
