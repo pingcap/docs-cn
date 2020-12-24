@@ -58,7 +58,7 @@ Currently, the TiCDC sink component supports replicating data to the following d
 
 - MySQL sink
 
-    - TiCDC does not split in-table transactions. This is to **ensure** the transactional consistency within a single table. However, TiCDC does **not ensure** that the transactional order in the upstream table is consistent.
+    - TiCDC does not split in-table transactions. This is to **ensure** the transactional consistency within a single table. However, TiCDC does **not ensure** consistency with the transactional order in the upstream table. If the primary keys between transactions have intersections, TiCDC still **ensures** consistency with the transactional order in the upstream table.
     - TiCDC splits cross-table transactions in the unit of tables. TiCDC does **not ensure** that cross-table transactions are always consistent.
     - TiCDC **ensures** that the order of single-row updates are consistent with that in the upstream.
 
