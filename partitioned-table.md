@@ -172,11 +172,7 @@ List 分区和 Range 分区有很多相似的地方，主要的不同在于 List
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT,
     store_id INT
 );
 ```
@@ -185,10 +181,10 @@ CREATE TABLE employees (
 
 | Region  | Store ID Numbers     |
 | ------- | -------------------- |
-| North   | 3, 5, 6, 9, 17       |
-| East    | 1, 2, 10, 11, 19, 20 |
-| West    | 4, 12, 13, 14, 18    |
-| Central | 7, 8, 15, 16         |
+| North   | 1, 2, 3, 4, 5        |
+| East    | 6, 7, 8, 9, 10       |
+| West    | 11, 12, 13, 14, 15   |
+| Central | 16, 17, 18, 19, 20   |
 
 如果想把同一个地区的商店的员工人事数据都存储在同一个分区里面，你可以根据 `store_id` 来创建 List 分区：
 
@@ -197,64 +193,57 @@ CREATE TABLE employees (
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT,
     store_id INT
 )
-PARTITION BY LIST(store_id) (
-    PARTITION pNorth VALUES IN (3,5,6,9,17),
-    PARTITION pEast VALUES IN (1,2,10,11,19,20),
-    PARTITION pWest VALUES IN (4,12,13,14,18),
-    PARTITION pCentral VALUES IN (7,8,15,16)
+PARTITION BY LIST (store_id) (
+    PARTITION pNorth VALUES IN (1, 2, 3, 4, 5),
+    PARTITION pEast VALUES IN (6, 7, 8, 9, 10),
+    PARTITION pWest VALUES IN (11, 12, 13, 14, 15),
+    PARTITION pCentral VALUES IN (16, 17, 18, 19, 20)
 );
 ```
 
-这样就能方便地在表中添加或删除与特定区域相关的记录。例如，假设西部地区 (West) 所有的商店都卖给了另一家公司，所有该地区商店的员工相关的行数据都可以通过 `ALTER TABLE employees TRUNCATE PARTITION pWest` 删除，这比等效的 `DELETE` 语句 `DELETE FROM employees WHERE store_id IN (4,12,13,14,18)` 执行起来更加高效。
+这样就能方便地在表中添加或删除与特定区域相关的记录。例如，假设东部地区 (East) 所有的商店都卖给了另一家公司，所有该地区商店的员工相关的行数据都可以通过 `ALTER TABLE employees TRUNCATE PARTITION pEast` 删除，这比等效的 `DELETE` 语句 `DELETE FROM employees WHERE store_id IN (6, 7, 8, 9, 10)` 执行起来更加高效。
 
-使用 `ALTER TABLE employees DROP PARTITION pWest` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pWest`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
+使用 `ALTER TABLE employees DROP PARTITION pEast` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pEast`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
 
 与 Range 分区的情况不同，List 分区没有诸如 `MAXVALUE` 之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句包含不匹配分区列值，该语句将执行失败并报错，如下例所示：
 
 ```sql
-test> CREATE TABLE h2 (
-    ->   c1 INT,
-    ->   c2 INT
+test> CREATE TABLE t (
+    ->   a INT,
+    ->   b INT
     -> )
-    -> PARTITION BY LIST(c1) (
-    ->   PARTITION p0 VALUES IN (1, 4, 7),
-    ->   PARTITION p1 VALUES IN (2, 5, 8)
+    -> PARTITION BY LIST (a) (
+    ->   PARTITION p0 VALUES IN (1, 2, 3),
+    ->   PARTITION p1 VALUES IN (4, 5, 6)
     -> );
 Query OK, 0 rows affected (0.11 sec)
 
-test> INSERT INTO h2 VALUES (3, 5);
-ERROR 1525 (HY000): Table has no partition for value 3
+test> INSERT INTO t VALUES (7, 7);
+ERROR 1525 (HY000): Table has no partition for value 7
 ```
 
 要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错:
 
 ```sql
-test> TRUNCATE h2;
+test> TRUNCATE t;
 Query OK, 1 row affected (0.00 sec)
 
-test> SELECT * FROM h2;
-Empty set (0.00 sec)
+test> INSERT IGNORE INTO t VALUES (1, 1), (7, 7), (8, 8), (3, 3), (5, 5);
+Query OK, 3 rows affected, 2 warnings (0.01 sec)
+Records: 5  Duplicates: 2  Warnings: 2
 
-test> INSERT IGNORE INTO h2 VALUES (2, 5), (6, 10), (7, 5), (3, 1), (1, 9);
-Query OK, 3 rows affected (0.00 sec)
-Records: 5  Duplicates: 2  Warnings: 0
-
-test> SELECT * FROM h2;
+test> select * from t;
 +------+------+
-| c1   | c2   |
+| a    | b    |
 +------+------+
-|    7 |    5 |
-|    1 |    9 |
-|    2 |    5 |
+|    5 |    5 |
+|    1 |    1 |
+|    3 |    3 |
 +------+------+
-3 rows in set (0.00 sec)
+3 rows in set (0.01 sec)
 ```
 
 ### List COLUMNS 分区
@@ -311,14 +300,14 @@ CREATE TABLE employees_2 (
     city VARCHAR(15)
 )
 PARTITION BY LIST COLUMNS(hired) (
-    PARTITION pWeek_1 VALUES IN('2010-02-01', '2010-02-02', '2010-02-03',
-        '2010-02-04', '2010-02-05', '2010-02-06', '2010-02-07'),
-    PARTITION pWeek_2 VALUES IN('2010-02-08', '2010-02-09', '2010-02-10',
-        '2010-02-11', '2010-02-12', '2010-02-13', '2010-02-14'),
-    PARTITION pWeek_3 VALUES IN('2010-02-15', '2010-02-16', '2010-02-17',
-        '2010-02-18', '2010-02-19', '2010-02-20', '2010-02-21'),
-    PARTITION pWeek_4 VALUES IN('2010-02-22', '2010-02-23', '2010-02-24',
-        '2010-02-25', '2010-02-26', '2010-02-27', '2010-02-28')
+    PARTITION pWeek_1 VALUES IN('2020-02-01', '2020-02-02', '2020-02-03',
+        '2020-02-04', '2020-02-05', '2020-02-06', '2020-02-07'),
+    PARTITION pWeek_2 VALUES IN('2020-02-08', '2020-02-09', '2020-02-10',
+        '2020-02-11', '2020-02-12', '2020-02-13', '2020-02-14'),
+    PARTITION pWeek_3 VALUES IN('2020-02-15', '2020-02-16', '2020-02-17',
+        '2020-02-18', '2020-02-19', '2020-02-20', '2020-02-21'),
+    PARTITION pWeek_4 VALUES IN('2020-02-22', '2020-02-23', '2020-02-24',
+        '2020-02-25', '2020-02-26', '2020-02-27', '2020-02-28')
 );
 ```
 
