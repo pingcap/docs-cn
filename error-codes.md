@@ -350,11 +350,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
     
 * Error Number: 9012
 
-    请求 TiFlash 超时，请检查 TiFlash Server 状态/监控/日志以及 TiDB Server 与 TiFlash Server 之间的网络。
+    请求 TiFlash 超时。请检查 TiFlash Server 状态/监控/日志以及 TiDB Server 与 TiFlash Server 之间的网络。
 
 * Error Number: 9013
 
-    TiFlash 操作繁忙，一般出现在数据库负载比较高时，请检查 TiFlash Server 状态/监控/日志。
+    TiFlash 操作繁忙。该错误一般出现在数据库负载比较高时。请检查 TiFlash Server 的状态/监控/日志。
 
 ## 故障诊断
 
