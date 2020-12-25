@@ -288,6 +288,24 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间正比与 1 小时的元数据版本数量。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintaince space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。推荐使用这三个版本的用户升级到 v4.0.9 及以后版本。
 
+## TiCDC 支持同步大事务吗？有什么风险吗？
+
+TiCDC 对大事务（事务尺寸超过 5G）提供部分支持，根据场景不同可能存在以下风险：
+
+- 同步任务报错 ErrBufferReachLimit
+    - 当 TiCDC 内部处理能力不足时可能导致这种错误。
+- TiCDC 节点占用过多内存，最终 OOM
+    - 当 TiCDC 内部处理能力不足或 TiCDC 下游吞吐能力不足时可能导致这种错误。
+
+当遇到上述错误时，建议将包含大事务部分的增量数据通过 BR 进行增量的恢复，具体操作如下：
+
+1. 记录因为大事务而终止的 Changefeed 的 `checkpoint-ts`，将这个 tso 作为 BR 增量备份的 `--lastbackupts`，执行[增量备份](/br/backup-and-restore-tool.md#增量备份)。
+1. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
+1. 进行[增量恢复](/br/backup-and-restore-tool.md#增量恢复)
+1. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
+1. 删除旧的 changefeed。
+
+
 ## 当 Changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL，阻塞了所有 Changefeed，应该怎样处理？
 
 1. 首先暂停正在执行耗时较长的 DDL 的 Changefeed。此时可以观察到，这个 Changefeed 暂停后，其他的 Changefeed 不再阻塞了。
