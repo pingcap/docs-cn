@@ -42,7 +42,7 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
 
 如果只是个别表报错，不会影响整体。报错的那个表会停止处理，继续处理其他的表。
 
-## 如何正确重启 TiDB Lightning？
+## 如何在使用 Importer Backend时正确重启 TiDB Lightning？
 
 根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
 
@@ -138,6 +138,8 @@ sql-mode = ""
 ```
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
+
+另外，如果从 Lightning log 的最后一条日志显示遇到的错误是 "Context canceled", 需要在日志中搜索第一条 "ERROR" 级别的日志，在这条日志之前，通常也会紧跟有一条 "got signal to exit", 表示 Lighting 是收到中断信号然后退出的。 
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
