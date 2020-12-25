@@ -42,9 +42,9 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
 
 如果只是个别表报错，不会影响整体。报错的那个表会停止处理，继续处理其他的表。
 
-## 如何在使用 Importer Backend时正确重启 TiDB Lightning？
+## 如何正确重启 TiDB Lightning？
 
-根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
+如果使用 Importer Backend, 根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
 
 如果 `tikv-importer` 仍在运行：
 
@@ -63,6 +63,8 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
     * 重启 `tikv-importer` 将清除所有仍在写入的引擎文件，但是 `tidb-lightning` 并不会感知到该操作。从 v3.0 开始，最简单的方法是让 `tidb-lightning` 继续，然后再重试。
 6. [清除失败的表及断点](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)。
 7. 再次重启 `tidb-lightning`。
+
+如果使用 Local 和 TiDB Backend，操作和 Importer Backend `tikv-importer` 仍在运行时相同。
 
 ## 如何校验导入的数据的正确性？
 
