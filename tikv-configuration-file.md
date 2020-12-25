@@ -924,7 +924,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `target-file-size-base`
 
-+ base level 的目标文件大小。当 `enable-compaction-guard` 设为 `true` 时，`compaction-guard-max-output-file-size` 的值会覆盖此配置项.
++ base level 的目标文件大小。当 `enable-compaction-guard` 的值为 `true` 时，`compaction-guard-max-output-file-size` 会覆盖此配置。
 + 默认值：8MB
 + 最小值：0
 + 单位：KB|MB|GB
