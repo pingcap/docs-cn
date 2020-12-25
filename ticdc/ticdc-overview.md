@@ -82,6 +82,7 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 - 暂不支持单独使用 RawKV 的 TiKV 集群。
 - 暂不支持 TiDB 4.0 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md) 和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
 - 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。
+- 对上游是存在较大事务的场景提供部分支持，详见。
 
 ## TiCDC 安装和部署
 
