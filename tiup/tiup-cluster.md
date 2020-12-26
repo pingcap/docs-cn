@@ -354,12 +354,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v4.0.0-rc 的命令为：
+例如，把集群升级到 v5.0.0-rc 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v4.0.0-rc
+tiup cluster upgrade tidb-test v5.0.0-rc
 ```
 
 ## 更新配置
