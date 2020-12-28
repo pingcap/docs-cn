@@ -136,7 +136,7 @@ aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/
 tiup cluster deploy tidb-test v5.0.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
 
-以上部署命令中：
+以上部署命令中： 
 
 - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
 - 部署版本为 `v5.0.0`，最新版本可以通过执行 `tiup list tidb` 来查看 TiUP 支持的版本
