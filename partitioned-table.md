@@ -165,7 +165,7 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 > **警告：**
 >
-> 该功能目前为实验特性，不建议在生产环境中使用。
+> 该功能从 v5.0.0-rc 引入，目前为实验特性，不建议在生产环境中使用。
 
 在创建 List 分区表之前，需要先将 session 变量 `tidb_enable_table_partition` 的值设置为 `ON`。
 
@@ -173,6 +173,7 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ```sql
 set @@session.tidb_enable_table_partition = 'ON';
+```
 
 List 分区和 Range 分区有很多相似的地方。不同之处主要在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但不能有重复的值，可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
 
@@ -190,12 +191,14 @@ CREATE TABLE employees (
 
 假如一共有 20 个商店分布在 4 个地区，如下表所示：
 
+```
 | Region  | Store ID Numbers     |
 | ------- | -------------------- |
 | North   | 1, 2, 3, 4, 5        |
 | East    | 6, 7, 8, 9, 10       |
 | West    | 11, 12, 13, 14, 15   |
 | Central | 16, 17, 18, 19, 20   |
+```
 
 如果想把同一个地区商店员工的人事数据都存储在同一个分区中，你可以根据 `store_id` 来创建 List 分区：
 
@@ -219,7 +222,7 @@ PARTITION BY LIST (store_id) (
 
 使用 `ALTER TABLE employees DROP PARTITION pEast` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pEast`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
 
-与 Range 分区的情况不同，List 分区没有诸如 `MAXVALUE` 之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
+与 Range 分区的情况不同，List 分区没有类似的 `MAXVALUE` 分区来存储所有不属于其他 partition 的值。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
 
 ```sql
 test> CREATE TABLE t (
@@ -263,14 +266,16 @@ List COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分�
 
 假设商店员工分别来自以下 12 个城市，想要根据相关规定分成 4 个区域，如下表所示：
 
+```
 | Region | Cities                         |
 | :----- | ------------------------------ |
 | 1      | LosAngeles,Seattle, Houston    |
 | 2      | Chicago, Columbus, Boston      |
 | 3      | NewYork, LongIsland, Baltimore |
 | 4      | Atlanta, Raleigh, Cincinnati   |
+```
 
-使用列表列分区，你可以为员工数据创建一个表，将每行数据存储在员工所在城市对应的分区中，如下所示：
+使用列表列分区，你可以为员工数据创建一张表，将每行数据存储在员工所在城市对应的分区中，如下所示：
 
 {{< copyable "sql" >}}
 
@@ -295,7 +300,7 @@ PARTITION BY LIST COLUMNS(city) (
 
 与 List 分区不同的是，你不需要在 `COLUMNS()` 子句中使用表达式来将列值转换为整数。
 
-List COLUMNS 分区也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前的 `employees_1` 表相同的名称和列，但根据 `hired` 列采用 List COLUMNS 分区：
+List COLUMNS 分区也可以使用 `DATE` 和 `DATETIME` 类型的列进行分区，如以下示例中所示，该示例使用与先前的 `employees_1` 表相同的名称和列，但根据 `hired` 列采用 List COLUMNS 分区：
 
 {{< copyable "sql" >}}
 
