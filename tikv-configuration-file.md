@@ -1244,7 +1244,7 @@ raftdb 相关配置项。
 ### `enable-compaction-filter`
 
 + 是否开启 GC in Compaction Filter 特性
-+ 默认值：true
++ 默认值：false
 
 ## backup
 
