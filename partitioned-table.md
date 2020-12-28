@@ -1135,7 +1135,7 @@ YEARWEEK()
 
 ### 兼容性
 
-目前 TiDB 里面只实现了 Range 分区、List 分区和 Hash 分区，其它的 MySQL 分区类型比如 Key 分区尚不支持。
+目前 TiDB 里面只实现了 Range 分区、List 分区、List COLUMNS 和 Hash 分区，其它的 MySQL 分区类型例如 Key 分区尚不支持。
 
 对于 Range Columns 类型的分区表，目前只支持单列的场景。
 
