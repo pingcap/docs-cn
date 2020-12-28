@@ -260,9 +260,9 @@ test> select * from t;
 
 ### List COLUMNS 分区
 
-LIST COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列。你还可以使用字符串类型、`DATE` 和 `DATETIME` 类型的列。
+List COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列。你还可以使用字符串类型、`DATE` 和 `DATETIME` 类型的列。
 
-假设您的员工分别来自以下 12 个城市，想要根据相关规定分成 4 个区域，如下表所示：
+假设你的员工分别来自以下 12 个城市，想要根据相关规定分成 4 个区域，如下表所示：
 
 | Region | Cities                         |
 | :----- | ------------------------------ |
@@ -271,7 +271,7 @@ LIST COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分�
 | 3      | NewYork, LongIsland, Baltimore |
 | 4      | Atlanta, Raleigh, Cincinnati   |
 
-使用列表列分区，您可以为员工数据创建一个表，每行数据将根据员工所在城市名称与这些区域对应的4个分区中的任意一个，如下所示：
+使用列表列分区，你可以为员工数据创建一个表，将每行数据存储在员工所在城市对应的分区中，如下所示：
 
 {{< copyable "sql" >}}
 
@@ -294,9 +294,9 @@ PARTITION BY LIST COLUMNS(city) (
 );
 ```
 
-与 List 分区不同的是，您不需要在 `COLUMNS()` 子句中使用表达式来将列值转换为整数。
+与 List 分区不同的是，你不需要在 `COLUMNS()` 子句中使用表达式来将列值转换为整数。
 
-LIST COLUMNS 分区也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前的 `employees_1` 表相同的名称和列，但根据 `hired` 列采用 LIST COLUMNS 分区：
+List COLUMNS 分区也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前的 `employees_1` 表相同的名称和列，但根据 `hired` 列采用 List COLUMNS 分区：
 
 {{< copyable "sql" >}}
 
@@ -332,7 +332,7 @@ CREATE TABLE t (
     id int,
     name varchar(10)
 )
-partition by list columns (id,name) (
+PARTITION BY LIST COLUMNS(id,name) (
      partition p0 values IN ((1,'a'),(2,'b')),
      partition p1 values IN ((3,'c'),(4,'d')),
      partition p3 values IN ((5,'e'),(null,null))
