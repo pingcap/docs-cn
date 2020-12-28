@@ -56,7 +56,7 @@ delta_index_cache_size = 0
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-    ## 限制后台任务每秒写入的字节数，0 代表没有限制
+    ## [实验特性] 限制后台任务每秒写入的字节数，默认为 0，代表没有限制
     bg_task_io_rate_limit = 0
 
     [storage.main]
