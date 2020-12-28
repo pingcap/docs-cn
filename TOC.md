@@ -231,6 +231,7 @@
     + [生成自签名证书](/generate-self-signed-certificates.md)
     + [静态加密](/encryption-at-rest.md)
     + [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
+    + [日志脱敏](/log-redaction.md)
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     + [权限管理](/privilege-management.md)
