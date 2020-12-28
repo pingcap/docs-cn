@@ -995,3 +995,13 @@ explain select * from t where age=5;
 - 默认值：0.8
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
+
+### `tidb_track_aggregate_memory_usage` <!-- 从 v5.0.0-rc 版本开始引入 -->
+
+> **警告：**
+>
+> `tidb_track_aggregate_memory_usage` 目前为实验特性，不建议在生产环境中使用。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 这个变量表示是否追踪聚合函数的内存使用情况。当开启该功能时，聚合函数的内存使用情况会被统计，进而可能会造成整个 SQL 内存统计值超阈值 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)，然后被 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的行为影响。
