@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 升级 TiDB
-aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/']
+aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/','/zh/tidb/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
 # 使用 TiUP 升级 TiDB
@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
 
 如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
+
+> **注意：**
+>
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅[使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
 
 ## 1. 升级兼容性说明
 
