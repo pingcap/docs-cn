@@ -230,7 +230,7 @@ password = ""
 
 ### 部署 Importer-backend
 
-本节介绍 TiDB Lightning 使用 Importer 模式部署方式：[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 使用 Importer 模式的部署方式：[手动部署](#手动部署-tidb-lightning)。
 
 #### 硬件需求
 
