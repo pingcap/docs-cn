@@ -1113,7 +1113,7 @@ rocksdb writecf 相关的配置项。
 
 ### `enable-compaction-guard`
 
-+ 设置 compaction guard 的启用状态。compaction guard 可以优化 TiKV Region 边界的 SST 文件分割，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
++ 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
 + 默认值：true
 
 ### `compaction-guard-min-output-file-size`
