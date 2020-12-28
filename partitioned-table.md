@@ -163,6 +163,18 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### List 分区
 
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+如果需要使用这一特性，可将 session 变量 `tidb_enable_table_partition` 的值设置为 `ON` 后，再创建 List 分区表。
+
+{{< copyable "sql" >}}
+
+```sql
+set @@session.tidb_enable_table_partition = 'ON';
+```
+
 List 分区和 Range 分区有很多相似的地方，主要的不同在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但值不能有重叠，可通过 `PARTITION ... VALUES IN (...)` 子句进行定义值。
 
 假设你要创建一张人事记录表，示例如下：
