@@ -1023,21 +1023,6 @@ explain select * from t where age=5;
 >
 > 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。
 
-<!-- 1PC 暂时有已知正确性问题，故暂时不对用户公开。
-### `tidb_enable_1pc` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
->
-> + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
-> + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter) 不兼容，共同使用时有小概率发生写丢失。
-
-- 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 指定是否在只涉及一个 Region 的事务上使用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
-- **注意：开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。**
--->
 
 ### `tidb_guarantee_external_consistency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
