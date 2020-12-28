@@ -65,7 +65,7 @@ delta_index_cache_size = 0
 
 ## Storage paths settings take effect starting from v4.0.9
 [storage]
-    ## Limits the total write rate of background tasks in bytes per second. 0 means no limit.
+    ## [Experimental] Introduced in v5.0. Limits the total write rate of background tasks in bytes per second. By default 0, means no limit. It is not recommended to use this experimental feature in a production environment.
     bg_task_io_rate_limit = 0
 
     [storage.main]
