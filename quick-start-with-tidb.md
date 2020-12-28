@@ -335,7 +335,7 @@ Other requirements for the target machine:
 
     - [Deploy TiDB online using TiUP](/production-deployment-using-tiup.md)
     - [Deploy TiDB offline using TiUP](/production-offline-deployment-using-tiup.md)
-    - [Deploy TiDB on Cloud using TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/v1.1)
+    - [Deploy TiDB on Cloud using TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable)
 
 > **Note:**
 >

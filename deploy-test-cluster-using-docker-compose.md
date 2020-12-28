@@ -8,7 +8,7 @@ aliases: ['/docs/dev/deploy-test-cluster-using-docker-compose/','/docs/dev/how-t
 
 > **Warning:**
 >
-> The Docker Compose deployment method provided in this document is no longer maintained. If you want to test TiDB, it is recommended to refer to [Quick Start Guide for the TiDB Database Platform](/quick-start-with-tidb.md) for deployment. For **production environment**, **do not use** Docker Compose for deployment, but [deploy TiDB with TiUP](/production-deployment-using-tiup.md) or [TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/deploy-tidb-operator).
+> The Docker Compose deployment method provided in this document is no longer maintained. If you want to test TiDB, it is recommended to refer to [Quick Start Guide for the TiDB Database Platform](/quick-start-with-tidb.md) for deployment. For **production environment**, **do not use** Docker Compose for deployment, but [deploy TiDB with TiUP](/production-deployment-using-tiup.md) or [TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-operator).
 
 This document describes how to quickly deploy a TiDB testing cluster with a single command using [Docker Compose](https://docs.docker.com/compose/overview).
 

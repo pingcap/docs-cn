@@ -34,7 +34,7 @@ The following are the basics of TiDB Lightning:
     - The output file of Dumpling
     - Other compatible CSV file
 - Supported TiDB versions: v2.1 or later
-- Kubernetes support: Yes. See [Quickly restore data into a TiDB cluster in Kubernetes using TiDB Lightning](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/restore-data-using-tidb-lightning) for details.
+- Kubernetes support: Yes. See [Quickly restore data into a TiDB cluster in Kubernetes using TiDB Lightning](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning) for details.
 
 > **Note:**
 >
@@ -48,7 +48,7 @@ The following are the basics of BR:
 
 - [Input and output data source](/br/backup-and-restore-tool.md#types-of-backup-files): SST + `backupmeta` file
 - Supported TiDB versions: v3.1 and v4.0
-- Kubernetes support: Yes. See [Back up Data to S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/backup-to-aws-s3-using-br) and [Restore Data from S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/restore-from-aws-s3-using-br) for details.
+- Kubernetes support: Yes. See [Back up Data to S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br) and [Restore Data from S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br) for details.
 
 ## Incremental data replication
 
@@ -60,11 +60,11 @@ The following are the basics of TiDB Binlog:
     - Input: TiDB cluster
     - Output: TiDB cluster, MySQL, Kafka or incremental backup files
 - Supported TiDB versions: v2.1 or later
-- Kubernetes support: Yes. See [TiDB Binlog Cluster Operations](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/deploy-tidb-binlog) and [TiDB Binlog Drainer Configurations in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/configure-tidb-binlog-drainer) for details.
+- Kubernetes support: Yes. See [TiDB Binlog Cluster Operations](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-binlog) and [TiDB Binlog Drainer Configurations in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer) for details.
 
 ### Data migration
 
-[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0) (DM) is an integrated data replication task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB to TiDB.
+[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/stable) (DM) is an integrated data replication task management platform that supports the full data migration and the incremental data migration from MySQL/MariaDB to TiDB.
 
 The following are the basics of DM:
 
