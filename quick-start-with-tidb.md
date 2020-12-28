@@ -8,7 +8,7 @@ aliases: ['/docs/dev/quick-start-with-tidb/','/docs/dev/test-deployment-using-do
 
 > **Warning:**
 >
-> For production environments, **do not** deploy TiDB with the following three methods. Instead, it is recommended that you [deploy TiDB using TiUP](/production-deployment-using-tiup.md).
+> For production environments, **do not** deploy TiDB with the following two methods. Instead, it is recommended that you [deploy TiDB using TiUP](/production-deployment-using-tiup.md).
 
 This document describes how to try out TiDB, a distributed SQL database, in a few minutes. You can choose any of the following two methods to get started with the TiDB database platform:
 
