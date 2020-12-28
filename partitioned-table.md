@@ -293,7 +293,7 @@ PARTITION BY LIST COLUMNS(city) (
 );
 ```
 
-与 List 分区不同的是，您不需要在 `COLUMNS()` 子句中使用表达式来将列值转换为整数。
+与 List 分区不同的是，你不需要在 `COLUMNS()` 子句中使用表达式来将列值转换为整数。
 
 LIST COLUMNS 分区也可以使用 DATE 和 DATETIME 类型的列进行分区，如以下示例中所示，该示例使用与先前的 `employees_1` 表相同的名称和列，但根据 `hired` 列采用 LIST COLUMNS 分区：
 
