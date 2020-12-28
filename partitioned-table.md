@@ -236,7 +236,7 @@ test> INSERT INTO t VALUES (7, 7);
 ERROR 1525 (HY000): Table has no partition for value 7
 ```
 
-要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错:
+要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用该关键字后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错:
 
 ```sql
 test> TRUNCATE t;
