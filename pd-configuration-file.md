@@ -303,6 +303,11 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
 + 默认：15
 
+### `enable-joint-consensus`
+
++ 是否使用 Joint Consensus 进行副本调度。关闭时，将采用一次调度一个副本的方式进行调度。本特性目前为实验特性。
++ 默认：true
+
 ## replication
 
 副本相关的配置项。
