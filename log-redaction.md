@@ -17,4 +17,4 @@ TiKV 侧的日志脱敏需要将 [`security.redact-info-log`](/tikv-configuratio
 
 ## PD 侧
 
-PD 侧的日志脱敏需要将 [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v500rc-版本开始引入) 的值设为 `true`。该配置项值默认为 `false`，即关闭脱敏。
+PD 侧的日志脱敏需要将 [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v500-rc-版本开始引入) 的值设为 `true`。该配置项值默认为 `false`，即关闭脱敏。
