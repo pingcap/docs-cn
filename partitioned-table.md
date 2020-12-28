@@ -219,7 +219,7 @@ PARTITION BY LIST (store_id) (
 
 使用 `ALTER TABLE employees DROP PARTITION pEast` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pEast`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
 
-与 Range 分区的情况不同，List 分区没有诸如 `MAXVALUE` 之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句包含不匹配分区列值，该语句将执行失败并报错，如下例所示：
+与 Range 分区的情况不同，List 分区没有诸如 `MAXVALUE` 之类的“包罗万象”的东西。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
 
 ```sql
 test> CREATE TABLE t (
