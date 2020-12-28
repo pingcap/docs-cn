@@ -72,9 +72,9 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 - Specifies the GC mode. Possible values are:
 
-    - `"distributed"` (default): Distributed GC mode. In the [Do GC](/garbage-collection-overview.md#do-gc) step, the GC leader on the TiDB side uploads the safe point to PD. Each TiKV node obtains the safe point respectively and performs GC on all leader Regions on the current node. This mode is is supported from TiDB 3.0.
+    - `"distributed"` (default): Distributed GC mode. In the [Do GC](/garbage-collection-overview.md#do-gc) step, the GC leader on the TiDB side uploads the safe point to PD. Each TiKV node obtains the safe point respectively and performs GC on all leader Regions on the current node. This mode is supported from TiDB 3.0.
 
-    - `"central"`: Central GC mode. In the [Do GC](/garbage-collection-overview.md#do-gc) step, the GC leader sends GC requests to all Regions. This mode is adopted by TiDB 2.1 or earlier versions.
+    - `"central"`: Central GC mode. In the [Do GC](/garbage-collection-overview.md#do-gc) step, the GC leader sends GC requests to all Regions. This mode is adopted by TiDB 2.1 or earlier versions. Starting from TiDB 5.0, this mode is not supported. Clusters set to this mode automatically switch to the `distributed` mode.
 
 ## `tikv_gc_auto_concurrency`
 
@@ -142,4 +142,50 @@ You can dynamically modify this configuration using tikv-ctl:
 
 ```bash
 tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
+```
+
+## GC in Compaction Filter
+
+Since v5.0, TiDB introduces the mechanism of GC in Compaction Filter. Based on the distributed GC mode, the mechanism uses the compaction process of RocksDB, instead of a separate GC worker thread, to run GC. This new GC machanism helps to avoid extra disk read caused by GC. Also, after clearing the obsolete data, it avoids a large number of left tombstone marks which degrade the sequential scan performance. This mechanism is enabled by default and is also automatically enabled after a rolling upgrade. The following example shows how to enable this GC mechanism in the TiKV configuration file:
+
+{{< copyable "" >}}
+
+```toml
+[gc]
+enable-compaction-filter = true
+```
+
+You can also enable this GC mechanism by modifying the configuration online. See the following example:
+
+{{< copyable "sql" >}}
+
+```sql
+show config where type = 'tikv' and name like '%enable-compaction-filter%';
+```
+
+```sql
++------+-------------------+-----------------------------+-------+
+| Type | Instance          | Name                        | Value |
++------+-------------------+-----------------------------+-------+
+| tikv | 172.16.5.37:20163 | gc.enable-compaction-filter | false |
+| tikv | 172.16.5.36:20163 | gc.enable-compaction-filter | false |
+| tikv | 172.16.5.35:20163 | gc.enable-compaction-filter | false |
++------+-------------------+-----------------------------+-------+
+```
+
+{{< copyable "sql" >}}
+
+```sql
+set config tikv gc.enable-compaction-filter = true;
+show config where type = 'tikv' and name like '%enable-compaction-filter%';
+```
+
+```sql
++------+-------------------+-----------------------------+-------+
+| Type | Instance          | Name                        | Value |
++------+-------------------+-----------------------------+-------+
+| tikv | 172.16.5.37:20163 | gc.enable-compaction-filter | true  |
+| tikv | 172.16.5.36:20163 | gc.enable-compaction-filter | true  |
+| tikv | 172.16.5.35:20163 | gc.enable-compaction-filter | true  |
++------+-------------------+-----------------------------+-------+
 ```
