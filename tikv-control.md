@@ -7,8 +7,7 @@ aliases: ['/docs-cn/dev/tikv-control/','/docs-cn/dev/reference/tools/tikv-contro
 
 TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装目录如下：
 
-* 如果是使用 TiDB Ansible 部署的集群，在 `ansible` 目录下的 `resources/bin` 子目录下。
-* 如果是使用 TiUP 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 目录下。
++ 如果是使用 TiUP 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 目录下。
 
 ## 通过 TiUP 使用 TiKV Control
 
