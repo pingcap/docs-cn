@@ -18,10 +18,10 @@ mysql> set @@global.tidb_redact_log=1;
 
 设置后，所有新的 session 产生的日志都会脱敏：
 ```sql
-mysql> create table t (a int, unique key (a));
+create table t (a int, unique key (a));
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> insert into t values (1),(1);
+insert into t values (1),(1);
 ERROR 1062 (23000): Duplicate entry '1' for key 'a'
 ```
 
