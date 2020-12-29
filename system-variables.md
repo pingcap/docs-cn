@@ -308,7 +308,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Default value: 0
-- This variable is used to control whether to enable the clustered index feature.
+- This variable is used to control whether to enable the [clustered index](/clustered-indexes.md) feature.
     - This feature is only applicable to newly created tables and does not affect the existing old tables.
     - This feature is only applicable to tables whose primary key is the single-column non-integer type or the multi-column type. It does not affect the tables without a primary key or tables with the primary key of the single-column non-integer type.
     - You can execute `select tidb_pk_type from information_schema.tables where table_name ='{table_name}'` to check whether the clustered index feature has been enabled on a table.
