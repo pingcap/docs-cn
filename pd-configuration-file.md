@@ -86,12 +86,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 包含 X509 key 的 PEM 文件路径
 + 默认：""
 
-### `redact-info-log` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-+ 控制 PD 日志脱敏的开关
-+ 该配置项值设为 true 时将对 PD 日志脱敏，遮蔽日志中的用户信息。
-+ 默认值：false
-
 ## log
 
 日志相关的配置项。
