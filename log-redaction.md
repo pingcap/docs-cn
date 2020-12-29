@@ -11,10 +11,10 @@ TiDB 在提供详细的日志信息时，可能会把数据库敏感的数据（
 
 TiDB 侧的日志脱敏需要将 [`global.tidb_redact_log`](/system-variables.md#tidb_redact_log) 的值设为 `1`。该变量值默认为 `0`，即关闭脱敏。
 
-可以通过 set 语法，设置全局的 `tidb_redact_log` 系统变量：
+可以通过 `set` 语法，设置全局系统变量 `tidb_redact_log`，示例如下：
+
 ```sql
-mysql> set @@global.tidb_redact_log=1;
-```
+set @@global.tidb_redact_log=1;
 
 设置后，所有新 session 产生的日志都会脱敏：
 
