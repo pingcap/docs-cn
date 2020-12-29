@@ -11,15 +11,15 @@ summary: 了解 TiDB 中的聚簇索引。
 
 TiDB 仅支持根据表的`主键`来进行聚簇操作。聚簇索引启用时，`主键`和`聚簇索引`两个术语在一些情况下可互换使用。`主键`指的是约束（一种逻辑属性），而`聚簇索引`描述的是数据存储的物理实现。
 
-## 部分支持聚簇索引（TiDB v5.0 前）
+## TiDB v5.0 前支持部分主键作为聚簇索引
 
-在 v5.0 之前，TiDB 对聚簇索引支持有限，需要同时满足以下条件才能启用：
+在 v5.0 之前，TiDB 对聚簇索引的支持有限，需要同时满足以下条件才能启用：
 
 - 数据表设置了主键
 - 主键的数据类型为 `INTEGER` 或 `BIGINT`
 - 主键只有一列
 
-当其中任一条件不满足时，TiDB 会创建一个隐藏的 64 位 `handle` 值。与非聚簇索引相比，使用聚簇索引一步就能完成表查询，效率更高。下面的例子对比了两张数据表的 `EXPLAIN` 语句输出结果，其中一张表支持使用聚簇索引，而另一张不支持：
+当其中任一条件不满足时，TiDB 会创建一个隐藏的 64 位 `handle` 值，以组织该数据表。与非聚簇索引相比，使用聚簇索引一步就能完成表查询，效率更高。下面的例子对比了两张数据表的 `EXPLAIN` 语句输出结果，其中一张表支持使用聚簇索引，而另一张不支持：
 
 ```sql
 CREATE TABLE always_clusters_in_all_versions (
@@ -65,7 +65,9 @@ Records: 2  Duplicates: 0  Warnings: 0
 1 row in set (0.00 sec)
 ```
 
-以上两个 `EXPLAIN` 语句输出结果类似，但在第二个例子中，TiDB 需要首先读取 `guid` 列上的主键索引，才能获得 `handle` 的值。而在下面的例子中，由于 `does_not_cluster_by_default.b` 这列并不是主键，查询效率差异体现得更为明显。TiDB 必须进行额外的扫表操作 (`└─TableFullScan_5`) 才能将 `handle` 的值转变为`guid` 的主键值。示例如下：
+以上两个 `EXPLAIN` 语句输出结果类似，但在第二个例子中，TiDB 需要首先读取 `guid` 列上的主键索引，才能获得 `handle` 的值。
+
+而在下面的例子中，由于 `does_not_cluster_by_default.b` 这列并不是主键，查询效率差异体现得更为明显。TiDB 必须进行额外的扫表操作 (`└─TableFullScan_5`) 才能将 `handle` 的值转变为 `guid` 的主键值。示例如下：
 
 ```sql
 EXPLAIN SELECT id FROM always_clusters_in_all_versions WHERE b = 'aaaa';
@@ -93,9 +95,9 @@ EXPLAIN SELECT guid FROM does_not_cluster_by_default WHERE b = 'aaaa';
 4 rows in set (0.00 sec)
 ```
 
-## 全面支持聚簇索引（TiDB v5.0 起）
+## TiDB v5.0 起支持任意主键作为聚簇索引
 
-从 v5.0 开始，TiDB 全面支持在任意主键上使用聚簇索引。下方示例沿用了上一节的数据表例子，但开启了聚簇索引特性，并列出相应的 `EXPLAIN` 语句输出结果：
+从 v5.0 开始，TiDB 全面支持使用任意主键作为聚簇索引。下方示例沿用了上一节的数据表例子，但开启了聚簇索引特性，并列出相应的 `EXPLAIN` 语句输出结果：
 
 ```sql
 SET tidb_enable_clustered_index = 1;
@@ -140,7 +142,7 @@ Records: 2  Duplicates: 0  Warnings: 0
 3 rows in set (0.00 sec)
 ```
 
-TiDB 同样支持对复合主键进行聚簇操作：
+TiDB 同样支持用复合主键进行聚簇操作：
 
 ```sql
 SET tidb_enable_clustered_index = 1;
@@ -171,11 +173,11 @@ Records: 2  Duplicates: 0  Warnings: 0
 1 row in set (0.00 sec)
 ```
 
-在 MySQL 中，InnoDB 存储引擎默认会为任意主键建立聚簇索引，此处行为与之一致。
+在 MySQL 中，InnoDB 存储引擎默认会使用任意主键作为聚簇索引，此处行为与之一致。
 
 ## 存储需求
 
-由于启用聚簇索引后，主键替代 64 位的 `handle` 值成为表中每行数据的内部指针，所以存储需求也可能上升，尤其当表中包含很多二级索引时。以下表为例：
+启用聚簇索引后，主键替代 64 位的 `handle` 值成为表中每行数据的内部指针，所以对存储空间的需求可能会上升，尤其当表中包含很多二级索引时。以下表为例：
 
 ```sql
 CREATE TABLE t1 (
