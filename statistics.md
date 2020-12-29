@@ -10,8 +10,8 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
 | 表的总行数 | √ | √ |
-| 列的Count-Min Sketch | √ | × |
-| 索引的Count-Min Sketch | √ | × |
+| 列的 Count-Min Sketch | √ | × |
+| 索引的 Count-Min Sketch | √ | × |
 | 列的 Top-N | √ | √（改善了维护方式和精度） |
 | 索引的 Top-N | √(维护精度不足，不能用于估计) | √ |
 | 列的直方图 | √ | √（直方图中不包含 Top-N 中出现的值） |
@@ -313,7 +313,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere];
 | repeats | 最大值出现的次数 |
 | lower_bound | 最小值 |
 | upper_bound | 最大值 |
-| ndv | 不同值的个数，当 analyze version 为 1 时，该值没有实际意义，因此会有 count 不为 0，但 ndv 为 0 的情况 |
+| ndv | 当前桶内不同值的个数。当 analyze version 为 1 时，该值恒为 0，没有实际意义。 |
 
 ### Top-N 信息
 
