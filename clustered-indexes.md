@@ -93,7 +93,7 @@ EXPLAIN SELECT guid FROM does_not_cluster_by_default WHERE b = 'aaaa';
 4 rows in set (0.00 sec)
 ```
 
-# Full support since TiDB v5.0
+## Full support since TiDB v5.0
 
 Since v5.0, TiDB provides full support for clustered indexes by any `PRIMARY KEY`. The following `EXPLAIN` output shows the previous example with clustered indexes enabled:
 
