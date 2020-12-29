@@ -16,7 +16,8 @@ TiDB 侧的日志脱敏需要将 [`global.tidb_redact_log`](/system-variables.md
 mysql> set @@global.tidb_redact_log=1;
 ```
 
-设置后，所有新的 session 产生的日志都会脱敏：
+设置后，所有新 session 产生的日志都会脱敏：
+
 ```sql
 create table t (a int, unique key (a));
 Query OK, 0 rows affected (0.00 sec)
