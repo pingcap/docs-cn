@@ -393,6 +393,7 @@
       + [精度数学](/functions-and-operators/precision-math.md)
       + [集合运算](/functions-and-operators/set-operators.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
+    + [聚簇索引](/clustered-indexes.md)
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
     + [SQL 模式](/sql-mode.md)
