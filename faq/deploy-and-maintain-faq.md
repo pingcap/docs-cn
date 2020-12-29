@@ -90,7 +90,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | **变量** | **含义** |
 | --- | --- |
 | cluster_name | 集群名称，可调整 |
-| tidb_version | TiDB 版本，TiDB Ansible 各分支默认已配置 |
+| tidb_version | TiDB 版本 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set_timezone 变量结合使用 |
@@ -105,22 +105,13 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
-### TiDB 离线 Ansible 部署方案（4.0 版本后不推荐使用）
-
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[离线 TiDB Ansible 部署方案](/offline-deployment-using-ansible.md)。
-
 ### Docker Compose 快速构建集群（单机部署）
 
 使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/deploy-test-cluster-using-docker-compose.md)。
 
 ### 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
-1）TiDB 中，对慢查询的定义在 tidb-ansible 的 `conf/tidb.yml` 配置文件中，`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
-
-慢查询日志默认记录到 tidb.log 中，如果希望生成单独的慢查询日志文件，修改 inventory.ini 配置文件的参数 `enable_slow_query_log` 为 True。
-
-如上配置修改之后，需要执行 `ansible-playbook rolling_update.yml --tags=tidb`，对 tidb-server 实例进行滚动升级，升级完成后，tidb-server 将在 `tidb_slow_query.log`
-文件中记录慢查询日志。
+1）TiDB 中，对慢查询的定义在 TiDB 的配置文件中。`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
@@ -154,30 +145,9 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
 
-### 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 `UNREACHABLE! "msg": "Failed to connect to the host via ssh: "` 报错是什么原因？
-
-有两种可能性：
-
-- ssh 互信的准备工作未做好，建议严格参照我们的[官方文档步骤](/online-deployment-using-ansible.md)配置互信，并使用命令 `ansible -i inventory.ini all -m shell -a 'whoami' -b` 来验证互信配置是否成功。
-
-- 如果涉及到单服务器分配了多角色的场景，例如多组件混合部署或单台服务器部署了多个 TiKV 实例，可能是由于 ssh 复用的机制引起这个报错，可以使用 `ansible … -f 1` 的选项来规避这个报错。
-
 ## 集群管理 FAQ
 
 ### 集群日常管理
-
-#### Ansible 常见运维操作有那些？
-
-| **任务** | **Playbook** |
-| --- | --- |
-| 启动集群 | ansible-playbook start.yml |
-| 停止集群 | ansible-playbook stop.yml |
-| 销毁集群 | ansible-playbook unsafe\_cleanup.yml (若部署目录为挂载点，会报错，可忽略） |
-| 清除数据(测试用) | ansible-playbook cleanup\_data.yml |
-| 滚动升级 | ansible-playbook rolling\_update.yml |
-| 滚动升级 TiKV | ansible-playbook rolling\_update.yml --tags=tikv |
-| 滚动升级除 PD 外模块 | ansible-playbook rolling\_update.yml --skip-tags=pd |
-| 滚动升级监控组件 | ansible-playbook rolling\_update\_monitor.yml |
 
 #### TiDB 如何登录？
 
@@ -203,7 +173,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### 如何规范停止 TiDB？
 
-如果是用 TiDB Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 TiDB Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
+可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
 
 #### TiDB 里面可以执行 kill 命令吗？
 
@@ -224,7 +194,7 @@ TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log�
 - `1` 表示该版本 commit 1 次
 - `ga80e796` 代表版本的 `git-hash`
 
-#### 分不清 TiDB master 版本之间的区别，经常用错 TiDB Ansible 版本?
+#### 分不清 TiDB master 版本之间的区别，应该怎么办？
 
 TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/production-deployment-using-tiup.md)。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
 
@@ -292,11 +262,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### 集群下线节点后，怎么删除老集群节点监控信息？
 
-下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。从 Ansible inventory.ini 中删除对应节点的信息。
-
-#### 使用 PD Control 连接 PD Server 时，为什么只能通过本机 IP 连接，不能通过 127.0.0.1 连接？
-
-因为使用 TiDB Ansible 部署的集群，PD 对外服务端口不会绑定到 127.0.0.1，所以 PD Control 不会识别 127.0.0.1。
+下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。
 
 ### TiDB server 管理
 

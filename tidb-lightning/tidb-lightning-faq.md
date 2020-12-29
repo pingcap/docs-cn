@@ -115,19 +115,13 @@ sql-mode = ""
 
 ## 如何正确结束 `tikv-importer` 进程？
 
-根据部署方式，选择相应操作结束进程
-
-- 使用 TiDB Ansible 部署：在 Importer 的服务器上运行 `scripts/stop_importer.sh`。
-
-- 手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程 ID，然后通过 `kill «pid»` 结束进程。
+手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程 ID，然后通过 `kill «pid»` 结束进程。
 
 ## 如何正确结束 `tidb-lightning` 进程？
 
 根据部署方式，选择相应操作结束进程
 
-- 使用 TiDB Ansible 部署：在 Lightning 的服务器上运行 `scripts/stop_lightning.sh`。
-
-- 手动部署：如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tidb-lightning` 获取进程 ID，然后通过 `kill -2 «pid»` 结束进程。
+手动部署：如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tidb-lightning` 获取进程 ID，然后通过 `kill -2 «pid»` 结束进程。
 
 ## `tidb-lightning` 在服务器上运行，进程莫名其妙地退出了，是怎么回事呢？
 
@@ -196,3 +190,7 @@ upload-speed-limit = "100MB"
 2. 删除 `tikv-importer` 所在机器上的整个 “import” 文件目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
+
+## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
+
+报错原因是遍历本地排序的文件时出现异常，可能在 lightning 打开的文件数量超过系统的上限时发生。在 linux 系统中，可以使用 `ulimit -n` 命令确认此值是否过小。建议在 lightning 导入期间将此设置调整为 1000000（`ulimit -n 1000000`）。
