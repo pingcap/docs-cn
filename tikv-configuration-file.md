@@ -924,7 +924,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `target-file-size-base`
 
-+ base level 的目标文件大小。
++ base level 的目标文件大小。当 `enable-compaction-guard` 的值为 `true` 时，`compaction-guard-max-output-file-size` 会覆盖此配置。
 + 默认值：8MB
 + 最小值：0
 + 单位：KB|MB|GB
@@ -996,6 +996,23 @@ Compaction 优先类型，默认：3（MinOverlappingRatio），0（ByCompensate
 
 + pending compaction bytes 的硬限制。
 + 默认值：256GB
++ 单位：KB|MB|GB
+
+### `enable-compaction-guard`
+
++ 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
++ 默认值：true
+
+### `compaction-guard-min-output-file-size`
+
++ 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
++ 默认值：8MB
++ 单位：KB|MB|GB
+
+### `compaction-guard-max-output-file-size`
+
++ 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
++ 默认值：128MB
 + 单位：KB|MB|GB
 
 ## rocksdb.defaultcf.titan
@@ -1093,6 +1110,23 @@ rocksdb writecf 相关的配置项。
 
 + 开启将整个 key 放到 bloom filter 中的开关。
 + 默认值：false
+
+### `enable-compaction-guard`
+
++ 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
++ 默认值：true
+
+### `compaction-guard-min-output-file-size`
+
++ 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
++ 默认值：8MB
++ 单位：KB|MB|GB
+
+### `compaction-guard-max-output-file-size`
+
++ 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
++ 默认值：128MB
++ 单位：KB|MB|GB
 
 ## rocksdb.lockcf
 
@@ -1210,7 +1244,7 @@ raftdb 相关配置项。
 ### `enable-compaction-filter`
 
 + 是否开启 GC in Compaction Filter 特性
-+ 默认值：true
++ 默认值：false
 
 ## backup
 
