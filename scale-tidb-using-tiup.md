@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 扩容缩容 TiDB 集群
-aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-tiup/','/docs-cn/dev/reference/tiflash/scale/']
+aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-tiup/','/docs-cn/dev/reference/tiflash/scale/','/zh/tidb/dev/scale-tidb-using-ansible/','/docs-cn/dev/scale-tidb-using-ansible/','/docs-cn/dev/how-to/scale/with-ansible/']
 ---
 
 # 使用 TiUP 扩容缩容 TiDB 集群
@@ -9,17 +9,21 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
 本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[升级文档中的步骤](/upgrade-tidb-using-tiup.md#2-在中控机器上安装-tiup)，将集群 Import 到 TiUP 环境中，再使用 TiUP 进行扩容缩容。
 
+> **注意：**
+>
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 扩容缩容 TiDB 集群的文档，可参阅[使用 TiDB Ansible 扩容缩容 TiDB 集群](https://docs.pingcap.com/zh/tidb/v4.0/scale-tidb-using-ansible)。
+
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
 例如，集群原拓扑结构如下所示：
 
-| 主机 IP   | 服务   | 
+| 主机 IP   | 服务   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
-| 10.0.1.4   | TiDB + PD   | 
-| 10.0.1.5   | TiKV + Monitor   | 
-| 10.0.1.1   | TiKV   | 
-| 10.0.1.2   | TiKV    |
+| 10.0.1.3   | TiDB + TiFlash  |
+| 10.0.1.4   | TiDB + PD   |
+| 10.0.1.5   | TiKV + Monitor   |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 扩容 TiDB/PD/TiKV 节点
 
