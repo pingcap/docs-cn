@@ -1188,7 +1188,7 @@ raftdb 相关配置项。
 + 包含 X509 key 的 PEM 文件路径
 + 默认值：""
 
-### `redact-info-log`
+### `redact-info-log` <span class="version-mark">从 v4.0.8 版本开始引入</span>
 
 + 若开启该选项，日志中的用户数据会以 `?` 代替。
 + 默认值：`false`
