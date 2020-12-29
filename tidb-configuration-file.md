@@ -305,9 +305,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `txn-entry-size-limit` <span class="version-mark">从 v4.0.10 版本开始引入</span>
 
-+ TiDB 单行数据大小限制
++ TiDB 单行数据的大小限制
 + 默认值：6291456 (Byte)
-+ 事务中单个 key-value 记录的大小限制，若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。注意，TiKV 同样有类似的限制，若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 8MB，TiKV 会拒绝处理该请求。当表的一行记录较大时，需要同时修改这 2 个配置。
++ 事务中单个 key-value 记录的大小限制。若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。
++ 注意，TiKV 有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 8MB，TiKV 会拒绝处理该请求。当表的一行记录较大时，需要同时修改这两个配置。
 
 ### `txn-total-size-limit`
 
