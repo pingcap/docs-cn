@@ -121,25 +121,6 @@ server_configs:
 </details>
 
 <details>
-  <summary>通过 TiDB Ansible 部署</summary>
-
-找到部署配置文件 `tidb-ansible/conf/tidb.yml` 中以下内容：
-
-```yaml
-# enable-telemetry: true
-```
-
-将其修改为：
-
-```yaml
-enable-telemetry: false
-```
-
-详情参见[使用 TiDB Ansible 部署](/online-deployment-using-ansible.md)。
-
-</details>
-
-<details>
   <summary>通过 TiDB Operator 在 Kubernetes 上部署</summary>
 
 在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.tidb.config.enable-telemetry: false`。
@@ -224,29 +205,6 @@ server_configs:
   pd:
     dashboard.enable-telemetry: false
 ```
-
-</details>
-
-<details>
-  <summary>通过 TiDB Ansible 部署</summary>
-
-找到部署配置文件 `tidb-ansible/conf/pd.yml` 中以下内容：
-
-```yaml
-dashboard:
-  ...
-  # enable-telemetry: true
-```
-
-将其修改为：
-
-```yaml
-dashboard:
-  ...
-  enable-telemetry: false
-```
-
-详情参见[使用 TiDB Ansible 部署](/online-deployment-using-ansible.md)。
 
 </details>
 
