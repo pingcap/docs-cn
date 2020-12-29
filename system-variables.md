@@ -399,7 +399,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
     - 默认值 `on` 表示开启 range partition、hash partition 以及 range column 单列的分区表。
     - `auto` 目前作用和 `on` 一样。
-    - `nightly` 表示开启 `on` 的分区表类型，并开启 list partition、list columns partition。
+    - `nightly` 表示开启 `on` 的分区表类型，并开启 list partition 和 list columns partition。
     - `off` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
 > **注意：**
