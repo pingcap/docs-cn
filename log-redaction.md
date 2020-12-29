@@ -15,6 +15,7 @@ TiDB 侧的日志脱敏需要将 [`global.tidb_redact_log`](/system-variables.md
 
 ```sql
 set @@global.tidb_redact_log=1;
+```
 
 设置后，所有新 session 产生的日志都会脱敏：
 
