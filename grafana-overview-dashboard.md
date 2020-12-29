@@ -1,6 +1,5 @@
 ---
 title: Overview 面板重要监控指标详解
-aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/overview-dashboard/']
 ---
 
 # Overview 面板重要监控指标详解

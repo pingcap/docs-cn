@@ -1,6 +1,5 @@
 ---
 title: 本地快速部署 TiDB 集群
-aliases: ['/docs-cn/dev/tiup/tiup-playground/','/docs-cn/dev/reference/tools/tiup/playground/']
 ---
 
 # 本地快速部署 TiDB 集群

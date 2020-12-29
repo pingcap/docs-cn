@@ -1,6 +1,5 @@
 ---
 title: TiSpark 用户指南
-aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
 ---
 
 # TiSpark 用户指南

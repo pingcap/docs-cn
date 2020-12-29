@@ -1,6 +1,5 @@
 ---
 title: 使用 TiDB Ansible 扩容缩容 TiDB 集群
-aliases: ['/docs-cn/dev/scale-tidb-using-ansible/','/docs-cn/dev/how-to/scale/with-ansible/']
 ---
 
 # 使用 TiDB Ansible 扩容缩容 TiDB 集群
