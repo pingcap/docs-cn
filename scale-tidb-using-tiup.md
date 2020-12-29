@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 扩容缩容 TiDB 集群
-aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-tiup/','/docs-cn/dev/reference/tiflash/scale/','/zh/tidb/dev/scale-tidb-using-ansible/','/docs-cn/dev/scale-tidb-using-ansible/','/docs-cn/dev/how-to/scale/with-ansible/']
 ---
 
 # 使用 TiUP 扩容缩容 TiDB 集群

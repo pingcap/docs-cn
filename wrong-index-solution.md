@@ -1,7 +1,6 @@
 ---
 title: 错误索引的解决方案
 summary: 了解如何处理错误索引问题。
-aliases: ['/docs-cn/dev/wrong-index-solution/']
 ---
 
 # 错误索引的解决方案

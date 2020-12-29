@@ -1,6 +1,5 @@
 ---
 title: 调度概述
-aliases: ['/docs-cn/dev/tidb-scheduling/']
 ---
 
 # 调度概述

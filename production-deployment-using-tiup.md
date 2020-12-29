@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
-aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/','/zh/tidb/dev/online-deployment-using-ansible/','/docs-cn/dev/online-deployment-using-ansible/','/docs-cn/dev/how-to/deploy/orchestrated/ansible/']
 ---
 
 # 使用 TiUP 部署 TiDB 集群

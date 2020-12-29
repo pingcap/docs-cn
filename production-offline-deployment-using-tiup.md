@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 离线部署 TiDB 集群
-aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/','/zh/tidb/dev/offline-deployment-using-ansible/','/docs-cn/dev/offline-deployment-using-ansible/','/docs-cn/dev/how-to/deploy/orchestrated/offline-ansible/']
 ---
 
 # 使用 TiUP 离线部署 TiDB 集群
