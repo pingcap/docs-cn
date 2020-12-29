@@ -771,9 +771,9 @@ set tidb_slow_log_threshold = 200;
 
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
-### `tidb_log_desensitization`
+### `tidb_redact_log`
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 
 - 默认值：0
 
