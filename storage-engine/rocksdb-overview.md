@@ -1,6 +1,5 @@
 ---
 title: RocksDB 简介
-aliases: ['/docs-cn/dev/storage-engine/rocksdb-overview/','/docs-cn/dev/rocksdb/rocksdb-overview/']
 ---
 
 # RocksDB 简介

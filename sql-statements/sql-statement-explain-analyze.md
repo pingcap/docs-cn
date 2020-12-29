@@ -1,7 +1,6 @@
 ---
 title: EXPLAIN ANALYZE
 summary: TiDB 数据库中 EXPLAIN ANALYZE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-explain-analyze/','/docs-cn/dev/reference/sql/statements/explain-analyze/']
 ---
 
 # EXPLAIN ANALYZE

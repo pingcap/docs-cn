@@ -1,6 +1,5 @@
 ---
 title: 离线 TiDB Ansible 部署方案
-aliases: ['/docs-cn/dev/offline-deployment-using-ansible/','/docs-cn/dev/how-to/deploy/orchestrated/offline-ansible/']
 ---
 
 # 离线 TiDB Ansible 部署方案
