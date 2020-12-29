@@ -7,8 +7,6 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
-  + [TiDB 4.0 实验特性](/experimental-features-4.0.md)
   + [基本功能](/basic-features.md)
   + 性能测试报告
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
