@@ -404,8 +404,8 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 > **注意：**
 >
-> 目前 TiDB 默认只支持 range partition 和 hash partition。
-> list partition 和 list columns partition 目前还属于实验特性。
+> 目前 TiDB 默认只支持 Range partition 和 Hash partition。
+> List partition 和 List COLUMNS partition 目前还属于实验特性。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
