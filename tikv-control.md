@@ -21,7 +21,7 @@ tiup ctl tikv
 
 ```
 Starting component `ctl`: /home/tidb/.tiup/components/ctl/v4.0.8/ctl tikv
-TiKV Control (tikv-ctl) 
+TiKV Control (tikv-ctl)
 Release Version:   4.0.8
 Edition:           Community
 Git Commit Hash:   83091173e960e5a0f5f417e921a0801d2f6635ae
@@ -426,6 +426,28 @@ success
 
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
+```
+
+```
+success
+```
+
+如果 compaction rate 的速率限制导致待 compaction 字节数积压，可以禁用 `rate-limiter-auto-tuned` 配置项或调高 compaction 相关的流量限制。示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-limiter-auto-tuned -v false
+```
+
+```
+success
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB"
 ```
 
 ```
