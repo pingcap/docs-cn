@@ -309,6 +309,15 @@ Configuration items related to scheduling
 + Determines the maximum number of operations related to adding peers within a minute
 + Default value: `15`
 
+### `enable-joint-consensus` <span class="version-mark">New in v5.0.0-rc</span>
+
+> **Warning:**
+>
+> Currently, Joint Consensus is an experimental feature. It is **NOT** recommended that you use it in the production environment.
+
++ Controls whether to use Joint Consensus for replica scheduling. If this configuration is disabled, PD schedules one replica at a time.
++ Default value: `true`
+
 ## `replication`
 
 Configuration items related to replicas
