@@ -933,3 +933,27 @@ explain select * from t where age=5;
 - Scope: SESSION | GLOBAL
 - Default value: OFF
 - This variable controls whether to track the memory usage of the aggregate function. When you enable this feature, TiDB counts the memory usage of the aggregate function, which might cause the overall SQL memory statistics to exceed the threshold [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query), and then be affected by the behavior defined by [`oom-action`](/tidb-configuration-file.md#oom-action).
+
+### `tidb_enable_async_commit` <span class="version-mark">New in v5.0.0-rc</span>
+
+> **Warning:**
+>
+> Async commit is still an experimental feature. It is not recommended to use this feature in the production environment. Currently, the following incompatible issues are found, and be aware of them if you need to use this feature:
+
+> - This feature is incompatible with [TiCDC](/ticdc/ticdc-overview.md) and might cause TiCDC to run abnormally.
+> - This feature is incompatible with [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter). If you use the two features at the same time, write loss might occur.
+> - This feature is incompatible with TiDB Binlog and does not take effect when TiDB Binlog is enabled.
+
+- Scope: SESSION | GLOBAL
+- Default value: OFF
+- This variable controls whether to enable the async commit feature for the second phase of the two-phase transaction commit to perform asynchronously in the background. Enabling this feature can reduce the latency of transaction commit.
+
+> **Warning:**
+>
+> When async commit is enabled, the external consistency of transactions cannot be guaranteed. For details, refer to [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-new-in-v500-rc).
+
+### `tidb_guarantee_external_consistency` <span class="version-mark">New in v5.0.0-rc</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: OFF
+- This variable controls whether the external consistency needs to be guaranteed when the async commit <!-- and one-phase commit--> feature is enabled. When this option is disabled, if the modifications made in two transactions do not have overlapping parts, the commit order that other transactions observe might not be consistent with the actual commit order. When the async commit <!-- or one-phase commit--> feature is disabled, the external consistency can be guaranteed no matter whether this configuration is enabled or disabled.
