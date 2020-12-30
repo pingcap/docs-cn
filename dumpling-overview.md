@@ -1,10 +1,6 @@
 ---
 title: Dumpling 使用文档
 summary: 使用 Dumpling 从 TiDB 导出数据。
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/docs-cn/dev/reference/tools/mydumper/','/zh/tidb/dev/mydumper-overview/']
->>>>>>> e690267d... delete mydumper doc in dev and 5.0 (#4858)
 ---
 
 # Dumpling 使用文档
