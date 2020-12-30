@@ -432,7 +432,7 @@ tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
 success
 ```
 
-如果 compaction rate 的速率限制导致待 compaction 字节数积压，可以禁用 `rate-limiter-auto-tuned` 配置项或调高 compaction 相关的流量限制。示例如下：
+如果 compaction 的流量控制导致待 compact 数据量 (compaction pending bytes) 堆积，可以禁用 `rate-limiter-auto-tuned` 配置项或调高 compaction 相关的流量阈值。示例如下：
 
 {{< copyable "shell-regular" >}}
 
