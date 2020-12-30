@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 # TiDB Lightning 部署与执行
 
-本文主要介绍 TiDB Lightning 使用 Local-backend 进行数据导入的硬件需求，以及使用 TiDB Ansible 部署与手动部署 TiDB Lightning 这两种部署方式。
+本文主要介绍 TiDB Lightning 使用 Local-backend 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。
 
 如果你不希望影响 TiDB 集群的对外服务，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 中的硬件需求与部署方式进行数据导入。
 
@@ -73,69 +73,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 ## 部署 TiDB Lightning
 
-本节介绍 TiDB Lightning 的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
-
-### 使用 TiDB Ansible 部署 TiDB Lightning
-
-TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deployment-using-ansible.md)。
-
-1. 编辑 `inventory.ini`，为 `tidb-lightning` 配置一个 IP。
-
-    ```ini
-    ...
-    [lightning_server]
-    192.168.20.10
-
-    ...
-    ```
-
-2. 修改 `group_vars/*.yml` 的变量配置 `tidb-lightning`。
-
-    - `group_vars/lightning_server.yml`
-
-        ```yaml
-        ---
-        dummy:
-
-        # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
-        tidb_lightning_pprof_port: 8289
-
-        # 获取数据源（Dumpling SQL dump 或 CSV）的路径。
-        data_source_dir: "{{ deploy_dir }}/mydumper"
-        ```
-
-3. 开始部署。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    ansible-playbook bootstrap.yml &&
-    ansible-playbook deploy.yml
-    ```
-
-4. 将数据源写入 `data_source_dir` 指定的路径。
-
-5. 登录 `tidb-lightning` 的服务器，编辑 `conf/tidb-lighting.toml` 如下配置项：
-
-    ```
-    [tikv-importer]
-    # 选择使用 local 模式
-    backend = "local"
-    # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
-    "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
-    
-    [tidb]
-    # pd-server 的地址，填一个即可
-    pd-addr = "172.16.31.4:2379"
-    ```
-
-6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    scripts/start_lightning.sh
-    ```
+本节介绍 TiDB Lightning 的部署方式：[手动部署](#手动部署-tidb-lightning)。
 
 ### 手动部署 TiDB Lightning
 

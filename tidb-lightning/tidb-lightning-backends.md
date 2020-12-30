@@ -61,37 +61,6 @@ TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与�
 * 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
 * 千兆网卡
 
-#### 使用 TiDB Ansible 部署
-
-1. `inventory.ini` 文件中，`[importer_server]` 部分可以留空。
-
-    ```ini
-    ...
-
-    [importer_server]
-    # keep empty
-
-    [lightning_server]
-    192.168.20.10
-
-    ...
-    ```
-
-2. 忽略 `group_vars/all.yml` 文件中 `tikv_importer_port` 部分的设置，`group_vars/importer_server.yml` 文件也不需要修改。但是你需要在 `conf/tidb-lightning.yml` 文件中将 `backend` 设置更改为 `tidb`。
-
-    ```yaml
-    ...
-    tikv_importer:
-        backend: "tidb"   # <-- 改成 “tidb”
-    ...
-    ```
-
-3. 启动、部署集群。
-
-4. 为 TiDB Lightning 挂载数据源。
-
-5. 启动 `tidb-lightning`。
-
 #### 手动部署
 
 手动部署时，你无需下载和配置 `tikv-importer`，TiDB Lightning 可[在此下载](/download-ecosystem-tools.md#tidb-lightning)。
@@ -261,7 +230,7 @@ password = ""
 
 ### 部署 Importer-backend
 
-本节介绍 TiDB Lightning 使用 Importer 模式的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 使用 Importer 模式的部署方式：[手动部署](#手动部署-tidb-lightning)。
 
 #### 硬件需求
 
@@ -286,87 +255,6 @@ password = ""
     - 运行过程中 CPU、I/O 和网络带宽资源都可能占满，建议单独部署。
 
 如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后将源数据以表为粒度进行切分，并发导入。
-
-#### 使用 TiDB Ansible 部署 TiDB Lightning
-
-TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deployment-using-ansible.md)。
-
-1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
-
-    ```ini
-    ...
-
-    [importer_server]
-    192.168.20.9
-
-    [lightning_server]
-    192.168.20.10
-
-    ...
-    ```
-
-2. 修改 `group_vars/*.yml` 的变量配置这两个工具。
-
-    - `group_vars/all.yml`
-
-        ```yaml
-        ...
-        # tikv-importer 的监听端口。需对 tidb-lightning 服务器开放。
-        tikv_importer_port: 8287
-        ...
-        ```
-
-    - `group_vars/lightning_server.yml`
-
-        ```yaml
-        ---
-        dummy:
-
-        # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
-        tidb_lightning_pprof_port: 8289
-
-        # 获取数据源（Dumpling SQL dump 或 CSV）的路径。
-        data_source_dir: "{{ deploy_dir }}/mydumper"
-        ```
-
-    - `group_vars/importer_server.yml`
-
-        ```yaml
-        ---
-        dummy:
-
-        # 储存引擎文件的路径。需存放在空间足够大的分区。
-        import_dir: "{{ deploy_dir }}/data.import"
-        ```
-
-3. 开始部署。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    ansible-playbook bootstrap.yml &&
-    ansible-playbook deploy.yml
-    ```
-
-4. 将数据源写入 `data_source_dir` 指定的路径。
-
-5. 登录 `tikv-importer` 的服务器，并执行以下命令来启动 Importer。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    scripts/start_importer.sh
-    ```
-
-6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    scripts/start_lightning.sh
-    ```
-
-7. 完成后，在 `tikv-importer` 的服务器执行 `scripts/stop_importer.sh` 来关闭 Importer。
 
 #### 手动部署 TiDB Lightning
 
