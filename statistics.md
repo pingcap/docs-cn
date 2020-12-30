@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 
 # 统计信息简介
 
-在[索引的选择](/choose-index.md)章节中，提到了 TiDB 会使用统计信息来决定选择哪个索引。在 TiDB 中，我们会使用变量 `tidb_analyze_version` 来控制 TiDB 所收集到的的统计信息。目前 TiDB 中支持 `tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2` 两种统计信息，其中值为 1 是当前的默认值。目前两种版本中，TiDB 维护的统计信息可以见如下的表格：
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` （默认）以及 `tidb_analyze_version = 2`。两种版本中，TiDB 维护的统计信息如下：
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 | 列的 Count-Min Sketch | √ | × |
 | 索引的 Count-Min Sketch | √ | × |
 | 列的 Top-N | √ | √（改善了维护方式和精度） |
-| 索引的 Top-N | √(维护精度不足，会产生较大误差) | √（改善了维护方式和精度） |
+| 索引的 Top-N | √（维护精度不足，会产生较大误差） | √（改善了维护方式和精度） |
 | 列的直方图 | √ | √（直方图中不包含 Top-N 中出现的值） |
 | 索引的直方图 | √ | √（直方图的桶中记录了各自的不同值的个数，且直方图不包含 Top-N 中出现的值） |
 | 列的 NULL 值个数 | √ | √ |
@@ -46,7 +46,7 @@ Count-Min Sketch 是一种哈希结构，当查询中出现诸如 `a = 1` 或者
 
 ## Top-N values
 
-Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会记录 n 个值的具体的值以及出现次数。
+Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会记录前 n 个值的具体的值以及出现次数。
 
 ## 统计信息的收集
 
