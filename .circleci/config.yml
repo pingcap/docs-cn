@@ -81,8 +81,8 @@ jobs:
           name: "Publish PDF to Qiniu and S3"
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              python3 scripts/upload.py output.pdf tidb-dev-zh-manual.pdf;
+            if [ "${CIRCLE_BRANCH}" == "release-5.0" ]; then
+              python3 scripts/upload.py output.pdf tidb-v5.0-zh-manual.pdf;
             fi
 
       - run:
@@ -103,4 +103,4 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - release-5.0
