@@ -9,6 +9,10 @@ summary: 使用 Dumpling 从 TiDB 导出数据。
 
 如果需要直接备份 SST 文件（键值对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc/ticdc-overview.md)。
 
+> **注意：**
+>
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代。Dumpling 工具使用 Go 语言编写，支持更多针对 TiDB 特性的优化。请切换到 Dumpling。
+
 ## 相比于 Mydumper，Dumpling 有哪些改进之处？
 
 1. 支持导出多种数据形式，包括 SQL/CSV
