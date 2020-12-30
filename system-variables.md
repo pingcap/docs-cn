@@ -1023,7 +1023,7 @@ explain select * from t where age=5;
 - 默认值：OFF
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
 
-> **注意：**
+> **警告：**
 >
 > 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。
 
