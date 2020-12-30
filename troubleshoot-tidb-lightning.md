@@ -120,14 +120,6 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 1. 确保 Lightning 与数据源时区一致。
 
-    * 使用 TiDB Ansible 部署的话，修正 [`inventory.ini`] 下的 `timezone` 变量。
-
-        ```ini
-        # inventory.ini
-        [all:vars]
-        timezone = Asia/Shanghai
-        ```
-
     * 手动部署的话，通过设定 `$TZ` 环境变量强制时区设定。
 
         强制使用 Asia/Shanghai 时区：
