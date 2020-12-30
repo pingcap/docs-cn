@@ -67,7 +67,7 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tool
 
 ## 数据迁入
 
-[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据的迁移和增量数据的复制。
 
 基本信息：
 
@@ -76,14 +76,14 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tool
 - 适用 TiDB 版本：所有版本
 - Kubernetes 支持：开发中
 
-如果数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL/MariaDB 数据到 TiDB（迁移的过程包括全量数据的导出导入和增量数据的同步）。
+如果数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL/MariaDB 数据到 TiDB（迁移的过程包括全量数据的导出导入和增量数据的复制）。
 
 如果数据量在 TB 级别，推荐的迁移步骤如下：
 
 1. 使用 [Dumpling](/dumpling-overview.md) 导出 MySQL/MariaDB 全量数据。
 2. 使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将全量导出数据导入 TiDB 集群。
-3. 使用 DM 迁移 MySQL/MariaDB 增量数据到 TiDB。
+3. 使用 DM 复制 MySQL/MariaDB 增量数据到 TiDB。
 
 > **注意：**
 >
-> - 原 Syncer 工具已停止维护，不再推荐使用，相关场景请使用 DM 的增量迁移模式进行替代。
+> - 原 Syncer 工具已停止维护，不再推荐使用，相关场景请使用 DM 的增量复制模式进行替代。
