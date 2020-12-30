@@ -68,7 +68,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 ### 如何快速迁移业务流量？
 
-我们建议通过 [TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/overview) 搭建成多源 MySQL -> TiDB 实时同步环境，读写流量可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
+我们建议通过 [TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 进行 MySQL -> TiDB 的业务数据的迁移；业务读写可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
 
 ### TiDB 总读写流量有限制吗？
 
