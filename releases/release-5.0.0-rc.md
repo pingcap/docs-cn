@@ -32,7 +32,7 @@ TiDB 版本：5.0.0-rc
         - [project](https://github.com/tikv/tikv/projects/34)
         - [document](https://github.com/pingcap/docs-cn/pull/5181)
     - 支持 clustered Index. 聚集索引可以提高某些查询的性能，例如点查（实验特性）
-        - [project](github.com/pingcap/tidb/projects/45)
+        - [project](https://github.com/pingcap/tidb/projects/45)
         - [document](https://docs.pingcap.com/tidb/dev/clustered-indexes)
     - 支持 `LIST` 和 `LIST COLUMNS` 分区表（实验特性）
         - [project](https://github.com/pingcap/tidb/issues/20678)
