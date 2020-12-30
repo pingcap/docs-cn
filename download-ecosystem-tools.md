@@ -68,18 +68,3 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 > 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v4.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.2-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
 > Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
 
-## Syncer，Loader 和 Mydumper
-
-如需下载最新版本的 [Syncer](/syncer-overview.md)，[Loader](/loader-overview.md) 或 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
-
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| [tidb-enterprise-tools-nightly-linux-amd64.tar.gz](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz) | Linux | amd64 | [tidb-enterprise-tools-nightly-linux-amd64.sha256](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.sha256) |
-
-tidb-enterprise-tools 安装包包含以下工具：
-
-- Syncer
-- Loader
-- Mydumper
-- ddl_checker
-- [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)

@@ -16,10 +16,6 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
 重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登录集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
 
-### 在 Loader 运行的过程中，TiDB 可以对外提供服务吗？
-
-该操作进行逻辑插入，TiDB 仍可对外提供服务，但不要执行相关 DDL 操作。
-
 ### 如何导出 TiDB 数据？
 
 TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。

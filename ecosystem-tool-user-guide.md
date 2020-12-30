@@ -18,6 +18,10 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tool
 - 适用 TiDB 版本：所有版本
 - Kubernetes 支持：尚未支持
 
+> **注意：**
+>
+> 原 Mydumper 工具已停止维护，不再推荐使用，相关场景请使用 [Dumpling](/dumpling-overview.md) 进行替代。
+
 ## 全量导入
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一个用于将全量数据导入到 TiDB 集群的工具。
