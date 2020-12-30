@@ -305,7 +305,6 @@ TiCDC 对大事务（事务尺寸超过 5G）提供部分支持，根据场景�
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
 
-
 ## 当 Changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL，阻塞了所有 Changefeed，应该怎样处理？
 
 1. 首先暂停正在执行耗时较长的 DDL 的 Changefeed。此时可以观察到，这个 Changefeed 暂停后，其他的 Changefeed 不再阻塞了。
