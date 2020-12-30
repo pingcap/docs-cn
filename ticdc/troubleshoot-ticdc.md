@@ -300,19 +300,19 @@ TiCDC 对大事务（事务尺寸超过 5G）提供部分支持，根据场景�
 当遇到上述错误时，建议将包含大事务部分的增量数据通过 BR 进行增量的恢复，具体操作如下：
 
 1. 记录因为大事务而终止的 Changefeed 的 `checkpoint-ts`，将这个 tso 作为 BR 增量备份的 `--lastbackupts`，执行[增量备份](/br/backup-and-restore-tool.md#增量备份)。
-1. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
-1. 进行[增量恢复](/br/backup-and-restore-tool.md#增量恢复)
-1. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
-1. 删除旧的 changefeed。
+2. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
+3. 进行[增量恢复](/br/backup-and-restore-tool.md#增量恢复)
+4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
+5. 删除旧的 changefeed。
 
 
 ## 当 Changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL，阻塞了所有 Changefeed，应该怎样处理？
 
 1. 首先暂停正在执行耗时较长的 DDL 的 Changefeed。此时可以观察到，这个 Changefeed 暂停后，其他的 Changefeed 不再阻塞了。
-1. 在 TiCDC log 中搜寻 `apply job` 字样，确认耗时较长的 DDL 的 StartTs。
-1. 手动在下游执行 DDL，执行完毕后进行下面的操作。
-1. 修改 Changefeed 配置，将上述 StartTs 添加到 `ignore-txn-start-ts` 配置项中。
-1. 恢复被暂停的 Changefeed。
+2. 在 TiCDC log 中搜寻 `apply job` 字样，确认耗时较长的 DDL 的 StartTs。
+3. 手动在下游执行 DDL，执行完毕后进行下面的操作。
+4. 修改 Changefeed 配置，将上述 StartTs 添加到 `ignore-txn-start-ts` 配置项中。
+5. 恢复被暂停的 Changefeed。
 
 ## TiCDC 集群升级到 v4.0.8 之后，Changefeed 报错 [CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled
 
