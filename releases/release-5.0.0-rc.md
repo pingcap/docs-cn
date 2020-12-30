@@ -8,13 +8,6 @@ title: TiDB 5.0 RC Release Notes
 
 TiDB 版本：5.0.0-rc
 
-## 兼容性更改
-
-+ TiFlash
-
-    - 支持限制 DeltaIndex 的内存使用量，避免大数据量下内存使用过多的问题
-    - 支持限制后台数据整理任务使用的 IO 写流量，降低对前台任务的影响
-
 ## 新功能
 
 + TiDB
@@ -44,6 +37,11 @@ TiDB 版本：5.0.0-rc
 + TiKV
 
     - 支持动态更改 RocksDB rate limiter 的自动调整模式
+
++ TiFlash
+
+    - 支持限制 DeltaIndex 的内存使用量，避免大数据量下内存使用过多的问题
+    - 支持限制后台数据整理任务使用的 IO 写流量，降低对前台任务的影响
 
 ## 改进提升
 
