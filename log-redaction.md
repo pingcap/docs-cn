@@ -1,6 +1,6 @@
 ---
 title: 日志脱敏
-summary: 了解 TiDB 各组件中的日志脱敏
+summary: 了解 TiDB 各组件中的日志脱敏。
 ---
 
 # 日志脱敏
