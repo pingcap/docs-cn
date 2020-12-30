@@ -56,7 +56,6 @@
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
       + [BR 存储](/br/backup-and-restore-storages.md)
     + [使用 Dumpling 和 TiDB Lightning 进行备份与恢复（推荐）](/backup-and-restore-using-dumpling-lightning.md)
-    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
   + [读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
@@ -195,7 +194,6 @@
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
   + [Loader](/loader-overview.md)
-  + [Mydumper](/mydumper-overview.md)
   + [Syncer](/syncer-overview.md)
   + TiSpark
     + [TiSpark 快速上手](/get-started-with-tispark.md)

@@ -110,7 +110,7 @@ title: TiDB Lightning 部署与执行
     sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
     [mydumper]
-    # Mydumper 源数据目录。
+    # 源数据目录。
     data-source-dir = "/data/my_database"
 
     [tidb]
