@@ -60,44 +60,15 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 ## 在线数据同步
 
-### Syncer 架构
-
-详细参考 [解析 TiDB 在线数据同步工具 Syncer](https://pingcap.com/blog-cn/tidb-syncer/)。
-
-#### Syncer 使用文档
-
-详细参考 [Syncer 使用文档](/syncer-overview.md)。
-
 #### 有没有现成的同步方案，可以将数据同步到 Hbase、Elasticsearh 等其他存储？
 
 没有，目前依赖程序自行实现。
-
-#### 利用 Syncer 做数据同步的时候是否支持只同步部分表？
-
-支持，具体参考 Syncer 使用手册 [Syncer 使用文档](/syncer-overview.md)
-
-#### 频繁的执行 DDL 会影响 Syncer 同步速度吗？
-
-频繁执行 DDL 对同步速度会有影响。对于 Sycner 来说，DDL 是串行执行的，当同步遇到了 DDL，就会以串行的方式执行，所以这种场景就会导致同步速度下降。
-
-#### 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
-
-当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 Mydumper。因此，要解决这个问题当前可以有两个方法：
-
-+ 把 syncer.meta 数据放到比较安全的磁盘上，例如磁盘做好 raid1；
-
-+ 可以根据 Syncer 定期上报到 Prometheus 的监控信息来还原出历史同步的位置信息，该方法的位置信息在大量同步数据时由于延迟会可能不准确。
-
-#### Syncer 下游 TiDB 数据和 MySQL 数据不一致，DML 会退出么？
-
-- 上游 MySQL 中存在数据，下游 TiDB 中该数据不存在，上游 MySQL 执行 `UPDATE` 或 `DELETE`（更新/删除）该条数据的操作时，Syncer 同步过程即不会报错退出也没有该条数据。
-- 下游有主键索引或是唯一索引冲突时，执行 `UPDATE` 会退出，执行 `INSERT` 不会退出。
 
 ## 业务流量迁入
 
 ### 如何快速迁移业务流量？
 
-我们建议通过 Syncer 工具搭建成多源 MySQL -> TiDB 实时同步环境，读写流量可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
+我们建议通过 [TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/overview) 搭建成多源 MySQL -> TiDB 实时同步环境，读写流量可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
 
 ### TiDB 总读写流量有限制吗？
 
