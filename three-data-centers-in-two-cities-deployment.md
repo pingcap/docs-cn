@@ -50,7 +50,7 @@ The configuration of the three DCs in two cities (Seattle and San Francisco) dep
 
 - From the illustration above, you can see that Seattle has two DCs: IDC1 and IDC2. IDC1 has three sets of racks: RAC1, RAC2, and RAC3. IDC2 has two racks: RAC4 and RAC5. The IDC3 DC in San Francisco has the RAC6 rack.
 - From the RAC1 rack illustrated above, TiDB and PD services are deployed on the same server. Each of the two TiKV servers are deployed with two TiKV instances (tikv-server). This is similar to RAC2, RAC4, RAC5, and RAC6.
-- The TiDB server, the control machine, and the monitoring server are on RAC3. The TiDB server is deployed for regular maintenance and backup. TiDB Ansible, Prometheus, Grafana, and the restore tools are deployed on the control machine and monitoring machine.
+- The TiDB server, the control machine, and the monitoring server are on RAC3. The TiDB server is deployed for regular maintenance and backup. Prometheus, Grafana, and the restore tools are deployed on the control machine and monitoring machine.
 - Another backup server can be added to deploy Mydumper and Drainer. Drainer saves binlog data to a specified location by outputting files, to achieve incremental backup.
 
 ## Configuration

@@ -6,26 +6,7 @@ aliases: ['/docs/dev/tidb-binlog/upgrade-tidb-binlog/','/docs/dev/reference/tidb
 
 # Upgrade TiDB Binlog
 
-This document introduces how to upgrade TiDB Binlog that is deployed with TiDB Ansible and deployed manually to the latest [cluster](/tidb-binlog/tidb-binlog-overview.md) version. There is also a section on how to upgrade TiDB Binlog from an earlier incompatible version (Kafka/Local version) to the latest version.
-
-## Upgrade TiDB Binlog deployed with TiDB Ansible
-
-Follow the steps in this section if you deploy TiDB Binlog with [TiDB Ansible Playbook](https://github.com/pingcap/tidb-ansible).
-
-### Upgrade Pump
-
-First, upgrade the Pump component:
-
-1. Copy the new version of the binary `pump` file into the`({ resources_dir })/bin` directory.
-2. Execute the `ansible-playbook rolling_update.yml --tags=pump` command to perform a rolling update for Pump.
-
-### Upgrade Drainer
-
-Second, upgrade the Drainer component:
-
-1. Copy the new version of the binary `drainer` file into the`({ resources_dir })/bin` directory.
-2. Execute the `ansible-playbook stop_drainer.yml --tags=drainer` command.
-3. Execute the `ansible-playbook start_drainer.yml --tags=drainer` command.
+This document introduces how to upgrade TiDB Binlog that is deployed manually to the latest [cluster](/tidb-binlog/tidb-binlog-overview.md) version. There is also a section on how to upgrade TiDB Binlog from an earlier incompatible version (Kafka/Local version) to the latest version.
 
 ## Upgrade TiDB Binlog deployed manually
 

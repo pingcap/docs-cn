@@ -14,7 +14,7 @@ The cluster diagnostics feature in TiDB Dashboard diagnoses the problems that mi
 
 > **Note:**
 >
-> The cluster diagnostics feature depends on Prometheus deployed in the cluster. For details about how to deploy this monitoring component, see [TiUP](/tiup/tiup-overview.md) or [TiDB Ansible](/online-deployment-using-ansible.md) deployment document. If no monitoring component is deployed in the cluster, the generated diagnostic report will indicate a failure.
+> The cluster diagnostics feature depends on Prometheus deployed in the cluster. For details about how to deploy this monitoring component, see the [TiUP](/tiup/tiup-overview.md) deployment document. If no monitoring component is deployed in the cluster, the generated diagnostic report will indicate a failure.
 
 ## Access the page
 

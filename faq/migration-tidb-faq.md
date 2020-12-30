@@ -76,18 +76,6 @@ See [Parsing TiDB online data synchronization tool Syncer](https://pingcap.com/b
 
 See [Syncer User Guide](/syncer-overview.md).
 
-#### How to configure to monitor Syncer status?
-
-Download and import [Syncer Json](https://github.com/pingcap/docs/blob/master/etc/Syncer.json) to Grafana. Edit the Prometheus configuration file and add the following content:
-
-```
-- job_name: 'syncer_ops' // task name
-    static_configs:
-      - targets: [’10.10.1.1:10096’] // Syncer monitoring address and port, informing Prometheus to pull the data of Syncer
-```
-
-Restart Prometheus.
-
 #### Is there a current solution to replicating data from TiDB to other databases like HBase and Elasticsearch?
 
 No. Currently, the data replication depends on the application itself.

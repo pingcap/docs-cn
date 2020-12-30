@@ -65,7 +65,7 @@ The content displayed in this area is consistent with the more detailed [Slow Qu
 
 > **Note:**
 >
-> This feature is available only in the cluster with slow query logs enabled. By default, slow query logs are enabled in the cluster deployed using TiUP or TiDB Ansible.
+> This feature is available only in the cluster with slow query logs enabled. By default, slow query logs are enabled in the cluster deployed using TiUP.
 
 ## Instances
 

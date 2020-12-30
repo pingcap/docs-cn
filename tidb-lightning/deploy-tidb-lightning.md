@@ -6,7 +6,7 @@ aliases: ['/docs/dev/tidb-lightning/deploy-tidb-lightning/','/docs/dev/reference
 
 # TiDB Lightning Deployment
 
-This document describes the hardware requirements of TiDB Lightning using the Local-backend, and how to deploy it using TiDB Ansible or manually.
+This document describes the hardware requirements of TiDB Lightning using the Local-backend, and how to deploy it manually.
 
 If you do not want the TiDB services to be impacted, read [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) for the changes to the deployment steps.
 
@@ -73,70 +73,7 @@ If the data source consists of CSV files, see [CSV support](/tidb-lightning/migr
 
 ## Deploy TiDB Lightning
 
-This section describes two deployment methods of TiDB Lightning:
-
-- [Deploy TiDB Lightning using TiDB Ansible](#deploy-tidb-lightning-using-tidb-ansible)
-- [Deploy TiDB Lightning manually](#deploy-tidb-lightning-manually)
-
-### Deploy TiDB Lightning using TiDB Ansible
-
-You can deploy TiDB Lightning using TiDB Ansible together with the [deployment of the TiDB cluster itself using TiDB Ansible](/online-deployment-using-ansible.md).
-
-1. Edit `inventory.ini` to configure an IP address for `tidb-lightning`.
-
-    ```ini
-    ...
-
-    [lightning_server]
-    192.168.20.10
-
-    ...
-    ```
-
-2. Configure `tidb-lightning` by editing the settings under `group_vars/*.yml`.
-
-    * `group_vars/lightning_server.yml`
-
-        ```yaml
-        ---
-        dummy:
-
-        # The listening port for metrics gathering. Should be open to the monitoring servers.
-        tidb_lightning_pprof_port: 8289
-
-        # The file path that tidb-lightning reads the data source (Dumpling SQL dump or CSV) from.
-        data_source_dir: "{{ deploy_dir }}/mydumper"
-        ```
-
-3. Deploy the cluster.
-
-    ```sh
-    ansible-playbook bootstrap.yml &&
-    ansible-playbook deploy.yml
-    ```
-
-4. Mount the data source to the path specified in the `data_source_dir` setting.
-
-5. Log in to the `tidb-lightning` server and edit the `conf/tidb-lighting.toml` file as follows:
-
-    ```
-    [tikv-importer]
-    # Uses the Local-backend.
-    backend = "local"
-    # Sets the directory for temporarily storing the sorted key-value pairs.
-    # The target directory must be empty.
-    "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
-
-    [tidb]
-    # An address of pd-server.
-    pd-addr = "172.16.31.4:2379
-    ```
-
-6. Log in to the `tidb-lightning` server, and manually run the following command to start Lightning and import the data into the TiDB cluster.
-
-    ```sh
-    scripts/start_lightning.sh
-    ```
+This section describes how to [deploy TiDB Lightning manually](#deploy-tidb-lightning-manually).
 
 ### Deploy TiDB Lightning manually
 

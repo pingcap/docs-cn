@@ -10,8 +10,7 @@ aliases: ['/docs/dev/tidb-lightning/monitor-tidb-lightning/','/docs/dev/referenc
 
 ## Monitor configuration
 
-- If TiDB Lightning is installed using TiDB Ansible, simply add the servers to the `[monitored_servers]` section in the `inventory.ini` file. Then the Prometheus server can collect their metrics.
-- If TiDB Lightning is manually installed, follow the instructions below.
+If TiDB Lightning is manually installed, follow the instructions below.
 
 The metrics of `tidb-lightning` can be gathered directly by Prometheus as long as it is discovered. You can set the metrics port in `tidb-lightning.toml`:
 
@@ -47,8 +46,7 @@ scrape_configs:
 
 [Grafana](https://grafana.com/) is a web interface to visualize Prometheus metrics as dashboards.
 
-If TiDB Lightning is installed using TiDB Ansible, its dashboard is already installed.
-Otherwise, the dashboard JSON can be imported from <https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json>.
+When you [deploy a TiDB cluster using TiUP](/production-deployment-using-tiup.md) and have added Grafana and Prometheus in the topology configuration, a set of [Grafana + Prometheus monitoring platform](/tidb-monitoring-framework.md) is deployed simultaneously. In this situation, you must first import [the JSON file of the dashboard](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json).
 
 ### Row 1: Speed
 

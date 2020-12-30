@@ -13,7 +13,7 @@ If TiDB's response slows down after you have troubleshot the CPU bottleneck and 
 
 ### Locate I/O issues from monitor
 
-The quickest way to locate I/O issues is to view the overall I/O status from the monitor, such as the Grafana dashboard which is deployed by default by TiDB Ansible and TiUP. The dashboard panels related to I/O include **Overview**, **Node_exporter**, and **Disk-Performance**.
+The quickest way to locate I/O issues is to view the overall I/O status from the monitor, such as the Grafana dashboard which is deployed by default by TiUP. The dashboard panels related to I/O include **Overview**, **Node_exporter**, and **Disk-Performance**.
 
 #### The first type of monitoring panels
 
@@ -78,7 +78,7 @@ In addition, some other panel metrics might help you determine whether the bottl
 
 ### I/O issues found in alerts
 
-The cluster deployment tools (TiDB Ansible and TiUP) deploy the cluster with alert components by default that have built-in alert items and thresholds. The following alert items are related to I/O:
+The cluster deployment tool (TiUP) deploys the cluster with alert components by default that have built-in alert items and thresholds. The following alert items are related to I/O:
 
 - TiKV_write_stall
 - TiKV_raft_log_lag

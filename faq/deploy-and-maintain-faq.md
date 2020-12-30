@@ -89,7 +89,7 @@ Check the time difference between the machine time of the monitor and the time w
 | Variable        | Description                                                |
 | ---- | ------- |
 | `cluster_name` | the name of a cluster, adjustable |
-| `tidb_version` | the version of TiDB, configured by default in TiDB Ansible branches |
+| `tidb_version` | the version of TiDB |
 | `deployment_method` | the method of deployment, binary by default, Docker optional |
 | `process_supervision` | the supervision way of processes, systemd by default, supervise optional |
 | `timezone` | the timezone of the managed node, adjustable, `Asia/Shanghai` by default, used with the `set_timezone` variable |
@@ -104,25 +104,13 @@ Check the time difference between the machine time of the monitor and the time w
 | `enable_slow_query_log` | to record the slow query log of TiDB into a single file: ({{ deploy_dir }}/log/tidb_slow_query.log). False by default, to record it into the TiDB log |
 | `deploy_without_tidb` | the Key-Value mode, deploy only PD, TiKV and the monitoring service, not TiDB; set the IP of the tidb_servers host group to null in the `inventory.ini` file |
 
-### Deploy TiDB offline using TiDB Ansible（not recommended since TiDB v4.0)
-
-> **Warning:**
->
-> It is not recommended to deploy TiDB using TiDB Ansible since TiDB v4.0. [Use TiUP to deploy TiDB](/production-deployment-using-tiup.md) instead.
-
-If the central control machine cannot access the Internet, you can [deploy TiDB offline using TiDB Ansible](https://docs.pingcap.com/tidb/stable/offline-deployment-using-ansible).
-
 ### How to deploy TiDB quickly using Docker Compose on a single machine?
 
 You can use Docker Compose to build a TiDB cluster locally, including the cluster monitoring components. You can also customize the version and number of instances for each component. The configuration file can also be customized. You can only use this deployment method for testing and development environment. For details, see [TiDB Docker Compose Deployment](/deploy-test-cluster-using-docker-compose.md).
 
 ### How to separately record the slow query log in TiDB? How to locate the slow query SQL statement?
 
-1. The slow query definition for TiDB is in the `conf/tidb.yml` configuration file of `tidb-ansible`. The `slow-threshold: 300` parameter is used to configure the threshold value of the slow query (unit: millisecond).
-
-    The slow query log is recorded in `tidb.log` by default. If you want to generate a slow query log file separately, set `enable_slow_query_log` in the `inventory.ini` configuration file to `True`.
-
-    Then run `ansible-playbook rolling_update.yml --tags=tidb` to perform a rolling update on the `tidb-server` instance. After the update is finished, the `tidb-server` instance will record the slow query log in `tidb_slow_query.log`.
+1. The slow query definition for TiDB is in the TiDB configuration file. The `slow-threshold: 300` parameter is used to configure the threshold value of the slow query (unit: millisecond).
 
 2. If a slow query occurs, you can locate the `tidb-server` instance where the slow query is and the slow query time point using Grafana and find the SQL statement information recorded in the log on the corresponding node.
 
@@ -156,29 +144,9 @@ The Direct mode wraps the Write request into the I/O command and sends this comm
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
 
-### Error `UNREACHABLE! "msg": "Failed to connect to the host via ssh: "` when deploying TiDB using TiDB Ansible
-
-Two possible reasons and solutions:
-
-- The SSH mutual trust is not configured as required. It’s recommended to follow [the steps described in the official document](/online-deployment-using-ansible.md#step-5-configure-the-ssh-mutual-trust-and-sudo-rules-on-the-control-machine) and check whether it is successfully configured using `ansible -i inventory.ini all -m shell -a 'whoami' -b`.
-- If it involves the scenario where a single server is assigned multiple roles, for example, the mixed deployment of multiple components or multiple TiKV instances are deployed on a single server, this error might be caused by the SSH reuse mechanism. You can use the option of `ansible … -f 1` to avoid this error.
-
 ## Cluster management
 
 ### Daily management
-
-#### What are the common operations of TiDB Ansible?
-
-| Job                               | Playbook                                 |
-|:----------------------------------|:-----------------------------------------|
-| Start the cluster                 | `ansible-playbook start.yml`             |
-| Stop the cluster                  | `ansible-playbook stop.yml`              |
-| Destroy the cluster               | `ansible-playbook unsafe_cleanup.yml` (If the deployment directory is a mount point, an error will be reported, but implementation results will remain unaffected) |
-| Clean data (for test)             | `ansible-playbook unsafe_cleanup_data.yml` |
-| Apply rolling updates                  | `ansible-playbook rolling_update.yml`    |
-| Apply rolling updates to TiKV   | `ansible-playbook rolling_update.yml --tags=tikv` |
-| Apply rolling updates to components except PD | `ansible-playbook rolling_update.yml --skip-tags=pd` |
-| Apply rolling updates to the monitoring components | `ansible-playbook rolling_update_monitor.yml` |
 
 #### How to log into TiDB?
 
@@ -206,7 +174,7 @@ By default, TiDB/PD/TiKV outputs standard error in the logs. If a log file is sp
 
 #### How to safely stop TiDB?
 
-If the cluster is deployed using TiDB Ansible, you can use the `ansible-playbook stop.yml` command to stop the TiDB cluster. If the cluster is not deployed using TiDB Ansible, `kill` all the services directly. The components of TiDB will do `graceful shutdown`.
+Kill all the services using `kill` directly. The components of TiDB will do `graceful shutdown`.
 
 #### Can `kill` be executed in TiDB?
 
@@ -227,11 +195,11 @@ Take `Release Version: v1.0.3-1-ga80e796` as an example of version number descri
 - `-1` indicates the current version has one commit.
 - `ga80e796` indicates the version `git-hash`.
 
-#### What's the difference between various TiDB master versions? How to avoid using the wrong TiDB Ansible version?
+#### What's the difference between various TiDB master versions?
 
 The TiDB community is highly active. After the 1.0 GA release, the engineers have been keeping optimizing and fixing bugs. Therefore, the TiDB version is updated quite fast. If you want to keep informed of the latest version, see [TiDB Weekly update](https://pingcap.com/weekly/).
 
-It is not recommended to deploy the TiDB cluster using TiDB Ansible. [Deploy TiDB using TiUP](/production-deployment-using-tiup.md) instead. TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
+It is recommeneded to [deploy TiDB using TiUP](/production-deployment-using-tiup.md). TiDB has a unified management of the version number after the 1.0 GA release. You can view the version number using the following two methods:
 
 - `select tidb_version()`
 - `tidb-server -V`
@@ -316,11 +284,6 @@ The offline node usually indicates the TiKV node. You can determine whether the 
 
 1. Manually stop the relevant services on the offline node.
 2. Delete the `node_exporter` data of the corresponding node from the Prometheus configuration file.
-3. Delete the data of the corresponding node from Ansible `inventory.ini`.
-
-#### Why couldn't I connect to the PD server using `127.0.0.1` when I was using the PD Control?
-
-If your TiDB cluster is deployed using TiDB Ansible, the PD external service port is not bound to `127.0.0.1`, so PD Control does not recognize `127.0.0.1` and you can only connect to it using the local IP address.
 
 ### TiDB server management
 

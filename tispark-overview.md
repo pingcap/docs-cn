@@ -90,8 +90,6 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 If you do not have a Spark cluster, we recommend using the standalone mode. To use the Spark Standalone model, you can simply place a compiled version of Spark on each node of the cluster. If you encounter problems, see its [official website](https://spark.apache.org/docs/latest/spark-standalone.html). And you are welcome to [file an issue](https://github.com/pingcap/tispark/issues/new) on our GitHub.
 
-If you are using TiDB Ansible to deploy a TiDB cluster, you can also use TiDB Ansible to deploy a Spark standalone cluster, and TiSpark is also deployed at the same time.
-
 #### Download and install
 
 You can download [Apache Spark](https://spark.apache.org/downloads.html)

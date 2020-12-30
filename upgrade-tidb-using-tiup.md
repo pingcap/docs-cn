@@ -1,7 +1,7 @@
 ---
 title: Upgrade TiDB Using TiUP
 summary: Learn how to upgrade TiDB using TiUP.
-aliases: ['/docs/dev/upgrade-tidb-using-tiup/','/docs/dev/how-to/upgrade/using-tiup/']
+aliases: ['/docs/dev/upgrade-tidb-using-tiup/','/docs/dev/how-to/upgrade/using-tiup/','/docs/dev/upgrade-tidb-using-ansible/','/docs/dev/how-to/upgrade/from-previous-version/','/docs/dev/how-to/upgrade/rolling-updates-with-ansible/','/tidb/dev/upgrade-tidb-using-ansible/']
 ---
 
 # Upgrade TiDB Using TiUP
@@ -9,6 +9,10 @@ aliases: ['/docs/dev/upgrade-tidb-using-tiup/','/docs/dev/how-to/upgrade/using-t
 This document is targeted for users who want to upgrade from TiDB 3.0 or 3.1 versions to TiDB 4.0 versions, or from TiDB 4.0 to a later version.
 
 If you have deployed the TiDB cluster using TiDB Ansible, you can use TiUP to import the TiDB Ansible configuration and perform the upgrade.
+
+> **Note:**
+>
+> Since TiDB v4.0, PingCAP no longer provides support for TiDB Ansible. Since TiDB v5.0, PingCAP no longer provides TiDB Ansible documents. If you want to read the document that introduces how to upgrade a TiDB cluster using TiDB Ansible, see [Upgrade TiDB Using TiDB Ansible](https://docs.pingcap.com/tidb/v4.0/upgrade-tidb-using-ansible).
 
 ## Upgrade caveat
 
@@ -83,7 +87,7 @@ tiup update cluster
 
 > **Note:**
 >
-> + Currently, TiUP only supports the `systemd` supervision method of a process. If you have previously selected the `supervise` method when deploying TiDB with TiDB Ansible, you need to modify the supervision method from `supervise` to `systemd` according to [Deploy TiDB Using TiDB Ansible](/online-deployment-using-ansible.md#how-to-modify-the-supervision-method-of-a-process-from-supervise-to-systemd).
+> + Currently, TiUP only supports the `systemd` supervision method of a process. If you have previously selected the `supervise` method when deploying TiDB with TiDB Ansible, you need to modify the supervision method from `supervise` to `systemd` according to [Deploy TiDB Using TiDB Ansible](https://docs.pingcap.com/tidb/v4.0/upgrade-tidb-using-ansible#how-to-modify-the-supervision-method-of-a-process-from-supervise-to-systemd).
 > + If the original cluster is deployed using TiUP, you can skip this step.
 > + Currently, the `inventory.ini` configuration file is identified by default. If your configuration file uses another name, specify this name.
 > + Ensure that the state of the current cluster is consistent with the topology in `inventory.ini`; that components of the cluster are operating normally. Otherwise, the cluster metadata becomes abnormal after the import.

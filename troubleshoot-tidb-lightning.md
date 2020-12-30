@@ -120,13 +120,7 @@ See the [Checkpoints control](/tidb-lightning/tidb-lightning-checkpoints.md#chec
 
 **Solutions**:
 
-1. Ensure Lightning and the source database are using the same time zone. When deploying via TiDB Ansible, the timezone is defined in `inventory.ini`.
-
-    ```ini
-    # inventory.ini
-    [all:vars]
-    timezone = Asia/Shanghai
-    ```
+1. Ensure Lightning and the source database are using the same time zone.
 
     When executing Lightning directly, the time zone can be forced using the `$TZ` environment variable.
 

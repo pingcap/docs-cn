@@ -121,25 +121,6 @@ server_configs:
 </details>
 
 <details>
-  <summary>Deployment using TiDB Ansible</summary>
-
-Locate the following contents in the configuration file `tidb-ansible/conf/tidb.yml`:
-
-```yaml
-# enable-telemetry: true
-```
-
-And change this content as follow:
-
-```yaml
-enable-telemetry: false
-```
-
-See [Deploy TiDB Using TiDB Ansible](/online-deployment-using-ansible.md) for details.
-
-</details>
-
-<details>
   <summary>Deployment in Kubernetes via TiDB Operator</summary>
 
 Configure `spec.tidb.config.enable-telemetry: false` in `tidb-cluster.yaml` or TidbCluster Custom Resource.
@@ -226,29 +207,6 @@ server_configs:
   pd:
     dashboard.enable-telemetry: false
 ```
-
-</details>
-
-<details>
-  <summary>Deployment using TiDB Ansible</summary>
-
-Locate the following content in the `tidb-ansible/conf/pd.yml` configuration file:
-
-```yaml
-dashboard:
-  ...
-  # enable-telemetry: true
-```
-
-And change the content as follows:
-
-```yaml
-dashboard:
-  ...
-  enable-telemetry: false
-```
-
-See [Deploy TiDB Using TiDB Ansible](/online-deployment-using-ansible.md) for details.
 
 </details>
 

@@ -110,15 +110,11 @@ Yes, as long as every `tidb-lightning` instance operates on different tables.
 
 To stop the `tikv-importer` process, you can choose the corresponding operation according to your deployment method.
 
-- For deployment using TiDB Ansible: run `scripts/stop_importer.sh` on the Importer server.
-
 - For manual deployment: if `tikv-importer` is running in foreground, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to exit. Otherwise, obtain the process ID using the `ps aux | grep tikv-importer` command and then terminate the process using the `kill «pid»` command.
 
 ## How to stop the `tidb-lightning` process?
 
 To stop the `tidb-lightning` process, you can choose the corresponding operation according to your deployment method.
-
-- For deployment using TiDB Ansible: run `scripts/stop_lightning.sh` on the Lightning server.
 
 - For manual deployment: if `tidb-lightning` is running in foreground, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to exit. Otherwise, obtain the process ID using the `ps aux | grep tidb-lighting` command and then terminate the process using the `kill -2 «pid»` command.
 

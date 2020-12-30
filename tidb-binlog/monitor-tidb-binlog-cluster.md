@@ -6,7 +6,7 @@ aliases: ['/docs/dev/tidb-binlog/monitor-tidb-binlog-cluster/','/docs/dev/refere
 
 # TiDB Binlog Monitoring
 
-After you have deployed TiDB Binlog using TiDB Ansible successfully, you can go to the Grafana Web (default address: <http://grafana_ip:3000>, default account: admin, password: admin) to check the state of Pump and Drainer.
+After you have deployed TiDB Binlog successfully, you can go to the Grafana Web (default address: <http://grafana_ip:3000>, default account: admin, password: admin) to check the state of Pump and Drainer.
 
 ## Monitoring metrics
 

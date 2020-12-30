@@ -148,33 +148,6 @@ tikv_servers:
 
 For details, see [Geo-distributed Deployment topology](/geo-distributed-deployment-topology.md).
 
-<details>
-<summary> <strong>Configure a cluster using TiDB Ansible</strong> </summary>
-
-When using TiDB Ansible to deploy a cluster, you can directly configure the TiKV location in the `inventory.ini` file. `tidb-ansible` will generate the corresponding TiKV and PD configuration files during deployment.
-
-In the following example, a two-layer topology of `zone/host` is defined. The TiKV nodes of the cluster are distributed among three zones, each zone with two hosts. In z1, two TiKV instances are deployed per host. In z2 and z3, one TiKV instance is deployed per host.
-
-```
-[tikv_servers]
-# z1
-tikv-1 labels="zone=z1,host=h1"
-tikv-2 labels="zone=z1,host=h1"
-tikv-3 labels="zone=z1,host=h2"
-tikv-4 labels="zone=z1,host=h2"
-# z2
-tikv-5 labels="zone=z2,host=h1"
-tikv-6 labels="zone=z2,host=h2"
-# z3
-tikv-7 labels="zone=z3,host=h1"
-tikv-8 labels="zone=z3,host=h2"
-
-[pd_servers:vars]
-location_labels = ["zone", "host"]
-```
-
-</details>
-
 ## PD schedules based on topology label
 
 PD schedules replicas according to the label layer to make sure that different replicas of the same data are scattered as much as possible.
@@ -185,7 +158,7 @@ Assume that the number of cluster replicas is 3 (`max-replicas=3`). Because ther
 
 Then, assume that the number of cluster replicas is 5 (`max-replicas=5`). Because there are only 3 zones in total, PD cannot guarantee the isolation of each replica at the zone level. In this situation, the PD scheduler will ensure replica isolation at the host level. In other words, multiple replicas of a Region might be distributed in the same zone but not on the same host.
 
-In the case of the 5-replica configuration, if z3 fails or is isolated as a whole, and cannot be recovered after a period of time (controlled by `max-store-down-time`), PD will make up the 5 replicas through scheduling. At this time, only 3 hosts are available. This means that host-level isolation cannot be guaranteed and that multiple replicas might be scheduled to the same host. But if the `isolation-level` value is set to `zone` instead of being left empty, this specifies the minimum physical isolation requirements for Region replicas. That is to say, PD will ensure that replicas of the same Region are scattered among different zones. PD will not perform corresponding scheduling even if following this isolation restriction does not meet the requirement of `max-replicas` for multiple replicas. 
+In the case of the 5-replica configuration, if z3 fails or is isolated as a whole, and cannot be recovered after a period of time (controlled by `max-store-down-time`), PD will make up the 5 replicas through scheduling. At this time, only 3 hosts are available. This means that host-level isolation cannot be guaranteed and that multiple replicas might be scheduled to the same host. But if the `isolation-level` value is set to `zone` instead of being left empty, this specifies the minimum physical isolation requirements for Region replicas. That is to say, PD will ensure that replicas of the same Region are scattered among different zones. PD will not perform corresponding scheduling even if following this isolation restriction does not meet the requirement of `max-replicas` for multiple replicas.
 
 For example, a TiKV cluster is distributed across three data zones z1, z2, and z3. Each Region has three replicas as required, and PD distributes the three replicas of the same Region to these three data zones respectively. If a power outage occurs in z1 and cannot be recovered after a period of time, PD determines that the Region replicas on z1 are no longer available. However, because `isolation-level` is set to `zone`, PD needs to strictly guarantee that different replicas of the same Region will not be scheduled on the same data zone. Because both z2 and z3 already have replicas, PD will not perform any scheduling under the minimum isolation level restriction of `isolation-level`, even if there are only two replicas at this moment.
 

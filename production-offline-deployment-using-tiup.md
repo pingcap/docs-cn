@@ -1,12 +1,16 @@
 ---
 title: Deploy a TiDB Cluster Offline Using TiUP
 summary: Introduce how to deploy a TiDB cluster offline using TiUP.
-aliases: ['/docs/dev/production-offline-deployment-using-tiup/']
+aliases: ['/docs/dev/production-offline-deployment-using-tiup/','/docs/dev/offline-deployment-using-ansible/','/docs/dev/how-to/deploy/orchestrated/offline-ansible/','/tidb/dev/offline-deployment-using-ansible/']
 ---
 
 # Deploy a TiDB Cluster Offline Using TiUP
 
 This document describes how to deploy a TiDB cluster offline using TiUP.
+
+> **Note:**
+>
+> Since TiDB v4.0, PingCAP no longer provides support for TiDB Ansible. Since TiDB v5.0, PingCAP no longer provides TiDB Ansible documents. If you want to read the document that introduces how to deploy a TiDB cluster using TiDB Ansible offline, see [Deploy TiDB Offline Using TiDB Ansible](https://docs.pingcap.com/tidb/v4.0/offline-deployment-using-ansible).
 
 ## Step 1: Prepare the TiUP offline component package
 

@@ -75,7 +75,6 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
 
 The metrics interface monitors the state and performance of the entire TiDB cluster.
 
-- If you use TiDB Ansible to deploy the TiDB cluster, the monitoring system (Prometheus and Grafana) is deployed at the same time.
 - If you use other deployment ways, [deploy Prometheus and Grafana](/deploy-monitoring-services.md) before using this interface.
 
 After Prometheus and Grafana are successfully deployed, [configure Grafana](/deploy-monitoring-services.md#configure-grafana).
