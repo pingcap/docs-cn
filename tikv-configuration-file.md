@@ -1251,7 +1251,7 @@ Configuration items related to TiDB Lightning import and BR restore.
 ### `enable-compaction-filter` <!-- New in v5.0 -->
 
 + Controls whether to enable the GC in Compaction Filter feature
-+ Default value: `true`
++ Default value: `false`
 
 ## backup
 
