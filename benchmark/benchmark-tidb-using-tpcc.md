@@ -125,7 +125,7 @@ level = "error"
 # 根据 NUMA 配置，设置单个 TiDB 最大使用的 CPU 核数
 max-procs = 20
 
-[prepared_plan_cache]
+[prepared-plan-cache]
 # 开启 TiDB 配置中的 prepared plan cache，以减少优化执行计划的开销
 enabled = true
 ```

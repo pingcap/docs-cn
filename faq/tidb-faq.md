@@ -37,16 +37,6 @@ TiDB 目前还不支持触发器、存储过程、自定义函数、外键，除
 
 详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
-使用 MySQL 8.0 客户端时，如果遇到无法登陆的问题，可以尝试指定 `default-auth` 和 `default-character-set` 参数：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-mysql -h 127.0.0.1 -u root -P 4000 --default-auth=mysql_native_password --default-character-set=utf8
-```
-
-无法登陆的原因是 MySQL 8.0 会更改了 MySQL 5.7 默认的[密码加密方式](/security-compatibility-with-mysql.md)，所以需要添加以上参数指定使用旧的加密方式。
-
 #### 1.1.7 TiDB 支持分布式事务吗？
 
 支持。无论是一个地方的几个节点，还是[跨多个数据中心的多个节点](/multi-data-centers-in-one-city-deployment.md)，TiDB 均支持 ACID 分布式事务。
@@ -83,19 +73,19 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 ##### 1.2.1.1 TiKV 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说存储](http://t.cn/RTKRRWv)
+[三篇文章了解 TiDB 技术内幕 - 说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
 
 #### 1.2.2 计算 TiDB
 
 ##### 1.2.2.1 TiDB 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说计算](http://t.cn/RTKRkBh)
+[三篇文章了解 TiDB 技术内幕 - 说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
 
 #### 1.2.3 调度 PD
 
 ##### 1.2.3.1 PD 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 谈调度](http://t.cn/RTKEZ0U)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
 
 ## 二、云上部署
 
@@ -150,6 +140,16 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 #### 3.1.8 ERROR 9007 (HY000) : Write Conflict
 
 可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
+
+#### 3.1.9 ERROR 1105 (HY000): client has multi-statement capability disabled
+
+从早期版本的 TiDB 升级后，可能会出现该问题。为了防止 SQL 注入攻击，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。
+
+关于如何执行多条语句，可以查阅以下客户端驱动程序的文档：
+
+* [go-sql-driver](https://github.com/go-sql-driver/mysql#multistatements) (`multiStatements`)
+* [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
+* PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
 
 ### 3.2 MySQL 原生报错汇总
 

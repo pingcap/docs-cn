@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/choose-index/']
 | IndexReader | 表有一个或多个索引，且计算所需的列被包含在索引里 | 存在较小的索引上的范围查询，或者对索引列有顺序需求的时候 | 当存在多个索引的时候，会根据估算代价选择合理的索引 |
 | IndexLookupReader | 表有一个或多个索引，且计算所需的列**不完全**被包含在索引里 | 同 IndexReader | 因为计算列不完全被包含在索引里，所以读完索引后需要回表，这里会比 IndexReader 多一些开销 |
 
-> 注意：
+> **注意：**
 > 
 > TableReader 是基于 `_tidb_rowid` 的索引，TiFlash 是列存索引，所以索引的选择即是读表算子的选择。
 

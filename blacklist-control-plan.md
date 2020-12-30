@@ -43,7 +43,7 @@ aliases: ['/docs-cn/dev/blacklist-control-plan/']
     {{< copyable "sql" >}}
 
     ```sql
-    insert into mysql.opt_rule_blacklist values("join_reorder"), ("topn_push_down");
+    INSERT INTO mysql.opt_rule_blacklist VALUES("join_reorder"), ("topn_push_down");
     ```
 
     执行以下 SQL 语句可让禁用规则立即生效，包括相应 TiDB Server 的所有旧链接：
@@ -51,11 +51,11 @@ aliases: ['/docs-cn/dev/blacklist-control-plan/']
     {{< copyable "sql" >}}
 
     ```sql
-    admin reload opt_rule_blacklist;
+    ADMIN reload opt_rule_blacklist;
     ```
-  
+
     > **注意：**
-    > 
+    >
     > `admin reload opt_rule_blacklist` 只对执行该 SQL 语句的 TiDB server 生效。若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
 
 - 需要解除一条规则的禁用时，需要删除表中禁用该条规则的相应数据，再执行 `admin reload`：
@@ -63,7 +63,7 @@ aliases: ['/docs-cn/dev/blacklist-control-plan/']
     {{< copyable "sql" >}}
 
     ```sql
-    delete from mysql.opt_rule_blacklist where name in ("join_reorder", "topn_push_down");
+    DELETE FROM mysql.opt_rule_blacklist WHERE name IN ("join_reorder", "topn_push_down");
     admin reload opt_rule_blacklist;
     ```
 
@@ -83,7 +83,7 @@ aliases: ['/docs-cn/dev/blacklist-control-plan/']
 | [日期运算](/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format)  |
 
 ### 禁止特定表达式下推
-    
+
 当函数的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将上述支持的函数或运算符名加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。
 
 `mysql.expr_pushdown_blacklist` 的 schema 如下：
@@ -91,7 +91,7 @@ aliases: ['/docs-cn/dev/blacklist-control-plan/']
 {{< copyable "sql" >}}
 
 ```sql
-desc mysql.expr_pushdown_blacklist;
+DESC mysql.expr_pushdown_blacklist;
 ```
 
 ```sql
@@ -133,21 +133,21 @@ desc mysql.expr_pushdown_blacklist;
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
 > **注意：**
-> 
+>
 > `admin reload expr_pushdown_blacklist` 只对执行该 SQL 语句的 TiDB server 生效。若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
 
 ### 表达式黑名单用法示例
 
 以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
 
-黑名单是否生效可以从 `explain` 结果中进行观察（参见[`EXPLAIN` 简介](/query-execution-plan.md#explain-简介)）。
+黑名单是否生效可以从 `explain` 结果中进行观察（参见 [`EXPLAIN` 简介](/explain-overview.md#explain-简介)）。
 
 1. 对于以下 SQL 语句，`where` 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
 
     {{< copyable "sql" >}}
 
     ```sql
-    explain select * from t where a < 2 and a > 2;
+    EXPLAIN SELECT * FROM t WHERE a < 2 AND a > 2;
     ```
 
     ```sql
@@ -166,7 +166,7 @@ desc mysql.expr_pushdown_blacklist;
     {{< copyable "sql" >}}
 
     ```sql
-    insert into mysql.expr_pushdown_blacklist values('<','tikv',''), ('>','tikv','');
+    INSERT INTO mysql.expr_pushdown_blacklist VALUES('<','tikv',''), ('>','tikv','');
     ```
 
     ```sql
@@ -177,7 +177,7 @@ desc mysql.expr_pushdown_blacklist;
     {{< copyable "sql" >}}
 
     ```sql
-    admin reload expr_pushdown_blacklist;
+    ADMIN reload expr_pushdown_blacklist;
     ```
 
     ```sql
@@ -189,7 +189,7 @@ desc mysql.expr_pushdown_blacklist;
     {{< copyable "sql" >}}
 
     ```sql
-    explain select * from t where a < 2 and a > 2;
+    EXPLAIN SELECT * FROM t WHERE a < 2 and a > 2;
     ```
 
     ```sql
@@ -208,7 +208,7 @@ desc mysql.expr_pushdown_blacklist;
     {{< copyable "sql" >}}
 
     ```sql
-    delete from mysql.expr_pushdown_blacklist where name = '>';
+    DELETE FROM mysql.expr_pushdown_blacklist WHERE name = '>';
     ```
 
     ```sql
@@ -218,7 +218,7 @@ desc mysql.expr_pushdown_blacklist;
     {{< copyable "sql" >}}
 
     ```sql
-    admin reload expr_pushdown_blacklist;
+    ADMIN reload expr_pushdown_blacklist;
     ```
 
     ```sql
@@ -230,7 +230,7 @@ desc mysql.expr_pushdown_blacklist;
     {{< copyable "sql" >}}
 
     ```sql
-    explain select * from t where a < 2 and a > 2;
+    EXPLAIN SELECT * FROM t WHERE a < 2 AND a > 2;
     ```
 
     ```sql

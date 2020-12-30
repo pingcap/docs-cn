@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/best-practices/three-nodes-hybrid-deployment/']
 
 由于 PD 和 TiKV 都会存储信息到磁盘，磁盘的写入读取延迟会直接影响到 PD 和 TiKV 的服务延迟，为了防止 PD 和 TiKV 对磁盘资源的争抢导致相互影响，推荐 PD 和 TiKV 采用不同的磁盘。
 
- 在 TiUP bench 中使用 TPC-C 5000 Warehouse 数据，每次以 `terminals` 参数为 `128` 的并发度测试 12 小时。主要观察集群性能的稳定性指标。
+在 TiUP bench 中使用 TPC-C 5000 Warehouse 数据，每次以 `terminals` 参数为 `128` 的并发度测试 12 小时。主要观察集群性能的稳定性指标。
 
 下图是默认参数配置下，12 小时内集群的 QPS 监控，可以看倒有比较明显的抖动。
 
@@ -85,14 +85,12 @@ tikv:
 
 #### `rocksdb.max-background-jobs` 和 `rocksdb.max-sub-compactions`
 
-RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小为 8。这明显超出了我们实际可以使用的资源，需要限制。
-`rocksdb.max-sub-compactions` 是单个 compaction 任务的子任务并发数，默认值为 3，在写入流量不大的情况下可以进行限制。
+RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小为 8。这明显超出了实际可以使用的资源，需要限制。`rocksdb.max-sub-compactions` 是单个 compaction 任务的子任务并发数，默认值为 `3`，在写入流量不大的情况下可以进行限制。
 
-这次测试最终将 `rocksdb.max-background-jobs` 设置为 3，将 `rocksdb.max-sub-compactions` 设置为 1。
-在 12 小时的 TPC-C 负载下没有发生 write stall，根据实际负载进行这两项参数的优化时，可以逐步调低这两个配置，并通过监控观察
+这次测试最终将 `rocksdb.max-background-jobs` 设置为 3，将 `rocksdb.max-sub-compactions` 设置为 1。在 12 小时的 TPC-C 负载下没有发生 Write Stall，根据实际负载进行这两项参数的优化时，可以逐步调低这两个配置，并通过监控观察。
 
-* 如果遇到了 Write Stall，可以先调大 `rocksdb.max-background-jobs` 的取值
-* 如果还是存在问题可将 `rocksdb.max-sub-compactions` 设置为 2 或者 3
+* 如果遇到了 Write Stall，可以先调大 `rocksdb.max-background-jobs` 的取值。
+* 如果还是存在问题，可将 `rocksdb.max-sub-compactions` 设置为 2 或者 3。
 
 #### `rocksdb.rate-bytes-per-sec`
 
@@ -102,11 +100,11 @@ RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小�
 
 #### `gc.max_write_bytes_per_sec`
 
-因为 TiDB 是 MVCC 的模型，TiKV 还需要周期性地在后台清除旧版本的数据。当可用资源有限的时候，这个操作会引起周期性的性能抖动。`gc.max_write_bytes_per_sec` 可以用来限制这一操作的资源使用。
+因为 TiDB 使用的是 MVCC 的模型，TiKV 还需要周期性地在后台清除旧版本的数据。当可用资源有限的时候，这个操作会引起周期性的性能抖动。可以用 `gc.max_write_bytes_per_sec` 来限制这一操作的资源使用。
 
 ![GC Impact](/media/best-practices/three-nodes-gc-impact.png)
 
-除了在配置文件中设置该参数之外，还可以通过 tikv-ctl 动态调节，可以为调整该参数提供便利
+除了在配置文件中设置该参数之外，还可以通过 tikv-ctl 动态调节，为调整该参数提供便利：
 
 {{< copyable "shell-regular" >}}
 
@@ -117,16 +115,15 @@ tiup ctl tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec
 > **注意：**
 >
 > 对于更新频繁的业务场景，限制 GC 流量可能会导致 MVCC 版本堆积，进而影响读取性能。所以这个参数的取值需要进行多次尝试，在性能抖动和性能衰退之间找一个比较平衡的取值。
-TiKV 后续也会提供新的优化方案改进这一问题。
 
 ### TiDB 参数调整
 
 一般通过系统变量调整 TiDB 执行算子的优化参数，例如 `tidb_hash_join_concurrency`、`tidb_index_lookup_join_concurrency` 等。
 
-本测试中没有对这些参数进行调整。如果实际的业务负载测试中出现因为执行算子消耗过多 CPU 资源的情况，可以针对业务场景对特定的算子资源使用量进行限制。这部分内容可以参考 [TiDB 系统变量文档](/system-variables.md)。
+本测试中没有对这些参数进行调整。如果实际的业务负载测试中，出现执行算子消耗过多 CPU 资源的情况，可以针对业务场景对特定的算子资源使用量进行限制。这部分内容可以参考 [TiDB 系统变量文档](/system-variables.md)。
 
 #### `performance.max-procs`
 
 该参数控制着整个 Go 进程能使用的 CPU 核心数量，默认情况下为当前机器或者 cgroups 的 CPU 数量。
 
-Go 运行时会定期使用一定比例的线程进行 GC 等后台工作，在混部模式下如果不对这一参数进行限制，GC 等后台操作就会使用过多 CPU 数量。
+Go 运行时会定期使用一定比例的线程进行 GC 等后台工作。在混合部署模式下，如果不对这一参数进行限制，GC 等后台操作会过多占用 CPU 资源。

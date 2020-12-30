@@ -128,7 +128,7 @@ read-block-size = 65536 # Byte (默认为 64 KB)
 # 取值范围为（0 <= batch-import-ratio < 1）。
 batch-import-ratio = 0.75
 
-# mydumper 本地源数据目录。
+# 本地源数据目录。
 data-source-dir = "/data/my_database"
 # 如果 no-schema = true，那么 TiDB Lightning 假设目标 TiDB 集群上
 # 已有表结构，并且不会执行 `CREATE TABLE` 语句。
@@ -164,6 +164,7 @@ separator = ','
 delimiter = '"'
 # CSV 文件是否包含表头。
 # 如果 header = true，将跳过首行。
+header = true
 # CSV 文件是否包含 NULL。
 # 如果 not-null = true，CSV 所有列都不能解析为 NULL。
 not-null = false

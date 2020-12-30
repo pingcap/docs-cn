@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-create-sequence/','/do
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE seq;
+CREATE SEQUENCE seq;
 ```
 
 ```
@@ -47,7 +47,7 @@ SHOW CREATE SEQUENCE seq;
 
 ## MySQL 兼容性
 
-MySQL 暂无序列选项。TiDB 序列部分借鉴自 MariaDB。`SETVAL` 函数的步调是 TiDB 特有的，其他函数的步调与 MariaDB 保持一致。
+该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
 
 ## 另请参阅
 

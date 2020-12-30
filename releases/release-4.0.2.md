@@ -114,6 +114,7 @@ TiDB 版本：4.0.2
     - 修复权限检查失败时的错误信息 [#17724](https://github.com/pingcap/tidb/pull/17724)
     - 修复 `DELETE`/`UPDATE` 语句的 feedback 被错误收集的问题 [#17843](https://github.com/pingcap/tidb/pull/17843)
     - 禁止更改非 `AUTO_RANDOM` 表的 `AUTO_RANDOM_BASE` 值 [#17828](https://github.com/pingcap/tidb/pull/17828)
+    - 修复通过 `ALTER TABLE ... RENAME` 在数据库间移动表时，`AUTO_RANDOM` 列分配到错误结果的问题 [#18243](https://github.com/pingcap/tidb/pull/18243)
     - 修复系统变量 `tidb_isolation_read_engines` 的值中没有 `tidb` 时某些系统表无法访问的问题 [#17719](https://github.com/pingcap/tidb/pull/17719)
     - 修复 JSON 中大整数和浮点数比较的精度问题 [#17717](https://github.com/pingcap/tidb/pull/17717)
     - 修复 `COUNT()` 函数的返回类型中 `DECIMAL` 不正确的问题 [#17704](https://github.com/pingcap/tidb/pull/17704)
@@ -133,6 +134,7 @@ TiDB 版本：4.0.2
     - 修复当多个 Region 的请求同时超时时整个 SQL 语句超时的问题 [#17585](https://github.com/pingcap/tidb/pull/17585)
     - 修复解析日期类型的分隔符时和 MySQL 不兼容的问题 [#17501](https://github.com/pingcap/tidb/pull/17501)
     - 修复少数情况下发给 TiKV 的请求错发给 TiFlash 的问题 [#18105](https://github.com/pingcap/tidb/pull/18105)
+    - 修复当前事务中主键被插入/删除但主键的锁却被另一事务清除可能造成结果不一致的问题 [#18250](https://github.com/pingcap/tidb/pull/18250)
 
 + TiKV
 

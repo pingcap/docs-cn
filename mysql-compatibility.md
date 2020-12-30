@@ -4,9 +4,9 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-compatibility/']
 ---
 
-# 与 MySQL 兼容性对比概览
+# 与 MySQL 兼容性对比
 
-- TiDB 100% 兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均用于 TiDB。
+- TiDB 100% 兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
 
 - 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
     - 有更好的解决方案，例如 JSON 取代 XML 函数。
@@ -24,20 +24,19 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-* 临时表
+* 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
-* X Protocol
-* Savepoints
-* 列级权限
+* X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
+* Savepoints [#6840](https://github.com/pingcap/tidb/issues/6840)
+* 列级权限 [#9766](https://github.com/pingcap/tidb/issues/9766)
 * `XA` 语法（TiDB 内部使用两阶段提交，但并没有通过 SQL 接口公开）
-* `CREATE TABLE tblName AS SELECT stmt` 语法
-* `CREATE TEMPORARY TABLE` 语法
-* `CHECK TABLE` 语法
-* `CHECKSUM TABLE` 语法
+* `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
+* `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
+* `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
 * `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
 
 ## 与 MySQL 有差异的特性详细说明
@@ -83,7 +82,7 @@ TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控
 
 ### 查询计划
 
-`EXPLAIN`/`EXPLAIN FOR` 输出格式、内容、权限设置与 MySQL 有比较大的差别，参见[理解 TiDB 执行计划](/query-execution-plan.md)。
+`EXPLAIN`/`EXPLAIN FOR` 输出格式、内容、权限设置与 MySQL 有比较大的差别，参见[理解 TiDB 执行计划](/explain-overview.md)。
 
 ### 内建函数
 
@@ -186,8 +185,4 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 + 不支持 FLOAT4/FLOAT8。
 
-+ 不支持 FIXED (alias for DECIMAL)。
-
-+ 不支持 SERIAL (alias for BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE)。
-
-+ 不支持 `SQL_TSI_*`（包括 `SQL_TSI_YEAR`、`SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`）。
++ 不支持 `SQL_TSI_*`（包括 `SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`，但不包括 `SQL_TSI_YEAR`）。

@@ -1,11 +1,11 @@
 ---
 title: 搭建私有镜像
-aliases: ['/docs-cn/dev/tiup/tiup-mirror/','/docs-cn/dev/tiup/tiup-mirrors/','/docs-cn/dev/reference/tools/tiup/mirror/']
+aliases: ['/docs-cn/dev/tiup/tiup-mirror/','/docs-cn/dev/tiup/tiup-mirrors/','/docs-cn/dev/reference/tools/tiup/mirror/','/docs-cn/dev/reference/tools/tiup/mirrors/']
 ---
 
 # 搭建私有镜像
 
-在构建私有云时，通常会使用隔离的网络环境，此时无法访问 TiUP 的官方镜像。因此，我们提供了构建私有镜像的方案，它主要由 mirror 指令来实现，该方案也可用于离线部署。
+在构建私有云时，通常会使用隔离的网络环境，此时无法访问 TiUP 的官方镜像。因此，TiUP 提供了构建私有镜像的方案，它主要由 mirror 指令来实现，该方案也可用于离线部署。
 
 ## mirror 指令介绍
 
@@ -59,7 +59,7 @@ tiup mirror clone <target-dir> [global-version] [flags]
 
 1. 克隆时是否使用前缀匹配方式匹配版本
 
-    如果指定了 `--prefix` 参数，则会才用前缀匹配方式匹配克隆的版本号。例：指定 `--prefex` 时填写版本 "v4.0.0" 将会匹配 "v4.0.0-rc.1", "v4.0.0-rc.2", "v4.0.0"
+    如果指定了 `--prefix` 参数，则会才用前缀匹配方式匹配克隆的版本号。例：指定 `--prefix` 时，填写版本 "v4.0.0" 将会匹配 "v4.0.0-rc.1", "v4.0.0-rc.2", "v4.0.0"
 
 2. 是否全量克隆
 

@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/sql-logical-optimization/']
 
 # 逻辑优化
 
-本章节将对一些比较关键的逻辑改写进行说明，帮助大家理解 TiDB 如何生成最终的查询计划。比如在 TiDB 输入 `select * from t where t.a in (select * from t1 where t1.b=t.b)` 这个查询时，在最终的执行计划中将看不到这个 `t.a in (select t1.a from t1 where t1.b=t.b` 这个 `IN` 子查询的存在，这便是因为 TiDB 对这里进行了一些改写。
+本章节将对一些比较关键的逻辑改写进行说明，帮助大家理解 TiDB 如何生成最终的查询计划。比如在 TiDB 输入 `select * from t where t.a in (select t1.a from t1 where t1.b=t.b)` 这个查询时，在最终的执行计划中将看不到这个 `t.a in (select t1.a from t1 where t1.b=t.b)` 这个 `IN` 子查询的存在，这便是因为 TiDB 对这里进行了一些改写。
 
 本章节会介绍如下几个关键改写：
 

@@ -110,7 +110,7 @@ OR, ||
 | [`AND`, &&](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与 |
 | [`NOT`, `!`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_not) | 逻辑非 |
 | [`\|\|`, `OR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | 逻辑或 |
-| [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑亦或 |
+| [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑异或 |
 
 详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html).
 

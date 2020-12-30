@@ -83,7 +83,7 @@ SHOW CONFIG LIKE 'tidb';
 
 ## MySQL 兼容性
 
-`SHOW CONFIG` 是 TiDB 的扩展语法，MySQL 没有对应的语法。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

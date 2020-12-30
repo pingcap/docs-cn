@@ -12,10 +12,10 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 
 目前推荐使用以下两种方式将 MySQL 数据迁移到 TiDB。
 
-- [使用 Mydumper 和 TiDB Lightning 迁移全量数据](#使用-mydumper-和-tidb-lightning-迁移全量数据)
+- [使用 Dumpling 和 TiDB Lightning 迁移全量数据](#使用-dumpling-和-tidb-lightning-迁移全量数据)
 - [使用 DM 迁移数据](#使用-dm-迁移数据)
 
-### 使用 Mydumper 和 TiDB Lightning 迁移全量数据
+### 使用 Dumpling 和 TiDB Lightning 迁移全量数据
 
 #### 适合场景
 
@@ -23,17 +23,17 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 
 #### 迁移方法
 
-使用 Mydumper 导出 MySQL 的全量数据，再使用 TiDB Lightning 将全量数据导入到 TiDB，详细信息可参考[从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
+使用 Dumpling 导出 MySQL 的全量数据，再使用 TiDB Lightning 将全量数据导入到 TiDB，详细信息可参考[使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
 
 ### 使用 DM 迁移数据
 
 #### 适合场景
 
-适合迁移 MySQL 全量数据并同步增量数据的场景，且全量数据的大小小于 1TB。如果全量数据的大小大于 1TB，建议使用 Mydumper 和 TiDB Lightning 导入全量数据后，再使用 DM 同步增量数据。
+适合迁移 MySQL 全量数据并同步增量数据的场景，且全量数据的大小小于 1TB。如果全量数据的大小大于 1TB，建议使用 Dumpling 和 TiDB Lightning 导入全量数据后，再使用 DM 同步增量数据。
 
 #### 迁移方法
 
-DM 支持将 MySQL 全量数据迁移到 TiDB，并同步 MySQL 的增量数据到 TiDB，详细信息可参考[使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
+DM 支持将 MySQL 全量数据迁移到 TiDB，并同步 MySQL 的增量数据到 TiDB，详细信息可参考[使用 DM 工具从 Amazon Aurora MySQL 迁移](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)
 
 ## 从文件迁移到 TiDB
 
@@ -59,4 +59,4 @@ DM 支持将 MySQL 全量数据迁移到 TiDB，并同步 MySQL 的增量数据�
 
 ### 从 SQL 文件迁移到 TiDB
 
-该部分内容与[使用 Mydumper 和 TiDB Lightning 迁移全量数据](#使用-mydumper-和-tidb-lightning-迁移全量数据)相同。
+该部分内容与[使用 Dumpling 和 TiDB Lightning 迁移全量数据](#使用-dumpling-和-tidb-lightning-迁移全量数据)相同。

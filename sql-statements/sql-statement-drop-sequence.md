@@ -50,7 +50,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 ## MySQL 兼容性
 
-MySQL 暂无序列功能。
+该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
 
 ## 另请参阅
 

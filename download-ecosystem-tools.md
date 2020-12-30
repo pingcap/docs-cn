@@ -11,16 +11,13 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 如需下载最新版本的 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)，直接下载 TiDB 安装包即可，因为 TiDB Binlog 包含在 TiDB 安装包中。
 
-以下表格中也提供了 Kafka 版本的 TiDB Binlog 下载链接。
-
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
 | `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (TiDB Binlog) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
-| `https://download.pingcap.org/tidb-binlog-kafka-linux-amd64.tar.gz`（Kafka 版本的 TiDB Binlog）| Linux | amd64 | `https://download.pingcap.org/tidb-binlog-kafka-linux-amd64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v3.0.5` 版本的下载链接为 `https://download.pingcap.org/tidb-v3.0.5-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v4.0.8` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.8-linux-amd64.tar.gz`。
 
 ## TiDB Lightning
 
@@ -32,7 +29,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v3.0.5` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v3.0.5-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v4.0.8` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.8-linux-amd64.tar.gz`。
 
 ## 快速备份和恢复（BR）
 
@@ -44,7 +41,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v3.1.0-beta` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v3.1.0-beta-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v4.0.8` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.8-linux-amd64.tar.gz`。
 
 ## TiDB DM (Data Migration)
 
@@ -56,7 +53,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v1.0.1` 版本的下载链接为 `https://download.pingcap.org/dm-v1.0.1-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
+> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v1.0.6` 版本的下载链接为 `https://download.pingcap.org/dm-v1.0.6-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
 
 ## Dumpling
 
@@ -73,7 +70,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 ## Syncer，Loader 和 Mydumper
 
-如需下载最新版本的 [Syncer](/syncer-overview.md)，[Loader](/loader-overview.md) 或 [Mydumper](/mydumper-overview.md)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
+如需下载最新版本的 [Syncer](/syncer-overview.md)，[Loader](/loader-overview.md) 或 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)，直接下载 tidb-enterprise-tools 安装包即可，因为这些工具均包含在此安装包中。
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|

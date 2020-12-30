@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_CONFIG
 summary: 了解 information_schema 表 `CLUSTER_CONFIG`。
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-config/','/docs-cn/dev/reference/system-databases/cluster-config/','/zh/tidb/dev/system-table-cluster-config/']
+aliases: ['/docs-cn/dev/system-tables/system-table-cluster-config/','/docs-cn/dev/reference/system-databases/cluster-config/','/zh/tidb/dev/system-table-cluster-config/','/docs-cn/dev/information-schema/information-schema-cluster-config/']
 ---
 
 # CLUSTER_CONFIG

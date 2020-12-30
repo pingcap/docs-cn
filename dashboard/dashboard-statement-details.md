@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 执行计划详情包括以下内容：
 
 - SQL 样本：该计划对应的实际执行的某一条 SQL 语句文本。时间范围内任何出现过的 SQL 都可能作为 SQL 样本。
-- 执行计划：执行计划的完整内容，参阅[理解 TiDB 执行计划](/query-execution-plan.md)文档了解如何解读执行计划。如果选择了多个执行计划，则显示的是其中任意一个。
+- 执行计划：执行计划的完整内容，参阅[理解 TiDB 执行计划](/explain-overview.md)文档了解如何解读执行计划。如果选择了多个执行计划，则显示的是其中任意一个。
 - 其他关于该 SQL 的基本信息、执行时间、Coprocessor 读取、事务、慢查询等信息，可点击相应标签页标题切换。
 
 ![执行计划详情](/media/dashboard/dashboard-statement-plans-detail.png)

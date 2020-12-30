@@ -65,6 +65,10 @@ SHOW STATS_META WHERE db_name='test' and table_name='t';
 Empty set (0.00 sec)
 ```
 
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
+
 ## 另请参阅
 
 * [统计信息简介](/statistics.md)

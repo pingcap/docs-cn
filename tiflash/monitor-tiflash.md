@@ -5,11 +5,11 @@ aliases: ['/docs-cn/dev/tiflash/monitor-tiflash/','/docs-cn/dev/reference/tiflas
 
 # TiFlash 集群监控
 
-使用 TiDB Ansible 或 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
+使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
 
-TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details**。通过面板上的指标，可以了解 TiFlash 当前的状态。其中 **TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details** 主要为 TiFlash 的 Raft 层信息，其监控指标信息可参考 [TiKV 监控指标详解](/grafana-tikv-dashboard.md)
+TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details**。通过面板上的指标，可以了解 TiFlash 当前的状态。其中 **TiFlash-Proxy-Summary**、**TiFlash-Proxy-Details** 主要为 TiFlash 的 Raft 层信息，其监控指标信息可参考 [TiKV 监控指标详解](/grafana-tikv-dashboard.md)。
 
 > **注意：**
 >
@@ -39,8 +39,10 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Executor QPS：所有 TiFlash 实例收到的请求中，每种 dag 算子的数量，其中 table_scan 是扫表算子，selection 是过滤算子，aggregation 是聚合算子，top_n 是 TopN 算子，limit 是 limit 算子。
 - Request Duration：所有 TiFlash 实例处理 coprocessor request 总时间，总时间为接收到该 coprocessor 请求至请求应答完毕的时间。
 - Error QPS：所有 TiFlash 实例处理 coprocessor 请求的错误数量。其中 meet_lock 为读取的数据有锁，region_not_found 为 Region 不存在，epoch_not_match 为读取的 Region epoch 与本地不一致，kv_client_error 为与 TiKV 通信产生的错误，internal_error 为 TiFlash 内部系统错误，other 为其他错误。
-- Request Handle：所有 TiFlash 实例处理 coprocessor 请求处理时间，处理时间为该 coprocessor 请求开始执行到执行结束的时间。
+- Request Handle Duration：所有 TiFlash 实例处理 coprocessor 请求处理时间，处理时间为该 coprocessor 请求开始执行到执行结束的时间。
 - Response Bytes/Seconds：所有 TiFlash 实例应答总字节数。
+- Cop task memory usage：所有 TiFlash 实例处理 coprocessor 请求占用的总内存。
+- Handling Request Number：所有 TiFlash 实例正在处理的 coprocessor 请求数量之和。请求的分类与 Request QPS 中的相同.
 
 ## DDL
 

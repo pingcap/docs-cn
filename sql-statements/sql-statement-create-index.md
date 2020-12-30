@@ -194,14 +194,14 @@ CREATE INDEX idx ON t ((lower(name)));
 
 ## 不可见索引
 
-不可见索引（Invisible Indexes）是 MySQL 8.0 引入的新功能，将一个索引设置为不可见，使优化器不会再使用这条索引。
+不可见索引（Invisible Indexes）不会被查询优化器使用：
 
 ```sql
 CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
 CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 ```
 
-具体可以参考 [不可见索引的介绍](/sql-statements/sql-statement-alter-index.md#不可见索引)。
+具体可以参考 [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)。
 
 ## 相关 session 变量
 

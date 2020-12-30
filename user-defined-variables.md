@@ -51,7 +51,7 @@ SET @c = @a + @b;
 {{< copyable "sql" >}}
 
 ```sql
-set @c = b'1000001' + b'1000001';
+SET @c = b'1000001' + b'1000001';
 ```
 
 ## 读取用户自定义变量
@@ -153,7 +153,7 @@ EXECUTE stmt USING @a, @b;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * from t;
+SELECT * FROM t;
 ```
 
 ```

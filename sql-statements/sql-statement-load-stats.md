@@ -32,6 +32,10 @@ LOAD STATS '/tmp/stats.json';
 Query OK, 0 rows affected (0.00 sec)
 ```
 
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
+
 ## 另请参阅
 
 * [统计信息](/statistics.md)

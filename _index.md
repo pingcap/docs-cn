@@ -16,6 +16,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 - [TiDB 简介](/overview.md)
 - [基本功能](/basic-features.md)
+- [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
 - [与 MySQL 的兼容性](/mysql-compatibility.md)
 - [使用限制](/tidb-limitations.md)
 - [荣誉列表](/credits.md)
@@ -45,10 +46,10 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 <ColumnTitle>数据迁移</ColumnTitle>
 
 - [概述](/migration-overview.md)
-- [从 Mydumper 文件迁移](/migrate-from-mysql-mydumper-files.md)
+- [使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
 - [从 Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
 - [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-- [从 SQL 文件迁移](/migrate-from-mysql-mydumper-files.md)
+- [从 SQL 文件迁移](/migrate-from-mysql-dumpling-files.md)
 
 </NavColumn>
 
@@ -70,6 +71,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 - [监控框架概述](/tidb-monitoring-framework.md)
 - [监控 API](/tidb-monitoring-api.md)
 - [部署监控](/deploy-monitoring-services.md)
+- [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
 - [TiDB 集群报警规则与处理方法](/alert-rules.md)
 - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 
@@ -79,6 +81,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 <ColumnTitle>故障诊断</ColumnTitle>
 
 - [定位慢查询](/identify-slow-queries.md)
+- [分析慢查询](/analyze-slow-queries.md)
 - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
 - [热点问题处理](/troubleshoot-hot-spot-issues.md)
 - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)

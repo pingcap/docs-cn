@@ -125,3 +125,7 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 所以，RECOVER TABLE 只需要在 GC Worker 还没删除表数据前，恢复表的元信息并删除 `mysql.gc_delete_range` 表中相应的行记录就可以了。恢复表的元信息可以用 TiDB 的快照读实现。具体的快照读内容可以参考[读取历史数据](/read-historical-data.md)文档。
 
 TiDB 中表的恢复是通过快照读获取表的元信息后，再走一次类似于 `CREATE TABLE` 的建表流程，所以 `RECOVER TABLE` 实际上也是一种 DDL。
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。

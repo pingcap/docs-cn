@@ -197,6 +197,10 @@ SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHERE t1.a = t2.a;
 ```
 
+> **注意：**
+>
+> 如果需要提示优化器使用的表不在同一个数据库内，需要显式指定数据库名。例如 `SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;`。
+
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
 `USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
@@ -304,7 +308,7 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 
 `IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
 
-该 Hint 用于在 [prepare-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
+该 Hint 用于临时对某类查询禁用 plan cache。
 
 以下示例强制该 `prepare` 语句不使用 plan cache：
 
@@ -313,3 +317,23 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 ```sql
 prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
 ```
+
+### NTH_PLAN(N)
+
+`NTH_PLAN(N)` 提示优化器选用在物理优化阶段搜索到的第 `N` 个物理计划。`N` 必须是正整数。
+
+如果指定的 `N` 超出了物理优化阶段的搜索范围，TiDB 会返回 warning，并根据不存在该 Hint 时一样的策略选择最优物理计划。
+
+该 Hint 在启用 cascades planner 的情况下不会生效。
+
+以下示例会强制优化器在物理阶段选择搜索到的第 3 个物理计划：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
+```
+
+> **注意：**
+>
+> `NTH_PLAN(N)` 主要用于测试用途，并且在未来不保证其兼容性，请谨慎使用。

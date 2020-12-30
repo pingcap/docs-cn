@@ -1,6 +1,7 @@
 ---
 title: KEY_COLUMN_USAGE
 summary: 了解 information_schema 表 `KEY_COLUMN_USAGE`。
+aliases: ['/docs-cn/dev/information-schema/information-schema-key-column-usage/']
 ---
 
 # KEY_COLUMN_USAGE

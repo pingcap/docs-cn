@@ -1,12 +1,12 @@
 ---
 title: SQL 诊断
 summary: 了解 SQL 诊断功能。
-aliases: ['/docs-cn/dev/system-tables/system-table-sql-diagnostics/','/docs-cn/dev/reference/system-databases/sql-diagnosis/','/docs-cn/dev/system-tables/system-table-sql-diagnosis/','/zh/tidb/dev/check-cluster-status-using-sql-statements','/docs-cn/dev/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/dev/system-table-sql-diagnostics/']
+aliases: ['/docs-cn/dev/system-tables/system-table-sql-diagnostics/','/docs-cn/dev/reference/system-databases/sql-diagnosis/','/docs-cn/dev/system-tables/system-table-sql-diagnosis/','/zh/tidb/dev/check-cluster-status-using-sql-statements','/docs-cn/dev/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/dev/system-table-sql-diagnostics/','/docs-cn/dev/check-cluster-status-using-sql-statements/']
 ---
 
 # SQL 诊断
 
-> **注意：**
+> **警告：**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 

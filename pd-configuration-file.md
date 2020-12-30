@@ -15,7 +15,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + PD 节点名称。
 + 默认：`"pd"`
-+ 如果你需要启动多个 PD，一定要给 PD 使用不同的名字
++ 如果你需要启动多个 PD，一定要给 PD 使用不同的名字。
 
 ### `data-dir`
 
@@ -24,29 +24,29 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `client-urls`
 
-+ 处理客户端请求监听 URL 列表。
++ PD 监听的客户端 URL 列表。
 + 默认：`"http://127.0.0.1:2379"`
 + 如果部署一个集群，client URLs 必须指定当前主机的 IP 地址，例如 `"http://192.168.100.113:2379"`，如果是运行在 Docker 则需要指定为 `"http://0.0.0.0:2379"`。
 
 ### `advertise-client-urls`
 
-+ 对外客户端访问 URL 列表。
++ 用于外部访问 PD 的 URL 列表。
 + 默认：`"${client-urls}"`
-+ 在某些情况下，例如 Docker 或者 NAT 网络环境，客户端并不能通过 PD 自己监听的 client URLs 来访问到 PD，这时候，你就可以设置 advertise URLs 来让客户端访问
++ 在某些情况下，例如 Docker 或者 NAT 网络环境，客户端并不能通过 PD 自己监听的 client URLs 来访问到 PD，这时候，你就可以设置 advertise URLs 来让客户端访问。
 + 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 2379:2379`，那么可以设置为 `advertise-client-urls="http://192.168.100.113:2379"`，客户端可以通过 `http://192.168.100.113:2379` 来找到这个服务。
 
 ### `peer-urls`
 
-+ 处理其他 PD 节点请求监听 URL 列表。
++ PD 节点监听其他 PD 节点的 URL 列表。
 + 默认: `"http://127.0.0.1:2380"`
 + 如果部署一个集群，peer URLs 必须指定当前主机的 IP 地址，例如 `"http://192.168.100.113:2380"`，如果是运行在 Docker 则需要指定为 `"http://0.0.0.0:2380"`。
 
 ### `advertise-peer-urls`
 
-+ 对外其他 PD 节点访问 URL 列表。
++ 用于其他 PD 节点访问某个 PD 节点的 URL 列表。
 + 默认：`"${peer-urls}"`
 + 在某些情况下，例如 Docker 或者 NAT 网络环境，其他节点并不能通过 PD 自己监听的 peer URLs 来访问到 PD，这时候，你就可以设置 advertise URLs 来让其他节点访问
-+ 例如，docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 2380:2380`，那么可以设置为 `advertise-peer-urls="http://192.168.100.113:2380"`，其他 PD 节点可以通过 `http://192.168.100.113:2380` 来找到这个服务。
++ 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 2380:2380`，那么可以设置为 `advertise-peer-urls="http://192.168.100.113:2380"`，其他 PD 节点可以通过 `http://192.168.100.113:2380` 来找到这个服务。
 
 ### `initial-cluster`
 
@@ -85,8 +85,8 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `quota-backend-bytes`
 
-+ 元信息数据库存储空间的大小，默认 2GB。
-+ 默认：2147483648
++ 元信息数据库存储空间的大小，默认 8GiB。
++ 默认：8589934592
 
 ### `auto-compaction-mod`
 
@@ -137,6 +137,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 包含 X509 key 的 PEM 文件路径
 + 默认：""
 
+### `redact-info-log` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
++ 控制 PD 日志脱敏的开关
++ 该配置项值设为 true 时将对 PD 日志脱敏，遮蔽日志中的用户信息。
++ 默认值：false
+
 ## log
 
 日志相关的配置项。
@@ -180,7 +186,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `interval`
 
-+ 向 promethus 推送监控指标数据的间隔时间。
++ 向 Prometheus 推送监控指标数据的间隔时间。
 + 默认: 15s
 
 ## schedule
@@ -244,7 +250,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `high-space-ratio`
 
-+ 设置 store 空间充裕的阈值。
++ 设置 store 空间充裕的阈值。此配置仅在 `region-score-formula-version = v1` 时生效。
 + 默认：0.7
 + 最小值：大于 0
 + 最大值：小于 1
@@ -261,6 +267,17 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 控制 balance 缓冲区大小。
 + 默认：0 (为 0 为自动调整缓冲区大小)
 + 最小值：0
+
+### `enable-cross-table-merge`
+
++ 设置是否开启跨表 merge。
++ 默认：true
+
+### `region-score-formula-version`
+
++ 设置 Region 算分公式版本。
++ 默认：v2
++ 可选值：v1，v2
 
 ### `disable-remove-down-replica`
 
@@ -292,13 +309,22 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
 + 默认：15
 
+### `enable-joint-consensus` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
+> **警告：**
+>
+> 目前 Joint Consensus 为实验特性，不推荐在生产环境中使用该特性。
+
++ 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
++ 默认：true
+
 ## replication
 
 副本相关的配置项。
 
 ### `max-replicas`
 
-+ 副本数量。
++ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。
 + 默认：3
 
 ### `location-labels`
@@ -315,7 +341,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `strictly-match-label`
 
-+ 打开强制 TiKV Label 和 PD 的 localtion-labels 是否匹配的检查
++ 打开强制 TiKV Label 和 PD 的 location-labels 是否匹配的检查
 + 默认：false
 
 ### `enable-placement-rules`

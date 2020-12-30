@@ -68,7 +68,7 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
 
-黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/query-execution-plan.md)）。
+黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/explain-overview.md)）。
 
 ```sql
 tidb> create table t(a int);
@@ -134,7 +134,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 | = | eq |
 | != | ne |
 | `<>` | ne |
-| <=> | nulleq |
+| `<=>` | nulleq |
 | &#124; | bitor |
 | && | bitand|
 | &#124;&#124; | or |

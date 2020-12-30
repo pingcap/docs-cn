@@ -60,12 +60,8 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-`START TRANSACTION` 语句与 MySQL 不完全兼容。
-
-* `START TRANSACTION` 相当于 MySQL 的 `START TRANSACTION WITH CONSISTENT SNAPSHOT`，即 `START TRANSACTION` 后执行了一个从 InnoDB 任意表读数据的 `SELECT` 语句（非 `SELECT FOR UPDATE`）。
-* `READ ONLY` 及其扩展选项都都只是语法兼容，其效果等同于 `START TRANSACTION`。
-
-如有任何其他兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+* 执行 `START TRANSACTION` 在 TiDB 中开启事务并立即生成快照。而在 MySQL 中，执行 `START TRANSACTION` 会开启事务但不会立即生成快照。TiDB 中的 `START TRANSACTION` 等同于 MySQL 中的 `START TRANSACTION WITH CONSISTENT SNAPSHOT`。
+* 为与 MySQL 兼容，TiDB 会解析 `START TRANSACTION READ ONLY` 语句，但解析后 TiDB 仍允许写入操作。
 
 ## 另请参阅
 
