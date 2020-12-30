@@ -1000,7 +1000,7 @@ explain select * from t where age=5;
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
 
-### `tidb_track_aggregate_memory_usage` <!-- 从 v5.0.0-rc 版本开始引入 -->
+### `tidb_track_aggregate_memory_usage` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 > **警告：**
 >
@@ -1018,10 +1018,11 @@ explain select * from t where age=5;
 >
 > + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
 > + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter) 不兼容，共同使用时有小概率发生写丢失。
+> + 本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
-- 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
+- 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
 > **警告：**
 >
