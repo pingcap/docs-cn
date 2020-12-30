@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 | 列的 Count-Min Sketch | √ | × |
 | 索引的 Count-Min Sketch | √ | × |
 | 列的 Top-N | √ | √（改善了维护方式和精度） |
-| 索引的 Top-N | √(维护精度不足，不能用于估计) | √ |
+| 索引的 Top-N | √(维护精度不足，会产生较大误差) | √（改善了维护方式和精度） |
 | 列的直方图 | √ | √（直方图中不包含 Top-N 中出现的值） |
 | 索引的直方图 | √ | √（直方图的桶中记录了各自的不同值的个数，且直方图不包含 Top-N 中出现的值） |
 | 列的 NULL 值个数 | √ | √ |
