@@ -334,7 +334,7 @@ password = ""
     addr = "172.16.31.10:8287"
 
     [mydumper]
-    # Mydumper 源数据目录。
+    # 源数据目录。
     data-source-dir = "/data/my_database"
 
     [tidb]
