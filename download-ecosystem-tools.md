@@ -72,7 +72,7 @@ Download [Dumpling](/dumpling-overview.md) from the links below:
 
 ## Syncer, Loader, and Mydumper
 
-If you want to download the latest version of [Syncer](/syncer-overview.md), [Loader](/loader-overview.md), or [Mydumper](/mydumper-overview.md), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
+To download the latest version of [Syncer](/syncer-overview.md), [Loader](/loader-overview.md), or [Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
