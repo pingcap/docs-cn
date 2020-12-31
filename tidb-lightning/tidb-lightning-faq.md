@@ -44,7 +44,7 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
 
 ## 如何正确重启 TiDB Lightning？
 
-根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
+如果使用 Importer-backend，根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
 
 如果 `tikv-importer` 仍在运行：
 
@@ -63,6 +63,8 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
     * 重启 `tikv-importer` 将清除所有仍在写入的引擎文件，但是 `tidb-lightning` 并不会感知到该操作。从 v3.0 开始，最简单的方法是让 `tidb-lightning` 继续，然后再重试。
 6. [清除失败的表及断点](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)。
 7. 再次重启 `tidb-lightning`。
+
+如果使用 Local-backend 和 TiDB-backend，操作和 Importer-backend 的 `tikv-importer` 仍在运行时相同。
 
 ## 如何校验导入的数据的正确性？
 
@@ -115,19 +117,13 @@ sql-mode = ""
 
 ## 如何正确结束 `tikv-importer` 进程？
 
-根据部署方式，选择相应操作结束进程
-
-- 使用 TiDB Ansible 部署：在 Importer 的服务器上运行 `scripts/stop_importer.sh`。
-
-- 手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程 ID，然后通过 `kill «pid»` 结束进程。
+手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程 ID，然后通过 `kill «pid»` 结束进程。
 
 ## 如何正确结束 `tidb-lightning` 进程？
 
 根据部署方式，选择相应操作结束进程
 
-- 使用 TiDB Ansible 部署：在 Lightning 的服务器上运行 `scripts/stop_lightning.sh`。
-
-- 手动部署：如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tidb-lightning` 获取进程 ID，然后通过 `kill -2 «pid»` 结束进程。
+手动部署：如果 `tidb-lightning` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tidb-lightning` 获取进程 ID，然后通过 `kill -2 «pid»` 结束进程。
 
 ## `tidb-lightning` 在服务器上运行，进程莫名其妙地退出了，是怎么回事呢？
 
@@ -138,6 +134,8 @@ sql-mode = ""
 ```
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
+
+另外，如果从 Lightning log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。 
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
