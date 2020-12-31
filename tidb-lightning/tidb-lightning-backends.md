@@ -45,6 +45,10 @@ TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与�
 
 ## TiDB Lightning TiDB-backend
 
+> **注意：**
+>
+> 从 TiDB v4.0 起，PingCAP 不再维护 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview) 工具。从 v5.0 起，不再提供 Loader 的文档。Loader 的功能已经完全被 TiDB Lightning 的 TiDB backend 功能取代，强烈建议切换到 TiDB Lightning。
+
 ### 部署和配置 TiDB Lightning
 
 使用 TiDB-backend 时，你无需部署 `tikv-importer`。与[标准部署过程](/tidb-lightning/deploy-tidb-lightning.md)相比，部署 TiDB-backend 时有如下不同：
@@ -91,7 +95,7 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 
 ### 从 Loader 迁移到 TiDB Lightning TiDB-backend
 
-TiDB Lightning TiDB-backend 可以完全取代 [Loader](/loader-overview.md)。下表说明了如何将 [Loader](/loader-overview.md) 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
+TiDB Lightning TiDB-backend 可以完全取代 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview)。下表说明了如何将 Loader 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
 <table align="left">
 <thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thead>
