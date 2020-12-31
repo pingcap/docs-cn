@@ -44,7 +44,7 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
 
 ## 如何正确重启 TiDB Lightning？
 
-如果使用 Importer Backend, 根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
+如果使用 Importer-backend，根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
 
 如果 `tikv-importer` 仍在运行：
 
@@ -64,7 +64,7 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
 6. [清除失败的表及断点](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)。
 7. 再次重启 `tidb-lightning`。
 
-如果使用 Local 和 TiDB Backend，操作和 Importer Backend `tikv-importer` 仍在运行时相同。
+如果使用 Local-backend 和 TiDB-backend，操作和 Importer-backend 的 `tikv-importer` 仍在运行时相同。
 
 ## 如何校验导入的数据的正确性？
 
@@ -141,7 +141,7 @@ sql-mode = ""
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
 
-另外，如果从 Lightning log 的最后一条日志显示遇到的错误是 "Context canceled", 需要在日志中搜索第一条 "ERROR" 级别的日志，在这条日志之前，通常也会紧跟有一条 "got signal to exit", 表示 Lighting 是收到中断信号然后退出的。 
+另外，如果从 Lightning log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。 
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
