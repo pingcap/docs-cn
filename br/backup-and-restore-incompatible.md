@@ -27,7 +27,3 @@ BR 内置版本检查会在执行前，对集群版本和自身版本进行对�
 **BR 5.0 / TiDB 5.0** | ✅ | ✅ | ✅
 **BR 4.0 / TiDB 4.0** | ✅ | ✅ | ✅(TiKV>=4.0.0-rc.1(BR [#233](https://github.com/pingcap/br/pull/233) and TiKV not include [#7241](https://github.com/tikv/tikv/pull/7241)), BR will panic TiKV) |
 **BR nightly or 5.0 / TiDB 4.0** | ❌(TiDB < 4.0.9 after [#609](https://github.com/pingcap/br/issues/609)) | ❌(TiDB < 4.0.9 after [#609](https://github.com/pingcap/br/issues/609)) | ❌(TiDB < 4.0.9 after [#609](https://github.com/pingcap/br/issues/609)) |
-
-
-
-
