@@ -198,8 +198,6 @@
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-  + [Loader](/loader-overview.md)
-  + [Syncer](/syncer-overview.md)
   + TiSpark
     + [TiSpark 快速上手](/get-started-with-tispark.md)
     + [TiSpark 用户指南](/tispark-overview.md)
@@ -384,6 +382,7 @@
       + [精度数学](/functions-and-operators/precision-math.md)
       + [集合运算](/functions-and-operators/set-operators.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
+    + [聚簇索引](/clustered-indexes.md)
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
     + [SQL 模式](/sql-mode.md)
