@@ -36,13 +36,8 @@
     + Linux 环境
       + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
       + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
-      + [使用 Ansible 部署](/online-deployment-using-ansible.md)
-      + [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
       + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
-  + 性能测试方法
-    + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
-    + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
@@ -57,10 +52,8 @@
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
     + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
-    + [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
-    + [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
     + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   + 备份与恢复
     + 使用 BR 工具（推荐）
@@ -68,13 +61,11 @@
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
       + [BR 存储](/br/backup-and-restore-storages.md)
     + [使用 Dumpling 和 TiDB Lightning 进行备份与恢复（推荐）](/backup-and-restore-using-dumpling-lightning.md)
-    + [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
   + [读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
-  + [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
   + [在线修改集群配置](/dynamic-config.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
@@ -207,9 +198,6 @@
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-  + [Loader](/loader-overview.md)
-  + [Mydumper](/mydumper-overview.md)
-  + [Syncer](/syncer-overview.md)
   + TiSpark
     + [TiSpark 快速上手](/get-started-with-tispark.md)
     + [TiSpark 用户指南](/tispark-overview.md)
@@ -231,6 +219,7 @@
     + [生成自签名证书](/generate-self-signed-certificates.md)
     + [静态加密](/encryption-at-rest.md)
     + [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
+    + [日志脱敏](/log-redaction.md)
   + 权限
     + [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     + [权限管理](/privilege-management.md)
@@ -393,6 +382,7 @@
       + [精度数学](/functions-and-operators/precision-math.md)
       + [集合运算](/functions-and-operators/set-operators.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
+    + [聚簇索引](/clustered-indexes.md)
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
     + [SQL 模式](/sql-mode.md)
