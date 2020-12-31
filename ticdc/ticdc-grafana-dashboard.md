@@ -1,33 +1,6 @@
 ---
 title: TiCDC 重要监控指标详解
 ---
-
-<!--
-
-How to obatin pictures in this document?
-
-1. Deploy two cluster
-
- upstream: 1 TiDB, 1 PD, 4 TiKV and 2 TiCDC
- upstream: 1 TiDB, 1 PD and 1 TiKV
-
-2. Create changefeed
-
-    ```sh
-    tiup cdc cli --pd=http://172.16.5.33:47902 changefeed create \
-        --sink-uri="mysql://root:@172.16.5.33:48004/" \
-        --changefeed-id="simple-replication-task"
-    ```
-
-3. Run TPCC
-
-    ```sh
-    go-tpc -H 172.16.5.33 -P 47904 -U root -D test tpcc prepare --warehouses 30 && \
-        go-tpc -H 172.16.5.33 -P 47904 -U root -D test tpcc run --warehouses 30
-    ```
-
--->
-
 # TiCDC 重要监控指标详解
 
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
