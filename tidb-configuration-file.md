@@ -303,6 +303,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
 
+### `txn-entry-size-limit` <!-- 从 v5.0.0-rc 版本开始引入 -->
+
++ TiDB 单行数据的大小限制
++ 默认值：6291456 (Byte)
++ 事务中单个 key-value 记录的大小限制。若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。
++ 注意，TiKV 有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 8MB，TiKV 会拒绝处理该请求。当表的一行记录较大时，需要同时修改这两个配置。
+
 ### `txn-total-size-limit`
 
 + TiDB 单个事务大小限制
@@ -455,26 +462,7 @@ prepare 语句的 plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
-### `enable-one-pc` <!-- 从 v5.0 版本开始引入 -->
-
-+ 指定是否在只涉及一个 Region 的事务上使用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
-+ 默认值：false
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
->
-> + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
-> + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
-> + 无法保证外部一致性。
-> + 如果在执行 DDL 操作的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
-
-## tikv-client.async-commit <!-- 从 v5.0 版本开始引入 -->
-
-### `enable`
-
-+ 指定是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不兼容，开启 binlog 时本配置将没有效果。
-+ 默认值：false
+## tikv-client.async-commit <!-- 从 v5.0.0-rc 版本开始引入 -->
 
 ### `keys-limit`
 
@@ -486,14 +474,6 @@ prepare 语句的 plan cache 设置。
 + 指定一个 Async Commit 事务中键的大小总和的上限。如果事务涉及的键过长，则不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
 + 默认值：4096
 + 单位：字节
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
->
-> + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
-> + 无法保证外部一致性。
-> + 如果在执行 DDL 操作的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
@@ -507,12 +487,12 @@ prepare 语句的 plan cache 设置。
 ### `capacity-mb`
 
 + 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
-+ 默认值：1000.0
++ 默认值：1000
 + 单位：MB
 
 ### `admission-max-result-mb`
 
-+ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
++ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集小于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
 + 默认值：10.0
 + 单位：MB
 
