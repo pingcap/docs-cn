@@ -309,7 +309,7 @@ Configuration items related to scheduling
 + Determines the maximum number of operations related to adding peers within a minute
 + Default value: `15`
 
-### `enable-joint-consensus` <span class="version-mark">New in v5.0.0-rc</span>
+### `enable-joint-consensus` <!-- New in v5.0.0-rc -->
 
 > **Warning:**
 >
