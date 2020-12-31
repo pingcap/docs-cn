@@ -28,7 +28,6 @@ How to obatin pictures in this document?
 
 -->
 
-
 # TiCDC 重要监控指标详解
 
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
@@ -49,6 +48,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 - TiKV：TiKV 中和 TiCDC 相关的详细信息
 
 ![TiCDC Dashboard - Overview](/media/ticdc/ticdc-dashboard-overview.png)
+
 ## Server
 
 - Uptime：TiKV 节点和 TiCDC 节点已经运行的时间
@@ -60,6 +60,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 - Memory usage：TiCDC 节点使用的内存
 
 ![TiCDC Dashboard - Server metrics](/media/ticdc/ticdc-dashboard-server.png)
+
 ## Changefeed
 
 - Changefeed table count：一个同步任务中分配到各个 TiCDC 节点同步的数据表个数
