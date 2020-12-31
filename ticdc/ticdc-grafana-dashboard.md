@@ -1,6 +1,7 @@
 ---
 title: TiCDC 重要监控指标详解
 ---
+
 # TiCDC 重要监控指标详解
 
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
@@ -13,7 +14,7 @@ title: TiCDC 重要监控指标详解
 cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
-以下为 TiCDC Dashboard 监控说明 ：
+以下为 TiCDC Dashboard 监控说明：
 
 - Server：TiDB 集群中 TiKV 节点和 TiCDC 节点的概要信息
 - Changefeed：TiCDC 同步任务的详细信息
