@@ -90,13 +90,13 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
-## `interactive_timeout`
+### `interactive_timeout`
 
 - 作用域：SESSION | GLOBAL
 - 默认值：28800
 - 该变量表示交互式用户会话的空闲超时，单位为秒。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 客户端）。该变量与 MySQL 完全兼容。
 
-## `sql_mode`
+### `sql_mode`
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
@@ -261,7 +261,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：512
 - 这个变量用来控制 DDL 操作失败重试的次数。失败重试次数超过该参数的值后，会取消出错的 DDL 操作。
 
-## `tidb_ddl_reorg_batch_size`
+### `tidb_ddl_reorg_batch_size`
 
 - 作用域：GLOBAL
 - 默认值：256
@@ -334,7 +334,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：0
-- 这个变量用于控制是否开启聚簇索引特性。
+- 这个变量用于控制是否开启[聚簇索引](/clustered-indexes.md)特性。
     - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
     - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
     - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了聚簇索引特性。
@@ -397,11 +397,15 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值："on"
 - 这个变量用来设置是否开启 `TABLE PARTITION` 特性。目前变量支持以下三种值：
 
-    - 默认值 `on` 表示开启 TiDB 当前已实现了的分区表类型，目前 range partition、hash partition 以及 range column 单列的场景会生效。
+    - 默认值 `on` 表示开启 range partition、hash partition 以及 range column 单列的分区表。
     - `auto` 目前作用和 `on` 一样。
+    - `nightly` 表示开启 `on` 的分区表类型，并开启 list partition 和 list columns partition。
     - `off` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-- 注意，目前 TiDB 只支持 range partition 和 hash partition。
+> **注意：**
+>
+> 目前 TiDB 默认只支持 Range partition 和 Hash partition。
+> List partition 和 List COLUMNS partition 目前还属于实验特性。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
@@ -791,9 +795,9 @@ set tidb_slow_log_threshold = 200;
 
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
-### `tidb_log_desensitization`
+### `tidb_redact_log`
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 
 - 默认值：0
 
@@ -995,3 +999,36 @@ explain select * from t where age=5;
 - 默认值：0.8
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
+
+### `tidb_track_aggregate_memory_usage` <!-- 从 v5.0.0-rc 版本开始引入 -->
+
+> **警告：**
+>
+> `tidb_track_aggregate_memory_usage` 目前为实验特性，不建议在生产环境中使用。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 这个变量表示是否追踪聚合函数的内存使用情况。当开启该功能时，聚合函数的内存使用情况会被统计，进而可能会造成整个 SQL 内存统计值超阈值 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)，然后被 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的行为影响。
+
+### `tidb_enable_async_commit` <!-- 从 v5.0.0-rc 版本开始引入 -->
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
+>
+> + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
+> + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter) 不兼容，共同使用时有小概率发生写丢失。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
+
+> **注意：**
+>
+> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency) 系统变量。
+
+### `tidb_guarantee_external_consistency` <!-- 从 v5.0.0-rc 版本开始引入 -->
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 该变量控制在开启 Async Commit <!--和一阶段提交-->特性时，是否需要保证外部一致性。该选项关闭时，如果两个事务修改的内容没有交集，其他事务观测到它们的提交顺序可能与它们实际的提交顺序不一致。在不使用 Async Commit <!--或一阶段提交-->特性时，无论该选项是否开启，都能保证外部一致性。
