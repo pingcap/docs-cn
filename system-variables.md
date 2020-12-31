@@ -1010,7 +1010,7 @@ explain select * from t where age=5;
 - 默认值：OFF
 - 这个变量表示是否追踪聚合函数的内存使用情况。当开启该功能时，聚合函数的内存使用情况会被统计，进而可能会造成整个 SQL 内存统计值超阈值 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)，然后被 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的行为影响。
 
-### `tidb_enable_async_commit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_enable_async_commit` <!-- 从 v5.0.0-rc 版本开始引入 -->
 
 > **警告：**
 >
@@ -1025,9 +1025,9 @@ explain select * from t where age=5;
 
 > **注意：**
 >
-> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。
+> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency) 系统变量。
 
-### `tidb_guarantee_external_consistency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_guarantee_external_consistency` <!-- 从 v5.0.0-rc 版本开始引入 -->
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
