@@ -197,8 +197,6 @@
     + [Data Check for Tables with Different Schema/Table Names](/sync-diff-inspector/route-diff.md)
     + [Data Check in Sharding Scenarios](/sync-diff-inspector/shard-diff.md)
     + [Data Check for TiDB Upstream/Downstream Clusters](/sync-diff-inspector/upstream-downstream-diff.md)
-  + [Loader](/loader-overview.md)
-  + [Syncer](/syncer-overview.md)
   + TiSpark
     + [Quick Start](/get-started-with-tispark.md)
     + [User Guide](/tispark-overview.md)

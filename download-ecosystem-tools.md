@@ -70,17 +70,14 @@ Download [Dumpling](/dumpling-overview.md) from the links below:
 >
 > Dumpling supports arm64 linux. You can replace `amd64` in the download link with `arm64`, which means the `arm64` version of Dumpling.
 
-## Syncer, Loader, and Mydumper
+## sync-diff-inspector
 
-To download the latest version of [Syncer](/syncer-overview.md), [Loader](/loader-overview.md), or [Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview), directly download the tidb-enterprise-tools package, because all these tools are included in this package.
+Download [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) from the links below:
 
 | Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
 | [tidb-enterprise-tools-nightly-linux-amd64.tar.gz](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz) | Linux | amd64 | [tidb-enterprise-tools-nightly-linux-amd64.sha256](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.sha256) |
 
-This enterprise tools package includes all the following tools:
+## TiCDC
 
-- Syncer
-- Loader
-- Mydumper
-- [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)
+To download [TiCDC](/ticdc/ticdc-overview.md), refer to [Deploy TiCDC](/ticdc/deploy-ticdc.md).
