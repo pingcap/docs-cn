@@ -44,7 +44,7 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
 
 ## 如何正确重启 TiDB Lightning？
 
-根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
+如果使用 Importer-backend，根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
 
 如果 `tikv-importer` 仍在运行：
 
@@ -63,6 +63,8 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
     * 重启 `tikv-importer` 将清除所有仍在写入的引擎文件，但是 `tidb-lightning` 并不会感知到该操作。从 v3.0 开始，最简单的方法是让 `tidb-lightning` 继续，然后再重试。
 6. [清除失败的表及断点](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)。
 7. 再次重启 `tidb-lightning`。
+
+如果使用 Local-backend 和 TiDB-backend，操作和 Importer-backend 的 `tikv-importer` 仍在运行时相同。
 
 ## 如何校验导入的数据的正确性？
 
@@ -139,6 +141,8 @@ sql-mode = ""
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
 
+另外，如果从 Lightning log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。 
+
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
 如果 `tidb-lightning` 异常退出，集群可能仍处于“导入模式” (import mode)，该模式不适用于生产环境。此时可执行以下命令查看当前使用的模式：
@@ -196,3 +200,7 @@ upload-speed-limit = "100MB"
 2. 删除 `tikv-importer` 所在机器上的整个 “import” 文件目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
+
+## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
+
+报错原因是遍历本地排序的文件时出现异常，可能在 lightning 打开的文件数量超过系统的上限时发生。在 linux 系统中，可以使用 `ulimit -n` 命令确认此值是否过小。建议在 lightning 导入期间将此设置调整为 1000000（`ulimit -n 1000000`）。

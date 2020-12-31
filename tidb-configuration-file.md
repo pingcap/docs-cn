@@ -284,7 +284,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 这个配置只有在 `prepared-plan-cache.enabled` 为 `true` 的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
 
-### `server-memory-quota`
+### `server-memory-quota` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 > **警告：**
 >
@@ -294,12 +294,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示无内存限制。
 
-### `memory-usage-alarm-ratio`
+### `memory-usage-alarm-ratio` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 + tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
 + 默认值：0.8
-+ 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota) 未设置，则内存报警阈值为 `memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `memory-usage-alarm-ratio * server-memory-quota`。
-+ 当 TiDB 检测到 tidb-server 实例的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
++ 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `memory-usage-alarm-ratio * server-memory-quota`。
++ 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
 
 ### `txn-total-size-limit`
@@ -317,7 +317,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tcp-keep-alive`
 
 + TiDB 在 TCP 层开启 keepalive。
-+ 默认值：false
++ 默认值：true
 
 ### `cross-join`
 
@@ -464,12 +464,12 @@ prepare 语句的 Plan cache 设置。
 ### `capacity-mb`
 
 + 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
-+ 默认值：1000.0
++ 默认值：1000
 + 单位：MB
 
 ### `admission-max-result-mb`
 
-+ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
++ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集小于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
 + 默认值：10.0
 + 单位：MB
 
