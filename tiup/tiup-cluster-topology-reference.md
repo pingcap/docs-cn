@@ -1,6 +1,6 @@
 ---
 title: tiup cluster topology reference
-aliases: ['/docs-cn/dev/tiup/tiup-mirror-reference/']
+aliases: ['/docs-cn/dev/tiup/tiup-cluster-topology-reference/']
 ---
 
 # tiup cluster topology reference
@@ -15,21 +15,21 @@ aliases: ['/docs-cn/dev/tiup/tiup-mirror-reference/']
 
 一个 TiDB 集群的拓扑文件可能包含以下区块：
 
-- [global](/tiup/tiup-mirror-reference.md#global)：集群全局配置，其中一些是集群的默认值，可以在实例里面单独配置
-- [monitored](/tiup/tiup-mirror-reference.md#monitored)：监控服务配置，即 blackbox exporter 和 node exporter，每台机器上都会部署一个 node expoter 一个 blackbox exporter
-- [server_configs](/tiup/tiup-mirror-reference.md#server_configs)：全局服务配置，针对每种组件配置其默认配置，这个配置可以在每个实例里单独覆盖，该配置用于生成服务的配置文件
-- [pd_servers](/tiup/tiup-mirror-reference.md#pd_servers)：PD 实例的配置，用来指定 PD 组件部署到哪些机器上
-- [tidb_servers](/tiup/tiup-mirror-reference.md#tidb_servers)： TiDB 实例的配置，用来指定 TiDB 组件部署到哪些机器上
-- [tikv_servers](/tiup/tiup-mirror-reference.md#tikv_servers)：TiKV 实例的配置，用来指定 TiKV 组件部署到哪些机器上
-- [tiflash_servers](/tiup/tiup-mirror-reference.md#tiflash_servers)：TiFlash 实例的配置，用来指定 TiFlash 组件部署到哪些机器上
-- [pump_servers](/tiup/tiup-mirror-reference.md#pump_servers)：Pump 实例的配置，用来指定 Pump 组件部署到哪些机器上
-- [drainer_servers](/tiup/tiup-mirror-reference.md#drainer_servers)：Drainer 实例的配置，用来指定 Drainer 组件部署到哪些机器上
-- [cdc_servers](/tiup/tiup-mirror-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
-- [tispark_masters](/tiup/tiup-mirror-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
-- [tispark_workers](/tiup/tiup-mirror-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
-- [monitoring_servers](/tiup/tiup-mirror-reference.md#monitoring_servers)：Prometheus 实例的配置，用来指定 Prometheus 部署在哪台机器上
-- [grafana_servers](/tiup/tiup-mirror-reference.md#grafana_servers)：Grafana 实例的配置，用来指定 Grafana 部署在哪台机器上
-- [alertmanager_servers](/tiup/tiup-mirror-reference.md#alertmanager_servers)：Alertemanager 实例的配置，用来指定 Alertmanager 部署在哪台机器上
+- [global](/tiup/tiup-cluster-topology-reference.md#global)：集群全局配置，其中一些是集群的默认值，可以在实例里面单独配置
+- [monitored](/tiup/tiup-cluster-topology-reference.md#monitored)：监控服务配置，即 blackbox exporter 和 node exporter，每台机器上都会部署一个 node expoter 一个 blackbox exporter
+- [server_configs](/tiup/tiup-cluster-topology-reference.md#server_configs)：全局服务配置，针对每种组件配置其默认配置，这个配置可以在每个实例里单独覆盖，该配置用于生成服务的配置文件
+- [pd_servers](/tiup/tiup-cluster-topology-reference.md#pd_servers)：PD 实例的配置，用来指定 PD 组件部署到哪些机器上
+- [tidb_servers](/tiup/tiup-cluster-topology-reference.md#tidb_servers)： TiDB 实例的配置，用来指定 TiDB 组件部署到哪些机器上
+- [tikv_servers](/tiup/tiup-cluster-topology-reference.md#tikv_servers)：TiKV 实例的配置，用来指定 TiKV 组件部署到哪些机器上
+- [tiflash_servers](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)：TiFlash 实例的配置，用来指定 TiFlash 组件部署到哪些机器上
+- [pump_servers](/tiup/tiup-cluster-topology-reference.md#pump_servers)：Pump 实例的配置，用来指定 Pump 组件部署到哪些机器上
+- [drainer_servers](/tiup/tiup-cluster-topology-reference.md#drainer_servers)：Drainer 实例的配置，用来指定 Drainer 组件部署到哪些机器上
+- [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
+- [tispark_masters](/tiup/tiup-cluster-topology-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
+- [tispark_workers](/tiup/tiup-cluster-topology-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
+- [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers)：Prometheus 实例的配置，用来指定 Prometheus 部署在哪台机器上
+- [grafana_servers](/tiup/tiup-cluster-topology-reference.md#grafana_servers)：Grafana 实例的配置，用来指定 Grafana 部署在哪台机器上
+- [alertmanager_servers](/tiup/tiup-cluster-topology-reference.md#alertmanager_servers)：Alertemanager 实例的配置，用来指定 Alertmanager 部署在哪些机器上
 
 ### global
 
