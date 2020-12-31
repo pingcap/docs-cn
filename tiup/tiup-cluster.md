@@ -39,7 +39,7 @@ Available Commands:
   display     获取集群信息
   list        获取集群列表
   audit       查看集群操作日志
-  import      导入一个由 TiDB-Ansible 部署的集群
+  import      导入一个由 TiDB Ansible 部署的集群
   edit-config 编辑 TiDB 集群的配置
   reload      用于必要时重载集群配置
   patch       使用临时的组件包替换集群上已部署的组件
