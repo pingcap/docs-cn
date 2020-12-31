@@ -27,9 +27,9 @@ summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择�
 
 另外，BR 也可以对 TiDB 的数据进行[增量备份](/br/backup-and-restore-tool.md#增量备份)和[增量恢复](/br/backup-and-restore-tool.md#增量恢复)。
 
-## 迁出数据到 MySQL/TiDB
+## 迁出数据到 TiDB
 
-当需要将 TiDB 集群的数据迁出到 MySQL 或其他 TiDB 集群时，可使用 [Dumpling](/dumpling-overview.md) 从 TiDB 将全量数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 MySQL/TiDB。
+当需要将 TiDB 集群的数据迁出到 MySQL 或其他 TiDB 集群时，可使用 [Dumpling](/dumpling-overview.md) 从 TiDB 将全量数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB。
 
 如果还需要执行增量数据的迁移，则可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
