@@ -9,6 +9,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 [Backup & Restore](https://github.com/pingcap/br)（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`dumpling`](/backup-and-restore-using-dumpling-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
 
 ## 兼容性
+
 - BR 作为独立于 TiDB 的工具，会由于某些特性出现备份／恢复不兼容的情况，具体请参考 [BR 兼容性问题整理](/br/backup-and-restore-incompatible.md)
 
 ## 使用限制
