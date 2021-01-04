@@ -586,7 +586,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION
 - 默认值：0
-- 这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
+- 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
 ### `tidb_opt_correlation_exp_factor`
@@ -1018,12 +1018,13 @@ explain select * from t where age=5;
 >
 > + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
 > + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter) 不兼容，共同使用时有小概率发生写丢失。
+> + 本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。 
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
-- 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
+- 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
-> **注意：**
+> **警告：**
 >
 > 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency) 系统变量。
 
