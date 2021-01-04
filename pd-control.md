@@ -220,8 +220,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 "4.0.0"
 ```
 
-- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-当需要加快补副本或 balance 速度时可以调大这个值。
+- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
     设置最大 snapshot 为 16：
 
@@ -334,9 +333,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set max-store-down-time 30m
     ```
 
-- 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
-这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Leader 调度的开销较小，需要的时候可以适当调大。
+- 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
 
     最多同时进行 4 个 leader 调度：
 
