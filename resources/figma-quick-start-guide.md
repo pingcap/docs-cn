@@ -7,10 +7,6 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 [Figma](https://www.figma.com/) 是一款免费的在线绘图工具，支持多人实时协作，简单实用、易于上手，Windows 和 macOS 等平台均可使用。本文档介绍如何使用 Figma 绘制图片。
 
-## Figma 界面
-
-详情参见 [Figma 教程](https://help.figma.com/article/12-getting-familiar-with-figma)。
-
 ## Figma 快速上手
 
 执行以下步骤可使用 Figma 快速绘制图片。
@@ -31,7 +27,7 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 ### 第 2 步：打开 tidb-sketch-book 文件
 
-点击 [tidb-sketch-book](https://www.figma.com/file/dHQ9B7X4mF1q78NRIzNTs5/tidb-sketch-book-2020) 查看该绘图模板文件。
+点击 [tidb-sketch-book](https://www.figma.com/file/hNoQeZdKbqQ6gwyOy5cmLz/tidb-sketch-book-2020-2.0) 查看该绘图模板文件。
 
 > **注意：**
 >
@@ -70,7 +66,7 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 之后便可在这个 Frame 中开始绘图。
 
-### 第 4 步骤：绘制图片
+### 第 4 步：绘制图片
 
 建议将其他 Frame 中已有的图形复制、粘贴到新的 Frame 中，以便快速绘制图片。
 
@@ -114,10 +110,6 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 ![Corner Radius](/media/figma-guide/corner-radius.png)
 
-#### 其他操作
-
-参见 [Figma 用户指南](https://help.figma.com/category/9-getting-started)。
-
 ### 第 5 步：导出图片
 
 1. 选中待导出的 Frame，点击 **Export** 一栏的 **+**。
@@ -137,3 +129,5 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
     ![Export Frame X](/media/figma-guide/export-frame-x.png)
 
 4. 设置图片名称时，使用**描述性**名称。名称中可包含小写字母、数字及短连线 `-`。**请勿使用大写字母、空格、下划线**。
+
+更多步骤见 Figma 官方文档。

@@ -31,6 +31,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 >
 > - 由于受众不同，TiDB 的中文文档与英文文档并非完全相同。但绝大多数情况下，中英版本会保持一致。
 > - 通常，TiDB 文档是先有中文版，后有英文版。但也有一小部分文档，是先有英文版，后有中文版。
+> - [快速上手资源](#快速上手资源)一节中汇总了**中英术语表**和**风格指南**等参考文档，建议译前阅读。
 
 #### 中文翻译任务的认领方式
 
@@ -76,6 +77,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
     - [常用 bot 命令](#常用-bot-命令)
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
+- [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
 - [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
 - [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
@@ -90,6 +92,10 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 > **注意：**
 >
 > 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版）、v4.0、v3.1、v3.0 以及 v2.1。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
+
+### 第 0 步：签署 Contributor License Agreement
+
+首次在本仓库提 PR 时，请务必签署 [Contributor License Agreement](https://cla-assistant.io/pingcap/docs-cn) (CLA)，否则我们将无法合并你的 PR。成功签署 CLA 后，可继续进行后续操作。
 
 ### 第 1 步：Fork pingcap/docs-cn 仓库
 
