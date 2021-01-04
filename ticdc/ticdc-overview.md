@@ -54,7 +54,7 @@ TiCDC 的系统架构如下图所示：
 
 - MySQL sink
 
-    - TiCDC 不拆分表内事务，**保证**单表事务一致性，但**不保证**上游表内事务的顺序一致。
+    - TiCDC 不拆分表内事务，**保证**单表事务一致性，但**不保证**与上游表内事务的顺序一致。如果事务间的主键有交集，依然可以保证与上游顺序一致。
     - TiCDC 以表为单位拆分跨表事务，**不保证**跨表的事务始终一致。
     - TiCDC **保证**单行的更新与上游更新顺序一致。
 
@@ -85,9 +85,7 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 
 ## TiCDC 安装和部署
 
-在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件，只需在 TiUP 启动 TiDB 集群时的配置文件中 [加入 TiCDC 部分](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件) 即可。
-
-目前也支持使用 TiUP 或 binary 方式在原有 TiDB 集群上新增 TiCDC 组件，详细部署方案请参考 [部署安装 TiCDC](/ticdc/manage-ticdc.md#部署安装-ticdc)。
+要安装 TiCDC，可以选择随新集群一起部署，也可以对现有 TiDB 集群新增 TiCDC 组件。详请参阅 [TiCDC 安装部署](/ticdc/deploy-ticdc.md)。
 
 ## TiCDC 集群管理和同步任务管理
 

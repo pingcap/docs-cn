@@ -49,7 +49,7 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 |                | MySQL++                                  | `libmysqlclient`                 | See [MySQL++ Web site](http://tangentsoft.net/mysql++/doc/). |
 |                | MySQL wrapped                            | `libmysqlclient`                 | See [MySQL wrapped](http://www.alhem.net/project/mysql/). |
 | Go             | go-sql-driver                            | Native Driver                    | See [Mysql Go API](https://github.com/go-sql-driver/mysql) |
-| Cocoa          | MySQL-Cocoa                              | `libmysqlclient`                 | Compatible with the Objective-C Cocoa environment. See<http://mysql-cocoa.sourceforge.net/> |
+| Cocoa          | MySQL-Cocoa                              | `libmysqlclient`                 | Compatible with the Objective-C Cocoa environment. See <http://mysql-cocoa.sourceforge.net/> |
 | D              | MySQL for D                              | `libmysqlclient`                 | See [MySQL for D](https://github.com/mysql-d/mysql-native). |
 | Eiffel         | Eiffel MySQL                             | `libmysqlclient`                 | See [Section 27.14, “MySQL Eiffel Wrapper”](https://dev.mysql.com/doc/refman/5.7/en/apis-eiffel.html). |
 | Erlang         | `erlang-mysql-driver`                    | `libmysqlclient`                 | See [`erlang-mysql-driver`.](http://code.google.com/p/erlang-mysql-driver/) |

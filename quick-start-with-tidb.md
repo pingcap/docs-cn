@@ -9,11 +9,10 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 >
 > 对于生产环境，不要使用本文介绍的方式进行部署，而应使用 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
-本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
+本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 2 种体验方式供用户选择。
 
 - [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
 - [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
-- [第三种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第三种使用-tidb-wasm-一键体验-tidb-数据库)
 
 ## 第一种：使用 TiUP Playground 快速部署本地测试环境
 
@@ -74,11 +73,21 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 4. 新开启一个 session 以访问 TiDB 数据库。
 
-    {{< copyable "shell-regular" >}}
+    1. 首先安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
 
-    ```shell
-    mysql --host 127.0.0.1 --port 4000 -u root
-    ```
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        yum -y install mysql
+        ```
+
+    2. 使用 MySQL 客户端连接 TiDB：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        mysql --host 127.0.0.1 --port 4000 -u root
+        ```
 
 5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
@@ -270,6 +279,14 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 8. 访问集群：
 
+    - 安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        yum -y install mysql
+        ```
+
     - 访问 TiDB 数据库，密码为空：
 
         ```shell
@@ -295,15 +312,6 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
         ```shell
         tiup cluster display <cluster-name>
         ```
-
-## 第三种：使用 TiDB-Wasm 一键体验 TiDB 数据库
-
-- 适用场景：初步极速体验 TiDB 数据库的语法、兼容性等基本功能
-- 耗时：即时体验
-
-TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用。TiDB-Wasm 可直接进行 SQL 执行、兼容性验证等基本操作。
-
-直接点击网址试用 TiDB-Wasm：<https://tour.pingcap.com>，之后会在内存中构建 TiDB 数据库，预计耗时 10 秒左右。
 
 ## 探索更多
 

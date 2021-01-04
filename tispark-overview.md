@@ -93,9 +93,7 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 ### 没有 Spark 集群的部署方式
 
-如果没有使用中的 Spark 集群，推荐使用 Saprk Standalone 方式部署。这里简单介绍下 Standalone 部署方式。如果遇到问题，可以去官网寻求[帮助](https://spark.apache.org/docs/latest/spark-standalone.html)；也欢迎在我们的 GitHub 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
-
-如果是使用 TiDB Ansible 部署的 TiDB 集群，也可以通过 TiDB Ansible 来部署 Spark Standalone 集群，TiSpark 也会同时部署。
+如果没有使用中的 Spark 集群，推荐使用 Spark Standalone 方式部署。这里简单介绍下 Standalone 部署方式。如果遇到问题，可以去官网寻求[帮助](https://spark.apache.org/docs/latest/spark-standalone.html)；也欢迎在 GitHub 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
 
 #### 下载安装包并安装
 

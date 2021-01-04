@@ -5,61 +5,7 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 # TiCDC 运维操作及任务管理
 
-本文档介绍如何部署 TiCDC 集群，以及如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
-
-## 部署安装 TiCDC
-
-### 软件和硬件环境推荐配置
-
-在生产环境中，TiCDC 的软件和硬件配置推荐如下：
-
-| Linux 操作系统平台       | 版本         |
-| :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上   |
-| CentOS                   | 7.3 及以上   |
-
-| **CPU** | **内存** | **硬盘类型** | **网络** | **TiCDC 集群实例数量（生产环境最低要求）** |
-| --- | --- | --- | --- | --- |
-| 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
-
-更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
-
-### 使用 TiUP 部署安装 TiCDC
-
-#### 使用 TiUP 部署包含 TiCDC 组件的 TiDB 集群
-
-详细操作参考[使用 TiUP 部署 TiCDC](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)。
-
-#### 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
-
-1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。
-
-2. 参考 [扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点) 章节对 TiCDC 进行部署。
-
-### 在原有 TiDB 集群上使用 binary 部署 TiCDC 组件
-
-假设 PD 集群有一个可以提供服务的 PD 节点（client URL 为 `10.0.10.25:2379`）。若要部署三个 TiCDC 节点，可以按照以下命令启动集群。只需要指定相同的 PD 地址，新启动的节点就可以自动加入 TiCDC 集群。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_1.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --addr=0.0.0.0:8302 --advertise-addr=127.0.0.1:8302
-cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:8303 --advertise-addr=127.0.0.1:8303
-```
-
-对于 `cdc server` 命令中可用选项解释如下：
-
-- `gc-ttl`: TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，单位为秒，默认值为 `86400`，即 24 小时。
-- `pd`: PD client 的 URL。
-- `addr`: TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。
-- `advertise-addr`: TiCDC 对外访问地址。
-- `tz`: TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
-- `log-file`: TiCDC 进程运行日志的地址，默认为 `cdc.log`。
-- `log-level`: TiCDC 进程运行时默认的日志级别，默认为 `info`。
-- `ca`: TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
-- `cert`: TiCDC 使用的证书文件路径，PEM 格式，可选。
-- `key`: TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
+本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
 
 ## 使用 TiUP 升级 TiCDC
 
@@ -137,15 +83,24 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
 - `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+
+    {{< copyable "" >}}
+
+    ```
+    [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+    ```
+  
+    URI 中包含特殊字符时，需要以 URL 编码对特殊字符进行处理。
+
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
+- `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `memory`/`unified`/`file`：
+
+    - `memory`：在内存中进行排序。生产环境中建议优先选择 `memory`。
+    - `unified`：自 v4.0.9 引入的实验特性，优先使用内存排序。内存不足时则自动使用硬盘暂存数据。**不建议用于生产环境**，除非因内存不足 `memory` 无法正常使用。
+    - `file`：完全使用磁盘暂存数据。**已经停止维护，不建议使用。**
+    
 - `--config`：指定 changefeed 配置文件。
-
-{{< copyable "" >}}
-
-```
-[scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
-```
 
 #### Sink URI 配置 `mysql`/`tidb`
 
@@ -195,9 +150,33 @@ URI 中可配置的的参数如下：
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
+| `max-batch-size` |  从 v4.0.9 引入。如果消息协议支持将多条变更记录输出到一条 kafka 消息，该参数指定一条 kafka 消息中变更记录的最多数量，目前仅对 Kafka 的 `protocol` 为 `default` 时有效（可选，默认值为 `4096`）|
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+
+> **注意：**
+>
+> 当 `protocol` 为 `default` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
+
+#### TiCDC 集成 Kafka Connect (Confluent Platform)
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
+配置样例如下所示：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--opts registry="http://127.0.0.1:8081"
+```
+
+如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，应当选择 `avro` 协议，并在 `opts` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。请注意，`avro` 协议和 Confluent 集成目前均为**实验特性**。
+
+集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
 
 #### Sink URI 配置 `pulsar`
 
@@ -674,7 +653,7 @@ sync-ddl = true
 
 环形同步任务创建步骤如下：
 
-1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](#部署安装-ticdc)。
+1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](/ticdc/deploy-ticdc.md)。
 
     {{< copyable "shell-regular" >}}
 
