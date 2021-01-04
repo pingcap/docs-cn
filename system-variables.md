@@ -585,7 +585,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION
 - 默认值：0
-- 这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
+- 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
 ### `tidb_opt_correlation_exp_factor`
