@@ -568,7 +568,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION
 - 默认值：0
-- 这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
+- 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
 ### `tidb_opt_correlation_exp_factor`
@@ -922,6 +922,13 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_enable_rate_limit_action`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：ON
+- 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_disql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
+- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为。
 
 ### `tidb_memory_usage_alarm_ratio`
 
