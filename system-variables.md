@@ -751,9 +751,9 @@ SET tidb_slow_log_threshold = 200;
 - Default value: 1
 - This variable controls whether to record the execution information of each operator in the slow query log.
 
-### tidb_log_desensitization
+### tidb_redact_log
 
-- Scope: GLOBAL
+- Scope: SESSION | GLOBAL
 - Default value: 0
 - This variable controls whether to hide user information in the SQL statement being recorded into the TiDB log and slow log.
 - When you set the variable to `1`, user information is hidden. For example, if the executed SQL statement is `insert into t values (1,2)`, the statement is recorded as `insert into t values (?,?)` in the log.

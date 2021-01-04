@@ -1195,7 +1195,7 @@ Configuration items related to security
 + The path of the PEM file that contains the X509 key
 + Default value: ""
 
-### `redact-info-log`
+### `redact-info-log` <span class="version-mark">New in v4.0.8</span>
 
 + This configuration item enables or disables log redaction. If the configuration value is set to `true`, all user data in the log will be replaced by `?`.
 + Default value: `false`
