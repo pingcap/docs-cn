@@ -1,5 +1,9 @@
 ---
 title: 使用 Dumpling/TiDB Lightning 进行备份与恢复
+<<<<<<< HEAD
+=======
+aliases: ['/docs-cn/dev/backup-and-restore-using-dumpling-lightning/','/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling','/docs-cn/dev/backup-and-restore-using-mydumper-lightning/','/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning/','/docs-cn/dev/how-to/maintain/backup-and-restore/','/zh/tidb/dev/backup-and-restore-using-mydumper-lightning/']
+>>>>>>> cefac73d... Fix bugs in 5.0 docs (#5208)
 ---
 
 # 使用 Dumpling/TiDB Lightning 进行备份与恢复
