@@ -221,8 +221,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 "4.0.0"
 ```
 
-- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-当需要加快补副本或 balance 速度时可以调大这个值。
+- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
     设置最大 snapshot 为 16：
 
