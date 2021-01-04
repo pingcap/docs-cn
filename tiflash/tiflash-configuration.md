@@ -144,7 +144,23 @@ delta_index_cache_size = 0
 
     ## The memory usage limit for the generated intermediate data when all queries
     ## are executed. The default value is 0 (in bytes), which means no limit.
-    max_memory_usage_for_all_queries = 0 
+    max_memory_usage_for_all_queries = 0
+
+## Security settings take effect starting from v4.0.5.
+[security]
+    ## This configuration item enables or disables log redaction. If the configuration value
+    ## is set to `true`, all user data in the log will be replaced by `?`.
+    ## Note that you also need to set `security.redact-info-log` for tiflash-learner's logging
+    ## in tiflash-learner.toml
+    # redact_info_log = false
+
+    ## Path of the file that contains a list of trusted SSL CAs. If set, the following settings
+    ## `cert_path` and `key_path` are also needed.
+    # ca_path = "/path/to/ca.pem"
+    ## Path of the file that contains X509 certificate in PEM format.
+    # cert_path = "/path/to/tiflash-server.pem"
+    ## Path of the file that contains X509 key in PEM format.
+    # key_path = "/path/to/tiflash-server-key.pem"
 ```
 
 ### Configure the `tiflash-learner.toml` file

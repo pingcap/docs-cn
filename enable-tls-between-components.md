@@ -35,11 +35,11 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
         ```toml
         [security]
-        # Path of file that contains list of trusted SSL CAs for connection with cluster components.
+        # Path of the file that contains list of trusted SSL CAs for connection with cluster components.
         cluster-ssl-ca = "/path/to/ca.pem"
-        # Path of file that contains X509 certificate in PEM format for connection with cluster components.
+        # Path of the file that contains X509 certificate in PEM format for connection with cluster components.
         cluster-ssl-cert = "/path/to/tidb-server.pem"
-        # Path of file that contains X509 key in PEM format for connection with cluster components.
+        # Path of the file that contains X509 key in PEM format for connection with cluster components.
         cluster-ssl-key = "/path/to/tidb-server-key.pem"
         ```
 
@@ -49,9 +49,12 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
         ```toml
         [security]
-        # set the path for certificates. Empty string means disabling secure connections.
+        ## The path for certificates. An empty string means that secure connections are disabled.
+        # Path of the file that contains a list of trusted SSL CAs. If it is set, the following settings `cert_path` and `key_path` are also needed.
         ca-path = "/path/to/ca.pem"
+        # Path of the file that contains X509 certificate in PEM format.
         cert-path = "/path/to/tikv-server.pem"
+        # Path of the file that contains X509 key in PEM format.
         key-path = "/path/to/tikv-server-key.pem"
         ```
 
@@ -61,11 +64,12 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
         ```toml
         [security]
-        # Path of file that contains list of trusted SSL CAs. If set, following four settings shouldn't be empty
+        ## The path for certificates. An empty string means that secure connections are disabled.
+        # Path of the file that contains a list of trusted SSL CAs. If it is set, the following settings `cert_path` and `key_path` are also needed.
         cacert-path = "/path/to/ca.pem"
-        # Path of file that contains X509 certificate in PEM format.
+        # Path of the file that contains X509 certificate in PEM format.
         cert-path = "/path/to/pd-server.pem"
-        # Path of file that contains X509 key in PEM format.
+        # Path of the file that contains X509 key in PEM format.
         key-path = "/path/to/pd-server-key.pem"
         ```
 
@@ -75,11 +79,12 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
          ```toml
         [security]
-        # Path of file that contains list of trusted SSL CAs. if set, following four settings shouldn't be empty
+        ## The path for certificates. An empty string means that secure connections are disabled.
+        # Path of the file that contains a list of trusted SSL CAs. If it is set, the following settings `cert_path` and `key_path` are also needed.
         ca_path = "/path/to/ca.pem"
-        # Path of file that contains X509 certificate in PEM format.
+        # Path of the file that contains X509 certificate in PEM format.
         cert_path = "/path/to/tiflash-server.pem"
-        # Path of file that contains X509 key in PEM format.
+        # Path of the file that contains X509 key in PEM format.
         key_path = "/path/to/tiflash-server-key.pem"
         ```
 
@@ -87,9 +92,11 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
         ```toml
         [security]
-        # Sets the path for certificates. The empty string means that secure connections are disabled.
+        # Path of the file that contains a list of trusted SSL CAs. If it is set, the following settings `cert_path` and `key_path` are also needed.
         ca-path = "/path/to/ca.pem"
+        # Path of the file that contains X509 certificate in PEM format.
         cert-path = "/path/to/tiflash-server.pem"
+        # Path of the file that contains X509 key in PEM format.
         key-path = "/path/to/tiflash-server-key.pem"
         ```
 
