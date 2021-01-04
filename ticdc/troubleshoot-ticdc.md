@@ -45,24 +45,31 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 - 通过 `cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
 - 部分极端异常情况下 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
 
-## TiCDC 的 `gc-ttl` 和文件排序是什么？
+## TiCDC 的 `gc-ttl` 是什么？
 
 从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何小于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
 
 启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间，该值默认为 86400 秒。
 
-如果同步任务长时间中断，累积未消费的数据比较多，初始启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的文件排序功能，该功能会使用文件系统文件进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=file` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
+## 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？
+
+如果同步任务长时间中断，累积未消费的数据比较多，再次启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的实验特性 Unified Sorter 排序引擎，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235200 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --sort-engine="file" --sort-dir="/data/cdc/sort"
+cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort"
 ```
 
 > **注意：**
 >
-> + TiCDC（4.0 发布版本）还不支持动态修改文件排序和内存排序。
-> + 目前文件排序功能的处理能力有限。如果单表数据量过多导致文件排序失败，可以修改 TiCDC 任务配置过滤掉这张表，通过其他备份恢复工具例如 BR 恢复这张表之后再继续同步该表。
+> + TiCDC 从 4.0.9 版本起支持 Unified Sorter 排序引擎。
+> + TiCDC（4.0 发布版本）还不支持动态修改排序引擎。在修改排序引擎设置前，请务必确保 changefeed 已经停止 (stopped)。
+> + 目前 Unified Sorter 排序引擎为实验特性，在数据表较多 (>= 100) 时可能出现性能问题，影响同步速度，故不建议在生产环境中使用。开启 Unified Sorter 前请保证各 TiCDC 节点机器上有足够硬盘空间。如果积攒的数据总量有可能超过 1 TB，则不建议使用 TiCDC 进行同步。
+
+## TiCDC GC safepoint 的完整行为是什么
+
+TiCDC 服务启动后，如果有任务开始同步，TiCDC owner 会根据所有同步任务最小的 checkpoint-ts 更新到 PD service GC safepoint，service GC safepoint 可以保证该时间点及之后的数据不被 GC 清理掉。如果 TiCDC 同步任务中断，该任务的 checkpoint-ts 不会再改变，PD 对应的 service GC safepoint 也不会再更新。TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC 服务中断 24 小时内恢复能保证数据不因 GC 而丢失。
 
 ## 如何处理 TiCDC 创建同步任务或同步到 MySQL 时遇到 `Error 1298: Unknown or incorrect time zone: 'UTC'` 错误？
 
@@ -74,6 +81,8 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --start-ts=415238226621235
 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql -p
 ```
 
+显示类似于下面的输出则表示导入已经成功：
+
 ```
 Enter password:
 Warning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.
@@ -82,7 +91,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it
 Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
 ```
 
-如果是在特殊的公有云环境使用 MySQL，譬如阿里云 RDS 并且没有修改 MySQL 的权限，就需要通过 `--tz` 参数指定时区。可以首先在 MySQL 查询其使用的时区，然后在创建同步任务和创建 TiCDC 服务时使用该时区。
+如果下游是特殊的 MySQL 环境（某种公有云 RDS 或某些 MySQL 衍生版本等），使用上述方式导入时区失败，就需要通过 sink-uri 中的 `time-zone` 参数指定下游的 MySQL 时区。可以首先在 MySQL 中查询其使用的时区：
 
 {{< copyable "shell-regular" >}}
 
@@ -99,19 +108,35 @@ show variables like '%time_zone%';
 +------------------+--------+
 ```
 
+然后在创建同步任务和创建 TiCDC 服务时使用该时区：
+
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Shanghai
+cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST"
 ```
 
 > **注意：**
 >
-> 在 MySQL 中 CST 时区通常实际代表的是 China Standard Time (UTC+08:00)，通常系统中不能直接使用 `CST`，而是用 `Asia/Shanghai` 来替换。
+> CST 可能是以下四个不同时区的缩写：
+>
+> + 美国中部时间：Central Standard Time (USA) UT-6:00
+> + 澳大利亚中部时间：Central Standard Time (Australia) UT+9:30
+> + 中国标准时间：China Standard Time UT+8:00
+> + 古巴标准时间：Cuba Standard Time UT-4:00
+>
+> 在中国，CST 通常表示中国标准时间，使用时请注意甄别。
+
+## 如何理解 TiCDC 时区和上下游数据库系统时区之间的关系？
+
+||上游时区| TiCDC 时区| 下游时区 |
+| :-: | :-: | :-: | :-: |
+| 配置方式 | 见[时区支持](/configure-time-zone.md) | 启动 ticdc server 时的 `--tz` 参数 | sink-uri 中的 `time-zone` 参数 |
+| 说明 | 上游 TiDB 的时区，影响 timestamp 类型的 DML 操作和与 timestamp 类型列相关的 DDL 操作。 | TiCDC 会将假设上游 TiDB 的时区和 TiCDC 时区配置相同，对 timestamp 类型的列进行相关处理。 | 下游 MySQL 将按照下游的时区设置对 DML 和 DDL 操作中包含的 timestamp 进行处理。|
 
 > **注意：**
 >
-> 请谨慎设置 TiCDC server 的时区，因为该时区会用于时间类型的转换。推荐上下游数据库使用相同的时区，并且启动 TiCDC server 时通过 `--tz` 参数指定该时区。TiCDC server 时区使用的优先级如下：
+> 请谨慎设置 TiCDC server 的时区，因为该时区会用于时间类型的转换。上游时区、TiCDC 时区和下游时区应该保持一致。TiCDC server 时区使用的优先级如下：
 >
 > - 最优先使用 `--tz` 传入的时区。
 > - 没有 `--tz` 参数，会尝试读取 `TZ` 环境变量设置的时区。
@@ -246,6 +271,10 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 更多信息请参考 [Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-的类型码)。
 
+## TiCDC 启动任务的 start-ts 时间戳与当前时间差距较大，任务执行过程中同步中断，出现错误 `[CDC:ErrBufferReachLimit]`
+
+自 v4.0.9 起可以尝试开启 unified sorter 特性进行同步；或者使用 BR 工具进行一次增量备份和恢复，然后从新的时间点开启 TiCDC 同步任务。TiCDC 将会在后续版本中对该问题进行优化。
+
 ## 如何区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件？
 
 如果没有开启 Old Value 功能，用户无法区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件。如果开启了 Old Value 功能，则可以通过事件中的字段判断事件类型：
@@ -255,3 +284,51 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 * 如果只存在 `"d"` 字段则为 `DELETE` 事件
 
 更多信息请参考 [Open protocol Row Changed Event 格式定义](/ticdc/ticdc-open-protocol.md#row-changed-event)。
+
+## TiCDC 占用多少 PD 的存储空间
+
+TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间正比与 1 小时的元数据版本数量。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintaince space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。推荐使用这三个版本的用户升级到 v4.0.9 及以后版本。
+
+## TiCDC 支持同步大事务吗？有什么风险吗？
+
+TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同可能存在以下风险：
+
++ 当 TiCDC 内部处理能力不足时，可能出现同步任务报错 `ErrBufferReachLimit`。
++ 当 TiCDC 内部处理能力不足或 TiCDC 下游吞吐能力不足时，可能出现内存溢出 (OOM)。
+
+当遇到上述错误时，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
+
+1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/backup-and-restore-tool.md#增量备份)。
+2. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
+3. 执行[增量恢复](/br/backup-and-restore-tool.md#增量恢复)。
+4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
+5. 删除旧的 changefeed。
+
+## 当 changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL 语句，阻塞了所有其他 changefeed，应该怎样处理？
+
+1. 首先暂停执行耗时较长的 DDL 的 changefeed。此时可以观察到，这个 changefeed 暂停后，其他的 changefeed 不再阻塞了。
+2. 在 TiCDC log 中搜寻 `apply job` 字段，确认耗时较长的 DDL 的 `StartTs`。
+3. 手动在下游执行该 DDL 语句，执行完毕后进行下面的操作。
+4. 修改 changefeed 配置，将上述 `StartTs` 添加到 `ignore-txn-start-ts` 配置项中。
+5. 恢复被暂停的 changefeed。
+
+## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`
+
+自 v4.0.8 起，如果 changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 Old Value 功能。如果没开启则会报错。可以按照以下步骤解决该问题：
+
+1. 将 changefeed 配置文件中 `enable-old-value` 的值设为 `true`。
+2. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    ```
+
+3. 使用 `cdc cli changfeed resume` 恢复同步任务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed resume -c test-cf
+    ```

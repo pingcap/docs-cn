@@ -260,6 +260,10 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     带聚合函数的 SQL 中返回非聚合的列，违反了 `only_full_group_by` 模式。请修改 SQL 或者考虑关闭 `only_full_group_by` 模式。
 
+* Error Number: 8129
+
+    TiDB 尚不支持键长度 >= 65536 的 JSON 对象。
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考 [与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
@@ -343,6 +347,14 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 9010
 
     TiKV 无法处理这条 raft log，请检查 TiKV Server 状态/监控/日志。
+    
+* Error Number: 9012
+
+    请求 TiFlash 超时。请检查 TiFlash Server 状态/监控/日志以及 TiDB Server 与 TiFlash Server 之间的网络。
+
+* Error Number: 9013
+
+    TiFlash 操作繁忙。该错误一般出现在数据库负载比较高时。请检查 TiFlash Server 的状态/监控/日志。
 
 ## 故障诊断
 
