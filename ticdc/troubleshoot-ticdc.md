@@ -81,7 +81,7 @@ TiCDC 服务启动后，如果有任务开始同步，TiCDC owner 会根据所�
 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql -p
 ```
 
-显示类似下面的输出则意味着导入已经成功：
+显示类似于下面的输出则表示导入已经成功：
 
 ```
 Enter password:
@@ -91,7 +91,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it
 Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
 ```
 
-如果下游是特殊的 MySQL 环境（某种公有云 RDS、某些 MySQL 衍生版本等），使用上述方式导入时区失败，就需要通过 sink-uri 中的 `time-zone` 参数指定下游 MySQL 时区。可以首先在 MySQL 查询其使用的时区：
+如果下游是特殊的 MySQL 环境（某种公有云 RDS 或某些 MySQL 衍生版本等），使用上述方式导入时区失败，就需要通过 sink-uri 中的 `time-zone` 参数指定下游的 MySQL 时区。可以首先在 MySQL 中查询其使用的时区：
 
 {{< copyable "shell-regular" >}}
 
@@ -126,11 +126,11 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 > 
 > 在中国，CST 通常表示中国标准时间，使用时请注意甄别。
 
-## 如何理解 TiCDC 时区和上下游数据库系统的时区的关系？
+## 如何理解 TiCDC 时区和上下游数据库系统时区之间的关系？
 
 ||上游时区| TiCDC 时区| 下游时区 |
 | :-: | :-: | :-: | :-: |
-| 配置方式 | [时区支持](/configure-time-zone.md) | 启动 ticdc server 时的 --tz 参数 | sink-uri 中的 time-zone 参数 |
+| 配置方式 | 见[时区支持](/configure-time-zone.md) | 启动 ticdc server 时的 --tz 参数 | sink-uri 中的 time-zone 参数 |
 | 说明 | 上游 TiDB 的时区，影响 timestamp 类型的 DML 和与 timestamp 类型列相关的 DDL。 | TiCDC 会将假设上游 TiDB 的时区和 TiCDC 时区配置相同，对 timestamp 类型的列进行相关处理。 | 下游 MySQL 将按照下游的时区设置对 DML 和 DDL 中包含的 timestamp 进行处理。|
 
 > **注意：**
@@ -290,7 +290,7 @@ TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd �
 
 ## TiCDC 支持同步大事务吗？有什么风险吗？
 
-TiCDC 对大事务（事务尺寸超过 5G）提供部分支持，根据场景不同可能存在以下风险：
+TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同可能存在以下风险：
 
 - 同步任务报错 ErrBufferReachLimit
     - 当 TiCDC 内部处理能力不足时可能导致这种错误。

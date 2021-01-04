@@ -33,7 +33,7 @@ Changefeed 是指 TiCDC 中的一个增量同步任务。一个增量同步任�
 
 ### Old value
 
-Old value 特指在 TiCDC 输出的增量变更日志中的“原始值”，可以通过配置指定 TiCDC 输出的增量变更日志是否包含“原始值”。
+Old value 特指在 TiCDC 输出的增量变更日志中的“原始值”。可以通过配置来指定 TiCDC 输出的增量变更日志是否包含“原始值”。
 
 ### Operator
 
