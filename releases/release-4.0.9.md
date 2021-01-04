@@ -104,7 +104,7 @@ TiDB 版本：4.0.9
         - 支持同时设置 `-F` 和 `-r` 两个参数 [#177](https://github.com/pingcap/dumpling/pull/177)
         - 默认不导出系统表 [#194](https://github.com/pingcap/dumpling/pull/194)
         - 在设置 `--transactional-consistency` 参数时支持重建 MySQL 链接 [#199](https://github.com/pingcap/dumpling/pull/199)
-        - 支持使用 -c,--compress 参数用于指定dumpling是否使用压缩备份及指定压缩算法 [#202](https://github.com/pingcap/dumpling/pull/202)
+        - 支持使用 `-c,--compress` 参数指定 Dumpling 使用的压缩算法，空字符串代表不压缩 [#202](https://github.com/pingcap/dumpling/pull/202)
 
     + TiDB Lightning
 
