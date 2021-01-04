@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 后端
 summary: 了解使用 TiDB Lightning 导入数据时，如何选择不同的后端。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/']
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/','/docs-cn/dev/loader-overview/','/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/','/docs-cn/dev/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/dev/loader-overview/']
 ---
 
 # TiDB Lightning 后端
@@ -45,6 +45,10 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与执行](/tidb-lightning/deploy-tidb-lightning.md)。
 
 ## TiDB Lightning TiDB-backend
+
+> **注意：**
+>
+> 从 TiDB v4.0 起，PingCAP 不再维护 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview) 工具。从 v5.0 起，不再提供 Loader 的文档。Loader 的功能已经完全被 TiDB Lightning 的 TiDB backend 功能取代，强烈建议切换到 TiDB Lightning。
 
 ### 部署和配置 TiDB Lightning
 
@@ -92,7 +96,7 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 
 ### 从 Loader 迁移到 TiDB Lightning TiDB-backend
 
-TiDB Lightning TiDB-backend 可以完全取代 [Loader](/loader-overview.md)。下表说明了如何将 [Loader](/loader-overview.md) 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
+当需要将数据导入到 TiDB 集群时，TiDB Lightning TiDB-backend 可以完全取代 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview)。下表说明了如何将 Loader 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
 <table align="left">
 <thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thead>
@@ -334,7 +338,7 @@ password = ""
     addr = "172.16.31.10:8287"
 
     [mydumper]
-    # Mydumper 源数据目录。
+    # 源数据目录。
     data-source-dir = "/data/my_database"
 
     [tidb]

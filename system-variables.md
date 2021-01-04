@@ -334,7 +334,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：0
-- 这个变量用于控制是否开启聚簇索引特性。
+- 这个变量用于控制是否开启[聚簇索引](/clustered-indexes.md)特性。
     - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
     - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
     - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了聚簇索引特性。
@@ -795,9 +795,9 @@ set tidb_slow_log_threshold = 200;
 
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
-### `tidb_log_desensitization`
+### `tidb_redact_log`
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 
 - 默认值：0
 
@@ -1010,7 +1010,7 @@ explain select * from t where age=5;
 - 默认值：OFF
 - 这个变量表示是否追踪聚合函数的内存使用情况。当开启该功能时，聚合函数的内存使用情况会被统计，进而可能会造成整个 SQL 内存统计值超阈值 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)，然后被 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的行为影响。
 
-### `tidb_enable_async_commit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_enable_async_commit` <!-- 从 v5.0.0-rc 版本开始引入 -->
 
 > **警告：**
 >
@@ -1025,9 +1025,9 @@ explain select * from t where age=5;
 
 > **注意：**
 >
-> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。
+> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency) 系统变量。
 
-### `tidb_guarantee_external_consistency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_guarantee_external_consistency` <!-- 从 v5.0.0-rc 版本开始引入 -->
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF

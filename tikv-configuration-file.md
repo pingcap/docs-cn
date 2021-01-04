@@ -746,9 +746,9 @@ rocksdb 相关的配置项。
 + 最小值：1
 + 最大值：3
 
-### `rate-limiter-auto-tuned`
+### `rate-limiter-auto-tuned` <!-- 从 v5.0.0-rc 版本开始引入 -->
 
-+ 控制是否自动优化 RocksDB 的 compaction rate limiter 配置。
++ 控制是否依据最近的负载量自动优化 RocksDB 的 compaction rate limiter 配置。此配置项开启后，compaction pending bytes 监控指标值会比一般情况下稍微高些。
 + 默认值：true
 
 ### `enable-pipelined-write`
@@ -1188,7 +1188,7 @@ raftdb 相关配置项。
 + 包含 X509 key 的 PEM 文件路径
 + 默认值：""
 
-### `redact-info-log`
+### `redact-info-log` <span class="version-mark">从 v4.0.8 版本开始引入</span>
 
 + 若开启该选项，日志中的用户数据会以 `?` 代替。
 + 默认值：`false`
