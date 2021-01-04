@@ -704,8 +704,8 @@ rocksdb 相关的配置项。
 
 ### `enable-statistics`
 
-+ 开启自动优化 Rate LImiter 的配置的开关。
-+ 默认值：false
++ 开启 RocksDB 的统计信息。
++ 默认值：true
 
 ### `stats-dump-period`
 
@@ -733,22 +733,23 @@ rocksdb 相关的配置项。
 
 ### `rate-bytes-per-sec`
 
-+ Rate Limiter 限制速率。
-+ 默认值：0
++ RocksDB compaction rate limiter 的限制速率。
++ 默认值：10GB
 + 最小值：0
-+ 单位：Bytes
++ 单位：B|KB|MB|GB
 
 ### `rate-limiter-mode`
 
-+ Rate LImiter 模式，取值：1（ReadOnly），2（WriteOnly），3（AllIo）。
++ RocksDB 的 compaction rate limiter 模式。
++ 可选值：1 (ReadOnly)，2 (WriteOnly)，3 (AllIo)
 + 默认值：2
 + 最小值：1
 + 最大值：3
 
-### `auto-tuned`
+### `rate-limiter-auto-tuned` <!-- 从 v5.0.0-rc 版本开始引入 -->
 
-+ 开启自动优化 Rate LImiter 的配置的开关。
-+ 默认值：false
++ 控制是否依据最近的负载量自动优化 RocksDB 的 compaction rate limiter 配置。此配置项开启后，compaction pending bytes 监控指标值会比一般情况下稍微高些。
++ 默认值：true
 
 ### `enable-pipelined-write`
 
@@ -842,7 +843,7 @@ rocksdb defaultcf 相关的配置项。
 
 ### `cache-index-and-filter-blocks`
 
-+ 开启 缓存 index 和 filter 的开关。
++ 开启缓存 index 和 filter 的开关。
 + 默认值：true
 
 ### `pin-l0-filter-and-index-blocks`
@@ -888,6 +889,13 @@ bloom filter 为每个 key 预留的长度。
 + 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
 + 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
 
+### `bottommost-level-compression`
+
++ 设置最底层的压缩算法。该设置将覆盖 `compression-per-level` 的设置。
++ 因为最底层并非从数据开始写入 LSM-tree 起就直接采用 `compression-per-level` 数组中的最后一个压缩算法，使用 `bottommost-level-compression` 可以让最底层从一开始就使用压缩效果最好的压缩算法。
++ 如果不想设置最底层的压缩算法，可以将该配置项的值设为 `disable`。
++ 默认值："zstd"
+
 ### `write-buffer-size`
 
 + memtable 大小。
@@ -916,7 +924,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `target-file-size-base`
 
-+ base level 的目标文件大小。
++ base level 的目标文件大小。当 `enable-compaction-guard` 的值为 `true` 时，`compaction-guard-max-output-file-size` 会覆盖此配置。
 + 默认值：8MB
 + 最小值：0
 + 单位：KB|MB|GB
@@ -988,6 +996,23 @@ Compaction 优先类型，默认：3（MinOverlappingRatio），0（ByCompensate
 
 + pending compaction bytes 的硬限制。
 + 默认值：256GB
++ 单位：KB|MB|GB
+
+### `enable-compaction-guard`
+
++ 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
++ 默认值：true
+
+### `compaction-guard-min-output-file-size`
+
++ 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
++ 默认值：8MB
++ 单位：KB|MB|GB
+
+### `compaction-guard-max-output-file-size`
+
++ 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
++ 默认值：128MB
 + 单位：KB|MB|GB
 
 ## rocksdb.defaultcf.titan
@@ -1086,6 +1111,23 @@ rocksdb writecf 相关的配置项。
 + 开启将整个 key 放到 bloom filter 中的开关。
 + 默认值：false
 
+### `enable-compaction-guard`
+
++ 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
++ 默认值：true
+
+### `compaction-guard-min-output-file-size`
+
++ 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
++ 默认值：8MB
++ 单位：KB|MB|GB
+
+### `compaction-guard-max-output-file-size`
+
++ 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
++ 默认值：128MB
++ 单位：KB|MB|GB
+
 ## rocksdb.lockcf
 
 rocksdb lockcf 相关配置项。
@@ -1146,10 +1188,40 @@ raftdb 相关配置项。
 + 包含 X509 key 的 PEM 文件路径
 + 默认值：""
 
-### `redact-info-log`
+### `redact-info-log` <span class="version-mark">从 v4.0.8 版本开始引入</span>
 
 + 若开启该选项，日志中的用户数据会以 `?` 代替。
 + 默认值：`false`
+
+## security.encryption
+
+[静态加密](/encryption-at-rest.md) (TDE) 有关的配置项。
+
+### `data-encryption-method`
+
++ 数据文件的加密方法。
++ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`
++ 选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
++ 默认值：`"plaintext"`
+
+### `data-key-rotation-period`
+
++ 指定 TiKV 轮换数据密钥的频率。
++ 默认值：`7d`
+
+### enable-file-dictionary-log
+
++ 启用优化，以减少 TiKV 管理加密元数据时的 I/O 操作和互斥锁竞争。
++ 此配置参数默认启用，为避免可能出现的兼容性问题，请参考[静态加密 - TiKV 版本间兼容性](/encryption-at-rest.md#tikv-版本间兼容性)。
++ 默认值：`true`
+
+### master-key
+
++ 指定启用加密时的主密钥。若要了解如何配置主密钥，可以参考[静态加密 - 配置加密](/encryption-at-rest.md#配置加密)。
+
+### previous-master-key
+
++ 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考[静态加密 - 配置加密](/encryption-at-rest.md#配置加密)。
 
 ## import
 
@@ -1166,6 +1238,13 @@ raftdb 相关配置项。
 + 并发导入工作任务数。
 + 默认值：8
 + 最小值：1
+
+## gc
+
+### `enable-compaction-filter`
+
++ 是否开启 GC in Compaction Filter 特性
++ 默认值：false
 
 ## backup
 
