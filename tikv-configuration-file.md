@@ -94,7 +94,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `snap-max-write-bytes-per-sec`
 
 + 处理 snapshot 时最大允许使用的磁盘带宽。
-+ 默认值：1000MB
++ 默认值：100MB
 + 单位：KB|MB|GB
 + 最小值：1KB
 
