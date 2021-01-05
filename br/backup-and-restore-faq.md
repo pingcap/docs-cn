@@ -69,3 +69,11 @@ However, if you want to restore data from local storage, the number of replicas 
 + Before v4.0.3, DDL jobs generated during the BR restore might cause unexpected DDL executions in TiCDC/Drainer. Therefore, if you need to perform restore on the upstream cluster of TiCDC/Drainer, add all tables restored using BR to the TiCDC/Drainer block list.
 
 You can use [`filter.rules`](https://github.com/pingcap/ticdc/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) to configure the block list for TiCDC and use [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) to configure the block list for Drainer.
+
+## Why is the `region is unavailable` error reported for a SQL query after I use BR to restore the backup data?
+
+If the cluster backed up using BR has TiFlash, `TableInfo` stores the TiFlash information when BR restores the backup data. If the cluster to be restored does not have TiFlash, the `region is unavailable` error is reported.
+
+## Does BR support in-place full recovery of some historical backup?
+
+No. BR does not support in-place full recovery of some historical backup.
