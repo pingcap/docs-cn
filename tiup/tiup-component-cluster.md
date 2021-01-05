@@ -33,11 +33,11 @@ tiup cluster [command] [flags]
 
 ### --wait-timeout（uint，默认 120）
 
-设置执行命令的超时时间，单位为秒。
+运维过程中涉及到很多操作：指定 systemctl 启动/停止服务，等待端口上线/下线等，每个操作可能会消耗数秒，`--wait-timeout` 用于设置每个步骤的最长等待时间（单位为秒），超时后报错退出。
 
 ### -y, --yes (boolean，默认 false)
 
-跳过所有二次确认，除非是使用脚本调用 TiUP，否则不推荐使用。
+跳过所有风险操作的二次确认，除非是使用脚本调用 TiUP，否则不推荐使用。
 
 ### -v, --version（boolean，默认 false）
 
@@ -49,19 +49,18 @@ tiup cluster [command] [flags]
 
 ## 命令清单
 
-- import：导入 ansible 部署的集群
-- check：部署前后的集群检查
-- deploy：根据指定拓扑部署集群
-- list：查询已部署的集群列表
-- start：启动指定集群
-- display：展示指定集群状态
-- stop：停止指定集群
-- restart：重启指定集群
-- scale-in：缩容指定集群
-- scale-out：扩容指定集群
-- upgrade：升级指定集群
-- exec：在指定集群的指定机器上执行命令
-- prune：销毁指定集群中状态为 tombstone 的实例
+- [import](/tiup/tiup-component-cluster-import.md)：导入 ansible 部署的集群
+- [check](/tiup/tiup-component-cluster-check.md)：部署前后的集群检查
+- [deploy](/tiup/tiup-component-cluster-deploy.md)：根据指定拓扑部署集群
+- [list](/tiup/tiup-component-cluster-list.md)：查询已部署的集群列表
+- [display](/tiup/tiup-component-cluster-display.md)：展示指定集群状态
+- [start](/tiup/tiup-component-cluster-start.md)：启动指定集群
+- [stop](/tiup/tiup-component-cluster-stop.md)：停止指定集群
+- [restart](/tiup/tiup-component-cluster-restart.md)：重启指定集群
+- [scale-in](/tiup/tiup-component-cluster-scale-in.md)：缩容指定集群
+- [scale-out](/tiup/tiup-component-cluster-scale-out.md)：扩容指定集群
+- [upgrade](/tiup/tiup-component-cluster-upgrade.md)：升级指定集群
+- [prune](/tiup/tiup-component-cluster-prune.md)：销毁指定集群中状态为 Tombstone 的实例
 - edit-config：修改指定集群配置
 - reload：重载指定集群配置
 - patch：替换已部署集群的某个服务
