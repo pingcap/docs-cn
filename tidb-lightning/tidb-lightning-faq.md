@@ -43,7 +43,7 @@ If only one table has an error encountered, the rest will still be processed nor
 
 ## How to properly restart TiDB Lightning?
 
-Depending on the status of `tikv-importer`, the basic sequence of restarting TiDB Lightning is like this:
+If you are using Importer-backend, depending on the status of `tikv-importer`, the basic sequence of restarting TiDB Lightning is like this:
 
 If `tikv-importer` is still running:
 
@@ -62,6 +62,8 @@ If `tikv-importer` needs to be restarted:
     * Restarting `tikv-importer` would destroy all engine files still being written, but `tidb-lightning` did not know about it. As of v3.0 the simplest way is to let `tidb-lightning` go on and retry.
 6. [Destroy the failed tables and checkpoints](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status-error-code)
 7. Start `tidb-lightning` again.
+
+If you are using Local-backend or TiDB-backend, the operations are the same as those of using Importer-backend when the `tikv-importer` is still running.
 
 ## How to ensure the integrity of the imported data?
 
@@ -127,6 +129,8 @@ It is potentially caused by starting `tidb-lightning` incorrectly, which causes 
 ```
 
 It is not recommended to directly use `nohup` in the command line to start `tidb-lightning`. You can [start `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md#step-3-start-tidb-lightning) by executing a script.
+
+In addition, if the last log of TiDB Lightning shows that the error is "Context canceled", you need to search for the first "ERROR" level log. This "ERROR" level log is usually followed by "got signal to exit", which indicates that TiDB Lightning received an interrupt signal and then exited.
 
 ## Why my TiDB cluster is using lots of CPU resources and running very slowly after using TiDB Lightning?
 
