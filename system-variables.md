@@ -567,7 +567,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION
 - Default value: 0
-- This variable is used to set whether the optimizer executes the optimization operation of pushing down the aggregate function to the position before Join.
+- This variable is used to set whether the optimizer executes the optimization operation of pushing down the aggregate function to the position before Join, Projection, and UnionAll.
 - When the aggregate operation is slow in query, you can set the variable value to 1.
 
 ### tidb_opt_correlation_exp_factor
