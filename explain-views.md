@@ -72,7 +72,7 @@ EXPLAIN SELECT * FROM trips WHERE bike_number = 'W00950';
 3 rows in set (0.00 sec)
 ```
 
-在上述第一条语句中，索引用于满足视图定义，接着在 TiDB 读取表行时应用了 `bike_number = 'W00950'`。在第二条语句中，没有满足该语句的索引，并且使用了 `TableFullScan`。
+执行以上第一条语句时使用了索引，满足视图定义，接着在 TiDB 读取行时应用了 `bike_number = 'W00950'` 条件。执行以上第二条语句时，不存在满足该语句的索引，因此使用了 `TableFullScan`。
 
 TiDB 使用的索引可以同时满足视图定义和语句本身，如以下组合索引所示：
 
