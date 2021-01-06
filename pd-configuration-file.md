@@ -193,11 +193,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `high-space-ratio`
 
-<<<<<<< HEAD
-+ 设置 store 空间充裕的阈值。
-=======
 + 设置 store 空间充裕的阈值。当节点的空间占用比例小于该阈值时，PD 调度时会忽略节点的剩余空间，主要根据实际数据量进行均衡。此配置仅在 `region-score-formula-version = v1` 时生效。
->>>>>>> f4a01e85... pd: make some configuration more clear (#5210)
 + 默认：0.7
 + 最小值：大于 0
 + 最大值：小于 1
