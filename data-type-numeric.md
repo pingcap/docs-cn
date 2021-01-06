@@ -13,7 +13,7 @@ TiDB 支持 MySQL 所有的数值类型，按照精度可以分为:
 
 ## 整数类型
 
-TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`SMALLINT`、`MEDIUMINT` 以及 `BIGINT`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html)文档。
+TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`SMALLINT`、`MEDIUMINT` 以及 `BIGINT`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/integer-types.html)文档。
 
 字段说明：
 
@@ -143,9 +143,10 @@ FLOAT[(M,D)] [UNSIGNED] [ZEROFILL]
 FLOAT(p) [UNSIGNED] [ZEROFILL]
 ```
 
-> **警告：**
+> **注意：**
 >
-> 与在 MySQL 中一样，`FLOAT` 数据类型存储近似值。对于货币之类的精确值，建议使用 `DECIMAL` 类型。
+> + 与在 MySQL 中一样，`FLOAT` 数据类型用于存储近似值。对于类似货币的精确值，建议使用 `DECIMAL` 类型。
+> + 在 TiDB 中，`FLOAT` 数据类型默认的精度是 8 位，这与 MySQL 不同。在 MySQL 中，`FLOAT` 数据类型默认的精度是 6 位。例如，同时往 MySQL 和 TiDB 中类型为 `FLOAT` 的列中插入数据 `123456789` 和 `1.23456789`。在 MySQL 中查询对应的值，将会得到结果 `123457000` 和 `1.23457`。而在 TiDB 中查询对应的值，将会得到 `123456790` 和 `1.2345679`。
 
 #### `DOUBLE` 类型
 

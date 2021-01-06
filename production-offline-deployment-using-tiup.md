@@ -1,11 +1,15 @@
 ---
 title: 使用 TiUP 离线部署 TiDB 集群
-aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/']
+aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/','/zh/tidb/dev/offline-deployment-using-ansible/','/docs-cn/dev/offline-deployment-using-ansible/','/docs-cn/dev/how-to/deploy/orchestrated/offline-ansible/']
 ---
 
 # 使用 TiUP 离线部署 TiDB 集群
 
 本文介绍如何使用 TiUP 离线部署 TiDB 集群，具体的操作步骤如下。
+
+> **注意：**
+>
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读 TiDB Ansible 离线部署 TiDB 集群的文档，可参阅[离线 TiDB Ansible 部署方案](https://docs.pingcap.com/zh/tidb/v4.0/offline-deployment-using-ansible)。
 
 ## 1. 准备 TiUP 离线组件包
 
@@ -77,7 +81,7 @@ source /home/tidb/.bash_profile
 
 `local_install.sh` 脚本会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 命令将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
 
-若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。
+若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
 
 ## 3. TiKV 数据盘挂载
 
