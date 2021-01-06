@@ -19,17 +19,19 @@ summary: TiDB 数据库中 ALTER DATABASE 的使用概况。
 
 ## 示例
 
+修改数据库 `test` 的字符集为 `utf8mb4`：
+
 {{< copyable "sql" >}}
 
 ```sql
-ALTER {DATABASE | SCHEMA} [db_name]
-    alter_specification ...
-alter_specification:
-    [DEFAULT] CHARACTER SET [=] charset_name
-  | [DEFAULT] COLLATE [=] collation_name
+ALTER DATABASE test DEFAULT CHARACTER SET = utf8mb4;
 ```
 
-`alter_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/character-set-and-collation.md)。
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+目前 TiDB 只支持部分的字符集和排序规则，详情参阅[字符集支持](/character-set-and-collation.md)。
 
 ## MySQL 兼容性
 
