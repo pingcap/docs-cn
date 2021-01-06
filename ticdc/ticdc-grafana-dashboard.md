@@ -4,9 +4,10 @@ title: TiCDC 重要监控指标详解
 
 # TiCDC 重要监控指标详解
 
-使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
+使用 TiUP 部署 TiDB 集群时，一键部署的监控系统面板包含 TiCDC 面板。监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
-对于日常运维，我们通过观察 TiCDC 面板上的 Metrics，可以了解 TiCDC 当前的状态。
+本文档对 TiCDC 监控面板上的各项指标进行详细说明。在日常运维中，运维人员可通过观察 TiCDC 面板上的指标了解 TiCDC 当前的状态。
+
 
 本文档使用默认配置创建一个同步到 MySQL 的同步任务为例，参见 [创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
 
@@ -14,7 +15,7 @@ title: TiCDC 重要监控指标详解
 cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
-以下为 TiCDC Dashboard 监控说明：
+TiCDC Dashboard 各监控面板说明如下：
 
 - Server：TiDB 集群中 TiKV 节点和 TiCDC 节点的概要信息
 - Changefeed：TiCDC 同步任务的详细信息
@@ -41,12 +42,12 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 - Processor resolved ts：TiCDC 节点内部状态中已同步的时间点
 - Table resolved ts：同步任务中各数据表的同步进度
 - Changefeed checkpoint：同步任务同步到下游的进度，正常情况下绿柱应和黄线相接
-- PD etcd requests/s：TiCDC 节点每秒读写 PD 的次数
-- Exit error count：每分钟导致同步中断的错误的发生次数
+- PD etcd requests/s：TiCDC 节点每秒向 PD 读写数据的次数
+- Exit error count：每分钟内导致同步中断的错误发生次数
 - Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间计算）
 - Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）
-- Flush sink duration：TiCDC 异步刷写下游的耗时直方图
-- Flush sink duration percentile： 每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 异步刷写下游所花费的时间
+- Flush sink duration：TiCDC 异步刷写数据入下游的耗时直方图
+- Flush sink duration percentile： 每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 异步刷写数据入下游所花费的时间
 - Sink write duration：TiCDC 将一个事务的更改写到下游的耗时直方图
 - Sink write duration percentile： 每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 将一个事务的更改写到下游所花费的时间
 - MySQL sink conflict detect duration：MySQL 写入冲突检测耗时直方图
@@ -61,7 +62,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 
 - Eventfeed count：TiCDC 节点中 Eventfeed RPC 的个数
 - Event size percentile：每秒钟中 95% 和 99.9% 的情况下，TiCDC 收到的来自 TiKV 的数据变更消息大小
-- Eventfeed error/m：TiCDC 节点每分钟 Eventfeed RPC 遇到的错误个数
+- Eventfeed error/m：TiCDC 节点中每分钟 Eventfeed RPC 遇到的错误个数
 - KV client receive events/s：TiCDC 节点中 KV client 模块每秒收到来自 TiKV 的数据变更个数
 - Puller receive events/s：TiCDC 节点中 Puller 模块每秒收到来自 KV client 模块的数据变更个数
 - Puller output events/s：TiCDC 节点中 Puller 模块每秒输出到 Sorter 模块的数据变更个数
@@ -70,11 +71,11 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 - Entry sorter buffer size：TiCDC 节点中缓存在 Sorter 模块中的数据变更个数
 - Processor/Mounter buffer size：TiCDC 节点中缓存在 Processor 模块和 Mounter 模块中的数据变更个数
 - Sink row buffer size：TiCDC 节点中缓存在 Sink 模块中的数据变更个数
-- Entry sorter sort duration：TiCDC 节点排序数据变更的耗时直方图
+- Entry sorter sort duration：TiCDC 节点对数据变更进行排序的耗时直方图
 - Entry sorter sort duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 排序数据变更所花费的时间
 - Entry sorter merge duration：TiCDC 节点合并排序后的数据变更的耗时直方图
 - Entry sorter merge duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 合并排序后的数据变更所花费的时间
-- Mounter unmarshal duration：TiCDC 节点解码的数据变更的耗时直方图
+- Mounter unmarshal duration：TiCDC 节点解码数据变更的耗时直方图
 - Mounter unmarshal duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 解码数据变更所花费的时间
 - KV client dispatch events/s：TiCDC 节点内部 KV client 模块每秒分发数据变更的个数
 - KV client batch resolved size：TiKV 批量发给 TiCDC 的 resolved ts 消息的大小
@@ -90,11 +91,11 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 - Min resolved ts：TiKV 节点上最小的 resolved ts
 - Min resovled region：TiKV 节点上最小的 resolved ts 的 region ID
 - Resolved ts lag duration percentile：TiKV 节点上最小的 resolved ts 与当前时间的差距
-- Initial scan duration：TiKV 节点与 TiCDC 建立链接是增量扫的耗时直方图
+- Initial scan duration：TiKV 节点与 TiCDC 建立链接时增量扫的耗时直方图
 - Initial scan duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiKV 节点增量扫的耗时
 - Memory without block cache：TiKV 节点在减去 RocksDB block cache 后使用的内存
 - CDC pending bytes in memory：TiKV 节点中 CDC 模块使用的内存
-- Captured region count：TiKV 节点上捕获数据变更的 region 个数
+- Captured region count：TiKV 节点上捕获数据变更的 Region 个数
 
 ![TiCDC Dashboard - TiKV metrics 1](/media/ticdc/ticdc-dashboard-tikv-1.png)
 ![TiCDC Dashboard - TiKV metrics 2](/media/ticdc/ticdc-dashboard-tikv-2.png)
