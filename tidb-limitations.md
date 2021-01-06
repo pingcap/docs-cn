@@ -38,7 +38,7 @@ This document describes the common usage limitations of TiDB, including the maxi
 
 | Type       | Upper limit   |
 |:----------|:----------|
-| Columns   | 512       |
+| Columns   | 4096       |
 | Indexes    | 64        |
 | Rows      | unlimited |
 | Size      | unlimited |
