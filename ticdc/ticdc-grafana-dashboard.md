@@ -7,8 +7,6 @@ title: TiCDC 重要监控指标详解
 使用 TiUP 部署 TiDB 集群时，一键部署的监控系统面板包含 TiCDC 面板。监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
 本文档对 TiCDC 监控面板上的各项指标进行详细说明。在日常运维中，运维人员可通过观察 TiCDC 面板上的指标了解 TiCDC 当前的状态。
-
-
 本文档使用默认配置创建一个同步到 MySQL 的同步任务为例，参见 [创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
 
 ```shell
