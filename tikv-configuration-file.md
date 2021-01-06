@@ -13,6 +13,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## server
 
+服务器相关的配置项。
+
 ### `status-thread-pool-size`
 
 + Http API 服务的工作线程数量。
