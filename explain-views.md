@@ -1,5 +1,5 @@
 ---
-title: EXPLAIN 视图
+title: 用 EXPLAIN 查看带视图的 SQL 执行计划
 summary: 了解 TiDB 中视图相关语句的执行计划。
 ---
 
