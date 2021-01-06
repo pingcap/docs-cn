@@ -11,6 +11,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [TiKV 配置参数](/command-line-flags-for-tikv-configuration.md)。
 
+<!-- markdownlint-disable MD001 -->
+
+## server
+
+服务器相关的配置项。
+
 ### `status-thread-pool-size`
 
 + Http API 服务的工作线程数量。
@@ -34,62 +40,62 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1024
 + 最小值：1
 
-### `server.grpc-raft-conn-num`
+### `grpc-raft-conn-num`
 
 + tikv 节点之间用于 raft 通讯的链接最大数量。
 + 默认值：10
 + 最小值：1
 
-### `server.grpc-stream-initial-window-size`
+### `grpc-stream-initial-window-size`
 
 + gRPC stream 的 window 大小。
 + 默认值：2MB
 + 单位：KB|MB|GB
 + 最小值：1KB
 
-### `server.grpc-keepalive-time`
+### `grpc-keepalive-time`
 
 + gRPC 发送 keep alive ping 消息的间隔时长。
 + 默认值：10s
 + 最小值：1s
 
-### `server.grpc-keepalive-timeout`
+### `grpc-keepalive-timeout`
 
 + 关闭 gRPC 链接的超时时长。
 + 默认值：3s
 + 最小值：1s
 
-### `server.concurrent-send-snap-limit`
+### `concurrent-send-snap-limit`
 
 + 同时发送 snapshot 的最大个数，默认值：32
 + 默认值：32
 + 最小值：1
 
-### `server.concurrent-recv-snap-limit`
+### `concurrent-recv-snap-limit`
 
 + 同时接受 snapshot 的最大个数，默认值：32
 + 默认值：32
 + 最小值：1
 
-### `server.end-point-recursion-limit`
+### `end-point-recursion-limit`
 
 + endpoint 下推查询请求解码消息时，最多允许的递归层数。
 + 默认值：1000
 + 最小值：1
 
-### `server.end-point-slow-log-threshold`
+### `end-point-slow-log-threshold`
 
 + endpoint 下推查询请求输出慢日志的阈值，处理时间超过阈值后会输出慢日志。
 + 默认值：1s
 + 最小值：0
 
-### `server.end-point-request-max-handle-duration`
+### `end-point-request-max-handle-duration`
 
 + endpoint 下推查询请求处理任务最长允许的时长。
 + 默认值：60s
 + 最小值：1s
 
-### `server.snap-max-write-bytes-per-sec`
+### `snap-max-write-bytes-per-sec`
 
 + 处理 snapshot 时最大允许使用的磁盘带宽
 + 默认值：1000MB
