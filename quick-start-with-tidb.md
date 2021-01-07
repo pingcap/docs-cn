@@ -325,7 +325,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 - 如果你准备好在生产环境部署 TiDB 了：
     - 在线部署：[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
     - 离线部署：[使用 TiUP 离线部署 TiDB 集群](/production-offline-deployment-using-tiup.md)
-    - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1)
+    - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
 > **注意：**
 >
