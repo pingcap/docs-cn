@@ -191,7 +191,6 @@
       + [后端](/tidb-lightning/tidb-lightning-backends.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + TiCDC
