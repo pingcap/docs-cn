@@ -47,7 +47,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 在部署集群时，tiup-cluster 会先检查拓扑文件中指定的用户名是否存在，如果不存在就会创建一个。指定 `--skip-create-user` 选项后不再检查用户是否存在，直接跳过创建步骤。
 
-### --help（boolean，默认 false）
+### -h, --help（boolean，默认 false）
 
 输出帮助信息。
 

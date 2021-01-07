@@ -181,7 +181,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - 对于指定了 `--cluster` 的集群，密码为部署集群时拓扑文件中指定的用户的密码
 - 对于未指定 `--cluster` 的集群，密码为 `-u/--user` 参数指定的用户的密码
 
-### --help（boolean，默认 false）
+### -h, --help（boolean，默认 false）
 
 输出帮助信息。
 

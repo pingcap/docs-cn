@@ -42,7 +42,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 如果想要跳过该项检查，可以使用该选项。
 
-### --help（boolean，默认 false）
+### -h, --help（boolean，默认 false）
 
 输出帮助信息。
 

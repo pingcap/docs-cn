@@ -61,13 +61,13 @@ tiup cluster [command] [flags]
 - [scale-out](/tiup/tiup-component-cluster-scale-out.md)：扩容指定集群
 - [upgrade](/tiup/tiup-component-cluster-upgrade.md)：升级指定集群
 - [prune](/tiup/tiup-component-cluster-prune.md)：销毁指定集群中状态为 Tombstone 的实例
-- edit-config：修改指定集群配置
-- reload：重载指定集群配置
-- patch：替换已部署集群的某个服务
-- rename：重命名集群
-- clean：删除指定集群数据
-- destroy：销毁指定集群
-- audit：查询集群操作审计日志
-- enable：开启指定集群或服务开机自启动
-- disable：关闭指定集群或服务开机自启动
-- help：输出帮助信息
+- [edit-config](/tiup/tiup-component-cluster-edit-config.md)：修改指定集群配置
+- [reload](/tiup/tiup-component-cluster-reload.md)：重载指定集群配置
+- [patch](/tiup/tiup-component-cluster-patch.md)：替换已部署集群的某个服务
+- [rename](/tiup/tiup-component-cluster-rename.md)：重命名集群
+- [clean](/tiup/tiup-component-cluster-clean.md)：删除指定集群数据
+- [destroy](/tiup/tiup-component-cluster-destroy.md)：销毁指定集群
+- [audit](/tiup/tiup-component-cluster-audit.md)：查询集群操作审计日志
+- [enable](/tiup/tiup-component-cluster-enable.md)：开启指定集群或服务开机自启动
+- [disable](/tiup/tiup-component-cluster-disable.md)：关闭指定集群或服务开机自启动
+- [help](/tiup/tiup-component-cluster-help.md)：输出帮助信息

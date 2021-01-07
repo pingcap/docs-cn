@@ -536,7 +536,7 @@ grafana_servers 约定了将 Grafana 服务部署到哪台机器上，同时可�
 >
 > 如果配置了 grafana_servers 的 dashboard_dir 字段，在执行 tiup cluster rename 命令进行集群重命名后，需要完成以下操作：
 >
-> 1. 在本地的 dashboards 目录中，将 datasource 字段的值更新为新的集群名（datasource 是以集群名命名的）
+> 1. 对于本地的 dashboards 目录中的 `*.json` 文件，将 datasource 字段的值更新为新的集群名（这是因为 datasource 是以集群名命名的）
 > 2. 执行 tiup cluster reload -R grafana 命令
 
 以上字段中，这些字段在部署完成之后就不能再修改：

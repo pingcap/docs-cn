@@ -49,7 +49,7 @@ tiup cluster import [flags]
 
 重命名导入的集群。默认集群名为 inventory 中指定的 cluster_name。
 
-### --help（boolean，默认 false）
+### -h, --help（boolean，默认 false）
 
 输出帮助信息。
 

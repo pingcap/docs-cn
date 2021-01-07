@@ -17,7 +17,7 @@ tiup cluster prune <cluster-name> [flags]
 
 ## 选项
 
-### --help（boolean，默认 false）
+### -h, --help（boolean，默认 false）
 
 输出帮助信息。
 

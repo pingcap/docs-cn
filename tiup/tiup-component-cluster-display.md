@@ -39,7 +39,7 @@ tiup cluster display <cluster-name> [flags]
 > 
 > 若同时指定了 `-N, --node`，那么将查询他们的交集中的服务状态。
 
-### --help（boolean，默认 false）
+### -h, --help（boolean，默认 false）
 
 输出帮助信息。
 

@@ -105,8 +105,8 @@ tiup [flags] <component> [args...]      # 运行组件
 
 ## 组件清单
 
-- cluster：生产环境 TiDB 集群管理
-- dm：生产环境 DM 集群管理
+- [cluster](/tiup/tiup-component-cluster.md)：生产环境 TiDB 集群管理
+- [dm](/tiup/tiup-component-dm.md)：生产环境 DM 集群管理
 - playground：本地集群体验
 - bench：数据库压测
 - ctl：TiDB 相关的控制工具

@@ -29,13 +29,13 @@ tiup cluster start <cluster-name> [flags]
 
 ### -R, --role strings（strings，默认为 []，表示所有角色）
 
-指定要启动的节点，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
+指定要启动的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
 
 > **注意：**
 > 
 > 若同时指定了 `-N, --node`，那么将启动他们的交集中的服务。
 
-### --help（boolean，默认 false）
+### -h, --help（boolean，默认 false）
 
 输出帮助信息。
 
