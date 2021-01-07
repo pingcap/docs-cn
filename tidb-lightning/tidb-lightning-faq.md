@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 常见问题
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/', '/docs-cn/dev/troubleshoot-tidb-lightning/','/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/dev/tidb-lightning/tidb-lightning-misuse-handling/']
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/', '/docs-cn/dev/troubleshoot-tidb-lightning/','/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/dev/tidb-lightning/tidb-lightning-misuse-handling/','/zh/tidb/dev/tidb-lightning-faq/']
 ---
 
 # TiDB Lightning 常见问题
@@ -57,7 +57,7 @@ Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接
 4. 重启 `tikv-importer`。
 5. 重启 `tidb-lightning` 并等待，**直到程序因校验和错误（如果有的话）而失败**。
     * 重启 `tikv-importer` 将清除所有仍在写入的引擎文件，但是 `tidb-lightning` 并不会感知到该操作。从 v3.0 开始，最简单的方法是让 `tidb-lightning` 继续，然后再重试。
-6. [清除失败的表及断点](/tidb-lightning/tidb-lightning-faq.md#checkpoint-for--has-invalid-status错误码)。
+6. [清除失败的表及断点](#checkpoint-for--has-invalid-status错误码)。
 7. 再次重启 `tidb-lightning`。
 
 如果使用 Local-backend 和 TiDB-backend，操作和 Importer-backend 的 `tikv-importer` 仍在运行时相同。
@@ -187,7 +187,7 @@ upload-speed-limit = "100MB"
 
     如果出于某些原因而无法运行该命令，你可以尝试手动删除 `/tmp/tidb_lightning_checkpoint.pb` 文件。
 
-2. 如果使用 Local Backend, 删除配置中 `sorted-kv-dir` 对应的目录; 如果使用 Importer Backend, 删除 `tikv-importer` 所在机器上的整个 “import” 文件目录。
+2. 如果使用 Local-backend, 删除配置中 `sorted-kv-dir` 对应的目录; 如果使用 Importer-backend, 删除 `tikv-importer` 所在机器上的整个 `import` 文件目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
 
@@ -195,7 +195,7 @@ upload-speed-limit = "100MB"
 
 报错原因是遍历本地排序的文件时出现异常，可能在 lightning 打开的文件数量超过系统的上限时发生。在 linux 系统中，可以使用 `ulimit -n` 命令确认此值是否过小。建议在 lightning 导入期间将此设置调整为 1000000（`ulimit -n 1000000`）。
 
-## Lightning 导入速度太慢
+## TiDB Lightning 导入速度太慢
 
 TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的数据文件，如果速度远慢于这个数值就是有问题。导入的速度可以检查日志提及 `restore chunk … takes` 的记录，或者观察 Grafana 的监控信息。
 
