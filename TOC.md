@@ -72,7 +72,6 @@
   + 故障诊断
     - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
     - [集群配置诊断](/troubleshoot-tidb-cluster.md)
-    - [TiDB Lightning 故障诊断](/troubleshoot-tidb-lightning.md)
 + 参考手册
   + SQL
     - [与 MySQL 兼容性对比](/mysql-compatibility.md)
@@ -330,7 +329,6 @@
       - [TiDB-backend](/tidb-lightning/tidb-lightning-tidb-backend.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
       - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-      - [故障诊断](/troubleshoot-tidb-lightning.md)
       - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
       - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
     + sync-diff-inspector

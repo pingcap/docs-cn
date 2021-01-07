@@ -28,9 +28,9 @@ aliases: ['/docs-cn/v3.0/ecosystem-tool-user-case/']
 
 当需要将备份文件恢复到 TiDB 集群时，可使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。
 
-## 迁出数据到 MySQL/TiDB
+## 迁出数据到 TiDB
 
-当需要将 TiDB 集群的数据迁出到 MySQL 或其他 TiDB 集群时，可使用 [Dumpling](/export-or-backup-using-dumpling.md) 从 TiDB 将全量数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 MySQL/TiDB。
+当需要将 TiDB 集群的数据迁出到其他 TiDB 集群时，可使用 [Dumpling](/export-or-backup-using-dumpling.md) 从 TiDB 将全量数据导出为 SQL dump files，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB。
 
 如果还需要执行增量数据的迁移，则可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
