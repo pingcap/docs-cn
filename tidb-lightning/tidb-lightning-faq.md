@@ -226,7 +226,7 @@ strict-format = true
 
 试试最新的版本吧！可能会有改善。
 
-## checksum failed: checksum mismatched remote vs local
+## `checksum failed: checksum mismatched remote vs local`
 
 **原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因：
 
@@ -252,7 +252,7 @@ strict-format = true
 
 3. 参考[如何正确重启 TiDB Lightning](/tidb-lightning/tidb-lightning-faq.md#如何正确重启-tidb-lightning)中的解决办法。
 
-## Checkpoint for … has invalid status:（错误码）
+## `Checkpoint for … has invalid status:`（错误码）
 
 **原因**：[断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lightning 在错误解决以前不会启动。
 
@@ -270,7 +270,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 其他解决方法请参考[断点续传的控制](/tidb-lightning/tidb-lightning-checkpoints.md#断点续传的控制)。
 
-## ResourceTemporarilyUnavailable("Too many open engines …: …")
+## `ResourceTemporarilyUnavailable("Too many open engines …: …")`
 
 **原因**：并行打开的引擎文件 (engine files) 超出 `tikv-importer` 里的限制。这可能由配置错误引起。即使配置没问题，如果 `tidb-lightning` 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
 
@@ -290,7 +290,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
     tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
     ```
 
-## cannot guess encoding for input file, please convert to UTF-8 manually
+## `cannot guess encoding for input file, please convert to UTF-8 manually`
 
 **原因**：Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如，因为在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
 
