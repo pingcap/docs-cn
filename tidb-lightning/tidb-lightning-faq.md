@@ -1,10 +1,6 @@
 ---
 title: TiDB Lightning 常见问题
-<<<<<<< HEAD
-aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-faq/','/docs-cn/v4.0/tidb-lightning/tidb-lightning-faq/','/docs-cn/stable/faq/tidb-lightning/']
-=======
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/','/docs-cn/dev/troubleshoot-tidb-lightning/','/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/dev/tidb-lightning/tidb-lightning-misuse-handling/','/zh/tidb/dev/tidb-lightning-faq/']
->>>>>>> 0a789823... lightning: merge lightning trouble shooting into faq (#5268)
+aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-faq/','/docs-cn/v4.0/tidb-lightning/tidb-lightning-faq/','/docs-cn/stable/faq/tidb-lightning/','/docs-cn/dev/troubleshoot-tidb-lightning/','/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/dev/tidb-lightning/tidb-lightning-misuse-handling/','/zh/tidb/stable/tidb-lightning-faq/','/zh/tidb/v4.0/tidb-lightning-faq/']
 ---
 
 # TiDB Lightning 常见问题
@@ -141,7 +137,7 @@ sql-mode = ""
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
 
-另外，如果从 Lightning log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。 
+另外，如果从 Lightning log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
@@ -310,7 +306,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 2. 手动在目标数量库创建所有的表，然后设置 `[mydumper] no-schema = true` 跳过创建表的步骤。
 3. 设置 `[mydumper] character-set = "binary"` 跳过这个检查。但是这样可能使数据库出现乱码。
 
-## [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 …}'
+## `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 …}'`
 
 **原因**: 一个 `timestamp` 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏时制切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 
