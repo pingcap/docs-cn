@@ -63,7 +63,7 @@ show config where type='tikv' and name='log-level'
 
 > **注意：**
 >
-> 变量名称建议使用反引号包裹
+> 建议使用反引号包裹变量名称。
 
 {{< copyable "sql" >}}
 
