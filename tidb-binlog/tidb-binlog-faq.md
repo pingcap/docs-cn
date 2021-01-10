@@ -216,3 +216,10 @@ Pump 以 `paused` 状态退出进程时，不保证所有 binlog 数据被下游
 ## 可以使用 `change pump`、`change drainer` 等 SQL 操作来暂停或者下线 Pump/Drainer 服务吗？
 
 目前还不支持。这种 SQL 操作会直接修改 PD 中保存的状态，在功能上等同于使用 binlogctl 的 `update-pump`、`update-drainer` 命令。如果需要暂停或者下线，仍然要使用 binlogctl。
+
+## 在使用全量+增量方式恢复的过程中，reparo 中断了，可以使用日志里面最后一个 tso 接起来吗？
+
+可以。reparo 不会在启动时自动开启 safe-mode 模式，需要手动操作：
+1、Reparo 中断后，记录日志中最后一个 tso，记为 checkpoint tso。
+2、修改 Reparo 配置文件，将 start-tso 设为 checkpoint tso + 1，将 stop-tso 设为 checkpoint tso + 80,000,000,000（大概是 checkpoint tso 延后 5 分钟），将 safe-mode 设为 true，启动 reparo，reparo 会将数据同步到 stop-tso 后自动停止。
+3、reparo 自动停止后，将配置文件 start-tso 设为 checkpoint tso + 80,000,000,001，将 stop-tso 设为 0，将 safe-mode 设为 false。启动 reparo 继续同步。
