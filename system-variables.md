@@ -397,15 +397,11 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值："on"
 - 这个变量用来设置是否开启 `TABLE PARTITION` 特性。目前变量支持以下三种值：
 
-    - 默认值 `on` 表示开启 range partition、hash partition 以及 range column 单列的分区表。
+    - 默认值 `on` 表示开启 TiDB 当前已实现了的分区表类型，目前 range partition、hash partition 以及 range column 单列的场景会生效。
     - `auto` 目前作用和 `on` 一样。
-    - `nightly` 表示开启 `on` 的分区表类型，并开启 list partition 和 list columns partition。
     - `off` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-> **注意：**
->
-> 目前 TiDB 默认只支持 Range partition 和 Hash partition。
-> List partition 和 List COLUMNS partition 目前还属于实验特性。
+- 注意，目前 TiDB 只支持 range partition 和 hash partition。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
