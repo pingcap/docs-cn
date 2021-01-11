@@ -305,13 +305,23 @@ Leader 调度的开销较小，需要的时候可以适当调大。
 >> config set leader-schedule-limit 4
 ```
 
+<<<<<<< HEAD
 通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。
 这个值主要影响 *Region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
 Region 调度的开销较大，所以这个值不宜调得太大。
+=======
+    设置 replicaChecker 的运行频率为 50 毫秒：
+>>>>>>> b15c79ac... update patrol-region-interval 10ms -> 50ms (#5249)
 
 最多同时进行 2 个 Region 调度：
 
+<<<<<<< HEAD
 {{< copyable "" >}}
+=======
+    ```bash
+    >> config set patrol-region-interval 50ms
+    ```
+>>>>>>> b15c79ac... update patrol-region-interval 10ms -> 50ms (#5249)
 
 ```bash
 >> config set region-schedule-limit 2
