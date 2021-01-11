@@ -1,29 +1,36 @@
 ---
 title: TiCDC 重要监控指标详解
+summary: 了解 TiCDC 重要的监控指标。
 ---
 
 # TiCDC 重要监控指标详解
 
-使用 TiUP 部署 TiDB 集群时，一键部署的监控系统面板包含 TiCDC 面板。监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
+使用 TiUP 部署 TiDB 集群时，一键部署的监控系统面板包含 TiCDC 面板。本文档对 TiCDC 监控面板上的各项指标进行详细说明。在日常运维中，运维人员可通过观察 TiCDC 面板上的指标了解 TiCDC 当前的状态。
 
-本文档对 TiCDC 监控面板上的各项指标进行详细说明。在日常运维中，运维人员可通过观察 TiCDC 面板上的指标了解 TiCDC 当前的状态。
-
-本文档基于以下命令创建的同步任务来讲解监控面板。以下命令使用默认配置创建一个同步到 MySQL 的同步任务。创建同步任务的方法，参见[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
+本文档的对指标的介绍基于以下同步任务，即使用默认配置同步数据到 MySQL。
 
 ```shell
 cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
-TiCDC Dashboard 各监控面板说明如下：
-
-- Server：TiDB 集群中 TiKV 节点和 TiCDC 节点的概要信息
-- Changefeed：TiCDC 同步任务的详细信息
-- Events：TiCDC 内部数据流转的详细信息
-- TiKV：TiKV 中和 TiCDC 相关的详细信息
+下图显示了 TiCDC Dashboard 各监控面板：
 
 ![TiCDC Dashboard - Overview](/media/ticdc/ticdc-dashboard-overview.png)
 
-## Server
+各监控面板说明如下：
+
+- **Server**：TiDB 集群中 TiKV 节点和 TiCDC 节点的概要信息
+- **Changefeed**：TiCDC 同步任务的详细信息
+- **Events**：TiCDC 内部数据流转的详细信息
+- **TiKV**：TiKV 中和 TiCDC 相关的详细信息
+
+## Server 面板
+
+Server 面板示例如下：
+
+![TiCDC Dashboard - Server metrics](/media/ticdc/ticdc-dashboard-server.png)
+
+Server 面板的各指标说明如下：
 
 - Uptime：TiKV 节点和 TiCDC 节点已经运行的时间
 - Goroutine count：TiCDC 节点 Goroutine 的个数
@@ -33,9 +40,15 @@ TiCDC Dashboard 各监控面板说明如下：
 - CPU usage：TiCDC 节点使用的 CPU
 - Memory usage：TiCDC 节点使用的内存
 
-![TiCDC Dashboard - Server metrics](/media/ticdc/ticdc-dashboard-server.png)
+## Changefeed 面板
 
-## Changefeed
+Changefeed 面板示例如下：
+
+![TiCDC Dashboard - Changefeed metrics 1](/media/ticdc/ticdc-dashboard-changefeed-1.png)
+![TiCDC Dashboard - Changefeed metrics 2](/media/ticdc/ticdc-dashboard-changefeed-2.png)
+![TiCDC Dashboard - Changefeed metrics 3](/media/ticdc/ticdc-dashboard-changefeed-3.png)
+
+Changefeed 面板的各指标说明如下：
 
 - Changefeed table count：一个同步任务中分配到各个 TiCDC 节点同步的数据表个数
 - Processor resolved ts：TiCDC 节点内部状态中已同步的时间点
@@ -46,18 +59,22 @@ TiCDC Dashboard 各监控面板说明如下：
 - Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间计算）
 - Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）
 - Flush sink duration：TiCDC 异步刷写数据入下游的耗时直方图
-- Flush sink duration percentile： 每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 异步刷写数据入下游所花费的时间
+- Flush sink duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 异步刷写数据入下游所花费的时间
 - Sink write duration：TiCDC 将一个事务的更改写到下游的耗时直方图
-- Sink write duration percentile： 每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 将一个事务的更改写到下游所花费的时间
+- Sink write duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 将一个事务的更改写到下游所花费的时间
 - MySQL sink conflict detect duration：MySQL 写入冲突检测耗时直方图
-- MySQL sink conflict detect duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，MySQL 写入冲突检测耗时
+- MySQL sink conflict detect duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，MySQL 写入冲突检测耗时
 - MySQL sink worker load：TiCDC 节点中写 MySQL 线程的负载情况
 
-![TiCDC Dashboard - Changefeed metrics 1](/media/ticdc/ticdc-dashboard-changefeed-1.png)
-![TiCDC Dashboard - Changefeed metrics 2](/media/ticdc/ticdc-dashboard-changefeed-2.png)
-![TiCDC Dashboard - Changefeed metrics 3](/media/ticdc/ticdc-dashboard-changefeed-3.png)
+## Events 面板
 
-## Events
+Events 面板示例如下：
+
+![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-1.png)
+![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-2.png)
+![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-3.png)
+
+Events 面板的各指标说明如下：
 
 - Eventfeed count：TiCDC 节点中 Eventfeed RPC 的个数
 - Event size percentile：每秒钟中 95% 和 99.9% 的情况下，TiCDC 收到的来自 TiKV 的数据变更消息大小
@@ -79,11 +96,14 @@ TiCDC Dashboard 各监控面板说明如下：
 - KV client dispatch events/s：TiCDC 节点内部 KV client 模块每秒分发数据变更的个数
 - KV client batch resolved size：TiKV 批量发给 TiCDC 的 resolved ts 消息的大小
 
-![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-1.png)
-![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-2.png)
-![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-3.png)
+## TiKV 面板
 
-## TiKV
+TiKV 面板示例如下：
+
+![TiCDC Dashboard - TiKV metrics 1](/media/ticdc/ticdc-dashboard-tikv-1.png)
+![TiCDC Dashboard - TiKV metrics 2](/media/ticdc/ticdc-dashboard-tikv-2.png)
+
+TiKV 面板的各指标说明如下：
 
 - CDC endpoint CPU：TiKV 节点上 CDC endpoint 线程使用的 CPU
 - CDC worker CPU：TiKV 节点上 CDC worker 线程使用的 CPU
@@ -91,10 +111,7 @@ TiCDC Dashboard 各监控面板说明如下：
 - Min resovled region：TiKV 节点上最小的 resolved ts 的 region ID
 - Resolved ts lag duration percentile：TiKV 节点上最小的 resolved ts 与当前时间的差距
 - Initial scan duration：TiKV 节点与 TiCDC 建立链接时增量扫的耗时直方图
-- Initial scan duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiKV 节点增量扫的耗时
+- Initial scan duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiKV 节点增量扫的耗时
 - Memory without block cache：TiKV 节点在减去 RocksDB block cache 后使用的内存
 - CDC pending bytes in memory：TiKV 节点中 CDC 模块使用的内存
 - Captured region count：TiKV 节点上捕获数据变更的 Region 个数
-
-![TiCDC Dashboard - TiKV metrics 1](/media/ticdc/ticdc-dashboard-tikv-1.png)
-![TiCDC Dashboard - TiKV metrics 2](/media/ticdc/ticdc-dashboard-tikv-2.png)
