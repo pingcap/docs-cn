@@ -31,7 +31,7 @@ tiup mirror grant <id> [flags]
 
 一个密钥只能被一个组件管理员使用。
 
-### -n, --name（string，默认 <id>）
+### -n, --name（string，默认 `<id>`）
 
 指定组件管理员的名字，该名字会展示在组件列表的 `Owner` 字段上，若未指定 `-n/--name` 则使用 `<id>` 作为组件管理员名字。
 
