@@ -26,11 +26,11 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 
 ## Server 面板
 
-Server 面板示例如下：
+**Server** 面板示例如下：
 
 ![TiCDC Dashboard - Server metrics](/media/ticdc/ticdc-dashboard-server.png)
 
-Server 面板的各指标说明如下：
+**Server** 面板的各指标说明如下：
 
 - Uptime：TiKV 节点和 TiCDC 节点已经运行的时间
 - Goroutine count：TiCDC 节点 Goroutine 的个数
@@ -42,13 +42,13 @@ Server 面板的各指标说明如下：
 
 ## Changefeed 面板
 
-Changefeed 面板示例如下：
+**Changefeed** 面板示例如下：
 
 ![TiCDC Dashboard - Changefeed metrics 1](/media/ticdc/ticdc-dashboard-changefeed-1.png)
 ![TiCDC Dashboard - Changefeed metrics 2](/media/ticdc/ticdc-dashboard-changefeed-2.png)
 ![TiCDC Dashboard - Changefeed metrics 3](/media/ticdc/ticdc-dashboard-changefeed-3.png)
 
-Changefeed 面板的各指标说明如下：
+**Changefeed** 面板的各指标说明如下：
 
 - Changefeed table count：一个同步任务中分配到各个 TiCDC 节点同步的数据表个数
 - Processor resolved ts：TiCDC 节点内部状态中已同步的时间点
@@ -68,13 +68,13 @@ Changefeed 面板的各指标说明如下：
 
 ## Events 面板
 
-Events 面板示例如下：
+**Events** 面板示例如下：
 
 ![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-1.png)
 ![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-2.png)
 ![TiCDC Dashboard - Events metrics 2](/media/ticdc/ticdc-dashboard-events-3.png)
 
-Events 面板的各指标说明如下：
+**Events** 面板的各指标说明如下：
 
 - Eventfeed count：TiCDC 节点中 Eventfeed RPC 的个数
 - Event size percentile：每秒钟中 95% 和 99.9% 的情况下，TiCDC 收到的来自 TiKV 的数据变更消息大小
@@ -98,12 +98,12 @@ Events 面板的各指标说明如下：
 
 ## TiKV 面板
 
-TiKV 面板示例如下：
+**TiKV** 面板示例如下：
 
 ![TiCDC Dashboard - TiKV metrics 1](/media/ticdc/ticdc-dashboard-tikv-1.png)
 ![TiCDC Dashboard - TiKV metrics 2](/media/ticdc/ticdc-dashboard-tikv-2.png)
 
-TiKV 面板的各指标说明如下：
+**TiKV** 面板的各指标说明如下：
 
 - CDC endpoint CPU：TiKV 节点上 CDC endpoint 线程使用的 CPU
 - CDC worker CPU：TiKV 节点上 CDC worker 线程使用的 CPU
