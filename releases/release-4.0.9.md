@@ -105,6 +105,7 @@ TiDB version: 4.0.9
         - Support configuring both the `-F` and `-r` arguments at the same time [#177](https://github.com/pingcap/dumpling/pull/177)
         - Exclude system databases in `--filter` by default [#194](https://github.com/pingcap/dumpling/pull/194)
         - Support the `--transactional-consistency` parameter and support rebuilding MySQL connections during retry [#199](https://github.com/pingcap/dumpling/pull/199)
+        - Support using the `-c,--compress` parameter to specify the compression algorithm used by Dumpling. An empty string means no compression. [#202](https://github.com/pingcap/dumpling/pull/202)
 
     + TiDB Lightning
 
