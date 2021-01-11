@@ -16,7 +16,6 @@ aliases: ['/docs-cn/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/how-
 
 使用 Lightning 将数据导入 TiDB，Lightning 具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
 
-
 ## 第三步：配置 TiDB Lightning 的数据源
 
 1. 将 `[mydumper]` 下的 `data-source-dir` 设置为第一步导出的 S3 Bucket 路径。
@@ -41,26 +40,28 @@ aliases: ['/docs-cn/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/how-
     ```
 
 3. 设置运行后端模式
-	```
-	[tikv-importer]
-	# 使用 local backend
-	backend = "local"
-	# 本地临时文件存储路径，请确保对应的路径不存在或目录为空，并且所在的磁盘中有足够大的存储空间
-	sorted-kv-dir = "/path/to/local-temp-dir"
-	```
+
+    ```
+    [tikv-importer]
+    # 使用 local backend
+    backend = "local"
+    # 本地临时文件存储路径，请确保对应的路径不存在或目录为空，并且所在的磁盘中有足够大的存储空间
+    sorted-kv-dir = "/path/to/local-temp-dir"
+    ```
 
 4. 设置文件路由
-	```
-	[mydumper]
-	no-schema = true
 
-	[mydumper.files]
-	# 注意此处使用单引号字符串避免转义
-	pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
-	schema = '$1'
-	table = '$2'
-	type = '$3'
-	```
+    ```
+    [mydumper]
+    no-schema = true
+
+    [mydumper.files]
+    # 注意此处使用单引号字符串避免转义
+    pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
+    schema = '$1'
+    table = '$2'
+    type = '$3'
+    ```
 
 > **注意：**
 > 
@@ -76,22 +77,22 @@ aliases: ['/docs-cn/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/how-
 
 1. 使用 dumpling 导出表结构文件：
 
-```
-./dumpling --host 127.0.0.1 --port 4000 --user root --password password --no-data --output ./schema --filter "mydb.*"
-```
+    ```
+    ./dumpling --host 127.0.0.1 --port 4000 --user root --password password --no-data --output ./schema --filter "mydb.*"
+    ```
 
-> **注意：**
-> 
-> - 请根据实际情况设置数据源地址的相关参数和输出文件的路径
-> - 如果需要导出所有库表，则不需要设置 "--filter" 相关参数, 如果只需要导出部分库表，可参考 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)
+    > **注意：**
+    > 
+    > - 请根据实际情况设置数据源地址的相关参数和输出文件的路径
+    > - 如果需要导出所有库表，则不需要设置 "--filter" 相关参数, 如果只需要导出部分库表，可参考 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)
 
 2. 使用 Lightning 创建表结构
 
-```
-./tidb-lightning -config tidb-lightning.toml -d ./schema -no-schema=false 
-```
+    ```
+    ./tidb-lightning -config tidb-lightning.toml -d ./schema -no-schema=false 
+    ```
 
-此次启动 Lightning 只用于创建表结构，执行应该迅速完成(在常规速度下，每秒可以执行 10 条建表语句)。
+    此次启动 Lightning 只用于创建表结构，执行应该迅速完成(在常规速度下，每秒可以执行 10 条建表语句)。
 
 > **注意：**
 > 
@@ -112,4 +113,3 @@ nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
 - 通过监控面板查看进度，具体参见 [TiDB-Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
-
