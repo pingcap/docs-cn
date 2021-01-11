@@ -28,6 +28,6 @@ tiup cluster audit [audit-id] [flags]
 
 - 若指定 `[audit-id]`，则输出对应的执行日志
 - 若不指定 `[audit-id]` 则输出含有以下字段的表格：
-  - ID：该条记录对应的 audit-id
-  - Time：该条记录对应的命令执行时间
-  - Command：该条记录对应的命令
+    - ID：该条记录对应的 audit-id
+    - Time：该条记录对应的命令执行时间
+    - Command：该条记录对应的命令

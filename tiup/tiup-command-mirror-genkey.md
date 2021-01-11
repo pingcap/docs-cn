@@ -44,8 +44,8 @@ tiup mirror genkey [flags]
 ## 输出
 
 - 若未指定 `-p/--public`:
-  - 若指定的密钥已存在：`Key already exists, skipped`
-  - 若指定的密钥不存在：`private key have been write to `${TIUP_HOME}/keys/{name}.json``
+    - 若指定的密钥已存在：`Key already exists, skipped`
+    - 若指定的密钥不存在：`private key have been write to ${TIUP_HOME}/keys/{name}.json`
 - 若指定 `-p/--public`:
-  - 若指定的密钥不存在：`Error: open `${TIUP_HOME}/keys/{name}.json`: no such file or directory`
-  - 若指定的密钥存在：输出该密钥对应的公钥内容
+    - 若指定的密钥不存在：`Error: open ${TIUP_HOME}/keys/{name}.json: no such file or directory`
+    - 若指定的密钥存在：输出该密钥对应的公钥内容

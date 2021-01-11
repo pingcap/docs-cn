@@ -68,5 +68,5 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 
 - 若成功：无输出
 - 若该组件管理员无权修改目标组件：
-  - 若使用远程镜像：`Error: The server refused, make sure you have access to this component`
-  - 若使用本地镜像：`Error: the signature is not correct`
+    - 若使用远程镜像：`Error: The server refused, make sure you have access to this component`
+    - 若使用本地镜像：`Error: the signature is not correct`

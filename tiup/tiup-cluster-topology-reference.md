@@ -461,7 +461,7 @@ tispark_masters:
 
 ### `tispark_workers`
 
-`tispark_workers `约定了将 TiSpark 的 worker 节点部署到哪些机器上，同时可以指定每台机器上的服务配置，它是一个数组，每个数组元素包含以下字段：
+`tispark_workers`约定了将 TiSpark 的 worker 节点部署到哪些机器上，同时可以指定每台机器上的服务配置，它是一个数组，每个数组元素包含以下字段：
 
 - `host`：部署到哪台机器，填 IP 地址，不可省略
 - `listen_host`：当机器上有多个 IP 时，可以指定服务的监听 IP，默认为 `0.0.0.0`

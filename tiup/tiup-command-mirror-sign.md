@@ -9,7 +9,6 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-sign/']
 
 命令 `tiup mirror sign` 用于对[镜像](/tiup/tiup-mirror-reference.md)中定义的元信息文件（*.json）进行签名，这些文件可能储存在本地文件系统，也可以放在远端使用 http 协议提供签名入口。
 
-
 ## 语法
 
 ```sh
@@ -18,7 +17,7 @@ tiup mirror sign <manifest-file> [flags]
 
 `<manifest-file>` 为被签名的文件地址，可以有两种地址：
 
-- 网络地址：http 或者 https 开头，如 http://172.16.5.5:8080/rotate/root.json
+- 网络地址：http 或者 https 开头，如 `http://172.16.5.5:8080/rotate/root.json`
 - 本地文件路径：相对路径或绝对路径均可
 
 如果是网络地址，该地址必须提供以下功能：

@@ -12,15 +12,15 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-scale-in/']
 由于 TiKV，TiFlash 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV，TiFlash 和 TiDB Binlog 组件做了特殊处理：
 
 - 对 TiKV，TiFlash 及 Binlog 组件的操作:
-  - tiup-cluster 通过 API 将其下线后直接退出而不等待下线完成
-  - 执行 `tiup cluster display` 查看下线节点的状态，等待其状态变为 Tombstone
-  - 执行 `tiup cluster prune` 命令清理 Tombstone 节点，该命令会执行以下操作：
-    - 停止已经下线掉的节点的服务
-    - 清理已经下线掉的节点的相关数据文件
-    - 更新集群的拓扑，移除已经下线掉的节点
+    - tiup-cluster 通过 API 将其下线后直接退出而不等待下线完成
+    - 执行 `tiup cluster display` 查看下线节点的状态，等待其状态变为 Tombstone
+    - 执行 `tiup cluster prune` 命令清理 Tombstone 节点，该命令会执行以下操作：
+        - 停止已经下线掉的节点的服务
+        - 清理已经下线掉的节点的相关数据文件
+        - 更新集群的拓扑，移除已经下线掉的节点
 - 对其他组件的操作
-  - 下线 PD 组件时，会通过 API 将指定节点从集群中删除掉（这个过程很快），然后停掉指定 PD 的服务并且清除该节点的相关数据文件
-  - 下线其他组件时，直接停止并且清除节点的相关数据文件
+    - 下线 PD 组件时，会通过 API 将指定节点从集群中删除掉（这个过程很快），然后停掉指定 PD 的服务并且清除该节点的相关数据文件
+    - 下线其他组件时，直接停止并且清除节点的相关数据文件
 
 ## 语法
 

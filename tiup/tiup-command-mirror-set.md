@@ -19,7 +19,7 @@ tiup mirror set <mirror-addr> [flags]
 
 `<mirror-addr>` 为镜像地址，可以有两种形式：
 
-- 网络地址：http 或者 https 开头，如 http://172.16.5.5:8080，https://tiup-mirrors.pingcap.com 等
+- 网络地址：http 或者 https 开头，如 `http://172.16.5.5:8080`，`https://tiup-mirrors.pingcap.com` 等
 - 本地文件路径：镜像目录的绝对路径，比如 /path/to/local-tiup-mirror
 
 ## 选项

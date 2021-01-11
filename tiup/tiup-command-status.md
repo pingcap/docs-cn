@@ -12,6 +12,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-status/']
 > **使用限制：**
 >
 > 只能查询到以下两种组件的信息：
+>
 > 1. 尚在运行的组件
 > 2. 通过 `tiup -T/--tag` 指定 tag 运行的组件
 

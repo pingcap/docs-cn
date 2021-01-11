@@ -8,12 +8,14 @@ aliases: ['/docs-cn/dev/tiup/tiup-mirror-reference/']
 ## 介绍
 
 TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件的元信息。镜像有两种存在形式：
+
 - 本地磁盘上的目录：用于服务本地的 TiUP 客户端，文档中将称之为本地镜像
 - 基于远程的磁盘目录启动的 HTTP 镜像：服务远程的 TiUP 客户端，文档中将称之为远程镜像
 
 ## 镜像的创建与更新
 
 镜像可以通过以下两种方式创建：
+
 - 通过命令 `tiup mirror init` 从零生成
 - 通过命令 `tiup mirrir clone` 从已有镜像克隆
 
@@ -302,11 +304,11 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
 
 - 客户端安装时随 binary 附带了一个 root.json
 - 客户端运行时以已有的 root.json 为基础，做如下操作：
-  1. 获取 root.json 中的 version，记为 N
-  2. 向镜像请求 {N+1}.root.json，若成功，使用 root.json 中记录的公钥验证该文件是否合法
+    1. 获取 root.json 中的 version，记为 N
+    2. 向镜像请求 {N+1}.root.json，若成功，使用 root.json 中记录的公钥验证该文件是否合法
 - 向镜像请求 timestamp.json，并使用 root.json 中记录的公钥验证该文件是否合法
 - 检查 timestamp.json 中记录的 snapshot.json 的 checksum 和本地的 snapshot.json 的 checksum 是否吻合
-  - 若不吻合，则向镜像请求最新的 snapshot.json 并使用 root.json 中记录的公钥验证该文件是否合法
+    - 若不吻合，则向镜像请求最新的 snapshot.json 并使用 root.json 中记录的公钥验证该文件是否合法
 - 对于 index.json 文件，从 snapshot.json 中获取其版本号 N，并请求 {N}.index.json，然后使用 root.json 中记录的公钥验证该文件是否合法
 - 对于组件（如 tidb.json，tikv.json），从 snapshot.json 中获取其版本号 N，并请求 {N}.{component}.json，然后使用 index.json 中记录的公钥验证该文件是否合法
 - 对于组件 tar 文件，从 {component}.json 中获取其 url 及 checksum，请求 url 得到 tar 包，并验证 checksum 是否正确

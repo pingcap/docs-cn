@@ -11,10 +11,10 @@ TiUP 的镜像中有一个非常重要的文件：root.json，里面记录了整
 
 - N 个管理员的签名，对于官方镜像,  N 为 5，默认初始化的镜像 N 为 3
 - 用于验证以下文件的公钥：
-  - root.json
-  - index.json
-  - snapshot.json
-  - timestamp.json
+    - root.json
+    - index.json
+    - snapshot.json
+    - timestamp.json
 - 过期时间，对于官方镜像，为 root.json 创建时间后延一年
 
 关于镜像的详细介绍可以参考[镜像说明](/tiup/tiup-mirror-reference.md)。

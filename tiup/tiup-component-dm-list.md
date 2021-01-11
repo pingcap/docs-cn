@@ -28,6 +28,7 @@ tiup dm list [flags]
 ## 输出
 
 输出含有以下字段的表格：
+
 - Name：集群名字
 - User：部署用户
 - Version：集群版本

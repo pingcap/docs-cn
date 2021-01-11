@@ -232,7 +232,7 @@ monitoring_servers:
 - `username`：Grafana 登陆界面的用户名
 - `password`：Grafana 对应的密码
 - `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 dashboard(*.json) 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
-- `resource_control`：针对该服务的资源控制，所配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以该字段为准），然后生成 systemd 配置文件下发到 `host` 指定机器。`resource_control` 的配置规则同 `global `中的 `resource_control`
+- `resource_control`：针对该服务的资源控制，所配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以该字段为准），然后生成 systemd 配置文件下发到 `host` 指定机器。`resource_control` 的配置规则同 `global`中的 `resource_control`
 
 > **注意：**
 >

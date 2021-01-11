@@ -68,7 +68,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-check/']
 
 检查 FirewallD 服务是否启用：建议用户禁用 FirewallD 或为 TiDB 集群各服务添加允许规则。
 
-###  irqbalance
+### irqbalance
 
 检查 irqbalance 服务是否启用：建议用户启用 irqbalance 服务。
 
@@ -178,6 +178,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 ### -p, --password（boolean，默认 false）
 
 在连接目标机器时使用密码登陆：
+
 - 对于指定了 `--cluster` 的集群，密码为部署集群时拓扑文件中指定的用户的密码
 - 对于未指定 `--cluster` 的集群，密码为 `-u/--user` 参数指定的用户的密码
 

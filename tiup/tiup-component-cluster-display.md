@@ -50,11 +50,11 @@ tiup cluster display <cluster-name> [flags]
 - SSH 客户端类型
 - Dashboard 地址
 - 含有以下字段的表格：
-  - ID：节点 ID，由 IP:PORT 构成
-  - Role：该节点部署的服务角色（如 tidb, tikv 等）
-  - Host：该节点对应的机器 IP
-  - Ports：服务占用的端口号
-  - OS/Arch：该节点的操作系统和机器架构
-  - Status：该节点服务当前的状态
-  - Data Dir：服务的数据目录，`-` 表示没有数据目录
-  - Deploy Dir：服务的部署目录
+    - ID：节点 ID，由 IP:PORT 构成
+    - Role：该节点部署的服务角色（如 tidb, tikv 等）
+    - Host：该节点对应的机器 IP
+    - Ports：服务占用的端口号
+    - OS/Arch：该节点的操作系统和机器架构
+    - Status：该节点服务当前的状态
+    - Data Dir：服务的数据目录，`-` 表示没有数据目录
+    - Deploy Dir：服务的部署目录
