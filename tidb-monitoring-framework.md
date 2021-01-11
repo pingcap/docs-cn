@@ -45,6 +45,7 @@ Grafana 是一个开源的 metric 分析及可视化系统。TiDB 使用 Grafana
 - {TiDB_Cluster_name}-TiKV-Details：TiKV server 组件详细监控项。
 - {TiDB_Cluster_name}-TiKV-Summary：TiKV server 监控项概览。
 - {TiDB_Cluster_name}-TiKV-Trouble-Shooting：TiKV 错误诊断相关监控项。
+- {TiDB_Cluster_name}-TiCDC：TiCDC 组件详细监控项。
 
 每个分组包含多个监控项页签，页签中包含多个详细的监控项信息。以 Overview 监控组为例，其中包含 5 个页签，每个页签内有相应的监控指标看板，如下图所示：
 
