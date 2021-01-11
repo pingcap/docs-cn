@@ -19,10 +19,10 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 
 各监控面板说明如下：
 
-- **Server**：TiDB 集群中 TiKV 节点和 TiCDC 节点的概要信息
-- **Changefeed**：TiCDC 同步任务的详细信息
-- **Events**：TiCDC 内部数据流转的详细信息
-- **TiKV**：TiKV 中和 TiCDC 相关的详细信息
+- [**Server**](#server-面板)：TiDB 集群中 TiKV 节点和 TiCDC 节点的概要信息
+- [**Changefeed**](#changefeed-面板)：TiCDC 同步任务的详细信息
+- [**Events**](#events-面板)：TiCDC 内部数据流转的详细信息
+- [**TiKV**](#tikv-面板)：TiKV 中和 TiCDC 相关的详细信息
 
 ## Server 面板
 
