@@ -217,6 +217,14 @@ Pump 以 `paused` 状态退出进程时，不保证所有 binlog 数据被下游
 
 目前还不支持。这种 SQL 操作会直接修改 PD 中保存的状态，在功能上等同于使用 binlogctl 的 `update-pump`、`update-drainer` 命令。如果需要暂停或者下线，仍然要使用 binlogctl。
 
+## TiDB 写 binlog 失败导致 TiDB 卡住，日志不停报错 "listener stopped, waiting for manual stop"
+
+在 3.0.12 之前版本的 tidb，写 binlog 失败会导致 tidb 报 fatal error， 但是 tidb 不会自动退出只是停止服务，看起来像是服务卡住, tidb 的日志里面可以看到 “listener stopped, waiting for manual stop”。 遇到此问题需要根据具体情况判断具体是什么原因导致写 binlog 失败，如果是下游 binlog 写入缓慢导致，可以考虑扩容 pump 或增加写 binlog 超时时间。
+
+## TiDB 向 pump 写入了重复的 binlog？
+
+TiDB 在写入 binlog 失败或者超时的情况下，会重试下一个可用的 pump 直到写入成功。所以如果某个 pump 写入较慢， 导致 tidb 超时(默认 15s), 此时 tidb 判定写入失败并尝试下一个 pump。 如果超时的 pump 实际也写入成功，则会出现同一条 binlog 被写入到多个 pump。Drainer 在处理 binlog 的时候，会自动去重 tso 相同的 binlog，所以这种重复的写入，对下游无感知，不会对同步逻辑产生影响。
+
 ## 在使用全量+增量方式恢复的过程中，reparo 中断了，可以使用日志里面最后一个 tso 接起来吗？
 
 可以。reparo 不会在启动时自动开启 safe-mode 模式，需要手动操作：
