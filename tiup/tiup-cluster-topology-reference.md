@@ -99,11 +99,11 @@ monitored:
 - `tidb`：TiDB 服务的相关配置，支持的完整配置请参考[TiDB 配置文件描述](/tidb-configuration-file.md)
 - `tikv`：TiKV 服务的相关配置，支持的完整配置请参考[TiKV 配置文件描述](/tikv-configuration-file.md)
 - `pd`：PD 服务的相关配置，支持的完整配置请参考[PD 配置文件描述](/pd-configuration-file.md)
-- `tiflash`：TiFlash 服务的相关配置，支持的完整配置请参考[TiFlash 配置参数](/tiflash-configuration.md)
+- `tiflash`：TiFlash 服务的相关配置，支持的完整配置请参考[TiFlash 配置参数](/tiflash/tiflash-configuration.md)
 - `tiflash_learner`：每个 TiFlash 中内置了一个特殊的 TiKV，该配置项用于配置这个特殊的 TiKV，一般不建议修改这个配置项下的内容
-- `pump`：Pump 服务的相关配置，支持的完整配置请参考[TiDB Binlog 配置说明](/tidb-binlog-configuration-file.md#pump)
-- `drainer`：Drainer 服务的相关配置，支持的完整配置请参考[TiDB Binlog 配置说明](/tidb-binlog-configuration-file.md#drainer)
-- `cdc`：CDC 服务的相关配置，支持的完整配置请参考[TiCDC 安装部署](/deploy-ticdc.md)
+- `pump`：Pump 服务的相关配置，支持的完整配置请参考[TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
+- `drainer`：Drainer 服务的相关配置，支持的完整配置请参考[TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
+- `cdc`：CDC 服务的相关配置，支持的完整配置请参考[TiCDC 安装部署](/ticdc/deploy-ticdc.md)
 
 `server_configs` 配置示例：
 
