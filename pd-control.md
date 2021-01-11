@@ -186,136 +186,9 @@ export PD_ADDR=http://127.0.0.1:2379
 `max-merge-region-keys` 控制 Region Merge 的 keyCount 上限。
 当 Region KeyCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
 
-<<<<<<< HEAD
 ```bash
 >> config set max-merge-region-keys 50000 // 设置 Region Merge 的 keyCount 上限为 50k
 ```
-=======
-    设置最大 pending peer 数量为 64：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set max-pending-peer-count 64
-    ```
-
-- `max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
-
-    设置 Region Merge 的 size 上限为 16 M：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set max-merge-region-size 16
-    ```
-
-- `max-merge-region-keys` 控制 Region Merge 的 keyCount 上限。当 Region KeyCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
-
-    设置 Region Merge 的 keyCount 上限为 50000：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set max-merge-region-keys 50000
-    ```
-
-- `split-merge-interval` 控制对同一个 Region 做 `split` 和 `merge` 操作的间隔，即对于新 `split` 的 Region 一段时间内不会被 `merge`。
-
-    设置 `split` 和 `merge` 的间隔为 1 天：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set split-merge-interval 24h
-    ```
-
-- `enable-one-way-merge` 用于控制是否只允许和相邻的后一个 Region 进行合并。当设置为 `false` 时，PD 允许与相邻的前后 Region 进行合并。
-
-    设置只允许和相邻的后一个 Region 合并：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set enable-one-way-merge true
-    ```
-
-- `enable-cross-table-merge` 用于开启跨表 Region 的合并。当设置为 `false` 时，PD 不会合并不同表的 Region。该选项只在键类型为 "table" 时生效。
-
-    设置允许跨表合并：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set enable-cross-table-merge true
-    ```
-
-- `key-type` 用于指定集群的键编码类型。支持的类型有 `["table", "raw", "txn"]`，默认值为 "table"。
-
-    - 如果集群中不存在 TiDB 实例，`key-type` 的值为 "raw" 或 "txn"。此时，无论 `enable-cross-table-merge` 设置为何，PD 均可以跨表合并 Region。
-    - 如果集群中存在 TiDB 实例，`key-type` 的值应当为 "table"。此时，`enable-cross-table-merge` 的设置决定了 PD 是否能跨表合并 Region。如果 `key-type` 的值为 "raw"，placement rules 不生效。
-
-    启用跨表合并：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set key-type raw
-    ```
-
-- `region-score-formula-version` 用于设置 Region 算分公式的版本，支持的值有 `["v1", "v2"]`。v2 版本公式有助于减少上下线等场景下冗余的 balance Region 调度。
-
-    开启 v2 版本 Region 算分公式：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set region-score-formula-version v2
-    ```
-
-- `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
-
-    设置 replicaChecker 的运行频率为 50 毫秒：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set patrol-region-interval 50ms
-    ```
-
-- `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
-
-    设置 store 心跳丢失 30 分钟开始补副本：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set max-store-down-time 30m
-    ```
-
-- 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
-
-    最多同时进行 4 个 leader 调度：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set leader-schedule-limit 4
-    ```
-
-- 通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。这个值可以避免创建过多的 Region balance operator。默认值为 `2048`，对所有大小的集群都足够。设置为 `0` 则关闭调度。Region 调度的速度通常受到 `store-limit` 的限制，但除非你熟悉该设置，否则不推荐自定义该参数。
-
-    最多同时进行 2 个 Region 调度：
-
-    {{< copyable "" >}}
-
-    ```bash
-    >> config set region-schedule-limit 2
-    ```
-
-- 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。
-
-    最多同时进行 4 个 replica 调度：
->>>>>>> b15c79ac... update patrol-region-interval 10ms -> 50ms (#5249)
 
 `split-merge-interval` 控制对同一个 Region 做 `split` 和 `merge` 操作的间隔，即对于新 `split` 的 Region 一段时间内不会被 `merge`。
 
@@ -326,7 +199,7 @@ export PD_ADDR=http://127.0.0.1:2379
 `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
 
 ```bash
->> config set patrol-region-interval 10ms // 设置 replicaChecker 的运行频率为 10ms
+>> config set patrol-region-interval 50ms // 设置 replicaChecker 的运行频率为 50ms
 ```
 
 `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
