@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-check/']
 
 ### 系统时间
 
-检查部署机系统时间是否同步：将部署机系统时间与中控机对比，偏差超出某一阈值后报错。
+检查部署器系统时间是否同步：将部署机系统时间与中控机对比，偏差超出某一阈值（500ms）后报错。
 
 ### 时间同步服务
 
@@ -86,7 +86,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-check/']
 
 ### CPU 核心数
 
-检查部署机 CPU 信息：建议生产级群 CPU 逻辑核心数 >= 16
+检查部署机 CPU 信息：建议生产集群 CPU 逻辑核心数 >= 16
 
 > **注意：**
 >

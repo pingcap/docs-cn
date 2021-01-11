@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-destroy/']
 当业务下线之后，如果想将集群占有的机器释放出来让给其他业务使用，需要清理掉集群上的数据以及部署的二进制文件。`tiup cluster destroy` 命令会执行以下操作销毁集群：
 
 - 停止集群
-- 对于每个服务，删除其数据目录，日志目录，部署目录
+- 对于每个服务，删除其日志目录，部署目录，数据目录
 - 如果各个服务的数据目录/部署目录的父目录是由 tiup-cluster 创建的，也一并删除
 
 ## 语法
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-destroy/']
 tiup cluster destroy <cluster-name> [flags]
 ```
 
-`<cluster-name>` 为要销毁的集群。
+`<cluster-name>` 为要销毁的集群名字。
 
 ## 选项
 

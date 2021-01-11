@@ -7,11 +7,11 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-enable/']
 
 ## 介绍
 
-命令 `tiup cluster enable` 由于设置集群服务在机器重启后的自启动，该命令会到指定的节点上去执行 `systemctl enable <service>` 来开启服务的自启。
+命令 `tiup cluster enable` 用于设置集群服务在机器重启后的自启动，该命令会到指定的节点上去执行 `systemctl enable <service>` 来开启服务的自启。
 
 > **注意：**
 >
-> 集群全部关机重启时，服务启动的顺序由节点的操作系统启动顺序决定，重启顺序不正确时，在某些情况下，重启后的集群仍然不能提供服务（比如先启动了 TiKV 但未启动 PD，systemd 重启 TiKV 多次仍未找到 PD 则会放弃）。
+> 集群全部关机重启时，服务启动的顺序由节点的操作系统启动顺序决定。重启顺序不正确时，在某些情况下，重启后的集群仍然不能提供服务（比如先启动了 TiKV 但未启动 PD，systemd 重启 TiKV 多次仍未找到 PD 则会放弃）。
 
 ## 语法
 

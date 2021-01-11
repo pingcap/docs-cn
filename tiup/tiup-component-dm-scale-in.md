@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-dm-scale-in/']
 
 ## 介绍
 
-`tiup dm scale-in` 命令用于集群缩容，缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关数据文件。
+`tiup dm scale-in` 命令用于集群缩容，缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
 ## 语法
 

@@ -38,7 +38,7 @@ tiup dm import [flags]
 
 ### --inventory string（string，默认 "inventory.ini"）
 
-指定 ansible inventory 文件的名字。
+指定 Ansible inventory 文件的名字。
 
 ### --rename（string，默认为空）
 
@@ -50,4 +50,4 @@ tiup dm import [flags]
 
 ## 输出
 
-import 过程的 debug 信息。
+import 过程的日志信息。

@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-help/']
 
 ## 介绍
 
-tiup-cluster 在命令行界面为用户提供了丰富的帮助信息，这些帮助信息可以通过 `help` 命令或者 `--help` 参数获得，基本上，`tiup cluster help <command>` 等价于 `tiup cluster <command> --help`。
+tiup-cluster 在命令行界面为用户提供了丰富的帮助信息，这些帮助信息可以通过 `help` 命令或者 `--help` 参数获得。基本上，`tiup cluster help <command>` 等价于 `tiup cluster <command> --help`。
 
 ## 语法
 

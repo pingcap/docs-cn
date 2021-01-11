@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-scale-out/']
 tiup cluster scale-out <cluster-name> <topology.yaml> [flags]
 ```
 
-- `<cluster-name>` 为要操作的集群名字，如果忘记集群名字可查看[集群列表](/tiup/tiup-component-cluster-list.md)
+- `<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看
 - `<topology.yaml>` 为事先编写好的扩容[拓扑文件](/tiup/tiup-cluster-topology-reference.md)，该文件应当仅包含扩容部分的拓扑
 
 ## 选项

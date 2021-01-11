@@ -7,12 +7,12 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-merge/']
 
 ## 介绍
 
-命令 `tiup mirror merge` 用于合并一个或多个镜像到当前镜像。在合并之前，需要使用命令 [tiup mirror set](/tiup/tiup-command-mirror-set.md) 指定当一个有权限发布组件的前镜像。
+命令 `tiup mirror merge` 用于合并一个或多个镜像到当前镜像。
 
 执行此命令需要满足几个条件：
 
 - 目标镜像的所有组件的管理员 ID 必须在当前镜像中存在
-- 执行该命令的用户的 `${TIUP_HOME}/keys` 目录中有上述管理员 ID 在当前镜像中对应的所有的私钥
+- 执行该命令的用户的 `${TIUP_HOME}/keys` 目录中有上述管理员 ID 在当前镜像中对应的所有的私钥（可以使用命令 [tiup mirror set](/tiup/tiup-command-mirror-set.md) 将当前镜像切换成目前有权限修改的镜像）
 
 ## 语法
 

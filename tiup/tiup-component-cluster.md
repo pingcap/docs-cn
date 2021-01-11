@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster/']
 
 ## 介绍
 
-TiUP Cluster 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群；管理 TiDB 集群参数。
+TiUP Cluster 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群、管理 TiDB 集群参数。
 
 ## 语法
 
@@ -21,7 +21,7 @@ tiup cluster [command] [flags]
 
 ### --ssh (string，默认 builtin)
 
-通过哪种 ssh 客户端到远端（部署 TiDB 服务的机器）执行命令，支持以下几个值：
+指定 SSH 客户端连接远端（部署 TiDB 服务的机器）执行命令，支持以下几个值：
 
 - builtin：使用 tiup-cluster 内置的 easyssh 客户端
 - system：使用当前操作系统默认的 ssh 客户端

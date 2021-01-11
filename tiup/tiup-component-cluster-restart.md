@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-restart/']
 
 ## 介绍
 
-命令 `tiup cluster restart` 用于重启指定集群的所有服务或部分服务。
+命令 `tiup cluster restart` 用于重启指定集群的所有或部分服务。
 
 > **注意：**
 > 
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-restart/']
 tiup cluster restart <cluster-name> [flags]
 ```
 
-`<cluster-name>` 为要操作的集群名字，如果忘记集群名字可查看[集群列表](/tiup/tiup-component-cluster-list.md)。
+`<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看。
 
 ## 选项
 

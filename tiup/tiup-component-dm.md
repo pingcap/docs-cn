@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster/']
 
 ## 介绍
 
-类似于 [TiUP Cluster](/tiup/tiup-component-cluster.md) 对 TiDB 集群的管理，TiUP DM 是用于对 DM 集群的日常运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 DM 集群；管理 DM 集群参数。
+类似于 [TiUP Cluster](/tiup/tiup-component-cluster.md) 对 TiDB 集群的管理，TiUP DM 是用于对 DM 集群的日常运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 DM 集群、管理 DM 集群参数。
 
 ## 语法
 
@@ -21,7 +21,7 @@ tiup dm [command] [flags]
 
 ### --ssh (string，默认 builtin)
 
-通过哪种 ssh 客户端到远端（部署 TiDB 服务的机器）执行命令，支持以下几个值：
+指定 SSH 客户端连接远端（部署 TiDB 服务的机器）执行命令，支持以下几个值：
 
 - builtin：使用 tiup-cluster 内置的 easyssh 客户端
 - system：使用当前操作系统默认的 ssh 客户端

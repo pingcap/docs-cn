@@ -45,4 +45,4 @@ tiup dm stop <cluster-name> [flags]
 
 ## 输出
 
-停服务的日志。
+停止服务的日志。

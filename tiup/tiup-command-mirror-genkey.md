@@ -29,7 +29,7 @@ tiup mirror genkey [flags]
 
 ### -n, --name（string，默认 private）
 
-密钥的名字，该名字决定最终生成的文件名，生成的私钥文件路径为：${TIUP_HOME}/keys/{name}.json，其中 `TIUP_HOME` 为 TiUP 的家目录，`name` 为 `-n/--name` 指定的密钥名字。
+密钥的名字，该名字决定最终生成的文件名，生成的私钥文件路径为：`${TIUP_HOME}/keys/{name}.json`，其中 `TIUP_HOME` 为 TiUP 的家目录，默认路径为 `$HOME/.tiup`，`name` 为 `-n/--name` 指定的密钥名字。
 
 ### -p, --public（boolean，默认 false）
 
@@ -45,7 +45,7 @@ tiup mirror genkey [flags]
 
 - 若未指定 `-p/--public`:
   - 若指定的密钥已存在：`Key already exists, skipped`
-  - 若指定的密钥不存在：`private key have been write to ${TIUP_HOME}/keys/{name}.json`
+  - 若指定的密钥不存在：`private key have been write to `${TIUP_HOME}/keys/{name}.json``
 - 若指定 `-p/--public`:
-  - 若指定的密钥不存在：`Error: open ${TIUP_HOME}/keys/{name}.json: no such file or directory`
+  - 若指定的密钥不存在：`Error: open `${TIUP_HOME}/keys/{name}.json`: no such file or directory`
   - 若指定的密钥存在：输出该密钥对应的公钥内容

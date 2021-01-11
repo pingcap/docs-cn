@@ -10,10 +10,10 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-patch/']
 在集群运行过程中，如果需要动态替换某个服务的二进制文件（即替换过程中保持集群可用），那么可以使用 `tiup cluster patch` 命令，它会完成以下几件事情：
 
 - 将用于替换的二进制包上传到目标机器
-- 如果目标服务是 TiKV, TiFlash 活着 Binlog 之类的存储服务，则先通过 API 下线节点
+- 如果目标服务是 TiKV, TiFlash 或者 Binlog 之类的存储服务，则先通过 API 下线节点
 - 停止目标服务
 - 解压二进制包，替换服务
-- 重启目标服务
+- 启动目标服务
 
 ## 语法
 

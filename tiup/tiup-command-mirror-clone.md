@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-clone/']
 
 ## 介绍
 
-命令 `tiup mirror clone` 用于从一个已经存在的镜像上克隆或部分克隆出一个新的镜像，新的镜像和旧的镜像组件/部分组件相同，但使用的密钥不同。
+命令 `tiup mirror clone` 用于从一个已经存在的镜像上克隆或部分克隆出一个新的镜像，新旧镜像的组件/部分组件相同，但使用的签名密钥不同。
 
 ## 语法
 

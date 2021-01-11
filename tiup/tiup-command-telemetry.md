@@ -7,15 +7,25 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-telemetry/']
 
 ## 介绍
 
-TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品，例如，通过这些使用情况信息，PingCAP 可以了解常见的 TiDB 集群操作，从而确定新功能优先级。
+TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品，例如，通过这些使用信息，PingCAP 可以了解常见的 TiDB 集群操作，从而确定新功能优先级。
 
-当 TiUP 遥测功能开启时，执行 TiUP 命令时将会将使用情况信息分享给 PingCAP，包括（但不限于）：
+当 TiUP 遥测功能开启时，执行 TiUP 命令时会将使用情况信息分享给 PingCAP，包括（但不限于）：
 
 - 随机生成的遥测标示符
 - TiUP 命令的执行情况，如命令执行是否成功、命令执行耗时等
 - 使用 TiUP 进行部署的情况，如部署的目标机器硬件信息、组件版本号、修改过的部署配置名称等
 
+以下信息不会被分享：
+
+- 集群的准确名字
+- 集群的拓扑结构
+- 集群的配置文件
+
 TiUP 使用命令 `tiup telemetry` 来控制遥测。
+
+> **注意：**
+>
+> 该功能默认是打开的。
 
 ## 语法
 

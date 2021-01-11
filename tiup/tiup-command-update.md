@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-update/']
 
 ## 介绍
 
-命令 `tiup update` 用于升级已安装的组件。
+命令 `tiup update` 用于升级已安装的组件或者自身。
 
 ## 语法
 
@@ -15,23 +15,25 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-update/']
 tiup update [component1][:version] [component2..N] [flags]
 ```
 
-`[component1]` 表示要升级的组件名字，`[version]` 表示要卸载的版本，如果省略，则表示升级到该组件的最新稳定版本，`[component2...N]` 表示可指定升级多个组件或版本。如果一个组件也不指定：即 `[component1][:version] [component2..N]` 为空，则需要配合使用 `--all` 选项或 `--self` 选项。
+- `[component1]` 表示要升级的组件名字
+- `[version]` 表示要卸载的版本，如果省略，则表示升级到该组件的最新稳定版本
+- `[component2...N]` 表示可指定升级多个组件或版本。如果一个组件也不指定：即 `[component1][:version] [component2..N]` 为空，则需要配合使用 `--all` 选项或 `--self` 选项。
 
-升级操作不会删除旧的版本，仍然可以在执行时指定旧版本。
+升级操作不会删除旧的版本，仍然可以在执行时指定旧版本使用。
 
 ## 选项
 
 ### --all (boolean, 默认 false)
 
-升级所有已安装的组件，若未指定任何组件，则必须指定该选项为 `true`。
+若未指定任何组件，则必须指定该选项。
 
 ### --force (boolean, 默认 false)
 
-若指定的组件版本已经安装，则不进行升级操作，指定该参数可忽略已安装版本强制升级。
+若指定的组件版本已经安装，则默认跳过升级操作，指定该参数可强制升级已安装版本。
 
 ### --nightly (boolean, 默认 false)
 
-将指定组件升级到 nightly：等价于 `tiup update <component>:nightly`。
+将指定组件升级到 nightly 版本：等价于 `tiup update <component>:nightly`。
 
 ### --self (boolean，默认 false)
 

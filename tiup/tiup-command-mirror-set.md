@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-set/']
 
 ## 介绍
 
-命令 `tiup mirror set` 用于切换当前镜像，支持本地文件系统镜像和远程网络镜像两种镜像。
+命令 `tiup mirror set` 用于切换当前镜像，支持本地文件系统和远程网络两种镜像。
 
 官方镜像为 `https://tiup-mirrors.pingcap.com`
 
@@ -20,7 +20,7 @@ tiup mirror set <mirror-addr> [flags]
 `<mirror-addr>` 为镜像地址，可以有两种形式：
 
 - 网络地址：http 或者 https 开头，如 http://172.16.5.5:8080，https://tiup-mirrors.pingcap.com 等
-- 本地文件路径：镜像目录的绝对路径
+- 本地文件路径：镜像目录的绝对路径，比如 /path/to/local-tiup-mirror
 
 ## 选项
 

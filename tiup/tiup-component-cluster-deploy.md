@@ -33,7 +33,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 ### --ignore-config-check（boolean，默认 false）
 
-在二进制文件部署之后，会对 TiDB，TiKV 和 PD 组件执行配置检查，检查方式为 `<binary> --config-check <config-file>`，其中 `<bianry>` 为部署的二进制文件的路径，`<config-file>` 为根据用户配置生成的配置文件。
+在组件二进制文件部署之后，会对 TiDB，TiKV 和 PD 组件执行配置检查，检查方式为 `<binary> --config-check <config-file>`，其中 `<bianry>` 为部署的二进制文件的路径，`<config-file>` 为根据用户配置生成的配置文件。
 
 如果想要跳过该项检查，可以使用该选项。
 

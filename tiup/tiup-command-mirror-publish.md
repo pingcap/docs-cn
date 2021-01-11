@@ -17,7 +17,7 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 
 各个参数解释如下：
 
-- `<comp-name>`：组件名，如 ，建议使用符合正则 `^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$` 的字符串
+- `<comp-name>`：组件名，如 `tidb`，建议使用符合正则 `^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$` 的字符串
 - `<version>`：当前正在发布的版本，需要符合 [Semantic Versioning](https://semver.org/)
 - `<tarball>`：`.tar.gz` 包的本地路径，需要将组件的可执行文件及依赖放在该包中，由 TiUP 上传到镜像
 - `<entry>`：组件的可执行文件在 `<tarball>` 中的位置

@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-stop/']
 tiup cluster stop <cluster-name> [flags]
 ```
 
-`<cluster-name>` 为要操作的集群名字，如果忘记集群名字可查看[集群列表](/tiup/tiup-component-cluster-list.md)。
+`<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看。
 
 ## 选项
 
@@ -45,4 +45,4 @@ tiup cluster stop <cluster-name> [flags]
 
 ## 输出
 
-停服务的日志。
+停止服务的日志。

@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-dm-restart/']
 
 ## 介绍
 
-命令 `tiup dm restart` 用于重启指定集群的所有服务或部分服务。
+命令 `tiup dm restart` 用于重启指定集群的所有或部分服务。
 
 > **注意：**
 > 

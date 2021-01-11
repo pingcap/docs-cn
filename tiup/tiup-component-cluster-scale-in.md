@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-scale-in/']
 
 ## 介绍
 
-`tiup cluster scale-in` 命令用于集群缩容，缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关数据文件。
+`tiup cluster scale-in` 命令用于集群缩容，缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
 由于 TiKV，TiFlash 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV，TiFlash 和 TiDB Binlog 组件做了特殊处理：
 
@@ -28,7 +28,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-scale-in/']
 tiup cluster scale-in <cluster-name> [flags]
 ```
 
-`<cluster-name>` 为要操作的集群名字，如果忘记集群名字可查看[集群列表](/tiup/tiup-component-cluster-list.md)。
+`<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看。
 
 ## 选项
 

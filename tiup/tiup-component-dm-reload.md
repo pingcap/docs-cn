@@ -3,7 +3,7 @@ title: tiup dm reload
 aliases: ['/docs-cn/dev/tiup/tiup-component-dm-reload/']
 ---
 
-# tiup dm list
+# tiup dm reload
 
 ## 介绍
 

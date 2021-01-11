@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-import/']
 
 ## 介绍
 
-在 TiDB 4.0 以前的版本，集群基本是通过 TiDB Ansible 部署的，TiUP Cluster 提供了 `import` 命令用于让这些集群过渡到 TiUP Cluster 组件接管。
+在 TiDB 4.0 以前的版本，集群基本是通过 TiDB Ansible 部署的，TiUP Cluster 提供了 `import` 命令用于让这些集群过渡到 tiup-cluster 组件接管。
 
 > **注意：**
 >
@@ -39,7 +39,7 @@ tiup cluster import [flags]
 
 ### --inventory string（string，默认 "inventory.ini"）
 
-指定 ansible inventory 文件的名字。
+指定 Ansible inventory 文件的名字。
 
 ### --no-backup（boolean，默认 false）
 
@@ -55,4 +55,4 @@ tiup cluster import [flags]
 
 ## 输出
 
-import 过程的 debug 信息。
+import 过程的日志信息。

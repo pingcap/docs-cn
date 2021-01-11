@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-dm-patch/']
 - 通过 API 下线节点
 - 停止目标服务
 - 解压二进制包，替换服务
-- 重启目标服务
+- 启动目标服务
 
 ## 语法
 

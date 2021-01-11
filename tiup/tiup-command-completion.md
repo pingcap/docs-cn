@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-completion/']
 如果是 bash，需要提前安装好 bash-completion：
 
 - macOS 的安装方式为：`brew install bash-completion` 或者 `brew install bash-completion@2`（Bash 4.1+）
-- Linux 的安装方式为：使用包管理器安装 `bash-completion` 包
+- Linux 的安装方式为：使用包管理器安装 `bash-completion` 包，例如 `yum install bash-completion` 或者 `apt install bash-completion`
 
 ## 语法
 
@@ -29,11 +29,11 @@ tiup completion <shell>
 将自动补全代码写入一个文件，并且在 .bash_profile 中 source 之：
 
 ```sh
-tiup completion bash > ~/.completion.bash.inc
+tiup completion bash > ~/.tiup.completion.bash
 
 printf "
 # tiup shell completion
-source '$HOME/.completion.bash.inc'
+source '$HOME/.tiup.completion.bash'
 " >> $HOME/.bash_profile
 
 source $HOME/.bash_profile
