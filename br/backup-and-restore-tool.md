@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 相比 [`dumpling`](/backup-and-restore-using-dumpling-lightning.md)，BR 更适合**大数据量**的场景。
 
-本文介绍了 BR 的工作原理、使用限制、命令行描述、备份恢复用例以及最佳实践。
+本文介绍了 BR 的工作原理、推荐部署配置、使用限制以及几种使用方式。
 
 ## 工作原理
 
@@ -82,7 +82,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 首先需要下载一个 BR 工具的二进制包，详见[下载链接](/download-ecosystem-tools.md#快速备份和恢复br)。
 
-以命令行工具进行备份恢复的方式见[使用备份与恢复工具 BR](/use-br-command-line-tool.md)。
+通过命令行工具进行备份恢复的具体操作见[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
 
 #### 在 Kubernetes 环境下
 

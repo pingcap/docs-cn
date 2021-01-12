@@ -1,9 +1,9 @@
 ---
-title: BR 备份与恢复场景示例
+title: BR 备份与恢复最佳实践
 aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','/docs-cn/dev/reference/tools/br/br-best-practices/']
 ---
 
-# BR 备份与恢复场景示例
+# BR 备份与恢复最佳实践
 
 [Backup & Restore](/br/backup-and-restore-tool.md)（下文简称 BR）一款分布式的快速备份和恢复工具。本文展示了[四种备份和恢复场景](#使用场景)下的 BR 操作过程，以帮助读者达到以下目标：
 
@@ -19,6 +19,14 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 ## 目标读者
 
 读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读[使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)。
+
+## 最佳实践
+
+- 推荐在 `-s` 指定的备份路径上挂载一个共享存储，例如 NFS。这样能方便收集和管理备份文件。
+- 在使用共享存储时，推荐使用高吞吐的存储硬件，因为存储的吞吐会限制备份或恢复的速度。
+- 推荐在业务低峰时执行备份操作，这样能最大程度地减少对业务的影响。
+
+更多最佳实践内容，参见 [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)。
 
 ## 环境准备
 
