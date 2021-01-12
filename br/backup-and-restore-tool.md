@@ -104,3 +104,10 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 - [使用 BR 工具恢复 Google Cloud Storage 上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-gcs-using-br)
 - [使用 BR 工具备份 TiDB 集群到持久卷](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-pv-using-br)
 - [使用 BR 工具恢复持久卷上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-pv-using-br)
+
+## BR 相关文档
+
++ [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
++ [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
++ [BR 常见问题](/br/backup-and-restore-faq.md)
++ [BR 存储](/br/backup-and-restore-storages.md)
