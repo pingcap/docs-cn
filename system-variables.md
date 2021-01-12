@@ -1013,7 +1013,7 @@ explain select * from t where age=5;
 > 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
 >
 > + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
-> + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter) 不兼容，共同使用时有小概率发生写丢失。
+> + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter-从-v500-rc-版本开始引入) 不兼容，共同使用时有小概率发生写丢失。
 > + 本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
 
 - 作用域：SESSION | GLOBAL
