@@ -14,7 +14,7 @@ TiDB 5.0.0-rc 版本是 5.0 版本的前序版本。在 5.0 版本中，我们�
 + 引入 Raft Joint Consensus 算法，确保 Region 成员变更时系统的可用性。
 + 优化 `EXPLAIN` 功能、引入不可见索引等功能帮助提升 DBA 调试及 SQL 语句的效率。
 + 通过备份文件到 AWS S3、Google Cloud GCS 或者从 AWS S3、Google Cloud GCS 恢复到 TiDB，确保企业数据的可靠性。
-+ 提升从 AWS S3 或者  TiDB/MySQL导入导出数据的性能，帮忙企业在云上快速构建应用。例如：导入 1TiB TPC-C 数据性能提升了 40%，由 254 GiB/h 提升到 366 GiB/h。
++ 提升从 AWS S3 或者 TiDB/MySQL导入导出数据的性能，帮忙企业在云上快速构建应用。例如：导入 1TiB TPC-C 数据性能提升了 40%，由 254 GiB/h 提升到 366 GiB/h。
 
 ## SQL
 
