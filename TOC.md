@@ -182,7 +182,6 @@
       + [后端](/tidb-lightning/tidb-lightning-backends.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + TiCDC
@@ -190,6 +189,7 @@
     + [安装部署](/ticdc/deploy-ticdc.md)
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
+    + [监控指标](/ticdc/ticdc-grafana-dashboard.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
   + [Dumpling](/dumpling-overview.md)
@@ -198,8 +198,6 @@
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-  + [Loader](/loader-overview.md)
-  + [Syncer](/syncer-overview.md)
   + TiSpark
     + [TiSpark 快速上手](/get-started-with-tispark.md)
     + [TiSpark 用户指南](/tispark-overview.md)
@@ -215,6 +213,7 @@
     + [PD 面板](/grafana-pd-dashboard.md)
     + [TiKV 面板](/grafana-tikv-dashboard.md)
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
+    + [TiCDC 监控指标](/ticdc/ticdc-grafana-dashboard.md)
   + 安全加固
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
