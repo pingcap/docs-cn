@@ -106,9 +106,9 @@ DBA 通过 `ALTER INDEX` 语句来修改某个索引的可见性。修改后优�
 
 + 扩展统计信息功能，收集多列 NDV、多列顺序依赖性、多列函数依赖性等信息，帮助优化器选择相对较优的索引。
 + 重构统计信息模块，帮助优化器选择相对较优的索引。
-    + 从 CMSKetch 中删除 TopNs 值。
-    + 重构 TopN 搜索逻辑。
-    + 从直方图中删除 TopN 信息，建立直方图的索引，方便维护 Bucket NDV。
+    + 从 `CMSKetch` 中删除 `TopN` 值。
+    + 重构 `TopN` 搜索逻辑。
+    + 从直方图中删除 `TopN` 信息，建立直方图的索引，方便维护 Bucket NDV。
 
 相关 issue：[#18065](https://github.com/pingcap/tidb/issues/18065)
 
@@ -118,8 +118,8 @@ TiDB 调度过程中会占用 I/O、Network、CPU、Memory 等资源，若不对
 
 + 减少节点的容量总是在水位线附近波动引起的调度及 PD 的 `store-limit` 配置项设置过大引起的调度，引入一套新的调度算分公式并通过 `region-score-formula-version = v2` 配置项启用新的调度算分公式 [#3269](https://github.com/tikv/pd/pull/3269)
 + 通过修改 `enable-cross-table-merge = true` 开启跨 Region 合并功能，减少空 Region 的数量 [#3129](https://github.com/tikv/pd/pull/3129)
-+ TiKV 后台压缩数据会占用大量 IO 资源，系统通过自动调整压缩的速度来平衡后台任务与前端的数据读写对 I/O 资源的争抢，通过 `rate-limiter-auto-tuned` 配置项开启此功能后，延迟抖动比未开启此功能时的抖动大幅减少 [#18011](https://github.com/pingcap/tidb/issues/18011)
-+ TiKV 在进行垃圾数据回收和数据压缩时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减 I/O 的占用。此特性为实验性特性，通过`gc.enable-compaction-filter = ture` 开启 [#18009](https://github.com/pingcap/tidb/issues/18009)
++ TiKV 后台压缩数据会占用大量 I/O 资源，系统通过自动调整压缩的速度来平衡后台任务与前端的数据读写对 I/O 资源的争抢，通过 `rate-limiter-auto-tuned` 配置项开启此功能后，延迟抖动比未开启此功能时的抖动大幅减少 [#18011](https://github.com/pingcap/tidb/issues/18011)
++ TiKV 在进行垃圾数据回收和数据压缩时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减 I/O 的占用。此特性为实验性特性，通过 `gc.enable-compaction-filter = ture` 开启 [#18009](https://github.com/pingcap/tidb/issues/18009)
 + TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制压缩或整理数据占用的 I/O 量缓解资源争抢。此特性为实验性特性，通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
 
 相关 issue：[#18005](https://github.com/pingcap/tidb/issues/18005)
@@ -152,9 +152,9 @@ Region 在完成成员变更时，由于“添加”和“删除”成员操作�
 
 ## 备份与恢复
 
-+ 相关 issue：[#89](https://github.com/pingcap/br/issues/89)
 + BR 支持将数据备份到 AWS S3、Google Cloud GCS（[用户文档](/br/backup-and-restore-tool.md#备份数据到-amazon-s3-后端存储)）
 + BR 支持从 AWS S3、Google Cloud GCS 恢复数据到 TiDB（[用户文档](/br/backup-and-restore-tool.md#从-amazon-s3-后端存储恢复数据)）
++ 相关 issue：[#89](https://github.com/pingcap/br/issues/89)
 
 ## 数据的导入和导出
 
