@@ -17,7 +17,7 @@ This document describes the following common operations when you operate and mai
 
 > **Note:**
 >
-> Since TiDB v4.0, PingCAP no longer provides support for TiDB Ansible. Since TiDB v5.0, PingCAP no longer provides TiDB Ansible documents. If you want to read the document that introduces how to maintain a TiDB cluster using TiDB Ansible, see [TiDB Ansible Common Operations](https://docs.pingcap.com/tidb/v4.0/maintain-tidb-using-ansible).
+> Since TiDB v4.0, PingCAP no longer provides support for TiDB Ansible. Since TiDB v5.0, PingCAP no longer provides TiDB Ansible documents. If you want to read the document that introduces how to maintain a TiDB cluster using TiDB Ansible, see [TiDB Ansible Common Operations (v4.0)](https://docs.pingcap.com/tidb/v4.0/maintain-tidb-using-ansible).
 
 ## View the cluster list
 

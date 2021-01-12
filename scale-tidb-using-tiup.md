@@ -12,7 +12,7 @@ This document describes how to scale the TiDB, TiKV, PD, TiCDC, or TiFlash clust
 
 > **Note:**
 >
-> Since TiDB v4.0, PingCAP no longer provides support for TiDB Ansible. Since TiDB v5.0, PingCAP no longer provides TiDB Ansible documents. If you want to read the document that introduces how to scale a TiDB cluster using TiDB Ansible, see [Scale the TiDB Cluster Using TiDB Ansible](https://docs.pingcap.com/tidb/v4.0/scale-tidb-using-ansible).
+> Since TiDB v4.0, PingCAP no longer provides support for TiDB Ansible. Since TiDB v5.0, PingCAP no longer provides TiDB Ansible documents. If you want to read the document that introduces how to scale a TiDB cluster using TiDB Ansible, see [Scale the TiDB Cluster Using TiDB Ansible (v4.0)](https://docs.pingcap.com/tidb/v4.0/scale-tidb-using-ansible).
 
 To view the current cluster name list, run `tiup cluster list`.
 

@@ -7,8 +7,7 @@
 
 + About TiDB
   + [TiDB Introduction](/overview.md)
-  + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
-  + [TiDB 4.0 Experimental Features](/experimental-features-4.0.md)
+  + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
   + [Basic Features](/basic-features.md)
   + Benchmarks
     + [Interaction Test on Online Workloads and `ADD INDEX`](/benchmark/online-workloads-and-add-index-operations.md)
@@ -515,6 +514,8 @@
 + Release Notes
   + [All Releases](/releases/release-notes.md)
   + [TiDB Roadmap](/roadmap.md)
+  + v5.0
+    + [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
     + [4.0.9](/releases/release-4.0.9.md)
     + [4.0.8](/releases/release-4.0.8.md)

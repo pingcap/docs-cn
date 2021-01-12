@@ -143,7 +143,7 @@ Configuration items related to security
 + The path of the PEM file that contains the X509 key
 + Default value: ""
 
-### `redact-info-log` <!-- New in v5.0.0-rc -->
+### `redact-info-log` <span class="version-mark">New in v5.0.0-rc</span>
 
 + Controls whether to enable log redaction in the PD log.
 + When you set the configuration value to `true`, user data is redacted in the PD log.
@@ -315,7 +315,7 @@ Configuration items related to scheduling
 + Determines the maximum number of operations related to adding peers within a minute
 + Default value: `15`
 
-### `enable-joint-consensus` <!-- New in v5.0.0-rc -->
+### `enable-joint-consensus` <span class="version-mark">New in v5.0.0-rc</span>
 
 > **Warning:**
 >
