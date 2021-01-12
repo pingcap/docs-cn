@@ -6,6 +6,10 @@ title: TiDB 版本发布历史
 
 TiDB 历史版本发布声明如下：
 
+## 5.0
+
+- [5.0.0-rc](/releases/release-5.0.0-rc.md)
+
 ## 4.0
 
 - [4.0.9](/releases/release-4.0.9.md)

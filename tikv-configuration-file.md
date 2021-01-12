@@ -748,7 +748,7 @@ rocksdb 相关的配置项。
 + 最小值：1
 + 最大值：3
 
-### `rate-limiter-auto-tuned` <!-- 从 v5.0.0-rc 版本开始引入 -->
+### `rate-limiter-auto-tuned` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 + 控制是否依据最近的负载量自动优化 RocksDB 的 compaction rate limiter 配置。此配置项开启后，compaction pending bytes 监控指标值会比一般情况下稍微高些。
 + 默认值：true
@@ -1243,7 +1243,7 @@ raftdb 相关配置项。
 
 ## gc
 
-### `enable-compaction-filter`
+### `enable-compaction-filter` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 + 是否开启 GC in Compaction Filter 特性
 + 默认值：false
