@@ -7,7 +7,7 @@ summary: 了解如何使用 BR 命令行进行集群数据备份和恢复。
 
 本文介绍如何 BR 命令行进行 TiDB 集群数据的备份和恢复。
 
-在阅读本文前，请确保你已了解 [备份与恢复工具 BR 简介](/br/backup-and-restore-tool.md)。
+在阅读本文前，请确保你已通读 [备份与恢复工具 BR 简介](/br/backup-and-restore-tool.md)，尤其是[使用限制](/br/backup-and-restore-tool.md#使用限制)和[最佳实践](/br/backup-and-restore-tool.md#最佳实践)这两节。
 
 ## BR 命令行描述
 
@@ -441,7 +441,9 @@ br restore raw --pd $PD_ADDR \
 
 ## 备份和恢复示例
 
-本示例展示如何对已有的集群数据进行备份和恢复操作。可以根据机器性能、配置、数据规模来预估一下备份和恢复的性能。
+本节展示如何使用 BR 命令行对已有的集群数据进行备份和恢复操作。
+
+建议提前根据机器性能、配置、数据规模来预估一下备份和恢复的性能。
 
 ### 数据规模和机器配置
 
@@ -501,7 +503,7 @@ CREATE TABLE `sbtest1` (
 
 {{< copyable "shell-regular" >}}
 
-```
+```sh
 bin/br backup full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file backup.log
 ```
 
@@ -517,7 +519,7 @@ bin/br backup full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file backup.
 
 {{< copyable "shell-regular" >}}
 
-```
+```sh
 bin/br restore full -s local:///tmp/backup --pd "${PDIP}:2379" --log-file restore.log
 ```
 

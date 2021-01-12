@@ -48,15 +48,14 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 > **注意：**
 >
-> 如果没有挂载网盘或者使用其他共享存储，那么 BR 备份的数据会生成在各个 TiKV 节点上。由于 BR 只备份 leader 副本，所以各个节点预留的空间需要根据 leader size 来预估。
-> 同时由于 v4.0 默认使用 leader count 进行平衡，所以会出现 leader size 差别大的问题，导致各个节点备份数据不均衡。
+> - 如果没有挂载网盘或者使用其他共享存储，那么 BR 备份的数据会生成在各个 TiKV 节点上。由于 BR 只备份 leader 副本，所以各个节点预留的空间需要根据 leader size 来预估。
+> - 同时由于 v4.0 默认使用 leader count 进行平衡，所以会出现 leader size 差别大的问题，导致各个节点备份数据不均衡。
 
 ### 使用限制
 
+下面是使用 BR 进行备份恢复的几条限制：
+
 - BR 只支持在 TiDB v3.1 及以上版本使用。
-- BR 支持在不同拓扑的集群上执行恢复，但恢复期间对在线业务影响很大，建议低峰期或者限速 (`rate-limit`) 执行恢复。
-- BR 备份最好串行执行。不同备份任务并行会导致备份性能降低，同时也会影响在线业务。
-- BR 恢复最好串行执行。不同恢复任务并行会导致 Region 冲突增多，恢复的性能降低。
 - BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。
 - BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
 
@@ -64,6 +63,17 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
     - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
 
     例如，数据备份在 v3.1 集群。如果恢复到 v4.0 集群中，查询恢复集群的 `new_collation_enabled` 的值为 `true`，则说明创建恢复集群时打开了 new collation 支持的开关。此时恢复数据，可能会出错。
+
+### 最佳实践
+
+下面是使用 BR 进行备份恢复的几种推荐操作：
+
+- 推荐在业务低峰时执行备份操作，这样能最大程度地减少对业务的影响。
+- BR 支持在不同拓扑的集群上执行恢复，但恢复期间对在线业务影响很大，建议低峰期或者限速 (`rate-limit`) 执行恢复。
+- BR 备份最好串行执行。不同备份任务并行会导致备份性能降低，同时也会影响在线业务。
+- BR 恢复最好串行执行。不同恢复任务并行会导致 Region 冲突增多，恢复的性能降低。
+- 推荐在 `-s` 指定的备份路径上挂载一个共享存储，例如 NFS。这样能方便收集和管理备份文件。
+- 在使用共享存储时，推荐使用高吞吐的存储硬件，因为存储的吞吐会限制备份或恢复的速度。
 
 ### 使用方式
 
