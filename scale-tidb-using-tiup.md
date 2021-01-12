@@ -147,8 +147,8 @@ If you want to add a TiFlash node to the `10.0.1.4` host, take the following ste
 >
 > When adding a TiFlash node to an existing TiDB cluster, you need to note the following things:
 >
-> 1. Confirm that the current TiDB version supports using TiFlash, otherwise upgrade your TiDB cluster to v4.0.0-rc or higher.
-> 2. Download [pd-ctl](https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz) and execute the `config set enable-placement-rules true` command to enable the PD's Placement Rules.
+> 1. Confirm that the current TiDB version supports using TiFlash, otherwise upgrade your TiDB cluster to v5.0.0-rc or higher.
+> 2. Download [pd-ctl](https://download.pingcap.org/tidb-v5.0.0-rc-linux-amd64.tar.gz) and execute the `config set enable-placement-rules true` command to enable the PD's Placement Rules.
 
 1. Add the node information to the `scale-out.yaml` file:
 
@@ -260,7 +260,7 @@ If you want to remove a TiKV node from the `10.0.1.5` host, take the following s
     ```
 
     ```
-    Starting /root/.tiup/components/cluster/v0.4.6/cluster display <cluster-name>
+    Starting /root/.tiup/components/cluster/v1.3.0/cluster display <cluster-name>
     TiDB Cluster: <cluster-name>
     TiDB Version: v4.0.0-rc
     ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir

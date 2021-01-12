@@ -249,14 +249,14 @@ Execute the following command to deploy the TiDB cluster:
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster deploy tidb-test v4.0.0 topology.yaml --user tidb [-p] [-i /home/root/.ssh/gcp_rsa]
+tiup cluster deploy tidb-test v5.0.0 topology.yaml --user tidb [-p] [-i /home/root/.ssh/gcp_rsa]
 tiup cluster start tidb-test
 ```
 
 > **Parameter description:**
 >
 > - The name of the cluster deployed by the TiUP cluster is `tidb-test`.
-> - The deployment version is `v4.0.0`. To obtain other supported versions, run `tiup list tidb`.
+> - The deployment version is `v5.0.0`. To obtain other supported versions, run `tiup list tidb`.
 > - The initialization configuration file is `topology.yaml`.
 > - `–user tidb`: log in to the target machine using the `tidb` user account to complete the cluster deployment. The `tidb` user needs to have `ssh` and `sudo` privileges of the target machine. You can use other users with `ssh` and `sudo` privileges to complete the deployment.
 > - `[-i]` and `[-p]`: optional. If you have configured login to the target machine without password, these parameters are not required. If not, choose one of the two parameters. `[-i]` is the private key of the `root` user (or other users specified by `-user`) that has access to the target machine. `[-p]` is used to input the user password interactively.

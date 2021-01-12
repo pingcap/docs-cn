@@ -55,7 +55,7 @@ The `tiup mirror clone` command provides many optional flags (might provide more
 
 - Determines whether to use prefix matching to match the version when cloning
 
-    If the `--prefix` flag is specified, the version number is matched by prefix for the clone. For example, if you specify `--prefix` as "v4.0.0", then "v4.0.0-rc.1", "v4.0.0-rc.2", and "v4.0.0" are matched.
+    If the `--prefix` flag is specified, the version number is matched by prefix for the clone. For example, if you specify `--prefix` as "v5.0.0", then "v5.0.0-rc", and "v5.0.0" are matched.
 
 - Determines whether to use the full clone
 
@@ -77,9 +77,9 @@ The `tiup mirror clone` command provides many optional flags (might provide more
 
     If you want to clone only one version (not all versions) of a component, use `--<component>=<version>` to specify this version. For example:
 
-    - Execute the `tiup mirror clone <target-dir> --tidb v4.0.0` command to clone the v4.0.0 version of the TiDB component.
-    - Execute the `tiup mirror clone <target-dir> --tidb v4.0.0 --tikv all` command to clone the v4.0.0 version of the TiDB component and all versions of the TiKV component.
-    - Execute the `tiup mirror clone <target-dir> v4.0.0` command to clone the v4.0.0 version of all components in a cluster.
+    - Execute the `tiup mirror clone <target-dir> --tidb v5.0.0` command to clone the v5.0.0 version of the TiDB component.
+    - Execute the `tiup mirror clone <target-dir> --tidb v5.0.0 --tikv all` command to clone the v5.0.0 version of the TiDB component and all versions of the TiKV component.
+    - Execute the `tiup mirror clone <target-dir> v5.0.0` command to clone the v5.0.0 version of all components in a cluster.
 
 ## Usage examples
 
