@@ -480,20 +480,32 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_hash_join_concurrency`
 
+> **警告：**
+>
+> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+
 - 作用域：SESSION | GLOBAL
-- 默认值：5
+- 默认值：-1
 - 这个变量用来设置 hash join 算法的并发度。
 
 ### `tidb_hashagg_final_concurrency`
 
+> **警告：**
+>
+> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+
 - 作用域：SESSION | GLOBAL
-- 默认值：4
+- 默认值：-1
 - 这个变量用来设置并行 hash aggregation 算法 final 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 
 ### `tidb_hashagg_partial_concurrency`
 
+> **警告：**
+>
+> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+
 - 作用域：SESSION | GLOBAL
-- 默认值：4
+- 默认值：-1
 - 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 
 ### `tidb_index_join_batch_size`
@@ -504,14 +516,22 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_index_lookup_concurrency`
 
+> **警告：**
+>
+> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+
 - 作用域：SESSION | GLOBAL
-- 默认值：4
+- 默认值：-1
 - 这个变量用来设置 index lookup 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### `tidb_index_lookup_join_concurrency`
 
+> **警告：**
+>
+> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+
 - 作用域：SESSION | GLOBAL
-- 默认值：4
+- 默认值：-1
 - 这个变量用来设置 index lookup join 算法的并发度。
 
 ### `tidb_index_lookup_size`
@@ -519,6 +539,35 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 作用域：SESSION | GLOBAL
 - 默认值：20000
 - 这个变量用来设置 index lookup 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
+
+### `tidb_executor_concurrency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
+作用域：SESSION | GLOBAL
+
+默认值：5
+
+该变量用来统一设置各个 SQL 算子的并发度，包括：
+
+- `index lookup`
+- `index lookup join`
+- `hash join`
+- `hash aggregation` (partial 和 final 阶段)
+- `window`
+- `projection`
+
+`tidb_executor_concurrency` 整合了已有的系统变量，方便管理。这些变量所列如下：
+
++ `tidb_index_lookup_concurrency`
++ `tidb_index_lookup_join_concurrency`
++ `tidb_hash_join_concurrency`
++ `tidb_hashagg_partial_concurrency`
++ `tidb_hashagg_final_concurrency`
++ `tidb_projection_concurrency`
++ `tidb_window_concurrency`
+
+v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警告），且修改只影响单个算子。后续通过 `tidb_executor_concurrency` 的修改也不会影响该算子。若要通过 `tidb_executor_concurrency` 来管理所有算子的并发度，可用将以上所列变量的值设置为 `-1`。
+
+对于从 v5.0.0-rc 之前的版本升级到 v5.0.0-rc 的系统，如果用户对上述所列变量的值没有做过改动（即 `tidb_hash_join_concurrency` 值为 `5`，其他值为 `4`），则会自动转为使用 `tidb_executor_concurrency` 来统一管理算子并发度。如果用户对上述变量的值做过改动，则沿用之前的变量对相应的算子做并发控制。
 
 ### `tidb_index_serial_scan_concurrency`
 
@@ -670,8 +719,12 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_projection_concurrency`
 
+> **警告：**
+>
+> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+
 - 作用域：SESSION | GLOBAL
-- 默认值：4
+- 默认值：-1
 - 这个变量用来设置 `Projection` 算子的并发度。
 
 ### `tidb_query_log_max_len`
@@ -904,9 +957,13 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_window_concurrency` <span class="version-mark">从 v4.0 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+
 - 作用域：SESSION | GLOBAL
 
-- 默认值：4
+- 默认值：-1
 
 - 这个变量用于设置 window 算子的并行度。
 
