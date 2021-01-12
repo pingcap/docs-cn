@@ -1,5 +1,6 @@
 ---
 title: TiDB 最佳实践
+aliases: ['/docs-cn/dev/tidb-best-practices/']
 ---
 
 # TiDB 最佳实践
@@ -186,7 +187,7 @@ TiDB [使用 Grafana + Prometheus 监控系统状态](/tidb-monitoring-framework
 
 + 公众号：微信搜索 PingCAP
 + 知乎专栏：[TiDB 的后花园](https://zhuanlan.zhihu.com/newsql)
-+ [官方博客](https://pingcap.github.io/blog/)
++ [官方博客](https://pingcap.com/blog-cn/)
 
 ## TiDB 的最佳适用场景
 

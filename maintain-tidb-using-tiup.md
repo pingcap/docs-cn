@@ -1,11 +1,15 @@
 ---
 title: TiUP 常见运维操作
-aliases: ['/docs-cn/dev/how-to/maintain/tiup-operations/']
+aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain/tiup-operations/','/zh/tidb/dev/maintain-tidb-using-ansible/','/docs-cn/dev/maintain-tidb-using-ansible/','/docs-cn/dev/how-to/maintain/ansible-operations/']
 ---
 
 # TiUP 常见运维操作
 
 本文介绍了使用 TiUP 运维 TiDB 集群的常见操作，包括查看集群列表、启动集群、查看集群状态、修改配置参数、关闭集群、销毁集群等。
+
+> **注意：**
+>
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 运维 TiDB 集群的文档，可参阅 [TiDB Ansible 常见运维操作](https://docs.pingcap.com/zh/tidb/v4.0/maintain-tidb-using-ansible)。
 
 ## 查看集群列表
 
@@ -147,6 +151,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -166,6 +172,21 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -R tidb
 ```bash
 tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
+
+## 重命名集群
+
+部署并启动集群后，可以通过 `tiup cluster rename` 命令来对集群重命名：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster rename ${cluster-name} ${new-name}
+```
+
+> **注意：**
+> 
+> + 重命名集群会重启监控（Prometheus 和 Grafana）。
+> + 重命名集群之后 Grafana 可能会残留一些旧集群名的面板，需要手动删除这些面板。
 
 ## 关闭集群
 
@@ -193,6 +214,56 @@ tiup cluster stop ${cluster-name} -R tidb
 
 ```bash
 tiup cluster stop ${cluster-name} -N 1.2.3.4:4000,1.2.3.5:4000
+```
+
+## 清除集群数据
+
+此操作会关闭所有服务，并清空其数据目录或/和日志目录，并且无法恢复，需要**谨慎操作**。
+
+清空集群所有服务的数据，但保留日志：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --data
+```
+
+清空集群所有服务的日志，但保留数据：
+
+```bash
+tiup cluster clean ${cluster-name} --log
+```
+
+清空集群所有服务的数据和日志：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all 
+```
+
+清空 Prometheus 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-role prometheus
+```
+
+清空节点 `172.16.13.11:9000` 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.11:9000
+```
+
+清空部署在 `172.16.13.12` 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12
 ```
 
 ## 销毁集群

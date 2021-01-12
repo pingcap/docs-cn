@@ -1,6 +1,7 @@
 ---
 title: LOAD STATS
 summary: TiDB 数据库中 LOAD STATS 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-stats/']
 ---
 
 # LOAD STATS
@@ -30,6 +31,10 @@ LOAD STATS '/tmp/stats.json';
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

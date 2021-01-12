@@ -1,6 +1,7 @@
 ---
 title: SHOW DRAINER STATUS
 summary: TiDB 数据库中 SHOW DRAINER STATUS 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-drainer-status/']
 ---
 
 # SHOW DRAINER STATUS
@@ -28,7 +29,7 @@ SHOW DRAINER STATUS;
 
 ## MySQL 兼容性
 
-MySQL 无此功能。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

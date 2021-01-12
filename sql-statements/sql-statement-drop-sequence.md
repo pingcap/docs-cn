@@ -1,7 +1,7 @@
 ---
 title: DROP SEQUENCE
 summary: TiDB 数据库中 DROP SEQUENCE 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/drop-sequence/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-sequence/','/docs-cn/dev/reference/sql/statements/drop-sequence/']
 ---
 
 # DROP SEQUENCE
@@ -50,7 +50,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 ## MySQL 兼容性
 
-MySQL 暂无序列功能。
+该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
 
 ## 另请参阅
 

@@ -1,6 +1,6 @@
 ---
 title: 基于角色的访问控制
-aliases: ['/docs-cn/dev/reference/security/role-based-access-control/']
+aliases: ['/docs-cn/dev/role-based-access-control/','/docs-cn/dev/reference/security/role-based-access-control/']
 ---
 
 # 基于角色的访问控制
@@ -25,8 +25,7 @@ CREATE ROLE 'app_developer', 'app_read', 'app_write';
 
 角色名的格式和规范可以参考 [TiDB 用户账户管理](/user-account-management.md)。
 
-角色会被保存在 `mysql.user` 表中，如果表中有同名角色或用户，角色会创建失败并报错。
-创建角色的用户需要拥有 `CREATE ROLE` 或 `CREATE USER` 权限。
+角色会被保存在 `mysql.user` 表中，角色名称的主机名部分（如果省略）默认为 `'%'`。如果表中有同名角色或用户，角色会创建失败并报错。创建角色的用户需要拥有 `CREATE ROLE` 或 `CREATE USER` 权限。
 
 ### 授予角色权限
 

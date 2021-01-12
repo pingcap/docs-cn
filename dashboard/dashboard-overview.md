@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 概况页面
+aliases: ['/docs-cn/dev/dashboard/dashboard-overview/']
 ---
 
 # TiDB Dashboard 概况页面
@@ -63,7 +64,7 @@ title: TiDB Dashboard 概况页面
 
 > **注意：**
 >
-> 该功能仅在配置开启了慢查询日志的集群中可用，使用 TiUP 或 Ansible 部署的集群默认开启慢查询日志。
+> 该功能仅在配置开启了慢查询日志的集群中可用，使用 TiUP 部署的集群默认开启慢查询日志。
 
 ## 实例
 

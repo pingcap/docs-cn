@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 配置说明
-aliases: ['/docs-cn/dev/reference/tidb-binlog/configs/']
+aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-configuration-file/','/docs-cn/dev/reference/tidb-binlog/configs/']
 ---
 
 # TiDB Binlog 配置说明
@@ -227,7 +227,7 @@ syncer 分组包含一些与同步下游相关的配置项。
 
 #### ignore-txn-commit-ts
 
-* 同步时，该项所指定的 commit timestamp 的 binlog 会被忽略。
+* 同步时，该项所指定的 commit timestamp 的 binlog 会被忽略，例如 `[416815754209656834, 421349811963822081]`。
 * 默认：`[]`
 
 #### ignore-schemas

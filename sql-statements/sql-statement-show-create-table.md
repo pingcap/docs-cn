@@ -1,7 +1,7 @@
 ---
 title: SHOW CREATE TABLE
 summary: TiDB 数据库中 SHOW CREATE TABLE 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/show-create-table/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-create-table/','/docs-cn/dev/reference/sql/statements/show-create-table/']
 ---
 
 # SHOW CREATE TABLE
@@ -49,7 +49,7 @@ SHOW CREATE TABLE t1;
 
 ## MySQL 兼容性
 
-`SHOW CREATE TABLE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW CREATE TABLE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

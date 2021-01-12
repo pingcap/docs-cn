@@ -1,7 +1,7 @@
 ---
 title: ALTER USER
 summary: TiDB 数据库中 ALTER USER 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/alter-user/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-user/','/docs-cn/dev/reference/sql/statements/alter-user/']
 ---
 
 # ALTER USER

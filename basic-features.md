@@ -1,6 +1,7 @@
 ---
 title: TiDB 基本功能
 summary: 了解 TiDB 的基本功能。
+aliases: ['/docs-cn/dev/basic-features/']
 ---
 
 # TiDB 基本功能
@@ -25,7 +26,7 @@ summary: 了解 TiDB 的基本功能。
 
 - 字符集：UTF8、UTF8MB4、BINARY、ASCII、LATIN1。
 
-- 排序规则：UTF8MB4_GENERAL_CI、UTF8MB4_GENERAL_BIN、UTF8_GENERAL_CI、UTF8_GENERAL_BIN、BINARY。
+- 排序规则：UTF8MB4_GENERAL_CI、UTF8MB4_UNICODE_CI、UTF8MB4_GENERAL_BIN、UTF8_GENERAL_CI、UTF8_UNICODE_CI、UTF8_GENERAL_BIN、BINARY。
 
 ## 函数
 

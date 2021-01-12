@@ -1,7 +1,7 @@
 ---
 title: SHOW DATABASES
 summary: TiDB 数据库中 SHOW DATABASES 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/show-databases/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-databases/','/docs-cn/dev/reference/sql/statements/show-databases/']
 ---
 
 # SHOW DATABASES
@@ -71,7 +71,7 @@ SHOW DATABASES;
 
 ## MySQL 兼容性
 
-`SHOW DATABASES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW DATABASES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

@@ -1,6 +1,6 @@
 ---
 title: 信息函数
-aliases: ['/docs-cn/dev/reference/sql/functions-and-operators/information-functions/']
+aliases: ['/docs-cn/dev/functions-and-operators/information-functions/','/docs-cn/dev/reference/sql/functions-and-operators/information-functions/']
 ---
 
 # 信息函数

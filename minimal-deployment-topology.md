@@ -1,6 +1,7 @@
 ---
 title: 最小拓扑架构
 summary: 介绍 TiDB 集群的最小拓扑。
+aliases: ['/docs-cn/dev/minimal-deployment-topology/']
 ---
 
 # 最小拓扑架构

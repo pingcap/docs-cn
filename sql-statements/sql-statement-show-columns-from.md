@@ -1,7 +1,7 @@
 ---
 title: SHOW [FULL] COLUMNS FROM
 summary: TiDB 数据库中 SHOW [FULL] COLUMNS FROM 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/show-columns-from/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-columns-from/','/docs-cn/dev/reference/sql/statements/show-columns-from/']
 ---
 
 # SHOW [FULL] COLUMNS FROM
@@ -203,7 +203,7 @@ show full columns from mysql.user;
 
 ## MySQL 兼容性
 
-`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

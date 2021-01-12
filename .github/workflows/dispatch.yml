@@ -16,6 +16,6 @@ jobs:
       uses: peter-evans/repository-dispatch@v1.1.1
       with:
           token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
-          repository: Ti-FE/website-docs/
+          repository: pingcap/website-docs/
           event-type: triggered
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'

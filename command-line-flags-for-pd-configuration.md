@@ -1,6 +1,6 @@
 ---
 title: PD 配置参数
-aliases: ['/docs-cn/dev/reference/configuration/pd-server/configuration/']
+aliases: ['/docs-cn/dev/command-line-flags-for-pd-configuration/','/docs-cn/dev/reference/configuration/pd-server/configuration/']
 ---
 
 # PD 配置参数
@@ -9,29 +9,29 @@ PD 可以通过命令行参数或环境变量配置。
 
 ## `--advertise-client-urls`
 
-+ 对外客户端访问 URL 列表。
++ 用于外部访问 PD 的 URL 列表。
 + 默认：`${client-urls}`
-+ 在某些情况下，譬如 docker，或者 NAT 网络环境，客户端并不能通过 PD 自己监听的 client URLs 来访问到 PD，这时候，你就可以设置 advertise urls 来让客户端访问
-+ 例如，docker 内部 IP 地址为 172.17.0.1，而宿主机的 IP 地址为 192.168.100.113 并且设置了端口映射 `-p 2379:2379`，那么可以设置为 `--advertise-client-urls="http://192.168.100.113:2379"`，客户端可以通过 `http://192.168.100.113:2379` 来找到这个服务。
++ 在某些情况下，例如 Docker 或者 NAT 网络环境，客户端并不能通过 PD 自己监听的 client URLs 来访问到 PD，这时候，你就可以设置 advertise URLs 来让客户端访问。
++ 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 2379:2379`，那么可以设置为 `--advertise-client-urls="http://192.168.100.113:2379"`，客户端可以通过 `http://192.168.100.113:2379` 来找到这个服务。
 
 ## `--advertise-peer-urls`
 
-+ 对外其他 PD 节点访问 URL 列表。
++ 用于其他 PD 节点访问某个 PD 节点的 URL 列表。
 + 默认：`${peer-urls}`
-+ 在某些情况下，譬如 docker，或者 NAT 网络环境，其他节点并不能通过 PD 自己监听的 peer URLs 来访问到 PD，这时候，你就可以设置 advertise urls 来让其他节点访问
-+ 例如，docker 内部 IP 地址为 172.17.0.1，而宿主机的 IP 地址为 192.168.100.113 并且设置了端口映射 `-p 2380:2380`，那么可以设置为 `--advertise-peer-urls="http://192.168.100.113:2380"`，其他 PD 节点可以通过 `http://192.168.100.113:2380` 来找到这个服务。
++ 在某些情况下，例如 Docker 或者 NAT 网络环境，其他节点并不能通过 PD 自己监听的 peer URLs 来访问到 PD，这时候，你就可以设置 advertise URLs 来让其他节点访问。
++ 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 2380:2380`，那么可以设置为 `advertise-peer-urls="http://192.168.100.113:2380"`，其他 PD 节点可以通过 `http://192.168.100.113:2380` 来找到这个服务。
 
 ## `--client-urls`
 
-+ 处理客户端请求监听 URL 列表。
++ PD 监听的客户端 URL 列表。
 + 默认：`http://127.0.0.1:2379`
-+ 如果部署一个集群，\-\-client-urls 必须指定当前主机的 IP 地址，例如 `http://192.168.100.113:2379"`，如果是运行在 docker 则需要指定为 `http://0.0.0.0:2379`。
++ 如果部署一个集群，`--client-urls` 必须指定当前主机的 IP 地址，例如 `http://192.168.100.113:2379"`，如果是运行在 Docker 则需要指定为 `http://0.0.0.0:2379`。
 
 ## `--peer-urls`
 
-+ 处理其他 PD 节点请求监听 URL 列表。
-+ default: `http://127.0.0.1:2380`
-+ 如果部署一个集群，\-\-peer-urls 必须指定当前主机的 IP 地址，例如 `http://192.168.100.113:2380`，如果是运行在 docker 则需要指定为 `http://0.0.0.0:2380`。
++ PD 节点监听其他 PD 节点的 URL 列表。
++ 默认：`http://127.0.0.1:2380`
++ 如果部署一个集群，`--peer-urls` 必须指定当前主机的 IP 地址，例如 `http://192.168.100.113:2380`，如果是运行在 Docker 则需要指定为 `http://0.0.0.0:2380`。
 
 ## `--config`
 

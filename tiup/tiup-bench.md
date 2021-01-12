@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP bench 组件压测 TiDB
-aliases: ['/docs-cn/dev/reference/tools/tiup/bench/']
+aliases: ['/docs-cn/dev/tiup/tiup-bench/','/docs-cn/dev/reference/tools/tiup/bench/']
 ---
 
 # 使用 TiUP bench 组件压测 TiDB
@@ -14,7 +14,7 @@ tiup bench
 ```
 
 ```
-Starting component `bench`: /Users/joshua/.tiup/components/bench/v0.0.1/bench 
+Starting component `bench`: /Users/joshua/.tiup/components/bench/v1.3.0/bench 
 Benchmark database with different workloads
 
 Usage:

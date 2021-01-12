@@ -1,7 +1,7 @@
 ---
 title: DROP COLUMN
 summary: TiDB 数据库中 DROP COLUMN 的使用概况。
-aliases: ['/docs-cn/dev/reference/sql/statements/drop-column/']
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-column/','/docs-cn/dev/reference/sql/statements/drop-column/']
 ---
 
 # DROP COLUMN
@@ -125,7 +125,7 @@ SELECT * FROM t1;
 ## MySQL 兼容性
 
 * 目前不支持在一条语句中同时删除多个列。
-* 目前不支持删除主键列或索引列。
+* 目前不支持删除主键列或组合索引相关列。
 
 ## 另请参阅
 

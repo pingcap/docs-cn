@@ -1,7 +1,7 @@
 ---
 title: Placement Rules 使用文档
 summary: 如何配置 Placement Rules
-aliases: ['/docs-cn/dev/how-to/configure/placement-rules/']
+aliases: ['/docs-cn/dev/configure-placement-rules/','/docs-cn/dev/how-to/configure/placement-rules/']
 ---
 
 # Placement Rules 使用文档
@@ -18,7 +18,7 @@ Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本�
 
 多条规则的 key range 可以有重叠部分的，即一个 Region 能匹配到多条规则。这种情况下 PD 根据 Rule 的属性来决定规则是相互覆盖还是同时生效。如果有多条规则同时生效，PD 会按照规则的堆叠次序依次去生成调度进行规则匹配。
 
-此外，为了满足不同来源的规则相互隔离的需求，还引入了分组（Group）的概念。如果某条规则不希望与系统中的其他规则相互影响（比如被覆盖），可以使用单独的分组。
+此外，为了满足不同来源的规则相互隔离的需求，支持更灵活的方式来组织规则，还引入了分组（Group）的概念。通常情况下，用户可根据规则的不同来源把规则放置在不同的 Group。
 
 Placement Rules 示意图如下所示：
 
@@ -52,6 +52,18 @@ Placement Rules 示意图如下所示：
 `LocationLabels` 的意义和作用与 PD v4.0 之前的版本相同。比如配置 `[zone,rack,host]` 定义了三层的拓扑结构：集群分为多个 zone（可用区），每个 zone 下有多个 rack（机架），每个 rack 下有多个 host（主机）。PD 在调度时首先会尝试将 Region 的 Peer 放置在不同的 zone，假如无法满足（比如配置 3 副本但总共只有 2 个 zone）则保证放置在不同的 rack；假如 rack 的数量也不足以保证隔离，那么再尝试 host 级别的隔离，以此类推。
 
 `IsolationLevel` 的意义和作用详细请参考[配置集群拓扑](/schedule-replicas-by-topology-labels.md)。例如已配置 `LocationLabels` 为 `[zone,rack,host]` 的前提下，设置 `IsolationLevel` 为 `zone`，则 PD 在调度时会保证每个 Region 的所有 Peer 均被放置在不同的 zone。假如无法满足 `IsolationLevel` 的最小强制隔离级别限制（比如配置 3 副本但总共只有 2 个 zone），PD 也不会尝试补足，以满足该限制。`IsolationLevel` 默认值为空字符串，即禁用状态。
+
+### 规则分组字段
+
+以下是规则分组字段的含义：
+
+| 字段名 | 类型及约束  | 说明 |
+| :--- | :--- | :--- |
+| `ID` | `string` | 分组 ID，用于标识规则来源 |
+| `Index` | `int` | 不同分组的堆叠次序 |
+| `Override` | `true`/`false` | 是否覆盖 index 更小的分组 |
+
+如果不单独设置规则分组，默认 `Override=false`，对应的行为是不同分组之间相互不影响，不同分组内的规则是同时生效的。
 
 ## 配置规则操作步骤
 
@@ -199,23 +211,107 @@ EOF
 pd-ctl config placement save --in=rules.json
 ```
 
-pd-ctl 还支持通过 `load` 命令将规则直接转存至文件以方便进行修改，只需要将查看命令的 `show` 改为 `load`：
+### 使用 pd-ctl 设置规则分组
+
++ 查看所有的规则分组列表
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config placement-rules rule-group show
+    ```
+
++ 查看指定 ID 的规则分组
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config placement-rules rule-group show pd
+    ```
+
++ 设置规则分组的 index 和 override 属性
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config placement-rules rule-group set pd 100 true
+    ```
+
++ 删除规则分组配置（如组内还有规则，则使用默认分组配置）
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config placement-rules rule-group delete pd
+    ```
+
+### 使用 pd-ctl 批量更新分组及组内规则
+
+使用 `rule-bundle` 子命令，可以方便地同时查看和修改规则分组及组内的所有规则。
+
+该子命令中 `get {group_id}` 用来查询一个分组，输出结果为嵌套形式的规则分组和组内规则：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules load
+pd-ctl config placement-rules rule-bundle get pd
 ```
 
-以上命令将所有规则转存至 rules.json 文件。
+输出示例：
+
+```json
+{
+  "group_id": "pd",
+  "group_index": 0,
+  "group_override": false,
+  "rules": [
+    {
+      "group_id": "pd",
+      "id": "default",
+      "start_key": "",
+      "end_key": "",
+      "role": "voter",
+      "count": 3
+    }
+  ]
+}
+```
+
+`rule-bundle get` 子命令中可以添加 `-out` 参数来将输出写入文件，方便后续修改保存。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules load --group=pd --out=rule.txt
+pd-ctl config placement-rules rule-bundle get pd -out="group.json"
 ```
 
-以上命令将 PD Group 的规则转存至 rule.txt 文件。
+修改完成后，使用 `rule-bundle set` 子命令将文件中的配置保存至 PD 服务器。与前面介绍的 `save` 不同，此命令会替换服务器端该分组内的所有规则。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config placement-rules rule-bundle set pd -in="group.json"
+```
+
+### 使用 pd-ctl 查看和修改所有配置
+
+用户还可以使用 pd-ctl 查看和修改所有配置，即把全部配置保存至文件，修改后再覆盖保存。该操作同样使用 `rule-bundle` 子命令。
+
+下面的命令将所有配置保存至 `rules.json` 文件：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config placement-rules rule-bundle load -out="rules.json"
+```
+
+编辑完文件后，使用下面的命令将配置保存至 PD 服务器：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config placement-rules rule-bundle save -in="rules.json"
+```
 
 ### 使用 tidb-ctl 查询表相关的 key range
 
@@ -355,5 +451,40 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
     {"key": "disk", "op": "notIn", "values": ["hdd"]}
   ],
   "location_labels": ["host"]
+}
+```
+
+### 场景五：将某张表迁移至 TiFlash 集群
+
+与场景三不同，这个场景不是要在原有配置的基础上增加新副本，而是要强制覆盖一段数据的其它配置，因此需要通过配置规则分组来指定一个足够大的 index 以及设置 override 来覆盖原有规则。
+
+规则：
+
+{{< copyable "" >}}
+
+```json
+{
+  "group_id": "tiflash-override",
+  "id": "learner-replica-table-ttt",
+  "start_key": "7480000000000000ff2d5f720000000000fa",
+  "end_key": "7480000000000000ff2e00000000000000f8",
+  "role": "voter",
+  "count": 3,
+  "label_constraints": [
+    {"key": "engine", "op": "in", "values": ["tiflash"]}
+  ],
+  "location_labels": ["host"]
+}
+```
+
+规则分组：
+
+{{< copyable "" >}}
+
+```json
+{
+  "id": "tiflash-override",
+  "index": 1024,
+  "override": true,
 }
 ```

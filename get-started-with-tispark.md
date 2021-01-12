@@ -1,11 +1,11 @@
 ---
 title: TiSpark 快速上手
-aliases: ['/docs-cn/dev/how-to/get-started/tispark/']
+aliases: ['/docs-cn/dev/get-started-with-tispark/','/docs-cn/dev/how-to/get-started/tispark/']
 ---
 
 # TiSpark 快速上手
 
-为了让大家快速体验 [TiSpark](/tispark-overview.md)，通过 TiDB Ansible 安装的 TiDB 集群中默认已集成 Spark、TiSpark jar 包及 TiSpark sample data。
+为了让大家快速体验 [TiSpark](/tispark-overview.md)，通过 TiUP 安装的 TiDB 集群中默认已集成 Spark 和 TiSpark jar 包。
 
 ## 部署信息
 

@@ -1,6 +1,6 @@
 ---
 title: TiKV 内存参数性能调优
-aliases: ['/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
+aliases: ['/docs-cn/dev/tune-tikv-memory-performance/','/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
 ---
 
 # TiKV 内存参数性能调优
@@ -121,7 +121,7 @@ region-split-check-diff = "32MB"
 # RocksDB 能够打开的最大文件句柄数。
 # max-open-files = 40960
 
-# RocksDB MANIFEST 文件的大小限制. # 更详细的信息请参考：https://github.com/facebook/rocksdb/wiki/MANIFEST
+# RocksDB MANIFEST 文件的大小限制.# 更详细的信息请参考：https://github.com/facebook/rocksdb/wiki/MANIFEST
 max-manifest-file-size = "20MB"
 
 # RocksDB write-ahead logs 目录。如果机器上有两块盘，可以将 RocksDB 的数据和 WAL 日志放在

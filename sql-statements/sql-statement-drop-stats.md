@@ -1,6 +1,7 @@
 ---
 title: DROP STATS
 summary: TiDB 数据库中 DROP STATS 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-stats/']
 ---
 
 # DROP STATS
@@ -63,6 +64,10 @@ SHOW STATS_META WHERE db_name='test' and table_name='t';
 ```sql
 Empty set (0.00 sec)
 ```
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

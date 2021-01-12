@@ -1,6 +1,6 @@
 ---
 title: TiDB 软件和硬件环境建议配置
-aliases: ['/docs-cn/dev/how-to/deploy/hardware-recommendations/']
+aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-to/deploy/hardware-recommendations/']
 ---
 
 # TiDB 软件和硬件环境建议配置
@@ -69,7 +69,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
 | TiDB | 16 核+ | 32 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
-| PD | 4核+ | 8 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
+| PD | 4核+ | 8 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiKV | 16 核+ | 32 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiFlash | 48 核+ | 128 GB+ | 1 or more SSDs | 万兆网卡（2 块最佳） | 2 |
 | TiCDC | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
@@ -95,6 +95,7 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | TiDB |  4000  | 应用及 DBA 工具访问通信端口 |
 | TiDB | 10080  | TiDB 状态信息上报通信端口 |
 | TiKV |  20160 | TiKV 通信端口 |
+| TiKV |  20180 | TiKV 状态信息上报通信端口 |
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | PD 集群节点间通信端口 |
 |TiFlash|9000|TiFlash TCP 服务端口|

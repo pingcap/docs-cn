@@ -1,6 +1,7 @@
 ---
 title: BR 存储
 summary: 了解 BR 中所用存储服务的 URL 格式。
+aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 ---
 
 # BR 存储

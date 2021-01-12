@@ -1,5 +1,6 @@
 ---
 title: 提高 TiDB Dashboard 安全性
+aliases: ['/docs-cn/dev/dashboard/dashboard-ops-security/']
 ---
 
 # 提高 TiDB Dashboard 安全性
@@ -73,6 +74,12 @@ http://192.168.0.123:2379/dashboard/
 建议的措施：
 
 - 参见 [通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md) 了解安全且推荐的反向代理配置。
+
+## 为反向代理开启 TLS
+
+为了进一步加强传输层安全性，可以为反向代理开启 TLS，甚至可以引入 mTLS 实现访问用户的证书验证。
+
+请参阅 [NGINX 文档](http://nginx.org/en/docs/http/configuring_https_servers.html)或 [HAProxy 文档](https://www.haproxy.com/blog/haproxy-ssl-termination/)了解如何为它们开启 TLS。
 
 ## 其他建议的安全措施
 

@@ -1,6 +1,6 @@
 ---
 title: TiDB Control 使用说明
-aliases: ['/docs-cn/dev/reference/tools/tidb-control/','/docs-cn/tools/tidb-controller/']
+aliases: ['/docs-cn/dev/tidb-control/','/docs-cn/dev/reference/tools/tidb-control/','/docs-cn/tools/tidb-controller/']
 ---
 
 # TiDB Control 使用说明
@@ -59,7 +59,7 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 `tidb-ctl` 有 4 个与连接相关的全局参数，分别为：
 
 - `--host` TiDB 服务地址
-- `--port` TiDB 服务端口
+- `--port` TiDB status 端口
 - `--pdhost` PD 服务地址
 - `--pdport` PD 服务端口
 - `--ca` 连接使用的 TLS CA 文件路径
@@ -137,7 +137,7 @@ tid 子命令用来通过表的 id 获取数据库中表的表结构。
 }
 ``` 
 
-同 in 子命令一样，如果使用的 TiDB 地址不是默认的地址和端口，需要通过 `--host` 和 `--port` 参数指定 TiDB 的地址和端口。
+同 in 子命令一样，如果使用的 TiDB 地址不是默认的地址和端口，需要通过 `--host` 和 `--port` 参数指定 TiDB 的地址和 status 端口。
 
 ### base64decode 命令
 

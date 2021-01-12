@@ -1,6 +1,6 @@
 ---
 title: TiSpark 用户指南
-aliases: ['/docs-cn/dev/reference/tispark/']
+aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
 ---
 
 # TiSpark 用户指南
@@ -93,9 +93,7 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 ### 没有 Spark 集群的部署方式
 
-如果没有使用中的 Spark 集群，推荐使用 Saprk Standalone 方式部署。这里简单介绍下 Standalone 部署方式。如果遇到问题，可以去官网寻求[帮助](https://spark.apache.org/docs/latest/spark-standalone.html)；也欢迎在我们的 GitHub 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
-
-如果是使用 TiDB Ansible 部署的 TiDB 集群，也可以通过 TiDB Ansible 来部署 Spark Standalone 集群，TiSpark 也会同时部署。
+如果没有使用中的 Spark 集群，推荐使用 Spark Standalone 方式部署。这里简单介绍下 Standalone 部署方式。如果遇到问题，可以去官网寻求[帮助](https://spark.apache.org/docs/latest/spark-standalone.html)；也欢迎在 GitHub 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
 
 #### 下载安装包并安装
 
@@ -121,11 +119,11 @@ cd $SPARKPATH
 ./sbin/start-master.sh
 ```
 
-在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 <http://spark-master-hostname:8080> 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Slave 的时候，也可以通过这个面板来确认 Slave 是否已经加入集群。
+在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件确认 Spark-Master 是否启动成功。你可以打开 <http://spark-master-hostname:8080> 查看集群信息（如果你没有改动 Spark-Master 默认 Port Numebr）。在启动 Spark-Worker 的时候，也可以通过这个面板来确认 Worker 是否已经加入集群。
 
-#### 启动 Slave
+#### 启动 Worker
 
-类似地，可以用如下命令启动 Spark-Slave 节点：
+类似地，可以用如下命令启动 Spark-Worker 节点：
 
 {{< copyable "shell-regular" >}}
 
@@ -133,7 +131,7 @@ cd $SPARKPATH
 ./sbin/start-slave.sh spark://spark-master-hostname:7077
 ```
 
-命令返回以后，即可通过刚才的面板查看这个 Slave 是否已经正确地加入了 Spark 集群。在所有 Slave 节点重复刚才的命令。确认所有的 Slave 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
+命令返回以后，即可通过刚才的面板查看这个 Worker 是否已经正确地加入了 Spark 集群。在所有 Worker 节点重复刚才的命令。确认所有的 Worker 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
 
 #### Spark SQL shell 和 JDBC 服务器
 
