@@ -455,21 +455,33 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_hash_join_concurrency
 
+> **Warning:**
+>
+> Since v5.0.0-rc, this variable is deprecated. Instead, use [`tidb_executor_concurrency`](#tidb_executor_concurrency-new-in-v500-rc) for setting.
+
 - Scope: SESSION | GLOBAL
-- Default value: 5
+- Default value: -1
 - This variable is used to set the concurrency of the `hash join` algorithm.
 
 ### tidb_hashagg_final_concurrency
 
+> **Warning:**
+>
+> Since v5.0.0-rc, this variable is deprecated. Instead, use [`tidb_executor_concurrency`](#tidb_executor_concurrency-new-in-v500-rc) for setting.
+
 - Scope: SESSION | GLOBAL
-- Default value: 4
+- Default value: -1
 - This variable is used to set the concurrency of executing the concurrent `hash aggregation` algorithm in the `final` phase.
 - When the parameter of the aggregate function is not distinct, `HashAgg` is run concurrently and respectively in two phases - the `partial` phase and the `final` phase.
 
 ### tidb_hashagg_partial_concurrency
 
+> **Warning:**
+>
+> Since v5.0.0-rc, this variable is deprecated. Instead, use [`tidb_executor_concurrency`](#tidb_executor_concurrency-new-in-v500-rc) for setting.
+
 - Scope: SESSION | GLOBAL
-- Default value: 4
+- Default value: -1
 - This variable is used to set the concurrency of executing the concurrent `hash aggregation` algorithm in the `partial` phase.
 - When the parameter of the aggregate function is not distinct, `HashAgg` is run concurrently and respectively in two phases - the `partial` phase and the `final` phase.
 
@@ -482,15 +494,23 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_index_lookup_concurrency
 
+> **Warning:**
+>
+> Since v5.0.0-rc, this variable is deprecated. Instead, use [`tidb_executor_concurrency`](#tidb_executor_concurrency-new-in-v500-rc) for setting.
+
 - Scope: SESSION | GLOBAL
-- Default value: 4
+- Default value: -1
 - This variable is used to set the concurrency of the `index lookup` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
 
 ### tidb_index_lookup_join_concurrency
 
+> **Warning:**
+>
+> Since v5.0.0-rc, this variable is deprecated. Instead, use [`tidb_executor_concurrency`](#tidb_executor_concurrency-new-in-v500-rc) for setting.
+
 - Scope: SESSION | GLOBAL
-- Default value: 4
+- Default value: -1
 - This variable is used to set the concurrency of the `index lookup join` algorithm.
 
 ### tidb_index_lookup_size
@@ -499,6 +519,34 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: 20000
 - This variable is used to set the batch size of the `index lookup` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
+
+### `tidb_executor_concurrency` <span class="version-mark">New in v5.0.0-rc</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 5
+
+This variable is used to set the concurrency of the following SQL operators (to one value):
+
+- `index lookup`
+- `index lookup join`
+- `hash join`
+- `hash aggregation` (the `partial` and `final` phases)
+- `window`
+- `projection`
+
+`tidb_executor_concurrency` incorporates the following existing system variables as a whole for easier management:
+
++ `tidb_index_lookup_concurrency`
++ `tidb_index_lookup_join_concurrency`
++ `tidb_hash_join_concurrency`
++ `tidb_hashagg_partial_concurrency`
++ `tidb_hashagg_final_concurrency`
++ `tidb_projection_concurrency`
++ `tidb_window_concurrency`
+
+Since v5.0.0-rc, you can still separately modify the system variables listed above (with a deprecation warning returned) and your modification only affects the corresponding single operators. After that, if you use `tidb_executor_concurrency` to modify the operator concurrency, the separately modified operators will not be affected. If you want to use `tidb_executor_concurrency` to modify the concurrency of all operators, you can set the values of all variables listed above to `-1`.
+
+For a system upgraded to v5.0.0-rc from an earlier version, if you have not modified any value of the variables listed above (which means that the `tidb_hash_join_concurrency` value is `5` and the values of the rest are `4`), the operator concurrency previously managed by these variables will automatically be managed by `tidb_executor_concurrency`. If you have modified any of these variables, the concurrency of the corresponding operators will still be controlled by the modified variables.
 
 ### tidb_index_serial_scan_concurrency
 
@@ -648,8 +696,12 @@ mysql> desc select count(distinct a) from test.t;
 
 ### tidb_projection_concurrency
 
+> **Warning:**
+>
+> Since v5.0.0-rc, this variable is deprecated. Instead, use [`tidb_executor_concurrency`](#tidb_executor_concurrency-new-in-v500-rc) for setting.
+
 - Scope: SESSION | GLOBAL
-- Default value: 4
+- Default value: -1
 - This variable is used to set the concurrency of the `Projection` operator.
 
 ### tidb_query_log_max_len
@@ -831,8 +883,12 @@ SET tidb_slow_log_threshold = 200;
 
 ### tidb_window_concurrency <span class="version-mark">New in v4.0</span>
 
+> **Warning:**
+>
+> Since v5.0.0-rc, this variable is deprecated. Instead, use [`tidb_executor_concurrency`](#tidb_executor_concurrency-new-in-v500-rc) for setting.
+
 - Scope: SESSION | GLOBAL
-- Default value: 4
+- Default value: -1
 - This variable is used to set the concurrency degree of the window operator.
 
 ### time_zone
