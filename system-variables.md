@@ -330,7 +330,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：0
 - 这个变量用于控制是否开启 cascades planner。
 
-### `tidb_enable_clustered_index` <!-- 从 v5.0 版本开始引入 -->
+### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：0
@@ -1053,7 +1053,7 @@ explain select * from t where age=5;
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
 
-### `tidb_track_aggregate_memory_usage` <!-- 从 v5.0.0-rc 版本开始引入 -->
+### `tidb_track_aggregate_memory_usage` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 > **警告：**
 >
@@ -1063,15 +1063,15 @@ explain select * from t where age=5;
 - 默认值：OFF
 - 这个变量表示是否追踪聚合函数的内存使用情况。当开启该功能时，聚合函数的内存使用情况会被统计，进而可能会造成整个 SQL 内存统计值超阈值 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)，然后被 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的行为影响。
 
-### `tidb_enable_async_commit` <!-- 从 v5.0.0-rc 版本开始引入 -->
+### `tidb_enable_async_commit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 > **警告：**
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
 >
 > + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
-> + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter) 不兼容，共同使用时有小概率发生写丢失。
-> + 本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。 
+> + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter-从-v500-rc-版本开始引入) 不兼容，共同使用时有小概率发生写丢失。
+> + 本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
@@ -1079,9 +1079,9 @@ explain select * from t where age=5;
 
 > **警告：**
 >
-> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency) 系统变量。
+> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。
 
-### `tidb_guarantee_external_consistency` <!-- 从 v5.0.0-rc 版本开始引入 -->
+### `tidb_guarantee_external_consistency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
