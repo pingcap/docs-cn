@@ -58,6 +58,7 @@
   + 备份与恢复
     + 使用 BR 工具备份与恢复（推荐）
       + [BR 工具简介](/br/backup-and-restore-tool.md)
+      + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
       + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
       + [BR 存储](/br/backup-and-restore-storages.md)
     + [使用 Dumpling 和 TiDB Lightning 备份与恢复（推荐）](/backup-and-restore-using-dumpling-lightning.md)
