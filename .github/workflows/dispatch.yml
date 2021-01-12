@@ -3,7 +3,7 @@ name: Repsitory dispatch workflow from docs-cn-release-master
 on:
   push:
     branches:
-      - master
+      - release-5.0
 
 jobs:
   build:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v1.1.1
       with:
