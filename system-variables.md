@@ -401,7 +401,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
     - `auto` 目前作用和 `on` 一样。
     - `off` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-- 注意，目前 TiDB 只支持 range partition 和 hash partition。
+- 注意，目前 TiDB 只支持 Range partition 和 Hash partition。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
