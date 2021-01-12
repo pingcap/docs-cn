@@ -35,7 +35,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 ### 部署方式
 
-推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#备份和恢复br工具) 获取 BR 工具。
+推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#备份和恢复-br-工具) 获取 BR 工具。
 
 ### 集群版本
 
@@ -84,7 +84,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 >
 > 自 v4.0.8 起，BR 已支持自适应 GC。将 `backupTS` 注册到 PD 的 `safePoint`，保证 `safePoint` 在备份期间不会向前移动，由此可避免手动设置 GC。
 
-1. 运行 [`br backup` 命令](/br/backup-and-restore-tool.md#br-命令行描述)前，查询 TiDB 集群的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [Garbage Collection](/garbage-collection-overview.md) (GC)。
+1. 运行 [`br backup` 命令](/br/use-br-command-line-tool.md#br-命令行描述)前，查询 TiDB 集群的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [Garbage Collection](/garbage-collection-overview.md) (GC)。
 
     {{< copyable "sql" >}}
 
@@ -105,7 +105,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 使用 BR 进行恢复前的准备工作如下：
 
-运行 [`br restore` 命令](/br/backup-and-restore-tool.md#br-命令行描述)前，需要检查新集群，确保集群内没有同名的表。
+运行 [`br restore` 命令](/br/use-br-command-line-tool.md#br-命令行描述)前，需要检查新集群，确保集群内没有同名的表。
 
 ### 将单表数据备份到网络盘（推荐）
 

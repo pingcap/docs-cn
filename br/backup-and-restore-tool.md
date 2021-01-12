@@ -90,7 +90,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 在 v3.1 以上的 TiDB 版本中，支持通过命令行工具进行备份恢复。
 
-首先需要下载一个 BR 工具的二进制包，详见[下载链接](/download-ecosystem-tools.md#备份和恢复br工具)。
+首先需要下载一个 BR 工具的二进制包，详见[下载链接](/download-ecosystem-tools.md#备份和恢复-br-工具)。
 
 通过命令行工具进行备份恢复的具体操作见[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
 
