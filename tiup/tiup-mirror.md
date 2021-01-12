@@ -59,7 +59,7 @@ tiup mirror clone <target-dir> [global-version] [flags]
 
 1. 克隆时是否使用前缀匹配方式匹配版本
 
-    如果指定了 `--prefix` 参数，则会才用前缀匹配方式匹配克隆的版本号。例：指定 `--prefix` 时，填写版本 "v4.0.0" 将会匹配 "v4.0.0-rc.1", "v4.0.0-rc.2", "v4.0.0"
+    如果指定了 `--prefix` 参数，则会才用前缀匹配方式匹配克隆的版本号。例：指定 `--prefix` 时，填写版本 "v5.0.0" 将会匹配 "v5.0.0-rc", "v5.0.0"
 
 2. 是否全量克隆
 
@@ -81,9 +81,9 @@ tiup mirror clone <target-dir> [global-version] [flags]
 
     如果只想克隆某个组件的某一个版本而不是所有版本，则使用 `--<component>=<version>` 来限定，例如：
 
-    - 只想克隆 TiDB 的 v4.0.0 版本，则执行 `tiup mirror clone <target-dir> --tidb v4.0.0`
-    - 只想克隆 TiDB 的 v4.0.0 版本，以及 TiKV 的所有版本，则执行 `tiup mirror clone <target-dir> --tidb v4.0.0 --tikv all`
-    - 克隆一个集群的所有组件的 v4.0.0 版本，则执行 `tiup mirror clone <target-dir> v4.0.0`
+    - 只想克隆 TiDB 的 v5.0.0 版本，则执行 `tiup mirror clone <target-dir> --tidb v5.0.0`
+    - 只想克隆 TiDB 的 v5.0.0 版本，以及 TiKV 的所有版本，则执行 `tiup mirror clone <target-dir> --tidb v5.0.0 --tikv all`
+    - 克隆一个集群的所有组件的 v5.0.0 版本，则执行 `tiup mirror clone <target-dir> v5.0.0`
 
 ## 使用示例
 
