@@ -8,13 +8,6 @@ title: 使用 TiUP 升级 TiDB
 
 如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
 
-<<<<<<< HEAD
-=======
-> **注意：**
->
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅 [v4.0 版使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
-
->>>>>>> 60ce14ab... releases: add tidb 5.0-rc release notes (#5295)
 ## 1. 升级兼容性说明
 
 - 不支持在升级后回退至 3.0 或更旧版本。

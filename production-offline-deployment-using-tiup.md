@@ -6,13 +6,6 @@ title: 使用 TiUP 离线部署 TiDB 集群
 
 本文介绍如何使用 TiUP 离线部署 TiDB 集群，具体的操作步骤如下。
 
-<<<<<<< HEAD
-=======
-> **注意：**
->
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读 TiDB Ansible 离线部署 TiDB 集群的文档，可参阅 [v4.0 版离线 TiDB Ansible 部署方案](https://docs.pingcap.com/zh/tidb/v4.0/offline-deployment-using-ansible)。
-
->>>>>>> 60ce14ab... releases: add tidb 5.0-rc release notes (#5295)
 ## 1. 准备 TiUP 离线组件包
 
 ### 方式一：下载官方 TiUP 离线组件包

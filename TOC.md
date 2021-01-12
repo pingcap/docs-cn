@@ -7,10 +7,7 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-<<<<<<< HEAD
-=======
   + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
->>>>>>> 60ce14ab... releases: add tidb 5.0-rc release notes (#5295)
   + [基本功能](/basic-features.md)
   + 性能测试报告
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
