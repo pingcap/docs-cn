@@ -1022,7 +1022,7 @@ explain select * from t where age=5;
 
 > **警告：**
 >
-> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency) 系统变量。
+> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。
 
 ### `tidb_guarantee_external_consistency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
