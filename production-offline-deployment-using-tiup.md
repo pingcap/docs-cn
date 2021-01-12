@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/','/zh/tidb/dev
 
 > **注意：**
 >
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读 TiDB Ansible 离线部署 TiDB 集群的文档，可参阅[离线 TiDB Ansible 部署方案](https://docs.pingcap.com/zh/tidb/v4.0/offline-deployment-using-ansible)。
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读 TiDB Ansible 离线部署 TiDB 集群的文档，可参阅 [v4.0 版离线 TiDB Ansible 部署方案](https://docs.pingcap.com/zh/tidb/v4.0/offline-deployment-using-ansible)。
 
 ## 1. 准备 TiUP 离线组件包
 

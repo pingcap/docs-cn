@@ -11,7 +11,7 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
 > **注意：**
 >
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 扩容缩容 TiDB 集群的文档，可参阅[使用 TiDB Ansible 扩容缩容 TiDB 集群](https://docs.pingcap.com/zh/tidb/v4.0/scale-tidb-using-ansible)。
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 扩容缩容 TiDB 集群的文档，可参阅 [v4.0 版使用 TiDB Ansible 扩容缩容 TiDB 集群](https://docs.pingcap.com/zh/tidb/v4.0/scale-tidb-using-ansible)。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 

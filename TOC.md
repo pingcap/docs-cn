@@ -518,7 +518,7 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v5.0
-    - [5.0-rc](/releases/release-5.0.rc.md)
+    - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
     - [4.0.9](/releases/release-4.0.9.md)
     - [4.0.8](/releases/release-4.0.8.md)
