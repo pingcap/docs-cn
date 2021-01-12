@@ -310,7 +310,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: 0
 - This variable is used to control whether to enable the [clustered index](/clustered-indexes.md) feature.
     - This feature is only applicable to newly created tables and does not affect the existing old tables.
-    - This feature is only applicable to tables whose primary key is the single-column non-integer type or the multi-column type. It does not affect the tables without a primary key or tables with the primary key of the single-column non-integer type.
+    - This feature is only applicable to tables whose primary key is the single-column non-integer type or the multi-column type. It does not affect the tables without a primary key or tables with the primary key of the single-column integer type.
     - You can execute `select tidb_pk_type from information_schema.tables where table_name ='{table_name}'` to check whether the clustered index feature has been enabled on a table.
 - After you enable this feature, rows are stored directly on the primary key instead of on the internally allocated `rows_id` to which the extra primary key index is created to point.
 
@@ -371,15 +371,11 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: "on"
 - This variable is used to set whether to enable the `TABLE PARTITION` feature.
 
-    - `on` indicates enabling Range partitioning, Hash partitioning, and Range column partitioning with one single column.
-    - `auto` functions the same way as `on` does.
-    - `nightly` indicates enabling the types of partitioned tables specified in `on`. It also indicates enabling List partitioning and List COLUMNS partitioning.
     - `off` indicates disabling the `TABLE PARTITION` feature. In this case, the syntax that creates a partition table can be executed, but the table created is not a partitioned one.
+    - `on` indicates enabling the `TABLE PARTITION` feature for the supported partition types. Currently, it indicates enabling range partition, hash partition and range column partition with one single column.
+    - `auto` functions the same way as `on` does.
 
-> **Note:**
->
-> Currently, TiDB only supports Range partitioning and Hash partitioning by default.
-> List partitioning and List COLUMNS partitioning are still experimental features.
+- Currently, TiDB only supports Range partition and Hash partition.
 
 ### tidb_enable_telemetry <span class="version-mark">New in v4.0.2 version</span>
 
