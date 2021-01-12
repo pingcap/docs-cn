@@ -12,6 +12,11 @@ summary: 使用 Dumpling 从 TiDB 导出数据。
 > **注意：**
 >
 > PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代。Dumpling 工具使用 Go 语言编写，支持更多针对 TiDB 特性的优化。请切换到 Dumpling。
+<<<<<<< HEAD
+=======
+>
+> 如果你需要阅读 Mydumper 的文档，可参阅 [v4.0 版 Mydumper 使用文档](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)。
+>>>>>>> 60ce14ab... releases: add tidb 5.0-rc release notes (#5295)
 
 ## 相比于 Mydumper，Dumpling 有哪些改进之处？
 
