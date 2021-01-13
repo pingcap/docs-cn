@@ -420,7 +420,7 @@ sudo systemctl enable ntpd.service
         title=CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
         ```
 
-    5. 配置 udev 脚本应用 IO 调度器策略。
+    4. 配置 udev 脚本应用 IO 调度器策略。
 
         {{< copyable "shell-regular" >}}
 
@@ -434,7 +434,7 @@ sudo systemctl enable ntpd.service
 
         ```
 
-    6. 应用 udev 脚本。
+    5. 应用 udev 脚本。
 
         {{< copyable "shell-regular" >}}
 
@@ -443,7 +443,7 @@ sudo systemctl enable ntpd.service
         udevadm trigger --type=devices --action=change
         ```
 
-    7. 创建 CPU 节能策略配置服务。
+    6. 创建 CPU 节能策略配置服务。
 
         {{< copyable "shell-regular" >}}
 
@@ -459,7 +459,7 @@ sudo systemctl enable ntpd.service
         EOF
         ```
 
-    8. 应用 CPU 节能策略配置服务。
+    7. 应用 CPU 节能策略配置服务。
 
         {{< copyable "shell-regular" >}}
 
