@@ -32,6 +32,7 @@ This is a list of TiDB adopters in various industries.
 |[Zhihu](https://en.wikipedia.org/wiki/Zhihu)|Knowledge Sharing|[English](https://pingcap.com/case-studies/lesson-learned-from-queries-over-1.3-trillion-rows-of-data-within-milliseconds-of-response-time-at-zhihu/); [Chinese](https://pingcap.com/cases-cn/user-case-zhihu/)|
 |[JD Cloud & AI](https://www.crunchbase.com/organization/jd-cloud)|Cloud Computing|[English](https://pingcap.com/case-studies/lesson-learned-from-40-k-qps-and-20-billion-rows-of-data-in-a-single-scale-out-cluster/); [Chinese](https://pingcap.com/cases-cn/user-case-jingdongyun/)|
 |[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://pingcap.com/case-studies/tidb-in-mobike); Chinese [#1](https://pingcap.com/cases-cn/user-case-mobike/), [#2](https://pingcap.com/cases-cn/user-case-mobike-2/)|
+|[Chehaoduo](https://www.crunchbase.com/organization/guazi-com)|Automobile|[English](https://pingcap.com/case-studies/top-car-trading-platform-chooses-scale-out-database-as-mysql-alternative)|
 |[Xiaomi](https://en.wikipedia.org/wiki/Xiaomi)|Consumer Electronics|[Chinese](https://pingcap.com/cases-cn/user-case-xiaomi/)|
 |[LY.com](https://www.crunchbase.com/organization/ly-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-tongcheng/)|
 |[Qunar.com](https://www.crunchbase.com/organization/qunar-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-qunar/)|
