@@ -310,72 +310,72 @@ sudo systemctl enable ntpd.service
 
 5. 推荐使用 tuned 方式配置应用优化参数。
    
-   1. 执行 `tuned-adm list` 命令查看当前操作系统的 tuned 策略。
+    1. 执行 `tuned-adm list` 命令查看当前操作系统的 tuned 策略。
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```bash
-    tuned-adm list
-    ```
+        ```bash
+        tuned-adm list
+        ```
 
-    ```
-    Available profiles:
-    - balanced                    - General non-specialized tuned profile
-    - desktop                     - Optimize for the desktop use-case
-    - hpc-compute                 - Optimize for HPC compute workloads
-    - latency-performance         - Optimize for deterministic performance at the cost of increased power consumption
-    - network-latency             - Optimize for deterministic performance at the cost of increased power consumption, focused on low latency network performance
-    - network-throughput          - Optimize for streaming network throughput, generally only necessary on older CPUs or 40G+ networks
-    - powersave                   - Optimize for low power consumption
-    - throughput-performance      - Broadly applicable tuning that provides excellent performance across a variety of common server workloads
-    - virtual-guest               - Optimize for running inside a virtual guest
-    - virtual-host                - Optimize for running KVM guests
-    Current active profile: balanced
-    ```
-    
-    `Current active profile: balanced` 表示当前操作系统的 tuned 策略使用 balanced，建议在当前策略的基础上添加操作系统优化配置。
+        ```
+        Available profiles:
+        - balanced                    - General non-specialized tuned profile
+        - desktop                     - Optimize for the desktop use-case
+        - hpc-compute                 - Optimize for HPC compute workloads
+        - latency-performance         - Optimize for deterministic performance at the cost of increased power consumption
+        - network-latency             - Optimize for deterministic performance at the cost of increased power consumption, focused on low latency network performance
+        - network-throughput          - Optimize for streaming network throughput, generally only necessary on older CPUs or 40G+ networks
+        - powersave                   - Optimize for low power consumption
+        - throughput-performance      - Broadly applicable tuning that provides excellent performance across a variety of common server workloads
+        - virtual-guest               - Optimize for running inside a virtual guest
+        - virtual-host                - Optimize for running KVM guests
+        Current active profile: balanced
+        ```
+
+        `Current active profile: balanced` 表示当前操作系统的 tuned 策略使用 balanced，建议在当前策略的基础上添加操作系统优化配置。
 
     2. 创建新的 tuned 策略。
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```bash
-    mkdir /etc/tuned/balanced-tidb-optimal/
-    vi /etc/tuned/balanced-tidb-optimal/tuned.conf
-    ```
-    
-    ```
-    [main]
-    include=balanced
+        ```bash
+        mkdir /etc/tuned/balanced-tidb-optimal/
+        vi /etc/tuned/balanced-tidb-optimal/tuned.conf
+        ```
 
-    [cpu]
-    governor=performance
+        ```
+        [main]
+        include=balanced
 
-    [vm]
-    transparent_hugepages=never
+        [cpu]
+        governor=performance
 
-    [disk]
-    devices_udev_regex=(ID_SERIAL=36d0946606d79f90025f3e09a0c1fc035)|(ID_SERIAL=36d0946606d79f90025f3e09a0c1f9e81)
-    elevator=noop
-    ```
+        [vm]
+        transparent_hugepages=never
 
-    `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
+        [disk]
+        devices_udev_regex=(ID_SERIAL=36d0946606d79f90025f3e09a0c1fc035)|(ID_SERIAL=36d0946606d79f90025f3e09a0c1f9e81)
+        elevator=noop
+        ```
+
+        `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
     
     3. 应用新的 tuned 策略。
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```bash
-    tuned-adm profile balanced-tidb-optimal
-    ```
+        ```bash
+        tuned-adm profile balanced-tidb-optimal
+        ```
     
 6. 使用脚本的配置方式应用优化参数。如果已经使用 tuned 方式，请跳过本步骤。
    
-   1. 执行 `grubby` 命令查看默认内核版本。
+    1. 执行 `grubby` 命令查看默认内核版本。
 
-    > **注意：**
-    >
-    > 需安装 `grubby` 软件包。
+        > **注意：**
+        >
+        > 需安装 `grubby` 软件包。
 
         {{< copyable "shell-regular" >}}
 
@@ -395,9 +395,9 @@ sudo systemctl enable ntpd.service
         grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
         ```
 
-    > **注意：**
-    >
-    > `--update-kernel` 后需要使用实际的默认内核版本。
+        > **注意：**
+        >
+        > `--update-kernel` 后需要使用实际的默认内核版本。
 
     3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
 
@@ -407,9 +407,9 @@ sudo systemctl enable ntpd.service
         grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
         ```
 
-    > **注意：**
-    >
-    > `--info` 后需要使用实际的默认内核版本。
+        > **注意：**
+        >
+        > `--info` 后需要使用实际的默认内核版本。
 
         ```
         index=0
