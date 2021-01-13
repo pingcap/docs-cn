@@ -308,7 +308,7 @@ sudo systemctl enable ntpd.service
     >
     > `The governor "powersave"` 表示cpufreq 的节能策略使用 powersave，需要进行修改。虚拟机或者云主机不需要调整，命令输出通常为 `Unable to determine current policy` 。
 
-5. 推荐使用 tuned 方式配置应用优化参数。
+5. 配置应用优化参数方式一：tuned 方式（推荐）。
    
     1. 执行 `tuned-adm list` 命令查看当前操作系统的 tuned 策略。
 
