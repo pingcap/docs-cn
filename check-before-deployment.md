@@ -369,7 +369,7 @@ sudo systemctl enable ntpd.service
         tuned-adm profile balanced-tidb-optimal
         ```
     
-6. 使用脚本的配置方式应用优化参数。如果已经使用 tuned 方式，请跳过本步骤。
+6. 配置应用优化参数方式二：使用脚本方式，如果已经使用 tuned 方式，请跳过本步骤。
    
     1. 执行 `grubby` 命令查看默认内核版本。
 
