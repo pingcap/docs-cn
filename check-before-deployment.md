@@ -232,11 +232,13 @@ sudo systemctl enable ntpd.service
 ## 检查和配置操作系统优化参数
 
 在生产系统的 TiDB 中，建议对操作系统进行如下的优化配置：
+
 1. 关闭透明大页（即 Transparent Huge Pages，缩写为 THP）。数据库的内存访问模式往往是稀疏的而非连续的，而且当高阶内存碎片化比较严重时，分配 THP 页面会出现较大的延迟。
 2. 将存储介质的 IO 调度器设置为 noop。对于高速 SSD 存储介质，内核的 IO 调度操作会导致性能损失。调度器设置为 noop，内核不做任何操作，尽可能快地将 IO 请求下发给硬件，能获取更好的性能。同时，noop 调度器也有较好的普适性。
 3. 调整 CPU 频率的 cpufreq 模块选用 performance 模式。将 CPU 频率固定工作在其支持的最高运行频率上，不进行动态调节，以获取最佳的性能。
 
 采用如下步骤检查操作系统的当前配置，并配置操作系统优化参数：
+
 1. 执行以下命令查看透明大页的开启状态。
 
     {{< copyable "shell-regular" >}}
@@ -304,9 +306,9 @@ sudo systemctl enable ntpd.service
     
     > **注意：**
     >
-    > `The governor "powersave"` 表示cpufreq 的节能策略使用 powersave，需要进行修改。虚拟机或者云主机不需要调整，命令输出通常为`Unable to determine current policy` 。
+    > `The governor "powersave"` 表示cpufreq 的节能策略使用 powersave，需要进行修改。虚拟机或者云主机不需要调整，命令输出通常为 `Unable to determine current policy` 。
 
-4. 推荐使用 tuned 方式配置应用优化参数。
+5. 推荐使用 tuned 方式配置应用优化参数。
    
    1. 执行 `tuned-adm list` 命令查看当前操作系统的 tuned 策略。
 
@@ -367,7 +369,7 @@ sudo systemctl enable ntpd.service
     tuned-adm profile balanced-tidb-optimal
     ```
     
-5. 使用脚本的配置方式应用优化参数。如果已经使用 tuned 方式，请跳过本步骤。
+6. 使用脚本的配置方式应用优化参数。如果已经使用 tuned 方式，请跳过本步骤。
    
    1. 执行 `grubby` 命令查看默认内核版本。
 
@@ -467,7 +469,7 @@ sudo systemctl enable ntpd.service
         systemctl start cpupower.service
         ```
   
-6. 执行以下命令验证透明大页的状态。
+7. 执行以下命令验证透明大页的状态。
 
     {{< copyable "shell-regular" >}}
 
@@ -479,7 +481,7 @@ sudo systemctl enable ntpd.service
     always madvise [never]
     ```
 
-7. 执行以下命令验证数据目录所在磁盘的 IO 调度器。
+8. 执行以下命令验证数据目录所在磁盘的 IO 调度器。
 
     {{< copyable "shell-regular" >}}
 
@@ -492,7 +494,7 @@ sudo systemctl enable ntpd.service
     [noop] deadline cfq 
     ```
 
-8. 执行以下命令查看 cpufreq 模块选用的节能策略。
+9. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
     {{< copyable "shell-regular" >}}
 
