@@ -37,7 +37,7 @@ aliases: ['/docs-cn/stable/tidb-limitations/','/docs-cn/v4.0/tidb-limitations/']
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Columns   | 512       |
+| Columns   | 4096      |
 | Indexs    | 64        |
 | Rows      | unlimited |
 | Size      | unlimited |
