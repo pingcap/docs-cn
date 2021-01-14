@@ -16,7 +16,6 @@ TiDB 版本：4.0.10
 + TiFlash
 
     - 添加了配置项 `security.redact_info_log`，可以设置将日志中的用户数据脱敏，例如把具体的值替换为 `?`
-    - 支持了枚举类型的无损修改
 
 ## 改进提升
 
@@ -46,3 +45,5 @@ TiDB 版本：4.0.10
     - 修复了在 RedHat 系统中 TiFlash 会对 cpu time 进行错误处理导致 TiFlash 无法启动的问题。
     - 修复了将配置项 path_realtime_mode 设置为 true 时 TiFlash 无法启动的问题。
     - 修复了当调用三个参数的 `substr` 函数时，返回结果错误的问题。
+    - 修复了当 tidb 对 enum 枚举进行无损修改时，tiflash 无法读取修改后的值的问题
+    
