@@ -13,6 +13,10 @@ TiDB 版本：4.0.10
 
 ## 新功能
 
++ TiFlash
+
+    - 添加了配置项 `security.redact_info_log`，可以设置将日志中的用户数据脱敏，例如把具体的值替换为 `?`
+    - 支持了枚举类型的无损修改
 
 ## 改进提升
 
@@ -35,3 +39,10 @@ TiDB 版本：4.0.10
     - 避免在 `ALTER TABLE` 中不必要的 column flag 更改 [#21474](https://github.com/pingcap/tidb/pull/21474)
     - 让包含子查询块别名的 optimizer hint 生效 [#21380](https://github.com/pingcap/tidb/pull/21380)
     - 为 IndexHashJoin 和 IndexMergeJoin 生成正确的 optimizer hint [#21020](https://github.com/pingcap/tidb/pull/21020)
+
++ TiFlash
+
+    - 修复了 TiFlash 解析老版本 TiDB 表结构失败导致 TiFlash 无法启动的问题。
+    - 修复了在 RedHat 系统中 TiFlash 会对 cpu time 进行错误处理导致 TiFlash 无法启动的问题。
+    - 修复了将配置项 path_realtime_mode 设置为 true 时 TiFlash 无法启动的问题。
+    - 修复了当调用三个参数的 `substr` 函数时，返回结果错误的问题。
