@@ -14,9 +14,11 @@ aliases: ['/docs-cn/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/how-
 
 ## 第二步：部署 TiDB Lightning
 
-使用 Lightning 将数据导入 TiDB，Lightning 具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
+Lightning 具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
 
 ## 第三步：配置 TiDB Lightning 的数据源
+
+根据部署方式不同，编辑配置文件 `tidb-lighting.toml`。
 
 1. 将 `[mydumper]` 下的 `data-source-dir` 设置为第一步导出的 S3 Bucket 路径。
 
