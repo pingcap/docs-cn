@@ -35,7 +35,7 @@ TiDB 5.0.0-rc 版本是 5.0 版本的前序版本。在 5.0 版本中，我们�
 
 用户可通过修改 `tidb_enable_clustered_index` 变量的方式开启聚簇索引功能。开启后仅在创建新表时生效，适用于主键是多个列或者单个列的非整数类型。如果主键是单列整数类型或者表没有主键，系统会按照原有的方式进行数据排序，不受聚簇索引的影响。
 
-例如，可通过 `select tidb_pk_type from information_schema.tables where tbl_name = '{tbl_name}'` 语名可查询 `tbl_name` 是否有聚簇索引。
+例如，可通过 `select tidb_pk_type from information_schema.tables where table_name = '{tbl_name}'` 语名可查询 `tbl_name` 是否有聚簇索引。
 
 + [用户文档](/system-variables.md#tidb_enable_clustered_index-从-v500-rc-版本开始引入)
 + 相关 issue：[#4841](https://github.com/pingcap/tidb/issues/4841)
