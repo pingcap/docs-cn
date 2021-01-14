@@ -41,9 +41,9 @@ TiDB 版本：4.0.10
 
 + TiFlash
 
-    - 修复了 TiFlash 解析老版本 TiDB 表结构失败导致 TiFlash 无法启动的问题。
-    - 修复了在 RedHat 系统中 TiFlash 会对 cpu time 进行错误处理导致 TiFlash 无法启动的问题。
-    - 修复了将配置项 path_realtime_mode 设置为 true 时 TiFlash 无法启动的问题。
-    - 修复了当调用三个参数的 `substr` 函数时，返回结果错误的问题。
+    - 修复了 TiFlash 解析老版本 TiDB 表结构失败导致 TiFlash 无法启动的问题
+    - 修复了在 RedHat 系统中 TiFlash 会对 cpu time 进行错误处理导致 TiFlash 无法启动的问题
+    - 修复了将配置项 path_realtime_mode 设置为 true 时 TiFlash 无法启动的问题
+    - 修复了当调用三个参数的 `substr` 函数时，返回结果错误的问题
     - 修复了当 tidb 对 enum 枚举进行无损修改时，tiflash 无法读取修改后的值的问题
     
