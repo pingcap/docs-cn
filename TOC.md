@@ -7,8 +7,7 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
-  + [TiDB 4.0 实验特性](/experimental-features-4.0.md)
+  + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
   + [基本功能](/basic-features.md)
   + 性能测试报告
     + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
@@ -189,6 +188,7 @@
     + [安装部署](/ticdc/deploy-ticdc.md)
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
+    + [监控指标](/ticdc/ticdc-grafana-dashboard.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
   + [Dumpling](/dumpling-overview.md)
@@ -212,6 +212,7 @@
     + [PD 面板](/grafana-pd-dashboard.md)
     + [TiKV 面板](/grafana-tikv-dashboard.md)
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
+    + [TiCDC 监控指标](/ticdc/ticdc-grafana-dashboard.md)
   + 安全加固
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
@@ -515,6 +516,8 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
+  + v5.0
+    - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
     - [4.0.9](/releases/release-4.0.9.md)
     - [4.0.8](/releases/release-4.0.8.md)
