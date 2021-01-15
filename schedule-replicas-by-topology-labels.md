@@ -145,33 +145,6 @@ tikv_servers:
 
 详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。
 
-<details>
-<summary> <strong>使用 TiDB Ansible 进行配置</strong> </summary>
-
-如果使用 TiDB Ansible 部署集群，可以直接在 `inventory.ini` 文件中统一进行 location 相关配置。`tidb-ansible` 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
-
-下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。
-
-```
-[tikv_servers]
-# z1
-tikv-1 labels="zone=z1,host=h1"
-tikv-2 labels="zone=z1,host=h1"
-tikv-3 labels="zone=z1,host=h2"
-tikv-4 labels="zone=z1,host=h2"
-# z2
-tikv-5 labels="zone=z2,host=h1"
-tikv-6 labels="zone=z2,host=h2"
-# z3
-tikv-7 labels="zone=z3,host=h1"
-tikv-8 labels="zone=z3,host=h2"
-
-[pd_servers:vars]
-location_labels = ["zone", "host"]
-```
-
-</details>
-
 ## 基于拓扑 label 的 PD 调度策略
 
 PD 在副本调度时，会按照 label 层级，保证同一份数据的不同副本尽可能分散。

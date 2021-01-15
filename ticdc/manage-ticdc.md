@@ -83,15 +83,24 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
 - `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+
+    {{< copyable "" >}}
+
+    ```
+    [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+    ```
+  
+    URI 中包含特殊字符时，需要以 URL 编码对特殊字符进行处理。
+
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
+- `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `memory`/`unified`/`file`：
+
+    - `memory`：在内存中进行排序。生产环境中建议优先选择 `memory`。
+    - `unified`：自 v4.0.9 引入的实验特性，优先使用内存排序。内存不足时则自动使用硬盘暂存数据。**不建议用于生产环境**，除非因内存不足 `memory` 无法正常使用。
+    - `file`：完全使用磁盘暂存数据。**已经停止维护，不建议使用。**
+    
 - `--config`：指定 changefeed 配置文件。
-
-{{< copyable "" >}}
-
-```
-[scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
-```
 
 #### Sink URI 配置 `mysql`/`tidb`
 
@@ -141,9 +150,14 @@ URI 中可配置的的参数如下：
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
+| `max-batch-size` |  从 v4.0.9 引入。如果消息协议支持将多条变更记录输出到一条 kafka 消息，该参数指定一条 kafka 消息中变更记录的最多数量，目前仅对 Kafka 的 `protocol` 为 `default` 时有效（可选，默认值为 `4096`）|
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+
+> **注意：**
+>
+> 当 `protocol` 为 `default` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
 
 #### TiCDC 集成 Kafka Connect (Confluent Platform)
 

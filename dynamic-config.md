@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/dynamic-config/']
 
 # 在线修改集群配置
 
-> **注意：**
+> **警告：**
 >
 > 该功能目前是实验性阶段，不建议在生产环境中使用。
 
@@ -61,10 +61,14 @@ show config where type='tikv' and name='log-level'
 
 修改全部 TiKV 实例配置：
 
+> **注意：**
+>
+> 建议使用反引号包裹变量名称。
+
 {{< copyable "sql" >}}
 
 ```sql
-set config tikv log.level="info"
+set config tikv `split.qps-threshold`=1000
 ```
 
 修改单个 TiKV 实例配置：
@@ -72,7 +76,7 @@ set config tikv log.level="info"
 {{< copyable "sql" >}}
 
 ```sql
-set config "127.0.0.1:20180" log.level="info"
+set config "127.0.0.1:20180" `split.qps-threshold`=1000
 ```
 
 设置成功会返回 `Query OK`：
@@ -88,7 +92,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-set config tikv log-level='warn';
+set config `tikv log-level`='warn';
 ```
 
 ```sql
@@ -207,7 +211,7 @@ PD 暂不支持单个实例拥有独立配置。所有实例共享一份配置�
 {{< copyable "sql" >}}
 
 ```sql
-set config pd log.level="info"
+set config pd `log.level`='info'
 ```
 
 设置成功会返回 `Query OK`：
@@ -270,7 +274,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-set tidb_slow_log_threshold = 200;
+set `tidb_slow_log_threshold` = 200;
 ```
 
 ```sql

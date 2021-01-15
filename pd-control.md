@@ -151,7 +151,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     "strictly-match-label": "false"
   },
   "schedule": {
-    "enable-cross-table-merge": "false",
+    "enable-cross-table-merge": "true",
     "enable-debug-metrics": "false",
     "enable-location-replacement": "true",
     "enable-make-up-replica": "true",
@@ -173,6 +173,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     "merge-schedule-limit": 8,
     "patrol-region-interval": "100ms",
     "region-schedule-limit": 2048,
+    "region-score-formula-version": "v2",
     "replica-schedule-limit": 64,
     "scheduler-max-waiting-operator": 5,
     "split-merge-interval": "1h0m0s",
@@ -220,8 +221,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 "4.0.0"
 ```
 
-- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-当需要加快补副本或 balance 速度时可以调大这个值。
+- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
     设置最大 snapshot 为 16：
 
@@ -304,14 +304,24 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set key-type raw
     ```
 
-- `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
+- `region-score-formula-version` 用于设置 Region 算分公式的版本，支持的值有 `["v1", "v2"]`。v2 版本公式有助于减少上下线等场景下冗余的 balance Region 调度。
 
-    设置 replicaChecker 的运行频率为 10 毫秒：
+    开启 v2 版本 Region 算分公式：
 
     {{< copyable "" >}}
 
     ```bash
-    >> config set patrol-region-interval 10ms
+    >> config set region-score-formula-version v2
+    ```
+
+- `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
+
+    设置 replicaChecker 的运行频率为 50 毫秒：
+
+    {{< copyable "" >}}
+
+    ```bash
+    >> config set patrol-region-interval 50ms
     ```
 
 - `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
@@ -324,9 +334,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set max-store-down-time 30m
     ```
 
-- 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
-这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Leader 调度的开销较小，需要的时候可以适当调大。
+- 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
 
     最多同时进行 4 个 leader 调度：
 
@@ -398,7 +406,7 @@ Leader 调度的开销较小，需要的时候可以适当调大。
     config set low-space-ratio 0.9
     ```
 
-- `high-space-ratio` 用于设置 store 空间充裕的阈值。当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
+- `high-space-ratio` 用于设置 store 空间充裕的阈值，此配置仅的在 `region-score-formula-version = v1` 时生效。当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
 
     设置空间充裕阈值为 0.5：
 
@@ -961,9 +969,10 @@ Encoding 格式示例：
 >> scheduler show                                 // 显示所有的 schedulers
 >> scheduler add grant-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 调度到 store 1
 >> scheduler add evict-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
+>> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
 >> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
->> scheduler remove grant-leader-scheduler-1      // 把对应的 scheduler 删掉
+>> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
 >> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器 

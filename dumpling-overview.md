@@ -1,7 +1,7 @@
 ---
 title: Dumpling 使用文档
 summary: 使用 Dumpling 从 TiDB 导出数据。
-aliases: ['/docs-cn/dev/dumpling-overview/']
+aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/docs-cn/dev/reference/tools/mydumper/','/zh/tidb/dev/mydumper-overview/']
 ---
 
 # Dumpling 使用文档
@@ -9,6 +9,12 @@ aliases: ['/docs-cn/dev/dumpling-overview/']
 本文档介绍如何使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)。该工具可以把存储在 TiDB/MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。
 
 如果需要直接备份 SST 文件（键值对）或者对延迟不敏感的增量备份，请参阅 [BR](/br/backup-and-restore-tool.md)。如果需要实时的增量备份，请参阅 [TiCDC](/ticdc/ticdc-overview.md)。
+
+> **注意：**
+>
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代。Dumpling 工具使用 Go 语言编写，支持更多针对 TiDB 特性的优化。请切换到 Dumpling。
+>
+> 如果你需要阅读 Mydumper 的文档，可参阅 [v4.0 版 Mydumper 使用文档](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)。
 
 ## 相比于 Mydumper，Dumpling 有哪些改进之处？
 
@@ -178,7 +184,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
 
 #### 使用 `--where` 选项筛选数据
 
-默认情况下，除了系统数据库中的表之外，Dumpling 会导出整个数据库的表。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。
+默认情况下，Dumpling 会导出排除系统数据库（包括 `mysql` 、`sys` 、`INFORMATION_SCHEMA` 、`PERFORMANCE_SCHEMA`、`METRICS_SCHEMA` 和 `INSPECTION_SCHEMA`）外所有其他数据库。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。
 
 {{< copyable "shell-regular" >}}
 
