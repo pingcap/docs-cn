@@ -58,7 +58,7 @@ TiDB version: 4.0.10
     - Fix the issue of incorrect results caused by schema change [#21596](https://github.com/pingcap/tidb/pull/21596)
     - Avoid unnecessary column flag changes in `ALTER TABLE` [#21474](https://github.com/pingcap/tidb/pull/21474)
     - Set the database name for table aliases of query blocks used in optimizer hints [#21380](https://github.com/pingcap/tidb/pull/21380)
-    - Generate the proper optimizer hint for `IndexHashJoin`and `IndexMergeJoin` [#21020](https://github.com/pingcap/tidb/pull/21020)
+    - Generate the proper optimizer hint for `IndexHashJoin` and `IndexMergeJoin` [#21020](https://github.com/pingcap/tidb/pull/21020)
 
 + TiKV
 
@@ -92,7 +92,7 @@ TiDB version: 4.0.10
 
     + Dumpling
 
-        - Avoid TiDB out of memory (OOM) by setting the default behavior of  `tidb_mem_quota_query` [#233](https://github.com/pingcap/dumpling/pull/233)
+        - Avoid TiDB out of memory (OOM) by setting the default behavior of `tidb_mem_quota_query` [#233](https://github.com/pingcap/dumpling/pull/233)
 
     + Backup & Restore (BR)
 
