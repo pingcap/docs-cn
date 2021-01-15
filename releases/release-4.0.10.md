@@ -10,13 +10,13 @@ TiDB 版本：4.0.10
 
 ## 新功能
 
-+ TiFlash
-
-    - 添加了配置项 `security.redact_info_log`，可以设置将日志中的用户数据脱敏，例如把具体的值替换为 `?`
-
 + PD
 
-    - 添加了配置项 `enable-redact-log`，可以设置将日志中的用户数据脱敏，例如把具体的值替换为 `?`  [#3266](https://github.com/pingcap/pd/pull/3266)
+    - 添加了配置项 `enable-redact-log`，可以设置将日志中的用户数据脱敏 [#3266](https://github.com/pingcap/pd/pull/3266)
+
++ TiFlash
+
+    - 添加了配置项 `security.redact_info_log`，可以设置将日志中的用户数据脱敏
 
 ## 改进提升
 
@@ -26,7 +26,7 @@ TiDB 版本：4.0.10
 
 + PD
 
-    - 优化了 store-state-filter 的监控，可以显示更加具体的原因 [#3100](https://github.com/tikv/pd/pull/3100)
+    - 优化了 `store-state-filter` 的监控，可以显示更加具体的原因 [#3100](https://github.com/tikv/pd/pull/3100)
     - 更新 `go.etcd.io/bbolt` 依赖至 v1.3.5 [#3331](https://github.com/tikv/pd/pull/3331)
 + Tools
 
@@ -37,7 +37,7 @@ TiDB 版本：4.0.10
 
     + Dumpling
 
-        - 支持检查为定义的参数，支持输出导出的进度 [#228](https://github.com/pingcap/dumpling/pull/228)
+        - 支持检查未定义的参数，支持输出导出的进度 [#228](https://github.com/pingcap/dumpling/pull/228)
 
     + TiDB Lightning
 
@@ -55,7 +55,7 @@ TiDB 版本：4.0.10
     - 修复错误使用 Index Merge 访问方式的问题 [#22124](https://github.com/pingcap/tidb/pull/22124)
     - 修复由于执行计划缓存导致 TiFlash 报 `wrong precision` 错误的问题 [#21960](https://github.com/pingcap/tidb/pull/21960)
     - 修复由于 schema 变更导致的错误结果 [#21596](https://github.com/pingcap/tidb/pull/21596)
-    - 避免在 `ALTER TABLE` 中不必要的 column flag 更改 [#21474](https://github.com/pingcap/tidb/pull/21474)
+    - 避免在 `ALTER TABLE` 中不必要地更改 column flag [#21474](https://github.com/pingcap/tidb/pull/21474)
     - 让包含子查询块别名的 optimizer hint 生效 [#21380](https://github.com/pingcap/tidb/pull/21380)
     - 为 `IndexHashJoin` 和 `IndexMergeJoin` 生成正确的 optimizer hint [#21020](https://github.com/pingcap/tidb/pull/21020)
 
@@ -74,20 +74,20 @@ TiDB 版本：4.0.10
     - 修复了 TiFlash 解析老版本 TiDB 表结构失败导致 TiFlash 无法启动的问题
     - 修复了在 RedHat 系统中 TiFlash 会对 `cpu_time` 进行错误处理导致 TiFlash 无法启动的问题
     - 修复了将配置项 `path_realtime_mode` 设置为 `true` 时 TiFlash 无法启动的问题
-    - 修复了当调用三个参数的 `substr` 函数时，返回结果错误的问题
+    - 修复了当调用有三个参数的 `substr` 函数时，返回结果错误的问题
     - 修复了当 TiDB 对 `Enum` 枚举进行无损修改时，TiFlash 无法读取修改后的值的问题
 
 + Tools
 
     + TiCDC
 
-        * 修复 `maxwell` 协议的问题，包括 `base64` 数据输出和将 TSO 转换成 unix timestamp [#1173](https://github.com/pingcap/ticdc/pull/1173)
-        * 修复过期的元数据可能引发新创建的 changefeed 异常的问题 [#1184](https://github.com/pingcap/ticdc/pull/1184)
-        * 修复在关闭的 notifier 上创建 receiver [#1199](https://github.com/pingcap/ticdc/pull/1199)
-        * 修复在 etcd 更新缓慢时导致的内存增长问题 [#1227](https://github.com/pingcap/ticdc/pull/1227)
-        * 修复 `max-batch-size` 不生效的问题 [#1253](https://github.com/pingcap/ticdc/pull/1253)
-        * 修复清理过期任务信息的问题 [#1280](https://github.com/pingcap/ticdc/pull/1280)
-        * 修复 MySQL sink 中由于没有调用 `rollback` 而导致的回收 db conn 卡住的问题 [#1285](https://github.com/pingcap/ticdc/pull/1285)
+        - 修复 `maxwell` 协议的问题，包括 `base64` 数据输出和将 TSO 转换成 unix timestamp [#1173](https://github.com/pingcap/ticdc/pull/1173)
+        - 修复过期的元数据可能引发新创建的 changefeed 异常的问题 [#1184](https://github.com/pingcap/ticdc/pull/1184)
+        - 修复在关闭的 notifier 上创建 receiver 的问题[#1199](https://github.com/pingcap/ticdc/pull/1199)
+        - 修复在 etcd 更新缓慢时导致的内存增长问题 [#1227](https://github.com/pingcap/ticdc/pull/1227)
+        - 修复 `max-batch-size` 不生效的问题 [#1253](https://github.com/pingcap/ticdc/pull/1253)
+        - 修复清理过期任务信息的问题 [#1280](https://github.com/pingcap/ticdc/pull/1280)
+        - 修复 MySQL sink 中由于没有调用 `rollback` 而导致回收 db conn 卡住的问题 [#1285](https://github.com/pingcap/ticdc/pull/1285)
 
     + Dumpling
 
@@ -96,12 +96,12 @@ TiDB 版本：4.0.10
     + Backup & Restore (BR)
 
         - 修复 BR v4.0.9 无法恢复 BR v4.0.8 保存在 GCS 上的备份 [#688](https://github.com/pingcap/br/pull/688)
-        - 修复在恢复 GCS 上的备份时可能发送的 panic 问题 [#673](https://github.com/pingcap/br/pull/673)
-        - Disable backup stats by default to avoid BR OOM [#693](https://github.com/pingcap/br/pull/693)
+        - 修复在恢复 GCS 上的备份时可能发生的 panic 问题 [#673](https://github.com/pingcap/br/pull/673)
+        - 默认禁用备份统计信息以避免 BR 内存溢出 [#693](https://github.com/pingcap/br/pull/693)
 
     + TiDB Binlog
 
-        - 修复在启用 amend txn 时，Drainer 可能会使用错误 schema 来生成 SQL 语句的问题 [#1033](https://github.com/pingcap/tidb-binlog/pull/1033)
+        - 修复在启用 `AMEND TRANSACTION` 特性时，Drainer 可能会使用错误 schema 来生成 SQL 语句的问题 [#1033](https://github.com/pingcap/tidb-binlog/pull/1033)
 
     + TiDB Lightning
 
