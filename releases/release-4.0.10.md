@@ -16,7 +16,8 @@ TiDB 版本：4.0.10
 
 + PD
 
-    - 添加了配置项 `enable-redact-log`，可以设置将日志中的用户数据脱敏，例如把具体的值替换为 `?  [#3266](https://github.com/pingcap/pd/pull/3266)
+    - 添加了配置项 `enable-redact-log`，可以设置将日志中的用户数据脱敏，例如把具体的值替换为 `?`  [#3266](https://github.com/pingcap/pd/pull/3266)
+
 ## 改进提升
 
 + TiDB
@@ -58,10 +59,15 @@ TiDB 版本：4.0.10
     - 让包含子查询块别名的 optimizer hint 生效 [#21380](https://github.com/pingcap/tidb/pull/21380)
     - 为 `IndexHashJoin` 和 `IndexMergeJoin` 生成正确的 optimizer hint [#21020](https://github.com/pingcap/tidb/pull/21020)
 
-TiKV
++ TiKV
 
     - 修复了 peer 和 ready 之间的错误映射 [#9409](https://github.com/tikv/tikv/pull/9409)
     - 修复一些日志信息在 `security.redact-info-log` 设置为 `true` 时未脱敏的问题 [#9314](https://github.com/tikv/tikv/pull/9314)
+
++ PD
+
+    - 修复 ID 分配不是单调递增的问题 [#3308](https://github.com/tikv/pd/pull/3308) [#3323](https://github.com/tikv/pd/pull/3323)
+    - 修复 PD client 在某些情况下可能卡住的问题 [#3285](https://github.com/pingcap/pd/pull/3285)
 
 + TiFlash
 
