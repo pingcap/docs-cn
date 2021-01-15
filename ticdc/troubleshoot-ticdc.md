@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 # TiCDC 常见问题和故障处理
 
-本文档总结了在使用 TiCDC 过程中经常遇到的问题，给出合适的运维方法。本文档还总结了常见的运行故障，并给出相对应的解决方案。部分 `cdc cli` 命令中指定 pd 地址为 `--pd=http://10.0.10.25:2379`，使用时请根据实际地址替换。
+本文档总结了在使用 TiCDC 过程中经常遇到的问题，给出合适的运维方法。本文档还总结了常见的运行故障，并给出相对应的解决方案。以下 `cdc cli` 命令中指定 pd 地址为 `--pd=http://10.0.10.25:2379`，使用时请根据实际地址替换。
 
 ## TiCDC 创建任务时如何选择 start-ts？
 
