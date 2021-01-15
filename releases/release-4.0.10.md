@@ -14,12 +14,19 @@ TiDB 版本：4.0.10
 
     - 添加了配置项 `security.redact_info_log`，可以设置将日志中的用户数据脱敏，例如把具体的值替换为 `?`
 
++ PD
+
+    - 添加了配置项 `enable-redact-log`，可以设置将日志中的用户数据脱敏，例如把具体的值替换为 `?  [#3266](https://github.com/pingcap/pd/pull/3266)
 ## 改进提升
 
 + TiDB
 
     - 添加 `txn-entry-size-limit` 配置项，用于限制事务中单个 key-value 记录的大小 [#21843](https://github.com/pingcap/tidb/pull/21843)
 
++ PD
+
+    - 优化了 store-state-filter 的监控，可以显示更加具体的原因 [#3100](https://github.com/tikv/pd/pull/3100)
+    - 更新 `go.etcd.io/bbolt` 依赖至 v1.3.5 [#3331](https://github.com/tikv/pd/pull/3331)
 + Tools
 
     + TiCDC
@@ -50,6 +57,11 @@ TiDB 版本：4.0.10
     - 避免在 `ALTER TABLE` 中不必要的 column flag 更改 [#21474](https://github.com/pingcap/tidb/pull/21474)
     - 让包含子查询块别名的 optimizer hint 生效 [#21380](https://github.com/pingcap/tidb/pull/21380)
     - 为 `IndexHashJoin` 和 `IndexMergeJoin` 生成正确的 optimizer hint [#21020](https://github.com/pingcap/tidb/pull/21020)
+
+TiKV
+
+    - 修复了 peer 和 ready 之间的错误映射 [#9409](https://github.com/tikv/tikv/pull/9409)
+    - 修复一些日志信息在 `security.redact-info-log` 设置为 `true` 时未脱敏的问题 [#9314](https://github.com/tikv/tikv/pull/9314)
 
 + TiFlash
 
