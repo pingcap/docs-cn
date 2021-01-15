@@ -20,7 +20,7 @@ The following are the basics of Dumpling:
 
 > **Note:**
 >
-> The Mydumper tool is no longer maintained. For scenarios related to Mydumper, it is recommended that you use [Dumpling](/dumpling-overview.md) instead.
+> PingCAP previously maintained a fork of the [mydumper project](https://github.com/maxbube/mydumper) with enhancements specific to TiDB. This fork has since been replaced by [Dumpling](/dumpling-overview.md), which has been rewritten in Go, and supports more optimizations that are specific to TiDB. It is strongly recommended that you use Dumpling instead of mydumper.
 
 ## Full data import
 
