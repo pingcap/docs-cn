@@ -28,6 +28,7 @@ TiDB 版本：4.0.10
 
     - 优化了 `store-state-filter` 的监控，可以显示更加具体的原因 [#3100](https://github.com/tikv/pd/pull/3100)
     - 更新 `go.etcd.io/bbolt` 依赖至 v1.3.5 [#3331](https://github.com/tikv/pd/pull/3331)
+
 + Tools
 
     + TiCDC
