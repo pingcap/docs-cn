@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 # TiCDC 常见问题和故障处理
 
-本文档总结了在使用 TiCDC 过程中经常遇到的问题，给出合适的运维方法。本文档还总结了常见的运行故障，并给出相对应的解决方案。
+本文档总结了在使用 TiCDC 过程中经常遇到的问题，给出合适的运维方法。本文档还总结了常见的运行故障，并给出相对应的解决方案。部分 `cdc cli` 命令中指定 pd 地址为 `--pd=http://10.0.10.25:2379`，使用时请根据实际地址替换。
 
 ## TiCDC 创建任务时如何选择 start-ts？
 
@@ -58,7 +58,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort"
+cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
 ```
 
 > **注意：**
@@ -113,7 +113,7 @@ show variables like '%time_zone%';
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST"
+cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --pd=http://10.0.10.25:2379
 ```
 
 > **注意：**
@@ -317,18 +317,26 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 自 v4.0.8 起，如果 changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 Old Value 功能。如果没开启则会报错。可以按照以下步骤解决该问题：
 
 1. 将 changefeed 配置文件中 `enable-old-value` 的值设为 `true`。
-2. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
+2. 使用 `cdc cli changefeed pause` 暂停同步任务。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
     ```
 
-3. 使用 `cdc cli changfeed resume` 恢复同步任务。
+3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed resume -c test-cf
+    cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    ```
+
+4. 使用 `cdc cli changfeed resume` 恢复同步任务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
