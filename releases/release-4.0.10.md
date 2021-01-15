@@ -106,5 +106,5 @@ TiDB 版本：4.0.10
     + TiDB Lightning
 
         - 修复未正确编码 Region key 而导致分裂 Region 失败问题 [#531](https://github.com/pingcap/tidb-lightning/pull/531)
-        - 修复可能丢失 `create table` 失败的错误 [#530](https://github.com/pingcap/tidb-lightning/pull/530)
+        - 修复可能丢失 `CREATE TABLE` 失败的错误 [#530](https://github.com/pingcap/tidb-lightning/pull/530)
         - 修复使用 TiDB-backend 时遇到的 `column count mismatch` 问题 [#535](https://github.com/pingcap/tidb-lightning/pull/535)
