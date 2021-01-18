@@ -221,7 +221,7 @@ Pump 以 `paused` 状态退出进程时，不保证所有 binlog 数据被下游
 
 在 3.0.12 之前版本的 tidb，写 binlog 失败会导致 tidb 报 fatal error， 但是 tidb 不会自动退出只是停止服务，看起来像是服务卡住, tidb 的日志里面可以看到 “listener stopped, waiting for manual stop”。 遇到此问题需要根据具体情况判断具体是什么原因导致写 binlog 失败，如果是下游 binlog 写入缓慢导致，可以考虑扩容 pump 或增加写 binlog 超时时间。
 
-新版本的 tidb 已优化此逻辑，写入 binlog 失败将使事务执行失败返回而不是导致 tidb 直接报错退出。
+新版本的 tidb 已优化此逻辑，写入 binlog 失败将使事务执行失败返回而不会导致 tidb 卡住。
 
 ## TiDB 向 pump 写入了重复的 binlog？
 
