@@ -239,7 +239,7 @@ Usage:
 - `patrol-region-interval` controls the execution frequency that `replicaChecker` checks the health status of Regions. A shorter interval indicates a higher execution frequency. Generally, you do not need to adjust it.
 
     ```bash
-    >> config set patrol-region-interval 10ms // Set the execution frequency of replicaChecker to 10ms
+    >> config set patrol-region-interval 50ms // Set the execution frequency of replicaChecker to 50ms
     ```
 
 - `max-store-down-time` controls the time that PD decides the disconnected store cannot be restored if exceeded. If PD does not receive heartbeats from a store within the specified period of time, PD adds replicas in other nodes.
