@@ -33,7 +33,7 @@ summary: 介绍混合部署 TiDB 集群的拓扑结构。
         - 开启 `readpool.storage` 和 `readpool.coprocessor`：
           
             ```yaml
-            readpool.storage.use-unified-pool: false
+            readpool.storage.use-unified-pool: true
             readpool.coprocessor.use-unified-pool: true
             ```
 
