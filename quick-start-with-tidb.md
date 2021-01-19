@@ -103,7 +103,7 @@ aliases: ['/docs-cn/stable/quick-start-with-tidb/','/docs-cn/v4.0/quick-start-wi
 
 > **注意：**
 >
-> TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问；若需要使服务可被外部访问，你可以通过 `--host` 参数指定监听 `0.0.0.0` 或网卡绑定外部可访问的 IP。
+> TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问；若需要使服务可被外部访问，你可以通过 `--host` 参数指定监听网卡绑定外部可访问的 IP。
 
 ## 第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
