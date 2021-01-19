@@ -221,8 +221,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 "4.0.0"
 ```
 
-- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-当需要加快补副本或 balance 速度时可以调大这个值。
+- `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
     设置最大 snapshot 为 16：
 
@@ -317,12 +316,12 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
 
-    设置 replicaChecker 的运行频率为 10 毫秒：
+    设置 replicaChecker 的运行频率为 50 毫秒：
 
     {{< copyable "" >}}
 
     ```bash
-    >> config set patrol-region-interval 10ms
+    >> config set patrol-region-interval 50ms
     ```
 
 - `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
@@ -335,9 +334,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set max-store-down-time 30m
     ```
 
-- 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
-这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Leader 调度的开销较小，需要的时候可以适当调大。
+- 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
 
     最多同时进行 4 个 leader 调度：
 

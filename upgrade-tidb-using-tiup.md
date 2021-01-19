@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 > **注意：**
 >
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅[使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅 [v4.0 版使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
 
 ## 1. 升级兼容性说明
 
@@ -134,7 +134,7 @@ tiup update cluster
 > - 原集群没有修改过配置参数。
 > - 升级后希望使用 `4.0` 默认参数。
 
-1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/config`，确认配置模板中修改过的参数。
+1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/ansible-imported-configs`，确认配置模板中修改过的参数。
 
 2. 进入拓扑文件的 `vi` 编辑模式：
 
