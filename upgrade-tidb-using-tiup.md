@@ -135,7 +135,7 @@ After the import is complete, you can check the current cluster status by execut
 > - The configuration parameters in the original cluster have not been modified.
 > - You want to use the default parameters of `4.0` after the upgrade.
 
-1. Enter `~/.tiup/storage/cluster/clusters/{cluster_name}/config`, the backup directory of TiDB Ansible, and confirm the modified parameters in the configuration template.
+1. Enter `~/.tiup/storage/cluster/clusters/{cluster_name}/ansible-imported-configs`, the backup directory of TiDB Ansible, and confirm the modified parameters in the configuration template.
 
 2. Enter the `vi` editing mode of the topology file:
 
