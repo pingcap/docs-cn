@@ -22,5 +22,5 @@ aliases: ['/docs-cn/stable/tiup/tiup-documentation-guide/','/docs-cn/v4.0/tiup/t
 
 ## TiUP 资源
 
-- [AskTUG TiUP](https://asktug.com/c/qa/set-up-deploy)：AskTUG.com 部署板块
+- [AskTUG TiUP 主题](https://asktug.com/tags/tiup)
 - [TiUP Issues](https://github.com/pingcap/tiup/issues)：TiUP Github Issues 列表
