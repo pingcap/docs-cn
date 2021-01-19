@@ -37,7 +37,7 @@ fetch.message.max.bytes=1073741824
 
 ## 当上游事务较大时，Pump 报错 `rpc error: code = ResourceExhausted desc = trying to send message larger than max (2191430008 vs. 2147483647)`
 
-出现该错误的原因是 TiDB 发送给 Pump 的 gRPC massage 超过限值。可以在启动 Pump 时通过指定 `-max-message-size` 来调整 Pump 可接受 gRPC massage 的最大大小。
+出现该错误的原因是 TiDB 发送给 Pump 的 gRPC message 超过限值。可以在启动 Pump 时通过指定 `max-message-size` 来调整 Pump 可接受 gRPC message 的最大大小。
 
 ## Drainer 输出 file 格式的增量数据，数据有什么清理机制吗？数据会被删除吗？
 
