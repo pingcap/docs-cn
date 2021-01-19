@@ -131,10 +131,6 @@ The following is the description of PD Dashboard metrics items:
 
 ![PD Dashboard - etcd metrics](/media/pd-dashboard-etcd-v2.png)
 
-Cluster | Label distribution | The distribution status of the labels in the cluster |
-Cluster | pd_cluster_metadata | The metadata of the PD cluster including cluster ID, the timestamp, and the generated ID. |
-Cluster | Region health | The health status of Regions indicated via count of unusual Regions including pending peers, down peers, extra peers, offline peers, missing peers, learner peers and incorrect namespaces | The number of pending peers should be less than `100`. The missing peers should not be persistently greater than `0`.
-
 ## TiDB
 
 - PD Server TSO handle time and Client recv time: The duration between PD receiving the TSO request and the PD client getting the TSO response
