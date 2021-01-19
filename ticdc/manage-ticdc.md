@@ -32,6 +32,10 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
 本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。`cdc cli` 是指通过 `cdc` binary 执行 `cli` 子命令。在以下接口描述中，通过 `cdc` binary 直接执行 `cli` 命令，PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
 
+> **注意：**
+>
+> PD 监听的 IP 和端口对应为 `pd-server` 启动时指定的 `advertise-client-urls` 参数。多个 `pd-server` 会包含多个该参数，用户可以指定其中任意一个或多个参数。例如 `--pd=http://10.0.10.25:2379` 或 `--pd=http://10.0.10.25:2379,http://10.0.10.26:2379,http://10.0.10.27:2379`。
+
 如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl cdc`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
@@ -421,9 +425,9 @@ TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefee
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause -c test-cf
-cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
-cdc cli changefeed resume -c test-cf
+cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
+cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
 
 当前支持修改的配置包括：
