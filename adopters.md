@@ -25,7 +25,7 @@ This is a list of TiDB adopters in various industries.
 |[Zhuan Zhuan](https://www.crunchbase.com/organization/zhuan-zhuan)|E-commerce|English [#1](https://pingcap.com/case-studies/tidb-in-zhuanzhuan/), [#2](https://pingcap.com/case-studies/scale-out-database-powers-china-letgo-with-reduced-maintenance-costs); Chinese [#1](https://pingcap.com/cases-cn/user-case-zhuanzhuan/), [#2](https://pingcap.com/cases-cn/user-case-zhuanzhuan-2/), [#3](https://pingcap.com/cases-cn/user-case-zhuanzhuan-3/)|
 |[Xiaohongshu](https://en.wikipedia.org/wiki/Xiaohongshu)|E-commerce|[English](https://pingcap.com/case-studies/how-we-use-a-scale-out-htap-database-for-real-time-analytics-and-complex-queries); Chinese [#1](https://pingcap.com/cases-cn/user-case-xiaohongshu/), [#2](https://pingcap.com/cases-cn/user-case-xiaohongshu-2/)|
 |[Happigo.com](https://www.crunchbase.com/organization/happigo-com)|E-commerce||
-|[Yimutian](http://www.ymt.com/)|E-commerce||
+|[Yimutian](https://www.crunchbase.com/organization/yimutian)|E-commerce||
 |[Youju Tech](https://nn.yjyz.com/)|E-commerce||
 |[Maizuo](https://www.crunchbase.com/organization/maizhuo)|E-commerce||
 |[Mogujie](https://www.crunchbase.com/organization/mogujie)|E-commerce||
@@ -47,6 +47,7 @@ This is a list of TiDB adopters in various industries.
 |[Ping An Life Insurance](https://www.bloomberg.com/profile/company/OPAHWZ:CH)|Insurance|[English](https://pingcap.com/case-studies/how-chinas-insurance-giant-improved-agile-application-performance-with-a-newsql-database); [Chinese](https://pingcap.com/cases-cn/user-case-pingan/)|
 |[Yimian Data](https://www.crunchbase.com/organization/yimian-data)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-yimian)|
 |[CAASDATA](https://www.caasdata.com/)|Big Data|[Chinese](https://pingcap.com/cases-cn/user-case-kasi/)|
+|[58.com](https://www.crunchbase.com/organization/58-com)|Advertising|[English](https://pingcap.com/case-studies/no-sharding-no-etl-use-scale-out-mysql-alternative-to-store-160-tb-of-data); [Chinese](https://pingcap.com/cases-cn/user-case-58/)|
 |[Mobikok](https://www.linkedin.com/company/shenzhen-keke-network-technology-co.-ltd./)|AdTech|[Chinese](https://pingcap.com/cases-cn/user-case-mobikok/)|
 |[ZTO Express](https://www.crunchbase.com/organization/zto-express)| Logistics|[English](https://pingcap.com/case-studies/why-we-migrated-from-exadata-to-a-scale-out-htap-database-for-near-real-time-analytics); [Chinese](https://pingcap.com/cases-cn/user-case-zto-express/)|
 |[G7 Networks](https://www.crunchbase.com/organization/g7)| Logistics|[Chinese](https://pingcap.com/cases-cn/user-case-g7/)|
