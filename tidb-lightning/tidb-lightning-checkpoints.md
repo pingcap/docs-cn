@@ -58,7 +58,7 @@ While using the target database as the checkpoints storage, Lightning is importi
 
 ## Checkpoints control
 
-If `tidb-lightning` exits abnormally due to unrecoverable errors (e.g. data corruption), it refuses to reuse the checkpoints until the errors are resolved. This is to prevent worsening the situation. The checkpoint errors can be resolved using the `tidb-lightning-ctl` program.
+If `tidb-lightning` exits abnormally due to unrecoverable errors (for example, data corruption), it refuses to reuse the checkpoints until the errors are resolved. This is to prevent worsening the situation. The checkpoint errors can be resolved using the `tidb-lightning-ctl` program.
 
 ### `--checkpoint-error-destroy`
 

@@ -165,7 +165,7 @@ character-set = "auto"
 # Assumes the input data are "strict" to speed up processing.
 # Implications of strict-format = true are:
 #  * in CSV, every value cannot contain literal new lines (U+000A and U+000D, or \r and \n) even
-#    when quoted, i.e. new lines are strictly used to separate rows.
+#    when quoted, which means new lines are strictly used to separate rows.
 # Strict format allows Lightning to quickly locate split positions of a large file for parallel
 # processing. However, if the input data is not strict, it may split a valid data in half and
 # corrupt the result.
@@ -191,7 +191,7 @@ header = true
 # Whether the CSV contains any NULL value.
 # If `not-null` is true, all columns from CSV cannot be NULL.
 not-null = false
-# When `not-null` is false (i.e. CSV can contain NULL),
+# When `not-null` is false (that is, CSV can contain NULL),
 # fields equal to this value will be treated as NULL.
 null = '\N'
 # Whether to interpret backslash escapes inside fields.

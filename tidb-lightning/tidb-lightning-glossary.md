@@ -14,7 +14,7 @@ This page explains the special terms used in TiDB Lightning's logs, monitoring, 
 
 ### Analyze
 
-An operation to rebuild the [statistics](/statistics.md) information of a TiDB table, i.e. running the [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) statement.
+An operation to rebuild the [statistics](/statistics.md) information of a TiDB table, which is running the [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) statement.
 
 Because TiDB Lightning imports data without going through TiDB, the statistics information is not automatically updated. Therefore, TiDB Lightning explicitly analyzes every table after importing. This step can be omitted by setting the `post-restore.analyze` configuration to `false`.
 

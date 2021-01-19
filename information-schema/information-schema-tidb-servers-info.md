@@ -5,7 +5,7 @@ summary: Learn the `TIDB_SERVERS_INFO` information_schema table.
 
 # TIDB_SERVERS_INFO
 
-The `TIDB_SERVERS_INFO` table provides information about TiDB servers in the TiDB Cluster (i.e. tidb-server processes).
+The `TIDB_SERVERS_INFO` table provides information about TiDB servers in the TiDB Cluster (namely, tidb-server processes).
 
 {{< copyable "sql" >}}
 

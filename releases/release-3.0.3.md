@@ -22,7 +22,7 @@ TiDB Ansible version: 3.0.3
     - Fix the issue that incorrect results for `ifnull` might be returned when Max/Min is used for type inferring with `NotNullFlag` retained [#11641](https://github.com/pingcap/tidb/pull/11641)
     - Fix the potential error that occurs when comparing bit type data in string form [#11660](https://github.com/pingcap/tidb/pull/11660)
     - Decrease the concurrency for data that requires sequential read to lower the possibility of OOM [#11679](https://github.com/pingcap/tidb/pull/11679)
-    - Fix the issue that incorrect type inferring might be caused when multiple parameters are unsigned for some built-in functions (e.g. `if`, `coalesce`) [#11621](https://github.com/pingcap/tidb/pull/11621)
+    - Fix the issue that incorrect type inferring might be caused when multiple parameters are unsigned for some built-in functions (for example, `if` and `coalesce`) [#11621](https://github.com/pingcap/tidb/pull/11621)
     - Fix the incompatibility with MySQL when the `Div` function handles unsigned decimal types [#11813](https://github.com/pingcap/tidb/pull/11813)
     - Fix the issue that panic might occur when executing SQL statements that modify the status of Pump/Drainer [#11827](https://github.com/pingcap/tidb/pull/11827)
     - Fix the issue that panic might occur for `select ... for update` when Autocommit = 1 and there is no `begin` statement [#11736](https://github.com/pingcap/tidb/pull/11736)

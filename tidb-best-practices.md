@@ -38,14 +38,14 @@ TiDB provides complete distributed transactions and the model has some optimizat
 
 * Optimistic transaction model
 
-    TiDB's optimistic transaction model does not detect conflicts until the commit phase. If there are conflicts, the transaction needs retry. But this model is inefficient if the conflict is severe, because operations before retry are invalid and need to repeat. 
-    
+    TiDB's optimistic transaction model does not detect conflicts until the commit phase. If there are conflicts, the transaction needs retry. But this model is inefficient if the conflict is severe, because operations before retry are invalid and need to repeat.
+
     Assume that the database is used as a counter. High access concurrency might lead to severe conflicts, resulting in multiple retries or even timeouts. Therefore, in the scenario of severe conflicts, it is recommended to use the pessimistic transaction mode or to solve problems at the system architecture level, such as placing counter in Redis. Nonetheless, the optimistic transaction model is efficient if the access conflict is not very severe.
 
 * Pessimistic transaction model
 
     In TiDB, the pessimistic transaction model has almost the same behavior as in MySQL. The transaction applies a lock during the execution phase, which avoids retries in conflict situations and ensures a higher success rate. By applying the pessimistic locking, you can also lock data in advance using `SELECT FOR UPDATE`.
-    
+
     However, if the application scenario has fewer conflicts, the optimistic transaction model has better performance.
 
 * Transaction size limit
@@ -75,9 +75,9 @@ Simply put, TiDB performs the following operations:
 * A row of data is mapped to a Key-Value pair. The key is prefixed with `TableID` and suffixed with the row ID.
 * An index is mapped as a Key-Value pair. The key is prefixed with `TableID+IndexID` and suffixed with the index value.
 
-The data or indexes in the same table have the same prefix. These Key-Values are at adjacent positions in the key space of TiKV. Therefore, when the amount of data to be written is large and all is written to one table, the write hotspot is created. The situation gets worse when some index values of the continuous written data is also continuous (e.g. fields that increase with time, like `update time`), which creates a few write hotspots and becomes the bottleneck of the entire system. 
+The data or indexes in the same table have the same prefix. These Key-Values are at adjacent positions in the key space of TiKV. Therefore, when the amount of data to be written is large and all is written to one table, the write hotspot is created. The situation gets worse when some index values of the continuous written data is also continuous (for example, fields that increase with time, like `update time`), which creates a few write hotspots and becomes the bottleneck of the entire system.
 
-Similarly, if all data is read from a focused small range (e.g. the continuous tens or hundreds of thousands of rows of data), an access hotspot of data is likely to occur.
+Similarly, if all data is read from a focused small range (for example, the continuous tens or hundreds of thousands of rows of data), an access hotspot of data is likely to occur.
 
 ### Secondary index
 
@@ -88,7 +88,7 @@ Lots of MySQL experience is also applicable to TiDB. It is noted that TiDB has i
 * The more secondary indexes, the better?
 
     Secondary indexes can speed up queries, but adding an index has side effects. The previous section introduces the storage model of indexes. For each additional index, there will be one more Key-Value when inserting a piece of data. Therefore, the more indexes, the slower the writing speed and the more space it takes up.
-    
+
     In addition, too many indexes affects the runtime of the optimizer, and inappropriate indexes mislead the optimizer. Thus, more secondary indexes does not mean better performance.
 
 * Which columns should create indexes?
@@ -117,17 +117,17 @@ Lots of MySQL experience is also applicable to TiDB. It is noted that TiDB has i
     As data is distributed across many Regions, queries run in TiDB concurrently. But the concurrency by default is not high in case it consumes lots of system resources. Besides, the OLTP query usually does not involve a large amount of data and the low concurrency is enough. But for the OLAP query, the concurrency is high and TiDB modifies the query concurrency through the following system variables:
 
     - [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency):
-    
+
         The concurrency of scanning data, including scanning the table and index data.
 
     - [`tidb_index_lookup_size`](/system-variables.md#tidb_index_lookup_size):
-        
+
         If it needs to access the index to get row IDs before accessing the table data, it uses a batch of row IDs as a single request to access the table data. This parameter sets the size of a batch. The larger batch increases latency, while the smaller one might lead to more queries. The proper size of this parameter is related to the amount of data that the query involves. Generally, no modification is required.
-    
+
     - [`tidb_index_lookup_concurrency`](/system-variables.md#tidb_index_lookup_concurrency):
 
         If it needs to access the index to get row IDs before accessing the table data, the concurrency of getting data through row IDs every time is modified through this parameter.
-    
+
 * Ensure the order of results through indexes
 
     You can use indexes to filter or sort data. Firstly, get row IDs according to the index order. Then, return the row content according to the return order of row IDs. In this way, the returned results are ordered according to the index column. It has been mentioned earlier that the model of scanning index and getting row is parallel + pipeline. If the row is returned according to the index order, a high concurrency between two queries does not reduce latency. Thus, the concurrency is low by default, but it can be modified through the [`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) variable.
@@ -181,7 +181,7 @@ You can control the concurrency of SQL execution through the `SET` statement and
 
 In addition, you can also use MySQL's standard index selection, the hint syntax, or control the optimizer to select indexes through `Use Index`/`Ignore Index hint`.
 
-If the application scenario has both OLTP and OLAP workloads, you can send the OLTP request and OLAP request to different TiDB servers, diminishing the impact of OLAP on OLTP. It is recommended to use machines with high-performance hardware (e.g. more processor cores, larger memory) for the TiDB server that processes OLAP workloads.
+If the application scenario has both OLTP and OLAP workloads, you can send the OLTP request and OLAP request to different TiDB servers, diminishing the impact of OLAP on OLTP. It is recommended to use machines with high-performance hardware (for example, more processor cores and larger memory) for the TiDB server that processes OLAP workloads.
 
 To completely isolate OLTP and OLAP workloads, it is recommended to run OLAP applications on TiFlash. TiFlash is a columnar storage engine with great performance on OLAP workloads. TiFlash can achieve physical isolation on the storage layer and guarantees consistent reads.
 

@@ -18,11 +18,11 @@ Now consider about the following situations:
 * When a new TiKV store is added, data can be rebalanced to it;
 * When a TiKV store fails, PD needs to consider:
     * Recovery time of the failed store.
-        * If it's short (e.g. the service is restarted), whether scheduling is necessary or not.
-        * If it's long (e.g. disk fault, data is lost, etc.), how to do scheduling.
+        * If it's short (for example, the service is restarted), whether scheduling is necessary or not.
+        * If it's long (for example, disk fault, data is lost, etc.), how to do scheduling.
     * Replicas of all Regions.
         * If the number of replicas is not enough for some Regions, PD needs to complete them.
-        * If the number of replicas is more than expected (e.g. the failed store re-joins into the cluster after recovery), PD needs to delete them.
+        * If the number of replicas is more than expected (for example, the failed store re-joins into the cluster after recovery), PD needs to delete them.
 * Read/Write operations are performed on leaders, which can not be distributed only on a few individual stores;
 * Not all Regions are hot, so loads of all TiKV stores need to be balanced;
 * When Regions are in balancing, data transferring utilizes much network/disk traffic and CPU time, which can influence online services.

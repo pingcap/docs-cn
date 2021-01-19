@@ -163,7 +163,7 @@ Refer to [5 PD issues](#5-pd-issues).
 
     - For v3.0 and later versions, use the `SQL Bind` feature to bind the execution plan.
 
-    - Update the statistics. If you are roughly sure that the problem is caused by the statistics, [dump the statistics](/statistics.md#export-statistics). If the cause is outdated statistics, such as the `modify count/row count` in `show stats_meta` is greater than a certain value (e.g. 0.3), or the table has an index of time column, you can try recovering by using `analyze table`. If `auto analyze` is configured, check whether the `tidb_auto_analyze_ratio` system variable is too large (e.g. > 0.3), and whether the current time is between `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
+    - Update the statistics. If you are roughly sure that the problem is caused by the statistics, [dump the statistics](/statistics.md#export-statistics). If the cause is outdated statistics, such as the `modify count/row count` in `show stats_meta` is greater than a certain value (for example, 0.3), or the table has an index of time column, you can try recovering by using `analyze table`. If `auto analyze` is configured, check whether the `tidb_auto_analyze_ratio` system variable is too large (for example, greater than 0.3), and whether the current time is between `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
 
     - For other situations, [report a bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md).
 
@@ -505,7 +505,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
     - `region-concurrency` is set too high, which causes thread contention and reduces performance. Three ways to troubleshoot:
 
         - The setting can be found from the start of the log by searching `region-concurrency`.
-        - If TiDB Lightning shares a server with other services (e.g. Importer), you must manually set `region-concurrency` to 75% of the total number of CPU cores on that server.
+        - If TiDB Lightning shares a server with other services (for example, Importer), you must manually set `region-concurrency` to 75% of the total number of CPU cores on that server.
         - If there is a quota on CPU (for example, limited by Kubernetes settings), TiDB Lightning might not be able to read this out. In this case, `region-concurrency` must also be manually reduced.
 
     - Every additional index introduces a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the [Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) output. If the indices are negligible, you may first remove them from the schema, and add them back via `CREATE INDEX` after the import is complete.

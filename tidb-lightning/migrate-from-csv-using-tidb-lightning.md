@@ -47,7 +47,7 @@ header = true
 # Whether the CSV contains any NULL value.
 # If `not-null` is true, all columns from CSV cannot be NULL.
 not-null = false
-# When `not-null` is false (i.e. CSV can contain NULL),
+# When `not-null` is false (that is, CSV can contain NULL),
 # fields equal to this value will be treated as NULL.
 null = '\N'
 # Whether to interpret backslash escapes inside fields.
@@ -144,8 +144,7 @@ recognized and transformed:
 
 TiDB Lightning does not support every option supported by the `LOAD DATA` statement. Some examples:
 
-* The line terminator must only be CR (`\r`), LF (`\n`) or CRLF (`\r\n`), i.e. `LINES TERMINATED BY`
-    is not customizable.
+* The line terminator must only be CR (`\r`), LF (`\n`) or CRLF (`\r\n`), which means `LINES TERMINATED BY` is not customizable.
 * There cannot be line prefixes (`LINES STARTING BY`).
 * The header cannot be simply skipped (`IGNORE n LINES`), it must be valid column names if present.
 * Delimiters and separators can only be a single ASCII character.
