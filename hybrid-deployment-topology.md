@@ -34,7 +34,7 @@ aliases: ['/docs-cn/stable/hybrid-deployment-topology/','/docs-cn/v4.0/hybrid-de
         - 开启 `readpool.storage` 和 `readpool.coprocessor`：
           
             ```yaml
-            readpool.storage.use-unified-pool: false
+            readpool.storage.use-unified-pool: true
             readpool.coprocessor.use-unified-pool: true
             ```
 
