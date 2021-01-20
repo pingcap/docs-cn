@@ -18,7 +18,17 @@ aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-alter-instance/','/docs-cn
 
 ## 语法图
 
+<<<<<<< HEAD
 ![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
+=======
+```ebnf+diagram
+AlterInstanceStmt ::=
+    'ALTER' 'INSTANCE' InstanceOption
+
+InstanceOption ::=
+    'RELOAD' 'TLS' ('NO' 'ROLLBACK' 'ON' 'ERROR')?
+```
+>>>>>>> 59ffc3de... sql-statements: use EBNF to render syntax diagrams for ADD, ALTER and ANALYZE statements (#5324)
 
 ## 示例
 
