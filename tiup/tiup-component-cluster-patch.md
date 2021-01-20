@@ -1,6 +1,5 @@
 ---
 title: tiup cluster patch
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-patch/']
 ---
 
 # tiup cluster patch

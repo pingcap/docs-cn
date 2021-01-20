@@ -1,6 +1,5 @@
 ---
 title: tiup dm help
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-help/']
 ---
 
 # tiup dm help

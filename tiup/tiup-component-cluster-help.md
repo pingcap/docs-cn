@@ -1,6 +1,5 @@
 ---
 title: tiup cluster help
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-help/']
 ---
 
 # tiup cluster help

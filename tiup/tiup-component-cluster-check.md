@@ -1,6 +1,5 @@
 ---
 title: tiup cluster check
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-check/']
 ---
 
 # tiup cluster check

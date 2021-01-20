@@ -1,6 +1,5 @@
 ---
 title: tiup clean
-aliases: ['/docs-cn/dev/tiup/tiup-command-clean/']
 ---
 
 # tiup clean

@@ -1,6 +1,5 @@
 ---
 title: tiup dm restart
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-restart/']
 ---
 
 # tiup dm restart

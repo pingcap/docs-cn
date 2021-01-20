@@ -1,6 +1,5 @@
 ---
 title: tiup cluster list
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-list/']
 ---
 
 # tiup cluster list

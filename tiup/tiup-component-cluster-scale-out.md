@@ -1,6 +1,5 @@
 ---
 title: tiup cluster scale-out
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-scale-out/']
 ---
 
 # tiup cluster scale-out

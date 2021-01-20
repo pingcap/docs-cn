@@ -1,6 +1,5 @@
 ---
 title: tiup help
-aliases: ['/docs-cn/dev/tiup/tiup-command-help/']
 ---
 
 # tiup help

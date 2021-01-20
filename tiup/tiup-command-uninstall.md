@@ -1,6 +1,5 @@
 ---
 title: tiup uninstall
-aliases: ['/docs-cn/dev/tiup/tiup-command-uninstall/']
 ---
 
 # tiup uninstall

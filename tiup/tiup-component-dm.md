@@ -1,6 +1,5 @@
 ---
 title: TiUP DM
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster/']
 ---
 
 # TiUP DM

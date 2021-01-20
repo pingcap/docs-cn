@@ -1,6 +1,5 @@
 ---
 title: tiup cluster prune
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-prune/']
 ---
 
 # tiup cluster list

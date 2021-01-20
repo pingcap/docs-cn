@@ -1,6 +1,5 @@
 ---
 title: tiup cluster edit-config
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-edit-config/']
 ---
 
 # tiup cluster edit-config

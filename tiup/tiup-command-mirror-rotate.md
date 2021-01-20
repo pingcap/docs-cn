@@ -1,6 +1,5 @@
 ---
 title: tiup mirror rotate
-aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-rotate/']
 ---
 
 # tiup mirror rotate

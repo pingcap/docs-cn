@@ -1,6 +1,5 @@
 ---
 title: tiup mirror
-aliases: ['/docs-cn/dev/tiup/tiup-command-mirror/']
 ---
 
 # tiup mirror

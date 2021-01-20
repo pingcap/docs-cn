@@ -1,6 +1,5 @@
 ---
 title: tiup mirror grant
-aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-grant/']
 ---
 
 # tiup mirror grant

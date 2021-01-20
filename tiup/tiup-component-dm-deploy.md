@@ -1,6 +1,5 @@
 ---
 title: tiup dm deploy
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-deploy/']
 ---
 
 # tiup dm deploy

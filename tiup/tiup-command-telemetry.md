@@ -1,6 +1,5 @@
 ---
 title: tiup telemetry
-aliases: ['/docs-cn/dev/tiup/tiup-command-telemetry/']
 ---
 
 # tiup telemetry

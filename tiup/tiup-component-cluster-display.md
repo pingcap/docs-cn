@@ -1,6 +1,5 @@
 ---
 title: tiup cluster display
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-display/']
 ---
 
 # tiup cluster display

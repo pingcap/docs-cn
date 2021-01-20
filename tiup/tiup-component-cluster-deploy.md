@@ -1,6 +1,5 @@
 ---
 title: tiup cluster deploy
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-deploy/']
 ---
 
 # tiup cluster deploy

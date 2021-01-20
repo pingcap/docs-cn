@@ -1,6 +1,5 @@
 ---
 title: tiup dm display
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-display/']
 ---
 
 # tiup dm display

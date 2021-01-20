@@ -1,6 +1,5 @@
 ---
 title: tiup dm edit-config
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-edit-config/']
 ---
 
 # tiup dm edit-config

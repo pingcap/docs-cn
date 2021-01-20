@@ -1,6 +1,5 @@
 ---
 title: tiup update
-aliases: ['/docs-cn/dev/tiup/tiup-command-update/']
 ---
 
 # tiup update

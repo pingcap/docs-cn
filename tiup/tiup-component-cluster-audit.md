@@ -1,6 +1,5 @@
 ---
 title: tiup cluster audit
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-audit/']
 ---
 
 # tiup cluster audit

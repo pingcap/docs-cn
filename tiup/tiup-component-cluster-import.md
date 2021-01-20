@@ -1,6 +1,5 @@
 ---
 title: tiup cluster import
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-import/']
 ---
 
 # tiup cluster import

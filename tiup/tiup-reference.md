@@ -1,6 +1,5 @@
 ---
 title: TiUP 参考手册
-aliases: ['/docs-cn/dev/tiup/tiup-reference/']
 ---
 
 # TiUP

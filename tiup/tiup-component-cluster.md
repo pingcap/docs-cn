@@ -1,6 +1,5 @@
 ---
 title: TiUP Cluster
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster/']
 ---
 
 # TiUP Cluster

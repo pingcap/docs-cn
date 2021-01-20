@@ -1,6 +1,5 @@
 ---
 title: tiup mirror genkey
-aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-genkey/']
 ---
 
 # tiup mirror genkey

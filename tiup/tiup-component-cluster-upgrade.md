@@ -1,6 +1,5 @@
 ---
 title: tiup cluster upgrade
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-upgrade/']
 ---
 
 # tiup cluster upgrade

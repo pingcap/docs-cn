@@ -1,6 +1,5 @@
 ---
 title: tiup cluster reload
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-reload/']
 ---
 
 # tiup cluster list

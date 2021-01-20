@@ -1,6 +1,5 @@
 ---
 title: tiup status
-aliases: ['/docs-cn/dev/tiup/tiup-command-status/']
 ---
 
 # tiup status

@@ -1,6 +1,5 @@
 ---
 title: tiup completion
-aliases: ['/docs-cn/dev/tiup/tiup-command-completion/']
 ---
 
 # tiup completion

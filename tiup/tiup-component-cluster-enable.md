@@ -1,6 +1,5 @@
 ---
 title: tiup cluster enable
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-enable/']
 ---
 
 # tiup cluster enable

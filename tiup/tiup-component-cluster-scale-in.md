@@ -1,6 +1,5 @@
 ---
 title: tiup cluster scale-in
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-scale-in/']
 ---
 
 # tiup cluster scale-in

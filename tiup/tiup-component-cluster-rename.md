@@ -1,6 +1,5 @@
 ---
 title: tiup cluster rename
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-rename/']
 ---
 
 # tiup cluster rename

@@ -1,6 +1,5 @@
 ---
 title: tiup dm import
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-import/']
 ---
 
 # tiup dm import

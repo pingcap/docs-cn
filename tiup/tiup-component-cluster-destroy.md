@@ -1,6 +1,5 @@
 ---
 title: tiup cluster destroy
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-destroy/']
 ---
 
 # tiup cluster destroy

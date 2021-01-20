@@ -1,6 +1,5 @@
 ---
 title: tiup dm scale-out
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-scale-out/']
 ---
 
 # tiup dm scale-out

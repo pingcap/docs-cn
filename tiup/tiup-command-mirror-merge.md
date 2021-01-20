@@ -1,6 +1,5 @@
 ---
 title: tiup mirror merge
-aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-merge/']
 ---
 
 # tiup mirror merge

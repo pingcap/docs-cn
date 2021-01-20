@@ -1,6 +1,5 @@
 ---
 title: tiup dm destroy
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-destroy/']
 ---
 
 # tiup dm destroy

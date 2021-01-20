@@ -1,6 +1,5 @@
 ---
 title: tiup dm stop
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-stop/']
 ---
 
 # tiup dm stop

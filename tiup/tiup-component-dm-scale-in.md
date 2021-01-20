@@ -1,6 +1,5 @@
 ---
 title: tiup dm scale-in
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-scale-in/']
 ---
 
 # tiup dm scale-in

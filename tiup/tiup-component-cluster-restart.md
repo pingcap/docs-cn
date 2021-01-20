@@ -1,6 +1,5 @@
 ---
 title: tiup cluster restart
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-restart/']
 ---
 
 # tiup cluster restart

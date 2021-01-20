@@ -1,6 +1,5 @@
 ---
 title: tiup dm start
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-start/']
 ---
 
 # tiup dm start

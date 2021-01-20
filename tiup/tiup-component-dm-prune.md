@@ -1,6 +1,5 @@
 ---
 title: tiup dm prune
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-prune/']
 ---
 
 # tiup dm prune

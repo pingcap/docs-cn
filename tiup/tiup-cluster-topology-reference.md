@@ -1,6 +1,5 @@
 ---
 title: tiup cluster topology reference
-aliases: ['/docs-cn/dev/tiup/tiup-cluster-topology-reference/']
 ---
 
 # tiup cluster topology reference

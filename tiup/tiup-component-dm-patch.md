@@ -1,6 +1,5 @@
 ---
 title: tiup dm patch
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-patch/']
 ---
 
 # tiup dm patch

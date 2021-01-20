@@ -1,6 +1,5 @@
 ---
 title: tiup cluster disable
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-disable/']
 ---
 
 # tiup cluster disable

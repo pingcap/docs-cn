@@ -1,6 +1,5 @@
 ---
 title: tiup dm list
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-list/']
 ---
 
 # tiup dm list

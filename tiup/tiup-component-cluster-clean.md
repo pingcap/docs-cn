@@ -1,6 +1,5 @@
 ---
 title: tiup cluster clean
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-clean/']
 ---
 
 # tiup cluster clean

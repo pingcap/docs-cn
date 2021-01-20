@@ -1,6 +1,5 @@
 ---
 title: tiup env
-aliases: ['/docs-cn/dev/tiup/tiup-command-env/']
 ---
 
 # tiup env

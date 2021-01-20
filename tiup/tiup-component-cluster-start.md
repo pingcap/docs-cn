@@ -1,6 +1,5 @@
 ---
 title: tiup cluster start
-aliases: ['/docs-cn/dev/tiup/tiup-component-cluster-start/']
 ---
 
 # tiup cluster start

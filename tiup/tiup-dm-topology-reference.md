@@ -1,6 +1,5 @@
 ---
 title: tiup dm topology reference
-aliases: ['/docs-cn/dev/tiup/tiup-dm-topology-reference/']
 ---
 
 # tiup dm topology reference

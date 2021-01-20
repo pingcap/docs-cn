@@ -1,6 +1,5 @@
 ---
 title: tiup mirror publish
-aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-publish/']
 ---
 
 # tiup mirror publish

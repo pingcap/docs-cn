@@ -1,6 +1,5 @@
 ---
 title: tiup install
-aliases: ['/docs-cn/dev/tiup/tiup-command-install/']
 ---
 
 # tiup install

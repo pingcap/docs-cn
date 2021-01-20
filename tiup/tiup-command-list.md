@@ -1,6 +1,5 @@
 ---
 title: tiup list
-aliases: ['/docs-cn/dev/tiup/tiup-command-list/']
 ---
 
 # tiup list

@@ -1,6 +1,5 @@
 ---
 title: tiup dm audit
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-audit/']
 ---
 
 # tiup dm audit
