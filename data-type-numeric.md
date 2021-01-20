@@ -13,7 +13,7 @@ TiDB 支持 MySQL 所有的数值类型，按照精度可以分为:
 
 ## 整数类型
 
-TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`SMALLINT`、`MEDIUMINT` 以及 `BIGINT`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-overview.html)文档。
+TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`SMALLINT`、`MEDIUMINT` 以及 `BIGINT`，完整信息参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/numeric-type-syntax.html)。
 
 字段说明：
 
