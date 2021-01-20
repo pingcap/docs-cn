@@ -104,7 +104,7 @@ Download the TiDB Lightning installation package from the following link:
 
 After the import is completed, TiDB Lightning exits automatically. If the import is successful, you can find `tidb lightning exit` in the last line of the log file.
 
-If any error occurs, refer to [TiDB Lightning Troubleshooting](/troubleshoot-tidb-lightning.md).
+If any error occurs, refer to [TiDB Lightning FAQs](/tidb-lightning/tidb-lightning-faq.md).
 
 ## Summary
 

@@ -1,14 +1,10 @@
 ---
 title: TiDB Lightning FAQs
 summary: Learn about the frequently asked questions (FAQs) and answers about TiDB Lightning.
-aliases: ['/docs/dev/tidb-lightning/tidb-lightning-faq/','/docs/dev/faq/tidb-lightning/']
+aliases: ['/docs/dev/tidb-lightning/tidb-lightning-faq/','/docs/dev/faq/tidb-lightning/','/docs/dev/troubleshoot-tidb-lightning/','/docs/dev/how-to/troubleshoot/tidb-lightning/','/docs/dev/tidb-lightning/tidb-lightning-misuse-handling/','/docs/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/tidb/dev/tidb-lightning-misuse-handling','/tidb/dev/troubleshoot-tidb-lightning']
 ---
 
 # TiDB Lightning FAQs
-
->**Note:**
->
-> See also [TiDB Lightning Troubleshooting](/troubleshoot-tidb-lightning.md) if you have encountered errors.
 
 ## What is the minimum TiDB/TiKV/PD cluster version supported by Lightning?
 
@@ -60,7 +56,7 @@ If `tikv-importer` needs to be restarted:
 4. Start `tikv-importer`.
 5. Start `tidb-lightning` *and wait until the program fails with CHECKSUM error, if any*.
     * Restarting `tikv-importer` would destroy all engine files still being written, but `tidb-lightning` did not know about it. As of v3.0 the simplest way is to let `tidb-lightning` go on and retry.
-6. [Destroy the failed tables and checkpoints](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status-error-code)
+6. [Destroy the failed tables and checkpoints](#checkpoint-for--has-invalid-status-error-code)
 7. Start `tidb-lightning` again.
 
 If you are using Local-backend or TiDB-backend, the operations are the same as those of using Importer-backend when the `tikv-importer` is still running.
@@ -187,10 +183,154 @@ See also [How to properly restart TiDB Lightning?](#how-to-properly-restart-tidb
 
     If, for some reason, you cannot run this command, try manually deleting the file `/tmp/tidb_lightning_checkpoint.pb`.
 
-2. Delete the entire "import" directory on the machine hosting `tikv-importer`.
+2. If you are using Local-backend, delete the `sorted-kv-dir` directory in the configuration. If you are using Importer-backend, delete the entire `import` directory on the machine hosting `tikv-importer`.
 
 3. Delete all tables and databases created on the TiDB cluster, if needed.
 
 ## Why does TiDB Lightning report the `could not find first pair, this shouldn't happen` error?
 
 This error occurs possibly because the number of files opened by TiDB Lightning exceeds the system limit when TiDB Lightning reads the sorted local files. In the Linux system, you can use the `ulimit -n` command to confirm whether the value of this system limit is too small. It is recommended that you adjust this value to `1000000` (`ulimit -n 1000000`) during Lightning import.
+
+## Import speed is too slow
+
+Normally it takes TiDB Lightning 2 minutes per thread to import a 256 MB data file. If the speed is much slower than this, there is an error. You can check the time taken for each data file from the log mentioning `restore chunk … takes`. This can also be observed from metrics on Grafana.
+
+There are several reasons why TiDB Lightning becomes slow:
+
+**Cause 1**: `region-concurrency` is set too high, which causes thread contention and reduces performance.
+
+1. The setting can be found from the start of the log by searching `region-concurrency`.
+2. If TiDB Lightning shares the same machine with other services (for example, TiKV Importer), `region-concurrency` must be **manually** set to 75% of the total number of CPU cores.
+3. If there is a quota on CPU (for example, limited by Kubernetes settings), TiDB Lightning may not be able to read this out. In this case, `region-concurrency` must also be **manually** reduced.
+
+**Cause 2**: The table schema is too complex.
+
+Every additional index introduces a new KV pair for each row. If there are N indices, the actual size to be imported would be approximately (N+1) times the size of the Dumpling output. If the indices are negligible, you may first remove them from the schema, and add them back using `CREATE INDEX` after the import is complete.
+
+**Cause 3**: Each file is too large.
+
+TiDB Lightning works the best when the data source is broken down into multiple files of size around 256 MB so that the data can be processed in parallel. If each file is too large, TiDB Lightning might not respond.
+
+If the data source is CSV, and all CSV files have no fields containing newline control characters (U+000A and U+000D), you can turn on "strict format" to let TiDB Lightning automatically split the large files.
+
+```toml
+[mydumper]
+strict-format = true
+```
+
+**Cause 4**: TiDB Lightning is too old.
+
+Try the latest version! Maybe there is new speed improvement.
+
+## `checksum failed: checksum mismatched remote vs local`
+
+**Cause**: The checksum of a table in the local data source and the remote imported database differ. This error has several deeper reasons:
+
+1. The table might already have data before. These old data can affect the final checksum.
+
+2. If the remote checksum is 0, which means nothing is imported, it is possible that the cluster is too hot and fails to take in any data.
+
+3. If the data is mechanically generated, ensure it respects the constrains of the table:
+
+    * `AUTO_INCREMENT` columns need to be positive, and do not contain the value "0".
+    * The UNIQUE and PRIMARY KEYs must have no duplicated entries.
+
+4. If TiDB Lightning has failed before and was not properly restarted, a checksum mismatch may happen due to data being out-of-sync.
+
+**Solutions**:
+
+1. Delete the corrupted data using `tidb-lightning-ctl`, and restart TiDB Lightning to import the affected tables again.
+
+    {{< copyable "shell-regular" >}}
+    
+    ```sh
+    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+    ```
+
+2. Consider using an external database to store the checkpoints (change `[checkpoint] dsn`) to reduce the target database's load.
+
+3. If TiDB Lightning was improperly restarted, see also the "[How to properly restart TiDB Lightning](#how-to-properly-restart-tidb-lightning)" section in the FAQ.
+
+## `Checkpoint for … has invalid status:` (error code)
+
+**Cause**: [Checkpoint](/tidb-lightning/tidb-lightning-checkpoints.md) is enabled, and TiDB Lightning or TiKV Importer has previously abnormally exited. To prevent accidental data corruption, Lightning will not start until the error is addressed.
+
+The error code is an integer smaller than 25, with possible values of 0, 3, 6, 9, 12, 14, 15, 17, 18, 20, and 21. The integer indicates the step where the unexpected exit occurs in the import process. The larger the integer is, the later step the exit occurs at.
+
+**Solutions**:
+
+If the error was caused by invalid data source, delete the imported data using `tidb-lightning-ctl` and start Lightning again.
+
+```sh
+tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+```
+
+See the [Checkpoints control](/tidb-lightning/tidb-lightning-checkpoints.md#checkpoints-control) section for other options.
+
+## `ResourceTemporarilyUnavailable("Too many open engines …: …")`
+
+**Cause**: The number of concurrent engine files exceeds the limit specified by `tikv-importer`. This could be caused by misconfiguration. Additionally, if `tidb-lightning` exited abnormally, an engine file might be left at a dangling open state, which could cause this error as well.
+
+**Solutions**:
+
+1. Increase the value of `max-open-engines` setting in `tikv-importer.toml`. This value is typically dictated by the available memory. This could be calculated by using:
+
+    Max Memory Usage ≈ `max-open-engines` × `write-buffer-size` × `max-write-buffer-number`
+
+2. Decrease the value of `table-concurrency` + `index-concurrency` so it is less than `max-open-engines`.
+
+3. Restart `tikv-importer` to forcefully remove all engine files (default to `./data.import/`). This also removes all partially imported tables, which requires Lightning to clear the outdated checkpoints.
+
+    ```sh
+    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
+    ```
+
+## `cannot guess encoding for input file, please convert to UTF-8 manually`
+
+**Cause**: TiDB Lightning only recognizes the UTF-8 and GB-18030 encodings for the table schemas. This error is emitted if the file isn't in any of these encodings. It is also possible that the file has mixed encoding, such as containing a string in UTF-8 and another string in GB-18030, due to historical `ALTER TABLE` executions.
+
+**Solutions**:
+
+1. Fix the schema so that the file is entirely in either UTF-8 or GB-18030.
+
+2. Manually `CREATE` the affected tables in the target database, and then set `[mydumper] no-schema = true` to skip automatic table creation.
+
+3. Set `[mydumper] character-set = "binary"` to skip the check. Note that this might introduce mojibake into the target database.
+
+## `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 …}'`
+
+**Cause**: A table contains a column with the `timestamp` type, but the time value itself does not exist. This is either because of DST changes or the time value has exceeded the supported range (Jan 1, 1970 to Jan 19, 2038).
+
+**Solutions**:
+
+1. Ensure Lightning and the source database are using the same time zone.
+
+    When executing Lightning directly, the time zone can be forced using the `$TZ` environment variable.
+
+    ```sh
+    # Manual deployment, and force Asia/Shanghai.
+    TZ='Asia/Shanghai' bin/tidb-lightning -config tidb-lightning.toml
+    ```
+
+2. When exporting data using Mydumper, make sure to include the `--skip-tz-utc` flag.
+
+3. Ensure the entire cluster is using the same and latest version of `tzdata` (version 2018i or above).
+
+    On CentOS, run `yum info tzdata` to check the installed version and whether there is an update. Run `yum upgrade tzdata` to upgrade the package.
+
+## `[Error 8025: entry too large, the max entry size is 6291456]`
+
+**Cause**: A single row of key-value pairs generated by TiDB Lightning exceeds the limit set by TiDB.
+
+**Solution**:
+
+Currently, the limitation of TiDB cannot be bypassed. You can only ignore this table to ensure the successful import of other tables.
+
+## Encounter `rpc error: code = Unimplemented ...` when TiDB Lightning switches the mode
+
+**Cause**: Some node(s) in the cluster does not support `switch-mode`. For example, if the TiFlash version is earlier than `v4.0.0-rc.2`, [`switch-mode` is not supported](https://github.com/pingcap/tidb-lightning/issues/273).
+
+**Solutions**:
+
+- If there are TiFlash nodes in the cluster, you can update the cluster to `v4.0.0-rc.2` or higher versions.
+- Temporarily disable TiFlash if you do not want to upgrade the cluster.

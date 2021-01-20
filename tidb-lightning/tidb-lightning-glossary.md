@@ -52,7 +52,7 @@ In TiDB Lightning, the checksum of a table is a set of 3 numbers calculated from
 
 TiDB Lightning [validates the imported data](/tidb-lightning/tidb-lightning-faq.md#how-to-ensure-the-integrity-of-the-imported-data) by comparing the [local](/tidb-lightning/tidb-lightning-glossary.md#local-checksum) and [remote checksums](/tidb-lightning/tidb-lightning-glossary.md#remote-checksum) of every table. The program would stop if any pair does not match. You can skip this check by setting the `post-restore.checksum` configuration to `false`.
 
-See also the [Troubleshooting guide](/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local) for how to properly handle checksum mismatch.
+See also the [FAQs](/tidb-lightning/tidb-lightning-faq.md#checksum-failed-checksum-mismatched-remote-vs-local) for how to properly handle checksum mismatch.
 
 ### Chunk
 
