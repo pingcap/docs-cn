@@ -15,7 +15,7 @@ AlterDatabaseStmt ::=
     'ALTER' 'DATABASE' DBName? DatabaseOptionList
 
 DatabaseOption ::=
-    DefaultKwdOpt ( CharsetKw EqOpt CharsetName | 'COLLATE' EqOpt CollationName | 'ENCRYPTION' EqOpt EncryptionOpt )
+    DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
 ```
 
 ## 示例
