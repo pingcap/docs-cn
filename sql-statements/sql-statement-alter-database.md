@@ -8,6 +8,19 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-alter-database/','/docs-cn
 
 `ALTER DATABASE` 用于修改指定或当前数据库的默认字符集和排序规则。`ALTER SCHEMA` 跟 `ALTER DATABASE` 操作效果一样。
 
+<<<<<<< HEAD
+=======
+## 语法图
+
+```ebnf+diagram
+AlterDatabaseStmt ::=
+    'ALTER' 'DATABASE' DBName? DatabaseOptionList
+
+DatabaseOption ::=
+    DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
+```
+
+>>>>>>> 59ffc3de... sql-statements: use EBNF to render syntax diagrams for ADD, ALTER and ANALYZE statements (#5324)
 ## 示例
 
 {{< copyable "sql" >}}

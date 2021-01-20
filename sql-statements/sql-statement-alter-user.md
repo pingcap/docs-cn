@@ -10,17 +10,28 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-alter-user/','/docs-cn/v3.
 
 ## 语法图
 
-**AlterUserStmt:**
+```ebnf+diagram
+AlterUserStmt ::=
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
 
-![AlterUserStmt](/media/sqlgram/AlterUserStmt.png)
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
 
-**UserSpecList:**
+UserSpec ::=
+    Username AuthOption
 
-![UserSpecList](/media/sqlgram/UserSpecList.png)
+Username ::=
+    StringName ('@' StringName | singleAtIdentifier)? | 'CURRENT_USER' OptionalBraces
 
+<<<<<<< HEAD
 **UserSpec:**
 
 ![UserSpec](/media/sqlgram/UserSpec.png)
+=======
+AuthOption ::=
+    ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
+```
+>>>>>>> 59ffc3de... sql-statements: use EBNF to render syntax diagrams for ADD, ALTER and ANALYZE statements (#5324)
 
 ## 示例
 
