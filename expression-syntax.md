@@ -31,7 +31,7 @@ BitExpr ::=
 |   SimpleExpr
 
 SimpleExpr ::=
-    SimpleIdent ( ( jss | juss ) stringLit )?
+    SimpleIdent ( ( '->' | '->>' ) stringLit )?
 |   FunctionCallKeyword
 |   FunctionCallNonKeyword
 |   FunctionCallGeneric
@@ -41,7 +41,7 @@ SimpleExpr ::=
 |   paramMarker
 |   Variable
 |   SumExpr
-|   ( '!' | '~' | '-' | '+' | not2 | 'BINARY' ) SimpleExpr
+|   ( '!' | '~' | '-' | '+' | 'NOT' | 'BINARY' ) SimpleExpr
 |   'EXISTS'? SubSelect
 |   ( ( '(' ( ExpressionList ',' )? | 'ROW' '(' ExpressionList ',' ) Expression | builtinCast '(' Expression 'AS' CastType | ( 'DEFAULT' | 'VALUES' ) '(' SimpleIdent | 'CONVERT' '(' Expression ( ',' CastType | 'USING' CharsetName ) ) ')'
 |   'CASE' ExpressionOpt WhenClause+ ElseOpt 'END'
