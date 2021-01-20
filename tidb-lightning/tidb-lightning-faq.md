@@ -1,5 +1,6 @@
 ---
 title: TiDB Lightning 常见问题
+aliases: ['/zh/tidb/v5.0/troubleshoot-tidb-lightning/']
 ---
 
 # TiDB Lightning 常见问题
