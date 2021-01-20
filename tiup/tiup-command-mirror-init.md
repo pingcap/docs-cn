@@ -30,7 +30,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-command-mirror-init/']
 tiup mirror init <path> [flags]
 ```
 
-`<path>` 为本地目录路径，可以为相对路径，TiUP 会以该路径为 mirror-dir，在其中生成文件，若该目录已存在，则必须为空，若该目录不存在，则 TiUP 会自动创建。
+`<path>` 为本地目录路径，可以为相对路径，TiUP 会以次路径做为 mirror-dir，在其中生成文件，若该目录已存在，则必须保证为空，若该目录不存在，则 TiUP 会自动创建。
 
 ## 选项
 

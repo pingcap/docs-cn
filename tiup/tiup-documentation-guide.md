@@ -3,7 +3,7 @@ title: TiUP 文档指南
 aliases: ['/docs-cn/dev/tiup/tiup-documentation-guide/']
 ---
 
-# TiUP 文档指南
+# TiUP 文档地图
 
 ## 使用文档
 

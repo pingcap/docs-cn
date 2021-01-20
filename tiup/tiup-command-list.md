@@ -21,7 +21,7 @@ tiup list [component] [flags]
 
 ### --all (boolean, 默认 false)
 
-显示所有组件：默认只显示非隐藏组件。
+显示所有组件（默认只显示非隐藏组件）。
 
 ### --installed (boolean，默认 false)
 
