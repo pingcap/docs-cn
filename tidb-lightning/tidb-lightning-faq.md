@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 常见问题
-aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-faq/','/docs-cn/v4.0/tidb-lightning/tidb-lightning-faq/','/docs-cn/stable/faq/tidb-lightning/','/docs-cn/dev/troubleshoot-tidb-lightning/','/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/dev/tidb-lightning/tidb-lightning-misuse-handling/','/zh/tidb/stable/tidb-lightning-faq/','/zh/tidb/v4.0/troubleshoot-tidb-lightning/','/zh/tidb/stable/troubleshoot-tidb-lightning/']
+aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-faq/','/docs-cn/v4.0/tidb-lightning/tidb-lightning-faq/','/docs-cn/stable/faq/tidb-lightning/','/docs-cn/dev/troubleshoot-tidb-lightning/','/docs-cn/dev/how-to/troubleshoot/tidb-lightning/','/docs-cn/dev/reference/tools/error-case-handling/lightning-misuse-handling/','/docs-cn/dev/tidb-lightning/tidb-lightning-misuse-handling/','/zh/tidb/v4.0/troubleshoot-tidb-lightning/','/zh/tidb/stable/troubleshoot-tidb-lightning/']
 ---
 
 # TiDB Lightning 常见问题
