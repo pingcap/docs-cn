@@ -107,4 +107,4 @@ admin show ddl jobs;
 
 ## MySQL 兼容性
 
-ADMIN 语句是 TiDB 对于 MySQL 语法的扩展。
+`ADMIN` 语句是 TiDB 对于 MySQL 语法的扩展。

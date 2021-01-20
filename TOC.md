@@ -50,6 +50,7 @@
   + 监控
     - [概述](/tidb-monitoring-framework.md)
     - [监控 TiDB 集群](/monitor-a-tidb-cluster.md)
+    - [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
   + 迁移
     - [迁移工具使用指南](/ecosystem-tool-user-guide.md)
     + 从 MySQL 迁移
@@ -145,6 +146,10 @@
       - [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
       - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
+      - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
+      - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
+      - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
+      - [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
@@ -381,6 +386,7 @@
     - [3.1.0-beta.1](/releases/release-3.1.0-beta.1.md)
     - [3.1.0-beta](/releases/release-3.1.0-beta.md)
   + v3.0
+    - [3.0.20](/releases/release-3.0.20.md)
     - [3.0.19](/releases/release-3.0.19.md)
     - [3.0.18](/releases/release-3.0.18.md)
     - [3.0.17](/releases/release-3.0.17.md)

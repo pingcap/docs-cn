@@ -213,19 +213,19 @@ TiDB 在 v3.0.8 后支持修改 server 版本号，可以通过配置文件中�
 
 ##### 1.2.1.1 TiKV 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说存储](http://t.cn/RTKRRWv)
+[三篇文章了解 TiDB 技术内幕 - 说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
 
 #### 1.2.2 计算 TiDB
 
 ##### 1.2.2.1 TiDB 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说计算](http://t.cn/RTKRkBh)
+[三篇文章了解 TiDB 技术内幕 - 说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
 
 #### 1.2.3 调度 PD
 
 ##### 1.2.3.1 PD 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 谈调度](http://t.cn/RTKEZ0U)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
 
 ## 二、安装部署升级
 
