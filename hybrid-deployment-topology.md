@@ -37,7 +37,7 @@ This section introduces the key parameters when you deploy multiple instances on
         - Enable `readpool.storage` and `readpool.coprocessor`:
 
             ```yaml
-            readpool.storage.use-unified-pool: false
+            readpool.storage.use-unified-pool: true
             readpool.coprocessor.use-unified-pool: true
             ```
 
