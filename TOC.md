@@ -101,6 +101,13 @@
     + [Overview](/sql-tuning-overview.md)
     + Understanding the Query Execution Plan
       + [Overview](/explain-overview.md)
+      + [`EXPLAIN` Walkthrough](/explain-walkthrough.md)
+      + [Indexes](/explain-indexes.md)
+      + [Joins](/explain-joins.md)
+      + [Subqueries](/explain-subqueries.md)
+      + [Aggregation](/explain-aggregation.md)
+      + [Views](/explain-views.md)
+      + [Partitions](/explain-partitions.md)
     + SQL Optimization Process
       + [Overview](/sql-optimization-concepts.md)
       + Logic Optimization

@@ -6,116 +6,61 @@ aliases: ['/docs/dev/query-execution-plan/','/docs/dev/reference/performance/und
 
 # `EXPLAIN` Overview
 
-Based on the latest statistics of your tables, the TiDB optimizer chooses the most efficient query execution plan, which consists of a series of operators. This document details the execution plan in TiDB.
+SQL is a declarative language. It describes what the results of a query should look like, **not the methodology** to actually retrieve those results. TiDB considers all the possible ways in which a query could be executed, including using what order to join tables and whether any potential indexes can be used. The process of _considering query execution plans_ is known as SQL optimization.
 
-## Introduction
-
-You can use the `EXPLAIN` command in TiDB to view the execution plan. The result of the `EXPLAIN` statement provides information about how TiDB executes SQL queries:
-
-- `EXPLAIN` works together with statements such as `SELECT` and `DELETE`.
-- When you execute the `EXPLAIN` statement, TiDB returns the final optimized physical execution plan. In other words, `EXPLAIN` displays the complete information about how TiDB executes the SQL statement, such as in which order, how tables are joined, and what the expression tree looks like.
-- For more information about each column of `EXPLAIN`, see [`EXPLAIN` Output Format](/sql-statements/sql-statement-explain.md).
-
-The results of `EXPLAIN` shed light on how to index the data tables so that the execution plan can use the index to speed up the execution of SQL statements. You can also use `EXPLAIN` to check if the optimizer chooses the optimal order to join tables.
-
-## Operator execution order
-
-The execution plan in TiDB has a tree structure, with each node of the tree as an operator. Considering the concurrent execution of multiple threads in each operator, all operators consume CPU and memory resources to process data during the execution of a SQL statement. From this point of view, there is no execution order for the operator.
-
-However, from the perspective of which operators process a row of data first, the execution of a piece of data is in order. The following rule roughly summarizes this order:
-
-**`Build` is always executed before `Probe` and always appears before `Probe`.**
-
-The first half of this rule means: if an operator has multiple child nodes, the operator with the `Build` keyword at the end of the child node ID is always executed before the operator with the `Probe` keyword. The second half means: when TiDB shows the execution plan, the `Build` side always appears first, followed by the `Probe` side.
-
-The following examples illustrate this rule:
+The `EXPLAIN` statement shows the selected execution plan for a given statement. That is, after considering hundreds or thousands of ways in which the query could be executed, TiDB believes that this _plan_ will consume the least resources and execute in the shortest amount of time:
 
 {{< copyable "sql" >}}
 
 ```sql
-explain select * from t use index(idx_a) where a = 1;
+CREATE TABLE t (id INT NOT NULL PRIMARY KEY auto_increment, a INT NOT NULL, pad1 VARCHAR(255), INDEX(a));
+INSERT INTO t VALUES (1, 1, 'aaa'),(2,2, 'bbb');
+EXPLAIN SELECT * FROM t WHERE a = 1;
 ```
 
 ```sql
-+-------------------------------+---------+-----------+-------------------------+---------------------------------------------+
-| id                            | estRows | task      | access object           | operator info                               |
-+-------------------------------+---------+-----------+-------------------------+---------------------------------------------+
-| IndexLookUp_7                 | 10.00   | root      |                         |                                             |
-| ├─IndexRangeScan_5(Build)     | 10.00   | cop[tikv] | table:t, index:idx_a(a) | range:[1,1], keep order:false, stats:pseudo |
-| └─TableRowIDScan_6(Probe)     | 10.00   | cop[tikv] | table:t                 | keep order:false, stats:pseudo              |
-+-------------------------------+---------+-----------+-------------------------+---------------------------------------------+
+Query OK, 0 rows affected (0.96 sec)
+
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
++-------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| id                            | estRows | task      | access object       | operator info                               |
++-------------------------------+---------+-----------+---------------------+---------------------------------------------+
+| IndexLookUp_10                | 10.00   | root      |                     |                                             |
+| ├─IndexRangeScan_8(Build)     | 10.00   | cop[tikv] | table:t, index:a(a) | range:[1,1], keep order:false, stats:pseudo |
+| └─TableRowIDScan_9(Probe)     | 10.00   | cop[tikv] | table:t             | keep order:false, stats:pseudo              |
++-------------------------------+---------+-----------+---------------------+---------------------------------------------+
 3 rows in set (0.00 sec)
 ```
 
-The `IndexLookUp_7` operator has two child nodes: `IndexRangeScan_5 (Build)` and `TableRowIDScan_6 (Probe)`. `IndexRangeScan_5 (Build)` appears first.
+`EXPLAIN` does not execute the actual query. [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) can be used to execute the query and show `EXPLAIN` information. This can be useful in diagnosing cases where the execution plan selected is suboptimal. For additional examples of using `EXPLAIN`, see the following documents:
 
-To get a piece of data, first, you need to execute `IndexRangeScan_5 (Build)` to get a RowID. Then, use `TableRowIDScan_6 (Probe)` to get a complete row of data based on the RowID.
+* [Indexes](/explain-indexes.md)
+* [Joins](/explain-joins.md)
+* [Subqueries](/explain-subqueries.md)
+* [Aggregation](/explain-aggregation.md)
+* [Views](/explain-views.md)
+* [Partitions](/explain-partitions.md)
 
-The implication of the above rule is: for nodes at the same level, the operator that appears first might be executed first, and the operator that appears last might be executed last. This can be illustrated in the following example:
+## Understand EXPLAIN output
 
-{{< copyable "sql" >}}
+The following describes the output of the `EXPLAIN` statement above:
 
-```sql
-explain select * from t t1 use index(idx_a) join t t2 use index() where t1.a = t2.a;
-```
+* `id` describes the name of an operator, or sub-task that is required to execute the SQL statement. See [Operator overview](#operator-overview) for additional details.
+* `estRows` shows an estimate of the number of rows TiDB expects to process. This number might be based on dictionary information, such as when the access method is based on a primary or unique key, or it could be based on statistics such as a CMSketch or histogram.
+* `task` shows where an operator is performing the work. See [Task overview](#task-overview) for additional details.
+* `access object` shows the table, partition and index that is being accessed. The parts of the index are also shown, as in the case above that the column `a` from the index was used. This can be useful in cases where you have composite indexes.
+* `operator info` shows additional details about the access. See [Operator info overview](#operator-info-overview) for additional details.
 
-```sql
-+----------------------------------+----------+-----------+--------------------------+------------------------------------------------------------------+
-| id                               | estRows  | task      | access object            | operator info                                                    |
-+----------------------------------+----------+-----------+--------------------------+------------------------------------------------------------------+
-| HashJoin_22                      | 12487.50 | root      |                          | inner join, inner:TableReader_26, equal:[eq(test.t.a, test.t.a)] |
-| ├─TableReader_26(Build)          | 9990.00  | root      |                          | data:Selection_25                                                |
-| │ └─Selection_25                 | 9990.00  | cop[tikv] |                          | not(isnull(test.t.a))                                            |
-| │   └─TableFullScan_24           | 10000.00 | cop[tikv] | table:t2                 | keep order:false, stats:pseudo                                   |
-| └─IndexLookUp_29(Probe)          | 9990.00  | root      |                          |                                                                  |
-|   ├─IndexFullScan_27(Build)      | 9990.00  | cop[tikv] | table:t1, index:idx_a(a) | keep order:false, stats:pseudo                                   |
-|   └─TableRowIDScan_28(Probe)     | 9990.00  | cop[tikv] | table:t1                 | keep order:false, stats:pseudo                                   |
-+----------------------------------+----------+-----------+--------------------------+------------------------------------------------------------------+
-7 rows in set (0.00 sec)
-```
+### Operator overview
 
-To complete the `HashJoin_22` operation, you need to execute `TableReader_26(Build)`, and then execute `IndexLookUp_29(Probe)`.
+An operator is a particular step that is executed as part of returning query results. The operators that perform table scans (of the disk or the TiKV Block Cache) are listed as follows:
 
-When executing `IndexLookUp_29(Probe)`, you need to execute `IndexFullScan_27(Build)` and `TableRowIDScan_28(Probe)` one by one. Therefore, from the perspective of the whole execution link, `TableRowIDScan_28(Probe)` is the last one awoken to be executed.
-
-### Task overview
-
-Currently, calculation tasks of TiDB can be divided into two categories: cop tasks and root tasks. The cop tasks are performed by the Coprocessor in TiKV, and the root tasks are performed in TiDB.
-
-One of the goals of SQL optimization is to push the calculation down to TiKV as much as possible. The Coprocessor in TiKV supports most of the built-in SQL functions (including the aggregate functions and the scalar functions), SQL `LIMIT` operations, index scans, and table scans. However, all `Join` operations can only be performed as root tasks in TiDB.
-
-### Access Object overview
-
-Access Object is the data item accessed by the operator, including `table`, `partition`, and `index` (if any). Only operators that directly access the data have this information.
-
-### Range query
-
-In the `WHERE`/`HAVING`/`ON` conditions, the TiDB optimizer analyzes the result returned by the primary key query or the index key query. For example, these conditions might include comparison operators of the numeric and date type, such as `>`, `<`, `=`, `>=`, `<=`, and the character type such as `LIKE`.
-
-> **Note:**
->
-> - Currently, TiDB only supports the case where a comparison operator is connected by a column (at one end) and a constant value (at the other end), or the case that the calculation result is a constant. You cannot use query conditions like `year(birth_day) < 1992` as the index.
-> - It is recommended to compare data of the same type; otherwise, additional `cast` operations are introduced, which causes the index to be unavailable. For example, regarding the condition `user_id = 123456`, if `user_id` is a string, you must define `123456` as a string constant.
-
-You can also use `AND` (intersection) and `OR` (union) to combine the range query conditions of one column. For a multi-dimensional composite index, you can use conditions in multiple columns. For example, regarding the composite index `(a, b, c)`:
-
-- When `a` is an equivalent query, continue to figure out the query range of `b`; when `b` is also an equivalent query, continue to figure out the query range of `c`.
-- Otherwise, if `a` is a non-equivalent query, you can only figure out the range of `a`.
-
-## Operator overview
-
-Different operators output different information after the `EXPLAIN` statement is executed. This section focuses on the execution plan of different operators, ranging from table scans, table aggregation, to table join.
-
-You can use optimizer hints to control the behavior of the optimizer, and thereby controlling the selection of the physical operators. For example, `/*+ HASH_JOIN(t1, t2) */` means that the optimizer uses the `Hash Join` algorithm. For more details, see [Optimizer Hints](/optimizer-hints.md).
-
-### Read the execution plan of table scans
-
-The operators that perform table scans (of the disk or the TiKV Block Cache) are listed as follows:
-
-- **TableFullScan**: Full table scan.
-- **TableRangeScan**: Table scans with the specified range.
-- **TableRowIDScan**: Accurately scans the table data based on the RowID passed down from the upper layer.
-- **IndexFullScan**: Another type of "full table scan", except that the index data is scanned, rather than the table data.
+- **TableFullScan**: Full table scan
+- **TableRangeScan**: Table scans with the specified range
+- **TableRowIDScan**: Scans the table data based on the RowID. Usually follows an index read operation to retrieve the matching data rows.
+- **IndexFullScan**: Similar to a "full table scan", except that an index is scanned, rather than the table data.
 - **IndexRangeScan**: Index scans with the specified range.
 
 TiDB aggregates the data or calculation results scanned from TiKV/TiFlash. The data aggregation operators can be divided into the following categories:
@@ -125,381 +70,34 @@ TiDB aggregates the data or calculation results scanned from TiKV/TiFlash. The d
 - **IndexLookUp**: First aggregates the RowID (in TiKV) scanned by the `Build` side. Then at the `Probe` side, accurately reads the data from TiKV based on these RowIDs. At the `Build` side, there are operators like `IndexFullScan` or `IndexRangeScan`; at the `Probe` side, there is the `TableRowIDScan` operator.
 - **IndexMerge**: Similar to `IndexLookUp`. `IndexMerge` can be seen as an extension of `IndexLookupReader`. `IndexMerge` supports reading multiple indexes at the same time. There are many `Build`s and one `Probe`. The execution process of `IndexMerge` the same as that of `IndexLookUp`.
 
-#### Table data and index data
+While the structure appears as a tree, executing the query does not strictly require the child nodes to be completed before the parent nodes. TiDB supports intra-query parallelism, so a more accurate way to describe the execution is that the child nodes _flow into_ their parent nodes. Parent, child and sibling operators _might_ potentially be executing parts of the query in parallel.
 
-Table data refers to the original data of a table stored in TiKV. For each row of the table data, its `key` is a 64-bit integer called `RowID`. If a primary key of a table is an integer, TiDB uses the value of the primary key as the `RowID` of the table data; otherwise, the system automatically generates `RowID`. The `value` of the table data is encoded from all the data in this row. When reading table data, data is returned in the order of increasing `RowID`s.
+In the previous example, the `├─IndexRangeScan_8(Build)` operator finds the internal `RowID` for rows that match the `a(a)` index. The `└─TableRowIDScan_9(Probe)` operator then retrieves these rows from the table.
 
-Similar to the table data, the index data is also stored in TiKV. Its `key` is the ordered bytes encoded from the index column. `value` is the `RowID` corresponding to a row of index data. The non-index column of the row can be read using `RowID`. When reading index data, TiKV returns data in ascending order of index columns. If there are multiple index columns, firstly, ensure that the first column is incremented; if the i-th column is equivalent, make sure that the (i+1)-th column is incremented.
+#### Range query
 
-#### `IndexLookUp` example
-
-{{< copyable "sql" >}}
-
-```sql
-explain select * from t use index(idx_a);
-```
-
-```sql
-+-------------------------------+----------+-----------+-------------------------+--------------------------------+
-| id                            | estRows  | task      | access object           | operator info                  |
-+-------------------------------+----------+-----------+-------------------------+--------------------------------+
-| IndexLookUp_6                 | 10000.00 | root      |                         |                                |
-| ├─IndexFullScan_4(Build)      | 10000.00 | cop[tikv] | table:t, index:idx_a(a) | keep order:false, stats:pseudo |
-| └─TableRowIDScan_5(Probe)     | 10000.00 | cop[tikv] | table:t                 | keep order:false, stats:pseudo |
-+-------------------------------+----------+-----------+-------------------------+--------------------------------+
-3 rows in set (0.00 sec)
-```
-
-The `IndexLookUp_6` operator has two child nodes: `IndexFullScan_4(Build)` and `TableRowIDScan_5(Probe)`.
-
-+ `IndexFullScan_4(Build)` performs an index full scan and scans all the data of index `a`. Because it is a full scan, this operation gets the `RowID` of all the data in the table.
-+ `TableRowIDScan_5(Probe)` scans all table data using `RowID`s.
-
-This execution plan is not as efficient as using `TableReader` to perform a full table scan, because `IndexLookUp` performs an extra index scan (which comes with additional overhead), apart from the table scan.
-
-For table scan operations, the operator info column in the `explain` table shows whether the data is sorted. In the above example, the `keep order:false` in the `IndexFullScan` operator indicates that the data is unsorted. The `stats:pseudo` in the operator info means that there is no statistics, or that the statistics will not be used for estimation because it is outdated. For other scan operations, the operator info involves similar information.
-
-#### `TableReader` example
-
-{{< copyable "sql" >}}
-
-```sql
-explain select * from t where a > 1 or b >100;
-```
-
-```sql
-+-------------------------+----------+-----------+---------------+----------------------------------------+
-| id                      | estRows  | task      | access object | operator info                          |
-+-------------------------+----------+-----------+---------------+----------------------------------------+
-| TableReader_7           | 8000.00  | root      |               | data:Selection_6                       |
-| └─Selection_6           | 8000.00  | cop[tikv] |               | or(gt(test.t.a, 1), gt(test.t.b, 100)) |
-|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo         |
-+-------------------------+----------+-----------+---------------+----------------------------------------+
-3 rows in set (0.00 sec)
-```
-
-In the above example, the child node of the `TableReader_7` operator is `Selection_6`. The subtree rooted at this child node is seen as a `Cop Task` and is delivered to the corresponding TiKV. This `Cop Task` uses the `TableFullScan_5` operator to perform the table scan. `Selection` represents the selection condition in the SQL statement, namely, the `WHERE`/`HAVING`/`ON` clause.
-
-`TableFullScan_5` performs a full table scan, and the load on the cluster increases accordingly, which might affect other queries running in the cluster. If an appropriate index is built and the `IndexMerge` operator is used, these will greatly improve query performance and reduce load on the cluster.
-
-#### `IndexMerge` example
-
-`IndexMerge` is a method introduced in TiDB v4.0 to access tables. Using this method, the TiDB optimizer can use multiple indexes per table and merge the results returned by each index. In some scenarios, this method makes the query more efficient by avoiding full table scans.
-
-```sql
-mysql> explain select * from t where a = 1 or b = 1;
-+-------------------------+----------+-----------+---------------+--------------------------------------+
-| id                      | estRows  | task      | access object | operator info                        |
-+-------------------------+----------+-----------+---------------+--------------------------------------+
-| TableReader_7           | 8000.00  | root      |               | data:Selection_6                     |
-| └─Selection_6           | 8000.00  | cop[tikv] |               | or(eq(test.t.a, 1), eq(test.t.b, 1)) |
-|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo       |
-+-------------------------+----------+-----------+---------------+--------------------------------------+
-mysql> set @@tidb_enable_index_merge = 1;
-mysql> explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
-+--------------------------------+---------+-----------+-------------------------+------------------------------------------------+
-| id                             | estRows | task      | access object           | operator info                                  |
-+--------------------------------+---------+-----------+-------------------------+------------------------------------------------+
-| IndexMerge_16                  | 6666.67 | root      |                         |                                                |
-| ├─IndexRangeScan_13(Build)     | 3333.33 | cop[tikv] | table:t, index:idx_a(a) | range:(1,+inf], keep order:false, stats:pseudo |
-| ├─IndexRangeScan_14(Build)     | 3333.33 | cop[tikv] | table:t, index:idx_b(b) | range:(1,+inf], keep order:false, stats:pseudo |
-| └─TableRowIDScan_15(Probe)     | 6666.67 | cop[tikv] | table:t                 | keep order:false, stats:pseudo                 |
-+--------------------------------+---------+-----------+-------------------------+------------------------------------------------+
-```
-
-In the above query, the filter condition is a `WHERE` clause that uses `OR` as the connector. Without `IndexMerge`, you can use only one index per table. `a = 1` cannot be pushed down to the index `a`; neither can `b = 1` be pushed down to the index `b`. The full table scan is inefficient when a huge volume of data exists in `t`. To handle such a scenario, `IndexMerge` is introduced in TiDB to access tables.
-
-`IndexMerge` allows the optimizer to use multiple indexes per table, and merge the results returned by each index to generate the execution plan of the latter `IndexMerge` in the figure above. Here the `IndexMerge_16` operator has three child nodes, among which `IndexRangeScan_13` and `IndexRangeScan_14` get all the `RowID`s that meet the conditions based on the result of range scan, and then the `TableRowIDScan_15` operator accurately reads all the data that meets the conditions according to these `RowID`s.
-
-For the scan operation that is performed on a specific range of data, such as `IndexRangeScan`/`TableRangeScan`, the `operator info` column in the result has additional information about the scan range compared with other scan operations like `IndexFullScan`/`TableFullScan`. In the above example, the `range:(1,+inf]` in the `IndexRangeScan_13` operator indicates that the operator scans the data from 1 to positive infinity.
+In the `WHERE`/`HAVING`/`ON` conditions, the TiDB optimizer analyzes the result returned by the primary key query or the index key query. For example, these conditions might include comparison operators of the numeric and date type, such as `>`, `<`, `=`, `>=`, `<=`, and the character type such as `LIKE`.
 
 > **Note:**
 >
-> At present, the `IndexMerge` feature is disabled by default in TiDB 4.0.0-rc.1. In addition, the currently supported scenarios of `IndexMerge` in TiDB 4.0 are limited to the disjunctive normal form (expressions connected by `or`). The conjunctive normal form (expressions connected by `and`) will be supported in later versions. Enable the `IndexMerge` in one of two ways:
->
-> - Set the `tidb_enable_index_merge` system variable to 1;
->
-> - Use the SQL Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) in the query.
->
-> SQL Hint has a higher priority than system variables.
+> - In order to use an index, the condition must be _sargable_. For example, the condition `YEAR(date_column) < 1992` can not use an index, but `date_column < '1992-01-01` can.
+> - It is recommended to compare data of the same type and [character set and collation](/character-set-and-collation.md). Mixing types may require additional `cast` operations, or prevent indexes from being used.
+> - You can also use `AND` (intersection) and `OR` (union) to combine the range query conditions of one column. For a multi-dimensional composite index, you can use conditions in multiple columns. For example, regarding the composite index `(a, b, c)`:
+>     - When `a` is an equivalent query, continue to figure out the query range of `b`; when `b` is also an equivalent query, continue to figure out the query range of `c`.
+>     - Otherwise, if `a` is a non-equivalent query, you can only figure out the range of `a`.
 
-### Read the aggregated execution plan
+### Task overview
 
-Aggregation algorithms in TiDB include the following categories:
+Currently, calculation tasks of TiDB can be divided into two categories: cop tasks and root tasks. A `cop[tikv]` task indicates that the operator is performed inside the TiKV coprocessor. A `root` task indicates that it will be completed inside of TiDB.
 
-- [Hash Aggregate](#hash-aggregate-example)
-- [Stream Aggregate](#stream-aggregate-example)
+One of the goals of SQL optimization is to push the calculation down to TiKV as much as possible. The Coprocessor in TiKV supports most of the built-in SQL functions (including the aggregate functions and the scalar functions), SQL `LIMIT` operations, index scans, and table scans. However, all `Join` operations can only be performed as root tasks in TiDB.
 
-#### `Hash Aggregate` example
+### Operator info overview
 
-The `Hash Aggregation` operator is optimized in multi-threaded concurrency. It is quick to execute at the cost of more memory usage. The following is an example of `Hash Aggregate`:
+The `operator info` can show useful information such as which conditions were able to be pushed down:
 
-{{< copyable "sql" >}}
+* `range: [1,1]` shows that the predicate from the where clause of the query (`a = 1`) was pushed right down to TiKV (the task is of `cop[tikv]`).
+* `keep order:false` shows that the semantics of this query did not require TiKV to return the results in order. If the query were to be modified to require an order (such as `SELECT * FROM t WHERE a = 1 ORDER BY id`), then this condition would be `keep order:true`.
+* `stats:pseudo` shows that the estimates shown in `estRows` might not be accurate. TiDB periodically updates statistics as part of a background operation. A manual update can also be performed by running `ANALYZE TABLE t`.
 
-```sql
-explain select /*+ HASH_AGG() */ count(*) from t;
-```
-
-```sql
-+---------------------------+----------+-----------+---------------+---------------------------------+
-| id                        | estRows  | task      | access object | operator info                   |
-+---------------------------+----------+-----------+---------------+---------------------------------+
-| HashAgg_11                | 1.00     | root      |               | funcs:count(Column#7)->Column#4 |
-| └─TableReader_12          | 1.00     | root      |               | data:HashAgg_5                  |
-|   └─HashAgg_5             | 1.00     | cop[tikv] |               | funcs:count(1)->Column#7        |
-|     └─TableFullScan_8     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo  |
-+---------------------------+----------+-----------+---------------+---------------------------------+
-4 rows in set (0.00 sec)
-```
-
-Generally speaking, `Hash Aggregate` is executed in two stages.
-
-- One is on the Coprocessor of TiKV/TiFlash, with the intermediate results of the aggregation function calculated when the table scan operator reads the data.
-- The other is at the TiDB layer, with the final result calculated through aggregating the intermediate results of all Coprocessor Tasks.
-
-The operator info column in the `explain` table also records other information about `Hash Aggregation`. You need to pay attention to what aggregate function that `Hash Aggregation` uses. In the above example, the operator info of the `Hash Aggregation` operator is `funcs:count(Column#7)->Column#4`. It means that `Hash Aggregation` uses the aggregate function `count` for calculation. The operator info of the `Stream Aggregation` operator in the following example is the same with this one.
-
-#### `Stream Aggregate` example
-
-The `Stream Aggregation` operator usually takes up less memory than `Hash Aggregate`. In some scenarios, `Stream Aggregation` executes faster than `Hash Aggregate`. In the case of a large amount of data or insufficient system memory, it is recommended to use the `Stream Aggregate` operator. An example is as follows:
-
-{{< copyable "sql" >}}
-
-```sql
-explain select /*+ STREAM_AGG() */ count(*) from t;
-```
-
-```sql
-+----------------------------+----------+-----------+---------------+---------------------------------+
-| id                         | estRows  | task      | access object | operator info                   |
-+----------------------------+----------+-----------+---------------+---------------------------------+
-| StreamAgg_16               | 1.00     | root      |               | funcs:count(Column#7)->Column#4 |
-| └─TableReader_17           | 1.00     | root      |               | data:StreamAgg_8                |
-|   └─StreamAgg_8            | 1.00     | cop[tikv] |               | funcs:count(1)->Column#7        |
-|     └─TableFullScan_13     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo  |
-+----------------------------+----------+-----------+---------------+---------------------------------+
-4 rows in set (0.00 sec)
-```
-
-Similar to `Hash Aggregate`, `Stream Aggregate` is executed in two stages.
-
-- One is on the Coprocessor of TiKV/TiFlash, with the intermediate results of the aggregation function calculated when the table scan operator reads the data.
-- The other is at the TiDB layer, with the final result calculated through aggregating the intermediate results of all Coprocessor Tasks.
-
-### Read the `Join` execution plan
-
-The `Join` algorithms in TiDB consist of the following categories:
-
-- [Hash Join](#hash-join-example)
-- [Merge Join](#merge-join-example)
-- [Index Join (Index Nested Loop Join)](#index-join-example)
-- [Index Hash Join (Index Nested Loop Hash Join)](#index-hash-join-example)
-- [Index Merge Join (Index Nested Loop Merge Join)](#index-merge-join-example)
-
-The following are examples of the execution processes of these `Join` algorithms.
-
-#### `Hash Join` example
-
-The `Hash Join` operator uses multi-thread. Its execution speed is fast at the cost of more memory usage. An example of `Hash Join` is as follows:
-
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
-```sql
-+-----------------------------+----------+-----------+------------------------+------------------------------------------------+
-| id                          | estRows  | task      | access object          | operator info                                  |
-+-----------------------------+----------+-----------+------------------------+------------------------------------------------+
-| HashJoin_30                 | 12487.50 | root      |                        | inner join, equal:[eq(test.t1.id, test.t2.id)] |
-| ├─IndexReader_35(Build)     | 9990.00  | root      |                        | index:IndexFullScan_34                         |
-| │ └─IndexFullScan_34        | 9990.00  | cop[tikv] | table:t2, index:id(id) | keep order:false, stats:pseudo                 |
-| └─IndexReader_33(Probe)     | 9990.00  | root      |                        | index:IndexFullScan_32                         |
-|   └─IndexFullScan_32        | 9990.00  | cop[tikv] | table:t1, index:id(id) | keep order:false, stats:pseudo                 |
-+-----------------------------+----------+-----------+------------------------+------------------------------------------------+
-5 rows in set (0.01 sec)
-```
-
-The execution process of `Hash Join` is as follows:
-
-1. Cache the data of the `Build` side in memory.
-2. Construct a Hash Table on the `Build` side based on the cached data.
-3. Read the data at the `Probe` side.
-4. Use the data of the `Probe` side to probe the Hash Table.
-5. Return qualified data to the user.
-
-The operator info column in the `explain` table also records other information about `Hash Join`, including whether the query is Inner Join or Outer Join, and what are the conditions of Join. In the above example, the query is an Inner Join, where the Join condition `equal:[eq(test.t1.id, test.t2.id)]` partly corresponds with the query statement `where t1.id = t2. id`. The operator info of the other Join operators in the following examples is similar to this one.
-
-#### `Merge Join` example
-
-The `Merge Join` operator usually uses less memory than `Hash Join`. However, `Merge Join` might take longer to be executed. When the amount of data is large, or the system memory is insufficient, it is recommended to use `Merge Join`. The following is an example:
-
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
-```sql
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------+
-| id                          | estRows  | task      | access object          | operator info                                         |
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------+
-| MergeJoin_7                 | 12487.50 | root      |                        | inner join, left key:test.t1.id, right key:test.t2.id |
-| ├─IndexReader_12(Build)     | 9990.00  | root      |                        | index:IndexFullScan_11                                |
-| │ └─IndexFullScan_11        | 9990.00  | cop[tikv] | table:t2, index:id(id) | keep order:true, stats:pseudo                         |
-| └─IndexReader_10(Probe)     | 9990.00  | root      |                        | index:IndexFullScan_9                                 |
-|   └─IndexFullScan_9         | 9990.00  | cop[tikv] | table:t1, index:id(id) | keep order:true, stats:pseudo                         |
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------+
-5 rows in set (0.01 sec)
-```
-
-The execution of the `Merge Join` operator is as follows:
-
-1. Read all the data of a Join Group from the `Build` side into the memory
-2. Read the data of the `Probe` side.
-3. Compare whether each row of data on the `Probe` side matches a complete Join Group on the `Build` side. Apart from equivalent conditions, there are non-equivalent conditions. Here "match" mainly refers to checking whether non-equivalent conditions are met. Join Group refers to the data with the same value among all Join Keys.
-
-#### `Index Join` example
-
-If the result set (obtained after the outer tables are filtered by the `WHERE` condition) is small, it is recommended to use `Index Join`. Here "small" means data is less than 10,000 rows.
-
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
-```sql
-+-----------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------+
-| id                          | estRows  | task      | access object          | operator info                                                                  |
-+-----------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------+
-| IndexJoin_11                | 12487.50 | root      |                        | inner join, inner:IndexReader_10, outer key:test.t1.id, inner key:test.t2.id   |
-| ├─IndexReader_31(Build)     | 9990.00  | root      |                        | index:IndexFullScan_30                                                         |
-| │ └─IndexFullScan_30        | 9990.00  | cop[tikv] | table:t1, index:id(id) | keep order:false, stats:pseudo                                                 |
-| └─IndexReader_10(Probe)     | 1.00     | root      |                        | index:Selection_9                                                              |
-|   └─Selection_9             | 1.00     | cop[tikv] |                        | not(isnull(test.t2.id))                                                        |
-|     └─IndexRangeScan_8      | 1.00     | cop[tikv] | table:t2, index:id(id) | range: decided by [eq(test.t2.id, test.t1.id)], keep order:false, stats:pseudo |
-+-----------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------+
-6 rows in set (0.00 sec)
-```
-
-#### `Index Hash Join` example
-
-`Index Hash Join` uses the same conditions as `Index Join`. However, `Index Hash Join` saves more memory in some scenarios.
-
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT /*+ INL_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
-```sql
-+-----------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------+
-| id                          | estRows  | task      | access object          | operator info                                                                  |
-+-----------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------+
-| IndexHashJoin_18            | 12487.50 | root      |                        | inner join, inner:IndexReader_10, outer key:test.t1.id, inner key:test.t2.id   |
-| ├─IndexReader_31(Build)     | 9990.00  | root      |                        | index:IndexFullScan_30                                                         |
-| │ └─IndexFullScan_30        | 9990.00  | cop[tikv] | table:t1, index:id(id) | keep order:false, stats:pseudo                                                 |
-| └─IndexReader_10(Probe)     | 1.00     | root      |                        | index:Selection_9                                                              |
-|   └─Selection_9             | 1.00     | cop[tikv] |                        | not(isnull(test.t2.id))                                                        |
-|     └─IndexRangeScan_8      | 1.00     | cop[tikv] | table:t2, index:id(id) | range: decided by [eq(test.t2.id, test.t1.id)], keep order:false, stats:pseudo |
-+-----------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------+
-6 rows in set (0.00 sec)
-```
-
-#### `Index Merge Join` example
-
-`Index Merge Join` is used in similar scenarios as Index Join. However, the index prefix used by the inner table is the inner table column collection in the join keys. `Index Merge Join` saves more memory than `INL_JOIN`.
-
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
-```sql
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------------------------------+
-| id                          | estRows  | task      | access object          | operator info                                                                 |
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------------------------------+
-| IndexMergeJoin_16           | 12487.50 | root      |                        | inner join, inner:IndexReader_14, outer key:test.t1.id, inner key:test.t2.id  |
-| ├─IndexReader_31(Build)     | 9990.00  | root      |                        | index:IndexFullScan_30                                                        |
-| │ └─IndexFullScan_30        | 9990.00  | cop[tikv] | table:t1, index:id(id) | keep order:false, stats:pseudo                                                |
-| └─IndexReader_14(Probe)     | 1.00     | root      |                        | index:Selection_13                                                            |
-|   └─Selection_13            | 1.00     | cop[tikv] |                        | not(isnull(test.t2.id))                                                       |
-|     └─IndexRangeScan_12     | 1.00     | cop[tikv] | table:t2, index:id(id) | range: decided by [eq(test.t2.id, test.t1.id)], keep order:true, stats:pseudo |
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------------------------------+
-6 rows in set (0.00 sec)
-```
-
-## Optimization example
-
-For more details, refer to [bikeshare example database](/import-example-data.md).
-
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
-```
-
-```sql
-+------------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------------+
-| id                           | estRows  | task      | access object | operator info                                                                                                          |
-+------------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------------+
-| StreamAgg_20                 | 1.00        | root      |               | funcs:count(Column#13)->Column#11                                                                                      |
-| └─TableReader_21             | 1.00        | root      |               | data:StreamAgg_9                                                                                                       |
-|   └─StreamAgg_9              | 1.00        | cop[tikv] |               | funcs:count(1)->Column#13                                                                                              |
-|     └─Selection_19           | 8166.73     | cop[tikv] |               | ge(bikeshare.trips.start_date, 2017-07-01 00:00:00.000000), le(bikeshare.trips.start_date, 2017-07-01 23:59:59.000000) |
-|       └─TableFullScan_18     | 19117643.00 | cop[tikv] | table:trips   | keep order:false, stats:pseudo                                                                                         |
-+------------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------------+
-```
-
-The execution process of the above example can be illustrated as follows:
-
-1. Coprocessor reads the data on the trips table (executed by `TableScan_18`).
-2. Find data that meets the `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` condition (executed by `Selection_19`).
-3. Calculate the number of rows that satisfy the condition, and return the result to TiDB (executed by `StreamAgg_9`).
-4. TiDB aggregates the results returned by each Coprocessor (executed by `TableReader_21`).
-5. TiDB calculates the number of rows of all data (`StreamAgg_20`), and finally returns the results to the client.
-
-In the above query, TiDB estimates the number of rows in the output of `TableScan_18` as 19117643.00, based on the statistics of the `trips` table. The number of rows that meet the `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` condition is 8168.73. After the aggregation operation, there is only 1 result.
-
-The execution as illustrated in the above example is not efficient enough, though most of the calculation logic is pushed down to the TiKV Coprocessor. You can add an appropriate index to eliminate the full table scan on `trips` by `TableScan_18`, thereby accelerating the execution of the query:
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER TABLE trips ADD INDEX (start_date);
-```
-
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59';
-```
-
-```sql
-+-----------------------------+---------+-----------+-------------------------------------------+---------------------------------------------------------------------------------+
-| id                          | estRows | task      | access object                             | operator info                                                                   |
-+-----------------------------+---------+-----------+-------------------------------------------+---------------------------------------------------------------------------------+
-| StreamAgg_17                | 1.00    | root      |                                           | funcs:count(Column#13)->Column#11                                               |
-| └─IndexReader_18            | 1.00    | root      |                                           | index:StreamAgg_9                                                               |
-|   └─StreamAgg_9             | 1.00    | cop[tikv] |                                           | funcs:count(1)->Column#13                                                       |
-|     └─IndexRangeScan_16     | 8166.73 | cop[tikv] | table:trips, index:start_date(start_date) | range:[2017-07-01 00:00:00,2017-07-01 23:59:59], keep order:false, stats:pseudo |
-+-----------------------------+---------+-----------+-------------------------------------------+---------------------------------------------------------------------------------+
-4 rows in set (0.00 sec)
-```
-
-After adding the index, use `IndexScan_24` to directly read the data that meets the `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` condition. The estimated number of rows to be scanned decreases from 19117643.00 to 8166.73. In the test environment, the execution time of this query decreases from 50.41 seconds to 0.01 seconds.
-
-## Operator-related system variables
-
-Based on MySQL, TiDB defines some special system variables and syntax to optimize performance. Some system variables are related to specific operators, such as the concurrency of the operator, the upper limit of the operator memory, and whether to use partitioned tables. These can be controlled by system variables, thereby affecting the efficiency of each operator.
-
-## See also
-
-* [EXPLAIN](/sql-statements/sql-statement-explain.md)
-* [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md)
-* [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
-* [TRACE](/sql-statements/sql-statement-trace.md)
-* [System Variables](/system-variables.md)
+Different operators output different information after the `EXPLAIN` statement is executed. You can use optimizer hints to control the behavior of the optimizer, and thereby controlling the selection of the physical operators. For example, `/*+ HASH_JOIN(t1, t2) */` means that the optimizer uses the `Hash Join` algorithm. For more details, see [Optimizer Hints](/optimizer-hints.md).
