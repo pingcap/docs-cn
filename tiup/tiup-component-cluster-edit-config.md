@@ -4,8 +4,6 @@ title: tiup cluster edit-config
 
 # tiup cluster edit-config
 
-## 介绍
-
 在部署集群之后，如果需要再调整集群服务的配置，则可以使用命令 `tiup cluster edit-config`，它会启动一个编辑器（默认为 $EDITOR 环境变量指定的值，当 EDITOR 环境变量不存在时，使用 vi 打开）允许用户修改指定集群的[拓扑文件](/tiup/tiup-cluster-topology-reference.md)。
 
 > **注意：**

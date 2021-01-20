@@ -4,8 +4,6 @@ title: tiup dm display
 
 # tiup dm display
 
-## 介绍
-
 如果想查看集群中每个组件的运行状态，逐一登录到各个机器上查看显然很低效。因此，tiup-dm 提供了 `tiup dm display` 命令来高效完成这件工作。
 
 ## 语法

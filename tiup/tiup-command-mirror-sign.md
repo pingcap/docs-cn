@@ -4,8 +4,6 @@ title: tiup mirror sign
 
 # tiup mirror sign
 
-## 介绍
-
 命令 `tiup mirror sign` 用于对[镜像](/tiup/tiup-mirror-reference.md)中定义的元信息文件（*.json）进行签名，这些文件可能储存在本地文件系统，也可以放在远端使用 http 协议提供签名入口。
 
 ## 语法

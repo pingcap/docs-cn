@@ -4,8 +4,6 @@ title: tiup cluster destroy
 
 # tiup cluster destroy
 
-## 介绍
-
 当业务下线之后，如果想将集群占有的机器释放出来让给其他业务使用，需要清理掉集群上的数据以及部署的二进制文件。`tiup cluster destroy` 命令会执行以下操作销毁集群：
 
 - 停止集群

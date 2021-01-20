@@ -4,8 +4,6 @@ title: tiup uninstall
 
 # tiup uninstall
 
-## 介绍
-
 命令 `tiup uninstall` 用于卸载已安装的组件。
 
 ## 语法

@@ -4,8 +4,6 @@ title: tiup mirror clone
 
 # tiup mirror clone
 
-## 介绍
-
 命令 `tiup mirror clone` 用于从一个已经存在的镜像上克隆或部分克隆出一个新的镜像，新旧镜像的组件/部分组件相同，但使用的签名密钥不同。
 
 ## 语法

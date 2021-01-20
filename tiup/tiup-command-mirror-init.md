@@ -4,8 +4,6 @@ title: tiup mirror init
 
 # tiup mirror init
 
-## 介绍
-
 命令 `tiup mirror init` 用于初始化一个空的镜像，初始化的镜像不包含任何组件和组件管理员，仅生成以下文件：
 
 ```

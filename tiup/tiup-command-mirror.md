@@ -4,8 +4,6 @@ title: tiup mirror
 
 # tiup mirror
 
-## 介绍
-
 在 TiUP 中，[镜像](/tiup/tiup-mirror-reference.md)是一个非常重要的概念，目前 TiUP 支持两种形式的镜像：
 
 - 本地镜像：即 TiUP 客户端和镜像在同一台机器上，客户端通过文件系统访问镜像

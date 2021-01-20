@@ -4,8 +4,6 @@ title: tiup cluster rename
 
 # tiup cluster rename
 
-## 介绍
-
 集群名字是[部署集群](/tiup/tiup-component-cluster-deploy.md)时指定的，在集群部署之后，如果想更改集群名字，可以通过 `tiup cluster rename` 命令来实现。
 
 > **注意：**

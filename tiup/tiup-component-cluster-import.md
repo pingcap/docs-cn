@@ -4,8 +4,6 @@ title: tiup cluster import
 
 # tiup cluster import
 
-## 介绍
-
 在 TiDB 4.0 以前的版本，集群基本是通过 TiDB Ansible 部署的，TiUP Cluster 提供了 `import` 命令用于让这些集群过渡到 tiup-cluster 组件接管。
 
 > **注意：**

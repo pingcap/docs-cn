@@ -4,8 +4,6 @@ title: tiup update
 
 # tiup update
 
-## 介绍
-
 命令 `tiup update` 用于升级已安装的组件或者自身。
 
 ## 语法

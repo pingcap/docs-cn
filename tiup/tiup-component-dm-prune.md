@@ -4,8 +4,6 @@ title: tiup dm prune
 
 # tiup dm prune
 
-## 介绍
-
 在[缩容集群](/tiup/tiup-component-dm-scale-in.md)后，ETCD 中仍然会有少量元信息不会被清理，通常不会有问题，如果确实需要清理，可以手动执行 `tiup cluster prune` 命令清理。
 
 ## 语法

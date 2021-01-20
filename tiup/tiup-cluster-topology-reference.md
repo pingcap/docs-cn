@@ -4,8 +4,6 @@ title: tiup cluster topology reference
 
 # tiup cluster topology reference
 
-## 介绍
-
 在部署或扩容 TiDB 集群时，需要提供一份拓扑文件来描述集群拓扑，同样，修改配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
 
 拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。

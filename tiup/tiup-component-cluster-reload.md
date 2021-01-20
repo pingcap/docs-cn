@@ -4,8 +4,6 @@ title: tiup cluster reload
 
 # tiup cluster list
 
-## 介绍
-
 在[修改集群配置](/tiup/tiup-component-cluster-edit-config.md)之后，需要通过 `tiup cluster reload` 命令让集群重新加载配置才会生效，该命令会将中控机的配置发布到服务运行的远端机器，并按照升级的流程按顺序重启服务，重启过程中集群仍然可用。
 
 ## 语法

@@ -4,8 +4,6 @@ title: tiup cluster enable
 
 # tiup cluster enable
 
-## 介绍
-
 命令 `tiup cluster enable` 用于设置集群服务在机器重启后的自启动，该命令会到指定的节点上去执行 `systemctl enable <service>` 来开启服务的自启。
 
 > **注意：**

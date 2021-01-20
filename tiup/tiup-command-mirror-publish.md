@@ -4,8 +4,6 @@ title: tiup mirror publish
 
 # tiup mirror publish
 
-## 介绍
-
 命令 `tiup mirror publish` 用于发布新组件，或已有组件的新版本。只有合法的组件管理员才可以发布组件，组件管理员的引入方式参考[grant 命令](/tiup/tiup-command-mirror-grant.md)。
 
 ## 语法

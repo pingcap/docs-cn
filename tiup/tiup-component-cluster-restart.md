@@ -4,8 +4,6 @@ title: tiup cluster restart
 
 # tiup cluster restart
 
-## 介绍
-
 命令 `tiup cluster restart` 用于重启指定集群的所有或部分服务。
 
 > **注意：**

@@ -4,8 +4,6 @@ title: tiup mirror modify
 
 # tiup mirror modify
 
-## 介绍
-
 命令 `tiup mirror modify` 用于修改已发布的组件。只有合法的组件管理员才可以修改组件，且只能修改其自己发布的组件，组件发布方式参考[publish 命令](/tiup/tiup-command-mirror-publish.md)。
 
 ## 语法

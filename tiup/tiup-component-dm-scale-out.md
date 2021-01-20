@@ -4,8 +4,6 @@ title: tiup dm scale-out
 
 # tiup dm scale-out
 
-## 介绍
-
 `tiup dm scale-out` 命令用于集群扩容，扩容的内部逻辑与部署类似，tiup-dm 组件会先建立新节点的 SSH 连接，在目标节点上创建必要的目录，然后执行部署并且启动服务。
 
 ## 语法

@@ -4,8 +4,6 @@ title: tiup dm stop
 
 # tiup dm stop
 
-## 介绍
-
 命令 `tiup dm stop` 用于停止指定集群的所有服务或部分服务。
 
 > **注意：**

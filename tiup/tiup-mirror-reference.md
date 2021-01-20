@@ -4,8 +4,6 @@ title: tiup mirror reference
 
 # tiup mirror reference
 
-## 介绍
-
 TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件的元信息。镜像有两种存在形式：
 
 - 本地磁盘上的目录：用于服务本地的 TiUP 客户端，文档中将称之为本地镜像

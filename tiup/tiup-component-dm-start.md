@@ -4,8 +4,6 @@ title: tiup dm start
 
 # tiup dm start
 
-## 介绍
-
 命令 `tiup dm start` 用于启动指定集群的所有或部分服务。
 
 ## 语法

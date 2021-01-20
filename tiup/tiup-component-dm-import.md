@@ -4,8 +4,6 @@ title: tiup dm import
 
 # tiup dm import
 
-## 介绍
-
 在 DM 1.0 版本，集群基本是通过 TiDB Ansible 部署的，TiUP DM 提供了 `import` 命令导入 1.0 的集群并重新部署 2.0 的集群。
 
 > **注意：**

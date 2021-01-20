@@ -4,8 +4,6 @@ title: tiup list
 
 # tiup list
 
-## 介绍
-
 命令 `tiup list` 用于查询镜像中可用的组件列表。
 
 ## 语法

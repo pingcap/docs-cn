@@ -4,8 +4,6 @@ title: tiup mirror rotate
 
 # tiup mirror rotate
 
-## 介绍
-
 TiUP 的镜像中有一个非常重要的文件：root.json，里面记录了整个系统需要使用的公钥，是 TiUP 信任链的基础，它的内容主要包含几个部分：
 
 - N 个管理员的签名，对于官方镜像,  N 为 5，默认初始化的镜像 N 为 3

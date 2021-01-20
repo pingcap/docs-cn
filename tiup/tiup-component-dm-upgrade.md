@@ -5,8 +5,6 @@ aliases: ['/docs-cn/dev/tiup/tiup-component-dm-upgrade/']
 
 # tiup dm upgrade
 
-## 介绍
-
 命令 `tiup dm upgrade` 用于将指定集群升级到特定版本。
 
 ## 语法

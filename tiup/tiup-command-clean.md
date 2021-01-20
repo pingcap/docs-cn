@@ -4,8 +4,6 @@ title: tiup clean
 
 # tiup clean
 
-## 介绍
-
 命令 `tiup clean` 用于清除组件运行过程中产生的数据
 
 ## 语法

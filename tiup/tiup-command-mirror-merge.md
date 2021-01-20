@@ -4,8 +4,6 @@ title: tiup mirror merge
 
 # tiup mirror merge
 
-## 介绍
-
 命令 `tiup mirror merge` 用于合并一个或多个镜像到当前镜像。
 
 执行此命令需要满足几个条件：

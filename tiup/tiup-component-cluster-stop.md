@@ -4,8 +4,6 @@ title: tiup cluster stop
 
 # tiup cluster stop
 
-## 介绍
-
 命令 `tiup cluster stop` 用于停止指定集群的所有服务或部分服务。
 
 > **注意：**
