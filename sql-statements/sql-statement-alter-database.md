@@ -9,13 +9,13 @@ summary: TiDB 数据库中 ALTER DATABASE 的使用概况。
 
 ## 语法图
 
-**AlterDatabaseStmt:**
+```ebnf+diagram
+AlterDatabaseStmt ::=
+    'ALTER' 'DATABASE' DBName? DatabaseOptionList
 
-![AlterDatabaseStmt](/media/sqlgram/AlterDatabaseStmt.png)
-
-**DatabaseOption:**
-
-![DatabaseOption](/media/sqlgram/DatabaseOption.png)
+DatabaseOption ::=
+    DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
+```
 
 ## 示例
 
