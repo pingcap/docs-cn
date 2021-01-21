@@ -17,13 +17,13 @@ summary: TiDB 数据库中 ALTER INSTANCE 的使用概况。
 
 ## 语法图
 
-**AlterInstanceStmt:**
+```ebnf+diagram
+AlterInstanceStmt ::=
+    'ALTER' 'INSTANCE' InstanceOption
 
-![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
-
-**InstanceOption:**
-
-![InstanceOption](/media/sqlgram/InstanceOption.png)
+InstanceOption ::=
+    'RELOAD' 'TLS' ('NO' 'ROLLBACK' 'ON' 'ERROR')?
+```
 
 ## 示例
 
