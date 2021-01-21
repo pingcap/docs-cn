@@ -14,17 +14,16 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-analyze-table/','/docs-c
 
 ## 语法图
 
-**AnalyzeTableStmt:**
+```ebnf+diagram
+AnalyzeTableStmt ::=
+    'ANALYZE' ( 'TABLE' ( TableNameList | TableName ( 'INDEX' IndexNameList | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? ) ) | 'INCREMENTAL' 'TABLE' TableName ( 'PARTITION' PartitionNameList )? 'INDEX' IndexNameList ) AnalyzeOptionListOpt
 
-![AnalyzeTableStmt](/media/sqlgram/AnalyzeTableStmt.png)
+TableNameList ::=
+    TableName (',' TableName)*
 
-**TableNameList:**
-
-![TableNameList](/media/sqlgram/TableNameList.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ( '.' Identifier )?
+```
 
 ## 示例
 
