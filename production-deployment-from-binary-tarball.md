@@ -106,15 +106,15 @@ See the following table for the default ports for the optional TiDB components:
 
 ```
 # Download the package.
-$ wget https://download.pingcap.org/tidb-latest-linux-amd64.tar.gz
-$ wget https://download.pingcap.org/tidb-latest-linux-amd64.sha256
+$ wget https://download.pingcap.org/tidb-nightly-linux-amd64.tar.gz
+$ wget https://download.pingcap.org/tidb-nightly-linux-amd64.sha256
 
 # Check the file integrity. If the result is OK, the file is correct.
-$ sha256sum -c tidb-latest-linux-amd64.sha256
+$ sha256sum -c tidb-nightly-linux-amd64.sha256
 
 # Extract the package.
-$ tar -xzf tidb-latest-linux-amd64.tar.gz
-$ cd tidb-latest-linux-amd64
+$ tar -xzf tidb-nightly-linux-amd64.tar.gz
+$ cd tidb-nightly-linux-amd64
 ```
 
 ## Multiple nodes cluster deployment
