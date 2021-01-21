@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tool
 
 > **注意：**
 >
-> 原 Mydumper 工具已停止维护，不再推荐使用，相关场景请使用 [Dumpling](/dumpling-overview.md) 进行替代。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 已经被 [Dumpling](/dumpling-overview.md) 工具取代，并使用 Go 语言编写，支持更多针对 TiDB 特性的优化。建议切换到 Dumpling。
 
 ## 全量导入
 
