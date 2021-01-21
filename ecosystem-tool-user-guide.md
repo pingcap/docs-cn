@@ -18,13 +18,10 @@ aliases: ['/docs-cn/stable/ecosystem-tool-user-guide/','/docs-cn/v4.0/ecosystem-
 - 适用 TiDB 版本：所有版本
 - Kubernetes 支持：尚未支持
 
-<<<<<<< HEAD
-=======
 > **注意：**
 >
 > PingCAP 之前维护的 Mydumper 工具 fork 自 [Mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 已经被 [Dumpling](/dumpling-overview.md) 工具取代，并使用 Go 语言编写，支持更多针对 TiDB 特性的优化。建议切换到 Dumpling。
 
->>>>>>> a09ebfa8... Refine ecosystem tool guide document  (#5368)
 ## 全量导入
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一个用于将全量数据导入到 TiDB 集群的工具。
