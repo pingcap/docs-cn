@@ -18,7 +18,10 @@ aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-alter-instance/','/docs-cn
 
 ## 语法图
 
-![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
+```ebnf+diagram
+AlterInstanceStmt ::=
+    'ALTER' 'INSTANCE' InstanceOption
+```
 
 ## 示例
 

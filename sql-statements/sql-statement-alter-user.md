@@ -10,17 +10,16 @@ aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-alter-user/','/docs-cn/v3.
 
 ## 语法图
 
-**AlterUserStmt:**
+```ebnf+diagram
+AlterUserStmt ::=
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
 
-![AlterUserStmt](/media/sqlgram/AlterUserStmt.png)
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
 
-**UserSpecList:**
-
-![UserSpecList](/media/sqlgram/UserSpecList.png)
-
-**UserSpec:**
-
-![UserSpec](/media/sqlgram/UserSpec.png)
+UserSpec ::=
+    Username AuthOption
+```
 
 ## 示例
 
