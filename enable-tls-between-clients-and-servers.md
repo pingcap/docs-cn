@@ -4,7 +4,7 @@ summary: Use the encrypted connection to ensure data security.
 aliases: ['/docs/dev/enable-tls-between-clients-and-servers/','/docs/dev/how-to/secure/enable-tls-clients/','/docs/dev/encrypted-connections-with-tls-protocols/']
 ---
 
-# Enable TLS Between TiDB Clients and Servers
+# Enable TLS between TiDB Clients and Servers
 
 Non-encrypted connection between TiDB's server and client is used by default, which enables third parties that monitor channel traffic to know the data sent and received between the server and the client, including but not limited to query content, query results, and so on. If a channel is untrustworthy (such as if the client is connected to the TiDB server via a public network), then a non-encrypted connection is prone to information leakage. In this case, for security reasons, it is recommended to use an encrypted connection.
 

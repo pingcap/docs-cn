@@ -4,7 +4,7 @@ summary: Learn about how to connect with us.
 aliases: ['/docs/dev/community/']
 ---
 
-# Connect with us
+# Connect with Us
 
 - **Twitter**: [@PingCAP](https://twitter.com/PingCAP)
 - **Reddit**: <https://www.reddit.com/r/TiDB/>

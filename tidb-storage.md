@@ -3,7 +3,7 @@ title: Storage of TiDB database
 summary: Understand the storage layer of a TiDB database
 ---
 
-# Storage of TiDB database
+# Storage of TiDB Database
 
 This document introduces some design ideas and key concepts of TiKV.
 
