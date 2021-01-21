@@ -19,19 +19,7 @@ UserSpecList ::=
 
 UserSpec ::=
     Username AuthOption
-
-Username ::=
-    StringName ('@' StringName | singleAtIdentifier)? | 'CURRENT_USER' OptionalBraces
-
-<<<<<<< HEAD
-**UserSpec:**
-
-![UserSpec](/media/sqlgram/UserSpec.png)
-=======
-AuthOption ::=
-    ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
 ```
->>>>>>> 59ffc3de... sql-statements: use EBNF to render syntax diagrams for ADD, ALTER and ANALYZE statements (#5324)
 
 ## 示例
 

@@ -10,27 +10,6 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-add-column/','/docs-cn/v3.
 
 ## 语法图
 
-<<<<<<< HEAD
-**AlterTableStmt:**
-
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
-
-**AlterTableSpec:**
-
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
-
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
-**ColumnDef:**
-
-![ColumnDef](/media/sqlgram/ColumnDef.png)
-
-**ColumnPosition:**
-
-![ColumnPosition](/media/sqlgram/ColumnPosition.png)
-=======
 ```ebnf+diagram
 AlterTableStmt ::=
     'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
@@ -58,13 +37,15 @@ AlterTableSpec ::=
 |   'SECONDARY_LOAD'
 |   'SECONDARY_UNLOAD'
 
+ColumnKeywordOpt ::=
+    'COLUMN'?
+
 ColumnDef ::=
     ColumnName ( Type | 'SERIAL' ) ColumnOptionListOpt
 
 ColumnPosition ::=
     ( 'FIRST' | 'AFTER' ColumnName )?
 ```
->>>>>>> 59ffc3de... sql-statements: use EBNF to render syntax diagrams for ADD, ALTER and ANALYZE statements (#5324)
 
 ## 示例
 
