@@ -1,6 +1,5 @@
 ---
 title: tiup dm upgrade
-aliases: ['/docs-cn/dev/tiup/tiup-component-dm-upgrade/']
 ---
 
 # tiup dm upgrade
