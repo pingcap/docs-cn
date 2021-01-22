@@ -1,7 +1,6 @@
 ---
 title: 使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据
 summary: 使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据。
-aliases: ['/docs-cn/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/how-to/migrate/from-aurorausing-lightning/','/docs-cn/dev/how-to/migrate/from-aurora-using-lightning/']
 ---
 
 # 使用 Lighting 从 MySQL SQL 文件迁移数据
