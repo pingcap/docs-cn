@@ -184,5 +184,5 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 TiDB 不支持在 MySQL 中标记为弃用的功能。包括：
 
-* 指定浮点类型的精度。MySQL 8.0 [弃用]（https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html）了此功能，建议改用 `DECIMAL` 类型。
+* 指定浮点类型的精度。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html)了此功能，建议改用 `DECIMAL` 类型。
 * `ZEROFILL` 属性。 MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html) 了此功能，建议改在应用程序中填充数字值。
