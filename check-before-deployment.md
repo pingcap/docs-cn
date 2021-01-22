@@ -271,7 +271,7 @@ sudo systemctl enable ntpd.service
     
     > **注意：**
     >
-    > `noop [deadline] cfq` 表示磁盘的 IO 调度器使用 deadline，需要进行修改。
+    > `noop [deadline] cfq` 表示磁盘的 IO 调度器使用 `deadline`，需要进行修改。
 
 3. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
 
