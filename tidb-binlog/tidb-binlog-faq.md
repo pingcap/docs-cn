@@ -225,11 +225,12 @@ Pump 以 `paused` 状态退出进程时，不保证所有 binlog 数据被下游
 
 ## TiDB 向 pump 写入了重复的 binlog？
 
-TiDB 在写入 binlog 失败或者超时的情况下，会重试下一个可用的 pump 直到写入成功。所以如果某个 pump 写入较慢， 导致 tidb 超时(默认 15s), 此时 tidb 判定写入失败并尝试下一个 pump。 如果超时的 pump 实际也写入成功，则会出现同一条 binlog 被写入到多个 pump。Drainer 在处理 binlog 的时候，会自动去重 tso 相同的 binlog，所以这种重复的写入，对下游无感知，不会对同步逻辑产生影响。
+TiDB 在写入 binlog 失败或者超时的情况下，会重试下一个可用的 Pump 直到写入成功。所以如果某个 Pump 写入较慢， 导致 TiDB 超时(默认 15s), 此时 TiDB 判定写入失败并尝试下一个 Pump。如果超时的 Pump 实际也写入成功，则会出现同一条 binlog 被写入到多个 Pump。Drainer 在处理 binlog 的时候，会自动去重 tso 相同的 binlog，所以这种重复的写入，对下游无感知，不会对同步逻辑产生影响。
 
 ## 在使用全量+增量方式恢复的过程中，reparo 中断了，可以使用日志里面最后一个 tso 接起来吗？
 
-可以。reparo 不会在启动时自动开启 safe-mode 模式，需要手动操作：
-1、Reparo 中断后，记录日志中最后一个 tso，记为 checkpoint tso。
-2、修改 Reparo 配置文件，将 start-tso 设为 checkpoint tso + 1，将 stop-tso 设为 checkpoint tso + 80,000,000,000（大概是 checkpoint tso 延后 5 分钟），将 safe-mode 设为 true，启动 reparo，reparo 会将数据同步到 stop-tso 后自动停止。
-3、reparo 自动停止后，将配置文件 start-tso 设为 checkpoint tso + 80,000,000,001，将 stop-tso 设为 0，将 safe-mode 设为 false。启动 reparo 继续同步。
+可以。Reparo 不会在启动时自动开启 safe-mode 模式，需要手动操作：
+
+1. Reparo 中断后，记录日志中最后一个 tso，记为 checkpoint tso。
+2. 修改 Reparo 配置文件，将 `start-tso` 设为 `checkpoint tso + 1`，将 `stop-tso` 设为 `checkpoint tso + 80,000,000,000`（大概是 checkpoint tso 延后 5 分钟），将 `safe-mode` 设为 `true`，启动 Reparo，Reparo 会将数据同步到 `stop-tso` 后自动停止。
+3. Reparo 自动停止后，将配置文件 `start-tso` 设为 `checkpoint tso + 80,000,000,001`，将 `stop-tso` 设为 `0`，将 `safe-mode` 设为 `false`。启动 Reparo 继续同步。
