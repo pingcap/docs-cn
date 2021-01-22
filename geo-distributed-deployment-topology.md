@@ -1,7 +1,7 @@
 ---
 title: 跨数据中心部署拓扑
 summary: 介绍跨数据中心部署 TiDB 集群的拓扑结构。
-aliases: ['/docs-cn/stable/geo-distributed-deployment-topology/','/docs-cn/v4.0/geo-distributed-deployment-topology/']
+aliases: ['/docs-cn/stable/geo-distributed-deployment-topology/','/docs-cn/v4.0/geo-distributed-deployment-topology/','/zh/tidb/v4.0/geo-redundancy-deployment/']
 ---
 
 # 跨数据中心部署拓扑
