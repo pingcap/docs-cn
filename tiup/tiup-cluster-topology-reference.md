@@ -1,16 +1,16 @@
 ---
-title: tiup cluster topology reference
+title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 ---
 
-# tiup cluster topology reference
+# 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 
-在部署或扩容 TiDB 集群时，需要提供一份拓扑文件来描述集群拓扑，同样，修改配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
+通过 TiUP 部署或扩容 TiDB 集群时，需要提供一份拓扑文件（[示例](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)）来描述集群拓扑。
 
-拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。
+同样，修改集群配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
 
 ## 文件结构
 
-一个 TiDB 集群的拓扑文件可能包含以下区块：
+一个通过 TiUP 部署的 TiDB 集群拓扑文件可能包含以下区块：
 
 - [global](/tiup/tiup-cluster-topology-reference.md#global)：集群全局配置，其中一些是集群的默认值，可以在实例里面单独配置
 - [monitored](/tiup/tiup-cluster-topology-reference.md#monitored)：监控服务配置，即 blackbox exporter 和 node exporter，每台机器上都会部署一个 node exporter 一个 blackbox exporter
