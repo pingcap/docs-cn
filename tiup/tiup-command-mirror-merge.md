@@ -9,7 +9,7 @@ title: tiup mirror merge
 执行此命令需要满足几个条件：
 
 - 目标镜像的所有组件的管理员 ID 必须在当前镜像中存在
-- 执行该命令的用户的 `${TIUP_HOME}/keys` 目录中有上述管理员 ID 在当前镜像中对应的所有的私钥（可以使用命令 [tiup mirror set](/tiup/tiup-command-mirror-set.md) 将当前镜像切换成目前有权限修改的镜像）
+- 执行该命令用户的 `${TIUP_HOME}/keys` 目录中有上述管理员 ID 在当前镜像中对应的所有私钥（可以使用命令 [tiup mirror set](/tiup/tiup-command-mirror-set.md) 将当前镜像切换成目前有权限修改的镜像）
 
 ## 语法
 
