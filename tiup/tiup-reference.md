@@ -12,6 +12,8 @@ title: TiUP 参考手册
 
 TiUP 的使用围绕命令，组件，镜像这几个核心概念进行，我们下面先对它们进行定义。
 
+## 概念
+
 ### 命令
 
 命令是程序功能的入口，一切功能都被实现在一个命令中，它具有以下特点：
@@ -55,7 +57,7 @@ tiup [flags] <component> [args...]      # 运行组件
 - 执行 `tiup -B/--binary <component>` 将打印已安装的 `<component>` 组件的最新稳定版路径，若 `<component>` 组件未安装，则报错
 - 执行 `tiup -B/--binary <component>:<version>` 将答应已经安装的 `<component>` 组件的 `<version>` 版本所在的路径，若该版本未安装，则报错
 
-> **使用限制：**
+> **注意**
 >
 > 该选项只能用于 `tiup [flags] <component> [args...]` 格式的命令。
 
@@ -63,7 +65,7 @@ tiup [flags] <component> [args...]      # 运行组件
 
 指定要执行的组件的路径：执行一个组件时，如果不想使用 TiUP 镜像中的二进制文件，可以使用该参数使用自定义路径的二进制文件替换之。
 
-> **使用限制：**
+> **注意**
 >
 > 该选项只能用于 `tiup [flags] <component> [args...]` 格式的命令。
 

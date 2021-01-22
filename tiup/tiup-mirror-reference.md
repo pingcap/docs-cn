@@ -299,13 +299,13 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
 
 客户端通过以下逻辑保证从镜像下载到的文件是安全的：
 
-- 客户端安装时随 binary 附带了一个 root.json
-- 客户端运行时以已有的 root.json 为基础，做如下操作：
-    1. 获取 root.json 中的 version，记为 N
-    2. 向镜像请求 {N+1}.root.json，若成功，使用 root.json 中记录的公钥验证该文件是否合法
-- 向镜像请求 timestamp.json，并使用 root.json 中记录的公钥验证该文件是否合法
-- 检查 timestamp.json 中记录的 snapshot.json 的 checksum 和本地的 snapshot.json 的 checksum 是否吻合
+1. 客户端安装时随 binary 附带了一个 root.json
+2. 客户端运行时以已有的 root.json 为基础，做如下操作：
+    a. 获取 root.json 中的 version，记为 N
+    b. 向镜像请求 {N+1}.root.json，若成功，使用 root.json 中记录的公钥验证该文件是否合法
+3. 向镜像请求 timestamp.json，并使用 root.json 中记录的公钥验证该文件是否合法
+4. 检查 timestamp.json 中记录的 snapshot.json 的 checksum 和本地的 snapshot.json 的 checksum 是否吻合
     - 若不吻合，则向镜像请求最新的 snapshot.json 并使用 root.json 中记录的公钥验证该文件是否合法
-- 对于 index.json 文件，从 snapshot.json 中获取其版本号 N，并请求 {N}.index.json，然后使用 root.json 中记录的公钥验证该文件是否合法
-- 对于组件（如 tidb.json，tikv.json），从 snapshot.json 中获取其版本号 N，并请求 {N}.{component}.json，然后使用 index.json 中记录的公钥验证该文件是否合法
-- 对于组件 tar 文件，从 {component}.json 中获取其 url 及 checksum，请求 url 得到 tar 包，并验证 checksum 是否正确
+5. 对于 index.json 文件，从 snapshot.json 中获取其版本号 N，并请求 {N}.index.json，然后使用 root.json 中记录的公钥验证该文件是否合法
+6. 对于组件（如 tidb.json，tikv.json），从 snapshot.json 中获取其版本号 N，并请求 {N}.{component}.json，然后使用 index.json 中记录的公钥验证该文件是否合法
+7. 对于组件 tar 文件，从 {component}.json 中获取其 url 及 checksum，请求 url 得到 tar 包，并验证 checksum 是否正确
