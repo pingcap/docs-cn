@@ -115,7 +115,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 {{< copyable "shell-regular" >}}
 
 ```bash
-echo "vm.swappiness = 0">> /etc/sysctl.conf 
+echo "vm.swappiness = 0">> /etc/sysctl.conf
 swapoff -a && swapon -a
 sysctl -p
 ```
@@ -267,7 +267,7 @@ sudo systemctl enable ntpd.service
     noop [deadline] cfq
     noop [deadline] cfq
     ```
-    
+
     > **注意：**
     >
     > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
@@ -284,7 +284,7 @@ sudo systemctl enable ntpd.service
     E: ID_SERIAL=36d0946606d79f90025f3e09a0c1f9e81
     E: ID_SERIAL_SHORT=6d0946606d79f90025f3e09a0c1f9e81
     ```
-    
+
     > **注意：**
     >
     > 如果多个磁盘都分配了数据目录，需要多次执行以上命令，记录所有磁盘各自的唯一标识。
@@ -302,182 +302,184 @@ sudo systemctl enable ntpd.service
     current policy: frequency should be within 1.20 GHz and 3.10 GHz.
                   The governor "powersave" may decide which speed to use within this range.
     ```
-    
+
     > **注意：**
     >
     > `The governor "powersave"` 表示 cpufreq 的节能策略使用 powersave，需要调整为 performance 策略。如果是虚拟机或者云主机，则不需要调整，命令输出通常为 `Unable to determine current policy`。
 
-5. 配置应用优化参数方式一：tuned 方式（推荐）。
-   
-    1. 执行 `tuned-adm list` 命令查看当前操作系统的 tuned 策略。
+5. 配置系统优化参数
 
-        {{< copyable "shell-regular" >}}
+    + 方法一：使用 tuned（推荐）
 
-        ```bash
-        tuned-adm list
-        ```
+        1. 执行 `tuned-adm list` 命令查看当前操作系统的 tuned 策略。
 
-        ```
-        Available profiles:
-        - balanced                    - General non-specialized tuned profile
-        - desktop                     - Optimize for the desktop use-case
-        - hpc-compute                 - Optimize for HPC compute workloads
-        - latency-performance         - Optimize for deterministic performance at the cost of increased power consumption
-        - network-latency             - Optimize for deterministic performance at the cost of increased power consumption, focused on low latency network performance
-        - network-throughput          - Optimize for streaming network throughput, generally only necessary on older CPUs or 40G+ networks
-        - powersave                   - Optimize for low power consumption
-        - throughput-performance      - Broadly applicable tuning that provides excellent performance across a variety of common server workloads
-        - virtual-guest               - Optimize for running inside a virtual guest
-        - virtual-host                - Optimize for running KVM guests
-        Current active profile: balanced
-        ```
+            {{< copyable "shell-regular" >}}
 
-        `Current active profile: balanced` 表示当前操作系统的 tuned 策略使用 balanced，建议在当前策略的基础上添加操作系统优化配置。
+            ```bash
+            tuned-adm list
+            ```
 
-    2. 创建新的 tuned 策略。
+            ```
+            Available profiles:
+            - balanced                    - General non-specialized tuned profile
+            - desktop                     - Optimize for the desktop use-case
+            - hpc-compute                 - Optimize for HPC compute workloads
+            - latency-performance         - Optimize for deterministic performance at the cost of increased power consumption
+            - network-latency             - Optimize for deterministic performance at the cost of increased power consumption, focused on low latency network performance
+            - network-throughput          - Optimize for streaming network throughput, generally only necessary on older CPUs or 40G+ networks
+            - powersave                   - Optimize for low power consumption
+            - throughput-performance      - Broadly applicable tuning that provides excellent performance across a variety of common server workloads
+            - virtual-guest               - Optimize for running inside a virtual guest
+            - virtual-host                - Optimize for running KVM guests
+            Current active profile: balanced
+            ```
 
-        {{< copyable "shell-regular" >}}
+            `Current active profile: balanced` 表示当前操作系统的 tuned 策略使用 balanced，建议在当前策略的基础上添加操作系统优化配置。
 
-        ```bash
-        mkdir /etc/tuned/balanced-tidb-optimal/
-        vi /etc/tuned/balanced-tidb-optimal/tuned.conf
-        ```
+        2. 创建新的 tuned 策略。
 
-        ```
-        [main]
-        include=balanced
+            {{< copyable "shell-regular" >}}
 
-        [cpu]
-        governor=performance
+            ```bash
+            mkdir /etc/tuned/balanced-tidb-optimal/
+            vi /etc/tuned/balanced-tidb-optimal/tuned.conf
+            ```
 
-        [vm]
-        transparent_hugepages=never
+            ```
+            [main]
+            include=balanced
 
-        [disk]
-        devices_udev_regex=(ID_SERIAL=36d0946606d79f90025f3e09a0c1fc035)|(ID_SERIAL=36d0946606d79f90025f3e09a0c1f9e81)
-        elevator=noop
-        ```
+            [cpu]
+            governor=performance
 
-        `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
-    
-    3. 应用新的 tuned 策略。
+            [vm]
+            transparent_hugepages=never
 
-        {{< copyable "shell-regular" >}}
+            [disk]
+            devices_udev_regex=(ID_SERIAL=36d0946606d79f90025f3e09a0c1fc035)|(ID_SERIAL=36d0946606d79f90025f3e09a0c1f9e81)
+            elevator=noop
+            ```
 
-        ```bash
-        tuned-adm profile balanced-tidb-optimal
-        ```
-    
-6. 配置应用优化参数方式二：使用脚本方式，如果已经使用 tuned 方式，请跳过本步骤。
-   
-    1. 执行 `grubby` 命令查看默认内核版本。
+            `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
 
-        > **注意：**
-        >
-        > 需安装 `grubby` 软件包。
+        3. 应用新的 tuned 策略。
 
-        {{< copyable "shell-regular" >}}
+            {{< copyable "shell-regular" >}}
 
-        ```bash
-        grubby --default-kernel
-        ```
+            ```bash
+            tuned-adm profile balanced-tidb-optimal
+            ```
 
-        ```bash
-        /boot/vmlinuz-3.10.0-957.el7.x86_64
-        ```
+    + 方法二：使用脚本方式。如果已经使用 tuned 方法，请跳过本方法。
 
-   2. 执行 `grubby --update-kernel` 命令修改内核配置。
+        1. 执行 `grubby` 命令查看默认内核版本。
 
-        {{< copyable "shell-regular" >}}
+            > **注意：**
+            >
+            > 需安装 `grubby` 软件包。
 
-        ```bash
-        grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
-        ```
+            {{< copyable "shell-regular" >}}
 
-        > **注意：**
-        >
-        > `--update-kernel` 后需要使用实际的默认内核版本。
+            ```bash
+            grubby --default-kernel
+            ```
 
-    3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
+            ```bash
+            /boot/vmlinuz-3.10.0-957.el7.x86_64
+            ```
 
-        {{< copyable "shell-regular" >}}
+        2. 执行 `grubby --update-kernel` 命令修改内核配置。
 
-        ```bash
-        grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
-        ```
+            {{< copyable "shell-regular" >}}
 
-        > **注意：**
-        >
-        > `--info` 后需要使用实际的默认内核版本。
+            ```bash
+            grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
+            ```
 
-        ```
-        index=0
-        kernel=/boot/vmlinuz-3.10.0-957.el7.x86_64
-        args="ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet LANG=en_US.UTF-8 transparent_hugepage=never"
-        root=/dev/mapper/centos-root
-        initrd=/boot/initramfs-3.10.0-957.el7.x86_64.img
-        title=CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
-        ```
+            > **注意：**
+            >
+            > `--update-kernel` 后需要使用实际的默认内核版本。
 
-    4. 修改当前的内核配置立即关闭透明大页。
+        3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
 
-        {{< copyable "shell-regular" >}}
+            {{< copyable "shell-regular" >}}
 
-        ```bash
-        echo never > /sys/kernel/mm/transparent_hugepage/enabled
-        echo never > /sys/kernel/mm/transparent_hugepage/defrag
-        ```
+            ```bash
+            grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
+            ```
 
-    5. 配置 udev 脚本应用 IO 调度器策略。
+            > **注意：**
+            >
+            > `--info` 后需要使用实际的默认内核版本。
 
-        {{< copyable "shell-regular" >}}
+            ```
+            index=0
+            kernel=/boot/vmlinuz-3.10.0-957.el7.x86_64
+            args="ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet LANG=en_US.UTF-8 transparent_hugepage=never"
+            root=/dev/mapper/centos-root
+            initrd=/boot/initramfs-3.10.0-957.el7.x86_64.img
+            title=CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
+            ```
 
-        ```bash
-        vi /etc/udev/rules.d/60-tidb-schedulers.rules
-        ```
+        4. 修改当前的内核配置立即关闭透明大页。
 
-        ```
-        ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_SERIAL}=="36d0946606d79f90025f3e09a0c1fc035", ATTR{queue/scheduler}="noop"
-        ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_SERIAL}=="36d0946606d79f90025f3e09a0c1f9e81", ATTR{queue/scheduler}="noop"
+            {{< copyable "shell-regular" >}}
 
-        ```
+            ```bash
+            echo never > /sys/kernel/mm/transparent_hugepage/enabled
+            echo never > /sys/kernel/mm/transparent_hugepage/defrag
+            ```
 
-    6. 应用 udev 脚本。
+        5. 配置 udev 脚本应用 IO 调度器策略。
 
-        {{< copyable "shell-regular" >}}
+            {{< copyable "shell-regular" >}}
 
-        ```bash
-        udevadm control --reload-rules
-        udevadm trigger --type=devices --action=change
-        ```
+            ```bash
+            vi /etc/udev/rules.d/60-tidb-schedulers.rules
+            ```
 
-    7. 创建 CPU 节能策略配置服务。
+            ```
+            ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_SERIAL}=="36d0946606d79f90025f3e09a0c1fc035", ATTR{queue/scheduler}="noop"
+            ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_SERIAL}=="36d0946606d79f90025f3e09a0c1f9e81", ATTR{queue/scheduler}="noop"
 
-        {{< copyable "shell-regular" >}}
+            ```
 
-        ```bash
-        $ cat  >> /etc/systemd/system/cpupower.service << EOF
-        [Unit]
-        Description=CPU performance
-        [Service]
-        Type=oneshot
-        ExecStart=/usr/bin/cpupower frequency-set --governor performance
-        [Install]
-        WantedBy=multi-user.target
-        EOF
-        ```
+        6. 应用 udev 脚本。
 
-    8. 应用 CPU 节能策略配置服务。
+            {{< copyable "shell-regular" >}}
 
-        {{< copyable "shell-regular" >}}
+            ```bash
+            udevadm control --reload-rules
+            udevadm trigger --type=devices --action=change
+            ```
 
-        ```bash
-        systemctl daemon-reload
-        systemctl enable cpupower.service
-        systemctl start cpupower.service
-        ```
-  
-7. 执行以下命令验证透明大页的状态。
+        7. 创建 CPU 节能策略配置服务。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            $ cat  >> /etc/systemd/system/cpupower.service << EOF
+            [Unit]
+            Description=CPU performance
+            [Service]
+            Type=oneshot
+            ExecStart=/usr/bin/cpupower frequency-set --governor performance
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+            ```
+
+        8. 应用 CPU 节能策略配置服务。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            systemctl daemon-reload
+            systemctl enable cpupower.service
+            systemctl start cpupower.service
+            ```
+
+6. 执行以下命令验证透明大页的状态。
 
     {{< copyable "shell-regular" >}}
 
@@ -489,7 +491,7 @@ sudo systemctl enable ntpd.service
     always madvise [never]
     ```
 
-8. 执行以下命令验证数据目录所在磁盘的 IO 调度器。
+7. 执行以下命令验证数据目录所在磁盘的 I/O 调度器。
 
     {{< copyable "shell-regular" >}}
 
@@ -499,10 +501,10 @@ sudo systemctl enable ntpd.service
 
     ```
     [noop] deadline cfq
-    [noop] deadline cfq 
+    [noop] deadline cfq
     ```
 
-9. 执行以下命令查看 cpufreq 模块选用的节能策略。
+8. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
     {{< copyable "shell-regular" >}}
 
