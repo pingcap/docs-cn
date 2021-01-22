@@ -42,8 +42,8 @@ tiup dm display <cluster-name> [flags]
 - 集群版本
 - SSH 客户端类型
 - 含有以下字段的表格：
-    - ID：节点 ID，由 IP:PORT 构成
-    - Role：该节点部署的服务角色（如 tidb, tikv 等）
+    - ID：节点 ID，由 IP:PORT 构成
+    - Role：该节点部署的服务角色（如 TiDB 和 TiKV 等）
     - Host：该节点对应的机器 IP
     - Ports：服务占用的端口号
     - OS/Arch：该节点的操作系统和机器架构

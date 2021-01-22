@@ -33,7 +33,7 @@ tiup dm patch <cluster-name> <package-path> [flags]
 
 ### --overwrite（boolean，默认 false）
 
-对某个组件（比如 TiDB，TiKV）进行 patch 之后，会涉及到一个问题：以后在该集群扩容该组件时，是用原来的版本，还是用 patch 之后的二进制包？tiup-dm 默认会用原来的版本，如果希望后续扩容的时候也使用 patch 之后的版本的话，就需要指定 `--overwrite` 选项。
+对某个组件（比如 TiDB，TiKV）进行 patch 之后，该集群扩容该组件时，tiup-dm 默认会用原来的版本。如果希望后续扩容的时候也使用 patch 之后的版本的话，就需要指定 `--overwrite` 选项。
 
 ### -N, --node（strings，默认为 []，未选中任何节点）
 

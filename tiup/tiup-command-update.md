@@ -30,11 +30,11 @@ tiup update [component1][:version] [component2..N] [flags]
 
 ### --nightly (boolean, 默认 false)
 
-将指定组件升级到 nightly 版本：等价于 `tiup update <component>:nightly`。
+将指定组件升级到 nightly 版本。使用该参数的命令等价于 `tiup update <component>:nightly`。
 
 ### --self (boolean，默认 false)
 
-升级 tiup 自身。
+升级 TiUP 自身。
 
 ## 输出
 
