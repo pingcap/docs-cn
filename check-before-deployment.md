@@ -253,7 +253,7 @@ sudo systemctl enable ntpd.service
 
     > **注意：**
     >
-    > `[always] madvise never` 表示透明大页处于启用状态，需要进行关闭。
+    > `[always] madvise never` 表示透明大页处于启用状态，需要关闭。
 
 2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设在 sdb、sdc 两个磁盘上创建了数据目录。
 
