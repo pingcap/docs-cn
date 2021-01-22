@@ -296,7 +296,7 @@ sudo systemctl enable ntpd.service
 
     ```bash
     cpupower frequency-info --policy
-      ```
+    ```
 
     ```
     analyzing CPU 0:
