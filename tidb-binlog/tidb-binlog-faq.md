@@ -217,20 +217,20 @@ Pump 以 `paused` 状态退出进程时，不保证所有 binlog 数据被下游
 
 目前还不支持。这种 SQL 操作会直接修改 PD 中保存的状态，在功能上等同于使用 binlogctl 的 `update-pump`、`update-drainer` 命令。如果需要暂停或者下线，仍然要使用 binlogctl。
 
-## TiDB 写 binlog 失败导致 TiDB 卡住，日志不停报错 "listener stopped, waiting for manual stop"
+## TiDB 写入 binlog 失败导致 TiDB 卡住，日志中出现 `listener stopped, waiting for manual stop`
 
-在 3.0.12 之前版本的 tidb，写 binlog 失败会导致 tidb 报 fatal error， 但是 tidb 不会自动退出只是停止服务，看起来像是服务卡住, tidb 的日志里面可以看到 “listener stopped, waiting for manual stop”。 遇到此问题需要根据具体情况判断具体是什么原因导致写 binlog 失败，如果是下游 binlog 写入缓慢导致，可以考虑扩容 pump 或增加写 binlog 超时时间。
+在 TiDB 3.0.12 之前，binlog 写入失败会导致 TiDB 报 fatal error。但是 TiDB 不会自动退出只是停止服务。看起来像服务卡住。TiDB 日志中可看到 `listener stopped, waiting for manual stop`。 遇到该问题需要根据具体情况判断是什么原因导致 binlog 写入失败。如果是下游 binlog 写入缓慢导致的，可以考虑扩容 Pump 或增加写 binlog 的超时时间。
 
-新版本的 tidb 已优化此逻辑，写入 binlog 失败将使事务执行失败返回而不会导致 tidb 卡住。
+TiDB 在 3.0.13 版本已优化此逻辑，写入 binlog 失败将使事务执行失败报错返回而不会导致 TiDB 卡住。
 
 ## TiDB 向 pump 写入了重复的 binlog？
 
-TiDB 在写入 binlog 失败或者超时的情况下，会重试下一个可用的 Pump 直到写入成功。所以如果某个 Pump 写入较慢， 导致 TiDB 超时(默认 15s), 此时 TiDB 判定写入失败并尝试下一个 Pump。如果超时的 Pump 实际也写入成功，则会出现同一条 binlog 被写入到多个 Pump。Drainer 在处理 binlog 的时候，会自动去重 tso 相同的 binlog，所以这种重复的写入，对下游无感知，不会对同步逻辑产生影响。
+TiDB 在写入 binlog 失败或者超时的情况下，会重试将 binlog 写入到下一个可用的 Pump 节点直到写入成功。所以如果写入到某个 Pump 节点较慢，导致 TiDB 超时（默认 15s），此时 TiDB 判定写入失败并尝试下一个 Pump 节点。如果超时的 Pump 实际也写入成功，则会出现同一条 binlog 被写入到多个 Pump 节点。Drainer 在处理 binlog 的时候，会自动去重 TSO 相同的 binlog，所以这种重复的写入，对下游无感知，不会对同步逻辑产生影响。
 
-## 在使用全量+增量方式恢复的过程中，reparo 中断了，可以使用日志里面最后一个 tso 接起来吗？
+## 在使用全量+增量方式恢复的过程中，Reparo 中断了，可以使用日志里面最后一个 tso 恢复同步吗？
 
 可以。Reparo 不会在启动时自动开启 safe-mode 模式，需要手动操作：
 
-1. Reparo 中断后，记录日志中最后一个 tso，记为 checkpoint tso。
-2. 修改 Reparo 配置文件，将 `start-tso` 设为 `checkpoint tso + 1`，将 `stop-tso` 设为 `checkpoint tso + 80,000,000,000`（大概是 checkpoint tso 延后 5 分钟），将 `safe-mode` 设为 `true`，启动 Reparo，Reparo 会将数据同步到 `stop-tso` 后自动停止。
-3. Reparo 自动停止后，将配置文件 `start-tso` 设为 `checkpoint tso + 80,000,000,001`，将 `stop-tso` 设为 `0`，将 `safe-mode` 设为 `false`。启动 Reparo 继续同步。
+1. Reparo 中断后，记录日志中最后一个 tso，记为 `checkpoint-tso`。
+2. 修改 Reparo 配置文件，将配置项 `start-tso` 设为 `checkpoint-tso + 1`，将 `stop-tso` 设为 `checkpoint-tso + 80,000,000,000`（大概是 `checkpoint-tso` 延后 5 分钟），将 `safe-mode` 设置为 `true`，启动 Reparo，Reparo 会将数据同步到 `stop-tso` 后自动停止。
+3. Reparo 自动停止后，将 `start-tso` 设置为 `checkpoint tso + 80,000,000,001`，将 `stop-tso` 设置为 `0`，将 `safe-mode` 设为 `false`。启动 Reparo 继续同步。

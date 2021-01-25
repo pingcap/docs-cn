@@ -343,13 +343,13 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 ## `tidb lightning encountered error: TiDB version too old, expected '>=4.0.0', found '3.0.18'`
 
-TiDB Lightning Local-backend 只支持导入到 `4.0.0` 以上的 TiDB 集群，如果试图使用 Local-backend 导入 `2.x` 或 `3.x` 的集群，就会报如上错误。遇到这个情况，请修改配置使用 Importer-backend 或 TiDB-backend。
+TiDB Lightning Local-backend 只支持导入到 v4.0.0 以上的 TiDB 集群，如果尝试使用 Local-backend 导入 v2.x 或 v3.x 的集群，就会报以上错误。此时可以修改配置使用 Importer-backend 或 TiDB-backend 进行导入。
 
-部分 `nightly` 版本的 TiDB 集群的版本可能类似 "4.0.0-beta.2" 这样，这样的版本实际支持 Local-backend，遇到这个情况，可以通过设置配置  `check-requirements = false` 跳过版本检查。在设置此参数之前，请务必确保 TiDB Lightning 的配置是支持对应的版本，否则无法保证导入成功。
+部分 `nightly` 版本的 TiDB 集群的版本可能类似 "4.0.0-beta.2" 这样，这样的版本实际支持 Local-backend，如果使用 `nightly` 版本遇到该报错，可以通过设置配置  `check-requirements = false` 跳过版本检查。在设置此参数之前，请确保 TiDB Lightning 的配置支持对应的版本，否则无法保证导入成功。
 
 ## `restore table test.district failed: unknown columns in header [...]`
 
-通常出现这种错误是因为 CSV 格式的数据文件不包含 header (第一行也是数据)，因此需要在 Lightning 的配置文件中增加如下配置项：
+出现该错误通常是因为 CSV 格式的数据文件不包含 header (第一行也是数据)，因此需要在 Lightning 的配置文件中增加如下配置项：
 
 ```
 [mydumper.csv]
