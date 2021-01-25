@@ -11,11 +11,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
+    - name: Extract branch, repo and sha
+      shell: bash
+      id: extract_info
+      run: |
+        echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+        echo "::set-output name=repo::$(cut -d'/' -f2 <<< ${{ github.repository }})"
+        echo "::set-output name=sha::$(sha=${{ github.sha }}; echo ${sha:0:6})"
+
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v1.1.1
       with:
           token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
           repository: pingcap/website-docs/
-          event-type: triggered
+          event-type: ${{ steps.extract_info.outputs.repo }}/${{ steps.extract_info.outputs.branch }}-${{ steps.extract_info.outputs.sha }}
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'
