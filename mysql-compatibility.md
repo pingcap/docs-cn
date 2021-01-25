@@ -180,7 +180,7 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 + 不支持 `SQL_TSI_*`（包括 `SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`，但不包括 `SQL_TSI_YEAR`）。
 
-### 弃用功能引起的不兼容问题
+### MySQL 弃用功能导致的不兼容问题
 
 TiDB 不支持在 MySQL 中标记为弃用的功能。包括：
 
