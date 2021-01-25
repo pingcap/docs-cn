@@ -146,7 +146,7 @@ Configuration items related to storage thread pool.
 ### `use-unified-pool`
 
 + Determines whether to use the unified thread pool (configured in [`readpool.unified`](#readpoolunified)) for storage requests. If the value of this parameter is `false`, a separate thread pool is used, which is configured through the rest parameters in this section (`readpool.storage`).
-+ Default value: `false`
++ Default value: `true`
 
 ### `high-concurrency`
 
