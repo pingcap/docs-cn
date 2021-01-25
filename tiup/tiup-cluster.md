@@ -17,8 +17,8 @@ tiup cluster
 
 ```
 The component `cluster` is not installed; downloading from repository.
-download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster
+download https://tiup-mirrors.pingcap.com/cluster-v1.3.0-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s
+Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v1.3.0/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -163,7 +163,7 @@ tiup cluster list
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.4.5/cluster list
+Starting /root/.tiup/components/cluster/v1.3.0/cluster list
 Name          User  Version    Path                                               PrivateKey
 ----          ----  -------    ----                                               ----------
 prod-cluster  tidb  v3.0.12    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
@@ -190,7 +190,7 @@ tiup cluster display prod-cluster
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.4.5/cluster display prod-cluster
+Starting /root/.tiup/components/cluster/v1.3.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
 TiDB Version: v3.0.12
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
@@ -255,7 +255,7 @@ tiup cluster display prod-cluster
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.4.5/cluster display prod-cluster
+Starting /root/.tiup/components/cluster/v1.3.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
 TiDB Version: v3.0.12
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
@@ -354,12 +354,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v4.0.0-rc 的命令为：
+例如，把集群升级到 v5.0.0-rc 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v4.0.0-rc
+tiup cluster upgrade tidb-test v5.0.0-rc
 ```
 
 ## 更新配置
@@ -536,14 +536,14 @@ tiup cluster audit
 ```
 
 ```
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.6.0/cluster audit
+Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v1.3.0/cluster audit
 ID      Time                       Command
 --      ----                       -------
-4BLhr0  2020-04-29T13:25:09+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKWjF  2020-04-28T23:36:57+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKVwH  2020-04-28T23:02:08+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKKH1  2020-04-28T16:39:04+08:00  /Users/joshua/.tiup/components/cluster/v0.4.9/cluster destroy test
-4BKKDx  2020-04-28T16:36:57+08:00  /Users/joshua/.tiup/components/cluster/v0.4.9/cluster deploy test v4.0.0-rc /tmp/topology.yaml
+4BLhr0  2020-04-29T13:25:09+08:00  /Users/joshua/.tiup/components/cluster/v1.3.0/cluster deploy test v5.0.0-rc /tmp/topology.yaml
+4BKWjF  2020-04-28T23:36:57+08:00  /Users/joshua/.tiup/components/cluster/v1.3.0/cluster deploy test v5.0.0-rc /tmp/topology.yaml
+4BKVwH  2020-04-28T23:02:08+08:00  /Users/joshua/.tiup/components/cluster/v1.3.0/cluster deploy test v5.0.0-rc /tmp/topology.yaml
+4BKKH1  2020-04-28T16:39:04+08:00  /Users/joshua/.tiup/components/cluster/v1.3.0/cluster destroy test
+4BKKDx  2020-04-28T16:36:57+08:00  /Users/joshua/.tiup/components/cluster/v1.3.0/cluster deploy test v5.0.0-rc /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：

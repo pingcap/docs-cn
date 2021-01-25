@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain
 
 > **注意：**
 >
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 运维 TiDB 集群的文档，可参阅 [TiDB Ansible 常见运维操作](https://docs.pingcap.com/zh/tidb/v4.0/maintain-tidb-using-ansible)。
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 运维 TiDB 集群的文档，可参阅 [v4.0 版 TiDB Ansible 常见运维操作](https://docs.pingcap.com/zh/tidb/v4.0/maintain-tidb-using-ansible)。
 
 ## 查看集群列表
 
