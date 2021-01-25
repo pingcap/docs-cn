@@ -108,17 +108,17 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 ## 检测及关闭系统 swap
 
-本段介绍 swap 关闭方法。TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
+本段介绍 swap 关闭方法。TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，否则重启机器后该操作会失效。
 
 建议执行以下命令关闭系统 swap：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-echo "vm.swappiness = 0">> /etc/sysctl.conf
-swapoff -a && swapon -a
-sysctl -p
+swapoff -a
 ```
+
+并且将 `/etc/fstab` 中 swap 相关设置行注释掉或者删掉，禁用 swap 分区防止服务器重启开启 swap 功能。
 
 ## 检测及关闭目标部署机器的防火墙
 
