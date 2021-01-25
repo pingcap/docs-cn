@@ -423,7 +423,7 @@ prepare 语句的 plan cache 设置。
 
 ### `grpc-keepalive-timeout`
 
-+ TiDB 与 TiKV 节点  rpc keepalive 检查的超时时间
++ TiDB 与 TiKV 节点 rpc keepalive 检查的超时时间
 + 默认值：3
 + 单位：秒
 
@@ -447,7 +447,7 @@ prepare 语句的 plan cache 设置。
 
 ### `max-batch-wait-time`
 
-+ 等待 `max-batch-wait-time` 纳秒批量将此期间的数据包封装成一个大包发送给 TiKV 节点，仅在 `tikv-client.max-batch-size`  值大于 0 时有效，不推荐修改该值。
++ 等待 `max-batch-wait-time` 纳秒批量将此期间的数据包封装成一个大包发送给 TiKV 节点，仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：0
 + 单位：纳秒
 
@@ -574,7 +574,7 @@ TiDB 服务状态相关配置。
 
 ### max-sql-length
 
-+ `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ `events_statement_summary_by_digest` 表中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
 ## pessimistic-txn
@@ -593,4 +593,9 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 ### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 + 用于控制是否能创建表达式索引。
++ 默认值：false
+
+### `enable-global-kill` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 开启此功能可以安全地终止任何连接，即使 TiDB 服务器位于负载平衡器后面。
 + 默认值：false
