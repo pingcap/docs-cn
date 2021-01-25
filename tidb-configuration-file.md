@@ -597,5 +597,5 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 ### `enable-global-kill` <span class="version-mark">从 v5.0.0 版本开始引入</span>
 
-+ 开启此功能可以安全地终止任何连接，即使 TiDB 服务器位于负载平衡器后面。
++ 开启此功能后，即使 TiDB 服务器位于负载平衡器后面，也可以安全地终止任何连接。
 + 默认值：false

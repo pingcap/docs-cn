@@ -59,13 +59,13 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## Global kill 示例
 
-On TiDB instance `127.0.0.1:10180`:
+在 TiDB 实例 `127.0.0.1:10180` 上：
 
 ```sql
 SELECT SLEEP(60);
 ```
 
-On TiDB instance `127.0.0.1:10080`:
+在 TiDB 实例 `127.0.0.1:10180` 上：
 
 ```sql
 SELECT * FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
