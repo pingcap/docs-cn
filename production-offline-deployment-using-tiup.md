@@ -14,15 +14,9 @@ This document describes how to deploy a TiDB cluster offline using TiUP.
 
 ## Step 1: Prepare the TiUP offline component package
 
-### Option 1: Download the official TiUP offline component package
+To prepare the TiUP offline component package, manually pack an offline component package using `tiup mirror clone`.
 
-Download the offline mirror package of the TiDB server (including the TiUP offline component package) from the [Download TiDB](https://pingcap.com/download/) page.
-
-### Option 2: Manually pack an offline component package using `tiup mirror clone`
-
-The steps are below.
-
-- Install the TiUP package manager online.
+1. Install the TiUP package manager online.
 
     1. Install the TiUP tool:
 
@@ -48,7 +42,7 @@ The steps are below.
         which tiup
         ```
 
-- Pull the mirror using TiUP
+2. Pull the mirror using TiUP.
 
     1. Pull the needed components on a machine that has access to the Internet:
 
