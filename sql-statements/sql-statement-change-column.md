@@ -10,6 +10,7 @@ aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-change-column/','/docs-cn/
 
 ## 语法图
 
+<<<<<<< HEAD
 **AlterTableStmt:**
 
 ![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
@@ -33,6 +34,44 @@ aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-change-column/','/docs-cn/
 **ColumnPosition:**
 
 ![ColumnPosition](/media/sqlgram/ColumnPosition.png)
+=======
+```ebnf+diagram
+AlterTableStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
+
+AlterTableSpec ::=
+    TableOptionList
+|   'SET' 'TIFLASH' 'REPLICA' LengthNum LocationLabelList
+|   'CONVERT' 'TO' CharsetKw ( CharsetName | 'DEFAULT' ) OptCollate
+|   'ADD' ( ColumnKeywordOpt IfNotExists ( ColumnDef ColumnPosition | '(' TableElementList ')' ) | Constraint | 'PARTITION' IfNotExists NoWriteToBinLogAliasOpt ( PartitionDefinitionListOpt | 'PARTITIONS' NUM ) )
+|   ( ( 'CHECK' | 'TRUNCATE' ) 'PARTITION' | ( 'OPTIMIZE' | 'REPAIR' | 'REBUILD' ) 'PARTITION' NoWriteToBinLogAliasOpt ) AllOrPartitionNameList
+|   'COALESCE' 'PARTITION' NoWriteToBinLogAliasOpt NUM
+|   'DROP' ( ColumnKeywordOpt IfExists ColumnName RestrictOrCascadeOpt | 'PRIMARY' 'KEY' | 'PARTITION' IfExists PartitionNameList | ( KeyOrIndex IfExists | 'CHECK' ) Identifier | 'FOREIGN' 'KEY' IfExists Symbol )
+|   'EXCHANGE' 'PARTITION' Identifier 'WITH' 'TABLE' TableName WithValidationOpt
+|   ( 'IMPORT' | 'DISCARD' ) ( 'PARTITION' AllOrPartitionNameList )? 'TABLESPACE'
+|   'REORGANIZE' 'PARTITION' NoWriteToBinLogAliasOpt ReorganizePartitionRuleOpt
+|   'ORDER' 'BY' AlterOrderItem ( ',' AlterOrderItem )*
+|   ( 'DISABLE' | 'ENABLE' ) 'KEYS'
+|   ( 'MODIFY' ColumnKeywordOpt IfExists | 'CHANGE' ColumnKeywordOpt IfExists ColumnName ) ColumnDef ColumnPosition
+|   'ALTER' ( ColumnKeywordOpt ColumnName ( 'SET' 'DEFAULT' ( SignedLiteral | '(' Expression ')' ) | 'DROP' 'DEFAULT' ) | 'CHECK' Identifier EnforcedOrNot | 'INDEX' Identifier IndexInvisible )
+|   'RENAME' ( ( 'COLUMN' | KeyOrIndex ) Identifier 'TO' Identifier | ( 'TO' | '='? | 'AS' ) TableName )
+|   LockClause
+|   AlgorithmClause
+|   'FORCE'
+|   ( 'WITH' | 'WITHOUT' ) 'VALIDATION'
+|   'SECONDARY_LOAD'
+|   'SECONDARY_UNLOAD'
+
+ColumnName ::=
+    Identifier ( '.' Identifier ( '.' Identifier )? )?
+
+ColumnDef ::=
+    ColumnName ( Type | 'SERIAL' ) ColumnOptionListOpt
+
+ColumnPosition ::=
+    ( 'FIRST' | 'AFTER' ColumnName )?
+```
+>>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 ## 示例
 
