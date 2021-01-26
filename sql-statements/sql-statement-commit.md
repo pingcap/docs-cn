@@ -15,15 +15,7 @@ aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-commit/','/docs-cn/v2.1/re
 ```ebnf+diagram
 CommitStmt ::=
     'COMMIT' CompletionTypeWithinTransaction?
-
-<<<<<<< HEAD
-![CommitStmt](/media/sqlgram/CommitStmt.png)
-=======
-CompletionTypeWithinTransaction ::=
-    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
-|   'NO'? 'RELEASE'
 ```
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 ## 示例
 

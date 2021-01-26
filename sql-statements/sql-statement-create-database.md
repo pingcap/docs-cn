@@ -14,16 +14,11 @@ aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-create-database/','/docs-c
 CreateDatabaseStmt ::=
     'CREATE' 'DATABASE' IfNotExists DBName DatabaseOptionListOpt
 
-<<<<<<< HEAD
-![CreateDatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
+DatabaseSym ::=
+    DATABASE
 
-**DatabaseSym:**
-
-![DatabaseSym](/media/sqlgram/DatabaseSym.png)
-=======
 IfNotExists ::=
     ( 'IF' 'NOT' 'EXISTS' )?
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 DBName ::=
     Identifier

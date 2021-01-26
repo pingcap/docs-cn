@@ -14,24 +14,14 @@ aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-drop-database/','/docs-cn/
 DropDatabaseStmt ::=
     'DROP' 'DATABASE' IfExists DBName
 
-<<<<<<< HEAD
-![DropDatabaseStmt](/media/sqlgram/DropDatabaseStmt.png)
+DatabaseSym ::=
+    DATABASE
 
-**DatabaseSym:**
-
-![DatabaseSym](/media/sqlgram/DatabaseSym.png)
-
-**IfExists:**
-
-![IfExists](/media/sqlgram/IfExists.png)
-=======
 IfExists ::= ( 'IF' 'EXISTS' )?
+
+DBName ::=
+    Identifier
 ```
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
 
 ## 示例
 

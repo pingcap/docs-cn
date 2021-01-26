@@ -10,31 +10,6 @@ aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-change-column/','/docs-cn/
 
 ## 语法图
 
-<<<<<<< HEAD
-**AlterTableStmt:**
-
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
-
-**AlterTableSpec:**
-
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
-
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
-**ColumnName:**
-
-![ColumnName](/media/sqlgram/ColumnName.png)
-
-**ColumnDef:**
-
-![ColumnDef](/media/sqlgram/ColumnDef.png)
-
-**ColumnPosition:**
-
-![ColumnPosition](/media/sqlgram/ColumnPosition.png)
-=======
 ```ebnf+diagram
 AlterTableStmt ::=
     'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
@@ -62,6 +37,9 @@ AlterTableSpec ::=
 |   'SECONDARY_LOAD'
 |   'SECONDARY_UNLOAD'
 
+ColumnKeywordOpt ::=
+    'COLUMN'?
+
 ColumnName ::=
     Identifier ( '.' Identifier ( '.' Identifier )? )?
 
@@ -71,7 +49,6 @@ ColumnDef ::=
 ColumnPosition ::=
     ( 'FIRST' | 'AFTER' ColumnName )?
 ```
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 ## 示例
 
