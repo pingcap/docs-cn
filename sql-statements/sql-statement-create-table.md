@@ -39,7 +39,7 @@ ColumnName ::=
 Type ::=
     NumericType
 |   StringType
-|    DateAndTimeType
+|   DateAndTimeType
 
 ColumnOptionListOpt ::=
     ColumnOption*
