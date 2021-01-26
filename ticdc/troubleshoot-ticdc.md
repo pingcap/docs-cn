@@ -344,19 +344,3 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
     ```shell
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
-
-## 使用 TiCDC v5.0.0-rc 版本的 cli 命令操作 v4.0.x 集群的不兼容问题
-
-当使用 v5.0.0-rc 版本的 cdc 操作 v4.0.x 版本的 TiCDC 集群时，可能会遇到如下异常情况：
-
- - 若 TiCDC 集群版本小于等于 v4.0.8，使用 v5.0.0-rc 版本的 cdc cli 创建 changefeed，可能导致 TiCDC 集群陷入异常状态，导致同步卡住。
- - 若 TiCDC 集群版本大于等于 v4.0.9，使用 v5.0.0-rc 版本的 cdc cli 创建 changefeed，会导致 `old-value` 和 `unified-sorter` 特性被非预期的默认开启。
-
-处理方案：
-
-1. 使用和 TiCDC 集群版本对应的 cdc 可执行文件进行下面的操作
-2. 删除使用 v5.0.0-rc 版本创建的 changefeed，例：`tiup cdc:v4.0.9 cli changefeed remove -c xxxx -pd=xxxxx`
-3. 如果 TiCDC 同步已经卡住，重启 TiCDC 集群，例：`tiup cluster restart <cluster_name> -R cdc`
-4. 重新创建 changefeed，例：`tiup cdc:v4.0.9 cli changefeed create -sink-uri=xxxx -pd=xxx`
-
-> 注意：上述问题仅在 v5.0.0-rc 版本存在，其他 v5.0.x 版本的 cli 可以兼容 v4.0.x 版本的集群。
