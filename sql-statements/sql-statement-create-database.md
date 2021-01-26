@@ -10,25 +10,27 @@ aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-create-database/','/docs-c
 
 ## 语法图
 
-**CreateDatabaseStmt:**
+```ebnf+diagram
+CreateDatabaseStmt ::=
+    'CREATE' 'DATABASE' IfNotExists DBName DatabaseOptionListOpt
 
+<<<<<<< HEAD
 ![CreateDatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
 
 **DatabaseSym:**
 
 ![DatabaseSym](/media/sqlgram/DatabaseSym.png)
+=======
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
+>>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
-**IfNotExists:**
+DBName ::=
+    Identifier
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
-
-**DatabaseOptionListOpt:**
-
-![DatabaseOptionListOpt](/media/sqlgram/DatabaseOptionListOpt.png)
+DatabaseOptionListOpt ::=
+    DatabaseOptionList?
+```
 
 ## 语法说明
 
