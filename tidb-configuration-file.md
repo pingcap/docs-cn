@@ -504,6 +504,12 @@ prepare 语句的 plan cache 设置。
 + 默认值：5
 + 单位：ms
 
+### `admission-max-ranges` <span class="version-mark">从 v4.0.8 版本开始引入</span>
+
++ 指定能被缓存的单个下推计算结果集的最大范围数量。如果下推计算存在的范围数量超过该配置项指定的数量，则结果集不会被缓存。一般认为当范围数量过多时，解析范围是计算的主要开销，这样 Coprocessor Cache 带来的额外计算开销会较大。
++ 默认值：500
++ 类型：uint
+
 ## txn-local-latches
 
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
