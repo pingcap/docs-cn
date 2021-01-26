@@ -9,21 +9,19 @@ summary: TiDB 数据库中 CREATE DATABASE 的使用概况。
 
 ## 语法图
 
-**CreateDatabaseStmt:**
+```ebnf+diagram
+CreateDatabaseStmt ::=
+    'CREATE' 'DATABASE' IfNotExists DBName DatabaseOptionListOpt
 
-![CreateDaatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
 
-**IfNotExists:**
+DBName ::=
+    Identifier
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
-
-**DatabaseOptionListOpt:**
-
-![DatabaseOptionListOpt](/media/sqlgram/DatabaseOptionListOpt.png)
+DatabaseOptionListOpt ::=
+    DatabaseOptionList?
+```
 
 ## 语法说明
 

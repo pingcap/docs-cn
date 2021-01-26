@@ -9,29 +9,25 @@ summary: TiDB 数据库中 DROP INDEX 的使用概况。
 
 ## 语法图
 
-**AlterTableDropIndexStmt:**
+```ebnf+diagram
+AlterTableDropIndexStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' AlterTableDropIndexSpec
 
-![AlterTableDropIndexStmt](/media/sqlgram/AlterTableDropIndexStmt.png)
+IgnoreOptional ::=
+    'IGNORE'?
 
-**IgnoreOptional:**
+TableName ::=
+    Identifier ('.' Identifier)?
 
-![IgnoreOptional](/media/sqlgram/IgnoreOptional.png)
+AlterTableDropIndexSpec ::=
+    'DROP' ( KeyOrIndex | 'FOREIGN' 'KEY' ) IfExists Identifier
 
-**TableName:**
+KeyOrIndex ::=
+    'KEY'
+|   'INDEX'
 
-![TableName](/media/sqlgram/TableName.png)
-
-**AlterTableDropIndexSpec:**
-
-![AlterTableDropIndexSpec](/media/sqlgram/AlterTableDropIndexSpec.png)
-
-**KeyOrIndex:**
-
-![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
-
-**IfExists:**
-
-![IfExists](/media/sqlgram/IfExists.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
+```
 
 ## 示例
 

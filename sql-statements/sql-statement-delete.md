@@ -9,9 +9,10 @@ summary: TiDB 数据库中 DELETE 的使用概况。
 
 ## 语法图
 
-**DeleteFromStmt:**
-
-![DeleteFromStmt](/media/sqlgram/DeleteFromStmt.png)
+```ebnf+diagram
+DeleteFromStmt ::=
+    'DELETE' TableOptimizerHints PriorityOpt QuickOptional IgnoreOptional ( 'FROM' ( TableName TableAsNameOpt IndexHintListOpt WhereClauseOptional OrderByOptional LimitClause | TableAliasRefList 'USING' TableRefs WhereClauseOptional ) | TableAliasRefList 'FROM' TableRefs WhereClauseOptional )
+```
 
 ## 示例
 

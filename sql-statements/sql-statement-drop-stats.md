@@ -9,13 +9,13 @@ summary: TiDB 数据库中 DROP STATS 的使用概况。
 
 ## 语法图
 
-**DropStatsStmt:**
+```ebnf+diagram
+DropStatsStmt ::=
+    'DROP' 'STATS' TableName
 
-![DropTableStmt](/media/sqlgram/DropStatsStmt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ('.' Identifier)?
+```
 
 ## 示例
 

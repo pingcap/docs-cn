@@ -9,17 +9,20 @@ summary: TiDB 数据库中 DEALLOCATE 的使用概况。
 
 ## 语法图
 
-**DeallocateStmt:**
+```ebnf+diagram
+DeallocateStmt ::=
+    DeallocateSym 'PREPARE' Identifier
 
-![DeallocateStmt](/media/sqlgram/DeallocateStmt.png)
+DeallocateSym ::=
+    'DEALLOCATE'
+|   'DROP'
 
-**DeallocateSym:**
-
-![DeallocateSym](/media/sqlgram/DeallocateSym.png)
-
-**Identifier:**
-
-![Identifier](/media/sqlgram/Identifier.png)
+Identifier ::=
+    identifier
+|   UnReservedKeyword
+|   NotKeywordToken
+|   TiDBKeyword
+```
 
 ## 示例
 
