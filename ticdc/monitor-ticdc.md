@@ -109,7 +109,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 - CDC endpoint CPU：TiKV 节点上 CDC endpoint 线程使用的 CPU
 - CDC worker CPU：TiKV 节点上 CDC worker 线程使用的 CPU
 - Min resolved ts：TiKV 节点上最小的 resolved ts
-- Min resolved region：TiKV 节点上最小的 resolved ts 的 region ID
+- Min resolved region：TiKV 节点上最小的 resolved ts 的 Region ID
 - Resolved ts lag duration percentile：TiKV 节点上最小的 resolved ts 与当前时间的差距
 - Initial scan duration：TiKV 节点与 TiCDC 建立链接时增量扫的耗时直方图
 - Initial scan duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiKV 节点增量扫的耗时
