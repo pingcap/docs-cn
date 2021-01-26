@@ -10,10 +10,14 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-create-index/','/docs-cn/v
 
 ## 语法图
 
-**CreateIndexStmt:**
+```ebnf+diagram
+CreateIndexStmt ::=
+    'CREATE' IndexKeyTypeOpt 'INDEX' IfNotExists Identifier IndexTypeOpt 'ON' TableName '(' IndexPartSpecificationList ')' IndexOptionList IndexLockAndAlgorithmOpt
 
-![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
+IndexKeyTypeOpt ::=
+    ( 'UNIQUE' | 'SPATIAL' | 'FULLTEXT' )?
 
+<<<<<<< HEAD
 **CreateIndexStmtUnique:**
 
 ![CreateIndexStmtUnique](/media/sqlgram/CreateIndexStmtUnique.png)
@@ -21,11 +25,27 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-create-index/','/docs-cn/v
 **Identifier:**
 
 ![Identifier](/media/sqlgram/Identifier.png)
+=======
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
 
-**IndexTypeOpt:**
+IndexTypeOpt ::=
+    IndexType?
 
-![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
+IndexPartSpecificationList ::=
+    IndexPartSpecification ( ',' IndexPartSpecification )*
 
+IndexOptionList ::=
+    IndexOption*
+>>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
+
+IndexLockAndAlgorithmOpt ::=
+    ( LockClause AlgorithmClause? | AlgorithmClause LockClause? )?
+
+IndexType ::=
+    ( 'USING' | 'TYPE' ) IndexTypeName
+
+<<<<<<< HEAD
 **TableName:**
 
 ![TableName](/media/sqlgram/TableName.png)
@@ -41,6 +61,35 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-create-index/','/docs-cn/v
 **IndexOption:**
 
 ![IndexOption](/media/sqlgram/IndexOption.png)
+=======
+IndexPartSpecification ::=
+    ( ColumnName OptFieldLen | '(' Expression ')' ) Order
+
+IndexOption ::=
+    'KEY_BLOCK_SIZE' '='? LengthNum
+|   IndexType
+|   'WITH' 'PARSER' Identifier
+|   'COMMENT' stringLit
+|   IndexInvisible
+
+IndexTypeName ::=
+    'BTREE'
+|   'HASH'
+|   'RTREE'
+
+ColumnName ::=
+    Identifier ( '.' Identifier ( '.' Identifier )? )?
+
+OptFieldLen ::=
+    FieldLen?
+
+IndexNameList ::=
+    ( Identifier | 'PRIMARY' )? ( ',' ( Identifier | 'PRIMARY' ) )*
+
+KeyOrIndex ::=
+    'Key' | 'Index'
+```
+>>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 ## 示例
 

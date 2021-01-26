@@ -10,17 +10,17 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-do/','/docs-cn/v3.0/refere
 
 ## 语法图
 
-**DoStmt:**
+```ebnf+diagram
+DoStmt   ::= 'DO' ExpressionList
 
-![DoStmt](/media/sqlgram/DoStmt.png)
+ExpressionList ::=
+    Expression ( ',' Expression )*
 
-**ExpressionList:**
-
-![ExpressionList](/media/sqlgram/ExpressionList.png)
-
-**Expression:**
-
-![Expression](/media/sqlgram/Expression.png)
+Expression ::=
+    ( singleAtIdentifier assignmentEq | 'NOT' | Expression ( logOr | 'XOR' | logAnd ) ) Expression
+|   'MATCH' '(' ColumnNameList ')' 'AGAINST' '(' BitExpr FulltextSearchModifierOpt ')'
+|   PredicateExpr ( IsOrNotOp 'NULL' | CompareOp ( ( singleAtIdentifier assignmentEq )? PredicateExpr | AnyOrAll SubSelect ) )* ( IsOrNotOp ( trueKwd | falseKwd | 'UNKNOWN' ) )?
+```
 
 ## 示例
 

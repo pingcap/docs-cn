@@ -10,6 +10,7 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-drop-index/','/docs-cn/v3.
 
 ## 语法图
 
+<<<<<<< HEAD
 **AlterTableStmt:**
 
 ![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
@@ -25,6 +26,27 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-drop-index/','/docs-cn/v3.
 **Identifier:**
 
 ![Identifier](/media/sqlgram/Identifier.png)
+=======
+```ebnf+diagram
+AlterTableDropIndexStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' AlterTableDropIndexSpec
+
+IgnoreOptional ::=
+    'IGNORE'?
+
+TableName ::=
+    Identifier ('.' Identifier)?
+
+AlterTableDropIndexSpec ::=
+    'DROP' ( KeyOrIndex | 'FOREIGN' 'KEY' ) IfExists Identifier
+
+KeyOrIndex ::=
+    'KEY'
+|   'INDEX'
+
+IfExists ::= ( 'IF' 'EXISTS' )?
+```
+>>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 ## 示例
 
