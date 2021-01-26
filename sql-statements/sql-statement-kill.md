@@ -51,21 +51,21 @@ Query OK, 0 rows affected (0.00 sec)
 * 按照设计，`KILL TIDB` 语句默认与 MySQL 不兼容。负载均衡器后面通常放有多个 TiDB 服务器，这种默认不兼容有助于防止在错误的 TiDB 服务器上终止连接。
 * `KILL TIDB` 语句是 TiDB 的扩展语法。如果正尝试终止的会话位于同一个 TiDB 服务器上，可在配置文件里设置 [`compatible-kill-query = true`](/tidb-configuration-file.md#compatible-kill-query)。
 
-## Global kill <span class="version-mark">从 v5.0.0 版本开始引入</span>
+## Global Kill <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
-从 v5.0 版本开始，TiDB 为 [global kill](https://github.com/pingcap/tidb/blob/master/docs/design/2020-06-01-global-kill.md) 提供实验性支持。启用该语句后，每台 TiDB 服务器会确保连接 ID 全局唯一。可以向任何 TiDB 服务器发送 `KILL` 语句，该服务器将在内部请求路由到正确的 TiDB 实例。这样可以确保即使 TiDB 服务器位于负载均衡器之后，`KILL` 也是安全的。
+从 v5.0 版本开始，TiDB 为 [Global Kill](https://github.com/pingcap/tidb/blob/master/docs/design/2020-06-01-global-kill.md) 功能提供实验性支持。启用该功能后，连接到每台 TiDB 服务器的 ID 将是全局唯一的。客户端可以向任一 TiDB 服务器发送 `KILL` 语句，服务器再将请求路由至目标 TiDB 实例。即使 TiDB 服务器位于负载均衡器之后，`KILL` 也能安全地执行 。
 
-要启用 `global kill` 功能，需要在配置文件的 `experimental` 中设置 `enable-global-kill = true`。
+要启用 Global Kill 功能，需要在配置文件的 `experimental` 部分设置 `enable-global-kill = true`。
 
-## Global kill 示例
+## Global Kill 示例
 
-在 TiDB 实例 `127.0.0.1:10180` 上：
+在 TiDB 实例 `127.0.0.1:10180` 上执行如下语句：
 
 ```sql
 SELECT SLEEP(60);
 ```
 
-在 TiDB 实例 `127.0.0.1:10180` 上：
+在 TiDB 实例 `127.0.0.1:10080` 上执行如下查询以及 `Kill` 操作：
 
 ```sql
 SELECT * FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
