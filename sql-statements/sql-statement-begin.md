@@ -12,9 +12,11 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-begin/','/docs-cn/v4.0/s
 
 ## 语法图
 
-**BeginTransactionStmt:**
-
-![BeginTransactionStmt](/media/sqlgram/BeginTransactionStmt.png)
+```ebnf+diagram
+BeginTransactionStmt ::=
+    'BEGIN' ( 'PESSIMISTIC' | 'OPTIMISTIC' )?
+|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' )?
+```
 
 ## 示例
 

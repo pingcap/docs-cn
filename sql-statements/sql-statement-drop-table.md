@@ -10,17 +10,17 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-table/','/docs-cn/v
 
 ## 语法图
 
-**DropTableStmt:**
+```ebnf+diagram
+DropTableStmt ::=
+    'DROP' OptTemporary TableOrTables IfExists TableNameList RestrictOrCascadeOpt
 
-![DropTableStmt](/media/sqlgram/DropTableStmt.png)
+TableOrTables ::=
+    'TABLE'
+|   'TABLES'
 
-**TableOrTables:**
-
-![TableOrTables](/media/sqlgram/TableOrTables.png)
-
-**TableNameList:**
-
-![TableNameList](/media/sqlgram/TableNameList.png)
+TableNameList ::=
+    TableName ( ',' TableName )*
+```
 
 ## 示例
 

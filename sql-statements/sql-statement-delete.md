@@ -10,9 +10,10 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-delete/','/docs-cn/v4.0/
 
 ## 语法图
 
-**DeleteFromStmt:**
-
-![DeleteFromStmt](/media/sqlgram/DeleteFromStmt.png)
+```ebnf+diagram
+DeleteFromStmt ::=
+    'DELETE' TableOptimizerHints PriorityOpt QuickOptional IgnoreOptional ( 'FROM' ( TableName TableAsNameOpt IndexHintListOpt WhereClauseOptional OrderByOptional LimitClause | TableAliasRefList 'USING' TableRefs WhereClauseOptional ) | TableAliasRefList 'FROM' TableRefs WhereClauseOptional )
+```
 
 ## 示例
 

@@ -10,13 +10,12 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-database/','/docs-c
 
 ## 语法图
 
-**DropDatabaseStmt:**
+```ebnf+diagram
+DropDatabaseStmt ::=
+    'DROP' 'DATABASE' IfExists DBName
 
-![DropDatabaseStmt](/media/sqlgram/DropDatabaseStmt.png)
-
-**IfExists:**
-
-![IfExists](/media/sqlgram/IfExists.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
+```
 
 ## 示例
 
