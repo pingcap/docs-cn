@@ -12,17 +12,16 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-binding/']
 
 ## 语法图
 
-**DropBindingStmt:**
+```ebnf+diagram
+DropBindingStmt ::=
+    'DROP' GlobalScope 'BINDING' 'FOR' SelectStmt ( 'USING' SelectStmt )?
 
-![DropBindingStmt](/media/sqlgram/DropBindingStmt.png)
+GlobalScope ::=
+    ( 'GLOBAL' | 'SESSION' )?
 
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
-
-**SelectStmt**
-
-![SelectStmt](/media/sqlgram/SelectStmt.png)
+SelectStmt ::=
+    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable ) OrderByOptional SelectStmtLimit SelectLockOpt SelectStmtIntoOption
+```
 
 ## 示例
 

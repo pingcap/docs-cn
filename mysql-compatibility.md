@@ -179,3 +179,10 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 + 不支持 FLOAT4/FLOAT8。
 
 + 不支持 `SQL_TSI_*`（包括 `SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`，但不包括 `SQL_TSI_YEAR`）。
+
+### MySQL 弃用功能导致的不兼容问题
+
+TiDB 不支持 MySQL 中标记为弃用的功能，包括：
+
+* 指定浮点类型的精度。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html)了此功能，建议改用 `DECIMAL` 类型。
+* `ZEROFILL` 属性。 MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。
