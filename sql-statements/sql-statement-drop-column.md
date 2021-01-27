@@ -10,23 +10,6 @@ aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-drop-column/','/docs-cn/v3
 
 ## 语法图
 
-<<<<<<< HEAD
-**AlterTableStmt:**
-
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
-
-**AlterTableSpec:**
-
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
-
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
-**ColumnName:**
-
-![ColumnName](/media/sqlgram/ColumnName.png)
-=======
 ```ebnf+diagram
 AlterTableStmt ::=
     'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
@@ -54,10 +37,12 @@ AlterTableSpec ::=
 |   'SECONDARY_LOAD'
 |   'SECONDARY_UNLOAD'
 
+ColumnKeywordOpt ::=
+    'COLUMN'？
+
 ColumnName ::=
     Identifier ( '.' Identifier ( '.' Identifier )? )?
 ```
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 ## 示例
 

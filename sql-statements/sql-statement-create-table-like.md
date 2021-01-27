@@ -10,28 +10,17 @@ aliases: ['/docs-cn/v3.1/sql-statements/sql-statement-create-table-like/','/docs
 
 ## 语法图
 
-<<<<<<< HEAD
-**CreateTableStmt:**
-
-![CreateTableStmt](/media/sqlgram/CreateTableStmt.png)
-
-**LikeTableWithOrWithoutParen:**
-
-![LikeTableWithOrWithoutParen](/media/sqlgram/LikeTableWithOrWithoutParen.png)
-=======
 ```ebnf+diagram
-CreateTableLikeStmt ::=
-    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen
+CreateTableStmt ::=
+    'CREATE' OptTemporary 'TABLE' IfNotExists TableName ( TableElementListOpt CreateTableOptionListOpt PartitionOpt DuplicateOpt AsOpt CreateTableSelectOpt | LikeTableWithOrWithoutParen )
 
 LikeTableWithOrWithoutParen ::=
     'LIKE' TableName
 |   '(' 'LIKE' TableName ')'
+
+TableName ::=
+    Identifier ('.' Identifier)?
 ```
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
 
 ## 示例
 
