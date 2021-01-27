@@ -10,13 +10,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-stats/']
 
 ## 语法图
 
-**DropStatsStmt:**
+```ebnf+diagram
+DropStatsStmt ::=
+    'DROP' 'STATS' TableName
 
-![DropTableStmt](/media/sqlgram/DropStatsStmt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ('.' Identifier)?
+```
 
 ## 示例
 
