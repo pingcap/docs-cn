@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/','/zh/tidb/dev
 
 ### 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包
 
-- 在线环境中安装 TiUP 包管理器工具
+1. 在线环境中安装 TiUP 包管理器工具
 
     1. 执行如下命令安装 TiUP 工具：
 
@@ -45,7 +45,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/','/zh/tidb/dev
         which tiup
         ```
 
-- 使用 TiUP 制作离线镜像
+2. 使用 TiUP 制作离线镜像
 
     1. 在一台和外网相通的机器上拉取需要的组件：
 
