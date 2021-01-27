@@ -7,7 +7,7 @@ summary: 了解如何使用 BR 命令行进行集群数据备份和恢复。
 
 本文介绍如何 BR 命令行进行 TiDB 集群数据的备份和恢复。
 
-在阅读本文前，请确保你已通读 [备份与恢复工具 BR 简介](/br/backup-and-restore-tool.md)，尤其是[使用限制](/br/backup-and-restore-tool.md#使用限制)和[最佳实践](/br/backup-and-restore-tool.md#最佳实践)这两节。
+在阅读本文前，请确保你已通读[备份与恢复工具 BR 简介](/br/backup-and-restore-tool.md)，尤其是[使用限制](/br/backup-and-restore-tool.md#使用限制)和[最佳实践](/br/backup-and-restore-tool.md#最佳实践)这两节。
 
 ## BR 命令行描述
 
@@ -53,7 +53,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `--pd`：用于连接的选项，表示 PD 服务地址，例如 `"${PDIP}:2379"`。
 * `-h`/`--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
-* `-V` (或 `--version`): 检查 BR 版本。
+* `-V` (或 `--version`)：检查 BR 版本。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -74,7 +74,7 @@ mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
     "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
 ```
 
-自 v4.0.3 起 BR 已经支持自适应 GC，无需手动调整 `tikv_gc_life_time`.
+自 v4.0.3 起 BR 已经支持自适应 GC，无需手动调整 `tikv_gc_life_time`。
 
 ### 备份全部集群数据
 
@@ -432,7 +432,7 @@ br restore raw --pd $PD_ADDR \
 
     {{< copyable "shell-regular" >}}
 
-    ```
+    ```shell
     br restore full \
         -s "local://$BACKUP_DIR" \
         --pd $PD_ADDR \
