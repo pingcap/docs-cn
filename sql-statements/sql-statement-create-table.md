@@ -10,51 +10,6 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-create-table/','/docs-cn/v
 
 ## 语法图
 
-<<<<<<< HEAD
-**CreateTableStmt:**
-
-![CreateTableStmt](/media/sqlgram/CreateTableStmt.png)
-
-**IfNotExists:**
-
-![IfNotExists](/media/sqlgram/IfNotExists.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**TableElementListOpt:**
-
-![TableElementListOpt](/media/sqlgram/TableElementListOpt.png)
-
-**TableElement:**
-
-![TableElement](/media/sqlgram/TableElement.png)
-
-**PartitionOpt:**
-
-![PartitionOpt](/media/sqlgram/PartitionOpt.png)
-
-**ColumnDef:**
-
-![ColumnDef](/media/sqlgram/ColumnDef.png)
-
-**ColumnName:**
-
-![ColumnName](/media/sqlgram/ColumnName.png)
-
-**Type:**
-
-![Type](/media/sqlgram/Type.png)
-
-**ColumnOptionListOpt:**
-
-![ColumnOptionListOpt](/media/sqlgram/ColumnOptionListOpt.png)
-
-**TableOptionListOpt:**
-
-![TableOptionListOpt](/media/sqlgram/TableOptionListOpt.png)
-=======
 ```ebnf+diagram
 CreateTableStmt ::=
     'CREATE' OptTemporary 'TABLE' IfNotExists TableName ( TableElementListOpt CreateTableOptionListOpt PartitionOpt DuplicateOpt AsOpt CreateTableSelectOpt | LikeTableWithOrWithoutParen )
@@ -68,65 +23,30 @@ TableName ::=
 TableElementListOpt ::=
     ( '(' TableElementList ')' )?
 
-TableElementList ::=
-    TableElement ( ',' TableElement )*
-
 TableElement ::=
     ColumnDef
 |   Constraint
 
+PartitionOpt ::=
+    ( 'PARTITION' 'BY' PartitionMethod PartitionNumOpt SubPartitionOpt PartitionDefinitionListOpt )?
+
 ColumnDef ::=
     ColumnName ( Type | 'SERIAL' ) ColumnOptionListOpt
+
+ColumnName ::=
+    Identifier ( '.' Identifier ( '.' Identifier )? )?
+
+Type ::=
+    NumericType
+|   StringType
+|   DateAndTimeType
 
 ColumnOptionListOpt ::=
     ColumnOption*
 
-ColumnOptionList ::=
-    ColumnOption*
-
-ColumnOption ::=
-    'NOT'? 'NULL'
-|   'AUTO_INCREMENT'
-|   PrimaryOpt 'KEY'
-|   'UNIQUE' 'KEY'?
-|   'DEFAULT' DefaultValueExpr
-|   'SERIAL' 'DEFAULT' 'VALUE'
-|   'ON' 'UPDATE' NowSymOptionFraction
-|   'COMMENT' stringLit
-|   ConstraintKeywordOpt 'CHECK' '(' Expression ')' EnforcedOrNotOrNotNullOpt
-|   GeneratedAlways 'AS' '(' Expression ')' VirtualOrStored
-|   ReferDef
-|   'COLLATE' CollationName
-|   'COLUMN_FORMAT' ColumnFormat
-|   'STORAGE' StorageMedia
-|   'AUTO_RANDOM' OptFieldLen
-
-CreateTableOptionListOpt ::=
-    TableOptionList?
-
-PartitionOpt ::=
-    ( 'PARTITION' 'BY' PartitionMethod PartitionNumOpt SubPartitionOpt PartitionDefinitionListOpt )?
-
-DuplicateOpt ::=
-    ( 'IGNORE' | 'REPLACE' )?
-
 TableOptionList ::=
     TableOption ( ','? TableOption )*
-
-TableOption ::=
-    PartDefOption
-|   DefaultKwdOpt ( CharsetKw EqOpt CharsetName | 'COLLATE' EqOpt CollationName )
-|   ( 'AUTO_INCREMENT' | 'AUTO_ID_CACHE' | 'AUTO_RANDOM_BASE' | 'AVG_ROW_LENGTH' | 'CHECKSUM' | 'TABLE_CHECKSUM' | 'KEY_BLOCK_SIZE' | 'DELAY_KEY_WRITE' | 'SHARD_ROW_ID_BITS' | 'PRE_SPLIT_REGIONS' ) EqOpt LengthNum
-|   ( 'CONNECTION' | 'PASSWORD' | 'COMPRESSION' ) EqOpt stringLit
-|   RowFormat
-|   ( 'STATS_PERSISTENT' | 'PACK_KEYS' ) EqOpt StatsPersistentVal
-|   ( 'STATS_AUTO_RECALC' | 'STATS_SAMPLE_PAGES' ) EqOpt ( LengthNum | 'DEFAULT' )
-|   'STORAGE' ( 'MEMORY' | 'DISK' )
-|   'SECONDARY_ENGINE' EqOpt ( 'NULL' | StringName )
-|   'UNION' EqOpt '(' TableNameListOpt ')'
-|   'ENCRYPTION' EqOpt EncryptionOpt
 ```
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 参数，例如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT`。
 

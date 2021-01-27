@@ -14,18 +14,15 @@ aliases: ['/docs-cn/v3.0/sql-statements/sql-statement-create-index/','/docs-cn/v
 CreateIndexStmt ::=
     'CREATE' IndexKeyTypeOpt 'INDEX' IfNotExists Identifier IndexTypeOpt 'ON' TableName '(' IndexPartSpecificationList ')' IndexOptionList IndexLockAndAlgorithmOpt
 
-IndexKeyTypeOpt ::=
-    ( 'UNIQUE' | 'SPATIAL' | 'FULLTEXT' )?
+CreateIndexStmtUnique ::=
+    UNIQUE?
 
-<<<<<<< HEAD
-**CreateIndexStmtUnique:**
+Identifier ::=
+    identifier
+|   UnReservedKeyword
+|   NotKeywordToken
+|   TiDBKeyword
 
-![CreateIndexStmtUnique](/media/sqlgram/CreateIndexStmtUnique.png)
-
-**Identifier:**
-
-![Identifier](/media/sqlgram/Identifier.png)
-=======
 IfNotExists ::=
     ( 'IF' 'NOT' 'EXISTS' )?
 
@@ -37,7 +34,6 @@ IndexPartSpecificationList ::=
 
 IndexOptionList ::=
     IndexOption*
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 IndexLockAndAlgorithmOpt ::=
     ( LockClause AlgorithmClause? | AlgorithmClause LockClause? )?
@@ -45,25 +41,14 @@ IndexLockAndAlgorithmOpt ::=
 IndexType ::=
     ( 'USING' | 'TYPE' ) IndexTypeName
 
-<<<<<<< HEAD
-**TableName:**
+TableName ::=
+    Identifier ('.' Identifier)?
 
-![TableName](/media/sqlgram/TableName.png)
+IndexColNameList ::=
+    IndexColName (',' IndexColName)*
 
-**IndexColNameList:**
-
-![IndexColNameList](/media/sqlgram/IndexColNameList.png)
-
-**IndexOptionList:**
-
-![IndexOptionList](/media/sqlgram/IndexOptionList.png)
-
-**IndexOption:**
-
-![IndexOption](/media/sqlgram/IndexOption.png)
-=======
-IndexPartSpecification ::=
-    ( ColumnName OptFieldLen | '(' Expression ')' ) Order
+IndexOptionList ::=
+    IndexOption*
 
 IndexOption ::=
     'KEY_BLOCK_SIZE' '='? LengthNum
@@ -71,25 +56,7 @@ IndexOption ::=
 |   'WITH' 'PARSER' Identifier
 |   'COMMENT' stringLit
 |   IndexInvisible
-
-IndexTypeName ::=
-    'BTREE'
-|   'HASH'
-|   'RTREE'
-
-ColumnName ::=
-    Identifier ( '.' Identifier ( '.' Identifier )? )?
-
-OptFieldLen ::=
-    FieldLen?
-
-IndexNameList ::=
-    ( Identifier | 'PRIMARY' )? ( ',' ( Identifier | 'PRIMARY' ) )*
-
-KeyOrIndex ::=
-    'Key' | 'Index'
 ```
->>>>>>> 541d0a6b... sql-statements: use EBNF to render syntax diagrams - second batch (#5376)
 
 ## 示例
 
