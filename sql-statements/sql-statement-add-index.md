@@ -10,61 +10,80 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-index/','/docs-cn/dev/r
 
 ## 语法图
 
-**AlterTableStmt:**
+```ebnf+diagram
+AlterTableStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
 
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
+AlterTableSpec ::=
+    TableOptionList
+|   'SET' 'TIFLASH' 'REPLICA' LengthNum LocationLabelList
+|   'CONVERT' 'TO' CharsetKw ( CharsetName | 'DEFAULT' ) OptCollate
+|   'ADD' ( ColumnKeywordOpt IfNotExists ( ColumnDef ColumnPosition | '(' TableElementList ')' ) | Constraint | 'PARTITION' IfNotExists NoWriteToBinLogAliasOpt ( PartitionDefinitionListOpt | 'PARTITIONS' NUM ) )
+|   ( ( 'CHECK' | 'TRUNCATE' ) 'PARTITION' | ( 'OPTIMIZE' | 'REPAIR' | 'REBUILD' ) 'PARTITION' NoWriteToBinLogAliasOpt ) AllOrPartitionNameList
+|   'COALESCE' 'PARTITION' NoWriteToBinLogAliasOpt NUM
+|   'DROP' ( ColumnKeywordOpt IfExists ColumnName RestrictOrCascadeOpt | 'PRIMARY' 'KEY' | 'PARTITION' IfExists PartitionNameList | ( KeyOrIndex IfExists | 'CHECK' ) Identifier | 'FOREIGN' 'KEY' IfExists Symbol )
+|   'EXCHANGE' 'PARTITION' Identifier 'WITH' 'TABLE' TableName WithValidationOpt
+|   ( 'IMPORT' | 'DISCARD' ) ( 'PARTITION' AllOrPartitionNameList )? 'TABLESPACE'
+|   'REORGANIZE' 'PARTITION' NoWriteToBinLogAliasOpt ReorganizePartitionRuleOpt
+|   'ORDER' 'BY' AlterOrderItem ( ',' AlterOrderItem )*
+|   ( 'DISABLE' | 'ENABLE' ) 'KEYS'
+|   ( 'MODIFY' ColumnKeywordOpt IfExists | 'CHANGE' ColumnKeywordOpt IfExists ColumnName ) ColumnDef ColumnPosition
+|   'ALTER' ( ColumnKeywordOpt ColumnName ( 'SET' 'DEFAULT' ( SignedLiteral | '(' Expression ')' ) | 'DROP' 'DEFAULT' ) | 'CHECK' Identifier EnforcedOrNot | 'INDEX' Identifier IndexInvisible )
+|   'RENAME' ( ( 'COLUMN' | KeyOrIndex ) Identifier 'TO' Identifier | ( 'TO' | '='? | 'AS' ) TableName )
+|   LockClause
+|   AlgorithmClause
+|   'FORCE'
+|   ( 'WITH' | 'WITHOUT' ) 'VALIDATION'
+|   'SECONDARY_LOAD'
+|   'SECONDARY_UNLOAD'
 
-**AlterTableSpec:**
+Constraint ::=
+    ConstraintKeywordOpt ConstraintElem
 
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
+ConstraintKeywordOpt ::=
+    ( 'CONSTRAINT' Symbol? )?
 
-**Constraint:**
+ConstraintElem ::=
+    ( ( 'PRIMARY' 'KEY' | KeyOrIndex IfNotExists | 'UNIQUE' KeyOrIndexOpt ) IndexNameAndTypeOpt | 'FULLTEXT' KeyOrIndexOpt IndexName ) '(' IndexPartSpecificationList ')' IndexOptionList
+|   'FOREIGN' 'KEY' IfNotExists IndexName '(' IndexPartSpecificationList ')' ReferDef
+|   'CHECK' '(' Expression ')' EnforcedOrNotOpt
 
-![Constraint](/media/sqlgram/Constraint.png)
+IndexNameAndTypeOpt ::=
+    IndexName ( 'USING' IndexTypeName )?
+|   Identifier 'TYPE' IndexTypeName
 
-**ConstraintKeywordOpt:**
+IndexPartSpecificationList ::=
+    IndexPartSpecification ( ',' IndexPartSpecification )*
 
-![ConstraintKeywordOpt](/media/sqlgram/ConstraintKeywordOpt.png)
+IndexPartSpecification ::=
+    ( ColumnName OptFieldLen | '(' Expression ')' ) Order
 
-**ConstraintElem:**
+IndexOptionList ::=
+    IndexOption*
 
-![ConstraintElem](/media/sqlgram/ConstraintElem.png)
+IndexOption ::=
+    'KEY_BLOCK_SIZE' '='? LengthNum
+|   IndexType
+|   'WITH' 'PARSER' Identifier
+|   'COMMENT' stringLit
+|   IndexInvisible
 
-**IndexNameAndTypeOpt:**
+KeyOrIndex ::=
+    'KEY'
+|   'INDEX'
 
-![IndexNameAndTypeOpt](/media/sqlgram/IndexNameAndTypeOpt.png)
+IndexKeyTypeOpt ::=
+    ( 'UNIQUE' | 'SPATIAL' | 'FULLTEXT' )?
 
-**IndexPartSpecificationList:**
+IndexInvisible ::=
+    'VISIBLE'
+|   'INVISIBLE'
 
-![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
-
-**IndexPartSpecification:**
-
-![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
-
-**IndexOptionList:**
-
-![IndexOptionList](/media/sqlgram/IndexOptionList.png)
-
-**IndexOption:**
-
-![IndexOption](/media/sqlgram/IndexOption.png)
-
-**KeyOrIndex:**
-
-![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
-
-**IndexKeyTypeOpt:**
-
-![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
-
-**IndexInvisible:**
-
-![IndexInvisible](/media/sqlgram/IndexInvisible.png)
-
-**IndexTypeName:**
-
-![IndexTypeName](/media/sqlgram/IndexTypeName.png)
+IndexTypeName ::=
+    'BTREE'
+|   'HASH'
+|   'RTREE'
+```
 
 ## 示例
 

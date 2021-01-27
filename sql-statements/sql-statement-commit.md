@@ -12,13 +12,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-commit/','/docs-cn/dev/refe
 
 ## 语法图
 
-**CommitStmt:**
+```ebnf+diagram
+CommitStmt ::=
+    'COMMIT' CompletionTypeWithinTransaction?
 
-![CommitStmt](/media/sqlgram/CommitStmt.png)
-
-**CompletionTypeWithinTransaction:**
-
-![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
+CompletionTypeWithinTransaction ::=
+    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
+|   'NO'? 'RELEASE'
+```
 
 ## 示例
 
