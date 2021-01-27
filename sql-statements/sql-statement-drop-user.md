@@ -11,13 +11,13 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-user/','/docs-cn/v4
 
 ## 语法图
 
-**DropUserStmt:**
+```ebnf+diagram
+DropUserStmt ::=
+    'DROP' 'USER' ( 'IF' 'EXISTS' )? UsernameList
 
-![DropUserStmt](/media/sqlgram/DropUserStmt.png)
-
-**Username:**
-
-![Username](/media/sqlgram/Username.png)
+Username ::=
+    StringName ('@' StringName | singleAtIdentifier)? | 'CURRENT_USER' OptionalBraces
+```
 
 ## 示例
 

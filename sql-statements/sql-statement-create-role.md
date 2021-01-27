@@ -9,17 +9,16 @@ summary: TiDB 数据库中 CREATE ROLE 的使用概况。
 
 ## 语法图
 
-**CreateRoleStmt:**
+```ebnf+diagram
+CreateRoleStmt ::=
+    'CREATE' 'ROLE' IfNotExists RoleSpec (',' RoleSpec)*
 
-![CreateRoleStmt](/media/sqlgram/CreateRoleStmt.png)
+IfNotExists ::=
+    ('IF' 'NOT' 'EXISTS')?
 
-**IfNotExists:**
-
-![IfNotExists](/media/sqlgram/IfNotExists.png)
-
-**RoleSpec:**
-
-![RoleSpec](/media/sqlgram/RoleSpec.png)
+RoleSpec ::=
+    Rolename
+```
 
 ## 示例
 
