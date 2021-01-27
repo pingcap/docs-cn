@@ -18,11 +18,10 @@ DatabaseSym ::=
     DATABASE
 
 IfExists ::= ( 'IF' 'EXISTS' )?
+
+DBName ::=
+    Identifier
 ```
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
 
 ## 示例
 
