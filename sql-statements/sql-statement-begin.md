@@ -11,9 +11,11 @@ summary: TiDB 数据库中 BEGIN 的使用概况。
 
 ## 语法图
 
-**BeginTransactionStmt:**
-
-![BeginTransactionStmt](/media/sqlgram/BeginTransactionStmt.png)
+```ebnf+diagram
+BeginTransactionStmt ::=
+    'BEGIN' ( 'PESSIMISTIC' | 'OPTIMISTIC' )?
+|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' )?
+```
 
 ## 示例
 

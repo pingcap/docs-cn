@@ -11,13 +11,14 @@ summary: TiDB 数据库中 COMMIT 的使用概况。
 
 ## 语法图
 
-**CommitStmt:**
+```ebnf+diagram
+CommitStmt ::=
+    'COMMIT' CompletionTypeWithinTransaction?
 
-![CommitStmt](/media/sqlgram/CommitStmt.png)
-
-**CompletionTypeWithinTransaction:**
-
-![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
+CompletionTypeWithinTransaction ::=
+    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
+|   'NO'? 'RELEASE'
+```
 
 ## 示例
 

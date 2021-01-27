@@ -9,13 +9,12 @@ summary: TiDB 数据库中 DROP DATABASE 的使用概况。
 
 ## 语法图
 
-**DropDatabaseStmt:**
+```ebnf+diagram
+DropDatabaseStmt ::=
+    'DROP' 'DATABASE' IfExists DBName
 
-![DropDatabaseStmt](/media/sqlgram/DropDatabaseStmt.png)
-
-**IfExists:**
-
-![IfExists](/media/sqlgram/IfExists.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
+```
 
 ## 示例
 

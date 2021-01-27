@@ -9,21 +9,18 @@ summary: TiDB 数据库中 DROP SEQUENCE 的使用概况。
 
 ## 语法图
 
-**DropSequenceStmt:**
+```ebnf+diagram
+DropSequenceStmt ::=
+    'DROP' 'SEQUENCE' IfExists TableNameList
 
-![DropSequenceStmt](/media/sqlgram/DropSequenceStmt.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
 
-**IfExists:**
+TableNameList ::=
+    TableName ( ',' TableName )*
 
-![IfExists](/media/sqlgram/IfExists.png)
-
-**TableNameList:**
-
-![TableNameList](/media/sqlgram/TableNameList.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ('.' Identifier)?
+```
 
 ## 示例
 

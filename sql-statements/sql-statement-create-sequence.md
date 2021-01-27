@@ -9,29 +9,31 @@ summary: CREATE SEQUENCE 在 TiDB 中的使用概况
 
 ## 语法图
 
-**CreateSequenceStmt:**
+```ebnf+diagram
+CreateSequenceStmt ::=
+    'CREATE' 'SEQUENCE' IfNotExists TableName CreateSequenceOptionListOpt CreateTableOptionListOpt
 
-![CreateSequenceStmt](/media/sqlgram/CreateSequenceStmt.png)
+IfNotExists ::=
+    ('IF' 'NOT' 'EXISTS')?
 
-**IfNotExists:**
+TableName ::=
+    Identifier ('.' Identifier)?
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+CreateSequenceOptionListOpt ::=
+    SequenceOption*
 
-**TableName:**
+SequenceOptionList ::=
+    SequenceOption
 
-![TableName](/media/sqlgram/TableName.png)
-
-**CreateSequenceOptionListOpt:**
-
-![CreateSequenceOptionListOpt](/media/sqlgram/CreateSequenceOptionListOpt.png)
-
-**SequenceOptionList:**
-
-![SequenceOptionList](/media/sqlgram/SequenceOptionList.png)
-
-**SequenceOption:**
-
-![SequenceOption](/media/sqlgram/SequenceOption.png)
+SequenceOption ::=
+    ( 'INCREMENT' ( '='? | 'BY' ) | 'START' ( '='? | 'WITH' ) | ( 'MINVALUE' | 'MAXVALUE' | 'CACHE' ) '='? ) SignedNum
+|   'NOMINVALUE'
+|   'NO' ( 'MINVALUE' | 'MAXVALUE' | 'CACHE' | 'CYCLE' )
+|   'NOMAXVALUE'
+|   'NOCACHE'
+|   'CYCLE'
+|   'NOCYCLE'
+```
 
 ## 语法说明
 
