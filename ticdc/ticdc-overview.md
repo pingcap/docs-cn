@@ -85,7 +85,7 @@ Currently, The following scenarios are not supported:
 
 - The TiKV cluster that uses RawKV alone.
 - The [DDL operation `CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md) and the [SEQUENCE function](/sql-statements/sql-statement-create-sequence.md#sequence-function) in TiDB v4.0. When the upstream TiDB uses `SEQUENCE`, TiCDC ignores `SEQUENCE` DDL operations/functions performed upstream. However, DML operations using `SEQUENCE` functions can be correctly replicated.
-- The [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region). TiCDC prevents the Region from entering the hibernated state.
+- The [TiKV Hibernate Region](/best-practices/massive-regions-best-practices.md#method-2-enable-hibernate-region). TiCDC prevents the Region from entering the hibernated state.
 
 ## Install and deploy TiCDC
 
