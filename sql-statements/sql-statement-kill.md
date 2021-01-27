@@ -30,7 +30,7 @@ mysql> SHOW PROCESSLIST;
 +------+------+-----------+------+---------+------+-------+------------------+
 2 rows in set (0.00 sec)
 
-mysql> KILL TIDB 2;
+KILL TIDB 2;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
@@ -39,24 +39,24 @@ Query OK, 0 rows affected (0.00 sec)
 * By design, this statement is not compatible with MySQL by default. This helps prevent against a case of a connection being terminated on the wrong TiDB server, because it is common to place multiple TiDB servers behind a load balancer.
 * The `KILL TIDB` statement is a TiDB extension. If you are certain that the session you are attempting to kill is on the same TiDB server, set [`compatible-kill-query = true`](/tidb-configuration-file.md#compatible-kill-query) in your configuration file.
 
-## Global kill <span class="version-mark">New in v5.0.0</span>
+## Global kill <span class="version-mark">New in v5.0.0-rc</span>
 
-Since v5.0, TiDB provides experimental support for [global kill](https://github.com/pingcap/tidb/blob/master/docs/design/2020-06-01-global-kill.md). When enabled, each TiDB server will ensure that Connection IDs are globally unique. A `KILL` statement can be issued to any TiDB server, which will internally route the request to the correct TiDB instance. This ensures that `KILL` is safe even when TiDB servers are behind a load balancer.
+Since v5.0, TiDB provides experimental support for [Global kill](https://github.com/pingcap/tidb/blob/master/docs/design/2020-06-01-global-kill.md). This feature is used to safely terminate any connection between the client and the TiDB server. When this feature is enabled, each TiDB server ensures that each connection ID is globally unique. The client can issue a `KILL` statement to any TiDB server, and the server internally routes the request to the corresponding TiDB instance. This ensures that `KILL` is safe to execute even when the TiDB server is behind a load balancer.
 
-To enable "global kill", set `enable-global-kill = true` in `experimental` section of your configuration file.
+To enable Global Kill, set `enable-global-kill = true` in the `experimental` section of the [TiDB configuration file](/tidb-configuration-file.md#enable-global-kill-new-in-v500-rc).
 
 ## Global kill example
 
-On TiDB instance `127.0.0.1:10180`:
+Execute the following statement on the TiDB instance `127.0.0.1:10180`:
 
 ```sql
-mysql> SELECT SLEEP(60);
+SELECT SLEEP(60);
 ```
 
-On TiDB instance `127.0.0.1:10080`:
+Execute the following statements on the TiDB instance `127.0.0.1:10080`:
 
 ```sql
-mysql> SELECT * FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
+SELECT * FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 +-----------------+---------------------+------+-----------+--------------------+---------+------+------------+------------------------------------------------------+------------------------------------------------------------------+------+----------------------------------------+
 | INSTANCE        | ID                  | USER | HOST      | DB                 | COMMAND | TIME | STATE      | INFO                                                 | DIGEST                                                           | MEM  | TxnStart                               |
 +-----------------+---------------------+------+-----------+--------------------+---------+------+------------+------------------------------------------------------+------------------------------------------------------------------+------+----------------------------------------+
@@ -65,7 +65,7 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 +-----------------+---------------------+------+-----------+--------------------+---------+------+------------+------------------------------------------------------+------------------------------------------------------------------+------+----------------------------------------+
 2 rows in set (0.07 sec)
 
-mysql> KILL 8824324082762776581;
+KILL 8824324082762776581;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
