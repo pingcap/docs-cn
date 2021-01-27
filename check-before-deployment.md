@@ -457,7 +457,7 @@ sudo systemctl enable ntpd.service
             {{< copyable "shell-regular" >}}
 
             ```bash
-            $ cat  >> /etc/systemd/system/cpupower.service << EOF
+            cat  >> /etc/systemd/system/cpupower.service << EOF
             [Unit]
             Description=CPU performance
             [Service]
