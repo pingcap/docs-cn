@@ -55,7 +55,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 从 v5.0 版本开始，TiDB 为 [Global Kill](https://github.com/pingcap/tidb/blob/master/docs/design/2020-06-01-global-kill.md) 功能提供实验性支持。该功能用于安全地终止客户端与 TiDB 服务器间的连接。启用该功能后，连接到每台 TiDB 服务器的 ID 将是全局唯一的。客户端可以向任一 TiDB 服务器发送 `KILL` 语句，服务器再将请求路由至目标 TiDB 实例。即使 TiDB 服务器位于负载均衡器之后，`KILL` 也能安全地被执行。
 
-要启用 Global Kill 功能，需要在配置文件的 `experimental` 部分设置 `enable-global-kill = true`。
+要启用 Global Kill 功能，需要在配置文件的 `experimental` 部分设置 [`enable-global-kill = true`](/tidb-configuration-file.md#enable-global-kill-从-v500-rc-版本开始引入)。
 
 ## Global Kill 示例
 
