@@ -38,7 +38,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - CPU Usage：每个 TiDB 实例的 CPU 使用统计
     - Connection Count：每个 TiDB 的连接数
     - Open FD Count：每个 TiDB 实例的打开的文件描述符统计
-    - Disconnection Count： 每个 TiDB 实例断开连接的数量
+    - Disconnection Count：每个 TiDB 实例断开连接的数量
     - Event OPM：每个 TiDB 实例关键事件统计，例如 start，close，graceful-shutdown，kill，hang 等
     - Goroutine Count：每个 TiDB 实例的 Goroutine 数量
     - Prepare Statement Count：每个 TiDB 实例现存的 `Prepare` 语句数以及总数
