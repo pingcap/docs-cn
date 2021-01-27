@@ -1,10 +1,22 @@
 ---
+<<<<<<< HEAD
 title: 使用 Dumpling/TiDB Lightning 进行备份与恢复
 aliases: ['/docs-cn/stable/backup-and-restore-using-dumpling-lightning/','/docs-cn/v4.0/backup-and-restore-using-dumpling-lightning/','/docs-cn/stable/export-or-backup-using-dumpling/','/docs-cn/v4.0/export-or-backup-using-dumpling/','/zh/tidb/v4.0/export-or-backup-using-dumpling']
+=======
+title: 使用 Dumpling/TiDB Lightning 备份与恢复
+aliases: ['/docs-cn/dev/backup-and-restore-using-dumpling-lightning/','/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling','/docs-cn/dev/backup-and-restore-using-mydumper-lightning/','/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning/','/docs-cn/dev/how-to/maintain/backup-and-restore/','/zh/tidb/dev/backup-and-restore-using-mydumper-lightning/']
+>>>>>>> 8dad50bb... BR: reorganize content about BR tool (#5299)
 ---
 
-# 使用 Dumpling/TiDB Lightning 进行备份与恢复
+# 使用 Dumpling/TiDB Lightning 备份与恢复
 
+<<<<<<< HEAD
+=======
+> **警告：**
+>
+> 本文提供的备份恢复方法已不再推荐，强烈推荐使用 [BR 工具](/br/backup-and-restore-tool.md)进行备份恢复，以获得更好的工具体验。
+
+>>>>>>> 8dad50bb... BR: reorganize content about BR tool (#5299)
 本文档将详细介绍如何使用 Dumpling/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份和同步可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
 这里假定 TiDB 服务器信息如下：
