@@ -39,17 +39,16 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - CPU Usage：每个 TiDB 实例的 CPU 使用统计
     - Connection Count：每个 TiDB 的连接数
     - Open FD Count：每个 TiDB 实例的打开的文件描述符统计
+    - Disconnection Count：每个 TiDB 实例断开连接的数量
+    - Event OPM：每个 TiDB 实例关键事件统计，例如 start，close，graceful-shutdown，kill，hang 等
     - Goroutine Count：每个 TiDB 实例的 Goroutine 数量
-    - Go GC Duration：每个 TiDB 实例的 Golang GC 耗时
-    - Go Threads：每个 TiDB 实例的线程数量
-    - Go GC Count：每个 TiDB 实例的 Golang GC 执行次数
-    - Go GC CPU Usage：每个 TiDB 实例的 Golang GC 使用的 CPU
-    - Events OPM：每个 TiDB 实例关键事件统计，例如 start，close，graceful-shutdown，kill，hang 等
-    - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注
     - Prepare Statement Count：每个 TiDB 实例现存的 `Prepare` 语句数以及总数
+    - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注
+    - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量
     - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数
-    - Write Binlog Error：每个 TiDB 每秒写入 Binlog 失败的次数
-    - Get Token Duration：每个连接获取 Token 的耗时
+    - Get Token Duration：每个连接获取 Token 的耗时  
+    - Skip Binlog Count：TiDB 写入 Binlog 失败的数量
+    - Client Data Traffic：TiDB 和客户端的数据流量统计
     - Handshake Error OPS：每个 TiDB 实例每秒握手错误的次数
 
 - Transaction
