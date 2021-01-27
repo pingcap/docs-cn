@@ -20,11 +20,12 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Duration：执行时间
         - 客户端网络请求发送到 TiDB，到 TiDB 执行结束后返回给客户端的时间。一般情况下，客户端请求都是以 SQL 语句的形式发送，但也可以包含 `COM_PING`、`COM_SLEEP`、`COM_STMT_FETCH`、`COM_SEND_LONG_DATA` 之类的命令执行时间
         - 由于 TiDB 支持 Multi-Query，因此，可以接受客户端一次性发送多条 SQL 语句，如 `select 1; select 1; select 1;`。此时，统计的执行时间是所有 SQL 语句执行完之后的总时间
-    - QPS：所有 TiDB 实例上的每秒执行的 SQL 语句数量。按照执行成功或失败（OK/Error）进行了区分
-    - Statement OPS：不同类型的 SQL 语句每秒执行的数量。按 `SELECT`、`INSERT`、`UPDATE` 等来统计
-    - QPS By Instance：每个 TiDB 实例上的 QPS。按照命令和执行结果成功或失败来统计
+    - Command Per Second：TiDB 每秒处理的命令数。按照执行结果成功或失败来统计
+    - QPS：所有 TiDB 实例上的每秒执行的 SQL 语句数量。按 `SELECT`、`INSERT`、`UPDATE` 类型进行了区分
+    - CPS By Instance：每个 TiDB 实例上的命令统计。按照命令和执行结果成功或失败来统计
     - Failed Query OPM：每个 TiDB 实例上，对每秒钟执行 SQL 语句发生的错误按照错误类型的统计（例如语法错误、主键冲突等）。包含了错误所属的模块和错误码
-    - Slow query：慢查询处理时间统计（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间）
+    - Slow query：慢查询处理时间统计（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间），慢查询分为 internal 和 general SQL 语句
+    - Connection Idle Duration：空闲连接的持续时间
     - 999/99/95/80 Duration：不同类型的 SQL 语句执行耗时统计（不同百分位）
 
 - Query Detail

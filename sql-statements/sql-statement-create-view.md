@@ -10,37 +10,30 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-view/','/docs-cn/dev
 
 ## 语法图
 
-**CreateViewStmt:**
+```ebnf+diagram
+CreateViewStmt ::=
+    'CREATE' OrReplace ViewAlgorithm ViewDefiner ViewSQLSecurity 'VIEW' ViewName ViewFieldList 'AS' CreateViewSelectOpt ViewCheckOption
 
-![CreateViewStmt](/media/sqlgram/CreateViewStmt.png)
+OrReplace ::=
+    ( 'OR' 'REPLACE' )?
 
-**OrReplace:**
+ViewAlgorithm ::=
+    ( 'ALGORITHM' '=' ( 'UNDEFINED' | 'MERGE' | 'TEMPTABLE' ) )?
 
-![OrReplace](/media/sqlgram/OrReplace.png)
+ViewDefiner ::=
+    ( 'DEFINER' '=' Username )?
 
-**ViewAlgorithm:**
+ViewSQLSecurity ::=
+    ( 'SQL' 'SECURITY' ( 'DEFINER' | 'INVOKER' ) )?
 
-![ViewAlgorithm](/media/sqlgram/ViewAlgorithm.png)
+ViewName ::= TableName
 
-**ViewDefiner:**
+ViewFieldList ::=
+    ( '(' Identifier ( ',' Identifier )* ')' )?
 
-![ViewDefiner](/media/sqlgram/ViewDefiner.png)
-
-**ViewSQLSecurity:**
-
-![ViewSQLSecurity](/media/sqlgram/ViewSQLSecurity.png)
-
-**ViewName:**
-
-![ViewName](/media/sqlgram/ViewName.png)
-
-**ViewFieldList:**
-
-![ViewFieldList](/media/sqlgram/ViewFieldList.png)
-
-**ViewCheckOption:**
-
-![ViewCheckOption](/media/sqlgram/ViewCheckOption.png)
+ViewCheckOption ::=
+    ( 'WITH' ( 'CASCADED' | 'LOCAL' ) 'CHECK' 'OPTION' )?
+```
 
 ## 示例
 

@@ -10,21 +10,19 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-database/','/docs-cn
 
 ## 语法图
 
-**CreateDatabaseStmt:**
+```ebnf+diagram
+CreateDatabaseStmt ::=
+    'CREATE' 'DATABASE' IfNotExists DBName DatabaseOptionListOpt
 
-![CreateDaatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
 
-**IfNotExists:**
+DBName ::=
+    Identifier
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
-
-**DatabaseOptionListOpt:**
-
-![DatabaseOptionListOpt](/media/sqlgram/DatabaseOptionListOpt.png)
+DatabaseOptionListOpt ::=
+    DatabaseOptionList?
+```
 
 ## 语法说明
 
