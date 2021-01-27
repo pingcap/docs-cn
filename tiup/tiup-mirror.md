@@ -89,4 +89,4 @@ tiup mirror clone <target-dir> [global-version] [flags]
 
 ### 使用 TiUP 离线安装 TiDB 集群
 
-参考[使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md#1-准备-tiup-离线组件包)安装 TiUP 离线镜像，部署并启动 TiDB 集群。
+参考[使用 TiUP 离线部署](/production-offline-deployment-using-tiup.md#方式二使用-tiup-mirror-clone-命令手动打包离线组件包)安装 TiUP 离线镜像，部署并启动 TiDB 集群。
