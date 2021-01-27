@@ -5,28 +5,41 @@ aliases: ['/docs-cn/v3.1/br/backup-and-restore-use-cases/','/docs-cn/v3.1/refere
 
 # BR 备份与恢复场景示例
 
-[Backup & Restore](/br/backup-and-restore-tool.md)（下文简称 BR）一款分布式的快速备份和恢复工具。本文展示了[四种备份和恢复场景](#使用场景)下的 BR 操作过程，以帮助读者达到以下目标：
+[BR](/br/backup-and-restore-tool.md) 是一款分布式的快速备份和恢复工具。
+
+本文展示了以下几种备份和恢复场景下的 BR 操作过程：
+
+* 将单表数据备份到网络盘（推荐生产环境使用）
+* 从网络磁盘恢复备份数据（推荐生产环境使用）
+* 将单表数据备份到本地磁盘（推荐测试环境试用）
+* 从本地磁盘恢复备份数据（推荐测试环境试用）
+
+以帮助读者达到以下目标：
 
 * 正确使用网络盘或本地盘进行备份或恢复
 * 通过相关监控指标了解备份或恢复的状态
 * 了解在备份或恢复时如何调优性能
 * 处理备份时可能发生的异常
 
-> **注意：**
->
-> 使用 BR 时应注意[使用限制](/br/backup-and-restore-tool.md#使用限制)。
-
 ## 目标读者
 
-读者需要对 TiDB 和 TiKV 有一定的了解。在阅读本文前，推荐先阅读[使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)。
+你需要对 TiDB 和 TiKV 有一定的了解。
+
+在阅读本文前，请确保你已通读[备份与恢复工具 BR 简介](/br/backup-and-restore-tool.md)，尤其是[使用限制](/br/backup-and-restore-tool.md#使用限制)和[最佳实践](/br/backup-and-restore-tool.md#最佳实践)这两节。
 
 ## 环境准备
 
-本部分介绍推荐的 TiDB 的部署方式、示例中的集群版本、TiKV 集群硬件信息和集群配置。读者可根据自己的硬件和配置来预估备份恢复的性能。
+本节介绍 TiDB 的推荐部署方式、BR 使用示例中的集群版本、TiKV 集群硬件信息和集群配置。
+
+你可以根据自己的硬件和配置来预估备份恢复的性能。
 
 ### 部署方式
 
+<<<<<<< HEAD
 推荐使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
+=======
+推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#备份和恢复-br-工具) 获取 BR 工具。
+>>>>>>> 8dad50bb... BR: reorganize content about BR tool (#5299)
 
 ### 集群版本
 
@@ -56,24 +69,24 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 ## 使用场景
 
-本文描述以下四种使用场景：
+本节描述以下几种使用场景：
 
-* [将单表数据备份到网络盘（推荐）](#将单表数据备份到网络盘推荐)
-* [从网络磁盘恢复备份数据（推荐）](#从网络磁盘恢复备份数据推荐)
-* [将单表数据备份到本地磁盘](#将单表数据备份到本地磁盘)
-* [从本地磁盘恢复备份数据](#从本地磁盘恢复备份数据)
+* [将单表数据备份到网络盘（推荐生产环境使用）](#将单表数据备份到网络盘推荐生产环境使用)
+* [从网络磁盘恢复备份数据（推荐生产环境使用）](#从网络磁盘恢复备份数据推荐生产环境使用)
+* [将单表数据备份到本地磁盘（推荐测试环境试用）](#将单表数据备份到本地磁盘推荐测试环境试用)
+* [从本地磁盘恢复备份数据（推荐测试环境试用）](#从本地磁盘恢复备份数据推荐测试环境试用)
 
 推荐使用网络盘来进行备份和恢复操作，这样可以省去收集备份数据文件的繁琐步骤。尤其在 TiKV 集群规模较大的情况下，使用网络盘可以大幅提升操作效率。
 
-> **注意：**
->
-> 在进行备份或恢复操作前，需要先进行备份或恢复的准备工作。
+在使用 BR 进行备份或恢复操作前，需要先进行如下准备工作.
 
 ### 备份前的准备工作
 
-`br backup` 命令的详细使用方法请参考 [BR 命令行描述](/br/backup-and-restore-tool.md#br-命令行描述)。
+如果你使用的是 TiDB v4.0.8 及以上版本，相应版本的 BR 工具已支持自适应 GC。你只需要将 `backupTS` 注册到 PD 的 `safePoint`，保证 `safePoint` 在备份期间不会向前移动，即可避免手动设置 GC。
 
-1. 运行 `br backup` 命令前，查询 TiDB 集群的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [Garbage Collection](/garbage-collection-overview.md) (GC)。
+如果你使用的是 TiDB v4.0.7 及以下版本，则需要在 BR 备份前后，按照以下步骤手动设置 GC：
+
+1. 运行 [`br backup` 命令](/br/use-br-command-line-tool.md#br-命令行描述)前，查询 TiDB 集群的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [Garbage Collection](/garbage-collection-overview.md) (GC)。
 
     {{< copyable "sql" >}}
 
@@ -92,18 +105,17 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 ### 恢复前的准备工作
 
-`br restore` 命令的详细使用方法请参考 [BR 命令行描述](/br/backup-and-restore-tool.md#br-命令行描述)。
+使用 BR 进行恢复前的准备工作如下：
 
-> **注意：**
->
-> 运行 `br restore` 前检查新集群确保没有同名的表。
+运行 [`br restore` 命令](/br/use-br-command-line-tool.md#br-命令行描述)前，需要检查新集群，确保集群内没有同名的表。
 
-### 将单表数据备份到网络盘（推荐）
+### 将单表数据备份到网络盘（推荐生产环境使用）
 
 使用 `br backup` 命令，将单表数据 `--db batchmark --table order_line` 备份到指定的网络盘路径 `local:///br_data` 下。
 
 #### 前置要求
 
+* [备份前的准备工作](#备份前的准备工作)。
 * 配置一台高性能 SSD 硬盘主机为 NFS server 存储数据。其他所有 BR 节点和 TiKV 节点为 NFS client，挂载相同的路径（例如 `/br_data`）到 NFS server 上以访问 NFS server。
 * NFS server 和 NFS client 间的数据传输速率至少要达到备份集群的 `TiKV 实例数 * 150MB/s`。否则网络 I/O 有可能成为性能瓶颈。
 
@@ -225,13 +237,13 @@ bin/br backup table \
 * 备份吞吐：`avg speed(MB/s)` 从 `358.09` 提升到 `659.59`
 * 单个 TiKV 实例的吞吐：`avg speed(MB/s)/tikv_count` 从 `89` 提升到 `164.89`
 
-### 从网络磁盘恢复备份数据（推荐）
+### 从网络磁盘恢复备份数据（推荐生产环境使用）
 
 使用 `br restore` 命令，将一份完整的备份数据恢复到一个离线集群。暂不支持恢复到在线集群。
 
 #### 前置要求
 
-无
+* [恢复前的准备工作](#恢复前的准备工作)。
 
 #### 部署拓扑
 
@@ -330,12 +342,13 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 * 单个 TiKV 实例的吞吐：`avg speed(MB/s)`/`tikv_count` 从 `91.8` 提升到 `199.1`
 * 单个 TiKV 实例的平均恢复速度：`total size(MB)`/(`split time` + `restore time`)/`tikv_count` 从 `87.4` 提升到 `162.3`
 
-### 将单表数据备份到本地磁盘
+### 将单表数据备份到本地磁盘（推荐测试环境试用）
 
 使用 `br backup 命令`，将单表数据 `--db batchmark --table order_line` 备份到指定的本地磁盘路径 `local:///home/tidb/backup_local` 下。
 
 #### 前置要求
 
+* [备份前的准备工作](#备份前的准备工作)。
 * 各个 TiKV 节点有单独的磁盘用来存放 backupSST 数据。
 * `backup_endpoint` 节点有单独的磁盘用来存放备份的 `backupmeta` 文件。
 * TiKV 和 `backup_endpoint` 节点需要有相同的备份目录，例如 `/home/tidb/backup_local`。
@@ -382,12 +395,13 @@ bin/br backup table \
 
 根据上表数据可以计算得到单个 TiKV 实例的吞吐：`avg speed(MB/s)`/`tikv_count` = `160`。
 
-### 从本地磁盘恢复备份数据
+### 从本地磁盘恢复备份数据（推荐测试环境试用）
 
 使用 `br restore` 命令，将一份完整的备份数据恢复到一个离线集群。暂不支持恢复到在线集群。
 
 #### 前置要求
 
+* [恢复前的准备工作](#恢复前的准备工作)。
 * 集群中没有与备份数据相同的库表。目前 BR 不支持 table route。
 * 集群中各个 TiKV 节点有单独的磁盘用来存放要恢复的 backupSST 数据。
 * `restore_endpoint` 节点有单独的磁盘用来存放要恢复的 `backupmeta` 文件。
@@ -436,17 +450,17 @@ bin/br restore table --db batchmark --table order_line -s local:///home/tidb/bac
 * 单个 TiKV 实例的吞吐：`avg speed(MB/s)`/`tikv_count` = `97.2`
 * 单个 TiKV 实例的平均恢复速度：`total size(MB)`/(`split time` + `restore time`)/`tikv_count` = `92.4`
 
-### 异常处理
+## 备份过程中的异常处理
 
-本部分介绍如何处理备份过程中出现的常见错误。
+本节介绍如何处理备份过程中出现的常见错误。
 
-#### 备份日志中出现 `key locked Error`
+### 备份日志中出现 `key locked Error`
 
 日志中的错误消息：`log - ["backup occur kv error"][error="{\"KvError\":{\"locked\":`
 
 如果在备份过程中遇到 key 被锁住，目前 BR 会尝试清锁。少量报错不会影响备份的正确性。
 
-#### 备份失败
+### 备份失败
 
 日志中的错误消息：`log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup_local/\" })"`
 
