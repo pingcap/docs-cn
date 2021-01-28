@@ -3,10 +3,7 @@ on:
   push:
     branches:
       - master
-      - release-2.1
-      - release-3.0
-      - release-3.1
-      - release-4.0
+      - release-*
     paths:
       - media/**
 jobs:
@@ -36,4 +33,4 @@ jobs:
           pip3 install awscli
           printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
       - name: Upload
-        run: cloud-assets-utils verify-and-sync -qiniu true -qiniu-bucket ${{ secrets.QINIU_BUCKET_NAME }} -aws true -aws-bucket ${{ secrets.AWS_BUCKET_NAME }} media -replace-first-path-to images/docs-cn
+        run: cloud-assets-utils verify-and-sync -qiniu true -qiniu-bucket ${{ secrets.QINIU_BUCKET_NAME }} -aws true -aws-bucket ${{ secrets.AWS_BUCKET_NAME }} media -replace-first-path-to images/docs-cn -cdn-refresh https://download.pingcap.com/

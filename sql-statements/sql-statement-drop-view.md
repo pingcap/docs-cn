@@ -10,17 +10,16 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-view/','/docs-cn/dev/r
 
 ## 语法图
 
-**DropViewStmt:**
+```ebnf+diagram
+DropViewStmt ::=
+    'DROP' 'VIEW' ( 'IF' 'EXISTS' )? TableNameList RestrictOrCascadeOpt
 
-![DropViewStmt](/media/sqlgram/DropViewStmt.png)
+TableNameList ::=
+    TableName ( ',' TableName )*
 
-**TableNameList:**
-
-![TableNameList](/media/sqlgram/TableNameList.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ('.' Identifier)?
+```
 
 ## 示例
 
