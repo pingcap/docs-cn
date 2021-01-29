@@ -352,7 +352,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 如果上述指令结果中没有 gc_worker service_id 项目：
 
 1. PD 的版本 <= v4.0.8，该问题对应于已知问题 [pd#3128](https://github.com/tikv/pd/issues/3128)
-2. PD 是由 v4.0.8 以下版本滚动升级到新版，该问题对应于已知问题 [pd#3366](https://github.com/tikv/pd/issues/3366)
+2. PD 是由 v4.0.8 及更低版本滚动升级到新版，该问题对应于已知问题 [pd#3366](https://github.com/tikv/pd/issues/3366)
 
 如果不满足上述情况，请将上述指令执行结果反应到 asktug 论坛或对应的支持 DBA。
 
