@@ -91,7 +91,7 @@ tiup [flags] <component> [args...]      # 运行组件
 
 - [install](/tiup/tiup-command-install.md)：安装组件
 - [list](/tiup/tiup-command-list.md)：查看组件列表
-- [uniinstall](/tiup/tiup-command-uninstall.md)：卸载组件
+- [uninstall](/tiup/tiup-command-uninstall.md)：卸载组件
 - [update](/tiup/tiup-command-update.md)：升级已安装的组件
 - [status](/tiup/tiup-command-status.md)：查看组件运行状态
 - [clean](/tiup/tiup-command-clean.md)：清理组件数据目录
