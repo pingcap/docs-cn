@@ -1,6 +1,6 @@
 ---
 title: 使用 TiFlash
-aliases: ['/docs-cn/stable/tiflash/use-tiflash/','/docs-cn/v4.0/tiflash/use-tiflash/','/docs-cn/stable/reference/tiflash/use-tiflash/']
+aliases: ['/docs-cn/stable/tiflash/use-tiflash/','/docs-cn/v4.0/tiflash/use-tiflash/','/docs-cn/stable/reference/tiflash/use-tiflash/','/docs-cn/v4.0/reference/tiflash/use-tiflash/']
 ---
 
 # 使用 TiFlash
@@ -240,7 +240,7 @@ case when, month, substr, timestampdiff, date_format, from_unixtime, json_length
 
 目前 TiFlash 不支持下推的情况包括：
 
-- 所有包含 Duration 的表达式均不能下推
+- 所有包含 Time 类型的表达式均不能下推
 - 在聚合函数或者 WHERE 条件中包含了不在上述列表中的表达式，聚合或者相关的谓词过滤均不能下推
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的表达式，将会在后续陆续加入支持，也可以联系官方沟通。
