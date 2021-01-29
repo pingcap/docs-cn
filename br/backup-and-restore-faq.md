@@ -89,3 +89,11 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 ## 在 Kubernetes 环境中如何使用 BR 进行增量备份？
 
 可以使用 kubectl 执行 `kubectl -n ${namespace} get bk ${name}` 以获得上次 BR 备份 `commitTs` 字段，该字段的内容可作为 `--lastbackupts` 使用。
+
+## BR 恢复存档后是否需要 analyze 表，以及如何 analyze？
+
+BR v4.0.10 及之前的版本（v4.0.9 除外）均不会备份统计信息。所以在恢复后需要手动执行 ANALYZE TABLE 或等待 TiDB 自动进行 ANALYZE。
+
+BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正常从 v4.0.10 开始此功能默认关闭。
+
+不进行 ANALYZE 只会导致因统计信息不准确而选不中最优化的执行计划。如果查询性能不是重点关注项可以忽略 ANALYZE。

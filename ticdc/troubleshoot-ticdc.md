@@ -344,3 +344,41 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
     ```shell
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
+
+## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`.
+
+解决方案：需要使用 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 指令查询当前的 gc_safe_point 与 service_gc_safe_points。如果 gc_safe_point 小于 CDC 的 changefeed，则用户直接在 create changefeed 指令后加上 `--disable-gc-check` 参数创建 changefeed 即可。
+
+如果上述指令结果中没有 gc_worker service_id 项目：
+
+1. PD 的版本 <= v4.0.8，该问题对应于已知问题 [pd#3128](https://github.com/tikv/pd/issues/3128)
+2. PD 是由 v4.0.8 以下版本滚动升级到新版，该问题对应于已知问题 [pd#3366](https://github.com/tikv/pd/issues/3366)
+
+如果不满足上述情况，请将上述指令执行结果反应到 asktug 论坛或对应的支持 DBA。
+
+## 使用 TiCDC 创建 changefeed enable-old-value 设置为 true 后 cdc 执行到下游的语句仍然为 REPLACE INTO 而非 UPDATE.
+
+需要在创建 changefeed 时显式指定 safe-mode 为 false 才会生成 UPDATE 语句，执行步骤为:
+
+```
+tiup ctl cdc changefeed pause -c simple-replication-task
+tiup ctl cdc changefeed update -c simple-replication-task --sink-uri "mysql://root:@127.0.0.1:3306/?safe-mode=false" --config ./changefeed.toml
+tiup ctl cdc changefeed resume -c simple-replication-task
+```
+
+值得注意的是目前修改 safe-mode 功能并没有对外开放，因为 TiCDC 还不提供 exactly once delivery 的保证；
+
+开启 safe-mode=false，因为有重复消息的存在，会出现同步中断的风险。因此，**不建议使用**。
+
+## 使用 TiCDC 同步消息到 kafka 时 kafka 报错 Message was too large
+
+v4.0.8 与更低版本的 TiCDC，Sink URI 配置 kafka 中的 `max-message-bytes` 参数不能保证有效控制输出到 kafka 的消息大小，需要在 kafka server 配置中加入下述配置以提高接受消息的字节数限制。
+
+```
+#broker能接收消息的最大字节数
+message.max.bytes=2147483648
+#broker可复制的消息的最大字节数
+replica.fetch.max.bytes=2147483648
+#消费者端的可读取的最大消息
+fetch.message.max.bytes=2147483648
+```

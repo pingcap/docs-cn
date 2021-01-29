@@ -179,30 +179,40 @@ bin/br backup table \
 
 #### 结果解读
 
-使用 BR 前已设置日志的存放路径。从路径下存放的日志中可以获取此次备份的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
+BR 会在备份结束时输出备份 summary 到控制台。
+
+同时使用 BR 前已设置日志的存放路径。从路径下存放的日志中可以获取此次备份的相关统计信息。在日志中搜关键字 "summary"，可以看到以下信息：
 
 ```
-["Table backup summary:
+["Full backup Success summary:
     total backup ranges: 4,
     total success: 4,
     total failed: 0,
-    total take(s): 986.43,
-    total kv: 5659888624,
-    total size(MB): 353227.18,
-    avg speed(MB/s): 358.09"]
-    ["backup total regions"=7196]
-    ["backup checksum"=6m28.291772955s]
-    ["backup fast checksum"=24.950298ms]
+    total take(Full backup time): 1m29.28161388s,
+    total take(real time): 2m33.213625285s,
+    total kv: 120000000,
+    total size(MB): 5997.49,
+    avg speed(MB/s): 67.17"]
+    ["backup checksum"=1m3.588888373s]
+    ["backup fast checksum"=358µs]
+    ["backup total regions"=2]
+    [BackupTS=422550536188329985]
+    [Size=826624755]
 ```
 
 以上日志信息中包含以下内容：
 
-* 备份耗时：`total take(s): 986.43`
-* 数据大小：`total size(MB): 353227.18`
-* 备份吞吐：`avg speed(MB/s): 358.09`
-* 校验耗时：`take=6m28.29s`
+* 备份耗时：`total take(Full backup time): 1m29.28161388s`
+* 程序运行总耗时：`total take(real time): 2m33.213625285s`
+* 备份数据大小：`total size(MB): 5997.49`
+* 备份吞吐：`avg speed(MB/s): 67.1`
+* 校验耗时：`["backup checksum"=1m3.588888373s]`
+* 计算各表 checksum, kvs, bytes 信息总和的耗时：`["backup fast checksum"=358µs]`
+* 备份 region 总数：`["backup total regions"=2]`
+* 备份存档压缩后在磁盘中的实际大小：`[Size=826624755]`
+* 备份存档的快照时间戳：`[BackupTS=422550536188329985]`
 
-通过以上数据可以计算得到单个 TiKV 实例的吞吐为：`avg speed(MB/s)`/`tikv_count` = `89`。
+通过以上数据可以计算得到单个 TiKV 实例的吞吐为：`avg speed(MB/s)`/`tikv_count` = `67.1`。
 
 #### 性能调优
 
