@@ -57,7 +57,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Transaction Statement Num：事务中的 SQL 语句数量
     - Transaction Retry Num：事务重试次数
     - Session Retry Error OPS：每秒事务重试时遇到的错误数量，分为重试失败和超过最大重试次数两种类型
-    - Commit Token Wait Duration：事务提交时的流控队列等待耗时。当出现较长等待时，代表提交事务过大，正在限流。如果系统还有资源可以使用，可以通过增大 TiDB 配置文件中 `committer-concurrency` 来加速提交
+    - Commit Token Wait Duration：事务提交时的流控队列等待耗时。当出现较长等待时，代表提交事务过大，正在限流。如果系统还有资源可以使用，可以通过增大 TiDB 配置文件中 `committer-concurrency` 值来加速提交
     - KV Transaction OPS：每个 TiDB 内部每秒执行的事务数量
         - 一个用户的事务，在 TiDB 内部可能会触发多次事务执行，其中包含，内部元数据的读取，用户事务原子性地多次重试执行等
         - TiDB 内部的定时任务也会通过事务来操作数据库，这部分也包含在这个面板里
