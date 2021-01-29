@@ -81,6 +81,8 @@ This error is returned when the downstream MySQL does not load the time zone. Yo
 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql -p
 ```
 
+If the output of the command above is similar to the following one, the import is successful:
+
 ```
 Enter password:
 Warning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.
@@ -89,7 +91,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it
 Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
 ```
 
-If you use MySQL in a special public cloud environment, such Alibaba Cloud RDS, and if you do not have the permission to modify MySQL, you need to specify the time zone using the `--tz` parameter:
+If the downstream is a special MySQL environment (a public cloud RDS or some MySQL derivative versions) and importing the time zone using the above method fails, you need to specify the MySQL time zone of the downstream using the `time-zone` parameter in `sink-uri`. You can first query the time zone used by MySQL:
 
 1. Query the time zone used by MySQL:
 
@@ -113,20 +115,34 @@ If you use MySQL in a special public cloud environment, such Alibaba Cloud RDS, 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/" --tz=Asia/Shanghai
+    cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST"
     ```
 
     > **Note:**
     >
-    > In MySQL, CST refers to the China Standard Time (UTC+08:00). Usually you cannot use `CST` directly in your system, but use `Asia/Shanghai` instead.
+    > CST might be an abbreviation for the following four different time zones:
+    >
+    > + Central Standard Time (USA) UT-6:00
+    > + Central Standard Time (Australia) UT+9:30
+    > + China Standard Time UT+8:00
+    > + Cuba Standard Time UT-4:00
+    >
+    > In China, CST usually stands for China Standard Time.
 
-Be cautious when you set the time zone of the TiCDC server, because the time zone will be used for the conversion of time type. It is recommended that you use the same time zone in the upstream and downstream databases, and specify the time zone using `--tz` when you start the TiCDC server.
+## How to understand the relationship between the TiCDC time zone and the time zones of the upstream/downstream databases?
 
-The TiCDC server chooses its time zone in the following priority:
+||Upstream time zone| TiCDC time zone|Downstream time zone|
+| :-: | :-: | :-: | :-: |
+| Configuration method | See [Time Zone Support](/configure-time-zone.md) | Configured using the `--tz` parameter when you start the TiCDC server |  Configured using the `time-zone` parameter in `sink-uri` |
+| Description | The time zone of the upstream TiDB, which affects DML operations of the timestamp type and DDL operations related to timestamp type columns.| TiCDC assumes that the upstream TiDB's time zone is the same as the TiCDC time zone configuration, and performs related operations on the timestamp column.| The downstream MySQL processes the timestamp in the DML and DDL operations according to the downstream time zone setting.|
 
-1. TiCDC first uses the time zone specified by `--tz`.
-2. When `--tz` is not available, TiCDC tries to read the time zone set by the `TZ` environment variable.
-3. When the `TZ` environment variable is not available, TiCDC uses the default time zone of the machine.
+ > **Note:**
+ >
+ > Be careful when you set the time zone of the TiCDC server, because this time zone is used for converting the time type. Keep the upstream time zone, TiCDC time zone, and the downstream time zone consistent. The TiCDC server chooses its time zone in the following priority:
+ >
+ > - TiCDC first uses the time zone specified using `--tz`.
+ > - When `--tz` is not available, TiCDC tries to read the time zone set using the `TZ` environment variable.
+ > - When the `TZ` environment variable is not available, TiCDC uses the default time zone of the machine.
 
 ## What is the default behavior of TiCDC if I create a replication task without specifying the configuration file in `--config`?
 
@@ -275,6 +291,50 @@ If the Old Value feature is not enabled, you cannot tell whether a Row Changed E
 
 For more information, refer to [Open protocol Row Changed Event format](/ticdc/ticdc-open-protocol.md#row-changed-event).
 
+## Does TiCDC support replicating large transactions? Is there any risk?
+
+TiCDC provides partial support for large transactions (more than 5 GB in size). Depending on different scenarios, the following risks might exist:
+
+- When TiCDC's internal processing capacity is insufficient, the replication task error `ErrBufferReachLimit` might occur.
+- When TiCDC's internal processing capacity is insufficient or the throughput capacity of TiCDC's downstream is insufficient, out of memory (OOM) might occur.
+
+If you encounter an error above, it is recommended to use BR to restore the incremental data of large transactions. The detailed operations are as follows:
+
+1. Record the `checkpoint-ts` of the changefeed that is terminated due to large transactions, use this TSO as the `--lastbackupts` of the BR incremental backup, and execute [incremental data backup](/br/backup-and-restore-tool.md#back-up-incremental-data).
+2. After backing up the incremental data, you can find a log record similar to `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` in the BR log output. Record the `BackupTS` in this log.
+3. [Restore the incremental data](/br/backup-and-restore-tool.md#restore-incremental-data).
+4. Create a new changefeed and start the replication task from `BackupTS`.
+5. Delete the old changefeed.
+
+## When the downstream of a changefeed is a database similar to MySQL and TiCDC executes a time-consuming DDL statement, all other changefeeds are blocked. How should I handle the issue?
+
+1. Pause the execution of the changefeed that contains the time-consuming DDL statement. Then you can see that other changefeeds are no longer blocked.
+2. Search for the `apply job` field in the TiCDC log and confirm the `StartTs` of the time-consuming DDL statement.
+3. Manually execute the DDL statement in the downstream. After the execution finishes, go on performing the following operations.
+4. Modify the changefeed configuration and add the above `StartTs` to the `ignore-txn-start-ts` configuration item.
+5. Resume the paused changefeed.
+
+## After I upgrade the TiCDC cluster to v4.0.8, the `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled` error is reported when I execute a changefeed
+
+Since v4.0.8, if the `canal` or `canal-json` protocol is used for output in a changefeed, TiCDC checks whether the old value feature is also enabled. If you disable the old value feature, this error is reported. To fix the error, take the following steps:
+
+1. Set the value of `enable-old-value` in the changefeed configuration file to `true`.
+2. Execute `cdc cli changefeed update` to update the original changefeed configuration.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    ```
+
+3. Execute `cdc cli changfeed resume` to resume the replication task.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed resume -c test-cf
+    ```
+
 ## How much PD storage does TiCDC use?
 
-TiCDC uses etcd in PD to store and regularly update the metadata. Because the time interval between the MVCC of etcd and PD‘s default compaction is one hour, the amount of PD storage that TiCDC uses is proportional to the amount of metadata versions generated within this hour. However, in v4.0.5, v4.0.6, and v4.0.7, TiCDC has a problem of frequent writing, so if there are 1000 tables created or scheduled in an hour, it then takes up all the etcd storage and returns the `etcdserver: mvcc: database space exceeded` error. You need to clean up the etcd storage after getting this error. See [etcd maintaince space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota) for details. It is recommended to upgrade your cluster to v4.0.9 or later versions.
+TiCDC uses etcd in PD to store and regularly update the metadata. Because the time interval between the MVCC of etcd and PD's default compaction is one hour, the amount of PD storage that TiCDC uses is proportional to the amount of metadata versions generated within this hour. However, in v4.0.5, v4.0.6, and v4.0.7, TiCDC has a problem of frequent writing, so if there are 1000 tables created or scheduled in an hour, it then takes up all the etcd storage and returns the `etcdserver: mvcc: database space exceeded` error. You need to clean up the etcd storage after getting this error. See [etcd maintaince space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota) for details. It is recommended to upgrade your cluster to v4.0.9 or later versions.

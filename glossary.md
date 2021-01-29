@@ -20,6 +20,12 @@ ACID refers to the four key properties of a transaction: atomicity, consistency,
 
 - **Durability** means that once a transaction is committed, it remains committed even in the event of a system failure. TiKV uses persistent storage to ensure durability.
 
+## C
+
+### Changefeed
+
+An incremental replication task in TiCDC, which outputs the data change logs of several tables in a TiDB cluster to the designated downstream.
+
 ## L
 
 ### leader/follower/learner
@@ -27,6 +33,10 @@ ACID refers to the four key properties of a transaction: atomicity, consistency,
 Leader/Follower/Learner each corresponds to a role in a Raft group of [peers](#regionpeerraft-group). The leader services all client requests and replicates data to the followers. If the group leader fails, one of the followers will be elected as the new leader. Learners are non-voting followers that only serves in the process of replica addition.
 
 ## O
+
+### Old value
+
+The "original value" in the incremental change log output by TiCDC. You can specify whether the incremental change log output by TiCDC contains the "original value".
 
 ### Operator
 

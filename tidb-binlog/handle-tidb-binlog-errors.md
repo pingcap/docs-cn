@@ -37,3 +37,12 @@ Solution: Use the [binlogctl tool](/tidb-binlog/binlog-control.md) to check whet
 ## Data loss occurs during the TiDB Binlog replication
 
 You need to confirm that TiDB Binlog is enabled on all TiDB instances and runs normally. If the cluster version is later than v3.0, use the `curl {TiDB_IP}:{STATUS_PORT}/info/all` command to confirm the TiDB Binlog status on all TiDB instances.
+
+## When the upstream transaction is large, Pump reports an error `rpc error: code = ResourceExhausted desc = trying to send message larger than max (2191430008 vs. 2147483647)`
+
+This error occurs because the gRPC message sent by TiDB to Pump exceeds the size limit. You can adjust the maximum size of a gRPC message that Pump allows by specifying `max-message-size` when starting Pump.
+
+## Is there any cleaning mechanism for the incremental data of the file format output by Drainer? Will the data be deleted?
+
+- In Drainer v3.0.x, there is no cleaning mechanism for incremental data of the file format.
+- In the v4.0.x version, there is a time-based data cleaning mechanism. For details, refer to [Drainer's `retention-time` configuration item](https://github.com/pingcap/tidb-binlog/blob/v4.0.9/cmd/drainer/drainer.toml#L153).
