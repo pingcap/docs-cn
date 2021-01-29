@@ -368,4 +368,4 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 > **注意：**
 >
 > 以上步骤仅适用于 TiCDC 4.0.11 及以上（且不包括 5.0.0-rc）。
-> 其余版本中，DDL 执行失败后 changefeed 的 checkpoint-ts 为 DDL 的 finish-ts. `cdc cli changefeed resume` 恢复同步任务后 DDL 会重试。
+> 其余版本中，DDL 执行失败后 changefeed 的 checkpoint-ts 为 DDL 的 finish-ts. `cdc cli changefeed resume` 恢复同步任务后 DDL 不会重试，直接跳过执行该 DDL。
