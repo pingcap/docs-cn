@@ -35,11 +35,7 @@ aliases: ['/docs-cn/v3.1/br/backup-and-restore-use-cases/','/docs-cn/v3.1/refere
 
 ### 部署方式
 
-<<<<<<< HEAD
-推荐使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#快速备份和恢复br) 获取 BR 应用。
-=======
-推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#备份和恢复-br-工具) 获取 BR 工具。
->>>>>>> 8dad50bb... BR: reorganize content about BR tool (#5299)
+推荐使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#备份和恢复-br-工具) 获取 BR 应用。
 
 ### 集群版本
 

@@ -31,22 +31,15 @@ aliases: ['/docs-cn/v3.1/br/backup-and-restore-faq/']
 ## BR 遇到 Permission denied 错误，即使用 root 运行 BR 也无法解决，该如何处理？
 
 需要确认 TiKV 是否有访问备份目录的权限。如果是备份，确认是否有写权限；如果是恢复，确认是否有读权限。
- 
+
 使用 root 运行 BR 仍旧有可能会因为磁盘权限而失败，因为备份文件 (SST) 的保存是由 TiKV 执行的。
 
 > **注意：**
 >
-<<<<<<< HEAD
-> 在恢复的时候也可能遇到同样的问题。BR 的恢复中，在检验读权限的时机是在第一次读取 SST 文件时，考虑到执行 DDL 的耗时，这个时刻可能会离开始运行 BR 的时间很远。
-> 
-> 这样可能会出现等了很长时间之后遇到 Permission denied 错误失败的情况。
-> 
-=======
 > 在恢复的时候也可能遇到同样的问题。
 >
 > 使用 BR 进行数据的恢复时，检验读权限的时机是在第一次读取 SST 文件时，考虑到执行 DDL 的耗时，这个时刻可能会离开始运行 BR 的时间很远。这样可能会出现等了很长时间之后遇到 Permission denied 错误失败的情况。
 >
->>>>>>> 8dad50bb... BR: reorganize content about BR tool (#5299)
 > 因此，最好在恢复前提前检查权限。
 
 ## BR 遇到错误信息 `Io(Os...)`，该如何处理？
@@ -54,17 +47,7 @@ aliases: ['/docs-cn/v3.1/br/backup-and-restore-faq/']
 这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。检查备份目录的挂载方式和文件系统，试试看备份到其它文件夹或者其它硬盘。
 
 目前已知备份到 samba 搭建的网盘时可能会遇到 `Code: 22(invalid argument)` 错误。
-<<<<<<< HEAD
- 
-=======
 
-## BR 遇到错误信息 `rpc error: code = Unavailable desc =...`，该如何处理？
-
-该问题一般是因为使用 BR 恢复数据的时候，恢复集群的性能不足导致的。可以从恢复集群的监控或者 TiKV 日志来辅助确认。
-
-要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
-
->>>>>>> 8dad50bb... BR: reorganize content about BR tool (#5299)
 ## 使用 local storage 的时候，BR 备份的文件会存在哪里？
 
 在使用 local storage 的时候，会在运行 BR 的节点生成 `backupmeta`，在各个 Region 的 Leader 节点生成备份文件。
