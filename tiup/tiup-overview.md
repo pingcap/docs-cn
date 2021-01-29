@@ -113,7 +113,6 @@ The output is long but you can focus on only two parts:
     - client: used to connect to a TiDB cluster in a local machine
     - cluster: used to deploy a TiDB cluster for production environments
     - bench: used to stress test the database
-    - doc: used to open online document
 
 > **Note:**
 >
