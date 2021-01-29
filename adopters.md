@@ -21,7 +21,7 @@ This is a list of TiDB adopters in various industries.
 |[iQiyi](https://en.wikipedia.org/wiki/IQiyi)|Media and Entertainment|[English](https://pingcap.com/case-studies/tidb-in-iqiyi/); [Chinese](https://pingcap.com/cases-cn/user-case-iqiyi/)|
 |[BookMyShow](https://www.crunchbase.com/organization/bookmyshow)|Media and Entertainment|[English](https://pingcap.com/case-studies/tidb-in-bookmyshow/)|
 |[Yiguo.com](https://www.crunchbase.com/organization/shanghai-yiguo-electron-business)|E-commerce|[English](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/); [Chinese](https://pingcap.com/cases-cn/user-case-yiguo)|
-|[Shopee](https://en.wikipedia.org/wiki/Shopee)|E-commerce|[English](https://pingcap.com/case-studies/tidb-in-shopee/); [Chinese](https://pingcap.com/cases-cn/user-case-shopee/)|
+|[Shopee](https://en.wikipedia.org/wiki/Shopee)|E-commerce|English [#1](https://pingcap.com/case-studies/tidb-in-shopee/), [#2](https://pingcap.com/case-studies/choosing-right-database-for-your-applications); [Chinese](https://pingcap.com/cases-cn/user-case-shopee/)|
 |[Zhuan Zhuan](https://www.crunchbase.com/organization/zhuan-zhuan)|E-commerce|English [#1](https://pingcap.com/case-studies/tidb-in-zhuanzhuan/), [#2](https://pingcap.com/case-studies/scale-out-database-powers-china-letgo-with-reduced-maintenance-costs); Chinese [#1](https://pingcap.com/cases-cn/user-case-zhuanzhuan/), [#2](https://pingcap.com/cases-cn/user-case-zhuanzhuan-2/), [#3](https://pingcap.com/cases-cn/user-case-zhuanzhuan-3/)|
 |[Xiaohongshu](https://en.wikipedia.org/wiki/Xiaohongshu)|E-commerce|[English](https://pingcap.com/case-studies/how-we-use-a-scale-out-htap-database-for-real-time-analytics-and-complex-queries); Chinese [#1](https://pingcap.com/cases-cn/user-case-xiaohongshu/), [#2](https://pingcap.com/cases-cn/user-case-xiaohongshu-2/)|
 |[Happigo.com](https://www.crunchbase.com/organization/happigo-com)|E-commerce||
@@ -29,11 +29,11 @@ This is a list of TiDB adopters in various industries.
 |[Youju Tech](https://nn.yjyz.com/)|E-commerce||
 |[Maizuo](https://www.crunchbase.com/organization/maizhuo)|E-commerce||
 |[Mogujie](https://www.crunchbase.com/organization/mogujie)|E-commerce||
-|[Zhihu](https://en.wikipedia.org/wiki/Zhihu)|Knowledge Sharing|[English](https://pingcap.com/case-studies/lesson-learned-from-queries-over-1.3-trillion-rows-of-data-within-milliseconds-of-response-time-at-zhihu/); [Chinese](https://pingcap.com/cases-cn/user-case-zhihu/)|
+|[Zhihu](https://en.wikipedia.org/wiki/Zhihu)|Knowledge Sharing|English [#1](https://pingcap.com/case-studies/lesson-learned-from-queries-over-1.3-trillion-rows-of-data-within-milliseconds-of-response-time-at-zhihu/), [#2](https://pingcap.com/case-studies/horizontally-scaling-hive-metastore-database-by-migrating-from-mysql-to-tidb); [Chinese](https://pingcap.com/cases-cn/user-case-zhihu/)|
 |[JD Cloud & AI](https://www.crunchbase.com/organization/jd-cloud)|Cloud Computing|[English](https://pingcap.com/case-studies/lesson-learned-from-40-k-qps-and-20-billion-rows-of-data-in-a-single-scale-out-cluster/); [Chinese](https://pingcap.com/cases-cn/user-case-jingdongyun/)|
 |[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://pingcap.com/case-studies/tidb-in-mobike); Chinese [#1](https://pingcap.com/cases-cn/user-case-mobike/), [#2](https://pingcap.com/cases-cn/user-case-mobike-2/)|
 |[Chehaoduo](https://www.crunchbase.com/organization/guazi-com)|Automobile|[English](https://pingcap.com/case-studies/top-car-trading-platform-chooses-scale-out-database-as-mysql-alternative)|
-|[Xiaomi](https://en.wikipedia.org/wiki/Xiaomi)|Consumer Electronics|[Chinese](https://pingcap.com/cases-cn/user-case-xiaomi/)|
+|[Xiaomi](https://en.wikipedia.org/wiki/Xiaomi)|Consumer Electronics|[English](https://pingcap.com/case-studies/tidb-in-xiaomi); [Chinese](https://pingcap.com/cases-cn/user-case-xiaomi/)|
 |[LY.com](https://www.crunchbase.com/organization/ly-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-tongcheng/)|
 |[Qunar.com](https://www.crunchbase.com/organization/qunar-com)|Travel|[Chinese](https://pingcap.com/cases-cn/user-case-qunar/)|
 |[Hulu](https://www.hulu.com)|Entertainment||
