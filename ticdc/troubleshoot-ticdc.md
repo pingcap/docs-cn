@@ -344,3 +344,26 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
     ```shell
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
+
+## TiCDC 同步时，在下游执行 DDL 失败会有什么表现，如何恢复？
+
+从 4.0.11 开始，如果 DDL 执行失败，changefeed 会自动停止，checkpoint TS 为出错的 DDL 的 finish TS 减一。如果希望让 TiCDC 再次重试在下游执行这条 DDL，可以使用 `cdc cli changefeed resume` 恢复同步任务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+    ```
+
+如果希望跳过这条 DDL，可以将 changefeed 的 start-ts 设为报错时的 checkpoint-ts + 1, 然后通过 `cdc cli changefeed resume` 恢复同步任务。假设报错时的 checkpoint-ts 为 `415241823337054209`, 可以如此操作来跳过这条 DDL.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --start-ts 415241823337054210
+    cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+    ```
+
+> **注意：**
+>
+> 以上步骤仅适用于 TiCDC 4.0.11 及以上（且不包括 5.0.0-rc）。
