@@ -240,7 +240,7 @@ Among them, the push-down of `cast` and `date_add` is not enabled by default. To
 
 TiFlash does not support push-down calculations in the following situations:
 
-- Expressions that contain `Duration` cannot be pushed down.
+- Expressions that contain the `Time` type cannot be pushed down.
 - If an aggregate function or a `WHERE` clause contains expressions that are not included in the list above, the aggregate or related predicate filtering cannot be pushed down.
 
 If a query encounters unsupported push-down calculations, TiDB needs to complete the remaining calculations, which might greatly affect the TiFlash acceleration effect.
