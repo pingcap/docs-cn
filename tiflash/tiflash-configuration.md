@@ -117,6 +117,10 @@ minmax_index_cache_size = 5368709120
     max_memory_usage = 0
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0
+    ## 4.0.11 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量，更多的请求会排队等待，设为 0 或不设置则使用默认值：物理核数的两倍
+    cop_pool_size = 0
+    ## 4.0.11 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量，更多的请求会排队等待，设为 0 或不设置则使用默认值：物理核数的两倍
+    batch_cop_pool_size = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
