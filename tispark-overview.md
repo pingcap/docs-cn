@@ -70,6 +70,7 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 ```
 
 在 `CDH`spark版本中
+
 ```
 spark.tispark.pd.addresses=$your_pd_servers
 spark.sql.extensions=org.apache.spark.sql.TiExtensions
