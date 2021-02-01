@@ -185,34 +185,35 @@ BR 会在备份结束时输出备份总结到控制台。
 
 ```
 ["Full backup Success summary:
-    total backup ranges: 4,
-    total success: 4,
+    total backup ranges: 2,
+    total success: 2,
     total failed: 0,
-    total take(Full backup time): 1m29.28161388s,
-    total take(real time): 2m33.213625285s,
-    total kv: 120000000,
+    total take(Full backup time): 31.802912166s,
+    total take(real time): 49.799662427s,
     total size(MB): 5997.49,
-    avg speed(MB/s): 67.17"]
-    ["backup checksum"=1m3.588888373s]
-    ["backup fast checksum"=358µs]
-    ["backup total regions"=2]
-    [BackupTS=422550536188329985]
-    [Size=826624755]
+    avg speed(MB/s): 188.58,
+    total kv: 120000000"]
+    ["backup checksum"=17.907153678s]
+    ["backup fast checksum"=349.333µs]
+    ["backup total regions"=43]
+    [BackupTS=422618409346269185]
+    [Size=826765915]
 ```
 
 以上日志信息中包含以下内容：
 
-* 备份耗时：`total take(Full backup time): 1m29.28161388s`
-* 程序运行总耗时：`total take(real time): 2m33.213625285s`
+* 备份耗时：`total take(Full backup time): 31.802912166s`
+* 程序运行总耗时：`total take(real time): 49.799662427s`
 * 备份数据大小：`total size(MB): 5997.49`
-* 备份吞吐：`avg speed(MB/s): 67.1`
-* 校验耗时：`["backup checksum"=1m3.588888373s]`
-* 计算各表 checksum, kvs, bytes 信息总和的耗时：`["backup fast checksum"=358µs]`
-* 备份 region 总数：`["backup total regions"=2]`
-* 备份存档压缩后在磁盘中的实际大小：`[Size=826624755]`
-* 备份存档的快照时间戳：`[BackupTS=422550536188329985]`
+* 备份吞吐：`avg speed(MB/s): 188.58`
+* 备份 kv 对数：`total kv: 120000000`
+* 校验耗时：`["backup checksum"=17.907153678s]`
+* 计算各表 checksum, kvs, bytes 信息总和的耗时：`["backup fast checksum"=349.333µs]`
+* 备份 region 总数：`["backup total regions"=43]`
+* 备份存档压缩后在磁盘中的实际大小：`[Size=826765915]`
+* 备份存档的快照时间戳：`[BackupTS=422618409346269185]`
 
-通过以上数据可以计算得到单个 TiKV 实例的吞吐为：`avg speed(MB/s)`/`tikv_count` = `67.1`。
+通过以上数据可以计算得到单个 TiKV 实例的吞吐为：`avg speed(MB/s)`/`tikv_count` = `62.86`。
 
 #### 性能调优
 
@@ -308,7 +309,8 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
     total restore tables: 1,
     total success: 1,
     total failed: 0,
-    total take(s): 961.37,
+    total take(Full restore time): 17m1.001611365s,
+    total take(real time): 16m1.371611365s,
     total kv: 5659888624,
     total size(MB): 353227.18,
     avg speed(MB/s): 367.42"]
@@ -316,15 +318,19 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
     ["restore ranges"=6888]
     ["split region"=49.049182743s]
     ["restore checksum"=6m34.879439498s]
+    [Size=48693068713]
 ```
 
 以上日志信息中包含以下内容：
 
-* 恢复耗时：`total take(s):961.37`
-* 数据大小：`total size(MB): 353227.18`
+* 恢复耗时：`total take(Full restore time): 17m1.001611365s`
+* 程序运行总耗时：`total take(real time): 16m1.371611365s`
+* 恢复数据大小：`total size(MB): 353227.18`
+* 恢复 kv 对数：`total kv: 5659888624`
 * 恢复吞吐：`avg speed(MB/s): 367.42`
 * `Region Split` 耗时：`take=49.049182743s`
-* 校验耗时：`take=6m34.879439498s`
+* 校验耗时：`restore checksum=6m34.879439498s`
+* 恢复存档在磁盘中的实际大小：`[Size=48693068713]`
 
 根据上表数据可以计算得到：
 
