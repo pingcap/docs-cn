@@ -6,7 +6,7 @@ title: tiup mirror set
 
 命令 `tiup mirror set` 用于切换当前镜像，支持本地文件系统和远程网络两种镜像。
 
-官方镜像为 `https://tiup-mirrors.pingcap.com`
+官方镜像为 `https://tiup-mirrors.pingcap.com`。
 
 ## 语法
 
