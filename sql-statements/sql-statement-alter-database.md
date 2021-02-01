@@ -10,13 +10,13 @@ aliases: ['/docs/dev/sql-statements/sql-statement-alter-database/','/docs/dev/re
 
 ## Synopsis
 
-**AlterDatabaseStmt:**
+```ebnf+diagram
+AlterDatabaseStmt ::=
+    'ALTER' 'DATABASE' DBName? DatabaseOptionList
 
-![AlterDatabaseStmt](/media/sqlgram/AlterDatabaseStmt.png)
-
-**DatabaseOption:**
-
-![DatabaseOption](/media/sqlgram/DatabaseOption.png)
+DatabaseOption ::=
+    DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
+```
 
 ## Examples
 

@@ -20,18 +20,32 @@ The expressions can be divided into the following types:
 
 The following rules are the expression syntax, which is based on the [parser.y](https://github.com/pingcap/parser/blob/master/parser.y) rules of TiDB parser. For the navigable version of the following syntax diagram, refer to [TiDB SQL Syntax Diagram](https://pingcap.github.io/sqlgram/#Expression).
 
-**Expression:**
+```ebnf+diagram
+Expression ::=
+    ( singleAtIdentifier assignmentEq | 'NOT' | Expression ( logOr | 'XOR' | logAnd ) ) Expression
+|   'MATCH' '(' ColumnNameList ')' 'AGAINST' '(' BitExpr FulltextSearchModifierOpt ')'
+|   PredicateExpr ( IsOrNotOp 'NULL' | CompareOp ( ( singleAtIdentifier assignmentEq )? PredicateExpr | AnyOrAll SubSelect ) )* ( IsOrNotOp ( trueKwd | falseKwd | 'UNKNOWN' ) )?
 
-![Expression](/media/sqlgram/Expression.png)
+PredicateExpr ::=
+    BitExpr ( BetweenOrNotOp BitExpr 'AND' BitExpr )* ( InOrNotOp ( '(' ExpressionList ')' | SubSelect ) | LikeOrNotOp SimpleExpr LikeEscapeOpt | RegexpOrNotOp SimpleExpr )?
 
-**PredicateExpr:**
+BitExpr ::=
+    BitExpr ( ( '|' | '&' | '<<' | '>>' | '*' | '/' | '%' | 'DIV' | 'MOD' | '^' ) BitExpr | ( '+' | '-' ) ( BitExpr | "INTERVAL" Expression TimeUnit ) )
+|   SimpleExpr
 
-![PredicateExpr](/media/sqlgram/PredicateExpr.png)
-
-**BitExpr:**
-
-![BitExpr](/media/sqlgram/BitExpr.png)
-
-**SimpleExpr:**
-
-![SimpleExpr](/media/sqlgram/SimpleExpr.png)
+SimpleExpr ::=
+    SimpleIdent ( ( '->' | '->>' ) stringLit )?
+|   FunctionCallKeyword
+|   FunctionCallNonKeyword
+|   FunctionCallGeneric
+|   SimpleExpr ( 'COLLATE' CollationName | pipes SimpleExpr )
+|   WindowFuncCall
+|   Literal
+|   paramMarker
+|   Variable
+|   SumExpr
+|   ( '!' | '~' | '-' | '+' | 'NOT' | 'BINARY' ) SimpleExpr
+|   'EXISTS'? SubSelect
+|   ( ( '(' ( ExpressionList ',' )? | 'ROW' '(' ExpressionList ',' ) Expression | builtinCast '(' Expression 'AS' CastType | ( 'DEFAULT' | 'VALUES' ) '(' SimpleIdent | 'CONVERT' '(' Expression ( ',' CastType | 'USING' CharsetName ) ) ')'
+|   'CASE' ExpressionOpt WhenClause+ ElseOpt 'END'
+```

@@ -20,11 +20,13 @@ When an error occurs during reloading, by default, this error message is returne
 
 **AlterInstanceStmt:**
 
-![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
+```ebnf+diagram
+AlterInstanceStmt ::=
+    'ALTER' 'INSTANCE' InstanceOption
 
-**InstanceOption:**
-
-![InstanceOption](/media/sqlgram/InstanceOption.png)
+InstanceOption ::=
+    'RELOAD' 'TLS' ('NO' 'ROLLBACK' 'ON' 'ERROR')?
+```
 
 ## Example
 
