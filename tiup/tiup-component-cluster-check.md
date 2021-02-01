@@ -117,7 +117,7 @@ title: tiup cluster check
 tiup cluster check <topology.yml | cluster-name> [flags]
 ```
 
-若集群尚未部署，需要传递将用于部署集群的 [tompology.yml](/tiup/tiup-cluster-topology-reference.md) 文件，tiup-cluster 会根据该文件的内容连接到对应机器去检查。若集群已经部署，则可以使用集群的名字 `<cluster-name>` 作为检查对象。
+若集群尚未部署，需要传递将用于部署集群的 [topology.yml](/tiup/tiup-cluster-topology-reference.md) 文件，tiup-cluster 会根据该文件的内容连接到对应机器去检查。若集群已经部署，则可以使用集群的名字 `<cluster-name>` 作为检查对象。
 
 > **注意：**
 >
