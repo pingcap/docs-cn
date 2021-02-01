@@ -90,7 +90,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 可以使用 kubectl 执行 `kubectl -n ${namespace} get bk ${name}` 以获得上次 BR 备份 `commitTs` 字段，该字段的内容可作为 `--lastbackupts` 使用。
 
-## BR 恢复存档后是否需要 analyze 表，以及如何 analyze？
+## BR 恢复存档后是否需要 ANALYZE 表？
 
 BR v4.0.10 及之前的版本（v4.0.9 除外）均不会备份统计信息。所以在恢复后需要手动执行 ANALYZE TABLE 或等待 TiDB 自动进行 ANALYZE。
 
