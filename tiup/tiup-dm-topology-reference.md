@@ -82,24 +82,24 @@ server_configs:
 
 ## `master_servers`
 
-`master_servers` 约定了将 DM 组件的 master 节点部署到哪些机器上，同时可以指定每台机器上的服务配置，它是一个数组，每个数组的元素包含以下字段：
+`master_servers` 约定了将 DM 组件的 master 节点部署到哪些机器上，同时可以指定每台机器上的服务配置，`master_servers` 是一个数组，每个数组的元素包含以下字段：
 
-- `host`：部署到哪台机器，填 IP 地址，不可省略
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
 - `name`：指定该 DM master 实例的名字，不同实例的名字必须唯一，否则无法部署
 - `port`：指定 DM master 提供给服务的端口，默认 8261
-- `peer_port`：指定 DM master 之间互相通信的端口，默认是 8291
+- `peer_port`：指定 DM master 之间互相通信的端口，默认值：8291
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。这个参数是一个 string 类型，里面填 NUMA 节点 ID，比如 "0,1"
-- `config`：该字段配置规则和 `server_configs` 里的 master 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 master 内容合并（若字段重叠，以该字段为准），然后生成配置文件下发到 `host` 指定的机器
+- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点 ID，比如 "0,1"
+- `config`：该字段配置规则和 `server_configs` 里的 master 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 master 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `resource_control`：针对该服务的资源控制，所配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以该字段为准），然后生成 systemd 配置文件下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
 - v1_source_path：从 v1.0.x 升级时，可指定该目录，该目录中应当存放有 V1 的源的配置文件
 
-以上字段中，这些字段在部署完成之后就不能再修改：
+以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
 - `host`
 - `name`
@@ -139,22 +139,22 @@ master_servers:
 
 ## `worker_servers`
 
-`worker_servers` 约定了将 DM 组件的 worker 节点部署到哪些机器上，同时可以指定每台机器上的服务配置，它是一个数组，每个数组的元素包含以下字段：
+`worker_servers` 约定了将 DM 组件的 worker 节点部署到哪些机器上，同时可以指定每台机器上的服务配置，`worker_servers` 是一个数组，每个数组的元素包含以下字段：
 
-- `host`：部署到哪台机器，填 IP 地址，不可省略
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
 - `name`：指定该 DM worker 实例的名字，不同实例的名字必须唯一，否则无法部署
 - `port`：指定 DM master 提供给服务的端口，默认 8262
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。这个参数是一个 string 类型，里面填 NUMA 节点 ID，比如 "0,1"
-- `config`：该字段配置规则和 `server_configs` 里的 worker 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 worker 内容合并（若字段重叠，以该字段为准），然后生成配置文件下发到 `host` 指定的机器
+- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点 ID，比如 "0,1"
+- `config`：该字段配置规则和 `server_configs` 里的 worker 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 worker 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `resource_control`：针对该服务的资源控制，所配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以该字段为准），然后生成 systemd 配置文件下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
 
-以上字段中，这些字段在部署完成之后就不能再修改：
+以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
 - `host`
 - `name`
@@ -183,22 +183,22 @@ worker_servers:
 
 ### `monitoring_servers`
 
-`monitoring_servers` 约定了将 Prometheus 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，它是一个数组，每个数组元素包含以下字段：
+`monitoring_servers` 约定了将 Prometheus 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，`monitoring_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `host`：部署到哪台机器，填 IP 地址，不可省略
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
-- `port`：指定 Prometheus 提供服务的端口，默认是 9090
+- `port`：指定 Prometheus 提供服务的端口，默认值：9090
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。这个参数是一个 string 类型，里面填 NUMA 节点 ID，比如 "0,1"
+- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点 ID，比如 "0,1"
 - `storage_retention`：Prometheus 监控数据保留时间，默认 "15d"
 - `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 *.rules.yml 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `resource_control`：针对该服务的资源控制，所配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以该字段为准），然后生成 systemd 配置文件下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
 
-以上字段中，这些字段在部署完成之后就不能再修改：
+以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
 - `host`
 - `port`
@@ -218,18 +218,18 @@ monitoring_servers:
 
 ### `grafana_servers`
 
-`grafana_servers` 约定了将 Grafana 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，它是一个数组，每个数组元素包含以下字段：
+`grafana_servers` 约定了将 Grafana 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，`grafana_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `host`：部署到哪台机器，填 IP 地址，不可省略
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
-- `port`：指定 Grafana 提供服务的端口，默认是 3000
+- `port`：指定 Grafana 提供服务的端口，默认值：3000
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `username`：Grafana 登陆界面的用户名
 - `password`：Grafana 对应的密码
 - `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 dashboard(*.json) 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
-- `resource_control`：针对该服务的资源控制，所配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以该字段为准），然后生成 systemd 配置文件下发到 `host` 指定机器。`resource_control` 的配置规则同 `global`中的 `resource_control`
+- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global`中的 `resource_control`
 
 > **注意：**
 >
@@ -238,7 +238,7 @@ monitoring_servers:
 > 1. 在本地的 dashboards 目录中，将 datasource 字段的值更新为新的集群名（datasource 是以集群名命名的）
 > 2. 执行 `tiup cluster reload -R grafana` 命令
 
-以上字段中，这些字段在部署完成之后就不能再修改：
+以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
 - `host`
 - `port`
@@ -256,22 +256,22 @@ grafana_servers:
 
 ### `alertmanager_servers`
 
-`alertmanager_servers` 约定了将 Alertmanager 服务部署到哪些机器上，同时可以指定这台机器上的服务配置，它是一个数组，每个数组元素包含以下字段：
+`alertmanager_servers` 约定了将 Alertmanager 服务部署到哪些机器上，同时可以指定这台机器上的服务配置，`alertmanager_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `host`：部署到哪台机器，填 IP 地址，不可省略
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
-- `web_port`：指定 Alertmanager 提供网页服务的端口，默认是 9093
-- `cluster_port`：指定 Alertmanger 和 其他 Alertmanager 通讯的端口，默认是 9094
+- `web_port`：指定 Alertmanager 提供网页服务的端口，默认值：9093
+- `cluster_port`：指定 Alertmanger 和 其他 Alertmanager 通讯的端口，默认值：9094
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。这个参数是一个 string 类型，里面填 NUMA 节点 ID，比如 "0,1"
+- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点 ID，比如 "0,1"
 - `config_file`：该字段指定一个本地文件，该文件会在集群配置初始化阶段被传输到目标机器上，作为 Alertmanager 的配置
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `resource_control`：针对该服务的资源控制，所配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以该字段为准），然后生成 systemd 配置文件下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
 
-以上字段中，这些字段在部署完成之后就不能再修改：
+以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
 - `host`
 - `web_port`
