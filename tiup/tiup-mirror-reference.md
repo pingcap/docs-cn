@@ -2,7 +2,7 @@
 title: TiUP 镜像参考指南
 ---
 
-# TiUP Mirror Reference
+# TiUP 镜像参考指南
 
 TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件的元信息。镜像有两种存在形式：
 
