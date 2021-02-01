@@ -22,4 +22,6 @@ tiup clean [name] [flags]
 
 ## 输出
 
+```
 Clean instance of `%s`, directory: %s
+```
