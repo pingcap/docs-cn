@@ -28,7 +28,7 @@ TiUP 集成了一系列的子命令用于组件管理和镜像管理。
 
 ### 镜像
 
-镜像是一个组件仓库，它存放了一系列组件，负责在 TiUP 需要某个组件时提供它。它的组织形式可以参考 [TiUP Mirror Reference](/tiup/tiup-mirror-reference.md)。
+镜像是一个组件仓库，它存放了一系列组件，负责在 TiUP 需要某个组件时提供它。镜像的组织形式可以参考 [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)。
 
 ## 语法
 

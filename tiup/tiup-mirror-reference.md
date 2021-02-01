@@ -1,5 +1,5 @@
 ---
-title: TiUP Mirror Reference
+title: TiUP 镜像参考指南
 ---
 
 # TiUP Mirror Reference
