@@ -5,7 +5,7 @@ summary: 了解在部署最小拓扑集群的基础上，部署 TiFlash 的拓�
 
 # TiFlash 部署拓扑
 
-本文介绍在部署最小拓扑集群的基础上，部署 TiFlash 的拓扑结构。TiFlash 是列式的存储引擎，已经成为集群拓扑的标配。适合 Real-Time HTAP 业务。
+本文介绍在部署最小拓扑集群的基础上，部署 [TiFlash](/tiflash/tiflash-overview.md) 的拓扑结构。TiFlash 是列式的存储引擎，已经成为集群拓扑的标配，适合 Real-Time HTAP 业务。
 
 ## 拓扑信息
 
