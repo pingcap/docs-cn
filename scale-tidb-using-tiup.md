@@ -133,7 +133,7 @@ tiup cluster display <cluster-name>
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
 > 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
-> 2. 执行 `tiup ctl pd -u <pd-host>:<pd-port> config set enable-placement-rules true`，以开启 PD 的 Placement Rules 功能。或下载 [pd-ctl](https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz) 执行对应命令。
+> 2. 执行 `tiup ctl pd -u <pd-host>:<pd-port> config set enable-placement-rules true`，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz) 执行对应命令。
 
 ### 1. 添加节点信息到 scale-out.yaml 文件
 
