@@ -30,7 +30,7 @@ CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
 create global binding for
     select * from t1, t2 where t1.id = t2.id
 using
-    select /*+ sm_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+    select /*+ merge_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
 
 -- 从该 SQL 的执行计划中可以看到其使用了 global binding 中指定的 sort merge join
 explain select * from t1, t2 where t1.id = t2.id;
