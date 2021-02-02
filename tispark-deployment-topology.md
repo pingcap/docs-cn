@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/tispark-deployment-topology/']
 
 ## 环境要求
 
-由于 TiSpark 基于 Apache Spark 集群，在启动包含 TiSpark 组件的 TiDB 集群前，需要在部署了 TiSpark 组件的服务器上安装 Java 运行时环境(JRE) 8, 否则将无法启动相关组件。
+由于 TiSpark 基于 Apache Spark 集群，在启动包含 TiSpark 组件的 TiDB 集群前，需要在部署了 TiSpark 组件的服务器上安装 Java 运行时环境(JRE) 8，否则将无法启动相关组件。
 
 TiUP 不提供自动安装 JRE 的支持，该操作需要用户自行完成。JRE 8 的安装方法可以参考 [OpenJDK 的文档说明](https://openjdk.java.net/install/)。
 
