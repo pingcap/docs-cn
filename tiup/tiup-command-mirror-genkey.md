@@ -6,7 +6,7 @@ title: tiup mirror genkey
 
 在 TiUP [镜像](/tiup/tiup-mirror-reference.md)的定义中，有三类角色：
 
-- 镜像管理员：拥有 `root.json`, `index.json`, `snapshot.json` 以及 `timestamp.json` 的修改权限
+- 镜像管理员：拥有 `root.json`，`index.json`，`snapshot.json` 以及 `timestamp.json` 的修改权限
 - 组件管理员：拥有相关组件的修改权限
 - 普通用户：可以下载并使用组件
 
@@ -26,13 +26,13 @@ tiup mirror genkey [flags]
 
 ### -n, --name（string，默认 private）
 
-密钥的名字，该名字决定最终生成的文件名，生成的私钥文件路径为：`${TIUP_HOME}/keys/{name}.json`，其中 `TIUP_HOME` 为 TiUP 的家目录，默认路径为 `$HOME/.tiup`，`name` 为 `-n/--name` 指定的密钥名字。
+密钥的名字，该名字决定最终生成的文件名。生成的私钥文件路径为：`${TIUP_HOME}/keys/{name}.json`，其中 `TIUP_HOME` 为 TiUP 的家目录，默认路径为 `$HOME/.tiup`，`name` 为 `-n/--name` 指定的密钥名字。
 
 ### -p, --public（boolean，默认 false）
 
 显示当前私钥对应的公钥，当前私钥名字由 `-n/--name` 选项指定。
 
-当指定了 `-p/--public` 时，不会创建新的私钥，若 `-n/--name` 指定的私钥不存在，则报错。
+当指定了 `-p/--public` 时，不会创建新的私钥。若 `-n/--name` 指定的私钥不存在，则报错。
 
 ### --save（boolean，默认 false）
 
@@ -40,9 +40,9 @@ tiup mirror genkey [flags]
 
 ## 输出
 
-- 若未指定 `-p/--public`:
+- 若未指定 `-p/--public`：
     - 若指定的密钥已存在：`Key already exists, skipped`
     - 若指定的密钥不存在：`private key have been write to ${TIUP_HOME}/keys/{name}.json`
-- 若指定 `-p/--public`:
+- 若指定 `-p/--public`：
     - 若指定的密钥不存在：`Error: open ${TIUP_HOME}/keys/{name}.json: no such file or directory`
     - 若指定的密钥存在：输出该密钥对应的公钥内容

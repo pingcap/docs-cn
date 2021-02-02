@@ -4,7 +4,7 @@ title: tiup mirror init
 
 # tiup mirror init
 
-命令 `tiup mirror init` 用于初始化一个空的镜像，初始化的镜像不包含任何组件和组件管理员，仅生成以下文件：
+命令 `tiup mirror init` 用于初始化一个空的镜像。初始化的镜像不包含任何组件和组件管理员，仅生成以下文件：
 
 ```
 + <mirror-dir>                                  # 镜像根目录
@@ -27,13 +27,13 @@ title: tiup mirror init
 tiup mirror init <path> [flags]
 ```
 
-`<path>` 为本地目录路径，可以为相对路径，TiUP 会以次路径做为 mirror-dir，在其中生成文件，若该目录已存在，则必须保证为空，若该目录不存在，则 TiUP 会自动创建。
+`<path>` 为本地目录路径，可以为相对路径。TiUP 会以此路径为镜像文件存放路径，在其中生成文件。若该目录已存在，则必须保证为空，若该目录不存在，则 TiUP 会自动创建。
 
 ## 选项
 
 ### -k, --key-dir（string，默认 {path}/keys）
 
-指定生成私钥文件的目录，若指定的文件目录不存在，则会自动创建。
+指定生成私钥文件的目录。若指定的文件目录不存在，则会自动创建。
 
 ### 输出
 

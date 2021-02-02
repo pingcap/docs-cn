@@ -4,7 +4,7 @@ title: tiup mirror modify
 
 # tiup mirror modify
 
-命令 `tiup mirror modify` 用于修改已发布的组件。只有合法的组件管理员才可以修改组件，且只能修改其自己发布的组件，组件发布方式参考 [publish 命令](/tiup/tiup-command-mirror-publish.md)。
+命令 `tiup mirror modify` 用于修改已发布的组件。只有合法的组件管理员才可以修改组件，且只能修改其自己发布的组件。组件发布方式参考 [publish 命令](/tiup/tiup-command-mirror-publish.md)。
 
 ## 语法
 
@@ -27,8 +27,8 @@ tiup mirror modify <component>[:version] [flags]
 
 将指定组件或指定版本标记为不可用：
 
-- 标记组件不可用之后 `tiup list` 将看不到该组件，也无法安装该组件的新版本
-- 标记版本不可用之后 `tiup list <component>` 将看不到该版本，也无法安装该版本
+- 标记组件不可用之后 `tiup list` 将看不到该组件，也无法安装该组件的新版本。
+- 标记版本不可用之后 `tiup list <component>` 将看不到该版本，也无法安装该版本。
 
 ### --hide（boolean，默认 false）
 
@@ -40,7 +40,7 @@ tiup mirror modify <component>[:version] [flags]
 
 ### --standalone（boolean，默认 false）
 
-该组件是否独立可运行的组件，该参数尚未使用，将在未来启用。
+该组件是否可独立运行。本参数目前尚未启用。
 
 > **注意：**
 >
