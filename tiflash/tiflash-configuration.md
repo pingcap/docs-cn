@@ -123,7 +123,7 @@ delta_index_cache_size = 0
     max_memory_usage_for_all_queries = 0
     ## 从 v5.0.0-rc 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     cop_pool_size = 0
-    ## 从 v4.0.11 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
+    ## 从 v5.0.0-rc 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     batch_cop_pool_size = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
