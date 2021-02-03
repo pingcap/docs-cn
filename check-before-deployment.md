@@ -115,7 +115,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 {{< copyable "shell-regular" >}}
 
 ```bash
-echo "vm.swappiness = 0">> /etc/sysctl.conf 
+echo "vm.swappiness = 0">> /etc/sysctl.conf
 swapoff -a && swapon -a
 sysctl -p
 ```
@@ -229,13 +229,17 @@ sudo systemctl start ntpd.service && \
 sudo systemctl enable ntpd.service
 ```
 
-## 检测和关闭透明大页
+## 检查和配置操作系统优化参数
 
-对于数据库应用，不推荐使用透明大页（即 Transparent Huge Pages，缩写为 THP），因为数据库的内存访问模式往往是稀疏的而非连续的。而且当高阶内存碎片化比较严重时，分配 THP 页面会出现较大的延迟。若开启针对 THP 的直接内存规整功能，也会出现系统 CPU 使用率激增的现象，因此建议关闭透明大页。
+在生产系统的 TiDB 中，建议对操作系统进行如下的配置优化：
 
-采用如下步骤检查是否已经关闭透明大页，并进行关闭：
+1. 关闭透明大页（即 Transparent Huge Pages，缩写为 THP）。数据库的内存访问模式往往是稀疏的而非连续的。当高阶内存碎片化比较严重时，分配 THP 页面会出现较高的延迟。
+2. 将存储介质的 I/O 调度器设置为 noop。对于高速 SSD 存储介质，内核的 I/O 调度操作会导致性能损失。将调度器设置为 noop 后，内核不做任何操作，直接将 I/O 请求下发给硬件，以获取更好的性能。同时，noop 调度器也有较好的普适性。
+3. 为调整 CPU 频率的 cpufreq 模块选用 performance 模式。将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，可获取最佳的性能。
 
-1. 执行以下命令查看透明大页的开启状态。如果返回 `[always] madvise never` 则表示处于启用状态：
+采用如下步骤检查操作系统的当前配置，并配置系统优化参数：
+
+1. 执行以下命令查看透明大页的开启状态。
 
     {{< copyable "shell-regular" >}}
 
@@ -247,75 +251,235 @@ sudo systemctl enable ntpd.service
     [always] madvise never
     ```
 
-2. 执行 `grubby` 命令查看默认内核版本：
-
     > **注意：**
     >
-    > 需安装 `grubby` 软件包。
+    > `[always] madvise never` 表示透明大页处于启用状态，需要关闭。
+
+2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设在 sdb、sdc 两个磁盘上创建了数据目录。
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    grubby --default-kernel
+    cat /sys/block/sd[bc]/queue/scheduler
     ```
 
-    ```bash
-    /boot/vmlinuz-3.10.0-957.el7.x86_64
     ```
-
-3. 执行 `grubby --update-kernel` 命令修改内核配置：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
+    noop [deadline] cfq
+    noop [deadline] cfq
     ```
 
     > **注意：**
     >
-    > `--update-kernel` 后需要使用实际的默认内核版本。
+    > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
 
-4. 执行 `grubby --info` 命令查看修改后的默认内核配置：
+3. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
+    udevadm info --name=/dev/sdb | grep ID_SERIAL
+    ```
+
+    ```
+    E: ID_SERIAL=36d0946606d79f90025f3e09a0c1f9e81
+    E: ID_SERIAL_SHORT=6d0946606d79f90025f3e09a0c1f9e81
     ```
 
     > **注意：**
     >
-    > `--info` 后需要使用实际的默认内核版本。
+    > 如果多个磁盘都分配了数据目录，需要多次执行以上命令，记录所有磁盘各自的唯一标识。
+
+4. 执行以下命令查看 cpufreq 模块选用的节能策略。
+
+    {{< copyable "shell-regular" >}}
 
     ```bash
-    index=0
-    kernel=/boot/vmlinuz-3.10.0-957.el7.x86_64
-    args="ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet LANG=en_US.UTF-8 transparent_hugepage=never"
-    root=/dev/mapper/centos-root
-    initrd=/boot/initramfs-3.10.0-957.el7.x86_64.img
-    title=CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
+    cpupower frequency-info --policy
     ```
 
-5. 执行 `reboot` 命令进行重启或者修改当前的内核配置：
+    ```
+    analyzing CPU 0:
+    current policy: frequency should be within 1.20 GHz and 3.10 GHz.
+                  The governor "powersave" may decide which speed to use within this range.
+    ```
 
-    - 如果需要重启验证，执行 `reboot` 命令：
+    > **注意：**
+    >
+    > `The governor "powersave"` 表示 cpufreq 的节能策略使用 powersave，需要调整为 performance 策略。如果是虚拟机或者云主机，则不需要调整，命令输出通常为 `Unable to determine current policy`。
 
-        {{< copyable "shell-regular" >}}
+5. 配置系统优化参数
 
-        ```bash
-        reboot
-        ```
+    + 方法一：使用 tuned（推荐）
 
-    - 如果不希望重启机器，也可以修改当前的内核配置来立即生效：
+        1. 执行 `tuned-adm list` 命令查看当前操作系统的 tuned 策略。
 
-        {{< copyable "shell-regular" >}}
+            {{< copyable "shell-regular" >}}
 
-        ```bash
-        echo never > /sys/kernel/mm/transparent_hugepage/enabled
-        echo never > /sys/kernel/mm/transparent_hugepage/defrag
-        ```
+            ```bash
+            tuned-adm list
+            ```
 
-6. 查看重启或者修改后已生效的默认内核配置。如果输出 `always madvise [never]` 表示透明大页处于禁用状态。
+            ```
+            Available profiles:
+            - balanced                    - General non-specialized tuned profile
+            - desktop                     - Optimize for the desktop use-case
+            - hpc-compute                 - Optimize for HPC compute workloads
+            - latency-performance         - Optimize for deterministic performance at the cost of increased power consumption
+            - network-latency             - Optimize for deterministic performance at the cost of increased power consumption, focused on low latency network performance
+            - network-throughput          - Optimize for streaming network throughput, generally only necessary on older CPUs or 40G+ networks
+            - powersave                   - Optimize for low power consumption
+            - throughput-performance      - Broadly applicable tuning that provides excellent performance across a variety of common server workloads
+            - virtual-guest               - Optimize for running inside a virtual guest
+            - virtual-host                - Optimize for running KVM guests
+            Current active profile: balanced
+            ```
+
+            `Current active profile: balanced` 表示当前操作系统的 tuned 策略使用 balanced，建议在当前策略的基础上添加操作系统优化配置。
+
+        2. 创建新的 tuned 策略。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            mkdir /etc/tuned/balanced-tidb-optimal/
+            vi /etc/tuned/balanced-tidb-optimal/tuned.conf
+            ```
+
+            ```
+            [main]
+            include=balanced
+
+            [cpu]
+            governor=performance
+
+            [vm]
+            transparent_hugepages=never
+
+            [disk]
+            devices_udev_regex=(ID_SERIAL=36d0946606d79f90025f3e09a0c1fc035)|(ID_SERIAL=36d0946606d79f90025f3e09a0c1f9e81)
+            elevator=noop
+            ```
+
+            `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
+
+        3. 应用新的 tuned 策略。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            tuned-adm profile balanced-tidb-optimal
+            ```
+
+    + 方法二：使用脚本方式。如果已经使用 tuned 方法，请跳过本方法。
+
+        1. 执行 `grubby` 命令查看默认内核版本。
+
+            > **注意：**
+            >
+            > 需安装 `grubby` 软件包。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            grubby --default-kernel
+            ```
+
+            ```bash
+            /boot/vmlinuz-3.10.0-957.el7.x86_64
+            ```
+
+        2. 执行 `grubby --update-kernel` 命令修改内核配置。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
+            ```
+
+            > **注意：**
+            >
+            > `--update-kernel` 后需要使用实际的默认内核版本。
+
+        3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
+            ```
+
+            > **注意：**
+            >
+            > `--info` 后需要使用实际的默认内核版本。
+
+            ```
+            index=0
+            kernel=/boot/vmlinuz-3.10.0-957.el7.x86_64
+            args="ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet LANG=en_US.UTF-8 transparent_hugepage=never"
+            root=/dev/mapper/centos-root
+            initrd=/boot/initramfs-3.10.0-957.el7.x86_64.img
+            title=CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
+            ```
+
+        4. 修改当前的内核配置立即关闭透明大页。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            echo never > /sys/kernel/mm/transparent_hugepage/enabled
+            echo never > /sys/kernel/mm/transparent_hugepage/defrag
+            ```
+
+        5. 配置 udev 脚本应用 IO 调度器策略。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            vi /etc/udev/rules.d/60-tidb-schedulers.rules
+            ```
+
+            ```
+            ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_SERIAL}=="36d0946606d79f90025f3e09a0c1fc035", ATTR{queue/scheduler}="noop"
+            ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_SERIAL}=="36d0946606d79f90025f3e09a0c1f9e81", ATTR{queue/scheduler}="noop"
+
+            ```
+
+        6. 应用 udev 脚本。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            udevadm control --reload-rules
+            udevadm trigger --type=devices --action=change
+            ```
+
+        7. 创建 CPU 节能策略配置服务。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            cat  >> /etc/systemd/system/cpupower.service << EOF
+            [Unit]
+            Description=CPU performance
+            [Service]
+            Type=oneshot
+            ExecStart=/usr/bin/cpupower frequency-set --governor performance
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+            ```
+
+        8. 应用 CPU 节能策略配置服务。
+
+            {{< copyable "shell-regular" >}}
+
+            ```bash
+            systemctl daemon-reload
+            systemctl enable cpupower.service
+            systemctl start cpupower.service
+            ```
+
+6. 执行以下命令验证透明大页的状态。
 
     {{< copyable "shell-regular" >}}
 
@@ -323,50 +487,36 @@ sudo systemctl enable ntpd.service
     cat /sys/kernel/mm/transparent_hugepage/enabled
     ```
 
-    ```bash
+    ```
     always madvise [never]
     ```
 
-7. 如果透明大页禁用未生效，需要使用 tuned 或 ktune 动态内核调试工具修改透明大页的配置。操作步骤如下：
+7. 执行以下命令验证数据目录所在磁盘的 I/O 调度器。
 
-    1. 启用 tuned 工具：
+    {{< copyable "shell-regular" >}}
 
-        {{< copyable "shell-regular" >}}
+    ```bash
+    cat /sys/block/sd[bc]/queue/scheduler
+    ```
 
-        ```bash
-        tuned-adm active
-        ```
+    ```
+    [noop] deadline cfq
+    [noop] deadline cfq
+    ```
 
-        ```bash
-        Current active profile: virtual-guest
-        ```
+8. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
-    2. 创建一个新的定制 profile：
+    {{< copyable "shell-regular" >}}
 
-        {{< copyable "shell-regular" >}}
+    ```bash
+    cpupower frequency-info --policy
+      ```
 
-        ```bash
-        mkdir /etc/tuned/virtual-guest-no-thp
-        vi /etc/tuned/virtual-guest-no-thp/tuned.conf
-        ```
-
-        ```bash
-        [main]
-        include=virtual-guest
-
-        [vm]
-        transparent_hugepages=never
-        ```
-
-    3. 应用新的定制 profile：
-
-        {{< copyable "shell-regular" >}}
-
-        ```bash
-        tuned-adm profile virtual-guest-no-thp
-        ```
-
-    应用后再重新检查透明大页的状态。
+    ```
+    analyzing CPU 0:
+    current policy: frequency should be within 1.20 GHz and 3.10 GHz.
+                  The governor "performance" may decide which speed to use within this range.
+    ```
 
 ## 手动配置 SSH 互信及 sudo 免密码
 
