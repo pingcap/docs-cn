@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-columns-from/','/docs-
 
 `SHOW [FULL] FIELDS FROM <table_name>`，`DESC <table_name>`，`DESCRIBE <table_name>` 和 `EXPLAIN <table_name>` 语句都是 `SHOW [FULL] COLUMNS FROM` 的别名。
 
-注意：`DESC TABLE <table_name>`，`DESCRIBE TABLE <table_name>`，`EXPLAIN TABLE <table_name>` 与上面的语句并不等价，它们是 [`DESC SELECT * FROM <table_name>`](/sql-statements/sql-statement-explain.md) 的别名.
+注意：`DESC TABLE <table_name>`，`DESCRIBE TABLE <table_name>` 和 `EXPLAIN TABLE <table_name>` 与上面的语句并不等价，它们是 [`DESC SELECT * FROM <table_name>`](/sql-statements/sql-statement-explain.md) 的别名.
 
 ## 语法图
 
