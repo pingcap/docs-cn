@@ -5,7 +5,7 @@ summary: 介绍如何在部署最小拓扑集群的基础上，同时部署 TiDB
 
 # TiDB Binlog 部署拓扑
 
-本文介绍在部署最小拓扑集群的基础上，同时部署 TiDB Binlog。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
+本文介绍在部署最小拓扑集群的基础上，同时部署 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
 
 ## 拓扑信息
 
