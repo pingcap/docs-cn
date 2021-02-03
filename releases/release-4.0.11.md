@@ -27,5 +27,6 @@ TiDB 版本：4.0.11
 
 + TiFlash
 
+    - 修正 decimal 类型计算 `min/max`的结果错误
     - 修正读取数据时有可能导致 crash 的问题 [#1358](https://github.com/pingcap/tics/pull/1358)
     - 修正 DDL 操作后写入的数据可能会在 compaction 后丢失的问题 [#1350](https://github.com/pingcap/tics/pull/1350)
