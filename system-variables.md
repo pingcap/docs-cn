@@ -1086,3 +1086,9 @@ explain select * from t where age=5;
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
 - 该变量控制在开启 Async Commit <!--和一阶段提交-->特性时，是否需要保证外部一致性。该选项关闭时，如果两个事务修改的内容没有交集，其他事务观测到它们的提交顺序可能与它们实际的提交顺序不一致。在不使用 Async Commit <!--或一阶段提交-->特性时，无论该选项是否开启，都能保证外部一致性。
+
+### `tidb_enable_tiflash_fallback_tikv`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 该变量控制在 TiFlash 的故障导致 SQL 语句执行失败时，是否尝试采用 TiKV 再次执行。
