@@ -47,3 +47,10 @@ aliases: ['/docs/dev/key-features/','/tidb/dev/key-features','/docs/dev/overview
 - **Data aggregation and secondary processing scenarios**
 
     The application data of most companies are scattered in different systems. As the application grows, the decision-making leaders need to understand the business status of the entire company to make decisions in time. In this case, the company needs to aggregate the scattered data into the same system and execute secondary processing to generate a T+0 or T+1 report. The traditional solution is to use ETL and Hadoop, but the Hadoop system is complicated, with high operations and maintenance cost and storage cost. Compared with Hadoop, TiDB is much simpler. You can replicate data into TiDB using ETL tools or data migration tools provided by TiDB. Reports can be directly generated using SQL statements.
+
+## See also
+
+- [TiDB Architecture](/tidb-architecture.md)
+- [TiDB Storage](/tidb-storage.md)
+- [TiDB Computing](/tidb-computing.md)
+- [TiDB Scheduling](/tidb-scheduling.md)

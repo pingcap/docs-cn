@@ -5,7 +5,7 @@ summary: Introduces the PD scheduling component in a TiDB cluster.
 
 # TiDB Scheduling
 
-PD works as the manager in a TiDB cluster, and it also schedules Regions in the cluster. This article introduces the design and core concepts of the PD scheduling component.
+The Placement Driver ([PD](https://github.com/tikv/pd)) works as the manager in a TiDB cluster, and it also schedules Regions in the cluster. This article introduces the design and core concepts of the PD scheduling component.
 
 ## Scheduling situations
 

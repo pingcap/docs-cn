@@ -1,11 +1,11 @@
 ---
-title: Storage of TiDB database
-summary: Understand the storage layer of a TiDB database
+title: TiDB Storage
+summary: Understand the storage layer of a TiDB database.
 ---
 
-# Storage of TiDB Database
+# TiDB Storage
 
-This document introduces some design ideas and key concepts of TiKV.
+This document introduces some design ideas and key concepts of [TiKV](https://github.com/tikv/tikv).
 
 ![storage-architecture](/media/tidb-storage-architecture.png)
 

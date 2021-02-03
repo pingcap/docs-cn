@@ -13,7 +13,7 @@ This document introduces the TiSpark deployment topology and how to deploy TiSpa
 
 TiSpark is a component built for running Apache Spark on top of TiDB/TiKV to answer complex OLAP queries. It brings benefits of both the Spark platform and the distributed TiKV cluster to TiDB and makes TiDB a one-stop solution for both online transactions and analytics.
 
-For more information about TiSpark, see [TiSpark User Guide](/tispark-overview.md).
+For more information about the TiSpark architecture and how to use it, see [TiSpark User Guide](/tispark-overview.md).
 
 ## Topology information
 
