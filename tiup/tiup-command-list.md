@@ -12,7 +12,7 @@ title: tiup list
 tiup list [component] [flags]
 ```
 
-`[component]` 是可选的组件名称，若指定，则列出该组件的所有版本，若不指定，则列出所有组件列表。
+`[component]` 是可选的组件名称。若指定，则列出该组件的所有版本；若不指定，则列出所有组件列表。
 
 ## 选项
 
@@ -31,8 +31,8 @@ tiup list [component] [flags]
 ## 输出
 
 - 若未指定 `[component]`
-    - 若指定 --verbose：输出 `组件名 (Name)`，`已安装版本 (Installed)`，`组件管理员 (Owner)`，`组件描述(Owner)` 构成的组件信息列表
-    - 若不指定 --verbose：输出 `组件名 (Name)`，`组件管理员 (Owner)`，`组件描述 (Owner)` 构成的组件信息列表
+    - 若指定 --verbose：输出 `组件名 (Name)`、`已安装版本 (Installed)`、`组件管理员 (Owner)`、`组件描述(Owner)` 构成的组件信息列表
+    - 若不指定 --verbose：输出 `组件名 (Name)`、`组件管理员 (Owner)`、`组件描述 (Owner)` 构成的组件信息列表
 - 若指定 `[component]`
-    - 若 `[component]` 存在：�输出 `版本 (Version)`，`是否已安装 (Installed)`，`发布时间 (Release)`，`支持的平台 (Platforms)` 构成的版本信息列表
+    - 若 `[component]` 存在：输出 `版本 (Version)`、`是否已安装 (Installed)`、`发布时间 (Release)`、`支持的平台 (Platforms)` 构成的版本信息列表
     - 若 `[component]` 不存在：报错 `failed to fetch component: unknown component`

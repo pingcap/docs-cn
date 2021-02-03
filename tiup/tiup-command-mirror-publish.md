@@ -29,9 +29,9 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 
 该 `<tarlball>` 中的二进制文件运行的平台，一个 `<tarball>` 只能选以下三个平台之一：
 
-- amd64：表示在 amd64 架构的机器上运行
-- arm64：表示在 arm64 架构的机器上运行
-- any：表示可以在以上两种架构的机器上运行（比如脚本）
+- `amd64`：表示在 amd64 架构的机器上运行
+- `arm64`：表示在 arm64 架构的机器上运行
+- `any`：表示可以在以上两种架构的机器上运行（比如脚本）
 
 > **注意：**
 >
@@ -41,9 +41,9 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 
 该 `<tarlball>` 中的二进制文件运行的操作系统，一个 `<tarball>` 只能选以下三个操作系统之一：
 
-- linux：表示在 Linux 操作系统上运行
-- darwin：表示在 Darwin 操作系统上运行
-- any：表示可以在以上两种操作系统上运行（比如脚本）
+- `linux`：表示在 Linux 操作系统上运行
+- `darwin`：表示在 Darwin 操作系统上运行
+- `any`：表示可以在以上两种操作系统上运行（比如脚本）
 
 > **注意：**
 >

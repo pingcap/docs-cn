@@ -43,7 +43,7 @@ TiUP 使用命令 `tiup mirror rotate` 来自动化以上流程。
 tiup mirror rotate [flags]
 ```
 
-该命令会启动一个编辑器，修改其内容为目标值（比如将 expires 字段的值向后推移），然后需要将 version 字段加一并保存。保存之后会启动一个临时的 http 服务器，等待 N 个不同的镜像管理员签名。
+该命令会启动一个编辑器，修改其内容为目标值（比如将 `expires` 字段的值向后推移），然后需要将 `version` 字段加一并保存。保存之后会启动一个临时的 http 服务器，等待 N 个不同的镜像管理员签名。
 
 镜像管理员签名的方式参考[sign 命令](/tiup/tiup-command-mirror-sign.md)。
 
@@ -51,7 +51,7 @@ tiup mirror rotate [flags]
 
 ### --addr（string，默认 0.0.0.0:8080）
 
-临时服务器的监听地址，需要确保该地址可以被其他镜像管理员访问，这样他们才能使用[sign 命令](/tiup/tiup-command-mirror-sign.md)签名。
+临时服务器的监听地址，需要确保该地址可以被其他镜像管理员访问，这样他们才能使用[sign 命令](/tiup/tiup-command-mirror-sign.md)签名。
 
 ## 输出
 

@@ -6,7 +6,7 @@ title: tiup mirror genkey
 
 在 TiUP [镜像](/tiup/tiup-mirror-reference.md)的定义中，有三类角色：
 
-- 镜像管理员：拥有 `root.json`，`index.json`，`snapshot.json` 以及 `timestamp.json` 的修改权限
+- 镜像管理员：拥有 `root.json`、`index.json`、`snapshot.json` 以及 `timestamp.json` 的修改权限
 - 组件管理员：拥有相关组件的修改权限
 - 普通用户：可以下载并使用组件
 

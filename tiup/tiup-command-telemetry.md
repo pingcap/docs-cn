@@ -38,8 +38,8 @@ tiup telemetry <command>
 
 命令 `tiup telemetry status` 查看当前的遥测设置，输出以下信息：
 
-- status: 当前是否开启遥测（enable|disable）
-- uuid: 随机生成的遥测标示符
+- `status`: 当前是否开启遥测 `(enable|disable)`
+- `uuid`: 随机生成的遥测标示符
 
 ### reset
 
