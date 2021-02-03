@@ -1,11 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 调度概述
-aliases: ['/docs-cn/stable/tidb-scheduling/','/docs-cn/v4.0/tidb-scheduling/']
-=======
 title: TiDB 数据库的调度
-aliases: ['/docs-cn/dev/tidb-scheduling/']
->>>>>>> e4c5df9f... *: add multiple interrelated links and update description (#5466)
+aliases: ['/docs-cn/stable/tidb-scheduling/','/docs-cn/v4.0/tidb-scheduling/']
 ---
 
 # TiDB 数据库的调度
