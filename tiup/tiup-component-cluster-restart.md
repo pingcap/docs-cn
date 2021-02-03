@@ -26,7 +26,7 @@ tiup cluster restart <cluster-name> [flags]
 
 > **注意：**
 > 
-> 若同时指定了 `-R, --role`，那么将重启他们的交集中的服务。
+> 若同时指定了 `-R, --role`，那么将重启它们的交集中的服务。
 
 ### -R, --role strings（strings，默认为 []，表示所有角色）
 
@@ -34,7 +34,7 @@ tiup cluster restart <cluster-name> [flags]
 
 > **注意：**
 > 
-> 若同时指定了 `-N, --node`，那么将重启他们的交集中的服务。
+> 若同时指定了 `-N, --node`，那么将重启它们的交集中的服务。
 
 ### -h, --help（boolean，默认 false）
 

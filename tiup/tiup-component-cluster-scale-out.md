@@ -31,9 +31,9 @@ tiup cluster scale-out <cluster-name> <topology.yaml> [flags]
 
 ### --no-labels（boolean，默认 false）
 
-当两个或多个 TiKV 部署到同一台机器时，会存在一个风险：由于 PD 无法感知集群的拓扑结构，可能将一个 Region 的多个副本调度到一台物理机上的不同 TiKV，这样这台物理机就成为了单点。为了避免这种情况，用户可以通过 label 来告诉 PD 不要将相同的 region 调度到同一台机器上（配置方式参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)）。
+当两个或多个 TiKV 部署到同一台机器时，会存在一个风险：由于 PD 无法感知集群的拓扑结构，可能将一个 Region 的多个副本调度到一台物理机上的不同 TiKV，这样这台物理机就成为了单点。为了避免这种情况，用户可以通过 label 来指定 PD 不要将相同的 Region 调度到同一台机器上（配置方式参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)）。
 
-但是对于测试环境，可能并不在意是否将一个 region 的副本调度到了同一台机器上，这个时候可以使用 `--no-labels` 来绕过检查。
+但是对于测试环境，可能并不在意是否将一个 Region 的副本调度到了同一台机器上，这个时候可以使用 `--no-labels` 来绕过检查。
 
 ### --skip-create-user（boolean，false）
 

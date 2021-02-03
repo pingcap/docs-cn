@@ -4,7 +4,7 @@ title: 通过 TiUP 部署 DM 集群的拓扑文件配置
 
 # 通过 TiUP 部署 DM 集群的拓扑文件配置
 
-在部署或扩容 DM 集群时，需要提供一份拓扑文件来描述集群拓扑，同样，修改配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
+在部署或扩容 TiDB Data Migration (DM) 集群时，需要提供一份拓扑文件来描述集群拓扑，同样，修改配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
 
 拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/examples/dm/topology.example.yaml)。
 
@@ -44,7 +44,7 @@ title: 通过 TiUP 部署 DM 集群的拓扑文件配置
 - `arch`：目标机器的 CPU 架构，该字段决定了向目标机器推送哪个平台的二进制包，支持 amd64 和 arm64，默认值：amd64
 - `resource_control`：运行时资源控制，该字段下所有配置都将写入 systemd 的 service 文件中，默认不限制，支持控制的资源：
     - `memory_limit`: 限制运行时最大内存，例如 "2G" 表示最多使用 2GB 内存
-    - `cpu_quota`：限制运行时最大 CPU 占用率，例如 "200%" 
+    - `cpu_quota`：限制运行时最大 CPU 占用率，例如 "200%"
     - `io_read_bandwidth_max`：读磁盘 IO 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
     - `io_write_bandwidth_max`：写磁盘 IO 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
     - `limit_core`：控制 core dump 大小
@@ -58,7 +58,7 @@ global:
     memory_limit: "2G"
 ```
 
-上述配置指定使用 tidb 用户启动集群，同时限制每个组件运行时最多只能使用 2GB 内存。
+上述配置指定使用 `tidb` 用户启动集群，同时限制每个组件运行时最多只能使用 2GB 内存。
 
 ### `server_configs`
 
@@ -193,7 +193,7 @@ worker_servers:
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点 ID，比如 "0,1"
 - `storage_retention`：Prometheus 监控数据保留时间，默认 "15d"
-- `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 *.rules.yml 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
+- `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `*.rules.yml` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
@@ -228,7 +228,7 @@ monitoring_servers:
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `username`：Grafana 登陆界面的用户名
 - `password`：Grafana 对应的密码
-- `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 dashboard(*.json) 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
+- `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global`中的 `resource_control`
 
 > **注意：**

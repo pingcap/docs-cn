@@ -4,7 +4,7 @@ title: TiUP Cluster
 
 # TiUP Cluster
 
-TiUP Cluster 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群、管理 TiDB 集群参数。
+TiUP Cluster 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP Cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群、管理 TiDB 集群参数。
 
 ## 语法
 
@@ -18,19 +18,19 @@ tiup cluster [command] [flags]
 
 ### --ssh (string，默认 builtin)
 
-指定 SSH 客户端连接远端（部署 TiDB 服务的机器）执行命令，支持以下几个值：
+指定 SSH 客户端连接远端（部署 TiDB 服务的机器）执行命令，支持以下值：
 
 - builtin：使用 tiup-cluster 内置的 easyssh 客户端
-- system：使用当前操作系统默认的 ssh 客户端
+- system：使用当前操作系统默认的 SSH 客户端
 - none：不使用 ssh 客户端，这种方式只支持部署到当前机器
 
 ### --ssh-timeout（uint，默认 5）
 
-设置 ssh 连接超时时间，单位为秒。
+设置 SSH 连接超时时间，单位为秒。
 
 ### --wait-timeout（uint，默认 120）
 
-运维过程中涉及到很多操作：指定 systemctl 启动/停止服务，等待端口上线/下线等，每个操作可能会消耗数秒，`--wait-timeout` 用于设置每个步骤的最长等待时间（单位为秒），超时后报错退出。
+运维过程中涉及到很多操作：指定 systemctl 启动/停止服务，等待端口上线/下线等，每个操作可能会消耗数秒。`--wait-timeout` 用于设置每个步骤的最长等待时间（单位为秒），超时后报错退出。
 
 ### -y, --yes (boolean，默认 false)
 

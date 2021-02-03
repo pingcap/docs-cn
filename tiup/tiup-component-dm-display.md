@@ -22,7 +22,7 @@ tiup dm display <cluster-name> [flags]
 
 > **注意：**
 > 
-> 若同时指定了 `-R, --role`，那么将查询他们的交集中的服务状态。
+> 若同时指定了 `-R, --role`，那么将查询它们的交集中的服务状态。
 
 ### -R, --role strings（strings，默认为 []，表示所有角色）
 
@@ -30,7 +30,7 @@ tiup dm display <cluster-name> [flags]
 
 > **注意：**
 > 
-> 若同时指定了 `-N, --node`，那么将查询他们的交集中的服务状态。
+> 若同时指定了 `-N, --node`，那么将查询它们的交集中的服务状态。
 
 ### -h, --help（boolean，默认 false）
 

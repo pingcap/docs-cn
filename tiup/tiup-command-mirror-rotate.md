@@ -51,7 +51,7 @@ tiup mirror rotate [flags]
 
 ### --addr（string，默认 0.0.0.0:8080）
 
-临时服务器的监听地址，需要确保该地址可以被其他镜像管理员访问，这样他们才能使用[sign 命令](/tiup/tiup-command-mirror-sign.md)签名。
+临时服务器的监听地址，需要确保该地址可以被其他镜像管理员访问，这样管理员才能使用[sign 命令](/tiup/tiup-command-mirror-sign.md)签名。
 
 ## 输出
 

@@ -21,18 +21,18 @@ tiup dm reload <cluster-name> [flags]
 指定要重启的节点，不指定则表示所有节点。该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-dm-display.md)表格的第一列。
 
 > **注意：**
-> 
-> 1. 若同时指定了 `-R, --role`，那么将重启他们的交集中的服务
-> 2. 若指定了选项 `--skip-restart`，则该选项无效
+>
+> + 若同时指定了 `-R, --role`，那么将重启它们的交集中的服务
+> + 若指定了选项 `--skip-restart`，则该选项无效
 
 ### -R, --role strings（strings，默认为 []，表示所有角色）
 
 指定要重启的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-dm-display.md)表格的第二列。
 
 > **注意：**
-> 
-> 1. 若同时指定了 `-N, --node`，那么将重启他们的交集中的服务
-> 2. 若指定了选项 `--skip-restart`，则该选项无效
+>
+> + 若同时指定了 `-N, --node`，那么将重启它们的交集中的服务
+> + 若指定了选项 `--skip-restart`，则该选项无效
 
 ### --skip-restart（boolean，默认 false）
 

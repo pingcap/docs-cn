@@ -4,12 +4,12 @@ title: tiup dm edit-config
 
 # tiup dm edit-config
 
-在部署集群之后，如果需要再调整集群服务的配置，则可以使用命令 `tiup dm edit-config`，它会启动一个编辑器（默认为 $EDITOR 环境变量指定的值，当 EDITOR 环境变量不存在时，使用 vi 打开）允许用户修改指定集群的[拓扑文件](/tiup/tiup-dm-topology-reference.md)。
+在部署集群之后，如果需要再调整集群服务的配置，则可以使用命令 `tiup dm edit-config`，它会启动一个编辑器（默认为 `$EDITOR` 环境变量指定的值，当 EDITOR 环境变量不存在时，使用 vi 打开）允许用户修改指定集群的[拓扑文件](/tiup/tiup-dm-topology-reference.md)。
 
 > **注意：**
-> 
-> 1. 修改配置时不能增删机器，增删机器属于[集群扩容](/tiup/tiup-component-dm-scale-out.md)和[集群缩容](/tiup/tiup-component-dm-scale-in.md)的功能。
-> 2. 执行完该命令后配置只是在中控机上修改了，要应用配置需要执行 `tiup dm relaod` 命令来重新加载。
+>
+> + 修改配置时不能增删机器，增删机器属于[集群扩容](/tiup/tiup-component-dm-scale-out.md)和[集群缩容](/tiup/tiup-component-dm-scale-in.md)的功能。
+> + 执行完该命令后配置只是在中控机上修改了，要应用配置需要执行 `tiup dm relaod` 命令来重新加载。
 
 ## 语法
 

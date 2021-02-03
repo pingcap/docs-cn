@@ -7,7 +7,7 @@ title: tiup cluster patch
 在集群运行过程中，如果需要动态替换某个服务的二进制文件（即替换过程中保持集群可用），那么可以使用 `tiup cluster patch` 命令，它会完成以下几件事情：
 
 - 将用于替换的二进制包上传到目标机器
-- 如果目标服务是 TiKV, TiFlash 或者 Binlog 之类的存储服务，则先通过 API 下线节点
+- 如果目标服务是 TiKV、TiFlash 或者 TiDB Binlog 之类的存储服务，则先通过 API 下线节点
 - 停止目标服务
 - 解压二进制包，替换服务
 - 启动目标服务
@@ -40,7 +40,7 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 在重启 PD 或 TiKV 时，会先将被重启节点的 leader 迁移到其他节点，迁移过程会需要一定时间，可以通过设置 `--transfer-timeout` 设置最长等待时间（单位为秒），超时之后会跳过等待直接重启服务。
 
 > **注意：**
-> 
+>
 > 若出现跳过等待直接重启的情况，服务性能可能会出现抖动。
 
 ### -N, --node（strings，默认为 []，未选中任何节点）
@@ -48,16 +48,16 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 指定要替换的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第一列。
 
 > **注意：**
-> 
-> 若同时指定了 `-R, --role`，那么将替换他们的交集中的服务。
+>
+> 若同时指定了 `-R, --role`，那么将替换它们的交集中的服务。
 
 ### -R, --role strings（strings，默认为 []，未选中任何角色）
 
 指定要替换的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
 
 > **注意：**
-> 
-> 若同时指定了 `-N, --node`，那么将替换他们的交集中的服务。
+>
+> 若同时指定了 `-N, --node`，那么将替换它们的交集中的服务。
 
 ### -h, --help（boolean，默认 false）
 

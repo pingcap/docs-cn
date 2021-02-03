@@ -35,10 +35,10 @@ tiup cluster scale-in <cluster-name> [flags]
 
 ### --force（boolean，默认 false）
 
-在某些情况下，有可能被缩容的节点宿主机已经宕机，导致无法通过 ssh 连接到节点进行操作，这个时候可以通过 `--force` 选项强制将其从集群中移除。
+在某些情况下，有可能被缩容的节点宿主机已经宕机，导致无法通过 SSH 连接到节点进行操作，这个时候可以通过 `--force` 选项强制将其从集群中移除。
 
 > **注意：**
-> 
+>
 > 强制移除 TiKV 节点不会等待数据调度，移除一个以上正在提供服务的 TiKV 节点会有数据丢失的风险。
 
 ### --transfer-timeout（uint，默认 300）
@@ -46,7 +46,7 @@ tiup cluster scale-in <cluster-name> [flags]
 在缩容 PD 或 TiKV 时，会先将被缩容节点的 leader 迁移到其他节点，迁移过程会需要一定时间，可以通过设置 `--transfer-timeout` 设置最长等待时间（单位为秒），超时之后会跳过等待直接缩容服务。
 
 > **注意：**
-> 
+>
 > 若出现跳过等待直接缩容的情况，服务性能可能会出现抖动。
 
 ### -h, --help（boolean，默认 false）
