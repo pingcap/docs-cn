@@ -11,7 +11,7 @@ summary: 了解 TiCDC 相关的术语及定义。
 
 ### 变更数据
 
-变更数据即为上有 TiDB 集群写入的数据，包含 INSERT/UPDATE/REPLACE/DELETE 等操作引发的数据变更。
+变更数据即为上游 TiDB 集群写入的数据，包含 DML 操作引发的数据变更和 DDL 操作引发的表结构变更。
 
 ## C
 
@@ -21,13 +21,13 @@ summary: 了解 TiCDC 相关的术语及定义。
 
 ### Changefeed
 
-Changefeed 是指 TiCDC 中的一个增量同步任务。一个增量同步任务将一个 TiDB 集群中数张表的数据变更日志输出到一个指定的下游中。
+Changefeed 是指 TiCDC 中的一个同步任务。一个同步任务将一个 TiDB 集群中数张表的变更数据输出到一个指定的下游中。
 
 ## O
 
 ### Owner
 
-一个特殊角色的 Capture，负责管理 TiCDC 集群和调度 TiCDC 集群中的同步任务。该角色有 Capture 选举产生，任意时刻，最多只存在一个。
+一个特殊角色的 Capture，负责管理 TiCDC 集群和调度 TiCDC 集群中的同步任务。该角色由 Capture 选举产生，任意时刻，最多只存在一个。
 
 ## P
 
