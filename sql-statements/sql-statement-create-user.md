@@ -10,29 +10,26 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev
 
 ## 语法图
 
-**CreateUserStmt:**
+```ebnf+diagram
+CreateUserStmt ::=
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions
 
-![CreateUserStmt](/media/sqlgram/CreateUserStmt.png)
+IfNotExists ::=
+    ('IF' 'NOT' 'EXISTS')?
 
-**IfNotExists:**
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+UserSpec ::=
+    Username AuthOption
 
-**UserSpecList:**
+AuthOption ::=
+    ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
 
-![UserSpecList](/media/sqlgram/UserSpecList.png)
-
-**UserSpec:**
-
-![UserSpec](/media/sqlgram/UserSpec.png)
-
-**AuthOption:**
-
-![AuthOption](/media/sqlgram/AuthOption.png)
-
-**StringName:**
-
-![StringName](/media/sqlgram/StringName.png)
+StringName ::=
+    stringLit
+|   Identifier
+```
 
 ## 示例
 

@@ -10,13 +10,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-table-like/','/docs-
 
 ## 语法图
 
-**CreateTableLikeStmt:**
+```ebnf+diagram
+CreateTableLikeStmt ::=
+    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen
 
-![CreateTableLikeStmt](/media/sqlgram/CreateTableLikeStmt.png)
-
-**LikeTableWithOrWithoutParen:**
-
-![LikeTableWithOrWithoutParen](/media/sqlgram/LikeTableWithOrWithoutParen.png)
+LikeTableWithOrWithoutParen ::=
+    'LIKE' TableName
+|   '(' 'LIKE' TableName ')'
+```
 
 ## 示例
 
