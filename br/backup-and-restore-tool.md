@@ -1,22 +1,12 @@
 ---
-<<<<<<< HEAD
-title: 使用 BR 进行备份与恢复
-summary: 了解如何使用 BR 工具进行集群数据备份和恢复。
-aliases: ['/docs-cn/stable/br/backup-and-restore-tool/','/docs-cn/v4.0/br/backup-and-restore-tool/','/docs-cn/stable/reference/tools/br/br/']
-=======
 title: 备份与恢复工具 BR 简介
 summary: 了解 BR 工具是什么、有什么用。
-aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/']
->>>>>>> 8dad50bb... BR: reorganize content about BR tool (#5299)
+aliases: ['/docs-cn/stable/br/backup-and-restore-tool/','/docs-cn/v4.0/br/backup-and-restore-tool/','/docs-cn/stable/reference/tools/br/br/']
 ---
 
 # 备份与恢复工具 BR 简介
 
-<<<<<<< HEAD
-[Backup & Restore](https://github.com/pingcap/br)（以下简称 BR）是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复。相比 [`dumpling`](/backup-and-restore-using-dumpling-lightning.md) 和 [`mydumper`](/backup-and-restore-using-mydumper-lightning.md)，BR 更适合大数据量的场景。本文档介绍了 BR 的使用限制、工作原理、命令行描述、备份恢复用例以及最佳实践。
-=======
 [BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。**BR 只支持在 TiDB v3.1 及以上版本使用。**
->>>>>>> 8dad50bb... BR: reorganize content about BR tool (#5299)
 
 相比 [`dumpling`](/backup-and-restore-using-dumpling-lightning.md)，BR 更适合**大数据量**的场景。
 
