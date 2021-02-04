@@ -31,7 +31,7 @@ For example:
 create global binding for
     select * from t1, t2 where t1.id = t2.id
 using
-    select /*+ sm_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+    select /*+ merge_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
 
 -- The execution plan of this SQL statement uses the `sort merge join` specified in the GLOBAL binding.
 explain select * from t1, t2 where t1.id = t2.id;
