@@ -63,7 +63,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 使用 `br backup` 命令来备份集群数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据或单张表的数据。
 
-如果 BR 的版本低于 v4.0.3，而且备份时间可能超过设定的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time)（默认 `10m0s`，即表示 10 分钟），需要手动将该参数调大。
+如果备份时间可能超过设定的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time)（默认 `10m0s`，即表示 10 分钟），则需要手动将该参数调大。
 
 例如，将 `tikv_gc_life_time` 调整为 `720h`：
 
@@ -73,8 +73,6 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 mysql -h${TiDBIP} -P4000 -u${TIDB_USER} ${password_str} -Nse \
     "update mysql.tidb set variable_value='720h' where variable_name='tikv_gc_life_time'";
 ```
-
-自 v4.0.3 起 BR 已经支持自适应 GC，无需手动调整 `tikv_gc_life_time`。
 
 ### 备份全部集群数据
 
@@ -334,7 +332,7 @@ br restore table \
     --log-file restorefull.log
 ```
 
-### 使用表库功能过滤恢复数据
+### 使用表库过滤功能恢复数据
 
 如果你需要用复杂的过滤条件来恢复多个表，执行 `br restore full` 命令，并用 `--filter` 或 `-f` 指定使用[表库过滤](/table-filter.md)。
 
@@ -438,3 +436,4 @@ br restore raw --pd $PD_ADDR \
         --pd $PD_ADDR \
         --online
     ```
+
