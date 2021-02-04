@@ -72,34 +72,14 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 ### 使用方式
 
-目前支持通过命令行工具或在 Kubernetes 环境下运行 BR 工具进行备份恢复。
-
-#### 通过命令行工具
-
 在 v3.1 以上的 TiDB 版本中，支持通过命令行工具进行备份恢复。
 
 首先需要下载一个 BR 工具的二进制包，详见[下载链接](/download-ecosystem-tools.md#备份和恢复-br-工具)。
 
 通过命令行工具进行备份恢复的具体操作见[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
 
-#### 在 Kubernetes 环境下
-
-目前支持使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储、Google Cloud Storage 以及持久卷，并作恢复：
-
-> **注意：**
->
-> Amazon S3 和 Google Cloud Storage (GCS) 参数描述见 [BR 存储](/br/backup-and-restore-storages.md#参数)文档。
-
-- [备份 TiDB 集群数据到兼容 S3 的存储](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br)
-- [恢复 S3 兼容存储上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br)
-- [备份 TiDB 集群到 Google Cloud Storage](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-gcs-using-br)
-- [恢复 Google Cloud Storage 上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-gcs-using-br)
-- [备份 TiDB 集群到持久卷](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-pv-using-br)
-- [恢复持久卷上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-pv-using-br)
-
 ## BR 相关文档
 
 + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
 + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
 + [BR 常见问题](/br/backup-and-restore-faq.md)
-+ [BR 存储](/br/backup-and-restore-storages.md)
