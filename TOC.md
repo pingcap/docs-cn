@@ -61,10 +61,11 @@
   + 运维
     - [Ansible 常见运维操作](/maintain-tidb-using-ansible.md)
     + 备份与恢复
-      - [使用 Mydumper/TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
+      + 使用 BR 工具（推荐）
+        - [BR 工具简介](/br/backup-and-restore-tool.md)
+        - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
+        - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       - [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
-      - [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
-      - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     + 定位异常查询
       - [定位慢查询](/identify-slow-queries.md)
       - [定位消耗系统资源多的查询](/identify-expensive-queries.md)
