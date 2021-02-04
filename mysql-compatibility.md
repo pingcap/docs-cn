@@ -152,6 +152,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 - 不支持 `SELECT ... INTO @变量` 语法。
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
+- TiDB 中的 `SELECT .. GROUP BY expr` 的返回结果与 MySQL 5.7 并不一致。MySQL 5.7 的结果等价于 `GROUP BY expr ORDER BY expr`。而 TiDB 中该语法所返回的结果并不承诺任何顺序，与 MySQL 8.0 的行为一致。
 
 ### 视图
 
