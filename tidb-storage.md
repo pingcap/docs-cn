@@ -6,7 +6,7 @@ aliases: ['/docs-cn/stable/tidb-storage/','/docs-cn/v4.0/tidb-storage/']
 
 # TiDB 数据库的存储
 
-本文主要介绍 TiKV 的一些设计思想和关键概念。
+本文主要介绍 [TiKV](https://github.com/tikv/tikv) 的一些设计思想和关键概念。
 
 ![storage-architecture](/media/tidb-storage-architecture.png)
 
