@@ -55,11 +55,9 @@ Click the **+** button on the title bar to submit a task.
 
 ![Submit task dialog](/media/lightning-web-submit.png)
 
-Tasks are TOML files described as [task configurations](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task).
-One could also open a local TOML file by clicking **UPLOAD**.
+Tasks are TOML files described as [task configurations](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task). One could also open a local TOML file by clicking **UPLOAD**.
 
-Click **SUBMIT** to run the task.
-If a task is already running, the new task will be queued and executed after the current task succeeds.
+Click **SUBMIT** to run the task. If a task is already running, the new task will be queued and executed after the current task succeeds.
 
 ## Table progress
 
@@ -77,8 +75,6 @@ Click the **ⓘ** button on the title bar to manage the current and queued tasks
 
 ![Task management page](/media/lightning-web-queue.png)
 
-Each task is labeled by the time it was submitted.
-Clicking the task would show the configuration formatted as JSON.
+Each task is labeled by the time it was submitted. Clicking the task would show the configuration formatted as JSON.
 
-Manage tasks by clicking the **⋮** button next to a task.
-You can stop a task immediately, or reorder queued tasks.
+Manage tasks by clicking the **⋮** button next to a task. You can stop a task immediately, or reorder queued tasks.

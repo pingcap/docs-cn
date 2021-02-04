@@ -40,7 +40,7 @@ The following is the description of PD Dashboard metrics items:
 
 ## Operator
 
-- Schedule operator create: The number of newly created operators per type  
+- Schedule operator create: The number of newly created operators per type
 - Schedule operator check: The number of checked operator per type. It mainly checks whether the current step is finished; if yes, it returns the next step to be executed
 - Schedule operator finish: The number of finished operators per type
 - Schedule operator timeout: The number of timeout operators per type

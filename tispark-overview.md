@@ -164,8 +164,7 @@ spark-sql> select count(*) from lineitem;
 Time taken: 0.673 seconds, Fetched 1 row(s)
 ```
 
-For JDBC connection with Thrift Server, you can try it with various JDBC supported tools including SQuirreLSQL and hive-beeline.
-For example, to use it with beeline:
+For JDBC connection with Thrift Server, you can try it with various JDBC supported tools including SQuirreLSQL and hive-beeline. For example, to use it with beeline:
 
 ```sh
 ./beeline

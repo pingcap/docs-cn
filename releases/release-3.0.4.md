@@ -35,6 +35,7 @@ TiDB Ansible version: 3.0.4
 - Contributors
 
     Our thanks go to the following contributors from the community for helping this release:
+
     - [sduzh](https://github.com/sduzh)
     - [lizhenda](https://github.com/lizhenda)
 

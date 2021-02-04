@@ -19,8 +19,7 @@ On December 22, 2018, TiDB 2.1.2 is released. The corresponding TiDB Ansible 2.1
 
 ## PD
 
-- Fix the Region information update issue about Region merge
-[#1377](https://github.com/pingcap/pd/pull/1377)
+- Fix the Region information update issue about Region merge [#1377](https://github.com/pingcap/pd/pull/1377)
 
 ## TiKV
 

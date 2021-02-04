@@ -35,8 +35,7 @@ TiDB Ansible version: 2.1.12
 
 ## PD
 
-- Fix the issue that etcd leader election is blocked in extreme conditions
-[#1576](https://github.com/pingcap/pd/pull/1576)
+- Fix the issue that etcd leader election is blocked in extreme conditions [#1576](https://github.com/pingcap/pd/pull/1576)
 
 ## TiKV
 

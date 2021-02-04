@@ -6,7 +6,7 @@ aliases: ['/docs/dev/sql-statements/sql-statement-set-variable/','/docs/dev/refe
 
 # `SET [GLOBAL|SESSION] <variable>`
 
-The statement `SET [GLOBAL|SESSION]` modifies one of TiDB's built in variables, of either `SESSION` or `GLOBAL` scope. 
+The statement `SET [GLOBAL|SESSION]` modifies one of TiDB's built in variables, of either `SESSION` or `GLOBAL` scope.
 
 > **Note:**
 >
@@ -44,8 +44,7 @@ mysql> SHOW SESSION VARIABLES LIKE 'sql_mode';
 1 row in set (0.00 sec)
 ```
 
-Update the value of `sql_mode` globally.
-If you check the value of `SQL_mode` after the update, you can see that the value of `SESSION` level has not been updated:
+Update the value of `sql_mode` globally. If you check the value of `SQL_mode` after the update, you can see that the value of `SESSION` level has not been updated:
 
 ```sql
 mysql> SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER';

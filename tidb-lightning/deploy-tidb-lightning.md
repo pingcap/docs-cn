@@ -49,8 +49,7 @@ Before starting TiDB Lightning, note that:
 >
 > - `tidb-lightning` is a CPU intensive program. In an environment with mixed components, the resources allocated to `tidb-lightning` must be limited. Otherwise, other components might not be able to run. It is recommended to set the `region-concurrency` to 75% of CPU logical cores. For instance, if the CPU has 32 logical cores, you can set the `region-concurrency` to 24.
 
-Additionally, the target TiKV cluster should have enough space to absorb the new data.
-Besides [the standard requirements](/hardware-and-software-requirements.md), the total free space of the target TiKV cluster should be larger than **Size of data source × [Number of replicas](/faq/deploy-and-maintain-faq.md#is-the-number-of-replicas-in-each-region-configurable-if-yes-how-to-configure-it) × 2**.
+Additionally, the target TiKV cluster should have enough space to absorb the new data. Besides [the standard requirements](/hardware-and-software-requirements.md), the total free space of the target TiKV cluster should be larger than **Size of data source × [Number of replicas](/faq/deploy-and-maintain-faq.md#is-the-number-of-replicas-in-each-region-configurable-if-yes-how-to-configure-it) × 2**.
 
 With the default replica count of 3, this means the total free space should be at least 6 times the size of data source.
 
@@ -128,8 +127,7 @@ Refer to the [TiDB enterprise tools download page](/download-ecosystem-tools.md#
     pd-addr = "172.16.31.4:2379"
     ```
 
-    The above only shows the essential settings.
-    See the [Configuration](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-global) section for the full list of settings.
+    The above only shows the essential settings. See the [Configuration](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-global) section for the full list of settings.
 
 4. Run `tidb-lightning`.
 

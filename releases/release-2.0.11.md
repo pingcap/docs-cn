@@ -17,5 +17,4 @@ On January 03, 2019, TiDB 2.0.11 is released. The corresponding TiDB Ansible 2.0
 
 ## TiKV
 
-- Fix two issues about Region merge
-[#4003](https://github.com/tikv/tikv/pull/4003), [#4004](https://github.com/tikv/tikv/pull/4004)
+- Fix two issues about Region merge [#4003](https://github.com/tikv/tikv/pull/4003), [#4004](https://github.com/tikv/tikv/pull/4004)

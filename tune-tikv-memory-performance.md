@@ -8,8 +8,7 @@ aliases: ['/docs/dev/tune-tikv-performance/','/docs/dev/reference/performance/tu
 
 This document describes how to tune the TiKV parameters for optimal performance.
 
-TiKV uses RocksDB for persistent storage at the bottom level of the TiKV architecture. Therefore, many of the performance parameters are related to RocksDB.
-TiKV uses two RocksDB instances: the default RocksDB instance stores KV data, the Raft RocksDB instance (RaftDB) stores Raft logs.
+TiKV uses RocksDB for persistent storage at the bottom level of the TiKV architecture. Therefore, many of the performance parameters are related to RocksDB. TiKV uses two RocksDB instances: the default RocksDB instance stores KV data, the Raft RocksDB instance (RaftDB) stores Raft logs.
 
 TiKV implements `Column Families` (CF) from RocksDB.
 
@@ -250,8 +249,7 @@ target-file-size-base = "32MB"
 
 ## TiKV memory usage
 
-Besides `block cache` and `write buffer` which occupy the system memory, the system memory is occupied in the
-following scenarios:
+Besides `block cache` and `write buffer` which occupy the system memory, the system memory is occupied in the following scenarios:
 
 + Some of the memory is reserved as the system's page cache.
 

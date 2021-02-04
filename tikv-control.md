@@ -185,8 +185,7 @@ In this command, the key is also the escaped form of raw key.
 
 The `raw-scan` command scans directly from the RocksDB. Note that to scan data keys you need to add a `'z'` prefix to keys.
 
-Use `--from` and `--to` options to specify the range to scan (unbounded by default). Use `--limit` to limit at most how
-many keys to print out (30 by default). Use `--cf` to specify which cf to scan (can be `default`, `write` or `lock`).
+Use `--from` and `--to` options to specify the range to scan (unbounded by default). Use `--limit` to limit at most how many keys to print out (30 by default). Use `--cf` to specify which cf to scan (can be `default`, `write` or `lock`).
 
 ```bash
 $ ./tikv-ctl --db /var/lib/tikv/db/ raw-scan --from 'zt' --limit 2 --cf default
@@ -222,7 +221,7 @@ The properties can be used to check whether the Region is healthy or not. If not
 
 ### Compact data of each TiKV manually
 
-Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key. 
+Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key.
 
 - Use the `--host` option to specify the TiKV that you need to compact.
 - Use the `-d` option to specify the RocksDB that you need to compact. The optional values are `kv` and `raft`.
@@ -434,8 +433,7 @@ success!
 
 ### Ldb Command
 
-The `ldb` command line tool offers multiple data access and database administration commands. Some examples are listed below.
-For more information, refer to the help message displayed when running `tikv-ctl ldb` or check the documents from RocksDB.
+The `ldb` command line tool offers multiple data access and database administration commands. Some examples are listed below. For more information, refer to the help message displayed when running `tikv-ctl ldb` or check the documents from RocksDB.
 
 Examples of data access sequence:
 
@@ -468,7 +466,7 @@ data-dir = "/path/to/tikv/data"
 ```
 
 The `--path` option can be used to specify an absolute or relative path to the data file of interest. The command might give empty output if the data file is not encrypted. If `--path` is not provided, encryption info for all data files will be printed.
-    
+
 ```bash
 $ tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/data/db/CURRENT
 /path/to/tikv/data/db/CURRENT: key_id: 9291156302549018620 iv: E3C2FDBF63FC03BFC28F265D7E78283F method: Aes128Ctr

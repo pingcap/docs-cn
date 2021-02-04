@@ -71,6 +71,7 @@ The result of another `go-ycsb` pressure test is shown in the image above. You c
 Generate a report that compares the system in the following two time ranges:
 
 T1: `2020-03-08 01:36:00` to `2020-03-08 01:41:00`. In this range, the system is normal, which is called a reference range.
+
 T2: `2020-03-08 01:46:30` to `2020-03-08 01:51:30`. In this range, QPS began to decrease.
 
 After the report is generated, you can view this report on the **Compare Diagnose** page.
@@ -101,6 +102,7 @@ The result of a `go-ycsb` pressure test is shown in the image above. You can see
 Generate a report that compares the system in the following two time ranges:
 
 T1: `2020-05-22 22:11:00` to `2020-05-22 22:14:00`. In this range, the system is normal, which is called a reference range.
+
 T2: `2020-05-22 22:14:00` `2020-05-22 22:17:00`. In this range, QPS began to decrease.
 
 After generating the comparison report, check the **Max diff item** report. This report compares the monitoring items of the two time ranges above and sorts them according to the difference of the monitoring items. The result of this table is as follows:

@@ -542,10 +542,7 @@ admin show slow top [internal | all] N
 admin show slow recent 10
 ```
 
-`top N` shows the slowest N query records recently (within a few days).
-If the `internal` option is provided, the returned results would be the inner SQL executed by the system;
-If the `all` option is provided, the returned results would be the user's SQL combinated with inner SQL;
-Otherwise, this command would only return the slow query records from the user's SQL.
+`top N` shows the slowest N query records recently (within a few days). If the `internal` option is provided, the returned results would be the inner SQL executed by the system; If the `all` option is provided, the returned results would be the user's SQL combinated with inner SQL; Otherwise, this command would only return the slow query records from the user's SQL.
 
 {{< copyable "sql" >}}
 

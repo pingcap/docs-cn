@@ -29,10 +29,8 @@ For other information, see [Frequently Asked Questions (FAQ)](/faq/tidb-faq.md).
 
 3. If the data is cleared and the services are re-deployed, make sure that:
 
-    - All the data in `tikv-server` and `pd-server` are cleared.
-    The specific data is stored in `tikv-server` and the metadata is stored in `pd-server`. If only one of the two servers is cleared, the data will be inconsistent.
-    - After the data in `pd-server` and `tikv-server` are cleared and the `pd-server` and `tikv-server` are restarted, the `tidb-server` must be restarted too.
-    The cluster ID is randomly allocated when the `pd-server` is initialized. So when the cluster is re-deployed, the cluster ID changes and you need to restart the `tidb-server` to get the new cluster ID.
+    - All the data in `tikv-server` and `pd-server` are cleared. The specific data is stored in `tikv-server` and the metadata is stored in `pd-server`. If only one of the two servers is cleared, the data will be inconsistent.
+    - After the data in `pd-server` and `tikv-server` are cleared and the `pd-server` and `tikv-server` are restarted, the `tidb-server` must be restarted too. The cluster ID is randomly allocated when the `pd-server` is initialized. So when the cluster is re-deployed, the cluster ID changes and you need to restart the `tidb-server` to get the new cluster ID.
 
 ## Cannot start `tidb-server`
 
@@ -74,8 +72,11 @@ See the following for the situations when the `tikv-server` cannot be started:
 See the following for the situations when the `pd-server` cannot be started:
 
 - Error in the startup parameters.
+
     See the [PD configuration and options](/command-line-flags-for-pd-configuration.md).
+
 - The port is occupied.
+
     Use the `lsof -i:port` command to show all the networking related to a given port and make sure the port to start the `pd-server` is not occupied.
 
 ## The TiDB/TiKV/PD process aborts unexpectedly
