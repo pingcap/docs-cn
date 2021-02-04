@@ -39,7 +39,7 @@ TiDB 版本：4.0.11
     - Grafana dashboards 支持监控多个集群 [#9572](https://github.com/tikv/tikv/pull/9572)
     - 汇报 RocksDB 的监控指标到 TiDB [#9316](https://github.com/tikv/tikv/pull/9316)
     - 为 Coprocessor 任务记录暂停时间 [#9277](https://github.com/tikv/tikv/pull/9277)
-    - 为 load-base-split 添加 key 数量和大小的阀值 [#9354](https://github.com/tikv/tikv/pull/9354)
+    - 为 Load Base Split 添加 key 数量和大小的阀值 [#9354](https://github.com/tikv/tikv/pull/9354)
     - 在导入数据前检查文件是否存在 [#9544](https://github.com/tikv/tikv/pull/9544)
     - 改进 Fast Tune 面板 [#9180](https://github.com/tikv/tikv/pull/9180)
 
@@ -88,7 +88,7 @@ TiDB 版本：4.0.11
     - 修复 `IndexLookUp` 执行统计不准的问题 [#22136](https://github.com/pingcap/tidb/pull/22136)
     - 容器部署时为内存使用信息增加缓存 [#22116](https://github.com/pingcap/tidb/pull/22116)
     - 修复解码执行计划错误的问题 [#22022](https://github.com/pingcap/tidb/pull/22022)
-    - 使用错误的窗口函数说明时报错 [#21976](https://github.com/pingcap/tidb/pull/21976)
+    - 使用错误的窗口函数说明时提供报错 [#21976](https://github.com/pingcap/tidb/pull/21976)
     - 使用 `PREPARE` 语句嵌套 `EXECUTE`、`DEALLOCATE` 或 `PREPARE` 时报错 [#21972](https://github.com/pingcap/tidb/pull/21972)
     - 修复使用 `INSERT IGNORE` 到不存在的分区时不报错的问题 [#21971](https://github.com/pingcap/tidb/pull/21971)
     - 统一 `EXPLAIN` 和 slow log 中的执行计划编码 [#21964](https://github.com/pingcap/tidb/pull/21964)
@@ -96,7 +96,7 @@ TiDB 版本：4.0.11
     - 修复 `ceiling` 函数中类型推导错误的问题 [#21936](https://github.com/pingcap/tidb/pull/21936)
     - 修复 `Double` 列忽略精度的问题 [#21916](https://github.com/pingcap/tidb/pull/21916)
     - 修复关联聚合在子查询中被计算的问题 [#21877](https://github.com/pingcap/tidb/pull/21877)
-    - 当 JSON 数据长度超过 65536 时报错 [#21870](https://github.com/pingcap/tidb/pull/21870)
+    - 当 JSON 数据长度超过 65536 时提供报错 [#21870](https://github.com/pingcap/tidb/pull/21870)
     - 修复 `dyname` 函数和 MySQL 不兼容的问题 [#21850](https://github.com/pingcap/tidb/pull/21850)
     - 修复输入数据过长时 `to_base64` 函数返回 `NULL` 的问题 [#21813](https://github.com/pingcap/tidb/pull/21813)
     - 修复在子查询中比较多个字段失败的问题 [#21808](https://github.com/pingcap/tidb/pull/21808)
@@ -129,12 +129,12 @@ TiDB 版本：4.0.11
 
     - 修复成员健康的监控显示不正确的问题 [#3368](https://github.com/pingcap/pd/pull/3368)
     - 禁止有副本的不正常 tombstone store 被清除 [#3352](https://github.com/pingcap/pd/pull/3352)
-    - 修复 store limit 无法持久化的问题  [#3403](https://github.com/pingcap/pd/pull/3403)
-    - Fix the limit constriction of the scatter range scheduler [#3401](https://github.com/pingcap/pd/pull/3401)
+    - 修复 store limit 无法持久化的问题 [#3403](https://github.com/pingcap/pd/pull/3403)
+    - 调整 `scatter range schedler` 的 limit 限制 [#3401](https://github.com/pingcap/pd/pull/3401)
 
 + TiFlash
 
-    - 修正 Decimal 类型的 `min/max` 的计算结果错误的问题
+    - 修正 Decimal 类型的 `min`/`max` 计算结果错误的问题
     - 修正读取数据时有可能导致 crash 的问题 [#1358](https://github.com/pingcap/tics/pull/1358)
     - 修正 DDL 操作后写入的数据可能会在 compaction 后丢失的问题 [#1350](https://github.com/pingcap/tics/pull/1350)
 
@@ -155,7 +155,7 @@ TiDB 版本：4.0.11
 
     + Backup & Restore (BR)
 
-        - 修复恢复备份后可能产生大 Region 的问题 [#702](https://github.com/pingcap/br/pull/702)
+        - 修复恢复备份后 TiKV 可能产生大 Region 的问题 [#702](https://github.com/pingcap/br/pull/702)
         - 修复在没有 Auto ID 的数据表上恢复 Auto ID 的问题 [#720](https://github.com/pingcap/br/pull/720)
 
     + TiDB Lightning
