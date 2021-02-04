@@ -46,6 +46,7 @@
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
+    + [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
     + [使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
   + 从 CSV 文件迁移至 TiDB
@@ -198,7 +199,7 @@
     + [安装部署](/ticdc/deploy-ticdc.md)
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
-    + [监控指标](/ticdc/ticdc-grafana-dashboard.md)
+    + [监控指标](/ticdc/monitor-ticdc.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
   + [Dumpling](/dumpling-overview.md)
@@ -225,7 +226,7 @@
     + [PD 面板](/grafana-pd-dashboard.md)
     + [TiKV 面板](/grafana-tikv-dashboard.md)
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
-    + [TiCDC 监控指标](/ticdc/ticdc-grafana-dashboard.md)
+    + [TiCDC 监控指标](/ticdc/monitor-ticdc.md)
   + 安全加固
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
