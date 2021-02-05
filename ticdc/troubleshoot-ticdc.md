@@ -151,7 +151,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 在使用 `cdc cli changefeed create` 命令时如果不指定 `--config` 参数，TiCDC 会按照以下默认行为创建同步任务：
 
 * 同步所有的非系统表
-* 不开启 old value 功能
+* 开启 old value 功能
 * 不同步不包含[有效索引](/ticdc/ticdc-overview.md#同步限制)的表
 
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
