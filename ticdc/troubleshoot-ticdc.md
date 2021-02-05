@@ -347,7 +347,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 ## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`
 
-解决方案：需要使用 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 指令查询当前的 gc_safe_point 与 service_gc_safe_points。如果 gc_safe_point 小于 CDC 的 changefeed，则用户直接在 create changefeed 指令后加上 `--disable-gc-check` 参数创建 changefeed 即可。
+解决方案：需要使用 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 指令查询当前的 gc_safe_point 与 service_gc_safe_points。如果 gc_safe_point 小于 CDC changefeed 的 `start-ts`，则用户直接在 create changefeed 指令后加上 `--disable-gc-check` 参数创建 changefeed 即可。
 
 如果上述指令结果中没有 gc_worker service_id 项目：
 
@@ -356,7 +356,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 如果不满足上述情况，请将上述指令执行结果反应到 asktug 论坛或对应的支持 DBA。
 
-## 使用 TiCDC 创建 changefeed enable-old-value 设置为 true 后 cdc 执行到下游的语句仍然为 REPLACE INTO 而非 UPDATE
+## 使用 TiCDC 创建 changefeed enable-old-value 设置为 true 后 cdc 执行到下游的语句仍然为 REPLACE INTO 而非 INSERT/UPDATE
 
 需要在创建 changefeed 时显式指定 safe-mode 为 false 才会生成 UPDATE 语句，执行步骤为:
 
