@@ -7,6 +7,10 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 本文档总结了在使用 TiCDC 过程中经常遇到的问题，给出合适的运维方法。本文档还总结了常见的运行故障，并给出相对应的解决方案。
 
+> **注意：**
+>
+> 本文档 `cdc cli` 命令中指定 PD 地址为 `--pd=http://10.0.10.25:2379`，用户在使用时需根据实际地址进行替换。
+
 ## TiCDC 创建任务时如何选择 start-ts？
 
 首先需要理解同步任务的 `start-ts` 对应于上游 TiDB 集群的一个 TSO，同步任务会从这个 TSO 开始请求数据。所以同步任务的 `start-ts` 需要满足以下两个条件：
@@ -58,7 +62,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort"
+cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
 ```
 
 > **注意：**
@@ -113,7 +117,7 @@ show variables like '%time_zone%';
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST"
+cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --pd=http://10.0.10.25:2379
 ```
 
 > **注意：**
@@ -287,7 +291,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 ## TiCDC 占用多少 PD 的存储空间
 
-TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间正比与 1 小时的元数据版本数量。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintaince space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。推荐使用这三个版本的用户升级到 v4.0.9 及以后版本。
+TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间与 1 小时内元数据的版本数量成正比。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintaince space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。推荐使用这三个版本的用户升级到 v4.0.9 及以后版本。
 
 ## TiCDC 支持同步大事务吗？有什么风险吗？
 
@@ -298,9 +302,9 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 当遇到上述错误时，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
 
-1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/backup-and-restore-tool.md#增量备份)。
+1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/use-br-command-line-tool.md#增量备份)。
 2. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
-3. 执行[增量恢复](/br/backup-and-restore-tool.md#增量恢复)。
+3. 执行[增量恢复](/br/use-br-command-line-tool.md#增量恢复)。
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
 
@@ -317,18 +321,26 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 自 v4.0.8 起，如果 changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 Old Value 功能。如果没开启则会报错。可以按照以下步骤解决该问题：
 
 1. 将 changefeed 配置文件中 `enable-old-value` 的值设为 `true`。
-2. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
+2. 使用 `cdc cli changefeed pause` 暂停同步任务。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
     ```
 
-3. 使用 `cdc cli changfeed resume` 恢复同步任务。
+3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed resume -c test-cf
+    cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    ```
+
+4. 使用 `cdc cli changefeed resume` 恢复同步任务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
