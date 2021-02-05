@@ -5,8 +5,9 @@ about: Usage question that isn't answered in docs or discussion
 
 ## Question
 
-**This repository is ONLY used to solve issues related to DOCS.
-For other issues (related to TiDB, PD, etc), please move to [other repositories](https://github.com/pingcap/).**
+<!-- This repository is ONLY used to solve issues related to DOCS.
+To discuss technical details or report a bug, please move to [other repositories](https://github.com/pingcap/).
+If you have problems using the product and need technical support, [join our Slack channel](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs).-->
 
 Before submitting your question, make sure you have:
 
