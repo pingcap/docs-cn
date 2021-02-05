@@ -125,14 +125,21 @@ tiup cluster display <cluster-name>
 
 ## 扩容 TiFlash 节点
 
+如果要添加一个 TiFlash 节点，其 IP 地址为 `10.0.1.4`，可以按照如下步骤进行操作。
+
 > **注意：**
 >
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
+<<<<<<< HEAD
 > 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 5.0.0-rc 以上版本。
 > 2. 下载 [pd-ctl](https://download.pingcap.org/tidb-v5.0.0-rc-linux-amd64.tar.gz)，执行 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
 
 如果要添加一个 TiFlash 节点，IP 地址为 10.0.1.4，可以按照如下步骤进行操作。
+=======
+> 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 RC 以上版本。
+> 2. 执行 `tiup ctl pd -u <pd-host>:<pd-port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
+>>>>>>> 2dd17567... Add `tiup ctl pd` command in tiup page. (#5475)
 
 ### 1. 添加节点信息到 scale-out.yaml 文件
 
