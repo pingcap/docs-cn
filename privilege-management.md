@@ -270,7 +270,6 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 | Index          | IndexPriv      | 创建/删除 index          |
 | Alter          | AlterPriv      | 执行 `ALTER` 语句          |
 | Super          | SuperPriv      | 所有权限                 |
-| Grant          | GrantPriv      | 授予其他用户权限         |
 | Create         | CreatePriv     | 创建 schema/table        |
 | Select         | SelectPriv     | 读取表内容               |
 | Insert         | InsertPriv     | 插入数据到表             |
