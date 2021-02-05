@@ -45,6 +45,14 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
     password = ""
     ```
 
+3. 增加 tidb-backend 必要参数
+
+    ```
+    [tidb]
+    # 由于当前模式使用 TiDb Backend 模式，可选参数有：“importer” 或 “local” 或 “tidb”
+    backend = "tidb"
+    ```
+
 其它配置参考 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ## 第 3 步：开启 TiDB Lightning 进行数据导入
