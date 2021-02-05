@@ -28,6 +28,7 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 
 - SST 文件：存储 TiKV 备份下来的数据信息
 - `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
+- `backup.lock` 文件：用于防止多次备份到同一目录
 
 ### SST 文件命名格式
 
@@ -63,6 +64,16 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
     - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
 
     例如，数据备份在 v3.1 集群。如果恢复到 v4.0 集群中，查询恢复集群的 `new_collation_enabled` 的值为 `true`，则说明创建恢复集群时打开了 new collation 支持的开关。此时恢复数据，可能会出错。
+
+### 运行 BR 的最低机型配置要求
+
+运行 BR 的最低机型配置要求如下：
+
+| CPU | 内存 | 硬盘类型 | 网络 |
+| --- | --- | --- | --- |
+| 1 核 | 4 GB | HDD | 千兆网卡 |
+
+一般场景下（备份恢复的表少于 1000 张），BR 在运行期间的 CPU 消耗不会超过 200%，内存消耗不会超过 1 GB。但在备份和恢复大量数据表时，BR 的内存消耗可能会上升到 3 GB 以上。在实际测试中，备份 24000 张表大概需要消耗 2.7 GB 内存，CPU 消耗维持在 100% 以下。
 
 ### 最佳实践
 
