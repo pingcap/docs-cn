@@ -11,7 +11,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
 >
 > 当前该功能为实验特性，请勿在生产环境中使用。
 
-[Confluent Platform](https://docs.confluent.io/current/platform.html) 是一个以 Kafka 为核心的流数据处理平台，可以借助官方或第三方的 sink connector 将数据源连接到关系型或非关系型数据库。
+[Confluent Platform](https://docs.confluent.io/current/platform.html) 是一个以 Apache Kafka 为核心的流数据处理平台，可以借助官方或第三方的 sink connector 将数据源连接到关系型或非关系型数据库。
 
 你可以使用 TiCDC 组件和 Avro 协议来集成 TiDB 和 Confluent Platform。TiCDC 能将数据更改以 Confluent Platform 能识别的格式流式传输到 Kafka。下文详细介绍了集成的操作步骤。
 
@@ -63,8 +63,9 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
 
 3. 通过以下任一方式部署 TiCDC。如果已经部署了 TiCDC，可以跳过这一步。
 
-    - [使用 TiUP 部署安装 TiCDC](/ticdc/manage-ticdc.md#使用-tiup-部署安装-ticdc)
-    - [在原有 TiDB 集群上使用 binary 部署 TiCDC 组件](/ticdc/manage-ticdc.md#在原有-tidb-集群上使用-binary-部署-ticdc-组件)
+    - [使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群](/ticdc/deploy-ticdc.md#使用-tiup-部署包含-ticdc-组件的全新-tidb-集群)
+    - [使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件](/ticdc/deploy-ticdc.md#使用-tiup-在原有-tidb-集群上新增-ticdc-组件)
+    - [使用 binary 在原有 TiDB 集群上新增 TiCDC 组件（不推荐）](/ticdc/deploy-ticdc.md#使用-binary-在原有-tidb-集群上新增-ticdc-组件不推荐)
 
     在继续接下来的操作之前，请先确保 TiDB 和 TiCDC 集群处于健康状态。
 

@@ -26,8 +26,6 @@ aliases: ['/docs-cn/dev/post-installation-check/']
 
 - 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认用户名及密码为 `admin`/`admin`。
 
-    ![Grafana-login](/media/tiup/grafana-login.png)
-
 - 点击 **Overview** 监控页面检查 TiDB 端口和负载监控信息。
 
     ![Grafana-overview](/media/tiup/grafana-overview.png)

@@ -75,7 +75,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 - `"distributed"`（默认）：分布式 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 TiDB 上的 GC leader 向 PD 发送 safe point，每个 TiKV 节点各自获取该 safe point 并对所有当前节点上作为 leader 的 Region 进行 GC。此模式于 TiDB 3.0 引入。
 
-- `"central"`：集中 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。
+- `"central"`：集中 GC 模式。在此模式下，[Do GC](/garbage-collection-overview.md#do-gc进行-gc-清理) 阶段由 GC leader 向所有的 Region 发送 GC 请求。TiDB 2.1 及更早版本采用此 GC 模式。从 TiDB 5.0 起不再支持该模式，设置该模式的集群将切换到 `distributed` 模式。
 
 ## `tikv_gc_auto_concurrency`
 
@@ -135,10 +135,56 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 ## 流控
 
-TiKV 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响，`0` 为关闭该功能。该配置可通过 tikv-ctl 动态修改：
+TiDB 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响，`0` 为关闭该功能。该配置可通过 tikv-ctl 动态修改：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
 tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
+```
+
+## GC in Compaction Filter 机制
+
+TiDB 在 5.0.0-rc 版本中引入了 GC in Compaction Filter 机制。在分布式 GC 模式 (distributed GC) 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及避免清理掉的旧版本残留大量删除标记影响顺序扫描性能。该 GC 机制默认关闭。可以由 TiKV 配置文件中的以下开关控制：
+
+{{< copyable "" >}}
+
+```toml
+[gc]
+enable-compaction-filter = true
+```
+
+该 GC 机制可通过在线配置变更开启：
+
+{{< copyable "sql" >}}
+
+```sql
+show config where type = 'tikv' and name like '%enable-compaction-filter%';
+```
+
+```sql
++------+-------------------+-----------------------------+-------+
+| Type | Instance          | Name                        | Value |
++------+-------------------+-----------------------------+-------+
+| tikv | 172.16.5.37:20163 | gc.enable-compaction-filter | false |
+| tikv | 172.16.5.36:20163 | gc.enable-compaction-filter | false |
+| tikv | 172.16.5.35:20163 | gc.enable-compaction-filter | false |
++------+-------------------+-----------------------------+-------+
+```
+
+{{< copyable "sql" >}}
+
+```sql
+set config tikv gc.enable-compaction-filter = true;
+show config where type = 'tikv' and name like '%enable-compaction-filter%';
+```
+
+```sql
++------+-------------------+-----------------------------+-------+
+| Type | Instance          | Name                        | Value |
++------+-------------------+-----------------------------+-------+
+| tikv | 172.16.5.37:20163 | gc.enable-compaction-filter | true  |
+| tikv | 172.16.5.36:20163 | gc.enable-compaction-filter | true  |
+| tikv | 172.16.5.35:20163 | gc.enable-compaction-filter | true  |
++------+-------------------+-----------------------------+-------+
 ```

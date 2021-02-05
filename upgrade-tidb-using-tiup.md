@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 升级 TiDB
-aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/']
+aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/','/zh/tidb/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
 ---
 
 # 使用 TiUP 升级 TiDB
@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
 
 如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
+
+> **注意：**
+>
+> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅 [v4.0 版使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
 
 ## 1. 升级兼容性说明
 
@@ -21,7 +25,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     - 启用了 `Spark` 的集群
     - 启用了 `Lightning` / `Importer` 的集群
     - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）
-    - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
+    - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）或者单独为某一台机器的 node_exporter / blackbox_exporter 设置了和其他机器的 node_exporter / blackbox_exporter 不同的 `deploy_dir`
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 从 2.0.6 之前的版本升级到 4.0 版本之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
 - 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 4.0 版本，可以选择下面两种方案：
@@ -82,7 +86,7 @@ tiup update cluster
 
 > **注意：**
 >
-> + 目前 TiUP 仅支持 `systemd` 的进程管理模式。如果此前使用 TiDB Ansible 部署时选择了 `supervise`，需要先按[使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md#如何调整进程监管方式从-supervise-到-systemd)迁移到 `systemd`。
+> + 目前 TiUP 仅支持 `systemd` 的进程管理模式。如果此前使用 TiDB Ansible 部署时选择了 `supervise`，需要先按[使用 TiDB Ansible 部署 TiDB 集群](https://docs.pingcap.com/zh/tidb/v4.0/online-deployment-using-ansible#如何调整进程监管方式从-supervise-到-systemd)迁移到 `systemd`。
 > + 如果原集群已经是 TiUP 部署，可以跳过此步骤。
 > + 目前默认识别 `inventory.ini` 配置文件，如果你的配置为其他名称，请指定。
 > + 你需要确保当前集群的状态与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常。
@@ -130,7 +134,7 @@ tiup update cluster
 > - 原集群没有修改过配置参数。
 > - 升级后希望使用 `4.0` 默认参数。
 
-1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/config`，确认配置模板中修改过的参数。
+1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/ansible-imported-configs`，确认配置模板中修改过的参数。
 
 2. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -157,7 +161,7 @@ tiup update cluster
 >        ```yaml
 >          tiflash_servers:
 >            - host: 10.0.1.14
->              data_dir: data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
+>              data_dir: /data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
 >        ```
 
 ## 4. 滚动升级 TiDB 集群

@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 
 # 执行计划管理 (SPM)
 
-执行计划管理，又称 SPM (SQL plan management)，是通过执行计划绑定，对执行计划进行人为干预的一系列功能，包括执行计划绑定、自动捕获绑定、自动演进绑定等。
+执行计划管理，又称 SPM (SQL Plan Management)，是通过执行计划绑定，对执行计划进行人为干预的一系列功能，包括执行计划绑定、自动捕获绑定、自动演进绑定等。
 
 ## 执行计划绑定 (SQL Binding)
 
@@ -30,7 +30,7 @@ CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
 create global binding for
     select * from t1, t2 where t1.id = t2.id
 using
-    select /*+ sm_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+    select /*+ merge_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
 
 -- 从该 SQL 的执行计划中可以看到其使用了 global binding 中指定的 sort merge join
 explain select * from t1, t2 where t1.id = t2.id;
