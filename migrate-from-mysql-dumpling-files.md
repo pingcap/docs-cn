@@ -48,9 +48,17 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 3. 增加 tidb-backend 必要参数
 
     ```
-    [tidb]
+    [tikv-importer]
     # 由于当前模式使用 TiDb Backend 模式，可选参数有：“importer” 或 “local” 或 “tidb”
     backend = "tidb"
+    ```
+    
+4. 增加导入 tidb 集群必要参数
+    
+    ```
+    [tidb]
+    status-port = {{tidb-status-port}}
+    pd-addr = {{pd-host}}:{{pd-port}}"
     ```
 
 其它配置参考 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)。
