@@ -165,7 +165,7 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
-Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考与之一致的 [BR 存储](/br/backup-and-restore-storages.md)。
+Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考[远端存储](/br/backup-and-restore-storages.md)。
 
 在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 S3 存储所在的区域。
 
@@ -338,7 +338,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
 | -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
 | --filetype| 导出文件类型（csv/sql） | "sql" |
-| -o 或 --output | 导出文件路径 | "./export-${time}" |
+| -o 或 --output | 导出本地文件路径或[远端存储 URL](/br/backup-and-restore-storages.md) | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: MySQL 默认用 flush, TiDB 默认用 snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |

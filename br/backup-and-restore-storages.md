@@ -1,16 +1,16 @@
 ---
-title: BR 存储
-summary: 了解 BR 中所用存储服务的 URL 格式。
+title: 远端存储
+summary: 了解 BR、Lightning 和 Dumpling 中所用存储服务的 URL 格式。
 aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 ---
 
-# BR 存储
+# 远端存储
 
-Backup & Restore (BR) 支持在本地文件系统、Amazon S3 和 Google Cloud Storage (GCS) 上读写数据。通过传入 BR 的 `--storage` 参数中的不同 URL scheme，可以区分不同的存储方式。
+Backup & Restore (BR)、Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
 
 ## Scheme
 
-BR 支持以下存储服务：
+TiDB 迁移工具支持以下存储服务：
 
 | 服务 | Scheme | 示例 |
 |---------|---------|-------------|
@@ -25,8 +25,18 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 
 {{< copyable "shell-regular" >}}
 
-```shell
-./br backup full -u 127.0.0.1:2379 -s 's3://bucket-name/prefix?region=us-west-2'
+```bash
+# 用 Dumpling 导出数据到 S3
+./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+    -o 's3://my-bucket/sql-backup?region=us-west-2'
+
+# 用 Lightning 从 S3 导入数据
+./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+    -d 's3://my-bucket/sql-backup?region=us-west-2'
+
+# 用 BR 备份到 GCS
+./br backup full -u 127.0.0.1:2379 \
+    -s 'gcs://bucket-name/prefix'
 ```
 
 ### S3 参数
@@ -46,12 +56,12 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 
 > **注意：**
 >
-> 不建议在存储 URL 中直接传递访问密钥和 secret 访问密钥，因为这些密钥是明文记录的。BR 尝试按照以下顺序从环境中推断这些密钥：
+> 不建议在存储 URL 中直接传递访问密钥和 secret 访问密钥，因为这些密钥是明文记录的。迁移工具尝试按照以下顺序从环境中推断这些密钥：
 
 1. `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量。
 2. `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量。
-3. BR 节点上的共享凭证文件，路径由 `$AWS_SHARED_CREDENTIALS_FILE` 环境变量指定。
-4. BR 节点上的共享凭证文件，路径为 `~/.aws/credentials`。
+3. 工具节点上的共享凭证文件，路径由 `$AWS_SHARED_CREDENTIALS_FILE` 环境变量指定。
+4. 工具节点上的共享凭证文件，路径为 `~/.aws/credentials`。
 5. 当前 Amazon EC2 容器的 IAM 角色。
 6. 当前 Amazon ECS 任务的 IAM 角色。
 
@@ -61,15 +71,15 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 |----------:|---------|
 | `credentials-file` | TiDB 节点上的凭证 JSON 文件的路径 |
 | `storage-class` | 上传对象的存储类别（例如 `STANDARD`、`COLDLINE`） |
-| `predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private` |
+| `predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
 
-如果没有指定 `credentials-file`，BR 尝试按照以下顺序从环境中推断出凭证：
+如果没有指定 `credentials-file`，迁移工具尝试按照以下顺序从环境中推断出凭证：
 
-1. BR 节点上位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容。
-2. BR 节点上位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容。
+1. 工具节点上位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容。
+2. 工具节点上位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容。
 3. 在 GCE 或 GAE 中运行时，从元数据服务器中获取的凭证。
 
-## 向 TiKV 发送凭证
+## BR 向 TiKV 发送凭证
 
 在默认情况下，使用 S3 和 GCS 存储时，BR 会将凭证发送到每个 TiKV 节点，以减少设置的复杂性。
 
@@ -77,6 +87,16 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 
 {{< copyable "shell-regular" >}}
 
-```shell
+```bash
 ./br backup full -c=0 -u pd-service:2379 -s 's3://bucket-name/prefix'
 ```
+
+使用 SQL 进行[备份](/sql-statements/sql-statement-backup.md)[恢复](/sql-statements/sql-statement-restore.md)时，可加上 `SEND_CREDENTIALS_TO_TIKV = FALSE` 选项：
+
+{{< copyable "sql" >}}
+
+```sql
+BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
+```
+
+此参数不适用于 Lightning 和 Dumpling，因为目前它们都是单机程序。

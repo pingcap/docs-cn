@@ -128,7 +128,7 @@ read-block-size = 65536 # Byte (默认为 64 KB)
 # 取值范围为（0 <= batch-import-ratio < 1）。
 batch-import-ratio = 0.75
 
-# 本地源数据目录。
+# 本地源数据目录或远端存储 URL
 data-source-dir = "/data/my_database"
 # 如果 no-schema = true，那么 TiDB Lightning 假设目标 TiDB 集群上
 # 已有表结构，并且不会执行 `CREATE TABLE` 语句。
@@ -256,7 +256,7 @@ log-file = "tikv-importer.log"
 # 日志等级：trace, debug, info, warn, error 和 off
 log-level = "info"
 
-# 状态服务器的监听地址。 
+# 状态服务器的监听地址。
 # Prometheus 可以从这个地址抓取监控指标。
 status-server-address = "0.0.0.0:8286"
 
@@ -335,7 +335,7 @@ min-available-ratio = 0.05
 |:----|:----|:----|
 | --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
 | -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
+| -d *directory* | 读取数据的本地目录或[远端存储 URL](/br/backup-and-restore-storages.md) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend [*backend*](/tidb-lightning/tidb-lightning-backends.md) | 选择后端的模式：`importer`、`local` 或 `tidb` | `tikv-importer.backend` |
