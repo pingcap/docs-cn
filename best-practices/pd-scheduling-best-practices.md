@@ -259,10 +259,10 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 - 创建过大量表后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
 
-    - TiKV: `split-region-on-table` 设为 `false`，该参数不支持动态修改。
+    - TiKV: 将 `split-region-on-table` 设为 `false`，该参数不支持动态修改。
     - PD: 
         + `key-type` 设为 `txn` 或者 `raw`，该参数支持动态修改。
-        + `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
+        + 或者 `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
        
         > **注意：**
         >
