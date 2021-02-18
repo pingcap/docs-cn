@@ -10,13 +10,7 @@ MySQL 系统变量 (System Variables) 是一些系统参数，用于调整数据
 
 ## 设置系统变量
 
-<<<<<<< HEAD
 通过 [`SET` 语句](/sql-statements/sql-statement-set-variable.md) 可以修改系统变量的值。进行修改时，还要考虑变量可修改的范围，不是所有的变量都能在全局/会话范围内进行修改。具体的可修改范围参考 [MySQL 动态变量文档](https://dev.mysql.com/doc/refman/5.7/en/dynamic-system-variables.html)。
-=======
-- 作用域：SESSION
-- 默认值：PRIORITY_LOW
-- 这个变量用来设置 `ADD INDEX` 操作 `re-organize` 阶段的执行优先级，可设置为 `PRIORITY_LOW`/`PRIORITY_NORMAL`/`PRIORITY_HIGH`。
->>>>>>> 6bd9362e... Update system-variables.md (#5531)
 
 ### 全局范围值
 
