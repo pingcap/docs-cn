@@ -1,11 +1,11 @@
 ---
-title: 调度概述
+title: TiDB 数据库的调度
 aliases: ['/docs-cn/stable/tidb-scheduling/','/docs-cn/v4.0/tidb-scheduling/']
 ---
 
-# 调度概述
+# TiDB 数据库的调度
 
-PD 是 TiDB 集群的管理模块，同时也负责集群数据的实时调度。本文档介绍一下 PD 的设计思想和关键概念。
+[PD](https://github.com/tikv/pd) (Placement Driver) 是 TiDB 集群的管理模块，同时也负责集群数据的实时调度。本文档介绍一下 PD 的设计思想和关键概念。
 
 ## 场景描述
 
