@@ -149,7 +149,7 @@ If the downstream is a special MySQL environment (a public cloud RDS or some MyS
 If you use the `cdc cli changefeed create` command without specifying the `-config` parameter, TiCDC creates the replication task in the following default behaviors:
 
 * Replicates all tables except system tables
-* Disables the Old Value feature
+* Enables the Old Value feature
 * Skips replicating tables that do not contain [valid indexes](/ticdc/ticdc-overview.md#restrictions)
 
 ## How do I handle the incompatibility issue of configuration files caused by TiCDC upgrade?
