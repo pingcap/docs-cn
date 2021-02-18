@@ -347,7 +347,7 @@ set @@global.tidb_distsql_scan_concurrency = 10
 
 ### tidb_ddl_reorg_priority
 
-作用域：SESSION | GLOBAL
+作用域：SESSION
 
 默认值：PRIORITY_LOW
 
