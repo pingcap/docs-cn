@@ -505,6 +505,7 @@
       + [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   + [遥测](/telemetry.md)
   + [错误码](/error-codes.md)
+  + [支持的连接器和 API](/connectors-and-apis.md)
   + [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
 + 常见问题解答 (FAQ)
   + [产品 FAQ](/faq/tidb-faq.md)
