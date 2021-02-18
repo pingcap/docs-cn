@@ -92,7 +92,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 ## BR 恢复存档后是否需要 ANALYZE 表？
 
-BR v4.0.10 及之前的版本（v4.0.9 除外）均不会备份统计信息。所以在恢复后需要手动执行 ANALYZE TABLE 或等待 TiDB 自动进行 ANALYZE。
+BR 不会备份统计信息（v4.0.9 除外）。所以在恢复后需要手动执行 ANALYZE TABLE 或等待 TiDB 自动进行 ANALYZE。
 
 BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正常从 v4.0.10 开始此功能默认关闭。
 
