@@ -193,6 +193,7 @@
     + [监控指标](/ticdc/monitor-ticdc.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+    + [术语表](/ticdc/ticdc-glossary.md)
   + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
