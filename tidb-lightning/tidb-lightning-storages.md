@@ -17,7 +17,6 @@ TiDB Lightning 支持以下存储服务：
 | 本地文件系统 | local | 所有版本 | `local:///path/to/source-directory/` 或 '/path/to/source-directory/' |
 | Amazon S3 及其他兼容 S3 的服务 | s3 | >=v4.0.7 | `s3://bucket-name/prefix/of/dest/` |
 
-
 ## 参数
 
 ### 参数设置
@@ -26,18 +25,18 @@ TiDB Lightning 支持如下两种方式设置数据源文件的路径：
 
 1. 在 TiDB Lightning 的 TOML 格式的配置文件中设置 `mydumper.data-source-dir` 字段。 例如：
 
-```toml
-[mydumper]
-data-source-dir = 's3://bucket-name/prefix?region=us-west-2'
-```
+    ```toml
+    [mydumper]
+    data-source-dir = 's3://bucket-name/prefix?region=us-west-2'
+    ```
 
 2. 通过命令行参数指定。 例如：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-./tidb-lightning -d '/path/to/source-directory/'
-```
+    ```shell
+    ./tidb-lightning -d '/path/to/source-directory/'
+    ```
 
 > **注意：**
 >
