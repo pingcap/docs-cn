@@ -335,7 +335,7 @@ min-available-ratio = 0.05
 |:----|:----|:----|
 | --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
 | -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的目录 | `mydumper.data-source-dir` |
+| -d *directory* | [数据源地址](/tidb-lightning/tidb-lightning-storages.md) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend [*backend*](/tidb-lightning/tidb-lightning-backends.md) | 选择后端的模式：`importer`、`local` 或 `tidb` | `tikv-importer.backend` |
