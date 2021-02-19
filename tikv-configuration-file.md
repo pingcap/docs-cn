@@ -144,7 +144,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `use-unified-pool`
 
 + 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理存储请求。该选项值为 false 时，使用单独的存储线程池。通过本节 (`readpool.storage`) 中的其余配置项配置单独的线程池。
-+ 默认值：false
++ 默认值：true
 
 ### `high-concurrency`
 
