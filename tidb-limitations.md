@@ -35,13 +35,13 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 
 ## 单个 Table 的限制
 
-| 类型       | 最大限制   |
-|:----------|:----------|
-| Columns   | 4096      |
-| Indexs    | 64        |
-| Rows      | unlimited |
-| Size      | unlimited |
-| Partitions| 1024      |
+| 类型       | 最大限制（默认值）   | 最大限制（可设置最大值）   |
+|:----------|:-------------------|:-----------------------|
+| Columns   | 1017               | 4096                   |
+| Indexs    | 64                 | 512                    |
+| Rows      | unlimited          | /                      |
+| Size      | unlimited          | /                      |
+| Partitions| 1024               | /                      |
 
 ## 单行的限制
 
