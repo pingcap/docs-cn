@@ -50,13 +50,17 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ```sql
 mysql> CREATE TABLE t1 (a int not null primary key auto_increment);
 Query OK, 0 rows affected (0.10 sec)
+
 mysql> set auto_increment_offset=1;
 Query OK, 0 rows affected (0.00 sec)
+
 mysql> set auto_increment_increment=3;
 Query OK, 0 rows affected (0.00 sec)
+
 mysql> INSERT INTO t1 VALUES (),(),(),();
 Query OK, 4 rows affected (0.04 sec)
 Records: 4  Duplicates: 0  Warnings: 0
+
 mysql> SELECT * FROM t1;
 +----+
 | a  |
@@ -235,7 +239,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：INSTANCE
 - 默认值：ON
-- 设置该变量为 `ON` 可强制只存储[基本多文种平面 (BMP)](https://zh.wikipedia.org/zh-hans/Unicode%E5%AD%97%E7%AC%A6%E5%B9%B3%E9%9D%A2%E6%98%A0%E5%B0%84) 编码区段内的 `utf8` 字符值。若要存储 BMP 区段外的 `utf8` 值，推荐使用 `utf8mb4` 字符集。
+- 设置该变量为 `ON` 可强制只存储[基本多文种平面 (BMP)](https://zh.wikipedia.org/zh-hans/Unicode字符平面映射) 编码区段内的 `utf8` 字符值。若要存储 BMP 区段外的 `utf8` 值，推荐使用 `utf8mb4` 字符集。
 - 早期版本的 TiDB 中 (v2.1.x)，`utf8` 检查更为宽松。如果你的 TiDB 集群是从早期版本升级的，推荐关闭该变量，详情参阅[升级与升级后常见问题](/faq/upgrade-faq.md)。
 
 ### `tidb_checksum_table_concurrency`
@@ -450,7 +454,7 @@ mysql> SELECT * FROM t1;
 
 > **注意：**
 >
-> 该变量只有在默认值 `0` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
+> 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
 
 ### `tidb_enable_rate_limit_action`
 
@@ -480,8 +484,6 @@ mysql> SELECT * FROM t1;
     - 默认值 `ON` 表示开启 TiDB 当前已实现了的分区表类型，目前 Range partition、Hash partition 以及 Range column 单列的场景会生效。
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
-
-- 注意，目前 TiDB 只支持 Range partition 和 Hash partition。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
@@ -532,9 +534,8 @@ mysql> SELECT * FROM t1;
 
 ### `tidb_executor_concurrency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
-作用域：SESSION | GLOBAL
-
-默认值：5
+- 作用域：SESSION | GLOBAL
+- 默认值：5
 
 变量用来统一设置各个 SQL 算子的并发度，包括：
 
@@ -555,7 +556,7 @@ mysql> SELECT * FROM t1;
 + `tidb_projection_concurrency`
 + `tidb_window_concurrency`
 
-v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警告），且修改只影响单个算子。后续通过 `tidb_executor_concurrency` 的修改也不会影响该算子。若要通过 `tidb_executor_concurrency` 来管理所有算子的并发度，可用将以上所列变量的值设置为 `-1`。
+v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警告），且修改只影响单个算子。后续通过 `tidb_executor_concurrency` 的修改也不会影响该算子。若要通过 `tidb_executor_concurrency` 来管理所有算子的并发度，需要将以上所列变量的值设置为 `-1`。
 
 对于从 v5.0.0-rc 之前的版本升级到 v5.0.0-rc 的系统，如果用户对上述所列变量的值没有做过改动（即 `tidb_hash_join_concurrency` 值为 `5`，其他值为 `4`），则会自动转为使用 `tidb_executor_concurrency` 来统一管理算子并发度。如果用户对上述变量的值做过改动，则沿用之前的变量对相应的算子做并发控制。
 
@@ -887,7 +888,7 @@ SET tidb_query_log_max_len = 20;
 ### `tidb_redact_log`
 
 - 作用域：SESSION | GLOBAL
-- 默认值：0
+- 默认值：OFF
 - 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
 - 将该变量设置为 `1` 即开启后，假设执行的 SQL 为 `insert into t values (1,2)`，在日志中记录的 SQL 会是 `insert into t values (?,?)`，即用户输入的信息被遮蔽。
 
@@ -1041,7 +1042,7 @@ set tidb_slow_log_threshold = 200;
 - 由于打散 Region 的时间可能比较长，主要由 PD 调度以及 TiKV 的负载情况所决定。这个变量用来设置在执行 `SPLIT REGION` 语句时，是否同步等待所有 Region 都打散完成后再返回结果给客户端。
     - 默认 `ON` 代表等待打散完成后再返回结果
     - `OFF` 代表不等待 Region 打散完成就返回。
-- 需要注意的是，在 Region 打散期间，对正在打散 Region 上的写入和读取的性能会有一定影响，对于批量写入，导数据等场景，还是建议等待 Region 打散完成后再开始导数据。
+- 需要注意的是，在 Region 打散期间，对正在打散 Region 上的写入和读取的性能会有一定影响，对于批量写入、导数据等场景，还是建议等待 Region 打散完成后再开始导数据。
 
 ### `tidb_wait_split_region_timeout`
 
