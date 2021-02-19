@@ -36,6 +36,10 @@ This section introduces how to use `cdc cli` to manage a TiCDC cluster and data 
 - `cli` commands are executed directly using the `cdc` binary;
 - PD listens on `10.0.10.25` and the port is `2379`.
 
+> **Note:**
+>
+> The IP address and port that PD listens on correspond to the `advertise-client-urls` parameter specified during the `pd-server` startup. Multiple `pd-server`s have multiple `advertise-client-urls` parameters and you can specify one or multiple parameters. For example, `--pd=http://10.0.10.25:2379` or `--pd=http://10.0.10.25:2379,http://10.0.10.26:2379,http://10.0.10.27:2379`.
+
 If you deploy TiCDC using TiUP, replace `cdc cli` in the following commands with `tiup ctl cdc`.
 
 ### Manage TiCDC service progress (`capture`)
@@ -427,9 +431,9 @@ Starting from v4.0.4, TiCDC supports modifying the configuration of the replicat
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause -c test-cf
-cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
-cdc cli changefeed resume -c test-cf
+cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
+cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
 
 Currently, you can modify the following configuration items:

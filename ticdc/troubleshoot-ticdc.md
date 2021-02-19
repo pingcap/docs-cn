@@ -8,6 +8,10 @@ aliases: ['/docs/dev/ticdc/troubleshoot-ticdc/']
 
 This document introduces the common issues and errors that you might encounter when using TiCDC, and the corresponding maintenance and troubleshooting methods.
 
+> **Note:**
+>
+> In this document, the PD address specified in `cdc cli` commands is `--pd=http://10.0.10.25:2379`. When you use the command, replace the address with your actual PD address.
+
 ## How do I choose `start-ts` when creating a task in TiCDC?
 
 The `start-ts` of a replication task corresponds to a Timestamp Oracle (TSO) in the upstream TiDB cluster. TiCDC requests data from this TSO in a replication task. Therefore, the `start-ts` of the replication task must meet the following requirements:
@@ -58,7 +62,7 @@ If the replication task is interrupted for a long time and a large volume of new
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort"
+cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
 ```
 
 > **Note:**
@@ -115,7 +119,7 @@ If the downstream is a special MySQL environment (a public cloud RDS or some MyS
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST"
+    cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --pd=http://10.0.10.25:2379
     ```
 
     > **Note:**
@@ -319,20 +323,28 @@ If you encounter an error above, it is recommended to use BR to restore the incr
 Since v4.0.8, if the `canal` or `canal-json` protocol is used for output in a changefeed, TiCDC checks whether the old value feature is also enabled. If you disable the old value feature, this error is reported. To fix the error, take the following steps:
 
 1. Set the value of `enable-old-value` in the changefeed configuration file to `true`.
-2. Execute `cdc cli changefeed update` to update the original changefeed configuration.
+2. Execute `cdc cli changefeed pause` to pause the replication task.
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed update -c test-cf --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
     ```
 
-3. Execute `cdc cli changfeed resume` to resume the replication task.
+3. Execute `cdc cli changefeed update` to update the original changefeed configuration.
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed resume -c test-cf
+    cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    ```
+
+4. Execute `cdc cli changfeed resume` to resume the replication task.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
 
 ## How much PD storage does TiCDC use?
