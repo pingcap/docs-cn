@@ -12,10 +12,10 @@ TiDB Lightning 支持在本地文件系统、Amazon S3 上读取数据源文件�
 
 TiDB Lightning 支持以下存储服务：
 
-| 服务 | Scheme | 示例 |
-|---------|---------|-------------|
-| 本地文件系统 | local | `local:///path/to/source-directory/` 或 '/path/to/source-directory/' |
-| Amazon S3 及其他兼容 S3 的服务 | s3 | `s3://bucket-name/prefix/of/dest/` |
+| 服务 | Scheme | 支持 TiDB Lightning 版本 | 示例 |
+|---------|------|-------|-------------|
+| 本地文件系统 | local | 所有版本 | `local:///path/to/source-directory/` 或 '/path/to/source-directory/' |
+| Amazon S3 及其他兼容 S3 的服务 | s3 | >=v4.0.7 | `s3://bucket-name/prefix/of/dest/` |
 
 
 ## 参数
