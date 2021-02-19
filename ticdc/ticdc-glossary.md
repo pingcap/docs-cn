@@ -17,11 +17,11 @@ summary: 了解 TiCDC 相关的术语及定义。
 
 ### Capture
 
-一个 TiCDC 实例。多个 Capture 组成一个 TiCDC 集群，Capture 上运行集群中的同步任务。
+单个 TiCDC 实例。多个 Capture 组成一个 TiCDC 集群，Capture 上运行集群中的同步任务。
 
 ### Changefeed
 
-TiCDC 中的一个同步任务。一个同步任务将一个 TiDB 集群中数张表的变更数据输出到一个指定的下游中。
+TiCDC 中的单个同步任务。同步任务将一个 TiDB 集群中数张表的变更数据输出到一个指定的下游中。
 
 ## O
 
@@ -33,4 +33,4 @@ TiCDC 中的一个同步任务。一个同步任务将一个 TiDB 集群中数�
 
 ### Processor
 
-一个 TiCDC 同步任务会在 TiCDC 实例上分配数据表，Processor 指这些数据表的同步处理单元。处理任务包括变更数据的拉取、排序、还原和分发。
+TiCDC 同步任务会在 TiCDC 实例上分配数据表，Processor 指这些数据表的同步处理单元。处理任务包括变更数据的拉取、排序、还原和分发。
