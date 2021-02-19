@@ -34,6 +34,31 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-replace/','/docs-cn/dev/ref
 
 ![InsertValues](/media/sqlgram/InsertValues.png)
 
+```ebnf+diagram
+ReplaceIntoStmt ::=
+    'REPLACE' PriorityOpt IntoOpt TableName PartitionNameListOpt InsertValues
+
+PriorityOpt ::=
+    ( 'LOW_PRIORITY' | 'HIGH_PRIORITY' | 'DELAYED' )?
+
+IntoOpt ::= 'INTO'?
+
+TableName ::=
+    Identifier ( '.' Identifier )?
+
+PartitionNameListOpt ::=
+    ( 'PARTITION' '(' Identifier ( ',' Identifier )* ')' )?
+
+InsertValues ::=
+    '(' ( ColumnNameListOpt ')' ( ValueSym ValuesList | SelectStmt | '(' SelectStmt ')' | UnionStmt ) | SelectStmt ')' )
+|   ValueSym ValuesList
+|   SelectStmt
+|   UnionStmt
+|   'SET' ColumnSetValue? ( ',' ColumnSetValue )*
+
+
+```
+
 ## 示例
 
 {{< copyable "sql" >}}

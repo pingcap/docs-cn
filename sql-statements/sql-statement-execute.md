@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-execute/','/docs-cn/dev/ref
 
 ## 语法图
 
-**ExecuteStmt:**
-
-![ExecuteStmt](/media/sqlgram/ExecuteStmt.png)
+```ebnf+diagram
+ExecuteStmt ::=
+    'EXECUTE' Identifier ( 'USING' UserVariable ( ',' UserVariable )* )?
+```
 
 ## 示例
 

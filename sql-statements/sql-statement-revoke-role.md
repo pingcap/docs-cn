@@ -9,17 +9,16 @@ summary: TiDB 数据库中 REVOKE <role> 的使用概况。
 
 ## 语法图
 
-**RevokeRoleStmt:**
+```ebnf+diagram
+RevokeRoleStmt ::=
+    'REVOKE' RolenameList 'FROM' UsernameList
 
-![RevokeRoleStmt](/media/sqlgram/RevokeRoleStmt.png)
+RolenameList ::=
+    Rolename ( ',' Rolename )*
 
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
-
-**UsernameList:**
-
-![UsernameList](/media/sqlgram/UsernameList.png)
+UsernameList ::=
+    Username ( ',' Username )*
+```
 
 ## 示例
 

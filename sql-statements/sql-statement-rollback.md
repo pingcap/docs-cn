@@ -10,13 +10,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-rollback/','/docs-cn/dev/re
 
 ## 语法图
 
-**RollbackStmt:**
+```ebnf+diagram
+RollbackStmt ::=
+    'ROLLBACK' CompletionTypeWithinTransaction?
 
-![RollbackStmt](/media/sqlgram/RollbackStmt.png)
-
-**CompletionTypeWithinTransaction:**
-
-![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
+CompletionTypeWithinTransaction ::=
+    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
+|   'NO'? 'RELEASE'
+```
 
 ## 示例
 
