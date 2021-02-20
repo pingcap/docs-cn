@@ -511,7 +511,7 @@ raftstore 相关的配置项。
 ### `leader-transfer-max-log-lag`
 
 + 尝试转移领导权时被转移者允许的最大日志缺失个数。
-+ 默认值：10
++ 默认值：128
 + 最小值：10
 
 ### `snap-apply-batch-size`
@@ -552,7 +552,7 @@ raftstore 相关的配置项。
 ### `merge-check-tick-interval`
 
 + 触发 merge 完成检查的时间间隔。
-+ 默认值：10s
++ 默认值：2s
 + 最小值：大于 0
 
 ### `use-delete-range`
