@@ -7,8 +7,7 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
-  + [TiDB 4.0 实验特性](/experimental-features-4.0.md)
+  + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
   + [基本功能](/basic-features.md)
   + 性能测试报告
     + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
@@ -41,6 +40,7 @@
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
+    + [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
     + [使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
   + 从 CSV 文件迁移至 TiDB
@@ -57,10 +57,9 @@
     + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   + 备份与恢复
     + 使用 BR 工具（推荐）
-      + [使用 BR 进行备份与恢复](/br/backup-and-restore-tool.md)
-      + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-      + [BR 存储](/br/backup-and-restore-storages.md)
-    + [使用 Dumpling 和 TiDB Lightning 进行备份与恢复（推荐）](/backup-and-restore-using-dumpling-lightning.md)
+      + [BR 工具简介](/br/backup-and-restore-tool.md)
+      + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
+      + [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
   + [读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
@@ -126,7 +125,7 @@
       + [控制执行计划概览](/control-execution-plan.md)
       + [Optimizer Hints](/optimizer-hints.md)
       + [执行计划管理](/sql-plan-management.md)
-      + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
+      + [优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
@@ -147,8 +146,10 @@
   + [适用场景](/ecosystem-tool-user-case.md)
   + [工具下载](/download-ecosystem-tools.md)
   + Backup & Restore (BR)
-    + [使用 BR 进行备份和恢复](/br/backup-and-restore-tool.md)
+    + [BR 工具简介](/br/backup-and-restore-tool.md)
+    + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+    + [BR 存储](/br/backup-and-restore-storages.md)
     + [BR 常见问题](/br/backup-and-restore-faq.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -182,7 +183,6 @@
       + [后端](/tidb-lightning/tidb-lightning-backends.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    + [故障诊断](/troubleshoot-tidb-lightning.md)
     + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + TiCDC
@@ -190,8 +190,10 @@
     + [安装部署](/ticdc/deploy-ticdc.md)
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
+    + [监控指标](/ticdc/monitor-ticdc.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+    + [术语表](/ticdc/ticdc-glossary.md)
   + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
@@ -213,6 +215,7 @@
     + [PD 面板](/grafana-pd-dashboard.md)
     + [TiKV 面板](/grafana-tikv-dashboard.md)
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
+    + [TiCDC 监控指标](/ticdc/monitor-ticdc.md)
   + 安全加固
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
@@ -516,7 +519,10 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
+  + v5.0
+    - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
+    - [4.0.10](/releases/release-4.0.10.md)
     - [4.0.9](/releases/release-4.0.9.md)
     - [4.0.8](/releases/release-4.0.8.md)
     - [4.0.7](/releases/release-4.0.7.md)

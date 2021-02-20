@@ -1,15 +1,13 @@
 ---
-title: 使用 Dumpling/TiDB Lightning 进行备份与恢复
+title: 使用 Dumpling/TiDB Lightning 备份与恢复
 aliases: ['/docs-cn/dev/backup-and-restore-using-dumpling-lightning/','/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling','/docs-cn/dev/backup-and-restore-using-mydumper-lightning/','/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning/','/docs-cn/dev/how-to/maintain/backup-and-restore/','/zh/tidb/dev/backup-and-restore-using-mydumper-lightning/']
 ---
 
-# 使用 Dumpling/TiDB Lightning 进行备份与恢复
+# 使用 Dumpling/TiDB Lightning 备份与恢复
 
-> **注意：**
+> **警告：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代。Dumpling 工具使用 Go 语言编写，支持更多针对 TiDB 特性的优化。请切换到 Dumpling。
->
-> 如果你需要阅读使用 Mydumper/TiDB Lightning 进行备份与恢复的文档，可参阅[使用 Mydumper/TiDB Lightning 进行备份与恢复](https://docs.pingcap.com/zh/tidb/v4.0/backup-and-restore-using-mydumper-lightning)。
+> 本文提供的备份恢复方法已不再推荐，强烈推荐使用 [BR 工具](/br/backup-and-restore-tool.md)进行备份恢复，以获得更好的工具体验。
 
 本文档将详细介绍如何使用 Dumpling/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份和同步可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 

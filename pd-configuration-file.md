@@ -137,7 +137,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 包含 X509 key 的 PEM 文件路径
 + 默认：""
 
-### `redact-info-log` <!-- 从 v5.0.0-rc 版本开始引入 -->
+### `redact-info-log` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 + 控制 PD 日志脱敏的开关
 + 该配置项值设为 true 时将对 PD 日志脱敏，遮蔽日志中的用户信息。
@@ -250,14 +250,14 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `high-space-ratio`
 
-+ 设置 store 空间充裕的阈值。此配置仅在 `region-score-formula-version = v1` 时生效。
++ 设置 store 空间充裕的阈值。当节点的空间占用比例小于该阈值时，PD 调度时会忽略节点的剩余空间，主要根据实际数据量进行均衡。此配置仅在 `region-score-formula-version = v1` 时生效。
 + 默认：0.7
 + 最小值：大于 0
 + 最大值：小于 1
 
 ### `low-space-ratio`
 
-+ 设置 store 空间不足的阈值。
++ 设置 store 空间不足的阈值。当某个节点的空间占用比例超过该阈值时，PD 会尽可能避免往该节点迁移数据，同时主要根据节点剩余空间大小进行调度，避免对应节点的磁盘空间被耗尽。
 + 默认：0.8
 + 最小值：大于 0
 + 最大值：小于 1
@@ -309,7 +309,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
 + 默认：15
 
-### `enable-joint-consensus` <!-- 从 v5.0.0-rc 版本开始引入 -->
+### `enable-joint-consensus` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 > **警告：**
 >

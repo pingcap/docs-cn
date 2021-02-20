@@ -9,13 +9,13 @@ summary: TiDB 数据库中 DROP ROLE 的使用概况。
 
 ## 语法图
 
-**DropRoleStmt:**
+```ebnf+diagram
+DropRoleStmt ::=
+    'DROP' 'ROLE' ( 'IF' 'EXISTS' )? RolenameList
 
-![DropRoleStmt](/media/sqlgram/DropRoleStmt.png)
-
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
+RolenameList ::=
+    Rolename ( ',' Rolename )*
+```
 
 ## 示例
 
