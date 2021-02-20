@@ -1,10 +1,7 @@
 ---
 title: 优化规则与表达式下推的黑名单
 summary: 了解优化规则与表达式下推的黑名单。
-<<<<<<< HEAD:blacklist-control-plan.md
-=======
-aliases: ['/docs-cn/dev/blacklist-control-plan/','/zh/tidb/dev/blacklist-control-plan']
->>>>>>> 36c19e4e... rename blacklist-control-plan to blocklist-control-plan (#5549):blocklist-control-plan.md
+aliases: ['/zh/tidb/v5.0/blacklist-control-plan']
 ---
 
 # 优化规则与表达式下推的黑名单
