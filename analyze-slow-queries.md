@@ -250,4 +250,4 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 
 1. [索引选择错误](/wrong-index-solution.md)
 2. [Join 顺序错误](/join-reorder.md)
-3. [表达式未下推](/blacklist-control-plan.md)
+3. [表达式未下推](/blocklist-control-plan.md)
