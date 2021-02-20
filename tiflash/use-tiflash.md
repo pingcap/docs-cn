@@ -236,7 +236,7 @@ set @@session.tidb_opt_broadcast_join=1
 round without fraction, cast(int as decimal), date_add(datetime, int), date_add(datetime, string), min, max, sum, count, avg, approx_count_distinct
 ```
 
-其中，`cast` 和 `date_add` 的下推默认不开启，若需要手动开启，请参考[优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
+其中，`cast` 和 `date_add` 的下推默认不开启，若需要手动开启，请参考[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
 
 目前 TiFlash 不支持下推的情况包括：
 
