@@ -6,24 +6,33 @@ aliases: ['/docs/dev/br/backup-and-restore-use-cases/','/docs/dev/reference/tool
 
 # BR Use Cases
 
-[Backup & Restore](/br/backup-and-restore-tool.md) (BR) is a command-line tool for distributed backup and restoration of the TiDB cluster data. This document describes the processes of operating BR in [four use cases](#use-cases) that aims to help you achieve the following goals:
+[BR](/br/backup-and-restore-tool.md) is a tool for distributed backup and restoration of the TiDB cluster data.
+
+This document describes how to run BR in the following use cases:
+
+- Back up a single table to a network disk (recommended in production environment)
+- Restore data from a network disk (recommended in production environment)
+- Back up a single table to a local disk (recommended in testing environment)
+- Restore data from a local disk (recommended in testing environment)
+
+This document aims to help you achieve the following goals:
 
 * Back up and restore data using a network disk or local disk correctly.
 * Get the status of a backup or restoration operation through monitoring metrics.
 * Learn how to tune performance during the operation.
 * Troubleshoot the possible anomalies during the backup operation.
 
-> **Note:**
->
-> Pay attention to the [usage restrictions](/br/backup-and-restore-tool.md#usage-restrictions) before using BR.
-
 ## Audience
 
-You are expected to have a basic understanding of [TiDB](https://docs.pingcap.com/tidb/v4.0) and [TiKV](https://tikv.org/). Before reading this document, it is recommended that you read [Use BR to Back up and Restore Data](/br/backup-and-restore-tool.md) first.
+You are expected to have a basic understanding of [TiDB](https://docs.pingcap.com/tidb/v4.0) and [TiKV](https://tikv.org/).
+
+Before reading on, make sure you have read [BR Tool Overview](/br/backup-and-restore-tool.md), especially [Usage Restrictions](/br/backup-and-restore-tool.md#usage-restrictions) and [Best Practices](/br/backup-and-restore-tool.md#best-practices).
 
 ## Prerequisites
 
-This section introduces the recommended method of deploying TiDB, cluster versions, the hardware information of the TiKV cluster, and the cluster configuration for the use case demonstrations. You can estimate the performance of your backup or restoration operation based on your own hardware and configuration.
+This section introduces the recommended method of deploying TiDB, cluster versions, the hardware information of the TiKV cluster, and the cluster configuration for the use case demonstrations.
+
+You can estimate the performance of your backup or restoration operation based on your own hardware and configuration.
 
 ### Deployment method
 
@@ -57,24 +66,27 @@ BR directly sends commands to the TiKV cluster and are not dependent on the TiDB
 
 ## Use cases
 
-This document describes the following four use cases:
+This document describes the following use cases:
 
-* [Back up a single table to a network disk (recommended)](#back-up-a-single-table-to-a-network-disk-recommended)
-* [Restore data from a network disk (recommended)](#restore-data-from-a-network-disk-recommended)
-* [Back up a single table to a local disk](#back-up-a-single-table-to-a-local-disk)
-* [Restore data from a local disk](#restore-data-from-a-local-disk)
+* [Back up a single table to a network disk (recommended in production environment)](#back-up-a-single-table-to-a-network-disk-recommended-in-production-environment)
+* [Restore data from a network disk (recommended in production environment)](#restore-data-from-a-network-disk-recommended-in-production-environment)
+* [Back up a single table to a local disk (recommended in testing environment)](#back-up-a-single-table-to-a-local-disk-recommended-in-testing-environment)
+* [Restore data from a local disk (recommended in testing environment)](#restore-data-from-a-local-disk-recommended-in-testing-environment)
 
 It is recommended that you use a network disk to back up and restore data. This spares you from collecting backup files and greatly improves the backup efficiency especially when the TiKV cluster is in a large scale.
 
-> **Note:**
->
-> Before the backup or restoration operation, you need to do some preparations. See [Preparation for backup](#preparation-for-backup) and [Preparation for restoration](#preparation-for-restoration) for details.
+Before the backup or restoration operations, you need to do some preparations:
+
+- [Preparation for backup](#preparation-for-backup)
+- [Preparation for restoration](#preparation-for-restoration)
 
 ### Preparation for backup
 
-For the detailed usage of the `br backup` command, refer to [BR command-line description](/br/backup-and-restore-tool.md#command-line-description).
+In TiDB v4.0.8 and later versions, BR supports the self-adaptive Garbage Collection (GC). So to avoid manually configuring GC, you only need to register `backupTS` in `safePoint` in PD and make sure that `safePoint` does not move forward during the backup process.
 
-1. Before executing the `br backup` command, check the value of the [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) configuration item, and adjust the value appropriately in the MySQL client to make sure that [Garbage Collection](/garbage-collection-overview.md) (GC) does not run during the backup operation.
+In TiDB v4.0.7 and earlier versions, you need to manually configure GC before and after the BR backup through the following steps:
+
+1. Before executing the [`br backup` command](/br/use-br-command-line-tool.md#br-command-line-description), check the value of the [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) configuration item, and adjust the value appropriately in the MySQL client to make sure that GC does not run during the backup operation.
 
     {{< copyable "sql" >}}
 
@@ -91,24 +103,17 @@ For the detailed usage of the `br backup` command, refer to [BR command-line des
     UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
     ```
 
-> **Note:**
->
-> Since v4.0.8, BR supports the self-adaptive GC. To avoid manually adjusting GC, register `backupTS` in `safePoint` in PD and make sure that `safePoint` does not move forward during the backup process.
-
 ### Preparation for restoration
 
-For the detailed usage of the `br restore` command, refer to [BR command-line description](/br/backup-and-restore-tool.md#command-line-description).
+Before executing the [`br restore` command](/br/use-br-command-line-tool.md#br-command-line-description), check the new cluster to make sure that the table in the cluster does not have a duplicate name.
 
-> **Note:**
->
-> Before executing the `br restore` command, check the new cluster to make sure that the table in the cluster does not have a duplicate name.
-
-### Back up a single table to a network disk (recommended)
+### Back up a single table to a network disk (recommended in production environment)
 
 Use the `br backup` command to back up the single table data `--db batchmark --table order_line` to the specified path `local:///br_data` in the network disk.
 
 #### Backup prerequisites
 
+* [Preparation for backup](#preparation-for-backup)
 * Configure a high-performance SSD hard disk host as the NFS server to store data, and all BR nodes and TiKV nodes as NFS clients. Mount the same path (for example, `/br_data`) to the NFS server for NFS clients to access the server.
 * The total transfer rate between the NFS server and all NFS clients must reach at least `the number of TiKV instances * 150MB/s`. Otherwise the network I/O might become the performance bottleneck.
 
@@ -227,13 +232,13 @@ The tuned performance results are as follows (with the same data size):
 * Backup throughput: `avg speed(MB/s)` increased from `358.09` to `659.59`
 * Throughput of a single TiKV instance: `avg speed(MB/s)/tikv_count` increased from `89` to `164.89`
 
-### Restore data from a network disk (recommended)
+### Restore data from a network disk (recommended in production environment)
 
 Use the `br restore` command to restore the complete backup data to an offline cluster. Currently, BR does not support restoring data to an online cluster.
 
 #### Restoration prerequisites
 
-None
+* [Preparation for restoration](#preparation-for-restoration)
 
 #### Topology
 
@@ -334,12 +339,13 @@ The tuned performance results are as follows (with the same data size):
 + Throughput of a single TiKV instance: `avg speed(MB/s)`/`tikv_count` increased from `91.8` to `199.1`
 + Average restoration speed of a single TiKV instance: `total size(MB)`/(`split time` + `restore time`)/`tikv_count` increased from `87.4` to `162.3`
 
-### Back up a single table to a local disk
+### Back up a single table to a local disk (recommended in testing environment)
 
 Use the `br backup` command to back up the single table `--db batchmark --table order_line` to the specified path `local:///home/tidb/backup_local` in the local disk.
 
 #### Backup prerequisites
 
+* [Preparation for backup](#preparation-for-backup)
 * Each TiKV node has a separate disk to store the backupSST file.
 * The `backup_endpoint` node has a separate disk to store the `backupmeta` file.
 * TiKV and the `backup_endpoint` node must have the same directory for the backup (for example, `/home/tidb/backup_local`).
@@ -388,12 +394,13 @@ The information from the above log includes:
 
 From the above information, the throughput of a single TiKV instance can be calculated: `avg speed(MB/s)`/`tikv_count` = `160`.
 
-### Restore data from a local disk
+### Restore data from a local disk (recommended in testing environment)
 
 Use the `br restore` command to restore the complete backup data to an offline cluster. Currently, BR does not support restoring data to an online cluster.
 
 #### Restoration prerequisites
 
+* [Preparation for restoration](#preparation-for-restoration)
 * The TiKV cluster and the backup data do not have a duplicate database or table. Currently, BR does not support table route.
 * Each TiKV node has a separate disk to store the backupSST file.
 * The `restore_endpoint` node has a separate disk to store the `backupmeta` file.
@@ -444,17 +451,17 @@ From the above information, the following items can be calculated:
 * The throughput of a single TiKV instance: `avg speed(MB/s)`/`tikv_count` = `97.2`
 * The average restoration speed of a single TiKV instance: `total size(MB)`/(`split time` + `restore time`)/`tikv_count` = `92.4`
 
-### Error handling
+## Error handling during backup
 
 This section introduces the common errors occurred during the backup process.
 
-#### `key locked Error` in the backup log
+### `key locked Error` in the backup log
 
 Error message in the log: `log - ["backup occur kv error"][error="{\"KvError\":{\"locked\":`
 
-If a key is locked during the backup process, BR tries to resolve the lock. A small number of this error does not affect the correctness of the backup.
+If a key is locked during the backup process, BR tries to resolve the lock. A small number of these errors do not affect the correctness of the backup.
 
-#### Backup failure
+### Backup failure
 
 Error message in the log: `log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup_local/\" })"`
 
