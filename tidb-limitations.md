@@ -43,6 +43,9 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 | Size      | unlimited          | /                      |
 | Partitions| 1024               | /                      |
 
+* Columns 最大限制可通过 [table-column-count-limit](/mysql-compatibility.md#table-column-count-limit) 修改。
+* Indexs 最大限制可通过 [index-limit](/mysql-compatibility.md#index-limit) 修改。
+
 ## 单行的限制
 
 | 类型       | 最大限制   |
