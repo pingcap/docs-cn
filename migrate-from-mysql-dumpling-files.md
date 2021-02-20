@@ -49,7 +49,7 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 
     ```
     [tikv-importer]
-    # 由于当前模式使用 TiDb Backend 模式，可选参数有：“importer” 或 “local” 或 “tidb”
+    # 本教程采用 TiDB-backend 模式。此处也可以根据实际应用场景设置为 "local" 或 "importer"。具体请参考[后端模式](/tidb-lightning-backends.md)
     backend = "tidb"
     ```
     
