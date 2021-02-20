@@ -57,8 +57,10 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
     
     ```
     [tidb]
-    status-port = {{tidb-status-port}}
-    pd-addr = {{pd-host}}:{{pd-port}}"
+    host = "{{tidb-host}}"
+    port = {{tidb-port}}
+    user = "{{tidb-user}}"
+    password = "{{tidb-password}}"
     ```
 
 其它配置参考 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)。
