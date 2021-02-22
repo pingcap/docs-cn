@@ -35,7 +35,7 @@ TiDB 版本：4.0.11
 
 + TiKV
 
-    - 为 DBasS 添加 server 信息的监控指标 [#9591](https://github.com/tikv/tikv/pull/9591)
+    - 为 DBaaS 添加 server 信息的监控指标 [#9591](https://github.com/tikv/tikv/pull/9591)
     - Grafana dashboards 支持监控多个集群 [#9572](https://github.com/tikv/tikv/pull/9572)
     - 汇报 RocksDB 的监控指标到 TiDB [#9316](https://github.com/tikv/tikv/pull/9316)
     - 为 Coprocessor 任务记录暂停时间 [#9277](https://github.com/tikv/tikv/pull/9277)
