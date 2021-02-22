@@ -19,7 +19,7 @@ TiDB 迁移工具支持以下存储服务：
 | GCS | gcs, gs | `gcs://bucket-name/prefix/of/dest/` |
 | 不写入任何存储（仅作为基准测试） | noop | `noop://` |
 
-## 参数
+## URL 参数
 
 S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配置指定参数。例如：
 
@@ -39,9 +39,9 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
     -s 'gcs://bucket-name/prefix'
 ```
 
-### S3 参数
+### S3 的 URL 参数
 
-| 参数 | 描述 |
+| URL 参数 | 描述 |
 |----------:|---------|
 | `access-key` | 访问密钥 |
 | `secret-access-key` | secret 访问密钥 |
@@ -65,11 +65,11 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 5. 当前 Amazon EC2 容器的 IAM 角色。
 6. 当前 Amazon ECS 任务的 IAM 角色。
 
-### GCS 参数
+### GCS 的 URL 参数
 
-| 参数 | 描述 |
+| URL 参数 | 描述 |
 |----------:|---------|
-| `credentials-file` | TiDB 节点上的凭证 JSON 文件的路径 |
+| `credentials-file` | 迁移工具节点上的凭证 JSON 文件的路径 |
 | `storage-class` | 上传对象的存储类别（例如 `STANDARD`、`COLDLINE`） |
 | `predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
 
@@ -78,6 +78,40 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 1. 工具节点上位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容。
 2. 工具节点上位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容。
 3. 在 GCE 或 GAE 中运行时，从元数据服务器中获取的凭证。
+
+## 命令行参数
+
+除了使用 URL 参数，BR 和 Dumpling 工具亦支持从命令行指定这些配置，例如：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+    -o 's3://my-bucket/sql-backup' \
+    --s3.region 'us-west-2'
+```
+
+如果同时指定了 URL 参数和命令行参数，命令行参数会覆盖 URL 参数。
+
+### S3 的命令行参数
+
+| 命令行参数 | 描述 |
+|----------:|------|
+| `--s3.region` | Amazon S3 服务区域（默认为 `us-east-1`） |
+| `--s3.endpoint` | S3 兼容服务自定义端点的 URL（例如 `https://s3.example.com/`）|
+| `--s3.storage-class` | 上传对象的存储类别（例如 `STANDARD`、`STANDARD_IA`） |
+| `--s3.sse` | 用于加密上传的服务器端加密算法（可以设置为空，`AES256` 或 `aws:kms`） |
+| `--s3.sse-kms-key-id` | 如果 `--s3.sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
+| `--s3.acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
+| `--s3.provider` | S3 兼容服务類型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
+
+### GCS 的命令行参数
+
+| 命令行参数 | 描述 |
+|----------:|---------|
+| `--gcs.credentials-file` | 迁移工具节点上的凭证 JSON 文件的路径 |
+| `--gcs.storage-class` | 上传对象的存储类别（例如 `STANDARD`、`COLDLINE`） |
+| `--gcs.predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
 
 ## BR 向 TiKV 发送凭证
 
