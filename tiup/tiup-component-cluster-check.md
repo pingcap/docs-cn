@@ -4,7 +4,7 @@ title: tiup cluster check
 
 # tiup cluster check
 
-对于严肃的生产环境，在正式上线之前需要进行一系列检查，来确保集群拥有最好的表现，为了简化人工检查的步骤，tiup-cluster 提供了 `check` 子命令，该命令用于检查指定集群的机器硬件和软件环境是否满足正常运行条件。
+对于严肃的生产环境，在正式上线之前需要进行一系列检查，来确保集群拥有最好的表现。为了简化人工检查的步骤，TiUP Cluster 提供了 `check` 子命令，用于检查指定集群的机器硬件和软件环境是否满足正常运行条件。
 
 ## 检查项列表
 
@@ -47,7 +47,7 @@ title: tiup cluster check
 
 检查部署机是否启用透明大页：建议禁用透明大页。
 
-### 系统 Limits
+### 系统限制
 
 检查 /etc/security/limits.conf 中各项 limit 值：
 

@@ -16,7 +16,7 @@ TiUP 的镜像中有一个非常重要的文件：root.json，里面记录了整
 
 关于镜像的详细介绍可以参考[镜像说明](/tiup/tiup-mirror-reference.md)。
 
-在某些情况下，我们需要更新 root.json:
+在某些情况下，用户需要更新 root.json:
 
 - 更换镜像的密钥
 - 更新证书过期时间

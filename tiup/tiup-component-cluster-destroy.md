@@ -22,7 +22,7 @@ tiup cluster destroy <cluster-name> [flags]
 
 ### --force（boolean，默认 false）
 
-在某些情况下，有可能集群中的某些节点已经宕机，导致无法通过 ssh 连接到节点进行操作，这个时候可以通过 `--force` 选项忽略这些错误。
+在某些情况下，有可能集群中的某些节点已经宕机，导致无法通过 SSH 连接到节点进行操作，这个时候可以通过 `--force` 选项忽略这些错误。
 
 ### --retain-node-data（StringArray，默认为空）
 
