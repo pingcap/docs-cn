@@ -347,18 +347,18 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 ## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`
 
-解决方案：需要使用 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 指令查询当前的 gc_safe_point 与 service_gc_safe_points。如果 gc_safe_point 小于 CDC changefeed 的 `start-ts`，则用户直接在 create changefeed 指令后加上 `--disable-gc-check` 参数创建 changefeed 即可。
+解决方案：需要执行 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 命令查询当前的 GC safepoint 与 service GC safepoint。如果 GC safepoint 小于 TiCDC changefeed 同步任务的开始时间戳 `start-ts`，则用户可以直接在 `cdc cli create changefeed` 命令后加上 `--disable-gc-check` 参数创建 changefeed。
 
-如果上述指令结果中没有 gc_worker service_id 项目：
+如果上述命令结果中没有 `gc_worker service_id`：
 
-1. PD 的版本 <= v4.0.8，该问题对应于已知问题 [pd#3128](https://github.com/tikv/pd/issues/3128)
-2. PD 是由 v4.0.8 及更低版本滚动升级到新版，该问题对应于已知问题 [pd#3366](https://github.com/tikv/pd/issues/3366)
++ 如果 PD 的版本 <= v4.0.8，详见 [PD issue #3128](https://github.com/tikv/pd/issues/3128)
++ 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)
 
-如果不满足上述情况，请将上述指令执行结果反应到 asktug 论坛或对应的支持 DBA。
+如果不满足上述情况，请将上述指令执行结果反应到 [AskTUG 论坛](https://asktug.com/tags/ticdc) 或对应的支持 DBA。
 
-## 使用 TiCDC 创建 changefeed enable-old-value 设置为 true 后 cdc 执行到下游的语句仍然为 REPLACE INTO 而非 INSERT/UPDATE
+## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后 TiCDC 执行到下游的语句仍然为 `REPLACE INTO` 而非 `INSERT`/`UPDATE`
 
-需要在创建 changefeed 时显式指定 safe-mode 为 false 才会生成 UPDATE 语句，执行步骤为:
+要解决该问题，创建 changefeed 时需要显式指定 `safe-mode` 为 `false` 才会生成 `UPDATE` 语句，执行步骤如下：
 
 ```
 tiup ctl cdc changefeed pause -c simple-replication-task
@@ -370,15 +370,15 @@ tiup ctl cdc changefeed resume -c simple-replication-task
 
 开启 safe-mode=false，因为有重复消息的存在，会出现同步中断的风险。因此，**不建议使用**。
 
-## 使用 TiCDC 同步消息到 kafka 时 kafka 报错 Message was too large
+## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`
 
-v4.0.8 与更低版本的 TiCDC，Sink URI 配置 kafka 中的 `max-message-bytes` 参数不能保证有效控制输出到 kafka 的消息大小，需要在 kafka server 配置中加入下述配置以提高接受消息的字节数限制。
+v4.0.8 或更低版本的 TiCDC，仅在 Sink URI 中为 Kafka 配置 `max-message-bytes` 参数不能有效控制输出到 Kafka 的消息大小，需要在 Kafka server 配置中加入如下配置以增加 Kafka 接收消息的字节数限制。
 
 ```
-#broker能接收消息的最大字节数
+# broker 能接收消息的最大字节数
 message.max.bytes=2147483648
-#broker可复制的消息的最大字节数
+# broker 可复制的消息的最大字节数
 replica.fetch.max.bytes=2147483648
-#消费者端的可读取的最大消息
+# 消费者端的可读取的最大消息字节数
 fetch.message.max.bytes=2147483648
 ```
