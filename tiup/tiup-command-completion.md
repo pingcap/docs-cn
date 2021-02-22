@@ -23,7 +23,7 @@ tiup completion <shell>
 
 ### bash
 
-将自动补全代码写入一个文件，并且在 .bash_profile 中 source 之：
+将自动补全代码写入一个文件，并且在 .bash_profile 中对其执行 source：
 
 ```sh
 tiup completion bash > ~/.tiup.completion.bash
