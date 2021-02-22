@@ -43,8 +43,8 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 | Size      | unlimited          | /                      |
 | Partitions| 1024               | /                      |
 
-* Columns 最大限制可通过 [table-column-count-limit](/tidb-configuration-file.md#table-column-count-limit) 修改。
-* Indexs 最大限制可通过 [index-limit](/tidb-configuration-file.md#index-limit) 修改。
+* Columns 最大限制可通过 [`table-column-count-limit`](/tidb-configuration-file.md#table-column-count-limit-从-v500-rc-版本开始引入) 修改。
+* Indexs 最大限制可通过 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v500-rc-版本开始引入) 修改。
 
 ## 单行的限制
 
