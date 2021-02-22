@@ -4,7 +4,7 @@ title: tiup cluster import
 
 # tiup cluster import
 
-在 TiDB 4.0 以前的版本，集群基本是通过 TiDB Ansible 部署的。TiUP Cluster 提供了 `import` 命令用于让这些集群过渡到使用 tiup-cluster 组件接管。
+在 TiDB 4.0 以前的版本，集群多是通过 TiDB Ansible 部署的。TiUP Cluster 提供了 `import` 命令用于让这些集群过渡到使用 tiup-cluster 组件管理。
 
 > **注意：**
 >
@@ -40,7 +40,7 @@ tiup cluster import [flags]
 
 ### --no-backup（boolean，默认 false）
 
-默认情况下，import 成功之后会将 `--dir` 指定的目录里所有内容备份到 `${TIUP_HOME}/.tiup/storage/cluster/clusters/{cluster-name}/ansible-backup` 下面。该选项用于禁用这个步骤，这在该目录下有多个 inventory 文件（部署了多个集群）的时候很有用。
+默认情况下，导入成功之后会将 `--dir` 指定的目录里所有内容备份到 `${TIUP_HOME}/.tiup/storage/cluster/clusters/{cluster-name}/ansible-backup` 下。该选项用于禁用默认的备份步骤，如果该目录下有多个 inventory 文件（部署了多个集群），推荐禁用默认备份。
 
 ### --rename（string，默认为空）
 
@@ -52,4 +52,4 @@ tiup cluster import [flags]
 
 ## 输出
 
-import 过程的日志信息。
+导入过程的日志信息。

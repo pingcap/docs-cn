@@ -13,7 +13,7 @@ tiup mirror clone <target-dir> [global version] [flags]
 ```
 
 - `<target-dir>` 是本地存放克隆下来的镜像的路径，如果不存在则会自动创建。
-- `[global version]` 若指定了该参数，会尝试克隆指定版本的所有组件。若某些组件没有指定的版本，则克隆其最新版本。
+- 若指定了 `[global version]` 参数，TiUP 会尝试克隆指定版本的所有组件。若某些组件没有指定的版本，则克隆其最新版本。
 
 ## 选项
 
@@ -35,4 +35,4 @@ tiup mirror clone <target-dir> [global version] [flags]
 
 ### --{component}（strings，默认为空）
 
-指定要克隆的 `{component}` 组件的版本列表。`{component}` 为组件名，可选的组件名可执行 [tiup list --all](/tiup/tiup-command-list.md) 查看。
+指定要克隆的 `{component}` 组件的版本列表。`{component}` 为组件名，可选的组件名可执行 [`tiup list --all`](/tiup/tiup-command-list.md) 查看。

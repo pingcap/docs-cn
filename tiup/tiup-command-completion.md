@@ -8,7 +8,7 @@ title: tiup completion
 
 如果是 bash，需要提前安装好 bash-completion：
 
-- macOS 的安装方式为：`brew install bash-completion` 或者 `brew install bash-completion@2`（Bash 4.1+）
+- macOS 的安装方式为：如果 Bash 版本小于 4.1，运行 `brew install bash-completion`；如果 Bash 版本大于等于 4.1，则运行 `brew install bash-completion@2`。
 - Linux 的安装方式为：使用包管理器安装 `bash-completion` 包，例如 `yum install bash-completion` 或者 `apt install bash-completion`
 
 ## 语法

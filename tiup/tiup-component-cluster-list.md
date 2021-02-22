@@ -8,7 +8,7 @@ tiup-cluster 支持使用同一个中控机部署多套集群，而命令 `tiup 
 
 > **注意：**
 > 
-> 部署的集群数据默认放在 `~/.tiup/storage/cluster/clusters/` 目录下，因此在同一台中控机上，用户 A 部署的集群用户 B 是看不到的。
+> 部署的集群数据默认放在 `~/.tiup/storage/cluster/clusters/` 目录下，因此在同一台中控机上，当前登录用户无法查看其他用户部署的集群。
 
 ## 语法
 
