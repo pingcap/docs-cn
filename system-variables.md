@@ -258,7 +258,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 ### `tidb_ddl_reorg_priority`
 
-- 作用域：SESSION | GLOBAL
+- 作用域：SESSION
 - 默认值：PRIORITY_LOW
 - 这个变量用来设置 `ADD INDEX` 操作 `re-organize` 阶段的执行优先级，可设置为 `PRIORITY_LOW`/`PRIORITY_NORMAL`/`PRIORITY_HIGH`。
 
