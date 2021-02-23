@@ -12,6 +12,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## server
 
+addr = "127.0.0.1:20160"
+
+advertise-addr = ""
+
+status-addr = "127.0.0.1:20180"
+
 服务器相关的配置项。
 
 ### `status-thread-pool-size`
@@ -46,7 +52,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-raft-conn-num`
 
 + tikv 节点之间用于 raft 通讯的链接最大数量。
-+ 默认值：10
++ 默认值：1
 + 最小值：1
 
 ### `grpc-stream-initial-window-size`
@@ -99,6 +105,16 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 单位：KB|MB|GB
 + 最小值：1KB
 
+enable-request-batch = true
+
+request-batch-enable-cross-command = true
+
+request-batch-wait-duration = "1ms"
+
+labels = {}
+
+background-thread-count = 2
+
 ### `end-point-slow-log-threshold`
 
 + endpoint 下推查询请求输出慢日志的阈值，处理时间超过阈值后会输出慢日志。
@@ -143,7 +159,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `use-unified-pool`
 
 + 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理存储请求。该选项值为 false 时，使用单独的存储线程池。通过本节 (`readpool.storage`) 中的其余配置项配置单独的线程池。
-+ 默认值：true
++ 默认值：false
 
 ### `high-concurrency`
 
@@ -233,17 +249,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：2000
 + 最小值：2
 
-### `stack-size`
-
-Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|GiB。
-
-+ 默认值：10MB
-+ 单位：KB|MB|GB
-+ 最小值：2MB
-
 ## storage
 
 存储相关的配置项。
+
+data-dir = "/tmp/tikv/store"
 
 ### `scheduler-concurrency`
 
@@ -263,11 +273,8 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 + 默认值：100MB
 + 单位: MB|GB
 
-### `reserve-space`
+enable-async-apply-prewrite = false
 
-+ TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
-+ 默认值：2GB
-+ 单位: MB|GB
 
 ## storage.block-cache
 
@@ -298,48 +305,43 @@ raftstore 相关的配置项。
 + raft 库的路径，默认存储在 storage.data-dir/raft 下。
 + 默认值：""
 
-### `raft-base-tick-interval`
+capacity = 0
 
-+ 状态机 tick 一次的间隔时间。
-+ 默认值：1s
-+ 最小值：大于 0
+### `notify-capacity`
 
-### `raft-heartbeat-ticks`
-
-+ 发送心跳时经过的 tick 个数，即每隔 raft-base-tick-interval * raft-heartbeat-ticks 时间发送一次心跳。
-+ 默认值：2
-+ 最小值：大于 0
-
-### `raft-election-timeout-ticks`
-
-+ 发起选举时经过的 tick 个数，即如果处于无主状态，大约经过 raft-base-tick-interval * raft-election-timeout-ticks 时间以后发起选举。
-+ 默认值：10
-+ 最小值：raft-heartbeat-ticks
-
-### `raft-min-election-timeout-ticks`
-
-+ 发起选举时至少经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks，不能比 raft-election-timeout-ticks 小。
-+ 默认值：0
++ region 消息队列的最长长度。
++ 默认值：40960
 + 最小值：0
 
-### `raft-max-election-timeout-ticks`
 
-+ 发起选举时最多经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks * 2。
-+ 默认值：0
+### `messages-per-tick`
+
++ 每轮处理的消息最大个数。
++ 默认值：4096
 + 最小值：0
 
-### `raft-max-size-per-message`
+### `pd-heartbeat-tick-interval`
 
-+ 产生的单个消息包的大小限制，软限制。
-+ 默认值：1MB
++ 触发 region 对 PD 心跳的时间间隔，0 表示不启用。
++ 默认值：1m
 + 最小值：0
-+ 单位：MB
 
-### `raft-max-inflight-msgs`
+### `pd-store-heartbeat-tick-interval`
 
-+ 待确认日志个数的数量，如果超过这个数量将会减缓发送日志的个数。
-+ 默认值：256
-+ 最小值：大于0
++ 触发 store 对 PD 心跳的时间间隔，0 表示不启用。
++ 默认值：10s
++ 最小值：0
+
+### `region-split-check-diff`
+
++ 允许 region 数据超过指定大小的最大值，默认为 region 大小的 1/16。
++ 最小值：0
+
+### `split-region-check-tick-interval`
+
++ 检查 region 是否需要分裂的时间间隔，0 表示不启用。
++ 默认值：10s
++ 最小值：0
 
 ### `raft-entry-max-size`
 
@@ -370,49 +372,18 @@ raftstore 相关的配置项。
 + 允许残余的 raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
 + 最小值：大于 0
 
-### `raft-entry-cache-life-time`
+raft-engine-purge-interval = "10s"
 
-+ 内存中日志 cache 允许的最长残留时间。
-+ 默认值：30s
-+ 最小值：0
+### `max-peer-down-duration`
 
-### `raft-reject-transfer-leader-duration`
-
-+ 新节点保护时间，控制迁移 leader 到新加节点的最小时间，设置过小容易导致迁移 leader 失败。
-+ 默认值：3s
-+ 最小值：0
-
-### `raftstore.hibernate-regions` (**实验特性**)
-
-+ 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
-+ 默认值：true
-
-### `raftstore.peer-stale-state-check-interval`
-
-+ 修改对 Region 的状态检查间隔时间。
-+ 默认值：5 min
-
-### `split-region-check-tick-interval`
-
-+ 检查 region 是否需要分裂的时间间隔，0 表示不启用。
-+ 默认值：10s
-+ 最小值：0
-
-### `region-split-check-diff`
-
-+ 允许 region 数据超过指定大小的最大值，默认为 region 大小的 1/16。
++ 副本允许的最长未响应时间，超过将被标记为 down，后续 PD 会尝试将其删掉。
++ 默认值：5m
 + 最小值：0
 
 ### `region-compact-check-interval`
 
 + 检查是否需要人工触发 rocksdb compaction 的时间间隔，0 表示不启用。
 + 默认值：5m
-+ 最小值：0
-
-### `clean-stale-peer-delay`
-
-+ 延迟删除过期副本数据的时间。
-+ 默认值：10m
 + 最小值：0
 
 ### `region-compact-check-step`
@@ -434,30 +405,6 @@ raftstore 相关的配置项。
 + 最小值：1
 + 最大值：100
 
-### `pd-heartbeat-tick-interval`
-
-+ 触发 region 对 PD 心跳的时间间隔，0 表示不启用。
-+ 默认值：1m
-+ 最小值：0
-
-### `pd-store-heartbeat-tick-interval`
-
-+ 触发 store 对 PD 心跳的时间间隔，0 表示不启用。
-+ 默认值：10s
-+ 最小值：0
-
-### `snap-mgr-gc-tick-interval`
-
-+ 触发回收过期 snapshot 文件的时间间隔，0 表示不启用。
-+ 默认值：5s
-+ 最小值：0
-
-### `snap-gc-timeout`
-
-+ snapshot 文件的最长保存时间。
-+ 默认值：4h
-+ 最小值：0
-
 ### `lock-cf-compact-interval`
 
 + 触发对 lock CF compact 检查的时间间隔。
@@ -471,93 +418,11 @@ raftstore 相关的配置项。
 + 最小值：0
 + 单位：MB
 
-### `notify-capacity`
-
-+ region 消息队列的最长长度。
-+ 默认值：40960
-+ 最小值：0
-
-### `messages-per-tick`
-
-+ 每轮处理的消息最大个数。
-+ 默认值：4096
-+ 最小值：0
-
-### `max-peer-down-duration`
-
-+ 副本允许的最长未响应时间，超过将被标记为 down，后续 PD 会尝试将其删掉。
-+ 默认值：5m
-+ 最小值：0
-
-### `max-leader-missing-duration`
-
-+ 允许副本处于无主状态的最长时间，超过将会向 PD 校验自己是否已经被删除。
-+ 默认值：2h
-+ 最小值：> abnormal-leader-missing-duration
-
-### `abnormal-leader-missing-duration`
-
-+ 允许副本处于无主状态的时间，超过将视为异常，标记在 metrics 和日志中。
-+ 默认值：10m
-+ 最小值：> peer-stale-state-check-interval
-
-### `peer-stale-state-check-interval`
-
-+ 触发检验副本是否处于无主状态的时间间隔。
-+ 默认值：5m
-+ 最小值：> 2 * election-timeout
-
-### `leader-transfer-max-log-lag`
-
-+ 尝试转移领导权时被转移者允许的最大日志缺失个数。
-+ 默认值：10
-+ 最小值：10
-
-### `snap-apply-batch-size`
-
-+ 当导入 snapshot 文件需要写数据时，内存写缓存的大小
-+ 默认值：10MB
-+ 最小值：0
-+ 单位：MB
-
 ### `consistency-check-interval`
 
 + 触发一致性检查的时间间隔, 0 表示不启用。
 + 默认值：0s
 + 最小值：0
-
-### `raft-store-max-leader-lease`
-
-+ region 主可信任期的最长时间。
-+ 默认值：9s
-+ 最小值：0
-
-### `right-derive-when-split`
-
-+ 为 true 时，以最大分裂 key 为起点的 region 复用原 region 的 key；否则以原 region 起点 key 作为起点的 region 复用原 region 的 key。
-+ 默认值：true
-
-### `allow-remove-leader`
-
-+ 允许删除主开关。
-+ 默认值：false
-
-### `merge-max-log-gap`
-
-+ 进行 merge 时，允许的最大日志缺失个数。
-+ 默认值：10
-+ 最小值：> raft-log-gc-count-limit
-
-### `merge-check-tick-interval`
-
-+ 触发 merge 完成检查的时间间隔。
-+ 默认值：10s
-+ 最小值：大于 0
-
-### `use-delete-range`
-
-+ 开启 rocksdb delete_range 接口删除数据的开关。
-+ 默认值：false
 
 ### `cleanup-import-sst-interval`
 
@@ -565,28 +430,10 @@ raftstore 相关的配置项。
 + 默认值：10m
 + 最小值：0
 
-### `local-read-batch-size`
-
-+ 一轮处理读请求的最大个数。
-+ 默认值：1024
-+ 最小值：大于 0
-
-### `apply-max-batch-size`
-
-+ 一轮处理数据落盘的最大请求个数。
-+ 默认值：1024
-+ 最小值：大于 0
-
 ### `apply-pool-size`
 
 + 处理数据落盘的线程池线程数。
 + 默认值：2
-+ 最小值：大于 0
-
-### `store-max-batch-size`
-
-+ 一轮处理的最大请求个数。
-+ 默认值：1024
 + 最小值：大于 0
 
 ### `store-pool-size`
@@ -595,11 +442,6 @@ raftstore 相关的配置项。
 + 默认值：2
 + 最小值：大于 0
 
-### `future-poll-size`
-
-+ 驱动 future 的线程池线程数。
-+ 默认值：1
-+ 最小值：大于 0
 
 ## coprocessor
 
@@ -608,7 +450,7 @@ coprocessor 相关的配置项。
 ### `split-region-on-table`
 
 + 开启按 table 分裂 Region的开关，建议仅在 TiDB 模式下使用。
-+ 默认值：true
++ 默认值：false
 
 ### `batch-split-limit`
 
@@ -704,6 +546,8 @@ rocksdb 相关的配置项。
 + 最小值：0
 + 单位：B|KB|MB|GB
 
+max-total-wal-size = "4GB"
+
 ### `enable-statistics`
 
 + 开启 RocksDB 的统计信息。
@@ -712,7 +556,7 @@ rocksdb 相关的配置项。
 ### `stats-dump-period`
 
 + 开启 Pipelined Write 的开关。
-+ 默认值：true
++ 默认值："10m"
 
 ### `compaction-readahead-size`
 
@@ -739,6 +583,8 @@ rocksdb 相关的配置项。
 + 默认值：10GB
 + 最小值：0
 + 单位：B|KB|MB|GB
+
+rate-limiter-refill-period = "100ms"
 
 ### `rate-limiter-mode`
 
@@ -795,6 +641,8 @@ rocksdb 相关的配置项。
 + 日志存储目录。
 + 默认值：""
 
+info-log-level = "info"
+
 ## rocksdb.titan
 
 Titan 相关的配置项。
@@ -804,25 +652,28 @@ Titan 相关的配置项。
 + 开启 Titan 开关。
 + 默认值：false
 
-### `dirname`
-
-+ Titan Blob 文件存储目录。
-+ 默认值：titandb
-
-### `disable-gc`
-
-+ 关闭 Titan 对 Blob 文件的 GC 的开关。
-+ 默认值：false
-
 ### `max-background-gc`
 
 + Titan 后台 GC 的线程个数。
-+ 默认值：1
++ 默认值：4
 + 最小值：1
 
 ## rocksdb.defaultcf
 
 rocksdb defaultcf 相关的配置项。
+
+### `compression-per-level`
+
++ 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
++ 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
+
+### `bottommost-level-compression`
+
++ 设置最底层的压缩算法。该设置将覆盖 `compression-per-level` 的设置。
++ 因为最底层并非从数据开始写入 LSM-tree 起就直接采用 `compression-per-level` 数组中的最后一个压缩算法，使用 `bottommost-level-compression` 可以让最底层从一开始就使用压缩效果最好的压缩算法。
++ 如果不想设置最底层的压缩算法，可以将该配置项的值设为 `disable`。
++ 默认值："zstd"
+
 
 ### `block-size`
 
@@ -830,43 +681,6 @@ rocksdb defaultcf 相关的配置项。
 + 默认值：64KB
 + 最小值：1KB
 + 单位：KB|MB|GB
-
-### `block-cache-size`
-
-+ rocksdb block cache size。
-+ 默认值：机器总内存 * 25%
-+ 最小值：0
-+ 单位：KB|MB|GB
-
-### `disable-block-cache`
-
-+ 开启 block cache 开关。
-+ 默认值：false
-
-### `cache-index-and-filter-blocks`
-
-+ 开启缓存 index 和 filter 的开关。
-+ 默认值：true
-
-### `pin-l0-filter-and-index-blocks`
-
-+ 是否 pin 住 L0 的 index 和 filter。
-+ 默认值：true
-
-### `use-bloom-filter`
-
-+ 开启 bloom filter 的开关。
-+ 默认值：true
-
-### `optimize-filters-for-hits`
-
-+ 开启优化 filter 的命中率的开关。
-+ 默认值：true
-
-### `whole_key_filtering`
-
-+ 开启将整个 key 放到 bloom filter 中的开关。
-+ 默认值：true
 
 ### `bloom-filter-bits-per-key`
 
@@ -880,23 +694,23 @@ bloom filter 为每个 key 预留的长度。
 + 开启每个 block 建立 bloom filter 的开关。
 + 默认值：false
 
-### `read-amp-bytes-per-bit`
+### `level0-file-num-compaction-trigger`
 
-+ 开启读放大统计的开关，0：不开启，> 0 开启。
-+ 默认值：0
++ 触发 compaction 的 L0 文件最大个数。
++ 默认值：4
 + 最小值：0
 
-### `compression-per-level`
+### `level0-slowdown-writes-trigger`
 
-+ 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
-+ 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ 触发 write stall 的 L0 文件最大个数。
++ 默认值：20
++ 最小值：0
 
-### `bottommost-level-compression`
+### `level0-stop-writes-trigger`
 
-+ 设置最底层的压缩算法。该设置将覆盖 `compression-per-level` 的设置。
-+ 因为最底层并非从数据开始写入 LSM-tree 起就直接采用 `compression-per-level` 数组中的最后一个压缩算法，使用 `bottommost-level-compression` 可以让最底层从一开始就使用压缩效果最好的压缩算法。
-+ 如果不想设置最底层的压缩算法，可以将该配置项的值设为 `disable`。
-+ 默认值："zstd"
++ 完全阻停写入的 L0 文件最大个数。
++ 默认值：36
++ 最小值：0
 
 ### `write-buffer-size`
 
@@ -931,24 +745,6 @@ bloom filter 为每个 key 预留的长度。
 + 最小值：0
 + 单位：KB|MB|GB
 
-### `level0-file-num-compaction-trigger`
-
-+ 触发 compaction 的 L0 文件最大个数。
-+ 默认值：4
-+ 最小值：0
-
-### `level0-slowdown-writes-trigger`
-
-+ 触发 write stall 的 L0 文件最大个数。
-+ 默认值：20
-+ 最小值：0
-
-### `level0-stop-writes-trigger`
-
-+ 完全阻停写入的 L0 文件最大个数。
-+ 默认值：36
-+ 最小值：0
-
 ### `max-compaction-bytes`
 
 + 一次 compaction 最大写入字节数，默认 2GB。
@@ -963,42 +759,31 @@ Compaction 优先类型，默认：3（MinOverlappingRatio），0（ByCompensate
 
 + 默认值：3
 
+### `cache-index-and-filter-blocks`
+
++ 开启缓存 index 和 filter 的开关。
++ 默认值：true
+
+### `pin-l0-filter-and-index-blocks`
+
++ 是否 pin 住 L0 的 index 和 filter。
++ 默认值：true
+
+### `read-amp-bytes-per-bit`
+
++ 开启读放大统计的开关，0：不开启，> 0 开启。
++ 默认值：0
++ 最小值：0
+
 ### `dynamic-level-bytes`
 
 + 开启 dynamic level bytes 优化的开关。
 + 默认值：true
 
-### `num-levels`
+### `optimize-filters-for-hits`
 
-+ RocksDB 文件最大层数。
-+ 默认值：7
-
-### `max-bytes-for-level-multiplier`
-
-+ 每一层的默认放大倍数。
-+ 默认值：10
-
-### `rocksdb.defaultcf.compaction-style`
-
-+ Compaction 方法，可选值为 level，universal。
-+ 默认值：level
-
-### `disable-auto-compactions`
-
-+ 开启自动 compaction 的开关。
-+ 默认值：false
-
-### `soft-pending-compaction-bytes-limit`
-
-+ pending compaction bytes 的软限制。
-+ 默认值：64GB
-+ 单位：KB|MB|GB
-
-### `hard-pending-compaction-bytes-limit`
-
-+ pending compaction bytes 的硬限制。
-+ 默认值：256GB
-+ 单位：KB|MB|GB
++ 开启优化 filter 的命中率的开关。
++ 默认值：true
 
 ### `enable-compaction-guard`
 
@@ -1040,40 +825,12 @@ rocksdb defaultcf titan 相关的配置项。
 + 最小值：0
 + 单位：KB|MB|GB
 
-### `min-gc-batch-size`
-
-+ 做一次 GC 所要求的最低 Blob 文件大小总和。
-+ 默认值：16MB
-+ 最小值：0
-+ 单位：KB|MB|GB
-
-### `max-gc-batch-size`
-
-+ 做一次 GC 所要求的最高 Blob 文件大小总和。
-+ 默认值：64MB
-+ 最小值：0
-+ 单位：KB|MB|GB
-
 ### `discardable-ratio`
 
 + Blob 文件 GC 的触发比例，如果某 Blob 文件中的失效 value 的比例高于该值才可能被 GC 选中。
 + 默认值：0.5
 + 最小值：0
 + 最大值：1
-
-### `sample-ratio`
-
-+ 进行 GC 时，对 Blob 文件进行采样时读取数据占整个文件的比例。
-+ 默认值：0.1
-+ 最小值：0
-+ 最大值：1
-
-### `merge-small-file-threshold`
-
-+ Blob 文件的大小小于该值时，无视 discardable-ratio 仍可能被 GC 选中。
-+ 默认值：8MB
-+ 最小值：0
-+ 单位：KB|MB|GB
 
 ### `blob-run-mode`
 
@@ -1097,21 +854,32 @@ rocksdb defaultcf titan 相关的配置项。
 
 rocksdb writecf 相关的配置项。
 
-### `block-cache-size`
+block-size = "64KB"
 
-+ block cache size。
-+ 默认值：机器总内存 * 15%
-+ 单位：MB|GB
+write-buffer-size = "128MB"
 
-### `optimize-filters-for-hits`
+max-write-buffer-number = 5
 
-+ 开启优化 filter 的命中率的开关。
-+ 默认值：false
+min-write-buffer-number-to-merge = 1
 
-### `whole-key-filtering`
+max-bytes-for-level-base = "512MB"
 
-+ 开启将整个 key 放到 bloom filter 中的开关。
-+ 默认值：false
+target-file-size-base = "8MB"
+
+level0-file-num-compaction-trigger = 4
+
+level0-slowdown-writes-trigger = 20
+
+level0-stop-writes-trigger = 36
+
+cache-index-and-filter-blocks = true
+
+pin-l0-filter-and-index-blocks = true
+
+compaction-pri = 3
+read-amp-bytes-per-bit = 0
+dynamic-level-bytes = true
+optimize-filters-for-hits = false
 
 ### `enable-compaction-guard`
 
@@ -1134,21 +902,29 @@ rocksdb writecf 相关的配置项。
 
 rocksdb lockcf 相关配置项。
 
-### `block-cache-size`
-
-+ block cache size。
-+ 默认值：机器总内存 * 2%
-+ 单位：MB|GB
-
-### `optimize-filters-for-hits`
-
-+ 开启优化 filter 的命中率的开关。
-+ 默认值：false
+compression-per-level = ["no", "no", "no", "no", "no", "no", "no"]
+block-size = "16KB"
+write-buffer-size = "32MB"
+max-write-buffer-number = 5
+min-write-buffer-number-to-merge = 1
+max-bytes-for-level-base = "128MB"
+target-file-size-base = "8MB"
 
 ### `level0-file-num-compaction-trigger`
 
 + 触发 compaction 的 L0 文件个数。
 + 默认值：1
+
+level0-slowdown-writes-trigger = 20
+level0-stop-writes-trigger = 36
+cache-index-and-filter-blocks = true
+pin-l0-filter-and-index-blocks = true
+compaction-pri = 0
+read-amp-bytes-per-bit = 0
+dynamic-level-bytes = true
+optimize-filters-for-hits = false
+enable-compaction-guard = false
+
 
 ## raftdb
 
@@ -1157,7 +933,7 @@ raftdb 相关配置项。
 ### `max-background-jobs`
 
 + RocksDB 后台线程个数。
-+ 默认值：2
++ 默认值：4
 + 最小值：1
 
 ### `max-sub-compactions`
@@ -1166,10 +942,31 @@ raftdb 相关配置项。
 + 默认值：2
 + 最小值：1
 
-### `wal-dir`
+max-open-files = 40960
+max-manifest-file-size = "20MB"
+create-if-missing = true
 
-+ WAL 存储目录。
-+ 默认值：/tmp/tikv/store
+enable-statistics = true
+stats-dump-period = "10m"
+
+compaction-readahead-size = 0
+writable-file-max-buffer-size = "1MB"
+use-direct-io-for-flush-and-compaction = false
+enable-pipelined-write = true
+allow-concurrent-memtable-write = false
+bytes-per-sync = "1MB"
+wal-bytes-per-sync = "512KB"
+
+info-log-max-size = "1GB"
+info-log-roll-time = "0s"
+info-log-keep-log-file-num = 10
+info-log-dir = ""
+info-log-level = "info"
+optimize-filters-for-hits = true
+
+[raftdb.defaultcf]
+
+[raft-engine]
 
 ## security
 
@@ -1189,6 +986,8 @@ raftdb 相关配置项。
 
 + 包含 X509 key 的 PEM 文件路径
 + 默认值：""
+
+cert-allowed-cn = []
 
 ### `redact-info-log` <span class="version-mark">从 v4.0.8 版本开始引入</span>
 
@@ -1235,18 +1034,20 @@ raftdb 相关配置项。
 + 默认值：8
 + 最小值：1
 
-### `num-import-jobs`
-
-+ 并发导入工作任务数。
-+ 默认值：8
-+ 最小值：1
+stream-channel-window = 18
 
 ## gc
+
+batch-keys = 512
+
+max-write-bytes-per-sec = "0"
 
 ### `enable-compaction-filter` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 + 是否开启 GC in Compaction Filter 特性
 + 默认值：false
+
+ratio-threshold = 1.1
 
 ## backup
 
@@ -1258,9 +1059,15 @@ raftdb 相关配置项。
 + 默认值：CPU * 0.75，但最大为 32
 + 最小值：1
 
+batch = 8
+
+sst-max-size = "144MB"
+
 ## pessimistic-txn
 
 悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
+
+enabled = true
 
 ### `wait-for-lock-timeout`
 
@@ -1276,4 +1083,4 @@ raftdb 相关配置项。
 ### `pipelined`
 
 + 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
-+ 默认值：false
++ 默认值：true
