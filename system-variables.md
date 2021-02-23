@@ -40,13 +40,13 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - Scope: SESSION | GLOBAL
 - Default value: 1
-- Controls how `AUTO_INCREMENT` values should be incremented on each allocation. It is often used in combination with `auto_increment_offset`.
+- Controls the step size of `AUTO_INCREMENT` values to be allocated to a column. It is often used in combination with `auto_increment_offset`.
 
 ### auto_increment_offset
 
 - Scope: SESSION | GLOBAL
 - Default value: 1
-- Controls the initial offset of `AUTO_INCREMENT` values being allocated. This setting is often used in combination with `auto_increment_increment`. For example:
+- Controls the initial offset of `AUTO_INCREMENT` values to be allocated to a column. This setting is often used in combination with `auto_increment_increment`. For example:
 
 ```sql
 mysql> CREATE TABLE t1 (a int not null primary key auto_increment);
@@ -110,7 +110,7 @@ mysql> SELECT * FROM t1;
 - Default value: 28800
 - This variable represents the idle timeout of the interactive user session, which is measured in seconds. Interactive user session refers to the session established by calling [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API using the `CLIENT_INTERACTIVE` option (for example, MySQL shell client). This variable is fully compatible with MySQL.
 
-### last_plan_from_binding <span class="version-mark">New in v5.0.0-rc</span>
+### last_plan_from_binding <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION
 - Default value: 0
@@ -234,7 +234,7 @@ mysql> SELECT * FROM t1;
 
 - Scope: INSTANCE
 - Default value: ON
-- This variable is used to enforce that the `utf8` character set only stores values from the [Basic Multilingual Plane (BMP)](https://en.wikipedia.org/wiki/Plane_\(Unicode\)#Basic_Multilingual_Plane). To store characters outside the BMP, it is recommended to use the `utf8mb4` character set.
+- This variable is used to enforce that the `utf8` character set only stores values from the [Basic Multilingual Plane (BMP)](https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane). To store characters outside the BMP, it is recommended to use the `utf8mb4` character set.
 - You might need to disable this option when upgrading your cluster from an earlier version of TiDB where the `utf8` checking was more relaxed. For details, see [FAQs After Upgrade](/faq/upgrade-faq.md).
 
 ### tidb_checksum_table_concurrency
