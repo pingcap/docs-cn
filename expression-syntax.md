@@ -17,18 +17,32 @@ aliases: ['/docs-cn/dev/expression-syntax/','/docs-cn/dev/reference/sql/language
 
 以下规则是表达式的语法，该语法基于 TiDB parser 的 [parser.y](https://github.com/pingcap/parser/blob/master/parser.y) 文件中所定义的规则。此外，下列语法图的可导航版本请参考 [TiDB SQL 语法图](https://pingcap.github.io/sqlgram/#Expression)。
 
-**Expression:**
+```ebnf+diagram
+Expression ::=
+    ( singleAtIdentifier assignmentEq | 'NOT' | Expression ( logOr | 'XOR' | logAnd ) ) Expression
+|   'MATCH' '(' ColumnNameList ')' 'AGAINST' '(' BitExpr FulltextSearchModifierOpt ')'
+|   PredicateExpr ( IsOrNotOp 'NULL' | CompareOp ( ( singleAtIdentifier assignmentEq )? PredicateExpr | AnyOrAll SubSelect ) )* ( IsOrNotOp ( trueKwd | falseKwd | 'UNKNOWN' ) )?
 
-![Expression](/media/sqlgram/Expression.png)
+PredicateExpr ::=
+    BitExpr ( BetweenOrNotOp BitExpr 'AND' BitExpr )* ( InOrNotOp ( '(' ExpressionList ')' | SubSelect ) | LikeOrNotOp SimpleExpr LikeEscapeOpt | RegexpOrNotOp SimpleExpr )?
 
-**PredicateExpr:**
+BitExpr ::=
+    BitExpr ( ( '|' | '&' | '<<' | '>>' | '*' | '/' | '%' | 'DIV' | 'MOD' | '^' ) BitExpr | ( '+' | '-' ) ( BitExpr | "INTERVAL" Expression TimeUnit ) )
+|   SimpleExpr
 
-![PredicateExpr](/media/sqlgram/PredicateExpr.png)
-
-**BitExpr:**
-
-![BitExpr](/media/sqlgram/BitExpr.png)
-
-**SimpleExpr:**
-
-![SimpleExpr](/media/sqlgram/SimpleExpr.png)
+SimpleExpr ::=
+    SimpleIdent ( ( '->' | '->>' ) stringLit )?
+|   FunctionCallKeyword
+|   FunctionCallNonKeyword
+|   FunctionCallGeneric
+|   SimpleExpr ( 'COLLATE' CollationName | pipes SimpleExpr )
+|   WindowFuncCall
+|   Literal
+|   paramMarker
+|   Variable
+|   SumExpr
+|   ( '!' | '~' | '-' | '+' | 'NOT' | 'BINARY' ) SimpleExpr
+|   'EXISTS'? SubSelect
+|   ( ( '(' ( ExpressionList ',' )? | 'ROW' '(' ExpressionList ',' ) Expression | builtinCast '(' Expression 'AS' CastType | ( 'DEFAULT' | 'VALUES' ) '(' SimpleIdent | 'CONVERT' '(' Expression ( ',' CastType | 'USING' CharsetName ) ) ')'
+|   'CASE' ExpressionOpt WhenClause+ ElseOpt 'END'
+```

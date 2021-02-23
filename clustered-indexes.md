@@ -5,7 +5,7 @@ summary: 了解 TiDB 中的聚簇索引。
 
 # 聚簇索引
 
-聚簇索引是 TiDB 在 5.0.0-rc 版本中引入的实验性特性。本文档通过多个示例来说明该特性对 TiDB 查询性能的影响。如需启用此特性及查看详细操作指南，参见 [`tidb_enable_clustered_index` 系统变量介绍](/system-variables.md#tidb_enable_clustered_index)。
+聚簇索引是 TiDB 在 5.0.0-rc 版本中引入的实验性特性。本文档通过多个示例来说明该特性对 TiDB 查询性能的影响。如需启用此特性及查看详细操作指南，参见 [`tidb_enable_clustered_index` 系统变量介绍](/system-variables.md#tidb_enable_clustered_index-从-v500-rc-版本开始引入)。
 
 通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统也将聚簇索引称为“索引组织表” (index-organized tables)。
 
