@@ -151,7 +151,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 在使用 `cdc cli changefeed create` 命令时如果不指定 `--config` 参数，TiCDC 会按照以下默认行为创建同步任务：
 
 * 同步所有的非系统表
-* 不开启 old value 功能
+* 开启 old value 功能
 * 不同步不包含[有效索引](/ticdc/ticdc-overview.md#同步限制)的表
 
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
@@ -302,9 +302,9 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 当遇到上述错误时，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
 
-1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/backup-and-restore-tool.md#增量备份)。
+1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/use-br-command-line-tool.md#增量备份)。
 2. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
-3. 执行[增量恢复](/br/backup-and-restore-tool.md#增量恢复)。
+3. 执行[增量恢复](/br/use-br-command-line-tool.md#增量恢复)。
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
 
