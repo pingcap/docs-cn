@@ -226,7 +226,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
     - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
     - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新统计信息
-+ 当 `stats-lease` 为 0 时， 上述所有操作都不会再进行。
++ 当 `stats-lease` 为 0s 时， 上述所有操作都不会再进行。
 
 ### `run-auto-analyze`
 
