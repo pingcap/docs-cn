@@ -318,22 +318,29 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 ## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`
 
-自 v4.0.8 起，如果 changefeed 使用 canal 或者 maxwell 协议输出，TiCDC 会自动开启 Old Value 功能。
-但如果 ticdc 从较旧版本升级到 v4.0.8 及以上版本，如果使用了上述协议且禁用了 Old Value 功能，会出现此报错，可以按照以下步骤解决该问题：
+自 v4.0.8 起，如果 changefeed 使用 canal 或者 maxwell 协议输出，TiCDC 会自动开启 Old Value 功能。但如果 TiCDC 是从较旧版本升级到 v4.0.8 或以上版本的，changefeed 使用 canal 或 maxwell 协议的同时 Old Value 功能被禁用，此时会出现该报错。可以按照以下步骤解决该报错：
 
 1. 将 changefeed 配置文件中 `enable-old-value` 的值设为 `true`。
 2. 使用 `cdc cli changefeed pause` 暂停同步任务。
-   {{< copyable "shell-regular" >}}
+
+    {{< copyable "shell-regular" >}}
+
     ```shell
     cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
     ```
+
 3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
-   {{< copyable "shell-regular" >}}
+
+    {{< copyable "shell-regular" >}}
+
     ```shell
     cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
     ```
+
 4. 使用 `cdc cli changefeed resume` 恢复同步任务。
-   {{< copyable "shell-regular" >}}
+
+    {{< copyable "shell-regular" >}}
+
     ```shell
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
