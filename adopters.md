@@ -24,6 +24,7 @@ This is a list of TiDB adopters in various industries.
 |[Shopee](https://en.wikipedia.org/wiki/Shopee)|E-commerce|English [#1](https://pingcap.com/case-studies/tidb-in-shopee/), [#2](https://pingcap.com/case-studies/choosing-right-database-for-your-applications); [Chinese](https://pingcap.com/cases-cn/user-case-shopee/)|
 |[Zhuan Zhuan](https://www.crunchbase.com/organization/zhuan-zhuan)|E-commerce|English [#1](https://pingcap.com/case-studies/tidb-in-zhuanzhuan/), [#2](https://pingcap.com/case-studies/scale-out-database-powers-china-letgo-with-reduced-maintenance-costs); Chinese [#1](https://pingcap.com/cases-cn/user-case-zhuanzhuan/), [#2](https://pingcap.com/cases-cn/user-case-zhuanzhuan-2/), [#3](https://pingcap.com/cases-cn/user-case-zhuanzhuan-3/)|
 |[Xiaohongshu](https://en.wikipedia.org/wiki/Xiaohongshu)|E-commerce|[English](https://pingcap.com/case-studies/how-we-use-a-scale-out-htap-database-for-real-time-analytics-and-complex-queries); Chinese [#1](https://pingcap.com/cases-cn/user-case-xiaohongshu/), [#2](https://pingcap.com/cases-cn/user-case-xiaohongshu-2/)|
+|[Meituan](https://www.crunchbase.com/organization/meituan)|E-commerce|English [#1](https://pingcap.com/case-studies/tidb-in-meituan-dianping/), [#2](https://pingcap.com/case-studies/how-we-use-a-mysql-alternative-to-avoid-sharding-and-provide-strong-consistency); [Chinese](https://pingcap.com/cases-cn/user-case-meituan/)|
 |[Happigo.com](https://www.crunchbase.com/organization/happigo-com)|E-commerce||
 |[Yimutian](https://www.crunchbase.com/organization/yimutian)|E-commerce||
 |[Youju Tech](https://nn.yjyz.com/)|E-commerce||
@@ -74,7 +75,6 @@ This is a list of TiDB adopters in various industries.
 |[Keruyun](https://www.crunchbase.com/organization/keruyun-technology-beijing-co-ltd)|SaaS|[Chinese](https://pingcap.com/cases-cn/user-case-keruyun/)|
 |[LinkDoc Technology](https://www.crunchbase.com/organization/linkdoc-technology)|HealthTech|[Chinese](https://pingcap.com/cases-cn/user-case-linkdoc/)|
 |[Chunyu Yisheng](https://www.crunchbase.com/organization/chunyu)|HealthTech||
-|[Meituan-Dianping](https://en.wikipedia.org/wiki/Meituan-Dianping)|Food Delivery|[English](https://pingcap.com/case-studies/tidb-in-meituan-dianping/); [Chinese](https://pingcap.com/cases-cn/user-case-meituan/)|
 |[Qutoutiao](https://www.crunchbase.com/organization/qutoutiao)|Social Network||
 |[Jinri Toutiao](https://en.wikipedia.org/wiki/Toutiao)|Mobile News Platform|[Chinese](https://pingcap.com/cases-cn/user-case-toutiao/)|
 |[360 Finance](https://www.crunchbase.com/organization/360-finance)|FinTech|[Chinese](https://pingcap.com/cases-cn/user-case-360/)|
