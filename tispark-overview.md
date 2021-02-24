@@ -69,7 +69,7 @@ spark.tispark.pd.addresses $your_pd_servers
 spark.sql.extensions org.apache.spark.sql.TiExtensions
 ```
 
-在 `CDH`spark版本中
+在 `CDH` spark 版本中添加如下配置：
 
 ```
 spark.tispark.pd.addresses=$your_pd_servers
