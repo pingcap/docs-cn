@@ -10,7 +10,7 @@ title: tiup cluster check
 
 ### 操作系统版本
 
-检查部署机操作系统发行版和版本：目前仅支持部署在 CentOS 7 的操作系统上，之后随兼容性改进可能增加更多系统版本。
+检查部署机操作系统发行版和版本：目前仅支持部署在 CentOS 7 的操作系统上，之后随兼容性改进可能支持更多系统版本。
 
 ### CPU EPOLLEXCLUSIVE
 
@@ -40,7 +40,7 @@ title: tiup cluster check
 - net.ipv4.tcp_syncookies: 0
 - net.core.somaxconn: 32768
 - vm.swappiness: 0
-- vm.overcommit_memory: 0 or 1
+- vm.overcommit_memory: 0 或 1
 - fs.file-max: 1000000
 
 ### THP（透明大页）

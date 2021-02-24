@@ -32,7 +32,7 @@ tiup mirror modify <component>[:version] [flags]
 
 ### --hide（boolean，默认 false）
 
-将该组件设置为隐藏，隐藏之后该组件将不在 `tiup list` 的列表中显示，但是 `tiup list --all` 可看到。
+将该组件设置为隐藏，隐藏之后该组件将不在 `tiup list` 的列表中显示，但是可通过执行 `tiup list --all` 查看。
 
 > **注意：**
 >

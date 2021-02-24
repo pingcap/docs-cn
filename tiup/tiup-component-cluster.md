@@ -38,7 +38,7 @@ tiup cluster [command] [flags]
 
 ### -v, --version（boolean，默认 false）
 
-输出 tiup-cluster 当前版本信息。
+输出 TiUP Cluster 当前版本信息。
 
 ### -h, --help（boolean，默认 false）
 

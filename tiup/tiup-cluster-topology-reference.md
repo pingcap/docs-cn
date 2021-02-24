@@ -6,7 +6,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 
 通过 TiUP 部署或扩容 TiDB 集群时，需要提供一份拓扑文件（[示例](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)）来描述集群拓扑。
 
-同样，修改集群配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
+同样，修改集群配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。本文档介绍拓扑文件的各个区块以各区块中的各字段。
 
 ## 文件结构
 
@@ -262,7 +262,7 @@ tikv_servers:
 - `tmp_path`: TiFlash 临时文件的存放路径，默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
 - `config`：该字段配置规则和 `server_configs` 里的 `tiflash` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tiflash` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器
-- `learner_config`：每个 TiFlash 中内置了一个特殊的 TiKV，该配置项用于配置这个特殊的 TiKV，一般不建议修改这个配置项下的内容
+- `learner_config`：每个 TiFlash 中内置了一个特殊的 TiKV 模块，该配置项用于配置这个特殊的 TiKV 模块，一般不建议修改这个配置项下的内容
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`

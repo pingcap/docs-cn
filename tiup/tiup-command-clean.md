@@ -12,7 +12,7 @@ title: tiup clean
 tiup clean [name] [flags]
 ```
 
-`[name]` 取值为 [status 命令](/tiup/tiup-command-status.md)输出的 `Name` 字段。若省略 `<name>`，则必须配合 `--all` 使用。
+`[name]` 取值为 [status 命令](/tiup/tiup-command-status.md)输出的 `Name` 字段。若省略 `[name]`，则必须配合 `--all` 使用。
 
 ## 选项
 
