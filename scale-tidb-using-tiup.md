@@ -147,7 +147,7 @@ If you want to add a TiFlash node to the `10.0.1.4` host, take the following ste
 >
 > When adding a TiFlash node to an existing TiDB cluster, you need to note the following things:
 >
-> 1. Confirm that the current TiDB version supports using TiFlash. Otherwise, upgrade your TiDB cluster to v4.0 or later versions.
+> 1. Confirm that the current TiDB version supports using TiFlash. Otherwise, upgrade your TiDB cluster to v5.0 or later versions.
 > 2. Execute the `tiup ctl pd -u <pd-host>:<pd-port> config set enable-placement-rules true` command to enable the Placement Rules feature. Or execute the corresponding command in [pd-ctl](/pd-control.md).
 
 1. Add the node information to the `scale-out.yaml` file:
