@@ -43,7 +43,7 @@ tiup [flags] <component> [args...]      # 运行组件
 
 跳过版本号合法性检查，默认指定的版本号只能是 Semantic Version。
 
-***deprecated***
+该选项自 `v1.3.0` 版本起**已废弃**。
 
 ### -T, --tag (string)
 
