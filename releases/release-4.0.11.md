@@ -51,6 +51,7 @@ TiDB 版本：4.0.11
 
     - 优化 `date_format` 函数的性能
     - 优化处理 ingest SST 时的内存开销
+    - 优化 Batch Coprocessor 内部的重试逻辑以降低 Region Error 的出现概率
 
 + Tools
 
