@@ -125,7 +125,7 @@
       + [控制执行计划概览](/control-execution-plan.md)
       + [Optimizer Hints](/optimizer-hints.md)
       + [执行计划管理](/sql-plan-management.md)
-      + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
+      + [优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
@@ -193,6 +193,7 @@
     + [监控指标](/ticdc/monitor-ticdc.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+    + [术语表](/ticdc/ticdc-glossary.md)
   + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
