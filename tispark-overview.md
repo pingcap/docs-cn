@@ -67,7 +67,18 @@ spark.tispark.pd.addresses $your_pd_servers
 spark.sql.extensions org.apache.spark.sql.TiExtensions
 ```
 
+<<<<<<< HEAD
  `your_pd_servers` 是用逗号分隔的 PD 地址，每个地址使用 `地址:端口` 的格式。
+=======
+在 `CDH` spark 版本中添加如下配置：
+
+```
+spark.tispark.pd.addresses=$your_pd_servers
+spark.sql.extensions=org.apache.spark.sql.TiExtensions
+```
+
+`your_pd_servers` 是用逗号分隔的 PD 地址，每个地址使用 `地址:端口` 的格式。
+>>>>>>> f48a0a0b... tispark: add a description in tispark overview (#5460)
 
 例如你有一组 PD 在`10.16.20.1`，`10.16.20.2`，`10.16.20.3`，那么 PD 配置格式是`10.16.20.1:2379,10.16.20.2:2379,10.16.20.3:2379`。
 
