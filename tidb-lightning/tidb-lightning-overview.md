@@ -21,7 +21,7 @@ TiDB Lightning 主要包含两个部分：
 
 TiDB Lightning 整体工作原理如下：
 
-1. 在导数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。
+1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。
 
 2. `tidb-lightning` 会在目标数据库建立架构和表，并获取其元数据。
 
