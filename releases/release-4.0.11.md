@@ -51,7 +51,7 @@ TiDB 版本：4.0.11
 
     - 优化 `date_format` 函数的性能
     - 优化处理 ingest SST 时的内存开销
-    - 优化 Batch Coprocessor 内部的重试逻辑以降低 Region Error 的出现概率
+    - 优化 Batch Coprocessor 内部的重试逻辑以降低 Region error 的出现概率
 
 + Tools
 
@@ -137,7 +137,10 @@ TiDB 版本：4.0.11
 
     - 修正 Decimal 类型的 `min`/`max` 计算结果错误的问题
     - 修正读取数据时有可能导致 crash 的问题 [#1358](https://github.com/pingcap/tics/pull/1358)
-    - 修正 DDL 操作后写入的数据可能会在 compaction 后丢失的问题 [#1350](https://github.com/pingcap/tics/pull/1350)
+    - 修正 DDL 操作后写入的数据可能会在 compaction 后丢失的问题
+    - 修正 Coprocessor 中错误解析 Decimal 常量的问题
+    - 修正 Learner Read 过程中可能导致 crash 的问题
+    - 修正 TiFlash 中除 `0` 或 `NULL` 的行为与 TiDB 不一致的问题
 
 + Tools
 
