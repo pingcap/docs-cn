@@ -344,7 +344,7 @@ Finally, all the exported data can be imported back to TiDB using [Lightning](/t
 | `--filetype` | Exported file type (csv/sql) | "sql" |
 | `-o` or `--output` | Exported file path | "./export-${time}" |
 | `-S` or `--sql` | Export data according to the specified SQL statement. This command does not support concurrent export. |
-| `--consistency` | flush: use FTWRL before the dump <br/> snapshot: dump the TiDB data of a specific snapshot of a TSO <br/> lock: execute `lock tables read` on all tables to be dumped <br/> none: dump without adding locks, which cannot guarantee consistency <br/> auto: MySQL defaults to using flush, TiDB defaults to using snapshot | "auto" |
+| `--consistency` | flush: use FTWRL before the dump <br/> snapshot: dump the TiDB data of a specific snapshot of a TSO <br/> lock: execute `lock tables read` on all tables to be dumped <br/> none: dump without adding locks, which cannot guarantee consistency <br/> auto: use --consistency flush for MySQL; use --consistency snapshot for TiDB | "auto" |
 | `--snapshot` | Snapshot TSO; valid only when `consistency=snapshot` |
 | `--where` | Specify the scope of the table backup through the `where` condition |
 | `-p` or `--password` | The password of the connected database host |
