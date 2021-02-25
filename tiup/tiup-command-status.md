@@ -4,7 +4,7 @@ title: tiup status
 
 # tiup status
 
-命令 `tiup status` 查看组件运行信息：通过 `tiup [flags] <component> [args...]` 运行组件之后，可以通过该命令查看组件的运行信息。
+使用命令 `tiup status` 可查看组件的运行信息：通过 `tiup [flags] <component> [args...]` 运行组件之后，可以通过该命令查看组件的运行信息。
 
 > **注意**
 >

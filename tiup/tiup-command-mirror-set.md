@@ -16,7 +16,7 @@ tiup mirror set <mirror-addr> [flags]
 
 `<mirror-addr>` 为镜像地址，可以有两种形式：
 
-- 网络地址：http 或者 https 开头，如 `http://172.16.5.5:8080`，`https://tiup-mirrors.pingcap.com` 等
+- 网络地址：以 http 或者 https 开头，如 `http://172.16.5.5:8080`，`https://tiup-mirrors.pingcap.com` 等
 - 本地文件路径：镜像目录的绝对路径，比如 `/path/to/local-tiup-mirror`
 
 ## 选项
@@ -37,7 +37,7 @@ wget <mirror-addr>/root.json -O /path/to/local/root.json
 tiup mirror set <mirror-addr> -r /path/to/local/root.json
 ```
 
-在这种操作方式下，如果中间人在 `wget` 之前攻击了镜像，我们能发现根证书不正确，如果在 `wget` 之后攻击了镜像，TiUP 会发现镜像和根证书不符。
+在这种操作方式下，如果中间人在 `wget` 之前攻击了镜像，用户可发现根证书不正确。如果在 `wget` 之后攻击了镜像，TiUP 会发现镜像和根证书不符。
 
 ## 输出
 
