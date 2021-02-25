@@ -25,4 +25,13 @@ tiup status [flags]
 
 ## 输出
 
-由 `Tag 名字`，`组件名`，`进程 PID`，`运行状态`, `启动时间`，`启动参数`，`数据目录`，`二进制文件路径` 构成的表格，若启动时未指定 Tag 名字，则 Tag 名字段为随机字符串。
+由以下字段构成的表格：
+
+- Name: 通过 `-T/--tag` 指定的 Tag 名字，若未指定，则为随机字符串
+- Component: 运行的组件
+- PID: 对应的进程 ID
+- Status: 组件运行状态
+- Created Time: 启动时间
+- Directory: 数据目录
+- Binary: 二进制文件路径
+- Args: 启动参数
