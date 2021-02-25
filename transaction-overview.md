@@ -38,6 +38,12 @@ START TRANSACTION;
 START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ```
 
+{{< copyable "sql" >}}
+
+```sql
+START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
+```
+
 如果执行以上语句时，当前 Session 正处于一个事务的中间过程，那么系统会先自动提交当前事务，再开启一个新的事务。
 
 > **注意：**
@@ -292,3 +298,57 @@ TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可�
 > 通常，用户会开启 TiDB Binlog 将数据向下游进行同步。某些场景下，用户会使用消息中间件来消费同步到下游的 binlog，例如 Kafka。
 >
 > 以 Kafka 为例，Kafka 的单条消息处理能力的上限是 1 GB。因此，当把 `txn-total-size-limit` 设置为 1 GB 以上时，可能出现事务在 TiDB 中执行成功，但下游 Kafka 报错的情况。为避免这种情况出现，请用户根据最终消费者的限制来决定 `txn-total-size-limit` 的实际大小。例如：下游使用了 Kafka，则 `txn-total-size-limit` 不应超过 1 GB。
+
+## 因果一致性事务
+
+TiDB 从 5.0 版本开始支持开启因果一致性的事务。因果一致性的事务在提交时无需向 PD 获取时间戳，所以提交延迟更低。开启因果一致性事务的语法为：
+
+{{< copyable "sql" >}}
+
+```sql
+START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
+```
+
+默认情况下，TiDB 保证线性一致性。在线性一致性的情况下，如果事务 B 在事务 A 提交完成后提交，逻辑上事务 B 就应该在事务 A 后发生。
+
+因果一致性弱于线性一致性。在因果一致性的情况下，上面的性质只在事务 A 和事务 B 加锁或写入的数据有交集，即有数据库可知的因果关系时保证成立。目前暂不支持传入数据库外部的因果关系。
+
+### 有潜在因果关系的事务之间的逻辑顺序与物理提交顺序一致
+
+| 事务 1 | 事务 2 |
+|-------|-------|
+| START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY |
+| x = SELECT v FROM t where id = 1 FOR UPDATE | |
+| UPDATE t set v = $(x + 1) where id = 2 | |
+| COMMIT | |
+| | UPDATE t SET v = 2 where id = 1 |
+| | COMMIT |
+
+上面的例子中，事务 1 对 id = 1 的记录加了锁，事务 2 的事务对 id = 1 的记录进行了修改，所以事务 1 和 事务 2 有潜在的因果关系。所以即使使用因果一致性开启事务，只要事务 2 在事务 1 提交成功后才提交，逻辑上事务 2 就必定比事务 1 晚发生。换句话说，不可能发生某个事务读到了事务 2 对 id = 1 记录的修改，但却没有读到事务 1 对 id = 2 记录的修改的情况。
+
+### 不保证没有因果关系的事务之间的逻辑顺序
+
+| 事务 1 | 事务 2 |
+|-------|-------|
+| START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY |
+| UPDATE t set v = 3 where id = 2 | |
+| | UPDATE t SET v = 2 where id = 1 |
+| COMMIT | |
+| | COMMIT |
+
+和前一个例子不同，这个例子中，去掉了事务 1 对 id = 1 的记录的读取。此时事务 1 和事务 2 没有数据库可知的因果关系。如果使用因果一致性开启事务，即使物理时间上事务 2 在事务 1 提交完成后才开始提交，也不保证逻辑上事务 2 比事务 1 晚发生。
+
+此时如果有一个事务 3 在事务 1 提交前开启，并在事务 2 提交后读取 id = 1 和 2 的记录，可能发生能读到事务 2 的写入，但却读不到事务 1 的写入的情况。
+
+### 不加锁的读取不产生因果关系
+
+| 事务 1 | 事务 2 |
+|-------|-------|
+| START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY |
+| | UPDATE t SET v = 2 where id = 1 |
+| SELECT v FROM t where id = 1 | |
+| UPDATE t set v = 3 where id = 2 | |
+| | COMMIT |
+| COMMIT | |
+
+这个例子展示了，不加锁的读取不产生因果关系，否则会产生写偏斜的异常，是不合理的。所以上面的例子中，使用因果一致性的事务 1 和事务 2 没有确定的逻辑顺序。
