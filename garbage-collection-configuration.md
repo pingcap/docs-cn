@@ -96,7 +96,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 >
 > Green GC is still an experimental feature. It is recommended **NOT** to use it in the production environment.
 
-This parameter specifies the way of scanning locks in the Resolve Locks step of GC, that is, whether to enable Green GC (experimental feature) or not. In the Resolve Locks step of GC, TiKV needs to scan all locks in the cluster. With Green GC disabled, TiDB scans locks by Regions. Green GC provides the "physical scanning" feature, which means that each TiKV node can bypass the Raft layer to directly scan data. This feature can effectively mitigate the impact of GC wakening up all Regions when the [Hibernate Region](/tikv-configuration-file.md#raftstorehibernate-regions-experimental) feature is enabled, thus improving the execution speed in the Resolve Locks step.
+This parameter specifies the way of scanning locks in the Resolve Locks step of GC, that is, whether to enable Green GC (experimental feature) or not. In the Resolve Locks step of GC, TiKV needs to scan all locks in the cluster. With Green GC disabled, TiDB scans locks by Regions. Green GC provides the "physical scanning" feature, which means that each TiKV node can bypass the Raft layer to directly scan data. This feature can effectively mitigate the impact of GC wakening up all Regions when the [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-experimental) feature is enabled, thus improving the execution speed in the Resolve Locks step.
 
 - `"legacy"` (default): Uses the old way of scanning, that is, disable Green GC.
 - `"physical"`: Uses the physical scanning method, that is, enable Green GC.
@@ -146,7 +146,7 @@ tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_s
 
 ## GC in Compaction Filter
 
-Since v5.0.0-rc, TiDB introduces the mechanism of GC in Compaction Filter. Based on the distributed GC mode, the mechanism uses the compaction process of RocksDB, instead of a separate GC worker thread, to run GC. This new GC machanism helps to avoid extra disk read caused by GC. Also, after clearing the obsolete data, it avoids a large number of left tombstone marks which degrade the sequential scan performance. This GC mechanism is disabled by default. The following example shows how to enable the mechanism in the TiKV configuration file:
+Since v5.0.0-rc, TiDB introduces the mechanism of GC in Compaction Filter. Based on the distributed GC mode, the mechanism uses the compaction process of RocksDB, instead of a separate GC worker thread, to run GC. This new GC mechanism helps to avoid extra disk read caused by GC. Also, after clearing the obsolete data, it avoids a large number of left tombstone marks which degrade the sequential scan performance. This GC mechanism is disabled by default. The following example shows how to enable the mechanism in the TiKV configuration file:
 
 {{< copyable "" >}}
 
