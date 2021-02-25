@@ -354,7 +354,7 @@ In this record, `Host` and `User` determine that the connection request sent by 
 
 > **Note:**
 >
-> It is recommended to only update the privilege tables via the supplied syntax such as `GRANT`, `CREATE USER` and `DROP USER`. Making direct edits to the underlying privilege tables will not automatially update the privilege cache, leading to unpredictable behavior until `FLUSH PRIVILEGES` is executed.
+> It is recommended to only update the privilege tables via the supplied syntax such as `GRANT`, `CREATE USER` and `DROP USER`. Making direct edits to the underlying privilege tables will not automatically update the privilege cache, leading to unpredictable behavior until `FLUSH PRIVILEGES` is executed.
 
 ### Connection verification
 

@@ -31,7 +31,7 @@ In this report, some small buttons are described as follows:
 * **expand**: Click **expand** to see details about this monitoring metric. For example, the detailed information of `tidb_get_token` in the image above includes the monitoring information of each TiDB instance's latency.
 * **collapse**: Contrary to **expand**, the button is used to fold detailed monitoring information.
 
-All monitoring metrics basically correspond to those on the TiDB Grafna monitoring dashboard. After a module is found to be abnormal, you can view more monitoring information on the TiDB Grafna.
+All monitoring metrics basically correspond to those on the TiDB Grafana monitoring dashboard. After a module is found to be abnormal, you can view more monitoring information on the TiDB Grafana.
 
 In addition, the `TOTAL_TIME` and `TOTAL_COUNT` metrics in this report are monitoring data read from Prometheus, so calculation inaccuracy might exits in their statistics.
 

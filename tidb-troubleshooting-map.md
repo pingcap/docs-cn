@@ -436,7 +436,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
     - Solution: Use the binlogctl tool to check whether each Drainer node is normal or not. This is to ensure that all Drainer nodes in the `online` state are working normally. If the state of a Drainer node is not consistent with its actual working status, use the binlogctl tool to change its state and then restart Pump. See the case [fail-to-notify-all-living-drainer](/tidb-binlog/handle-tidb-binlog-errors.md#fail-to-notify-all-living-drainer-is-returned-when-pump-is-started).
 
-- 6.1.9 Draienr reports the `gen update sqls failed: table xxx: row data is corruption []` error.
+- 6.1.9 Drainer reports the `gen update sqls failed: table xxx: row data is corruption []` error.
 
     - Trigger: The upstream performs DML operations on this table while performing `DROP COLUMN` DDL. This issue has been fixed in v3.0.6. See [case-820](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case820.md) in Chinese.
 

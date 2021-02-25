@@ -105,7 +105,7 @@ On June 21, 2019, TiDB 3.0.0-rc.3 is released. The corresponding TiDB Ansible ve
 
 + tikv-ctl
     - Add the `bad-regions` command to support checking more abnormal conditions [#4862](https://github.com/tikv/tikv/pull/4862)
-    - Add a feature of forcely executing the `tombstone` command [#4862](https://github.com/tikv/tikv/pull/4862)
+    - Add a feature of forcibly executing the `tombstone` command [#4862](https://github.com/tikv/tikv/pull/4862)
 
 + Misc
     - Add the `dist_release` compiling command [#4841](https://github.com/tikv/tikv/pull/4841)

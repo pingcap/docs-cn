@@ -36,7 +36,7 @@ Download [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) by using t
 
 Download [BR](/br/backup-and-restore-tool.md) by using the download link in the following table:
 
-| Package name | OS | Architecure | SHA256 checksum |
+| Package name | OS | Architecture | SHA256 checksum |
 |:---|:---|:---|:---|
 | `http://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `http://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
 

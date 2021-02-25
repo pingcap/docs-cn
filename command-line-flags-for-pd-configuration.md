@@ -103,5 +103,5 @@ PD is configurable using command-line flags and environment variables.
 
 ## `--metrics-addr`
 
-- The address of Prometheus Pushgateway, which does not push data to Promethus by default.
+- The address of Prometheus Pushgateway, which does not push data to Prometheus by default.
 - Default: ""

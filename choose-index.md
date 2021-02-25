@@ -41,7 +41,7 @@ Skyline-pruning is a heuristic filtering rule for indexes. To judge an index, th
 
 - How many access conditions are covered by the indexed columns. An “access condition” is a where condition that can be converted to a column range. And the more access conditions an indexed column set covers, the better it is in this dimension.
 
-For these three dimensions, if an index named idx_a is not worse than the index named idx_b in all three dimensions and one of the dimensions is better than Idx_b, then idx_a is preferred.
+For these three dimensions, if an index named idx_a is not worse than the index named idx_b in all three dimensions and one of the dimensions is better than idx_b, then idx_a is preferred.
 
 ### Selection based on cost estimation
 
@@ -63,7 +63,7 @@ According to these factors and the cost model, the optimizer selects an index wi
 2. Statistics are accurate, and reading from TiFlash is faster, but why does the optimizer choose to read from TiKV?
 
     At present, the cost model of distinguishing TiFlash from TiKV is still rough. You can decrease the value of `tidb_opt_seek_factor` parameter, then the optimizer prefers to choose TiFlash.
-    
+
 3. The statistics are accurate. Index A needs to retrieve rows from tables, but it actually executes faster than Index B that does not retrieve rows from tables. Why does the optimizer choose Index B?
 
     In this case, the cost estimation may be too large for retrieving rows from tables. You can decrease the value of `tidb_opt_network_factor` parameter to reduce the cost of retrieving rows from tables.

@@ -147,7 +147,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
     | :---------- | :----- | :--------------------- |
     | Column Name    | String |  The column name.  |
     | Column Type    | Number |  The column type. For details, see [Column Type Code](#column-type-code).  |
-    | Where Handle  | Bool   |  Determines whether this column can be the filter condition of the `Where` clause. When this column is unique on the table, `Where Handle` is `true`. |
+    | Where Handle  | Boolean   |  Determines whether this column can be the filter condition of the `Where` clause. When this column is unique on the table, `Where Handle` is `true`. |
     | Flag (**experimental**)       | Number   |  The bit flags of columns. For details, see [Bit flags of columns](#bit-flags-of-columns). |
     | Column Value   | Any    | The Column value.   |
 
@@ -283,7 +283,7 @@ Currently, TiCDC does not provide the standard parsing library for TiCDC Open Pr
 
 | Type                   | Code | Output Example | Description |
 | :-------------------- | :--- | :------ | :-- |
-| TINYINT/BOOL          | 1    | {"t":1,"v":1} | |
+| TINYINT/BOOLEAN          | 1    | {"t":1,"v":1} | |
 | SMALLINT              | 2    | {"t":2,"v":1} | |
 | INT                   | 3    | {"t":3,"v":123} | |
 | FLOAT                 | 4    | {"t":4,"v":153.123} | |

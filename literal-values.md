@@ -32,9 +32,9 @@ If the `ANSI_QUOTES` SQL MODE is enabled, string literals can be quoted only wit
 The string is divided into the following two types:
 
 + Binary string: It consists of a sequence of bytes, whose charset and collation are both `binary`, and uses **byte** as the unit when compared with each other.
-+ Non-binary string: It consists of a sequence of characters and has various charsets and collations other than `binary`. When compared with each other, non-binary strings use **characters** as the unit. A charater might contian multiple bytes, depending on the charset.
++ Non-binary string: It consists of a sequence of characters and has various charsets and collations other than `binary`. When compared with each other, non-binary strings use **characters** as the unit. A character might contain multiple bytes, depending on the charset.
 
-A string literal may have an optional `character set introducer` and `COLLATE clause`, to designate it as a string that uses a specific character set and collation. 
+A string literal may have an optional `character set introducer` and `COLLATE clause`, to designate it as a string that uses a specific character set and collation.
 
 ```
 [_charset_name]'string' [COLLATE collation_name]
