@@ -11,12 +11,12 @@ summary: 扩展统计信息用于优化包含相关列的查询
 
 ## 扩展统计信息注册
 
-如果要对想收集的扩展统计信息进行注册，可使用 `ALTER TABLE ADD TIDB_STATS` SQL 语句，其语法如下：
+如果要对想收集的扩展统计信息进行注册，可使用 `ALTER TABLE ADD STATS_EXTENDED` SQL 语句，其语法如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE table_name ADD TIDB_STATS IF NOT EXISTS stats_name stats_type(column_name, column_name...);
+ALTER TABLE table_name ADD STATS_EXTENDED IF NOT EXISTS stats_name stats_type(column_name, column_name...);
 ```
 
 该语句表示想要在指定表的指定列组合上收集指定类型的扩展统计信息，并为其命名。
@@ -49,7 +49,7 @@ ALTER TABLE table_name ADD TIDB_STATS IF NOT EXISTS stats_name stats_type(column
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t ADD TIDB_STATS s1 correlation(col1, col2);
+ALTER TABLE t ADD STATS_EXTENDED s1 correlation(col1, col2);
 ```
 
 在执行该语句后的下一次 `ANALYZE` 时，TiDB 会计算 `t` 表上 `col1` 和 `col2` 值在顺序上的[皮尔逊相关系数](https://zh.wikipedia.org/wiki/%E7%9A%AE%E5%B0%94%E9%80%8A%E7%A7%AF%E7%9F%A9%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0)，并将结果值记录到 `mysql.stats_extended` 的 `stats` 列。
@@ -99,7 +99,7 @@ SELECT * FROM t WHERE col1 <= 1 OR col1 IS NULL;
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE table_name DROP TIDB_STATS stats_name;
+ALTER TABLE table_name DROP STATS_EXTENDED stats_name;
 ```
 
 这条语句会将 `mysql.stats_extended` 中相应记录的 `status` 列值修改为 2（表示“已删除”状态），而不是将其从表中直接删除。其他 TiDB 实例会增量读取到这个更新操作，并删除各自缓存中的记录，使得缓存保持一致。在后续的统计信息 Garbage Collection 过程中，TiDB 才会将这些被标记为“删除”状态的记录真正从表中删除，以避免 `mysql.stats_extended` 的无限增长。
@@ -109,9 +109,25 @@ ALTER TABLE table_name DROP TIDB_STATS stats_name;
 {{< copyable "sql" >}}
 
 ```sql
-ADMIN RELOAD TIDB_STATS;
+ADMIN RELOAD STATS_EXTENDED;
 ```
 
 ## 扩展统计信息导入导出
 
 [统计信息简介](/statistics.md)章节中提到的常规统计信息导入导出同样适用于扩展统计信息，导出的扩展统计信息和常规统计信息在同一个 json 文件中。
+
+## 控制开关
+
+通过以下语句可以开启扩展统计信息功能：
+
+{{< copyable "sql" >}}
+
+```sql
+set global tidb_enable_extended_stats = on;
+```
+
+`tidb_enable_extended_stats` 的默认值为 `off`。
+
+> **注意：**
+>
+> 设置 global 系统变量在当前 session 并不会生效，只会在新创建的 session 生效。可以将 global 关键字替换为 session 使当前 session 开启扩展统计信息功能。

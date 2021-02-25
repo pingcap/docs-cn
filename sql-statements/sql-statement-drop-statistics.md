@@ -5,7 +5,7 @@ summary: TiDB 数据库中 DROP TIDB\_STATS 的使用概况。
 
 # DROP TIDB\_STATS
 
-`ALTER TABLE.. DROP TIDB_STATS` 语句用于删除指定的创建扩展统计信息。
+`ALTER TABLE.. DROP STATS_EXTENDED` 语句用于删除指定的创建扩展统计信息。
 
 ## 语法图
 
@@ -20,7 +20,7 @@ summary: TiDB 数据库中 DROP TIDB\_STATS 的使用概况。
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t ADD TIDB_STATS s1 correlation(a,b);
+ALTER TABLE t ADD STATS_EXTENDED s1 correlation(a,b);
 ```
 
 ```sql
@@ -45,7 +45,7 @@ SELECT * FROM mysql.stats_extended;
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t DROP TIDB_STATS s1;
+ALTER TABLE t DROP STATS_EXTENDED s1;
 ```
 
 ```sql

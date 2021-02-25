@@ -1035,6 +1035,12 @@ set tidb_slow_log_threshold = 200;
 - 默认值：ON
 - 这个变量用于控制是否开启执行计划绑定功能，默认打开，可通过赋值 `OFF` 来关闭。关于执行计划绑定功能的使用可以参考[执行计划绑定文档](/sql-plan-management.md#创建绑定)。
 
+### `tidb_enable_extended_stats` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 这个变量用于控制是否开启扩展统计信息功能，默认关闭，可通过赋值 `ON` 来开启。关于扩展统计信息的使用可以参考[扩展统计信息文档](/extended-statistics.md#扩展统计信息简介)。
+
 ### `tidb_wait_split_region_finish`
 
 - 作用域：SESSION

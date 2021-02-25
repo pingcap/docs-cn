@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADD TIDB\_STATS 的使用概况。
 
 # ADD TIDB\_STATS
 
-`ALTER TABLE.. ADD TIDB_STATS` 语句用于为指定表的指定列组合创建扩展统计信息。
+`ALTER TABLE.. ADD STATS_EXTENDED` 语句用于为指定表的指定列组合创建扩展统计信息。
 
 ## 语法图
 
@@ -24,7 +24,7 @@ summary: TiDB 数据库中 ADD TIDB\_STATS 的使用概况。
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t ADD TIDB_STATS s1 correlation(a,b);
+ALTER TABLE t ADD STATS_EXTENDED s1 correlation(a,b);
 ```
 
 ```sql
