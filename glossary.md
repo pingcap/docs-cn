@@ -20,12 +20,6 @@ ACID refers to the four key properties of a transaction: atomicity, consistency,
 
 - **Durability** means that once a transaction is committed, it remains committed even in the event of a system failure. TiKV uses persistent storage to ensure durability.
 
-## C
-
-### Changefeed
-
-An incremental replication task in TiCDC, which outputs the data change logs of several tables in a TiDB cluster to the designated downstream.
-
 ## L
 
 ### leader/follower/learner

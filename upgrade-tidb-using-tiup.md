@@ -26,7 +26,7 @@ If you have deployed the TiDB cluster using TiDB Ansible, you can use TiUP to im
     - `Spark` is enabled for the cluster.
     - `Lightning` / `Importer` is enabled for the cluster.
     - You still use the `'push'` method to collect monitoring metrics (since v3.0, `pull` is the default mode, which is supported if you have not modified this mode).
-    - In the `inventory.ini` configuration file, the `node_exporter` or `blackbox_exporter` item of the machine is set to non-default ports through `node_exporter_port` or `blackbox_exporter_port`, which is compatible if you have unified the configuration in the `group_vars` directory.
+    - In the `inventory.ini` configuration file, the `node_exporter` or `blackbox_exporter` item of the machine is set to non-default ports through `node_exporter_port` or `blackbox_exporter_port`, which is compatible if you have unified the configuration in the `group_vars` directory. Or the `node_exporter` or `blackbox_exporter` item of a machine is set to a `deploy_dir` that is different from that of other machines.
 - Support upgrading the versions of TiDB Binlog, TiCDC, TiFlash, and other components.
 - Before you upgrade from v2.0.6 or earlier to v4.0.0 or later, you must make sure that no DDL operations are running in the cluster, especially the `Add Index` operation that is time-consuming. Perform the upgrade after all DDL operations are completed.
 - Starting from v2.1, TiDB enables parallel DDL. Therefore, clusters **older than v2.0.1** cannot be upgraded to v4.0.0 or later via a direct rolling upgrade. Instead, you can choose one of the following solutions:
