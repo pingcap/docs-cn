@@ -318,7 +318,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `committer-concurrency`
 
-+ 用于控制 retry commit 阶段的 goroutine 数量
++ 单个事务提交阶段，用于执行提交操作相关请求的 goroutine 数量
 + 默认值：16
 + 若提交的事务过大，事务提交时的流控队列等待耗时可能会过长，可以通过增大 TiDB 配置文件中 committer-concurrency 值来加速提交。
 
