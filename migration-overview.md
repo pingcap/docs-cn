@@ -8,6 +8,10 @@ aliases: ['/docs/dev/migration-overview/']
 
 This document describes how to migrate data to TiDB, including migrating data from MySQL and from CSV/SQL files.
 
+## Migrate from Aurora to TiDB
+
+In a cloud environment, you can directly migrate full data to TiDB by exporting snapshot from Aurora. For details, see [Migrate from Amazon Aurora MySQL Using TiDB Lightning](/migrate-from-aurora-using-lightning.md).
+
 ## Migrate from MySQL to TiDB
 
 To migrate data from MySQL to TiDB, it is recommended to use one of the following methods:
