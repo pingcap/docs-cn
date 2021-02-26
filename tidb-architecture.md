@@ -16,7 +16,7 @@ Compared with the traditional standalone databases, TiDB has the following advan
 
 As a distributed database, TiDB is designed to consist of multiple components. Theses components communicate with each other and form a complete TiDB system. The architecture is as follows:
 
-![TiDB Architecture](/media/tidb-architecture.png)
+![TiDB Architecture](/media/tidb-architecture-v3.1.png)
 
 ## TiDB server
 
