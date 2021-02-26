@@ -21,7 +21,7 @@ TiDB 版本：4.0.11
 
 + TiFlash
 
-    - 增加排队处理 Coprocessor 任务的线程池以减小内存溢出几率，并增加配置项 `cop_pool_size` 和 `batch_cop_pool_size`，默认值为 `物理核数 * 2` [#1312](https://github.com/pingcap/tics/pull/1312)
+    - 增加排队处理 Coprocessor 任务的线程池以减小内存溢出几率，并增加配置项 `cop_pool_size` 和 `batch_cop_pool_size`，默认值为 `物理核数 * 2`
 
 ## 改进提升
 
@@ -136,7 +136,7 @@ TiDB 版本：4.0.11
 + TiFlash
 
     - 修正 Decimal 类型的 `min`/`max` 计算结果错误的问题
-    - 修正读取数据时有可能导致 crash 的问题 [#1358](https://github.com/pingcap/tics/pull/1358)
+    - 修正读取数据时有可能导致 crash 的问题
     - 修正 DDL 操作后写入的数据可能会在 compaction 后丢失的问题
     - 修正 Coprocessor 中错误解析 Decimal 常量的问题
     - 修正 Learner Read 过程中可能导致 crash 的问题
