@@ -21,7 +21,7 @@ TiDB 版本：4.0.11
 
 + TiFlash
 
-    - 增加排队处理 Coprocessor 任务的线程池以减小内存溢出几率，并增加配置项 `cop_pool_size` 和 `batch_cop_pool_size`，默认值为 `物理核数 * 2`
+    - 增加排队处理 Coprocessor 任务的线程池以降低内存溢出几率，并增加配置项 `cop_pool_size` 和 `batch_cop_pool_size`，默认值为 `物理核数 * 2`
 
 ## 改进提升
 
