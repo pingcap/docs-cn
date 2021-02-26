@@ -82,7 +82,7 @@ TiDB 版本：4.0.11
     - 修复生成多个 join 相关 hint 可能 panic 的问题 [#22518](https://github.com/pingcap/tidb/pull/22518)
     - 修复转换字符串为 `BIT` 类型不准确的问题 [#22420](https://github.com/pingcap/tidb/pull/22420)
     - 修复插入 `tidb_rowid` 列时出现的 `index out of range` 报错问题 [#22359](https://github.com/pingcap/tidb/pull/22359)
-    - 修复缓存计划被错误的使用问题 [#22353](https://github.com/pingcap/tidb/pull/22353)
+    - 修复缓存计划被错误地使用的问题 [#22353](https://github.com/pingcap/tidb/pull/22353)
     - 修复 `WEIGHT_STRING` 函数处理过长字符串出现 panic 的问题 [#22332](https://github.com/pingcap/tidb/pull/22332)
     - 禁止参数数量不合法时使用生成列 [#22174](https://github.com/pingcap/tidb/pull/22174)
     - 在构造执行计划前正确地设置进程执行信息 [#22148](https://github.com/pingcap/tidb/pull/22148)
@@ -135,12 +135,12 @@ TiDB 版本：4.0.11
 
 + TiFlash
 
-    - 修正 Decimal 类型的 `min`/`max` 计算结果错误的问题
-    - 修正读取数据时有可能导致 crash 的问题
-    - 修正 DDL 操作后写入的数据可能会在 compaction 后丢失的问题
-    - 修正 Coprocessor 中错误解析 Decimal 常量的问题
-    - 修正 Learner Read 过程中可能导致 crash 的问题
-    - 修正 TiFlash 中除 `0` 或 `NULL` 的行为与 TiDB 不一致的问题
+    - 修复 Decimal 类型的 `min`/`max` 计算结果错误的问题
+    - 修复读取数据时有可能导致 crash 的问题
+    - 修复 DDL 操作后写入的数据可能会在 compaction 后丢失的问题
+    - 修复 Coprocessor 中错误解析 Decimal 常量的问题
+    - 修复 Learner Read 过程中可能导致 crash 的问题
+    - 修复 TiFlash 中除以 `0` 或 `NULL` 的行为与 TiDB 不一致的问题
 
 + Tools
 
