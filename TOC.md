@@ -527,6 +527,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v4.0
+    - [4.0.11](/releases/release-4.0.11.md)
     - [4.0.10](/releases/release-4.0.10.md)
     - [4.0.9](/releases/release-4.0.9.md)
     - [4.0.8](/releases/release-4.0.8.md)
