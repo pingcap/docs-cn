@@ -16,3 +16,4 @@ jobs:
         days-before-issue-close: 15
         stale-issue-label: 'lifecycle/stale'
         exempt-issue-labels: 'lifecycle/frozen,good-first-issue,help-wanted'
+        exempt-all-issue-assignees: true
