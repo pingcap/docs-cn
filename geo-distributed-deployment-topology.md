@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 
 [跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml)
 
-以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](tiup/tiup-cluster-topology-reference.md)。
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
 ### 关键参数配置
 

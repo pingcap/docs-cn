@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/hybrid-deployment-topology/']
 
 [详细混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-multi-instance.yaml)
 
-以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](tiup/tiup-cluster-topology-reference.md)。
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
 ### 混合部署的关键参数介绍
 
