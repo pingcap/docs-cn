@@ -151,7 +151,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 在使用 `cdc cli changefeed create` 命令时如果不指定 `--config` 参数，TiCDC 会按照以下默认行为创建同步任务：
 
 * 同步所有的非系统表
-* 不开启 old value 功能
+* 开启 old value 功能
 * 不同步不包含[有效索引](/ticdc/ticdc-overview.md#同步限制)的表
 
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
@@ -318,7 +318,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 ## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`
 
-自 v4.0.8 起，如果 changefeed 使用 canal 或者 canal-json 协议输出，TiCDC 会检查是否同时开启了 Old Value 功能。如果没开启则会报错。可以按照以下步骤解决该问题：
+自 v4.0.8 起，如果 changefeed 使用 canal 或者 maxwell 协议输出，TiCDC 会自动开启 Old Value 功能。但如果 TiCDC 是从较旧版本升级到 v4.0.8 或以上版本的，changefeed 使用 canal 或 maxwell 协议的同时 Old Value 功能被禁用，此时会出现该报错。可以按照以下步骤解决该报错：
 
 1. 将 changefeed 配置文件中 `enable-old-value` 的值设为 `true`。
 2. 使用 `cdc cli changefeed pause` 暂停同步任务。

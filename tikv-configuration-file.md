@@ -144,7 +144,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `use-unified-pool`
 
 + 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理存储请求。该选项值为 false 时，使用单独的存储线程池。通过本节 (`readpool.storage`) 中的其余配置项配置单独的线程池。
-+ 默认值：false
++ 默认值：true
 
 ### `high-concurrency`
 
@@ -383,7 +383,7 @@ raftstore 相关的配置项。
 + 默认值：3s
 + 最小值：0
 
-### `raftstore.hibernate-regions` (**实验特性**)
+### `hibernate-regions` (**实验特性**)
 
 + 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
 + 默认值：true
