@@ -23,6 +23,8 @@ summary: 了解在部署最小拓扑集群的基础上，部署 TiFlash 的拓�
 
 - [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)
 
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)。
+
 ### 关键参数介绍
 
 - 需要将配置模板中 `replication.enable-placement-rules` 设置为 `true`，以开启 PD 的 [Placement Rules](/configure-placement-rules.md) 功能。
