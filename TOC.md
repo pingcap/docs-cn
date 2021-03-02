@@ -52,7 +52,7 @@
     + 从 MySQL 迁移
       - [全量迁移](/migrate-full-data-from-mysql.md)
       - [增量复制](/migrate-incremental-data-from-mysql.md)
-    - [从 MySQL/Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
+    - [使用 DM 从 Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
     - [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     - [从 SQL 文件迁移](/migrate-from-mysql-mydumper-files.md)
   + 运维
