@@ -493,12 +493,15 @@
       + [TiFlash 简介](/tiflash/tiflash-overview.md)
       + [使用 TiFlash](/tiflash/use-tiflash.md)
   + TiUP
-    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [文档地图](/tiup/tiup-documentation-guide.md)
     + [概览](/tiup/tiup-overview.md)
     + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
     + [TiUP 组件管理](/tiup/tiup-component-management.md)
     + [FAQ](/tiup/tiup-faq.md)
     + [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    + [参考手册](/tiup/tiup-reference.md)
+    + [TiDB 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)
+    + [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)
     + TiUP 组件文档
       + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
@@ -522,6 +525,7 @@
   + v5.0
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
+    - [4.0.11](/releases/release-4.0.11.md)
     - [4.0.10](/releases/release-4.0.10.md)
     - [4.0.9](/releases/release-4.0.9.md)
     - [4.0.8](/releases/release-4.0.8.md)
