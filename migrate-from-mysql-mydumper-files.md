@@ -14,19 +14,13 @@ aliases: ['/docs-cn/v3.1/migrate-from-mysql-mydumper-files/']
 
 > **注意：**
 >
-<<<<<<< HEAD:migrate-from-mysql-mydumper-files.md
-> - 如果选用 Importer Backend 来导入数据，除需要部署 TiDB Lightning 组件外，也需要部署 TiKV Importer 组件。导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
-> - 如果选用 TiDB Backend 来导入数据，只需要部署 TiDB Lightning 组件。导入期间集群可以正常提供服务。
+> - 如果选用 Importer-backend 来导入数据，除需要部署 TiDB Lightning 组件外，也需要部署 TiKV Importer 组件。导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
+> - 如果选用 TiDB-backend 来导入数据，只需要部署 TiDB Lightning 组件。导入期间集群可以正常提供服务。
 > - 二者的具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-tidb-backend.md)。
-=======
-> - 如果选用 Local-backend 来导入数据，导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
-> - 如果选用 TiDB-backend 来导入数据，导入期间集群可以正常提供服务, 但相对导入速度较慢。
-> - 二者的具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-backends.md)。
->>>>>>> c379a21d... migrate: change titles to make it clear (#5560):migrate-from-mysql-dumpling-files.md
 
 ## 第 2 步：配置 TiDB Lightning 的数据源
 
-本文以选用 TiDB Backend 导入数据为例。增加 `tidb-lightning.toml 配置文件`，在文件中添加以下主要配置：
+本文以选用 TiDB-backend 导入数据为例。增加 `tidb-lightning.toml 配置文件`，在文件中添加以下主要配置：
 
 1. 将 `[mydumper]` 下的 `data-source-dir` 设置为 MySQL 的 SQL 文件路径。
 
