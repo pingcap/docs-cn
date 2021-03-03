@@ -89,3 +89,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 ## 在 Kubernetes 环境中如何使用 BR 进行增量备份？
 
 可以使用 kubectl 执行 `kubectl -n ${namespace} get bk ${name}` 以获得上次 BR 备份 `commitTs` 字段，该字段的内容可作为 `--lastbackupts` 使用。
+
+## BR backupTS 如何转化成 Unix 时间?
+
+BR backupTS 默认情况下是在备份开始前，从 PD 获取到的最新 timestamp。可以采用 pd-ctl tso `timestamp` 来解析，获得精确值，也可以通过 `backupTS >> 18` 来快速获取估计值。
