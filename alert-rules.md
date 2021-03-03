@@ -8,9 +8,6 @@ aliases: ['/docs-cn/v2.1/alert-rules/','/docs-cn/v2.1/reference/alert-rules/']
 
 本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
-<<<<<<< HEAD
-## TiDB 报警项
-=======
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
 |  严重程度 |  说明   |
@@ -20,17 +17,11 @@ aliases: ['/docs-cn/v2.1/alert-rules/','/docs-cn/v2.1/reference/alert-rules/']
 |  警告级别  |  对某一问题或错误的提醒   |
 
 ## TiDB 报警规则
->>>>>>> df415647... Refine wording about severity in alert-rules.md (#5640)
 
 本节介绍了 TiDB 组件的报警项。
 
 ### 紧急级别报警项
 
-<<<<<<< HEAD
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
-
-=======
->>>>>>> df415647... Refine wording about severity in alert-rules.md (#5640)
 #### `TiDB_schema_error`
 
 * 报警规则：
