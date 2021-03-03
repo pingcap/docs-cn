@@ -63,7 +63,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 该命令需要提供集群的名字、集群使用的 TiDB 版本，以及一个集群的拓扑文件。
 
-拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
+拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
 
 > **注意：**
 >
@@ -216,7 +216,7 @@ Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件�
 >
 > 本节只展示缩容命令的语法示例，线上扩缩容具体步骤可参考[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)。
 
-缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关数据文件。
+缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
 由于 TiKV 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV 和 TiDB Binlog 组件做了特殊处理：
 
