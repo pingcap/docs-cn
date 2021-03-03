@@ -118,7 +118,7 @@ ansible -i inventory.ini tikv_servers -m shell -a 'cat {{deploy_dir}}/log/tikv* 
 {{< copyable "shell-regular" >}}
 
 ```
-ansible-playbook bootsrap.yml --tags=pd
+ansible-playbook bootstrap.yml --tags=pd
 ```
 
 ```
