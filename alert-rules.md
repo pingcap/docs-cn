@@ -22,11 +22,6 @@ aliases: ['/docs-cn/v3.0/alert-rules/','/docs-cn/v3.0/reference/alert-rules/']
 
 ### 紧急级别报警项
 
-<<<<<<< HEAD
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
-
-=======
->>>>>>> df415647... Refine wording about severity in alert-rules.md (#5640)
 #### `TiDB_schema_error`
 
 * 报警规则：
