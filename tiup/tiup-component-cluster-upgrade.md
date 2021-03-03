@@ -39,6 +39,10 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 如果想要跳过该项检查，可以使用该选项。
 
+## --offline（boolean，默认 false）
+
+声明当前集群处于停止状态。指定该选项时，TiUP Cluster 仅原地替换集群组件的二进制文件，不执行迁移 Leader 以及重启服务等操作。
+
 ### -h, --help（boolean，默认 false）
 
 输出帮助信息。

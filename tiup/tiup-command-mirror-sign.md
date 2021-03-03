@@ -32,7 +32,7 @@ tiup mirror sign <manifest-file> [flags]
 
 通过网络签名时网络的访问超时时间，单位为秒。
 
-> **注意**
+> **注意：**
 >
 > 只有当 `<manifest-file>` 为网络地址时该选项有效。
 
