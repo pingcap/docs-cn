@@ -22,6 +22,8 @@ summary: 介绍混合部署 TiDB 集群的拓扑结构。
 
 [详细混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-multi-instance.yaml)
 
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
+
 ### 混合部署的关键参数介绍
 
 本节介绍单机多实例的关键参数，主要用于 TiDB、TiKV 的单机多实例部署场景。你需要按照提供的计算公式，将结果填写至上一步的配置模板中。
@@ -31,7 +33,7 @@ summary: 介绍混合部署 TiDB 集群的拓扑结构。
     - readpool 线程池自适应，配置 `readpool.unified.max-thread-count` 参数可以使 `readpool.storage` 和 `readpool.coprocessor` 共用统一线程池，同时要分别设置自适应开关。
 
         - 开启 `readpool.storage` 和 `readpool.coprocessor`：
-          
+
             ```yaml
             readpool.storage.use-unified-pool: true
             readpool.coprocessor.use-unified-pool: true
@@ -50,7 +52,7 @@ summary: 介绍混合部署 TiDB 集群的拓扑结构。
             ```yaml
             storage.block-cache.shared: true
             ```
-     
+
         - 计算公式如下：
 
             ```
@@ -92,7 +94,7 @@ summary: 介绍混合部署 TiDB 集群的拓扑结构。
 
     - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
 
-    - `numa_node` 这个配置参数与 `numactl --membind` 配置对应。 
+    - `numa_node` 这个配置参数与 `numactl --membind` 配置对应。
 
 > **注意：**
 >
