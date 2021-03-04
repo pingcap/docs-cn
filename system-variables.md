@@ -429,6 +429,8 @@ Constraint checking is always performed in place for pessimistic transactions (d
     * `get_lock` and `release_lock` functions
     * `LOCK IN SHARE MODE` syntax
     * `SQL_CALC_FOUND_ROWS` syntax
+    * `CREATE TEMPORARY TABLE` syntax
+    * `DROP TEMPORARY TABLE` syntax
 
 > **Note:**
 >
