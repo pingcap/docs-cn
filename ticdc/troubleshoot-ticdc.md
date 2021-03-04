@@ -347,7 +347,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 ## TiCDC 同步时，在下游执行 DDL 失败会有什么表现，如何恢复？
 
-从 4.0.11 开始，如果 DDL 执行失败，changefeed 会自动停止，checkpoint TS 为出错的 DDL 的 finish TS 减一。如果希望让 TiCDC 再次重试在下游执行这条 DDL，可以使用 `cdc cli changefeed resume` 恢复同步任务。
+从 4.0.11 开始，如果 DDL 执行失败，changefeed 会自动停止，checkpoint-ts 为出错的 DDL 的 finish-ts 减一。如果希望让 TiCDC 再次重试在下游执行这条 DDL，可以使用 `cdc cli changefeed resume` 恢复同步任务。
 
 {{< copyable "shell-regular" >}}
 
