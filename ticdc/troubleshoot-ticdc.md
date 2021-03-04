@@ -320,7 +320,7 @@ If you encounter an error above, it is recommended to use BR to restore the incr
 
 ## After I upgrade the TiCDC cluster to v4.0.8, the `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled` error is reported when I execute a changefeed
 
-Since v4.0.8, if the `canal` or `canal-json` protocol is used for output in a changefeed, TiCDC checks whether the old value feature is also enabled. If you disable the old value feature, this error is reported. To fix the error, take the following steps:
+Since v4.0.8, if the `canal` or `maxwell` protocol is used for output in a changefeed, TiCDC enables the old value feature automatically. However, if you have upgraded TiCDC from an earlier version to v4.0.8 or later, when the changefeed uses the `canal` or `maxwell` protocol and the old value feature is disabled, this error is reported. To fix the error, take the following steps:
 
 1. Set the value of `enable-old-value` in the changefeed configuration file to `true`.
 2. Execute `cdc cli changefeed pause` to pause the replication task.
