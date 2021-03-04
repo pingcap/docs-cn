@@ -316,7 +316,7 @@ START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
 采用因果一致性的两个事务有以下特性：
 
 + 有潜在因果关系的事务之间的逻辑顺序与物理提交顺序一致
-+ 不保证没有因果关系的事务之间的逻辑顺序
++ 无因果关系的事务之间的逻辑顺序得不到保证
 + 不加锁的读取不产生因果关系
 
 ### 有潜在因果关系的事务之间的逻辑顺序与物理提交顺序一致
@@ -326,29 +326,31 @@ START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
 | 事务 1 | 事务 2 |
 |-------|-------|
 | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY |
-| x = SELECT v FROM t where id = 1 FOR UPDATE | |
-| UPDATE t set v = $(x + 1) where id = 2 | |
+| x = SELECT v FROM t WHERE id = 1 FOR UPDATE | |
+| UPDATE t set v = $(x + 1) WHERE id = 2 | |
 | COMMIT | |
-| | UPDATE t SET v = 2 where id = 1 |
+| | UPDATE t SET v = 2 WHERE id = 1 |
 | | COMMIT |
 
-上面的例子中，事务 1 对 id = 1 的记录加了锁，事务 2 的事务对 id = 1 的记录进行了修改，所以事务 1 和 事务 2 有潜在的因果关系。所以即使使用因果一致性开启事务，只要事务 2 在事务 1 提交成功后才提交，逻辑上事务 2 就必定比事务 1 晚发生。换句话说，不可能发生某个事务读到了事务 2 对 id = 1 记录的修改，但却没有读到事务 1 对 id = 2 记录的修改的情况。
+上面的例子中，事务 1 对 `id = 1` 的记录加了锁，事务 2 的事务对 `id = 1` 的记录进行了修改，所以事务 1 和 事务 2 有潜在的因果关系。所以即使用因果一致性开启事务，只要事务 2 在事务 1 提交成功后才提交，逻辑上事务 2 就必定比事务 1 晚发生。因此，不存在某个事务读到了事务 2 对 `id = 1` 记录的修改，但却没有读到事务 1 对 `id = 2` 记录的修改的情况。
 
-### 不保证没有因果关系的事务之间的逻辑顺序
+### 无因果关系的事务之间的逻辑顺序得不到保证
 
-假设事务 1 和 事务 2 都采用因果一致性，并先后执行如下语句：
+假设 `id = 1` 和 `id = 2` 的记录最初值都为 0，事务 1 和 事务 2 都采用因果一致性，并先后执行如下语句：
 
-| 事务 1 | 事务 2 |
-|-------|-------|
-| START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY |
-| UPDATE t set v = 3 where id = 2 | |
-| | UPDATE t SET v = 2 where id = 1 |
-| COMMIT | |
-| | COMMIT |
+| 事务 1 | 事务 2 | 事务 3 |
+|-------|-------|-------|
+| START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | |
+| UPDATE t set v = 3 WHERE id = 2 | | |
+| | UPDATE t SET v = 2 WHERE id = 1 | |
+| | | BEGIN |
+| COMMIT | | |
+| | COMMIT | |
+| | | SELECT v FROM t WHERE id IN (1, 2) |
 
-和前一个例子不同，这个例子中，去掉了事务 1 对 id = 1 的记录的读取。此时事务 1 和事务 2 没有数据库可知的因果关系。如果使用因果一致性开启事务，即使物理时间上事务 2 在事务 1 提交完成后才开始提交，也不保证逻辑上事务 2 比事务 1 晚发生。
+在本例中，事务 1 不读取 `id = 1` 的记录。此时事务 1 和事务 2 没有数据库可知的因果关系。如果使用因果一致性开启事务，即使物理时间上事务 2 在事务 1 提交完成后才开始提交，TiDB 也不保证逻辑上事务 2 比事务 1 晚发生。
 
-此时如果有一个事务 3 在事务 1 提交前开启，并在事务 2 提交后读取 id = 1 和 2 的记录，可能发生能读到事务 2 的写入，但却读不到事务 1 的写入的情况。
+此时如果有一个事务 3 在事务 1 提交前开启，并在事务 2 提交后读取 `id = 1` 和 `id = 2` 的记录，事务 3 可能读到 `id = 1` 的值为 2，而 `id = 2` 的值为 0。
 
 ### 不加锁的读取不产生因果关系
 
@@ -357,10 +359,10 @@ START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
 | 事务 1 | 事务 2 |
 |-------|-------|
 | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY |
-| | UPDATE t SET v = 2 where id = 1 |
-| SELECT v FROM t where id = 1 | |
-| UPDATE t set v = 3 where id = 2 | |
+| | UPDATE t SET v = 2 WHERE id = 1 |
+| SELECT v FROM t WHERE id = 1 | |
+| UPDATE t set v = 3 WHERE id = 2 | |
 | | COMMIT |
 | COMMIT | |
 
-这个例子展示了，不加锁的读取不产生因果关系，否则会产生写偏斜的异常，是不合理的。所以上面的例子中，使用因果一致性的事务 1 和事务 2 没有确定的逻辑顺序。
+如本例所示，不加锁的读取不产生因果关系。事务 1 和事务 2 产生了写偏斜的异常，如果他们有业务上的因果关系，则是不合理的。所以本例中，使用因果一致性的事务 1 和事务 2 没有确定的逻辑顺序。
