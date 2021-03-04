@@ -21,6 +21,8 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 
 [跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml)
 
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
+
 ### 关键参数配置
 
 本节介绍跨数据中心部署 TiDB 集群的关键参数配置。
@@ -28,7 +30,7 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 #### TiKV 参数
 
 - 设置 gRPC 的压缩格式，默认为 `none`。为提高跨机房部署场景的目标节点间 gRPC 包的传输速度，建议设置为 gzip 格式。
-    
+
     ```yaml
     server.grpc-compression-type: gzip
     ```
