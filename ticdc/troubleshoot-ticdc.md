@@ -365,10 +365,9 @@ curl -X POST -d 'cf-id=[your-changefeed-id]' http://owner:port/capture/owner/reb
 
 来解决。
 
-## TiCDC 集群卡住，不断写 `region not receiving event from tikv for too long time` 的日志。
+## TiCDC 集群卡住，不断写 `region not receiving event from tikv for too long time` 的日志
 
 这是 TiKV 已知的 bug, 已在 v4.0.8 修复。原因是删除 region 后（例如 region merge 或迁移）没有正确关闭通信通道导致。此 bug 必需升级 TiKV 才能解决。
-
 
 ## TiCDC 出现 `[CDC:ErrPDEtcdAPIError]etcdserver: request is too large`, 如何排查？
 
