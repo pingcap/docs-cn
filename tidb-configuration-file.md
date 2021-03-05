@@ -133,6 +133,18 @@ The TiDB configuration file supports more options than command-line parameters. 
 - Unit: byte
 - Currently, the valid value range is `[3072, 3072*4]`. MySQL and TiDB (version < v3.0.11) do not have this configuration item, but both limit the length of the newly created index. This limit in MySQL is `3072`. In TiDB (version =< 3.0.7), this limit is `3072*4`. In TiDB (3.0.7 < version < 3.0.11), this limit is `3072`. This configuration is added to be compatible with MySQL and earlier versions of TiDB.
 
+### `table-column-count-limit` <span class="version-mark">New in v5.0.0-rc</span>
+
+- Sets the limit on the number of columns in a single table.
+- Default value: `1017`
+- Currently, the valid value range is `[1017, 4096]`.
+
+### `index-limit` <span class="version-mark">New in v5.0.0-rc</span>
+
+- Sets the limit on the number of indexes in a single table.
+- Default value: `64`
+- Currently, the valid value range is `[64, 512]`.
+
 ### `enable-telemetry` <span class="version-mark">New in v4.0.2</span>
 
 - Enables or disables the telemetry collection in TiDB.
