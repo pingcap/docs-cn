@@ -78,7 +78,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 ### 备份前的准备工作
 
-如果你使用的是 TiDB v4.0.8 及以上版本，相应版本的 BR 工具已支持自适应 GC。会自动将 `backupTS`(默认是最新 PD timestamp) 注册到 PD 的 `safePoint`，保证 `safePoint` 在备份期间不会向前移动，即可避免手动设置 GC。
+如果你使用的是 TiDB v4.0.8 及以上版本，相应版本的 BR 工具已支持自适应 GC。会自动将 `backupTS`(默认是最新 PD timestamp) 注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
 
 如果你使用的是 TiDB v4.0.7 及以下版本，则需要在 BR 备份前后，按照以下步骤手动设置 GC：
 
