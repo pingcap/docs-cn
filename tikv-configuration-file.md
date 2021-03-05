@@ -40,7 +40,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-memory-pool-quota`
 
 + gRPC 可使用的内存大小限制。
-+ 默认值: isize::MAX
++ 默认值: 无限制
 + 建议仅在出现内存不足 (OOM) 的情况下限制内存使用。需要注意，限制内存使用可能会导致卡顿。
 
 ### `grpc-raft-conn-num`
@@ -143,7 +143,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `use-unified-pool`
 
 + 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理存储请求。该选项值为 false 时，使用单独的存储线程池。通过本节 (`readpool.storage`) 中的其余配置项配置单独的线程池。
-+ 默认值：false
++ 默认值：如果本节 (`readpool.storage`) 中没有其他配置，默认为 true。否则，为了升级兼容性，默认为 false，请根据需要更改 [`readpool.unified`](#readpoolunified) 中的配置后再启用该选项。
 
 ### `high-concurrency`
 
@@ -248,13 +248,13 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 ### `scheduler-concurrency`
 
 + scheduler 内置一个内存锁机制，防止同时对一个 key 进行操作。每个 key hash 到不同的槽。
-+ 默认值：512 * 1024
++ 默认值：524288
 + 最小值：1
 
 ### `scheduler-worker-pool-size`
 
-+ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。
-+ 默认值：cpu_num >= 16 { 8 } else { 4 }
++ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。如果CPU核心数量超过16，默认为8，否则默认为4。
++ 默认值：4
 + 最小值：1
 
 ### `scheduler-pending-write-threshold`
@@ -327,6 +327,13 @@ raftstore 相关的配置项。
 + 发起选举时最多经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks * 2。
 + 默认值：0
 + 最小值：0
+
+### `raft-max-size-per-msg`
+
++ 产生的单个消息包的大小限制，软限制。
++ 默认值：1MB
++ 最小值：0
++ 单位：MB
 
 ### `raft-max-inflight-msgs`
 
@@ -698,7 +705,6 @@ rocksdb 相关的配置项。
 
 ### `stats-dump-period`
 
-+ 开启 Pipelined Write 的开关。
 + 默认值：10m
 
 ### `compaction-readahead-size`
@@ -1145,7 +1151,7 @@ raftdb 相关配置项。
 
 + RocksDB 后台线程个数。
 + 默认值：4
-+ 最小值：1
++ 最小值：2
 
 ### `max-sub-compactions`
 
@@ -1167,7 +1173,7 @@ raftdb 相关配置项。
 + CA 文件路径
 + 默认值：""
 
-### `cert-path`
+### `cert-path`：：
 
 + 包含 X509 证书的 PEM 文件路径
 + 默认值：""
