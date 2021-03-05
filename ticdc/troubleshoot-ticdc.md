@@ -345,9 +345,9 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
 
-## 从 CDC 中删除了一个 checkpoint 滞后的 changefeed 后，TiKV 的 gc-safepoint 出现大幅推进，导致 TiKV 性能下降，如何解决？
+## 从 CDC 中删除了一个 checkpoint 滞后的 changefeed 后，TiKV 的 `gc-safepoint` 出现大幅推进，导致 TiKV 性能下降，如何解决？
 
-CDC 会在 PD 中设置 gc-safepoint 保证可能将被同步的数据不被 TiKV 垃圾回收机制清除，该 gc-safepoint 以进度最落后的 changefeed 为准。如果一个 changefeed 落后了若干天，之后用户将该 changefeed 删除，gc-safepoint 很可能会前进若干天，导致 TiKV 在短时间内 GC 大量数据，影响正常业务。这种情况下可以通过配置 gc.max-write-bytes-per-sec 限制 GC worker 每秒数据写入量，降低对正常请求的影响。可以通过 tikv-ctl 动态修改
+CDC 会在 PD 中设置 `gc-safepoint` 保证可能将被同步的数据不被 TiKV 垃圾回收机制清除，该 `gc-safepoint` 以进度最落后的 changefeed 为准。如果一个 changefeed 落后了若干天，之后用户将该 changefeed 删除，`gc-safepoint` 会突然前进若干天，导致 TiKV 在短时间内 GC 大量数据，影响正常业务。这种情况下可以通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响。可以通过 tikv-ctl 动态修改
 
 ```
 tikv-ctl --host=ip:port modify-tikv-config -n gc.max_write_bytes_per_sec -v 10MB
@@ -355,48 +355,48 @@ tikv-ctl --host=ip:port modify-tikv-config -n gc.max_write_bytes_per_sec -v 10MB
 
 上述命令中 ip:port 指的是 TiKV 节点的地址, 可能需要在所有节点上运行， 10MB 可以改为其他适当的数值。
 
-## CDC 多节点负载分配不均怎么解决？
-出于稳定性考虑，CDC 新建的 changefeed 中默认不开启定期自动再平衡。再平衡只在新节点加入时触发。此外 CDC 在调度表时会尽量保证轻负载节点优先。如果偶然出现了不平衡现象，可以尝试通过触发 
+## TiCDC 多节点负载分配不均怎么解决？
+
+出于稳定性考虑，TiCDC 新建的 changefeed 中默认不开启定期自动再平衡。再平衡只在新节点加入时触发。此外 TiCDC 在调度表时会尽量保证轻负载节点优先。如果偶然出现了不平衡现象，可以尝试通过触发 
 
 ```
-curl -X POST -d 'cf-id=[your-changefeed-id]' http://owner:port/capture/owner/rebalance_trigger 解决。
+curl -X POST -d 'cf-id=[your-changefeed-id]' http://owner:port/capture/owner/rebalance_trigger
 ```
+
+来解决。
 
 ## TiCDC 集群卡住，不断写 `region not receiving event from tikv for too long time` 的日志。
 
-这是 TiKV 已知的 bug，已在 v4.0.8 修复。原因是删除 region 后（例如 region merge 或迁移）没有正确关闭通信通道导致。此 bug 必需升级 TiKV 才能解决。
+这是 TiKV 已知的 bug, 已在 v4.0.8 修复。原因是删除 region 后（例如 region merge 或迁移）没有正确关闭通信通道导致。此 bug 必需升级 TiKV 才能解决。
 
 
-## CDC 出现 `[CDC:ErrPDEtcdAPIError]etcdserver: request is too large` 如何排查？
+## TiCDC 出现 `[CDC:ErrPDEtcdAPIError]etcdserver: request is too large`, 如何排查？
 
-CDC 使用 Etcd 管理同步的进度，包括所有 table 的信息。如果 table 数量过多，有可能导致一个 Etcd key 中储存的数据过长，超过 Etcd 的限制 (默认 1.5 MB). 这时 CDC 在尝试写入 Etcd 时会遇到 `etcdserver: request is too large` 的错误。目前建议一个 changefeed 同步不超过 5000 个表。如果用户想同步的表数量过多，建议拆分 changefeed 来避免这个问题。
-
-
-## CDC 向下游执行 DDL 时如果失败会有什么表现？如何排查？
-
-CDC 向下游执行 DDL 时如果遇到错误，会采用如下的处理方式：
-对于可恢复错误，比如 `Table already exists` 等可能由重复执行同一个 DDL 导致的错误，CDC 会忽略错误，并尝试继续同步。
-对于其他错误，CDC 会尝试重试 20 次。如果依然失败，changefeed 会自动停止 (stop).
-
-* 注意: 由于一个 bug, 在 4.0.10 及之前，以及 5.0.0-rc 中，DDL 失败后 changefeed 虽然会自动停止，但是 changefeed summary 中没有错误信息。
-
-* 在 4.0.10 及之前，以及 5.0.0-rc 中，DDL 错误后 changefeed 的 checkpoint 会停在 DDL 的 finishTs。如果从 finishTs resume changefeed, CDC 会尝试再次执行该 DDL；在其他版本中，DDL 错误后 changefeed 的 checkpoint 会停在 DDL 的 `finishTs - 1`, 如果从 `finishTs` 继续，CDC 会跳过 DDL.
-
-## 用户使用 CDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`.
-
-遇到这种情况，需要使用 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 指令查询当前的 gc_safe_point 与 service_gc_safe_points。如果 gc_safe_point 小于 CDC 的 changefeed，则用户直接在 create changefeed 指令后加上 `--disable-gc-check` 参数创建 changefeed 即可。
-如果上述指令结果中没有 gc_worker service_id 项目, 请将上述指令执行结果反应到 asktug 论坛或对应的支持 DBA。
+TiCDC 使用 Etcd 管理同步的进度，包括所有数据表的信息。如果数据表数量过多，有可能导致一个 Etcd key 中储存的数据过长，超过 Etcd 的限制 (默认 1.5 MB). 这时 TiCDC 在尝试写入 Etcd 时会遇到 `etcdserver: request is too large` 的错误。目前建议一个 changefeed 同步不超过 5000 个表。如果想同步的表数量过多，建议拆分 changefeed 来避免这个问题。
 
 
-## 用户使用 CDC v4.0.10 创建 changefeed enable-old-value 设置为 true 后 cdc 执行到下游的语句仍然为 REPLACE INTO 而非 UPDATE.
+## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`, 如何解决？
 
-用户在创建 changefeed 时需要显式指定 safe-mode 为 false 才会是 update，执行步骤为:
+
+如果 PD 版本小于等于 v4.0.8 或者近期内从这些版本升级，这个问题可能是 PD 的已知 bug 导致的。
+
+请使用 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 指令查询当前的 `gc_safe_point` 与 `service_gc_safe_points`. 如果 `gc_safe_point` 小于 TiCDC 的 changefeed 的 checkpoint，则直接在 create changefeed 指令后加上 `--disable-gc-check` 参数创建 changefeed 即可。
+
+> **注意：**
+> 如果上述条件不满足 (如果 PD 并非有 bug 的版本或 `gc_safe_point` 大于当前 checkpoint)，为了避免 TiCDC 遗漏数据的风险，请联系 PingCAP 或社区技术支持。
+
+
+## 使用 TiCDC 创建 changefeed 时，`enable-old-value` 设置为 true 后 cdc 执行到下游的语句仍然为 `REPLACE INTO` 而非 `UPDATE`, 这是预期的吗？
+
+创建 changefeed 时需要显式指定 `safe-mode` 为 `false` 才会让 MySQL sink 使用 `update`, 执行步骤为:
 
 ```
-tiup ctl cdc changefeed pause -c simple-replication-task
-tiup ctl cdc changefeed update -c simple-replication-task --sink-uri "mysql://root:@127.0.0.1:3306/?safe-mode=false" --config ./changefeed.toml
-tiup ctl cdc changefeed resume -c simple-replication-task
+cdc cli changefeed pause -c simple-replication-task --pd=http://10.0.10.25:2379
+
+cdc cli changefeed update -c simple-replication-task
+ --sink-uri "mysql://root:@127.0.0.1:3306/?safe-mode=false" --config ./changefeed.toml --pd=http://10.0.10.25:2379
+
+cdc cli changefeed resume -c simple-replication-task --pd=http://10.0.10.25:2379
 ```
 
-该功能并没有对外开放，因为 TiCDC 还不提供 exactly once delivery 的保证；
-开启 safe-mode=false，因为有重复消息的存在，会出现同步中断的风险。不建议使用
+由于 TiCDC 还不提供 exactly once delivery 的保证，在设置 `safe-mode = false` 后因为有重复消息的存在，会出现同步中断的风险。在生产环境下除非是为了解决紧急情况或从事故中恢复，否则**不建议使用**。
