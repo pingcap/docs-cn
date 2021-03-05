@@ -374,9 +374,7 @@ curl -X POST -d 'cf-id=[your-changefeed-id]' http://owner:port/capture/owner/reb
 
 TiCDC 使用 Etcd 管理同步的进度，包括所有数据表的信息。如果数据表数量过多，有可能导致一个 Etcd key 中储存的数据过长，超过 Etcd 的限制 (默认 1.5 MB). 这时 TiCDC 在尝试写入 Etcd 时会遇到 `etcdserver: request is too large` 的错误。目前建议一个 changefeed 同步不超过 5000 个表。如果想同步的表数量过多，建议拆分 changefeed 来避免这个问题。
 
-
 ## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`, 如何解决？
-
 
 如果 PD 版本小于等于 v4.0.8 或者近期内从这些版本升级，这个问题可能是 PD 的已知 bug 导致的。
 
@@ -384,7 +382,6 @@ TiCDC 使用 Etcd 管理同步的进度，包括所有数据表的信息。如�
 
 > **注意：**
 > 如果上述条件不满足 (如果 PD 并非有 bug 的版本或 `gc_safe_point` 大于当前 checkpoint)，为了避免 TiCDC 遗漏数据的风险，请联系 PingCAP 或社区技术支持。
-
 
 ## 使用 TiCDC 创建 changefeed 时，`enable-old-value` 设置为 true 后 cdc 执行到下游的语句仍然为 `REPLACE INTO` 而非 `UPDATE`, 这是预期的吗？
 
