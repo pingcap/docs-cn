@@ -40,7 +40,7 @@ To support distributed transactions, TiDB adopts two-phase commit (2PC) in optim
     1. TiDB selects a Primary Key from the data to be written.
     2. TiDB receives the information of Region distribution from PD, and groups all keys by Region accordingly.
     3. TiDB sends prewrite requests to all TiKV nodes involved. Then, TiKV checks whether there are conflict or expired versions. Valid data is locked.
-    4. TiDB receives all requests in the prewrite phase and the prewrite is successful.
+    4. TiDB receives all responses in the prewrite phase and the prewrite is successful.
     5. TiDB receives a commit version number from PD and marks it as `commit_ts`.
     6. TiDB initiates the second commit to the TiKV node where Primary Key is located. TiKV checks the data, and cleans the locks left in the prewrite phase.
     7. TiDB receives the message that reports the second phase is successfully finished.
