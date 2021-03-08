@@ -192,25 +192,7 @@ tiup cluster start tidb-test
 
 ## 第 8 步：验证集群运行状态
 
-- 通过 TiUP 检查集群状态
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup cluster display tidb-test
-```
-
-预期结果输出，注意 Status 状态信息为 `Up` 说明集群状态正常
-
-- 执行如下命令登录数据库：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-mysql -u root -h 10.0.1.4 -P 4000
-```
-
-此外，也需要验证监控系统、[TiDB Dashboard](/dashboard/dashboard-intro.md) 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
+在完成集群启动后，需要验证监控系统、[TiDB Dashboard](/dashboard/dashboard-intro.md) 的运行状态，以及简单查询的执行。验证方式可参考[验证集群运行状态](/post-installation-check.md)。
 
 ## 探索更多
 
