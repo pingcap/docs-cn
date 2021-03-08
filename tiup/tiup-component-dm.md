@@ -62,4 +62,5 @@ tiup dm [command] [flags]
 - [patch](/tiup/tiup-component-dm-patch.md)：替换已部署集群的某个服务
 - [destroy](/tiup/tiup-component-dm-destroy.md)：销毁指定集群
 - [audit](/tiup/tiup-component-dm-audit.md)：查询集群操作审计日志
+- [replay](/tiup/tiup-component-dm-replay.md)：重试指定命令
 - [help](/tiup/tiup-component-dm-help.md)：输出帮助信息
