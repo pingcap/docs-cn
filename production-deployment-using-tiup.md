@@ -296,10 +296,6 @@ tiup cluster start tidb-test
 
 预期结果输出 ```Started cluster `tidb-test` successfully``` 标志启动成功。
 
-## 第 8 步：验证集群运行状态
-
-在完成集群启动后，需要验证监控系统、[TiDB Dashboard](/dashboard/dashboard-intro.md) 的运行状态，以及简单查询的执行。验证方式可参考[验证集群运行状态](/post-installation-check.md)。
-
 ## 探索更多
 
 如果你已同时部署了 [TiFlash](/tiflash/tiflash-overview.md)，接下来可参阅以下文档：
