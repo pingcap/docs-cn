@@ -418,7 +418,7 @@ region4:   [ 3<<61     ,  +inf  )
 
 ## 注意事项
 
-Split Region 语句切分的 Region 超过在 PD 上的配置项 `split-merge-interval` 时间后（默认 1h），且如果新分裂出来的 Region 的 size 小于配置项 `max-merge-region-size` 的值，或者 Region 中的 key 的数量小于配置项 `max-merge-region-keys` 的值时，该 Region 可能会和相邻的 Region 合并。相关配置项的介绍和设置可以参考 [PD Control 使用说明](/pd-control.md)
+Split Region 语句切分的 Region 会受到 PD 中 Region Merge 调度的控制，需要避免新切分的 Region 不久后又被 PD 重新 Merge 的情况，详情请参考 [PD 调度策略最佳实践/Region Merge](/best-practices/pd-scheduling-best-practices.md#region-merge)。动态修改 Region Merge 相关的配置项，请参考 [PD Control 使用说明](/pd-control.md)。
 
 ## MySQL 兼容性
 
