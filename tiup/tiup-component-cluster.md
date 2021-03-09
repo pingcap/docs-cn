@@ -65,6 +65,7 @@ tiup cluster [command] [flags]
 - [clean](/tiup/tiup-component-cluster-clean.md)：删除指定集群数据
 - [destroy](/tiup/tiup-component-cluster-destroy.md)：销毁指定集群
 - [audit](/tiup/tiup-component-cluster-audit.md)：查询集群操作审计日志
+- [replay](/tiup/tiup-component-cluster-replay.md)：重试指定命令
 - [enable](/tiup/tiup-component-cluster-enable.md)：开启指定集群或服务开机自启动
 - [disable](/tiup/tiup-component-cluster-disable.md)：关闭指定集群或服务开机自启动
 - [help](/tiup/tiup-component-cluster-help.md)：输出帮助信息
