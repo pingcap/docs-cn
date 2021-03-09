@@ -23,7 +23,7 @@
 | 17 | [MD032 - Lists should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md032---lists-should-be-surrounded-by-blank-lines) | 列表（包括有序和无序列表）前后必须各空一行。 |
 | 18 | [MD031 - Fenced code blocks should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md031---fenced-code-blocks-should-be-surrounded-by-blank-lines) | 代码块前后必须各空一行。 |
 | 29 | [MD034 - Bare URL used](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md034---bare-url-used) | 文档中禁止出现裸露的 URL。如果希望用户能直接点击并打开该 URL，则使用一对尖括号 (`<URL>`) 包裹该 URL。如果由于特殊情况必须使用裸露的 URL，不需要用户通过点击打开，则使用一对反引号 (``` `URL` ```) 包裹该 URL。 |
-| 20 | [MD037 - Spaces inside emphasis markers](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md037---spaces-inside-emphasis-markers) | 使用加粗、斜体等强调效果时，在强调标识符内禁止出现多余的空格。如不能出现 ``` ** 加粗文本 ** ```。 |
+| 20 | [MD037 - Spaces inside emphasis markers](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md037---spaces-inside-emphasis-markers) | 使用加粗、斜体等强调效果时，在强调标识符内禁止出现多余的空格。如不能出现 ``` `** 加粗文本 **` ```。 |
 | 21 | [MD038 - Spaces inside code span elements](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md038---spaces-inside-code-span-elements) | 单个反引号包裹的代码块内禁止出现多余的空格。如不能出现 ``` ` 示例文本 ` ```。 |
 | 22 | [MD039 - Spaces inside link text](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md039---spaces-inside-link-text) | 链接文本两边禁止出现多余的空格。如不能出现 `[ 某链接 ](https://www.example.com/)`。 |
 | 23 | [MD042 - No empty links](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md042---no-empty-links) | 链接必须有链接路径。如不能出现`[空链接]()`或`[空链接](#)`等情况。 |
