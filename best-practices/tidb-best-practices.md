@@ -155,8 +155,7 @@ for i from 0 to 23:
 
 ### 查询
 
-看业务的查询需求以及具体的语句，可以参考 [TiDB 专用系统变量和语法](/system-variables.md)这篇文档
-可以通过 SET 语句控制 SQL 执行的并发度，另外通过 Hint 控制 Join 物理算子选择。
+看业务的查询需求以及具体的语句，可以参考 [TiDB 专用系统变量和语法](/system-variables.md)这篇文档。可以通过 SET 语句控制 SQL 执行的并发度，另外通过 Hint 控制 Join 物理算子选择。
 
 另外 MySQL 标准的索引选择 Hint 语法，也可以用，通过 `Use Index/Ignore Index hint` 控制优化器选择索引。
 
@@ -180,8 +179,7 @@ TiDB [使用 Grafana + Prometheus 监控系统状态](/tidb-monitoring-framework
 
 了解一个系统或者解决使用中的问题最好的方法是阅读文档，明白实现原理。TiDB 有大量的官方文档，希望大家在遇到问题的时候能先尝试通过文档或者搜索 Issue list 寻找解决方案。官方文档查看 [docs-cn](https://github.com/pingcap/docs-cn)。如果希望阅读英文文档，可以查看 [docs](https://github.com/pingcap/docs)。
 
-其中的 [FAQ](/faq/tidb-faq.md)
-和[故障诊断](/troubleshoot-tidb-cluster.md)章节建议大家仔细阅读。另外 TiDB 还有一些不错的工具，也有配套的文档，具体的见各项工具的 GitHub 页面。
+其中的 [FAQ](/faq/tidb-faq.md) 和[故障诊断](/troubleshoot-tidb-cluster.md)章节建议大家仔细阅读。另外 TiDB 还有一些不错的工具，也有配套的文档，具体的见各项工具的 GitHub 页面。
 
 除了文档之外，还有很多不错的文章介绍 TiDB 的各项技术细节内幕，大家可以关注下面这些文章发布渠道：
 
