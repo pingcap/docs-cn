@@ -416,6 +416,10 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
+## 注意事项
+
+Split Region 语句切分的 Region 超过配置项 `split-merge-interval` 时间后，如果 Region 的 size 小于配置项 `max-merge-region-size` 的值，或者 Region 中的 key 的数量小于配置项 `max-merge-region-keys` 的值时，该 Region 可能会和相邻的 Region 合并。相关配置项的介绍和设置可以参考 [PD Control 使用说明](pd-control.md)
+
 ## MySQL 兼容性
 
 该语句是 TiDB 对 MySQL 语法的扩展。
