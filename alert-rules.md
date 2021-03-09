@@ -8,13 +8,19 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
+按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
+
+|  严重程度 |  说明   |
+| :-------- | :----- |
+|  紧急级别  | 最高严重程度，服务不可用，通常由于服务停止或节点故障导致，此时需要**马上进行人工干预** |
+|  严重级别  |  服务可用性下降，需要用户密切关注异常指标 |
+|  警告级别  |  对某一问题或错误的提醒   |
+
 ## TiDB 报警规则
 
-本节介绍了 TiDB 组件的报警项。根据严重级别，报警项可分为三类，按照严重程度由高到低依次为：紧急级别、重要级别、警告级别。
+本节介绍了 TiDB 组件的报警项。
 
 ### 紧急级别报警项
-
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预。
 
 #### `TiDB_schema_error`
 
@@ -73,9 +79,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiDB 进程是否 OOM。
     * 检查机器是否发生了重启。
 
-### 重要级别报警项
-
-对于重要级别的报警，需要密切关注异常指标。
+### 严重级别报警项
 
 #### `TiDB_server_panic_total`
 
@@ -92,8 +96,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     收集 panic 日志，定位原因。
 
 ### 警告级别报警项
-
-警告级别的报警是对某一问题或错误的提醒。
 
 #### `TiDB_memory_abnormal`
 
@@ -185,11 +187,9 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ## PD 报警规则
 
-本节介绍了 PD 组件的报警项。根据严重级别，报警项可分为三类，按照严重程度由高到低依次为：紧急级别、重要级别、警告级别。
+本节介绍了 PD 组件的报警项。
 
 ### 紧急级别报警项
-
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
 
 #### `PD_cluster_offline_tikv_nums`
 
@@ -206,9 +206,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiKV 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
     * 如果确定 TiKV 无法恢复，可做下线处理。
 
-### 重要级别报警项
-
-对于重要级别的报警，需要密切关注异常指标。
+### 严重级别报警项
 
 #### `PD_etcd_write_disk_latency`
 
@@ -242,8 +240,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 观察 region health 面板，查看 `miss_peer_region_count` 是否在不断减少。
 
 ### 警告级别报警项
-
-警告级别的报警是对某一问题或错误的提醒。
 
 #### `PD_cluster_lost_connect_tikv_nums`
 
@@ -405,11 +401,9 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ## TiKV 报警规则
 
-本节介绍了 TiKV 组件的报警项。根据严重级别，报警项可分为三类，按照严重程度由高到低依次为：紧急级别、重要级别、警告级别。
+本节介绍了 TiKV 组件的报警项。
 
 ### 紧急级别报警项
-
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
 
 #### `TiKV_memory_used_too_fast`
 
@@ -445,9 +439,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     2. 查看该 `tidb-server` 的日志，grep gc_worker tidb.log；
     3. 如果发现这段时间一直在 resolve locks（最后一条日志是 `start resolve locks`）或者 delete ranges（最后一条日志是 `start delete {number} ranges`），说明 GC 进程是正常的。否则需要报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
 
-### 重要级别报警项
-
-对于重要级别的报警，需要密切关注异常指标。
+### 严重级别报警项
 
 #### `TiKV_server_report_failure_msg_total`
 
@@ -633,8 +625,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ### 警告级别报警项
 
-警告级别的报警是对某一问题或错误的提醒。
-
 #### `TiKV_leader_drops`
 
 * 报警规则：
@@ -809,11 +799,9 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ## Node_exporter 主机报警规则
 
-本节介绍了 Node_exporter 主机的报警项。根据严重级别，报警项可分为三类，按照严重程度由高到低依次为：紧急级别、重要级别、警告级别。
+本节介绍了 Node_exporter 主机的报警项。
 
 ### 紧急级别报警项
-
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
 
 #### `NODE_disk_used_more_than_80%`
 
@@ -858,9 +846,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 登录机器创建文件测试是否正常。
     * 检查该服务器硬盘指示灯是否正常，如异常，需更换磁盘并修复该机器文件系统。
 
-### 重要级别报警项
-
-对于重要级别的报警，需要密切关注异常指标。
+### 严重级别报警项
 
 #### `NODE_memory_used_more_than_80%`
 
@@ -878,8 +864,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 登录机器，执行 `free -m` 命令查看内存使用情况，执行 `top` 看是否有异常进程的内存使用率过高。
 
 ### 警告级别报警项
-
-警告级别的报警是对某一问题或错误的提醒。
 
 #### `NODE_node_overload`
 
@@ -959,11 +943,9 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ## Blackbox_exporter TCP、ICMP 和 HTTP 报警规则
 
-本节介绍了 Blackbox_exporter TCP、ICMP 和 HTTP 的报警项。根据严重级别，报警项可分为三类，按照严重程度由高到低依次为：紧急级别、重要级别、警告级别。
+本节介绍了 Blackbox_exporter TCP、ICMP 和 HTTP 的报警项。
 
 ### 紧急级别报警项
-
-紧急级别的报警通常由于服务停止或节点故障导致，此时需要马上进行人工干预操作。
 
 #### `TiDB_server_is_down`
 
@@ -1142,8 +1124,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查监控机与 Pushgateway 服务所在机器之间网络是否正常。
 
 ### 警告级别报警项
-
-警告级别的报警是对某一问题或错误的提醒。
 
 #### `BLACKER_ping_latency_more_than_1s`
 
