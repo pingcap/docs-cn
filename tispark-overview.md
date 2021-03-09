@@ -172,8 +172,7 @@ spark-sql> select count(*) from lineitem;
 Time taken: 0.673 seconds, Fetched 1 row(s)
 ```
 
-SQuirreLSQL 和 hive-beeline 可以使用 JDBC 连接 Thrift 服务器。
-例如，使用 beeline 连接：
+SQuirreLSQL 和 hive-beeline 可以使用 JDBC 连接 Thrift 服务器。例如，使用 beeline 连接：
 
 ```sh
 ./beeline
@@ -206,8 +205,7 @@ TiSpark on PySpark 是为兼容 PySpark 而开发的组件。具体使用请参�
 
 ## 和 Hive 一起使用 TiSpark
 
-TiSpark 可以和 Hive 混合使用。
-在启动 Spark 之前，需要添加 HADOOP_CONF_DIR 环境变量指向 Hadoop 配置目录并且将 `hive-site.xml` 拷贝到 `$SPARK_HOME/conf` 目录下。
+TiSpark 可以和 Hive 混合使用。在启动 Spark 之前，需要添加 HADOOP_CONF_DIR 环境变量指向 Hadoop 配置目录并且将 `hive-site.xml` 拷贝到 `$SPARK_HOME/conf` 目录下。
 
 ```
 val tisparkDF = spark.sql("select * from tispark_table").toDF
@@ -254,8 +252,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 
-统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。
-可以在`spark-defaults.conf`中开启或关闭统计信息读取：
+统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。可以在`spark-defaults.conf`中开启或关闭统计信息读取：
 
 | Property Name | Default | Description
 | --------   | -----:   | :----: |

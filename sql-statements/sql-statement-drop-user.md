@@ -6,7 +6,11 @@ aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-drop-user/','/docs-cn/v2.1
 
 # DROP USER
 
+<<<<<<< HEAD
 `DROP USER` 语句用于从 TiDB 系统数据库中删除用户。如果用户不存在，使用关键词 `IF EXISTS` 可避免出现警告。
+=======
+`DROP USER` 语句用于从 TiDB 系统数据库中删除用户。如果用户不存在，使用关键词 `IF EXISTS` 可避免出现警告。执行 `DROP USER` 语句需要拥有 `CREATE USER` 权限。
+>>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
 
 ## 语法图
 
