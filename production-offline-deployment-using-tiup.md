@@ -232,6 +232,7 @@ alertmanager_servers:
 ## 5. 部署 TiDB 集群
 
 执行以下命令来部署 TiDB 集群。
+
 {{< copyable "shell-regular" >}}
 
 ```bash

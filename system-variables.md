@@ -178,9 +178,21 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_check_mb4_value_in_utf8`
 
 - 作用域：INSTANCE
+<<<<<<< HEAD
 - 默认值：1
 - 这个变量用来设置是否开启对字符集为 UTF8 类型的数据做合法性检查，默认值 `1` 表示开启检查。这个默认行为和 MySQL 是兼容的。
 - 如果是旧版本升级时，可能需要关闭该选项，否则由于旧版本（v2.1.1 及之前）没有对数据做合法性检查，所以旧版本写入非法字符串是可以写入成功的，但是新版本加入合法性检查后会报写入失败。具体可以参考[升级后常见问题](/faq/upgrade-faq.md)。
+=======
+- 默认值：ON
+- 设置该变量为 `ON` 可强制只存储[基本多文种平面 (BMP)](https://zh.wikipedia.org/zh-hans/Unicode字符平面映射) 编码区段内的 `utf8` 字符值。若要存储 BMP 区段外的 `utf8` 值，推荐使用 `utf8mb4` 字符集。
+- 早期版本的 TiDB 中 (v2.1.x)，`utf8` 检查更为宽松。如果你的 TiDB 集群是从早期版本升级的，推荐关闭该变量，详情参阅[升级与升级后常见问题](/faq/upgrade-faq.md)。
+
+### `tidb_checksum_table_concurrency`
+
+- 作用域：SESSION
+- 默认值：4
+- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+>>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
 
 ### `tidb_config`
 
@@ -306,6 +318,32 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：1
 - 这个变量用来设置是否启用 Coprocessor 的 `Chunk` 数据编码格式。
 
+<<<<<<< HEAD
+=======
+### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 这个变量用于控制是否开启[聚簇索引](/clustered-indexes.md)特性。
+    - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
+    - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
+    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了聚簇索引特性。
+- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 `row_id` 上并用额外创建的主键索引指向 `row_id`。
+
+    开启该特性对性能的影响主要体现在以下几个方面:
+
+    - 插入的时候每行会减少一个索引 key 的写入。
+    - 使用主键作为等值条件查询的时候，会节省一次读取请求。
+    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。
+    - 使用多列主键的前缀作为等值或范围条件查询的时候，可以节省多次读取请求。
+
+### `tidb_enable_collect_execution_info`
+
+- 作用域：INSTANCE
+- 默认值：ON
+- 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
+
+>>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
 ### `tidb_enable_fast_analyze`
 
 - 作用域：SESSION | GLOBAL
@@ -567,9 +605,14 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_opt_agg_push_down`
 
 - 作用域：SESSION
+<<<<<<< HEAD
 - 默认值：0
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。
 当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
+=======
+- 默认值：OFF
+- 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
+>>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
 
 ### `tidb_opt_correlation_exp_factor`
 
@@ -587,9 +630,14 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_opt_distinct_agg_push_down`
 
 - 作用域：SESSION
+<<<<<<< HEAD
 - 默认值：0
 - 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
 当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
+=======
+- 默认值：OFF
+- 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
+>>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
 
 在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
 
