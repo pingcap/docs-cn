@@ -155,10 +155,12 @@ source /home/tidb/.bash_profile
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster template > topology.yaml ### 混合部署可以使用 --full 生成的建议拓扑模板，跨机房部署可以使用 --multi-dc 生成的建议拓扑模板。
-vi topology.yaml
+tiup cluster template > topology.yaml 
 ```
-```yaml
+> **注意：**
+>混合部署场景也可以使用 --full 生成的建议拓扑模板，跨机房部署场景可以使用 --multi-dc 生成的建议拓扑模板。
+```shell
+vi topology.yaml
 global:
   user: "tidb"
   ssh_port: 22
@@ -247,8 +249,6 @@ alertmanager_servers:
 
 ```shell
 tiup cluster check ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
-```
-```shell
 tiup cluster check ./topology.yaml --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
 ```shell
