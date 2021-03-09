@@ -42,3 +42,7 @@ TiKV 侧的日志脱敏需要将 [`security.redact-info-log`](/tikv-configuratio
 ## PD 组件日志脱敏
 
 PD 侧的日志脱敏需要将 [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v500-rc-版本开始引入) 的值设为 `true`。该配置项值默认为 `false`，即关闭脱敏。
+
+## TiFlash 组件日志脱敏
+
+TiFlash 侧的日志脱敏需要将 tiflash-server 里 [`security.redact_info_log`](/tiflash-configuration.md#configure-the-tiflashtoml-file) 的值以及 tiflash-learner 里的 [`security.redact-info-log`](/tiflash-configuration.md#configure-the-tiflash-learnertoml-file) 的值均设为 `true`。两配置项默认值均为 `false`，即关闭脱敏。
