@@ -37,6 +37,9 @@
       + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
       + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
+  + [性能测试方法]
+      + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
+      + [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
