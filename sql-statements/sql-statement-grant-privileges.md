@@ -6,11 +6,7 @@ aliases: ['/docs-cn/v2.1/sql-statements/sql-statement-grant-privileges/','/docs-
 
 # `GRANT <privileges>`
 
-<<<<<<< HEAD
 `GRANT <privileges>` 语句用于为 TiDB 中已存在的用户分配权限。TiDB 中的权限系统同 MySQL 一样，都基于数据库/表模式来分配凭据。
-=======
-`GRANT <privileges>` 语句用于为 TiDB 中已存在的用户分配权限。TiDB 中的权限系统同 MySQL 一样，都基于数据库/表模式来分配凭据。执行 `GRANT <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
->>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
 
 ## 语法图
 

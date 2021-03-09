@@ -69,12 +69,8 @@ tidb-server 无法启动的常见情况包括：
 
 + 端口被占用：`lsof -i:port`
 
-<<<<<<< HEAD
     请确保 tikv-server 启动所需要的端口未被占用： `lsof -i:port`。
-=======
-    请确保 tikv-server 启动所需要的端口未被占用：`lsof -i:port`。
 
->>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
 + 无法连接 pd-server
 
     首先检查 pd-server 的进程状态和日志。确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
