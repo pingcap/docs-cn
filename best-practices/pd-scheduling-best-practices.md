@@ -103,7 +103,7 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 两�
 
 Region merge 指的是为了避免删除数据后大量小甚至空的 Region 消耗系统资源，通过调度把相邻的小 Region 合并的过程。Region merge 由 `mergeChecker` 负责，其过程与 `replicaChecker` 类似：PD 在后台遍历，发现连续的小 Region 后发起调度。
 
-具体来说，当某个新分裂出来的 Region 超过配置项 `split-merge-interval` 时间后（默认 1h），且这个 Region 的 size 小于配置项 `max-merge-region-size` 的值（默认 20MiB），或者 Region 中的 key 的数量小于配置项 `max-merge-region-keys` 的值时（默认 200000），该 Region 会触发 Region merge 的调度。相关配置项的描述，请参考 [PD 配置文件描述](/pd-configuration-file.md#max-merge-region-size)
+具体来说，当某个新分裂出来的 Region 超过配置项 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 时间后（默认 1h），且这个 Region 的 size 小于配置项 [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) 的值（默认 20MiB），或者 Region 中的 key 的数量小于配置项 [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) 的值时（默认 200000），该 Region 会触发 Region merge 的调度。
 
 ## 查询调度状态
 
