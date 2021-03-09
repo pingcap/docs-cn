@@ -13,13 +13,15 @@ aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/
 >
 > 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读 TiDB Ansible 部署 TiDB 集群的文档，可参阅 [v4.0 版使用 TiDB Ansible 部署 TiDB 集群](https://docs.pingcap.com/zh/tidb/v4.0/online-deployment-using-ansible)。
 
-## 第 1 步：软硬件环境需求及前置检查
+## 第 1 步：软硬件环境配置及检查
 
 [软硬件环境需求](/hardware-and-software-requirements.md)
 
 [环境与系统配置检查](/check-before-deployment.md)
 
 ## 第 2 步：在中控机上安装 TiUP 组件
+
+### 方式一：在线部署 TiUP 组件
 
 使用普通用户登录中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
 
@@ -74,12 +76,116 @@ aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/
     ```shell
     tiup --binary cluster
     ```
+### 方式二：离线部署 TiUP 组件
 
-## 第 3 步：编辑初始化配置文件
+#### 准备 TiUP 离线组件包
 
+方式一：在 [官方下载页面](https://pingcap.com/download-cn/) 选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
+
+方式二：使用 `tiup mirror clone` 命令手动打包离线组件包
+
+1. 在线环境中安装 TiUP 包管理器工具
+
+    1. 执行如下命令安装 TiUP 工具：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+        ```
+
+    2. 重新声明全局环境变量：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        source .bash_profile
+        ```
+
+    3. 确认 TiUP 工具是否安装：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        which tiup
+        ```
+
+2. 使用 TiUP 制作离线镜像
+
+    1. 在一台和外网相通的机器上拉取需要的组件：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror clone tidb-community-server-${version}-linux-amd64 ${version} --os=linux --arch=amd64
+        ```
+
+        该命令会在当前目录下创建一个名叫 `tidb-community-server-${version}-linux-amd64` 的目录，里面包含 TiUP 管理的组件包。
+
+    2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tar czvf tidb-community-server-${version}-linux-amd64.tar.gz tidb-community-server-${version}-linux-amd64
+        ```
+
+        此时，`tidb-community-server-${version}-linux-amd64.tar.gz` 就是一个独立的离线环境包。
+        
+#### 部署离线环境 TiUP 组件
+
+将离线包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
+sh tidb-community-server-${version}-linux-amd64/local_install.sh
+source /home/tidb/.bash_profile
+```
+
+`local_install.sh` 脚本会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 命令将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
+
+若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
+
+## 第 3 步：初始化集群拓扑文件
 请根据不同的集群拓扑，编辑 TiUP 所需的集群初始化配置文件。
+集群初始化配置文件可以通过 tiup 工具在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
 
-这里举出常见的 6 种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，新建一个配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster template > topology.yaml ### 混合部署可以使用 --full 生成的建议拓扑模板，跨机房部署可以使用 --multi-dc 生成的建议拓扑模板。
+vi topology.yaml
+```
+```yaml
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+server_configs: {}
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+tikv_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+monitoring_servers:
+  - host: 10.0.1.4
+grafana_servers:
+  - host: 10.0.1.4
+alertmanager_servers:
+  - host: 10.0.1.4
+```
+
+这里举出常见的 6 种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，修改配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据标准模板自行调整。
 
 - [最小拓扑架构](/minimal-deployment-topology.md)
 
@@ -192,25 +298,7 @@ tiup cluster start tidb-test
 
 ## 第 8 步：验证集群运行状态
 
-- 通过 TiUP 检查集群状态
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup cluster display tidb-test
-```
-
-预期结果输出，注意 Status 状态信息为 `Up` 说明集群状态正常
-
-- 执行如下命令登录数据库：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-mysql -u root -h 10.0.1.4 -P 4000
-```
-
-此外，也需要验证监控系统、[TiDB Dashboard](/dashboard/dashboard-intro.md) 的运行状态，以及简单命令的执行，验证方式可参考[验证集群运行状态](/post-installation-check.md)。
+在完成集群启动后，需要验证监控系统、[TiDB Dashboard](/dashboard/dashboard-intro.md) 的运行状态，以及简单查询的执行。验证方式可参考[验证集群运行状态](/post-installation-check.md)。
 
 ## 探索更多
 
