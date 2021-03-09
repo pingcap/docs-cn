@@ -316,6 +316,12 @@ Configuration items related to performance.
 + When TiDB detects that the memory usage of the tidb-server instance exceeds the threshold, it considers that there might be a risk of OOM. Therefore, it records ten SQL statements with the highest memory usage, ten SQL statements with the longest running time, and the heap profile among all SQL statements currently being executed to the directory [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) and outputs a log containing the keyword `tidb-server has the risk of OOM`.
 + The value of this configuration item is the initial value of the system variable [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio).
 
+### `committer-concurrency`
+
++ The number of goroutines for requests related to executing commit in the commit phase of the single transaction.
++ Default value: `16`
++ If the transaction to commit is too large, the waiting time for the flow control queue when the transaction is committed might be too long. In this situation, you can increase the configuration value to speed up the commit.
+
 ### `stmt-count-limit`
 
 - The maximum number of statements allowed in a single TiDB transaction.
