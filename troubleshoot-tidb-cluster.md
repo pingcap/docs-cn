@@ -57,12 +57,9 @@ tidb-server 无法启动的常见情况包括：
 
     首先检查 pd-server 的进程状态和日志，确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
 
-    若 pd-server 正常，则需要检查 tidb-server 机器和 pd-server 对应端口之间的连通性，
-    确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。
+    若 pd-server 正常，则需要检查 tidb-server 机器和 pd-server 对应端口之间的连通性，确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。
 
-    例如，假设 tidb 服务位于 `192.168.1.100`，无法连接的 pd 位于 `192.168.1.101`，且 2379 为其 client port，
-    则可以在 tidb 机器上执行 `nc -v -z 192.168.1.101 2379`，测试是否可以访问端口。
-    或使用 `curl -v 192.168.1.101:2379/pd/api/v1/leader` 直接检查 pd 是否正常服务。
+    例如，假设 tidb 服务位于 `192.168.1.100`，无法连接的 pd 位于 `192.168.1.101`，且 2379 为其 client port，则可以在 tidb 机器上执行 `nc -v -z 192.168.1.101 2379`，测试是否可以访问端口。或使用 `curl -v 192.168.1.101:2379/pd/api/v1/leader` 直接检查 pd 是否正常服务。
 
 ## tikv-server 启动报错
 
@@ -73,12 +70,12 @@ tidb-server 无法启动的常见情况包括：
 + 端口被占用：`lsof -i:port`
 
     请确保 tikv-server 启动所需要的端口未被占用：`lsof -i:port`。
+
 + 无法连接 pd-server
 
     首先检查 pd-server 的进程状态和日志。确保 pd-server 成功启动，对应端口已打开：`lsof -i:port`。
 
-    若 pd-server 正常，则需要检查 tikv-server 机器和 pd-server 对应端口之间的连通性，
-    确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。具体命令参考上一节。
+    若 pd-server 正常，则需要检查 tikv-server 机器和 pd-server 对应端口之间的连通性，确保网段连通且对应服务端口已添加到防火墙白名单中，可通过 nc 或 curl 工具检查。具体命令参考上一节。
 
 + 文件被占用
 
