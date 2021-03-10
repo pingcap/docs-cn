@@ -355,7 +355,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
 
-如果希望跳过这条 DDL，可以将 changefeed 的 start-ts 设为报错时的 checkpoint-ts + 1, 然后通过 `cdc cli changefeed resume` 恢复同步任务。假设报错时的 checkpoint-ts 为 `415241823337054209`, 可以如此操作来跳过这条 DDL.
+如果希望跳过这条出错的 DDL 语句，可以将 changefeed 的 start-ts 设为报错时的 checkpoint-ts 加上一，然后通过 `cdc cli changefeed resume` 恢复同步任务。假设报错时的 checkpoint-ts 为 `415241823337054209`，可以进行如下操作来跳过该 DDL 语句：
 
 {{< copyable "shell-regular" >}}
 
