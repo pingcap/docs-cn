@@ -25,54 +25,59 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 ## 2. 升级前准备
 
-本部分介绍实际开始升级前需要进行的准备工作，如安装或更新 TiUP 版本等。
+本部分介绍实际开始升级前需要进行的更新 TiUP 版本准备工作。
 
-### 2.1 在中控机器上安装 TiUP 和 TiUP Cluster
+### 2.1 升级 TiUP 和 TiUP Cluster
+> **注意：**
+>
+> 如果原集群中控机不能访问 https://tiup-mirrors.pingcap.com 地址，可跳到步骤 2.2 使用离线升级方式。
 
-1. 在中控机上执行如下命令安装 TiUP：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-    ```
-
-2. 重新声明全局环境变量：
+1. 先升级 TiUP 版本：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
-    ```
-
-3. 确认 TiUP 工具是否安装：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    which tiup
+    tiup update --self
+    tiup --version
     ```
 > **注意：**
 >
-> 如果 `tiup --version` 显示 `tiup` 版本低于 `v1.4.0`，请在执行 `tiup update cluster` 之前先执行 `tiup update --self` 命令更新 `tiup` 版本。
+> 建议 `tiup` 版本不应低于 `v1.4.0`。
 
-4. 安装 TiUP 的 cluster 工具：
+2. 升级 TiUP Cluster 版本：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup install cluster
+    tiup update cluster
     ```
 
-如果之前安装过 TiUP 及 TiUP Cluster 组件，使用如下命令更新至最新版本即可：
+### 2.2 更新 TiUP 离线镜像
 
-{{< copyable "shell-regular" >}}
+> **注意：**
+>
+> 如果原集群不是通过离线部署方式部署的，可忽略此步骤。
 
-```shell
-tiup update cluster
-```
+可以参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)的步骤下载部署新版本的 TiUP 离线镜像，上传到中控机。在执行 `local_install.sh` 后，TiUP 会完成覆盖升级。
+   
+   {{< copyable "shell-regular" >}}
+    
+    ```shell
+    tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
+    sh tidb-community-server-${version}-linux-amd64/local_install.sh
+    source /home/tidb/.bash_profile
+    ```
+    
+覆盖升级完成升级 Cluster 组件：
+ 
+ {{< copyable "shell-regular" >}}
+ 
+    ```shell
+    tiup update cluster
+    ```
+此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests` 后再使用。
 
-### 2.2 编辑 TiUP Cluster 拓扑配置文件
+### 2.3 编辑 TiUP Cluster 拓扑配置文件
 
 > **注意：**
 >
@@ -98,19 +103,8 @@ tiup update cluster
 > 升级到 5.0 版本前，请确认已在 4.0 修改的参数在 5.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
 
 
-### 2.3 更新 TiUP 离线镜像
 
-> **注意：**
->
-> 如果原集群不是通过[离线部署](/production-offline-deployment-using-tiup.md)方式部署的，可忽略此步骤。
-
-如果用户希望升级更新本地的 TiUP 离线镜像，可以参考[使用 TiUP 离线部署 TiDB 集群](/production-offline-deployment-using-tiup.md)的步骤 1 与步骤 2 下载部署新版本的 TiUP 离线镜像。在执行 `local_install.sh` 后，TiUP 会完成覆盖升级。
-
-覆盖升级完成后使用 `tiup update cluster` 升级 Cluster 组件。
-
-此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests` 后再使用。
-
-## 3. 滚动升级 TiDB 集群
+## 3. 升级 TiDB 集群
 
 本部分介绍如何滚动升级 TiDB 集群以及升级后的验证。
 
@@ -130,11 +124,11 @@ tiup cluster upgrade <cluster-name> <version>
 tiup cluster upgrade <cluster-name> v5.0.0
 ```
 
-滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟，超过后会直接停止实例。
-
-如果不希望驱逐 leader，而希望立刻升级，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
-
-如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个超大值，如 `--transfer-timeout 100000000`，单位为秒。
+> **注意：**
+>
+> - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟，超过后会直接停止实例。
+> - 如果不希望驱逐 leader，而希望快速升级集群至新版本，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
+> - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个超大值，如 `--transfer-timeout 100000000`，单位为秒。
 
 ### 3.2 升级后验证
 
