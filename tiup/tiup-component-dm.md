@@ -64,4 +64,6 @@ tiup dm [command] [flags]
 - [destroy](/tiup/tiup-component-dm-destroy.md)：销毁指定集群
 - [audit](/tiup/tiup-component-dm-audit.md)：查询集群操作审计日志
 - [replay](/tiup/tiup-component-dm-replay.md)：重试指定命令
+- [enable](/tiup/tiup-component-dm-enable.md)：开启指定集群或服务开机自启动
+- [disable](/tiup/tiup-component-dm-disable.md)：关闭指定集群或服务开机自启动
 - [help](/tiup/tiup-component-dm-help.md)：输出帮助信息
