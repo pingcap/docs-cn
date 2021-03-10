@@ -47,6 +47,7 @@ tiup dm [command] [flags]
 ## 命令清单
 
 - [import](/tiup/tiup-component-dm-import.md)：导入使用  DM-Ansible 部署的 DM v1.0 集群
+- [template](/tiup/tiup-component-dm-template.md)：输出拓扑模版
 - [deploy](/tiup/tiup-component-dm-deploy.md)：根据指定拓扑部署集群
 - [list](/tiup/tiup-component-dm-list.md)：查询已部署的集群列表
 - [display](/tiup/tiup-component-dm-display.md)：展示指定集群状态

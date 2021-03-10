@@ -47,6 +47,7 @@ tiup cluster [command] [flags]
 ## 命令清单
 
 - [import](/tiup/tiup-component-cluster-import.md)：导入 ansible 部署的集群
+- [template](/tiup/tiup-component-cluster-template.md)：输出拓扑模版
 - [check](/tiup/tiup-component-cluster-check.md)：部署前后的集群检查
 - [deploy](/tiup/tiup-component-cluster-deploy.md)：根据指定拓扑部署集群
 - [list](/tiup/tiup-component-cluster-list.md)：查询已部署的集群列表
