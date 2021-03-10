@@ -20,10 +20,10 @@
 + 快速上手
   + [快速上手指南](/quick-start-with-tidb.md)
   + [SQL 基本操作](/basic-sql-operations.md)
-+ 部署集群
++ 部署标准集群
   + [软硬件环境需求](/hardware-and-software-requirements.md)
   + [环境与系统配置检查](/check-before-deployment.md)
-  + 配置拓扑结构
+  + 规划集群拓扑
     + [最小部署拓扑结构](/minimal-deployment-topology.md)
     + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
@@ -32,10 +32,8 @@
     + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md)
   + 安装与启动
-    + Linux 环境
-      + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
-      + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
-      + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+    + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+    + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
   + [性能测试方法]
       + [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
