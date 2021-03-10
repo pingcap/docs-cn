@@ -960,9 +960,8 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compaction-pri`
 
-Compaction 优先类型，默认：3（MinOverlappingRatio），0（ByCompensatedSize），
-1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
-
++ Compaction 优先类型
++ 可选择值：3（MinOverlappingRatio），0（ByCompensatedSize），1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
 + 默认值：3
 
 ### `dynamic-level-bytes`
