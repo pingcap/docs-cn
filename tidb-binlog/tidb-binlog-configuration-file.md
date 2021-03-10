@@ -177,8 +177,7 @@ aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-configuration-file/','/docs-cn/d
 
 ### synced-check-time
 
-* 通过 HTTP API 访问 `/status` 路径可以查询 Drainer 同步的状态。
-`synced-check-time` 指定距离上次成功同步的时间超过多少分钟可以认为是 `synced`，即同步完成。
+* 通过 HTTP API 访问 `/status` 路径可以查询 Drainer 同步的状态。`synced-check-time` 指定距离上次成功同步的时间超过多少分钟可以认为是 `synced`，即同步完成。
 * 默认：`5`
 
 ### compressor
