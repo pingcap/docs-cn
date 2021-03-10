@@ -344,3 +344,28 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
     ```shell
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
+
+## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
+
+从 v4.0.11 开始，如果某条 DDL 语句执行失败，同步任务 (changefeed) 会自动停止，checkpoint-ts 断点时间戳为该条出错 DDL 语句的结束时间戳 (finish-ts) 减去一。如果希望让 TiCDC 在下游重试执行这条 DDL 语句，可以使用 `cdc cli changefeed resume` 恢复同步任务。例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+```
+
+如果希望跳过这条出错的 DDL 语句，可以将 changefeed 的 start-ts 设为报错时的 checkpoint-ts 加上一，然后通过 `cdc cli changefeed resume` 恢复同步任务。假设报错时的 checkpoint-ts 为 `415241823337054209`，可以进行如下操作来跳过该 DDL 语句：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --start-ts 415241823337054210
+
+cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+```
+
+> **注意：**
+>
+> 以上步骤仅适用于 TiCDC v4.0.11 及以上版本。
+> 在其它版本中（v4.0.11 以下），DDL 执行失败后 changefeed 的 checkpoint-ts 为该 DDL 语句的 finish-ts。使用 `cdc cli changefeed resume` 恢复同步任务后不会重试该 DDL 语句，而是直接跳过执行该 DDL 语句。

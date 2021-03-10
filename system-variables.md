@@ -436,8 +436,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION
 - 默认值：4
-- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。
-当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_distsql_scan_concurrency`
 
@@ -568,8 +567,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION
 - 默认值：0
-- 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。
-当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
+- 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
 ### `tidb_opt_correlation_exp_factor`
 
@@ -588,8 +586,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION
 - 默认值：0
-- 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
-当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
+- 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
 在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `disctinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
 
