@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain
 
 # TiUP 常见运维操作
 
-本文介绍了使用 TiUP 运维 TiDB 集群的常见操作，包括查看集群列表、启动集群、查看集群状态、修改配置参数、关闭集群、销毁集群等。
+本文介绍了使用 TiUP 运维 TiDB 集群的常见操作，包括查看集群列表、启动集群、查看集群状态、修改配置参数、关闭集群、销毁集群等。更多 TIUP 运维 TiDB 集群的操作请参考 [TiUP Cluster](/tiup/tiup-component-cluster.md) 使用指南。
 
 > **注意：**
 >
