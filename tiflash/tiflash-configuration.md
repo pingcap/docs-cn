@@ -130,6 +130,10 @@ minmax_index_cache_size = 5368709120
     # cert_path = "/path/to/tiflash-server.pem"
     ## 包含 PEM 格式的 X509 key 文件路径
     # key_path = "/path/to/tiflash-server-key.pem"
+
+    ## 从 v4.0.10 引入。若开启该选项，日志中的用户数据会以 `?` 代替显示
+    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
+    # redact_info_log = false
 ```
 
 ### 配置文件 tiflash-learner.toml
