@@ -357,17 +357,9 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 ## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后 TiCDC 执行到下游的语句仍然为 `REPLACE INTO` 而非 `INSERT`/`UPDATE`
 
-要解决该问题，创建 changefeed 时需要显式指定 `safe-mode` 为 `false` 才会生成 `UPDATE` 语句，执行步骤如下：
+因为 TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而生成 `REPLACE INTO` 的执行语句。
 
-```
-tiup ctl cdc changefeed pause -c simple-replication-task
-tiup ctl cdc changefeed update -c simple-replication-task --sink-uri "mysql://root:@127.0.0.1:3306/?safe-mode=false" --config ./changefeed.toml
-tiup ctl cdc changefeed resume -c simple-replication-task
-```
-
-值得注意的是目前修改 safe-mode 功能并没有对外开放，因为 TiCDC 还不提供 exactly once delivery 的保证；
-
-开启 safe-mode=false，因为有重复消息的存在，会出现同步中断的风险。因此，**不建议使用**。
+目前修改 safe-mode 功能并没有对外开放，因为关闭 safe-mode 后 TiCDC 还不提供 exactly once delivery 的保证；
 
 ## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`
 
