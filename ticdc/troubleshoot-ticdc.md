@@ -359,7 +359,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 因为 TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而生成 `REPLACE INTO` 的执行语句。
 
-目前修改 safe-mode 功能并没有对外开放，因为关闭 safe-mode 后 TiCDC 还不提供 exactly once delivery 的保证；
+目前用户暂时无法修改 `safe-mode` 设置，因此该问题暂无解决办法。
 
 ## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`
 
