@@ -146,6 +146,22 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
 
+### -N, --node（strings，默认为 []，表示所有节点）
+
+指定要关闭自启的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第一列。
+
+> **注意：**
+>
+> 若同时指定了 `-R, --role`，那么将检查它们的交集中的服务。
+
+### -R, --role strings（strings，默认为 []，表示所有角色）
+
+指定要关闭自启的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
+
+> **注意：**
+>
+> 若同时指定了 `-N, --node`，那么将检查它们的交集中的服务。
+
 ### --enable-cpu（boolean，默认 false）
 
 默认情况下 tiup-cluster 不检查 CPU 核心数，该选项用于启用 CPU 核心数检查。
