@@ -24,8 +24,7 @@ CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结�
 
 ## 配置
 
-CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。
-大部分设置项在 MySQL [`LOAD DATA`] 语句中都有对应的项目。
+CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。大部分设置项在 MySQL [`LOAD DATA`] 语句中都有对应的项目。
 
 ```toml
 [mydumper.csv]
