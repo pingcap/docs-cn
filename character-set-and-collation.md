@@ -87,8 +87,7 @@ SHOW COLLATION WHERE Charset = 'latin1';
 
 `TiDB` 的 Collation 遵循着如下的命名规则：
 
-* Collation 的前缀是它相应的字符集，通常之后会跟着一个或者更多的后缀来表名其他的排序规则， 例如：utf8_general_ci 和 lation1_swedish_ci 是 utf8
- 和 latin1 字符集的 Collation。但是 binary 字符集只有一个 Collation，就是 binary。
+* Collation 的前缀是它相应的字符集，通常之后会跟着一个或者更多的后缀来表名其他的排序规则， 例如：utf8_general_ci 和 lation1_swedish_ci 是 utf8 和 latin1 字符集的 Collation。但是 binary 字符集只有一个 Collation，就是 binary。
 * 一个语言对应的 Collation 会包含语言的名字，例如 utf8_turkish_ci 和 utf8_hungarian_ci 是依据 Turkish(土耳其语) 和 Hungarian(匈牙利语) 的排序规则来排序。
 * Collation 的后缀表示了 Collation 是否区分大小写和是否区分口音。下面的表展示了这些特性：
 
