@@ -349,12 +349,11 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 解决方案：需要执行 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 命令查询当前的 GC safepoint 与 service GC safepoint。如果 GC safepoint 小于 TiCDC changefeed 同步任务的开始时间戳 `start-ts`，则用户可以直接在 `cdc cli create changefeed` 命令后加上 `--disable-gc-check` 参数创建 changefeed。
 
-如果上述命令结果中没有 `gc_worker service_id`：
+如果 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 的结果中没有 `gc_worker service_id`：
 
 + 如果 PD 的版本 <= v4.0.8，详见 [PD issue #3128](https://github.com/tikv/pd/issues/3128)
 + 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)
-
-如果不满足上述情况，请将上述指令执行结果反应到 [AskTUG 论坛](https://asktug.com/tags/ticdc) 或对应的支持 DBA。
++ 对于其他情况，请将上述命令执行结果反馈到 [AskTUG 论坛](https://asktug.com/tags/ticdc)。
 
 ## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后 TiCDC 执行到下游的语句仍然为 `REPLACE INTO` 而非 `INSERT`/`UPDATE`
 
