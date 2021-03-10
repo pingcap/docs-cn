@@ -21,18 +21,14 @@ jobs:
           command: |
             git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
-<<<<<<< HEAD
-            python3 scripts/check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-3.0..HEAD -- '*.md' '*.yml' '*.yaml')
-=======
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-file-encoding.py
-            python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/release-3.0..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Check git conflicts"
           command: |
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-conflicts.py
-            python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' '*.yml' '*.yaml')
->>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
+            python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-3.0..HEAD -- '*.md' '*.yml' '*.yaml')
 
       - run:
           name: "Install markdownlint"
@@ -54,27 +50,24 @@ jobs:
           command: |
             scripts/verify-link-anchors.sh
 
-<<<<<<< HEAD
-=======
       - run:
           name: "Check control characters"
           command: |
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-control-char.py
-            python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/release-3.0..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Check unclosed tags"
           command: |
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-tags.py
-            python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/release-3.0..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Check manual line breaks"
           command: |
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-manual-line-breaks.py
-            python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/release-3.0..HEAD -- '*.md' ':(exclude).github/*')
 
->>>>>>> 3ea7eb09... CI: add file format lint script to check manual line breaks and file encoding (#5666)
   build:
     docker:
       - image: andelf/doc-build:0.1.9
