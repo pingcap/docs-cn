@@ -40,7 +40,7 @@
   + [Overview](/migration-overview.md)
   + Migrate from MySQL
     + [Migrate from Amazon Aurora MySQL Using TiDB Lightning](/migrate-from-aurora-using-lightning.md)
-    + [Migrate Using Dumpling and TiDB Lightning](/migrate-from-mysql-dumpling-files.md)
+    + [Migrate from MySQL SQL Files Using TiDB Lightning](/migrate-from-mysql-dumpling-files.md)
     + [Migrate from Amazon Aurora MySQL Using DM](/migrate-from-aurora-mysql-database.md)
   + Migrate from CSV Files
     + [Use TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
