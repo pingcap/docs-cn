@@ -185,7 +185,7 @@ source /home/tidb/.bash_profile
 
 ## 4. 配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
 
 {{< copyable "shell-regular" >}}
 
@@ -236,6 +236,7 @@ alertmanager_servers:
 ## 5. 部署 TiDB 集群
 
 执行以下命令来部署 TiDB 集群。
+
 {{< copyable "shell-regular" >}}
 
 ```bash

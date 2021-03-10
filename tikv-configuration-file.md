@@ -383,7 +383,7 @@ raftstore 相关的配置项。
 + 默认值：3s
 + 最小值：0
 
-### `raftstore.hibernate-regions` (**实验特性**)
+### `hibernate-regions` (**实验特性**)
 
 + 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
 + 默认值：true
@@ -959,9 +959,8 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compaction-pri`
 
-Compaction 优先类型，默认：3（MinOverlappingRatio），0（ByCompensatedSize），
-1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
-
++ Compaction 优先类型
++ 可选择值：3（MinOverlappingRatio），0（ByCompensatedSize），1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
 + 默认值：3
 
 ### `dynamic-level-bytes`

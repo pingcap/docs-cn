@@ -135,6 +135,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：byte。
 + 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
 
+### `table-column-count-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
++ 用于设置单个表中列的数量限制
++ 默认值：1017
++ 目前的合法值范围 `[1017, 4096]`。
+
+### `index-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
++ 用于设置单个表中索引的数量限制
++ 默认值：64
++ 目前的合法值范围 `[64, 512]`。
+
 ### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 + 是否开启 TiDB 遥测功能。
@@ -316,6 +328,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：104857600 (Byte)
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `10737418240`（表示 10GB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
 
+### `committer-concurrency`
+
++ 在单个事务的提交阶段，用于执行提交操作相关请求的 goroutine 数量
++ 默认值：16
++ 若提交的事务过大，事务提交时的流控队列等待耗时可能会过长，可以通过调大该配置项来加速提交。
+
 ### `stmt-count-limit`
 
 + TiDB 单个事务允许的最大语句条数限制。
@@ -342,7 +360,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
     - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
     - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新内存中缓存的统计信息
-+ 当 `stats-lease` 为 0 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息并更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
++ 当 `stats-lease` 为 0s 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息并更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
     - `mysql.stats_meta`：TiDB 不再自动记录事务中对某张表的修改行数，也不会更新到这个系统表中
     - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
     - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
