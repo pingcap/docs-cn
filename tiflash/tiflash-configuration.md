@@ -153,10 +153,9 @@ delta_index_cache_size = 0
 
 ## Security settings take effect starting from v4.0.5.
 [security]
-    ## This configuration item enables or disables log redaction. If the configuration value
+    ## New in v5.0.0-rc. This configuration item enables or disables log redaction. If the configuration value
     ## is set to `true`, all user data in the log will be replaced by `?`.
-    ## Note that you also need to set `security.redact-info-log` for tiflash-learner's logging
-    ## in tiflash-learner.toml
+    ## Note that you also need to set `security.redact-info-log` for tiflash-learner's logging in tiflash-learner.toml.
     # redact_info_log = false
 
     ## Path of the file that contains a list of trusted SSL CAs. If set, the following settings
@@ -175,22 +174,27 @@ delta_index_cache_size = 0
     engine-addr = The external access address of the TiFlash coprocessor service.
 [raftstore]
     ## Specifies the number of threads that handle snapshots.
-    ## The default number is 2. 
+    ## The default number is 2.
     ## If you set it to 0, the multi-thread optimization is disabled.
-    snap-handle-pool-size = 2 
+    snap-handle-pool-size = 2
 
     ## Specifies the shortest interval at which Raft store persists WAL.
     ## You can properly increase the latency to reduce IOPS usage.
     ## The default value is "4ms".
     ## If you set it to 0ms, the optimization is disabled.
     store-batch-retry-recv-timeout = "4ms"
+[security]
+    ## New in v4.0.10. This configuration item enables or disables log redaction.
+    ## If the configuration value is set to true,
+    ## all user data in the log will be replaced by ?. The default value is false.
+    redact-info-log = false
 ```
 
 In addition to the items above, other parameters are the same with those of TiKV. Note that the configuration items in `tiflash.toml [flash.proxy]` will override the overlapping parameters in `tiflash-learner.toml`; The `label` whose key is `engine` is reserved and cannot be configured manually.
 
 ### Multi-disk deployment
 
-TiFlash supports multi-disk deployment. If there are multiple disks in your TiFlash node, you can make full use of those disks by configuring the parameters described in the following sections. For TiFlash's configuration template to be used for TiUP, see [The complex template for the TiFlash topology](https://github.com/pingcap/docs/blob/master/config-templates/complex-tiflash.yaml). 
+TiFlash supports multi-disk deployment. If there are multiple disks in your TiFlash node, you can make full use of those disks by configuring the parameters described in the following sections. For TiFlash's configuration template to be used for TiUP, see [The complex template for the TiFlash topology](https://github.com/pingcap/docs/blob/master/config-templates/complex-tiflash.yaml).
 
 #### Multi-disk deployment with TiDB version earlier than v4.0.9
 
