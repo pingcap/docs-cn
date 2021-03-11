@@ -343,3 +343,32 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
     ```shell
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
+
+## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`
+
+解决方案：需要执行 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 命令查询当前的 GC safepoint 与 service GC safepoint。如果 GC safepoint 小于 TiCDC changefeed 同步任务的开始时间戳 `start-ts`，则用户可以直接在 `cdc cli create changefeed` 命令后加上 `--disable-gc-check` 参数创建 changefeed。
+
+如果 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 的结果中没有 `gc_worker service_id`：
+
++ 如果 PD 的版本 <= v4.0.8，详见 [PD issue #3128](https://github.com/tikv/pd/issues/3128)
++ 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)
++ 对于其他情况，请将上述命令执行结果反馈到 [AskTUG 论坛](https://asktug.com/tags/ticdc)。
+
+## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为 `REPLACE INTO`
+
+TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而为上游的 `INSERT`/`UPDATE` 语句生成 `REPLACE INTO` 的执行语句。
+
+目前用户暂时无法修改 `safe-mode` 设置，因此该问题暂无解决办法。
+
+## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`
+
+v4.0.8 或更低版本的 TiCDC，仅在 Sink URI 中为 Kafka 配置 `max-message-bytes` 参数不能有效控制输出到 Kafka 的消息大小，需要在 Kafka server 配置中加入如下配置以增加 Kafka 接收消息的字节数限制。
+
+```
+# broker 能接收消息的最大字节数
+message.max.bytes=2147483648
+# broker 可复制的消息的最大字节数
+replica.fetch.max.bytes=2147483648
+# 消费者端的可读取的最大消息字节数
+fetch.message.max.bytes=2147483648
+```
