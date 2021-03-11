@@ -288,7 +288,7 @@ CREATE TABLE employees_1 (
     id INT NOT NULL,
     fname VARCHAR(30),
     lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT '1970-01-01',
+    hired DATE NOT NULL DEFAULT '2015-04-08',
     separated DATE NOT NULL DEFAULT '9999-12-31',
     job_code INT,
     store_id INT,
