@@ -35,6 +35,7 @@ TiDB Ansible 版本：3.0.4
 - 社区贡献者
 
     感谢以下社区贡献者参与本次发版：
+
     - [sduzh](https://github.com/sduzh)
     - [lizhenda](https://github.com/lizhenda)
 
