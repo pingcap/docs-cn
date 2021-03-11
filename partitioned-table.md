@@ -184,7 +184,7 @@ List 分区和 Range 分区有很多相似的地方。不同之处主要在于 L
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
-    hired DATE NOT NULL DEFAULT '1970-01-01',
+    hired DATE NOT NULL DEFAULT '2015-04-08',
     store_id INT
 );
 ```
