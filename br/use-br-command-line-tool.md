@@ -193,7 +193,7 @@ br backup full \
     --pd "${PDIP}:2379" \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
-    --send-credentials-to-tikv true \
+    --send-credentials-to-tikv=true \
     --log-file backuptable.log
 ```
 
