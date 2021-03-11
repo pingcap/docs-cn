@@ -451,6 +451,8 @@ mysql> SELECT * FROM t1;
     * `get_lock` 和 `release_lock` 函数
     * `LOCK IN SHARE MODE` 语法
     * `SQL_CALC_FOUND_ROWS` 语法
+    * `CREATE TEMPORARY TABLE` 语法
+    * `DROP TEMPORARY TABLE` 语法
 
 > **注意：**
 >
