@@ -95,7 +95,7 @@ Example 1: Upgrade all components to the latest versions.
 tiup update --all
 ```
 
-Example: Upgrade all components to the nightly version.
+Example 2: Upgrade all components to the nightly version.
 
 {{< copyable "shell-regular" >}}
 
