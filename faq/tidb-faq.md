@@ -145,7 +145,7 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 
 从早期版本的 TiDB 升级后，可能会出现该问题。为了减少 SQL 注入攻击的影响，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。
 
-可通过系统变量 [`tidb_multi_statement_mode`](/tidb-configuration-file.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 控制是否在同一 `COM_QUERY` 调用中执行多个查询。
+可通过系统变量 [`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 控制是否在同一 `COM_QUERY` 调用中执行多个查询。
 
 ### 3.2 MySQL 原生报错汇总
 

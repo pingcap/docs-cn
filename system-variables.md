@@ -728,7 +728,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 - 默认值：60
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 step，单位为秒。
 
-## `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
+### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
