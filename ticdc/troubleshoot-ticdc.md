@@ -353,7 +353,7 @@ CDC 会在 PD 中设置 `gc-safepoint` 保证可能将被同步的数据不被 T
 tikv-ctl --host=ip:port modify-tikv-config -n gc.max_write_bytes_per_sec -v 10MB
 ```
 
-上述命令中 ip:port 指的是 TiKV 节点的地址, 可能需要在所有节点上运行， 10MB 可以改为其他适当的数值。
+上述命令中 ip:port 指的是 TiKV 节点的地址, 可能需要在所有节点上运行， 10MB 可以改为其他适当的数值。更多信息请参阅 [垃圾回收配置](/garbage-collection-configuration#gc-io-limit)。
 
 ## TiCDC 多节点负载分配不均怎么解决？
 
@@ -364,6 +364,12 @@ curl -X POST -d 'cf-id=[your-changefeed-id]' http://owner:port/capture/owner/reb
 ```
 
 来解决。
+
+此外，还可以通过手工调度的方式来进行平衡
+
+```
+curl -X POST -d 'cf-id=[your-changefeed-id]&target-cp-id=[target-capture-id]&table-id=[table-id]' http://owner:port/capture/owner/move_table
+```
 
 ## TiCDC 集群卡住，不断写 `region not receiving event from tikv for too long time` 的日志
 
