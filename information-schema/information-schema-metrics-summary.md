@@ -183,7 +183,7 @@ ORDER BY ratio DESC LIMIT 10;
 
 * t2 时间段内的 `tidb_slow_query_cop_process_total_time`（TiDB 慢查询中的 `cop process` 耗时）比 t1 时间段高了 5865 倍。
 * t2 时间段内的 `tidb_distsql_partial_scan_key_total_num`（TiDB 的 `distsql` 请求扫描 key 的数量）比 t1 时间段高了 3648 倍。
-t2 时间段内，`tidb_slow_query_cop_wait_total_time`（TiDB 慢查询中的 cop 请求排队等待的耗时）比 t1 时间段高了 267 倍。
+* t2 时间段内的 `tidb_slow_query_cop_wait_total_time`（TiDB 慢查询中的 cop 请求排队等待的耗时）比 t1 时间段高了 267 倍。
 * t2 时间段内的 `tikv_cop_total_response_size`（TiKV 的 cop 请求结果的大小）比 t1 时间段高了 192 倍。
 * t2 时间段内的 `tikv_cop_scan_details`（TiKV 的 cop 请求的 scan）比 t1 时间段高了 105 倍。
 
