@@ -11,12 +11,13 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 > **注意：**
 >
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅 [v4.0 版使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
+> 从 TiDB 4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅 [4.0 版使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
 
 ## 1. 升级兼容性说明
 
 - 不支持在升级后回退至 4.0 或更旧版本。
-- 3.0 之前的版本，需要先通过 TiDB Ansible 升级到 3.0 版本，然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP 将 TiDB Ansible 配置导入，并升级到 4.0 版本，再按本文档说明升级到 5.0 版本。
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.0 版本。
+- 3.0 之前的版本，需要先通过 TiDB Ansible 升级到 3.0 版本，然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入，并升级到 4.0 版本，再按本文档说明升级到 5.0 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 
 > **注意：**
@@ -25,58 +26,71 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 ## 2. 升级前准备
 
-本部分介绍实际开始升级前需要进行的准备工作，如安装或更新 TiUP 版本等。
+本部分介绍实际开始升级前需要进行的更新 TiUP 和 TiUP Cluster 组件版本等准备工作。
 
-### 2.1 在中控机器上安装 TiUP 和 TiUP Cluster
-
-1. 在中控机上执行如下命令安装 TiUP：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-    ```
-
-2. 重新声明全局环境变量：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    source .bash_profile
-    ```
-
-3. 确认 TiUP 工具是否安装：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    which tiup
-    ```
-> **注意：**
->
-> 如果 `tiup --version` 显示 `tiup` 版本低于 `v1.4.0`，请在执行 `tiup update cluster` 之前先执行 `tiup update --self` 命令更新 `tiup` 版本。
-
-4. 安装 TiUP 的 cluster 工具：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup install cluster
-    ```
-
-如果之前安装过 TiUP 及 TiUP Cluster 组件，使用如下命令更新至最新版本即可：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup update cluster
-```
-
-### 2.2 编辑 TiUP Cluster 拓扑配置文件
+### 2.1 升级 TiUP 和 TiUP Cluster
 
 > **注意：**
 >
-> 以下情况可跳过该步骤：
+> 如果原集群中控机不能访问 https://tiup-mirrors.pingcap.com 地址，可跳到步骤 2.2 使用离线升级方式。
+
+1. 先升级 TiUP 版本：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup update --self
+    tiup --version
+    ```
+
+> **注意：**
+>
+> 建议 `tiup` 版本应不低于 `1.4.0`。
+
+2. 升级 TiUP Cluster 版本：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup update cluster
+    tiup cluster --version
+    ```
+
+> **注意：**
+>
+> 建议 `tiup cluster` 版本应不低于 `1.4.0`。
+
+### 2.2 更新 TiUP 离线镜像
+
+> **注意：**
+>
+> 如果原集群不是通过离线部署方式部署的，可忽略此步骤。
+
+可以参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)的步骤下载部署新版本的 TiUP 离线镜像，上传到中控机。在执行 `local_install.sh` 后，TiUP 会完成覆盖升级。
+   
+   {{< copyable "shell-regular" >}}
+    
+    ```shell
+    tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
+    sh tidb-community-server-${version}-linux-amd64/local_install.sh
+    source /home/tidb/.bash_profile
+    ```
+    
+覆盖升级完成升级 Cluster 组件：
+ 
+ {{< copyable "shell-regular" >}}
+ 
+    ```shell
+    tiup update cluster
+    ```
+
+此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests/*` 后再使用。
+
+### 2.3 编辑 TiUP Cluster 拓扑配置文件
+
+> **注意：**
+>
+> 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
 > - 升级后对未修改过的配置项希望使用 `5.0` 默认参数。
@@ -97,20 +111,19 @@ tiup update cluster
 >
 > 升级到 5.0 版本前，请确认已在 4.0 修改的参数在 5.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
 
+### 2.4 检查当前集群的健康状况
 
-### 2.3 更新 TiUP 离线镜像
+为避免升级过程中出现未定义行为或其他故障，建议在升级前对集群当前的 region 健康状态进行检查，此操作可通过 `check` 子命令完成。
 
-> **注意：**
->
-> 如果原集群不是通过[离线部署](/production-offline-deployment-using-tiup.md)方式部署的，可忽略此步骤。
+    {{< copyable "shell-regular" >}}
 
-如果用户希望升级更新本地的 TiUP 离线镜像，可以参考[使用 TiUP 离线部署 TiDB 集群](/production-offline-deployment-using-tiup.md)的步骤 1 与步骤 2 下载部署新版本的 TiUP 离线镜像。在执行 `local_install.sh` 后，TiUP 会完成覆盖升级。
+    ```shell
+    tiup cluster check <cluster-name> --cluster
+    ```
 
-覆盖升级完成后使用 `tiup update cluster` 升级 Cluster 组件。
+并观察执行结束后在输出最后的 region status 检查结果，如果结果为 "All regions are healthy." 则说明当前集群中所有 region 均为健康状态，可以继续执行升级；如果结果为 "Regions are not fully healthy: m miss-peer, n pending-peer" 并提示 "Please fix unhealthy regions before other operations." 则说明当前集群中有 region 处在异常状态，应先排除相应异常状态并再次检查结果为全部 region 健康后再继续升级。
 
-此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests` 后再使用。
-
-## 3. 滚动升级 TiDB 集群
+## 3. 升级 TiDB 集群
 
 本部分介绍如何滚动升级 TiDB 集群以及升级后的验证。
 
@@ -122,7 +135,7 @@ tiup update cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 v5.0.0 版本为例：
+以升级到 5.0.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
@@ -130,11 +143,39 @@ tiup cluster upgrade <cluster-name> <version>
 tiup cluster upgrade <cluster-name> v5.0.0
 ```
 
-滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟，超过后会直接停止实例。
+> **注意：**
+>
+> - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超过后会直接停止实例。
+> - 如果不希望驱逐 leader，而希望快速升级集群至新版本，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
+> - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
 
-如果不希望驱逐 leader，而希望立刻升级，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
+#### 3.1.1 停机升级
 
-如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个超大值，如 `--transfer-timeout 100000000`，单位为秒。
+TiUP Cluster 默认的升级 TiDB 集群的方式是在线升级，即升级过程中集群仍然可以对外提供服务。升级时会对各节点逐个迁移 leader 后再升级和重启，因此对于大规模集群需要较长时间才能完成整个升级操作。如果业务有维护窗口可供数据库停机维护，则可以使用停机升级的方式快速进行升级操作。
+
+在停机升级前，首先需要将整个集群关停。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster stop <cluster-name>
+```
+
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster upgrade <cluster-name> <version> --offline
+```
+
+升级完成后集群不会自动启动，需要使用 `start` 命令来启动集群。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster start <cluster-name>
+```
 
 ### 3.2 升级后验证
 
@@ -150,7 +191,6 @@ tiup cluster display <cluster-name>
 Cluster type:       tidb
 Cluster name:       <cluster-name>
 Cluster version:    v5.0.0
-...
 ```
 
 > **注意：**
@@ -185,7 +225,7 @@ Cluster version:    v5.0.0
 
 ### 4.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群影响较大。命令如下：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下：
 
 {{< copyable "shell-regular" >}}
 
