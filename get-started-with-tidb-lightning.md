@@ -15,7 +15,7 @@ TiDB Lightning 主要包含两个部分:
 - **`tidb-lightning`**（“前端”）：主要完成适配工作，通过读取数据源，在下游 TiDB 集群建表、将数据转换成键/值对 (KV 对) 发送到 `tikv-importer`、检查数据完整性等。
 - **`tikv-importer`**（“后端”）：主要完成将数据导入 TiKV 集群的工作，把 `tidb-lightning` 写入的 KV 对缓存、排序、切分并导入到 TiKV 集群。
 
-![TiDB Lightning 整体架构](/media/tidb-lightning-architecture.png)
+![TiDB Lightning 整体架构](/media/tidb-lightning-architecture-v2.1.png)
 
 本教程假设使用的是若干新的、纯净版 CentOS 7 实例，你可以（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。因为 TiDB Lightning 对计算机资源消耗较高，建议分配 4 GB 以上的内存。
 
