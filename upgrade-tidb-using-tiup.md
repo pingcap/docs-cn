@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 升级 TiDB
-aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/','/zh/tidb/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
+aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/']
 ---
 
 # 使用 TiUP 升级 TiDB

@@ -416,6 +416,10 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
+## 注意事项
+
+Split Region 语句切分的 Region 会受到 PD 中 [Region merge](/best-practices/pd-scheduling-best-practices.md#region-merge) 调度的控制，需要[动态修改](/pd-control.md) Region merge 相关的配置项，避免新切分的 Region 不久后又被 PD 重新合并的情况。
+
 ## MySQL 兼容性
 
 该语句是 TiDB 对 MySQL 语法的扩展。

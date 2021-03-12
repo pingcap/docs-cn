@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
-aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/','/zh/tidb/dev/online-deployment-using-ansible/','/docs-cn/dev/online-deployment-using-ansible/','/docs-cn/dev/how-to/deploy/orchestrated/ansible/']
+aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/
 >
 > 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读 TiDB Ansible 部署 TiDB 集群的文档，可参阅 [v4.0 版使用 TiDB Ansible 部署 TiDB 集群](https://docs.pingcap.com/zh/tidb/v4.0/online-deployment-using-ansible)。
 
-## 第 1 步：软硬件环境配置
+## 第 1 步：软硬件环境需求及前置检查
 
 [软硬件环境需求](/hardware-and-software-requirements.md)
 
