@@ -492,9 +492,9 @@ mysql> SELECT * FROM t1;
 - 默认值：OFF
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
-> **注意：**
+> **警告：**
 >
-> 目前 List partition 和 List COLUMNS partition 目前还属于实验特性。
+> 目前 List partition 和 List COLUMNS partition 为实验特性，不建议在生产环境中使用。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
