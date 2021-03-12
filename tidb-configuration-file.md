@@ -417,11 +417,6 @@ Configuration items related to performance.
 
 The Plan Cache configuration of the `PREPARE` statement.
 
-### `enabled`
-
-- Determines whether to enable Plan Cache of the `PREPARE` statement.
-- Default value: `true`
-
 ### `capacity`
 
 - The number of cached statements.
@@ -505,29 +500,10 @@ This section introduces configuration items related to the Coprocessor Cache fea
 
 ### `capacity-mb`
 
-- The total size of the cached data. When the cache space is full, old cache entries are evicted.
+- The total size of the cached data. When the cache space is full, old cache entries are evicted. When the value is `0.0`, the Coprocessor Cache feature is disabled.
 - Default value: `1000.0`
 - Unit: MB
 - Type: Float
-
-### `admission-max-result-mb`
-
-- Specifies the largest single push-down calculation result set that can be cached. If the result set of a single push-down calculation returned on the Coprocessor is less than the result set specified by this parameter, the result set is cached. Increasing this value means that more types of push-down requests are cached, but also cause the cache space to be occupied more easily. Note that the size of each push-down calculation result set is generally smaller than the size of the Region. Therefore, it is meaningless to set this value far beyond the size of a Region.
-- Default value: `10.0`
-- Unit: MB
-- Type: Float
-
-### `admission-min-process-ms`
-
-- Specifies the minimum calculation time for a single push-down calculation result set that can be cached. If the calculation time of a single push-down calculation on the Coprocessor is less than the time specified by this parameter, the result set is not cached. Requests that are processed quickly do not need to be cached, and only the requests that take a long time to process need to be cached, which makes the cache less likely to be evicted.
-- Default value: `5`
-- Unit: ms
-
-### `admission-max-ranges` <span class="version-mark">New in v4.0.8</span>
-
-+ Specifies the maximum number of ranges in a single push-down calculation result set that can be cached. If the push-down calculation has more ranges than the number specified by this configuration, the result set will not be cached. Generally, when there are too many ranges, the extra calculation overhead of parsing the range brought by Coprocessor Cache is large.
-+ Default value: `500`
-+ Type: uint
 
 ### txn-local-latches
 
