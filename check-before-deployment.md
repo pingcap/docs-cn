@@ -116,7 +116,9 @@ aliases: ['/docs-cn/stable/check-before-deployment/','/docs-cn/v4.0/check-before
 
 ```bash
 echo "vm.swappiness = 0">> /etc/sysctl.conf
-swapoff -a && swapon -a
+swapoff -a
+echo "swapoff -a" >>/etc/rc.d/rc.local
+chmod +x /etc/rc.d/rc.local
 sysctl -p
 ```
 
@@ -428,6 +430,9 @@ sudo systemctl enable ntpd.service
             ```bash
             echo never > /sys/kernel/mm/transparent_hugepage/enabled
             echo never > /sys/kernel/mm/transparent_hugepage/defrag
+            echo "echo never > /sys/kernel/mm/transparent_hugepage/defrag" >>/etc/rc.d/rc.local
+            echo "echo never > /sys/kernel/mm/transparent_hugepage/enabled" >>/etc/rc.d/rc.local
+            chmod +x /etc/rc.d/rc.local
             ```
 
         5. 配置 udev 脚本应用 IO 调度器策略。
