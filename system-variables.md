@@ -487,6 +487,7 @@ mysql> SELECT * FROM t1;
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
 ### `tidb_enable_list_partition`
+
 - 作用域：SESSION
 - 默认值：OFF
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
