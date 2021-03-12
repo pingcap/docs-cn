@@ -221,6 +221,18 @@ mysql> SELECT * FROM t1;
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
+### `tidb_broadcast_join_threshold_count`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：10240
+- 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+
+### `tidb_broadcast_join_threshold_size`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：100 \* 1024 \* 1024
+- 如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+
 ### `tidb_build_stats_concurrency`
 
 - 作用域：SESSION
