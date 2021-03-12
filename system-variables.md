@@ -346,7 +346,7 @@ mysql> SELECT * FROM t1;
 
     关于是否需要禁用自动重试，请参考[重试的局限性](/optimistic-transaction.md#重试的局限性)。
 
-    该变量只适用于乐观事务，不适用于悲观事务。悲观事务的重试次数由 [max_retry_count](/tidb-configuration-file.md#max-retry-count) 控制。
+    该变量只适用于乐观事务，不适用于悲观事务。悲观事务的重试次数由 [`max_retry_count`](/tidb-configuration-file.md#max-retry-count) 控制。
 
 ### `tidb_distsql_scan_concurrency`
 
