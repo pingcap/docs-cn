@@ -56,6 +56,7 @@ This is a list of TiDB adopters in various industries.
 |[Hive-Box](http://www.fcbox.com/en/pc/index.html#/)|Logistics|[Chinese](https://pingcap.com/cases-cn/user-case-fengchao/)|
 |[NetEase Games](https://www.linkedin.com/company/netease-games)|Gaming|[English](https://pingcap.com/case-studies/why-we-chose-tidb-over-other-mysql-based-and-newsql-storage-solutions); [Chinese](https://pingcap.com/cases-cn/user-case-wangyihuyu/)|
 |[GAEA](http://www.gaea.com/en/)|Gaming|[English](https://pingcap.com/case-studies/2017-05-22-Comparison-between-MySQL-and-TiDB-with-tens-of-millions-of-data-per-day); [Chinese](https://pingcap.com/cases-cn/user-case-gaea-ad/)|
+|[Kunlun](https://www.crunchbase.com/organization/kunlun)|Gaming|[English](https://pingcap.com/case-studies/empowering-your-gaming-application-with-a-scale-out-newsql-database)|
 |[YOOZOO Games](https://www.crunchbase.com/organization/yoozoo-games)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-youzu/)|
 |[Seasun Games](https://www.crunchbase.com/organization/seasun)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-xishanju/)|
 |[FUNYOURS JAPAN](http://company.funyours.co.jp/)|Gaming|[Chinese](https://pingcap.com/cases-cn/user-case-funyours-japan/)|
