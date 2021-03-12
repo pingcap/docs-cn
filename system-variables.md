@@ -713,7 +713,7 @@ For a system upgraded to v5.0.0-rc from an earlier version, if you have not modi
 - Default value: 60
 - This variable is used to set the step of the Prometheus statement generated when querying `METRIC_SCHEMA`. The unit is second.
 
-## tidb_multi_statement_mode <span class="version-mark">New in v4.0.11</span>
+### tidb_multi_statement_mode <span class="version-mark">New in v4.0.11</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: OFF
