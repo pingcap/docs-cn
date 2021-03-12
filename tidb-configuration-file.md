@@ -316,6 +316,13 @@ Configuration items related to performance.
 + When TiDB detects that the memory usage of the tidb-server instance exceeds the threshold, it considers that there might be a risk of OOM. Therefore, it records ten SQL statements with the highest memory usage, ten SQL statements with the longest running time, and the heap profile among all SQL statements currently being executed to the directory [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) and outputs a log containing the keyword `tidb-server has the risk of OOM`.
 + The value of this configuration item is the initial value of the system variable [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio).
 
+### `max-txn-ttl`
+
+- The longest time that a single transaction can hold locks. If this time is exceeded, the locks of a transaction might be cleared by other transactions so that this transaction cannot be successfully committed.
+- Default value: `600000`
+- Unit: Millisecond
+- The transaction that holds locks longer than this time can only be committed or rolled back. The commit might not be successful.
+
 ### `committer-concurrency`
 
 + The number of goroutines for requests related to executing commit in the commit phase of the single transaction.
@@ -451,13 +458,6 @@ The Plan Cache configuration of the `PREPARE` statement.
 - The maximum timeout when executing a transaction commit.
 - Default value: `41s`
 - It is required to set this value larger than twice of the Raft election timeout.
-
-### `max-txn-ttl`
-
-- The longest time that a single transaction can hold locks. If this time is exceeded, the locks of a transaction might be cleared by other transactions so that this transaction cannot be successfully committed.
-- Default value: `600000`
-- Unit: Millisecond
-- The transaction that holds locks longer than this time can only be committed or rolled back. The commit might not be successful.
 
 ### `max-batch-size`
 
