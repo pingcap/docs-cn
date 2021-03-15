@@ -246,8 +246,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION
 - 默认值：4
-- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。
-当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_config`
 
@@ -339,13 +338,15 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
-- 这个变量用来设置是否禁用显式事务自动重试，设置为 `ON` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
+- 这个变量用来设置是否禁用显式的乐观事务自动重试，设置为 `ON` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
 
     如果将该变量的值设为 `OFF`，TiDB 将会自动重试事务，这样在事务提交时遇到的错误更少。需要注意的是，这样可能会导致数据更新丢失。
 
     这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
     关于是否需要禁用自动重试，请参考[重试的局限性](/optimistic-transaction.md#重试的局限性)。
+
+    该变量只适用于乐观事务，不适用于悲观事务。悲观事务的重试次数由 [`max_retry_count`](/tidb-configuration-file.md#max-retry-count) 控制。
 
 ### `tidb_distsql_scan_concurrency`
 
@@ -418,6 +419,7 @@ mysql> SELECT * FROM t1;
 - 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 `row_id` 上并用额外创建的主键索引指向 `row_id`。
 
     开启该特性对性能的影响主要体现在以下几个方面:
+
     - 插入的时候每行会减少一个索引 key 的写入。
     - 使用主键作为等值条件查询的时候，会节省一次读取请求。
     - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。
@@ -451,6 +453,8 @@ mysql> SELECT * FROM t1;
     * `get_lock` 和 `release_lock` 函数
     * `LOCK IN SHARE MODE` 语法
     * `SQL_CALC_FOUND_ROWS` 语法
+    * `CREATE TEMPORARY TABLE` 语法
+    * `DROP TEMPORARY TABLE` 语法
 
 > **注意：**
 >
@@ -730,8 +734,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 - 作用域：SESSION
 - 默认值：OFF
-- 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。
-当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
+- 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
 ### `tidb_opt_correlation_exp_factor`
 
@@ -750,8 +753,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 - 作用域：SESSION
 - 默认值：OFF
-- 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
-当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
+- 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
 在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
 
@@ -908,7 +910,7 @@ SET tidb_query_log_max_len = 20;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：10
-- 这个变量用来设置最大重试次数。一个事务执行中遇到可重试的错误（例如事务冲突、事务提交过慢或表结构变更）时，会根据该变量的设置进行重试。注意当 `tidb_retry_limit = 0` 时，也会禁用自动重试。
+- 这个变量用来设置乐观事务的最大重试次数。一个事务执行中遇到可重试的错误（例如事务冲突、事务提交过慢或表结构变更）时，会根据该变量的设置进行重试。注意当 `tidb_retry_limit = 0` 时，也会禁用自动重试。该变量仅适用于乐观事务，不适用于悲观事务。
 
 ### `tidb_row_format_version`
 
