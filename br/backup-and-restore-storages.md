@@ -23,21 +23,32 @@ TiDB 迁移工具支持以下存储服务：
 
 S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配置指定参数。例如：
 
-{{< copyable "shell-regular" >}}
+* 用 Dumpling 导出数据到 S3
 
-```bash
-# 用 Dumpling 导出数据到 S3
-./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-    -o 's3://my-bucket/sql-backup?region=us-west-2'
+    {{< copyable "shell-regular" >}}
 
-# 用 Lightning 从 S3 导入数据
-./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
-    -d 's3://my-bucket/sql-backup?region=us-west-2'
+    ```bash
+    ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+        -o 's3://my-bucket/sql-backup?region=us-west-2'
+    ```
 
-# 用 BR 备份到 GCS
-./br backup full -u 127.0.0.1:2379 \
-    -s 'gcs://bucket-name/prefix'
-```
+* 用 Lightning 从 S3 导入数据
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup?region=us-west-2'
+    ```
+
+* 用 BR 备份到 GCS
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./br backup full -u 127.0.0.1:2379 \
+        -s 'gcs://bucket-name/prefix'
+    ```
 
 ### S3 的 URL 参数
 
