@@ -1102,8 +1102,8 @@ set tidb_slow_log_threshold = 200;
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-### `tidb_enable_engine_fallback`
+### `tidb_allow_fallback_to_tikv`
 
 - 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 该变量控制在引擎发生故障导致 SQL 语句执行失败时，是否尝试采用其他引擎再次执行。在该变量打开的情况下，目前 TiDB 支持在 TiFlash 发生故障导致 SQL 语句执行失败时尝试采用 TiKV 再次执行。
+- 默认值：""
+- 当 SQL 语句因为该变量指定的存储引擎的故障而执行失败时，TiDB 会尝试使用 TiKV 再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。当该变量被设置为 "tiflash" 时，TiDB 会在 TiFlash 发生故障导致 SQL 语句执行失败的情况下尝试使用 TiKV 再次执行。
