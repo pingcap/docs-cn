@@ -71,7 +71,7 @@ io-concurrency = 5
 [checkpoint]
 # 是否启用断点续传。
 # 导入数据时，TiDB Lightning 会记录当前表导入的进度。
-# 所以即使 Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
+# 所以即使 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
 enable = true
 # 存储断点的数据库名称。
 schema = "tidb_lightning_checkpoint"
@@ -116,11 +116,11 @@ addr = "172.16.31.10:8287"
 read-block-size = 65536 # Byte (默认为 64 KB)
 
 # （源数据文件）单个导入区块大小的最小值。
-# Lightning 根据该值将一张大表分割为多个数据引擎文件。
+# TiDB Lightning 根据该值将一张大表分割为多个数据引擎文件。
 # batch-size = 107_374_182_400 # Byte (默认为 100 GB)
 
 # 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，
-# 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，Lightning
+# 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，TiDB Lightning
 # 稍微增大了前几个区块的大小。该参数也决定了比例系数，即在完全并发下
 # “导入”和“写入”过程的持续时间比。这个值可以通过计算 1 GB 大小的
 # 单张表的（导入时长/写入时长）得到。在日志文件中可以看到精确的时间。
@@ -134,8 +134,8 @@ data-source-dir = "/data/my_database"
 # 已有表结构，并且不会执行 `CREATE TABLE` 语句。
 no-schema = false
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
-#  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则 Lightning 会报错。
-#  - gb18030：表结构文件必须使用 GB-18030 编码，否则 Lightning 会报错。
+#  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
+#  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
 #  - auto：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错（默认）。
 #  - binary：不尝试转换编码。
 # 注意：**数据** 文件始终解析为 binary 文件。
@@ -240,7 +240,7 @@ analyze = true
 # 设置周期性后台操作。
 # 支持的单位：h（时）、m（分）、s（秒）。
 [cron]
-# Lightning 自动刷新导入模式状态的持续时间，该值应小于 TiKV 对应的设定值。
+# TiDB Lightning 自动刷新导入模式状态的持续时间，该值应小于 TiKV 对应的设定值。
 switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"

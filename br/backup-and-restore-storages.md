@@ -1,12 +1,12 @@
 ---
 title: 外部存储
-summary: 了解 BR、Lightning 和 Dumpling 中所用存储服务的 URL 格式。
+summary: 了解 BR、TiDB Lightning 和 Dumpling 中所用存储服务的 URL 格式。
 aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 ---
 
 # 外部存储
 
-Backup & Restore (BR)、Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
+Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
 
 ## Scheme
 
@@ -32,7 +32,7 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
         -o 's3://my-bucket/sql-backup?region=us-west-2'
     ```
 
-* 用 Lightning 从 S3 导入数据
+* 用 TiDB Lightning 从 S3 导入数据
 
     {{< copyable "shell-regular" >}}
 
@@ -144,4 +144,4 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 
-此参数不适用于 Lightning 和 Dumpling，因为目前它们都是单机程序。
+此参数不适用于 TiDB Lightning 和 Dumpling，因为目前它们都是单机程序。

@@ -12,7 +12,7 @@ TiDB Lightning 有以下两个主要的使用场景：
 - **迅速**导入**大量新**数据。
 - 恢复所有备份数据。
 
-目前，Lightning 支持：
+目前，TiDB Lightning 支持：
 
 - 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) 输出格式的数据源。
 - 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
