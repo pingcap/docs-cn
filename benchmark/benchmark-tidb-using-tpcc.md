@@ -181,7 +181,7 @@ cd run && \
 
 ### 通过 TiDB Lightning 导入
 
-由于导入数据量随着 warehouse 的增加而增加，当需要导入 1000 warehouse 以上数据时，可以先用 BenchmarkSQL 生成 csv 文件，再将文件通过 TiDB Lightning（以下简称 Lightning）导入的方式来快速导入。生成的 csv 文件也可以多次复用，节省每次生成所需要的时间。
+由于导入数据量随着 warehouse 的增加而增加，当需要导入 1000 warehouse 以上数据时，可以先用 BenchmarkSQL 生成 csv 文件，再将文件通过 TiDB Lightning 导入的方式来快速导入。生成的 csv 文件也可以多次复用，节省每次生成所需要的时间。
 
 #### 修改 BenchmarkSQL 的配置文件
 
@@ -191,13 +191,13 @@ cd run && \
 fileLocation=/home/user/csv/  # 存储 csv 文件的目录绝对路径，需保证有足够的空间
 ```
 
-因为最终要使用 Lightning 导入数据，所以 csv 文件名最好符合 Lightning 要求，即 `{database}.{table}.csv` 的命名法。这里可以将以上配置改为：
+因为最终要使用 TiDB Lightning 导入数据，所以 csv 文件名最好符合其要求，即 `{database}.{table}.csv` 的命名法。这里可以将以上配置改为：
 
 ```text
 fileLocation=/home/user/csv/tpcc.  # 存储 csv 文件的目录绝对路径 + 文件名前缀（database）
 ```
 
-这样生成的 csv 文件名将会是类似 `tpcc.bmsql_warehouse.csv` 的样式，符合 Lightning 的要求。
+这样生成的 csv 文件名将会是类似 `tpcc.bmsql_warehouse.csv` 的样式，符合 TiDB Lightning 的要求。
 
 #### 生成 csv 文件
 
@@ -207,9 +207,9 @@ fileLocation=/home/user/csv/tpcc.  # 存储 csv 文件的目录绝对路径 + �
 ./runLoader.sh props.mysql
 ```
 
-#### 通过 Lightning 导入
+#### 通过 TiDB Lightning 导入
 
-通过 Lightning 导入数据请参考 [Lightning 部署执行](/tidb-lightning/deploy-tidb-lightning.md)章节。这里我们介绍下通过 TiDB Ansible 部署 Lightning 导入数据的方法。
+通过 TiDB Lightning 导入数据请参考 [TiDB Lightning 部署执行](/tidb-lightning/deploy-tidb-lightning.md)章节。这里我们介绍下通过 TiDB Ansible 部署 TiDB Lightning 导入数据的方法。
 
 ##### 修改 inventory.ini
 
@@ -238,7 +238,7 @@ mydumper:
         trim-last-separator: false
 ```
 
-##### 部署 Lightning 和 Importer
+##### 部署 TiDB Lightning 和 TiKV Importer
 
 {{< copyable "shell-regular" >}}
 
@@ -248,12 +248,12 @@ ansible-playbook deploy.yml --tags=lightning
 
 ##### 启动
 
-* 登录到部署 Lightning 和 Importer 的服务器
+* 登录到部署 TiDB Lightning 和 TiKV Importer 的服务器
 * 进入部署目录
-* 在 Importer 目录下执行 `scripts/start_importer.sh`，启动 Importer
-* 在 Lightning 目录下执行 `scripts/start_lightning.sh`，开始导入数据
+* 在 TiKV Importer 目录下执行 `scripts/start_importer.sh`，启动 TiKV Importer
+* 在 TiDB Lightning 目录下执行 `scripts/start_lightning.sh`，开始导入数据
 
-由于是用 TiDB Ansible 进行部署的，可以在监控页面看到 Lightning 的导入进度，或者通过日志查看导入是否结束。
+由于是用 TiDB Ansible 进行部署的，可以在监控页面看到 TiDB Lightning 的导入进度，或者通过日志查看导入是否结束。
 
 ### 导入完成后
 
