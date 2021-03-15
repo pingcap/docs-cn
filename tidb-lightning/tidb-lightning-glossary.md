@@ -94,7 +94,7 @@ TiDB Lightning 同时处理多个数据引擎（可通过 `lightning.table-concu
 
 引擎。在 TiKV Importer 中，一个引擎就是一个用于排序键值对的 RocksDB 实例。
 
-TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。Lightning 先打开一个引擎，向其发送未排序的键值对，然后关闭引擎。随后，引擎会对收到的键值对进行排序操作。这些关闭的引擎可以进一步上传至 TiKV store 中为 [Ingest](#ingest) 做准备。
+TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。TiDB Lightning 先打开一个引擎，向其发送未排序的键值对，然后关闭引擎。随后，引擎会对收到的键值对进行排序操作。这些关闭的引擎可以进一步上传至 TiKV store 中为 [Ingest](#ingest) 做准备。
 
 引擎使用 TiKV Importer 的 `import-dir` 作为临时存储，有时也会被称为引擎文件 (engine files)。
 
