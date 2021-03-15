@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: BR 存储
-summary: 了解 BR 中所用存储服务的 URL 格式。
-=======
 title: 外部存储
 summary: 了解 BR、TiDB Lightning 和 Dumpling 中所用存储服务的 URL 格式。
-aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
->>>>>>> 2c9622b7... *: generalize and link to the external storage docs from Lightning (#5528)
 ---
 
 # 外部存储
