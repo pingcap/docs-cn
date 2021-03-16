@@ -171,7 +171,7 @@ mysql> SELECT * FROM t1;
     * 1：aggregation 和 join 的请求会进行批量发送
     * 2：所有的 cop 请求都会批量发送
 
-### `tidb_allow_mpp`
+### `tidb_allow_mpp` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：0
