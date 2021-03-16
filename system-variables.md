@@ -233,7 +233,7 @@ mysql> SELECT * FROM t1;
 - 默认值：10240
 - 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
-### `tidb_broadcast_join_threshold_size`
+### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：100 \* 1024 \* 1024
