@@ -96,7 +96,7 @@ BACKUP DATABASE * TO 'local:///mnt/backup/full/';
 
 注意，备份中不包含系统表 (`mysql.*`、`INFORMATION_SCHEMA.*`、`PERFORMANCE_SCHEMA.*` 等)。
 
-### 远端存储
+### 外部存储
 
 BR 支持备份数据到 Amazon S3 或 Google Cloud Storage (GCS)：
 

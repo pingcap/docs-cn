@@ -76,9 +76,11 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
-- job_name: &#39;syncer_ops&#39; // 任务名字
-    static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] //Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+```yaml
+- job_name: 'syncer_ops' # 任务名字
+  static_configs:
+  - targets: ['10.10.1.1:10096'] # Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+```
 
 重启 Prometheus 即可。
 
@@ -153,7 +155,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 主要有两个方面：
 
-- 目前已开发分布式导入工具 [Lightning](/tidb-lightning/tidb-lightning-overview.md)，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
+- 目前已开发分布式导入工具 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
 - TiDB 的数据加载与磁盘以及整体集群状态相关，加载数据时应关注该主机的磁盘利用率，TiClient Error/Backoff/Thread CPU 等相关 metric，可以分析相应瓶颈。
 
 ### 对数据做删除操作之后，空间回收比较慢，如何处理？

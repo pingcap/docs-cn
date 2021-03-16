@@ -7,10 +7,15 @@ aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-overview/','/docs-cn/v4
 
 TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，可[在此下载](/download-ecosystem-tools.md#tidb-lightning)。
 
-TiDB Lightning 有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量备份数据的恢复。目前，Lightning 支持 Dumpling 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
+TiDB Lightning 有以下两个主要的使用场景：
 
 - **迅速**导入**大量新**数据。
 - 恢复所有备份数据。
+
+目前，TiDB Lightning 支持：
+
+- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) 输出格式的数据源。
+- 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 ## TiDB Lightning 整体架构
 
@@ -36,5 +41,4 @@ TiDB Lightning 整体工作原理如下：
 
 7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
 
-如果需要导入的目标集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下，`tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入；
-TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据。TiDB-backend 使用和 Loader 类似，`tidb-lightning` 将数据转换为 `INSERT` 语句，然后直接在目标集群上执行这些语句。详见 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
+如果需要导入的目标集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下，`tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入；TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据。TiDB-backend 使用和 Loader 类似，`tidb-lightning` 将数据转换为 `INSERT` 语句，然后直接在目标集群上执行这些语句。详见 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
