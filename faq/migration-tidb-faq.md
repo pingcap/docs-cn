@@ -76,9 +76,11 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
-- job_name: &#39;syncer_ops&#39; // 任务名字
-    static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] //Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+```yaml
+- job_name: 'syncer_ops' # 任务名字
+  static_configs:
+  - targets: ['10.10.1.1:10096'] # Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+```
 
 重启 Prometheus 即可。
 
