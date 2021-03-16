@@ -227,7 +227,7 @@ mysql> SELECT * FROM t1;
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
-### `tidb_broadcast_join_threshold_count`
+### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：10240
