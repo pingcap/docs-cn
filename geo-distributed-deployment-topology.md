@@ -37,7 +37,7 @@ This section describes the key parameter configuration of the TiDB geo-distribut
 
 - The label configuration:
 
-    Since TiKV is deployed across different data centers, if the physical machines go down, the Region Group might lose three of the default five replicas, which causes the cluster unavailability. To address this issue, you can configure the labels to enable the smart scheduling of PD, which ensures that the Region Group does not allow three replicas to be located in TiKV instances on the same machine in the same cabinet of the same data center.
+    Since TiKV is deployed across different data centers, if the physical machines go down, the Raft Group might lose three of the default five replicas, which causes the cluster unavailability. To address this issue, you can configure the labels to enable the smart scheduling of PD, which ensures that the Raft Group does not allow three replicas to be located in TiKV instances on the same machine in the same cabinet of the same data center.
 
 - The TiKV configuration:
 
