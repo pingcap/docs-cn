@@ -249,7 +249,7 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 
 TiFlash 支持 MPP 模式的执行，即在计算中引入跨节点的数据交换，即 data shuffle 过程。打开 MPP 的开关由 global/session 变量 tidb_allow_mpp 控制，方式为：
 
-```
+```shell
 set @@session.tidb_allow_mpp=1
 ```
 
