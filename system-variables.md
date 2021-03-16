@@ -563,6 +563,32 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：60
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 step，单位为秒。
 
+### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：WARN
+- 可选值：OFF，ON 和 WARN
+- 该变量用于控制是否在同一个 `COM_QUERY` 调用中执行多个查询。
+- 为了减少 SQL 注入攻击的影响，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。该变量可用作早期 TiDB 版本的升级路径选项。该变量值与是否允许多语句行为的对照表如下：
+
+| 客户端设置         | `tidb_multi_statement_mode` 值 | 是否允许多语句 |
+|------------------------|-----------------------------------|--------------------------------|
+| Multiple Statements = ON  | OFF                               | 允许                            |
+| Multiple Statements = ON  | ON                                | 允许                            |
+| Multiple Statements = ON  | WARN                              | 允许                            |
+| Multiple Statements = OFF | OFF                               | 不允许                             |
+| Multiple Statements = OFF | ON                                | 允许                            |
+| Multiple Statements = OFF | WARN                              | 允许 + 警告提示        |
+
+> **注意：**
+>
+> 只有默认值 `OFF` 才是安全的。如果用户业务是专为早期 TiDB 版本而设计的，那么需要将该变量值设为 `ON`。如果用户业务需要多语句支持，建议用户使用客户端提供的设置，不要使用 `tidb_multi_statement_mode` 变量进行设置。
+
+>
+> * [go-sql-driver](https://github.com/go-sql-driver/mysql#multistatements) (`multiStatements`)
+> * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
+> * PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
+
 ### `tidb_opt_agg_push_down`
 
 - 作用域：SESSION
