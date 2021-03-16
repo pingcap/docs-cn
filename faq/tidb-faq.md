@@ -141,15 +141,11 @@ update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_tim
 
 可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
 
-#### 3.1.9 ERROR 1105 (HY000): client has multi-statement capability disabled
+#### 3.1.9 ERROR 8130 (HY000): client has multi-statement capability disabled
 
-从早期版本的 TiDB 升级后，可能会出现该问题。为了防止 SQL 注入攻击，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。
+从早期版本的 TiDB 升级后，可能会出现该问题。为了减少 SQL 注入攻击的影响，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。
 
-关于如何执行多条语句，可以查阅以下客户端驱动程序的文档：
-
-* [go-sql-driver](https://github.com/go-sql-driver/mysql#multistatements) (`multiStatements`)
-* [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
-* PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
+可通过系统变量 [`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 控制是否在同一 `COM_QUERY` 调用中执行多个查询。
 
 ### 3.2 MySQL 原生报错汇总
 
