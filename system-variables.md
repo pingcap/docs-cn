@@ -486,7 +486,7 @@ mysql> SELECT * FROM t1;
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-### `tidb_enable_list_partition`
+### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 > **警告：**
 >
