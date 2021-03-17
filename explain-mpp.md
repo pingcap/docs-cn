@@ -1,0 +1,92 @@
+---
+title: 用 EXPLAIN 查看使用 MPP SQL 执行计划
+summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
+---
+
+# 用 EXPLAIN 查看使用 MPP SQL 执行计划
+
+在 TiDB 中，新增了 MPP 执行模式，在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
+
+本文档使用的示例数据如下:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (id int, value int);
+INSERT INTO t1 values(1,2),(2,3),(1,3);
+ALTER TABLE t1 set tiflash replica 1;
+ANALYZE TABLE t1;
+SET tidb_allow_mpp = 1;
+```
+
+## MPP query fragment 和 MPP task
+
+在 MPP 模式下，一个 query 在逻辑上会被切分为多个 MPP query fragment，举例来说：
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN select count(*) from t1 group by id;
+```
+
+这个 query 在 MPP 模式下会包含两个 query fragment，一个为 partial aggregation，一个为 final aggregation。在 query 执行的时候每个 query fragment 都会被实例化为一个或者多个 MPP task。
+
+## Exchange 算子
+
+在 MPP 执行计划中，新增了两个 Exchange 算子，分别为 ExchangeReceiver 和 ExchangeSender，ExchangeReceiver 为从下游 query fragment 读取数据，ExchangeSender 为下游 query fragment 向上游 query fragment 发送数据，在 MPP 执行模式下，每个 MPP query fragment 的 root 算子均为 ExchangeSender 算子，即每个 query fragment 以 ExchangeSender 为界进行划分。一个简单的 MPP plan 如下：
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN select count(*) from t1 group by id;
+```
+
+```sql
++------------------------------------+---------+-------------------+---------------+----------------------------------------------------+
+| id                                 | estRows | task              | access object | operator info                                      |
++------------------------------------+---------+-------------------+---------------+----------------------------------------------------+
+| TableReader_31                     | 2.00    | root              |               | data:ExchangeSender_30                             |
+| └─ExchangeSender_30                | 2.00    | batchCop[tiflash] |               | ExchangeType: PassThrough                          |
+|   └─Projection_26                  | 2.00    | batchCop[tiflash] |               | Column#4                                           |
+|     └─HashAgg_27                   | 2.00    | batchCop[tiflash] |               | group by:test.t1.id, funcs:sum(Column#7)->Column#4 |
+|       └─ExchangeReceiver_29        | 2.00    | batchCop[tiflash] |               |                                                    |
+|         └─ExchangeSender_28        | 2.00    | batchCop[tiflash] |               | ExchangeType: HashPartition, Hash Cols: test.t1.id |
+|           └─HashAgg_9              | 2.00    | batchCop[tiflash] |               | group by:test.t1.id, funcs:count(1)->Column#7      |
+|             └─TableFullScan_25     | 3.00    | batchCop[tiflash] | table:t1      | keep order:false                                   |
++------------------------------------+---------+-------------------+---------------+----------------------------------------------------+
+```
+
+上述 plan 中有两个 query fragment：[TableFullScan_25 => HashAgg_9 => ExchangeSender_28] 为第一个 query fragment，其主要完成 partial aggregation 的计算，[ExchangeReceiver_29 => HashAgg_27 => Projection_26 => ExchangeSender_30] 为第二个 query fragment，其主要完成 final aggregation 的计算。
+
+在 ExchangeSender 的 operator info 中有 ExchangeType 的信息，目前总共有三种 ExchangeType，分别为：
+
+* HashPartition：ExchangeSender 把数据按 Hash 值进行 partition 之后分发给上游的 MPP Task 的 ExchangeReceiver，通常在 Hash aggregation 以及 Hash Join 中使用
+* Broadcast：ExchangeSender 通过 broadcast 的方式把数据分发给上游的 MPP Task，通常在 Broadcast Join 中使用
+* PassThrough：ExchangeSender 把数据分发给上游的 MPP Task，与 Broadcast 的区别是此时上游有且仅有一个 MPP Task，通常用于向 TiDB 返回数据。
+
+## MPP Explain analyze
+
+Explain analyze 语句与 Explain 类似，不过它还会输出一些运行时的信息，一个简单的 explain analyze 输出的信息如下：
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN ANALYZE select count(*) from t1 group by id;
+```
+
+```sql
++------------------------------------+---------+---------+-------------------+---------------+---------------------------------------------------------------------------------------------+----------------------------------------------------------------+--------+------+
+| id                                 | estRows | actRows | task              | access object | execution info                                                                              | operator info                                                  | memory | disk |
++------------------------------------+---------+---------+-------------------+---------------+---------------------------------------------------------------------------------------------+----------------------------------------------------------------+--------+------+
+| TableReader_31                     | 4.00    | 2       | root              |               | time:44.5ms, loops:2, cop_task: {num: 1, max: 0s, proc_keys: 0, copr_cache_hit_ratio: 0.00} | data:ExchangeSender_30                                         | N/A    | N/A  |
+| └─ExchangeSender_30                | 4.00    | 2       | batchCop[tiflash] |               | tiflash_task:{time:16.5ms, loops:1, threads:1}                                              | ExchangeType: PassThrough, tasks: [2, 3, 4]                    | N/A    | N/A  |
+|   └─Projection_26                  | 4.00    | 2       | batchCop[tiflash] |               | tiflash_task:{time:16.5ms, loops:1, threads:1}                                              | Column#4                                                       | N/A    | N/A  |
+|     └─HashAgg_27                   | 4.00    | 2       | batchCop[tiflash] |               | tiflash_task:{time:16.5ms, loops:1, threads:1}                                              | group by:test.t1.id, funcs:sum(Column#7)->Column#4             | N/A    | N/A  |
+|       └─ExchangeReceiver_29        | 4.00    | 2       | batchCop[tiflash] |               | tiflash_task:{time:14.5ms, loops:1, threads:20}                                             |                                                                | N/A    | N/A  |
+|         └─ExchangeSender_28        | 4.00    | 0       | batchCop[tiflash] |               | tiflash_task:{time:9.49ms, loops:0, threads:0}                                              | ExchangeType: HashPartition, Hash Cols: test.t1.id, tasks: [1] | N/A    | N/A  |
+|           └─HashAgg_9              | 4.00    | 0       | batchCop[tiflash] |               | tiflash_task:{time:9.49ms, loops:0, threads:0}                                              | group by:test.t1.id, funcs:count(1)->Column#7                  | N/A    | N/A  |
+|             └─TableFullScan_25     | 6.00    | 0       | batchCop[tiflash] | table:t1      | tiflash_task:{time:9.49ms, loops:0, threads:0}                                              | keep order:false                                               | N/A    | N/A  |
++------------------------------------+---------+---------+-------------------+---------------+---------------------------------------------------------------------------------------------+----------------------------------------------------------------+--------+------+
+```
+
+与 explain 相比，ExchangeSender 的 operator info 中多了 task id 的输出，其记录了该 query fragment 实例化成的 MPP Task 的 task id，此外 MPP Executor 中都会有 `threads` 这一列，这列记录了 MPP 在执行该算子时使用的并发数（对于有多个节点组成的集群，改并发数是所有节点并发数相加的结果）。
