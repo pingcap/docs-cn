@@ -188,3 +188,5 @@ show config where type = 'tikv' and name like '%enable-compaction-filter%';
 | tikv | 172.16.5.35:20163 | gc.enable-compaction-filter | true  |
 +------+-------------------+-----------------------------+-------+
 ```
+
+**这个特性在 TiDB 5.0.0 已经默认开启**。
