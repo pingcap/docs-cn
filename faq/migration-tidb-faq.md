@@ -19,7 +19,7 @@ Restart the TiDB service, add the `-skip-grant-table=true` parameter in the conf
 
 ### How to export the data in TiDB?
 
-Currently, TiDB does not support `select into outfile`. You can use the following methods to export the data in TiDB:
+You can use the following methods to export the data in TiDB:
 
 - See [MySQL uses mysqldump to export part of the table data](https://blog.csdn.net/xin_yu_xin/article/details/7574662) in Chinese and export data using mysqldump and the `WHERE` clause.
 - Use the MySQL client to export the results of `select` to a file.
@@ -120,13 +120,3 @@ If the amount of data that needs to be deleted at a time is very large, this loo
 
 - The [Lightning](/tidb-lightning/tidb-lightning-overview.md) tool is developed for distributed data import. It should be noted that the data import process does not perform a complete transaction process for performance reasons. Therefore, the ACID constraint of the data being imported during the import process cannot be guaranteed. The ACID constraint of the imported data can only be guaranteed after the entire import process ends. Therefore, the applicable scenarios mainly include importing new data (such as a new table or a new index) or the full backup and restoring (truncate the original table and then import data).
 - Data loading in TiDB is related to the status of disks and the whole cluster. When loading data, pay attention to metrics like the disk usage rate of the host, TiClient Error, Backoff, Thread CPU and so on. You can analyze the bottlenecks using these metrics.
-
-### What should I do if it is slow to reclaim storage space after deleting data?
-
-You can configure concurrent GC to increase the speed of reclaiming storage space. The default concurrency is 1, and you can modify it to at most 50% of the number of TiKV instances using the following command:
-
-{{< copyable "sql" >}}
-
-```sql
-update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";
-```

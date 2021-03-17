@@ -24,7 +24,7 @@ This document aims to help you achieve the following goals:
 
 ## Audience
 
-You are expected to have a basic understanding of [TiDB](https://docs.pingcap.com/tidb/v4.0) and [TiKV](https://tikv.org/).
+You are expected to have a basic understanding of TiDB and [TiKV](https://tikv.org/).
 
 Before reading on, make sure you have read [BR Tool Overview](/br/backup-and-restore-tool.md), especially [Usage Restrictions](/br/backup-and-restore-tool.md#usage-restrictions) and [Best Practices](/br/backup-and-restore-tool.md#best-practices).
 
@@ -82,26 +82,10 @@ Before the backup or restoration operations, you need to do some preparations:
 
 ### Preparation for backup
 
-In TiDB v4.0.8 and later versions, BR supports the self-adaptive Garbage Collection (GC). So to avoid manually configuring GC, you only need to register `backupTS` in `safePoint` in PD and make sure that `safePoint` does not move forward during the backup process.
+For the detailed usage of the `br backup` command, refer to [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md).
 
-In TiDB v4.0.7 and earlier versions, you need to manually configure GC before and after the BR backup through the following steps:
-
-1. Before executing the [`br backup` command](/br/use-br-command-line-tool.md#br-command-line-description), check the value of the [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) configuration item, and adjust the value appropriately in the MySQL client to make sure that GC does not run during the backup operation.
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
-    UPDATE mysql.tidb SET VARIABLE_VALUE = '720h' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
-    ```
-
-2. After the backup operation, set the parameter back to the original value.
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
-    ```
+1. Before executing the `br backup` command, ensure that no DDL is running on the TiDB cluster.
+2. Ensure that the storage device where the backup will be created has sufficient space.
 
 ### Preparation for restoration
 

@@ -555,7 +555,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
     The transaction duration exceeds the GC lifetime (10 minutes by default).
 
-    You can increase the GC lifetime by modifying the `mysql.tidb` table. Generally, it is not recommended to modify this parameter, because changing it might cause many old versions to pile up if this transaction has a large number of `update` and `delete` statements.
+    You can increase the GC lifetime by modifying the [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time) system variable. Generally, it is not recommended to modify this parameter, because changing it might cause many old versions to pile up if this transaction has a large number of `UPDATE` and `DELETE` statements.
 
 - 7.1.2 `txn takes too much time`.
 
@@ -582,12 +582,10 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
 - 7.1.5 `distsql.go` reports `inconsistent index`.
 
-    The data index seems to be inconsistent. Run the `admin check table <TableName>` command on the table where the reported index is. If the check fails, close GC by running the following command, and [report a bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md):
+    The data index seems to be inconsistent. Run the `admin check table <TableName>` command on the table where the reported index is. If the check fails, disable garbage collection by running the following command, and [report a bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md):
 
     ```sql
-    begin;
-    update mysql.tidb set variable_value='72h' where variable_name='tikv_gc_life_time';
-    commit;
+    SET GLOBAL tidb_gc_enable = 0;
     ```
 
 ### 7.2 TiKV

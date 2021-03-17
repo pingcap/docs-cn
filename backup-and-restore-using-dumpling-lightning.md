@@ -59,22 +59,22 @@ The steps to manually modify the GC time are as follows:
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    SHOW GLOBAL VARIABLES LIKE 'tidb_gc_life_time';
     ```
 
     ```sql
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    | VARIABLE_NAME         | VARIABLE_VALUE                                                                                 |
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    | tikv_gc_life_time     | 10m0s                                                                                          |
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    1 rows in set (0.02 sec)
+    +-------------------+-------+
+    | Variable_name     | Value |
+    +-------------------+-------+
+    | tidb_gc_life_time | 10m0s |
+    +-------------------+-------+
+    1 row in set (0.03 sec)
     ```
 
     {{< copyable "sql" >}}
 
     ```sql
-    UPDATE mysql.tidb SET VARIABLE_VALUE = '720h' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    SET GLOBAL tidb_gc_life_time = '720h';
     ```
 
 2. After executing the `dumpling` command, restore the GC value of the TiDB cluster to the initial value in step 1:
@@ -82,7 +82,7 @@ The steps to manually modify the GC time are as follows:
     {{< copyable "sql" >}}
 
     ```sql
-    UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    SET GLOBAL tidb_gc_life_time = '10m';
     ```
 
 ## Restore data into TiDB

@@ -8,13 +8,15 @@ aliases: ['/docs/dev/sql-statements/sql-statement-flashback-table/','/docs/dev/r
 
 The `FLASHBACK TABLE` syntax is introduced since TiDB 4.0. You can use the `FLASHBACK TABLE` statement to restore the tables and data dropped by the `DROP` or `TRUNCATE` operation within the Garbage Collection (GC) lifetime.
 
-Use the following command to query the TiDB cluster's `tikv_gc_safe_point` and `tikv_gc_life_time`. As long as the table is dropped by `DROP` or `TRUNCATE` statements after the `tikv_gc_safe_point` time, you can restore the table using the `FLASHBACK TABLE` statement.
+The system variable [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time) (default: `10m0s`) defines the retention time of earlier versions of rows. The current `safePoint` of where garabage collection has been performed up to can be obtained with the following query:
 
 {{< copyable "sql" >}}
 
 ```sql
-select * from mysql.tidb where variable_name in ('tikv_gc_safe_point','tikv_gc_life_time');
+SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
 ```
+
+As long as the table is dropped by `DROP` or `TRUNCATE` statements after the `tikv_gc_safe_point` time, you can restore the table using the `FLASHBACK TABLE` statement.
 
 ## Syntax
 

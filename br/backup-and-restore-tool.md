@@ -6,11 +6,11 @@ aliases: ['/docs/dev/br/backup-and-restore-tool/','/docs/dev/reference/tools/br/
 
 # BR Tool Overview
 
-[BR](http://github.com/pingcap/br) (Backup & Restore) is a command-line tool for distributed backup and restoration of the TiDB cluster data. It is supported to use BR only in TiDB v3.1 and later versions.
+[BR](http://github.com/pingcap/br) (Backup & Restore) is a command-line tool for distributed backup and restoration of the TiDB cluster data.
 
 Compared with [`dumpling`](/backup-and-restore-using-dumpling-lightning.md), BR is more suitable for scenarios of huge data volume.
 
-This document describes BR's implementation principles, recommended deployment configuration, usage restrictions, several methods to use BR, etc.
+This document describes BR's implementation principles, recommended deployment configuration, usage restrictions and several methods to use BR.
 
 ## Implementation principles
 
@@ -113,20 +113,14 @@ After the restoration operation is completed, BR performs a checksum calculation
 >
 > - If you do not mount a network disk or use other shared storage, the data backed up by BR will be generated on each TiKV node. Because BR only backs up leader replicas, you should estimate the space reserved for each node based on the leader size.
 >
-> - Meanwhile, because TiDB v4.0 uses leader count for load balancing by default, leaders are greatly different in size, resulting in uneven distribution of backup data on each node.
+> - Because TiDB uses leader count for load balancing by default, leaders can greatly differ in size. This might resulting in uneven distribution of backup data on each node.
 
 ### Usage restrictions
 
 The following are the limitations of using BR for backup and restoration:
 
-- It is supported to use BR only in TiDB v3.1 and later versions.
 - When BR restores data to the upstream cluster of TiCDC/Drainer, TiCDC/Drainer cannot replicate the restored data to the downstream.
 - BR supports operations only between clusters with the same [`new_collations_enabled_on_first_bootstrap`](/character-set-and-collation.md#collation-support-framework) value because BR only backs up KV data. If the cluster to be backed up and the cluster to be restored use different collations, the data validation fails. Therefore, before restoring a cluster, make sure that the switch value from the query result of the `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` statement is consistent with that during the backup process.
-
-    - For v3.1 clusters, the new collation framework is not supported, so you can see it as disabled.
-    - For v4.0 clusters, check whether the new collation is enabled by executing `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';`.
-
-    For example, assume that data is backed up from a v3.1 cluster and will be restored to a v4.0 cluster. The `new_collation_enabled` value of the v4.0 cluster is `true`, which means that the new collation is enabled in the cluster to be restored when this cluster is created. If you perform the restore in this situation, an error might occur.
 
 ### Minimum machine configuration required for running BR
 
@@ -159,20 +153,11 @@ Currently, the following methods are supported to run the BR tool:
 
 #### Use SQL statements
 
-In TiDB v4.0.2 and later versions, you can run the BR tool using SQL statements.
-
-For detailed operations, see the following documents:
-
-- [Backup syntax](/sql-statements/sql-statement-backup.md#backup)
-- [Restore syntax](/sql-statements/sql-statement-restore.md#restore)
+TiDB supports both [`BACKUP`](/sql-statements/sql-statement-backup.md#backup) and [`RESTORE`](/sql-statements/sql-statement-restore.md#restore) SQL statements. The progress of these operations can be monitored with the statement [`SHOW BACKUPS|RESTORES`](/sql-statements/sql-statement-show-backups.md).
 
 #### Use the command-line tool
 
-In TiDB versions above v3.1, you can run the BR tool using the command-line tool.
-
-First, you need to download the binary file of the BR tool. See [download link](/download-ecosystem-tools.md#br-backup-and-restore).
-
-For how to use the command-line tool to perform backup and restore operations, see [Use the BR command-line tool](/br/use-br-command-line-tool.md).
+The `br` command-line utility is available as a [separate download](/download-ecosystem-tools.md#br-backup-and-restore). For details, see [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md).
 
 #### In the Kubernetes environment
 

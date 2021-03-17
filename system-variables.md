@@ -553,6 +553,46 @@ For a system upgraded to v5.0.0-rc from an earlier version, if you have not modi
 - This variable is used to change the default priority for statements executed on a TiDB server. A use case is to ensure that a particular user that is performing OLAP queries receives lower priority than users performing OLTP queries.
 - You can set the value of this variable to `NO_PRIORITY`, `LOW_PRIORITY`, `DELAYED` or `HIGH_PRIORITY`.
 
+### tidb_gc_concurrency
+
+- Scope: GLOBAL
+- Default: -1
+- Specifies the number of threads in the [Resolve Locks](/garbage-collection-overview.md#resolve-locks) step of GC. A value of `-1` means that TiDB will automatically decide the number of garbage collection threads to use.
+
+### tidb_gc_enable
+
+- Scope: GLOBAL
+- Default value: ON
+- Enables garbage collection for TiKV. Disabling garbage collection will reduce system performance, as old versions of rows will no longer be purged.
+
+## tidb_gc_life_time
+
+- Scope: GLOBAL
+- Default: `"10m0s"`
+- The time limit during which data is retained for each GC, in the format of Go Duration. When a GC happens, the current time minus this value is the safe point.
+
+> **Note:**
+>
+> - In scenarios of frequent updates, a large value (days or even months) for `tidb_gc_life_time` may cause potential issues, such as:
+>     - Larger storage use
+>     - A large amount of history data may affect performance to a certain degree, especially for range queries such as `select count(*) from t`
+> - If there is any transaction that has been running longer than `tidb_gc_life_time`, during GC, the data since `start_ts` is retained for this transaction to continue execution. For example, if `tidb_gc_life_time` is configured to 10 minutes, among all transactions being executed, the transaction that starts earliest has been running for 15 minutes, GC will retain data of the recent 15 minutes.
+
+### tidb_gc_run_interval
+
+- Scope: GLOBAL
+- Default value: `"10m0s"`
+- Specifies the GC interval, in the format of Go Duration, for example, `"1h30m"`, and `"15m"`
+
+### tidb_gc_scan_lock_mode
+
+- Scope: GLOBAL
+- Default value: `PHYSICAL`
+- Possible values:
+    - `LEGACY`: Uses the old way of scanning, that is, disable Green GC.
+    - `PHYSICAL`: Uses the physical scanning method, that is, enable Green GC.
+- This parameter specifies the way of scanning locks in the Resolve Locks step of GC. When set to `LEGACY`, TiDB scans locks by Regions. The value `PHYSICAL` enables each TiKV node to bypass the Raft layer and directly scan data. This feature can effectively mitigate the impact of GC wakening up all Regions when the [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-experimental) feature is enabled, thus improving the execution speed in the Resolve Locks step.
+
 ### tidb_general_log
 
 - Scope: INSTANCE

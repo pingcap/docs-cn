@@ -124,12 +124,12 @@ The accessed Region is not available. A Raft Group is not available, with possib
 
 #### ERROR 9006 (HY000): GC life time is shorter than transaction duration
 
-The interval of `GC Life Time` is too short. The data that should have been read by long transactions might be deleted. You can add `GC Life Time` using the following command:
+The interval of `GC Life Time` is too short. The data that should have been read by long transactions might be deleted. You can adjust [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time) using the following command:
 
 {{< copyable "sql" >}}
 
 ```sql
-update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';
+SET GLOBAL tidb_gc_life_time = '30m';
 ```
 
 > **Note:**
