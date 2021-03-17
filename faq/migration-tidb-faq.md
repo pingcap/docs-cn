@@ -54,7 +54,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 该问题可能有如下原因：
 
-- 数据库主键分布不均匀，例如启用了 [SHARD_ROW_ID_BITS](shard-row-id-bits.md#shard_row_id_bits)
+- 数据库主键分布不均匀，例如启用了 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
 - 上游数据库为 TiDB，导出表是分区表
 
 在上述情况下，Dumpling 划分导出子范围时，会划分出过大的子范围，从而向上游发送结果过大的查询。请联系 [AskTUG 社区专家](https://asktug.com/) 获取实验版本的 Dumpling。
