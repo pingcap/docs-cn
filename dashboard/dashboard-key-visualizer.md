@@ -156,7 +156,7 @@ In the heatmap above, bright and dark colors are a fine-grained mix. This indica
 
 In the heatmap above, there is an alternating brightness and darkness along the X-axis (time) but the brightness is relatively even along the Y-axis (Region). This indicates that the reads and writes change periodically, which might occur in scenarios of periodically scheduled tasks. For example, the big data platform periodically extracts data from TiDB every day. In this kind of scenarios, pay attention to whether the resources are sufficient during peak usage.
 
-## Concentrated reads or writes
+### Concentrated reads or writes
 
 ![Concentrated](/media/dashboard/dashboard-keyviz-continue.png)
 
