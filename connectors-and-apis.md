@@ -51,7 +51,7 @@ The third-party APIs are not developed by Oracle. The following table lists the 
 |                | MySQL wrapped                            | `libmysqlclient`                 | See [MySQL wrapped](http://www.alhem.net/project/mysql/) |
 | Go             | go-sql-driver                            | Native Driver                    | See [Mysql Go API](https://github.com/go-sql-driver/mysql) |
 | Cocoa          | MySQL-Cocoa                              | `libmysqlclient`                 | Compatible with the Objective-C Cocoa environment. See <http://mysql-cocoa.sourceforge.net/> |
-| D              | MySQL for D                              | `libmysqlclient`                 | See [MySQL for D](http://www.steinmole.de/d/) |
+| D              | MySQL for D                              | `libmysqlclient`                 | See [MySQL for D](https://github.com/mysql-d/mysql-native) |
 | Eiffel         | Eiffel MySQL                             | `libmysqlclient`                 | See [Section 27.14, “MySQL Eiffel Wrapper”](https://dev.mysql.com/doc/refman/5.7/en/apis-eiffel.html) |
 | Erlang         | `erlang-mysql-driver`                    | `libmysqlclient`                 | See [`erlang-mysql-driver`](http://code.google.com/p/erlang-mysql-driver/) |
 | Haskell        | Haskell MySQL Bindings                   | Native Driver                    | See [Brian O'Sullivan's pure Haskell MySQL bindings](http://www.serpentine.com/blog/software/mysql/) |
