@@ -1,6 +1,5 @@
 ---
 title: Java Client 配置参数
-aliases: ['/docs-cn/dev/client/java/client-java-configuration/','/docs-cn/dev/reference/client/java/client-java-configuration/']
 ---
 
 # Java Client 配置参数
