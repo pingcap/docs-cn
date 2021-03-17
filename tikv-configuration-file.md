@@ -270,6 +270,18 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 + 默认值：2GB
 + 单位: MB|GB
 
+### `enable-ttl`
+
++ TTL 即 Time to live，数据超过 TTL 时间后会自动删除。TTL 需在客户端写入请求中指定，不指定 TTL 即表明相应数据无 TTL 不会被自动删除。
++ 注意：TTL 暂时只适用于 rawkv 接口。由于涉及底层数据格式的不同，该功能只能在新建集群时设置好，对于已有集群修改该项配置会使得启动报错。
++ 默认值：false 
+
+### `ttl-poll-check-interval`
+
++ TTL 空间回收检查周期。超时 TTL 数据的物理空间会在检查时强制回收。
++ 默认值：12h
++ 最小值：0s
+
 ## storage.block-cache
 
 RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为每个 CF 单独配置的 block cache 将无效。
