@@ -69,7 +69,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2);
 8 rows in set (0.00 sec)
 ```
 
-由上述查询结果可知，TiDB 首先执行 `Index Join` 索引连接（即 `Merge Join` 合并连接的变体）操作，开始读取 `t2.t1_id` 列的索引。先是 `└─HashAgg_31` 算子的部分任务在 TiKV 中对 `t1_id` 值进行去重，然后`├─HashAgg_38(Build)` 算子的部分任务在 TiDB 中对 `t1_id` 值再次进行去重。去重操作由聚合函数 `firstrow(test.t2.t1_id)` 执行，之后会将操作结果与 `t1` 表的主键相连接。
+由上述查询结果可知，TiDB 首先执行 `Index Join` 索引连接操作，开始读取 `t2.t1_id` 列的索引。先是 `└─HashAgg_31` 算子的部分任务在 TiKV 中对 `t1_id` 值进行去重，然后`├─HashAgg_38(Build)` 算子的部分任务在 TiDB 中对 `t1_id` 值再次进行去重。去重操作由聚合函数 `firstrow(test.t2.t1_id)` 执行，之后会将操作结果与 `t1` 表的主键相连接。
 
 ## Inner join（有 `UNIQUE` 约束的子查询）
 
@@ -97,7 +97,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t3);
 
 ## Semi Join（关联查询）
 
-在前两个示例中，通过 `HashAgg` 聚合操作或通过 `UNIQUE` 约束保证子查询数据的唯一性之后，TiDB 才能够执行 `Inner Join` 操作。这两种连接均使用了 `Index Join`（`Merge Join` 的变体）。
+在前两个示例中，通过 `HashAgg` 聚合操作或通过 `UNIQUE` 约束保证子查询数据的唯一性之后，TiDB 才能够执行 `Inner Join` 操作。这两种连接均使用了 `Index Join`。
 
 下面的例子中，TiDB 优化器则选择了一种不同的执行计划：
 
