@@ -49,8 +49,8 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
- 
-    其中，需要设置force-path-style=true，才可以使用路径类型请求模式。
+
+其中，需要设置force-path-style=true，才可以使用路径类型请求模式。
 * 用 BR 备份到 GCS
 
     {{< copyable "shell-regular" >}}
