@@ -20,7 +20,7 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
     * 从节点的恢复时间来看
         * 如果节点只是短暂掉线（重启服务），是否需要进行调度。
         * 如果节点是长时间掉线（磁盘故障，数据全部丢失），如何进行调度。
-    * 假设集群需要每个 Raft Group 有 N 个副本，从单个 Raft Group 的副本个数来看 
+    * 假设集群需要每个 Raft Group 有 N 个副本，从单个 Raft Group 的副本个数来看
         * 副本数量不够（例如节点掉线，失去副本），需要选择适当的机器的进行补充。
         * 副本数量过多（例如掉线的节点又恢复正常，自动加入集群），需要合理的删除多余的副本。
 * 读/写通过 Leader 进行，Leader 的分布只集中在少量几个节点会对集群造成影响。
@@ -102,7 +102,7 @@ PD 收集了这些信息后，还需要一些策略来制定具体的调度计�
 
 * 某个节点掉线，上面的数据全部丢失，导致一些 Region 的副本数量不足
 * 某个掉线节点又恢复服务，自动接入集群，这样之前已经补足了副本的 Region 的副本数量过多，需要删除某个副本
-* 管理员调整副本策略，修改了 [max-replicas](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L95) 的配置
+* 管理员调整副本策略，修改了 [max-replicas](https://github.com/pingcap/pd/blob/v5.0.0/conf/config.toml#L95) 的配置
 
 **一个 Raft Group 中的多个副本不在同一个位置**
 
@@ -112,7 +112,7 @@ PD 收集了这些信息后，还需要一些策略来制定具体的调度计�
 * TiKV 节点分布在多个机架上，希望单个机架掉电时，也能保证系统可用性
 * TiKV 节点分布在多个 IDC 中，希望单个机房掉电时，也能保证系统可用性
 
-这些需求本质上都是某一个节点具备共同的位置属性，构成一个最小的『容错单元』，希望这个单元内部不会存在一个 Region 的多个副本。这个时候，可以给节点配置 [labels](https://github.com/tikv/tikv/blob/v4.0.0-beta/etc/config-template.toml#L140) 并且通过在 PD 上配置 [location-labels](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L100) 来指名哪些 label 是位置标识，需要在副本分配的时候尽量保证一个 Region 的多个副本不会分布在具有相同的位置标识的节点上。
+这些需求本质上都是某一个节点具备共同的位置属性，构成一个最小的『容错单元』，希望这个单元内部不会存在一个 Region 的多个副本。这个时候，可以给节点配置 [labels](https://github.com/tikv/tikv/blob/v5.0.0/etc/config-template.toml#L140) 并且通过在 PD 上配置 [location-labels](https://github.com/pingcap/pd/blob/v5.0.0/conf/config.toml#L100) 来指名哪些 label 是位置标识，需要在副本分配的时候尽量保证一个 Region 的多个副本不会分布在具有相同的位置标识的节点上。
 
 **副本在 Store 之间的分布均匀分配**
 
