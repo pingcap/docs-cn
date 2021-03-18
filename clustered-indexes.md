@@ -13,7 +13,7 @@ summary: 本文档介绍了聚簇索引的概念、使用场景、使用方法�
     - `_tidb_rowid` -> row data
     - primary key columns data -> `_tidb_rowid`
 - `CLUSTERED`，表示该表的主键为聚簇索引。在聚簇索引表中，行数据的键由用户给定的主键列数据构成，不存在唯一索引，因此聚簇索引表存储一行至少只要一个键值对，即
-  - primary key columns data -> row data
+    - primary key columns data -> row data
 
 请再次注意，TiDB 仅支持根据表的主键来进行聚簇操作。聚簇索引启用时，主键和聚簇索引两个术语在一些情况下可互换使用。主键指的是约束（一种逻辑属性），而聚簇索引描述的是数据存储的物理实现。
 
