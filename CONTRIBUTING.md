@@ -165,7 +165,7 @@ git push -u origin new-branch-name
 
 > **注意：**
 >
-> - 如果你的修改影响多个文档版本 (dev, v5.0, v4.0, etc)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
+> - 如果你的修改影响多个文档版本 (dev，v5.0，v4.0 等)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
 
 ## 必须遵循的 Markdown 规范
 
