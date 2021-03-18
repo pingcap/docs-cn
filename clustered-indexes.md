@@ -10,8 +10,8 @@ summary: 本文档介绍了聚簇索引的概念、使用场景、使用方法�
 目前 TiDB 所有含有主键的表分为两类，分别是：
 
 - `NONCLUSTERED`，表示该表的主键为非聚簇索引。在非聚簇索引表中，行数据的键由 TiDB 内部隐式分配的 `_tidb_rowid` 构成，而主键本质上是唯一索引，因此非聚簇索引表存储一行至少需要两个键值对，分别为
-  - `_tidb_rowid` -> row data
-  - primary key columns data -> `_tidb_rowid`
+    - `_tidb_rowid` -> row data
+    - primary key columns data -> `_tidb_rowid`
 - `CLUSTERED`，表示该表的主键为聚簇索引。在聚簇索引表中，行数据的键由用户给定的主键列数据构成，不存在唯一索引，因此聚簇索引表存储一行至少只要一个键值对，即
   - primary key columns data -> row data
 
@@ -48,7 +48,7 @@ CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) NONCLUSTERED);
 
 注意在列定义中的 `KEY` 和 `PRIMARY KEY` 含义相同。
 
-此外，TiDB 支持[可执行的注释语法](/comment-syntax.md)。：
+此外，TiDB 支持[可执行的注释语法](/comment-syntax.md)：
 
 ```sql
 CREATE TABLE t (a BIGINT PRIMARY KEY /*T![clustered_index] CLUSTERED */, b VARCHAR(255)); 
@@ -152,7 +152,6 @@ ERROR 8200 (HY000): Unsupported shard_row_id_bits for table with primary key as 
 
 - 尚未支持通过 `ALTER TABLE` 语句增加、删除、修改聚簇索引。
 - 在 v5.0-rc 中，如果 `alter-primary-key = true`，无法新建聚簇索引表。从 v5.0 开始，`alter-primary-key` 选项被移除，该限制已被解除。
-
 
 ## 兼容性
 
