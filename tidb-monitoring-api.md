@@ -30,7 +30,7 @@ curl http://127.0.0.1:10080/status
 ```
 {
     connections: 0,  # 当前 TiDB Server 上的客户端连接数
-    version: "5.7.25-TiDB-v5.0.0-141-g7267747ae",  # TiDB 版本号
+    version: "5.7.25-TiDB-v4.0.0-rc-141-g7267747ae",  # TiDB 版本号
     git_hash: "7267747ae0ec624dffc3fdedb00f1ed36e10284b"  # TiDB 当前代码的 Git Hash
 }
 ```
@@ -58,11 +58,11 @@ curl http://127.0.0.1:2379/pd/api/v1/stores
       "store": {
         "id": 1,
         "address": "127.0.0.1:20160",
-        "version": "5.0.0",
+        "version": "4.0.0-rc.2",
         "status_address": "172.16.5.90:20382",
         "git_hash": "2fdb2804bf8ffaab4b18c4996970e19906296497",
         "start_timestamp": 1590029618,
-        "deploy_path": "/data2/tidb_test/v5.0/tikv-20372/bin",
+        "deploy_path": "/data2/tidb_test/v4.0.rc.2/tikv-20372/bin",
         "last_heartbeat": 1590030038949235439,
         "state_name": "Up"
       },
