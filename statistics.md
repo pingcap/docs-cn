@@ -58,7 +58,11 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS];
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS];
+=======
+ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+>>>>>>> c6c18407... Update statistics.md (#5762)
 ```
 
 #### 增量收集
