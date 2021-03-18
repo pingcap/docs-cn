@@ -12,6 +12,10 @@ This document introduces commonly used transaction-related statements, explicit 
 
 The common variables include [`autocommit`](#autocommit), [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry), [`tidb_retry_limit`](/system-variables.md#tidb_retry_limit), and [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode).
 
+> **Note:**
+>
+> The [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) and [`tidb_retry_limit`](/system-variables.md#tidb_retry_limit) variables only apply to optimistic transactions, not to pessimistic transactions.
+
 ## Common statements
 
 ### Starting a transaction
