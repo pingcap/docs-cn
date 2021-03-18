@@ -58,7 +58,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS];
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [IndexNameList] [WITH NUM BUCKETS];
+ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS];
 ```
 
 #### 增量收集
