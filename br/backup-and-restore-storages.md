@@ -40,6 +40,7 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup?region=us-west-2'
     ```
+
 * 用 TiDB Lightning 从 S3 导入数据——使用路径类型请求模式   
 
     {{< copyable "shell-regular" >}}
