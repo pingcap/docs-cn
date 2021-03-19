@@ -56,13 +56,77 @@ EXPLAIN select count(*) from t1 group by id;
 +------------------------------------+---------+-------------------+---------------+----------------------------------------------------+
 ```
 
-上述 plan 中有两个 query fragment：[TableFullScan_25 => HashAgg_9 => ExchangeSender_28] 为第一个 query fragment，其主要完成 partial aggregation 的计算，[ExchangeReceiver_29 => HashAgg_27 => Projection_26 => ExchangeSender_30] 为第二个 query fragment，其主要完成 final aggregation 的计算。
+上述 plan 中有两个 query fragment：[TableFullScan_25, HashAgg_9, ExchangeSender_28] 为第一个 query fragment，其主要完成 partial aggregation 的计算，[ExchangeReceiver_29, HashAgg_27, Projection_26, ExchangeSender_30] 为第二个 query fragment，其主要完成 final aggregation 的计算。
 
 在 ExchangeSender 的 operator info 中有 ExchangeType 的信息，目前总共有三种 ExchangeType，分别为：
 
-* HashPartition：ExchangeSender 把数据按 Hash 值进行 partition 之后分发给上游的 MPP Task 的 ExchangeReceiver，通常在 Hash aggregation 以及 Hash Join 中使用
+* HashPartition：ExchangeSender 把数据按 Hash 值进行 partition 之后分发给上游的 MPP Task 的 ExchangeReceiver，通常在 Hash Aggregation 以及 Shuffle Hash Join 中使用
 * Broadcast：ExchangeSender 通过 broadcast 的方式把数据分发给上游的 MPP Task，通常在 Broadcast Join 中使用
 * PassThrough：ExchangeSender 把数据分发给上游的 MPP Task，与 Broadcast 的区别是此时上游有且仅有一个 MPP Task，通常用于向 TiDB 返回数据。
+
+上述例子中 ExchangeSender 的 ExchangeType 为 HashPartition 以及 PassThroough，分别对应于 Hash Aggregation 以及向 TiDB 返回数据。
+
+另外一个典型的 MPP 应用为 join，TiDB MPP 支持两种类型的 join，分别为 
+
+* Shuffle Hash Join：join 的 input 通过 HashPartition 的方式 shuffle 数据，上游的 MPP Task 进行 partition 内的 join。 
+* Broadcast Join：join 中的小表以 Broadcast 的方式把数据 broadcast 到各个节点，各个节点各自进行 join。
+
+典型的 Shuffle Hash Join plan 如下：
+
+{{< copyable "sql" >}}
+
+```sql
+SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET tidb_broadcast_join_threshold_size=0; EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
+```
+
+```sql
++----------------------------------------+---------+--------------+---------------+----------------------------------------------------+
+| id                                     | estRows | task         | access object | operator info                                      |
++----------------------------------------+---------+--------------+---------------+----------------------------------------------------+
+| StreamAgg_14                           | 1.00    | root         |               | funcs:count(1)->Column#7                           |
+| └─TableReader_48                       | 9.00    | root         |               | data:ExchangeSender_47                             |
+|   └─ExchangeSender_47                  | 9.00    | cop[tiflash] |               | ExchangeType: PassThrough                          |
+|     └─HashJoin_44                      | 9.00    | cop[tiflash] |               | inner join, equal:[eq(test.t1.id, test.t1.id)]     |
+|       ├─ExchangeReceiver_19(Build)     | 6.00    | cop[tiflash] |               |                                                    |
+|       │ └─ExchangeSender_18            | 6.00    | cop[tiflash] |               | ExchangeType: HashPartition, Hash Cols: test.t1.id |
+|       │   └─Selection_17               | 6.00    | cop[tiflash] |               | not(isnull(test.t1.id))                            |
+|       │     └─TableFullScan_16         | 6.00    | cop[tiflash] | table:a       | keep order:false                                   |
+|       └─ExchangeReceiver_23(Probe)     | 6.00    | cop[tiflash] |               |                                                    |
+|         └─ExchangeSender_22            | 6.00    | cop[tiflash] |               | ExchangeType: HashPartition, Hash Cols: test.t1.id |
+|           └─Selection_21               | 6.00    | cop[tiflash] |               | not(isnull(test.t1.id))                            |
+|             └─TableFullScan_20         | 6.00    | cop[tiflash] | table:b       | keep order:false                                   |
++----------------------------------------+---------+--------------+---------------+----------------------------------------------------+
+12 rows in set (0.00 sec)
+```
+
+其中 [TableFullScan_20, Selection_21, ExchangeSender_22] 完成表 b 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task，[TableFullScan_16, Selection_17, ExchangeSender_18] 完成表 a 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task，[ExchangeReceiver_19, ExchangeReceiver_23, HashJoin_44, ExchangeSender_47] 完成 join 并把数据返回给 TiDB。
+
+典型的 Broadcast Join plan 如下：
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
+```
+
+```sql
++----------------------------------------+---------+--------------+---------------+------------------------------------------------+
+| id                                     | estRows | task         | access object | operator info                                  |
++----------------------------------------+---------+--------------+---------------+------------------------------------------------+
+| StreamAgg_15                           | 1.00    | root         |               | funcs:count(1)->Column#7                       |
+| └─TableReader_47                       | 9.00    | root         |               | data:ExchangeSender_46                         |
+|   └─ExchangeSender_46                  | 9.00    | cop[tiflash] |               | ExchangeType: PassThrough                      |
+|     └─HashJoin_43                      | 9.00    | cop[tiflash] |               | inner join, equal:[eq(test.t1.id, test.t1.id)] |
+|       ├─ExchangeReceiver_20(Build)     | 6.00    | cop[tiflash] |               |                                                |
+|       │ └─ExchangeSender_19            | 6.00    | cop[tiflash] |               | ExchangeType: Broadcast                        |
+|       │   └─Selection_18               | 6.00    | cop[tiflash] |               | not(isnull(test.t1.id))                        |
+|       │     └─TableFullScan_17         | 6.00    | cop[tiflash] | table:a       | keep order:false                               |
+|       └─Selection_22(Probe)            | 6.00    | cop[tiflash] |               | not(isnull(test.t1.id))                        |
+|         └─TableFullScan_21             | 6.00    | cop[tiflash] | table:b       | keep order:false                               |
++----------------------------------------+---------+--------------+---------------+------------------------------------------------+
+```
+
+其中 [TableFullScan_17, Selection_18, ExchangeSender_19] 从小表读数据并 broadcast 给大表数据所在的各个节点，[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46] 完成 join 并将数据返回给 TiDB。
 
 ## MPP Explain analyze
 
