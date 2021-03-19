@@ -257,7 +257,7 @@ MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash J
 
 TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join，分别为：
 
-- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count)，单位为 bytes。如果表大小小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-ga-版本开始引入)，单位为 bytes。如果表大小小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-ga-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 MPP 模式默认不支持分区表。
