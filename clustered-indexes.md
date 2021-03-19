@@ -5,9 +5,9 @@ summary: 本文档介绍了聚簇索引的概念、使用场景、使用方法�
 
 # 聚簇索引
 
-聚簇索引是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统也将聚簇索引称为“索引组织表” (index-organized tables)。
+聚簇索引 (clustered index) 是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统也将聚簇索引称为“索引组织表” (index-organized tables)。
 
-目前 TiDB 所有含有主键的表分为两类，分别是：
+目前 TiDB 中含有主键的表分为以下两类：
 
 - `NONCLUSTERED`，表示该表的主键为非聚簇索引。在非聚簇索引表中，行数据的键由 TiDB 内部隐式分配的 `_tidb_rowid` 构成，而主键本质上是唯一索引，因此非聚簇索引表存储一行至少需要两个键值对，分别为
     - `_tidb_rowid` -> row data
@@ -15,7 +15,9 @@ summary: 本文档介绍了聚簇索引的概念、使用场景、使用方法�
 - `CLUSTERED`，表示该表的主键为聚簇索引。在聚簇索引表中，行数据的键由用户给定的主键列数据构成，不存在唯一索引，因此聚簇索引表存储一行至少只要一个键值对，即
     - primary key columns data -> row data
 
-请再次注意，TiDB 仅支持根据表的主键来进行聚簇操作。聚簇索引启用时，主键和聚簇索引两个术语在一些情况下可互换使用。主键指的是约束（一种逻辑属性），而聚簇索引描述的是数据存储的物理实现。
+> **注意：**
+>
+> TiDB 仅支持根据表的主键来进行聚簇操作。聚簇索引启用时，“主键”和“聚簇索引”两个术语在一些情况下可互换使用。主键指的是约束（一种逻辑属性），而聚簇索引描述的是数据存储的物理实现。
 
 ## 使用场景
 
@@ -46,7 +48,7 @@ CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) CLUSTERED);
 CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) NONCLUSTERED);
 ```
 
-注意在列定义中的 `KEY` 和 `PRIMARY KEY` 含义相同。
+注意，列定义中的 `KEY` 和 `PRIMARY KEY` 含义相同。
 
 此外，TiDB 支持[可执行的注释语法](/comment-syntax.md)：
 
@@ -80,7 +82,7 @@ ALTER TABLE t DROP INDEX `PRIMARY`;
 
 ### 查询主键是否为聚簇索引
 
-要确定一张表的主键是否使用了聚簇索引，TiDB 提供了三种方式：
+可通过以下方式来确定一张表的主键是否使用了聚簇索引：
 
 - `SHOW CREATE TABLE`
 - `SHOW INDEX FROM`
@@ -138,7 +140,7 @@ mysql> SELECT TIDB_PK_TYPE FROM information_schema.tables WHERE table_schema = '
 
 - 尚未支持通过 `ALTER TABLE` 语句增加、删除、修改聚簇索引。
 
-开启 Binlog 之后，创建非单个整数列作为主键的聚簇索引会报以下错误：
+开启 TiDB Binlog 之后，创建非单个整数列作为主键的聚簇索引会报以下错误：
 
 ```sql
 mysql> CREATE TABLE t (a VARCHAR(255) PRIMARY KEY CLUSTERED);
@@ -174,7 +176,7 @@ TiDB 支持使用可执行注释的语法来包裹 `CLUSTERED` 或 `NONCLUSTERED
 
 聚簇索引仅与 v5.0 及以后版本的以下生态工具兼容：
 
-- 备份与恢复工具 BR、Dumpling、Lightning。
+- 备份与恢复工具 BR、Dumpling、TiDB Lightning。
 - 数据迁移和同步工具 DM、TiCDC。
 
 v5.0 的 BR 不能通过备份恢复将非聚簇索引表转换成聚簇索引表，反之亦然。
