@@ -617,8 +617,3 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于控制是否能创建表达式索引。
 + 默认值：false
-
-### `enable-global-kill` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-+ 用于控制是否开启 Global Kill 功能。将配置项的值设为 `true` 可开启该功能。开启后，即使 TiDB 服务器位于负载均衡器后，也可以安全地终止任何连接。
-+ 默认值：false
