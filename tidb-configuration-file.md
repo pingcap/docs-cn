@@ -90,7 +90,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 将旧表中的 utf8 字符集当成 utf8mb4的开关。
 + 默认值：true
 
-### `alter-primary-key` <span class="version-mark">从 v5.0.0 版本开始废弃</span>
+### `alter-primary-key`（已废弃）
 
 + 用于控制添加或者删除主键功能。
 + 默认值：false
