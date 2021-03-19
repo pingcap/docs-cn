@@ -133,7 +133,7 @@ mysql> SELECT TIDB_PK_TYPE FROM information_schema.tables WHERE table_schema = '
 目前 TiDB 的聚簇索引具有以下两类限制：
 
 - 明确不支持且没有支持计划的使用限制：
-    - 不支持与 TiDB Binlog 一起使用。开启 Binlog 后 TiDB 不允许创建非单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 Binlog 同步到下游。如需同步聚簇索引表，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
+    - 不支持与 TiDB Binlog 一起使用。开启 TiDB Binlog 后 TiDB 不允许创建非单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 Binlog 同步到下游。如需同步聚簇索引表，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
     - 不支持与 `SHARD_ROW_ID_BITS` 一起使用。
     - 不支持对聚簇索引表进行降级。如需降级，请使用逻辑备份工具迁移数据。
 - 另一类是尚未支持，但未来有计划支持的使用限制：
