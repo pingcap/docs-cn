@@ -1106,4 +1106,4 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：""
-- 当 SQL 语句因为该变量指定的存储引擎的故障而执行失败时，TiDB 会尝试使用 TiKV 再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。当该变量被设置为 "tiflash" 时，TiDB 会在 TiFlash 发生故障导致 SQL 语句执行失败的情况下尝试使用 TiKV 再次执行。
+- 这个变量用于指定一个存储引擎。当该变量指定的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会尝试使用 TiKV 再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash" ，当TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会尝试使用 TiKV 再次执行该 SQL 语句。
