@@ -131,7 +131,7 @@ EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
 
 以上执行计划中，`[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表读数据并 broadcast 给大表数据所在的各个节点。`[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` 完成 join 并将数据返回给 TiDB。
 
-## MPP Explain analyze
+## 对 MPP 模式的查询使用 `EXPLAIN ANALYZE`
 
 Explain analyze 语句与 Explain 类似，不过它还会输出一些运行时的信息，一个简单的 explain analyze 输出的信息如下：
 
