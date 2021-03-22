@@ -9,15 +9,11 @@ aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/
 
 目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC，以及监控系统。本文将介绍不同集群拓扑的具体部署步骤。
 
-> **注意：**
->
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读 TiDB Ansible 部署 TiDB 集群的文档，可参阅 [v4.0 版使用 TiDB Ansible 部署 TiDB 集群](https://docs.pingcap.com/zh/tidb/v4.0/online-deployment-using-ansible)。
-
 ## 第 1 步：软硬件环境需求及前置检查
 
 [软硬件环境需求](/hardware-and-software-requirements.md)
 
-[环境与系统配置](/check-before-deployment.md)
+[环境与系统配置检查](/check-before-deployment.md)
 
 ## 第 2 步：在中控机上安装 TiUP 组件
 
@@ -167,7 +163,7 @@ tiup cluster template > topology.yaml
 
 > **注意：**
 >
-> 混合部署场景也可以使用 `--full` 生成的建议拓扑模板，跨机房部署场景可以使用 `--multi-dc` 生成的建议拓扑模板。
+> 混合部署场景也可以使用 `tiup cluster template --full > topology.yaml` 生成的建议拓扑模板，跨机房部署场景可以使用 `tiup cluster template --multi-dc > topology.yaml` 生成的建议拓扑模板。
 
 执行 `vi topology.yaml`，查看配置文件的内容：
 ```shell
@@ -252,8 +248,8 @@ alertmanager_servers:
 >
 > - `topology.yaml` 中设置的用户名在目标机器上已存在。
 > - 在命令行上使用了参数 `--skip-create-user` 明确指定跳过创建用户的步骤。
-> 
-> 执行 deploy 命令前建议使用 check 及 check --apply 命令，检查和自动修复集群存在的潜在风险。
+
+执行 deploy 命令前，先使用 `check` 及 `check --apply` 命令，检查和自动修复集群存在的潜在风险：
 
 {{< copyable "shell-regular" >}}
 
@@ -261,6 +257,11 @@ alertmanager_servers:
 tiup cluster check ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 tiup cluster check ./topology.yaml --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
+
+然后执行 `deploy` 命令部署 TiDB 集群：
+
+{{< copyable "shell-regular" >}}
+
 ```shell
 tiup cluster deploy tidb-test v5.0.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```

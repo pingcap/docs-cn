@@ -530,7 +530,7 @@ sudo systemctl enable ntpd.service
     echo "vm.swappiness = 0">> /etc/sysctl.conf
     sysctl -p
     ```
-10. 执行以下命令配置用户的 limits.conf 。
+10. 执行以下命令配置用户的 limits.conf 文件。
 
     {{< copyable "shell-regular" >}}
 

@@ -38,7 +38,7 @@ server_configs:
     rocksdb.writecf.block-cache-size: "6GB"
 ```
 
-对于 3.0 及以后的版本，还可以使用共享 block cache 的方式进行设置：
+还可以使用共享 block cache 的方式进行设置：
 
 ```yaml
 server_configs:
@@ -88,7 +88,9 @@ db-driver=mysql
 
 ### 数据导入
 
-如果 TiDB 启用了乐观事务模型（默认为悲观锁模式），当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
+> **注意：**
+>
+> 如果 TiDB 启用了乐观事务模型（默认为悲观锁模式），当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
 
 在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行如下命令：
 
