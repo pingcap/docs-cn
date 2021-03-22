@@ -379,13 +379,13 @@ mysql> SELECT * FROM t1;
 ### `tidb_enable_async_commit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：对新创建的集群，v5.0.0-rc 及以前版本默认为 OFF，自 v5.0.0 GA 版本起默认为 ON。升级不改变该变量的值。
+- 默认值：对新创建的集群，v5.0.0-rc 默认值为 OFF，自 v5.0.0 GA 版本起默认值为 ON。对于升级到 v5.0.0 GA 版本的集群，如果原来为 v5.0.0-rc 版本，升级不改变该变量的值；如果原来是 v4.0 及之前版本，默认值为 OFF。
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
 ### `enable-one-pc` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：对新创建的集群，v5.0.0-rc 及以前版本默认为 OFF，自 v5.0.0 GA 版本起默认为 ON。升级不改变该变量的值。
+- 默认值：对新创建的集群，v5.0.0-rc 默认值为 OFF，自 v5.0.0 GA 版本起默认值为 ON。对于升级到 v5.0.0 GA 版本的集群，如果原来为 v5.0.0-rc 版本，升级不改变该变量的值；如果原来是 v4.0 及之前版本，默认值为 OFF。
 - 指定是否在只涉及一个 Region 的事务上使用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
 
 ### `tidb_enable_cascades_planner`
