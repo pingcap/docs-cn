@@ -21,6 +21,8 @@ aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/
 
 ## 第 2 步：在中控机上安装 TiUP 组件
 
+在中控机上安装 TiUP 组件有两种方式：在线部署和离线部署。
+
 ### 方式一：在线部署 TiUP 组件
 
 使用普通用户登录中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
@@ -76,13 +78,16 @@ aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/
     ```shell
     tiup --binary cluster
     ```
+
 ### 方式二：离线部署 TiUP 组件
+
+离线部署 TiUP 组件的操作步骤如下。
 
 #### 准备 TiUP 离线组件包
 
 方式一：在 [官方下载页面](https://pingcap.com/download-cn/) 选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
 
-方式二：使用 `tiup mirror clone` 命令手动打包离线组件包
+方式二：使用 `tiup mirror clone` 命令手动打包离线组件包，步骤如下：
 
 1. 在线环境中安装 TiUP 包管理器工具
 
