@@ -1,11 +1,11 @@
 ---
-title: 用 EXPLAIN 查看使用 MPP SQL 执行计划
+title: 用 EXPLAIN 查看 MPP 模式查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看使用 MPP SQL 执行计划
+# 用 EXPLAIN 查看 MPP 模式查询的执行计划
 
-在 TiDB 中，新增了 MPP 执行模式，在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
+TiDB 支持使用 [MPP 模式](/tiflash/use-tiflash.md#使用-mpp-模式)来执行查询。在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
 
 本文档使用的示例数据如下:
 
@@ -21,7 +21,7 @@ SET tidb_allow_mpp = 1;
 
 ## MPP query fragment 和 MPP task
 
-在 MPP 模式下，一个 query 在逻辑上会被切分为多个 MPP query fragment，举例来说：
+在 MPP 模式下，一个查询在逻辑上会被切分为多个 MPP 查询 fragment。示例如下：
 
 {{< copyable "sql" >}}
 
@@ -33,7 +33,7 @@ EXPLAIN select count(*) from t1 group by id;
 
 ## Exchange 算子
 
-在 MPP 执行计划中，新增了两个 Exchange 算子，分别为 ExchangeReceiver 和 ExchangeSender，ExchangeReceiver 为从下游 query fragment 读取数据，ExchangeSender 为下游 query fragment 向上游 query fragment 发送数据，在 MPP 执行模式下，每个 MPP query fragment 的 root 算子均为 ExchangeSender 算子，即每个 query fragment 以 ExchangeSender 为界进行划分。一个简单的 MPP plan 如下：
+MPP 查询的执行计划中有两个 MPP 特有的 Exchange 算子，分别为 ExchangeReceiver 和 ExchangeSender。ExchangeReceiver 表示从下游 query fragment 读取数据，ExchangeSender 表示下游 query fragment 向上游 query fragment 发送数据。在 MPP 执行模式下，每个 MPP query fragment 的 root 算子均为 ExchangeSender 算子，即每个 query fragment 以 ExchangeSender 为界进行划分。一个简单的 MPP 计划如下：
 
 {{< copyable "sql" >}}
 
@@ -56,22 +56,25 @@ EXPLAIN select count(*) from t1 group by id;
 +------------------------------------+---------+-------------------+---------------+----------------------------------------------------+
 ```
 
-上述 plan 中有两个 query fragment：[TableFullScan_25, HashAgg_9, ExchangeSender_28] 为第一个 query fragment，其主要完成 partial aggregation 的计算，[ExchangeReceiver_29, HashAgg_27, Projection_26, ExchangeSender_30] 为第二个 query fragment，其主要完成 final aggregation 的计算。
+以上执行计划中有两个 query fragment：
 
-在 ExchangeSender 的 operator info 中有 ExchangeType 的信息，目前总共有三种 ExchangeType，分别为：
+* `[TableFullScan_25, HashAgg_9, ExchangeSender_28]` 为第一个 query fragment，其主要完成 partial aggregation 的计算。
+* `[ExchangeReceiver_29, HashAgg_27, Projection_26, ExchangeSender_30]` 为第二个 query fragment，其主要完成 final aggregation 的计算。
 
-* HashPartition：ExchangeSender 把数据按 Hash 值进行 partition 之后分发给上游的 MPP Task 的 ExchangeReceiver，通常在 Hash Aggregation 以及 Shuffle Hash Join 中使用
+ExchangeSender 算子的 `operator info` 列输出了 ExchangeType 信息。目前有以下三种 ExchangeType：
+
+* HashPartition：ExchangeSender 把数据按 Hash 值进行分区之后分发给上游的 MPP Task 的 ExchangeReceiver 算子，通常在 Hash Aggregation 以及 Shuffle Hash Join 算法中使用。
 * Broadcast：ExchangeSender 通过 broadcast 的方式把数据分发给上游的 MPP Task，通常在 Broadcast Join 中使用
 * PassThrough：ExchangeSender 把数据分发给上游的 MPP Task，与 Broadcast 的区别是此时上游有且仅有一个 MPP Task，通常用于向 TiDB 返回数据。
 
-上述例子中 ExchangeSender 的 ExchangeType 为 HashPartition 以及 PassThroough，分别对应于 Hash Aggregation 以及向 TiDB 返回数据。
+上述例子中 ExchangeSender 的 ExchangeType 为 HashPartition 以及 PassThroough，分别对应于 Hash Aggregation 运算以及向 TiDB 返回数据。
 
-另外一个典型的 MPP 应用为 join，TiDB MPP 支持两种类型的 join，分别为 
+另外一个典型的 MPP 应用为 join 运算。TiDB MPP 支持两种类型的 join，分别为：
 
 * Shuffle Hash Join：join 的 input 通过 HashPartition 的方式 shuffle 数据，上游的 MPP Task 进行 partition 内的 join。 
 * Broadcast Join：join 中的小表以 Broadcast 的方式把数据 broadcast 到各个节点，各个节点各自进行 join。
 
-典型的 Shuffle Hash Join plan 如下：
+典型的 Shuffle Hash Join 执行计划如下：
 
 {{< copyable "sql" >}}
 
@@ -99,9 +102,9 @@ SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET ti
 12 rows in set (0.00 sec)
 ```
 
-其中 [TableFullScan_20, Selection_21, ExchangeSender_22] 完成表 b 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task，[TableFullScan_16, Selection_17, ExchangeSender_18] 完成表 a 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task，[ExchangeReceiver_19, ExchangeReceiver_23, HashJoin_44, ExchangeSender_47] 完成 join 并把数据返回给 TiDB。
+以上执行计划中，`[TableFullScan_20, Selection_21, ExchangeSender_22]` 完成表 b 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task。`[TableFullScan_16, Selection_17, ExchangeSender_18]` 完成表 a 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task。`[ExchangeReceiver_19, ExchangeReceiver_23, HashJoin_44, ExchangeSender_47]` 完成 join 并把数据返回给 TiDB。
 
-典型的 Broadcast Join plan 如下：
+典型的 Broadcast Join 执行计划如下：
 
 {{< copyable "sql" >}}
 
@@ -126,11 +129,11 @@ EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
 +----------------------------------------+---------+--------------+---------------+------------------------------------------------+
 ```
 
-其中 [TableFullScan_17, Selection_18, ExchangeSender_19] 从小表读数据并 broadcast 给大表数据所在的各个节点，[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46] 完成 join 并将数据返回给 TiDB。
+以上执行计划中，`[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表读数据并 broadcast 给大表数据所在的各个节点。`[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` 完成 join 并将数据返回给 TiDB。
 
-## MPP Explain analyze
+## 对 MPP 模式的查询使用 `EXPLAIN ANALYZE`
 
-Explain analyze 语句与 Explain 类似，不过它还会输出一些运行时的信息，一个简单的 explain analyze 输出的信息如下：
+`EXPLAIN ANALYZE` 语句与 `EXPLAIN` 类似，但还会输出一些运行时的信息。一个简单的 `EXPLAIN ANALYZE` 输出信息如下：
 
 {{< copyable "sql" >}}
 
