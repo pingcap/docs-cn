@@ -33,7 +33,7 @@ EXPLAIN select count(*) from t1 group by id;
 
 ## Exchange 算子
 
-在 MPP 执行计划中，新增了两个 Exchange 算子，分别为 ExchangeReceiver 和 ExchangeSender，ExchangeReceiver 为从下游 query fragment 读取数据，ExchangeSender 为下游 query fragment 向上游 query fragment 发送数据，在 MPP 执行模式下，每个 MPP query fragment 的 root 算子均为 ExchangeSender 算子，即每个 query fragment 以 ExchangeSender 为界进行划分。一个简单的 MPP plan 如下：
+MPP 查询的执行计划中有两个 MPP 特有的 Exchange 算子，分别为 ExchangeReceiver 和 ExchangeSender。ExchangeReceiver 表示从下游 query fragment 读取数据，ExchangeSender 表示下游 query fragment 向上游 query fragment 发送数据。在 MPP 执行模式下，每个 MPP query fragment 的 root 算子均为 ExchangeSender 算子，即每个 query fragment 以 ExchangeSender 为界进行划分。一个简单的 MPP 计划如下：
 
 {{< copyable "sql" >}}
 
