@@ -376,6 +376,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 在 TCP 层开启 keepalive。
 + 默认值：true
 
+### `tcp-no-delay`
+
++ TiDB 在 TCP 层开启 no delay。
++ 默认值：true
+
 ### `cross-join`
 
 + 默认值：true
