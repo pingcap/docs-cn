@@ -376,13 +376,13 @@ mysql> SELECT * FROM t1;
 >
 > 目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分不兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 TiDB Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
 
-### `tidb_enable_async_commit`
+### `tidb_enable_async_commit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：对新创建的集群，v5.0.0-rc 及以前版本默认为 OFF，自 v5.0.0 GA 版本起默认为 ON。升级不改变该变量的值。
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
-### `enable-one-pc`
+### `enable-one-pc` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：对新创建的集群，v5.0.0-rc 及以前版本默认为 OFF，自 v5.0.0 GA 版本起默认为 ON。升级不改变该变量的值。
