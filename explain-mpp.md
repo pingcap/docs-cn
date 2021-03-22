@@ -104,7 +104,7 @@ SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET ti
 
 以上执行计划中，`[TableFullScan_20, Selection_21, ExchangeSender_22]` 完成表 b 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task。`[TableFullScan_16, Selection_17, ExchangeSender_18]` 完成表 a 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task。`[ExchangeReceiver_19, ExchangeReceiver_23, HashJoin_44, ExchangeSender_47]` 完成 join 并把数据返回给 TiDB。
 
-典型的 Broadcast Join plan 如下：
+典型的 Broadcast Join 执行计划如下：
 
 {{< copyable "sql" >}}
 
