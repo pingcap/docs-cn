@@ -376,23 +376,17 @@ mysql> SELECT * FROM t1;
 >
 > 目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分不兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 TiDB Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
 
-### `tidb_enable_async_commit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
->
-> + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
-> + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter-从-v500-rc-版本开始引入) 不兼容，共同使用时有小概率发生写丢失。
-> + 本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
+### `tidb_enable_async_commit`
 
 - 作用域：SESSION | GLOBAL
-- 默认值：OFF
+- 默认值：对新创建的集群，v5.0.0-rc 及以前版本默认为 OFF，自 v5.0.0 GA 版本起默认为 ON。升级不改变该变量的值。
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
-> **警告：**
->
-> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。
+### `enable-one-pc`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：对新创建的集群，v5.0.0-rc 及以前版本默认为 OFF，自 v5.0.0 GA 版本起默认为 ON。升级不改变该变量的值。
+- 指定是否在只涉及一个 Region 的事务上使用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
 
 ### `tidb_enable_cascades_planner`
 
@@ -590,12 +584,6 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
     - `current_db`：当前数据库名
     - `txn_mode`：事务模型。可选值：`OPTIMISTIC`（乐观事务模型），或 `PESSIMISTIC`（悲观事务模型）
     - `sql`：当前查询对应的 SQL 语句
-
-### `tidb_guarantee_external_consistency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 该变量控制在开启 Async Commit <!--和一阶段提交-->特性时，是否需要保证外部一致性。该选项关闭时，如果两个事务修改的内容没有交集，其他事务观测到它们的提交顺序可能与它们实际的提交顺序不一致。在不使用 Async Commit <!--或一阶段提交-->特性时，无论该选项是否开启，都能保证外部一致性。
 
 ### `tidb_hash_join_concurrency`
 
