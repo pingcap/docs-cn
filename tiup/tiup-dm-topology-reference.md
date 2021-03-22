@@ -228,6 +228,11 @@ monitoring_servers:
         url: http://127.0.0.1:8003/write
       remote_read:
       - url: http://127.0.0.1:8003/read
+    external_alertmanagers:
+    - host: 10.1.1.1
+      web_port: 9093
+    - host: 10.1.1.2
+      web_port: 9094
 ```
 
 ### `grafana_servers`
