@@ -56,7 +56,10 @@ EXPLAIN select count(*) from t1 group by id;
 +------------------------------------+---------+-------------------+---------------+----------------------------------------------------+
 ```
 
-上述 plan 中有两个 query fragment：[TableFullScan_25, HashAgg_9, ExchangeSender_28] 为第一个 query fragment，其主要完成 partial aggregation 的计算，[ExchangeReceiver_29, HashAgg_27, Projection_26, ExchangeSender_30] 为第二个 query fragment，其主要完成 final aggregation 的计算。
+以上执行计划中有两个 query fragment：
+
+* `[TableFullScan_25, HashAgg_9, ExchangeSender_28]` 为第一个 query fragment，其主要完成 partial aggregation 的计算。
+* `[ExchangeReceiver_29, HashAgg_27, Projection_26, ExchangeSender_30]` 为第二个 query fragment，其主要完成 final aggregation 的计算。
 
 在 ExchangeSender 的 operator info 中有 ExchangeType 的信息，目前总共有三种 ExchangeType，分别为：
 
