@@ -149,18 +149,23 @@ source /home/tidb/.bash_profile
 若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
 
 ## 第 3 步：初始化集群拓扑文件
+
 请根据不同的集群拓扑，编辑 TiUP 所需的集群初始化配置文件。
-集群初始化配置文件可以通过 tiup 工具在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
+
+集群初始化配置文件可以通过 TiUP 工具在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster template > topology.yaml 
 ```
+
 > **注意：**
->混合部署场景也可以使用 --full 生成的建议拓扑模板，跨机房部署场景可以使用 --multi-dc 生成的建议拓扑模板。
+>
+> 混合部署场景也可以使用 `--full` 生成的建议拓扑模板，跨机房部署场景可以使用 `--multi-dc` 生成的建议拓扑模板。
+
+执行 `vi topology.yaml`，查看配置文件的内容：
 ```shell
-vi topology.yaml
 global:
   user: "tidb"
   ssh_port: 22
