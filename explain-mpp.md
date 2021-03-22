@@ -19,26 +19,26 @@ ANALYZE TABLE t1;
 SET tidb_allow_mpp = 1;
 ```
 
-## MPP query fragment 和 MPP task
+## MPP 查询片段和 MPP 任务
 
-在 MPP 模式下，一个查询在逻辑上会被切分为多个 MPP 查询 fragment。示例如下：
+在 MPP 模式下，一个查询在逻辑上会被切分为多个 MPP 查询片段（query fragment）。示例如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-EXPLAIN select count(*) from t1 group by id;
+EXPLAIN SELECT COUNT(*) FROM t1 GROUP BY id;
 ```
 
-这个 query 在 MPP 模式下会包含两个 query fragment，一个为 partial aggregation，一个为 final aggregation。在 query 执行的时候每个 query fragment 都会被实例化为一个或者多个 MPP task。
+这个查询在 MPP 模式下会包含两个查询片段，一个为一阶段聚合，一个为二阶段聚合（最终聚合）。在查询执行的时候每个查询片段都会被实例化为一个或者多个 MPP 任务。
 
 ## Exchange 算子
 
-MPP 查询的执行计划中有两个 MPP 特有的 Exchange 算子，分别为 ExchangeReceiver 和 ExchangeSender。ExchangeReceiver 表示从下游 query fragment 读取数据，ExchangeSender 表示下游 query fragment 向上游 query fragment 发送数据。在 MPP 执行模式下，每个 MPP query fragment 的 root 算子均为 ExchangeSender 算子，即每个 query fragment 以 ExchangeSender 为界进行划分。一个简单的 MPP 计划如下：
+MPP 查询的执行计划中有两个 MPP 特有的 Exchange 算子，分别为 ExchangeReceiver 和 ExchangeSender。ExchangeReceiver 表示从下游查询片段读取数据，ExchangeSender 表示下游查询片段向上游查询片段发送数据。在 MPP 执行模式下，每个 MPP 查询片段的根算子均为 ExchangeSender 算子，即每个查询片段以 ExchangeSender 为界进行划分。一个简单的 MPP 计划如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-EXPLAIN select count(*) from t1 group by id;
+EXPLAIN SELECT COUNT(*) FROM t1 GROUP BY id;
 ```
 
 ```sql
@@ -56,30 +56,30 @@ EXPLAIN select count(*) from t1 group by id;
 +------------------------------------+---------+-------------------+---------------+----------------------------------------------------+
 ```
 
-以上执行计划中有两个 query fragment：
+以上执行计划中有两个查询片段：
 
-* `[TableFullScan_25, HashAgg_9, ExchangeSender_28]` 为第一个 query fragment，其主要完成 partial aggregation 的计算。
-* `[ExchangeReceiver_29, HashAgg_27, Projection_26, ExchangeSender_30]` 为第二个 query fragment，其主要完成 final aggregation 的计算。
+* `[TableFullScan_25, HashAgg_9, ExchangeSender_28]` 为第一个查询片段，其主要完成一阶段聚合的计算。
+* `[ExchangeReceiver_29, HashAgg_27, Projection_26, ExchangeSender_30]` 为第二个查询片段，其主要完成二阶段聚合的计算。
 
 ExchangeSender 算子的 `operator info` 列输出了 ExchangeType 信息。目前有以下三种 ExchangeType：
 
-* HashPartition：ExchangeSender 把数据按 Hash 值进行分区之后分发给上游的 MPP Task 的 ExchangeReceiver 算子，通常在 Hash Aggregation 以及 Shuffle Hash Join 算法中使用。
-* Broadcast：ExchangeSender 通过 broadcast 的方式把数据分发给上游的 MPP Task，通常在 Broadcast Join 中使用
-* PassThrough：ExchangeSender 把数据分发给上游的 MPP Task，与 Broadcast 的区别是此时上游有且仅有一个 MPP Task，通常用于向 TiDB 返回数据。
+* HashPartition：ExchangeSender 把数据按 Hash 值进行分区之后分发给上游的 MPP 任务的 ExchangeReceiver 算子，通常在 Hash Aggregation 以及 Shuffle Hash Join 算法中使用。
+* Broadcast：ExchangeSender 通过广播的方式把数据分发给上游的 MPP 任务，通常在 Broadcast Join 中使用
+* PassThrough：ExchangeSender 把数据分发给上游的 MPP Task，与 Broadcast 的区别是此时上游有且仅有一个 MPP 任务，通常用于向 TiDB 返回数据。
 
 上述例子中 ExchangeSender 的 ExchangeType 为 HashPartition 以及 PassThroough，分别对应于 Hash Aggregation 运算以及向 TiDB 返回数据。
 
 另外一个典型的 MPP 应用为 join 运算。TiDB MPP 支持两种类型的 join，分别为：
 
-* Shuffle Hash Join：join 的 input 通过 HashPartition 的方式 shuffle 数据，上游的 MPP Task 进行 partition 内的 join。 
-* Broadcast Join：join 中的小表以 Broadcast 的方式把数据 broadcast 到各个节点，各个节点各自进行 join。
+* Shuffle Hash Join：join 的 input 通过 HashPartition 的方式 shuffle 数据，上游的 MPP 任务进行 partition 内的 join。 
+* Broadcast Join：join 中的小表以 Broadcast 的方式把数据广播到各个节点，各个节点各自进行 join。
 
 典型的 Shuffle Hash Join 执行计划如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET tidb_broadcast_join_threshold_size=0; EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
+SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET tidb_broadcast_join_threshold_size=0; EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
 ```
 
 ```sql
@@ -102,14 +102,14 @@ SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET ti
 12 rows in set (0.00 sec)
 ```
 
-以上执行计划中，`[TableFullScan_20, Selection_21, ExchangeSender_22]` 完成表 b 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task。`[TableFullScan_16, Selection_17, ExchangeSender_18]` 完成表 a 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP Task。`[ExchangeReceiver_19, ExchangeReceiver_23, HashJoin_44, ExchangeSender_47]` 完成 join 并把数据返回给 TiDB。
+以上执行计划中，`[TableFullScan_20, Selection_21, ExchangeSender_22]` 完成表 b 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP 任务。`[TableFullScan_16, Selection_17, ExchangeSender_18]` 完成表 a 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP 任务。`[ExchangeReceiver_19, ExchangeReceiver_23, HashJoin_44, ExchangeSender_47]` 完成 join 并把数据返回给 TiDB。
 
 典型的 Broadcast Join 执行计划如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
+EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
 ```
 
 ```sql
@@ -129,7 +129,7 @@ EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
 +----------------------------------------+---------+--------------+---------------+------------------------------------------------+
 ```
 
-以上执行计划中，`[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表读数据并 broadcast 给大表数据所在的各个节点。`[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` 完成 join 并将数据返回给 TiDB。
+以上执行计划中，`[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表读数据并 broadcast 给大表（表 a）数据所在的各个节点。`[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` 完成 join 并将数据返回给 TiDB。
 
 ## 对 MPP 模式的查询使用 `EXPLAIN ANALYZE`
 
@@ -138,7 +138,7 @@ EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
 {{< copyable "sql" >}}
 
 ```sql
-EXPLAIN ANALYZE select count(*) from t1 group by id;
+EXPLAIN ANALYZE SELECT COUNT(*) FROM t1 GROUP BY id;
 ```
 
 ```sql
@@ -156,4 +156,4 @@ EXPLAIN ANALYZE select count(*) from t1 group by id;
 +------------------------------------+---------+---------+-------------------+---------------+---------------------------------------------------------------------------------------------+----------------------------------------------------------------+--------+------+
 ```
 
-与 explain 相比，ExchangeSender 的 operator info 中多了 task id 的输出，其记录了该 query fragment 实例化成的 MPP Task 的 task id，此外 MPP Executor 中都会有 `threads` 这一列，这列记录了 MPP 在执行该算子时使用的并发数（对于有多个节点组成的集群，改并发数是所有节点并发数相加的结果）。
+与 explain 相比，ExchangeSender 的 `operator info` 中多了 `task id` 的输出，其记录了该查询片段实例化成的 MPP 任务的任务 id，此外 MPP 算子中都会有 `threads` 这一列，这列记录了 MPP 在执行该算子时使用的并发数（对于有多个节点组成的集群，改并发数是所有节点并发数相加的结果）。
