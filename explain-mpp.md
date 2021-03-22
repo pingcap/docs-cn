@@ -1,5 +1,5 @@
 ---
-title: 用 EXPLAIN 查看使用 MPP SQL 执行计划
+title: 用 EXPLAIN 查看 MPP 模式查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
