@@ -21,7 +21,7 @@ SET tidb_allow_mpp = 1;
 
 ## MPP query fragment 和 MPP task
 
-在 MPP 模式下，一个 query 在逻辑上会被切分为多个 MPP query fragment，举例来说：
+在 MPP 模式下，一个查询在逻辑上会被切分为多个 MPP 查询 fragment。示例如下：
 
 {{< copyable "sql" >}}
 
