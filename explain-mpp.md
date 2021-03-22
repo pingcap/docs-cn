@@ -133,7 +133,7 @@ EXPLAIN select count(*) from t1 a join t1 b on a.id = b.id;
 
 ## 对 MPP 模式的查询使用 `EXPLAIN ANALYZE`
 
-Explain analyze 语句与 Explain 类似，不过它还会输出一些运行时的信息，一个简单的 explain analyze 输出的信息如下：
+`EXPLAIN ANALYZE` 语句与 `EXPLAIN` 类似，但还会输出一些运行时的信息。一个简单的 `EXPLAIN ANALYZE` 输出信息如下：
 
 {{< copyable "sql" >}}
 
