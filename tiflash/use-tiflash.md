@@ -254,6 +254,27 @@ set @@session.tidb_allow_mpp=1
 ```
 
 MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash Join 和 Shuffled Hash Aggregation。算法的选择由优化器自动判断。通过 `EXPLAIN` 语句可以查看具体的查询执行计划。
+以 TPC-H 测试集中的表结构为例：
+
+```sql
+mysql> explain select count(*) from customer c join nation n on c.c_nationkey=n.n_nationkey;
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+| id                                       | estRows    | task              | access object | operator info                                                              |
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+| HashAgg_23                               | 1.00       | root              |               | funcs:count(Column#16)->Column#15                                          |
+| └─TableReader_25                         | 1.00       | root              |               | data:ExchangeSender_24                                                     |
+|   └─ExchangeSender_24                    | 1.00       | batchCop[tiflash] |               | ExchangeType: PassThrough                                                  |
+|     └─HashAgg_12                         | 1.00       | batchCop[tiflash] |               | funcs:count(1)->Column#16                                                  |
+|       └─HashJoin_17                      | 3000000.00 | batchCop[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
+|         ├─ExchangeReceiver_21(Build)     | 25.00      | batchCop[tiflash] |               |                                                                            |
+|         │ └─ExchangeSender_20            | 25.00      | batchCop[tiflash] |               | ExchangeType: Broadcast                                                    |
+|         │   └─TableFullScan_18           | 25.00      | batchCop[tiflash] | table:n       | keep order:false                                                           |
+|         └─TableFullScan_22(Probe)        | 3000000.00 | batchCop[tiflash] | table:c       | keep order:false                                                           |
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+9 rows in set (0.00 sec)
+```
+
+在执行计划中，出现了 `ExchangeReceiver` 和 `ExchangeSender` 算子。该执行计划表示 `nation` 表读取完毕后，经过 `ExchangeSender` 算子广播到各个节点中，与 `customer` 表先后进行 `HashJoin` 和 `HashAgg` 操作，再将结果返回至 TiDB 中。
 
 > **注意：**
 >
