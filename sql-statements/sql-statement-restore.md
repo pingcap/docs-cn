@@ -91,7 +91,7 @@ RESTORE DATABASE `test` FROM 'local:///mnt/backup/2020/04/';
 RESTORE TABLE `test`.`sbtest01`, `test`.`sbtest02` FROM 'local:///mnt/backup/2020/04/';
 ```
 
-### 远端存储
+### 外部存储
 
 BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
 

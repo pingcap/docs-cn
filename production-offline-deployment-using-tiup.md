@@ -1,15 +1,11 @@
 ---
 title: 使用 TiUP 离线部署 TiDB 集群
-aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/','/zh/tidb/dev/offline-deployment-using-ansible/','/docs-cn/dev/offline-deployment-using-ansible/','/docs-cn/dev/how-to/deploy/orchestrated/offline-ansible/']
+aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/']
 ---
 
 # 使用 TiUP 离线部署 TiDB 集群
 
 本文介绍如何使用 TiUP 离线部署 TiDB 集群，具体的操作步骤如下。
-
-> **注意：**
->
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读 TiDB Ansible 离线部署 TiDB 集群的文档，可参阅 [v4.0 版离线 TiDB Ansible 部署方案](https://docs.pingcap.com/zh/tidb/v4.0/offline-deployment-using-ansible)。
 
 ## 1. 准备 TiUP 离线组件包
 
@@ -185,7 +181,7 @@ source /home/tidb/.bash_profile
 
 ## 4. 配置初始化参数文件 `topology.yaml`
 
-集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
+集群初始化配置文件需要手动编写，完整的全配置参数模版可以参考 [Github TiUP 项目配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。需要在中控机上面创建 YAML 格式配置文件，例如 `topology.yaml`:
 
 {{< copyable "shell-regular" >}}
 
@@ -236,6 +232,7 @@ alertmanager_servers:
 ## 5. 部署 TiDB 集群
 
 执行以下命令来部署 TiDB 集群。
+
 {{< copyable "shell-regular" >}}
 
 ```bash

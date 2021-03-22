@@ -19,7 +19,7 @@ TiDB 开发者社区以 SIG (Special Interest Group) 为单位管理组织开发
 |[Dashboard](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-dashboard)|[breeswish](https://github.com/breeswish)|
 |[docs](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)|[lilin90](https://github.com/lilin90)|
 |[execution](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-exec)|[qw4990](https://github.com/qw4990)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[kennytm](https://github.com/kennytm)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[kennytm](https://github.com/kennytm)|
 |[tiup](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tiup)|[lonng](https://github.com/lonng)|
 |[web](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-web)|[wd0517](https://github.com/wd0517)|
 |[ddl](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-ddl)|[zimulala](https://github.com/zimulala)|
@@ -63,16 +63,16 @@ TiDB 开发者社区以 SIG (Special Interest Group) 为单位管理组织开发
 |[docs](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)|[TomShawn](https://github.com/TomShawn)|
 |[docs](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)|[toutdesuite](https://github.com/toutdesuite)|
 |[docs](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)|[WangXiangUSTC](https://github.com/WangXiangUSTC)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[3pointer](https://github.com/3pointer)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[5kbpers](https://github.com/5kbpers)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[amyangfei](https://github.com/amyangfei)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[gmhdbjd](https://github.com/gmhdbjd)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[GregoryIan](https://github.com/GregoryIan)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[july2993](https://github.com/july2993)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[leoppro](https://github.com/leoppro)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[lichunzhu](https://github.com/lichunzhu)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[overvenus](https://github.com/overvenus)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[YuJuncen](https://github.com/YuJuncen)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[3pointer](https://github.com/3pointer)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[5kbpers](https://github.com/5kbpers)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[amyangfei](https://github.com/amyangfei)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[gmhdbjd](https://github.com/gmhdbjd)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[GregoryIan](https://github.com/GregoryIan)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[july2993](https://github.com/july2993)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[leoppro](https://github.com/leoppro)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[lichunzhu](https://github.com/lichunzhu)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[overvenus](https://github.com/overvenus)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[YuJuncen](https://github.com/YuJuncen)|
 |[tiup](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tiup)|[AstroProfundis](https://github.com/AstroProfundis)|
 |[tiup](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tiup)|[july2993](https://github.com/july2993)|
 |[tiup](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tiup)|[nrc](https://github.com/nrc)|
@@ -93,7 +93,7 @@ TiDB 开发者社区以 SIG (Special Interest Group) 为单位管理组织开发
 |[planner](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-planner)|[eurekaka](https://github.com/eurekaka)|
 |[planner](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-planner)|[francis0407](https://github.com/francis0407)|
 |[planner](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-planner)|[lzmhhh123](https://github.com/lzmhhh123)|
-|[tools](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-tools)|[csuzhangxc](https://github.com/csuzhangxc)|
+|[migrate](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-migrate)|[csuzhangxc](https://github.com/csuzhangxc)|
 
 ## Reviewers
 

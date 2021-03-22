@@ -7,10 +7,15 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-overview/','/docs-cn/dev/r
 
 TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，可[在此下载](/download-ecosystem-tools.md#tidb-lightning)。
 
-TiDB Lightning 有以下两个主要的使用场景：一是大量新数据的快速导入；二是全量备份数据的恢复。目前，Lightning 支持 Dumpling 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
+TiDB Lightning 有以下两个主要的使用场景：
 
 - **迅速**导入**大量新**数据。
 - 恢复所有备份数据。
+
+目前，TiDB Lightning 支持：
+
+- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) 输出格式的数据源。
+- 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 ## TiDB Lightning 整体架构
 
@@ -18,7 +23,7 @@ TiDB Lightning 有以下两个主要的使用场景：一是大量新数据的�
 
 TiDB Lightning 整体工作原理如下：
 
-1. 在导数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。
+1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。
 
 2. `tidb-lightning` 会在目标数据库建立架构和表，并获取其元数据。
 

@@ -97,7 +97,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 >
 > Green GC 目前是实验性功能，不建议在生产环境中使用。
 
-设定 GC 的 Resolve Locks 阶段中，扫描锁的方式，即是否开启 Green GC（实验性特性）。Resolve Locks 阶段需要扫描整个集群的锁。在不开启 Green GC 的情况下，TiDB 会以 Region 为单位进行扫描。Green GC 提供了“物理扫描”的功能，即每台 TiKV 节点分别绕过 Raft 层直接扫描数据。该功能可以有效缓解 [Hibernate Region](/tikv-configuration-file.md#raftstorehibernate-regions-实验特性) 功能开启时，GC 唤醒全部 Region 的现象，并一定程度上提升 Resolve Locks 阶段的执行速度。
+设定 GC 的 Resolve Locks 阶段中，扫描锁的方式，即是否开启 Green GC（实验性特性）。Resolve Locks 阶段需要扫描整个集群的锁。在不开启 Green GC 的情况下，TiDB 会以 Region 为单位进行扫描。Green GC 提供了“物理扫描”的功能，即每台 TiKV 节点分别绕过 Raft 层直接扫描数据。该功能可以有效缓解 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-实验特性) 功能开启时，GC 唤醒全部 Region 的现象，并一定程度上提升 Resolve Locks 阶段的执行速度。
 
 - `"legacy"`（默认）：使用旧的扫描方式，即关闭 Green GC。
 - `"physical"`：使用物理扫描的方式，即开启 Green GC。
@@ -145,7 +145,7 @@ tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_s
 
 ## GC in Compaction Filter 机制
 
-TiDB 在 5.0.0-rc 版本中引入了 GC in Compaction Filter 机制。在分布式 GC 模式 (distributed GC) 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及避免清理掉的旧版本残留大量删除标记影响顺序扫描性能。该 GC 机制默认关闭。可以由 TiKV 配置文件中的以下开关控制：
+GC in Compaction Filter 机制是在分布式 GC 模式 (distributed GC) 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及避免清理掉的旧版本残留大量删除标记影响顺序扫描性能。可以由 TiKV 配置文件中的以下开关控制：
 
 {{< copyable "" >}}
 

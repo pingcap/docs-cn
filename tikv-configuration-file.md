@@ -270,6 +270,18 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 + 默认值：2GB
 + 单位: MB|GB
 
+### `enable-ttl`
+
++ TTL 即 Time to live。数据超过 TTL 时间后会被自动删除。用户需在客户端写入请求中指定 TTL。不指定 TTL 即表明相应数据不会被自动删除。
++ 注意：TTL 暂时只适用于 RawKV 接口。由于所涉及底层数据格式的不同，用户只能在新建集群时设置好该功能，在已有集群上修改该项配置会使得启动报错。
++ 默认值：false 
+
+### `ttl-poll-check-interval`
+
++ 回收数据物理空间的检查周期。如果数据超过了 TTL 时间，数据的物理空间会在检查时被强制回收。
++ 默认值：12h
++ 最小值：0s
+
 ## storage.block-cache
 
 RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为每个 CF 单独配置的 block cache 将无效。
@@ -383,7 +395,7 @@ raftstore 相关的配置项。
 + 默认值：3s
 + 最小值：0
 
-### `raftstore.hibernate-regions` (**实验特性**)
+### `hibernate-regions` (**实验特性**)
 
 + 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
 + 默认值：true
@@ -959,9 +971,8 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compaction-pri`
 
-Compaction 优先类型，默认：3（MinOverlappingRatio），0（ByCompensatedSize），
-1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
-
++ Compaction 优先类型
++ 可选择值：3（MinOverlappingRatio），0（ByCompensatedSize），1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
 + 默认值：3
 
 ### `dynamic-level-bytes`

@@ -1,15 +1,11 @@
 ---
 title: TiUP 常见运维操作
-aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain/tiup-operations/','/zh/tidb/dev/maintain-tidb-using-ansible/','/docs-cn/dev/maintain-tidb-using-ansible/','/docs-cn/dev/how-to/maintain/ansible-operations/']
+aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain/tiup-operations/']
 ---
 
 # TiUP 常见运维操作
 
 本文介绍了使用 TiUP 运维 TiDB 集群的常见操作，包括查看集群列表、启动集群、查看集群状态、修改配置参数、关闭集群、销毁集群等。
-
-> **注意：**
->
-> 从 TiDB v4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 v5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 运维 TiDB 集群的文档，可参阅 [v4.0 版 TiDB Ansible 常见运维操作](https://docs.pingcap.com/zh/tidb/v4.0/maintain-tidb-using-ansible)。
 
 ## 查看集群列表
 
@@ -101,7 +97,7 @@ tiup cluster display ${cluster-name}
                 log.slow-threshold: 300
         ```
 
-    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。
+    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。
 
     **配置项层次结构使用 `.` 表示**。
 

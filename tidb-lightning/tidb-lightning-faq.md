@@ -96,7 +96,7 @@ TiDB Lightning 只支持两种格式的数据源：
 
 ## 有些不合法的数据，能否通过关掉严格 SQL 模式 (Strict SQL Mode) 来导入？
 
-可以。Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) 为 `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`。
+可以。TiDB Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) 为 `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`。
 
 这个设置不允许一些非法的数值，例如 `1970-00-00` 这样的日期。可以修改配置文件 `[tidb]` 下的 `sql-mode` 值。
 
@@ -109,7 +109,7 @@ sql-mode = ""
 
 ## 可以启用一个 `tikv-importer`，同时有多个 `tidb-lightning` 进程导入数据吗？
 
-只要每个 Lightning 操作的表互不相同就可以。
+只要每个 TiDB Lightning 操作的表互不相同就可以。
 
 ## 如何正确结束 `tikv-importer` 进程？
 
@@ -131,7 +131,7 @@ sql-mode = ""
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
 
-另外，如果从 Lightning log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。 
+另外，如果从 TiDB Lightning 的 log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。
 
 ## 为什么用过 TiDB Lightning 之后，TiDB 集群变得又慢又耗 CPU？
 
@@ -173,7 +173,7 @@ upload-speed-limit = "100MB"
 
 ## TiDB Lightning 使用过程中是否可以重启 TiKV Importer？
 
-不能，Importer 会在内存中存储一些引擎文件，Importer 重启后，`tidb-lightning` 会因连接失败而停止。此时，你需要[清除失败的断点](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)，因为这些 Importer 特有的信息丢失了。你可以在之后[重启 Lightning](#如何正确重启-tidb-lightning)。
+不能，TiKV Importer 会在内存中存储一些引擎文件，重启后，`tidb-lightning` 会因连接失败而停止。此时，你需要[清除失败的断点](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)，因为这些 TiKV Importer 特有的信息丢失了。你可以在之后[重启 TiDB Lightning](#如何正确重启-tidb-lightning)。
 
 ## 如何清除所有与 TiDB Lightning 相关的中间数据？
 
@@ -193,7 +193,7 @@ upload-speed-limit = "100MB"
 
 ## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
 
-报错原因是遍历本地排序的文件时出现异常，可能在 lightning 打开的文件数量超过系统的上限时发生。在 linux 系统中，可以使用 `ulimit -n` 命令确认此值是否过小。建议在 lightning 导入期间将此设置调整为 1000000（`ulimit -n 1000000`）。
+报错原因是遍历本地排序的文件时出现异常，可能在 TiDB Lightning 打开的文件数量超过系统的上限时发生报错。在 Linux 系统中，可以使用 `ulimit -n` 命令确认此值是否过小。建议在导入期间将此设置调整为 `1000000`（即 `ulimit -n 1000000`）。
 
 ## TiDB Lightning 导入速度太慢
 
@@ -203,9 +203,9 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 
 **原因 1**：`region-concurrency` 设定太高，线程间争用资源反而减低了效率。
 
-1. 从日志的开头搜寻 `region-concurrency` 能知道 Lightning 读到的参数是多少。
-2. 如果 Lightning 与其他服务（如 Importer）共用一台服务器，必需**手动**将 `region-concurrency` 设为该服务器 CPU 数量的 75%。
-3. 如果 CPU 设有限额（例如从 Kubernetes 指定的上限），Lightning 可能无法自动判断出来，此时亦需要**手动**调整 `region-concurrency`。
+1. 从日志的开头搜寻 `region-concurrency` 能知道 TiDB Lightning 读到的参数是多少。
+2. 如果 TiDB Lightning 与其他服务（如 TiKV Importer）共用一台服务器，必需**手动**将 `region-concurrency` 设为该服务器 CPU 数量的 75%。
+3. 如果 CPU 设有限额（例如从 Kubernetes 指定的上限），TiDB Lightning 可能无法自动判断出来，此时亦需要**手动**调整 `region-concurrency`。
 
 **原因 2**：表结构太复杂。
 
@@ -240,7 +240,7 @@ strict-format = true
 
 **解决办法**：
 
-1. 使用 `tidb-lightning-ctl` 把出错的表删除，然后重启 Lightning 重新导入那些表。
+1. 使用 `tidb-lightning-ctl` 把出错的表删除，然后重启 TiDB Lightning 重新导入那些表。
 
     {{< copyable "shell-regular" >}}
 
@@ -254,13 +254,13 @@ strict-format = true
 
 ## `Checkpoint for … has invalid status:`（错误码）
 
-**原因**：[断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lightning 在错误解决以前不会启动。
+**原因**：[断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)已启用。TiDB Lightning 或 TiKV Importer 之前发生了异常退出。为了防止数据意外损坏，TiDB Lightning 在错误解决以前不会启动。
 
 错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
 **解决办法**：
 
-如果错误原因是非法数据源，使用 `tidb-lightning-ctl` 删除已导入数据，并重启 Lightning。
+如果错误原因是非法数据源，使用 `tidb-lightning-ctl` 删除已导入数据，并重启 TiDB Lightning。
 
 {{< copyable "shell-regular" >}}
 
@@ -282,7 +282,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 2. 降低 `table-concurrency` + `index-concurrency`，使之低于 `max-open-engines`。
 
-3. 重启 `tikv-importer` 来强制移除所有引擎文件 (默认值为 `./data.import/`)。这样也会丢弃导入了一半的表，所以启动 Lightning 前必须清除过期的断点记录：
+3. 重启 `tikv-importer` 来强制移除所有引擎文件 (默认值为 `./data.import/`)。这样也会丢弃导入了一半的表，所以启动 TiDB Lightning 前必须清除过期的断点记录：
 
     {{< copyable "shell-regular" >}}
 
@@ -292,7 +292,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 ## `cannot guess encoding for input file, please convert to UTF-8 manually`
 
-**原因**：Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如，因为在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
+**原因**：TiDB Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如，因为在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
 
 **解决办法**：
 
@@ -306,7 +306,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 **解决办法**:
 
-1. 确保 Lightning 与数据源时区一致。
+1. 确保 TiDB Lightning 与数据源时区一致。
 
     * 手动部署的话，通过设定 `$TZ` 环境变量强制时区设定。
 

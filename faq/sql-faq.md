@@ -172,8 +172,7 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 ## 可以使用 Hints 控制优化器行为吗？
 
-在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下 ：
-`select column_name from table_name use index（index_name）where where_condition;`
+在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：`select column_name from table_name use index（index_name）where where_condition;`
 
 ## 触发 Information schema is changed 错误的原因？
 

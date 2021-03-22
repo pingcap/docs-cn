@@ -1,10 +1,10 @@
 ---
-title: 从 MySQL SQL 文件迁移数据
+title: 使用 TiDB Lightning 从 MySQL SQL 文件迁移数据
 summary: 使用 TiDB Lightning 从 MySQL 迁移数据。
 aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrate-from-mysql-mydumper-files/']
 ---
 
-# 从 MySQL SQL 文件迁移数据
+# 使用 TiDB Lightning 从 MySQL SQL 文件迁移数据
 
 本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，可以参考 [Dumpling](/dumpling-overview.md) 文档。
 
@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 使用 TiDB Lightning 将数据导入 TiDB。TiDB Lightning 具体的部署方法见 [TiDB Lightning 部署](/tidb-lightning/deploy-tidb-lightning.md)。
 
 > **注意：**
-> 
+>
 > - 如果选用 Local-backend 来导入数据，导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
 > - 如果选用 TiDB-backend 来导入数据，导入期间集群可以正常提供服务, 但相对导入速度较慢。
 > - 二者的具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-backends.md)。
@@ -51,9 +51,9 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
     [tikv-importer]
     backend = "tidb"
     ```
-    
+
 4. 增加导入 TiDB 集群必要参数
-    
+
     ```
     [tidb]
     host = "{{tidb-host}}"
