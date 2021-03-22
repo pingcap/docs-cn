@@ -69,7 +69,7 @@ ExchangeSender 算子的 `operator info` 列输出了 ExchangeType 信息。目�
 
 上述例子中 ExchangeSender 的 ExchangeType 为 HashPartition 以及 PassThroough，分别对应于 Hash Aggregation 运算以及向 TiDB 返回数据。
 
-另外一个典型的 MPP 应用为 join，TiDB MPP 支持两种类型的 join，分别为 
+另外一个典型的 MPP 应用为 join 运算。TiDB MPP 支持两种类型的 join，分别为：
 
 * Shuffle Hash Join：join 的 input 通过 HashPartition 的方式 shuffle 数据，上游的 MPP Task 进行 partition 内的 join。 
 * Broadcast Join：join 中的小表以 Broadcast 的方式把数据 broadcast 到各个节点，各个节点各自进行 join。
