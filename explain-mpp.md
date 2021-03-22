@@ -3,7 +3,7 @@ title: 用 EXPLAIN 查看 MPP 模式查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看使用 MPP SQL 执行计划
+# 用 EXPLAIN 查看 MPP 模式查询的执行计划
 
 在 TiDB 中，新增了 MPP 执行模式，在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
 
