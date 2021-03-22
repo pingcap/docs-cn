@@ -12,14 +12,14 @@ title: tiup cluster template
 tiup cluster template [flags]
 ```
 
-在不指定任何选项的情况下，输出默认模版：
+在不指定任何选项的情况下，输出默认模版，包含下面的角色：
 
 - 3 个 PD
 - 3 个 TiKV
 - 1 个 TiDB
-- 1 个 prometheus
-- 1 个 grafana
-- 1 个 alertmanager
+- 1 个 Prometheus
+- 1 个 Grafana
+- 1 个 Alertmanager
 
 ## 选项
 
@@ -37,4 +37,4 @@ tiup cluster template [flags]
 
 ## 输出
 
-根据指定选项输出拓扑模版，可重定向到拓扑文件中用于部署。
+根据指定选项输出拓扑模版到标准输出，可重定向到拓扑文件中用于部署。

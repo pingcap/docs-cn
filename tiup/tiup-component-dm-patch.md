@@ -53,7 +53,7 @@ tiup dm patch <cluster-name> <package-path> [flags]
 
 ## --offline（boolean，默认 false）
 
-声明当前集群处于停止状态。指定该选项时，TiUP DM 仅原地替换集群组件的二进制文件，不重启服务。
+声明当前集群处于离线状态。指定该选项时，TiUP DM 仅原地替换集群组件的二进制文件，不重启服务。
 
 ### -h, --help（boolean，默认 false）
 

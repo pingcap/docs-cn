@@ -16,9 +16,9 @@ tiup dm template [flags]
 
 - 3 个 DM Master
 - 3 个 DM Worker
-- 1 个 prometheus
-- 1 个 grafana
-- 1 个 alertmanager
+- 1 个 Prometheus
+- 1 个 Grafana
+- 1 个 Alertmanager
 
 ## 选项
 
@@ -32,4 +32,4 @@ tiup dm template [flags]
 
 ## 输出
 
-根据指定选项输出拓扑模版，可重定向到拓扑文件中用于部署。
+根据指定选项输出拓扑模版到标准输出，可重定向到拓扑文件中用于部署。
