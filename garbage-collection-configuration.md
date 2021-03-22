@@ -145,7 +145,7 @@ tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_s
 
 ## GC in Compaction Filter 机制
 
-TiDB 在 5.0.0-rc 版本中引入了 GC in Compaction Filter 机制。在分布式 GC 模式 (distributed GC) 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及避免清理掉的旧版本残留大量删除标记影响顺序扫描性能。该 GC 机制默认关闭。可以由 TiKV 配置文件中的以下开关控制：
+GC in Compaction Filter 机制是在分布式 GC 模式 (distributed GC) 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及避免清理掉的旧版本残留大量删除标记影响顺序扫描性能。可以由 TiKV 配置文件中的以下开关控制：
 
 {{< copyable "" >}}
 
