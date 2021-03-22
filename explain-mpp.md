@@ -63,7 +63,7 @@ EXPLAIN select count(*) from t1 group by id;
 
 ExchangeSender 算子的 `operator info` 列输出了 ExchangeType 信息。目前有以下三种 ExchangeType：
 
-* HashPartition：ExchangeSender 把数据按 Hash 值进行 partition 之后分发给上游的 MPP Task 的 ExchangeReceiver，通常在 Hash Aggregation 以及 Shuffle Hash Join 中使用
+* HashPartition：ExchangeSender 把数据按 Hash 值进行分区之后分发给上游的 MPP Task 的 ExchangeReceiver 算子，通常在 Hash Aggregation 以及 Shuffle Hash Join 算法中使用。
 * Broadcast：ExchangeSender 通过 broadcast 的方式把数据分发给上游的 MPP Task，通常在 Broadcast Join 中使用
 * PassThrough：ExchangeSender 把数据分发给上游的 MPP Task，与 Broadcast 的区别是此时上游有且仅有一个 MPP Task，通常用于向 TiDB 返回数据。
 
