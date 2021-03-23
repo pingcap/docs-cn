@@ -84,16 +84,16 @@ BR 和 TiDB 集群的兼容性问题分为以下两方面：
 
 ### 版本检查
 
-BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR 4.x 和 TiDB 5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查，但是可能会遇到版本不兼容的问题。
+BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查，但是可能会遇到版本不兼容的问题。
 
 需要注意的是，跳过检查可能会遇到版本不兼容的问题，现整理如下：
 
-| 备份版本（纵向） \ 恢复版本（横向） | BR nightly / TiDB nightly| BR 5.0 / TiDB 5.0| BR 4.0 / TiDB 4.0 |
+| 备份版本（纵向） \ 恢复版本（横向） | BR nightly / TiDB nightly | BR v5.0 / TiDB v5.0| BR v4.0 / TiDB v4.0 |
 |  ----  |  ----  | ---- | ---- |
 | **BR nightly / TiDB nightly** | ✅ | ✅ | ✅ |
-| **BR 5.0 / TiDB 5.0** | ✅ | ✅ | ✅
-| **BR 4.0 / TiDB 4.0** | ✅ | ✅ | ✅（如果 TiKV>=4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
-| **BR nightly 或 5.0 / TiDB 4.0** | ❌（当 TiDB < v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < 4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < 4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
+| **BR v5.0 / TiDB v5.0** | ✅ | ✅ | ✅
+| **BR v4.0 / TiDB v4.0** | ✅ | ✅ | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
+| **BR nightly 或 v5.0 / TiDB v4.0** | ❌（当 TiDB < v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
 
 ### 运行 BR 的最低机型配置要求
 
