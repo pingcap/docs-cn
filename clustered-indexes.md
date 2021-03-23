@@ -134,7 +134,7 @@ mysql> SELECT TIDB_PK_TYPE FROM information_schema.tables WHERE table_schema = '
 
 - 明确不支持且没有支持计划的使用限制：
     - 不支持与 TiDB Binlog 一起使用。开启 TiDB Binlog 后 TiDB 不允许创建非单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 TiDB Binlog 同步到下游。如需同步聚簇索引表，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
-    - 不支持与 `SHARD_ROW_ID_BITS` 一起使用；`PRE_SPLIT_REGIONS` 在聚簇索引表上不生效。
+    - 不支持与 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 一起使用；[`PRE_SPLIT_REGIONS`](sql-statements/sql-statement-split-region.md#pre_split_regions) 在聚簇索引表上不生效。
     - 不支持对聚簇索引表进行降级。如需降级，请使用逻辑备份工具迁移数据。
 - 另一类是尚未支持，但未来有计划支持的使用限制：
     - 尚未支持通过 `ALTER TABLE` 语句增加、删除、修改聚簇索引。
@@ -211,11 +211,9 @@ mysql> split table t by (0, ''), (50000, ''), (100000, '');
 1 row in set (0.01 sec)
 ```
 
-`AUTO_RANDOM` 属性只能在聚簇索引表上使用。在非聚簇索引上使用 `AUTO_RANDOM` 会报以下错误：
+[`AUTO_RANDOM`](/auto-random.md) 属性只能在聚簇索引表上使用。在非聚簇索引上使用 `AUTO_RANDOM` 会报以下错误：
 
 ```sql
 mysql> create table t (a bigint primary key nonclustered auto_random);
 ERROR 8216 (HY000): Invalid auto random: column a is not the integer primary key, or the primary key is nonclustered
 ```
-
-要了解 `AUTO_RANDOM` 的详细信息，请参考 [AUTO_RANDOM 用户文档](/auto-random.md)。
