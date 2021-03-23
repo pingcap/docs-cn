@@ -74,11 +74,11 @@ BR 和 TiDB 集群的兼容性问题分为以下两方面：
 
 下表整理了会导致 KV 格式发生变化的功能。
 
-功能 | 相关 issue | 解决方式
+| 功能 | 相关 issue | 解决方式 |
 |  ----  | ----  | ----- |
-聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 tidb_enable_clustered_index 变量和恢复时一致，否则会导致数据不一致的问题，如 default not found, 数据索引不一致。
-New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 new_collations_enabled_on_first_bootstrap 和备份时的一致，否则会导致数据索引不一致和checksum 不通过。
-恢复集群开启 TiCDC 同步 | [#364](https://github.com/pingcap/br/issues/364#issuecomment-646813965) |  TiKV 暂不能将 BR ingest 的 SST 文件下推到 TiCDC，因此使用 BR 恢复时候需要关闭 TiCDC。
+| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 tidb_enable_clustered_index 变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
+| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 new_collations_enabled_on_first_bootstrap 和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
+| 恢复集群开启 TiCDC 同步 | [#364](https://github.com/pingcap/br/issues/364#issuecomment-646813965) |  TiKV 暂不能将 BR ingest 的 SST 文件下推到 TiCDC，因此使用 BR 恢复时候需要关闭 TiCDC。 |
 
 在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。
 
@@ -88,12 +88,12 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 
 需要注意的是，跳过检查可能会遇到版本不兼容的问题，现整理如下：
 
-| 备份版本 \ 恢复版本| BR nightly / TiDB nightly| BR 5.0 / TiDB 5.0| BR 4.0 / TiDB 4.0 |
+| 备份版本（纵向） \ 恢复版本（横向） | BR nightly / TiDB nightly| BR 5.0 / TiDB 5.0| BR 4.0 / TiDB 4.0 |
 |  ----  |  ----  | ---- | ---- |
-**BR nightly / TiDB nightly** | ✅ | ✅ | ✅ |
-**BR 5.0 / TiDB 5.0** | ✅ | ✅ | ✅
-**BR 4.0 / TiDB 4.0** | ✅ | ✅ | ✅(TiKV>=4.0.0-rc.1(BR 包含 [#233](https://github.com/pingcap/br/pull/233)，但 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241)), 那么 BR 会导致 TiKV 节点重启) |
-**BR nightly or 5.0 / TiDB 4.0** | ❌(TiDB < 4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌(TiDB < 4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌(TiDB < 4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
+| **BR nightly / TiDB nightly** | ✅ | ✅ | ✅ |
+| **BR 5.0 / TiDB 5.0** | ✅ | ✅ | ✅
+| **BR 4.0 / TiDB 4.0** | ✅ | ✅ | ✅（如果 TiKV>=4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
+| **BR nightly 或 5.0 / TiDB 4.0** | ❌（当 TiDB < v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < 4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < 4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
 
 ### 运行 BR 的最低机型配置要求
 
