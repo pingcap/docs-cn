@@ -21,7 +21,7 @@ SET tidb_allow_mpp = 1;
 
 ## MPP 查询片段和 MPP 任务
 
-在 MPP 模式下，一个查询在逻辑上会被切分为多个 MPP 查询片段（query fragment）。示例如下：
+在 MPP 模式下，一个查询在逻辑上会被切分为多个 MPP 查询片段 (query fragment)。示例如下：
 
 {{< copyable "sql" >}}
 
