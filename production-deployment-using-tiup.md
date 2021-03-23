@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
-aliases: ['/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
+aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/dev/production-offline-deployment-using-tiup','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
@@ -315,6 +315,10 @@ tiup cluster start tidb-test
 ```
 
 预期结果输出 ```Started cluster `tidb-test` successfully``` 标志启动成功。
+
+## 第 8 步：验证集群运行状态
+
+操作步骤见[验证集群运行状态](/post-installation-check.md)。
 
 ## 探索更多
 
