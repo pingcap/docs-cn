@@ -382,11 +382,19 @@ mysql> SELECT * FROM t1;
 - 默认值：对于新创建的集群，v5.0 RC 版本默认值为 OFF，自 v5.0 GA 版本起默认值为 ON。对于升级到 v5.0 GA 版本的集群，如果升级前是 v5.0 RC 版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
+> **注意：**
+>
+> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。如果可能，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代。
+
 ### `enable-one-pc` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 RC 及之后版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
 - 指定是否在只涉及一个 Region 的事务上启用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
+
+> **注意：**
+>
+> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。如果可能，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代。
 
 ### `tidb_enable_cascades_planner`
 
