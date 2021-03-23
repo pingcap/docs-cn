@@ -337,13 +337,15 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
-- 这个变量用来设置是否禁用显式事务自动重试，设置为 `ON` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
+- 这个变量用来设置是否禁用显式的乐观事务自动重试，设置为 `ON` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
 
     如果将该变量的值设为 `OFF`，TiDB 将会自动重试事务，这样在事务提交时遇到的错误更少。需要注意的是，这样可能会导致数据更新丢失。
 
     这个变量不会影响自动提交的隐式事务和 TiDB 内部执行的事务，它们依旧会根据 `tidb_retry_limit` 的值来决定最大重试次数。
 
     关于是否需要禁用自动重试，请参考[重试的局限性](/optimistic-transaction.md#重试的局限性)。
+
+    该变量只适用于乐观事务，不适用于悲观事务。悲观事务的重试次数由 [`max_retry_count`](/tidb-configuration-file.md#max-retry-count) 控制。
 
 ### `tidb_distsql_scan_concurrency`
 
@@ -725,6 +727,32 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 - 默认值：60
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 step，单位为秒。
 
+### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 可选值：OFF，ON 和 WARN
+- 该变量用于控制是否在同一个 `COM_QUERY` 调用中执行多个查询。
+- 为了减少 SQL 注入攻击的影响，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。该变量可用作早期 TiDB 版本的升级路径选项。该变量值与是否允许多语句行为的对照表如下：
+
+| 客户端设置         | `tidb_multi_statement_mode` 值 | 是否允许多语句 |
+|------------------------|-----------------------------------|--------------------------------|
+| Multiple Statements = ON  | OFF                               | 允许                            |
+| Multiple Statements = ON  | ON                                | 允许                            |
+| Multiple Statements = ON  | WARN                              | 允许                            |
+| Multiple Statements = OFF | OFF                               | 不允许                             |
+| Multiple Statements = OFF | ON                                | 允许                            |
+| Multiple Statements = OFF | WARN                              | 允许 + 警告提示        |
+
+> **注意：**
+>
+> 只有默认值 `OFF` 才是安全的。如果用户业务是专为早期 TiDB 版本而设计的，那么需要将该变量值设为 `ON`。如果用户业务需要多语句支持，建议用户使用客户端提供的设置，不要使用 `tidb_multi_statement_mode` 变量进行设置。
+
+>
+> * [go-sql-driver](https://github.com/go-sql-driver/mysql#multistatements) (`multiStatements`)
+> * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
+> * PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
+
 ### `tidb_opt_agg_push_down`
 
 - 作用域：SESSION
@@ -905,7 +933,7 @@ SET tidb_query_log_max_len = 20;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：10
-- 这个变量用来设置最大重试次数。一个事务执行中遇到可重试的错误（例如事务冲突、事务提交过慢或表结构变更）时，会根据该变量的设置进行重试。注意当 `tidb_retry_limit = 0` 时，也会禁用自动重试。
+- 这个变量用来设置乐观事务的最大重试次数。一个事务执行中遇到可重试的错误（例如事务冲突、事务提交过慢或表结构变更）时，会根据该变量的设置进行重试。注意当 `tidb_retry_limit = 0` 时，也会禁用自动重试。该变量仅适用于乐观事务，不适用于悲观事务。
 
 ### `tidb_row_format_version`
 

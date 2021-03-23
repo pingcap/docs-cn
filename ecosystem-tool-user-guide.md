@@ -33,7 +33,7 @@ title: TiDB 生态工具功能概览
 
 基本信息：
 
-- Lightning 的输入：
+- TiDB Lightning 的输入：
     - Dumpling 输出文件
     - 其他格式兼容的 CSV 文件
 - 适用 TiDB 版本：v2.1 及以上
