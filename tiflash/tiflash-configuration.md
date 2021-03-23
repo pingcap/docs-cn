@@ -56,12 +56,17 @@ delta_index_cache_size = 0
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-    ## [实验特性] 自 v5.0 引入，限制后台任务每秒写入的字节数。默认为 0，代表没有限制。目前为实验特性，不推荐在生产环境中使用。
+    ## [实验特性] 自 v5.0 引入，限制后台任务每秒写入的字节数。目前为实验特性，不推荐在生产环境中使用。
+    ## 以 byte 为单位。目前不支持如 "10GB" 的设置。
+    ## 默认为 0，代表没有限制。
+    ## 该参数主要针对 TiFlash 部署在 AWS EBS (gp2/gp3) 盘时的场景，用于控制后台任务对机器磁盘带宽的占用。
+    ## 提升 TiFlash 查询性能的稳定性。在该场景下推荐配置为磁盘带宽的 50%。
+    ## 其他场景下不建议修改该配置。
     bg_task_io_rate_limit = 0
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
-    dir = [ "/tidb-data/tiflash-9000" ] 
+    dir = [ "/tidb-data/tiflash-9000" ]
     ## 或
     # dir = [ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]
 
@@ -119,7 +124,7 @@ delta_index_cache_size = 0
     ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 true
     dt_enable_logical_split = true
     ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
-    max_memory_usage = 0 
+    max_memory_usage = 0
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0
     ## 从 v5.0.0-rc 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。

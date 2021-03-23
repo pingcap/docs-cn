@@ -90,11 +90,15 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 将旧表中的 utf8 字符集当成 utf8mb4的开关。
 + 默认值：true
 
-### `alter-primary-key`
+### `alter-primary-key`（已废弃）
 
 + 用于控制添加或者删除主键功能。
 + 默认值：false
 + 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。
+
+> **注意：**
+>
+> 该配置项不再生效。如果需要增删主键，请使用 `NONCLUSTERED` 代替。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ### `server-version`
 
@@ -497,36 +501,12 @@ prepare 语句的 plan cache 设置。
 
 本部分介绍 Coprocessor Cache 相关的配置项。
 
-### `enable`
-
-+ 是否开启[下推计算结果缓存](/coprocessor-cache.md)。
-+ 默认值：false（即不开启）
-
 ### `capacity-mb`
 
-+ 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
++ 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。值为 0.0 时表示关闭 Coprocessor Cache。
 + 默认值：1000.0
 + 单位：MB
 + 类型：Float
-
-### `admission-max-result-mb`
-
-+ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集小于该参数指定的大小，则结果集会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
-+ 默认值：10.0
-+ 单位：MB
-+ 类型：Float
-
-### `admission-min-process-ms`
-
-+ 指定能被缓存的单个下推计算结果集的最短计算时间。若单个下推计算在 Coprocessor 上的计算时间小于该参数指定的时间，则结果集不会被缓存。处理得很快的请求没有必要进行缓存，仅对处理时间很长的请求进行缓存，减少缓存被逐出的概率，这是本配置参数的意义。
-+ 默认值：5
-+ 单位：ms
-
-### `admission-max-ranges` <span class="version-mark">从 v4.0.8 版本开始引入</span>
-
-+ 指定能被缓存的单个下推计算结果集的最大范围数量。如果下推计算存在的范围数量超过该配置项指定的数量，则结果集不会被缓存。一般认为当范围数量过多时，解析范围是计算的主要开销，这样 Coprocessor Cache 带来的额外计算开销会较大。
-+ 默认值：500
-+ 类型：uint
 
 ## txn-local-latches
 
@@ -617,9 +597,4 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 ### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 + 用于控制是否能创建表达式索引。
-+ 默认值：false
-
-### `enable-global-kill` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-+ 用于控制是否开启 Global Kill 功能。将配置项的值设为 `true` 可开启该功能。开启后，即使 TiDB 服务器位于负载均衡器后，也可以安全地终止任何连接。
 + 默认值：false

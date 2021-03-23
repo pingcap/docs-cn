@@ -484,10 +484,19 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
 - 这个变量用来设置是否开启 `TABLE PARTITION` 特性。目前变量支持以下三种值：
-
     - 默认值 `ON` 表示开启 TiDB 当前已实现了的分区表类型，目前 Range partition、Hash partition 以及 Range column 单列的场景会生效。
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
+
+### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+> **警告：**
+>
+> 目前 List partition 和 List COLUMNS partition 为实验特性，不建议在生产环境中使用。
+
+- 作用域：SESSION
+- 默认值：OFF
+- 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
@@ -974,8 +983,15 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
-- 这个变量用来设置是否跳过 UTF-8 字符的验证。
-- 验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 `ON`。
+- 这个变量用来设置是否校验 UTF-8 字符的合法性。
+- 校验 UTF-8 字符会损耗些许性能。当你确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 `ON`。
+
+### `tidb_skip_ascii_check`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 这个变量用来设置是否校验 ASCII 字符的合法性。
+- 校验 ASCII 字符会损耗些许性能。当你确认输入的字符串为有效的 ASCII 字符时，可以将其设置为 `ON`。
 
 ### `tidb_slow_log_threshold`
 
@@ -1038,16 +1054,6 @@ set tidb_slow_log_threshold = 200;
 - 作用域：INSTANCE | GLOBAL
 - 默认值：0
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
-
-### `tidb_track_aggregate_memory_usage` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-> **警告：**
->
-> `tidb_track_aggregate_memory_usage` 目前为实验特性，不建议在生产环境中使用。
-
-- 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 这个变量表示是否追踪聚合函数的内存使用情况。当开启该功能时，聚合函数的内存使用情况会被统计，进而可能会造成整个 SQL 内存统计值超阈值 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)，然后被 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的行为影响。
 
 ### `tidb_txn_mode`
 
@@ -1129,3 +1135,9 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_allow_fallback_to_tikv` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：""
+- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
