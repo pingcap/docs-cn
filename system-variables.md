@@ -384,7 +384,7 @@ mysql> SELECT * FROM t1;
 
 > **注意：**
 >
-> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。如果可能，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代。
+> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 
 ### `enable-one-pc` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
@@ -394,7 +394,7 @@ mysql> SELECT * FROM t1;
 
 > **注意：**
 >
-> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。如果可能，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代。
+> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 
 ### `tidb_enable_cascades_planner`
 
