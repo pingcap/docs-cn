@@ -1120,7 +1120,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-### `tidb_allow_fallback_to_tikv`  <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+### `tidb_allow_fallback_to_tikv` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：""
