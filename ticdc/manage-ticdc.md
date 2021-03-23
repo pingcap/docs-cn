@@ -782,7 +782,7 @@ force-replicate = true
 
 ## Unified Sorter 功能
 
-Unified Sorter 是 TiCDC 自 v4.0.9 起支持的新特性，于 v5.0.0 默认启用。Unified Sorter 缓解了类似场景下的 OOM 问题：
+Unified Sorter 是 TiCDC 中的排序引擎功能，目前默认开启，用于缓解以下场景造成的内存溢出问题：
 
 + 如果 TiCDC 数据订阅任务的暂停中断时间长，其间积累了大量的增量更新数据需要同步。
 + 从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
