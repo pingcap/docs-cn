@@ -67,7 +67,7 @@ ExchangeSender 算子的 `operator info` 列输出了 ExchangeType 信息。目�
 * Broadcast：ExchangeSender 通过广播的方式把数据分发给上游的 MPP 任务，通常在 Broadcast Join 中使用。
 * PassThrough：ExchangeSender 把数据分发给上游的 MPP Task，与 Broadcast 的区别是此时上游有且仅有一个 MPP 任务，通常用于向 TiDB 返回数据。
 
-上述例子中 ExchangeSender 的 ExchangeType 为 HashPartition 以及 PassThroough，分别对应于 Hash Aggregation 运算以及向 TiDB 返回数据。
+上述例子中 ExchangeSender 的 ExchangeType 为 HashPartition 以及 PassThrough，分别对应于 Hash Aggregation 运算以及向 TiDB 返回数据。
 
 另外一个典型的 MPP 应用为 join 运算。TiDB MPP 支持两种类型的 join，分别为：
 
