@@ -517,6 +517,7 @@ sudo systemctl enable ntpd.service
     current policy: frequency should be within 1.20 GHz and 3.10 GHz.
                   The governor "performance" may decide which speed to use within this range.
     ```
+
 9. 执行以下命令修改 sysctl 参数。
 
     {{< copyable "shell-regular" >}}
@@ -530,6 +531,7 @@ sudo systemctl enable ntpd.service
     echo "vm.swappiness = 0">> /etc/sysctl.conf
     sysctl -p
     ```
+
 10. 执行以下命令配置用户的 limits.conf 文件。
 
     {{< copyable "shell-regular" >}}
@@ -542,6 +544,7 @@ sudo systemctl enable ntpd.service
     tidb           hard    stack          32768
     EOF
     ```
+
 ## 手动配置 SSH 互信及 sudo 免密码
 
 对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登陆，可忽略本段内容。

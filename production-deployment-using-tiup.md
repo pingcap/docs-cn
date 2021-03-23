@@ -132,7 +132,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         ```
 
         此时，`tidb-community-server-${version}-linux-amd64.tar.gz` 就是一个独立的离线环境包。
-        
+
 #### 部署离线环境 TiUP 组件
 
 将离线包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
@@ -158,7 +158,7 @@ source /home/tidb/.bash_profile
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster template > topology.yaml 
+tiup cluster template > topology.yaml
 ```
 
 > **注意：**
@@ -166,6 +166,7 @@ tiup cluster template > topology.yaml
 > 混合部署场景也可以使用 `tiup cluster template --full > topology.yaml` 生成的建议拓扑模板，跨机房部署场景可以使用 `tiup cluster template --multi-dc > topology.yaml` 生成的建议拓扑模板。
 
 执行 `vi topology.yaml`，查看配置文件的内容：
+
 ```shell
 global:
   user: "tidb"
@@ -222,7 +223,7 @@ alertmanager_servers:
 - [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)
 
     以典型的 `两地三中心` 架构为例，介绍跨机房部署架构，以及需要注意的关键设置。
-    
+
 > **注意：**
 >
 > - 对于需要全局生效的参数，请在配置文件中 `server_configs` 的对应组件下配置。
@@ -232,7 +233,6 @@ alertmanager_servers:
 > - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。
 >
 > - 更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 、 [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
-
 
 ## 第 4 步：执行部署命令
 
