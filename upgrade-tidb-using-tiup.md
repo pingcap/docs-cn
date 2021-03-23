@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 >
 > 如果原集群中控机不能访问 https://tiup-mirrors.pingcap.com 地址，可跳到步骤 2.2 使用离线升级方式。
 
-1. 先升级 TiUP 版本（建议`tiup`版本不低于 `1.4.0`）：
+1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.4.0`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -42,10 +42,6 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     tiup update --self
     tiup --version
     ```
-
-> **注意：**
->
-> 建议先升级 `tiup` 。
 
 2. 再升级 TiUP Cluster 版本（建议 `tiup cluster` 版本不低于 `1.4.0`）：
 
