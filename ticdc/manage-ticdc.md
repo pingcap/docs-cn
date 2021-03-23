@@ -22,7 +22,7 @@ tiup cluster upgrade <cluster-name> v4.0.6
 ### 升级的注意事项
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
-* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#5-升级-faq)。
+* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#4-升级-faq)。
 
 ## 使用加密传输 (TLS) 功能
 
@@ -93,7 +93,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     ```
     [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
     ```
-  
+
     URI 中包含特殊字符时，需要以 URL 编码对特殊字符进行处理。
 
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
@@ -103,7 +103,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `memory`：在内存中进行排序。生产环境中建议优先选择 `memory`。
     - `unified`：自 v4.0.9 引入的实验特性，优先使用内存排序。内存不足时则自动使用硬盘暂存数据。**不建议用于生产环境**，除非因内存不足 `memory` 无法正常使用。
     - `file`：完全使用磁盘暂存数据。**已经停止维护，不建议使用。**
-    
+
 - `--config`：指定 changefeed 配置文件。
 
 #### Sink URI 配置 `mysql`/`tidb`
