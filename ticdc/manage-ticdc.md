@@ -104,7 +104,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项默认开启默认选项。
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
-- `--sort-dir`: 指定排序引擎使用的临时文件目录。**v4.0.12+ 以及 v5.0.x 不建议使用**，这些版本的用户请使用 `cdc server` 的 `--sort-dir` 选项设置临时文件目录。该配置项的默认值为 `/tmp/cdc_sort`, 在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请务必手工指定 `sort-dir`.
+- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议使用该选项**，建议使用 `cdc server` 的 `--sort-dir` 选项设置临时文件目录。该配置项的默认值为 `/tmp/cdc_sort`, 在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`. 如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
     
 - `--config`：指定 changefeed 配置文件。
 
@@ -782,14 +782,14 @@ force-replicate = true
 
 ## Unified Sorter 功能
 
-Unified Sorter 是 TiCDC 自 v4.0.9 起支持的新特性，于 v5.0.0 默认启用。Unified Sorter 的设计主要为了解决两个问题：
+Unified Sorter 是 TiCDC 自 v4.0.9 起支持的新特性，于 v5.0.0 默认启用。Unified Sorter 缓解了类似场景下的 OOM 问题：
 
-1. 如果增量扫 (TiCDC 追赶历史数据的过程) 的数据量过大，TiCDC 有可能因内存不足而退出。在增量扫过程中 TiKV 会从硬盘中读取历史数据，而这个过程中读取的数据并非按时间排序；但 TiCDC 为了保证下游数据的一致性，必须把数据变更记录按时间顺序写入。这就要求 TiCDC 必须在增量扫结束后才能开始排序并输出这些数据。如果 TiCDC 在此期间仅使用内存来暂存数据，则容易出现内存不足的问题。为了解决这个问题，Unified Sorter “统合 (unified)” 了之前 memory sorter 和 file sorter 的功能，使得 TiCDC 能更加灵活地选取数据暂存的位置。
+1. TiCDC 数据订阅任务暂停中断时间长，其间积累了大量的增量更新数据需要同步；
+2. 从较早的时间点启动数据订阅任务，业务写入量大积累了大量的更新数据需要同步。
 
-2. 如果 TiCDC 接收数据过快 (通常发生在增量扫时)，排序器 (Sorter) 有可能无法及时消费数据，此时会在 TiCDC 的内存中堆积，发生 `CDC:ErrBufferReachLimit` 报错。之前的排序器因为使用了单线程排序，所以容易出现吞吐量不足，从而引发以上报错。Unified Sorter 的核心算法为，分隔数据流 (将事件以轮询的方式交给若干个排序线程)、并发堆排序、写入磁盘(如果内存充裕则会跳过)、最终流式归并。这种并发的算法，在性能允许的限度内尽可能减少了排序的延迟，使得 `BufferReachLimit` 不会发生。
 
 > **注意事项：**
 >
 > 1. 如果服务器使用机械硬盘或其他延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter.
-> 2. 请保证硬盘空闲容量大于等于 128G. 如果遇到极端情况应保证每个节点空闲容量大于等于要追赶的同步数据。
-> 3. 在 v5.0.x 中 Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter,请手动将 changefeed 的 `sort-engine` 设为 `memory`.
+> 2. 请保证硬盘空闲容量大于等于 128G. 如果需要同步大量历史数据，请确保每个节点空闲容量大于等于要追赶的同步数据。
+> 3. Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter,请手动将 changefeed 的 `sort-engine` 设为 `memory`.
