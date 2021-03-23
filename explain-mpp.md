@@ -102,7 +102,11 @@ SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET ti
 12 rows in set (0.00 sec)
 ```
 
-以上执行计划中，`[TableFullScan_20, Selection_21, ExchangeSender_22]` 完成表 b 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP 任务。`[TableFullScan_16, Selection_17, ExchangeSender_18]` 完成表 a 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP 任务。`[ExchangeReceiver_19, ExchangeReceiver_23, HashJoin_44, ExchangeSender_47]` 完成 join 并把数据返回给 TiDB。
+以上执行计划中，
+
+* `[TableFullScan_20, Selection_21, ExchangeSender_22]` 完成表 b 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP 任务。
+* `[TableFullScan_16, Selection_17, ExchangeSender_18]` 完成表 a 的数据读取并通过 HashPartition 的方式把数据 shuffle 给上游 MPP 任务。
+* `[ExchangeReceiver_19, ExchangeReceiver_23, HashJoin_44, ExchangeSender_47]` 完成 join 并把数据返回给 TiDB。
 
 典型的 Broadcast Join 执行计划如下：
 
@@ -129,7 +133,10 @@ EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
 +----------------------------------------+---------+--------------+---------------+------------------------------------------------+
 ```
 
-以上执行计划中，`[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表读数据并 broadcast 给大表（表 a）数据所在的各个节点。`[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` 完成 join 并将数据返回给 TiDB。
+以上执行计划中，
+
+* `[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表读数据并 broadcast 给大表（表 a）数据所在的各个节点。
+* `[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` 完成 join 并将数据返回给 TiDB。
 
 ## 对 MPP 模式的查询使用 `EXPLAIN ANALYZE`
 
