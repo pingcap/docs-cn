@@ -303,7 +303,7 @@ TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可�
 
 > **注意：**
 >
-> 因果一致性事务只在启用 Async Commit 特性和一阶段提交特性时生效。关于这两个特性的启用情况，请参见 [`tidb_enable_async_commit` 系统变量介绍](system-variables#tidb_enable_async_commit-从-v500-rc-版本开始引入)和 [`tidb_enable_1pc` 系统变量介绍](system-variables#tidb_enable_1pc-从-v500-rc-版本开始引入)
+> 因果一致性事务只在启用 Async Commit 特性和一阶段提交特性时生效。关于这两个特性的启用情况，请参见 [`tidb_enable_async_commit` 系统变量介绍](system-variables.md#tidb_enable_async_commit-从-v500-rc-版本开始引入)和 [`tidb_enable_1pc` 系统变量介绍](system-variables.md#tidb_enable_1pc-从-v500-rc-版本开始引入)
 
 TiDB 支持开启因果一致性的事务。因果一致性的事务在提交时无需向 PD 获取时间戳，所以提交延迟更低。开启因果一致性事务的语法为：
 
