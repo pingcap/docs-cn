@@ -974,8 +974,15 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
-- 这个变量用来设置是否跳过 UTF-8 字符的验证。
-- 验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 `ON`。
+- 这个变量用来设置是否校验 UTF-8 字符的合法性。
+- 校验 UTF-8 字符会损耗些许性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 `ON`。
+
+### `tidb_skip_ascii_check`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 这个变量用来设置是否校验 ASCII 字符的合法性。
+- 校验 ASCII 字符损耗些许性能，当可以确认输入的字符串为有效的 ASCII 字符时，可以将其设置为 `ON`。
 
 ### `tidb_slow_log_threshold`
 
