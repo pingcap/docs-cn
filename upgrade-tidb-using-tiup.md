@@ -1,23 +1,23 @@
 ---
 title: 使用 TiUP 升级 TiDB
-aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/']
+aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/','/docs-cn/dev/upgrade-tidb-using-tiup-offline/', '/zh/tidb/dev/upgrade-tidb-using-tiup-offline']
 ---
 
 # 使用 TiUP 升级 TiDB
 
 本文档适用于使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 5.0 版本，以及从 5.0 版本升级至后续修订版本。
 
-如果原集群是 3.0 或 3.1 以及更老的版本，需要先升级到 4.0 后再升级到 5.0, 不可跨主版本升级。
+如果原集群是 3.0 或 3.1 或更老的版本，需要先升级到 4.0 后再升级到 5.0，不可跨主版本升级。
 
 > **注意：**
 >
-> 从 TiDB 4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 5.0 起，不再提供 TiDB Ansible 的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅 [4.0 版使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
+> 从 TiDB 4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 5.0 起，不再提供使用 TiDB Ansible 升级集群的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅 [4.0 版使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
 
 ## 1. 升级兼容性说明
 
 - 不支持在升级后回退至 4.0 或更旧版本。
 - 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.0 版本。
-- 3.0 之前的版本，需要先通过 TiDB Ansible 升级到 3.0 版本，然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入，并升级到 4.0 版本，再按本文档说明升级到 5.0 版本。
+- 3.0 之前的版本，需要先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)，然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入，并升级到 4.0 版本，再按本文档说明升级到 5.0 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 
 > **注意：**
@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 >
 > 如果原集群中控机不能访问 https://tiup-mirrors.pingcap.com 地址，可跳到步骤 2.2 使用离线升级方式。
 
-1. 先升级 TiUP 版本：
+1. 先升级 TiUP 版本（建议`tiup`版本不低于 `1.4.0`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -45,7 +45,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 > **注意：**
 >
-> 建议 `tiup` 版本应不低于 `1.4.0`。
+> 建议先升级 `tiup` 。
 
 2. 升级 TiUP Cluster 版本：
 
@@ -76,7 +76,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     source /home/tidb/.bash_profile
     ```
     
-覆盖升级完成升级 Cluster 组件：
+覆盖升级完成后，执行下列命令升级 Cluster 组件：
  
  {{< copyable "shell-regular" >}}
  
@@ -109,7 +109,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 > **注意：**
 >
-> 升级到 5.0 版本前，请确认已在 4.0 修改的参数在 5.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
+> 升级到 5.0 版本前，请确认已在 4.0 修改的参数在 5.0 版本中是兼容的，可参考 [TiKV 配置文件描述]/tikv-configuration-file.md)。
 
 ### 2.4 检查当前集群的健康状况
 
@@ -121,11 +121,11 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     tiup cluster check <cluster-name> --cluster
     ```
 
-并观察执行结束后在输出最后的 region status 检查结果，如果结果为 "All regions are healthy." 则说明当前集群中所有 region 均为健康状态，可以继续执行升级；如果结果为 "Regions are not fully healthy: m miss-peer, n pending-peer" 并提示 "Please fix unhealthy regions before other operations." 则说明当前集群中有 region 处在异常状态，应先排除相应异常状态并再次检查结果为全部 region 健康后再继续升级。
+执行结束后，最后会输出 region status 检查结果。如果结果为 "All regions are healthy"，则说明当前集群中所有 region 均为健康状态，可以继续执行升级；如果结果为 "Regions are not fully healthy: m miss-peer, n pending-peer" 并提示 "Please fix unhealthy regions before other operations."，则说明当前集群中有 region 处在异常状态，应先排除相应异常状态，并再次检查结果为 "All regions are healthy" 后再继续升级。
 
 ## 3. 升级 TiDB 集群
 
-本部分介绍如何滚动升级 TiDB 集群以及升级后的验证。
+本部分介绍如何滚动升级 TiDB 集群以及如何进行升级后的验证。
 
 ### 3.1 将集群升级到指定版本
 
@@ -145,7 +145,7 @@ tiup cluster upgrade <cluster-name> v5.0.0
 
 > **注意：**
 >
-> - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超过后会直接停止实例。
+> - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
 > - 如果不希望驱逐 leader，而希望快速升级集群至新版本，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
 
@@ -195,7 +195,7 @@ Cluster version:    v5.0.0
 
 > **注意：**
 >
-> TiUP 及 TiDB（v4.0.2 起）默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+> TiUP 及 TiDB 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
 
 ## 4. 升级 FAQ
 
@@ -235,7 +235,7 @@ tiup cluster upgrade <cluster-name> v5.0.0 --force
 
 ### 4.3 升级完成后，如何更新 pd-ctl 等周边工具版本
 
-可通过 TiUP 安装对应版本的 `ctl` 组件来调用相关工具：
+可通过 TiUP 安装对应版本的 `ctl` 组件来更新相关工具版本：
 
 {{< copyable "" >}}
 
