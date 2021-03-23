@@ -5,7 +5,7 @@ summary: Learn about SQL Prepare Execution Plan Cache in TiDB.
 
 # SQL Prepare Execution Plan Cache
 
-In the current development release of TiDB, the execution plan of prepared statements is cached by default. This includes both forms of prepared statements:
+TiDB supports execution plan caching for `Prepare` and `Execute` queries. This includes both forms of prepared statements:
 
 - Using the `COM_STMT_PREPARE` and `COM_STMT_EXECUTE` protocol features.
 - Using the SQL statements `PREPARE` and `EXECUTE`.
@@ -44,7 +44,7 @@ There are two points worth noting about execution plan caching and query perform
 - Considering that the parameters of `Execute` are different, the execution plan cache prohibits some aggressive query optimization methods that are closely related to specific parameter values to ensure adaptability. This causes that the query plan may not be optimal for certain parameter values. For example, the filter condition of the query is `where a > ? And a < ?`, the parameters of the first `Execute` statement are `2` and `1` respectively. Considering that these two parameters maybe be `1` and `2` in the next execution time, the optimizer does not generate the optimal `TableDual` execution plan that is specific to current parameter values;
 - If cache invalidation and elimination are not considered, an execution plan cache is applied to various parameter values, which in theory also result in non-optimal execution plans for certain values. For example, if the filter condition is `where a < ?` and the parameter value used for the first execution is `1`, then the optimizer generates the optimal `IndexScan` execution plan and puts it into the cache. In the subsequent executions, if the value becomes `10000`, the `TableScan` plan might be the better one. But due to the execution plan cache, the previously generated `IndexScan` is used for execution. Therefore, the execution plan cache is more suitable for application scenarios where the query is simple (the ratio of compilation is high) and the execution plan is relatively fixed.
 
-The default capacity for the plan cache is `100` statements. You can configure this by modifying [`prepare-plan-cache`](/tidb-configuration-file.md#prepared-plan-cache) in the TiDB configuration file.
+Currently, the execution plan cache is disabled by default. You can enable this feature by enabling the [`prepare-plan-cache`](/tidb-configuration-file.md#prepared-plan-cache) in the TiDB configuration file.
 
 > **Note：**
 >
