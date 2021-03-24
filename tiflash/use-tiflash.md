@@ -254,6 +254,7 @@ set @@session.tidb_allow_mpp=1
 ```
 
 MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash Join 和 Shuffled Hash Aggregation。算法的选择由优化器自动判断。通过 `EXPLAIN` 语句可以查看具体的查询执行计划。
+
 以 TPC-H 测试集中的表结构为例：
 
 ```sql
