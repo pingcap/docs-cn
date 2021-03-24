@@ -101,7 +101,7 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 `SHARD_ROW_ID_BITS` 的值可以动态修改，每次修改之后，只对新写入的数据生效。
 
-TiDB `alter-primary-key` 参数设置为 false 时，会使用表的整数型主键作为 RowID，因为 `SHARD_ROW_ID_BITS` 会改变 RowID 生成规则，所以此时无法使用 `SHARD_ROW_ID_BITS` 选项。在 `alter-primary-key` 参数设置为 true 时，TiDB 在建表时不再使用整数型主键作为 RowID，此时带有整数型主键的表也可以使用 `SHARD_ROW_ID_BITS` 特性。
+对于含有 `CLUSTERED` 主键的表，TiDB 会使用表的主键作为 RowID，因为 `SHARD_ROW_ID_BITS` 会改变 RowID 生成规则，所以此时无法使用 `SHARD_ROW_ID_BITS` 选项。而对于使用 `NONCLUSTERED` 主键的表，TiDB 会使用自动分配的 64 位整数作为 RowID，此时也可以使用 `SHARD_ROW_ID_BITS` 特性。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 以下是两张无主键情况下使用 `SHARD_ROW_ID_BITS` 打散热点后的流量图，第一张展示了打散前的情况，第二张展示了打散后的情况。
 

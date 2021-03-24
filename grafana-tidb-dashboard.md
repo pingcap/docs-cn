@@ -163,6 +163,6 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 - Batch Client
     - Pending Request Count by TiKV：等待处理的 Batch 消息数量
-    - Wait Duration 95：等待处理的 Batch 消息延迟
+
     - Batch Client Unavailable Duration 95：Batch 客户端不可用的时间
     - No Available Connection Counter：Batch 客户端找不到可用链接的次数

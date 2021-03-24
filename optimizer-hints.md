@@ -111,10 +111,6 @@ SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 
 `INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，两者的区别是 `INL_JOIN` 会在连接的内表上建哈希表，而 `INL_HASH_JOIN` 会在连接的外表上建哈希表，后者对于内存的使用是有固定上限的，而前者使用的内存使用取决于内表匹配到的行数。
 
-### INL_MERGE_JOIN
-
-`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。这个 Hint 的适用场景和 `INL_JOIN` 一致，相比于 `INL_JOIN` 和 `INL_HASH_JOIN` 会更节省内存，但使用条件会更苛刻：join keys 中的内表列集合是内表使用的索引的前缀，或内表使用的索引是 join keys 中的内表列集合的前缀。
-
 ### HASH_JOIN(t1_name [, tl_name ...])
 
 `HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
