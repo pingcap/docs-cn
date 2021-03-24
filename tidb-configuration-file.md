@@ -484,19 +484,6 @@ prepare 语句的 plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
-## tikv-client.async-commit <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-### `keys-limit`
-
-+ 指定一个 Async Commit 事务中键的数量上限。过大的事务不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
-+ 默认值：256
-
-### `total-key-size-limit`
-
-+ 指定一个 Async Commit 事务中键的大小总和的上限。如果事务涉及的键过长，则不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
-+ 默认值：4096
-+ 单位：字节
-
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 Coprocessor Cache 相关的配置项。
