@@ -1140,8 +1140,8 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：1
-- 这个变量用于控制是否开启并行 Apply 执行，并发数由 tidb_executor_concurrency 控制。
+- 默认值：0
+- 这个变量用于控制是否开启 Apply 并发，并发数由 tidb_executor_concurrency 控制。Apply 算子用来处理关联子查询，且默认无并发所以速度较慢，此时可打开这个开关，增加并发度，提高执行速度。
 
 ### `tidb_allow_fallback_to_tikv` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
