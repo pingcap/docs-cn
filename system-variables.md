@@ -171,6 +171,12 @@ mysql> SELECT * FROM t1;
     * 1：aggregation 和 join 的请求会进行批量发送
     * 2：所有的 cop 请求都会批量发送
 
+### `tidb_allow_mpp` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：ON（表示开启）
+- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询。开启后 TiDB 会通过优化器自动判断是否选择 MPP 执行。MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。
+
 ### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
 - 作用域：SESSION
@@ -220,6 +226,18 @@ mysql> SELECT * FROM t1;
     例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 \* 2 等于 30 秒。
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
+
+### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：10240
+- 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+
+### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：104857600（表示 100 兆）
+- 如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 ### `tidb_build_stats_concurrency`
 
