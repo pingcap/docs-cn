@@ -242,7 +242,3 @@ tiup cluster upgrade <cluster-name> v5.0.0 --force
 ```
 tiup install ctl:v5.0.0
 ```
-
-## 5. TiDB 5.0 兼容性变化
-
-TBD
