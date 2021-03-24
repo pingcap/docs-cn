@@ -13,13 +13,13 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
 例如，集群原拓扑结构如下所示：
 
-| 主机 IP   | 服务   | 
+| 主机 IP   | 服务   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
-| 10.0.1.4   | TiDB + PD   | 
-| 10.0.1.5   | TiKV + Monitor   | 
-| 10.0.1.1   | TiKV   | 
-| 10.0.1.2   | TiKV    |
+| 10.0.1.3   | TiDB + TiFlash  |
+| 10.0.1.4   | TiDB + PD   |
+| 10.0.1.5   | TiKV + Monitor   |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 扩容 TiDB/PD/TiKV 节点
 
@@ -126,14 +126,14 @@ tiup cluster display <cluster-name>
 
 ## 扩容 TiFlash 节点
 
+如果要添加一个 TiFlash 节点，其 IP 地址为 `10.0.1.4`，可以按照如下步骤进行操作。
+
 > **注意：**
 >
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
-> 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
-> 2. 下载 [pd-ctl](https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz)，执行 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
-
-如果要添加一个 TiFlash 节点，IP 地址为 10.0.1.4，可以按照如下步骤进行操作。
+> 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 v5.0 以上版本。
+> 2. 执行 `tiup ctl pd -u <pd-host>:<pd-port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
 
 ### 1. 添加节点信息到 scale-out.yaml 文件
 
@@ -243,7 +243,7 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.4.6/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.3.0/cluster display <cluster-name> 
 
 TiDB Cluster: <cluster-name>
 

@@ -10,65 +10,58 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-index/','/docs-cn/de
 
 ## 语法图
 
-**CreateIndexStmt:**
+```ebnf+diagram
+CreateIndexStmt ::=
+    'CREATE' IndexKeyTypeOpt 'INDEX' IfNotExists Identifier IndexTypeOpt 'ON' TableName '(' IndexPartSpecificationList ')' IndexOptionList IndexLockAndAlgorithmOpt
 
-![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
+IndexKeyTypeOpt ::=
+    ( 'UNIQUE' | 'SPATIAL' | 'FULLTEXT' )?
 
-**IndexKeyTypeOpt:**
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
 
-![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
+IndexTypeOpt ::=
+    IndexType?
 
-**IfNotExists:**
+IndexPartSpecificationList ::=
+    IndexPartSpecification ( ',' IndexPartSpecification )*
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+IndexOptionList ::=
+    IndexOption*
 
-**IndexTypeOpt:**
+IndexLockAndAlgorithmOpt ::=
+    ( LockClause AlgorithmClause? | AlgorithmClause LockClause? )?
 
-![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
+IndexType ::=
+    ( 'USING' | 'TYPE' ) IndexTypeName
 
-**IndexPartSpecificationList:**
+IndexPartSpecification ::=
+    ( ColumnName OptFieldLen | '(' Expression ')' ) Order
 
-![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
+IndexOption ::=
+    'KEY_BLOCK_SIZE' '='? LengthNum
+|   IndexType
+|   'WITH' 'PARSER' Identifier
+|   'COMMENT' stringLit
+|   IndexInvisible
 
-**IndexOptionList:**
+IndexTypeName ::=
+    'BTREE'
+|   'HASH'
+|   'RTREE'
 
-![IndexOptionList](/media/sqlgram/IndexOptionList.png)
+ColumnName ::=
+    Identifier ( '.' Identifier ( '.' Identifier )? )?
 
-**IndexLockAndAlgorithmOpt:**
+OptFieldLen ::=
+    FieldLen?
 
-![IndexLockAndAlgorithmOpt](/media/sqlgram/IndexLockAndAlgorithmOpt.png)
+IndexNameList ::=
+    ( Identifier | 'PRIMARY' )? ( ',' ( Identifier | 'PRIMARY' ) )*
 
-**IndexType:**
-
-![IndexType](/media/sqlgram/IndexType.png)
-
-**IndexPartSpecification:**
-
-![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
-
-**IndexOption:**
-
-![IndexOption](/media/sqlgram/IndexOption.png)
-
-**IndexTypeName:**
-
-![IndexTypeName](/media/sqlgram/IndexTypeName.png)
-
-**ColumnName:**
-
-![ColumnName](/media/sqlgram/ColumnName.png)
-
-**OptFieldLen:**
-
-![OptFieldLen](/media/sqlgram/OptFieldLen.png)
-
-**IndexNameList:**
-
-![IndexNameList](/media/sqlgram/IndexNameList.png)
-
-**KeyOrIndex:**
-
-![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
+KeyOrIndex ::=
+    'Key' | 'Index'
+```
 
 ## 示例
 
@@ -158,6 +151,18 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 表达式索引
 
+> **注意：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+如果需要使用这一特性，在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
+
+{{< copyable "sql" >}}
+
+```sql
+allow-expression-index = true
+```
+
 TiDB 不仅能将索引建立在表中的一个或多个列上，还可以将索引建立在一个表达式上。当查询涉及表达式时，表达式索引能够加速这些查询。
 
 考虑以下查询：
@@ -199,7 +204,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * 不支持降序索引 （类似于 MySQL 5.7）。
-* 默认无法向表中添加 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/tidb-configuration-file.md#alter-primary-key)。
+* 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ## 另请参阅
 

@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/g
 
 # TiDB Lightning 教程
 
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，目前支持 SQL 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
+TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，目前支持 SQL 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 TiDB Lightning：
 
 - **迅速**导入**大量新**数据。
 - 备份恢复所有数据。
@@ -73,6 +73,9 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
     # 源数据目录。
     data-source-dir = "/data/my_datasource/"
 
+    # 配置通配符规则，默认规则会过滤 mysql、sys、INFORMATION_SCHEMA、PERFORMANCE_SCHEMA、METRICS_SCHEMA、INSPECTION_SCHEMA 系统数据库下的所有表
+    # 若不配置该项，导入系统表时会出现“找不到 schema”的异常
+    filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
     [tidb]
     # 目标集群的信息
     host = "172.16.31.2"
@@ -98,7 +101,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 
-如果出错，请参见 [TiDB Lightning 错误排解](/troubleshoot-tidb-lightning.md)。
+如果出错，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
 ## 总结
 

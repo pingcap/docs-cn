@@ -11,8 +11,7 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/dev/
 
 - [硬件要求](/hardware-and-software-requirements.md)
 
-- 参考 [TiDB 部署文档](https://pingcap.com/docs-cn/v3.0/how-to/deploy/orchestrated/ansible/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
-    对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
+- 参考 [TiDB 部署文档](https://pingcap.com/docs-cn/v3.0/how-to/deploy/orchestrated/ansible/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
 
 IDC 机器：
 
@@ -140,9 +139,9 @@ set global tidb_disable_txn_auto_retry = off;
 create database sbtest;
 ```
 
-调整 Sysbench 脚本创建索引的顺序。Sysbench 按照“建表->插入数据->创建索引”的顺序导入数据。该方式对于 TiDB 需要花费更多的导入时间。用户可以通过调整顺序来加速数据的导入。
+调整 Sysbench 脚本创建索引的顺序。Sysbench 按照“建表->插入数据->创建索引”的顺序导入数据。对于 TiDB 而言，该方式会花费更多的导入时间。你可以通过调整顺序来加速数据的导入。
 
-假设用户使用的 [Sysbench](https://github.com/akopytov/sysbench/tree/1.0.14) 版本。我们可以通过以下两种方式来修改。
+假设使用的 Sysbench 版本为 [1.0.14](https://github.com/akopytov/sysbench/tree/1.0.14)，可以通过以下两种方式来修改：
 
 1. 直接下载为 TiDB 修改好的 [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) 文件，覆盖 `/usr/share/sysbench/oltp_common.lua` 文件。
 2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) 行到第 [240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) 行移动到第 198 行以后。

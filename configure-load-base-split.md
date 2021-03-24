@@ -29,9 +29,9 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 
 ## 使用方法
 
-目前的 Load Base Split 的控制参数为 `split.qps-threshold`。这个阈值的含义是：如果连续 10s 内，某个 Region 每秒的各类读请求之和超过 `split.qps-threshold`，那么就对此 Region 进行拆分。
+目前的 Load Base Split 的控制参数为 `split.qps-threshold`（QPS 阈值）和 `split.byte-threshold`（流量阈值）。如果连续 10s 内，某个 Region 每秒的各类读请求之和都超过 QPS 阈值或流量阈值，那么就对此 Region 进行拆分。
 
-目前默认开启 Load Base Split，但配置相对保守，默认为 `3000`。如果想要关闭这个功能，可以将这个阈值调到足够高即可。
+目前默认开启 Load Base Split，但配置相对保守，`split.qps-threshold` 默认为 `3000`，`split.byte-threshold` 默认为 30MB/s。如果想要关闭这个功能，将这两个阈值全部都调到足够高即可。
 
 目前有两种办法修改配置：
 
@@ -69,6 +69,6 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     curl "http://ip:status_port/config"
     ```
 
-> **注意**
+> **注意：**
 >
 > 从 v4.0.0-rc.2 起可以使用 SQL 语句来修改和查看配置。

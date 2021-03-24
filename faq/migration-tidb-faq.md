@@ -16,10 +16,6 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
 重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登录集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
 
-### 在 Loader 运行的过程中，TiDB 可以对外提供服务吗？
-
-该操作进行逻辑插入，TiDB 仍可对外提供服务，但不要执行相关 DDL 操作。
-
 ### 如何导出 TiDB 数据？
 
 TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
@@ -54,60 +50,25 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
+### Dumpling 导出大表时引发上游数据库报错“磁盘空间不足”
+
+该问题是由于数据库主键分布不均匀，Dumpling 划分导出子范围时出现过大的子范围引起的。请尝试分配更大的磁盘空间，或者联系 [AskTUG 社区专家](https://asktug.com/) 获取实验版本的 Dumpling。
+
 ### TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
 有，也支持 DDL。详细参考 [TiDB 历史数据回溯](/read-historical-data.md)。
 
 ## 在线数据同步
 
-### Syncer 架构
-
-详细参考 [解析 TiDB 在线数据同步工具 Syncer](https://pingcap.com/blog-cn/tidb-syncer/)。
-
-#### Syncer 使用文档
-
-详细参考 [Syncer 使用文档](/syncer-overview.md)。
-
-#### 如何配置监控 Syncer 运行情况？
-
-下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
-
-- job_name: &#39;syncer_ops&#39; // 任务名字
-    static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] //Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
-
-重启 Prometheus 即可。
-
-#### 有没有现成的同步方案，可以将数据同步到 Hbase、Elasticsearh 等其他存储？
+### 有没有现成的同步方案，可以将数据同步到 Hbase、Elasticsearh 等其他存储？
 
 没有，目前依赖程序自行实现。
-
-#### 利用 Syncer 做数据同步的时候是否支持只同步部分表？
-
-支持，具体参考 Syncer 使用手册 [Syncer 使用文档](/syncer-overview.md)
-
-#### 频繁的执行 DDL 会影响 Syncer 同步速度吗？
-
-频繁执行 DDL 对同步速度会有影响。对于 Sycner 来说，DDL 是串行执行的，当同步遇到了 DDL，就会以串行的方式执行，所以这种场景就会导致同步速度下降。
-
-#### 使用 Syncer gtid 的方式同步时，同步过程中会不断更新 syncer.meta 文件，如果 Syncer 所在的机器坏了，导致 syncer.meta 文件所在的目录丢失，该如何处理？
-
-当前 Syncer 版本的没有进行高可用设计，Syncer 目前的配置信息 syncer.meta 直接存储在硬盘上，其存储方式类似于其他 MySQL 生态工具，比如 Mydumper。因此，要解决这个问题当前可以有两个方法：
-
-+ 把 syncer.meta 数据放到比较安全的磁盘上，例如磁盘做好 raid1；
-
-+ 可以根据 Syncer 定期上报到 Prometheus 的监控信息来还原出历史同步的位置信息，该方法的位置信息在大量同步数据时由于延迟会可能不准确。
-
-#### Syncer 下游 TiDB 数据和 MySQL 数据不一致，DML 会退出么？
-
-- 上游 MySQL 中存在数据，下游 TiDB 中该数据不存在，上游 MySQL 执行 `UPDATE` 或 `DELETE`（更新/删除）该条数据的操作时，Syncer 同步过程即不会报错退出也没有该条数据。
-- 下游有主键索引或是唯一索引冲突时，执行 `UPDATE` 会退出，执行 `INSERT` 不会退出。
 
 ## 业务流量迁入
 
 ### 如何快速迁移业务流量？
 
-我们建议通过 Syncer 工具搭建成多源 MySQL -> TiDB 实时同步环境，读写流量可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
+我们建议通过 [TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 进行 MySQL -> TiDB 的业务数据的迁移；业务读写可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
 
 ### TiDB 总读写流量有限制吗？
 
@@ -149,7 +110,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 主要有两个方面：
 
-- 目前已开发分布式导入工具 [Lightning](/tidb-lightning/tidb-lightning-overview.md)，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
+- 目前已开发分布式导入工具 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
 - TiDB 的数据加载与磁盘以及整体集群状态相关，加载数据时应关注该主机的磁盘利用率，TiClient Error/Backoff/Thread CPU 等相关 metric，可以分析相应瓶颈。
 
 ### 对数据做删除操作之后，空间回收比较慢，如何处理？

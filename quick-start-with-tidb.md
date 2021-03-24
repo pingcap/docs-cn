@@ -59,9 +59,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
         tiup playground v4.0.0 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动一个 `v4.0.0` 版本的集群，`--monitor` 表示同时部署监控组件。
-        最新版本可以通过执行 `tiup list tidb` 来查看。
-        运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动一个 `v4.0.0` 版本的集群，`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -103,7 +101,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 > **注意：**
 >
-> TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问；若需要使服务可被外部访问，你可以通过 `--host` 参数指定监听 `0.0.0.0` 或网卡绑定外部可访问的 IP。
+> TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问；若需要使服务可被外部访问，你可以通过 `--host` 参数指定监听网卡绑定外部可访问的 IP。
 
 ## 第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
@@ -325,7 +323,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 - 如果你准备好在生产环境部署 TiDB 了：
     - 在线部署：[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
     - 离线部署：[使用 TiUP 离线部署 TiDB 集群](/production-offline-deployment-using-tiup.md)
-    - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1)
+    - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
 > **注意：**
 >

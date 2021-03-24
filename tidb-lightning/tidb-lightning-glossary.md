@@ -56,7 +56,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 
 TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远程校验和](#remote-checksum)来验证导入数据的正确性。如果有任一对校验和不匹配，导入进程就会停止。如果你需要跳过校验和检查，可以将 `post-restore.checksum` 设置为 `false` 。
 
-遇到校验和不匹配的问题时，参考[故障排查](/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
+遇到校验和不匹配的问题时，参考[常见问题](/tidb-lightning/tidb-lightning-faq.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
 
 ### Chunk
 
@@ -94,7 +94,7 @@ TiDB Lightning 同时处理多个数据引擎（可通过 `lightning.table-concu
 
 引擎。在 TiKV Importer 中，一个引擎就是一个用于排序键值对的 RocksDB 实例。
 
-TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。Lightning 先打开一个引擎，向其发送未排序的键值对，然后关闭引擎。随后，引擎会对收到的键值对进行排序操作。这些关闭的引擎可以进一步上传至 TiKV store 中为 [Ingest](#ingest) 做准备。
+TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。TiDB Lightning 先打开一个引擎，向其发送未排序的键值对，然后关闭引擎。随后，引擎会对收到的键值对进行排序操作。这些关闭的引擎可以进一步上传至 TiKV store 中为 [Ingest](#ingest) 做准备。
 
 引擎使用 TiKV Importer 的 `import-dir` 作为临时存储，有时也会被称为引擎文件 (engine files)。
 

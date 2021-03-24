@@ -90,17 +90,16 @@ TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控
 
 ### DDL 的限制
 
-TiDB 中，所有支持的 DDL 变更操作都是在线执行的。可能与 MySQL 不同的是，在 TiDB 中，`ALGORITHM=INSTANT` 和 `ALGORITHM=INPLACE` 这两种 MySQL DDL 算法可用于指定使用哪种算法来修改表。
-
-与 MySQL 相比，TiDB 中的 DDL 存在以下限制：
+TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相比，TiDB 中的 DDL 存在以下限制：
 
 * 不能在单条 `ALTER TABLE` 语句中完成多个操作。例如，不能在单个语句中添加多个列或索引，否则，可能会输出 `Unsupported multi schema change` 的错误。
 * 不支持不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
-* 不支持添加/删除主键，除非开启了 [`alter-primary-key`](/tidb-configuration-file.md#alter-primary-key) 配置项。
+* 不支持添加/删除 `CLUSTERED` 类型的主键。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 不支持将字段类型修改为其超集，例如不支持从 `INTEGER` 修改为 `VARCHAR`，或者从 `TIMESTAMP` 修改为 `DATETIME`，否则可能输出的错误信息 `Unsupported modify column: type %d not match origin %d`。
 * 更改/修改数据类型时，尚未支持“有损更改”，例如不支持从 BIGINT 更改为 INT。
-* 更改/修改十进制列时，不支持更改预置。
+* 更改/修改 DECIMAL 类型时，不支持更改精度。
 * 更改/修改整数列时，不允许更改 `UNSIGNED` 属性。
+* TiDB 中，`ALGORITHM={INSTANT,INPLACE,COPY}` 语法只作为一种指定，并不更改 `ALTER` 算法，详情参阅 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)。
 * 分区表支持 Hash、Range 和 `Add`/`Drop`/`Truncate`/`Coalesce`。其他分区操作将被忽略，可能会报 `Warning: Unsupported partition type, treat as normal table` 错误。不支持以下分区表语法：
     + `PARTITION BY LIST`
     + `PARTITION BY KEY`
@@ -117,6 +116,7 @@ TiDB 中的[信息统计](/statistics.md#手动收集) 与 MySQL 中的有所不
 
 - 不支持 `SELECT ... INTO @变量` 语法。
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
+- TiDB 中的 `SELECT .. GROUP BY expr` 的返回结果与 MySQL 5.7 并不一致。MySQL 5.7 的结果等价于 `GROUP BY expr ORDER BY expr`。而 TiDB 中该语法所返回的结果并不承诺任何顺序，与 MySQL 8.0 的行为一致。
 
 ### 视图
 
@@ -175,14 +175,15 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 - MySQL 默认使用本地时区，依赖于系统内置的当前的时区规则（例如什么时候开始夏令时等）进行计算；且在未[导入时区表数据](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation)的情况下不能通过时区名称来指定时区。
 
-#### 零月和零日
-
-- 与 MySQL 一样，TiDB 默认启用了 `NO_ZERO_DATE` 和 `NO_ZERO_IN_DATE` 模式，但是 TiDB 与 MySQL 在处理这两个 SQL 模式有以下不同：
-    - TiDB 在非严格模式下启用以上两个 SQL 模式，插入零月/零日/零日期不会给出警告，MySQL 则会给出对应的警告。
-    - TiDB 在严格模式下，启用了 `NO_ZERO_DATE`，仍然能够插入零日期；如果启用了 `NO_ZERO_IN_DATE` 则无法插入零月/零日日期。MySQL 在严格模式下则都无法插入两种类型的日期。
-
 ### 类型系统
 
 + 不支持 FLOAT4/FLOAT8。
 
 + 不支持 `SQL_TSI_*`（包括 `SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`，但不包括 `SQL_TSI_YEAR`）。
+
+### MySQL 弃用功能导致的不兼容问题
+
+TiDB 不支持 MySQL 中标记为弃用的功能，包括：
+
+* 指定浮点类型的精度。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html)了此功能，建议改用 `DECIMAL` 类型。
+* `ZEROFILL` 属性。 MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。

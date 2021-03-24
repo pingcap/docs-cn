@@ -24,6 +24,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
 + 默认值：1073741824
++ 注意：当集群从 v2.0.x 或 v3.0.x 版本直接升级至 v4.0.9 及以上版本时，该配置默认值为 34359738368。
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
 + 该值作为系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的初始值。
 
@@ -48,7 +49,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-action`
 
-> **注意：**
+> **警告：**
 >
 > 目前 `oom-action` 为实验功能，会对写入过程中的内存进行统计。如果用户希望根据该特性取消写入操作，不建议在生产环境中将参数值配置为 `cancel`。
 
@@ -89,11 +90,15 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 将旧表中的 utf8 字符集当成 utf8mb4的开关。
 + 默认值：true
 
-### `alter-primary-key`
+### `alter-primary-key`（已废弃）
 
 + 用于控制添加或者删除主键功能。
 + 默认值：false
 + 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。
+
+> **注意：**
+>
+> 该配置项不再生效。如果需要增删主键，请使用 `NONCLUSTERED` 代替。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ### `server-version`
 
@@ -134,6 +139,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：byte。
 + 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
 
+### `table-column-count-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
++ 用于设置单个表中列的数量限制
++ 默认值：1017
++ 目前的合法值范围 `[1017, 4096]`。
+
+### `index-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
++ 用于设置单个表中索引的数量限制
++ 默认值：64
++ 目前的合法值范围 `[64, 512]`。
+
 ### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 + 是否开启 TiDB 遥测功能。
@@ -143,6 +160,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ## log
 
 日志相关的配置项。
+
+### `level`
+
++ 指定日志的输出级别, 可选项为 [debug, info, warn, error, fatal]
++ 默认值："info"
 
 ### `format`
 
@@ -278,17 +300,50 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示使用机器上所有的 CPU；如果设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
 
-### `max-memory`
+### `server-memory-quota` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
-+ Prepare cache LRU 使用的最大内存限制。当 Prepare cache LRU 的内存使用超过 `performance.max-memory * (1 - prepared-plan-cache.memory-guard-ratio)` 时，会剔除 LRU 中的元素。
+> **警告：**
+>
+> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+
++ tidb-server 实例内存的使用限制，单位为字节。<!-- 从 TiDB v5.0 起 -->该配置项完全取代原有的 [`max-memory`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#max-memory)。
+
 + 默认值：0
-+ 这个配置在 `prepared-plan-cache.enabled` 为 `true`（默认值）的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
++ 默认值为 0 表示无内存限制。
+
+### `memory-usage-alarm-ratio` <span class="version-mark">从 v4.0.9 版本开始引入</span>
+
++ tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
++ 默认值：0.8
++ 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `memory-usage-alarm-ratio * server-memory-quota`。
++ 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
++ 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
+
+### `txn-entry-size-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
++ TiDB 单行数据的大小限制
++ 默认值：6291456 (Byte)
++ 事务中单个 key-value 记录的大小限制。若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。
++ 注意，TiKV 有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 8MB，TiKV 会拒绝处理该请求。当表的一行记录较大时，需要同时修改这两个配置。
 
 ### `txn-total-size-limit`
 
 + TiDB 单个事务大小限制
 + 默认值：104857600 (Byte)
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `10737418240`（表示 10GB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
+
+### `max-txn-ttl`
+
++ 单个事务持锁的最长时间，超过该时间，该事务的锁可能会被其他事务清除，导致该事务无法成功提交。
++ 默认值：600000
++ 单位：毫秒
++ 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
+
+### `committer-concurrency`
+
++ 在单个事务的提交阶段，用于执行提交操作相关请求的 goroutine 数量
++ 默认值：16
++ 若提交的事务过大，事务提交时的流控队列等待耗时可能会过长，可以通过调大该配置项来加速提交。
 
 ### `stmt-count-limit`
 
@@ -299,7 +354,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tcp-keep-alive`
 
 + TiDB 在 TCP 层开启 keepalive。
-+ 默认值：false
++ 默认值：true
 
 ### `cross-join`
 
@@ -316,7 +371,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
     - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
     - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新内存中缓存的统计信息
-+ 当 `stats-lease` 为 0 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息并更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
++ 当 `stats-lease` 为 0s 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息并更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
     - `mysql.stats_meta`：TiDB 不再自动记录事务中对某张表的修改行数，也不会更新到这个系统表中
     - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
     - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
@@ -397,7 +452,7 @@ prepare 语句的 plan cache 设置。
 
 ### `grpc-keepalive-timeout`
 
-+ TiDB 与 TiKV 节点  rpc keepalive 检查的超时时间
++ TiDB 与 TiKV 节点 rpc keepalive 检查的超时时间
 + 默认值：3
 + 单位：秒
 
@@ -407,13 +462,6 @@ prepare 语句的 plan cache 设置。
 + 默认值：41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
 
-### `max-txn-ttl`
-
-+ 单个事务持锁的最长时间，超过该时间，该事务的锁可能会被其他事务清除，导致该事务无法成功提交。
-+ 默认值：600000
-+ 单位：毫秒
-+ 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
-
 ### `max-batch-size`
 
 + 批量发送 rpc 封包的最大数量，如果不为 0，将使用 BatchCommands api 发送请求到 TiKV，可以在并发度高的情况降低 rpc 的延迟，推荐不修改该值。
@@ -421,7 +469,7 @@ prepare 语句的 plan cache 设置。
 
 ### `max-batch-wait-time`
 
-+ 等待 `max-batch-wait-time` 纳秒批量将此期间的数据包封装成一个大包发送给 TiKV 节点，仅在 `tikv-client.max-batch-size`  值大于 0 时有效，不推荐修改该值。
++ 等待 `max-batch-wait-time` 纳秒批量将此期间的数据包封装成一个大包发送给 TiKV 节点，仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：0
 + 单位：纳秒
 
@@ -436,26 +484,7 @@ prepare 语句的 plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
-### `enable-one-pc` <!-- 从 v5.0 版本开始引入 -->
-
-+ 指定是否在只涉及一个 Region 的事务上使用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
-+ 默认值：false
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
->
-> + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
-> + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
-> + 无法保证外部一致性。
-> + 如果在执行 DDL 操作的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
-
-## tikv-client.async-commit <!-- 从 v5.0 版本开始引入 -->
-
-### `enable`
-
-+ 指定是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。本特性与 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不兼容，开启 binlog 时本配置将没有效果。
-+ 默认值：false
+## tikv-client.async-commit <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 ### `keys-limit`
 
@@ -468,40 +497,16 @@ prepare 语句的 plan cache 设置。
 + 默认值：4096
 + 单位：字节
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
->
-> + 暂时与 [Follower Read](/follower-read.md) 及 [TiFlash](/tiflash/tiflash-overview.md) 不兼容，使用时无法保证快照隔离。
-> + 无法保证外部一致性。
-> + 如果在执行 DDL 操作的同时，由于 TiDB 机器宕机等原因导致事务提交异常中断，可能造成数据格式不正确。
-
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 Coprocessor Cache 相关的配置项。
 
-### `enable`
-
-+ 是否开启[下推计算结果缓存](/coprocessor-cache.md)。
-+ 默认值：false（即不开启）
-
 ### `capacity-mb`
 
-+ 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
++ 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。值为 0.0 时表示关闭 Coprocessor Cache。
 + 默认值：1000.0
 + 单位：MB
-
-### `admission-max-result-mb`
-
-+ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
-+ 默认值：10.0
-+ 单位：MB
-
-### `admission-min-process-ms`
-
-+ 指定能被缓存的单个下推计算结果集的最短计算时间。若单个下推计算在 Coprocessor 上的计算时间小于该参数指定的时间，则结果集不会被缓存。处理得很快的请求没有必要进行缓存，仅对处理时间很长的请求进行缓存，减少缓存被逐出的概率，这是本配置参数的意义。
-+ 默认值：5
-+ 单位：ms
++ 类型：Float
 
 ## txn-local-latches
 
@@ -573,7 +578,7 @@ TiDB 服务状态相关配置。
 
 ### max-sql-length
 
-+ `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ `events_statement_summary_by_digest` 表中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
 ## pessimistic-txn
@@ -587,4 +592,9 @@ TiDB 服务状态相关配置。
 
 ## experimental
 
-experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。目前暂无相关配置项。
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
+
+### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
++ 用于控制是否能创建表达式索引。
++ 默认值：false
