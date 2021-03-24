@@ -239,4 +239,4 @@ tiup install ctl:v5.0.0
 
 ## 5. TiDB 5.0 兼容性变化
 
-兼容性变化请参考 [5.0 Release Notes](https://docs.pingcap.com/zh/tidb/stable/release-5.0.0)
+兼容性变化请参考 5.0 GA Release Notes。
