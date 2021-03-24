@@ -393,7 +393,3 @@ cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --start-ts 4152
 
 cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
-
-> **注意：**
->
-> + DDL 执行失败后 changefeed 的 checkpoint-ts 为该 DDL 语句的 finish-ts。使用 `cdc cli changefeed resume` 恢复同步任务后不会重试该 DDL 语句，而是直接跳过执行该 DDL 语句。
