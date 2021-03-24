@@ -36,7 +36,6 @@ SHOW CONFIG;
 | Type | Instance       | Name                                            | Value                                                               |
 +------+----------------+-------------------------------------------------+---------------------------------------------------------------------+
 | tidb | 127.0.0.1:4000 | advertise-address                               | 127.0.0.1                                                           |
-| tidb | 127.0.0.1:4000 | alter-primary-key                               | false                                                               |
 | tidb | 127.0.0.1:4000 | binlog.binlog-socket                            |                                                                     |
 | tidb | 127.0.0.1:4000 | binlog.enable                                   | false                                                               |
 ...
@@ -73,7 +72,6 @@ SHOW CONFIG LIKE 'tidb';
 | Type | Instance       | Name                                            | Value                                                               |
 +------+----------------+-------------------------------------------------+---------------------------------------------------------------------+
 | tidb | 127.0.0.1:4000 | advertise-address                               | 127.0.0.1                                                           |
-| tidb | 127.0.0.1:4000 | alter-primary-key                               | false                                                               |
 | tidb | 127.0.0.1:4000 | binlog.binlog-socket                            |                                                                     |
 | tidb | 127.0.0.1:4000 | binlog.enable                                   | false                                                               |
 ...
