@@ -1,9 +1,6 @@
 ---
 title: 使用 TiUP 升级 TiDB
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/','/docs-cn/dev/upgrade-tidb-using-tiup-offline/', '/zh/tidb/dev/upgrade-tidb-using-tiup-offline']
->>>>>>> b4315909... Tiup 5.0: update deploy, upgrade, maintain docs (#5728)
+aliases: ['/zh/tidb/v5.0/upgrade-tidb-using-tiup-offline']
 ---
 
 # 使用 TiUP 升级 TiDB

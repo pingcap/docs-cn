@@ -1,9 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/dev/production-offline-deployment-using-tiup','/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
->>>>>>> b4315909... Tiup 5.0: update deploy, upgrade, maintain docs (#5728)
+aliases: ['/zh/tidb/v5.0/production-offline-deployment-using-tiup']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
