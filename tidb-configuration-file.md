@@ -420,10 +420,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 prepare 语句的 plan cache 设置。
 
+> **警告：**
+>
+> 当前该功能仍为实验特性，不建议在生产环境中使用。
+
 ### `enabled`
 
 + 开启 prepare 语句的 plan cache。
-+ 默认值：true
++ 默认值：false
 
 ### `capacity`
 
