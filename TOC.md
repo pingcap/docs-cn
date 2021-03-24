@@ -99,6 +99,7 @@
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + 理解 TiDB 执行计划
       + [TiDB 执行计划概览](/explain-overview.md)
+      + [MPP 模式查询的执行计划](/explain-mpp.md)
     + SQL 优化流程
       + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
