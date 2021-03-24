@@ -517,6 +517,33 @@ sudo systemctl enable ntpd.service
                   The governor "performance" may decide which speed to use within this range.
     ```
 
+9. 执行以下命令修改 sysctl 参数。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    echo "fs.file-max = 1000000">> /etc/sysctl.conf
+    echo "net.core.somaxconn = 32768">> /etc/sysctl.conf
+    echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
+    echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
+    echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
+    echo "vm.swappiness = 0">> /etc/sysctl.conf
+    sysctl -p
+    ```
+
+10. 执行以下命令配置用户的 limits.conf 文件。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat << EOF >>/etc/security/limits.conf
+    tidb           soft    nofile          1000000
+    tidb           hard    nofile          1000000
+    tidb           soft    stack          32768
+    tidb           hard    stack          32768
+    EOF
+    ```
+
 ## 手动配置 SSH 互信及 sudo 免密码
 
 对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登陆，可忽略本段内容。
