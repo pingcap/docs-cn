@@ -236,7 +236,7 @@ mysql> SELECT * FROM t1;
 ### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：100 \* 1024 \* 1024
+- 默认值：104857600（表示 100 兆）
 - 如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 ### `tidb_build_stats_concurrency`
