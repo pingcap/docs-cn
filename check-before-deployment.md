@@ -570,7 +570,9 @@ sudo systemctl enable ntpd.service
     ```
 
 3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成你的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。
-
+   当新建tidb用户时，里面并没有.ssh目录，需要执行rsa密钥生成指令，生成.ssh目录，同时当中控机上也要部署组件时，需要配置中控机本机互信，即`10.0.1.1`换成中控机的ip：
+   ssh-keygen -t rsa
+   
     {{< copyable "shell-regular" >}}
 
     ```bash
