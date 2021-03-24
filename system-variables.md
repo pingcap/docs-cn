@@ -399,11 +399,7 @@ mysql> SELECT * FROM t1;
 ### `tidb_enable_cascades_planner`
 
 - 作用域：SESSION | GLOBAL
-<<<<<<< HEAD
-- 默认值：0
-=======
 - 默认值：OFF
->>>>>>> upstream/master
 - 这个变量用于控制是否开启 cascades planner。
 
 ### `tidb_enable_chunk_rpc` <span class="version-mark">从 v4.0 版本开始引入</span>
