@@ -171,6 +171,12 @@ mysql> SELECT * FROM t1;
     * 1：aggregation 和 join 的请求会进行批量发送
     * 2：所有的 cop 请求都会批量发送
 
+### `tidb_allow_mpp` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：ON（表示开启）
+- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询。开启后 TiDB 会通过优化器自动判断是否选择 MPP 执行。MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。
+
 ### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
 - 作用域：SESSION
@@ -220,6 +226,18 @@ mysql> SELECT * FROM t1;
     例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 \* 2 等于 30 秒。
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
+
+### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：10240
+- 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+
+### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：104857600（表示 100 兆）
+- 如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 ### `tidb_build_stats_concurrency`
 
@@ -380,21 +398,23 @@ mysql> SELECT * FROM t1;
 
 ### `tidb_enable_async_commit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。目前存在已知问题有：
->
-> + 暂时与 [TiCDC](/ticdc/ticdc-overview.md) 不兼容，可能导致 TiCDC 运行不正常。
-> + 暂时与 [Compaction Filter](/tikv-configuration-file.md#enable-compaction-filter-从-v500-rc-版本开始引入) 不兼容，共同使用时有小概率发生写丢失。
-> + 本特性与 TiDB Binlog 不兼容，开启 TiDB Binlog 时本配置将不生效。
-
 - 作用域：SESSION | GLOBAL
-- 默认值：OFF
+- 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 RC 及之后版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
-> **警告：**
+> **注意：**
 >
-> 开启本特性时，默认不保证事务的外部一致性。具体请参考 [`tidb_guarantee_external_consistency`](#tidb_guarantee_external_consistency-从-v500-rc-版本开始引入) 系统变量。
+> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
+### `tidb_enable_1pc` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 RC 及之后版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
+- 指定是否在只涉及一个 Region 的事务上启用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
+
+> **注意：**
+>
+> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 
 ### `tidb_enable_cascades_planner`
 
@@ -601,12 +621,6 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
     - `current_db`：当前数据库名
     - `txn_mode`：事务模型。可选值：`OPTIMISTIC`（乐观事务模型），或 `PESSIMISTIC`（悲观事务模型）
     - `sql`：当前查询对应的 SQL 语句
-
-### `tidb_guarantee_external_consistency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 该变量控制在开启 Async Commit <!--和一阶段提交-->特性时，是否需要保证外部一致性。该选项关闭时，如果两个事务修改的内容没有交集，其他事务观测到它们的提交顺序可能与它们实际的提交顺序不一致。在不使用 Async Commit <!--或一阶段提交-->特性时，无论该选项是否开启，都能保证外部一致性。
 
 ### `tidb_hash_join_concurrency`
 
@@ -1135,6 +1149,12 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：0
+- 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
 
 ### `tidb_allow_fallback_to_tikv` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
