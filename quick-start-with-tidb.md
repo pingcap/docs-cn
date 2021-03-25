@@ -20,7 +20,7 @@ This document describes how to try out TiDB, a distributed SQL database, in a fe
 - Scenario: Quickly deploy a TiDB cluster on a local Mac or Linux OS machine. You can see the basic architecture of TiDB and how TiDB, TiKV, PD, monitoring, and other components run in a TiDB cluster.
 - Time required: 1 minute
 
-As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, and 3 PD instances. With TiUP Playground, you can quickly build the above test cluster by taking the following steps:
+As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, 3 PD instances, and optional TiFlash instances. With TiUP Playground, you can quickly build the above test cluster by taking the following steps:
 
 1. Download and install TiUP:
 
@@ -44,7 +44,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 3. Start the cluster in the current session:
 
-    - If you want to start a TiDB cluster of the latest version with 1 TiDB instance, 1 TiKV instance, and 1 PD instance, run the following command:
+    - If you want to start a TiDB cluster of the latest version with 1 TiDB instance, 1 TiKV instance, 1 PD instance, and 1 TiFlash instance, run the following command:
 
         {{< copyable "shell-regular" >}}
 
@@ -96,7 +96,9 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 6. Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
 
-7. After the test, you can clean the cluster by taking the following steps:
+7. (Optional) [Load data to TiFlash](/tiflash/use-tiflash.md) for analysis.
+
+8. After the test, you can clean the cluster by taking the following steps:
 
     1. Stop the process by pressing `ctrl-c`.
 
@@ -336,6 +338,11 @@ Other requirements for the target machine:
     - [Deploy TiDB online using TiUP](/production-deployment-using-tiup.md)
     - [Deploy TiDB offline using TiUP](/production-offline-deployment-using-tiup.md)
     - [Deploy TiDB on Cloud using TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable)
+
+- If you're looking for analytics solution with TiFlash:
+
+    - [Use TiFlash](/tiflash/use-tiflash.md)
+    - [TiFlash Overview](/tiflash/tiflash-overview.md)
 
 > **Note:**
 >
