@@ -336,7 +336,7 @@ Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成
 
 ### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform)  (实验特性)
 
-[用户文档](/integrate-confluent-using-ticdc#tidb-集成-confluent-platform-快速上手指南)，[TiCDC#660](https://github.com/pingcap/ticdc/issues/660)
+[用户文档](/integrate-confluent-using-ticdc.md)，[TiCDC#660](https://github.com/pingcap/ticdc/issues/660)
 
 为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统，实现业务所需的数据流转架构。
 
