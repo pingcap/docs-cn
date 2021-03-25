@@ -7,7 +7,7 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
+  + [What's New in TiDB 5.0](/releases/release-5.0.0.md)
   + [基本功能](/basic-features.md)
   + 性能测试报告
     + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
@@ -524,6 +524,7 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v5.0
+    - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
     - [4.0.11](/releases/release-4.0.11.md)
