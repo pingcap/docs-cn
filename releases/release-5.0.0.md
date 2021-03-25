@@ -244,35 +244,35 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 
 TiDB 调度过程中会占用 I/O、网络、CPU、内存等资源，若不对调度的任务进行控制，QPS 和延时会因为资源被抢占而出现性能抖动问题。通过以下几项的优化，长期测试 72 小时，衡量 Sysbench TPS 抖动标准差的值从 11.09% 降低到 3.36%。
 
-### 引入新的调度算分公式，减少不必要的调度，减少因调度引起的性能抖动问题
+#### 引入新的调度算分公式，减少不必要的调度，减少因调度引起的性能抖动问题
 
 当节点的总容量总是在系统设置的水位线附近波动或者 `store-limit` 配置项设置过大时，为满足容量负载的设计，系统会频繁地将 Region 调度到其他节点，甚至还会调度到原来的节点，调度过程中会占用 I/O、网络、CPU、内存 等资源，引起性能抖动问题，而这类调度其实没有太多的意义。为缓解此问题，PD 引入了一套新的调度算分公式，并通过 `region-score-formula-version = v2` 配置项启用新的调度算分公式。
 
-### 默认开启跨 Region 合并功能
+#### 默认开启跨 Region 合并功能
 
 [用户文档](/pd-configuration-file.md#enable-cross-table-merge)
 
 在 5.0-rc 之前，TiDB 默认关闭跨 Region 合并的功能；从5.0-rc 起, TiDB 默认开启跨 Region 合并功能，减少空 Region 的数量，降低系统的 网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
 
-### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢
+#### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢
 
 [用户文档](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入)
 
 在 5.0-rc 之前，自动调整 Compaction 的速度来平衡后台任务与前端的数据读写对 I/O 资源的争抢默认是半闭的；从5.0-rc 起, TiDB 默认开启此功能并优化调整算法，开启之后延迟抖动比未开启此功能时的抖动大幅减少。你可以通过修改`rate-limiter-auto-tuned` 配置项关闭此功能。
 
-### 默认开启 GC in Compaction filter 功能，减少 GC 对 CPU、I/O 资源的占用
+#### 默认开启 GC in Compaction filter 功能，减少 GC 对 CPU、I/O 资源的占用
 
 [用户文档](/garbage-collection-configuration.md#gc-in-compaction-filter-机制)，[#18009](https://github.com/pingcap/tidb/issues/18009)
 
 TiDB 在进行垃圾数据回收和数据 Compaction 时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减少对 CPU、 I/O 资源的占用。系统默认开启此功能，你可以通过设置 `gc.enable-compaction-filter = flase` 关闭此功能。
 
-### TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢
+#### TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢
 
 TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制压缩或整理数据占用的 I/O 量缓解资源争抢。此特性为实验性特性，系统默认关闭此特性，你可以通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
 
-### 优化 load bsae 切分策略，缓解部分场景热点数据无法切分导致的性能抖动
+#### 优化 load bsae 切分策略，缓解部分场景热点数据无法切分导致的性能抖动
 
-### 增强检查调度约束的性能，提升大集群中修复不健康 Region 的性能
+#### 增强检查调度约束的性能，提升大集群中修复不健康 Region 的性能
 
 ### 保证执行计划在最大程度保持不变，避免性能抖动
 
