@@ -98,7 +98,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **注意：**
 >
-> 该配置项不再生效。如果需要增删主键，请使用 `NONCLUSTERED` 代替。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
+> 该配置项已被废弃，目前仅在 `@@tidb_enable_clustered_index` 取值为 `INT_ONLY` 时生效。如果需要增删主键，请在建表时使用 `NONCLUSTERED` 关键字代替。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ### `server-version`
 

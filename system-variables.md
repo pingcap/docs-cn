@@ -428,22 +428,14 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 这个变量用来设置是否启用 Coprocessor 的 `Chunk` 数据编码格式。
 
-### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 这个变量用于控制是否开启[聚簇索引](/clustered-indexes.md)特性。
-    - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
-    - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
-    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了聚簇索引特性。
-- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 `row_id` 上并用额外创建的主键索引指向 `row_id`。
-
-    开启该特性对性能的影响主要体现在以下几个方面:
-
-    - 插入的时候每行会减少一个索引 key 的写入。
-    - 使用主键作为等值条件查询的时候，会节省一次读取请求。
-    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。
-    - 使用多列主键的前缀作为等值或范围条件查询的时候，可以节省多次读取请求。
+- 作用域：GLOBAL
+- 默认值：INT_ONLY
+- 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况” 即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
+    - `OFF` 表示所有主键默认使用非聚簇索引。
+    - `ON` 表示所有主键默认使用聚簇索引。
+    - `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
 
 ### `tidb_enable_collect_execution_info`
 
