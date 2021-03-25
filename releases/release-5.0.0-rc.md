@@ -31,7 +31,7 @@ TiDB 版本：5.0.0 GA
 + 新增系统变量 `tidb_enable_strict_double_type_check`，用于决定类似 “double(N)” 语法是否允许被定义在表结构中，默认为 OFF。
 + 系统变量 tidb_dml_batch_size 的默认值由 2000 修改为 0，即在 LOAD/INSERT INTO SELECT ... 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。[用户文档](/system-variables.md#tidb_dml_batch_size)
 + 临时表的语法兼容性受到 tidb_noop_functions 系统变量的控制：当 tidb_noop_functions 为 OFF 时，CREATE TEMPORARY TABLE 语法将会报错。
-+ 新增 tidb_gc_concurrency、tidb_gc_enable、tidb_gc_life_time、tidb_gc_run_interval、tidb_gc_scan_lock_mode 系统变量，用于直接通过系统变量调整垃圾回收相关参数。[ 用户文档](/system-variables.md#tidb_gc_enable)
++ 新增 tidb_gc_concurrency、tidb_gc_enable、tidb_gc_life_time、tidb_gc_run_interval、tidb_gc_scan_lock_mode 系统变量，用于直接通过系统变量调整垃圾回收相关参数。[用户文档](/system-variables.md#tidb_gc_enable)
 
 ### 配置文件参数
 
@@ -188,7 +188,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 用户可以通过以下两种方式使用聚簇索引和非聚簇索引，如下：
 
 + 创建表时在语句上指定 `CLUSTERED | NONCLUSTERED` 。
-+ 设置 `tidb_enable_clustered_index ` 控制聚簇索引功能，取值：ON|OFF|INT_ONLY，默认： INT_ONLY
++ 设置 `tidb_enable_clustered_index` 控制聚簇索引功能，取值：ON|OFF|INT_ONLY，默认： INT_ONLY
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
     + OFF：关闭聚簇索引， 支持添加或者删除非聚簇索引。
     + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与`alter-primary-ke = false` 一起使用可控制 INT 类型是开启聚簇索引。
@@ -198,7 +198,6 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 推荐创建表时在语句上指定 `CLUSTERED | NONCLUSTERED` 的方式使用聚簇索引和非聚簇索引，此方式对业务更加灵活，业务可以根据需求在同一个系统同时使用所有数据类型的聚簇索引和非聚簇索引。
 
 不推荐使用 `tidb_enable_clustered_index = INT_ONLY`，原因是 INT_ONLY 是满足兼容性而临时设置的值，不推荐使用，未来会 Deprecated。
-
 
 #### 异步提交事务（Async Commit)
 
@@ -215,7 +214,6 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 异步提交事务功能有如下限制：
 
 + 不支持直接降级
-
 
 #### 默认开启 Coprocessor cache 功能
 
@@ -275,11 +273,11 @@ TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制�
 
 通过 SQL BINDING 语句手动的绑定SQL 语句时，你需要确保优化过的 SQL 语句的语法与原来 SQL 语句的语法保持一致。
 
-你可以通过` SHOW {GLOBAL | SESSION} BINDINGS` 命令查看手工、系统自动绑定的查询计划信息。输出信息基本跟原来保持一致。
+你可以通过`SHOW {GLOBAL | SESSION} BINDINGS` 命令查看手工、系统自动绑定的查询计划信息。输出信息基本跟原来保持一致。
 
 #### 自动捕获、绑定查询计划
 
-在升级 TiDB 时，为避免性能抖动问题，你可以开启自动捕获并绑定查询计划的功能，由系统自动捕获并绑定最近一次查询计划然后存储在系统表中。升级完成后， DBA 可以通过 `SHOW BINDING ` 导出绑定的查询计划，自行分析并决策是否要删除绑定的执行计划。
+在升级 TiDB 时，为避免性能抖动问题，你可以开启自动捕获并绑定查询计划的功能，由系统自动捕获并绑定最近一次查询计划然后存储在系统表中。升级完成后， DBA 可以通过 `SHOW BINDING` 导出绑定的查询计划，自行分析并决策是否要删除绑定的执行计划。
 
 系统默认关闭自动捕获并绑定查询计划的功能，你可以通过修改 Server 或者设置全局系统变量 `tidb_capture_plan_baselines = ON` 开启此功能。开启此功能后，系统每隔 `bind-info-lease` (默认 3 秒）从 Statement Summary 抓取出现过至少 2 次的 SQL 语句并自动捕获、绑定。
 
@@ -416,9 +414,9 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 新版本 TiUP 对运维 TiDB 集群的功能做了进一步的强化:
 
 + 支持对已停机的 TiDB 和 DM 集群进行升级或 patch 操作，以适应更多用户的使用场景。
-+ 为 tiup-cluster 的 display 子命令添加 `--version` 参数用于获取集群版本
-+ 支持 edit-config 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置
-+ 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因
-+  …….
-    
++ 为 tiup-cluster 的 display 子命令添加 `--version` 参数用于获取集群版本。
++ 支持 edit-config 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置。
++ 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因。
++ ……  
+
 更多信息可以参考[TiUP Release Note](https://github.com/pingcap/tiup/releases/tag/v1.4.0)
