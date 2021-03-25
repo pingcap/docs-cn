@@ -1201,7 +1201,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.labels | contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+» store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
 ```
 
 ```
