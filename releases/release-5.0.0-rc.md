@@ -217,7 +217,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 
 #### 默认开启 Coprocessor cache 功能
 
-[用户文档](tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入) 
+[用户文档](/tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入) 
 
 在 5.0 GA 默认开启 Coprocessor cache 功能，开启此功能后， TiDB 会在 tidb-server 中会缓存算子下推到 tikv-server 计算后的结果，降低读取数据的延时。要关闭Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
@@ -336,7 +336,7 @@ Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成
 
 ### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform)  (实验特性)
 
-[用户文档](/integrate-confluent-using-ticdc)，[TiCDC#660](https://github.com/pingcap/ticdc/issues/660)
+[用户文档](/integrate-confluent-using-ticdc#tidb-集成-confluent-platform-快速上手指南)，[TiCDC#660](https://github.com/pingcap/ticdc/issues/660)
 
 为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统，实现业务所需的数据流转架构。
 
@@ -365,7 +365,7 @@ TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB
 
 ### 优化 `EXPLAIN` 功能，收集更多的信息，方便 DBA 排查性能问题 
 
-[用户文档](sql-statement-explain.md#explain)
+[用户文档](/sql-statement-explain.md#explain)
 
 DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起性能问题的原因。之前版本中 `EXPLAIN` 收集的信息不够完善， DBA 只能通过日志信息、监控信息或者盲猜的方式来判断问题的原因，效率比较低。此版本通过以下几项优化提升排查问题的效率：
 
