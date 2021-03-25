@@ -342,12 +342,12 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### 从 S3/Aurora 数据迁移到 TiDB
 
-数据迁移类工具支持 AWS S3 （也包含支持 S3 协议的其他存储服务）作为数据迁移的中间转存介质，同时支持将 Aurora 快照数据直接初始化 TiDB 中，丰富了数据从 AWS S3/Aurora 迁移到 TiDB 的选择。
+数据迁移类工具支持 AWS S3（也包含支持 S3 协议的其他存储服务）作为数据迁移的中间转存介质，同时支持将 Aurora 快照数据直接初始化 TiDB 中，丰富了数据从 AWS S3/Aurora 迁移到 TiDB 的选择。
 
-该功能使用方法可以参照以下文档
+该功能使用方法可以参照以下文档：
 
-+ 将 MySQL/Aurora 数据导出到 AWS S3 [用户文档](/dumpling-overview.md#导出到-amazon-s3-云盘)，[dumpling#8](https://github.com/pingcap/dumpling/issues/8)
-+ 从 AWS S3 将 Aurora Snapshot 数据初始化到 TiDB [用户文档](/migrate-from-aurora-using-lightning.md)，[lightning#266](https://github.com/pingcap/tidb-lightning/issues/266)
++ [将 MySQL/Aurora 数据导出到 AWS S3](/dumpling-overview.md#导出到-amazon-s3-云盘)，[Dumpling #8](https://github.com/pingcap/dumpling/issues/8)
++ [从 AWS S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-from-aurora-using-lightning.md)，[Lightning #266](https://github.com/pingcap/tidb-lightning/issues/266)
 
 ### TiDB on Cloud 数据导入性能优化
 
@@ -357,7 +357,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform) (实验特性)
 
-[用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[TiCDC#660](https://github.com/pingcap/ticdc/issues/660)
+[用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[TiCDC #660](https://github.com/pingcap/ticdc/issues/660)
 
 为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统，实现业务所需的数据流转架构。
 
@@ -365,7 +365,7 @@ Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型�
 
 ### TiCDC 支持 TiDB 集群之间环形同步 (实验特性)
 
-[用户文档](/ticdc/manage-ticdc.md#环形同步)，[TiCDC#471](https://github.com/pingcap/ticdc/issues/471)
+[用户文档](/ticdc/manage-ticdc.md#环形同步)，[TiCDC #471](https://github.com/pingcap/ticdc/issues/471)
 
 由于地理位置差异导致的通讯延迟等问题，存在以下场景：用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
 
@@ -396,45 +396,49 @@ DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起�
 
 ## 部署及运维
 
-### 优化集群部署操作逻辑，以便 DBA 更快地部署一套标准的 TiDB 生产集群
+### 优化集群部署操作逻辑，帮助 DBA 更快地部署一套标准的 TiDB 生产集群
 
 [用户文档](/production-deployment-using-tiup.md)
 
 DBA 在使用 TiUP 部署 TiDB 集群过程发现环境初始化比较复杂、校验配置过多，集群拓扑文件比较难编辑等，DBA 的部署效率比较低。5.0 版本通过以下几个事项提升 DBA 部署 TiDB 的效率：
 
-+ TiUP Cluster 支持 check topo.yaml 命令，进行更全面一键式环境检查并给出修复建议。
-+ TiUP Cluster 支持 check topo.yaml --apply 命令，自动修复检查过程中发现的环境问题。
-+ TiUP Cluster 支持 template 命令，获取集群拓扑原始文件，供 DBA 编辑且支持修改全局的节点参数。
-+ TiUP 支持使用 edit-config 命令编辑 remote_config 参数配置远程 Prometheus。
-+ TiUP 支持使用 edit-config 命令编辑 external_alertmanagers 参数配置不同的 AlertManager 。
-+ 在 tiup-cluster 中使用 edit-config 子命令编辑拓扑文件时允许改变配置项值的数据类型。
++ TiUP Cluster 支持 `check topo.yaml` 命令，进行更全面一键式环境检查并给出修复建议。
++ TiUP Cluster 支持 `check topo.yaml --apply` 命令，自动修复检查过程中发现的环境问题。
++ TiUP Cluster 支持 `template` 命令，获取集群拓扑原始文件，供 DBA 编辑且支持修改全局的节点参数。
++ TiUP 支持使用 `edit-config` 命令编辑 `remote_config` 参数配置远程 Prometheus。
++ TiUP 支持使用 `edit-config` 命令编辑 `external_alertmanagers` 参数配置不同的 AlertManager。
++ 在 tiup-cluster 中使用 `edit-config` 子命令编辑拓扑文件时允许改变配置项值的数据类型。
 
 ### 提升升级稳定性
 
-TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时会导致 SQL 响应持续长时间抖动，PD 在线滚动升级期间集群 QPS 抖动时间维持在 10~30s 。TiUP v1.4.0 版本版本做了如下逻辑调整进行优化：
+TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时会导致 SQL 响应持续长时间抖动，PD 在线滚动升级期间集群 QPS 抖动时间维持在 10~30s。
+
+TiUP v1.4.0 版本版本做了如下逻辑调整进行优化：
 
 + 升级 PD 时，会主动判断被重启的 PD 节点状态就绪后再滚动升级下一个 PD 节点。
-+ 主动识别 PD 角色，先升级 follower 角色 PD 节点最后再升级 PD Leader 节点。
++ 主动识别 PD 角色，先升级 follower 角色 PD 节点，最后再升级 PD Leader 节点。
 
 ### 优化升级时长
 
-TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，对于节点数比较多的集群，整个升级的时间会持续很长，不能满足部分有升级时间窗口要求的用户。从 v1.4.0 版本起，TiUP进行了以下几处优化：
+TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，对于节点数比较多的集群，整个升级的时间会持续很长，不能满足部分有升级时间窗口要求的用户。
 
-+ 新版本 TiUP 支持使用 tiup cluster upgrade --offline 子命令实现快速的离线升级。
+从 v1.4.0 版本起，TiUP 进行了以下几处优化：
+
++ 新版本 TiUP 支持使用 `tiup cluster upgrade --offline` 子命令实现快速的离线升级。
 + 对于使用滚动升级的用户，新版本 TiUP 默认会加速升级期间 Region Leader 的搬迁速度以减少滚动升级 TiKV 消耗的时间。
-+ 运行滚动升级前使用 check 子命令，对 Region 监控状态的检查，确保集群升级前状态正常以减少升级失败的概率。
++ 运行滚动升级前使用 `check` 子命令，对 Region 监控状态的检查，确保集群升级前状态正常以减少升级失败的概率。
 
 ### 支持断点功能
 
 TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如果命令执行中断，那么整个升级操作都需重新开始。
 
-新版本 TiUP 支持使用 tiup-cluster replay 子命令从断点处重试失败的操作，以避免升级中断后所有操作重新执行。
+新版本 TiUP 支持使用 tiup-cluster `replay` 子命令从断点处重试失败的操作，以避免升级中断后所有操作重新执行。
 
 ### 运维功能增强
 
 新版本 TiUP 对运维 TiDB 集群的功能做了进一步的强化：
 
 + 支持对已停机的 TiDB 和 DM 集群进行升级或 patch 操作，以适应更多用户的使用场景。
-+ 为 tiup-cluster 的 display 子命令添加 `--version` 参数用于获取集群版本。
-+ 支持 edit-config 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置。
-+ 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因。
++ 为 tiup-cluster 的 `display` 子命令添加 `--version` 参数用于获取集群版本。
++ 支持 `edit-config` 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置。
++ 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户更快定位问题原因。
