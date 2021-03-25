@@ -95,7 +95,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 当前此功能存在以下不兼容性问题：
 + 并发事务场景下事务的语义可能发生变化的问题
 + 与 Binlog 一起使用还存在已知的兼容性问题 [#20996](https://github.com/pingcap/tidb/issues/20996)
-+ 与 Change column 功能不兼容 [21470](https://github.com/pingcap/tidb/issues/21470)
++ 与 Change column 功能不兼容 [#21470](https://github.com/pingcap/tidb/issues/21470)
     
 ### 字符集和排序规则
 
@@ -204,7 +204,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 新创建的 5.0 集群默认开启该功能。从旧版本升级到 5.0 的集群，默认不开启，你可以执行 set global tidb_enable_async_commit = ON; 和 set global tidb_enable_1pc = ON; 语句开启该功能。
 
 异步提交事务功能有如下限制：
-    + 不支持直接降级
++ 不支持直接降级
 
 
 #### 默认开启 Coprocessor cache 功能
@@ -279,11 +279,13 @@ TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制�
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
+[TiCDC#1150](https://github.com/pingcap/ticdc/issues/1150)
+
 V4.0.9 及之前版本的 TiCDC 遇到同步过多历史变更数据的场景时会出现 OOM 问题。TiCDC 自 V4.0.9 版本起引入变更数据本地排序功能 Unified Sorter，在 V5.0.0 版本会默认开启本功能以缓解类似场景下的 OOM 问题：
 + 场景一：TiCDC 数据订阅任务暂停中断时间长，其间积累了大量的增量更新数据需要同步。
 + 场景二：从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
 
-Unified Sorter 统合了老版本提供了 memory、file sort-engine 配置选择，不需要用户手动配置变更的运维操作。[TiCDC#1150](https://github.com/pingcap/ticdc/issues/1150)
+Unified Sorter 统合了老版本提供了 memory、file sort-engine 配置选择，不需要用户手动配置变更的运维操作。
 
 限制与约束：
 + 用户需要根据业务数据更新量提供充足的磁盘空间，推荐使用大于 128G 的 SSD 磁盘。
@@ -293,7 +295,7 @@ Unified Sorter 统合了老版本提供了 memory、file sort-engine 配置选�
 
 ### 提升 Region 成员变更时的可用性
 
-[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)，[#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
+[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入) [#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
 
 Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成两步，如果两步操作之间有故障发生会引起 Region 不可用并且会返回前端业务的错误信息。TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加”和“删除”合并为一个操作，并发送给所有成员，提升了 Region 成员变更时的可用性。在变更过程中，Region 处于中间的状态，如果任何被修改的成员失败，系统仍然可以使用。
 
