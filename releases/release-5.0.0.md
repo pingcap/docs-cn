@@ -272,11 +272,11 @@ TiDB 在进行垃圾回收和数据 Compaction 时，分区会占用 CPU、I/O �
 
 GC Compaction Filter 特性将这两个任务合并在同一个任务中完成，减少对 CPU、I/O 资源的占用。系统默认开启此功能，你可以通过设置 `gc.enable-compaction-filter = false` 关闭此功能。
 
-#### TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（实验特性）
+#### TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（**实验特性**）
 
 TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制压缩或整理数据占用的 I/O 量缓解资源争抢。
 
-此特性为实验特性，系统默认关闭此特性，你可以通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
+系统默认关闭此特性，你可以通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
 
 #### 优化 load base 切分策略，缓解部分场景热点数据无法切分导致的性能抖动
 
@@ -355,7 +355,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ## TiDB 数据共享订阅
 
-### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform) (实验特性)
+### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform)（**实验特性**）
 
 [用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[TiCDC #660](https://github.com/pingcap/ticdc/issues/660)
 
@@ -363,7 +363,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect 扩展 TiDB 数据流转到其他异构数据库或者系统的能力。
 
-### TiCDC 支持 TiDB 集群之间环形同步 (实验特性)
+### TiCDC 支持 TiDB 集群之间环形同步（**实验特性**）
 
 [用户文档](/ticdc/manage-ticdc.md#环形同步)，[TiCDC #471](https://github.com/pingcap/ticdc/issues/471)
 
