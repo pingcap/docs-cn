@@ -49,7 +49,8 @@ TiDB 版本：5.0.0 ga
 
 #### List 分区表 （List Partition）（实验特性）
 
-[用户文档](partitioned-table#List 分区)
+[用户文档](/partitioned-table#List 分区)
+
 采用 List 分区表后，你可以高效地查询、维护有大量数据的表。
 
 List 分区表会按照 `PARTITION BY LIST(expr) PARTITION part_name VALUES IN (...)` 表达式来定义分区，定义如何将数据划分到不同的分区中。分区表的数据集合最多支持 1024 个值，值的类型只支持整数型，不能有重复的值。可通过 PARTITION ... VALUES IN (...) 子句对值进行定义。
@@ -58,21 +59,24 @@ List 分区表会按照 `PARTITION BY LIST(expr) PARTITION part_name VALUES IN (
 
 #### List Column 分区表 （List Column Partition）（实验特性）
 
-[用户文档](partitioned-table#List 分区)
+[用户文档](/partitioned-table#List 分区)
+
 List Column 分区表是 List 分区表的变体，主要的区别是分区键可以由多个列组成，列的类型不再局限于整数类型，可以是字符串、DATE 和  DATETIME 等。
 
 你可以设置session 变量 `tidb_enable_list_partition` 的值为 `ON` 开启 List Column 分区表实验功能。
 
 #### 不可见索引（Invisible Indexes）
 
-[用户文档](/sql-statements/sql-statement-alter-index.md)，issue：[#9246](https://github.com/pingcap/tidb/issues/9246)
+[用户文档](/sql-statements/sql-statement-alter-index.md)，[#9246](https://github.com/pingcap/tidb/issues/9246)
+
 DBA 调试和选择相对最优的索引时，可以通过 SQL 语句将某个索引设置成 `Visible` 或者 `Invisible`，避免执行消耗资源较多的操作，例如：`DROP INDEX` 或 `ADD INDEX`。
 
 DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后，查询优化器会根据索引的可见性决定是否将此索引加入到索引列表中。
 
 #### `EXCEPT` 和 `INTERSECT` 操作符
 
- [用户文档](/functions-and-operators/set-operators.md)， issue：[#18031](https://github.com/pingcap/tidb/issues/18031)
+ [用户文档](/functions-and-operators/set-operators.md)，[#18031](https://github.com/pingcap/tidb/issues/18031)
+ 
 `INTERSECT` 操作符是一个集合操作符，返回两个或者多个查询结果集的交集。一定程度上可以替代 `Inner Join` 操作符。
 
 `EXCEPT` 操作符是一个集合操作符，返回两个查询结果集的差集， 即在第一个查询结果中存在但在第二个查询结果中不存在的结果集。
