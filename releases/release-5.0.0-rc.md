@@ -50,8 +50,6 @@ TiDB 版本：5.0.0 GA
 
 #### List 分区表 （List Partition）（实验特性）
 
-[用户文档](/partitioned-table#List 分区)
-
 采用 List 分区表后，你可以高效地查询、维护有大量数据的表。
 
 List 分区表会按照 `PARTITION BY LIST(expr) PARTITION part_name VALUES IN (...)` 表达式来定义分区，定义如何将数据划分到不同的分区中。分区表的数据集合最多支持 1024 个值，值的类型只支持整数型，不能有重复的值。可通过 PARTITION ... VALUES IN (...) 子句对值进行定义。
@@ -59,8 +57,6 @@ List 分区表会按照 `PARTITION BY LIST(expr) PARTITION part_name VALUES IN (
 你可以设置 session 变量 `tidb_enable_list_partition` 的值为 `ON` ，开启 List 分区表实验功能。
 
 #### List Column 分区表 （List Column Partition）（实验特性）
-
-[用户文档](/partitioned-table#List 分区)
 
 List Column 分区表是 List 分区表的变体，主要的区别是分区键可以由多个列组成，列的类型不再局限于整数类型，可以是字符串、DATE 和  DATETIME 等。
 
@@ -418,5 +414,3 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 + 支持 edit-config 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置。
 + 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因。
 + ……  
-
-更多信息可以参考[TiUP Release Note](https://github.com/pingcap/tiup/releases/tag/v1.4.0)
