@@ -121,7 +121,7 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 + 配置项 `security.redact-info-log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 pd-server 的日志脱敏功能。
 + 配置项 `security.redact_info_log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 tiflash-server 及 tiflash-learner 的日志脱敏功能。
 
-此功能从 5.0-rc 版本中开始提供，使用过程中必须开启所有系统变量及配置项。
+此功能从 5.0-rc 版本中开始提供，使用过程中必须开启以上所有系统变量及配置项。
 
 ## 性能
 
