@@ -190,7 +190,7 @@ Currently, the `SHOW ANALYZE STATUS` statement returns the following 7 columns:
 | table_name | The table name |
 | partition_name| The partition name |
 | job_info | The task information. The element includes index names when index analysis is performed. |
-| row_count | The the number of rows that have been analyzed |
+| row_count | The number of rows that have been analyzed |
 | start_time | The time at which the task starts |
 | state | The state of a task, including `pending`, `running`, `finished`, and `failed` |
 
