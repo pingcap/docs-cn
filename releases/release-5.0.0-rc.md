@@ -193,7 +193,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 
 #### 异步提交事务（Async Commit)
 
-[用户文档](/system-variables.md#tidb_enable_async_commit-从-v500-rc-版本开始引入), [#8316](https://github.com/tikv/tikv/issues/8316)
+[用户文档](/system-variables.md#tidb_enable_async_commit-从-v500-rc-版本开始引入)，[#8316](https://github.com/tikv/tikv/issues/8316)
 
 数据库的客户端会同步等待数据库系统通过两阶段 (2PC) 完成事务的提交，事务在第一阶段提交成功能就会返回结果给客户端，系统会在后台异步执行第二阶段提交操作，降低事务提交的延迟。如果事务的写入只涉及一个 region，则第二阶段可以直接被省略，变成一阶段提交。
 
@@ -213,7 +213,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 
 在 5.0 GA 默认开启 Coprocessor cache 功能，开启此功能后， TiDB 会在 tidb-server 中会缓存算子下推到 tikv-server 计算后的结果，降低读取数据的延时。要关闭Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
-#### 提升`delete * from table where id < ? limit ?` 语句执行的性能，p99 性能提升了 4 倍 。
+#### 提升`delete * from table where id < ? limit ?` 语句执行的性能，p99 性能提升了 4 倍
 
 [#18028](https://github.com/pingcap/tidb/issues/18028)
 
@@ -243,7 +243,7 @@ TiDB 调度过程中会占用 I/O、网络、CPU、内存 等资源，若不对�
 
 ### 默认开启 GC in Compaction filter 功能，减少 GC 对 CPU、I/O 资源的占用
 
-[用户文档](/garbage-collection-configuration.md#gc-in-compaction-filter-机制),[#18009](https://github.com/pingcap/tidb/issues/18009)
+[用户文档](/garbage-collection-configuration.md#gc-in-compaction-filter-机制)，[#18009](https://github.com/pingcap/tidb/issues/18009)
 
 TiDB 在进行垃圾数据回收和数据 Compaction 时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减少对 CPU、 I/O 资源的占用。系统默认开启此功能，你可以通过设置 `gc.enable-compaction-filter = flase` 关闭此功能。
 
@@ -295,7 +295,7 @@ Unified Sorter 统合了老版本提供了 memory、file sort-engine 配置选�
 
 ### 提升 Region 成员变更时的可用性
 
-[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入) [#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
+[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)[#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
 
 Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成两步，如果两步操作之间有故障发生会引起 Region 不可用并且会返回前端业务的错误信息。TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加”和“删除”合并为一个操作，并发送给所有成员，提升了 Region 成员变更时的可用性。在变更过程中，Region 处于中间的状态，如果任何被修改的成员失败，系统仍然可以使用。
 
