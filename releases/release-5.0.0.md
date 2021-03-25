@@ -242,49 +242,59 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 
 [#18005](https://github.com/pingcap/tidb/issues/18005)
 
-TiDB 调度过程中会占用 I/O、网络、CPU、内存等资源，若不对调度的任务进行控制，QPS 和延时会因为资源被抢占而出现性能抖动问题。通过以下几项的优化，长期测试 72 小时，衡量 Sysbench TPS 抖动标准差的值从 11.09% 降低到 3.36%。
+TiDB 调度过程中会占用 I/O、网络、CPU、内存等资源，若不对调度的任务进行控制，QPS 和延时会因为资源被抢占而出现性能抖动问题。
+
+通过以下几项的优化，长期测试 72 小时，衡量 Sysbench TPS 抖动标准差的值从 11.09% 降低到 3.36%。
 
 #### 引入新的调度算分公式，减少不必要的调度，减少因调度引起的性能抖动问题
 
-当节点的总容量总是在系统设置的水位线附近波动或者 `store-limit` 配置项设置过大时，为满足容量负载的设计，系统会频繁地将 Region 调度到其他节点，甚至还会调度到原来的节点，调度过程中会占用 I/O、网络、CPU、内存 等资源，引起性能抖动问题，而这类调度其实没有太多的意义。为缓解此问题，PD 引入了一套新的调度算分公式，并通过 `region-score-formula-version = v2` 配置项启用新的调度算分公式。
+当节点的总容量总是在系统设置的水位线附近波动或者 `store-limit` 配置项设置过大时，为满足容量负载的设计，系统会频繁地将 Region 调度到其他节点，甚至还会调度到原来的节点，调度过程中会占用 I/O、网络、CPU、内存等资源，引起性能抖动问题，但这类调度其实意义不大。
+
+为缓解此问题，PD 引入了一套新的调度算分公式，并通过 `region-score-formula-version = v2` 配置项启用新的调度算分公式。
 
 #### 默认开启跨 Region 合并功能
 
 [用户文档](/pd-configuration-file.md#enable-cross-table-merge)
 
-在 5.0-rc 之前，TiDB 默认关闭跨 Region 合并的功能；从5.0-rc 起, TiDB 默认开启跨 Region 合并功能，减少空 Region 的数量，降低系统的 网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
+在 5.0-rc 之前，TiDB 默认关闭跨 Region 合并的功能。从5.0-rc 起，TiDB 默认开启跨 Region 合并功能，减少空 Region 的数量，降低系统的网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
 
 #### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢
 
 [用户文档](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入)
 
-在 5.0-rc 之前，自动调整 Compaction 的速度来平衡后台任务与前端的数据读写对 I/O 资源的争抢默认是半闭的；从5.0-rc 起, TiDB 默认开启此功能并优化调整算法，开启之后延迟抖动比未开启此功能时的抖动大幅减少。你可以通过修改`rate-limiter-auto-tuned` 配置项关闭此功能。
+在 5.0-rc 之前，为了平衡后台任务与前端的数据读写对 I/O 资源的争抢，自动调整 Compaction 的速度这个功能默认是半闭的；从 5.0-rc 起，TiDB 默认开启此功能并优化调整算法，开启之后延迟抖动比未开启此功能时的抖动大幅减少。
+
+你可以通过修改 `rate-limiter-auto-tuned` 配置项关闭此功能。
 
 #### 默认开启 GC in Compaction filter 功能，减少 GC 对 CPU、I/O 资源的占用
 
 [用户文档](/garbage-collection-configuration.md#gc-in-compaction-filter-机制)，[#18009](https://github.com/pingcap/tidb/issues/18009)
 
-TiDB 在进行垃圾数据回收和数据 Compaction 时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减少对 CPU、 I/O 资源的占用。系统默认开启此功能，你可以通过设置 `gc.enable-compaction-filter = flase` 关闭此功能。
+TiDB 在进行垃圾回收和数据 Compaction 时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。
 
-#### TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢
+GC Compaction Filter 特性将这两个任务合并在同一个任务中完成，减少对 CPU、I/O 资源的占用。系统默认开启此功能，你可以通过设置 `gc.enable-compaction-filter = false` 关闭此功能。
 
-TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制压缩或整理数据占用的 I/O 量缓解资源争抢。此特性为实验性特性，系统默认关闭此特性，你可以通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
+#### TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（实验特性）
 
-#### 优化 load bsae 切分策略，缓解部分场景热点数据无法切分导致的性能抖动
+TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制压缩或整理数据占用的 I/O 量缓解资源争抢。
+
+此特性为实验特性，系统默认关闭此特性，你可以通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
+
+#### 优化 load base 切分策略，缓解部分场景热点数据无法切分导致的性能抖动
 
 #### 增强检查调度约束的性能，提升大集群中修复不健康 Region 的性能
 
 ### 保证执行计划在最大程度保持不变，避免性能抖动
 
-#### SQL BINDING 支持 `INSERT、REPLACE、UPDATE、DELETE` 语句
+#### SQL BINDING 支持 `INSERT`、`REPLACE`、`UPDATE`、`DELETE` 语句
 
 [用户文档](/sql-plan-management.md)
 
-在数据库性能调优或者运维过程中，如果发现因为查询计划选不稳定导致系统的性能不稳定时，你可以根据自身的经验或者通过 `EXPLAIN ANALYZE` 测试选择一条人为优化过的 SQL 语句，通过 SQL BINDING 将优化过的 SQL 语句与业务代码执行的 SQL 语句绑定，确保性能的稳定性。
+在数据库性能调优或者运维过程中，如果发现因为查询计划不稳定导致系统性能不稳定时，你可以根据自身的经验或者通过 `EXPLAIN ANALYZE` 测试选择一条人为优化过的 SQL 语句，通过 SQL BINDING 将优化过的 SQL 语句与业务代码执行的 SQL 语句绑定，确保性能的稳定性。
 
-通过 SQL BINDING 语句手动的绑定SQL 语句时，你需要确保优化过的 SQL 语句的语法与原来 SQL 语句的语法保持一致。
+通过 SQL BINDING 语句手动的绑定 SQL 语句时，你需要确保优化过的 SQL 语句的语法与原来 SQL 语句的语法保持一致。
 
-你可以通过`SHOW {GLOBAL | SESSION} BINDINGS` 命令查看手工、系统自动绑定的查询计划信息。输出信息基本跟原来保持一致。
+你可以通过 `SHOW {GLOBAL | SESSION} BINDINGS` 命令查看手工、系统自动绑定的查询计划信息。输出信息基本跟原来保持一致。
 
 #### 自动捕获、绑定查询计划
 
@@ -294,13 +304,13 @@ TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制�
 
 ### TiFlash 查询稳定性提升
 
-新增系统变量 tidb_allow_fallback_to_tikv，用于决定在 TiFlash 查询失败时，自动将查询回退到 TiKV 尝试执行，默认为 OFF。
+新增系统变量 `tidb_allow_fallback_to_tikv`，用于决定在 TiFlash 查询失败时，自动将查询回退到 TiKV 尝试执行，默认为 OFF。
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
-[TiCDC#1150](https://github.com/pingcap/ticdc/issues/1150)
+[TiCDC #1150](https://github.com/pingcap/ticdc/issues/1150)
 
-V4.0.9 及之前版本的 TiCDC 遇到同步过多历史变更数据的场景时会出现 OOM 问题。TiCDC 自 V4.0.9 版本起引入变更数据本地排序功能 Unified Sorter，在 V5.0.0 版本会默认开启本功能以缓解类似场景下的 OOM 问题：
+v4.0.9 及之前版本的 TiCDC 遇到同步过多历史变更数据的场景时会出现 OOM 问题。TiCDC 自 v4.0.9 版本起引入变更数据本地排序功能 Unified Sorter，在 v5.0.0 版本会默认开启本功能以缓解类似场景下的 OOM 问题：
 
 + 场景一：TiCDC 数据订阅任务暂停中断时间长，其间积累了大量的增量更新数据需要同步。
 + 场景二：从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
