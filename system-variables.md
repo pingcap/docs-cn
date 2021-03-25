@@ -428,7 +428,7 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 这个变量用来设置是否启用 Coprocessor 的 `Chunk` 数据编码格式。
 
-### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：INT_ONLY
