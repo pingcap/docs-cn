@@ -345,8 +345,7 @@ Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型�
 
 [用户文档](/ticdc/manage-ticdc.md#环形同步)，[TiCDC#471](https://github.com/pingcap/ticdc/issues/471)
 
-由于地理位置差异导致的通讯延迟等问题，存在以下场景：
-用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
+由于地理位置差异导致的通讯延迟等问题，存在以下场景：用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
 
 TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。
 
@@ -405,8 +404,9 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，对�
 
 ### 支持断点功能
 
-TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如果命令执行中断，那么整个升级操作都需重新开始，新版本 TiUP 可以支持：
-使用 tiup-cluster replay 子命令从断点处重试失败的操作，以避免升级中断后所有操作重新执行。
+TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如果命令执行中断，那么整个升级操作都需重新开始。
+
+新版本 TiUP 支持使用 tiup-cluster replay 子命令从断点处重试失败的操作，以避免升级中断后所有操作重新执行。
 
 ### 运维功能增强
 
