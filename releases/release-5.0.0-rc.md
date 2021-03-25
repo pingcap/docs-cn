@@ -99,7 +99,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
     
 ### 字符集和排序规则
 
-#### `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` 排序规则
+#### 支持 `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` 排序规则
 
 [用户文档](/character-set-and-collation.md#新框架下的排序规则支持)，[#17596](https://github.com/pingcap/tidb/issues/17596)
 
