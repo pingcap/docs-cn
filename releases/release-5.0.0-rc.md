@@ -293,11 +293,11 @@ Unified Sorter 统合了老版本提供了 memory、file sort-engine 配置选�
 
 ### 提升 Region 成员变更时的可用性
 
-[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入，issue：[#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
+[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)，[#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
 
 Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成两步，如果两步操作之间有故障发生会引起 Region 不可用并且会返回前端业务的错误信息。TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加”和“删除”合并为一个操作，并发送给所有成员，提升了 Region 成员变更时的可用性。在变更过程中，Region 处于中间的状态，如果任何被修改的成员失败，系统仍然可以使用。
 
-系统默认开启此功能，你可以通过设置 `pd-ctl config set enable-joint-consensus` 选项值为 false  关闭此功能。[#7587](https://github.com/tikv/pd/issues/2860), [#2860](https://github.com/tikv/pd/issues/2860)
+系统默认开启此功能，你可以通过设置 `pd-ctl config set enable-joint-consensus` 选项值为 false  关闭此功能。
 
 ### 优化内存管理模块，降低系统 OOM 的风险
 
@@ -312,8 +312,8 @@ Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成
 数据迁移类工具支持 AWS S3 （也包含支持 S3 协议的其他存储服务）作为数据迁移的中间转存介质，同时支持将 Aurora 快照数据直接初始化 TiDB 中，丰富了数据从 AWS S3/Aurora 迁移到 TiDB 的选择。
 
 该功能使用方法可以参照以下文档
-+ 将 MySQL/Aurora 数据导出到 AWS S3（相关 issue：[dumpling#8](https://github.com/pingcap/dumpling/issues/8)，[用户文档](/dumpling-overview.md#导出到-amazon-s3-云盘)）
-+ 从 AWS S3 将 Aurora Snapshot 数据初始化到 TiDB（相关 issue：[lightning#266](https://github.com/pingcap/tidb-lightning/issues/266)，[用户文档](/migrate-from-aurora-using-lightning.md)）
++ 将 MySQL/Aurora 数据导出到 AWS S3 [用户文档](/dumpling-overview.md#导出到-amazon-s3-云盘)，[dumpling#8](https://github.com/pingcap/dumpling/issues/8)
++ 从 AWS S3 将 Aurora Snapshot 数据初始化到 TiDB [用户文档](/migrate-from-aurora-using-lightning.md)，[lightning#266](https://github.com/pingcap/tidb-lightning/issues/266)
 
 ### TiDB on Cloud 数据导入性能优化
 
@@ -323,20 +323,20 @@ Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成
 
 ### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform)  (实验特性)
 
-[用户文档](/integrate-confluent-using-ticdc)
+[用户文档](/integrate-confluent-using-ticdc)，[TiCDC#660](https://github.com/pingcap/ticdc/issues/660)
 
 为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统，实现业务所需的数据流转架构。
 
-Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。 TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect 扩展 TiDB 数据流转到其他异构数据库或者系统的能力。[TiCDC#660](https://github.com/pingcap/ticdc/issues/660)。
+Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。 TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect 扩展 TiDB 数据流转到其他异构数据库或者系统的能力。
 
 ### TiCDC 支持 TiDB 集群之间环形同步 (实验特性)
 
-[用户文档](/ticdc/manage-ticdc.md#环形同步)
+[用户文档](/ticdc/manage-ticdc.md#环形同步)，[TiCDC#471](https://github.com/pingcap/ticdc/issues/471)
 
 由于地理位置差异导致的通讯延迟等问题，存在以下场景：
 用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
 
-TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。[TiCDC#471](https://github.com/pingcap/ticdc/issues/471)
+TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。
 
 该功能可以用于以下场景： 
 + 多套 TiDB 集群相互进行数据备份，灾难发生时业务切换到正常的 TiDB 集群
@@ -399,4 +399,4 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 + 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因
 +  …….
     
-更多信息可以参考[Tiup Release Note](https://github.com/pingcap/tiup/releases/tag/v1.4.0)
+更多信息可以参考[TiUP Release Note](https://github.com/pingcap/tiup/releases/tag/v1.4.0)
