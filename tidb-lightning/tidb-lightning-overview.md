@@ -43,3 +43,7 @@ TiDB Lightning 整体工作原理如下：
 如果需要导入的目标集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下，`tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入。
 
 TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据：`tidb-lightning` 将数据转换为 `INSERT` 语句，然后直接在目标集群上执行这些语句。详见 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
+
+> **注意：**
+>
+> 目前不支持对有 TiFlash 副本的表使用 TiDB Lightning 导入数据。在导入之前请先清除 TiFlash 副本，导入完成之后再添加 TiFlash 副本。
