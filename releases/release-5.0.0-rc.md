@@ -295,7 +295,7 @@ Unified Sorter 统合了老版本提供了 memory、file sort-engine 配置选�
 
 ### 提升 Region 成员变更时的可用性
 
-[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)[#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
+[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)，[#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
 
 Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成两步，如果两步操作之间有故障发生会引起 Region 不可用并且会返回前端业务的错误信息。TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加”和“删除”合并为一个操作，并发送给所有成员，提升了 Region 成员变更时的可用性。在变更过程中，Region 处于中间的状态，如果任何被修改的成员失败，系统仍然可以使用。
 
