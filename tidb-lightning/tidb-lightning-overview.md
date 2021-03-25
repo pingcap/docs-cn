@@ -46,4 +46,4 @@ TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据：`tidb-lig
 
 > **注意：**
 >
-> 目前不支持对有 TiFlash 副本的表使用 TiDB Lightning 导入数据。在导入之前请先清除 TiFlash 副本，导入完成之后再添加 TiFlash 副本。
+> TiDB Lightning 不支持对有 TiFlash 副本的表导入数据。在导入数据之前请先清除 TiFlash 副本。你可以在导入完成之后再添加 TiFlash 副本。
