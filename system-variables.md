@@ -506,7 +506,7 @@ mysql> SELECT * FROM t1;
 - 这个变量用来控制是否可以用 `DOUBLE` 类型的无效定义创建表。该设置的目的是提供一个从 TiDB 早期版本的升级路径，因为早期版本在验证类型方面不太严格。
 - 该变量的默认值 `ON` 与 MySQL 兼容。
 
-例如，由于无法保证浮点类型的精度，现在将 `DOUBLE(10)` 类型视为无效。将`tidb_enable_strict_double_type_check` 更改为 `OFF` 后，将会创建表：
+例如，由于无法保证浮点类型的精度，现在将 `DOUBLE(10)` 类型视为无效。将 `tidb_enable_strict_double_type_check` 更改为 `OFF` 后，将会创建表。如下所示：
 
 ```sql
 CREATE TABLE t1 (id int, c double(10));
@@ -519,7 +519,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **注意：**
 >
-> 该设置仅适用于 `DOUBLE` 类型，因为 MySQL 允许指定 `FLOAT` 类型的精度。 从 MySQL 8.0.17 开始已弃用此行为，不建议为 `FLOAT` 或 `DOUBLE` 类型指定精度。
+> 该设置仅适用于 `DOUBLE` 类型，因为 MySQL 允许为 `FLOAT` 类型指定精度。从 MySQL 8.0.17 开始已弃用此行为，不建议为 `FLOAT` 或 `DOUBLE` 类型指定精度。
 
 ### `tidb_enable_table_partition`
 
