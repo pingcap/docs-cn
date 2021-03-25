@@ -499,6 +499,28 @@ mysql> SELECT * FROM t1;
 - 默认值：ON（受配置文件影响，这里给出的是默认配置文件取值）
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
 
+### tidb_enable_strict_double_type_check <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：ON
+- 这个变量用来控制是否可以用 `DOUBLE` 类型的无效定义创建表。该设置的目的是提供一个从 TiDB 早期版本的升级路径，因为早期版本在验证类型方面不太严格。
+- 该变量的默认值 `ON` 与 MySQL 兼容。
+
+例如，由于无法保证浮点类型的精度，现在将 `DOUBLE(10)` 类型视为无效。将`tidb_enable_strict_double_type_check` 更改为 `OFF` 后，将会创建表：
+
+```sql
+CREATE TABLE t1 (id int, c double(10));
+ERROR 1149 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+SET tidb_enable_strict_double_type_check = 'OFF';
+Query OK, 0 rows affected (0.00 sec)
+CREATE TABLE t1 (id int, c double(10));
+Query OK, 0 rows affected (0.09 sec)
+```
+
+> **注意：**
+>
+> 该设置仅适用于 `DOUBLE` 类型，因为 MySQL 允许指定 `FLOAT` 类型的精度。 从 MySQL 8.0.17 开始已弃用此行为，不建议为 `FLOAT` 或 `DOUBLE` 类型指定精度。
+
 ### `tidb_enable_table_partition`
 
 - 作用域：SESSION | GLOBAL
