@@ -86,6 +86,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 #### 提升悲观事务执行成功的概率
 
 [用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)，[#18005](https://github.com/pingcap/tidb/issues/18005)
+
 悲观事务模式下，如果事务所涉及到的表存在并发的 DDL 操作或者 SCHEMA VERSION 变更，系统自动将该事务的 SCHEMA VERSION 更新到最新版本，以此确保事务会提交成功，避免事务因并发的 DDL 操作或者 SCHEMA VERSION 变更而中断时客户端收到 `Information schema is changed` 的错误信息。系统默认关闭此功能，你可以通过修改 `tidb_enable_amend_pessimistic_txn ` 系统变量开此功能，此功能已经从 4.0.7 版本开始提供，5.0 版本主要是修复了以下问题：
 + Binlog 在执行 Add cloumn 操作的兼容性问题
 + 与唯一索引一起使用时存在的数据不一致性的问题
@@ -101,6 +102,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 #### `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` 排序规则
 
 [用户文档](/character-set-and-collation.md#新框架下的排序规则支持)，[#17596](https://github.com/pingcap/tidb/issues/17596)
+
 支持字符集比较排序时不区分大小写。
 
 ### 安全
@@ -108,6 +110,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 #### 错误信息和日志信息的脱敏
 
 [用户文档](/log-redaction.md)，[#18566](https://github.com/pingcap/tidb/issues/18566)
+
 为满足各种安全合规（例如，《通用数据保护条例》(GDPR)）的要求，系统在输出错误信息和日志信息时，支持对敏感信息（例如，身份证信息、信用卡号）进行脱敏处理，避免敏感信息泄露。
 
 TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开关开启此功能：
@@ -123,6 +126,7 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 ### MPP 架构
 
 [用户文档](/tiflash/use-tiflash.md)
+
 TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。当 MPP 模式开启后，TiDB 会通过代价决策是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。更进一步，加上之前 TiFlash 已经支持的聚合计算，MPP 模式下 TiDB 可以将一个查询的计算都下推到 TiFlash MPP 集群，从而借助分布式环境加速整个执行过程，大幅度提升分析查询速度。经过 Benchmark 测试，在 TPC-H 100 的规模下，三台 40C 189G 物理机上，TiFlash MPP 提供了显著超越 Greenplum，Apache Spark 等传统分析数据库或数据湖上分析引擎的速度。借助这套架构，用户可以直接针对最新的交易数据进行大规模分析查询，且性能超越传统离线分析方案。
 
 当前 MPP 模式不支持的功能，如下：
@@ -136,6 +140,7 @@ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查�
 ### 聚簇索引
 
 [用户文档](/clustered-indexes.md)，[#4841](https://github.com/pingcap/tidb/issues/4841)
+
 DBA、数据库应用开发者在设计表结构时或者分析业务数据的行为时，如果发现有部分列经常分组排序、返回某范围的数据、返回少量不同的值的数据、有主键列及业务数据不会有读、写热点时，建议选择聚簇索引。
 
 开启聚簇索引功能后，TiDB 性能在一些场景下会有较大幅度的提升。例如，TPC-C tpmC 的性能可以提升 39%。聚簇索引主要在以下场景会有性能提升：
@@ -189,6 +194,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 #### 异步提交事务（Async Commit)
 
 [用户文档](/system-variables.md#tidb_enable_async_commit-从-v500-rc-版本开始引入), [#8316](https://github.com/tikv/tikv/issues/8316)
+
 数据库的客户端会同步等待数据库系统通过两阶段 (2PC) 完成事务的提交，事务在第一阶段提交成功能就会返回结果给客户端，系统会在后台异步执行第二阶段提交操作，降低事务提交的延迟。如果事务的写入只涉及一个 region，则第二阶段可以直接被省略，变成一阶段提交。
 
 开启异步提交事务特性后，在硬件、配置完全相同，Sysbench 设置 32 线程测试 oltp_insert 时， TPS 由 3056 提升到 4878，提升了 59.6%, 平均延迟由 10.46ms 降低到 6.56ms ，降低了 38.2%。
@@ -204,6 +210,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 #### 默认开启 Coprocessor cache 功能
 
 [用户文档](tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入) 
+
 在 5.0 GA 默认开启 Coprocessor cache 功能，开启此功能后， TiDB 会在 tidb-server 中会缓存算子下推到 tikv-server 计算后的结果，降低读取数据的延时。要关闭Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
 #### 提升`delete * from table where id < ? limit ?` 语句执行的性能，p99 性能提升了 4 倍 。
@@ -215,6 +222,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 ### 优化因调度功能不完善引起的性能抖动问题
 
 [#18005](https://github.com/pingcap/tidb/issues/18005)
+
 TiDB 调度过程中会占用 I/O、网络、CPU、内存 等资源，若不对调度的任务进行控制，QPS 和延时会因为资源被抢占而出现性能抖动问题。通过以下几项的优化，长期测试 72 小时，衡量 Sysbench TPS 抖动标准差的值从 11.09% 降低到 3.36%。
 
 ### 引入新的调度算分公式，减少不必要的调度，减少因调度引起的性能抖动问题
@@ -224,16 +232,19 @@ TiDB 调度过程中会占用 I/O、网络、CPU、内存 等资源，若不对�
 ### 默认开启跨 Region 合并功能
 
 [用户文档](/pd-configuration-file.md#enable-cross-table-merge)
+
 在 5.0-rc 之前，TiDB 默认关闭跨 Region 合并的功能；从5.0-rc 起, TiDB 默认开启跨 Region 合并功能，减少空 Region 的数量，降低系统的 网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
 
 ### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢 
 
 [用户文档](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入)
+
 在 5.0-rc 之前，自动调整 Compaction 的速度来平衡后台任务与前端的数据读写对 I/O 资源的争抢默认是半闭的；从5.0-rc 起, TiDB 默认开启此功能并优化调整算法，开启之后延迟抖动比未开启此功能时的抖动大幅减少。你可以通过修改`rate-limiter-auto-tuned` 配置项关闭此功能。
 
 ### 默认开启 GC in Compaction filter 功能，减少 GC 对 CPU、I/O 资源的占用
 
 [用户文档](/garbage-collection-configuration.md#gc-in-compaction-filter-机制),[#18009](https://github.com/pingcap/tidb/issues/18009)
+
 TiDB 在进行垃圾数据回收和数据 Compaction 时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减少对 CPU、 I/O 资源的占用。系统默认开启此功能，你可以通过设置 `gc.enable-compaction-filter = flase` 关闭此功能。
 
 ### TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢
@@ -249,6 +260,7 @@ TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制�
 #### SQL BINDING 支持 `INSERT、REPLACE、UPDATE、DELETE` 语句
 
 [用户文档](/sql-plan-management.md)
+
 在数据库性能调优或者运维过程中，如果发现因为查询计划选不稳定导致系统的性能不稳定时，你可以根据自身的经验或者通过 `EXPLAIN ANALYZE` 测试选择一条人为优化过的 SQL 语句，通过 SQL BINDING 将优化过的 SQL 语句与业务代码执行的 SQL 语句绑定，确保性能的稳定性。
 
 通过 SQL BINDING 语句手动的绑定SQL 语句时，你需要确保优化过的 SQL 语句的语法与原来 SQL 语句的语法保持一致。
@@ -311,24 +323,24 @@ Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成
 
 ### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform)  (实验特性)
 
+[用户文档](/integrate-confluent-using-ticdc)
+
 为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统，实现业务所需的数据流转架构。
 
-Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。 TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect 扩展 TiDB 数据流转到其他异构数据库或者系统的能力。相关 issue [TiCDC#660](https://github.com/pingcap/ticdc/issues/660)，
-
-使用方法参考 [用户文档](/integrate-confluent-using-ticdc)）
+Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。 TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect 扩展 TiDB 数据流转到其他异构数据库或者系统的能力。[TiCDC#660](https://github.com/pingcap/ticdc/issues/660)。
 
 ### TiCDC 支持 TiDB 集群之间环形同步 (实验特性)
+
+[用户文档](/ticdc/manage-ticdc.md#环形同步)
 
 由于地理位置差异导致的通讯延迟等问题，存在以下场景：
 用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
 
-TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。相关 issue：[TiCDC#471](https://github.com/pingcap/ticdc/issues/471)
+TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。[TiCDC#471](https://github.com/pingcap/ticdc/issues/471)
 
 该功能可以用于以下场景： 
 + 多套 TiDB 集群相互进行数据备份，灾难发生时业务切换到正常的 TiDB 集群
 + 跨地域部署多套 TiDB 集群支撑当地业务，TiDB 集群之间的同一业务表之间数据需要相互复制
-
-使用方法参考 [用户文档](/ticdc/manage-ticdc.md#环形同步)
 
 限制与约束：
 + 无法支持业务在不同集群写入使用自增 ID 的业务表，数据复制会导致业务数据相互覆盖而造成数据丢失
@@ -339,6 +351,7 @@ TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB
 ### 优化 `EXPLAIN` 功能，收集更多的信息，方便 DBA 排查性能问题 
 
 [用户文档](sql-statement-explain.md#explain)
+
 DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起性能问题的原因。之前版本中 `EXPLAIN` 收集的信息不够完善， DBA 只能通过日志信息、监控信息或者盲猜的方式来判断问题的原因，效率比较低。此版本通过以下几项优化提升排查问题的效率：
 + 支持对所有 DML 语句使用 `EXPLAIN ANALYZE` 语句以查看实际的执行计划及各个算子的执行详情。[#18056](https://github.com/pingcap/tidb/issues/18056)
 + 支持对正在执行的 SQL 语句使用 `EXPLAIN FOR CONNECTION` 语句以查看实时执行状态，例如各个算子的执行时间、已处理的数据行数等。[#18233](https://github.com/pingcap/tidb/issues/18233)
@@ -350,6 +363,7 @@ DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起�
 ### 优化集群部署操作逻辑，以便 DBA 更快地部署一套标准的 TiDB 生产集群 
 
 [用户文档](/production-deployment-using-tiup.md)
+
 DBA 在使用 TiUP 部署 TiDB 集群过程发现环境初始化比较复杂、校验配置过多，集群拓扑文件比较难编辑等，DBA 的部署效率比较低。5.0 版本通过以下几个事项提升 DBA 部署 TiDB 的效率：
 + TiUP Cluster 支持 check topo.yaml 命令，进行更全面一键式环境检查并给出修复建议。
 + TiUP Cluster 支持 check topo.yaml --apply 命令，自动修复检查过程中发现的环境问题。
@@ -385,4 +399,4 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 + 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因
 +  …….
     
-更多信息可以参考 （[Tiup Release Note]( https://github.com/pingcap/tiup/releases/tag/v1.4.0)
+更多信息可以参考[Tiup Release Note](https://github.com/pingcap/tiup/releases/tag/v1.4.0)
