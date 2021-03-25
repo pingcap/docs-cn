@@ -11,37 +11,37 @@ TiDB 版本：5.0.0 ga
 5.0 版本中，我们专注于帮助企业基于 TiDB 数据库快速构建应用程序，使企业在构建过程中无需担心数据库的性能、性能抖动、安全、高可用、容灾、SQL 语句的性能问题排查等问题。
 
 在 5.0 版本中，你可以获得以下关键特性：
-    + TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。
-    + 开启聚簇索引功能，提升数据库的性能。例如： TPC-C tpmC 测试下的性能提升了 39%。
-    + 开启异步提交事务功能，降低写入数据的延迟。例如：Sysbench oltp-insert 测试中延迟降低了 37.3%。
-    + 通过提升优化器的稳定性及限制系统任务对 I/O、网络、CPU、内存等资源的占用，降低系统的抖动。例如：长期测试 72 小时，衡量 Sysbench TPS 抖动标准差的值从 11.09% 降低到 3.36%。
-    + 通过完善调度功能及保证执行计划在最程度上保持不变，提升系统的稳定性。
-    + 引入 Raft Joint Consensus 算法，确保 Region 成员变更时系统的可用性。
-    + 优化 `EXPLAIN` 功能、引入不可见索引等功能帮助提升 DBA 调试及 SQL 语句执行的效率。
-    + 通过从 TiDB 备份文件到 AWS S3、Google Cloud GCS，或者从 AWS S3、Google Cloud GCS 恢复文件到 TiDB，确保企业数据的可靠性。
-    + 提升从 AWS S3 或者  TiDB/MySQL 导入导出数据的性能，帮忙企业在云上快速构建应用。例如：导入 1TiB TPC-C 数据性能提升了 40%，由 254 GiB/h 提升到 366 GiB/h。
++ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。
++ 开启聚簇索引功能，提升数据库的性能。例如： TPC-C tpmC 测试下的性能提升了 39%。
++ 开启异步提交事务功能，降低写入数据的延迟。例如：Sysbench oltp-insert 测试中延迟降低了 37.3%。
++ 通过提升优化器的稳定性及限制系统任务对 I/O、网络、CPU、内存等资源的占用，降低系统的抖动。例如：长期测试 72 小时，衡量 Sysbench TPS 抖动标准差的值从 11.09% 降低到 3.36%。
++ 通过完善调度功能及保证执行计划在最程度上保持不变，提升系统的稳定性。
++ 引入 Raft Joint Consensus 算法，确保 Region 成员变更时系统的可用性。
++ 优化 `EXPLAIN` 功能、引入不可见索引等功能帮助提升 DBA 调试及 SQL 语句执行的效率。
++ 通过从 TiDB 备份文件到 AWS S3、Google Cloud GCS，或者从 AWS S3、Google Cloud GCS 恢复文件到 TiDB，确保企业数据的可靠性。
++ 提升从 AWS S3 或者  TiDB/MySQL 导入导出数据的性能，帮忙企业在云上快速构建应用。例如：导入 1TiB TPC-C 数据性能提升了 40%，由 254 GiB/h 提升到 366 GiB/h。
 
 ## 兼容性变化
 
 ### 系统变量
 
-    + 新增系统变量 `tidb_executor_concurrency`，用于统一控制算子并发度，对原有的 tidb_*_concurrency（例如 tidb_projection_concurrency）设置仍然生效，使用过程中会提示已废弃警告。[用户文档](/system-variables.md#tidb_executor_concurrency-从-v500-rc-版本开始引入)
-    + 新增系统变量 `tidb_skip_ascii_check`，用于决定在写入 ASCII 字符集的列时，是否对字符的合法性进行检查，默认为 OFF。
-    + 新增系统变量 `tidb_enable_strict_double_type_check`，用于决定类似 “double(N)” 语法是否允许被定义在表结构中，默认为 OFF。
-    + 系统变量 tidb_dml_batch_size 的默认值由 2000 修改为 0，即在 LOAD/INSERT INTO SELECT ... 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。[用户文档](/system-variables.md#tidb_dml_batch_size)
-    + 临时表的语法兼容性受到 tidb_noop_functions 系统变量的控制：当 tidb_noop_functions 为 OFF 时，CREATE TEMPORARY TABLE 语法将会报错。
-    + 新增 tidb_gc_concurrency、tidb_gc_enable、tidb_gc_life_time、tidb_gc_run_interval、tidb_gc_scan_lock_mode 系统变量，用于直接通过系统变量调整垃圾回收相关参数。[ 用户文档](/system-variables.md#tidb_gc_enable)
++ 新增系统变量 `tidb_executor_concurrency`，用于统一控制算子并发度，对原有的 tidb_*_concurrency（例如 tidb_projection_concurrency）设置仍然生效，使用过程中会提示已废弃警告。[用户文档](/system-variables.md#tidb_executor_concurrency-从-v500-rc-版本开始引入)
++ 新增系统变量 `tidb_skip_ascii_check`，用于决定在写入 ASCII 字符集的列时，是否对字符的合法性进行检查，默认为 OFF。
++ 新增系统变量 `tidb_enable_strict_double_type_check`，用于决定类似 “double(N)” 语法是否允许被定义在表结构中，默认为 OFF。
++ 系统变量 tidb_dml_batch_size 的默认值由 2000 修改为 0，即在 LOAD/INSERT INTO SELECT ... 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。[用户文档](/system-variables.md#tidb_dml_batch_size)
++ 临时表的语法兼容性受到 tidb_noop_functions 系统变量的控制：当 tidb_noop_functions 为 OFF 时，CREATE TEMPORARY TABLE 语法将会报错。
++ 新增 tidb_gc_concurrency、tidb_gc_enable、tidb_gc_life_time、tidb_gc_run_interval、tidb_gc_scan_lock_mode 系统变量，用于直接通过系统变量调整垃圾回收相关参数。[ 用户文档](/system-variables.md#tidb_gc_enable)
 
 ### 配置文件参数
 
-    + 新增 `index-limit` 配置项，用于兼容 MySQL 最大索引数量限制，如果设置超过默认值，该表结构再次导入 MySQL 将会报错，默认值 64，取值范围在 [64,64 *8]。
-    + 新增 `enable-enum-length-limit` 配置项，用于兼容 MySQL enum/set 元素长度并保持一致（Enum 长度 < 255），默认值为 true。
-    + 新增 `deprecate-integer-display-length`，用于兼容 MySQL 显示声明整数类型长度，但会返回一个类似于 `Integer display width is deprecated and will be removed in a future release` 的警告。
-    + 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代 。
-    + 删除 `performance.max-memory` 配置项，通过[performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
-    + 删除 `tikv-client.copr-cache.enable` 配置项，通过[tikv-client.copr-cache.capcity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能， 默认： 1000.0。
-    + 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned] (/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入)替代。
-    + 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘。
++ 新增 `index-limit` 配置项，用于兼容 MySQL 最大索引数量限制，如果设置超过默认值，该表结构再次导入 MySQL 将会报错，默认值 64，取值范围在 [64,64 *8]。
++ 新增 `enable-enum-length-limit` 配置项，用于兼容 MySQL enum/set 元素长度并保持一致（Enum 长度 < 255），默认值为 true。
++ 新增 `deprecate-integer-display-length`，用于兼容 MySQL 显示声明整数类型长度，但会返回一个类似于 `Integer display width is deprecated and will be removed in a future release` 的警告。
++ 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代 。
++ 删除 `performance.max-memory` 配置项，通过[performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
++ 删除 `tikv-client.copr-cache.enable` 配置项，通过[tikv-client.copr-cache.capcity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能， 默认： 1000.0。
++ 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned] (/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入)替代。
++ 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘。
 
 ## 新功能
 
@@ -83,14 +83,14 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 
 [用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)，[#18005](https://github.com/pingcap/tidb/issues/18005)
 悲观事务模式下，如果事务所涉及到的表存在并发的 DDL 操作或者 SCHEMA VERSION 变更，系统自动将该事务的 SCHEMA VERSION 更新到最新版本，以此确保事务会提交成功，避免事务因并发的 DDL 操作或者 SCHEMA VERSION 变更而中断时客户端收到 `Information schema is changed` 的错误信息。系统默认关闭此功能，你可以通过修改 `tidb_enable_amend_pessimistic_txn ` 系统变量开此功能，此功能已经从 4.0.7 版本开始提供，5.0 版本主要是修复了以下问题：
-    + Binlog 在执行 Add cloumn 操作的兼容性问题
-    + 与唯一索引一起使用时存在的数据不一致性的问题
-    + 与添加索引一起使用时存在的数据不一致性的问题
++ Binlog 在执行 Add cloumn 操作的兼容性问题
++ 与唯一索引一起使用时存在的数据不一致性的问题
++ 与添加索引一起使用时存在的数据不一致性的问题
 
 当前此功能存在以下不兼容性问题：
-    + 并发事务场景下事务的语义可能发生变化的问题
-    + 与 Binlog 一起使用还存在已知的兼容性问题 [#20996](https://github.com/pingcap/tidb/issues/20996)
-    + 与 Change column 功能不兼容 [21470](https://github.com/pingcap/tidb/issues/21470)
++ 并发事务场景下事务的语义可能发生变化的问题
++ 与 Binlog 一起使用还存在已知的兼容性问题 [#20996](https://github.com/pingcap/tidb/issues/20996)
++ 与 Change column 功能不兼容 [21470](https://github.com/pingcap/tidb/issues/21470)
     
 ### 字符集和排序规则
 
@@ -107,10 +107,10 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 为满足各种安全合规（例如，《通用数据保护条例》(GDPR)）的要求，系统在输出错误信息和日志信息时，支持对敏感信息（例如，身份证信息、信用卡号）进行脱敏处理，避免敏感信息泄露。
 
 TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开关开启此功能：
-    + 全局系统变量 `tidb_redact_log` ：默认值为 0， 即关闭脱敏。设置变量值为 1 开启 tidb-server 的日志脱敏功能。
-    + 配置项 `security.redact-info-log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 tikv-server 的日志脱敏功能。[#2852](https://github.com/tikv/pd/issues/2852)
-    + 配置项 `security.redact-info-log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 pd-server 的日志脱敏功能。
-    + 修改配置项 `security.redact_info_log` ：默认值为 false，即关闭脱敏。设置配置项为 true 开启 tiflash-server 及 tiflash-learner 的日志脱敏功能。
++ 全局系统变量 `tidb_redact_log` ：默认值为 0， 即关闭脱敏。设置变量值为 1 开启 tidb-server 的日志脱敏功能。
++ 配置项 `security.redact-info-log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 tikv-server 的日志脱敏功能。[#2852](https://github.com/tikv/pd/issues/2852)
++ 配置项 `security.redact-info-log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 pd-server 的日志脱敏功能。
++ 修改配置项 `security.redact_info_log` ：默认值为 false，即关闭脱敏。设置配置项为 true 开启 tiflash-server 及 tiflash-learner 的日志脱敏功能。
 
 此功能从 5.0-rc 版本中开始提供，使用过程中必须开启所有系统变量及配置项。
 
@@ -122,12 +122,12 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。当 MPP 模式开启后，TiDB 会通过代价决策是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。更进一步，加上之前 TiFlash 已经支持的聚合计算，MPP 模式下 TiDB 可以将一个查询的计算都下推到 TiFlash MPP 集群，从而借助分布式环境加速整个执行过程，大幅度提升分析查询速度。经过 Benchmark 测试，在 TPC-H 100 的规模下，三台 40C 189G 物理机上，TiFlash MPP 提供了显著超越 Greenplum，Apache Spark 等传统分析数据库或数据湖上分析引擎的速度。借助这套架构，用户可以直接针对最新的交易数据进行大规模分析查询，且性能超越传统离线分析方案。
 
 当前 MPP 模式不支持的功能，如下：
-    + 分区表
-    + Window Function
-    + Collation
-    + 部分内置函数
-    + 读取 TiKV 数据
-    + OOM Spill
++ 分区表
++ Window Function
++ Collation
++ 部分内置函数
++ 读取 TiKV 数据
++ OOM Spill
 
 ### 聚簇索引
 
@@ -135,16 +135,16 @@ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查�
 DBA、数据库应用开发者在设计表结构时或者分析业务数据的行为时，如果发现有部分列经常分组排序、返回某范围的数据、返回少量不同的值的数据、有主键列及业务数据不会有读、写热点时，建议选择聚簇索引。
 
 开启聚簇索引功能后，TiDB 性能在一些场景下会有较大幅度的提升。例如，TPC-C tpmC 的性能可以提升 39%。聚簇索引主要在以下场景会有性能提升：
-    + 插入数据时会减少一次从网络写入索引数据。
-    + 等值条件查询仅涉及主键时会减少一次从网络读取数据。
-    + 范围条件查询仅涉及主键时会减少多次从网络读取数据。
-    + 等值或范围条件查询涉及主键的前缀时会减少多次从网络读取数据。
++ 插入数据时会减少一次从网络写入索引数据。
++ 等值条件查询仅涉及主键时会减少一次从网络读取数据。
++ 范围条件查询仅涉及主键时会减少多次从网络读取数据。
++ 等值或范围条件查询涉及主键的前缀时会减少多次从网络读取数据。
 
 聚簇索引，部分数据库管理系统叫索引组织表或者 Clustered Index，是一种和表的数据相关联的存储结构。创建聚簇索引时可指定包含表中的一列或多列作为索引的键值。这些键存储在一个结构中，使 TiDB 能够快速有效地找到与键值相关联的行，提升查询和写入数据的性能。
 
 一个表可以采用聚簇索引和非聚簇索引排序存储数据，区别如下：
-    + 创建聚簇索引时，可指定包含表中的一列或多列作为索引的键值，聚簇索引根据键值对表的数据进行排序和存储，每个表只能有一个聚簇索引，当一个表有聚簇索引时，该表称为聚簇索引表。相反如果一个表没有聚簇索引，称为非聚簇索引表。
-    + 创建非聚簇索引时，表中的数据存储在无序结构，用户无需显式指定非聚簇索引的键值，系统会自动为每一行数据分配唯一的 ROWID，标识一行数据的位置信息，查询数据时会用 ROWID 定位一行数据。查询或者写入数据时至少会有两次网络 I/O，因此查询或者写入数据的性能相比聚簇索引会有所下降。
++ 创建聚簇索引时，可指定包含表中的一列或多列作为索引的键值，聚簇索引根据键值对表的数据进行排序和存储，每个表只能有一个聚簇索引，当一个表有聚簇索引时，该表称为聚簇索引表。相反如果一个表没有聚簇索引，称为非聚簇索引表。
++ 创建非聚簇索引时，表中的数据存储在无序结构，用户无需显式指定非聚簇索引的键值，系统会自动为每一行数据分配唯一的 ROWID，标识一行数据的位置信息，查询数据时会用 ROWID 定位一行数据。查询或者写入数据时至少会有两次网络 I/O，因此查询或者写入数据的性能相比聚簇索引会有所下降。
 
 聚簇索引和非聚簇索引都是唯一的，意味着索引键值不能有相同的两行，但多条普通索引可以引用一条聚簇索引和非聚簇索引的键值。
 
@@ -158,22 +158,22 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 通过 `SHOW INDEX FROM tbl-name`  语句可查询表是否有聚簇索引。
 
 聚簇索引功能有如下限制：
-    + 不支持聚簇索引和非聚簇索引相互转换。
-    + 不支持删除聚簇索引。
-    + 不支持通过 `ALTER TABLE` SQL 语句增加、删除、修改聚簇索引。
-    + 不支持重组织和重建聚簇索引。
-    + 不支持启用、禁用索引，也就是不可见索引功能对聚簇索引不生效。
-    + 不支持 `UNIQUE KEY`  作为聚簇索引。
-    + 不支持与 Binlog 一起使用，即开启过 Binlog 后不允许创建聚簇索引，创建聚簇索引后不允许开启 Binlog。
-    + 不支持与 `SHARD_ROW_ID_BITS，`PRE_SPLIT_REGIONS` 属性一起使用。
-    + 集群升级回滚时，存量的表不受影响，新增表可以通过导入、导出数据的方式降级。
++ 不支持聚簇索引和非聚簇索引相互转换。
++ 不支持删除聚簇索引。
++ 不支持通过 `ALTER TABLE` SQL 语句增加、删除、修改聚簇索引。
++ 不支持重组织和重建聚簇索引。
++ 不支持启用、禁用索引，也就是不可见索引功能对聚簇索引不生效。
++ 不支持 `UNIQUE KEY`  作为聚簇索引。
++ 不支持与 Binlog 一起使用，即开启过 Binlog 后不允许创建聚簇索引，创建聚簇索引后不允许开启 Binlog。
++ 不支持与 `SHARD_ROW_ID_BITS，`PRE_SPLIT_REGIONS` 属性一起使用。
++ 集群升级回滚时，存量的表不受影响，新增表可以通过导入、导出数据的方式降级。
 
 用户可以通过以下两种方式使用聚簇索引和非聚簇索引，如下：
-    + 创建表时在语句上指定 `CLUSTERED | NONCLUSTERED` 。
-    + 设置 `tidb_enable_clustered_index ` 控制聚簇索引功能，取值：ON|OFF|INT_ONLY，默认： INT_ONLY
-        + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
-        + OFF：关闭聚簇索引， 支持添加或者删除非聚簇索引。
-        + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与`alter-primary-ke = false` 一起使用可控制 INT 类型是开启聚簇索引。
++ 创建表时在语句上指定 `CLUSTERED | NONCLUSTERED` 。
++ 设置 `tidb_enable_clustered_index ` 控制聚簇索引功能，取值：ON|OFF|INT_ONLY，默认： INT_ONLY
+ + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
+ + OFF：关闭聚簇索引， 支持添加或者删除非聚簇索引。
+ + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与`alter-primary-ke = false` 一起使用可控制 INT 类型是开启聚簇索引。
 
 优先级方面，建表时有指定 `CLUSTERED | NONCLUSTERED` 时，优先级高于系统变量和配置项。
 
@@ -264,15 +264,14 @@ TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制�
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
 V4.0.9 及之前版本的 TiCDC 遇到同步过多历史变更数据的场景时会出现 OOM 问题。TiCDC 自 V4.0.9 版本起引入变更数据本地排序功能 Unified Sorter，在 V5.0.0 版本会默认开启本功能以缓解类似场景下的 OOM 问题：
-
-    + 场景一：TiCDC 数据订阅任务暂停中断时间长，其间积累了大量的增量更新数据需要同步。
-    + 场景二：从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
++ 场景一：TiCDC 数据订阅任务暂停中断时间长，其间积累了大量的增量更新数据需要同步。
++ 场景二：从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
 
 Unified Sorter 统合了老版本提供了 memory、file sort-engine 配置选择，不需要用户手动配置变更的运维操作。[TiCDC#1150](https://github.com/pingcap/ticdc/issues/1150)
 
 限制与约束：
-    + 用户需要根据业务数据更新量提供充足的磁盘空间，推荐使用大于 128G 的 SSD 磁盘。
-    + 无法解决目标系统（sink）写入速度过慢，逐渐积累在 TiCDC 内存中的还未消费的数据造成 TiCDC OOM 的问题。
++ 用户需要根据业务数据更新量提供充足的磁盘空间，推荐使用大于 128G 的 SSD 磁盘。
++ 无法解决目标系统（sink）写入速度过慢，逐渐积累在 TiCDC 内存中的还未消费的数据造成 TiCDC OOM 的问题。
 
 ## 高可用和容灾
 
@@ -297,8 +296,8 @@ Region 在完成成员变更时，由于"添加 "和 "删除 "成员操作分成
 数据迁移类工具支持 AWS S3 （也包含支持 S3 协议的其他存储服务）作为数据迁移的中间转存介质，同时支持将 Aurora 快照数据直接初始化 TiDB 中，丰富了数据从 AWS S3/Aurora 迁移到 TiDB 的选择。
 
 该功能使用方法可以参照以下文档
-    + 将 MySQL/Aurora 数据导出到 AWS S3（相关 issue：[dumpling#8](https://github.com/pingcap/dumpling/issues/8)，[用户文档](/dumpling-overview.md#导出到-amazon-s3-云盘)）
-    + 从 AWS S3 将 Aurora Snapshot 数据初始化到 TiDB（相关 issue：[lightning#266](https://github.com/pingcap/tidb-lightning/issues/266)，[用户文档](/migrate-from-aurora-using-lightning.md)）
++ 将 MySQL/Aurora 数据导出到 AWS S3（相关 issue：[dumpling#8](https://github.com/pingcap/dumpling/issues/8)，[用户文档](/dumpling-overview.md#导出到-amazon-s3-云盘)）
++ 从 AWS S3 将 Aurora Snapshot 数据初始化到 TiDB（相关 issue：[lightning#266](https://github.com/pingcap/tidb-lightning/issues/266)，[用户文档](/migrate-from-aurora-using-lightning.md)）
 
 ### TiDB on Cloud 数据导入性能优化
 
@@ -322,14 +321,14 @@ Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型�
 TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。相关 issue：[TiCDC#471](https://github.com/pingcap/ticdc/issues/471)
 
 该功能可以用于以下场景： 
-    + 多套 TiDB 集群相互进行数据备份，灾难发生时业务切换到正常的 TiDB 集群
-    + 跨地域部署多套 TiDB 集群支撑当地业务，TiDB 集群之间的同一业务表之间数据需要相互复制
++ 多套 TiDB 集群相互进行数据备份，灾难发生时业务切换到正常的 TiDB 集群
++ 跨地域部署多套 TiDB 集群支撑当地业务，TiDB 集群之间的同一业务表之间数据需要相互复制
 
 使用方法参考 [用户文档](/ticdc/manage-ticdc.md#环形同步)
 
 限制与约束：
-    + 无法支持业务在不同集群写入使用自增 ID 的业务表，数据复制会导致业务数据相互覆盖而造成数据丢失
-    + 无法支持业务在不同集群写入相同业务表的相同数据，数据复制会导致业务数据相互覆盖而造成数据丢失
++ 无法支持业务在不同集群写入使用自增 ID 的业务表，数据复制会导致业务数据相互覆盖而造成数据丢失
++ 无法支持业务在不同集群写入相同业务表的相同数据，数据复制会导致业务数据相互覆盖而造成数据丢失
 
 ## 问题诊断
 
@@ -337,10 +336,10 @@ TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB
 
 [用户文档](sql-statement-explain.md#explain)
 DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起性能问题的原因。之前版本中 `EXPLAIN` 收集的信息不够完善， DBA 只能通过日志信息、监控信息或者盲猜的方式来判断问题的原因，效率比较低。此版本通过以下几项优化提升排查问题的效率：
-    + 支持对所有 DML 语句使用 `EXPLAIN ANALYZE` 语句以查看实际的执行计划及各个算子的执行详情。[#18056](https://github.com/pingcap/tidb/issues/18056)
-    + 支持对正在执行的 SQL 语句使用 `EXPLAIN FOR CONNECTION` 语句以查看实时执行状态，例如各个算子的执行时间、已处理的数据行数等。[#18233](https://github.com/pingcap/tidb/issues/18233)
-    + `EXPLAIN ANALYZE` 语句显示的算子执行详情中新增算子发送的 RPC 请求数、处理锁冲突耗时、网络延迟、RocksDB 已删除数据的扫描量、RocksDB 缓存命中情况等。[#18663](https://github.com/pingcap/tidb/issues/18663)
-    + 慢查询日志中自动记录 SQL 语句执行时的详细执行状态，输出的信息与 `EXPLAIN ANALYZE` 语句输出信息保持一致，例如各个算子消耗的时间、处理数据行数、发送的 RPC 请求数等。[#15009](https://github.com/pingcap/tidb/issues/15009)
++ 支持对所有 DML 语句使用 `EXPLAIN ANALYZE` 语句以查看实际的执行计划及各个算子的执行详情。[#18056](https://github.com/pingcap/tidb/issues/18056)
++ 支持对正在执行的 SQL 语句使用 `EXPLAIN FOR CONNECTION` 语句以查看实时执行状态，例如各个算子的执行时间、已处理的数据行数等。[#18233](https://github.com/pingcap/tidb/issues/18233)
++ `EXPLAIN ANALYZE` 语句显示的算子执行详情中新增算子发送的 RPC 请求数、处理锁冲突耗时、网络延迟、RocksDB 已删除数据的扫描量、RocksDB 缓存命中情况等。[#18663](https://github.com/pingcap/tidb/issues/18663)
++ 慢查询日志中自动记录 SQL 语句执行时的详细执行状态，输出的信息与 `EXPLAIN ANALYZE` 语句输出信息保持一致，例如各个算子消耗的时间、处理数据行数、发送的 RPC 请求数等。[#15009](https://github.com/pingcap/tidb/issues/15009)
 
 ## 部署及运维
 
@@ -348,25 +347,25 @@ DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起�
 
 [用户文档](/production-deployment-using-tiup.md)
 DBA 在使用 TiUP 部署 TiDB 集群过程发现环境初始化比较复杂、校验配置过多，集群拓扑文件比较难编辑等，DBA 的部署效率比较低。5.0 版本通过以下几个事项提升 DBA 部署 TiDB 的效率：
-    + TiUP Cluster 支持 check topo.yaml 命令，进行更全面一键式环境检查并给出修复建议。
-    + TiUP Cluster 支持 check topo.yaml --apply 命令，自动修复检查过程中发现的环境问题。
-    + TiUP Cluster 支持 template 命令，获取集群拓扑原始文件，供 DBA 编辑且支持修改全局的节点参数。
-    + TiUP 支持使用 edit-config 命令编辑 remote_config 参数配置远程 Prometheus。
-    + TiUP 支持使用 edit-config 命令编辑 external_alertmanagers 参数配置不同的 AlertManager 。
-    + 在 tiup-cluster 中使用 edit-config 子命令编辑拓扑文件时允许改变配置项值的数据类型。
++ TiUP Cluster 支持 check topo.yaml 命令，进行更全面一键式环境检查并给出修复建议。
++ TiUP Cluster 支持 check topo.yaml --apply 命令，自动修复检查过程中发现的环境问题。
++ TiUP Cluster 支持 template 命令，获取集群拓扑原始文件，供 DBA 编辑且支持修改全局的节点参数。
++ TiUP 支持使用 edit-config 命令编辑 remote_config 参数配置远程 Prometheus。
++ TiUP 支持使用 edit-config 命令编辑 external_alertmanagers 参数配置不同的 AlertManager 。
++ 在 tiup-cluster 中使用 edit-config 子命令编辑拓扑文件时允许改变配置项值的数据类型。
 
 ### 提升升级稳定性
 
 TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时会导致 SQL 响应持续长时间抖动，PD 在线滚动升级期间集群 QPS 抖动时间维持在 10~30s 。TiUP v1.4.0 版本版本做了如下逻辑调整进行优化：
-    + 升级 PD 时，会主动判断被重启的 PD 节点状态就绪后再滚动升级下一个 PD 节点。
-    + 主动识别 PD 角色，先升级 follower 角色 PD 节点最后再升级 PD Leader 节点。
++ 升级 PD 时，会主动判断被重启的 PD 节点状态就绪后再滚动升级下一个 PD 节点。
++ 主动识别 PD 角色，先升级 follower 角色 PD 节点最后再升级 PD Leader 节点。
 
 ### 优化升级时长
 
 TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，对于节点数比较多的集群，整个升级的时间会持续很长，不能满足部分有升级时间窗口要求的用户。从 v1.4.0 版本起，TiUP进行了以下几处优化：
-    + 新版本 TiUP 支持使用 tiup cluster upgrade --offline 子命令实现快速的离线升级。
-    + 对于使用滚动升级的用户，新版本 TiUP 默认会加速升级期间 region Leader 的搬迁速度以减少滚动升级 TiKV 消耗的时间。
-    + 运行滚动升级前使用 check 子命令，对 region 监控状态的检查，确保集群升级前状态正常以减少升级失败的概率。
++ 新版本 TiUP 支持使用 tiup cluster upgrade --offline 子命令实现快速的离线升级。
++ 对于使用滚动升级的用户，新版本 TiUP 默认会加速升级期间 region Leader 的搬迁速度以减少滚动升级 TiKV 消耗的时间。
++ 运行滚动升级前使用 check 子命令，对 region 监控状态的检查，确保集群升级前状态正常以减少升级失败的概率。
     
 ### 支持断点功能
 
@@ -376,10 +375,10 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 ### 运维功能增强
 
 新版本 TiUP 对运维 TiDB 集群的功能做了进一步的强化:
-    + 支持对已停机的 TiDB 和 DM 集群进行升级或 patch 操作，以适应更多用户的使用场景。
-    + 为 tiup-cluster 的 display 子命令添加 `--version` 参数用于获取集群版本
-    + 支持 edit-config 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置
-    + 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因
-    + …….
++ 支持对已停机的 TiDB 和 DM 集群进行升级或 patch 操作，以适应更多用户的使用场景。
++ 为 tiup-cluster 的 display 子命令添加 `--version` 参数用于获取集群版本
++ 支持 edit-config 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置
++ 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因
++  …….
     
 更多信息可以参考 （[Tiup Release Note]( https://github.com/pingcap/tiup/releases/tag/v1.4.0)
