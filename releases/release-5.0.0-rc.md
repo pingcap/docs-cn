@@ -46,7 +46,7 @@ TiDB 版本：5.0.0 GA
 
 ## 新功能
 
-### SQL 
+### SQL
 
 #### List 分区表 （List Partition）（实验特性）
 
@@ -73,7 +73,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 #### `EXCEPT` 和 `INTERSECT` 操作符
 
  [用户文档](/functions-and-operators/set-operators.md)，[#18031](https://github.com/pingcap/tidb/issues/18031)
- 
+
 `INTERSECT` 操作符是一个集合操作符，返回两个或者多个查询结果集的交集。一定程度上可以替代 `Inner Join` 操作符。
 
 `EXCEPT` 操作符是一个集合操作符，返回两个查询结果集的差集， 即在第一个查询结果中存在但在第二个查询结果中不存在的结果集。
@@ -95,7 +95,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 + 并发事务场景下事务的语义可能发生变化的问题
 + 与 Binlog 一起使用还存在已知的兼容性问题 [#20996](https://github.com/pingcap/tidb/issues/20996)
 + 与 Change column 功能不兼容 [#21470](https://github.com/pingcap/tidb/issues/21470)
-    
+
 ### 字符集和排序规则
 
 #### 支持 `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` 排序规则
@@ -163,9 +163,12 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 当修改表的数据时，数据库系统会自动维护聚簇索引和非聚簇索引，用户无需参与。
 
 系统默认采用非聚簇索引，用户在创建表时通过 `CLUSTERED` 或者 `NONCLUSTERED` 指定采用聚簇索引或者非聚簇索引，指定后系统将按照指定的方式创建表，具体语法如下：
- CREATE TABLE `t` (`a` VARCHAR(255), `b` INT, PRIMARY KEY (`a`, `b`) CLUSTERED);
- 或者
+
+```
+CREATE TABLE `t` (`a` VARCHAR(255), `b` INT, PRIMARY KEY (`a`, `b`) CLUSTERED);
+或者
 CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
+```
 
 通过 `SHOW INDEX FROM tbl-name`  语句可查询表是否有聚簇索引。
 
@@ -213,7 +216,7 @@ CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 
 #### 默认开启 Coprocessor cache 功能
 
-[用户文档](/tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入) 
+[用户文档](/tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入)
 
 在 5.0 GA 默认开启 Coprocessor cache 功能，开启此功能后， TiDB 会在 tidb-server 中会缓存算子下推到 tikv-server 计算后的结果，降低读取数据的延时。要关闭Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
@@ -239,7 +242,7 @@ TiDB 调度过程中会占用 I/O、网络、CPU、内存 等资源，若不对�
 
 在 5.0-rc 之前，TiDB 默认关闭跨 Region 合并的功能；从5.0-rc 起, TiDB 默认开启跨 Region 合并功能，减少空 Region 的数量，降低系统的 网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
 
-### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢 
+### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢
 
 [用户文档](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入)
 
@@ -347,7 +350,7 @@ Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型�
 
 TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。
 
-该功能可以用于以下场景： 
+该功能可以用于以下场景：
 
 + 多套 TiDB 集群相互进行数据备份，灾难发生时业务切换到正常的 TiDB 集群
 + 跨地域部署多套 TiDB 集群支撑当地业务，TiDB 集群之间的同一业务表之间数据需要相互复制
@@ -359,7 +362,7 @@ TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB
 
 ## 问题诊断
 
-### 优化 `EXPLAIN` 功能，收集更多的信息，方便 DBA 排查性能问题 
+### 优化 `EXPLAIN` 功能，收集更多的信息，方便 DBA 排查性能问题
 
 [用户文档](/sql-statements/sql-statement-explain.md#explain)
 
@@ -372,7 +375,7 @@ DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起�
 
 ## 部署及运维
 
-### 优化集群部署操作逻辑，以便 DBA 更快地部署一套标准的 TiDB 生产集群 
+### 优化集群部署操作逻辑，以便 DBA 更快地部署一套标准的 TiDB 生产集群
 
 [用户文档](/production-deployment-using-tiup.md)
 
@@ -399,7 +402,7 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，对�
 + 新版本 TiUP 支持使用 tiup cluster upgrade --offline 子命令实现快速的离线升级。
 + 对于使用滚动升级的用户，新版本 TiUP 默认会加速升级期间 region Leader 的搬迁速度以减少滚动升级 TiKV 消耗的时间。
 + 运行滚动升级前使用 check 子命令，对 region 监控状态的检查，确保集群升级前状态正常以减少升级失败的概率。
-    
+
 ### 支持断点功能
 
 TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如果命令执行中断，那么整个升级操作都需重新开始，新版本 TiUP 可以支持：
@@ -413,4 +416,4 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 + 为 tiup-cluster 的 display 子命令添加 `--version` 参数用于获取集群版本。
 + 支持 edit-config 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置。
 + 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户 更快定位问题原因。
-+ ……  
++ ……
