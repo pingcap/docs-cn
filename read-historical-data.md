@@ -35,6 +35,7 @@ TiDB 使用 MVCC 管理版本，当更新/删除数据时，不会做真正的�
 TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行清理，关于 GC 的详细介绍参见 [TiDB 垃圾回收 (GC)](/garbage-collection-overview.md)。
 
 这里需要重点关注的是：
+
 - 使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time) 可以配置历史版本的保留时间（默认值是 `10m0s`）。
 - 使用 SQL 语句 `SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point'` 可以查询当前的 safePoint， 即当前能读取到的所有历史数据。在每次 GC 开始运行时，safePoint 将自动更新。
 
