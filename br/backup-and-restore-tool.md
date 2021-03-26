@@ -75,7 +75,7 @@ BR 和 TiDB 集群的兼容性问题分为以下两方面：
 
 | 功能 | 相关 issue | 解决方式 |
 |  ----  | ----  | ----- |
-| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 tidb_enable_clustered_index 变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
+| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 tidb_enable_clustered_index 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
 | New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 new_collations_enabled_on_first_bootstrap 和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
 | 恢复集群开启 TiCDC 同步 | [#364](https://github.com/pingcap/br/issues/364#issuecomment-646813965) |  TiKV 暂不能将 BR ingest 的 SST 文件下推到 TiCDC，因此使用 BR 恢复时候需要关闭 TiCDC。 |
 
