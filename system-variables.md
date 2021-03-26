@@ -271,13 +271,8 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_disable_txn_auto_retry`
 
 - 作用域：SESSION | GLOBAL
-<<<<<<< HEAD
 - 默认值：on
-- 这个变量用来设置是否禁用显式事务自动重试，设置为 `on` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
-=======
-- 默认值：ON
 - 这个变量用来设置是否禁用显式的乐观事务自动重试，设置为 `ON` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
->>>>>>> 868bf60d... Add declaration for scopes of transaction related variables and configurations (#5725)
 
     如果将该变量的值设为 `off`，TiDB 将会自动重试事务，这样在事务提交时遇到的错误更少。需要注意的是，这样可能会导致数据更新丢失。
 
@@ -285,27 +280,8 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
     关于是否需要禁用自动重试，请参考[重试的局限性](/optimistic-transaction.md#重试的局限性)。
 
-<<<<<<< HEAD
-=======
     该变量只适用于乐观事务，不适用于悲观事务。悲观事务的重试次数由 [`max_retry_count`](/tidb-configuration-file.md#max-retry-count) 控制。
 
-### `tidb_distsql_scan_concurrency`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：15
-- 这个变量用来设置 scan 操作的并发度。
-- AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
-- 若表的分区较多可以适当调小该参数，避免 TiKV 内存溢出 (OOM)。
-
-### `tidb_dml_batch_size`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：0
-- 样本值：20000
-- 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
-- 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
-
->>>>>>> 868bf60d... Add declaration for scopes of transaction related variables and configurations (#5725)
 ### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
