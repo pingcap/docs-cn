@@ -606,19 +606,19 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
-### tidb_gc_concurrency
+### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：-1
 - 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-lock)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
 
-### tidb_gc_enable
+### `tidb_gc_enable` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：ON
 - 这个变量用于控制是否启用 TiKV 的垃圾回收 (GC) 机制。如果不启用 GC 机制，系统将不再清理旧版本的数据，因此会有损系统性能。
 
-## tidb_gc_life_time
+## `tidb_gc_life_time` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`"10m0s"`
@@ -631,13 +631,13 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 >     - 大量的历史数据可能会在一定程度上影响系统性能，尤其是范围的查询（如 `select count(*) from t`）。
 > - 如果一个事务的运行时长超过了 `tidb_gc_life_time` 配置的值，在 GC 时，为了使这个事务可以继续正常运行，系统会保留从这个事务开始时间 `start_ts` 以来的数据。例如，如果 `tidb_gc_life_time` 的值配置为 10 分钟，且在一次 GC 时，集群正在运行的事务中最早开始的那个事务已经运行了 15 分钟，那么本次 GC 将保留最近 15 分钟的数据。
 
-### tidb_gc_run_interval
+### `tidb_gc_run_interval` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`"10m0s"`
 - 这个变量用于指定垃圾回收 (GC) 运行的时间间隔。变量值为 Go 的 Duration 字符串格式，如`"1h30m"`，`"15m"`等。
 
-### tidb_gc_scan_lock_mode
+### `tidb_gc_scan_lock_mode` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 > **警告：**
 >
