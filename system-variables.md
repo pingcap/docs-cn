@@ -178,6 +178,12 @@ mysql> SELECT * FROM t1;
 - Default value: ""
 - This variable is used to specify a list of storage engines that might fall back to TiKV. If the execution of a SQL statement fails due to a failure of the specified storage engine in the list, TiDB retries executing this SQL statement with TiKV. This variable can be set to "" or "tiflash". When this variable is set to "tiflash", if the execution of a SQL statement fails due to a failure of TiFlash, TiDB retries executing this SQL statement with TiKV.
 
+### tidb_allow_mpp <span class="version-mark">New in v5.0 GA</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: ON
+- This variable controls whether to use the MPP mode of TiFlash to execute queries. If the value is set to `ON`, TiDB automatically determines using the optimizer whether to choose MPP to execute queries. MPP is a distributed computing framework provided by the TiFlash engine, which allows data exchange between nodes and provides high-performance, high-throughput SQL algorithms.
+
 ### tidb_allow_remove_auto_inc <span class="version-mark">New in v2.1.18 and v3.0.4</span>
 
 - Scope: SESSION
@@ -221,6 +227,18 @@ mysql> SELECT * FROM t1;
     For example, the base timeout for TiDB to take TSO from PD is 15 seconds. When `tidb_backoff_weight = 2`, the maximum timeout for taking TSO is: *base time \* 2 = 30 seconds*.
 
     In the case of a poor network environment, appropriately increasing the value of this variable can effectively alleviate error reporting to the application end caused by timeout. If the application end wants to receive the error information more quickly, minimize the value of this variable.
+
+### tidb_broadcast_join_threshold_count <span class="version-mark">New in v5.0 GA</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 10240
+- The unit of the variable is rows. If the objects of the join operation belong to a subquery, the optimizer cannot estimate the size of the subquery result set. In this situation, the size is determined by the number of rows in the result set. If the estimated number of rows in the subquery is less than the value of this variable, the Broadcast Hash Join algorithm is used. Otherwise, the Shuffled Hash Join algorithm is used.
+
+### tidb_broadcast_join_threshold_size <span class="version-mark">New in v5.0 GA</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: 104857600 (which equals 100 megabytes)
+- If the table size (in the unit of bytes) is less than the value of the variable, the Broadcast Hash Join algorithm is used. Otherwise, the Shuffled Hash Join algorithm is used.
 
 ### tidb_build_stats_concurrency
 

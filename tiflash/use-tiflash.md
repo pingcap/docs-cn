@@ -244,3 +244,44 @@ TiFlash does not support push-down calculations in the following situations:
 - If an aggregate function or a `WHERE` clause contains expressions that are not included in the list above, the aggregate or related predicate filtering cannot be pushed down.
 
 If a query encounters unsupported push-down calculations, TiDB needs to complete the remaining calculations, which might greatly affect the TiFlash acceleration effect.
+
+## Use the MPP mode
+
+TiFlash supports using the MPP mode to execute queries, which introduces cross-node data exchange (data shuffle process) into the computation. The MPP mode is enabled by default and can be disabled by setting the value of the global/session variable [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-new-in-v50-ga) to `0` or `OFF`.
+
+```shell
+set @@session.tidb_allow_mpp=0
+```
+
+MPP mode supports these physical algorithms: Broadcast Hash Join, Shuffled Hash Join, and Shuffled Hash Aggregation. The optimizer automatically determines which algorithm to be used in a query. To check the specific query execution plan, you can execute the `EXPLAIN` statement.
+
+The following statement takes the table structure in the TPC-H test set as an example：
+
+```sql
+explain select count(*) from customer c join nation n on c.c_nationkey=n.n_nationkey;
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+| id                                       | estRows    | task              | access object | operator info                                                              |
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+| HashAgg_23                               | 1.00       | root              |               | funcs:count(Column#16)->Column#15                                          |
+| └─TableReader_25                         | 1.00       | root              |               | data:ExchangeSender_24                                                     |
+|   └─ExchangeSender_24                    | 1.00       | batchCop[tiflash] |               | ExchangeType: PassThrough                                                  |
+|     └─HashAgg_12                         | 1.00       | batchCop[tiflash] |               | funcs:count(1)->Column#16                                                  |
+|       └─HashJoin_17                      | 3000000.00 | batchCop[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
+|         ├─ExchangeReceiver_21(Build)     | 25.00      | batchCop[tiflash] |               |                                                                            |
+|         │ └─ExchangeSender_20            | 25.00      | batchCop[tiflash] |               | ExchangeType: Broadcast                                                    |
+|         │   └─TableFullScan_18           | 25.00      | batchCop[tiflash] | table:n       | keep order:false                                                           |
+|         └─TableFullScan_22(Probe)        | 3000000.00 | batchCop[tiflash] | table:c       | keep order:false                                                           |
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+9 rows in set (0.00 sec)
+```
+
+In the example execution plan, the `ExchangeReceiver` and `ExchangeSender` operators are included. The execution plan indicates that after the `nation` table is read, the `ExchangeSender` operator broadcasts the table to each node, the `HashJoin` and `HashAgg` operations are performed on the `nation` table and the `customer` table, and then the results are returned to TiDB.
+
+> **Note:**
+>
+> By default, TiFlash does not support using the MPP mode in partitioned tables.
+
+TiFlash provides the following two global/session variables to control whether to use Broadcast Hash Join:
+
+- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-new-in-v50-ga): The unit of the value is bytes. If the table size (in the unit of bytes) is less than the value of the variable, the Broadcast Hash Join algorithm is used. Otherwise, the Shuffled Hash Join algorithm is used.
+- [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-new-in-v50-ga): The unit of the value is rows. If the objects of the join operation belong to a subquery, the optimizer cannot estimate the size of the subquery result set, so the size is determined by the number of rows in the result set. If the estimated number of rows in the subquery is less than the value of this variable, the Broadcast Hash Join algorithm is used. Otherwise, the Shuffled Hash Join algorithm is used.
