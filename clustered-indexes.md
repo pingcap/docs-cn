@@ -50,7 +50,7 @@ CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) NONCLUSTERED);
 
 注意，列定义中的 `KEY` 和 `PRIMARY KEY` 含义相同。
 
-此外，TiDB 支持使用[可执行的注释语法]指定聚簇索引属性(/comment-syntax.md)：
+此外，TiDB 支持使用[可执行的注释语法](/comment-syntax.md)指定聚簇索引属性：
 
 ```sql
 CREATE TABLE t (a BIGINT PRIMARY KEY /*T![clustered_index] CLUSTERED */, b VARCHAR(255)); 
