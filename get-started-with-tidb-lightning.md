@@ -73,14 +73,14 @@ Download the TiDB Lightning installation package from the following link:
     backend = "local"
     # Sets the directory for temporarily storing the sorted key-value pairs.
     # The target directory must be empty.
-    "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
+    sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
     [mydumper]
     # Local source data directory
     data-source-dir = "/data/my_datasource/"
 
     # Configures the wildcard rule. By default, all tables in the mysql, sys, INFORMATION_SCHEMA, PERFORMANCE_SCHEMA, METRICS_SCHEMA, and INSPECTION_SCHEMA system databases are filtered.
-    # If this item is not configured, the "cannot find schema" error occurs when system tables are imported. 
+    # If this item is not configured, the "cannot find schema" error occurs when system tables are imported.
     filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
     [tidb]
     # Information of the target cluster
