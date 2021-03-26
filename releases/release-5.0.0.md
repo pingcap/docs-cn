@@ -165,7 +165,11 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 ```sql
 CREATE TABLE `t` (`a` VARCHAR(255), `b` INT, PRIMARY KEY (`a`, `b`) CLUSTERED);
-或者
+```
+
+或者：
+
+```sql
 CREATE TABLE `t` (`a` VARCHAR(255) PRIMARY KEY CLUSTERED, `b` INT);
 ```
 
