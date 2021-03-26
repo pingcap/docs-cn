@@ -46,4 +46,5 @@ TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据：`tidb-lig
 
 > **注意：**
 >
-> TiDB Lightning 不支持对有 TiFlash 副本的表导入数据。在导入数据之前请先清除 TiFlash 副本。你可以在导入完成之后再添加 TiFlash 副本。
+> * 如果集群版本 \< v4.0.6，若先对表创建 TiFlash 副本，再使用 TiDB Lightning 导入数据，会导致数据导入失败。需要在使用 TiDB Lightning 成功导入数据至表后，再对相应的表创建 TiFlash 副本。
+> * 如果集群版本以及 TiDB Lightning 版本均 \>= v4.0.6，无论一个表是否已经创建 TiFlash 副本，你均可以使用 TiDB Lightning 导入数据至该表。但注意此情况会导致 TiDB Lightning 导入数据耗费的时间延长，具体取决于 TiDB Lightning 部署机器的网卡带宽、TiFlash 节点的 CPU 及磁盘负载、TiFlash 副本数等因素。
