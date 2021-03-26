@@ -180,7 +180,7 @@ Query OK, 0 rows affected (3.65 sec)
 
 ### Variations of Index Join
 
-An index join operation using the hint [`INL_JOIN`](/optimizer-hints.md#inl_joint1_name--tl_name-) creates a hash table of the intermediate results before joining on the outer table. TiDB also supports creating a hash table on the outer table using the hint [`INL_HASH_JOIN`](/optimizer-hints.md#inl_hash_join). If the column sets on the inner table match the columns of the outer table, the [`INL_MERGE_JOIN`](/optimizer-hints.md#inl_merge_join) index join can apply. Each of these variations of index join is automatically selected by the SQL Optimizer.
+An index join operation using the hint [`INL_JOIN`](/optimizer-hints.md#inl_joint1_name--tl_name-) creates a hash table of the intermediate results before joining on the outer table. TiDB also supports creating a hash table on the outer table using the hint [`INL_HASH_JOIN`](/optimizer-hints.md#inl_hash_join). Each of these variations of index join is automatically selected by the SQL Optimizer.
 
 ### Configuration
 

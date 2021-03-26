@@ -604,8 +604,3 @@ The `experimental` section, introduced in v3.1.0, describes configurations relat
 
 - Determines whether to create the expression index.
 - Default value: `false`
-
-### `enable-global-kill` <span class="version-mark">New in v5.0.0-rc</span>
-
-- Determines whether to enable the Global Kill feature. To enable this feature, set the value of this configuration item to `true`. When enabled, this feature can safely kill any connection even when the TiDB server is behind a load balancer.
-- Default value: `false`
