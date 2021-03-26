@@ -33,7 +33,7 @@ TiDB 5.0 及之后的版本不再需要向各个 TiKV Region 都发送触发 GC 
 
 ## GC in Compaction Filter 机制
 
-GC in Compaction Filter 机制是在分布式 GC 模式 (`DISTRIBUTED` GC) 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及避免清理掉的旧版本残留大量删除标记影响顺序扫描性能。可以由 TiKV 配置文件中的以下开关控制：
+GC in Compaction Filter 机制是在分布式 GC 模式 (`DISTRIBUTED` GC mode) 的基础上，由 RocksDB 的 Compaction 过程来进行 GC，而不再使用一个单独的 GC worker 线程。这样做的好处是避免了 GC 引起的额外磁盘读取，以及避免清理掉的旧版本残留大量删除标记影响顺序扫描性能。可以由 TiKV 配置文件中的以下开关控制：
 
 {{< copyable "" >}}
 
