@@ -60,10 +60,18 @@ dumpling \
   --filetype sql \
   --threads 32 \
   -o /tmp/test \
+  -r 200000 \
   -F 256MiB
 ```
 
-上述命令中，`-h`、`-P`、`-u` 分别是地址，端口，用户。如果需要密码验证，可以用 `-p $YOUR_SECRET_PASSWORD` 传给 Dumpling。
+- `-h`、`-P`、`-u` 分别是地址，端口，用户。如果需要密码验证，可以用 `-p $YOUR_SECRET_PASSWORD` 传给 Dumpling。
+- `-o` 用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URL](/br/backup-and-restore-storages.md) 格式。
+- `-r` 可以指定单个文件的最大行数，开启后 Dumpling 会开启表内并发加速导出，同时减少内存使用。
+- `-F` 可以指定单个文件的最大大小。
+
+> **注意：**
+>
+> 导出较大表（单表大小超过 10 GB）时 `-r`, `-F` 参数均**强烈建议**开启。
 
 ### 导出到 csv 文件
 
@@ -197,11 +205,11 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
   --where "id < 100"
 ```
 
-上述命令将会导出各个表的 id < 100 的数据。
+上述命令将会导出各个表的 id < 100 的数据。注意 `--where` 参数无法与 `--sql` 一起使用。
 
 #### 使用 `--filter` 选项筛选数据
 
-Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。table-filter 的语法与 .gitignore 相似，详细语法参考[表库过滤](/table-filter.md)。
+Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。table-filter 的语法与 `.gitignore` 相似，详细语法参考[表库过滤](/table-filter.md)。
 
 {{< copyable "shell-regular" >}}
 
@@ -236,11 +244,10 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用选项如下：
 
-- `-o` 用于选择存储导出文件的目录。
-- `-F` 选项用于指定单个文件的最大大小，默认单位为 `MiB`。可以接受类似 `5GiB` 或 `8KB` 的输入。
+- `-t` 用于指定导出线程数，增大线程数会提高 Dumpling 并发度，但也会加大数据库内存消耗。
 - `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数），开启后 Dumpling 会开启表内并发，提高导出大表的速度。
 
-利用以上选项可以让 Dumpling 的并行度更高。
+利用以上选项可以提高 Dumpling 导出速度。
 
 ### 调整 Dumpling 的数据一致性选项
 
@@ -290,7 +297,7 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 
 Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 TiDB 内存溢出 (OOM)，从而使连接中断导出失败。可以通过以下参数减少 TiDB 的内存使用。
 
-+ 设置 `--rows` 参数，可以划分导出数据区块减少 TiDB 扫描数据的内存开销，同时也可开启表内并发提高导出效率。
++ 设置 `-r` 参数，可以划分导出数据区块减少 TiDB 扫描数据的内存开销，同时也可开启表内并发提高导出效率。
 + 调小 `--tidb-mem-quota-query` 参数到 `8589934592` (8GB) 或更小。可控制 TiDB 单条查询语句的内存使用。
 + 调整 `--params "tidb_distsql_scan_concurrency=5"` 参数，即设置导出时的 session 变量 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 从而减少 TiDB scan 操作的并发度。
 
