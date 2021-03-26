@@ -192,9 +192,10 @@ The following TiKV configuration items can be modified online:
 | `{db-name}.{cf-name}.titan.blob-run-mode` | The mode of processing blob files |
 | `storage.block-cache.capacity` | The size of shared block cache (supported since v4.0.3) |
 | `backup.num-threads` | The number of backup threads (supported since v4.0.3) |
-| `split.qps-threshold` | The threshold to execute `load-base-split` on a Region. If the read QPS is higher than this value for 10 consecutive seconds, this Region should be split. |
-| `split.split-balance-score` | The parameter of `load-base-split`, which ensures the load of the two split Regions is as balanced as possible |
-| `split.split-contained-score` | The parameter of `load-base-split`, which reduces the cross-Region visits after split as much as possible |
+| `split.qps-threshold` | The threshold to execute `load-base-split` on a Region. If the QPS of read requests for a Region exceeds `qps-threshold` for a consecutive period of time, this Region should be split.|
+| `split.byte-threshold` | The threshold to execute `load-base-split` on a Region. If the traffic of read requests for a Region exceeds the `byte-threshold` for a consecutive period of time, this Region should be split. |
+| `split.split-balance-score` | The parameter of `load-base-split`, which ensures the load of the two split Regions is as balanced as possible. The smaller the value is, the more balanced the load is. But setting it too small might cause split failure. |
+| `split.split-contained-score` | The parameter of `load-base-split`. The smaller the value, the fewer cross-Region visits after Region split. |
 
 In the table above, parameters with the `{db-name}` or `{db-name}.{cf-name}` prefix are configurations related to RocksDB. The optional values of `db-name` are `rocksdb` and `raftdb`.
 
