@@ -12,6 +12,20 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
+### 导入导出速度慢，且日志中出现大量重试、EOF 错误
+
+首先怀疑网络问题，使用相关工具排查网络连通状况。下面是使用 [iperf](https://iperf.fr/) 进行排查的例子
+
+```
+# on server node
+iperf3 -s
+
+# on client node
+iperf3 -c <server-IP>
+```
+
+检查带宽、延迟、重传等指标是否有异常。
+
 ### 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登录，如何处理？
 
 重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登录集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
