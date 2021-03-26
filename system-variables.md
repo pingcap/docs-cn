@@ -500,10 +500,19 @@ Query OK, 0 rows affected (0.09 sec)
 - Scope: SESSION | GLOBAL
 - Default value: ON
 - This variable is used to set whether to enable the `TABLE PARTITION` feature:
-
     - `ON` indicates enabling Range partitioning, Hash partitioning, and Range column partitioning with one single column.
     - `AUTO` functions the same way as `ON` does.
     - `OFF` indicates disabling the `TABLE PARTITION` feature. In this case, the syntax that creates a partition table can be executed, but the table created is not a partitioned one.
+
+### tidb_enable_list_partition <span class="version-mark">New in v5.0 GA</span>
+
+> **Warning:**
+>
+> Currently, List partition and List COLUMNS partition are experimental features. It is not recommended that you use it in the production environment.
+
+- Scope: SESSION
+- Default value: OFF
+- This variable is used to set whether to enable the `LIST (COLUMNS) TABLE PARTITION` feature.
 
 ### tidb_enable_telemetry <span class="version-mark">New in v4.0.2 version</span>
 
