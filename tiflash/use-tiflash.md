@@ -47,6 +47,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 > **注意：**
 >
 > * 假设有一张表 t 已经通过上述的 DDL 语句同步到 TiFlash，则通过以下语句创建的表也会自动同步到 TiFlash：
+>
 >    {{< copyable "sql" >}}
 >
 >    ```sql
