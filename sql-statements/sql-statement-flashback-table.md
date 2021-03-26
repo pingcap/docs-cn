@@ -14,6 +14,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-table/','/docs-cn
   ```sql
   SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
   ```
+
 只要被 `DROP` 或 `TRUNCATE` 删除的表是在 `tikv_gc_safe_point` 时间之后，都能用 `FLASHBACK TABLE` 语法来恢复。  
 
 ## 语法
