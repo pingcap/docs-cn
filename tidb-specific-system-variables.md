@@ -40,9 +40,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来表示当前状态是否为从 dump 文件中导入数据。
-当这个变量被设置为 1 时，唯一索引约束不被检查以加速导入速度。
-这个变量不对外用，只是给 lightning 使用，请用户不要自行修改。
+这个变量用来表示当前状态是否为从 dump 文件中导入数据。当这个变量被设置为 1 时，唯一索引约束不被检查以加速导入速度。这个变量不对外用，只是给 lightning 使用，请用户不要自行修改。
 
 ### tidb_opt_agg_push_down
 
@@ -50,8 +48,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
-当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
+这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
 ### tidb_auto_analyze_ratio
 
@@ -83,8 +80,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：4
 
-这个变量用来设置 ANALYZE 语句执行时并发度。
-当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+这个变量用来设置 ANALYZE 语句执行时并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### tidb_checksum_table_concurrency
 
@@ -92,8 +88,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：4
 
-这个变量用来设置 ADMIN CHECKSUM TABLE 语句执行时扫描索引的并发度。
-当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+这个变量用来设置 ADMIN CHECKSUM TABLE 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### tidb_current_ts
 
@@ -117,8 +112,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：15
 
-这个变量用来设置 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
-对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
+这个变量用来设置 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 
 ### tidb_index_lookup_size
 
@@ -198,8 +192,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来设置是否跳过 UTF-8 字符的验证。
-验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 1。
+这个变量用来设置是否跳过 UTF-8 字符的验证。验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 1。
 
 ### tidb_init_chunk_size
 
@@ -223,8 +216,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：32 GB
 
-这个变量用来设置一条查询语句的内存使用阈值。
-如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+这个变量用来设置一条查询语句的内存使用阈值。如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_mem_quota_hashjoin
 
@@ -232,8 +224,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：32 GB
 
-这个变量用来设置 HashJoin 算子的内存使用阈值。
-如果 HashJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+这个变量用来设置 HashJoin 算子的内存使用阈值。如果 HashJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_mem_quota_mergejoin
 
@@ -241,8 +232,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：32 GB
 
-这个变量用来设置 MergeJoin 算子的内存使用阈值。
-如果 MergeJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+这个变量用来设置 MergeJoin 算子的内存使用阈值。如果 MergeJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_mem_quota_sort
 
@@ -250,8 +240,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：32 GB
 
-这个变量用来设置 Sort 算子的内存使用阈值。
-如果 Sort 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+这个变量用来设置 Sort 算子的内存使用阈值。如果 Sort 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_mem_quota_topn
 
@@ -259,8 +248,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：32 GB
 
-这个变量用来设置 TopN 算子的内存使用阈值。
-如果 TopN 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+这个变量用来设置 TopN 算子的内存使用阈值。如果 TopN 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_mem_quota_indexlookupreader
 
@@ -278,8 +266,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：32 GB
 
-这个变量用来设置 IndexLookupJoin 算子的内存使用阈值。
-如果 IndexLookupJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+这个变量用来设置 IndexLookupJoin 算子的内存使用阈值。如果 IndexLookupJoin 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_mem_quota_nestedloopapply
 
@@ -287,8 +274,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：32 GB
 
-这个变量用来设置 NestedLoopApply 算子的内存使用阈值。
-如果 NestedLoopApply 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+这个变量用来设置 NestedLoopApply 算子的内存使用阈值。如果 NestedLoopApply 算子执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_general_log
 
