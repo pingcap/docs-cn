@@ -40,9 +40,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来表示当前状态是否为从 dump 文件中导入数据。
-当这个变量被设置为 1 时，唯一索引约束不被检查以加速导入速度。
-这个变量不对外用，只是给 lightning 使用，请用户不要自行修改。
+这个变量用来表示当前状态是否为从 dump 文件中导入数据。当这个变量被设置为 1 时，唯一索引约束不被检查以加速导入速度。这个变量不对外用，只是给 lightning 使用，请用户不要自行修改。
 
 ### tidb_opt_agg_push_down
 
@@ -50,8 +48,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。
-当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
+这个变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
 ### tidb_auto_analyze_ratio
 
@@ -201,8 +198,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：0
 
-这个变量用来设置是否跳过 UTF-8 字符的验证。
-验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 1。
+这个变量用来设置是否跳过 UTF-8 字符的验证。验证 UTF-8 字符需要消耗一定的性能，当可以确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 1。
 
 ### tidb_init_chunk_size
 
@@ -226,8 +222,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 
 默认值：32 GB
 
-这个变量用来设置一条查询语句的内存使用阈值。
-如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
+这个变量用来设置一条查询语句的内存使用阈值。如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。
 
 ### tidb_general_log
 
@@ -296,6 +291,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 作用域：GLOBAL
 
 默认值（3.0.3 之前版本）：16
+
 默认值（3.0.3 及之后版本）：4
 
 这个变量用来设置 DDL 操作 re-organize 阶段的并发度。
@@ -305,6 +301,7 @@ set @@global.tidb_distsql_scan_concurrency = 10;
 作用域：GLOBAL
 
 默认值（3.0.3 以前版本）：1024
+
 默认值（3.0.3 及以后版本）：256
 
 这个变量用来设置 DDL 操作 re-organize 阶段的 batch size。比如 Add Index 操作，需要回填索引数据，通过并发 tidb_ddl_reorg_worker_cnt 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。如果 Add Index 时有较多 Update 操作或者 Replace 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。在没有事务冲突的情况下，batch size 可设为较大值，最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
