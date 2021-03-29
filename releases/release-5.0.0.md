@@ -27,19 +27,19 @@ TiDB 版本：5.0.0 GA
 
 ### 系统变量
 
-+ 新增系统变量 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v500-rc-版本开始引入)，用于统一控制算子并发度，对原有的 tidb_*_concurrency（例如 `tidb_projection_concurrency`）设置仍然生效，使用过程中会提示已废弃警告。
++ 新增系统变量 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v500-rc-版本开始引入)，用于统一控制算子并发度。原有的 tidb_*_concurrency（例如 `tidb_projection_concurrency`）设置仍然生效，使用过程中会提示已废弃警告。
 + 新增系统变量 [`tidb_skip_ascii_check`](/system-variables.md#tidb_skip_ascii_check)，用于决定在写入 ASCII 字符集的列时，是否对字符的合法性进行检查，默认为 OFF。
-+ 新增系统变量 [`tidb_enable_strict_double_type_check`](/system-variables.md#tidb_enable_strict_double_type_check)，用于决定类似 “double(N)” 语法是否允许被定义在表结构中，默认为 OFF。
++ 新增系统变量 [`tidb_enable_strict_double_type_check`](/system-variables.md#tidb_enable_strict_double_type_check-从-v500-rc-版本开始引入)，用于决定类似“double(N)”语法是否允许被定义在表结构中，默认为 OFF。
 + 系统变量 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的默认值由 2000 修改为 0，即在 LOAD/INSERT INTO SELECT ... 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。
 + 临时表的语法兼容性受到 [`tidb_noop_functions`](/system-variables.md#tidb_noop_functions) 系统变量的控制：当 `tidb_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
 + 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency)、[`tidb_gc_enable`]((/system-variables.md#tidb_gc_enable)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
 
 ### 配置文件参数
 
-+ 新增 [`index-limit`](/tidb-configuration-file.md#index-limit-new-in-v500-rc) 配置项，用于兼容 MySQL 最大索引数量限制，如果设置超过默认值，该表结构再次导入 MySQL 将会报错，默认值 64，取值范围在 [64,64 *8]。
++ 新增 [`index-limit`](/tidb-configuration-file.md#index-limit-new-in-v500-rc) 配置项，用于兼容 MySQL 最大索引数量限制，如果设置超过默认值，该表结构再次导入 MySQL 将会报错，默认值 64，取值范围在 [64,64*8]。
 + 新增 [`enable-enum-length-limit`](/tidb-configuration-file.md#enable-enum-length-limit) 配置项，用于兼容 MySQL enum/set 元素长度并保持一致（Enum 长度 < 255），默认值为 true。
 + 新增 [`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length)，用于兼容 MySQL 显示声明整数类型长度，但会返回一个类似于 `Integer display width is deprecated and will be removed in a future release` 的警告。
-+ 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代 。
++ 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代。
 + 删除 `performance.max-memory` 配置项，通过 [performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
 + 删除 `tikv-client.copr-cache.enable` 配置项，通过 [tikv-client.copr-cache.capcity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能，默认：1000.0。
 + 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入) 替代。
@@ -59,7 +59,7 @@ List 分区表会按照 `PARTITION BY LIST(expr) PARTITION part_name VALUES IN (
 
 #### List Column 分区表 (List Column Partition)（**实验特性**）
 
-List Column 分区表是 List 分区表的变体，主要的区别是分区键可以由多个列组成，列的类型不再局限于整数类型，可以是字符串、DATE 和 DATETIME 等。
+List Column 分区表是 List 分区表的变体，主要的区别是分区键可以由多个列组成，列的类型不再局限于整数类型，也可以是字符串、DATE 和 DATETIME 等类型。
 
 你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-ga-版本开始引入) 的值为 `ON`，开启 List Column 分区表功能。
 
@@ -67,7 +67,7 @@ List Column 分区表是 List 分区表的变体，主要的区别是分区键�
 
 [用户文档](/sql-statements/sql-statement-alter-index.md)，[#9246](https://github.com/pingcap/tidb/issues/9246)
 
-DBA 调试和选择相对最优的索引时，可以通过 SQL 语句将某个索引设置成 `Visible` 或者 `Invisible`，避免执行消耗资源较多的操作，例如：`DROP INDEX` 或 `ADD INDEX`。
+DBA 调试和选择相对最优的索引时，可以通过 SQL 语句将某个索引设置成 `Visible` 或者 `Invisible`，避免执行消耗资源较多的操作，如 `DROP INDEX` 或 `ADD INDEX`。
 
 DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后，查询优化器会根据索引的可见性决定是否将此索引加入到索引列表中。
 
@@ -81,11 +81,9 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 
 ### 事务
 
-提升悲观事务执行成功的概率：
-
 悲观事务模式下，如果事务所涉及到的表存在并发的 DDL 操作或者 SCHEMA VERSION 变更，系统自动将该事务的 SCHEMA VERSION 更新到最新版本，以此确保事务会提交成功，避免事务因并发的 DDL 操作或者 SCHEMA VERSION 变更而中断时客户端收到 `Information schema is changed` 的错误信息。 [用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)，[#18005](https://github.com/pingcap/tidb/issues/18005)
 
-系统默认关闭此功能，你可以通过修改 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 系统变量开启此功能，此功能已经从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
+系统默认关闭此功能，你可以通过修改 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 系统变量开启此功能，此功能从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
 
 + Binlog 在执行 Add column 操作的兼容性问题
 + 与唯一索引一起使用时存在的数据不一致性的问题
@@ -94,8 +92,8 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 当前此功能存在以下不兼容性问题：
 
 + 并发事务场景下事务的语义可能发生变化的问题
-+ 与 Binlog 一起使用还存在已知的兼容性问题 [#20996](https://github.com/pingcap/tidb/issues/20996)
-+ 与 Change column 功能不兼容 [#21470](https://github.com/pingcap/tidb/issues/21470)
++ 与 Binlog 一起使用时，存在已知的兼容性问题 [#20996](https://github.com/pingcap/tidb/issues/20996)
++ 与 change column 功能不兼容 [#21470](https://github.com/pingcap/tidb/issues/21470)
 
 ### 字符集和排序规则
 
@@ -103,8 +101,6 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 - 支持字符集比较排序时不区分大小写。
 
 ### 安全
-
-错误信息和日志信息的脱敏：
 
 为满足各种安全合规（如《通用数据保护条例》(GDPR)）的要求，系统在输出错误信息和日志信息时，支持对敏感信息（例如，身份证信息、信用卡号）进行脱敏处理，避免敏感信息泄露。 [用户文档](/log-redaction.md)，[#18566](https://github.com/pingcap/tidb/issues/18566)
 
