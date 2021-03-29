@@ -10,6 +10,10 @@ TiDB 支持完整的分布式事务，提供[乐观事务](/optimistic-transacti
 
 常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/tidb-specific-system-variables.md#tidb_disable_txn_auto_retry) 以及 [`tidb_retry_limit`](/tidb-specific-system-variables.md#tidb_retry_limit)。
 
+> **注意：**
+>
+> 变量 [`tidb_disable_txn_auto_retry`](/tidb-specific-system-variables.md#tidb_disable_txn_auto_retry) 和 [`tidb_retry_limit`](/tidb-specific-system-variables.md#tidb_retry_limit) 仅适用于乐观事务，不适用于悲观事务。
+
 ## 常用事务语句
 
 ### `BEGIN` 和 `START TRANSACTION`
