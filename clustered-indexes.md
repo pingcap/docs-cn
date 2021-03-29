@@ -1,188 +1,225 @@
 ---
 title: Clustered Indexes
-summary: Learn how clustered indexes apply to TiDB.
+summary: Learn the concept, user scenarios, usages, limitations, and compatibility of clustered indexes.
 ---
 
 # Clustered Indexes
 
-The clustered index is an experimental feature introduced in TiDB 5.0.0-rc. This document provides multiple examples to explain how this feature makes a difference to the query performance of TiDB. To enable this feature and see the detailed operation guide, see [tidb_enable_clustered_index](/system-variables.md#tidb_enable_clustered_index-new-in-v500-rc).
+TiDB supports the clustered index feature since v5.0. This feature controls how data is stored in tables containing primary keys. It provides TiDB the ability to organize tables in a way that can improve the performance of certain queries.
 
-Clustered indexes provide TiDB the ability to organize tables in a way that can improve the performance of certain queries. The term _clustered_ in this context refers to the _organization of how data is stored_ and not _a group of database servers working together_. Some database management systems refer to clustered indexes as _index-organized tables_ (IOT).
+The term _clustered_ in this context refers to the _organization of how data is stored_ and not _a group of database servers working together_. Some database management systems refer to clustered indexes as _index-organized tables_ (IOT).
 
-TiDB supports clustering only by a table's `PRIMARY KEY`. With clustered indexes enabled, the terms _the_ `PRIMARY KEY` and _the clustered index_ might be used interchangeably. `PRIMARY KEY` refers to the constraint (a logical property), and clustered index describes the physical implementation of how the data is stored.
+Currently, tables containing primary keys in TiDB are divided into the following two categories:
 
-## Limited support before TiDB v5.0
+- `NONCLUSTERD`: The primary key of the table is non-clustered index. In tables with non-clustered indexes, the keys for row data consist of internal `_tidb_rowid` implicitly assigned by TiDB. Because primary keys are essentially unique indexes, tables with non-clustered indexes need at least two key-value pairs to store a row, which are:
+    - `_tidb_rowid` (key) - row data (value)
+    - Primary key data (key) - `_tidb_rowid` (value)
+- `CLUSTERED`: The primary key of the table is clustered index. In tables with clustered indexes, the keys for row data consist of primary key data given by the user. Therefore, tables with clustered indexes need only one key-value pair to store a row, which is:
+    - Primary key data (key) - row data (value)
 
-Before v5.0, TiDB has only limited support for clustered indexes, provided the following criteria are true:
+> **Note:**
+>
+> TiDB supports clustering only by a table's `PRIMARY KEY`. With clustered indexes enabled, the terms _the_ `PRIMARY KEY` and _the clustered index_ might be used interchangeably. `PRIMARY KEY` refers to the constraint (a logical property), and clustered index describes the physical implementation of how the data is stored.
 
-- The table contains a `PRIMARY KEY`
-- The `PRIMARY KEY` is an `INTEGER` or `BIGINT`
-- The `PRIMARY KEY` consists of only one column
+## User scenarios
 
-When any of these criteria are not met, TiDB will create a hidden 64-bit `handle` value to organize the table. Querying table rows by a clustered index is more efficient than by a non-clustered index because the query can be completed in a single step. In the following `EXPLAIN` outputs, a table that supports clustered indexes is compared with one that does not:
+Compared to tables with non-clustered indexes, tables with clustered indexes offer greater performance and throughput advantages in the following scenarios:
+
++ When data is inserted, the clustered index reduces one write of the index data from the network.
++ When a query with an equivalent condition only involves the primary key, the clustered index reduces one read of index data from the network.
++ When a query with a range condition only involves the primary key, the clustered index reduces multiple reads of index data from the network.
++ When a query with an equivalent or range condition only involves the primary key prefix, the clustered index reduces multiple reads of index data from the network.
+
+On the other hand, tables with clustered indexes have certain disadvantages. See the following:
+
+- There might be write hotspot issues when inserting a large number of primary keys with close values.
+- The table data takes up more storage space if the data type of the primary key is larger than 64 bits, especially when there are multiple secondary indexes.
+
+## Usages
+
+## Create a table with clustered indexes
+
+Since TiDB v5.0, you can add non-reserved keywords `CLUSTERED` or `NONCLUSTERED` after `PRIMARY KEY` in a `CREATE TABLE` statement to specify whether the table's primary key is a clustered index. For example:
 
 ```sql
-CREATE TABLE always_clusters_in_all_versions (
- id BIGINT NOT NULL PRIMARY KEY auto_increment,
- b CHAR(100),
- INDEX(b)
-);
-
-CREATE TABLE does_not_cluster_by_default (
- guid CHAR(32) NOT NULL PRIMARY KEY,
- b CHAR(100),
- INDEX(b)
-);
-
-INSERT INTO always_clusters_in_all_versions VALUES (1, 'aaa'), (2, 'bbb');
-INSERT INTO does_not_cluster_by_default VALUES ('02dd050a978756da0aff6b1d1d7c8aef', 'aaa'), ('35bfbc09cb3c93d8ef032642521ac042', 'bbb');
-
-EXPLAIN SELECT * FROM always_clusters_in_all_versions WHERE id = 1;
-EXPLAIN SELECT * FROM does_not_cluster_by_default WHERE guid = '02dd050a978756da0aff6b1d1d7c8aef';
+CREATE TABLE t (a BIGINT PRIMARY KEY CLUSTERED, b VARCHAR(255));
+CREATE TABLE t (a BIGINT PRIMARY KEY NONCLUSTERED, b VARCHAR(255));
+CREATE TABLE t (a BIGINT KEY CLUSTERED, b VARCHAR(255));
+CREATE TABLE t (a BIGINT KEY NONCLUSTERED, b VARCHAR(255));
+CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) CLUSTERED);
+CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) NONCLUSTERED);
 ```
 
+Note that keywords `KEY` and `PRIMARY KEY` have the same meaning in the column definition.
+
+You can also use the [comment syntax](/comment-syntax.md) in TiDB to specify the type of the primary key. For example:
+
 ```sql
-Query OK, 0 rows affected (0.09 sec)
+CREATE TABLE t (a BIGINT PRIMARY KEY /*T![clustered_index] CLUSTERED */, b VARCHAR(255));
+CREATE TABLE t (a BIGINT PRIMARY KEY /*T![clustered_index] NONCLUSTERED */, b VARCHAR(255));
+CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] CLUSTERED */,);
+CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] NONCLUSTERED */);
+```
 
-Query OK, 0 rows affected (0.10 sec)
+For statements that do not explicitly specify the keyword `CLUSTERED`/`NONCLUSTERED`, the default behavior is controlled by the global variable `@@global.tidb_enable_clustered_index`. Supported values for this variable are as follows:
 
-Records: 2  Duplicates: 0  Warnings: 0
+- `OFF` indicates that primary keys are created as non-clustered indexes by default.
+- `ON` indicates that primary keys are created as clustered indexes by default.
+- `INT_ONLY` indicates that the behavior is controlled by the configuration item `alter-primary-key`. If `alter-primary-key` is set to `true`, primary keys are created as non-clustered indexes by default. If it is set to `false`, only the primary keys consist of an integer column are created as clustered indexes.
 
-Records: 2  Duplicates: 0  Warnings: 0
+The default value of `@@global.tidb_enable_clustered_index` is `INT_ONLY`.
 
-+-------------+---------+------+---------------------------------------+---------------+
-| id          | estRows | task | access object                         | operator info |
-+-------------+---------+------+---------------------------------------+---------------+
-| Point_Get_1 | 1.00    | root | table:always_clusters_in_all_versions | handle:1      |
-+-------------+---------+------+---------------------------------------+---------------+
+### Add or drop clustered indexes
+
+TiDB does not support adding or dropping clustered indexes after tables are created. Nor does it support the mutual conversion between clustered indexes and non-clustered indexes. For example:
+
+```sql
+ALTER TABLE t ADD PRIMARY KEY(b, a) CLUSTERED; -- Currently not supported.
+ALTER TABLE t DROP PRIMARY KEY;     -- If the primary key is a clustered index, then not supported.
+ALTER TABLE t DROP INDEX `PRIMARY`; -- If the primary key is a clustered index, then not supported.
+```
+
+### Add or drop non-clustered indexes
+
+TiDB supports adding or dropping non-clustered indexes after tables are created. You can explicitly specify the keyword `NONCLUSTERED` or omit it. For example:
+
+```sql
+ALTER TABLE t ADD PRIMARY KEY(b, a) NONCLUSTERED;
+ALTER TABLE t ADD PRIMARY KEY(b, a); -- If you omit the keyword, the primary key is a non-clustered index by default.
+ALTER TABLE t DROP PRIMARY KEY;
+ALTER TABLE t DROP INDEX `PRIMARY`;
+```
+
+### Check whether the primary key is a clustered index
+
+You can check whether the primary key of a table is a clustered index using one of the following methods:
+
+- Execute the command `SHOW CREATE TABLE`.
+- Execute the command `SHOW INDEX FROM`.
+- Query the `TIDB_PK_TYPE` column in the system table `information_schema.tables`.
+
+By running the command `SHOW CREATE TABLE`, you can see whether the attribute of `PRIMARY KEY` is `CLUSTERED` or `NONCLUSTERED`. For example:
+
+```sql
+mysql> SHOW CREATE TABLE t;
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                      |
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| t     | CREATE TABLE `t` (
+  `a` bigint(20) NOT NULL,
+  `b` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`a`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+By running the command `SHOW INDEX FROM`, you can check whether the result in the column `Clustered` shows `YES` or `NO`. For example:
+
+```sql
+mysql> SHOW INDEX FROM t;
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+-----------+
+| Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression | Clustered |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+-----------+
+| t     |          0 | PRIMARY  |            1 | a           | A         |           0 |     NULL | NULL   |      | BTREE      |         |               | YES     | NULL       | YES       |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+-----------+
+1 row in set (0.01 sec)
+```
+
+You can also query the column `TIDB_PK_TYPE` in the system table `information_schema.tables` to see whether the result is `CLUSTERED` or `NONCLUSTERED`. For example:
+
+```sql
+mysql> SELECT TIDB_PK_TYPE FROM information_schema.tables WHERE table_schema = 'test' AND table_name = 't';
++--------------+
+| TIDB_PK_TYPE |
++--------------+
+| CLUSTERED    |
++--------------+
+1 row in set (0.03 sec)
+```
+
+## Limitations
+
+Currently, there are two types of limitations for the clustered index feature. See the following:
+
+- Situations that are not supported and not in the support plan:
+    - Using the clustered index feature together with TiDB Binlog is not supported. After TiDB Binlog is enabled, TiDB only allows creating a single integer primary key as a clustered index. TiDB Binlog does not replicate data changes of existing tables with clustered indexes to the downstream. If you need to replicate tables with clustered indexes, use [TiCDC](/ticdc/ticdc-overview.md) instead.
+    - Using clustered indexes together with the attribute [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) is not supported. Also, the attribute [`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) does not take effect on tables with clustered indexes.
+    - Downgrading tables with clustered indexes is not supported. If you need to downgrade such tables, use logical backup tools to migrate data instead.
+- Situations that are not supported yet but in the support plan:
+    - Adding, dropping, and altering clustered indexes using `ALTER TABLE` statements are not supported.
+
+After TiDB Binlog is enabled, if the clustered index you create is not a single integer primary key, TiDB returns the following error:
+
+```sql
+mysql> CREATE TABLE t (a VARCHAR(255) PRIMARY KEY CLUSTERED);
+ERROR 8200 (HY000): Cannot create clustered index table when the binlog is ON
+```
+
+If you use clustered indexes together with the attribute `SHARD_ROW_ID_BITS`, TiDB reports the following error:
+
+```sql
+mysql> CREATE TABLE t (a VARCHAR(255) PRIMARY KEY CLUSTERED) SHARD_ROW_ID_BITS = 3;
+ERROR 8200 (HY000): Unsupported shard_row_id_bits for table with primary key as row id
+```
+
+## Compatibility
+
+### Compatibility with earlier and later TiDB versions
+
+TiDB supports upgrading tables with clustered indexes but not downgrading such tables, which means that data in tables with clustered indexes on a later TiDB version is not available on an earlier one.
+
+The clustered index feature is partially supported in TiDB v3.0 and v4.0. It is enabled by default when the following requirements are fully met:
+
+- The table contains a `PRIMARY KEY`.
+- The `PRIMARY KEY` consists of only one column.
+- The `PRIMARY KEY` is an `INTEGER`.
+
+Since TiDB v5.0, the clustered index feature is fully supported for all types of primary keys, but the default behavior is consistent with TiDB v3.0 and v4.0. To change the default behavior, you can configure the system variable `@@tidb_enable_clustered_index` to `ON` or `OFF`. For more details, see [Create a table with clustered indexes](#create-a-table-with-clustered-indexes).
+
+### Compatibility with MySQL
+
+TiDB specific comment syntax supports wrapping the keywords `CLUSTERED` and `NONCLUSTERED` in a comment. The result of `SHOW CREATE TABLE` also contains TiDB specific SQL comments. MySQL databases and TiDB databases of an earlier version will ignore these comments.
+
+### Compatibility with TiDB ecosystem tools
+
+The clustered index feature is only compatible with the following ecosystem tools in v5.0 and later versions:
+
+- Backup and restore tools: BR, Dumpling, and TiDB Lightning.
+- Data migration and replication tools: DM and TiCDC.
+
+However, you cannot convert a table with non-clustered indexes to a table with clustered indexes by backing up and restoring the table using the v5.0 BR tool, and vice versa.
+
+### Compatibility with other TiDB features
+
+For a table with a combined primary key or a single non-integer primary key, if you change the primary key from a non-clustered index to a clustered index, the keys of its row data change as well. Therefore, `SPLIT TABLE BY/BETWEEN` statements that are executable in TiDB versions earlier than v5.0 are no longer workable in v5.0 and later versions of TiDB. If you want to split a table with clustered indexes using `SPLIT TABLE BY/BETWEEN`, you need to provide the value of the primary key column, instead of specifying an integer value. See the following example:
+
+```sql
+mysql> create table t (a int, b varchar(255), primary key(a, b) clustered);
+Query OK, 0 rows affected (0.01 sec)
+mysql> split table t between (0) and (1000000) regions 5;
+ERROR 1105 (HY000): Split table region lower value count should be 2
+mysql> split table t by (0), (50000), (100000);
+ERROR 1136 (21S01): Column count doesn't match value count at row 0
+mysql> split table t between (0, 'aaa') and (1000000, 'zzz') regions 5;
++--------------------+----------------------+
+| TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
++--------------------+----------------------+
+|                  4 |                    1 |
++--------------------+----------------------+
 1 row in set (0.00 sec)
-
-+-------------+---------+------+--------------------------------------------------------+---------------+
-| id          | estRows | task | access object                                          | operator info |
-+-------------+---------+------+--------------------------------------------------------+---------------+
-| Point_Get_1 | 1.00    | root | table:does_not_cluster_by_default, index:PRIMARY(guid) |               |
-+-------------+---------+------+--------------------------------------------------------+---------------+
-1 row in set (0.00 sec)
+mysql> split table t by (0, ''), (50000, ''), (100000, '');
++--------------------+----------------------+
+| TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
++--------------------+----------------------+
+|                  3 |                    1 |
++--------------------+----------------------+
+1 row in set (0.01 sec)
 ```
 
-The two `EXPLAIN` results above look similar, but in the second example, TiDB must first read the `PRIMARY KEY` index on the `guid` column in order to find the `handle` value. This is more obvious in the following example where the `PRIMARY KEY` value is not in the index on `does_not_cluster_by_default.b`. TiDB must perform an extra lookup on the table rows (`└─TableFullScan_5`) to convert the `handle` value to the `PRIMARY KEY` value of `guid`:
+The attribute [`AUTO_RANDOM`](/auto-random.md) can only be used on clustered indexes. Otherwise, TiDB returns the following error:
 
 ```sql
-EXPLAIN SELECT id FROM always_clusters_in_all_versions WHERE b = 'aaaa';
-EXPLAIN SELECT guid FROM does_not_cluster_by_default WHERE b = 'aaaa';
+mysql> create table t (a bigint primary key nonclustered auto_random);
+ERROR 8216 (HY000): Invalid auto random: column a is not the integer primary key, or the primary key is nonclustered
 ```
-
-```sql
-+--------------------------+---------+-----------+---------------------------------------------------+-------------------------------------------------------+
-| id                       | estRows | task      | access object                                     | operator info                                         |
-+--------------------------+---------+-----------+---------------------------------------------------+-------------------------------------------------------+
-| Projection_4             | 0.00    | root      |                                                   | test.always_clusters_in_all_versions.id               |
-| └─IndexReader_6          | 0.00    | root      |                                                   | index:IndexRangeScan_5                                |
-|   └─IndexRangeScan_5     | 0.00    | cop[tikv] | table:always_clusters_in_all_versions, index:b(b) | range:["aaaa","aaaa"], keep order:false, stats:pseudo |
-+--------------------------+---------+-----------+---------------------------------------------------+-------------------------------------------------------+
-3 rows in set (0.01 sec)
-
-+---------------------------+---------+-----------+-----------------------------------+------------------------------------------------+
-| id                        | estRows | task      | access object                     | operator info                                  |
-+---------------------------+---------+-----------+-----------------------------------+------------------------------------------------+
-| Projection_4              | 0.00    | root      |                                   | test.does_not_cluster_by_default.guid          |
-| └─TableReader_7           | 0.00    | root      |                                   | data:Selection_6                               |
-|   └─Selection_6           | 0.00    | cop[tikv] |                                   | eq(test.does_not_cluster_by_default.b, "aaaa") |
-|     └─TableFullScan_5     | 2.00    | cop[tikv] | table:does_not_cluster_by_default | keep order:false, stats:pseudo                 |
-+---------------------------+---------+-----------+-----------------------------------+------------------------------------------------+
-4 rows in set (0.00 sec)
-```
-
-## Full support since TiDB v5.0
-
-Since v5.0, TiDB provides full support for clustered indexes by any `PRIMARY KEY`. The following `EXPLAIN` output shows the previous example with clustered indexes enabled:
-
-```sql
-SET tidb_enable_clustered_index = 1;
-CREATE TABLE will_now_cluster (
- guid CHAR(32) NOT NULL PRIMARY KEY,
- b CHAR(100),
- INDEX(b)
-);
-
-INSERT INTO will_now_cluster VALUES (1, 'aaa'), (2, 'bbb');
-INSERT INTO will_now_cluster VALUES ('02dd050a978756da0aff6b1d1d7c8aef', 'aaa'), ('35bfbc09cb3c93d8ef032642521ac042', 'bbb');
-
-EXPLAIN SELECT * FROM will_now_cluster WHERE guid = '02dd050a978756da0aff6b1d1d7c8aef';
-EXPLAIN SELECT guid FROM will_now_cluster WHERE b = 'aaaa';
-```
-
-```sql
-Query OK, 0 rows affected (0.00 sec)
-
-Query OK, 0 rows affected (0.11 sec)
-
-Query OK, 2 rows affected (0.02 sec)
-Records: 2  Duplicates: 0  Warnings: 0
-
-Query OK, 2 rows affected (0.01 sec)
-Records: 2  Duplicates: 0  Warnings: 0
-
-+-------------+---------+------+-------------------------------------------------------+---------------+
-| id          | estRows | task | access object                                         | operator info |
-+-------------+---------+------+-------------------------------------------------------+---------------+
-| Point_Get_1 | 1.00    | root | table:will_now_cluster, clustered index:PRIMARY(guid) |               |
-+-------------+---------+------+-------------------------------------------------------+---------------+
-1 row in set (0.00 sec)
-
-+--------------------------+---------+-----------+------------------------------------+-------------------------------------------------------+
-| id                       | estRows | task      | access object                      | operator info                                         |
-+--------------------------+---------+-----------+------------------------------------+-------------------------------------------------------+
-| Projection_4             | 10.00   | root      |                                    | test.will_now_cluster.guid                            |
-| └─IndexReader_6          | 10.00   | root      |                                    | index:IndexRangeScan_5                                |
-|   └─IndexRangeScan_5     | 10.00   | cop[tikv] | table:will_now_cluster, index:b(b) | range:["aaaa","aaaa"], keep order:false, stats:pseudo |
-+--------------------------+---------+-----------+------------------------------------+-------------------------------------------------------+
-3 rows in set (0.00 sec)
-```
-
-Clustering by a composite `PRIMARY KEY` is also supported:
-
-```sql
-SET tidb_enable_clustered_index = 1;
-CREATE TABLE composite_primary_key (
- key_a INT NOT NULL,
- key_b INT NOT NULL,
- b CHAR(100),
- PRIMARY KEY (key_a, key_b)
-);
-
-INSERT INTO composite_primary_key VALUES (1, 1, 'aaa'), (2, 2, 'bbb');
-EXPLAIN SELECT * FROM composite_primary_key WHERE key_a = 1 AND key_b = 2;
-```
-
-```sql
-Query OK, 0 rows affected (0.00 sec)
-
-Query OK, 0 rows affected (0.09 sec)
-
-Query OK, 2 rows affected (0.02 sec)
-Records: 2  Duplicates: 0  Warnings: 0
-
-+-------------+---------+------+--------------------------------------------------------------------+---------------+
-| id          | estRows | task | access object                                                      | operator info |
-+-------------+---------+------+--------------------------------------------------------------------+---------------+
-| Point_Get_1 | 1.00    | root | table:composite_primary_key, clustered index:PRIMARY(key_a, key_b) |               |
-+-------------+---------+------+--------------------------------------------------------------------+---------------+
-1 row in set (0.00 sec)
-```
-
-This behavior is consistent with MySQL, where the InnoDB storage engine will by default cluster by any `PRIMARY KEY`.
-
-## Storage considerations
-
-Because the `PRIMARY KEY` replaces a 64-bit `handle` value as the internal pointer to table rows, using clustered indexes might increase storage requirements. This is particularly impactful on tables that contain many secondary indexes. Consider the following example:
-
-```sql
-CREATE TABLE t1 (
- guid CHAR(32) NOT NULL PRIMARY KEY,
- b BIGINT,
- INDEX(b)
-);
-```
-
-Because the pointer to the `guid` is a `char(32)`, each index value for `b` will now require approximately `8 + 32 = 40 bytes` (a `BIGINT` value requires 8 bytes for storage). This compares to `8 + 8 = 16 bytes` for non-clustered tables. The exact storage requirements will differ after compression has been applied.
