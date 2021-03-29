@@ -620,19 +620,19 @@ For a system upgraded to v5.0.0-rc from an earlier version, if you have not modi
 - This variable is used to change the default priority for statements executed on a TiDB server. A use case is to ensure that a particular user that is performing OLAP queries receives lower priority than users performing OLTP queries.
 - You can set the value of this variable to `NO_PRIORITY`, `LOW_PRIORITY`, `DELAYED` or `HIGH_PRIORITY`.
 
-### tidb_gc_concurrency
+### tidb_gc_concurrency <span class="version-mark">New in v5.0 GA</span>
 
 - Scope: GLOBAL
 - Default: -1
 - Specifies the number of threads in the [Resolve Locks](/garbage-collection-overview.md#resolve-locks) step of GC. A value of `-1` means that TiDB will automatically decide the number of garbage collection threads to use.
 
-### tidb_gc_enable
+### tidb_gc_enable <span class="version-mark">New in v5.0 GA</span>
 
 - Scope: GLOBAL
 - Default value: ON
 - Enables garbage collection for TiKV. Disabling garbage collection will reduce system performance, as old versions of rows will no longer be purged.
 
-## tidb_gc_life_time
+## tidb_gc_life_time <span class="version-mark">New in v5.0 GA</span>
 
 - Scope: GLOBAL
 - Default: `"10m0s"`
@@ -645,16 +645,20 @@ For a system upgraded to v5.0.0-rc from an earlier version, if you have not modi
 >     - A large amount of history data may affect performance to a certain degree, especially for range queries such as `select count(*) from t`
 > - If there is any transaction that has been running longer than `tidb_gc_life_time`, during GC, the data since `start_ts` is retained for this transaction to continue execution. For example, if `tidb_gc_life_time` is configured to 10 minutes, among all transactions being executed, the transaction that starts earliest has been running for 15 minutes, GC will retain data of the recent 15 minutes.
 
-### tidb_gc_run_interval
+### tidb_gc_run_interval <span class="version-mark">New in v5.0 GA</span>
 
 - Scope: GLOBAL
 - Default value: `"10m0s"`
 - Specifies the GC interval, in the format of Go Duration, for example, `"1h30m"`, and `"15m"`
 
-### tidb_gc_scan_lock_mode
+### tidb_gc_scan_lock_mode <span class="version-mark">New in v5.0 GA</span>
+
+> **Warning:**
+>
+> Currently, Green GC is an experimental feature. It is not recommended that you use it in the production environment.
 
 - Scope: GLOBAL
-- Default value: `PHYSICAL`
+- Default value: `LEGACY`
 - Possible values:
     - `LEGACY`: Uses the old way of scanning, that is, disable Green GC.
     - `PHYSICAL`: Uses the physical scanning method, that is, enable Green GC.

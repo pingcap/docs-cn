@@ -555,7 +555,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
     The transaction duration exceeds the GC lifetime (10 minutes by default).
 
-    You can increase the GC lifetime by modifying the [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time) system variable. Generally, it is not recommended to modify this parameter, because changing it might cause many old versions to pile up if this transaction has a large number of `UPDATE` and `DELETE` statements.
+    You can increase the GC lifetime by modifying the [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-new-in-v50-ga) system variable. Generally, it is not recommended to modify this parameter, because changing it might cause many old versions to pile up if this transaction has a large number of `UPDATE` and `DELETE` statements.
 
 - 7.1.2 `txn takes too much time`.
 

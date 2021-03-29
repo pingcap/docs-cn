@@ -606,25 +606,6 @@ This section gives the alert rules for the TiKV component.
 
     The pressure on the apply Raft log thread is too high. It is often caused by a burst of writes.
 
-#### `TiDB_tikvclient_gc_action_fail` (only happen when in special configurations)
-
-* Alert rule:
-
-    `sum(increase(tidb_tikvclient_gc_action_result{type="fail”}[1m])) > 10`
-
-    > **Note:**
-    >
-    > In TiDB 3.* versions, the `tidb_tikvclient_gc_action_result` metric exists but does not have a value. It's because distributed garbage collection (GC) is introduced in the TiDB 3.0 version but will not be performed in TiDB.
-
-* Description:
-
-    There are many Regions where GC fails to work.
-
-* Solution:
-
-    1. It is normally because the GC concurrency is set too high. You can moderately lower the GC concurrency degree, and you need to first confirm that the failed GC is caused by the busy server.
-    2. You can moderately lower the concurrency degree by adjusting [`tikv_db_concurrency`](/system-variables.md#tidb_gc_concurrency).
-
 ### Warning-level alerts
 
 #### `TiKV_leader_drops`
