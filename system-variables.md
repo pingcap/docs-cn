@@ -617,6 +617,50 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
+### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：-1
+- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
+
+### `tidb_gc_enable` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：ON
+- 这个变量用于控制是否启用 TiKV 的垃圾回收 (GC) 机制。如果不启用 GC 机制，系统将不再清理旧版本的数据，因此会有损系统性能。
+
+### `tidb_gc_life_time` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`"10m0s"`
+- 这个变量用于指定每次进行垃圾回收 (GC) 时保留数据的时限。变量值为 Go 的 Duration 字符串格式。每次进行 GC 时，将以当前时间减去该变量的值作为 safe point。
+
+> **Note:**
+>
+> - 在数据频繁更新的场景下，将 `tidb_gc_life_time` 的值设置得过大（如数天甚至数月）可能会导致一些潜在的问题，如：
+>     - 占用更多的存储空间。
+>     - 大量的历史数据可能会在一定程度上影响系统性能，尤其是范围的查询（如 `select count(*) from t`）。
+> - 如果一个事务的运行时长超过了 `tidb_gc_life_time` 配置的值，在 GC 时，为了使这个事务可以继续正常运行，系统会保留从这个事务开始时间 `start_ts` 以来的数据。例如，如果 `tidb_gc_life_time` 的值配置为 10 分钟，且在一次 GC 时，集群正在运行的事务中最早开始的那个事务已经运行了 15 分钟，那么本次 GC 将保留最近 15 分钟的数据。
+
+### `tidb_gc_run_interval` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`"10m0s"`
+- 这个变量用于指定垃圾回收 (GC) 运行的时间间隔。变量值为 Go 的 Duration 字符串格式，如`"1h30m"`、`"15m"`等。
+
+### `tidb_gc_scan_lock_mode` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+
+> **警告：**
+>
+> Green GC 目前是实验性功能，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 默认值：`LEGACY`
+- 可设置为：
+    - `LEGACY`：使用旧的扫描方式，即禁用 Green GC。
+    - `PHYSICAL`：使用物理扫描方式，即启用 Green GC。
+- 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-实验特性) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
+
 ### `tidb_general_log`
 
 - 作用域：INSTANCE
