@@ -8,7 +8,7 @@ aliases: ['/docs/dev/scale-tidb-using-tiup/','/docs/dev/how-to/scale/with-tiup/'
 
 The capacity of a TiDB cluster can be increased or decreased without interrupting the online services.
 
-This document describes how to scale the TiDB, TiKV, PD, TiCDC, or TiFlash cluster using TiUP. If you have not installed TiUP, refer to the steps in [Install TiUP on the control machine](/upgrade-tidb-using-tiup.md#install-tiup-on-the-control-machine) and import the cluster into TiUP before you use TiUP to scale the TiDB cluster.
+This document describes how to scale the TiDB, TiKV, PD, TiCDC, or TiFlash cluster using TiUP. If you have not installed TiUP, refer to the steps in [Install TiUP on the control machine](/production-deployment-using-tiup.md#step-2-install-tiup-on-the-control-machine).
 
 To view the current cluster name list, run `tiup cluster list`.
 

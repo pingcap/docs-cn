@@ -335,8 +335,7 @@ Other requirements for the target machine:
 
 - If you are ready to deploy a TiDB cluster for the production environment:
 
-    - [Deploy TiDB online using TiUP](/production-deployment-using-tiup.md)
-    - [Deploy TiDB offline using TiUP](/production-offline-deployment-using-tiup.md)
+    - [Deploy TiDB using TiUP](/production-deployment-using-tiup.md)
     - [Deploy TiDB on Cloud using TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable)
 
 - If you're looking for analytics solution with TiFlash:

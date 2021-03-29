@@ -22,7 +22,7 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
 ### Notes for upgrade
 
-* The `changefeed` configuration has changed in TiCDC v4.0.2. See [Compatibility notes for the configuration file](/production-deployment-using-tiup.md#step-3-edit-the-initialization-configuration-file) for details.
+* The `changefeed` configuration has changed in TiCDC v4.0.2. See [Compatibility notes for the configuration file](/production-deployment-using-tiup.md#step-3-initialize-cluster-topology-file) for details.
 * If you encounter any issues, see [Upgrade TiDB using TiUP - FAQ](/upgrade-tidb-using-tiup.md#faq).
 
 ## Use TLS

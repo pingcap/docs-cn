@@ -530,6 +530,33 @@ Take the following steps to check the current operating system configuration and
                   The governor "performance" may decide which speed to use within this range.
     ```
 
+9. Execute the following commands to modify the `sysctl` parameters:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    echo "fs.file-max = 1000000">> /etc/sysctl.conf
+    echo "net.core.somaxconn = 32768">> /etc/sysctl.conf
+    echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
+    echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
+    echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
+    echo "vm.swappiness = 0">> /etc/sysctl.conf
+    sysctl -p
+    ```
+
+10. Execute the following command to configure the user's `limits.conf` file:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat << EOF >>/etc/security/limits.conf
+    tidb           soft    nofile          1000000
+    tidb           hard    nofile          1000000
+    tidb           soft    stack          32768
+    tidb           hard    stack          32768
+    EOF
+    ```
+
 ## Manually configure the SSH mutual trust and sudo without password
 
 This section describes how to manually configure the SSH mutual trust and sudo without password. It is recommended to use TiUP for deployment, which automatically configure SSH mutual trust and login without password. If you deploy TiDB clusters using TiUP, ignore this section.

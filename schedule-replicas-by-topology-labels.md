@@ -91,7 +91,7 @@ The `location-level` configuration is an array of strings, which needs to corres
 
 ### Configure a cluster using TiUP (recommended)
 
-When using TiUP to deploy a cluster, you can configure the TiKV location in the [initialization configuration file](/production-deployment-using-tiup.md#step-3-edit-the-initialization-configuration-file). TiUP will generate the corresponding TiKV and PD configuration files during deployment.
+When using TiUP to deploy a cluster, you can configure the TiKV location in the [initialization configuration file](/production-deployment-using-tiup.md#step-3-initialize-cluster-topology-file). TiUP will generate the corresponding TiKV and PD configuration files during deployment.
 
 In the following example, a two-layer topology of `zone/host` is defined. The TiKV nodes of the cluster are distributed among three zones, each zone with two hosts. In z1, two TiKV instances are deployed per host. In z2 and z3, one TiKV instance is deployed per host. In the following example, `tikv-n` represents the IP address of the `n`th TiKV node.
 

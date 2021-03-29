@@ -6,11 +6,23 @@ aliases: ['/docs/dev/post-installation-check/']
 
 # Check Cluster Status
 
-This document describes how to check the cluster status via [TiDB Dashboard](/dashboard/dashboard-intro.md) and Grafana, and how to log in to the TiDB database to perform simple DML and DDL operations and SQL queries.
+After a TiDB cluster is deployed, you need to check whether the cluster runs normally. This document introduces how to check the cluster status using TiUP commands, [TiDB Dashboard](/dashboard/dashboard-intro.md) and Grafana, and how to log into the TiDB database to perform simple SQL operations.
 
 ## Check the TiDB cluster status
 
-This section describes how to check the TiDB cluster status using [TiDB Dashboard](/dashboard/dashboard-intro.md) and Grafana.
+This section describes how to check the TiDB cluster status using TiUP commands, [TiDB Dashboard](/dashboard/dashboard-intro.md), and Grafana.
+
+### Use TiUP
+
+Use the `tiup cluster display <cluster-name>` command to check the cluster status. For example:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster display tidb-test
+```
+
+Expected output: If the `Status` information of each node is `Up`, the cluster runs normally.
 
 ### Use TiDB Dashboard
 
