@@ -31,6 +31,10 @@ Resolve Locks 有两种执行模式：
 `LEGACY` （默认模式）：由 GC leader 对所有的 Region 发送请求扫描过期的锁，并对扫到的锁查询 Primary 的状态，再发送请求对其进行提交或回滚。
 `PHYSICAL`：TiDB 绕过 Raft 层直接扫描每个 TiKV 节点上的数据。
 
+> **警告：**
+>
+> `PHYSICAL`模式（即启用 Green GC）目前是实验性功能，不建议在生产环境中使用。
+
 你可以通过修改系统变量 [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode) 的值切换 Resolve Locks 的执行模式。
 
 ### Delete Ranges（删除区间）
