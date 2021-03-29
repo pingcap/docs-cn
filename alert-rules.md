@@ -604,25 +604,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     Apply Raft log 线程压力太大，通常是因为写入太猛了。
 
-#### `TiDB_tikvclient_gc_action_fail`（基本不发生，只在特殊配置下才会发生）
-
-* 报警规则：
-
-    `sum(increase(tidb_tikvclient_gc_action_result{type="fail”}[1m])) > 10`
-
-    > **注意：**
-    >
-    > 由于 3.0 中引入了分布式 GC 且 GC 不会在 TiDB 执行，因此 `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 以上版本中存在，但是不会有值。
-
-* 规则描述：
-
-    GC 失败的 Region 较多。
-
-* 处理方法：
-
-    1. 一般是因为并行 GC 开的太高了，可以适当降低 GC 并行度。你需要先确认 GC 失败是由于服务器繁忙导致的。
-    2. 通过修改系统变量 [`tikv_db_concurrency`](/system-variables.md#tidb_gc_concurrency) 的值适当降低并行度。
-
 ### 警告级别报警项
 
 #### `TiKV_leader_drops`
