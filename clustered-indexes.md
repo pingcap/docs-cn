@@ -92,9 +92,9 @@ ALTER TABLE t DROP INDEX `PRIMARY`;
 
 可通过以下方式来确定一张表的主键是否使用了聚簇索引：
 
-- `SHOW CREATE TABLE`
-- `SHOW INDEX FROM`
-- `information_schema.tables`
+- 执行语句 `SHOW CREATE TABLE`。
+- 执行语句 `SHOW INDEX FROM`。
+- 查询系统表 `information_schema.tables` 中的 `TIDB_PK_TYPE` 列。
 
 通过 `SHOW CREATE TABLE` 查看，`PRIMARY KEY` 的属性可能为 `CLUSTERED` 或 `NONCLUSTERED`：
 
