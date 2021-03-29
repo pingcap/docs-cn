@@ -29,8 +29,8 @@ Resolve Locks 这一步的任务即对 safe point 之前的锁进行清理。即
 
 Resolve Locks 有两种执行模式：
 
-`LEGACY` （默认模式）：由 GC leader 对所有的 Region 发送请求扫描过期的锁，并对扫到的锁查询 Primary 的状态，再发送请求对其进行提交或回滚。
-`PHYSICAL`：TiDB 绕过 Raft 层直接扫描每个 TiKV 节点上的数据。
+- `LEGACY` （默认模式）：由 GC leader 对所有的 Region 发送请求扫描过期的锁，并对扫到的锁查询 Primary 的状态，再发送请求对其进行提交或回滚。
+- `PHYSICAL`：TiDB 绕过 Raft 层直接扫描每个 TiKV 节点上的数据。
 
 > **警告：**
 >
