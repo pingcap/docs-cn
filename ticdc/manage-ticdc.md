@@ -103,9 +103,13 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 - `--start-ts`: Specifies the starting TSO of the `changefeed`. From this TSO, the TiCDC cluster starts pulling data. The default value is the current time.
 - `--target-ts`: Specifies the ending TSO of the `changefeed`. To this TSO, the TiCDC cluster stops pulling data. The default value is empty, which means that TiCDC does not automatically stop pulling data.
 - `--sort-engine`: Specifies the sorting engine for the `changefeed`. Because TiDB and TiKV adopt distributed architectures, TiCDC must sort the data changes before writing them to the sink. This option supports `memory`/`unified`/`file`.
-    - `memory`: Sorts data changes in memory. It is recommended to use `memory` in a production environment.
-    - `unified`: An experimental feature introduced in v4.0.9. When `unified` is used, TiCDC prefers data sorting in memory. If the memory is insufficient, TiCDC automatically uses the disk to store the temporary data. It is **NOT** recommended to use it in a production environment unless `memory` cannot be used due to insufficient memory.
-    - `file`: Entirely uses the disk to store the temporary data. This feature is **deprecated**. It is not recommended to use it.
+
+    - `memory`: Sorts data changes in memory.
+    - `unified`: When `unified` is used, TiCDC prefers data sorting in memory. If the memory is insufficient, TiCDC automatically uses the disk to store the temporary data. This is the default value of `--sort-engine`.
+    - `file`: Entirely uses the disk to store the temporary data. This feature is **deprecated**. It is **NOT recommended** to use it in **any** situation.
+
+- `--sort-dir`: Specifies the temporary file directory of the sorting engine. It is **NOT recommended** to use this option in the command `cdc cli changefeed create`. You are recommended to use this option in the command `cdc server` to set the temporary file directory. The default value of this option is `/tmp/cdc_sort`. When the unified sorter is enabled, if the default directory `/tmp/cdc_sort` on the sever is not writable or there is not enough space, you need to manually specify a directory in `sort-dir`. If the directory specified in `sort-dir` is not writable, `changefeed` stops automatically.
+
 - `--config`: Specifies the configuration file of the `changefeed`.
 
 #### Configure sink URI with `mysql`/`tidb`
@@ -781,3 +785,16 @@ force-replicate = true
 > **Warning:**
 >
 > For tables without a valid index, operations such as `INSERT` and `REPLACE` are not reentrant, so there is a risk of data redundancy. TiCDC guarantees that data is distributed only at least once during the replication process. Therefore, enabling this feature to replicate tables without a valid index will definitely cause data redundancy. If you do not accept data redundancy, it is recommended to add an effective index, such as adding a primary key column with the `AUTO RANDOM` attribute.
+
+## Unified Sorter
+
+Unified sorter is the sorting engine in TiCDC. This feature is enabled by default. It can mitigate OOM problems caused by the following scenarios:
+
++ The data replication task in TiCDC is paused for a long time, during which a large amount of incremental data is accumulated and needs to be replicated.
++ The data replication task is started from an early timestamp so it becomes necessary to replicate a large amount of incremental data.
+
+> **Note:**
+>
+> + If your servers use mechanical hard drives or other storage devices that have high latency or limited bandwidth, use the unified sorter with caution.
+> + The total free capacity of hard drives must be greater than or equal to 128G. If you need to replicate a large amount of historical data, make sure that the free capacity on each node is greater than or equal to the size of the incremental data that needs to be replicated.
+> + Unified sorter is enabled by default. If your servers do not match the above requirements and you want to disable the unified sorter, you need to manually set `sort-engine` to `memory` for the changefeed.
