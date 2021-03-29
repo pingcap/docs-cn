@@ -624,7 +624,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 - 作用域：GLOBAL
 - 默认值：-1
-- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-lock)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
+- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-lock-清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
 
 ### `tidb_gc_enable` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
@@ -662,7 +662,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 - 可设置为：
     - `LEGACY`：使用旧的扫描方式，即禁用 Green GC。
     - `PHYSICAL`：使用物理扫描方式，即启用 Green GC。
-- 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-xperimental) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
+- 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-实验特性) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
 
 ### `tidb_general_log`
 
