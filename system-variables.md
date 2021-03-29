@@ -632,7 +632,7 @@ For a system upgraded to v5.0.0-rc from an earlier version, if you have not modi
 - Default value: ON
 - Enables garbage collection for TiKV. Disabling garbage collection will reduce system performance, as old versions of rows will no longer be purged.
 
-## tidb_gc_life_time <span class="version-mark">New in v5.0 GA</span>
+### tidb_gc_life_time <span class="version-mark">New in v5.0 GA</span>
 
 - Scope: GLOBAL
 - Default: `"10m0s"`
