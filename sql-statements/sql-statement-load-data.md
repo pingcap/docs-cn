@@ -60,17 +60,17 @@ In addition, TiDB currently only supports parsing the syntax of the `DuplicateOp
 
 ```sql
 CREATE TABLE trips (
-    ->  trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    ->  duration integer not null,
-    ->  start_date datetime,
-    ->  end_date datetime,
-    ->  start_station_number integer,
-    ->  start_station varchar(255),
-    ->  end_station_number integer,
-    ->  end_station varchar(255),
-    ->  bike_number varchar(255),
-    ->  member_type varchar(255)
-    -> );
+    trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    duration integer not null,
+    start_date datetime,
+    end_date datetime,
+    start_station_number integer,
+    start_station varchar(255),
+    end_station_number integer,
+    end_station varchar(255),
+    bike_number varchar(255),
+    member_type varchar(255)
+    );
 ```
 
 ```
