@@ -20,8 +20,8 @@ TiDB 版本：5.0.0
 + 通过完善调度功能及保证执行计划在最大程度上保持不变，提升系统的稳定性。
 + 引入 Raft Joint Consensus 算法，确保 Region 成员变更时系统的可用性。
 + 优化 `EXPLAIN` 功能、引入不可见索引等功能帮助提升 DBA 调试及 SQL 语句执行的效率。
-+ 通过从 TiDB 备份文件到 AWS S3、Google Cloud GCS，或者从 AWS S3、Google Cloud GCS 恢复文件到 TiDB，确保企业数据的可靠性。
-+ 提升从 AWS S3 或者 TiDB/MySQL 导入导出数据的性能，帮忙企业在云上快速构建应用。例如：导入 1TiB TPC-C 数据性能提升了 40%，由 254 GiB/h 提升到 366 GiB/h。
++ 通过从 TiDB 备份文件到 Amazon S3、Google Cloud GCS，或者从 Amazon S3、Google Cloud GCS 恢复文件到 TiDB，确保企业数据的可靠性。
++ 提升从 Amazon S3 或者 TiDB/MySQL 导入导出数据的性能，帮忙企业在云上快速构建应用。例如：导入 1TiB TPC-C 数据性能提升了 40%，由 254 GiB/h 提升到 366 GiB/h。
 
 ## 兼容性变化
 
@@ -51,17 +51,21 @@ TiDB 版本：5.0.0
 
 #### List 分区表 (List Partition)（**实验特性**）
 
+[用户文档](/partitioned-table.md#list-分区)
+
 采用 List 分区表后，你可以高效地查询、维护有大量数据的表。
 
 List 分区表会按照 `PARTITION BY LIST(expr) PARTITION part_name VALUES IN (...)` 表达式来定义分区，定义如何将数据划分到不同的分区中。分区表的数据集合最多支持 1024 个值，值的类型只支持整数型，不能有重复的值。可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
 
 你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-ga-版本开始引入) 的值为 `ON`，开启 List 分区表功能。
 
-#### List Column 分区表 (List Column Partition)（**实验特性**）
+#### List COLUMNS 分区表 (List COLUMNS Partition)（**实验特性**）
 
-List Column 分区表是 List 分区表的变体，主要的区别是分区键可以由多个列组成，列的类型不再局限于整数类型，也可以是字符串、DATE 和 DATETIME 等类型。
+[用户文档](/partitioned-table.md#list-columns-分区)
 
-你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-ga-版本开始引入) 的值为 `ON`，开启 List Column 分区表功能。
+List COLUMNS 分区表是 List 分区表的变体，主要的区别是分区键可以由多个列组成，列的类型不再局限于整数类型，也可以是字符串、DATE 和 DATETIME 等类型。
+
+你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-ga-版本开始引入) 的值为 `ON`，开启 List COLUMNS 分区表功能。
 
 #### 不可见索引（Invisible Indexes）
 
@@ -81,18 +85,20 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 
 ### 事务
 
-悲观事务模式下，如果事务所涉及到的表存在并发的 DDL 操作或者 SCHEMA VERSION 变更，系统自动将该事务的 SCHEMA VERSION 更新到最新版本，以此确保事务会提交成功，避免事务因并发的 DDL 操作或者 SCHEMA VERSION 变更而中断时客户端收到 `Information schema is changed` 的错误信息。 [用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)，[#18005](https://github.com/pingcap/tidb/issues/18005)
+[用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)，[#18005](https://github.com/pingcap/tidb/issues/18005)
+
+悲观事务模式下，如果事务所涉及到的表存在并发的 DDL 操作或者 SCHEMA VERSION 变更，系统自动将该事务的 SCHEMA VERSION 更新到最新版本，以此确保事务会提交成功，避免事务因并发的 DDL 操作或者 SCHEMA VERSION 变更而中断时客户端收到 `Information schema is changed` 的错误信息。
 
 系统默认关闭此功能，你可以通过修改 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 系统变量开启此功能，此功能从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
 
-+ Binlog 在执行 Add column 操作的兼容性问题
++ TiDB Binlog 在执行 Add column 操作的兼容性问题
 + 与唯一索引一起使用时存在的数据不一致性的问题
 + 与添加索引一起使用时存在的数据不一致性的问题
 
 当前此功能存在以下不兼容性问题：
 
 + 并发事务场景下事务的语义可能发生变化的问题
-+ 与 Binlog 一起使用时，存在已知的兼容性问题 [#20996](https://github.com/pingcap/tidb/issues/20996)
++ 与 TiDB Binlog 一起使用时，存在已知的兼容性问题 [#20996](https://github.com/pingcap/tidb/issues/20996)
 + 与 change column 功能不兼容 [#21470](https://github.com/pingcap/tidb/issues/21470)
 
 ### 字符集和排序规则
@@ -102,7 +108,9 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 
 ### 安全
 
-为满足各种安全合规（如《通用数据保护条例》(GDPR)）的要求，系统在输出错误信息和日志信息时，支持对敏感信息（例如，身份证信息、信用卡号）进行脱敏处理，避免敏感信息泄露。 [用户文档](/log-redaction.md)，[#18566](https://github.com/pingcap/tidb/issues/18566)
+[用户文档](/log-redaction.md)，[#18566](https://github.com/pingcap/tidb/issues/18566)
+
+为满足各种安全合规（如《通用数据保护条例》(GDPR)）的要求，系统在输出错误信息和日志信息时，支持对敏感信息（例如，身份证信息、信用卡号）进行脱敏处理，避免敏感信息泄露。
 
 TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开关开启此功能：
 
@@ -174,7 +182,7 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
     通过 `SHOW INDEX FROM tbl-name` 语句可查询表是否有聚簇索引。
 
-+ 设置 `tidb_enable_clustered_index` 控制聚簇索引功能，取值：ON|OFF|INT_ONLY，默认：INT_ONLY
++ 设置 `tidb_enable_clustered_index` 控制聚簇索引功能，取值：ON|OFF|INT_ONLY
 
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
     + OFF：关闭聚簇索引，支持添加或者删除非聚簇索引。
@@ -202,9 +210,9 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 [用户文档](/system-variables.md#tidb_enable_async_commit-从-v500-rc-版本开始引入)，[#8316](https://github.com/tikv/tikv/issues/8316)
 
-数据库的客户端会同步等待数据库系统通过两阶段 (2PC) 完成事务的提交，事务在第一阶段提交成功能就会返回结果给客户端，系统会在后台异步执行第二阶段提交操作，降低事务提交的延迟。如果事务的写入只涉及一个 Region，则第二阶段可以直接被省略，变成一阶段提交。
+数据库的客户端会同步等待数据库系统通过两阶段 (2PC) 完成事务的提交，事务在第一阶段提交成功后就会返回结果给客户端，系统会在后台异步执行第二阶段提交操作，降低事务提交的延迟。如果事务的写入只涉及一个 Region，则第二阶段可以直接被省略，变成一阶段提交。
 
-开启异步提交事务特性后，在硬件、配置完全相同，Sysbench 设置 32 线程测试 oltp_insert 时，TPS 由 3056 提升到 4878，提升了 59.6%，平均延迟由 10.46ms 降低到 6.56ms，降低了 38.2%。
+开启异步提交事务特性后，在硬件、配置完全相同的情况下，Sysbench 设置 32 线程测试 oltp_insert 时，TPS 由 3056 提升到 4878，提升了 59.6%，平均延迟由 10.46ms 降低到 6.56ms，降低了 38.2%。
 
 数据库应用开发人员可以考虑将事务的一致性从线性一致性降低到 [因果一致性](/transaction-overview.md#因果一致性事务)，减少 1 次网络交互降低延迟，提升数据写入的性能。开启因果一致性的 SQL 语句为 `START TRANSACTION WITH CAUSAL CONSISTENCY`。
 
@@ -212,7 +220,7 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 **新创建的 5.0 集群默认开启该功能。**
 
-从旧版本升级到 5.0 的集群，默认不开启，你可以执行 `set global tidb_enable_async_commit = ON;` 和 `set global tidb_enable_1pc = ON;` 语句开启该功能。
+从旧版本升级到 5.0 的集群，默认不开启该功能，你可以执行 `set global tidb_enable_async_commit = ON;` 和 `set global tidb_enable_1pc = ON;` 语句开启该功能。
 
 异步提交事务功能有如下限制：
 
@@ -222,7 +230,7 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 [用户文档](/tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入)
 
-在 5.0 GA 默认开启 Coprocessor cache 功能，开启此功能后，TiDB 会在 tidb-server 中会缓存算子下推到 tikv-server 计算后的结果，降低读取数据的延时。
+在 5.0 GA 默认开启 Coprocessor cache 功能，开启此功能后，TiDB 会在 tidb-server 中缓存算子下推到 tikv-server 计算后的结果，降低读取数据的延时。
 
 要关闭 Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
@@ -270,11 +278,11 @@ TiDB 在进行垃圾回收和数据 Compaction 时，分区会占用 CPU、I/O �
 
 GC Compaction Filter 特性将这两个任务合并在同一个任务中完成，减少对 CPU、I/O 资源的占用。系统默认开启此功能，你可以通过设置 `gc.enable-compaction-filter = false` 关闭此功能。
 
-#### TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（**实验特性**）
+#### TiFlash 限制压缩或整理数据占用 I/O 资源（**实验特性**）
 
-TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制压缩或整理数据占用的 I/O 量缓解资源争抢。
+该特性能缓解后台任务与前端的数据读写对 I/O 资源的争抢。
 
-系统默认关闭此特性，你可以通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
+系统默认关闭该特性，你可以通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
 
 #### 优化 load base 切分策略，缓解部分场景热点数据无法切分导致的性能抖动
 
@@ -282,9 +290,9 @@ TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制�
 
 ### 保证执行计划在最大程度保持不变，避免性能抖动
 
-#### SQL BINDING 支持 `INSERT`、`REPLACE`、`UPDATE`、`DELETE` 语句
-
 [用户文档](/sql-plan-management.md)
+
+#### SQL BINDING 支持 `INSERT`、`REPLACE`、`UPDATE`、`DELETE` 语句
 
 在数据库性能调优或者运维过程中，如果发现因为执行计划不稳定导致系统性能不稳定时，你可以根据自身的经验或者通过 `EXPLAIN ANALYZE` 测试选择一条人为优化过的 SQL 语句，通过 SQL BINDING 将优化过的 SQL 语句与业务代码执行的 SQL 语句绑定，确保性能的稳定性。
 
@@ -294,17 +302,17 @@ TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制�
 
 #### 自动捕获、绑定执行计划
 
-在升级 TiDB 时，为避免性能抖动问题，你可以开启自动捕获并绑定执行计划的功能，由系统自动捕获并绑定最近一次执行计划然后存储在系统表中。升级完成后，DBA 可以通过 `SHOW BINDING` 导出绑定的执行计划，自行分析并决策是否要删除绑定的执行计划。
+在升级 TiDB 时，为避免性能抖动问题，你可以开启自动捕获并绑定执行计划的功能，由系统自动捕获并绑定最近一次执行计划然后存储在系统表中。升级完成后，你可以通过 `SHOW BINDING` 导出绑定的执行计划，自行分析并决策是否要删除绑定的执行计划。
 
 系统默认关闭自动捕获并绑定执行计划的功能，你可以通过修改 Server 或者设置全局系统变量 `tidb_capture_plan_baselines = ON` 开启此功能。开启此功能后，系统每隔 `bind-info-lease` (默认 3 秒）从 Statement Summary 抓取出现过至少 2 次的 SQL 语句并自动捕获、绑定。
 
 ### TiFlash 查询稳定性提升
 
-新增系统变量 `tidb_allow_fallback_to_tikv`，用于决定在 TiFlash 查询失败时，自动将查询回退到 TiKV 尝试执行，默认为 OFF。
+新增系统变量 [`tidb_allow_fallback_to_tikv`](/system-variables.md#tidb_allow_fallback_to_tikv-从-v50-ga-版本开始引入)，用于决定在 TiFlash 查询失败时，自动将查询回退到 TiKV 尝试执行，默认为 OFF。
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
-[TiCDC #1150](https://github.com/pingcap/ticdc/issues/1150)
+[用户文档](/manage-ticdc.md#unified-sorter)，[#1150](https://github.com/pingcap/ticdc/issues/1150)
 
 v4.0.9 及之前版本的 TiCDC 遇到同步过多历史变更数据的场景时会出现 OOM 问题。TiCDC 自 v4.0.9 版本起引入变更数据本地排序功能 Unified Sorter，在 v5.0.0 版本会默认开启本功能以缓解类似场景下的 OOM 问题：
 
@@ -322,13 +330,13 @@ Unified Sorter 整合了老版本提供的 memory、file sort-engine 配置选�
 
 ### 提升 Region 成员变更时的可用性
 
-[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)，[#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
+[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)，[#18079](https://github.com/pingcap/tidb/issues/18079)，[#7587](https://github.com/tikv/tikv/issues/7587)，[#2860](https://github.com/tikv/pd/issues/2860)
 
 Region 在完成成员变更时，由于“添加”和“删除”成员操作分成两步，如果两步操作之间有故障发生会引起 Region 不可用并且会返回前端业务的错误信息。
 
 TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加”和“删除”合并为一个操作，并发送给所有成员，提升了 Region 成员变更时的可用性。在变更过程中，Region 处于中间的状态，如果任何被修改的成员失败，系统仍然可以使用。
 
-系统默认开启此功能，你可以通过设置 `pd-ctl config set enable-joint-consensus` 选项值为 false 关闭此功能。
+系统默认开启此功能，你可以通过 `pd-ctl config set enable-joint-consensus` 命令设置选项值为 false 关闭此功能。
 
 ### 优化内存管理模块，降低系统 OOM 的风险
 
@@ -340,38 +348,38 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### 从 S3/Aurora 数据迁移到 TiDB
 
-数据迁移类工具支持 AWS S3（也包含支持 S3 协议的其他存储服务）作为数据迁移的中间转存介质，同时支持将 Aurora 快照数据直接初始化 TiDB 中，丰富了数据从 AWS S3/Aurora 迁移到 TiDB 的选择。
+数据迁移类工具支持 Amazon S3（也包含支持 S3 协议的其他存储服务）作为数据迁移的中间转存介质，同时支持将 Aurora 快照数据直接初始化 TiDB 中，丰富了数据从 Amazon S3/Aurora 迁移到 TiDB 的选择。
 
 该功能使用方法可以参照以下文档：
 
-+ [将 MySQL/Aurora 数据导出到 AWS S3](/dumpling-overview.md#导出到-amazon-s3-云盘)，[Dumpling #8](https://github.com/pingcap/dumpling/issues/8)
-+ [从 AWS S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-from-aurora-using-lightning.md)，[Lightning #266](https://github.com/pingcap/tidb-lightning/issues/266)
++ [将 MySQL/Aurora 数据导出到 Amazon S3](/dumpling-overview.md#导出到-amazon-s3-云盘)，[#8](https://github.com/pingcap/dumpling/issues/8)
++ [从 Amazon S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-from-aurora-using-lightning.md)，[#266](https://github.com/pingcap/tidb-lightning/issues/266)
 
-### TiDB on Cloud 数据导入性能优化
+### TiDB Cloud 数据导入性能优化
 
-数据导入工具 TiDB Lightning 针对 DBaaS AWS T1.standard 配置（及其等同配置）的 TiDB 集群进行了数据导入性能优化，测试结果显示使用 TiDB Lightning 导入 1TB TPCC 数据到 TiDB，性能提升了 40%，由 254 GiB/h 提升到了 366 GiB/h。
+数据导入工具 TiDB Lightning 针对 TiDB Cloud AWS T1.standard 配置（及其等同配置）的 TiDB 集群进行了数据导入性能优化，测试结果显式使用 TiDB Lightning 导入 1TB TPCC 数据到 TiDB，性能提升了 40%，由 254 GiB/h 提升到了 366 GiB/h。
 
 ## TiDB 数据共享订阅
 
 ### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform)（**实验特性**）
 
-[用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[TiCDC #660](https://github.com/pingcap/ticdc/issues/660)
+[用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[#660](https://github.com/pingcap/ticdc/issues/660)
 
-为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统，实现业务所需的数据流转架构。
+为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能实现了数据流转架构，可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统。
 
-Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect 扩展 TiDB 数据流转到其他异构数据库或者系统的能力。
+Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect，扩展了 TiDB 数据流转到其他异构数据库或者系统的能力。
 
 ### TiCDC 支持 TiDB 集群之间环形同步（**实验特性**）
 
-[用户文档](/ticdc/manage-ticdc.md#环形同步)，[TiCDC #471](https://github.com/pingcap/ticdc/issues/471)
+[用户文档](/ticdc/manage-ticdc.md#环形同步)，[#471](https://github.com/pingcap/ticdc/issues/471)
 
-由于地理位置差异导致的通讯延迟等问题，存在以下场景：用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
+由于地理位置差异导致的通讯延迟等问题，存在以下场景：用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 之间相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
 
 TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。
 
-该功能可以用于以下场景：
+该功能适用于以下场景：
 
-+ 多套 TiDB 集群相互进行数据备份，灾难发生时业务切换到正常的 TiDB 集群
++ 多套 TiDB 集群之间相互进行数据备份，灾难发生时业务切换到正常的 TiDB 集群
 + 跨地域部署多套 TiDB 集群支撑当地业务，TiDB 集群之间的同一业务表之间数据需要相互复制
 
 限制与约束：
@@ -398,7 +406,7 @@ DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起�
 
 [用户文档](/production-deployment-using-tiup.md)
 
-DBA 在使用 TiUP 部署 TiDB 集群过程发现环境初始化比较复杂、校验配置过多，集群拓扑文件比较难编辑等，DBA 的部署效率比较低。5.0 版本通过以下几个事项提升 DBA 部署 TiDB 的效率：
+DBA 在使用 TiUP 部署 TiDB 集群过程发现环境初始化比较复杂、校验配置过多，集群拓扑文件比较难编辑等问题，导致 DBA 的部署效率比较低。5.0 版本通过以下几个事项提升 DBA 部署 TiDB 的效率：
 
 + TiUP Cluster 支持 `check topo.yaml` 命令，进行更全面一键式环境检查并给出修复建议。
 + TiUP Cluster 支持 `check topo.yaml --apply` 命令，自动修复检查过程中发现的环境问题。
@@ -411,9 +419,9 @@ DBA 在使用 TiUP 部署 TiDB 集群过程发现环境初始化比较复杂、�
 
 TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时会导致 SQL 响应持续长时间抖动，PD 在线滚动升级期间集群 QPS 抖动时间维持在 10~30s。
 
-TiUP v1.4.0 版本版本做了如下逻辑调整进行优化：
+TiUP v1.4.0 版本调整了逻辑，优化如下：
 
-+ 升级 PD 时，会主动判断被重启的 PD 节点状态就绪后再滚动升级下一个 PD 节点。
++ 升级 PD 时，会主动判断被重启的 PD 节点状态，确认就绪后再滚动升级下一个 PD 节点。
 + 主动识别 PD 角色，先升级 follower 角色 PD 节点，最后再升级 PD Leader 节点。
 
 ### 优化升级时长
@@ -432,9 +440,9 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 
 新版本 TiUP 支持使用 tiup-cluster `replay` 子命令从断点处重试失败的操作，以避免升级中断后所有操作重新执行。
 
-### 运维功能增强
+### 增强运维功能
 
-新版本 TiUP 对运维 TiDB 集群的功能做了进一步的强化：
+新版本 TiUP 进一步强化了 TiDB 集群运维的功能：
 
 + 支持对已停机的 TiDB 和 DM 集群进行升级或 patch 操作，以适应更多用户的使用场景。
 + 为 tiup-cluster 的 `display` 子命令添加 `--version` 参数用于获取集群版本。
