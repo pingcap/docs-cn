@@ -632,7 +632,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 - 默认值：ON
 - 这个变量用于控制是否启用 TiKV 的垃圾回收 (GC) 机制。如果不启用 GC 机制，系统将不再清理旧版本的数据，因此会有损系统性能。
 
-## `tidb_gc_life_time` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+### `tidb_gc_life_time` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`"10m0s"`
