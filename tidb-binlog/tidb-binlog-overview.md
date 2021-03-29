@@ -15,6 +15,10 @@ TiDB Binlog has the following features:
 * **Data replication:** replicate the data in the TiDB cluster to other databases
 * **Real-time backup and restoration:** back up the data in the TiDB cluster and restore the TiDB cluster when the cluster fails
 
+> **Note:**
+>
+> TiDB Binlog is not compatible with some features introduced in TiDB v5.0.0-rc and they cannot be used together. For details, see [Notes](#notes). It is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead of TiDB Binlog.
+
 ## TiDB Binlog architecture
 
 The TiDB Binlog architecture is as follows:
@@ -50,7 +54,15 @@ The TiDB Binlog cluster is composed of Pump and Drainer.
 
 ## Notes
 
-* You need to use TiDB v2.0.8-binlog, v2.1.0-rc.5 or a later version. Older versions of TiDB cluster are not compatible with the cluster version of TiDB Binlog.
+* TiDB Binlog is not compatible with the following features introduced in TiDB v5.0.0-rc and they cannot be used together. It is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead of TiDB Binlog:
+
+    - [TiDB Clustered Index](/clustered-indexes.md#limitations): After TiDB Binlog is enabled, TiDB does not allow creating clustered indexes with non-single integer columns as primary keys; data insertion, deletion, and update of the created clustered index tables will not be replicated downstream via TiDB Binlog. 
+    - TiDB system variable [tidb_enable_async_commit](/system-variables.md#tidb_enable_async_commit-new-in-v50-rc): After TiDB Binlog is enabled, performance cannot be improved by enabling this option.
+    - TiDB system variable [tidb_enable_1pc](/system-variables.md#tidb_enable_1pc-new-in-v50-rc): After TiDB Binlog is enabled, performance cannot be improved by enabling this option.
+
+* TiDB Binlog is incompatible with the following feature introduced in TiDB v4.0.7 and they cannot be used together:
+
+    - TiDB system variable [tidb_enable_amend_pessimistic_txn](/system-variables.md#tidb_enable_amend_pessimistic_txn-new-in-v407): The two features have compatibility issues. Using them together might cause the issue that TiDB Binlog replicates data inconsistently.
 
 * Drainer supports replicating binlogs to MySQL, TiDB, Kafka or local files. If you need to replicate binlogs to other Drainer unsuppored destinations, you can set Drainer to replicate the binlog to Kafka and read the data in Kafka for customized processing according to binlog consumer protocol. See [Binlog Consumer Client User Guide](/tidb-binlog/binlog-consumer-client.md).
 
