@@ -106,7 +106,7 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 The value of `SHARD_ROW_ID_BITS` can be dynamically modified. The modified value only takes effect for newly written data.
 
-When TiDB's `alter-primary-key` parameter is set to false, the table's integer primary key is used as the RowID. At this time, the `SHARD_ROW_ID_BITS` option can not be used because it changes the RowID generation rules. If the `alter-primary-key` parameter is set to true, TiDB no longer uses the integer primary key as the RowID when creating a table, and the table with the integer primary key can also use the `SHARD_ROW_ID_BITS` feature.
+For the table with a primary key of the `CLUSTERED` type, TiDB uses the primary key of the table as the RowID. At this time, the `SHARD_ROW_ID_BITS` option cannot be used because it changes the RowID generation rules. For the table with the primary key of the `NONCLUSTERED` type, TiDB uses an automatically allocated 64-bit integer as the RowID. In this case, you can use the `SHARD_ROW_ID_BITS` feature. For more details about the primary key of the `CLUSTERED` type, refer to [clustered index](/clustered-indexes.md).
 
 The following two load diagrams shows the case where two tables without primary keys use `SHARD_ROW_ID_BITS` to scatter hotspots. The first diagram shows the situation before scattering hotspots, while the second one shows the situation after scattering hotspots.
 
