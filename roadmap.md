@@ -49,7 +49,7 @@ aliases: ['/docs-cn/ROADMAP/','/docs-cn/roadmap/','/docs-cn/stable/roadmap/','/d
 
 - [ ] 恢复到任意时间点 (PITR) [#325](https://github.com/pingcap/br/issues/325)
 - [ ] 支持修改列的类型 [#17526](https://github.com/pingcap/tidb/issues/17526)
-- [x] 提升发现及诊断性能问题的效率，降低用户的使用成本 [#18867](https://github.com/pingcap/tidb/issues/18867)
+- [ ] 提升发现及诊断性能问题的效率，降低用户的使用成本 [#18867](https://github.com/pingcap/tidb/issues/18867)
 - [x] 字符集的排序规则支持 `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` [#17596](https://github.com/pingcap/tidb/issues/17596)
 - [ ] TiCDC 兼容 TiDB Binlog 相关的特性，降低用户使用 TiCDC 的成本 [#690](https://github.com/pingcap/ticdc/issues/690)
     - [ ] 支持分类更新和插入一行数据事件
