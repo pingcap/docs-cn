@@ -1,6 +1,6 @@
 ---
 title: TiDB 实验特性
-summary: 了解 TiDB 所有版本的实验特性。
+summary: 了解 TiDB 各版本的实验特性。
 aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-features-4.0/']
 ---
 
