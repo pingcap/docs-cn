@@ -133,7 +133,6 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 TiDB 采用了多版本并发控制 (MVCC)，为了使并发事务能查看到早期版本的数据，删除数据不会立即回收空间，而是推迟一段时间后再进行垃圾回收 (GC)。你可以通过修改系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time)的值（默认值为 `10m0s`）配置历史数据的保留时限。
 
-
 ## `SHOW PROCESSLIST` 是否显示系统进程号？
 
 TiDB 的 `SHOW PROCESSLIST` 与 MySQL 的 `SHOW PROCESSLIST` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
