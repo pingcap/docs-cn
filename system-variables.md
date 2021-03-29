@@ -430,20 +430,12 @@ mysql> SELECT * FROM t1;
 
 ### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 这个变量用于控制是否开启[聚簇索引](/clustered-indexes.md)特性。
-    - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
-    - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
-    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了聚簇索引特性。
-- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 `row_id` 上并用额外创建的主键索引指向 `row_id`。
-
-    开启该特性对性能的影响主要体现在以下几个方面:
-
-    - 插入的时候每行会减少一个索引 key 的写入。
-    - 使用主键作为等值条件查询的时候，会节省一次读取请求。
-    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。
-    - 使用多列主键的前缀作为等值或范围条件查询的时候，可以节省多次读取请求。
+- 作用域：GLOBAL
+- 默认值：INT_ONLY
+- 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
+    - `OFF` 表示所有主键默认使用非聚簇索引。
+    - `ON` 表示所有主键默认使用聚簇索引。
+    - `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
 
 ### `tidb_enable_collect_execution_info`
 
@@ -498,6 +490,28 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON（受配置文件影响，这里给出的是默认配置文件取值）
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
+
+### tidb_enable_strict_double_type_check <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：ON
+- 这个变量用来控制是否可以用 `DOUBLE` 类型的无效定义创建表。该设置的目的是提供一个从 TiDB 早期版本升级的方法，因为早期版本在验证类型方面不太严格。
+- 该变量的默认值 `ON` 与 MySQL 兼容。
+
+例如，由于无法保证浮点类型的精度，现在将 `DOUBLE(10)` 类型视为无效。将 `tidb_enable_strict_double_type_check` 更改为 `OFF` 后，将会创建表。如下所示：
+
+```sql
+CREATE TABLE t1 (id int, c double(10));
+ERROR 1149 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+SET tidb_enable_strict_double_type_check = 'OFF';
+Query OK, 0 rows affected (0.00 sec)
+CREATE TABLE t1 (id int, c double(10));
+Query OK, 0 rows affected (0.09 sec)
+```
+
+> **注意：**
+>
+> 该设置仅适用于 `DOUBLE` 类型，因为 MySQL 允许为 `FLOAT` 类型指定精度。从 MySQL 8.0.17 开始已弃用此行为，不建议为 `FLOAT` 或 `DOUBLE` 类型指定精度。
 
 ### `tidb_enable_table_partition`
 
