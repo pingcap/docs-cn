@@ -184,6 +184,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
   -u root \
   -P 4000 \
   -h 127.0.0.1 \
+  -r 200000 \
   -o "s3://${Bucket}/${Folder}" \
   --s3.region "${region}"
 ```
@@ -219,6 +220,7 @@ Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。
   -P 4000 \
   -h 127.0.0.1 \
   -o /tmp/test \
+  -r 200000 \
   --filter "employees.*" \
   --filter "*.WorkOrder"
 ```
@@ -244,7 +246,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用选项如下：
 
-- `-t` 用于指定导出线程数，增大线程数会提高 Dumpling 并发度，但也会加大数据库内存消耗。
+- `-t` 用于指定导出线程数，增大线程数会提高 Dumpling 并发度，但也会加大数据库内存消耗，因此不宜过大。
 - `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数），开启后 Dumpling 会开启表内并发，提高导出大表的速度。
 
 利用以上选项可以提高 Dumpling 导出速度。
