@@ -17,10 +17,78 @@ An SQL binding is the basis of SPM. The [Optimizer Hints](/optimizer-hints.md) d
 {{< copyable "sql" >}}
 
 ```sql
-CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt
+CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt
 ```
 
-This statement binds SQL execution plans at the GLOBAL or SESSION level. The default scope is SESSION. The bound SQL statement is parameterized and stored in the system table. When a SQL query is processed, as long as the parameterized SQL statement and a bound one in the system table are consistent and the system variable `tidb_use_plan_baselines` is set to `on` (the default value is `on`), the corresponding optimizer hint is available. If multiple execution plans are available, the optimizer chooses to bind the plan with the least cost.
+This statement binds SQL execution plans at the GLOBAL or SESSION level. Currently, supported bindable SQL statements (BindableStmt) in TiDB include `SELECT`, `DELETE`, `UPDATE`, and `INSERT` / `REPLACE` with `SELECT` subqueries.
+
+Specifically, two types of these statements cannot be bound to execution plans due to syntax conflicts. See the following examples:
+
+```sql
+-- Type one: Statements that get the Cartesian product by using the `join` keyword and not specifying the associated columns with the `using` keyword.
+create global binding for
+    select * from t t1 join t t2
+using
+    select * from t t1 join t t2;
+
+-- Type two: `DELETE` statements that contain the `using` keyword.
+create global binding for
+    delete from t1 using t1 join t2 on t1.a = t2.a
+using
+    delete from t1 using t1 join t2 on t1.a = t2.a;
+```
+
+You can bypass syntax conflicts by using equivalent statements. For example, you can rewrite the above statements in the following ways:
+
+```sql
+-- First rewrite of type one statements: Add a `using` clause for the `join` keyword.
+create global binding for
+    select * from t t1 join t t2 using (a)
+using
+    select * from t t1 join t t2 using (a);
+
+-- Second rewrite of type one statements: Delete the `join` keyword.
+create global binding for
+    select * from t t1, t t2
+using
+    select * from t t1, t t2;
+
+-- Rewrite of type two statements: Remove the `using` keyword from the `delete` statement.
+create global binding for
+    delete t1 from t1 join t2 on t1.a = t2.a
+using
+    delete t1 from t1 join t2 on t1.a = t2.a;
+```
+
+> **Note:**
+>
+> When creating execution plan bindings for `INSERT` / `REPLACE` statements with `SELECT` subqueries, you need to specify the optimizer hints you want to bind in the `SELECT` subquery, not after the `INSERT` / `REPLACE` keyword. Otherwise, the optimizer hints do not take effect as intended.
+
+Here are two examples:
+
+```sql
+-- The hint takes effect in the following statement.
+create global binding for
+    insert into t1 select * from t2 where a > 1 and b = 1
+using
+    insert into t1 select /*+ use_index(@sel_1 t2, a) */ * from t2 where a > 1 and b = 1;
+
+-- The hint cannot take effect in the following statement.
+create global binding for
+    insert into t1 select * from t2 where a > 1 and b = 1
+using
+    insert /*+ use_index(@sel_1 t2, a) */ into t1 select * from t2 where a > 1 and b = 1;
+```
+
+If you do not specify the scope when creating an execution plan binding, the default scope is SESSION. The TiDB optimizer normalizes bound SQL statements and stores them in the system table. When processing SQL queries, if a normalized statement matches one of the bound SQL statements in the system table and the system variable `tidb_use_plan_baselines` is set to `on` (the default value is `on`), TiDB then uses the corresponding optimizer hint for this statement. If there are multiple matchable execution plans, the optimizer chooses the least costly one to bind.
+
+`Normalization` is a process that converts a constant in an SQL statement to a variable parameter and explicitly specifies the database for tables referenced in the query, with standardized processing on the spaces and line breaks in the SQL statement. See the following example:
+
+```sql
+select * from t where a >    1
+-- Normalized:
+select * from test . t where a > ?
+```
 
 When a SQL statement has bound execution plans in both GLOBAL and SESSION scopes, because the optimizer ignores the bound execution plan in the GLOBAL scope when it encounters the SESSION binding, the bound execution plan of this statement in the SESSION scope shields the execution plan in the GLOBAL scope.
 
@@ -48,42 +116,34 @@ explain select * from t1, t2 where t1.id = t2.id;
 
 When the first `select` statement is being executed, the optimizer adds the `sm_join(t1, t2)` hint to the statement through the binding in the GLOBAL scope. The top node of the execution plan in the `explain` result is MergeJoin. When the second `select` statement is being executed, the optimizer uses the binding in the SESSION scope instead of the binding in the GLOBAL scope and adds the `hash_join(t1, t2)` hint to the statement. The top node of the execution plan in the `explain` result is HashJoin.
 
-`Parameterization` is a process that converts a constant in an SQL statement to a variable parameter, with standardized processing on the spaces and line breaks in the SQL statement, for example,
-
-{{< copyable "sql" >}}
-
-```sql
-select * from t where a >    1
--- parameterized:
-select * from t where a > ？
-```
-
 Each standardized SQL statement can have only one binding created using `CREATE BINDING` at a time. When multiple bindings are created for the same standardized SQL statement, the last created binding is retained, and all previous bindings (created and evolved) are marked as deleted. But session bindings and global bindings can coexist and are not affected by this logic.
 
 In addition, when you create a binding, TiDB requires that the session is in a database context, which means that a database is specified when the client is connected or `use ${database}` is executed.
 
+The original SQL statement and the bound statement must have the same text after normalization and hint removal, or the binding will fail. Take the following examples:
+
+- This binding can be created successfully because the texts before and after parameterization and hint removal are the same: `select * from test . t where a > ?`
+
+     ```sql
+     CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index  (idx) WHERE a > 2
+     ```
+
+- This binding will fail because the original SQL statement is processed as `select * from test . t where a > ?`, while the bound SQL statement is processed differently as `select * from test . t where b > ?`.
+
+     ```sql
+     CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2
+     ```
+
 > **Note:**
 >
-> The text must be the same before and after parameterization and hint removal for both the original SQL statement and the bound statement, or the binding will fail. Take the following examples:
->
-> - This binding can be created successfully because the texts before and after parameterization and hint removal are the same: `select * from t where a > ?`
->
->     ```sql
->     CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index  (idx) WHERE a > 2
->     ```
->
-> - This binding will fail because the original SQL statement is processed as `select * from t where a > ?`, while the bound SQL statement is processed differently as `select * from t where b > ?`.
->
->     ```sql
->     CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2
->     ```
+> For `PREPARE` / `EXECUTE` statements and for queries executed with binary protocols, you need to create execution plan bindings for the real query statements, not for the `PREPARE` / `EXECUTE` statements.
 
 ### Remove binding
 
 {{< copyable "sql" >}}
 
 ```sql
-DROP [GLOBAL | SESSION] BINDING FOR SelectStmt
+DROP [GLOBAL | SESSION] BINDING FOR BindableStmt;
 ```
 
 This statement removes a specified execution plan binding at the GLOBAL or SESSION level. The default scope is SESSION.
@@ -132,7 +192,15 @@ To enable baseline capturing, set `tidb_capture_plan_baselines` to `on`. The def
 >
 > Because the automatic binding creation function relies on [Statement Summary](/statement-summary-tables.md), make sure to enable Statement Summary before using automatic binding.
 
-After automatic binding creation is enabled, the historical SQL statements in the Statement Summary are traversed every `bind-info-lease` (the default value is `3s`), and baseline capturing is automatically created for SQL statements that appear at least twice.
+After automatic binding creation is enabled, the historical SQL statements in the Statement Summary are traversed every `bind-info-lease` (the default value is `3s`), and a binding is automatically created for SQL statements that appear at least twice. For these SQL statements, TiDB automatically binds the execution plan recorded in Statement Summary.
+
+However, TiDB does not automatically capture bindings for the following types of SQL statements:
+
+- `EXPLAIN` and `EXPLAIN ANALYZE` statements.
+- SQL statements executed internally in TiDB, such as `SELECT` queries used for automatically loading statistical information.
+- SQL statements that are bound to a manually created execution plan.
+
+For `PREPARE` / `EXECUTE` statements and for queries executed with binary protocols, TiDB automatically captures bindings for the real query statements, not for the `PREPARE` / `EXECUTE` statements.
 
 > **Note:**
 >
@@ -160,7 +228,7 @@ The default value of `tidb_evolve_plan_baselines` is `off`.
 
 > **Note:**
 >
-> The global variable does not take effect in the current session. It only takes effect in a newly created session. To enable automatic binding evolution in the current session, change the keyword `global` to `session`.
+> The feature baseline evolution is not generally available for now. It is **NOT RECOMMENDED** to use it in the production environment.
 
 After the automatic binding evolution feature is enabled, if the optimal execution plan selected by the optimizer is not among the binding execution plans, the optimizer marks the plan as an execution plan that waits for verification. At every `bind-info-lease` (the default value is `3s`) interval, an execution plan to be verified is selected and compared with the binding execution plan that has the least cost in terms of the actual execution time. If the plan to be verified has shorter execution time, this plan is marked as a usable binding. The following example describes the process above.
 
