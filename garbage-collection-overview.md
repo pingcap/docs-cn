@@ -28,6 +28,7 @@ TiDB 的事务是基于 [Google Percolator](https://ai.google/research/pubs/pub3
 Resolve Locks 这一步的任务即对 safe point 之前的锁进行清理。即如果一个锁对应的 Primary 已经提交，那么该锁也应该被提交；反之，则应该回滚。而如果 Primary 仍然是上锁的状态（没有提交也没有回滚），则应当将该事务视为超时失败而回滚。
 
 Resolve Locks 有两种执行模式：
+
 `LEGACY` （默认模式）：由 GC leader 对所有的 Region 发送请求扫描过期的锁，并对扫到的锁查询 Primary 的状态，再发送请求对其进行提交或回滚。
 `PHYSICAL`：TiDB 绕过 Raft 层直接扫描每个 TiKV 节点上的数据。
 
