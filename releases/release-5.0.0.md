@@ -1,5 +1,6 @@
 ---
 title: What's New in TiDB 5.0
+aliases: ['/zh/tidb/dev/release-5.0.0-rc/']
 ---
 
 # What's New in TiDB 5.0

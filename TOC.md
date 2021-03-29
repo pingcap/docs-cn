@@ -525,7 +525,6 @@
   + [产品路线图](/roadmap.md)
   + v5.0
     - [5.0 GA](/releases/release-5.0.0.md)
-    - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
     - [4.0.11](/releases/release-4.0.11.md)
     - [4.0.10](/releases/release-4.0.10.md)
