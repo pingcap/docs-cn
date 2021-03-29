@@ -624,7 +624,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 - 作用域：GLOBAL
 - 默认值：-1
-- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-lock清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
+- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
 
 ### `tidb_gc_enable` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
