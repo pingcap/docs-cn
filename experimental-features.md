@@ -32,5 +32,5 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## TiDB 数据共享订阅
 
-+ TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/integrate-confluent-using-ticdc#tidb-集成-confluent-platform-快速上手指南)（v5.0 实验特性）
++ TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
 + TiCDC [支持 TiDB 集群之间环形同步](/ticdc/manage-ticdc.md#环形同步)（v5.0 实验特性）
