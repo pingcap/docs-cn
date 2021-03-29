@@ -25,7 +25,7 @@ tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_s
 
 ## TiDB 5.0 引入的变化
 
-在 TiDB 5.0 之前的版本中，GC 是通过系统表 `mysql.tidb` 进行配置的。从 TiDB 5.0 版本起，GC 仍然可以通过系统表 `mysql.tidb` 进行配置，但建议你使用系统变量进行配置，这样可以确保对配置的任何更改都能得到验证，防止造成异常行为([#20655](https://github.com/pingcap/tidb/issues/20655))。
+在 TiDB 5.0 之前的版本中，GC 是通过系统表 `mysql.tidb` 进行配置的。从 TiDB 5.0 版本起，GC 仍然可以通过系统表 `mysql.tidb` 进行配置，但建议你使用系统变量进行配置，这样可以确保对配置的任何更改都能得到验证，防止造成异常行为 ([#20655](https://github.com/pingcap/tidb/issues/20655))。
 
 TiDB 5.0 及之后的版本不再需要向各个 TiKV Region 都发送触发 GC 的请求，因此不再提供 `CENTRAL` GC 模式的支持，取而代之的是效率更高的 `DISTRIBUTED` GC 模式 （自 TiDB 3.0 起的默认 GC 模式）。
 
