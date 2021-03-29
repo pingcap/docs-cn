@@ -649,7 +649,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 - 作用域：GLOBAL
 - 默认值：`"10m0s"`
-- 这个变量用于指定垃圾回收 (GC) 运行的时间间隔。变量值为 Go 的 Duration 字符串格式，如`"1h30m"`，`"15m"`等。
+- 这个变量用于指定垃圾回收 (GC) 运行的时间间隔。变量值为 Go 的 Duration 字符串格式，如`"1h30m"`、`"15m"`等。
 
 ### `tidb_gc_scan_lock_mode` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
