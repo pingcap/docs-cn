@@ -278,6 +278,7 @@ mysql> explain select count(*) from customer c join nation n on c.c_nationkey=n.
 在执行计划中，出现了 `ExchangeReceiver` 和 `ExchangeSender` 算子。该执行计划表示 `nation` 表读取完毕后，经过 `ExchangeSender` 算子广播到各个节点中，与 `customer` 表先后进行 `HashJoin` 和 `HashAgg` 操作，再将结果返回至 TiDB 中。
 
 > **注意：**
+>
 > MPP 模式不支持如下功能：
 >
 > - 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
