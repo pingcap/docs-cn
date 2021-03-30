@@ -423,7 +423,7 @@ prepare 语句的 Plan cache 设置。
 ### `grpc-connection-count`
 
 + 跟每个 TiKV 之间建立的最大连接数。
-+ 默认值：16
++ 默认值：4
 
 ### `grpc-keepalive-time`
 
