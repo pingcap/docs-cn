@@ -148,19 +148,19 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `high-concurrency`
 
 + 处理高优先级读请求的线程池线程数量。
-+ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num < 8 时，默认值为 4；当 cpu num > 16 时，默认值为 8。
++ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
 + 最小值：1
 
 ### `normal-concurrency`
 
 + 处理普通优先级读请求的线程池线程数量。
-+ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num < 8 时，默认值为 4；当 cpu num > 16 时，默认值为 8。
++ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
 + 最小值：1
 
 ### `low-concurrency`
 
 + 处理低优先级读请求的线程池线程数量。
-+ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num < 8 时，默认值为 4；当 cpu num > 16 时，默认值为 8。
++ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
 + 最小值：1
 
 ### `max-tasks-per-worker-high`
