@@ -717,6 +717,7 @@ rocksdb 相关的配置项。
 
 ### `stats-dump-period`
 
++ 将统计信息输出到日志中的间隔时间。
 + 默认值：10m
 
 ### `compaction-readahead-size`
