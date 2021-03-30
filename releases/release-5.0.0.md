@@ -254,7 +254,7 @@ TiDB 调度过程中会占用 I/O、网络、CPU、内存等资源，若不对�
 
 为缓解此问题，PD 引入了一套新的调度算分公式并默认开启，可通过 `region-score-formula-version = v1` 配置项切换回之前的调度算分公式。
 
-#### 默认开启跨 Region 合并功能
+#### 默认开启跨表合并 Region 功能
 
 [用户文档](/pd-configuration-file.md#enable-cross-table-merge)
 
