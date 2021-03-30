@@ -95,11 +95,11 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
 
-7.（可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
 8. 测试之后，可以通过执行以下步骤来清理群集：
 
-    1. 通过 `ctrl-c` 停掉进程
+    1. 通过 <kbd>ctrl</kbd> + <kbd>c</kbd> 停掉进程
 
     2. 执行以下命令：
 
