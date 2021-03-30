@@ -447,7 +447,7 @@ The Plan Cache configuration of the `PREPARE` statement.
 ### `grpc-connection-count`
 
 - The maximum number of connections established with each TiKV.
-- Default value: `16`
+- Default value: `4`
 
 ### `grpc-keepalive-time`
 
