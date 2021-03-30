@@ -43,7 +43,7 @@ TiDB 版本：5.0.0
 + 删除 `performance.max-memory` 配置项，通过 [performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
 + 删除 `tikv-client.copr-cache.enable` 配置项，通过 [tikv-client.copr-cache.capcity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能，默认：1000.0。
 + 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入) 替代。
-+ 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘。
++ 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘，之前显示关闭 `raftstore.sync-log`，成功升级 v5.x 版本后，会强制改为 `true`。
 
 ## 新功能
 
@@ -324,7 +324,6 @@ Unified Sorter 整合了老版本提供的 memory、file sort-engine 配置选�
 限制与约束：
 
 + 用户需要根据业务数据更新量提供充足的磁盘空间，推荐使用大于 128G 的 SSD 磁盘。
-+ 无法解决向目标系统 (sink) 写入数据的速度过慢，逐渐积累在 TiCDC 内存中的还未消费的数据造成 TiCDC OOM 的问题。
 
 ## 高可用和容灾
 
