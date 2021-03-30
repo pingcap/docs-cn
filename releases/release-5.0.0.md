@@ -186,7 +186,7 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
     + OFF：关闭聚簇索引，支持添加或者删除非聚簇索引。
-    + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与 `alter-primary-ke = false` 一起使用可控制 INT 类型是开启聚簇索引。
+    + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与 `alter-primary-key = false` 一起使用可控制 INT 类型是开启聚簇索引。
 
 优先级方面，建表时有指定 `CLUSTERED | NONCLUSTERED` 时，优先级高于系统变量和配置项。
 
@@ -202,7 +202,7 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 + 不支持重组织和重建聚簇索引。
 + 不支持启用、禁用索引，也就是不可见索引功能对聚簇索引不生效。
 + 不支持 `UNIQUE KEY` 作为聚簇索引。
-+ 不支持与 Binlog 一起使用，即开启过 Binlog 后不允许创建聚簇索引，创建聚簇索引后不允许开启 Binlog。
++ 不支持与 TiDB Binlog 一起使用，即开启过 TiDB Binlog 后不允许创建聚簇索引，创建聚簇索引后不允许开启 TiDB Binlog。
 + 不支持与 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 属性一起使用。
 + 集群升级回滚时，存量的表不受影响，新增表可以通过导入、导出数据的方式降级。
 
@@ -230,7 +230,7 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 [用户文档](/tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入)
 
-在 5.0 GA 默认开启 Coprocessor cache 功能，开启此功能后，TiDB 会在 tidb-server 中缓存算子下推到 tikv-server 计算后的结果，降低读取数据的延时。
+5.0 GA 默认开启 Coprocessor cache 功能。开启此功能后，TiDB 会在 tidb-server 中缓存算子下推到 tikv-server 计算后的结果，降低读取数据的延时。
 
 要关闭 Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
@@ -298,7 +298,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 通过 SQL BINDING 语句手动的绑定 SQL 语句时，你需要确保优化过的 SQL 语句的语法与原来 SQL 语句的语法保持一致。
 
-你可以通过 `SHOW {GLOBAL | SESSION} BINDINGS` 命令查看手工、系统自动绑定的执行计划信息。输出信息基本跟原来保持一致。
+你可以通过 `SHOW {GLOBAL | SESSION} BINDINGS` 命令查看手工、系统自动绑定的执行计划信息。输出信息基本跟 v5.0 以前的版本保持一致。
 
 #### 自动捕获、绑定执行计划
 
@@ -324,7 +324,7 @@ Unified Sorter 整合了老版本提供的 memory、file sort-engine 配置选�
 限制与约束：
 
 + 用户需要根据业务数据更新量提供充足的磁盘空间，推荐使用大于 128G 的 SSD 磁盘。
-+ 无法解决目标系统（sink）写入速度过慢，逐渐积累在 TiCDC 内存中的还未消费的数据造成 TiCDC OOM 的问题。
++ 无法解决向目标系统 (sink) 写入数据的速度过慢，逐渐积累在 TiCDC 内存中的还未消费的数据造成 TiCDC OOM 的问题。
 
 ## 高可用和容灾
 
