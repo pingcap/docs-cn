@@ -20,7 +20,7 @@ The `RESTORE` statement is blocking, and will finish only after the entire resto
 
 Only one `BACKUP` and `RESTORE` task can be executed at a time. If a `BACKUP` or `RESTORE` task is already running on the same TiDB server, the new `RESTORE` execution will wait until all previous tasks are done.
 
-`RESTORE` can only be used with "tikv" storage engine. Using `RESTORE` with the "mocktikv" engine will fail.
+`RESTORE` can only be used with "tikv" storage engine. Using `RESTORE` with the "unistore" engine will fail.
 
 ## Synopsis
 

@@ -16,7 +16,7 @@ The `BACKUP` statement is blocked until the entire backup task is finished, fail
 
 Only one `BACKUP` and [`RESTORE`](/sql-statements/sql-statement-restore.md) task can be executed at a time. If a `BACKUP` or `RESTORE` statement is already being executed on the same TiDB server, the new `BACKUP` execution will wait until all previous tasks are finished.
 
-`BACKUP` can only be used with "tikv" storage engine. Using `BACKUP` with the "mocktikv" engine will fail.
+`BACKUP` can only be used with "tikv" storage engine. Using `BACKUP` with the "unistore" engine will fail.
 
 ## Synopsis
 

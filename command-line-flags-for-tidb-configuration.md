@@ -97,11 +97,11 @@ When you start the TiDB cluster, you can use command-line options or environment
 
 ## `--path`
 
-- The path to the data directory for local storage engine like "mocktikv"
-- For `--store = tikv`, you must specify the path; for `--store = mocktikv`, the default value is used if you do not specify the path.
+- The path to the data directory for local storage engine like "unistore"
+- For `--store = tikv`, you must specify the path; for `--store = unistore`, the default value is used if you do not specify the path.
 - For the distributed storage engine like TiKV, `--path` specifies the actual PD address. Assuming that you deploy the PD server on 192.168.100.113:2379, 192.168.100.114:2379 and 192.168.100.115:2379, the value of `--path` is "192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379".
 - Default: "/tmp/tidb"
-- You can use `tidb-server --store=mocktikv --path=""` to enable a pure in-memory TiDB.
+- You can use `tidb-server --store=unistore --path=""` to enable a pure in-memory TiDB.
 
 ## `--tmp-storage-path`
 
@@ -162,8 +162,8 @@ When you start the TiDB cluster, you can use command-line options or environment
 ## `--store`
 
 - Specifies the storage engine used by TiDB in the bottom layer
-- Default: "mocktikv"
-- You can choose "mocktikv" or "tikv". ("mocktikv" is the local storage engine; "tikv" is a distributed storage engine)
+- Default: "unistore"
+- You can choose "unistore" or "tikv". ("unistore" is the local storage engine; "tikv" is a distributed storage engine)
 
 ## `--token-limit`
 
