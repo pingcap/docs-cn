@@ -219,7 +219,43 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 > **注意：**
 >
-> TiDB 4.0.2 版本之前，TiFlash 不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
+> 在 TiFlash 计算下推时有些下推的限制以及计算行为与 TiDB 原生计算不兼容的问题，具体罗列如下：
+>
+> * TiDB 4.0.2 版本之前，TiFlash 不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
+> * 在 TiDB 5.0 之后，TiFlash 引入了 [MPP](#使用 MPP 模式) 的支持，在 MPP 模式下支持分布式的 Shuffle Hash Join 与 Hash Aggregation，但是如果 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)时，Shuffle Hash Join 与 Hash Aggregation 不支持 shuffle key 为 String（包括 char、varchar、text、blob、binary）类型。
+> * TiFlash 目前的 sum 函数不支持参数为 String 类型的输入，但是因为一些原因，TiDB 在编译时无法检测出这种情况，所以当出现类似 `select sum(string_col) from t`的时候，TiFlash 会报`[FLASH:Coprocessor:Unimplemented] CastStringAsReal is not supported.`的错，要避免这类报错，需要手动把 SQL 改写成`select sum(cast(string_col as double)) from t`
+> * TiFlash 目前的 Decimal 除法计算上和 TiDB 有一点不兼容，具体体现在在进行 Decimal 相除的时候，TiFlash 会始终按照编译时推断出来的类型进行计算，而 TiDB 则在计算过程中采用高于编译是推断出来的类型，这导致在一些带有 Decimal 除法的 SQL 在 TiDB + TiKV 上的结果会和 TiDB + TiFlash 上的结果不一样。举例来说，对于如下的 case：
+>
+> ```
+> mysql> create table t (a decimal(3,0), b decimal(10, 0));
+> Query OK, 0 rows affected (0.07 sec)
+> 
+> mysql> insert into t values (43, 1044774912);
+> Query OK, 1 row affected (0.03 sec)
+> 
+> mysql> alter table t set tiflash replica 1;
+> Query OK, 0 rows affected (0.07 sec)
+> 
+> mysql> set session tidb_isolation_read_engines='tikv';
+> Query OK, 0 rows affected (0.00 sec)
+> 
+> mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
+> +--------+-----------------------+
+> | a/b    | a/b + 0.0000000000001 |
+> +--------+-----------------------+
+> | 0.0000 |       0.0000000410001 |
+> +--------+-----------------------+
+> 1 row in set (0.00 sec)
+> 
+> mysql> set session tidb_isolation_read_engines='tiflash';
+> Query OK, 0 rows affected (0.00 sec)
+> 
+> mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
+> Empty set (0.01 sec)
+> 
+> ```
+>
+> 在 TiDB 和 TiFlash 中，`a/b`在编译期推导出来的 Type 都为 `Decimal(7,4)`，而在`Decimal(7,4)`的约束小，`a/b`返回的结果应该为`0.0000`，但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)`大，所以原表中的数据没有被 `where a/b` 过滤掉，而在 TiFlash 中`a/b`在运行期也是采用`Decimal(7,4)`作为结果类型，所以原表中的数据被`where a/b`过滤掉了。
 
 TiFlash 支持谓词、聚合下推计算以及表连接，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型是 `Full Outer Join` 和 `DISTINCT COUNT`，会在后续版本逐步优化。
 
