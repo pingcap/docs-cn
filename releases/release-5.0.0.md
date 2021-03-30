@@ -184,7 +184,7 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
     + OFF：关闭聚簇索引，支持添加或者删除非聚簇索引。
-    + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与 `alter-primary-key = false` 一起使用可控制 INT 类型是开启聚簇索引。
+    + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与 `alter-primary-key = false` 一起使用可控制 INT 类型是否开启聚簇索引。
 
 优先级方面，建表时有指定 `CLUSTERED | NONCLUSTERED` 时，优先级高于系统变量和配置项。
 
