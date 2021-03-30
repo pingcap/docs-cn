@@ -282,7 +282,7 @@ mysql> explain select count(*) from customer c join nation n on c.c_nationkey=n.
 > MPP 模式不支持如下功能：
 >
 > - 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
-> - 在配置项 `new_collations_enabled_on_first_bootstrap`(/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 为 `true` 时，MPP 不支持 join 的连接键类型为 string 和聚合 group by 列类型为 string 的情况。在处理这种查询时，默认不选择 MPP 模式。
+> - 在配置项 `new_collations_enabled_on_first_bootstrap`(/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值为 `true` 时，MPP 不支持 join 的连接键类型为字符串或 `group by` 聚合运算时列类型为字符串的情况。在处理这两类查询时，默认不选择 MPP 模式。
 
 TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join，分别为：
 
