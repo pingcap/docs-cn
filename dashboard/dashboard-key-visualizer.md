@@ -153,7 +153,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 
 如上图所示，热力图在 X 轴（时间）上表现出明暗交替，但 Y 轴 (Region) 则比较均匀，说明读取或写入负载具有周期性的变化。这种情况可能出现在周期性的定时任务场景，如大数据平台每天定时从 TiDB 中抽取数据。一般来说可以关注一下使用高峰时期资源是否充裕。
 
-## Y 轴明暗交替：需要关注产生的热点聚集程度
+### Y 轴明暗交替：需要关注产生的热点聚集程度
 
 ![Y 轴明暗交替](/media/dashboard/dashboard-keyviz-continue.png)
 

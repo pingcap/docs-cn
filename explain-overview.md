@@ -240,7 +240,6 @@ TiDB 的 Join 算法包括如下几类：
 - Merge Join
 - Index Join (Index Nested Loop Join)
 - Index Hash Join (Index Nested Loop Hash Join)
-- Index Merge Join (Index Nested Loop Merge Join)
 
 下面分别通过一些例子来解释这些 Join 算法的执行过程。
 
@@ -319,25 +318,6 @@ mysql> EXPLAIN SELECT /*+ INL_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t
 |   └─Selection_9             | 1.00     | cop[tikv] |                        | not(isnull(test.t2.id))                                                        |
 |     └─IndexRangeScan_8      | 1.00     | cop[tikv] | table:t2, index:id(id) | range: decided by [eq(test.t2.id, test.t1.id)], keep order:false, stats:pseudo |
 +-----------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------+
-6 rows in set (0.00 sec)
-```
-
-#### Index Merge Join 示例
-
-该算法的使用条件包含 Index Join 的所有使用条件，但还需要添加一条：join keys 中的内表列集合是内表使用的 index 的前缀，或内表使用的 index 是 join keys 中的内表列集合的前缀，该算法相比于 INL_JOIN 会更节省内存。
-
-```
-mysql> EXPLAIN SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------------------------------+
-| id                          | estRows  | task      | access object          | operator info                                                                 |
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------------------------------+
-| IndexMergeJoin_16           | 12487.50 | root      |                        | inner join, inner:IndexReader_14, outer key:test.t1.id, inner key:test.t2.id  |
-| ├─IndexReader_31(Build)     | 9990.00  | root      |                        | index:IndexFullScan_30                                                        |
-| │ └─IndexFullScan_30        | 9990.00  | cop[tikv] | table:t1, index:id(id) | keep order:false, stats:pseudo                                                |
-| └─IndexReader_14(Probe)     | 1.00     | root      |                        | index:Selection_13                                                            |
-|   └─Selection_13            | 1.00     | cop[tikv] |                        | not(isnull(test.t2.id))                                                       |
-|     └─IndexRangeScan_12     | 1.00     | cop[tikv] | table:t2, index:id(id) | range: decided by [eq(test.t2.id, test.t1.id)], keep order:true, stats:pseudo |
-+-----------------------------+----------+-----------+------------------------+-------------------------------------------------------------------------------+
 6 rows in set (0.00 sec)
 ```
 

@@ -20,10 +20,10 @@
 + 快速上手
   + [快速上手指南](/quick-start-with-tidb.md)
   + [SQL 基本操作](/basic-sql-operations.md)
-+ 部署集群
++ 部署标准集群
   + [软硬件环境需求](/hardware-and-software-requirements.md)
   + [环境与系统配置检查](/check-before-deployment.md)
-  + 配置拓扑结构
+  + 规划集群拓扑
     + [最小部署拓扑结构](/minimal-deployment-topology.md)
     + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
@@ -32,11 +32,12 @@
     + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md)
   + 安装与启动
-    + Linux 环境
-      + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
-      + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
-      + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+    + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+    + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
+  + 测试集群性能
+      + [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
+      + [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
@@ -50,7 +51,6 @@
 + 运维操作
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
-    + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
     + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
@@ -64,7 +64,7 @@
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
-  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
+  + [使用 TiUP 运维集群](/maintain-tidb-using-tiup.md)
   + [在线修改集群配置](/dynamic-config.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
@@ -102,6 +102,7 @@
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + 理解 TiDB 执行计划
       + [TiDB 执行计划概览](/explain-overview.md)
+      + [MPP 模式查询的执行计划](/explain-mpp.md)
     + SQL 优化流程
       + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化

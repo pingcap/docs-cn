@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/monitor-tidb-lightning/','/docs-cn/dev/re
 
 ## 监控配置
 
-如果是手动部署 Lightning，则参照以下步骤进行配置。
+如果是手动部署 TiDB Lightning，则参照以下步骤进行配置。
 
 只要 Prometheus 能发现 `tidb-lightning` 和 `tikv-importer` 的监控地址，就能收集对应的监控指标。
 
@@ -166,7 +166,7 @@ scrape_configs:
 
 - **`tikv_import_write_chunk_bytes`**（直方图）
 
-    从 Lightning 接收的键值对区块大小（未压缩）的直方图。
+    从 TiDB Lightning 接收的键值对区块大小（未压缩）的直方图。
 
 - **`tikv_import_write_chunk_duration`**（直方图）
 
