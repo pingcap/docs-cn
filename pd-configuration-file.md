@@ -52,8 +52,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 初始化 PD 集群配置。
 + 默认：`"{name}=http://{advertise-peer-url}"`
 + 例如，如果 name 是 "pd"，并且 `advertise-peer-urls` 是 `"http://192.168.100.113:2380"`，那么 `initial-cluster` 就是 `"pd=http://192.168.100.113:2380"`。
-+ 如果启动三台 PD，那么 `initial-cluster` 可能就是
-  `pd1=http://192.168.100.113:2380, pd2=http://192.168.100.114:2380, pd3=192.168.100.115:2380`。
++ 如果启动三台 PD，那么 `initial-cluster` 可能就是 `pd1=http://192.168.100.113:2380, pd2=http://192.168.100.114:2380, pd3=192.168.100.115:2380`。
 
 ### `initial-cluster-state`
 
@@ -315,7 +314,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 > 目前 Joint Consensus 为实验特性，不推荐在生产环境中使用该特性。
 
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
-+ 默认：false
++ 默认：v5.0 RC 版本默认值为 false，v5.0 GA 版本默认值为 true。
 
 ## replication
 

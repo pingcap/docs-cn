@@ -50,9 +50,9 @@ summary: 使用 TiDB Lightning 从 MySQL 迁移数据。
     [tikv-importer]
     backend = "tidb"
     ```
-    
+
 4. 增加导入 TiDB 集群必要参数
-    
+
     ```
     [tidb]
     host = "{{tidb-host}}"

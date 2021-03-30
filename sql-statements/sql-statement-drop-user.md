@@ -5,8 +5,7 @@ summary: TiDB 数据库中 DROP USER 的使用概况。
 
 # DROP USER
 
-`DROP USER` 语句用于从 TiDB 系统数据库中删除用户。如果用户不存在，使用关键词 `IF EXISTS` 可避免出现警告。
-执行 `DROP USER` 语句需要拥有 `CREATE USER` 权限。
+`DROP USER` 语句用于从 TiDB 系统数据库中删除用户。如果用户不存在，使用关键词 `IF EXISTS` 可避免出现警告。执行 `DROP USER` 语句需要拥有 `CREATE USER` 权限。
 
 ## 语法图
 
