@@ -581,7 +581,7 @@ raftstore 相关的配置项。
 ### `apply-max-batch-size`
 
 + 一轮处理数据落盘的最大请求个数。
-+ 默认值：1024
++ 默认值：256
 + 最小值：大于 0
 
 ### `apply-pool-size`
@@ -593,7 +593,7 @@ raftstore 相关的配置项。
 ### `store-max-batch-size`
 
 + 一轮处理的最大请求个数。
-+ 默认值：1024
++ 默认值：如果开启 `hibernate-regions` 为 256，否则为 1024
 + 最小值：大于 0
 
 ### `store-pool-size`
