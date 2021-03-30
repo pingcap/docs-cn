@@ -29,7 +29,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-concurrency`
 
 + gRPC 工作线程的数量。
-+ 默认值：5
++ 默认值：4
 + 最小值：1
 
 ### `grpc-concurrent-stream`
@@ -144,11 +144,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `use-unified-pool`
 
 + 是否使用统一的读取线程池（在 [`readpool.unified`](#readpoolunified) 中配置）处理存储请求。该选项值为 false 时，使用单独的存储线程池。通过本节 (`readpool.storage`) 中的其余配置项配置单独的线程池。
-<<<<<<< HEAD
 + 默认值：false
-=======
-+ 默认值：如果本节 (`readpool.storage`) 中没有其他配置，默认为 true。否则，为了升级兼容性，默认为 false，请根据需要更改 [`readpool.unified`](#readpoolunified) 中的配置后再启用该选项。
->>>>>>> 6fc87f99... update doc to match config default value with TiKV codebase. (#5669)
 
 ### `high-concurrency`
 
@@ -271,7 +267,7 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 ### `reserve-space`
 
 + TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
-+ 默认值：5GB
++ 默认值：2GB
 + 单位: MB|GB
 
 ## storage.block-cache
@@ -559,7 +555,7 @@ raftstore 相关的配置项。
 ### `merge-check-tick-interval`
 
 + 触发 merge 完成检查的时间间隔。
-+ 默认值：2s
++ 默认值：10s
 + 最小值：大于 0
 
 ### `use-delete-range`
