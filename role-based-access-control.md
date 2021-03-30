@@ -278,9 +278,13 @@ SET ROLE ALL EXCEPT 'app_read'
 SET DEFAULT ROLE ALL TO 'rw_user1'@'localhost';
 ```
 
-用 `rw_user1@localhost` 登陆后：
+用 `rw_user1@localhost` 登陆，TiDB中无法通过 `localhost` 登陆，需要在 tidb-server 机器上指定127.0.0.1登陆：
 
 {{< copyable "sql" >}}
+
+```sql
+mysql -h 127.0.0.1 -P 4000 -u rw_user1 -prw_user1pass;
+```
 
 ```sql
 SELECT CURRENT_ROLE();
