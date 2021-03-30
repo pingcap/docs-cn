@@ -91,7 +91,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
 
-7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+7.（可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
 8. 测试之后，可以通过 `ctrl-c` 停掉进程并执行以下命令：
 
@@ -326,9 +326,9 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
     - 在线部署：[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
     - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
-- 如果你正在寻找 TiFlash 的分析解决方案：
+- 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
     - [使用 TiFlash](/tiflash/use-tiflash.md)
-    - 查看 [TiFlash 简介](/tiflash/tiflash-overview.md)
+    - [TiFlash 简介](/tiflash/tiflash-overview.md)
 
 > **注意：**
 >
