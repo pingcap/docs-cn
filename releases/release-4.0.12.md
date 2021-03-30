@@ -4,7 +4,7 @@ title: TiDB 4.0.12 Release Notes
 
 # TiDB 4.0.12 Release Notes
 
-发版日期：2021 年 3 月 31 日
+发版日期：2021 年 4 月 2 日
 
 TiDB 版本：4.0.12
 
@@ -18,8 +18,8 @@ TiDB 版本：4.0.12
 
 + TiDB
 
-    - 优化 explain 中 batch cop 的信息展示 [#23164](https://github.com/pingcap/tidb/pull/23164)
-    - 为在 explain 语句中不能下推的表达式增加 warning 信息 [#23020](https://github.com/pingcap/tidb/pull/23020)
+    - 优化 `EXPLAIN` 中 `batch cop` 的信息展示 [#23164](https://github.com/pingcap/tidb/pull/23164)
+    - 为在 `EXPLAIN` 语句中不能下推的表达式增加告警信息 [#23020](https://github.com/pingcap/tidb/pull/23020)
     - 调整 DDL 包中部分 Execute/ExecRestricted 使用为 ExecuteInternal (2) [#22935](https://github.com/pingcap/tidb/pull/22935)
     - 调整 DDL 包中部分 Execute/ExecRestricted 使用为 ExecuteInternal (1) [#22929](https://github.com/pingcap/tidb/pull/22929)
     - 添加 optimization-time 和 wait-TS-time 到慢日志中 [#22918](https://github.com/pingcap/tidb/pull/22918)
