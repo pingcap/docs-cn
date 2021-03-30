@@ -1182,6 +1182,34 @@ logic:  120102
 ...
 ```
 
+### 查询状态不为 Up 的所有节点
+
+{{< copyable "" >}}
+
+```bash
+» store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
+```
+
+```
+{"id":1,"address":"127.0.0.1:20161""state_name":"Offline"}
+{"id":5,"address":"127.0.0.1:20162""state_name":"Offline"}
+...
+```
+
+### 查询所有的 TiFlash 节点
+
+{{< copyable "" >}}
+
+```bash
+» store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+```
+
+```
+{"id":1,"address":"127.0.0.1:20161""state_name":"Up"}
+{"id":5,"address":"127.0.0.1:20162""state_name":"Up"}
+...
+```
+
 ### 查询 Region 副本的分布情况
 
 {{< copyable "" >}}

@@ -108,7 +108,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 | utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
 | utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
-2 rows in set (0.00 sec)
+3 rows in set (0.00 sec)
 ```
 
 ## TiDB 中的 `utf8` 和 `utf8mb4`

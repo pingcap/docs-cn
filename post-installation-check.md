@@ -6,7 +6,19 @@ aliases: ['/docs-cn/dev/post-installation-check/']
 
 # 验证集群运行状态
 
-本文档介绍如何通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana 检查集群状态，以及登录数据库执行简单 DML、DDL 操作和查询 SQL 语句。
+在部署完一套 TiDB 集群后，需要检查集群是否正常运行。本文介绍如何通过 TiUP 命令、[TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana 检查集群状态，以及如何登录 TiDB 数据库执行简单的 SQL 操作。
+
+## 通过 TiUP 检查集群状态
+
+检查集群状态的命令是 `tiup cluster display <cluster-name>`，例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster display tidb-test
+```
+
+预期结果输出：各节点 Status 状态信息为 `Up` 说明集群状态正常。
 
 ## 通过 TiDB Dashboard 和 Grafana 检查集群状态
 
