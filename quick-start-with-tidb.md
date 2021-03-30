@@ -11,15 +11,19 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 2 种体验方式供用户选择。
 
-- [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
-- [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
+- [TiDB 数据库快速上手指南](#tidb-数据库快速上手指南)
+  - [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
+  - [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
+    - [准备环境](#准备环境)
+    - [实施部署](#实施部署)
+  - [探索更多](#探索更多)
 
 ## 第一种：使用 TiUP Playground 快速部署本地测试环境
 
 - 适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 集群。可以体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
 - 耗时：1 分钟
 
-作为一个分布式系统，最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例来构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
+作为一个分布式系统，最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
 
 1. 下载并安装 TiUP。
 
@@ -92,6 +96,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
 
 7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+
 8. 测试之后，可以通过 `ctrl-c` 停掉进程并执行以下命令：
 
     {{< copyable "shell-regular" >}}
