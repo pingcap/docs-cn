@@ -283,6 +283,7 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-ga-版本开始引入 )，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 > **注意：**
+>
 > TiFlash 计算层不支持：
 > - 不支持从数值溢出检测，例如对于 2 个 `bigint` 最大值相加 `9223372036854775807 + 9223372036854775807`，在 TiDB 中应有的行为是提示错误 `ERROR 1690 (22003): BIGINT value is out of range`，但如果该计算在 TiFlash 中进行，则会得到溢出的结果 `-2`无报错。
 > - 不支持 Window Function。
