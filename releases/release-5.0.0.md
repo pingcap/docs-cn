@@ -214,7 +214,9 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 开启异步提交事务特性时，数据库应用开发人员可以考虑将事务的一致性从线性一致性降低到 [因果一致性](/transaction-overview.md#因果一致性事务)，减少 1 次网络交互降低延迟，提升数据写入的性能。开启因果一致性的 SQL 语句为 `START TRANSACTION WITH CAUSAL CONSISTENCY`。
 
-开启因果一致性后，在硬件和配置完全相同的情况下，Sysbench 设置 32 线程测试 oltp_write_only 时，TPS 由 16180 提升到 17149，提升了 6.0%，平均延迟由 11.86ms 降低到 11.19ms，降低了 5.6%。事务的一致性从线性一致性降低到因果一致性后，如果应用程序中多个事务之间没有相互依赖关系时，事务没有全局一致的顺序。
+开启因果一致性后，在硬件和配置完全相同的情况下，Sysbench 设置 32 线程测试 oltp_write_only 时，TPS 由 16180 提升到 17149，提升了 6.0%，平均延迟由 11.86ms 降低到 11.19ms，降低了 5.6%。
+
+事务的一致性从线性一致性降低到因果一致性后，如果应用程序中多个事务之间没有相互依赖关系时，事务没有全局一致的顺序。
 
 **新创建的 5.0 集群默认开启异步提交事务功能。**
 
@@ -404,9 +406,9 @@ DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起�
 
 DBA 在使用 TiUP 部署 TiDB 集群过程发现环境初始化比较复杂、校验配置过多，集群拓扑文件比较难编辑等问题，导致 DBA 的部署效率比较低。5.0 版本通过以下几个事项提升 DBA 部署 TiDB 的效率：
 
-+ TiUP Cluster 支持 `check topo.yaml` 命令，进行更全面一键式环境检查并给出修复建议。
-+ TiUP Cluster 支持 `check topo.yaml --apply` 命令，自动修复检查过程中发现的环境问题。
-+ TiUP Cluster 支持 `template` 命令，获取集群拓扑原始文件，供 DBA 编辑且支持修改全局的节点参数。
++ TiUP Cluster 支持使用 `check topo.yaml` 命令，进行更全面一键式环境检查并给出修复建议。
++ TiUP Cluster 支持使用 `check topo.yaml --apply` 命令，自动修复检查过程中发现的环境问题。
++ TiUP Cluster 支持 `template` 命令，获取集群拓扑模板文件，供 DBA 编辑且支持修改全局的节点参数。
 + TiUP 支持使用 `edit-config` 命令编辑 `remote_config` 参数配置远程 Prometheus。
 + TiUP 支持使用 `edit-config` 命令编辑 `external_alertmanagers` 参数配置不同的 AlertManager。
 + 在 tiup-cluster 中使用 `edit-config` 子命令编辑拓扑文件时允许改变配置项值的数据类型。
@@ -442,5 +444,5 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 
 + 支持对已停机的 TiDB 和 DM 集群进行升级或 patch 操作，以适应更多用户的使用场景。
 + 为 tiup-cluster 的 `display` 子命令添加 `--version` 参数用于获取集群版本。
-+ 支持 `edit-config` 仅在修改了 Prometheus 配置后才会被 Reload，避免覆盖用户自定义的 Prometheus 配置。
++ 在被缩容的节点中仅包含 Prometheus 时不执行更新监控配置的操作，以避免因 Prometheus 节点不存在而缩容失败
 + 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户更快定位问题原因。
