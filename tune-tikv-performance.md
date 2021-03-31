@@ -42,7 +42,7 @@ log-level = "info"
 # gRPC 线程池大小
 # grpc-concurrency = 4
 # TiKV 每个实例之间的 gRPC 连接数
-# grpc-raft-conn-num = 10
+# grpc-raft-conn-num = 1
 
 # TiDB 过来的大部分读请求都会发送到 TiKV 的 Coprocessor 进行处理，该参数用于设置
 # coprocessor 线程的个数，如果业务是读请求比较多，增加 coprocessor 的线程数，但应比系统的
@@ -121,7 +121,7 @@ region-split-check-diff = "32MB"
 # RocksDB 能够打开的最大文件句柄数。
 # max-open-files = 40960
 
-# RocksDB MANIFEST 文件的大小限制. # 更详细的信息请参考：https://github.com/facebook/rocksdb/wiki/MANIFEST
+# RocksDB MANIFEST 文件的大小限制 # 更详细的信息请参考：https://github.com/facebook/rocksdb/wiki/MANIFEST
 max-manifest-file-size = "20MB"
 
 # RocksDB write-ahead logs 目录。如果机器上有两块盘，可以将 RocksDB 的数据和 WAL 日志放在

@@ -43,7 +43,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-raft-conn-num`
 
 + tikv 节点之间用于 raft 通讯的链接最大数量。
-+ 默认值：10
++ 默认值：1
 + 最小值：1
 
 ### `grpc-stream-initial-window-size`
