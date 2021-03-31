@@ -94,17 +94,17 @@ TiDB 版本：4.0.12
 
 + TiKV
 
-    - 解决 `IN` 表达式没有正确处理有符号、无符号整型数的问题 [#9850](https://github.com/tikv/tikv/pull/9850)
-    - 解决 ingest 操作不可重入问题 [#9779](https://github.com/tikv/tikv/pull/9779)
-    - 解决 TiKV 在处理 Json 向 String 转换时空格缺失的问题 [#9666](https://github.com/tikv/tikv/pull/9666)
+    - 解决 `IN` 表达式没有正确处理有符号和无符号整型数的问题 [#9850](https://github.com/tikv/tikv/pull/9850)
+    - 解决 Ingest 操作不可重入问题 [#9779](https://github.com/tikv/tikv/pull/9779)
+    - 解决 TiKV 在处理 JSON 向字符串转换时空格缺失的问题 [#9666](https://github.com/tikv/tikv/pull/9666)
 
 + PD
 
-    - 解决 isolation level 在 label 缺失情况下的统计问题 [#3474](https://github.com/pingcap/pd/pull/3474)
+    - 解决在 store 缺失 label 的情况下隔离级别错误的问题 [#3474](https://github.com/pingcap/pd/pull/3474)
 
 + TiFlash
 
-    - 修复当 `binary` 列的默认值包含前后 `\0` 字节时查询结果错误的问题
+    - 修复当 `binary` 列的默认值包含前后 `0` 字节时查询结果错误的问题
     - 修复当数据库名称中包含特殊字符时无法同步数据的问题
     - 修复 `IN` 表达式中出现 `Decimal` 列时查询结果错误的问题
     - 修复 Grafana 中已打开文件数指标过高的问题
@@ -117,17 +117,17 @@ TiDB 版本：4.0.12
 
     + TiCDC
 
-        - 解决 resolved ts 时间乱序的问题 [#1464](https://github.com/pingcap/ticdc/pull/1464)
+        - 解决 `resolved ts` 时间乱序的问题 [#1464](https://github.com/pingcap/ticdc/pull/1464)
         - 解决由于网络不稳定而导致的表调度出错引发的数据丢失问题 [#1508](https://github.com/pingcap/ticdc/pull/1508)
 
     + Backup & Restore (BR)
 
-        - 解决 WalkDir 在 target 为 bucket name 的时候无返回值的问题 [#773](https://github.com/pingcap/br/pull/773)
-        - 解决 status 端口无 TLS 的问题 [#839](https://github.com/pingcap/br/pull/839)
+        - 解决 `WalkDir` 在目标为 bucket name 的时候无返回值的问题 [#773](https://github.com/pingcap/br/pull/773)
+        - 解决 `status` 端口无 TLS 的问题 [#839](https://github.com/pingcap/br/pull/839)
 
     + TiDB Lightning
 
-        - 解决 importer 可能忽略文件已存在的错误 [#848](https://github.com/pingcap/br/pull/848)
-        - 解决 Lightning 可能使用错误的时间戳而读到错误数据的问题 [#850](https://github.com/pingcap/br/pull/850)
-        - 解决 Lightning 非预期退出时可能造成 checkpoint 损坏的问题 [#889](https://github.com/pingcap/br/pull/889)
-        - 解决由于忽略 cancel 错误而可能导致的数据错误的问题 [#874](https://github.com/pingcap/br/pull/874)
+        - 解决 TiKV Importer 可能忽略文件已存在的错误 [#848](https://github.com/pingcap/br/pull/848)
+        - 解决 TiDB Lightning 可能使用错误的时间戳而读到错误数据的问题 [#850](https://github.com/pingcap/br/pull/850)
+        - 解决 TiDB Lightning 非预期退出时可能造成 checkpoint 文件损坏的问题 [#889](https://github.com/pingcap/br/pull/889)
+        - 解决由于忽略 `cancel` 错误而可能导致的数据错误的问题 [#874](https://github.com/pingcap/br/pull/874)
