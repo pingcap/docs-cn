@@ -258,7 +258,7 @@ TiDB 调度过程中会占用 I/O、网络、CPU、内存等资源，若不对�
 
 [用户文档](/pd-configuration-file.md#enable-cross-table-merge)
 
-在 5.0-rc 之前，TiDB 默认关闭跨 Region 合并的功能。从5.0-rc 起，TiDB 默认开启跨 Region 合并功能，减少空 Region 的数量，降低系统的网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
+在 5.0-rc 之前，TiDB 默认关闭跨表合并 Region 的功能。从 5.0-rc 起，TiDB 默认开启跨表合并 Region 功能，减少空 Region 的数量，降低系统的网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
 
 #### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢
 
