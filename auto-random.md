@@ -139,7 +139,7 @@ CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM)
 
 目前在 TiDB 中使用 `AUTO_RANDOM` 有以下限制：
 
-- 该属性必须指定在整数类型的主键列上，否则会报错。此外，当配置项 `alter-primary-key` 的值为 `true` 时，即使是整型主键列，也不支持使用 `AUTO_RANDOM`。
+- 该属性必须指定在整数类型的主键列上，否则会报错。此外，当主键属性为 `NONCLUSTERED` 时，即使是整型主键列，也不支持使用 `AUTO_RANDOM`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 - 不支持使用 `ALTER TABLE` 来修改 `AUTO_RANDOM` 属性，包括添加或移除该属性。
 - 不支持修改含有 `AUTO_RANDOM` 属性的主键列的列类型。
 - 不支持与 `AUTO_INCREMENT` 同时指定在同一列上。
