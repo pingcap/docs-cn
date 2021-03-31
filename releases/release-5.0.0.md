@@ -32,7 +32,7 @@ TiDB 版本：5.0.0
 + 新增系统变量 [`tidb_enable_strict_double_type_check`](/system-variables.md#tidb_enable_strict_double_type_check-从-v500-rc-版本开始引入)，用于决定类似“double(N)”语法是否允许被定义在表结构中，默认为 OFF。
 + 系统变量 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的默认值由 2000 修改为 0，即在 LOAD/INSERT INTO SELECT ... 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。
 + 临时表的语法兼容性受到 [`tidb_noop_functions`](/system-variables.md#tidb_noop_functions) 系统变量的控制：当 `tidb_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
-+ 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency)、[`tidb_gc_enable`]((/system-variables.md#tidb_gc_enable)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
++ 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
 
 ### 配置文件参数
 
