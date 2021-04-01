@@ -157,6 +157,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
+### `enable-tcp4-only` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制是否只监听 TCP4。
++ 默认值：false
++ 如果 TiDB 和 LVS 一起用于均衡负载，可开启此配置项。这是因为 TCP4 协议能正确解析 TCP 头部信息中的真实 IP。详情参阅 [LVS/toa](https://github.com/alibaba/LVS/tree/master/kernel/net/toa)。
+
 ## log
 
 日志相关的配置项。
