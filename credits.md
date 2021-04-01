@@ -17,7 +17,7 @@ TiDB 社区以 SIG (Special Interest Group) 为单位管理和组织开发者。
 
 ### Maintainer
 
-Maintainer 是项目的规划和设计者，拥有合并主干分支的权限，从 Committer 中产生。他们必须对子项目的健康表现出良好的判断力和责任感。维护者必须直接或通过委派这些职责来设置技术方向并为子项目做出或批准设计决策。
+Maintainer 是项目的规划和设计者，拥有合并主干分支的权限，从 Committer 中产生。他们必须对子项目的健康表现出良好的判断力和责任感。Maintainer 必须直接或通过委派这些职责来设置技术方向并为子项目做出或批准设计决策。
 
 更多信息，请查阅 [Maintainer | TiDB DevGroup](https://developer.tidb.io/people/maintainer)。
 
