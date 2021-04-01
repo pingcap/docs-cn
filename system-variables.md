@@ -684,7 +684,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -695,7 +695,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -706,7 +706,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -723,7 +723,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -734,7 +734,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -967,7 +967,7 @@ explain select * from t where age=5;
 
 > **警告：**
 >
-> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -1160,7 +1160,7 @@ set tidb_slow_log_threshold = 200;
 
 > **警告：**
 >
-> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
