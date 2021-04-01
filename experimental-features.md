@@ -28,7 +28,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
 + [生成列](/generated-columns.md#生成列)。
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。
-+ [JSON 数据类型](/data-type-json.md#data-type-json#json-类型) 及 [JSON 函数](/json-functions#json-函数)。
++ [JSON 数据类型](/data-type-json.md#data-type-json#json-类型) 及 [JSON 函数](/functions-and-operators/json-functions.md#json-函数)。
 + [Global Kill](/sql-statements/sql-statement-kill.md#global-kill-span-classversion-mark从-v50-版本开始引入span)。
 + [View](/information-schema/information-schema-views.md#views)。
 
@@ -41,7 +41,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
 + TiCDC [支持 TiDB 集群之间环形同步](/ticdc/manage-ticdc.md#环形同步)。（v5.0 实验特性）
-+ [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md#row-changed-event) 的 [列标志位](/ticdc-open-protocol#列标志位) 功能。
++ [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md#row-changed-event) 的 [列标志位](/ticdc/ticdc-open-protocol.md#列标志位) 功能。
 
 ## 存储
 
