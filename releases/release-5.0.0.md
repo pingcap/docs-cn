@@ -45,10 +45,6 @@ TiDB 版本：5.0.0
 + 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入) 替代。
 + 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘，之前显式关闭 `raftstore.sync-log`，成功升级 v5.x 版本后，会强制改为 `true`。
 
-## 新更改
-
-- TiDB 在遥测中新增收集集群的使用指标，包括数据表数量、查询次数、新特性是否启用等。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
-
 ## 新功能
 
 ### SQL
@@ -125,7 +121,7 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 
 此功能从 5.0 版本中开始提供，使用过程中必须开启以上所有系统变量及配置项。
 
-## 性能
+## 性能优化
 
 ### MPP 架构
 
@@ -243,8 +239,10 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 [#18028](https://github.com/pingcap/tidb/issues/18028)
 
 `delete * from table where id < ? limit ?` 语句执行的 p99 性能提升了 4 倍。
+
 ### 优化 load base 切分策略，解决部分小表热点读场景数据无法切分的性能问题
-## 稳定性
+
+## 稳定性提升
 
 ### 优化因调度功能不完善引起的性能抖动问题
 
@@ -288,7 +286,6 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 系统默认关闭该特性，你可以通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
 
-
 #### 增强检查调度约束的性能，提升大集群中修复不健康 Region 的性能
 
 ### 保证执行计划在最大程度保持不变，避免性能抖动
@@ -301,7 +298,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 通过 SQL BINDING 语句手动的绑定 SQL 语句时，你需要确保优化过的 SQL 语句的语法与原来 SQL 语句的语法保持一致。
 
-你可以通过 `SHOW {GLOBAL | SESSION} BINDINGS` 命令查看手工、系统自动绑定的执行计划信息。输出信息基本跟 v5.0 以前的版本保持一致。
+你可以通过 `SHOW {GLOBAL | SESSION} BINDINGS` 命令查看手工、系统自动绑定的执行计划信息。输出信息基本跟 5.0 之前的版本保持一致。
 
 #### 自动捕获、绑定执行计划
 
@@ -317,7 +314,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 [用户文档](/ticdc/manage-ticdc.md#unified-sorter)，[#1150](https://github.com/pingcap/ticdc/issues/1150)
 
-v4.0.9 及之前版本的 TiCDC 遇到同步过多历史变更数据的场景时会出现 OOM 问题。TiCDC 自 v4.0.9 版本起引入变更数据本地排序功能 Unified Sorter，在 v5.0.0 版本会默认开启本功能以缓解类似场景下的 OOM 问题：
+自 v4.0.9 版本起，TiCDC 引入变更数据本地排序功能 Unified Sorter。在 5.0 版本，默认开启此功能以缓解类似场景下的 OOM 问题：
 
 + 场景一：TiCDC 数据订阅任务暂停中断时间长，其间积累了大量的增量更新数据需要同步。
 + 场景二：从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
@@ -391,11 +388,11 @@ TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB
 
 ## 问题诊断
 
-### 优化 `EXPLAIN` 功能，收集更多的信息，方便 DBA 排查性能问题
-
 [用户文档](/sql-statements/sql-statement-explain.md#explain)
 
-DBA 在排查 SQL 语句性能问题时，需要详细的信息来判断引起性能问题的原因。之前版本中 `EXPLAIN` 收集的信息不够完善，DBA 只能通过日志信息、监控信息或者盲猜的方式来判断问题的原因，效率比较低。此版本通过以下几项优化提升排查问题的效率：
+在排查 SQL 语句性能问题时，需要详细的信息来判断引起性能问题的原因。5.0 版本之前，`EXPLAIN` 收集的信息不够完善，DBA 只能通过日志信息、监控信息或者盲猜的方式来判断问题的原因，效率比较低。
+
+5.0 版本中，通过以下几项优化提升排查问题的效率：
 
 + 支持对所有 DML 语句使用 `EXPLAIN ANALYZE` 语句以查看实际的执行计划及各个算子的执行详情。[#18056](https://github.com/pingcap/tidb/issues/18056)
 + 支持对正在执行的 SQL 语句使用 `EXPLAIN FOR CONNECTION` 语句以查看实时执行状态，例如各个算子的执行时间、已处理的数据行数等。[#18233](https://github.com/pingcap/tidb/issues/18233)
@@ -450,3 +447,9 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 + 为 tiup-cluster 的 `display` 子命令添加 `--version` 参数用于获取集群版本。
 + 在被缩容的节点中仅包含 Prometheus 时不执行更新监控配置的操作，以避免因 Prometheus 节点不存在而缩容失败
 + 在使用 TiUP 命令输入结果不正确时将用户输入的内容添加到错误信息中，以便用户更快定位问题原因。
+
+## 遥测
+
+TiDB 在遥测中新增收集集群的使用指标，包括数据表数量、查询次数、新特性是否启用等。
+
+若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
