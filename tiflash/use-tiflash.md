@@ -321,7 +321,7 @@ Empty set (0.01 sec)
 
 ```
 
-在 TiDB 和 TiFlash 中，`a/b`在编译期推导出来的 Type 都为 `Decimal(7,4)`，而在`Decimal(7,4)`的约束小，`a/b`返回的结果应该为`0.0000`，但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)`大，所以原表中的数据没有被 `where a/b` 过滤掉，而在 TiFlash 中`a/b`在运行期也是采用`Decimal(7,4)`作为结果类型，所以原表中的数据被`where a/b`过滤掉了。
+在 TiDB 和 TiFlash 中，`a/b`在编译期推导出来的 Type 都为 `Decimal(7,4)`，而在`Decimal(7,4)`的约束下，`a/b`返回的结果应该为`0.0000`，但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)`大，所以原表中的数据没有被 `where a/b` 过滤掉，而在 TiFlash 中`a/b`在运行期也是采用`Decimal(7,4)`作为结果类型，所以原表中的数据被`where a/b`过滤掉了。
 
 * TiFlash MPP 模式不支持如下功能：
   * 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
