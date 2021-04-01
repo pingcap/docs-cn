@@ -291,25 +291,33 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
     * TiFlash 目前的 Decimal 除法计算上和 TiDB 有一点不兼容，具体体现在在进行 Decimal 相除的时候，TiFlash 会始终按照编译时推断出来的类型进行计算，而 TiDB 则在计算过程中采用高于编译是推断出来的类型，这导致在一些带有 Decimal 除法的 SQL 在 TiDB + TiKV 上的结果会和 TiDB + TiFlash 上的结果不一样。举例来说，对于如下的 case：
 
     ```
-mysql> create table t (a decimal(3,0), b decimal(10, 0));
-Query OK, 0 rows affected (0.07 sec)
-mysql> insert into t values (43, 1044774912);
-Query OK, 1 row affected (0.03 sec)
-mysql> alter table t set tiflash replica 1;
-Query OK, 0 rows affected (0.07 sec)
-mysql> set session tidb_isolation_read_engines='tikv';
-Query OK, 0 rows affected (0.00 sec)
-mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
-+--------+-----------------------+
-| a/b    | a/b + 0.0000000000001 |
-+--------+-----------------------+
-| 0.0000 |       0.0000000410001 |
-+--------+-----------------------+
-1 row in set (0.00 sec)
-mysql> set session tidb_isolation_read_engines='tiflash';
-Query OK, 0 rows affected (0.00 sec)
-mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
-Empty set (0.01 sec)
+
+    mysql> create table t (a decimal(3,0), b decimal(10, 0));
+    Query OK, 0 rows affected (0.07 sec)
+
+    mysql> insert into t values (43, 1044774912);
+    Query OK, 1 row affected (0.03 sec)
+
+    mysql> alter table t set tiflash replica 1;
+    Query OK, 0 rows affected (0.07 sec)
+
+    mysql> set session tidb_isolation_read_engines='tikv';
+    Query OK, 0 rows affected (0.00 sec)
+
+    mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
+    +--------+-----------------------+
+    | a/b    | a/b + 0.0000000000001 |
+    +--------+-----------------------+
+    | 0.0000 |       0.0000000410001 |
+    +--------+-----------------------+
+    1 row in set (0.00 sec)
+
+    mysql> set session tidb_isolation_read_engines='tiflash';
+    Query OK, 0 rows affected (0.00 sec)
+
+    mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
+    Empty set (0.01 sec)
+
     ```
 
     在 TiDB 和 TiFlash 中，`a/b`在编译期推导出来的 Type 都为 `Decimal(7,4)`，而在`Decimal(7,4)`的约束下，`a/b`返回的结果应该为`0.0000`，但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)`大，所以原表中的数据没有被 `where a/b` 过滤掉，而在 TiFlash 中`a/b`在运行期也是采用`Decimal(7,4)`作为结果类型，所以原表中的数据被`where a/b`过滤掉了。
