@@ -59,13 +59,13 @@ CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index
 CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] NONCLUSTERED */); 
 ```
 
-对于未显式指定该关键字的语句，默认行为受全局变量 `@@global.tidb_enable_clustered_index` 影响。该变量有三个取值：
+对于未显式指定该关键字的语句，默认行为受系统变量 `@@global.tidb_enable_clustered_index` 影响。该变量有三个取值：
 
 - `OFF` 表示所有主键默认使用非聚簇索引。
 - `ON` 表示所有主键默认使用聚簇索引。
 - `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
 
-全局变量 `@@global.tidb_enable_clustered_index` 本身的默认值为 `INT_ONLY`。
+系统变量 `@@global.tidb_enable_clustered_index` 本身的默认值为 `INT_ONLY`。
 
 ### 添加、删除聚簇索引
 
