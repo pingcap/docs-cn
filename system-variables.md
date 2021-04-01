@@ -796,7 +796,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 - 作用域：SESSION | GLOBAL
 - 默认值：32 MB
-- 这个变量用来设置 Apply 算子中局部 Cache 的内存使用阈值。
+- 这个变量用来设置 `Apply` 算子中局部 Cache 的内存使用阈值。
 - `Apply` 算子中局部 Cache 用来加速 `Apply` 算子的计算，该变量可以设置 `Apply` Cache 的内存使用阈值。设置变量值为 `0` 可以关闭 `Apply` Cache 功能。
 
 ### `tidb_memory_usage_alarm_ratio`
