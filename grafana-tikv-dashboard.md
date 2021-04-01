@@ -77,9 +77,8 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Storage ReadPool CPU: The CPU utilization of the `storage read pool` thread
 - Coprocessor CPU: The CPU utilization of the `coprocessor` thread
 - RocksDB CPU: The CPU utilization of the RocksDB thread
-- Split check CPU: The CPU utilization of the `split check` thread
 - GC worker CPU: The CPU utilization of the `GC worker` thread
-- Snapshot worker CPU: The CPU utilization of the `snapshot worker` thread
+- BackGround worker CPU: The CPU utilization of the `background worker` thread
 
 ## PD
 
