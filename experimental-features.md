@@ -23,23 +23,24 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## SQL 功能
 
-+ List 分区表 （List Partition）（v5.0 实验特性）
-+ List Column 分区表 （List Column Partition)（v5.0 实验特性）
++ List 分区表 （List Partition）。（v5.0 实验特性）
++ List Column 分区表 （List Column Partition)。（v5.0 实验特性）
 + 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
 + [生成列](/generated-columns#生成列)。
 + [自定义变量](/user-defined-variables#用户自定义变量)。
 + [JSON 数据类型](/data-type-json#data-type-json#json-类型) 及 [JSON 函数](/json-functions#json-函数)。
 + [Global Kill](/sql-statement-kill#global-kill-span-classversion-mark从-v50-版本开始引入span)。
++ [View](/information-schema-views#views)。
 
 ## 配置管理
 
 + 将配置参数持久化存储到 PD 中，并且可以动态修改配置项的功能。（v4.0 实验特性）
-+ [SHOW CONFIG](/sql-statement-show-config#show-config) （v4.0 实验特性）
++ [SHOW CONFIG](/sql-statement-show-config#show-config)。 （v4.0 实验特性）
 
 ## TiDB 数据共享订阅
 
 + TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
-+ TiCDC [支持 TiDB 集群之间环形同步](/ticdc/manage-ticdc.md#环形同步)（v5.0 实验特性）
++ TiCDC [支持 TiDB 集群之间环形同步](/ticdc/manage-ticdc.md#环形同步)。（v5.0 实验特性）
 + [TiCDC Open Protocol](/ticdc-open-protocol#row-changed-event) 的 [列标志位](/ticdc-open-protocol#列标志位) 功能。
 
 ## 存储
@@ -48,11 +49,11 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + TiFlash 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力。
 
 ## 备份与恢复
-+ [Raw KV 备份](/use-br-command-line-tool#raw-kv-备份实验性功能)
++ [Raw KV 备份](/use-br-command-line-tool#raw-kv-备份实验性功能)。
 
 ## 垃圾加收
-+ [Green GC](/garbage-collection-configuration#tikv_gc_scan_lock_mode)
++ [Green GC](/garbage-collection-configuration#tikv_gc_scan_lock_mode)。
 
 ## 问题诊断
-+ [SQL 诊断](/information-schema-sql-diagnostics#sql-诊断)
-+ [集群诊断](/dashboard-diagnostics-access#tidb-dashboard-集群诊断页面)
++ [SQL 诊断](/information-schema-sql-diagnostics#sql-诊断)。
++ [集群诊断](/dashboard-diagnostics-access#tidb-dashboard-集群诊断页面)。
