@@ -108,10 +108,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## readpool.unified
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
 
 ### `min-thread-count`
@@ -398,7 +394,7 @@ raftstore 相关的配置项。
 ### `hibernate-regions` (**实验特性**)
 
 + 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
-+ 默认值：true
++ 默认值：false
 
 ### `raftstore.peer-stale-state-check-interval`
 
