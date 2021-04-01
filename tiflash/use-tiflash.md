@@ -273,12 +273,7 @@ mysql> explain select count(*) from customer c join nation n on c.c_nationkey=n.
 
 在执行计划中，出现了 `ExchangeReceiver` 和 `ExchangeSender` 算子。该执行计划表示 `nation` 表读取完毕后，经过 `ExchangeSender` 算子广播到各个节点中，与 `customer` 表先后进行 `HashJoin` 和 `HashAgg` 操作，再将结果返回至 TiDB 中。
 
-> **注意：**
->
-> MPP 模式不支持如下功能：
->
-> - 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
-> - 在配置项 `new_collations_enabled_on_first_bootstrap`(/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值为 `true` 时，MPP 不支持 join 的连接键类型为字符串或 `group by` 聚合运算时列类型为字符串的情况。在处理这两类查询时，默认不选择 MPP 模式。
+
 
 TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join，分别为：
 
@@ -287,12 +282,15 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 
 ## 注意事项
 
-在 TiFlash 计算下推时有些下推的限制以及计算行为与 TiDB 原生计算不兼容的问题，具体罗列如下：
+在 TiFlash 目前有一些已知的不支持的功能以及与原生 TiDB 不兼容的问题，具体罗列如下：
 
-* TiDB 4.0.2 版本之前，TiFlash 不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
-* 在 TiDB 5.0 之后，TiFlash 引入了 [MPP](#使用 MPP 模式) 的支持，在 MPP 模式下支持分布式的 Shuffle Hash Join 与 Hash Aggregation，但是如果 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)时，Shuffle Hash Join 与 Hash Aggregation 不支持 shuffle key 为 String（包括 char、varchar、text、blob、binary）类型。
-* TiFlash 目前的 sum 函数不支持参数为 String 类型的输入，但是因为一些原因，TiDB 在编译时无法检测出这种情况，所以当出现类似 `select sum(string_col) from t`的时候，TiFlash 会报`[FLASH:Coprocessor:Unimplemented] CastStringAsReal is not supported.`的错，要避免这类报错，需要手动把 SQL 改写成`select sum(cast(string_col as double)) from t`
-* TiFlash 目前的 Decimal 除法计算上和 TiDB 有一点不兼容，具体体现在在进行 Decimal 相除的时候，TiFlash 会始终按照编译时推断出来的类型进行计算，而 TiDB 则在计算过程中采用高于编译是推断出来的类型，这导致在一些带有 Decimal 除法的 SQL 在 TiDB + TiKV 上的结果会和 TiDB + TiFlash 上的结果不一样。举例来说，对于如下的 case：
+* TiFlash 计算层：
+  * TiDB 4.0.2 版本之前，不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
+  * 不支持从数值溢出检测，例如对于 2 个 `bigint` 最大值相加 `9223372036854775807 + 9223372036854775807`，在 TiDB 中应有的行为是提示错误 `ERROR 1690 (22003): BIGINT value is out of range`，但如果该计算在 TiFlash 中进行，则会得到溢出的结果 `-2`无报错。
+  * 不支持 Window Function。
+  * 不支持从 TiKV 读取数据。
+  * TiFlash 目前的 sum 函数不支持参数为 String 类型的输入，但是因为一些原因，TiDB 在编译时无法检测出这种情况，所以当出现类似 `select sum(string_col) from t`的时候，TiFlash 会报`[FLASH:Coprocessor:Unimplemented] CastStringAsReal is not supported.`的错，要避免这类报错，需要手动把 SQL 改写成`select sum(cast(string_col as double)) from t`
+  * TiFlash 目前的 Decimal 除法计算上和 TiDB 有一点不兼容，具体体现在在进行 Decimal 相除的时候，TiFlash 会始终按照编译时推断出来的类型进行计算，而 TiDB 则在计算过程中采用高于编译是推断出来的类型，这导致在一些带有 Decimal 除法的 SQL 在 TiDB + TiKV 上的结果会和 TiDB + TiFlash 上的结果不一样。举例来说，对于如下的 case：
 
 ```
 mysql> create table t (a decimal(3,0), b decimal(10, 0));
@@ -324,3 +322,7 @@ Empty set (0.01 sec)
 ```
 
 在 TiDB 和 TiFlash 中，`a/b`在编译期推导出来的 Type 都为 `Decimal(7,4)`，而在`Decimal(7,4)`的约束小，`a/b`返回的结果应该为`0.0000`，但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)`大，所以原表中的数据没有被 `where a/b` 过滤掉，而在 TiFlash 中`a/b`在运行期也是采用`Decimal(7,4)`作为结果类型，所以原表中的数据被`where a/b`过滤掉了。
+
+* TiFlash MPP 模式不支持如下功能：
+  * 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
+  * 在配置项 `new_collations_enabled_on_first_bootstrap`(/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值为 `true` 时，MPP 不支持 join 的连接键类型为字符串或 `group by` 聚合运算时列类型为字符串的情况。在处理这两类查询时，默认不选择 MPP 模式。
