@@ -165,30 +165,41 @@ During the backup process, pay attention to the following metrics on the monitor
 
 #### Backup results explanation
 
+When finishing the backup, BR outputs the backup summary to the console.
+
 Before executing the backup command, a path in which the log is stored has been specified. You can get the statistical information of the backup operation from this log. Search "summary" in this log, you can see the following information:
 
 ```
-["Table backup summary:
-    total backup ranges: 4,
-    total success: 4,
+["Full backup Success summary:
+    total backup ranges: 2,
+    total success: 2,
     total failed: 0,
-    total take(s): 986.43,
-    total kv: 5659888624,
-    total size(MB): 353227.18,
-    avg speed(MB/s): 358.09"]
-    ["backup total regions"=7196]
-    ["backup checksum"=6m28.291772955s]
-    ["backup fast checksum"=24.950298ms]
+    total take(Full backup time): 31.802912166s,
+    total take(real time): 49.799662427s,
+    total size(MB): 5997.49,
+    avg speed(MB/s): 188.58,
+    total kv: 120000000"]
+    ["backup checksum"=17.907153678s]
+    ["backup fast checksum"=349.333µs]
+    ["backup total regions"=43]
+    [BackupTS=422618409346269185]
+    [Size=826765915]
 ```
 
 The above log includes the following information:
 
-* Backup duration: `total take(s): 986.43`
-* Data size: `total size(MB): 353227.18`
-* Backup throughput: `avg speed(MB/s): 358.09`
-* Backup checksum duration: `take=6m28.29s`
+* Backup duration: `total take(Full backup time): 31.802912166s`
+* Total runtime of the application: `total take(real time): 49.799662427s`
+* Backup data size: `total size(MB): 5997.49`
+* Backup throughput: `avg speed(MB/s): 188.58`
+* Number of backed-up KV pairs: `total kv: 120000000`
+* Backup checksum duration: `["backup checksum"=17.907153678s]`
+* Total duration of calculating the checksum, KV pairs, and bytes of each table: `["backup fast checksum"=349.333µs]`
+* Total number of backup Regions: `["backup total regions"=43]`
+* The actual size of the backup data in the disk after compression: `[Size=826765915]`
+* Snapshot timestamp of the backup data: `[BackupTS=422618409346269185]`
 
-From the above information, the throughput of a single TiKV instance can be calculated: `avg speed(MB/s)`/`tikv_count` = `89`.
+From the above information, the throughput of a single TiKV instance can be calculated: `avg speed(MB/s)`/`tikv_count` = `62.86`.
 
 #### Performance tuning
 
@@ -283,7 +294,8 @@ Before executing the restoration command, a path in which the log is stored has 
     total restore tables: 1,
     total success: 1,
     total failed: 0,
-    total take(s): 961.37,
+    total take(Full restore time): 17m1.001611365s,
+    total take(real time): 16m1.371611365s,
     total kv: 5659888624,
     total size(MB): 353227.18,
     avg speed(MB/s): 367.42"]
@@ -291,24 +303,28 @@ Before executing the restoration command, a path in which the log is stored has 
     ["restore ranges"=6888]
     ["split region"=49.049182743s]
     ["restore checksum"=6m34.879439498s]
+    [Size=48693068713]
 ```
 
 The above log includes the following information:
 
-* Restoration duration: `total take(s):961.37`
-* Data size: `total size(MB): 353227.18`
-* Restoration throughput: `avg speed(MB/s): 367.42`
+* Restore duration: `total take(Full restore time): 17m1.001611365s`
+* Total runtime of the application: `total take(real time): 16m1.371611365s`
+* Restore data size: `total size(MB): 353227.18`
+* Restore KV pair number: `total kv: 5659888624`
+* Restore throughput: `avg speed(MB/s): 367.42`
 * `Region Split` duration: `take=49.049182743s`
-* Restoration checksum duration: `take=6m34.879439498s`
+* Restore checksum duration: `restore checksum=6m34.879439498s`
+* The actual size of the restored data in the disk: `[Size=48693068713]`
 
 From the above information, the following items can be calculated:
 
 * The throughput of a single TiKV instance: `avg speed(MB/s)`/`tikv_count` = `91.8`
-* The average restoration speed of a single TiKV instance: `total size(MB)`/(`split time` + `restore time`)/`tikv_count` = `87.4`
+* The average restore speed of a single TiKV instance: `total size(MB)`/(`split time` + `restore time`)/`tikv_count` = `87.4`
 
 #### Performance tuning
 
-If the resource usage of TiKV does not become an obvious bottleneck during the restoration process, you can try to increase the value of `--concurrency` which is `128` by default. See the following example:
+If the resource usage of TiKV does not become an obvious bottleneck during the restore process, you can try to increase the value of `--concurrency` which is `128` by default. See the following example:
 
 {{< copyable "shell-regular" >}}
 
@@ -318,10 +334,10 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 
 The tuned performance results are as follows (with the same data size):
 
-+ Restoration duration: `total take(s)` reduced from `961.37` to `443.49`
-+ Restoration throughput: `avg speed(MB/s)` increased from `367.42` to `796.47`
++ Restore duration: `total take(s)` reduced from `961.37` to `443.49`
++ Restore throughput: `avg speed(MB/s)` increased from `367.42` to `796.47`
 + Throughput of a single TiKV instance: `avg speed(MB/s)`/`tikv_count` increased from `91.8` to `199.1`
-+ Average restoration speed of a single TiKV instance: `total size(MB)`/(`split time` + `restore time`)/`tikv_count` increased from `87.4` to `162.3`
++ Average restore speed of a single TiKV instance: `total size(MB)`/(`split time` + `restore time`)/`tikv_count` increased from `87.4` to `162.3`
 
 ### Back up a single table to a local disk (recommended in testing environment)
 
