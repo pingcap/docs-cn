@@ -123,7 +123,7 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 + 配置项 `security.redact-info-log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 pd-server 的日志脱敏功能。
 + 配置项 `security.redact_info_log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 tiflash-server 及 tiflash-learner 的日志脱敏功能。
 
-此功能从 5.0-rc 版本中开始提供，使用过程中必须开启以上所有系统变量及配置项。
+此功能从 5.0 版本中开始提供，使用过程中必须开启以上所有系统变量及配置项。
 
 ## 性能
 
@@ -264,13 +264,13 @@ TiDB 调度过程中会占用 I/O、网络、CPU、内存等资源，若不对�
 
 [用户文档](/pd-configuration-file.md#enable-cross-table-merge)
 
-在 5.0-rc 之前，TiDB 默认关闭跨表合并 Region 的功能。从 5.0-rc 起，TiDB 默认开启跨表合并 Region 功能，减少空 Region 的数量，降低系统的网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
+在 5.0 之前，TiDB 默认关闭跨表合并 Region 的功能。从 5.0 起，TiDB 默认开启跨表合并 Region 功能，减少空 Region 的数量，降低系统的网络、内存、CPU 的开销。你可以通过修改 `schedule.enable-cross-table-merge` 配置项关闭此功能。
 
 #### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢
 
 [用户文档](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入)
 
-在 5.0-rc 之前，为了平衡后台任务与前端的数据读写对 I/O 资源的争抢，自动调整 Compaction 的速度这个功能默认是半闭的；从 5.0-rc 起，TiDB 默认开启此功能并优化调整算法，开启之后延迟抖动比未开启此功能时的抖动大幅减少。
+在 5.0 之前，为了平衡后台任务与前端的数据读写对 I/O 资源的争抢，自动调整 Compaction 的速度这个功能默认是半闭的；从 5.0 起，TiDB 默认开启此功能并优化调整算法，开启之后延迟抖动比未开启此功能时的抖动大幅减少。
 
 你可以通过修改 `rate-limiter-auto-tuned` 配置项关闭此功能。
 
