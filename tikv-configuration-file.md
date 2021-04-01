@@ -269,7 +269,7 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 
 + TTL 即 Time to live。数据超过 TTL 时间后会被自动删除。用户需在客户端写入请求中指定 TTL。不指定 TTL 即表明相应数据不会被自动删除。
 + 注意：TTL 暂时只适用于 RawKV 接口。由于所涉及底层数据格式的不同，用户只能在新建集群时设置好该功能，在已有集群上修改该项配置会使得启动报错。
-+ 默认值：false 
++ 默认值：false
 
 ### `ttl-poll-check-interval` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
 
@@ -750,7 +750,7 @@ rocksdb 相关的配置项。
 + 最小值：1
 + 最大值：3
 
-### `rate-limiter-auto-tuned` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `rate-limiter-auto-tuned` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 控制是否依据最近的负载量自动优化 RocksDB 的 compaction rate limiter 配置。此配置项开启后，compaction pending bytes 监控指标值会比一般情况下稍微高些。
 + 默认值：true
@@ -1244,7 +1244,7 @@ raftdb 相关配置项。
 
 ## gc
 
-### `enable-compaction-filter` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `enable-compaction-filter` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 是否开启 GC in Compaction Filter 特性
 + 默认值：false
