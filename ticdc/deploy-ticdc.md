@@ -58,4 +58,4 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `ca`：TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
 - `cert`：TiCDC 使用的证书文件路径，PEM 格式，可选。
 - `key`：TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
-- `config`: TiCDC 使用的配置文件地址，可选，TiCDC 5.0.0 开始支持该配置，TiUP 1.4.0 开始支持部署时使用该配置。
+- `config`：可选项，表示 TiCDC 使用的配置文件地址。TiCDC 从 v5.0.0 开始支持该选项，TiUP 从 v1.4.0 开始支持在部署 TiCDC 时使用该配置。
