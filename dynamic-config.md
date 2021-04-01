@@ -190,8 +190,8 @@ show warnings;
 | {db-name}.{cf-name}.soft-pending-compaction-bytes-limit | pending compaction bytes 的软限制 |
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
-| storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
-| backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
+| storage.block-cache.capacity | 共享 block cache 的大小 |
+| backup.num-threads | backup 线程的数量 |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则切分该 Region |
 | split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则切分该 Region |
 | split.split-balance-score | load-base-split 的控制参数，确保 Region 切分后左右访问尽量均匀，数值越小越均匀，但也可能导致无法切分 |
