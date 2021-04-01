@@ -32,11 +32,11 @@ TiDB 版本：5.0.0
 + 新增系统变量 [`tidb_enable_strict_double_type_check`](/system-variables.md#tidb_enable_strict_double_type_check-从-v500-rc-版本开始引入)，用于决定类似“double(N)”语法是否允许被定义在表结构中，默认为 OFF。
 + 系统变量 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的默认值由 2000 修改为 0，即在 LOAD/INSERT INTO SELECT ... 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。
 + 临时表的语法兼容性受到 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 系统变量的控制：当 `tidb_enable_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
-+ 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
++ 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
 
 ### 配置文件参数
 
-+ 新增 [`index-limit`](/tidb-configuration-file.md#index-limit-new-in-v500-rc) 配置项，用于兼容 MySQL 最大索引数量限制，如果设置超过默认值，该表结构再次导入 MySQL 将会报错，默认值 64，取值范围在 [64,64*8]。
++ 新增 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 配置项，用于兼容 MySQL 最大索引数量限制，如果设置超过默认值，该表结构再次导入 MySQL 将会报错，默认值 64，取值范围在 [64,64*8]。
 + 新增 [`enable-enum-length-limit`](/tidb-configuration-file.md#enable-enum-length-limit) 配置项，用于兼容 MySQL enum/set 元素长度并保持一致（Enum 长度 < 255），默认值为 true。
 + 新增 [`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length)，用于兼容 MySQL 显式声明整数类型长度，但会返回一个类似于 `Integer display width is deprecated and will be removed in a future release` 的警告。
 + 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代。
@@ -312,7 +312,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
-[用户文档](/ticdc/manage-ticdc.md#unified-sorter)，[#1150](https://github.com/pingcap/ticdc/issues/1150)
+[用户文档](/ticdc/manage-ticdc.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/ticdc/issues/1150)
 
 自 v4.0.9 版本起，TiCDC 引入变更数据本地排序功能 Unified Sorter。在 5.0 版本，默认开启此功能以缓解类似场景下的 OOM 问题：
 
