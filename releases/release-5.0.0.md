@@ -38,7 +38,7 @@ TiDB 版本：5.0.0
 + 系统变量 [`tidb_enable_clustered_index`](https://docs.pingcap.com/zh/tidb/v5.0/system-variables#tidb_enable_clustered_index-从-v50-版本开始引入) 默认值由 OFF 改成 INT_ONLY 且含义有如下变化：
   + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
   + OFF：关闭聚簇索引， 支持添加或者删除非聚簇索引。
-  + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与`alter-primary-ke = false` 一起使用可控制 INT 类型是开启聚簇索引。
+  + INT_ONLY：默认值，行为与 v5.0 以下版本保持一致，与 `alter-primary-key = false` 一起使用可控制 INT 类型是否开启聚簇索引。
 
 ### 配置文件参数
 
