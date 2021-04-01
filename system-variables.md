@@ -429,7 +429,7 @@ mysql> SELECT * FROM t1;
 
 ### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 默认值：INT_ONLY
 - 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
     - `OFF` 表示所有主键默认使用非聚簇索引。
