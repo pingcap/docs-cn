@@ -28,14 +28,14 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
 + [生成列](/generated-columns.md#生成列)。
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。
-+ [JSON 数据类型](/data-type-json.md#data-type-json#json-类型) 及 [JSON 函数](/functions-and-operators/json-functions.md#json-函数)。
-+ [Global Kill](/sql-statements/sql-statement-kill.md#global-kill-span-classversion-mark从-v50-版本开始引入span)。
-+ [View](/information-schema/information-schema-views.md#views)。
++ [JSON 数据类型](/data-type-json.md) 及 [JSON 函数](/functions-and-operators/json-functions.md)。
++ [Global Kill](/sql-statements/sql-statement-kill.md#global-kill-从-v50-版本开始引入)。
++ [View](/information-schema/information-schema-views.md)。
 
 ## 配置管理
 
 + 将配置参数持久化存储到 PD 中，并且可以动态修改配置项的功能。（v4.0 实验特性）
-+ [SHOW CONFIG](/sql-statements/sql-statement-show-config.md#show-config)。（v4.0 实验特性）
++ [SHOW CONFIG](/sql-statements/sql-statement-show-config.md)。（v4.0 实验特性）
 
 ## TiDB 数据共享订阅
 
@@ -59,5 +59,5 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 问题诊断
 
-+ [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md#sql-诊断)。
-+ [集群诊断](/dashboard/dashboard-diagnostics-access.md#tidb-dashboard-集群诊断页面)。
++ [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。
++ [集群诊断](/dashboard/dashboard-diagnostics-access.md)。
