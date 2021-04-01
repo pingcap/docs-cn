@@ -14,8 +14,8 @@ TiDB 版本：5.0.0
 在 5.0 版本中，你可以获得以下关键特性：
 
 + TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。
-+ 开启聚簇索引功能，提升数据库的性能。例如： TPC-C tpmC 测试下的性能提升了 39%。
-+ 开启异步提交事务功能，降低写入数据的延迟。例如：Sysbench oltp-insert 测试中延迟降低了 37.3%。
++ 开启聚簇索引功能，提升数据库的性能。例如，在 Sysbench 测试中，Read Write 性能可以提升 58.1%。
++ 开启异步提交事务功能，降低写入数据的延迟。例如：Sysbench 设置 64 线程测试 Update index 时, 平均延迟由 12.04 ms 降低到 7.01ms ，降低了 41.7%。
 + 通过提升优化器的稳定性及限制系统任务对 I/O、网络、CPU、内存等资源的占用，降低系统的抖动。例如：长期测试 72 小时，衡量 Sysbench TPS 抖动标准差的值从 11.09% 降低到 3.36%。
 + 通过完善调度功能及保证执行计划在最大程度上保持不变，提升系统的稳定性。
 + 引入 Raft Joint Consensus 算法，确保 Region 成员变更时系统的可用性。
@@ -27,12 +27,18 @@ TiDB 版本：5.0.0
 
 ### 系统变量
 
-+ 新增系统变量 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v500-rc-版本开始引入)，用于统一控制算子并发度。原有的 tidb_*_concurrency（例如 `tidb_projection_concurrency`）设置仍然生效，使用过程中会提示已废弃警告。
++ 新增系统变量 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入)，用于统一控制算子并发度。原有的 tidb_*_concurrency（例如 `tidb_projection_concurrency`）设置仍然生效，使用过程中会提示已废弃警告。
 + 新增系统变量 [`tidb_skip_ascii_check`](/system-variables.md#tidb_skip_ascii_check)，用于决定在写入 ASCII 字符集的列时，是否对字符的合法性进行检查，默认为 OFF。
-+ 新增系统变量 [`tidb_enable_strict_double_type_check`](/system-variables.md#tidb_enable_strict_double_type_check-从-v500-rc-版本开始引入)，用于决定类似“double(N)”语法是否允许被定义在表结构中，默认为 OFF。
++ 新增系统变量 [`tidb_enable_strict_double_type_check`](/system-variables.md#tidb_enable_strict_double_type_check-从-v50-版本开始引入)，用于决定类似“double(N)”语法是否允许被定义在表结构中，默认为 OFF。
 + 系统变量 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的默认值由 2000 修改为 0，即在 LOAD/INSERT INTO SELECT ... 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。
 + 临时表的语法兼容性受到 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 系统变量的控制：当 `tidb_enable_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
 + 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
++ 系统变量 [`enable-joint-consensus`](/pd-configuration-file#enable-joint-consensus-从-v50-版本开始引入) 默认值由 `false` 改成 `ture`, 默认开启 Joint consensus 功能。
++ 系统变量 [`tidb_enable_amend_pessimistic_txn`](system-variables#tidb_enable_amend_pessimistic_txn-span-classversion-mark从-v407-版本开始引入span) 的值由数字 0 或者 1 变更成 ON 和 OFF。
++ 系统变量 [`tidb_enable_clustered_index`](https://docs.pingcap.com/zh/tidb/v5.0/system-variables#tidb_enable_clustered_index-从-v50-版本开始引入) 默认值由 OFF 改成 INT_ONLY 且含义有如下变化：
+  + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
+  + OFF：关闭聚簇索引， 支持添加或者删除非聚簇索引。
+  + INT_ONLY：默认值，行为与 5.0-rc 及以下版本保持一致，与`alter-primary-ke = false` 一起使用可控制 INT 类型是开启聚簇索引。
 
 ### 配置文件参数
 
@@ -42,8 +48,11 @@ TiDB 版本：5.0.0
 + 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代。
 + 删除 `performance.max-memory` 配置项，通过 [performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
 + 删除 `tikv-client.copr-cache.enable` 配置项，通过 [tikv-client.copr-cache.capcity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能，默认：1000.0。
-+ 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入) 替代。
++ 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 替代。
 + 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘，之前显式关闭 `raftstore.sync-log`，成功升级 v5.x 版本后，会强制改为 `true`。
++ `gc.enable-compaction-filter` 配置项的默认值由 `false` 改成 `true`。
++ `enable-cross-table-merge` 配置项的默认值由 `false` 改成 `true`。
++ [`rate-limiter-auto-tuned`](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 配置项的默认值由 `false` 改成 `ture`。
 
 ## 新功能
 
@@ -57,7 +66,7 @@ TiDB 版本：5.0.0
 
 List 分区表会按照 `PARTITION BY LIST(expr) PARTITION part_name VALUES IN (...)` 表达式来定义分区，定义如何将数据划分到不同的分区中。分区表的数据集合最多支持 1024 个值，值的类型只支持整数型，不能有重复的值。可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
 
-你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-ga-版本开始引入) 的值为 `ON`，开启 List 分区表功能。
+你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) 的值为 `ON`，开启 List 分区表功能。
 
 #### List COLUMNS 分区表 (List COLUMNS Partition)（**实验特性**）
 
@@ -65,7 +74,7 @@ List 分区表会按照 `PARTITION BY LIST(expr) PARTITION part_name VALUES IN (
 
 List COLUMNS 分区表是 List 分区表的变体，主要的区别是分区键可以由多个列组成，列的类型不再局限于整数类型，也可以是字符串、DATE 和 DATETIME 等类型。
 
-你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-ga-版本开始引入) 的值为 `ON`，开启 List COLUMNS 分区表功能。
+你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) 的值为 `ON`，开启 List COLUMNS 分区表功能。
 
 #### 不可见索引（Invisible Indexes）
 
@@ -150,7 +159,7 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 聚簇索引 (Clustered Index)，部分数据库管理系统也叫索引组织表，是一种和表的数据相关联的存储结构。创建聚簇索引时可指定包含表中的一列或多列作为索引的键值。这些键存储在一个结构中，使 TiDB 能够快速有效地找到与键值相关联的行，提升查询和写入数据的性能。
 
-开启聚簇索引功能后，TiDB 性能在一些场景下会有较大幅度的提升。例如，TPC-C tpmC 的性能可以提升 39%。聚簇索引主要在以下场景会有性能提升：
+开启聚簇索引功能后，TiDB 性能在一些场景下会有较大幅度的提升。例如，在 Sysbench 测试中，Read Write 性能可以提升 58.1%。聚簇索引主要在以下场景会有性能提升：
 
 + 插入数据时会减少一次从网络写入索引数据。
 + 等值条件查询仅涉及主键时会减少一次从网络读取数据。
@@ -206,15 +215,15 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 ### 异步提交事务（Async Commit)
 
-[用户文档](/system-variables.md#tidb_enable_async_commit-从-v500-rc-版本开始引入)，[#8316](https://github.com/tikv/tikv/issues/8316)
+[用户文档](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)，[#8316](https://github.com/tikv/tikv/issues/8316)
 
 数据库的客户端会同步等待数据库系统通过两阶段 (2PC) 完成事务的提交，事务在第一阶段提交成功后就会返回结果给客户端，系统会在后台异步执行第二阶段提交操作，降低事务提交的延迟。如果事务的写入只涉及一个 Region，则第二阶段可以直接被省略，变成一阶段提交。
 
-开启异步提交事务特性后，在硬件、配置完全相同的情况下，Sysbench 设置 32 线程测试 oltp_insert 时，TPS 由 3056 提升到 4878，提升了 59.6%，平均延迟由 10.46ms 降低到 6.56ms，降低了 37.3%。
+开启异步提交事务特性后，在硬件、配置完全相同的情况下，Sysbench 设置 64 线程测试 Update index 时, 平均延迟由 12.04 ms 降低到 7.01ms ，降低了 41.7%。
 
 开启异步提交事务特性时，数据库应用开发人员可以考虑将事务的一致性从线性一致性降低到 [因果一致性](/transaction-overview.md#因果一致性事务)，减少 1 次网络交互降低延迟，提升数据写入的性能。开启因果一致性的 SQL 语句为 `START TRANSACTION WITH CAUSAL CONSISTENCY`。
 
-开启因果一致性后，在硬件和配置完全相同的情况下，Sysbench 设置 32 线程测试 oltp_write_only 时，TPS 由 16180 提升到 17149，提升了 6.0%，平均延迟由 11.86ms 降低到 11.19ms，降低了 5.6%。
+开启因果一致性后，在硬件和配置完全相同的情况下，Sysbench 设置 64 线程测试 oltp_write_only 时，平均延迟由 11.86ms 降低到 11.19ms，降低了 5.6%。
 
 事务的一致性从线性一致性降低到因果一致性后，如果应用程序中多个事务之间没有相互依赖关系时，事务没有全局一致的顺序。
 
@@ -266,7 +275,7 @@ TiDB 调度过程中会占用 I/O、网络、CPU、内存等资源，若不对�
 
 #### 默认开启自动调整 Compaction 压缩的速度，平衡后台任务与前端的数据读写对 I/O 资源的争抢
 
-[用户文档](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v500-rc-版本开始引入)
+[用户文档](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入)
 
 在 5.0 之前，为了平衡后台任务与前端的数据读写对 I/O 资源的争抢，自动调整 Compaction 的速度这个功能默认是半闭的；从 5.0 起，TiDB 默认开启此功能并优化调整算法，开启之后延迟抖动比未开启此功能时的抖动大幅减少。
 
@@ -308,7 +317,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 ### TiFlash 查询稳定性提升
 
-新增系统变量 [`tidb_allow_fallback_to_tikv`](/system-variables.md#tidb_allow_fallback_to_tikv-从-v50-ga-版本开始引入)，用于决定在 TiFlash 查询失败时，自动将查询回退到 TiKV 尝试执行，默认为 OFF。
+新增系统变量 [`tidb_allow_fallback_to_tikv`](/system-variables.md#tidb_allow_fallback_to_tikv-从-v50-版本开始引入)，用于决定在 TiFlash 查询失败时，自动将查询回退到 TiKV 尝试执行，默认为 OFF。
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
@@ -329,7 +338,7 @@ Unified Sorter 整合了老版本提供的 memory、file sort-engine 配置选�
 
 ### 提升 Region 成员变更时的可用性
 
-[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)，[#18079](https://github.com/pingcap/tidb/issues/18079)，[#7587](https://github.com/tikv/tikv/issues/7587)，[#2860](https://github.com/tikv/pd/issues/2860)
+[用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v50-版本开始引入)，[#18079](https://github.com/pingcap/tidb/issues/18079)，[#7587](https://github.com/tikv/tikv/issues/7587)，[#2860](https://github.com/tikv/pd/issues/2860)
 
 Region 在完成成员变更时，由于“添加”和“删除”成员操作分成两步，如果两步操作之间有故障发生会引起 Region 不可用并且会返回前端业务的错误信息。
 
