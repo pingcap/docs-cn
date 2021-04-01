@@ -303,7 +303,7 @@ Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 T
 {{< copyable "sql" >}}
 
 ```sql
-update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
+SET GLOBAL tidb_gc_life_time = '720h';
 ```
 
 在操作结束之后，再将 GC 时间调回原样（默认是 `10m`）：
@@ -311,7 +311,7 @@ update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_lif
 {{< copyable "sql" >}}
 
 ```sql
-update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+SET GLOBAL tidb_gc_life_time = '10m';
 ```
 
 最后，所有的导出数据都可以用 [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md) 导入回 TiDB。
