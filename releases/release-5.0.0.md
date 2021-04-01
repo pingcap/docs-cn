@@ -49,7 +49,7 @@ TiDB 版本：5.0.0
 + 删除 `performance.max-memory` 配置项，通过 [performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
 + 删除 `tikv-client.copr-cache.enable` 配置项，通过 [tikv-client.copr-cache.capcity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能，默认：1000.0。
 + 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 替代。
-+ 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘，之前显式关闭 `raftstore.sync-log`，成功升级 v5.x 版本后，会强制改为 `true`。
++ 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘，之前显式关闭 `raftstore.sync-log`，成功升级 v5.0 版本后，会强制改为 `true`。
 + `gc.enable-compaction-filter` 配置项的默认值由 `false` 改成 `true`。
 + `enable-cross-table-merge` 配置项的默认值由 `false` 改成 `true`。
 + [`rate-limiter-auto-tuned`](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 配置项的默认值由 `false` 改成 `ture`。
