@@ -24,9 +24,9 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-sysbench-v5-vs-v4/']
 
 | 服务类型   | 软件版本   |
 |:----------|:-----------|
-| PD        | 3.0、4.0   |
-| TiDB      | 3.0、4.0   |
-| TiKV      | 3.0、4.0   |
+| PD        | 4.0、5.0   |
+| TiDB      | 4.0、5.0   |
+| TiKV      | 4.0、5.0   |
 | Sysbench  | 1.0.20     |
 
 ### 参数配置
