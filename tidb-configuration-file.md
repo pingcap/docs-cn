@@ -161,7 +161,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 控制是否只监听 TCP4。
 + 默认值：false
-+ 如果 TiDB 和 LVS 一起用于均衡负载，可开启此配置项。这是因为 TCP4 协议能正确解析 TCP 头部信息中的真实 IP。详情参阅 [LVS/toa](https://github.com/alibaba/LVS/tree/master/kernel/net/toa)。
++ 当使用 LVS 为 TiDB 做负载均衡时，可开启此配置项。这是因为 TCP4 协议能正确解析 TCP 头部信息中的真实 IP。详情参阅 [LVS/toa](https://github.com/alibaba/LVS/tree/master/kernel/net/toa)。
 
 ## log
 
