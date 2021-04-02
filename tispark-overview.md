@@ -307,7 +307,7 @@ df.write.
 
 如果写入的数据量比较大，且写入时间超过 10 分钟，则需要保证 GC 时间大于写入时间。
 
-```shell
+```sql
 update mysql.tidb set VARIABLE_VALUE="6h" where VARIABLE_NAME="tikv_gc_life_time";
 ```
 
