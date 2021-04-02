@@ -268,14 +268,7 @@ spark.sql("select * from hive_table a, tispark_table b where a.col1 = b.col1").s
 
 ## 通过 TiSpark 将 DataFrame 批量写入 TiDB
 
-TiSpark 从 v2.3 版本开始原生支持将 DataFrame 批量写入 TiDB 集群。该写入模式通过 TiKV 的两阶段提交协议实现。
-
-1. 首先计算出最终需要写入到 TiKV 的 Key-Value 对，并以 RDD 的形式保存在 Spark 内部
-2. 对 Key-Value 的 RDD 进行采样，以 96M 每个 region 的大小计算出 region 的分割点，并对 region 进行 pre-split 操作
-3. Spark Driver 从 Key-Value RDD 中取出一个作为 primary key，并进行 prewrite 操作
-4. Spark Executors 对剩下的 Key-Value 进行分布式 prewrite 操作
-5. Spark Driver 进行 commit primary key 操作，一旦这个步骤完成，数据就写入成功了
-6. Spark Executors 分布式 commit secondary key 操作
+TiSpark 从 v2.3 版本开始原生支持将 DataFrame 批量写入 TiDB 集群，该写入模式通过 TiKV 的两阶段提交协议实现。
 
 TiSpark 批量写入相比 Spark + JDBC 写入，有以下特点：
 
