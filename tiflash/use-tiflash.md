@@ -216,10 +216,6 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 ## TiFlash 支持的计算下推
 
-> **注意：**
->
-> TiDB 4.0.2 版本之前，TiFlash 不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
-
 TiFlash 支持谓词、聚合下推计算以及表连接，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型是 `Full Outer Join` 和 `DISTINCT COUNT`，会在后续版本逐步优化。
 
 目前下推连接 (`Join`) 的功能需要通过以下会话变量开启（暂不支持 `Full Outer Join`）：
@@ -276,14 +272,57 @@ mysql> explain select count(*) from customer c join nation n on c.c_nationkey=n.
 
 在执行计划中，出现了 `ExchangeReceiver` 和 `ExchangeSender` 算子。该执行计划表示 `nation` 表读取完毕后，经过 `ExchangeSender` 算子广播到各个节点中，与 `customer` 表先后进行 `HashJoin` 和 `HashAgg` 操作，再将结果返回至 TiDB 中。
 
-> **注意：**
->
-> MPP 模式不支持如下功能：
->
-> - 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
-> - 在配置项 `new_collations_enabled_on_first_bootstrap`(/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值为 `true` 时，MPP 不支持 join 的连接键类型为字符串或 `group by` 聚合运算时列类型为字符串的情况。在处理这两类查询时，默认不选择 MPP 模式。
-
 TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join，分别为：
 
+<<<<<<< HEAD
 - [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+=======
+- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入 )，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入 )，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+
+## 注意事项
+
+TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容的问题，具体如下：
+
+* TiFlash 计算层：
+    * 不支持检查溢出的数值。例如将两个 `BIGINT` 类型的最大值相加 `9223372036854775807 + 9223372036854775807`，该计算在 TiDB 中预期的行为是返回错误 `ERROR 1690 (22003): BIGINT value is out of range`，但如果该计算在 TiFlash 中进行，则会得到溢出的结果 `-2` 且无报错。
+    * 不支持窗口函数。
+    * 不支持从 TiKV 读取数据。
+    * 目前 TiFlash 中的 `sum` 函数不支持传入字符串类型的参数，但 TiDB 在编译时无法检测出这种情况。所以当执行类似于 `select sum(string_col) from t` 的语句时，TiFlash 会报错 `[FLASH:Coprocessor:Unimplemented] CastStringAsReal is not supported.`。要避免这类报错，需要手动把 SQL 改写成 `select sum(cast(string_col as double)) from t`。
+    * TiFlash 目前的 Decimal 除法计算和 TiDB 存在不兼容的情况。例如在进行 Decimal 相除的时候，TiFlash 会始终按照编译时推断出来的类型进行计算，而 TiDB 则在计算过程中采用精度高于编译时推断出来的类型。这导致在一些带有 Decimal 除法的 SQL 语句在 TiDB + TiKV 上的执行结果会和 TiDB + TiFlash 上的执行结果不一样，示例如下：
+
+        ```sql
+        mysql> create table t (a decimal(3,0), b decimal(10, 0));
+        Query OK, 0 rows affected (0.07 sec)
+
+        mysql> insert into t values (43, 1044774912);
+        Query OK, 1 row affected (0.03 sec)
+
+        mysql> alter table t set tiflash replica 1;
+        Query OK, 0 rows affected (0.07 sec)
+
+        mysql> set session tidb_isolation_read_engines='tikv';
+        Query OK, 0 rows affected (0.00 sec)
+
+        mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
+        +--------+-----------------------+
+        | a/b    | a/b + 0.0000000000001 |
+        +--------+-----------------------+
+        | 0.0000 |       0.0000000410001 |
+        +--------+-----------------------+
+        1 row in set (0.00 sec)
+
+        mysql> set session tidb_isolation_read_engines='tiflash';
+        Query OK, 0 rows affected (0.00 sec)
+
+        mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
+        Empty set (0.01 sec)
+        ```
+
+        以上示例中，在 TiDB 和 TiFlash 中，`a/b` 在编译期推导出来的类型都为 `Decimal(7,4)`，而在 `Decimal(7,4)` 的约束下，`a/b` 返回的结果应该为 `0.0000`。但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)` 高，所以原表中的数据没有被 `where a/b` 过滤掉。而在 TiFlash 中 `a/b` 在运行期也是采用 `Decimal(7,4)` 作为结果类型，所以原表中的数据被 `where a/b` 过滤掉了。
+
+* TiFlash MPP 模式不支持如下功能：
+    * 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
+    * 在配置项 `new_collations_enabled_on_first_bootstrap`(/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值为 `true` 时，MPP 不支持 join 的连接键类型为字符串或 `group by` 聚合运算时列类型为字符串的情况。在处理这两类查询时，默认不选择 MPP 模式。
+>>>>>>> 65123f5c... add some known limitations about TiFlash (#5891)
