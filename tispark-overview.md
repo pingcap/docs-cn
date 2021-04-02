@@ -305,7 +305,7 @@ df.write.
   save()
 ```
 
-如果写入的数据量比较大，写入时间超过10分钟，需要调整一下 gc 时间，保证 gc 时间大于写入时间。
+如果写入的数据量比较大，且写入时间超过 10 分钟，则需要保证 GC 时间大于写入时间。
 
 ```
 update mysql.tidb set VARIABLE_VALUE="6h" where VARIABLE_NAME="tikv_gc_life_time";
