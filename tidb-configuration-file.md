@@ -159,6 +159,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 当使用 LVS 为 TiDB 做负载均衡时，可开启此配置项。这是因为 [LVS 的 TOA 模块](https://github.com/alibaba/LVS/tree/master/kernel/net/toa)可以通过 TCP4 协议从 TCP 头部信息中解析出客户端的真实 IP。
 
+### `enable-enum-length-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 是否限制 `ENUM` 和 `SET` 两种类型中，单个元素的最大长度
++ 默认值：true
++ 当为 true 时，`ENUM` 和 `SET` 单个元素最大长度为 255 个字符（[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)）；当为 false 时，不对单个元素长度进行限制（与 TiDB v5.0 之前版本兼容）。
+
 ## log
 
 日志相关的配置项。
