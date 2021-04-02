@@ -283,7 +283,6 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容的问题，具体如下：
 
 * TiFlash 计算层：
-    * TiDB 4.0.2 版本之前，不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
     * 不支持从数值溢出检测，例如对于 2 个 `bigint` 最大值相加 `9223372036854775807 + 9223372036854775807`，在 TiDB 中应有的行为是提示错误 `ERROR 1690 (22003): BIGINT value is out of range`，但如果该计算在 TiFlash 中进行，则会得到溢出的结果 `-2`无报错。
     * 不支持 Window Function。
     * 不支持从 TiKV 读取数据。
