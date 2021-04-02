@@ -280,7 +280,7 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 
 ## 注意事项
 
-在 TiFlash 目前有一些已知的不支持的功能以及与原生 TiDB 不兼容的问题，具体罗列如下：
+TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容的问题，具体如下：
 
 * TiFlash 计算层：
     * TiDB 4.0.2 版本之前，不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
