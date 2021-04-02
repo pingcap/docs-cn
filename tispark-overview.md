@@ -286,7 +286,7 @@ TiSpark 批量写入相比 Spark + JDBC 写入，有以下特点：
 | 错误恢复 | 失败后只需要重新运行 Spark 程序 | 需要业务来实现幂等，例如失败后需要先清理部分写入成功的数据，再重新运行 Spark 程序，并且需要设置 `spark.task.maxFailures=1`，防止 task 内重试导致数据重复 |
 | 速度    | 直接写入 TiKV，速度更快 | 通过 TiDB 再写入 TiKV，对速度会有影响 |
 
-下面演示一下 scala API：
+以下通过 scala API 演示如何使用 TiSpark 批量写入：
 
 ```scala
 // select data to write
