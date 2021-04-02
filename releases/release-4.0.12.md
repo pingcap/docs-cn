@@ -33,7 +33,7 @@ TiDB 版本：4.0.12
 + TiKV
 
     - 消除短时间内大量重连接的现象 [#9879](https://github.com/tikv/tikv/pull/9879)
-    - 对多 Tombstones 场景下的写操作进行优化 [#9729](https://github.com/tikv/tikv/pull/9729)
+    - 对多 Tombstones 场景下的写操作和 Batch Get 进行优化 [#9729](https://github.com/tikv/tikv/pull/9729)
     - 将 `leader-transfer-max-log-lag` 的默认值改为 `128`，以增加切换 leader 的成功率 [#9605](https://github.com/tikv/tikv/pull/9605)
 
 + PD
