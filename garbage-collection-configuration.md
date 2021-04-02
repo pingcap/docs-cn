@@ -7,19 +7,11 @@ aliases: ['/docs-cn/dev/garbage-collection-configuration/','/docs-cn/dev/referen
 
 你可以通过以下系统变量进行 GC 配置:
 
-<<<<<<< HEAD
-* [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入 )
-* [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入 )
-* [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入 )
-* [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入 )
-* [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入 )
-=======
 * [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)
 * [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)
 * [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)
 * [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)
 * [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入)
->>>>>>> 7101692b... *: update all 5.0-rc descriptions to v5.0 (#5911) (#5923)
 
 ## 流控
 
