@@ -12,7 +12,7 @@ TiDB 版本：5.0.0
 
 在 5.0 版本中，你可以获得以下关键特性：
 
-+ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。经测试，Query 1 与 Greenplum 6.15.0 相比有 8 倍的性能提升，与 Spark 3.1.1 + Parquet 相比有 6.5 倍的性能提升。 
++ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。经测试，Query 1 与 Greenplum 6.15.0 相比有 8 倍的性能提升，与 Spark 3.1.1 + Parquet 相比有 6.5 倍的性能提升。
 + 引入聚簇索引功能，提升数据库的性能。例如，在 Sysbench 测试中，Read Write 性能可以提升 58.1%。
 + 开启异步提交事务功能，降低写入数据的延迟。例如：Sysbench 设置 64 线程测试 Update index 时, 平均延迟由 12.04 ms 降低到 7.01ms ，降低了 41.7%。
 + 通过提升优化器的稳定性及限制系统任务对 I/O、网络、CPU、内存等资源的占用，降低系统的抖动。例如：测试 8 小时，TPC-C 测试中 tpmC 抖动标准差的值小于等于 2%。
@@ -43,15 +43,15 @@ TiDB 版本：5.0.0
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
     + OFF：关闭聚簇索引，支持添加或者删除非聚簇索引。
     + INT_ONLY：默认值，行为与 v5.0 以下版本保持一致，与 `alter-primary-key = false` 一起使用可控制 INT 类型是否开启聚簇索引。
-    
+
     > **注意：**
-    > 
+    >
     > 5.0 GA 中 `tidb_enable_clustered_index` 的 INT_ONLY 值和 5.0 RC 中的 OFF 值含义一致，从已设置 OFF 的 5.0 RC 集群升级至 5.0 GA 后，将展示为 INT_ONLY。
 
 ### 配置文件参数
 
 + 新增 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 配置项，用于兼容 MySQL 最大索引数量限制，如果设置超过默认值，该表结构再次导入 MySQL 将会报错，默认值 64，取值范围在 [64,64*8]。
-+ 新增 [`enable-enum-length-limit`](/tidb-configuration-file.md#enable-enum-length-limit) 配置项，用于兼容 MySQL enum/set 元素长度并保持一致（Enum 长度 < 255），默认值为 true。
++ 新增 [`enable-enum-length-limit`](/tidb-configuration-file.md#enable-enum-length-limi-从-v50-版本开始引入) 配置项，用于兼容 MySQL enum/set 元素长度并保持一致（Enum 长度 < 255），默认值为 true。
 + 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代。
 + 删除 `performance.max-memory` 配置项，通过 [performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
 + 删除 `tikv-client.copr-cache.enable` 配置项，通过 [tikv-client.copr-cache.capacity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能，默认：1000.0。
