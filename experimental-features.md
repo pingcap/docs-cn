@@ -45,8 +45,8 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 存储
 
-+ [关闭 Titan 功能](/storage-engine/titan-configuration.md#关闭-titan-实验功能)。
-+ [Titan Level Merge 功能](/storage-engine/titan-configuration.md#level-merge-实验功能)。
++ [关闭 Titan 功能](/storage-engine/titan-configuration.md#关闭-titan实验功能)。
++ [Titan Level Merge 功能](/storage-engine/titan-configuration.md#level-merge实验功能)。
 + TiFlash 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力。（v4.0 实验特性）
 
 ## 备份与恢复
@@ -55,7 +55,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 垃圾回收
 
-+ [Green GC](/system-variables.md#tikv_gc_scan_lock_mode-从-v50-版本开始引入)。
++ [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入)。
 
 ## 问题诊断
 
