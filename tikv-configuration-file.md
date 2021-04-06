@@ -587,7 +587,7 @@ Configuration items related to Raftstore
 ### `apply-max-batch-size`
 
 + The maximum number of requests for data flushing in one batch
-+ Default value: `1024`
++ Default value: `256`
 + Minimum value: greater than `0`
 
 ### `apply-pool-size`
@@ -599,7 +599,7 @@ Configuration items related to Raftstore
 ### `store-max-batch-size`
 
 + The maximum number of requests processed in one batch
-+ Default value: `1024`
++ If `hibernate-regions` is enabled, the default value is `256`. If `hibernate-regions` is disabled, the default value is `1024`.
 + Minimum value: greater than `0`
 
 ### `store-pool-size`
