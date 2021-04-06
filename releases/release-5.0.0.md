@@ -140,7 +140,7 @@ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查�
 
 经过 Benchmark 测试，在 TPC-H 100 的规模下，三台 40C 189G 物理机上，TiFlash MPP 提供了显著超越 Greenplum，Apache Spark 等传统分析数据库或数据湖上分析引擎的速度。借助这套架构，用户可以直接针对最新的交易数据进行大规模分析查询，且性能超越传统离线分析方案。经测试，Query 1 与 Greenplum 6.15.0 相比有 8 倍的性能提升，与 Spark 3.1.1 + Parquet 相比有 6.5 倍的性能提升。
 
-当前 MPP 模式不支持的功能有：
+当前 MPP 模式不支持的主要功能如下（详细信息请参阅[用户文档](/tiflash/use-tiflash.md)）：
 
 + 分区表
 + Window Function
