@@ -41,13 +41,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-memory-pool-quota`
 
 + gRPC 可使用的内存大小限制。
-+ 默认值: 32G
++ 默认值: 无限制
 + 建议仅在出现内存不足 (OOM) 的情况下限制内存使用。需要注意，限制内存使用可能会导致卡顿。
 
 ### `grpc-raft-conn-num`
 
 + tikv 节点之间用于 raft 通讯的链接最大数量。
-+ 默认值：10
++ 默认值：1
 + 最小值：1
 
 ### `grpc-stream-initial-window-size`
@@ -149,19 +149,19 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `high-concurrency`
 
 + 处理高优先级读请求的线程池线程数量。
-+ 默认值：4
++ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
 + 最小值：1
 
 ### `normal-concurrency`
 
 + 处理普通优先级读请求的线程池线程数量。
-+ 默认值：4
++ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
 + 最小值：1
 
 ### `low-concurrency`
 
 + 处理低优先级读请求的线程池线程数量。
-+ 默认值：4
++ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
 + 最小值：1
 
 ### `max-tasks-per-worker-high`
@@ -249,12 +249,12 @@ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|G
 ### `scheduler-concurrency`
 
 + scheduler 内置一个内存锁机制，防止同时对一个 key 进行操作。每个 key hash 到不同的槽。
-+ 默认值：2048000
++ 默认值：524288
 + 最小值：1
 
 ### `scheduler-worker-pool-size`
 
-+ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。
++ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。
 + 默认值：4
 + 最小值：1
 
@@ -338,7 +338,7 @@ raftstore 相关的配置项。
 + 默认值：0
 + 最小值：0
 
-### `raft-max-size-per-message`
+### `raft-max-size-per-msg`
 
 + 产生的单个消息包的大小限制，软限制。
 + 默认值：1MB
@@ -419,12 +419,6 @@ raftstore 相关的配置项。
 + 默认值：5m
 + 最小值：0
 
-### `clean-stale-peer-delay`
-
-+ 延迟删除过期副本数据的时间。
-+ 默认值：10m
-+ 最小值：0
-
 ### `region-compact-check-step`
 
 + 每轮校验人工 compaction 时，一次性检查的 region 个数。
@@ -459,7 +453,7 @@ raftstore 相关的配置项。
 ### `snap-mgr-gc-tick-interval`
 
 + 触发回收过期 snapshot 文件的时间间隔，0 表示不启用。
-+ 默认值：5s
++ 默认值：1m
 + 最小值：0
 
 ### `snap-gc-timeout`
@@ -520,7 +514,7 @@ raftstore 相关的配置项。
 ### `leader-transfer-max-log-lag`
 
 + 尝试转移领导权时被转移者允许的最大日志缺失个数。
-+ 默认值：10
++ 默认值：128
 + 最小值：10
 
 ### `snap-apply-batch-size`
@@ -618,7 +612,7 @@ coprocessor 相关的配置项。
 ### `split-region-on-table`
 
 + 开启按 table 分裂 Region的开关，建议仅在 TiDB 模式下使用。
-+ 默认值：true
++ 默认值：false
 
 ### `batch-split-limit`
 
@@ -656,7 +650,7 @@ rocksdb 相关的配置项。
 
 + RocksDB 后台线程个数。
 + 默认值：8
-+ 最小值：1
++ 最小值：2
 
 ### `max-background-flushes`
 
@@ -721,8 +715,8 @@ rocksdb 相关的配置项。
 
 ### `stats-dump-period`
 
-+ 开启 Pipelined Write 的开关。
-+ 默认值：true
++ 将统计信息输出到日志中的间隔时间。
++ 默认值：10m
 
 ### `compaction-readahead-size`
 
@@ -826,7 +820,7 @@ Titan 相关的配置项。
 ### `max-background-gc`
 
 + Titan 后台 GC 的线程个数。
-+ 默认值：1
++ 默认值：4
 + 最小值：1
 
 ## rocksdb.defaultcf
@@ -1124,8 +1118,8 @@ raftdb 相关配置项。
 ### `max-background-jobs`
 
 + RocksDB 后台线程个数。
-+ 默认值：2
-+ 最小值：1
++ 默认值：4
++ 最小值：2
 
 ### `max-sub-compactions`
 
@@ -1239,4 +1233,4 @@ raftdb 相关配置项。
 ### `pipelined`
 
 + 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
-+ 默认值：false
++ 默认值：true
