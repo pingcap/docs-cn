@@ -53,7 +53,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [Raw KV 备份](/br/use-br-command-line-tool.md#raw-kv-备份实验性功能)。
 
-## 垃圾加收
+## 垃圾回收
 
 + [Green GC](/system-varables.md#tikv_gc_scan_lock_mode-从-v50-版本开始引入)。
 
