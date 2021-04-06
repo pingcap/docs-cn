@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-sysbench-v5-vs-v4/']
 | PD        | m5.xlarge |     3     |
 | TiKV      | i3.4xlarge|     3     |
 | TiDB      | c5.4xlarge|     3     |
-| Sysbench  | m5.4xlarge|     1     |
+| Sysbench  | c5.9xlarge|     1     |
 
 ### 软件版本
 
@@ -53,9 +53,12 @@ raftstore.apply-pool-size: 3
 rocksdb.max-background-jobs: 3
 raftdb.max-background-jobs: 3
 raftdb.allow-concurrent-memtable-write: true
+server.request-batch-enable-cross-command: false
 server.grpc-concurrency: 6
+readpool.unified.min-thread-count: 5
+readpool.unified.max-thread-count: 20
 readpool.storage.normal-concurrency: 10
-readpool.coprocessor.normal-concurrency: 5
+pessimistic-txn.pipelined: true
 ```
 
 #### TiDB v5.0 参数配置
@@ -88,7 +91,7 @@ readpool.storage.normal-concurrency: 10
 pessimistic-txn.pipelined: true
 ```
 
-#### 全局变量配置
+#### TiDB v4.0 全局变量配置
 
 {{< copyable "sql" >}}
 
@@ -96,6 +99,21 @@ pessimistic-txn.pipelined: true
 set global tidb_hashagg_final_concurrency=1;
 set global tidb_hashagg_partial_concurrency=1;
 set global tidb_disable_txn_auto_retry=0;
+```
+
+#### TiDB v5.0 全局变量配置
+
+{{< copyable "sql" >}}
+
+```sql
+set global tidb_hashagg_final_concurrency=1;
+set global tidb_hashagg_partial_concurrency=1;
+set global tidb_disable_txn_auto_retry=0;
+set global tidb_enable_async_commit = 1;
+set global tidb_enable_1pc = 1;
+set global tidb_guarantee_linearizability = 0;
+set global tidb_enable_clustered_index = 1; 
+
 ```
 
 ## 测试方案
