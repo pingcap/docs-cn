@@ -371,7 +371,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 [用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[#660](https://github.com/pingcap/ticdc/issues/660)
 
-为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能实现了数据流转架构，可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统。
+为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统。
 
 Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect，扩展了 TiDB 数据流转到其他异构数据库或者系统的能力。
 
