@@ -244,3 +244,88 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 - 在聚合函数或者 WHERE 条件中包含了不在上述列表中的表达式，聚合或者相关的谓词过滤均不能下推
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的表达式，将会在后续陆续加入支持，也可以联系官方沟通。
+<<<<<<< HEAD
+=======
+
+## 使用 MPP 模式
+
+TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。MPP 模式默认开启，如需关闭可将全局/会话变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入 ) 的值设为 `0` 或 `OFF`：
+
+```shell
+set @@session.tidb_allow_mpp=0
+```
+
+MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash Join 和 Shuffled Hash Aggregation。算法的选择由优化器自动判断。通过 `EXPLAIN` 语句可以查看具体的查询执行计划。
+
+以 TPC-H 测试集中的表结构为例：
+
+```sql
+mysql> explain select count(*) from customer c join nation n on c.c_nationkey=n.n_nationkey;
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+| id                                       | estRows    | task              | access object | operator info                                                              |
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+| HashAgg_23                               | 1.00       | root              |               | funcs:count(Column#16)->Column#15                                          |
+| └─TableReader_25                         | 1.00       | root              |               | data:ExchangeSender_24                                                     |
+|   └─ExchangeSender_24                    | 1.00       | batchCop[tiflash] |               | ExchangeType: PassThrough                                                  |
+|     └─HashAgg_12                         | 1.00       | batchCop[tiflash] |               | funcs:count(1)->Column#16                                                  |
+|       └─HashJoin_17                      | 3000000.00 | batchCop[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
+|         ├─ExchangeReceiver_21(Build)     | 25.00      | batchCop[tiflash] |               |                                                                            |
+|         │ └─ExchangeSender_20            | 25.00      | batchCop[tiflash] |               | ExchangeType: Broadcast                                                    |
+|         │   └─TableFullScan_18           | 25.00      | batchCop[tiflash] | table:n       | keep order:false                                                           |
+|         └─TableFullScan_22(Probe)        | 3000000.00 | batchCop[tiflash] | table:c       | keep order:false                                                           |
++------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
+9 rows in set (0.00 sec)
+```
+
+在执行计划中，出现了 `ExchangeReceiver` 和 `ExchangeSender` 算子。该执行计划表示 `nation` 表读取完毕后，经过 `ExchangeSender` 算子广播到各个节点中，与 `customer` 表先后进行 `HashJoin` 和 `HashAgg` 操作，再将结果返回至 TiDB 中。
+
+TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join，分别为：
+
+- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入 )，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入 )，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+
+## 注意事项
+
+TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容的问题，具体如下：
+
+* TiFlash 计算层：
+    * 不支持检查溢出的数值。例如将两个 `BIGINT` 类型的最大值相加 `9223372036854775807 + 9223372036854775807`，该计算在 TiDB 中预期的行为是返回错误 `ERROR 1690 (22003): BIGINT value is out of range`，但如果该计算在 TiFlash 中进行，则会得到溢出的结果 `-2` 且无报错。
+    * 不支持窗口函数。
+    * 不支持从 TiKV 读取数据。
+    * 目前 TiFlash 中的 `sum` 函数不支持传入字符串类型的参数，但 TiDB 在编译时无法检测出这种情况。所以当执行类似于 `select sum(string_col) from t` 的语句时，TiFlash 会报错 `[FLASH:Coprocessor:Unimplemented] CastStringAsReal is not supported.`。要避免这类报错，需要手动把 SQL 改写成 `select sum(cast(string_col as double)) from t`。
+    * TiFlash 目前的 Decimal 除法计算和 TiDB 存在不兼容的情况。例如在进行 Decimal 相除的时候，TiFlash 会始终按照编译时推断出来的类型进行计算，而 TiDB 则在计算过程中采用精度高于编译时推断出来的类型。这导致在一些带有 Decimal 除法的 SQL 语句在 TiDB + TiKV 上的执行结果会和 TiDB + TiFlash 上的执行结果不一样，示例如下：
+
+        ```sql
+        mysql> create table t (a decimal(3,0), b decimal(10, 0));
+        Query OK, 0 rows affected (0.07 sec)
+
+        mysql> insert into t values (43, 1044774912);
+        Query OK, 1 row affected (0.03 sec)
+
+        mysql> alter table t set tiflash replica 1;
+        Query OK, 0 rows affected (0.07 sec)
+
+        mysql> set session tidb_isolation_read_engines='tikv';
+        Query OK, 0 rows affected (0.00 sec)
+
+        mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
+        +--------+-----------------------+
+        | a/b    | a/b + 0.0000000000001 |
+        +--------+-----------------------+
+        | 0.0000 |       0.0000000410001 |
+        +--------+-----------------------+
+        1 row in set (0.00 sec)
+
+        mysql> set session tidb_isolation_read_engines='tiflash';
+        Query OK, 0 rows affected (0.00 sec)
+
+        mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
+        Empty set (0.01 sec)
+        ```
+
+        以上示例中，在 TiDB 和 TiFlash 中，`a/b` 在编译期推导出来的类型都为 `Decimal(7,4)`，而在 `Decimal(7,4)` 的约束下，`a/b` 返回的结果应该为 `0.0000`。但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)` 高，所以原表中的数据没有被 `where a/b` 过滤掉。而在 TiFlash 中 `a/b` 在运行期也是采用 `Decimal(7,4)` 作为结果类型，所以原表中的数据被 `where a/b` 过滤掉了。
+
+* TiFlash MPP 模式不支持如下功能：
+    * 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
+    * 在配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值为 `true` 时，MPP 不支持 join 的连接键类型为字符串或 `group by` 聚合运算时列类型为字符串的情况。在处理这两类查询时，默认不选择 MPP 模式。
+>>>>>>> 5e4879cf... Fix a typo in use-tiflash.md (#5947)
