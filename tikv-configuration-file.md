@@ -1266,7 +1266,7 @@ raftdb 相关配置项。
 
 ### `min-ts-interval`
 
-+ 定期推进 resolved ts 的时间间隔。
++ 定期推进 Resolved TS 的时间间隔。
 + 默认值：1s
 
 ### `old-value-cache-size` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -1276,8 +1276,8 @@ raftdb 相关配置项。
 
 ### `incremental-scan-speed-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
-+ 增量扫历史数据速度的上限。
-+ 默认值：128MB/s
++ 增量扫描历史数据的速度上限。
++ 默认值：128MB，即 128MB 每秒。
 
 ## pessimistic-txn
 
