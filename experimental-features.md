@@ -55,7 +55,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 垃圾回收
 
-+ [Green GC](/system-varables.md#tikv_gc_scan_lock_mode-从-v50-版本开始引入)。
++ [Green GC](/system-variables.md#tikv_gc_scan_lock_mode-从-v50-版本开始引入)。
 
 ## 问题诊断
 
