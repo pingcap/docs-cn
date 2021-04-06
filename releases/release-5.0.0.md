@@ -1,11 +1,10 @@
 ---
 title: What's New in TiDB 5.0
-aliases: ['/zh/tidb/dev/release-5.0.0-rc/']
 ---
 
 # What's New in TiDB 5.0
 
-发版日期：2021 年 03 月 31 日
+发版日期：2021 年 04 月 07 日
 
 TiDB 版本：5.0.0
 
