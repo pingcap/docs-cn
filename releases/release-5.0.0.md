@@ -150,6 +150,7 @@ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查�
 + OOM Spill
 + Union
 + Full Outer Join
+
 ### 聚簇索引
 
 [用户文档](/clustered-indexes.md)，[#4841](https://github.com/pingcap/tidb/issues/4841)
