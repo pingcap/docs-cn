@@ -1260,6 +1260,30 @@ raftdb 相关配置项。
 + 默认值：CPU * 0.75，但最大为 32
 + 最小值：1
 
+## cdc
+
+用于 TiCDC 变更数据捕捉相关的配置项。
+
+### `min-ts-interval`
+
++ 定期推进 resolved ts 的时间间隔。
++ 默认值：1s
+
+### `min-ts-interval`
+
++ 定期推进 resolved ts 的时间间隔。
++ 默认值：1s
+
+### `old-value-cache-size`
+
++ 缓存在内存中的 TiCDC Old Value 的条目个数。
++ 默认值：1024
+
+### `incremental-scan-speed-limit`
+
++ 增量扫历史数据速度的上限。
++ 默认值：128MB/s
+
 ## pessimistic-txn
 
 悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
