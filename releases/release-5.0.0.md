@@ -46,7 +46,7 @@ TiDB 版本：5.0.0
 + 新增 [`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length)，用于兼容 MySQL 显式声明整数类型长度，但会返回一个类似于 `Integer display width is deprecated and will be removed in a future release` 的警告。
 + 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代。
 + 删除 `performance.max-memory` 配置项，通过 [performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
-+ 删除 `tikv-client.copr-cache.enable` 配置项，通过 [tikv-client.copr-cache.capcity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能，默认：1000.0。
++ 删除 `tikv-client.copr-cache.enable` 配置项，通过 [tikv-client.copr-cache.capacity-mb](/tidb-configuration-file.md#capacity-mb) 替代，如果配置项的值为 0.0 代表关闭此功能，大于 0.0 代表开启此功能，默认：1000.0。
 + 删除 `rocksdb.auto-tuned` 配置项，通过 [rocksdb.rate-limiter-auto-tuned](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 替代。
 + 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘，之前显式关闭 `raftstore.sync-log`，成功升级 v5.0 版本后，会强制改为 `true`。
 + `gc.enable-compaction-filter` 配置项的默认值由 `false` 改成 `true`。
@@ -364,7 +364,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### TiDB Cloud 数据导入性能优化
 
-数据导入工具 TiDB Lightning 针对 TiDB Cloud AWS T1.standard 配置（及其等同配置）的 TiDB 集群进行了数据导入性能优化，测试结果显式使用 TiDB Lightning 导入 1TB TPCC 数据到 TiDB，性能提升了 40%，由 254 GiB/h 提升到了 366 GiB/h。
+数据导入工具 TiDB Lightning 针对 TiDB Cloud AWS T1.standard 配置（及其等同配置）的 TiDB 集群进行了数据导入性能优化，测试结果显式使用 TiDB Lightning 导入 1TB TPC-C 数据到 TiDB，性能提升了 40%，由 254 GiB/h 提升到了 366 GiB/h。
 
 ## TiDB 数据共享订阅
 
