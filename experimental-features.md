@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（v5.0 实验特性）
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
-    + 扩展统计信息功能，收集多列 NDV (Number of Distinct Values)、多列顺序依赖性、多列函数依赖性等信息，帮助优化器选择相对较优的索引。
+    + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
     + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 中删除 `TopN` 值、重构 `TopN` 搜索逻辑及从直方图中删除 `TopN` 信息，建立直方图的索引，方便维护 Bucket NDV。
 
 ## 调度功能
