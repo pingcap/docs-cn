@@ -10,7 +10,7 @@ Currently, TiDB can track the memory quota of a single SQL query and take action
 
 ```
 # Valid options: ["log", "cancel"]
-oom-action = "log"
+oom-action = "cancel"
 ```
 
 - If the configuration item above uses "log", when the memory quota of a single SQL query exceeds the threshold value which is controlled by the `tidb_mem_quota_query` variable, TiDB prints an entry of log. Then the SQL query continues to be executed. If OOM occurs, you can find the corresponding SQL query in the log.
@@ -26,16 +26,16 @@ mem-quota-query = 34359738368
 
 In addition, you can control the memory quota of a query using the following session variables. Generally, you only need to configure `tidb_mem_quota_query`. Other variables are used for advanced configuration which most users do not need to care about.
 
-| Variable Name | Description | Unit | Default Value |
-|-----------------------------------|---------------------------------------------------|-------|-----------|
-| tidb_mem_quota_query              | Control the memory quota of a query | Byte | 32 << 30 |
-| tidb_mem_quota_hashjoin | Control the memory quota of "HashJoinExec" | Byte | 32 << 30 |
-| tidb_mem_quota_mergejoin | Control the memory quota of "MergeJoinExec" | Byte | 32 << 30 |
-| tidb_mem_quota_sort | Control the memory quota of "SortExec" | Byte | 32 << 30 |
-| tidb_mem_quota_topn | Control the memory quota of "TopNExec" | Byte | 32 << 30 |
-| tidb_mem_quota_indexlookupreader | Control the memory quota of "IndexLookUpExecutor" | Byte | 32 << 30 |
-| tidb_mem_quota_indexlookupjoin | Control the memory quota of "IndexLookUpJoin" | Byte | 32 << 30 |
-| tidb_mem_quota_nestedloopapply | Control the memory quota of "NestedLoopApplyExec" | Byte | 32 << 30 |
+| Variable Name                    | Description                                       | Unit | Default Value |
+| -------------------------------- | ------------------------------------------------- | ---- | ------------- |
+| tidb_mem_quota_query             | Control the memory quota of a query               | Byte | 32 << 30      |
+| tidb_mem_quota_hashjoin          | Control the memory quota of "HashJoinExec"        | Byte | 32 << 30      |
+| tidb_mem_quota_mergejoin         | Control the memory quota of "MergeJoinExec"       | Byte | 32 << 30      |
+| tidb_mem_quota_sort              | Control the memory quota of "SortExec"            | Byte | 32 << 30      |
+| tidb_mem_quota_topn              | Control the memory quota of "TopNExec"            | Byte | 32 << 30      |
+| tidb_mem_quota_indexlookupreader | Control the memory quota of "IndexLookUpExecutor" | Byte | 32 << 30      |
+| tidb_mem_quota_indexlookupjoin   | Control the memory quota of "IndexLookUpJoin"     | Byte | 32 << 30      |
+| tidb_mem_quota_nestedloopapply   | Control the memory quota of "NestedLoopApplyExec" | Byte | 32 << 30      |
 
 Some usage examples:
 
