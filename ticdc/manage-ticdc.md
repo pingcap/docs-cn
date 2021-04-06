@@ -589,7 +589,7 @@ curl -X POST -d '"debug"' http://127.0.0.1:8301/admin/log
 # 该配置会同时影响 filter 和 sink 相关配置，默认为 true
 case-sensitive = true
 
-# 是否输出 old value，从 v4.0.5 开始支持，从 v5.0.0-rc 开始默认为 true
+# 是否输出 old value，从 v4.0.5 开始支持，从 v5.0 开始默认为 true
 enable-old-value = true
 
 [filter]

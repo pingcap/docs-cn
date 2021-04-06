@@ -40,6 +40,9 @@ server_configs:
     schedule.leader-schedule-limit: 4
     schedule.region-schedule-limit: 2048
     schedule.replica-schedule-limit: 64
+  ticdc:
+    # capture-session-ttl: 10
+    # sorter.sort-dir: "/tmp/cdc_sort"
 
 pd_servers:
   - host: 10.0.1.4

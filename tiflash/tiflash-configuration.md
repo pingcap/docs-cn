@@ -102,6 +102,7 @@ delta_index_cache_size = 0
     data-dir = proxy 数据存储路径
     config = proxy 配置文件路径
     log-file = proxy log 路径
+    log-level = proxy log 级别，默认为 "info"
     status-addr = 拉取 proxy metrics｜status 信息的监听地址
     advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
 
@@ -127,9 +128,9 @@ delta_index_cache_size = 0
     max_memory_usage = 0
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0
-    ## 从 v5.0.0-rc 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
+    ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     cop_pool_size = 0
-    ## 从 v5.0.0-rc 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
+    ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     batch_cop_pool_size = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
