@@ -10,7 +10,7 @@ This document introduces TiKV internal thread pools and how to tune their perfor
 
 ## Thread pool introduction
 
-In TiKV 4.0, the TiKV thread pool is mainly composed of gRPC, Scheduler, UnifyReadPool, Raftstore, Apply, RocksDB, and some scheduled tasks and detection components that do not consume much CPU. This document mainly introduces a few CPU-intensive thread pools that affect the performance of read and write requests.
+The TiKV thread pool is mainly composed of gRPC, Scheduler, UnifyReadPool, Raftstore, Apply, RocksDB, and some scheduled tasks and detection components that do not consume much CPU. This document mainly introduces a few CPU-intensive thread pools that affect the performance of read and write requests.
 
 * The gRPC thread pool: it handles all network requests and forwards requests of different task types to different thread pools.
 
@@ -22,7 +22,7 @@ In TiKV 4.0, the TiKV thread pool is mainly composed of gRPC, Scheduler, UnifyRe
 
 * The RocksDB thread pool: it is a thread pool for RocksDB to compact and flush tasks. For RocksDB's architecture and `Compact` operation, refer to [RocksDB: A Persistent Key-Value Store for Flash and RAM Storage](https://github.com/facebook/rocksdb).
 
-* The UnifyReadPool thread pool: it is a new feature introduced in TiKV 4.0. It is a combination of the previous Coprocessor thread pool and Storage Read Pool. All read requests such as kv get, kv batch get, raw kv get, and coprocessor are executed in this thread pool.
+* The UnifyReadPool thread pool: it is a combination of the Coprocessor thread pool and Storage Read Pool. All read requests such as kv get, kv batch get, raw kv get, and coprocessor are executed in this thread pool.
 
 ## TiKV read-only requests
 
@@ -31,7 +31,7 @@ TiKV's read requests are divided into the following types:
 - Simple queries that specify a certain row or several rows, running in the Storage Read Pool.
 - Complex aggregate calculation and range queries, running in the Coprocessor Read Pool.
 
-Starting from version 4.0, the above types of read requests can be configured to use the same thread pool, which reduces the number of threads and user costs. It is disabled by default (Point queries and Coprocessor requests use different thread pools by default). To enable the unified thread pool, set the `readpool.storage.use-unified-pool` configuration item to `true`.
+Starting from TiKV v5.0, all read requests use the unified thread pool for queries by default. If your TiKV cluster is upgraded from TiKV v4.0 and the `use-unified-pool` configuration of `readpool.storage` was set to `false` before the upgrade, all read requests continue using different thread pools after the upgrade. In this scenario, to make all read requests use the unified thread pool for queries, you can set the value of `readpool.storage.use-unified-pool` to `true`.
 
 ## Performance tuning for TiKV thread pools
 

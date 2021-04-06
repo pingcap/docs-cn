@@ -170,7 +170,7 @@ For more details, see [AUTO_RANDOM](/auto-random.md).
 
 ## Optimization of small table hotspots
 
-From v4.0, TiDB introduces the Coprocessor Cache feature to support pushing down computing result caches. After this feature is enabled, it caches the computing results that will be pushed down to TiKV. This feature works well for read hotspots of small tables.
+The Coprocessor Cache feature of TiDB supports pushing down computing result caches. After this feature is enabled, TiDB caches the computing results that will be pushed down to TiKV. This feature works well for read hotspots of small tables.
 
 For more details, see [Coprocessor Cache](/coprocessor-cache.md).
 
