@@ -791,6 +791,13 @@ For a system upgraded to v5.0.0-rc from an earlier version, if you have not modi
 - This variable is used to set the threshold value of memory quota for a query.
 - If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. The initial value of this variable is configured by [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query).
 
+### tidb_mem_quota_apply_cache
+
+- Scope: SESSION | GLOBAL
+- Default value: 32 MB
+- This variable is used to set the memory usage threshold of the local cache in the `Apply` operator.
+- The local cache in the `Apply` operator is used to speed up the computation of the `Apply` operator. You can set the variable to `0` to disable the `Apply` cache feature.
+
 ### tidb_memory_usage_alarm_ratio
 
 - Scope: SESSION
@@ -818,8 +825,8 @@ For a system upgraded to v5.0.0-rc from an earlier version, if you have not modi
 - This variable controls whether to allow multiple queries to be executed in the same `COM_QUERY` call.
 - To reduce the impact of SQL injection attacks, TiDB now prevents multiple queries from being executed in the same `COM_QUERY` call by default. This variable is intended to be used as part of an upgrade path from earlier versions of TiDB. The following behaviors apply:
 
-| Client setting         | `tidb_multi_statement_mode` value | Multiple statements permitted? |
-|------------------------|-----------------------------------|--------------------------------|
+| Client setting            | `tidb_multi_statement_mode` value | Multiple statements permitted? |
+| ------------------------- | --------------------------------- | ------------------------------ |
 | Multiple Statements = ON  | OFF                               | Yes                            |
 | Multiple Statements = ON  | ON                                | Yes                            |
 | Multiple Statements = ON  | WARN                              | Yes                            |
