@@ -414,7 +414,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_enable_clustered_index <span class="version-mark">New in v5.0</span>
 
-- Scope: GLOBAL
+- Scope: SESSION | GLOBAL
 - Default value: INT_ONLY
 - This variable is used to control whether to create the primary key as a [clustered index](/clustered-indexes.md) by default. "By default" here means that the statement does not explicitly specify the keyword `CLUSTERED`/`NONCLUSTERED`. Supported values are `OFF`, `ON`, and `INT_ONLY`:
     - `OFF` indicates that primary keys are created as non-clustered indexes by default.

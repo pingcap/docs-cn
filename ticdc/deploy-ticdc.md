@@ -58,3 +58,4 @@ The following are descriptions of options available in the `cdc server` command:
 - `ca`: The path of the CA certificate file used by TiCDC, in the PEM format (optional).
 - `cert`: The path of the certificate file used by TiCDC, in the PEM format (optional).
 - `key`: The path of the certificate key file used by TiCDC, in the PEM format (optional).
+- `config`: The address of the configuration file that TiCDC uses (optional). This option is supported since TiCDC v5.0.0. This option can be used in the TiCDC deployment since TiUP v1.4.0.
