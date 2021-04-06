@@ -39,7 +39,7 @@ In TiDB, Garbage Collection (GC) runs periodically to remove the obsolete data v
 
 Pay special attention to the following:
 
-- [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-new-in-v50-ga): This system variable is used to configure the retention time of earlier modifications (default: `10m0s`).
+- [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-new-in-v50): This system variable is used to configure the retention time of earlier modifications (default: `10m0s`).
 - The output of `SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point'`. This is the current `safePoint` where you can read historical data up to. It is updated every time the garbage collection process is run.
 
 ## Example

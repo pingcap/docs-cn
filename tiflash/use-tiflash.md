@@ -232,7 +232,7 @@ set @@session.tidb_opt_broadcast_join=1
 Currently, TiFlash supports pushing down a limited number of expressions, including:
 
 ```
-+, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, bitand, or, and, like, not, case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor, 
++, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, bitand, or, and, like, not, case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor,
 round without fraction, cast(int as decimal), date_add(datetime, int), date_add(datetime, string), min, max, sum, count, avg, approx_count_distinct
 ```
 
@@ -247,7 +247,7 @@ If a query encounters unsupported push-down calculations, TiDB needs to complete
 
 ## Use the MPP mode
 
-TiFlash supports using the MPP mode to execute queries, which introduces cross-node data exchange (data shuffle process) into the computation. The MPP mode is enabled by default and can be disabled by setting the value of the global/session variable [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-new-in-v50-ga) to `0` or `OFF`.
+TiFlash supports using the MPP mode to execute queries, which introduces cross-node data exchange (data shuffle process) into the computation. The MPP mode is enabled by default and can be disabled by setting the value of the global/session variable [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-new-in-v50) to `0` or `OFF`.
 
 ```shell
 set @@session.tidb_allow_mpp=0
@@ -283,5 +283,5 @@ In the example execution plan, the `ExchangeReceiver` and `ExchangeSender` opera
 
 TiFlash provides the following two global/session variables to control whether to use Broadcast Hash Join:
 
-- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-new-in-v50-ga): The unit of the value is bytes. If the table size (in the unit of bytes) is less than the value of the variable, the Broadcast Hash Join algorithm is used. Otherwise, the Shuffled Hash Join algorithm is used.
-- [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-new-in-v50-ga): The unit of the value is rows. If the objects of the join operation belong to a subquery, the optimizer cannot estimate the size of the subquery result set, so the size is determined by the number of rows in the result set. If the estimated number of rows in the subquery is less than the value of this variable, the Broadcast Hash Join algorithm is used. Otherwise, the Shuffled Hash Join algorithm is used.
+- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-new-in-v50): The unit of the value is bytes. If the table size (in the unit of bytes) is less than the value of the variable, the Broadcast Hash Join algorithm is used. Otherwise, the Shuffled Hash Join algorithm is used.
+- [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-new-in-v50): The unit of the value is rows. If the objects of the join operation belong to a subquery, the optimizer cannot estimate the size of the subquery result set, so the size is determined by the number of rows in the result set. If the estimated number of rows in the subquery is less than the value of this variable, the Broadcast Hash Join algorithm is used. Otherwise, the Shuffled Hash Join algorithm is used.

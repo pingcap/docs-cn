@@ -208,7 +208,7 @@ For `PREPARE` / `EXECUTE` statements and for queries executed with binary protoc
 
 ## Baseline evolution
 
-Baseline evolution is an important feature of SPM introduced in TiDB v4.0.0-rc.
+Baseline evolution is an important feature of SPM introduced in TiDB v4.0.
 
 As data updates, the previously bound execution plan might no longer be optimal. The baseline evolution feature can automatically optimize the bound execution plan.
 

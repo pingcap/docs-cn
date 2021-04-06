@@ -37,7 +37,7 @@ Users can enable the clustered index feature by modifying the `tidb_enable_clust
 
 For example, to check whether a table (`tbl_name`) has a clustered index, execute `select tidb_pk_type from information_schema.tables where table_name = '{tbl_name}'`.
 
-+ [User document](/system-variables.md#tidb_enable_clustered_index-new-in-v500-rc)
++ [User document](/system-variables.md#tidb_enable_clustered_index-new-in-v50)
 + Related issue: [#4841](https://github.com/pingcap/tidb/issues/4841)
 
 ### Support invisible indexes
@@ -103,7 +103,7 @@ However, when async commit is enabled, the external consistency of transactions 
 
 Users can enable this feature by setting the global variable `tidb_enable_async_commit = ON`.
 
-+ [User document](/system-variables.md#tidb_enable_async_commit-new-in-v50-rc)
++ [User document](/system-variables.md#tidb_enable_async_commit-new-in-v50)
 + Related issue: [#8316](https://github.com/tikv/tikv/issues/8316)
 
 ### Improve the optimizer's stability in index selection (experimental)
@@ -147,7 +147,7 @@ Related issue: [#18005](https://github.com/pingcap/tidb/issues/18005)
 
 In the process of Region membership changes, "adding a member" and "deleting a member" are two operations performed in two steps. If a failure occurs when the membership change finishes, the Regions will become unavailable and an error of foreground application is returned. The introduced Raft Joint Consensus algorithm can improve the system availability during Region membership change. "adding a member" and "deleting a member" operations during the membership change are combined into one operation and sent to all members. During the change process, Regions are in an intermediate state. If any modified member fails, the system is still available. Users can enable this feature by modifying the membership variable by executing `pd-ctl config set enable-joint-consensus true`. [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
 
-+ [User document](/pd-configuration-file.md#enable-joint-consensus-new-in-v500-rc)
++ [User document](/pd-configuration-file.md#enable-joint-consensus-new-in-v50)
 + Related issue: [#18079](https://github.com/pingcap/tidb/issues/18079)
 
 ### Optimize the memory management module to reduce system OOM risks

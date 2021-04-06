@@ -8,11 +8,11 @@ aliases: ['/docs/dev/garbage-collection-configuration/','/docs/dev/reference/gar
 
 Garbage collection is configured via the following system variables:
 
-* [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-new-in-v50-ga)
-* [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-new-in-v50-ga)
-* [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-new-in-v50-ga)
-* [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-new-in-v50-ga)
-* [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50-ga)
+* [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-new-in-v50)
+* [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-new-in-v50)
+* [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-new-in-v50)
+* [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-new-in-v50)
+* [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50)
 
 ## GC I/O limit
 

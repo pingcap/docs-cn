@@ -309,7 +309,7 @@ TiDB previously limited the total number of key-value pairs for a single transac
 
 > **Note:**
 >
-> Transactions with causal consistency take effect only when the async commit and one-phase commit features are enabled. For details of the two features, see [`tidb_enable_async_commit`](/system-variables.md#tidb_enable_async_commit-new-in-v50-rc) and [`tidb_enable_1pc`](/system-variables.md#tidb_enable_1pc-new-in-v50-rc).
+> Transactions with causal consistency take effect only when the async commit and one-phase commit features are enabled. For details of the two features, see [`tidb_enable_async_commit`](/system-variables.md#tidb_enable_async_commit-new-in-v50) and [`tidb_enable_1pc`](/system-variables.md#tidb_enable_1pc-new-in-v50).
 
 TiDB supports enabling causal consistency for transactions. Transactions with causal consistency, when committed, do not need to get timestamp from PD and have lower commit latency. The syntax to enable causal consistency is as follows:
 

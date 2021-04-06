@@ -24,7 +24,7 @@ You can adjust the PD scheduling parameters using [pd-ctl](/pd-control.md). Note
     >
     > Since v4.0.2, the `store-balance-rate` parameter has been deprecated and changes have been made to the `store limit` command. See [store-limit](/configure-store-limit.md) for details.
 
-    - Execute the `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` command to set the scheduling rate of a specified store. (To get `store_id`, you can execute the `pd-ctl -u <pd_ip:pd_port> store` command. 
+    - Execute the `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` command to set the scheduling rate of a specified store. (To get `store_id`, you can execute the `pd-ctl -u <pd_ip:pd_port> store` command.
     - If you do not set the scheduling rate for Regions of a specified store, this store inherits the setting of `store-balance-rate`.
     - You can execute the `pd-ctl -u <pd_ip:pd_port> store limit` command to view the current setting value of `store-balance-rate`.
 
@@ -65,7 +65,7 @@ delta_index_cache_size = 0
 
 ## Storage paths settings take effect starting from v4.0.9
 [storage]
-    ## [Experimental] New in v5.0. This item limits the total write rate of background tasks in bytes per second. It is not recommanded to use this experimental feature in a production environment. 
+    ## [Experimental] New in v5.0. This item limits the total write rate of background tasks in bytes per second. It is not recommanded to use this experimental feature in a production environment.
     ## The unit is bytes. Currently, the setting such as "10GB" is not supported.
     ## The default value is 0, which means no limit.
     ## This parameter is used to control the usage of machine disk bandwidth by background tasks mainly for the scenario where TiFlash is deployed on the AWS EBS (gp2/gp3) disk.
@@ -141,24 +141,24 @@ delta_index_cache_size = 0
     ## of DeltaTree Storage Engine uses logical split.
     ## Using the logical split can reduce the write amplification, and improve the write speed.
     ## However, these are at the cost of disk space waste.
-    dt_enable_logical_split = true 
+    dt_enable_logical_split = true
 
     ## The memory usage limit for the generated intermediate data when a single
     ## coprocessor query is executed. The default value is 0, which means no limit.
-    max_memory_usage = 0 
+    max_memory_usage = 0
 
     ## The memory usage limit for the generated intermediate data when all queries
     ## are executed. The default value is 0 (in bytes), which means no limit.
     max_memory_usage_for_all_queries = 0
 
-    ## New in v5.0.0-rc. This item specifies the maximum number of cop requests that TiFlash Coprocessor executes at the same time. If the number of requests exceeds the specified value, the exceeded requests will queue. If the configuration value is set to 0 or not set, the default value is used, which is twice the number of physical cores.
+    ## New in v5.0. This item specifies the maximum number of cop requests that TiFlash Coprocessor executes at the same time. If the number of requests exceeds the specified value, the exceeded requests will queue. If the configuration value is set to 0 or not set, the default value is used, which is twice the number of physical cores.
     cop_pool_size = 0
-    ## New in v5.0.0-rc. This item specifies the maximum number of batch requests that TiFlash Coprocessor executes at the same time. If the number of requests exceeds the specified value, the exceeded requests will queue. If the configuration value is set to 0 or not set, the default value is used, which is twice the number of physical cores.
+    ## New in v5.0. This item specifies the maximum number of batch requests that TiFlash Coprocessor executes at the same time. If the number of requests exceeds the specified value, the exceeded requests will queue. If the configuration value is set to 0 or not set, the default value is used, which is twice the number of physical cores.
     batch_cop_pool_size = 0
 
 ## Security settings take effect starting from v4.0.5.
 [security]
-    ## New in v5.0.0-rc. This configuration item enables or disables log redaction. If the configuration value
+    ## New in v5.0. This configuration item enables or disables log redaction. If the configuration value
     ## is set to `true`, all user data in the log will be replaced by `?`.
     ## Note that you also need to set `security.redact-info-log` for tiflash-learner's logging in tiflash-learner.toml.
     # redact_info_log = false
@@ -171,7 +171,7 @@ delta_index_cache_size = 0
     ## Path of the file that contains X509 key in PEM format.
     # key_path = "/path/to/tiflash-server-key.pem"
 
-    ## New in v5.0.0-rc. This configuration item enables or disables log redaction. If the configuration value
+    ## New in v5.0. This configuration item enables or disables log redaction. If the configuration value
     ## is set to `true`, all user data in the log will be replaced by `?`.
     ## Note that you also need to set `security.redact-info-log` for tiflash-learner's logging in tiflash-learner.toml.
     # redact_info_log = false
@@ -194,7 +194,7 @@ delta_index_cache_size = 0
     ## If you set it to 0ms, the optimization is disabled.
     store-batch-retry-recv-timeout = "4ms"
 [security]
-    ## New in v5.0.0-rc. This configuration item enables or disables log redaction.
+    ## New in v5.0. This configuration item enables or disables log redaction.
     ## If the configuration value is set to true,
     ## all user data in the log will be replaced by ?. The default value is false.
     redact-info-log = false

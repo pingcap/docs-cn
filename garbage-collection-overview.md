@@ -28,7 +28,7 @@ The TiDB transaction model is implemented based on [Google's Percolator](https:/
 
 The Resolve Locks step clears the locks before the safe point. This means that if the primary key of a lock is committed, this lock needs to be committed; otherwise, it needs to be rolled back. If the primary key is still locked (not committed or rolled back), this transaction is seen as timing out and rolled back.
 
-The Resolve Locks step is implemented in either of the following two ways, which can be configured using the system variable [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50-ga):
+The Resolve Locks step is implemented in either of the following two ways, which can be configured using the system variable [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50):
 
 > **Warning:**
 >

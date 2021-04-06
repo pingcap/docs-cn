@@ -44,8 +44,8 @@ This document describes the common usage limitations of TiDB, including the maxi
 | Size      | unlimited |
 | Partitions | 1024      |
 
-* The upper limit of `Columns` can be modified via [`table-column-count-limit`](/tidb-configuration-file.md#table-column-count-limit-new-in-v500-rc).
-* The upper limit of `Indexes` can be modified via [`index-limit`](/tidb-configuration-file.md#index-limit-new-in-v500-rc).
+* The upper limit of `Columns` can be modified via [`table-column-count-limit`](/tidb-configuration-file.md#table-column-count-limit-new-in-v50).
+* The upper limit of `Indexes` can be modified via [`index-limit`](/tidb-configuration-file.md#index-limit-new-in-v50).
 
 ## Limitation on a single row
 

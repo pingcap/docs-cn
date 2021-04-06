@@ -17,7 +17,7 @@ TiDB Binlog has the following features:
 
 > **Note:**
 >
-> TiDB Binlog is not compatible with some features introduced in TiDB v5.0.0-rc and they cannot be used together. For details, see [Notes](#notes). It is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead of TiDB Binlog.
+> TiDB Binlog is not compatible with some features introduced in TiDB v5.0 and they cannot be used together. For details, see [Notes](#notes). It is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead of TiDB Binlog.
 
 ## TiDB Binlog architecture
 
@@ -54,11 +54,11 @@ The TiDB Binlog cluster is composed of Pump and Drainer.
 
 ## Notes
 
-* TiDB Binlog is not compatible with the following features introduced in TiDB v5.0.0-rc and they cannot be used together. It is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead of TiDB Binlog:
+* TiDB Binlog is not compatible with the following features introduced in TiDB v5.0 and they cannot be used together. It is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead of TiDB Binlog:
 
-    - [TiDB Clustered Index](/clustered-indexes.md#limitations): After TiDB Binlog is enabled, TiDB does not allow creating clustered indexes with non-single integer columns as primary keys; data insertion, deletion, and update of the created clustered index tables will not be replicated downstream via TiDB Binlog. 
-    - TiDB system variable [tidb_enable_async_commit](/system-variables.md#tidb_enable_async_commit-new-in-v50-rc): After TiDB Binlog is enabled, performance cannot be improved by enabling this option.
-    - TiDB system variable [tidb_enable_1pc](/system-variables.md#tidb_enable_1pc-new-in-v50-rc): After TiDB Binlog is enabled, performance cannot be improved by enabling this option.
+    - [TiDB Clustered Index](/clustered-indexes.md#limitations): After TiDB Binlog is enabled, TiDB does not allow creating clustered indexes with non-single integer columns as primary keys; data insertion, deletion, and update of the created clustered index tables will not be replicated downstream via TiDB Binlog.
+    - TiDB system variable [tidb_enable_async_commit](/system-variables.md#tidb_enable_async_commit-new-in-v50): After TiDB Binlog is enabled, performance cannot be improved by enabling this option.
+    - TiDB system variable [tidb_enable_1pc](/system-variables.md#tidb_enable_1pc-new-in-v50): After TiDB Binlog is enabled, performance cannot be improved by enabling this option.
 
 * TiDB Binlog is incompatible with the following feature introduced in TiDB v4.0.7 and they cannot be used together:
 
