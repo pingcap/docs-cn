@@ -102,6 +102,7 @@ delta_index_cache_size = 0
     data-dir = proxy 数据存储路径
     config = proxy 配置文件路径
     log-file = proxy log 路径
+    log-level = proxy log 级别，默认为 "info"
     status-addr = 拉取 proxy metrics｜status 信息的监听地址
     advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
 
