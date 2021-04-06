@@ -38,6 +38,10 @@ TiDB 版本：5.0.0
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
     + OFF：关闭聚簇索引，支持添加或者删除非聚簇索引。
     + INT_ONLY：默认值，行为与 v5.0 以下版本保持一致，与 `alter-primary-key = false` 一起使用可控制 INT 类型是否开启聚簇索引。
+    
+    > **注意：**
+    > 
+    > 5.0 GA 中 `tidb_enable_clustered_index` 的 INT_ONLY 值和 5.0 RC 中的 OFF 值含义一致，从已设置 OFF 的 5.0 RC 集群升级至 5.0 GA 后，将展示为 INT_ONLY。
 
 ### 配置文件参数
 
