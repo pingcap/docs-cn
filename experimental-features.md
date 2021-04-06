@@ -29,7 +29,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [生成列](/generated-columns.md#生成列)。
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。
 + [JSON 数据类型](/data-type-json.md) 及 [JSON 函数](/functions-and-operators/json-functions.md)。
-+ [Global Kill](/sql-statements/sql-statement-kill.md#global-kill-从-v50-版本开始引入)。
 + [View](/information-schema/information-schema-views.md)。
 
 ## 配置管理
