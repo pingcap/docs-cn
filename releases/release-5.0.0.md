@@ -128,7 +128,7 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 + 全局系统变量 [`tidb_redact_log`](/system-variables.md#tidb_redact_log)：默认值为 0，即关闭脱敏。设置变量值为 1 开启 tidb-server 的日志脱敏功能。
 + 配置项 `security.redact-info-log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 tikv-server 的日志脱敏功能。[#2852](https://github.com/tikv/pd/issues/2852)
 + 配置项 `security.redact-info-log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 pd-server 的日志脱敏功能。
-+ 配置项 `security.redact_info_log`：默认值为 false，即关闭脱敏。设置配置项值为 true 开启 tiflash-server 及 tiflash-learner 的日志脱敏功能。
++ 配置项 `security.redact_info_log`（对于 tiflash-server）和配置项 `security.redact-info-log`（对于 tiflash-learner）：两个配置项的默认值均为 false，即关闭脱敏。设置配置项值为 true 开启 tiflash-server 及 tiflash-learner 的日志脱敏功能。
 
 此功能从 5.0 版本中开始提供，使用过程中必须开启以上所有系统变量及配置项。
 
