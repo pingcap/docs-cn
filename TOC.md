@@ -11,7 +11,6 @@
   + [基本功能](/basic-features.md)
   + 性能测试报告
     + [Sysbench 性能对比 - v5.0 对比 v4.0](/benchmark/benchmark-sysbench-v5-vs-v4.md)
-    + [TPC-H 性能对比 - v5.0 对比 v4.0](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
     + [TPC-C 性能对比 - v5.0 对比 v4.0](/benchmark/v5.0-performance-benchmarking-with-tpcc.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
