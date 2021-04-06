@@ -1260,7 +1260,7 @@ raftdb 相关配置项。
 + 默认值：CPU * 0.75，但最大为 32
 + 最小值：1
 
-## cdc
+## cdc <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
 用于 TiCDC 变更数据捕捉相关的配置项。
 
@@ -1269,12 +1269,12 @@ raftdb 相关配置项。
 + 定期推进 resolved ts 的时间间隔。
 + 默认值：1s
 
-### `old-value-cache-size`
+### `old-value-cache-size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 缓存在内存中的 TiCDC Old Value 的条目个数。
 + 默认值：1024
 
-### `incremental-scan-speed-limit`
+### `incremental-scan-speed-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 增量扫历史数据速度的上限。
 + 默认值：128MB/s
