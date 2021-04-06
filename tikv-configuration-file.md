@@ -1269,11 +1269,6 @@ raftdb 相关配置项。
 + 定期推进 resolved ts 的时间间隔。
 + 默认值：1s
 
-### `min-ts-interval`
-
-+ 定期推进 resolved ts 的时间间隔。
-+ 默认值：1s
-
 ### `old-value-cache-size`
 
 + 缓存在内存中的 TiCDC Old Value 的条目个数。
