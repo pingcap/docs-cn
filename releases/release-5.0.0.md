@@ -33,7 +33,7 @@ TiDB 版本：5.0.0
 
     > **注意：**
     >
-    >  该变量作用域从 session 改变为 global，且默认值从 20000 修改为 0，如果应用依赖于原始默认值，需要在升级之后使用 `set global` 语句修改该变量值为原始值。
+    > 该变量作用域从 session 改变为 global，且默认值从 20000 修改为 0，如果应用依赖于原始默认值，需要在升级之后使用 `set global` 语句修改该变量值为原始值。
 
 + 临时表的语法兼容性受到 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 系统变量的控制：当 `tidb_enable_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
 + 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
