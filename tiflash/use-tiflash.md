@@ -223,14 +223,14 @@ TiFlash 支持部分算子的下推，具体支持的算子包括：
 * Selection：该算子对数据进行过滤
 * HashAgg：该算子基于 [Hash Aggregation](/explain-aggregation.md/#Hash Aggregation) 算法对数据进行聚合运算
 * StreamAgg：该算子基于 [Stream Aggregation](/explain-aggregation.md/#Stream Aggregation) 算法对数据进行聚合运算
-  * 仅支持不带 group by 列的 StreamAgg
+    * 仅支持不带 group by 列的 StreamAgg
 * TopN：该算子对数据求 top n 运算
 * Limit：该算子对数据进行 limit 运算
 * Project：该算子对数据进行投影运算
 * HashJoin：该算子基于 [Hash Join](/explain-joins.md/#Hash Join) 算法对数据进行连接运算
-  * 只有在 [MPP 模式](#使用 MPP 模式)下才能下推
-  * 必须带有等值的 join 条件
-  * `Full Outer Join` 不支持下推
+    * 只有在 [MPP 模式](#使用 MPP 模式)下才能下推
+    * 必须带有等值的 join 条件
+    * `Full Outer Join` 不支持下推
 
 大部分算子中都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推给 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
