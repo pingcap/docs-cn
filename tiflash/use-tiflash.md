@@ -241,7 +241,7 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 
 其中，`cast` 和 `date_add` 的下推默认不开启，若需要手动开启，请参考[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
 
-另外目前 TiFlash 对于所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推
+另外，所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推到 TiFlash：
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续陆续加入支持，也可以联系官方沟通。
 
