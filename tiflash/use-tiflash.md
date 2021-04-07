@@ -217,15 +217,22 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 ## TiFlash 支持的计算下推
 
-TiFlash 支持谓词、聚合下推计算以及表连接，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型是 `Full Outer Join` 和 `DISTINCT COUNT`，会在后续版本逐步优化。
+TiFlash 支持部分算子的下推，具体支持的算子包括：
 
-目前下推连接 (`Join`) 的功能需要通过以下会话变量开启（暂不支持 `Full Outer Join`）：
+* TableScan：该算子从表中读取数据
+* Selection：该算子对数据进行过滤
+* HashAgg：该算子基于 [Hash Aggregation](/explain-aggregation.md/#Hash Aggregation) 算法对数据进行聚合运算
+* StreamAgg：该算子基于 [Stream Aggregation](/explain-aggregation.md/#Stream Aggregation) 算法对数据进行聚合运算
+  * 仅支持不带 group by 列的 StreamAgg
+* TopN：该算子对数据求 top n 运算
+* Limit：该算子对数据进行 limit 运算
+* Project：该算子对数据进行投影运算
+* HashJoin：该算子基于 [Hash Join](/explain-joins.md/#Hash Join) 算法对数据进行连接运算
+  * 只有在 [MPP 模式](#使用 MPP 模式)下才能下推
+  * 必须带有等值的 join 条件
+  * `Full Outer Join` 不支持下推
 
-```
-set @@session.tidb_opt_broadcast_join=1
-```
-
-目前 TiFlash 支持了有限的常用表达式下推，支持下推的表达式包括：
+大部分算子中都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推给 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
 ```
 +, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, bitand, or, and, like, not, case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor,
@@ -234,12 +241,9 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 
 其中，`cast` 和 `date_add` 的下推默认不开启，若需要手动开启，请参考[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
 
-目前 TiFlash 不支持下推的情况包括：
+另外目前 TiFlash 对于所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推
 
-- 所有包含 Time 类型的表达式均不能下推
-- 在聚合函数或者 WHERE 条件中包含了不在上述列表中的表达式，聚合或者相关的谓词过滤均不能下推
-
-如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的表达式，将会在后续陆续加入支持，也可以联系官方沟通。
+如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续陆续加入支持，也可以联系官方沟通。
 
 ## 使用 MPP 模式
 
