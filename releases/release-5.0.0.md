@@ -50,7 +50,7 @@ TiDB 版本：5.0.0
 
 ### 配置文件参数
 
-+ 新增 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 配置项，用于兼容 MySQL 最大索引数量限制，如果设置超过默认值，该表结构再次导入 MySQL 将会报错，默认值 64，取值范围在 [64,64*8]。
++ 新增 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 配置项，默认值为 64，取值范围是 [64, 512]。MySQL 一张表最多支持 64 个索引，如果该配置超过默认值并为某张表创建超过 64 个索引，该表结构再次导入 MySQL 将会报错。
 + 新增 [`enable-enum-length-limit`](/tidb-configuration-file.md#enable-enum-length-limit-从-v50-版本开始引入) 配置项，用于兼容 MySQL ENUM/SET 元素长度并保持一致（ENUM 长度 < 255），默认值为 true。
 + 删除 `pessimistic-txn.enable` 配置项，通过环境变量 [tidb_txn_mode](/system-variables.md#tidb_txn_mode) 替代。
 + 删除 `performance.max-memory` 配置项，通过 [performance.server-memory-quota](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 替代。
