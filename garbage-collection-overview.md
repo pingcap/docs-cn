@@ -36,7 +36,7 @@ Resolve Locks 有两种执行模式：
 >
 > `PHYSICAL`模式（即启用 Green GC）目前是实验性功能，不建议在生产环境中使用。
 
-你可以通过修改系统变量 [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-ga-版本开始引入 ) 的值切换 Resolve Locks 的执行模式。
+你可以通过修改系统变量 [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 的值切换 Resolve Locks 的执行模式。
 
 ### Delete Ranges（删除区间）
 
