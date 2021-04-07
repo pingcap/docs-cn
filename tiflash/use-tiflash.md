@@ -241,7 +241,7 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 
 另外，所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推到 TiFlash。
 
-如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续陆续加入支持，也可以联系官方沟通。
+如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续提供支持，也可以联系官方沟通。
 
 ## 使用 MPP 模式
 
