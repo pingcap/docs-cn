@@ -181,7 +181,7 @@ DBA 在排查 SQL 语句性能问题时，需要比较详细的信息来判断�
 
 ## 部署及运维
 
-+ TiUP 支持将 TiDB Ansible 的配置信息导入到 TiUP。以前导入 Ansible 集群的时候 TiUP 会将用户的配置放在 `ansible-imported-configs` 目录下面。用户后续修改配置执行 `tiup cluster edit` 时，配置编辑界面中不显示导入的配置，会给用户造成困扰。现在导入 TiDB Ansible 配置信息的时候 TiUP 不仅会放一份到 ansible-imported-configs 目录下面，还会导入到 `tiup cluster edit` 的配置编辑界面，这样用户以后编辑集群配置时就能够看到导入的配置了。
++ TiUP 支持将 TiDB Ansible 的配置信息导入到 TiUP。以前导入 Ansible 集群的时候 TiUP 会将用户的配置放在 `ansible-imported-configs` 目录下面。用户后续修改配置执行 `tiup cluster edit-config` 时，配置编辑界面中不显示导入的配置，会给用户造成困扰。现在导入 TiDB Ansible 配置信息的时候 TiUP 不仅会放一份到 ansible-imported-configs 目录下面，还会导入到 `tiup cluster edit` 的配置编辑界面，这样用户以后编辑集群配置时就能够看到导入的配置了。
 + 增强 TiUP `mirror`命令的功能，支持将多个镜像合并成一个，支持在本地镜像发布组件，支持添加组件所有者到本地镜像 [#814](https://github.com/pingcap/tiup/issues/814)
     + 金融行业或者大型企业生产环境的变更是一项非常严肃的事情，若每个版本都采用光盘安装一次，用户使用起来不是很方便。TiUP 提升 `merge` 命令将多个安装包合并成一个，方便 DBA 安装部署。
     + 在 v4.0 中，用户发布自建的镜像时需要启动 tiup-server，使用起来不是很方便。在 v5.0 中，执行 `tiup mirror set` 将当前镜像设置成本地的镜像就可以方便发布自建镜像。
