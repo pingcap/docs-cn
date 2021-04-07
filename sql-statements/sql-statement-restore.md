@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-restore/']
 
 一次只能执行一个 `BACKUP` 和 `RESTORE` 任务。如果 TiDB server 上已经在执行一个 `BACKUP` 或 `RESTORE` 语句，新的 `RESTORE` 将等待前面所有的任务完成后再执行。
 
-`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "mocktikv" 存储引擎，`RESTORE` 操作会失败。
+`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "unistore" 存储引擎，`RESTORE` 操作会失败。
 
 ## 语法图
 

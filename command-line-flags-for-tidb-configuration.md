@@ -94,11 +94,11 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 ## `--path`
 
-+ 对于本地存储引擎 "mocktikv" 来说，path 指定的是实际的数据存放路径
-+ 当 `--store = tikv` 时，必须指定 path；当 `--store = mocktikv` 时，如果不指定 path，会使用默认值。
++ 对于本地存储引擎 "unistore" 来说，path 指定的是实际的数据存放路径
++ 当 `--store = tikv` 时，必须指定 path；当 `--store = unistore` 时，如果不指定 path，会使用默认值。
 + 对于 "TiKV" 存储引擎来说，path 指定的是实际的 PD 地址。假如在 192.168.100.113:2379、192.168.100.114:2379 和 192.168.100.115:2379 上面部署了 PD，那么 path 为 "192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379"
 + 默认："/tmp/tidb"
-+ 可以通过 `tidb-server --store=mocktikv --path=""` 来启动一个纯内存引擎的 TiDB
++ 可以通过 `tidb-server --store=unistore --path=""` 来启动一个纯内存引擎的 TiDB
 
 ## `--tmp-storage-path`
 
@@ -160,8 +160,8 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 ## `--store`
 
 + 用来指定 TiDB 底层使用的存储引擎
-+ 默认："mocktikv"
-+ 可以选择 "mocktikv"（本地存储引擎）或者 "tikv"（分布式存储引擎）
++ 默认："unistore"
++ 可以选择 "unistore"（本地存储引擎）或者 "tikv"（分布式存储引擎）
 
 ## `--token-limit`
 

@@ -37,7 +37,7 @@ TiDB 5.0.0-rc 版本是 5.0 版本的前序版本。在 5.0 版本中，我们�
 
 例如，可通过 `select tidb_pk_type from information_schema.tables where table_name = '{tbl_name}'` 语名可查询 `tbl_name` 是否有聚簇索引。
 
-+ [用户文档](/system-variables.md#tidb_enable_clustered_index-从-v500-rc-版本开始引入)
++ [用户文档](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入)
 + 相关 issue：[#4841](https://github.com/pingcap/tidb/issues/4841)
 
 ### 支持不可见索引
@@ -101,7 +101,7 @@ DBA 通过 `ALTER INDEX` 语句来修改某个索引的可见性。修改后优�
 
 用户可通过修改 `tidb_enable_async_commit = ON` 全局变量开启此功能。
 
-+ [用户文档](/system-variables.md#tidb_enable_async_commit-从-v500-rc-版本开始引入)
++ [用户文档](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)
 + 相关 issue：[#8316](https://github.com/tikv/tikv/issues/8316)
 
 ### 提升优化器选择索引的稳定性（实验特性）
@@ -145,7 +145,7 @@ TiDB 调度过程中会占用 I/O、Network、CPU、Memory 等资源，若不对
 
 Region 在完成成员变更时，由于“添加”和“删除”成员操作分成两步，如果此时有故障发生会引起 Region 不可用并且会返回前端业务的错误信息。引入的 Raft Joint Consensus 算法，可提升 Region 成员变更时的可用性，将成员变更操作中的“添加”和“删除”合并为一个操作，并发送给所有成员。在变更过程中，Region 处于中间的状态，如果任何被修改的成员失败，系统仍然可以使用。用户可通过 `pd-ctl config set enable-joint-consensus true` 修改成员变量的方式开启此功能。
 
-+ [用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v500-rc-版本开始引入)
++ [用户文档](/pd-configuration-file.md#enable-joint-consensus-从-v50-版本开始引入)
 + 相关 issue：[#18079](https://github.com/pingcap/tidb/issues/18079) [#7587](https://github.com/tikv/tikv/issues/7587) [#2860](https://github.com/tikv/pd/issues/2860)
 
 ### 优化内存管理模块，降低系统内存溢出的风险

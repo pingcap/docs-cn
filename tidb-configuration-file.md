@@ -49,10 +49,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-action`
 
-> **警告：**
->
-> 目前 `oom-action` 为实验功能，会对写入过程中的内存进行统计。如果用户希望根据该特性取消写入操作，不建议在生产环境中将参数值配置为 `cancel`。
-
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
 + 默认值："log"
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
@@ -90,11 +86,15 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 将旧表中的 utf8 字符集当成 utf8mb4的开关。
 + 默认值：true
 
-### `alter-primary-key`
+### `alter-primary-key`（已废弃）
 
 + 用于控制添加或者删除主键功能。
 + 默认值：false
 + 默认情况下，不支持增删主键。将此变量被设置为 true 后，支持增删主键功能。不过对在此开关开启前已经存在的表，且主键是整型类型时，即使之后开启此开关也不支持对此列表删除主键。
+
+> **注意：**
+>
+> 该配置项已被废弃，目前仅在 `@@tidb_enable_clustered_index` 取值为 `INT_ONLY` 时生效。如果需要增删主键，请在建表时使用 `NONCLUSTERED` 关键字代替。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ### `server-version`
 
@@ -135,13 +135,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：byte。
 + 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
 
-### `table-column-count-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `table-column-count-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 用于设置单个表中列的数量限制
 + 默认值：1017
 + 目前的合法值范围 `[1017, 4096]`。
 
-### `index-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `index-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 用于设置单个表中索引的数量限制
 + 默认值：64
@@ -152,6 +152,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 是否开启 TiDB 遥测功能。
 + 默认值：true
 + 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
+
+### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 控制是否只监听 TCP4。
++ 默认值：false
++ 当使用 LVS 为 TiDB 做负载均衡时，可开启此配置项。这是因为 [LVS 的 TOA 模块](https://github.com/alibaba/LVS/tree/master/kernel/net/toa)可以通过 TCP4 协议从 TCP 头部信息中解析出客户端的真实 IP。
+
+### `enable-enum-length-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 是否限制单个 `ENUM` 元素和单个 `SET` 元素的最大长度
++ 默认值：true
++ 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
 
 ## log
 
@@ -315,7 +327,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
 
-### `txn-entry-size-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + TiDB 单行数据的大小限制
 + 默认值：6291456 (Byte)
@@ -331,7 +343,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `max-txn-ttl`
 
 + 单个事务持锁的最长时间，超过该时间，该事务的锁可能会被其他事务清除，导致该事务无法成功提交。
-+ 默认值：600000
++ 默认值：3600000
 + 单位：毫秒
 + 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
 
@@ -416,10 +428,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 prepare 语句的 plan cache 设置。
 
+> **警告：**
+>
+> 当前该功能仍为实验特性，不建议在生产环境中使用。
+
 ### `enabled`
 
 + 开启 prepare 语句的 plan cache。
-+ 默认值：true
++ 默认值：false
 
 ### `capacity`
 
@@ -438,7 +454,7 @@ prepare 语句的 plan cache 设置。
 ### `grpc-connection-count`
 
 + 跟每个 TiKV 之间建立的最大连接数。
-+ 默认值：16
++ 默认值：4
 
 ### `grpc-keepalive-time`
 
@@ -480,53 +496,16 @@ prepare 语句的 plan cache 设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
-## tikv-client.async-commit <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-### `keys-limit`
-
-+ 指定一个 Async Commit 事务中键的数量上限。过大的事务不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
-+ 默认值：256
-
-### `total-key-size-limit`
-
-+ 指定一个 Async Commit 事务中键的大小总和的上限。如果事务涉及的键过长，则不适合使用 Async Commit，超出该限制的事务会使用传统两阶段提交方式。
-+ 默认值：4096
-+ 单位：字节
-
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 Coprocessor Cache 相关的配置项。
 
-### `enable`
-
-+ 是否开启[下推计算结果缓存](/coprocessor-cache.md)。
-+ 默认值：false（即不开启）
-
 ### `capacity-mb`
 
-+ 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
++ 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。值为 0.0 时表示关闭 Coprocessor Cache。
 + 默认值：1000.0
 + 单位：MB
 + 类型：Float
-
-### `admission-max-result-mb`
-
-+ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集小于该参数指定的大小，则结果集会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
-+ 默认值：10.0
-+ 单位：MB
-+ 类型：Float
-
-### `admission-min-process-ms`
-
-+ 指定能被缓存的单个下推计算结果集的最短计算时间。若单个下推计算在 Coprocessor 上的计算时间小于该参数指定的时间，则结果集不会被缓存。处理得很快的请求没有必要进行缓存，仅对处理时间很长的请求进行缓存，减少缓存被逐出的概率，这是本配置参数的意义。
-+ 默认值：5
-+ 单位：ms
-
-### `admission-max-ranges` <span class="version-mark">从 v4.0.8 版本开始引入</span>
-
-+ 指定能被缓存的单个下推计算结果集的最大范围数量。如果下推计算存在的范围数量超过该配置项指定的数量，则结果集不会被缓存。一般认为当范围数量过多时，解析范围是计算的主要开销，这样 Coprocessor Cache 带来的额外计算开销会较大。
-+ 默认值：500
-+ 类型：uint
 
 ## txn-local-latches
 
@@ -617,9 +596,4 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 ### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 + 用于控制是否能创建表达式索引。
-+ 默认值：false
-
-### `enable-global-kill` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-+ 用于控制是否开启 Global Kill 功能。将配置项的值设为 `true` 可开启该功能。开启后，即使 TiDB 服务器位于负载均衡器后，也可以安全地终止任何连接。
 + 默认值：false

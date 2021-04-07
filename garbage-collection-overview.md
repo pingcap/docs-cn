@@ -27,7 +27,16 @@ TiDB 的事务是基于 [Google Percolator](https://ai.google/research/pubs/pub3
 
 Resolve Locks 这一步的任务即对 safe point 之前的锁进行清理。即如果一个锁对应的 Primary 已经提交，那么该锁也应该被提交；反之，则应该回滚。而如果 Primary 仍然是上锁的状态（没有提交也没有回滚），则应当将该事务视为超时失败而回滚。
 
-Resolve Locks 的执行方式是由 GC leader 对所有的 Region 发送请求扫描过期的锁，并对扫到的锁查询 Primary 的状态，再发送请求对其进行提交或回滚。这个过程默认会并行地执行，并发数量默认与 TiKV 节点个数相同。
+Resolve Locks 有两种执行模式：
+
+- `LEGACY` （默认模式）：由 GC leader 对所有的 Region 发送请求扫描过期的锁，并对扫到的锁查询 Primary 的状态，再发送请求对其进行提交或回滚。
+- `PHYSICAL`：TiDB 绕过 Raft 层直接扫描每个 TiKV 节点上的数据。
+
+> **警告：**
+>
+> `PHYSICAL`模式（即启用 Green GC）目前是实验性功能，不建议在生产环境中使用。
+
+你可以通过修改系统变量 [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 的值切换 Resolve Locks 的执行模式。
 
 ### Delete Ranges（删除区间）
 
@@ -41,4 +50,4 @@ Resolve Locks 的执行方式是由 GC leader 对所有的 Region 发送请求�
 
 > **注意：**
 >
-> TiDB v2.1 以及更早的版本中，Do GC 这一步是通过由 TiDB 对每个 Region 发送请求的方式实现的。在 v3.0 及更新的版本中，通过修改配置可以继续使用旧的 GC 方式，详情请参考 [GC 配置](/garbage-collection-configuration.md#tikv_gc_mode)。
+> 从 TiDB 5.0 版本起，`CENTRAL` GC 模式（需要 TiDB 服务器发送 GC 请求到各个 Region）已经废弃， Do GC 这一步将只以 `DISTRIBUTED` GC 模式（从 TiDB 3.0 版起的默认模式）运行。

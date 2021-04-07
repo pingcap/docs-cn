@@ -127,12 +127,12 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 
 #### 3.1.7 ERROR 9006 (HY000) : GC life time is shorter than transaction duration
 
-`GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了，可使用如下命令增加 `GC Life Time`：
+`GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了。你可以使用如下命令修改 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值：
 
 {{< copyable "sql" >}}
 
 ```sql
-update mysql.tidb set variable_value='30m' where variable_name='tikv_gc_life_time';
+SET GLOBAL tidb_gc_life_time = '30m';
 ```
 
 其中 30m 代表仅清理 30 分钟前的数据，这可能会额外占用一定的存储空间。

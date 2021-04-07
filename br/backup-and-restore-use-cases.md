@@ -39,14 +39,14 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 ### 集群版本
 
-* TiDB: v4.0.2
-* TiKV: v4.0.2
-* PD: v4.0.2
-* BR: v4.0.2
+* TiDB: v5.0.0
+* TiKV: v5.0.0
+* PD: v5.0.0
+* BR: v5.0.0
 
 > **注意：**
 >
-> v4.0.2 为编写本文档时的最新版本。推荐读者使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
+> v5.0.0 为编写本文档时的最新版本。推荐使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
 
 ### TiKV 集群硬件信息
 
@@ -78,26 +78,12 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 ### 备份前的准备工作
 
-如果你使用的是 TiDB v4.0.8 及以上版本，相应版本的 BR 工具已支持自适应 GC。你只需要将 `backupTS` 注册到 PD 的 `safePoint`，保证 `safePoint` 在备份期间不会向前移动，即可避免手动设置 GC。
+关于 `br backup` 命令的具体使用方法，参见[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
 
-如果你使用的是 TiDB v4.0.7 及以下版本，则需要在 BR 备份前后，按照以下步骤手动设置 GC：
+运行 `br backup` 命令前，请确保以下条件：
 
-1. 运行 [`br backup` 命令](/br/use-br-command-line-tool.md#br-命令行描述)前，查询 TiDB 集群的 [`tikv_gc_life_time`](/garbage-collection-configuration.md#tikv_gc_life_time) 配置项的值，并使用 MySQL 客户端将该项调整至合适的值，确保备份期间不会发生 [Garbage Collection](/garbage-collection-overview.md) (GC)。
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
-    UPDATE mysql.tidb SET VARIABLE_VALUE = '720h' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
-    ```
-
-2. 在备份完成后，将该参数调回原来的值。
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
-    ```
+1. TiDB 集群中没有正在运行中的 DDL。
+2. 用于创建备份的存储设备有足够的空间。
 
 ### 恢复前的准备工作
 
