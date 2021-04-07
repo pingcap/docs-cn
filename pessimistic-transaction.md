@@ -131,17 +131,17 @@ If the application logic relies on the locking or lock waiting mechanisms, or if
 
 ![Pipelined pessimistic lock](/media/pessimistic-transaction-pipelining.png)
 
-This feature is disabled by default. To enable it, modify the TiKV configuration:
+This feature is enabled by default. To disable it, modify the TiKV configuration:
 
 ```toml
 [pessimistic-txn]
-pipelined = true
+pipelined = false
 ```
 
-If the TiKV cluster is v4.0.9 or later, you can also dynamically enable this feature by [modifying TiKV configuration online](/dynamic-config.md#modify-tikv-configuration-online):
+If the TiKV cluster is v4.0.9 or later, you can also dynamically disable this feature by [modifying TiKV configuration online](/dynamic-config.md#modify-tikv-configuration-online):
 
 {{< copyable "sql" >}}
 
 ```sql
-set config tikv pessimistic-txn.pipelined='true';
+set config tikv pessimistic-txn.pipelined='false';
 ```
