@@ -224,7 +224,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * HashAgg：该算子基于 [Hash Aggregation](/explain-aggregation.md#hash-aggregation) 算法对数据进行聚合运算
 * StreamAgg：该算子基于 [Stream Aggregation](/explain-aggregation.md#stream-aggregation) 算法对数据进行聚合运算。StreamAgg 仅支持不带 `GROUP BY` 条件的列。
     * 仅支持不带 group by 列的 StreamAgg
-* TopN：该算子对数据求 top n 运算
+* TopN：该算子对数据求 TopN 运算
 * Limit：该算子对数据进行 limit 运算
 * Project：该算子对数据进行投影运算
 * HashJoin：该算子基于 [Hash Join](/explain-joins.md/#Hash Join) 算法对数据进行连接运算
