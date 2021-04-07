@@ -232,7 +232,7 @@ TiFlash 支持部分算子的下推，具体支持的算子包括：
     * 必须带有等值的 join 条件
     * `Full Outer Join` 不支持下推
 
-大部分算子中都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推给 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
+在 TiDB 中算子之间会组织成树的形式，一个算子能下推给 TiFlash 的前提条件是该算子的所有孩子算子都能下推给 TiFlash，而且因为大部分算子中都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推给 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
 ```
 +, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, bitand, or, and, like, not, case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor,
