@@ -60,6 +60,7 @@ TiDB 版本：5.0.0
 + `gc.enable-compaction-filter` 配置项的默认值由 `false` 改成 `true`。
 + `enable-cross-table-merge` 配置项的默认值由 `false` 改成 `true`。
 + [`rate-limiter-auto-tuned`](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 配置项的默认值由 `false` 改成 `ture`。
+
 ### 其他
 
 + 为了避免造成数据正确性问题，列类型变更不再允许 `VARCHAR` 类型和 `CHAR` 类型的互相转换。
