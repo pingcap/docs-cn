@@ -173,9 +173,9 @@ sysbench $testname \
 | 1200        | 376529.18        | 7.98        | 297499.11        | 11.87        | -26.56%     |
 | 1500        | 368390.52        | 10.84        | 326877.96        | 14.46        | -12.70%     |
 
-v5.0 对比 v4.0，Point Select 性能提升了 14%。
+v5.0 对比 v4.0，Point Select 性能下降了 12%。
 
-![Point Select](/media/sysbench_v4vsv3_point_select.png)
+![Point Select](/media/sysbench_v5vsv4_point_select.png)
 
 ### Update Non-index 性能
 
@@ -188,9 +188,9 @@ v5.0 对比 v4.0，Point Select 性能提升了 14%。
 | 1200        | 41003.46        | 55.82        | 76376.22        | 28.67        | 86.27%     |
 | 1500        | 44702.84        | 62.19        | 80234.58        | 34.95        | 79.48%     |
 
-v5.0 对比 v4.0，Update Non-index 性能提升了 15%。
+v5.0 对比 v4.0，Update Non-index 性能提升了 81%。
 
-![Update Non-index](/media/sysbench_v4vsv3_update_non_index.png)
+![Update Non-index](/media/sysbench_v5vsv4_update_non_index.png)
 
 ### Update Index 性能
 
@@ -203,9 +203,9 @@ v5.0 对比 v4.0，Update Non-index 性能提升了 15%。
 | 1200        | 21887.64        | 102.97        | 28505.41        | 69.29        | -32.71%     |
 | 1500        | 23621.15        | 110.66        | 30341.06        | 82.96        | -25.03%     |
 
-v5.0 对比 v4.0，Update Index 性能提升了 17%。
+v5.0 对比 v4.0，Update Index 性能下降了 20%。
 
-![Update Index](/media/sysbench_v4vsv3_update_index.png)
+![Update Index](/media/sysbench_v5vsv4_update_index.png)
 
 ### Read Write 性能
 
@@ -218,6 +218,6 @@ v5.0 对比 v4.0，Update Index 性能提升了 17%。
 | 1200        | 106521.61        | 331.91        | 115416.05        | 320.17        | 8.35%     |
 | 1500        | 116278.96        | 363.18        | 118807.5        | 411.96        | 2.17%     |
 
-v5.0 对比 v4.0，Read Write 性能提升了 31%。
+v5.0 对比 v4.0，Read Write 性能提升了 9%。
 
 ![Read Write](/media/sysbench_v5vsv4_read_write.png)
