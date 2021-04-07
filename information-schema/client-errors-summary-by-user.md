@@ -13,7 +13,7 @@ summary: 了解 information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_USER`。
 * 权限错误。
 * 表不存在。
 
-MySQL 服务器协议会返回以上错误到客户端，此时应用程序应在客户端采取适当操作。information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_USER` 提供了一种有效方法，能够在应用程序没有正确处理（或记录）TiDB 服务器返回的错误的情况下检查错误。
+MySQL 服务器协议会返回以上错误到客户端，此时应用程序应在客户端采取适当操作。`information_schema`.`CLIENT_ERRORS_SUMMARY_BY_USER` 表提供了一种有效方法，能够在应用程序没有正确处理（或记录）TiDB 服务器返回的错误的情况下检查错误。
 
 因为 `CLIENT_ERRORS_SUMMARY_BY_USER` 会基于每个用户汇总错误，所以在诊断一个用户服务器比其他服务器产生更多错误的方案时很有用。可能的情况包括：
 
@@ -48,8 +48,8 @@ DESC CLIENT_ERRORS_SUMMARY_BY_USER;
 字段说明如下：
 
 * `USER`：已认证的用户。
-* `ERROR_NUMBER`：返回的与 MySQL 兼容的错误号。
-* `ERROR_MESSAGE`：与错误号匹配的错误消息（预处理语句形式）。
+* `ERROR_NUMBER`：返回的与 MySQL 兼容的错误码。
+* `ERROR_MESSAGE`：与错误码匹配的错误消息（预处理语句形式）。
 * `ERROR_COUNT`：返回此错误给用户的次数。
 * `WARNING_COUNT`：返回此警告给用户的次数。
 * `FIRST_SEEN`：首次向用户发送此错误（或警告）。
