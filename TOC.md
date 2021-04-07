@@ -10,6 +10,7 @@
   + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
   + [基本功能](/basic-features.md)
   + 性能测试报告
+    + [TPC-H 100 性能对比 - v5.0 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
