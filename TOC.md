@@ -412,6 +412,9 @@
       + INFORMATION_SCHEMA
         + [Overview](/information-schema/information-schema.md)
         + [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)
+        + [`CLIENT_ERRORS_SUMMARY_BY_HOST`](/information-schema/client-errors-summary-by-host.md)
+        + [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md)
+        + [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)
         + [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)
         + [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)
         + [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-hardware.md)
