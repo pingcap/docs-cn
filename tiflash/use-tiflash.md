@@ -230,7 +230,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * HashJoin：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算，但有以下使用条件：
     * 只有在 [MPP 模式](#使用 MPP 模式)下才能被下推
     * 必须带有等值的 join 条件
-    * `Full Outer Join` 不支持下推
+    * 不支持下推 `Full Outer Join`
 
 在 TiDB 中算子之间会组织成树的形式，一个算子能下推给 TiFlash 的前提条件是该算子的所有孩子算子都能下推给 TiFlash，而且因为大部分算子中都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推给 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
