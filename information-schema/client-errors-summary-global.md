@@ -3,7 +3,7 @@ title: CLIENT_ERRORS_SUMMARY_GLOBAL
 summary: Learn about the `CLIENT_ERRORS_SUMMARY_GLOBAL` information_schema table.
 ---
 
-# CLIENT_ERROR_SUMMARY_BY_HOST
+# CLIENT_ERRORS_SUMMARY_GLOBAL
 
 The table `CLIENT_ERRORS_SUMMARY_GLOBAL` provides a global summary of all SQL errors and warnings that have been returned to clients that connect to a TiDB server. These include:
 

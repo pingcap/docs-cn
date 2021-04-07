@@ -3,7 +3,7 @@ title: CLIENT_ERRORS_SUMMARY_BY_USER
 summary: Learn about the `CLIENT_ERRORS_SUMMARY_BY_USER` information_schema table.
 ---
 
-# CLIENT_ERROR_SUMMARY_BY_HOST
+# CLIENT_ERRORS_SUMMARY_BY_USER
 
 The table `CLIENT_ERRORS_SUMMARY_BY_USER` provides a summary of SQL errors and warnings that have been returned to clients that connect to a TiDB server. These include:
 
