@@ -221,7 +221,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 * TableScan：该算子从表中读取数据
 * Selection：该算子对数据进行过滤
-* HashAgg：该算子基于 [Hash Aggregation](/explain-aggregation.md/#Hash Aggregation) 算法对数据进行聚合运算
+* HashAgg：该算子基于 [Hash Aggregation](/explain-aggregation.md#hash-aggregation) 算法对数据进行聚合运算
 * StreamAgg：该算子基于 [Stream Aggregation](/explain-aggregation.md/#Stream Aggregation) 算法对数据进行聚合运算
     * 仅支持不带 group by 列的 StreamAgg
 * TopN：该算子对数据求 top n 运算
