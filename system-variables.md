@@ -1062,7 +1062,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 这个变量用来设置是否校验 UTF-8 字符的合法性。
 - 校验 UTF-8 字符会损耗些许性能。当你确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 `ON`。
 
-### `tidb_skip_ascii_check` <span class="version-mark">从 v5.0 RC 版本开始引入</span>
+### `tidb_skip_ascii_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
