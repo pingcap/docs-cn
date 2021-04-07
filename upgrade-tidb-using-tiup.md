@@ -81,6 +81,7 @@ tiup update cluster
 此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests/*` 后再使用。
 
 ### 2.2 编辑 TiUP Cluster 拓扑配置文件
+
 > **注意：**
 >
 > 以下情况可跳过此步骤：
