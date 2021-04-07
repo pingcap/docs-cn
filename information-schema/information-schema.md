@@ -51,7 +51,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | 表名                                                                                    | 描述 |
 |-----------------------------------------------------------------------------------------|-------------|
 | [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)            | 提供有关收集统计信息的任务的信息。 |
-| [`CLIENT_ERRORS_SUMMARY_BY_HOST`](/information-schema/client-errors-summary-by-host.md)  | 提供客户端请求产生的错误和警告的汇总，并返回给客户端。 |
+| [`CLIENT_ERRORS_SUMMARY_BY_HOST`](/information-schema/client-errors-summary-by-host.md)  | 提供由客户端请求生成并返回给客户端的错误和警告的汇总。 |
 | [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md)  | 提供客户端产生的错误和警告的汇总。 |
 | [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)   | 提供客户端产生的错误和警告的汇总。 |
 | [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)            | 提供有关整个 TiDB 集群的配置设置的详细信息。 |
