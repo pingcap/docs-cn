@@ -96,7 +96,7 @@ jobs:
           name: "Generate PDF"
           command: scripts/generate_pdf.sh
 
-      echo "222.222.95.49 uc.qbox.me": adds a new host
+      # echo "222.222.95.49 uc.qbox.me": adds a new host
       - deploy:
           name: "Publish PDF to Qiniu and S3"
           command: |
