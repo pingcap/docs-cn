@@ -52,8 +52,8 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 |-----------------------------------------------------------------------------------------|-------------|
 | [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)            | 提供有关收集统计信息的任务的信息。 |
 | [`CLIENT_ERRORS_SUMMARY_BY_HOST`](/information-schema/client-errors-summary-by-host.md)  | 提供由客户端请求生成并返回给客户端的错误和警告的汇总。 |
-| [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md)  | 提供客户端产生的错误和警告的汇总。 |
-| [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)   | 提供客户端产生的错误和警告的汇总。 |
+| [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md)  | 提供由客户端产生的错误和警告的汇总。 |
+| [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)   | 提供由客户端产生的错误和警告的汇总。 |
 | [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)            | 提供有关整个 TiDB 集群的配置设置的详细信息。 |
 | [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-info.md)            | 提供在每个 TiDB 组件上发现的底层物理硬件的详细信息。 |
 | [`CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md)                | 提供当前集群拓扑的详细信息。 |
