@@ -81,7 +81,6 @@ tiup update cluster
 此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests/*` 后再使用。
 
 ### 2.2 编辑 TiUP Cluster 拓扑配置文件
-
 > **注意：**
 >
 > 以下情况可跳过此步骤：
@@ -104,6 +103,12 @@ tiup update cluster
 > **注意：**
 >
 > 升级到 5.0 版本前，请确认已在 4.0 修改的参数在 5.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 
+> 以下三个 TiKV 参数 5.0 已废弃，如果原集群配置过，需要通过 edit-config 编辑模式删除:
+> 
+> - pessimistic-txn.enabled
+> - server.request-batch-enable-cross-command
+> - server.request-batch-wait-duration
 
 ### 2.3 检查当前集群的健康状况
 
