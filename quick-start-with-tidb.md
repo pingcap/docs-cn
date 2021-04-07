@@ -55,10 +55,10 @@ title: TiDB 数据库快速上手指南
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v4.0.0 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v5.0.0 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动一个 `v4.0.0` 版本的集群，`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.0.0），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -70,15 +70,15 @@ title: TiDB 数据库快速上手指南
 
 4. 新开启一个 session 以访问 TiDB 数据库。
 
-    1. 首先安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
+    + 使用 TiUP `client` 连接 TiDB：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        yum -y install mysql
+        tiup client
         ```
 
-    2. 使用 MySQL 客户端连接 TiDB：
+    + 也可使用 MySQL 客户端连接 TiDB：
 
         {{< copyable "shell-regular" >}}
 
