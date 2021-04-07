@@ -7,8 +7,9 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
+  + [What's New in TiDB 5.0](/releases/release-5.0.0.md)
   + [基本功能](/basic-features.md)
+  + [实验特性](/experimental-features.md)
   + 性能测试报告
     + [TPC-H 100 性能对比 - v5.0 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
     + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
@@ -521,6 +522,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v5.0
+    - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
     - [4.0.12](/releases/release-4.0.12.md)
