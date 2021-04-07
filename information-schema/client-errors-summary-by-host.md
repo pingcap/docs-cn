@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_HOST`。
 
 # CLIENT_ERROR_SUMMARY_BY_HOST
 
-`CLIENT_ERRORS_SUMMARY_BY_HOST` 表提供了连接到 TiDB 服务器的客户端所返回的 SQL 错误和警告汇总。这些错误和警告包括：
+`CLIENT_ERRORS_SUMMARY_BY_HOST` 表汇总了已返回给连接到 TiDB 服务器的客户端的 SQL 错误和警告。这些错误和警告包括：
 
 * 格式错误的 SQL 语句。
 * 除以零错误。
@@ -13,16 +13,16 @@ summary: 了解 information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_HOST`。
 * 权限错误。
 * 表不存在。
 
-MySQL 服务器协议会返回以上错误到客户端，此时应用程序应在客户端采取适当操作。`information_schema`.`CLIENT_ERRORS_SUMMARY_BY_HOST` 表提供了一种有效方法，能够在应用程序没有正确处理（或记录）TiDB 服务器返回的错误的情况下检查错误。
+以上错误通过 MySQL 服务器协议返回给客户端，此时应用程序应在客户端采取适当操作。`information_schema`.`CLIENT_ERRORS_SUMMARY_BY_HOST` 表提供了一种有效方法，能够在应用程序没有正确处理（或记录）TiDB 服务器返回的错误的情况下检查错误。
 
 由于 `CLIENT_ERRORS_SUMMARY_BY_HOST` 会基于每个远程主机汇总错误，在诊断其中一台应用程序服务器比其他服务器生成更多错误的情况时很有用。可能的情况包括：
 
 * 过时的 MySQL 客户端库。
 * 过时的应用程序（可能是在推出新部署时遗漏了此服务器）。
 * 用户权限中“主机”部分的使用不正确。
-* 网络连接不可靠，导致更多超时或断开的连接。
+* 网络连接不可靠，导致更多超时或连接断开。
 
-可以使用 `FLUSH CLIENT_ERRORS_SUMMARY` 语句重置汇总的计数。汇总是每个 TiDB 服务器的本地数据，并且只保留在内存中。如果 TiDB 服务器重新启动，会丢失汇总。
+可以使用 `FLUSH CLIENT_ERRORS_SUMMARY` 语句重置汇总的计数。所汇总的是每个 TiDB 服务器的本地数据，并且只保留在内存中。如果 TiDB 服务器重新启动，会丢失汇总信息。
 
 {{< copyable "sql" >}}
 
