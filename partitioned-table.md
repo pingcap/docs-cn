@@ -170,13 +170,15 @@ Range partitioning is particularly useful when one or more of the following cond
 >
 > List partitioning is an experimental feature. It is not recommended that you use it in the production environment.
 
-Before creating a List partitioned table, you need to set the value of the session variable `tidb_enable_table_partition` to `ON`.
+Before creating a List partitioned table, you need to set the value of the session variable `tidb_enable_list_partition` to `ON`.
 
 {{< copyable "sql" >}}
 
 ```sql
-set @@session.tidb_enable_table_partition = ON
+set @@session.tidb_enable_list_partition = ON
 ```
+
+Also, make sure that `tidb_enable_table_partition` is set to `ON`, which is the default setting.
 
 List partitioning is similar to Range partitioning. Unlike Range partitioning, in List partitioning, the partitioning expression values for all rows in each partition are in a given value set. This value set defined for each partition can have any number of values but cannot have duplicate values. You can use the `PARTITION ... VALUES IN (...)` clause to define a value set.
 
