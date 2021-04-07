@@ -1212,6 +1212,15 @@ raftdb 相关配置项。
 + 默认值：CPU * 0.75，但最大为 32
 + 最小值：1
 
+## cdc <span class="version-mark">从 v4.0.5 版本开始引入</span>
+
+用于 TiCDC 捕捉变更数据相关的配置项。
+
+### `min-ts-interval`
+
++ 定期推进 Resolved TS 的时间间隔。
++ 默认值：1s
+
 ## pessimistic-txn
 
 ### `enabled`
