@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（v5.0 实验特性）
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
     + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
-    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 中删除 `TopN` 值、重构 `TopN` 搜索逻辑及从直方图中删除 `TopN` 信息，建立直方图的索引，方便维护 Bucket NDV。
+    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。
 + [hibernate-regions](/tikv-configuration-file.md#hibernate-regions-实验特性)，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。
 
 ## 调度功能
