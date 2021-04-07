@@ -35,7 +35,7 @@ title: TiDB Sysbench 性能对比测试报告 - v5.0 对比 v4.0
 {{< copyable "" >}}
 
 ```yaml
-log.level: “error”
+log.level: "error"
 performance.max-procs: 20
 prepared-plan-cache.enabled: true
 tikv-client.max-batch-wait-time: 2000000
