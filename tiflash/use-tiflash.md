@@ -217,7 +217,7 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 ## TiFlash 支持的计算下推
 
-TiFlash 支持部分算子的下推，具体支持的算子包括：
+TiFlash 支持部分算子的下推，支持的算子如下：
 
 * TableScan：该算子从表中读取数据
 * Selection：该算子对数据进行过滤
