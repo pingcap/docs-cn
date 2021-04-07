@@ -63,7 +63,37 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
     - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
     - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
 
+<<<<<<< HEAD
     例如，数据备份在 v3.1 集群。如果恢复到 v4.0 集群中，查询恢复集群的 `new_collation_enabled` 的值为 `true`，则说明创建恢复集群时打开了 new collation 支持的开关。此时恢复数据，可能会出错。
+=======
+BR 和 TiDB 集群的兼容性问题分为以下两方面：
+
++ 某些功能在开启或关闭状态下，会导致 KV 格式发生变化，因此备份和恢复期间没有统一开启或关闭，就会带来不兼容的问题
++ BR 部分版本和 TiDB 集群的接口不兼容
+
+下表整理了会导致 KV 格式发生变化的功能。
+
+| 功能 | 相关 issue | 解决方式 |
+|  ----  | ----  | ----- |
+| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 tidb_enable_clustered_index 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
+| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 new_collations_enabled_on_first_bootstrap 和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
+| 恢复集群开启 TiCDC 同步 | [#364](https://github.com/pingcap/br/issues/364#issuecomment-646813965) |  TiKV 暂不能将 BR ingest 的 SST 文件下推到 TiCDC，因此使用 BR 恢复时候需要关闭 TiCDC。 |
+
+在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。
+
+### 版本检查
+
+BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查，但是可能会遇到版本不兼容的问题。
+
+需要注意的是，跳过检查可能会遇到版本不兼容的问题，现整理如下：
+
+| 备份版本（纵向） \ 恢复版本（横向） | BR nightly / TiDB nightly | BR v5.0 / TiDB v5.0| BR v4.0 / TiDB v4.0 |
+|  ----  |  ----  | ---- | ---- |
+| **BR nightly / TiDB nightly** | ✅ | ✅ | ✅ |
+| **BR v5.0 / TiDB v5.0** | ✅ | ✅ | ✅
+| **BR v4.0 / TiDB v4.0** | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误） | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误） | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
+| **BR nightly 或 v5.0 / TiDB v4.0** | ❌（当 TiDB < v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
+>>>>>>> 0b851ba2... Update compatibility of BR (#5905)
 
 ### 运行 BR 的最低机型配置要求
 
