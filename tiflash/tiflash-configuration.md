@@ -117,6 +117,7 @@ delta_index_cache_size = 0
     data-dir = The data storage path of proxy.
     config = The proxy configuration file path.
     log-file = The proxy log path.
+    log-level = The proxy log level. "info" is used by default.
     status-addr = The listening address from which the proxy metrics | status information is pulled.
     advertise-status-addr = The external access address of status-addr. If it is left empty, status-addr is used by default.
 
