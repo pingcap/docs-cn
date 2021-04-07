@@ -317,10 +317,6 @@ Configuration items related to scheduling
 
 ### `enable-joint-consensus` <span class="version-mark">New in v5.0</span>
 
-> **Warning:**
->
-> Currently, Joint Consensus is an experimental feature. It is **NOT** recommended that you use it in the production environment.
-
 + Controls whether to use Joint Consensus for replica scheduling. If this configuration is disabled, PD schedules one replica at a time.
 + Default value: `true`
 
