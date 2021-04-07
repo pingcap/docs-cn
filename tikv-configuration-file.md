@@ -1262,7 +1262,7 @@ raftdb 相关配置项。
 
 ## cdc <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
-用于 TiCDC 变更数据捕捉相关的配置项。
+用于 TiCDC 捕捉变更数据相关的配置项。
 
 ### `min-ts-interval`
 
