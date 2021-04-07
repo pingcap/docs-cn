@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_USER`。
 
 # CLIENT_ERRORS_SUMMARY_BY_USER
 
-`CLIENT_ERRORS_SUMMARY_BY_USER` 表提供了连接到 TiDB 服务器的客户端所返回的 SQL 错误和警告的汇总。这些错误和警告包括：
+`CLIENT_ERRORS_SUMMARY_BY_USER` 表汇总了已返回给连接到 TiDB 服务器的客户端的 SQL 错误和警告。这些错误和警告包括：
 
 * 格式错误的 SQL 语句。
 * 除以零错误。
