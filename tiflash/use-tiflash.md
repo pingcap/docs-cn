@@ -226,7 +226,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * Limit：该算子对数据进行 limit 运算
 * Project：该算子对数据进行投影运算
 * HashJoin：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算，但有以下使用条件：
-    * 只有在 [MPP 模式](#使用 MPP 模式)下才能被下推
+    * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
     * 必须带有等值的 join 条件
     * 不支持下推 `Full Outer Join`
 
@@ -241,7 +241,11 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 
 另外，所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推到 TiFlash。
 
+<<<<<<< HEAD
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续提供支持，也可以联系官方沟通。
+=======
+如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续支持。
+>>>>>>> 89c3bbe1... fix typos in multiple docs (#5979)
 
 ## 使用 MPP 模式
 
