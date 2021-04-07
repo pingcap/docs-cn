@@ -1221,16 +1221,6 @@ raftdb 相关配置项。
 + 定期推进 Resolved TS 的时间间隔。
 + 默认值：1s
 
-### `old-value-cache-size` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-+ 缓存在内存中的 TiCDC Old Value 的条目个数。
-+ 默认值：1024
-
-### `incremental-scan-speed-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-+ 增量扫描历史数据的速度上限。
-+ 默认值：128MB，即 128MB 每秒。
-
 ## pessimistic-txn
 
 ### `enabled`
