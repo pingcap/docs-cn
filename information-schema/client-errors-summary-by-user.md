@@ -50,8 +50,8 @@ DESC CLIENT_ERRORS_SUMMARY_BY_USER;
 * `USER`：已认证的用户。
 * `ERROR_NUMBER`：返回的与 MySQL 兼容的错误号。
 * `ERROR_MESSAGE`：与错误号匹配的错误消息（预处理语句形式）。
-* `ERROR_COUNT`：此错误返回给用户的次数。
-* `WARNING_COUNT`：此警告返回给用户的次数。
+* `ERROR_COUNT`：返回此错误给用户的次数。
+* `WARNING_COUNT`：返回此警告给用户的次数。
 * `FIRST_SEEN`：首次向用户发送此错误（或警告）。
 * `LAST_SEEN`：最近一次向用户发送该错误（或警告）。
 
