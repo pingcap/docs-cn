@@ -97,7 +97,6 @@ pessimistic-txn.pipelined: true
 ```sql
 set global tidb_hashagg_final_concurrency=1;
 set global tidb_hashagg_partial_concurrency=1;
-set global tidb_disable_txn_auto_retry=0;
 ```
 
 #### TiDB v5.0 全局变量配置
@@ -107,7 +106,6 @@ set global tidb_disable_txn_auto_retry=0;
 ```sql
 set global tidb_hashagg_final_concurrency=1;
 set global tidb_hashagg_partial_concurrency=1;
-set global tidb_disable_txn_auto_retry=0;
 set global tidb_enable_async_commit = 1;
 set global tidb_enable_1pc = 1;
 set global tidb_guarantee_linearizability = 0;
@@ -222,4 +220,4 @@ v5.0 对比 v4.0，Update Index 性能提升了 17%。
 
 v5.0 对比 v4.0，Read Write 性能提升了 31%。
 
-![Read Write](/media/sysbench_v4vsv3_read_write.png)
+![Read Write](/media/sysbench_v5vsv4_read_write.png)
