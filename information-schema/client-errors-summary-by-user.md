@@ -53,7 +53,7 @@ DESC CLIENT_ERRORS_SUMMARY_BY_USER;
 * `ERROR_COUNT`：返回此错误给用户的次数。
 * `WARNING_COUNT`：返回此警告给用户的次数。
 * `FIRST_SEEN`：首次向用户发送此错误（或警告）。
-* `LAST_SEEN`：最近一次向用户发送该错误（或警告）。
+* `LAST_SEEN`：最近一次向用户发送此错误（或警告）。
 
 以下示例显示了客户端连接到本地 TiDB 服务器时生成的警告。执行 `FLUSH CLIENT_ERRORS_SUMMARY` 语句后，会重置汇总。
 
