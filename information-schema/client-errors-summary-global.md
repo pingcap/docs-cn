@@ -42,10 +42,10 @@ DESC CLIENT_ERRORS_SUMMARY_GLOBAL;
 
 * `ERROR_NUMBER`：返回的与 MySQL 兼容的错误码。
 * `ERROR_MESSAGE`：与错误码匹配的错误消息（预处理语句形式）。
-* `ERROR_COUNT`：返回该错误的次数。
-* `WARNING_COUNT`：返回该警告的次数。
-* `FIRST_SEEN`：首次返回该错误（或警告）。
-* `LAST_SEEN`：最近一次发送该错误（或警告）。
+* `ERROR_COUNT`：返回此错误的次数。
+* `WARNING_COUNT`：返回此警告的次数。
+* `FIRST_SEEN`：首次返回此错误（或警告）的时间。
+* `LAST_SEEN`：最近一次发送此错误（或警告）的时间。
 
 以下示例显示了客户端连接到本地 TiDB 服务器时生成的警告。执行 `FLUSH CLIENT_ERRORS_SUMMARY` 语句后，会重置汇总。
 

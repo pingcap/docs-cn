@@ -53,8 +53,8 @@ DESC CLIENT_ERRORS_SUMMARY_BY_HOST;
 * `ERROR_MESSAGE`：与错误码匹配的错误消息（预处理语句形式）。
 * `ERROR_COUNT`：此错误返回到客户端主机的次数。
 * `WARNING_COUNT`：此警告返回到客户端主机的次数。
-* `FIRST_SEEN`：首次从客户端主机看到此错误（或警告）。
-* `LAST_SEEN`：最近一次从客户端主机看到此错误（或警告）。
+* `FIRST_SEEN`：首次从客户端主机看到此错误（或警告）的时间。
+* `LAST_SEEN`：最近一次从客户端主机看到此错误（或警告）的时间。
 
 以下示例显示了客户端连接到本地 TiDB 服务器时生成的警告。执行 `FLUSH CLIENT_ERRORS_SUMMARY` 语句后，会重置汇总。
 
