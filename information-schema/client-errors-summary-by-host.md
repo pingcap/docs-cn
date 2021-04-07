@@ -3,7 +3,7 @@ title: CLIENT_ERRORS_SUMMARY_BY_HOST
 summary: 了解 information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_HOST`。
 ---
 
-# CLIENT_ERROR_SUMMARY_BY_HOST
+# CLIENT_ERRORS_SUMMARY_BY_HOST
 
 `CLIENT_ERRORS_SUMMARY_BY_HOST` 表汇总了已返回给连接到 TiDB 服务器的客户端的 SQL 错误和警告。这些错误和警告包括：
 
