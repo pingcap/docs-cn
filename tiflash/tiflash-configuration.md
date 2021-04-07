@@ -27,8 +27,6 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 - [`replication.location-labels`](/pd-control.md#config-show--set-option-value--placement-rules)：用来表示 TiKV 实例拓扑关系，其中 key 的序代表了不同标签的层次关系。在 tiflash 开启的情况下需要使用 `pd-ctl config placement-rules` 来设置默认值，详细可参考 [geo-distributed-deployment-topology](/geo-distributed-deployment-topology.md)。
 
-
-
 ## TiFlash 配置参数
 
 ### 配置文件 tiflash.toml
