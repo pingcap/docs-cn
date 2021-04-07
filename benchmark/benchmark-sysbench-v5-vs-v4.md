@@ -79,8 +79,8 @@ tikv-client.max-batch-wait-time: 2000000
 storage.scheduler-worker-pool-size: 5
 raftstore.store-pool-size: 3
 raftstore.apply-pool-size: 3
-rocksdb.max-background-jobs: 3
-raftdb.max-background-jobs: 3
+rocksdb.max-background-jobs: 8
+raftdb.max-background-jobs: 4
 raftdb.allow-concurrent-memtable-write: true
 server.request-batch-enable-cross-command: false
 server.grpc-concurrency: 6
