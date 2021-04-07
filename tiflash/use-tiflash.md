@@ -228,7 +228,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * Limit：该算子对数据进行 limit 运算
 * Project：该算子对数据进行投影运算
 * HashJoin：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算，但有以下使用条件：
-    * 只有在 [MPP 模式](#使用 MPP 模式)下才能下推
+    * 只有在 [MPP 模式](#使用 MPP 模式)下才能被下推
     * 必须带有等值的 join 条件
     * `Full Outer Join` 不支持下推
 
