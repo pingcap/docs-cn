@@ -217,15 +217,24 @@ You can configure this parameter in one of the following ways:
 
 ## Supported push-down calculations
 
-TiFlash supports predicate, aggregate push-down calculations, and table joins. Push-down calculations can help TiDB perform distributed acceleration. Currently, `Full Outer Join` and `DISTINCT COUNT` are not the supported calculation types, which will be optimized in later versions.
+TiFlash supports the push-down of the following operators:
 
-You can enable the push-down of `join` using the following session variable (`Full Outer Join` is currently not supported):
+* TableScan: Reads data from tables.
+* Selection: Filters data.
+* HashAgg: Performs data aggregation based on the [Hash Aggregation](/explain-aggregation.md#hash-aggregation) algorithm.
+* StreamAgg: Performs data aggregation based on the [Stream Aggregation](/explain-aggregation.md#stream-aggregation) algorithm. SteamAgg only supports the aggregation without the `GROUP BY` condition.
+* TopN: Performs the TopN calculation.
+* Limit: Performs the limit calculation.
+* Project: Performs the projection calculation.
+* HashJoin: Performs the join calculation based on the [Hash Join](/explain-joins.md#hash-join) algorithm, but with the following conditions:
+    * The operator can be pushed down only in the [MPP mode](#use-the-mpp-mode).
+    * The operator must have the join condition with the equivalent value.
+    * The push-down of `Full Outer Join` is not supported.
 
-```
-set @@session.tidb_opt_broadcast_join=1
-```
+In TiDB, operators are organized in a tree structure. For an operator to be pushed down to TiFlash, all of the following prerequisites must be met:
 
-Currently, TiFlash supports pushing down a limited number of expressions, including:
++ All of its child operators can be pushed down to TiFlash.
++ If an operator contains expressions (most of the operators contain expressions), all expressions of the operator can be pushed down to TiFlash.
 
 ```
 +, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, bitand, or, and, like, not, case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor,
@@ -234,12 +243,9 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 
 Among them, the push-down of `cast` and `date_add` is not enabled by default. To enable it, refer to [Blocklist of Optimization Rules and Expression Pushdown](/blocklist-control-plan.md).
 
-TiFlash does not support push-down calculations in the following situations:
+In addition, expressions that contain the Time/Bit/Set/Enum/Geometry type cannot be pushed down to TiFlash.
 
-- Expressions that contain the `Time` type cannot be pushed down.
-- If an aggregate function or a `WHERE` clause contains expressions that are not included in the list above, the aggregate or related predicate filtering cannot be pushed down.
-
-If a query encounters unsupported push-down calculations, TiDB needs to complete the remaining calculations, which might greatly affect the TiFlash acceleration effect.
+If a query encounters unsupported push-down calculations, TiDB needs to complete the remaining calculations, which might greatly affect the TiFlash acceleration effect. The currently unsupported operators and expressions might be supported in future versions.
 
 ## Use the MPP mode
 
@@ -251,7 +257,7 @@ set @@session.tidb_allow_mpp=0
 
 MPP mode supports these physical algorithms: Broadcast Hash Join, Shuffled Hash Join, and Shuffled Hash Aggregation. The optimizer automatically determines which algorithm to be used in a query. To check the specific query execution plan, you can execute the `EXPLAIN` statement.
 
-The following statement takes the table structure in the TPC-H test set as an example：
+The following statement takes the table structure in the TPC-H test set as an example:
 
 ```sql
 explain select count(*) from customer c join nation n on c.c_nationkey=n.n_nationkey;
