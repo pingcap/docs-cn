@@ -1,6 +1,6 @@
 ---
 title: TiDB Ansible 常见运维操作
-aliases: ['/docs-cn/stable/maintain-tidb-using-ansible/','/docs-cn/v4.0/maintain-tidb-using-ansible/','/docs-cn/stable/how-to/maintain/ansible-operations/','/zh/tidb/dev/maintain-tidb-using-ansible/','/docs-cn/dev/maintain-tidb-using-ansible/','/docs-cn/dev/how-to/maintain/ansible-operations/']
+aliases: ['/docs-cn/stable/maintain-tidb-using-ansible/','/docs-cn/v4.0/maintain-tidb-using-ansible/','/docs-cn/stable/how-to/maintain/ansible-operations/','/zh/tidb/dev/maintain-tidb-using-ansible/','/docs-cn/dev/maintain-tidb-using-ansible/','/docs-cn/dev/how-to/maintain/ansible-operations/','/zh/tidb/stable/maintain-tidb-using-ansible/']
 ---
 
 # TiDB Ansible 常见运维操作
