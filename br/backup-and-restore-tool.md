@@ -56,16 +56,11 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 下面是使用 BR 进行备份恢复的几条限制：
 
-- BR 只支持在 TiDB v3.1 及以上版本使用。
 - BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。
 - BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
 
-    - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
-    - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
+### 兼容性
 
-<<<<<<< HEAD
-    例如，数据备份在 v3.1 集群。如果恢复到 v4.0 集群中，查询恢复集群的 `new_collation_enabled` 的值为 `true`，则说明创建恢复集群时打开了 new collation 支持的开关。此时恢复数据，可能会出错。
-=======
 BR 和 TiDB 集群的兼容性问题分为以下两方面：
 
 + 某些功能在开启或关闭状态下，会导致 KV 格式发生变化，因此备份和恢复期间没有统一开启或关闭，就会带来不兼容的问题
@@ -93,7 +88,6 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 | **BR v5.0 / TiDB v5.0** | ✅ | ✅ | ✅
 | **BR v4.0 / TiDB v4.0** | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误） | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误） | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
 | **BR nightly 或 v5.0 / TiDB v4.0** | ❌（当 TiDB < v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB < v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
->>>>>>> 0b851ba2... Update compatibility of BR (#5905)
 
 ### 运行 BR 的最低机型配置要求
 
