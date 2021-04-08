@@ -59,7 +59,7 @@ TiDB 版本：5.0.0
 + 删除 `raftstore.sync-log` 配置项，默认会写入数据强制落盘，之前显式关闭 `raftstore.sync-log`，成功升级 v5.0 版本后，会强制改为 `true`。
 + `gc.enable-compaction-filter` 配置项的默认值由 `false` 改成 `true`。
 + `enable-cross-table-merge` 配置项的默认值由 `false` 改成 `true`。
-+ [`rate-limiter-auto-tuned`](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 配置项的默认值由 `false` 改成 `ture`。
++ [`rate-limiter-auto-tuned`](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 配置项的默认值由 `false` 改成 `true`。
 
 ### 其他
 
