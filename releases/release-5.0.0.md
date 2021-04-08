@@ -13,7 +13,7 @@ In v5.0, PingCAP is dedicated to helping enterprises quickly build applications 
 In v5.0, the key new features or improvements are as follows:
 
 + Introduce Massively Parallel Processing (MPP) architecture through TiFlash nodes, which shares the execution workloads of large join queries among TiFlash nodes. When the MPP mode is enabled, TiDB, based on cost, determines whether to use the MPP framework to perform the calculation. In the MPP mode, the join keys are redistributed through the `Exchange` operation while being calculated, which distributes the calculation pressure to each TiFlash node and speeds up the calculation. According to the benchmark, with the same cluster resource, TiDB 5.0 MPP shows 2 to 3 times of speedup over Greenplum 6.15.0 and Apache Spark 3.1.1, and some queries have 8 times better performance.
-+ Introduce the clustered index feature to improve database performance. For example, in the Sysbench test, TiDB's read and write performance, with clustered index enabled, improves by 58.1%.
++ Introduce the clustered index feature to improve database performance. For example, in the TPC-C tpmC test, the performance of TiDB, with clustered index enabled, improves by 39%.
 + Enable the async commit feature to reduce the write latency. For example, in the 64-thread Sysbench test, the average latency of updating indexes, with async commit enabled, is reduced by 41.7%, from 12.04 ms to 7.01 ms.
 + Reduce jitters. This is achieved by improving the optimizer stability and by limiting system tasks' usages of I/O, network, CPU, and memory resources. For example, in the 8-hour performance test, the standard deviation of TPC-C tpmC does not exceed 2%.
 + Enhance system stability by improving scheduling and by keeping execution plans stable as much as possible.
@@ -177,7 +177,7 @@ When you are designing table structures or analyzing database behaviors, it is r
 
 Clustered indexes, also known as _index-organized tables_ in some database management systems, is a storage structure associated with the data of a table. When creating a clustered index, you can specify one or more columns from the table as the keys for the index. TiDB stores these keys in a specific structure, which allows TiDB to quickly and efficiently find the rows associated with the keys, thus improves the performance of querying and writing data.
 
-When the clustered index feature is enabled, the TiDB performance improves significantly (for example in the Sysbench test, the read and write performance of TiDB, with clustered index enabled, improves by 58.1%) in the following cases:
+When the clustered index feature is enabled, the TiDB performance improves significantly (for example in the TPC-C tpmC test, the performance of TiDB, with clustered index enabled, improves by 39%) in the following cases:
 
 + When data is inserted, the clustered index reduces one write of the index data from the network.
 + When a query with an equivalent condition only involves the primary key, the clustered index reduces one read of index data from the network.
