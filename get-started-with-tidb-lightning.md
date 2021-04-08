@@ -44,17 +44,17 @@ After executing this command, the full backup data is exported to the `/data/my_
 
 ### Step 1: Deploy TiDB cluster
 
-Before the data import, you need to deploy a TiDB cluster (later than v2.0.9). In this tutorial, TiDB v4.0.3 is used. For the deployment method, refer to [TiDB Introduction](/overview.md).
+Before the data import, you need to deploy a TiDB cluster. In this tutorial, TiDB v5.0.0 is used as an example. For the deployment method, refer to [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md).
 
 ### Step 2: Download TiDB Lightning installation package
 
 Download the TiDB Lightning installation package from the following link:
 
-- **v4.0.3**: [tidb-toolkit-v4.0.3-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v4.0.3-linux-amd64.tar.gz)
+- **v5.0.0**: [tidb-toolkit-v5.0.0-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v5.0.0-linux-amd64.tar.gz)
 
 > **Note:**
 >
-> Choose the same version of TiDB Lightning as that of the TiDB cluster.
+> TiDB Lightning is compatible with TiDB clusters of earlier versions. It is recommended that you download the latest stable version of the TiDB Lightning installation package.
 
 ### Step 3: Start `tidb-lightning`
 

@@ -78,13 +78,17 @@ This section describes how to [deploy TiDB Lightning manually](#deploy-tidb-ligh
 
 #### Step 1: Deploy a TiDB cluster
 
-Before importing data, you need to have a deployed TiDB cluster, with the cluster version 2.0.9 or above. It is highly recommended to use the latest version.
+Before importing data, you need to have a deployed TiDB cluster. It is highly recommended to use the latest stable version.
 
 You can find deployment instructions in [TiDB Quick Start Guide](/quick-start-with-tidb.md).
 
 #### Step 2: Download the TiDB Lightning installation package
 
-Refer to the [TiDB enterprise tools download page](/download-ecosystem-tools.md#tidb-lightning) to download the TiDB Lightning package (choose the same version as that of the TiDB cluster).
+Refer to the [TiDB enterprise tools download page](/download-ecosystem-tools.md#tidb-lightning) to download the TiDB Lightning package. 
+
+> **Note:**
+>
+> TiDB Lightning is compatible with TiDB clusters of earlier versions. It is recommended that you download the latest stable version of the TiDB Lightning installation package.
 
 #### Step 3: Start `tidb-lightning`
 
