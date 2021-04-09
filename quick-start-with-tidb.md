@@ -179,7 +179,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
         {{< copyable "shell-regular" >}}
 
         ```shell
-        service sshd restart
+        service ssh restart
         ```
 
 5. 创建并启动集群
