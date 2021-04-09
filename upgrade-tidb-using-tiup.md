@@ -7,7 +7,7 @@ aliases: ['/docs-cn/stable/upgrade-tidb-using-tiup/','/docs-cn/v4.0/upgrade-tidb
 
 本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
 
-如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入[参考](/tiup/tiup-component-cluster-import.md#如何使用 tiup cluster import)，并完成升级。
+如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入[参考](/tiup/tiup-component-cluster-import.md#如何使用-tiup-cluster-import)，并完成升级。
 
 ## 1. 升级兼容性说明
 
