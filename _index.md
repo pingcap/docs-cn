@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/']
 
 - [TiDB 简介](/overview.md)
 - [基本功能](/basic-features.md)
-- [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
+- [What's New in TiDB 5.0](/releases/release-5.0.0.md)
 - [与 MySQL 的兼容性](/mysql-compatibility.md)
 - [使用限制](/tidb-limitations.md)
 
