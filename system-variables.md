@@ -806,7 +806,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_mem_quota_apply_cache` <span class="version-mark">从 v5.0 版本开始引入</span>
 
-
 - 作用域：SESSION | GLOBAL
 - 默认值：32 MB
 - 这个变量用来设置 `Apply` 算子中局部 Cache 的内存使用阈值。
@@ -941,7 +940,6 @@ mysql> desc select count(distinct a) from test.t;
     ```
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
-
 
 - 作用域：SESSION
 - 默认值：0
