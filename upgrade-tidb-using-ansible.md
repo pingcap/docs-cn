@@ -1,6 +1,6 @@
 ---
 title: 使用 TiDB Ansible 升级 TiDB
-aliases: ['/docs-cn/stable/upgrade-tidb-using-ansible/','/docs-cn/v4.0/upgrade-tidb-using-ansible/','/docs-cn/stable/how-to/upgrade/from-previous-version/','/docs-cn/v4.0/how-to/upgrade/from-previous-version/','/docs-cn/stable/how-to/upgrade/rolling-updates-with-ansible/','/docs-cn/op-guide/ansible-deployment-rolling-update/','/zh/tidb/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/']
+aliases: ['/docs-cn/stable/upgrade-tidb-using-ansible/','/docs-cn/v4.0/upgrade-tidb-using-ansible/','/docs-cn/stable/how-to/upgrade/from-previous-version/','/docs-cn/v4.0/how-to/upgrade/from-previous-version/','/docs-cn/stable/how-to/upgrade/rolling-updates-with-ansible/','/docs-cn/op-guide/ansible-deployment-rolling-update/','/zh/tidb/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/','/zh/tidb/stable/upgrade-tidb-using-ansible/']
 ---
 
 # 使用 TiDB Ansible 升级 TiDB
