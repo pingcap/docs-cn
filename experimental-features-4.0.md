@@ -1,7 +1,7 @@
 ---
 title: TiDB 4.0 实验特性
 summary: 了解 TiDB 4.0 版本的实验特性。
-aliases: ['/docs-cn/stable/experimental-features-4.0/','/docs-cn/v4.0/experimental-features-4.0/','/tidb/stable/experimental-features-4.0']
+aliases: ['/docs-cn/stable/experimental-features-4.0/','/docs-cn/v4.0/experimental-features-4.0/','/zh/tidb/stable/experimental-features-4.0']
 ---
 
 # TiDB 4.0 实验特性
