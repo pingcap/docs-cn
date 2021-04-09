@@ -1099,6 +1099,8 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：24（受配置文件影响，这里给出的是默认配置文件取值）
+- 最小值：0
+- 最大值：255
 - 这个变量设置了 statement summary 的历史记录容量。
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -1111,18 +1113,24 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：4096（受配置文件影响，这里给出的是默认配置文件取值）
+- 最小值：0
+- 最大值：2147483647
 - 这个变量控制 statement summary 显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：200（受配置文件影响，这里给出的是默认配置文件取值）
+- 最小值：0
+- 最大值：32767
 - 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：1800（受配置文件影响，这里给出的是默认配置文件取值）
+- 最小值：1
+- 最大值：2147483647
 - 这个变量设置了 statement summary 的刷新时间，单位为秒。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
