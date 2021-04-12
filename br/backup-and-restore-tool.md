@@ -59,7 +59,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 - BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。
 - BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
 
-## 兼容性
+### 兼容性
 
 BR 和 TiDB 集群的兼容性问题分为以下两方面：
 
@@ -70,13 +70,13 @@ BR 和 TiDB 集群的兼容性问题分为以下两方面：
 
 | 功能 | 相关 issue | 解决方式 |
 |  ----  | ----  | ----- |
-| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 tidb_enable_clustered_index 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
-| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 new_collations_enabled_on_first_bootstrap 和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
+| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 `tidb_enable_clustered_index` 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
+| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
 | 恢复集群开启 TiCDC 同步 | [#364](https://github.com/pingcap/br/issues/364#issuecomment-646813965) |  TiKV 暂不能将 BR ingest 的 SST 文件下推到 TiCDC，因此使用 BR 恢复时候需要关闭 TiCDC。 |
 
 在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。
 
-### 版本检查
+#### 版本检查
 
 BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查，但是可能会遇到版本不兼容的问题。
 
