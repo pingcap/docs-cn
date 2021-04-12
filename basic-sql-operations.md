@@ -182,7 +182,7 @@ ALTER TABLE person DROP INDEX person_unique_id;
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO person VALUES("1","tom","20170912");
+INSERT INTO person VALUES(1,'tom','20170912');
 ```
 
 使用 `INSERT` 语句向表内插入包含部分字段数据的表记录。例如：
@@ -190,7 +190,7 @@ INSERT INTO person VALUES("1","tom","20170912");
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO person(id,name) VALUES("2","bob");
+INSERT INTO person(id,name) VALUES('2','bob');
 ```
 
 使用 `UPDATE` 语句向表内修改表记录的部分字段数据。例如：
@@ -198,7 +198,7 @@ INSERT INTO person(id,name) VALUES("2","bob");
 {{< copyable "sql" >}}
 
 ```sql
-UPDATE person SET birthday="20180808" WHERE id=2;
+UPDATE person SET birthday='20180808' WHERE id=2;
 ```
 
 使用 `DELETE` 语句向表内删除部分表记录。例如：
