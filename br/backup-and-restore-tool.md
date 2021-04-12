@@ -70,14 +70,14 @@ BR 和 TiDB 集群的兼容性问题分为以下两方面：
 
 | 功能 | 相关 issue | 解决方式 |
 |  ----  | ----  | ----- |
-| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 new_collations_enabled_on_first_bootstrap 和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
+| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
 | 恢复集群开启 TiCDC 同步 | [#364](https://github.com/pingcap/br/issues/364#issuecomment-646813965) |  TiKV 暂不能将 BR ingest 的 SST 文件下推到 TiCDC，因此使用 BR 恢复时候需要关闭 TiCDC。 |
 
 在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。
 
 ### 版本检查
 
-BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查，但是可能会遇到版本不兼容的问题。[这张表格](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#版本检查)记载了一部分版本之间兼容性，供参考。
+BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查，但是可能会遇到版本不兼容的问题。TiDB v4.0 用 BR 备份后，不完全支持恢复到 v5.0 以及之后版本，详细信息见 [BR 版本检查（stable 版文档）](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool#版本检查)。
 
 ### 运行 BR 的最低机型配置要求
 
