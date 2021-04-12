@@ -211,10 +211,10 @@ br backup full\
 {{< copyable "shell-regular" >}}
 
 ```shell
-LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata`
+LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata | tail -n1`
 ```
 
-示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。
+示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。 
 
 ### Raw KV 备份（实验性功能）
 
