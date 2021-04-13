@@ -1090,6 +1090,8 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Default value: 24 (the value of the default configuration file)
+- Minimum value: 0
+- Maximum value: 255
 - This variable is used to set the history capacity of the statement summary.
 
 ### tidb_stmt_summary_internal_query <span class="version-mark">New in v4.0</span>
@@ -1102,18 +1104,24 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Default value: 4096 (the value of the default configuration file)
+- Minimum value: 0
+- Maximum value: 2147483647
 - This variable is used to control the length of the SQL string in the statement summary.
 
 ### tidb_stmt_summary_max_stmt_count <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: 200 (the value of the default configuration file)
+- Minimum value: 0
+- Maximum value: 32767
 - This variable is used to set the maximum number of statements that the statement summary stores in memory.
 
 ### tidb_stmt_summary_refresh_interval <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: 1800 (the value of the default configuration file)
+- Minimum value: 1
+- Maximum value: 2147483647
 - This variable is used to set the refresh time of the statement summary. The unit is second.
 
 ### tidb_store_limit <span class="version-mark">New in v3.0.4 and v4.0</span>
