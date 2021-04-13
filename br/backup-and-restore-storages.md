@@ -113,7 +113,7 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 | `--s3.sse` | 用于加密上传的服务器端加密算法（可以设置为空，`AES256` 或 `aws:kms`） |
 | `--s3.sse-kms-key-id` | 如果 `--s3.sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
 | `--s3.acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
-| `--s3.provider` | S3 兼容服务類型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
+| `--s3.provider` | S3 兼容服务类型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
 
 ### GCS 的命令行参数
 
