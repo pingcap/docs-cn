@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
-### 导入导出速度慢，且日志中出现大量重试、EOF 错误
+### 导入导出速度慢，且各组件日志中出现大量重试、EOF 错误
 
 首先怀疑网络问题，使用相关工具排查网络连通状况。下面是使用 [iperf](https://iperf.fr/) 进行排查的例子
 
