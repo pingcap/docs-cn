@@ -58,9 +58,14 @@ Two solutions:
 
 - You can also increase the limited number of statements in a single TiDB transaction, but this will consume more memory.
 
-### Why does Dumpling return `The local disk space is insufficient` error when exporting a large table?
+### Why does Dumpling return `The local disk space is insufficient` error or cause the upstream database to run out of memory when exporting a table?
 
-This error occurs because the database's primary keys are not evenly distributed. When Dumpling splits the data, some data chunks become excessive. Try to allocate more disk space or [contact us](https://tidbcommunity.slack.com/archives/CH7TTLL7P) to get the nightly version of Dumpling.
+This issue might have the following causes:
+
++ The database's primary keys are not evenly distributed (for example, when you enable [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)).
++ The upstream database is TiDB and the exported table is a partitioned table.
+
+For the above cases, Dumpling splits excessively large data chunk for the export and sends queries with excessively large results. To address the issue, you can [contact us](https://tidbcommunity.slack.com/archives/CH7TTLL7P) to get the nightly version of Dumpling.
 
 ### Does TiDB have a function like the Flashback Query in Oracle? Does it support DDL?
 
