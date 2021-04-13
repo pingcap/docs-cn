@@ -101,7 +101,7 @@ BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
 RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2';
 ```
 
-有关详细的 URL 语法，见 [BR 存储](/br/backup-and-restore-storages.md)。
+有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
 
 当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
 
