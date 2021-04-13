@@ -15,7 +15,7 @@ TiUP mirrors are TiUP's component warehouse, which stores components and their m
 You can create a TiUP mirror using one of the following two methods:
 
 + Execute `tiup mirror init` to create a mirror from scratch.
-+ Execute `tiup mirrir clone` to clone from an existing mirror.
++ Execute `tiup mirror clone` to clone from an existing mirror.
 
 After the mirror is created, you can add components to or delete components from the mirror using the `tiup mirror` commands. TiUP updates a mirror by adding files and assigning a new version number to it, rather than deleting any files from the mirror.
 
