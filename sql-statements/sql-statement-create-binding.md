@@ -15,13 +15,13 @@ summary: TiDB 数据库中 CREATE [GLOBAL|SESSION] BINDING 的使用概况。
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-    'CREATE' GlobalScope 'BINDING' 'FOR' SelectStmt 'USING' SelectStmt
+    'CREATE' GlobalScope 'BINDING' 'FOR' BindableStmt 'USING' BindableStmt
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
 
-SelectStmt ::=
-    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable ) OrderByOptional SelectStmtLimit SelectLockOpt SelectStmtIntoOption
+BindableStmt ::=
+    ( SelectStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | DeleteStmt )
 ```
 
 ****
