@@ -27,7 +27,7 @@ In v5.0, the key new features or improvements are as follows:
 ### System variables
 
 + Add the [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-new-in-v50) system variable to control the concurrency of multiple operators. The previous `tidb_*_concurrency` settings (such as `tidb_projection_concurrency`) still take effect but with a warning when you use them.
-+ Add the [`tidb_skip_ascii_check`](/system-variables.md#tidb_skip_ascii_check) system variable to specify whether to skip the ASCII validation check when the ASCII character set is written. This default value is `OFF`.
++ Add the [`tidb_skip_ascii_check`](/system-variables.md#tidb_skip_ascii_check-new-in-v50) system variable to specify whether to skip the ASCII validation check when the ASCII character set is written. This default value is `OFF`.
 + Add the [`tidb_enable_strict_double_type_check`](/system-variables.md#tidb_enable_strict_double_type_check-new-in-v50) system variable to determine whether the syntax like `double(N)` can be defined in the table schema. This default value is `OFF`.
 + Change the default value of [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) from `20000` to `0`. This means that batch DML statements are no longer used by default in `LOAD`/`INSERT INTO SELECT ...`. Instead, large transactions are used to comply with the strict ACID semantics.
 

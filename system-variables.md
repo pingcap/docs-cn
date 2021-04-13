@@ -791,7 +791,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - This variable is used to set the threshold value of memory quota for a query.
 - If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. The initial value of this variable is configured by [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query).
 
-### tidb_mem_quota_apply_cache
+### tidb_mem_quota_apply_cache <span class="version-mark">New in v5.0</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: 32 MB
@@ -923,7 +923,7 @@ mysql> desc select count(distinct a) from test.t;
     select * from t, t1 where t.a=t1.a
     ```
 
-### tidb_opt_prefer_range_scan
+### tidb_opt_prefer_range_scan <span class="version-mark">New in v5.0</span>
 
 - Scope: SESSION
 - Default value: 0
@@ -1055,7 +1055,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - This variable is used to set whether to skip UTF-8 validation.
 - Validating UTF-8 characters affects the performance. When you are sure that the input characters are valid UTF-8 characters, you can set the variable value to `ON`.
 
-### tidb_skip_ascii_check
+### tidb_skip_ascii_check <span class="version-mark">New in v5.0</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: OFF
