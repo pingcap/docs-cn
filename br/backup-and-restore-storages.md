@@ -41,6 +41,15 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
         -d 's3://my-bucket/sql-backup?region=us-west-2'
     ```
 
+* 用 TiDB Lightning 从 S3 导入数据（使用路径类型的请求模式）。如果你使用的是 TiDB v4.0.11 及以下版本，需要设置 `force-path-style=true` 后才能使用路径类型的请求模式。  
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
+    ```
+
 * 用 BR 备份到 GCS
 
     {{< copyable "shell-regular" >}}
