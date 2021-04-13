@@ -8,10 +8,15 @@ aliases: ['/docs/dev/tidb-lightning/tidb-lightning-overview/','/docs/dev/referen
 
 [TiDB Lightning](https://github.com/pingcap/tidb-lightning) is a tool used for fast full import of large amounts of data into a TiDB cluster. You can download TiDB Lightning from [here](/download-ecosystem-tools.md#tidb-lightning).
 
-Currently, TiDB Lightning supports reading SQL dump exported via Dumpling or CSV data source. You can use it in the following two scenarios:
+Currently, TiDB Lightning can mainly be used in the following two scenarios:
 
 - Importing **large amounts** of **new** data **quickly**
 - Restore all backup data
+
+Currently, TiDB Lightning supports:
+
+- The data source of the [Dumpling](/dumpling-overview.md), CSV or [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) exported formats.
+- Reading data from a local disk or from the Amazon S3 storage. For details, see [External Storages](/br/backup-and-restore-storages.md).
 
 ## TiDB Lightning architecture
 

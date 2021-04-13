@@ -526,7 +526,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
 - 6.3.4 `Checkpoint for … has invalid status:(error code)`
 
-    - Cause: Checkpoint is enabled, and Lightning/Importer has previously abnormally exited. To prevent accidental data corruption, Lightning will not start until the error is addressed. The error code is an integer less than 25, with possible values as `0, 3, 6, 9, 12, 14, 15, 17, 18, 20 and 21`. The integer indicates the step where the unexpected exit occurs in the import process. The larger the integer is, the later the exit occurs.
+    - Cause: Checkpoint is enabled, and Lightning/Importer has previously abnormally exited. To prevent accidental data corruption, TiDB Lightning will not start until the error is addressed. The error code is an integer less than 25, with possible values as `0, 3, 6, 9, 12, 14, 15, 17, 18, 20 and 21`. The integer indicates the step where the unexpected exit occurs in the import process. The larger the integer is, the later the exit occurs.
 
     - Solution: See [Troubleshooting Solution](/tidb-lightning/tidb-lightning-faq.md#checkpoint-for--has-invalid-status-error-code).
 

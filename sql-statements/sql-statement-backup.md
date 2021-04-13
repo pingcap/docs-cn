@@ -98,7 +98,7 @@ BACKUP DATABASE * TO 'local:///mnt/backup/full/';
 
 Note that the system tables (`mysql.*`, `INFORMATION_SCHEMA.*`, `PERFORMANCE_SCHEMA.*`, …) will not be included into the backup.
 
-### Remote destinations
+### External storages
 
 BR supports backing up data to S3 or GCS:
 
@@ -108,7 +108,7 @@ BR supports backing up data to S3 or GCS:
 BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2&access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
 ```
 
-The URL syntax is further explained in [BR storages](/br/backup-and-restore-storages.md).
+The URL syntax is further explained in [External Storages](/br/backup-and-restore-storages.md).
 
 When running on cloud environment where credentials should not be distributed, set the `SEND_CREDENTIALS_TO_TIKV` option to `FALSE`:
 

@@ -165,7 +165,7 @@ In the Kubernetes environment, you can use the BR tool to back up TiDB cluster d
 
 > **Note:**
 >
-> For Amazon S3 and Google Cloud Storage parameter descriptions, see the [BR Storages](/br/backup-and-restore-storages.md) document.
+> For Amazon S3 and Google Cloud Storage parameter descriptions, see the [External Storages](/br/backup-and-restore-storages.md#url-parameters) document.
 
 - [Back up Data to S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br)
 - [Restore Data from S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br)
@@ -179,4 +179,4 @@ In the Kubernetes environment, you can use the BR tool to back up TiDB cluster d
 - [Use BR Command-line](/br/use-br-command-line-tool.md)
 - [BR Use Cases](/br/backup-and-restore-use-cases.md)
 - [BR FAQ](/br/backup-and-restore-faq.md)
-- [BR Storages](/br/backup-and-restore-storages.md)
+- [External Storages](/br/backup-and-restore-storages.md)

@@ -58,7 +58,7 @@ See also the [FAQs](/tidb-lightning/tidb-lightning-faq.md#checksum-failed-checks
 
 A continuous range of source data, normally equivalent to a single file in the data source.
 
-When a file is too large, Lightning may split a file into multiple chunks.
+When a file is too large, TiDB Lightning might split a file into multiple chunks.
 
 ### Compaction
 

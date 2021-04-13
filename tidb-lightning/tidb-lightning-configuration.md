@@ -75,7 +75,7 @@ io-concurrency = 5
 [checkpoint]
 # Whether to enable checkpoints.
 # While importing data, TiDB Lightning records which tables have been imported, so
-# even if Lightning or another component crashes, you can start from a known
+# even if TiDB Lightning or another component crashes, you can start from a known
 # good state instead of redoing everything.
 enable = true
 # The schema name (database name) to store the checkpoints.
@@ -85,7 +85,7 @@ schema = "tidb_lightning_checkpoint"
 #  - mysql: store into a remote MySQL-compatible database
 driver = "file"
 # The data source name (DSN) indicating the location of the checkpoint storage.
-# For the "file" driver, the DSN is a path. If the path is not specified, Lightning would
+# For the "file" driver, the DSN is a path. If the path is not specified, TiDB Lightning would
 # default to "/tmp/CHECKPOINT_SCHEMA.pb".
 # For the "mysql" driver, the DSN is a URL in the form of "USER:PASS@tcp(HOST:PORT)/".
 # If the URL is not specified, the TiDB server from the [tidb] section is used to
@@ -132,7 +132,7 @@ read-block-size = 65536 # Byte (default = 64 KB)
 
 # The engine file needs to be imported sequentially. Due to parallel processing,
 # multiple data engines will be imported at nearly the same time, and this
-# creates a queue and wastes resources. Therefore, Lightning slightly
+# creates a queue and wastes resources. Therefore, TiDB Lightning slightly
 # increases the size of the first few batches to properly distribute
 # resources. The scale up factor is controlled by this parameter, which
 # expresses the ratio of duration between the "import" and "write" steps
@@ -143,7 +143,7 @@ read-block-size = 65536 # Byte (default = 64 KB)
 # This value should be in the range (0 <= batch-import-ratio < 1).
 batch-import-ratio = 0.75
 
-# Local source data directory.
+# Local source data directory or the URL of the external storage.
 data-source-dir = "/data/my_database"
 # If no-schema is set to true, tidb-lightning assumes that the table skeletons
 # already exist on the target TiDB cluster, and will not execute the `CREATE
@@ -151,10 +151,9 @@ data-source-dir = "/data/my_database"
 no-schema = false
 # The character set of the schema files, containing CREATE TABLE statements;
 # only supports one of:
-#  - utf8mb4: the schema files must be encoded as UTF-8, otherwise Lightning
-#             will emit errors
-#  - gb18030: the schema files must be encoded as GB-18030, otherwise
-#             Lightning will emit errors
+#  - utf8mb4: the schema files must be encoded as UTF-8; otherwise, an error is reported.
+#  - gb18030: the schema files must be encoded as GB-18030; otherwise,
+#             an error is reported
 #  - auto:    (default) automatically detects whether the schema is UTF-8 or
 #             GB-18030. An error is reported if the encoding is neither.
 #  - binary:  do not try to decode the schema files
@@ -166,13 +165,13 @@ character-set = "auto"
 # Implications of strict-format = true are:
 #  * in CSV, every value cannot contain literal new lines (U+000A and U+000D, or \r and \n) even
 #    when quoted, which means new lines are strictly used to separate rows.
-# Strict format allows Lightning to quickly locate split positions of a large file for parallel
+# Strict format allows TiDB Lightning to quickly locate split positions of a large file for parallel
 # processing. However, if the input data is not strict, it may split a valid data in half and
 # corrupt the result.
 # The default value is false for safety over speed.
 strict-format = false
 
-# If strict-format is true, Lightning will split large CSV files into multiple chunks to process in
+# If strict-format is true, TiDB Lightning will split large CSV files into multiple chunks to process in
 # parallel. max-region-size is the maximum size of each chunk after splitting.
 # max-region-size = 268_435_456 # Byte (default = 256 MB)
 
@@ -266,7 +265,7 @@ analyze = true
 # Configures the background periodic actions.
 # Supported units: h (hour), m (minute), s (second).
 [cron]
-# Duration between which Lightning automatically refreshes the import mode
+# Duration between which TiDB Lightning automatically refreshes the import mode
 # status. Should be shorter than the corresponding TiKV setting.
 switch-mode = "5m"
 # Duration between which an import progress is printed to the log.
@@ -360,7 +359,7 @@ min-available-ratio = 0.05
 |:----|:----|:----|
 | --config *file* | Reads global configuration from *file*. If not specified, the default configuration would be used. | |
 | -V | Prints program version | |
-| -d *directory* | Directory of the data dump to read from | `mydumper.data-source-dir` |
+| -d *directory* | Directory or [external storage URL](/br/backup-and-restore-storages.md) of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
 | -f *rule* | [Table filter rules](/table-filter.md) (can be specified multiple times) | `mydumper.filter` |
 | --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-backends.md) (`importer`, `local`, or `tidb`) | `tikv-importer.backend` |
@@ -381,7 +380,7 @@ min-available-ratio = 0.05
 | --ca *file* | CA certificate path for TLS connection | `security.ca-path` |
 | --cert *file* | Certificate path for TLS connection | `security.cert-path` |
 | --key *file* | Private key path for TLS connection | `security.key-path` |
-| --server-mode | Start Lightning in server mode | `lightning.server-mode` |
+| --server-mode | Start TiDB Lightning in server mode | `lightning.server-mode` |
 
 If a command line parameter and the corresponding setting in the configuration file are both provided, the command line parameter will be used. For example, running `./tidb-lightning -L debug --config cfg.toml` would always set the log level to "debug" regardless of the content of `cfg.toml`.
 
