@@ -223,20 +223,17 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ## GC
 
-- MVCC versions: The number of versions for each key
-- MVCC delete versions: The number of versions deleted by GC for each key
 - GC tasks: The count of GC tasks processed by gc_worker
 - GC tasks Duration: The time consumed when executing GC tasks
-- GC keys (write CF): The count of keys in write CF affected during GC
-- TiDB GC worker actions: The count of TiDB GC worker actions
 - TiDB GC seconds: The GC duration
-- GC speed: The number of keys deleted by GC per second
-- TiKV AutoGC Working: The status of Auto GC
+- TiDB GC worker actions: The count of TiDB GC worker actions
 - ResolveLocks Progress: The progress of the first phase of GC (Resolve Locks)
 - TiKV Auto GC Progress: The progress of the second phase of GC
+- GC speed: The number of keys deleted by GC per second
 - TiKV Auto GC SafePoint: The value of TiKV GC safe point. The safe point is the current GC timestamp
 - GC lifetime: The lifetime of TiDB GC
 - GC interval: The interval of TiDB GC
+- GC in Compaction Filter: The count of filtered versions in the compaction filter of write CF.
 
 ## Snapshot
 
