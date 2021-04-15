@@ -144,7 +144,7 @@ master_servers:
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
 - `name`：指定该 DM worker 实例的名字，不同实例的名字必须唯一，否则无法部署
-- `port`：指定 DM master 提供给服务的端口，默认 8262
+- `port`：指定 DM worker 提供给服务的端口，默认 8262
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
