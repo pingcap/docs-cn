@@ -21,7 +21,7 @@ title: tiup cluster scale-in
 
 ## 语法
 
-```sh
+```shell
 tiup cluster scale-in <cluster-name> [flags]
 ```
 

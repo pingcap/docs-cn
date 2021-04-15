@@ -12,7 +12,7 @@ title: tiup dm destroy
 
 ## 语法
 
-```sh
+```shell
 tiup dm destroy <cluster-name> [flags]
 ```
 

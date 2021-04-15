@@ -8,7 +8,7 @@ title: tiup dm audit
 
 ## 语法
 
-```sh
+```shell
 tiup dm audit [audit-id] [flags]
 ```
 

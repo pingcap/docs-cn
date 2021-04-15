@@ -8,7 +8,7 @@ title: TiUP DM
 
 ## 语法
 
-```sh
+```shell
 tiup dm [command] [flags]
 ```
 

@@ -8,7 +8,7 @@ TiUP 命令行界面为用户提供了丰富的帮助信息，用户可以通过
 
 ## 语法
 
-```sh
+```shell
 tiup help [command]
 ```
 

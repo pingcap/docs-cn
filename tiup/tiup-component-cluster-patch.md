@@ -14,12 +14,12 @@ title: tiup cluster patch
 
 ## 语法
 
-```sh
+```shell
 tiup cluster patch <cluster-name> <package-path> [flags]
 ```
 
 - `<cluster-name>` 代表要操作的集群名
-- `<package-pach>` 为用于替换的二进制包，其打包方式如下：
+- `<package-path>` 为用于替换的二进制包，其打包方式如下：
     - 确定当前要替换的组件名称 `${component}` (tidb, tikv, pd...) 以及其版本 `${version}` (v4.0.0, v4.0.1 ...)，以及其运行的平台 `${os}` (linux) 和 `${arch}` (amd64, arm64)
     - 下载当前的组件包：`wget https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz -O /tmp/${component}-${version}-${os}-${arch}.tar.gz`
     - 建立临时打包目录：`mkdir -p /tmp/package && cd /tmp/package`
@@ -33,7 +33,7 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 
 ### --overwrite（boolean，默认 false）
 
-对某个组件（比如 TiDB，TiKV）进行 patch 之后，会涉及到一个问题：以后在该集群扩容该组件时，是用原来的版本，还是用 patch 之后的二进制包？tiup-cluster 默认会用原来的版本，如果希望后续扩容的时候也使用 patch 之后的版本的话，就需要指定 `--overwrite` 选项。
+对某个组件（比如 TiDB，TiKV）进行 patch 后，如果要在该集群扩容该组件，tiup-cluster 会默认使用 patch 前的版本。如果希望后续扩容的时候也使用 patch 之后的版本，需要指定 `--overwrite` 选项。
 
 ### --transfer-timeout（uint，默认 300）
 
@@ -51,7 +51,7 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 >
 > 若同时指定了 `-R, --role`，那么将替换它们的交集中的服务。
 
-### -R, --role strings（strings，默认为 []，未选中任何角色）
+### -R, --role（strings，默认为 []，未选中任何角色）
 
 指定要替换的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
 

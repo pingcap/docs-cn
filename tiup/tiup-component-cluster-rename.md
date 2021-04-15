@@ -15,7 +15,7 @@ title: tiup cluster rename
 
 ## 语法
 
-```sh
+```shell
 tiup cluster rename <old-cluster-name> <new-cluster-name> [flags]
 ```
 

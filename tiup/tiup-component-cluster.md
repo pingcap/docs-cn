@@ -8,7 +8,7 @@ TiUP Cluster 是 TiUP 提供的使用 Golang 编写的集群管理组件，通�
 
 ## 语法
 
-```sh
+```shell
 tiup cluster [command] [flags]
 ```
 

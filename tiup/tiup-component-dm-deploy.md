@@ -8,7 +8,7 @@ title: tiup dm deploy
 
 ## 语法
 
-```sh
+```shell
 tiup dm deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 

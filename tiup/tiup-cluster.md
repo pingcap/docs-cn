@@ -663,7 +663,7 @@ tiup cluster check <cluster-name> --cluster
 
 也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--native-ssh` 参数：
 
-```sh
+```shell
 export TIUP_NATIVE_SSH=true
 # 或者
 export TIUP_NATIVE_SSh=1

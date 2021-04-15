@@ -13,7 +13,7 @@ title: tiup dm edit-config
 
 ## 语法
 
-```sh
+```shell
 tiup dm edit-config <cluster-name> [flags]
 ```
 

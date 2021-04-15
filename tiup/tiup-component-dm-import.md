@@ -19,7 +19,7 @@ title: tiup dm import
 
 ## 语法
 
-```sh
+```shell
 tiup dm import [flags]
 ```
 

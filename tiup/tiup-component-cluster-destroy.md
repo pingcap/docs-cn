@@ -12,7 +12,7 @@ title: tiup cluster destroy
 
 ## 语法
 
-```sh
+```shell
 tiup cluster destroy <cluster-name> [flags]
 ```
 

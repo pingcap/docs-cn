@@ -13,7 +13,7 @@ title: tiup mirror merge
 
 ## 语法
 
-```sh
+```shell
 tiup mirror merge <mirror-dir-1> [mirror-dir-N] [flags]
 ```
 

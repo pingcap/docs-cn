@@ -10,7 +10,7 @@ title: tiup mirror set
 
 ## 语法
 
-```sh
+```shell
 tiup mirror set <mirror-addr> [flags]
 ```
 

@@ -14,7 +14,7 @@ title: tiup dm patch
 
 ## 语法
 
-```sh
+```shell
 tiup dm patch <cluster-name> <package-path> [flags]
 ```
 
@@ -43,7 +43,7 @@ tiup dm patch <cluster-name> <package-path> [flags]
 >
 > 若同时指定了 `-R, --role`，那么将替换它们的交集中的服务。
 
-### -R, --role strings（strings，默认为 []，未选中任何角色）
+### -R, --role（strings，默认为 []，未选中任何角色）
 
 指定要替换的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-dm-display.md)表格的第二列。
 

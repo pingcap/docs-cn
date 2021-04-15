@@ -8,7 +8,7 @@ title: tiup clean
 
 ## 语法
 
-```sh
+```shell
 tiup clean [name] [flags]
 ```
 

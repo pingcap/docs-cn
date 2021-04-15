@@ -8,7 +8,7 @@ title: tiup mirror publish
 
 ## 语法
 
-```sh
+```shell
 tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 ```
 
@@ -59,7 +59,9 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 
 ### --standalone（boolean，默认 false）
 
-该组件是否可独立运行。该参数目前尚未启用。
+- 该组件是否可独立运行。该参数目前尚未启用。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

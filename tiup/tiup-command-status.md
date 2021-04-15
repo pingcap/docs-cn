@@ -15,7 +15,7 @@ title: tiup status
 
 ## 语法
 
-```sh
+```shell
 tiup status [flags]
 ```
 

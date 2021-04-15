@@ -2,13 +2,13 @@
 title: tiup cluster reload
 ---
 
-# tiup cluster list
+# tiup cluster reload
 
 在[修改集群配置](/tiup/tiup-component-cluster-edit-config.md)之后，需要通过 `tiup cluster reload` 命令让集群重新加载配置才会生效，该命令会将中控机的配置发布到服务运行的远端机器，并按照升级的流程按顺序重启服务，重启过程中集群仍然可用。
 
 ## 语法
 
-```sh
+```shell
 tiup cluster reload <cluster-name> [flags]
 ```
 
@@ -30,7 +30,7 @@ tiup cluster reload <cluster-name> [flags]
 
 ### --ignore-config-check（boolean，默认 false）
 
-在组件二进制文件部署之后，会对 TiDB，TiKV 和 PD 组件执行配置检查，检查方式为 `<binary> --config-check <config-file>`，其中 `<bianry>` 为部署的二进制文件的路径，`<config-file>` 为根据用户配置生成的配置文件。
+在组件二进制文件部署之后，会对 TiDB，TiKV 和 PD 组件执行配置检查，检查方式为 `<binary> --config-check <config-file>`，其中 `<binary>` 为部署的二进制文件的路径，`<config-file>` 为根据用户配置生成的配置文件。
 
 如果想要跳过该项检查，可以使用该选项。
 
@@ -43,7 +43,7 @@ tiup cluster reload <cluster-name> [flags]
 > + 若同时指定了 `-R, --role`，那么将重启它们的交集中的服务
 > + 若指定了选项 `--skip-restart`，则该选项无效
 
-### -R, --role strings（strings，默认为 []，表示所有角色）
+### -R, --role（strings，默认为 []，表示所有角色）
 
 指定要重启的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
 

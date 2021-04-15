@@ -8,7 +8,7 @@ title: tiup cluster deploy
 
 ## 语法
 
-```sh
+```shell
 tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 
@@ -32,7 +32,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 ### --ignore-config-check（boolean，默认 false）
 
-在组件二进制文件部署之后，会对 TiDB，TiKV 和 PD 组件执行配置检查，检查方式为 `<binary> --config-check <config-file>`，其中 `<bianry>` 为部署的二进制文件的路径，`<config-file>` 为根据用户配置生成的配置文件。
+在组件二进制文件部署之后，会对 TiDB，TiKV 和 PD 组件执行配置检查，检查方式为 `<binary> --config-check <config-file>`，其中 `<binary>` 为部署的二进制文件的路径，`<config-file>` 为根据用户配置生成的配置文件。
 
 如果想要跳过该项检查，可以使用该选项。
 
@@ -42,7 +42,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 但是对于测试环境，可能并不在意是否将一个 Region 的副本调度到了同一台机器上，这个时候可以使用 `--no-labels` 来绕过检查。
 
-### --skip-create-user（boolean，false）
+### --skip-create-user（boolean，默认 false）
 
 在部署集群时，tiup-cluster 会先检查拓扑文件中指定的用户名是否存在，如果不存在就会创建一个。指定 `--skip-create-user` 选项后不再检查用户是否存在，直接跳过创建步骤。
 

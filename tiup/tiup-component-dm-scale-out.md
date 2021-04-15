@@ -8,7 +8,7 @@ title: tiup dm scale-out
 
 ## 语法
 
-```sh
+```shell
 tiup dm scale-out <cluster-name> <topology.yaml> [flags]
 ```
 

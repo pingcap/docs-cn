@@ -12,7 +12,7 @@ tiup-cluster 支持使用同一个中控机部署多套集群，而命令 `tiup 
 
 ## 语法
 
-```sh
+```shell
 tiup cluster list [flags]
 ```
 

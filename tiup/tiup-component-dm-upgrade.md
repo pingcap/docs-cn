@@ -8,7 +8,7 @@ title: tiup dm upgrade
 
 ## 语法
 
-```sh
+```shell
 tiup dm upgrade <cluster-name> <version> [flags]
 ```
 

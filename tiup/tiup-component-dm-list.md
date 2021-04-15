@@ -12,7 +12,7 @@ tiup-dm 支持使用同一个中控机部署多套集群，而命令 `tiup dm li
 
 ## 语法
 
-```sh
+```shell
 tiup dm list [flags]
 ```
 

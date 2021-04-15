@@ -8,7 +8,7 @@ title: tiup mirror sign
 
 ## 语法
 
-```sh
+```shell
 tiup mirror sign <manifest-file> [flags]
 ```
 

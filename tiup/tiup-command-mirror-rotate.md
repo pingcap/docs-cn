@@ -39,7 +39,7 @@ TiUP 使用命令 `tiup mirror rotate` 来自动化以上流程。
 
 ## 语法
 
-```sh
+```shell
 tiup mirror rotate [flags]
 ```
 

@@ -8,7 +8,7 @@ title: tiup mirror clone
 
 ## 语法
 
-```sh
+```shell
 tiup mirror clone <target-dir> [global version] [flags]
 ```
 
@@ -19,7 +19,9 @@ tiup mirror clone <target-dir> [global version] [flags]
 
 ### -f, --full（boolean，默认 false）
 
-是否克隆整个镜像。指定该选项后会完整从目标镜像克隆所有组件的所有版本，此时其他指定的选项将失效。
+- 是否克隆整个镜像。指定该选项后会完整从目标镜像克隆所有组件的所有版本，此时其他指定的选项将失效。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### -a, --arch（strings，默认 amd64,arm64）
 
@@ -31,7 +33,9 @@ tiup mirror clone <target-dir> [global version] [flags]
 
 ### --prefix（boolean，默认 false）
 
-匹配版本时是否前缀匹配。默认情况下必须严格匹配指定的版本才会下载，指定该选项之后，仅前缀匹配指定的版本也会被下载。
+- 匹配版本时是否前缀匹配。默认情况下必须严格匹配指定的版本才会下载，指定该选项之后，仅前缀匹配指定的版本也会被下载。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### --{component}（strings，默认为空）
 

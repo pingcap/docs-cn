@@ -23,7 +23,7 @@ title: tiup mirror init
 
 ## 语法
 
-```sh
+```shell
 tiup mirror init <path> [flags]
 ```
 

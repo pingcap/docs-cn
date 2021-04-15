@@ -8,7 +8,7 @@ TiUP 在 TiDB 生态中承担包管理器的功能，管理着 TiDB 生态下众
 
 ## 语法
 
-```sh
+```shell
 tiup [flags] <command> [args...]        # 执行命令
 # or
 tiup [flags] <component> [args...]      # 运行组件

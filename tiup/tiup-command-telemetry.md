@@ -26,7 +26,7 @@ TiUP 使用命令 `tiup telemetry` 来控制遥测。
 
 ## 语法
 
-```sh
+```shell
 tiup telemetry <command>
 ```
 

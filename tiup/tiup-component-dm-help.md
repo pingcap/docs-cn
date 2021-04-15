@@ -8,7 +8,7 @@ tiup-dm 在命令行界面为用户提供了丰富的帮助信息，这些帮助
 
 ## 语法
 
-```sh
+```shell
 tiup dm help [command] [flags]
 ```
 

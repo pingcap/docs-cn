@@ -8,7 +8,7 @@ title: tiup cluster display
 
 ## 语法
 
-```sh
+```shell
 tiup cluster display <cluster-name> [flags]
 ```
 
@@ -28,7 +28,7 @@ tiup cluster display <cluster-name> [flags]
 >
 > 若同时指定了 `-R, --role`，那么将查询它们的交集中的服务状态。
 
-### -R, --role strings（strings，默认为 []，表示所有角色）
+### -R, --role（strings，默认为 []，表示所有角色）
 
 指定要查询的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
 

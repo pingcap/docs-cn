@@ -8,7 +8,7 @@ title: tiup cluster prune
 
 ## 语法
 
-```sh
+```shell
 tiup cluster prune <cluster-name> [flags]
 ```
 

@@ -8,7 +8,7 @@ tiup-cluster 在命令行界面为用户提供了丰富的帮助信息，这些�
 
 ## 语法
 
-```sh
+```shell
 tiup cluster help [command] [flags]
 ```
 

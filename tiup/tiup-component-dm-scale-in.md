@@ -8,7 +8,7 @@ title: tiup dm scale-in
 
 ## 语法
 
-```sh
+```shell
 tiup dm scale-in <cluster-name> [flags]
 ```
 

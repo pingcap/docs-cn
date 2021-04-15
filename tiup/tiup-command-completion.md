@@ -13,7 +13,7 @@ title: tiup completion
 
 ## 语法
 
-```sh
+```shell
 tiup completion <shell>
 ```
 
@@ -25,7 +25,7 @@ tiup completion <shell>
 
 将自动补全代码写入一个文件，并且在 `.bash_profile` 中对其执行 `source` 命令：
 
-```sh
+```shell
 tiup completion bash > ~/.tiup.completion.bash
 
 printf "
@@ -38,6 +38,6 @@ source $HOME/.bash_profile
 
 ### zsh
 
-```sh
+```shell
 tiup completion zsh > "${fpath[1]}/_tiup"
 ```

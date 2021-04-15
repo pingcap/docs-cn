@@ -8,7 +8,7 @@ title: tiup mirror modify
 
 ## 语法
 
-```sh
+```shell
 tiup mirror modify <component>[:version] [flags]
 ```
 
@@ -25,14 +25,19 @@ tiup mirror modify <component>[:version] [flags]
 
 ### --yank（boolean，默认 false）
 
-将指定组件或指定版本标记为不可用：
+- 将指定组件或指定版本标记为不可用：
 
-- 标记组件不可用之后 `tiup list` 将看不到该组件，也无法安装该组件的新版本。
-- 标记版本不可用之后 `tiup list <component>` 将看不到该版本，也无法安装该版本。
+    - 标记组件不可用之后 `tiup list` 将看不到该组件，也无法安装该组件的新版本。
+    - 标记版本不可用之后 `tiup list <component>` 将看不到该版本，也无法安装该版本。
+
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### --hide（boolean，默认 false）
 
-将该组件设置为隐藏，隐藏之后该组件将不在 `tiup list` 的列表中显示，但是可通过执行 `tiup list --all` 查看。
+- 将该组件设置为隐藏，隐藏之后该组件将不在 `tiup list` 的列表中显示，但是可通过执行 `tiup list --all` 查看。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 > **注意：**
 >
@@ -40,7 +45,9 @@ tiup mirror modify <component>[:version] [flags]
 
 ### --standalone（boolean，默认 false）
 
-该组件是否可独立运行。本参数目前尚未启用。
+- 该组件是否可独立运行。本参数目前尚未启用。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 > **注意：**
 >

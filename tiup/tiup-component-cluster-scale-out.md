@@ -8,7 +8,7 @@ title: tiup cluster scale-out
 
 ## 语法
 
-```sh
+```shell
 tiup cluster scale-out <cluster-name> <topology.yaml> [flags]
 ```
 

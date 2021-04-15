@@ -12,15 +12,15 @@ title: tiup cluster import
 > + 如果使用 TiDB Ansible 部署的集群存在以下情况之一，暂不支持导入：
 >     + 启用了 TLS 加密功能的集群
 >     + 纯 KV 集群（没有 TiDB 实例的集群）
->     + 启用了 `Kafka 的集群
->     + 启用了 Spark` 的集群
+>     + 启用了 Kafka 的集群
+>     + 启用了 Spark 的集群
 >     + 启用了 TiDB Lightning/ Importer 的集群
 >     + 仍使用老版本 `push` 的方式收集监控指标（从 v3.0 起默认为 `pull` 模式，如果没有特意调整过则可以支持）
 >     + 在 `inventory.ini` 配置文件中单独为机器的 `node_exporter` / `blackbox_exporter` 通过 `node_exporter_port`/`blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
 
 ## 语法
 
-```sh
+```shell
 tiup cluster import [flags]
 ```
 
