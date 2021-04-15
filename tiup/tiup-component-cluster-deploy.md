@@ -8,7 +8,7 @@ The `tiup cluster deploy` command is used to deploy a new cluster.
 
 ## Syntax
 
-```sh
+```shell
 tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 

@@ -13,7 +13,7 @@ If you need to modify the cluster configuration after the cluster is deployed, y
 
 ## Syntax
 
-```sh
+```shell
 tiup cluster edit-config <cluster-name> [flags]
 ```
 

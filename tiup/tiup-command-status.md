@@ -15,7 +15,7 @@ The `tiup status` command is used to view the operation information of the compo
 
 ## Syntax
 
-```sh
+```shell
 tiup status [flags]
 ```
 

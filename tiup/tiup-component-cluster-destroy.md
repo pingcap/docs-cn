@@ -12,7 +12,7 @@ After an application goes offline, if you want to release the machines occupied 
 
 ## Syntax
 
-```sh
+```shell
 tiup cluster destroy <cluster-name> [flags]
 ```
 
