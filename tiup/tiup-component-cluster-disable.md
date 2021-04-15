@@ -18,15 +18,15 @@ tiup cluster disable <cluster-name> [flags]
 
 ### -N, --node
 
+- Specifies the nodes whose auto-enabling service is to be disabled. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status](/tiup/tiup-component-cluster-display.md) table.
 - Data type: `strings`
 - Default: `[]`, which means no node is selected.
-- Specifies the nodes whose auto-enabling service is to be disabled. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status](/tiup/tiup-component-cluster-display.md) table.
 
 > **Note:**
 >
 > If the `-R, --role` option is specified at the same time, the auto-enabling of services in their intersection is disabled.
 
-### -R, --role strings
+### -R, --role
 
 - Data type: `strings`
 - Default: `[]`, which means no role is selected.
@@ -38,7 +38,7 @@ tiup cluster disable <cluster-name> [flags]
 
 ### -h, --help
 
-- Outputs the help information.
+- Prints the help information.
 - Data type: `BOOLEAN`
 - Default: false
 
