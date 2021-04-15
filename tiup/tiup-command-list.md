@@ -8,7 +8,7 @@ The command `tiup list` is used to get the list of available components of a mir
 
 ## Syntax
 
-```sh
+```shell
 tiup list [component] [flags]
 ```
 

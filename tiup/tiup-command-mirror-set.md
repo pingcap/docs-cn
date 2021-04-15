@@ -10,7 +10,7 @@ The address of the official mirror is `https://tiup-mirrors.pingcap.com`.
 
 ## Syntax
 
-```sh
+```shell
 tiup mirror set <mirror-addr> [flags]
 ```
 

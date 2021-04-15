@@ -8,7 +8,7 @@ The `tiup install` command is used for component installation. It downloads the 
 
 ## Syntax
 
-```sh
+```shell
 tiup install <component1>[:version] [component2...N] [flags]
 ```
 

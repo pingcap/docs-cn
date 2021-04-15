@@ -8,7 +8,7 @@ The command `tiup mirror clone` is used to clone an existing mirror or clone som
 
 ## Syntax
 
-```sh
+```shell
 tiup mirror clone <target-dir> [global version] [flags]
 ```
 

@@ -8,7 +8,7 @@ TiUP provides users with flexible and customized interfaces, some of which are i
 
 ## Syntax
 
-```sh
+```shell
 tiup env [name1...N]
 ```
 

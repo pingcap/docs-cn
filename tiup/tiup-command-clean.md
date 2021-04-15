@@ -8,7 +8,7 @@ The `tiup clean` command is used to clear the data generated during component op
 
 ## Syntax
 
-```sh
+```shell
 tiup clean [name] [flags]
 ```
 

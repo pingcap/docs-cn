@@ -13,7 +13,7 @@ If you want to complete `bash` commands, you need to install `bash-completion` f
 
 ## Syntax
 
-```sh
+```shell
 tiup completion <shell>
 ```
 
@@ -25,7 +25,7 @@ tiup completion <shell>
 
 Write the `tiup completion bash` command into a file and source the file in `.bash_profile`. See the following example:
 
-```sh
+```shell
 tiup completion bash > ~/.tiup.completion.bash
 
 printf "
@@ -38,6 +38,6 @@ source $HOME/.bash_profile
 
 ### zsh
 
-```sh
+```shell
 tiup completion zsh > "${fpath[1]}/_tiup"
 ```
