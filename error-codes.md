@@ -98,7 +98,7 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
 * Error Number: 8027
 
-    The table schema version is outdated. TiDB uses the F1 online schema change algorithm to execute DDL statements. When the table schema version of the TiDB server is earlier than that of the entire system, this error is returned if you execute a SQL statement.
+    The table schema version is outdated. TiDB uses the online schema change algorithm to execute DDL statements. When the table schema version of the TiDB server is earlier than that of the entire system, this error is returned if you execute a SQL statement.
 
     When this error occurs, check the network between the TiDB server and the PD Leader.
 
