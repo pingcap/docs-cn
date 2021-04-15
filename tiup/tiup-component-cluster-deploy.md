@@ -50,7 +50,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 - Data type: `BOOLEAN`
 - Default: false
 
-### --skip-create-user（boolean，false）
+### --skip-create-user
 
 - During the cluster deployment, tiup-cluster checks whether the specified user name in the topology file exists or not. If not, it creates one. To skip this check, you can use the `--skip-create-user` option.
 - Data type: `BOOLEAN`
