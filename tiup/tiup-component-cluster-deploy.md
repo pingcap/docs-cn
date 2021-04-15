@@ -28,11 +28,11 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 - Specifies the key file used to connect to the target machine.
 - Data type: `STRING`
-- Default: `~/.ssh/id_rsa`
+- If this option is not specified in the command, the `~/.ssh/id_rsa` file is used to connect to the target machine by default.
 
 ### -p, --password
 
-- Specifies the password used to connect to the target machine. Do not use it with `-i/--identity_file` at the same time.
+- Specifies the password used to connect to the target machine. Do not use this option with `-i/--identity_file` at the same time.
 - Data type: `BOOLEAN`
 - Default: false
 

@@ -8,7 +8,7 @@ The TiUP command-line interface provides users with a wealth of help information
 
 ## Syntax
 
-```sh
+```shell
 tiup help [command]
 ```
 
