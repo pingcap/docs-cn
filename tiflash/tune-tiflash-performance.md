@@ -51,7 +51,7 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
     set @@tidb_opt_distinct_agg_push_down = 1;
     ```
 
-5. 在 Join 没有选择 MPP 执行模式的情况下，调整参数使 Join 算子选择 MPP 执行：
+5. 如果 `Join` 算子没有选择 MPP 执行模式，你可以调整 `tidb_opt_network_factor` 变量值使 `Join` 算子选择 MPP 执行模式：
 
     `tidb_opt_network_factor` 变量用来设置优化器计算代价时考虑网络开销代价的比例。当这个值越小时，TiDB 对于大量网络传输的代价估算就更小，从而更倾向于选择 MPP 算子。
 
