@@ -25,6 +25,8 @@ TiFlash is a columnar storage engine, and gradually becomes the standard cluster
 - [The simple template for the TiFlash topology](https://github.com/pingcap/docs/blob/master/config-templates/simple-tiflash.yaml)
 - [The complex template for the TiFlash topology](https://github.com/pingcap/docs/blob/master/config-templates/complex-tiflash.yaml)
 
+For detailed descriptions of the configuration items in the above TiDB cluster topology file, see [Topology Configuration File for Deploying TiDB Using TiUP](/tiup/tiup-cluster-topology-reference.md).
+
 ### Key parameters
 
 - To enable the [Placement Rules](/configure-placement-rules.md) feature of PD, set the value of `replication.enable-placement-rules` in the configuration template to `true`.

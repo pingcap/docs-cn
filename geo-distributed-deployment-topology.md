@@ -21,6 +21,8 @@ This document takes the typical architecture of three data centers (DC) in two c
 
 - [The geo-distributed topology template](https://github.com/pingcap/docs/blob/master/config-templates/geo-redundancy-deployment.yaml)
 
+For detailed descriptions of the configuration items in the above TiDB cluster topology file, see [Topology Configuration File for Deploying TiDB Using TiUP](/tiup/tiup-cluster-topology-reference.md).
+
 ### Key parameters
 
 This section describes the key parameter configuration of the TiDB geo-distributed deployment.

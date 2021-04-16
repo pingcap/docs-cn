@@ -220,7 +220,7 @@ For the PD component, `|L` or `|UI` might be appended to `Up` or `Down`. `|L` in
 >
 > This section describes only the syntax of the scale-in command. For detailed steps of online scaling, refer to [Scale the TiDB Cluster Using TiUP](/scale-tidb-using-tiup.md).
 
-Scaling in a cluster means making some node(s) offline. This operation removes the specific node(s) from the cluster and deletes the remaining data files.
+Scaling in a cluster means making some node(s) offline. This operation removes the specific node(s) from the cluster and deletes the remaining files.
 
 Because the offline process of the TiKV and TiDB Binlog components is asynchronous (which requires removing the node through API), and the process takes a long time (which requires continuous observation on whether the node is successfully taken offline), special treatment is given to the TiKV and TiDB Binlog components.
 

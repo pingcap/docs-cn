@@ -506,12 +506,15 @@
       + [Overview](/tiflash/tiflash-overview.md)
       + [Use TiFlash](/tiflash/use-tiflash.md)
   + TiUP
-    + [Documentation Guide](/tiup/tiup-documentation-guide.md)
+    + [Documentation Map](/tiup/tiup-documentation-guide.md)
     + [Overview](/tiup/tiup-overview.md)
     + [Terminology and Concepts](/tiup/tiup-terminology-and-concepts.md)
     + [Manage TiUP Components](/tiup/tiup-component-management.md)
     + [FAQ](/tiup/tiup-faq.md)
     + [Troubleshooting Guide](/tiup/tiup-troubleshooting-guide.md)
+    + [Reference Guide](/tiup/tiup-reference.md)
+    + [Cluster Topology Reference](/tiup/tiup-cluster-topology-reference.md)
+    + [Mirror Reference Guide](/tiup/tiup-mirror-reference.md)
     + TiUP Components
       + [tiup-playground](/tiup/tiup-playground.md)
       + [tiup-cluster](/tiup/tiup-cluster.md)
