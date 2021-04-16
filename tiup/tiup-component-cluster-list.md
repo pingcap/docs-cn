@@ -22,7 +22,7 @@ tiup cluster list [flags]
 
 - Prints help information.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ## Outputs
 

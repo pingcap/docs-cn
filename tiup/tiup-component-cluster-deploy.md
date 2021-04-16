@@ -34,12 +34,12 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 - Specifies the password used to connect to the target machine. Do not use this option with `-i/--identity_file` at the same time.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ### --ignore-config-check
 
 - This option is used to skip the configuration check. After the binary files of components are deployed, the configurations of TiDB, TiKV, and PD components are checked using `<binary> --config-check <config-file>`. `<binary>` is the path of the deployed binary file. `<config-file>` is the configuration file generated based on the user configuration.
-- Data type: `BOOLEAN`
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 - Default: false
 
 ### --no-labels
@@ -48,19 +48,19 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 - When two or more TiKV nodes are deployed on the same physical machine, a risk exists: PD cannot learn the cluster topology, so PD might schedule multiple replicas of a Region to different TiKV nodes on one physical machine, which makes this physical machine a single point. To avoid this risk, you can use labels to tell PD not to schedule the same Region to the same machine. See [Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md) for label configuration.
 - For the test environment, this risk might matter and you can use `--no-labels` to skip the check.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ### --skip-create-user
 
 - During the cluster deployment, tiup-cluster checks whether the specified user name in the topology file exists or not. If not, it creates one. To skip this check, you can use the `--skip-create-user` option.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ### -h, --help
 
 - Prints help information.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ## Output
 

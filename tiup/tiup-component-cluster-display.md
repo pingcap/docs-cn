@@ -20,7 +20,7 @@ tiup cluster display <cluster-name> [flags]
 
 - By default, all node information of the entire cluster is displayed. With the `--dashboard` option, only dashboard information is displayed.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ### -N, --node
 
@@ -46,7 +46,7 @@ tiup cluster display <cluster-name> [flags]
 
 - Prints the help information.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ## Outputs
 

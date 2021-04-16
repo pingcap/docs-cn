@@ -73,7 +73,7 @@ The meaning of each parameter is as follows:
 
 - Controls whether the component can run standalone. This option is currently **NOT available**.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ## Outputs
 

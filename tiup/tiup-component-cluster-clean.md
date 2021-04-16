@@ -24,7 +24,7 @@ tiup cluster clean <cluster-name> [flags]
 
 - Cleans data and the log at the same time. It is equivalent to specifying `--data` and `--log` at the same time.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 - If it is not specified, you must specify at lease one of the following options:
     - --data: Cleans data
     - --log: Cleans the log
@@ -33,13 +33,13 @@ tiup cluster clean <cluster-name> [flags]
 
 - Cleans data. If neither of it nor `--all` is specified, data will not be cleaned.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ### --log
 
 - Cleans the log. If neither of it nor `--all` is specified, the log will not be cleaned.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ### --ignore-node
 
@@ -57,7 +57,7 @@ tiup cluster clean <cluster-name> [flags]
 
 - Prints help information.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ## Output
 

@@ -25,9 +25,9 @@ tiup cluster edit-config <cluster-name> [flags]
 
 - Prints help information.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ## Output
 
-- Normally, no output.
-- If you have mistakenly modified the fields that cannot be modified, when you save the file, an error will be reported, reminding you to edit the file again. For the fields that cannot be modified, see topology file<!-- (/tiup/tiup-cluster-topology-reference.md) -->.
+- If the command is successfully executed, there is no output.
+- If you have mistakenly modified the fields that cannot be modified, when you save the file, an error will be reported, reminding you to edit the file again. For the fields that cannot be modified, see the topology file<!-- /tiup/tiup-cluster-topology-reference.md) -->.

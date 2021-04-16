@@ -24,7 +24,7 @@ tiup cluster destroy <cluster-name> [flags]
 
 - In some cases, some nodes in the cluster have been down, making it impossible to connect to the node through SSH for operation. At this time, you can use the `--force` option to ignore these errors.
 - Data type: `Boolean`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ### --retain-node-data
 
@@ -42,7 +42,7 @@ tiup cluster destroy <cluster-name> [flags]
 
 - Prints the help information.
 - Data type: `Boolean`
-- Default: false
+- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
 
 ## Output
 
