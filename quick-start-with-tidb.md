@@ -71,7 +71,7 @@ title: TiDB 数据库快速上手指南
         > **注意：**
         >
         > 以这种方式执行的 playground，在运行结束后 TiUP 会清理掉其数据，重新执行该命令后会得到一个全新的集群。
-        > 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情请参考 [TiUP 参考手册](https://docs.pingcap.com/zh/tidb/stable/tiup-reference#-t---tag-string)。
+        > 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
     
 4. 新开启一个 session 以访问 TiDB 数据库。
 
