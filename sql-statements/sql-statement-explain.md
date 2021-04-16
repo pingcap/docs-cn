@@ -28,6 +28,10 @@ TiDB supports the `EXPLAIN [options] FOR CONNECTION connection_id` statement. Ho
 
 ## `EXPLAIN` output format
 
+> **Note:**
+>
+> If you use the `mysql` client to connect to TiDB you may want to use `pager less -S` to avoid line wrapping in your terminal and instead press the right arrow on your keyboard to horizontally scroll through the explain output.
+
 Currently, `EXPLAIN` in TiDB outputs 5 columns: `id`, `estRows`, `task`, `access object`, `operator info`. Each operator in the execution plan is described by these attributes, with each row in the `EXPLAIN` output describing an operator. The description of each attribute is as follows:
 
 | Attribute name          | Description |
