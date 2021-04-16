@@ -4,7 +4,7 @@ title: tiup dm reload
 
 # tiup dm reload
 
-After [modifying the cluster configuration]<!-- (/tiup/tiup-component-dm-edit-config.md) -->, the cluster needs to be reloaded using the `tiup dm reload` command for the configuration to take effect. This command publishes the configuration of the control machine to the remote machine where the service is running and restarts the service in order according to the upgrade process. The cluster remains available during the restart process.
+After [modifying the cluster configuration](/tiup/tiup-component-dm-edit-config.md), the cluster needs to be reloaded using the `tiup dm reload` command for the configuration to take effect. This command publishes the configuration of the control machine to the remote machine where the service is running and restarts the service in order according to the upgrade process. The cluster remains available during the restart process.
 
 ## Syntax
 
@@ -18,7 +18,7 @@ tiup dm reload <cluster-name> [flags]
 
 ### -N, --node
 
-- Specifies the nodes to be restarted. If not specified, all nodes are restarted. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status]<!--(/tiup/tiup-component-dm-display.md) -->table.
+- Specifies the nodes to be restarted. If not specified, all nodes are restarted. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status](/tiup/tiup-component-dm-display.md) table.
 - Data type: `strings`
 - Default: `[]`, which means all nodes are selected.
 
@@ -29,7 +29,7 @@ tiup dm reload <cluster-name> [flags]
 
 ### -R, --role
 
-- Specifies the roles to be restarted. If not specified, all roles are restarted. The value of this option is a comma-separated list of node roles. The role is the second column of the [cluster status]<!-- (/tiup/tiup-component-dm-display.md) -->table.
+- Specifies the roles to be restarted. If not specified, all roles are restarted. The value of this option is a comma-separated list of node roles. The role is the second column of the [cluster status](/tiup/tiup-component-dm-display.md) table.
 - Data type: `strings`
 - Default: `[]`, which means all roles are selected.
 

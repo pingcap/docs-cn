@@ -4,7 +4,7 @@ title: tiup dm edit-config
 
 # tiup dm edit-config
 
-If you need to modify the cluster service configuration after the cluster is deployed, you can use the `tiup dm edit-config` command that starts an editor for you to modify the [topology file]<!-- (/tiup/tiup-dm-topology-reference.md) -->. of the specified cluster. This editor is specified in the `$EDITOR` environment variable by default. If the `$EDITOR` environment variable does not exist, the `vi` editor is used.
+If you need to modify the cluster service configuration after the cluster is deployed, you can use the `tiup dm edit-config` command that starts an editor for you to modify the [topology file](/tiup/tiup-dm-topology-reference.md). of the specified cluster. This editor is specified in the `$EDITOR` environment variable by default. If the `$EDITOR` environment variable does not exist, the `vi` editor is used.
 
 > **Note:**
 >
@@ -30,4 +30,4 @@ tiup dm edit-config <cluster-name> [flags]
 ## Output
 
 - Normally, no output.
-- If you have mistakenly modified the fields that cannot be modified, when you save the file, an error is reported, reminding you to edit the file again. For the fields that cannot be modified, see [the topology file]<!-- (/tiup/tiup-dm-topology-reference.md)-->.
+- If you have mistakenly modified the fields that cannot be modified, when you save the file, an error is reported, reminding you to edit the file again. For the fields that cannot be modified, see [the topology file](/tiup/tiup-dm-topology-reference.md).

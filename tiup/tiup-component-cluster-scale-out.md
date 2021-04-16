@@ -14,9 +14,9 @@ When PD is scaled out, new PD nodes are added to the cluster by the join operati
 tiup cluster scale-out <cluster-name> <topology.yaml> [flags]
 ```
 
-`<cluster-name>`: the name of the cluster to operate on. If you forget the cluster name, you can check it with the `cluster list`<!-- (/tiup/tiup-component-dm-list.md) -->command.
+`<cluster-name>`: the name of the cluster to operate on. If you forget the cluster name, you can check it with the [`cluster list`](/tiup/tiup-component-dm-list.md) command.
 
-`<topology.yaml>`: the prepared topology file<!--(/tiup/tiup-dm-topology-reference.md) -->. This topology file should only contain the new nodes that are to be added to the current cluster.
+`<topology.yaml>`: the prepared [topology file](/tiup/tiup-dm-topology-reference.md). This topology file should only contain the new nodes that are to be added to the current cluster.
 
 ## Options
 

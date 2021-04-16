@@ -14,7 +14,7 @@ tiup dm deploy <cluster-name> <version> <topology.yaml> [flags]
 
 - `<cluster-name>`: the name of the new cluster, which cannot be the same as the existing cluster names.
 - `<version>`: the version number of the DM cluster to be deployed, such as `v2.0.0`.
-- `<topology.yaml>`: the prepared [topology file]<!-- (/tiup/tiup-dm-topology-reference.md) -->.
+- `<topology.yaml>`: the prepared [topology file](/tiup/tiup-dm-topology-reference.md).
 
 ## Options
 

@@ -16,13 +16,13 @@ The `tiup dm stop` command is used to stop all or part of the services of the sp
 tiup dm stop <cluster-name> [flags]
 ```
 
-`<cluster-name>`: the name of the cluster to operate on. If you forget the cluster name, you can check it with the [cluster list]<!--(/tiup/tiup-component-dm-list.md) -->command.
+`<cluster-name>`: the name of the cluster to operate on. If you forget the cluster name, you can check it with the [cluster list](/tiup/tiup-component-dm-list.md) command.
 
 ## Options
 
 ### -N, --node
 
-- Specifies the nodes to be stopped. If not specified, all nodes are stopped. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status]<!-- (/tiup/tiup-component-dm-display.md) --> table.
+- Specifies the nodes to be stopped. If not specified, all nodes are stopped. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status](/tiup/tiup-component-dm-display.md) table.
 - Data type: `strings`
 - Default: `[]`, which means all nodes are selected.
 
@@ -32,7 +32,7 @@ tiup dm stop <cluster-name> [flags]
 
 ### -R, --role
 
-- Specifies the roles to be stopped. If not specified, all roles are stopped. The value of this option is a comma-separated list of node roles. The role is the second column of the [cluster status]<!-- (/tiup/tiup-component-dm-display.md) --> table.
+- Specifies the roles to be stopped. If not specified, all roles are stopped. The value of this option is a comma-separated list of node roles. The role is the second column of the [cluster status](/tiup/tiup-component-dm-display.md) table.
 - Data type: `strings`
 - Default: `[]`, which means all roles are selected.
 

@@ -54,7 +54,7 @@ You need to pack the binary package required for this command in advance accordi
 
 ### -N, --node
 
-- Specifies nodes to be replaced. The value of this option is a comma-separated list of node IDs. You can get the node ID from the first column of the cluster status table<!--(/tiup/tiup-component-cluster-display.md)--> returned by the `tiup cluster display` command.
+- Specifies nodes to be replaced. The value of this option is a comma-separated list of node IDs. You can get the node ID from the first column of the [cluster status table](/tiup/tiup-component-cluster-display.md) returned by the `tiup cluster display` command.
 - Data type: `STRINGS`
 - If this option is not specified, TiUP does not select any nodes to replace by default.
 
@@ -64,7 +64,7 @@ You need to pack the binary package required for this command in advance accordi
 
 ### -R, --role
 
-- Specifies the roles to be replaced. The value of this option is a comma-separated list of the roles of the nodes. You can get the role deployed on a node from the second column of the cluster status table<!--(/tiup/tiup-component-cluster-display.md)--> returned by the `tiup cluster display` command.
+- Specifies the roles to be replaced. The value of this option is a comma-separated list of the roles of the nodes. You can get the role deployed on a node from the second column of the [cluster status table](/tiup/tiup-component-cluster-display.md) returned by the `tiup cluster display` command.
 - Data type: `STRINGS`
 - If this option is not specified, TiUP does not select any roles to replace by default.
 

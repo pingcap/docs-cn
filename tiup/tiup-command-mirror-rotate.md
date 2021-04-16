@@ -45,13 +45,13 @@ tiup mirror rotate [flags]
 
 After executing this command, TiUP starts an editor for the user to modify the file content to the target value, such as changing the value of the `expires` field to a later date. Then, TiUP changes the `version` field from `N` to `N+1` and saves the file. After the file is saved, TiUP starts a temporary HTTP server and waits for all mirror administrators to sign the file.
 
-For how mirror administrators sign files, refer to the `sign` command<!-- (/tiup/tiup-command-mirror-sign.md) -->.
+For how mirror administrators sign files, refer to the [`sign` command](/tiup/tiup-command-mirror-sign.md).
 
 ## Options
 
 ### --addr
 
-- Specifies the listening address of the temporary server. You need to make sure that the address is accessible to other mirror administrators so that they can use the `sign` command<!-- (/tiup/tiup-command-mirror-sign.md) --> to sign the file.
+- Specifies the listening address of the temporary server. You need to make sure that the address is accessible to other mirror administrators so that they can use the [`sign` command](/tiup/tiup-command-mirror-sign.md) to sign the file.
 - Data type: `STRING`
 - If this option is not specified in the command, TiUP listens on `0.0.0.0:8080` by default.
 
