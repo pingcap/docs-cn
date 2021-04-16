@@ -237,7 +237,7 @@ Examples:
 The exported file is stored in the `./export-<current local time>` directory by default. Commonly used options are as follows:
 
 - `-o` is used to select the directory where the exported files are stored.
-- `-F` option is used to specify the maximum size of a single file (the unit here is `MiB`; inputs like `5GiB` or `8KB` are also acceptable).
+- `-F` option is used to specify the maximum size of a single file (the unit here is `MiB`; inputs like `5GiB` or `8KB` are also acceptable). It is recommended to keep its value to 256 MiB or less if you plan to use TiDB Lightning to load this file into a TiDB instance.
 - `-r` option is used to specify the maximum number of records (or the number of rows in the database) for a single file. When it is enabled, Dumpling enables concurrency in the table to improve the speed of exporting large tables.
 
 With the above options specified, Dumpling can have a higher degree of parallelism.
