@@ -5,7 +5,7 @@ aliases: ['/docs-cn/stable/tikv-configuration-file/','/docs-cn/v4.0/tikv-configu
 
 # TiKV 配置文件描述
 
-TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到默认值的配置文件，重命名为 config.toml 即可。
+TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/release-4.0/etc/config-template.toml) 找到默认值的配置文件，重命名为 config.toml 即可。
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [TiKV 配置参数](/command-line-flags-for-tikv-configuration.md)。
 
