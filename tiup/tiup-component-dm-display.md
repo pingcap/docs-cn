@@ -12,7 +12,7 @@ If you want to check the operational status of each component in a DM cluster, i
 tiup dm display <cluster-name> [flags]
 ```
 
-`<cluster-name>` is the name of the cluster to be operated. If you forget the cluster name, you can use the `[tiup dm list](/tiup/tiup-component-dm-list.md)` command to check it.
+`<cluster-name>` is the name of the cluster to be operated. If you forget the cluster name, you can check it using the [`tiup dm list`](/tiup/tiup-component-dm-list.md) command.
 
 ## Options
 
@@ -24,7 +24,7 @@ tiup dm display <cluster-name> [flags]
 
 > **Note:**
 > 
-> If `-R, --role` is also specified, only the services in the intersection of the specified nodes and roles is queried.
+> If `-R, --role` is also specified, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are queried.
 
 ### -R, --role
 
@@ -34,7 +34,7 @@ tiup dm display <cluster-name> [flags]
 
 > **Note:**
 > 
-> If `-N, --node` is also specified, only the services in the intersection of the specified nodes and roles is queried.
+> If `-N, --node` is also specified, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are queried.
 
 ### -h, --help
 

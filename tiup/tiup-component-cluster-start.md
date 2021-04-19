@@ -12,7 +12,7 @@ The `tiup cluster start` command is used to start all services or some services 
 tiup cluster start <cluster-name> [flags]
 ```
 
-`<cluster-name>` is the name of the cluster to operate on. If you forget the cluster name, check it using the [cluster list](/tiup/tiup-component-cluster-list.md) command.
+`<cluster-name>` is the name of the cluster to operate on. If you forget the cluster name, you can check it using the [`tiup cluster list`](/tiup/tiup-component-cluster-list.md) command.
 
 ## Options
 
@@ -24,7 +24,7 @@ tiup cluster start <cluster-name> [flags]
 
 > **Note:**
 >
-> If the `-R, --role` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are restarted.
+> If the `-R, --role` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are started.
 
 ### -R, --role
 
@@ -34,7 +34,7 @@ tiup cluster start <cluster-name> [flags]
 
 > **Note:**
 >
-> If the `-N, --node` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are restarted.
+> If the `-N, --node` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are started.
 
 ### -h, --help
 
