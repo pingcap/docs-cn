@@ -258,6 +258,10 @@ middle_key_by_approximate_size:
 - `--host` 参数可以指定要 compact 的 TiKV。
 - `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
 - `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+- `--bottommost` 参数可以指定 compact 是否包括最下层的文件。有 `default`, `skip` 和 `force` 可选，默认为 `default`。
+    - `default` 表示，只有开启了 compaction filter 时 compact 才会包括最下层文件
+    - `skip` 表示，compact 不包括最下层文件
+    - `force` 表示，compact 总是包括最下层文件
 
 {{< copyable "shell-regular" >}}
 
@@ -482,7 +486,7 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 >
 > - 该命令只支持本地模式。在运行成功后，会打印 `success!`。
 > - 一般来说，您需要为指定 Region 的 peers 所在的每个 store 运行此命令。
-> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行此命令。
+> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行此命令。需要保证所有目标 store 都停掉服务后进行恢复，否则期间 Region 副本之间的 peer 列表不一致会导致 apply 报错进而引起其他元数据的不一致，最终引发 Region Unavailable 不可用。
 
 ### 恢复损坏的 MVCC 数据
 
