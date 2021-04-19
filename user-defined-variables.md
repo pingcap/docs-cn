@@ -179,4 +179,8 @@ SELECT @col FROM t;
 +------+
 ```
 
+## MySQL 兼容性
+
+除`SELECT ... INTO <variable>`外，MySQL和TiDB支持的语法相同。
+
 更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/user-variables.html)。
