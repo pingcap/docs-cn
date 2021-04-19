@@ -322,7 +322,7 @@ mysql> EXPLAIN SELECT /*+ INL_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t
 
 ## 优化实例
 
-使用 [bikeshare example database](https://github.com/pingcap/docs/blob/master/import-example-data.md):
+使用 [bikeshare example database](https://docs.pingcap.com/tidb/stable/import-example-data):
 
 {{< copyable "sql" >}}
 
