@@ -39,14 +39,14 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 ### 集群版本
 
-* TiDB: v4.0.2
-* TiKV: v4.0.2
-* PD: v4.0.2
-* BR: v4.0.2
+* TiDB: v5.0.0
+* TiKV: v5.0.0
+* PD: v5.0.0
+* BR: v5.0.0
 
 > **注意：**
 >
-> v4.0.2 为编写本文档时的最新版本。推荐读者使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
+> v5.0.0 为编写本文档时的最新版本。推荐使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
 
 ### TiKV 集群硬件信息
 

@@ -127,7 +127,7 @@ TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV 
 
 #### 3.1.7 ERROR 9006 (HY000) : GC life time is shorter than transaction duration
 
-`GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了。你可以使用如下命令修改 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-ga-版本开始引入 ) 的值：
+`GC Life Time` 间隔时间过短，长事务本应读到的数据可能被清理了。你可以使用如下命令修改 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值：
 
 {{< copyable "sql" >}}
 

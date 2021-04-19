@@ -49,10 +49,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-action`
 
-> **警告：**
->
-> 目前 `oom-action` 为实验功能，会对写入过程中的内存进行统计。如果用户希望根据该特性取消写入操作，不建议在生产环境中将参数值配置为 `cancel`。
-
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
 + 默认值："log"
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
@@ -139,13 +135,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：byte。
 + 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
 
-### `table-column-count-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `table-column-count-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 用于设置单个表中列的数量限制
 + 默认值：1017
 + 目前的合法值范围 `[1017, 4096]`。
 
-### `index-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `index-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 用于设置单个表中索引的数量限制
 + 默认值：64
@@ -156,6 +152,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 是否开启 TiDB 遥测功能。
 + 默认值：true
 + 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
+
+### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 控制是否只监听 TCP4。
++ 默认值：false
++ 当使用 LVS 为 TiDB 做负载均衡时，可开启此配置项。这是因为 [LVS 的 TOA 模块](https://github.com/alibaba/LVS/tree/master/kernel/net/toa)可以通过 TCP4 协议从 TCP 头部信息中解析出客户端的真实 IP。
+
+### `enable-enum-length-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 是否限制单个 `ENUM` 元素和单个 `SET` 元素的最大长度
++ 默认值：true
++ 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
 
 ## log
 
@@ -319,7 +327,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
 
-### `txn-entry-size-limit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + TiDB 单行数据的大小限制
 + 默认值：6291456 (Byte)
