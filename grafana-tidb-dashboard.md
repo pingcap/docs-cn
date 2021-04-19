@@ -70,7 +70,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Transaction Write Size Bytes Rate and sum：事务写入字节数的速率和总计
     - Transaction Write Size Bytes：事务写入的数据大小
     - Acquire Pessimistic Locks Duration：加锁所消耗的时间
-    - TTL Lifetime Reach Counter：事务的 TTL 达到了上限的数量。TTL 上限默认值 10 分钟，它的含义是从悲观事务第一次加锁，或者乐观事务的第一个 prewrite 开始，超过了 10 分钟。可以通过修改 TiDB 配置文件中 `max-txn-ttl` 来改变 TTL 寿命上限
+    - TTL Lifetime Reach Counter：事务的 TTL 达到了上限的数量。TTL 上限默认值 1 小时，它的含义是从悲观事务第一次加锁，或者乐观事务的第一个 prewrite 开始，超过了 1 小时。可以通过修改 TiDB 配置文件中 `max-txn-ttl` 来改变 TTL 寿命上限
     - Load Safepoint OPS：加载 Safepoint 的次数统计。Safepoint 作用是在事务读数据时，保证不读到 Safepoint 之前的数据，保证数据安全。因为，Safepoint 之前的数据有可能被 GC 清理掉    
     - Pessimistic Statement Retry OPS：悲观语句重试次数统计。当语句尝试加锁时，可能遇到写入冲突，此时，语句会重新获取新的 snapshot 并再次加锁
     - Async Commit Transaction Counter：启用 Async commit 机制的事务数量，分为成功、失败两种
@@ -163,6 +163,6 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 - Batch Client
     - Pending Request Count by TiKV：等待处理的 Batch 消息数量
-    - Wait Duration 95：等待处理的 Batch 消息延迟
+
     - Batch Client Unavailable Duration 95：Batch 客户端不可用的时间
     - No Available Connection Counter：Batch 客户端找不到可用链接的次数

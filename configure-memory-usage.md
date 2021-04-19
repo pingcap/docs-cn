@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/configure-memory-usage/','/docs-cn/dev/how-to/configure/
 
 ```
 # Valid options: ["log", "cancel"]
-oom-action = "log"
+oom-action = "cancel"
 ```
 
 - 如果上面的配置项使用的是 "log"，那么当一条 SQL 的内存使用超过一定阈值（由 session 变量 `tidb_mem_quota_query` 来控制）后，TiDB 会在 log 文件中打印一条 LOG，然后这条 SQL 继续执行，之后如果发生了 OOM 可以在 LOG 中找到对应的 SQL。

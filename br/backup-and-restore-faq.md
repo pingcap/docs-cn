@@ -93,3 +93,11 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 ## BR backupTS 如何转化成 Unix 时间?
 
 BR backupTS 默认情况下是在备份开始前，从 PD 获取到的最新 timestamp。可以采用 pd-ctl tso `timestamp` 来解析，获得精确值，也可以通过 `backupTS >> 18` 来快速获取估计值。
+
+## BR 恢复存档后是否需要对表执行 `ANALYZE` 以更新 TiDB 在表和索引上留下的统计信息？
+
+BR 不会备份统计信息（v4.0.9 除外）。所以在恢复存档后需要手动执行 `ANALYZE TABLE` 或等待 TiDB 自动进行 `ANALYZE`。
+
+BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正常，从 v4.0.10 开始默认关闭备份统计信息的功能。
+
+如果不对表执行 `ANALYZE`，TiDB 会因统计信息不准确而选不中最优化的执行计划。如果查询性能不是重点关注项，可以忽略 `ANALYZE`。

@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitio
 
 ## 分区类型
 
-本节介绍在 TiDB 中的分区类型。当前支持的类型包括 Range 分区和 Hash 分区。Range 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
+本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区) 和 [Hash 分区](#hash-分区)。Range 分区，List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
 
 ### Range 分区
 
@@ -56,7 +56,7 @@ PARTITION BY RANGE (store_id) (
 
 在这个分区模式中，所有 `store_id` 为 1 到 5 的员工，都存储在分区 `p0` 里面，`store_id` 为 6 到 10 的员工则存储在分区 `p1` 里面。Range 分区要求，分区的定义必须是有序的，按从小到大递增。
 
-新插入一行数据 `(72, 'Mitchell', 'Wilson', '1998-06-25', NULL, 13)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
+新插入一行数据 `(72, 'Tom', 'John', '2015-06-25', NULL, 15)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
 
 {{< copyable "sql" >}}
 
@@ -160,6 +160,194 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 * 删除旧数据。如果你使用之前的 `employees` 表的例子，你可以简单使用 `ALTER TABLE employees DROP PARTITION p0;` 删除所有在 1991 年以前停止继续在这家公司工作的员工记录。这会比使用 `DELETE FROM employees WHERE YEAR(separated) <= 1990;` 执行快得多。
 * 使用包含时间或者日期的列，或者是其它按序生成的数据。
 * 频繁查询分区使用的列。例如执行这样的查询 `EXPLAIN SELECT COUNT(*) FROM employees WHERE separated BETWEEN '2000-01-01' AND '2000-12-31' GROUP BY store_id;` 时，TiDB 可以迅速确定，只需要扫描 `p2` 分区的数据，因为其它的分区不满足 `where` 条件。
+
+### List 分区
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+在创建 List 分区表之前，需要先将 session 变量 `tidb_enable_list_partition` 的值设置为 `ON`。
+
+{{< copyable "sql" >}}
+
+```sql
+set @@session.tidb_enable_list_partition = ON
+```
+
+此外，还需保证 `tidb_enable_table_partition` 变量已开启（默认开启）。
+
+List 分区和 Range 分区有很多相似的地方。不同之处主要在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但不能有重复的值，可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
+
+假设你要创建一张人事记录表，示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    store_id INT
+);
+```
+
+假如一共有 20 个商店分布在 4 个地区，如下表所示：
+
+```
+| Region  | Store ID Numbers     |
+| ------- | -------------------- |
+| North   | 1, 2, 3, 4, 5        |
+| East    | 6, 7, 8, 9, 10       |
+| West    | 11, 12, 13, 14, 15   |
+| Central | 16, 17, 18, 19, 20   |
+```
+
+如果想把同一个地区商店员工的人事数据都存储在同一个分区中，你可以根据 `store_id` 来创建 List 分区：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    store_id INT
+)
+PARTITION BY LIST (store_id) (
+    PARTITION pNorth VALUES IN (1, 2, 3, 4, 5),
+    PARTITION pEast VALUES IN (6, 7, 8, 9, 10),
+    PARTITION pWest VALUES IN (11, 12, 13, 14, 15),
+    PARTITION pCentral VALUES IN (16, 17, 18, 19, 20)
+);
+```
+
+这样就能方便地在表中添加或删除与特定区域相关的记录。例如，假设东部地区 (East) 所有的商店都卖给了另一家公司，所有该地区商店员工相关的行数据都可以通过 `ALTER TABLE employees TRUNCATE PARTITION pEast` 删除，这比等效的 `DELETE` 语句 `DELETE FROM employees WHERE store_id IN (6, 7, 8, 9, 10)` 执行起来更加高效。
+
+使用 `ALTER TABLE employees DROP PARTITION pEast` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pEast`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
+
+与 Range 分区的情况不同，List 分区没有类似的 `MAXVALUE` 分区来存储所有不属于其他 partition 的值。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
+
+```sql
+test> CREATE TABLE t (
+    ->   a INT,
+    ->   b INT
+    -> )
+    -> PARTITION BY LIST (a) (
+    ->   PARTITION p0 VALUES IN (1, 2, 3),
+    ->   PARTITION p1 VALUES IN (4, 5, 6)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+test> INSERT INTO t VALUES (7, 7);
+ERROR 1525 (HY000): Table has no partition for value 7
+```
+
+要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用该关键字后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错:
+
+```sql
+test> TRUNCATE t;
+Query OK, 1 row affected (0.00 sec)
+
+test> INSERT IGNORE INTO t VALUES (1, 1), (7, 7), (8, 8), (3, 3), (5, 5);
+Query OK, 3 rows affected, 2 warnings (0.01 sec)
+Records: 5  Duplicates: 2  Warnings: 2
+
+test> select * from t;
++------+------+
+| a    | b    |
++------+------+
+|    5 |    5 |
+|    1 |    1 |
+|    3 |    3 |
++------+------+
+3 rows in set (0.01 sec)
+```
+
+### List COLUMNS 分区
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+List COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列。你还可以使用字符串类型、`DATE` 和 `DATETIME` 类型的列。
+
+假设商店员工分别来自以下 12 个城市，想要根据相关规定分成 4 个区域，如下表所示：
+
+```
+| Region | Cities                         |
+| :----- | ------------------------------ |
+| 1      | LosAngeles,Seattle, Houston    |
+| 2      | Chicago, Columbus, Boston      |
+| 3      | NewYork, LongIsland, Baltimore |
+| 4      | Atlanta, Raleigh, Cincinnati   |
+```
+
+使用列表列分区，你可以为员工数据创建一张表，将每行数据存储在员工所在城市对应的分区中，如下所示：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees_1 (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE NOT NULL DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT,
+    city VARCHAR(15)
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN('LosAngeles', 'Seattle', 'Houston'),
+    PARTITION pRegion_2 VALUES IN('Chicago', 'Columbus', 'Boston'),
+    PARTITION pRegion_3 VALUES IN('NewYork', 'LongIsland', 'Baltimore'),
+    PARTITION pRegion_4 VALUES IN('Atlanta', 'Raleigh', 'Cincinnati')
+);
+```
+
+与 List 分区不同的是，你不需要在 `COLUMNS()` 子句中使用表达式来将列值转换为整数。
+
+List COLUMNS 分区也可以使用 `DATE` 和 `DATETIME` 类型的列进行分区，如以下示例中所示，该示例使用与先前的 `employees_1` 表相同的名称和列，但根据 `hired` 列采用 List COLUMNS 分区：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees_2 (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE NOT NULL DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT,
+    city VARCHAR(15)
+)
+PARTITION BY LIST COLUMNS(hired) (
+    PARTITION pWeek_1 VALUES IN('2020-02-01', '2020-02-02', '2020-02-03',
+        '2020-02-04', '2020-02-05', '2020-02-06', '2020-02-07'),
+    PARTITION pWeek_2 VALUES IN('2020-02-08', '2020-02-09', '2020-02-10',
+        '2020-02-11', '2020-02-12', '2020-02-13', '2020-02-14'),
+    PARTITION pWeek_3 VALUES IN('2020-02-15', '2020-02-16', '2020-02-17',
+        '2020-02-18', '2020-02-19', '2020-02-20', '2020-02-21'),
+    PARTITION pWeek_4 VALUES IN('2020-02-22', '2020-02-23', '2020-02-24',
+        '2020-02-25', '2020-02-26', '2020-02-27', '2020-02-28')
+);
+```
+
+另外，你也可以在 `COLUMNS()` 子句中添加多个列，例如：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t (
+    id int,
+    name varchar(10)
+)
+PARTITION BY LIST COLUMNS(id,name) (
+     partition p0 values IN ((1,'a'),(2,'b')),
+     partition p1 values IN ((3,'c'),(4,'d')),
+     partition p3 values IN ((5,'e'),(null,null))
+);
+```
 
 ### Hash 分区
 
@@ -949,11 +1137,11 @@ YEARWEEK()
 
 ### 兼容性
 
-目前 TiDB 里面只实现了 Range 分区和 Hash 分区，其它的 MySQL 分区类型比如 List 分区和 Key 分区尚不支持。
+目前 TiDB 支持 Range 分区、List 分区、List COLUMNS 分区和 Hash 分区，其它的 MySQL 分区类型（例如 Key 分区）尚不支持。
 
 对于 Range Columns 类型的分区表，目前只支持单列的场景。
 
-分区管理方面，只要底层实现可能会涉及数据挪到的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区，交换分区等。
+分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区，交换分区等。
 
 对于暂不支持的分区类型，在 TiDB 中建表时会忽略分区信息，以普通表的形式创建，并且会报 Warning。
 
@@ -1049,6 +1237,6 @@ select * from t;
 5 rows in set (0.00 sec)
 ```
 
-环境变量 `tidb_enable_table_partition` 可以控制是否启用分区表功能。如果该变量设置为 `off`，则建表时会忽略分区信息，以普通表的方式建表。
+环境变量 `tidb_enable_list_partition` 可以控制是否启用分区表功能。如果该变量设置为 `OFF`，则建表时会忽略分区信息，以普通表的方式建表。
 
-该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_table_partition)。
+该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入)。

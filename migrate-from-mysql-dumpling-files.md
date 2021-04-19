@@ -51,9 +51,9 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
     [tikv-importer]
     backend = "tidb"
     ```
-    
+
 4. 增加导入 TiDB 集群必要参数
-    
+
     ```
     [tidb]
     host = "{{tidb-host}}"

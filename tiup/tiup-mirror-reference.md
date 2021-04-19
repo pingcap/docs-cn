@@ -74,7 +74,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
         "_type": "root",                                        # 该字段说明本文件的类型，root.json 的类型就是 root
         "expires": "{expiration-date-of-this-file}",            # 该文件的过期时间，过期后客户端会拒绝此文件
         "roles": {                                              # root.json 中的 roles 用来记录对各个元文件签名的密钥
-            "{role:index,root,snapshot,timestamp}": {           # 涉及到的元文件由 index, root, snapshot, timestamp
+            "{role:index,root,snapshot,timestamp}": {           # 涉及的元文件类型包括 index, root, snapshot, timestamp
                 "keys": {                                       # 只有 keys 中记录的密钥签名才是合法的
                     "{id-of-the-key-1}": {                      # 用于签名 {role} 的第 1 个密钥 ID
                         "keytype": "rsa",                       # 密钥类型，目前固定为 rsa
@@ -103,7 +103,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
 
 ### 索引
 
-索引文件记录了镜像中所有的组件已经组件的所有者信息。
+索引文件记录了镜像中所有的组件以及组件的所有者信息。
 
 其格式如下：
 
