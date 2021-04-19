@@ -14,7 +14,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-start-transaction/','/docs-
 
 **BeginTransactionStmt:**
 
-![BeginTransactionStmt](/media/sqlgram/BeginTransactionStmt.png)
+```ebnf+diagram
+BeginTransactionStmt ::= 
+    'BEGIN' ( 'PESSIMISTIC' | 'OPTIMISTIC' )?
+|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' | 'WITH' 'CAUSAL' 'CONSISTENCY' 'ONLY' )?
+```
 
 ## 示例
 
@@ -68,3 +72,4 @@ Query OK, 0 rows affected (0.01 sec)
 * [COMMIT](/sql-statements/sql-statement-commit.md)
 * [ROLLBACK](/sql-statements/sql-statement-rollback.md)
 * [BEGIN](/sql-statements/sql-statement-begin.md)
+* [START TRANSACTION WITH CAUSAL CONSISTENCY ONLY](/transaction-overview.md#因果一致性事务)

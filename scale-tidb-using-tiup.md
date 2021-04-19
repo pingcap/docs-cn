@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-
 
 TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[升级文档中的步骤](/upgrade-tidb-using-tiup.md#2-在中控机器上安装-tiup)，将集群 Import 到 TiUP 环境中，再使用 TiUP 进行扩容缩容。
+本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上安装-tiup-组件)。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
