@@ -5,7 +5,7 @@ summary: TiDB 数据库中 TABLE 的使用概况。
 
 # TABLE
 
-当不需要聚合操作或复杂的过滤时，可以用 `TABLE` 语句代替 `SELECT * FROM`。
+当不需要聚合或复杂的过滤操作时，可以用 `TABLE` 语句代替 `SELECT * FROM`。
 
 ## 语法图
 
