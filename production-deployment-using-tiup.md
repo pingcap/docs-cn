@@ -111,7 +111,7 @@ aliases: ['/docs-cn/stable/production-deployment-using-tiup/','/docs-cn/v4.0/pro
 >
 > - 对于需要某个节点生效的参数，请在具体节点的 `config` 中配置。
 >
-> - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/release-4.0/embed/templates/examples/topology.example.yaml)。
+> - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。
 >
 > - 更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/release-4.0/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/release-4.0/etc/config-template.toml) 、 [PD `config.toml.example`](https://github.com/tikv/pd/blob/release-4.0/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
 
