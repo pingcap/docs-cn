@@ -60,10 +60,20 @@ dumpling \
   --filetype sql \
   --threads 32 \
   -o /tmp/test \
+  -r 200000 \
   -F 256MiB
 ```
 
-In the above command, `-h`, `-P` and `-u` mean address, port and user, respectively. If password authentication is required, you can pass it to Dumpling with `-p $YOUR_SECRET_PASSWORD`.
+In the command above:
+
++ `-h`, `-p`, and `-u` respectively mean the address, the port, and the user. If a password is required for authentication, you can use `-p $YOUR_SECRET_PASSWORD` to pass the password to Dumpling.
++ `-o` specifies the export directory of the storage, which supports a local file path or a [URL of an external storage](/br/backup-and-restore-storages.md).
++ `-r` specifies the maximum number of rows in a single file. With this option specified, Dumpling enables the in-table concurrency to speed up the export and reduce the memory usage.
++ `-F` specifies the maximum size of a single file.
+
+> **Note:**
+>
+> If the size of a single exported table exceeds 10 GB, it is **strongly recommended to use** the `-r` and `-F` options.
 
 ### Export to CSV files
 
@@ -177,6 +187,7 @@ When you back up data using Dumpling, explicitly specify the `--s3.region` param
   -u root \
   -P 4000 \
   -h 127.0.0.1 \
+  -r 200000 \
   -o "s3://${Bucket}/${Folder}" \
   --s3.region "${region}"
 ```
@@ -198,7 +209,7 @@ By default, Dumpling exports all databases except system databases (including `m
   --where "id < 100"
 ```
 
-The above command exports the data that matches `id < 100` from each table.
+The above command exports the data that matches `id < 100` from each table. Note that you cannot use the `--where` parameter together with `--sql`.
 
 #### Use the `--filter` option to filter data
 
@@ -212,6 +223,7 @@ Dumpling can filter specific databases or tables by specifying the table filter 
   -P 4000 \
   -h 127.0.0.1 \
   -o /tmp/test \
+  -r 200000 \
   --filter "employees.*" \
   --filter "*.WorkOrder"
 ```
@@ -236,11 +248,11 @@ Examples:
 
 The exported file is stored in the `./export-<current local time>` directory by default. Commonly used options are as follows:
 
-- `-o` is used to select the directory where the exported files are stored.
-- `-F` option is used to specify the maximum size of a single file (the unit here is `MiB`; inputs like `5GiB` or `8KB` are also acceptable). It is recommended to keep its value to 256 MiB or less if you plan to use TiDB Lightning to load this file into a TiDB instance.
-- `-r` option is used to specify the maximum number of records (or the number of rows in the database) for a single file. When it is enabled, Dumpling enables concurrency in the table to improve the speed of exporting large tables.
+- The `t` option specifies the number of threads for the export. Increasing the number of threads will increase the concurrency of Dumpling but will also increase the database's memory consumption. Therefore, it is not recommended to set the number too large.
+- The `-F` option is used to specify the maximum size of a single file (the unit here is `MiB`; inputs like `5GiB` or `8KB` are also acceptable). It is recommended to keep its value to 256 MiB or less if you plan to use TiDB Lightning to load this file into a TiDB instance.
+- The `-r` option specifies the maximum number of records (or the number of rows in the database) for a single file. When it is enabled, Dumpling enables concurrency in the table to improve the speed of exporting large tables.
 
-With the above options specified, Dumpling can have a higher degree of parallelism.
+With the above options specified, Dumpling can have a quicker speed of data export.
 
 ### Adjust Dumpling's data consistency options
 
@@ -294,7 +306,7 @@ The TiDB historical data snapshots when the TSO is `417773951312461825` and the 
 
 When Dumpling is exporting a large single table from TiDB, Out of Memory (OOM) might occur because the exported data size is too large, which causes connection abort and export failure. You can use the following parameters to reduce the memory usage of TiDB:
 
-+ Setting `--rows` to split the data to be exported into chunks. This reduces the memory overhead of TiDB's data scan and enables concurrent table data dump to improve export efficiency.
++ Setting `-r` to split the data to be exported into chunks. This reduces the memory overhead of TiDB's data scan and enables concurrent table data dump to improve export efficiency.
 + Reduce the value of `--tidb-mem-quota-query` to `8589934592` (8 GB) or lower. `--tidb-mem-quota-query` controls the memory usage of a single query statement in TiDB.
 + Adjust the `--params "tidb_distsql_scan_concurrency=5"` parameter. [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) is a session variable which controls the concurrency of the scan operations in TiDB.
 
