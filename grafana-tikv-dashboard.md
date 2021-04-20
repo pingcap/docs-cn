@@ -75,9 +75,8 @@ title: TiKV 监控指标详解
 - Storage ReadPool CPU：storage read pool 线程的 CPU 使用率
 - Coprocessor CPU：coprocessor 线程的 CPU 使用率
 - RocksDB CPU：RocksDB 线程的 CPU 使用率
-- Split check CPU：split check 线程的 CPU 使用率
 - GC worker CPU：GC worker 线程的 CPU 使用率
-- Snapshot worker CPU：snapshot worker 线程的 CPU 使用率
+- BackGround worker CPU：background worker 线程的 CPU 使用率
 
 ## PD
 

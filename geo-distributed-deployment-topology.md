@@ -18,7 +18,7 @@ summary: 介绍跨数据中心部署 TiDB 集群的拓扑结构。
 
 ### 拓扑模版
 
-[跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml)
+[跨机房配置模板](https://github.com/pingcap/docs-cn/blob/release-5.0/config-templates/geo-redundancy-deployment.yaml)
 
 以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
@@ -36,7 +36,7 @@ summary: 介绍跨数据中心部署 TiDB 集群的拓扑结构。
 
 - label 配置
 
-    由于采用跨机房部署 TiKV，为了避免物理机宕机导致 Region Group 默认的 5 副本中丢失 3 副本，使集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同中心、同机柜、同机器 TiKV 实例不会出现 Region Group 有 3 副本的情况。
+    由于采用跨机房部署 TiKV，为了避免物理机宕机导致 Raft Group 默认的 5 副本中丢失 3 副本，使集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同中心、同机柜、同机器 TiKV 实例不会出现 Raft Group 有 3 副本的情况。
 
 - TiKV 配置
 

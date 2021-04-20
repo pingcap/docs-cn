@@ -57,10 +57,20 @@ dumpling \
   --filetype sql \
   --threads 32 \
   -o /tmp/test \
+  -r 200000 \
   -F 256MiB
 ```
 
-上述命令中，`-h`、`-P`、`-u` 分别是地址，端口，用户。如果需要密码验证，可以用 `-p $YOUR_SECRET_PASSWORD` 传给 Dumpling。
+以上命令中：
+
+- `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
+- `-o` 用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URL](/br/backup-and-restore-storages.md) 格式。
+- `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。
+- `-F` 可以指定单个文件的最大大小。
+
+> **注意：**
+>
+> 如果导出的单表大小超过 10 GB，**强烈建议**使用`-r` 和 `-F` 参数。
 
 ### 导出到 csv 文件
 
@@ -162,7 +172,7 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
-Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考与之一致的 [BR 存储](/br/backup-and-restore-storages.md)。
+Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考[外部存储](/br/backup-and-restore-storages.md)。
 
 在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 S3 存储所在的区域。
 
@@ -173,6 +183,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
   -u root \
   -P 4000 \
   -h 127.0.0.1 \
+  -r 200000 \
   -o "s3://${Bucket}/${Folder}" \
   --s3.region "${region}"
 ```
@@ -194,11 +205,11 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
   --where "id < 100"
 ```
 
-上述命令将会导出各个表的 id < 100 的数据。
+上述命令将会导出各个表的 id < 100 的数据。注意 `--where` 参数无法与 `--sql` 一起使用。
 
 #### 使用 `--filter` 选项筛选数据
 
-Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。table-filter 的语法与 .gitignore 相似，详细语法参考[表库过滤](/table-filter.md)。
+Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。table-filter 的语法与 `.gitignore` 相似，详细语法参考[表库过滤](/table-filter.md)。
 
 {{< copyable "shell-regular" >}}
 
@@ -208,6 +219,7 @@ Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。
   -P 4000 \
   -h 127.0.0.1 \
   -o /tmp/test \
+  -r 200000 \
   --filter "employees.*" \
   --filter "*.WorkOrder"
 ```
@@ -233,11 +245,10 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用选项如下：
 
-- `-o` 用于选择存储导出文件的目录。
-- `-F` 选项用于指定单个文件的最大大小，默认单位为 `MiB`。可以接受类似 `5GiB` 或 `8KB` 的输入。
+- `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度，但也会加大数据库内存消耗，因此不宜设置过大。
 - `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数），开启后 Dumpling 会开启表内并发，提高导出大表的速度。
 
-利用以上选项可以让 Dumpling 的并行度更高。
+利用以上选项可以提高 Dumpling 的导出速度。
 
 ### 调整 Dumpling 的数据一致性选项
 
@@ -287,7 +298,7 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 
 Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 TiDB 内存溢出 (OOM)，从而使连接中断导出失败。可以通过以下参数减少 TiDB 的内存使用。
 
-+ 设置 `--rows` 参数，可以划分导出数据区块减少 TiDB 扫描数据的内存开销，同时也可开启表内并发提高导出效率。
++ 设置 `-r` 参数，可以划分导出数据区块减少 TiDB 扫描数据的内存开销，同时也可开启表内并发提高导出效率。
 + 调小 `--tidb-mem-quota-query` 参数到 `8589934592` (8GB) 或更小。可控制 TiDB 单条查询语句的内存使用。
 + 调整 `--params "tidb_distsql_scan_concurrency=5"` 参数，即设置导出时的 session 变量 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 从而减少 TiDB scan 操作的并发度。
 
@@ -300,7 +311,7 @@ Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 T
 {{< copyable "sql" >}}
 
 ```sql
-update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
+SET GLOBAL tidb_gc_life_time = '720h';
 ```
 
 在操作结束之后，再将 GC 时间调回原样（默认是 `10m`）：
@@ -308,10 +319,10 @@ update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_lif
 {{< copyable "sql" >}}
 
 ```sql
-update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+SET GLOBAL tidb_gc_life_time = '10m';
 ```
 
-最后，所有的导出数据都可以用 [Lightning](/tidb-lightning/tidb-lightning-backends.md) 导入回 TiDB。
+最后，所有的导出数据都可以用 [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md) 导入回 TiDB。
 
 ## Dumpling 主要选项表
 
@@ -335,7 +346,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
 | -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
 | --filetype| 导出文件类型（csv/sql） | "sql" |
-| -o 或 --output | 导出文件路径 | "./export-${time}" |
+| -o 或 --output | 导出本地文件路径或[外部存储 URL](/br/backup-and-restore-storages.md) | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: 对 MySQL 使用 --consistency flush；对 TiDB 使用 --consistency snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |

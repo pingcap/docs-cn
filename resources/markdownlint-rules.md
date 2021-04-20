@@ -28,4 +28,4 @@
 | 22 | [MD039 - Spaces inside link text](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md039---spaces-inside-link-text) | 链接文本两边禁止出现多余的空格。如不能出现 `[ 某链接 ](https://www.example.com/)`。 |
 | 23 | [MD042 - No empty links](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md042---no-empty-links) | 链接必须有链接路径。如不能出现`[空链接]()`或`[空链接](#)`等情况。 |
 | 24 | [MD045 - Images should have alternate text (alt text)](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md045---images-should-have-alternate-text-alt-text) | 图片链接必须添加描述文本（即 `[]()` 的 `[]` 内必须有描述文字），这是为了让无法加载出图片的人看到图片的描述性文字。 |
-| 25 | [MD046 - Code block style](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md046---code-block-style) | 文档中的代码块统一使用**三个反引号** ` ``` ` 进行包裹，**禁止**使用**缩进四格**风格的代码块。 |
+| 25 | [MD046 - Code block style](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md#md046---code-block-style) | 文档中的代码块统一使用**三个反引号**进行包裹，**禁止**使用**缩进四格**风格的代码块。 |
