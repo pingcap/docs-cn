@@ -29,11 +29,12 @@ Before you contribute, please take a quick look at some general information abou
 
 ### Learn about docs versions
 
-Currently, we maintain four versions of TiDB documentation, each with a separate branch:
+Currently, we maintain six versions of TiDB documentation, each with a separate branch:
 
 | Docs branch name | Version description |
 | :--- | :--- |
 | `master` branch | the latest development version |
+| `release-5.0` branch | the 5.0 stable version |
 | `release-4.0` branch | the 4.0 stable version |
 | `release-3.1` branch | the 3.1 stable version |
 | `release-3.0` branch | the 3.0 stable version |
@@ -50,7 +51,7 @@ Currently, we maintain four versions of TiDB documentation, each with a separate
 - If your changes apply to only one docs version, just submit a PR to the corresponding version branch.
 
 - If your changes apply to multiple docs versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the sre-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, sre-bot will start to work.
-
+    - `needs-cherry-pick-5.0` label: sre-bot will submit a PR to the `release-5.0` branch.
     - `needs-cherry-pick-4.0` label: sre-bot will submit a PR to the `release-4.0` branch.
     - `needs-cherry-pick-3.1` label: sre-bot will submit a PR to the `release-3.1` branch.
     - `needs-cherry-pick-3.0` label: sre-bot will submit a PR to the `release-3.0` branch.
@@ -61,7 +62,7 @@ Currently, we maintain four versions of TiDB documentation, each with a separate
 
 ## How to contribute
 
-Please perform the following steps to create your Pull Request to this repository. If don't like to use command, you can also use [GitHub Desktop](https://desktop.github.com/), which is easier to get started.
+Please perform the following steps to create your Pull Request to this repository. If don't like to use commands, you can also use [GitHub Desktop](https://desktop.github.com/), which is easier to get started.
 
 > **Note:**
 >
