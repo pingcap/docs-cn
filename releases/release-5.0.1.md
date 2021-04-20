@@ -42,3 +42,19 @@ TiDB 版本：5.0.1
     - 修复了在 batch ingest SST 之后产生大量空 Region 的问题 [#10015](https://github.com/tikv/tikv/pull/10015)
     - 修复了 `cast_string_as_time` 输入非法的 UTF-8 值之和导致 panic 的问题 [#9995](https://github.com/tikv/tikv/pull/9995)
     - 修复了“文件目录”文件损坏之后 TiKV 无法启动的问题 [#9992](https://github.com/tikv/tikv/pull/9992)
+
++ TiFlash
+
+    - 修复存储引擎无法删除某些范围数据的问题
+    - 修复 `time` 转换为 `int` 时产生错误结果的问题
+    - 修复 `receiver` 可能无法在 10 秒内找到对应任务的问题
+    - 修复 `cancelMPPQuery` 中可能存在无效迭代器的问题
+    - 修复 `bitwise` 操作和 TiDB 行为不一致的问题
+    - 修复当使用 `prefix key` 时出现范围重叠报错的问题
+    - 修复字符串转换为 `int` 时产生错误结果的问题
+    - 修复连续快速写入可能导致 TiFlash OOM 的问题
+    - 修复列名重复会引发报错的问题
+    - 修复 MPP 执行计划无法被解析的问题
+    - 修复 Table GC 时会引发空指针的问题
+    - 修复向已被删除的表写数据时 TiFlash 进程崩溃的问题
+    - 修复当使用 BR Restore 时 TiFlash 进程崩溃的问题
