@@ -233,7 +233,7 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - TiKV Auto GC SafePoint：TiKV GC 的 safe point 的数值，safe point 为当前 GC 的时间戳
 - GC lifetime：TiDB 设置的 GC lifetime
 - GC interval：TiDB 设置的 GC 间隔
-- GC in Compaction Filter：write CF 的 Compaction Filter 中已过滤版本的数量。
+- GC in Compaction Filter：write CF 的 Compaction Filter 中已过滤版本的数量
 
 ## Snapshot
 
