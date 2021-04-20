@@ -1,5 +1,6 @@
 ---
 title: tiup mirror merge
+summary: 命令 `tiup mirror merge` 用于合并一个或多个镜像到当前镜像。
 ---
 
 # tiup mirror merge

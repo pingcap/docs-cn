@@ -1,5 +1,6 @@
 ---
 title: tiup cluster audit
+summary: 命令 `tiup cluster audit` 可以用于查看历史上对所有集群执行了什么命令，以及每个命令的执行日志。
 ---
 
 # tiup cluster audit

@@ -1,5 +1,6 @@
 ---
 title: tiup cluster display
+summary: 如果想查看集群中每个组件的运行状态，逐一登录到各个机器上查看显然很低效。因此，tiup-cluster 提供了 `tiup cluster display` 命令来高效完成这件工作。
 ---
 
 # tiup cluster display

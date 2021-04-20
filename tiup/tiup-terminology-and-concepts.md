@@ -1,5 +1,6 @@
 ---
 title: TiUP 术语及核心概念
+summary: 本文主要说明 TiUP 的重要术语和核心概念。
 aliases: ['/docs-cn/dev/tiup/tiup-terminology-and-concepts/']
 ---
 

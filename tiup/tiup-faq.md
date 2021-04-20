@@ -1,5 +1,6 @@
 ---
 title: TiUP FAQ
+summary: TiUP 支持通过环境变量 `TIUP_MIRRORS` 指定镜像源，镜像源的地址可以是一个本地目录或 HTTP 服务器地址。如果用户的环境不能访问网络，可以建立自己的离线镜像源使用 TiUP。
 aliases: ['/docs-cn/dev/tiup/tiup-faq/']
 ---
 

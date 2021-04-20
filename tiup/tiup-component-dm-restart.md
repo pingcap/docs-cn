@@ -1,5 +1,6 @@
 ---
 title: tiup dm restart
+summary: 命令 `tiup dm restart` 用于重启指定集群的所有或部分服务。
 ---
 
 # tiup dm restart

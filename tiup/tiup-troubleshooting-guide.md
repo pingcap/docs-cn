@@ -1,5 +1,6 @@
 ---
 title: TiUP 故障排查
+summary: 本文介绍 TiUP 使用过程中一些常见的故障及排查方式，如果本文不包含你目前遇到的问题，可以通过以下方式求助：
 aliases: ['/docs-cn/dev/tiup/tiup-troubleshooting-guide/']
 ---
 

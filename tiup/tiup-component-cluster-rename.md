@@ -1,5 +1,6 @@
 ---
 title: tiup cluster rename
+summary: 集群名字是部署集群时指定的，在集群部署之后，如果想更改集群名字，可以通过 `tiup cluster rename` 命令来实现。
 ---
 
 # tiup cluster rename

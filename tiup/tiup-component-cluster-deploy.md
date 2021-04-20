@@ -1,5 +1,6 @@
 ---
 title: tiup cluster deploy
+summary: 命令 `tiup cluster deploy` 用于部署一个全新的集群。
 ---
 
 # tiup cluster deploy

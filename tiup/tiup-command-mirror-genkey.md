@@ -1,5 +1,6 @@
 ---
 title: tiup mirror genkey
+summary: 由于修改文件需要相关的管理员进行签名，因此管理员必须拥有自己的私钥。命令 `tiup mirror genkey` 就是用于生成私钥的。
 ---
 
 # tiup mirror genkey

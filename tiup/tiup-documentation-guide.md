@@ -1,9 +1,12 @@
 ---
 title: TiUP 文档指南
+summary: 本文档提供所有 TiUP 相关文档的入口。
 aliases: ['/docs-cn/dev/tiup/tiup-documentation-guide/']
 ---
 
 # TiUP 文档地图
+
+本文档提供所有 TiUP 相关文档的入口。
 
 ## 使用文档
 

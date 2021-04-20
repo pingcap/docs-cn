@@ -1,5 +1,6 @@
 ---
 title: tiup list
+summary: 命令 `tiup list` 用于查询镜像中可用的组件列表。
 ---
 
 # tiup list

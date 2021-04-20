@@ -1,5 +1,6 @@
 ---
 title: tiup mirror
+summary: 命令 `tiup mirror` 用于管理镜像，提供了创建镜像，组件发布，密钥管理等多种功能。
 ---
 
 # tiup mirror

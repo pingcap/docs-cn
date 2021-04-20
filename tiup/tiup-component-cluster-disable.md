@@ -1,5 +1,6 @@
 ---
 title: tiup cluster disable
+summary: 命令 `tiup cluster disable` 用于关闭集群服务所在机器重启之后的自启动，该命令会到指定的节点上去执行 `systemctl disable <service>` 来关闭服务的自启动。
 ---
 
 # tiup cluster disable

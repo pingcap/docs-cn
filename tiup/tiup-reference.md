@@ -1,5 +1,6 @@
 ---
 title: TiUP 参考手册
+summary: TiUP 在 TiDB 生态中承担包管理器的功能，管理着 TiDB 生态下众多的组件，如 TiDB、PD、TiKV 等。
 ---
 
 # TiUP

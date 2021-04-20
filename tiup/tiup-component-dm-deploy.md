@@ -1,5 +1,6 @@
 ---
 title: tiup dm deploy
+summary: 命令 `tiup dm deploy` 用于部署一个全新的集群。
 ---
 
 # tiup dm deploy

@@ -1,5 +1,6 @@
 ---
 title: tiup update
+summary: 命令 `tiup update` 用于升级已安装的组件或者自身。
 ---
 
 # tiup update
