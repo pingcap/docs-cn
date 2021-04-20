@@ -1,6 +1,6 @@
 ---
 title: TABLE
-summary: TiDB 数据库中 TABLE 的使用概况。
+summary: TiDB 数据库中 TABLE 语句的使用概况。
 ---
 
 # TABLE
