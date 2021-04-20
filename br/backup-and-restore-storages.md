@@ -41,6 +41,15 @@ Cloud storages such as S3 and GCS sometimes require additional configuration for
         -d 's3://my-bucket/sql-backup?region=us-west-2'
     ```
 
++ Use TiDB Lightning to import data from S3 (using the path style in the request mode):
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
+    ```
+
 + Use BR to back up data to GCS:
 
     {{< copyable "shell-regular" >}}
