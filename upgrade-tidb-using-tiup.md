@@ -26,7 +26,7 @@ aliases: ['/docs-cn/stable/upgrade-tidb-using-tiup/','/docs-cn/v4.0/upgrade-tidb
 - 从 2.0.6 之前的版本升级到 4.0 版本之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
 - 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 4.0 版本，可以选择下面两种方案：
     - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本，然后使用 TiUP Cluster 提供的 `tiup cluster import` 命令导入配置并使用 TiUP 作为管理工具。
-    - 滚动升级，滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本，停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本，然后使用 TiUP Cluster 提供的 `tiup cluster import` 命令导入配置并使用 TiUP 作为管理工具。
+    - 滚动升级，滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本。然后使用 TiUP Cluster 提供的 `tiup cluster import` 命令导入配置并使用 TiUP 作为管理工具。
 
 > **注意：**
 >
