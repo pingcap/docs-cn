@@ -6,6 +6,10 @@ aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performan
 
 # `EXPLAIN` 概览
 
+> **注意：**
+>
+> 当使用 MySQL 客户端连接到 TiDB 时，你可以执行 `pager less -S` 命令，这样读取的输出结果无需换行，显示更清晰。在输出 `EXPLAIN` 结果后，可以按键盘上的右箭头 <kbd>→</kbd> 按钮，水平滚动阅读输出的结果。
+
 TiDB 优化器会根据当前数据表的最新的统计信息来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中的执行计划。
 
 ## `EXPLAIN` 简介
