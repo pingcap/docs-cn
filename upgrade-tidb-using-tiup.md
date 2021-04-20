@@ -7,7 +7,7 @@ aliases: ['/docs-cn/stable/upgrade-tidb-using-tiup/','/docs-cn/v4.0/upgrade-tidb
 
 本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
 
-如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
+如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，参考 [`tiup cluster import`](/tiup/tiup-component-cluster-import.md)，并完成升级。
 
 ## 1. 升级兼容性说明
 
@@ -25,8 +25,8 @@ aliases: ['/docs-cn/stable/upgrade-tidb-using-tiup/','/docs-cn/v4.0/upgrade-tidb
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 从 2.0.6 之前的版本升级到 4.0 版本之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
 - 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 4.0 版本，可以选择下面两种方案：
-    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本
-    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本
+    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本，然后使用 TiUP Cluster 提供的 `tiup cluster import` 命令导入配置并使用 TiUP 作为管理工具。
+    - 滚动升级，先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本。然后使用 TiUP Cluster 提供的 `tiup cluster import` 命令导入配置并使用 TiUP 作为管理工具。
 
 > **注意：**
 >
