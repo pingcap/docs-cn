@@ -18,6 +18,12 @@ TiDB 版本：5.0.1
 
     - 使用 `zstd` 压缩 Region Snapshot [#10005](https://github.com/tikv/tikv/pull/10005)
 
++ Tools
+
+    + Backup & Restore (BR)
+
+        - 删除 summary 日志中一些容易误解的信息 [#1009](https://github.com/pingcap/br/pull/1009)
+
 ## Bug 修复
 
 + TiDB
@@ -58,3 +64,23 @@ TiDB 版本：5.0.1
     - 修复 Table GC 时会引发空指针的问题
     - 修复向已被删除的表写数据时 TiFlash 进程崩溃的问题
     - 修复当使用 BR Restore 时 TiFlash 进程崩溃的问题
+
++ Tools
+
+    + TiDB Lightning
+
+        - 修复导入过程中进度不准确的问题. [#1005](https://github.com/pingcap/br/pull/1005)
+
+    + Backup & Restore (BR)
+
+        - 修复备份时设置 ratelimit 不生效的问题. [#1026](https://github.com/pingcap/br/pull/1026)
+        - 修复备份时不能容忍少部分 TiKV 节点挂掉的问题. [#1019](https://github.com/pingcap/br/pull/1019)
+
+    + TiCDC
+
+        - 修复 unified sorter 中的并发问题，以及改进日志. [#1678](https://github.com/pingcap/ticdc/pull/1678)
+        - 修复同步到 minio s3 时，避免重复创建 object 导致同步失败的问题. [#1672]
+        - 默认打开 session 变量 `explicit_defaults_for_timestamp`，使得 mysql 和上游 TiDB 行为一致 [#1659](https://github.com/pingcap/ticdc/pull/1659)
+        - 修复错误的处理 io.EOF 问题，导致同步中断的问题. [#1648](https://github.com/pingcap/ticdc/pull/1648)
+        - 修复 TiKV CDC endpoint CPU 统计信息. [#1645](https://github.com/pingcap/ticdc/pull/1645)
+        - 增加 defaultBufferChanSize 来避免某些情况下同步阻塞的问题 [#1632](https://github.com/pingcap/ticdc/pull/1632)
