@@ -23,7 +23,7 @@ tiup mirror modify <component>[:version] [flags]
 
 组件管理员的私钥，客户端需要使用该私钥对组件信息 (`{component}.json`) 进行签名。
 
-### --yank（boolean，默认 false）
+### --yank
 
 - 将指定组件或指定版本标记为不可用：
 
@@ -33,7 +33,7 @@ tiup mirror modify <component>[:version] [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --hide（boolean，默认 false）
+### --hide
 
 - 将该组件设置为隐藏，隐藏之后该组件将不在 `tiup list` 的列表中显示，但是可通过执行 `tiup list --all` 查看。
 - 数据类型：`BOOLEAN`
@@ -43,7 +43,7 @@ tiup mirror modify <component>[:version] [flags]
 >
 > 该选项只能应用于组件上，无法应用于组件的版本上。
 
-### --standalone（boolean，默认 false）
+### --standalone
 
 - 该组件是否可独立运行。本参数目前尚未启用。
 - 数据类型：`BOOLEAN`

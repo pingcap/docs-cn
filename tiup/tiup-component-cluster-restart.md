@@ -36,9 +36,11 @@ tiup cluster restart <cluster-name> [flags]
 > 
 > 若同时指定了 `-N, --node`，那么将重启它们的交集中的服务。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

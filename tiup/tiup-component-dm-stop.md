@@ -36,7 +36,7 @@ tiup dm stop <cluster-name> [flags]
 > 
 > 若同时指定了 `-N, --node`，那么将停止它们的交集中的服务。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
 - 输出帮助信息。
 - 数据类型：`BOOLEAN`

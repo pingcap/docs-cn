@@ -17,21 +17,25 @@ tiup mirror clone <target-dir> [global version] [flags]
 
 ## 选项
 
-### -f, --full（boolean，默认 false）
+### -f, --full
 
 - 是否克隆整个镜像。指定该选项后会完整从目标镜像克隆所有组件的所有版本，此时其他指定的选项将失效。
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### -a, --arch（strings，默认 amd64,arm64）
+### -a, --arch
 
-仅克隆能在指定平台上运行的组件。
+- 仅克隆能在指定平台上运行的组件。
+- 数据类型：`STRING`
+- 如果未指定该选项，默认克隆 AMD64 和 ARM64 平台的组件 (`amd64,arm64`)。
 
-### -o, --os（strings，默认 linux,darwin）
+### -o, --os
 
-仅克隆能在指定操作系统上运行的组件。
+- 仅克隆能在指定操作系统上运行的组件。
+- 数据类型：`STRING`
+- 如果未指定该选项，默认克隆 Linux 和 Darwin 系统的组件 (`linux,darwin`)。
 
-### --prefix（boolean，默认 false）
+### --prefix
 
 - 匹配版本时是否前缀匹配。默认情况下必须严格匹配指定的版本才会下载，指定该选项之后，仅前缀匹配指定的版本也会被下载。
 - 数据类型：`BOOLEAN`

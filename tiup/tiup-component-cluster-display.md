@@ -18,7 +18,9 @@ tiup cluster display <cluster-name> [flags]
 
 ### --dashboard（boolean，默认为 false）
 
-默认情况会展示整个集群的所有节点信息，加上该选项后仅展示 dashboard 的信息。
+- 默认情况会展示整个集群的所有节点信息，加上该选项后仅展示 dashboard 的信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### -N, --node（strings，默认为 []，表示所有节点）
 
@@ -36,9 +38,11 @@ tiup cluster display <cluster-name> [flags]
 >
 > 若同时指定了 `-N, --node`，那么将查询它们的交集中的服务状态。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

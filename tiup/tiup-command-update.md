@@ -20,21 +20,29 @@ tiup update [component1][:version] [component2..N] [flags]
 
 ## 选项
 
-### --all (boolean, 默认 false)
+### --all
 
-若未指定任何组件，则必须指定该选项。
+- 若未指定任何组件，则必须指定该选项。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --force (boolean, 默认 false)
+### --force
 
-若指定的组件版本已经安装，则默认跳过升级操作，指定该参数可强制升级已安装版本。
+- 若指定的组件版本已经安装，则默认跳过升级操作，指定该参数可强制升级已安装版本。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --nightly (boolean, 默认 false)
+### --nightly
 
-将指定组件升级到 nightly 版本。使用该参数的命令等价于 `tiup update <component>:nightly`。
+- 将指定组件升级到 nightly 版本。使用该参数的命令等价于 `tiup update <component>:nightly`。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --self (boolean，默认 false)
+### --self
 
-升级 TiUP 自身。
+- 升级 TiUP 自身。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

@@ -30,13 +30,15 @@ tiup cluster clean <cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --data（boolean，默认 false）
+### --data
 
 该选项开启数据清理，若不指定该选项，也不指定 `--all`，则不清理数据。
 
-### --log（boolean，默认 false）
+### --log
 
-该选项开启日志清理，若不指定该选项，也不指定 `--all`，则不清理日志。
+- 该选项开启日志清理，若不指定该选项，也不指定 `--all`，则不清理日志。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### --ignore-node（StringArray，默认为空）
 
@@ -46,9 +48,11 @@ tiup cluster clean <cluster-name> [flags]
 
 指定不需要清理的角色，如需指定多个，重复使用多次该选项：`--ignore-role <role-A> --ignore-role <role-B>`。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
