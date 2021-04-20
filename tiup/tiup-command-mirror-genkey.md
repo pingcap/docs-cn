@@ -24,7 +24,7 @@ tiup mirror genkey [flags]
 
 ## 选项
 
-### -n, --name（string，默认 private）
+### -n, --name
 
 - 密钥的名字，该名字决定最终生成的文件名。生成的私钥文件路径为：`${TIUP_HOME}/keys/{name}.json`，其中 `TIUP_HOME` 为 TiUP 的家目录，默认路径为 `$HOME/.tiup`，`name` 为 `-n/--name` 指定的密钥名字。
 - 数据类型：`STRING`
