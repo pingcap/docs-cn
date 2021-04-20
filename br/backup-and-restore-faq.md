@@ -92,7 +92,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 ## BR backupTS 如何转化成 Unix 时间?
 
-BR backupTS 默认情况下是在备份开始前，从 PD 获取到的最新 timestamp。可以采用 pd-ctl tso `timestamp` 来解析，获得精确值，也可以通过 `backupTS >> 18` 来快速获取估计值。
+BR `backupTS` 默认是在备份开始前，从 PD 获取到的最新时间戳。可以使用 `pd-ctl tso timestamp` 来解析该时间戳，以获得精确值，也可以通过 `backupTS >> 18` 来快速获取估计值。
 
 ## BR 恢复存档后是否需要对表执行 `ANALYZE` 以更新 TiDB 在表和索引上留下的统计信息？
 
