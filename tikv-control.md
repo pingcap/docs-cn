@@ -258,10 +258,10 @@ middle_key_by_approximate_size:
 - `--host` 参数可以指定要 compact 的 TiKV。
 - `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
 - `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
-- `--bottommost` 参数可以指定 compact 是否包括最下层的文件。有 `default`, `skip` 和 `force` 可选，默认为 `default`。
-    - `default` 表示，只有开启了 compaction filter 时 compact 才会包括最下层文件
-    - `skip` 表示，compact 不包括最下层文件
-    - `force` 表示，compact 总是包括最下层文件
+- `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
+    - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
+    - `skip` 表示 compact 不包括最下层文件。
+    - `force` 表示 compact 总是包括最下层文件。
 
 {{< copyable "shell-regular" >}}
 
