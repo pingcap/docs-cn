@@ -240,7 +240,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 ## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
 
-不能，目前 TiCDC 控制了向 Kafka 发送的消息批量的大小最大为 512 MB，其中单个消息的大小最大为 4 MB。
+可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 64MB）；通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量，目前仅对 Kafka 的 protocol 为 `default` 时有效（可选，默认值为 `4096`）;
 
 ## TiCDC 把数据同步到 Kafka 时，一条消息中会不会包含多种数据变更？
 
