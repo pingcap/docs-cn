@@ -23,13 +23,13 @@ tiup list [component] [flags]
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 
-### --installed（boolean，默认 false）
+### --installed
 
 - 只显示已经安装的组件或版本。
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --verbose（boolean，默认 false）
+### --verbose
 
 - 在组件列表中显示已安装的版本列表。默认组件列表不显示当前已安装的版本。
 - 数据类型：`BOOLEAN`

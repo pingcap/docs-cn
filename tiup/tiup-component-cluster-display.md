@@ -16,7 +16,7 @@ tiup cluster display <cluster-name> [flags]
 
 ## 选项
 
-### --dashboard（boolean，默认为 false）
+### --dashboard
 
 - 默认情况会展示整个集群的所有节点信息，加上该选项后仅展示 dashboard 的信息。
 - 数据类型：`BOOLEAN`
