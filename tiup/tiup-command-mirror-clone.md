@@ -26,14 +26,14 @@ tiup mirror clone <target-dir> [global version] [flags]
 ### -a, --arch
 
 - 仅克隆能在指定平台上运行的组件。
-- 数据类型：`STRING`
-- 如果未指定该选项，默认克隆 AMD64 和 ARM64 平台的组件 (`amd64,arm64`)。
+- 数据类型：`STRINGS`
+- 该参数接受以逗号分隔的多个平台名称，例如 `amd64,arm64`。如果未指定该选项，默认克隆 AMD64 和 ARM64 平台的组件，即 `amd64,arm64`。
 
 ### -o, --os
 
 - 仅克隆能在指定操作系统上运行的组件。
-- 数据类型：`STRING`
-- 如果未指定该选项，默认克隆 Linux 和 Darwin 系统的组件 (`linux,darwin`)。
+- 数据类型：`STRINGS`
+- 该参数接受以逗号分隔的多个操作系统名称，例如 `linux,darwin`。如果未指定该选项，默认克隆 Linux 和 Darwin 系统的组件，即 `linux,darwin`。
 
 ### --prefix
 

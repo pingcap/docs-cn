@@ -43,7 +43,7 @@ tiup mirror modify <component>[:version] [flags]
 >
 > 该选项只能应用于组件上，无法应用于组件的版本上。
 
-### --standalone
+<!-- ### --standalone
 
 - 该组件是否可独立运行。本参数目前尚未启用。
 - 数据类型：`BOOLEAN`
@@ -51,7 +51,7 @@ tiup mirror modify <component>[:version] [flags]
 
 > **注意：**
 >
-> 该选项只能应用于组件上，无法应用于组件的版本上。
+> 该选项只能应用于组件上，无法应用于组件的版本上。-->
 
 ## 输出
 

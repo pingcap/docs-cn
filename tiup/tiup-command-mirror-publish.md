@@ -59,11 +59,11 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --standalone
+<!-- ### --standalone
 
 - 该组件是否可独立运行。该参数目前尚未启用。
 - 数据类型：`BOOLEAN`
-- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。-->
 
 ## 输出
 
