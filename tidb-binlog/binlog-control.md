@@ -1,7 +1,12 @@
 ---
 title: binlogctl 工具
+<<<<<<< HEAD
 summary: 介绍 binlogctl 的使用方法。 
 aliases: ['/docs-cn/stable/tidb-binlog/binlog-control/','/docs-cn/v4.0/tidb-binlog/binlog-control/']
+=======
+summary: 介绍 binlogctl 的使用方法。
+aliases: ['/docs-cn/dev/tidb-binlog/binlog-control/']
+>>>>>>> ab487f7a... ctl: add a note for all ctl docs (#6096)
 ---
 
 # binlogctl 工具
@@ -21,6 +26,10 @@ binlogctl 支持如下这些功能：
 * Pump/Drainer 异常退出，状态没有更新，或者状态不符合预期，对业务造成影响
 
 ## binlogctl 下载
+
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
 
 binlogctl 下载链接：
 
