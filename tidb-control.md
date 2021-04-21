@@ -11,15 +11,11 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 本节提供了两种方式获取 TiDB Control 工具。
 
-<<<<<<< HEAD
-### 通过 TiDB Ansible 安装
-=======
 > **注意：**
 >
 > 建议使用的 Control 工具版本与集群版本保持一致。
 
-### 通过 TiUP 安装
->>>>>>> ab487f7a... ctl: add a note for all ctl docs (#6096)
+### 通过 TiDB Ansible 安装
 
 对于使用 [TiDB Ansible](/online-deployment-using-ansible.md) 部署的 TiDB 集群，在 TiDB 的安装路径下可以找到 TiDB Control 的二进制程序 `tidb-ctl`。
 
