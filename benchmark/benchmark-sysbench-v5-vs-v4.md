@@ -82,7 +82,6 @@ raftstore.apply-pool-size: 3
 rocksdb.max-background-jobs: 8
 raftdb.max-background-jobs: 4
 raftdb.allow-concurrent-memtable-write: true
-server.request-batch-enable-cross-command: false
 server.grpc-concurrency: 6
 readpool.unified.min-thread-count: 5
 readpool.unified.max-thread-count: 20
