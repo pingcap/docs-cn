@@ -1,11 +1,6 @@
 ---
 title: binlogctl 工具
-<<<<<<< HEAD
-summary: 介绍 binlogctl 的使用方法。 
-=======
 summary: 介绍 binlogctl 的使用方法。
-aliases: ['/docs-cn/dev/tidb-binlog/binlog-control/']
->>>>>>> ab487f7a... ctl: add a note for all ctl docs (#6096)
 ---
 
 # binlogctl 工具
