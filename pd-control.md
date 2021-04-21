@@ -9,8 +9,18 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 源码编译
 
+<<<<<<< HEAD
 1. [Go](https://golang.org/) Version 1.13 以上
 2. 在 PD 项目根目录使用 `make` 命令进行编译，生成 bin/pd-ctl
+=======
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
+### 使用 TiUP
+
+可直接通过 `tiup ctl pd:<pd_version> -u http://<pd_ip>:<pd_port> [-i]` 使用。
+>>>>>>> ab487f7a... ctl: add a note for all ctl docs (#6096)
 
 ## 下载安装包
 
@@ -901,12 +911,50 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
+<<<<<<< HEAD
 >> scheduler show                             // 显示所有的 schedulers
 >> scheduler add grant-leader-scheduler 1     // 把 store 1 上的所有 Region 的 leader 调度到 store 1
 >> scheduler add evict-leader-scheduler 1     // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
 >> scheduler add shuffle-leader-scheduler     // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler     // 随机调度不同 store 上的 Region
 >> scheduler remove grant-leader-scheduler-1  // 把对应的 scheduler 删掉
+=======
+>> scheduler show                                 // 显示所有的 schedulers
+>> scheduler add grant-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 调度到 store 1
+>> scheduler add evict-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
+>> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
+>> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
+>> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
+>> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
+>> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
+>> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
+>> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器
+>> scheduler resume all                           // 继续运行所有的调度器
+>> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
+```
+
+### `scheduler config balance-hot-region-scheduler`
+
+用于查看和控制 `balance-hot-region-scheduler` 策略。
+
+示例：
+
+```bash
+>> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的所有配置
+{
+  "min-hot-byte-rate": 100,
+  "min-hot-key-rate": 10,
+  "max-zombie-rounds": 3,
+  "max-peer-number": 1000,
+  "byte-rate-rank-step-ratio": 0.05,
+  "key-rate-rank-step-ratio": 0.05,
+  "count-rank-step-ratio": 0.01,
+  "great-dec-ratio": 0.95,
+  "minor-dec-ratio": 0.99,
+  "src-tolerance-ratio": 1.02,
+  "dst-tolerance-ratio": 1.02
+}
+>>>>>>> ab487f7a... ctl: add a note for all ctl docs (#6096)
 ```
 
 ### `store [delete | label | weight] <store_id>  [--jq="<query string>"]`
