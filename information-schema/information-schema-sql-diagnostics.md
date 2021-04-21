@@ -1,7 +1,7 @@
 ---
 title: SQL 诊断
 summary: 了解 SQL 诊断功能。
-aliases: ['/docs-cn/stable/system-tables/system-table-sql-diagnostics/','/docs-cn/v4.0/system-tables/system-table-sql-diagnostics/','/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/','/zh/tidb/stable/check-cluster-status-using-sql-statements','/docs-cn/stable/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/stable/system-table-sql-diagnostics/','/docs-cn/stable/check-cluster-status-using-sql-statements/']
+aliases: ['/docs-cn/stable/system-tables/system-table-sql-diagnostics/','/docs-cn/v4.0/system-tables/system-table-sql-diagnostics/','/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/','/zh/tidb/stable/check-cluster-status-using-sql-statements','/docs-cn/stable/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/stable/system-table-sql-diagnostics/','/docs-cn/stable/check-cluster-status-using-sql-statements/','/zh/tidb/v4.0/check-cluster-status-using-sql-statements','/zh/tidb/v4.0/system-table-sql-diagnostics/']
 ---
 
 # SQL 诊断
