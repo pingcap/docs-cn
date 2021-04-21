@@ -9,6 +9,10 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 安装方式
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 ### 使用 TiUP
 
 可直接通过 `tiup ctl pd:<pd_version> -u http://<pd_ip>:<pd_port> [-i]` 使用。
@@ -975,8 +979,8 @@ Encoding 格式示例：
 >> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
->> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器 
->> scheduler resume all                           // 继续运行所有的调度器 
+>> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器
+>> scheduler resume all                           // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
 ```
 

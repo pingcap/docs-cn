@@ -11,6 +11,10 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 
 ## 通过 TiUP 使用 TiKV Control
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 `tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
 
 {{< copyable "shell-regular" >}}
