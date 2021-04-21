@@ -8,7 +8,7 @@ aliases: ['/docs/dev/tiup/tiup-cluster/','/docs/dev/reference/tools/tiup/cluster
 
 This document focuses on how to use the TiUP cluster component. For the complete steps of online deployment, refer to [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md).
 
-Similar to [the TiUP playground component](/tiup/tiup-playground.md) used for local deployment, the TiUP cluster component quickly deploys TiDB for production environment. Compared with playground, the cluster component provides more powerful cluster management features, including upgrading, scaling, and even operation and auditing.
+Similar to [the TiUP playground component](/tiup/tiup-playground.md) used for a local test deployment, the TiUP cluster component quickly deploys TiDB for production environment. Compared with playground, the cluster component provides more powerful production cluster management features, including upgrading, scaling, and even operation and auditing.
 
 For the help information of the cluster component, run the following command:
 
@@ -588,7 +588,7 @@ Flags:
   -h, --help             help for exec
   -N, --node strings     Only exec on host with specified nodes
   -R, --role strings     Only exec on host with specified roles
-      --sudo            use root permissions (default false)
+      --sudo             use root permissions (default false)
 
 Global Flags:
       --ssh-timeout int   Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
@@ -707,11 +707,11 @@ If you specify this environment variable and `--native-ssh` at the same time, `-
 The TiUP data is stored in the `.tiup` directory in the user's home directory. To migrate the control machine, you can take the following steps to copy the `.tiup` directory to the corresponding target machine:
 
 1. Execute `tar czvf tiup.tar.gz .tiup` in the home directory of the original machine.
-2. Copy `tip.tar.gz` to the home directory of the target machine.
+2. Copy `tiup.tar.gz` to the home directory of the target machine.
 3. Execute `tar xzvf tiup.tar.gz` in the home directory of the target machine.
 4. Add the `.tiup` directory to the `PATH` environment variable.
 
-    If you use `bash` and you are a `tidb` user, you can add `export PATH=/home/tidb/.tiup/bin:$PATH` in `~/.bashr` and execute `source ~/.bashrc`. Then make corresponding adjustments according to the shell and the user you use.
+    If you use `bash` and you are a `tidb` user, you can add `export PATH=/home/tidb/.tiup/bin:$PATH` in `~/.bashrc` and execute `source ~/.bashrc`. Then make corresponding adjustments according to the shell and the user you use.
 
 > **Note:**
 >
