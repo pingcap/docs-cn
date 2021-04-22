@@ -33,11 +33,10 @@ TiDB 版本：5.0.1
     - 修复某些情况下列包含 `NULL` 值时查询结果可能错误的问题 [#24063](https://github.com/pingcap/tidb/pull/24063)
     - 当有虚拟列参与扫描时不允许生成 MPP 计划 [#24058](https://github.com/pingcap/tidb/pull/24058)
     - 修复 Plan Cache 中对 `PointGet` 和 `TableDual` 错误的重复使用 [#24043](https://github.com/pingcap/tidb/pull/24043)
-    - ping @eurekaka @winoros:
- `IndexMerge` 算子需要保留聚簇索引的输出 [#24042](https://github.com/pingcap/tidb/pull/24042)
+    - 修复优化器在为聚簇索引构建 `IndexMerge` 执行计划时出现的错误 [#24042](https://github.com/pingcap/tidb/pull/24042)
     - 修复 BIT 类型相关错误的类型推导 [#24027](https://github.com/pingcap/tidb/pull/24027)
     - 修复某些优化器 Hint 在 `PointGet` 算子存在时无法生效的问题 [#23685](https://github.com/pingcap/tidb/pull/23685)
-    - ping @winoros @AilinKid: 修复某些情况下 DDL Job 在将状态设置外 rolling back 时能出现的参数解析失败问题 [#24080](https://github.com/pingcap/tidb/pull/24080)
+    - 修复 DDL 遇到错误回滚时可能卡住的问题 [#24080](https://github.com/pingcap/tidb/pull/24080)
     - 修复二进制字面值常量的索引范围构造错误的问题 [#24041](https://github.com/pingcap/tidb/pull/24041)
     - 修复某些情况下 `IN` 语句的执行结果可能错误的问题 [#24023](https://github.com/pingcap/tidb/pull/24023)
     - 修复某些字符串函数的返回结果错误的问题 [#23879](https://github.com/pingcap/tidb/pull/23879)
@@ -82,8 +81,8 @@ TiDB 版本：5.0.1
     + TiCDC
 
         - 修复 Unified Sorter 中的并发问题并改进无用的错误消息 [#1678](https://github.com/pingcap/ticdc/pull/1678)
-        - ping @amyangfei @3pointer: 修复同步到 minio s3 时，避免重复创建 object 导致同步失败的问题 [#1672](https://github.com/pingcap/ticdc/pull/1672)
-        - 默认开启 session 变量 `explicit_defaults_for_timestamp`，使得下游 MySQL 5.7 和上游 TiDB 的行为保持一致 [#1659](https://github.com/pingcap/ticdc/pull/1659)
+        - 修复同步到 MinIO 时，重复创建目录会导致同步中断的问题 [#1672](https://github.com/pingcap/ticdc/pull/1672)
+        - 默认开启会话变量 `explicit_defaults_for_timestamp`，使得下游 MySQL 5.7 和上游 TiDB 的行为保持一致 [#1659](https://github.com/pingcap/ticdc/pull/1659)
         - 修复错误地处理 `io.EOF` 可能导致同步中断的问题 [#1648](https://github.com/pingcap/ticdc/pull/1648)
         - 修正 TiCDC 面板中的 TiKV CDC endpoint CPU 统计信息 [#1645](https://github.com/pingcap/ticdc/pull/1645)
         - 增加 `defaultBufferChanSize` 来避免某些情况下同步阻塞的问题 [#1632](https://github.com/pingcap/ticdc/pull/1632)
