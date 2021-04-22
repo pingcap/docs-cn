@@ -10,6 +10,10 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 * 如果是使用 TiDB Ansible 部署的集群，在 `ansible` 目录下的 `resources/bin` 子目录下。
 * 如果是使用 TiUP 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 目录下。
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 [TiUP](https://github.com/pingcap/tiup) 是晚于 `tidb-ansible` 推出的部署工具，使用方式更加简化，`tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
 
 {{< copyable "shell-regular" >}}
