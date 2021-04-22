@@ -8,15 +8,16 @@ title: TiDB 5.0.1 Release Notes
 
 TiDB 版本：5.0.1
 
-## 兼容性更改
-
-## 新功能
-
 ## 改进提升
 
 + TiKV
 
     - 使用 `zstd` 压缩 Region Snapshot [#10005](https://github.com/tikv/tikv/pull/10005)
+
++ PD
+
+    - 改善 Region 分数公式使其更适用异构集群问题 [#1009](https://github.com/pingcap/br/pull/1009)
+    - 避免在添加 `scatter range` 后的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
 
 + Tools
 
