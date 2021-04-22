@@ -226,8 +226,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 "2.0.0"
 ```
 
-`max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-当需要加快补副本或 balance 速度时可以调大这个值。
+`max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
 设置最大 snapshot 为 16：
 
@@ -297,9 +296,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 >> config set max-store-down-time 30m
 ```
 
-通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
-这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Leader 调度的开销较小，需要的时候可以适当调大。
+通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
 
 最多同时进行 4 个 leader 调度：
 
@@ -309,9 +306,7 @@ Leader 调度的开销较小，需要的时候可以适当调大。
 >> config set leader-schedule-limit 4
 ```
 
-通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。
-这个值主要影响 *Region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Region 调度的开销较大，所以这个值不宜调得太大。
+通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。这个值主要影响 *Region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Region 调度的开销较大，所以这个值不宜调得太大。
 
 最多同时进行 2 个 Region 调度：
 
@@ -321,9 +316,7 @@ Region 调度的开销较大，所以这个值不宜调得太大。
 >> config set region-schedule-limit 2
 ```
 
-通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。
-这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。
-Replica 调度的开销较大，所以这个值不宜调得太大。
+通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。
 
 最多同时进行 4 个 replica 调度：
 
@@ -333,8 +326,7 @@ Replica 调度的开销较大，所以这个值不宜调得太大。
 >> config set replica-schedule-limit 4
 ```
 
-`merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
-Merge 调度的开销较大，所以这个值不宜调得过大。
+`merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。Merge 调度的开销较大，所以这个值不宜调得过大。
 
 最多同时进行 16 个 merge 调度：
 
@@ -362,8 +354,7 @@ Merge 调度的开销较大，所以这个值不宜调得过大。
 >> config set namespace ts2 region-schedule-limit 2
 ```
 
-`tolerant-size-ratio` 控制 balance 缓冲区大小。
-当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
+`tolerant-size-ratio` 控制 balance 缓冲区大小。当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
 
 设置缓冲区为约 20 倍平均 RegionSize：
 
@@ -373,8 +364,7 @@ Merge 调度的开销较大，所以这个值不宜调得过大。
 >> config set tolerant-size-ratio 20
 ```
 
-`low-space-ratio` 用于设置 store 空间不足的阈值。
-当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
+`low-space-ratio` 用于设置 store 空间不足的阈值。当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
 
 设置空间不足阈值为 0.9：
 
@@ -384,8 +374,7 @@ Merge 调度的开销较大，所以这个值不宜调得过大。
 config set low-space-ratio 0.9
 ```
 
-`high-space-ratio` 用于设置 store 空间充裕的阈值。
-当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
+`high-space-ratio` 用于设置 store 空间充裕的阈值。当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
 
 设置空间充裕阈值为 0.5：
 
@@ -395,8 +384,7 @@ config set low-space-ratio 0.9
 config set high-space-ratio 0.5
 ```
 
-`disable-raft-learner` 用于关闭 raft learner 功能。
-默认配置下 PD 在添加副本时会使用 raft learner 来降低宕机或网络故障带来的不可用风险。
+`disable-raft-learner` 用于关闭 raft learner 功能。默认配置下 PD 在添加副本时会使用 raft learner 来降低宕机或网络故障带来的不可用风险。
 
 关闭 raft learner 功能：
 
@@ -406,8 +394,7 @@ config set high-space-ratio 0.5
 config set disable-raft-learner true
 ```
 
-`cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。
-通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
+`cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
 
 设置 cluster version 为 1.0.8：
 
@@ -417,20 +404,15 @@ config set disable-raft-learner true
 config set cluster-version 1.0.8
 ```
 
-`disable-remove-down-replica` 用于关闭自动删除 DownReplica 的特性。
-当设置为 true 时，PD 不会自动清理宕机状态的副本。
+`disable-remove-down-replica` 用于关闭自动删除 DownReplica 的特性。当设置为 true 时，PD 不会自动清理宕机状态的副本。
 
-`disable-replace-offline-replica` 用于关闭迁移 OfflineReplica 的特性。
-当设置为 true 时，PD 不会迁移下线状态的副本。
+`disable-replace-offline-replica` 用于关闭迁移 OfflineReplica 的特性。当设置为 true 时，PD 不会迁移下线状态的副本。
 
-`disable-make-up-replica` 用于关闭补充副本的特性。
-当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
+`disable-make-up-replica` 用于关闭补充副本的特性。当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
 
-`disable-remove-extra-replica` 用于关闭删除多余副本的特性。
-当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
+`disable-remove-extra-replica` 用于关闭删除多余副本的特性。当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
 
-`disable-location-replacement` 用于关闭隔离级别检查。
-当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
+`disable-location-replacement` 用于关闭隔离级别检查。当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
 
 `disable-namespace-relocation` 用于关闭 Region 的 namespace 调度。当设置为 true 时，PD 不会把 Region 调度到它所属的 Store 上。
 
