@@ -36,7 +36,7 @@ TiDB 版本：5.0.1
     - 修复优化器在为聚簇索引构建 `IndexMerge` 执行计划时出现的错误 [#24042](https://github.com/pingcap/tidb/pull/24042)
     - 修复 BIT 类型相关错误的类型推导 [#24027](https://github.com/pingcap/tidb/pull/24027)
     - 修复某些优化器 Hint 在 `PointGet` 算子存在时无法生效的问题 [#23685](https://github.com/pingcap/tidb/pull/23685)
-    - 修复 DDL 遇到错误回滚时可能卡住的问题 [#24080](https://github.com/pingcap/tidb/pull/24080)
+    - 修复 DDL 遇到错误回滚时可能失败的问题 [#24080](https://github.com/pingcap/tidb/pull/24080)
     - 修复二进制字面值常量的索引范围构造错误的问题 [#24041](https://github.com/pingcap/tidb/pull/24041)
     - 修复某些情况下 `IN` 语句的执行结果可能错误的问题 [#24023](https://github.com/pingcap/tidb/pull/24023)
     - 修复某些字符串函数的返回结果错误的问题 [#23879](https://github.com/pingcap/tidb/pull/23879)
