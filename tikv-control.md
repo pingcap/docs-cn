@@ -9,6 +9,10 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 
 编译 TiKV 的同时也会编译 tikv-ctl 命令。如果通过 TiDB Ansible 部署集群，则对应的 `tidb-ansible/resources/bin` 目录下会存在 `tikv-ctl` 二进制文件。如果使用二进制文件部署集群，bin 目录下会包含 `tikv-ctl` 文件及 `tidb-server`、`pd-server`、以及 `tikv-server` 等其他文件。
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 ## 通用参数
 
 tikv-ctl 提供以下两种运行模式：

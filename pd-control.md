@@ -7,6 +7,10 @@ aliases: ['/docs-cn/v2.1/pd-control/','/docs-cn/v2.1/reference/tools/pd-control/
 
 PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整集群。
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 ## 源码编译
 
 1. [Go](https://golang.org/) Version 1.13 以上
@@ -162,29 +166,25 @@ export PD_ADDR=http://127.0.0.1:2379
 "2.0.0"
 ```
 
-`max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-当需要加快补副本或 balance 速度时可以调大这个值。
+`max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
 ```bash
 >> config set max-snapshot-count 16  // 设置最大 snapshot 为 16
 ```
 
-`max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。
-需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
+`max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
 
 ```bash
 >> config set max-pending-peer-count 64  // 设置最大 pending peer 数量为 64
 ```
 
-`max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。
-当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
+`max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
 
 ```bash
 >> config set max-merge-region-size 16 // 设置 Region Merge 的 size 上限为 16M
 ```
 
-`max-merge-region-keys` 控制 Region Merge 的 keyCount 上限。
-当 Region KeyCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
+`max-merge-region-keys` 控制 Region Merge 的 keyCount 上限。当 Region KeyCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
 
 ```bash
 >> config set max-merge-region-keys 50000 // 设置 Region Merge 的 keyCount 上限为 50k
@@ -208,32 +208,25 @@ export PD_ADDR=http://127.0.0.1:2379
 >> config set max-store-down-time 30m  // 设置 store 心跳丢失 30 分钟开始补副本
 ```
 
-通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。
-这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Leader 调度的开销较小，需要的时候可以适当调大。
+通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
 
 ```bash
 >> config set leader-schedule-limit 4         // 最多同时进行 4 个 leader 调度
 ```
 
-通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。
-这个值主要影响 *Region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。
-Region 调度的开销较大，所以这个值不宜调得太大。
+通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。这个值主要影响 *Region balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Region 调度的开销较大，所以这个值不宜调得太大。
 
 ```bash
 >> config set region-schedule-limit 2         // 最多同时进行 2 个 Region 调度
 ```
 
-通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。
-这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。
-Replica 调度的开销较大，所以这个值不宜调得太大。
+通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。
 
 ```bash
 >> config set replica-schedule-limit 4        // 最多同时进行 4 个 replica 调度
 ```
 
-`merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
-Merge 调度的开销较大，所以这个值不宜调得过大。
+`merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。Merge 调度的开销较大，所以这个值不宜调得过大。
 
 ```bash
 >> config set merge-schedule-limit 16       // 最多同时进行 16 个 merge 调度
@@ -246,55 +239,45 @@ Merge 调度的开销较大，所以这个值不宜调得过大。
 >> config set namespace ts2 region-schedule-limit 2 // 设置名为 ts2 的 namespace 最多同时进行  2 个 Region 调度
 ```
 
-`tolerant-size-ratio` 控制 balance 缓冲区大小。
-当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
+`tolerant-size-ratio` 控制 balance 缓冲区大小。当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
 
 ```bash
 >> config set tolerant-size-ratio 20        // 设置缓冲区为约 20 倍平均 RegionSize
 ```
 
-`low-space-ratio` 用于设置 store 空间不足的阈值。
-当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
+`low-space-ratio` 用于设置 store 空间不足的阈值。当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
 
 ```bash
 config set low-space-ratio 0.9              // 设置空间不足阈值为 0.9
 ```
 
-`high-space-ratio` 用于设置 store 空间充裕的阈值。
-当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
+`high-space-ratio` 用于设置 store 空间充裕的阈值。当节点的空间占用比例小于指定值时，PD 调度时会忽略剩余空间这个指标，主要针对实际数据量进行均衡。
 
 ```bash
 config set high-space-ratio 0.5             // 设置空间充裕阈值为 0.5
 ```
 
-`disable-raft-learner` 用于关闭 raft learner 功能。
-默认配置下 PD 在添加副本时会使用 raft learner 来降低宕机或网络故障带来的不可用风险。
+`disable-raft-learner` 用于关闭 raft learner 功能。默认配置下 PD 在添加副本时会使用 raft learner 来降低宕机或网络故障带来的不可用风险。
 
 ```bash
 config set disable-raft-learner true        // 关闭 raft learner 功能
 ```
 
-`cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。
-通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
+`cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
 
 ```bash
 config set cluster-version 1.0.8              // 设置 cluster version 为 1.0.8
 ```
 
-`disable-remove-down-replica` 用于关闭自动删除 DownReplica 的特性。
-当设置为 true 时，PD 不会自动清理宕机状态的副本。
+`disable-remove-down-replica` 用于关闭自动删除 DownReplica 的特性。当设置为 true 时，PD 不会自动清理宕机状态的副本。
 
-`disable-replace-offline-replica` 用于关闭迁移 OfflineReplica 的特性。
-当设置为 true 时，PD 不会迁移下线状态的副本。
+`disable-replace-offline-replica` 用于关闭迁移 OfflineReplica 的特性。当设置为 true 时，PD 不会迁移下线状态的副本。
 
-`disable-make-up-replica` 用于关闭补充副本的特性。
-当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
+`disable-make-up-replica` 用于关闭补充副本的特性。当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
 
-`disable-remove-extra-replica` 用于关闭删除多余副本的特性。
-当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
+`disable-remove-extra-replica` 用于关闭删除多余副本的特性。当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
 
-`disable-location-replacement` 用于关闭隔离级别检查。
-当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
+`disable-location-replacement` 用于关闭隔离级别检查。当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
 
 `disable-namespace-relocation` 用于关闭 Region 的 namespace 调度。当设置为 true 时，PD 不会把 Region 调度到它所属的 Store 上。
 
