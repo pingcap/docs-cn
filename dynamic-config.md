@@ -273,7 +273,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-set `tidb_slow_log_threshold` = 200;
+set tidb_slow_log_threshold = 200;
 ```
 
 ```sql
