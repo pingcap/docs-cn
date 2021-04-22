@@ -65,18 +65,22 @@ When using the `set config` statement, you can modify the configuration of a sin
 
 - Modify the configuration of all TiKV instances:
 
-    {{< copyable "sql" >}}
+> **Note:**
+>
+> It is recommended to wrap variable names in backticks.
 
-    ```sql
-    set config tikv split.qps-threshold=1000
-    ```
+{{< copyable "sql" >}}
+
+```sql
+set config tikv `split.qps-threshold`=1000
+```
 
 - Modify the configuration of a single TiKV instance:
 
     {{< copyable "sql" >}}
 
     ```sql
-    set config "127.0.0.1:20180" split.qps-threshold=1000
+    set config "127.0.0.1:20180" `split.qps-threshold`=1000
     ```
 
 If the modification is successful, `Query OK` is returned:
@@ -90,7 +94,7 @@ If an error occurs during the batch modification, a warning is returned:
 {{< copyable "sql" >}}
 
 ```sql
-set config tikv log-level='warn';
+set config `tikv log-level`='warn';
 ```
 
 ```sql
@@ -212,7 +216,7 @@ You can modify the PD configurations using the following statement:
 {{< copyable "sql" >}}
 
 ```sql
-set config pd log.level='info'
+set config pd `log.level`='info'
 ```
 
 If the modification is successful, `Query OK` is returned:
