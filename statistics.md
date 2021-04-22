@@ -146,11 +146,11 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
-在查询语句执行时，TiDB 会以 `feedback-probability` 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。可通过配置文件修改 `feedback-probability`，其默认值是 `0.05`。设置成 `0.0` 可以关闭这个功能。
+在查询语句执行时，TiDB 会以 `feedback-probability` 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。
 
 > **注意：**
 >
-> 在配置文件中如果将 `feedback-probability` 设置为 `0` 会导致设置失败并报错。需要设置成 `0.0` 才可以关闭 `feedback-probability`。
+> 目前 `feedback-probability` 默认关闭，默认值为 `0`，暂不建议开启此功能。
 
 ### 控制 ANALYZE 并发度
 
