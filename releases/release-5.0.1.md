@@ -16,72 +16,74 @@ TiDB 版本：5.0.1
 
 + PD
 
-    - 改善 Region 分数公式使其更适用异构集群问题 [#1009](https://github.com/pingcap/br/pull/1009)
-    - 避免在添加 `scatter range` 后的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
+    - 调整 Region 分数公式使其更适用异构集群 [#1009](https://github.com/pingcap/br/pull/1009)
+    - 避免在添加 `scatter region` 调度器后出现的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
 
 + Tools
 
     + Backup & Restore (BR)
 
-        - 删除 summary 日志中一些容易误解的信息 [#1009](https://github.com/pingcap/br/pull/1009)
+        - 删除 Summary 日志中一些容易被误解的信息 [#1009](https://github.com/pingcap/br/pull/1009)
 
 ## Bug 修复
 
 + TiDB
 
     - 修复投影消除在投影结果为空时执行结果可能错误的问题 [#24093](https://github.com/pingcap/tidb/pull/24093)
-    - 修复某些情况下列允许为 NULL 时执行结果可能错误的问题 [#24063](https://github.com/pingcap/tidb/pull/24063)
-    - 当有虚拟列参与运算时不允许生成 MPP 计划 [#24058](https://github.com/pingcap/tidb/pull/24058)
-    - 修复 Plan Cache 中对 PointGet 和 TableDual 错误的重复使用 [#24043](https://github.com/pingcap/tidb/pull/24043)
-    - IndexMerge 算子需要保留聚簇索引的输出 [#24042](https://github.com/pingcap/tidb/pull/24042)
-    - 修复 BIT 类型相关的错误的类型推导 [#24027](https://github.com/pingcap/tidb/pull/24027)
-    - 修复某些优化器 hint 在 PointGet 算子存在时无法生效的问题 [#23685](https://github.com/pingcap/tidb/pull/23685)
-    - 修复某些情况下 DDL job 在将状态设置外 rolling back 时可能的参数解析失败的问题 [#24080](https://github.com/pingcap/tidb/pull/24080)
+    - 修复某些情况下列包含 `NULL` 值时查询结果可能错误的问题 [#24063](https://github.com/pingcap/tidb/pull/24063)
+    - 当有虚拟列参与扫描时不允许生成 MPP 计划 [#24058](https://github.com/pingcap/tidb/pull/24058)
+    - 修复 Plan Cache 中对 `PointGet` 和 `TableDual` 错误的重复使用 [#24043](https://github.com/pingcap/tidb/pull/24043)
+    - ping @eurekaka @winoros:
+ `IndexMerge` 算子需要保留聚簇索引的输出 [#24042](https://github.com/pingcap/tidb/pull/24042)
+    - 修复 BIT 类型相关错误的类型推导 [#24027](https://github.com/pingcap/tidb/pull/24027)
+    - 修复某些优化器 Hint 在 `PointGet` 算子存在时无法生效的问题 [#23685](https://github.com/pingcap/tidb/pull/23685)
+    - ping @winoros @AilinKid: 修复某些情况下 DDL Job 在将状态设置外 rolling back 时能出现的参数解析失败问题 [#24080](https://github.com/pingcap/tidb/pull/24080)
     - 修复二进制字面值常量的索引范围构造错误的问题 [#24041](https://github.com/pingcap/tidb/pull/24041)
-    - 修复某些情况下 IN 语句执行结果可能错误的问题 [#24023](https://github.com/pingcap/tidb/pull/24023)
-    - 修复某些字符串函数返回结果错误的问题 [#23879](https://github.com/pingcap/tidb/pull/23879)
-    - 执行 REPLACE 语句需要用户同时拥有 INSERT 和 DELETE 的权限 [#23939](https://github.com/pingcap/tidb/pull/23939)
-    - 修复点差时的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
+    - 修复某些情况下 `IN` 语句的执行结果可能错误的问题 [#24023](https://github.com/pingcap/tidb/pull/24023)
+    - 修复某些字符串函数的返回结果错误的问题 [#23879](https://github.com/pingcap/tidb/pull/23879)
+    - 执行 `REPLACE` 语句需要用户同时拥有 `INSERT` 和 `DELETE` 权限 [#23939](https://github.com/pingcap/tidb/pull/23939)
+    - 修复点查时出现的的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
+    - 修复因错误比较二进制与字节导致的错误 `TableDual` 计划
 
 + TiKV
 
-    - 修复了 coprocessor 的 IN 表达式未正确处理 unsigned/signed int 类型数据的问题 [#10018](https://github.com/tikv/tikv/pull/10018)
-    - 修复了在 batch ingest SST 之后产生大量空 Region 的问题 [#10015](https://github.com/tikv/tikv/pull/10015)
-    - 修复了 `cast_string_as_time` 输入非法的 UTF-8 值之和导致 panic 的问题 [#9995](https://github.com/tikv/tikv/pull/9995)
-    - 修复了“文件目录”文件损坏之后 TiKV 无法启动的问题 [#9992](https://github.com/tikv/tikv/pull/9992)
+    - 修复了 Coprocessor 的 `IN` 表达式未正确处理有符号整数或无符号整数类型数据的问题 [#10018](https://github.com/tikv/tikv/pull/10018)
+    - 修复了在批量 ingest SST 文件后产生大量空 Region 的问题 [#10015](https://github.com/tikv/tikv/pull/10015)
+    - 修复了在 `cast_string_as_time` 中输入非法的 UTF-8 字节后导致 panic 的问题 [#9995](https://github.com/tikv/tikv/pull/9995)
+    - 修复了 file dictionary 文件损坏之后 TiKV 无法启动的问题 [#9992](https://github.com/tikv/tikv/pull/9992)
 
 + TiFlash
 
     - 修复存储引擎无法删除某些范围数据的问题
-    - 修复 `time` 转换为 `int` 时产生错误结果的问题
+    - 修复 `TIME` 类型转换为 `INT` 类型时产生错误结果的问题
     - 修复 `receiver` 可能无法在 10 秒内找到对应任务的问题
     - 修复 `cancelMPPQuery` 中可能存在无效迭代器的问题
     - 修复 `bitwise` 操作和 TiDB 行为不一致的问题
     - 修复当使用 `prefix key` 时出现范围重叠报错的问题
-    - 修复字符串转换为 `int` 时产生错误结果的问题
-    - 修复连续快速写入可能导致 TiFlash OOM 的问题
+    - 修复字符串转换为 `INT` 时产生错误结果的问题
+    - 修复连续快速写入可能导致 TiFlash 内存溢出的问题
     - 修复列名重复会引发报错的问题
     - 修复 MPP 执行计划无法被解析的问题
     - 修复 Table GC 时会引发空指针的问题
     - 修复向已被删除的表写数据时 TiFlash 进程崩溃的问题
-    - 修复当使用 BR Restore 时 TiFlash 进程崩溃的问题
+    - 修复当使用 BR 恢复数据时 TiFlash 进程崩溃的问题
 
 + Tools
 
     + TiDB Lightning
 
-        - 修复导入过程中进度不准确的问题. [#1005](https://github.com/pingcap/br/pull/1005)
+        - 修复导入过程中进度日志中的表数量不准确的问题 [#1005](https://github.com/pingcap/br/pull/1005)
 
     + Backup & Restore (BR)
 
-        - 修复备份时设置 ratelimit 不生效的问题. [#1026](https://github.com/pingcap/br/pull/1026)
-        - 修复备份时不能容忍少部分 TiKV 节点挂掉的问题. [#1019](https://github.com/pingcap/br/pull/1019)
+        - 修复实际的备份速度超过 `--ratelimit` 限制的问题 [#1026](https://github.com/pingcap/br/pull/1026)
+        - 修复备份时不能容忍少部分 TiKV 节点不可用的问题 [#1019](https://github.com/pingcap/br/pull/1019)
 
     + TiCDC
 
-        - 修复 unified sorter 中的并发问题，以及改进日志. [#1678](https://github.com/pingcap/ticdc/pull/1678)
-        - 修复同步到 minio s3 时，避免重复创建 object 导致同步失败的问题. [#1672]
-        - 默认打开 session 变量 `explicit_defaults_for_timestamp`，使得 mysql 和上游 TiDB 行为一致 [#1659](https://github.com/pingcap/ticdc/pull/1659)
-        - 修复错误的处理 io.EOF 问题，导致同步中断的问题. [#1648](https://github.com/pingcap/ticdc/pull/1648)
-        - 修复 TiKV CDC endpoint CPU 统计信息. [#1645](https://github.com/pingcap/ticdc/pull/1645)
-        - 增加 defaultBufferChanSize 来避免某些情况下同步阻塞的问题 [#1632](https://github.com/pingcap/ticdc/pull/1632)
+        - 修复 Unified Sorter 中的并发问题并改进无用的错误消息 [#1678](https://github.com/pingcap/ticdc/pull/1678)
+        - ping @amyangfei @3pointer: 修复同步到 minio s3 时，避免重复创建 object 导致同步失败的问题 [#1672](https://github.com/pingcap/ticdc/pull/1672)
+        - 默认开启 session 变量 `explicit_defaults_for_timestamp`，使得下游 MySQL 5.7 和上游 TiDB 的行为保持一致 [#1659](https://github.com/pingcap/ticdc/pull/1659)
+        - 修复错误地处理 `io.EOF` 可能导致同步中断的问题 [#1648](https://github.com/pingcap/ticdc/pull/1648)
+        - 修正 TiCDC 面板中的 TiKV CDC endpoint CPU 统计信息 [#1645](https://github.com/pingcap/ticdc/pull/1645)
+        - 增加 `defaultBufferChanSize` 来避免某些情况下同步阻塞的问题 [#1632](https://github.com/pingcap/ticdc/pull/1632)
