@@ -150,6 +150,6 @@ For details about the optimizer hints that TiDB supports, see [Optimizer hints](
 
 > **Note**
 >
-> In MySQL client before 5.7.7, TiDB specific comment syntax and optimizer comment syntax are treated as comments and cleared by default. To use the two syntaxes in the old client, add the `--comments` option when you start the client. For example, `mysql -h 127.0.0.1 -P 4000 -uroot --comments`.
+> In MySQL client, the TiDB-specific comment syntax is treated as comments and cleared by default. In MySQL client before 5.7.7, hints are also seen as comments and are cleared by default. It is recommended to use the `--comments` option when you start the client. For example, `mysql -h 127.0.0.1 -P 4000 -uroot --comments`.
 
 For more information, see [Comment Syntax](https://dev.mysql.com/doc/refman/5.7/en/comments.html).
