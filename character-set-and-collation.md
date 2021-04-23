@@ -48,7 +48,7 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 `latin1` Collation（排序规则）分别有以下含义：
 
 | Collation         | 含义                              |
-|:------------------|:----------------------------------|
+| :---------------- | :-------------------------------- |
 | latin1_bin        | latin1 编码的二进制表示           |
 | latin1_danish_ci  | 丹麦语/挪威语，不区分大小写       |
 | latin1_general_ci | 多种语言的 (西欧)，不区分大小写   |
@@ -77,9 +77,9 @@ mysql> SHOW COLLATION WHERE Charset = 'latin1';
 * Collation 的后缀表示了 Collation 是否区分大小写和是否区分口音。下面的表展示了这些特性：
 
 | 后缀 | 含义                             |
-|:-----|:---------------------------------|
+| :--- | :------------------------------- |
 | \_ai | 口音不敏感（Accent insensitive） |
-| \_as | 口音敏感 （Accent sensitive）  |
+| \_as | 口音敏感 （Accent sensitive）    |
 | \_ci | 大小写不敏感                     |
 | \_cs | 大小写敏感                       |
 
@@ -107,17 +107,8 @@ ALTER DATABASE db_name
 
 通过系统变量 `character_set_database` 和 `collation_database` 可以查看到当前数据库的字符集以及排序规则：
 
-<<<<<<< HEAD
-=======
-{{< copyable "sql" >}}
-
 ```sql
-CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-```
-
->>>>>>> 41d6eac6... Fix a typo in Update character-set-and-collation.md (#6124)
-```sql
-mysql> CREATE SCHEMA test1 CHARACTER SET utf8 COLLATE uft8_general_ci;
+mysql> CREATE SCHEMA test1 CHARACTER SET utf8 COLLATE utf8_general_ci;
 Query OK, 0 rows affected (0.09 sec)
 
 mysql> USE test1;
@@ -126,11 +117,7 @@ mysql> SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
-<<<<<<< HEAD
-| utf8                     | uft8_general_ci      |
-=======
-| utf8mb4                  | utf8mb4_general_ci   |
->>>>>>> 41d6eac6... Fix a typo in Update character-set-and-collation.md (#6124)
+| utf8                     | utf8_general_ci      |
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 
