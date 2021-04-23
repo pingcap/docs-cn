@@ -46,7 +46,7 @@ TiDB 版本：5.0.1
 
 + TiKV
 
-    - 修复了 Coprocessor 的 `IN` 表达式未正确处理有符号整数或无符号整数类型数据的问题 [#10018](https://github.com/tikv/tikv/pull/10018)
+    - 修复了 Coprocessor 未正确处理 `IN` 表达式有符号整数或无符号整数类型数据的问题 [#10018](https://github.com/tikv/tikv/pull/10018)
     - 修复了在批量 ingest SST 文件后产生大量空 Region 的问题 [#10015](https://github.com/tikv/tikv/pull/10015)
     - 修复了在 `cast_string_as_time` 中输入非法的 UTF-8 字节后导致 panic 的问题 [#9995](https://github.com/tikv/tikv/pull/9995)
     - 修复了 file dictionary 文件损坏之后 TiKV 无法启动的问题 [#9992](https://github.com/tikv/tikv/pull/9992)
