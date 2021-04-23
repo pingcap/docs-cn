@@ -174,7 +174,7 @@ ALTER DATABASE db_name
 {{< copyable "sql" >}}
 
 ```sql
-CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE uft8mb4_general_ci;
+CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
 ```sql
@@ -201,7 +201,7 @@ SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
-| utf8mb4                  | uft8mb4_general_ci   |
+| utf8mb4                  | utf8mb4_general_ci   |
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 ```
