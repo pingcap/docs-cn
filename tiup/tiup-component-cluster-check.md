@@ -148,7 +148,9 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 ### -N, --node（strings，默认为 []，表示所有节点）
 
-指定要检查的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第一列。
+- 指定要检查的节点。该选项的值为以逗号分割的节点 ID 列表，节点 ID 为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第一列。
+- 数据类型：`STRINGS`
+- 如果不指定该选项，默认检查所有节点，即 `[]`。
 
 > **注意：**
 >
@@ -156,7 +158,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 ### -R, --role strings（strings，默认为 []，表示所有角色）
 
-指定要检查的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
+指定要检查的角色。该选项的值为以逗号分割的节点角色列表，角色为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第二列。
 
 > **注意：**
 >

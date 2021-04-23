@@ -4,11 +4,11 @@ title: tiup dm disable
 
 # tiup dm disable
 
-命令 `tiup dm disable` 用于关闭集群服务所在机器重启之后的自启动，该命令会到指定的节点上去执行 `systemctl disable <service>` 来关闭服务的自启动。
+集群服务所在的机器重启之后会自启动，命令 `tiup dm disable` 用于关闭该自启动。该命令会在指定的节点上执行 `systemctl disable <service>` 来关闭服务的自启动。
 
 ## 语法
 
-```sh
+```shell
 tiup dm disable <cluster-name> [flags]
 ```
 

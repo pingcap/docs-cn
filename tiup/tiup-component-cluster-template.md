@@ -4,7 +4,7 @@ title: tiup cluster template
 
 # tiup cluster template
 
-部署集群之前，需要准备一份集群的[拓扑文件](/tiup/tiup-cluster-topology-reference.md)，TiUP 内置了拓扑文件的模版，用户可以通过修改模版来生成最终的拓扑文件。命令 `tiup cluster template` 用于输出 TiUP 内置的模版内容。
+部署集群之前，需要准备一份集群的[拓扑文件](/tiup/tiup-cluster-topology-reference.md)。TiUP 内置了拓扑文件的模版，用户可以通过修改该模版来生成最终的拓扑文件。命令 `tiup cluster template` 用于输出 TiUP 内置的模版内容。
 
 ## 语法
 
@@ -12,7 +12,7 @@ title: tiup cluster template
 tiup cluster template [flags]
 ```
 
-在不指定任何选项的情况下，输出默认模版，包含下面的角色：
+如果不指定该选项，输出的默认模版包含以下角色：
 
 - 3 个 PD
 - 3 个 TiKV
@@ -29,7 +29,7 @@ tiup cluster template [flags]
 
 ### --multi-dc（boolean，默认 false）
 
-输出多数据中心的拓扑模版。默认输出单地单机房的拓扑模版，打开该选项后，会给出多数据中心的配置用例。
+输出多数据中心的拓扑模版。如果不指定该选项，默认输出单地单机房的拓扑模版。通过在命令中添加该选项，可开启该选项，输出多数据中心的配置用例。
 
 ### -h, --help（boolean，默认 false）
 
@@ -37,4 +37,4 @@ tiup cluster template [flags]
 
 ## 输出
 
-根据指定选项输出拓扑模版到标准输出，可重定向到拓扑文件中用于部署。
+根据指定选项输出拓扑模版，可重定向到拓扑文件中用于部署。
