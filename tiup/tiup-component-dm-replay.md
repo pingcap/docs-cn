@@ -16,7 +16,7 @@ tiup dm replay <audit-id> [flags]
 
 ## 选项
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
 输出帮助信息。
 

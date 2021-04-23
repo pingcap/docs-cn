@@ -22,11 +22,11 @@ tiup dm template [flags]
 
 ## 选项
 
-### --full（boolean，默认 false）
+### --full
 
 输出详细的拓扑模版。默认输出最简单的拓扑模版，打开该选项后，输出详细的拓扑模版，以注释的形式带上可配置的参数。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
 输出帮助信息。
 

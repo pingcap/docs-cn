@@ -164,7 +164,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 >
 > 若同时指定了 `-N, --node`，那么将检查它们的交集中的服务。
 
-### --enable-cpu（boolean，默认 false）
+### --enable-cpu
 
 默认情况下 tiup-cluster 不检查 CPU 核心数，该选项用于启用 CPU 核心数检查。
 
