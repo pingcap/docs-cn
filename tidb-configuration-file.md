@@ -20,7 +20,11 @@ The TiDB configuration file supports more options than command-line parameters. 
 ### `token-limit`
 
 + The number of sessions that can execute requests concurrently.
++ Type: Integer
 + Default value: `1000`
++ Minimum value: `1`
++ Maximum Value (64-bit platforms): `18446744073709551615`
++ Maximum Value (32-bit platforms): `4294967295`
 
 ### `mem-quota-query`
 
