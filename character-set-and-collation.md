@@ -129,7 +129,11 @@ ALTER DATABASE db_name
 {{< copyable "sql" >}}
 
 ```sql
+<<<<<<< HEAD
 CREATE SCHEMA test1 CHARACTER SET utf8 COLLATE uft8_general_ci;
+=======
+CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+>>>>>>> 41d6eac6... Fix a typo in Update character-set-and-collation.md (#6124)
 ```
 
 ```
@@ -156,7 +160,11 @@ SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
+<<<<<<< HEAD
 | utf8                     | uft8_general_ci      |
+=======
+| utf8mb4                  | utf8mb4_general_ci   |
+>>>>>>> 41d6eac6... Fix a typo in Update character-set-and-collation.md (#6124)
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 ```
