@@ -18,6 +18,10 @@ title: TiDB 数据库快速上手指南
 - 适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 集群。可以体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
 - 耗时：1 分钟
 
+> **注意：**
+> 
+> 本地 Mac 环境下，TiUP Playground 命令暂不支持 Apple M1 芯片。
+
 作为一个分布式系统，最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
 
 1. 下载并安装 TiUP。
