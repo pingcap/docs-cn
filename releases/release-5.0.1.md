@@ -76,7 +76,7 @@ TiDB 版本：5.0.1
     + Backup & Restore (BR)
 
         - 修复实际的备份速度超过 `--ratelimit` 限制的问题 [#1026](https://github.com/pingcap/br/pull/1026)
-        - 修复备份时不能容忍少部分 TiKV 节点不可用的问题 [#1019](https://github.com/pingcap/br/pull/1019)
+        - 修复备份期间少数 TiKV 节点不可用导致的备份中断问题 [#1019](https://github.com/pingcap/br/pull/1019)
 
     + TiCDC
 
