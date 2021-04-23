@@ -504,7 +504,7 @@ tispark_workers:
 - `remote_config`：用于支持将 Prometheus 数据写到远端，或从远端读取数据
     - `remote_write`：[ - [<remote_write>](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) ... ]
     - `remote_read`：[ - [<remote_read>](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) ... ]
-- `external_alertmanagers`：配置 Prometheus 将报警通知到集群之外的 Alertmanager，该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
+- `external_alertmanagers`：若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`

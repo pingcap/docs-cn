@@ -146,7 +146,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
 
-### -N, --node（strings，默认为 []，表示所有节点）
+### -N, --node
 
 - 指定要检查的节点。该选项的值为以逗号分割的节点 ID 列表，节点 ID 为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第一列。
 - 数据类型：`STRINGS`
@@ -156,7 +156,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 >
 > 若同时指定了 `-R, --role`，那么将检查它们的交集中的服务。
 
-### -R, --role strings（strings，默认为 []，表示所有角色）
+### -R, --role strings
 
 指定要检查的角色。该选项的值为以逗号分割的节点角色列表，角色为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第二列。
 
