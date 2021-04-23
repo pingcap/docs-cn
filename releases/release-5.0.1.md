@@ -42,7 +42,7 @@ TiDB 版本：5.0.1
     - 修复某些字符串函数的返回结果错误的问题 [#23879](https://github.com/pingcap/tidb/pull/23879)
     - 执行 `REPLACE` 语句需要用户同时拥有 `INSERT` 和 `DELETE` 权限 [#23939](https://github.com/pingcap/tidb/pull/23939)
     - 修复点查时出现的的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
-    - 修复因错误比较二进制与字节导致的错误 `TableDual` 计划
+    - 修复因错误比较二进制与字节导致的错误 `TableDual` 计划 [#23918](https://github.com/pingcap/tidb/pull/23918)
 
 + TiKV
 
