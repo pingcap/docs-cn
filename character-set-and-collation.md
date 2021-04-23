@@ -107,6 +107,15 @@ ALTER DATABASE db_name
 
 通过系统变量 `character_set_database` 和 `collation_database` 可以查看到当前数据库的字符集以及排序规则：
 
+<<<<<<< HEAD
+=======
+{{< copyable "sql" >}}
+
+```sql
+CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+```
+
+>>>>>>> 41d6eac6... Fix a typo in Update character-set-and-collation.md (#6124)
 ```sql
 mysql> CREATE SCHEMA test1 CHARACTER SET utf8 COLLATE uft8_general_ci;
 Query OK, 0 rows affected (0.09 sec)
@@ -117,7 +126,11 @@ mysql> SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
+<<<<<<< HEAD
 | utf8                     | uft8_general_ci      |
+=======
+| utf8mb4                  | utf8mb4_general_ci   |
+>>>>>>> 41d6eac6... Fix a typo in Update character-set-and-collation.md (#6124)
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 
