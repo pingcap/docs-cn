@@ -16,7 +16,7 @@ TiDB 版本：5.0.1
 
 + PD
 
-    - 调整 Region 分数公式使其更适用异构集群 [#1009](https://github.com/pingcap/br/pull/1009)
+    - 调整 Region 分数公式使其更适用于异构集群 [#1009](https://github.com/pingcap/br/pull/1009)
     - 避免在添加 `scatter region` 调度器后出现的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
 
 + Tools
@@ -30,7 +30,7 @@ TiDB 版本：5.0.1
 + TiDB
 
     - 修复投影消除在投影结果为空时执行结果可能错误的问题 [#24093](https://github.com/pingcap/tidb/pull/24093)
-    - 修复某些情况下列包含 `NULL` 值时查询结果可能错误的问题 [#24063](https://github.com/pingcap/tidb/pull/24063)
+    - 修复列包含 `NULL` 值时查询结果在某些情况下可能错误的问题 [#24063](https://github.com/pingcap/tidb/pull/24063)
     - 当有虚拟列参与扫描时不允许生成 MPP 计划 [#24058](https://github.com/pingcap/tidb/pull/24058)
     - 修复 Plan Cache 中对 `PointGet` 和 `TableDual` 错误的重复使用 [#24043](https://github.com/pingcap/tidb/pull/24043)
     - 修复优化器在为聚簇索引构建 `IndexMerge` 执行计划时出现的错误 [#24042](https://github.com/pingcap/tidb/pull/24042)
@@ -42,7 +42,7 @@ TiDB 版本：5.0.1
     - 修复某些字符串函数的返回结果错误的问题 [#23879](https://github.com/pingcap/tidb/pull/23879)
     - 执行 `REPLACE` 语句需要用户同时拥有 `INSERT` 和 `DELETE` 权限 [#23939](https://github.com/pingcap/tidb/pull/23939)
     - 修复点查时出现的的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
-    - 修复因错误比较二进制与字节导致的错误 `TableDual` 计划 [#23918](https://github.com/pingcap/tidb/pull/23918)
+    - 修复因错误比较二进制与字节而导致的 `TableDual` 计划错误的问题 [#23918](https://github.com/pingcap/tidb/pull/23918)
 
 + TiKV
 
@@ -57,7 +57,7 @@ TiDB 版本：5.0.1
     - 修复 `TIME` 类型转换为 `INT` 类型时产生错误结果的问题
     - 修复 `receiver` 可能无法在 10 秒内找到对应任务的问题
     - 修复 `cancelMPPQuery` 中可能存在无效迭代器的问题
-    - 修复 `bitwise` 操作和 TiDB 行为不一致的问题
+    - 修复 `bitwise` 算子和 TiDB 行为不一致的问题
     - 修复当使用 `prefix key` 时出现范围重叠报错的问题
     - 修复字符串转换为 `INT` 时产生错误结果的问题
     - 修复连续快速写入可能导致 TiFlash 内存溢出的问题
@@ -65,7 +65,7 @@ TiDB 版本：5.0.1
     - 修复 MPP 执行计划无法被解析的问题
     - 修复 Table GC 时会引发空指针的问题
     - 修复向已被删除的表写数据时 TiFlash 进程崩溃的问题
-    - 修复当使用 BR 恢复数据时 TiFlash 进程崩溃的问题
+    - 修复当使用 BR 恢复数据时 TiFlash 进程可能崩溃的问题
 
 + Tools
 
