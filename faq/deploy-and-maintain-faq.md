@@ -229,6 +229,13 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 
 这是因为两者计算的角度不一样。`information_schema.tables.data_length` 是通过统计信息（平均每行的大小）得到的估算值。TiKV 监控面板上的 store size 是单个 TiKV 实例的数据文件（RocksDB 的 SST 文件）的大小总和。由于多版本和 TiKV 会压缩数据，所以两者显示的大小不一样。
 
+#### 为什么事务没有使用异步提交或一阶段提交？
+
+下面几种情况下，即使通过系统变量开启了[异步提交](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和[一阶段提交](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)，也不会使用对应特性：
+
+- 由于 TiDB Binlog 的原理限制，使用 TiDB Binlog 时，不会使用异步提交或一阶段提交特性。
+- 异步提交对写入量大的事务提升不明显。所以 TiDB 只在事务写入不超过 256 个键值对，所有键值对里键的总大小不超过 4 KB 时，才会使用异步提交或一阶段提交特性。
+
 ### PD 管理
 
 #### 访问 PD 报错：TiKV cluster is not bootstrapped
