@@ -106,6 +106,10 @@ The following system variables are used to control the statement summary:
 - `tidb_stmt_summary_max_sql_length`: Specifies the longest display length of `DIGEST_TEXT` and `QUERY_SAMPLE_TEXT`. The default value is `4096`.
 - `tidb_stmt_summary_internal_query`: Determines whether to count the TiDB SQL statements. `1` means to count, and `0` means not to count. The default value is `0`.
 
+> **Note:**
+>
+> When a category of SQL statement needs to be removed because the `tidb_stmt_summary_max_stmt_count` limit is exceeded, TiDB removes the data of that SQL statement category of all time ranges from the `statement summary history` table. Therefore, even if the number of SQL statement categories in a certain time range does not reach the limit, the number of SQL statements stored in the `statement summary history` table is less than the actual number of SQL statements. If this situation occurs, you are recommended to increase the value of `tidb_stmt_summary_max_stmt_count`.
+
 An example of the statement summary configuration is shown as follows:
 
 {{< copyable "sql" >}}
