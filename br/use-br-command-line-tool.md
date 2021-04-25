@@ -347,7 +347,7 @@ br restore full \
 
 > **注意：**
 >
-> 完成一次恢复 TiKV 和 BR 需要的最小权限包括 `s3:ListBucket`, `s3:GetObject`。
+> 要完成一次恢复，通常 TiKV 和 BR 需要的最小权限为 `s3:ListBucket` 和 `s3:GetObject`。
 
 将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
 
