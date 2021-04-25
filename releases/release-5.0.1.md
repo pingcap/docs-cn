@@ -10,6 +10,10 @@ TiDB 版本：5.0.1
 
 ## 改进提升
 
++ TiDB
+    
+    - 支持 `VITESS_HASH()` 函数 [#23915](https://github.com/pingcap/tidb/pull/23915)
+
 + TiKV
 
     - 使用 `zstd` 压缩 Region Snapshot [#10005](https://github.com/tikv/tikv/pull/10005)
