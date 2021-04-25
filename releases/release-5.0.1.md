@@ -16,7 +16,7 @@ TiDB 版本：5.0.1
 
 + PD
 
-    - 调整 Region 分数公式使其更适用于异构集群 [#3605](https://github.com/pingcap/br/pull/3605)
+    - 调整 Region 分数公式使其更适用于异构集群 [#3605](https://github.com/pingcap/pd/pull/3605)
     - 避免在添加 `scatter region` 调度器后出现的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
 
 + Tools
