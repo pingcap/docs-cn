@@ -166,7 +166,7 @@ br backup full \
 
 > **注意：**
 >
-> 正常完成一次备份 TiKV 和 BR 需要的最小权限包括 `s3:ListBucket`, `s3:PutObject` 和 `s3:AbortMultipartUpload`。
+> 要完成一次备份，通常 TiKV 和 BR 需要的最小权限为 `s3:ListBucket`，`s3:PutObject` 和 `s3:AbortMultipartUpload`。
 
 将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
 
