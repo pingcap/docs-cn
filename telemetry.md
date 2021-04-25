@@ -34,7 +34,7 @@ ADMIN SHOW TELEMETRY;
 
 ### TiDB Dashboard
 
-When the telemetry collection feature is enabled in TiDB Dashboard, usage information on the TiDB Dashboard web UI will be shared, including (but not limited to):
+When the telemetry collection feature is enabled for TiDB Dashboard, usage information on the TiDB Dashboard web UI will be shared, including (but not limited to):
 
 - A randomly generated telemetry ID.
 - User operation information, such as the name of the TiDB Dashboard web page accessed by the user.
