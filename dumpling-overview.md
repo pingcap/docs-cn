@@ -328,7 +328,7 @@ update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life
 | -V 或 --version | 输出 Dumpling 版本并直接退出 |
 | -B 或 --database | 导出指定数据库 |
 | -T 或 --tables-list | 导出指定数据表 |
-| -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) | `*.*`（导出所有库表） |
+| -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) | `[\*.\*,!/^(mysql&#124;sys&#124;INFORMATION_SCHEMA&#124;PERFORMANCE_SCHEMA&#124;METRICS_SCHEMA&#124;INSPECTION_SCHEMA)$/.\*]`（导出除系统库外的所有库表） |
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
 | -h 或 --host| 连接的数据库主机的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
