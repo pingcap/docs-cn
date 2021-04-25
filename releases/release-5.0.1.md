@@ -10,6 +10,10 @@ TiDB version: 5.0.1
 
 ## Improvements
 
++ TiDB
+
+    - Support the built-in function `VITESS_HASH()` [#23915](https://github.com/pingcap/tidb/pull/23915)
+
 + TiKV
 
     - Use `zstd` to compress the Region snapshot [#10005](https://github.com/tikv/tikv/pull/10005)
