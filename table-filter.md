@@ -240,7 +240,7 @@ employees.*
 
 > **注意：**
 >
-> 在 TiDB 生态工具中，无论表库过滤如何设置，系统库总是被排除。系统库有以下六个：
+> 在 TiDB 生态工具的默认配置中，系统库总是被排除。系统库有以下六个：
 >
 > * `INFORMATION_SCHEMA`
 > * `PERFORMANCE_SCHEMA`
