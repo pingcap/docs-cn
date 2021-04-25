@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/credits/']
 
 ## TiDB 开发者
 
-TiDB 开发者为 TiDB 的新功能开发、性能优化、稳定性保障做出了贡献。以下是 TiDB 相关 repo 的贡献者名单：
+TiDB 开发者为 TiDB 的新功能开发、性能优化、稳定性保障做出了贡献。以下链接包含了 TiDB 相关 repo 的贡献者名单：
 
 - [pingcap/tidb](https://github.com/pingcap/tidb/graphs/contributors)
 - [tikv/tikv](https://github.com/tikv/tikv/graphs/contributors)
@@ -35,7 +35,7 @@ TiDB 开发者为 TiDB 的新功能开发、性能优化、稳定性保障做出
 
 ## TiDB 文档写作者和译员
 
-TiDB 文档写作者和译员为 TiDB 及相关项目撰写文档、提供翻译。以下是 TiDB 文档相关 repo 的贡献者名单：
+TiDB 文档写作者和译员为 TiDB 及相关项目撰写文档、提供翻译。以下链接包含了 TiDB 文档相关 repo 的贡献者名单：
 
 - [pingcap/docs-cn](https://github.com/pingcap/docs-cn/graphs/contributors)
 - [pingcap/docs](https://github.com/pingcap/docs/graphs/contributors)
