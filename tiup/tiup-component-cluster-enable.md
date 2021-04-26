@@ -22,7 +22,7 @@ tiup cluster enable <cluster-name> [flags]
 
 ### -N, --node
 
-- 指定要开启自启的节点，该选项的值为以逗号分割的节点 ID 列表，角色为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第一列。
+- 指定要开启自启的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第一列。
 - 数据类型：`STRINGS`
 - 如果不指定该选项，默认开启所有节点的自启。
 
