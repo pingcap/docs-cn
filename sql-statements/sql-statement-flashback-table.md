@@ -26,17 +26,16 @@ FLASHBACK TABLE table_name [TO other_table_name]
 
 ### 语法图
 
-**FlashbackTableStmt:**
+```ebnf+diagram
+FlashbackTableStmt ::=
+    'FLASHBACK' 'TABLE' TableName FlashbackToNewName
 
-![FlashbackTableStmt](/media/sqlgram/FlashbackTableStmt.png)
+TableName ::=
+    Identifier ( '.' Identifier )?
 
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**FlashbackToNewName:**
-
-![FlashbackToNewName](/media/sqlgram/FlashbackToNewName.png)
+FlashbackToNewName ::=
+    ( 'TO' Identifier )?
+```
 
 ## 注意事项
 

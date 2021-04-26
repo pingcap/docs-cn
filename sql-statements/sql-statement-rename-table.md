@@ -9,13 +9,13 @@ summary: TiDB 数据库中 RENAME TABLE 的使用概况。
 
 ## 语法图
 
-**RenameTableStmt:**
+```ebnf+diagram
+RenameTableStmt ::=
+    'RENAME' 'TABLE' TableToTable ( ',' TableToTable )*
 
-![RenameTableStmt](/media/sqlgram/RenameTableStmt.png)
-
-**TableToTable:**
-
-![TableToTable](/media/sqlgram/TableToTable.png)
+TableToTable ::=
+    TableName 'TO' TableName
+```
 
 ## 示例
 

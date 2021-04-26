@@ -9,13 +9,14 @@ summary: TiDB 数据库中 ROLLBACK 的使用概况。
 
 ## 语法图
 
-**RollbackStmt:**
+```ebnf+diagram
+RollbackStmt ::=
+    'ROLLBACK' CompletionTypeWithinTransaction?
 
-![RollbackStmt](/media/sqlgram/RollbackStmt.png)
-
-**CompletionTypeWithinTransaction:**
-
-![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
+CompletionTypeWithinTransaction ::=
+    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
+|   'NO'? 'RELEASE'
+```
 
 ## 示例
 

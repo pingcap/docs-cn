@@ -9,9 +9,10 @@ summary: TiDB 数据库中 LOAD DATA 的使用概况。
 
 ## 语法图
 
-**LoadDataStmt:**
-
-![LoadDataStmt](/media/sqlgram/LoadDataStmt.png)
+```ebnf+diagram
+LoadDataStmt ::=
+    'LOAD' 'DATA' LocalOpt 'INFILE' stringLit DuplicateOpt 'INTO' 'TABLE' TableName CharsetOpt Fields Lines IgnoreLines ColumnNameOrUserVarListOptWithBrackets LoadDataSetSpecOpt
+```
 
 ## 参数说明
 

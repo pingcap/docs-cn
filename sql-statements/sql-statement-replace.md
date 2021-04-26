@@ -9,29 +9,30 @@ summary: TiDB 数据库中 REPLACE 的使用概况。
 
 ## 语法图
 
-**ReplaceIntoStmt:**
+```ebnf+diagram
+ReplaceIntoStmt ::=
+    'REPLACE' PriorityOpt IntoOpt TableName PartitionNameListOpt InsertValues
 
-![ReplaceIntoStmt](/media/sqlgram/ReplaceIntoStmt.png)
+PriorityOpt ::=
+    ( 'LOW_PRIORITY' | 'HIGH_PRIORITY' | 'DELAYED' )?
 
-**PriorityOpt:**
+IntoOpt ::= 'INTO'?
 
-![PriorityOpt](/media/sqlgram/PriorityOpt.png)
+TableName ::=
+    Identifier ( '.' Identifier )?
 
-**IntoOpt:**
+PartitionNameListOpt ::=
+    ( 'PARTITION' '(' Identifier ( ',' Identifier )* ')' )?
 
-![IntoOpt](/media/sqlgram/IntoOpt.png)
+InsertValues ::=
+    '(' ( ColumnNameListOpt ')' ( ValueSym ValuesList | SelectStmt | '(' SelectStmt ')' | UnionStmt ) | SelectStmt ')' )
+|   ValueSym ValuesList
+|   SelectStmt
+|   UnionStmt
+|   'SET' ColumnSetValue? ( ',' ColumnSetValue )*
 
-**TableName:**
 
-![TableName](/media/sqlgram/TableName.png)
-
-**PartitionNameListOpt:**
-
-![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
-
-**InsertValues:**
-
-![InsertValues](/media/sqlgram/InsertValues.png)
+```
 
 ## 示例
 

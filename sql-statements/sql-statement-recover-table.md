@@ -22,21 +22,17 @@ RECOVER TABLE BY JOB ddl_job_id
 
 ### 语法图
 
-**RecoverTableStmt:**
+```ebnf+diagram
+RecoverTableStmt ::=
+    'RECOVER' 'TABLE' ( 'BY' 'JOB' Int64Num | TableName Int64Num? )
 
-![RecoverTableStmt](/media/sqlgram/RecoverTableStmt.png)
+TableName ::=
+    Identifier ( '.' Identifier )?
 
-**TableName:**
+Int64Num ::= NUM
 
-![TableName](/media/sqlgram/TableName.png)
-
-**Int64Num:**
-
-![Int64Num](/media/sqlgram/Int64Num.png)
-
-**NUM:**
-
-![NUM](/media/sqlgram/NUM.png)
+NUM ::= intLit
+```
 
 ## 注意事项
 

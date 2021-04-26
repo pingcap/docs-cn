@@ -13,17 +13,23 @@ TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 
 
 ## 语法图
 
-**ExplainSym:**
+```ebnf+diagram
+ExplainSym ::=
+    'EXPLAIN'
+|   'DESCRIBE'
+|   'DESC'
 
-![ExplainSym](/media/sqlgram/ExplainSym.png)
+ExplainStmt ::=
+    ExplainSym ( TableName ColumnName? | 'ANALYZE'? ExplainableStmt | 'FOR' 'CONNECTION' NUM | 'FORMAT' '=' ( stringLit | ExplainFormatType ) ( 'FOR' 'CONNECTION' NUM | ExplainableStmt ) )
 
-**ExplainStmt:**
-
-![ExplainStmt](/media/sqlgram/ExplainStmt.png)
-
-**ExplainableStmt:**
-
-![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
+ExplainableStmt ::=
+    SelectStmt
+|   DeleteFromStmt
+|   UpdateStmt
+|   InsertIntoStmt
+|   ReplaceIntoStmt
+|   UnionStmt
+```
 
 ## EXPLAIN 输出格式
 
@@ -191,7 +197,7 @@ desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 1
 +-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | dot contents                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 +-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 
+|
 digraph Projection_8 {
 subgraph cluster8{
 node [style=filled, color=lightgrey]

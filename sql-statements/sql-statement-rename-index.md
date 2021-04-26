@@ -9,13 +9,14 @@ summary: TiDB 数据库中 RENAME INDEX 的使用概况。
 
 ## 语法图
 
-**AlterTableStmt:**
+```ebnf+diagram
+AlterTableStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
 
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
-
-**KeyOrIndex:**
-
-![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
+KeyOrIndex ::=
+    'KEY'
+|   'INDEX'
+```
 
 ## 示例
 

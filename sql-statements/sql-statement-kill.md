@@ -9,13 +9,11 @@ summary: TiDB 数据库中 KILL [TIDB] 的使用概况。
 
 ## 语法图
 
-**KillStmt:**
+```ebnf+diagram
+KillStmt ::= KillOrKillTiDB ( 'CONNECTION' | 'QUERY' )? NUM
 
-![KillStmt](/media/sqlgram/KillStmt.png)
-
-**KillOrKillTiDB:**
-
-![KillOrKillTiDB](/media/sqlgram/KillOrKillTiDB.png)
+KillOrKillTiDB ::= 'KILL' 'TIDB'?
+```
 
 ## 示例
 

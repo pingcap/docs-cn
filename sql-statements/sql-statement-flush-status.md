@@ -9,17 +9,21 @@ summary: TiDB 数据库中 FLUSH STATUS 的使用概况。
 
 ## 语法图
 
-**FlushStmt:**
+```ebnf+diagram
+FlushStmt ::=
+    'FLUSH' NoWriteToBinLogAliasOpt FlushOption
 
-![FlushStmt](/media/sqlgram/FlushStmt.png)
+NoWriteToBinLogAliasOpt ::=
+    ( 'NO_WRITE_TO_BINLOG' | 'LOCAL' )?
 
-**NoWriteToBinLogAliasOpt:**
-
-![NoWriteToBinLogAliasOpt](/media/sqlgram/NoWriteToBinLogAliasOpt.png)
-
-**FlushOption:**
-
-![FlushOption](/media/sqlgram/FlushOption.png)
+FlushOption ::=
+    'PRIVILEGES'
+|   'STATUS'
+|    'TIDB' 'PLUGINS' PluginNameList
+|    'HOSTS'
+|   LogTypeOpt 'LOGS'
+|   TableOrTables TableNameListOpt WithReadLockOpt
+```
 
 ## 示例
 

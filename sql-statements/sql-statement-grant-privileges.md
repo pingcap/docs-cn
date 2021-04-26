@@ -9,33 +9,52 @@ summary: TiDB 数据库中 GRANT <privileges> 的使用概况。
 
 ## 语法图
 
-**GrantStmt:**
+```ebnf+diagram
+GrantStmt ::=
+    'GRANT' PrivElemList 'ON' ObjectType PrivLevel 'TO' UserSpecList RequireClauseOpt WithGrantOptionOpt
 
-![GrantStmt](/media/sqlgram/GrantStmt.png)
+PrivElemList ::=
+    PrivElem ( ',' PrivElem )*
 
-**PrivElemList:**
+PrivElem ::=
+    PrivType ( '(' ColumnNameList ')' )?
 
-![PrivElemList](/media/sqlgram/PrivElemList.png)
+PrivType ::=
+    'ALL' 'PRIVILEGES'?
+|    'ALTER' 'ROUTINE'?
+|   'CREATE' ( 'USER' | 'TEMPORARY' 'TABLES' | 'VIEW' | 'ROLE' | 'ROUTINE' )?
+|   'TRIGGER'
+|   'DELETE'
+|   'DROP' 'ROLE'?
+|    'PROCESS'
+|   'EXECUTE'
+|   'INDEX'
+|   'INSERT'
+|   'SELECT'
+|   'SUPER'
+|   'SHOW' ( 'DATABASES' | 'VIEW' )
+|   'UPDATE'
+|    'GRANT' 'OPTION'
+|    'REFERENCES'
+|    'REPLICATION' ( 'SLAVE' | 'CLIENT' )
+|    'USAGE'
+|   'RELOAD'
+|   'FILE'
+|   'CONFIG'
+|   'LOCK' 'TABLES'
+|   'EVENT'
+|   'SHUTDOWN'
 
-**PrivElem:**
+ObjectType ::=
+    'TABLE'?
 
-![PrivElem](/media/sqlgram/PrivElem.png)
+PrivLevel ::=
+    '*' ( '.' '*' )?
+|    Identifier ( '.' ( '*' | Identifier ) )?
 
-**PrivType:**
-
-![PrivType](/media/sqlgram/PrivType.png)
-
-**ObjectType:**
-
-![ObjectType](/media/sqlgram/ObjectType.png)
-
-**PrivLevel:**
-
-![PrivLevel](/media/sqlgram/PrivLevel.png)
-
-**UserSpecList:**
-
-![UserSpecList](/media/sqlgram/UserSpecList.png)
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
+```
 
 ## 示例
 

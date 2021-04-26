@@ -9,9 +9,10 @@ summary: TiDB 数据库中 EXECUTE 的使用概况。
 
 ## 语法图
 
-**ExecuteStmt:**
-
-![ExecuteStmt](/media/sqlgram/ExecuteStmt.png)
+```ebnf+diagram
+ExecuteStmt ::=
+    'EXECUTE' Identifier ( 'USING' UserVariable ( ',' UserVariable )* )?
+```
 
 ## 示例
 
