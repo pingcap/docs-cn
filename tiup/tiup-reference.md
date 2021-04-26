@@ -8,7 +8,7 @@ TiUP 在 TiDB 生态中承担包管理器的功能，管理着 TiDB 生态下众
 
 ## 语法
 
-```sh
+```shell
 tiup [flags] <command> [args...]        # 执行命令
 # or
 tiup [flags] <component> [args...]      # 运行组件
@@ -20,12 +20,14 @@ tiup [flags] <component> [args...]      # 运行组件
 
 ## 选项
 
-### -B, --binary (boolean，默认 false)
+### -B, --binary
 
 打印指定组件的二进制文件路径：
 
 - 执行 `tiup -B/--binary <component>` 将打印已安装的 `<component>` 组件的最新稳定版路径，若 `<component>` 组件未安装，则报错
 - 执行 `tiup -B/--binary <component>:<version>` 将答应已经安装的 `<component>` 组件的 `<version>` 版本所在的路径，若该版本未安装，则报错
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 > **注意：**
 >
@@ -39,11 +41,15 @@ tiup [flags] <component> [args...]      # 运行组件
 >
 > 该选项只能用于 `tiup [flags] <component> [args...]` 格式的命令。
 
-### --skip-version-check (boolean，默认 false)
+### --skip-version-check
 
-跳过版本号合法性检查，默认指定的版本号只能是 Semantic Version。
+> **注意：**
+>
+> 该选项自 `v1.3.0` 版本起**已废弃**。
 
-该选项自 `v1.3.0` 版本起**已废弃**。
+- 跳过版本号合法性检查，默认指定的版本号只能是 Semantic Version。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### -T, --tag (string)
 
