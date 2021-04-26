@@ -87,7 +87,7 @@ readpool.unified.min-thread-count: 5
 readpool.unified.max-thread-count: 20
 readpool.storage.normal-concurrency: 10
 pessimistic-txn.pipelined: true
-enable-request-batch: false
+server.enable-request-batch: false
 ```
 
 #### TiDB v4.0 global variable configuration
