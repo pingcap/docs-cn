@@ -8,7 +8,7 @@ title: tiup cluster template
 
 ## 语法
 
-```sh
+```shell
 tiup cluster template [flags]
 ```
 

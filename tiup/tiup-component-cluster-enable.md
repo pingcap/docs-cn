@@ -28,7 +28,7 @@ tiup cluster enable <cluster-name> [flags]
 >
 > 若同时指定了 `-R, --role`，那么将开启它们的交集中的服务自启。
 
-### -R, --role strings
+### -R, --role
 
 指定要开启自启的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
 

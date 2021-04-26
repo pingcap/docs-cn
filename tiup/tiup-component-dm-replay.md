@@ -8,7 +8,7 @@ title: tiup dm replay
 
 ## 语法
 
-```sh
+```shell
 tiup dm replay <audit-id> [flags]
 ```
 

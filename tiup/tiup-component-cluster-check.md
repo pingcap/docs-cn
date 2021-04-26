@@ -159,7 +159,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 >
 > 若同时指定了 `-R, --role`，那么将检查它们的交集中的服务。
 
-### -R, --role strings
+### -R, --role
 
 指定要检查的角色。该选项的值为以逗号分割的节点角色列表，角色为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第二列。
 

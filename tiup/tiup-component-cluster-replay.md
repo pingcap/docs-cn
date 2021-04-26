@@ -8,7 +8,7 @@ title: tiup cluster replay
 
 ## 语法
 
-```sh
+```shell
 tiup cluster replay <audit-id> [flags]
 ```
 

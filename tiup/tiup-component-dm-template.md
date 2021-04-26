@@ -8,7 +8,7 @@ title: tiup dm template
 
 ## 语法
 
-```sh
+```shell
 tiup dm template [flags]
 ```
 
