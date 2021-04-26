@@ -100,8 +100,13 @@ BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD
 #### 前置要求
 
 * [备份前的准备工作](#备份前的准备工作)。
-* 配置一台高性能 SSD 硬盘主机为 NFS server 存储数据。其他所有 BR 节点和 TiKV 节点为 NFS client，挂载相同的路径（例如 `/br_data`）到 NFS server 上以访问 NFS server。
+* 配置一台高性能 SSD 硬盘主机为 NFS server 存储数据。其他所有 BR 节点和 TiKV 节点 (TiFlash 节点) 为 NFS client，挂载相同的路径（例如 `/br_data`）到 NFS server 上以访问 NFS server。
 * NFS server 和 NFS client 间的数据传输速率至少要达到备份集群的 `TiKV 实例数 * 150MB/s`。否则网络 I/O 有可能成为性能瓶颈。
+
+> **注意：**
+>
+> * 因为备份时候只备份单副本 (leader) 数据，所以即使集群中存在 TiFlash 副本，无需挂载 TiFlash 节点也能完成备份。
+> * 但是恢复的时候需要恢复全部副本的数据，因此在恢复时 TiFlash 节点需要有备份数据的访问权限才能完成恢复，所以建议此时也一并将 TiFlash 节点挂载到 NFS server 上 。
 
 #### 部署拓扑
 
