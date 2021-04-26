@@ -19,7 +19,7 @@ title: tiup dm import
 
 ## 语法
 
-```sh
+```shell
 tiup dm import [flags]
 ```
 
@@ -41,9 +41,11 @@ tiup dm import [flags]
 
 重命名导入的集群。默认集群名为 inventory 中指定的 `cluster_name`。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

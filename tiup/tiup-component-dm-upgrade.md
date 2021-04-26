@@ -8,7 +8,7 @@ title: tiup dm upgrade
 
 ## 语法
 
-```sh
+```shell
 tiup dm upgrade <cluster-name> <version> [flags]
 ```
 
@@ -23,7 +23,9 @@ tiup dm upgrade <cluster-name> <version> [flags]
 
 ### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

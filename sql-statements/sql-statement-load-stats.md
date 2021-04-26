@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-stats/']
 
 ## 语法图
 
-**LoadStatsStmt:**
-
-![LoadStatsStmt](/media/sqlgram/LoadStatsStmt.png)
+```ebnf+diagram
+LoadStatsStmt ::=
+    'LOAD' 'STATS' stringLit
+```
 
 ## 参数说明
 

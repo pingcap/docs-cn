@@ -9,17 +9,16 @@ summary: TiDB 数据库中 GRANT <role> 的使用概况。
 
 ## 语法图
 
-**GrantRoleStmt:**
+```ebnf+diagram
+GrantRoleStmt ::=
+    'GRANT' RolenameList 'TO' UsernameList
 
-![GrantRoleStmt](/media/sqlgram/GrantRoleStmt.png)
+RolenameList ::=
+    Rolename ( ',' Rolename )*
 
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
-
-**UsernameList:**
-
-![UsernameList](/media/sqlgram/UsernameList.png)
+UsernameList ::=
+    Username ( ',' Username )*
+```
 
 ## 示例
 

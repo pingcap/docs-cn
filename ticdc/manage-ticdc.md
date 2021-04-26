@@ -203,8 +203,8 @@ URI 中可配置的的参数如下：
 | `tlsAllowInsecureConnection` | 在开启 TLS 之后是否允许非加密连接（可选） |
 | `tlsValidateHostname` | 是否校验下游 Pulsar 证书中的 host name（可选） |
 | `maxConnectionsPerBroker` | 下游单个 Pulsar broker 最多允许的连接数（可选，默认值为 1） |
-| `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `"{"tlsCertFile":"/path/to/cert", "tlsKeyFile":"/path/to/key"}"`）|
-| `auth.token` | 使用 token 模式认证下游（可选，示例 `"{"token":"secret-token"}"` 或者 `"{"file":"path/to/secret-token-file"}"`）|
+| `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `auth=tls&auth.tlsCertFile=/path/to/cert&auth.tlsKeyFile=/path/to/key`）|
+| `auth.token` | 使用 token 模式认证下游（可选，示例 `auth=token&auth.token=secret-token` 或者 `auth=token&auth.file=path/to/secret-token-file`）|
 | `name` | TiCDC 中 Pulsar producer 名字（可选） |
 | `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
@@ -742,9 +742,11 @@ sync-ddl = true
 2. 开启环形同步的数据表名字需要符合正则表达式 `^[a-zA-Z0-9_]+$`。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
-5. 如果想在线 DDL，需要确保以下两点：
-    1. 多个集群的 TiCDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 TiCDC 关闭了 `sync-ddl`。
-    2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
+5. 在多集群同时写入时，为了避免业务出错，请避免执行 DDL 语句，比如 `ADD COLUMN`/`DROP COLUMN` 等。 
+6. 如果想在线执行 DDL 语句，需要确保满足以下条件：
+    + 业务兼容 DDL 语句执行前后的表结构。
+    + 多个集群的 TiCDC 组件构成一个单向 DDL 同步链，不能成环。例如以上在 TiDB 集群 A，B 和 C 上创建环形同步任务的示例中，只有 C 集群的 TiCDC 组件关闭了 `sync-ddl`。
+    + DDL 语句必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
 
 ## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 

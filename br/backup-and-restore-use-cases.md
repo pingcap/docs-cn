@@ -78,6 +78,8 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 ### 备份前的准备工作
 
+BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
+
 关于 `br backup` 命令的具体使用方法，参见[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
 
 运行 `br backup` 命令前，请确保以下条件：
@@ -203,7 +205,7 @@ BR 会在备份结束时输出备份总结到控制台。
 
 #### 性能调优
 
-如果 TiKV 的资源使用没有出现明显的瓶颈（例如[备份过程中的运行指标](#备份过程中的运行指标)中的 **Backup CPU Utilization** 最高为 `1500%` 左右，**IO Utilization** 普遍低于 `30%`），可以尝试调大 `--concurrency` 参数以进行性能调优。该方法不适用于存在许多小表的场景。
+如果 TiKV 的资源使用没有出现明显的瓶颈（例如[备份过程中的运行指标](#备份过程中的运行指标)中的 **Backup CPU Utilization** 最高为 `1500%` 左右，**IO Utilization** 普遍低于 `30%`），可以尝试调大 `--concurrency`（默认是 4）参数以进行性能调优。该方法不适用于存在许多小表的场景。
 
 示例如下：
 
