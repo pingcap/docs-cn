@@ -9,9 +9,10 @@ summary: TiDB 数据库中 LOAD STATS 的使用概况。
 
 ## 语法图
 
-**LoadStatsStmt:**
-
-![LoadStatsStmt](/media/sqlgram/LoadStatsStmt.png)
+```ebnf+diagram
+LoadStatsStmt ::=
+    'LOAD' 'STATS' stringLit
+```
 
 ## 参数说明
 

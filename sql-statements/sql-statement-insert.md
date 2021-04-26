@@ -9,41 +9,37 @@ summary: TiDB 数据库中 INSERT 的使用概况。
 
 ## 语法图
 
-**InsertIntoStmt:**
+```ebnf+diagram
+InsertIntoStmt ::=
+    'INSERT' TableOptimizerHints PriorityOpt IgnoreOptional IntoOpt TableName PartitionNameListOpt InsertValues OnDuplicateKeyUpdate
 
-![InsertIntoStmt](/media/sqlgram/InsertIntoStmt.png)
+TableOptimizerHints ::=
+    hintComment?
 
-**TableOptimizerHints**
+PriorityOpt ::=
+    ( 'LOW_PRIORITY' | 'HIGH_PRIORITY' | 'DELAYED' )?
 
-![TableOptimizerHints](/media/sqlgram/TableOptimizerHints.png)
+IgnoreOptional ::=
+    'IGNORE'?
 
-**PriorityOpt:**
+IntoOpt  ::= 'INTO'?
 
-![PriorityOpt](/media/sqlgram/PriorityOpt.png)
+TableName ::=
+    Identifier ( '.' Identifier )?
 
-**IgnoreOptional:**
+PartitionNameListOpt ::=
+    ( 'PARTITION' '(' Identifier ( ',' Identifier )* ')' )?
 
-![IgnoreOptional](/media/sqlgram/IgnoreOptional.png)
+InsertValues ::=
+    '(' ( ColumnNameListOpt ')' ( ValueSym ValuesList | SelectStmt | '(' SelectStmt ')' | UnionStmt ) | SelectStmt ')' )
+|   ValueSym ValuesList
+|   SelectStmt
+|   UnionStmt
+|   'SET' ColumnSetValue? ( ',' ColumnSetValue )*
 
-**IntoOpt:**
-
-![IntoOpt](/media/sqlgram/IntoOpt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**PartitionNameListOpt:**
-
-![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
-
-**InsertValues:**
-
-![InsertValues](/media/sqlgram/InsertValues.png)
-
-**OnDuplicateKeyUpdate:**
-
-![OnDuplicateKeyUpdate](/media/sqlgram/OnDuplicateKeyUpdate.png)
+OnDuplicateKeyUpdate ::=
+    ( 'ON' 'DUPLICATE' 'KEY' 'UPDATE' AssignmentList )?
+```
 
 ## 示例
 

@@ -13,17 +13,23 @@ summary: TiDB 数据库中 EXPLAIN ANALYZE 的使用概况。
 
 ## 语法图
 
-**ExplainSym:**
+```ebnf+diagram
+ExplainSym ::=
+    'EXPLAIN'
+|   'DESCRIBE'
+|    'DESC'
 
-![ExplainSym](/media/sqlgram/ExplainSym.png)
+ExplainStmt ::=
+    ExplainSym ( TableName ColumnName? | 'ANALYZE'? ExplainableStmt | 'FOR' 'CONNECTION' NUM | 'FORMAT' '=' ( stringLit | ExplainFormatType ) ( 'FOR' 'CONNECTION' NUM | ExplainableStmt ) )
 
-**ExplainStmt:**
-
-![ExplainStmt](/media/sqlgram/ExplainStmt.png)
-
-**ExplainableStmt:**
-
-![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
+ExplainableStmt ::=
+    SelectStmt
+|   DeleteFromStmt
+|   UpdateStmt
+|   InsertIntoStmt
+|   ReplaceIntoStmt
+|   UnionStmt
+```
 
 ## EXPLAIN ANALYZE 输出格式
 
@@ -180,7 +186,7 @@ inner:{total:4.297515932s, concurrency:5, task:17, construct:97.96291ms, fetch:4
 `IndexHashJoin` 算子包含以下执行信息：
 
 ```sql
-inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:4.239324006s, build:24.567801ms, join:93.607362ms} 
+inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:4.239324006s, build:24.567801ms, join:93.607362ms}
 ```
 
 - `inner`：inner worker 的执行信息，具体如下：

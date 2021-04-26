@@ -9,13 +9,14 @@ summary: TiDB 数据库中 PREPARE 的使用概况。
 
 ## 语法图
 
-**PreparedStmt:**
+```ebnf+diagram
+PreparedStmt ::=
+    'PREPARE' Identifier 'FROM' PrepareSQL
 
-![PreparedStmt](/media/sqlgram/PreparedStmt.png)
-
-**PrepareSQL:**
-
-![PrepareSQL](/media/sqlgram/PrepareSQL.png)
+PrepareSQL ::=
+    stringLit
+|   UserVariable
+```
 
 ## 示例
 
