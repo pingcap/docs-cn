@@ -82,6 +82,8 @@ Before the backup or restoration operations, you need to do some preparations:
 
 ### Preparation for backup
 
+The BR tool already supports self-adapting to GC. It automatically registers `backupTS` (the latest PD timestamp by default) to PD's `safePoint` to ensure that TiDB's GC Safe Point does not move forward during the backup, thus avoiding manually setting GC configurations.
+
 For the detailed usage of the `br backup` command, refer to [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md).
 
 1. Before executing the `br backup` command, ensure that no DDL is running on the TiDB cluster.
@@ -203,7 +205,7 @@ From the above information, the throughput of a single TiKV instance can be calc
 
 #### Performance tuning
 
-If the resource usage of TiKV does not become an obvious bottleneck during the backup process (for example, in the [Monitoring metrics for the backup](#monitoring-metrics-for-the-backup), the highest CPU usage rate of backup-worker is around `1500%` and the overall I/O usage rate is below `30%`), you can try to increase the value of `--concurrency` to tune the performance. But this performance tuning method is not suitable for the use cases of many small tables. See the following example:
+If the resource usage of TiKV does not become an obvious bottleneck during the backup process (for example, in the [Monitoring metrics for the backup](#monitoring-metrics-for-the-backup), the highest CPU usage rate of backup-worker is around `1500%` and the overall I/O usage rate is below `30%`), you can try to increase the value of `--concurrency` (`4` by default) to tune the performance. But this performance tuning method is not suitable for the use cases of many small tables. See the following example:
 
 {{< copyable "shell-regular" >}}
 
