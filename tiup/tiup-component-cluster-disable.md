@@ -18,7 +18,10 @@ tiup cluster disable <cluster-name> [flags]
 
 ### -N, --node
 
-指定要关闭自启的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第一列。
+- 指定要关闭自启的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第一列。
+- 数据类型：`STRINGS`
+- 如果不指定该选项，默认检查所有节点。
+- 
 
 > **注意：**
 >

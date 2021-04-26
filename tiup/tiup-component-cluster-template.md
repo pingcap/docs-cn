@@ -14,9 +14,9 @@ tiup cluster template [flags]
 
 如果不指定该选项，输出的默认模版包含以下角色：
 
-- 3 个 PD
-- 3 个 TiKV
-- 1 个 TiDB
+- 3 个 PD 实例
+- 3 个 TiKV 实例
+- 1 个 TiDB 实例
 - 1 个 Prometheus
 - 1 个 Grafana
 - 1 个 Alertmanager
