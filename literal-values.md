@@ -165,7 +165,7 @@ X'1z' (z is not a hexadecimal legal digit)
 0X12AC (0X must be written as 0x)
 ```
 
-Hexadecimal literals written using `X'val'` notation must contain an even number of digits. To avoid the syntax error, pad the value with a leading zero:
+Hexadecimal literals written using `X'val'` notation must contain an even number of digits. If the length of `val` is an odd number (for example, `X'A'` or `X'11A'`), to avoid the syntax error, pad the value with a leading zero:
 
 ```sql
 mysql> select X'aff';
