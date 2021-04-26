@@ -22,6 +22,10 @@ The following are its usage scenarios:
 
 ## Download `binlogctl`
 
+> **Note:**
+>
+> It is recommended that the version of the Control tool you use is consistent with the version of the cluster.
+
 {{< copyable "shell-regular" >}}
 
 ```bash

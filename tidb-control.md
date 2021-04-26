@@ -12,6 +12,10 @@ TiDB Control is a command-line tool of TiDB, usually used to obtain the status i
 
 You can get TiDB Control by installing it using TiUP or by compiling it from source code.
 
+> **Note:**
+>
+> It is recommended that the version of the Control tool you use is consistent with the version of the cluster.
+
 ### Install TiDB Control using TiUP
 
 After installing TiUP, you can use `tiup ctl tidb` command to get and execute TiDB Control.

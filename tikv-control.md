@@ -12,6 +12,10 @@ TiKV Control (`tikv-ctl`) is a command line tool of TiKV, used to manage the clu
 
 ## Use TiKV Control in TiUP
 
+> **Note:**
+>
+> It is recommended that the version of the Control tool you use is consistent with the version of the cluster.
+
 `tikv-ctl` is also integrated in the `tiup` command. Execute the following command to call the `tikv-ctl` tool:
 
 {{< copyable "shell-regular" >}}
