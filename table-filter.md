@@ -241,7 +241,7 @@ The filtered outcome is as follows:
 
 > **Note:**
 >
-> In TiDB tools, the system schemas are always excluded regardless of the table filter settings. The system schemas are:
+> In TiDB tools, the system schemas are always excluded in the default configuration. The system schemas are:
 >
 > * `INFORMATION_SCHEMA`
 > * `PERFORMANCE_SCHEMA`
