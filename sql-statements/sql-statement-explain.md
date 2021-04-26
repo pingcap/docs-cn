@@ -14,18 +14,6 @@ TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 
 
 ## 语法图
 
-**ExplainSym:**
-
-![ExplainSym](/media/sqlgram/ExplainSym.png)
-
-**ExplainStmt:**
-
-![ExplainStmt](/media/sqlgram/ExplainStmt.png)
-
-**ExplainableStmt:**
-
-![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
-
 ```ebnf+diagram
 ExplainSym ::=
     'EXPLAIN'

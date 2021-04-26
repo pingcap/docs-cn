@@ -10,26 +10,6 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 
 ## 语法图
 
-**AlterTableStmt:**
-
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
-
-**AlterTableSpec:**
-
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
-
-**ColumnKeywordOpt:**
-
-![ColumnKeywordOpt](/media/sqlgram/ColumnKeywordOpt.png)
-
-**ColumnDef:**
-
-![ColumnDef](/media/sqlgram/ColumnDef.png)
-
-**ColumnPosition:**
-
-![ColumnPosition](/media/sqlgram/ColumnPosition.png)
-
 ```ebnf+diagram
 AlterTableStmt ::=
     'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )

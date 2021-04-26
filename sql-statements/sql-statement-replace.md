@@ -10,30 +10,6 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-replace/','/docs-cn/dev/ref
 
 ## 语法图
 
-**ReplaceIntoStmt:**
-
-![ReplaceIntoStmt](/media/sqlgram/ReplaceIntoStmt.png)
-
-**PriorityOpt:**
-
-![PriorityOpt](/media/sqlgram/PriorityOpt.png)
-
-**IntoOpt:**
-
-![IntoOpt](/media/sqlgram/IntoOpt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**PartitionNameListOpt:**
-
-![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
-
-**InsertValues:**
-
-![InsertValues](/media/sqlgram/InsertValues.png)
-
 ```ebnf+diagram
 ReplaceIntoStmt ::=
     'REPLACE' PriorityOpt IntoOpt TableName PartitionNameListOpt InsertValues
