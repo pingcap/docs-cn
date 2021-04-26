@@ -4,7 +4,7 @@ title: TiUP 镜像参考指南
 
 # TiUP 镜像参考指南
 
-TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件的元信息。镜像有两种存在形式：
+TiUP 镜像是 TiUP 的组件仓库，存放了一系列的组件和这些组件的元信息。镜像有两种存在形式：
 
 - 本地磁盘上的目录：用于服务本地的 TiUP 客户端，文档中将称之为本地镜像
 - 基于远程的磁盘目录启动的 HTTP 镜像：服务远程的 TiUP 客户端，文档中将称之为远程镜像
@@ -14,7 +14,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
 镜像可以通过以下两种方式创建：
 
 - 通过命令 `tiup mirror init` 从零生成
-- 通过命令 `tiup mirrir clone` 从已有镜像克隆
+- 通过命令 `tiup mirror clone` 从已有镜像克隆
 
 在创建镜像之后，可以通过 `tiup mirror` 相关命令来给镜像添加组件或删除组件，无论是通过何种方式更新镜像，TiUP 都不会从镜像中删除任何文件，而是通过增加文件并分配新版本号的方式更新。
 
@@ -59,7 +59,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
 
 ```
 {
-    "signatures": [                                             # 每个元信息文件有一些列的签名，签名由该文件对应的几个私钥签出
+    "signatures": [                                             # 每个元信息文件有一系列的签名，签名由该文件对应的几个私钥签出
         {
             "keyid": "{id-of-root-key-1}",                      # 第一个参与签名私钥的 ID，该 ID 由私钥对应的公钥内容哈希得到
             "sig": "{signature-by-root-key-1}"                  # 该私钥对此文件 signed 部分签名的结果
@@ -189,7 +189,7 @@ TiUP 镜像是 TiUP 的组件仓库，存放了一些列的组件和这些组件
         "_type": "component",                                   # 指示该文件类型
         "description": "{description-of-the-component}",        # 该组件的描述信息
         "expires": "{expiration-date-of-this-file}",            # 该文件的过期时间，过期后客户端会拒绝此文件
-        "id": "{component-id}",                                 # 该组件的 id，具有全局唯一性
+        "id": "{component-id}",                                 # 该组件的 ID，具有全局唯一性
         "nightly": "{nightly-cursor}",                          # nightly 游标，值为最新的 nightly 的版本号（如 v5.0.0-nightly-20201209）
         "platforms": {                                          # 该组件支持的平台（如 darwin/amd64，linux/arm64 等）
             "{platform-pair-1}": {
