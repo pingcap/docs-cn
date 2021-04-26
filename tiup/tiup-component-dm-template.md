@@ -14,11 +14,11 @@ tiup dm template [flags]
 
 如果不指定该选项，输出的默认模版包含以下角色：
 
-- 3 个 DM-master 节点
-- 3 个 DM-worker 节点
-- 1 个 Prometheus
-- 1 个 Grafana
-- 1 个 Alertmanager
+- 3 个 DM-master 实例
+- 3 个 DM-worker 实例
+- 1 个 Prometheus 实例
+- 1 个 Grafana 实例
+- 1 个 Alertmanager 实例
 
 ## 选项
 
