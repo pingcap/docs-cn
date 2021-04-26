@@ -18,7 +18,9 @@ tiup dm disable <cluster-name> [flags]
 
 ### -N, --node
 
-指定要关闭自启的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-dm-display.md)表格的第一列。
+- 指定要关闭自启的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-dm-display.md)表格的第一列。
+- 数据类型：`STRINGS`
+- 如果不指定该选项，默认关闭所有节点的自启。
 
 > **注意：**
 >
@@ -26,7 +28,9 @@ tiup dm disable <cluster-name> [flags]
 
 ### -R, --role
 
-指定要关闭自启的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-dm-display.md)表格的第二列。
+- 指定要关闭自启的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-dm-display.md)表格的第二列。
+- 数据类型：`STRINGS`
+- 如果不指定该选项，默认关闭所有角色的自启。
 
 > **注意：**
 >
