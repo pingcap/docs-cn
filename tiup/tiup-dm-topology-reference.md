@@ -195,8 +195,8 @@ worker_servers:
 - `storage_retention`：Prometheus 监控数据保留时间，默认 "15d"
 - `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `*.rules.yml` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
 - `remote_config`：用于支持将 Prometheus 数据写到远端，或从远端读取数据，该字段下有两个配置：
-    - `remote_write`：[ - [<remote_write>](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) ... ]
-    - `remote_read`：[ - [<remote_read>](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) ... ]
+    - `remote_write`：参考 Prometheus [<remote_write>](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
+    - `remote_read`：参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
 - `external_alertmanagers`：若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
