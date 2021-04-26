@@ -8,7 +8,7 @@ title: tiup cluster upgrade
 
 ## 语法
 
-```sh
+```shell
 tiup cluster upgrade <cluster-name> <version> [flags]
 ```
 
@@ -17,9 +17,11 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 ## 选项
 
-### --force（boolean，默认 false）
+### --force
 
-升级集群需要保证集群目前是启动的，在某些情况下，可能希望在集群未启动的状态下升级，这时候可以使用 `--force` 忽略升级过程的错误，强制替换二进制文件并启动集群。
+- 升级集群需要保证集群目前是启动的，在某些情况下，可能希望在集群未启动的状态下升级，这时候可以使用 `--force` 忽略升级过程的错误，强制替换二进制文件并启动集群。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 > **注意：**
 > 
@@ -33,19 +35,23 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 > 
 > 若出现跳过等待直接升级的情况，服务性能可能会出现抖动。
 
-### --ignore-config-check（boolean，默认 false）
+### --ignore-config-check
 
-在二进制文件更新之后，会对 TiDB，TiKV 和 PD 组件执行配置检查，检查方式为 `<binary> --config-check <config-file>`，其中 `<bianry>` 为新部署的二进制文件的路径，`<config-file>` 为根据用户配置生成的配置文件。
+- 在二进制文件更新之后，TiUP 会对 TiDB，TiKV 和 PD 组件执行配置检查，检查方式为 `<binary> --config-check <config-file>`，其中 `<binary>` 为新部署的二进制文件的路径，`<config-file>` 为根据用户配置生成的配置文件。如果想要跳过该项检查，可以使用该选项。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-如果想要跳过该项检查，可以使用该选项。
+## --offline
 
-## --offline（boolean，默认 false）
+- 声明当前集群处于停止状态。指定该选项时，TiUP Cluster 仅原地替换集群组件的二进制文件，不执行迁移 Leader 以及重启服务等操作。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-声明当前集群处于停止状态。指定该选项时，TiUP Cluster 仅原地替换集群组件的二进制文件，不执行迁移 Leader 以及重启服务等操作。
+### -h, --help
 
-### -h, --help（boolean，默认 false）
-
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
