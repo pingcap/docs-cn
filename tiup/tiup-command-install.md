@@ -8,7 +8,7 @@ title: tiup install
 
 ## 语法
 
-```sh
+```shell
 tiup install <component1>[:version] [component2...N] [flags]
 ```
 
