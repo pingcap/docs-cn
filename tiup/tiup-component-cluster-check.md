@@ -161,7 +161,9 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 ### -R, --role
 
-指定要检查的角色。该选项的值为以逗号分割的节点角色列表，角色为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第二列。
+- 指定要检查的角色。该选项的值为以逗号分割的节点角色列表，角色为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第二列。
+- 数据类型：`STRINGS`
+- 如果不指定该选项，默认检查所有角色。
 
 > **注意：**
 >
