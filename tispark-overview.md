@@ -206,9 +206,49 @@ tisparkDF.write.saveAsTable("hive_table") // save table to hive
 spark.sql("select * from hive_table a, tispark_table b where a.col1 = b.col1").show // join table across Hive and Tispark
 ```
 
+## Batch write DataFrames into TiDB using TiSpark
+
+Starting from v2.3, TiSpark natively supports batch writing DataFrames into TiDB clusters. This writing mode is implemented through the two-phase commit protocol of TiKV.
+
+Compared with the writing through Spark + JDBC, the TiSpark batch writing has the following advantages:
+
+|  Aspects to compare    | TiSpark batch writes | Spark + JDBC writes|
+| ------- | --------------- | --------------- |
+| Atomicity   | The DataFrames either are all written successfully or all fail to write. | If the Spark task fails and exits during the writing process, a part of the data might be written successfully. |
+| Isolation   | During the writing process, the data being written is invisible to other transactions. | During the writing process, some successfully written data is visible to other transactions.  |
+| Error recovery | If the batch write fails, you only need to re-run Spark. | An application is required to achieve idempotence. For example, if the batch write fails, you need to clean up the part of the successfully written data and re-run Spark. You need to set `spark.task.maxFailures=1` to prevent data duplication caused by task retry. |
+| Speed    | Data is directly written into TiKV, which is faster. | Data is written to TiKV through TiDB, which affects the speed. |
+
+The following example shows how to batch write data using TiSpark via the scala API:
+
+```scala
+// select data to write
+val df = spark.sql("select * from tpch.ORDERS")
+
+// write data to tidb
+df.write.
+  format("tidb").
+  option("tidb.addr", "127.0.0.1").
+  option("tidb.port", "4000")
+  option("tidb.user", "root").
+  option("tidb.password", "").
+  option("database", "tpch").
+  option("table", "target_orders").
+  mode("append").
+  save()
+```
+
+If the amount of data to write is large and the writing time exceeds ten minutes, you need to ensure that the GC time is longer than the writing time.
+
+```sql
+update mysql.tidb set VARIABLE_VALUE="6h" where VARIABLE_NAME="tikv_gc_life_time";
+```
+
+Refer to [this document](https://github.com/pingcap/tispark/blob/master/docs/datasource_api_userguide.md) for details.
+
 ## Load Spark Dataframe into TiDB using JDBC
 
-TiSpark does not provide a direct way of loading data into your TiDB cluster, but you can load data using JDBC like this:
+In addition to using TiSpark to batch write DataFrames into the TiDB cluster, you can also use Spark's native JDBC support for the data writing:
 
 ```scala
 import org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions
