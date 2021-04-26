@@ -113,7 +113,7 @@ title: tiup cluster check
 
 ## 语法
 
-```sh
+```shell
 tiup cluster check <topology.yml | cluster-name> [flags]
 ```
 
@@ -125,34 +125,43 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 ## 选项
 
-### --apply（boolean，默认 false）
+### --apply
 
-尝试自动修复失败的检查项，目前仅会尝试修复以下项目：
+- 尝试自动修复失败的检查项，目前仅会尝试修复以下项目：
 
-- SELinux
-- 防火墙
-- irqbalance
-- 内核参数
-- 系统 Limits
-- THP（透明大页）
+    - SELinux
+    - 防火墙
+    - irqbalance
+    - 内核参数
+    - 系统 Limits
+    - THP（透明大页）
 
-### --cluster（boolean，默认 false）
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+
+### --cluster
 
 tiup-cluster 支持对未部署的集群进行检查，也支持对已部署的集群进行检查，命令格式：
 
-```sh
+```shell
 tiup cluster check <topology.yml | cluster-name> [flags]
 ```
 
 若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
 
-### --enable-cpu（boolean，默认 false）
+该选项的数据类型为 `BOOLEAN`。该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-默认情况下 tiup-cluster 不检查 CPU 核心数，该选项用于启用 CPU 核心数检查。
+### --enable-cpu
 
-### --enable-disk（boolean，默认 false）
+- 默认情况下 tiup-cluster 不检查 CPU 核心数，该选项用于启用 CPU 核心数检查。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-默认情况下 tiup-cluster 不进行 fio 磁盘性能测试，该选项用于启用 fio 磁盘性能测试。
+### --enable-disk
+
+- 默认情况下 tiup-cluster 不进行 fio 磁盘性能测试，该选项用于启用 fio 磁盘性能测试。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### --enable-mem
 
@@ -174,16 +183,21 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 >
 > 仅当 `--cluster` 选项为 false 时该选项有效，否则该值固定为 `${TIUP_HOME}/storage/cluster/clusters/<cluster-name>/ssh/id_rsa`
 
-### -p, --password（boolean，默认 false）
+### -p, --password
 
-在连接目标机器时使用密码登陆：
+- 在连接目标机器时使用密码登陆：
 
-- 对于指定了 `--cluster` 的集群，密码为部署集群时拓扑文件中指定的用户的密码
-- 对于未指定 `--cluster` 的集群，密码为 `-u/--user` 参数指定的用户的密码
+    - 对于指定了 `--cluster` 的集群，密码为部署集群时拓扑文件中指定的用户的密码
+    - 对于未指定 `--cluster` 的集群，密码为 `-u/--user` 参数指定的用户的密码
 
-### -h, --help（boolean，默认 false）
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-输出帮助信息。
+### -h, --help
+
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

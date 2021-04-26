@@ -8,7 +8,7 @@ title: tiup dm reload
 
 ## 语法
 
-```sh
+```shell
 tiup dm reload <cluster-name> [flags]
 ```
 
@@ -25,7 +25,7 @@ tiup dm reload <cluster-name> [flags]
 > + 若同时指定了 `-R, --role`，那么将重启它们的交集中的服务
 > + 若指定了选项 `--skip-restart`，则该选项无效
 
-### -R, --role strings（strings，默认为 []，表示所有角色）
+### -R, --role（strings，默认为 []，表示所有角色）
 
 指定要重启的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-dm-display.md)表格的第二列。
 
@@ -34,18 +34,22 @@ tiup dm reload <cluster-name> [flags]
 > + 若同时指定了 `-N, --node`，那么将重启它们的交集中的服务
 > + 若指定了选项 `--skip-restart`，则该选项无效
 
-### --skip-restart（boolean，默认 false）
+### --skip-restart
 
-命令 `tiup dm reload` 会执行两个操作：
+- 命令 `tiup dm reload` 会执行两个操作：
 
-- 刷新所有节点配置
-- 重启指定节点
+    - 刷新所有节点配置
+    - 重启指定节点
 
-该选项指定后仅刷新配置，不重启任何节点，这样刷新的配置也不会应用，需要等对应服务下次重启才会生效。
+- 该选项指定后仅刷新配置，不重启任何节点，这样刷新的配置也不会应用，需要等对应服务下次重启才会生效。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

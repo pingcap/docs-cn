@@ -8,7 +8,7 @@ title: tiup dm display
 
 ## 语法
 
-```sh
+```shell
 tiup dm display <cluster-name> [flags]
 ```
 
@@ -24,7 +24,7 @@ tiup dm display <cluster-name> [flags]
 > 
 > 若同时指定了 `-R, --role`，那么将查询它们的交集中的服务状态。
 
-### -R, --role strings（strings，默认为 []，表示所有角色）
+### -R, --role（strings，默认为 []，表示所有角色）
 
 指定要查询的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，如果不确定要查询节点的角色，不指定此选项，输出会显示所有节点的角色和状态信息。
 
@@ -32,9 +32,11 @@ tiup dm display <cluster-name> [flags]
 > 
 > 若同时指定了 `-N, --node`，那么将查询它们的交集中的服务状态。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
