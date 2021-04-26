@@ -10,33 +10,34 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-flush-tables/','/docs-cn
 
 ## 语法图
 
-**FlushStmt:**
+```ebnf+diagram
+FlushStmt ::=
+    'FLUSH' NoWriteToBinLogAliasOpt FlushOption
 
-![FlushStmt](/media/sqlgram/FlushStmt.png)
+NoWriteToBinLogAliasOpt ::=
+    ( 'NO_WRITE_TO_BINLOG' | 'LOCAL' )?
 
-**NoWriteToBinLogAliasOpt:**
+FlushOption ::=
+    'PRIVILEGES'
+|   'STATUS'
+|    'TIDB' 'PLUGINS' PluginNameList
+|    'HOSTS'
+|    LogTypeOpt 'LOGS'
+|    TableOrTables TableNameListOpt WithReadLockOpt
 
-![NoWriteToBinLogAliasOpt](/media/sqlgram/NoWriteToBinLogAliasOpt.png)
+LogTypeOpt ::=
+    ( 'BINARY' | 'ENGINE' | 'ERROR' | 'GENERAL' | 'SLOW' )?
 
-**FlushOption:**
+TableOrTables ::=
+    'TABLE'
+|   'TABLES'
 
-![FlushOption](/media/sqlgram/FlushOption.png)
+TableNameListOpt ::=
+    TableNameList?
 
-**LogTypeOpt:**
-
-![LogTypeOpt](/media/sqlgram/LogTypeOpt.png)
-
-**TableOrTables:**
-
-![TableOrTables](/media/sqlgram/TableOrTables.png)
-
-**TableNameListOpt:**
-
-![TableNameListOpt](/media/sqlgram/TableNameListOpt.png)
-
-**WithReadLockOpt:**
-
-![WithReadLockOpt](/media/sqlgram/WithReadLockOpt.png)
+WithReadLockOpt ::=
+    ( 'WITH' 'READ' 'LOCK' )?
+```
 
 ## 示例
 
