@@ -9,6 +9,10 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 安装方式
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 ### 使用 TiUP
 
 可直接通过 `tiup ctl pd:<pd_version> -u http://<pd_ip>:<pd_port> [-i]` 使用。

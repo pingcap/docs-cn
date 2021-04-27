@@ -8,7 +8,7 @@ title: tiup cluster disable
 
 ## 语法
 
-```sh
+```shell
 tiup cluster disable <cluster-name> [flags]
 ```
 
@@ -24,7 +24,7 @@ tiup cluster disable <cluster-name> [flags]
 >
 > 若同时指定了 `-R, --role`，那么将关闭它们的交集中的服务自启。
 
-### -R, --role strings（strings，默认为 []，未选中任何角色）
+### -R, --role（strings，默认为 []，未选中任何角色）
 
 指定要关闭自启的角色，该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
 
@@ -32,9 +32,11 @@ tiup cluster disable <cluster-name> [flags]
 >
 > 若同时指定了 `-N, --node`，那么将关闭它们的交集中的服务自启。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

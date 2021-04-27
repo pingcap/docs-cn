@@ -68,12 +68,12 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
         To view the dashboard: http://127.0.0.1:2379/dashboard
         To view the monitor: http://127.0.0.1:9090
         ```
-        
+
         > **注意：**
         >
         > 以这种方式执行的 playground，在运行结束后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
         > 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
-    
+
 4. 新开启一个 session 以访问 TiDB 数据库。
 
     + 使用 TiUP `client` 连接 TiDB：
@@ -142,7 +142,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 - 部署需要使用部署主机的 root 用户及密码
 - 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
-- 目前 TiUP 支持在 x86_64 (AMD64) 架构和 ARM 架构上部署 TiDB 集群
+- 目前 TiUP 支持在 x86_64 (AMD64 和 ARM) 架构上部署 TiDB 集群
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 
