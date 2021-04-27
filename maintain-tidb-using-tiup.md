@@ -112,7 +112,7 @@ tiup cluster display ${cluster-name}
 
 ### 示例
 
-如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 模块下，调整后的配置如下：
+如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/release-5.0/config/config.toml.example) 模块下，调整后的配置如下：
 
 ```
 server_configs:
