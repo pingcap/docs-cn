@@ -53,6 +53,7 @@ tiup dm [command] [flags]
 ## 命令清单
 
 - [import](/tiup/tiup-component-dm-import.md)：导入使用  DM-Ansible 部署的 DM v1.0 集群
+- [template](/tiup/tiup-component-dm-template.md)：输出拓扑模版
 - [deploy](/tiup/tiup-component-dm-deploy.md)：根据指定拓扑部署集群
 - [list](/tiup/tiup-component-dm-list.md)：查询已部署的集群列表
 - [display](/tiup/tiup-component-dm-display.md)：展示指定集群状态
@@ -68,4 +69,7 @@ tiup dm [command] [flags]
 - [patch](/tiup/tiup-component-dm-patch.md)：替换已部署集群的某个服务
 - [destroy](/tiup/tiup-component-dm-destroy.md)：销毁指定集群
 - [audit](/tiup/tiup-component-dm-audit.md)：查询集群操作审计日志
+- [replay](/tiup/tiup-component-dm-replay.md)：重试指定命令
+- [enable](/tiup/tiup-component-dm-enable.md)：开启指定集群或服务开机自启动
+- [disable](/tiup/tiup-component-dm-disable.md)：关闭指定集群或服务开机自启动
 - [help](/tiup/tiup-component-dm-help.md)：输出帮助信息

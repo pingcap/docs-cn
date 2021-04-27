@@ -17,6 +17,10 @@ tiup dm upgrade <cluster-name> <version> [flags]
 
 ## 选项
 
+## --offline
+
+声明当前集群处于离线状态。指定该选项时，TiUP DM 仅原地替换集群组件的二进制文件，不重启服务。
+
 ### -h, --help
 
 - 输出帮助信息。
