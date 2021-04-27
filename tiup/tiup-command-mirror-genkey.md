@@ -18,25 +18,30 @@ title: tiup mirror genkey
 
 ## 语法
 
-```sh
+```shell
 tiup mirror genkey [flags]
 ```
 
 ## 选项
 
-### -n, --name（string，默认 private）
+### -n, --name
 
-密钥的名字，该名字决定最终生成的文件名。生成的私钥文件路径为：`${TIUP_HOME}/keys/{name}.json`，其中 `TIUP_HOME` 为 TiUP 的家目录，默认路径为 `$HOME/.tiup`，`name` 为 `-n/--name` 指定的密钥名字。
+- 密钥的名字，该名字决定最终生成的文件名。生成的私钥文件路径为：`${TIUP_HOME}/keys/{name}.json`，其中 `TIUP_HOME` 为 TiUP 的家目录，默认路径为 `$HOME/.tiup`，`name` 为 `-n/--name` 指定的密钥名字。
+- 数据类型：`STRING`
+- 如果不指定该选项，密钥名默认为 `private`。
 
-### -p, --public（boolean，默认 false）
+### -p, --public
 
-显示当前私钥对应的公钥，当前私钥名字由 `-n/--name` 选项指定。
+- 显示当前私钥对应的公钥，当前私钥名字由 `-n/--name` 选项指定。
+- 当指定了 `-p/--public` 时，不会创建新的私钥。若 `-n/--name` 指定的私钥不存在，则报错。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-当指定了 `-p/--public` 时，不会创建新的私钥。若 `-n/--name` 指定的私钥不存在，则报错。
+### --save
 
-### --save（boolean，默认 false）
-
-将公钥信息储存为文件放置于当前目录，文件名称为 `{hash-prefix}-public.json`，其中 `hash-prefix` 为该密钥 ID 的前 16 位。
+- 将公钥信息储存为文件放置于当前目录，文件名称为 `{hash-prefix}-public.json`，其中 `hash-prefix` 为该密钥 ID 的前 16 位。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 

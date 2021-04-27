@@ -119,7 +119,7 @@ tiup cluster display <cluster-name>
 | 主机 IP   | 服务   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash   |
-| 10.0.1.4   | TiDB + PD   | 
+| 10.0.1.4   | TiDB + PD   |
 | 10.0.1.5   | **TiDB** + TiKV + Monitor   |
 | 10.0.1.1   | TiKV    |
 | 10.0.1.2   | TiKV    |
@@ -170,13 +170,13 @@ tiup cluster display <cluster-name>
 
 扩容后，集群拓扑结构如下所示：
 
-| 主机 IP   | 服务   | 
+| 主机 IP   | 服务   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash   |
-| 10.0.1.4   | TiDB + PD + **TiFlash**    | 
-| 10.0.1.5   | TiDB+ TiKV + Monitor   | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + **TiFlash**    |
+| 10.0.1.5   | TiDB+ TiKV + Monitor   |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 扩容 TiCDC 节点
 
@@ -218,13 +218,13 @@ tiup cluster display <cluster-name>
 
 扩容后，集群拓扑结构如下所示：
 
-| 主机 IP   | 服务   | 
+| 主机 IP   | 服务   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + **TiCDC**  |
-| 10.0.1.4   | TiDB + PD + TiFlash + **TiCDC**  | 
-| 10.0.1.5   | TiDB+ TiKV + Monitor   | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + TiFlash + **TiCDC**  |
+| 10.0.1.5   | TiDB+ TiKV + Monitor   |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiDB/PD/TiKV 节点
 
@@ -308,13 +308,13 @@ tiup cluster display <cluster-name>
 
 调整后，拓扑结构如下：
 
-| Host IP   | Service   | 
+| Host IP   | Service   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC | 
-| 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC |
+| 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiFlash 节点
 
@@ -463,13 +463,13 @@ tiup cluster display <cluster-name>
 
 调整后，拓扑结构如下：
 
-| Host IP   | Service   | 
+| Host IP   | Service   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + TiCDC **（TiFlash 已删除）**  | 
-| 10.0.1.5   | TiDB + Monitor  | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + TiCDC **（TiFlash 已删除）**  |
+| 10.0.1.5   | TiDB + Monitor  |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiCDC 节点
 
@@ -495,10 +495,10 @@ tiup cluster display <cluster-name>
 
 调整后，拓扑结构如下：
 
-| Host IP   | Service   | 
+| Host IP   | Service   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  | 
-| 10.0.1.5   | TiDB + Monitor  | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  |
+| 10.0.1.5   | TiDB + Monitor  |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |

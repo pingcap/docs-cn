@@ -10,13 +10,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-kill/','/docs-cn/dev/refere
 
 ## 语法图
 
-**KillStmt:**
+```ebnf+diagram
+KillStmt ::= KillOrKillTiDB ( 'CONNECTION' | 'QUERY' )? NUM
 
-![KillStmt](/media/sqlgram/KillStmt.png)
-
-**KillOrKillTiDB:**
-
-![KillOrKillTiDB](/media/sqlgram/KillOrKillTiDB.png)
+KillOrKillTiDB ::= 'KILL' 'TIDB'?
+```
 
 ## 示例
 

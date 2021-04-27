@@ -10,13 +10,17 @@ TiDB 版本：5.0.1
 
 ## 改进提升
 
++ TiDB
+    
+    - 支持 `VITESS_HASH()` 函数 [#23915](https://github.com/pingcap/tidb/pull/23915)
+
 + TiKV
 
     - 使用 `zstd` 压缩 Region Snapshot [#10005](https://github.com/tikv/tikv/pull/10005)
 
 + PD
 
-    - 调整 Region 分数公式使其更适用于异构集群 [#3605](https://github.com/pingcap/br/pull/3605)
+    - 调整 Region 分数公式使其更适用于异构集群 [#3605](https://github.com/pingcap/pd/pull/3605)
     - 避免在添加 `scatter region` 调度器后出现的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
 
 + Tools
@@ -74,9 +78,9 @@ TiDB 版本：5.0.1
         - 修复导入过程中进度日志中的表数量不准确的问题 [#1005](https://github.com/pingcap/br/pull/1005)
 
     + Backup & Restore (BR)
-
         - 修复实际的备份速度超过 `--ratelimit` 限制的问题 [#1026](https://github.com/pingcap/br/pull/1026)
         - 修复备份期间少数 TiKV 节点不可用导致的备份中断问题 [#1019](https://github.com/pingcap/br/pull/1019)
+        - 修复 TiDB Lightning 在导入过程中进度日志中的表数量不准确的问题 [#1005](https://github.com/pingcap/br/pull/1005)
 
     + TiCDC
 
