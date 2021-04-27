@@ -53,6 +53,7 @@ tiup cluster [command] [flags]
 ## 命令清单
 
 - [import](/tiup/tiup-component-cluster-import.md)：导入 ansible 部署的集群
+- [template](/tiup/tiup-component-cluster-template.md)：输出拓扑模版
 - [check](/tiup/tiup-component-cluster-check.md)：部署前后的集群检查
 - [deploy](/tiup/tiup-component-cluster-deploy.md)：根据指定拓扑部署集群
 - [list](/tiup/tiup-component-cluster-list.md)：查询已部署的集群列表
@@ -71,6 +72,7 @@ tiup cluster [command] [flags]
 - [clean](/tiup/tiup-component-cluster-clean.md)：删除指定集群数据
 - [destroy](/tiup/tiup-component-cluster-destroy.md)：销毁指定集群
 - [audit](/tiup/tiup-component-cluster-audit.md)：查询集群操作审计日志
+- [replay](/tiup/tiup-component-cluster-replay.md)：重试指定命令
 - [enable](/tiup/tiup-component-cluster-enable.md)：开启指定集群或服务开机自启动
 - [disable](/tiup/tiup-component-cluster-disable.md)：关闭指定集群或服务开机自启动
 - [help](/tiup/tiup-component-cluster-help.md)：输出帮助信息

@@ -19,15 +19,21 @@ tiup dm patch <cluster-name> <package-path> [flags]
 ```
 
 - `<cluster-name>` 代表要操作的集群名
-- `<package-pach>` 为用于替换的二进制包，其打包方式如下：
-    - 确定当前要替换的组件名称 `${component}` (dm-master, dm-worker ...) 以及其版本 `${version}` (v2.0.0, v2.0.1 ...)，以及其运行的平台 `${os}` (linux) 和 `${arch}` (amd64, arm64)
-    - 下载当前的组件包：`wget https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz -O /tmp/${component}-${version}-${os}-${arch}.tar.gz`
-    - 建立临时打包目录：`mkdir -p /tmp/package && cd /tmp/package`
-    - 解压原来的二进制包：`tar xf /tmp/${component}-${version}-${os}-${arch}.tar.gz`
-    - 查看临时打包目录中的文件结构：`find .`
-    - 将要替换的二进制文件或配置文件复制到临时目录的对应位置
-    - 重新打包 `tar czf /tmp/${component}-hotfix-${os}-${arch}.tar.gz *`
-    - 通过以上步骤之后，`/tmp/${component}-hotfix-${os}-${arch}.tar.gz` 就可以用于 patch 命令了
+- `<package-path>` 为用于替换的二进制包
+
+### 准备条件
+
+执行 `tiup dm patch` 命令前，需要进行以下操作准备用于替换的二进制包：
+
+- 确定当前要替换的组件名称 `${component}` (dm-master，dm-worker 等) 以及其版本 `${version}` (v2.0.0，v2.0.1 等)，以及其运行的平台 `${os}` (linux) 和 `${arch}` (amd64, arm64)
+- 下载当前的组件包：`wget https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz -O /tmp/${component}-${version}-${os}-${arch}.tar.gz`
+- 建立临时打包目录：`mkdir -p /tmp/package && cd /tmp/package`
+- 解压原来的二进制包：`tar xf /tmp/${component}-${version}-${os}-${arch}.tar.gz`
+- 查看临时打包目录中的文件结构：`find .`
+- 将要替换的二进制文件或配置文件复制到临时目录的对应位置
+- 重新打包 `tar czf /tmp/${component}-hotfix-${os}-${arch}.tar.gz *`
+
+完成以上操作后，`/tmp/${component}-hotfix-${os}-${arch}.tar.gz` 就可以作为 `<package-path>` 用于 patch 命令中。
 
 ## 选项
 
@@ -52,6 +58,10 @@ tiup dm patch <cluster-name> <package-path> [flags]
 > **注意：**
 >
 > 若同时指定了 `-N, --node`，那么将替换它们的交集中的服务。
+
+## --offline
+
+声明当前集群处于离线状态。指定该选项时，TiUP DM 仅原地替换集群组件的二进制文件，不重启服务。
 
 ### -h, --help
 
