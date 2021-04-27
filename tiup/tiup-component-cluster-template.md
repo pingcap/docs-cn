@@ -17,9 +17,9 @@ tiup cluster template [flags]
 - 3 个 PD 实例
 - 3 个 TiKV 实例
 - 1 个 TiDB 实例
-- 1 个 Prometheus
-- 1 个 Grafana
-- 1 个 Alertmanager
+- 1 个 Prometheus 实例
+- 1 个 Grafana 实例
+- 1 个 Alertmanager 实例
 
 ## 选项
 
