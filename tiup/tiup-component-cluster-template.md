@@ -12,7 +12,7 @@ title: tiup cluster template
 tiup cluster template [flags]
 ```
 
-如果不指定该选项，输出的默认模版包含以下角色：
+如果不指定该选项，输出的默认模版包含以下实例：
 
 - 3 个 PD 实例
 - 3 个 TiKV 实例
