@@ -8,7 +8,7 @@ title: tiup mirror publish
 
 ## 语法
 
-```sh
+```shell
 tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 ```
 
@@ -53,13 +53,17 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 
 该组件的描述信息。
 
-### --hide（boolean，默认 false）
+### --hide
 
-是否为隐藏组件。若为隐藏组件，则不在 `tiup list` 的列表中显示，但是 `tiup list --all` 可看到。
+- 是否为隐藏组件。若为隐藏组件，则不在 `tiup list` 的列表中显示，但在 `tiup list --all` 的列表中会显示。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --standalone（boolean，默认 false）
+<!-- ### --standalone
 
-该组件是否可独立运行。该参数目前尚未启用。
+- 该组件是否可独立运行。该参数目前尚未启用。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。-->
 
 ## 输出
 
