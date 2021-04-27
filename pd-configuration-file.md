@@ -313,7 +313,10 @@ Configuration items related to scheduling
 ### `store-balance-rate`
 
 + Determines the maximum number of operations related to adding peers within a minute
++ Type: Integer
 + Default value: `15`
++ Minimum value: `0`
++ Maximum value: `200`
 
 ### `enable-joint-consensus` <span class="version-mark">New in v5.0</span>
 
