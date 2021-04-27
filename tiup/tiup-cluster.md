@@ -99,14 +99,14 @@ TiUP 默认部署在 amd64 架构上运行的 binary，若目标机器为 arm64 
 ```yaml
 global:
   arch: "arm64"           # 让所有机器默认使用 arm64 的 binary
- 
+
 tidb_servers:
   - host: 172.16.5.134
     arch: "amd64"         # 这台机器会使用 amd64 的 binary
   - host: 172.16.5.139
     arch: "arm64"         # 这台机器会使用 arm64 的 binary
   - host: 172.16.5.140    # 没有配置 arch 字段的机器，会使用 global 中的默认值，这个例子中是 arm64
-  
+
 ...
 ```
 
@@ -351,12 +351,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v5.0.0-rc 的命令为：
+例如，把集群升级到 v5.0.0 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v5.0.0-rc
+tiup cluster upgrade tidb-test v5.0.0
 ```
 
 ## 更新配置
