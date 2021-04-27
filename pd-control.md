@@ -26,7 +26,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v4.0.0-rc.2` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.0.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -221,7 +221,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 
 ```
-"4.0.0"
+"5.0.0"
 ```
 
 - `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。

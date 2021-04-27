@@ -60,7 +60,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 ```sql
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 3
-Server version: 5.7.25-TiDB-v4.0.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+Server version: 5.7.25-TiDB-v5.0.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
 Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
 
@@ -85,7 +85,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
     ```sql
     *************************** 1. row ***************************
-    tidb_version(): Release Version: v4.0.0
+    tidb_version(): Release Version: v5.0.0
     Edition: Community
     Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
     Git Branch: HEAD
@@ -146,7 +146,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
     {{< copyable "sql" >}}
 
     ```sql
-    insert into `tab_tidb` values (1,'TiDB',5,'TiDB-v4.0.0');
+    insert into `tab_tidb` values (1,'TiDB',5,'TiDB-v5.0.0');
     ```
 
     预期输出
@@ -169,7 +169,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
     +----+------+-----+-------------+
     | id | name | age | version     |
     +----+------+-----+-------------+
-    |  1 | TiDB |   5 | TiDB-v4.0.0 |
+    |  1 | TiDB |   5 | TiDB-v5.0.0 |
     +----+------+-----+-------------+
     1 row in set (0.00 sec)
     ```

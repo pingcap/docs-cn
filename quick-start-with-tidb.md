@@ -71,12 +71,12 @@ title: TiDB 数据库快速上手指南
         To view the dashboard: http://127.0.0.1:2379/dashboard
         To view the monitor: http://127.0.0.1:9090
         ```
-        
+
         > **注意：**
         >
         > 以这种方式执行的 playground，在运行结束后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
         > 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
-    
+
 4. 新开启一个 session 以访问 TiDB 数据库。
 
     + 使用 TiUP `client` 连接 TiDB：
