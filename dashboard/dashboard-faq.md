@@ -56,4 +56,4 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 ### 慢查询页面显示 `unknown field` 错误
 
-如果在集群升级后慢查询页面出现 `unknown field` 错误，这是由于升级后新版本 TiDB Dashboard 字段与用户偏好设置的字段（处于浏览器缓存内）不兼容导致报错。此时可以尝试通过[清理浏览器缓存](https://developer.chrome.com/docs/devtools/storage/localstorage/#deleteall)以清空用户偏好设置。
+集群升级后，如果慢查询页面出现 `unknown field` 错误，是由于升级后新版本 TiDB Dashboard 字段与浏览器缓存内的用户偏好设置的字段不兼容导致的。此时可以尝试通过[清理浏览器缓存](https://developer.chrome.com/docs/devtools/storage/localstorage/#deleteall)以清空用户偏好设置。
