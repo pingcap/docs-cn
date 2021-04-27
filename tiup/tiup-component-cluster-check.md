@@ -149,7 +149,25 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
 
-该选项的数据类型为 `BOOLEAN`。该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+### -N, --node
+
+- 指定要检查的节点。该选项的值为以逗号分割的节点 ID 列表，节点 ID 为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第一列。
+- 数据类型：`STRINGS`
+- 如果不指定该选项，默认检查所有节点，即 `[]`。
+
+> **注意：**
+>
+> 若同时指定了 `-R, --role`，那么将检查它们的交集中的服务。
+
+### -R, --role
+
+- 指定要检查的角色。该选项的值为以逗号分割的节点角色列表，角色为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第二列。
+- 数据类型：`STRINGS`
+- 如果不指定该选项，默认检查所有角色。
+
+> **注意：**
+>
+> 若同时指定了 `-N, --node`，那么将检查它们的交集中的服务。
 
 ### --enable-cpu
 

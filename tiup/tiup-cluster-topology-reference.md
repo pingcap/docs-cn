@@ -501,6 +501,10 @@ tispark_workers:
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
 - `storage_retention`：Prometheus 监控数据保留时间，默认 "15d"
 - `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `*.rules.yml` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
+- `remote_config`：用于支持将 Prometheus 数据写到远端，或从远端读取数据，该字段下有两个配置：
+    - `remote_write`：参考 Prometheus [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
+    - `remote_read`：参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
+- `external_alertmanagers`：若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
@@ -521,6 +525,21 @@ tispark_workers:
 monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
+    remote_config:
+      remote_write:
+      - queue_config:
+          batch_send_deadline: 5m
+          capacity: 100000
+          max_samples_per_send: 10000
+          max_shards: 300
+        url: http://127.0.0.1:8003/write
+      remote_read:
+      - url: http://127.0.0.1:8003/read
+    external_alertmanagers:
+    - host: 10.1.1.1
+      web_port: 9093
+    - host: 10.1.1.2
+      web_port: 9094
 ```
 
 ### `grafana_servers`
