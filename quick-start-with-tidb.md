@@ -20,6 +20,10 @@ This document describes how to try out TiDB, a distributed SQL database, in a fe
 - Scenario: Quickly deploy a TiDB cluster on a local Mac or Linux OS machine. You can see the basic architecture of TiDB and how TiDB, TiKV, PD, monitoring, and other components run in a TiDB cluster.
 - Time required: 1 minute
 
+> **Note:**
+>
+> Currently, some TiDB components do not have a released version that supports the Apple M1 chip. Therefore, the `tiup playground` command currently cannot be executed on the local Mac machine that uses the Apple M1 chip.
+
 As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, 3 PD instances, and optional TiFlash instances. With TiUP Playground, you can quickly build the above test cluster by taking the following steps:
 
 1. Download and install TiUP:
