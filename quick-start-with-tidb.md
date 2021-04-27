@@ -11,8 +11,12 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 2 种体验方式供用户选择。
 
-- [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
-- [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
+- [TiDB 数据库快速上手指南](#tidb-数据库快速上手指南)
+  - [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
+  - [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
+    - [准备环境](#准备环境)
+    - [实施部署](#实施部署)
+  - [探索更多](#探索更多)
 
 ## 第一种：使用 TiUP Playground 快速部署本地测试环境
 
@@ -142,7 +146,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 - 部署需要使用部署主机的 root 用户及密码
 - 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
-- 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
+- 目前 TiUP 支持在 x86_64 (AMD64 和 ARM) 架构上部署 TiDB 集群
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 
