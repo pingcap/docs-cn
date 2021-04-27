@@ -267,7 +267,7 @@ Similar to slow scheduling, the speed of region merge is most likely limited by 
     - TiKV: Set `split-region-on-table` to `false`. You cannot modify the parameter dynamically.
     - PD
         - Set `key-type` to `"txn"` or `"raw"`. You can modify the parameter dynamically.
-        - Keep `key-type` as `table` and set `enable-cross-table-merge` to `true`. You can modify the parameter dynamically.
+        - Or keep `key-type` as `table` and set `enable-cross-table-merge` to `true`. You can modify the parameter dynamically.
 
         > **Note:**
         >
