@@ -100,7 +100,7 @@ tiup cluster display ${cluster-name}
 
     **配置项层次结构使用 `.` 表示**。
 
-    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/tikv/pd/blob/master/conf/config.toml)。
+    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/release-5.0/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/release-5.0/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/tikv/pd/blob/release-5.0/conf/config.toml)。
 
 3. 执行 `reload` 命令滚动分发配置、重启相应组件：
 
