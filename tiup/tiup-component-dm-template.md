@@ -12,7 +12,7 @@ title: tiup dm template
 tiup dm template [flags]
 ```
 
-如果不指定该选项，输出的默认模版包含以下角色：
+如果不指定该选项，输出的默认模版包含以下实例：
 
 - 3 个 DM-master 实例
 - 3 个 DM-worker 实例
