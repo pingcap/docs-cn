@@ -57,9 +57,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 > **注意：**
 >
-> * `tidb_allow_remove_auto_inc` 要求版本号 >= v2.1.18 或者 >= v3.0.4。
-> * 表的 `AUTO_ID_CACHE` 属性要求版本号 >= v3.0.14 或者 >= v3.1.2 或者 >= v4.0.0-rc.2。
-> * 若创建表时没有指定主键时，TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
+> 若创建表时没有指定主键时，TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器。如果指定了自增列为主键，则 TiDB 会用该列来标识行。因此会有以下的示例情况：
 
 ```sql
 mysql> create table t(id int unique key AUTO_INCREMENT);
