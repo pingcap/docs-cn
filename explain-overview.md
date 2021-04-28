@@ -6,7 +6,6 @@ aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performan
 
 # `EXPLAIN` 概览
 
-
 > **注意：**
 >
 > 使用 MySQL 客户端连接到 TiDB 时，为避免输出结果在终端中换行，可先执行 `pager less -S` 命令。执行命令后，新的 `EXPLAIN` 的输出结果不再换行，可按右箭头 <kbd>→</kbd> 键水平滚动阅读输出结果。
