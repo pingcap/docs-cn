@@ -352,6 +352,7 @@ EXPLAIN SELECT AVG(intkey), ANY_VALUE(pad1) FROM t1;
 
 ## 其他类型查询的执行计划
 
++ [MPP 模式查询的执行计划](/explain-mpp.md)
 + [Join 查询的执行计划](/explain-joins.md)
 + [子查询的执行计划](/explain-subqueries.md)
 + [聚合查询的执行计划](/explain-aggregation.md)

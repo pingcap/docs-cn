@@ -46,6 +46,7 @@ explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 
 ## 其他类型查询的执行计划
 
++ [MPP 模式查询的执行计划](/explain-mpp.md)
 + [索引查询的执行计划](/explain-indexes.md)
 + [Join 查询的执行计划](/explain-joins.md)
 + [子查询的执行计划](/explain-subqueries.md)
