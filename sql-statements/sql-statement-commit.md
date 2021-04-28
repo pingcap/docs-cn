@@ -12,13 +12,14 @@ In the absence of a `BEGIN` or `START TRANSACTION` statement, the default behavi
 
 ## Synopsis
 
-**CommitStmt:**
+```ebnf+diagram
+CommitStmt ::=
+    'COMMIT' CompletionTypeWithinTransaction?
 
-![CommitStmt](/media/sqlgram/CommitStmt.png)
-
-**CompletionTypeWithinTransaction:**
-
-![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
+CompletionTypeWithinTransaction ::=
+    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
+|   'NO'? 'RELEASE'
+```
 
 ## Examples
 

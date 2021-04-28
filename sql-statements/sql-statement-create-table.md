@@ -10,65 +10,77 @@ This statement creates a new table in the currently selected database. It behave
 
 ## Synopsis
 
-**CreateTableStmt:**
+```ebnf+diagram
+CreateTableStmt ::=
+    'CREATE' OptTemporary 'TABLE' IfNotExists TableName ( TableElementListOpt CreateTableOptionListOpt PartitionOpt DuplicateOpt AsOpt CreateTableSelectOpt | LikeTableWithOrWithoutParen )
 
-![CreateTableStmt](/media/sqlgram/CreateTableStmt.png)
+IfNotExists ::=
+    ('IF' 'NOT' 'EXISTS')?
 
-**IfNotExists:**
+TableName ::=
+    Identifier ('.' Identifier)?
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+TableElementListOpt ::=
+    ( '(' TableElementList ')' )?
 
-**TableName:**
+TableElementList ::=
+    TableElement ( ',' TableElement )*
 
-![TableName](/media/sqlgram/TableName.png)
+TableElement ::=
+    ColumnDef
+|   Constraint
 
-**TableElementListOpt:**
+ColumnDef ::=
+    ColumnName ( Type | 'SERIAL' ) ColumnOptionListOpt
 
-![TableElementListOpt](/media/sqlgram/TableElementListOpt.png)
+ColumnOptionListOpt ::=
+    ColumnOption*
 
-**TableElementList:**
+ColumnOptionList ::=
+    ColumnOption*
 
-![TableElementList](/media/sqlgram/TableElementList.png)
+ColumnOption ::=
+    'NOT'? 'NULL'
+|   'AUTO_INCREMENT'
+|   PrimaryOpt 'KEY'
+|   'UNIQUE' 'KEY'?
+|   'DEFAULT' DefaultValueExpr
+|   'SERIAL' 'DEFAULT' 'VALUE'
+|   'ON' 'UPDATE' NowSymOptionFraction
+|   'COMMENT' stringLit
+|   ConstraintKeywordOpt 'CHECK' '(' Expression ')' EnforcedOrNotOrNotNullOpt
+|   GeneratedAlways 'AS' '(' Expression ')' VirtualOrStored
+|   ReferDef
+|   'COLLATE' CollationName
+|   'COLUMN_FORMAT' ColumnFormat
+|   'STORAGE' StorageMedia
+|   'AUTO_RANDOM' OptFieldLen
 
-**TableElement:**
+CreateTableOptionListOpt ::=
+    TableOptionList?
 
-![TableElement](/media/sqlgram/TableElement.png)
+PartitionOpt ::=
+    ( 'PARTITION' 'BY' PartitionMethod PartitionNumOpt SubPartitionOpt PartitionDefinitionListOpt )?
 
-**ColumnDef:**
+DuplicateOpt ::=
+    ( 'IGNORE' | 'REPLACE' )?
 
-![ColumnDef](/media/sqlgram/ColumnDef.png)
+TableOptionList ::=
+    TableOption ( ','? TableOption )*
 
-**ColumnOptionListOpt:**
-
-![ColumnOptionListOpt](/media/sqlgram/ColumnOptionListOpt.png)
-
-**ColumnOptionList:**
-
-![ColumnOptionList](/media/sqlgram/ColumnOptionList.png)
-
-**ColumnOption:**
-
-![ColumnOption](/media/sqlgram/ColumnOption.png)
-
-**CreateTableOptionListOpt:**
-
-![CreateTableOptionListOpt](/media/sqlgram/CreateTableOptionListOpt.png)
-
-**PartitionOpt:**
-
-![PartitionOpt](/media/sqlgram/PartitionOpt.png)
-
-**DuplicateOpt:**
-
-![DuplicateOpt](/media/sqlgram/DuplicateOpt.png)
-
-**TableOptionList:**
-
-![TableOptionList](/media/sqlgram/TableOptionList.png)
-
-**TableOption:**
-
-![TableOption](/media/sqlgram/TableOption.png)
+TableOption ::=
+    PartDefOption
+|   DefaultKwdOpt ( CharsetKw EqOpt CharsetName | 'COLLATE' EqOpt CollationName )
+|   ( 'AUTO_INCREMENT' | 'AUTO_ID_CACHE' | 'AUTO_RANDOM_BASE' | 'AVG_ROW_LENGTH' | 'CHECKSUM' | 'TABLE_CHECKSUM' | 'KEY_BLOCK_SIZE' | 'DELAY_KEY_WRITE' | 'SHARD_ROW_ID_BITS' | 'PRE_SPLIT_REGIONS' ) EqOpt LengthNum
+|   ( 'CONNECTION' | 'PASSWORD' | 'COMPRESSION' ) EqOpt stringLit
+|   RowFormat
+|   ( 'STATS_PERSISTENT' | 'PACK_KEYS' ) EqOpt StatsPersistentVal
+|   ( 'STATS_AUTO_RECALC' | 'STATS_SAMPLE_PAGES' ) EqOpt ( LengthNum | 'DEFAULT' )
+|   'STORAGE' ( 'MEMORY' | 'DISK' )
+|   'SECONDARY_ENGINE' EqOpt ( 'NULL' | StringName )
+|   'UNION' EqOpt '(' TableNameListOpt ')'
+|   'ENCRYPTION' EqOpt EncryptionOpt
+```
 
 The following *table_options* are supported. Other options such as `AVG_ROW_LENGTH`, `CHECKSUM`, `COMPRESSION`, `CONNECTION`, `DELAY_KEY_WRITE`, `ENGINE`, `KEY_BLOCK_SIZE`, `MAX_ROWS`, `MIN_ROWS`, `ROW_FORMAT` and `STATS_PERSISTENT` are parsed but ignored.
 

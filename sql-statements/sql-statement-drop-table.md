@@ -10,17 +10,17 @@ This statement drops a table from the currently selected database. An error is r
 
 ## Synopsis
 
-**DropTableStmt:**
+```ebnf+diagram
+DropTableStmt ::=
+    'DROP' OptTemporary TableOrTables IfExists TableNameList RestrictOrCascadeOpt
 
-![DropTableStmt](/media/sqlgram/DropTableStmt.png)
+TableOrTables ::=
+    'TABLE'
+|   'TABLES'
 
-**TableOrTables:**
-
-![TableOrTables](/media/sqlgram/TableOrTables.png)
-
-**TableNameList:**
-
-![TableNameList](/media/sqlgram/TableNameList.png)
+TableNameList ::=
+    TableName ( ',' TableName )*
+```
 
 ## Examples
 

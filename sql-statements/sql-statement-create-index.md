@@ -10,65 +10,58 @@ This statement adds a new index to an existing table. It is an alternative synta
 
 ## Synopsis
 
-**CreateIndexStmt:**
+```ebnf+diagram
+CreateIndexStmt ::=
+    'CREATE' IndexKeyTypeOpt 'INDEX' IfNotExists Identifier IndexTypeOpt 'ON' TableName '(' IndexPartSpecificationList ')' IndexOptionList IndexLockAndAlgorithmOpt
 
-![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
+IndexKeyTypeOpt ::=
+    ( 'UNIQUE' | 'SPATIAL' | 'FULLTEXT' )?
 
-**IndexKeyTypeOpt:**
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
 
-![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
+IndexTypeOpt ::=
+    IndexType?
 
-**IfNotExists:**
+IndexPartSpecificationList ::=
+    IndexPartSpecification ( ',' IndexPartSpecification )*
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+IndexOptionList ::=
+    IndexOption*
 
-**IndexTypeOpt:**
+IndexLockAndAlgorithmOpt ::=
+    ( LockClause AlgorithmClause? | AlgorithmClause LockClause? )?
 
-![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
+IndexType ::=
+    ( 'USING' | 'TYPE' ) IndexTypeName
 
-**IndexPartSpecificationList:**
+IndexPartSpecification ::=
+    ( ColumnName OptFieldLen | '(' Expression ')' ) Order
 
-![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
+IndexOption ::=
+    'KEY_BLOCK_SIZE' '='? LengthNum
+|   IndexType
+|   'WITH' 'PARSER' Identifier
+|   'COMMENT' stringLit
+|   IndexInvisible
 
-**IndexOptionList:**
+IndexTypeName ::=
+    'BTREE'
+|   'HASH'
+|   'RTREE'
 
-![IndexOptionList](/media/sqlgram/IndexOptionList.png)
+ColumnName ::=
+    Identifier ( '.' Identifier ( '.' Identifier )? )?
 
-**IndexLockAndAlgorithmOpt:**
+OptFieldLen ::=
+    FieldLen?
 
-![IndexLockAndAlgorithmOpt](/media/sqlgram/IndexLockAndAlgorithmOpt.png)
+IndexNameList ::=
+    ( Identifier | 'PRIMARY' )? ( ',' ( Identifier | 'PRIMARY' ) )*
 
-**IndexType:**
-
-![IndexType](/media/sqlgram/IndexType.png)
-
-**IndexPartSpecification:**
-
-![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
-
-**IndexOption:**
-
-![IndexOption](/media/sqlgram/IndexOption.png)
-
-**IndexTypeName:**
-
-![IndexTypeName](/media/sqlgram/IndexTypeName.png)
-
-**ColumnName:**
-
-![ColumnName](/media/sqlgram/ColumnName.png)
-
-**OptFieldLen:**
-
-![OptFieldLen](/media/sqlgram/OptFieldLen.png)
-
-**IndexNameList:**
-
-![IndexNameList](/media/sqlgram/IndexNameList.png)
-
-**KeyOrIndex:**
-
-![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
+KeyOrIndex ::=
+    'Key' | 'Index'
+```
 
 ## Examples
 

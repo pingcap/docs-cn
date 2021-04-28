@@ -12,17 +12,16 @@ A `BINDING` can be on either a `GLOBAL` or `SESSION` basis. The default is `SESS
 
 ## Synopsis
 
-**DropBindingStmt:**
+```ebnf+diagram
+DropBindingStmt ::=
+    'DROP' GlobalScope 'BINDING' 'FOR' SelectStmt ( 'USING' SelectStmt )?
 
-![DropBindingStmt](/media/sqlgram/DropBindingStmt.png)
+GlobalScope ::=
+    ( 'GLOBAL' | 'SESSION' )?
 
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
-
-**SelectStmt**
-
-![SelectStmt](/media/sqlgram/SelectStmt.png)
+SelectStmt ::=
+    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable ) OrderByOptional SelectStmtLimit SelectLockOpt SelectStmtIntoOption
+```
 
 ## Syntax description
 

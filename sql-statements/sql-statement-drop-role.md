@@ -9,13 +9,13 @@ This statement removes a role, that was previously created with `CREATE ROLE`.
 
 ## Synopsis
 
-**DropRoleStmt:**
+```ebnf+diagram
+DropRoleStmt ::=
+    'DROP' 'ROLE' ( 'IF' 'EXISTS' )? RolenameList
 
-![DropRoleStmt](/media/sqlgram/DropRoleStmt.png)
-
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
+RolenameList ::=
+    Rolename ( ',' Rolename )*
+```
 
 ## Examples
 

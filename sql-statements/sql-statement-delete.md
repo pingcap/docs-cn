@@ -10,9 +10,10 @@ The `DELETE` statement removes rows from a specified table.
 
 ## Synopsis
 
-**DeleteFromStmt:**
-
-![DeleteFromStmt](/media/sqlgram/DeleteFromStmt.png)
+```ebnf+diagram
+DeleteFromStmt ::=
+    'DELETE' TableOptimizerHints PriorityOpt QuickOptional IgnoreOptional ( 'FROM' ( TableName TableAsNameOpt IndexHintListOpt WhereClauseOptional OrderByOptional LimitClause | TableAliasRefList 'USING' TableRefs WhereClauseOptional ) | TableAliasRefList 'FROM' TableRefs WhereClauseOptional )
+```
 
 ## Examples
 

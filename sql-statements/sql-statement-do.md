@@ -10,23 +10,23 @@ aliases: ['/docs/dev/sql-statements/sql-statement-do/','/docs/dev/reference/sql/
 
 > **Note:**
 >
-> `DO` only executes expressions. It cannot be used in all cases where `SELECT` can be used. For example, `DO id FROM t1` is invalid because it references a table. 
+> `DO` only executes expressions. It cannot be used in all cases where `SELECT` can be used. For example, `DO id FROM t1` is invalid because it references a table.
 
 In MySQL, a common use case is to execute stored procedure or trigger. Since TiDB does not provide stored procedure or trigger, this function has a limited use.
 
 ## Synopsis
 
-**DoStmt:**
+```ebnf+diagram
+DoStmt   ::= 'DO' ExpressionList
 
-![DoStmt](/media/sqlgram/DoStmt.png)
+ExpressionList ::=
+    Expression ( ',' Expression )*
 
-**ExpressionList:**
-
-![ExpressionList](/media/sqlgram/ExpressionList.png)
-
-**Expression:**
-
-![Expression](/media/sqlgram/Expression.png)
+Expression ::=
+    ( singleAtIdentifier assignmentEq | 'NOT' | Expression ( logOr | 'XOR' | logAnd ) ) Expression
+|   'MATCH' '(' ColumnNameList ')' 'AGAINST' '(' BitExpr FulltextSearchModifierOpt ')'
+|   PredicateExpr ( IsOrNotOp 'NULL' | CompareOp ( ( singleAtIdentifier assignmentEq )? PredicateExpr | AnyOrAll SubSelect ) )* ( IsOrNotOp ( trueKwd | falseKwd | 'UNKNOWN' ) )?
+```
 
 ## Examples
 

@@ -10,13 +10,13 @@ The `DROP STATS` statement is used to delete the statistics of the selected tabl
 
 ## Synopsis
 
-**DropStatsStmt:**
+```ebnf+diagram
+DropStatsStmt ::=
+    'DROP' 'STATS' TableName
 
-![DropTableStmt](/media/sqlgram/DropStatsStmt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ('.' Identifier)?
+```
 
 ## Examples
 

@@ -10,17 +10,20 @@ The `DEALLOCATE` statement provides an SQL interface to server-side prepared sta
 
 ## Synopsis
 
-**DeallocateStmt:**
+```ebnf+diagram
+DeallocateStmt ::=
+    DeallocateSym 'PREPARE' Identifier
 
-![DeallocateStmt](/media/sqlgram/DeallocateStmt.png)
+DeallocateSym ::=
+    'DEALLOCATE'
+|   'DROP'
 
-**DeallocateSym:**
-
-![DeallocateSym](/media/sqlgram/DeallocateSym.png)
-
-**Identifier:**
-
-![Identifier](/media/sqlgram/Identifier.png)
+Identifier ::=
+    identifier
+|   UnReservedKeyword
+|   NotKeywordToken
+|   TiDBKeyword
+```
 
 ## Examples
 

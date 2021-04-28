@@ -10,29 +10,26 @@ This statement creates a new user, specified with a password. In the MySQL privi
 
 ## Synopsis
 
-**CreateUserStmt:**
+```ebnf+diagram
+CreateUserStmt ::=
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions
 
-![CreateUserStmt](/media/sqlgram/CreateUserStmt.png)
+IfNotExists ::=
+    ('IF' 'NOT' 'EXISTS')?
 
-**IfNotExists:**
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+UserSpec ::=
+    Username AuthOption
 
-**UserSpecList:**
+AuthOption ::=
+    ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
 
-![UserSpecList](/media/sqlgram/UserSpecList.png)
-
-**UserSpec:**
-
-![UserSpec](/media/sqlgram/UserSpec.png)
-
-**AuthOption:**
-
-![AuthOption](/media/sqlgram/AuthOption.png)
-
-**StringName:**
-
-![StringName](/media/sqlgram/StringName.png)
+StringName ::=
+    stringLit
+|   Identifier
+```
 
 ## Examples
 
@@ -55,7 +52,7 @@ Create a user who is enforced to log in using TLS connection.
 ```sql
 CREATE USER 'newuser3'@'%' REQUIRE SSL IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.02 sec)
-``` 
+```
 
 Create a user who is required to use X.509 certificate at login.
 

@@ -12,9 +12,11 @@ In the absence of a `BEGIN` statement, every statement will by default autocommi
 
 ## Synopsis
 
-**BeginTransactionStmt:**
-
-![BeginTransactionStmt](/media/sqlgram/BeginTransactionStmt.png)
+```ebnf+diagram
+BeginTransactionStmt ::=
+    'BEGIN' ( 'PESSIMISTIC' | 'OPTIMISTIC' )?
+|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' )?
+```
 
 ## Examples
 

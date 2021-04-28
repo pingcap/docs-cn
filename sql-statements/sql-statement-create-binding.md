@@ -14,17 +14,16 @@ The bound SQL statement is parameterized and stored in the system table. When a 
 
 ## Synopsis
 
-**CreateBindingStmt:**
+```ebnf+diagram
+CreateBindingStmt ::=
+    'CREATE' GlobalScope 'BINDING' 'FOR' SelectStmt 'USING' SelectStmt
 
-![CreateBindingStmt](/media/sqlgram/CreateBindingStmt.png)
+GlobalScope ::=
+    ( 'GLOBAL' | 'SESSION' )?
 
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
-
-**SelectStmt**
-
-![SelectStmt](/media/sqlgram/SelectStmt.png)
+SelectStmt ::=
+    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable ) OrderByOptional SelectStmtLimit SelectLockOpt SelectStmtIntoOption
+```
 
 ****
 

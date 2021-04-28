@@ -10,13 +10,13 @@ This statement removes a user from the TiDB system database. The optional keywor
 
 ## Synopsis
 
-**DropUserStmt:**
+```ebnf+diagram
+DropUserStmt ::=
+    'DROP' 'USER' ( 'IF' 'EXISTS' )? UsernameList
 
-![DropUserStmt](/media/sqlgram/DropUserStmt.png)
-
-**Username:**
-
-![Username](/media/sqlgram/Username.png)
+Username ::=
+    StringName ('@' StringName | singleAtIdentifier)? | 'CURRENT_USER' OptionalBraces
+```
 
 ## Examples
 

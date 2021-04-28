@@ -10,29 +10,25 @@ This statement removes an index from a specified table, marking space as free in
 
 ## Synopsis
 
-**AlterTableDropIndexStmt:**
+```ebnf+diagram
+AlterTableDropIndexStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' AlterTableDropIndexSpec
 
-![AlterTableDropIndexStmt](/media/sqlgram/AlterTableDropIndexStmt.png)
+IgnoreOptional ::=
+    'IGNORE'?
 
-**IgnoreOptional:**
+TableName ::=
+    Identifier ('.' Identifier)?
 
-![IgnoreOptional](/media/sqlgram/IgnoreOptional.png)
+AlterTableDropIndexSpec ::=
+    'DROP' ( KeyOrIndex | 'FOREIGN' 'KEY' ) IfExists Identifier
 
-**TableName:**
+KeyOrIndex ::=
+    'KEY'
+|   'INDEX'
 
-![TableName](/media/sqlgram/TableName.png)
-
-**AlterTableDropIndexSpec:**
-
-![AlterTableDropIndexSpec](/media/sqlgram/AlterTableDropIndexSpec.png)
-
-**KeyOrIndex:**
-
-![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
-
-**IfExists:**
-
-![IfExists](/media/sqlgram/IfExists.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
+```
 
 ## Examples
 

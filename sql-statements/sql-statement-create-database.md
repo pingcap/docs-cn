@@ -10,21 +10,19 @@ This statement creates a new database in TiDB. The MySQL terminology for 'databa
 
 ## Synopsis
 
-**CreateDatabaseStmt:**
+```ebnf+diagram
+CreateDatabaseStmt ::=
+    'CREATE' 'DATABASE' IfNotExists DBName DatabaseOptionListOpt
 
-![CreateDatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
 
-**IfNotExists:**
+DBName ::=
+    Identifier
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
-
-**DatabaseOptionListOpt:**
-
-![DatabaseOptionListOpt](/media/sqlgram/DatabaseOptionListOpt.png)
+DatabaseOptionListOpt ::=
+    DatabaseOptionList?
+```
 
 ## Syntax
 

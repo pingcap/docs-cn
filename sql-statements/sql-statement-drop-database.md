@@ -10,13 +10,12 @@ The `DROP DATABASE` statement permanently removes a specified database schema, a
 
 ## Synopsis
 
-**DropDatabaseStmt:**
+```ebnf+diagram
+DropDatabaseStmt ::=
+    'DROP' 'DATABASE' IfExists DBName
 
-![DropDatabaseStmt](/media/sqlgram/DropDatabaseStmt.png)
-
-**IfExists:**
-
-![IfExists](/media/sqlgram/IfExists.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
+```
 
 ## Examples
 

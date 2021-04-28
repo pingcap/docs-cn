@@ -10,13 +10,14 @@ This statement copies the definition of an existing table, without copying any d
 
 ## Synopsis
 
-**CreateTableStmt:**
+```ebnf+diagram
+CreateTableLikeStmt ::=
+    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen
 
-![CreateTableLikeStmt](/media/sqlgram/CreateTableLikeStmt.png)
-
-**LikeTableWithOrWithoutParen:**
-
-![LikeTableWithOrWithoutParen](/media/sqlgram/LikeTableWithOrWithoutParen.png)
+LikeTableWithOrWithoutParen ::=
+    'LIKE' TableName
+|   '(' 'LIKE' TableName ')'
+```
 
 ## Examples
 

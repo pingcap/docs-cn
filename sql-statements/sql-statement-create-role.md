@@ -9,17 +9,16 @@ This statement creates a new role, which can be assigned to users as part of rol
 
 ## Synopsis
 
-**CreateRoleStmt:**
+```ebnf+diagram
+CreateRoleStmt ::=
+    'CREATE' 'ROLE' IfNotExists RoleSpec (',' RoleSpec)*
 
-![CreateRoleStmt](/media/sqlgram/CreateRoleStmt.png)
+IfNotExists ::=
+    ('IF' 'NOT' 'EXISTS')?
 
-**IfNotExists:**
-
-![IfNotExists](/media/sqlgram/IfNotExists.png)
-
-**RoleSpec:**
-
-![RoleSpec](/media/sqlgram/RoleSpec.png)
+RoleSpec ::=
+    Rolename
+```
 
 ## Examples
 
