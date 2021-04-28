@@ -40,6 +40,7 @@ Records: 2  Duplicates: 0  Warnings: 0
 
 `EXPLAIN` 实际不会执行查询。[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 可用于实际执行查询并显示执行计划。如果 TiDB 所选的执行计划非最优，可用 `EXPLAIN` 或 `EXPLAIN ANALYZE` 来进行诊断。有关 `EXPLAIN` 用法的详细内容，参阅以下文档：
 
++ [MPP 模式查询的执行计划](/explain-mpp.md)
 + [索引查询的执行计划](/explain-indexes.md)
 + [Join 查询的执行计划](/explain-joins.md)
 + [子查询的执行计划](/explain-subqueries.md)
