@@ -24,16 +24,15 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-role/']
 
 ## 示例
 
-创建一个用户 `'u1'@'%'`, 创建三个角色 `'r1'@'%'`, `'r2'@'%'`, `'r3'@'%'` 并将这些角色授予给 `'u1'@'%'`。
-将 `'u1'@'%'` 的默认启用角色设置为 `'r1'@'%'`。
+创建一个用户 `'u1'@'%'`, 创建三个角色 `'r1'@'%'`, `'r2'@'%'`, `'r3'@'%'` 并将这些角色授予给 `'u1'@'%'`。将 `'u1'@'%'` 的默认启用角色设置为 `'r1'@'%'`。
 
 {{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'u1'@'%';
 CREATE ROLE 'r1', 'r2', 'r3';
-GRANT 'r1', 'r2', 'r3' TO 'u1'@'%'; 
-SET DEFAULT ROLE 'r1' TO 'u1'@'%'; 
+GRANT 'r1', 'r2', 'r3' TO 'u1'@'%';
+SET DEFAULT ROLE 'r1' TO 'u1'@'%';
 ```
 
 使用 `'u1'@'%'` 登录，执行 `SET ROLE` 将启用角色设置为 `ALL`。

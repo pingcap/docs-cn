@@ -53,8 +53,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 初始化 PD 集群配置。
 + 默认：`"{name}=http://{advertise-peer-url}"`
 + 例如，如果 name 是 "pd"，并且 `advertise-peer-urls` 是 `"http://192.168.100.113:2380"`，那么 `initial-cluster` 就是 `"pd=http://192.168.100.113:2380"`。
-+ 如果启动三台 PD，那么 `initial-cluster` 可能就是
-  `pd1=http://192.168.100.113:2380, pd2=http://192.168.100.114:2380, pd3=192.168.100.115:2380`。
++ 如果启动三台 PD，那么 `initial-cluster` 可能就是 `pd1=http://192.168.100.113:2380, pd2=http://192.168.100.114:2380, pd3=192.168.100.115:2380`。
 
 ### `initial-cluster-state`
 
@@ -137,7 +136,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 包含 X509 key 的 PEM 文件路径
 + 默认：""
 
-### `redact-info-log` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `redact-info-log` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 控制 PD 日志脱敏的开关
 + 该配置项值设为 true 时将对 PD 日志脱敏，遮蔽日志中的用户信息。
@@ -309,11 +308,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
 + 默认：15
 
-### `enable-joint-consensus` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
-
-> **警告：**
->
-> 目前 Joint Consensus 为实验特性，不推荐在生产环境中使用该特性。
+### `enable-joint-consensus` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
 + 默认：true

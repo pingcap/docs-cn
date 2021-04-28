@@ -510,12 +510,39 @@ sudo systemctl enable ntpd.service
 
     ```bash
     cpupower frequency-info --policy
-      ```
+    ```
 
     ```
     analyzing CPU 0:
     current policy: frequency should be within 1.20 GHz and 3.10 GHz.
                   The governor "performance" may decide which speed to use within this range.
+    ```
+
+9. 执行以下命令修改 sysctl 参数。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    echo "fs.file-max = 1000000">> /etc/sysctl.conf
+    echo "net.core.somaxconn = 32768">> /etc/sysctl.conf
+    echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
+    echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
+    echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
+    echo "vm.swappiness = 0">> /etc/sysctl.conf
+    sysctl -p
+    ```
+
+10. 执行以下命令配置用户的 limits.conf 文件。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cat << EOF >>/etc/security/limits.conf
+    tidb           soft    nofile          1000000
+    tidb           hard    nofile          1000000
+    tidb           soft    stack          32768
+    tidb           hard    stack          32768
+    EOF
     ```
 
 ## 手动配置 SSH 互信及 sudo 免密码
@@ -543,11 +570,12 @@ sudo systemctl enable ntpd.service
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
 
-3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成你的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。
+3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成你的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。新建的 `tidb` 用户下没有 `.ssh` 目录，需要执行生成 rsa 密钥的命令来生成 `.ssh` 目录。如果要在中控机上部署 TiDB 组件，需要为中控机和中控机自身配置互信。
 
     {{< copyable "shell-regular" >}}
 
     ```bash
+    ssh-keygen -t rsa
     ssh-copy-id -i ~/.ssh/id_rsa.pub 10.0.1.1
     ```
 

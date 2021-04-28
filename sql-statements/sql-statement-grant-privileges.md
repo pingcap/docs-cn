@@ -6,38 +6,56 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-grant-privileges/','/docs-c
 
 # `GRANT <privileges>`
 
-`GRANT <privileges>` 语句用于为 TiDB 中已存在的用户分配权限。TiDB 中的权限系统同 MySQL 一样，都基于数据库/表模式来分配凭据。
-执行 `GRANT <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
+`GRANT <privileges>` 语句用于为 TiDB 中已存在的用户分配权限。TiDB 中的权限系统同 MySQL 一样，都基于数据库/表模式来分配凭据。执行 `GRANT <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
 
 ## 语法图
 
-**GrantStmt:**
+```ebnf+diagram
+GrantStmt ::=
+    'GRANT' PrivElemList 'ON' ObjectType PrivLevel 'TO' UserSpecList RequireClauseOpt WithGrantOptionOpt
 
-![GrantStmt](/media/sqlgram/GrantStmt.png)
+PrivElemList ::=
+    PrivElem ( ',' PrivElem )*
 
-**PrivElemList:**
+PrivElem ::=
+    PrivType ( '(' ColumnNameList ')' )?
 
-![PrivElemList](/media/sqlgram/PrivElemList.png)
+PrivType ::=
+    'ALL' 'PRIVILEGES'?
+|    'ALTER' 'ROUTINE'?
+|   'CREATE' ( 'USER' | 'TEMPORARY' 'TABLES' | 'VIEW' | 'ROLE' | 'ROUTINE' )?
+|   'TRIGGER'
+|   'DELETE'
+|   'DROP' 'ROLE'?
+|    'PROCESS'
+|   'EXECUTE'
+|   'INDEX'
+|   'INSERT'
+|   'SELECT'
+|   'SUPER'
+|   'SHOW' ( 'DATABASES' | 'VIEW' )
+|   'UPDATE'
+|    'GRANT' 'OPTION'
+|    'REFERENCES'
+|    'REPLICATION' ( 'SLAVE' | 'CLIENT' )
+|    'USAGE'
+|   'RELOAD'
+|   'FILE'
+|   'CONFIG'
+|   'LOCK' 'TABLES'
+|   'EVENT'
+|   'SHUTDOWN'
 
-**PrivElem:**
+ObjectType ::=
+    'TABLE'?
 
-![PrivElem](/media/sqlgram/PrivElem.png)
+PrivLevel ::=
+    '*' ( '.' '*' )?
+|    Identifier ( '.' ( '*' | Identifier ) )?
 
-**PrivType:**
-
-![PrivType](/media/sqlgram/PrivType.png)
-
-**ObjectType:**
-
-![ObjectType](/media/sqlgram/ObjectType.png)
-
-**PrivLevel:**
-
-![PrivLevel](/media/sqlgram/PrivLevel.png)
-
-**UserSpecList:**
-
-![UserSpecList](/media/sqlgram/UserSpecList.png)
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
+```
 
 ## 示例
 

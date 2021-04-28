@@ -108,7 +108,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 | utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
 | utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
-2 rows in set (0.00 sec)
+3 rows in set (0.00 sec)
 ```
 
 ## TiDB 中的 `utf8` 和 `utf8mb4`
@@ -174,7 +174,7 @@ ALTER DATABASE db_name
 {{< copyable "sql" >}}
 
 ```sql
-CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE uft8mb4_general_ci;
+CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
 ```sql
@@ -201,7 +201,7 @@ SELECT @@character_set_database, @@collation_database;
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
-| utf8mb4                  | uft8mb4_general_ci   |
+| utf8mb4                  | utf8mb4_general_ci   |
 +--------------------------|----------------------+
 1 row in set (0.00 sec)
 ```
@@ -331,8 +331,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 * `SET NAMES 'charset_name' [COLLATE 'collation_name']`
 
-    `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。
-    `SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
+    `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。`SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
 
     {{< copyable "sql" >}}
 

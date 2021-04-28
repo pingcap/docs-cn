@@ -184,7 +184,7 @@ Query OK, 0 rows affected (3.65 sec)
 
 ### Index Join 相关算法
 
-如果使用 Hint [`INL_JOIN`](/optimizer-hints.md#inl_joint1_name--tl_name-) 进行 Index Join 操作，TiDB 会在连接外表之前创建一个中间结果的 Hash Table。TiDB 同样也支持使用 Hint [`INL_HASH_JOIN`](/optimizer-hints.md#inl_hash_join) 在外表上建 Hash Table。而如果内表列集合与外表的相匹配，则可以应用 Hint [`INL_MERGE_JOIN`](/optimizer-hints.md#inl_merge_join)。以上所述的 Index Join 相关算法都由 SQL 优化器自动选择。
+如果使用 Hint [`INL_JOIN`](/optimizer-hints.md#inl_joint1_name--tl_name-) 进行 Index Join 操作，TiDB 会在连接外表之前创建一个中间结果的 Hash Table。TiDB 同样也支持使用 Hint [`INL_HASH_JOIN`](/optimizer-hints.md#inl_hash_join) 在外表上建 Hash Table。以上所述的 Index Join 相关算法都由 SQL 优化器自动选择。
 
 ### 配置
 

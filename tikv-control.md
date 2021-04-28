@@ -11,6 +11,10 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 
 ## 通过 TiUP 使用 TiKV Control
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 `tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
 
 {{< copyable "shell-regular" >}}
@@ -258,6 +262,10 @@ middle_key_by_approximate_size:
 - `--host` 参数可以指定要 compact 的 TiKV。
 - `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
 - `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+- `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
+    - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
+    - `skip` 表示 compact 不包括最下层文件。
+    - `force` 表示 compact 总是包括最下层文件。
 
 {{< copyable "shell-regular" >}}
 
@@ -482,7 +490,7 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 >
 > - 该命令只支持本地模式。在运行成功后，会打印 `success!`。
 > - 一般来说，您需要为指定 Region 的 peers 所在的每个 store 运行此命令。
-> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行此命令。
+> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行此命令。需要保证这些健康的 store 都停掉服务后再进行恢复，否则期间 Region 副本之间的 peer 列表不一致会导致执行 `split-region` 或者 `remove-peer` 时报错进而引起其他元数据的不一致，最终引发 Region 不可用。
 
 ### 恢复损坏的 MVCC 数据
 

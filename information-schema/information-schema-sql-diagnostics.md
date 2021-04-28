@@ -10,8 +10,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-sql-diagnostics/','/docs-cn/d
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
-SQL 诊断功能是在 TiDB 4.0 版本中引入的特性，用于提升 TiDB 问题定位的效率。TiDB 4.0 版本以前，用户需要使用不同工具获取以异构的方式获取不同信息。
-新的 SQL 诊断系统对这些离散的信息进行了整体设计，它整合系统各个维度的信息，通过系统表的方式向上层提供一致的接口，提供监控汇总与自动诊断，方便用户查询集群信息。
+SQL 诊断功能是在 TiDB 4.0 版本中引入的特性，用于提升 TiDB 问题定位的效率。TiDB 4.0 版本以前，用户需要使用不同的工具以异构的方式获取不同信息。新的 SQL 诊断系统对这些离散的信息进行了整体设计，它整合系统各个维度的信息，通过系统表的方式向上层提供一致的接口，提供监控汇总与自动诊断，方便用户查询集群信息。
 
 SQL 诊断共分三大块：
 
@@ -21,8 +20,7 @@ SQL 诊断共分三大块：
 
 ## 集群信息表
 
-集群信息表将一个集群中的所有实例的信息都汇聚在一起，让用户仅通过一条 SQL 就能查询整个集群相关信息。
-集群信息表列表如下：
+集群信息表将一个集群中的所有实例的信息都汇聚在一起，让用户仅通过一条 SQL 就能查询整个集群相关信息。集群信息表列表如下：
 
 * 集群拓扑表 [`information_schema.cluster_info`](/information-schema/information-schema-cluster-info.md) 用于获取集群当前的拓扑信息，以及各个实例的版本、版本对应的 Git Hash、各实例的启动时间、各实例的运行时间。
 * 集群配置表 [`information_schema.cluster_config`](/information-schema/information-schema-cluster-config.md) 用于获取集群当前所有实例的配置。对于 TiDB 4.0 之前的版本，用户必须逐个访问各个实例的 HTTP API 才能获取这些配置信息。

@@ -12,6 +12,10 @@ TiDB 支持分布式事务，提供[乐观事务](/optimistic-transaction.md)与
 
 常用的变量包括 [`autocommit`](#自动提交)、[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)、[`tidb_retry_limit`](/system-variables.md#tidb_retry_limit) 以及 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode)。
 
+> **注意：**
+>
+> 变量 [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) 和 [`tidb_retry_limit`](/system-variables.md#tidb_retry_limit) 仅适用于乐观事务，不适用于悲观事务。
+
 ## 常用事务语句
 
 ### 开启事务
@@ -38,6 +42,12 @@ START TRANSACTION;
 START TRANSACTION WITH CONSISTENT SNAPSHOT;
 ```
 
+{{< copyable "sql" >}}
+
+```sql
+START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
+```
+
 如果执行以上语句时，当前 Session 正处于一个事务的中间过程，那么系统会先自动提交当前事务，再开启一个新的事务。
 
 > **注意：**
@@ -62,7 +72,7 @@ COMMIT;
 
 ### 回滚事务
 
-[`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 语句用于回滚并撤销当前事务的所有修改。 
+[`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 语句用于回滚并撤销当前事务的所有修改。
 
 语法：
 
@@ -224,7 +234,7 @@ mysql> SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 惰性检查优化通过批处理约束检查并减少网络通信来提升性能。可以通过设置 [`tidb_constraint_check_in_place = TRUE`](/system-variables.md#tidb_constraint_check_in_place) 禁用该行为。
 
 > **注意：**
-> 
+>
 > + 本优化仅适用于乐观事务。
 > + 本优化仅对普通的 `INSERT` 语句生效，对 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效。
 
@@ -288,7 +298,79 @@ TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可�
 在 4.0 以前的版本，TiDB 限制了单个事务的键值对的总数量不超过 30 万条，从 4.0 版本起 TiDB 取消了这项限制。
 
 > **注意：**
-> 
+>
 > 通常，用户会开启 TiDB Binlog 将数据向下游进行同步。某些场景下，用户会使用消息中间件来消费同步到下游的 binlog，例如 Kafka。
 >
 > 以 Kafka 为例，Kafka 的单条消息处理能力的上限是 1 GB。因此，当把 `txn-total-size-limit` 设置为 1 GB 以上时，可能出现事务在 TiDB 中执行成功，但下游 Kafka 报错的情况。为避免这种情况出现，请用户根据最终消费者的限制来决定 `txn-total-size-limit` 的实际大小。例如：下游使用了 Kafka，则 `txn-total-size-limit` 不应超过 1 GB。
+
+## 因果一致性事务
+
+> **注意：**
+>
+> 因果一致性事务只在启用 Async Commit 特性和一阶段提交特性时生效。关于这两个特性的启用情况，请参见 [`tidb_enable_async_commit` 系统变量介绍](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和 [`tidb_enable_1pc` 系统变量介绍](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)。
+
+TiDB 支持开启因果一致性的事务。因果一致性的事务在提交时无需向 PD 获取时间戳，所以提交延迟更低。开启因果一致性事务的语法为：
+
+{{< copyable "sql" >}}
+
+```sql
+START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
+```
+
+默认情况下，TiDB 保证线性一致性。在线性一致性的情况下，如果事务 2 在事务 1 提交完成后提交，逻辑上事务 2 就应该在事务 1 后发生。
+
+因果一致性弱于线性一致性。在因果一致性的情况下， 只有事务 1 和事务 2 加锁或写入的数据有交集时（即事务 1 和事务 2 存在数据库可知的因果关系时），才能保证事务的提交顺序与事务的发生顺序保持一致。目前暂不支持传入数据库外部的因果关系。
+
+采用因果一致性的两个事务有以下特性：
+
++ [有潜在因果关系的事务之间的逻辑顺序与物理提交顺序一致](#有潜在因果关系的事务之间的逻辑顺序与物理提交顺序一致)
++ [无因果关系的事务之间的逻辑顺序与物理提交顺序不保证一致](#无因果关系的事务之间的逻辑顺序与物理提交顺序不保证一致)
++ [不加锁的读取不产生因果关系](#不加锁的读取不产生因果关系)
+
+### 有潜在因果关系的事务之间的逻辑顺序与物理提交顺序一致
+
+假设事务 1 和 事务 2 都采用因果一致性，并先后执行如下语句：
+
+| 事务 1 | 事务 2 |
+|-------|-------|
+| START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY |
+| x = SELECT v FROM t WHERE id = 1 FOR UPDATE | |
+| UPDATE t set v = $(x + 1) WHERE id = 2 | |
+| COMMIT | |
+| | UPDATE t SET v = 2 WHERE id = 1 |
+| | COMMIT |
+
+上面的例子中，事务 1 对 `id = 1` 的记录加了锁，事务 2 的事务对 `id = 1` 的记录进行了修改，所以事务 1 和 事务 2 有潜在的因果关系。所以即使用因果一致性开启事务，只要事务 2 在事务 1 提交成功后才提交，逻辑上事务 2 就必定比事务 1 晚发生。因此，不存在某个事务读到了事务 2 对 `id = 1` 记录的修改，但却没有读到事务 1 对 `id = 2` 记录的修改的情况。
+
+### 无因果关系的事务之间的逻辑顺序与物理提交顺序不保证一致
+
+假设 `id = 1` 和 `id = 2` 的记录最初值都为 0，事务 1 和 事务 2 都采用因果一致性，并先后执行如下语句：
+
+| 事务 1 | 事务 2 | 事务 3 |
+|-------|-------|-------|
+| START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | |
+| UPDATE t set v = 3 WHERE id = 2 | | |
+| | UPDATE t SET v = 2 WHERE id = 1 | |
+| | | BEGIN |
+| COMMIT | | |
+| | COMMIT | |
+| | | SELECT v FROM t WHERE id IN (1, 2) |
+
+在本例中，事务 1 不读取 `id = 1` 的记录。此时事务 1 和事务 2 没有数据库可知的因果关系。如果使用因果一致性开启事务，即使物理时间上事务 2 在事务 1 提交完成后才开始提交，TiDB 也不保证逻辑上事务 2 比事务 1 晚发生。
+
+此时如果有一个事务 3 在事务 1 提交前开启，并在事务 2 提交后读取 `id = 1` 和 `id = 2` 的记录，事务 3 可能读到 `id = 1` 的值为 2 但是 `id = 2` 的值为 0。
+
+### 不加锁的读取不产生因果关系
+
+假设事务 1 和 事务 2 都采用因果一致性，并先后执行如下语句：
+
+| 事务 1 | 事务 2 |
+|-------|-------|
+| START TRANSACTION WITH CAUSAL CONSISTENCY ONLY | START TRANSACTION WITH CAUSAL CONSISTENCY ONLY |
+| | UPDATE t SET v = 2 WHERE id = 1 |
+| SELECT v FROM t WHERE id = 1 | |
+| UPDATE t set v = 3 WHERE id = 2 | |
+| | COMMIT |
+| COMMIT | |
+
+如本例所示，不加锁的读取不产生因果关系。事务 1 和事务 2 产生了写偏斜的异常，如果他们有业务上的因果关系，则是不合理的。所以本例中，使用因果一致性的事务 1 和事务 2 没有确定的逻辑顺序。

@@ -56,22 +56,22 @@ Could not read data from testSchema.testTable: GC life time is shorter than tran
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    SHOW GLOBAL VARIABLES LIKE 'tidb_gc_life_time';
     ```
 
     ```sql
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    | VARIABLE_NAME         | VARIABLE_VALUE                                                                                 |
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    | tikv_gc_life_time     | 10m0s                                                                                          |
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    1 rows in set (0.02 sec)
+    +-------------------+-------+
+    | Variable_name     | Value |
+    +-------------------+-------+
+    | tidb_gc_life_time | 10m0s |
+    +-------------------+-------+
+    1 row in set (0.03 sec)
     ```
 
     {{< copyable "sql" >}}
 
     ```sql
-    UPDATE mysql.tidb SET VARIABLE_VALUE = '720h' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    SET GLOBAL tidb_gc_life_time = '720h';
     ```
 
 2. 执行 `dumpling` 命令后，将 TiDB 集群的 GC 值恢复到第 1 步中的初始值：
@@ -79,7 +79,7 @@ Could not read data from testSchema.testTable: GC life time is shorter than tran
     {{< copyable "sql" >}}
 
     ```sql
-    UPDATE mysql.tidb SET VARIABLE_VALUE = '10m' WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    SET GLOBAL tidb_gc_life_time = '10m';
     ```
 
 ## 向 TiDB 恢复数据

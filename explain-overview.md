@@ -6,7 +6,10 @@ aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performan
 
 # `EXPLAIN` 概览
 
-SQL 是一种声明性语言。一条 SQL 语句描述的是最终结果，而非查询过程中所用的方法。执行一条查询语句时，TiDB 会考虑所有可能的执行方法，包括表连接的顺序、是否可以使用索引等。TiDB 考虑执行计划的过程称为 SQL 优化。
+
+> **注意：**
+>
+> 使用 MySQL 客户端连接到 TiDB 时，为避免输出结果在终端中换行，可先执行 `pager less -S` 命令。执行命令后，新的 `EXPLAIN` 的输出结果不再换行，可按右箭头 <kbd>→</kbd> 键水平滚动阅读输出结果。
 
 使用 `EXPLAIN` 可查看 TiDB 执行某条语句时选用的执行计划。也就是说，TiDB 在考虑上数百或数千种可能的执行计划后，最终认定该执行计划消耗的资源最少、执行的速度最快。
 
