@@ -32,18 +32,6 @@ There are two ways to check the TiFlash version:
 
 ## TiFlash critical logs
 
-Starting from TiDB 4.0.5, TiFlash's log format has been refined for compatibility with TiDB. Therefore, there are two versions of log messages. 
-
-Before TiDB 4.0.5:
-
-| Log Information | Log Description |
-|---------------|-------------------|
-| [ 23 ] `<Information>` KVStore: Start to persist [region 47, applied: term 6 index 10] | Data starts to be replicated (the number in the square brackets at the start of the log refers to the thread ID |
-| [ 30 ] `<Debug>` CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute() | Handling DAG request, that is, TiFlash starts to handle a Coprocessor request |
-| [ 30 ] `<Debug>` CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute() | Handling DAG request done, that is, TiFlash finishes handling a Coprocessor request |
-
-After TiDB 4.0.5:
-
 | Log Information | Log Description |
 |---------------|-------------------|
 | [INFO] [`<unknown>`] ["KVStore: Start to persist [region 47, applied: term 6 index 10]"] [thread_id=23] | Data starts to be replicated (the number in the square brackets at the start of the log refers to the thread ID |

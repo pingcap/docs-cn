@@ -54,8 +54,6 @@ However, some features of MySQL are not supported. This could be because there i
 
 > **Note:**
 >
-> + To use the `tidb_allow_remove_auto_inc` system variable, your TiDB version must be >= v2.1.18 or >= v3.0.4.
-> + The `AUTO_ID_CACHE` table attribute requires that your TiDB version >= v3.0.14 or >= v3.1.2 or >= v4.0.0-rc.2.
 > + If you have not specified the primary key when creating a table, TiDB uses `_tidb_rowid` to identify the row. The allocation of this value shares an allocator with the auto-increment column (if such a column exists). If you specify an auto-increment column as the primary key, TiDB uses this column to identify the row. In this situation, the following situation might happen:
 
 ```sql
