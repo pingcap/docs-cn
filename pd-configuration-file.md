@@ -313,11 +313,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `enable-joint-consensus` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
-<<<<<<< HEAD
-+ 默认：v5.0 RC 版本默认值为 false，v5.0 GA 版本默认值为 true。
-=======
-+ 默认值：true
->>>>>>> 22af59e6... pd-config: add value range and type for store-balance-rate (#6190)
++ 默认值：v5.0 RC 版本默认值为 false，v5.0 GA 版本默认值为 true。
 
 ## replication
 
