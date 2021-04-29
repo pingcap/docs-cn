@@ -809,7 +809,7 @@ This section gives the alert rules for the Node_exporter host.
 
 * Solution:
 
-    * Log in to the machine and run the `df -i` command to view the inode usage of the filesystem.
+    * Log in to the machine and run the `df -i` command to view the node usage of the filesystem.
     * Make a plan to increase the disk capacity or delete some data or increase cluster node depending on different situations.
 
 #### `NODE_disk_readonly`

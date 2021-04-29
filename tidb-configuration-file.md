@@ -450,7 +450,7 @@ The Plan Cache configuration of the `PREPARE` statement.
 
 - The number of cached statements.
 - Default value: `100`
-- The type is `uint`. Values less than `0` are converted to large integers.
+- The type is `UINT`. Values less than `0` are converted to large integers.
 
 ### `memory-guard-ratio`
 
