@@ -14,13 +14,13 @@ A `BINDING` can be on either a `GLOBAL` or `SESSION` basis. The default is `SESS
 
 ```ebnf+diagram
 DropBindingStmt ::=
-    'DROP' GlobalScope 'BINDING' 'FOR' SelectStmt ( 'USING' SelectStmt )?
+    'DROP' GlobalScope 'BINDING' 'FOR' BindableStmt ( 'USING' BindableStmt )?
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
 
-SelectStmt ::=
-    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable ) OrderByOptional SelectStmtLimit SelectLockOpt SelectStmtIntoOption
+BindableStmt ::=
+    ( SelectStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | DeleteStmt )
 ```
 
 ## Syntax description
