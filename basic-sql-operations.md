@@ -187,7 +187,7 @@ To insert data into a table, use the `INSERT` statement:
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO person VALUES("1","tom","20170912");
+INSERT INTO person VALUES(1,'tom','20170912');
 ```
 
 To insert a record containing data of some fields into a table, use the `INSERT` statement:
@@ -195,7 +195,7 @@ To insert a record containing data of some fields into a table, use the `INSERT`
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO person(id,name) VALUES("2","bob");
+INSERT INTO person(id,name) VALUES('2','bob');
 ```
 
 To update some fields of a record in a table, use the `UPDATE` statement:
