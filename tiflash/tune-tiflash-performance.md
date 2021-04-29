@@ -53,3 +53,13 @@ If you want to save machine resources and have no requirement on isolation, you 
     ```sql
     set @@tidb_opt_distinct_agg_push_down = 1;
     ```
+
+5. If the `JOIN` operator does not choose the MPP mode, you can modify the value of `tidb_opt_network_factor` to make the`JOIN` operator choose the MPP mode:
+
+    The variable `tidb_opt_network_factor` is used to set the ratio of network overhead that the optimizer takes into account when calculating the cost. The smaller the variable value is, the smaller the estimated cost for a large amount of network transmissions is, and the more TiDB inclined to choose the MPP operator.
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    set @@tidb_opt_network_factor = 0.001;
+    ```
