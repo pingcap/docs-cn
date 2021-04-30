@@ -381,7 +381,7 @@ br restore full \
 
 在 [#1048](https://github.com/pingcap/br/pull/1048) 之后，BR 可以并且默认会备份 `mysql` 数据库下的表。
 
-在恢复时，`mysql` 下的表默认会被 [table filter](/table-filter) 规则过滤掉，
+在恢复时，`mysql` 下的表默认会被 [table filter](/table-filter#表库过滤语法) 规则过滤掉，
 要恢复在 `mysql` 下的用户表的时候，可以通过 `-f` 来指定目标，例如，以下命令会恢复 `mysql.usertable`。
 
 {{< copyable "shell-regular" >}}
