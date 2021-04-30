@@ -10,13 +10,13 @@ This statement renames an existing table to a new name.
 
 ## Synopsis
 
-**RenameTableStmt:**
+```ebnf+diagram
+RenameTableStmt ::=
+    'RENAME' 'TABLE' TableToTable ( ',' TableToTable )*
 
-![RenameTableStmt](/media/sqlgram/RenameTableStmt.png)
-
-**TableToTable:**
-
-![TableToTable](/media/sqlgram/TableToTable.png)
+TableToTable ::=
+    TableName 'TO' TableName
+```
 
 ## Examples
 

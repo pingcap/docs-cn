@@ -9,17 +9,16 @@ This statement removes a previously assigned role from a specified user (or list
 
 ## Synopsis
 
-**RevokeRoleStmt:**
+```ebnf+diagram
+RevokeRoleStmt ::=
+    'REVOKE' RolenameList 'FROM' UsernameList
 
-![RevokeRoleStmt](/media/sqlgram/RevokeRoleStmt.png)
+RolenameList ::=
+    Rolename ( ',' Rolename )*
 
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
-
-**UsernameList:**
-
-![UsernameList](/media/sqlgram/UsernameList.png)
+UsernameList ::=
+    Username ( ',' Username )*
+```
 
 ## Examples
 

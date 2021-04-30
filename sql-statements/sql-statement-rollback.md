@@ -10,13 +10,14 @@ This statement reverts all changes in the current transaction inside of TIDB.  I
 
 ## Synopsis
 
-**RollbackStmt:**
+```ebnf+diagram
+RollbackStmt ::=
+    'ROLLBACK' CompletionTypeWithinTransaction?
 
-![RollbackStmt](/media/sqlgram/RollbackStmt.png)
-
-**CompletionTypeWithinTransaction:**
-
-![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
+CompletionTypeWithinTransaction ::=
+    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
+|   'NO'? 'RELEASE'
+```
 
 ## Examples
 

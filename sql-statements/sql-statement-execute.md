@@ -10,9 +10,10 @@ The `EXECUTE` statement provides an SQL interface to server-side prepared statem
 
 ## Synopsis
 
-**ExecuteStmt:**
-
-![ExecuteStmt](/media/sqlgram/ExecuteStmt.png)
+```ebnf+diagram
+ExecuteStmt ::=
+    'EXECUTE' Identifier ( 'USING' UserVariable ( ',' UserVariable )* )?
+```
 
 ## Examples
 

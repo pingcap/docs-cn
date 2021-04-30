@@ -10,17 +10,21 @@ This statement triggers TiDB to reload the in-memory copy of privileges from the
 
 ## Synopsis
 
-**FlushStmt:**
+```ebnf+diagram
+FlushStmt ::=
+    'FLUSH' NoWriteToBinLogAliasOpt FlushOption
 
-![FlushStmt](/media/sqlgram/FlushStmt.png)
+NoWriteToBinLogAliasOpt ::=
+    ( 'NO_WRITE_TO_BINLOG' | 'LOCAL' )?
 
-**NoWriteToBinLogAliasOpt:**
-
-![NoWriteToBinLogAliasOpt](/media/sqlgram/NoWriteToBinLogAliasOpt.png)
-
-**FlushOption:**
-
-![FlushOption](/media/sqlgram/FlushOption.png)
+FlushOption ::=
+    'PRIVILEGES'
+|   'STATUS'
+|    'TIDB' 'PLUGINS' PluginNameList
+|    'HOSTS'
+|   LogTypeOpt 'LOGS'
+|   TableOrTables TableNameListOpt WithReadLockOpt
+```
 
 ## Examples
 

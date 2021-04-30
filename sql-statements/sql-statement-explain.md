@@ -14,17 +14,23 @@ TiDB supports the `EXPLAIN [options] FOR CONNECTION connection_id` statement. Ho
 
 ## Synopsis
 
-**ExplainSym:**
+```ebnf+diagram
+ExplainSym ::=
+    'EXPLAIN'
+|   'DESCRIBE'
+|   'DESC'
 
-![ExplainSym](/media/sqlgram/ExplainSym.png)
+ExplainStmt ::=
+    ExplainSym ( TableName ColumnName? | 'ANALYZE'? ExplainableStmt | 'FOR' 'CONNECTION' NUM | 'FORMAT' '=' ( stringLit | ExplainFormatType ) ( 'FOR' 'CONNECTION' NUM | ExplainableStmt ) )
 
-**ExplainStmt:**
-
-![ExplainStmt](/media/sqlgram/ExplainStmt.png)
-
-**ExplainableStmt:**
-
-![ExplainableStmt](/media/sqlgram/ExplainableStmt.png)
+ExplainableStmt ::=
+    SelectStmt
+|   DeleteFromStmt
+|   UpdateStmt
+|   InsertIntoStmt
+|   ReplaceIntoStmt
+|   UnionStmt
+```
 
 ## `EXPLAIN` output format
 

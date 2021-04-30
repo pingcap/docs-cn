@@ -10,9 +10,10 @@ The `LOAD STATS` statement is used to load the statistics into TiDB.
 
 ## Synopsis
 
-**LoadStatsStmt:**
-
-![LoadStatsStmt](/media/sqlgram/LoadStatsStmt.png)
+```ebnf+diagram
+LoadStatsStmt ::=
+    'LOAD' 'STATS' stringLit
+```
 
 ## Examples
 

@@ -10,13 +10,14 @@ The `PREPARE` statement provides an SQL interface to server-side prepared statem
 
 ## Synopsis
 
-**PreparedStmt:**
+```ebnf+diagram
+PreparedStmt ::=
+    'PREPARE' Identifier 'FROM' PrepareSQL
 
-![PreparedStmt](/media/sqlgram/PreparedStmt.png)
-
-**PrepareSQL:**
-
-![PrepareSQL](/media/sqlgram/PrepareSQL.png)
+PrepareSQL ::=
+    stringLit
+|   UserVariable
+```
 
 ## Examples
 

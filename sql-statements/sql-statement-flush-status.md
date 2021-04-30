@@ -10,17 +10,21 @@ This statement is included for compatibility with MySQL. It has no effect on TiD
 
 ## Synopsis
 
-**FlushStmt:**
+```ebnf+diagram
+FlushStmt ::=
+    'FLUSH' NoWriteToBinLogAliasOpt FlushOption
 
-![FlushStmt](/media/sqlgram/FlushStmt.png)
+NoWriteToBinLogAliasOpt ::=
+    ( 'NO_WRITE_TO_BINLOG' | 'LOCAL' )?
 
-**NoWriteToBinLogAliasOpt:**
-
-![NoWriteToBinLogAliasOpt](/media/sqlgram/NoWriteToBinLogAliasOpt.png)
-
-**FlushOption:**
-
-![FlushOption](/media/sqlgram/FlushOption.png)
+FlushOption ::=
+    'PRIVILEGES'
+|   'STATUS'
+|    'TIDB' 'PLUGINS' PluginNameList
+|    'HOSTS'
+|   LogTypeOpt 'LOGS'
+|   TableOrTables TableNameListOpt WithReadLockOpt
+```
 
 ## Examples
 

@@ -10,13 +10,11 @@ The statement `KILL TIDB` is used to terminate connections in TiDB.
 
 ## Synopsis
 
-**KillStmt:**
+```ebnf+diagram
+KillStmt ::= KillOrKillTiDB ( 'CONNECTION' | 'QUERY' )? NUM
 
-![KillStmt](/media/sqlgram/KillStmt.png)
-
-**KillOrKillTiDB:**
-
-![KillOrKillTiDB](/media/sqlgram/KillOrKillTiDB.png)
+KillOrKillTiDB ::= 'KILL' 'TIDB'?
+```
 
 ## Examples
 

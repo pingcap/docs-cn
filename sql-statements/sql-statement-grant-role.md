@@ -9,17 +9,16 @@ Assigns a previously created role to an existing user. The user can use then use
 
 ## Synopsis
 
-**GrantRoleStmt:**
+```ebnf+diagram
+GrantRoleStmt ::=
+    'GRANT' RolenameList 'TO' UsernameList
 
-![GrantRoleStmt](/media/sqlgram/GrantRoleStmt.png)
+RolenameList ::=
+    Rolename ( ',' Rolename )*
 
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
-
-**UsernameList:**
-
-![UsernameList](/media/sqlgram/UsernameList.png)
+UsernameList ::=
+    Username ( ',' Username )*
+```
 
 ## Examples
 
