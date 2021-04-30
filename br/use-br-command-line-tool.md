@@ -405,9 +405,9 @@ br restore full \
 ```shell
 br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url
 #               ^        ^             ^
-#               |        |             +- select `mysql`.`usertable`
-#               |        +- filter out other tables in `mysql`
-#               +- select all tables
+#               |        |             +-  ……仅恢复 `mysql`.`usertable`。
+#               |        +- ……但是过滤掉 `mysql` 中的其它表……
+#               +- 恢复所有表……
 ```
 
 > **警告：**
