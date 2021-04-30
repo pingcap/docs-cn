@@ -27,7 +27,7 @@ To download the latest version of PD Recover, directly download the TiDB package
 
 > **Note:**
 >
-> `{version}` indicates the version number of TiDB. For example, if `{version}` is `v4.0.0`, the package download link is `https://download.pingcap.org/tidb-v4.0.0-linux-amd64.tar.gz`. You can also download the latest unpublished version by replacing `{version}` with `latest`.
+> `{version}` indicates the version number of TiDB. For example, if `{version}` is `v5.0.0`, the package download link is `https://download.pingcap.org/tidb-v5.0.0-linux-amd64.tar.gz`.
 
 ## Quick Start
 
@@ -89,7 +89,7 @@ The allocated ID value you specify must be larger than the currently largest all
 #### Get allocated ID from the monitor (recommended)
 
 To get allocated ID from the monitor, you need to make sure that the metrics you are viewing are the metrics of **the last PD leader**, and you can get the largest allocated ID from the **Current ID allocation** panel in PD dashboard.
- 
+
 #### Get allocated ID from PD log
 
 To get the allocated ID from the PD log, you need to make sure that the log you are viewing is the log of **the last PD leader**, and you can get the maximum allocated ID by running the following command:

@@ -373,12 +373,12 @@ Global Flags:
   -y, --yes               Skip all confirmations and assumes 'yes'
 ```
 
-For example, the following command upgrades the cluster to v5.0.0-rc:
+For example, the following command upgrades the cluster to v5.0.0:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v5.0.0-rc
+tiup cluster upgrade tidb-test v5.0.0
 ```
 
 ## Update configuration

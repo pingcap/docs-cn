@@ -77,7 +77,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         To view the dashboard: http://127.0.0.1:2379/dashboard
         To view the monitor: http://127.0.0.1:9090
         ```
-        
+
         > **Note:**
         >
         > For the playground operated in this way, after the test is finished, TiUP will clean up the original cluster data. You will get a new cluster after re-running the command.
