@@ -42,6 +42,7 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 | :--- | :--- |
 | sshpass | 1.06 or later |
 | numa | 2.0.12 or later |
+| tar | any |
 
 ## Server recommendations
 
