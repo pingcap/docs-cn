@@ -8,9 +8,7 @@ aliases: ['/docs/dev/sql-mode/','/docs/dev/reference/sql/sql-mode/']
 
 TiDB servers operate in different SQL modes and apply these modes differently for different clients. SQL mode defines the SQL syntaxes that TiDB supports and the type of data validation check to perform, as described below:
 
-+ Before TiDB is started, modify the `--sql-mode="modes"` configuration item to set SQL mode.
-
-+ After TiDB is started, modify `SET [ SESSION | GLOBAL ] sql_mode='modes'` to set SQL mode.
+After TiDB is started, modify `SET [ SESSION | GLOBAL ] sql_mode='modes'` to set SQL mode.
 
 Ensure that you have `SUPER` privilege when setting SQL mode at `GLOBAL` level, and your setting at this level only affects the connections established afterwards. Changes to SQL mode at `SESSION` level only affect the current client.
 
