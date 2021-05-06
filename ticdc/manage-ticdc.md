@@ -749,7 +749,9 @@ To create a cyclic replication task, take the following steps:
 + The name of the table with cyclic replication enabled must match the `^[a-zA-Z0-9_]+$` regular expression.
 + Before creating the cyclic replication task, the tables for the task must be created.
 + After enabling the cyclic replication, you cannot create a table that will be replicated by the cyclic replication task.
++ To avoid causing errors, do not execute DDL statements such as `ADD COLUMN`/`DROP COLUMN` when data is written into multiple clusters at the same time.
 + To perform online DDL operations, ensure the following requirements are met:
+    - The application is compatible with the table schema before and after executing the DDL operations.
     - The TiCDC components of multiple clusters form a one-way DDL replication chain, which is not cyclic. For example, in the example above, only the TiCDC component of cluster C disables `sync-ddl`.
     - DDL operations must be performed on the cluster that is the starting point of the one-way DDL replication chain, such as cluster A in the example above.
 
