@@ -381,11 +381,11 @@ br restore full \
 
 增量恢复的方法和使用 BR 进行全量恢复的方法并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
 
-### 恢复创建在 `mysql` 数据库下的表
+### 恢复创建在 `mysql` 数据库下的表（实验性功能）
 
-在 [#1048](https://github.com/pingcap/br/pull/1048) 之后，BR 可以并且默认会备份 `mysql` 数据库下的表。
+BR 可以并且会默认备份 `mysql` 数据库下的表。
 
-在恢复时，`mysql` 下的表默认会被 [table filter](/table-filter.md#表库过滤语法) 规则过滤掉，要恢复在 `mysql` 下的用户表的时候，可以通过 `-f` 来指定目标，例如，以下命令会恢复 `mysql.usertable`。
+在恢复时，`mysql` 下的表默认会被 [table filter](/table-filter.md#表库过滤语法) 规则过滤掉。如果需要恢复 `mysql` 下的用户表，可以通过 `-f` 来指定目标用户表。以下示例中的要恢复目标用户表为`mysql.usertable`。
 
 {{< copyable "shell-regular" >}}
 
@@ -399,12 +399,12 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 
 > **警告：**
 >
-> 即便系统表（例如，`mysql.tidb` 等）也可以通过这个功能备份和恢复，但是部分系统表在恢复之后可能会出现意外状况，已知的异常如下：
+> 虽然系统表（例如 `mysql.tidb` 等）可以通过 BR 进行备份和恢复，但是部分系统表在恢复之后可能会出现意外状况，已知的异常如下：
 >
 > - 统计信息表（`mysql.stat_*`）无法被恢复。
 > - 用户信息表（`mysql.user`）在恢复之后不会生效，直到用户手动执行 `FLUSH PRIVILEGES`。
 > 
-> 对更多系统表恢复的兼容性测试也尚在进行中，为了防止意外，请尽量避免在生产环境中恢复系统表。
+> 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
 
 ### Raw KV 恢复（实验性功能）
 
