@@ -6,7 +6,7 @@ aliases: ['/docs/dev/geo-distributed-deployment-topology/']
 
 # Geo-Distributed Deployment Topology
 
-This document takes the typical architecture of three data centers (DC) in two cities as an example, and introduces the geo-distributed deployment architecture and the key configuration.
+This document takes the typical architecture of three data centers (DC) in two cities as an example, and introduces the geo-distributed deployment architecture and the key configuration. The cities used in this example are Shanghai (referred to as `sha`) and Beijing (referred to as `bja` and `bjb`).
 
 ## Topology information
 
@@ -88,3 +88,5 @@ This section describes the key parameter configuration of the TiDB geo-distribut
 >
 > - You do not need to manually create the `tidb` user in the configuration file. The TiUP cluster component automatically creates the `tidb` user on the target machines. You can customize the user, or keep the user consistent with the control machine.
 > - If you configure the deployment directory as a relative path, the cluster will be deployed in the home directory of the user.
+
+[Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md) further explains the use of labels and the number of Raft Group replicas.
