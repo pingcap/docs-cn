@@ -140,7 +140,7 @@ EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
 
 In the above execution plan:
 
-* The query fragment `[TableFullScan_17, Selection_18, ExchangeSender_19]` reads data from the small table and broadcasts the data to each node that contains data from the large table (table a).
+* The query fragment `[TableFullScan_17, Selection_18, ExchangeSender_19]` reads data from the small table (table a) and broadcasts the data to each node that contains data from the large table (table b).
 * The query fragment `[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` joins all data and returns it to TiDB.
 
 ## `EXPLAIN ANALYZE` statements in the MPP mode
