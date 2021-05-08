@@ -332,7 +332,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
 
-### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `txn-entry-size-limit` <span class="version-mark">从 v4.0.10 版本开始引入</span>
 
 + TiDB 单行数据的大小限制
 + 默认值：6291456
