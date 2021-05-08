@@ -16,7 +16,7 @@ As a command line tool of PD, PD Control obtains the state information of the cl
 
 ### Use TiUP command
 
-To use PD Control, execute the `tiup ctl pd:<pd_version> -u http://<pd_ip>:<pd_port> [-i]` command.
+To use PD Control, execute the `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> [-i]` command.
 
 ### Download TiDB installation package
 
