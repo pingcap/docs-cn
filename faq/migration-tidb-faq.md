@@ -16,13 +16,23 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
 在没有其他逻辑出错的情况下，重试、EOF 可能是由网络问题引起的，建议首先使用相关工具排查网络连通状况。以下示例使用 [iperf](https://iperf.fr/) 进行排查：
 
-```shell
-# 在重试、EOF 错误的服务器端节点执行
-iperf3 -s
 
-# 在重试、EOF 错误的客户端节点执行
-iperf3 -c <server-IP>
-```
++ 在出现重试、EOF 错误的服务器端节点执行以下命令：
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    iperf3 -s
+    ```
+
++ 在出现重试、EOF 错误的服务器端节点执行以下命令：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    iperf3 -c <server-IP>
+    ```
+
 
 下面是一个网络连接良好的客户端节点的输出
 
