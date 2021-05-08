@@ -12,19 +12,46 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
-### 导入导出速度慢，且各组件日志中出现大量重试、EOF 错误
+### 导入导出速度慢，各组件日志中出现大量重试、EOF 错误并且没有其他错误
 
-首先怀疑网络问题，使用相关工具排查网络连通状况。下面是使用 [iperf](https://iperf.fr/) 进行排查的例子
+在没有其他逻辑出错的情况下，重试、EOF 可能是由网络问题引起的，建议首先使用相关工具排查网络连通状况。以下示例使用 [iperf](https://iperf.fr/) 进行排查：
 
 ```shell
-# 在服务器节点上执行
+# 在重试、EOF 错误的服务器端节点执行
 iperf3 -s
 
-# 在客户端节点执行
+# 在重试、EOF 错误的客户端节点执行
 iperf3 -c <server-IP>
 ```
 
-检查带宽、延迟、重传等指标是否有异常。
+下面是一个网络连接良好的客户端节点的输出
+
+```
+$ iperf3 -c 192.168.196.58
+Connecting to host 192.168.196.58, port 5201
+[  5] local 192.168.196.150 port 55397 connected to 192.168.196.58 port 5201
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  18.0 MBytes   150 Mbits/sec
+[  5]   1.00-2.00   sec  20.8 MBytes   175 Mbits/sec
+[  5]   2.00-3.00   sec  18.2 MBytes   153 Mbits/sec
+[  5]   3.00-4.00   sec  22.5 MBytes   188 Mbits/sec
+[  5]   4.00-5.00   sec  22.4 MBytes   188 Mbits/sec
+[  5]   5.00-6.00   sec  22.8 MBytes   191 Mbits/sec
+[  5]   6.00-7.00   sec  20.8 MBytes   174 Mbits/sec
+[  5]   7.00-8.00   sec  20.1 MBytes   168 Mbits/sec
+[  5]   8.00-9.00   sec  20.8 MBytes   175 Mbits/sec
+[  5]   9.00-10.00  sec  21.8 MBytes   183 Mbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-10.00  sec   208 MBytes   175 Mbits/sec                  sender
+[  5]   0.00-10.00  sec   208 MBytes   174 Mbits/sec                  receiver
+
+iperf Done.
+```
+
+如果输出中网络带宽较低、带宽波动大，会导致各组件出现上述状况。这需要咨询网络服务供应商提升网络质量。
+
+如果输出中各指标良好，请尝试更新各组件版本。更新后无法解决的问题，请移步 [AskTUG 论坛](https://asktug.com/)寻求帮助。
 
 ### 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登录，如何处理？
 
