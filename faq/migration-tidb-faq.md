@@ -16,11 +16,11 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
 首先怀疑网络问题，使用相关工具排查网络连通状况。下面是使用 [iperf](https://iperf.fr/) 进行排查的例子
 
-```
-# on server node
+```shell
+# 在服务器节点上执行
 iperf3 -s
 
-# on client node
+# 在客户端节点执行
 iperf3 -c <server-IP>
 ```
 
