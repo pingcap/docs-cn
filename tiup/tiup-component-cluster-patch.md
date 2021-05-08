@@ -72,9 +72,9 @@ You need to pack the binary package required for this command in advance accordi
 >
 > If the option `-N, --node` is specified at the same time, TiUP then replaces service nodes that match both the requirements of `-N, --node` and `-R, --role`.
 
-## --offline
+### --offline
 
-- Declares that the current cluster is not running. When the option is specified, TiUP does not migrate the service leader to another node or restart the service, but only replaces the binary files of cluster components.
+- Declares that the current cluster is not running. When the option is specified, TiUP does not evict the service leader to another node or restart the service, but only replaces the binary files of cluster components.
 - Data type: `BOOLEAN`
 - This option is disabled by default with the `false` value. To enable this option, add this option to the command, and either pass the `true` value or do not pass any value.
 

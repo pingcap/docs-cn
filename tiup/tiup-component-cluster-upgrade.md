@@ -43,6 +43,12 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 - Data type: `BOOLEAN`
 - Default: false
 
+### --offline
+
+- Declares that the current cluster is not running. When this option is specified, TiUP does not evict the service leader to another node or restart the service, but only replaces the binary files of the cluster components.
+- Data type: `BOOLEAN`
+- This option is disabled by default with the `false` value. To enable this option, add this option to the command, and either pass the `true` value or do not pass any value.
+
 ### -h, --help
 
 - Prints the help information.

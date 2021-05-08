@@ -60,6 +60,7 @@ tiup cluster [command] [flags]
 ## Command list
 
 - [import](/tiup/tiup-component-cluster-import.md): imports a cluster deployed by Ansible
+- [template](/tiup/tiup-component-cluster-template.md): outputs the topology template
 - [check](/tiup/tiup-component-cluster-check.md): checks a cluster before and after the deployment
 - [deploy](/tiup/tiup-component-cluster-deploy.md): deploys a cluster based on a specified topology
 - [list](/tiup/tiup-component-cluster-list.md): queries the list of deployed clusters
@@ -78,6 +79,7 @@ tiup cluster [command] [flags]
 - [clean](/tiup/tiup-component-cluster-clean.md): deletes data from the specified cluster
 - [destroy](/tiup/tiup-component-cluster-destroy.md): destroys a specified cluster
 - [audit](/tiup/tiup-component-cluster-audit.md): queries the operation audit log of a specified cluster
-- [enable](/tiup/tiup-component-cluster-enable.md): enables a specified cluster or service to start on boot
-- [disable](/tiup/tiup-component-cluster-disable.md): disables a specified cluster or service to start on boot
+- [replay](/tiup/tiup-component-cluster-replay.md): retries the specified command
+- [enable](/tiup/tiup-component-cluster-enable.md): enables the auto-enabling of the cluster service after a machine is restarted.
+- [disable](/tiup/tiup-component-cluster-disable.md): disables the auto-enabling of the cluster service after a machine is restarted.
 - [help](/tiup/tiup-component-cluster-help.md): prints the help information

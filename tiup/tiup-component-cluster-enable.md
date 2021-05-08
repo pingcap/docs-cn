@@ -4,7 +4,7 @@ title: tiup cluster enable
 
 # tiup cluster enable
 
-The `tiup cluster enable` command is used to set the self-enabling of the cluster service after a machine restarts. To enable the self-enabling of the service, this command executes `systemctl enable <service>` at the specified node.
+The `tiup cluster enable` command is used to set the auto-enabling of the cluster service after a machine is restarted. This command enables the auto-enabling of the service by executing `systemctl enable <service>` at the specified node.
 
 > **Note:**
 >
@@ -16,35 +16,35 @@ The `tiup cluster enable` command is used to set the self-enabling of the cluste
 tiup cluster enable <cluster-name> [flags]
 ```
 
-`<cluster-name>`: the cluster whose auto-enabling service is to be enabled.
+`<cluster-name>`: the cluster whose service auto-enabling is to be enabled.
 
 ## Options
 
 ### -N, --node
 
-- Specifies the nodes whose auto-enabling service is to be enabled. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status](/tiup/tiup-component-cluster-display.md) table.
-- Data type: `strings`
-- Default: `[]`, which means no node is selected.
+- Specifies the nodes whose service auto-enabling is to be enabled. The value of this option is a comma-separated list of node IDs. You can get the node IDs from the first column of the cluster status table returned by the [`tiup cluster display`](/tiup/tiup-component-cluster-display.md) command.
+- Data type: `STRINGS`
+- If this option is not specified in the command, the auto-enabling of all nodes is enabled by default.
 
 > **Note:**
 >
-> If the `-R, --role` option is specified at the same time, the auto-enabling of services in their intersection is enabled.
+> If the `-R, --role` option is specified at the same time, the auto-enabling of services that match both the specifications of `-N, --node` and `-R, --role` is enabled.
 
 ### -R, --role
 
-- Specifies the roles whose auto-enabling service is to be enabled. The value of this option is a comma-separated list of node roles. The role is the second column of the [cluster status](/tiup/tiup-component-cluster-display.md) table.
-- Data type: `strings`
-- Default: `[]`, which means no role is selected.
+- Specifies the roles whose service auto-enabling is to be enabled. The value of this option is a comma-separated list of node roles. You can get the roles of nodes from the second column of the cluster status table returned by the [`tiup cluster display`](/tiup/tiup-component-cluster-display.md) command.
+- Data type: `STRINGS`
+- If this option is not specified in the command, the auto-enabling of all roles is enabled by default.
 
 > **Note:**
 >
-> If the `-N, --node` option is specified at the same time, the auto-enabling of services in their intersection is enabled.
+> If the `-N, --node` option is specified at the same time, the auto-enabling of services that match both the specifications of `-N, --node` and `-R, --role` is enabled.
 
 ### -h, --help
 
 - Prints the help information.
 - Data type: `BOOLEAN`
-- Default: false
+- This option is disabled by default with the `false` value. To enable this option, add this option to the command, and either pass the `true` value or do not pass any value.
 
 ## Output
 

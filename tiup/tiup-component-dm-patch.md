@@ -62,6 +62,10 @@ You need to pack the binary package required for this command in advance accordi
 >
 > If the option `-N, --node` is specified at the same time, TiUP then replaces service nodes that match both the requirements of `-N, --node` and `-R, --role`.
 
+### --offline
+
+- Declares that the current cluster is offline. When this option is specified, TiUP DM only replaces the binary files of the cluster components in place without restarting the service.
+
 ### -h, --help
 
 - Prints help information.

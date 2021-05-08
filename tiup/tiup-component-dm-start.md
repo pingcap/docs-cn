@@ -18,23 +18,23 @@ tiup dm start <cluster-name> [flags]
 
 ### -N, --node
 
-- Specifies the nodes to be started. If not specified, all nodes are started. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status](/tiup/tiup-component-dm-display.md) table.
-- Data type: `strings`
-- Default: `[]`. If this option is not specified in the command, all nodes are started.
+- Specifies the nodes to be started. If not specified, all nodes are started. The value of this option is a comma-separated list of node IDs. You can get the node IDs from the first column of the cluster status table returned by the [`tiup dm display`](/tiup/tiup-component-dm-display.md) command.
+- Data type: `STRINGS`
+- If this option is not specified in the command, all nodes are started.
 
 > **Note:**
 >
-> If the `-R, --role` option is specified at the same time, then the services in their intersection are started.
+> If the `-R, --role` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are started.
 
 ### -R, --role
 
-- Specifies the roles to be started. If not specified, all roles are started. The value of this option is a comma-separated list of node roles. The role is the second column of the [cluster status](/tiup/tiup-component-dm-display.md) table.
-- Data type: `strings`
-- Default: `[]`. If this option is not specified in the command, all roles are started.
+- Specifies the roles to be started. If not specified, all roles are started. The value of this option is a comma-separated list of node roles. You can get the roles of nodes from the second column of the cluster status table returned by the [`tiup dm display`](/tiup/tiup-component-dm-display.md) command.
+- Data type: `STRINGS`
+- If this option is not specified in the command, all roles are started.
 
 > **Note:**
 >
-> If the `-N, --node` option is specified at the same time, the services in their intersection are started.
+> If the `-N, --node` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are started.
 
 ### -h, --help
 

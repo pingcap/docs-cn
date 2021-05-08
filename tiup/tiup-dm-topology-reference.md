@@ -194,6 +194,10 @@ worker_servers:
 - `numa_node`: allocates the NUMA policy to the instance. Before specifying this field, you need to make sure that the target machine has [numactl](https://linux.die.net/man/8/numactl) installed. If this field is specified, cpubind and membind policies are allocated using [numactl](https://linux.die.net/man/8/numactl). This field is a string type. The field value is the ID of the NUMA node, such as "0,1"
 - `storage_retention`: specifies the retention time of the Prometheus monitoring data. The default value is "15d".
 - `rule_dir`: specifies a local directory where the complete `*.rules.yml` files are located. The files in the specified directory will be sent to the target machine as the Prometheus rules during the initialization phase of the cluster configuration.
+- `remote_config`: Supports writing Prometheus data to the remote, or reading data from the remote. This field has two configurations:
+    - `remote_write`: See the Prometheus document [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write).
+    - `remote_read`: See the Prometheus document [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read).
+- `external_alertmanagers`: If the `external_alertmanagers` field is configured, Prometheus alerts the configuration behavior to the Alertmanager that is outside the cluster. This field is an array, each element of which is an external Alertmanager and consists of the `host` and `web_port` fields.
 - `os`: the operating system of the machine specified in the `host` field. If the field is not specified, the default value is the `os` value configured in the `global` section.
 - `arch`: the architecture of the machine specified in the `host` field. If the field is not specified, the default value is the `arch` value configured in the `global` section.
 - `resource_control`: resource control on this service. If this field is specified, the configuration of this field will be merged with the configuration of `resource_control` in the `global` section (if the two fields overlap, the configuration of this field takes effect), and then the configuration file of systemd is generated and distributed to the machine specified in the `host` field. The configuration rules of this field are the same as that of `resource_control` in the `global` section.
@@ -214,6 +218,21 @@ A `monitoring_servers` configuration example is as follows:
 monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
+    remote_config:
+      remote_write:
+      - queue_config:
+          batch_send_deadline: 5m
+          capacity: 100000
+          max_samples_per_send: 10000
+          max_shards: 300
+        url: http://127.0.0.1:8003/write
+      remote_read:
+      - url: http://127.0.0.1:8003/read\
+      external_alertmanagers:
+      - host: 10.1.1.1
+      web_port: 9093
+      - host: 10.1.1.2
+      web_port: 9094
 ```
 
 ### `grafana_servers`

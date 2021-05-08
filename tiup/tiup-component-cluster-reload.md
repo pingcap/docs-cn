@@ -25,7 +25,7 @@ tiup cluster reload <cluster-name> [flags]
 ### --transfer-timeout
 
 - When restarting PD or TiKV, the leader of the restarted node is migrated to other nodes first, and the migration process takes some time. You can set the maximum wait time (in seconds) by setting `-transfer-timeout`. After the timeout, the service can be restarted directly without waiting.
-- Data type: `uint`
+- Data type: `UINT`
 - Default: 300
 
 > **Note:**
@@ -40,24 +40,24 @@ tiup cluster reload <cluster-name> [flags]
 
 ### -N, --node
 
-- Specifies the nodes to be restarted. If not specified, all nodes are restarted. The value of this option is a comma-separated list of node IDs. The node ID is the first column of the [cluster status](/tiup/tiup-component-cluster-display.md) table.
-- Data type: `strings`
-- Default: `[]`, which means all nodes are selected.
+- Specifies the nodes to be restarted. If not specified, all nodes are restarted. The value of this option is a comma-separated list of node IDs. You can get the node IDs from the first column of the cluster status table returned by the [`tiup cluster display`](/tiup/tiup-component-cluster-display.md) command.
+- Data type: `STRINGS`
+- If this option is not specified in the command, all nodes are selected by default.
 
 > **Note:**
 >
-> + If the `-R, --role` option is specified at the same time, then the service status in their intersection is restarted.
+> + If the `-R, --role` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are restarted.
 > + If the `--skip-restart` option is specified, the `-N, --node` option is invalid.
 
 ### -R, --role
 
 - Specifies the roles to be restarted. If not specified, all roles are restarted. The value of this option is a comma-separated list of node roles. The role is the second column of the [cluster status](/tiup/tiup-component-cluster-display.md) table.
-- Data type: `strings`
-- Default: `[]`, which means all roles are selected.
+- Data type: `STRINGS`
+- If this option is not specified in the command, all roles are selected by default.
 
 > **Note:**
 >
-> 1. If the `-N, --node` option is specified at the same time, the services in their intersection is restarted.
+> 1. If the `-N, --node` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are restarted.
 > 2. If the `--skip-restart` option is specified, the `-R, --role` option is invalid.
 
 ### --skip-restart

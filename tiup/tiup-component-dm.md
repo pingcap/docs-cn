@@ -61,6 +61,7 @@ tiup dm [command] [flags]
 ## List of commands
 
 - [import](/tiup/tiup-component-dm-import.md): Imports a DM v1.0 cluster deployed by DM-Ansible.
+- [template](/tiup/tiup-component-dm-template.md): Outputs the topology template.
 - [deploy](/tiup/tiup-component-dm-deploy.md): Deploys a cluster based on a specified topology.
 - [list](/tiup/tiup-component-dm-list.md): Queries the list of deployed clusters.
 - [display](/tiup/tiup-component-dm-display.md): Displays the status of a specified cluster.
@@ -76,4 +77,7 @@ tiup dm [command] [flags]
 - [patch](/tiup/tiup-component-dm-patch.md): Replaces a specified service in a deployed cluster.
 - [destroy](/tiup/tiup-component-dm-destroy.md): Destroys a specified cluster.
 - [audit](/tiup/tiup-component-dm-audit.md): Queries the operation audit log of a specified cluster.
+- [replay](/tiup/tiup-component-dm-replay.md): Replays the specified commands
+- [enable](/tiup/tiup-component-dm-enable.md): Enables the auto-enabling of the cluster service after a machine is restarted.
+- [disable](/tiup/tiup-component-dm-disable.md): Disables the auto-enabling of the cluster service after a machine is restarted.
 - [help](/tiup/tiup-component-dm-help.md): Prints help information.

@@ -19,7 +19,7 @@ tiup dm scale-in <cluster-name> [flags]
 ### -N, --node
 
 - Specifies the nodes to be scaled in. If you need to scale in multiple nodes, split them by commas.
-- Data type: `Strings`
+- Data type: `STRINGS`
 - Default: no. This option is mandatory and the value must be not null.
 
 ### --force

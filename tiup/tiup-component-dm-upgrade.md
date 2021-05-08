@@ -17,6 +17,10 @@ tiup dm upgrade <cluster-name> <version> [flags]
 
 ## Options
 
+### --offline
+
+- Declares that the current cluster is offline. When this option is specified, TiUP DM only replaces the binary files of the cluster components in place without restarting the service.
+
 ### -h, --help
 
 - Prints the help information.

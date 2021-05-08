@@ -8,7 +8,7 @@ The `tiup status` command is used to view the operation information of the compo
 
 > **Note:**
 >
-> You can only query the information of the following components:
+> You can only check the information of the following components:
 >
 > - Components that are still in operation
 > - Components that run through the tag specified by `tiup -T/--tag`
