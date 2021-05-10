@@ -23,7 +23,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
     iperf3 -s
     ```
 
-+ 在出现重试、EOF 错误的服务器端节点执行以下命令：
++ 在出现重试、EOF 错误的客户端节点执行以下命令：
 
     {{< copyable "shell-regular" >}}
 
