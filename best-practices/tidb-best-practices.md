@@ -41,7 +41,7 @@ TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](htt
     由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
 
     - 单个事务包含的 SQL 语句不超过 5000 条（默认）
-        - 单条 KV entry 不超过 6MB
+        - 单条 KV entry 不超过 6MB（默认）
         - KV entry 的总大小不超过 10G
 
     在 Google 的 Cloud Spanner 上面，也有[类似的限制](https://cloud.google.com/spanner/docs/limits)。
