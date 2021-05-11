@@ -67,7 +67,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8025
 
-    写入的单条键值对过大。TiDB 默认支持最大 6MB 的单个键值对，超过该限制可适当调整 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 以放宽限制。
+    写入的单条键值对过大。TiDB 默认支持最大 6MB 的单个键值对，超过该限制可适当调整 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项以放宽限制。
 
 * Error Number: 8026
 
