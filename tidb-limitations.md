@@ -52,7 +52,6 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 |:----------|:----------|
 | Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调整 |
 
-
 ## 单列的限制
 
 | 类型       | 最大限制   |
