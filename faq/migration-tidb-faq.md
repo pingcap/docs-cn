@@ -175,7 +175,11 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 ### Transaction too large 是什么原因，怎么解决？
 
+<<<<<<< HEAD
 TiDB 限制了单条 KV entry 不超过 6MB，可以修改配置文件中的 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-版本开始引入) 配置项进行调整，最大可以修改到 120MB。
+=======
+TiDB 限制了单条 KV entry 不超过 6MB，可以修改配置文件中的 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项进行调整，最大可以修改到 120MB。
+>>>>>>> 521f86125 (update TiDB 6MB limit (#6226))
 
 分布式事务要做两阶段提交，而且底层还需要做 Raft 复制。如果一个事务非常大，提交过程会非常慢，事务写冲突概率会增加，而且事务失败后回滚会导致不必要的性能开销。所以我们设置了 key-value entry 的总大小默认不超过 100MB。如果业务需要使用大事务，可以修改配置文件中的 `txn-total-size-limit` 配置项进行调整，最大可以修改到 10G。实际的大小限制还受机器的物理内存影响。
 

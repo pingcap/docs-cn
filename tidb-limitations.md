@@ -47,7 +47,11 @@ aliases: ['/docs-cn/stable/tidb-limitations/','/docs-cn/v4.0/tidb-limitations/']
 
 | 类型       | 最大限制   |
 |:----------|:----------|
+<<<<<<< HEAD
 | Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-版本开始引入) 配置项调整 |
+=======
+| Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调整 |
+>>>>>>> 521f86125 (update TiDB 6MB limit (#6226))
 
 ## 单列的限制
 
