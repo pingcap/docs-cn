@@ -29,8 +29,7 @@ GRANT SELECT ON test.* TO 'xxx'@'%';
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 ```
 
-`GRANT` 为一个不存在的用户授予权限时，默认并不会自动创建用户。该行为受 SQL Mode 中的 `NO_AUTO_CREATE_USER` 控制。
-如果从 SQL Mode 中去掉 `NO_AUTO_CREATE_USER`，当 `GRANT` 的目标用户不存在时，TiDB 会自动创建用户。
+`GRANT` 为一个不存在的用户授予权限时，默认并不会自动创建用户。该行为受 SQL Mode 中的 `NO_AUTO_CREATE_USER` 控制。如果从 SQL Mode 中去掉 `NO_AUTO_CREATE_USER`，当 `GRANT` 的目标用户不存在时，TiDB 会自动创建用户。
 
 {{< copyable "sql" >}}
 
@@ -270,7 +269,6 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 | Index          | IndexPriv      | 创建/删除 index          |
 | Alter          | AlterPriv      | 执行 `ALTER` 语句          |
 | Super          | SuperPriv      | 所有权限                 |
-| Grant          | GrantPriv      | 授予其他用户权限         |
 | Create         | CreatePriv     | 创建 schema/table        |
 | Select         | SelectPriv     | 读取表内容               |
 | Insert         | InsertPriv     | 插入数据到表             |
@@ -483,9 +481,3 @@ TiDB 启动时，将一些权限检查的表加载到内存，之后使用缓存
 ```sql
 FLUSH PRIVILEGES;
 ```
-
-### 限制和约束
-
-一些使用频率偏低的权限当前版本的实现中还未做检查，比如 `FILE`/`USAGE`/`SHUTDOWN`/`EXECUTE`/`PROCESS`/`INDEX` 等等，未来会陆续完善。
-
-现阶段对权限的支持还没有做到 column 级别。

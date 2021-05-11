@@ -6,7 +6,19 @@ aliases: ['/docs-cn/dev/post-installation-check/']
 
 # 验证集群运行状态
 
-本文档介绍如何通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana 检查集群状态，以及登录数据库执行简单 DML、DDL 操作和查询 SQL 语句。
+在部署完一套 TiDB 集群后，需要检查集群是否正常运行。本文介绍如何通过 TiUP 命令、[TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana 检查集群状态，以及如何登录 TiDB 数据库执行简单的 SQL 操作。
+
+## 通过 TiUP 检查集群状态
+
+检查集群状态的命令是 `tiup cluster display <cluster-name>`，例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster display tidb-test
+```
+
+预期结果输出：各节点 Status 状态信息为 `Up` 说明集群状态正常。
 
 ## 通过 TiDB Dashboard 和 Grafana 检查集群状态
 
@@ -49,7 +61,7 @@ mysql -u root -h 10.0.1.4 -P 4000
 ```sql
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 3
-Server version: 5.7.25-TiDB-v4.0.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
+Server version: 5.7.25-TiDB-v5.0.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
 
 Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
 
@@ -74,7 +86,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
     ```sql
     *************************** 1. row ***************************
-    tidb_version(): Release Version: v4.0.0
+    tidb_version(): Release Version: v5.0.0
     Edition: Community
     Git Commit Hash: 689a6b6439ae7835947fcaccf329a3fc303986cb
     Git Branch: HEAD
@@ -135,7 +147,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
     {{< copyable "sql" >}}
 
     ```sql
-    insert into `tab_tidb` values (1,'TiDB',5,'TiDB-v4.0.0');
+    insert into `tab_tidb` values (1,'TiDB',5,'TiDB-v5.0.0');
     ```
 
     预期输出
@@ -158,7 +170,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
     +----+------+-----+-------------+
     | id | name | age | version     |
     +----+------+-----+-------------+
-    |  1 | TiDB |   5 | TiDB-v4.0.0 |
+    |  1 | TiDB |   5 | TiDB-v5.0.0 |
     +----+------+-----+-------------+
     1 row in set (0.00 sec)
     ```

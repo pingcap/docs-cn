@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/tispark-deployment-topology/']
 
 本文介绍 TiSpark 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiSpark。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。
 
-关于 TiSpark 的使用可以参考 [TiSpark 用户指南](/tispark-overview.md)
+关于 TiSpark 的架构介绍与使用，参见 [TiSpark 用户指南](/tispark-overview.md)。
 
 > **警告：**
 >
@@ -30,15 +30,17 @@ aliases: ['/docs-cn/dev/tispark-deployment-topology/']
 
 [详细 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tispark.yaml)
 
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md#tispark_masters)。
+
 > **注意：**
 >
 > - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在目标主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
 > - 如果部署目录配置为相对路径，会部署在用户家目录下。
 
-# 环境要求
+## 环境要求
 
-由于 TiSpark 基于 Apache Spark 集群，在启动包含 TiSpark 组件的 TiDB 集群前，需要在部署了 TiSpark 组件的服务器上安装 Java 运行时环境(JRE) 8, 否则将无法启动相关组件。
+由于 TiSpark 基于 Apache Spark 集群，在启动包含 TiSpark 组件的 TiDB 集群前，需要在部署了 TiSpark 组件的服务器上安装 Java 运行时环境(JRE) 8，否则将无法启动相关组件。
 
 TiUP 不提供自动安装 JRE 的支持，该操作需要用户自行完成。JRE 8 的安装方法可以参考 [OpenJDK 的文档说明](https://openjdk.java.net/install/)。
 
-如果部署服务器上已经安装有 JRE 8, 但不在系统的默认包管理工具路径中，可以通过在拓扑配置中设置 `java_home` 参数来指定要使用的 JRE 环境所在的路径。该参数对应系统环境变量 `JAVA_HOME`.
+如果部署服务器上已经安装有 JRE 8，但不在系统的默认包管理工具路径中，可以通过在拓扑配置中设置 `java_home` 参数来指定要使用的 JRE 环境所在的路径。该参数对应系统环境变量 `JAVA_HOME`。

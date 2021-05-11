@@ -1,6 +1,13 @@
 # Tip: PD priority needs to be manually set using the PD-ctl client tool. such as, member Leader_priority PD-name numbers.
 # Global variables are applied to all deployments and used as the default value of
 # the deployments if a specific deployment value is missing.
+#
+# Abbreviations used in this example:
+# sh: Shanghai Zone
+# bj: Beijing Zone
+# sha: Shanghai Datacenter A
+# bja: Beijing Datacenter A
+# bjb: Beijing Datacenter B
 
 global:
   user: "tidb"

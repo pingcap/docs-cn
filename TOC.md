@@ -7,23 +7,23 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
+  + [What's New in TiDB 5.0](/releases/release-5.0.0.md)
   + [基本功能](/basic-features.md)
+  + [实验特性](/experimental-features.md)
   + 性能测试报告
-    + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
-    + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
-    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
-    + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
+    + [Sysbench 性能对比 - v5.0 对比 v4.0](/benchmark/benchmark-sysbench-v5-vs-v4.md)
+    + [TPC-C 性能对比 - v5.0 对比 v4.0](/benchmark/v5.0-performance-benchmarking-with-tpcc.md)
+    + [TPC-H 100 性能对比 - v5.0 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
 + 快速上手
   + [快速上手指南](/quick-start-with-tidb.md)
   + [SQL 基本操作](/basic-sql-operations.md)
-+ 部署集群
++ 部署标准集群
   + [软硬件环境需求](/hardware-and-software-requirements.md)
   + [环境与系统配置检查](/check-before-deployment.md)
-  + 配置拓扑结构
+  + 规划集群拓扑
     + [最小部署拓扑结构](/minimal-deployment-topology.md)
     + [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     + [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
@@ -32,16 +32,18 @@
     + [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     + [混合部署拓扑结构](/hybrid-deployment-topology.md)
   + 安装与启动
-    + Linux 环境
-      + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
-      + [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
-      + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+    + [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+    + [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   + [验证集群状态](/post-installation-check.md)
+  + 测试集群性能
+      + [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
+      + [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 + 数据迁移
   + [概述](/migration-overview.md)
   + 从 MySQL 迁移至 TiDB
-    + [使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
-    + [使用 DM 工具从 Amazon Aurora MySQL 迁移](/migrate-from-aurora-mysql-database.md)
+    + [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
+    + [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
+    + [使用 DM 工具从 Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
   + 从 CSV 文件迁移至 TiDB
     + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
@@ -49,7 +51,6 @@
 + 运维操作
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
-    + [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
     + [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
   + 扩缩容
     + [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
@@ -63,7 +64,7 @@
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
-  + [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
+  + [使用 TiUP 运维集群](/maintain-tidb-using-tiup.md)
   + [在线修改集群配置](/dynamic-config.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
@@ -101,6 +102,7 @@
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + 理解 TiDB 执行计划
       + [TiDB 执行计划概览](/explain-overview.md)
+      + [MPP 模式查询的执行计划](/explain-mpp.md)
     + SQL 优化流程
       + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
@@ -124,7 +126,7 @@
       + [控制执行计划概览](/control-execution-plan.md)
       + [Optimizer Hints](/optimizer-hints.md)
       + [执行计划管理](/sql-plan-management.md)
-      + [优化规则及表达式下推的黑名单](/blacklist-control-plan.md)
+      + [优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
@@ -148,7 +150,7 @@
     + [BR 工具简介](/br/backup-and-restore-tool.md)
     + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    + [BR 存储](/br/backup-and-restore-storages.md)
+    + [外部存储](/br/backup-and-restore-storages.md)
     + [BR 常见问题](/br/backup-and-restore-faq.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -189,9 +191,10 @@
     + [安装部署](/ticdc/deploy-ticdc.md)
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
-    + [监控指标](/ticdc/ticdc-grafana-dashboard.md)
+    + [监控指标](/ticdc/monitor-ticdc.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+    + [术语表](/ticdc/ticdc-glossary.md)
   + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
@@ -213,7 +216,7 @@
     + [PD 面板](/grafana-pd-dashboard.md)
     + [TiKV 面板](/grafana-tikv-dashboard.md)
     + [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
-    + [TiCDC 监控指标](/ticdc/ticdc-grafana-dashboard.md)
+    + [TiCDC 监控指标](/ticdc/monitor-ticdc.md)
   + 安全加固
     + [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     + [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
@@ -353,6 +356,7 @@
       - [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
+      - [`TABLE`](/sql-statements/sql-statement-table.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
@@ -403,6 +407,9 @@
       + INFORMATION_SCHEMA
         + [Overview](/information-schema/information-schema.md)
         + [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)
+        + [`CLIENT_ERRORS_SUMMARY_BY_HOST`](/information-schema/client-errors-summary-by-host.md)
+        + [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md)
+        + [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)
         + [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)
         + [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)
         + [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-hardware.md)
@@ -491,12 +498,15 @@
       + [TiFlash 简介](/tiflash/tiflash-overview.md)
       + [使用 TiFlash](/tiflash/use-tiflash.md)
   + TiUP
-    + [文档指南](/tiup/tiup-documentation-guide.md)
+    + [文档地图](/tiup/tiup-documentation-guide.md)
     + [概览](/tiup/tiup-overview.md)
     + [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
     + [TiUP 组件管理](/tiup/tiup-component-management.md)
     + [FAQ](/tiup/tiup-faq.md)
     + [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    + [参考手册](/tiup/tiup-reference.md)
+    + [TiDB 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)
+    + [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)
     + TiUP 组件文档
       + [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
@@ -518,8 +528,12 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v5.0
+    - [5.0.1](/releases/release-5.0.1.md)
+    - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
+    - [4.0.12](/releases/release-4.0.12.md)
+    - [4.0.11](/releases/release-4.0.11.md)
     - [4.0.10](/releases/release-4.0.10.md)
     - [4.0.9](/releases/release-4.0.9.md)
     - [4.0.8](/releases/release-4.0.8.md)

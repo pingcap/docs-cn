@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/tidb-binlog-deployment-topology/']
 
 # TiDB Binlog 部署拓扑
 
-本文介绍在部署最小拓扑集群的基础上，同时部署 TiDB Binlog。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
+本文介绍在部署最小拓扑集群的基础上，同时部署 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
 
 ## 拓扑信息
 
@@ -25,6 +25,8 @@ aliases: ['/docs-cn/dev/tidb-binlog-deployment-topology/']
 [简单 TiDB Binlog 配置模板（下游为 file）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-file-binlog.yaml)
 
 [详细 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tidb-binlog.yaml)
+
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
 ### 关键参数介绍
 

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 # 备份与恢复工具 BR 简介
 
-[BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。**BR 只支持在 TiDB v3.1 及以上版本使用。**
+[BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
 相比 [`dumpling`](/backup-and-restore-using-dumpling-lightning.md)，BR 更适合**大数据量**的场景。
 
@@ -28,6 +28,7 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 
 - SST 文件：存储 TiKV 备份下来的数据信息
 - `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
+- `backup.lock` 文件：用于防止多次备份到同一目录
 
 ### SST 文件命名格式
 
@@ -49,20 +50,54 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 > **注意：**
 >
 > - 如果没有挂载网盘或者使用其他共享存储，那么 BR 备份的数据会生成在各个 TiKV 节点上。由于 BR 只备份 leader 副本，所以各个节点预留的空间需要根据 leader size 来预估。
-> - 同时由于 v4.0 默认使用 leader count 进行平衡，所以会出现 leader size 差别大的问题，导致各个节点备份数据不均衡。
+> - 同时由于 TiDB 默认使用 leader count 进行平衡，所以会出现 leader size 差别大的问题，导致各个节点备份数据不均衡。
 
 ### 使用限制
 
 下面是使用 BR 进行备份恢复的几条限制：
 
-- BR 只支持在 TiDB v3.1 及以上版本使用。
 - BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。
 - BR 只支持在 `new_collations_enabled_on_first_bootstrap` [开关值](/character-set-and-collation.md#排序规则支持)相同的集群之间进行操作。这是因为 BR 仅备份 KV 数据。如果备份集群和恢复集群采用不同的排序规则，数据校验会不通过。所以恢复集群时，你需要确保 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME='new_collation_enabled';` 语句的开关值查询结果与备份时的查询结果相一致，才可以进行恢复。
 
-    - 对于 v3.1 集群，TiDB 尚未支持 new collation，因此可以认为 new collation 未打开
-    - 对于 v4.0 集群，请通过 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';` 查看 new collation 是否打开。
+### 兼容性
 
-    例如，数据备份在 v3.1 集群。如果恢复到 v4.0 集群中，查询恢复集群的 `new_collation_enabled` 的值为 `true`，则说明创建恢复集群时打开了 new collation 支持的开关。此时恢复数据，可能会出错。
+BR 和 TiDB 集群的兼容性问题分为以下两方面：
+
++ BR 部分版本和 TiDB 集群的接口不兼容
++ 某些功能在开启或关闭状态下，会导致 KV 格式发生变化，因此备份和恢复期间如果没有统一开启或关闭，就会带来不兼容的问题
+
+下表整理了会导致 KV 格式发生变化的功能。
+
+| 功能 | 相关 issue | 解决方式 |
+|  ----  | ----  | ----- |
+| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 `tidb_enable_clustered_index` 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
+| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
+| 恢复集群开启 TiCDC 同步 | [#364](https://github.com/pingcap/br/issues/364#issuecomment-646813965) |  TiKV 暂不能将 BR ingest 的 SST 文件下推到 TiCDC，因此使用 BR 恢复时候需要关闭 TiCDC。 |
+
+在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。
+
+#### 版本检查
+
+BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查。
+
+需要注意的是，跳过检查可能会遇到版本不兼容的问题。BR 和 TiDB 各版本兼容情况如下表所示：
+
+| 恢复版本（横向）\ 备份版本（纵向）   | 用 BR nightly 恢复 TiDB nightly | 用 BR v5.0 恢复 TiDB v5.0| 用 BR v4.0 恢复 TiDB v4.0 |
+|  ----  |  ----  | ---- | ---- |
+| 用 BR nightly 备份 TiDB nightly | ✅ | ✅ | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误） |
+| 用 BR v5.0 备份 TiDB v5.0 | ✅ | ✅ | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误）
+| 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
+| 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
+
+### 运行 BR 的最低机型配置要求
+
+运行 BR 的最低机型配置要求如下：
+
+| CPU | 内存 | 硬盘类型 | 网络 |
+| --- | --- | --- | --- |
+| 1 核 | 4 GB | HDD | 千兆网卡 |
+
+一般场景下（备份恢复的表少于 1000 张），BR 在运行期间的 CPU 消耗不会超过 200%，内存消耗不会超过 4 GB。但在备份和恢复大量数据表时，BR 的内存消耗可能会上升到 4 GB 以上。在实际测试中，备份 24000 张表大概需要消耗 2.7 GB 内存，CPU 消耗维持在 100% 以下。
 
 ### 最佳实践
 
@@ -81,18 +116,11 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 #### 通过 SQL 语句
 
-在 v4.0.2 及以上版本的 TiDB 中，支持直接通过 SQL 语句进行备份恢复，具体使用示例见：
-
-- [Backup 语法](/sql-statements/sql-statement-backup.md#backup)
-- [Restore 语法](/sql-statements/sql-statement-restore.md#restore)
+TiDB 支持使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md#backup) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md#restore) 进行备份恢复。如果要查看备份恢复的进度，你可以使用 [`SHOW BACKUPS|RESTORES`](/sql-statements/sql-statement-show-backups.md) 语句。
 
 #### 通过命令行工具
 
-在 v3.1 以上的 TiDB 版本中，支持通过命令行工具进行备份恢复。
-
-首先需要下载一个 BR 工具的二进制包，详见[下载链接](/download-ecosystem-tools.md#备份和恢复-br-工具)。
-
-通过命令行工具进行备份恢复的具体操作见[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
+TiDB 支持使用 BR 命令行工具进行备份恢复（需[手动下载](/download-ecosystem-tools.md#备份和恢复-br-工具)）。关于 BR 命令行工具的具体使用方法，请参阅[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
 
 #### 在 Kubernetes 环境下
 
@@ -100,7 +128,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 > **注意：**
 >
-> Amazon S3 和 Google Cloud Storage (GCS) 参数描述见 [BR 存储](/br/backup-and-restore-storages.md#参数)文档。
+> Amazon S3 和 Google Cloud Storage (GCS) 参数描述见[外部存储](/br/backup-and-restore-storages.md#url-参数)文档。
 
 - [备份 TiDB 集群数据到兼容 S3 的存储](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br)
 - [恢复 S3 兼容存储上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br)
@@ -114,4 +142,4 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
 + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
 + [BR 常见问题](/br/backup-and-restore-faq.md)
-+ [BR 存储](/br/backup-and-restore-storages.md)
++ [外部存储](/br/backup-and-restore-storages.md)

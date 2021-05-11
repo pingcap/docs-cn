@@ -12,13 +12,65 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
+### 导入导出速度慢，各组件日志中出现大量重试、EOF 错误并且没有其他错误
+
+在没有其他逻辑出错的情况下，重试、EOF 可能是由网络问题引起的，建议首先使用相关工具排查网络连通状况。以下示例使用 [iperf](https://iperf.fr/) 进行排查：
+
++ 在出现重试、EOF 错误的服务器端节点执行以下命令：
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    iperf3 -s
+    ```
+
++ 在出现重试、EOF 错误的客户端节点执行以下命令：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    iperf3 -c <server-IP>
+    ```
+
+下面是一个网络连接良好的客户端节点的输出：
+
+```shell
+$ iperf3 -c 192.168.196.58
+Connecting to host 192.168.196.58, port 5201
+[  5] local 192.168.196.150 port 55397 connected to 192.168.196.58 port 5201
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  18.0 MBytes   150 Mbits/sec
+[  5]   1.00-2.00   sec  20.8 MBytes   175 Mbits/sec
+[  5]   2.00-3.00   sec  18.2 MBytes   153 Mbits/sec
+[  5]   3.00-4.00   sec  22.5 MBytes   188 Mbits/sec
+[  5]   4.00-5.00   sec  22.4 MBytes   188 Mbits/sec
+[  5]   5.00-6.00   sec  22.8 MBytes   191 Mbits/sec
+[  5]   6.00-7.00   sec  20.8 MBytes   174 Mbits/sec
+[  5]   7.00-8.00   sec  20.1 MBytes   168 Mbits/sec
+[  5]   8.00-9.00   sec  20.8 MBytes   175 Mbits/sec
+[  5]   9.00-10.00  sec  21.8 MBytes   183 Mbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-10.00  sec   208 MBytes   175 Mbits/sec                  sender
+[  5]   0.00-10.00  sec   208 MBytes   174 Mbits/sec                  receiver
+
+iperf Done.
+```
+
+如果输出显示网络带宽较低、带宽波动大，各组件日志中就可能出现大量重试、EOF 错误。此时你需要咨询网络服务供应商以提升网络质量。
+
+如果输出的各指标良好，请尝试更新各组件版本。如果更新后仍无法解决问题，请移步 [AskTUG 论坛](https://asktug.com/)寻求帮助。
+
 ### 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登录，如何处理？
 
 重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登录集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
 
 ### 如何导出 TiDB 数据？
 
-TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
+你可以通过以下方式导出 TiDB 数据：
+
+- 参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
+- 使用 MySQL client 将 select 的结果输出到一个文件。
 
 ### 如何从 DB2、Oracle 数据库迁移到 TiDB？
 
@@ -50,9 +102,14 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 - 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
 
-### Dumpling 导出大表时引发上游数据库报错“磁盘空间不足”
+### Dumpling 导出时引发上游数据库 OOM 或报错“磁盘空间不足”
 
-该问题是由于数据库主键分布不均匀，Dumpling 划分导出子范围时出现过大的子范围引起的。请尝试分配更大的磁盘空间，或者联系 [AskTUG 社区专家](https://asktug.com/) 获取实验版本的 Dumpling。
+该问题可能有如下原因：
+
+- 数据库主键分布不均匀，例如启用了 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
+- 上游数据库为 TiDB，导出表是分区表
+
+在上述情况下，Dumpling 划分导出子范围时，会划分出过大的子范围，从而向上游发送结果过大的查询。请联系 [AskTUG 社区专家](https://asktug.com/)获取实验版本的 Dumpling。
 
 ### TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
@@ -110,9 +167,5 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 主要有两个方面：
 
-- 目前已开发分布式导入工具 [Lightning](/tidb-lightning/tidb-lightning-overview.md)，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
+- 目前已开发分布式导入工具 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)，需要注意的是数据导入过程中为了性能考虑，不会执行完整的事务流程，所以没办法保证导入过程中正在导入的数据的 ACID 约束，只能保证整个导入过程结束以后导入数据的 ACID 约束。因此适用场景主要为新数据的导入（比如新的表或者新的索引），或者是全量的备份恢复（先 Truncate 原表再导入）。
 - TiDB 的数据加载与磁盘以及整体集群状态相关，加载数据时应关注该主机的磁盘利用率，TiClient Error/Backoff/Thread CPU 等相关 metric，可以分析相应瓶颈。
-
-### 对数据做删除操作之后，空间回收比较慢，如何处理？
-
-可以设置并行 GC，加快对空间的回收速度。默认并发为 1，最大可调整为 tikv 实例数量的 50%。可使用 `update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";` 命令来调整。

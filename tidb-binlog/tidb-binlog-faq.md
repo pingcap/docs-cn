@@ -83,8 +83,7 @@ Drainer 会因为获取不到这个 Pump 的数据没法同步数据到下游。
 
 ## 什么是 checkpoint？
 
-Checkpoint 记录了 Drainer 同步到下游的 commit-ts，Drainer 重启时可以读取 checkpoint 接着从对应 commit-ts 同步数据到下游。
-Drainer 日志 `["write save point"] [ts=411222863322546177]` 表示保存对应时间戳的 checkpoint。
+Checkpoint 记录了 Drainer 同步到下游的 commit-ts，Drainer 重启时可以读取 checkpoint 接着从对应 commit-ts 同步数据到下游。Drainer 日志 `["write save point"] [ts=411222863322546177]` 表示保存对应时间戳的 checkpoint。
 
 下游类型不同，checkpoint 的保存方式也不同：
 

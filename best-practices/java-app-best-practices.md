@@ -128,8 +128,7 @@ insert into t(a) values(12);
 insert into t(a) values(10),(11),(12);
 ```
 
-需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL，insert 语句如果有其他差异将无法被改写。
-例如：
+需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL，insert 语句如果有其他差异将无法被改写。例如：
 
 {{< copyable "sql" >}}
 

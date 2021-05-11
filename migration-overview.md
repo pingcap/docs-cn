@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 
 本文档介绍支持从哪些路径将数据迁移到 TiDB，包括从 MySQL 迁移到 TiDB 和从 CSV/SQL 文件迁移到 TiDB。
 
+## 从 Aurora 迁移到 TiDB
+
+在云环境下，可以直接通过 Aurora Snapshot 导出的方式，将全量数据迁移至 TiDB。详细可参考 [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)。
+
 ## 从 MySQL 迁移到 TiDB
 
 目前推荐使用以下两种方式将 MySQL 数据迁移到 TiDB。

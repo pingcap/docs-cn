@@ -239,9 +239,31 @@ Query OK, 0 rows affected (0.10 sec)
 * 表 `t3` 创建失败，因为一张表只能有一个主键。
 * 表 `t4` 创建成功，因为虽然只能有一个主键，但 TiDB 支持定义一个多列组合作为复合主键。
 
-除上述规则外，默认情况下，TiDB 还有一个额外限制，即一旦一张表创建成功，其主键就不能再改变。如果需要添加/删除主键，需要在 TiDB 配置文件中将 `alter-primary-key` 设置为 `true`，并重启 TiDB 实例使之生效。
+除上述规则外，TiDB 目前仅支持对 `NONCLUSTERED` 的主键进行添加和删除操作。例如：
 
-当开启添加/删除主键功能以后，TiDB 允许对表添加/删除主键。但需要注意的是，对于在未开启该功能时创建的整数类型的主键的表，即使开启添加/删除主键功能，也不能删除其主键约束。
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t5 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b) CLUSTERED);
+ALTER TABLE t5 DROP PRIMARY KEY;
+```
+
+```
+ERROR 8200 (HY000): Unsupported drop primary key when the table is using clustered index
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t5 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b) NONCLUSTERED);
+ALTER TABLE t5 DROP PRIMARY KEY;
+```
+
+```
+Query OK, 0 rows affected (0.10 sec)
+```
+
+要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ## 外键约束
 

@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v4.0.8` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.8-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.0.0-linux-amd64.tar.gz`。
 
 ## TiDB Lightning
 
@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v4.0.8` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.8-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v5.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.0.0-linux-amd64.tar.gz`。
 
 ## 备份和恢复 (BR) 工具
 
@@ -41,7 +41,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v4.0.8` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.8-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v5.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.0.0-linux-amd64.tar.gz`。
 
 ## TiDB DM (Data Migration)
 
@@ -53,7 +53,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v1.0.6` 版本的下载链接为 `https://download.pingcap.org/dm-v1.0.6-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
+> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v2.0.1` 版本的下载链接为 `https://download.pingcap.org/dm-v2.0.1-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
 
 ## Dumpling
 
@@ -65,8 +65,8 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v4.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.2-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
-> Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
+> - 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v4.0.11` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.11-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
+> - Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
 
 ## sync-diff-inspector
 

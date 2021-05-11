@@ -54,8 +54,9 @@ TiCDC 的系统架构如下图所示：
 
 - MySQL sink
 
-    - TiCDC 不拆分表内事务，**保证**单表事务一致性，但**不保证**与上游表内事务的顺序一致。如果事务间的主键有交集，依然可以保证与上游顺序一致。
-    - TiCDC 以表为单位拆分跨表事务，**不保证**跨表的事务始终一致。
+    - TiCDC 不拆分单表事务，**保证**单表事务的原子性。 
+    - TiCDC **不保证**下游事务的执行顺序和上游完全一致。
+    - TiCDC 以表为单位拆分跨表事务，**不保证**跨表事务的原子性。
     - TiCDC **保证**单行的更新与上游更新顺序一致。
 
 - Kafka sink
@@ -81,8 +82,27 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 
 - 暂不支持单独使用 RawKV 的 TiKV 集群。
 - 暂不支持 TiDB 4.0 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md) 和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
-- 暂不支持 [TiKV Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。TiCDC 会使 Region 无法进入静默状态。
+- 暂不支持 [TiKV Hibernate Region](/best-practices/massive-regions-best-practices.md#方法四开启-hibernate-region-功能)。TiCDC 会使 Region 无法进入静默状态。
 - 对上游存在较大事务的场景提供部分支持，详见：[FAQ：TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/troubleshoot-ticdc.md#ticdc-支持同步大事务吗有什么风险吗)。
+
+## 兼容性问题提示
+
+### 使用 TiCDC v5.0.0-rc 版本的 `cdc cli` 工具操作 v4.0.x 集群导致不兼容问题
+
+使用 TiCDC v5.0.0-rc 版本的 `cdc cli` 工具操作 v4.0.x 版本的 TiCDC 集群时，可能会遇到如下异常情况：
+
+- 若 TiCDC 集群版本为 v4.0.8 或以下，使用 v5.0.0-rc 版本的 `cdc cli` 创建同步任务 changefeed 时，可能导致 TiCDC 集群陷入异常状态，导致同步卡住。
+- 若 TiCDC 集群版本为 v4.0.9 或以上，使用 v5.0.0-rc 版本的 `cdc cli` 创建同步任务 changefeed，会导致 Old Value 和 Unified Sorter 特性被非预期地默认开启。
+
+处理方案：使用和 TiCDC 集群版本对应的 `cdc` 可执行文件进行如下操作：
+
+1. 删除使用 v5.0.0-rc 版本创建的 changefeed，例如：`tiup cdc:v4.0.9 cli changefeed remove -c xxxx --pd=xxxxx --force`。
+2. 如果 TiCDC 同步已经卡住，重启 TiCDC 集群，例如：`tiup cluster restart <cluster_name> -R cdc`。
+3. 重新创建 changefeed，例如：`tiup cdc:v4.0.9 cli changefeed create --sink-uri=xxxx --pd=xxx`。
+
+> **注意：**
+>
+> 上述问题仅在 `cdc cli` 的版本是 v5.0.0-rc 时存在。未来其他 v5.0.x 版本的 `cdc cli` 可以兼容 v4.0.x 版本的集群。
 
 ## TiCDC 安装和部署
 

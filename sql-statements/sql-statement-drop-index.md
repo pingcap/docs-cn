@@ -108,7 +108,7 @@ Query OK, 0 rows affected (0.30 sec)
 
 ## MySQL 兼容性
 
-* 默认不支持删除 `PRIMARY KEY`，在开启 `alter-primary-key` 配置项后可支持此功能，详情参考：[alter-primary-key](/tidb-configuration-file.md#alter-primary-key)。
+* 不支持删除 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ## 另请参阅
 
