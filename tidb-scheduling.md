@@ -20,7 +20,7 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
     * 从节点的恢复时间来看
         * 如果节点只是短暂掉线（重启服务），是否需要进行调度。
         * 如果节点是长时间掉线（磁盘故障，数据全部丢失），如何进行调度。
-    * 假设集群需要每个 Raft Group 有 N 个副本，从单个 Raft Group 的副本个数来看 
+    * 假设集群需要每个 Raft Group 有 N 个副本，从单个 Raft Group 的副本个数来看
         * 副本数量不够（例如节点掉线，失去副本），需要选择适当的机器的进行补充。
         * 副本数量过多（例如掉线的节点又恢复正常，自动加入集群），需要合理的删除多余的副本。
 * 读/写通过 Leader 进行，Leader 的分布只集中在少量几个节点会对集群造成影响。
@@ -67,7 +67,7 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
 
 **每个 TiKV 节点会定期向 PD 汇报节点的状态信息**
 
-TiKV 节点（Store）与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/release-3.1/proto/pdpb.proto#L421)，主要包括：
+TiKV 节点（Store）与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L473)，主要包括：
 
 * 总磁盘容量
 * 可用磁盘容量
@@ -79,7 +79,7 @@ TiKV 节点（Store）与 PD 之间存在心跳包，一方面 PD 通过心跳�
 
 **每个 Raft Group 的 Leader 会定期向 PD 汇报 Region 的状态信息**
 
-每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个[Region 的状态](https://github.com/pingcap/kvproto/blob/release-3.1/proto/pdpb.proto#L271)，主要包括下面几点信息：
+每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个[Region 的状态](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L312)，主要包括下面几点信息：
 
 * Leader 的位置
 * Followers 的位置

@@ -164,6 +164,10 @@ br backup full \
 
 这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
 
+> **注意：**
+>
+> 要完成一次备份，通常 TiKV 和 BR 需要的最小权限为 `s3:ListBucket`，`s3:PutObject` 和 `s3:AbortMultipartUpload`。
+
 将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
 
 {{< copyable "shell-regular" >}}
@@ -211,10 +215,10 @@ br backup full\
 {{< copyable "shell-regular" >}}
 
 ```shell
-LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata`
+LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata | tail -n1`
 ```
 
-示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。
+示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。 
 
 ### Raw KV 备份（实验性功能）
 
@@ -340,6 +344,10 @@ br restore full \
 ### 从 Amazon S3 后端存储恢复数据
 
 如果需要恢复的数据并不是存储在本地，而是在 Amazon 的 S3 后端，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
+
+> **注意：**
+>
+> 要完成一次恢复，通常 TiKV 和 BR 需要的最小权限为 `s3:ListBucket` 和 `s3:GetObject`。
 
 将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 BR 节点，并且通过 BR 将权限传给 TiKV 节点。
 

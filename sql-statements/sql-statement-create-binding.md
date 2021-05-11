@@ -16,13 +16,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-    'CREATE' GlobalScope 'BINDING' 'FOR' SelectStmt 'USING' SelectStmt
+    'CREATE' GlobalScope 'BINDING' 'FOR' BindableStmt 'USING' BindableStmt
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
 
-SelectStmt ::=
-    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable ) OrderByOptional SelectStmtLimit SelectLockOpt SelectStmtIntoOption
+BindableStmt ::=
+    ( SelectStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | DeleteStmt )
 ```
 
 ****

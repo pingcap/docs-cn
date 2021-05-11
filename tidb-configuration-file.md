@@ -13,12 +13,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 为每个 table 建立单独的 Region。
 + 默认值：true
-+ 如果需要创建大量的表，我们建议把这个参数设置为 false。
++ 如果需要创建大量的表，建议将此参数设置为 false。
 
 ### `token-limit`
 
 + 可以同时执行请求的 session 个数
++ 类型：Integer
 + 默认值：1000
++ 最小值：1
++ 最大值（64 位平台）：`18446744073709551615`
++ 最大值（32 位平台）：`4294967295`
 
 ### `mem-quota-query`
 
@@ -41,7 +45,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `tmp-storage-quota`
 
-+ `tmp-storage-path` 存储使用的限额，单位为字节。
++ `tmp-storage-path` 存储使用的限额。
++ 单位：Byte
 + 当单条 SQL 语句使用临时磁盘，导致 TiDB server 的总体临时磁盘总量超过 `tmp-storage-quota` 时，当前 SQL 操作会被取消，并返回 `Out Of Global Storage Quota!` 错误。
 + 当 `tmp-storage-quota` 小于 0 时则没有上述检查与限制。
 + 默认值: -1
@@ -83,7 +88,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `treat-old-version-utf8-as-utf8mb4`
 
-+ 将旧表中的 utf8 字符集当成 utf8mb4的开关。
++ 将旧表中的 utf8 字符集当成 utf8mb4 的开关。
 + 默认值：true
 
 ### `alter-primary-key`（已废弃）
@@ -132,7 +137,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用于设置新建索引的长度限制。
 + 默认值：3072
-+ 单位：byte。
++ 单位：Byte
 + 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
 
 ### `table-column-count-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -217,7 +222,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 输出 `expensive` 操作的行数阈值。
 + 默认值：10000
-+ 当查询的行数（包括中间结果，基于统计信息）大于这个值，我们就会当成是一个 `expensive` 的操作，输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
++ 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
 
 ### `query-log-max-len`
 
@@ -330,14 +335,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + TiDB 单行数据的大小限制
-+ 默认值：6291456 (Byte)
++ 默认值：6291456
++ 单位：Byte
 + 事务中单个 key-value 记录的大小限制。若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。
 + 注意，TiKV 有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 8MB，TiKV 会拒绝处理该请求。当表的一行记录较大时，需要同时修改这两个配置。
 
 ### `txn-total-size-limit`
 
 + TiDB 单个事务大小限制
-+ 默认值：104857600 (Byte)
++ 默认值：104857600
++ 单位：Byte
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `10737418240`（表示 10GB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
 
 ### `max-txn-ttl`
@@ -404,7 +411,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 修改过的行数/表的总行数的比值，超过该值时系统会认为统计信息已经过期，会采用 pseudo 的统计信息。
 + 默认值：0.8
-+ 最小值为 0；最大值为 1。
++ 最小值：0
++ 最大值：1
 
 ### `force-priority`
 
@@ -420,7 +428,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `nested-loop-join-cache-capacity`
 
-+ nested loop join cache LRU 使用的最大内存限制。可以占用的最大内存阈值，单位为字节。
++ nested loop join cache LRU 使用的最大内存限制。可以占用的最大内存阈值。
++ 单位：Byte
 + 默认值：20971520
 + 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
 
@@ -447,7 +456,8 @@ prepare 语句的 plan cache 设置。
 
 + 用于防止超过 performance.max-memory, 超过 max-memory * (1 - prepared-plan-cache.memory-guard-ratio) 会剔除 LRU 中的元素。
 + 默认值：0.1
-+ 最小值为 0；最大值为 1。
++ 最小值：0
++ 最大值：1
 
 ## tikv-client
 

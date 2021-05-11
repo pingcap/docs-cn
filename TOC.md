@@ -150,7 +150,7 @@
     + [BR 工具简介](/br/backup-and-restore-tool.md)
     + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    + [BR 存储](/br/backup-and-restore-storages.md)
+    + [外部存储](/br/backup-and-restore-storages.md)
     + [BR 常见问题](/br/backup-and-restore-faq.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -356,6 +356,7 @@
       - [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
+      - [`TABLE`](/sql-statements/sql-statement-table.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
@@ -527,6 +528,7 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v5.0
+    - [5.0.1](/releases/release-5.0.1.md)
     - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0

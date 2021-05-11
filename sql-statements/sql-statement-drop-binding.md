@@ -14,13 +14,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-binding/']
 
 ```ebnf+diagram
 DropBindingStmt ::=
-    'DROP' GlobalScope 'BINDING' 'FOR' SelectStmt ( 'USING' SelectStmt )?
+    'DROP' GlobalScope 'BINDING' 'FOR' BindableStmt ( 'USING' BindableStmt )?
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
 
-SelectStmt ::=
-    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable ) OrderByOptional SelectStmtLimit SelectLockOpt SelectStmtIntoOption
+BindableStmt ::=
+    ( SelectStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | DeleteStmt )
 ```
 
 ## 示例

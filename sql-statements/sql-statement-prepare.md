@@ -10,13 +10,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-prepare/','/docs-cn/dev/ref
 
 ## 语法图
 
-**PreparedStmt:**
+```ebnf+diagram
+PreparedStmt ::=
+    'PREPARE' Identifier 'FROM' PrepareSQL
 
-![PreparedStmt](/media/sqlgram/PreparedStmt.png)
-
-**PrepareSQL:**
-
-![PrepareSQL](/media/sqlgram/PrepareSQL.png)
+PrepareSQL ::=
+    stringLit
+|   UserVariable
+```
 
 ## 示例
 

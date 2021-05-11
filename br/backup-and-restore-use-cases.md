@@ -78,6 +78,8 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 ### 备份前的准备工作
 
+BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
+
 关于 `br backup` 命令的具体使用方法，参见[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
 
 运行 `br backup` 命令前，请确保以下条件：
@@ -98,8 +100,13 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 #### 前置要求
 
 * [备份前的准备工作](#备份前的准备工作)。
-* 配置一台高性能 SSD 硬盘主机为 NFS server 存储数据。其他所有 BR 节点和 TiKV 节点为 NFS client，挂载相同的路径（例如 `/br_data`）到 NFS server 上以访问 NFS server。
+* 配置一台高性能 SSD 硬盘主机为 NFS server 存储数据。其他所有 BR 节点、 TiKV 节点 和 TiFlash 节点为 NFS client，挂载相同的路径（例如 `/br_data`）到 NFS server 上以访问 NFS server。
 * NFS server 和 NFS client 间的数据传输速率至少要达到备份集群的 `TiKV 实例数 * 150MB/s`。否则网络 I/O 有可能成为性能瓶颈。
+
+> **注意：**
+>
+> * 因为备份时候只备份单副本 (leader) 数据，所以即使集群中存在 TiFlash 副本，无需挂载 TiFlash 节点 BR 也能完成备份。
+> * BR 在恢复数据时，会恢复全部副本的数据。因此在恢复时，TiFlash 节点需要有备份数据的访问权限 BR 才能完成恢复，此时也必须将 TiFlash 节点挂载到 NFS server 上 。
 
 #### 部署拓扑
 
@@ -203,7 +210,7 @@ BR 会在备份结束时输出备份总结到控制台。
 
 #### 性能调优
 
-如果 TiKV 的资源使用没有出现明显的瓶颈（例如[备份过程中的运行指标](#备份过程中的运行指标)中的 **Backup CPU Utilization** 最高为 `1500%` 左右，**IO Utilization** 普遍低于 `30%`），可以尝试调大 `--concurrency` 参数以进行性能调优。该方法不适用于存在许多小表的场景。
+如果 TiKV 的资源使用没有出现明显的瓶颈（例如[备份过程中的运行指标](#备份过程中的运行指标)中的 **Backup CPU Utilization** 最高为 `1500%` 左右，**IO Utilization** 普遍低于 `30%`），可以尝试调大 `--concurrency`（默认是 4）参数以进行性能调优。该方法不适用于存在许多小表的场景。
 
 示例如下：
 

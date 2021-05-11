@@ -8,7 +8,7 @@ title: TiUP DM
 
 ## 语法
 
-```sh
+```shell
 tiup dm [command] [flags]
 ```
 
@@ -32,21 +32,28 @@ tiup dm [command] [flags]
 
 运维过程中涉及到很多操作：指定 systemctl 启动/停止服务，等待端口上线/下线等，每个操作可能会消耗数秒，`--wait-timeout` 用于设置每个步骤的最长等待时间（单位为秒），超时后报错退出。
 
-### -y, --yes (boolean，默认 false)
+### -y, --yes 
 
-跳过所有风险操作的二次确认，除非是使用脚本调用 TiUP，否则不推荐使用。
+- 跳过所有风险操作的二次确认，除非是使用脚本调用 TiUP，否则不推荐使用。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### -v, --version（boolean，默认 false）
+### -v, --version
 
-输出 tiup-dm 当前版本信息。
+- 输出 tiup-dm 当前版本信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出相关命令的帮助信息。
+- 输出相关命令的帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 命令清单
 
 - [import](/tiup/tiup-component-dm-import.md)：导入使用  DM-Ansible 部署的 DM v1.0 集群
+- [template](/tiup/tiup-component-dm-template.md)：输出拓扑模版
 - [deploy](/tiup/tiup-component-dm-deploy.md)：根据指定拓扑部署集群
 - [list](/tiup/tiup-component-dm-list.md)：查询已部署的集群列表
 - [display](/tiup/tiup-component-dm-display.md)：展示指定集群状态
@@ -62,4 +69,7 @@ tiup dm [command] [flags]
 - [patch](/tiup/tiup-component-dm-patch.md)：替换已部署集群的某个服务
 - [destroy](/tiup/tiup-component-dm-destroy.md)：销毁指定集群
 - [audit](/tiup/tiup-component-dm-audit.md)：查询集群操作审计日志
+- [replay](/tiup/tiup-component-dm-replay.md)：重试指定命令
+- [enable](/tiup/tiup-component-dm-enable.md)：开启指定集群或服务开机自启动
+- [disable](/tiup/tiup-component-dm-disable.md)：关闭指定集群或服务开机自启动
 - [help](/tiup/tiup-component-dm-help.md)：输出帮助信息
