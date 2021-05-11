@@ -32,7 +32,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 在升级 PD 或 TiKV 时，会先将被升级节点的 leader 迁移到其他节点，迁移过程会需要一定时间，可以通过设置 `--transfer-timeout` 设置最长等待时间（单位为秒），超时之后会跳过等待直接升级服务。
 
 > **注意：**
-> 
+>
 > 若出现跳过等待直接升级的情况，服务性能可能会出现抖动。
 
 ### --ignore-config-check
@@ -41,7 +41,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-## --offline
+### --offline
 
 - 声明当前集群处于停止状态。指定该选项时，TiUP Cluster 仅原地替换集群组件的二进制文件，不执行迁移 Leader 以及重启服务等操作。
 - 数据类型：`BOOLEAN`

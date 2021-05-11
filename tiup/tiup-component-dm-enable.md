@@ -20,7 +20,7 @@ tiup dm enable <cluster-name> [flags]
 
 - 指定要开启自启的节点，该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-dm-display.md)表格的第一列。
 - 数据类型：`STRINGS`
-- 如果不指定该选项，默认关闭所有节点的自启。
+- 如果不指定该选项，默认开启所有节点的自启。
 
 > **注意：**
 >
