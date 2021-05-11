@@ -13,6 +13,55 @@ This document summarizes the FAQs related to TiDB data migration.
 
 Because TiDB supports most MySQL syntax, generally you can migrate your applications to TiDB without changing a single line of code in most cases.
 
+### Data import and export is slow, and many retries and EOF errors appear in the log of each component without other errors
+
+If no other logical errors occur, retries and EOF errors might be caused by network issues. It is recommended to first use tools to check the network connectivity. In the following example, [iperf](https://iperf.fr/) is used for troubleshooting:
+
++ Execute the following command on the server-side node where the retries and EOF errors occur:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    iperf3 -s
+    ```
+
++ Execute the following command on the client-side node where the retries and EOF errors occur:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    iperf3 -c <server-IP>
+    ```
+
+The following example is the output of a client node with a good network connection:
+
+```shell
+$ iperf3 -c 192.168.196.58
+Connecting to host 192.168.196.58, port 5201
+[  5] local 192.168.196.150 port 55397 connected to 192.168.196.58 port 5201
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  18.0 MBytes   150 Mbits/sec
+[  5]   1.00-2.00   sec  20.8 MBytes   175 Mbits/sec
+[  5]   2.00-3.00   sec  18.2 MBytes   153 Mbits/sec
+[  5]   3.00-4.00   sec  22.5 MBytes   188 Mbits/sec
+[  5]   4.00-5.00   sec  22.4 MBytes   188 Mbits/sec
+[  5]   5.00-6.00   sec  22.8 MBytes   191 Mbits/sec
+[  5]   6.00-7.00   sec  20.8 MBytes   174 Mbits/sec
+[  5]   7.00-8.00   sec  20.1 MBytes   168 Mbits/sec
+[  5]   8.00-9.00   sec  20.8 MBytes   175 Mbits/sec
+[  5]   9.00-10.00  sec  21.8 MBytes   183 Mbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-10.00  sec   208 MBytes   175 Mbits/sec                  sender
+[  5]   0.00-10.00  sec   208 MBytes   174 Mbits/sec                  receiver
+
+iperf Done.
+```
+
+If the output shows low network bandwidth and high bandwidth fluctuations, a large number of retries and EOF errors might appear in each component log. In this case, you need to consult your network service provider to improve the network quality.
+
+If the output of each metric looks good, try to update each component. If the problem persists after the updating, you can [contact us](https://tidbcommunity.slack.com/archives/CH7TTLL7P).
+
 ### If I accidentally import the MySQL user table into TiDB, or forget the password and cannot log in, how to deal with it?
 
 Restart the TiDB service, add the `-skip-grant-table=true` parameter in the configuration file. Log into the cluster without password and recreate the user, or recreate the `mysql.user` table. For the specific table schema, search the official documentation.
