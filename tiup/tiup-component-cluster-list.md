@@ -33,3 +33,5 @@ tiup cluster list [flags]
 - Version：集群版本
 - Path：集群部署数据在中控机上的路径
 - PrivateKey：连接集群的私钥所在路径
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

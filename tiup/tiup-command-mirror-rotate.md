@@ -56,3 +56,5 @@ tiup mirror rotate [flags]
 ## 输出
 
 - 各个镜像管理员当前的签名状态
+
+[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-command-mirror.md#命令清单)
