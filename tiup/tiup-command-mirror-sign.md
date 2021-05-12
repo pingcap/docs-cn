@@ -42,4 +42,4 @@ tiup mirror sign <manifest-file> [flags]
 - 文件已被指定的 key 签名过：`Error: this manifest file has already been signed by specified key`
 - 文件不是合法的 manifest：`Error: unmarshal manifest: %s`
 
-[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-component-mirror.md#命令清单)
+[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-command-mirror.md#命令清单)

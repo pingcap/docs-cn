@@ -29,4 +29,4 @@ tiup mirror merge <mirror-dir-1> [mirror-dir-N] [flags]
 - 成功：无输出
 - 当前镜像缺失目标镜像某个组件的管理员，或 `${TIUP_HOME}/keys` 缺失该管理员的私钥：`Error: missing owner keys for owner %s on component %s`
 
-[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-component-mirror.md#命令清单)
+[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-command-mirror.md#命令清单)

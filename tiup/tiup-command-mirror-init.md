@@ -41,4 +41,4 @@ tiup mirror init <path> [flags]
 - 若 `<path>` 不为空：`Error: the target path '%s' is not an empty directory`
 - 若 `<path>` 不是目录：`Error: fdopendir: not a directory`
 
-[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-component-mirror.md#命令清单)
+[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-command-mirror.md#命令清单)

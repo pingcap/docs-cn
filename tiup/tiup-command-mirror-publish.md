@@ -72,4 +72,4 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
     - 若使用远程镜像：`Error: The server refused, make sure you have access to this component`
     - 若使用本地镜像：`Error: the signature is not correct`
 
-[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-component-mirror.md#命令清单)
+[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-command-mirror.md#命令清单)
