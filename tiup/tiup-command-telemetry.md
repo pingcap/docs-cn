@@ -52,3 +52,5 @@ The `tiup telemetry enable` command is used to enable the telemetry.
 ### disable
 
 The `tiup telemetry disable` command is used to disable the telemetry.
+
+[<< Back to the previous page - TiUP Reference command list](/tiup/tiup-reference.md#command-list)

@@ -45,3 +45,5 @@ If it is a network address, this address must provide the following features:
 - If the command is executed successfully, there is no output.
 - If the file has been signed by the specified key, TiUP reports the error `Error: this manifest file has already been signed by specified key`.
 - If the file is not a valid manifest, TiUP reports the error `Error: unmarshal manifest: %s`.
+
+[<< Back to the previous page - TiUP Mirror command list](/tiup/tiup-command-mirror.md#command-list)

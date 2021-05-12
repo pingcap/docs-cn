@@ -51,3 +51,5 @@ tiup mirror genkey [flags]
 - If `-p/--public` is specified:
     - If the private key specified in `-n/--name` does not exist: TiUP reports the error `Error: open ${TIUP_HOME}/keys/{name}.json: no such file or directory`.
     - If the private key specified in `-n/--name` exists: TiUP outputs the content of the corresponding public key.
+
+[<< Back to the previous page - TiUP Mirror command list](/tiup/tiup-command-mirror.md#command-list)

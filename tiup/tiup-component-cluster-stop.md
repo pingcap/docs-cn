@@ -7,7 +7,7 @@ title: tiup cluster stop
 The `tiup cluster stop` command is used to stop all services or some services of the specified cluster.
 
 > **Note:**
-> 
+>
 > If the core services of a cluster are stopped, the cluster cannot provide services anymore.
 
 ## Syntax
@@ -27,7 +27,7 @@ tiup cluster stop <cluster-name> [flags]
 - If this option is not specified in the command, the command stops all the nodes by default.
 
 > **Note:**
-> 
+>
 > If the `-R, --role` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are stopped.
 
 ### -R, --role
@@ -37,7 +37,7 @@ tiup cluster stop <cluster-name> [flags]
 - If this option is not specified in the command, the command stops all the roles by default.
 
 > **Note:**
-> 
+>
 > If the `-N, --node` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are stopped.
 
 ### -h, --help
@@ -49,3 +49,5 @@ tiup cluster stop <cluster-name> [flags]
 ## Output
 
 The log of stopping the service.
+
+[<< Back to the previous page - TiUP Cluster command list](/tiup/tiup-component-cluster.md#command-list)

@@ -31,3 +31,5 @@ tiup dm edit-config <cluster-name> [flags]
 
 - Normally, no output.
 - If you have mistakenly modified the fields that cannot be modified, when you save the file, an error is reported, reminding you to edit the file again. For the fields that cannot be modified, see [the topology file](/tiup/tiup-dm-topology-reference.md).
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

@@ -37,3 +37,5 @@ tiup dm scale-in <cluster-name> [flags]
 ## Output
 
 The log of scaling in.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

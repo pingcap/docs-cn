@@ -40,3 +40,5 @@ Prints the help information.
 ## Output
 
 Outputs the topology template according to the specified options, which can be redirected to the topology file for deployment.
+
+[<< Back to the previous page - TiUP Cluster command list](/tiup/tiup-component-cluster.md#command-list)

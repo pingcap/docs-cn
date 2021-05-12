@@ -29,3 +29,5 @@ tiup dm destroy <cluster-name> [flags]
 ## Output
 
 The execution log of the tiup-dm.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

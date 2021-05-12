@@ -49,3 +49,5 @@ tiup dm restart <cluster-name> [flags]
 ## Outputs
 
 The log of the service restart process.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

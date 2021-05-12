@@ -33,3 +33,5 @@ A table consisting of the following fields:
 - `Version`: the cluster version.
 - `Path`: the path of the cluster deployment data on the control machine.
 - `PrivateKey`: the path of the private key to the cluster.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

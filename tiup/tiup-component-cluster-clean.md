@@ -12,7 +12,7 @@ In the test environment, sometimes you might need to reset the cluster back to t
 
 ## Syntax
 
-```sh
+```shell
 tiup cluster clean <cluster-name> [flags]
 ```
 
@@ -62,3 +62,5 @@ tiup cluster clean <cluster-name> [flags]
 ## Output
 
 The execution logs of tiup-cluster.
+
+[<< Back to the previous page - TiUP Cluster command list](/tiup/tiup-component-cluster.md#command-list)

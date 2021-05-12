@@ -75,3 +75,5 @@ You need to pack the binary package required for this command in advance accordi
 ## Outputs
 
 The execution log of tiup-dm.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

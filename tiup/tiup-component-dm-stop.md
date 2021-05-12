@@ -49,3 +49,5 @@ tiup dm stop <cluster-name> [flags]
 ## Output
 
 The log of stopping the service.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

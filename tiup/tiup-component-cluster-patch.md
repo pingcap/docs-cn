@@ -87,3 +87,5 @@ You need to pack the binary package required for this command in advance accordi
 ## Outputs
 
 The execution log of the tiup-cluster.
+
+[<< Back to the previous page - TiUP Cluster command list](/tiup/tiup-component-cluster.md#command-list)

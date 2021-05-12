@@ -6,7 +6,7 @@ title: tiup dm upgrade
 
 The `tiup dm upgrade` command is used to upgrade a specified cluster to a specific version.
 
-## Syntax 
+## Syntax
 
 ```shell
 tiup dm upgrade <cluster-name> <version> [flags]
@@ -30,3 +30,5 @@ tiup dm upgrade <cluster-name> <version> [flags]
 ## Output
 
 Log of the service upgrade process.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

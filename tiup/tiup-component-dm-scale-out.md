@@ -45,3 +45,5 @@ tiup dm scale-out <cluster-name> <topology.yaml> [flags]
 ## Output
 
 The log of scaling out.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

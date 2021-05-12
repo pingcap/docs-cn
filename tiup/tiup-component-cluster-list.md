@@ -33,3 +33,5 @@ Outputs the table with the following fields:
 - Version: the cluster version
 - Path: the path of the cluster deployment data on the control machine
 - PrivateKey: the path of the private key that is used to connect the cluster
+
+[<< Back to the previous page - TiUP Cluster command list](/tiup/tiup-component-cluster.md#command-list)

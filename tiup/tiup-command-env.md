@@ -24,3 +24,5 @@ None
 - If `[name1...N]` is specified, the "{value}" list is output in order.
 
 In the above output, if `value` is empty, it means that the value of the environment variable is not set. In this case, TiUP uses the default value.
+
+[<< Back to the previous page - TiUP Reference command list](/tiup/tiup-reference.md#command-list)

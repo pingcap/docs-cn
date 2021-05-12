@@ -40,3 +40,5 @@ tiup mirror grant <id> [flags]
 - If the command is executed successfully, there is no output.
 - If the component owner's ID is duplicated, TiUP reports the error `Error: owner %s exists`.
 - If the key is used by another component owner, TiUP reports the error `Error: key %s exists`.
+
+[<< Back to the previous page - TiUP Mirror command list](/tiup/tiup-command-mirror.md#command-list)

@@ -45,3 +45,5 @@ tiup dm deploy <cluster-name> <version> <topology.yaml> [flags]
 ## Output
 
 The deployment log.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)

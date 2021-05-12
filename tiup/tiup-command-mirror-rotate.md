@@ -58,3 +58,5 @@ For how mirror administrators sign files, refer to the [`sign` command](/tiup/ti
 ## Outputs
 
 The current signature status of each mirror administrator.
+
+[<< Back to the previous page - TiUP Mirror command list](/tiup/tiup-command-mirror.md#command-list)

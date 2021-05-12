@@ -68,3 +68,5 @@ tiup cluster scale-in <cluster-name> [flags]
 ## Output
 
 Shows the logs of the scaling-in process.
+
+[<< Back to the previous page - TiUP Cluster command list](/tiup/tiup-component-cluster.md#command-list)

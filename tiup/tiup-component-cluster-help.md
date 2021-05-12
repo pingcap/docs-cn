@@ -23,3 +23,5 @@ tiup cluster help [command] [flags]
 ## Output
 
 The help information of the `[command]` or tiup-cluster.
+
+[<< Back to the previous page - TiUP Cluster command list](/tiup/tiup-component-cluster.md#command-list)

@@ -688,7 +688,7 @@ You can add `--native-ssh` in all cluster operation commands above to use the sy
 
 To avoid adding such a flag in every command, you can use the `TIUP_NATIVE_SSH` system variable to specify whether to use the local SSH client:
 
-```sh
+```shell
 export TIUP_NATIVE_SSH=true
 # or
 export TIUP_NATIVE_SSH=1

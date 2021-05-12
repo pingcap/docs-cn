@@ -59,3 +59,5 @@ After you specify the `--skip-restart` option, it only refreshes the configurati
 ## Output
 
 The execution log of the tiup-dm.
+
+[<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)
