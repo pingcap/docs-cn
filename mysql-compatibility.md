@@ -39,6 +39,7 @@ However, some features of MySQL are not supported. This could be because there i
 + `CHECK TABLE` syntax [#4673](https://github.com/pingcap/tidb/issues/4673)
 + `CHECKSUM TABLE` syntax [#1895](https://github.com/pingcap/tidb/issues/1895)
 + `GET_LOCK` and `RELEASE_LOCK` functions [#14994](https://github.com/pingcap/tidb/issues/14994)
++ [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) with the `REPLACE` keyword [#24515](https://github.com/pingcap/tidb/issues/24515)
 
 ## Features that are different from MySQL
 

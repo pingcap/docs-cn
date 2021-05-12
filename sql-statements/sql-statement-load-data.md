@@ -105,7 +105,7 @@ In the above example, `x'2c'` is the hexadecimal representation of the `,` chara
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
+This statement is understood to be fully compatible with MySQL except for the `LOAD DATA...REPLACE INTO` syntax [#24515](https://github.com/pingcap/tidb/issues/24515). Any other compatibility differences should be [reported via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
 
 > **Note:**
 >
