@@ -227,3 +227,5 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - Check：检查项
 - Result：检查结果（Pass/Warn/Fail）
 - Message：结果描述
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
