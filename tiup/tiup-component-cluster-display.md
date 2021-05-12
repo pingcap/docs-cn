@@ -59,3 +59,5 @@ tiup cluster display <cluster-name> [flags]
     - Status：该节点服务当前的状态
     - Data Dir：服务的数据目录，`-` 表示没有数据目录
     - Deploy Dir：服务的部署目录
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

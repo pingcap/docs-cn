@@ -29,3 +29,5 @@ tiup dm destroy <cluster-name> [flags]
 ## 输出
 
 tiup-dm 的执行日志。
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)
