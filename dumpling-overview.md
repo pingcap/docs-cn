@@ -32,7 +32,7 @@ Dumpling 的更多具体用法可以使用 --help 选项查看，或者查看 [D
 
 使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
-可以通过运行 `tiup install dumpling` 命令来使用 [TiUP]（/tiup/tiup-overview.md）工具获取 Dumpling。之后，可以使用 `tiup dumpling ...` 命令运行 Dumpling。
+可以通过运行 `tiup install dumpling` 命令来使用 [TiUP](/tiup/tiup-overview.md）工具获取 Dumpling。之后，可以使用 `tiup dumpling ...` 命令运行 Dumpling。
 
 Dumpling 也包含在 tidb-toolkit 安装包中，可[在此下载](/download-ecosystem-tools.md#dumpling)。
 
