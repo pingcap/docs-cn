@@ -35,7 +35,9 @@ For detailed usage of Dumpling, use the `--help` option or refer to [Option list
 
 When using Dumpling, you need to execute the export command on a running cluster. This document assumes that there is a TiDB instance on the `127.0.0.1:4000` host and that this TiDB instance has a root user without a password.
 
-Dumpling is included in the tidb-toolkit installation package and can be [download here](/download-ecosystem-tools.md#dumpling).
+You can get Dumpling using [TiUP](/tiup/tiup-overview.md) by running `tiup install dumpling`. Afterwards, you can use `tiup dumpling ...` to run Dumpling.
+
+Dumpling is also included in the tidb-toolkit installation package and can be [download here](/download-ecosystem-tools.md#dumpling).
 
 ## Export data from TiDB/MySQL
 
