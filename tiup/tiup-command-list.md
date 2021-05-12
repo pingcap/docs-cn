@@ -42,3 +42,5 @@ tiup list [component] [flags]
 - 若指定 `[component]`
     - 若 `[component]` 存在：输出 `版本 (Version)`、`是否已安装 (Installed)`、`发布时间 (Release)`、`支持的平台 (Platforms)` 构成的版本信息列表
     - 若 `[component]` 不存在：报错 `failed to fetch component: unknown component`
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)
