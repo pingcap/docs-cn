@@ -31,3 +31,5 @@ tiup dm edit-config <cluster-name> [flags]
 
 - 正常情况无输出
 - 若修改了不能修改的字段，则保存文件时报错并提示用户重新编辑，不能修改的字段参考[拓扑文件](/tiup/tiup-dm-topology-reference.md)中的相关描述
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

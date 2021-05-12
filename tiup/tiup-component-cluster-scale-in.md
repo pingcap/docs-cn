@@ -60,3 +60,5 @@ tiup cluster scale-in <cluster-name> [flags]
 ## 输出
 
 缩容日志
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

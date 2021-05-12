@@ -23,3 +23,5 @@ tiup dm help [command] [flags]
 ## 输出
 
 `[command]` 或 tiup-dm 的帮助信息。
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

@@ -30,3 +30,5 @@ tiup dm upgrade <cluster-name> <version> [flags]
 ## 输出
 
 升级服务的日志。
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)
