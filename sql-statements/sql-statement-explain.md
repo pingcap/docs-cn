@@ -250,7 +250,7 @@ The `xx.dot` is the result returned by the above statement.
 
 ## `EXPLAIN FOR CONNECTION`
 
-`EXPLAIN FOR CONNECTION` 用于获得一个连接中最后执行的查询的执行计划，其输出格式与 `EXPLAIN` 完全一致。但 TiDB 中的实现与 MySQL 不同，除了输出格式之外，还有以下区别：
+`EXPLAIN FOR CONNECTION` 用于获得一个连接中当前正在执行 SQL 的执行计划或者是最后执行 SQL 的执行计划，其输出格式与 `EXPLAIN` 完全一致。但 TiDB 中的实现与 MySQL 不同，除了输出格式之外，还有以下区别：
 
 - MySQL 返回的是**正在执行**的查询计划，而 TiDB 返回的是**最后执行**的查询计划。
 - MySQL 的文档中指出，MySQL 要求登录用户与被查询的连接相同，或者拥有 `PROCESS` 权限，而 TiDB 则要求登录用户与被查询的连接相同，或者拥有 `SUPER` 权限。
