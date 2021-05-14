@@ -42,6 +42,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
 * `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
 * `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
+ [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 和 `REPLACE` 关键字 [#24515](https://github.com/pingcap/tidb/issues/24515)
 
 ## 与 MySQL 有差异的特性详细说明
 
