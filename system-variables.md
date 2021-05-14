@@ -1236,3 +1236,9 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `cte_max_recursion_depth`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：1000
+- 这个变量用于控制公共表表达式最大递归深度。
