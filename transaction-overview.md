@@ -72,7 +72,7 @@ COMMIT;
 
 ### 回滚事务
 
-[`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 语句用于回滚并撤销当前事务的所有修改。 
+[`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 语句用于回滚并撤销当前事务的所有修改。
 
 语法：
 
@@ -234,7 +234,7 @@ mysql> SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 惰性检查优化通过批处理约束检查并减少网络通信来提升性能。可以通过设置 [`tidb_constraint_check_in_place = TRUE`](/system-variables.md#tidb_constraint_check_in_place) 禁用该行为。
 
 > **注意：**
-> 
+>
 > + 本优化仅适用于乐观事务。
 > + 本优化仅对普通的 `INSERT` 语句生效，对 `INSERT IGNORE` 和 `INSERT ON DUPLICATE KEY UPDATE` 不会生效。
 
@@ -298,7 +298,7 @@ TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可�
 在 4.0 以前的版本，TiDB 限制了单个事务的键值对的总数量不超过 30 万条，从 4.0 版本起 TiDB 取消了这项限制。
 
 > **注意：**
-> 
+>
 > 通常，用户会开启 TiDB Binlog 将数据向下游进行同步。某些场景下，用户会使用消息中间件来消费同步到下游的 binlog，例如 Kafka。
 >
 > 以 Kafka 为例，Kafka 的单条消息处理能力的上限是 1 GB。因此，当把 `txn-total-size-limit` 设置为 1 GB 以上时，可能出现事务在 TiDB 中执行成功，但下游 Kafka 报错的情况。为避免这种情况出现，请用户根据最终消费者的限制来决定 `txn-total-size-limit` 的实际大小。例如：下游使用了 Kafka，则 `txn-total-size-limit` 不应超过 1 GB。
@@ -307,7 +307,7 @@ TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可�
 
 > **注意：**
 >
-> 因果一致性事务只在启用 Async Commit 特性和一阶段提交特性时生效。关于这两个特性的启用情况，请参见 [`tidb_enable_async_commit` 系统变量介绍](/system-variables.md#tidb_enable_async_commit-从-v500-rc-版本开始引入)和 [`tidb_enable_1pc` 系统变量介绍](/system-variables.md#tidb_enable_1pc-从-v500-rc-版本开始引入)。
+> 因果一致性事务只在启用 Async Commit 特性和一阶段提交特性时生效。关于这两个特性的启用情况，请参见 [`tidb_enable_async_commit` 系统变量介绍](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和 [`tidb_enable_1pc` 系统变量介绍](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)。
 
 TiDB 支持开启因果一致性的事务。因果一致性的事务在提交时无需向 PD 获取时间戳，所以提交延迟更低。开启因果一致性事务的语法为：
 

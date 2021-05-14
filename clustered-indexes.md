@@ -12,7 +12,7 @@ summary: 本文档介绍了聚簇索引的概念、使用场景、使用方法�
 - `NONCLUSTERED`，表示该表的主键为非聚簇索引。在非聚簇索引表中，行数据的键由 TiDB 内部隐式分配的 `_tidb_rowid` 构成，而主键本质上是唯一索引，因此非聚簇索引表存储一行至少需要两个键值对，分别为
     - `_tidb_rowid`（键）- 行数据（值）
     - 主键列数据（键） - `_tidb_rowid`（值）
-- `CLUSTERED`，表示该表的主键为聚簇索引。在聚簇索引表中，行数据的键由用户给定的主键列数据构成，不需要用唯一索引模拟，因此聚簇索引表存储一行至少只要一个键值对，即
+- `CLUSTERED`，表示该表的主键为聚簇索引。在聚簇索引表中，行数据的键由用户给定的主键列数据构成，因此聚簇索引表存储一行至少只要一个键值对，即
     - 主键列数据（键） - 行数据（值）
 
 > **注意：**
@@ -31,7 +31,7 @@ summary: 本文档介绍了聚簇索引的概念、使用场景、使用方法�
 另一方面，聚簇索引表也存在一定的劣势：
 
 - 批量插入大量取值相邻的主键时，可能会产生较大的写热点问题。
-- 当使用大于 64 位的数据类型作为主键时，可能导致表本身需要占用更多的存储空间。该现象在存在多个二级索引时尤为明显。
+- 当使用大于 64 位的数据类型作为主键时，可能导致表数据需要占用更多的存储空间。该现象在存在多个二级索引时尤为明显。
 
 ## 使用方法
 
@@ -50,14 +50,22 @@ CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) NONCLUSTERED);
 
 注意，列定义中的 `KEY` 和 `PRIMARY KEY` 含义相同。
 
-此外，TiDB 支持[可执行的注释语法](/comment-syntax.md)：
+此外，TiDB 支持使用[可执行的注释语法](/comment-syntax.md)指定聚簇索引属性：
 
 ```sql
-CREATE TABLE t (a BIGINT PRIMARY KEY /*T![clustered_index] CLUSTERED */, b VARCHAR(255)); 
+CREATE TABLE t (a BIGINT PRIMARY KEY /*T![clustered_index] CLUSTERED */, b VARCHAR(255));
 CREATE TABLE t (a BIGINT PRIMARY KEY /*T![clustered_index] NONCLUSTERED */, b VARCHAR(255));
-CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] CLUSTERED */,);
-CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] NONCLUSTERED */); 
+CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] CLUSTERED */);
+CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] NONCLUSTERED */);
 ```
+
+对于未显式指定该关键字的语句，默认行为受系统变量 `@@global.tidb_enable_clustered_index` 影响。该变量有三个取值：
+
+- `OFF` 表示所有主键默认使用非聚簇索引。
+- `ON` 表示所有主键默认使用聚簇索引。
+- `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
+
+系统变量 `@@global.tidb_enable_clustered_index` 本身的默认值为 `INT_ONLY`。
 
 ### 添加、删除聚簇索引
 
@@ -84,9 +92,9 @@ ALTER TABLE t DROP INDEX `PRIMARY`;
 
 可通过以下方式来确定一张表的主键是否使用了聚簇索引：
 
-- `SHOW CREATE TABLE`
-- `SHOW INDEX FROM`
-- `information_schema.tables`
+- 执行语句 `SHOW CREATE TABLE`。
+- 执行语句 `SHOW INDEX FROM`。
+- 查询系统表 `information_schema.tables` 中的 `TIDB_PK_TYPE` 列。
 
 通过 `SHOW CREATE TABLE` 查看，`PRIMARY KEY` 的属性可能为 `CLUSTERED` 或 `NONCLUSTERED`：
 
@@ -133,13 +141,13 @@ mysql> SELECT TIDB_PK_TYPE FROM information_schema.tables WHERE table_schema = '
 目前 TiDB 的聚簇索引具有以下两类限制：
 
 - 明确不支持且没有支持计划的使用限制：
-    - 不支持与 TiDB Binlog 一起使用。开启 TiDB Binlog 后 TiDB 不允许创建非单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 TiDB Binlog 同步到下游。如需同步聚簇索引表，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
+    - 不支持与 TiDB Binlog 一起使用。开启 TiDB Binlog 后 TiDB 只允许创建单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 TiDB Binlog 同步到下游。如需同步聚簇索引表，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
     - 不支持与 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 一起使用；[`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 在聚簇索引表上不生效。
     - 不支持对聚簇索引表进行降级。如需降级，请使用逻辑备份工具迁移数据。
 - 另一类是尚未支持，但未来有计划支持的使用限制：
     - 尚未支持通过 `ALTER TABLE` 语句增加、删除、修改聚簇索引。
 
-开启 TiDB Binlog 之后，创建非单个整数列作为主键的聚簇索引会报以下错误：
+开启 TiDB Binlog 之后，要创建的聚簇索引如果不是由单个整数列构成，会报以下错误：
 
 ```sql
 mysql> CREATE TABLE t (a VARCHAR(255) PRIMARY KEY CLUSTERED);
@@ -165,11 +173,11 @@ TiDB 支持对聚簇索引表的升级兼容，但不支持降级兼容，即高
 - 主键只有一列
 - 主键的数据类型为整数类型
 
-从 TiDB v5.0 开始，不论是单整数列主键还是其他类型主键，默认均为非聚簇索引。该行为变更可能导致默认配置下的 TiDB 在某些场景中出现性能回退，此时可以考虑显式启用聚簇索引。
+TiDB v5.0 完成了所有类型主键的支持，但默认行为与 TiDB v3.0 和 v4.0 保持一致。要修改默认行为，请设置系统变量 `@@tidb_enable_clustered_index` 为 `ON` 或 `OFF`。
 
 ### MySQL 兼容性
 
-TiDB 支持使用可执行注释的语法来包裹 `CLUSTERED` 或 `NONCLUSTERED` 关键字，且 `SHOW CREATE TABLE` 的结果均包含 TiDB 特有的可执行注释，因此这部分 DDL 语句能被 MySQL 或低版本的 TiDB 识别并执行。
+TiDB 支持使用可执行注释的语法来包裹 `CLUSTERED` 或 `NONCLUSTERED` 关键字，且 `SHOW CREATE TABLE` 的结果均包含 TiDB 特有的可执行注释，这些注释在 MySQL 或低版本的 TiDB 中会被忽略。
 
 ### TiDB 生态工具兼容性
 

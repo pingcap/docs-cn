@@ -67,7 +67,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8025
 
-    写入的单条键值对过大。TiDB 最大支持 6MB 的单个键值对，超过该限制需要将过大的单行数据进行人工处理，以满足 6MB 限制。
+    写入的单条键值对过大。TiDB 默认支持最大 6MB 的单个键值对，超过该限制可适当调整 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项以放宽限制。
 
 * Error Number: 8026
 
@@ -75,7 +75,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8027
 
-    表结构版本过期。TiDB 使用 F1 的在线 Schema 变更算法来执行 DDL。当 TiDB server 表结构版本落后于整个系统的时，执行 SQL 将遇到该错误。遇到该错误，请检查该 TiDB server 与 PD leader 之间的网络。
+    表结构版本过期。TiDB 采用在线变更表结构的方法。当 TiDB server 表结构版本落后于整个系统的时，执行 SQL 将遇到该错误。遇到该错误，请检查该 TiDB server 与 PD leader 之间的网络。
 
 * Error Number: 8028
 
@@ -119,7 +119,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8048
 
-    设置了不支持的隔离级别，如果是使用第三方工具或框架等无法修改代码进行适配的情况，可以考虑通过 `tidb_skip_isolation_level_check` 来绕过这一检查。
+    设置了不支持的隔离级别，如果是使用第三方工具或框架等无法修改代码进行适配的情况，可以考虑通过 [`tidb_skip_isolation_level_check`](/system-variables.md#tidb_skip_isolation_level_check) 来绕过这一检查。
 
     {{< copyable "sql" >}}
 
@@ -141,13 +141,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8055
 
-    当前快照过旧，数据可能已经被 GC。可以调大 `tikv_gc_life_time` 的值来避免该问题。新版本的 TiDB 会自动为长时间运行的事务保留数据，一般不会遇到该错误。有关 GC 的介绍和配置可以参考 [GC 机制简介](/garbage-collection-overview.md)和 [GC 配置](/garbage-collection-configuration.md)文档。
+    当前快照过旧，数据可能已经被 GC。可以调大 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值来避免该问题。从 TiDB v4.0.8 版本起，TiDB 会自动为长时间运行的事务保留数据，一般不会遇到该错误。
 
-    {{< copyable "sql" >}}
-
-    ```sql
-    update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";
-    ```
+    有关 GC 的介绍和配置可以参考 [GC 机制简介](/garbage-collection-overview.md)和 [GC 配置](/garbage-collection-configuration.md)文档。
 
 * Error Number: 8059
 

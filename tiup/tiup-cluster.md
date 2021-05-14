@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-cluster/','/docs-cn/dev/reference/tools/tiup/c
 
 本文重在介绍如何使用 TiUP 的 cluster 组件，如果需要线上部署的完整步骤，可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
-与 playground 组件用于部署本地集群类似，cluster 组件用于快速部署生产集群。对比 playground，cluster 组件提供了更强大的集群管理功能，包括对集群的升级、缩容、扩容甚至操作、审计等。
+与 playground 组件用于部署本地测试集群类似，cluster 组件用于快速部署生产集群。对比 playground，cluster 组件提供了更强大的生产集群管理功能，包括对集群的升级、缩容、扩容甚至操作、审计等。
 
 cluster 组件的帮助文档如下：
 
@@ -100,14 +100,14 @@ TiUP 默认部署在 amd64 架构上运行的 binary，若目标机器为 arm64 
 ```yaml
 global:
   arch: "arm64"           # 让所有机器默认使用 arm64 的 binary
- 
+
 tidb_servers:
   - host: 172.16.5.134
     arch: "amd64"         # 这台机器会使用 amd64 的 binary
   - host: 172.16.5.139
     arch: "arm64"         # 这台机器会使用 arm64 的 binary
   - host: 172.16.5.140    # 没有配置 arch 字段的机器，会使用 global 中的默认值，这个例子中是 arm64
-  
+
 ...
 ```
 
@@ -352,12 +352,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v5.0.0-rc 的命令为：
+例如，把集群升级到 v5.0.0 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v5.0.0-rc
+tiup cluster upgrade tidb-test v5.0.0
 ```
 
 ## 更新配置
@@ -663,7 +663,7 @@ tiup cluster check <cluster-name> --cluster
 
 也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--native-ssh` 参数：
 
-```sh
+```shell
 export TIUP_NATIVE_SSH=true
 # 或者
 export TIUP_NATIVE_SSh=1
@@ -682,11 +682,11 @@ export TIUP_NATIVE_SSH=enable
 TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，若要迁移中控机只需要拷贝 `.tiup` 目录到对应目标机器即可。
 
 1. 在原机器 home 目录下执行 `tar czvf tiup.tar.gz .tiup`。
-2. 把 `tip.tar.gz` 拷贝到目标机器 home 目录。
+2. 把 `tiup.tar.gz` 拷贝到目标机器 home 目录。
 3. 在目标机器 home 目录下执行 `tar xzvf tiup.tar.gz`。
 4. 添加 `.tiup` 目录到 `PATH` 环境变量。
 
-    如使用 `bash` 并且是 `tidb` 用户，在 `~/.bashr` 中添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后执行 `source ~/.bashrc`，根据使用的 shell 与用户做相应调整。
+    如使用 `bash` 并且是 `tidb` 用户，在 `~/.bashrc` 中添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后执行 `source ~/.bashrc`，根据使用的 shell 与用户做相应调整。
 
 > **注意：**
 >

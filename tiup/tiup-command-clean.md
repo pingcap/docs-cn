@@ -8,7 +8,7 @@ title: tiup clean
 
 ## 语法
 
-```sh
+```shell
 tiup clean [name] [flags]
 ```
 
@@ -16,12 +16,16 @@ tiup clean [name] [flags]
 
 ## 选项
 
-### --all (boolean, 默认 false)
+### --all
 
-清除所有运行记录。
+- 清除所有运行记录。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
 ```
 Clean instance of `%s`, directory: %s
 ```
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

@@ -423,19 +423,15 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `sum(increase(tidb_tikvclient_gc_action_result{type="success"}[6h])) < 1`
-
-    > **注意：**
-    >
-    > 由于 3.0 中引入了分布式 GC 且 GC 不会在 TiDB 执行，因此 `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 以上版本中存在，但是不会有值。
+    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1`
 
 * 规则描述：
 
-    在 6 小时内 Region 上没有成功执行 GC，说明 GC 不能正常工作了。短期内 GC 不运行不会造成太大的影响，但如果 GC 一直不运行，版本会越来越多，从而导致查询变慢。
+    在 24 小时内一个 TiKV 实例上没有成功执行 GC，说明 GC 不能正常工作了。短期内 GC 不运行不会造成太大的影响，但如果 GC 一直不运行，版本会越来越多，从而导致查询变慢。
 
 * 处理方法：
 
-    1. 执行 `select VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME="tikv_gc_leader_desc"` 来找到 gc leader 对应的 `tidb-server`；
+    1. 执行 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME="tikv_gc_leader_desc"` 来找到 gc leader 对应的 `tidb-server`；
     2. 查看该 `tidb-server` 的日志，grep gc_worker tidb.log；
     3. 如果发现这段时间一直在 resolve locks（最后一条日志是 `start resolve locks`）或者 delete ranges（最后一条日志是 `start delete {number} ranges`），说明 GC 进程是正常的。否则需要报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
 
@@ -603,25 +599,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 * 规则描述：
 
     Apply Raft log 线程压力太大，通常是因为写入太猛了。
-
-#### `TiDB_tikvclient_gc_action_fail`（基本不发生，只在特殊配置下才会发生）
-
-* 报警规则：
-
-    `sum(increase(tidb_tikvclient_gc_action_result{type="fail”}[1m])) > 10`
-
-    > **注意：**
-    >
-    > 由于 3.0 中引入了分布式 GC 且 GC 不会在 TiDB 执行，因此 `tidb_tikvclient_gc_action_result` 指标虽然在 3.* 以上版本中存在，但是不会有值。
-
-* 规则描述：
-
-    GC 失败的 Region 较多。
-
-* 处理方法：
-
-    1. 一般是因为并行 GC 开的太高了，可以适当降低 GC 并行度。你需要先确认 GC 失败是由于服务器繁忙导致的。
-    2. 通过执行 `update set VARIABLE_VALUE=”{number}” where VARIABLE_NAME=”tikv_gc_concurrency”` 适当降低并行度。
 
 ### 警告级别报警项
 

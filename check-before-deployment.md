@@ -510,7 +510,7 @@ sudo systemctl enable ntpd.service
 
     ```bash
     cpupower frequency-info --policy
-      ```
+    ```
 
     ```
     analyzing CPU 0:
@@ -570,11 +570,12 @@ sudo systemctl enable ntpd.service
     tidb ALL=(ALL) NOPASSWD: ALL
     ```
 
-3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成你的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。
+3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成你的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。新建的 `tidb` 用户下没有 `.ssh` 目录，需要执行生成 rsa 密钥的命令来生成 `.ssh` 目录。如果要在中控机上部署 TiDB 组件，需要为中控机和中控机自身配置互信。
 
     {{< copyable "shell-regular" >}}
 
     ```bash
+    ssh-keygen -t rsa
     ssh-copy-id -i ~/.ssh/id_rsa.pub 10.0.1.1
     ```
 

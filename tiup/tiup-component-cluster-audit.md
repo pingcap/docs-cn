@@ -8,7 +8,7 @@ title: tiup cluster audit
 
 ## 语法
 
-```sh
+```shell
 tiup cluster audit [audit-id] [flags]
 ```
 
@@ -17,9 +17,11 @@ tiup cluster audit [audit-id] [flags]
 
 ## 选项
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
@@ -28,3 +30,5 @@ tiup cluster audit [audit-id] [flags]
     - ID：该条记录对应的 audit-id
     - Time：该条记录对应的命令执行时间
     - Command：该条记录对应的命令
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

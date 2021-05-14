@@ -171,7 +171,13 @@ mysql> SELECT * FROM t1;
     * 1：aggregation 和 join 的请求会进行批量发送
     * 2：所有的 cop 请求都会批量发送
 
-### `tidb_allow_mpp` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+### `tidb_allow_fallback_to_tikv` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：""
+- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
+
+### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON（表示开启）
@@ -227,13 +233,13 @@ mysql> SELECT * FROM t1;
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
-### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：10240
 - 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
-### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：104857600（表示 100 兆）
@@ -396,20 +402,20 @@ mysql> SELECT * FROM t1;
 >
 > 目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分不兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 TiDB Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
 
-### `tidb_enable_async_commit` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_enable_async_commit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 RC 及之后版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
+- 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 OFF。
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
 > **注意：**
 >
 > 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 
-### `tidb_enable_1pc` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 RC 及之后版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
+- 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 OFF。
 - 指定是否在只涉及一个 Region 的事务上启用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
 
 > **注意：**
@@ -428,22 +434,14 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 这个变量用来设置是否启用 Coprocessor 的 `Chunk` 数据编码格式。
 
-### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_enable_clustered_index` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 这个变量用于控制是否开启[聚簇索引](/clustered-indexes.md)特性。
-    - 该特性只适用于新创建的表，对于已经创建的旧表不会有影响。
-    - 该特性只适用于主键为单列非整数类型的表和主键为多列的表。对于无主键的表和主键是单列整数类型的表不会有影响。
-    - 通过执行 `select tidb_pk_type from information_schema.tables where table_name = '{table_name}'` 可以查看一张表是否使用了聚簇索引特性。
-- 特性启用以后，row 会直接存储在主键上，而不再是存储在系统内部分配的 `row_id` 上并用额外创建的主键索引指向 `row_id`。
-
-    开启该特性对性能的影响主要体现在以下几个方面:
-
-    - 插入的时候每行会减少一个索引 key 的写入。
-    - 使用主键作为等值条件查询的时候，会节省一次读取请求。
-    - 使用单列主键作为范围条件查询的时候，可以节省多次读取请求。
-    - 使用多列主键的前缀作为等值或范围条件查询的时候，可以节省多次读取请求。
+- 默认值：INT_ONLY
+- 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
+    - `OFF` 表示所有主键默认使用非聚簇索引。
+    - `ON` 表示所有主键默认使用聚簇索引。
+    - `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
 
 ### `tidb_enable_collect_execution_info`
 
@@ -475,6 +473,8 @@ mysql> SELECT * FROM t1;
     * `SQL_CALC_FOUND_ROWS` 语法
     * `CREATE TEMPORARY TABLE` 语法
     * `DROP TEMPORARY TABLE` 语法
+    * `START TRANSACTION READ ONLY` 和 `SET TRANSACTION READ ONLY` 语法
+    * `tx_read_only`、`transaction_read_only`、`offline_mode`、`super_read_only` 以及 `read_only` 系统变量
 
 > **注意：**
 >
@@ -499,6 +499,28 @@ mysql> SELECT * FROM t1;
 - 默认值：ON（受配置文件影响，这里给出的是默认配置文件取值）
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
 
+### tidb_enable_strict_double_type_check <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：ON
+- 这个变量用来控制是否可以用 `DOUBLE` 类型的无效定义创建表。该设置的目的是提供一个从 TiDB 早期版本升级的方法，因为早期版本在验证类型方面不太严格。
+- 该变量的默认值 `ON` 与 MySQL 兼容。
+
+例如，由于无法保证浮点类型的精度，现在将 `DOUBLE(10)` 类型视为无效。将 `tidb_enable_strict_double_type_check` 更改为 `OFF` 后，将会创建表。如下所示：
+
+```sql
+CREATE TABLE t1 (id int, c double(10));
+ERROR 1149 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+SET tidb_enable_strict_double_type_check = 'OFF';
+Query OK, 0 rows affected (0.00 sec)
+CREATE TABLE t1 (id int, c double(10));
+Query OK, 0 rows affected (0.09 sec)
+```
+
+> **注意：**
+>
+> 该设置仅适用于 `DOUBLE` 类型，因为 MySQL 允许为 `FLOAT` 类型指定精度。从 MySQL 8.0.17 开始已弃用此行为，不建议为 `FLOAT` 或 `DOUBLE` 类型指定精度。
+
 ### `tidb_enable_table_partition`
 
 - 作用域：SESSION | GLOBAL
@@ -508,7 +530,7 @@ mysql> SELECT * FROM t1;
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
+### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -517,6 +539,12 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION
 - 默认值：OFF
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
+
+### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：0
+- 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
@@ -565,7 +593,7 @@ mysql> SELECT * FROM t1;
 - 默认值：00:00 +0000
 - 这个变量用来设置一天中允许自动演进的开始时间。
 
-### `tidb_executor_concurrency` <span class="version-mark">从 v5.0.0-rc 版本开始引入</span>
+### `tidb_executor_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：5
@@ -589,9 +617,9 @@ mysql> SELECT * FROM t1;
 + `tidb_projection_concurrency`
 + `tidb_window_concurrency`
 
-v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警告），且修改只影响单个算子。后续通过 `tidb_executor_concurrency` 的修改也不会影响该算子。若要通过 `tidb_executor_concurrency` 来管理所有算子的并发度，需要将以上所列变量的值设置为 `-1`。
+v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告），且修改只影响单个算子。后续通过 `tidb_executor_concurrency` 的修改也不会影响该算子。若要通过 `tidb_executor_concurrency` 来管理所有算子的并发度，需要将以上所列变量的值设置为 `-1`。
 
-对于从 v5.0.0-rc 之前的版本升级到 v5.0.0-rc 的系统，如果用户对上述所列变量的值没有做过改动（即 `tidb_hash_join_concurrency` 值为 `5`，其他值为 `4`），则会自动转为使用 `tidb_executor_concurrency` 来统一管理算子并发度。如果用户对上述变量的值做过改动，则沿用之前的变量对相应的算子做并发控制。
+对于从 v5.0 之前的版本升级到 v5.0 的系统，如果用户对上述所列变量的值没有做过改动（即 `tidb_hash_join_concurrency` 值为 `5`，其他值为 `4`），则会自动转为使用 `tidb_executor_concurrency` 来统一管理算子并发度。如果用户对上述变量的值做过改动，则沿用之前的变量对相应的算子做并发控制。
 
 ### `tidb_expensive_query_time_threshold`
 
@@ -605,6 +633,50 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 - 默认值：NO_PRIORITY
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
+
+### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：-1
+- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
+
+### `tidb_gc_enable` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：ON
+- 这个变量用于控制是否启用 TiKV 的垃圾回收 (GC) 机制。如果不启用 GC 机制，系统将不再清理旧版本的数据，因此会有损系统性能。
+
+### `tidb_gc_life_time` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`"10m0s"`
+- 这个变量用于指定每次进行垃圾回收 (GC) 时保留数据的时限。变量值为 Go 的 Duration 字符串格式。每次进行 GC 时，将以当前时间减去该变量的值作为 safe point。
+
+> **Note:**
+>
+> - 在数据频繁更新的场景下，将 `tidb_gc_life_time` 的值设置得过大（如数天甚至数月）可能会导致一些潜在的问题，如：
+>     - 占用更多的存储空间。
+>     - 大量的历史数据可能会在一定程度上影响系统性能，尤其是范围的查询（如 `select count(*) from t`）。
+> - 如果一个事务的运行时长超过了 `tidb_gc_life_time` 配置的值，在 GC 时，为了使这个事务可以继续正常运行，系统会保留从这个事务开始时间 `start_ts` 以来的数据。例如，如果 `tidb_gc_life_time` 的值配置为 10 分钟，且在一次 GC 时，集群正在运行的事务中最早开始的那个事务已经运行了 15 分钟，那么本次 GC 将保留最近 15 分钟的数据。
+
+### `tidb_gc_run_interval` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`"10m0s"`
+- 这个变量用于指定垃圾回收 (GC) 运行的时间间隔。变量值为 Go 的 Duration 字符串格式，如`"1h30m"`、`"15m"`等。
+
+### `tidb_gc_scan_lock_mode` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+> **警告：**
+>
+> Green GC 目前是实验性功能，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 默认值：`LEGACY`
+- 可设置为：
+    - `LEGACY`：使用旧的扫描方式，即禁用 Green GC。
+    - `PHYSICAL`：使用物理扫描方式，即启用 Green GC。
+- 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-实验特性) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
 
 ### `tidb_general_log`
 
@@ -626,7 +698,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 > **警告：**
 >
-> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -637,7 +709,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 > **警告：**
 >
-> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -648,7 +720,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 > **警告：**
 >
-> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -665,7 +737,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 > **警告：**
 >
-> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -676,7 +748,7 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 
 > **警告：**
 >
-> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -733,6 +805,13 @@ v5.0.0-rc 后，用户仍可以单独修改以上系统变量（会有废弃警�
 - 默认值：1 GB
 - 这个变量用来设置一条查询语句的内存使用阈值。
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
+
+### `tidb_mem_quota_apply_cache` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：32 MB
+- 这个变量用来设置 `Apply` 算子中局部 Cache 的内存使用阈值。
+- `Apply` 算子中局部 Cache 用来加速 `Apply` 算子的计算，该变量可以设置 `Apply` Cache 的内存使用阈值。设置变量值为 `0` 可以关闭 `Apply` Cache 功能。
 
 ### `tidb_memory_usage_alarm_ratio`
 
@@ -862,7 +941,7 @@ mysql> desc select count(distinct a) from test.t;
     select * from t, t1 where t.a=t1.a;
     ```
 
-### `tidb_opt_prefer_range_scan`
+### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION
 - 默认值：0
@@ -909,7 +988,7 @@ explain select * from t where age=5;
 
 > **警告：**
 >
-> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -1000,7 +1079,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 这个变量用来设置是否校验 UTF-8 字符的合法性。
 - 校验 UTF-8 字符会损耗些许性能。当你确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 `ON`。
 
-### `tidb_skip_ascii_check`
+### `tidb_skip_ascii_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
@@ -1037,6 +1116,8 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：24（受配置文件影响，这里给出的是默认配置文件取值）
+- 最小值：0
+- 最大值：255
 - 这个变量设置了 statement summary 的历史记录容量。
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -1049,18 +1130,24 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：4096（受配置文件影响，这里给出的是默认配置文件取值）
+- 最小值：0
+- 最大值：2147483647
 - 这个变量控制 statement summary 显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：200（受配置文件影响，这里给出的是默认配置文件取值）
+- 最小值：0
+- 最大值：32767
 - 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：1800（受配置文件影响，这里给出的是默认配置文件取值）
+- 最小值：1
+- 最大值：2147483647
 - 这个变量设置了 statement summary 的刷新时间，单位为秒。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
@@ -1102,7 +1189,7 @@ set tidb_slow_log_threshold = 200;
 
 > **警告：**
 >
-> 从 v5.0.0-rc 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v500-rc-版本开始引入) 进行设置。
+> 从 v5.0 版本开始，该变量被废弃。请使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：-1
@@ -1149,15 +1236,3 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：0
-- 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
-
-### `tidb_allow_fallback_to_tikv` <span class="version-mark">从 v5.0 GA 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：""
-- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。

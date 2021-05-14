@@ -140,8 +140,8 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
-sh tidb-community-server-${version}-linux-amd64/local_install.sh
+tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz && \
+sh tidb-community-server-${version}-linux-amd64/local_install.sh && \
 source /home/tidb/.bash_profile
 ```
 

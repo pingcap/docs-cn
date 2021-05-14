@@ -12,7 +12,7 @@ title: tiup cluster stop
 
 ## 语法
 
-```sh
+```shell
 tiup cluster stop <cluster-name> [flags]
 ```
 
@@ -28,7 +28,7 @@ tiup cluster stop <cluster-name> [flags]
 > 
 > 若同时指定了 `-R, --role`，那么将停止它们的交集中的服务。
 
-### -R, --role strings（strings，默认为 []，表示所有角色）
+### -R, --role（strings，默认为 []，表示所有角色）
 
 指定要停止的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
 
@@ -36,10 +36,14 @@ tiup cluster stop <cluster-name> [flags]
 > 
 > 若同时指定了 `-N, --node`，那么将停止它们的交集中的服务。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
 停止服务的日志。
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

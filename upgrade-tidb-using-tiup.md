@@ -9,15 +9,15 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 如果原集群是 3.0 或 3.1 或更老的版本，需要先升级到 4.0 后再升级到 5.0，不可跨主版本升级。
 
-> **注意：**
->
-> 从 TiDB 4.0 起，PingCAP 不再提供 TiDB Ansible 的支持。从 5.0 起，不再提供使用 TiDB Ansible 升级集群的文档。如需阅读使用 TiDB Ansible 升级 TiDB 集群的文档，可参阅 [4.0 版使用 TiDB Ansible 升级 TiDB](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-ansible)。
-
 ## 1. 升级兼容性说明
 
 - 不支持在升级后回退至 4.0 或更旧版本。
 - 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.0 版本。
-- 3.0 之前的版本，需要先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)，然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入，并升级到 4.0 版本，再按本文档说明升级到 5.0 版本。
+- 若要将 3.0 之前的版本升级至 5.0 版本：
+    1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
+    2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
+    3. 将集群升级至 4.0 版本。
+    4. 按本文档说明将集群升级到 5.0 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 
 > **注意：**
@@ -28,7 +28,9 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 本部分介绍实际开始升级前需要进行的更新 TiUP 和 TiUP Cluster 组件版本等准备工作。
 
-### 2.1 升级 TiUP 和 TiUP Cluster
+### 2.1 升级 TiUP 或更新 TiUP 离线镜像
+
+#### 升级 TiUP 和 TiUP Cluster
 
 > **注意：**
 >
@@ -52,7 +54,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     tiup cluster --version
     ```
 
-### 2.2 更新 TiUP 离线镜像
+#### 更新 TiUP 离线镜像
 
 > **注意：**
 >
@@ -78,7 +80,7 @@ tiup update cluster
 
 此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests/*` 后再使用。
 
-### 2.3 编辑 TiUP Cluster 拓扑配置文件
+### 2.2 编辑 TiUP Cluster 拓扑配置文件
 
 > **注意：**
 >
@@ -101,9 +103,15 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 5.0 版本前，请确认已在 4.0 修改的参数在 5.0 版本中是兼容的，可参考 [TiKV 配置文件描述]/tikv-configuration-file.md)。
+> 升级到 5.0 版本前，请确认已在 4.0 修改的参数在 5.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 
+> 以下 TiKV 参数在 TiDB v5.0 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数:
+> 
+> - pessimistic-txn.enabled
+> - server.request-batch-enable-cross-command
+> - server.request-batch-wait-duration
 
-### 2.4 检查当前集群的健康状况
+### 2.3 检查当前集群的健康状况
 
 为避免升级过程中出现未定义行为或其他故障，建议在升级前对集群当前的 region 健康状态进行检查，此操作可通过 `check` 子命令完成。
 

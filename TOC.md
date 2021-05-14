@@ -7,13 +7,13 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 5.0](/releases/release-5.0.0-rc.md)
+  + [What's New in TiDB 5.0](/releases/release-5.0.0.md)
   + [基本功能](/basic-features.md)
+  + [实验特性](/experimental-features.md)
   + 性能测试报告
-    + [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
-    + [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
-    + [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
-    + [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
+    + [Sysbench 性能对比 - v5.0 对比 v4.0](/benchmark/benchmark-sysbench-v5-vs-v4.md)
+    + [TPC-C 性能对比 - v5.0 对比 v4.0](/benchmark/v5.0-performance-benchmarking-with-tpcc.md)
+    + [TPC-H 100 性能对比 - v5.0 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
@@ -150,7 +150,7 @@
     + [BR 工具简介](/br/backup-and-restore-tool.md)
     + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     + [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    + [BR 存储](/br/backup-and-restore-storages.md)
+    + [外部存储](/br/backup-and-restore-storages.md)
     + [BR 常见问题](/br/backup-and-restore-faq.md)
   + TiDB Binlog
     + [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -356,6 +356,7 @@
       - [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
+      - [`TABLE`](/sql-statements/sql-statement-table.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
@@ -406,6 +407,9 @@
       + INFORMATION_SCHEMA
         + [Overview](/information-schema/information-schema.md)
         + [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)
+        + [`CLIENT_ERRORS_SUMMARY_BY_HOST`](/information-schema/client-errors-summary-by-host.md)
+        + [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md)
+        + [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)
         + [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)
         + [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)
         + [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-hardware.md)
@@ -524,8 +528,11 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v5.0
+    - [5.0.1](/releases/release-5.0.1.md)
+    - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
+    - [4.0.12](/releases/release-4.0.12.md)
     - [4.0.11](/releases/release-4.0.11.md)
     - [4.0.10](/releases/release-4.0.10.md)
     - [4.0.9](/releases/release-4.0.9.md)

@@ -13,7 +13,7 @@ title: tiup cluster edit-config
 
 ## 语法
 
-```sh
+```shell
 tiup cluster edit-config <cluster-name> [flags]
 ```
 
@@ -21,11 +21,15 @@ tiup cluster edit-config <cluster-name> [flags]
 
 ## 选项
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
 - 正常情况无输出
 - 若修改了不能修改的字段，则保存文件时报错并提示用户重新编辑，不能修改的字段参考[拓扑文件](/tiup/tiup-cluster-topology-reference.md)中的相关描述
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

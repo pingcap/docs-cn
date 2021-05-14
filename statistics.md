@@ -54,8 +54,6 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 
 可以通过执行 `ANALYZE` 语句来收集统计信息。
 
-#### 全量收集
-
 > **注意：**
 >
 > 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
@@ -63,6 +61,8 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 > 如需更快的分析速度，可将 `tidb_enable_fast_analyze` 设置为 `1` 来打开快速分析功能。该参数的默认值为 `0`。
 >
 > 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
+
+#### 全量收集
 
 可以通过以下几种语法进行全量收集。
 
@@ -147,11 +147,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
-在查询语句执行时，TiDB 会以 `feedback-probability` 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。可通过配置文件修改 `feedback-probability`，其默认值是 `0.05`。设置成 `0.0` 可以关闭这个功能。
-
-> **注意：**
->
-> 在配置文件中如果将 `feedback-probability` 设置为 `0` 会导致设置失败并报错。需要设置成 `0.0` 才可以关闭 `feedback-probability`。
+在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**对于 v5.0 版本，该功能默认关闭，暂不建议开启此功能。**
 
 ### 控制 ANALYZE 并发度
 

@@ -8,7 +8,7 @@ title: tiup uninstall
 
 ## 语法
 
-```sh
+```shell
 tiup uninstall <component1>:<version> [component2...N] [flags]
 ```
 
@@ -18,15 +18,21 @@ tiup uninstall <component1>:<version> [component2...N] [flags]
 
 ## 选项
 
-### --all（boolean, 默认 false）
+### --all
 
-卸载指定组件的全部已安装版本，省略 `<version>` 时使用。
+- 卸载指定组件的全部已安装版本，省略 `<version>` 时使用。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --self（boolean，默认 false）
+### --self
 
-卸载 TiUP 自身：删除所有从镜像上下载过来的数据，但会保留 TiUP 及其组件产生的数据，数据存放在 `TIUP_HOME` 环境变量指定的目录中，若未设置过 `TIUP_HOME`，则默认值为 `~/.tiup/`。
+- 卸载 TiUP 自身：删除所有从镜像上下载过来的数据，但会保留 TiUP 及其组件产生的数据，数据存放在 `TIUP_HOME` 环境变量指定的目录中，若未设置过 `TIUP_HOME`，则默认值为 `~/.tiup/`。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
 - 正常退出：`Uninstalled component "%s" successfully!`
 - 若未指定 `<version>` 也未指定 `--all`：报错 `Use "tiup uninstall tidbx --all" if you want to remove all versions.`
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

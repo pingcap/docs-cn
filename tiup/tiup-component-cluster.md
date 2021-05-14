@@ -8,7 +8,7 @@ TiUP Cluster 是 TiUP 提供的使用 Golang 编写的集群管理组件，通�
 
 ## 语法
 
-```sh
+```shell
 tiup cluster [command] [flags]
 ```
 
@@ -32,21 +32,28 @@ tiup cluster [command] [flags]
 
 运维过程中涉及到很多操作：指定 systemctl 启动/停止服务，等待端口上线/下线等，每个操作可能会消耗数秒。`--wait-timeout` 用于设置每个步骤的最长等待时间（单位为秒），超时后报错退出。
 
-### -y, --yes (boolean，默认 false)
+### -y, --yes 
 
-跳过所有风险操作的二次确认，除非是使用脚本调用 TiUP，否则不推荐使用。
+- 跳过所有风险操作的二次确认，除非是使用脚本调用 TiUP，否则不推荐使用。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### -v, --version（boolean，默认 false）
+### -v, --version
 
-输出 TiUP Cluster 当前版本信息。
+- 输出 TiUP Cluster 当前版本信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出相关命令的帮助信息。
+- 输出相关命令的帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 命令清单
 
 - [import](/tiup/tiup-component-cluster-import.md)：导入 ansible 部署的集群
+- [template](/tiup/tiup-component-cluster-template.md)：输出拓扑模版
 - [check](/tiup/tiup-component-cluster-check.md)：部署前后的集群检查
 - [deploy](/tiup/tiup-component-cluster-deploy.md)：根据指定拓扑部署集群
 - [list](/tiup/tiup-component-cluster-list.md)：查询已部署的集群列表
@@ -65,6 +72,9 @@ tiup cluster [command] [flags]
 - [clean](/tiup/tiup-component-cluster-clean.md)：删除指定集群数据
 - [destroy](/tiup/tiup-component-cluster-destroy.md)：销毁指定集群
 - [audit](/tiup/tiup-component-cluster-audit.md)：查询集群操作审计日志
+- [replay](/tiup/tiup-component-cluster-replay.md)：重试指定命令
 - [enable](/tiup/tiup-component-cluster-enable.md)：开启指定集群或服务开机自启动
 - [disable](/tiup/tiup-component-cluster-disable.md)：关闭指定集群或服务开机自启动
 - [help](/tiup/tiup-component-cluster-help.md)：输出帮助信息
+
+[<< 返回上一页 - TiUP 组件清单](/tiup/tiup-reference.md#组件清单)

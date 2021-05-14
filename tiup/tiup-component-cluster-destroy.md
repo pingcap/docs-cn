@@ -12,7 +12,7 @@ title: tiup cluster destroy
 
 ## 语法
 
-```sh
+```shell
 tiup cluster destroy <cluster-name> [flags]
 ```
 
@@ -20,9 +20,11 @@ tiup cluster destroy <cluster-name> [flags]
 
 ## 选项
 
-### --force（boolean，默认 false）
+### --force
 
-在某些情况下，有可能集群中的某些节点已经宕机，导致无法通过 SSH 连接到节点进行操作，这个时候可以通过 `--force` 选项忽略这些错误。
+- 在某些情况下，有可能集群中的某些节点已经宕机，导致无法通过 SSH 连接到节点进行操作，这个时候可以通过 `--force` 选项忽略这些错误。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### --retain-node-data（StringArray，默认为空）
 
@@ -32,10 +34,14 @@ tiup cluster destroy <cluster-name> [flags]
 
 指定需要保留数据的角色，如需指定多个，重复使用多次该选项：`--retain-role-data <role-A> --retain-role-data <role-B>`。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
 tiup-cluster 的执行日志。
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

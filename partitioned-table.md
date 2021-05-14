@@ -175,6 +175,8 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 set @@session.tidb_enable_list_partition = ON
 ```
 
+此外，还需保证 `tidb_enable_table_partition` 变量已开启（默认开启）。
+
 List 分区和 Range 分区有很多相似的地方。不同之处主要在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但不能有重复的值，可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
 
 假设你要创建一张人事记录表，示例如下：
@@ -1237,4 +1239,4 @@ select * from t;
 
 环境变量 `tidb_enable_list_partition` 可以控制是否启用分区表功能。如果该变量设置为 `OFF`，则建表时会忽略分区信息，以普通表的方式建表。
 
-该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_list_partition-从-v50-ga-版本开始引入)。
+该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入)。

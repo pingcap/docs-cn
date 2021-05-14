@@ -266,9 +266,49 @@ tisparkDF.write.saveAsTable("hive_table") // save table to hive
 spark.sql("select * from hive_table a, tispark_table b where a.col1 = b.col1").show // join table across Hive and Tispark
 ```
 
+## 通过 TiSpark 将 DataFrame 批量写入 TiDB
+
+TiSpark 从 v2.3 版本开始原生支持将 DataFrame 批量写入 TiDB 集群，该写入模式通过 TiKV 的两阶段提交协议实现。
+
+TiSpark 批量写入相比 Spark + JDBC 写入，有以下特点：
+
+|  比较的方面     | TiSpark 批量写入 | Spark + JDBC 写入|
+| ------- | --------------- | --------------- |
+| 原子性   | DataFrame 的数据要么全部写入成功，要么全部写入失败 | 如果在写入过程中 spark 任务失败退出，会出现部分数据写入成功的情况 |
+| 隔离性   | 写入过程中其他事务对正在写入的数据不可见 | 写入过程中其他事务能看到部分写入成功的数据 |
+| 错误恢复 | 失败后只需要重新运行 Spark 程序 | 需要业务来实现幂等，例如失败后需要先清理部分写入成功的数据，再重新运行 Spark 程序，并且需要设置 `spark.task.maxFailures=1`，防止 task 内重试导致数据重复 |
+| 速度    | 直接写入 TiKV，速度更快 | 通过 TiDB 再写入 TiKV，对速度会有影响 |
+
+以下通过 scala API 演示如何使用 TiSpark 批量写入：
+
+```scala
+// select data to write
+val df = spark.sql("select * from tpch.ORDERS")
+
+// write data to tidb
+df.write.
+  format("tidb").
+  option("tidb.addr", "127.0.0.1").
+  option("tidb.port", "4000")
+  option("tidb.user", "root").
+  option("tidb.password", "").
+  option("database", "tpch").
+  option("table", "target_orders").
+  mode("append").
+  save()
+```
+
+如果写入的数据量比较大，且写入时间超过 10 分钟，则需要保证 GC 时间大于写入时间。
+
+```sql
+update mysql.tidb set VARIABLE_VALUE="6h" where VARIABLE_NAME="tikv_gc_life_time";
+```
+
+详细使用手册请参考[该文档](https://github.com/pingcap/tispark/blob/master/docs/datasource_api_userguide.md)。
+
 ## 通过 JDBC 将 DataFrame 写入 TiDB
 
-暂时 TiSpark 不支持直接将数据写入 TiDB 集群，但可以使用 Spark 原生的 JDBC 支持进行写入：
+除了使用 TiSpark 将 DataFrame 批量写入 TiDB 集群以外，也可以使用 Spark 原生的 JDBC 支持进行写入：
 
 ```scala
 import org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions

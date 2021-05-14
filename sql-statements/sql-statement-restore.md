@@ -18,11 +18,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-restore/']
 
 执行 `RESTORE` 需要 `SUPER` 权限。此外，执行恢复操作的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读权限。
 
-`RESTORE` 语句开始执行后将会加锁，直到整个恢复任务完成、失败或取消。因此，执行 `RESTORE` 时需要准备一个持久的连接。如需取消任务，可执行 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句。
+`RESTORE` 语句开始执行后将会被阻塞，直到整个恢复任务完成、失败或取消。因此，执行 `RESTORE` 时需要准备一个持久的连接。如需取消任务，可执行 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句。
 
 一次只能执行一个 `BACKUP` 和 `RESTORE` 任务。如果 TiDB server 上已经在执行一个 `BACKUP` 或 `RESTORE` 语句，新的 `RESTORE` 将等待前面所有的任务完成后再执行。
 
-`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "mocktikv" 存储引擎，`RESTORE` 操作会失败。
+`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "unistore" 存储引擎，`RESTORE` 操作会失败。
 
 ## 语法图
 
@@ -101,7 +101,7 @@ BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
 RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2';
 ```
 
-有关详细的 URL 语法，见 [BR 存储](/br/backup-and-restore-storages.md)。
+有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
 
 当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
 

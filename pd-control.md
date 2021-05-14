@@ -9,9 +9,13 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 安装方式
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 ### 使用 TiUP
 
-可直接通过 `tiup ctl pd -u http://<pd_ip>:<pd_port> [-i]` 使用。
+可直接通过 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> [-i]` 使用。
 
 ### 下载安装包
 
@@ -23,7 +27,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v4.0.0-rc.2` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.0.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -218,7 +222,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 
 ```
-"4.0.0"
+"5.0.0"
 ```
 
 - `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
@@ -975,8 +979,8 @@ Encoding 格式示例：
 >> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
->> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器 
->> scheduler resume all                           // 继续运行所有的调度器 
+>> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器
+>> scheduler resume all                           // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
 ```
 
@@ -1179,6 +1183,34 @@ logic:  120102
 ```
 {"id":1,"available":"10 GiB"}
 {"id":30,"available":"10 GiB"}
+...
+```
+
+### 查询状态不为 Up 的所有节点
+
+{{< copyable "" >}}
+
+```bash
+» store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
+```
+
+```
+{"id":1,"address":"127.0.0.1:20161""state_name":"Offline"}
+{"id":5,"address":"127.0.0.1:20162""state_name":"Offline"}
+...
+```
+
+### 查询所有的 TiFlash 节点
+
+{{< copyable "" >}}
+
+```bash
+» store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+```
+
+```
+{"id":1,"address":"127.0.0.1:20161""state_name":"Up"}
+{"id":5,"address":"127.0.0.1:20162""state_name":"Up"}
 ...
 ```
 

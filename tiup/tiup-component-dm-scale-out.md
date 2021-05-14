@@ -8,7 +8,7 @@ title: tiup dm scale-out
 
 ## 语法
 
-```sh
+```shell
 tiup dm scale-out <cluster-name> <topology.yaml> [flags]
 ```
 
@@ -25,14 +25,20 @@ tiup dm scale-out <cluster-name> <topology.yaml> [flags]
 
 指定连接目标机器的密钥文件。
 
-### -p, --password（boolean，默认 false）
+### -p, --password
 
-在连接目标机器时使用密码登陆，不可和 `-i/--identity_file` 同时使用。
+- 在连接目标机器时使用密码登陆，不可和 `-i/--identity_file` 同时使用。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
 扩容日志
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)
