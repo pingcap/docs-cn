@@ -23,6 +23,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 > - 在之后的 TiDB 版本中将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
 
 其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行，但官方并未支持。
+
 ## 软件配置要求
 
 ### 中控机软件配置
