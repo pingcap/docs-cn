@@ -251,7 +251,7 @@ TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数�
 set @@session.tidb_allow_mpp=0
 ```
 
-MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash Join 和 Shuffled Hash Aggregation。算法的选择由优化器自动判断。通过 `EXPLAIN` 语句可以查看具体的查询执行计划。
+MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash Join 和 Shuffled Hash Aggregation。算法的选择由优化器自动判断。通过 `EXPLAIN` 语句可以查看具体的查询执行计划。如果 `EXPLAIN` 语句的结果中出现 ExchangeSender 和 ExchangeReceiver 算子，表明 MPP 已生效。
 
 以 TPC-H 测试集中的表结构为例：
 
