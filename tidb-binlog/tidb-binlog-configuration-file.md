@@ -171,8 +171,12 @@ title: TiDB Binlog 配置说明
 
 ### initial-commit-ts
 
-* 指定从哪个 commit timestamp 之后开始同步。这个配置仅适用于初次开始同步的 Drainer 节点。如果下游已经有 checkpoint 存在，则会根据 checkpoint 里记录的时间进行同步。
-* 默认：`-1`。Drainer 会从 PD 得到一个最新的 timestamp 作为初始时间。
+* 指定从哪个 commit ts 之后开始同步。这个配置仅适用于初次开始同步的 Drainer 节点。如果下游已经有 checkpoint 存在，则会根据 checkpoint 里记录的时间进行同步。
+* commit ts 是 TiDB 内部的概念，是从 PD 获取的全局唯一递增的时间戳作为当前事务的唯一 ID，典型 initial-commit-ts 配置可以通过以下方式获得
+    - BR 备份元信息 backupmeta 中记录的 backup TS
+    - Dumpling 备份元信息 metadata 中记录的 Pos
+    - PD control 中 tso 命令返回的结果
+* 默认：`-1`。Drainer 会从 PD 得到一个最新的 timestamp 作为初始时间。即从当前的时间点开始同步。
 
 ### synced-check-time
 
