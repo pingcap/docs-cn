@@ -153,7 +153,6 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ## MySQL 兼容性
 
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
-* 不支持 `VISIBLE/INVISIBLE` 索引（目前只有 master 分支上真正支持此功能）。
 * 不支持降序索引（类似于 MySQL 5.7）。
 * 目前尚不支持在一条中同时添加多个索引。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
