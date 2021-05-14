@@ -27,7 +27,7 @@ summary: BR 相关的常见问题以及解决方法。
 
 因为这些系统库根本不可能存在于备份中，恢复的时候自然不可能发生冲突。
 
-## BR 遇到 Permission denied 错误，即使用 root 运行 BR 也无法解决，该如何处理？
+## BR 遇到 Permission denied 或者 No such file or directory 错误，即使用 root 运行 BR 也无法解决，该如何处理？
 
 需要确认 TiKV 是否有访问备份目录的权限。如果是备份，确认是否有写权限；如果是恢复，确认是否有读权限。
 
@@ -45,7 +45,7 @@ summary: BR 相关的常见问题以及解决方法。
 
 ## BR 遇到错误信息 `Io(Os...)`，该如何处理？
 
-这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。检查备份目录的挂载方式和文件系统，试试看备份到其它文件夹或者其它硬盘。
+这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。例如遇到 `Io(Os { code: 13, kind: PermissionDenied...})` 或者 `Io(Os { code: 2, kind: NotFound...})` 这类错误信息，首先检查备份目录的挂载方式和文件系统，试试看备份到其它文件夹或者其它硬盘。
 
 目前已知备份到 samba 搭建的网盘时可能会遇到 `Code: 22(invalid argument)` 错误。
 
