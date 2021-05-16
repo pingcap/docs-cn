@@ -69,14 +69,14 @@ indexPrefixSep  = []byte{'i'}
 最后通过一个简单的例子，来理解 TiDB 的 Key-Value 映射关系。假设 TiDB 中有如下这个表：
 
 ```sql
-CREATE TABLE User {
+CREATE TABLE User (
     ID int,
     Name varchar(20),
     Role varchar(20),
     Age int,
     PRIMARY KEY (ID),
     KEY idxAge (Age)
-};
+);
 ```
 
 假设该表中有 3 行数据：
