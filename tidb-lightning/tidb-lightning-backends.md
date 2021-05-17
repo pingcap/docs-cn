@@ -133,7 +133,7 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 ```toml
 # 日志级别
 log-level = "info"
-# 日志输出的位置
+# 日志的输出目录
 log-file = "loader.log"
 # Prometheus
 status-addr = ":8272"
