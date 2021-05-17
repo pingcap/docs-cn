@@ -67,7 +67,7 @@ WITH RECURSIVE cte(a) AS (SELECT 1 UNION SELECT a+1 FROM cte WHERE a < 5) SELECT
 
 ## MySQL 兼容性
 
-CTE 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+* 在严格模式下，当递归部分算出的数据的长度超过初始部分的长度时，TiDB 会返回警告, 而 MySQL 会返回错误。非严格模式下，TiDB 与 MySQL 一致。
 
 ## 另请参阅
 
