@@ -69,14 +69,14 @@ Also note that in the above encoding schemes, no matter table data or index data
 This section shows a simple example for you to understand the Key-Value mapping relationship of TiDB. Suppose the following table exists in TiDB.
 
 ```sql
-CREATE TABLE User {
+CREATE TABLE User (
      ID int,
      Name varchar(20),
      Role varchar(20),
      Age int,
      PRIMARY KEY (ID),
      KEY idxAge (Age)
-};
+);
 ```
 
 Suppose there are 3 rows of data in the table.
