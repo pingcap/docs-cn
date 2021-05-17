@@ -104,7 +104,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `memory`：在内存中进行排序。 **不建议使用，同步大量数据时易引发 OOM。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
-- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 [`cdc server` 命令中使用该选项来设置临时文件目录](/ticdc/deploy-ticdc.md#ticdc-cdc server-命令行参数说明)。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
+- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 [`cdc server` 命令中使用该选项来设置临时文件目录](/ticdc/deploy-ticdc.md#ticdc-cdc-server-命令行参数说明)。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
 - `--config`：指定 changefeed 配置文件。
 
 #### Sink URI 配置 `mysql`/`tidb`
@@ -805,4 +805,4 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 > + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
 > + 请保证硬盘的空闲容量大于等于 128G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
-> + 如需将已存在的 changefeed 上开启 Unified Sorter，参见 [同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom如何处理)
+> + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom如何处理)回答中提供的方法。
