@@ -8,10 +8,10 @@ title: TiDB 4.0.13 Release Notes
 
 TiDB 版本：4.0.13
 
-## Compatibility Changes
+## 兼容性更改
 
-## New Features
+## 新功能
 
-## Improvements
+## 提升改进
 
-## Bug Fixes
+## Bug 修复
