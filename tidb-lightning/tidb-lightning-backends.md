@@ -147,7 +147,7 @@ pool-size = 16
 [lightning]
 # 日志级别
 level = "info"
-# 日志输出位置，未指定目录，默认为执行命令所在目录
+# 日志的输出目录。如果未指定该位置目录，默认为执行命令的所在目录。
 file = "tidb-lightning.log"
 # Prometheus
 pprof-port = 8289
