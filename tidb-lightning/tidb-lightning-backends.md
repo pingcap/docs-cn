@@ -198,7 +198,7 @@ password = ""
 # TiDB 连接参数
 host = "127.0.0.1"
 port = 4000
-# 在 tidb-backend 模式下，该参数为非必要参数
+# 在 TiDB-backend 模式下，该参数为可选参数
 # status-port = 10080
 user = "root"
 password = ""
