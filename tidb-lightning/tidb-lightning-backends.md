@@ -131,8 +131,9 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 <tr><td>
 
 ```toml
-# 日志
+# 日志级别
 log-level = "info"
+# 日志的输出目录
 log-file = "loader.log"
 # Prometheus
 status-addr = ":8272"
@@ -144,8 +145,9 @@ pool-size = 16
 
 ```toml
 [lightning]
-# 日志
+# 日志级别
 level = "info"
+# 日志的输出目录。如果未指定该位置目录，默认为执行命令的所在目录。
 file = "tidb-lightning.log"
 # Prometheus
 pprof-port = 8289
@@ -224,7 +226,8 @@ password = ""
 # TiDB 连接参数
 host = "127.0.0.1"
 port = 4000
-status-port = 10080  # <- 必须有的参数
+# 在 TiDB-backend 模式下，该参数为可选参数
+# status-port = 10080
 user = "root"
 password = ""
 #sql-mode = ""
