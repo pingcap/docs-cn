@@ -302,7 +302,7 @@ The user certificate information can be specified by `require subject`, `require
         create user 'u1'@'%' require san 'DNS:d1,URI:spiffe://example.org/myservice1,URI:spiffe://example.org/myservice2'
         ```
 
-    The above configuration only allows the `u1` user to log in to TiDB using the certificate with the URI item `spiffe://example.org/myservice1` or `spiffe://example.org/myservice2` and the DNS item `d1`.
+        The above configuration only allows the `u1` user to log in to TiDB using the certificate with the URI item `spiffe://example.org/myservice1` or `spiffe://example.org/myservice2` and the DNS item `d1`.
 
 + `require cipher`: Checks the cipher method supported by the client. Use the following statement to check the list of supported cipher methods:
 
