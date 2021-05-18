@@ -27,9 +27,9 @@ Currently, it is not supported to only enable encrypted transmission of some spe
 
 2. Configure certificates.
 
-   To enable mutual authentication among TiDB components, configure the certificates of TiDB, TiKV, and PD as follows.
+    To enable mutual authentication among TiDB components, configure the certificates of TiDB, TiKV, and PD as follows.
 
-   - TiDB
+    - TiDB
 
         Configure in the configuration file or command-line arguments:
 
@@ -43,7 +43,7 @@ Currently, it is not supported to only enable encrypted transmission of some spe
         cluster-ssl-key = "/path/to/tidb-server-key.pem"
         ```
 
-   - TiKV
+    - TiKV
 
         Configure in the configuration file or command-line arguments, and set the corresponding URL to `https`:
 
@@ -58,7 +58,7 @@ Currently, it is not supported to only enable encrypted transmission of some spe
         key-path = "/path/to/tikv-server-key.pem"
         ```
 
-   - PD
+    - PD
 
         Configure in the configuration file or command-line arguments, and set the corresponding URL to `https`:
 
