@@ -110,7 +110,7 @@ Currently, it is not supported to only enable encrypted transmission of some spe
         cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem
         ```
 
-    Now, encrypted transmission among TiDB components is enabled.
+        Now, encrypted transmission among TiDB components is enabled.
 
     > **Note:**
     >
