@@ -303,7 +303,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
         create user 'u1'@'%' require san 'DNS:d1,URI:spiffe://example.org/myservice1,URI:spiffe://example.org/myservice2'
         ```
 
-    以上配置只允许用户 `u1` 使用 URI 项为 `spiffe://example.org/myservice1` 或 `spiffe://example.org/myservice2`、DNS 项为 `d1` 的证书登录 TiDB。
+        以上配置只允许用户 `u1` 使用 URI 项为 `spiffe://example.org/myservice1` 或 `spiffe://example.org/myservice2`、DNS 项为 `d1` 的证书登录 TiDB。
 
 + `require cipher`：配置该项检查客户端支持的 `cipher method`。可以使用以下语句来查看支持的列表：
 
