@@ -44,7 +44,7 @@ Ensure that you have `SUPER` privilege when setting SQL mode at `GLOBAL` level, 
 | `NO_AUTO_CREATE_USER` | Prevents `GRANT` from automatically creating new users, except for the specified password (full support)|
 | `HIGH_NOT_PRECEDENCE` | The precedence of the NOT operator is such that expressions such as `NOT a BETWEEN b AND c` are parsed as `NOT (a BETWEEN b AND c)`. In some older versions of MySQL, this expression is parsed as `(NOT a) BETWEEN b AND c`. (full support) |
 | `NO_ENGINE_SUBSTITUTION` | Prevents the automatic replacement of storage engines if the required storage engine is disabled or not compiled. (syntax support only)|
-| `PAD_CHAR_TO_FULL_LENGTH` | If this mode is enabled, the system does not trim the trailing spaces for `CHAR` types. (full support) |
+| `PAD_CHAR_TO_FULL_LENGTH` | If this mode is enabled, the system does not trim the trailing spaces for `CHAR` types. (syntax support only. This mode has been [deprecated in MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_pad_char_to_full_length).) |
 | `REAL_AS_FLOAT` | Treats `REAL` as the synonym of `FLOAT`, not the synonym of `DOUBLE` (full support)|
 | `POSTGRESQL` | Equivalent to `PIPES_AS_CONCAT`, `ANSI_QUOTES`, `IGNORE_SPACE`, `NO_KEY_OPTIONS`, `NO_TABLE_OPTIONS`, `NO_FIELD_OPTIONS` (syntax support only)|
 | `MSSQL` | Equivalent to `PIPES_AS_CONCAT`, `ANSI_QUOTES`, `IGNORE_SPACE`, `NO_KEY_OPTIONS`, `NO_TABLE_OPTIONS`, `NO_FIELD_OPTIONS` (syntax support only)|
