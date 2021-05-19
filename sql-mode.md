@@ -40,7 +40,7 @@ Modes 是用逗号 (',') 间隔开的一系列不同的模式。使用 `SELECT @
 | NO_AUTO_CREATE_USER | 防止 GRANT 自动创建新用户，但指定密码除外（支持）|
 | HIGH_NOT_PRECEDENCE | NOT 操作符的优先级是表达式。例如： NOT a BETWEEN b AND c 被解释为 NOT (a BETWEEN b AND c)。在部份旧版本MySQL中， 表达式被解释为(NOT a) BETWEEN b AND c (支持) |
 | NO_ENGINE_SUBSTITUTION | 如果需要的存储引擎被禁用或未编译，可以防止自动替换存储引擎（仅语法支持）|
-| PAD_CHAR_TO_FULL_LENGTH | 若启用该模式，系统对于 CHAR 类型不会截断尾部空格（仅语法支持。该模式已经[在 MySQL 8.0 中被废弃](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_pad_char_to_full_length)。）|
+| PAD_CHAR_TO_FULL_LENGTH | 若启用该模式，系统对于 CHAR 类型不会截断尾部空格（仅语法支持。该模式[在 MySQL 8.0 中已废弃](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_pad_char_to_full_length)。）|
 | REAL_AS_FLOAT | 将 REAL 视为 FLOAT 的同义词，而不是 DOUBLE 的同义词（支持）|
 | POSTGRESQL | 等同于 PIPES_AS_CONCAT、ANSI_QUOTES、IGNORE_SPACE、NO_KEY_OPTIONS、NO_TABLE_OPTIONS、NO_FIELD_OPTIONS（仅语法支持）|
 | MSSQL | 等同于 PIPES_AS_CONCAT、ANSI_QUOTES、IGNORE_SPACE、NO_KEY_OPTIONS、NO_TABLE_OPTIONS、 NO_FIELD_OPTIONS（仅语法支持）|
