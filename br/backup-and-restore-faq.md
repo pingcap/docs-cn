@@ -26,7 +26,7 @@ The system libraries (`information_schema`, `performance_schema`, `mysql`) are f
 
 Because these system libraries do not exist in the backup files, no conflict occurs among system tables during data restoration.
 
-## What should I do to handle the `Permission denied` error, even if I have tried to run BR using root in vain?
+## What should I do to handle the `Permission denied` or `No such file or directory` error, even if I have tried to run BR using root in vain?
 
 You need to confirm whether TiKV has access to the backup directory. To back up data, confirm whether TiKV has the write permission. To restore data, confirm whether it has the read permission.
 
@@ -42,7 +42,7 @@ Running BR with the root access might fail due to the disk permission, because t
 
 ## What should I do to handle the `Io(Os...)` error?
 
-Almost all of these problems are system call errors that occur when TiKV writes data to the disk. You can check the mounting method and the file system of the backup directory, and try to back up data to another folder or another hard disk.
+Almost all of these problems are system call errors that occur when TiKV writes data to the disk. For example, if you encounter error messages such as `Io(Os {code: 13, kind: PermissionDenied...})` or `Io(Os {code: 2, kind: NotFound...})`, you can first check the mounting method and the file system of the backup directory, and try to back up data to another folder or another hard disk.
 
 For example, you might encounter the `Code: 22(invalid argument)` error when backing up data to the network disk built by `samba`.
 
