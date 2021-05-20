@@ -55,7 +55,7 @@ TiKV supports some readable unit conversions for command line parameters.
 - The path to the data directory
 - Default: "/tmp/tikv/store"
 
-## `-L, --Log`
+## `-L`
 
 - The log level
 - Default: "info"
