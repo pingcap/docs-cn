@@ -60,7 +60,7 @@ dumpling \
   -P 4000 \
   -h 127.0.0.1 \
   --filetype sql \
-  --threads 32 \
+  --t 8 \
   -o /tmp/test \
   -r 200000 \
   -F 256MiB
@@ -68,9 +68,10 @@ dumpling \
 
 In the command above:
 
-+ `-h`, `-p`, and `-u` respectively mean the address, the port, and the user. If a password is required for authentication, you can use `-p $YOUR_SECRET_PASSWORD` to pass the password to Dumpling.
-+ `-o` specifies the export directory of the storage, which supports a local file path or a [URL of an external storage](/br/backup-and-restore-storages.md).
-+ `-r` specifies the maximum number of rows in a single file. With this option specified, Dumpling enables the in-table concurrency to speed up the export and reduce the memory usage.
++ The `-h`, `-p`, and `-u` option respectively mean the address, the port, and the user. If a password is required for authentication, you can use `-p $YOUR_SECRET_PASSWORD` to pass the password to Dumpling.
++ The `-o` option specifies the export directory of the storage, which supports a local file path or a [URL of an external storage](/br/backup-and-restore-storages.md).
++ The `t` option specifies the number of threads for the export. Increasing the number of threads improves the concurrency of Dumpling and the export speed, and also increases the database's memory consumption. Therefore, it is not recommended to set the number too large.
++ The `-r` option specifies the maximum number of rows in a single file. With this option specified, Dumpling enables the in-table concurrency to speed up the export and reduce the memory usage.
 + The `-F` option is used to specify the maximum size of a single file (the unit here is `MiB`; inputs like `5GiB` or `8KB` are also acceptable). It is recommended to keep its value to 256 MiB or less if you plan to use TiDB Lightning to load this file into a TiDB instance.
 
 > **Note:**
@@ -250,7 +251,7 @@ Examples:
 
 The exported file is stored in the `./export-<current local time>` directory by default. Commonly used options are as follows:
 
-- The `t` option specifies the number of threads for the export. Increasing the number of threads will increase the concurrency of Dumpling but will also increase the database's memory consumption. Therefore, it is not recommended to set the number too large.
+- The `t` option specifies the number of threads for the export. Increasing the number of threads improves the concurrency of Dumpling and the export speed, and also increases the database's memory consumption. Therefore, it is not recommended to set the number too large.
 - The `-r` option specifies the maximum number of records (or the number of rows in the database) for a single file. When it is enabled, Dumpling enables concurrency in the table to improve the speed of exporting large tables.
 
 With the above options specified, Dumpling can have a quicker speed of data export.
@@ -292,7 +293,7 @@ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
 
 Dumpling can export the data of a certain [tidb_snapshot](/read-historical-data.md#how-tidb-reads-data-from-history-versions) with the `--snapshot` option specified.
 
-The `--snapshot` option can be set to a TSO (the `Position` field output by the `SHOW MASTER STATUS` command) or a valid time of the `datetime` data type, for example:
+The `--snapshot` option can be set to a TSO (the `Position` field output by the `SHOW MASTER STATUS` command) or a valid time of the `datetime` data type (in the form of `YYYY-MM-DD hh:mm:ss`), for example:
 
 {{< copyable "shell-regular" >}}
 
@@ -313,7 +314,7 @@ When Dumpling is exporting a large single table from TiDB, Out of Memory (OOM) m
 
 ### TiDB GC settings when exporting a large volume of data
 
-When exporting data from TiDB, if the TiDB version is greater than v4.0.0 and Dumpling can access the PD address of the TiDB cluster, Dumpling automatically extends the GC time without affecting the original cluster. But for TiDB earlier than v4.0.0, you need to manually modify the GC time.
+When exporting data from TiDB, if the TiDB version is greater than or equal to v4.0.0 and Dumpling can access the PD address of the TiDB cluster, Dumpling automatically extends the GC time without affecting the original cluster.
 
 In other scenarios, if the data size is very large, to avoid export failure due to GC during the export process, you can extend the GC time in advance:
 
