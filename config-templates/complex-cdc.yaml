@@ -40,12 +40,6 @@ server_configs:
     schedule.leader-schedule-limit: 4
     schedule.region-schedule-limit: 2048
     schedule.replica-schedule-limit: 64
-<<<<<<< HEAD
-=======
-  cdc:
-    # capture-session-ttl: 10
-    # sorter.sort-dir: "/tmp/cdc_sort"
->>>>>>> bbec54926 (cdc: fix config typo (#6312))
 
 pd_servers:
   - host: 10.0.1.4
