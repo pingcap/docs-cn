@@ -255,7 +255,7 @@ TiFlash supports using the MPP mode to execute queries, which introduces cross-n
 set @@session.tidb_allow_mpp=0
 ```
 
-MPP mode supports these physical algorithms: Broadcast Hash Join, Shuffled Hash Join, and Shuffled Hash Aggregation. The optimizer automatically determines which algorithm to be used in a query. To check the specific query execution plan, you can execute the `EXPLAIN` statement.
+MPP mode supports these physical algorithms: Broadcast Hash Join, Shuffled Hash Join, and Shuffled Hash Aggregation. The optimizer automatically determines which algorithm to be used in a query. To check the specific query execution plan, you can execute the `EXPLAIN` statement. If the result of the `EXPLAIN` statement shows ExchangeSender and ExchangeReceiver operators, it indicates that the MPP mode has taken effect.
 
 The following statement takes the table structure in the TPC-H test set as an example:
 
