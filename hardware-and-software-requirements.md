@@ -21,7 +21,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 > - 不计划支持 CentOS 8 Linux，因为 CentOS 的上游支持将于 2021 年 12 月 31 日终止。
 > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
 
-其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但并未得到 TiDB 官方支持。
+其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但尚未得到 TiDB 官方支持。
 
 ## 软件配置要求
 
