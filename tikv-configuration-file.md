@@ -125,9 +125,11 @@ Configuration items related to the single thread pool serving read requests. Thi
 ### `stack-size`
 
 + The stack size of the threads in the unified thread pool
++ Type: Integer + Unit
 + Default value: `"10MB"`
 + Unit: KB|MB|GB
 + Minimum value: `"2MB"`
++ Maximum value: The number of Kbytes output in the result of the `ulimit -sH` command executed in the system.
 
 ### `max-tasks-per-worker`
 
@@ -184,8 +186,10 @@ Configuration items related to storage thread pool.
 
 + The stack size of threads in the Storage read thread pool
 + Default value: `"10MB"`
++ Type: Integer + Unit
 + Unit: KB|MB|GB
 + Minimum value: `"2MB"`
++ Maximum value: The number of Kbytes output in the result of the `ulimit -sH` command executed in the system.
 
 ## `readpool.coprocessor`
 
@@ -235,9 +239,11 @@ Configuration items related to the Coprocessor thread pool.
 ### `stack-size`
 
 + The stack size of the thread in the Coprocessor thread pool
++ Type: Integer + Unit
 + Default value: `"10MB"`
 + Unit: KB|MB|GB
 + Minimum value: `"2MB"`
++ Maximum value: The number of Kbytes output in the result of the `ulimit -sH` command executed in the system.
 
 ## storage
 
