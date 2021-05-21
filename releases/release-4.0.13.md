@@ -21,6 +21,12 @@ TiDB 版本：4.0.13
 
     - 当内存中的统计信息缓存是最新的时，避免后台作业频繁读取 mysql.stats_histograms 表 [#24352](https://github.com/pingcap/tidb/pull/24352)
 
++ TiKV
+
+    - 修正了 store used size 的计算过程 [9904](https://github.com/tikv/tikv/pull/9904)
+    - 在 `EpochNotMatch` 消息中返回更多的 regions 比降低 region miss 的发生 [9731](https://github.com/tikv/tikv/pull/9731)
+    - 加快内存占用的释放速度 [10035](https://github.com/tikv/tikv/pull/10035)
+
 + PD
 
     - 优化 tso 处理时间的统计 metrics [#3524](https://github.com/pingcap/pd/pull/3524)
@@ -29,6 +35,19 @@ TiDB 版本：4.0.13
 + TiFlash
 
     - 自动清除过期历史数据以释放磁盘空间
+
++ Tools
+
+    + Backup & Restore (BR)
+
+        - BR 支持备份恢复系统库 mysql 下的用户表。[#1077](https://github.com/pingcap/br/pull/1077)
+        - BR 增加集群版本检查和备份数据版本检查。[#1090](https://github.com/pingcap/br/pull/1090)
+        - BR 可以在备份期间容忍集群中部分 TiKV 节点宕机. [#1062](https://github.com/pingcap/br/pull/1062)
+
+    + TiCDC
+        - 内部处理单元增加流控，避免出现 OOM 问题 [#1751](https://github.com/pingcap/ticdc/pull/1751)
+        - 增加 unified sorter 清理排序目录功能，避免多个 cdc 服务共享临时排序目录 [#1741](https://github.com/pingcap/ticdc/pull/1741)
+        - 给 Failpoint 增加 HTTP 接口调用 [#1732](https://github.com/pingcap/ticdc/pull/1732)
 
 ## Bug 修复
 
@@ -77,6 +96,16 @@ TiDB 版本：4.0.13
     - 修复 Grafana 中 coprocessor cache 无显示数据的问题 [#22617](https://github.com/pingcap/tidb/pull/22617)
     - 修复优化器访问统计信息缓存时出错的问题 [#22565](https://github.com/pingcap/tidb/pull/22565)
 
++ TiKV
+
+    - 修复因磁盘写满后 `file_dict` 写入不完全导致的无法重启的问题 [9963](https://github.com/tikv/tikv/pull/9963)
+    - 限制 CDC 默认的 scan 速度为 128MB/s [9983](https://github.com/tikv/tikv/pull/9983)
+    - 减少 CDC 进行初次 scan 的内存使用量 [10133](https://github.com/tikv/tikv/pull/10133)
+    - CDC 支持反压 scan 速率 [10142](https://github.com/tikv/tikv/pull/10142)
+    - 通过避免不必要的读取来获取 CDC 旧值以解决潜在的 OOM 问题 [10031](https://github.com/tikv/tikv/pull/10031)
+    - 修复了由于读取旧值而导致的 CDC OOM 问题 [10197](https://github.com/tikv/tikv/pull/10197)
+    - 为 S3 storage 添加超时机制以避免 S3 客户端没有任何响应地挂起 [10132](https://github.com/tikv/tikv/pull/10132)
+
 + TiFlash
 
     - 修复未向 Prometheus 报告 `delta-merge-tasks` 数量的问题
@@ -97,3 +126,9 @@ TiDB 版本：4.0.13
     - 修复逻辑函数仅接受受数字类型输入的问题
     - 修复时间戳值为 `1970-01-01` 且时区偏移为负时计算结果不正确的问题
     - 修复 Decimal256 的哈希值计算结果不稳定的问题
+
++ TiCDC
+
+    - 修复内部单元卡住导致的死锁问题 [1779](https://github.com/pingcap/ticdc/pull/1779)
+    - 修复 CDC changefeed 卡住导致 TiKV GC safepoint 不推进的问题。[#1756](https://github.com/pingcap/ticdc/pull/1756)
+    - 回滚 explicit_defaults_for_timestamp 的改动，确保不用 `SUPER` 权限也可以同步 [#1749](https://github.com/pingcap/ticdc/pull/1749)
