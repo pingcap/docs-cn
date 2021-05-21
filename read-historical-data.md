@@ -215,4 +215,4 @@ SET GLOBAL tidb_gc_life_time="60m";
 
 - 对于简单的情况，在设置 `tidb_snapshot` 变量后使用 `SELECT` 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO LOCAL OUTFLE` 语句并在之后使用 `LOAD DATA` 语句来导入数据。
 
-- 使用 [Dumpling](/dumpling-overview.md#export-historical-data-snapshot-of-tidb) 导出历史快照。Dumpling 在导出较大的数据集时表现良好。
+- 使用 [Dumpling](/dumpling-overview.md#导出-tidb-的历史数据快照) 导出 TiDB 的历史数据快照。Dumpling 在导出较大的数据集时表现良好。
