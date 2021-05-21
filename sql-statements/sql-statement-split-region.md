@@ -300,7 +300,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
     > **注意：**
     >
-    > 此示例仅适用于数据热点均匀分布的场景。如果热点数据在你指定的数据范围内是不均匀分布的，请参考 [Split 分区表的 Region](/sql-statement-split-region.md#split-分区表的-region) 中不均匀切分的语法。
+    > 此示例仅适用于数据热点均匀分布的场景。如果热点数据在你指定的数据范围内是不均匀分布的，请参考 [Split 分区表的 Region](#split-分区表的-region) 中不均匀切分的语法。
 
 3. 用 `SHOW TABLE REGIONS` 语法查看该表的 Region。如下会发现该表现在一共有 10 个 Region，每个 partition 分别有 5 个 Region，其中 4 个 Region 是表的行数据，1 个 Region 是表的索引数据。
 
