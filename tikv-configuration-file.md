@@ -185,8 +185,8 @@ Configuration items related to storage thread pool.
 ### `stack-size`
 
 + The stack size of threads in the Storage read thread pool
-+ Default value: `"10MB"`
 + Type: Integer + Unit
++ Default value: `"10MB"`
 + Unit: KB|MB|GB
 + Minimum value: `"2MB"`
 + Maximum value: The number of Kbytes output in the result of the `ulimit -sH` command executed in the system.
