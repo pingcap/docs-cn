@@ -63,4 +63,4 @@ TiDB Binlog 版本与 TiDB 版本的对应关系如下：
     如果返回的 `Synced` 为 true，则可以认为 Binlog 数据已经全部同步到了下游。
 
 6. 启动新版本 Drainer；
-7. 下线老版本的 Pump、Drainer 以及依赖的 Kafka 和 ZookeSeper。
+7. 下线老版本的 Pump、Drainer 以及依赖的 Kafka 和 ZooKeeper。
