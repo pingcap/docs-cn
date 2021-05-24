@@ -123,9 +123,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `stack-size`
 
 + 统一处理读请求的线程池中线程的栈大小。
++ 类型：整数 + 单位
 + 默认值：10MB
 + 单位：KB|MB|GB
 + 最小值：2MB
++ 最大值：在系统中执行 `ulimit -sH` 命令后，输出的千字节数。
 
 ### `max-tasks-per-worker`
 
@@ -181,9 +183,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `stack-size`
 
 + Storage 读线程池中线程的栈大小。
++ 类型：整数 + 单位
 + 默认值：10MB
 + 单位：KB|MB|GB
 + 最小值：2MB
++ 最大值：在系统中执行 `ulimit -sH` 命令后，输出的千字节数。
 
 ## readpool.coprocessor
 
@@ -232,11 +236,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `stack-size`
 
-Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|GiB。
-
++ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|GiB。
++ 类型：整数 + 单位
 + 默认值：10MB
 + 单位：KB|MB|GB
 + 最小值：2MB
++ 最大值：在系统中执行 `ulimit -sH` 命令后，输出的千字节数。
 
 ## storage
 
