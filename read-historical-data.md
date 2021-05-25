@@ -200,7 +200,7 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
 
 ## 历史数据恢复策略
 
-在恢复历史版本的数据之前，需要确保在运行时，GC（垃圾回收）不会清除历史数据。如下所示，可以通过设置 `tidb_gc_life_time` 变量来实现该过程。不要忘记在恢复历史数据后将该变量设置回之前的值。
+在恢复历史版本的数据之前，需要确保在对数据进行操作时，垃圾回收机制 (GC) 不会清除历史数据。如下所示，可以通过设置 `tidb_gc_life_time` 变量来调整 GC 清理的周期。不要忘记在恢复历史数据后将该变量设置回之前的值。
 
 ```sql
 SET GLOBAL tidb_gc_life_time="60m";
@@ -208,10 +208,10 @@ SET GLOBAL tidb_gc_life_time="60m";
 
 > **注意：**
 >
-> 将 GC life time 从默认的 10 分钟增加到半小时或更多，会导致保留有额外的行数的版本并可能占用更多的磁盘空间。也可能会影响某些操作的性能，比如扫描。当 TiDB 在读取数据时，需要跳过这些额外的有相同行的版本。
+> 将 GC life time 从默认的 10 分钟增加到半小时或更多，会导致同一行保留有多个版本并占用更多的磁盘空间，也可能会影响某些操作的性能，例如扫描。进行扫描操作时，TiDB 读取数据需要跳过这些有多个版本的同一行，从而影响到扫描性能。
 
 如果想要恢复历史版本的数据，可以使用以下任意一种方法进行设置：
 
-- 对于简单的情况，在设置 `tidb_snapshot` 变量后使用 `SELECT` 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO LOCAL OUTFLE` 语句并在之后使用 `LOAD DATA` 语句来导入数据。
+- 对于简单场景，在设置 `tidb_snapshot` 变量后使用 `SELECT` 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO LOCAL OUTFLE` 语句并使用 `LOAD DATA` 语句来导入数据。
 
-- 使用 [Dumpling](/dumpling-overview.md#导出-tidb-的历史数据快照) 导出 TiDB 的历史数据快照。Dumpling 在导出较大的数据集时表现良好。
+- 使用 [Dumpling](/dumpling-overview.md#导出-tidb-的历史数据快照) 导出 TiDB 的历史数据快照。Dumpling 在导出较大的数据集时有较好的性能。
