@@ -49,4 +49,3 @@ TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据：`tidb-lig
 TiDB Lightning 与 TiFlash 一起使用时需要注意：
 
 无论是否已为一张表创建 TiFlash 副本，你均可以使用 TiDB Lightning 导入数据至该表。但该场景下 TiDB Lightning 导入数据耗费的时间更长，具体取决于 TiDB Lightning 部署机器的网卡带宽、TiFlash 节点的 CPU 及磁盘负载、TiFlash 副本数等因素。
-无论是否已为一张表创建 TiFlash 副本，你均可以使用 TiDB Lightning 导入数据至该表。但该场景下 TiDB Lightning 导入数据耗费的时间更长，具体取决于 TiDB Lightning 部署机器的网卡带宽、TiFlash 节点的 CPU 及磁盘负载、TiFlash 副本数等因素。
