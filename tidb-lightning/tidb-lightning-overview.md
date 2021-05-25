@@ -42,3 +42,10 @@ TiDB Lightning 整体工作原理如下：
 7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
 
 如果需要导入的目标集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下，`tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入；TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据。TiDB-backend 使用和 Loader 类似，`tidb-lightning` 将数据转换为 `INSERT` 语句，然后直接在目标集群上执行这些语句。详见 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
+
+## 使用限制
+
+TiDB Lightning 与 TiFlash 一起使用时需要注意：
+
+* 如果集群版本小于 v4.0.6，若先对表创建 TiFlash 副本，再使用 TiDB Lightning 导入数据，会导致数据导入失败。需要在使用 TiDB Lightning 成功导入数据至表后，再对相应的表创建 TiFlash 副本。
+* 如果集群版本以及 TiDB Lightning 版本均大于等于 v4.0.6，无论是否已为一张表创建 TiFlash 副本，你均可以使用 TiDB Lightning 导入数据至该表。但该场景下 TiDB Lightning 导入数据耗费的时间更长，具体取决于 TiDB Lightning 部署机器的网卡带宽、TiFlash 节点的 CPU 及磁盘负载、TiFlash 副本数等因素。
