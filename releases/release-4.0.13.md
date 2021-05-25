@@ -57,7 +57,7 @@ TiDB 版本：4.0.13
     - 修复带有子查询的 `UPDATE` 语句更新生成列时会 panic 的问题 [#24658](https://github.com/pingcap/tidb/pull/24658)
     - 修复使用多列索引读取数据时返回结果重复的问题 [#24634](https://github.com/pingcap/tidb/pull/24634)
     - 修复在 DIV 表达式中使用 `BIT` 类型常量作为除数造成查询结果错误的问题 [#24266](https://github.com/pingcap/tidb/pull/24266)
-    - 修复因 `NO_ZERO_IN_DATE` SQL 模式限制，对 DDL 语句中设置的列默认值无效的问题 [#24185](https://github.com/pingcap/tidb/pull/24185)
+    - 修复 `NO_ZERO_IN_DATE` SQL 模式对 DDL 语句中设置的列默认值无效的问题 [#24185](https://github.com/pingcap/tidb/pull/24185)
     - 修复 `BIT` 类型列与整型列进行 `UNION` 并集运算时，查询结果出错的问题 [#24026](https://github.com/pingcap/tidb/pull/24026)
     - 修复 `BINARY` 类型与 `CHAR` 类型比较时，错误生成了 `TableDual` 执行计划的问题 [#23917](https://github.com/pingcap/tidb/pull/23917)
     - 修复 `insert ignore on duplicate` 非预期的删除表记录的问题 [#23825](https://github.com/pingcap/tidb/pull/23825)
