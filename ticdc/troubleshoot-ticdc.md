@@ -312,7 +312,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 ## 当 changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL 语句，阻塞了所有其他 changefeed，应该怎样处理？
 
 1. 首先暂停执行耗时较长的 DDL 的 changefeed。此时可以观察到，这个 changefeed 暂停后，其他的 changefeed 不再阻塞了。
-2. 在 TiCDC log 中搜寻 `apply job` 字段，确认耗时较长的 DDL 的 `start-ts`。如果在旧版本 TiCDC 中没有打印该 `start-ts`，可以查询 TiDB DDL history，找到该条 DDL 的 `binlog.TableInfo.update_timestamp` 字段，即为所需的 `start-ts`。
+2. 在 TiCDC log 中搜寻 `apply job` 字段，确认耗时较长的 DDL 的 `start-ts`。如果旧版本的 TiCDC 没有打印该 `start-ts`，可以查询 TiDB DDL history，找到该条 DDL 语句的 `binlog.TableInfo.update_timestamp` 字段，该字段即为所需的 `start-ts`。
 3. 手动在下游执行该 DDL 语句，执行完毕后进行下面的操作。
 4. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
 5. 恢复被暂停的 changefeed。
