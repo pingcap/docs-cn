@@ -268,6 +268,12 @@ Configuration items related to log files.
 
 Configuration items related to security.
 
+### `enable-sem`
+
+- Enable the Security Enhanced Mode (SEM).
+- Default value: `false`
+- The status of security enhanced mode is available via the system variable [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security).
+
 ### `ssl-ca`
 
 - The file path of the trusted CA certificate in the PEM format.
