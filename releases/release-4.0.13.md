@@ -23,7 +23,7 @@ TiDB 版本：4.0.13
 
 + TiKV
 
-    - 使 `store used size` 的计算过程更精确 [9904](https://github.com/tikv/tikv/pull/9904)
+    - 提高 `store used size` 计算过程的准确性 [9904](https://github.com/tikv/tikv/pull/9904)
     - 在 `EpochNotMatch` 消息中返回更多的 Region 以降低 Region miss 的发生 [9731](https://github.com/tikv/tikv/pull/9731)
     - 加快内存占用的释放速度 [10035](https://github.com/tikv/tikv/pull/10035)
 
