@@ -93,7 +93,7 @@ TiDB 版本：4.0.13
     - 修复由于未正确处理排序规则导致的 `concat`/`make_set`/`insert` 表达式计算结果出错的问题 [#23878](https://github.com/pingcap/tidb/pull/23878)
     - 修复在含有 RANGE 分区的表上查询时，查询崩溃的问题 [#23689](https://github.com/pingcap/tidb/pull/23689)
     - 修复如下问题：在旧版本的集群中，若 `tidb_enable_table_partition` 被设置为 `false`，含有分区的表会被当作普通表处理。此时由旧版本升级至新版本时，在该表上执行 `batch point get` 查询会导致连接崩溃 [#23682](https://github.com/pingcap/tidb/pull/23682)
-    - 修复 TiDB 被配置监听 TCP 连接及 UNIX 套接字时，TCP 连接中远程主机未被正确验证的问题 [#23513](https://github.com/pingcap/tidb/pull/23513)
+    - 修复配置了 TiDB 监听 TCP 连接及 UNIX 套接字时，TCP 连接中远程主机未被正确验证的问题 [#23513](https://github.com/pingcap/tidb/pull/23513)
     - 修复由于非默认的排序规则导致查询结果出错的问题 [#22923](https://github.com/pingcap/tidb/pull/22923)
     - 修复 Grafana 的 **Coprocessor Cache** 面板不显示数据的问题 [#22617](https://github.com/pingcap/tidb/pull/22617)
     - 修复优化器访问统计信息缓存时出错的问题 [#22565](https://github.com/pingcap/tidb/pull/22565)
