@@ -19,17 +19,17 @@ TiDB 版本：4.0.13
 
 + TiDB
 
-    - 当内存中的统计信息缓存是最新的时，避免后台作业频繁读取 `mysql.stats_histograms` 表 [#24352](https://github.com/pingcap/tidb/pull/24352)
+    - 当内存中的统计信息缓存是最新的时，避免后台作业频繁读取 `mysql.stats_histograms` 表造成高 CPU 使用率 [#24352](https://github.com/pingcap/tidb/pull/24352)
 
 + TiKV
 
     - 提高 `store used size` 计算过程的准确性 [9904](https://github.com/tikv/tikv/pull/9904)
     - 在 `EpochNotMatch` 消息中返回更多的 Region 以降低 Region miss 的发生 [9731](https://github.com/tikv/tikv/pull/9731)
-    - 加快内存占用的释放速度 [10035](https://github.com/tikv/tikv/pull/10035)
+    - 加快释放长期运行集群中堆积的内存 [10035](https://github.com/tikv/tikv/pull/10035)
 
 + PD
 
-    - 优化 TSO 处理时间的统计指标 [#3524](https://github.com/pingcap/pd/pull/3524)
+    - 优化 TSO 处理时间的统计指标，帮助用户判断 PD 侧的 TSO 处理时间是否过长 [#3524](https://github.com/pingcap/pd/pull/3524)
     - 更新 Dashboard 的版本至 v2021.03.12.1 [#3469](https://github.com/pingcap/pd/pull/3469)
 
 + TiFlash
@@ -59,7 +59,7 @@ TiDB 版本：4.0.13
     - 修复在 DIV 表达式中使用 `BIT` 类型常量作为除数造成查询结果错误的问题 [#24266](https://github.com/pingcap/tidb/pull/24266)
     - 修复 `NO_ZERO_IN_DATE` SQL 模式对 DDL 语句中设置的列默认值无效的问题 [#24185](https://github.com/pingcap/tidb/pull/24185)
     - 修复 `BIT` 类型列与整型列进行 `UNION` 并集运算时，查询结果出错的问题 [#24026](https://github.com/pingcap/tidb/pull/24026)
-    - 修复 `BINARY` 类型与 `CHAR` 类型比较时，错误生成了 `TableDual` 执行计划的问题 [#23917](https://github.com/pingcap/tidb/pull/23917)
+    - 修复 `BINARY` 类型与 `CHAR` 类型比较时，错误地生成了 `TableDual` 执行计划的问题 [#23917](https://github.com/pingcap/tidb/pull/23917)
     - 修复 `insert ignore on duplicate` 非预期的删除表记录的问题 [#23825](https://github.com/pingcap/tidb/pull/23825)
     - 修复 Audit 插件导致 TiDB panic 的问题 [#23819](https://github.com/pingcap/tidb/pull/23819)
     - 修复 `HashJoin` 算子未正确处理排序规则的问题 [#23812](https://github.com/pingcap/tidb/pull/23812)
@@ -70,7 +70,7 @@ TiDB 版本：4.0.13
     - 修复执行 TiFlash 批量请求时，TiDB 误报 `TiKV server timeout` 的问题 [#23700](https://github.com/pingcap/tidb/pull/23700)
     - 修复 `IndexJoin` 在前缀列索引上计算结果出错的问题 [#23691](https://github.com/pingcap/tidb/pull/23691)
     - 修复由于 `BINARY` 类型列上排序规则处理不当导致查询结果出错的问题 [#23598](https://github.com/pingcap/tidb/pull/23598)
-    - 修复当 `UPDATE` 语句中存在含 `HAVING` 子句的连接查询时，执行出错的问题 [#23575](https://github.com/pingcap/tidb/pull/23575)
+    - 修复当 `UPDATE` 语句中存在含 `HAVING` 子句的连接查询时，执行崩溃的问题 [#23575](https://github.com/pingcap/tidb/pull/23575)
     - 修复比较类型表达式中使用 `NULL` 常量导致 TiFlash 计算结果出错的问题 [#23474](https://github.com/pingcap/tidb/pull/23474)
     - 修复 `YEAR` 类型列与字符类型常量比较结果出错的问题 [#23335](https://github.com/pingcap/tidb/pull/23335)
     - 修复 `session.group_concat_max_len` 被设置得过小时，`group_concat` 执行崩溃的问题 [#23257](https://github.com/pingcap/tidb/pull/23257)
