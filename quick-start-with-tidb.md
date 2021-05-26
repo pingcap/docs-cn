@@ -95,7 +95,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 `root`，密码为空。
 
-7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析.
+7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
 8. 测试完成之后，可以通过执行以下步骤来清理集群：
 
