@@ -31,7 +31,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     > **注意：**
     >
-    > TiUP 安装完成后会提示对应的 profile 文件的绝对路径，以下 source 操作需要根据实际位置进行操作。
+    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
 
     {{< copyable "shell-regular" >}}
 
@@ -41,7 +41,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 3. 在当前 session 执行以下命令启动集群。
 
-    - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
+    - 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
         {{< copyable "shell-regular" >}}
 
@@ -98,7 +98,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 8. 测试完成之后，可以通过执行以下步骤来清理集群：
 
-    1. 通过 <kbd>ctrl</kbd> + <kbd>c</kbd> 停掉进程
+    1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
 
     2. 执行以下命令：
 
@@ -132,7 +132,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     > **注意：**
     >
-    > TiUP 安装完成后会提示对应的 profile 文件的绝对路径，以下 source 操作需要根据实际位置进行操作。
+    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
 
     {{< copyable "shell-regular" >}}
 
@@ -199,7 +199,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 8. 测试完成之后，可以通过执行以下步骤来清理集群：
 
-    1. 通过 <kbd>ctrl</kbd> + <kbd>c</kbd> 停掉进程
+    1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
 
     2. 执行以下命令：
 
