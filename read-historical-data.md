@@ -1,5 +1,5 @@
 ---
-title: 读取历史数据
+title: 通过 tidb_snapshot 读取历史数据
 aliases: ['/docs-cn/dev/read-historical-data/','/docs-cn/dev/how-to/get-started/read-historical-data/']
 ---
 

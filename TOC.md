@@ -60,7 +60,9 @@
       + [BR 工具简介](/br/backup-and-restore-tool.md)
       + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
       + [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-  + [读取历史数据](/read-historical-data.md)
+  + [读取历史数据]
+    + [通过 tidb_snapshot 读取历史数据](/read-historical-data.md)
+    + [通过 as of timestamp 读取历史数据](/read-stale-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
