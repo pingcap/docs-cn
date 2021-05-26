@@ -317,9 +317,9 @@ If you encounter an error above, it is recommended to use BR to restore the incr
 ## When the downstream of a changefeed is a database similar to MySQL and TiCDC executes a time-consuming DDL statement, all other changefeeds are blocked. How should I handle the issue?
 
 1. Pause the execution of the changefeed that contains the time-consuming DDL statement. Then you can see that other changefeeds are no longer blocked.
-2. Search for the `apply job` field in the TiCDC log and confirm the `StartTs` of the time-consuming DDL statement.
+2. Search for the `apply job` field in the TiCDC log and confirm the `start-ts` of the time-consuming DDL statement.
 3. Manually execute the DDL statement in the downstream. After the execution finishes, go on performing the following operations.
-4. Modify the changefeed configuration and add the above `StartTs` to the `ignore-txn-start-ts` configuration item.
+4. Modify the changefeed configuration and add the above `start-ts` to the `ignore-txn-start-ts` configuration item.
 5. Resume the paused changefeed.
 
 ## After I upgrade the TiCDC cluster to v4.0.8, the `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled` error is reported when I execute a changefeed
