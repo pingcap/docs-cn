@@ -244,6 +244,28 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 In the above example, for the incremental backup data, BR records the data changes and the DDL operations during `(LAST_BACKUP_TS, current PD timestamp]`. When restoring data, BR first restores DDL operations and then the data.
 
+### Point-in-time recovery (experimental feature)
+
+Point-in-time recovery (PITR) allows you to restore data to a point in time of your choice.
+
+An example scenario would be to take a full backup every day and take incremental backups every 6 hours and then use TiCDC for PITR. Assume that on one day, the full backup was performed at 00:00 and the first incremental backup was performed at 06:00. If you want to restore the database to the state of 07:16, you can first restore the full backup (taken at 00:00) and the incremental backup (taken at 06:00), and then restore TiCDC logs that fill in the gap between 06:00 and 07:16.
+
+To peform the PITR, you can take the following steps:
+
+1. Restore a full backup using `br restore full`.
+2. (optional) Restore incremental backup(s).
+3. Use `br restore cdclog` to restore the transactions that happened after the last incremental backup. The complete command to execute is as follows:
+
+    ```shell
+    br restore cdclog --storage local:///data/cdclog --start-ts $START_TS --end-ts $END_TS
+    ```
+
+    In the command above:
+
+    - `local:///data/cdclog` is the location of the TiCDC logs. This might be on the local filesystem or on the external storage like S3.
+    - `$START_TS` is the end position of the restore from the last restored backup (either a full backup or an incremental backup).
+    - `$END_TS` is the point to which you want to restore your data.
+
 ### Back up Raw KV (experimental feature)
 
 > **Warning:**
