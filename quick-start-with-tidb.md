@@ -5,9 +5,9 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 # TiDB 数据库快速上手指南
 
-本指南介绍如何以最快速度开始使用 TiDB 数据库。相关操作主要通过 TiUP 进行。TiUP 是 TiDB 生态系统中的一个包管理工具.通过 TiUP，可以只用一行命令就运行任意 TiDB 集群组件。
+本指南介绍如何快速上手体验 TiDB 数据库。要上手 TiDB 数据库，你将使用到 TiUP，即 TiDB 生态系统中的一个包管理工具。通过 TiUP，你只需执行一行命令就可运行任意 TiDB 集群组件。
 
-如需部署本地生产集群，可参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。如需在 Kubernetes 上部署 TiDB，可参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。如需在云上管理 TiDB，可参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart)。
+如需部署本地生产集群，请参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart)。
 
 <SimpleTab>
 <div label="Mac">
@@ -42,7 +42,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 3. 在当前 session 执行以下命令启动集群。
 
-    - 直接运行 tiup playground 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
+    - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
         {{< copyable "shell-regular" >}}
 
@@ -70,8 +70,8 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
         > **注意：**
         >
-        > 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
-        > 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
+        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
+        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
 
 4. 新开启一个 session 以访问 TiDB 数据库。
 
