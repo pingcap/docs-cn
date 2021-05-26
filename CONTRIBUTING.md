@@ -49,7 +49,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 2. 认领 PR
 
-    打开你想认领的 PR，拉到底部留下这条 comment：`/assign @Your-GitHub-ID`（将 Your-GitHub-ID 替换为你的 GitHub ID），即可将此 PR 的翻译任务分配给自己。
+    打开你想认领的 PR，拉到底部留下这条 comment：`/assign`，即可将此 PR 的翻译任务分配给自己。
 
 3. 修改 PR 标签
 
@@ -189,7 +189,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 | ------ | ------ | ------ |
 | `/label` | 给 PR 添加 label，多个 label 间需要用逗号分隔。如果 label 中有斜线 `/`，则命令为 `/[label 的第一个单词] [label 其他部分]` | `/label contribution`，`/translation from-docs` |
 | `/remove-label` | 删除 PR label。如果 label 中有斜线 `/`，则命令为 `/remove-[label 的第一个单词] [label 其他部分]` | `/remove-label contribution`，`/remove-translation welcome` |
-| `/assign` | 将 PR 分配给指定的人，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/assign @CharLotteiu` |
+| `/assign` | 将 PR 分配给指定的人，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。如果想要将 PR 分配给自己，`/assign`后可不跟 GitHub ID。 | `/assign @CharLotteiu` |
 | `/unassign` | 移除 PR 之前指定的 assignee。 | `/unassign @CharLotteiu` |
 | `/cc` | 将 PR 分配给指定的 reviewer，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/cc @TomShawn, @yikeke` |
 | `/uncc` | 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
