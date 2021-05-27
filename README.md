@@ -20,6 +20,10 @@
 
 ## 贡献文档
 
-[<img src="media/contribution-map.png" alt="contribution-map" width="180">](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)
+[<img src="media/contribution-map.png" alt="contribution-map" width="180" />](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)
 
 你提交的第一个 [Pull Request](https://help.github.com/en/github/getting-started-with-github/github-glossary#pull-request) (PR) 合并以后，即可成为 TiDB 文档的 Contributor。查看 [TiDB 中文文档贡献指南](/CONTRIBUTING.md)，开始你的贡献吧！
+
+## 贡献者数量增长图
+
+[![Contributor over time](https://contributor-graph-api.apiseven.com/contributors-svg?chart=contributorOverTime&repo=pingcap/docs-cn)](https://www.apiseven.com/en/contributor-graph?chart=contributorOverTime&repo=pingcap/docs-cn)
