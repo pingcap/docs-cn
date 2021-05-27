@@ -17,8 +17,8 @@ TiDB 实现了通过标准 SQL 接口读取历史数据功能，无需特殊的 
 
 为支持读取历史版本数据，TiDB 扩展了新的语法 AS OF TIMESTAMP。目前支持以下三种方式使用该语法。
 
-- 通过 START TRANSACTION READ ONLY AS OF TIMESTAMP
-- 通过 SET TRANSACTION READ ONLY AS OF TIMESTAMP
+- 通过 [START TRANSACTION READ ONLY AS OF TIMESTAMP](/sql-statements/sql-statement-start-transaction.md)
+- 通过 [SET TRANSACTION READ ONLY AS OF TIMESTAMP](/sql-statements/sql-statement-set-transaction.md)
 - 通过 SELECT 子句中使用 AS OF TIMESTAMP
 
 AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式为：“2016-10-08 16:45:26.999”，一般来说可以只写到秒，比如”2016-10-08 16:45:26”。
