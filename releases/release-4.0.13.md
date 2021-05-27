@@ -103,7 +103,7 @@ TiDB 版本：4.0.13
     - 修复因磁盘写满后 `file_dict` 写入不完全导致 TiKV 无法重启的问题 [9963](https://github.com/tikv/tikv/pull/9963)
     - 限制 TiCDC 默认的扫描速度为 128MB/s [9983](https://github.com/tikv/tikv/pull/9983)
     - 减少 TiCDC 进行初次扫描的内存使用量 [10133](https://github.com/tikv/tikv/pull/10133)
-    - 支持反压 TiCDC 扫描的速率 [10142](https://github.com/tikv/tikv/pull/10142)
+    - 为 TiCDC 扫描的速度添加背压 (back pressure) 功能 [10142](https://github.com/tikv/tikv/pull/10142)
     - 通过避免不必要的读取来获取 TiCDC 旧值以解决潜在的 OOM 问题 [10031](https://github.com/tikv/tikv/pull/10031)
     - 修复了由于读取旧值而导致的 TiCDC OOM 问题 [10197](https://github.com/tikv/tikv/pull/10197)
     - 为 S3 存储添加超时机制以避免 S3 客户端没有任何响应地挂起 [10132](https://github.com/tikv/tikv/pull/10132)
