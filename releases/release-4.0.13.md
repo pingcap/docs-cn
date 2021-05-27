@@ -129,8 +129,14 @@ TiDB 版本：4.0.13
     - 修复时间戳值为 `1970-01-01` 且时区偏移为负时计算结果不正确的问题
     - 修复 `Decimal256` 的哈希值计算结果不稳定的问题
 
-+ TiCDC
++ Tools
 
-    - 修复当 Sorter 的输入通道卡住时，流控导致的死锁问题 [1779](https://github.com/pingcap/ticdc/pull/1779)
-    - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1756](https://github.com/pingcap/ticdc/pull/1756)
-    - 回滚 `explicit_defaults_for_timestamp` 的改动，确保不用 `SUPER` 权限也可以同步数据到 MySQL [#1749](https://github.com/pingcap/ticdc/pull/1749)
+    + TiCDC
+
+        - 修复当 Sorter 的输入通道卡住时，流控导致的死锁问题 [1779](https://github.com/pingcap/ticdc/pull/1779)
+        - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1756](https://github.com/pingcap/ticdc/pull/1756)
+        - 回滚 `explicit_defaults_for_timestamp` 的改动，确保不用 `SUPER` 权限也可以同步数据到 MySQL [#1749](https://github.com/pingcap/ticdc/pull/1749)
+
+    + TiDB Lightning
+
+        - 修复在 autocommit 关闭的情况下，TiDB Lightning TiDB-backend 无法导入数据的问题
