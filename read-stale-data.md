@@ -124,6 +124,7 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
 
 通过 START TRANSACTION READ ONLY AS OF TIMESTAMP 开启一个基于历史时间的只读事务，该事务将会基于所提供的历史时间来读取历史数据。
 
+    {{< copyable "sql" >}}
 
     ```sql
     start transaction read only as of timestamp '2021-05-26 16:45:26';
@@ -132,6 +133,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
     ```
     Query OK, 0 rows affected (0.00 sec)
     ```
+
+    {{< copyable "sql" >}}
 
     ```sql
     select * from t;
@@ -148,6 +151,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
     3 rows in set (0.00 sec)
     ```
 
+    {{< copyable "sql" >}}
+
     ```sql
     commit;
     ```
@@ -157,6 +162,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
     ```
 
 当事务结束后，即可读取最新数据。
+
+    {{< copyable "sql" >}}
 
     ```sql
     select * from t;
@@ -181,6 +188,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
 
 通过 START TRANSACTION READ ONLY AS OF TIMESTAMP 表示下一个事务为基于该历史时间的只读事务，该事务将会基于所提供的历史时间来读取历史数据。
 
+    {{< copyable "sql" >}}
+
     ```sql
     set transaction read only as of timestamp '2021-05-26 16:45:26';
     ```
@@ -189,6 +198,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
     Query OK, 0 rows affected (0.00 sec)
     ```
 
+    {{< copyable "sql" >}}
+
     ```sql
     begin;
     ```
@@ -196,6 +207,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
     ```
     Query OK, 0 rows affected (0.00 sec)
     ```
+
+    {{< copyable "sql" >}}
 
     ```sql
     select * from t;
@@ -212,6 +225,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
     3 rows in set (0.00 sec)
     ```
 
+    {{< copyable "sql" >}}
+
     ```sql
     commit;
     ```
@@ -221,6 +236,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
     ```
 
 当事务结束后，即可读取最新数据。
+
+    {{< copyable "sql" >}}
 
     ```sql
     select * from t;
@@ -245,6 +262,8 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
 
 通过 SELECT 子句中使用 AS OF TIMESTAMP 对当前的查询语句基于历史时间进行查询数据。
 
+    {{< copyable "sql" >}}
+    
     ```sql
     select * from t as of timestamp '2021-05-26 16:45:26';
     ```
