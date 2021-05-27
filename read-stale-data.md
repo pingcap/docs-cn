@@ -263,7 +263,7 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
 通过 SELECT 子句中使用 AS OF TIMESTAMP 对当前的查询语句基于历史时间进行查询数据。
 
     {{< copyable "sql" >}}
-    
+
     ```sql
     select * from t as of timestamp '2021-05-26 16:45:26';
     ```
