@@ -31,7 +31,7 @@ AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式�
 
 ### 准备阶段
 
-1. 初始化阶段，创建一个表，并插入几行数据：
+初始化阶段，创建一个表，并插入几行数据：
 
 ```sql
 create table t (c int);
@@ -49,7 +49,7 @@ insert into t values (1), (2), (3);
 Query OK, 3 rows affected (0.00 sec)
 ```
 
-2. 查看表中的数据：
+查看表中的数据：
 
 ```sql
 select * from t;
@@ -66,7 +66,7 @@ select * from t;
 3 rows in set (0.00 sec)
 ```
 
-3. 查看当前时间：
+查看当前时间：
 
 ```sql
 select now();
@@ -81,7 +81,7 @@ select now();
 1 row in set (0.00 sec)
 ```
 
-4. 更新某一行数据：
+更新某一行数据：
 
 ```sql
 update t set c=22 where c=2;
@@ -91,7 +91,7 @@ update t set c=22 where c=2;
 Query OK, 1 row affected (0.00 sec)
 ```
 
-5. 确认数据已经被更新：
+确认数据已经被更新：
 
 ```sql
 select * from t;
