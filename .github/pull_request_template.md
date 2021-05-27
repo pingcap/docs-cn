@@ -13,6 +13,7 @@
 <!-- Fill in "x" in [] to tick the checkbox below.-->
 
 - [ ] master (the latest development version)
+- [ ] v5.1 (TiDB 5.1 versions)
 - [ ] v5.0 (TiDB 5.0 versions)
 - [ ] v4.0 (TiDB 4.0 versions)
 - [ ] v3.1 (TiDB 3.1 versions)
