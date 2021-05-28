@@ -381,7 +381,7 @@ br restore full \
 
 BR 可以并且会默认备份 `mysql` 数据库下的表。
 
-在恢复时，`mysql` 下的表默认会被 [table filter](/table-filter.md#表库过滤语法) 规则过滤掉。如果需要恢复 `mysql` 下的用户表，可以通过 `-f` 来指定目标用户表。以下示例中的要恢复目标用户表为`mysql.usertable`。
+在恢复时，`mysql` 下的表默认会被 [table filter](/table-filter.md#表库过滤语法) 规则过滤掉。如果需要恢复 `mysql` 下的用户表，可以添加 `-f` 来指定目标用户表。以下示例中要恢复目标用户表为`mysql.usertable`。
 
 {{< copyable "shell-regular" >}}
 
