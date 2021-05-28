@@ -412,7 +412,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 
 > **警告：**
 >
-> 虽然系统表（例如 `mysql.tidb` 等）可以通过 BR 进行备份和恢复，但是部分系统表在恢复之后可能会出现意外状况，已知的异常如下：
+> 虽然系统表（例如 `mysql.tidb` 等）可以通过 BR 进行备份和恢复，但是部分系统表在恢复之后可能会出现非预期的状况，已知的异常如下：
 >
 > - 统计信息表（`mysql.stat_*`）无法被恢复。
 > - 用户信息表（`mysql.user`）在恢复之后不会生效，直到用户手动执行 `FLUSH PRIVILEGES`。
