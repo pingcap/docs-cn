@@ -151,7 +151,7 @@ mysql> SELECT * FROM t1;
 - Default value: `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 - This variable controls a number of MySQL compatibility behaviors. See [SQL Mode](/sql-mode.md) for more information.
 
-### sql_select_limit <span class="version-mark">New in v4.0.2 version</span>
+### sql_select_limit <span class="version-mark">New in v4.0.2</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: `2^64 - 1` (18446744073709551615)
@@ -163,7 +163,7 @@ mysql> SELECT * FROM t1;
 - Default value: (system dependent)
 - This variable shows the system time zone from when TiDB was first bootstrapped. See also [`time_zone`](#time_zone).
 
-### tidb_allow_batch_cop <span class="version-mark">New in v4.0 version</span>
+### tidb_allow_batch_cop <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: 1
@@ -367,6 +367,17 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - When this value is greater than `0`, TiDB will batch commit statements such as `INSERT` or `LOAD DATA` into smaller transactions. This reduces memory usage and helps ensure that the `txn-total-size-limit` is not reached by bulk modifications.
 - Only the value `0` provides ACID compliance. Setting this to any other value will break the atomicity and isolation guarantees of TiDB.
 
+### tidb_enable_1pc <span class="version-mark">New in v5.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: `ON` for newly created clusters. If your cluster before upgrade was earlier than v5.0, the variable value defaults to `OFF` after the upgrade.
+- This variable is used to specify whether to enable the one-phase commit feature for transactions that only affect one Region. Compared with the often-used two-phase commit, one-phase commit can greatly reduce the latency of transaction commit and increase the throughput.
+
+> **Note:**
+>
+> - If you have enabled TiDB Binlog, enabling this variable cannot improve the performance. To improve the performance, it is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead.
+> - Enabling this parameter only means that one-phase commit becomes an optional mode of transaction commit. In fact, the most suitable mode of transaction commit is determined by TiDB.
+
 ### tidb_enable_amend_pessimistic_txn <span class="version-mark">New in v4.0.7</span>
 
 - Scope: SESSION | GLOBAL
@@ -391,17 +402,6 @@ Constraint checking is always performed in place for pessimistic transactions (d
 >
 > - If you have enabled TiDB Binlog, enabling this variable cannot improve the performance. To improve the performance, it is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead.
 > - Enabling this parameter only means that Async Commit becomes an optional mode of transaction commit. In fact, the most suitable mode of transaction commit is determined by TiDB.
-
-### tidb_enable_1pc <span class="version-mark">New in v5.0</span>
-
-- Scope: SESSION | GLOBAL
-- Default value: `ON` for newly created clusters. If your cluster before upgrade was earlier than v5.0, the variable value defaults to `OFF` after the upgrade.
-- This variable is used to specify whether to enable the one-phase commit feature for transactions that only affect one Region. Compared with the often-used two-phase commit, one-phase commit can greatly reduce the latency of transaction commit and increase the throughput.
-
-> **Note:**
->
-> - If you have enabled TiDB Binlog, enabling this variable cannot improve the performance. To improve the performance, it is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead.
-> - Enabling this parameter only means that one-phase commit becomes an optional mode of transaction commit. In fact, the most suitable mode of transaction commit is determined by TiDB.
 
 ### tidb_enable_cascades_planner
 
@@ -453,6 +453,16 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Scope: SESSION | GLOBAL
 - Default value: OFF
 - This variable is used to control whether to enable the index merge feature.
+
+### tidb_enable_list_partition <span class="version-mark">New in v5.0</span>
+
+> **Warning:**
+>
+> Currently, List partition and List COLUMNS partition are experimental features. It is not recommended that you use it in the production environment.
+
+- Scope: SESSION
+- Default value: OFF
+- This variable is used to set whether to enable the `LIST (COLUMNS) TABLE PARTITION` feature.
 
 ### tidb_enable_noop_functions <span class="version-mark">New in v4.0</span>
 
@@ -530,17 +540,7 @@ Query OK, 0 rows affected (0.09 sec)
     - `AUTO` functions the same way as `ON` does.
     - `OFF` indicates disabling the `TABLE PARTITION` feature. In this case, the syntax that creates a partition table can be executed, but the table created is not a partitioned one.
 
-### tidb_enable_list_partition <span class="version-mark">New in v5.0</span>
-
-> **Warning:**
->
-> Currently, List partition and List COLUMNS partition are experimental features. It is not recommended that you use it in the production environment.
-
-- Scope: SESSION
-- Default value: OFF
-- This variable is used to set whether to enable the `LIST (COLUMNS) TABLE PARTITION` feature.
-
-### tidb_enable_telemetry <span class="version-mark">New in v4.0.2 version</span>
+### tidb_enable_telemetry <span class="version-mark">New in v4.0.2</span>
 
 - Scope: GLOBAL
 - Default value: ON
@@ -800,19 +800,19 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Default value: 1024
 - This variable is used to set the maximum number of schema versions (the table IDs modified for corresponding versions) allowed to be cached. The value range is 100 ~ 16384.
 
-### tidb_mem_quota_query
-
-- Scope: SESSION
-- Default value: 1 GB
-- This variable is used to set the threshold value of memory quota for a query.
-- If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. The initial value of this variable is configured by [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query).
-
 ### tidb_mem_quota_apply_cache <span class="version-mark">New in v5.0</span>
 
 - Scope: SESSION | GLOBAL
 - Default value: 32 MB
 - This variable is used to set the memory usage threshold of the local cache in the `Apply` operator.
 - The local cache in the `Apply` operator is used to speed up the computation of the `Apply` operator. You can set the variable to `0` to disable the `Apply` cache feature.
+
+### tidb_mem_quota_query
+
+- Scope: SESSION
+- Default value: 1 GB
+- This variable is used to set the threshold value of memory quota for a query.
+- If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. The initial value of this variable is configured by [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query).
 
 ### tidb_memory_usage_alarm_ratio
 
@@ -1048,6 +1048,13 @@ SET tidb_query_log_max_len = 20
 - Default value: OFF
 - By default, Regions are split for a new table when it is being created in TiDB. After this variable is enabled, the newly split Regions are scattered immediately during the execution of the `CREATE TABLE` statement. This applies to the scenario where data need to be written in batches right after the tables are created in batches, because the newly split Regions can be scattered in TiKV beforehand and do not have to wait to be scheduled by PD. To ensure the continuous stability of writing data in batches, the `CREATE TABLE` statement returns success only after the Regions are successfully scattered. This makes the statement's execution time multiple times longer than that when you disable this variable.
 
+### tidb_skip_ascii_check <span class="version-mark">New in v5.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: OFF
+- This variable is used to set whether to skip ASCII validation.
+- Validating ASCII characters affects the performance. When you are sure that the input characters are valid ASCII characters, you can set the variable value to `ON`.
+
 ### tidb_skip_isolation_level_check
 
 - Scope: SESSION | GLOBAL
@@ -1070,13 +1077,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - Default value: OFF
 - This variable is used to set whether to skip UTF-8 validation.
 - Validating UTF-8 characters affects the performance. When you are sure that the input characters are valid UTF-8 characters, you can set the variable value to `ON`.
-
-### tidb_skip_ascii_check <span class="version-mark">New in v5.0</span>
-
-- Scope: SESSION | GLOBAL
-- Default value: OFF
-- This variable is used to set whether to skip ASCII validation.
-- Validating ASCII characters affects the performance. When you are sure that the input characters are valid ASCII characters, you can set the variable value to `ON`.
 
 ### tidb_slow_log_threshold
 

@@ -24,7 +24,7 @@ If you want to save machine resources and have no requirement on isolation, you 
 
 2. Enable the super batch feature:
 
-    You can use the [`tidb_allow_batch_cop`](/system-variables.md#tidb_allow_batch_cop-new-in-v40-version) variable to set whether to merge Region requests when reading from TiFlash.
+    You can use the [`tidb_allow_batch_cop`](/system-variables.md#tidb_allow_batch_cop-new-in-v40) variable to set whether to merge Region requests when reading from TiFlash.
 
     When the number of Regions involved in the query is relatively large, try to set this variable to `1` (effective for coprocessor requests with `aggregation` operators that are pushed down to TiFlash), or set this variable to `2` (effective for all coprocessor requests that are pushed down to TiFlash).
 

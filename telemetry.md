@@ -136,7 +136,7 @@ See [Deploy TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubern
 
 ### Disable TiDB telemetry for deployed TiDB clusters
 
-In existing TiDB clusters, you can also modify the system variable [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-new-in-v402-version) to dynamically disable the TiDB telemetry collection:
+In existing TiDB clusters, you can also modify the system variable [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-new-in-v402) to dynamically disable the TiDB telemetry collection:
 
 {{< copyable "sql" >}}
 
