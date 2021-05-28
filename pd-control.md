@@ -388,7 +388,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set hot-region-schedule-limit 4
     ```
 
-- `hot-region-cache-hits-threshold` 用于设置热点 Region 的阈值，只有命中 cache 的次数超过这个阈值才会被当作热点。
+- `hot-region-cache-hits-threshold` 用于设置识别热点 Region 所需的分钟数，只有 Region 处于热点状态持续时间超过该分钟数后，才能参与热点调度。
 
 - `tolerant-size-ratio` 控制 balance 缓冲区大小。当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
 
