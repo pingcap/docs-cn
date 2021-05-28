@@ -101,7 +101,7 @@ tiup cluster display ${cluster-name}
 
     **配置项层次结构使用 `.` 表示**。
 
-    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/v4.0.0-rc/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/v4.0.0-rc/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/pingcap/pd/blob/v4.0.0-rc/conf/config.toml)。
+    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/release-4.0/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/release-4.0/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/tikv/pd/blob/release-4.0/conf/config.toml)。
 
 3. 执行 `reload` 命令滚动分发配置、重启相应组件：
 
@@ -113,7 +113,7 @@ tiup cluster display ${cluster-name}
 
 ### 示例
 
-如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/v4.0.0-rc/config/config.toml.example) 模块下，调整后的配置如下：
+如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/release-4.0/config/config.toml.example) 模块下，调整后的配置如下：
 
 ```
 server_configs:
@@ -235,7 +235,7 @@ tiup cluster clean ${cluster-name} --log
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster clean ${cluster-name} --all 
+tiup cluster clean ${cluster-name} --all
 ```
 
 清空 Prometheus 以外的所有服务的日志和数据：
