@@ -9,14 +9,14 @@ aliases: ['/docs-cn/stable/ticdc/manage-ticdc/','/docs-cn/v4.0/ticdc/manage-ticd
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.6。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.13。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v4.0.6
+tiup cluster upgrade <cluster-name> v4.0.13
 ```
 
 ### 升级的注意事项
@@ -422,7 +422,7 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 
 ### 更新同步任务配置
 
-TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
+TiCDC 从 v4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
 
 {{< copyable "shell-regular" >}}
 

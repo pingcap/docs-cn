@@ -20,7 +20,7 @@ aliases: ['/docs-cn/stable/quick-start-with-tidb/','/docs-cn/v4.0/quick-start-wi
 - 耗时：1 分钟
 
 > **注意：**
-> 
+>
 > 由于部分 TiDB 组件尚未发布支持 Apple M1 芯片的版本，暂不支持在使用 Apple M1 芯片的本地 Mac 机器上使用 `tiup playground` 命令。
 
 作为一个分布式系统，最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
@@ -60,7 +60,7 @@ aliases: ['/docs-cn/stable/quick-start-with-tidb/','/docs-cn/v4.0/quick-start-wi
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v4.0.11 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v4.0.13 --db 2 --pd 3 --kv 3 --monitor
         ```
 
         上述命令会在本地下载并启动某个版本的集群（例如 v4.0.11），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
@@ -72,12 +72,12 @@ aliases: ['/docs-cn/stable/quick-start-with-tidb/','/docs-cn/v4.0/quick-start-wi
         To view the dashboard: http://127.0.0.1:2379/dashboard
         To view the monitor: http://127.0.0.1:9090
         ```
-        
+
         > **注意：**
         >
         > 以这种方式执行的 playground，在运行结束后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
         > 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
-    
+
 4. 新开启一个 session 以访问 TiDB 数据库。
 
     + 使用 TiUP `client` 连接 TiDB：
@@ -275,7 +275,7 @@ aliases: ['/docs-cn/stable/quick-start-with-tidb/','/docs-cn/v4.0/quick-start-wi
     - 参数 `<cluster-name>` 表示设置集群名称
     - 参数 `<tidb-version>` 表示设置集群版本，可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
 
-    按照引导，输入”y”及 root 密码，来完成部署：
+    按照引导，输入 `y` 及 root 密码，来完成部署：
 
     ```log
     Do you want to continue? [y/N]:  y

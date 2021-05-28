@@ -25,12 +25,12 @@ tiup ctl tikv
 ```
 
 ```
-Starting component `ctl`: /home/tidb/.tiup/components/ctl/v4.0.8/ctl tikv
+Starting component `ctl`: /home/tidb/.tiup/components/ctl/v4.0.13/ctl tikv
 TiKV Control (tikv-ctl) 
-Release Version:   4.0.8
+Release Version:   4.0.13
 Edition:           Community
 Git Commit Hash:   83091173e960e5a0f5f417e921a0801d2f6635ae
-Git Commit Branch: heads/refs/tags/v4.0.8
+Git Commit Branch: heads/refs/tags/v4.0.13
 UTC Build Time:    2020-10-30 08:40:33
 Rust Version:      rustc 1.42.0-nightly (0de96d37f 2019-12-19)
 Enable Features:   jemalloc mem-profiling portable sse protobuf-codec
