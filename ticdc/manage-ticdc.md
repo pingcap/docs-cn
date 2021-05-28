@@ -99,12 +99,20 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `unified`（默认）/`memory`/`file`：
 
+<<<<<<< HEAD
     - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项在 v5.0 版本中默认开启。
     - `memory`：在内存中进行排序。**不建议使用，同步大量数据时易引发 OOM。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
 - `--sort-dir`: 指定排序引擎使用的临时文件目录。对于 v5.0.x 版本，**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 [`cdc server` 命令中使用该选项来设置临时文件目录](/ticdc/deploy-ticdc.md#ticdc-cdc-server-命令行参数说明)。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
 
+=======
+    - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项默认开启。
+    - `memory`：在内存中进行排序。 **不建议使用，同步大量数据时易引发 OOM。**
+    - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
+
+- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 [`cdc server` 命令中使用该选项来设置临时文件目录](/ticdc/deploy-ticdc.md#ticdc-cdc-server-命令行参数说明)。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
+>>>>>>> 068d8ad85 (ticdc: add more docs about unified sorter (#6258))
 - `--config`：指定 changefeed 配置文件。
 
 #### Sink URI 配置 `mysql`/`tidb`
@@ -783,7 +791,11 @@ force-replicate = true
 
 ## Unified Sorter 功能
 
+<<<<<<< HEAD
 Unified Sorter 是 TiCDC 中的排序引擎功能，在 v5.0.x 版本中默认开启，用于缓解以下场景造成的内存溢出问题：
+=======
+Unified Sorter 是 TiCDC 中的排序引擎功能，用于缓解以下场景造成的内存溢出问题：
+>>>>>>> 068d8ad85 (ticdc: add more docs about unified sorter (#6258))
 
 + 如果 TiCDC 数据订阅任务的暂停中断时间长，其间积累了大量的增量更新数据需要同步。
 + 从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
