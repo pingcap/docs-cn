@@ -199,7 +199,7 @@ tiup cluster display <cluster-name>
 ```
 Starting /home/tidblk/.tiup/components/cluster/v1.0.0/cluster display <cluster-name>
 TiDB Cluster: <cluster-name>
-TiDB Version: v4.0.0
+TiDB Version: v4.0.13
 ```
 
 > **注意：**
