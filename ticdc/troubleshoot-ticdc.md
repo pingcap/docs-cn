@@ -393,12 +393,11 @@ cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --start-ts 4152
 cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
 
-<<<<<<< HEAD
 > **注意：**
 >
 > + 以上步骤仅适用于 TiCDC v5.0.0 及以上版本（不包括 v5.0.0-rc）。
 > + 在 v5.0.0-rc 版本中，DDL 执行失败后 changefeed 的 checkpoint-ts 为该 DDL 语句的 finish-ts。使用 `cdc cli changefeed resume` 恢复同步任务后不会重试该 DDL 语句，而是直接跳过执行该 DDL 语句。
-=======
+
 ## 同步 DDL 到下游 MySQL 5.7 时间类型字段默认值不一致
 
 比如上游 TiDB 的建表语句为 `create table test (id int primary key, ts timestamp)`，TiCDC 同步该语句到下游 MySQL 5.7，MySQL 使用默认配置，同步得到的表结构如下所示，timestamp 字段默认值会变成 `CURRENT_TIMESTAMP`：
@@ -419,5 +418,4 @@ mysql root@127.0.0.1:test> show create table test;
 1 row in set
 ```
 
-产生表结构不一致的原因是 `explicit_defaults_for_timestamp` 的[默认值在 TiDB 和 MySQL 5.7 不同](/mysql-compatibility.md#默认设置)。从 TiCDC v5.0.1/v4.0.13 版本开始，同步到 MySQL 会自动设置 session 变量 `explicit_defaults_for_timestamp = ON`，保证同步时间类型时上下游行为一致。对于 v5.0.1/v4.0.13 以前的版本，同步时间类型时需要注意 `explicit_defaults_for_timestamp` 默认值不同带来的兼容性问题。
->>>>>>> 923bc605c ([v5.0.1/v4.0.13] ticdc: add explicit_defaults_for_timestamp compatibility troubleshoot (#6032))
+产生表结构不一致的原因是 `explicit_defaults_for_timestamp` 的[默认值在 TiDB 和 MySQL 5.7 不同](/mysql-compatibility.md#默认设置)。从 TiCDC v5.0.1 版本开始，同步到 MySQL 会自动设置 session 变量 `explicit_defaults_for_timestamp = ON`，保证同步时间类型时上下游行为一致。对于 v5.0.1 以前的版本，同步时间类型时需要注意 `explicit_defaults_for_timestamp` 默认值不同带来的兼容性问题。
