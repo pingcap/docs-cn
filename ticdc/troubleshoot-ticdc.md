@@ -399,6 +399,7 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 >
 > 以上步骤仅适用于 TiCDC v4.0.11 及以上版本。
 > 在其它版本中（v4.0.11 以下），DDL 执行失败后 changefeed 的 checkpoint-ts 为该 DDL 语句的 finish-ts。使用 `cdc cli changefeed resume` 恢复同步任务后不会重试该 DDL 语句，而是直接跳过执行该 DDL 语句。
+
 ## 同步 DDL 到下游 MySQL 5.7 时间类型字段默认值不一致
 
 比如上游 TiDB 的建表语句为 `create table test (id int primary key, ts timestamp)`，TiCDC 同步该语句到下游 MySQL 5.7，MySQL 使用默认配置，同步得到的表结构如下所示，timestamp 字段默认值会变成 `CURRENT_TIMESTAMP`：
