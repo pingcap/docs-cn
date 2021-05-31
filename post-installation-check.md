@@ -48,13 +48,15 @@ tiup cluster display tidb-test
 >
 > 登录数据库前，你需要安装 MySQL 客户端。
 
-执行如下命令登录数据库：
+执行以下命令登录数据库：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -u root -h 10.0.1.4 -P 4000
+mysql -u root -h ${tidb_server_host_IP_address} -P 4000
 ```
+
+其中 `${tidb_server_host_IP_address}` 是你在[初始化集群拓扑文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)时为 `tidb_servers` 配置的 IP 地址，例如 `10.0.1.7`。
 
 输出下列信息表示登录成功：
 
