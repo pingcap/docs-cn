@@ -9,7 +9,7 @@ TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需
 
 请参阅下列文档了解如何部署标准 TiDB 集群：
 
-- [快速试用 TiDB 集群](/quick-start-with-tidb.md#第一种使用-tiup-playground-快速部署本地测试环境)
+- [快速试用 TiDB 集群](/quick-start-with-tidb.md)
 - [生产环境部署](/production-deployment-using-tiup.md)
 - [Kubernetes 环境部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/access-dashboard/)
 
