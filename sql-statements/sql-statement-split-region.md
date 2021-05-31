@@ -4,7 +4,7 @@ title: Split Region 使用文档
 
 # Split Region 使用文档
 
-在 TiDB 中新建一个表后，默认会单独切分出 1 个 Region 来存储这个表的数据，这个默认行为由配置文件中的 `split-table` 控制。当这个 Region 中的数据超过默认 Region 大小限制后，这个 Region 会开始分裂成 2 个 Region。
+在 TiDB 中新建一个表后，默认会单独切分出 1 个 [Region](/tidb-storage.md#region) 来存储这个表的数据，这个默认行为由配置文件中的 `split-table` 控制。当这个 Region 中的数据超过默认 Region 大小限制后，这个 Region 会开始分裂成 2 个 Region。
 
 上述情况中，如果在新建的表上发生大批量写入，则会造成热点，因为开始只有一个 Region，所有的写请求都发生在该 Region 所在的那台 TiKV 上。
 
@@ -44,17 +44,21 @@ title: Split Region 使用文档
 
 Split Region 有 2 种不同的语法，具体如下：
 
-```sql
-SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
-```
+- 均匀切分的语法：
 
-`BETWEEN lower_value AND upper_value REGIONS region_num` 语法是通过指定上、下边界和 Region 数量，然后在上、下边界之间均匀切分出 `region_num` 个 Region。
+    ```sql
+    SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
+    ```
 
-```sql
-SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
-```
+    `BETWEEN lower_value AND upper_value REGIONS region_num` 语法是通过指定数据的上、下边界和 Region 数量，然后在上、下边界之间均匀切分出 `region_num` 个 Region。
 
-`BY value_list…` 语法将手动指定一系列的点，然后根据这些指定的点切分 Region，适用于数据不均匀分布的场景。
+- 不均匀切分的语法：
+
+    ```sql
+    SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
+    ```
+
+    `BY value_list…` 语法将手动指定一系列的点，然后根据这些指定的点切分 Region，适用于数据不均匀分布的场景。
 
 `SPLIT` 语句的返回结果示例如下：
 
@@ -94,7 +98,7 @@ t22_r11
 
 #### 均匀切分
 
-由于 `row_id` 是整数，所以根据指定的 `lower_value`、`upper_value` 以及 `region_num`，可以推算出需要切分的 key。TiDB 先计算 step（`step = (upper_value - lower_value)/num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `num` 个 Region。
+由于 `row_id` 是整数，所以根据指定的 `lower_value`、`upper_value` 以及 `region_num`，可以推算出需要切分的 key。TiDB 先计算 step（`step = (upper_value - lower_value)/region_num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `region_num` 个 Region。
 
 例如，对于表 t，如果想要从 `minInt64`~`maxInt64` 之间均匀切割出 16 个 Region，可以用以下语句：
 
@@ -257,9 +261,9 @@ region4  [("c", "")                    , maxIndexValue               )
     SPLIT [PARTITION] TABLE table_name [PARTITION (partition_name_list...)] [INDEX index_name] BY (value_list) [, (value_list)] ...
     ```
 
-#### 示例
+#### Split 分区表的 Region 示例
 
-1. 首先创建一个分区表。
+1. 首先创建一个分区表。如果你要建一个 Hash 分区表，分成 2 个 partition，示例语句如下：
 
     {{< copyable "sql" >}}
 
@@ -284,13 +288,19 @@ region4  [("c", "")                    , maxIndexValue               )
     +-----------+-----------+---------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
     ```
 
-2. 用 `SPLIT` 语法为每个 partition 切分 Region，示例如下，在 [0,10000] 范围内切分成 4 个 Region。
+2. 用 `SPLIT` 语法为每个 partition 切分 Region。如果你要将各个 partition 的 [0,10000] 范围内的数据切分成 4 个 Region，示例语句如下：
 
     {{< copyable "sql" >}}
 
     ```sql
     split partition table t between (0) and (10000) regions 4;
     ```
+
+    其中，`0` 和 `10000` 分别代表你想要打散的热点数据对应的上、下边界的 `row_id`。
+
+    > **注意：**
+    >
+    > 此示例仅适用于数据热点均匀分布的场景。如果热点数据在你指定的数据范围内是不均匀分布的，请参考 [Split 分区表的 Region](#split-分区表的-region) 中不均匀切分的语法。
 
 3. 用 `SHOW TABLE REGIONS` 语法查看该表的 Region。如下会发现该表现在一共有 10 个 Region，每个 partition 分别有 5 个 Region，其中 4 个 Region 是表的行数据，1 个 Region 是表的索引数据。
 
@@ -317,7 +327,7 @@ region4  [("c", "")                    , maxIndexValue               )
     +-----------+---------------+---------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
     ```
 
-4. 也可以给每个分区的索引切分 Region，如将索引 `idx` 的 [1000,10000] 范围切分成 2 个 Region：
+4. 如果你要给每个分区的索引切分 Region，如将索引 `idx` 的 [1000,10000] 范围切分成 2 个 Region，示例语句如下：
 
     {{< copyable "sql" >}}
 
@@ -325,11 +335,11 @@ region4  [("c", "")                    , maxIndexValue               )
     split partition table t index idx between (1000) and (10000) regions 2;
     ```
 
-#### Split 单个分区的 Region
+#### Split 单个分区的 Region 示例
 
 可以单独指定要切分的 partition，示例如下：
 
-1. 首先创建一个分区表：
+1. 首先创建一个分区表。如果你要建一个 Range 分区表，分成 3 个 partition，示例语句如下：
 
     {{< copyable "sql" >}}
 
@@ -340,7 +350,7 @@ region4  [("c", "")                    , maxIndexValue               )
         partition p3 values less than (MAXVALUE) );
     ```
 
-2. 为 `p1` 分区的 [0,10000] 预切分 2 个 Region：
+2. 如果你要将 `p1` 分区的 [0,10000] 范围内的数据预切分 2 个 Region，示例语句如下：
 
     {{< copyable "sql" >}}
 
@@ -348,7 +358,7 @@ region4  [("c", "")                    , maxIndexValue               )
     split partition table t partition (p1) between (0) and (10000) regions 2;
     ```
 
-3. 为 `p2` 分区的 [10000,20000] 预切分 2 个 Region：
+3. 如果你要将 `p2` 分区的 [10000,20000] 范围内的数据预切分 2 个 Region，示例语句如下：
 
     {{< copyable "sql" >}}
 
@@ -376,7 +386,7 @@ region4  [("c", "")                    , maxIndexValue               )
     +-----------+----------------+----------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
     ```
 
-5. 为 `p1` 和 `p2` 分区的索引 `idx` 的 [0,20000] 范围预切分 2 个 Region:
+5. 如果你要将 `p1` 和 `p2` 分区的索引 `idx` 的 [0,20000] 范围预切分 2 个 Region，示例语句如下：
 
     {{< copyable "sql" >}}
 
@@ -396,7 +406,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 * `tidb_scatter_region`：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `1`，表示等待所有 Region 都切分和打散完成后再返回结果给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
 
-### 示例
+### pre_split_regions 示例
 
 {{< copyable "sql" >}}
 
