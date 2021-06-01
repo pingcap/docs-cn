@@ -53,7 +53,7 @@ TiDB provides complete distributed transactions and the model has some optimizat
     As distributed transactions need to conduct two-phase commit and the bottom layer performs Raft replication, if a transaction is very large, the commit process would be quite slow, and the following Raft replication process is thus stuck. To avoid this problem, the transaction size is limited:
 
     - A transaction is limited to 5,000 SQL statements (by default)
-    - Each Key-Value entry is no more than 6 MB
+    - Each Key-Value entry is no more than 6 MB (by default)
     - The total size of Key-Value entries is no more than 10 GB.
 
     You can find similar limits in [Google Cloud Spanner](https://cloud.google.com/spanner/quotas).
