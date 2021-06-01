@@ -29,7 +29,7 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 
 ## 登录
 
-首次访问 TiDB Dashboard 将会显示用户登录界面，如下图所示，可使用 TiDB root 账号登录。
+首次访问 TiDB Dashboard 将会显示用户登录界面，如下图所示，可使用 TiDB root 账号登录。默认情况下，root 账号密码为空。
 
 ![登录界面](/media/dashboard/dashboard-access-login.png)
 
