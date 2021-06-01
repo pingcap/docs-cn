@@ -456,8 +456,8 @@ mysql> SELECT * FROM t1;
 
 - 作用域：NONE
 - 默认值：OFF
-- 这个变量代表所连接的 TiDB 服务器是否启用了安全增强模式（SEM），并且在不重新启动 TiDB 服务器的情况下不能改变该变量。
-- SEM 的想法来自于诸如 [安全增强式 Linux](https://zh.wikipedia.org/wiki/%E5%AE%89%E5%85%A8%E5%A2%9E%E5%BC%BA%E5%BC%8FLinux) 等系统的设计。SEM 降低了具有 MySQL `SUPER` 权限的用户的能力，而是需要授予 `RESTRICTED` 细粒度权限作为替代。`RESTRICTED` 权限如下：
+- 这个变量表示所连接的 TiDB 服务器是否启用了安全增强模式（SEM），在不重新启动 TiDB 服务器的情况下不能改变该变量。
+- 安全增强模式的想法来自于诸如 [安全增强式 Linux](https://zh.wikipedia.org/wiki/%E5%AE%89%E5%85%A8%E5%A2%9E%E5%BC%BA%E5%BC%8FLinux) 等系统的设计。SEM 降低了具有 MySQL `SUPER` 权限的用户的能力，而是需要授予 `RESTRICTED` 细粒度权限作为替代。`RESTRICTED` 权限如下：
     - `RESTRICTED_TABLES_ADMIN`：能够写入 `mysql` 模式中的系统表，并查看 `information_schema` 表上的敏感列。
     - `RESTRICTED_STATUS_ADMIN`：能够在 `SHOW STATUS` 命令中查看敏感变量。
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置敏感变量。
