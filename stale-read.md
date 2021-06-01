@@ -18,4 +18,4 @@ Stale Read 是 TiDB 提供快速读取数据的一种机制。Stale Read 功能�
 - 精确时间点：通过指定一个时间戳，确保读到该指定时间点下保证全局事务记录一致性的数据，不破坏隔离级别，但可能读到旧数据。该功能通过 [AS OF TIMESTAMP 语法](/as-of-timestamp.md#语法方式)提供。
 - 时间范围：通过指定一个时间范围，确保读到在该时间范围内尽可能新的数据，不破坏隔离级别，但可能读到旧数据。该功能通过 [AS OF TIMESTAMP 语法](/as-of-timestamp.md#语法方式) 和 [TIDB_BOUNDED_STALENESS 函数](/as-of-timestamp.md#语法方式)实现。
 
-除了语法的使用，Stale Read 通常需要配合 TiDB 的 Geo-Partition 部署来进一步在跨中心部署场景中获得更好的性能表现，具体可见[Geo-Partition 使用文档](/configure-geo-partition.md)。
+除了语法的使用，Stale Read 通常需要配合 TiDB 的 Geo-Partition 部署来进一步在跨中心部署场景中获得更好的性能表现，具体可见 Geo-Partition 使用文档。
