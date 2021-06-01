@@ -189,6 +189,22 @@ To check whether the NTP service is installed and whether it synchronizes with t
     Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
     ```
 
+    - If it returns `Unit ntpd.service could not be found.`, then try the following command to see whether your system is configured to use `chronyd` instead of `ntpd` to perform clock synchronization with NTP:
+
+        {{< copyable "shell-regular" >}}
+    
+        ```bash
+        sudo systemctl status cronyd.service
+        ```
+    
+        ```
+        chronyd.service - NTP client/server
+        Loaded: loaded (/usr/lib/systemd/system/chronyd.service; enabled; vendor preset: enabled)
+        Active: active (running) since Mon 2021-04-05 09:55:29 EDT; 3 days ago
+        ```
+    
+        If your system is configured to use `chronyd`, proceed to step 3.
+
 2. Run the `ntpstat` command to check whether the NTP service synchronizes with the NTP server.
 
     > **Note:**
@@ -219,6 +235,48 @@ To check whether the NTP service is installed and whether it synchronizes with t
 
         ```
         Unable to talk to NTP daemon. Is it running?
+        ```
+
+3. Run the `chronyc tracking` command to check wheter the Chrony service synchronizes with the NTP server.
+
+    > **Note:**
+    >
+    > This only applies to systems that use Chrony instead of NTPd.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    chronyc tracking
+    ```
+
+    - If the command returns `Leap status     : Normal`, the synchronization process is normal.
+
+        ```
+        Reference ID    : 5EC69F0A (ntp1.time.nl)
+        Stratum         : 2
+        Ref time (UTC)  : Thu May 20 15:19:08 2021
+        System time     : 0.000022151 seconds slow of NTP time
+        Last offset     : -0.000041040 seconds
+        RMS offset      : 0.000053422 seconds
+        Frequency       : 2.286 ppm slow
+        Residual freq   : -0.000 ppm
+        Skew            : 0.012 ppm
+        Root delay      : 0.012706812 seconds
+        Root dispersion : 0.000430042 seconds
+        Update interval : 1029.8 seconds
+        Leap status     : Normal
+        ```
+
+    - If the command returns the following result, an error occurs in the synchronization:
+
+        ```
+        Leap status    : Not synchronised
+        ```
+
+    - If the command returns the following result, the `chronyd` service is not running normally:
+
+        ```
+        506 Cannot talk to daemon
         ```
 
 To make the NTP service start synchronizing as soon as possible, run the following command. Replace `pool.ntp.org` with your NTP server.
