@@ -288,7 +288,7 @@ val df = spark.sql("select * from tpch.ORDERS")
 df.write.
   format("tidb").
   option("tidb.addr", "127.0.0.1").
-  option("tidb.port", "4000")
+  option("tidb.port", "4000").
   option("tidb.user", "root").
   option("tidb.password", "").
   option("database", "tpch").
