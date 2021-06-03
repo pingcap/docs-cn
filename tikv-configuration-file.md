@@ -11,6 +11,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 <!-- markdownlint-disable MD001 -->
 
+## 全局配置
+
+### abort-on-panic
++ 设置 TiKV panic 时 abort 进程，允许系统生成 core dump。当这个配置项为 false 时，TiKV 使用 exit 退出进程。注意当把这个配置项打开以后，还需要进行相关的系统配置才能生成 core dump。建议把 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
++ 默认值：false
+
 ## server
 
 服务器相关的配置项。
