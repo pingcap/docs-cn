@@ -270,9 +270,9 @@ Configuration items related to security.
 
 ### `enable-sem`
 
-- Enable the Security Enhanced Mode (SEM).
+- Enables the Security Enhanced Mode (SEM).
 - Default value: `false`
-- The status of security enhanced mode is available via the system variable [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security).
+- The status of SEM is available via the system variable [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security).
 
 ### `ssl-ca`
 

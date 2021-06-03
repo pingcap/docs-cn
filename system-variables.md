@@ -434,9 +434,9 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: NONE
 - Default value: OFF
-- This variable indicates if the TiDB server you are connected to has Security Enhanced Mode (SEM) enabled, and can not be changed without restarting the TiDB server.
-- SEM is inspired by the design of systems such as [Security-Enhanced Linux](https://en.wikipedia.org/wiki/Security-Enhanced_Linux). It reduces the capabilities of users with the MySQL `SUPER` privilege, and instead requires `RESTRICTED` fine grained privileges to be granted as a replacement. These include:
-    - `RESTRICTED_TABLES_ADMIN`: The ability to write to system tables in the `mysql` schema, and see sensitive columns on `information_schema` tables.
+- This variable indicates whether the TiDB server you are connected to has the Security Enhanced Mode (SEM) enabled. To change its value, you need to modify the value of `enable-sem` in your TiDB server configuration file and restart the TiDB server.
+- SEM is inspired by the design of systems such as [Security-Enhanced Linux](https://en.wikipedia.org/wiki/Security-Enhanced_Linux). It reduces the abilities of users with the MySQL `SUPER` privilege and instead requires `RESTRICTED` fine-grained privileges to be granted as a replacement. These fine-grained privileges include:
+    - `RESTRICTED_TABLES_ADMIN`: The ability to write data to system tables in the `mysql` schema and to see sensitive columns on `information_schema` tables.
     - `RESTRICTED_STATUS_ADMIN`: The ability to see sensitive variables in the command `SHOW STATUS`.
     - `RESTRICTED_VARIABLES_ADMIN`: The ability to see and set sensitive variables in `SHOW [GLOBAL] VARIABLES` and `SET`.
     - `RESTRICTED_USER_ADMIN`: The ability to prevent other users from making changes or dropping a user account.
