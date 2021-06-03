@@ -1,30 +1,29 @@
 ---
 title: TiDB Lightning 分布式导入
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-distributed-import/','/docs-cn/dev/reference/tools/tidb-lightning/distributed-import/']
 ---
 
 # TiDB Lightning 分布式导入
 
-从 v5.1.0 版本开始，TiDB Lightning Local Backend 增加如下功能的支持:
+从 v5.1.0 版本开始，TiDB Lightning Local Backend 增加对如下功能的支持:
 
 - 增量导入。支持导入新数据至已存在数据的表
 - 分布式并行导入。支持同时启动多个 TiDB Lightning 导入数据至单个表中
 
 > **注意：**
 >
-> 在使用 Local-Backend 增量导入或分布式导入时，都需要确保多个 TiDB Lightning 的数据源直接以及他们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
+> 在使用 Local-Backend 增量导入或分布式导入时，都需要确保多个 TiDB Lightning 的数据源之间，以及他们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
 
 ## 增量导入
 
 TiDB Lightning 会自动调整 ID 分配器的基准值以确保为设置 AUTO_INCREMENT 等类型的字段分配的值不会重复。同时，在开始导入之前，如果 TiDB Lightning 发现目标表中包含数据，则会首先执行一次 Checksum, 确保最终 Checksum 结果的正确性。
 
-TiDB Lightning 总是会会检测目标表中是否包含数据，如果包含，则会自动切换至增量导入模式，因此无须执行任何操作即可使用此功能。
+TiDB Lightning 总是会检测目标表中是否包含数据，如果包含，则会自动切换至增量导入模式，因此无须执行任何操作即可使用此功能。
 
 ## 分布式并行导入
 
-TiDB Lightning 分布式导入功能通过支持同步启动多个实例并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入的大量数据所需的时间。
+TiDB Lightning 分布式导入功能通过支持同步启动多个实例并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
-TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表的元信息，以协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV及PD 的配置变更与恢复。
+TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表的元信息，以协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
 ### 使用说明
 
@@ -38,7 +37,7 @@ TiDB Lightning 分布式并行的水平扩展性能受每个实例的导入速�
 
 ```
 [tikv-importer]
-# 如果有多个 TiDB Lightning 导入相同的表，则按比例增大此设置。例如，需要启动 5 个示例导入相同表的数据，则设置为 480MiB 
+# 如果有多个 TiDB Lightning 导入相同的表，则按比例增大此设置。例如，需要启动 5 个实例导入相同表的数据，则设置为 480MiB 
 region-split-size = '96MiB'
 ```
 
@@ -56,7 +55,7 @@ region-split-size = '96MiB'
 
 > **注意：**
 >
-> 如果需要导出的多个分表属于同一个上游 MySQL 集群，可以直接使用 dumpling 的 -f 参数一次导出多个分表的结果。如果多个分表分布在不同的集群，可以使用 dumpling 分两次导出，并将两次导出的结果放置在相同的父目录下即可。
+> 如果需要导出的多个分表属于同一个上游 MySQL 实例，可以直接使用 dumpling 的 -f 参数一次导出多个分表的结果。如果多个分表分布在不同的 MySQL 实例，可以使用 dumpling 分两次导出，并将两次导出的结果放置在相同的父目录下即可。
 
 ### 第 2 步：配置 TiDB Lightning 的数据源
 
