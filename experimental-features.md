@@ -14,7 +14,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
     + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
     + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。
-+ [hibernate-regions](/tikv-configuration-file.md#hibernate-regions-实验特性)，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。
 
 ## 调度功能
 
