@@ -35,6 +35,7 @@ TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表�
 TiDB Lightning 分布式并行的水平扩展性能受每个实例的导入速度和目标集群规模的限制。在通常情况下，建议至少确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)，以达到最佳的导入性能。
 
 同时如果存在需要使用多个 TiDB Lightning 并行导入的单个表的数据，请调整如何配置：
+
 ```
 [tikv-importer]
 # 如果有多个 TiDB Lightning 导入相同的表，则按比例增大此设置。例如，需要启动 5 个示例导入相同表的数据，则设置为 480MiB 
