@@ -68,6 +68,7 @@ WITH RECURSIVE cte(a) AS (SELECT 1 UNION SELECT a+1 FROM cte WHERE a < 5) SELECT
 ## MySQL 兼容性
 
 * 在严格模式下，当递归部分算出的数据的长度超过初始部分的长度时，TiDB 会返回警告, 而 MySQL 会返回错误。非严格模式下，TiDB 与 MySQL 一致。
+* 递归 CTE 所使用的数据类型由初始部分决定。初始部分的类型在某些情况（例如函数）下并不与 MySQL 完全一致。
 
 ## 另请参阅
 
