@@ -1,0 +1,194 @@
+---
+title: TiDB Specific Functions
+summary: Learn about the usage of TiDB specific functions.
+---
+
+# TiDB Specific Functions
+
+This document introduces the functions that are specific to TiDB.
+
+## TIDB_BOUNDED_STALENESS
+
+The `TIDB_BOUNDED_STALENESS` function is an internal function of TiDB.
+
+## TIDB_DECODE_KEY
+
+The `TIDB_DECODE_KEY` function can be used to decode a TiDB-encoded key entry into a JSON structure containing `_tidb_rowid` and `table_id`. These encoded keys can be found in some system tables and in logging outputs.
+
+### Synopsis
+
+```ebnf+diagram
+TableStmt ::=
+    "TIDB_DECODE_KEY(" STR ")"
+```
+
+### Example
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT START_KEY, TIDB_DECODE_KEY(START_KEY) FROM information_schema.tikv_region_status WHERE table_name='t1' AND REGION_ID=2\G
+```
+
+```sql
+*************************** 1. row ***************************
+                 START_KEY: 7480000000000000FF3B5F728000000000FF1DE3F10000000000FA
+TIDB_DECODE_KEY(START_KEY): {"_tidb_rowid":1958897,"table_id":"59"}
+1 row in set (0.00 sec)
+```
+
+### MySQL compatibility
+
+The `TIDB_DECODE_KEY` function is TiDB-specific and not compatible with MySQL.
+
+## TIDB_DECODE_PLAN
+
+The `TIDB_DECODE_PLAN` function can be used to decode a TiDB execution plan. These plans can be found in the slow query log.
+
+### Synopsis
+
+```ebnf+diagram
+TableStmt ::=
+    "TIDB_DECODE_PLAN(" STR ")"
+```
+
+### Example
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXRpbWU6NzEzLjHCtXMsIGxvb3BzOjIsIGNvcF90YXNrOiB7bnVtOiAxLCBtYXg6IDU2OC41wgErRHByb2Nfa2V5czogMCwgcnBjXxEpAQwFWBAgNTQ5LglZyGNvcHJfY2FjaGVfaGl0X3JhdGlvOiAwLjAwfQkzLjk5IEtCCU4vQQoxCTFfNgkxXzAJMwm2SGx0KHRlc3QudC5hLCAxMDAwMCkNuQRrdgmiAHsFbBQzMTMuOMIBmQnEDDk2MH0BUgEEGAoyCTQzXzUFVwX1oGFibGU6dCwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCTk2ISE2aAAIMTUzXmYA')\G
+```
+
+```sql
+*************************** 1. row ***************************
+  tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXRpbWU6NzEzLjHCtXMsIGxvb3BzOjIsIGNvcF90YXNrOiB7bnVtOiAxLCBtYXg6IDU2OC41wgErRHByb2Nfa2V5czogMCwgcnBjXxEpAQwFWBAgNTQ5LglZyGNvcHJfY2FjaGVfaGl0X3JhdGlvOiAwLjAwfQkzLjk5IEtCCU4vQQoxCTFfNgkxXz:     id                     task         estRows    operator info                              actRows    execution info                                                                                                                         memory     disk
+    TableReader_7          root         319.04     data:Selection_6                           960        time:713.1µs, loops:2, cop_task: {num: 1, max: 568.5µs, proc_keys: 0, rpc_num: 1, rpc_time: 549.1µs, copr_cache_hit_ratio: 0.00}    3.99 KB    N/A
+    └─Selection_6          cop[tikv]    319.04     lt(test.t.a, 10000)                        960        tikv_task:{time:313.8µs, loops:960}                                                                                                   N/A        N/A
+      └─TableFullScan_5    cop[tikv]    960        table:t, keep order:false, stats:pseudo    960        tikv_task:{time:153µs, loops:960}                                                                                                     N/A        N/A
+```
+
+### MySQL compatibility
+
+The `TIDB_DECODE_PLAN` function is TiDB-specific and not compatible with MySQL.
+
+## TIDB_IS_DDL_OWNER
+
+The `TIDB_IS_DDL_OWNER` function can be used to check whether or not the TiDB instance you are connected to is the one that is the DDL Owner. The DDL Owner is the TiDB instance that is tasked with executing DDL statements on behalf of all other nodes in the cluster.
+
+### Synopsis
+
+```ebnf+diagram
+TableStmt ::=
+    "TIDB_IS_DDL_OWNER())"
+```
+
+### Example
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT tidb_is_ddl_owner();
+```
+
+```sql
++---------------------+
+| tidb_is_ddl_owner() |
++---------------------+
+|                   1 |
++---------------------+
+1 row in set (0.00 sec)
+```
+
+### MySQL compatibility
+
+The `TIDB_IS_DDL_OWNER` function is TiDB-specific and not compatible with MySQL.
+
+### See also
+
+- [ADMIN SHOW DDL](/sql-statements/sql-statement-admin-show-ddl.md)
+- [ADMIN CANCEL DDL](/sql-statements/sql-statement-admin-cancel-ddl.md)
+
+## TIDB_PARSE_TSO
+
+The `TIDB_PARSE_TSO` function can be used to extract the physical timestamp from a TiDB TSO timestamp.
+
+TSO stands for Time Stamp Oracle and is a monotonically increasing timestamp given out by PD (Placement Driver) for every transaction.
+
+A TSO is a number that consists of two parts:
+
+- A physical timestamp
+- A logical counter
+
+### Synopsis
+
+```ebnf+diagram
+TableStmt ::=
+    "TIDB_PARSE_TSO(" NUM ")"
+```
+
+### Example
+
+{{< copyable "sql" >}}
+
+```sql
+BEGIN;
+SELECT TIDB_PARSE_TSO(@@tidb_current_ts);
+ROLLBACK;
+```
+
+```sql
++-----------------------------------+
+| TIDB_PARSE_TSO(@@tidb_current_ts) |
++-----------------------------------+
+| 2021-05-26 11:33:37.776000        |
++-----------------------------------+
+1 row in set (0.0012 sec)
+```
+
+Here `TIDB_PARSE_TSO` is used to extract the physical timestamp from the timestamp number that is available in the `tidb_current_ts` session variable. Because timestamps are given out per transaction, this function is running in a transaction.
+
+### MySQL compatibility
+
+The `TIDB_PARSE_TSO` function is TiDB-specific and not compatible with MySQL.
+
+### See also
+
+- [`tidb_current_ts`](/system-variables.md#tidb_current_ts)
+
+## TIDB_VERSION
+
+The `TIDB_VERSION` function can be used to get the version and build details of the TiDB server that you are connected to. You can use this function when reporting issues on GitHub.
+
+### Synopsis
+
+```ebnf+diagram
+TableStmt ::=
+    "TIDB_VERSION()"
+```
+
+### Example
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT TIDB_VERSION()\G
+```
+
+```sql
+*************************** 1. row ***************************
+TIDB_VERSION(): Release Version: v5.1.0-alpha-13-gd5e0ed0aa-dirty
+Edition: Community
+Git Commit Hash: d5e0ed0aaed72d2f2dfe24e9deec31cb6cb5fdf0
+Git Branch: master
+UTC Build Time: 2021-05-24 14:39:20
+GoVersion: go1.13
+Race Enabled: false
+TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
+Check Table Before Drop: false
+1 row in set (0.00 sec)
+```
+
+### MySQL compatibility
+
+The `TIDB_VERSION` function is TiDB-specific and not compatible with MySQL. If MySQL compatibility is required, you can also use `VERSION` to get version information, but the result does not contain build details.
