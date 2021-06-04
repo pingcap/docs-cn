@@ -174,6 +174,14 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 
 在乐观模型下，会出现 TxnLockNotFound 错误，而在悲观锁模型下，不会出现这个问题。同样的，悲观锁也有一个 TTL 的时间。txn heartbeat 会自动的更新事务的 TTL，以确保第二个事务不会将第一个事务的锁清掉。
 
+### Lock View
+
+自 5.1 版本起，TiDB 可以支持 Lock View 这一 feature。该 feature 提供了若干系统表用于提供更多关于悲观锁的锁冲突和锁等待的信息，详细使用方法请参考相关系统表的使用文档。
+
+* [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx)：提供当前 TiDB 节点上 / 整个集群上的所有运行中的事务的信息，其中包含事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
+* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits)：提供关于 TiKV 内的悲观锁等锁情况的信息，包含阻塞和被阻塞的事务的 start ts、被阻塞的 SQL 语句 Digest 和发生等待的 key。
+* [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks)：提供当前 TiDB 节点上 / 整个集群上最近发生过的若干次死锁的相关信息，其中会包含死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
+
 ### 其他锁相关错误
 
 #### pessimistic lock retry limit reached
@@ -238,4 +246,5 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 
 处理建议：
 
+* 如果难以确认死锁的产生原因，对于 5.1 及以后的版本，建议尝试使用 `INFORMATION_SCHEMA.DEADLOCKS` 或 `INFORMATION_SCHEMA.CLUSTER_DEADLOCKS` 系统表来获取死锁的等待链信息。请参考 [DEADLOCKS 表的文档](/information-schema/information-schema-deadlocks)。
 * 如果出现非常频繁，需要调整业务代码来降低死锁发生概率。
