@@ -11,19 +11,34 @@ summary: TiDB 数据库中 WITH (公共表表达式) 的使用概况。
 
 **WithClause:**
 
-![WithClause](/media/sqlgram/WithClause.png)
+``` ebnf
+WithClause ::=
+        "WITH" WithList
+|       "WITH" recursive WithList
+```
+
+**WithList:**
+
+``` ebnf
+WithList ::=
+        WithList ',' CommonTableExpr
+|       CommonTableExpr
+```
 
 **CommonTableExpr:**
 
-![CommonTableExpr](/media/sqlgram/CommonTableExpr.png)
-
-**CommonTableExpr:**
-
-![CommonTableExpr](/media/sqlgram/CommonTableExpr.png)
+``` ebnf
+CommonTableExpr ::=
+        Identifier IdentListWithParenOpt "AS" SubSelect
+```
 
 **IdentListWithParenOpt:**
 
-![IdentListWithParenOpt](/media/sqlgram/IdentListWithParenOpt.png)
+``` ebnf
+IdentListWithParenOpt ::=
+
+|       '(' IdentList ')'
+```
 
 ## 示例
 
