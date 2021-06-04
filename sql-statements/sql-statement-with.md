@@ -3,7 +3,7 @@ title: WITH
 summary: TiDB 数据库中 WITH (公共表表达式) 的使用概况。
 ---
 
-# WITH (公共表表达式)
+# WITH
 
 公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。
 
