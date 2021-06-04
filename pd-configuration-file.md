@@ -244,6 +244,16 @@ Configuration items related to scheduling
 + The number of Region scheduling tasks performed at the same time
 + Default value: `2048`
 
+### `hot-region-schedule-limit`
+
++ Controls the hot Region scheduling tasks that are running at the same time. It is independent of the Region scheduling.
++ Default value: `4`
+
+### `hot-region-cache-hits-threshold`
+
++ The threshold used to set the number of minutes required to identify a hot Region. PD can participate in the hotspot scheduling only after the Region is in the hotspot state for more than this number of minutes.
++ Default value: `3`
+
 ### `replica-schedule-limit`
 
 + The number of Replica scheduling tasks performed at the same time
