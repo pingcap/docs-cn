@@ -264,9 +264,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `enable-sem`
 
-- 启用安全增强模式（SEM）。
+- 启用安全增强模式 (SEM)。
 - 默认值：`false`
-- 可以通过系统变量[`tidb_enable_enhanced_security`]（/system-variables.md#tidb_enable_enhanced_security）获得安全增强模式的状态。
+- 可以通过系统变量 [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security) 获取安全增强模式的状态。
 
 ### `ssl-ca`
 
