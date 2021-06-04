@@ -1,5 +1,5 @@
 ---
-title: WITH (公共表表达式)
+title: WITH
 summary: TiDB 数据库中 WITH (公共表表达式) 的使用概况。
 ---
 
