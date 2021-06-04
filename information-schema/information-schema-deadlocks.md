@@ -44,6 +44,8 @@ DESC deadlocks;
 * `KEY`：该事务试图上锁、但是被阻塞的 key，以十六进制编码的形式显示。
 * `TRX_HOLDING_LOCK`：该 key 上当前持锁并导致阻塞的事务的事务 ID，即事务的 start ts。
 
+`DEADLOCKS` 表中可以容纳的死锁事件的个数可以由配置文件的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file#deadlock-history-capacity) 配置项来调整，默认会容纳最近 10 次死锁错误的信息。
+
 ## 示例 1
 
 假设有如下表定义和初始数据：

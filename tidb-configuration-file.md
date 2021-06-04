@@ -599,6 +599,13 @@ TiDB 服务状态相关配置。
 + 悲观事务中单个语句最大重试次数，重试次数超过该限制，语句执行将会报错。
 + 默认值：256
 
+### deadlock-history-capacity
+
++ 单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks) 表中最多记录的死锁事件的个数。当容量已满时，再次发生死锁错误将移除最旧的一次死锁错误的信息。
++ 默认值：10
++ 最小值：0
++ 最大值：10000
+
 ## experimental
 
 experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。

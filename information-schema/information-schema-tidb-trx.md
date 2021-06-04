@@ -53,7 +53,7 @@ DESC tidb_trx;
 * `SESSION_ID`：该事务所属的 session 的 ID。
 * `USER`：执行该事务的用户名。
 * `DB`：执行该事务的 session 当前的默认数据库名。
-* `ALL_SQL_DIGESTS`：该事务已经执行过的语句的 Digest 的列表。
+* `ALL_SQL_DIGESTS`：该事务已经执行过的语句的 Digest 的列表。每个事务最多记录前 50 条语句。
 
 目前 `TIDB_TRX` 表暂不支持显示 TiDB 内部事务相关的信息。
 
