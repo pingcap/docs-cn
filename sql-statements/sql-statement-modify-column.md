@@ -8,6 +8,8 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 
 `ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
 
+在 v5.0.2 及其之后的版本中，类型变更将支持 Reorg 类型变更，包括但是不仅限于 varchar -> bigint、decimal 精度修改、varchar(10) -> varchar(5) 长度压缩等类型的变更。
+
 ## 语法图
 
 ```ebnf+diagram
@@ -47,6 +49,8 @@ ColumnPosition ::=
 ```
 
 ## 示例
+
+### Meta-Only Change
 
 {{< copyable "sql" >}}
 
@@ -96,6 +100,68 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
+### Reorg-Data Change
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (col1) VALUES (12345),(67890);
+```
+
+```
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+```
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 MODIFY col1 VARCHAR(5);
+```
+
+```
+Query OK, 0 rows affected (2.52 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW CREATE TABLE t1\G;
+```
+
+```
+*************************** 1. row ***************************
+       Table: t1
+CREATE TABLE `t1` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `col1` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=30001
+1 row in set (0.00 sec)
+```
+
+注意
+> 1：当所变更的类型和已经存在的数据行具有冲突时会进行报错处理。在上述例子中：
+> ```
+> alter table t1 modify column col1 varchar(4);
+> ERROR 1406 (22001): Data Too Long, field len 4, data len 5
+> ```
+> 2：由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间 (约 2.5s) 的等待处理：
+>```
+> Query OK, 0 rows affected (2.52 sec)
+>```
+
+
 ## MySQL 兼容性
 
 * 不支持在单个 `ALTER TABLE` 语句修改多个列，例如：
@@ -104,21 +170,27 @@ Create Table: CREATE TABLE `t1` (
     ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
     ERROR 1105 (HY000): Unsupported multi schema change
     ```
-
-* 不支持有损变更，以及部分数据类型的更改（包括整数改为字符串或 BLOB 格式等）。例如：
-
-    ```sql
-    CREATE TABLE t1 (col1 BIGINT);
-    ALTER TABLE t1 MODIFY col1 INT;
-    ERROR 8200 (HY000): Unsupported modify column length 11 is less than origin 20
+  
+* 不支持修改主键列上的类型。例如：
+    ```
+    CREATE TABLE t (a int primary key);
+    ALTER TABLE t MODIFY COLUMN a VARCHAR(10);
+    ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
     ```
 
-* 不支持修改 decimal 类型的精度。例如：
+* 不支持修改 generated column 的类型。例如：
 
     ```sql
-    CREATE TABLE t (a DECIMAL(5, 3));
-    ALTER TABLE t MODIFY COLUMN a DECIMAL(6, 3);
-    ERROR 8200 (HY000): Unsupported modify column: can't change decimal column precision
+    CREATE TABLE t (a INT, b INT as (a+1));
+    ALTER TABLE t MODIFY COLUMN b VARCHAR(10);
+    ERROR 8200 (HY000): Unsupported modify column: column is generated
+    ```
+
+* 不支持修一部分类型 (部分时间类型、Bit、Json 等) 上的变更。例如：
+    ```
+    CREATE TABLE t (a DECIMAL(13, 7));
+    ALTER TABLE t MODIFY COLUMN a DATETIME;
+    ERROR 8200 (HY000): Unsupported modify column: change from original type decimal(13,7) to datetime is currently unsupported yet
     ```
 
 ## 另请参阅
