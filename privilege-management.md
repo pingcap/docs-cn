@@ -5,10 +5,10 @@ aliases: ['/docs-cn/dev/privilege-management/','/docs-cn/dev/reference/security/
 
 # 权限管理
 
-TiDB 支持 MySQL 5.7 的权限管理系统，包括 MySQL 的语法和权限类型。同时还支持 MySQL 8.0 的以下特性：
+TiDB 支持 MySQL 5.7 的权限管理系统，包括 MySQL 的语法和权限类型。同时 TiDB 还支持 MySQL 8.0 的以下特性：
 
-* 从 TiDB 3.0 开始，支持 SQL 角色特性。
-* 从 TiDB 5.1 开始，支持动态权限特性。
+* 从 TiDB 3.0 开始，支持 SQL 角色。
+* 从 TiDB 5.1 开始，支持动态权限。
 
 本文档主要介绍 TiDB 权限相关操作、各项操作需要的权限以及权限系统的实现。
 
@@ -58,7 +58,7 @@ SELECT user,host,authentication_string FROM mysql.user WHERE user='idontexist';
 Empty set (0.00 sec)
 ```
 
-在下面的例子中，由于没有将 SQL Mode 设置为 `NO_AUTO_CREATE_USER`，用户 `idontexist` 会被自动创建为空密码。**不推荐**使用这种方式，因为会带来安全风险：拼写错误的用户名会导致创建的新用户的密码为空。
+在下面的例子中，由于没有将 SQL Mode 设置为 `NO_AUTO_CREATE_USER`，用户 `idontexist` 会被自动创建且密码为空。**不推荐**使用这种方式，因为会带来安全风险：如果用户名拼写错误，会导致新用户被创建且密码为空。
 
 {{< copyable "sql" >}}
 
@@ -257,7 +257,7 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 
 ### 动态权限
 
-从 v5.1 开始，TiDB 支持 MySQL 8.0 中的动态权限特性。动态权限是为了替换 `SUPER` 权限，实现对某些操作更细粒度的访问。例如，系统管理员可以使用动态权限，创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
+从 v5.1 开始，TiDB 支持 MySQL 8.0 中的动态权限特性。动态权限用于限制 `SUPER` 权限，实现对某些操作更细粒度的访问。例如，系统管理员可以使用动态权限来创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
 
 动态权限包括：
 
@@ -267,7 +267,7 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 * `CONNECTION_ADMIN`
 * `SYSTEM_VARIABLES_ADMIN`
 
-可以执行 `SHOW PRIVILEGES` 语句查看全部的动态权限。由于允许插件添加新的权限，因此可分配的权限列表可能因您的 TiDB 安装情况而异。
+若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。由于用户可使用插件来添加新的权限，因此可分配的权限列表可能因用户的 TiDB 安装情况而异。
 
 ## TiDB 各操作需要的权限
 
