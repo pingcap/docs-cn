@@ -10,6 +10,12 @@ TiDB 版本：5.0.2
 
 ## 兼容性更改
 
++ Tools
+
+    + TiCDC
+
+        - cdc cli changefeed 命令中 `--sort-dir` 参数已被废弃, 请使用在 cdc server 命令中设定 `--sort-dir` [#1795](https://github.com/pingcap/ticdc/pull/1795)
+
 ## 新功能
 
 ## 提升改进
@@ -23,6 +29,25 @@ TiDB 版本：5.0.2
     - 优化 apply region snapshots 操作的内存占用
     - 优化锁操作以避免 DDL 和读数据相互阻塞
     - 支持 integer 和 real 类型转化为 real 类型
+
++ Tools
+
+    + TiCDC
+
+        - 添加关于数据表内存使用情况的监控 [#1885](https://github.com/pingcap/ticdc/pull/1885)
+        - 优化排序阶段的内存和 CPU 使用 [#1863](https://github.com/pingcap/ticdc/pull/1863)
+        - 调整 `--gc-ttl` 的行为，使得失败的同步任务不会卡住 TiDB GC safepoint 推进 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - 优化一些错误日志 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+
+    + Backup & Restore (BR)
+
+        - 优化一些报错信息 [#1132](https://github.com/pingcap/br/pull/1132)
+        - 支持检查备份版本信息 [#1091](https://github.com/pingcap/br/pull/1091)
+        - 支持备份回复在 `mysql` 下面的系统表 [#1143](https://github.com/pingcap/br/pull/1143) [#1078](https://github.com/pingcap/br/pull/1078)
+
+    + Dumpling
+
+        - 修复备份失败却没有错误输出的问题 [#280](https://github.com/pingcap/dumpling/pull/280)
 
 ## Bug 修复
 
@@ -56,3 +81,27 @@ TiDB 版本：5.0.2
     - 修复当 timezone 类型转换结果包含 timestamp 类型时返回错误结果的问题
     - 修复 TiFlash 在 Segment Split 期间异常退出的问题
     - 修复非根节点 MPP 任务的执行信息显示不正确的问题
+
++ Tools
+
+    + TiCDC
+
+        - 修复 Avro 输出中丢失时区信息的问题 [#1712](https://github.com/pingcap/ticdc/pull/1712)
+        - 支持清理 Unified Sorter 过期的文件 [#1742](https://github.com/pingcap/ticdc/pull/1742)
+        - 修复存在大量过期 Region 信息时可能遇到的死锁问题 [#1801](https://github.com/pingcap/ticdc/pull/1801)
+        - 修复 `--cert-allowed-cn` 中错误的帮助消息 [#1697](https://github.com/pingcap/ticdc/pull/1697)
+        - 修复因修改 explicit_defaults_for_timestamp 而需要 MySQL `SUPER` 权限的问题 [#1750](https://github.com/pingcap/ticdc/pull/1750)
+        - 添加 sink 流控以降低 OOM 风险 [#1840](https://github.com/pingcap/ticdc/pull/1840)
+        - 修复调度数据表时可能发生的同步终止问题 [#1828](https://github.com/pingcap/ticdc/pull/1828)
+
+    + Backup & Restore (BR)
+
+        - 修复 log restore 就是删除事件的问题 [#1083](https://github.com/pingcap/br/pull/1083)
+        - 修复 BR 发生无用请求到 TiKV 的问题 [#1037](https://github.com/pingcap/br/pull/1037)
+        - 修复备份失败却没有错误输出的问题 [#1043](https://github.com/pingcap/br/pull/1043)
+
+    + TiDB Lightning
+
+        - 修复在生成 kv 数据时可能发生的 panic 问题 [#5739](https://github.com/pingcap/br/pull/5739)
+        - 修复 tidb backend 下因没有开启 autocommit 而丢失数据的问题 [#1125](https://github.com/pingcap/br/pull/1125)
+        - 修复导入期间 batch split region 可能会失败的问题 [#1065](https://github.com/pingcap/br/pull/1065)
