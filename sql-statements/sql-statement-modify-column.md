@@ -152,15 +152,17 @@ CREATE TABLE `t1` (
 
 注意
 > 1：当所变更的类型和已经存在的数据行具有冲突时会进行报错处理。在上述例子中：
-> ```
-> alter table t1 modify column col1 varchar(4);
-> ERROR 1406 (22001): Data Too Long, field len 4, data len 5
-> ```
-> 2：由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间 (约 2.5s) 的等待处理：
->```
-> Query OK, 0 rows affected (2.52 sec)
->```
 
+```
+alter table t1 modify column col1 varchar(4);
+ERROR 1406 (22001): Data Too Long, field len 4, data len 5
+```
+
+> 2：由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间 (约 2.5s) 的等待处理：
+
+```
+Query OK, 0 rows affected (2.52 sec)
+```
 
 ## MySQL 兼容性
 
@@ -172,6 +174,7 @@ CREATE TABLE `t1` (
     ```
   
 * 不支持修改主键列上的类型。例如：
+  
     ```
     CREATE TABLE t (a int primary key);
     ALTER TABLE t MODIFY COLUMN a VARCHAR(10);
@@ -187,6 +190,7 @@ CREATE TABLE `t1` (
     ```
 
 * 不支持修一部分类型 (部分时间类型、Bit、Json 等) 上的变更。例如：
+  
     ```
     CREATE TABLE t (a DECIMAL(13, 7));
     ALTER TABLE t MODIFY COLUMN a DATETIME;
