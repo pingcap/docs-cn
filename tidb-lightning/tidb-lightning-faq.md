@@ -365,5 +365,6 @@ header = false
    ```sh
    kill -USR1 <lightning-pid>
    ```
+   
    查看 TiDB Lightning 的日志，其中有“starting HTTP server / start HTTP server / started HTTP server”的日志显示了新开启的 status-port。
-2. 访问 http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2 返回 goroutine 信息。
+2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 返回 goroutine 信息。
