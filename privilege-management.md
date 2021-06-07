@@ -257,7 +257,7 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 
 ### 动态权限
 
-从 v5.1 开始，TiDB 支持 MySQL 8.0 中的动态权限特性。动态权限是为了替换 `SUPER` 权限，实现对某些操作更细粒度的访问。例如，使用动态权限，系统管理员可以创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
+从 v5.1 开始，TiDB 支持 MySQL 8.0 中的动态权限特性。动态权限是为了替换 `SUPER` 权限，实现对某些操作更细粒度的访问。例如，系统管理员可以使用动态权限，创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
 
 动态权限包括：
 
@@ -267,7 +267,7 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 * `CONNECTION_ADMIN`
 * `SYSTEM_VARIABLES_ADMIN`
 
-可以执行 `SHOW PRIVILEGES` 语句查看全部的动态权限。由于允许插件添加新的权限，因此可分配的权限列表可能因您的 TiDB 安装而异。
+可以执行 `SHOW PRIVILEGES` 语句查看全部的动态权限。由于允许插件添加新的权限，因此可分配的权限列表可能因您的 TiDB 安装情况而异。
 
 ## TiDB 各操作需要的权限
 
