@@ -355,3 +355,15 @@ TiDB Lightning Local-backend 只支持导入到 v4.0.0 及以上版本的 TiDB �
 [mydumper.csv]
 header = false
 ```
+
+## 如何获取 TiDB Lightning 运行时的 goroutine 信息
+
+1. 如果配置文件中已经指定了 [status-port](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)，可以跳过此步骤。否则，需要向 TiDB Lightning 发送 USR1 信号开启 status-port。
+   首先通过 `ps` 等命令获取 TiDB Lightning 的进程 ID（PID），然后运行如下命令
+   {{< copyable "shell-regular" >}}
+
+   ```sh
+   kill -USR1 <lightning-pid>
+   ```
+   查看 TiDB Lightning 的日志，其中有“starting HTTP server / start HTTP server / started HTTP server”的日志显示了新开启的 status-port。
+2. 访问 http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2 返回 goroutine 信息。
