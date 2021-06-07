@@ -38,7 +38,7 @@ DESC deadlocks;
 
 * `DEADLOCK_ID`：死锁事件的 ID。当表内存在多次死锁错误的信息时，需要使用该列来区分属于不同死锁错误的行。
 * `OCCUR_TIME`：发生该次死锁错误的时间。
-* `RETRYABLE`：该次死锁错误是否可重试。目前暂不支持收集可充式的死锁错误的信息，因而该字段恒为 0。在一些特定的情况下，一个死锁错误可能是可重试的，此时 TiDB 内部会自动重试。
+* `RETRYABLE`：该次死锁错误是否可重试。目前暂不支持收集可重试的死锁错误的信息，因而该字段恒为 0。关于可重试的死锁错误的说明，见[可重试的死锁错误](#可重试的死锁错误)小节。
 * `TRY_LOCK_TRX_ID`：试图上锁的事务 ID，即事务的 start ts。
 * `CURRENT_SQL_DIGEST`：试图上锁的事务当前正在执行的 SQL 语句的 Digest。
 * `KEY`：该事务试图上锁、但是被阻塞的 key，以十六进制编码的形式显示。
@@ -103,6 +103,40 @@ select * from information_schema.deadlocks;
 
 上述结果中的 `DEADLOCK_ID` 表明，前两行共同表示一次死锁错误的信息，两条事务相互等待构成了死锁；而后三行共同表示另一次死锁信息，三个事务循环等待构成了死锁。
 
+## 可重试的死锁错误
+
+> **注意：**
+>
+> 当前版本 `DEADLOCKS` 表暂不支持收集可重试的死锁错误相关的信息。
+
+当一个事务 A 被另一个事务已经持有的锁阻塞，而另一个事务 B 直接或间接地被当前事务持有的锁阻塞，将会引发一个死锁错误。这里，事务 B 可能（直接或间接地）被事务 A 之前已经执行完的语句产生的锁阻塞，也可能被事务 A 目前正在执行的语句阻塞。对于前者，TiDB 将会向事务 A 的客户端报告死锁错误，并终止该事务；而对于后者，事务 A 当前正在执行的语句将在 TiDB 内部被自动重试。例如，假设事务 A 执行了如下语句：
+
+{{< copyable "sql" >}}
+
+```sql
+update t set v = v + 1 where id = 1 or id = 2;
+```
+
+事务 B 则先后执行如下两条语句：
+
+{{< copyable "sql" >}}
+
+```sql
+update t set v = 4 where id = 2;
+update t set v = 2 where id = 1;
+```
+
+那么如果事务 A 先后对 `id = 1` 和 `id = 2` 的两行分别上锁，且两个事务以如下时序运行：
+
+1. 事务 A 对 `id = 1` 的行上锁
+2. 事务 B 执行第一条语句并对 `id = 2` 的行上锁
+3. 事务 B 执行第二条语句试图对 `id = 1` 的行上锁，被事务 A 阻塞
+4. 事务 A 试图对 `id = 2` 的行上锁，被 B 阻塞，形成死锁
+
+对于这种情况，由于事务 A 阻塞其它事务的语句也是当前正在执行的语句，因而可以解除当前语句所上的悲观锁（使得事务 B 可以继续运行），并重试当前语句。TiDB 内部使用 key 的 hash 来判断是否属于这种情况。
+
+当可重试的死锁发生时，内部自动重试并不会引起事务报错，因而对客户端透明，但是这种情况的频繁发生可能影响性能。当这种情况发生时，在 TiDB 的日志中可以观察到 `single statement deadlock, retry statement` 字样的日志。
+
 ## CLUSTER_DEADLOCKS
 
 `CLUSTER_DEADLOCKS` 表是 `DEADLOCKS` 的集群版本，其返回整个集群上的每个 TiDB 节点中最近发生数次的死锁错误（每个节点上的 `DEADLOCKS` 表内的信息合并到一起）。`CLUSTER_DEADLOCKS` 包含额外的 `INSTANCE` 列展示所属节点的 IP 地址和端口，用以区分不同的 TiDB 节点。
@@ -135,7 +169,7 @@ DESC cluster_deadlocks;
 
 `DEADLOCKS` 表中会记录 SQL Digest，并不记录 SQL 原文。
 
-SQL Digest 是 SQL 归一化之后的哈希值。对于最近一段时间内执行过的语句，可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 Digest 查找到对应的归一化 SQL 的原文：
+SQL Digest 是 SQL 归一化之后的哈希值。对于当前 TiDB 最近一段时间内执行过的语句，可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 Digest 查找到对应的归一化 SQL 的原文。注意 `STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 只在当前 TiDB 节点范围内查询；如需在整个集群范围内查询，则可使用 `CLUSTER_STATEMENTS_SUMMARY` 和 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 代替。
 
 {{< copyable "sql" >}}
 

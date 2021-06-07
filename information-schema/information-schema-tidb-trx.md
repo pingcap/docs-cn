@@ -116,7 +116,7 @@ DESC cluster_tidb_trx;
 
 `TIDB_TRX` 表中会记录 SQL Digest，并不记录 SQL 原文。
 
-SQL Digest 是 SQL 归一化之后的哈希值。对于最近一段时间内执行过的语句，可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 Digest 查找到对应的归一化 SQL 的原文：
+SQL Digest 是 SQL 归一化之后的哈希值。对于当前 TiDB 最近一段时间内执行过的语句，可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 Digest 查找到对应的归一化 SQL 的原文。注意 `STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 只在当前 TiDB 节点范围内查询；如需在整个集群范围内查询，则可使用 `CLUSTER_STATEMENTS_SUMMARY` 和 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 代替。
 
 {{< copyable "sql" >}}
 
