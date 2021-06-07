@@ -11,7 +11,6 @@ summary: 了解 information_schema 表 `TIDB_TRX`。
 >
 > 该功能目前为实验性功能，表结构的定义和行为将来可能有较大改动。
 
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -43,10 +42,10 @@ DESC tidb_trx;
 * `START_TIME`：人类可读的事务开始时间，即事务的 start ts 所对应的物理时间。
 * `CURRENT_SQL_DIGEST`：该事务当前正在执行的 SQL 语句的 Digest。
 * `STATE`：该事务当前所处的状态，其可能的值包括:
-  * `Normal`：事务正在正常执行，或者处于闲置状态。
-  * `LockWaiting`：事务处于正在等待悲观锁上锁完成的状态。需要注意事务刚开始进行上悲观锁操作时即进入该状态，无论是否被其它事务阻塞。
-  * `Committing`：事务正在提交过程中。
-  * `RollingBack`：事务正在回滚过程中。
+    * `Normal`：事务正在正常执行，或者处于闲置状态。
+    * `LockWaiting`：事务处于正在等待悲观锁上锁完成的状态。需要注意事务刚开始进行上悲观锁操作时即进入该状态，无论是否被其它事务阻塞。
+    * `Committing`：事务正在提交过程中。
+    * `RollingBack`：事务正在回滚过程中。
 * `WAITING_START_TIME`：当 `STATE` 值为 `LockWaiting` 时，该列显示等待的开始时间。
 * `MEM_BUFFER_KEYS`：当前事务写入内存缓冲区的 key 的个数。
 * `MEM_BUFFER_BYTES`：当前事务写入内存缓冲区的 key 和 value 的总字节数。
@@ -86,7 +85,6 @@ WAITING_START_TIME: NULL
 ## CLUSTER_TIDB_TRX
 
 `CLUSTER_TIDB_TRX` 表是 `TIDB_TRX` 的集群版本，其返回整个集群上的所有 TiDB 节点中正在执行的事务。`CLUSTER_TIDB_TRX` 包含额外的 `INSTANCE` 列展示所属节点的 IP 地址和端口，用以区分事务所在的 TiDB 节点：
-
 
 {{< copyable "sql" >}}
 
