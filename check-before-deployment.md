@@ -228,7 +228,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
 
     > **注意：**
     >
-    > 该操作仅适用于使用 Chrony 而不是 ntpd 的系统.
+    > 该操作仅适用于使用 Chrony 而不是 ntpd 的系统。
 
     {{< copyable "shell-regular" >}}
 
@@ -236,7 +236,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     chronyc tracking
     ```
 
-    - 如果该命令返回 `Leap status : Normal`，则代表同步过程正常。
+    - 如果该命令返回结果为 `Leap status : Normal`，则代表同步过程正常。
 
         ```
         Reference ID    : 5EC69F0A (ntp1.time.nl)
