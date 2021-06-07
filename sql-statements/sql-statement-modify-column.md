@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 
 `ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
 
-在 v5.0.2 及其之后的版本中，类型变更将支持 Reorg 类型变更，包括但是不仅限于 varchar -> bigint、decimal 精度修改、varchar(10) -> varchar(5) 长度压缩等类型的变更。
+在 v5.1.0 及其之后的版本中，类型变更将支持 Reorg 类型变更，包括但是不仅限于 varchar -> bigint、decimal 精度修改、varchar(10) -> varchar(5) 长度压缩等类型的变更。
 
 ## 语法图
 
