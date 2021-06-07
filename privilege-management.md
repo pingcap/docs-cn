@@ -7,8 +7,8 @@ aliases: ['/docs-cn/dev/privilege-management/','/docs-cn/dev/reference/security/
 
 TiDB 支持 MySQL 5.7 的权限管理系统，包括 MySQL 的语法和权限类型。同时还支持 MySQL 8.0 的以下特性：
 
-* 从 TiDB 3.0 开始，支持 SQL 角色。
-* 从 TiDB 5.1 开始，支持动态权限。
+* 从 TiDB 3.0 开始，支持 SQL 角色特性。
+* 从 TiDB 5.1 开始，支持动态权限特性。
 
 本文档主要介绍 TiDB 权限相关操作、各项操作需要的权限以及权限系统的实现。
 
