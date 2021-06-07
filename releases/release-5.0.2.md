@@ -33,7 +33,7 @@ TiDB 版本：5.0.2
     - 修复了当 collation 为 ascii_bin/latin1_bin 时，写入错误前缀索引的值的问题 [#24680](https://github.com/pingcap/tidb/pull/24680)
     - 修复了正在执行的事务被 gc worker 中断的问题 [#24652](https://github.com/pingcap/tidb/pull/24652)
     - 修复了当 `new-collation` 开启且 `new-row-format` 关闭的情况下，点查在聚簇索引下可能出错的问题 [#24611](https://github.com/pingcap/tidb/pull/24611)
-    - Refactor converting partition keys for shuffle hash join [#24490](https://github.com/pingcap/tidb/pull/24490)
+    - 为 Shuffle Hash Join 重构分区键的转换功能 [#24490](https://github.com/pingcap/tidb/pull/24490)
     - 修复了当查询包含 HAVING 子句时，在构建计划的过程中 Panic 的问题 [#24489](https://github.com/pingcap/tidb/pull/24489)
     - 修复了列裁剪优化导致 Apply 算子和 Join 算子执行结果错误的问题 [#24437](https://github.com/pingcap/tidb/pull/24437)
     - 修复了 `async commit` 回退导致的主锁无法清除的问题 [#24397](https://github.com/pingcap/tidb/pull/24397)
