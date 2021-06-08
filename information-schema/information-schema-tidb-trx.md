@@ -132,4 +132,4 @@ select digest, digest_text from information_schema.statements_summary where dige
 +------------------------------------------------------------------+---------------------------------------+
 ```
 
-关于 SQL Digest 和 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY` 表的详细说明请参阅 [Statement Summary Tables](/statement-summary-tables)。
+关于 SQL Digest 和 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY` 表的详细说明请参阅 [Statement Summary Tables](/statement-summary-tables.md)。

@@ -238,16 +238,16 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 
 处理建议：
 
-* 如果难以确认死锁的产生原因，对于 5.1 及以后的版本，建议尝试使用 `INFORMATION_SCHEMA.DEADLOCKS` 或 `INFORMATION_SCHEMA.CLUSTER_DEADLOCKS` 系统表来获取死锁的等待链信息。请参考 [DEADLOCKS 表的文档](/information-schema/information-schema-deadlocks)。
+* 如果难以确认死锁的产生原因，对于 5.1 及以后的版本，建议尝试使用 `INFORMATION_SCHEMA.DEADLOCKS` 或 `INFORMATION_SCHEMA.CLUSTER_DEADLOCKS` 系统表来获取死锁的等待链信息。请参考[死锁错误](#死锁错误)小节和[DEADLOCKS 表的文档](/information-schema/information-schema-deadlocks.md)。
 * 如果出现非常频繁，需要调整业务代码来降低死锁发生概率。
 
 ### 使用 Lock View 排查悲观锁相关的问题
 
 自 5.1 版本起，TiDB 可以支持 Lock View 这一 feature。该 feature 在 information schema 中提供了若干系统表用于提供更多关于悲观锁的锁冲突和锁等待的信息。关于这些表的详细说明请参考相关系统表的文档。
 
-* [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx)：提供当前 TiDB 节点上 / 整个集群上的所有运行中的事务的信息，其中包含事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
-* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits)：提供关于 TiKV 内的悲观锁等锁情况的信息，包含阻塞和被阻塞的事务的 start ts、被阻塞的 SQL 语句 Digest 和发生等待的 key。
-* [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks)：提供当前 TiDB 节点上 / 整个集群上最近发生过的若干次死锁的相关信息，其中会包含死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
+* [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)：提供当前 TiDB 节点上 / 整个集群上的所有运行中的事务的信息，其中包含事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
+* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁情况的信息，包含阻塞和被阻塞的事务的 start ts、被阻塞的 SQL 语句 Digest 和发生等待的 key。
+* [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md)：提供当前 TiDB 节点上 / 整个集群上最近发生过的若干次死锁的相关信息，其中会包含死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
 
 > **警告：**
 >
@@ -276,7 +276,7 @@ select * from information_schema.deadlocks;
 
 查询结果中会显示死锁错误中事务相互之间的等待关系和各个事务当前正在执行的 SQL 语句的 Digest，以及发生冲突的 key。
 
-可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 表中获取最近一段时间内执行过的 SQL 语句的 Digest 所对应的归一化的 SQL 语句的文本（详见 [`STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 表的文档](/statement-summary-tables)）。也可将其直接与 `DEADLOCKS` 表进行 join （注意 `STATEMENTS_SUMMARY` 中可能不包含所有 SQL 的信息，所以以下例子中使用了 left join）：
+可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 表中获取最近一段时间内执行过的 SQL 语句的 Digest 所对应的归一化的 SQL 语句的文本（详见 [`STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 表的文档](/statement-summary-tables.md)）。也可将其直接与 `DEADLOCKS` 表进行 join （注意 `STATEMENTS_SUMMARY` 中可能不包含所有 SQL 的信息，所以以下例子中使用了 left join）：
 
 {{< copyable "sql" >}}
 
@@ -382,4 +382,4 @@ ba07e3cc34b6b3be7b7c2de7fe9, a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3
 1 row in set (0.01 sec)
 ```
 
-如果当前事务的 start ts 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist) 表中的信息进行判断。
+如果当前事务的 start ts 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。

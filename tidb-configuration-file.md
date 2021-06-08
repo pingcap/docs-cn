@@ -601,7 +601,7 @@ TiDB 服务状态相关配置。
 
 ### deadlock-history-capacity
 
-+ 单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks) 表中最多记录的死锁事件的个数。当容量已满时，再次发生死锁错误将移除最旧的一次死锁错误的信息。
++ 单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中最多记录的死锁事件的个数。当容量已满时，再次发生死锁错误将移除最旧的一次死锁错误的信息。
 + 默认值：10
 + 最小值：0
 + 最大值：10000
