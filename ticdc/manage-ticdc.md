@@ -69,6 +69,25 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
 ### 管理同步任务 (`changefeed`)
 
+#### 同步任务状态流转
+
+![TiCDC state transfer](/media/ticdc-state-transfer.png)
+
+状态说明：
+
+ - Normal：正常同步，checkpoint-ts 正常推进。
+ - Stopped：停止同步，一般是由于用户手动暂停（pause） changefeed，在这个状态的 changefeed 会阻挡 GC 推进。
+ - Error：同步报错，由于某些可恢复内部错误导致同步无法继续进行，在这个状态下的 changefeed 会不断尝试继续推进，直到状态转为 Normal。在这个状态的 changefeed 会阻挡 GC 推进。
+ - Failed：同步失败，由于发生了某些不可恢复错误，导致同步无法继续进行，并且无法恢复。在这个状态的 changefeed 不会阻挡 GC 推进。
+
+ 状态流转说明：
+
+ ① 执行 changefeed pause 命令或者同步任务已经进行到预设的 TargetTs，同步自动停止  
+ ② 执行 changefeed resume 恢复同步任务  
+ ③ changefeed 运行过程中发生可恢复错误
+ ④ 执行 changefeed resume 恢复同步任务
+ ⑤ changefeed 运行过程中发生不可恢复错误
+
 #### 创建同步任务
 
 使用以下命令来创建同步任务：
