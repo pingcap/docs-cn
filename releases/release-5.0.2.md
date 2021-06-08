@@ -18,11 +18,24 @@ TiDB 版本：5.0.2
 
 ## 新功能
 
++ TiKV
+
+    - 默认开启 hibernate-regions 特性（i.e. `raftstore.hibernate-regions = true`）. [#10266](https://github.com/tikv/tikv/pull/10266)
+
 ## 提升改进
 
 + TiDB
 
     - 当内存中的统计信息缓存是最新的时，避免后台作业频繁读取 `mysql.stats_histograms` 表造成高 CPU 使用率 [#24317](https://github.com/pingcap/tidb/pull/24317)
+
++ TiKV
+
+    - BR 支持 S3 兼容的存储（基于 virtual-host 寻址模式）[#10243](https://github.com/tikv/tikv/pull/10243)
+    - 支持基于下游压力反馈的 CDC 限速 [#10151](https://github.com/tikv/tikv/pull/10151)
+    - 减少了 CDC 初始化扫描时的内存占用 [#10133](https://github.com/tikv/tikv/pull/10133)
+    - 修复了 TiKV 不繁忙时 point-get 查询性能回退的问题 [#10115](https://github.com/tikv/tikv/pull/10115)
+    - 提升了悲观事务中 CDC 相关的缓存命中率 [#10089](https://github.com/tikv/tikv/pull/10089)
+    - Region 分裂均匀性提升 [#10086](https://github.com/tikv/tikv/pull/10086)
 
 + TiFlash
 
@@ -68,6 +81,11 @@ TiDB 版本：5.0.2
     - 修复了当 SQL 语句包含 `GROUP BY` 以及 `UNION` 时，可能会出现的 `index out of range` 的问题 [#24551](https://github.com/pingcap/tidb/pull/24551)
     - 修复了 `CONCAT` 函数错误处理排序规则的问题 [#24301](https://github.com/pingcap/tidb/pull/24301)
     - 修复了全局变量 `collation_server` 对新会话无法生效的问题 [#24156](https://github.com/pingcap/tidb/pull/24156)
+
++ TiKV
+    - 修复了 CDC 相关的 OOM 问题 [#10246](https://github.com/tikv/tikv/pull/10246)
+    - 修复了聚集主键列在次级索引上的 latin1_bin 字符集的空值问题 [#10239](https://github.com/tikv/tikv/pull/10239)
+    - 新增 `abort-on-panic` 配置，允许 TiKV 在 panic 时生成 coredump 文件 [#10216](https://github.com/tikv/tikv/pull/10216)
 
 + TiFlash
 
