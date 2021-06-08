@@ -14,13 +14,13 @@ TiDB 版本：5.0.2
 
     + TiCDC
 
-        - 在 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户需在 `cdc server` 命令中设定 `--sort-dir` [#1795](https://github.com/pingcap/ticdc/pull/1795)
+        - 在 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户可在 `cdc server` 命令中设定 `--sort-dir`。 [#1795](https://github.com/pingcap/ticdc/pull/1795)
 
 ## 新功能
 
 + TiKV
 
-    - 默认开启 hibernate-regions 特性（i.e. `raftstore.hibernate-regions = true`）. [#10266](https://github.com/tikv/tikv/pull/10266)
+    - 默认开启 Hibernate Region 特性 [#10266](https://github.com/tikv/tikv/pull/10266)
 
 ## 提升改进
 
@@ -31,11 +31,10 @@ TiDB 版本：5.0.2
 + TiKV
 
     - BR 支持 S3 兼容的存储（基于 virtual-host 寻址模式）[#10243](https://github.com/tikv/tikv/pull/10243)
-    - 支持基于下游压力反馈的 CDC 限速 [#10151](https://github.com/tikv/tikv/pull/10151)
-    - 减少了 CDC 初始化扫描时的内存占用 [#10133](https://github.com/tikv/tikv/pull/10133)
-    - 修复了 TiKV 不繁忙时 point-get 查询性能回退的问题 [#10115](https://github.com/tikv/tikv/pull/10115)
-    - 提升了悲观事务中 CDC 相关的缓存命中率 [#10089](https://github.com/tikv/tikv/pull/10089)
-    - Region 分裂均匀性提升 [#10086](https://github.com/tikv/tikv/pull/10086)
+    - 为 TiCDC 扫描的速度添加背压 (back pressure) 功能 [#10151](https://github.com/tikv/tikv/pull/10151)
+    - 减少 TiCDC 进行初次扫描的内存使用量 [#10133](https://github.com/tikv/tikv/pull/10133)
+    - 提升了悲观事务中 TiCDC Old Value 的缓存命中率 [#10089](https://github.com/tikv/tikv/pull/10089)
+    - 提升 Region 分裂的均匀性，避免分裂速度跟不上写入速度造成 Region 过大 [#10086](https://github.com/tikv/tikv/pull/10086)
 
 + TiFlash
 
@@ -49,7 +48,7 @@ TiDB 版本：5.0.2
 
         - 添加关于数据表内存使用情况的监控 [#1885](https://github.com/pingcap/ticdc/pull/1885)
         - 优化排序阶段的内存和 CPU 使用 [#1863](https://github.com/pingcap/ticdc/pull/1863)
-        - 删除了一些可能让用户困惑的日志信息 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - 删除了一些可能让用户困惑的无用日志信息 [#1759](https://github.com/pingcap/ticdc/pull/1759)
 
     + Backup & Restore (BR)
 
@@ -65,34 +64,35 @@ TiDB 版本：5.0.2
 
 + TiDB
 
-    - 修复了在某些情况下，使用前缀索引和 Index Join 导致的 panic 的问题 [#24824](https://github.com/pingcap/tidb/pull/24824)
-    - 修复了 `point get` 的 prepare plan cache 被事务中的 `point get` 语句不正确使用的问题 [#24765](https://github.com/pingcap/tidb/pull/24765)
-    - 修复了当排序规则为 `ascii_bin` 或 `latin1_bin` 时，写入错误的前缀索引值的问题 [#24680](https://github.com/pingcap/tidb/pull/24680)
-    - 修复了正在执行的事务被 GC worker 中断的问题 [#24652](https://github.com/pingcap/tidb/pull/24652)
-    - 修复了当 `new-collation` 开启且 `new-row-format` 关闭的情况下，点查在聚簇索引下可能出错的问题 [#24611](https://github.com/pingcap/tidb/pull/24611)
+    - 修复了在某些情况下，使用前缀索引和 Index Join 导致的 panic 的问题 [#24547](https://github.com/pingcap/tidb/issues/24547) [#24716](https://github.com/pingcap/tidb/issues/24716) [#24717](https://github.com/pingcap/tidb/issues/24717)
+    - 修复了 `point get` 的 prepare plan cache 被事务中的 `point get` 语句不正确使用的问题 [#24741](https://github.com/pingcap/tidb/issues/24741)
+    - 修复了当排序规则为 `ascii_bin` 或 `latin1_bin` 时，写入错误的前缀索引值的问题 [#24569](https://github.com/pingcap/tidb/issues/24569)
+    - 修复了正在执行的事务被 GC worker 中断的问题 [#24591](https://github.com/pingcap/tidb/issues/24591))
+    - 修复了当 `new-collation` 开启且 `new-row-format` 关闭的情况下，点查在聚簇索引下可能出错的问题 [#24541](https://github.com/pingcap/tidb/issues/24541)
     - 为 Shuffle Hash Join 重构分区键的转换功能 [#24490](https://github.com/pingcap/tidb/pull/24490)
-    - 修复了当查询包含 `HAVING` 子句时，在构建计划的过程中 panic 的问题 [#24489](https://github.com/pingcap/tidb/pull/24489)
-    - 修复了列裁剪优化导致 Apply 算子和 Join 算子执行结果错误的问题 [#24437](https://github.com/pingcap/tidb/pull/24437)
-    - 修复了 Async Commit 回退导致的主锁无法清除的问题 [#24397](https://github.com/pingcap/tidb/pull/24397)
-    - 修复了统计信息 GC 的一个问题，该问题可能导致重复的 fm-sketch 记录 [#24357](https://github.com/pingcap/tidb/pull/24357)
-    - 当悲观锁事务收到 `ErrKeyExists` 错误时，避免不必要的悲观事务回滚 [#23800](https://github.com/pingcap/tidb/pull/23800)
+    - 修复了当查询包含 `HAVING` 子句时，在构建计划的过程中 panic 的问题 [#24045](https://github.com/pingcap/tidb/issues/24045)
+    - 修复了列裁剪优化导致 `Apply` 算子和 `Join` 算子执行结果错误的问题 [#23887](https://github.com/pingcap/tidb/issues/23887)
+    - 修复了从 Async Commit 回退的主锁无法被清除的问题 [#24384](https://github.com/pingcap/tidb/issues/24384)
+    - 修复了一个统计信息 GC 的问题，该问题可能导致重复的 fm-sketch 记录 [#24357](https://github.com/pingcap/tidb/pull/24357)
+    - 当悲观锁事务收到 `ErrKeyExists` 错误时，避免不必要的悲观事务回滚 [#23799](https://github.com/pingcap/tidb/issues/23799)
     - 修复了当 sql_mode 包含 `ANSI_QUOTES` 时，数值字面值无法被识别的问题 [#25015](https://github.com/pingcap/tidb/pull/25015)
-    - 禁止如 `INSERT INTO table PARTITION (<partitions>) ... ON DUPLICATE KEY UPDATE` 的语句从 non-listed partitions 读取数据 [#25000](https://github.com/pingcap/tidb/pull/25000)
-    - 修复了当 SQL 语句包含 `GROUP BY` 以及 `UNION` 时，可能会出现的 `index out of range` 的问题 [#24551](https://github.com/pingcap/tidb/pull/24551)
-    - 修复了 `CONCAT` 函数错误处理排序规则的问题 [#24301](https://github.com/pingcap/tidb/pull/24301)
+    - 禁止如 `INSERT INTO table PARTITION (<partitions>) ... ON DUPLICATE KEY UPDATE` 的语句从 non-listed partitions 读取数据 [#24746](https://github.com/pingcap/tidb/issues/24746)
+    - 修复了当 SQL 语句包含 `GROUP BY` 以及 `UNION` 时，可能会出现的 `index out of range` 的问题 [#24281](https://github.com/pingcap/tidb/issues/24281)
+    - 修复了 `CONCAT` 函数错误处理排序规则的问题 [#24296](https://github.com/pingcap/tidb/issues/24296)
     - 修复了全局变量 `collation_server` 对新会话无法生效的问题 [#24156](https://github.com/pingcap/tidb/pull/24156)
 
 + TiKV
-    - 修复了 CDC 相关的 OOM 问题 [#10246](https://github.com/tikv/tikv/pull/10246)
-    - 修复了聚集主键列在次级索引上的 latin1_bin 字符集的空值问题 [#10239](https://github.com/tikv/tikv/pull/10239)
-    - 新增 `abort-on-panic` 配置，允许 TiKV 在 panic 时生成 coredump 文件 [#10216](https://github.com/tikv/tikv/pull/10216)
+    - 修复了由于读取旧值而导致的 TiCDC OOM 问题 [#9996](https://github.com/tikv/tikv/issues/9996) [#9981](https://github.com/tikv/tikv/issues/9981)
+    - 修复了聚簇主键列在次级索引上的 `latin1_bin` 字符集出现空值的问题 [#24548](https://github.com/pingcap/tidb/issues/24548)
+    - 新增 `abort-on-panic` 配置，允许 TiKV 在 panic 时生成 core dump 文件。用户仍需正确配置环境以开启 core dump。 [#10216](https://github.com/tikv/tikv/pull/10216)
+    - 修复了 TiKV 不繁忙时 `point get` 查询性能回退的问题 [#10046](https://github.com/tikv/tikv/issues/10046)
 
 + PD
 
-    - 修复 offline peer 统计信息不准的问题 [#3615](https://github.com/pingcap/pd/pull/3615)
-    - 修复在 store 数量多的情况下，切换 PD leader 慢的问题 [#3719](https://github.com/tikv/pd/pull/3719)
-    - 修复删除过期的 evict leader 调度器时 panic 的问题 [#3679](https://github.com/tikv/pd/pull/3679)
-    - 修复 Offline Peer 在 merge 完之后没有更新统计的问题 [#3614](https://github.com/tikv/pd/pull/3614)
+    - 修复合并 offline peer 后 `offline_stats` 统计信息不准确的问题 [#3611](https://github.com/tikv/pd/issues/3611)
+    - 修复在 store 数量多的情况下，切换 PD Leader 慢的问题 [#3697](https://github.com/tikv/pd/issues/3697)
+    - 修复删除不存在的 evict leader 调度器时出现 panic 的问题 [#3660](https://github.com/tikv/pd/issues/3660)
+    - 修复 offline peer 在合并完后未更新统计的问题 [#3611](https://github.com/tikv/pd/issues/3611)
 
 + TiFlash
 
@@ -101,7 +101,7 @@ TiDB 版本：5.0.2
     - 修复旧的 dm 文件无法被自动清理的问题
     - 修复 TiFlash 在 Compaction Filter 特性开启时可能崩溃的问题
     - 修复 `ExchangeSender` 可能传输重复数据的问题
-    ?- 修复 TiFlash 无法清除 Async Commit 回退的锁的问题
+    - 修复 TiFlash 无法清除从 Async Commit 回退的锁的问题
     - 修复当 `TIMEZONE` 类型的转换结果包含 `TIMESTAMP` 类型时返回错误结果的问题
     - 修复 TiFlash 在 Segment Split 期间异常退出的问题
     - 修复非根节点 MPP 任务的执行信息显示不正确的问题
@@ -121,12 +121,12 @@ TiDB 版本：5.0.2
 
     + Backup & Restore (BR)
 
-        ?- 修复 log restore 为删除事件的问题 [#1083](https://github.com/pingcap/br/pull/1083)
+        ?- 修复 log restore 为删除事件的问题 [#1063](https://github.com/pingcap/br/issues/1063)
         - 修复 BR 发送过多无用 RPC 请求到 TiKV 的问题 [#1037](https://github.com/pingcap/br/pull/1037)
         - 修复备份失败却没有错误输出的问题 [#1043](https://github.com/pingcap/br/pull/1043)
 
     + TiDB Lightning
 
-        - 修复在生成 KV 数据时可能发生的 panic 问题 [#5739](https://github.com/pingcap/br/pull/5739)
-        - 修复 TiDB-backend 模式下因没有开启 autocommit 而无法加载数据的问题 [#1125](https://github.com/pingcap/br/pull/1125)
-        - 修复数据导入期间 batch split region 因键的总大小超过 Raft 条目限制而可能失败的问题 [#1065](https://github.com/pingcap/br/pull/1065)
+        ?(死链)- 修复在生成 KV 数据时可能发生的 panic 问题 [#5739](https://github.com/pingcap/br/pull/5739)
+        - 修复 TiDB-backend 模式下因没有开启 autocommit 而无法加载数据的问题 [#1104](https://github.com/pingcap/br/issues/1104)
+        - 修复数据导入期间 batch split region 因键的总大小超过 Raft 条目限制而可能失败的问题 [#969](https://github.com/pingcap/br/issues/969)
