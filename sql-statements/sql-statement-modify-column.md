@@ -192,10 +192,7 @@ Query OK, 0 rows affected (2.52 sec)
 * 不支持修该分区表上的列类型。例如：
 
     ```sql
-    CREATE TABLE t (c1 INT, c2 INT, c3 INT) partition by range columns(c1) (
-						partition p0 values less than (10),
-						partition p1 values less than (maxvalue)
-					);
+    CREATE TABLE t (c1 INT, c2 INT, c3 INT) partition by range columns(c1) ( partition p0 values less than (10), partition p1 values less than (maxvalue));
     ALTER TABLE t MODIFY COLUMN c1 DATETIME;
     ERROR 8200 (HY000): Unsupported modify column: table is partition table
     ```
