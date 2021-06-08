@@ -89,7 +89,7 @@ Query OK, 0 rows affected (0.09 sec)
 SHOW CREATE TABLE t1\G;
 ```
 
-```
+```sql
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
@@ -139,7 +139,7 @@ Query OK, 0 rows affected (2.52 sec)
 SHOW CREATE TABLE t1\G;
 ```
 
-```
+```sql
 *************************** 1. row ***************************
        Table: t1
 CREATE TABLE `t1` (
@@ -175,7 +175,7 @@ Query OK, 0 rows affected (2.52 sec)
   
 * 不支持修改主键列上的类型。例如：
   
-    ```
+    ```sql
     CREATE TABLE t (a int primary key);
     ALTER TABLE t MODIFY COLUMN a VARCHAR(10);
     ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
@@ -189,9 +189,20 @@ Query OK, 0 rows affected (2.52 sec)
     ERROR 8200 (HY000): Unsupported modify column: column is generated
     ```
 
-* 不支持修一部分类型 (部分时间类型、Bit、Json 等) 上的变更。例如：
-  
+* 不支持修该分区表上的列类型。例如：
+
+    ```sql
+    CREATE TABLE t (c1 INT, c2 INT, c3 INT) partition by range columns(c1) (
+						partition p0 values less than (10),
+						partition p1 values less than (maxvalue)
+					);
+    ALTER TABLE t MODIFY COLUMN c1 DATETIME;
+    ERROR 8200 (HY000): Unsupported modify column: table is partition table
     ```
+
+* 不支持修一部分类型 (部分时间类型、Bit、Set、Enum、Json 等) 上的变更。例如：
+  
+    ```sql
     CREATE TABLE t (a DECIMAL(13, 7));
     ALTER TABLE t MODIFY COLUMN a DATETIME;
     ERROR 8200 (HY000): Unsupported modify column: change from original type decimal(13,7) to datetime is currently unsupported yet
