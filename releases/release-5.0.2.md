@@ -87,6 +87,13 @@ TiDB 版本：5.0.2
     - 修复了聚集主键列在次级索引上的 latin1_bin 字符集的空值问题 [#10239](https://github.com/tikv/tikv/pull/10239)
     - 新增 `abort-on-panic` 配置，允许 TiKV 在 panic 时生成 coredump 文件 [#10216](https://github.com/tikv/tikv/pull/10216)
 
++ PD
+
+    - 修复 offline peer 统计信息不准的问题 [#3615](https://github.com/pingcap/pd/pull/3615)
+    - 修复在 store 数量多的情况下，切换 PD leader 慢的问题 [#3719](https://github.com/tikv/pd/pull/3719)
+    - 修复删除过期的 evict leader 调度器时 panic 的问题 [#3679](https://github.com/tikv/pd/pull/3679)
+    - 修复 Offline Peer 在 merge 完之后没有更新统计的问题 [#3614](https://github.com/tikv/pd/pull/3614)
+
 + TiFlash
 
     - 修复并发复制共享 Delta 索引导致结果错误的问题
