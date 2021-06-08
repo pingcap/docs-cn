@@ -121,7 +121,7 @@ TiDB 版本：5.0.2
 
     + Backup & Restore (BR)
 
-        ?- 修复 log restore 为删除事件的问题 [#1063](https://github.com/pingcap/br/issues/1063)
+        - 修复 log restore 时丢失删除事件的问题 [#1063](https://github.com/pingcap/br/issues/1063)
         - 修复 BR 发送过多无用 RPC 请求到 TiKV 的问题 [#1037](https://github.com/pingcap/br/pull/1037)
         - 修复备份失败却没有错误输出的问题 [#1043](https://github.com/pingcap/br/pull/1043)
 
