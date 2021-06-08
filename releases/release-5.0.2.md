@@ -34,7 +34,7 @@ TiDB 版本：5.0.2
     - 为 TiCDC 扫描的速度添加背压 (back pressure) 功能 [#10151](https://github.com/tikv/tikv/pull/10151)
     - 减少 TiCDC 进行初次扫描的内存使用量 [#10133](https://github.com/tikv/tikv/pull/10133)
     - 提升了悲观事务中 TiCDC Old Value 的缓存命中率 [#10089](https://github.com/tikv/tikv/pull/10089)
-    - 提升 Region 分裂的均匀性，避免分裂速度跟不上写入速度造成 Region 过大 [#10086](https://github.com/tikv/tikv/pull/10086)
+    - 提升 Region 分裂的均匀性
 
 + TiFlash
 
@@ -89,7 +89,6 @@ TiDB 版本：5.0.2
 
 + PD
 
-    - 修复合并 offline peer 后 `offline_stats` 统计信息不准确的问题 [#3611](https://github.com/tikv/pd/issues/3611)
     - 修复在 store 数量多的情况下，切换 PD Leader 慢的问题 [#3697](https://github.com/tikv/pd/issues/3697)
     - 修复删除不存在的 evict leader 调度器时出现 panic 的问题 [#3660](https://github.com/tikv/pd/issues/3660)
     - 修复 offline peer 在合并完后未更新统计的问题 [#3611](https://github.com/tikv/pd/issues/3611)
@@ -101,7 +100,7 @@ TiDB 版本：5.0.2
     - 修复旧的 dm 文件无法被自动清理的问题
     - 修复 TiFlash 在 Compaction Filter 特性开启时可能崩溃的问题
     - 修复 `ExchangeSender` 可能传输重复数据的问题
-    - 修复 TiFlash 无法清除从 Async Commit 回退的锁的问题
+    - 修复了从 Async Commit 回退的锁无法被 TiFlash 清除的问题
     - 修复当 `TIMEZONE` 类型的转换结果包含 `TIMESTAMP` 类型时返回错误结果的问题
     - 修复 TiFlash 在 Segment Split 期间异常退出的问题
     - 修复非根节点 MPP 任务的执行信息显示不正确的问题
