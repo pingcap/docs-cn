@@ -229,7 +229,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * HashJoin（带等值 Join 条件）：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算，但有以下使用条件：
     * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
     * 不支持下推 `Full Outer Join`
-* HashJoin（不带等值 join 条件，即 Cartesian Join）：该算子实现了 Cartesian Join，但有以下使用条件：
+* HashJoin（不带等值 Join 条件，即 Cartesian Join）：该算子实现了 Cartesian Join，但有以下使用条件：
     * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
     * 只有在 Broadcast Join 中才支持 Cartesian Join
 
