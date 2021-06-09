@@ -19,6 +19,9 @@ ANALYZE TABLE t1;
 SET tidb_allow_mpp = 1;
 ```
 
+注意
+> v5.1 版本及其后续版本将不再支持系统表的 replica 设置，在集群升级之前需要将相关系统表的 replica 清除，不然升级到高版本时候将无法再修改系统表的 replica 设置。
+
 ## MPP 查询片段和 MPP 任务
 
 在 MPP 模式下，一个查询在逻辑上会被切分为多个 MPP 查询片段 (query fragment)。示例如下：
