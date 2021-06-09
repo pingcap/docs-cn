@@ -23,9 +23,9 @@ TiDB 版本：4.0.13
 
 + TiKV
 
-    - 提高 `store used size` 计算过程的准确性 [9904](https://github.com/tikv/tikv/pull/9904)
-    - 在 `EpochNotMatch` 消息中返回更多的 Region 以降低 Region miss 的发生 [9731](https://github.com/tikv/tikv/pull/9731)
-    - 加快释放长期运行集群中堆积的内存 [10035](https://github.com/tikv/tikv/pull/10035)
+    - 提高 `store used size` 计算过程的准确性 [#9904](https://github.com/tikv/tikv/pull/9904)
+    - 在 `EpochNotMatch` 消息中返回更多的 Region 以降低 Region miss 的发生 [#9731](https://github.com/tikv/tikv/pull/9731)
+    - 加快释放长期运行集群中堆积的内存 [#10035](https://github.com/tikv/tikv/pull/10035)
 
 + PD
 
@@ -100,13 +100,13 @@ TiDB 版本：4.0.13
 
 + TiKV
 
-    - 修复因磁盘写满后 `file_dict` 写入不完全导致 TiKV 无法重启的问题 [9963](https://github.com/tikv/tikv/pull/9963)
-    - 限制 TiCDC 默认的扫描速度为 128MB/s [9983](https://github.com/tikv/tikv/pull/9983)
-    - 减少 TiCDC 进行初次扫描的内存使用量 [10133](https://github.com/tikv/tikv/pull/10133)
-    - 为 TiCDC 扫描的速度添加背压 (back pressure) 功能 [10142](https://github.com/tikv/tikv/pull/10142)
-    - 通过避免不必要的读取来获取 TiCDC 旧值以解决潜在的 OOM 问题 [10031](https://github.com/tikv/tikv/pull/10031)
-    - 修复了由于读取旧值而导致的 TiCDC OOM 问题 [10197](https://github.com/tikv/tikv/pull/10197)
-    - 为 S3 存储添加超时机制以避免 S3 客户端没有任何响应地挂起 [10132](https://github.com/tikv/tikv/pull/10132)
+    - 修复因磁盘写满后 `file_dict` 写入不完全导致 TiKV 无法重启的问题 [#9963](https://github.com/tikv/tikv/pull/9963)
+    - 限制 TiCDC 默认的扫描速度为 128MB/s [#9983](https://github.com/tikv/tikv/pull/9983)
+    - 减少 TiCDC 进行初次扫描的内存使用量 [#10133](https://github.com/tikv/tikv/pull/10133)
+    - 为 TiCDC 扫描的速度添加背压 (back pressure) 功能 [#10142](https://github.com/tikv/tikv/pull/10142)
+    - 通过避免不必要的读取来获取 TiCDC 旧值以解决潜在的 OOM 问题 [#10031](https://github.com/tikv/tikv/pull/10031)
+    - 修复了由于读取旧值而导致的 TiCDC OOM 问题 [#10197](https://github.com/tikv/tikv/pull/10197)
+    - 为 S3 存储添加超时机制以避免 S3 客户端没有任何响应地挂起 [#10132](https://github.com/tikv/tikv/pull/10132)
 
 + TiFlash
 
@@ -133,7 +133,7 @@ TiDB 版本：4.0.13
 
     + TiCDC
 
-        - 修复当 Sorter 的输入通道卡住时，流控导致的死锁问题 [1779](https://github.com/pingcap/ticdc/pull/1779)
+        - 修复当 Sorter 的输入通道卡住时，流控导致的死锁问题 [#1779](https://github.com/pingcap/ticdc/pull/1779)
         - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1756](https://github.com/pingcap/ticdc/pull/1756)
         - 回滚 `explicit_defaults_for_timestamp` 的改动，确保不用 `SUPER` 权限也可以同步数据到 MySQL [#1749](https://github.com/pingcap/ticdc/pull/1749)
 
