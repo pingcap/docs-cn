@@ -79,6 +79,12 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### `cte_max_recursion_depth`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：1000
+- 这个变量用于控制公共表表达式的最大递归深度。
+
 ### `ddl_slow_threshold`
 
 - 作用域：INSTANCE
@@ -1236,9 +1242,3 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：ON
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `cte_max_recursion_depth`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：1000
-- 这个变量用于控制公共表表达式最大递归深度。
