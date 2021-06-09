@@ -51,7 +51,7 @@ TiDB 版本：5.0.2
 
     + Backup & Restore (BR)
 
-        - 优化了一些含糊的报错信息使其更清晰 [#1132](https://github.com/pingcap/br/pull/1132)
+        - 优化了一些含糊的报错信息 [#1132](https://github.com/pingcap/br/pull/1132)
         - 支持检查备份的版本信息 [#1091](https://github.com/pingcap/br/pull/1091)
         - 支持备份和恢复 `mysql` schema 下的系统表 [#1143](https://github.com/pingcap/br/pull/1143) [#1078](https://github.com/pingcap/br/pull/1078)
 
