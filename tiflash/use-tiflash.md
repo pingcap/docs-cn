@@ -323,5 +323,4 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         以上示例中，在 TiDB 和 TiFlash 中，`a/b` 在编译期推导出来的类型都为 `Decimal(7,4)`，而在 `Decimal(7,4)` 的约束下，`a/b` 返回的结果应该为 `0.0000`。但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)` 高，所以原表中的数据没有被 `where a/b` 过滤掉。而在 TiFlash 中 `a/b` 在运行期也是采用 `Decimal(7,4)` 作为结果类型，所以原表中的数据被 `where a/b` 过滤掉了。
 
 * TiFlash MPP 模式不支持如下功能：
-    * 不支持分区表，对于带有分区表的查询默认不选择 MPP 模式。
     * 在配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值为 `true` 时，MPP 不支持 join 的连接键类型为字符串或 `group by` 聚合运算时列类型为字符串的情况。在处理这两类查询时，默认不选择 MPP 模式。
