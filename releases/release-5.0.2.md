@@ -38,7 +38,6 @@ TiDB 版本：5.0.2
 
 + TiFlash
 
-    - 通过摄取文件来进行 Apply Region snapshots 操作以减少内存占用
     - 优化锁操作以避免 DDL 语句和读数据相互阻塞
     - 支持 `INTEGER` 和 `REAL` 类型转化为 `REAL` 类型
 
