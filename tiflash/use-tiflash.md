@@ -226,10 +226,12 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * TopN：该算子对数据求 TopN 运算
 * Limit：该算子对数据进行 limit 运算
 * Project：该算子对数据进行投影运算
-* HashJoin：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算，但有以下使用条件：
+* HashJoin（带等值 Join 条件）：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算，但有以下使用条件：
     * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
-    * 必须带有等值的 join 条件
     * 不支持下推 `Full Outer Join`
+* HashJoin（不带等值 Join 条件，即 Cartesian Join）：该算子实现了 Cartesian Join，但有以下使用条件：
+    * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
+    * 只有在 Broadcast Join 中才支持 Cartesian Join
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
