@@ -23,9 +23,9 @@ TiDB version: 4.0.13
 
 + TiKV
 
-    - Make the calculation process of `store used size` more precise [9904](https://github.com/tikv/tikv/pull/9904)
-    - Set more Regions in the `EpochNotMatch` message to reduce Region misses [9731](https://github.com/tikv/tikv/pull/9731)
-    - Speed up freeing the memory accumulated in the long-running cluster [10035](https://github.com/tikv/tikv/pull/10035)
+    - Make the calculation process of `store used size` more precise [#9904](https://github.com/tikv/tikv/pull/9904)
+    - Set more Regions in the `EpochNotMatch` message to reduce Region misses [#9731](https://github.com/tikv/tikv/pull/9731)
+    - Speed up freeing the memory accumulated in the long-running cluster [#10035](https://github.com/tikv/tikv/pull/10035)
 
 + PD
 
@@ -100,13 +100,13 @@ TiDB version: 4.0.13
 
 + TiKV
 
-    - Fix a bug that TiKV cannot start if the `file_dict` file is not fully written into the disk that has been full [9963](https://github.com/tikv/tikv/pull/9963)
-    - Limit TiCDC's scan speed at 128MB/s by default [9983](https://github.com/tikv/tikv/pull/9983)
-    - Reduce the memory usage of TiCDC's initial scan [10133](https://github.com/tikv/tikv/pull/10133)
-    - Support the back pressure for TiCDC's scan speed [10142](https://github.com/tikv/tikv/pull/10142)
-    - Fix a potential OOM issue by avoiding unnecessary reads to get TiCDC old values [10031](https://github.com/tikv/tikv/pull/10031)
-    - Fix a TiCDC OOM issue caused by reading old values [10197](https://github.com/tikv/tikv/pull/10197)
-    - Add a timeout mechanism for S3 storages to avoid the client hanging without responses [10132](https://github.com/tikv/tikv/pull/10132)
+    - Fix a bug that TiKV cannot start if the `file_dict` file is not fully written into the disk that has been full [#9963](https://github.com/tikv/tikv/pull/9963)
+    - Limit TiCDC's scan speed at 128MB/s by default [#9983](https://github.com/tikv/tikv/pull/9983)
+    - Reduce the memory usage of TiCDC's initial scan [#10133](https://github.com/tikv/tikv/pull/10133)
+    - Support the back pressure for TiCDC's scan speed [#10142](https://github.com/tikv/tikv/pull/10142)
+    - Fix a potential OOM issue by avoiding unnecessary reads to get TiCDC old values [#10031](https://github.com/tikv/tikv/pull/10031)
+    - Fix a TiCDC OOM issue caused by reading old values [#10197](https://github.com/tikv/tikv/pull/10197)
+    - Add a timeout mechanism for S3 storages to avoid the client hanging without responses [#10132](https://github.com/tikv/tikv/pull/10132)
 
 + TiFlash
 
