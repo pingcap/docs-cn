@@ -316,7 +316,6 @@ select `key`, count(*) as `count` from information_schema.data_lock_waits group 
 
 如果已知频繁出问题的 key，便可尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表中获取试图在该 key 上上锁的事务的信息。需要注意 `TIDB_TRX` 和 `CLUSTER_TIDB_TRX` 表所展示的信息也是对其进行查询的时刻正在运行的事务的信息，并不展示已经结束的事务。如果并发的事务数量很大，该查询的结果集也可能很大，可以考虑添加 limit 子句，或用 where 子句筛选出等锁时间较长的事务。需要注意，对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而不同表中的信息可能并不同步。
 
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -356,7 +355,6 @@ ba07e3cc34b6b3be7b7c2de7fe9]
 #### 事务被长时间阻塞
 
 如果已知一个事务被另一事务（或多个事务）阻塞，且已知当前事务的 start ts（即事务 ID），则可使用如下方式获取导致该事务阻塞的事务的信息。注意对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而可能不同表中的信息可能并不同步。
-
 
 {{< copyable "sql" >}}
 
