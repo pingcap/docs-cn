@@ -234,11 +234,11 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
 ```
-数学函数: +, -, /, *, >=, <=, =, !=, <, >, round, abs
+数学函数: +, -, /, *, >=, <=, =, !=, <, >, round(int), round(double), abs, floor(int), ceil(int), ceiling(int)
 逻辑函数: and, or, not, case when, if, ifnull, isnull, in
 位运算: bitand, bitor, bigneg, bitxor
-字符串函数: substr, replace, concat, concat_ws, left, right
-日期函数: date_format, timestampdiff, from_unixtime, unix_timestamp, str_to_date, date_add, date_sub, datediff, year, month, day, extract
+字符串函数: substr, char_length, replace, concat, concat_ws, left, right
+日期函数: date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), date_add(string, int), date_add(datetime, int), date_sub(datetime, int), date_sub(string, int), datediff, year, month, day, extract(datetime)
 JSON 函数: json_length
 转换函数: cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)
 聚合函数: min, max, sum, count, avg, approx_count_distinct
