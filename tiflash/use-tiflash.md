@@ -306,7 +306,7 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
 
         mysql> set session tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
- 
+
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -314,7 +314,7 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
- 
+
         mysql> set session tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
 
