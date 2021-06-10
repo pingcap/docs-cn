@@ -200,7 +200,7 @@ CREATE TABLE `t1` (
     ERROR 8200 (HY000): Unsupported modify column: table is partition table
     ```
 
-* 不支持修一部分类型 (部分时间类型、Bit、Set、Enum、Json 等) 上的变更，缘由是 TiDB cast 函数和 MySQL 的行为有一些兼容性问题。例如：
+* 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、Json 等）的变更，因为 TiDB cast 函数与 MySQL 的行为有一些兼容性问题。例如：
   
     ```sql
     CREATE TABLE t (a DECIMAL(13, 7));
