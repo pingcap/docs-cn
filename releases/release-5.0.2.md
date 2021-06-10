@@ -127,4 +127,4 @@ TiDB 版本：5.0.2
 
         - 修复在生成 KV 数据时可能发生的 panic 问题 [#1127](https://github.com/pingcap/br/pull/1127)
         - 修复 TiDB-backend 模式下因没有开启 autocommit 而无法加载数据的问题 [#1104](https://github.com/pingcap/br/issues/1104)
-        - 修复数据导入期间 batch split region 因键的总大小超过 Raft 条目限制而可能失败的问题 [#969](https://github.com/pingcap/br/issues/969)
+        - 修复数据导入期间 Batch Split Region 因键的总大小超过 Raft 条目限制而可能失败的问题 [#969](https://github.com/pingcap/br/issues/969)
