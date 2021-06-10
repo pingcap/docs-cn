@@ -13,7 +13,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 
 - `<cluster-name>` 表示新集群的名字，不能和现有集群同名
-- `<version>` 为要部署的 TiDB 集群版本号，如 `v4.0.9`
+- `<version>` 为要部署的 TiDB 集群版本号，如 `v5.0.2`
 - `<topology.yaml>` 为事先编写好的[拓扑文件](/tiup/tiup-cluster-topology-reference.md)
 
 ## 选项
