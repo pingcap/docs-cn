@@ -152,7 +152,7 @@ ERROR 8200 (HY000): Unsupported modify column: change from original type decimal
 * 不支持主键列上的类型变更。
 * 不支持分区表上的列类型变更。
 * 不支持 generated column 上的列类型变更。
-* 不支持修一部分类型 (部分时间类型、Bit、Set、Enum、Json 等) 上的变更，缘由是 TiDB cast 函数和 MySQL 的行为有一些兼容性问题。
+* 不支持修一部分类型 (部分时间类型、Bit、Set、Enum、JSON 等) 上的变更，缘由是 TiDB cast 函数和 MySQL 的行为有一些兼容性问题。
 
 ## 另请参阅
 
