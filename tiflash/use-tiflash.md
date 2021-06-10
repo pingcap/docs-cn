@@ -233,7 +233,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
-* 数学函数: `+, -, /, *, >=, <=, =, !=, <, >, round(int), round(double), abs, floor(int), ceil(int), ceiling(int)`
+* 数学函数：`+, -, /, *, >=, <=, =, !=, <, >, round(int), round(double), abs, floor(int), ceil(int), ceiling(int)`
 * 逻辑函数: `and, or, not, case when, if, ifnull, isnull, in`
 * 位运算: `bitand, bitor, bigneg, bitxor`
 * 字符串函数: `substr, char_length, replace, concat, concat_ws, left, right`
