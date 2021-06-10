@@ -50,7 +50,7 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 * TiDB Binlog 与 TiDB v5.0 版本开始引入的以下特性不兼容，无法一起使用：
 
-    - [TiDB 聚簇索引特性](/clustered-indexes.md#限制)：开启 TiDB Binlog 后 TiDB 不允许创建非单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 TiDB Binlog 同步到下游。如需同步聚簇索引表，请使用 [TiCDC](/ticdc/ticdc-overview.md)；
+    - [TiDB 聚簇索引特性](/clustered-indexes.md#限制)：开启 TiDB Binlog 后 TiDB 不允许创建非单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 TiDB Binlog 同步到下游。如需同步聚簇索引表，请升级至 v5.1 版本或使用 [TiCDC](/ticdc/ticdc-overview.md)；
     - TiDB 系统变量 [tidb_enable_async_commit](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)：启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
     - TiDB 系统变量 [tidb_enable_1pc](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)：启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 
