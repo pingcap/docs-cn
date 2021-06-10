@@ -1,11 +1,13 @@
 ---
-title: Stale Read 功能使用场景介绍
-aliases: ['/docs-cn/dev/stale-read/']
+title: Stale Read 功能的使用场景
+summary: 介绍 Stale Read 功能和使用场景。
 ---
 
-# Stale Read 功能介绍
+# Stale Read 功能的使用场景
 
-Stale Read 是 TiDB 提供快速读取数据的一种机制。Stale Read 功能允许用户通过指定时间点或时间范围的方式读取一定程度上的历史数据（使用 [AS OF TIMESTAMP 语法](/as-of-timestamp.md)）。通过 Stale Read，TiDB 可以从任意一个副本上读取到所给定时间点或时间范围内尽可能新的数据，并在这个过程中始终保证数据的一致性约束。
+本文档介绍 Stale Read 的使用场景。Stale Read 是 TiDB 用户快速读取数据的一种机制。使用 Stale Read 功能，你能从指定时间点或时间范围内读取一定程度上的历史数据。
+
+在内部实现上，TiDB 通过 Stale Read 可以从任意一个副本上读取到该指定时间点或时间范围内尽可能新的数据，并在这个过程中始终保证数据的一致性约束。
 
 # 使用场景
 
@@ -13,9 +15,9 @@ Stale Read 是 TiDB 提供快速读取数据的一种机制。Stale Read 功能�
 
 而 Stale Read 通过引入类似安全时间节点的机制，达成一致性读的同时减少副本间的进度同步开销，并且可以从地理位置更近的副本中进行读操作，在多区域部署中带来更好的延迟表现。同时，由于 Stale Read 读取的可以是有一定时间偏斜的历史数据，读写冲突可以被极大地避免，性能表现从而得以提升。
 
-# 使用方式
+## 使用方法
 
-如前所述，TiDB 提供两种 Stale Read 的方式，分别是指定一个精确的时间点和一个时间范围，两者的区别如下：
+TiDB 提供两种 Stale Read 使用方式，分别是指定一个精确的时间点和一个时间范围：
 
-- 精确时间点：通过指定一个时间戳，确保读到该指定时间点下保证全局事务记录一致性的数据，不破坏隔离级别，但可能读到旧数据。该功能通过 [AS OF TIMESTAMP 语法](/as-of-timestamp.md#语法方式)提供。
-- 时间范围：通过指定一个时间范围，确保读到在该时间范围内尽可能新的数据，不破坏隔离级别，但可能读到旧数据。该功能通过 [AS OF TIMESTAMP 语法](/as-of-timestamp.md#语法方式) 和 [TIDB_BOUNDED_STALENESS 函数](/as-of-timestamp.md#语法方式)实现。
+- 指定精确时间点：你可以通过指定一个时间戳，确保读到该指定时间点下保证全局事务记录一致性的数据，不破坏隔离级别，但可能读到旧数据。要使用该方法，参阅 [`AS OF TIMESTAMP` 语法](/as-of-timestamp.md#语法方式)文档。
+- 指定时间范围：你可以通过指定一个时间范围，确保读到在该时间范围内尽可能新的数据，不破坏隔离级别，但可能读到旧数据。要使用该功能，参阅 [`AS OF TIMESTAMP` 语法](/as-of-timestamp.md#语法方式) 文档和该文档中 [`TIDB_BOUNDED_STALENESS` 函数](/as-of-timestamp.md#语法方式)部分的介绍。

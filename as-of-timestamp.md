@@ -1,11 +1,11 @@
 ---
 title: 使用 AS OF TIMESTAMP 语法读取历史数据
-aliases: ['/docs-cn/dev/read-stale-data/']
+summary: 了解如何使用 AS OF TIMESTAMP 语法读取历史数据。
 ---
 
 # 使用 AS OF TIMESTAMP 语法读取历史数据
 
-本文档介绍如何使用 Stale Read 功能中的 AS OF TIMESTAMP 语句来读取历史版本数据，包括具体的操作流程以及历史数据的保存策略。
+本文档介绍如何通过 `AS OF TIMESTAMP` 语句使用 [Stale Read](/stale-read.md) 功能来读取 TiDB 历史版本数据，包括具体的操作示例以及历史数据的保存策略。
 
 ## 功能说明
 
@@ -15,13 +15,15 @@ TiDB 实现了通过标准 SQL 接口读取历史数据功能，无需特殊的 
 
 ## 语法方式
 
-为支持读取历史版本数据，TiDB 扩展了新的语法 AS OF TIMESTAMP。目前支持以下三种方式使用该语法。
+你可以通过以下三种方式使用 `AS OF TIMESTAMP` 语法：
 
-- 通过 [START TRANSACTION READ ONLY AS OF TIMESTAMP](/sql-statements/sql-statement-start-transaction.md)
-- 通过 [SET TRANSACTION READ ONLY AS OF TIMESTAMP](/sql-statements/sql-statement-set-transaction.md)
-- 通过 SELECT 子句中使用 AS OF TIMESTAMP
+- [`START TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-start-transaction.md)
+- [`SET TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-set-transaction.md)
+- 在 `SELECT` 的子句中使用 `AS OF TIMESTAMP`
 
-AS OF TIMESTAMP 支持接收日期时间和时间函数，日期时间的格式为：“2016-10-08 16:45:26.999”，最小时间精度范围为毫秒，但一般来说可以只写到秒，比如”2016-10-08 16:45:26”，也可以通过 `NOW(3)` 函数获得精确到毫秒的当前时间。当需要指定时间范围时，需要使用 `TIDB_BOUNDED_STALENESS()` 函数，具体用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 t1 和 t2 为时间范围的两端，支持接受日期时间和时间函数，例如：
+如果你指定的是精确的时间点，可在 `AS OF TIMESTAMP` 中使用日期时间和时间函数，日期时间的格式为："2016-10-08 16:45:26.999"，最小时间精度范围为毫秒，通常可只写到秒，例如 "2016-10-08 16:45:26"。你也可以通过 `NOW(3)` 函数获得精确到毫秒的当前时间。
+
+如果你指定的是时间范围，需要使用 `TIDB_BOUNDED_STALENESS()` 函数。用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 `t1` 和 `t2` 为时间范围的两端，支持使用日期时间和时间函数，示例如下：
 
 - `AS OF TIMESTAMP '2016-10-08 16:45:26'` 表示读取在 2016 年 10 月 8 日 16 点 45 分 26 秒时最新的数据。
 - `AS OF TIMESTAMP NOW() - INTERVAL 10 SECOND` 表示读取 10 秒前最新的数据。
