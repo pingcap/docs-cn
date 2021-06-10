@@ -6,7 +6,7 @@ aliases: ['/docs/dev/sql-statements/sql-statement-split-region/','/docs/dev/refe
 
 # Split Region
 
-For each new table created in TiDB, one Region is segmented by default to store the data of this table. This default behavior is controlled by `split-table` in the configuration file. When the data in this Region exceeds the default Region size limit, the Region starts to split into two.
+For each new table created in TiDB, one [Region](/tidb-storage.md#region) is segmented by default to store the data of this table. This default behavior is controlled by `split-table` in the TiDB configuration file. When the data in this Region exceeds the default Region size limit, the Region starts to split into two.
 
 In the above case, because there is only one Region at the beginning, all write requests occur on the TiKV where the Region is located. If there are a large number of writes for the newly created table, hotspots are caused.
 
@@ -46,21 +46,25 @@ To solve the hotspot problem in the above scenario, TiDB introduces the pre-spli
 
 There are two types of Split Region syntax:
 
-{{< copyable "sql" >}}
+- The syntax of even split:
 
-```sql
-SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
-```
+    {{< copyable "sql" >}}
 
-`BETWEEN lower_value AND upper_value REGIONS region_num` defines the upper boundary, the lower boundary, and the Region amount. Then the current region will be evenly spilt into the number of regions (as specified in `region_num`) between the upper and lower boundaries.
+    ```sql
+    SPLIT TABLE table_name [INDEX index_name] BETWEEN (lower_value) AND (upper_value) REGIONS region_num
+    ```
 
-{{< copyable "sql" >}}
+    `BETWEEN lower_value AND upper_value REGIONS region_num` defines the upper boundary, the lower boundary, and the Region amount. Then the current region will be evenly spilt into the number of regions (as specified in `region_num`) between the upper and lower boundaries.
 
-```sql
-SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
-```
+- The syntax of uneven split:
 
-`BY value_list…` specifies a series of points manually, based on which the current Region is spilt. It is suitable for scenarios with unevenly distributed data.
+    {{< copyable "sql" >}}
+
+    ```sql
+    SPLIT TABLE table_name [INDEX index_name] BY (value_list) [, (value_list)] ...
+    ```
+
+    `BY value_list…` specifies a series of points manually, based on which the current Region is spilt. It is suitable for scenarios with unevenly distributed data.
 
 The following example shows the result of the `SPLIT` statement:
 
@@ -100,7 +104,7 @@ Row data in the same table have the same `table_id`, but each row has its unique
 
 #### Even Split
 
-Because `row_id` is an integer, the value of the key to be split can be calculated according to the specified `lower_value`, `upper_value`, and `region_num`. TiDB first calculates the step value (`step = (upper_value - lower_value)/num`). Then split will be done evenly per each "step" between `lower_value` and `upper_value` to generate the number of Regions as specified by `num`.
+Because `row_id` is an integer, the value of the key to be split can be calculated according to the specified `lower_value`, `upper_value`, and `region_num`. TiDB first calculates the step value (`step = (upper_value - lower_value)/region_num`). Then split will be done evenly per each "step" between `lower_value` and `upper_value` to generate the number of Regions as specified by `region_num`.
 
 For example, if you want 16 evenly split Regions split from key range`minInt64`~`maxInt64` for table t, you can use this statement:
 
@@ -263,9 +267,9 @@ Splitting Regions for partitioned tables is the same as splitting Regions for or
     SPLIT [PARTITION] TABLE table_name [PARTITION (partition_name_list...)] [INDEX index_name] BY (value_list) [, (value_list)] ...
     ```
 
-#### Examples
+#### Examples of Split Regions for partitioned tables
 
-1. Create a partitioned table `t`.
+1. Create a partitioned table `t`. Suppose that you want to create a Hash table divided into two partitions. The example statement is as follows:
 
     {{< copyable "sql" >}}
 
@@ -290,13 +294,19 @@ Splitting Regions for partitioned tables is the same as splitting Regions for or
     +-----------+-----------+---------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
     ```
 
-2. Use the `SPLIT` syntax to split a Region for each partition. In the following example, four Regions are split in the range of `[0,10000]`.
+2. Use the `SPLIT` syntax to split a Region for each partition. Suppose that you want to split the data in the `[0,10000]` range of each partition into four Regions. The example statement is as follows:
 
     {{< copyable "sql" >}}
 
     ```sql
     split partition table t between (0) and (10000) regions 4;
     ```
+
+    In the above statement, `0` and `10000` respectively represent the `row_id` of the upper and lower boundaries corresponding to the hotspot data you want to scatter.
+
+    > **Note:**
+    >
+    > This example only applies to scenarios where hotspot data is evenly distributed. If the hotspot data is unevenly distributed in a specified data range, refer to the syntax of uneven split in [Split Regions for partitioned tables](#split-regions-for-partitioned-tables).
 
 3. Use the `SHOW TABLE REGIONS` syntax to view the Regions of this table again. You can see that this table now has ten Regions, each partition with five Regions, four of which are the row data and one is the index data.
 
@@ -323,7 +333,7 @@ Splitting Regions for partitioned tables is the same as splitting Regions for or
     +-----------+---------------+---------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
     ```
 
-4. You can also split Regions for the index of each partition. For example, you can split the `[1000,10000]` range of the `idx` index into two Regions:
+4. You can also split Regions for the index of each partition. For example, you can split the `[1000,10000]` range of the `idx` index into two Regions. The example statement is as follows:
 
     {{< copyable "sql" >}}
 
@@ -331,11 +341,11 @@ Splitting Regions for partitioned tables is the same as splitting Regions for or
     split partition table t index idx between (1000) and (10000) regions 2;
     ```
 
-#### Split Region for a single partition
+#### Examples of Split Region for a single partition
 
-You can specify the partition to be split. See the following usage example:
+You can specify the partition to be split.
 
-1. Create a partitioned table:
+1. Create a partitioned table. Suppose that you want to create a Range partitioned table split into three partitions. The example statement is as follows:
 
     {{< copyable "sql" >}}
 
@@ -346,7 +356,7 @@ You can specify the partition to be split. See the following usage example:
         partition p3 values less than (MAXVALUE) );
     ```
 
-2. Split two Regions in the `[0,10000]` range of the `p1` partition:
+2. Suppose that you want to split the data in the `[0,10000]` range of the `p1` partition into two Regions. The example statement is as follows:
 
     {{< copyable "sql" >}}
 
@@ -354,7 +364,7 @@ You can specify the partition to be split. See the following usage example:
     split partition table t partition (p1) between (0) and (10000) regions 2;
     ```
 
-3. Split two Regions in the `[10000,20000]` range of the `p2` partition:
+3. Suppose that you want to split the data in the `[10000,20000]` range of the `p2` partition into two Regions. The example statement is as follows:
 
     {{< copyable "sql" >}}
 
@@ -362,7 +372,7 @@ You can specify the partition to be split. See the following usage example:
     split partition table t partition (p2) between (10000) and (20000) regions 2;
     ```
 
-4. Use the `SHOW TABLE REGIONS` syntax to view the Regions of this table:
+4. You can use the `SHOW TABLE REGIONS` syntax to view the Regions of this table:
 
     {{< copyable "sql" >}}
 
@@ -382,7 +392,7 @@ You can specify the partition to be split. See the following usage example:
     +-----------+----------------+----------------+-----------+-----------------+------------------+------------+---------------+------------+----------------------+------------------+
     ```
 
-5. Split two Regions in the `[0,20000]` range of the `idx` index of `p1` and `p2` partitions:
+5. Suppose that you want to split the `[0,20000]` range of the `idx` index of the `p1` and `p2` partitions into two Regions. The example statement is as follows:
 
     {{< copyable "sql" >}}
 
@@ -400,7 +410,7 @@ To have evenly split Regions when a table is created, it is recommended you use 
 
 The `tidb_scatter_region` global variable affects the behavior of `PRE_SPLIT_REGIONS`. This variable controls whether to wait for Regions to be pre-split and scattered before returning results after the table creation. If there are intensive writes after creating the table, you need to set the value of this variable to `1`, then TiDB will not return the results to the client until all the Regions are split and scattered. Otherwise, TiDB writes the data before the scattering is completed, which will have a significant impact on write performance.
 
-### Example
+### Examples of pre_split_regions
 
 {{< copyable "sql" >}}
 
