@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 
 # 统计信息简介
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 5.1 以前的版本中，该变量的默认值为 1，在 5.1 中，该变量的默认值为 2，作为实验性特性启用。两种版本中，TiDB 维护的统计信息如下：
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.1 以前的版本中，该变量的默认值为 `1`。在 v5.1 中，该变量的默认值为 `2`，作为实验特性启用。两种版本中，TiDB 维护的统计信息如下：
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
@@ -61,7 +61,8 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 > 如需更快的分析速度，可将 `tidb_enable_fast_analyze` 设置为 `1` 来打开快速分析功能。该参数的默认值为 `0`。
 >
 > 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
-> `tidb_enable_fast_analyze` 为实验性功能，目前并不与 `tidb_analyze_version=2` 的统计信息完全匹配，因此开启 `tidb_enable_fast_analyze` 时请将 `tidb_analyze_version` 设置为 1。
+>
+> `tidb_enable_fast_analyze` 为实验性功能，目前与 `tidb_analyze_version=2` 的统计信息**不完全匹配**。因此开启 `tidb_enable_fast_analyze` 时需要将 `tidb_analyze_version` 的值设置为 `1`。
 
 #### 全量收集
 
