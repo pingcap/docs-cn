@@ -34,7 +34,7 @@ TiDB 版本：5.0.2
     - 为 TiCDC 扫描的速度添加背压 (back pressure) 功能 [#10151](https://github.com/tikv/tikv/pull/10151)
     - 减少 TiCDC 进行初次扫描的内存使用量 [#10133](https://github.com/tikv/tikv/pull/10133)
     - 提升了悲观事务中 TiCDC Old Value 的缓存命中率 [#10089](https://github.com/tikv/tikv/pull/10089)
-    - 提升 Region 分裂的均匀性
+    - 让 Region 分裂更均匀，优化有写入热点时 Region 大小的增长速度超过分裂速度的问题 [#9785](https://github.com/tikv/tikv/issues/9785)
 
 + TiFlash
 
