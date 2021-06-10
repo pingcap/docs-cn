@@ -49,7 +49,7 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 ## 注意事项
 
-* TIDB Binlog 和 TiDB 在 v5.1 版本中解决了 v5.0 版本中引入的聚簇索引与 TiDB Binlog 不兼容问题。在升级 TiDBlog 和 TiDB Server 到 v5.1 版本后：开启 TiDB Binlog 后 TiDB 支持创建聚簇索引表；聚簇索引表的数据插入、删除和更新动作支持通过 TiDB Binlog 同步到下游。对于聚簇索引表同步需注意:
+* TiDB Binlog 和 TiDB 在 v5.1 版本中解决了 v5.0 版本中引入的聚簇索引与 TiDB Binlog 不兼容问题。在升级 TiDB Binlog 和 TiDB Server 到 v5.1 版本后：开启 TiDB Binlog 后，TiDB 支持创建聚簇索引表；聚簇索引表的数据插入、删除和更新操作支持通过 TiDB Binlog 同步到下游。对于同步聚簇索引表时需注意：
 
     - 如果从 v5.0 版本手动控制组件升级顺序进行升级，请确保将 TiDB Binlog 升级至 v5.1 版本后再将 TiDB Server 升级至 v5.1 版本。
     - 推荐配置上下游 TiDB 系统变量 [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入)为一致的值来保证上游下游 TiDB 聚簇索引表结构一致。
