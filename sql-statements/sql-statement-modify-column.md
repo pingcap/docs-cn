@@ -189,7 +189,7 @@ Query OK, 0 rows affected (2.52 sec)
     ERROR 8200 (HY000): Unsupported modify column: column is generated
     ```
 
-* 不支持修该分区表上的列类型。例如：
+* 不支持修改分区表上的列类型。例如：
 
     ```sql
     CREATE TABLE t (c1 INT, c2 INT, c3 INT) partition by range columns(c1) ( partition p0 values less than (10), partition p1 values less than (maxvalue));
