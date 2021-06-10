@@ -34,7 +34,7 @@ TiDB version: 5.0.2
     - Support the back pressure for TiCDC's scan speed [#10151](https://github.com/tikv/tikv/pull/10151)
     - Reduce the memory usage of TiCDC's initial scan [#10133](https://github.com/tikv/tikv/pull/10133)
     - Improve the cache hit ratio of the TiCDC's Old Value feature in the pessimistic transaction [#10089](https://github.com/tikv/tikv/pull/10089)
-    - Split Regions more evenly [#10086](https://github.com/tikv/tikv/pull/10086)
+    - Split Regions more evenly to mitigate the issue that the growth of Region size exceeds the splitting speed when there are hotspot writes [#9785](https://github.com/tikv/tikv/issues/9785)
 
 + TiFlash
 
@@ -74,7 +74,7 @@ TiDB version: 5.0.2
     - Fix a bug that the primary lock fallen back from async commit cannot be resolved [#24384](https://github.com/pingcap/tidb/issues/24384)
     - Fix a GC issue of statistics that might cause duplicated fm-sketch records [#24357](https://github.com/pingcap/tidb/pull/24357)
     - Avoid unnecessary pessimistic rollback when the pessimistic locking receives the `ErrKeyExists` error [#23799](https://github.com/pingcap/tidb/issues/23799)
-    - Fix the issue that numeric literals cannot be recognized when the sql_mode contains `ANSI_QUOTES` [#24522](https://github.com/pingcap/tidb/pull/24522)
+    - Fix the issue that numeric literals cannot be recognized when the sql_mode contains `ANSI_QUOTES` [#24429](https://github.com/pingcap/tidb/issues/24429)
     - Forbid statements such as `INSERT INTO table PARTITION (<partitions>) ... ON DUPLICATE KEY UPDATE` to read data from non-listed partitions [#24746](https://github.com/pingcap/tidb/issues/24746)
     - Fix the potential `index out of range` error when a SQL statement contains both `GROUP BY` and `UNION` [#24281](https://github.com/pingcap/tidb/issues/24281)
     - Fix the issue that the `CONCAT` function incorrectly handles the collation [#24296](https://github.com/pingcap/tidb/issues/24296)
@@ -111,7 +111,7 @@ TiDB version: 5.0.2
 
         - Fix the issue that the time zone information is lost in the Avro output [#1712](https://github.com/pingcap/ticdc/pull/1712)
         - Support cleaning up stale temporary files in Unified Sorter and forbid sharing the `sort-dir` directory [#1742](https://github.com/pingcap/ticdc/pull/1742)
-        - Fix a deadlock bug in the KV client that occurs when many stale Regions exist [#1801](https://github.com/pingcap/ticdc/pull/1801)
+        - Fix a deadlock bug in the KV client that occurs when many stale Regions exist [#1599](https://github.com/pingcap/ticdc/issues/1599)
         - Fix the wrong help information in the `--cert-allowed-cn` flag [#1697](https://github.com/pingcap/ticdc/pull/1697)
         - Revert the update for `explicit_defaults_for_timestamp` which requires the `SUPER` privilege when replicating data to MySQL [#1750](https://github.com/pingcap/ticdc/pull/1750)
         - Support the sink flow control to reduce the risk of memory overflow [#1840](https://github.com/pingcap/ticdc/pull/1840)
