@@ -9,8 +9,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 `ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
 
 从 v5.1.0 版本起，TiDB 开始支持 Reorg 类型变更，包括但不限于：
+
 - 从 varchar 转换为 bigint 
+
 - decimal 精度修改
+
 - 从 varchar(10) 到 varchar(5) 的长度压缩
 
 ## 语法图
@@ -153,19 +156,20 @@ CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-> **注意:**
+**注意:**
+
 > - 当所变更的类型与已经存在的数据行产生冲突时，TiDB 会进行报错处理。在上述例子中，TiDB 将进行如下报错：
->
->     ```
->     alter table t1 modify column col1 varchar(4);
->     ERROR 1406 (22001): Data Too Long, field len 4, data len 5
->     ```
-	
+
+>   ```
+>   alter table t1 modify column col1 varchar(4);
+>   ERROR 1406 (22001): Data Too Long, field len 4, data len 5
+>   ```
+
 > - 由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间 (约 2.5s) 的等待处理：
 
-    ```
-    Query OK, 0 rows affected (2.52 sec)
-    ```
+>   ```
+>   Query OK, 0 rows affected (2.52 sec)
+>   ```
 
 ## MySQL 兼容性
 
