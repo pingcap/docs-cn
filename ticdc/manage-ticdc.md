@@ -76,17 +76,19 @@ tiup cluster upgrade <cluster-name> v4.0.6
 状态说明：
 
  - Normal：正常同步，checkpoint-ts 正常推进。
- - Stopped：停止同步，一般是由于用户手动暂停（pause） changefeed，在这个状态的 changefeed 会阻挡 GC 推进。
+ - Stopped：停止同步，由于用户手动暂停（pause） changefeed，在这个状态的 changefeed 会阻挡 GC 推进。
  - Error：同步报错，由于某些可恢复内部错误导致同步无法继续进行，在这个状态下的 changefeed 会不断尝试继续推进，直到状态转为 Normal。在这个状态的 changefeed 会阻挡 GC 推进。
+ - Finished：同步完成，同步任务进度已经达到预设的 TargetTs。在这个状态的 changefeed 不会阻挡 GC 推进。
  - Failed：同步失败，由于发生了某些不可恢复错误，导致同步无法继续进行，并且无法恢复。在这个状态的 changefeed 不会阻挡 GC 推进。
 
  状态流转说明：
 
- ① 执行 changefeed pause 命令或者同步任务已经进行到预设的 TargetTs，同步自动停止  
+ ① 执行 changefeed pause 命令
  ② 执行 changefeed resume 恢复同步任务  
  ③ changefeed 运行过程中发生可恢复错误
  ④ 执行 changefeed resume 恢复同步任务
  ⑤ changefeed 运行过程中发生不可恢复错误
+ ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止  
 
 #### 创建同步任务
 
@@ -273,7 +275,8 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 - `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
 - `state` 为该同步任务的状态：
     - `normal`: 正常同步
-    - `stopped`: 停止同步（手动暂停或出错）
+    - `stopped`: 停止同步（手动暂停）
+    - `error`: 停止同步（出错）
     - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
     - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
 
@@ -429,14 +432,6 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 ```
 
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
-
-删除任务后会保留任务的同步状态信息 24 小时（主要用于记录同步的 checkpoint），24 小时内不能创建同名的任务。如果希望彻底删除任务信息，可以指定 `--force` 或 `-f` 参数删除，删除后 changefeed 的所有信息都会被清理，可以立即创建同名的 changefeed。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task --force
-```
 
 ### 更新同步任务配置
 
