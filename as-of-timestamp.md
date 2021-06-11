@@ -243,7 +243,7 @@ select * from t;
 
 ### 通过 SELECT 子句中使用 AS OF TIMESTAMP 读取历史数据
 
-通过 SELECT 子句中使用 AS OF TIMESTAMP 对当前的查询语句基于历史时间进行查询数据。
+若查询语句需要基于历史时间进行数据查询，你可以在 `SELECT` 的子句中使用 `AS OF TIMESTAMP`：
 
 ```sql
 select * from t as of timestamp '2021-05-26 16:45:26';
