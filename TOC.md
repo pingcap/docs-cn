@@ -64,7 +64,7 @@
       + [BR 常见问题](/br/backup-and-restore-faq.md)
   + 读取历史数据
     + 通过 Stale Read 功能读取历史数据
-      + [Stale Read 功能使用场景介绍](/stale-read.md)
+      + [Stale Read 使用场景介绍](/stale-read.md)
       + [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
     + [通过系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
