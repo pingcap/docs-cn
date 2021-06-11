@@ -41,7 +41,7 @@ TiDB 实现了通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法�
 
 ### 准备阶段
 
-初始化阶段，创建一个表，并插入几行数据：
+在准备数据阶段，创建一张表，并插入若干行数据：
 
 ```sql
 create table t (c int);
