@@ -372,6 +372,7 @@
       + [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       + [`UPDATE`](/sql-statements/sql-statement-update.md)
       + [`USE`](/sql-statements/sql-statement-use.md)
+      + [`WITH`](/sql-statements/sql-statement-with.md)
     + Data Types
       + [Overview](/data-type-overview.md)
       + [Default Values](/data-type-default-values.md)
