@@ -31,13 +31,9 @@ TiDB 实现了通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法�
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS('2016-10-08 16:45:26', '2016-10-08 16:45:29')` 表示读取在 2016 年 10 月 8 日 16 点 45 分 26 秒到 29 秒的时间范围内尽可能新的数据。
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS(NOW() - INTERVAL 20 SECOND, NOW())` 表示读取 20 秒前到现在的时间范围内尽可能新的数据。
 
-## 历史数据保留策略
+## 历史数据的保留和恢复策略
 
-参考[历史数据保留策略](/read-historical-data.md#历史数据保留策略)
-
-## 历史数据恢复策略
-
-参考[历史数据恢复策略](/read-historical-data.md#历史数据恢复策略)
+通过 Stale Read 方法读取的历史数据所采用的保留和恢复策略同使用 `tidb_snapshot` 系统变量读取的历史数据，详见[通过系统变量 `tidb_snapshot` 读取历史数据 - 历史数据保留策略](/read-historical-data.md#历史数据保留策略)和[通过系统变量 `tidb_snapshot` 读取历史数据 - 历史数据恢复策略](/read-historical-data.md#历史数据恢复策略)。
 
 ## 示例
 
