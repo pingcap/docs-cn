@@ -96,7 +96,7 @@ BR (v5.1.0 之后) 默认会备份全部数据，包括系统库 (`mysql.*`)，�
 同时对于以下系统库表进行特殊处理:
 
 - 统计信息相关的表: 不进行恢复，因为统计信息的 table id 发生了变化。
-- mysql 下的 tidb/global_variables 表: 不进行恢复，因为该表不能覆盖，如 gc safe point 覆盖后会对集群产生影响。
+- mysql 库下的 tidb 和 global_variables 表: 不进行恢复，因为该表不能覆盖，如 gc safe point 覆盖后会对集群产生影响。
 - mysql 下的 user 表: 恢复后需要手动执行 FLUSH PRIVILEGE 才能生效。
 
 ### 运行 BR 的最低机型配置要求
