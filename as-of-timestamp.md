@@ -174,7 +174,7 @@ select * from t;
 >
 > 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 开启的事务为只读事务。假如在该事务中执行写入操作，操作将会被该事务拒绝。
 
-### 通过 SET TRANSACTION READ ONLY AS OF TIMESTAMP 读取历史数据
+### 通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 读取历史数据
 
 通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 表示下一个事务是基于指定历史时间的只读事务，该事务将会基于所提供的历史时间来读取历史数据。
 
