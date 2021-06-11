@@ -3,7 +3,7 @@ title: 通过系统变量 tidb_snapshot 读取历史数据
 aliases: ['/docs-cn/dev/read-historical-data/','/docs-cn/dev/how-to/get-started/read-historical-data/']
 ---
 
-# 读取历史数据
+# 通过系统变量 tidb_snapshot 读取历史数据
 
 本文档介绍 TiDB 如何读取历史版本数据，包括具体的操作流程以及历史数据的保存策略。
 
