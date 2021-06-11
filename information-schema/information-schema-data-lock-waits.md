@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `DATA_LOCK_WAITS`。
 
 # DATA_LOCK_WAITS
 
-`DATA_LOCK_WAITS` 表展示了集群中的所有 TiKV 节点上当前正在发生的悲观锁等锁的情况。
+`DATA_LOCK_WAITS` 表展示了集群中所有 TiKV 节点上当前正在发生的悲观锁等锁的情况。
 
 > **警告：**
 >
