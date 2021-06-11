@@ -120,7 +120,7 @@ select * from t;
 
 ### 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 读取历史数据
 
-通过 START TRANSACTION READ ONLY AS OF TIMESTAMP 开启一个基于历史时间的只读事务，该事务将会基于所提供的历史时间来读取历史数据。
+通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 语句开启一个基于历史时间的只读事务，该事务基于所提供的历史时间来读取历史数据。
 
 ```sql
 start transaction read only as of timestamp '2021-05-26 16:45:26';
