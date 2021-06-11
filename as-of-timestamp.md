@@ -7,6 +7,7 @@ summary: 了解如何使用 AS OF TIMESTAMP 语法读取历史数据。
 
 本文档介绍如何通过 `AS OF TIMESTAMP` 语句使用 [Stale Read](/stale-read.md) 功能来读取 TiDB 历史版本数据，包括具体的操作示例以及历史数据的保存策略。
 
+
 TiDB 实现了通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的形式读取历史数据，无需特殊的服务器或者驱动器。当数据被更新、删除后，你可以通过 SQL 接口将更新或删除前的数据读取出来。
 
 > **注意：**
@@ -30,9 +31,7 @@ TiDB 实现了通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法�
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS('2016-10-08 16:45:26', '2016-10-08 16:45:29')` 表示读取在 2016 年 10 月 8 日 16 点 45 分 26 秒到 29 秒的时间范围内尽可能新的数据。
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS(NOW() - INTERVAL 20 SECOND, NOW())` 表示读取 20 秒前到现在的时间范围内尽可能新的数据。
 
-## 历史数据的保留和恢复策略
-
-通过 Stale Read 方法读取的历史数据所采用的保留和恢复策略同使用 `tidb_snapshot` 系统变量读取的历史数据，详见[通过系统变量 `tidb_snapshot` 读取历史数据 - 历史数据保留策略](/read-historical-data.md#历史数据保留策略)和[通过系统变量 `tidb_snapshot` 读取历史数据 - 历史数据恢复策略](/read-historical-data.md#历史数据恢复策略)。
+注意： 除了指定时间戳，最常用使用的方式是读几秒前的数据，采用这种方式取值推荐读 5 秒以上的历史数据。
 
 ## 示例
 
