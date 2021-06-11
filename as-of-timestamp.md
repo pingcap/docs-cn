@@ -118,7 +118,7 @@ select * from t;
 3 rows in set (0.00 sec)
 ```
 
-### 通过 START TRANSACTION READ ONLY AS OF TIMESTAMP 读取历史数据
+### 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 读取历史数据
 
 通过 START TRANSACTION READ ONLY AS OF TIMESTAMP 开启一个基于历史时间的只读事务，该事务将会基于所提供的历史时间来读取历史数据。
 
