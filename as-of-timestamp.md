@@ -179,7 +179,7 @@ select * from t;
 
 ### 通过 SET TRANSACTION READ ONLY AS OF TIMESTAMP 读取历史数据
 
-通过 SET TRANSACTION READ ONLY AS OF TIMESTAMP 表示下一个事务为基于该历史时间的只读事务，该事务将会基于所提供的历史时间来读取历史数据。
+通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 表示下一个事务是基于指定历史时间的只读事务，该事务将会基于所提供的历史时间来读取历史数据。
 
 ```sql
 set transaction read only as of timestamp '2021-05-26 16:45:26';
