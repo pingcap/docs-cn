@@ -246,7 +246,7 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 自 5.1 版本起，TiDB 可以支持 Lock View 这一 feature。该 feature 在 information schema 中提供了若干系统表用于提供更多关于悲观锁的锁冲突和锁等待的信息。关于这些表的详细说明请参考相关系统表的文档。
 
 * [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)：提供当前 TiDB 节点上 / 整个集群上的所有运行中的事务的信息，其中包含事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
-* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁情况的信息，包含阻塞和被阻塞的事务的 start ts、被阻塞的 SQL 语句 Digest 和发生等待的 key。
+* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁情况的信息，包含阻塞和被阻塞的事务的 `start_ts`、被阻塞的 SQL 语句 Digest 和发生等待的 key。
 * [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md)：提供当前 TiDB 节点上 / 整个集群上最近发生过的若干次死锁的相关信息，其中会包含死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
 
 > **警告：**
@@ -265,7 +265,7 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 select * from information_schema.deadlocks;
 ```
 
-```
+```sql
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
 | DEADLOCK_ID | OCCUR_TIME                 | RETRYABLE | TRY_LOCK_TRX_ID    | CURRENT_SQL_DIGEST                                               | KEY                                    | TRX_HOLDING_LOCK   |
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
@@ -284,7 +284,7 @@ select * from information_schema.deadlocks;
 select l.deadlock_id, l.occur_time, l.try_lock_trx_id, l.trx_holding_lock, s.digest_text from information_schema.deadlocks as l left join information_schema.statements_summary as s on l.current_sql_digest = s.digest;
 ```
 
-```
+```sql
 +-------------+----------------------------+--------------------+--------------------+-----------------------------------------+
 | deadlock_id | occur_time                 | try_lock_trx_id    | trx_holding_lock   | digest_text                             |
 +-------------+----------------------------+--------------------+--------------------+-----------------------------------------+
@@ -303,7 +303,7 @@ select l.deadlock_id, l.occur_time, l.try_lock_trx_id, l.trx_holding_lock, s.dig
 select `key`, count(*) as `count` from information_schema.data_lock_waits group by `key` order by `count` desc;
 ```
 
-```
+```sql
 +----------------------------------------+-------+
 | key                                    | count |
 +----------------------------------------+-------+
@@ -322,7 +322,7 @@ select `key`, count(*) as `count` from information_schema.data_lock_waits group 
 select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415f728000000000000001"\G
 ```
 
-```
+```sql
 *************************** 1. row ***************************
                 ID: 425496938634543111
         START_TIME: 2021-06-08 08:46:48.341000
@@ -354,7 +354,7 @@ ba07e3cc34b6b3be7b7c2de7fe9]
 
 #### 事务被长时间阻塞
 
-如果已知一个事务被另一事务（或多个事务）阻塞，且已知当前事务的 start ts（即事务 ID），则可使用如下方式获取导致该事务阻塞的事务的信息。注意对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而可能不同表中的信息可能并不同步。
+如果已知一个事务被另一事务（或多个事务）阻塞，且已知当前事务的 `start_ts`（即事务 ID），则可使用如下方式获取导致该事务阻塞的事务的信息。注意对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而可能不同表中的信息可能并不同步。
 
 {{< copyable "sql" >}}
 
@@ -362,7 +362,7 @@ ba07e3cc34b6b3be7b7c2de7fe9]
 select l.key, trx.* from information_schema.data_lock_waits as l join information_schema.tidb_trx as trx on l.current_holding_trx_id = trx.id where l.trx_id = 425497223886536705\G
 ```
 
-```
+```sql
 *************************** 1. row ***************************
                key: 7480000000000000475f728000000000000002
                 ID: 425497219115778059
@@ -380,4 +380,4 @@ ba07e3cc34b6b3be7b7c2de7fe9, a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3
 1 row in set (0.01 sec)
 ```
 
-如果当前事务的 start ts 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。
+如果当前事务的 `start_ts` 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。

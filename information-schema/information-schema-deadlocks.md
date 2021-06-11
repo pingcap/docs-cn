@@ -5,11 +5,11 @@ summary: 了解 information_schema 表 `DEADLOCKS`。
 
 # DEADLOCKS
 
-`DEADLOCKS` 表提供了当前 TiDB 节点最近发生的若干次死锁错误的信息。
+`DEADLOCKS` 表提供当前 TiDB 节点上最近发生的若干次死锁错误的信息。
 
 > **警告：**
 >
-> 该功能目前为实验性功能，表结构的定义和行为将来可能有较大改动。
+> 该功能目前为实验性功能，表结构的定义和行为在未来版本中可能有较大改动。
 
 {{< copyable "sql" >}}
 
@@ -18,7 +18,7 @@ USE information_schema;
 DESC deadlocks;
 ```
 
-```
+```sql
 +--------------------+---------------------+------+------+---------+-------+ 
 | Field              | Type                | Null | Key  | Default | Extra | 
 +--------------------+---------------------+------+------+---------+-------+ 
@@ -38,13 +38,13 @@ DESC deadlocks;
 
 * `DEADLOCK_ID`：死锁事件的 ID。当表内存在多次死锁错误的信息时，需要使用该列来区分属于不同死锁错误的行。
 * `OCCUR_TIME`：发生该次死锁错误的时间。
-* `RETRYABLE`：该次死锁错误是否可重试。目前暂不支持收集可重试的死锁错误的信息，因而该字段恒为 0。关于可重试的死锁错误的说明，见[可重试的死锁错误](#可重试的死锁错误)小节。
-* `TRY_LOCK_TRX_ID`：试图上锁的事务 ID，即事务的 start ts。
-* `CURRENT_SQL_DIGEST`：试图上锁的事务当前正在执行的 SQL 语句的 Digest。
+* `RETRYABLE`：该次死锁错误是否可重试。目前暂不支持收集可重试的死锁错误的信息，因而该字段值恒为 0。关于可重试的死锁错误的说明，参见[可重试的死锁错误](#可重试的死锁错误)小节。
+* `TRY_LOCK_TRX_ID`：试图上锁的事务 ID，即事务的 `start_ts`。
+* `CURRENT_SQL_DIGEST`：试图上锁的事务中当前正在执行的 SQL 语句的 Digest。
 * `KEY`：该事务试图上锁、但是被阻塞的 key，以十六进制编码的形式显示。
-* `TRX_HOLDING_LOCK`：该 key 上当前持锁并导致阻塞的事务的事务 ID，即事务的 start ts。
+* `TRX_HOLDING_LOCK`：该 key 上当前持锁并导致阻塞的事务 ID，即事务的 `start_ts`。
 
-`DEADLOCKS` 表中可以容纳的死锁事件的个数可以由配置文件的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置项来调整，默认会容纳最近 10 次死锁错误的信息。
+`DEADLOCKS` 表中可以容纳的死锁事件数量可以通过 TiDB 配置文件的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置项来调整，默认会容纳最近 10 次死锁错误的信息。
 
 ## 示例 1
 
@@ -57,7 +57,7 @@ create table t (id int primary key, v int);
 insert into t values (1, 10), (2, 20);
 ```
 
-令两个事务按如下顺序执行：
+使两个事务按如下顺序执行：
 
 | 事务 1                               | 事务 2                               | 说明                 |
 |--------------------------------------|--------------------------------------|----------------------|
@@ -74,7 +74,7 @@ insert into t values (1, 10), (2, 20);
 select * from information_schema.deadlocks;
 ```
 
-```
+```sql
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
 | DEADLOCK_ID | OCCUR_TIME                 | RETRYABLE | TRY_LOCK_TRX_ID    | CURRENT_SQL_DIGEST                                               | KEY                                    | TRX_HOLDING_LOCK   |
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
@@ -87,9 +87,9 @@ select * from information_schema.deadlocks;
 
 ## 示例 2
 
-假设查询 `DEADLOCKS` 表获得了如下结果集：
+假设查询 `DEADLOCKS` 表得到了如下结果集：
 
-```
+```sql
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
 | DEADLOCK_ID | OCCUR_TIME                 | RETRYABLE | TRY_LOCK_TRX_ID    | CURRENT_SQL_DIGEST                                               | KEY                                    | TRX_HOLDING_LOCK   |
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
@@ -107,9 +107,14 @@ select * from information_schema.deadlocks;
 
 > **注意：**
 >
-> 当前版本 `DEADLOCKS` 表暂不支持收集可重试的死锁错误相关的信息。
+> 目前，`DEADLOCKS` 表暂不支持收集可重试的死锁错误相关的信息。
 
-当一个事务 A 被另一个事务已经持有的锁阻塞，而另一个事务 B 直接或间接地被当前事务持有的锁阻塞，将会引发一个死锁错误。这里，事务 B 可能（直接或间接地）被事务 A 之前已经执行完的语句产生的锁阻塞，也可能被事务 A 目前正在执行的语句阻塞。对于前者，TiDB 将会向事务 A 的客户端报告死锁错误，并终止该事务；而对于后者，事务 A 当前正在执行的语句将在 TiDB 内部被自动重试。例如，假设事务 A 执行了如下语句：
+当事务 A 被另一个事务已经持有的锁阻塞，而事务 B 直接或间接地被当前事务持有的锁阻塞，将会引发一个死锁错误。这里：
+
++ 情况一：事务 B 可能（直接或间接地）被事务 A 之前已经执行完的语句产生的锁阻塞
++ 情况二：事务 B 也可能被事务 A 目前正在执行的语句阻塞
+
+对于情况一，TiDB 将会向事务 A 的客户端报告死锁错误，并终止该事务；而对于情况二，事务 A 当前正在执行的语句将在 TiDB 内部被自动重试。例如，假设事务 A 执行了如下语句：
 
 {{< copyable "sql" >}}
 
@@ -139,7 +144,7 @@ update t set v = 2 where id = 1;
 
 ## CLUSTER_DEADLOCKS
 
-`CLUSTER_DEADLOCKS` 表是 `DEADLOCKS` 的集群版本，其返回整个集群上的每个 TiDB 节点中最近发生数次的死锁错误（每个节点上的 `DEADLOCKS` 表内的信息合并到一起）。`CLUSTER_DEADLOCKS` 包含额外的 `INSTANCE` 列展示所属节点的 IP 地址和端口，用以区分不同的 TiDB 节点。
+`CLUSTER_DEADLOCKS` 表是 `DEADLOCKS` 的集群版本，返回整个集群上每个 TiDB 节点中最近发生数次的死锁错误（将每个节点上的 `DEADLOCKS` 表内的信息合并到一起）。`CLUSTER_DEADLOCKS` 包含额外的 `INSTANCE` 列展示所属节点的 IP 地址和端口，用以区分不同的 TiDB 节点。
 
 需要注意的是，由于 `DEADLOCK_ID` 并不保证全局唯一，所以在 `CLUSTER_DEADLOCKS` 表的查询结果中，需要 `INSTANCE` 和 `DEADLOCK_ID` 两个字段共同区分结果集中的不同死锁错误的信息。
 
@@ -150,7 +155,7 @@ USE information_schema;
 DESC cluster_deadlocks;
 ```
 
-```
+```sql
 +--------------------+---------------------+------+------+---------+-------+
 | Field              | Type                | Null | Key  | Default | Extra |
 +--------------------+---------------------+------+------+---------+-------+
@@ -169,7 +174,10 @@ DESC cluster_deadlocks;
 
 `DEADLOCKS` 表中会记录 SQL Digest，并不记录 SQL 原文。
 
-SQL Digest 是 SQL 归一化之后的哈希值。对于当前 TiDB 最近一段时间内执行过的语句，可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 Digest 查找到对应的归一化 SQL 的原文。注意 `STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 只在当前 TiDB 节点范围内查询；如需在整个集群范围内查询，则可使用 `CLUSTER_STATEMENTS_SUMMARY` 和 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 代替。
+SQL Digest 是 SQL 归一化之后的哈希值。如需查找 SQL Digest 对应的 SQL 原文，请进行以下操作之一：
+
+- 对于当前 TiDB 节点在最近一段时间内执行过的语句，你可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 SQL Digest 查找到对应的 SQL 原文。
+- 对于整个集群所有 TiDB 节点在最近一段时间内执行过的语句，你可以从 `CLUSTER_STATEMENTS_SUMMARY` 或`CLUSTER_STATEMENTS_SUMMARY_HISTORY` 中根据 SQL Digest 查找到对应的 SQL 原文。
 
 {{< copyable "sql" >}}
 
@@ -177,7 +185,7 @@ SQL Digest 是 SQL 归一化之后的哈希值。对于当前 TiDB 最近一段�
 select digest, digest_text from information_schema.statements_summary where digest = "f7530877a35ae65300c42250abd8bc731bbaf0a7cabc05dab843565230611bb2";
 ```
 
-```
+```sql
 +------------------------------------------------------------------+---------------------------------------+
 | digest                                                           | digest_text                           |
 +------------------------------------------------------------------+---------------------------------------+
@@ -185,4 +193,4 @@ select digest, digest_text from information_schema.statements_summary where dige
 +------------------------------------------------------------------+---------------------------------------+
 ```
 
-关于 SQL Digest 和 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY` 表的详细说明请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
+关于 SQL Digest 和 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY` 、`CLUSTER_STATEMENTS_SUMMARY`、`CLUSTER_STATEMENTS_SUMMARY_HISTORY` 表的详细说明，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。

@@ -9,7 +9,7 @@ summary: 了解 information_schema 表 `DATA_LOCK_WAITS`。
 
 > **警告：**
 >
-> 该功能目前为实验性功能，表结构的定义和行为将来可能有较大改动。
+> 该功能目前为实验性功能，表结构的定义和行为在未来版本中可能有较大改动。
 
 {{< copyable "sql" >}}
 
@@ -18,7 +18,7 @@ USE information_schema;
 DESC data_lock_waits;
 ```
 
-```
+```sql
 +------------------------+---------------------+------+------+---------+-------+
 | Field                  | Type                | Null | Key  | Default | Extra |
 +------------------------+---------------------+------+------+---------+-------+
@@ -32,14 +32,14 @@ DESC data_lock_waits;
 `DATA_LOCK_WAITS` 表的各列的含义如下：
 
 * `KEY`：正在发生等锁的 KEY，以十六进制编码的形式显示。
-* `TRX_ID`：正在等锁的事务的事务 ID，即 start ts。
-* `CURRENT_HOLDING_TRX_ID`：当前持有锁的事务的事务 ID，即 start ts。
-* `SQL_DIGEST`：当前正在等锁的事务被阻塞的 SQL 语句的 Digest。
+* `TRX_ID`：正在等锁的事务 ID，即 `start_ts`。
+* `CURRENT_HOLDING_TRX_ID`：当前持有锁的事务 ID，即 `start_ts`。
+* `SQL_DIGEST`：当前正在等锁的事务中被阻塞的 SQL 语句的 Digest。
 
-需要注意：
-
-* 该表中的信息在查询时实时地从所有 TiKV 节点中获取。目前即使设置了 WHERE 查询条件，也无法避免对所有 TiKV 节点都进行信息收集。对于规模很大、负载很高的集群，查询该表有潜在的造成性能抖动的风险，请酌情使用。
-* 来自不同 TiKV 节点的信息不保证是同一时间点的快照。
+> **警告：**
+>
+> * 该表中的信息是在查询时，从所有 TiKV 节点实时获取的。目前，即使加上了 `WHERE` 查询条件，也无法避免对所有 TiKV 节点都进行信息收集。如果集群规模很大、负载很高，查询该表有造成性能抖动的潜在风险，因此请根据实际情况使用。
+> * 来自不同 TiKV 节点的信息不一定是同一时间点的快照。
 
 ## 示例
 
@@ -49,7 +49,7 @@ DESC data_lock_waits;
 select * from information_schema.data_lock_waits\G
 ```
 
-```
+```sql
 *************************** 1. row ***************************                          
                    KEY: 7480000000000000355f728000000000000002                          
                 TRX_ID: 425405024158875649                                              
@@ -58,13 +58,16 @@ CURRENT_HOLDING_TRX_ID: 425405016242126849
 2 rows in set (0.01 sec)                                                                
 ```
 
-上述结果显示，事务 ID 为 `425405024158875649` 的事务在执行 Digest 为 `"f7530877a35ae65300c42250abd8bc731bbaf0a7cabc05dab843565230611bb22"` 的语句的过程中，试图在 `"7480000000000000355f728000000000000002"` 这个 key 上获取悲观锁，但是该 key 目前被事务 ID 为 `425405016242126849` 的事务持有。
+以上查询结果显示，ID 为 `425405024158875649` 的事务在执行 Digest 为 `"f7530877a35ae65300c42250abd8bc731bbaf0a7cabc05dab843565230611bb22"` 的语句的过程中，试图在 `"7480000000000000355f728000000000000002"` 这个 key 上获取悲观锁，但是该 key 目前被 ID 为 `425405016242126849` 的事务持有。
 
 ## SQL Digest
 
 `DATA_LOCK_WAITS` 表中会记录 SQL Digest，并不记录 SQL 原文。
 
-SQL Digest 是 SQL 归一化之后的哈希值。对于当前 TiDB 最近一段时间内执行过的语句，可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 Digest 查找到对应的归一化 SQL 的原文。注意 `STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 只在当前 TiDB 节点范围内查询；如需在整个集群范围内查询，则可使用 `CLUSTER_STATEMENTS_SUMMARY` 和 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 代替。
+SQL Digest 是 SQL 归一化之后的哈希值。如需查找 SQL Digest 对应的 SQL 原文，请进行以下操作之一：
+
+- 对于当前 TiDB 节点在最近一段时间内执行过的语句，你可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 SQL Digest 查找到对应的 SQL 原文。
+- 对于整个集群所有 TiDB 节点在最近一段时间内执行过的语句，你可以从 `CLUSTER_STATEMENTS_SUMMARY` 或`CLUSTER_STATEMENTS_SUMMARY_HISTORY` 中根据 SQL Digest 查找到对应的 SQL 原文。
 
 {{< copyable "sql" >}}
 
@@ -72,7 +75,7 @@ SQL Digest 是 SQL 归一化之后的哈希值。对于当前 TiDB 最近一段�
 select digest, digest_text from information_schema.statements_summary where digest = "f7530877a35ae65300c42250abd8bc731bbaf0a7cabc05dab843565230611bb2";
 ```
 
-```
+```sql
 +------------------------------------------------------------------+---------------------------------------+
 | digest                                                           | digest_text                           |
 +------------------------------------------------------------------+---------------------------------------+
@@ -80,4 +83,4 @@ select digest, digest_text from information_schema.statements_summary where dige
 +------------------------------------------------------------------+---------------------------------------+
 ```
 
-关于 SQL Digest 和 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY` 表的详细说明请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
+关于 SQL Digest 和 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY` 、`CLUSTER_STATEMENTS_SUMMARY`、`CLUSTER_STATEMENTS_SUMMARY_HISTORY` 表的详细说明，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
