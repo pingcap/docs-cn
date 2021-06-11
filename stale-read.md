@@ -22,4 +22,4 @@ summary: 介绍 Stale Read 功能和使用场景。
 TiDB 提供两种 Stale Read 使用方式，分别是指定一个精确的时间点和一个时间范围：
 
 - 指定精确时间点：你可以通过指定一个时间戳，确保读到该指定时间点下保证全局事务记录一致性的数据，不破坏隔离级别，但可能读到旧数据。要使用该方法，参阅 [`AS OF TIMESTAMP` 语法](/as-of-timestamp.md#语法方式)文档。
-- 指定时间范围：你可以通过指定一个时间范围，确保读到在该时间范围内尽可能新的数据，不破坏隔离级别，但可能读到旧数据。要使用该功能，参阅 [`AS OF TIMESTAMP` 语法](/as-of-timestamp.md#语法方式) 文档和该文档中 [`TIDB_BOUNDED_STALENESS` 函数](/as-of-timestamp.md#语法方式)部分的介绍。
+- 指定时间范围：你可以通过指定一个时间范围，确保读到在该时间范围内尽可能新的数据，不破坏隔离级别，但可能读到旧数据。要使用该功能，参阅 [`AS OF TIMESTAMP` 语法](/as-of-timestamp.md#语法方式)文档和该文档中 [`TIDB_BOUNDED_STALENESS` 函数](/as-of-timestamp.md#语法方式)部分的介绍。
