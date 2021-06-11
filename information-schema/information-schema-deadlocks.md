@@ -44,7 +44,7 @@ DESC deadlocks;
 * `KEY`：该事务试图上锁、但是被阻塞的 key，以十六进制编码的形式显示。
 * `TRX_HOLDING_LOCK`：该 key 上当前持锁并导致阻塞的事务 ID，即事务的 `start_ts`。
 
-`DEADLOCKS` 表中可以容纳的死锁事件数量可以通过 TiDB 配置文件的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置项来调整，默认会容纳最近 10 次死锁错误的信息。
+要调整 `DEADLOCKS` 表中可以容纳的死锁事件数量，可通过 TiDB 配置文件中的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置项进行调整，默认容纳最近 10 次死锁错误的信息。
 
 ## 示例 1
 
@@ -83,7 +83,7 @@ select * from information_schema.deadlocks;
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
 ```
 
-该表中产生了两行数据，两行的 `DEADLOCK_ID` 字段皆为 1，表示这两行数据包含同一次死锁错误的信息。第一行显示事务 ID 为 `425405959304904707` 的事务，在 `"7480000000000000385F728000000000000002"` 这个 key 上，被事务 ID 为 `"425405959304904708"` 的事务阻塞了；第二行则显示事务 ID 为 `"425405959304904708"` 的事务在 `"7480000000000000385F728000000000000001"` 这个 key 上被事务 ID 为 `425405959304904707` 的事务阻塞了，构成了相互阻塞的状态，形成了死锁。
+该表中产生了两行数据，两行的 `DEADLOCK_ID` 字段皆为 1，表示这两行数据包含同一次死锁错误的信息。第一行显示 ID 为 `425405959304904707` 的事务，在 `"7480000000000000385F728000000000000002"` 这个 key 上，被 ID 为 `"425405959304904708"` 的事务阻塞了；第二行则显示 ID 为 `"425405959304904708"` 的事务在 `"7480000000000000385F728000000000000001"` 这个 key 上被 ID 为 `425405959304904707` 的事务阻塞了，构成了相互阻塞的状态，形成了死锁。
 
 ## 示例 2
 
@@ -101,7 +101,7 @@ select * from information_schema.deadlocks;
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
 ```
 
-上述结果中的 `DEADLOCK_ID` 表明，前两行共同表示一次死锁错误的信息，两条事务相互等待构成了死锁；而后三行共同表示另一次死锁信息，三个事务循环等待构成了死锁。
+以上查询结果中的 `DEADLOCK_ID` 列表明，前两行共同表示一次死锁错误的信息，两条事务相互等待构成了死锁；而后三行共同表示另一次死锁信息，三个事务循环等待构成了死锁。
 
 ## 可重试的死锁错误
 
@@ -144,7 +144,7 @@ update t set v = 2 where id = 1;
 
 ## CLUSTER_DEADLOCKS
 
-`CLUSTER_DEADLOCKS` 表是 `DEADLOCKS` 的集群版本，返回整个集群上每个 TiDB 节点中最近发生数次的死锁错误（将每个节点上的 `DEADLOCKS` 表内的信息合并到一起）。`CLUSTER_DEADLOCKS` 包含额外的 `INSTANCE` 列展示所属节点的 IP 地址和端口，用以区分不同的 TiDB 节点。
+`CLUSTER_DEADLOCKS` 表返回整个集群上每个 TiDB 节点中最近发生的数次死锁错误的信息，即将每个节点上的 `DEADLOCKS` 表内的信息合并在一起。`CLUSTER_DEADLOCKS` 还包含额外的 `INSTANCE` 列展示所属节点的 IP 地址和端口，用以区分不同的 TiDB 节点。
 
 需要注意的是，由于 `DEADLOCK_ID` 并不保证全局唯一，所以在 `CLUSTER_DEADLOCKS` 表的查询结果中，需要 `INSTANCE` 和 `DEADLOCK_ID` 两个字段共同区分结果集中的不同死锁错误的信息。
 
@@ -172,9 +172,9 @@ DESC cluster_deadlocks;
 
 ## SQL Digest
 
-`DEADLOCKS` 表中会记录 SQL Digest，并不记录 SQL 原文。
+`DEADLOCKS` 表记录 SQL Digest，并不记录 SQL 原文。
 
-SQL Digest 是 SQL 归一化之后的哈希值。如需查找 SQL Digest 对应的 SQL 原文，请进行以下操作之一：
+SQL Digest 是 SQL 归一化之后的哈希值。如需查找 SQL Digest 对应的 SQL 原文，请进行以下任一操作：
 
 - 对于当前 TiDB 节点在最近一段时间内执行过的语句，你可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 中根据 SQL Digest 查找到对应的 SQL 原文。
 - 对于整个集群所有 TiDB 节点在最近一段时间内执行过的语句，你可以从 `CLUSTER_STATEMENTS_SUMMARY` 或`CLUSTER_STATEMENTS_SUMMARY_HISTORY` 中根据 SQL Digest 查找到对应的 SQL 原文。
@@ -193,4 +193,4 @@ select digest, digest_text from information_schema.statements_summary where dige
 +------------------------------------------------------------------+---------------------------------------+
 ```
 
-关于 SQL Digest 和 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY` 、`CLUSTER_STATEMENTS_SUMMARY`、`CLUSTER_STATEMENTS_SUMMARY_HISTORY` 表的详细说明，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
+关于 SQL Digest 和 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY`、`CLUSTER_STATEMENTS_SUMMARY`、`CLUSTER_STATEMENTS_SUMMARY_HISTORY` 表的详细说明，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。

@@ -238,26 +238,27 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 
 处理建议：
 
-* 如果难以确认死锁的产生原因，对于 5.1 及以后的版本，建议尝试使用 `INFORMATION_SCHEMA.DEADLOCKS` 或 `INFORMATION_SCHEMA.CLUSTER_DEADLOCKS` 系统表来获取死锁的等待链信息。请参考[死锁错误](#死锁错误)小节和[DEADLOCKS 表的文档](/information-schema/information-schema-deadlocks.md)。
+* 如果难以确认产生死锁的原因，对于 v5.1 及以后的版本，建议尝试查询 `INFORMATION_SCHEMA.DEADLOCKS` 或 `INFORMATION_SCHEMA.CLUSTER_DEADLOCKS` 系统表来获取死锁的等待链信息。详情请参考[死锁错误](#死锁错误)小节和 [`DEADLOCKS` 表](/information-schema/information-schema-deadlocks.md)文档。
 * 如果出现非常频繁，需要调整业务代码来降低死锁发生概率。
 
 ### 使用 Lock View 排查悲观锁相关的问题
 
-自 5.1 版本起，TiDB 可以支持 Lock View 这一 feature。该 feature 在 information schema 中提供了若干系统表用于提供更多关于悲观锁的锁冲突和锁等待的信息。关于这些表的详细说明请参考相关系统表的文档。
+自 v5.1 版本起，TiDB 支持 Lock View 功能。该功能在 `information_schema` 中内置了若干系统表，用于提供更多关于悲观锁的锁冲突和锁等待的信息。关于这些表的详细说明，请参考相关系统表的文档：
 
-* [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)：提供当前 TiDB 节点上 / 整个集群上的所有运行中的事务的信息，其中包含事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
-* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁情况的信息，包含阻塞和被阻塞的事务的 `start_ts`、被阻塞的 SQL 语句 Digest 和发生等待的 key。
-* [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md)：提供当前 TiDB 节点上 / 整个集群上最近发生过的若干次死锁的相关信息，其中会包含死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
+* [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)：提供当前 TiDB 节点上或整个集群上所有运行中的事务的信息，包括事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
+* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁信息，包括阻塞和被阻塞的事务的 `start_ts`、被阻塞的 SQL 语句的 Digest 和发生等待的 key。
+* [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md)：提供当前 TiDB 节点上或整个集群上最近发生过的若干次死锁的相关信息，包括死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
+
 
 > **警告：**
 >
-> 该功能目前为实验性功能，相关表结构的定义和行为将来可能有较大改动。
+> 该功能目前为实验性功能，相关表结构的定义和行为在未来版本可能有较大改动。
 
 以下为排查部分问题的示例。
 
 #### 死锁错误
 
-可以通过查询 `DEADLOCKS` / `CLUSTER_DEADLOCKS` 表来获取最近发生的死锁错误的信息。
+要获取最近发生的死锁错误的信息，可查询 `DEADLOCKS` 或 `CLUSTER_DEADLOCKS` 表，示例如下：
 
 {{< copyable "sql" >}}
 
@@ -274,9 +275,9 @@ select * from information_schema.deadlocks;
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
 ```
 
-查询结果中会显示死锁错误中事务相互之间的等待关系和各个事务当前正在执行的 SQL 语句的 Digest，以及发生冲突的 key。
+查询结果会显示死锁错误中多个事务之间的等待关系和各个事务当前正在执行的 SQL 语句的 Digest，以及发生冲突的 key。
 
-可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 表中获取最近一段时间内执行过的 SQL 语句的 Digest 所对应的归一化的 SQL 语句的文本（详见 [`STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 表的文档](/statement-summary-tables.md)）。也可将其直接与 `DEADLOCKS` 表进行 join （注意 `STATEMENTS_SUMMARY` 中可能不包含所有 SQL 的信息，所以以下例子中使用了 left join）：
+你可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 表中获取最近一段时间内，执行过的 SQL 语句的 Digest 所对应的归一化的 SQL 语句的文本（详见 [`STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 表](/statement-summary-tables.md)）。你也可将获取到的结果直接与 `DEADLOCKS` 表进行 join 操作。注意：`STATEMENTS_SUMMARY` 中可能不包含所有 SQL 语句的信息，所以以下例子中使用了 left join：
 
 {{< copyable "sql" >}}
 
@@ -295,7 +296,7 @@ select l.deadlock_id, l.occur_time, l.try_lock_trx_id, l.trx_holding_lock, s.dig
 
 #### 少数热点 key 造成锁排队
 
-`DATA_LOCK_WAITS` 系统表提供了 TiKV 节点上的等锁情况。查询该表时，TiDB 将自动从所有 TiKV 节点上获取当前时刻的等锁情况的信息。当少数热点 key 频繁被上锁并阻塞较多事务时，可以查询 `DATA_LOCK_WAITS` 表并按 key 进行聚合，以尝试寻找经常发生问题的 key：
+`DATA_LOCK_WAITS` 系统表提供 TiKV 节点上的等锁情况。查询该表时，TiDB 将自动从所有 TiKV 节点上获取当前时刻的等锁信息。当少数热点 key 频繁被上锁并阻塞较多事务时，你可以查询 `DATA_LOCK_WAITS` 表并按 key 对结果进行聚合，以尝试找出经常发生问题的 key：
 
 {{< copyable "sql" >}}
 
@@ -312,9 +313,11 @@ select `key`, count(*) as `count` from information_schema.data_lock_waits group 
 +----------------------------------------+-------+
 ```
 
-可以考虑多次查询以避免偶然性。
+为避免偶然性，你可考虑进行多次查询。
 
-如果已知频繁出问题的 key，便可尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表中获取试图在该 key 上上锁的事务的信息。需要注意 `TIDB_TRX` 和 `CLUSTER_TIDB_TRX` 表所展示的信息也是对其进行查询的时刻正在运行的事务的信息，并不展示已经结束的事务。如果并发的事务数量很大，该查询的结果集也可能很大，可以考虑添加 limit 子句，或用 where 子句筛选出等锁时间较长的事务。需要注意，对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而不同表中的信息可能并不同步。
+如果已知频繁出问题的 key，可尝试从 `TIDB_TRX` 或 `CLUSTER_TIDB_TRX` 表中获取试图上锁该 key 的事务的信息。
+
+需要注意 `TIDB_TRX` 和 `CLUSTER_TIDB_TRX` 表所展示的信息也是对其进行查询的时刻正在运行的事务的信息，并不展示已经结束的事务。如果并发的事务数量很大，该查询的结果集也可能很大，可以考虑添加 limit 子句，或用 where 子句筛选出等锁时间较长的事务。需要注意，对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而不同表中的信息可能并不同步。
 
 {{< copyable "sql" >}}
 
