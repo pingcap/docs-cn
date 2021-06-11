@@ -1298,7 +1298,7 @@ raftdb 相关配置项。
 
 + 增量扫描历史数据任务的最大并发执行个数。
 + 默认值：6，即最多并发执行 6 个任务
-+ 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则会使得 TiKV 启动报错。
++ 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
 
 ## pessimistic-txn
 
