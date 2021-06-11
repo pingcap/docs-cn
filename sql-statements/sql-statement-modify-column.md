@@ -171,7 +171,7 @@ CREATE TABLE `t1` (
 
 ## MySQL 兼容性
 
-* 不支持在单个 `ALTER TABLE` 语句修改多个列，例如：
+* 不支持使用单个 `ALTER TABLE` 语句修改多个列，例如：
 
     ```sql
     ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
