@@ -239,7 +239,7 @@ select * from t;
 
 > **注意：**
 >
-> 通过 SET TRANSACTION READ ONLY AS OF TIMESTAMP 开启的事务将会是一个只读事务。假如在该事务中执行写入操作，将会被该事务拒绝。
+> 通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 开启的事务为只读事务。假如在该事务中执行写入操作，操作将会被该事务拒绝。
 
 ### 通过 `SELECT` 子句中使用 `AS OF TIMESTAMP` 读取历史数据
 
