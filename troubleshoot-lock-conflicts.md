@@ -249,7 +249,6 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 * [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁信息，包括阻塞和被阻塞的事务的 `start_ts`、被阻塞的 SQL 语句的 Digest 和发生等待的 key。
 * [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md)：提供当前 TiDB 节点上或整个集群上最近发生过的若干次死锁的相关信息，包括死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
 
-
 > **警告：**
 >
 > 该功能目前为实验性功能，相关表结构的定义和行为在未来版本可能有较大改动。
