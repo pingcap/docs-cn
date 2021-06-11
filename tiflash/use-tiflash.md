@@ -236,10 +236,16 @@ In TiDB, operators are organized in a tree structure. For an operator to be push
 + All of its child operators can be pushed down to TiFlash.
 + If an operator contains expressions (most of the operators contain expressions), all expressions of the operator can be pushed down to TiFlash.
 
-```
-+, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, bitand, or, and, like, not, case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor,
-round without fraction, cast(int as decimal), date_add(datetime, int), date_add(datetime, string), min, max, sum, count, avg, approx_count_distinct
-```
+Currently, TiFlash supports the following push-down expressions:
+
+* Mathematical functions: `+, -, /, *, >=, <=, =, !=, <, >, round(int), round(double), abs, floor(int), ceil(int), ceiling(int)`
+* Logical functions: `and, or, not, case when, if, ifnull, isnull, in`
+* Bitwise operations: `bitand, bitor, bigneg, bitxor`
+* String functions: `substr, char_length, replace, concat, concat_ws, left, right`
+* Date functions: `date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), date_add(string, int), date_add(datetime, int), date_sub(datetime, int), date_sub(string, int), datediff, year, month, day, extract(datetime)`
+* JSON function: `json_length`
+* Conversion functions: `cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)`
+* Aggregate functions: `min, max, sum, count, avg, approx_count_distinct`
 
 Among them, the push-down of `cast` and `date_add` is not enabled by default. To enable it, refer to [Blocklist of Optimization Rules and Expression Pushdown](/blocklist-control-plan.md).
 
