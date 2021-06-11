@@ -82,6 +82,12 @@ mysql> SELECT * FROM t1;
 - Default value: ON
 - Controls whether statements should automatically commit when not in an explicit transaction. See [Transaction Overview](/transaction-overview.md#autocommit) for more information.
 
+### `cte_max_recursion_depth`
+
+- Scope：SESSION | GLOBAL
+- Default value：1000
+- Controls the maximum recursion depth in Common Table Expressions.
+
 ### ddl_slow_threshold
 
 - Scope: INSTANCE
