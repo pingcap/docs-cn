@@ -8,7 +8,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-change-column/','/docs-cn/d
 
 `ALTER TABLE.. CHANGE COLUMN` 语句用于在已有表上更改列，包括对列进行重命名，和将数据改为兼容类型。
 
-在 v5.1.0 及其之后的版本中，类型变更将支持 Reorg 类型变更，包括但是不仅限于 varchar -> bigint、decimal 精度修改、varchar(10) -> varchar(5) 长度压缩等类型的变更。
+从 v5.1.0 版本起，TiDB 开始支持 Reorg 数据的类型变更，包括但不限于：
+
+- 从 varchar 转换为 bigint 
+- decimal 精度修改
+- 从 varchar(10) 到 varchar(5) 的长度压缩
 
 ## 语法图
 
