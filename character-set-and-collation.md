@@ -72,16 +72,21 @@ TiDB 支持以下排序规则：
 
 ```sql
 mysql> show collation;
-+-------------+---------+------+---------+----------+---------+
-| Collation   | Charset | Id   | Default | Compiled | Sortlen |
-+-------------+---------+------+---------+----------+---------+
-| utf8mb4_bin | utf8mb4 |   46 | Yes     | Yes      |       1 |
-| latin1_bin  | latin1  |   47 | Yes     | Yes      |       1 |
-| binary      | binary  |   63 | Yes     | Yes      |       1 |
-| ascii_bin   | ascii   |   65 | Yes     | Yes      |       1 |
-| utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
-+-------------+---------+------+---------+----------+---------+
-5 rows in set (0.01 sec)
++------------------------------+---------+------+---------+----------+---------+
+| Collation                    | Charset | Id   | Default | Compiled | Sortlen |
++------------------------------+---------+------+---------+----------+---------+
+| ascii_bin                    | ascii   |   65 | Yes     | Yes      |       1 |
+| binary                       | binary  |   63 | Yes     | Yes      |       1 |
+| latin1_bin                   | latin1  |   47 | Yes     | Yes      |       1 |
+| utf8_bin                     | utf8    |   83 | Yes     | Yes      |       1 |
+| utf8_general_ci              | utf8    |   33 |         | Yes      |       1 |
+| utf8_unicode_ci              | utf8    |  192 |         | Yes      |       1 |
+| utf8mb4_bin                  | utf8mb4 |   46 | Yes     | Yes      |       1 |
+| utf8mb4_general_ci           | utf8mb4 |   45 |         | Yes      |       1 |
+| utf8mb4_unicode_ci           | utf8mb4 |  224 |         | Yes      |       1 |
+| utf8mb4_zh_pinyin_tidb_as_cs | utf8mb4 | 2048 |         | Yes      |       1 |
++------------------------------+---------+------+---------+----------+---------+
+10 rows in set (0.20 sec)
 ```
 
 > **警告：**
