@@ -80,6 +80,12 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### `cte_max_recursion_depth`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：1000
+- 这个变量用于控制公共表表达式的最大递归深度。
+
 ### `ddl_slow_threshold`
 
 - 作用域：INSTANCE
@@ -690,7 +696,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 可设置为：
     - `LEGACY`：使用旧的扫描方式，即禁用 Green GC。
     - `PHYSICAL`：使用物理扫描方式，即启用 Green GC。
-- 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-实验特性) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
+- 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
 
 ### `tidb_general_log`
 
