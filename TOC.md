@@ -363,6 +363,7 @@
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
       - [`USE`](/sql-statements/sql-statement-use.md)
+      - [`WITH`](/sql-statements/sql-statement-with.md)
     + 数据类型
       + [数据类型概述](/data-type-overview.md)
       + [数据类型默认值](/data-type-default-values.md)
@@ -530,6 +531,7 @@
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
   + v5.0
+    - [5.0.2](/releases/release-5.0.2.md)
     - [5.0.1](/releases/release-5.0.1.md)
     - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
