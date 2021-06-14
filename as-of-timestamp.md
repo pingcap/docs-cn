@@ -21,7 +21,7 @@ TiDB 支持通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的�
 - [`START TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-start-transaction.md)
 - [`SET TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-set-transaction.md)
 
-如果你指定的是精确的时间点，可在 `AS OF TIMESTAMP` 中使用日期时间和时间函数，日期时间的格式为："2016-10-08 16:45:26.999"，最小时间精度范围为毫秒，通常可只写到秒，例如 "2016-10-08 16:45:26"。你也可以通过 `NOW(3)` 函数获得精确到毫秒的当前时间。
+如果你想要指定一个精确的时间点，可在 `AS OF TIMESTAMP` 中使用日期时间和时间函数，日期时间的格式为："2016-10-08 16:45:26.999"，最小时间精度范围为毫秒，通常可只写到秒，例如 "2016-10-08 16:45:26"。你也可以通过 `NOW(3)` 函数获得精确到毫秒的当前时间。
 
 如果你指定的是时间范围，需要使用 `TIDB_BOUNDED_STALENESS()` 函数。用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 `t1` 和 `t2` 为时间范围的两端，支持使用日期时间和时间函数，示例如下：
 
