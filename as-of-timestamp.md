@@ -17,7 +17,7 @@ TiDB 实现了通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法�
 
 你可以通过以下三种方式使用 `AS OF TIMESTAMP` 语法：
 
-- [在 `SELECT` 的子句中使用 `AS OF TIMESTAMP`](/sql-statements/Sql-statement-select.md)
+- [在 `SELECT` 的子句中使用 `AS OF TIMESTAMP`](/sql-statements/sql-statement-select.md)
 - [`START TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-start-transaction.md)
 - [`SET TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-set-transaction.md)
 
@@ -118,7 +118,7 @@ select * from t;
 
 ## 通过 `SELECT` 读取历史数据
 
-通过 `SELECT ... FROM ... AS OF TIMESTAMP EXPRESSION` 语句读取一个基于历史时间的数据。
+通过 `SELECT ... FROM ... AS OF TIMESTAMP` 语句读取一个基于历史时间的数据。
 
 ```sql
 select * from t as of timestamp '2021-05-26 16:45:26';
