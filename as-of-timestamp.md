@@ -21,7 +21,6 @@ TiDB 实现了通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法�
 - [`START TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-start-transaction.md)
 - [`SET TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-set-transaction.md)
 
-
 如果你指定的是精确的时间点，可在 `AS OF TIMESTAMP` 中使用日期时间和时间函数，日期时间的格式为："2016-10-08 16:45:26.999"，最小时间精度范围为毫秒，通常可只写到秒，例如 "2016-10-08 16:45:26"。你也可以通过 `NOW(3)` 函数获得精确到毫秒的当前时间。
 
 如果你指定的是时间范围，需要使用 `TIDB_BOUNDED_STALENESS()` 函数。用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 `t1` 和 `t2` 为时间范围的两端，支持使用日期时间和时间函数，示例如下：
@@ -134,12 +133,15 @@ select * from t as of timestamp '2021-05-26 16:45:26';
 +------+
 3 rows in set (0.00 sec)
 ```
+
 > **注意：**
 >
 > 通过 `SELECT` 读取多个表时要保证 TIMESTAMP EXPRESSION 是一致的。 比如： `select * from t as of timestamp NOW() - INTERVAL 2 SECOND, c as of timestamp NOW() - INTERVAL 2 SECOND;`. 相关 table 的 as of 必须要指定，不指定会视为读最新的数据。
+
 ### 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 读取历史数据
 
 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 语句开启一个基于历史时间的只读事务，该事务基于所提供的历史时间来读取历史数据。
+
 
 ```sql
 start transaction read only as of timestamp '2021-05-26 16:45:26';
