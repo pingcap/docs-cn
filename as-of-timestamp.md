@@ -34,7 +34,7 @@ TiDB 支持通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的�
 
 ## 示例
 
-本节通过多个示例介绍 `AS OF TIMESTAMP` 语法的不同使用方法。在本节中，先准备用于恢复的数据，再分别展示如何通过  `SELECT`  `START TRANSACTION READ ONLY AS OF TIMESTAMP`、`SET TRANSACTION READ ONLY AS OF TIMESTAMP` 以及在的子句中使用 `AS OF TIMESTAMP`。
+本节通过多个示例介绍 `AS OF TIMESTAMP` 语法的不同使用方法。在本节中，先介绍如何准备用于恢复的数据，再分别展示如何通过 `SELECT`、`START TRANSACTION READ ONLY AS OF TIMESTAMP`、`SET TRANSACTION READ ONLY AS OF TIMESTAMP` 以及 `SELECT` 子句使用 `AS OF TIMESTAMP`。
 
 ### 准备数据
 
