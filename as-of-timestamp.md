@@ -23,14 +23,14 @@ TiDB 实现了通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法�
 
 如果你指定的是精确的时间点，可在 `AS OF TIMESTAMP` 中使用日期时间和时间函数，日期时间的格式为："2016-10-08 16:45:26.999"，最小时间精度范围为毫秒，通常可只写到秒，例如 "2016-10-08 16:45:26"。你也可以通过 `NOW(3)` 函数获得精确到毫秒的当前时间。
 
-如果你指定的是时间范围，需要使用 `TIDB_BOUNDED_STALENESS()` 函数。用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 `t1` 和 `t2` 为时间范围的两端，支持使用日期时间和时间函数，示例如下：
+如果你想要在一个时间范围，需要使用 `TIDB_BOUNDED_STALENESS()` 函数。使用该函数，，TiDB 会选择一个合适的时间戳，该时间戳能保证所访问的副本上不存在开始于这个时间戳之前且还没有提交的相关事务，即能保证所访问的可用副本上执行读取操作而且不会被阻塞。用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 `t1` 和 `t2` 为时间范围的两端，支持使用日期时间和时间函数，示例如下：
 
 - `AS OF TIMESTAMP '2016-10-08 16:45:26'` 表示读取在 2016 年 10 月 8 日 16 点 45 分 26 秒时最新的数据。
 - `AS OF TIMESTAMP NOW() - INTERVAL 10 SECOND` 表示读取 10 秒前最新的数据。
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS('2016-10-08 16:45:26', '2016-10-08 16:45:29')` 表示读取在 2016 年 10 月 8 日 16 点 45 分 26 秒到 29 秒的时间范围内尽可能新的数据。
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS(NOW() - INTERVAL 20 SECOND, NOW())` 表示读取 20 秒前到现在的时间范围内尽可能新的数据。
 
-注意： 除了指定时间戳，最常用使用的方式是读几秒前的数据，采用这种方式取值推荐读 5 秒以上的历史数据。
+注意： 除了指定时间戳，`AS OF TIMESTAMP` 语法最常用使用的方式是读几秒前的数据。如果采用这种方式，取值范围推荐为读 5 秒以上的历史数据。
 
 ## 示例
 
@@ -115,7 +115,7 @@ select * from t;
 3 rows in set (0.00 sec)
 ```
 
-## 通过 `SELECT` 读取历史数据
+### 通过 `SELECT` 读取历史数据
 
 通过 `SELECT ... FROM ... AS OF TIMESTAMP` 语句读取一个基于历史时间的数据。
 
@@ -140,7 +140,7 @@ select * from t as of timestamp '2021-05-26 16:45:26';
 
 ### 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 读取历史数据
 
-通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 语句开启一个基于历史时间的只读事务，该事务基于所提供的历史时间来读取历史数据。
+通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 语句，你可以开启一个基于历史时间的只读事务，该事务基于所提供的历史时间来读取历史数据。
 
 
 ```sql
@@ -197,7 +197,7 @@ select * from t;
 
 ### 通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 读取历史数据
 
-通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 表示下一个事务是基于指定历史时间的只读事务，该事务将会基于所提供的历史时间来读取历史数据。
+通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 语句，你可以将下一个事务设置为基于指定历史时间的只读事务。该事务将会基于所提供的历史时间来读取历史数据。
 
 ```sql
 set transaction read only as of timestamp '2021-05-26 16:45:26';
