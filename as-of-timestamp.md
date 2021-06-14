@@ -17,7 +17,7 @@ TiDB 支持通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的�
 
 你可以通过以下三种方式使用 `AS OF TIMESTAMP` 语法：
 
-- [ `SELECT ... FROM ... AS OF TIMESTAMP`](/sql-statements/sql-statement-select.md)
+- [`SELECT ... FROM ... AS OF TIMESTAMP`](/sql-statements/sql-statement-select.md)
 - [`START TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-start-transaction.md)
 - [`SET TRANSACTION READ ONLY AS OF TIMESTAMP`](/sql-statements/sql-statement-set-transaction.md)
 
