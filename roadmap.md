@@ -55,7 +55,7 @@ aliases: ['/zh/tidb/v5.0/roadmap','/docs-cn/ROADMAP/','/docs-cn/roadmap/','/docs
     - [ ] TiDB Lightning 支持检测导入数据中的冲突
     - [ ] TiDB Lightning 支持分布式并行导入
 - [ ] 数据复制：TiCDC 兼容 TiDB Binlog 相关的特性，降低 TiDB Binlog 用户使用 TiCDC 的成本 [#690](https://github.com/pingcap/ticdc/issues/690)
-    - [ ] 支持输出数据到文件系统和云端存储(S3/GCS)
+    - [ ] 支持输出数据到文件系统和云端存储 (S3/GCS)
 - [ ] 数据容灾：容灾中支持快照级别的一致性数据复制 [#691](https://github.com/pingcap/ticdc/issues/691)
     - [ ] 支持 TiDB 灾备集群在主集群遇到灾难时将备用集群复制到快照级别的一致状态
 - [ ] 支持通过 API 管理 TiCDC [#736](https://github.com/pingcap/ticdc/issues/736)
