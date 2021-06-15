@@ -15,10 +15,10 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### abort-on-panic
 
-+ 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。
++ 设置 TiKV panic 时是否使用 abort 退出进程。此选项影响 TiKV 是否允许系统生成 core dump 文件。
 
     + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 使用 exit 退出进程。
-    + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 ulimit -c 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
+    + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 使用 abort 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 ulimit -c 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
     
 + 默认值：false
 
