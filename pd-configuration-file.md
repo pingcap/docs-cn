@@ -349,7 +349,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 参考[Placement Rules 使用文档](/configure-placement-rules.md)
 + 4.0 实验性特性
 
-### `flow-round-by-digit` 从 v5.1 版本开始引入
+### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
 
 + 打开 `flow-round-by-digit`
 + 默认值：3
