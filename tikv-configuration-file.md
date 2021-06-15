@@ -1315,6 +1315,25 @@ raftdb 相关配置项。
 + 默认值：6，即最多并发执行 6 个任务
 + 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
 
+## resolved-ts
+
+用于维护 Resolved TS 以服务 Stale Read 请求的相关配置项。
+
+### `enable`
+
++ 是否为所有 Region 维护 Resolved TS
++ 默认值：true
+
+### `advance-ts-interval`
+
++ 定期推进 Resolved TS 的时间间隔。
++ 默认值：1s
+
+### `scan-lock-pool-size`
+
++ 初始化 Resolved TS 时 TiKV 扫描 MVCC（多版本并发控制）锁数据的线程个数。
++ 默认值：2，即 2 个线程
+
 ## pessimistic-txn
 
 悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
