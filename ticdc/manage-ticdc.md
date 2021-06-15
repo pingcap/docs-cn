@@ -73,7 +73,7 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
 ![TiCDC state transfer](/media/ticdc-state-transfer.png)
 
-状态说明：
+以上状态流转图中的状态说明如下：
 
  - Normal：正常同步，checkpoint-ts 正常推进。
  - Stopped：停止同步，由于用户手动暂停（pause） changefeed，在这个状态的 changefeed 会阻挡 GC 推进。
