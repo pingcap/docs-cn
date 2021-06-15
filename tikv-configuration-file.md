@@ -1321,7 +1321,7 @@ raftdb 相关配置项。
 
 ### `enable`
 
-+ 是否为所有 region 维护 Resolved TS
++ 是否为所有 Region 维护 Resolved TS
 + 默认值：true
 
 ### `advance-ts-interval`
