@@ -349,6 +349,13 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 参考[Placement Rules 使用文档](/configure-placement-rules.md)
 + 4.0 实验性特性
 
+### `flow-round-by-digit`
+
++ 打开 `flow-round-by-digit`
++ 默认值：3
++ 用于控制心跳上报的 Region 流量的离散化处理，减少流量信息变化引起的统计信息更新。表示对流量信息的末尾几位的数字四舍五入，比如流量 100512 会归约到 100500。默认值为 3。该配置替换了 `trace-region-flow`。
++ 5.1 引入该配置
+
 ## label-property
 
 标签相关的配置项。
