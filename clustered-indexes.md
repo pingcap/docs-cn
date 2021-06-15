@@ -140,14 +140,15 @@ mysql> SELECT TIDB_PK_TYPE FROM information_schema.tables WHERE table_schema = '
 
 ## Limitations
 
-Currently, there are two types of limitations for the clustered index feature. See the following:
+Currently, there are several different types of limitations for the clustered index feature. See the following:
 
 - Situations that are not supported and not in the support plan:
-    - Using the clustered index feature together with TiDB Binlog is not supported. After TiDB Binlog is enabled, TiDB only allows creating a single integer primary key as a clustered index. TiDB Binlog does not replicate data changes of existing tables with clustered indexes to the downstream. If you need to replicate tables with clustered indexes, use [TiCDC](/ticdc/ticdc-overview.md) instead.
     - Using clustered indexes together with the attribute [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) is not supported. Also, the attribute [`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) does not take effect on tables with clustered indexes.
     - Downgrading tables with clustered indexes is not supported. If you need to downgrade such tables, use logical backup tools to migrate data instead.
 - Situations that are not supported yet but in the support plan:
     - Adding, dropping, and altering clustered indexes using `ALTER TABLE` statements are not supported.
+- Limitations for specific versions:    
+    - In v5.0, using the clustered index feature together with TiDB Binlog is not supported. After TiDB Binlog is enabled, TiDB only allows creating a single integer column as the clustered index of a primary key. TiDB Binlog does not replicate data changes (such as insertion, deletion, and update) on existing tables with clustered indexes to the downstream. If you need to replicate tables with clustered indexes to the downstream, upgrade your cluster to v5.1 or use [TiCDC](/ticdc/ticdc-overview.md) for replication instead.
 
 After TiDB Binlog is enabled, if the clustered index you create is not a single integer primary key, TiDB returns the following error:
 

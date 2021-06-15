@@ -257,6 +257,7 @@ You can upgrade the tool version by using TiUP to install the `ctl` component of
 tiup install ctl:v5.0.0
 ```
 
-## TiDB 5.0 compatibility changes
+## TiDB 5.1 compatibility changes
 
-See TiDB 5.0 GA Release Notes for the compatibility changes.
+- See TiDB 5.1 GA Release Notes for the compatibility changes.
+- Try to avoid creating a new clustered index table when you apply rolling updates to the clusters using TiDB-Binlog.
