@@ -1317,7 +1317,7 @@ raftdb 相关配置项。
 
 ## resolved-ts
 
-用于维护 resolved-ts 以服务 stale read 请求的相关配置项。
+用于维护 Resolved TS 以服务 Stale Read 请求的相关配置项。
 
 ### `enable`
 
