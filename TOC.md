@@ -145,6 +145,7 @@
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
     + [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
+    + [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
   + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
