@@ -4,7 +4,7 @@ title: TiDB Lightning 分布式并行导入
 
 # TiDB Lightning 分布式并行导入
 
-TiDB Lightning Local 后端模式从 v5.1.0 版本开始支持单表的并行导入模式，即同时启动多个 TiDB Lightning 导入数据至单个表中。
+TiDB Lightning 的 Local 后端模式从 v5.1.0 版本开始支持单表的并行导入模式，即同时启动多个 TiDB Lightning 导入数据至单个表中。
 
 TiDB Lightning 并行导入功能通过支持同步启动多个实例并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
@@ -12,23 +12,22 @@ TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表�
 
 > **注意：**
 >
-> 在使用 Local-Backend 并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及他们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入，否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
+> 在使用 Local 后端模式并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入，否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
 
 ## 使用说明
 
-并行导入无须额外的配置，TiDB Lightning 在启动时会在下游 TiDB 中注册元信息，并自动检测是否有其他的实例向目标集群导入数据，如果存在则自动进入并行导入模式，无须做任何手动配置。
+使用 TiDB Lightning 进行并行导入无须额外配置。TiDB Lightning 在启动时会在下游 TiDB 中注册元信息，并自动检测是否有其他的实例向目标集群导入数据，如果存在则自动进入并行导入模式。
 
 ## 配置优化
 
 TiDB Lightning 分布式并行的水平扩展性能受每个实例的导入速度和目标集群规模的限制。在通常情况下，建议至少确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)，以达到最佳的导入性能。
 
-如果多个并行运行的 TiDB Lightning 的源数据中都包含统一个表的数据，需要调整如下配置：
+TiDB Lightning 在默认配置下会按照 `96MiB` 的大小划分 Region 的大小，但是在并行导入的时候，由于不同的 TiDB Lightning 实例划分的 Region 范围不同，会导致产生大量不足 `96MiB` 的 Region，大幅影响导入的性能。为了缓解此问题，建议在并行导入的时候，将此参数调大至 `n * 96Mib`（n 为最大并行导入单表的 lightning 实例数量）。
 
 ```
 [tikv-importer]
-#  设置导入 Region 的大小，为了避免产生过大的 region, 需要增加 Region 的大小。例如，有 5 个 TiDB Lightning 导入同一个表的数据，
-需要将此参数调大至 480MiB
-region-split-size = '96MiB'
+#  Region 分裂的大小，默认为 96MiB，如果有 5 个 TiDB-Lightning 实例并行导入，则建议调整为 5 * 96MiB = 480MiB
+region-split-size = '480MiB'
 ```
 
 ## 使用示例
