@@ -81,7 +81,7 @@ tiup cluster upgrade <cluster-name> v4.0.6
  - Finished：同步完成，同步任务进度已经达到预设的 TargetTs。在这个状态的 changefeed 不会阻挡 GC 推进。
  - Failed：同步失败，由于发生了某些不可恢复错误，导致同步无法继续进行，并且无法恢复。在这个状态的 changefeed 不会阻挡 GC 推进。
 
- 状态流转说明：
+以上状态流转图中的编号说明如下：
 
  ① 执行 `changefeed pause` 命令  
  ② 执行 `changefeed resume` 恢复同步任务  
