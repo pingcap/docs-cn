@@ -1,17 +1,23 @@
 ---
-title: 读取历史数据
+title: 通过系统变量 tidb_snapshot 读取历史数据
 aliases: ['/docs-cn/dev/read-historical-data/','/docs-cn/dev/how-to/get-started/read-historical-data/']
 ---
 
-# 读取历史数据
+# 通过系统变量 tidb_snapshot 读取历史数据
 
-本文档介绍 TiDB 如何读取历史版本数据，包括具体的操作流程以及历史数据的保存策略。
+本文档介绍如何通过系统变量 `tidb_snapshot` 读取历史数据，包括具体的操作流程以及历史数据的保存策略。
+
+> **注意：**
+>
+> 你还可以使用 [Stale Read](/stale-read.md) 功能读取历史数据。更推荐使用 Stale Read 读取历史数据。
 
 ## 功能说明
 
 TiDB 实现了通过标准 SQL 接口读取历史数据功能，无需特殊的 client 或者 driver。当数据被更新、删除后，依然可以通过 SQL 接口将更新/删除前的数据读取出来。
 
-另外即使在更新数据之后，表结构发生了变化，TiDB 依旧能用旧的表结构将数据读取出来。
+> **注意：**
+>
+> 读取历史数据时，即使当前数据的表结构相较于历史数据的表结构已经发生改变，历史数据也会使用当时的表结构来返回数据。
 
 ## 操作流程
 
