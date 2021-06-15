@@ -1320,7 +1320,8 @@ raftdb 相关配置项。
 用于维护 resolved-ts 以服务 stale read 请求的相关配置项。
 
 ### `enable`
-+ 是否为所有 region 维护 resolved-ts
+
++ 是否为所有 region 维护 Resolved TS
 + 默认值：true
 
 ### `advance-ts-interval`
@@ -1330,7 +1331,7 @@ raftdb 相关配置项。
 
 ### `scan-lock-pool-size`
 
-+ 初始化 resolved-ts 时扫描 mvcc 锁数据的线程个数。
++ 初始化 Resolved TS 时扫描 mvcc 锁数据的线程个数。
 + 默认值：2，即 2 个线程
 
 ## pessimistic-txn
