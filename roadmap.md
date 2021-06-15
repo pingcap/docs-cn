@@ -53,7 +53,7 @@ aliases: ['/zh/tidb/v5.0/roadmap','/docs-cn/ROADMAP/','/docs-cn/roadmap/','/docs
 - [x] 字符集的排序规则支持 `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` [#17596](https://github.com/pingcap/tidb/issues/17596)
 - [ ] 数据导入
     - [ ] TiDB Lightning 支持检测导入数据中的冲突
-    - [x] TiDB Lightning 支持分布式并行导入
+    - [ ] TiDB Lightning 支持分布式并行导入
 - [ ] 数据复制：TiCDC 兼容 TiDB Binlog 相关的特性，降低 TiDB Binlog 用户使用 TiCDC 的成本 [#690](https://github.com/pingcap/ticdc/issues/690)
     - [ ] 支持输出数据到文件系统和云端存储 (S3/GCS)
 - [ ] 数据容灾：容灾中支持快照级别的一致性数据复制 [#691](https://github.com/pingcap/ticdc/issues/691)
