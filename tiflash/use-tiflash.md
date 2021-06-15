@@ -226,10 +226,12 @@ TiFlash supports the push-down of the following operators:
 * TopN: Performs the TopN calculation.
 * Limit: Performs the limit calculation.
 * Project: Performs the projection calculation.
-* HashJoin: Performs the join calculation based on the [Hash Join](/explain-joins.md#hash-join) algorithm, but with the following conditions:
+* HashJoin (Equi Join): Performs the join calculation based on the [Hash Join](/explain-joins.md#hash-join) algorithm, but with the following conditions:
     * The operator can be pushed down only in the [MPP mode](#use-the-mpp-mode).
-    * The operator must have the join condition with the equivalent value.
     * The push-down of `Full Outer Join` is not supported.
+* HashJoin (Non-Equi Join): Performs the Cartesian Join algorithm, but with the following conditions:
+    * The operator can be pushed down only in the [MPP mode](#use-the-mpp-mode).
+    * Cartesian Join is supported only in Broadcast Join.
 
 In TiDB, operators are organized in a tree structure. For an operator to be pushed down to TiFlash, all of the following prerequisites must be met:
 
