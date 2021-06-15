@@ -248,9 +248,9 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 
 TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。默认由优化器自动选择是否使用 MPP 模式，可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 的值来更改选择策略，变量取值包括：
 
-- 0 或 OFF，代表从不使用 MPP 模式；
-- 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式；（默认）
-- 2 或 ENFORCE，代表无视代价估算，尽可能使用 MPP 模式；
+- 0 或 OFF，代表从不使用 MPP 模式
+- 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
+- 2 或 ENFORCE，代表无视代价估算，尽可能使用 MPP 模式
 
 举例来说，如果不想使用 MPP，可以通过如下语句来设置：
 
