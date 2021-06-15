@@ -83,11 +83,11 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
  状态流转说明：
 
- ① 执行 changefeed pause 命令  
- ② 执行 changefeed resume 恢复同步任务  
- ③ changefeed 运行过程中发生可恢复错误  
- ④ 执行 changefeed resume 恢复同步任务  
- ⑤ changefeed 运行过程中发生不可恢复错误  
+ ① 执行 `changefeed pause` 命令  
+ ② 执行 `changefeed resume` 恢复同步任务  
+ ③ `changefeed` 运行过程中发生可恢复的错误  
+ ④ 执行 `changefeed resume` 恢复同步任务  
+ ⑤ `changefeed` 运行过程中发生不可恢复的错误  
  ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止  
 
 #### 创建同步任务
