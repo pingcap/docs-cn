@@ -39,7 +39,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
 + TiCDC [支持 TiDB 集群之间环形同步](/ticdc/manage-ticdc.md#环形同步)。（v5.0 实验特性）
-+ [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md#row-changed-event) 的 [列标志位](/ticdc/ticdc-open-protocol.md#列标志位) 功能。
 
 ## 存储
 
