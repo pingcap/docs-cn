@@ -267,7 +267,6 @@ TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数�
 | tidb_enforce_mpp=off（默认） | 不会使用 mpp 模式。  | 优化器根据代价估算选择。（默认） |
 | tidb_enforce_mpp=on  | 不会使用 mpp 模式。  | 无视代价估算选择 mpp 模式。      |
 
-
 例如，如果你不想使用 MPP 模式，可以通过以下语句来设置：
 
 {{< copyable "sql" >}}
