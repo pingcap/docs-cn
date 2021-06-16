@@ -12,7 +12,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## 全局配置
 
-### abort-on-panic
+### abort-on-panic <span class="version-mark">从 v5.0.2 版本开始引入</span>
 
 + 设置 TiKV panic 时是否调用 `abort()` 退出进程。此选项影响 TiKV 是否允许系统生成 core dump 文件。
 
