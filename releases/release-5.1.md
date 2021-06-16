@@ -137,15 +137,6 @@ TiDB 版本：5.1
 
 + 解决多个扩缩容时的调度稳定性问题
 
-### 数据迁移
-
-+ 支持数据的增量导入和分布式导入
-
-    - 增量导入：支持导入新数据至已存在数据的表。
-    - 分布式导入：支持使用多个 lightning 进程并行或分批次初始化同一张表，可用于分表数据使用多个 lightning 并行合并迁移到 TiDB，或者超大单表数据分批次使用 lightning 迁移到 TiDB，可大大降低导入大量数据所需的时间。
-
-    [用户文档](tidb-lightning-distributed-import.md)，[#784](https://github.com/pingcap/br/pull/784)
-
 ### TiDB 数据共享订阅
 
 [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md#row-changed-event) 的 [列标志位](/ticdc/ticdc-open-protocol.md#列标志位) 功能正式发布，不再是实验特性。列标志位用于以 Bit flags 形式标记列的相关属性。
