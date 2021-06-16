@@ -89,9 +89,10 @@ TiDB 版本：5.1
 
     AS OF TIMESTAMP 语法示例如下：
 
-    SELECT * FROM t AS OF TIMESTAMP  '2020-09-06 00:00:00'
-    START TRANSACTION READ ONLY AS OF TIMESTAMP '2020-09-06 00:00:00'
-    SET TRANSACTION READ ONLY as of timestamp '2020-09-06 00:00:00'
+```sql
+    SELECT * FROM t AS OF TIMESTAMP  '2020-09-06 00:00:00';
+    START TRANSACTION READ ONLY AS OF TIMESTAMP '2020-09-06 00:00:00';
+    SET TRANSACTION READ ONLY as of timestamp '2020-09-06 00:00:00';
 
 ### 事务
 
@@ -316,4 +317,3 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
         - 添加 sink 流控以降低内存溢出的风险 [#1840](https://github.com/pingcap/ticdc/pull/1840)
         - 修复调度数据表时可能发生的同步终止问题 [#1828](https://github.com/pingcap/ticdc/pull/1828)
         - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1759](https://github.com/pingcap/ticdc/pull/1759)
-
