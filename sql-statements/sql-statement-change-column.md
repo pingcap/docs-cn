@@ -8,6 +8,12 @@ aliases: ['/docs/dev/sql-statements/sql-statement-change-column/','/docs/dev/ref
 
 The `ALTER TABLE.. CHANGE COLUMN` statement changes a column on an existing table. The change can include both renaming the column, and changing the data type to a compatible type.
 
+Since v5.1.0, TiDB has supported changing the Reorg data type, including but not limited to:
+
+- Changing `VARCHAR` to `BIGINT`
+- Modifying the `DECIMAL` precision
+- Compressing the length of `VARCHAR(10)` to `VARCHAR(5)`
+
 ## Synopsis
 
 ```ebnf+diagram
@@ -49,36 +55,108 @@ ColumnPosition ::=
 
 ## Examples
 
-```sql
-mysql> CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
-Query OK, 0 rows affected (0.11 sec)
+{{< copyable "sql" >}}
 
-mysql> INSERT INTO t1 (col1) VALUES (1),(2),(3),(4),(5);
+```sql
+CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
+```
+
+```
+Query OK, 0 rows affected (0.11 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t1 (col1) VALUES (1),(2),(3),(4),(5);
+```
+
+```
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
+```
 
-mysql>
-mysql> ALTER TABLE t1 CHANGE col1 col2 INT;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 CHANGE col1 col2 INT;
+```
+
+```
 Query OK, 0 rows affected (0.09 sec)
+```
 
-mysql> ALTER TABLE t1 CHANGE col2 col3 BIGINT, ALGORITHM=INSTANT;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 CHANGE col2 col3 BIGINT, ALGORITHM=INSTANT;
+```
+
+```
 Query OK, 0 rows affected (0.08 sec)
+```
 
-mysql>
-mysql> ALTER TABLE t1 CHANGE col3 col3 INT;
-ERROR 1105 (HY000): unsupported modify column length 11 is less than origin 20
-mysql> ALTER TABLE t1 CHANGE col3 col3 BLOB;
-ERROR 1105 (HY000): unsupported modify column type 252 not match origin 8
-mysql> ALTER TABLE t1 CHANGE col3 col4 BIGINT, CHANGE id id2 INT NOT NULL;
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 CHANGE col3 col4 BIGINT, CHANGE id id2 INT NOT NULL;
+```
+
+```
 ERROR 1105 (HY000): can't run multi schema change
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t (a int primary key);
+ALTER TABLE t CHANGE COLUMN a a VARCHAR(10);
+```
+
+```
+ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t (c1 INT, c2 INT, c3 INT) partition by range columns(c1) ( partition p0 values less than (10), partition p1 values less than (maxvalue));
+ALTER TABLE t CHANGE COLUMN c1 c1 DATETIME;
+```
+
+```
+ERROR 8200 (HY000): Unsupported modify column: table is partition table
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t (a INT, b INT as (a+1));
+ALTER TABLE t CHANGE COLUMN b b VARCHAR(10);
+```
+
+```
+ERROR 8200 (HY000): Unsupported modify column: column is generated
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t (a DECIMAL(13, 7));
+ALTER TABLE t CHANGE COLUMN a a DATETIME;
+```
+
+```
+ERROR 8200 (HY000): Unsupported modify column: change from original type decimal(13,7) to datetime is currently unsupported yet
 ```
 
 ## MySQL compatibility
 
 * Making multiple changes in a single `ALTER TABLE` statement is not currently supported.
-* Only certain types of data type changes are supported. For example, an `INTEGER` to `BIGINT` is supported, but the reverse is not possible. Changing from an integer to a string format or blob is not supported.
-* Modifying precision of the `DECIMAL` type is not supported.
-* Changing the `UNSIGNED` attribute is not supported.
+* Changes of data types on primary key columns are not supported.
+* Changes of column types on partitioned tables are not supported.
+* Changes of column types on the generated columns are not supported.
+* Changes of some data types (for example, some TIME types, Bit, Set, Enum, JSON) are not supported due to some compatibility issues of the `cast` function's behavior between TiDB and MySQL.
 
 ## See also
 
