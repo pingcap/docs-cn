@@ -246,17 +246,72 @@ round without fraction, cast(int as decimal), date_add(datetime, int), date_add(
 
 ## 使用 MPP 模式
 
-TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。默认由优化器自动选择是否使用 MPP 模式，可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 的值来更改选择策略，变量取值包括：
+TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。默认由优化器自动选择是否使用 MPP 模式，可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-span-classversion-mark-v50-span) 和 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-span-classversion-mark-v51-span) 的值来更改选择策略，变量取值包括：
 
-- 0 或 OFF，代表从不使用 MPP 模式
-- 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
-- 2 或 ENFORCE，代表无视代价估算，尽可能使用 MPP 模式
+### 控制是否选择 MPP 模式
+
+变量 tidb_allow_mpp 控制 TiDB 能否选择 MPP 模式执行查询，而变量 tidb_enforce_mpp 控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
+
+这两个变量所有取值对应的结果如下：
+
+|                        | tidb_allow_mpp=off | tidb_allow_mpp=on（默认）              |
+| ---------------------- | -------------------- | -------------------------------- |
+| tidb_enforce_mpp=off（默认） | 不会使用 mpp 模式。  | 优化器根据代价估算选择。（默认） |
+| tidb_enforce_mpp=on  | 不会使用 mpp 模式。  | 无视代价估算选择 mpp 模式。      |
+
 
 举例来说，如果不想使用 MPP，可以通过如下语句来设置：
 
-```shell
-set @@session.tidb_allow_mpp=0
+{{< copyable "sql" >}}
+
+```sql
+set @@session.tidb_allow_mpp=0;
 ```
+
+如果想要通过优化器代价估算来智能选择是否使用 MPP（是默认情况），可以通过如下语句来设置：
+
+{{< copyable "sql" >}}
+
+```sql
+set @@session.tidb_allow_mpp=1;
+set @@session.tidb_enforce_mpp=0;
+```
+
+如果想要忽略优化器代价估算，强制使用 MPP，可以通过如下语句来设置：
+
+{{< copyable "sql" >}}
+
+```sql
+set @@session.tidb_allow_mpp=1;
+set @@session.tidb_enforce_mpp=1;
+```
+
+Session 变量 `tidb_enforce_mpp` 的初始值等于这台 tidb-server 实例的配置项 [`enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) 的值（默认为 false）。如果在一个 TiDB 集群中，有若干台 tidb-server 只会执行分析型查询，又想确保它们能够选中 MPP 模式，可以将它们的配置项 [`enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) 修改为 true.
+
+> **注意：**
+>
+> tidb_enforce_mpp 在生效时，会让优化器忽略代价估算选择 MPP 模式。如果是因为其它 MPP 不支持的原因，比如没有 TiFlash 副本、TiFlash 副本同步未完成、语句中含有 MPP 模式不支持的算子或函数等，那么仍然会无法选择 MPP 模式。
+> 
+> 在因为非代价估算的原因导致无法选择 MPP 的情况下，使用 explain 语句查看执行计划时，会返回警告说明原因，例如：
+> 
+> {{< copyable "sql" >}}
+> 
+> ```sql
+> set @@session.tidb_enforce_mpp=1;
+> create table t(a int);
+> explain select count(*) from t; 
+> show warnings;
+> ```
+> 
+> ```
+> +---------+------+-----------------------------------------------------------------------------+
+> | Level   | Code | Message                                                                     |
+> +---------+------+-----------------------------------------------------------------------------+
+> | Warning | 1105 | MPP mode may be blocked because there aren't tiflash replicas of table `t`. |
+> +---------+------+-----------------------------------------------------------------------------+
+> ```
+
+### MPP 模式的算法支持
 
 MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash Join 和 Shuffled Hash Aggregation。算法的选择由优化器自动判断。通过 `EXPLAIN` 语句可以查看具体的查询执行计划。
 

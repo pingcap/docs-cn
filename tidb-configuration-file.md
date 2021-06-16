@@ -433,6 +433,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：20971520
 + 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
 
+### `enforce-mpp`
+
++ 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询.
++ 默认值：false
++ 该变量作为系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-span-classversion-mark-v51-span) 的初始值。
+
 ## prepared-plan-cache
 
 prepare 语句的 plan cache 设置。
