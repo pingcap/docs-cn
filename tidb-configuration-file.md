@@ -262,6 +262,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 安全相关配置。
 
+### `enable-sem`
+
+- 启用安全增强模式 (SEM)。
+- 默认值：`false`
+- 可以通过系统变量 [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security) 获取安全增强模式的状态。
+
 ### `ssl-ca`
 
 + PEM 格式的受信任 CA 的证书文件路径。
@@ -399,8 +405,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
-+ 默认值：0.05
-+ 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
++ 默认值：0
++ 此功能默认关闭，暂不建议开启。如果开启此功能，对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ### `query-feedback-limit`
 
@@ -604,6 +610,13 @@ TiDB 服务状态相关配置。
 
 + 悲观事务中单个语句最大重试次数，重试次数超过该限制，语句执行将会报错。
 + 默认值：256
+
+### deadlock-history-capacity
+
++ 单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数。当表的容量已满时，如果再次发生死锁错误，最早的一次死锁错误的信息将从表中移除。
++ 默认值：10
++ 最小值：0
++ 最大值：10000
 
 ## experimental
 

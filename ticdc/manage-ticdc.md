@@ -69,6 +69,29 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
 ### 管理同步任务 (`changefeed`)
 
+#### 同步任务状态流转
+
+同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
+
+![TiCDC state transfer](/media/ticdc-state-transfer.png)
+
+以上状态流转图中的状态说明如下：
+
+- Normal：同步任务正常进行，checkpoint-ts 正常推进。
+- Stopped：同步任务停止，由于用户手动暂停 (pause) changefeed。处于这个状态的 changefeed 会阻挡 GC 推进。
+- Error：同步任务报错，由于某些可恢复的内部错误导致同步无法继续进行，处于这个状态的 changefeed 会不断尝试继续推进，直到状态转为 Normal。处于这个状态的 changefeed 会阻挡 GC 推进。
+- Finished：同步任务完成，同步任务进度已经达到预设的 TargetTs。处于这个状态的 changefeed 不会阻挡 GC 推进。
+- Failed：同步任务失败。由于发生了某些不可恢复的错误，导致同步无法继续进行，并且无法恢复。处于这个状态的 changefeed 不会阻挡 GC 推进。
+
+以上状态流转图中的编号说明如下：
+
+- ① 执行 `changefeed pause` 命令  
+- ② 执行 `changefeed resume` 恢复同步任务  
+- ③ `changefeed` 运行过程中发生可恢复的错误  
+- ④ 执行 `changefeed resume` 恢复同步任务  
+- ⑤ `changefeed` 运行过程中发生不可恢复的错误  
+- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止  
+
 #### 创建同步任务
 
 使用以下命令来创建同步任务：
@@ -76,13 +99,13 @@ tiup cluster upgrade <cluster-name> v4.0.6
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
 ```
 
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -98,13 +121,13 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
-- `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `memory`/`unified`/`file`：
+- `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `unified`（默认）/`memory`/`file`：
 
-    - `memory`：在内存中进行排序。
     - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项默认开启。
+    - `memory`：在内存中进行排序。 **不建议使用，同步大量数据时易引发 OOM。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
-- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 `cdc server` 命令中使用该选项来设置临时文件目录。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
+- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 [`cdc server` 命令中使用该选项来设置临时文件目录](/ticdc/deploy-ticdc.md#ticdc-cdc-server-命令行参数说明)。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
 - `--config`：指定 changefeed 配置文件。
 
 #### Sink URI 配置 `mysql`/`tidb`
@@ -254,7 +277,8 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 - `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
 - `state` 为该同步任务的状态：
     - `normal`: 正常同步
-    - `stopped`: 停止同步（手动暂停或出错）
+    - `stopped`: 停止同步（手动暂停）
+    - `error`: 停止同步（出错）
     - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
     - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
 
@@ -299,7 +323,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
     "start-ts": 419036036249681921,
     "target-ts": 0,
     "admin-job-type": 0,
-    "sort-engine": "memory",
+    "sort-engine": "unified",
     "sort-dir": ".",
     "config": {
       "case-sensitive": true,
@@ -410,14 +434,6 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 ```
 
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
-
-删除任务后会保留任务的同步状态信息 24 小时（主要用于记录同步的 checkpoint），24 小时内不能创建同名的任务。如果希望彻底删除任务信息，可以指定 `--force` 或 `-f` 参数删除，删除后 changefeed 的所有信息都会被清理，可以立即创建同名的 changefeed。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task --force
-```
 
 ### 更新同步任务配置
 
@@ -742,7 +758,7 @@ sync-ddl = true
 2. 开启环形同步的数据表名字需要符合正则表达式 `^[a-zA-Z0-9_]+$`。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
-5. 在多集群同时写入时，为了避免业务出错，请避免执行 DDL 语句，比如 `ADD COLUMN`/`DROP COLUMN` 等。 
+5. 在多集群同时写入时，为了避免业务出错，请避免执行 DDL 语句，比如 `ADD COLUMN`/`DROP COLUMN` 等。
 6. 如果想在线执行 DDL 语句，需要确保满足以下条件：
     + 业务兼容 DDL 语句执行前后的表结构。
     + 多个集群的 TiCDC 组件构成一个单向 DDL 同步链，不能成环。例如以上在 TiDB 集群 A，B 和 C 上创建环形同步任务的示例中，只有 C 集群的 TiCDC 组件关闭了 `sync-ddl`。
@@ -783,13 +799,26 @@ force-replicate = true
 
 ## Unified Sorter 功能
 
-Unified Sorter 是 TiCDC 中的排序引擎功能，目前默认开启，用于缓解以下场景造成的内存溢出问题：
+Unified Sorter 是 TiCDC 中的排序引擎功能，用于缓解以下场景造成的内存溢出问题：
 
 + 如果 TiCDC 数据订阅任务的暂停中断时间长，其间积累了大量的增量更新数据需要同步。
 + 从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
+
+对 v4.0.13 版本之后的 `cdc cli` 创建的 changefeed，默认开启 Unified Sorter。对 v4.0.13 版本前已经存在的 changefeed，则使用之前的配置。
+
+要确定一个 changefeed 上是否开启了 Unified Sorter 功能，可执行以下示例命令查看（假设 PD 实例的 IP 地址为 `http://10.0.10.25:2379`）：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
+```
+
+以上命令的返回结果中，如果 `sort-engine` 的值为 "unified"，则说明 Unified Sorter 已在该 changefeed 上开启。
 
 > **注意：**
 >
 > + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
 > + 请保证硬盘的空闲容量大于等于 128G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
+> + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom如何处理)回答中提供的方法。

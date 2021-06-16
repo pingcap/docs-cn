@@ -24,7 +24,7 @@ summary: 了解 TiCDC 软硬件环境要求以及如何安装部署 TiCDC。
 
 ## 使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群
 
-在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件。只需在 TiUP 启动 TiDB 集群时的配置文件中加入 `TiCDC` 部分即可，详细操作参考[编辑初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)。
+在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件。只需在 TiUP 启动 TiDB 集群时的配置文件中加入 `TiCDC` 部分即可，详细操作参考[编辑初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)，具体可配置字段参考[通过 TiUP 配置 `cdc_servers`](/tiup/tiup-cluster-topology-reference.md#cdc_servers)。
 
 ## 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
 
@@ -46,6 +46,8 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_2.log --addr=0.0.0.0:830
 cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:8303 --advertise-addr=127.0.0.1:8303
 ```
 
+## TiCDC `cdc server` 命令行参数说明
+
 对于 `cdc server` 命令中可用选项解释如下：
 
 - `gc-ttl`：TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，单位为秒，默认值为 `86400`，即 24 小时。
@@ -59,3 +61,4 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `cert`：TiCDC 使用的证书文件路径，PEM 格式，可选。
 - `key`：TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 - `config`：可选项，表示 TiCDC 使用的配置文件地址。TiCDC 从 v5.0.0 开始支持该选项，TiUP 从 v1.4.0 开始支持在部署 TiCDC 时使用该配置。
+- `sort-dir`：指定排序引擎使用的临时文件目录。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。需确保 TiCDC 在该 `sort-dir` 路径下可读写数据。

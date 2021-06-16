@@ -9,6 +9,7 @@ TiDB 系统变量的行为与 MySQL 相似但有一些不同，变量的作用�
 
 - 对 `GLOBAL` 作用域变量的更改，设置后**只对新 TiDB 连接会话生效**，当前活动连接会话不受影响。更改会被持久化，重启后仍然生效。
 - 对 `INSTANCE` 作用域变量的更改，设置后会立即对当前 TiDB 实例所有活动连接会话或新连接会话生效，其他 TiDB 实例不生效。更改**不会**被持久化，重启 TiDB 后会**失效**。
+- 作用域为 `NONE` 的变量为只读变量，通常用于展示 TiDB 服务器启动后不会改变的静态信息。
 
 使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的作用范围为全局级别、实例级别或会话级别。
 
@@ -79,6 +80,12 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### `cte_max_recursion_depth`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：1000
+- 这个变量用于控制公共表表达式的最大递归深度。
+
 ### `ddl_slow_threshold`
 
 - 作用域：INSTANCE
@@ -96,6 +103,12 @@ mysql> SELECT * FROM t1;
 - 作用域：NONE
 - 默认值：（系统主机名）
 - 这个变量一个只读变量，表示 TiDB server 的主机名。
+
+### `init_connect`
+
+- 作用域：GLOBAL
+- 默认值：""
+- 用户首次连接到 TiDB 服务器时，`init_connect` 特性允许 TiDB 自动执行一条或多条 SQL 语句。如果你有 `CONNECTION_ADMIN` 或者 `SUPER` 权限，这些 SQL 语句将不会被自动执行。如果这些语句执行报错，你的用户连接将被终止。
 
 ### `innodb_lock_wait_timeout`
 
@@ -357,7 +370,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：256
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的 batch size。比如 `ADD INDEX` 操作，需要回填索引数据，通过并发 `tidb_ddl_reorg_worker_cnt` 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。
 
-    - 如果 `ADD INDEX` 操作时有较多 `UPDATA` 操作或者 `REPLACE` 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。
+    - 如果 `ADD INDEX` 操作时有较多 `UPDATE` 操作或者 `REPLACE` 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。
     - 在没有事务冲突的情况下，batch size 可设为较大值，最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
 
 ### `tidb_ddl_reorg_priority`
@@ -424,7 +437,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **注意：**
 >
-> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -434,7 +448,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **注意：**
 >
-> 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_cascades_planner`
 
@@ -462,6 +477,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：INSTANCE
 - 默认值：ON
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
+
+### `tidb_enable_enhanced_security`
+
+- 作用域：NONE
+- 默认值：OFF
+- 这个变量表示所连接的 TiDB 服务器是否启用了安全增强模式 (SEM)。若要改变该变量值，你需要在 TiDB 服务器的配置文件中修改 `enable-sem` 项的值，并重启 TiDB 服务器。
+- 安全增强模式受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，削减拥有 MySQL `SUPER` 权限的用户能力，转而使用细粒度的 `RESTRICTED` 权限作为替代。这些细粒度的 `RESTRICTED` 权限如下：
+    - `RESTRICTED_TABLES_ADMIN`：能够写入 `mysql` 库中的系统表，能查看 `information_schema` 表上的敏感列。
+    - `RESTRICTED_STATUS_ADMIN`：能够在 `SHOW STATUS` 命令中查看敏感内容。
+    - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
+    - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
 
 ### `tidb_enable_fast_analyze`
 
@@ -690,7 +716,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 可设置为：
     - `LEGACY`：使用旧的扫描方式，即禁用 Green GC。
     - `PHYSICAL`：使用物理扫描方式，即启用 Green GC。
-- 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-实验特性) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
+- 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
 
 ### `tidb_general_log`
 

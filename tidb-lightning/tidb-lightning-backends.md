@@ -98,14 +98,15 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 
 当需要将数据导入到 TiDB 集群时，TiDB Lightning TiDB-backend 可以完全取代 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview)。下表说明了如何将 Loader 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
-<table align="left">
+<table>
 <thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thead>
 <tbody>
 <tr><td>
 
 ```toml
-# 日志
+# 日志级别
 log-level = "info"
+# 日志的输出目录
 log-file = "loader.log"
 # Prometheus
 status-addr = ":8272"
@@ -117,8 +118,9 @@ pool-size = 16
 
 ```toml
 [lightning]
-# 日志
+# 日志级别
 level = "info"
+# 日志的输出目录。如果未指定该位置目录，默认为执行命令的所在目录。
 file = "tidb-lightning.log"
 # Prometheus
 pprof-port = 8289
@@ -197,7 +199,8 @@ password = ""
 # TiDB 连接参数
 host = "127.0.0.1"
 port = 4000
-status-port = 10080  # <- 必须有的参数
+# 在 TiDB-backend 模式下，该参数为可选参数
+# status-port = 10080
 user = "root"
 password = ""
 #sql-mode = ""
