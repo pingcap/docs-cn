@@ -81,7 +81,7 @@ TiDB 版本：5.1
     - decimal 精度修改
     - 从 varchar(10) 到 varchar(5) 的长度压缩
 
-    [用户文档](sql-statement-modify-column.md]
+    [用户文档](/sql-statement-modify-column.md]
 
 - 引入新的语法 AS OF TIMESTAMP，支持通过 Stale Read 功能从指定的时间点或时间范围内读取历史数据。
 
@@ -124,7 +124,7 @@ TiDB 版本：5.1
         - 同步中断期间积累大量数据，超过 1TB，重新同步出现 OOM 问题
         - 大量数据写入造成 TiCDC 出现 OOM 问题
 
-    - 改善 TiCDC 同步中断问题，缓解以下场景的问题 [project#11(]https://github.com/pingcap/ticdc/projects/11)
+    - 改善 TiCDC 同步中断问题，缓解以下场景的问题 [project#11]https://github.com/pingcap/ticdc/projects/11)
         - 网络不稳定情况下出现的同步中断问题
         - 在部分 TiKV/PD/TiCDC 节点宕机情况下出现的同步中断问题
 
