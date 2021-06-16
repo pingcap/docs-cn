@@ -32,7 +32,7 @@ TiDB 版本：5.1
 ### 配置文件参数
 
 | 配置文件   | 配置项   | 修改类型   | 描述   |
-|:----------|:-----------|:-----------|
+|:----------|:-----------|:-----------|:-----------|
 | TiDB 配置文件  | security.enable-sem  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
 | TiDB 配置文件  | performance.tcp-no-delay  | 新增  | 控制是否在 TiDB 在 TCP 层开启 no dela。 默认值为 `true`，代表开启。 |
 TiDB 配置文件  | performance.committer-concurrency  | 修改  | "在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量
