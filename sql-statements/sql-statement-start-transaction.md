@@ -17,7 +17,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-start-transaction/','/docs-
 ```ebnf+diagram
 BeginTransactionStmt ::= 
     'BEGIN' ( 'PESSIMISTIC' | 'OPTIMISTIC' )?
-|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' | 'WITH' 'CAUSAL' 'CONSISTENCY' 'ONLY' )?
+|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? | AsOfClause ) ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' | 'WITH' 'CAUSAL' 'CONSISTENCY' 'ONLY' )?
+
+AsOfClause ::=
+    ( 'AS' 'OF' 'TIMESTAMP' Expression)
 ```
 
 ## 示例

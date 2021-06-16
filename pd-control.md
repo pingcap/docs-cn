@@ -446,9 +446,19 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `enable-debug-metrics` 用于开启 debug 的 metrics。当设置为 true 时，PD 会开启一些 metrics，比如 `balance-tolerant-size` 等。
 
-- `enable-placement-rules` 用于开启 placement rules。
+- `enable-placement-rules` 用于开启 placement rules，在 v5.0 以上的版本默认开启。
 
 - `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
+
+- PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `100500`。默认值为 `3`。该配置替换了 `trace-region-flow`。
+
+    示例：将 `flow-round-by-digit` 的值设为 `4`：
+
+    {{< copyable "" >}}
+
+    ```bash
+    config set flow-round-by-digit 4
+    ```
 
 ### `config placement-rules [disable | enable | load | save | show | rule-group]`
 

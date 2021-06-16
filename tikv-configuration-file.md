@@ -11,6 +11,17 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 <!-- markdownlint-disable MD001 -->
 
+## 全局配置
+
+### abort-on-panic
+
++ 设置 TiKV panic 时是否调用 `abort()` 退出进程。此选项影响 TiKV 是否允许系统生成 core dump 文件。
+
+    + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
+    + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
+    
++ 默认值：false
+
 ## server
 
 服务器相关的配置项。
@@ -1314,6 +1325,25 @@ raftdb 相关配置项。
 + 增量扫描历史数据任务的最大并发执行个数。
 + 默认值：6，即最多并发执行 6 个任务
 + 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
+
+## resolved-ts
+
+用于维护 Resolved TS 以服务 Stale Read 请求的相关配置项。
+
+### `enable`
+
++ 是否为所有 Region 维护 Resolved TS
++ 默认值：true
+
+### `advance-ts-interval`
+
++ 定期推进 Resolved TS 的时间间隔。
++ 默认值：1s
+
+### `scan-lock-pool-size`
+
++ 初始化 Resolved TS 时 TiKV 扫描 MVCC（多版本并发控制）锁数据的线程个数。
++ 默认值：2，即 2 个线程
 
 ## pessimistic-txn
 

@@ -62,7 +62,11 @@
       + [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       + [外部存储](/br/backup-and-restore-storages.md)
       + [BR 常见问题](/br/backup-and-restore-faq.md)
-  + [读取历史数据](/read-historical-data.md)
+  + 读取历史数据
+    + 使用 Stale Read 功能读取历史数据（推荐）
+      + [Stale Read 使用场景介绍](/stale-read.md)
+      + [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
+    + [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -141,6 +145,7 @@
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
     + [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
+    + [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
   + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
