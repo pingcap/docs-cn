@@ -215,6 +215,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
         - 优化导入逻辑实现导入速度的提升。优化结果显示，导入 tpcc 数据速度提升在 30% 左右，导入索引比较多（5 个索引）的大表 (2TB+) 速度提升超过 50% [#753](https://github.com/pingcap/br/pull/753)
         - 导入前对导入数据和目标集群进行检查，如果不符合导入要求，则报错拒绝导入程序的运行 [#999](https://github.com/pingcap/br/pull/999)
+        - 优化 Local 后端更新 checkpoint 的时机，提升断点重启时的性能 [#1080](https://github.com/pingcap/br/pull/1080)
 
 ## Bug 修复
 
@@ -291,6 +292,8 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
         - 修复在生成 KV 数据时可能发生的 panic 问题 [#1127](https://github.com/pingcap/br/pull/1127)
         - 修复数据导入期间 Batch Split Region 因键的总大小超过 Raft 条目限制而可能失败的问题 [#969](https://github.com/pingcap/br/issues/969)
+        - 修复在导入 CSV 文件时，如果文件的最后一行未包含换行符(`\r\n`)会导入报错的问题 [#1134](https://github.com/pingcap/br/pull/1134)
+        - 修复在导入目标表包含 double 类型的自增列会导致表的 auto_Increment 值异常的问题 [#1178](https://github.com/pingcap/br/pull/1178)
 
     + Backup & Restore (BR)
 
