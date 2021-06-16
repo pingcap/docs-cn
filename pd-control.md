@@ -446,7 +446,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `enable-debug-metrics` 用于开启 debug 的 metrics。当设置为 true 时，PD 会开启一些 metrics，比如 `balance-tolerant-size` 等。
 
-- `enable-placement-rules` 用于开启 placement rules，在 v5.0 以上的版本默认开启。
+- `enable-placement-rules` 用于开启 placement rules，在 v5.0 及以上的版本默认开启。
 
 - `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
 
