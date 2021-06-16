@@ -108,7 +108,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 默认值：""
-- 用户首次连接到 TiDB 服务器时，`init_connect` 特性允许 TiDB 自动执行 SQL 语句。如果你有 `CONNECTION_ADMIN` 或者 `SUPER` 权限，SQL 语句将不会被自动执行。如果 SQL 语句执行报错，你的用户连接将被终止。
+- 用户首次连接到 TiDB 服务器时，`init_connect` 特性允许 TiDB 自动执行一条或多条 SQL 语句。如果你有 `CONNECTION_ADMIN` 或者 `SUPER` 权限，这些 SQL 语句将不会被自动执行。如果这些语句执行报错，你的用户连接将被终止。
 
 ### `innodb_lock_wait_timeout`
 
