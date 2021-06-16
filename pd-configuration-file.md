@@ -349,6 +349,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 参考[Placement Rules 使用文档](/configure-placement-rules.md)
 + 4.0 实验性特性
 
+### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
+
++ 打开 `flow-round-by-digit`
++ 默认值：3
++ PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `100500`。默认值为 `3`。该配置替换了 `trace-region-flow`。
+
 ## label-property
 
 标签相关的配置项。

@@ -311,9 +311,9 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 ## 当 changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL 语句，阻塞了所有其他 changefeed，应该怎样处理？
 
 1. 首先暂停执行耗时较长的 DDL 的 changefeed。此时可以观察到，这个 changefeed 暂停后，其他的 changefeed 不再阻塞了。
-2. 在 TiCDC log 中搜寻 `apply job` 字段，确认耗时较长的 DDL 的 `StartTs`。
+2. 在 TiCDC log 中搜寻 `apply job` 字段，确认耗时较长的 DDL 的 `start-ts`。
 3. 手动在下游执行该 DDL 语句，执行完毕后进行下面的操作。
-4. 修改 changefeed 配置，将上述 `StartTs` 添加到 `ignore-txn-start-ts` 配置项中。
+4. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
 5. 恢复被暂停的 changefeed。
 
 ## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`
@@ -393,3 +393,25 @@ cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --start-ts 4152
 
 cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
+
+## 同步 DDL 到下游 MySQL 5.7 时间类型字段默认值不一致
+
+比如上游 TiDB 的建表语句为 `create table test (id int primary key, ts timestamp)`，TiCDC 同步该语句到下游 MySQL 5.7，MySQL 使用默认配置，同步得到的表结构如下所示，timestamp 字段默认值会变成 `CURRENT_TIMESTAMP`：
+
+{{< copyable "sql" >}}
+
+```sql
+mysql root@127.0.0.1:test> show create table test;
++-------+----------------------------------------------------------------------------------+
+| Table | Create Table                                                                     |
++-------+----------------------------------------------------------------------------------+
+| test  | CREATE TABLE `test` (                                                            |
+|       |   `id` int(11) NOT NULL,                                                         |
+|       |   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, |
+|       |   PRIMARY KEY (`id`)                                                             |
+|       | ) ENGINE=InnoDB DEFAULT CHARSET=latin1                                           |
++-------+----------------------------------------------------------------------------------+
+1 row in set
+```
+
+产生表结构不一致的原因是 `explicit_defaults_for_timestamp` 的[默认值在 TiDB 和 MySQL 5.7 不同](/mysql-compatibility.md#默认设置)。从 TiCDC v5.0.1/v4.0.13 版本开始，同步到 MySQL 会自动设置 session 变量 `explicit_defaults_for_timestamp = ON`，保证同步时间类型时上下游行为一致。对于 v5.0.1/v4.0.13 以前的版本，同步时间类型时需要注意 `explicit_defaults_for_timestamp` 默认值不同带来的兼容性问题。
