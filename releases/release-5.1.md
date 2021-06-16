@@ -35,9 +35,8 @@ TiDB 版本：5.1
 |:----------|:-----------|:-----------|:-----------|
 | TiDB 配置文件  | security.enable-sem  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
 | TiDB 配置文件  | performance.tcp-no-delay  | 新增  | 控制是否在 TiDB 在 TCP 层开启 no dela。 默认值为 `true`，代表开启。 |
-TiDB 配置文件  | performance.committer-concurrency  | 修改  | "在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量
-。默认值从 16 修改为 128。" |
-TiDB 配置文件  | pessimistic-txn.deadlock-history-capacity  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
+| TiDB 配置文件  | performance.committer-concurrency  | 修改  | "在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 16 修改为 128。" |
+| TiDB 配置文件  | pessimistic-txn.deadlock-history-capacity  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
 | TiKV 配置文件  | `storage.io-rate-limit`  | 新增  | 控制 TiKV 写入的 IO 速率。`storage.io-rate-limit.max-bytes-per-sec` 默认值为 “0MB”。 |
 | TiKV 配置文件  | `abort-on-panic`  | 新增  | 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。默认值为 false, 代表不允许生成 core dump 文件。 |
 | TiKV 配置文件  | `soft-pending-compaction-bytes-limit`  | 修改  | pending compaction bytes 的软限制，默认值从 “64GB” 修改为 “192GB” |
