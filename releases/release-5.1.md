@@ -104,7 +104,7 @@ TiDB 版本：5.1
 
 + 数据副本非一致性读（Stale Read）
 
-    - 直接读取本地副本数据，降低读取延迟，提升查询性能
+    直接读取本地副本数据，降低读取延迟，提升查询性能
 [用户文档](/stale-read.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
 
 + TiKV 增加独立的 IO 线程（Async IO）
@@ -127,7 +127,7 @@ TiDB 版本：5.1
         - 在部分 TiKV/PD/TiCDC 节点宕机情况下出现的同步中断问题
 
 + TiFlash 存储内存控制
-优化了 Region 快照生成的速度和内存使用量，减少了OOM的可能性
+优化了 Region 快照生成的速度和内存使用量，减少了 OOM 的可能性
 
 + 新增 TiKV 后台任务写入限制（TiKV Write Rate Limiter）
     TiKV Write Rate Limiter 通过平滑 TiKV 后台任务如 GC，Compaction 等的写入流量，保证读写请求的延迟稳定性。TiKV 后台任务写入限制默认值为 “0MB”，建议将此限制设置为磁盘的最佳 I/O 带宽，例如云盘厂商指定的最大 I/O 带宽。
@@ -183,8 +183,8 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
 + TiFlash
 
-    - 新增对 Union All , TopN，Limit 函数的支持
-    - 新增 MPP 模式下对笛卡尔积 left outer join 和 semi anti join的支持
+    - 新增对 Union All, TopN, Limit 函数的支持
+    - 新增 MPP 模式下对笛卡尔积 left outer join 和 semi anti join 的支持
     - 优化锁操作以避免 DDL 语句和读数据相互阻塞
 
 + PD
@@ -316,5 +316,4 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
         - 添加 sink 流控以降低内存溢出的风险 [#1840](https://github.com/pingcap/ticdc/pull/1840)
         - 修复调度数据表时可能发生的同步终止问题 [#1828](https://github.com/pingcap/ticdc/pull/1828)
         - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1759](https://github.com/pingcap/ticdc/pull/1759)
-
 
