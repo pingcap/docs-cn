@@ -178,6 +178,10 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
     - 新增对 Union All, TopN, Limit 函数的支持
     - 新增 MPP 模式下对笛卡尔积 left outer join 和 semi anti join 的支持
     - 优化锁操作以避免 DDL 语句和读数据相互阻塞
+    - 优化 TiFlash 对过期数据的清理
+    - 新增支持对 timestamp 列的查询过滤条件在 TiFlash 存储层进一步过滤
+    - 在集群中有大量表时，优化 TiFlash 的启动速度及扩容速度
+    - 提升 TiFlash 在未知 CPU 上运行的兼容性
 
 + PD
     - 避免在添加 `scatter region` 调度器后出现的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
