@@ -452,7 +452,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `flow-round-by-digit` 用于控制心跳上报的 Region 流量的离散化处理，减少流量信息变化引起的统计信息更新。表示对流量信息的末尾几位的数字四舍五入，比如流量 100512 会归约到 100500。默认值为 3。该配置替换了 `trace-region-flow`。
 
-    设置 flow-round-by-digit 为 4：
+    示例：将 `flow-round-by-digit` 的值设为 `4`：
 
     {{< copyable "" >}}
 
