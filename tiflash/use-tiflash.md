@@ -258,7 +258,7 @@ TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数�
 
 ### 控制是否选择 MPP 模式
 
-变量 tidb_allow_mpp 控制 TiDB 能否选择 MPP 模式执行查询，而变量 tidb_enforce_mpp 控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
+变量 `tidb_allow_mpp` 控制 TiDB 能否选择 MPP 模式执行查询。变量 `tidb_enforce_mpp` 控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
 
 这两个变量所有取值对应的结果如下：
 
