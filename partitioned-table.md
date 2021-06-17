@@ -1299,9 +1299,9 @@ mysql> explain select * from t1 where id < 150;
 
 `dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式还解决了两个 `static` 模式无法解决的问题：
 
-1. 不能够使用 Plan Cache；
++ 不能使用 Plan Cache
 
-2. 不能够使用 IndexJoin 的执行方式；
++ 不能使用 IndexJoin 的执行方式
 
 下面是关于 Plan Cache 的例子：
 
