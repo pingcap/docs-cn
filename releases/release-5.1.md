@@ -4,7 +4,7 @@ title: TiDB 5.1 Release Notes
 
 # TiDB 5.1 Release Notes
 
-发版日期：2021 年 6 月 18 日
+发版日期：2021 年 6 月 24 日
 
 TiDB 版本：5.1
 
@@ -13,7 +13,7 @@ TiDB 版本：5.1
 - 支持 MySQL 8 中的公共表表达式 (Common Table Expression)，提高了 SQL 语句的可读性与执行效率。
 - 支持 MySQL 8 中的动态权限（Dynamic Privileges）配置，实现对某些操作更细粒度的控制。
 - 支持通过 Stale Read 功能直接读取本地副本数据，降低读取延迟，提升查询性能。
-- 新增锁视图 (Lock View) 功能方便 DBA 观察事务加锁情况以及排查死锁问题。
+- 新增锁视图 (Lock View) 功能方便 DBA 观察事务加锁情况以及排查死锁问题（实验特性）。
 - 新增 TiKV 后台任务写入限制（TiKV Write Rate Limiter)，保证读写请求的延迟稳定性。
 
 ## 兼容性更改
@@ -25,7 +25,7 @@ TiDB 版本：5.1
 | `tidb_enable_enhanced_security`  | 新增 | 表示所连接的 TiDB 服务器是否启用了安全增强模式（SEM），在不重新启动 TiDB 服务器的情况下不能改变该变量。 |
 | `cte_max_recursion_depth`  | 新增 | 用于控制公共表表达式最大递归深度。 |
 | `init_connect`  | 新增 | 用于控制初始连接。 |
-| `tidb_analyze_version`  | 新增 | 用于控制所收集到的统计信息。默认值从 `1` 修改为 `2`，默认作为实验特性启用。 |
+| `tidb_analyze_version`  | 修改 | 用于控制所收集到的统计信息。默认值从 `1` 修改为 `2`，默认作为实验特性启用。 |
 | `tidb_enforce_mpp`  | 新增 | 用于忽略优化器代价估算，强制使用 mpp 模式。bool 类型，默认值为 false。 |
 
 ### 配置文件参数
@@ -33,16 +33,16 @@ TiDB 版本：5.1
 | 配置文件   | 配置项   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|:-----------|
 | TiDB 配置文件  | security.enable-sem  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
-| TiDB 配置文件  | performance.tcp-no-delay  | 新增  | 控制是否在 TiDB 在 TCP 层开启 no dela。 默认值为 `true`，代表开启。 |
-| TiDB 配置文件  | performance.committer-concurrency  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 16 修改为 128。|
+| TiDB 配置文件  | performance.tcp-no-delay  | 新增  | 控制 TiDB 是否在 TCP 层开启 no dela。 默认值为 `true`，代表开启。 |
+| TiDB 配置文件  | performance.committer-concurrency  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 "16" 修改为 "128"。|
 | TiDB 配置文件  | pessimistic-txn.deadlock-history-capacity  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
 | TiKV 配置文件  | `storage.io-rate-limit`  | 新增  | 控制 TiKV 写入的 IO 速率。`storage.io-rate-limit.max-bytes-per-sec` 默认值为 “0MB”。 |
-| TiKV 配置文件  | `abort-on-panic`  | 新增  | 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。默认值为 false, 代表不允许生成 core dump 文件。 |
+| TiKV 配置文件  | `abort-on-panic`  | 新增  | 控制 TiKV panic 时是否允许系统调用 `abort()` 退出进程并生成 core dump 文件。默认值为 false，代表不允许生成 core dump 文件。 |
 | TiKV 配置文件  | `soft-pending-compaction-bytes-limit`  | 修改  | pending compaction bytes 的软限制，默认值从 “64GB” 修改为 “192GB”。 |
 | TiKV 配置文件  | `hibernate-regions`  | 修改  | 默认值从 `false` 修改为 `true`。 如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。 |
-| TiKV 配置文件  | `resolved-ts.enable`  | 新增  | 为所有 region leader 维护 resolved-ts, 默认为 true。 |
-| TiKV 配置文件  | `resolved-ts.advance-ts-interval`  | 新增  | 推进 resolved-ts 的间隔，默认为 1s, 支持动态更改。 |
-| TiKV 配置文件  | `resolved-ts.scan-lock-pool-size`  | 新增  | 用于初始化 resolved-ts 时扫锁的线程数，默认为 2。 |
+| TiKV 配置文件  | `resolved-ts.enable`  | 新增  | 控制是否为所有 region leader 维护 resolved-ts，默认为 true。 |
+| TiKV 配置文件  | `resolved-ts.advance-ts-interval`  | 新增  | 设置推进 resolved-ts 的间隔，默认为 1s，支持动态更改。 |
+| TiKV 配置文件  | `resolved-ts.scan-lock-pool-size`  | 新增  | 设置初始化 resolved-ts 时扫描锁数据的线程数，默认值为 2。 |
 
 ### 其他
 
@@ -99,7 +99,7 @@ TiDB 版本：5.1
 + 新增锁视图（Lock View）（实验特性）
 [用户文档](/information-schema/information-schema-data-lock-waits.md)，[#24199](https://github.com/pingcap/tidb/issues/24199)
 
-    Lock View 用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题等
+    Lock View 用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题。
 
 ### 性能
 
@@ -128,7 +128,7 @@ TiDB 版本：5.1
         - 在部分 TiKV/PD/TiCDC 节点宕机情况下出现的同步中断问题
 
 + TiFlash 存储内存控制
-优化了 Region 快照生成的速度和内存使用量，减少了 OOM 的可能性
+    优化了 Region 快照生成的速度和内存使用量，减少了 OOM 的可能性
 
 + 新增 TiKV 后台任务写入限制（TiKV Write Rate Limiter）
     TiKV Write Rate Limiter 通过平滑 TiKV 后台任务如 GC，Compaction 等的写入流量，保证读写请求的延迟稳定性。TiKV 后台任务写入限制默认值为 “0MB”，建议将此限制设置为磁盘的最佳 I/O 带宽，例如云盘厂商指定的最大 I/O 带宽。
