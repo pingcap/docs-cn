@@ -1247,7 +1247,7 @@ select * from t;
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
-TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认情况下使用 `static` 模式，如果想打开动态模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`。
+TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使用 `static` 模式。如果想开启 `dynamic` 模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`。
 
 {{< copyable "sql" >}}
 
