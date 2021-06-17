@@ -284,7 +284,7 @@ set @@session.tidb_allow_mpp=1;
 set @@session.tidb_enforce_mpp=0;
 ```
 
-如果想要忽略优化器代价估算，强制使用 MPP，可以通过如下语句来设置：
+如果想要 TiDB 忽略优化器的代价估算，强制使用 MPP，可以通过如下语句来设置：
 
 {{< copyable "sql" >}}
 
