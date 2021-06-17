@@ -12,6 +12,17 @@ The TiKV configuration file supports more options than command-line parameters. 
 
 This document only describes the parameters that are not included in command-line parameters. For more details, see [command-line parameter](/command-line-flags-for-tikv-configuration.md).
 
+## Global configuration
+
+### abort-on-panic
+
++ Sets whether to call `abort()` to exit the process when TiKV panics. This option affects whether TiKV allows the system to generate core dump files.
+
+    + If the value of this configuration item is `false`, when TiKV panics, it calls `exit()` to exit the process.
+    + If the value of this configuration item is `true`, when TiKV panics, TiKV calls `abort()` to exit the process. At this time, TiKV allows the system to generate core dump files when exiting. To generate the core dump file, you also need to perform the system configuration related to core dump (for example, setting the size limit of the core dump file via `ulimit -c` command, and configure the core dump path. Different operating systems have different related configurations). To avoid the core dump files occupying too much disk space and causing insufficient TiKV disk space, it is recommended to set the core dump generation path to a disk partition different to that of TiKV data.
+
++ Default value: `false`
+
 ### server
 
 + Configuration items related to the server
@@ -42,7 +53,7 @@ This document only describes the parameters that are not included in command-lin
 
 ### `grpc-memory-pool-quota`
 
-+ Limit the memory size that can be used by gRPC
++ Limits the memory size that can be used by gRPC
 + Default: No limit
 + Limit the memory in case OOM is observed. Note that limit the usage can lead to potential stall
 
