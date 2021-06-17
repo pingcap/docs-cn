@@ -570,7 +570,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **警告：**
 >
-> 目前 Partition Table Dynamic Mode 为实验特性，不建议在生产环境中使用。
+> 目前分区表动态模式为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：static
