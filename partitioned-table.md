@@ -1255,7 +1255,7 @@ TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使�
 set @@session.tidb_partition_prune_mode = 'dynamic'
 ```
 
-在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来；而在 `dynamic` 模式下，单个算子直接访问多个分区，不再使用 Union。
+在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来。在 `dynamic` 模式下，单个算子直接访问多个分区，不使用 Union。
 
 {{< copyable "sql" >}}
 
