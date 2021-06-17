@@ -1303,7 +1303,7 @@ mysql> explain select * from t1 where id < 150;
 
 2. 不能够使用 IndexJoin 的执行方式；
 
-下面是关于 Plan Cache 的例子：
+下面是关于 Plan Cache 的例子：
 
 {{< copyable "sql" >}}
 
