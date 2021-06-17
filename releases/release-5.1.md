@@ -54,9 +54,9 @@ TiDB 版本：5.1
 
 ## 新功能
 
-### SQL 
+### SQL
 
-- 新增 MySQL 8 中的公共表表达式(Common Table Expression)，为 TiDB 带来递归/非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。 在 TiDB 中，你可以通过 `WITH` 语句使用公共表表达式。 
+- 新增 MySQL 8 中的公共表表达式(Common Table Expression)，为 TiDB 带来递归/非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。 在 TiDB 中，你可以通过 `WITH` 语句使用公共表表达式。
 [用户文档](/sql-statements/sql-statement-with.md)，[#17472](https://github.com/pingcap/tidb/issues/17472)
 
 - 新增 MySQL 8 中的动态权限（Dynamic Privileges）。动态权限用于限制 `SUPER` 权限，为 TiDB 提供更灵活的权限配置，实现对某些操作更细粒度的控制。例如，你可以使用动态权限来创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
@@ -76,7 +76,7 @@ TiDB 版本：5.1
 
 - 全面加强列类型的在线变更能力，支持通过 ALTER TABLE 语句进行列的在线类型修改, 包括但不限于：
 
-    - 从 varchar 转换为 bigint 
+    - 从 varchar 转换为 bigint
     - decimal 精度修改
     - 从 varchar(10) 到 varchar(5) 的长度压缩
 
@@ -115,7 +115,7 @@ TiDB 版本：5.1
 + 默认开启 Hibernate Region 特性 [#10266](https://github.com/tikv/tikv/pull/10266)
 
 ### 稳定性
- 
+
 + TiCDC 复制稳定性问题解决
 
     - 改善 TiCDC 内存使用，避免在以下场景出现 OOM
@@ -123,7 +123,7 @@ TiDB 版本：5.1
         - 同步中断期间积累大量数据，超过 1TB，重新同步出现 OOM 问题
         - 大量数据写入造成 TiCDC 出现 OOM 问题
 
-    - 改善 TiCDC 同步中断问题，缓解以下场景的问题 [project#11]https://github.com/pingcap/ticdc/projects/11)
+    - 改善 TiCDC 同步中断问题，缓解以下场景的问题 [project#11](https://github.com/pingcap/ticdc/projects/11)
         - 网络不稳定情况下出现的同步中断问题
         - 在部分 TiKV/PD/TiCDC 节点宕机情况下出现的同步中断问题
 
@@ -187,8 +187,8 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
     - 避免在添加 `scatter region` 调度器后出现的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
     - 解决扩缩容过程中出现的多个调度问题
 
-        - 优化副本 snapshot 生成流程，解决扩缩容调度慢问题：pd/issues/3563 ，tikv/pull/10059 ，tikv/pull/10001 
-        - 解决由于流量变化引带来的心跳压力引起的调度慢问题 pd/pull/3693  pd/pull/3739 /pd/pull/3728  pd/pull/3751 
+        - 优化副本 snapshot 生成流程，解决扩缩容调度慢问题：pd/issues/3563 ，tikv/pull/10059 ，tikv/pull/10001
+        - 解决由于流量变化引带来的心跳压力引起的调度慢问题 pd/pull/3693  pd/pull/3739 /pd/pull/3728  pd/pull/3751
         - 减少大集群由于调度产生的空间差异问题，并优化调度公式防止由于压缩率差异大引发的类似异构空间集群的爆盘问题   tikv/pd/pull/3592  tikv/pull/10005
 
 + Tools
@@ -221,20 +221,20 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
 + TiDB
 
-    - 修复投影消除在投影结果为空时执行结果可能错误的问题 [#24093](https://github.com/pingcap/tidb/pull/24093)
-    - 修复列包含 `NULL` 值时查询结果在某些情况下可能错误的问题 [#24063](https://github.com/pingcap/tidb/pull/24063)
-    - 当有虚拟列参与扫描时不允许生成 MPP 计划 [#24058](https://github.com/pingcap/tidb/pull/24058)
-    - 修复 Plan Cache 中对 `PointGet` 和 `TableDual` 错误的重复使用 [#24043](https://github.com/pingcap/tidb/pull/24043)
-    - 修复优化器在为聚簇索引构建 `IndexMerge` 执行计划时出现的错误 [#24042](https://github.com/pingcap/tidb/pull/24042)
-    - 修复 BIT 类型相关错误的类型推导 [#24027](https://github.com/pingcap/tidb/pull/24027)
-    - 修复某些优化器 Hint 在 `PointGet` 算子存在时无法生效的问题 [#23685](https://github.com/pingcap/tidb/pull/23685)
-    - 修复 DDL 遇到错误回滚时可能失败的问题 [#24080](https://github.com/pingcap/tidb/pull/24080)
-    - 修复二进制字面值常量的索引范围构造错误的问题 [#24041](https://github.com/pingcap/tidb/pull/24041)
-    - 修复某些情况下 `IN` 语句的执行结果可能错误的问题 [#24023](https://github.com/pingcap/tidb/pull/24023)
-    - 修复某些字符串函数的返回结果错误的问题 [#23879](https://github.com/pingcap/tidb/pull/23879)
-    - 执行 `REPLACE` 语句需要用户同时拥有 `INSERT` 和 `DELETE` 权限 [#23939](https://github.com/pingcap/tidb/pull/23939)
+    - 修复投影消除在投影结果为空时执行结果可能错误的问题 [#23887](https://github.com/pingcap/tidb/issues/23887)
+    - 修复列包含 `NULL` 值时查询结果在某些情况下可能错误的问题 [#23891](https://github.com/pingcap/tidb/issues/23891)
+    - 当有虚拟列参与扫描时不允许生成 MPP 计划 [#23886](https://github.com/pingcap/tidb/issues/23886)
+    - 修复 Plan Cache 中对 `PointGet` 和 `TableDual` 错误的重复使用 [#23187](https://github.com/pingcap/tidb/issues/23187) [#23144](https://github.com/pingcap/tidb/issues/23144) [#23304](https://github.com/pingcap/tidb/issues/23304) [#23290](https://github.com/pingcap/tidb/issues/23290)
+    - 修复优化器在为聚簇索引构建 `IndexMerge` 执行计划时出现的错误 [#23906](https://github.com/pingcap/tidb/issues/23906)
+    - 修复 BIT 类型相关错误的类型推导 [#23832](https://github.com/pingcap/tidb/issues/23832)
+    - 修复某些优化器 Hint 在 `PointGet` 算子存在时无法生效的问题 [#23570](https://github.com/pingcap/tidb/issues/23570)
+    - 修复 DDL 遇到错误回滚时可能失败的问题 [#23893](https://github.com/pingcap/tidb/issues/23893)
+    - 修复二进制字面值常量的索引范围构造错误的问题 [#23672](https://github.com/pingcap/tidb/issues/23672)
+    - 修复某些情况下 `IN` 语句的执行结果可能错误的问题 [#23889](https://github.com/pingcap/tidb/issues/23889)
+    - 修复某些字符串函数的返回结果错误的问题 [#23759](https://github.com/pingcap/tidb/issues/23759)
+    - 执行 `REPLACE` 语句需要用户同时拥有 `INSERT` 和 `DELETE` 权限 [#23909](https://github.com/pingcap/tidb/issues/23909)
     - 修复点查时出现的的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
-    - 修复因错误比较二进制与字节而导致的 `TableDual` 计划错误的问题 [#23918](https://github.com/pingcap/tidb/pull/23918)
+    - 修复因错误比较二进制与字节而导致的 `TableDual` 计划错误的问题 [#23846](https://github.com/pingcap/tidb/issues/23846)
     - 修复了在某些情况下，使用前缀索引和 Index Join 导致的 panic 的问题 [#24547](https://github.com/pingcap/tidb/issues/24547) [#24716](https://github.com/pingcap/tidb/issues/24716) [#24717](https://github.com/pingcap/tidb/issues/24717)
     - 修复了 `point get` 的 prepare plan cache 被事务中的 `point get` 语句不正确使用的问题 [#24741](https://github.com/pingcap/tidb/issues/24741)
     - 修复了当排序规则为 `ascii_bin` 或 `latin1_bin` 时，写入错误的前缀索引值的问题 [#24569](https://github.com/pingcap/tidb/issues/24569)
@@ -254,9 +254,9 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
 + TiKV
 
-    - 修复了 Coprocessor 未正确处理 `IN` 表达式有符号整数或无符号整数类型数据的问题 [#10018](https://github.com/tikv/tikv/pull/10018)
-    - 修复了在批量 ingest SST 文件后产生大量空 Region 的问题 [#10015](https://github.com/tikv/tikv/pull/10015)
-    - 修复了 file dictionary 文件损坏之后 TiKV 无法启动的问题 [#9992](https://github.com/tikv/tikv/pull/9992)
+    - 修复了 Coprocessor 未正确处理 `IN` 表达式有符号整数或无符号整数类型数据的问题 [#9821](https://github.com/tikv/tikv/issues/9821)
+    - 修复了在批量 ingest SST 文件后产生大量空 Region 的问题 [#964](https://github.com/pingcap/br/issues/964)
+    - 修复了 file dictionary 文件损坏之后 TiKV 无法启动的问题 [#9886](https://github.com/tikv/tikv/issues/9886)
     - 修复了由于读取旧值而导致的 TiCDC OOM 问题 [#9996](https://github.com/tikv/tikv/issues/9996) [#9981](https://github.com/tikv/tikv/issues/9981)
     - 修复了聚簇主键列在次级索引上的 `latin1_bin` 字符集出现空值的问题 [#24548](https://github.com/pingcap/tidb/issues/24548)
     - 新增 `abort-on-panic` 配置，允许 TiKV 在 panic 时生成 core dump 文件。用户仍需正确配置环境以开启 core dump。 [#10216](https://github.com/tikv/tikv/pull/10216)
@@ -292,24 +292,25 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
         - 修复在生成 KV 数据时可能发生的 panic 问题 [#1127](https://github.com/pingcap/br/pull/1127)
         - 修复数据导入期间 Batch Split Region 因键的总大小超过 Raft 条目限制而可能失败的问题 [#969](https://github.com/pingcap/br/issues/969)
-        - 修复在导入 CSV 文件时，如果文件的最后一行未包含换行符(`\r\n`)会导入报错的问题 [#1134](https://github.com/pingcap/br/pull/1134)
+
+            - 修复在导入 CSV 文件时，如果文件的最后一行未包含换行符(`\r\n`)会导入报错的问题 [#1133](https://github.com/pingcap/br/issues/1133)
         - 修复在导入目标表包含 double 类型的自增列会导致表的 auto_Increment 值异常的问题 [#1178](https://github.com/pingcap/br/pull/1178)
 
     + Backup & Restore (BR)
 
-        - 修复备份期间少数 TiKV 节点不可用导致的备份中断问题 [#1019](https://github.com/pingcap/br/pull/1019)
+        - 修复备份期间少数 TiKV 节点不可用导致的备份中断问题 [#980](https://github.com/pingcap/br/issues/980)
 
     + TiCDC
 
         - 修复 Unified Sorter 中的并发问题并过滤无用的错误消息 [#1678](https://github.com/pingcap/ticdc/pull/1678)
-        - 修复同步到 MinIO 时，重复创建目录会导致同步中断的问题 [#1672](https://github.com/pingcap/ticdc/pull/1672)
-        - 默认开启会话变量 `explicit_defaults_for_timestamp`，使得下游 MySQL 5.7 和上游 TiDB 的行为保持一致 [#1659](https://github.com/pingcap/ticdc/pull/1659)
-        - 修复错误地处理 `io.EOF` 可能导致同步中断的问题 [#1648](https://github.com/pingcap/ticdc/pull/1648)
+        - 修复同步到 MinIO 时，重复创建目录会导致同步中断的问题 [#1463](https://github.com/pingcap/ticdc/issues/1463)
+        - 默认开启会话变量 `explicit_defaults_for_timestamp`，使得下游 MySQL 5.7 和上游 TiDB 的行为保持一致 [#1585](https://github.com/pingcap/ticdc/issues/1585)
+        - 修复错误地处理 `io.EOF` 可能导致同步中断的问题 [#1633](https://github.com/pingcap/ticdc/issues/1633)
         - 修正 TiCDC 面板中的 TiKV CDC endpoint CPU 统计信息 [#1645](https://github.com/pingcap/ticdc/pull/1645)
-        - 增加 `defaultBufferChanSize` 来避免某些情况下同步阻塞的问题 [#1632](https://github.com/pingcap/ticdc/pull/1632)
+        - 增加 `defaultBufferChanSize` 来避免某些情况下同步阻塞的问题 [#1259](https://github.com/pingcap/ticdc/issues/1259)
         - 修复 Avro 输出中丢失时区信息的问题 [#1712](https://github.com/pingcap/ticdc/pull/1712)
         - 支持清理 Unified Sorter 过期的文件并禁止共享 `sort-dir` 目录 [#1742](https://github.com/pingcap/ticdc/pull/1742)
-        - 修复存在大量过期 Region 信息时 KV 客户端可能锁死的问题 [#1801](https://github.com/pingcap/ticdc/pull/1801)
+        - 修复存在大量过期 Region 信息时 KV 客户端可能锁死的问题 [#1599](https://github.com/pingcap/ticdc/issues/1599)
         - 修复 `--cert-allowed-cn` 参数中错误的帮助消息 [#1697](https://github.com/pingcap/ticdc/pull/1697)
         - 修复因更新 `explicit_defaults_for_timestamp` 而需要 MySQL `SUPER` 权限的问题 [#1750](https://github.com/pingcap/ticdc/pull/1750)
         - 添加 sink 流控以降低内存溢出的风险 [#1840](https://github.com/pingcap/ticdc/pull/1840)
