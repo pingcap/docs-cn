@@ -1297,7 +1297,7 @@ mysql> explain select * from t1 where id < 150;
 
 从以上示例可见，开启 `dynamic` 模式后，执行计划便没有了 Union 算子，且分区裁剪依然生效，都只访问了 `p0` 和 `p1` 两个分区。
 
-`dynamic` 模式让执行计划变得更简单清晰，剔除 Union 操作提高执行效率，以及避免了 Union 并发管理的问题，此外还解决了两个 `static` 模式无法解决的问题：
+`dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式还解决了两个 `static` 模式无法解决的问题：
 
 1. 不能够使用 Plan Cache；
 
