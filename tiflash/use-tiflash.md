@@ -299,7 +299,7 @@ Session 变量 `tidb_enforce_mpp` 的初始值等于这台 tidb-server 实例的
 >
 > tidb_enforce_mpp 在生效时，会让优化器忽略代价估算选择 MPP 模式。如果是因为其它 MPP 不支持的原因，比如没有 TiFlash 副本、TiFlash 副本同步未完成、语句中含有 MPP 模式不支持的算子或函数等，那么仍然会无法选择 MPP 模式。
 > 
-> 在因为非代价估算的原因导致无法选择 MPP 的情况下，使用 explain 语句查看执行计划时，会返回警告说明原因，例如：
+> 如果由于代价估算之外的原因导致 TiDB 优化器无法选择 MPP，在你使用 `EXPLAIN` 语句查看执行计划时，会返回警告说明原因，例如：
 > 
 > {{< copyable "sql" >}}
 > 
