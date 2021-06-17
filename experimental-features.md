@@ -14,7 +14,6 @@ This document introduces the experimental features of TiDB in different versions
 + Improve the stability of the optimizer's choice of indexes (Introduced in v5.0)
     + Extend the statistics feature by collecting the multi-column order dependency information.
     + Refactor the statistics module, including deleting the `TopN` value from `CMSKetch` and the histogram, and adding NDV information for histogram buckets of each table index.
-+ [hibernate-regions](/tikv-configuration-file.md#hibernate-regions-experimental). A Region that idles for a long time is automatically set as hibernated. This reduces the extra overhead caused by heartbeat messages between the Raft leader and the followers for idle Regions.
 
 ## Scheduling
 

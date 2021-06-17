@@ -712,7 +712,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Possible values: `PHYSICAL`, `LEGACY`
     - `LEGACY`: Uses the old way of scanning, that is, disable Green GC.
     - `PHYSICAL`: Uses the physical scanning method, that is, enable Green GC.
-- This parameter specifies the way of scanning locks in the Resolve Locks step of GC. When set to `LEGACY`, TiDB scans locks by Regions. The value `PHYSICAL` enables each TiKV node to bypass the Raft layer and directly scan data. This feature can effectively mitigate the impact of GC wakening up all Regions when the [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-experimental) feature is enabled, thus improving the execution speed in the Resolve Locks step.
+- This variable specifies the way of scanning locks in the Resolve Locks step of GC. When the variable value is set to `LEGACY`, TiDB scans locks by Regions. When the value `PHYSICAL` is used, it enables each TiKV node to bypass the Raft layer and directly scan data, which can effectively mitigate the impact of GC wakening up all Regions when the [Hibernate Region](/tikv-configuration-file.md#hibernate-regions) feature is enabled, thus improving the execution speed in the Resolve Locks step.
 
 ### tidb_general_log
 
