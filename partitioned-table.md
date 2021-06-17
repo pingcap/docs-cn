@@ -1240,3 +1240,173 @@ select * from t;
 环境变量 `tidb_enable_list_partition` 可以控制是否启用分区表功能。如果该变量设置为 `OFF`，则建表时会忽略分区信息，以普通表的方式建表。
 
 该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入)。
+
+### 动态模式
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认情况下使用 `static` 模式，如果想打开动态模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`。
+
+{{< copyable "sql" >}}
+
+```sql
+set @@session.tidb_partition_prune_mode = 'dynamic'
+```
+
+在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来；而在 `dynamic` 模式下，单个算子直接访问多个分区，不再使用 Union。
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> create table t1(id int, age int, key(id)) partition by range(id) (
+    ->     partition p0 values less than (100),
+    ->     partition p1 values less than (200),
+    ->     partition p2 values less than (300),
+    ->     partition p3 values less than (400));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> explain select * from t1 where id < 150;
++------------------------------+----------+-----------+------------------------+--------------------------------+
+| id                           | estRows  | task      | access object          | operator info                  |
++------------------------------+----------+-----------+------------------------+--------------------------------+
+| PartitionUnion_9             | 6646.67  | root      |                        |                                |
+| ├─TableReader_12             | 3323.33  | root      |                        | data:Selection_11              |
+| │ └─Selection_11             | 3323.33  | cop[tikv] |                        | lt(test.t1.id, 150)            |
+| │   └─TableFullScan_10       | 10000.00 | cop[tikv] | table:t1, partition:p0 | keep order:false, stats:pseudo |
+| └─TableReader_18             | 3323.33  | root      |                        | data:Selection_17              |
+|   └─Selection_17             | 3323.33  | cop[tikv] |                        | lt(test.t1.id, 150)            |
+|     └─TableFullScan_16       | 10000.00 | cop[tikv] | table:t1, partition:p1 | keep order:false, stats:pseudo |
++------------------------------+----------+-----------+------------------------+--------------------------------+
+7 rows in set (0.00 sec)
+
+mysql> set @@session.tidb_partition_prune_mode = 'dynamic';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> explain select * from t1 where id < 150;
++-------------------------+----------+-----------+-----------------+--------------------------------+
+| id                      | estRows  | task      | access object   | operator info                  |
++-------------------------+----------+-----------+-----------------+--------------------------------+
+| TableReader_7           | 3323.33  | root      | partition:p0,p1 | data:Selection_6               |
+| └─Selection_6           | 3323.33  | cop[tikv] |                 | lt(test.t1.id, 150)            |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t1        | keep order:false, stats:pseudo |
++-------------------------+----------+-----------+-----------------+--------------------------------+
+3 rows in set (0.00 sec)
+```
+
+从上面例子可以看出，打开动态模式后，执行计划便没有了 Union 算子，且分区裁剪依然生效，都只范围了 `p0` 和 `p1` 两个分区。
+
+`dynamic` 模式让执行计划变得更简单清晰，剔除 Union 操作提高执行效率，以及避免了 Union 并发管理的问题，此外还解决了两个 `static` 模式无法解决的问题：
+
+1. 不能够使用 Plan Cache；
+
+2. 不能够使用 IndexJoin 的执行方式；
+
+下面是关于 Plan Cache 的例子：
+
+{{< copyable "sql" >}}
+
+```sql
+-- 需要提前在配置文件中代开 Plan Cache 这个功能
+mysql> set @a=150;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> set @@tidb_partition_prune_mode = 'static';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> prepare stmt from 'select * from t1 where id < ?';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> execute stmt using @a;
+Empty set (0.00 sec)
+
+mysql> execute stmt using @a;
+Empty set (0.00 sec)
+
+-- static 模式下执行两次相同的查询，第二次无法命中缓存
+mysql> select @@last_plan_from_cache;
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      0 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> set @@tidb_partition_prune_mode = 'dynamic';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> prepare stmt from 'select * from t1 where id < ?';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> execute stmt using @a;
+Empty set (0.00 sec)
+
+mysql> execute stmt using @a;
+Empty set (0.00 sec)
+
+-- dynamic 模式下第二次执行命中缓存
+mysql> select @@last_plan_from_cache;
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+```
+
+下面是关于 IndexJoin 的例子：
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> create table t2(id int, code int);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> set @@tidb_partition_prune_mode = 'static';
+Query OK, 0 rows affected (0.00 sec)
+
+-- static 模式下，即使使用了 hint，依然不能选上 IndexJoin
+mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 0 and t2.id = t1.id;
++--------------------------------+----------+-----------+------------------------+------------------------------------------------+
+| id                             | estRows  | task      | access object          | operator info                                  |
++--------------------------------+----------+-----------+------------------------+------------------------------------------------+
+| HashJoin_13                    | 12.49    | root      |                        | inner join, equal:[eq(test.t1.id, test.t2.id)] |
+| ├─TableReader_42(Build)        | 9.99     | root      |                        | data:Selection_41                              |
+| │ └─Selection_41               | 9.99     | cop[tikv] |                        | eq(test.t2.code, 0), not(isnull(test.t2.id))   |
+| │   └─TableFullScan_40         | 10000.00 | cop[tikv] | table:t2               | keep order:false, stats:pseudo                 |
+| └─PartitionUnion_15(Probe)     | 39960.00 | root      |                        |                                                |
+|   ├─TableReader_18             | 9990.00  | root      |                        | data:Selection_17                              |
+|   │ └─Selection_17             | 9990.00  | cop[tikv] |                        | not(isnull(test.t1.id))                        |
+|   │   └─TableFullScan_16       | 10000.00 | cop[tikv] | table:t1, partition:p0 | keep order:false, stats:pseudo                 |
+|   ├─TableReader_24             | 9990.00  | root      |                        | data:Selection_23                              |
+|   │ └─Selection_23             | 9990.00  | cop[tikv] |                        | not(isnull(test.t1.id))                        |
+|   │   └─TableFullScan_22       | 10000.00 | cop[tikv] | table:t1, partition:p1 | keep order:false, stats:pseudo                 |
+|   ├─TableReader_30             | 9990.00  | root      |                        | data:Selection_29                              |
+|   │ └─Selection_29             | 9990.00  | cop[tikv] |                        | not(isnull(test.t1.id))                        |
+|   │   └─TableFullScan_28       | 10000.00 | cop[tikv] | table:t1, partition:p2 | keep order:false, stats:pseudo                 |
+|   └─TableReader_36             | 9990.00  | root      |                        | data:Selection_35                              |
+|     └─Selection_35             | 9990.00  | cop[tikv] |                        | not(isnull(test.t1.id))                        |
+|       └─TableFullScan_34       | 10000.00 | cop[tikv] | table:t1, partition:p3 | keep order:false, stats:pseudo                 |
++--------------------------------+----------+-----------+------------------------+------------------------------------------------+
+17 rows in set, 1 warning (0.00 sec)
+
+mysql> set @@tidb_partition_prune_mode = 'dynamic';
+Query OK, 0 rows affected (0.00 sec)
+
+-- dynamic 模式下，可以选上 IndexJoin
+mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 0 and t2.id = t1.id;
++---------------------------------+----------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------------+
+| id                              | estRows  | task      | access object          | operator info                                                                                                       |
++---------------------------------+----------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_11                    | 12.49    | root      |                        | inner join, inner:IndexLookUp_10, outer key:test.t2.id, inner key:test.t1.id, equal cond:eq(test.t2.id, test.t1.id) |
+| ├─TableReader_16(Build)         | 9.99     | root      |                        | data:Selection_15                                                                                                   |
+| │ └─Selection_15                | 9.99     | cop[tikv] |                        | eq(test.t2.code, 0), not(isnull(test.t2.id))                                                                        |
+| │   └─TableFullScan_14          | 10000.00 | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                                                      |
+| └─IndexLookUp_10(Probe)         | 1.25     | root      | partition:all          |                                                                                                                     |
+|   ├─Selection_9(Build)          | 1.25     | cop[tikv] |                        | not(isnull(test.t1.id))                                                                                             |
+|   │ └─IndexRangeScan_7          | 1.25     | cop[tikv] | table:t1, index:id(id) | range: decided by [eq(test.t1.id, test.t2.id)], keep order:false, stats:pseudo                                      |
+|   └─TableRowIDScan_8(Probe)     | 1.25     | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                                                      |
++---------------------------------+----------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------------+
+8 rows in set (0.00 sec)
+```
