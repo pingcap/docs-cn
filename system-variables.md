@@ -208,7 +208,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - 0 或 OFF，代表不强制使用 MPP 模式（默认）
     - 1 或 ON，代表将忽略代价估算，强制使用 MPP 模式。注意：只有当 `tidb_allow_mpp=true` 时该设置才生效。
 
-参见：[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择 MPP 模式)
+MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)。
 
 ### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
