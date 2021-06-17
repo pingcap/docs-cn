@@ -254,7 +254,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 ## 使用 MPP 模式
 
-TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。默认由优化器自动选择是否使用 MPP 模式，可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-span-classversion-mark-v50-span) 和 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-span-classversion-mark-v51-span) 的值来更改选择策略，变量取值包括：
+TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。TiDB 默认由优化器自动选择是否使用 MPP 模式，你可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 和 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的值来更改选择策略。
 
 ### 控制是否选择 MPP 模式
 
