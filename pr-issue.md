@@ -6,7 +6,7 @@
     - 修复投影消除在投影结果为空时执行结果可能错误的问题 [#23887](https://github.com/pingcap/tidb/issues/23887)
     - 修复列包含 `NULL` 值时查询结果在某些情况下可能错误的问题 [#23891](https://github.com/pingcap/tidb/issues/23891)
     - 当有虚拟列参与扫描时不允许生成 MPP 计划 [#23886](https://github.com/pingcap/tidb/issues/23886)
-    - 修复 Plan Cache 中对 `PointGet` 和 `TableDual` 错误的重复使用 [#23187](https://github.com/pingcap/tidb/issues/23187)
+    - 修复 Plan Cache 中对 `PointGet` 和 `TableDual` 错误的重复使用 [#23187](https://github.com/pingcap/tidb/issues/23187) [#23144](https://github.com/pingcap/tidb/issues/23144) [#23304](https://github.com/pingcap/tidb/issues/23304) [#23290](https://github.com/pingcap/tidb/issues/23290)
     - 修复优化器在为聚簇索引构建 `IndexMerge` 执行计划时出现的错误 [#23906](https://github.com/pingcap/tidb/issues/23906)
     - 修复 BIT 类型相关错误的类型推导 [#23832](https://github.com/pingcap/tidb/issues/23832)
     - 修复某些优化器 Hint 在 `PointGet` 算子存在时无法生效的问题 [#23570](https://github.com/pingcap/tidb/issues/23570)
