@@ -205,7 +205,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION
 - 默认值：OFF（表示关闭）
 - 这个变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
-    - 0 或 OFF，代表将不会强制使用 mpp 模式（默认）
+    - 0 或 OFF，代表不强制使用 MPP 模式（默认）
     - 1 或 ON，代表将忽略代价估算，强制使用 mpp 模式，注意：只有当 tidb_allow_mpp=true 时才生效。
 
 参见：[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择 MPP 模式)
