@@ -22,9 +22,9 @@ To reduce the impact on the cluster, you can use the `--ratelimit` parameter to 
 
 ## Does BR back up system tables? During data restoration, do they raise conflict?
 
-The system libraries (`information_schema`, `performance_schema`, `mysql`) are filtered out during full backup. For more details, refer to the [Backup Principle](/br/backup-and-restore-tool.md#implementation-principles).
+The system schemas (`information_schema`, `performance_schema`, `mysql`) are filtered out during full backup. For more details, refer to the [Backup Principle](/br/backup-and-restore-tool.md#implementation-principles).
 
-Because these system libraries do not exist in the backup files, no conflict occurs among system tables during data restoration.
+Because these system schemas do not exist in the backup files, no conflict occurs among system tables during data restoration.
 
 ## What should I do to handle the `Permission denied` or `No such file or directory` error, even if I have tried to run BR using root in vain?
 

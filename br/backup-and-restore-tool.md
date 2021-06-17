@@ -152,6 +152,18 @@ Note that skipping the version check might introduce incompatibility. The versio
 | Use BR v4.0 to back up TiDB v4.0 | ✅ | ✅ | ✅ (If TiKV >= v4.0.0-rc.1, and if BR contains the [#233](https://github.com/pingcap/br/pull/233) bug fix and TiKV does not contain the [#7241](https://github.com/tikv/tikv/pull/7241) bug fix, BR will cause the TiKV node to restart.) |
 | Use BR nightly or v5.0 to back up TiDB v4.0 | ❌ (If the TiDB version is earlier than v4.0.9, the [#609](https://github.com/pingcap/br/issues/609) issue might occur.) | ❌ (If the TiDB version is earlier than v4.0.9, the [#609](https://github.com/pingcap/br/issues/609) issue might occur.) | ❌ (If the TiDB version is earlier than v4.0.9, the [#609](https://github.com/pingcap/br/issues/609) issue might occur.) |
 
+### Backup and restore system schemas
+
+Before v5.1.0, BR filtered out data from the system schemas during the backup.
+
+Since v5.1.0, BR **backups** all data by default, including the system schema (`mysql.*`). But to be compatible with the earlier versions of BR, the tables in system schema are **not** restored by default during the **restore**. If you want the tables to be restored to the system schemas, you need to set the [`filter` parameter](/br/use-br-command-line-tool.md#back-up-with-table-filter). Then, the system tables are first restored to the temporary schemas and then to the system schemas (by renaming the temporary schemas).
+
+In addition, TiDB performs special operations on the following system tables:
+
+- Tables related to statistical information are not restored, because the table ID of the statistical information has changed.
+- `tidb` and `global_variables` tables in the `mysql` schema are not restored, because these tables cannot be overwritten. For example, overwriting these tables by the GC safepoint will affect the cluster.
+- The restore of the `user` table in the `mysql` schema does not take effect until you manually execute the `FLUSH PRIVILEGE` command.
+
 ### Minimum machine configuration required for running BR
 
 The minimum machine configuration required for running BR is as follows:
