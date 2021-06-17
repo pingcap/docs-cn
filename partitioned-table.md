@@ -1308,7 +1308,7 @@ mysql> explain select * from t1 where id < 150;
 {{< copyable "sql" >}}
 
 ```sql
--- 需要提前在配置文件中代开 Plan Cache 这个功能
+-- 需要提前在配置文件中开启 Plan Cache 功能
 mysql> set @a=150;
 Query OK, 0 rows affected (0.00 sec)
 
