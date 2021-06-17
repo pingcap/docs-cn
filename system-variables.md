@@ -574,7 +574,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 默认值：static
-- 这个变量用来设置是否开启动态模式，关于动态模式的详情请参阅[分区表动态模式](partitioned-table.md#动态模式)。
+- 这个变量用来设置是否开启动态模式，关于动态模式的详情请参阅[分区表动态模式](/partitioned-table.md#动态模式)。
 
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
