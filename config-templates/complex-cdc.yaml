@@ -97,14 +97,17 @@ cdc_servers:
     port: 8300
     deploy_dir: "/tidb-deploy/cdc-8300"
     log_dir: "/tidb-deploy/cdc-8300/log"
+    # gc-ttl: 86400 
   - host: 10.0.1.2
     port: 8300
     deploy_dir: "/tidb-deploy/cdc-8300"
     log_dir: "/tidb-deploy/cdc-8300/log"
+    # gc-ttl: 86400 
   - host: 10.0.1.3
     port: 8300
     deploy_dir: "/tidb-deploy/cdc-8300"
     log_dir: "/tidb-deploy/cdc-8300/log"
+    # gc-ttl: 86400 
 
 monitoring_servers:
   - host: 10.0.1.10
