@@ -1255,7 +1255,7 @@ TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使�
 set @@session.tidb_partition_prune_mode = 'dynamic'
 ```
 
-在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来。在 `dynamic` 模式下，单个算子直接访问多个分区，不使用 Union。
+在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来。下面例子进行了一个简单的读取操作，可以发现 TiDB 用 Union 合并了对应两个分区的结果：
 
 {{< copyable "sql" >}}
 
@@ -1280,7 +1280,13 @@ mysql> explain select * from t1 where id < 150;
 |     └─TableFullScan_16       | 10000.00 | cop[tikv] | table:t1, partition:p1 | keep order:false, stats:pseudo |
 +------------------------------+----------+-----------+------------------------+--------------------------------+
 7 rows in set (0.00 sec)
+```
 
+在 `dynamic` 模式下，每个算子都支持直接访问多个分区，所以 TiDB 不再使用 Union。
+
+{{< copyable "sql" >}}
+
+```sql
 mysql> set @@session.tidb_partition_prune_mode = 'dynamic';
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1295,7 +1301,7 @@ mysql> explain select * from t1 where id < 150;
 3 rows in set (0.00 sec)
 ```
 
-从以上示例可见，开启 `dynamic` 模式后，执行计划便没有了 Union 算子，且分区裁剪依然生效，都只访问了 `p0` 和 `p1` 两个分区。
+可见执行计划中的 Union 消失了，此外分区裁剪依然生效，上述执行计划只访问了 `p0` 和 `p1` 两个分区。
 
 `dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式还解决了两个 `static` 模式无法解决的问题：
 
@@ -1303,12 +1309,11 @@ mysql> explain select * from t1 where id < 150;
 
 + 不能使用 IndexJoin 的执行方式
 
-下面是关于 Plan Cache 的例子：
+下面是关于 Plan Cache 的例子，我们在配置文件中开启 Plan Cache 功能后，在 `static` 模式下执行同一个查询两次：
 
 {{< copyable "sql" >}}
 
 ```sql
--- 需要提前在配置文件中开启 Plan Cache 功能
 mysql> set @a=150;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1332,7 +1337,15 @@ mysql> select @@last_plan_from_cache;
 |                      0 |
 +------------------------+
 1 row in set (0.00 sec)
+```
 
+`last_plan_from_cache` 变量可以指示上一次查询是否命中 Plan Cache，可见在 `static` 模式下，即使执行同一个分区表查询多次，也不会命中 Plan Cache。
+
+下面是在 `dynamic` 模式下执行同样操作的情况：
+
+{{< copyable "sql" >}}
+
+```sql
 mysql> set @@tidb_partition_prune_mode = 'dynamic';
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1355,7 +1368,9 @@ mysql> select @@last_plan_from_cache;
 1 row in set (0.00 sec)
 ```
 
-下面是关于 IndexJoin 的例子：
+可见打开 `dynamic` 模式后，分区表查询便能命中 Plan Cache 了。
+
+下面是关于 IndexJoin 的例子，同样先在 `static` 模式下，尝试执行带 IndexJoin 的执行计划：
 
 {{< copyable "sql" >}}
 
@@ -1366,7 +1381,6 @@ Query OK, 0 rows affected (0.01 sec)
 mysql> set @@tidb_partition_prune_mode = 'static';
 Query OK, 0 rows affected (0.00 sec)
 
--- static 模式下，即使使用了 hint，依然不能选上 IndexJoin
 mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 0 and t2.id = t1.id;
 +--------------------------------+----------+-----------+------------------------+------------------------------------------------+
 | id                             | estRows  | task      | access object          | operator info                                  |
@@ -1390,11 +1404,18 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 |       └─TableFullScan_34       | 10000.00 | cop[tikv] | table:t1, partition:p3 | keep order:false, stats:pseudo                 |
 +--------------------------------+----------+-----------+------------------------+------------------------------------------------+
 17 rows in set, 1 warning (0.00 sec)
+```
 
+上面例子可见，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上 IndexJoin。
+
+接下来是在 `dynamic` 模式下的情况：
+
+{{< copyable "sql" >}}
+
+```sql
 mysql> set @@tidb_partition_prune_mode = 'dynamic';
 Query OK, 0 rows affected (0.00 sec)
 
--- dynamic 模式下，可以选上 IndexJoin
 mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 0 and t2.id = t1.id;
 +---------------------------------+----------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------------+
 | id                              | estRows  | task      | access object          | operator info                                                                                                       |
@@ -1410,3 +1431,5 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 +---------------------------------+----------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------------+
 8 rows in set (0.00 sec)
 ```
+
+可见打开 `dynamic` 模式后，IndexJoin 便能被选上了。
