@@ -1369,7 +1369,7 @@ mysql> select @@last_plan_from_cache;
 
 由示例二结果可知，开启 `dynamic` 模式后，分区表查询能命中 Plan Cache 。
 
-下面是关于 IndexJoin 的例子，同样先在 `static` 模式下，尝试执行带 IndexJoin 的执行计划：
+**示例三**：以下示例在 `static` 模式下尝试执行计划带 IndexJoin 的查询：
 
 {{< copyable "sql" >}}
 
