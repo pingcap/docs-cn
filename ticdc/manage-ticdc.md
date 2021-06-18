@@ -109,7 +109,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`。
+- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`/`tidb`/`kafka`/`pulsar`/`s3`/`local`。
 
     {{< copyable "" >}}
 
@@ -237,6 +237,26 @@ URI 中可配置的的参数如下：
 | `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
 更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
+
+#### Sink URI 配置 cdclog
+
+`cdclog` 文件（TiCDC 在本地文件系统或 Amazon S3 兼容存储上写入的文件）可以与备份和恢复 (BR) 一起使用以提供时间点 (PITR) 恢复。更多详细信息，请参阅[时间点恢复（实验性功能）](/br/use-br-command-line-tool.md#时间点恢复（实验性功能）)。
+
+下面的命令会创建一个 changefeed，将 cdclog 文件本地写入到 `/data/cdc/log` 目录。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="local:///data/cdclog" --config changefeed.toml
+```
+
+The following command creates a changefeed that will write cdclog files to an external S3 storage in the `logbucket` bucket with a subdirectory of `test`. The endpoint is set in the URI, which is needed if you are using an S3-compatible storage other than Amazon S3.
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="s3://logbucket/test?endpoint=http://$S3_ENDPOINT/" --config changefeed.toml
+```
 
 #### 使用同步任务配置文件
 

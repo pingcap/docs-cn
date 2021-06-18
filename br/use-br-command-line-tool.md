@@ -220,6 +220,28 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。 
 
+### 时间点恢复（实验性功能）
+
+时间点恢复（PITR）可以将数据恢复至你选择的任意时间点。
+
+示例场景：每天进行一次全量备份，每 6 小时进行一次增量备份，然后使用 TiCDC 进行 PITR。假设某天 00:00 进行全量备份，06:00 进行第一次增量备份。如果要将数据库恢复到 07:16 的状态，可以先恢复全量备份 (00:00) 和增量备份(06:00)，然后恢复 TiCDC 日志，填入 06:00 和 07:16 之间的间隔。
+
+要执行 PITR，您可以采用以下步骤：
+
+1. 使用 `br restore full` 恢复全量备份。
+2. （可选）恢复增量备份。
+3. 使用 `br restore cdclog` 恢复上次增量备份后发生的事务。完整的执行命令如下：
+
+    ```shell
+    br restore cdclog --storage local:///data/cdclog --start-ts $START_TS --end-ts $END_TS
+    ```
+
+    上述命令中：
+
+    - `local:///data/cdclog` 是 TiCDC 日志的位置。该位置可能位于本地文件系统或外部存储（如 S3）上。
+    - `$START_TS` 是上次恢复备份（全量备份或增量备份）的结束位置。
+    - `$END_TS` 是你要恢复数据的点。
+
 ### Raw KV 备份（实验性功能）
 
 > **警告：**
