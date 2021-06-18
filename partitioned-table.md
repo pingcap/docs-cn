@@ -1301,7 +1301,7 @@ mysql> explain select * from t1 where id < 150;
 3 rows in set (0.00 sec)
 ```
 
-可见执行计划中的 Union 消失了，此外分区裁剪依然生效，上述执行计划只访问了 `p0` 和 `p1` 两个分区。
+从以上查询结果可知，执行计划中的 Union 消失了，分区裁剪依然生效，且执行计划只访问了 `p0` 和 `p1` 两个分区。
 
 `dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式还解决了两个 `static` 模式无法解决的问题：
 
