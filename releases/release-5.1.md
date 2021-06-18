@@ -35,6 +35,7 @@ TiDB 版本：5.1
 |:----------|:-----------|:-----------|:-----------|
 | TiDB 配置文件  | security.enable-sem  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
 | TiDB 配置文件  | performance.tcp-no-delay  | 新增  | 控制 TiDB 是否在 TCP 层开启 no dela。 默认值为 `true`，代表开启。 |
+| TiDB 配置文件  | performance.enforce-mpp  | 新增  | 用于在实例级别控制 TiDB 是否忽略优化器代价估算，强制使用 MPP 模式，默认值为 false。 |
 | TiDB 配置文件  | performance.committer-concurrency  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 "16" 修改为 "128"。|
 | TiDB 配置文件  | pessimistic-txn.deadlock-history-capacity  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
 | TiKV 配置文件  | `storage.io-rate-limit`  | 新增  | 控制 TiKV 写入的 IO 速率。`storage.io-rate-limit.max-bytes-per-sec` 默认值为 “0MB”。 |
