@@ -29,6 +29,7 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 | 目标表 | 必须为空 | 必须为空 | 可以不为空 |
 | 额外组件 | 无 | `tikv-importer` | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
+| 是否影响 TiDB 对外提供服务 | 是 | 是 | 否 |
 
 ## 如何选择后端模式
 
