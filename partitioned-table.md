@@ -1405,7 +1405,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 17 rows in set, 1 warning (0.00 sec)
 ```
 
-上面例子可见，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上 IndexJoin。
+从以上示例三结果可知，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上带 IndexJoin 的执行计划。
 
 接下来是在 `dynamic` 模式下的情况：
 
