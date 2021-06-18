@@ -194,7 +194,11 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON（表示开启）
-- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询。开启后 TiDB 会通过优化器自动判断是否选择 MPP 执行。MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。
+- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
+    - 0 或 OFF，代表从不使用 MPP 模式
+    - 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
+
+MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)。
 
 ### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
@@ -600,6 +604,16 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：ON
 - 这个变量用来控制是否开启窗口函数的支持。默认值 1 代表开启窗口函数的功能。
 - 由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `OFF`。
+
+### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：OFF（表示关闭）
+- 这个变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
+    - 0 或 OFF，代表不强制使用 MPP 模式（默认）
+    - 1 或 ON，代表将忽略代价估算，强制使用 MPP 模式。注意：只有当 `tidb_allow_mpp=true` 时该设置才生效。
+
+MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)。
 
 ### `tidb_evolve_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
