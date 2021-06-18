@@ -566,6 +566,16 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：OFF
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
+### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
+
+> **警告：**
+>
+> 目前分区表动态模式为实验特性，不建议在生产环境中使用。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：static
+- 这个变量用来设置是否开启分区表动态模式。关于动态模式的详细说明请参阅[分区表动态模式](/partitioned-table.md#动态模式)。
+
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
