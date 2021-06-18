@@ -26,6 +26,7 @@ TiDB 版本：5.1
 | `cte_max_recursion_depth`  | 新增 | 用于控制公共表表达式最大递归深度。 |
 | `init_connect`  | 新增 | 用于控制初始连接。 |
 | `tidb_analyze_version`  | 修改 | 用于控制所收集到的统计信息。默认值从 `1` 修改为 `2`，默认作为实验特性启用。 |
+| `tidb_partition_prune_mode`  | 新增 | 用户控制是否打开分区表的动态模式。 |
 | `tidb_enforce_mpp`  | 新增 | 用于忽略优化器代价估算，强制使用 mpp 模式。bool 类型，默认值为 false。 |
 
 ### 配置文件参数
