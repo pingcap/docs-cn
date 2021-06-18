@@ -73,6 +73,29 @@ If you deploy TiCDC using TiUP, replace `cdc cli` in the following commands with
 
 ### Manage replication tasks (`changefeed`)
 
+#### State transfer of replication tasks
+
+The state of a replication task represents the running status of the replication task. During the running of TiCDC, replication tasks might fail with errors, be manually paused, resumed, or reach the specified `TargetTs`. These behaviors can lead to the change of the replication task state. This section describes the states of TiCDC replication tasks and the transfer relationships between states.
+
+![TiCDC state transfer](/media/ticdc-state-transfer.png)
+
+The states in the above state transfer diagram are described as follows:
+
+- `Normal`: The replication task runs normally and the checkpoint-ts proceeds normally.
+- `Stopped`: The replication task is stopped, because the user manually pauses the changefeed. The changefeed in this state blocks GC operations.
+- `Error`: The replication task returns an error. The replication cannot continue due to some recoverable errors. The changefeed in this state keeps trying to resume until the state transfers to `Normal`. The changefeed in this state blocks GC operations.
+- `Finished`: The replication task is finished and has reached the preset `TargetTs`. The changefeed in this state does not block GC operations.
+- `Failed`: The replication task fails. Due to some unrecoverable errors, the replication task cannot resume and cannot be recovered. The changefeed in this state does not block GC operations.
+
+The numbers in the above state transfer diagram are described as follows.
+
+- ① Execute the `changefeed pause` command
+- ② Execute the `changefeed resume` command to resume the replication task
+- ③ Recoverable errors occur during the `changefeed` operation
+- ④ Execute the `changefeed resume` command to resume the replication task
+- ⑤ Recoverable errors occur during the `changefeed` operation
+- ⑥ The replication task has reached the preset `TargetTs`, and the replication is automatically stopped.
+
 #### Create a replication task
 
 Execute the following commands to create a replication task:
@@ -279,7 +302,8 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 - `checkpoint` indicates that TiCDC has already replicated data before this time point to the downstream.
 - `state` indicates the state of the replication task.
     - `normal`: The replication task runs normally.
-    - `stopped`: The replication task is stopped (manually paused or stopped by an error).
+    - `stopped`: The replication task is stopped (manually paused).
+    - `error`: The replication task is stopped (by an error).
     - `removed`: The replication task is removed. Tasks of this state are displayed only when you have specified the `--all` option. To see these tasks when this option is not specified, execute the `changefeed query` command.
     - `finished`: The replication task is finished (data is replicated to the `target-ts`). Tasks of this state are displayed only when you have specified the `--all` option. To see these tasks when this option is not specified, execute the `changefeed query` command.
 
@@ -437,16 +461,6 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 In the above command:
 
 - `--changefeed-id=uuid` represents the ID of the `changefeed` that corresponds to the replication task you want to remove.
-
-After the replication task is removed, the state information of the task will be retained for 24 hours, mainly used for recording the replication checkpoint. Within this 24 hours, you cannot create a replication task of the same name.
-
-If you want to completely remove the task information, you can specify the `--force` or `-f` argument in the command. Then all information of the `changefeed` will be removed, and you can immediately create a `changefeed` of the same name.
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task --force
-```
 
 ### Update task configuration
 
