@@ -1309,7 +1309,7 @@ mysql> explain select * from t1 where id < 150;
 
 + 不能使用 IndexJoin 的执行方式
 
-下面是关于 Plan Cache 的例子，我们在配置文件中开启 Plan Cache 功能后，在 `static` 模式下执行同一个查询两次：
+**示例一**：以下示例在配置文件中开启 Plan Cache 功能，并在 `static` 模式下执行同一个查询两次：
 
 {{< copyable "sql" >}}
 
