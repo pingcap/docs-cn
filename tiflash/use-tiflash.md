@@ -293,7 +293,7 @@ set @@session.tidb_allow_mpp=1;
 set @@session.tidb_enforce_mpp=1;
 ```
 
-Session 变量 `tidb_enforce_mpp` 的初始值等于这台 tidb-server 实例的配置项 [`enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) 的值（默认为 false）。如果在一个 TiDB 集群中，有若干台 tidb-server 只会执行分析型查询，又想确保它们能够选中 MPP 模式，可以将它们的配置项 [`enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) 修改为 true.
+Session 变量 `tidb_enforce_mpp` 的初始值等于这台 tidb-server 实例的 [`enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) 配置项值（默认为 `false`）。在一个 TiDB 集群中，如果有若干台 tidb-server 实例只执行分析型查询，要确保它们能够选中 MPP 模式，你可以将它们的 [`enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) 配置值修改为 `true`.
 
 > **注意：**
 >
