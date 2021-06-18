@@ -32,6 +32,7 @@ tiup cluster upgrade <cluster-name> v5.1.0
 ```shell
 tiup cluster edit-config <cluster-name> 
 ```
+
 执行以上命令之后，进入到 vi 编辑器页面之后，修改 [server-configs](../tiup/tiup-dm-topology-reference.md#server_configs) 中 cdc 的配置，如下所示：
 
 {{< copyable "shell-regular" >}}
@@ -48,6 +49,7 @@ tiup cluster edit-config <cluster-name>
   cdc:
     gc-ttl: 3600
 ```
+
 修改完毕之后需要执行 tiup cluster relaod 命令来重新加载。
 
 ## 使用加密传输 (TLS) 功能
