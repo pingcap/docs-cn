@@ -18,6 +18,7 @@ tiup update --self && \
 tiup update --all && \
 tiup cluster upgrade <cluster-name> v5.1.0
 ```
+
 ### 升级的注意事项
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
