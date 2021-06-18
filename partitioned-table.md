@@ -1338,7 +1338,7 @@ mysql> select @@last_plan_from_cache;
 1 row in set (0.00 sec)
 ```
 
-`last_plan_from_cache` 变量可以显示上一次查询是否命中 Plan Cache。从以上示例一可知，在 `static` 模式下，即使在同一个分区表上执行多次查询，也不会命中 Plan Cache。
+`last_plan_from_cache` 变量可以显示上一次查询是否命中 Plan Cache。从以上示例一可知，在 `static` 模式下，即使在分区表上执行同一个查询多次，也不会命中 Plan Cache。
 
 **示例二**：以下示例在 `dynamic` 模式下执行与示例一相同的操作：
 
