@@ -51,14 +51,15 @@ aliases: ['/tidb/v5.0/roadmap','/docs/ROADMAP/','/docs/roadmap/','/docs/stable/r
 - [ ] Change column types [#17526](https://github.com/pingcap/tidb/issues/17526)
 - [ ] Easier to discover performance issues and diagnose the causes [#18867](https://github.com/pingcap/tidb/issues/18867)
 - [x] Support the collations of `utf8mb4_unicode_ci` and `utf8_unicode_ci` [#17596](https://github.com/pingcap/tidb/issues/17596)
-- [ ] Make TiCDC a complete alternative to TiDB Binlog [#690](https://github.com/pingcap/ticdc/issues/690)
-    - [ ] Support distinguishing `UPDATE` and `INSERT` in a row changed event.
-    - [ ] Support providing old values in the row changed event, including old values before the `DELETE` or `UPDATE` execution.
-- [ ] Support snapshot-level consistent replication for disaster recovery [#691](https://github.com/pingcap/ticdc/issues/691)
-    - [ ] Support MySQL sink in replicating the upstream to a snapshot-level consistent state when the upstream meets a disaster
+- [ ] Data import
+    - [ ] TiDB Lightning supports detecting conflicts in the imported data.
+    - [ ] TiDB Lightning supports distributed parallel import.
+- [ ] Data replication: TiCDC is compatible with TiDB Binlog features, which makes using TiCDC easier for TiDB Binlog users [#690](https://github.com/pingcap/ticdc/issues/690)
+    - [ ] Support exporting data to file systems and cloud storages (S3/GCS)
+- [ ] Data disaster recovery: Support snapshot-level consistent data replication in the disaster recovery [#691](https://github.com/pingcap/ticdc/issues/691)
+    - [ ] The TiDB disaster recovery cluster supports replicating the backup cluster to a consistent state at the snapshot level when a disaster occurs in the main cluster
 - [ ] Manage TiCDC using API [#736](https://github.com/pingcap/ticdc/issues/736)
-- [ ] Support the SQL-based `import` command [#18089](https://github.com/pingcap/tidb/issues/18089)
-- [x] Support Avro sink and make TiCDC compatible with Kafka connect [#660](https://github.com/pingcap/ticdc/issues/660)
+- [x] Data sharing: TiCDC supports the Avro sink, which makes TiCDC compatible with Kafka connect [#660](https://github.com/pingcap/ticdc/issues/660)
 - [ ] Support Spark 3.0 [#1173](https://github.com/pingcap/tispark/issues/1173)
 - [x] Support `EXCEPT`/`INTERSECT` operators [#18031](https://github.com/pingcap/tidb/issues/18031)
 - [x] Support migrating the RDS (such as MySQL/Aurora) on cloud to TiDB [#18629](https://github.com/pingcap/tidb/issues/18629)
