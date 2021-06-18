@@ -1431,4 +1431,4 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 8 rows in set (0.00 sec)
 ```
 
-可见打开 `dynamic` 模式后，IndexJoin 便能被选上了。
+从示例四结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
