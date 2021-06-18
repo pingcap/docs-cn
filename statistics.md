@@ -6,7 +6,7 @@ aliases: ['/docs/dev/statistics/','/docs/dev/reference/performance/statistics/']
 
 # Introduction to Statistics
 
-TiDB uses statistics to decide [which index to choose](/choose-index.md). The `tidb_analyze_version` variable controls the statistics collected by TiDB. Currently, two versions of statistics are supported: `tidb_analyze_version = 1` (by default) and `tidb_analyze_version = 2`. These two versions include different information in TiDB:
+TiDB uses statistics to decide [which index to choose](/choose-index.md). The `tidb_analyze_version` variable controls the statistics collected by TiDB. Currently, two versions of statistics are supported: `tidb_analyze_version = 1` and `tidb_analyze_version = 2`. In versions before v5.1, the default value of this variable is `1`. In v5.1, the default value of this variable is `2`, which serves as an experimental feature. These two versions include different information in TiDB:
 
 | Information | Version 1 | Version 2|
 | --- | --- | ---|
@@ -22,7 +22,7 @@ TiDB uses statistics to decide [which index to choose](/choose-index.md). The `t
 | The average length of columns | √ | √ |
 | The average length of indexes | √ | √ |
 
-Compared to Version 1, Version 2 statistics avoids the potential inaccuracy caused by hash collision when the data volume is huge. It also increases the estimate precision in most scenarios.
+Compared to Version 1, Version 2 statistics avoids the potential inaccuracy caused by hash collision when the data volume is huge. It also maintains the estimate precision in most scenarios.
 
 This document briefly introduces the histogram, Count-Min Sketch, and Top-N, and details the collection and maintenance of statistics.
 
@@ -62,6 +62,8 @@ You can run the `ANALYZE` statement to collect statistics.
 > For quicker analysis, you can set `tidb_enable_fast_analyze` to `1` to enable the Quick Analysis feature. The default value for this parameter is `0`.
 >
 > After Quick Analysis is enabled, TiDB randomly samples approximately 10,000 rows of data to build statistics. Therefore, in the case of uneven data distribution or a relatively small amount of data, the accuracy of statistical information is relatively poor. It might lead to poor execution plans, such as choosing the wrong index. If the execution time of the normal `ANALYZE` statement is acceptable, it is recommended to disable the Quick Analysis feature.
+>
+> `tidb_enable_fast_analyze` is an experimental feature, which currently **does not match exactly** with the statistical information of `tidb_analyze_version=2`. Therefore, you need to set the value of `tidb_analyze_version` to `1` when `tidb_enable_fast_analyze` is enabled.
 
 #### Full collection
 
@@ -106,6 +108,10 @@ You can perform full collection using the following syntax.
     ```sql
     ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
     ```
+
+> **Note:**
+>
+> To ensure that the statistical information before and after the collection is consistent, when you set `tidb_analyze_version=2`, `ANALYZE TABLE TableName INDEX` will also collect statistics of the whole table instead of the given index.
 
 #### Incremental collection
 
@@ -266,10 +272,10 @@ Currently, the `SHOW STATS_HISTOGRAMS` statement returns the following 10 column
 | `column_name` | The column name (when `is_index` is `0`) or the index name (when `is_index` is `1`) |
 | `is_index` | Whether it is an index column or not |
 | `update_time` | The time of the update |
-| `version` | The value of `tidb_analyze_version` in the corresponding `ANALYZE` statement |
 | `distinct_count` | The number of different values |
 | `null_count` | The number of `NULL` |
 | `avg_col_size` | The average length of columns |
+| correlation | The Pearson correlation coefficient of the column and the integer primary key, which indicates the degree of association between the two columns|
 
 ### Buckets of histogram
 
