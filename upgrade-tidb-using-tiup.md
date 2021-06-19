@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 ## 1. 升级兼容性说明
 
-- TiDB 目前暂时不支持版本降级或升级后回退，这类功能将在未来支持。
+- TiDB 目前暂不支持版本降级或升级后回退，此类功能将在未来支持。
 - 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.0 版本及后续修订版本。
 - 若要将 3.0 之前的版本升级至 5.0 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
