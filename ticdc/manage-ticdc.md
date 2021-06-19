@@ -240,7 +240,7 @@ URI 中可配置的的参数如下：
 
 #### Sink URI 配置 cdclog
 
-`cdclog` 文件（TiCDC 在本地文件系统或 Amazon S3 兼容存储上写入的文件）可以与备份和恢复 (BR) 一起使用以提供时间点 (PITR) 恢复。更多详细信息，请参阅[时间点恢复（实验性功能）](/br/use-br-command-line-tool.md#时间点恢复（实验性功能）)。
+`cdclog` 文件（TiCDC 在本地文件系统或 Amazon S3 兼容存储上写入的文件）可以与备份和恢复 (BR) 一起使用以提供时间点 (PITR) 恢复。更多详细信息，请参阅[时间点恢复（实验性功能）](/br/use-br-command-line-tool.md##时间点恢复实验性功能)。
 
 下面的命令会创建一个 changefeed，将 cdclog 文件本地写入到 `/data/cdc/log` 目录。
 
