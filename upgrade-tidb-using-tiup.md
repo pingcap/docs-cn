@@ -248,5 +248,5 @@ tiup install ctl:v5.0.0
 
 ## 5. TiDB 5.1 兼容性变化
 
-- 兼容性变化请参考 5.1 GA Release Notes。
+- 兼容性变化请参考 5.1 Release Notes。
 - 请避免在对使用 TiDB-Binlog 的集群进行滚动升级过程中新创建聚簇索引表。
