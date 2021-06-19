@@ -15,8 +15,8 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退，此类功能将在未来支持。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.0 版本及后续修订版本。
-- 若要将 3.0 之前的版本升级至 5.0 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.1 版本及后续修订版本。
+- 若要将 3.0 之前的版本升级至 5.1 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 4.0 版本。
@@ -40,7 +40,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 >
 > 如果原集群中控机不能访问 `https://tiup-mirrors.pingcap.com` 地址，可跳到步骤 2.2 使用离线升级方式。
 
-1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.4.0`）：
+1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.5.0`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -49,7 +49,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     tiup --version
     ```
 
-2. 再升级 TiUP Cluster 版本（建议 `tiup cluster` 版本不低于 `1.4.0`）：
+2. 再升级 TiUP Cluster 版本（建议 `tiup cluster` 版本不低于 `1.5.0`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -91,7 +91,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `5.0` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `5.1` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -107,9 +107,9 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 5.0 版本前，请确认已在 4.0 修改的参数在 5.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 5.1 版本前，请确认已在 4.0 修改的参数在 5.1 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 > 
-> 以下 TiKV 参数在 TiDB v5.0 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数:
+> 以下 TiKV 参数在 TiDB v5.1 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数:
 > 
 > - pessimistic-txn.enabled
 > - server.request-batch-enable-cross-command
@@ -143,12 +143,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 5.0.0 版本为例：
+以升级到 5.1.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v5.0.0
+tiup cluster upgrade <cluster-name> v5.1.0
 ```
 
 > **注意：**
@@ -196,7 +196,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v5.0.0
+Cluster version:    v5.1.0
 ```
 
 > **注意：**
@@ -246,7 +246,7 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v5.0.0
+tiup install ctl:v5.1.0
 ```
 
 ## 5. TiDB 5.1 兼容性变化
