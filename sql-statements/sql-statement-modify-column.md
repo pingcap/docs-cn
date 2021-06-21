@@ -10,9 +10,9 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 
 从 v5.1.0 版本起，TiDB 开始支持 Reorg 类型变更，包括但不限于：
 
-- 从 varchar 转换为 bigint 
-- decimal 精度修改
-- 从 varchar(10) 到 varchar(5) 的长度压缩
+- 从 `VARCHAR` 转换为 `BIGINT`
+- `DECIMAL` 精度修改
+- 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
 ## 语法图
 

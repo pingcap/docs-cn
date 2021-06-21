@@ -79,7 +79,7 @@ TiDB 版本：5.1
     - `DECIMAL` 精度修改
     - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
-    [用户文档](/sql-statement-modify-column.md)
+    [用户文档](/sql-statements/sql-statement-modify-column.md)
 
 - 引入新的语法 `AS OF TIMESTAMP`，支持通过 Stale Read 功能从指定的时间点或时间范围内读取历史数据。
 
@@ -133,7 +133,7 @@ TiDB 版本：5.1
 
     TiKV Write Rate Limiter 通过平滑 TiKV 后台任务如 GC，Compaction 等的写入流量，保证读写请求的延迟稳定性。TiKV 后台任务写入限制默认值为 "0MB"，建议将此限制设置为磁盘的最佳 I/O 带宽，例如云盘厂商指定的最大 I/O 带宽。
 
-    [用户文档](tikv-configuration-file.md#storageio-rate-limit)，[#9156](https://github.com/tikv/tikv/issues/9156)
+    [用户文档](/tikv-configuration-file.md#storageio-rate-limit)，[#9156](https://github.com/tikv/tikv/issues/9156)
 
 + 解决多个扩缩容时的调度稳定性问题
 
