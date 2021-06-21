@@ -51,8 +51,9 @@ TiDB 版本：5.1
 - 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.13.7  升级到了 go1.16.4。如果你是 TiDB 的开发者，为了能保证顺利编译，请对应升级你的 Go 编译器版本。
 - 请避免在对使用 TiDB-Binlog 的集群进行滚动升级的过程中新创建聚簇索引表。
 - 请避免在 TiDB 滚动升级时执行 alter table … modify/change column。
-- 当按表构建 TiFlash 副本时，v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
+- 当按表构建 TiFlash 副本时，v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则会导致升级失败。
 - 在 TiCDC 的 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户可在 `cdc server` 命令中设定 `--sort-dir`。 [#1795](https://github.com/pingcap/ticdc/pull/1795)
+- 当从 v5.0.0-v5.0.2 版本升级到 v5.1 时，需要升级前手动删除 TiKV 的 2 个参数：`rocksdb.ver-defaultcf` 和 `rocksdb.ver-defaultcf.titan`，否则会导致升级失败。
 
 ## 新功能
 
