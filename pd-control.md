@@ -326,9 +326,19 @@ Usage:
 
 - `enable-debug-metrics` is used to enable the metrics for debugging. When you set it to `true`, PD enables some metrics such as `balance-tolerant-size`.
 
-- `enable-placement-rules` is used to enable placement rules.
+- `enable-placement-rules` is used to enable placement rules, which is enabled by default in v5.0 and later versions.
 
 - `store-limit-mode` is used to control the mode of limiting the store speed. The optional modes are `auto` and `manual`. In `auto` mode, the stores are automatically balanced according to the load (experimental).
+
+- PD rounds the lowest digits of the flow number, which reduces the update of statistics caused by the changes of the Region flow information. This configuration item is used to specify the number of lowest digits to round for the Region flow information. For example, the flow `100512` will be rounded to `101000` because the default value is `3`. This configuration replaces `trace-region-flow`.
+
+- For example, set the value of `flow-round-by-digit` to `4`:
+
+    {{< copyable "" >}}
+
+    ```bash
+    config set flow-round-by-digit 4
+    ```
 
 #### `config placement-rules [disable | enable | load | save | show | rule-group]`
 

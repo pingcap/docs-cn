@@ -221,7 +221,7 @@ Configuration items related to scheduling
 
 ### `max-snapshot-count`
 
-+ Control the maximum number of snapshots that a single store receives or sends at the same time. PD schedulers depend on this configuration to prevent the resources used for normal traffic from being preempted.
++ Controls the maximum number of snapshots that a single store receives or sends at the same time. PD schedulers depend on this configuration to prevent the resources used for normal traffic from being preempted.
 + Default value value: `3`
 
 ### `max-pending-peer-count`
@@ -365,6 +365,11 @@ Configuration items related to replicas
 + Default value: `false`
 + See [Placement Rules](/configure-placement-rules.md).
 + An experimental feature of TiDB 4.0.
+
+### `flow-round-by-digit` <span class="version-mark">New in TiDB 5.1</span>
+
++ Default value: 3
++ PD rounds the lowest digits of the flow number, which reduces the update of statistics caused by the changes of the Region flow information. This configuration item is used to specify the number of lowest digits to round for the Region flow information. For example, the flow `100512` will be rounded to `101000` because the default value is `3`. This configuration replaces `trace-region-flow`.
 
 ## `label-property`
 
