@@ -24,6 +24,7 @@ This document introduces the experimental features of TiDB in different versions
 
 + List Partition (Introduced in v5.0)
 + List COLUMNS Partition (Introduced in v5.0)
++ [Dynamic Mode for Partitioned Tables](/partitioned-table.md#dynamic-mode). (Introduced in v5.1)
 + The expression index feature. The expression index is also called the function-based index. When you create an index, the index fields do not have to be a specific column but can be an expression calculated from one or more columns. This feature is useful for quickly accessing the calculation-based tables. See [Expression index](/sql-statements/sql-statement-create-index.md) for details. (Introduced in v4.0)
 + [Generated Columns](/generated-columns.md).
 + [User-Defined Variables](/user-defined-variables.md).
