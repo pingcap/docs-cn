@@ -149,8 +149,8 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     - 支持 `VITESS_HASH()` 函数 [#23915](https://github.com/pingcap/tidb/pull/23915)
     - 支持枚举类型下推到 TiKV ，提升 WHERE 子句中使用枚举类型时的性能 [#23619](https://github.com/pingcap/tidb/issues/23619)
-    - 支持 Window Function Pipeline，降低 Window Function 运行过程中 OOM 概率 [#23807](https://github.com/pingcap/tidb/issues/23807)
-    - 减少 `UNION` 算子 OOM 概率 [#21441](https://github.com/pingcap/tidb/issues/21441)
+    - 优化 Window Function 计算过程，解决了使用 ROW_NUMBER() 对数据分页时 TiDB OOM 的问题  [#23807](https://github.com/pingcap/tidb/issues/23807)
+    - 优化 UNION ALL 的计算过程，解决了使用 UNION ALL 连接大量 SELECT 语句时 TiDB OOM 的问题  [#21441](https://github.com/pingcap/tidb/issues/21441)
     - 解决多种情况下出现的 `Region is Unavailable` 问题 [project#62](https://github.com/pingcap/tidb/projects/62)
 
         - 修复频繁调度情况下可能出现的多个 `Region is Unavailable` 问题
