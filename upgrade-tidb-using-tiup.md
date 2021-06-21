@@ -10,6 +10,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 - 使用 TiUP 从 TiDB 5.0 版本升级至 TiDB 5.1 及后续修订版本。
 
 >  **注意：**
+>
 >  如果原集群是 3.0 或 3.1 或更老的版本，不支持直接升级到 5.1 及后续修订版本。你需要先从老版本升级到 4.0 后，再从 4.0 升级到 5.1 及后续修订版本。
 
 ## 1. 升级兼容性说明
