@@ -33,30 +33,30 @@ TiDB 版本：5.1
 | 配置文件   | 配置项   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|:-----------|
 | TiDB 配置文件  | `security.enable-sem`  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
-| TiDB 配置文件  | `performance.tcp-no-delay`  | 新增  | 控制是否在 TiDB 在 TCP 层开启 no dela。 默认值为 `true`，代表开启。 |
-| TiDB 配置文件  | `performance.committer-concurrency`  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 16 修改为 128。|
+| TiDB 配置文件  | `performance.tcp-no-delay`  | 新增  | 控制是否在 TiDB 在 TCP 层开启 no delay。 默认值为 `true`，代表开启。 |
+| TiDB 配置文件  | `performance.committer-concurrency`  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 `16` 修改为 `128`。|
 | TiDB 配置文件  | `pessimistic-txn.deadlock-history-capacity`  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
 | TiKV 配置文件  | `storage.io-rate-limit`  | 新增  | 控制 TiKV 写入的 IO 速率。`storage.io-rate-limit.max-bytes-per-sec` 默认值为 “0MB”。 |
 | TiKV 配置文件  | `abort-on-panic`  | 新增  | 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。默认值为 false, 代表不允许生成 core dump 文件。 |
-| TiKV 配置文件  | `soft-pending-compaction-bytes-limit`  | 修改  | pending compaction bytes 的软限制，默认值从 “64GB” 修改为 “192GB”。 |
+| TiKV 配置文件  | `soft-pending-compaction-bytes-limit`  | 修改  | pending compaction bytes 的软限制，默认值从 "64GB" 修改为 "192GB"。 |
 | TiKV 配置文件  | `hibernate-regions`  | 修改  | 默认值从 `false` 修改为 `true`。 如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。 |
-| TiKV 配置文件  | `resolved-ts.enable`  | 新增  | 为所有 region leader 维护 resolved-ts, 默认为 true。 |
-| TiKV 配置文件  | `resolved-ts.advance-ts-interval`  | 新增  | 推进 resolved-ts 的间隔，默认为 1s, 支持动态更改。 |
-| TiKV 配置文件  | `resolved-ts.scan-lock-pool-size`  | 新增  | 用于初始化 resolved-ts 时扫锁的线程数，默认为 2。 |
+| TiKV 配置文件  | `resolved-ts.enable`  | 新增  | 为所有 Region leader 维护 `resolved-ts`，默认值为 `true`。 |
+| TiKV 配置文件  | `resolved-ts.advance-ts-interval`  | 新增  | 推进 `resolved-ts` 的间隔，默认为 "1s"，支持动态更改。 |
+| TiKV 配置文件  | `resolved-ts.scan-lock-pool-size`  | 新增  | 用于初始化 `resolved-ts` 时扫锁的线程数，默认值为 `2`。 |
 
 ### 其他
 
 - 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.13.7 升级到了 go1.16.4。如果你是 TiDB 的开发者，为了能保证顺利编译，请对应升级你的 Go 编译器版本。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级的过程中新创建聚簇索引表。
 - 请避免在 TiDB 滚动升级时执行 `alter table ... modify column` 或 `alter table ... change column`。
-- 当按表构建 TiFlash 副本时，v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
+- 当按表构建 TiFlash 副本时，v5.1 版本及后续版本将不再支持设置系统表的副本。在集群升级前，需要清除相关系统表的副本，否则升级到较高版本后将无法再修改系统表的副本设置。
 - 在 TiCDC 的 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户可在 `cdc server` 命令中设定 `--sort-dir`。[#1795](https://github.com/pingcap/ticdc/pull/1795)
 
 ## 新功能
 
 ### SQL
 
-- 新增 MySQL 8 中的公共表表达式 (Common Table Expression)，为 TiDB 带来递归或非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。 在 TiDB 中，你可以通过 `WITH` 语句使用公共表表达式。
+- 新增 MySQL 8 中的公共表表达式 (Common Table Expression)，为 TiDB 带来递归或非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。在 TiDB 中，你可以通过 `WITH` 语句使用公共表表达式。
 [用户文档](/sql-statements/sql-statement-with.md)，[#17472](https://github.com/pingcap/tidb/issues/17472)
 
 - 新增 MySQL 8 中的动态权限 (Dynamic Privileges)。动态权限用于限制 `SUPER` 权限，为 TiDB 提供更灵活的权限配置，实现对某些操作更细粒度的控制。例如，你可以使用动态权限来创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
@@ -69,12 +69,11 @@ TiDB 版本：5.1
     - `CONNECTION_ADMIN`
     - `SYSTEM_VARIABLES_ADMIN`
 
-    你也可以使用插件来添加新的权限。若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。
-[用户文档](/privilege-management.md)
+    你也可以使用插件来添加新的权限。若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。[用户文档](/privilege-management.md)
 
 - 新增安全增强模式 (Security Enhanced Mode) 配置项，用于对 TiDB 管理员进行更细粒度的权限划分。安全增强模式默认关闭，如需开启，请参考[用户文档](/system-variables.md#tidb_enable_enhanced_security)。
 
-- 全面加强列类型的在线变更能力，支持通过 ALTER TABLE 语句进行列的在线类型修改, 包括但不限于：
+- 全面加强列类型的在线变更能力，支持通过 `ALTER TABLE` 语句进行列的在线类型修改, 包括但不限于：
 
     - 从 `VARCHAR` 转换为 `BIGINT`
     - `DECIMAL` 精度修改
@@ -82,7 +81,7 @@ TiDB 版本：5.1
 
     [用户文档](/sql-statement-modify-column.md)
 
-- 引入新的语法 AS OF TIMESTAMP，支持通过 Stale Read 功能从指定的时间点或时间范围内读取历史数据。
+- 引入新的语法 `AS OF TIMESTAMP`，支持通过 Stale Read 功能从指定的时间点或时间范围内读取历史数据。
 
     [用户文档](/as-of-timestamp.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
 
@@ -97,16 +96,18 @@ TiDB 版本：5.1
 ### 事务
 
 + 新增锁视图 (Lock View)（实验特性）
-[用户文档](/information-schema/information-schema-data-lock-waits.md)，[#24199](https://github.com/pingcap/tidb/issues/24199)
+
+    [用户文档](/information-schema/information-schema-data-lock-waits.md)，[#24199](https://github.com/pingcap/tidb/issues/24199)
 
     Lock View 用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题等
 
 ### 性能
 
-+ 数据副本非一致性读（Stale Read）
++ 数据副本非一致性读 (Stale Read)
 
     直接读取本地副本数据，降低读取延迟，提升查询性能
-[用户文档](/stale-read.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
+
+    [用户文档](/stale-read.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
 
 + 默认开启 Hibernate Region 特性 [#10266](https://github.com/tikv/tikv/pull/10266)
 
@@ -125,10 +126,13 @@ TiDB 版本：5.1
         - 在部分 TiKV/PD/TiCDC 节点宕机情况下出现的同步中断问题
 
 + TiFlash 存储内存控制
-优化了 Region 快照生成的速度和内存使用量，减少了 OOM 的可能性
 
-+ 新增 TiKV 后台任务写入限制（TiKV Write Rate Limiter）
-    TiKV Write Rate Limiter 通过平滑 TiKV 后台任务如 GC，Compaction 等的写入流量，保证读写请求的延迟稳定性。TiKV 后台任务写入限制默认值为 “0MB”，建议将此限制设置为磁盘的最佳 I/O 带宽，例如云盘厂商指定的最大 I/O 带宽。
+    优化了 Region 快照生成的速度和内存使用量，减少了 OOM 的可能性
+
++ 新增 TiKV 后台任务写入限制 (TiKV Write Rate Limiter)
+
+    TiKV Write Rate Limiter 通过平滑 TiKV 后台任务如 GC，Compaction 等的写入流量，保证读写请求的延迟稳定性。TiKV 后台任务写入限制默认值为 "0MB"，建议将此限制设置为磁盘的最佳 I/O 带宽，例如云盘厂商指定的最大 I/O 带宽。
+
     [用户文档](tikv-configuration-file.md#storageio-rate-limit)，[#9156](https://github.com/tikv/tikv/issues/9156)
 
 + 解决多个扩缩容时的调度稳定性问题
@@ -146,11 +150,11 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
     - 支持 `VITESS_HASH()` 函数 [#23915](https://github.com/pingcap/tidb/pull/23915)
     - 支持枚举类型下推到 TiKV ，提升 WHERE 子句中使用枚举类型时的性能 [#23619](https://github.com/pingcap/tidb/issues/23619)
     - 支持 Window Function Pipeline，降低 Window Function 运行过程中 OOM 概率 [#23807](https://github.com/pingcap/tidb/issues/23807)
-    - 减少 UNION 算子 OOM 概率 [#21441](https://github.com/pingcap/tidb/issues/21441)
-    - 解决多种情况下出现的 Region is Unavailable 问题 [project#62](https://github.com/pingcap/tidb/projects/62)
+    - 减少 `UNION` 算子 OOM 概率 [#21441](https://github.com/pingcap/tidb/issues/21441)
+    - 解决多种情况下出现的 `Region is Unavailable` 问题 [project#62](https://github.com/pingcap/tidb/projects/62)
 
-        - 修复频繁调度情况下可能出现的多个 Region is Unavailable 问题
-        - 解决部分高压力写入情况下可能出现的 Region is Unavailable 问题
+        - 修复频繁调度情况下可能出现的多个 `Region is Unavailable` 问题
+        - 解决部分高压力写入情况下可能出现的 `Region is Unavailable` 问题
 
     - 当内存中的统计信息缓存是最新的时，避免后台作业频繁读取 `mysql.stats_histograms` 表造成高 CPU 使用率 [#24317](https://github.com/pingcap/tidb/pull/24317)
 
@@ -180,9 +184,9 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
     - 避免在添加 `scatter region` 调度器后出现的非预期统计行为 [#3602](https://github.com/pingcap/pd/pull/3602)
     - 解决扩缩容过程中出现的多个调度问题
 
-        - 优化副本 snapshot 生成流程，解决扩缩容调度慢问题：pd/issues/3563 ，tikv/pull/10059 ，tikv/pull/10001
-        - 解决由于流量变化引带来的心跳压力引起的调度慢问题 pd/pull/3693  pd/pull/3739 /pd/pull/3728  pd/pull/3751
-        - 减少大集群由于调度产生的空间差异问题，并优化调度公式防止由于压缩率差异大引发的类似异构空间集群的爆盘问题   tikv/pd/pull/3592  tikv/pull/10005
+        - 优化副本 snapshot 生成流程，解决扩缩容调度慢问题：[#3563](https://github.com/tikv/pd/issues/3563) [#10059](https://github.com/tikv/tikv/pull/10059) [#10001](https://github.com/tikv/tikv/pull/10001)
+        - 解决由于流量变化引带来的心跳压力引起的调度慢问题 [#3693](https://github.com/tikv/pd/issues/3693) [#3739](https://github.com/tikv/pd/issues/3739) [#3728](https://github.com/tikv/pd/issues/3728) [#3751](https://github.com/tikv/pd/issues/3751)
+        - 减少大集群由于调度产生的空间差异问题，并优化调度公式防止由于压缩率差异大引发的类似异构空间集群的爆盘问题 [#3592](https://github.com/tikv/pd/issues/3592) [#10005](https://github.com/tikv/tikv/pull/10005)
 
 + Tools
 
@@ -190,7 +194,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
         - 支持备份和恢复 `mysql` schema 下的用户数据表 [#1143](https://github.com/pingcap/br/pull/1143) [#1078](https://github.com/pingcap/br/pull/1078)
         - BR 支持 S3 兼容的存储（基于 virtual-host 寻址模式）[#10243](https://github.com/tikv/tikv/pull/10243)
-        - BR 改进 backupmeta 格式，减少内存占用。[#1171](https://github.com/pingcap/br/pull/1171)
+        - BR 改进 backupmeta 格式，减少内存占用 [#1171](https://github.com/pingcap/br/pull/1171)
 
     + TiCDC
 
@@ -201,12 +205,12 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     + Dumpling
 
-        - 改善从 TiDB 4.0 导出的逻辑避免 TiDB OOM [#273](https://github.com/pingcap/dumpling/pull/273)
+        - 改善从 TiDB v4.0 导出数据的逻辑避免 TiDB OOM [#273](https://github.com/pingcap/dumpling/pull/273)
         - 修复备份失败却没有错误输出的问题 [#280](https://github.com/pingcap/dumpling/pull/280)
 
-    + Lightning
+    + TiDB Lightning
 
-        - 提升导入速度。优化结果显示，导入 tpcc 数据速度提升在 30% 左右，导入索引比较多（5 个索引）的大表 (2TB+) 速度提升超过 50% [#753](https://github.com/pingcap/br/pull/753)
+        - 提升导入速度。优化结果显示，导入 TPC-C 数据速度提升在 30% 左右，导入索引比较多（5 个索引）的大表 (2TB+) 速度提升超过 50% [#753](https://github.com/pingcap/br/pull/753)
         - 导入前对导入数据和目标集群进行检查，如果不符合导入要求，则报错拒绝导入程序的运行 [#999](https://github.com/pingcap/br/pull/999)
         - 优化 Local 后端更新 checkpoint 的时机，提升断点重启时的性能 [#1080](https://github.com/pingcap/br/pull/1080)
 
