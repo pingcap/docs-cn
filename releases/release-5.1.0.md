@@ -108,10 +108,6 @@ TiDB 版本：5.1
     直接读取本地副本数据，降低读取延迟，提升查询性能
 [用户文档](/stale-read.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
 
-+ TiKV 增加独立的 IO 线程（Async IO）
-
-    通过将写盘操作从计算线程剥离出来，提高 CPU 利用率以及降低由于排队导致的长尾延迟问题
-
 + 默认开启 Hibernate Region 特性 [#10266](https://github.com/tikv/tikv/pull/10266)
 
 ### 稳定性
@@ -205,7 +201,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     + Dumpling
 
-        - 改善 TiDB 4.0 导出逻辑避免 TiDB OOM [#273](https://github.com/pingcap/dumpling/pull/273)
+        - 改善从 TiDB 4.0 导出的逻辑避免 TiDB OOM [#273](https://github.com/pingcap/dumpling/pull/273)
         - 修复备份失败却没有错误输出的问题 [#280](https://github.com/pingcap/dumpling/pull/280)
 
     + Lightning
