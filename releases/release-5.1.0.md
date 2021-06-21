@@ -137,10 +137,6 @@ TiDB 版本：5.1
 
 + 解决多个扩缩容时的调度稳定性问题
 
-### TiDB 数据共享订阅
-
-[TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md#row-changed-event) 的[列标志位](/ticdc/ticdc-open-protocol.md#列标志位)功能正式发布，不再是实验特性。列标志位用于以 Bit flags 形式标记列的相关属性。
-
 ### 遥测
 
 TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、失败情况等。
