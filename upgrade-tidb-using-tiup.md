@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     3. 将集群升级至 4.0 版本。
     4. 按本文档说明将集群升级到 5.1 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
-- 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](https://docs.pingcap.com/zh/tidb/dev/release-notes)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
+- 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 
 > **注意：**
 >
