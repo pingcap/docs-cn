@@ -198,7 +198,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     + TiCDC
 
-        - 改进一些让用户困惑的无用日志信息 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - 改进了部分日志信息的描述使其更加明确清晰，对诊断问题更有帮助 [#1759](https://github.com/pingcap/ticdc/pull/1759)
         - 为 TiCDC 扫描的速度添加感知下游处理能力的 (back pressure) 功能 [#10151](https://github.com/tikv/tikv/pull/10151)
         - 减少 TiCDC 进行初次扫描的内存使用量 [#10133](https://github.com/tikv/tikv/pull/10133)
         - 提升了悲观事务中 TiCDC Old Value 的缓存命中率 [#10089](https://github.com/tikv/tikv/pull/10089)
