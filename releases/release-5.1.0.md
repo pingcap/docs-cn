@@ -210,7 +210,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     + Lightning
 
-        - 优化导入逻辑实现导入速度的提升。优化结果显示，导入 tpcc 数据速度提升在 30% 左右，导入索引比较多（5 个索引）的大表 (2TB+) 速度提升超过 50% [#753](https://github.com/pingcap/br/pull/753)
+        - 提升导入速度。优化结果显示，导入 tpcc 数据速度提升在 30% 左右，导入索引比较多（5 个索引）的大表 (2TB+) 速度提升超过 50% [#753](https://github.com/pingcap/br/pull/753)
         - 导入前对导入数据和目标集群进行检查，如果不符合导入要求，则报错拒绝导入程序的运行 [#999](https://github.com/pingcap/br/pull/999)
         - 优化 Local 后端更新 checkpoint 的时机，提升断点重启时的性能 [#1080](https://github.com/pingcap/br/pull/1080)
 
