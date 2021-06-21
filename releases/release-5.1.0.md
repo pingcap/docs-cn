@@ -124,6 +124,7 @@ TiDB 版本：5.1
         - 大量数据写入造成 TiCDC 出现 OOM 问题
 
     - 改善 TiCDC 同步中断问题，缓解以下场景的问题 [project#11](https://github.com/pingcap/ticdc/projects/11)
+
         - 网络不稳定情况下出现的同步中断问题
         - 在部分 TiKV/PD/TiCDC 节点宕机情况下出现的同步中断问题
 
@@ -195,13 +196,13 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     + Backup & Restore (BR)
 
-        - 支持备份和恢复 `mysql` schema 下的系统表 [#1143](https://github.com/pingcap/br/pull/1143) [#1078](https://github.com/pingcap/br/pull/1078)
+        - 支持备份和恢复 `mysql` schema 下的用户数据表 [#1143](https://github.com/pingcap/br/pull/1143) [#1078](https://github.com/pingcap/br/pull/1078)
         - BR 支持 S3 兼容的存储（基于 virtual-host 寻址模式）[#10243](https://github.com/tikv/tikv/pull/10243)
         - BR 改进 backupmeta 格式，减少内存占用。[#1171](https://github.com/pingcap/br/pull/1171)
 
     + TiCDC
 
-        - 删除了一些可能让用户困惑的无用日志信息 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - 改进一些让用户困惑的无用日志信息 [#1759](https://github.com/pingcap/ticdc/pull/1759)
         - 为 TiCDC 扫描的速度添加感知下游处理能力的 (back pressure) 功能 [#10151](https://github.com/tikv/tikv/pull/10151)
         - 减少 TiCDC 进行初次扫描的内存使用量 [#10133](https://github.com/tikv/tikv/pull/10133)
         - 提升了悲观事务中 TiCDC Old Value 的缓存命中率 [#10089](https://github.com/tikv/tikv/pull/10089)
