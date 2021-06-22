@@ -206,6 +206,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：OFF
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
+### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值: 2
+- 这个变量用于控制 tidb 收集和使用统计信息的行为，目前的取值范围是 1 和 2，具体的行为可以参照[统计信息简介](statistics.md)。当前值为 2 时的行为还是实验性特性。
+
 ### `tidb_auto_analyze_end_time`
 
 - 作用域：GLOBAL
