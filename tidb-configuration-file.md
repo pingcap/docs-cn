@@ -615,6 +615,13 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 - The maximum number of retries of each statement in pessimistic transactions. If the number of retries exceeds this limit, an error occurs.
 - Default value: `256`
 
+### deadlock-history-capacity
+
++ The maximum number of deadlock events that can be recorded in the [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) table of a single TiDB server. If this table is in full volume and an additional deadlock event occurs, the earliest record in the table will be removed to make place for the newest error.
++ Default value: `10`
++ Minimum value: `0`
++ Maximum value: `10000`
+
 ## experimental
 
 The `experimental` section, introduced in v3.1.0, describes configurations related to the experimental features of TiDB.

@@ -204,7 +204,7 @@ Solutions:
 * If the above error occurs frequently, it is recommended to adjust the application logic.
 
 #### TTL manager has timed out
- 
+
 The transaction execution time can not exceed the GC time limit. In addition, the TTL time of pessimistic transactions has an upper limit, whose default value is 1 hour. Therefore, a pessimistic transaction executed for more than 1 hour will fail to commit. This timeout threshold is controlled by the TiDB parameter [performance.max-txn-ttl](https://github.com/pingcap/tidb/blob/master/config/config.toml.example).
 
 When the execution time of a pessimistic transaction exceeds the TTL time, the following error message occurs in the TiDB log:
@@ -215,7 +215,7 @@ TTL manager has timed out, pessimistic locks may expire, please commit or rollba
 
 Solutions:
 
-* First, confirm whether the application logic can be optimized. For example, large transactions may trigger TiDB's transaction size limit, which can be split into multiple small transactions. 
+* First, confirm whether the application logic can be optimized. For example, large transactions may trigger TiDB's transaction size limit, which can be split into multiple small transactions.
 * Also, you can adjust the related parameters properly to meet the application transaction logic.
 
 #### Deadlock found when trying to get lock
@@ -230,4 +230,148 @@ When a pessimistic transaction has a deadlock, one of the transactions must be t
 
 Solutions:
 
-* The application needs to adjust transaction request logic when there too many deadlocks.
+* If it is difficult to confirm the cause of the deadlock, for v5.1 and later versions, you are recommended to try to query the `INFORMATION_SCHEMA.DEADLOCKS` or `INFORMATION_SCHEMA.CLUSTER_DEADLOCKS` system table to get the information of deadlock waiting chain. For details, see the [Deadlock errors](#deadlock-errors) section and the [`DEADLOCKS` table](/information-schema/information-schema-deadlocks.md) document.
+* If the deadlock occurs frequently, you need to adjust the transaction query logic in your application to reduce such occurrences.
+
+### Use Lock View to troubleshoot issues related to pessimistic locks
+
+Since v5.1, TiDB supports the Lock View feature. This feature has several system tables built in `information_schema` that provide more information about the pessimistic lock conflicts and pessimistic lock waitings. For the detailed introduction of these tables, see the following documents:
+
+* [`TIDB_TRX` and `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md): Provides information of all running transactions on the current TiDB node or in the entire cluster, including whether the transaction is in the lock-waiting state, the lock-waiting time, and the digests of statements that have been executed in the transaction.
+* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md): Provides the pessimistic lock-waiting information in TiKV, including the `start_ts` of the blocking and blocked transaction, the digest of the blocked SQL statement, and the key on which the waiting occurs.
+* [`DEADLOCKS` and `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md): Provides the information of several deadlock events that have recently occurred on the current TiDB node or in the entire cluster, including the waiting relationship among transactions in the deadlock loops, the digest of the statement currently being executed in the transaction, and the key on which the waiting occurs.
+
+> **Warning:**
+>
+> Currently, this is an experimental feature. The definition and behavior of the table structure might have major changes in future releases.
+
+The following sections show the examples of troubleshooting some issues using these tables.
+
+#### Deadlock errors
+
+To get the information of the recent deadlock errors, you can query the `DEADLOCKS` or `CLUSTER_DEADLOCKS` table. For example:
+
+{{< copyable "sql" >}}
+
+```sql
+select * from information_schema.deadlocks;
+```
+
+```sql
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
+| DEADLOCK_ID | OCCUR_TIME                 | RETRYABLE | TRY_LOCK_TRX_ID    | CURRENT_SQL_DIGEST                                               | KEY                                    | TRX_HOLDING_LOCK   |
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
+|           1 | 2021-06-04 08:22:38.765699 |         0 | 425405959304904707 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | 7480000000000000385F728000000000000002 | 425405959304904708 |
+|           1 | 2021-06-04 08:22:38.765699 |         0 | 425405959304904708 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | 7480000000000000385F728000000000000001 | 425405959304904707 |
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
+```
+
+The query result above shows the waiting relationship among multiple transactions in the deadlock error, the digest of the SQL statement currently being executed in each transaction, and the key on which the conflict occurs.
+
+You can get the text of the normalized SQL statement corresponding to the digest of the SQL statements executed recently from the `STATEMENTS_SUMMARY` or `STATEMENTS_SUMMARY_HISTORY` table. For details, see [`STATEMENTS_SUMMARY` and `STATEMENTS_SUMMARY_HISTORY` tables](/statement-summary-tables.md). You can also join the obtained results directly with the `DEADLOCKS` table. Note that the `STATEMENTS_SUMMARY` table might not contain the information of all SQL statements, so left join is used in the following example:
+
+{{< copyable "sql" >}}
+
+```sql
+select l.deadlock_id, l.occur_time, l.try_lock_trx_id, l.trx_holding_lock, s.digest_text from information_schema.deadlocks as l left join information_schema.statements_summary as s on l.current_sql_digest = s.digest;
+```
+
+```sql
++-------------+----------------------------+--------------------+--------------------+-----------------------------------------+
+| deadlock_id | occur_time                 | try_lock_trx_id    | trx_holding_lock   | digest_text                             |
++-------------+----------------------------+--------------------+--------------------+-----------------------------------------+
+|           1 | 2021-06-04 08:22:38.765699 | 425405959304904707 | 425405959304904708 | update `t` set `v` = ? where `id` = ? ; |
+|           1 | 2021-06-04 08:22:38.765699 | 425405959304904708 | 425405959304904707 | update `t` set `v` = ? where `id` = ? ; |
++-------------+----------------------------+--------------------+--------------------+-----------------------------------------+
+```
+
+#### A few hot keys cause queueing locks
+
+The `DATA_LOCK_WAITS` system table provides the lock-waiting status on the TiKV nodes. When you query this table, TiDB automatically obtains the real-time lock-waiting information from all TiKV nodes. If a few hot keys are frequently locked and block many transactions, you can query the `DATA_LOCK_WAITS` table and aggregate the results by key to try to find the keys on which issues frequently occur:
+
+{{< copyable "sql" >}}
+
+```sql
+select `key`, count(*) as `count` from information_schema.data_lock_waits group by `key` order by `count` desc;
+```
+
+```sql
++----------------------------------------+-------+
+| key                                    | count |
++----------------------------------------+-------+
+| 7480000000000000415f728000000000000001 |     2 |
+| 7480000000000000415f728000000000000002 |     1 |
++----------------------------------------+-------+
+```
+
+To avoid contingency, you might need to make multiple queries.
+
+If you know the key that frequently has issues occurred, you can try to get the information of the transaction that tries to lock the key from the `TIDB_TRX` or `CLUSTER_TIDB_TRX` table.
+
+Note that the information displayed in the `TIDB_TRX` and `CLUSTER_TIDB_TRX` tables is also the information of the transactions that are running at the time the query is performed. These tables do not display the information of the completed transactions. If there is a large number of concurrent transactions, the result set of the query might also be large. You can use the `limit` clause or the `where` clause to filter out transactions with a long lock-waiting time. Note that when you join multiple tables in Lock View, the data in different tables might not be obtained at the same time, so the information in different tables might not be consistent.
+
+{{< copyable "sql" >}}
+
+```sql
+select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415f728000000000000001"\G
+```
+
+```sql
+*************************** 1. row ***************************
+                ID: 425496938634543111
+        START_TIME: 2021-06-08 08:46:48.341000
+CURRENT_SQL_DIGEST: a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9
+             STATE: LockWaiting
+WAITING_START_TIME: 2021-06-08 08:46:48.388024
+   MEM_BUFFER_KEYS: 1
+  MEM_BUFFER_BYTES: 19
+        SESSION_ID: 87
+              USER: root
+                DB: test
+   ALL_SQL_DIGESTS: [0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3, a4e28cc182bdd18288e2a34180499b9404cd0
+ba07e3cc34b6b3be7b7c2de7fe9, a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9]
+*************************** 2. row ***************************
+                ID: 425496940994101249
+        START_TIME: 2021-06-08 08:46:57.342000
+CURRENT_SQL_DIGEST: a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9
+             STATE: LockWaiting
+WAITING_START_TIME: 2021-06-08 08:46:57.590060
+   MEM_BUFFER_KEYS: 0
+  MEM_BUFFER_BYTES: 0
+        SESSION_ID: 85
+              USER: root
+                DB: test
+   ALL_SQL_DIGESTS: [0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3, a4e28cc182bdd18288e2a34180499b9404cd0
+ba07e3cc34b6b3be7b7c2de7fe9]
+2 rows in set (0.00 sec)
+```
+
+#### A transaction is blocked for a long time
+
+If a transaction is known to be blocked by another transaction (or multiple transactions) and the `start_ts` (transaction ID) of the current transaction is known, you can use the following method to obtain the information of the blocking transaction. Note that when you join multiple tables in Lock View, the data in different tables might not be obtained at the same time, so the information in different tables might not be consistent.
+
+{{< copyable "sql" >}}
+
+```sql
+select l.key, trx.* from information_schema.data_lock_waits as l join information_schema.tidb_trx as trx on l.current_holding_trx_id = trx.id where l.trx_id = 425497223886536705\G
+```
+
+```sql
+*************************** 1. row ***************************
+               key: 7480000000000000475f728000000000000002
+                ID: 425497219115778059
+        START_TIME: 2021-06-08 09:04:38.292000
+CURRENT_SQL_DIGEST: a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9
+             STATE: LockWaiting
+WAITING_START_TIME: 2021-06-08 09:04:38.336264
+   MEM_BUFFER_KEYS: 1
+  MEM_BUFFER_BYTES: 19
+        SESSION_ID: 97
+              USER: root
+                DB: test
+   ALL_SQL_DIGESTS: [0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3, a4e28cc182bdd18288e2a34180499b9404cd0
+ba07e3cc34b6b3be7b7c2de7fe9, a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9]
+1 row in set (0.01 sec)
+```
+
+If the `start_ts` of the current transaction is unknown, you can try to find it out from the information in the `TIDB_TRX` / `CLUSTER_TIDB_TRX` table or in the [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) table.
