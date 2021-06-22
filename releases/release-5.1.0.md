@@ -26,28 +26,28 @@ TiDB 版本：5.1
 
 | 变量名   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|
-| `cte_max_recursion_depth`  | 新增 | 用于控制公共表表达式最大递归深度。 |
-| `init_connect`  | 新增 | 用于控制初始连接。 |
+| [`cte_max_recursion_depth`](/system-variables.md#cte_max_recursion_depth)  | 新增 | 用于控制公共表表达式最大递归深度。 |
+| [`init_connect`](/system-variables.md#init_connect)  | 新增 | 用于控制初始连接。 |
 | `tidb_analyze_version`  | 新增 | 用于控制所收集到的统计信息。默认值从 `1` 修改为 `2`，默认作为实验特性启用。 |
-| `tidb_enable_enhanced_security`  | 新增 | 表示所连接的 TiDB 服务器是否启用了安全增强模式（SEM），在不重新启动 TiDB 服务器的情况下不能改变该变量。 |
-| `tidb_enforce_mpp` | 新增 | 用于忽略优化器代价估算，强制使用 MPP 模式。`BOOL` 类型，默认值为 `false`。 |
-| `tidb_partition_prune_mode` | 新增 | 用于设置是否开启分区表动态模式（实验特性）。默认值为 `static`，即默认不启用分区表动态模式。 |
+| [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security) | 新增 | 表示所连接的 TiDB 服务器是否启用了安全增强模式（SEM），在不重新启动 TiDB 服务器的情况下不能改变该变量。 |
+| [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) | 新增 | 用于忽略优化器代价估算，强制使用 MPP 模式。`BOOL` 类型，默认值为 `false`。 |
+| [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) | 新增 | 用于设置是否开启分区表动态模式（实验特性）。默认值为 `static`，即默认不启用分区表动态模式。 |
 
 ### 配置文件参数
 
 | 配置文件   | 配置项   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|:-----------|
-| TiDB 配置文件  | `security.enable-sem`  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
-| TiDB 配置文件  | `performance.committer-concurrency`  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 `16` 修改为 `128`。|
+| TiDB 配置文件  | [`security.enable-sem`](tidb-configuration-file.md#enable-sem)  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
+| TiDB 配置文件  | [`performance.committer-concurrency`](/tidb-configuration-file.md#committer-concurrency)  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 `16` 修改为 `128`。|
 | TiDB 配置文件  | `performance.tcp-no-delay`  | 新增  | 控制是否在 TiDB 在 TCP 层开启 no delay。 默认值为 `true`，代表开启。 |
-| TiDB 配置文件  | `pessimistic-txn.deadlock-history-capacity`  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
-| TiKV 配置文件  | `abort-on-panic`  | 新增  | 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。默认值为 false, 代表不允许生成 core dump 文件。 |
-| TiKV 配置文件  | `hibernate-regions`  | 修改  | 默认值从 `false` 修改为 `true`。 如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。 |
-| TiKV 配置文件  | `soft-pending-compaction-bytes-limit`  | 修改  | pending compaction bytes 的软限制，默认值从 "64GB" 修改为 "192GB"。 |
-| TiKV 配置文件  | `storage.io-rate-limit`  | 新增  | 控制 TiKV 写入的 IO 速率。`storage.io-rate-limit.max-bytes-per-sec` 默认值为 “0MB”。 |
-| TiKV 配置文件  | `resolved-ts.enable`  | 新增  | 为所有 Region leader 维护 `resolved-ts`，默认值为 `true`。 |
-| TiKV 配置文件  | `resolved-ts.advance-ts-interval`  | 新增  | 推进 `resolved-ts` 的间隔，默认为 "1s"，支持动态更改。 |
-| TiKV 配置文件  | `resolved-ts.scan-lock-pool-size`  | 新增  | 用于初始化 `resolved-ts` 时扫锁的线程数，默认值为 `2`。 |
+| TiDB 配置文件  | [`pessimistic-txn.deadlock-history-capacity`](tidb-configuration-file.md#deadlock-history-capacity)  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
+| TiKV 配置文件  | [`abort-on-panic`](/tikv-configuration-file.md#abort-on-panic)  | 新增  | 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。默认值为 false, 代表不允许生成 core dump 文件。 |
+| TiKV 配置文件  | [`hibernate-regions`](/tikv-configuration-file.md#hibernate-regions)  | 修改  | 默认值从 `false` 修改为 `true`。 如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。 |
+| TiKV 配置文件  | [`soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit)  | 修改  | pending compaction bytes 的软限制，默认值从 "64GB" 修改为 "192GB"。 |
+| TiKV 配置文件  | [`storage.io-rate-limit`](/tikv-configuration-file.md#storageio-rate-limit)  | 新增  | 控制 TiKV 写入的 IO 速率。`storage.io-rate-limit.max-bytes-per-sec` 默认值为 “0MB”。 |
+| TiKV 配置文件  | [`resolved-ts.enable`](/tikv-configuration-file.md#enable)  | 新增  | 为所有 Region leader 维护 `resolved-ts`，默认值为 `true`。 |
+| TiKV 配置文件  | [`resolved-ts.advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval)  | 新增  | 推进 `resolved-ts` 的间隔，默认为 "1s"，支持动态更改。 |
+| TiKV 配置文件  | [`resolved-ts.scan-lock-pool-size`](/tikv-configuration-file.md#scan-lock-pool-size)  | 新增  | 用于初始化 `resolved-ts` 时扫锁的线程数，默认值为 `2`。 |
 
 ### 其他
 
