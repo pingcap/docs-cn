@@ -102,10 +102,14 @@ TiDB 版本：5.1
 
 + 新增锁视图 (Lock View)（实验特性）
 
-    [用户文档](/information-schema/information-schema-data-lock-waits.md)，[#24199](https://github.com/pingcap/tidb/issues/24199)
+    Lock View 用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题等 [#24199](https://github.com/pingcap/tidb/issues/24199)
+    
+    用户文档：
 
-    Lock View 用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题等
-
+    - 查看集群中所有 TiKV 节点上当前正在发生的悲观锁：[`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
+    - 查看当前 TiDB 节点上最近发生的若干次死锁错误：[`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
+    - 查看当前 TiDB 节点上正在执行的事务的信息：[`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
+    
 ### 性能
 
 + 数据副本非一致性读 (Stale Read)
