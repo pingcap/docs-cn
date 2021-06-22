@@ -56,7 +56,7 @@ summary: 了解如何使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量�
     [mydumper]
     no-schema = true
 
-    [mydumper.files]
+    [[mydumper.files]]
     # 使用单引号字符串避免转义
     pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
     schema = '$1'
