@@ -106,9 +106,9 @@ TiDB 版本：5.1
     
     用户文档：
 
-    - 查看集群中所有 TiKV 节点上当前正在发生的悲观锁：[`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
-    - 查看当前 TiDB 节点上最近发生的若干次死锁错误：[`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
-    - 查看当前 TiDB 节点上正在执行的事务的信息：[`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
+    - 查看集群中所有 TiKV 节点上当前正在发生的悲观锁等锁：[`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
+    - 查看 TiDB 节点上最近发生的若干次死锁错误：[`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
+    - 查看 TiDB 节点上正在执行的事务的信息：[`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
     
 ### 性能
 
