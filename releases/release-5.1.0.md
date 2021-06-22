@@ -43,10 +43,10 @@ TiDB 版本：5.1
 | TiDB 配置文件  | [`pessimistic-txn.deadlock-history-capacity`](tidb-configuration-file.md#deadlock-history-capacity)  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
 | TiKV 配置文件  | [`abort-on-panic`](/tikv-configuration-file.md#abort-on-panic)  | 新增  | 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。默认值为 false, 代表不允许生成 core dump 文件。 |
 | TiKV 配置文件  | [`hibernate-regions`](/tikv-configuration-file.md#hibernate-regions)  | 修改  | 默认值从 `false` 修改为 `true`。 如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。 |
-| TiKV 配置文件  | [`old-value-cache-memory-quota`](/tikv-configuration-file.md#old-value-cache-memory-quota)  | 新增  |用于设置缓存在内存中的 TiCDC Old Value 的条目占用内存的上限。默认值为 512MB。  |
-| TiKV 配置文件  | [`sink-memory-quota`](/tikv-configuration-file.md#sink-memory-quota)  | 新增  | 用于设置缓存在内存中的 TiCDC 数据变更事件占用内存的上限。默认值为 512MB。 |
-| TiKV 配置文件  | [`incremental-scan-threads`](/tikv-configuration-file.md#incremental-scan-threads)  | 新增  | 用于控制增量扫描历史数据任务的线程个数。默认值为 4，代表 4 个线程。  |
-| TiKV 配置文件  | [`incremental-scan-concurrency`](/tikv-configuration-file.md#incremental-scan-concurrency)  | 新增  | 用于控制增量扫描历史数据任务的最大并发执行个数。默认值为 6，代表最多并发执行 6 个任务。 |
+| TiKV 配置文件  | [`old-value-cache-memory-quota`](/tikv-configuration-file.md#old-value-cache-memory-quota)  | 新增  |设置缓存在内存中的 TiCDC Old Value 的条目占用内存的上限。默认值为 512MB。  |
+| TiKV 配置文件  | [`sink-memory-quota`](/tikv-configuration-file.md#sink-memory-quota)  | 新增  | 设置缓存在内存中的 TiCDC 数据变更事件占用内存的上限。默认值为 512MB。 |
+| TiKV 配置文件  | [`incremental-scan-threads`](/tikv-configuration-file.md#incremental-scan-threads)  | 新增  | 控制增量扫描历史数据任务的线程个数。默认值为 4，代表 4 个线程。  |
+| TiKV 配置文件  | [`incremental-scan-concurrency`](/tikv-configuration-file.md#incremental-scan-concurrency)  | 新增  | 控制增量扫描历史数据任务的最大并发执行个数。默认值为 6，代表最多并发执行 6 个任务。 |
 | TiKV 配置文件  | [`soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit)  | 修改  | pending compaction bytes 的软限制，默认值从 "64GB" 修改为 "192GB"。 |
 | TiKV 配置文件  | [`storage.io-rate-limit`](/tikv-configuration-file.md#storageio-rate-limit)  | 新增  | 控制 TiKV 写入的 IO 速率。`storage.io-rate-limit.max-bytes-per-sec` 默认值为 “0MB”。 |
 | TiKV 配置文件  | [`resolved-ts.enable`](/tikv-configuration-file.md#enable)  | 新增  | 为所有 Region leader 维护 `resolved-ts`，默认值为 `true`。 |
