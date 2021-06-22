@@ -13,7 +13,7 @@ TiDB 版本：5.1
 - 支持 MySQL 8 中的公共表表达式 (Common Table Expression)，提高了 SQL 语句的可读性与执行效率。
 - 支持 MySQL 8 中的动态权限 (Dynamic Privileges) 配置，实现对某些操作更细粒度的控制。
 - 支持通过 Stale Read 功能直接读取本地副本数据，降低读取延迟，提升查询性能。
-- 新增锁视图 (Lock View) 功能方便 DBA 观察事务加锁情况以及排查死锁问题。
+- 新增锁视图 (Lock View) 功能方便 DBA 观察事务加锁情况以及排查死锁问题（实验特性）。
 - 新增 TiKV 后台任务写入限制（TiKV Write Rate Limiter)，保证读写请求的延迟稳定性。
 
 ## 兼容性更改
