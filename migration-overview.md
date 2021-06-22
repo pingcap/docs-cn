@@ -1,7 +1,6 @@
 ---
 title: 数据迁移概述
 summary: 本文档介绍支持哪些路径将数据迁移到 TiDB。
-aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route','/zh/tidb/dev/data-migration-route']
 ---
 
 # 数据迁移概述
