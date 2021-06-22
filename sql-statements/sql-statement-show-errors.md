@@ -1,7 +1,6 @@
 ---
 title: SHOW ERRORS
 summary: TiDB 数据库中 SHOW ERRORS 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-errors/','/docs-cn/dev/reference/sql/statements/show-errors/']
 ---
 
 # SHOW ERRORS

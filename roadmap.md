@@ -1,6 +1,5 @@
 ---
 title: TiDB Roadmap
-aliases: ['/zh/tidb/v5.0/roadmap','/docs-cn/ROADMAP/','/docs-cn/roadmap/','/docs-cn/stable/roadmap/','/docs-cn/v4.0/roadmap/','/zh/tidb/stable/roadmap','/docs-cn/v3.1/roadmap/','/zh/tidb/v3.1/roadmap','/docs-cn/v3.0/roadmap/','/zh/tidb/v3.0/roadmap','/docs-cn/v2.1/roadmap/','/zh/tidb/v2.1/roadmap']
 ---
 
 <!-- markdownlint-disable MD001 -->

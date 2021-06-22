@@ -1,7 +1,6 @@
 ---
 title: 部署运维 FAQ
 summary: 介绍 TiDB 集群运维部署的常见问题、原因及解决方法。
-aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 ---
 
 # 部署运维 FAQ
