@@ -34,10 +34,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-select/','/docs-cn/dev/refe
 
 ```ebnf+diagram
 TableRefsClause ::= 
-   (TableRef (AsOfClause)? ) (( ',' TableRef (AsOfClause)? ))*
+    TableRef AsOfClause? ( ',' TableRef AsOfClause? )*
 
 AsOfClause ::=
-    ( 'AS' 'OF' 'TIMESTAMP' Expression)
+    'AS' 'OF' 'TIMESTAMP' Expression
 ```
 
 **WhereClauseOptional:**
