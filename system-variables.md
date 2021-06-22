@@ -25,8 +25,8 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 > **注意：**
 >
-> - 在 TiDB 中，`GLOBAL` 变量的设置即使重启后也仍然有效。每隔 2 秒，其他 TiDB server 会获取到对变量设置的更改。详情见 [TiDB #14531](https://github.com/pingcap/tidb/issues/14531)。
-> - 此外，由于应用和连接器通常需要读 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 5.7 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
+> - 在 TiDB 服务器上执行 `SET GLOBAL` 语句后，该更改会立即生效。之后会通知所有 TiDB 服务器刷新其系统变量缓存，该操作会在后台立即开始。由于某些 TiDB 服务器可能会错过通知，系统变量缓存每 30 秒会自动刷新一次。这有助于确保所有服务器都以相同的配置运行。
+> - 在 TiDB 中，`GLOBAL` 变量的设置即使重启后也仍然有效。此外，由于应用和连接器通常需要读 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
 
 ## 变量参考
 
@@ -103,6 +103,12 @@ mysql> SELECT * FROM t1;
 - 作用域：NONE
 - 默认值：（系统主机名）
 - 这个变量一个只读变量，表示 TiDB server 的主机名。
+
+### `init_connect`
+
+- 作用域：GLOBAL
+- 默认值：""
+- 用户首次连接到 TiDB 服务器时，`init_connect` 特性允许 TiDB 自动执行一条或多条 SQL 语句。如果你有 `CONNECTION_ADMIN` 或者 `SUPER` 权限，这些 SQL 语句将不会被自动执行。如果这些语句执行报错，你的用户连接将被终止。
 
 ### `innodb_lock_wait_timeout`
 
@@ -188,7 +194,11 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：ON（表示开启）
-- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询。开启后 TiDB 会通过优化器自动判断是否选择 MPP 执行。MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。
+- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
+    - 0 或 OFF，代表从不使用 MPP 模式
+    - 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
+
+MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)。
 
 ### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
@@ -560,6 +570,16 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：OFF
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
+### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
+
+> **警告：**
+>
+> 目前分区表动态模式为实验特性，不建议在生产环境中使用。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：static
+- 这个变量用来设置是否开启分区表动态模式。关于动态模式的详细说明请参阅[分区表动态模式](/partitioned-table.md#动态模式)。
+
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -584,6 +604,16 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：ON
 - 这个变量用来控制是否开启窗口函数的支持。默认值 1 代表开启窗口函数的功能。
 - 由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `OFF`。
+
+### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：OFF（表示关闭）
+- 这个变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
+    - 0 或 OFF，代表不强制使用 MPP 模式（默认）
+    - 1 或 ON，代表将忽略代价估算，强制使用 MPP 模式。注意：只有当 `tidb_allow_mpp=true` 时该设置才生效。
+
+MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)。
 
 ### `tidb_evolve_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
