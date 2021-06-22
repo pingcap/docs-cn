@@ -3,7 +3,7 @@ name: Repsitory dispatch workflow from docs-cn-release-master
 on:
   push:
     branches:
-      - master
+      - release-5.1
 
 jobs:
   build:
