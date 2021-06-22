@@ -378,7 +378,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `tcp-no-delay`
 
-+ TiDB 在 TCP 层开启 no delay。
++ 控制 TiDB 是否在 TCP 层开启 TCP_NODELAY。开启后，TiDB 将禁用 TCP/IP 协议中的 Nagle 算法，允许小数据包的发送，可以降低网络延时，适用于延时敏感型且数据传输量比较小的应用。
 + 默认值：true
 
 ### `cross-join`
