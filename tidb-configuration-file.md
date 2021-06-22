@@ -379,6 +379,11 @@ Configuration items related to performance.
 - Determines whether to enable `keepalive` in the TCP layer.
 - Default value: `true`
 
+### `tcp-no-delay`
+
+- Determines whether to enable TCP_NODELAY at the TCP layer. After it is enabled, TiDB disables the Nagle algorithm in the TCP/IP protocol and allows sending small data packets to reduce network latency. This is suitable for latency-sensitive applications with a small transmission volume of data.
+- Default value: `true`
+
 ### `cross-join`
 
 - Default value: `true`
