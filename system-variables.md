@@ -206,8 +206,11 @@ mysql> SELECT * FROM t1;
 
 - Scope: SESSION | GLOBAL
 - Default value: `ON`
-- Possible values: `OFF`, `ON`, `ENFORCE`
-- This variable controls whether to use the MPP mode of TiFlash to execute queries. If the value is set to `ON`, TiDB automatically determines using the optimizer whether to choose MPP to execute queries. MPP is a distributed computing framework provided by the TiFlash engine, which allows data exchange between nodes and provides high-performance, high-throughput SQL algorithms.
+- Controls whether to use the MPP mode of TiFlash to execute queries. The value options are as follows:
+    - `0` or `OFF`, which means that the MPP mode will not be used.
+    - `1` or `ON`, which means that the optimizer determines whether to use the MPP mode based on the cost estimation (by default).
+
+MPP is a distributed computing framework provided by the TiFlash engine, which allows data exchange between nodes and provides high-performance, high-throughput SQL algorithms. For details about the selection of the MPP mode, refer to [Control whether to select the MPP mode](/tiflash/use-tiflash.md#control-whether-to-select-the-mpp-mode).
 
 ### tidb_allow_remove_auto_inc <span class="version-mark">New in v2.1.18 and v3.0.4</span>
 
@@ -605,6 +608,16 @@ Query OK, 0 rows affected (0.09 sec)
 - Scope: SESSION | GLOBAL
 - Default value: `ON`
 - This variable is used to control whether to enable the support for window functions. Note that window functions may use reserved keywords. This might cause SQL statements that could be executed normally cannot be parsed after upgrading TiDB. In this case, you can set `tidb_enable_window_function` to `OFF`.
+
+### `tidb_enforce_mpp` <span class="version-mark">New in v5.1</span>
+
+- Scope: SESSION
+- Default value: `OFF`
+- Controls whether to ignore the optimizer's cost estimation and to forcibly use TiFlash's MPP mode for query execution. The value options are as follows:
+    - `0` or `OFF`, which means that the MPP mode is not forcibly used (by default).
+    - `1` or `ON`, which means that the cost estimation is ignored and the MPP mode is forcibly used. Note that this setting only takes effect when `tidb_allow_mpp=true`.
+
+MPP is a distributed computing framework provided by the TiFlash engine, which allows data exchange between nodes and provides high-performance, high-throughput SQL algorithms. For details about the selection of the MPP mode, refer to [Control whether to select the MPP mode](/tiflash/use-tiflash.md#control-whether-to-select-the-mpp-mode).
 
 ### tidb_evolve_plan_baselines <span class="version-mark">New in v4.0</span>
 

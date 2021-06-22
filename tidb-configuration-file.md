@@ -439,6 +439,12 @@ Configuration items related to performance.
 + Default value: `20971520`
 + When `nested-loop-join-cache-capacity` is set to `0`, nested loop join cache is disabled by default. When the LRU size is larger than the value of `nested-loop-join-cache-capacity`, the elements in the LRU are removed.
 
+### `enforce-mpp`
+
++ Determines whether to ignore the optimizer's cost estimation and to forcibly use TiFlash's MPP mode for query execution.
++ Default value: `false`
++ This configuration item is the initial value of [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51).
+
 ## prepared-plan-cache
 
 The Plan Cache configuration of the `PREPARE` statement.
