@@ -151,7 +151,7 @@ In the above example:
 
 * Table t corresponds to six Regions. In these Regions, `102`, `106`, `110`, `114`, and `3` store the row data and `98` stores the index data.
 * For `START_KEY` and `END_KEY` of Region `102`, `t_43` indicates the table prefix and ID. `_r` is the prefix of the record data in table t. `_i` is the prefix of the index data.
-* In Region `102`, `START_KEY` and `END_KEY` mean that record data in the range of `[-inf, 20000)` is stored. In similar way, the ranges of data storage in Regions (`103`, `109`, `113`, `2`) can also be calculated.
+* In Region `102`, `START_KEY` and `END_KEY` mean that record data in the range of `[-inf, 20000)` is stored. In similar way, the ranges of data storage in Regions (`106`, `110`, `114`, `3`) can also be calculated.
 * Region `98` stores the index data. The start key of table t's index data is `t_43_i`, which is in the range of Region `98`.
 
 To check the Region that corresponds to table t in store 1, use the `WHERE` clause:
