@@ -1,19 +1,25 @@
 ---
-title: Read Historical Data
-summary: Learn about how TiDB reads data from history versions.
+title: Read Historical Data Using the System Variable `tidb_snapshot`
+summary: Learn about how TiDB reads data from history versions using the system variable `tidb_snapshot`.
 aliases: ['/docs/dev/read-historical-data/','/docs/dev/how-to/get-started/read-historical-data/']
 ---
 
-# Read Historical Data
+# Read Historical Data Using the System Variable `tidb_snapshot`
 
-This document describes how TiDB reads data from the history versions, how TiDB manages the data versions, as well as an example to show how to use the feature.
+This document describes how to read data from the history versions using the system variable `tidb_snapshot`, including specific usage examples and strategies for saving historical data.
+
+> **Note:**
+>
+> You can also use the [Stale Read](/stale-read.md) feature to read historical data, which is more recommended.
 
 ## Feature description
 
-TiDB implements a feature to read history data using the standard SQL interface directly without special clients or drivers. By using this feature:
+TiDB implements a feature to read history data using the standard SQL interface directly without special clients or drivers.
 
-- Even when data is updated or removed, its history versions can be read using the SQL interface.
-- Even if the table structure changes after the data is updated, TiDB can use the old structure to read the history data.
+> **Note:**
+>
+> - Even when data is updated or removed, its history versions can be read using the SQL interface.
+> - When reading historical data, TiDB returns the data with the old table structure even if the current table structure is different.
 
 ## How TiDB reads data from history versions
 

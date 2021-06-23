@@ -10,17 +10,22 @@ The `SET TRANSACTION` statement can be used to change the current isolation leve
 
 ## Synopsis
 
-**SetStmt:**
+```ebnf+diagram
+SetStmt ::=
+    'SET' ( VariableAssignmentList |
+    'PASSWORD' ('FOR' Username)? '=' PasswordOpt |
+    ( 'GLOBAL'| 'SESSION' )? 'TRANSACTION' TransactionChars |
+    'CONFIG' ( Identifier | stringLit) ConfigItemName EqOrAssignmentEq SetExpr )
 
-![SetStmt](/media/sqlgram/SetStmt.png)
+TransactionChars ::=
+    ( 'ISOLATION' 'LEVEL' IsolationLevel | 'READ' 'WRITE' | 'READ' 'ONLY' AsOfClause? )
 
-**TransactionChar:**
+IsolationLevel ::=
+    ( 'REPEATABLE' 'READ' | 'READ' ( 'COMMITTED' | 'UNCOMMITTED' ) | 'SERIALIZABLE' )
 
-![TransactionChar](/media/sqlgram/TransactionChar.png)
-
-**IsolationLevel:**
-
-![IsolationLevel](/media/sqlgram/IsolationLevel.png)
+AsOfClause ::=
+    ( 'AS' 'OF' 'TIMESTAMP' Expression)
+```
 
 ## Examples
 

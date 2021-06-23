@@ -15,9 +15,12 @@ In the absence of a `START TRANSACTION` statement, every statement will by defau
 **BeginTransactionStmt:**
 
 ```ebnf+diagram
-BeginTransactionStmt ::= 
+BeginTransactionStmt ::=
     'BEGIN' ( 'PESSIMISTIC' | 'OPTIMISTIC' )?
-|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' | 'WITH' 'CAUSAL' 'CONSISTENCY' 'ONLY' )?
+|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? | AsOfClause ) ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' | 'WITH' 'CAUSAL' 'CONSISTENCY' 'ONLY' )?
+
+AsOfClause ::=
+    ( 'AS' 'OF' 'TIMESTAMP' Expression)
 ```
 
 ## Examples
