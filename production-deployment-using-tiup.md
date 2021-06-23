@@ -288,10 +288,10 @@ tiup cluster list
 TiUP 支持管理多个 TiDB 集群，该命令会输出当前通过 TiUP cluster 管理的所有集群信息，包括集群名称、部署用户、版本、密钥信息等：
 
 ```log
-Starting /home/tidb/.tiup/components/cluster/v1.3.0/cluster list
+Starting /home/tidb/.tiup/components/cluster/v1.5.0/cluster list
 Name              User  Version        Path                                                        PrivateKey
 ----              ----  -------        ----                                                        ----------
-tidb-test         tidb  v5.0.2      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
+tidb-test         tidb  v5.1.0      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
 ## 第 6 步：检查部署的 TiDB 集群情况
