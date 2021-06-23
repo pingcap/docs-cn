@@ -92,7 +92,7 @@ TiDB 版本：5.1
 
 - 引入新的语法 `AS OF TIMESTAMP`，支持通过 Stale Read 功能从指定的时间点或时间范围内读取历史数据。
 
-    [用户文档](/as-of-timestamp.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
+    [用户文档](/stale-read.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
 
     `AS OF TIMESTAMP` 语法示例如下：
 
