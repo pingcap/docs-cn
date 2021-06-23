@@ -50,7 +50,7 @@ summary: BR 相关的常见问题以及解决方法。
 {{< copyable "shell-regular" >}}
 
 ```bash
-ps aux | grep tikv
+ps aux | grep tikv-server
 ```
 
 2.使用tiup命令查询集群启动信息:
