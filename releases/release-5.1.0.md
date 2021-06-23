@@ -84,7 +84,7 @@ TiDB 版本：5.1
 
 - 新增安全增强模式 (Security Enhanced Mode) 配置项，用于对 TiDB 管理员进行更细粒度的权限划分。安全增强模式默认关闭，如需开启，请参考[用户文档](/system-variables.md#tidb_enable_enhanced_security)。
 
-- 全面加强列类型的在线变更能力，支持通过 `ALTER TABLE` 语句进行列的在线类型修改, 包括但不限于：
+- 全面加强列类型的在线变更能力，支持通过 `ALTER TABLE` 语句进行列的在线类型修改，包括但不限于：
 
     - 从 `VARCHAR` 转换为 `BIGINT`
     - `DECIMAL` 精度修改
