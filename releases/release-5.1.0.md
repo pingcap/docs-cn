@@ -127,7 +127,11 @@ TiDB 版本：5.1
 
     [用户文档](/stale-read.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
 
-+ 默认开启 Hibernate Region 特性 [#10266](https://github.com/tikv/tikv/pull/10266)
++ 默认开启 Hibernate Region 特性。
+
+    如果 Region 长时间处于非活跃状态，即被自动设置为静默状态，可以降低 Leader 和 Follower 之间心跳信息的系统开销。
+
+    [用户文档](/tikv-configuration-file.md#hibernate-regions)，[#10266](https://github.com/tikv/tikv/pull/10266)
 
 ### 稳定性
 
