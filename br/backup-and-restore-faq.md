@@ -47,12 +47,14 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 如何检查权限:
 
 1.使用Linux原生进程查询命令：
+
 {{< copyable "shell-regular" >}}
 ```bash
 ps aux | grep tikv
 ```
 
-2.使用tiup命令查询集群启动信息
+2.使用tiup命令查询集群启动信息:
+
 {{< copyable "shell-regular" >}}
 ```bash
 tiup cluster list
