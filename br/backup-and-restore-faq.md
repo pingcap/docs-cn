@@ -51,7 +51,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 {{< copyable "shell-regular" >}}
 
 ```bash
-ps aux | grep tikv
+ps aux | grep tikv-server
 ```
 
 2.使用tiup命令查询集群启动信息:
