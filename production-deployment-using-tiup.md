@@ -1,6 +1,10 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
+<<<<<<< HEAD
 aliases: ['/zh/tidb/v5.0/production-offline-deployment-using-tiup']
+=======
+aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/dev/production-offline-deployment-using-tiup','/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/','/zh/tidb/dev/deploy-test-cluster-using-docker-compose','/zh/tidb/dev/test-deployment-using-docker']
+>>>>>>> d38019c49 (Delete docker deployment docs (#6507))
 ---
 
 # 使用 TiUP 部署 TiDB 集群
