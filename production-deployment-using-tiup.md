@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
-aliases: ['/zh/tidb/v5.0/production-offline-deployment-using-tiup']
+aliases: ['/zh/tidb/v5.0/production-offline-deployment-using-tiup','/zh/tidb/v5.0/deploy-test-cluster-using-docker-compose','/zh/tidb/v5.0/test-deployment-using-docker','/zh/tidb/stable/deploy-test-cluster-using-docker-compose','/zh/tidb/stable/test-deployment-using-docker']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
