@@ -101,6 +101,7 @@ TiDB 版本：5.1
     START TRANSACTION READ ONLY AS OF TIMESTAMP '2020-09-06 00:00:00';
     SET TRANSACTION READ ONLY as of timestamp '2020-09-06 00:00:00';
     ```
+
 - 引入一种新的统计信息类型 `tidb_analyze_version = 2` (实验特性)。
 
     `tidb_analyze_version = 2` 默认启用，避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
