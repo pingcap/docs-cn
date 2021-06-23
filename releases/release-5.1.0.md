@@ -30,7 +30,7 @@ TiDB 版本：5.1
 |:----------|:-----------|:-----------|
 | [`cte_max_recursion_depth`](/system-variables.md#cte_max_recursion_depth)  | 新增 | 用于控制公共表表达式最大递归深度。 |
 | [`init_connect`](/system-variables.md#init_connect)  | 新增 | 用于控制初始连接。 |
-| [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入)  | 新增 | 用于控制所收集到的统计信息。默认值从 `1` 修改为 `2`，默认作为实验特性启用。 |
+| [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入)  | 新增 | 用于控制所收集到的统计信息。默认值为 `2`，默认作为实验特性启用。 |
 | [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security) | 新增 | 表示所连接的 TiDB 服务器是否启用了安全增强模式（SEM），在不重新启动 TiDB 服务器的情况下不能改变该变量。 |
 | [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) | 新增 | 用于忽略优化器代价估算，强制使用 MPP 模式。`BOOL` 类型，默认值为 `false`。 |
 | [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) | 新增 | 用于设置是否开启分区表动态模式（实验特性）。默认值为 `static`，即默认不启用分区表动态模式。 |
