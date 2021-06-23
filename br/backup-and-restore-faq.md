@@ -44,6 +44,24 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 >
 > 因此，最好在恢复前提前检查权限。
 
+如何检查权限:
+
+1.使用Linux原生进程查询命令：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+ps aux | grep tikv
+```
+
+2.使用tiup命令查询集群启动信息:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster list
+```
+
 ## BR 遇到错误信息 `Io(Os...)`，该如何处理？
 
 这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。例如遇到 `Io(Os { code: 13, kind: PermissionDenied...})` 或者 `Io(Os { code: 2, kind: NotFound...})` 这类错误信息，首先检查备份目录的挂载方式和文件系统，试试看备份到其它文件夹或者其它硬盘。
