@@ -104,10 +104,6 @@ Check the time difference between the machine time of the monitor and the time w
 | `enable_slow_query_log` | to record the slow query log of TiDB into a single file: ({{ deploy_dir }}/log/tidb_slow_query.log). False by default, to record it into the TiDB log |
 | `deploy_without_tidb` | the Key-Value mode, deploy only PD, TiKV and the monitoring service, not TiDB; set the IP of the tidb_servers host group to null in the `inventory.ini` file |
 
-### How to deploy TiDB quickly using Docker Compose on a single machine?
-
-You can use Docker Compose to build a TiDB cluster locally, including the cluster monitoring components. You can also customize the version and number of instances for each component. The configuration file can also be customized. You can only use this deployment method for testing and development environment. For details, see [TiDB Docker Compose Deployment](/deploy-test-cluster-using-docker-compose.md).
-
 ### How to separately record the slow query log in TiDB? How to locate the slow query SQL statement?
 
 1. The slow query definition for TiDB is in the TiDB configuration file. The `slow-threshold: 300` parameter is used to configure the threshold value of the slow query (unit: millisecond).
