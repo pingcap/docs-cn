@@ -69,15 +69,6 @@ server.enable-request-batch: false
 ```sql
 set global tidb_hashagg_final_concurrency=1;
 set global tidb_hashagg_partial_concurrency=1;
-```
-
-#### TiDB 全局变量配置
-
-{{< copyable "sql" >}}
-
-```sql
-set global tidb_hashagg_final_concurrency=1;
-set global tidb_hashagg_partial_concurrency=1;
 set global tidb_enable_async_commit = 1;
 set global tidb_enable_1pc = 1;
 set global tidb_guarantee_linearizability = 0;
