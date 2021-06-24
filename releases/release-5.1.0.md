@@ -14,7 +14,7 @@ TiDB 版本：5.1
 - 支持对数据表列类型的在线变更，提高了业务开发的灵活性。
 - 引入一种新的统计信息类型 tidb_analyze_version = 2，默认作为实验特性启用，提升查询稳定性。
 - 支持 MySQL 8 中的动态权限 (Dynamic Privileges) 配置，实现对某些操作更细粒度的控制。
-- 支持通过 Stale Read 功能直接读取本地副本数据，降低读取延迟，提升查询性能。
+- 支持通过 Stale Read 功能直接读取本地副本数据，降低读取延迟，提升查询性能（实验特性）。
 - 新增锁视图 (Lock View) 功能方便 DBA 观察事务加锁情况以及排查死锁问题（实验特性）。
 - 新增 TiKV 后台任务写入限制（TiKV Write Rate Limiter)，保证读写请求的延迟稳定性。
 
@@ -67,10 +67,14 @@ TiDB 版本：5.1
 
 ### SQL
 
-- 新增 MySQL 8 中的公共表表达式 (Common Table Expression)，为 TiDB 带来递归或非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。在 TiDB 中，你可以通过 `WITH` 语句使用公共表表达式。
+- 新增 MySQL 8 中的公共表表达式 (Common Table Expression)，为 TiDB 带来递归或非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。
+
+    在 TiDB 中，你可以通过 `WITH` 语句使用公共表表达式。
 [用户文档](/sql-statements/sql-statement-with.md)，[#17472](https://github.com/pingcap/tidb/issues/17472)
 
-- 新增 MySQL 8 中的动态权限 (Dynamic Privileges)。动态权限用于限制 `SUPER` 权限，为 TiDB 提供更灵活的权限配置，实现对某些操作更细粒度的控制。例如，你可以使用动态权限来创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
+- 新增 MySQL 8 中的动态权限 (Dynamic Privileges)。
+
+    动态权限用于限制 `SUPER` 权限，为 TiDB 提供更灵活的权限配置，实现对某些操作更细粒度的控制。例如，你可以使用动态权限来创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
 
     支持的动态权限包括：
 
@@ -82,7 +86,9 @@ TiDB 版本：5.1
 
     你也可以使用插件来添加新的权限。若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。[用户文档](/privilege-management.md)
 
-- 新增安全增强模式 (Security Enhanced Mode) 配置项，用于对 TiDB 管理员进行更细粒度的权限划分。安全增强模式默认关闭，如需开启，请参考[用户文档](/system-variables.md#tidb_enable_enhanced_security)。
+- 新增安全增强模式 (Security Enhanced Mode) 配置项，用于对 TiDB 管理员进行更细粒度的权限划分。
+
+    安全增强模式默认关闭，如需开启，请参考[用户文档](/system-variables.md#tidb_enable_enhanced_security)。
 
 - 全面加强列类型的在线变更能力，支持通过 `ALTER TABLE` 语句进行列的在线类型修改，包括但不限于：
 
@@ -92,7 +98,7 @@ TiDB 版本：5.1
 
     [用户文档](/sql-statements/sql-statement-modify-column.md)
 
-- 引入新的语法 `AS OF TIMESTAMP`，支持通过 Stale Read 功能从指定的时间点或时间范围内读取历史数据。
+- 引入新的语法 `AS OF TIMESTAMP`，支持通过 Stale Read 功能从指定的时间点或时间范围内读取历史数据（实验特性）。
 
     [用户文档](/stale-read.md)，[#21094](https://github.com/pingcap/tidb/issues/21094)
 
@@ -124,7 +130,7 @@ TiDB 版本：5.1
     
 ### 性能
 
-+ 数据副本非一致性读 (Stale Read)
++ 数据副本非一致性读 (Stale Read)（实验特性）
 
     直接读取本地副本数据，降低读取延迟，提升查询性能
 
