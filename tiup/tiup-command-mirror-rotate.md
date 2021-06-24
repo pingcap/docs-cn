@@ -34,8 +34,8 @@ TiUP 使用命令 `tiup mirror rotate` 来自动化以上流程。
 
 > **注意：**
 >
-> + 经测试，小于 TiUP v1.3.0 的版本无法正确获得新的 root.json [#983](https://github.com/pingcap/tiup/issues/983)。
-> + 使用此功能前请确保所有的 TiUP 客户端升级到了 v1.3.0 或以上版本。
+> + 经测试，小于 TiUP v1.5.0 的版本无法正确获得新的 root.json [#983](https://github.com/pingcap/tiup/issues/983)。
+> + 使用此功能前请确保所有的 TiUP 客户端升级到了 v1.5.0 或以上版本。
 
 ## 语法
 
