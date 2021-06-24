@@ -242,7 +242,7 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.3.0/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.5.0/cluster display <cluster-name> 
 
 TiDB Cluster: <cluster-name>
 
