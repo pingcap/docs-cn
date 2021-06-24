@@ -316,7 +316,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
         - 修复在生成 KV 数据时可能发生的 panic 问题 [#1127](https://github.com/pingcap/br/pull/1127)
         - 修复数据导入期间 Batch Split Region 因键的总大小超过 Raft 条目限制而可能失败的问题 [#969](https://github.com/pingcap/br/issues/969)
 
-            - 修复在导入 CSV 文件时，如果文件的最后一行未包含换行符(`\r\n`)会导入报错的问题 [#1133](https://github.com/pingcap/br/issues/1133)
+        - 修复在导入 CSV 文件时，如果文件的最后一行未包含换行符(`\r\n`)会导入报错的问题 [#1133](https://github.com/pingcap/br/issues/1133)
         - 修复在导入目标表包含 double 类型的自增列会导致表的 auto_Increment 值异常的问题 [#1178](https://github.com/pingcap/br/pull/1178)
 
     + Backup & Restore (BR)
