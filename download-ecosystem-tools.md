@@ -45,7 +45,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 ## TiDB DM (Data Migration)
 
-使用下表中的链接下载 [DM](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/overview)：
+使用下表中的链接下载 [DM](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
