@@ -171,6 +171,12 @@ The TiDB configuration file supports more options than command-line parameters. 
 + Default value: `true`
 + When this configuration value is `true`, the maximum length of a single `ENUM` element and a single `SET` element is 255 characters, which is compatible with [MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html). When this configuration value is `false`, there is no limit on the length of a single element, which is compatible with TiDB (earlier than v5.0).
 
+#### `graceful-wait-before-shutdown` <span class="version-mark">New in v5.0</span>
+
+- Specifies the number of seconds that TiDB waits when you shut down the server, which allows the clients to disconnect.
+- Default value: `0`
+- When TiDB is waiting for shutdown (in the grace period), the HTTP status will indicate a failure, which allows the load balancers to reroute traffic.
+
 ## Log
 
 Configuration items related to log.
