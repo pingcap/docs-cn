@@ -3,6 +3,10 @@ title: 使用 AS OF TIMESTAMP 语法读取历史数据
 summary: 了解如何使用 AS OF TIMESTAMP 语法读取历史数据。
 ---
 
+> **警告：**
+>
+> Stale Read 目前为实验特性。不推荐在生产环境下使用该特性。
+
 # 使用 AS OF TIMESTAMP 语法读取历史数据
 
 本文档介绍如何通过 `AS OF TIMESTAMP` 语句使用 [Stale Read](/stale-read.md) 功能来读取 TiDB 历史版本数据，包括具体的操作示例以及历史数据的保存策略。
@@ -37,6 +41,8 @@ TiDB 支持通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的�
 > 除了指定时间戳，`AS OF TIMESTAMP` 语法最常用使用的方式是读几秒前的数据。如果采用这种方式，取值范围推荐为读 5 秒以上的历史数据。
 >
 > 使用 Stale Read 时需要为 TiDB 和 PD 部署 NTP 服务，防止 TiDB 指定的时间戳超过当前最新的 TSO 分配进度（如几秒后的时间戳），或者前于 GC safe point 的时间戳。当指定的时间戳超过服务范围，TiDB 会产生报错或者等待事务提交等行为。
+>
+> `Prepare` 语句与 `AS OF TIMESTAMP` 语法的兼容支持尚不完善，不推荐同时使用
 
 ## 示例
 

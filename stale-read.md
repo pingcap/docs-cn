@@ -3,6 +3,10 @@ title: Stale Read 功能的使用场景
 summary: 介绍 Stale Read 功能和使用场景。
 ---
 
+> **警告：**
+>
+> Stale Read 目前为实验特性。不推荐在生产环境下使用该特性。
+
 # Stale Read 功能的使用场景
 
 本文档介绍 Stale Read 的使用场景。Stale Read 是一种读取历史数据版本的机制，读取 TiDB 中存储的历史数据版本。使用 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而避免数据同步带来延迟。
