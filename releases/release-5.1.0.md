@@ -11,7 +11,7 @@ TiDB version: 5.1.0
 In v5.1, the key new features or improvements are as follows:
 
 - Support the Common Table Expression (CTE) feature of MySQL 8.0 to improve the readability and execution efficiency of SQL statements.
-- Support changing column types online to improve code development flexibility
+- Support changing column types online to improve code development flexibility.
 - Introduce a new statistics type to improve query stability, which is enabled as an experimental feature by default.
 - Support the dynamic privilege feature of MySQL 8.0 to implement more fine-grained control over certain operations.
 - Support directly reading data from the local replica using the Stale Read feature to reduce read latency and improve query performance (Experimental).
@@ -111,7 +111,7 @@ In v5.1, the key new features or improvements are as follows:
     SET TRANSACTION READ ONLY as of timestamp '2020-09-06 00:00:00';
     ```
 
-- Introduce a new statistics type `tidb_analyze_version = 2` (experimental feature).
+- Introduce a new statistics type `tidb_analyze_version = 2` (Experimental).
 
     `tidb_analyze_version` is set to `2` by default, which avoids the large errors that might occur in the large data volume caused by hash conflicts in Version 1 and maintains the estimation accuracy in most scenarios.
 
@@ -119,17 +119,17 @@ In v5.1, the key new features or improvements are as follows:
 
 ### Transaction
 
-+ Support the Lock View feature (Experimental Feature)
++ Support the Lock View feature (Experimental)
 
     The Lock View feature provides more information about lock conflicts and lock waits of pessimistic locks, which helps DBAs to observe transaction locking conditions and troubleshoot deadlock problems. [#24199](https://github.com/pingcap/tidb/issues/24199)
-
+    
     User document:
 
-        - View the pessimistic locks and other locks that currently occur on all TiKV nodes in the clusters: 
+    - View the pessimistic locks and other locks that currently occur on all TiKV nodes in the clusters: 
 [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
-        - View several deadlock errors that recently occured on the TiDB nodes:
+    - View several deadlock errors that recently occured on the TiDB nodes:
 [`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
-        - View the transaction information executed currently on the TiDB nodes:
+    - View the transaction information executed currently on the TiDB nodes:
 [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
 
 ### Performance
@@ -152,7 +152,7 @@ In v5.1, the key new features or improvements are as follows:
     - If large amounts of data is accumulated during the replication interruption, exceeding 1TB, the re-replication causes OOM problems.
     - Large amounts of data writes cause OOM problems in TiCDC.
     - Reduce the possibility of  TiCDC replication interruption in the following scenarios:
-[project#11](https://github.com/pingcap/ticdc/projects/11)
+        [project#11](https://github.com/pingcap/ticdc/projects/11)
        
         - Replication interruption when the network is unstable
         - Replication interruption when some TiKV/PD/TiCDC nodes are down
@@ -211,6 +211,7 @@ To learn more about the information and how to disable this behavior, refer to [
     - Improve TiFlash compatibility when running on unknown CPUs
 
 + PD
+
     - Avoid unexpected statistics after adding the `scatter region` scheduler [#3602](https://github.com/pingcap/pd/pull/3602)
     - Solve multiple scheduling issues in the scaling process
 
