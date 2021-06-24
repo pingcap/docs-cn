@@ -11,7 +11,7 @@
   + [基本功能](/basic-features.md)
   + [实验特性](/experimental-features.md)
   + 性能测试报告
-    + [Sysbench 性能对比 - v5.0 对比 v4.0](/benchmark/benchmark-sysbench-v5.1.0-vs-v5.0.2.md)
+    + [Sysbench 性能对比 - v5.1.0 对比 v5.0.2](/benchmark/benchmark-sysbench-v5.1.0-vs-v5.0.2.md)
     + [TPC-C 性能对比 - v5.0 对比 v4.0](/benchmark/v5.1-performance-benchmarking-with-tpcc.md)
     + [TPC-H 100 性能对比 - v5.0 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
