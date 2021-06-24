@@ -178,12 +178,18 @@ CREATE TABLE `t1` (
     ERROR 1105 (HY000): Unsupported multi schema change
     ```
   
-* 不支持修改主键列上的类型。例如：
+* 不支持修改主键列上需要 Reorg-Data 的类型，但是支持修改 Meta-Only 的类型。例如：
   
     ```sql
     CREATE TABLE t (a int primary key);
     ALTER TABLE t MODIFY COLUMN a VARCHAR(10);
     ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
+    ```
+
+    ```sql
+    CREATE TABLE t (a int primary key);
+    ALTER TABLE t MODIFY COLUMN a bigint;
+    Query OK, 0 rows affected (0.01 sec)
     ```
 
 * 不支持修改 generated column 的类型。例如：
