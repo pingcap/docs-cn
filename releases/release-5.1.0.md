@@ -122,15 +122,12 @@ In v5.1, the key new features or improvements are as follows:
 + Support the Lock View feature (Experimental)
 
     The Lock View feature provides more information about lock conflicts and lock waits of pessimistic locks, which helps DBAs to observe transaction locking conditions and troubleshoot deadlock problems. [#24199](https://github.com/pingcap/tidb/issues/24199)
-    
+
     User document:
 
-    - View the pessimistic locks and other locks that currently occur on all TiKV nodes in the clusters: 
-[`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
-    - View several deadlock errors that recently occured on the TiDB nodes:
-[`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
-    - View the transaction information executed currently on the TiDB nodes:
-[`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
+    - View the pessimistic locks and other locks that currently occur on all TiKV nodes in the clusters: [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
+    - View several deadlock errors that recently occurred on the TiDB nodes: [`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
+    - View the transaction information executed currently on the TiDB nodes: [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
 
 ### Performance
 
@@ -215,10 +212,8 @@ To learn more about the information and how to disable this behavior, refer to [
     - Avoid unexpected statistics after adding the `scatter region` scheduler [#3602](https://github.com/pingcap/pd/pull/3602)
     - Solve multiple scheduling issues in the scaling process
 
-        - Optimize the generation process of replica snapshots to solve slow scheduling issues during scaling: 
-[#3563](https://github.com/tikv/pd/issues/3563) [#10059](https://github.com/tikv/tikv/pull/10059) [#10001](https://github.com/tikv/tikv/pull/10001)
-        - Solve slow scheduling issues caused by heartbeat pressure due to traffic changes 
-[#3693](https://github.com/tikv/pd/issues/3693) [#3739](https://github.com/tikv/pd/issues/3739) [#3728](https://github.com/tikv/pd/issues/3728) [#3751](https://github.com/tikv/pd/issues/3751)
+        - Optimize the generation process of replica snapshots to solve slow scheduling issues during scaling [#3563](https://github.com/tikv/pd/issues/3563) [#10059](https://github.com/tikv/tikv/pull/10059) [#10001](https://github.com/tikv/tikv/pull/10001)
+        - Solve slow scheduling issues caused by heartbeat pressure due to traffic changes [#3693](https://github.com/tikv/pd/issues/3693) [#3739](https://github.com/tikv/pd/issues/3739) [#3728](https://github.com/tikv/pd/issues/3728) [#3751](https://github.com/tikv/pd/issues/3751)
         - Reduce the space discrepancies of large clusters due to scheduling, and optimize the scheduling formula to prevent the bursting issue (which is similar to heterogeneous space clusters) caused by large compression rate discrepancies [#3592](https://github.com/tikv/pd/issues/3592) [#10005](https://github.com/tikv/tikv/pull/10005)
 
 + Tools
