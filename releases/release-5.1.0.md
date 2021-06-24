@@ -11,7 +11,7 @@ TiDB 版本：5.1
 在 5.1 版本中，你可以获得以下关键特性：
 
 - 支持 MySQL 8 中的公共表表达式 (Common Table Expression)，提高了 SQL 语句的可读性与执行效率。
-- 支持对数据表列类型的变更，提高了业务开发的灵活性。
+- 支持对数据表列类型的在线变更，提高了业务开发的灵活性。
 - 引入一种新的统计信息类型 tidb_analyze_version = 2，默认作为实验特性启用，提升查询稳定性。
 - 支持 MySQL 8 中的动态权限 (Dynamic Privileges) 配置，实现对某些操作更细粒度的控制。
 - 支持通过 Stale Read 功能直接读取本地副本数据，降低读取延迟，提升查询性能。
@@ -317,7 +317,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
         - 修复数据导入期间 Batch Split Region 因键的总大小超过 Raft 条目限制而可能失败的问题 [#969](https://github.com/pingcap/br/issues/969)
 
         - 修复在导入 CSV 文件时，如果文件的最后一行未包含换行符(`\r\n`)会导入报错的问题 [#1133](https://github.com/pingcap/br/issues/1133)
-        - 修复在导入目标表包含 double 类型的自增列会导致表的 auto_Increment 值异常的问题 [#1178](https://github.com/pingcap/br/pull/1178)
+        - 修复待导入的目标表中包含 double 类型的自增列时会导致表的 auto_Increment 值异常的问题 [#1178](https://github.com/pingcap/br/pull/1178)
 
     + Backup & Restore (BR)
 
