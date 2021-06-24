@@ -250,7 +250,7 @@ URI 中可配置的的参数如下：
 cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="local:///data/cdclog" --config changefeed.toml
 ```
 
-The following command creates a changefeed that will write cdclog files to an external S3 storage in the `logbucket` bucket with a subdirectory of `test`. The endpoint is set in the URI, which is needed if you are using an S3-compatible storage other than Amazon S3.
+下面的命令会创建一个 changefeed，将 cdclog 文件写入到 `logbucket` 桶中的外部 S3 存储，子目录为 `test`。端点在 URI 中设置，如果你使用的是与 S3 兼容的存储而不是 Aamazons S3，则需要 URI。
 
 {{< copyable "shell-regular" >}}
 
