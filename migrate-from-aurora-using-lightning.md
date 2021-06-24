@@ -56,7 +56,7 @@ Based on different deployment methods, edit the `tidb-lighting.toml` configurati
     [mydumper]
     no-schema = true
 
-    [mydumper.files]
+    [[mydumper.files]]
     # Uses single quoted strings to avoid escaping.
     pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
     schema = '$1'
