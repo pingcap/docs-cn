@@ -9,6 +9,10 @@ This document describes the usage scenarios of Stale Read. Stale Read is a mecha
 
 In terms of the internal implementation, Stale Read allows TiDB to read from any replica the data of the specified point in time or the data as new as possible within the specified time range, and to always ensure the data consistency constraint during the reading process.
 
+> **Warning:**
+>
+> Currently, Stale Read is an experimental feature. It is not recommended to use it in the production environment.
+
 ## Scenario examples
 
 + Scenario one: If a transaction only involves read operations and is tolerant of data staleness to some extent, you can use Stale Read to get historical data. Using Stale Read, TiDB sends the query requests to any replica of the corresponding data at the expense of some real-time performance, and thus increases the throughput of query executions.
