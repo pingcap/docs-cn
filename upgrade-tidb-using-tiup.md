@@ -6,20 +6,26 @@ aliases: ['/docs/dev/upgrade-tidb-using-tiup/','/docs/dev/how-to/upgrade/using-t
 
 # Upgrade TiDB Using TiUP
 
-This document is targeted for users who want to upgrade from TiDB 4.0 versions to TiDB 5.0 versions, or from TiDB 5.0 to a later version.
+This document is targeted for the following upgrade paths:
 
-If your cluster to upgrade is v3.1 or an earlier version (v3.0 or v2.1), you need to upgrade your cluster first to v4.0 and then to v5.0. You cannot upgrade your cluster across a major version or versions.
+- Upgrade from TiDB 4.0 versions to TiDB 5.1 versions.
+- Upgrade from TiDB 5.0 versions to TiDB 5.1 versions.
+
+> **Note:**
+>
+> If your cluster to be upgraded is v3.1 or an earlier version (v3.0 or v2.1), the direct upgrade to v5.1 or its patch versions is not supported. You need to upgrade your cluster first to v4.0 and then to v5.1.
 
 ## Upgrade caveat
 
-- After the upgrade, rolling back to 4.0 or earlier versions is not supported.
-- For the v4.0 cluster managed using TiDB Ansible, you need to import the cluster to TiUP (`tiup cluster`) for new management according to [Upgrade TiDB Using TiUP (v4.0)](https://docs.pingcap.com/tidb/v4.0/upgrade-tidb-using-tiup#import-tidb-ansible-and-the-inventoryini-configuration-to-tiup). Then you can upgrade the cluster to v5.0 according to this document.
-- To update versions earlier than 3.0 to 5.0:
+- TiDB currently does not support version downgrade or rolling back to an earlier version after the upgrade.
+- For the v4.0 cluster managed using TiDB Ansible, you need to import the cluster to TiUP (`tiup cluster`) for new management according to [Upgrade TiDB Using TiUP (v4.0)](https://docs.pingcap.com/tidb/v4.0/upgrade-tidb-using-tiup#import-tidb-ansible-and-the-inventoryini-configuration-to-tiup). Then you can upgrade the cluster to v5.1 or its patch versions according to this document.
+- To update versions earlier than 3.0 to 5.1:
     1. Update this version to 3.0 using [TiDB Ansible](https://docs.pingcap.com/tidb/v3.0/upgrade-tidb-using-ansible).
     2. Use TiUP (`tiup cluster`) to import the TiDB Ansible configuration.
     3. Update the 3.0 version to 4.0 according to [Upgrade TiDB Using TiUP (v4.0)](https://docs.pingcap.com/tidb/v4.0/upgrade-tidb-using-tiup#import-tidb-ansible-and-the-inventoryini-configuration-to-tiup).
-    4. Then you can upgrade the cluster to v5.0 according to this document.
+    4. Upgrade the cluster to v5.1 according to this document.
 - Support upgrading the versions of TiDB Binlog, TiCDC, TiFlash, and other components.
+- For detailed compatibility changes of different versions, see the [Release Notes](/releases/release-notes.md) of each version. Modify your cluster configuration according to the "Compatibility Changes" section of the corresponding release notes.
 
 > **Note:**
 >
@@ -39,7 +45,7 @@ Before upgrading your TiDB cluster, you first need to upgrade TiUP or TiUP mirro
 >
 > If the control machine of the cluster to upgrade cannot access `https://tiup-mirrors.pingcap.com`, skip this section and see [Upgrade TiUP offline mirror](#upgrade-tiup-offline-mirror).
 
-1. Upgrade the TiUP version. It is recommended that the TiUP version is `1.4.0` or later.
+1. Upgrade the TiUP version. It is recommended that the TiUP version is `1.5.0` or later.
 
     {{< copyable "shell-regular" >}}
 
@@ -48,7 +54,7 @@ Before upgrading your TiDB cluster, you first need to upgrade TiUP or TiUP mirro
     tiup --version
     ```
 
-2. Upgrade the TiUP Cluster version. It is recommended that the TiUP Cluster version is `1.4.0` or later.
+2. Upgrade the TiUP Cluster version. It is recommended that the TiUP Cluster version is `1.5.0` or later.
 
     {{< copyable "shell-regular" >}}
 
@@ -90,7 +96,7 @@ Now, the offline mirror has been upgraded successfully. If an error occurs durin
 > Skip this step if one of the following situations applies:
 >
 > + You have not modified the configuration parameters of the original cluster. Or you have modified the configuration parameters using `tiup cluster` but no more modification is needed.
-> + After the upgrade, you want to use v5.0's default parameter values for the unmodified configuration items.
+> + After the upgrade, you want to use v5.1's default parameter values for the unmodified configuration items.
 
 1. Enter the `vi` editing mode to edit the topology file:
 
@@ -106,9 +112,9 @@ Now, the offline mirror has been upgraded successfully. If an error occurs durin
 
 > **Note:**
 >
-> Before you upgrade the cluster to v5.0, make sure that the parameters you have modified in v4.0 are compatible in v5.0. For details, see [TiKV Configuration File](/tikv-configuration-file.md).
+> Before you upgrade the cluster to v5.1, make sure that the parameters you have modified in v4.0 are compatible in v5.1. For details, see [TiKV Configuration File](/tikv-configuration-file.md).
 >
-> The following three TiKV parameters are obsolete in TiDB v5.0. If the following parameters have been configured in your original cluster, you need to delete these parameters through `edit-config`:
+> The following three TiKV parameters are obsolete in TiDB v5.1. If the following parameters have been configured in your original cluster, you need to delete these parameters through `edit-config`:
 >
 > - pessimistic-txn.enabled
 > - server.request-batch-enable-cross-command
@@ -149,12 +155,12 @@ If your application has a maintenance window for the database to be stopped for 
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-For example, if you want to upgrade the cluster to v5.0.0:
+For example, if you want to upgrade the cluster to v5.1.0:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster upgrade <cluster-name> v5.0.0
+tiup cluster upgrade <cluster-name> v5.1.0
 ```
 
 > **Note:**
@@ -204,7 +210,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v5.0.0
+Cluster version:    v5.1.0
 ```
 
 > **Note:**
@@ -254,10 +260,10 @@ You can upgrade the tool version by using TiUP to install the `ctl` component of
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup install ctl:v5.0.0
+tiup install ctl:v5.1.0
 ```
 
 ## TiDB 5.1 compatibility changes
 
-- See TiDB 5.1 GA Release Notes for the compatibility changes.
+- See TiDB 5.1 Release Notes for the compatibility changes.
 - Try to avoid creating a new clustered index table when you apply rolling updates to the clusters using TiDB-Binlog.
