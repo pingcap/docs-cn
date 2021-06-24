@@ -105,10 +105,6 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
-### Docker Compose 快速构建集群（单机部署）
-
-使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/deploy-test-cluster-using-docker-compose.md)。
-
 ### 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
 1）TiDB 中，对慢查询的定义在 TiDB 的配置文件中。`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。

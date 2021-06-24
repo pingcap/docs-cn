@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 
 # 统计信息简介
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.1 以前的版本中，该变量的默认值为 `1`。在 v5.1 中，该变量的默认值为 `2`，作为实验特性启用。两种版本中，TiDB 维护的统计信息如下：
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.1.0 以前的版本中，该变量的默认值为 `1`。在 v5.1.0 中，该变量的默认值为 `2`，作为实验特性启用。两种版本中，TiDB 维护的统计信息如下：
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
