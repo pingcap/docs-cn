@@ -7,7 +7,7 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 5.0](/releases/release-5.0.0.md)
+  + [TiDB 5.1 Release Notes](/releases/release-5.1.0.md)
   + [基本功能](/basic-features.md)
   + [实验特性](/experimental-features.md)
   + 性能测试报告
@@ -538,6 +538,8 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
+  + v5.1
+    - [5.1.0](/releases/release-5.1.0.md)
   + v5.0
     - [5.0.2](/releases/release-5.0.2.md)
     - [5.0.1](/releases/release-5.0.1.md)
