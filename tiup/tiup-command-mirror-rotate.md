@@ -34,8 +34,8 @@ TiUP uses the command `tiup mirror rotate` to automate the above process.
 
 > **Note:**
 >
-> + For TiUP versions earlier than v1.3.0, running this command does not returns a correct new `root.json` file. See [#983](https://github.com/pingcap/tiup/issues/983).
-> + Before using this command, make sure that all TiUP clients are upgraded to v1.3.0 or a later version.
+> + For TiUP versions earlier than v1.5.0, running this command does not returns a correct new `root.json` file. See [#983](https://github.com/pingcap/tiup/issues/983).
+> + Before using this command, make sure that all TiUP clients are upgraded to v1.5.0 or a later version.
 
 ## Syntax
 
