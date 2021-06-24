@@ -11,7 +11,7 @@ A Common Table Expression (CTE) is a temporary result set that can be referred m
 
 **WithClause:**
 
-```ebnf
+```ebnf+diagram
 WithClause ::=
         "WITH" WithList
 |       "WITH" recursive WithList
@@ -19,7 +19,7 @@ WithClause ::=
 
 **WithList:**
 
-```ebnf
+```ebnf+diagram
 WithList ::=
         WithList ',' CommonTableExpr
 |       CommonTableExpr
@@ -27,14 +27,14 @@ WithList ::=
 
 **CommonTableExpr:**
 
-```ebnf
+```ebnf+diagram
 CommonTableExpr ::=
         Identifier IdentListWithParenOpt "AS" SubSelect
 ```
 
 **IdentListWithParenOpt:**
 
-```ebnf
+```ebnf+diagram
 IdentListWithParenOpt ::=
 
 |       '(' IdentList ')'
