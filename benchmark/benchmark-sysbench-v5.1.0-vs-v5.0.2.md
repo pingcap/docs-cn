@@ -4,13 +4,8 @@ title: TiDB Sysbench 性能对比测试报告 - v5.1.0 对比 v5.0.2
 
 # TiDB Sysbench 性能对比测试报告 - v5.1.0 对比 v5.0.2
 
-## 测试目的
-
-测试对比 TiDB v5.1.0 和 v5.0.2 在 OLTP 场景下的性能。
-
-## 测试结果
-
-v5.1.0 相对v5.0.2, Point Get场景有性能提高，Read Write 和 Update Index 场景略有下降。
+## 测试概况
+本次测试对比了 TiDB v5.1.0 和 v5.0.2 在 OLTP 场景下的 Sysbench 性能表现。结果显示，v5.1.0 相比于 v5.0.2，Point Select 场景性能提升了 19.4%，Read Write 和 Update Index 场景性能略有下降。
 
 ## 测试环境 (AWS EC2）
 
