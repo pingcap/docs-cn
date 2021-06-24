@@ -12,7 +12,7 @@ TiDB 版本：5.1
 
 - 支持 MySQL 8 中的公共表表达式 (Common Table Expression)，提高了 SQL 语句的可读性与执行效率。
 - 支持对数据表列类型的在线变更，提高了业务开发的灵活性。
-- 引入一种新的统计信息类型 tidb_analyze_version = 2，默认作为实验特性启用，提升查询稳定性。
+- 引入一种新的统计信息类型，默认作为实验特性启用，提升查询稳定性。
 - 支持 MySQL 8 中的动态权限 (Dynamic Privileges) 配置，实现对某些操作更细粒度的控制。
 - 支持通过 Stale Read 功能直接读取本地副本数据，降低读取延迟，提升查询性能（实验特性）。
 - 新增锁视图 (Lock View) 功能方便 DBA 观察事务加锁情况以及排查死锁问题（实验特性）。
@@ -33,14 +33,14 @@ TiDB 版本：5.1
 | [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入)  | 新增 | 用于控制所收集到的统计信息。默认值为 `2`，默认作为实验特性启用。 |
 | [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security) | 新增 | 表示所连接的 TiDB 服务器是否启用了安全增强模式（SEM），在不重新启动 TiDB 服务器的情况下不能改变该变量。 |
 | [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) | 新增 | 用于忽略优化器代价估算，强制使用 MPP 模式。`BOOL` 类型，默认值为 `false`。 |
-| [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) | 新增 | 用于设置是否开启分区表动态模式（实验特性）。默认值为 `static`，即默认不启用分区表动态模式。 |
+| [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) | 新增 | 用于设置是否开启分区表动态裁剪模式（实验特性）。默认值为 `static`，即默认不启用分区表动态裁剪模式。 |
 
 ### 配置文件参数
 
 | 配置文件   | 配置项   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|:-----------|
 | TiDB 配置文件  | [`security.enable-sem`](tidb-configuration-file.md#enable-sem)  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
-| TiDB 配置文件  | [`performance.committer-concurrency`](/tidb-configuration-file.md#committer-concurrency)  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的 goroutine 数量。默认值从 `16` 修改为 `128`。|
+| TiDB 配置文件  | [`performance.committer-concurrency`](/tidb-configuration-file.md#committer-concurrency)  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的并发数。默认值从 `16` 修改为 `128`。|
 | TiDB 配置文件  | [`performance.tcp-no-delay`](/tidb-configuration-file.md#tcp-no-delay)  | 新增  | 控制 TiDB 是否在 TCP 层开启 TCP_NODELAY。 默认值为 `true`，代表开启。 |
 | TiDB 配置文件  | [`pessimistic-txn.deadlock-history-capacity`](tidb-configuration-file.md#deadlock-history-capacity)  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
 | TiKV 配置文件  | [`abort-on-panic`](/tikv-configuration-file.md#abort-on-panic)  | 新增  | 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。默认值为 false，代表不允许生成 core dump 文件。 |
