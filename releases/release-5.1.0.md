@@ -68,7 +68,9 @@ TiDB 版本：5.1
 
 ### SQL
 
-- 新增 MySQL 8 中的公共表表达式 (Common Table Expression)，为 TiDB 带来递归或非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。
+- 新增 MySQL 8 中的公共表表达式 (Common Table Expression，简称 CTE)。
+
+    CTE 为 TiDB 带来递归或非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。
 
     在 TiDB 中，你可以通过 `WITH` 语句使用公共表表达式。[用户文档](/sql-statements/sql-statement-with.md)，[#17472](https://github.com/pingcap/tidb/issues/17472)
 
