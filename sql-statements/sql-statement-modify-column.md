@@ -192,7 +192,7 @@ CREATE TABLE `t1` (
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-* 不支持修改 generated column 的类型。例如：
+* 不支持修改生成列的类型。例如：
 
     ```sql
     CREATE TABLE t (a INT, b INT as (a+1));
