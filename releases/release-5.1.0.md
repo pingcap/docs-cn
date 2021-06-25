@@ -74,7 +74,6 @@ TiDB 版本：5.1
     
     测试用途。
 [测试](/sql-statements/sql-statement-with.md)，[#17472](https://github.com/pingcap/tidb/issues/17472)
- 
 
 - 新增 MySQL 8 中的动态权限 (Dynamic Privileges)。
 
