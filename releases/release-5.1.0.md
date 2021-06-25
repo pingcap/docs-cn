@@ -22,7 +22,7 @@ In v5.1, the key new features or improvements are as follows:
 
 > **Note:**
 >
-> When upgrading from an earlier TiDB version to v5.1, if you want to know the compatibility change notes of all intermediate versions, you can check the [Release Notes](/releases/release-notes.md) for the corresponding version. 
+> When upgrading from an earlier TiDB version to v5.1, if you want to know the compatibility change notes of all intermediate versions, you can check the [Release Notes](/releases/release-notes.md) for the corresponding version.
 
 ### System variables
 
@@ -68,11 +68,13 @@ In v5.1, the key new features or improvements are as follows:
 
 ### SQL
 
-- Support the Common Table Expression (CTE) feature of MySQL 8.0, which empowers TiDB with the capability of querying hierarchical data recursively or non-recursively. 
+- Support the Common Table Expression (CTE) feature of MySQL 8.0, which empowers TiDB with the capability of querying hierarchical data recursively or non-recursively.
 
-    This feature meets the needs of using tree queries to implement application logics in multiple sectors such as human resources, manufacturing, financial markets, and education. [User document](/sql-statements/sql-statement-with.md), [#17472](https://github.com/pingcap/tidb/issues/17472)
+    This feature meets the needs of using tree queries to implement application logics in multiple sectors such as human resources, manufacturing, financial markets, and education.
 
-- Support the dynamic privilege feature of MySQL 8.0. 
+    In TiDB, you can apply the `WITH` statement to use Common Table Expressions. [User document](/sql-statements/sql-statement-with.md), [#17472](https://github.com/pingcap/tidb/issues/17472)
+
+- Support the dynamic privilege feature of MySQL 8.0.
 
     Dynamic privileges are used to limit the `SUPER` privilege and provide TiDB with more flexible privilege configuration for more fine-grained access control. For example, you can use dynamic privileges to create a user account that can only perform `BACKUP` and `RESTORE` operations.
 
@@ -86,7 +88,7 @@ In v5.1, the key new features or improvements are as follows:
 
     You can also use plugins to add new privileges. To check out all supported privileges, execute the `SHOW PRIVILEGES` statement. [User document](/privilege-management.md)
 
-- Add a new configuration item for the Security Enhanced Mode (SEM), which divides the TiDB administrator privileges in a finer-grained way. 
+- Add a new configuration item for the Security Enhanced Mode (SEM), which divides the TiDB administrator privileges in a finer-grained way.
 
     The Security Enhanced Mode is disabled by default. To enable it, see the [user document](/system-variables.md#tidb_enable_enhanced_security).
 
@@ -149,7 +151,7 @@ In v5.1, the key new features or improvements are as follows:
     - Large amounts of data writes cause OOM problems in TiCDC.
     - Reduce the possibility of  TiCDC replication interruption in the following scenarios:
         [project#11](https://github.com/pingcap/ticdc/projects/11)
-       
+
         - Replication interruption when the network is unstable
         - Replication interruption when some TiKV/PD/TiCDC nodes are down
 
@@ -201,7 +203,7 @@ To learn more about the information and how to disable this behavior, refer to [
     - Support `Union All`, `TopN`, and `Limit` functions
     - Support the Cartesian product including left outer join and semi anti join in MPP mode
     - Optimize lock operations to avoid that running DDL statements and read operations are blocked by each other
-    - Optimize cleanup of expired data by TiFlash 
+    - Optimize cleanup of expired data by TiFlash
     - Support further filtering of query filters on `timestamp` columns at the TiFlash storage level
     - Improve the startup and scalability speed of TiFlash when a large number of tables are in a cluster
     - Improve TiFlash compatibility when running on unknown CPUs
