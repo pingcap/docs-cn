@@ -387,6 +387,17 @@ mysql> SELECT * FROM t1;
 - 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
 - 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
 
+### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 OFF。
+- 指定是否在只涉及一个 Region 的事务上启用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
+
+> **注意：**
+>
+> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
+
 ### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -411,17 +422,6 @@ mysql> SELECT * FROM t1;
 >
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
-
-### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：对于新创建的集群，v5.0 RC 版本的默认值为 OFF，自 v5.0 GA 版本起默认值为 ON。对于升级到 v5.0 GA 版本的集群，如果升级前是 v5.0 RC 版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
-- 指定是否在只涉及一个 Region 的事务上启用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
-
-> **注意：**
->
-> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
-> - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_cascades_planner`
 
@@ -462,6 +462,16 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 默认值：OFF
 - 这个变量用于控制是否开启 index merge 功能。
+
+### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+> **警告：**
+>
+> 目前 List partition 和 List COLUMNS partition 为实验特性，不建议在生产环境中使用。
+
+- 作用域：SESSION
+- 默认值：OFF
+- 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -526,16 +536,6 @@ Query OK, 0 rows affected (0.09 sec)
     - 默认值 `ON` 表示开启 TiDB 当前已实现了的分区表类型，目前 Range partition、Hash partition 以及 Range column 单列的场景会生效。
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
-
-### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-> **警告：**
->
-> 目前 List partition 和 List COLUMNS partition 为实验特性，不建议在生产环境中使用。
-
-- 作用域：SESSION
-- 默认值：OFF
-- 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -796,19 +796,19 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：1024
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
-### `tidb_mem_quota_query`
-
-- 作用域：SESSION
-- 默认值：1 GB
-- 这个变量用来设置一条查询语句的内存使用阈值。
-- 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
-
 ### `tidb_mem_quota_apply_cache` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：32 MB
 - 这个变量用来设置 `Apply` 算子中局部 Cache 的内存使用阈值。
 - `Apply` 算子中局部 Cache 用来加速 `Apply` 算子的计算，该变量可以设置 `Apply` Cache 的内存使用阈值。设置变量值为 `0` 可以关闭 `Apply` Cache 功能。
+
+### `tidb_mem_quota_query`
+
+- 作用域：SESSION
+- 默认值：1 GB
+- 这个变量用来设置一条查询语句的内存使用阈值。
+- 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
 
 ### `tidb_memory_usage_alarm_ratio`
 
@@ -1053,6 +1053,13 @@ SET tidb_query_log_max_len = 20;
 - 默认值：OFF
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是关闭该变量的数倍。
 
+### `tidb_skip_ascii_check` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：OFF
+- 这个变量用来设置是否校验 ASCII 字符的合法性。
+- 校验 ASCII 字符会损耗些许性能。当你确认输入的字符串为有效的 ASCII 字符时，可以将其设置为 `ON`。
+
 ### `tidb_skip_isolation_level_check`
 
 - 作用域：SESSION | GLOBAL
@@ -1075,13 +1082,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：OFF
 - 这个变量用来设置是否校验 UTF-8 字符的合法性。
 - 校验 UTF-8 字符会损耗些许性能。当你确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 `ON`。
-
-### `tidb_skip_ascii_check` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：OFF
-- 这个变量用来设置是否校验 ASCII 字符的合法性。
-- 校验 ASCII 字符会损耗些许性能。当你确认输入的字符串为有效的 ASCII 字符时，可以将其设置为 `ON`。
 
 ### `tidb_slow_log_threshold`
 
