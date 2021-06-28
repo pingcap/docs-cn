@@ -31,3 +31,11 @@ TiDB 版本：5.0.3
   - 支持 MPP 查询任务按 region 均衡到不同 TiFlash 节点上。 [#24724](https://github.com/pingcap/tidb/pull/24724)
   - 支持执行 MPP 查询后将缓存中过时的 region 无效化。 [#24432](https://github.com/pingcap/tidb/pull/24432)
 ## Bug 修复
+
++ TiDB
+
+    - 禁止在 stale read 中设置一个未来的读时间戳。[#25761](https://github.com/pingcap/tidb/pull/25761)
+    - 修复 ODBC 类常数（例如 `{d '2020-01-01'}`）不能被用作表达式的问题。 [#25577](https://github.com/pingcap/tidb/pull/25577)
+    - 修复 `SELECT DISTINCT` 被转化为 batch get 而导致结果不正确的问题。 [#25533](https://github.com/pingcap/tidb/pull/25533)
+    - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题。 [#24600](https://github.com/pingcap/tidb/pull/24600)
+    - 修复在检查 `only_full_group_by` 时的 index-out-of-range 错误。 [#24016](https://github.com/pingcap/tidb/pull/24016)
