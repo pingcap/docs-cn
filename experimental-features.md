@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + List 分区表 （List Partition）。（v5.0 实验特性）
 + List Column 分区表 （List Column Partition)。（v5.0 实验特性）
-+ [分区表动态模式](/partitioned-table.md#动态模式)。（v5.1 实验特性）
++ [分区表动态裁剪模式](/partitioned-table.md#动态模式)。（v5.1 实验特性）
 + 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
 + [生成列](/generated-columns.md#生成列)。
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。
