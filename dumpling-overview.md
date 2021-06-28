@@ -190,7 +190,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
   -P 4000 \
   -h 127.0.0.1 \
   -r 200000 \
-  -o s3://${Bucket}/${Folder} \
+  -o "s3://${Bucket}/${Folder}" \
   --s3.region "${region}"
 ```
 
