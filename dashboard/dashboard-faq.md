@@ -60,10 +60,10 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 1. 打开 Dashboard 页面
 
-1. 点击 **自定义及控制 Google Chrome** 按钮，选择 **更多工具 > 开发者工具**。
+2. 点击 **自定义及控制 Google Chrome** 按钮，选择 **更多工具 > 开发者工具**。
 
 ![打开开发者工具](/media/dashboard/dashboard-faq-devtools.png)
 
-1. 选中 **Application** 面板，展开 **Local Storage** 菜单并选中**Dashboard 页面的域名**，点击 **Clear All** 按钮。
+3. 选中 **Application** 面板，展开 **Local Storage** 菜单并选中**Dashboard 页面的域名**，点击 **Clear All** 按钮。
 
 ![清理 Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
