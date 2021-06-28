@@ -423,20 +423,6 @@ mysql> SELECT * FROM t1;
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
-<<<<<<< HEAD
-### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：对于新创建的集群，v5.0 RC 版本的默认值为 OFF，自 v5.0 GA 版本起默认值为 ON。对于升级到 v5.0 GA 版本的集群，如果升级前是 v5.0 RC 版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
-- 指定是否在只涉及一个 Region 的事务上启用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
-
-> **注意：**
->
-> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
-> - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
-
-=======
->>>>>>> 36fc969c3 (system-variables: ensure alphabetical order (#6533))
 ### `tidb_enable_cascades_planner`
 
 - 作用域：SESSION | GLOBAL
@@ -551,19 +537,6 @@ Query OK, 0 rows affected (0.09 sec)
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-<<<<<<< HEAD
-### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-> **警告：**
->
-> 目前 List partition 和 List COLUMNS partition 为实验特性，不建议在生产环境中使用。
-
-- 作用域：SESSION
-- 默认值：OFF
-- 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
-
-=======
->>>>>>> 36fc969c3 (system-variables: ensure alphabetical order (#6533))
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1001,16 +974,6 @@ explain select * from t where age=5;
 - 作用域：SESSION
 - 默认值：OFF
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
-
-### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
-
-> **警告：**
->
-> 目前分区表动态模式为实验特性，不建议在生产环境中使用。
-
-- 作用域：SESSION | GLOBAL
-- 默认值：static
-- 这个变量用来设置是否开启分区表动态模式。关于动态模式的详细说明请参阅[分区表动态模式](/partitioned-table.md#动态模式)。
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
