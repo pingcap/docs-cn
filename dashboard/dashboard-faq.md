@@ -64,6 +64,6 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 ![打开开发者工具](/media/dashboard/dashboard-faq-devtools.png)
 
-3. 选中 **Application** 面板，展开 **Local Storage** 菜单并选中**Dashboard 页面的域名**，点击 **Clear All** 按钮。
+3. 选中 **Application** 面板，展开 **Local Storage** 菜单并选中**TiDB Dashboard 页面的域名**，点击 **Clear All** 按钮。
 
 ![清理 Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
