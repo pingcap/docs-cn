@@ -11,7 +11,7 @@ summary: 了解如何使用 AS OF TIMESTAMP 语法读取历史数据。
 >
 > Stale Read 目前为实验特性。不推荐在生产环境下使用该特性。
 >
-> 需要注意的是，目前 Stale Read 特性无法和 TiFlash 一起使用。因此如果你的查询中带有 `AS OF TIMESTAMP` 并且可能从 TiFlash 副本读取数据，就有可能会遇到 `ERROR 1105 (HY000): stale requests require tikv backend` 这样的报错。
+> 目前 Stale Read 特性无法和 TiFlash 一起使用。如果你的查询中带有 `AS OF TIMESTAMP` 并且 TiDB 可能从 TiFlash 副本读取数据，你可能会遇到 `ERROR 1105 (HY000): stale requests require tikv backend` 报错信息。
 >
 > 要解决该问题，你需要为使用 Stale Read 特性的查询禁用 TiFlash 副本。要禁用 TiFlash 副本，你可以使用以下任一方法：
 
