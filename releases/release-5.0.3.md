@@ -8,9 +8,15 @@ title: TiDB 5.0.3 Release Notes
 
 TiDB 版本：5.0.3
 
-## 兼容性更改
-
 ## 新功能
+
++ Tools
+
+    + TiCDC
+
+        - 增加 HTTP API 获取 TiCDC changefeed 信息和节点健康信息 [#1955](https://github.com/pingcap/ticdc/pull/1955)
+        - 为 kafka 下游增加 SASL/SCRAM 支持 [#1942](https://github.com/pingcap/ticdc/pull/1942)
+        - 使 TiCDC 在 server 级别支持 `--data-dir` 配置 [#2070](https://github.com/pingcap/ticdc/pull/2070)
 
 ## 提升改进
 
@@ -36,6 +42,10 @@ TiDB 版本：5.0.3
     - 限制 TiCDC sink 的内存消耗 [#10305](https://github.com/tikv/tikv/pull/10305)
     - 为 TiCDC old value 缓存增加基于内存使用量的上限 [#10313](https://github.com/tikv/tikv/pull/10313)
 
++ PD
+
+    - 将 TiDB Dashboard 升级至 v2021.06.15.1 [#3798](https://github.com/pingcap/pd/pull/3798)
+
 + TiFlash
 
     - 支持将 `STRING` 类型转换为 `DOUBLE` 类型
@@ -45,6 +55,13 @@ TiDB 版本：5.0.3
     - 支持 `LEFT()` 和 `RIGHT()` 函数
     - 支持在 MPP 查询中自动清理过期的 Region 信息
     - 支持 `ABS()` 函数
+
++ Tools
+
+    + TiCDC
+
+        - 优化 gRPC 的重连逻辑，提升 KV client 的吞吐 [#1922](https://github.com/pingcap/ticdc/pull/1922)
+        - 优化 sorter I/O 报错信息 [#1977](https://github.com/pingcap/ticdc/pull/1977)
 
 ## Bug 修复
 
@@ -86,3 +103,25 @@ TiDB 版本：5.0.3
     - 修复写入压力过大时出现进程崩溃的问题
     - 修复右连接键不为空且左连接键可为空时进程崩溃的问题
     - 修复 `read-index` 请求耗时长的潜在问题
+
++ Tools
+
+    + TiCDC
+
+        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#2031](https://github.com/pingcap/ticdc/pull/2031)
+        - 修复写 MySQL 下游出错暂停时 MySQL 连接泄漏的问题 [#1946](https://github.com/pingcap/ticdc/pull/1946)
+        - 修复 TiCDC 读取 `/proc/meminfo` 失败时出现的 panic 问题 [#2024](https://github.com/pingcap/ticdc/pull/2024)
+        - 减少 TiCDC 运行时的内存使用 [#2012](https://github.com/pingcap/ticdc/pull/2012) [#1958](https://github.com/pingcap/ticdc/pull/1958)
+        - 修复 resolved ts 计算慢导致 TiCDC panic 的问题 [#2047](https://github.com/pingcap/ticdc/pull/2047)
+        - 修复 processor 潜在的死锁问题 [#2142](https://github.com/pingcap/ticdc/pull/2142)
+
+    + Backup & Restore (BR)
+
+        - 修复 BR 恢复中忽略了所有系统表的问题 [#1224](https://github.com/pingcap/br/pull/1224)
+
+    + TiDB Lightning
+
+        - 修复 TiDB Lightning 在特殊数据下 panic 的问题 [#1268](https://github.com/pingcap/br/pull/1268)
+        - 修复 TiDB Lightning 导入大文件拆分时遇到的 EOF 报错问题 [#1189](https://github.com/pingcap/br/pull/1189)
+        ?- 修复 TiDB Lightning 导入主键为 `auto_increment double` 类型表时生成极大 increment 值的问题 [#1186](https://github.com/pingcap/br/pull/1186)
+        - 修复 TiDB Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1277](https://github.com/pingcap/br/pull/1277)
