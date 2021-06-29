@@ -78,7 +78,7 @@ TiDB 版本：5.0.3
     - 修复了使用含有多列的前缀索引查询时出现多余结果的问题 [#24635](https://github.com/pingcap/tidb/pull/24635)
     - 修复了操作符 `<=>` 不能正确生效的问题 [#24633](https://github.com/pingcap/tidb/pull/24633)
     - 修复并行 `Apply` 算子的数据竞争问题 [#24345](https://github.com/pingcap/tidb/pull/24345)
-    ?- 修复在分区表上对 union IndexMerge 结果排序时出现的 `index out of range` 错误 [#24155](https://github.com/pingcap/tidb/pull/24155)
+    - 修复对 PartitionUnion 算子的 IndexMerge 结果排序时出现 `index out of range` 错误 [#24155](https://github.com/pingcap/tidb/pull/24155)
     - 禁止设置一个未来的读时间戳 [#25761](https://github.com/pingcap/tidb/pull/25761)
     - 修复 ODBC 类常数（例如 `{d '2020-01-01'}`）不能被用作表达式的问题 [#25577](https://github.com/pingcap/tidb/pull/25577)
     - 修复 `SELECT DISTINCT` 被转化为 Batch Get 而导致结果不正确的问题 [#25533](https://github.com/pingcap/tidb/pull/25533)
@@ -97,7 +97,7 @@ TiDB 版本：5.0.3
 + TiFlash
 
     - 修复因 split 失败而不断重启的问题
-    ?- 修复无法 GC Delta 数据的潜在问题
+    - 修复无法删除 Delta 历史数据的潜在问题
     - 修复在 `CAST` 函数中为非二进制字符串填充错误数据的问题
     - 修复处理包含复杂 `GROUP BY` 列的聚合查询时结果不正确的问题
     - 修复写入压力过大时出现进程崩溃的问题
