@@ -90,6 +90,13 @@ mysql> SELECT * FROM t1;
 - Default value：1000
 - Controls the maximum recursion depth in Common Table Expressions.
 
+### datadir
+
+- Scope: NONE
+- Default value: /tmp/tidb
+- This variable indicates the location where data is stored. This location can be a local path or point to a PD server if the data is stored on TiKV.
+- A value in the format of `ip_address:port` indicates the PD server that TiDB connects to on startup.
+
 ### ddl_slow_threshold
 
 - Scope: INSTANCE
@@ -140,6 +147,12 @@ mysql> SELECT * FROM t1;
 - Scope: SESSION
 - Default value: `OFF`
 - This variable is used to show whether the execution plan used in the previous `execute` statement is taken directly from the plan cache.
+
+### license
+
+- Scope: NONE
+- Default value: Apache License 2.0
+- This variable indicates the license of your TiDB server installation.
 
 ### max_execution_time
 
