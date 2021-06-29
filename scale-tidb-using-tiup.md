@@ -391,16 +391,6 @@ In special cases (such as when a node needs to be forcibly taken down), or if th
         
 3. Wait for the store of the TiFlash node to disappear or for the `state_name` to become `Tombstone` before you stop the TiFlash process.
 
-    If, after waiting for a long time, the node still fails to disappear or the `state_name` fails to become `Tombstone`, consider using the following command to force the node out of the cluster.
-
-    **Note that the command will directly discard the replicas on the TiFlash node, which might cause the query to fail.**
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl -X POST 'http://<pd-address>/pd/api/v1/store/<store_id>/state?state=Tombstone'
-    ```
-
 4. Manually delete TiFlash data files (whose location can be found in the `data_dir` directory under the TiFlash configuration of the cluster topology file).
 
 5. Manually update TiUP's cluster configuration file (delete the information of the TiFlash node that goes down in edit mode).
