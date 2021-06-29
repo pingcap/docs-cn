@@ -31,6 +31,16 @@ TiDB 版本：5.0.3
     - 支持 MPP 查询任务按 region 均衡到不同 TiFlash 节点上。 [#24724](https://github.com/pingcap/tidb/pull/24724)
     - 支持执行 MPP 查询后将缓存中过时的 region 无效化。 [#24432](https://github.com/pingcap/tidb/pull/24432)
 
++ TiFlash
+
+    - 支持将 `STRING` 类型转换为 `DOUBLE` 类型
+    - 支持 `STR_TO_DATE()` 函数
+    - 通过多线程优化 right outer join
+    - 支持笛卡尔积 join
+    - 支持 `LEFT()` 和 `RIGHT()` 函数
+    - 支持 MPP 查询中自动清理过期 region 信息
+    - 支持 `ABS()` 函数
+
 ## Bug 修复
 
 + TiDB
@@ -52,3 +62,13 @@ TiDB 版本：5.0.3
     - 修复 `SELECT DISTINCT` 被转化为 batch get 而导致结果不正确的问题。 [#25533](https://github.com/pingcap/tidb/pull/25533)
     - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题。 [#24600](https://github.com/pingcap/tidb/pull/24600)
     - 修复在检查 `only_full_group_by` 时的 index-out-of-range 错误。 [#24016](https://github.com/pingcap/tidb/pull/24016)
+
++ TiFlash
+
+    - 修复因 split 失败而不断重启的问题
+    - 修复无法 GC delta 数据的潜在问题
+    - 修复在 `CAST` 函数中为非二进制字符串填充错误数据的问题
+    - 修复处理包含复杂 `GROUP BY` 列的聚合查询时结果不正确的问题
+    - 修复写入压力过大时出现进程崩溃的问题
+    - 修复右连接键不为空且左连接键可为空时进程崩溃的问题
+    - 修复 read-index 请求耗时长的潜在问题
