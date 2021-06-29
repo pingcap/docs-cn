@@ -48,7 +48,7 @@ aliases: ['/tidb/v5.0/roadmap','/docs/ROADMAP/','/docs/roadmap/','/docs/stable/r
 ## New features
 
 - [ ] Point-in-time recovery [#325](https://github.com/pingcap/br/issues/325)
-- [ ] Change column types [#17526](https://github.com/pingcap/tidb/issues/17526)
+- [x] Change column types [#17526](https://github.com/pingcap/tidb/issues/17526)
 - [ ] Easier to discover performance issues and diagnose the causes [#18867](https://github.com/pingcap/tidb/issues/18867)
 - [x] Support the collations of `utf8mb4_unicode_ci` and `utf8_unicode_ci` [#17596](https://github.com/pingcap/tidb/issues/17596)
 - [ ] Data import
