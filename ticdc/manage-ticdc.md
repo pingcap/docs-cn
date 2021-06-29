@@ -236,7 +236,7 @@ URI 中可配置的的参数如下：
 | `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
 | `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
-更多关于 Pulsar 的参数解释，参见 ["pulsar-client-go ClientOptions 文档"](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 ["pulsar-client-go ProducerOptions 文档"](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions) 。
+更多关于 Pulsar 的参数解释，参见 [“pulsar-client-go ClientOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [“pulsar-client-go ProducerOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions) 。
 
 #### 使用同步任务配置文件
 
