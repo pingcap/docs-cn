@@ -75,6 +75,8 @@ Flags:
 
 1. Create 4 warehouses using 4 partitions via hash:
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     tiup bench tpcc --warehouses 4 --parts 4 prepare
     ```
