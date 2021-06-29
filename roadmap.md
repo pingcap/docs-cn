@@ -47,7 +47,7 @@ title: TiDB Roadmap
 ## 新功能
 
 - [ ] 恢复到任意时间点 (PITR) [#325](https://github.com/pingcap/br/issues/325)
-- [ ] 支持修改列的类型 [#17526](https://github.com/pingcap/tidb/issues/17526)
+- [x] 支持修改列的类型 [#17526](https://github.com/pingcap/tidb/issues/17526)
 - [ ] 提升发现及诊断性能问题的效率，降低用户的使用成本 [#18867](https://github.com/pingcap/tidb/issues/18867)
 - [x] 字符集的排序规则支持 `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` [#17596](https://github.com/pingcap/tidb/issues/17596)
 - [ ] 数据导入
