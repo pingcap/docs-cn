@@ -34,6 +34,18 @@ TiDB 版本：5.0.3
 
 + TiDB
 
+  - 修复在 `SET` 列类型上 merge join 结果不正确的问题。 [#25694](https://github.com/pingcap/tidb/pull/25694)
+  - 修复 `IN` 表达式参数数据腐蚀的问题。 [#25666](https://github.com/pingcap/tidb/pull/25666)
+  - 避免 GC 的 session 受全局变量的影响。 [#25609](https://github.com/pingcap/tidb/pull/25609)
+  - 修复了在窗口函数查询中使用 limit 时的 panic 问题。 [#25517](https://github.com/pingcap/tidb/pull/25517)
+  - 修复查询分区表时 Limit 被下推到 IndexLookup 算子的列数量不匹配问题。 [#25139](https://github.com/pingcap/tidb/pull/25139)
+  - 修复了 ifnull 在 enum 或 set 类型上不能正确生效的问题。 [#25116](https://github.com/pingcap/tidb/pull/25116)
+  - 修复了 Join 子查询中的 count 被改写为 first_row 导致结果不正确的问题。 [#25062](https://github.com/pingcap/tidb/pull/25062)
+  - 修复了 TopN 算子下使用 ParallelApply 查询时 hang 住的问题。 [#25011](https://github.com/pingcap/tidb/pull/25011)
+  - 修复了使用含有多列的前缀索引查询时出现多余结果的问题。 [#24635](https://github.com/pingcap/tidb/pull/24635)
+  - 修复了操作符 `<=>` 不能正确生效的问题。 [#24633](https://github.com/pingcap/tidb/pull/24633)
+  - 修复并行 Apply 算子的数据竞争问题。 [#24345](https://github.com/pingcap/tidb/pull/24345)
+  - 修复分区表上对 union IndexMerge 结果排序时的数组越界问题。 [#24155](https://github.com/pingcap/tidb/pull/24155)
     - 禁止在 stale read 中设置一个未来的读时间戳。[#25761](https://github.com/pingcap/tidb/pull/25761)
     - 修复 ODBC 类常数（例如 `{d '2020-01-01'}`）不能被用作表达式的问题。 [#25577](https://github.com/pingcap/tidb/pull/25577)
     - 修复 `SELECT DISTINCT` 被转化为 batch get 而导致结果不正确的问题。 [#25533](https://github.com/pingcap/tidb/pull/25533)
