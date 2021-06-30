@@ -41,8 +41,8 @@ CREATE TABLE employees (
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT NOT NULL,
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
     store_id INT NOT NULL
 )
 
@@ -56,7 +56,7 @@ PARTITION BY RANGE (store_id) (
 
 在这个分区模式中，所有 `store_id` 为 1 到 5 的员工，都存储在分区 `p0` 里面，`store_id` 为 6 到 10 的员工则存储在分区 `p1` 里面。Range 分区要求，分区的定义必须是有序的，按从小到大递增。
 
-新插入一行数据 `(72, 'Tom', 'John', '2015-06-25', NULL, 15)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
+新插入一行数据 `(72, 'Tom', 'John', '2015-06-25', NULL, NULL, 15)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
 
 {{< copyable "sql" >}}
 
