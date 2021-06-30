@@ -24,8 +24,8 @@ CREATE TABLE employees (
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT NOT NULL,
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
     store_id INT NOT NULL
 );
 ```
@@ -65,8 +65,8 @@ CREATE TABLE employees (
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT NOT NULL,
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
     store_id INT NOT NULL
 )
 
@@ -90,8 +90,8 @@ CREATE TABLE employees (
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT NOT NULL,
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
     store_id INT NOT NULL
 )
 
@@ -114,7 +114,7 @@ CREATE TABLE employees (
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
+    separated DATE DEFAULT '9999-12-31',
     job_code INT,
     store_id INT
 )
@@ -290,7 +290,7 @@ CREATE TABLE employees_1 (
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
+    separated DATE DEFAULT '9999-12-31',
     job_code INT,
     store_id INT,
     city VARCHAR(15)
@@ -364,7 +364,7 @@ CREATE TABLE employees (
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
+    separated DATE DEFAULT '9999-12-31',
     job_code INT,
     store_id INT
 )
@@ -385,7 +385,7 @@ CREATE TABLE employees (
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
+    separated DATE DEFAULT '9999-12-31',
     job_code INT,
     store_id INT
 )
