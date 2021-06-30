@@ -1018,7 +1018,7 @@ PARTITION BY HASH(col1 + col3)
 ERROR 1491 (HY000): A PRIMARY KEY must include all columns in the table's partitioning function
 ```
 
-原因是 `col1` 和 `col3` 出现在分区键中，但是几个唯一键定义并没有完全包含它们， 需做如下修改即为合法语句:
+原因是 `col1` 和 `col3` 出现在分区键中，但是几个唯一键定义并没有完全包含它们，需做如下修改即为合法语句:
 
 {{< copyable "sql" >}}
 
@@ -1080,7 +1080,7 @@ PARTITION BY HASH( YEAR(col2) )
 PARTITIONS 4;
 ```
 
-两个例子中，主键都没有包含分区表达式中的全部的列，需做如下修改即为合法语句:
+两个例子中，主键都没有包含分区表达式中的全部的列，在主键中补充缺失列即为合法语句:
 
 {{< copyable "sql" >}}
 
