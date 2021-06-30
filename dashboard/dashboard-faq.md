@@ -52,3 +52,17 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 ### 概况页面中 Top SQL 语句、最近慢查询显示 `invalid connection` 错误
 
 可能的原因是你开启了 TiDB 的 `prepared-plan-cache` 功能。`prepared-plan-cache` 是实验性功能，在某些版本的 TiDB 中可能无法正常运行，开启后可能会导致 TiDB Dashboard（及其他应用）出现该问题。可以通过修改 [TiDB 配置文件](/tidb-configuration-file.md#prepared-plan-cache)来关闭 `prepared-plan-cache` 功能。
+
+### 慢查询页面显示 `unknown field` 错误
+
+集群升级后，如果慢查询页面出现 `unknown field` 错误，是由于升级后新版本 TiDB Dashboard 字段与浏览器缓存内的用户偏好设置的字段不兼容导致的。该问题已在 v4.0.14/v5.0.3 及之后的版本修复，老版本可通过清空浏览器 Local Storage 解决。
+
+1. 打开 TiDB Dashboard 页面
+
+2. 点击 **自定义及控制 Google Chrome** 按钮，选择 **更多工具 > 开发者工具**。
+
+![打开开发者工具](/media/dashboard/dashboard-faq-devtools.png)
+
+3. 选中 **Application** 面板，展开 **Local Storage** 菜单并选中**TiDB Dashboard 页面的域名**，点击 **Clear All** 按钮。
+
+![清理 Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
