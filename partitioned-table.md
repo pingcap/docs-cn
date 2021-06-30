@@ -814,7 +814,23 @@ PARTITION BY HASH(col1 + col3)
 ERROR 1491 (HY000): A PRIMARY KEY must include all columns in the table's partitioning function
 ```
 
-原因是 `col1` 和 `col3` 出现在分区键中，但是几个唯一键定义并没有完全包含它们。
+原因是 `col1` 和 `col3` 出现在分区键中，但是几个唯一键定义并没有完全包含它们， 需做如下修改即为合法语句:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t3 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    UNIQUE KEY (col1, col2, col3),
+    UNIQUE KEY (col1, col3)
+)
+
+PARTITION BY HASH(col1 + col3)
+    PARTITIONS 4;
+```
 
 下面这个表就没法做分区了，因为无论如何都不可能找到满足条件的分区键：
 
@@ -860,7 +876,34 @@ PARTITION BY HASH( YEAR(col2) )
 PARTITIONS 4;
 ```
 
-两个例子中，主键都没有包含分区表达式中的全部的列。
+两个例子中，主键都没有包含分区表达式中的全部的列，需做如下修改即为合法语句:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t5 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    PRIMARY KEY(col1, col2, col3)
+)
+
+PARTITION BY HASH(col3)
+PARTITIONS 4;
+
+CREATE TABLE t6 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    PRIMARY KEY(col1, col2, col3),
+    UNIQUE KEY(col2)
+)
+
+PARTITION BY HASH( YEAR(col2) )
+PARTITIONS 4;
+```
 
 如果既没有主键，也没有唯一键，则不存在这个限制。
 
