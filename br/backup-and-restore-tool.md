@@ -95,7 +95,10 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 
 自 v5.1.0 起，BR 默认会**备份**全部数据，包括系统库 (`mysql.*`)，但为了兼容之前 BR 的版本，**恢复**的时候默认**不**恢复系统库下的数据，只有设置了 [`filter` 参数](/br/use-br-command-line-tool.md#使用表库过滤功能备份多张表的数据)才会把系统库下的数据恢复到临时库中，然后通过对临时库表进行重命名的方式恢复到系统库。
 
-之所以这么处理，是考虑到系统库中可以创建非系统表，并且有需求对这些非系统表进行备份恢复。同时，由于对系统表进行恢复还不完善，在实际操作中**不建议**恢复集群本身存在的系统表。因此，在恢复数据涉及到系统库的时候，请通过具体的**表名过滤**(`-f "mysql.usertable1"`)，而不是通配(`-f "mysql.*"`)的方式来进行恢复。
+之所以这么处理，是考虑到系统库中可以创建非系统表，并且有需求对这些非系统表进行备份恢复。同时，由于对系统表进行恢复还不完善，在实际操作中**不建议**恢复集群本身存在的系统表。因此，在恢复数据涉及到系统库的时候，请通过具体的**表名过滤**(`-f "mysql.usertable1"`)，而不是通配(`-f "mysql.*"`)的方式来进行恢复。同时 BR 默认会有一个黑名单，来阻止恢复以下系统表:
+
+-- 统计信息相关的表："stats_buckets"，"stats_extended"，"stats_feedback"，"stats_fm_sketch"，"stats_histograms"，"stats_meta"，"stats_top_n"。
+-- 权限或系统相关的表： "tidb"，"global_variables"，"columns_priv"，"db"，"default_roles"，"global_grants"，"global_priv"，"role_edges"，"tables_priv"，"user"，"gc_delete_range"，"gc_delete_range_done"，"schema_index_usage"。
 
 ### 运行 BR 的最低机型配置要求
 
