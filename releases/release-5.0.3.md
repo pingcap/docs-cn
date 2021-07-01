@@ -93,14 +93,14 @@ TiDB 版本：5.0.3
     - 修复错误的 `tikv_raftstore_hibernated_peer_state` 监控指标 [#10330](https://github.com/tikv/tikv/issues/10330)
     - 修复 coprocessor 中 `json_unquote()` 函数错误的参数类型 [#10176](https://github.com/tikv/tikv/issues/10176)
     - 修复在 Backup & Restore 数据恢复期间开启 TDE 会报出文件已存在的错误 [#1179](https://github.com/pingcap/br/issues/1179)
-    - 正常关机时跳过清理 Raftstore 的回调从而避免在某些情况下破坏事务的 ACID [#10353](https://github.com/tikv/tikv/issues/10353)
+    - 正常关机时跳过清理 Raftstore 的回调从而避免在某些情况下破坏事务的 ACID [#10353](https://github.com/tikv/tikv/issues/10353) [#10307](https://github.com/tikv/tikv/issues/10307)
     - 修复在 Leader 上 Replica Read 共享 Read Index 的问题 [#10347](https://github.com/tikv/tikv/issues/10347)
-    - 修复 coprocessor 转换 `DOUBLE` 到 `DOUBLE` 的错误函数 [#10388](https://github.com/tikv/tikv/pull/10388)
+    - 修复 coprocessor 转换 `DOUBLE` 到 `DOUBLE` 的错误函数 [#25200](https://github.com/pingcap/tidb/issues/25200)
 + PD
 
-    - 修复在 scheduler 启动之后，加载 TTL 配置产生的数据竞争问题 [#3774](https://github.com/tikv/pd/pull/3774)
-    - 修复 `is_learner` 字段在 TiDB 的 `TIKV_REGION_PEERS` 表中显示异常的问题 [#3743](https://github.com/tikv/pd/pull/3743)
-    - 修复在一个 zone 内所有 TiKV 节点下线或宕机的情况下，PD 不往其他 zone 调度数据的问题 [#3742](https://github.com/tikv/pd/pull/3742)
+    - 修复在 scheduler 启动之后，加载 TTL 配置产生的数据竞争问题 [#3771](https://github.com/tikv/pd/issues/3771)
+    - 修复 `is_learner` 字段在 TiDB 的 `TIKV_REGION_PEERS` 表中显示异常的问题 [#3372](https://github.com/tikv/pd/issues/3372) [#24293](https://github.com/pingcap/tidb/issues/24293)
+    - 修复在一个 zone 内所有 TiKV 节点下线或宕机的情况下，PD 不往其他 zone 调度数据的问题 [#3705](https://github.com/tikv/pd/issues/3705)
     - 修复在添加 scatter range 调度器后导致 PD 挂掉的问题 [#3762](https://github.com/tikv/pd/pull/3762)
 
 + TiFlash
@@ -118,20 +118,20 @@ TiDB 版本：5.0.3
 
     + TiCDC
 
-        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#2031](https://github.com/pingcap/ticdc/pull/2031)
+        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1902](https://github.com/pingcap/ticdc/issues/1902)
         - 修复写 MySQL 下游出错暂停时 MySQL 连接泄漏的问题 [#1946](https://github.com/pingcap/ticdc/pull/1946)
         - 修复 TiCDC 读取 `/proc/meminfo` 失败时出现的 panic 问题 [#2024](https://github.com/pingcap/ticdc/pull/2024)
         - 减少 TiCDC 运行时的内存使用 [#2012](https://github.com/pingcap/ticdc/pull/2012) [#1958](https://github.com/pingcap/ticdc/pull/1958)
-        - 修复 resolved ts 计算慢导致 TiCDC panic 的问题 [#2047](https://github.com/pingcap/ticdc/pull/2047)
+        - 修复 resolved ts 计算慢导致 TiCDC panic 的问题 [#1576](https://github.com/pingcap/ticdc/issues/1576)
         - 修复 processor 潜在的死锁问题 [#2142](https://github.com/pingcap/ticdc/pull/2142)
 
     + Backup & Restore (BR)
 
-        - 修复 BR 恢复中忽略了所有系统表的问题 [#1224](https://github.com/pingcap/br/pull/1224)
+        - 修复 BR 恢复中忽略了所有系统表的问题 [#1197](https://github.com/pingcap/br/issues/1197) [#1201](https://github.com/pingcap/br/issues/1201)
 
     + TiDB Lightning
 
-        - 修复 TiDB Lightning 在特殊数据下 panic 的问题 [#1268](https://github.com/pingcap/br/pull/1268)
-        - 修复 TiDB Lightning 导入大文件拆分时遇到的 EOF 报错问题 [#1189](https://github.com/pingcap/br/pull/1189)
+        - 修复 TiDB Lightning 在特殊数据下 panic 的问题 [#1213](https://github.com/pingcap/br/issues/1213)
+        - 修复 TiDB Lightning 导入大文件拆分时遇到的 EOF 报错问题 [#1133](https://github.com/pingcap/br/issues/1133)
         - 修复 TiDB Lightning 导入含 `auto_increment` 的 `DOUBLE` 或 `FLOAT` 类型列的表时生成极大 base 值的问题 [#1186](https://github.com/pingcap/br/pull/1186)
         - 修复 TiDB Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1277](https://github.com/pingcap/br/pull/1277)
