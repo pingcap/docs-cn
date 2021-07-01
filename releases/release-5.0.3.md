@@ -8,7 +8,7 @@ title: TiDB 5.0.3 Release Notes
 
 TiDB 版本：5.0.3
 
-## 新功能
+## 功能增强
 
 + Tools
 
@@ -61,8 +61,8 @@ TiDB 版本：5.0.3
 
     + TiCDC
 
-        - 优化 gRPC 的重连逻辑，提升 KV client 的吞吐 [#1922](https://github.com/pingcap/ticdc/pull/1922)
-        - 优化 sorter I/O 报错信息 [#1977](https://github.com/pingcap/ticdc/pull/1977)
+        - 优化 gRPC 的重连逻辑，提升 KV client 的吞吐 [#1586](https://github.com/pingcap/ticdc/issues/1586) [#1501](https://github.com/pingcap/ticdc/issues/1501#issuecomment-820027078) [#1682](https://github.com/pingcap/ticdc/pull/1682) [#1393](https://github.com/pingcap/ticdc/issues/1393) [#184s7](https://github.com/pingcap/ticdc/pull/1847) [#1905](https://github.com/pingcap/ticdc/issues/1905) [#1904](https://github.com/pingcap/ticdc/issues/1904)
+        - 优化 sorter I/O 报错信息
 
 ## Bug 修复
 
@@ -80,10 +80,10 @@ TiDB 版本：5.0.3
     - 修复了操作符 `<=>` 不能正确生效的问题 [#24477](https://github.com/pingcap/tidb/issues/24477)
     - 修复并行 `Apply` 算子的数据竞争问题 [#23280](https://github.com/pingcap/tidb/issues/23280)
     - 修复对 PartitionUnion 算子的 IndexMerge 结果排序时出现 `index out of range` 错误 [#23919](https://github.com/pingcap/tidb/issues/23919)
-    - 禁止设置一个未来的读时间戳 [#25761](https://github.com/pingcap/tidb/pull/25761)
+    - 修复 `tidb_snapshot` 被允许设置为非预期的过大值，而可能造成事务隔离性被破坏的问题 [25680]( https://github.com/pingcap/tidb/issues/25680)
     - 修复 ODBC 类常数（例如 `{d '2020-01-01'}`）不能被用作表达式的问题 [#25531](https://github.com/pingcap/tidb/issues/25531)
     - 修复 `SELECT DISTINCT` 被转化为 Batch Get 而导致结果不正确的问题 [#25320](https://github.com/pingcap/tidb/issues/25320)
-    - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题 [#24600](https://github.com/pingcap/tidb/pull/24600)
+    - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题 [#23665](https://github.com/pingcap/tidb/issues/23665) [#24421](https://github.com/pingcap/tidb/issues/24421)
     - 修复在检查 `only_full_group_by` 时的 `index-out-of-range` 错误 [#23839](https://github.com/pingcap/tidb/issues/23839)
     - 修复使用 `TABLESAMPLE` 在空表上进行查询返回预期外的行数据的问题 [#25257](https://github.com/pingcap/tidb/issues/25257)
     - 修复关联子查询中 Index Join 的结果不正确问题 [#25799](https://github.com/pingcap/tidb/issues/25799)
@@ -92,7 +92,6 @@ TiDB 版本：5.0.3
 
     - 修复错误的 `tikv_raftstore_hibernated_peer_state` 监控指标 [#10330](https://github.com/tikv/tikv/issues/10330)
     - 修复 coprocessor 中 `json_unquote()` 函数错误的参数类型 [#10176](https://github.com/tikv/tikv/issues/10176)
-    - 修复在 Backup & Restore 数据恢复期间开启 TDE 会报出文件已存在的错误 [#1179](https://github.com/pingcap/br/issues/1179)
     - 正常关机时跳过清理 Raftstore 的回调从而避免在某些情况下破坏事务的 ACID [#10353](https://github.com/tikv/tikv/issues/10353) [#10307](https://github.com/tikv/tikv/issues/10307)
     - 修复在 Leader 上 Replica Read 共享 Read Index 的问题 [#10347](https://github.com/tikv/tikv/issues/10347)
     - 修复 coprocessor 转换 `DOUBLE` 到 `DOUBLE` 的错误函数 [#25200](https://github.com/pingcap/tidb/issues/25200)
@@ -113,6 +112,7 @@ TiDB 版本：5.0.3
     - 修复右连接键不为空且左连接键可为空时进程崩溃的问题
     - 修复 `read-index` 请求耗时长的潜在问题
     - 修复读负载高的情况下进程崩溃的问题
+    - 修复 `Date_Format` 函数在参数类型为 `STRING` 且包含 `NULL` 值时可能导致 TiFlash server 崩溃的问题
 
 + Tools
 
@@ -128,6 +128,7 @@ TiDB 版本：5.0.3
     + Backup & Restore (BR)
 
         - 修复 BR 恢复中忽略了所有系统表的问题 [#1197](https://github.com/pingcap/br/issues/1197) [#1201](https://github.com/pingcap/br/issues/1201)
+        - 修复在 Backup & Restore 数据恢复期间开启 TDE 会报出文件已存在的错误 [#1179](https://github.com/pingcap/br/issues/1179)
 
     + TiDB Lightning
 
