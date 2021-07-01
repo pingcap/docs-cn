@@ -170,6 +170,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
 
+#### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 指定关闭服务器时 TiDB 等待的秒数，从而让客户端断开连接。
+- 默认值：`0`
+- 当 TiDB 等待关闭（在宽限期内）时，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
 ## log
 
 日志相关的配置项。
