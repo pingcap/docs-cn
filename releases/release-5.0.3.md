@@ -26,7 +26,7 @@ TiDB 版本：5.0.3
     - 支持将内置函数 `json_unquote()` 下推到 TiKV [#25720](https://github.com/pingcap/tidb/pull/25720)
     - 支持在 Dual 表上移除 `Union` 算子的优化 [#25614](https://github.com/pingcap/tidb/pull/25614)
     - 支持将内置函数 `replace()` 下推到 TiFlash [#25565](https://github.com/pingcap/tidb/pull/25565)
-    - 支持将内置函数 `unix_timestamp()`、`concat()`、`year()`、`day()`、`datediff()`、`datesub()`、`castTimeAsString()`、`concat_ws()` 下推到 TiFlash [#25564](https://github.com/pingcap/tidb/pull/25564)
+    - 支持将内置函数 `unix_timestamp()`、`concat()`、`year()`、`day()`、`datediff()`、`datesub()`、`concat_ws()` 下推到 TiFlash [#25564](https://github.com/pingcap/tidb/pull/25564)
     - 优化聚合算子的代价常数 [#25241](https://github.com/pingcap/tidb/pull/25241)
     - 支持将 `Limit` 算子下推到 TiFlash [#25159](https://github.com/pingcap/tidb/pull/25159)
     - 支持将内置函数 `str_to_date()` 下推到 TiFlash [#25148](https://github.com/pingcap/tidb/pull/25148)
