@@ -84,6 +84,36 @@ mysql> SELECT * FROM t1;
 - Default value: `ON`
 - Controls whether statements should automatically commit when not in an explicit transaction. See [Transaction Overview](/transaction-overview.md#autocommit) for more information.
 
+### character_set_client
+
+- Scope: SESSION | GLOBAL
+- Default value: `utf8mb4`
+- The character set for data sent from the client. See [Character Set and Collation](/character-set-and-collation.md) for details on the use of character sets and collations in TiDB. It is recommended to use [`SET NAMES`](/sql-statements/sql-statement-set-names.md) to change the character set when needed.
+
+### character_set_connection
+
+- Scope: SESSION | GLOBAL
+- Default value: `utf8mb4`
+- The character set for string literals that do not have a specified character set.
+
+### character_set_database
+
+- Scope: SESSION | GLOBAL
+- Default value: `utf8mb4`
+- This variable indicates the character set of the default database in use. **It is NOT recommended to set this variable**. When a new default database is selected, the server changes the variable value.
+
+### character_set_results
+
+- Scope: SESSION | GLOBAL
+- Default value: `utf8mb4`
+- The character set that is used when data is sent to the client.
+
+### character_set_server
+
+- Scope: SESSION | GLOBAL
+- Default value: `utf8mb4`
+- The character set used for new schemas when no character set is specified in the `CREATE SCHEMA` statement.
+
 ### `cte_max_recursion_depth`
 
 - Scope：SESSION | GLOBAL
