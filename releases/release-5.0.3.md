@@ -27,7 +27,7 @@ TiDB 版本：5.0.3
     - 支持在 Dual 表上移除 `Union` 算子的优化 [#25614](https://github.com/pingcap/tidb/pull/25614)
     - 支持将内置函数 `replace()` 下推到 TiFlash [#25565](https://github.com/pingcap/tidb/pull/25565)
     - 支持将内置函数 `unix_timestamp()`、`concat()`、`year()`、`day()`、`datediff()`、`datesub()`、`castTimeAsString()`、`concat_ws()` 下推到 TiFlash [#25564](https://github.com/pingcap/tidb/pull/25564)
-    - 修改聚合算子的代价常数 [#25241](https://github.com/pingcap/tidb/pull/25241)
+    - 优化聚合算子的代价常数 [#25241](https://github.com/pingcap/tidb/pull/25241)
     - 支持将 `Limit` 算子下推到 TiFlash [#25159](https://github.com/pingcap/tidb/pull/25159)
     - 支持将内置函数 `str_to_date()` 下推到 TiFlash [#25148](https://github.com/pingcap/tidb/pull/25148)
     - 允许 MPP outer join 根据表行数选择构建表 [#25142](https://github.com/pingcap/tidb/pull/25142)
@@ -36,6 +36,7 @@ TiDB 版本：5.0.3
     - 支持将 `Union All` 算子下推到 TiFlash [#25051](https://github.com/pingcap/tidb/pull/25051)
     - 支持 MPP 查询任务按 Region 均衡到不同 TiFlash 节点上 [#24724](https://github.com/pingcap/tidb/pull/24724)
     - 支持执行 MPP 查询后将缓存中过时的 Region 无效化 [#24432](https://github.com/pingcap/tidb/pull/24432)
+    - 提升内置函数 `str_to_date` 在格式指定器中 `%b/%M/%r/%T` 的 MySQL 兼容性 [#25767](https://github.com/pingcap/tidb/pull/25767)
 
 + TiKV
 
@@ -84,6 +85,8 @@ TiDB 版本：5.0.3
     - 修复 `SELECT DISTINCT` 被转化为 Batch Get 而导致结果不正确的问题 [#25533](https://github.com/pingcap/tidb/pull/25533)
     - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题 [#24600](https://github.com/pingcap/tidb/pull/24600)
     - 修复在检查 `only_full_group_by` 时的 `index-out-of-range` 错误 [#24016](https://github.com/pingcap/tidb/pull/24016)
+    - 修复使用 `TABLESAMPLE` 在空表上进行查询返回预期外的行数据的问题 [#25795](https://github.com/pingcap/tidb/pull/25795)
+    - 修复关联子查询中 Index Join 的结果不正确问题 [#25818](https://github.com/pingcap/tidb/pull/25818)
 
 + TiKV
 
@@ -103,6 +106,7 @@ TiDB 版本：5.0.3
     - 修复写入压力过大时出现进程崩溃的问题
     - 修复右连接键不为空且左连接键可为空时进程崩溃的问题
     - 修复 `read-index` 请求耗时长的潜在问题
+    - 修复读负载高的情况下进程崩溃的问题
 
 + Tools
 
@@ -123,5 +127,5 @@ TiDB 版本：5.0.3
 
         - 修复 TiDB Lightning 在特殊数据下 panic 的问题 [#1268](https://github.com/pingcap/br/pull/1268)
         - 修复 TiDB Lightning 导入大文件拆分时遇到的 EOF 报错问题 [#1189](https://github.com/pingcap/br/pull/1189)
-        ?- 修复 TiDB Lightning 导入主键为 `auto_increment double` 类型表时生成极大 increment 值的问题 [#1186](https://github.com/pingcap/br/pull/1186)
+        - 修复 TiDB Lightning 导入含 `auto_increment` 的 `DOUBLE` 或 `FLOAT` 类型列的表时生成极大 base 值的问题 [#1186](https://github.com/pingcap/br/pull/1186)
         - 修复 TiDB Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1277](https://github.com/pingcap/br/pull/1277)
