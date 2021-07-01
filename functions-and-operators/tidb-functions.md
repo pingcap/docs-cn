@@ -1,9 +1,9 @@
 ---
 title: TiDB 特有的函数
-summary: 学习使用 TiDB 的特有函数。
+summary: 学习使用 TiDB 特有的函数。
 ---
 
-# TiDB 特有函数
+# TiDB 特有的函数
 
 本文档介绍 TiDB 特有的函数。
 
@@ -39,7 +39,7 @@ TIDB_DECODE_KEY(START_KEY): {"_tidb_rowid":1958897,"table_id":"59"}
 
 ### MySQL 兼容性
 
-`TIDB_DECODE_KEY` 是 TiDB 的特有函数，和 MySQL 不兼容。
+`TIDB_DECODE_KEY` 是 TiDB 特有的函数，和 MySQL 不兼容。
 
 ## TIDB_DECODE_PLAN
 
@@ -102,7 +102,7 @@ SELECT tidb_is_ddl_owner();
 
 ### MySQL 兼容性
 
-`TIDB_IS_DDL_OWNER` 是 TiDB 的特有函数，和 MySQL 不兼容。
+`TIDB_IS_DDL_OWNER` 是 TiDB 特有的函数，和 MySQL 不兼容。
 
 ### 另请参阅
 
@@ -150,7 +150,7 @@ ROLLBACK;
 
 ### MySQL 兼容性
 
-`TIDB_PARSE_TSO` 是 TiDB 的特有函数，和 MySQL 不兼容。
+`TIDB_PARSE_TSO` 是 TiDB 特有的函数，和 MySQL 不兼容。
 
 ### 另请参阅
 
@@ -158,7 +158,7 @@ ROLLBACK;
 
 ## TIDB_VERSION
 
-`TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。你向 GitHub 上提交 issue 时，你可使用此函数获取相关信息。
+`TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。向 GitHub 上提交 issue 时，你可使用此函数获取相关信息。
 
 ### 语法图
 
@@ -191,4 +191,4 @@ Check Table Before Drop: false
 
 ### MySQL 兼容性
 
-`TIDB_VERSION` 是 TiDB 的特有函数，和 MySQL 不兼容。如果要求兼容 MySQL，可以使用 `VERSION` 获取版本信息，但结果不包含详细的构建信息。
+`TIDB_VERSION` 是 TiDB 特有的函数，和 MySQL 不兼容。如果要求兼容 MySQL，可以使用 `VERSION` 获取版本信息，但结果不包含详细的构建信息。
