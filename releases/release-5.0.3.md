@@ -96,6 +96,12 @@ TiDB 版本：5.0.3
     - 正常关机时跳过清理 Raftstore 的回调从而避免在某些情况下破坏事务的 ACID [#10396](https://github.com/tikv/tikv/pull/10396)
     - 修复在 Leader 上 Replica Read 共享 Read Index 的问题 [#10391](https://github.com/tikv/tikv/pull/10391)
     - 修复 coprocessor 转换 `DOUBLE` 到 `DOUBLE` 的错误函数 [#10388](https://github.com/tikv/tikv/pull/10388)
++ PD
+
+    - 修复在 scheduler 启动之后，加载 TTL 配置产生的数据竞争问题 [#3774](https://github.com/tikv/pd/pull/3774)
+    - 修复 `is_learner` 字段在 TiDB 的 `TIKV_REGION_PEERS` 表中显示异常的问题 [#3743](https://github.com/tikv/pd/pull/3743)
+    - 修复在一个 zone 内所有 TiKV 节点下线或宕机的情况下，PD 不往其他 zone 调度数据的问题 [#3742](https://github.com/tikv/pd/pull/3742)
+    - 修复在添加 scatter range 调度器后导致 PD 挂掉的问题 [#3762](https://github.com/tikv/pd/pull/3762)
 
 + TiFlash
 
