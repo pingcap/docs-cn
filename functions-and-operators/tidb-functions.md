@@ -1,5 +1,5 @@
 ---
-title: TiDB 特有函数
+title: TiDB 特有的函数
 summary: 学习使用 TiDB 的特有函数。
 ---
 
@@ -43,7 +43,7 @@ TIDB_DECODE_KEY(START_KEY): {"_tidb_rowid":1958897,"table_id":"59"}
 
 ## TIDB_DECODE_PLAN
 
-`TIDB_DECODE_PLAN` 函数可以用来解码 TiDB 执行计划。你可以在慢查询日志中找到这些计划。
+`TIDB_DECODE_PLAN` 函数可用来解码 TiDB 执行计划。你可以在慢查询日志中找到 TiDB 执行计划。
 
 ### 语法图
 
@@ -70,11 +70,11 @@ SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXR
 
 ### MySQL 兼容性
 
-`TIDB_DECODE_PLAN` 是 TiDB 的特有函数，和 MySQL 不兼容。
+`TIDB_DECODE_PLAN` 是 TiDB 特有的函数，和 MySQL 不兼容。
 
 ## TIDB_IS_DDL_OWNER
 
-`TIDB_IS_DDL_OWNER` 函数用来检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 是代表集群中的所有其他节点执行 DDL 语句的 TiDB 实例。
+`TIDB_IS_DDL_OWNER` 函数用来检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 是代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。
 
 ### 语法图
 
@@ -113,9 +113,9 @@ SELECT tidb_is_ddl_owner();
 
 `TIDB_PARSE_TSO` 函数可以用来从 TiDB TSO 时间戳中提取物理时间戳。
 
-TSO 指 Time Stamp Oracle，是 PD (place Driver) 为每个事务提供的单调递增的时间戳。
+TSO 指 Time Stamp Oracle，是 PD (Placement Driver) 为每个事务提供的单调递增的时间戳。
 
-TSO 是一串包括以下两部分的数字：
+TSO 是一串数字，包含以下两部分：
 
 - 一个物理时间戳
 - 一个逻辑计数器
@@ -146,7 +146,7 @@ ROLLBACK;
 1 row in set (0.0012 sec)
 ```
 
-这里使用 `TIDB_PARSE_TSO` 从 `tidb_current_ts` 会话变量可用的时间戳编号中提取物理时间戳。因为每个事务都会给出时间戳，所以此函数在事务中运行。
+以上示例使用 `TIDB_PARSE_TSO` 函数从 `tidb_current_ts` 会话变量提供的可用时间戳编号中提取物理时间戳。因为每个事务都会分配到时间戳，所以此函数在事务中运行。
 
 ### MySQL 兼容性
 
@@ -158,7 +158,7 @@ ROLLBACK;
 
 ## TIDB_VERSION
 
-`TIDB_VERSION` 函数可以用来获取你连接的 TiDB 服务器的版本和内部版本详细信息。你可以在 GitHub 上提交 issue 时使用此函数。
+`TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。你向 GitHub 上提交 issue 时，你可使用此函数获取相关信息。
 
 ### 语法图
 
@@ -191,4 +191,4 @@ Check Table Before Drop: false
 
 ### MySQL 兼容性
 
-`TIDB_VERSION` 是 TiDB 的特有函数，和 MySQL 不兼容。如果你需要兼容 MySQL，可以使用 `VERSION` 获取版本信息，但结果不包含详细的构建信息。
+`TIDB_VERSION` 是 TiDB 的特有函数，和 MySQL 不兼容。如果要求兼容 MySQL，可以使用 `VERSION` 获取版本信息，但结果不包含详细的构建信息。
