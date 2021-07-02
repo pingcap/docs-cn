@@ -92,7 +92,6 @@ TiDB 版本：5.0.3
     - 修复 `SELECT DISTINCT` 被转化为 Batch Get 而导致结果不正确的问题 [#25320](https://github.com/pingcap/tidb/issues/25320)
     - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题 [#23665](https://github.com/pingcap/tidb/issues/23665) [#24421](https://github.com/pingcap/tidb/issues/24421)
     - 修复在检查 `only_full_group_by` 时的 `index-out-of-range` 错误 [#23839](https://github.com/pingcap/tidb/issues/23839)
-    - 修复使用 `TABLESAMPLE` 在空表上进行查询返回预期外的行数据的问题 [#25257](https://github.com/pingcap/tidb/issues/25257)
     - 修复关联子查询中 Index Join 的结果不正确问题 [#25799](https://github.com/pingcap/tidb/issues/25799)
 
 + TiKV
